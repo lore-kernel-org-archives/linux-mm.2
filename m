@@ -4,93 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7097FD8FCF
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06703FD8FD3
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 16:30:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 625A76B015A; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 63FED6B015F; Thu, 26 Feb 2026 11:29:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3E46B015C; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 5ED7B6B0160; Thu, 26 Feb 2026 11:29:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 452416B015E; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
+	id 4CE9F6B0161; Thu, 26 Feb 2026 11:29:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FACC6B015C
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:28:07 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BFFB21402DC
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:28:06 +0000 (UTC)
-X-FDA: 84487139772.09.9935DE5
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5A60D1C000A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:28:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A636B015F
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 11:29:59 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E97BF8B251
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:29:58 +0000 (UTC)
+X-FDA: 84487144476.18.FE75977
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0C5562001A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:29:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OB3FKG2X;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772123284;
+	s=arc-20220608; t=1772123397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OTHNJJvHPvQjN2xeyejeP82xCwvLUcEn/ox/O4XGLWA=;
-	b=7iwaKbt+l9vjfUg5OBoFh7jSH/YIXz1c9FiykHtQazhI56dDq+e70SdwZZVM56rESsmSpA
-	LIbPBhmL9YDl7IV3sDuxxXlSFpxig6FSsX68HtNL4sK4ZAte60DI4jaeQM2vvy/Apy85+h
-	qxgPc8HErYfzXpIVP95YKubx9JLiBiI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772123284; a=rsa-sha256;
-	cv=none;
-	b=Jf7ntFCEGVMAl1rZf2Tz8zEZIU55Hb/SzeDhgQxyptoCGCWIN54Rtdl8IDMelelEC2a3vj
-	gmwTvv+0Tk0dRMn7ztZG3f+lVbGtMw/aMSk+BPoVaz/16eaTupuujSpG2sCoeWSgiD3XiJ
-	rFb5k/DaS1Jw1qga1Ya28zLH9RAVwGo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Yh64DWzjn3T5tbVdG00bnLP2a4FuujI6RBd/LRsFLSk=;
+	b=C+Xbi+wfpe7r0U1D3V3dEdeZfDBwZ2M69XWnnOfi5AXAiRtsrbGHr+z5adPDYytRpD+1qG
+	jz3eeCVot+V7xwq0oPKNwyS5m7MseT14m9By6ynwfyCy4WGOMyMlBdAOJPS8thfwFtHI62
+	Gw37zpbC/51aD3QBxR4+0LgiIGbHW0A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fMH1M4PN9zJ46CD;
-	Fri, 27 Feb 2026 00:27:35 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id B163D40587;
-	Fri, 27 Feb 2026 00:28:00 +0800 (CST)
-Received: from mscphis00972.huawei.com (10.123.68.107) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 26 Feb 2026 19:28:00 +0300
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-To: Ilya Gladyshev <gladyshev.ilya1@h-partners.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R .
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Harry Yoo
-	<harry.yoo@oracle.com>, Matthew Wilcox <willy@infradead.org>, Yu Zhao
-	<yuzhao@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Gorbunov Ivan <gorbunov.ivan@h-partners.com>,
-	Muchun Song <muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>
-Subject: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
-Date: Thu, 26 Feb 2026 16:27:23 +0000
-Message-ID: <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
-References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OB3FKG2X;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772123397; a=rsa-sha256;
+	cv=none;
+	b=aiMkrmMXjUPXKz8nZN9oTUcY2KTo+Vpza5YMAqnGE3ZZ2/CrPNGYlYplU36LBL6BweU8R+
+	tQZdmwWdcfNZVX5X9165mitRgS1FO5iHQLXxIXJ2tkdVhEuZoYvB1KEQAtulNt3cUUTXon
+	oEph4+ZFnsFDaglDBs2z+HRyv37urE4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FA4043641;
+	Thu, 26 Feb 2026 16:29:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519A4C116C6;
+	Thu, 26 Feb 2026 16:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772123396;
+	bh=uMFN9RkMbM+7SbXyhkLLyz3IvEzev7M+UJI2j68H1GU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OB3FKG2XQBSFfNl6yatDDLwkubGI3MTeie/zNm8/qluN6mhVq7k9oZd6suBLz8So2
+	 mlXSyzGb4JjZkOe0yU1+kIdE2dygihuvnRdZJPvYuUhP+qDchhw5aUOabPa+90pPcx
+	 G9m1RMch34bOWQkpgakTvl0tQD53nVdMOM6tkN7yYCbyC2/HwNLHzE3PTPuUg0UN3l
+	 3lfjaRVHX2n4RXWidrSrCFN+aPduJNuWAfZifP3NofAopZvQXDrIVghRcCN8UGGjGf
+	 SdamrQWFZfXGcySWnN1d5qiVmwA4jx1gcHocmJhZrcBnE1Y1XxPFWyPHEJA6AGNB18
+	 tJsCRrNyw/jVw==
+Message-ID: <cb38e860-bd1a-409e-9685-de8dbe9ee54e@kernel.org>
+Date: Thu, 26 Feb 2026 17:29:51 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.68.107]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: od8x1onayq6wib4mgno8r1uuzqq5zhx8
-X-Rspamd-Queue-Id: 5A60D1C000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] selftests/mm: Add UFFDIO_MOVE huge zeropage PMD
+ regression test
+To: Chris Down <chris@chrisdown.name>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <aaBWG4fajXXbjpVN@chrisdown.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aaBWG4fajXXbjpVN@chrisdown.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0C5562001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1772123284-482056
-X-HE-Meta: U2FsdGVkX1/XBdwCTgSg41XT5SPSIfuuh87pQQn1pLPgyXOz+/Xg02+moHeqAsaPZVJXmqs+XVxvbXL9qTmcAjdQJNdC3/RFRTvDkhXryMpoLc2IjJLS5jByoK89f/i8675aQfs8zubdkue4nqJYFHvCAj0y67u1SpvshXQRiZkF2KajX5+IyqDvwCA5PXFVR4SHQeBvGAYYmIJW3cqsiy4aBM/9gW2xcRZw40VYJC3kFMpgNx107bKshTkPHAEnC7tEGHFzx6fULJIlvrbQ5X8r8AHtiJPhTB1DAPDRfwZ4vo80cU62WkFigxU5infL7dzs2gQdHw8JdkA3ooUjG9aI92ld/IvbwfHfilXLpylX+DSwuh2wy15QaXmk5YcWTxll5eTJ1XfDxtfSkcLGjPo/cyo/EeSN17wrkse+WmHBoYyRmFknZSam36cSyfzOhwYHKQNKRVs0oJIae48DAbxlutqdpUV3yGlLkSUm11L/sRWlFL4I9zsizKYtl73WJsvom+kjb6xuSXwhDDvnxQEnTp090QxUsC0C3ojFZwqwTOBsoASdR+B9CPN00UFgny8iKjq7vczOnqV0WPcAX+XJ9Vux0rCKI3D7SZq8uRuk1nD3UFRvMgV4WtwJeh+XzuZR3O3BLOiIb8u8UX49CQeWVCNw66Mj0ppU4+knvN19S/ysUeXCxS5JZyiHFjkMaryXpsjLudUzRs4x+G79U1bIcfIsgXvRezGW6F0DwFF1lutjYBhU/ksDy1drxCE3iejQs/RqRPl5G8fR9t7Ok4KhNREuN3H+xBhyUHwez3kefuGKjRqySvKC755Z6oJfIbZypfYrrgxN1Ye/Dk7r+cjX1GxZKijKfOZyrimIJg8QYinlTE0brOTAGrV8gGJ00yTdSlsxeA3rAdbA/nCadpmD15oDLseFA8WZj3UIImqpjvnR5BS9ow7V0vhZTE1KWOQsunKsCEtbF6YVY+j
- tnLyzTz0
- jiIiQQ3P6/XYSkWk2H20VSAFiYde9wmI/EpoLhvtkRg/RdNSTd4jtFYWtt5WSOYTRXgdNLadWUT6tFy4PM5mq5kzY7nnUiUoWvllmIctDwgkE1jJx/B+nE1CAq7zaFU84sot4+Bp2uIR4a6bp7mqQLqLgjc/r7se3NXI1Kh5sJHQ8ihLu8NihLBtG3cCyEfc7kQJefhaP9f/idEM9WzhjMknt9gVYcRsVqwE30LBxEH8/yuGaw5FlFzlhCa4dHQc8LbNg+WW/MW5ZYcQ=
+X-Rspamd-Server: rspam03
+X-Stat-Signature: fbxrz5xug1a3xk5fssb4q5fsymckuwru
+X-HE-Tag: 1772123396-873242
+X-HE-Meta: U2FsdGVkX1/PEfLyYgHc0uYKPUj+Af42bvEhWgEOx1h026xOeS8l5PuR/t0YFfhBCAEWwJ/BwCNch4DQ54yXisPJ0boLwYTbN/wm1clkZIoIsIat51hPb8jUapAAPvNqZsi08f645YnsPrF/RRRDYwp9QMeWmbmPIGZtwS3NE0ygf8YJHnGQXrkn60kBe+LqFDaWIM0KLSGdgWce11/XPeFC+hp3lViDiMG7s2/Ktr8atopmkzvIpHWmEhw+EmjEaFiwpuZxb41G1wmFuaKCofjF8KA1jz/vvVTYA6aivc7I7iRlUYBEr1T7TxeimmG897ikT2HIbmZDF7Qgqs73SBjlq9szzJ+OdV4bD+E32VY6cl/DGkL4F9SP/HRDL4uzDYHFp0BStUZoaYzm/08VlmB9CGL7ocrHWUBVvDiuPbi4exHZ7MLP6O/3pPZ6lSCEzLb7PLex2hsycmDSm8INyAXqQXoEZ3emfDUKexjuZ2gslNhW4+Zajr/O1aZu+SfN/PLtGWCA/O0N/+dA0iACoztCMsVuDok7vQBLucqwcVv6LjnSyyrp0KoLDOs/LYnp4CYWWmWSS39eEN0BpN8qfQHg/jPKOEsKRcp9221fGFf9hRZex+LTRjVzUIvXrInl0OOgiujq9DTkCCed1+vX8eIOjfeLebig8Xa67d9dQZspq5NB3gDPKFGZYdGd44MKz0ma6FD+HcLVW2k6t93ILjht4KzSIhI9MT3olW1YHeaPJWFLfsV1rm2gw9070R9xlXH1gWJ0KFzxCR48Xnt7Yax4DkKylpINq+5bod9scX0Bea4WYju/K8xTE4xXF35Q3E9OnJK/qhY264ovxhfw0l1LQ66itodHXsMJuC9HgYKDyvPMbNkiLmW3HUo1XuSMcO/Ptq7YNJLpoX42pf2Mdd3XeK4jWBEEw7Ep4/jAmin9L7YN1WhiQzXxAHVIEm7xl/rDrO8X5gtc0CD/uIo
+ zU+X1WdF
+ M0/GkQeT9+A7coa/YryNGTVFJ2d7FNnXC7LiPtchTCL6LgqenC5vA1y76gTBk7L5Q6NXLK9Pwg/rTEOhE5P4/+W6HewjkPsyCVexVTdIYX9t0dK9LuxuLX9D4XXesyCkw9L7vtvLWjjb2eP/RN+nBOp+jJyPIGk8iAO6BOv4Gz//9vowx3dZulJi3ZqsrHtk7C6wUfycRJFahFoqEPblP76gfxLcZLoUUFfv3SH4GqCLyq8Q6zkH/d7cUccv/2ZAPw5tZJABXhtBi8/dTXMHC7JNu+gpMAL+vlTlzNIH5JPCFyrXro6P7HqwbYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,128 +139,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current atomic-based page refcount implementation treats zero
-counter as dead and requires a compare-and-swap loop in folio_try_get()
-to prevent incrementing a dead refcount. This CAS loop acts as a
-serialization point and can become a significant bottleneck during
-high-frequency file read operations.
+On 2/26/26 15:18, Chris Down wrote:
+> The existing uffd-unit-tests move-pmd coverage exercises PMD-sized
+> UFFDIO_MOVE on anonymous THPs, but it does not force the huge zeropage
+> PMD path in move_pages_huge_pmd().
+> 
+> Add a dedicated anonymous UFFDIO_MOVE PMD test that exercises this
+> relatively comprehensively.
+> 
+> Signed-off-by: Chris Down <chris@chrisdown.name>
+> ---
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 176 +++++++++++++++++++
+>  1 file changed, 176 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index 6f5e404a446c..372619e3906d 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -203,6 +203,62 @@ static int pagemap_open(void)
+>  	return fd;
+>  }
+>  
 
-This patch introduces FOLIO_LOCKED_BIT to distinguish between a
-(temporary) zero refcount and a locked (dead/frozen) state. Because now
-incrementing counter doesn't affect it's locked/unlocked state, it is
-possible to use an optimistic atomic_add_return() in
-page_ref_add_unless_zero() that operates independently of the locked bit.
-The locked state is handled after the increment attempt, eliminating the
-need for the CAS loop.
+Thanks for implementing this!
 
-If locked state is detected after atomic_add(), pageref counter will be
-reset using CAS loop, eliminating theoretical possibility of overflow.
+[...]
 
-Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
----
- include/linux/page-flags.h |  5 ++++-
- include/linux/page_ref.h   | 28 ++++++++++++++++++++++++----
- 2 files changed, 28 insertions(+), 5 deletions(-)
+> +static bool uffd_pagemap_scan_get_categories(int fd, char *start, uint64_t *categories)
+> +{
+> +	struct page_region r = { 0 };
+> +	long ret;
+> +
+> +	if (!uffd_pagemap_scan_supported(fd, start))
+> +		return false;
+> +
+> +	ret = uffd_pagemap_scan_get_categories_raw(fd, start, &r);
+> +	if (ret < 0)
+> +		err("PAGEMAP_SCAN failed: %s", strerror(errno));
+> +
+> +	*categories = ret ? r.categories : 0;
+> +	return true;
+> +}
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7c2195baf4c1..f2a9302104eb 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -196,6 +196,9 @@ enum pageflags {
- 
- #define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
- 
-+/* Most significant bit in page refcount */
-+#define PAGEREF_LOCKED_BIT	(1 << 31)
-+
- #ifndef __GENERATING_BOUNDS_H
- 
- #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-@@ -257,7 +260,7 @@ static __always_inline bool page_count_writable(const struct page *page)
- 	 * The refcount check also prevents modification attempts to other (r/o)
- 	 * tail pages that are not fake heads.
- 	 */
--	if (!atomic_read_acquire(&page->_refcount))
-+	if (atomic_read_acquire(&page->_refcount) & PAGEREF_LOCKED_BIT)
- 		return false;
- 
- 	return page_fixed_fake_head(page) == page;
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index b0e3f4a4b4b8..f2f2775af4bb 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -64,7 +64,12 @@ static inline void __page_ref_unfreeze(struct page *page, int v)
- 
- static inline int page_ref_count(const struct page *page)
- {
--	return atomic_read(&page->_refcount);
-+	int val = atomic_read(&page->_refcount);
-+
-+	if (unlikely(val & PAGEREF_LOCKED_BIT))
-+		return 0;
-+
-+	return val;
- }
- 
- /**
-@@ -176,6 +181,9 @@ static inline int page_ref_sub_and_test(struct page *page, int nr)
- {
- 	int ret = atomic_sub_and_test(nr, &page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_LOCKED_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -nr, ret);
- 	return ret;
-@@ -204,6 +212,9 @@ static inline int page_ref_dec_and_test(struct page *page)
- {
- 	int ret = atomic_dec_and_test(&page->_refcount);
- 
-+	if (ret)
-+		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_LOCKED_BIT);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -1, ret);
- 	return ret;
-@@ -228,14 +239,23 @@ static inline int folio_ref_dec_return(struct folio *folio)
- 	return page_ref_dec_return(&folio->page);
- }
- 
-+#define _PAGEREF_LOCKED_LIMIT	((1 << 30) | PAGEREF_LOCKED_BIT)
-+
- static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- {
- 	bool ret = false;
-+	int val;
- 
- 	rcu_read_lock();
- 	/* avoid writing to the vmemmap area being remapped */
--	if (page_count_writable(page))
--		ret = atomic_add_unless(&page->_refcount, nr, 0);
-+	if (page_count_writable(page)) {
-+		val = atomic_add_return(nr, &page->_refcount);
-+		ret = !(val & PAGEREF_LOCKED_BIT);
-+
-+		/* Undo atomic_add() if counter is locked and scary big */
-+		while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
-+			val = atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_LOCKED_BIT);
-+	}
- 	rcu_read_unlock();
- 
- 	if (page_ref_tracepoint_active(page_ref_mod_unless))
-@@ -271,7 +291,7 @@ static inline bool folio_ref_try_add(struct folio *folio, int count)
- 
- static inline int page_ref_freeze(struct page *page, int count)
- {
--	int ret = likely(atomic_cmpxchg(&page->_refcount, count, 0) == count);
-+	int ret = likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_LOCKED_BIT) == count);
- 
- 	if (page_ref_tracepoint_active(page_ref_freeze))
- 		__page_ref_freeze(page, count, ret);
+Can we unify (deduplicate) that code with what we have in vm_util.c, and
+then only export a function like
+
+bool pagemap_is_huge_zero(int fd, char *start)
+
+similar to pagemap_is_softdirty() etc to be consumed by the test here?
+
+It can simply return "false" in case the interface is not available.
+
+> +
+>  /* This macro let __LINE__ works in err() */
+>  #define  pagemap_check_wp(value, wp) do {				\
+>  		if (!!(value & PM_UFFD_WP) != wp)			\
+> @@ -1227,6 +1283,119 @@ static void uffd_move_pmd_test(uffd_global_test_opts_t *gopts, uffd_test_args_t
+>  			      uffd_move_pmd_handle_fault);
+>  }
+>  
+> +static void uffd_move_pmd_huge_zeropage_test(uffd_global_test_opts_t *gopts,
+> +					     uffd_test_args_t *targs)
+> +{
+> +	unsigned long pmd_size = read_pmd_pagesize();
+> +	unsigned long pmd_pages;
+> +	unsigned long bytes = gopts->nr_pages * gopts->page_size;
+> +	char *orig_area_src = gopts->area_src, *orig_area_dst = gopts->area_dst;
+> +	char *aligned_src, *aligned_dst;
+> +	unsigned long src_offs, dst_offs, max_offs;
+> +	pthread_t uffd_mon;
+> +	struct uffd_args args = { 0 };
+> +	char c = '\0';
+> +	int pagemap_fd;
+> +	uint64_t categories;
+> +	unsigned long i;
+> +
+> +	if (pmd_size <= gopts->page_size) {
+> +		uffd_test_skip("huge page size is 0, feature missing?");
+> +		return;
+> +	}
+> +	if (!detect_huge_zeropage()) {
+> +		uffd_test_skip("transparent huge zeropage disabled");
+> +		return;
+> +	}
+> +
+> +	pmd_pages = pmd_size / gopts->page_size;
+> +	if (bytes < pmd_size) {
+> +		uffd_test_skip("not enough pages for one PMD-sized move");
+> +		return;
+> +	}
+> +
+> +	aligned_src = ALIGN_UP(orig_area_src, pmd_size);
+> +	aligned_dst = ALIGN_UP(orig_area_dst, pmd_size);
+> +	src_offs = (aligned_src - orig_area_src) / gopts->page_size;
+> +	dst_offs = (aligned_dst - orig_area_dst) / gopts->page_size;
+> +	max_offs = src_offs > dst_offs ? src_offs : dst_offs;
+> +	if (max_offs + pmd_pages > gopts->nr_pages) {
+> +		uffd_test_skip("could not find aligned PMD-sized src/dst window");
+> +		return;
+> +	}
+> +
+> +	if (madvise(orig_area_dst, bytes, MADV_HUGEPAGE))
+> +		err("madvise(MADV_HUGEPAGE) failure");
+> +	if (madvise(orig_area_src, bytes, MADV_DONTFORK))
+> +		err("madvise(MADV_DONTFORK) failure");
+> +	if (madvise(aligned_src, pmd_size, MADV_DONTNEED))
+> +		err("madvise(MADV_DONTNEED) failure");
+> +
+> +	/* Materialise a PMD-sized huge zeropage mapping in the source. */
+
+"Fault in the huge zeropage"
+
+> +	force_read_pages(aligned_src, pmd_pages, gopts->page_size);
+> +
+> +	pagemap_fd = pagemap_open();
+> +	if (!uffd_pagemap_scan_get_categories(pagemap_fd, aligned_src, &categories)) {
+> +		close(pagemap_fd);
+> +		uffd_test_skip("PAGEMAP_SCAN unsupported");
+> +		return;
+> +	}
+> +	if ((categories & (PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) !=
+> +	    (PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) {
+> +		close(pagemap_fd);
+> +		uffd_test_skip("could not materialise a huge zeropage PMD mapping");
+
+"could not fault in the huge zeropage" ?
+
+> +		return;
+> +	}
+> +	gopts->area_src = aligned_src;
+> +	gopts->area_dst = aligned_dst;
+> +
+> +	if (uffd_register(gopts->uffd, gopts->area_dst, pmd_size, true, false, false))
+> +		err("register failure");
+> +
+> +	args.gopts = gopts;
+> +	args.handle_fault = uffd_move_pmd_handle_fault;
+> +	if (pthread_create(&uffd_mon, NULL, uffd_poll_thread, &args))
+> +		err("uffd_poll_thread create");
+> +
+> +	/*
+> +	 * One fault on dst should trigger a single PMD-sized UFFDIO_MOVE from
+> +	 * the huge zeropage PMD we populated in the source.
+> +	 */
+> +	force_read_pages(gopts->area_dst, pmd_pages, gopts->page_size);
+> +
+> +	if (write(gopts->pipefd[1], &c, sizeof(c)) != sizeof(c))
+> +		err("pipe write");
+> +	if (pthread_join(uffd_mon, NULL))
+> +		err("join() failed");
+> +
+> +	if (args.missing_faults != 1 || args.minor_faults != 0) {
+> +		uffd_test_fail("stats check error");
+> +	} else if (!uffd_pagemap_scan_get_categories(pagemap_fd, gopts->area_dst,
+> +						     &categories)) {
+> +		uffd_test_fail("PAGEMAP_SCAN unsupported");
+
+Why should it suddenly be unsupported when it worked before?
+
+With the pagemap_is_huge_zero() helper, this will boil down to
+
+} else if (pagemap_is_huge_zero(...)) {
+	uffd_test_fail("moved destination is not a huge zeropage PMD");
+}
+
+> +	} else if ((categories & (PAGE_IS_PRESENT | PAGE_IS_PFNZERO |
+> +				  PAGE_IS_HUGE)) !=
+> +			(PAGE_IS_PRESENT | PAGE_IS_PFNZERO | PAGE_IS_HUGE)) {
+> +		uffd_test_fail("moved destination is not a huge zeropage PMD");
+> +	} else if (!check_huge_anon(gopts->area_dst, 0, pmd_size)) {
+> +		/* vm_normal_page_pmd() must continue to treat the moved PMD as special. */
+> +		uffd_test_fail("moved huge zeropage PMD counted as AnonHugePages");
+> +	} else {
+> +		for (i = 0; i < pmd_size; i++) {
+> +			if (gopts->area_dst[i]) {
+> +				uffd_test_fail("moved huge zeropage PMD data is not zero");
+> +				goto out_restore;
+> +			}
+> +		}
+
+That's a bit excessive given that pagemap told us that it is indeed the
+huge zeropage. So I would just drop this.
+
+
 -- 
-2.43.0
+Cheers,
 
+David
 
