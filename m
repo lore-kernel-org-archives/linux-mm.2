@@ -4,105 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C092EFD8FF8
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:27:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D20FD8FF5
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:31:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAFD76B0180; Thu, 26 Feb 2026 13:27:10 -0500 (EST)
+	id 4C0076B01AA; Thu, 26 Feb 2026 13:31:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6DB46B0183; Thu, 26 Feb 2026 13:27:10 -0500 (EST)
+	id 496F96B01AB; Thu, 26 Feb 2026 13:31:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC72C6B0184; Thu, 26 Feb 2026 13:27:10 -0500 (EST)
+	id 399436B01AE; Thu, 26 Feb 2026 13:31:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B4F4F6B0180
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:27:10 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86AF5160342
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:27:10 +0000 (UTC)
-X-FDA: 84487439820.03.1CE6D86
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9FF83A0017
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:27:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=HtgDyNSQ;
-	spf=pass (imf15.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772130428;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 241CF6B01AA
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:31:57 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CD315B697B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:31:56 +0000 (UTC)
+X-FDA: 84487451832.24.719DF09
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11020093.outbound.protection.outlook.com [52.101.61.93])
+	by imf21.hostedemail.com (Postfix) with ESMTP id EA8D61C000A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:31:53 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=mOId8493;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.61.93 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772130714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0LKKlLe+YhKO7o329A7m73xvNfBWJnGt18tZ/iyWG2I=;
-	b=J0M0atcB33M1zweALhY6YoGGdgjtOeu866VFGM8rGCFoJ/46yKoGNO8p5GJslmvcghoYCi
-	ZWu4eqQly+QZOS19xHs1yZIEFJfinXS8qRAkZKIbOMYG3c0i8no7GoOkiUd8M7rspLhtGy
-	Jxx/H/6RybQCxXEdLyEyj7z667ZCWx8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=HtgDyNSQ;
-	spf=pass (imf15.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772130428; a=rsa-sha256;
-	cv=none;
-	b=nhV8TpIY7iID+mJYtdhMD5FxhBSrpklN3IDSI3xRV1nK67/5+Kdhz6cD2yznbWQ/NnGZKr
-	8/WFa3FBV/1De2kQTpldDP+M8TudJMa30gFrTSZ+sa+yieZNkF0Eh0IYS/bc1UVrqGqiZm
-	OYCM8Kf6Wne7RoSn/aUbDWnig9KTPj0=
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 21AF8B2CE9;
-	Thu, 26 Feb 2026 18:26:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772130416;
-	bh=0LKKlLe+YhKO7o329A7m73xvNfBWJnGt18tZ/iyWG2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HtgDyNSQsc5OOYXt8Lu2WiYyqNLrSkEdLiAWO0FgQdJeGTG/vh2VHprW6CqmKoUzj
-	 DMU76FNUcTKHR1QaJxMFnnpW6R4bxlYUjaRp5/OmHu+ykA5MFvRTsnTDPl164DtAdw
-	 6HZohSwO1xzUmkYAc3QV6RRnpCgvY2XcVAV5piuc=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	kernel-team@meta.com,
-	Benjamin Cheatham <benjamin.cheatham@amd.com>,
-	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v3 5/5] mm: add tracepoints for zone lock
-Date: Thu, 26 Feb 2026 18:26:22 +0000
-Message-ID: <378089dd269249d3d7981fe10eb8b49ad551d353.1772129168.git.d@ilvokhin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772129168.git.d@ilvokhin.com>
-References: <cover.1772129168.git.d@ilvokhin.com>
-MIME-Version: 1.0
+	bh=goyiSbX06hm/ZfK3u3llBEasnlV/cwIG2gHLawCeHiM=;
+	b=71w1hY5bXzOwIj9Fye0UWOzaVGf8vNqCKNHJ1gdprl/nsnTa1HsY9sC8SMVkSDwwYuTXGj
+	gxUbIDXEnbbajGN1sFQmD5GTBF9uk9HTQFE7E1mW4Xvmj0hSt2IClBwn5QbKDxNmyumnDG
+	iK6a/28Sn7A+5aMSfvhK2+u0LmRG0aA=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772130714; a=rsa-sha256;
+	cv=pass;
+	b=cg7VD1mYVjbtCmEYFQeUWCGEo4CutlHCihb58eNSpvyQ/O2D+I+C1OO064xBp0HoKDiFY9
+	WceYRWek3w4KkJxoBJv4TRk3agWzqXM/1zkUaoickuCDn5n6hKmjFwxMPaK4oVdBlzX9kP
+	1SdyL6L+v+gSqDLXG76Wh4xCtqG/UJU=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=os.amperecomputing.com header.s=selector2 header.b=mOId8493;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of yang@os.amperecomputing.com designates 52.101.61.93 as permitted sender) smtp.mailfrom=yang@os.amperecomputing.com;
+	dmarc=pass (policy=quarantine) header.from=amperecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RPM8WdQcsUv9EMURSnXLUEp7UntvoBA5VMCYOoUkqHX2/PZlFAXCQ931eq3Ms+3idBZVTLAncKeUBnTUH1RtQrO6hhJDS0ifRGvpFJHi1A/70KBCydMnKlGqhswyx5g3rzM78XDpcUICFeJbxQyFQg3W160WSIkFkt4eCNorFUIgNVisJg8jINJ38bpsUft1PMBCzsaDGLnRf4Y/xJn/09qTiQxt0CzRcop8145a9XIgFA0NEedxY3PaNk5+w1YTF3hcDtsYG6kvj9Rh4zYSKhHajbtDG0d3n4RXauxBZ/966nNLIFiPfssSX2IDBwa70LGtTvbqrRsOfpU4wP1peA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=goyiSbX06hm/ZfK3u3llBEasnlV/cwIG2gHLawCeHiM=;
+ b=pujFgMz1fVawKR4jlBLR/GLL+5ETLMIV47p0hhCJIAGtyRGTcUuoOZgisGksaoPUAnj3/ZVfgg76wYGKhYjgfIRG9vBWCbYbbaQhAz9Rq3thE8zswWwMpkZa4ttMVJLyO8JRiYFycL7EAw7YBGP2gyZQRBHEmG/dILME3ITChZrurr5Q21HVxaLALVPF5tLeQEdnjIV7fIDl25ud2oSeRf7DBCcKSaW4hv92+0HGBCi09p/N3O5rxSELRn+xBIRQwLU9x74hqauThKsMdfmr26EKx0VnXgV6NA/6iot/6VFs4eFOG2fEZN9a9tIajQvBBOGh7+Boi7/PAK8argmw1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=os.amperecomputing.com; dkim=pass
+ header.d=os.amperecomputing.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=os.amperecomputing.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=goyiSbX06hm/ZfK3u3llBEasnlV/cwIG2gHLawCeHiM=;
+ b=mOId8493MLfPsGTLA5t0wlMO+O1xrc621wgJvt9e1mPAQnBDYzsceZDMpcwH85jVj3u0I/Obj1B5eldfy6Jw3tRBfu7UNMyGejqoRinz2lslu1IgqM5WYOkGc7atxU41e8zhqzcpoZN0VT+udZhvTTyZMnzF4xiODapTffJE5LI=
+Received: from CH0PR01MB6873.prod.exchangelabs.com (2603:10b6:610:112::22) by
+ SA1PR01MB994289.prod.exchangelabs.com (2603:10b6:806:4a0::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.14; Thu, 26 Feb 2026 18:31:50 +0000
+Received: from CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0]) by CH0PR01MB6873.prod.exchangelabs.com
+ ([fe80::46eb:64a3:667c:c1a0%4]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
+ 18:31:50 +0000
+Message-ID: <011671c7-6eaa-4389-a058-dd1ba133d8bd@os.amperecomputing.com>
+Date: Thu, 26 Feb 2026 10:31:46 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
+ (and potentially other architectures)
+To: Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, lsf-pc@lists.linux-foundation.org,
+ Linux MM <linux-mm@kvack.org>, "Christoph Lameter (Ampere)" <cl@gentwo.org>,
+ dennis@kernel.org, Tejun Heo <tj@kernel.org>, urezki@gmail.com,
+ Will Deacon <will@kernel.org>
+References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
+ <5a648f49-97b1-4195-a825-47f3261225eb@arm.com>
+ <CAHbLzkqRjuWg7ybdkuv5xdoPz7z_q2n+0Eh0pRNoVxq-WskRvA@mail.gmail.com>
+ <aZMCAWiA7XHYLIE1@arm.com>
+Content-Language: en-US
+From: Yang Shi <yang@os.amperecomputing.com>
+In-Reply-To: <aZMCAWiA7XHYLIE1@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9FF83A0017
-X-Stat-Signature: 9ifdt9m96o3iskf96b3rqpkcukaxs73q
+X-ClientProxiedBy: CY5P221CA0061.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:930:4::36) To CH0PR01MB6873.prod.exchangelabs.com
+ (2603:10b6:610:112::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR01MB6873:EE_|SA1PR01MB994289:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a985bb8-89b5-4e26-7da2-08de75654e55
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	fqcXN6c83pcmSAqjh6qedx1AK7biMi3rzUJu8Y+/OR7I2O0a9y/6m3a3Ihv63UtcxtBlFi37ybV1mh2CvbYtGmTw3Uqu6wQp5nnY6AigrYT6GIChU4F54wztzVrBogqOPLLN3g6NUSmeGxcuff1ohANgkNOBdsFztoWQriGRQTdL/4wxBlZZ2ldTJF2eqMD/c0Df4X2c7juRERllROcyEyyI1MI/QRNC1RDoQtYtK5umaqhrzprEw3fTCFpdHkEDVq5e0YpiqQmwgs/g6AxJ9Pg5EpRx5YUDDG0DqhsZbc3jz5OOsO47Jx4Cv9NNzHTf5i3c/72geJm0idt/heA5AiIvfqorAZHj9T2RNlk0fler3Hd6tbXMJn7q5empuneSZDAJ2fRdzkiybaoKHNSXi5rQNLx1Wd9IoccrACTbv0JHWYJDqfZ7ceC4XM3MtUfXZqw4J+FjtZpt+/aTG/TwZhIrYlOMgDkQvjxM2TsGRsXRc1g/+T79h/j/92LnLXVMH0JP3mILHX2vQ2c7w7Bfoh6XIExS2Wv54LJbCBTUAVJgz7Hv1hWBhlAFIa72DcKQg4yhg6JEbHIN19awh8zegBUUQQeHgf/ngiDYGBvahNWwcMZ1ipQXPkbxdXYahUMyBvW5na8P2doqQ0ulfoO7b3f7pOmbfJHVUngxx22O55HMQgaanbZzNSbq97uj/jptegjiuzTDikyQz8bHm47JGvP4L9luR5OGES4NnwX9RjA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR01MB6873.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WVVkZjZrN3VvUkV2anNrOGE1SDNLZi9jcHFiMFYzWmVNNW5TU2NlcHY1TmRY?=
+ =?utf-8?B?Y29XTUFOTlhhSjNRYWU4ZkdrbWZIOU1NdG92TWV6U3E2TkdYckZkaGVWcFI0?=
+ =?utf-8?B?MkttRjlwZmRyUGs1ZXEzVU96aWNhVzg5NjNJNzkvMnZ4Y0d4ZjlBS1FYYXkz?=
+ =?utf-8?B?L2lWNGVldGV3TXY4RlJmMnlxYk85WTJBNTRmOHhPRzdEdXR5U2lHSUVKdUxJ?=
+ =?utf-8?B?Y1lKckpWK3ZNUkVvZm9BeXJFZkhJQ2M1ZTRGSTRaWExxN0kzS2hsT2JaV1Nr?=
+ =?utf-8?B?RFExdVFZQXBmeE0rbXBGa3ZOaEYvNW9udVllN3JDa2FSY2thLzF3WjQ1NHlj?=
+ =?utf-8?B?elZNQnZGdnpFZ1IvOVZ6bjhmUmw0UWZrMW1iYXRDOTNFUGpUejhOTlVVb1Ey?=
+ =?utf-8?B?ZHBFbUh4RmoxdEU3a3hpQjhEa2grT005cVBKQVhKZytDUkZURGJDMHh4NUxr?=
+ =?utf-8?B?Wmc0bG4vZjBURmRWWVliOEtzcE1HaEdIMDdWWjZhOXE4R1d5NitCdEFjZ1Nw?=
+ =?utf-8?B?alZ0UWQ0RUFHb2FmMTFnNUFJUlJtWVo4R2JkYmRWZlRTbkt0Y3FRMXJaQ3NM?=
+ =?utf-8?B?MHJ1MzVFTi85cmdRN3JPVTdSSEs2aGtaSldmLzh5aWk2SUlHUTZYZXJwclhI?=
+ =?utf-8?B?UjJIbTNkcHpSb3N5bkw5cU9lcDF6RFNsbTVrWnpVK2ZmeUliZldtRnFtTFkx?=
+ =?utf-8?B?NjhuNzZkOTYrcVE0N1ptMzR5eVlsYWxodHdyK0ZBb0haaGs3QjRaUGpzTnFs?=
+ =?utf-8?B?V2tTcENUdTREQzN1bmZFSXlKcUFZbHV2eVpwK0tadldVSExGVDgzU0hSTDFu?=
+ =?utf-8?B?SG9aMkYxYnZpL3VTODZFNzdNT1BwbU5uVVNpdGxJV1pPYmp4VzhXd095VWQ4?=
+ =?utf-8?B?SkNqQ0wzcEJOUy96ekRZT3BtYi9kanlFV2oxUWJJYUVBNVlXMkJGR2pVNW9h?=
+ =?utf-8?B?aW43Sno5dWpsQVZPbUhxMHorbzZCcTJkS3FKd2ZYTFVNK25xak03N1JJOWpP?=
+ =?utf-8?B?MXVnMXdialhCKytKVlhTMDhzNm5hY0tKWjl4R3NCNUViRWlFei9OWVMrNW9B?=
+ =?utf-8?B?Q28vWHFRZEMvOFRVUG41cnVyMzNBN1ZzVy94eUZnWm56M2NUdFNrREt3dU9u?=
+ =?utf-8?B?bGpVSzFHbVZwbVd3VTF6SDJQNDcxcEc5dnB1eS83UkJJTTYweUlSU0F4dURI?=
+ =?utf-8?B?aUpzWDFvN1N3NjQzcWFMSnBwRDR2aTd3NEU5ZVNZYUdvTGZSOW9WdzhJemVM?=
+ =?utf-8?B?TVFSeWRuN2pRNGx1RjIrZ2Zsa0FJVllGL2xsOHVnSWk2UlFxNWdsdGVXdVFr?=
+ =?utf-8?B?YUVDMDlWN2IvY0JxRUZ6VEhZYVpaYytxTU41L0lrby9PaVdGanFqRTByaEdL?=
+ =?utf-8?B?dk9OaU1tamt6WkRXdzVyWStDRnpkampFc2FZcTU0RTNjTFRyNUxXTVUzMnhD?=
+ =?utf-8?B?MzhlOGJ5TkRKeEViaVZqZFlvdTEzUUtNcnM2bHg5aVU2Y3o0enZKNDZ0UlA0?=
+ =?utf-8?B?eWxmdThBWmcxbUdYa0lTT1FKQjZwdGE5L0RkOCthYk9kYmhEWVB4bUlPM2pn?=
+ =?utf-8?B?WnNUQUdGS3VsbFN0bzh6RHpNbU91Q0xlV2Rsc1g3VjhrYTdCUG1vMEVWL2Vk?=
+ =?utf-8?B?K3M3dmpnNnlDcnVDTU0vaTIwL3BLU2RiNURJWGdKaENUdy9HY0dkQ0dyOXlC?=
+ =?utf-8?B?azFWK3ZlRDI0N2ZSOHpiTHdrSFhzOGpmcVJlNTllY01YemVhS0VmVXgvaUZ4?=
+ =?utf-8?B?dUxNSmhBTzdPNTdLbnRXV0dwcTExNTJhalUxWFBPeFZ6Rk9TSWYxVFFoUGta?=
+ =?utf-8?B?dFpxZXZLcEpLOFY4U1NOcGpGZHFSMnR1SHZyV0FVdnFCOFJEdytaUmF0bElo?=
+ =?utf-8?B?UFQreGYzK1FyZmZNdStFMHREMERvb2dsQVI3ZXAwNUNOZmZVUHFCUFdIL0JX?=
+ =?utf-8?B?cFR3R2Z3eS82WXRBc3RSMXhNd25YMjU1bVUrMTQ4OWtIaEZVek9oMGlzQ2tQ?=
+ =?utf-8?B?aUNWUEZ2NXRIQk5tOXRpQ0ZTQTZQUXNqSE85Yk9VR2tobjN4WlBTRG5BWkVM?=
+ =?utf-8?B?SERjajVVODJFaFRYU2hFSVdyaUw4ZjJZc05ENEJxanRKa2tjTmJSUktpV2g4?=
+ =?utf-8?B?alJYVjJPdkxLT1BrOTNzSjlLekxCQndGOFIxWnFHbVZWRXNMejlvaWZ1ZjNP?=
+ =?utf-8?B?QkVuZnY3RGlBUi9BY0J4UEVBL2hYaUxNUHlJM0hvTzl3cnRYUTd3QklUK2dP?=
+ =?utf-8?B?Sys2Nkl0RTRJYnUwMml0clVuV2VFQ0JuZmY4VGwwUnFxRnF1VUNQaHZUamEz?=
+ =?utf-8?B?RS8zL2lQdk05SXZlaFp5dVNhc1RDWWtZZGRObHYzcVFmYlBYOUZGaUh5aU9y?=
+ =?utf-8?Q?Z14ryTcgGqM49Uno=3D?=
+X-OriginatorOrg: os.amperecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a985bb8-89b5-4e26-7da2-08de75654e55
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR01MB6873.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 18:31:50.1495
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ztq3A9ylLfGiZCADsCflMp9OerJgkeGQjGicZSZFIjmAcMzOlyiKQu2xpR+yipQO5K056wckP6yqw1YzODRWZ2aWwk0fyxBv0qC16nW/fKY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR01MB994289
+X-Rspamd-Queue-Id: EA8D61C000A
 X-Rspam-User: 
-X-HE-Tag: 1772130428-790216
-X-HE-Meta: U2FsdGVkX18mYNxh7c7PVazlG1bAWKwqJFv9licI1cTr+fgjLL/MXJVFo+Tzw38eJ9yNF4dfpSur8kHTQ3Vv9ZSt76GHaTqGZan1YbDB+G+f4NKzHj0LGFP1nHA3x+TS13whOO5XkwG+/n4lNE7wQAONYaLqpUsgepQSg3Vus1cFHt2UbPZwDPUjxdOj3Ck6C5cE8HHB8ntAMZtLN2djp+DYObClhM5HSSQa2MII27zpF2sHUM85dvAbhbLf3TQ/fpznLMyVmANGHzHdn79s7whZ8OH/APrESqb+cnJT2WB6xX7E5lCHSI4EBSOmyfK6gRJnfYbnYpY1Sagqg++jPodZiMZsZ+YFAo0hntGFEqmRNBrUz8//yz/iw7iMReAiBTEKz63ttZScDG4JcLr7jerae1v0FDUa9ZAVlCRhso9gVuoh/a69IjxF25T9rnjDbeV+rT63SufQL1oFudXu/WA27sECO8duyo6cp6Vq24bE0gb/AP4OZTCxkUsSynyKuZTvan5r9Vkk9dX0fhij0Ph8N1K+z1jKc5wFclic9HB59qKQp/IARk4xNEcNcjaKu2j0z/ZkOZVeCRmosMeCpnx6clq9GNlj64pW3E18nxIjny0coU2F18qP0JI9yTx9n3CAk78+QWddG4w30uSVTgmwJzWLS7meyYwxPk37EkvpQx/ufUyrEMc3M+jGpDjOLR2sM7PU9ZdP0PNyPkT+otBxdcpJOTVLaGUq0JFPsTBS+kzy2/tO06mwmeVTp6YzjFu2Djzyef06f4LPJ6D6WKwKHVZi3Pxm2obvYL2HDKU4TOUJ2E9i3QBv6lRiCiSoZlq1+DdDG0iizUIG+o7kDHfvtOy3+ue10f3cIEv63khLD7oc9qiC+YVFgnSegD3jKri27Mehx236JvUe70V30Tw84Y5iRw+IQsu4EHS2R8BBihyWctduTxh/6nGk0OPJv5Vyhy2SlFBTElNrovr
- RNqILHO+
- ambNoC2duboG7Le9VZV5DQlw2eo6tjp9wZfm8qXyiK4Gi5gVUX3kqjcAohFbQda0gCtblSdTA3AfdLZKVQqFjnasJNl+GyBsON/n2wqmjQdD3CFHvTH/WkARQG4q4r68Kh9s1BwfylguFnX/YnUVEv3nTHZMLRntCraDOHEBuS71cMO9KOdfZJ963OQkz1uhag4qyliMt7M8xl3BSPZbGcsHhBK+iFAnGREkGi+bdRidJYNK+rmHvDP4FAlrL83x4Ah0wXCljh204HgnSXX+vjn4WFP/PY+dv0WxSN0MtyRqpocxGWUyHRudmFyDhUKvWsC4q
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4wjwqhzgxcfq87q6zxq8z1tweuifb81r
+X-HE-Tag: 1772130713-842282
+X-HE-Meta: U2FsdGVkX1+6J6gfBT6DRChMZjRFBRnLL/noEn7TdaSF68I2N6c/tqFA4FspPLKmYn4uBTGXA+hQTxsOqU15m5231qtjl9C3Tw5FNGZMbhj2gJ85b4BzGzGWj7LCbGBGf9fre+ZB55e5mQQISj1R5XbB0BR1sYkasT6K097zNbUkGZap8ashRwif781udY/f7F7JtqKtQAtdpjWya4RSVIdSpFTYsfk+/w//18tVWJb1VL2AZ29VZTGbJv175lHUN4/LFc7HlYaP+weXf6UnMidj6c4Ngs/Qh8q+7t7l++PyiJp8N14VqHn+oqsT4mVTWnkZfpsjJ9teJeeABD5JVQrfLPdkT6yw86WmBnVNmww1UafZ41182vtPXMuB0YboC+lp/+OSaxGZqbQhvyi+0cYXvVwo8gTi4zmMqDz3U+nQgO6fBETLr0hLjsMtMN6Gfb8Nwjwxd3HllzXPXaZuRsgFlNTNMwKIUnWE+FoJWe1g3Smjhtjq+F0hxXb6Ga636ai0LEzVRgDXz+u4FPMIU1RbKUP7xPqjpUAvGtWNbHTp5gUExpjPOpPW3D7xonCBJS50dlPz1j6fSJcTWxTFBkV6PwAagdsRaSeooxoTAWOUOwpKIa4uWFgR4/5UWxuNCYtQzULDTGADUO43N9juyWDpJoJHpmxZ8IMhDiqpLk1ukcvT2KJJCVcNmHPXrePvhMpFuiGoZMc4uOxMvEAAx8SJ6OWoCk3QECn4z0zwvxxL/tcsC9rHSoorVq/Nu++Z/ACIMKFYUkYug1ULqnXarbaHGiOHcGZBBE+lpZETje6rhGdZfCPzxnIMBYzdLRa27xlP403h5/57Htj1BDKjG+1GsBf8AnafbYiL1HTMLDZUiRsBWV+EG/YsVj+STzYe3K/DD1zztsSsf31QXLg1XiJkXhiRl7QYle9/HUarJGpTexfF6zZTSZn2D76uR5xBhyyHMr+PXE3kRxV5KjF
+ a3vwxiDd
+ 7aS2OKRTv36ZPjt8ll4SEBSLheYLTzzhyJOT3uuwJnqmq4TrZbzVlvu5GJXOJdu3X/0VgF/+XilM/QnyxcONlI8Gv2I/ZgWXVJqGOWeQiklrJFo3HSIv2wc0D2AZ4e6G0vKghp0zqNIZ/agsLgcCr3tcn560/p/KYH4PoxcG6qJ0LwSAG2WPtPxqSkpOBUO7xYL9L//YDNGiHI9PpXlO9AA2FAAeoChBOpoVc2D8X02RyqT3LSNEu9x98mIBu87XdD+frQPTaVJyycfflF8w7aV4KsVGUk4POvMfrB+UkTmV395CglbVdd4uUguE/CURO6XK8TyTwGaPOmxGWDgRuwLLTBDG5ZoYK8VQ4UJEtAdXYOb86n+sCtTwyTCfYAi6qOmGTowB7sR5AqgqpM3Igme9xVggUFoDspQxApR2ZK4LSfGik2ZWoy8PUuHq915oBwemQpQ/NF/5v/vW3S5Sm4rgSyr/I6zyd9ZEWAM9oHKn4uDWsJKv3o5RcLGse08u9rsciaf14z5fPt21uVOGM8vG6KwkEKNWPXaH8j3RNTsnOIsfdvGxQwc+KxJSsolu9vrrlwbk7113PCTxOH9ZV70552vGs+DM7ZLTZF2PM7cgByhT137Ccvz41jw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,269 +177,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add tracepoint instrumentation to zone lock acquire/release operations
-via the previously introduced wrappers.
 
-The implementation follows the mmap_lock tracepoint pattern: a
-lightweight inline helper checks whether the tracepoint is enabled and
-calls into an out-of-line helper when tracing is active. When
-CONFIG_TRACING is disabled, helpers compile to empty inline stubs.
 
-The fast path is unaffected when tracing is disabled.
+On 2/16/26 3:39 AM, Catalin Marinas wrote:
+> On Fri, Feb 13, 2026 at 10:42:21AM -0800, Yang Shi wrote:
+>> On Thu, Feb 12, 2026 at 10:42 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>> On 11/02/2026 23:14, Yang Shi wrote:
+>>>> So, the code flow should just become:
+>>>> INC VIRTUAL_BASE + percpu_variable_offset
+>>>>
+>>>> In order to do that we need to have the same virtual address mapped
+>>>> differently for each processor. This means we need different page
+>>>> tables for each processor. These page tables
+>>>> can map almost all of the address space in the same way. The only area
+>>>> that will be special is the area starting at VIRTUAL_BASE.
+>>> This is an interesting idea. I'm keen to be involved in discussions.
+>>>
+>>> My immediate concern is that this would not be compatible with FEAT_TTCNP, which
+>>> allows multiple PEs (ARM speak for CPU) to share a TLB - e.g. for SMT. I'm not
+>>> sure if that would be the end of the world; the perf numbers below are
+>>> compelling. I'll defer to others' opions on that.
+>> Thank you for involving the discussion. The concern is definitely
+>> valid. The shared TLB sounds like a microarchitecture feature or
+>> design choice. AmpereOne supports CNP, but doesn't share TLB. As long
+>> as it doesn't generate TLB conflict abort, shared TLB should be fine,
+>> but may suffer from frequent TLB invalidation. Anyway I think it
+>> should be solvable. We can make percpu page table opt-in if the
+>> machines can handle TLB conflict, just like what we did for
+>> bbml2_noabort.
+> It's not about TLB conflicts but rather using the wrong translation for
+> a per-CPU variable with CnP.
 
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- MAINTAINERS                      |  2 +
- include/linux/zone_lock.h        | 64 +++++++++++++++++++++++++++++++-
- include/trace/events/zone_lock.h | 64 ++++++++++++++++++++++++++++++++
- mm/Makefile                      |  2 +-
- mm/zone_lock.c                   | 31 ++++++++++++++++
- 5 files changed, 161 insertions(+), 2 deletions(-)
- create mode 100644 include/trace/events/zone_lock.h
- create mode 100644 mm/zone_lock.c
+Ah, yes. It may be just a simple TLB hit for the other CPU due to the 
+same virtual address is used if TLB is shared.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61e3d1f5bf43..b5aa2bb5d2ba 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16681,6 +16681,7 @@ F:	include/linux/ptdump.h
- F:	include/linux/vmpressure.h
- F:	include/linux/vmstat.h
- F:	include/linux/zone_lock.h
-+F:	include/trace/events/zone_lock.h
- F:	kernel/fork.c
- F:	mm/Kconfig
- F:	mm/debug.c
-@@ -16700,6 +16701,7 @@ F:	mm/sparse.c
- F:	mm/util.c
- F:	mm/vmpressure.c
- F:	mm/vmstat.c
-+F:	mm/zone_lock.c
- N:	include/linux/page[-_]*
- 
- MEMORY MANAGEMENT - EXECMEM
-diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
-index 5ce1aa38d500..f32ff0fae266 100644
---- a/include/linux/zone_lock.h
-+++ b/include/linux/zone_lock.h
-@@ -4,6 +4,53 @@
- 
- #include <linux/mmzone.h>
- #include <linux/spinlock.h>
-+#include <linux/tracepoint-defs.h>
-+
-+DECLARE_TRACEPOINT(zone_lock_start_locking);
-+DECLARE_TRACEPOINT(zone_lock_acquire_returned);
-+DECLARE_TRACEPOINT(zone_lock_released);
-+
-+#ifdef CONFIG_TRACING
-+
-+void __zone_lock_do_trace_start_locking(struct zone *zone);
-+void __zone_lock_do_trace_acquire_returned(struct zone *zone, bool success);
-+void __zone_lock_do_trace_released(struct zone *zone);
-+
-+static inline void __zone_lock_trace_start_locking(struct zone *zone)
-+{
-+	if (tracepoint_enabled(zone_lock_start_locking))
-+		__zone_lock_do_trace_start_locking(zone);
-+}
-+
-+static inline void __zone_lock_trace_acquire_returned(struct zone *zone,
-+						      bool success)
-+{
-+	if (tracepoint_enabled(zone_lock_acquire_returned))
-+		__zone_lock_do_trace_acquire_returned(zone, success);
-+}
-+
-+static inline void __zone_lock_trace_released(struct zone *zone)
-+{
-+	if (tracepoint_enabled(zone_lock_released))
-+		__zone_lock_do_trace_released(zone);
-+}
-+
-+#else /* !CONFIG_TRACING */
-+
-+static inline void __zone_lock_trace_start_locking(struct zone *zone)
-+{
-+}
-+
-+static inline void __zone_lock_trace_acquire_returned(struct zone *zone,
-+						      bool success)
-+{
-+}
-+
-+static inline void __zone_lock_trace_released(struct zone *zone)
-+{
-+}
-+
-+#endif /* CONFIG_TRACING */
- 
- static inline void zone_lock_init(struct zone *zone)
- {
-@@ -12,26 +59,41 @@ static inline void zone_lock_init(struct zone *zone)
- 
- #define zone_lock_irqsave(zone, flags)				\
- do {								\
-+	bool success = true;					\
-+								\
-+	__zone_lock_trace_start_locking(zone);			\
- 	spin_lock_irqsave(&(zone)->_lock, flags);		\
-+	__zone_lock_trace_acquire_returned(zone, success);	\
- } while (0)
- 
- #define zone_trylock_irqsave(zone, flags)			\
- ({								\
--	spin_trylock_irqsave(&(zone)->_lock, flags);		\
-+	bool success;						\
-+								\
-+	__zone_lock_trace_start_locking(zone);			\
-+	success = spin_trylock_irqsave(&(zone)->_lock, flags);	\
-+	__zone_lock_trace_acquire_returned(zone, success);	\
-+	success;						\
- })
- 
- static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
- {
-+	__zone_lock_trace_released(zone);
- 	spin_unlock_irqrestore(&zone->_lock, flags);
- }
- 
- static inline void zone_lock_irq(struct zone *zone)
- {
-+	bool success = true;
-+
-+	__zone_lock_trace_start_locking(zone);
- 	spin_lock_irq(&zone->_lock);
-+	__zone_lock_trace_acquire_returned(zone, success);
- }
- 
- static inline void zone_unlock_irq(struct zone *zone)
- {
-+	__zone_lock_trace_released(zone);
- 	spin_unlock_irq(&zone->_lock);
- }
- 
-diff --git a/include/trace/events/zone_lock.h b/include/trace/events/zone_lock.h
-new file mode 100644
-index 000000000000..3df82a8c0160
---- /dev/null
-+++ b/include/trace/events/zone_lock.h
-@@ -0,0 +1,64 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM zone_lock
-+
-+#if !defined(_TRACE_ZONE_LOCK_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_ZONE_LOCK_H
-+
-+#include <linux/tracepoint.h>
-+#include <linux/types.h>
-+
-+struct zone;
-+
-+DECLARE_EVENT_CLASS(zone_lock,
-+
-+	TP_PROTO(struct zone *zone),
-+
-+	TP_ARGS(zone),
-+
-+	TP_STRUCT__entry(
-+		__field(struct zone *, zone)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->zone = zone;
-+	),
-+
-+	TP_printk("zone=%p", __entry->zone)
-+);
-+
-+#define DEFINE_ZONE_LOCK_EVENT(name)			\
-+	DEFINE_EVENT(zone_lock, name,			\
-+		TP_PROTO(struct zone *zone),		\
-+		TP_ARGS(zone))
-+
-+DEFINE_ZONE_LOCK_EVENT(zone_lock_start_locking);
-+DEFINE_ZONE_LOCK_EVENT(zone_lock_released);
-+
-+TRACE_EVENT(zone_lock_acquire_returned,
-+
-+	TP_PROTO(struct zone *zone, bool success),
-+
-+	TP_ARGS(zone, success),
-+
-+	TP_STRUCT__entry(
-+		__field(struct zone *, zone)
-+		__field(bool, success)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->zone = zone;
-+		__entry->success = success;
-+	),
-+
-+	TP_printk(
-+		"zone=%p success=%s",
-+		__entry->zone,
-+		__entry->success ? "true" : "false"
-+	)
-+);
-+
-+#endif /* _TRACE_ZONE_LOCK_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/mm/Makefile b/mm/Makefile
-index 8ad2ab08244e..ffd06cf7a04e 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -55,7 +55,7 @@ obj-y			:= filemap.o mempool.o oom_kill.o fadvise.o \
- 			   mm_init.o percpu.o slab_common.o \
- 			   compaction.o show_mem.o \
- 			   interval_tree.o list_lru.o workingset.o \
--			   debug.o gup.o mmap_lock.o vma_init.o $(mmu-y)
-+			   debug.o gup.o mmap_lock.o zone_lock.o vma_init.o $(mmu-y)
- 
- # Give 'page_alloc' its own module-parameter namespace
- page-alloc-y := page_alloc.o
-diff --git a/mm/zone_lock.c b/mm/zone_lock.c
-new file mode 100644
-index 000000000000..f647fd2aca48
---- /dev/null
-+++ b/mm/zone_lock.c
-@@ -0,0 +1,31 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/zone_lock.h>
-+
-+#include <linux/zone_lock.h>
-+
-+EXPORT_TRACEPOINT_SYMBOL(zone_lock_start_locking);
-+EXPORT_TRACEPOINT_SYMBOL(zone_lock_acquire_returned);
-+EXPORT_TRACEPOINT_SYMBOL(zone_lock_released);
-+
-+#ifdef CONFIG_TRACING
-+
-+void __zone_lock_do_trace_start_locking(struct zone *zone)
-+{
-+	trace_zone_lock_start_locking(zone);
-+}
-+EXPORT_SYMBOL(__zone_lock_do_trace_start_locking);
-+
-+void __zone_lock_do_trace_acquire_returned(struct zone *zone, bool success)
-+{
-+	trace_zone_lock_acquire_returned(zone, success);
-+}
-+EXPORT_SYMBOL(__zone_lock_do_trace_acquire_returned);
-+
-+void __zone_lock_do_trace_released(struct zone *zone)
-+{
-+	trace_zone_lock_released(zone);
-+}
-+EXPORT_SYMBOL(__zone_lock_do_trace_released);
-+
-+#endif /* CONFIG_TRACING */
--- 
-2.47.3
 
 
