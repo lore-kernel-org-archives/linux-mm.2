@@ -4,136 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A83FC5904
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 914C9FC5904
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A65F6B0088; Thu, 26 Feb 2026 02:01:25 -0500 (EST)
+	id F2C666B0089; Thu, 26 Feb 2026 02:01:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0781F6B0089; Thu, 26 Feb 2026 02:01:25 -0500 (EST)
+	id EFD056B008A; Thu, 26 Feb 2026 02:01:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC9106B008A; Thu, 26 Feb 2026 02:01:24 -0500 (EST)
+	id E00516B008C; Thu, 26 Feb 2026 02:01:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D6F446B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:01:24 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 667EF8CA03
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:24 +0000 (UTC)
-X-FDA: 84485711688.15.898858D
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 5F7461A000E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VirvJ93y;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772089282;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CCACF6B0089
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:01:32 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F212160A13
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:32 +0000 (UTC)
+X-FDA: 84485712024.13.BBB3F04
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 153D9140004
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Ya4sAlE6;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=kLxjgKuj;
+	spf=pass (imf23.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772089290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v6lBogwJ3mVDAbt42E7wKK1U8C1lmC6fA754zzsVMhg=;
-	b=x3ldbIMK76HJ3AN8jxJN9LeVdUlEKmq0gHwnp4W3I+H8DlO7IfnlG+MsI/e64oOEaWEjli
-	jj1z8MiN7Hbp1L9SVXdj6XkCogq7xwKK3P/aCjyor+4qKxLhFyPQXv1XlJ5QDAjATGOQ2J
-	6TCBEvG5r0RjG/fJf2eju2dhAe1VFuQ=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VirvJ93y;
-	spf=pass (imf19.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.54 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772089282; a=rsa-sha256;
-	cv=pass;
-	b=2saI1vj5GsFiglQ84yTVRT1HfOv0EncadewhDqGlLkC72yKtss0CeAtCcVSG2V9BLkt6oH
-	EE1FMpoBbAWAcEBS4cVLbtJXN+t2W0iVRXGDh6NmSkEkBAxob6rr7zT1Tev+RKJ4T/rSgy
-	ItMvrx8URBw/3bnOBPTN96K8cN0Wjqc=
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-899cbb1bea0so561736d6.0
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:01:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772089281; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lZczx39YVVWFMLKgMiQ88TpKLE1J8ZPMP/aIsmXDr9ja5wgS6iE4fekTygJUZROqRt
-         B8+rJSfqS0yH93fSxZJ0j2XWVN6pNx1JO0ghCWLlFeQM3Ebs91DgHU8KoD3190sluGhG
-         yDX1mGTUpekd4PskoePPO+FEHt1VzfGjIM6dC49NW+GuHvqLXWpL7MhMi+w6f5kY0FBJ
-         0WEenVZTelQmJKDVnlSfMzAQP+jFf1GrtoVdftUjZ7uyNZr6jDCsSDWih15dZ+D0e2gq
-         yF++t1fWy0u9VUsveqyEKLKymSIxlCrkGKVa+oyO3Un3DwjyieEPggaFLT0SAH3Ynjhe
-         G26w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v6lBogwJ3mVDAbt42E7wKK1U8C1lmC6fA754zzsVMhg=;
-        fh=ZtwBbgMLntBuRlUZZVYno500ZJ3T0ExZXl0vuQzRTao=;
-        b=gvkMBTKFUHaLXDPQRZ9/qGBsksJAPiezncTo+dxpn5M+yJurV4yawfndM4+s0L0llC
-         JjBjYAIUW3yDHrKl54ptbgcVIzuB3cjVUN3FjYMUsVwWLGDkmK8druXvDD5gomcYnliO
-         kkRODnNSA3VEwhBNZF326E2Dkq765YB28ojx+ZnlMQMyrVwepMKG49VGg67F7Cdm08hp
-         MIZkfuqS6sFYyjScAiGWdmNifi9zJMCgCBJ6DBhvCmZFNAvE6BMpz6arvo60gYgBucHl
-         ypZsvKjCdTcojIszFH+EYzlndykDYrG0oUlsrSIepf9zny4dqhiIweQXAyRCggRfSvj8
-         l/Sg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Bd9GytnbLfNGAuFQVvbct7LRRRfzUwf7RxY82DlywCg=;
+	b=yDDXSXL1KHisSe4v3/0bUUdFbQmSZW8AHsuOW2C3FVF/u/ncsGdC5lTABvQ+WKuKQg+Xxh
+	JiujE0O7p4hjltQYA4ByExYvYtoPRscgV0NqCxWNX60N1atlp7oPZTY6pC1F0vdj+UmX1K
+	OuaauxU4Z+PqT9MmQfPgjf5UJ+Ru4wc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Ya4sAlE6;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=kLxjgKuj;
+	spf=pass (imf23.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772089290; a=rsa-sha256;
+	cv=none;
+	b=IoGI+HzmoQH8Vmbq2i+daX4WKDrfbq4yEP5xpV3lwzBYcb7by6rSAWD4h82HUSgFbgfdMy
+	7tO/N7EY3kmErYrjycDcsknbNCF9xLpSSp84WWf0dyU5/r1WgMipQe9Ox8ZNR4yJbScqgR
+	L/m9hj86cGvWIcPz3yC861WMzp1BTn4=
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q4V8aW2996716
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=Bd9GytnbLfNGAuFQVvbct7LRRRfzUwf7RxY
+	82DlywCg=; b=Ya4sAlE6cZED1TsJp0N/e8giADq3gJ+NF1qRP09P9719UhGwGO9
+	L/FZZLty7P/3tvJsO6JPhbvUjfSPhrK49H5H3hSi5PzuTOOv20cNo3deZs1ynat1
+	Bb4kvV3nAXlM3MGc61VVkSVnkHEwsKpj8M+tXGcL+nHght3c0R0XrMEwuP8qzSd0
+	P1ujIQ7dmFdZS3s8ZiCVACXG4yE5bFs+NePLz8hvM3FEpa5va46xsFc60xKMVxHk
+	zgW79jaDFMMA63voIpANTd1grL77YxS9Vv0qNsQUE89CPbN8skk1i2ku6ls13w/1
+	FzxR5AlP66uTH9ZYAq9O0QzniBwQeh/X9sg==
+Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4chyv9k7pj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:01:29 +0000 (GMT)
+Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-679dda090fbso12832802eaf.2
+        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 23:01:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772089281; x=1772694081; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v6lBogwJ3mVDAbt42E7wKK1U8C1lmC6fA754zzsVMhg=;
-        b=VirvJ93yj8KzjyqqZRrIxZXnduPq7htvZ7JGdgo3qZ5h6c1zCLIbhCiv1SkPOJrrl6
-         7IVxoMauHfInGtHAAtmN8VY3ZPEHB503d9pUU4CxO7vnwg9IS3ekxGwM+/mDyfuXyGdJ
-         +FnFmWNDo6qsrxlp7a+Q/oTqhG49y3mvy23EiiCzp/0JH7Z+LtikfEE4GU5JLFdqDYYc
-         VXq3stVM3AbRqn3i76vcPyOBDc6EFpmE7fScD9dikmkNIq1MiWrBhXD577XP/zNQPp/Y
-         dqX3qFqvo5c0bkL3F3JfnV9u0KLXl04DMCd5S75aCYKiso2Corfbx0zHM17NZFs4BIqD
-         rh6w==
+        d=oss.qualcomm.com; s=google; t=1772089288; x=1772694088; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bd9GytnbLfNGAuFQVvbct7LRRRfzUwf7RxY82DlywCg=;
+        b=kLxjgKujmX/yU54C3Gwvx32HaJIal1uBEdypcqX+/J5d4e+VKVldD47EllAKsh6jmI
+         iEYckHi5dFu1R8AvKl9ptvrr1hFKTP46/FIjIUUdvil7GCriUH7FJVyxEbltW3AnRE3n
+         MsM240jsrCNP/s+XNRbp0a5VTGJXdBH/KNi7srB1MwJDPKeBS1XWzIB4nMmEM7OluqIx
+         F4lChUpn7t8fRBLnkyoS9lU3U/NAKrw7IoGZiOERZve/TzU/G2LQShe9VJUAS9dN+j9l
+         CDASpm+2a3VTH68pmWP4O2SFNHRNZLPjM35unoo7g1o9Guj7vJL140583VI+dWD26McL
+         QevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772089281; x=1772694081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=v6lBogwJ3mVDAbt42E7wKK1U8C1lmC6fA754zzsVMhg=;
-        b=wFrJHoufpT5fd1xL/F4O4j127QnSuoDjxQMGV8nCXT9kaY8MhqT9emFR4W7Lf+u+Ln
-         eBJ/ZRwBERn8OgEAzM3ZiPcVqG+pnCTrPncxSPq7A8IO3+8+buV8cJqc0R+6utC5Zf21
-         RX4L3dAXxNgYQwlwbVIOJpxSyUgjB1sjppunykpexlNdqXcBbj98r5rnlBu9CPMIEUvl
-         54zQtjyhjqIsw2hH9IqVFwV9M82TBLRcE+L9OaKtNZl6sbPWTkwiFKhVHltjq+24kQlZ
-         Vud6Rlrz8JufcUqoP6JRYDiHMkRukOQYIRR99KZP2FzTt6vxPsV4cYiCBXS7X6dyChv2
-         bUvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVno3XsZrsdvEixKw8gGMA1ArUxDP80Q8vAeiWZE5D5viumb/pUtXypLh0aklM00vehnmu4yG9Aw==@kvack.org
-X-Gm-Message-State: AOJu0YwxDdNamxJl9Oa5IqUEByv8laeASDWT4WGR0AjoPPRTJfiAth2T
-	f3kJH2F1hF2gIRUp7LbTji6KQwFOxgJEVKCO8AGR7sI1h57GOBxvFxMLSzkBuSUHvG3NhwH7Z97
-	Vc9t/LV3DJZP/AZe74D6OoGH4IadaliY=
-X-Gm-Gg: ATEYQzxuWTFWtokJ4Ld6dYkXapBqa2SNCZEnAOIn2zhgeusZGueqivcx/2cibGVMtEs
-	GUkZM0+v7ACeSbDbwzdUeyxU3UjbhwbnTOlWoJuL0/s+SZSiVCxCgDUFPpdWvhc/c6sV/aBkEOW
-	H4GJAT0iihDpNP7pbZtx1LfTe0qJ1kPvvhsAQFYVTXpt4LELvOc4/eWDrClThwWDnhmvoJg9Y4P
-	jFu8dbB/jidxOcorOmZ+4VJJ98bH96MSbYkLN1NUXjyilSugU0or5bPvxfZ+ix0deembrK8YDDW
-	E5P73w==
-X-Received: by 2002:a05:6214:27c4:b0:896:f50e:b6c1 with SMTP id
- 6a1803df08f44-89979f3473fmr261336216d6.51.1772089280997; Wed, 25 Feb 2026
- 23:01:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772089288; x=1772694088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bd9GytnbLfNGAuFQVvbct7LRRRfzUwf7RxY82DlywCg=;
+        b=icQKHgUKQDc30ZHBgwcrdaOMKdoorT6LZ+GParXSC85DRZb8lwhJpYzPlqtQnQ6eok
+         K9K5UgxMMm4ku/b8XhHe5kxZX2xjklNOQlQnF4eG+sljyUlO97UO4zYe+jTL+9yCojk/
+         a+xLzGmv5wGQeSZiSFpXTqZ+75Gt0sTfDWDqav8zz6bfE/KKdHWM0ToFgr3WNxdcXvDk
+         yq+KavFmRlfNXsxQfPxZAclYEg5WKWBaGN0BETENdXURbX7hfY8BR4OVw99/DLoi6GTx
+         jRY+wDVTzNQykXdfNoK6kn/r+5GH9i3OikD8xrSa2IX773kCnc5XXgZfxnPiFpEgaLks
+         BW5A==
+X-Forwarded-Encrypted: i=1; AJvYcCU5fNBzi3lCBAtUlYhQzAl+J8n5S0v0ys+L161hIy5QTPeJ2xS5LltBSBJIKZ89fxmG48k30kVnqQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx4YXepapWmSQhgb1ovj0hvFTKAsVEE2AFHADwDV3Av01oTRW7A
+	RrfUIWrrL4/EimFWVSvZg7+NcedBYHKQHmzzURkCOmGjtpIGd6j806F5CdWSXUIvAwvkLjB8e07
+	aJWHXymDoeU/HZSd0JMdxmQm3MlXqFUSCqWzR7OxoBfww3iegJFn4Fw==
+X-Gm-Gg: ATEYQzwmtGWzMYwU/9BbatkvJOCQBDh/jXdJZ0nFphxl0mMYBrwfZS0zoCCW58ziXCx
+	GwsZ2dICQ4+w1ebtqbwArvxuv6kprHqa4kM7lBCLRF7t2W1gh4WJ+9tI0L/m0qboXJMyiItnGNT
+	/8NYOlC5zUcNKOR69OICiNpr13gLMKtYZ7MCk2SzHq0/m7b23dDlb+aV3gvJwrKcDBtrJvljOM6
+	CXGmSx8wZSFqsZRalAFfPRC3NpuhTY+fnG+uU7tcSWQMtkgba9d4okuB2H/n+hHfTsws25CwDT4
+	nMG6XTtRH5koRfDT61Qu5JZbClEI3wTKivTsicsDpArmNt7cwR1b/xBqPhfxDNGqYe9cK5ZtAbx
+	lu++cgcZQIZUPICxU2Y84dDPgkw9ELjAJcdEh3a8/t0OXDqI/watmxYg14pkmJhKOPzGYLL13Fb
+	RAP6UO
+X-Received: by 2002:a05:6820:1f05:b0:679:88ee:e3db with SMTP id 006d021491bc7-679ef9aa12amr1654170eaf.70.1772089288453;
+        Wed, 25 Feb 2026 23:01:28 -0800 (PST)
+X-Received: by 2002:a05:6820:1f05:b0:679:88ee:e3db with SMTP id 006d021491bc7-679ef9aa12amr1654157eaf.70.1772089288041;
+        Wed, 25 Feb 2026 23:01:28 -0800 (PST)
+Received: from hu-ysakshit-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679f2bfee3csm1013246eaf.7.2026.02.25.23.01.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 23:01:27 -0800 (PST)
+From: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
+To: akpm@linux-foundation.org, mst@redhat.com, david@kernel.org
+Cc: vbabka@suse.cz, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+        hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+        jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+        virtualization@lists.linux.dev, kys@microsoft.com,
+        haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+        longli@microsoft.com, linux-hyperv@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Allow order zero pages in page reporting
+Date: Wed, 25 Feb 2026 23:01:22 -0800
+Message-Id: <20260226070125.3732265-1-yuvraj.sakshith@oss.qualcomm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20260224110934.881360-1-dev.jain@arm.com> <763ffcc5-8640-4b48-8ace-051ff0ccbdaf@lucifer.local>
- <61161337-0d0b-4597-aad6-b5a1aa1ad41f@lucifer.local> <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
-In-Reply-To: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 26 Feb 2026 15:01:09 +0800
-X-Gm-Features: AaiRm50bDmB5Hm6WPrghAw-r-boCkHSTkEVu9-vkNOmpt21TJHXgINxavkgrTtU
-Message-ID: <CAGsJ_4x=n9BPHN9Eg9KYY40T68wWuNJUN1x8dokJqFXSKu3KyQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>, 
-	akpm@linux-foundation.org, riel@surriel.com, Liam.Howlett@oracle.com, 
-	vbabka@kernel.org, harry.yoo@oracle.com, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable <stable@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5F7461A000E
-X-Stat-Signature: baaojzketsyc4mm5tbubwiktbkdu6o8h
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: 9ncrRu9lL-ow31NjMEw-e9LzsHZ0Gkut
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDA2MSBTYWx0ZWRfXw2LCC80rzcWC
+ LtUOiThjavo8h0fnWAkuv3xrwW+hXKYfTAsUJHuqF3VdREYPVny+P/pjp4dZjVj+GmAxCXIdKZD
+ ARTWec0YIW9W70LZRUQpp40TRAalT7lR/eh2DKWBee2o0zKPukBYK7pcgX9C44pz6HfciYhIBs2
+ tUHPUI8vhirOr6+Xe8+oN5XvtxlK8ZEoGdNMnhT0LLRFuuAM1mBH+1ppxGXajpooqki3LKPKSni
+ YGrJ5yKaA1/tzKYPBSzpPZZPhEB3fcarQj46dbdP+0i5/Bb6M1RcmSRTSw9X5m8WZDfke8hFWPA
+ nr2xUkXGqAHXdrcrnjbQ9TcGHxkHv1jKRuehOzDCJkhTnichFmeeSywKiT3EaX3v9v3gJN5yafD
+ zqFRcme+HgnZ86eQGUmJDD1uMcS5LPHcv8s9kd9mChwUzZX2skNp4a4BgGuNbTQFAw8wxGIiVrI
+ vLYEkfOSaXDBG4qpV6g==
+X-Authority-Analysis: v=2.4 cv=GZwaXAXL c=1 sm=1 tr=0 ts=699fefc9 cx=c_pps
+ a=lVi5GcDxkcJcfCmEjVJoaw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=9ecvtSpfVrh-a2M179QA:9
+ a=rBiNkAWo9uy_4UTK5NWh:22
+X-Proofpoint-GUID: 9ncrRu9lL-ow31NjMEw-e9LzsHZ0Gkut
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-25_04,2026-02-25_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 suspectscore=0 adultscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602260061
 X-Rspam-User: 
-X-HE-Tag: 1772089282-888787
-X-HE-Meta: U2FsdGVkX18s0XXKNsLVbuLbZ4zmjaNEj/BqWTX6xegGA/AvprowVZ2rDUMh1nk1zDTDl5q4XTkoM7aPQqOUH6Wz6xgp7lr4hsFFVvxCUOpt/uyX6WNwxAhroJ+SQuUpvuEi+MTV9Sqiic0ngIrJ06txZwthNZ9SX+IT5zrITACCWY4hJBa/TDuV1nRabwF/gnS+K2yAcWoN6o0ZoHBUIaLTB293qgu1BhFUKzcwaUg19LHHBdTupJ9nDKnDt7YgZEJOq8SVaHT5yrahCI7d9FpJr3zQ2NunJoAD5nUdoyQnwjFKEZsEguWMr2my7RHbTloj+fr+rsY+fP/CTShFj7DPJZJ4qeP21+CnF3foC0LgC4ejCSCj0jgU4ySIez/GG2UxoOYCHOMT1JeHylpA+cIRcg3GEP9aDCUCPlMezY7tI75VWQTFpb8zjDMuOpxh6nXl/pN9P1Ytyszf/M0sguu4yh+4OeW+5vr3tGbWCWQxfM9oL6FzTbAJtiPirMvaPpbAK7kCu5H/iR0SNnYrEA+fwn7WgYwJYlzYcbRAvEyCrInfatOV3rtqancTTaLO1XvPMISdIrxRnOUDtMm5qniJdHv+PPS9b8flujmWTBNc/B0qzPNBeXWOvoECjjcrM2Pyxg8ltaSSnMngofyF1MDulm/85eHq2l4iGMEXT7+HVY2A4ydfXexnwlZJpB04kGlLiIYW6YItxenQow2LHSgmMo3JFYHtOYpZLWtNLbd2kVlUrw4vhhL/pxolNO5hUn6nWdZaIckvBEJsEXS2cVMr3i7tJwr3Kzunt91uEp5YW/lx2sV5TOM0+fgrF9ycfA55yvhHXLAhKiqaM6AZnsAkjULAqTJka9UHCldYYc9uenHsCGlhmXK48NH0xnSYOJTnmnfksdiNmjj3yHcEUg64JR5+BfOnQA+yjrkxtG6sgQCtPCakmqcvIcGHEgnbT1c5Sg7tlHkHCDpwfb2
- bo6MqPk3
- N25xtgUij5GlFyz2e4yhckIZowCMfVtbRXFWk4UFsoWL+6AwzyO1kOQ2K8ByVszLGnjQzyh8eEFl7VOv0Crten4xStuHATo0LIHBP4ciy4xLpP4A5QgPKwdySiFAFCM9S1eB9OY28yoSOK+ncfO3Y+wuPBmxSMsrbKX19Z5DF4rh9uojFPaCwikxye3+DDQYqXSLKwU5DG46TO3V5MfbU5FTeH2e8bcXqKMGRw54hjcPjiKyUa+k41cdxt6eKwibxQXKYAOX4LCIDtALQHl/y6QGl80xfbWpu2FsPQUVKLd3zXNFyKJciHF3tSDMiolfl+cuAIUj81PgKiZXEl1Hu9Sw8xU/Cx/aGpRzzggvpheroKeZtKX3UZUnnCriefNPbjX8ARlghMgvv7kXaqv0gMn4m3K2cDPtBSPLWb8LdwaRhKjgH2sLUrwpdMUfetZw4jiRg
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 153D9140004
+X-Stat-Signature: 8a3tdn9pbtdumibbdqyogizpgsuchaze
+X-HE-Tag: 1772089289-151438
+X-HE-Meta: U2FsdGVkX1/8srFIHxRa3Po/EfgEItjvUubE/G4xMCXTi6KUyI6jh1oI6rzZkfufjWaU7Q7eu6h+uDpIZZFdDL5krePh0XwYSuJBLrc39WKLBNSs9kOyWYrWPGwkV/K3h1UvuNjAq70ZHRIYSnu6gBs7xA3qHntNn5+30AKwFlI8+JH3X9WuHYR+2XUdxaMD3ZTR6TVWwD46fzv2guytdOZBzcBsYzwdD9tCYhdI26IAsUBE9VoxqDxXlTODhmbZzAXB81jXsSVyXFfpgIdfiyN4mcqtAkc8o2R/GU5uUhaYJHDbimKMjfWj/kdOQnV3SIHBgJsIRyDDqvlXc161nV5MSLfYehSMc2QfEUnu223vayU4ufGa2Ag0YC+EXFBSvd9G92r+NaSePLWPS04eFlPzdxGEYwCuBUccHYdIGMnPCIymL5uGfO3KqNOiZXGJ3h6nyHPTilcZQqUvpLs+kNWeD+aMOdT1rmMc6sEB54De8yrG8g1wZkvocRg/fb8U6Qi+gBCFbasCOJ00MTvdq/ZMYSjtA5tHjxx1EVpPvkBZotWzhfnhYNUfLW1D0Xp9T+B9Z+W2PgZf0P05d1Ss6Ge0gjQMnIQpy8gShNJhBgWryoQ1RY4Ao1DUdXsAZdRYwjcMqe6bsQVsLu0PZn1LRngG2LsAnmgSZujJVyBCAydIm5H9VOx01zfvRx3xg1nI4+Hz9wI2XQhM/aOag3YMsExDrX0DPFN2fArrIRwHlDU2I9mRxds7X8jMicuPjIj+WhVMuGApQXMRPAJN1J2rUUF87VLxqxkzGXzjx4L9n9Zy+8wM9frCQPoPgSvRwrdSZFapH1XRHNvEVUyuOw02iwJyg5erCyKJQD4mgf4w0pBt3PWU9iuMjqeCzWBr9+Hpf63jwKAWsaP55VKzhf1jqoWi0gnVn5VBUshCLu+It/hOmEsi5HZohBeB45Vo2BtqPu44ffgPqVAzUhwwziN
+ tGh9rv1R
+ Ngyfs5IG7/Uo2RNcgnmoMhSZtrbc2at8dUO6+tZ7HR297w6PvYV1Aw+w1wZHpftMJVBaQ+jnxuxRVDSbSit2dK4/aWQg++q/NS7HqK5KhJ4zEWftTXlyvM+S8aHWcm0+ndVQ3YhXe7nGAGEeDD//SS2xPs9NAj6lZ5NT4rtTnF5l1upihJIxJeWsVCABLGQja+R8WEUs/YuISYWK5M/A+pr9D/jRzWK6dzbJ7KORZii2q/VGu7KE+RANqCSGPR2p8rapGai+AZahbtGtF5ca6D/4hSg/vAazuP1ff9RaSaGTvs8fiVKU/o3EFvt/KD8lnHCdaLoseYeAhLQJbI+KVKewby94UmX+UXkGFapHl6X4MIGK80t8eq80ruDjrI5LT+N2V5096QeGgcMRKcW00R/oSi9MTBO28QGMx5h5gXHDfTyHkprWAPTGm8W2uW5S8DA68tdVt9GeHJLx9ijTlu+S2o45UVEzG4AEa0MYN6rxAveLp18f5nxVXDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,149 +163,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 12:01=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 2/24/26 12:43, Lorenzo Stoakes wrote:
-> > On Tue, Feb 24, 2026 at 11:31:24AM +0000, Lorenzo Stoakes wrote:
-> >> Thanks Dev.
-> >>
-> >> Andrew - why was commit 354dffd29575 ("mm: support batched unmap for l=
-azyfree
-> >> large folios during reclamation") merged?
-> >>
-> >> It had enormous amounts of review commentary at
-> >> https://lore.kernel.org/all/146b4cb1-aa1e-4519-9e03-f98cfb1135d2@redha=
-t.com/ and
-> >> no tags, this should be a signal to wait for a respin _at least_, and =
-really if
-> >> late in cycle suggests it should wait a cycle.
-> >>
-> >> I've said going forward I'm going to check THP series for tags and if =
-not
-> >> present NAK if they hit mm-stable, I guess I'll extend that to rmap al=
-so.
-> >
-> > Sorry I misread the original mail rushing through this is old... so thi=
-s is less
-> > pressing than I thought (for some reason I thought it was merged last c=
-ycle...!)
-> > but it's a good example of how stuff can go unnoticed for a while.
-> >
-> > In that case maybe a revert is a bit much and we just want the simplest=
- possible
-> > fix for backporting.
+Today, page reporting sets page_reporting_order in two ways:
 
-Apologies for the mess I caused, and thanks to Dev for catching this bug.
+(1) page_reporting.page_reporting_order cmdline parameter
+(2) Driver can pass order while registering itself.
 
->
-> Dev volunteered to un-messify some of the stuff here. In particular, to
-> extend batching to all cases, not just some hand-selected ones.
->
-> Support for file folios is on the way.
->
-> >
-> > But is the proposed 'just assume wrprotect' sensible? David?
->
-> In general, I think so. If PTEs were writable, they certainly have
-> PAE set. The write-fault handler can fully recover from that (as PAE is
-> set). If it's ever a performance problem (doubt), we can revisit.
->
-> I'm wondering whether we should just perform the wrprotect earlier:
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 0f00570d1b9e..19b875ee3fad 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, =
-struct vm_area_struct *vma,
->
->                         /* Nuke the page table entry. */
->                         pteval =3D get_and_clear_ptes(mm, address, pvmw.p=
-te, nr_pages);
-> +
-> +                       /*
-> +                        * Our batch might include writable and read-only
-> +                        * PTEs. When we have to restore the mapping, jus=
-t
-> +                        * assume read-only to not accidentally upgrade
-> +                        * write permissions for PTEs that must not be
-> +                        * writable.
-> +                        */
-> +                       pteval =3D pte_wrprotect(pteval);
-> +
->                         /*
->                          * We clear the PTE but do not flush so potential=
-ly
->                          * a remote CPU could still be writing to the fol=
-io
->
->
-> Given that nobody asks for writability (pte_write()) later.
->
-> Or does someone care?
->
-> Staring at set_tlb_ubc_flush_pending()->pte_accessible() I am
-> not 100% sure. Could pte_wrprotect() turn a PTE inaccessible on some
-> architecture (write-only)? I don't think so.
->
->
-> We have the following options:
->
-> 1) pte_wrprotect(): fake that all was read-only.
->
-> Either we do it like Dev suggests, or we do it as above early.
->
-> The downside is that any code that might later want to know "was
-> this possibly writable" would get that information. Well, it wouldn't
-> get that information reliably *today* already (and that sounds a bit shak=
-y).
->
-> 2) Tell batching logic to honor pte_write()
->
-> Sounds suboptimal for some cases that really don't care in the future.
+In both cases, order zero is ignored by free page reporting
+because it is used to set page_reporting_order to a default
+value, like MAX_PAGE_ORDER.
 
-I'm still curious what the downside would be to applying the
-simple fix instead of introducing more "hacks". As I assume,
-cases where a folio has both writable and non-writable PTEs
-are not common?
+In some cases we might want page_reporting_order to be zero.
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index bff8f222004e..48ad3435593a 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1955,7 +1955,7 @@ static inline unsigned int
-folio_unmap_pte_batch(struct folio *folio,
-        if (userfaultfd_wp(vma))
-                return 1;
+For instance, when virtio-balloon runs inside a guest with
+tiny memory (say, 16MB), it might not be able to find a order 1 page
+(or in the worst case order MAX_PAGE_ORDER page) after some uptime.
+Page reporting should be able to return order zero pages back for
+optimal memory relinquishment.
 
--       return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-+       return folio_pte_batch_flags(folio, NULL, pvmw->pte, &pte,
-max_nr, FPB_RESPECT_WRITE);
- }
+This patch changes the default fallback value from '0' to '-1' in
+all possible clients of free page reporting (hv_balloon and
+virtio-balloon) together with allowing '0' as a valid order in
+page_reporting_register().
 
->
-> 3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRIT=
-E
->
-> ... then we know for sure whether any PTE was writable and we could
->
-> (a) Pass it as we did before around to all checks, like pte_accessible().
->
-> (b) Have an explicit restore PTE where we play save.
->
->
-> I raised to Dev in private that softdirty handling is also shaky, as we
-> batch over that. Meaning that we could lose or gain softdirty PTE bits in
-> a batch.
->
-> For lazyfree and file folios it doesn't really matter I guess. But it wil=
-l
-> matter once we unlock it for all anon folios.
->
->
-> 1) sounds simplest, 3) sounds cleanest long-term.
+Yuvraj Sakshith (3):
+  mm/page_reporting: Allow zero page_reporting_order
+  hv_balloon: Change default page reporting order
+  virtio_balloon: Set pr_dev.order to new default
 
-Thanks
-Barry
+ drivers/hv/hv_balloon.c         |  2 +-
+ drivers/virtio/virtio_balloon.c | 14 ++++++++++++++
+ mm/page_reporting.c             |  2 +-
+ 3 files changed, 16 insertions(+), 2 deletions(-)
+
+-- 
+2.34.1
+
 
