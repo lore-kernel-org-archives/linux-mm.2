@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 262F1FD8FF4
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0306FD8FF9
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 18:27:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04BD6B0168; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
+	id 1769A6B016C; Thu, 26 Feb 2026 13:27:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAFBA6B016C; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
+	id 0B99E6B0172; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6F4A6B0172; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
+	id E61266B0173; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 861D36B0168
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D35AF6B016C
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 13:26:59 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AE8216032B
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9415958825
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:26:59 +0000 (UTC)
-X-FDA: 84487439358.19.328E4BF
+X-FDA: 84487439358.27.3609ECE
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 42010A0019
+	by imf13.hostedemail.com (Postfix) with ESMTP id D6A4120003
 	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:26:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ROUBdTKd;
-	spf=pass (imf15.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=OXH8f7Fl;
+	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772130417;
+	s=arc-20220608; t=1772130418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HXRtBBG/qhw0slRma85SDcDIachKM+DkOh/vjMaFIu0=;
-	b=73BSBMEkAl/co73vKyxRIv2krhdNGd7nf19a2csCS5LYROL9v2XhQx6XqCZYLztD85gEag
-	YPGD2dgJjTRs5mLXiUHk8lZpOn5MoCRaGokfnnMhdb4WZoHDKD3ndRknzqiW/ad2XebPvW
-	rIWItcn9u8LNHI1lHC6Gk0Q2NlAHuhw=
+	 in-reply-to:references:dkim-signature;
+	bh=LlCjj+3UcXvXvqd5PfGg5q5chZ1QMHNerBnuWirnbHA=;
+	b=KlQN4mqUYdegs2GMHWazSfuDv5K5rTBrB+SopTSg7UnyFsdafBkiMl4mJ0hp+FPsoUpc6c
+	KfFEwwp4Vxto0beIrX+UIacXlJV1QXRzZkLp+q7FIKF1oQEEoNcEy6kIUrmhJdo/TbH/1D
+	GjmZkn7uEoZN4sUM51uixQBo71Kq430=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ROUBdTKd;
-	spf=pass (imf15.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=OXH8f7Fl;
+	spf=pass (imf13.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772130417; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772130418; a=rsa-sha256;
 	cv=none;
-	b=uKh4d8V+014RQXZiieBLWdxLKgXWJ7FwZhsVyyzyBtyq0A4Z0sfevaB1Sw4X9HO7yuVfm8
-	pZuE/SMdAxDYtRnFcfTkW7bu5mJqauWh+PH81xRVeWIeLWJYnA4NvDPsrtzkXqxMwfXkam
-	VXRpzMP8Zq4vLFB0StAxt+vB92LQ6vE=
+	b=heCixD0lEVF/r232Q1NXeGxcJ9mg+C3/QpRld+L6Dzp9lgKcAoc15qd9J0oHR9/RF1k6hy
+	mLwq2NkGPdXzpU12s0KJkURxq6OBFRcZpr00FYJv2Mt1rYwq39wRAbhzH2Lwm85qnnPpzv
+	C18pQzjCaD25BOFTRKE6U4kD4EQpyHc=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 5976EB2CE3;
-	Thu, 26 Feb 2026 18:26:55 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 34E3CB2CD9;
+	Thu, 26 Feb 2026 18:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772130415;
-	bh=HXRtBBG/qhw0slRma85SDcDIachKM+DkOh/vjMaFIu0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ROUBdTKdAI2asAnZVnKs+ciEM4SjsPZwqQLfD3v+GHvBhTDiiyYhMHaeCQQlPHtGm
-	 r0tsUeUHrtF5h6G3bZpEsfJzcCPyjb6Kg4sfxcrRsh3ZZEaWw/uzEW6WdzhQ+QChFR
-	 LthCPlRh1pASvysPqMKh34FyuhkEaC+fnjdWT5c8=
+	s=mail; t=1772130414;
+	bh=LlCjj+3UcXvXvqd5PfGg5q5chZ1QMHNerBnuWirnbHA=;
+	h=From:To:Cc:Subject:Date;
+	b=OXH8f7FlOnxRA+eanQJnKn/eZc8rUSUG5RNK9MOQAg1wdyf1WUHzZIzq119NaxEQg
+	 ITICJ0B0MOIR43D4yzTWI/bnDjH040u5352TQ9ixNzCkSMxAM9ZJRitpZ2GIFMg3B9
+	 cDltXdx1xa7+0bG+P6hLsjU6iLNzNFb0TvLgrM18=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -87,22 +87,20 @@ Cc: linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Benjamin Cheatham <benjamin.cheatham@amd.com>,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v3 3/5] mm: convert compaction to zone lock wrappers
-Date: Thu, 26 Feb 2026 18:26:20 +0000
-Message-ID: <01729baf359e4c6612aead53f1fcb644f782d1de.1772129168.git.d@ilvokhin.com>
+Subject: [PATCH v3 0/5] mm: zone lock tracepoint instrumentation
+Date: Thu, 26 Feb 2026 18:26:17 +0000
+Message-ID: <cover.1772129168.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772129168.git.d@ilvokhin.com>
-References: <cover.1772129168.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 42010A0019
-X-Stat-Signature: ntboofwzqcuo7itsjthdyggfpkdrhi84
 X-Rspam-User: 
-X-HE-Tag: 1772130417-955849
-X-HE-Meta: U2FsdGVkX18y8mruzIcTlwSNzuHgn3pXbB80eJ2FgBEBqgSuMeznggxNF7gffdgI66fxmOJO2fA43YC/Q5n88fYDplG3UqVAF8HHF7MqZyzKpte9g83YRHA8oBf0V1ZoQuP70LFi6O9wjbcvILuLL1qJj4s0dT4Li1TcrHtUPHmL+og/MtxF1c+iGpDqSbkNxRbIl66vjh3orHadAitKhGOj/BJrgHCRqG921pPFXGtzvnElbILsvMi2JoH5eCpFCiVHpgKSYn2UWXaxcwzFc3MzJPCZGwZHwQgpUMWClYFqRZ4xXvVAhQCyYs8EGrXNIWIOmB2lTuPlmqX3dJ7EYN4TYdOZ8o99x1Q3EaRuulprLfelWClPleRHaIw98NFA6CYrywaP1fb0NArSIDs2OKOvVAAp/+ASkj/eTy3UVEPusw9Tl7n6/hBc+whV9vj45vcJrjsdeHKYX1YbPZU/8dLNgWHsajp6sTPhLQd/4/+yN2COIMsIY5PcyKxSmthVeEQ+RAodwnpom/Cv7qLWw+p6w1F7MHUqBsQR17iQD+/HcAbc7MBNpImRbaCKitl+I4QEAt2yueVs8ZFU1hzvcIZAJ5rrMMCkJicBJd1dIrf6nBa3TQLZZ6BsEpoHD3xPXDXrHloUTx9GyXGvUuM1HUxk/IHTkGjsMWsxPlOMCSjjSxjUGZm+Tfj7Ew9GtvvXOw9I0h+crPwuZmFVaMDSXetdYPuEWVI4geLuoZ2saoiY8Yk4hvhy2T4RkIHrc1L5x0R8og/FYQ5/4UHUvf0nehziviB6BrMq7w0IzzuMD1+BgE28e2HVkOiIrgasI50V0rQIEhpzS5oJzatonaZsIvDKfrNh/WyOC8r9vCiOPoE2wgkjSA/hNWPMS4JnoS62o715ZBz9b7ylef1Zz6CDlAKos8ZYfHWy8UAkY8lNdbwHUhqoPlcY029hCr6xSJ4k2EiPHYglWfuIjmDrI/C
- kECjmWv/
- DiGwDQuUb/znUCwFEZRDFwqEVZuE0kH600XmNzt/edjdiAMtxBXqpivuSDmiNfmVEARXii5dIjNM00r/haJeh2R+OtI9a3UTn6lS0FiuSvqnKPZc2GXlvszCAWRjTvVuqtVlgxFjNnlac5B23OWQ3Bg9d7Y5M82u/dnzMl1rpjurpI744Lt0rg5d+hK8sOq12blgFNXLABN6Mp6eMCnCtK3oL/WaoWHKSXDdrln+ORUg8XsNIMgM+EYL/pQ==
+X-Stat-Signature: wekiyce8kbi5ydxtk4wemnpweue8pphb
+X-Rspamd-Queue-Id: D6A4120003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1772130417-266631
+X-HE-Meta: U2FsdGVkX19nMn7Z+ZdzGlgyYjLC2iyYFsvvJfS/BY709atlBR1BYu9psGgpIjWst2RaX/fwHKKyuMWFjm5ShNde5pQbF1V8SOMbWWcUSvxmoNXGpvEG3QUdxLxoGIKT/A7MnZWjmJCCa4dxdoh/C/EWq0D/kcqqNOsmJcJAwoo91KNOLOkJX8zKO1VjMnrFafIJSamREO84VPeWcIlPoqu+wlOEfyZYXaxytUDL6ri76lrkxlk00ifiToqh3vovR8zYstrpyIee9I9PZNjgQRwEYbNzbwxSyHrB6XctPP9qS2mLA86x4sxU4lgIYSMOasqvbui+y22i5BA3U232EFJjrfSjys3OIrFgQ1DoOgF45ahWZlcrKMtDsi7w5NUwjsmfyIrQq8GnuM2tdCnfTln3Zg/YMNl5vX47/e8ueDsqAAUbIKXQWovQcNzVYGmJhtIC4Jxzos106Ri1/5aNvQaDYimaTlgEHXEjfVxdpkytz7k/Cvx6Lu+HEOpMUuylDg7yVj0Jm6gFp1l4AnxPRYTj398a4ykjF01t4NF25cAT8fKYgRpz2Ih6AeeLHhjwa9DR1EEdZUDLGsbZEyt4Vhje7Q3ohnJhRRgKWUnoCne/oZ4N/+bNnAjjZCkEymEyhxotGlKX6YWdScncKgs0lgc85zuzYEz6UHNTqDz9fPStwdV8yicbzOzPCbRLbxKYCZv7jxs31CsFDpHTh6puSyZMFsLbOHmpveNmhqC0Kce6QJ4/8oU6XGb+dcNIVn/obStUz+37uLuA6VMDB9ubR+nweAE/NNqt7f/BAcrK80AK3fIM6FrufmVbH8cTd5damp7TgSTGCbOqrlpnCIvNbpNPy0jBVYH6VxD517txU+Nzaa2xndJOD3m4Qx1V2zIyAbYhE/ZrBgxfOYKcTMs5TmW7RoZooQgW3daCsVsEA3kS11xDr/ieCnPER6AjWYowzkkBrGeTurv6UpgF4Cb
+ lT3kSKPM
+ CfYyeoxNxb3ExdKpoRDU2xG0WTBAy9Vx55AtGj2PX7voXCAoW249DIAYjl5SXVLw5VVDaDj8Sr+kR0FnfNYpr/m4lOBj2B8eKkJgYaA6yRL7qldygi40S6iyCca8f0objK9Yv62OUdrYBGcQIAuHU9iVGg6V8yNMMUd1ezO5JTWd9dCV+82WqiT3XpQAhM5tLQ7ZTN4vXg4W6bG1AMQ9GAavAQG4g4zVBrPp2dpTKDEDwpUmHlYl/V9anU+HuytlclhpTD82SNqE5URo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,98 +108,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Compaction uses compact_lock_irqsave(), which currently operates
-on a raw spinlock_t pointer so it can be used for both zone->lock
-and lruvec->lru_lock. Since zone lock operations are now wrapped,
-compact_lock_irqsave() can no longer directly operate on a
-spinlock_t when the lock belongs to a zone.
+Zone lock contention can significantly impact allocation and
+reclaim latency, as it is a central synchronization point in
+the page allocator and reclaim paths. Improved visibility into
+its behavior is therefore important for diagnosing performance
+issues in memory-intensive workloads.
 
-Split the helper into compact_zone_lock_irqsave() and
-compact_lruvec_lock_irqsave(), duplicating the small amount of
-shared logic. As there are only two call sites and both statically
-know the lock type, this avoids introducing additional abstraction
-or runtime dispatch in the compaction path.
+On some production workloads at Meta, we have observed noticeable
+zone lock contention. Deeper analysis of lock holders and waiters
+is currently difficult with existing instrumentation.
 
-No functional change intended.
+While generic lock contention_begin/contention_end tracepoints
+cover the slow path, they do not provide sufficient visibility
+into lock hold times. In particular, the lack of a release-side
+event makes it difficult to identify long lock holders and
+correlate them with waiters. As a result, distinguishing between
+short bursts of contention and pathological long hold times
+requires additional instrumentation.
 
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- mm/compaction.c | 33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+This patch series adds dedicated tracepoint instrumentation to
+zone lock, following the existing mmap_lock tracing model.
 
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 47b26187a5df..9f7997e827bd 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -503,19 +503,36 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
-  *
-  * Always returns true which makes it easier to track lock state in callers.
-  */
--static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
--						struct compact_control *cc)
--	__acquires(lock)
-+static bool compact_zone_lock_irqsave(struct zone *zone,
-+				      unsigned long *flags,
-+				      struct compact_control *cc)
-+__acquires(&zone->lock)
- {
- 	/* Track if the lock is contended in async mode */
- 	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
--		if (spin_trylock_irqsave(lock, *flags))
-+		if (zone_trylock_irqsave(zone, *flags))
- 			return true;
- 
- 		cc->contended = true;
- 	}
- 
--	spin_lock_irqsave(lock, *flags);
-+	zone_lock_irqsave(zone, *flags);
-+	return true;
-+}
-+
-+static bool compact_lruvec_lock_irqsave(struct lruvec *lruvec,
-+					unsigned long *flags,
-+					struct compact_control *cc)
-+__acquires(&lruvec->lru_lock)
-+{
-+	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
-+		if (spin_trylock_irqsave(&lruvec->lru_lock, *flags))
-+			return true;
-+
-+		cc->contended = true;
-+	}
-+
-+	spin_lock_irqsave(&lruvec->lru_lock, *flags);
- 	return true;
- }
- 
-@@ -531,7 +548,6 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
-  * Returns true if compaction should abort due to fatal signal pending.
-  * Returns false when compaction can continue.
-  */
--
- static bool compact_unlock_should_abort(struct zone *zone,
- 					unsigned long flags,
- 					bool *locked,
-@@ -616,8 +632,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
- 
- 		/* If we already hold the lock, we can skip some rechecking. */
- 		if (!locked) {
--			locked = compact_lock_irqsave(&cc->zone->lock,
--								&flags, cc);
-+			locked = compact_zone_lock_irqsave(cc->zone, &flags, cc);
- 
- 			/* Recheck this is a buddy page under lock */
- 			if (!PageBuddy(page))
-@@ -1163,7 +1178,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 			if (locked)
- 				unlock_page_lruvec_irqrestore(locked, flags);
- 
--			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
-+			compact_lruvec_lock_irqsave(lruvec, &flags, cc);
- 			locked = lruvec;
- 
- 			lruvec_memcg_debug(lruvec, folio);
+The goal is to enable detailed holder/waiter analysis and lock
+hold time measurements without affecting the fast path when
+tracing is disabled.
+
+The series is structured as follows:
+
+  1. Introduce zone lock wrappers.
+  2. Mechanically convert zone lock users to the wrappers.
+  3. Convert compaction to use the wrappers (requires minor
+     restructuring of compact_lock_irqsave()).
+  4. Rename zone->lock to zone->_lock.
+  5. Add zone lock tracepoints.
+
+The tracepoints are added via lightweight inline helpers in the
+wrappers. When tracing is disabled, the fast path remains
+unchanged.
+
+Changes in v3:
+- Split compact_lock_irqsave() to compact_zone_lock_irqsave() and 
+  compact_lruvec_lock_irqsave().
+- Rename zone->lock to zone->_lock.
+
+Changes in v2:
+- Move mecanical changes from mm/compaction.c to different commit.
+- Removed compact_do_zone_trylock() and compact_do_raw_trylock_irqsave().
+
+v1: https://lore.kernel.org/all/cover.1770821420.git.d@ilvokhin.com/
+v2: https://lore.kernel.org/all/cover.1772030186.git.d@ilvokhin.com/
+
+Dmitry Ilvokhin (5):
+  mm: introduce zone lock wrappers
+  mm: convert zone lock users to wrappers
+  mm: convert compaction to zone lock wrappers
+  mm: rename zone->lock to zone->_lock
+  mm: add tracepoints for zone lock
+
+ MAINTAINERS                      |   3 +
+ include/linux/mmzone.h           |   7 ++-
+ include/linux/zone_lock.h        | 100 +++++++++++++++++++++++++++++++
+ include/trace/events/zone_lock.h |  64 ++++++++++++++++++++
+ mm/Makefile                      |   2 +-
+ mm/compaction.c                  |  58 +++++++++++-------
+ mm/internal.h                    |   2 +-
+ mm/memory_hotplug.c              |   9 +--
+ mm/mm_init.c                     |   3 +-
+ mm/page_alloc.c                  |  89 +++++++++++++--------------
+ mm/page_isolation.c              |  23 +++----
+ mm/page_owner.c                  |   2 +-
+ mm/page_reporting.c              |  13 ++--
+ mm/show_mem.c                    |   5 +-
+ mm/vmscan.c                      |   5 +-
+ mm/vmstat.c                      |   9 +--
+ mm/zone_lock.c                   |  31 ++++++++++
+ 17 files changed, 326 insertions(+), 99 deletions(-)
+ create mode 100644 include/linux/zone_lock.h
+ create mode 100644 include/trace/events/zone_lock.h
+ create mode 100644 mm/zone_lock.c
+
 -- 
 2.47.3
 
