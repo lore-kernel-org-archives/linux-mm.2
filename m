@@ -4,102 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA384FD9E19
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEA13FD9E19
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:08:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 230086B010A; Thu, 26 Feb 2026 17:07:23 -0500 (EST)
+	id 2C60C6B013B; Thu, 26 Feb 2026 17:08:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DE896B011D; Thu, 26 Feb 2026 17:07:23 -0500 (EST)
+	id 29A3E6B0140; Thu, 26 Feb 2026 17:08:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DE7F6B0158; Thu, 26 Feb 2026 17:07:23 -0500 (EST)
+	id 1DB396B0167; Thu, 26 Feb 2026 17:08:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E74FA6B010A
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:07:22 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE741C19F8
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:07:22 +0000 (UTC)
-X-FDA: 84487994724.01.A860991
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0958F140007
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:07:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=K7DL8n1Q;
-	spf=none (imf26.hostedemail.com: domain of BATV+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id F22446B013B
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:08:50 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBFCE13A947
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:08:50 +0000 (UTC)
+X-FDA: 84487998420.29.DEFFBBF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ECA07A0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:08:48 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wVuWoyEo;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772143641;
+	s=arc-20220608; t=1772143729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kg9gzOuUKPXfQ8TifAkHBiU5GSG5v54A0/HGpdATajE=;
-	b=jp6wx8RQdR1akpYG8L7i7we8QLtZd9QK4vAjyDliXJSmZbocQRLtA8N6Y8g7LgYV/a7aGl
-	8r7iWEcBem8MQFMMHCCpitf4hlyFX+/aam8lJqU2caRvR+PjJcGI8T9WueAmorHMCxQnPz
-	w/67yPCs/NFYhcjSQ8clmHqXJWwAP8g=
+	bh=12DwDyHNeUzIGukLjlYM793X8FOIq2MbKCdSDJ/VzIc=;
+	b=5d77fa9VfjmW+Nbm3MSRvD0tK+0159JLMgBIf5cS7p57svwLqjwmZFH85UXUJvrnmRHZQB
+	9HzdHgXbtDQcbQfcrShtspxy0VNxOTXIhPUlPetrHBzvFd+VQsACj5IQLjTmVsRJWWH0WQ
+	7X8Iz0s89zMqkKHpd8VoaEUh3EYp+0g=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=K7DL8n1Q;
-	spf=none (imf26.hostedemail.com: domain of BATV+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+c5cab09b19de097b6dd3+8222+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772143641; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wVuWoyEo;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772143729; a=rsa-sha256;
 	cv=none;
-	b=nkahyPTkGL3EHYmSMGA00uTdnDnjOBDZsHo2aH3sMRSIEKOj4A2l+nFFdlxFbdlb+O9TLq
-	rEJq99SCWhmrIhRG8cri2qBylZEfh8R64QD/6A6hNT4cGj8jgSb7uYbBaT/jhWBG8Bw0so
-	kLrO8gYbSNszaHWQKyICXbKvo8KW1Yc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Kg9gzOuUKPXfQ8TifAkHBiU5GSG5v54A0/HGpdATajE=; b=K7DL8n1QS3fDGk8/1/ItX9kSyq
-	wGDsP3RH3tejeQ90Haptd0/T0PuP9s1ekbp6LW1y31cbyrt9nWxqXpDH5yWK910W0H7qDmAOp4mir
-	vPyykjX5r2Y9hYE4nuPKuxchdUtNCMGnFo7DpEMxzLsXdtuACqOyH7o+aoj6LwBSld9JPHEVZZaeS
-	qBKvr5fqBFTTGOOveTkKaGnpZpaKhIND3S5tdw74N7oTSKyYDDBmUZ77/NuHPY3rtWDa/wNtmot3+
-	r6z1pWxyxWHCTDAUm65LDMvRpEaU6e357eJg8d2uGILLtuClnyLAlOgGs7cbZuIkAkYRoS4MeaaqN
-	lclBFExg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvjVq-00000007HdC-1p3G;
-	Thu, 26 Feb 2026 22:07:14 +0000
-Date: Thu, 26 Feb 2026 14:07:14 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Jens Axboe <axboe@kernel.dk>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bob Copeland <me@bobcopeland.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
-	ntfs3@lists.linux.dev, linux-karma-devel@lists.sourceforge.net,
-	linux-mm@kvack.org
-Subject: Re: [PATCH RFC v2 2/2] block: enable RWF_DONTCACHE for block devices
-Message-ID: <aaDEEjVKBKrLxsht@infradead.org>
-References: <20260225-blk-dontcache-v2-0-70e7ac4f7108@columbia.edu>
- <20260225-blk-dontcache-v2-2-70e7ac4f7108@columbia.edu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225-blk-dontcache-v2-2-70e7ac4f7108@columbia.edu>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+	b=glTcPgyjbeaMukWlLZaQeL0+MPnMcRt5TmdK5RdKmaLVTCba4QA/WyoytAKbolWHb49Jid
+	DMpJo/03KSLKhvLKAYGrcl2b/hIWj0FjxBIyihin4s3Vkdvwj4ZCIgHjSJBftNwdUisz3r
+	argFgcqMd+X9Opxa1ZxXANuuXOxn0Tg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C6A074042D;
+	Thu, 26 Feb 2026 22:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C0CC116C6;
+	Thu, 26 Feb 2026 22:08:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772143727;
+	bh=04u31OS8pHtQknBMGM0v9En/KT3xrx+KpMvq6UGaC9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wVuWoyEoWa6hkBNz5BZQM0u1SAhmT92KyWrGnw8SGD79sCKTc4r6NQlwSoVZiaOgg
+	 waV04VNXIDDAh+3UainQ+sHa3dTPAzXIsMsjEE8YSQFUY5b0z20fICqwVsaL+XXCfw
+	 UATodmqmOCaRws1NDXz98RFcrPgQql9TqEXQllak=
+Date: Thu, 26 Feb 2026 14:08:46 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Dmitry Ilvokhin <d@ilvokhin.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ kernel-team@meta.com, Benjamin Cheatham <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
+Message-Id: <20260226140846.4d8b30f200b0194c4bb78d25@linux-foundation.org>
+In-Reply-To: <202602270508.8MKXotxZ-lkp@intel.com>
+References: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
+	<202602270508.8MKXotxZ-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0958F140007
-X-Stat-Signature: pzurm7k5r5xdwwaobkyyp3y8zfncpp48
+X-Rspamd-Queue-Id: ECA07A0005
+X-Stat-Signature: sp4szd78gnsca9g5hti6uz4p4safhuzu
 X-Rspam-User: 
-X-HE-Tag: 1772143640-321921
-X-HE-Meta: U2FsdGVkX1/WIXwkm5Ods9ffMa+baR2tjCU9L0j++5Glii56q7Qlo7gLWxrhW7/pbUsKJRqEkZjjmD8bHDXn+Qrt8FV6YRINa1/uy5sbD4mkYiDOziWNgGKtIuHCdtddAY3bWsvpxgG2D68rFe5op3xfPtmrqlEXWub5952Din73/c8/OKFAp+o+FShggds4YIb6QbeMMjHBLzvgzHU4+YK8wQJZaZGDVw3zjkt3rGhrSC5SrjSAC6e9U+SxcQ2goobXPzB7+SoE7J205aYiLuk8QrmaPT5ZOaXit4GeNWXvQMHZJOb5KHHObRTdEPfOk5zgWBwzHUiwXKNVBhFGPuxprc8DVi+K6+jNUkhxmoayq+7uneEcA1k8c4NatPbMCts4PbeaxtSHdkllQnrEDj8ols6NA/Oh7Xt69YNNYGMt/TiBZvOnkdEf5lQaeONNTvE91JHTJooJnb5MOV+wZyLOFIadCF19yN60TegfPH4Lcu9zh1mKTAUdcaJVCgkdyi7XAXBT43Q/P9xfeEx0UTLSDM2PT8hGAGczhkV52WDqACpQH+ykmX++vBq2DQTX5gXrEJiBNrW0N8IFvAYMHfsSkLCwsj9a9PSrJRgzsJq7YJnuyDAp3+Mn2k9w9xT/exiIiJpftH1VC0Sc+VkYQxfoBPQQ5UXF4sscvP5+g0c87XWMg0Eun05D3us/V7WosIusp36nz1s4Dw7DQnMiQ9szOE9jipAum94h45Xy7WoYWuDwn7wzeSGyAhH99slUd0SuB7TygzP1MYi5tbJhJOwN9DyhAq10XW8m5hBwtF8mzyZLNvfAIo1a6fjUafYJzLSaDfHtUayOzsdzZYyQKPzlSeSpCjfW5pQxU/bc9T0s+VfNbAiQvP25KLTU4oTY2chlIuC4rIYoqCUGyz3TElcNh52cYCLLXdoqOtjPnRZgf4c7KUQTMsNg1nn+6qhd5CWhNGvTzPdSZuHS4lZ
- hQY/yR2Y
- 2ICeFisuZpqUm7nISW5h667uMqPeGfbJ7Bal2ljQg9IaZGrYRIwSVobft6RhBsGCz0cXG4OGYxeImfqOEXSdg+ljo2ylwlXWR0ScqCzlIXl6jonk9ZzmU3YvmoQLsOEl0zckf4YDjmEuQkLmnt+HFpnO9Vl4bvS6dGC5v5hXpITRAAKPcrhbew3eDZV95QnK4bOSxYu5aUZfwdDY5+1m+pfrQ111+eO8inynuG+/myV0JLXAbazi7hW9OweCFEFJ0pvtbkXCe5c1ZCHYFTb2a1BRljyDs1L32gOe0DZ40g73AFw4FcRVWnRTX/fw+L3pU8jawKmGy1sQpecHw1+GAe8aG/5S5CIfCCeL0BNhs7rRQ5LX1Knv6JHdIUkXIoLJjzksSkUXkY1RpszPtWD6pwyAIoqN0dIsDaqmCgEZGwZM/t0yGQWciCUL8c4Tutv/QyhYUjY3qstYn32U5yyMkid/Lk1W40xYKxQ44fkA9ZAdQTUL0oGwVvQSnd/p5+azIiGxKocRGBpHpYOpO9BZUoSaoIeVqEPaENpaoWUwKN1IdspERWtuo6YxFFvIAycr964nD3JJn1l5hNUAL5TvSXbmaHLnUaktR0xvPwJ6zPqiS5sOCyTiF8MFfCHnhnbvs4CDwz1mV2bASuhg=
+X-HE-Tag: 1772143728-653644
+X-HE-Meta: U2FsdGVkX1/9jCaB3/UcmWsgz7mh3lkAZNzlNJ95qYxY7qJIcSz0kFpxzJY1hlXIGoF198ByV03LlWIHuigB2s2OXgA4zMr8H+PSAzN7bO/mTto+3vel1x1aNyXBvggr0G9O3uep4SLGplpi0QSmO8/EPTUC287BWzhOqBSnZVfHQulJDrlQYCVt1ScXZTu4EpvXvZXBQiIlyoB8B32ZGWMC7ZvSKisc/qoIzTiNslJAAXUOt4j9bAcRdodScVzeGNJvAUlG0tLHR/KHtfc5eDg3VbAIz0ykol87e52D/SAkp6+zw8kSPaB6jTfbRVVpg2yP1Zf/JX+VG/BTl3ccRpzi9/t1+xLsx1OS2QA26umpE1JJbbJd53lXIzn636X+ddXv27gebIe4nhvU8+PgJSustjmwcT57/cQ6jXWGACx0itIPbqP+BlG5wzDVCGttVUmMElus3Sf/5OHocL/f2oDeOllLjsDHLDG/l6ekoyDdCmLlrQ89/Cm4JrBQ/8mRTDrX1nhR9y1Y06Saqv7xfvtnn4hM4EkZSWihHQbaX5fJDOWu0uDFPcQsYFRqESSNhjBlBMMJ08IlF0Q0XDtC8hIfQ0OcYFlBFXXEPCzC9ZZRranR99QVKv6pX/RBUdR1tV7HdqN+FNtg0dXhkbRgSZXWFfb5AQ6l8K0EPYkMLtFT/XyfSRoDbUJrLVWV7quD52nf5cfaBP2uZJ5rwgtBotIektHlXyI3HHaWOBOUfhudg/i/BcUpp2g1YQBvl82cpTegjGaVrAM6uWkdTDS8RuWcDmVmtiN7QZDaKI8auznwNUQ2O/UraoUx9mx+QycttZb47SSLpYLF5pLeohzTCh4qIg3cegFJZ2c+6k/ZutmZsERwMrgf17HcmXPQ1TlWDiVA5HWVl2LA8c+Pu+bldC32ufaIhvF2LLTbeghftxruySmKDdlQ+7IVeBOBuoyyoH2qjsuosfhLyxbPAR8
+ h4+JqYDm
+ 1kaiuBJ8BAJtCHhgDhD3gj7zSqqdWu7XxQ6Rv8E3YPJT3QXApdTeO4biMJaz5OdWq9094PDG/oOwJxtaf5KLfjN/Gd9yiEnWdSeW1fbcF0gR5qbKzY2J5zY6zujnsxXjFAvT3WrR0wBW7AcOwcg/yy01XT4h0UyHFxiuhGIDKN1DaeNq10RLO6/HXKYRmOwEWIdHceKqCPd1V66ob3umozYMjBBGgN8wb3MPjsbIA32P0VJJ0L23SnC64PgHLsIotR3lZ4SWQ3pxZ7WHtfdP1t3lPVzRWueb7UbHSo+98CYCIqbZstgfUAyVJwIPWBroeMzYh9GvFOG8Hrldv4MX3cUep/je//tBPunvbfx6NRJtopGEngemsXiVyt89ChfJZVuQj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,22 +103,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> --- a/fs/bfs/file.c
-> +++ b/fs/bfs/file.c
-> @@ -177,7 +177,7 @@ static int bfs_write_begin(const struct kiocb *iocb,
->  {
->  	int ret;
->  
-> -	ret = block_write_begin(mapping, pos, len, foliop, bfs_get_block);
-> +	ret = block_write_begin(iocb, mapping, pos, len, foliop, bfs_get_block);
+On Fri, 27 Feb 2026 05:48:05 +0800 kernel test robot <lkp@intel.com> wrote:
 
-Please don't change the prototoype for block_write_begin and thus
-cause churn for all these legacy file systems.  Add a new
-block_write_begin_iocb, and use that in the block code and to implement
-block_write_begin.
+> Hi Dmitry,
+> 
+> kernel test robot noticed the following build errors:
+> 
+>    mm/shuffle.c: In function '__shuffle_zone':
 
-And avoid the overly long line there to keep the code readable.
-
-Note that you also need to cover the !CONFIG_BUFFER_HEAD case.
-
+yep, thanks.  And kernel/power/snapshot.c.  I've added fixups.
 
