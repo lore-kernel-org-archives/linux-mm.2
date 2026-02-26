@@ -4,64 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09EDAFC5913
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 08:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883C9FC590F
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 08:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30F6E6B0088; Thu, 26 Feb 2026 03:55:31 -0500 (EST)
+	id EBCA36B0088; Thu, 26 Feb 2026 03:57:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BD376B0089; Thu, 26 Feb 2026 03:55:31 -0500 (EST)
+	id E69FE6B0089; Thu, 26 Feb 2026 03:57:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9046B008A; Thu, 26 Feb 2026 03:55:31 -0500 (EST)
+	id D93626B008A; Thu, 26 Feb 2026 03:57:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 05AD76B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:55:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C71D36B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:57:10 -0500 (EST)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F1921B7993
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:55:30 +0000 (UTC)
-X-FDA: 84485999220.05.220FCAC
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0319214000E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:55:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XaPtPOeu;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 790011B7994
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:57:10 +0000 (UTC)
+X-FDA: 84486003420.05.403E41F
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C1A67C0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:57:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="BytB/PsA";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772096228; a=rsa-sha256;
+	cv=none;
+	b=yTuU8zhekCJdALzrFP6yGgiyfek7Oc/YXapReMhrqMbuEpdvOScCxt12ef0+zFSiygD4QK
+	eFVB1/Ml5zDAF6I+NX2AYWo5Wm8peulGGoV49Zf0N8o8q3VzbxCo3JDkcWeRniBWKsCALi
+	YMeZEwD8QjK6+7PCEBhA0x5BiNK/vH4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="BytB/PsA";
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772096129;
+	s=arc-20220608; t=1772096228;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W+s8ajlX2QcTdOYbVJGf1Ky4Pkxf5RlbUW07y7TzjKU=;
-	b=yL1MHNHF/UMc5AoUBx8Yd2Pjw9z7TYmuDrJu2MCAgbQ7tTmpi/QUa7qn5RCganMmtNMbrY
-	fpqINRL1GAVEDUFjPLzfCfuF6Rcd/ENRf7Z46svEk4FckhiUwSXrSC9OmKxl/8jTx9ImAt
-	oFDoWZXvSBcZJ1g7hUYrcn0w5Dn0qa0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772096129; a=rsa-sha256;
-	cv=none;
-	b=mYTjE6ML1M638VfjqpbjGIPrCWAg+inqroUyz6+jaFxUp1WOsA45zTGC4J5ZT4eWyXCzWf
-	QCPcMbvGnmiwKtnFllu6qt3VT3eXURwvmGrCIs7Yw5AiFUcm5VY3jyqkx/YrRP2u1trb2T
-	3/vgmQReCht8l/CJj7AKfZAToqkG03g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XaPtPOeu;
-	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=Z7BoKbMMMJWHf1VjGKYbdXsNGYJY+/g+XoYY+Ydm1ps=;
+	b=tFbqwCTBxAaSpILd9/gmNlLAK2SC54m5s92suQutzWNGj2cGG6voiFQCSdA5rCc0ATqefg
+	DmGEQf+b6cnMixu0RMOfr4/MUL9wHuLq++HfiFqpigVV+4yJ43Rm8QnyyjjMMRIq5VCFvV
+	5hMLHJ538YlvFHfRpVGZmnSGhcSUhso=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1772096121; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=W+s8ajlX2QcTdOYbVJGf1Ky4Pkxf5RlbUW07y7TzjKU=;
-	b=XaPtPOeuJb7STliqL9GjFZB8eC6/ENUWp7cQmOWQ1XHVuMCObGE+yAM6kGU0O7Fq3Zyq9ggDMDqeIyK2Tv5fdLblYkdjS3MDxCPbofUcLIkeRZvH3ZHewGR3WS1TDcO+xMTUhhxumt5d4rL4cFSLBbU+r4WgviRqCF/5lBAt170=
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzqh9SS_1772096118 cluster:ay36)
+	t=1772096221; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Z7BoKbMMMJWHf1VjGKYbdXsNGYJY+/g+XoYY+Ydm1ps=;
+	b=BytB/PsA15A22qLvkEqBVfAp4QcnzeKFLDBi7fkmfannoo6giAGaTtI7wFhywXRoRurOHrBvlU3GhqI0G/ST3unzPtDF/v9cX3HY6eCa/CXwfWWPUGjTEzP96tzEGP+R7/TcRq8d08GgXMbUe1FwMubTWUJ3ilQBcFV3kjYA/y4=
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WzqmKHv_1772096217 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 26 Feb 2026 16:55:19 +0800
-Message-ID: <c9c250de-742b-4615-88b8-95ea7e6dbba8@linux.alibaba.com>
-Date: Thu, 26 Feb 2026 16:55:17 +0800
+          Thu, 26 Feb 2026 16:56:59 +0800
+Message-ID: <9038265b-7066-4fcd-9b41-fa7ad6c5a07c@linux.alibaba.com>
+Date: Thu, 26 Feb 2026 16:56:57 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v2 2/5] mm: introduce is_pmd_order helper
+Subject: Re: [PATCH mm-unstable v2 3/5] mm/khugepaged: define
+ COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
 To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 Cc: aarcange@redhat.com, akpm@linux-foundation.org,
@@ -83,19 +84,19 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260226012929.169479-1-npache@redhat.com>
- <20260226012929.169479-3-npache@redhat.com>
+ <20260226012929.169479-4-npache@redhat.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260226012929.169479-3-npache@redhat.com>
+In-Reply-To: <20260226012929.169479-4-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9cqm8yjtayak5chbqjxdr144wwk6w9h1
 X-Rspam-User: 
-X-Stat-Signature: 9ri11p9x1gsg6kwhg7xw6guq7oqf1anr
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0319214000E
-X-HE-Tag: 1772096125-823962
-X-HE-Meta: U2FsdGVkX1/4+sxBFXxXYT7GFNzMOvPvezoQt2ljGxFfa5d+MFqNxHod3kv5D3KCPV7bCeNJVgLKgAWLM9XdvGCfQd4z+eXoG+i7hQFlQwqr8YIWRXwmgtmtnd5QF1Na8nvoiW5evIv7vjjGyKwwyFx5b83yjc7LCrMohGJZhq5VPjw5OV/pS2AJLVOCPpeFyAIlQittZFEJvXoiqS/xPnXLNOUYFDft8VzbzkXdI4pGkSKEBncsVzkrSUj5lyhijIuC03OfhSDRt6CeE9lJWf7MtgmeRzC4RguB50cDRuTd7CSzxMKQbT4TKbPUVZTQbonQMnb51J3vlNnvA3WZ8uS1OYsys9n0R4CK3z5JR4c+jy1C/FzLf9eAwavLvvmKcUMn7HH/99+AHe1jmjjpeOCftO/UqPbyHJmbmgYMcCt/dlMgJyi50OYo9UT5pXivl5TlwLvHtola75NZk3obxO5rbnYz622wuCXQZhYJ66/5RlLIIdC+7qfwDrCTPGn9g7/3IIl+vwTPRT8IXBG8mczmCbHhhaI3qTsIbvEgOBbjQutuLBcMkvWhl+gZZXaH5F4h1ZVA3xcC+3E5fQ3PNKQcHo+EiIbTUnAsulCGk/N3dJ0bBkqHuhDKKu2SF/7IcedilnLcGfyQOSIvf+zNRQOC7a7zwpniGiZD/nBrR3xs4tWIVQ+DyIjGEPaH2BLYjMWu0rwe+bmG0ZZxejewzxkTIK0CHeynAqwMk0Ts6+tVVcCB1LWTl6TJT6fYVrgYh2770bc4Ume9B1HurxIuUt0Cug76DOCXgoaTYu3j/0djioB5darObjAauMJuTe7rp9vNKSb2+RT1xIjTnty8VaW76HkKFkNZhB86vY/bmEEbb7tJAGfAeYAijMhzrdPP2nw/Z1bCgodKAy7r5Q89Vw184M4hEf3LqAYzL5NB3SbhVhB8/a7IIhXileVePr4rAFlIVupwo064Byvou4R
- V0sw/OoO
- RC5LiPNrTokhqy8ihEB3aseYvUmanVtboRPd33uJneTD49lyfrtSgxMcOtGZGBkrprj+jSd1YZj1ZdORnQi/f7qgePUS/JMLWU3qZJn27kiNOo6LqQDqsPKeJy01M4uwsGbJBlFW307is0ijQ+ooitst69cND33X8qtaeCwpH2kEOuM80il6f0UNQfMP3lQBK1MvJyf+CkR1uyDZJxiiVASV45FssyYXW9TxYQbiYMPAksyBwMGI4to6bqR6iLzd0K9u8pOQsfU2UjCGiY70Lmgzz10Y/3GM5pJsv6xivwKrdLibL0JwzrOQVvzxTYwfGCmXPhDHwCQq4yDQeBh/PX+OvmRCnV9B5rD3znFgbwhUVMa78nUjos0izq+DRF530RDWz88EqtjdR0nEMEV6DH21LlzVgK0BxDqr2WjonQE/r9fqIip0J+em0IvCks2bWaIX1ZCPkBOSH6L/TWGGs+35qOw1d1exov3ajcGMFa+Mms0V6FuZPT41f3/bmslp3aLiNMmd/CFL2Cz1P4smEtXAbKXHIrusl74t6x8J3QoHZvCRH00hIM5Z/1w==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C1A67C0005
+X-HE-Tag: 1772096226-923839
+X-HE-Meta: U2FsdGVkX19vBGi6P1wcFUyRnEQCuwHnmkCSfMFm3nQXJab7W4ISFKmiMXIr0qprlRVBQYJjUftA24DMvWcLYQc5oK+hfMjoymWW53+6hnSnEglNn1FGTIz+jKkump6u8hWLNEwjcB8byAfv8ZuR7B7uwyGxG/tqNLElKLF4N2+xMKQj2qSrFC36A2WNKZcMq2ceFYG62pmUWXubuE1GGP51Jr4DdIGU6uVnRhYd2VvtTS/rUbjWce/8PLst93zvl3PFsLeymsTCtYVcLTOSJ3wzaI+TasWPoWWsnQk2R3LHvuamyUpnMhtZWyQyDlOwYWjjBP7IfKD+0VnT7YVJloI4B1ahaqd/z67IB2RpCsb9H9noTy+VyGQdu3CbbOEzjnyPhAu8+1bUyrV6vkbAfyOQpfI+fP92Z9nn8SlA+0Ly50UIi7qphevWX1rnq6uWCglqD5x5oh4DOxQgLI2MG8Lipsm/bN7inB4IljtK9jImZzr/KZ5O3Zwf2qYSjxneippLlDCAkoo1/9sCNuKSNa7UjeN+u2bKXBOPXBguHzcXyz9hJ0+FrULIPN2Fe/vKlbsr5qj/angguglXBsUxG8MzxxX3AmaIFLMX0ZHlqtP2hOx5TAp3mmilia3GsQ+Xi6MeW41VbBt9fiVD+ZLMFnhVu+vtP1WWQzywCx/VWZP924gdqurS8exQS/0nwVyIjQhMN+P+Jh5no0m9Oa0m0AG034Nf2nypOX2OThASh1gGTy8VlVRJRp8IiJBJl6h5deycxriOx6cb2MOjHPiyd0Kv0AUAsh0LONaZMnaGywWsMTTT+LwIcZhtRff9B4Fesa3Gl7dxzKbjW8OVCQ6NjBO2i4bUU9uD8HIXSjPV4tfEJul0AGbkiquL/kn/WWC+VfqQfYF6wvyNK+51pUVaxgQf8N8/K0x0QtErPQLD0zaI128ymxKn3iCSJIJvKuiOWIUbsPygFOVNHG6lKo+
+ XorcXmjd
+ i0c1iPpTFsKGgDSjegMwY/IlKKekPJ2t35ZFU+GPru2AX4L5zDAc/WI6Jdf4jN9dctUVboTS7cg1iJyeUxKxoLBr5J4LyawNQXcjl42BWxh0K3v8pbxd5xBrPWddiISGAFUDHa86REEqVSYBuD+u08xy/OAtpvFQkwPKrfJDYXRWuV2g06LhWfzT6XnPNI6/m0lyhy7ArqHdWfIyLwoqqUEDG8Z9E43ZhTjIx9bsVH6UX5f7pklkUZbv7k8jxVCqsfH46kPPI8LOlLfk/hgv0nGO8U9u4wNQAbwRjrBeNItxQVc/OEzCa1GoxogwDiLqyuti4NG1fGqziE7thwiU2+AxCPHppCMtzshSZ9RF8cC2zK4YXKU/FGq5MvgSfDYhL5MXzS8RlQYR3gmqbyHd12LbofU+ccY0KMuqG792sCX529/tejrbp3a2+Ti6LccN/6h29bbT42ALH2SG9m7loVdIcXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,20 +107,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 2/26/26 9:29 AM, Nico Pache wrote:
-> In order to add mTHP support to khugepaged, we will often be checking if a
-> given order is (or is not) a PMD order. Some places in the kernel already
-> use this check, so lets create a simple helper function to keep the code
-> clean and readable.
+> The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
+> signify the limit of the max_ptes_* values. Add a define for this to
+> increase code readability and reuse.
 > 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Barry Song <baohua@kernel.org>
+> Acked-by: Pedro Falcato <pfalcato@suse.de>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
+
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
