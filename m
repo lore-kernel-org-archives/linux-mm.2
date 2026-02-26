@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25378FC591F
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF963FC5926
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 10:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8434A6B0088; Thu, 26 Feb 2026 05:27:18 -0500 (EST)
+	id 46C386B0089; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EDA36B0089; Thu, 26 Feb 2026 05:27:18 -0500 (EST)
+	id 4160B6B008A; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744DB6B008A; Thu, 26 Feb 2026 05:27:18 -0500 (EST)
+	id 30F766B008C; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 613316B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:27:18 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0FE81160AD6
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:27:18 +0000 (UTC)
-X-FDA: 84486230556.01.687B5CB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E4697140002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:27:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CB416B0089
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 05:28:37 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A53C713C020
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:28:36 +0000 (UTC)
+X-FDA: 84486233832.16.24709BB
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A6B0DA000A
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 10:28:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YAVrmS6n;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772101636;
+	s=arc-20220608; t=1772101715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tDNeC0J7CLO6kZT4rtD/G9QKlcwzvJg4L88we91SZFU=;
-	b=WEfWuz6RXr/3byQVff6UeRgOpRyngmmauUikl/AQDOthgEf9Osp+jhqtgWNkPcl7C36y2f
-	coOnlyrq8jLZqYp7wZK1w6x/P84+iSsHg00UZEkL0w0O6H/+blnamwv/jB9EkYHZ3siCF8
-	PAVKFvQj3EvpNvJo8eeiEaPe5dmDo6Q=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S+yFBRNqmJ5O/9wR1LsjXptvmYsNUxZetzHoIAzFZaU=;
+	b=MdDMKC6q3TFVXVe9g/CSOxozJ5c8U5B/ZsuJNg8G8p6TzLmxNNxp+fn7/B3qW/Ulb113qm
+	p9nNC14fdvooufS4r5tVA1d8pfZXsBNi05q2/3aIIXAtPCPjBMN+zxfPBzR/JXOYn5mvOC
+	JFDWx4fS4pdp03Bn39yRo0CJLnjVqTU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772101636; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YAVrmS6n;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772101715; a=rsa-sha256;
 	cv=none;
-	b=xB4koeWlIAutFPsLA8LVzI1IPd1mIcKFS4Lyrx68Sbre0XK+ncJ00lNUMbosDtGII6w0Xp
-	V/wblAjz5NgxA7LzlFxqtFfoV9Ttn2sJG0UE2D4yK+Cw5HzjUryXMnIYFQih24VtrYd8Vb
-	SPf1IlkqMkplwiTQMW6ujZWa8RQ5BkY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D9CC1516;
-	Thu, 26 Feb 2026 02:27:08 -0800 (PST)
-Received: from [10.164.19.28] (unknown [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 41CCC3F7BD;
-	Thu, 26 Feb 2026 02:27:10 -0800 (PST)
-Message-ID: <697fe0bf-fd5b-4ea2-b430-37e38dd30590@arm.com>
-Date: Thu, 26 Feb 2026 15:57:08 +0530
+	b=x3LFphlGJ+gAwI8dafH1I56CrXrgCCq9HRL3x+tr69iyaYs0KsUzMgS00GGY76lrB23Aiu
+	Vsn30wdYM6Bl2/5cmlIa6D6S2q4nV8BNubNzOa+3qff6Vhd3CW7frUsGs77gE+Q+2K4qUm
+	mu6P6BUmv9KHekaL9Q5angS9kpdkoUA=
+Message-ID: <dfd37e2c-d939-4682-a693-ae3941358fea@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772101712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+yFBRNqmJ5O/9wR1LsjXptvmYsNUxZetzHoIAzFZaU=;
+	b=YAVrmS6nLqZsCg6F0yNd7g0+0S+UrhZBNrsQMxarcA45GZ9rploasDDZG3zBZSsvtqu4V1
+	ECAaFMOU82waYaNw0uoudNJkZG/zShB6fLGXc24OaJox6bMyFxjr9yGpUarKUGEhz2ukum
+	27LYG00ZV4ikGkVU5Gl5m+aEL7o7tEc=
+Date: Thu, 26 Feb 2026 18:28:23 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/rmap: fix incorrect pte restoration for lazyfree
  folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: akpm@linux-foundation.org, riel@surriel.com, Liam.Howlett@oracle.com,
- vbabka@kernel.org, harry.yoo@oracle.com, jannh@google.com,
- baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- stable <stable@kernel.org>
-References: <20260224110934.881360-1-dev.jain@arm.com>
- <763ffcc5-8640-4b48-8ace-051ff0ccbdaf@lucifer.local>
- <61161337-0d0b-4597-aad6-b5a1aa1ad41f@lucifer.local>
- <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
- <40c4917a-cf50-43f6-8ef0-de5a2c7a638f@arm.com>
- <bc4ad689-6dd5-4637-92dd-d16ac8ddd460@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <bc4ad689-6dd5-4637-92dd-d16ac8ddd460@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ dev.jain@arm.com, harry.yoo@oracle.com, jannh@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, riel@surriel.com, stable@kernel.org,
+ vbabka@kernel.org
+References: <36e676b4-dc6f-45f7-b885-8685227ac6a8@kernel.org>
+ <20260226070940.96226-1-lance.yang@linux.dev>
+ <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <ece450e0-8e19-42bd-9a7a-fdfc7ab785e6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: aaixmr5quwoyn8xq7z96uew3zg3zej1p
-X-Rspamd-Server: rspam11
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A6B0DA000A
+X-Stat-Signature: x48he167u8aonr8pr1iw6eu8w3h14zpp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E4697140002
-X-HE-Tag: 1772101635-384435
-X-HE-Meta: U2FsdGVkX19TVSQWBIRgpWRcrHrAi48U0YgTlGqRW+v1cH7QbXH2soTE5U/txe4lSr38o/ky/GA4ifVGhcgXOWvwzNh7QKGQVclfpYzvD0ZjB8/qi6GVNbkldJY+uEe3Zgs6Mjkkfq4lI/4tEFYJrzbOecs92YG6MmzJrGhnLJHrtRz2Hj3aLT4Mv/9osJPiAMCnhjSOxVZo5eJQVdYkADBKoccYyFWFm9cthAuC7gdat6ez7mK1QgMiLSUFDvq7WxgvAUCSdc6govFbsXx/dllG1rXU+CnBKjKsPMC9wOgMnZQUKxQd2Zn1Y7tznEvyir1DQkIvNL7+p/angzJgk127nICfISMdxt8E4xuarxZAMzDrp3E/wR2wZS/Lml6a8fWBgtyqil6TcQIyScnLho6MayPpRMdfbzRm7FjJclpy9Yis6c6SuCyTNFC2FRXU7k5fz/UugXYicsPtYX6trI4Mp6rhSmKzGl/lKcYvayoSAvXLH3pU0bcFMC6+e/RoA4B+jnoIikgeBH5PSkUd+o6MGVqxmQBqEa1naRsMYxcNc6bMcZLhbO0HYWpKcMT+M9sKP6IDDKnefloo9U4gd5k13wUMKlVfV/SwY+EBCFUy8WkCzBPVDlk2mUpvIEdeCo/bP/VBa9FpGj5FrrJlo/Nq4HrEDnqjL2WkwNaC2cnlyFd9YE/1D+R4EodjGOuorRa0wo8eZLIIulpS5DduG7/T3gBLENrtgHwQkXhHTWx0BIhwu2a0ve8yVP5TVTJnD5uL6Y6OGGD5aonxtjikPniZRiXCDdcbSNtU6ZrsJ238hQNtgmu+72qYzueBV14MaYrSLvOsBlXMEM/cC4YXA1E6c25FJbKkaaRtvkzgj052N5d/ivJ904XWFoH33ENCqDhPW3QTAeAOw6Sw58+TM1QrmuUj5HVARuFmm10ZNMNKGdSKZLAe4zC5ceqZtu5ZDpLUADoHaA4rbwKfeOV
- tPzkE5LQ
- Mv9GfDNfKUByfandI8/Le9+jWGZUVfLSsFTI5A5N820Q1wa0zCJu8BBs9wU5YYryjCOawN9zU/JdMK7xfjzNW6vm8dWCE2l3WdHDdSnrNHT+H8MBC/p92gXzMLnXYtudLmx7cIVj9MVVuDqc=
+X-HE-Tag: 1772101714-389844
+X-HE-Meta: U2FsdGVkX1/VKl6OACBKUDMunB1HD1bAcDn0eTCQFyBAgejO7feHknBbYHVKIfT8MBMKmc/tgavmvjImo0B4nZ46hjaYKPphRoTL4aY8cer87fl/O0qTvMzNvYQ/uSH85E+mBgK7OuY/zKCX80jM8S5pHvVlZDe1XiRQGNYUN7O4o9W+PmwPz3X578HHwU0c5eaX+6wNM5e60tTfaYu+l3Ppigtr5Prg5E9Ao5a9NKe6Ihrd33R3YkED/GNLhTX4wkGKUeAJzvwIH0XflrXtGb52uoA3X3jej1PqLb31x9OVLpQQlVpZL19WZD5Bbc55yrXhSeodBiQIsKA06xGOcMHEJPZaZ7oQwPT+ihDpeGmd/bEjcxzrQgXaV4y8dDCQI8QxyF987VpnQEqNzQI3+xM/BYoj7QSbVbXzdrgl/PQRw1uAk+G1CDKRbfrYehWKfzYGSrA0tOG30csrAjRM39fIm+VvB/NG5SUtoppdVfX6Ui2HBlq5gLQox0dOxfCMRjsd7A7nkNFEKBWKX5mW4Dwq4XmVn+TNlFWuI0xlnh02P/oYKwCZDL6O/ggr9y026nqifz3/1u35TjM0/mSPnxe8lSttr4deRalg4yJVJXcnzgH8E5447cIo4x0FFy4GdjcHJL0CV92duPKeKeC/HNYM6plQo3hCfJ7+KzP18CweUMkC9izgvV1tfFKWRXWCZLytJC4l54OCWcvVCcfm5LZAPjv3Bppo4mbjh+rly63pwnXbAe4eAcilAIzmT4OZ0nk8CTbnLCuH7fRista5/9qjkPGMgFA6prxWnXDp2tMsR71k9zuyvX0IpYNag8FWExiwIiwakxPAvdZyJ599H/Wwef37wYKQRmOEMrFdRZiQ1CtZA45Sdk2QGNps1vRge1e1VYWkvVP9dIhMN8cN7R5+XghsV5kV2ttK4IUSj4uGvpjJyMGrEML67zBD0Qe3R3JHV1Nv6FlLgvCWTv5
+ MhhR5hl9
+ qg5zJCm37fAeBRxdGsowFEhCa1b3+ekQO0artbWjCA3lYS2/EvzXcUksGkcqEJ+LTViUu738HTdOpi9gHBVNxB5IM5H/ZAl8uNMb/+7SLVQvRYchKlLdS+GnzD/biJSBMdurfhrJCHhPNKJGQBdM1mcTlGBbgnwUIhhAII2tCRuRfgm3dWNQEpfauyQt2CPUl1QXvMQqYBaOdV5++qZzVmwswnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,11 +97,10 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 26/02/26 3:51 pm, David Hildenbrand (Arm) wrote:
-> On 2/25/26 06:11, Dev Jain wrote:
+On 2026/2/26 18:06, David Hildenbrand (Arm) wrote:
+> On 2/26/26 08:09, Lance Yang wrote:
 >>
->>
->> On 24/02/26 9:31 pm, David Hildenbrand (Arm) wrote:
+>> On Tue, Feb 24, 2026 at 05:01:50PM +0100, David Hildenbrand (Arm) wrote:
 >>> On 2/24/26 12:43, Lorenzo Stoakes wrote:
 >>>>
 >>>> Sorry I misread the original mail rushing through this is old... so this is less
@@ -113,16 +114,6 @@ On 26/02/26 3:51 pm, David Hildenbrand (Arm) wrote:
 >>> extend batching to all cases, not just some hand-selected ones.
 >>>
 >>> Support for file folios is on the way.
->>
->> Typo - anonymous non-lazyfree folios : )
-> 
-> Heh, no, not what I meant. We do have file folio support on the way (see
-> the other patch set).
-
-Ah I thought that got merged already : )
-
-> 
->>
 >>>
 >>>>
 >>>> But is the proposed 'just assume wrprotect' sensible? David?
@@ -138,7 +129,7 @@ Ah I thought that got merged already : )
 >>> --- a/mm/rmap.c
 >>> +++ b/mm/rmap.c
 >>> @@ -2150,6 +2150,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>>  
+>>>
 >>>                         /* Nuke the page table entry. */
 >>>                         pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
 >>> +
@@ -175,72 +166,37 @@ Ah I thought that got merged already : )
 >>> this possibly writable" would get that information. Well, it wouldn't
 >>> get that information reliably *today* already (and that sounds a bit shaky).
 >>
->> I would vote for this, since if we were to follow the current patch,
->> the extension to anon folios will make it worse (pte_wrprotect at 5 places
->> - the 3 additional places being in the if conditions consisting of
->> folio_dup_swap, arch_unmap_one, folio_try_share_anon_rmap_pte)
->> The downside being that if we fail in this rmap path, the ptes are all
->> write-protected. But then the page is already there - the fault is going
->> to be processed fast.
-> 
-> Right, we should only have a single "revert pte", and not have to redo
-> that from multiple locations.
-> 
+>> Makes sense to me :)
 >>
->>>
 >>> 2) Tell batching logic to honor pte_write()
 >>>
 >>> Sounds suboptimal for some cases that really don't care in the future.
-> 
-> As per discussion with Barry, we might just want to do that now as an
-> easy and obviously correct fix.
-> 
-> It's a shame we stop being able to use folio_pte_batch() and have to
-> create an inlined version.
-> 
 >>>
 >>> 3) Tell batching logic to tell us if any pte was writable: FPB_MERGE_WRITE
 >>>
 >>> ... then we know for sure whether any PTE was writable and we could
+>>>
+>>> (a) Pass it as we did before around to all checks, like pte_accessible().
+>>>
+>>> (b) Have an explicit restore PTE where we play save.
+>>>
+>>>
+>>> I raised to Dev in private that softdirty handling is also shaky, as we
+>>> batch over that. Meaning that we could lose or gain softdirty PTE bits in
+>>> a batch.
 >>
->> Well, we don't need this? The problem here is that we are making a decision
->> on the basis of the writability of the *first* pte of the batch - so if
->> the first pte is writable, only then we have the problem we have been
->> talking about.
-> 
-> That's what I was referring above as "being shaky".
-> 
-> Some code has to be taught that "there is something writable here, so
-> assume it was accessible in a certain way", other code has to be taught
-> that "there is something read-only here, so make sure you don't
-> accidentally make something writable".
-> 
-> One way to handle it is to say that "the resulting pte is writable, so
-> assume it was accessible", to then say "but just assume it is read-only
-> as we are not sure whether everything is writable".
-> 
+>> I guess we won't lose soft_dirty bits - only gain them (false positive):
 >>
->> We could have had a FPB_MERGE_WRPROTECT (which I know, is totally
->> incompatible with FPB_MERGE_WRITE) - that would tell whether at least one
->> pte in the patch was non-writable, in which case we will be able to avoid
->> the restoration of the entire batch to writeprotected if all the ptes
->> were writable (which I am assuming is the common case). But of course this
->> is not possible to do with the current shape of folio_pte_batch_flags. We
->> will have to revert the FPB_MERGE_* stuff to just collect the "at least one
->> is writable, at least one is dirty, at least one is young, at least one is
->> non-writable" etc information from the function and let the caller handle
->> it. That will kill all the work you did in simplifying that function :)
-> Yeah, let's not go down that path. :)
+>> 1) get_and_clear_ptes() merges dirty bits from all PTEs via pte_mkdirty()
+>> 2) pte_mkdirty() atomically sets both _PAGE_DIRTY and _PAGE_SOFT_DIRTY on
+>> all architectures that support soft_dirty (x86, s390, powerpc, riscv)
+>> 3) set_ptes() uses pte_advance_pfn() which keeps all flags intact
+>>
+>> So if any PTE in the batch was dirty, all PTEs become soft_dirty after
+>> restore.
 > 
-> To fix what we currently have in the tree, probably we should really
-> just set FPB_RESPECT_WRITE|FPB_RESPECT_SOFT_DIRTY, saying that this is
-> "obviously correct", and revisit it once we expect more cases where
-> batching over these PTEs would provide more value.
+> PTEs can be softdirty without being dirty. That over-complicates the
+> situation.
 
-Yup makes sense, I'll do this.
-
-> 
-> For lazyfree, likely it doesn't make a difference.
-> 
-
+Ah, it's even trickier then :D
 
