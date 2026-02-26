@@ -4,134 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944D4FD45F9
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:16:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0540FD45FF
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 01:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEE6B6B0088; Wed, 25 Feb 2026 20:16:48 -0500 (EST)
+	id E77C36B0088; Wed, 25 Feb 2026 20:30:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9C476B0089; Wed, 25 Feb 2026 20:16:48 -0500 (EST)
+	id E25336B0089; Wed, 25 Feb 2026 20:30:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7DD36B008A; Wed, 25 Feb 2026 20:16:48 -0500 (EST)
+	id CFD306B008A; Wed, 25 Feb 2026 20:30:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A37F16B0088
-	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:16:48 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BC81577EF
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:16:48 +0000 (UTC)
-X-FDA: 84484843296.23.F0F7487
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4EE8AC0009
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:16:46 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zNmaPvwZ;
-	spf=pass (imf10.hostedemail.com: domain of elver@google.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772068606; a=rsa-sha256;
-	cv=pass;
-	b=KIm8l7ZT191VAaTLIUrVjosUMMkO5ReSJa/hWUziFD9VCXsvUYP5cFyYlzZSgX4hNmOgyV
-	Qf9pvP/er9XK/LhTBlowzvbY1MnOcPeI//E9AHGV0IPL4I9D0M5A4qCz3tct+ELRQKP1Eh
-	66deRFWgJG7Y/j9hFlZ3e+7o0xcAxXc=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=zNmaPvwZ;
-	spf=pass (imf10.hostedemail.com: domain of elver@google.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=elver@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772068606;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA5C36B0088
+	for <linux-mm@kvack.org>; Wed, 25 Feb 2026 20:30:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E8761C4A2
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:30:34 +0000 (UTC)
+X-FDA: 84484877988.28.FF0701A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3671FA0011
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 01:30:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HYPmhPYl;
+	spf=pass (imf25.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772069432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vRCpYCv9LhOitz1IfzI25VOPlvd9PoDqej+x+FrWu+Q=;
-	b=3YYjOuylPVM2UWkd8Fyd8Uaq2fmZc4mt+2dSo63RXKbwyRP606KpOCsQ/BFhrPkl08A5L2
-	7t7EpyoNC+CUU9J70mLtW27guqmFGqcQrTH2pn2A7weJwcy+k0OpP9EH9oXuQGU2psGwVC
-	lPjhQLakEAN3NMuInVr/OJbJ1JWaUaE=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-126ea4b77adso408071c88.1
-        for <linux-mm@kvack.org>; Wed, 25 Feb 2026 17:16:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772068605; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WWuB/72RqyMqaDepfMBEVD2Jeu+GeB5uZug9AdUarG+AD0eKBst6QLmOfQhuAGpa5T
-         Qc3kD8uaMLJplD4W4pkeM+XMzSGe1AI6SMknGOoJd69eammj/qmelnFQ++PpyYDwGv4r
-         1CX5YRj1JihcXhVHLO2aZbc9fhF/2zN1LT/qxDW1ASevofIUGAs5SJ80RMTvioI6WIG4
-         kXy/1kgQYB+I+7MmL+bprV07rb+ioRYlmiEdPCNAz7kXeBOT+4xreTMQhKJJXn6Ne6cw
-         6EOG0jyNQQ/R0TkDOOIrw9HMXUQe6WqJiyIA8nlixMnu1+ldPLLK+kfXARKOZOxIwtEc
-         x7pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=vRCpYCv9LhOitz1IfzI25VOPlvd9PoDqej+x+FrWu+Q=;
-        fh=s4vL14sJFGlfN8GrP0aTj8Ovb8It8jXYSaELPJQ6fJI=;
-        b=bpgTcM8RxyCUyBLMscd7T/Zs59kee4oUdw5ltHVF7/mEHzw52FGbIzPQhi4IpKYhsi
-         6yhhN95sL1S7Ejz/LOoA1uWbq2mOuSp3Mrcj/KoZWJ4eIKVeDE1haiL57WhUShS+Aj6o
-         ligzTHwjyoKIuchKjZ+OMKa4WVi66xew8N9MNUCf/P1IhC74KuAQKQSEBc89T2YootS6
-         mMTQ1joJtLsVJbv9Ulqqj/1dcJT7MiODyZiSVQvMvr4jSuEui/9nvOnbe7+5PEDpN12D
-         9BKwiePfyfd941eZbyKcJ5lOshfE4pJMuh76/wLSrtko0jh6wtExkKUI1gzfMnt3T62V
-         cO3w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772068605; x=1772673405; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vRCpYCv9LhOitz1IfzI25VOPlvd9PoDqej+x+FrWu+Q=;
-        b=zNmaPvwZACoA0jwT32BNhtsOtROw7wZke+91vccBCI0X1MOrsJcmdFuN9VFMHR1U5Z
-         up5GwOg2woGO2NGV8nQ+Q/iFGFCT8zPkWhTjoycYK240IRgtJa0C8+7ybXd5osMU87Ts
-         FpV5jdgPkE+P5qOm8IgxGVgeUKd+4NpGuCcdechmJZNGIL6e3dzGzFwgBpMVcEUkuH/W
-         pPEfy9eRxpT2Q4KSQB+i3rv+W/c8ok1+qrneJrZO2txcpSYd3t4A0CQm2fxkYdR6DtvW
-         OmidJVOJNAkJlX5E9kGuoIt0aB2c/NEBFThB7cdFLOetrARjz1RFQ///nus6HU3APDol
-         t4Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772068605; x=1772673405;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vRCpYCv9LhOitz1IfzI25VOPlvd9PoDqej+x+FrWu+Q=;
-        b=k5s15j60l9tPd+ZOi6m0VfzynyhdwnGehkAZ+zpNeRTQeB0OXDG7nE+v87zWyUE8qc
-         UqjAZ6hM5073JBAX+4clRRHNYnL2fP1UuAAmcYfmokny3oX8N9KwcDMcoTg2WTgeR6/7
-         SKGYmwqvQvem824AEYAhIBrM51UUCTttMA0HEtBSQgyw/v5pAzrKHdRrTwuuN2Fzmxzk
-         JUkgoCnQg+FYhqD+ZSu7Y/TUrc10iIwGuczCrGxCOLqip7bKmKTAR+q+dpDVt7r4ck7l
-         +XAK8mF4Vogg3IbZE1pO2zJ7YVfOjO/OaZGiOWjRDfzrUHJxsXtjY2dGOe3FyX28ViJc
-         sqkw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnZ7pj/8Eo88+KiRB6gpr5Jd1Ou2rv/CN9ptkj8drs3c6P6PXHhLHcITaGJZPHVAOQCYtAb6zhZA==@kvack.org
-X-Gm-Message-State: AOJu0YxMklL37MlACbFzs6BWVqynJOdY8V1nqrPcb5UAWeezDzLdk76Z
-	k7Hum7uG7JZzpLpdoIaasI0DQAiUzjbS0GiMXd/HvANv6TU3hf1s1jRHlx8lwWc6/ZTpbQYJH51
-	XOWYRKZjLrDidbYAsQ61HsaxzGKtO7Pa2gP+lpUEv
-X-Gm-Gg: ATEYQzzljBlXATfaoF6HzFivbys1qVUrWOq9lNxvcJlMjRbvE0yoRuHxDaxKlDvaUYe
-	zrckNM4fbv/7ZJSFJVBkpeOayiIBTL2a5HXfLhBJuSx7ETcE2gV9UOM5WvPKeLrfgwZCXRNxZ1c
-	teG9kaZ6e+3oHmn3fMfss3Ug8sW/CBY+C4Hmlmm2DMoEFiUZ5+0TAn3nvEpzHCShTeZOH/jHEZH
-	4fjy3B9xQ5u0+4wInQPBHlyeq9dVMqKsKZWXnXAcb0KoX0esJ1NWHjVyib44lWOyEl7TIJM/xZK
-	U9nD1ScY+jwr6D5sB7JRFK/1kY7yOaYupaVNpyw=
-X-Received: by 2002:a05:7022:48c:b0:124:9fd8:4b99 with SMTP id
- a92af1059eb24-1276acbdfbfmr8853747c88.14.1772068604514; Wed, 25 Feb 2026
- 17:16:44 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=M0YEBPy3Jmhtqggio/qwqreiYc/B8zsRq7a21Upohf8=;
+	b=nlyrj1ZnPDeBW/CQR1c0rwToBoxV5MpvC2NdBDaRKiNq1ia4HNtU/JDYQDZT1Gnue/LOdW
+	5TKl4CloX4UWD6qDm3RBYPwJ+LH1D7lHQhFoCMH9Mu4e58S2xsXEYeYzANoeZLuOn0dIvB
+	BRWuNoC9MOteUlvKzGC7W+ihJXqO4Gk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HYPmhPYl;
+	spf=pass (imf25.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772069432; a=rsa-sha256;
+	cv=none;
+	b=7MCVDQclXWMkCE35q36iTUt6n/Uh1/G7zcbt3hFqgOTsqvGb6MQ7Nhh12x8Emm+lIb/M0B
+	7PHijzg/v9EfNqZu8BqyrZtw2oMpp0XCPDWqr9PDej2mKcCV80V8+ASDS4psdZt2GzqfVP
+	mcd/iEc7nJVa0UwoEVDZFl+Ed3o13s8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772069431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M0YEBPy3Jmhtqggio/qwqreiYc/B8zsRq7a21Upohf8=;
+	b=HYPmhPYlXteFpSaay2tTuaWqFOAhAstxdmpa8wfvx5ApaH1hDsJKmF+JZtcOKGpuUAsCWn
+	4Bsd2n1pHEITK7crsUkKnbLdO9UUin5NYDcwXw1UYv+o/FmjaOifX9GrbNwLVM+eNGkEyc
+	yAcXz7NPemDXZXxh8pQiwOHIUKsl3mA=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-595-QU2Ptz3OMlywVs9V1NyPvg-1; Wed,
+ 25 Feb 2026 20:30:27 -0500
+X-MC-Unique: QU2Ptz3OMlywVs9V1NyPvg-1
+X-Mimecast-MFC-AGG-ID: QU2Ptz3OMlywVs9V1NyPvg_1772069421
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A1B15180025E;
+	Thu, 26 Feb 2026 01:30:18 +0000 (UTC)
+Received: from h1.redhat.com (unknown [10.22.64.173])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BFDB33003D88;
+	Thu, 26 Feb 2026 01:30:02 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: aarcange@redhat.com,
+	akpm@linux-foundation.org,
+	anshuman.khandual@arm.com,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	catalin.marinas@arm.com,
+	cl@gentwo.org,
+	corbet@lwn.net,
+	dave.hansen@linux.intel.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	jackmanb@google.com,
+	jack@suse.cz,
+	jannh@google.com,
+	jglisse@google.com,
+	joshua.hahnjy@gmail.com,
+	kas@kernel.org,
+	lance.yang@linux.dev,
+	Liam.Howlett@oracle.com,
+	lorenzo.stoakes@oracle.com,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	mhiramat@kernel.org,
+	mhocko@suse.com,
+	npache@redhat.com,
+	peterx@redhat.com,
+	pfalcato@suse.de,
+	rakie.kim@sk.com,
+	raquini@redhat.com,
+	rdunlap@infradead.org,
+	richard.weiyang@gmail.com,
+	rientjes@google.com,
+	rostedt@goodmis.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	shivankg@amd.com,
+	sunnanyong@huawei.com,
+	surenb@google.com,
+	thomas.hellstrom@linux.intel.com,
+	tiwai@suse.de,
+	usamaarif642@gmail.com,
+	vbabka@suse.cz,
+	vishal.moola@gmail.com,
+	wangkefeng.wang@huawei.com,
+	will@kernel.org,
+	willy@infradead.org,
+	yang@os.amperecomputing.com,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	zokeefe@google.com
+Subject: [PATCH mm-unstable v2 0/5] mm: khugepaged cleanups and mTHP prerequisites
+Date: Wed, 25 Feb 2026 18:29:24 -0700
+Message-ID: <20260226012929.169479-1-npache@redhat.com>
 MIME-Version: 1.0
-References: <20260225203639.3159463-1-elver@google.com> <9476ab2ff783c77ff4f1d323fad3e356bb172fcd.camel@surriel.com>
-In-Reply-To: <9476ab2ff783c77ff4f1d323fad3e356bb172fcd.camel@surriel.com>
-From: Marco Elver <elver@google.com>
-Date: Thu, 26 Feb 2026 02:16:08 +0100
-X-Gm-Features: AaiRm52Q6kRNA7CHrMLsOWSgdbnXUE5vCnkOPGyFzwQOTRVlJEfjChemViCldxw
-Message-ID: <CANpmjNM4kwRGU7mxZPtPnD2-Q2u2E5K9bLuHiZYkPkB4JETeJg@mail.gmail.com>
-Subject: Re: [PATCH] kfence: add kfence.fault parameter
-To: Rik van Riel <riel@surriel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	workflows@vger.kernel.org, linux-mm@kvack.org, 
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 4EE8AC0009
-X-Stat-Signature: jkqjxa9mhkhqpc54i8i61y6uz3e3yqfz
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 16u1ekqDQT9ma2St44LCkfgck5X3KO9jBPHBrmUnD7c_1772069421
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772068606-608456
-X-HE-Meta: U2FsdGVkX192aY5XdeLieLNw6R26tcAo4F2/cBjk81+IF/jaJRbG+GD8Exn5SvHE2zsrgB4VhfsoQ8D0nHRH/t9sQQmNKRj2futMzgwgUV4RUcXwhyRdwfDkm9degbCiIFEANINXQB0GTrJ0srwBkkuDqrzU/fA+UWPOYQgg2U+NI7NjpDpVxFISZ6FSRmujjA6UHv+giH/CdWYudY4lhBO9LEu9OMX0OPRz4xey7+9KDKXi5L8iDVj1hm/DiosZYAWOztT3QISmNzBydHQU7BkkVIuo4Od18wETXgnHxBxv0Kham3n0EtSkdSb3esJrI/CqUAYTS+4GmJn9NbaKenivkSjDM+6v5gn950s/l4FI5xIWNCq7dgf9LPR5Kj1y4kZj7l55hjdi2BprDMoeDt/Rnag8ZwPGw3AnCtNCFpFkdnE1GMiQfUBeIlFPxrf7+9nQgPFClmY3BQIEUgp1xE/ejH2r49RqBm/13v7mE8lVIn6a8OZTbjycCimSydvqJKsSgTLTBwAjCzsJfPkbm4D8n1knPAyxrP4c0tbdt11VawHFT9wzd/bj0IYgyqvg048HqTTOTJLVGfU6H7BYVZ47BIGCD685k2Lu6bYtBus+/IWQLNpX2hikuPc0sF39IPwJ6EoA5asURgHkw3Kzwm7gUX5qUUYzKTx7hgq5V/LbC6spV1fUFOOHWuLSyLZXgwZq7jZKoR571xUoPeRQZt7L7Ay8UszsbT64zxdAsSj/Voo/5rpxGcFX4B/YcDtRpqFRu/eCUdcLoMKVb4vVUQeS5Gwd4rfP/JQ2E1uEVDFvg/r9a4gre+zwxkdAwZc7+9zJaTA/DyGU2lzp17qX+XrNCurL/yr+50SJvGPgbqTYIGRihzU8YgEm9FHuSBIE79Kgo0XqCbBeCSkb20nQopd2/p3bNLDQ8QvQ59VsWtffLe9EGIIbFa8nQVAgJfz2fUVhOiZw0qp0llVv5Id
- 2rjNvM6n
- XIR69uN8bpHDzAtcQFYseKww/kyOGUv/iEyhNoOAhXMBsXh22t0oWZfO+w1LoNQq/UATLurBeRFbnwW5fkq9XYydmL7DTet4TYdN3a7uHRbh0ceSJZ2oCNN8i34dXiDNZ2OnsMQa3cbSiOEOYtex8xQh6/oiUvwVHMoP7NASKdJgfucbJ5X/ezWucZpp9446RMNGYASwVqivjApt4oxX4XdE4NdyGnqEsV1m4FEEgMrpPa34aBZEcU1JXyw9QapPjk5Hd9SlemwFpfV+N2pKgPwh15UkGknJZqjjrbm8Qxf5ftjM=
+X-Rspamd-Queue-Id: 3671FA0011
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5s3fzgdmn66r5411ju4hyby1gt7h6gze
+X-HE-Tag: 1772069432-699739
+X-HE-Meta: U2FsdGVkX19EogOYHEoNwsJYPHe41yhVMYbgHRnMqC3KHmC06u3gGVsJk+flQXvwz9SN0PLuSWKFZdEKEwkR3+FvITx6GSuISVMR2p+5zV+0nbQ3bdqjdXDQBUNjMG9212LFaqpAm+Ldf7EAY6Jhs2UoBTd45eJbgmtyIkNs2tCwzK2M92aXR1fpOhypiX2wPsIrDU8ajUoPCX1VFJv53RfGTyDB+8kRGZOZIyo5QqLqQe9HxbhzyqCraotLzf93GRF6jia6+fUt7OnqR/aCiLXdSj8ZY1TzMf+1K6ctySkvaP/rwSCrRBEXluEGtWkhHCGd423mVMqOUgk14nnxIeMLL248G+OwVFVazJ7MHMVow/EOjq+KtJ6UqwA7jdPqyhB+IFH4qw2ZNNqRIBDpNcQuN1UsyrgyENRcCnWaZmdbzU0vR7kgdbJSUoYc6C76/g8fYEY8ouL6+6+mA3vB+2Q2TH0MoTvSGmw/ghehGxMlzTsc1mWxHJrgoW7sGPAbfq85+R0G1R+1d8wVdhU0P1mamX2Jd7aSlUNERJxcyhsJvBBOUYfGlWtBWot7dvgphiFK6I1+hRIlnizweNAuIbkn0g+ObIjrEaQ7O7oprckZbx4gfB5ieQsTdcwPa5Hsy2VRKYpXluL8wI6KRa8RGmJ5H3ql8i6MaViAfg2Xi4mHRmC1VK08LumuEGwSkyIDgYgk+zys3m0Q8coCLhUPjoNSCqYyHwNgY8tFGsmhnoikP9vginJHM3lHThpEUx8dF/gbLexn5JE71lzrZTqao/fvwunCwohCsSDN+ugopXWFa/rLvIcWTgxiefUrqZmedtJuZ0ShDZLZv48MNX161FcUOkKzz4nsX3QXw0WcUacXkVWJuEahy46iLxQndqi9fcMXhR+yWu7WJIL70xcnkGo0Hx+sOBMoEw132j0gOoWNaLLSnDUv9ObMKb2Mf9c2tVL1SrKuMBZ88RssbGQ
+ eLsxuau+
+ /iBcklEss9p+5N8xQY07zu9Oi09IYcHycs9qUlQQ8Mq6Lub5/AzfgF1UX2fnqMhcGA+8RtnsmukYk4fQJ5ithhbUhdC6AfJjNlVT70BwqUipwfA/o84Am81JrOLNAm6cJDJncR+i+mBG0XQOf3w5S+8lffWtRtS+QNyJF2ThRktilYHmEhi1VfJ7LdAcLziBSxhUY8Y/huqfX8rosgjUKKe6beovGmvf2IW6In4G6ymtJ8EwD3AqXjwVUIzNNLRqBEc4KoxHgFiMW3dL0ql/0UUCJQxIm2MtFTNh5bVSMx4y94VJ+IdJcvOaW/LtIhL4gcoIf+oVeYQ3bj13sui7pK8U+NLw3vPs5kBsZsoU5Y7+2aUg9n3F0c3twqiug44A7sD2GkHMv7nXvMiflsLIwvYYQi+qnXOVB5XglQesUKBUTOtcGLg6anT52BC9fw4jguX8XNPp6xaKusPk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,52 +156,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 at 23:26, Rik van Riel <riel@surriel.com> wrote:
->
-> On Wed, 2026-02-25 at 21:36 +0100, Marco Elver wrote:
-> >
-> > +static int __init early_kfence_fault(char *arg)
-> > +{
-> > +     if (!arg)
-> > +             return -EINVAL;
-> > +
-> > +     if (!strcmp(arg, "report"))
-> > +             kfence_fault = KFENCE_FAULT_REPORT;
-> > +     else if (!strcmp(arg, "oops"))
-> > +             kfence_fault = KFENCE_FAULT_OOPS;
-> > +     else if (!strcmp(arg, "panic"))
-> > +             kfence_fault = KFENCE_FAULT_PANIC;
-> > +     else
-> > +             return -EINVAL;
-> > +
-> > +     return 0;
-> > +}
-> > +early_param("kfence.fault", early_kfence_fault);
->
-> The other parameters in mm/kfence/ seem to be module_param,
-> which make them tunable at run time through
-> /sys/module/kfence/parameters/*
->
-> Why is this one different?
+The following series contains cleanups and prerequisites for my work on
+khugepaged mTHP support [1]. These have been separated out to ease review.
 
-That was my first thought too, but after much thought we should not
-make this changeable after init, see below ...
+The first patch in the series refactors the page fault folio to pte mapping
+and follows a similar convention as defined by map_anon_folio_pmd_(no)pf().
+This not only cleans up the current implementation of do_anonymous_page(),
+but will allow for reuse later in the khugepaged mTHP implementation.
 
-> And, does this one show up as /sys/module/kfence/parameters/fault?
->
-> Having the ability to tweak this behavior at run time, without
-> requiring a system reboot, could be really useful for people
-> unexpectedly triggering kernel panics across a fleet of servers,
-> and deciding they would rather not.
+The second patch adds a small is_pmd_order() helper to check if an order is
+the PMD order. This check is open-coded in a number of places. This patch
+aims to clean this up and will be used more in the khugepaged mTHP work.
+The third patch also adds a small DEFINE for (HPAGE_PMD_NR - 1) which is
+used often across the khugepaged code.
 
-It's intentional - having the ability to switch it after init means
-we'd have to remove __ro_after_init from the kfence_fault setting. We
-risk having the system administrator's choice being overridden by
-accident in the exact situation where we do not want it to happen:
-either through memory corruption overwriting that global flag, or it
-might give an attacker the ability to circumvent the oops/panic
-setting, if they manage to reset it. KFENCE is not a mitigation, but
-this setting is meant to give a knob to reduce the risk that someone
-takes advantage of KFENCE's heap layout - until now, KFENCE only
-reports and continues - the actual buggy access happily proceeds.
+The fourth and fifth patch come from the khugepaged mTHP patchset [1].
+These two patches include the rename of function prefixes, and the
+unification of khugepaged and madvise_collapse via a new
+collapse_single_pmd function.
+
+Patch 1:     refactor do_anonymous_page into map_anon_folio_pte_(no)pf
+Patch 2:     add is_pmd_order helper
+Patch 3:     Add define for (HPAGE_PMD_NR - 1)
+Patch 4:     Refactor/rename hpage_collapse
+Patch 5:     Refactoring to combine madvise_collapse and khugepaged
+
+Testing:
+- Built for x86_64, aarch64, ppc64le, and s390x
+- ran all arches on test suites provided by the kernel-tests project
+- selftests mm
+
+V2 Changes:
+- patch1: add missing pte_sw_mkyoung [2]
+- patch1: the switch to maybe_mkwrite introduced a functional change
+  causing pte_mkdirty to no longer run conditionally. switch back to the
+  original call format [2]
+- patch1: fix minor formatting issues [3]
+- patch2: found/added more open-coded is_pmd_order() checks
+- patch3: only use the define for cases referring to the khugepaged
+  limits. [4]
+- patch5: Move the last bits of the new writeback retry logic into
+  collapse_single_pmd. My previous version had this logic split across
+  madvise_collapse and collapse_single_pmd. [5](Thanks David!)
+- did not add review/ack's on patch 1 or 5 due to the above changes.
+
+V1 - https://lore.kernel.org/lkml/20260212021835.17755-1-npache@redhat.com/
+
+A big thanks to everyone that has reviewed, tested, and participated in
+the development process.
+
+[1] - https://lore.kernel.org/all/20260122192841.128719-1-npache@redhat.com/
+[2] - https://lore.kernel.org/lkml/CAA1CXcC7SPkehNLT8FUnnUf6m0vm3GbhZuDZyMMW4X0DHDs6Mg@mail.gmail.com/
+[3] - https://lore.kernel.org/lkml/20260212155539.2083102-1-joshua.hahnjy@gmail.com/
+[4] - https://lore.kernel.org/lkml/493d7898-c959-42ee-ad09-35ffc631ec21@kernel.org/
+[5] - https://lore.kernel.org/lkml/92e9d637-988a-4201-8c8b-c29987b727bb@kernel.org/
+
+Nico Pache (5):
+  mm: consolidate anonymous folio PTE mapping into helpers
+  mm: introduce is_pmd_order helper
+  mm/khugepaged: define COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
+  mm/khugepaged: rename hpage_collapse_* to collapse_*
+  mm/khugepaged: unify khugepaged and madv_collapse with
+    collapse_single_pmd()
+
+ include/linux/huge_mm.h |   5 +
+ include/linux/mm.h      |   4 +
+ mm/huge_memory.c        |   2 +-
+ mm/khugepaged.c         | 206 +++++++++++++++++++++-------------------
+ mm/memory.c             |  61 ++++++++----
+ mm/mempolicy.c          |   2 +-
+ mm/mremap.c             |   2 +-
+ mm/page_alloc.c         |   4 +-
+ mm/shmem.c              |   3 +-
+ 9 files changed, 163 insertions(+), 126 deletions(-)
+
+-- 
+2.53.0
+
 
