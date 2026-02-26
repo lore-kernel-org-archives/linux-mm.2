@@ -4,181 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9BDFD9E1A
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:52:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BECBFD9E1A
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 22:52:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CBB66B026E; Thu, 26 Feb 2026 17:52:10 -0500 (EST)
+	id 902EF6B0145; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14FD16B0271; Thu, 26 Feb 2026 17:52:10 -0500 (EST)
+	id 8ACE36B0266; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3B3F6B0272; Thu, 26 Feb 2026 17:52:09 -0500 (EST)
+	id 7AFC66B0272; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D62CF6B026E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:52:09 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87FE7160358
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:09 +0000 (UTC)
-X-FDA: 84488107578.18.EF2B28F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CD6BB160003
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:07 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWJc2Uz6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146327; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A26C6B0145
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 17:52:34 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 098E11C0C8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:34 +0000 (UTC)
+X-FDA: 84488108628.20.DDD51F7
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B3299A0009
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:52:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b="o83TYSm/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m QieDi2";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf15.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772146352; a=rsa-sha256;
 	cv=none;
-	b=nRjIwhIJ4qyehPZnh/PnYJXnucNmDX6hNF4Zu/ywLZZNXTH4Bu7iSB8enlskE+3YS6bHhT
-	E48UEEY6QPKeGLDKHtbYap1LVuCbmI5jd2nvEC+E8nwMTQ8cG7/4Bz33TnwQNNnUhLH76H
-	lKMvRpowvHU4wHiIVsutfkcNMLawDP8=
+	b=T4e6TeQ5EXHD3YkwngDtCjlfKpA84LCzmeCzUAzPtDFZ9FrBVjEOJp4bvJmdAJYWMy1eF7
+	qeA2fGxE11rq+FBu3yVzuilZjLaofaF+6e5C+8Zu3b3eYrEVZSTvO+RG4H1bHe1H0mgzK2
+	c21Ag/9ibRugvWuZXoISLfrD26/POwc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EWJc2Uz6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of dlemoal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dlemoal@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b="o83TYSm/";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="m QieDi2";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf15.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.142 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772146327;
+	s=arc-20220608; t=1772146352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h05hljcobI8xx08G3rYVu7XYlmD9xj3EK6/LsmQW+Rg=;
-	b=kJ1x8uir3MW4SH0kSWVaxmezp46ptaU48vkO5LoErxduuVavp8CnZCt+36Hokbe99ONN00
-	ibMyCG2leRL7xVecFogWh30Ni6TXsd4warogE4PHLkaJrVgupoxOpuxlq5B2vQjXQbkU7a
-	bSZ4uQUmV/fZH1jyAEF0CRDbbc0KCV8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AC98060054;
-	Thu, 26 Feb 2026 22:52:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F89BC116C6;
-	Thu, 26 Feb 2026 22:51:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772146325;
-	bh=pajDmz5yp010hi/+QMkuQbHFrnu7ZcaVGRjn0wxtp+k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EWJc2Uz6oM/U5lpFUSm3GfVgR4cldZrHPbo/JbNPiCo7a9Qet3NPwP5d/g2F9Z/eY
-	 PULzCCLSyJn39yRAPsdhfy+RdiF52vi9KQubOdZlNMxkN2YEKcSZEHQQHEwBCv8UDq
-	 aUBFV4GAaYKK9ceshTeB/l1Olc+NGJM3RsiAcavnfuqg+7yXrgam32eowwkzRFvJiO
-	 netZZv71AIv/PMFlHfmi9NAn7OA57Ds8pdoFOxBLCi6KvwtN5EM8l5UroXTz7+zS0y
-	 Jdi0ImLclB5JNz4xYwfY9d0QUSMNEpHwhSScYgT0H9rCBdMCBOXzjYqnr0oZ0b2JRV
-	 uc6mB11PL9OGw==
-Message-ID: <104bcaf3-42ba-4eec-98c1-fe3afa7fcc41@kernel.org>
-Date: Fri, 27 Feb 2026 07:51:43 +0900
+	bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=;
+	b=MUdYm/TkO+ultAm40iAPaJ3YOEHLiXWDV4EQX8HSAaLCQ3WfinvGEnWIxsAJz1Kx6He3M1
+	y+TDm42j0/Gtfbrf6E7RU28U4ZSQnvgeiIiMlr1pNAYZqeuAMuzX2ANQwv8XLnKwENLyUi
+	6nA2BMJ4LR/gGiNJz6KWgtbWYWUGoXA=
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailflow.stl.internal (Postfix) with ESMTP id EBF011300BCC;
+	Thu, 26 Feb 2026 17:52:28 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Thu, 26 Feb 2026 17:52:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772146348;
+	 x=1772153548; bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=; b=
+	o83TYSm/N5K9/2/Rtg8QOuuro4N9DEyyzUyMSplPsN/HHQ4SFtKbd1kGwp9qti8C
+	CvLnqaRv1nJft8p4Y0Kfx3UPhzpppkvrC3+lmXar4Ih+r8yDS0BN+r95ELWuTHYO
+	LCH/xD+NNQ8d3oFyo9vLoYiOMntUFokn9INVsNwb636AF3cZMrDdHlVhQMR4hO1e
+	7s/OGnE5phRQfxWBF2pc2Hg3jHNw/z+Oa4xIIRlaqUKDmzxaCH0q3AglMZJTnAod
+	GTcOFeay+bxbwjKYMCmBRbqswfGfBbi04mYW7an6R05gtlnDK29AoHRFU/SkoAEi
+	tVIotca6drSoW2xWOmNd8w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772146348; x=
+	1772153548; bh=44uo4P/92yZYJcD163y8UHc8z0ZnnckxsAr9PpEhJjk=; b=m
+	QieDi29aKWQhWaRpHtkJFXYVNhddIFR7f1/l5RV2JXj5JOe+34TRrGuQiPCDv/8q
+	sjM36sYZIDHM2TGPHAxCACtHKdowQytZzI4RflFQSb3CxaENKe8Em93flZZh1XI2
+	fjmRj009hat7tVQzvk6S123bFzQGqrO6/M+F9i94o1mZyJkarnMR7K8UZ54Bh24T
+	fNJNab9xC16c8ohNRSoahEGm5WdPpm7ZXwjCDtv+SC8JsjDGZsJdZDeAb0FOwzzL
+	1pOU0SrAsFwH342Fb6sIn9fs1m27yGiPdJBtFl9p6I7LXjWkkQds8iaA3hT0mKZu
+	hLXSXHpBe9Y8dHfXiA/Fw==
+X-ME-Sender: <xms:q86gaa0GCSBc5XmrtJOtc0A3ut03vk8J3s-GIS1-0yrWmZ63HMf-Og>
+    <xme:q86gaZ5VAVB5eigFLbsLhd_u2X8uOaH9nw78UFOeqIQwSAW7uVUtjwvXEDRvbgHdF
+    R2BaaKt1sSzbyyFclW2_Jo4xob0FFO9o6HKaqosuZvM9_8eUFDN2Q>
+X-ME-Received: <xmr:q86gaXHtzv04BUksDBjPA5ncTtb6reAZXM-aGVQmLA7HEu2rMLsN3egnp9Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejfeegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgeehpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpd
+    hrtghpthhtoheprghjrgihrggthhgrnhgurhgrsehnvhhiughirgdrtghomhdprhgtphht
+    thhopehgrhgrfhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfh
+    gsrdgtohhmpdhrtghpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
+    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:q86gaZ8IOgmE5jQ4E_zPNAkwAsNuDaoq9Ee8ASHZkDmvLycmY9W6Qw>
+    <xmx:q86gaRM74BtYK0cfgvaow8GWkJUAe5HqLvyQVzPqdfUk8SyqK2o53g>
+    <xmx:q86gadwTYJEI1Vb6JEv1mtsNrc-X6xUY5EjAoX5Q4RHmZ-5N99K_Ug>
+    <xmx:q86gabsZUyLA7ivoaXFaN-s7syAAkj4Ajry4CbETBa0CDmMYZBV4dg>
+    <xmx:rM6gab3exeKbhLg9LIZVoPa_QSXQHzpDienbmSCle7GUjyeehzyyTTDv>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Feb 2026 17:52:23 -0500 (EST)
+Date: Thu, 26 Feb 2026 15:52:22 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+ kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+ Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>,
+ " =?UTF-8?B?TWljaGHFgg==?= Winiarski" <michal.winiarski@intel.com>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=" <thomas.hellstrom@linux.intel.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH v2 06/22] vfio/pci: Retrieve preserved device files
+ after Live Update
+Message-ID: <20260226155222.5452a741@shazbot.org>
+In-Reply-To: <20260129212510.967611-7-dmatlack@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-7-dmatlack@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/61] trace: update VFS-layer trace events for u64 i_ino
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
- <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Bharath SM
- <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>,
- Ryusuke Konishi <konishi.ryusuke@gmail.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>,
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>,
- Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Yangtao Li <frank.li@vivo.com>,
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
- Dave Kleikamp <shaggy@kernel.org>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
- <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
- Zhihao Cheng <chengzhihao1@huawei.com>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>,
- Casey Schaufler <casey@schaufler-ca.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
- Martin Schiller <ms@dev.tdt.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org
-References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
- <20260226-iino-u64-v1-3-ccceff366db9@kernel.org>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260226-iino-u64-v1-3-ccceff366db9@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CD6BB160003
-X-Stat-Signature: dwaiqp99iy316aar16apxxdz1hadr7rc
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B3299A0009
+X-Stat-Signature: sffecknyz5ngq66nzh1qb96893jt3snf
 X-Rspam-User: 
-X-HE-Tag: 1772146327-915670
-X-HE-Meta: U2FsdGVkX19fnjM/UvG13+iNvZEqTKAF5EdPoz5n5KpkD0eIOIXEAC3z0WleUA+7hLfjgrkj9OHXAx6UqckmbguzAthe7wFKllt+DxZNx4A1B5SMEL+kr6YmkDPfPjSD3CJJ367BweMhgJX+mhnT9+p8d2i1OaW2w+QqDfTOGs4K1JP1N+eT2EUD0PGNNik5iN50/zRjOC0Ft8CO2TMrZW6PL24eAFa72FgPAwCmKSGjm4/4FIVWTwFulwmQDtJYzjxZ2DrFwJACCe2dBnBHjX07eEkXWEZh4wXw0FrphbxYEWHfuNP9Ea9xW5lxyKPJHKS87BabNbAyw94bofqIuORrAwzcvuUloxrlHUMGDG9vdfTCMNXqFxfFo71QvlCGzV6rjow8flTBBAfHo0W9uq28pfH4fnWmSK/Eef55pVyLZHXF5vEpFordRJEa50u0nv+FGiRpNWlUZAhJkOiYIIul1UfVAOtKy/+J6da7fEZQOJtTS4WZLnfKIbE8+goNXXJCwCeU2BY30uh9jzO3zUclpREgGSBRUjXdpjbLjfsIYfghtyKIpxeUfJrWGTjadXgeHZZmlzd9tIVY+gQFSYKWPZWkzThz4iUoPS6iFTlvb9rz6IOASmTQbsPO3bZ4Uc1O652jzduABqWGJioLYqar1jmm50ydLoy13mJ2i7KQ0LztHBG87qVHksSFF2rd4I2UwgyLLDk+BImRTeIKZHdns8sUwfYAu+1l2Un0y7Wx4t2/EZoyGMvNAFuiSp3FHYAIODdkmmmOyxY/z/JeDR1jIsplWabVwp5I6/CQT+wVXseJD4iGQg0LYN3zgOfPPTtuTVZahTNqH2mTdTbflmfF8lk/JmK0EEk/X5AF+6+wOWwtt8ap7g6Nh2NVInW7Dt7VEC9pfCeiaNpr0ODB79rU+lYtQZvWCgmZnSs+XgY16a3AhPdlf3FDtfdOGZYstZWXCVa+HAPgFRzQ9Dj
- /kiUeUxg
- 6HN50tg0j4mGlwPUYIOn8/9mxWQcbKCuTyhQH7QivLGV355gXeG/Spj14HPeQB9rLP0hkr5GNXwevhdZmY2tzDHBSeP0PaESsayPqzrl6bwgVDjiI06Py1bm2ouE4b6eB5izmaZZiTacjLhV/QlMFdtJbWiXETkMt3SUr537uqYkudBhebUc1hvbKIm4VeSgDft38scd8AkTZVurogD+GHlNX70ZMiDk2ef81eIr476loaJkN0C/PFFd64Txd/5WsY4AKX2jcPeKoRTVG0kep4a9PCmKOtSAHMcz2kSxegoSekXrKPhajI/U5FulibeJpcYttecVi5eoln49VlRKyp2rK7gVYWEFk0lw6Y1WWyBxuh92q2qRLr9hF2yYRPC0tCax1P3jTEjU35AlBo1810IziXZ4dOto2UJRECVV6JKMb/BdUJKDoohZmSAfSKbzkUFgaO9NniCH+78QVIdtd5a5ycqx/VdLYcSzOS6W90cclhw6qYOs/NNnKpIlAxdsN/NpelKQh0uhK4H8iE2jKc4imirSL3n1UfUAqfCiaCKYmzQRCOh/hbrb2PlDRrSJApgEQdsPhibtWgxp94CQM39UMvSkFBxzVh2owM3rNlI64NZClVOk7/jvx9E4vR3G9ixIn40h5D/pUXt30TEWpseZgf3UvJDietGGueNZb0KMnZDDMd6sZve1XQy7dEfbbN2KPjty6NGSRf8T+lVYUvkW0Tkkp3MMI64DqKVg9GT4jtGWc0DkwRAy5UKqwFuZ+LR9rqdZgsenlHHL8d0FOsor4AEg9U2Vi81a5AuW61fV7BrTcIBCFysZBUMOdj/iqDKuKkw2oUyY+4fRzE6xPv0zOkUJDF3vzKgZocWEiNp3ronHaL/xoKwzVTwpftVxy/C4t+jocsl0Qc2qWyVE7Y9D7Yygk1BGRPSpMZnTbNLKN161UzbL0t3k854T1941k39iaYDMwqh058dpyu3BoZTf5k8UD
- /82Ihkhb
- +1IXYENhOaPIgfStLWkzZrTzfnSIVrONrgK/UqHC2ycmS5lpDMiRgMd9bKhdhFzjJL/hmCIP8gkVXhYtzx870nJArxJXHcUTUYK8BfNhcxQ9lzIBx5OMcGwbTAgT2KevVkDdZbvBvzGoxQE2dRytPMuErqXYwc0c+LcBZTh6REstPjvuP30olczt0cxI8MdWAe38PpQhjWwYjabii+7TgJSvshdOmYRxonua2TItVfTHh4nI6snGob+qPHk7fv9B5au2GVCKJ/32P45O7obxfsAyPVrPdp+kvo+JQA0KaqEfMOUU19renR3au+dEXP4vts8l6LHZI15abS4hzevfm3+902HRJ9U/q9mQzEpzIzeLIbFhPBERpjuWgexVUlRomgCHKYXzLJ4Wgbls5LvJQD+C/BKrLPSPPgyILIn+4Xj3zB4byxpO19ilZWhpIrw63qVRuCBuXrJhu9p9t8BWrglzg3AkS/24EhkUsPOSXQyDpL9ywnxLpSQw+TX7rS+O4dGt5k6HgVAJuhd3TFewG0cF7PlRd03hdsMqI+QRN0kCRjy8ttsDJ9buJNKpwYMKFyixMpk0w1V/hVgHWj0Q8F28h9J7Y8mFnfBZpk4D/4JaLZ6Q6/oBxRT8q+JAiAJlsdPSX4gZ8YQ0RpmVQWdDF0Mf4dVoZx89DrvdZ2tWHK4G0imRFihPhhEVgzDMnfZPRSJg+lRiD26Y7+AzsV0eKKOjkOdj88dPCgA/EIrJ4WbtL7J1oLwM1REDcnXpfg5ZR5ws2m9l7hoGN6rfmzTIP1DRH4F2EkrXQu9uhQhU339kwP+eeJWNWW+v8oYekEjsqTrIe6WFfwPZSJejlCHP1Qd8UsXJP7VreEtOcYlTHoQjAj9osFYlwe52/VZl7LDo2uqHzs9Mv6r1nyZSpGLPJYSlF0tFUOZWtdoUQU2mwh84GK7JBLz1V1KroOr7Hh0m7xsGU4BLXQpf63zI+TWrYPUWEst+n
- GjfHpmjc
- oOFqTdlq126caoHzPe5nZR8ASjekYXQmn7Xp9Mk67C5+GYBvkUFWdQYxKFRc2nZxVy/uRCBcLm72zGznRkyFfh2zPxx6LTG4P2vb1MF5+bC4ZOzJJzbFGXTygAVPDFBsBF+YVrag+pojopDvtL1An9DEYtus+XrXWgAbOPOJFsc+sDnH4NC5bkeIdIQeNr7AQcOoA9yXrmXjuICSGY4IAr/YjDIHNEXTT/qsQGZF2skmzBohCpZIUpRhAgNqceoR+kVAm6MElMX+9zWsePybB2VlFzoAb6KsIUAxYdoYtg2Kc7TZ1FZH01KXR8RDqPYeggL4C5hhZxjRxdy0LeNElEw2FzFC7094jrm+JIGIy8iRsYZY9wJJazy8GWqYRMzS07nfEZ/yc4id59X6YXXo/mIckkqGkW6GSraQ5HnHRfjbIDish0jBDtVJcL8zhHhHMJY6SFkYfhdAYHsVNHkxALWXJQtVikWymgiZVcO/hMkb8K7C1wYSI/PnGoxbvh8Mv+myZRpLl/TdSMdopVykokg7VYhlzT+I1KjsxyIei9UK549t53FINqdo1IElgYyWtFkw2aPVyR/etqQ3rwuIAMeXXGKRBYet+S75SkxpP9ZpW150X+7AP14asLr8tBGniFtb8c/gA5tlwRVRoKvoOp8YieiviJ/WcCuYwPjnEfa4pp3w25FLbYdk57/K0UE+DZkRlh2CQ/ABLAsgtfZXOalMWagpOUrL8N7UUq+0CuqSYDQmO8a06qyF24utTVvs451J3LefAz5d+ni2kAhwxPnSwMP32GsvqwMylo6fJzLr8rReJUcFeO0CnqNhTDIuiyhOTRRx++T8lW4hzt9EeoZVb+JhzDvOCSgsPOFfcljnPhqgcW/QoHGJ8+e+R8nei2ESplUq4tL1AkL8pC3Kv+bBSfhVKaaaj2KnduYlzcPtuRhTImfAhqETJyC4erGqt443uFTezhnDk8kroqKianEN+gXwC
- nCWOBZ+o
- 6PP2/JV40Z1ka+DqDzTN2YzTRn3mg5zFU8/9VihMfXR9eGfWewuLvAepCAKQu8ZZ4iGDwG8wj4lvzyAk0s3vA4/PMpTlXu3dB2zOVFH4bT9NMFmFUMCVWR70xnqZnCB5Lx7pSOuQqO5rBW/vahXaaSwpQIwGGcgR4uTnIUJxBL5jEkfa+sG95h+IkR+R/cwYAWLvDccEg2LAa4mlTaXtatDQ+GF71YMRd9S4B+54jEx5miBOHblvwqRcyccdNujM7n1vUnIBmNllCLs1F//h5HOKZ13G/kVjq2ZKjKynn5x9vhCBxdvlIcl4H0NfVvcqm3LybNaHXFNlNOlSxOeyuI+5+E1XedmyBQ22D/3Hg1dE4VDGym4ecyicWw7y6XqVTmuo2d6C9r5oEszTedcWUthNC9A9/YHxo6gpnHqsAxPJKOEAOU6GzV5sJrFawrDKK3yD4atghljKqVzzlDuMp6
+X-HE-Tag: 1772146351-952177
+X-HE-Meta: U2FsdGVkX1+ldS21zPh29C1mMEKRBbc9IpFVkY2ellUj7ug5ucYsD3pCIxhudZ2C9eK8pBjw6j+0pi2nS0KlzKMsCRDVLtQ4Wcr9mdeFFojbDtqA04YJT5gomoJu6ckv88bQZV9sbNaldg+UASNe4ONAzdFIIBMUuMm4Bz83AbIkUgx46NMh5XLm/jtMCwQqwGPJtXJcQGj1xxYIgN4GZGiwQM905n3zL4Hj4qRZ7LbgVUb3+6vWIAjByutj1uaSLNXEiTx8QdrG2t163Qrr/gUjCOytMU2xJSCZzfesT5PedVWZruVT2e/NkzuiaPpmJfAI8J2/dCK3ojq3etJrJ85ykGUxm0EC74Vnig4IwENM7DoKBr5FGPLlIHtuRNLW34/JZzenO984ZFQcqMYgzVOdpHelvu70UgbZK5FzSSNYYZkegtM3rUDD1MMXj84S/D0gItMF8KZW5u57Uh3KG+JGauw+nMXD0U2v4nBxDli8/nUaoaMHzJl8jz2iREphKbXnJQvw9e4ngVR5e9LRdI+gMowX73Nzlb7tkpxqJYgbCfaPBnUXn6BpR2V09LdFh5gRqC78f+hna5qa+WhlIMB/eKjts9En+htJhfUKz4jPUkliC+Y8WIXR00i2/0etmcYPCJ4iPa17Oz6Nyu5x8dz16dvIBMSbFR1vlAA6Wb7iqvksjVX1MzulsfxQrDOtTIHWYZ9JsV+ieaEdocfS5f2MFXcCw7Xztlq9vE0ZbpJ9r6Zxc42EX8F7hMtkqdyxCr0+Zga4a7a5haPAurOYZyHNzEXzCtj8tl+BWpZU6LeRlpy4lzOPZfVu+bfgb2HS+patHQScg0LvAB/Qv8Y3TtGSIhDSc1yzcLbwBJFrQf3gvHCuSxYAlKGIMU3Gh9DDDV146pFL/zTWMdw07YfH5Ri8nlgTSsC+ptaI/3+8XNUlvkJYaBe+luntadHT5/dnnVjiuTk9hmSIc+N+oQI
+ 19P9Sr+0
+ k7PBjVCt05s+m6Oxdeiwr3v5nDZFiQNUOQwZS2N/9WzRKJbU9FopX74GcioZ4UvZfBDxRYy8mwHackOEmHjQ31cAjvYE7DhqV9XF7rUlws1RvXGtsECo+WC9CG7RPYfr2M1cYCOWhaKGktWhO/52zCOI0xETkWYSqqZ+jDsxGLSLV/i3bqIYB/cIuXPncl8W7xSBr3GWl/F5EnnkltlsjeeZY5DAVlwfNFpLoWcTuKLjFapIXmi5E2CF5YL/V8ShJjf9rSNLm1SlEc9fZWAnz44qxy7tOFOnF3DlecgO4mVABcOLejPmscGvsOXwAetYDmjI5ILlAxTNdG4+n920kYUwyaWpoHugWNMQK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,37 +166,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 00:55, Jeff Layton wrote:
-> Update trace event definitions in VFS-layer trace headers to use u64
-> instead of ino_t/unsigned long for inode number fields, and change
-> format strings from %lu/%lx to %llu/%llx to match.
+On Thu, 29 Jan 2026 21:24:53 +0000
+David Matlack <dmatlack@google.com> wrote:
+
+> From: Vipin Sharma <vipinsh@google.com>
 > 
-> This is needed because i_ino is now u64. Changing trace event field
-> types changes the binary trace format, but the self-describing format
-> metadata handles this transparently for modern trace-cmd and perf.
+> Enable userspace to retrieve preserved VFIO device files from VFIO after
+> a Live Update by implementing the retrieve() and finish() file handler
+> callbacks.
 > 
-> Files updated:
->   - cachefiles.h, filelock.h, filemap.h, fs_dax.h, fsverity.h,
->     hugetlbfs.h, netfs.h, readahead.h, timestamp.h, writeback.h
+> Use an anonymous inode when creating the file, since the retrieved
+> device file is not opened through any particular cdev inode, and the
+> cdev inode does not matter in practice.
 > 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> For now the retrieved file is functionally equivalent a opening the
+> corresponding VFIO cdev file. Subsequent commits will leverage the
+> preserved state associated with the retrieved file to preserve bits of
+> the device across Live Update.
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> Co-developed-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/vfio/device_cdev.c             | 21 ++++++---
+>  drivers/vfio/pci/vfio_pci_liveupdate.c | 60 +++++++++++++++++++++++++-
+>  drivers/vfio/vfio_main.c               | 13 ++++++
+>  include/linux/vfio.h                   | 12 ++++++
+>  4 files changed, 98 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+> index 8ceca24ac136..935f84a35875 100644
+> --- a/drivers/vfio/device_cdev.c
+> +++ b/drivers/vfio/device_cdev.c
+> @@ -16,14 +16,8 @@ void vfio_init_device_cdev(struct vfio_device *device)
+>  	device->cdev.owner = THIS_MODULE;
+>  }
+>  
+> -/*
+> - * device access via the fd opened by this function is blocked until
+> - * .open_device() is called successfully during BIND_IOMMUFD.
+> - */
+> -int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+> +int __vfio_device_fops_cdev_open(struct vfio_device *device, struct file *filep)
+>  {
+> -	struct vfio_device *device = container_of(inode->i_cdev,
+> -						  struct vfio_device, cdev);
+>  	struct vfio_device_file *df;
+>  	int ret;
+>  
+> @@ -52,6 +46,19 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+>  	vfio_device_put_registration(device);
+>  	return ret;
+>  }
+> +EXPORT_SYMBOL_GPL(__vfio_device_fops_cdev_open);
 
-[...]
+I really dislike that we're exporting the underscore variant, which
+implies it's an internal function that the caller should understand the
+constraints, without outlining any constraints.
 
-> @@ -726,7 +726,7 @@ TRACE_EVENT(balance_dirty_pages,
->  		  __entry->pause,	/* ms */
->  		  __entry->period,	/* ms */
->  		  __entry->think,	/* ms */
-> -		  (unsigned long)__entry->cgroup_ino
-> +		  (unsigned long long)__entry->cgroup_ino
+I'm not sure what a good alternative is.  We can drop fops since this
+isn't called from file_operations.  Maybe vfio_device_cdev_open_file().
 
-Do we really need this cast here ? (same comment for the following events).
+> +
+> +/*
+> + * device access via the fd opened by this function is blocked until
+> + * .open_device() is called successfully during BIND_IOMMUFD.
+> + */
+> +int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
+> +{
+> +	struct vfio_device *device = container_of(inode->i_cdev,
+> +						  struct vfio_device, cdev);
+> +
+> +	return __vfio_device_fops_cdev_open(device, filep);
+> +}
+>  
+>  static void vfio_df_get_kvm_safe(struct vfio_device_file *df)
+>  {
+> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> index f01de98f1b75..7f4117181fd0 100644
+> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
+> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> @@ -8,6 +8,8 @@
+>  
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>  
+> +#include <linux/anon_inodes.h>
+> +#include <linux/file.h>
+>  #include <linux/kexec_handover.h>
+>  #include <linux/kho/abi/vfio_pci.h>
+>  #include <linux/liveupdate.h>
+> @@ -108,13 +110,68 @@ static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+>  	return ret;
+>  }
+>  
+> +static int match_device(struct device *dev, const void *arg)
+> +{
+> +	struct vfio_device *device = container_of(dev, struct vfio_device, device);
+> +	const struct vfio_pci_core_device_ser *ser = arg;
+> +	struct pci_dev *pdev;
+> +
+> +	pdev = dev_is_pci(device->dev) ? to_pci_dev(device->dev) : NULL;
+> +	if (!pdev)
+> +		return false;
+> +
+> +	return ser->bdf == pci_dev_id(pdev) && ser->domain == pci_domain_nr(pdev->bus);
+> +}
+> +
+>  static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
+>  {
+> -	return -EOPNOTSUPP;
+> +	struct vfio_pci_core_device_ser *ser;
+> +	struct vfio_device *device;
+> +	struct file *file;
+> +	int ret;
+> +
+> +	ser = phys_to_virt(args->serialized_data);
+> +
+> +	device = vfio_find_device(ser, match_device);
+> +	if (!device)
+> +		return -ENODEV;
+> +
+> +	/*
+> +	 * Simulate opening the character device using an anonymous inode. The
+> +	 * returned file has the same properties as a cdev file (e.g. operations
+> +	 * are blocked until BIND_IOMMUFD is called).
+> +	 */
+> +	file = anon_inode_getfile_fmode("[vfio-device-liveupdate]",
+> +					&vfio_device_fops, NULL,
+> +					O_RDWR, FMODE_PREAD | FMODE_PWRITE);
+> +	if (IS_ERR(file)) {
+> +		ret = PTR_ERR(file);
+> +		goto out;
+> +	}
+> +
+> +	ret = __vfio_device_fops_cdev_open(device, file);
+> +	if (ret) {
+> +		fput(file);
 
-Other than this, this looks OK to me.
+Don't we end up calling vfio_device_fops.release with NULL
+file->private_data here with inevitable segfaults?  Thanks,
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Alex
 
--- 
-Damien Le Moal
-Western Digital Research
+> +		goto out;
+> +	}
+> +
+> +	args->file = file;
+> +
+> +out:
+> +	/* Drop the reference from vfio_find_device() */
+> +	put_device(&device->device);
+> +
+> +	return ret;
+> +}
+> +
+> +static bool vfio_pci_liveupdate_can_finish(struct liveupdate_file_op_args *args)
+> +{
+> +	return args->retrieved;
+>  }
+>  
+>  static void vfio_pci_liveupdate_finish(struct liveupdate_file_op_args *args)
+>  {
+> +	kho_restore_free(phys_to_virt(args->serialized_data));
+>  }
+>  
+>  static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+> @@ -123,6 +180,7 @@ static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+>  	.unpreserve = vfio_pci_liveupdate_unpreserve,
+>  	.freeze = vfio_pci_liveupdate_freeze,
+>  	.retrieve = vfio_pci_liveupdate_retrieve,
+> +	.can_finish = vfio_pci_liveupdate_can_finish,
+>  	.finish = vfio_pci_liveupdate_finish,
+>  	.owner = THIS_MODULE,
+>  };
+> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+> index 276f615f0c28..89c5feef75d5 100644
+> --- a/drivers/vfio/vfio_main.c
+> +++ b/drivers/vfio/vfio_main.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/cdev.h>
+>  #include <linux/compat.h>
+>  #include <linux/device.h>
+> +#include <linux/device/class.h>
+>  #include <linux/fs.h>
+>  #include <linux/idr.h>
+>  #include <linux/iommu.h>
+> @@ -1758,6 +1759,18 @@ int vfio_dma_rw(struct vfio_device *device, dma_addr_t iova, void *data,
+>  }
+>  EXPORT_SYMBOL(vfio_dma_rw);
+>  
+> +struct vfio_device *vfio_find_device(const void *data, device_match_t match)
+> +{
+> +	struct device *device;
+> +
+> +	device = class_find_device(vfio.device_class, NULL, data, match);
+> +	if (!device)
+> +		return NULL;
+> +
+> +	return container_of(device, struct vfio_device, device);
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_find_device);
+> +
+>  /*
+>   * Module/class support
+>   */
+> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> index 9aa1587fea19..dc592dc00f89 100644
+> --- a/include/linux/vfio.h
+> +++ b/include/linux/vfio.h
+> @@ -419,4 +419,16 @@ int vfio_virqfd_enable(void *opaque, int (*handler)(void *, void *),
+>  void vfio_virqfd_disable(struct virqfd **pvirqfd);
+>  void vfio_virqfd_flush_thread(struct virqfd **pvirqfd);
+>  
+> +#if IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV)
+> +int __vfio_device_fops_cdev_open(struct vfio_device *device, struct file *filep);
+> +#else
+> +static inline int __vfio_device_fops_cdev_open(struct vfio_device *device,
+> +					       struct file *filep)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +#endif /* IS_ENABLED(CONFIG_VFIO_DEVICE_CDEV) */
+> +
+> +struct vfio_device *vfio_find_device(const void *data, device_match_t match);
+> +
+>  #endif /* VFIO_H */
+
 
