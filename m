@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3973FC5903
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 07:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD758FC5908
+	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 08:00:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F2526B0088; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
+	id 261536B0088; Thu, 26 Feb 2026 03:00:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A0586B0089; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
+	id 2395E6B0089; Thu, 26 Feb 2026 03:00:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CCE36B008A; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
+	id 16F906B008A; Thu, 26 Feb 2026 03:00:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AB856B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 02:58:14 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AF3F140A24
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:58:13 +0000 (UTC)
-X-FDA: 84485854866.29.4995EFE
+	by kanga.kvack.org (Postfix) with ESMTP id F40B46B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 03:00:09 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B81441B7918
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:00:09 +0000 (UTC)
+X-FDA: 84485859738.26.E21F022
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EFB2B1C0009
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 07:58:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zc1/CqtJ";
-	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772092692; a=rsa-sha256;
-	cv=none;
-	b=zyyTng67VnV5qqoETbRCwxYnsX6k36K+rcjYcMp+b+xXAPgZH7cOiWN80Dlz0/cj7cc89e
-	+9dgX/3iLVFsWaS3cwvvT2nIQxOA9hxN33KVwBGGVMNish9LpF8rsBxNmG7q6nkpozBieu
-	/ytWP0taFTDgVVtZgO/HYB79goRekZQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Zc1/CqtJ";
-	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id C4E9A20016
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 08:00:07 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/VjVtCh";
+	spf=pass (imf03.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772092692;
+	s=arc-20220608; t=1772092807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6fpUK4LfylAvkG0XeIRFeExbCCkS9TIdCEYEy7IZVNY=;
-	b=esoUjGsu2ypSZrz6ofJyx7wYQAJqiKn0bSKYd1XfDv8rejb+F+OpJhTQn7MLKuwgEgiv+R
-	LFm0mJkps5mMkyjSr9kjVigQRvAaKgn13MQbjapietxPBRMilOf6FSB+LXH0t+VnftCuQt
-	pUTDdZM3dAx/YQwC6bhmGEMetzTDsng=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gCX6CsDfNM3oDfAV1rBaweXqT2lir1CDbcoqn8SMWOg=;
+	b=ms+2iXldSK2MvT1WGMI3RlnH2h9VQ8qxDIBDNegORenKP6nCYKCsy3UQxw+mtSM8KPX/TT
+	cgJAdFe0ItebaH9Jp0rM/3w00ASQpvUZqc2SowPYlF6tzcm1Q8OutOYYMMdZSrbJmYJPPI
+	HFdw04BZmaXT75BHUEDuRMsgUK8jxQA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f/VjVtCh";
+	spf=pass (imf03.hostedemail.com: domain of dlemoal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dlemoal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772092807; a=rsa-sha256;
+	cv=none;
+	b=vX0zxEey6ttTk7tmqLdF7VXrSKMZzjnmVLs6E5EbDJzJ2OwGDyc1yoHT4uzwlL4JAQQx9X
+	Lm9/PxOlj+SbAa7mBvQIWgUMchujBtEkuwLyVADEOzI5VS29H3+HdmADwc4XfrprIcbmVN
+	0wDBAQkUuWM1Hkv5PUQ3j8aCtRlqUUE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ADF9544297;
-	Thu, 26 Feb 2026 07:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23668C19422;
-	Thu, 26 Feb 2026 07:58:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B7CC6416DD;
+	Thu, 26 Feb 2026 08:00:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE9CC19422;
+	Thu, 26 Feb 2026 08:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772092690;
-	bh=hwHQ4BRTp4F0JOLYb4176Dt2qXHf/97NMLc4rVMaBHI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zc1/CqtJ2lX1ikU1tRuGiLCcSf+PJcmQp27jY1UVT8mEhBa0T7oK+fzCGVBeZsnTp
-	 y57Hm4DKDShkuemMzKtTTD22AIzdkwAkI/Zh/EaCqzfKLjjTjMMwqeIKxG5MPinOyB
-	 +Ua2UOxErR6UkS9HiaYRC8ewYWmTy69fEgQVMDp1XNvm+wbugf4un4dWktqraeOfuJ
-	 bmFGDIk24OO+ugM8aNKQuQ1DFb6el5T2YXMfJrDaE8aGHS2my8BNOJmsZTvgdMk/04
-	 F46UtHTWtsIjlkIKgoLOgYn0YWEPuXM0+VUczSP0rxBwQzQwkfPCYF3jEIEug39BTT
-	 MU9wptbR55eFw==
-Date: Thu, 26 Feb 2026 09:58:06 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Ashish Mhetre <amhetre@nvidia.com>, robin.murphy@arm.com,
-	joro@8bytes.org, will@kernel.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
+	s=k20201202; t=1772092806;
+	bh=q51EvZLYVH3v7aiWXdLBUUBLmMdEbsHbEaog+fCHYQ0=;
+	h=From:To:Subject:Date:From;
+	b=f/VjVtChblPTNjIWGwsM6HMZ6YqSWQPgoPYA71Xex7NTgobNhhDr7fCkERNrfCSNh
+	 N7wnA0WYrcP6dB8z8iSOO+aaBqp57/8F791OshwMk2W0BuhmRi7vDNNF4rztMcNK+v
+	 32imInv5Oxf5zyjxMuzDeJhnks7M0kWdgaJ9uhDE3VegZNF2Csps6rg0TSp5Mag3t3
+	 irPLIWXzBNpq14fZXqgBPqu8121Uj/5fC+9A80zemp8A0dOYdytGBNJXjc8Bgzmp5Z
+	 7vjGAe44dE0B2EtjnKRo71Tykfpp+dcW2ylCoQjn0dB4ce09WEFDENLIrHhajXWYFo
+	 tEsLwMxg2t78g==
+From: Damien Le Moal <dlemoal@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org,
+	Song Liu <song@kernel.org>,
+	Yu Kuai <yukuai@fnnas.com>,
+	linux-raid@vger.kernel.org,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	David Sterba <dsterba@suse.com>,
+	linux-btrfs@vger.kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	linux-ext4@vger.kernel.org,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
 	linux-mm@kvack.org
-Subject: Re: [PATCH RFC] iommu/dma: Validate page before accessing P2PDMA
- state
-Message-ID: <20260226075806.GE12611@unreal>
-References: <20260224104257.1641429-1-amhetre@nvidia.com>
- <20260224123221.GM10607@unreal>
- <aZ4Q1HA9q1ojsVYY@google.com>
- <9d01b4e3-be5b-4c9c-8088-1d10f67f1fd8@nvidia.com>
- <20260225075609.GB9541@unreal>
- <aZ9Xccnn7JOikudb@google.com>
+Subject: [PATCH] block: remove bdev_nonrot()
+Date: Thu, 26 Feb 2026 16:54:48 +0900
+Message-ID: <20260226075448.2229655-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aZ9Xccnn7JOikudb@google.com>
-X-Rspamd-Queue-Id: EFB2B1C0009
-X-Stat-Signature: 4u8krakonyandopro7po1n5chx7x43mx
+X-Stat-Signature: dner1koceghupxuurq7zqmyysgm751tq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772092691-20623
-X-HE-Meta: U2FsdGVkX1+uglbMO5vYIEHlx6N8GrvtkauaOF3fYY4xk3ZZsz34ElJW30yV71C0lqPyKefC8VXO9SoO6ioB6VRXlaVYGKrfKC7+UbNFDUYdjbfRbFCieUEV2Utq7JC4HrLArbg1yHZgnf6WMn+xEXpqz9PGZT7IwbM8QVi9ATroZZaoPrPNzEQr/9BOI7/OaDJrONb274uM8Ll76fold5CMLCjraUL9NMNpLmhVyPtR45PaRYiQMbOtiZCSrkLa16ZY03nnIYRYc/mbb7kNxDLSvtIhTvx288+sNqldgl7553Uj+vjP9jHrXdjCrj2JlO2IUaAItbwgujqX+jDxUG7SEO0Dy2n5PBqUU/oWG823JELch1pESUI5q7DonSwENB0prWFaFL0Drf+2veL6XDaLo5Xlpp1pY/YAeLhBUeni7ME3p0O/IqIooCAPAX1SigbFEpWM4SXQUdY4EQse+paUTQIWu0JGvmL8lAg7arwBrVvDMRcTCVLAxufOASGCwJAMPX9Or76J/0rz1bCB8amxd0yfpY/HKwQVnH1HSIhscdBd31pxYlINGxVDGlcreKfrM1rrMEafVaDHqsrjXxDzShB5ffElxGQcdtVlct0exZWhQlig5H5llSzscSAyaXIpgLvgljYLSMtT/XjsblIizKALABc7vLCkU5GE9zD0t4B0Gq+xu0Ck0zKGxVHnZON2fU8qhRM+5qwL0bhWrJM+edQGL1rNUPpx5dnKv2EUuGoDh9I3P/aiCAzQeBM2rm0dx9n0D7pUkzFw+WfSI7QP6TicF5NMYvO+A+IOcEjo1wPVc0+jU9sQf3zpHWj+XUdgmzyT6FPFw34gevR5GPT6zPOC1Rinr/MMToEYQPpGWytKb9rwDkkaFxKOig/4xtDtZSND7VPnx7dTzJBloXaL4kAzePM/EEHjUjpSkNU=
+X-Rspamd-Queue-Id: C4E9A20016
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1772092807-414636
+X-HE-Meta: U2FsdGVkX184viMuyhLwVVD2OdAVFzeTCUlWr6sDWzvLG42ucxrThbkSVoFicdYFN9rjKIFvea7onmut6Pp/nozq2PPaKuNSMY1bARC4UOFfusdcrouvbp83L12E2M7AeYM6e1JcT5wFbrbhxtxDKoMVlUPVC8eFaS/8/ZOdqhQh2+YfT3oz6hkIZiXiSEJG9hIphAokz3/xUTHC83F28d57aGsZGgvmqKtKV/Xs69uv74Htm/KNWx/XM3JWdZNDYEm47VO3QFiEeXyS2QXMTnZsfV+FnQW0ArAtvHPwZ3wW1eEt6J3Tm2JN8PvhWUMD2wrxPI1VHYtt53gmOcsYKUi76rkmgqY+RL7+zUSp5gKZuGcSZ9cGz+ZXUC0CJsTJRdJViaObGYudFnXFZC+GR4hllYRXC06QRzwMqgtS2b6QFOUBRuLimx65WN4xssgICX33R+DFx9G9LkUrjYdLVLXLSRR3GKthQfU5qmKwiFs3WQ6zFfUZNh06fmMDQUP0uipB06TUAUUHOcSB7nNva1uNdoJ9rLjLofLSevmBXHR1C4td/xZBpSeEyAMhALZItbfZ2qMR89gP5eMkfCcoMhXeBN/3tu0wI2qO/b8LucRoAb3J+aTeYDl5qTLzvVhNiyKmGJNJIq9Tvxa9cdNxmRn+9HxLFaEfrXeQaPgDaqzGqHOWRgMaStrALKap76MMO900DHf31NYw9zRyH7h/yb8U8e+eVVg4+jXqiwc+zS4Ccx5/qS2xYtkYvAipEt3cfh4TlN9ainrBs5CRF9I9vtIXHB+TSVh11J1jK+IFkLx+1dpWL0MLgaryZL1/72n/vem4/TjYZFTK+3/8UvC8xV98/YcRbsnTSdhcxnDA08ReMaqIU+J2nQ8uTuhPtL2YxR3ld0Yx8mgNau73GJeQSg3tjag+/dwAEkGi9kOudNcxWhf+pN35nT3lFsJVYlfEsowAJXE8tHz0oKkETLR
+ eNX4i44g
+ f65986tp1q7CWSu+YWEF8YmZlDvqUm3l1jbaFGUd3T53tpzcB5+y4xtejmSu2NkNFfa6aMhIkdywHWDanF8h9bZ+dhKgvPotiQKYoE5ZoC0Xeb8r2O/kA3HLZLMTRdSK+qNUc3a3g0DDImWlDKiHJt8WZLlXQISLmZAVDlyJaGQmnvobPEJODqWoj5NGncc2382CFXnNj2ILMJE9QlgMyMxaJzkb3zvH41At9i2sWXB3opSSxJM20JOSq5ILGhbJgWcuT6Rcqkrpy/1vQGetXq68FhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,100 +101,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 08:11:29PM +0000, Pranjal Shrivastava wrote:
-> On Wed, Feb 25, 2026 at 09:56:09AM +0200, Leon Romanovsky wrote:
-> > On Wed, Feb 25, 2026 at 10:19:41AM +0530, Ashish Mhetre wrote:
-> > > 
-> > > 
-> > > On 2/25/2026 2:27 AM, Pranjal Shrivastava wrote:
-> > > > External email: Use caution opening links or attachments
-> > > > 
-> > > > 
-> > > > On Tue, Feb 24, 2026 at 02:32:21PM +0200, Leon Romanovsky wrote:
-> > > > > On Tue, Feb 24, 2026 at 10:42:57AM +0000, Ashish Mhetre wrote:
-> > > > > > When mapping scatter-gather entries that reference reserved
-> > > > > > memory regions without struct page backing (e.g., bootloader created
-> > > > > > carveouts), is_pci_p2pdma_page() dereferences the page pointer
-> > > > > > returned by sg_page() without first verifying its validity.
-> > > > > I believe this behavior started after commit 88df6ab2f34b
-> > > > > ("mm: add folio_is_pci_p2pdma()"). Prior to that change, the
-> > > > > is_zone_device_page(page) check would return false when given a
-> > > > > non‑existent page pointer.
-> > > > > 
-> > > 
-> > > Thanks Leon for the review. This crash started after commit 30280eee2db1
-> > > ("iommu/dma: support PCI P2PDMA pages in dma-iommu map_sg").
-> > > 
-> > > > Doesn't folio_is_pci_p2pdma() also check for zone device?
-> > > > I see[1] that it does:
-> > > > 
-> > > > static inline bool folio_is_pci_p2pdma(const struct folio *folio)
-> > > > {
-> > > >          return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
-> > > >                  folio_is_zone_device(folio) &&
-> > > >                  folio->pgmap->type == MEMORY_DEVICE_PCI_P2PDMA;
-> > > > }
-> > > > 
-> > > > I believe the problem arises due to the page_folio() call in
-> > > > folio_is_pci_p2pdma(page_folio(page)); within is_pci_p2pdma_page().
-> > > > page_folio() assumes it has a valid struct page to work with. For these
-> > > > carveouts, that isn't true.
-> > > > 
-> > > > Potentially something like the following would stop the crash:
-> > > > 
-> > > > diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-> > > > index e3c2ccf872a8..e47876021afa 100644
-> > > > --- a/include/linux/memremap.h
-> > > > +++ b/include/linux/memremap.h
-> > > > @@ -197,7 +197,8 @@ static inline void folio_set_zone_device_data(struct folio *folio, void *data)
-> > > > 
-> > > >   static inline bool is_pci_p2pdma_page(const struct page *page)
-> > > >   {
-> > > > -       return IS_ENABLED(CONFIG_PCI_P2PDMA) &&
-> > > > +       return IS_ENABLED(CONFIG_PCI_P2PDMA) && page &&
-> > > > +               pfn_valid(page_to_pfn(page)) &&
-> > > >                  folio_is_pci_p2pdma(page_folio(page));
-> > > >   }
-> > > > 
-> > > 
-> > > Yes, this will also fix the crash.
-> > > 
-> > > > But my broader question is: why are we calling a page-based API like
-> > > > is_pci_p2pdma_page() on non-struct-page memory in the first place?
-> > > > Could we instead add a helper to verify if the sg_page() return value
-> > > > is actually backed by a struct page? If it isn't, we should arguably
-> > > > skip the P2PDMA logic entirely and fall back to a dma_map_phys style
-> > > > path. Isn't handling these "pageless" physical ranges the primary reason
-> > > > dma_map_phys exists?
-> > > 
-> > > Thanks for the feedback, Pranjal.
-> > > 
-> > > To clarify: are you suggesting we handle non-page-backed mappings inside
-> > > iommu_dma_map_sg (within dma-iommu), or that callers should detect
-> > > non-page-backed memory and use dma_map_phys instead of dma_map_sg?
-> > 
-> > The latter one.
-> > 
-> 
-> Yup, I meant the latter.
-> 
-> > > Former approach sounds better so that existing iommu_dma_map_sg callers
-> > > don't need changes, but I'd like to confirm your preference.
-> > 
-> > The bug is in callers which used wrong API, they need to be adapted.
-> 
-> Yes, the thing is, if the caller already knows that the region to be
-> mapped is NOT struct page-backed, then why does it use dma_map_sg
-> variants?
+bdev_nonrot() is simply the negative return value of bdev_rot().
+So replace all call sites of bdev_nonrot() with calls to bdev_rot()
+and remove bdev_nonrot().
 
-Before dma_map_phys() was added, there was no reliable way to DMA‑map
-such memory, and using dma_map_sg() was a workaround that happened to
-work. I'm not sure whether it worked by design or by accident, but the
-correct approach now is to use dma_map_phys().
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+---
+ drivers/md/raid1.c                  | 2 +-
+ drivers/md/raid10.c                 | 2 +-
+ drivers/md/raid5.c                  | 2 +-
+ drivers/target/target_core_file.c   | 2 +-
+ drivers/target/target_core_iblock.c | 2 +-
+ fs/btrfs/volumes.c                  | 4 ++--
+ fs/ext4/mballoc-test.c              | 2 +-
+ fs/ext4/mballoc.c                   | 2 +-
+ include/linux/blkdev.h              | 5 -----
+ mm/swapfile.c                       | 2 +-
+ 10 files changed, 10 insertions(+), 15 deletions(-)
 
-Thanks
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 181400e147c0..cda6af0712b9 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1878,7 +1878,7 @@ static bool raid1_add_conf(struct r1conf *conf, struct md_rdev *rdev, int disk,
+ 	if (info->rdev)
+ 		return false;
+ 
+-	if (bdev_nonrot(rdev->bdev)) {
++	if (!bdev_rot(rdev->bdev)) {
+ 		set_bit(Nonrot, &rdev->flags);
+ 		WRITE_ONCE(conf->nonrot_disks, conf->nonrot_disks + 1);
+ 	}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 0653b5d8545a..cfbd345805ca 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -806,7 +806,7 @@ static struct md_rdev *read_balance(struct r10conf *conf,
+ 		if (!do_balance)
+ 			break;
+ 
+-		nonrot = bdev_nonrot(rdev->bdev);
++		nonrot = !bdev_rot(rdev->bdev);
+ 		has_nonrot_disk |= nonrot;
+ 		pending = atomic_read(&rdev->nr_pending);
+ 		if (min_pending > pending && nonrot) {
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index a8e8d431071b..ba9d6d05b089 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -7541,7 +7541,7 @@ static struct r5conf *setup_conf(struct mddev *mddev)
+ 	rdev_for_each(rdev, mddev) {
+ 		if (test_bit(Journal, &rdev->flags))
+ 			continue;
+-		if (bdev_nonrot(rdev->bdev)) {
++		if (!bdev_rot(rdev->bdev)) {
+ 			conf->batch_bio_dispatch = false;
+ 			break;
+ 		}
+diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
+index 3ae1f7137d9d..d6e3e5214652 100644
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -173,7 +173,7 @@ static int fd_configure_device(struct se_device *dev)
+ 		 */
+ 		dev->dev_attrib.max_write_same_len = 0xFFFF;
+ 
+-		if (bdev_nonrot(bdev))
++		if (!bdev_rot(bdev))
+ 			dev->dev_attrib.is_nonrot = 1;
+ 	} else {
+ 		if (!(fd_dev->fbd_flags & FBDF_HAS_SIZE)) {
+diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+index 3c92f94497b4..1087d1d17c36 100644
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -148,7 +148,7 @@ static int iblock_configure_device(struct se_device *dev)
+ 	else
+ 		dev->dev_attrib.max_write_same_len = 0xFFFF;
+ 
+-	if (bdev_nonrot(bd))
++	if (!bdev_rot(bd))
+ 		dev->dev_attrib.is_nonrot = 1;
+ 
+ 	target_configure_write_atomic_from_bdev(&dev->dev_attrib, bd);
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 6fb0c4cd50ff..c6e49eb74f3a 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -694,7 +694,7 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+ 			set_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
+ 	}
+ 
+-	if (!bdev_nonrot(file_bdev(bdev_file)))
++	if (bdev_rot(file_bdev(bdev_file)))
+ 		fs_devices->rotating = true;
+ 
+ 	if (bdev_max_discard_sectors(file_bdev(bdev_file)))
+@@ -2919,7 +2919,7 @@ int btrfs_init_new_device(struct btrfs_fs_info *fs_info, const char *device_path
+ 
+ 	atomic64_add(device->total_bytes, &fs_info->free_chunk_space);
+ 
+-	if (!bdev_nonrot(device->bdev))
++	if (bdev_rot(device->bdev))
+ 		fs_devices->rotating = true;
+ 
+ 	orig_super_total_bytes = btrfs_super_total_bytes(fs_info->super_copy);
+diff --git a/fs/ext4/mballoc-test.c b/fs/ext4/mballoc-test.c
+index 9fbdf6a09489..b9f22e3a8d5c 100644
+--- a/fs/ext4/mballoc-test.c
++++ b/fs/ext4/mballoc-test.c
+@@ -72,7 +72,7 @@ static int mbt_mb_init(struct super_block *sb)
+ 	ext4_fsblk_t block;
+ 	int ret;
+ 
+-	/* needed by ext4_mb_init->bdev_nonrot(sb->s_bdev) */
++	/* needed by ext4_mb_init->bdev_rot(sb->s_bdev) */
+ 	sb->s_bdev = kzalloc_obj(*sb->s_bdev);
+ 	if (sb->s_bdev == NULL)
+ 		return -ENOMEM;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 20e9fdaf4301..8a4dfe19878c 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3836,7 +3836,7 @@ int ext4_mb_init(struct super_block *sb)
+ 		spin_lock_init(&lg->lg_prealloc_lock);
+ 	}
+ 
+-	if (bdev_nonrot(sb->s_bdev))
++	if (!bdev_rot(sb->s_bdev))
+ 		sbi->s_mb_max_linear_groups = 0;
+ 	else
+ 		sbi->s_mb_max_linear_groups = MB_DEFAULT_LINEAR_LIMIT;
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index d463b9b5a0a5..e439d6fa8484 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1467,11 +1467,6 @@ static inline bool bdev_rot(struct block_device *bdev)
+ 	return blk_queue_rot(bdev_get_queue(bdev));
+ }
+ 
+-static inline bool bdev_nonrot(struct block_device *bdev)
+-{
+-	return !bdev_rot(bdev);
+-}
+-
+ static inline bool bdev_synchronous(struct block_device *bdev)
+ {
+ 	return bdev->bd_disk->queue->limits.features & BLK_FEAT_SYNCHRONOUS;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 94af29d1de88..60e21414624b 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3460,7 +3460,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	if (si->bdev && bdev_synchronous(si->bdev))
+ 		si->flags |= SWP_SYNCHRONOUS_IO;
+ 
+-	if (si->bdev && bdev_nonrot(si->bdev)) {
++	if (si->bdev && !bdev_rot(si->bdev)) {
+ 		si->flags |= SWP_SOLIDSTATE;
+ 	} else {
+ 		atomic_inc(&nr_rotate_swap);
+-- 
+2.53.0
 
-> 
-> Thanks
-> Praan
 
