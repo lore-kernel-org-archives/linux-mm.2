@@ -4,125 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F8C104891E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 756E8104891D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 23:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB0C86B00B0; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
+	id 4F4136B00A1; Fri, 27 Feb 2026 18:32:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5E486B00B1; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
+	id 4CB9C6B00A3; Fri, 27 Feb 2026 18:32:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D40576B00B3; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
+	id 3D82F6B00A4; Fri, 27 Feb 2026 18:32:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C14826B00B0
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 749B68C872
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:56:32 +0000 (UTC)
-X-FDA: 84491747424.17.3352944
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 39B531C0002
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:56:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TcMq55DD;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772232990;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B2CB6B00A1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:32:59 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AA8C95A859
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 23:32:58 +0000 (UTC)
+X-FDA: 84491839236.25.791E973
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 83EDAC000B
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 23:32:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=dfinity.org header.s=google header.b=TLjWE51+;
+	spf=pass (imf10.hostedemail.com: domain of bas@dfinity.org designates 209.85.208.42 as permitted sender) smtp.mailfrom=bas@dfinity.org;
+	dmarc=pass (policy=reject) header.from=dfinity.org;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772235176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ek0Mzv1UK8N335lH2nTWNZGMwjB+aFaxAFp5rFNMzKA=;
-	b=3e4YBknitvWx0rd0yWkwew8LNNtg4qKc5jg0FQH8r0f/hQXfFJf3h1CsqhxRvObAWdDPMb
-	qDViJTDn0xdMowt/ZdKaEvwW4kzBufFO4YFYv8tpllFx1pM2ABtxxwqHjNhS6GGRFuYbx6
-	+sYWE8JJQtTXlrfz56ROmw5NStWy7BQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772232990; a=rsa-sha256;
-	cv=none;
-	b=XtSGmVYRBLpbbfo5Ex/VtgOOBdSqSwENxrZ8dFhqm3ZT161qRVMbjWFxGtcMPd3v5H5b9Z
-	jSnYNzUHWbyiN8vCD0VuYr1ezEElC543b7aI8mjEBDRegvmiAibcu6SAdsSnwzz7PcQZJp
-	c5n1jT/1NXpX8nzQ4L8o54agl6XTeXk=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TcMq55DD;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772232988; x=1803768988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=U0J17v32ksmWhx/78xpg+Nz3+Nk3kvxsdR51MuM0I70=;
-  b=TcMq55DDh+cgOXREF3+p4qhe7sIlANRLPYgehrcXHEqDdzYXdYsvz0sG
-   uJbtiukvFrEH4KayM480vsOBCuKotfRy3PACv+z9T8nx8VPzriPELNEMg
-   i+Px5o9Yy9kQ2pjE2OgMZWFy3c7vzwuspgKX95UzSwGSZJ/+e6+Nn5tKM
-   3nzm3Yyg13bRJn7P1JplcH6UrqSqgBMr9KtXnM2woFXH/FPKPY798VTLJ
-   ojJXzCCzxHBo1/VKTebicIkhVTy3p/c1o7rq62+51A2TM45j7BK8vU91t
-   LW1aEBCuQW3s5kvBkn2HgHLIpL0ve8+FgfIyi9fvf7igAPcLGzacniGwH
-   Q==;
-X-CSE-ConnectionGUID: og23EqtYSaqum6XScqwjhA==
-X-CSE-MsgGUID: cGeJQ3M0QUKGGNtaepiTvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="77190601"
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="77190601"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 14:56:26 -0800
-X-CSE-ConnectionGUID: Gj8OruRNS5+rloaJ2M5xNw==
-X-CSE-MsgGUID: ehdBotFtTHOu+IA4PxmIIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
-   d="scan'208";a="221172735"
-Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
-  by orviesa003.jf.intel.com with ESMTP; 27 Feb 2026 14:56:19 -0800
-Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vw6kp-00000000B8V-2dsg;
-	Fri, 27 Feb 2026 22:56:15 +0000
-Date: Sat, 28 Feb 2026 06:56:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
-	Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
-	Kees Cook <kees@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Maxwell Bland <mbland@motorola.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pierre Langlois <pierre.langlois@arm.com>,
-	Quentin Perret <qperret@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	Yang Shi <yang@os.amperecomputing.com>
-Subject: Re: [PATCH v6 23/30] arm64: kpkeys: Ensure the linear map can be
- modified
-Message-ID: <202602280610.KQRFmbR3-lkp@intel.com>
-References: <20260227175518.3728055-24-kevin.brodsky@arm.com>
+	bh=e/eLIE3ND8oKfgZ51wtjS+hjmkhRyVh6yadLObJYXaA=;
+	b=NaGQSQBn4Jd1McD4INL+OS+7TerCCELh4+rC4d2YlWE9SoY+06sTEgqIWvHMsy2RtAg8Tu
+	eCzkKYor254HYXBHvAm7EzhF4DK2ZhFkJJFRQRjWvWEAgAmzafSY6j5C6CZZfpr6y16h9i
+	U+uTxTT57X+7JXQfNTw60VYk1pJNifQ=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=dfinity.org header.s=google header.b=TLjWE51+;
+	spf=pass (imf10.hostedemail.com: domain of bas@dfinity.org designates 209.85.208.42 as permitted sender) smtp.mailfrom=bas@dfinity.org;
+	dmarc=pass (policy=reject) header.from=dfinity.org;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772235176; a=rsa-sha256;
+	cv=pass;
+	b=EOFk3cdGILu++p4C9yDBxD9vGcrhHU3k4DVHjm96zKEAxLxHi5tAQUDM2kvHnf/dp+It4n
+	3CeKGTqWjAD7vEkJxEO6q6heC6d7q+ba428KNi6TT0wm6L5z01cCzhJFf88lsXre70H2vO
+	vMhNptrkKpoqWyR1ve4CEDYAEpsFKYM=
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-65bf2f59d64so3454215a12.1
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:32:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772235175; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lYNi7z4NgLiVZd8kPo0R5yjcLQs1EsbsaN91ydphx9YktHmekvgH1ykUZe7XLFyo4L
+         udncucjLH7x1T6hD6Dl86TXXKU/as7trR83i04ScK+74SS6afXantvn8xbzq2nO+zXjc
+         I4+1aVjb1rGckUbiAckRFQZN6C/rmoZ3S2AAsbaFH4Ui80Uh0gPWVPZ/GZMvmy2eFh/N
+         Clsj7BFwbJO9aGDmGS1OmGU+wAp8avGIwpM3ADulh0HND+rrN00ojdIG4ZVjTvpZwWHi
+         ZEwYi2YPUaZngYtJTGr8Do5NzdEQ6/NNUHfLH/bsKvicc7sK53OybBHPZRnpdAC0ozMZ
+         248g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=e/eLIE3ND8oKfgZ51wtjS+hjmkhRyVh6yadLObJYXaA=;
+        fh=e/ImoaayVqeFlFJwfCsk2qxJCzY+/9UXqg4At2a8lhw=;
+        b=eZZl7PDqTpImBRejDBVxr30HCuYRTYA8O1sVh9zHnTgnByNcCqUeACTiOzDe3es+mF
+         fABTsE7a4fjhhyckLuxkS0OCTt4Kni6shjcgYG1VuPxlqIdmR3PGB6jVW+tRO1odk6i7
+         PyvvXJDOV03/iVVtHw9rNKbS6Llhhqh5cYtIMq/3oqEVQDPyXs2nf7Y/JrslquteX+6G
+         k2ux+8AXzhbeWL4UzKKbhJt+Y5ju1hyucDUpeS4vk9mJlmoW91XGaBrdvnC3u6wr/qWg
+         X1Gyg4v6RGpqhfUC4+rFYJEn0d69JafvnBmcjPuGihJXVxzafqiLj8lp5R2OIYQGsnke
+         8a5g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dfinity.org; s=google; t=1772235175; x=1772839975; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e/eLIE3ND8oKfgZ51wtjS+hjmkhRyVh6yadLObJYXaA=;
+        b=TLjWE51+ahre+mqnzFRHHH5y91u7EZ4HMvXFbnDRqkTVYvJS/ODDqYNpjDNRmiphqj
+         nicY3k3USttEkQSRFymOUFHh0iJ1qFYAKAD6tJSL+gEKuearpDD9IJ9PDob/2xsTMh9H
+         hP8PQAvU39AgWdZnExKNyLQ7BsIMrj7nteq21VgI/KyEOOKjamzUdCx1oTvlUrdMeFfy
+         0agsD9tbyCuFd5Pvck9Wr/EZK+3InNXXgLRKzSWDZxmcRUY+hmbaabRowhnHWs8FA550
+         +jgQqKugG55Qdc8lj0iSPgNixSCotgOK+835ip1etRxW/pUBOnTFcxjvujfrrxSDBMMM
+         wT0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772235175; x=1772839975;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e/eLIE3ND8oKfgZ51wtjS+hjmkhRyVh6yadLObJYXaA=;
+        b=klKTY5qo4VYYrhwuJ1VwImPSu1Bot+WyWaoNc0oMvqr/drfnXJ3CIfMvBlhoDE+E8R
+         D/ntaAZfRVrQvE6NKxPF72JIltxTbn22ruFP6LlMiL3gS4dkXbpciFJl4sqDHBtfbPL5
+         Ixbr/c2ShBUIZVkhRTvzLYHE+5rKhVf3ETFN0/857gd/qwtAsUsb1/HMPE83OQIbZYSS
+         e/BbYIqrhWh6Y9S3Q3+OwH3HJq98ks8wlQhrFSyrJDi21sirmZl2uHd9BpyiNAJ2Gkph
+         EqNL7H73IBMqy9sWyz0Es5+d3BaU5htmkuvIkw69XzgDobqRXgCKUK7enzbD+I7HdPtx
+         KmTg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNonNjXZPxLiOod6vsGRjkvJ2n+f8TMGnyFmEcbpB+MifPNh6/QKr5pcKHPdXHf6XXQamSUBrXfw==@kvack.org
+X-Gm-Message-State: AOJu0YwUIw9+Wf0S7QgZUhrvKBCn4zbI/WPf99Xeeqeyh8zxgg1kSp0g
+	KsJJNxo6B9EjFnJR5sp+86DnM/G7IcdjwinTb0PAR0nnPSLwjw9inwHh+ZuVcmuS4KwxzVYN8P/
+	EyUxskNTQi1aLyLkftXdA/W2nr4BtPXkEJ7FhaOTlLw==
+X-Gm-Gg: ATEYQzykGj1zT5fPczZa5w+8FtUUE7aUzRCVaUlAOEtXj4DD6a/JammkXR3HlY4OOpm
+	cNXzIgYLxQRAkidX3zOs50j6G1AmMUViuR4kybCs+4gE6HxGkJh5NEensoXKfbV8TvoUpGgrE01
+	vWGFDRvYT4cCUkf9SppQ3MOWUFsaisfb+r1OUelFuoelzCBm0nAnHdUIiWpi4l1fSHNM8gQgfut
+	F0JPt1fAHoLTs4lWvXn0m72QMskkIBD813XPdX6AXdYqsDgtNy3ArO5eF1vEcnxSskurU3zsWP3
+	gC3TtucxjN9GIPVzSw==
+X-Received: by 2002:a05:6402:3810:b0:65f:a47f:6e98 with SMTP id
+ 4fb4d7f45d1cf-65fddcf17a2mr2834242a12.27.1772235174690; Fri, 27 Feb 2026
+ 15:32:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227175518.3728055-24-kevin.brodsky@arm.com>
-X-Stat-Signature: 3kiswh8uwjwhkqpkf1xfeo6fwcb4fje1
+References: <CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com>
+ <CB5EF1C4-6285-4EEC-ABD0-A8870E7241E8@nvidia.com> <D4BD80F5-6CA2-42E1-B826-92EACD77A3F3@nvidia.com>
+ <CAKNNEtwZzt3xWh_b1pn4X4FG+cq6FLOP5rR4+G=WUsjHsJRjaA@mail.gmail.com> <2EECA9B4-E1F0-42FF-9E61-3E4AC4B4DC13@nvidia.com>
+In-Reply-To: <2EECA9B4-E1F0-42FF-9E61-3E4AC4B4DC13@nvidia.com>
+From: Bas van Dijk <bas@dfinity.org>
+Date: Sat, 28 Feb 2026 00:32:43 +0100
+X-Gm-Features: AaiRm52i5X9PI75r_CXw7oqvsR4nJ7O2YOcRO4y6Kt2G9VuPp0acJ2VcRalSCjk
+Message-ID: <CAKNNEtziooemhq3Yb8OpOjg4N0bV+Kc+1in0P7L1i_NBWS-q=A@mail.gmail.com>
+Subject: Re: [External Sender] [REGRESSION] madvise(MADV_REMOVE) corrupts
+ pages in THP-backed MAP_SHARED memfd (bisected to 7460b470a131)
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, regressions@lists.linux.dev, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, Eero Kelly <eero.kelly@dfinity.org>, 
+	Andrew Battat <andrew.battat@dfinity.org>, 
+	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 83EDAC000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7zry9f5qzfhiqc4ei6uohgk1w5daokda
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 39B531C0002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772232987-436495
-X-HE-Meta: U2FsdGVkX19f6SYu0BUqFAdnIJhCTDzStRHVAhc97K6muvRWVFQPv9E9LAHmShL1+SxfWW4zvsFgKgqMgczgQqbtNxUp+wBBcVqMzOgRsME81wSQsqzOOFj4eMjS3tsPYCjvqDCYiwPFOHTmLnz/b2d2fNU2u9SiXs93j7BXLleLSWOZ9WDwHhw1LyfS3z2TmRoBljlnRUbylE5S7HkTz8doCJ7SqSLAaZ5nDRRLT1MMZJ4QS3yFAhfnruEZisQgsZJYhgbo94Xd6BvaE6lBQM3mVUt415womH7menmFdcT51q2/FE7dXCO11kyHw8NmTI8f8hcr1uEGHe03lERdIJzPnG8YyQdTbxfcYBq432WYAAvTc3joILPPwSK/uOnGLOBplT5S+8DD8U076HuXvpWkbeoI2wmsgzdHHqZwhglgs2ezYLAawT0iEE2lyvdknKNea5Y8Cq34G5fZIwZhpe25EsZRTTo5p0BzX4tAnPhopcrcRgwisI9TGzom5D5X/WcGdE05U59rZmVJQGguJwLTFDOjwvip+riaYqpsYLXUjS02tGDCE3pyfstoKE8AvT25BiQTsl2XOJT3dxWlbbMKq0BmJA34rFulHJNzc7g/KPiHLvimofyj0EsepVtb+0VPsTjv99E3tLgMF3Y0EIgPbXl4TnWyWSVo1Z+GXIE7sFpYZm5Oo/Dazr0qWIdbfLyEqbe9MfzJiOnPkK5+o1z8zQ02hTKI1E/TVJIdnhbQKyC4AMy4nMk5BvLIcwSQxClaJ/0LYDNEv/PgfLl4RKy/nFqccph77zIoGnW9kC3V5cdZb0sAdy8wc90/uDg6OQ8RJcLEj65bn1zyHQLi17Rte+GfZRnzvRKWLBL3J1rRdam/yBRMLRkg2Ucl8kC2CbPOiwB/SL+RXMlhsyFTWghzMRcd7/v3FW628HJWS7Z2z2FQV7R+D160gI6HuRhYYM/S5OlOZo6TCKfTQRO
- hsAFcnqs
- 2ZqYQ2hL8XgEg1g8FbgYQNQVqDHu7i4qH4rzFpldnr1Wz3dL42IzauYOuUIbJ+UI9BOL6TvbH0HNwMkweaFSH4H4uo/vGOK2zXcgKSLb+dzIrgrz1WYumqrIhyPDMYjyCaEYWEJqIdannfsaqz4Gg5RvSs6g+HXkL/cK+uiMnJcfUg7ZhKjfihDIDTFKhany0f0w7mqBFEeUycRkcDowAXNuVk17PTqRuSOq9mZEVerHTgEuqKvuuE2uRKbC3VcNzq3T88XSiUKAy2dQ0QDqaxF+ax64oVl8w5IE2dyX0D4vwQ+U0OaN0R/H64Ws6wzhv0p0tMCNDR1mPx6aPQNto00dMcbHT72j89/aMwxD+XDBgWvvWyzEbWogBqcxnrwNa19ik06gQHofLQWw=
+X-HE-Tag: 1772235176-180220
+X-HE-Meta: U2FsdGVkX1/EAfkXmVttTAdQ4kgleVU9YATHVaBPCfEnYUBupItmr19eLT1XQym2YSs4igHzA9mCND8tLz0oxjd0qps4DQ5PkCncDi/Ghlu6UINpDW+l7aga/3ZRMeIOvERHnuvh+Tylloe0huvNSxwd8V33Wp2x3X/88x/ZZ7r6n67ZVwmKZ9+8VYbW4oqTJm75JOkONP+7wXo6NFEh1+poCRbZTkJ+FHOqQsEPnUDGmcf/UtUDNJ3FAOIsXWLWE6J4CY0fQJ8A+qzvzdowGeq7grRRTXIhoQded5k+/OQotx4Qo7SxePy5iREKndWjOzkElApnQnXk2axwZyGgbVN5yGjoLkqxMaAIittfXG+9rDSRWVmkP/p9u15t2RIaZw8NuY611Ss4T2N2AFhhEUoT7kt5Yg9v5yxO5N9280oR+QPHOO7AZVODK9YelLpmiEY5TJ66XNJAgKgWwaP5VMTT/+OyB5jYP6xwx1CKj5dzA1UyAnIWdeNpkQJVPgM7fqjHRlE/QOeWT9BLWXUrVe04+m/mqjiC7NPTpwrLYWmkkxNE1zMErdoefyAuZAC3cvLvaXw7x4UGBIgwGiAo9zKHLBwFRLJnM0zjiwBFDx+HbJXypoaxsHj04USkK0yKkRW9R32MNdKIRtFLDp+yn+aX1hFcqMgAeHWBw1uk925ykXHQ+zPu9eedL4w5fxVAG3lkPp52W9XvUKSLWvZvhXzHPaOPLVRdY5BH5jxBRfurMsnT2nW+LhcPR4sLXwk5Clcwn7UZmSiqLLjZ4LY5+iRY57lA9j+RxG5p40CNIfLxwq65GXe2a7nS2g+hYl16qp8KSuTc1IpHqoycWGla6XPfOXR5AQYHfS47jSk0B1lqp0DFRnFyAMqgV4GPifsm///5tzASwrQ0cQEhTVrA6yCgELOnYpDEbp+C9DXTckxuhbbtAWbwcd1x1CIx70kANP2wkpZ//0IWBHCrC0j
+ JYdnZjDm
+ lYT7yTyBxMC50AfG2iCFes9ZR6rGTUpepUgK1zK7mXITnzbow3NpTBHF8QnRdim90a8V/AscAKzA2noTR3/9KMljNn8AkDklJrRtMNyZtTIttZPLa1n+9YyTLaTmvCVQGgayGS1cMpYV+Im/8re1d50+2h6/2e+Qr2Wu4DoXueQDaokfd+cxlzspz+fKlIb13rzamZeky+Ef0LGU1houS2y+EZ80+SL5REloqos+th1NDIeWCgNtAWby1n4q72K9o7RaPq7ZSe40gZrvnmtAFh6QudITnn7yiB6kANDamtBZKIaDU7fRIsuzCNcvRaCWoqrL8+COlCP7JLEJa/FLMQnlnlhzd5owIZb4Fm5GRMdiC2XcIudwISpPs9sLpozAZuS6pLpNMNaFyk6k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,59 +144,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kevin,
+On Fri, Feb 27, 2026 at 8:29=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On 26 Feb 2026, at 16:16, Bas van Dijk wrote:
+>
+> > On Thu, Feb 26, 2026 at 10:06=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+> >>
+> >> On 26 Feb 2026, at 15:49, Zi Yan wrote:
+> >>
+> >>> On 26 Feb 2026, at 15:34, Bas van Dijk wrote:
+> >>>
+> >>>> #regzbot introduced: 7460b470a131f985a70302a322617121efdd7caa
+> >>>>
+> >>>> Hey folks,
+> >>>>
+> >>>> We discovered madvise(MADV_REMOVE) on a 4KiB range within a
+> >>>> huge-page-backed MAP_SHARED memfd region corrupts nearby pages.
+> >>>>
+> >>>> Using the reproducible test in
+> >>>> https://github.com/dfinity/thp-madv-remove-test this was bisected to=
+ the
+> >>>> first bad commit:
+> >>>>
+> >>>> commit 7460b470a131f985a70302a322617121efdd7caa
+> >>>> Author: Zi Yan <ziy@nvidia.com>
+> >>>> Date:   Fri Mar 7 12:40:00 2025 -0500
+> >>>>
+> >>>>     mm/truncate: use folio_split() in truncate operation
+> >>>>
+> >>>> v7.0-rc1 still has the regression.
+> >>>>
+> >>>> The repo mentioned above explains how to reproduce the regression an=
+d
+> >>>> contains the necessary logs of failed runs on 7460b470a131 and v7.0-=
+rc1, as
+> >>>> well as a successful run on its parent 4b94c18d1519.
+> >>>
+> >>> Thanks for the report. I will look into it.
+> >>
+> >> Can you also share your kernel config file? I just ran the reproducer =
+and
+> >> could not trigger the corruption.
+> >
+> > Sure, I just ran `nix build
+> > .#linux_6_14_first_bad_7460b470a131.configfile -o kernel.config` which
+> > produced:
+> >
+> > https://github.com/dfinity/thp-madv-remove-test/blob/master/kernel.conf=
+ig
+>
+> Hi Bas,
+>
+> Can you try the patch below?
 
-kernel test robot noticed the following build errors:
+The test passes twice with the patch manually applied to the latest
+master (4d349ee5c778). Thank you!
 
-[auto build test ERROR on 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f]
+I had trouble applying the patch using `git am` to 7460b470a131 or
+7.0-rc1 but this is the first time I've used `git am`, so I might have
+done something wrong.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kevin-Brodsky/mm-Introduce-kpkeys/20260228-020115
-base:   6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-patch link:    https://lore.kernel.org/r/20260227175518.3728055-24-kevin.brodsky%40arm.com
-patch subject: [PATCH v6 23/30] arm64: kpkeys: Ensure the linear map can be modified
-config: arm64-randconfig-001-20260228 (https://download.01.org/0day-ci/archive/20260228/202602280610.KQRFmbR3-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9a109fbb6e184ec9bcce10615949f598f4c974a9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260228/202602280610.KQRFmbR3-lkp@intel.com/reproduce)
+> I was able to use your app to reproduce the issue after change my shmem T=
+HP config from never to always.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602280610.KQRFmbR3-lkp@intel.com/
+Yes I had to write "advise" to
+/sys/kernel/mm/transparent_hugepage/shmem_enabled since it's set to
+"never" by default in NixOS. See:
+https://github.com/dfinity/thp-madv-remove-test/blob/d859609820113c69023848=
+452bdba8b619d78a8a/flake.nix#L93
 
-All errors (new ones prefixed by >>):
+It would be great if the patch could be backported to 6.17 used in
+Ubuntu 24.04 LTS since that's what we use for the Internet Computer
+and where our tests first started crashing.
 
->> arch/arm64/mm/pageattr.c:100:3: error: call to undeclared function 'arm64_supports_kpkeys_hardened_pgtables'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     100 |                 arm64_supports_kpkeys_hardened_pgtables();
-         |                 ^
-   1 error generated.
---
->> arch/arm64/mm/mmu.c:768:3: error: call to undeclared function 'arm64_supports_kpkeys_hardened_pgtables'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     768 |                 arm64_supports_kpkeys_hardened_pgtables();
-         |                 ^
-   1 error generated.
+Cheers,
 
-
-vim +/arm64_supports_kpkeys_hardened_pgtables +100 arch/arm64/mm/pageattr.c
-
-    86	
-    87	bool can_set_direct_map(void)
-    88	{
-    89		/*
-    90		 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
-    91		 * map to be mapped at page granularity, so that it is possible to
-    92		 * protect/unprotect single pages.
-    93		 *
-    94		 * KFENCE pool requires page-granular mapping if initialized late.
-    95		 *
-    96		 * Realms need to make pages shared/protected at page granularity.
-    97		 */
-    98		return rodata_full || debug_pagealloc_enabled() ||
-    99			arm64_kfence_can_set_direct_map() || is_realm_world() ||
- > 100			arm64_supports_kpkeys_hardened_pgtables();
-   101	}
-   102	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Bas
 
