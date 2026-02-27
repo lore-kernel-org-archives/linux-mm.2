@@ -4,132 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D48ACFEFB5D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:09:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 313C2FEFB56
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:14:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05AC46B0005; Fri, 27 Feb 2026 10:09:25 -0500 (EST)
+	id 194CB6B0005; Fri, 27 Feb 2026 10:14:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0088A6B0088; Fri, 27 Feb 2026 10:09:24 -0500 (EST)
+	id 13F9E6B0088; Fri, 27 Feb 2026 10:14:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1F7D6B0089; Fri, 27 Feb 2026 10:09:24 -0500 (EST)
+	id 038786B0089; Fri, 27 Feb 2026 10:14:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C8B3D6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:09:24 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 730D759ECE
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:24 +0000 (UTC)
-X-FDA: 84490570248.02.4866762
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0C20F140017
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n4TpTiQo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="frjS/mKq";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n4TpTiQo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="frjS/mKq";
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E38496B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:14:29 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F39EBA727
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:14:29 +0000 (UTC)
+X-FDA: 84490583058.13.359F122
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3F1541C000F
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:14:27 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UCTh0ROF;
+	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772204962;
+	s=arc-20220608; t=1772205267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IgC4TAut0oAE46fR5Ae6UByQ/Iym7IYeieMNOTiDBXU=;
-	b=3HDKF8WNaVKJDZDCKFnM81Ms0r3TZpiy6hUd3IxB/Z3K7ZwzZLri5Q5AnCEW2li8GviQcD
-	lWjo1pwLtL5buSo6cMljKam4l/53ID00fxd3J+779qwFFRC99eI/1oY0aamjZmy67gNXbm
-	EHZhWj/rxjLnX0M89GGU2+CiRMvywFY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772204962; a=rsa-sha256;
+	bh=JJDWBfSNCysRUwJvl2i5MmHHSkPTb8ONqUHCHbTZpy0=;
+	b=vwr9exMBrP9i1zI27JeMriUi70qzllZmk36e5m615pLOwyysqvGl7taswpStjuJojSSqWw
+	tIWVpIRWHoUq99P9qQbtX4A1MQD9PnW254XQnUM2ESY/gmiCs8QRi6+Cgp5Mf5XI4c300s
+	LTPuM2iL/CvcuV0FrZyVD7Zhzl2guQA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205267; a=rsa-sha256;
 	cv=none;
-	b=JrEfllB29w5ReuNnyAIw95GkgJVqYjN9URUVl4NKvjw8NmoYwFgjx1boJL/0BihsiZEBCq
-	GQtmq2SpM/rIhymam74qFsFksozc7ppoJ8Cc0P9+arY4vxLqq/c2++3C2iHHeXsjWQy51d
-	8aUCjM+CCb2Z0AndR0FHoVJeWU57UU0=
+	b=nWGp1GVeK+pJfITn+4h106tmst2Y/eKwqjAeLZ9HUIywfK1vQBlU4NxiJNx/e9JButQfVd
+	sphyoBkmKpjTfV7SOpUMSQNhvzqn/oV+axlpgom94PwmeeFLTaV05ezMMe+/IRXIBZGf9J
+	xeWke+Ex4mavV4kj7dFdKTpOAbT1MYM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n4TpTiQo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="frjS/mKq";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n4TpTiQo;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="frjS/mKq";
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 560223FA0D;
-	Fri, 27 Feb 2026 15:09:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772204960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgC4TAut0oAE46fR5Ae6UByQ/Iym7IYeieMNOTiDBXU=;
-	b=n4TpTiQo7AH/0uoo++HfsYLrlTXL8UK00zJUZSewWB+J9Xg/rbCYE6aWAksOV4N5aan7Fo
-	kaSS8i+8J2EGIq9jijKgQgKPGK9Lm6G9CjT2msnz9SDkcvRWe04rmNHCF55M7si0ZnPElF
-	Du4XWBE0zpoUUPa9Wd8ApwAtnDJs32M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772204960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgC4TAut0oAE46fR5Ae6UByQ/Iym7IYeieMNOTiDBXU=;
-	b=frjS/mKqtQ041leJMmhBzqFTIWXixTqYMtKv1wh/jYW0R1WZiqPIdmGbbyC58w30PY6FeX
-	mA2R3jREjsJnubBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772204960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgC4TAut0oAE46fR5Ae6UByQ/Iym7IYeieMNOTiDBXU=;
-	b=n4TpTiQo7AH/0uoo++HfsYLrlTXL8UK00zJUZSewWB+J9Xg/rbCYE6aWAksOV4N5aan7Fo
-	kaSS8i+8J2EGIq9jijKgQgKPGK9Lm6G9CjT2msnz9SDkcvRWe04rmNHCF55M7si0ZnPElF
-	Du4XWBE0zpoUUPa9Wd8ApwAtnDJs32M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772204960;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IgC4TAut0oAE46fR5Ae6UByQ/Iym7IYeieMNOTiDBXU=;
-	b=frjS/mKqtQ041leJMmhBzqFTIWXixTqYMtKv1wh/jYW0R1WZiqPIdmGbbyC58w30PY6FeX
-	mA2R3jREjsJnubBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4AA553EA69;
-	Fri, 27 Feb 2026 15:09:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nLYzEqCzoWkAFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:09:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0818AA06D4; Fri, 27 Feb 2026 16:09:16 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:09:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 05/14] pidfs: adapt to rhashtable-based simple_xattrs
-Message-ID: <qxctwu77wp7gv4ua3hn6kg7r2vt57laomn3ebjisemzzaybagy@mvoo2wpvu2ux>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-5-c2efa4f74cb7@kernel.org>
+	imf21.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UCTh0ROF;
+	spf=pass (imf21.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61REYGqc1136392;
+	Fri, 27 Feb 2026 15:14:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=JJDWBfSNCysRUwJvl2i5MmHHSkPTb8
+	ONqUHCHbTZpy0=; b=UCTh0ROF2uP873dNINdMUwKgoIeLMZ198DQ3ExuA7TX3Td
+	yJ3LXkrXF0aA6oLQQpdQMPOnUx7UKWBEwaAFweF2KZFQRZAyQCH5B7/YmPrjJaL3
+	vV5YQ8FBsgWcwllKh2ek+Mc7QbFmrUwLm6sVGBDSSgllP9CNFNPLiifRrzqyN31o
+	ZWdgTS8Yb2WRckcYLNG3NKTwhrNL6ZN+UWLdAg7Q6YZ8pw/79nQo/V6p/TWoveF3
+	/OqbG6RPoL+zYe0HHl70wWsyKFySJpIVnqAIm4eUOl6UBJwit/bEScReLYK1she2
+	UzKVpP8T4k2tG1QW+broDKURbvZ4UFpO3PUURARQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bsc9y0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Feb 2026 15:14:01 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61RBTx2t003836;
+	Fri, 27 Feb 2026 15:14:00 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfs8kahmy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Feb 2026 15:14:00 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61RFDudb45810010
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Feb 2026 15:13:56 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A10F20043;
+	Fri, 27 Feb 2026 15:13:56 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C81920040;
+	Fri, 27 Feb 2026 15:13:54 +0000 (GMT)
+Received: from osiris (unknown [9.87.152.66])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 27 Feb 2026 15:13:54 +0000 (GMT)
+Date: Fri, 27 Feb 2026 16:13:52 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
+        David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+        Shakeel Butt <shakeel.butt@linux.dev>, SeongJae Park <sj@kernel.org>,
+        Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        "Liam R . Howlett" <liam.howlett@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Christian Brauner <brauner@kernel.org>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        David Hildenbrand <david@redhat.com>,
+        Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
+        linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+        Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+        Mateusz Guzik <mjguzik@gmail.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v17 0/3] Improve proc RSS accuracy
+Message-ID: <20260227151352.10882Ca0-hca@linux.ibm.com>
+References: <20260217161006.1105611-1-mathieu.desnoyers@efficios.com>
+ <20260226120422.8101Cc2-hca@linux.ibm.com>
+ <59b28cb4-4fff-4888-b562-7b7236e29d27@efficios.com>
+ <e0af317a-d6ad-4de4-8bb1-215d5dce7351@efficios.com>
+ <73e6fea9-caf2-4404-b511-11646013f8db@efficios.com>
+ <20260227011201.GA1577380@ax162>
+ <20260227131128.10882B8b-hca@linux.ibm.com>
+ <b3447e37-89a0-4482-886b-dde87733fb86@efficios.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-5-c2efa4f74cb7@kernel.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 0C20F140017
+In-Reply-To: <b3447e37-89a0-4482-886b-dde87733fb86@efficios.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: -3T30V_MJlKG4EfyyLoPMq8lNEDS26Os
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDEzNSBTYWx0ZWRfX3nfVMoCIh2SS
+ ucYO/H6Pgh/q+6vOm9ka1cfkWtOnJLyjSyOSLoRlMfW6wAvxXKJ1XacSWMeg/510bIvlfZa9/sw
+ 9K0RoTB+wmJi5cRqACCnPFxxO9yTArgS8raaLgsw4DHNm+k53nQ8f3OLphR3yUw8EDeayFr0g7c
+ Fwmy/PE5p8I62l9msrWp7XHvbBWtbtXxsUDRgmCLwDgtyMc0BAHyAtHbx2j1mdXxlurDAZxxvC9
+ OtWA/RfN0BOBPNFi1o/hK/RJu+Ersis0q1SDZA8LjpBWd5lq5TyXG4lPUhUOMOe2Op/M3YsbzNr
+ RufkWhmWgk3XjF12baRIsxjLh+3roHIhlymjMEs5mvnxOKqVW5BEEFayiMLhEa3W+8YTttBf52t
+ VH7W3+BBGslFFHs8GzH1NfusGc7LUkN6FXEuzp8JiPnC8dF/37wUo+K73EM/cNr331yzdcYF7rU
+ W9r+TfR0TpCpcx0POnQ==
+X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a1b4b9 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=crcK52EdEUAz85siLdIA:9
+ a=CjuIK1q_8ugA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-GUID: 7nyTaHxWFMAMGrOcBXMXoawwBqgiTdoY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-27_02,2026-02-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
+ bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602270135
+X-Rspamd-Queue-Id: 3F1541C000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: mq5q1i9qhxu7o87ak61bprcdjb66pezh
-X-HE-Tag: 1772204961-648160
-X-HE-Meta: U2FsdGVkX1+8IK6fNCxjtqqyRPmOby4A1gyzGbOyraOWURBfU5ab5G7o9tOAhrY5EMOrD9eyUP7oNnT14SM3TzdeKpfRpktINLoTeiAElLhfUvK+joL3XkS/YQiTuJ/ndags08/2WAGbxeYnEm9fJfZa+5Sye4xP2dOIdd9cY9hAHnHafuGJZSddADLgCUTyZD2DJ42I8IOP7gavyCf8y1H6PmYB+pLngs+TlYOadiFp4QP39PTLUOdIOaJ0EPpXQUffhXAnKBBmxprSTcUHlXTE5jUIWivQrDSyZC1u/YlDJxQIosGa+7V3cIfG0E3NFQEfeZl+ycmEXHbbbFoi5lbHW71sKI2X3Xg+xrDmLYMcU5GXKK7VeQSlYQrUAU3Qwxj5Kls6P+VgpxPGhyPyErH07k22DekAJCH36NdQBpHknWZeXtEnOr5GmzT3bQ+PnsUEVNOZPuHRgur3e+lAsIeDtcriP2Don45QeEp3rijZ70q1kiuKsVeTyaCyncP66DL7329y2xYds5AmB4QeZ6oIr1FateWLu3thQ/KlHsoapBpI6T48fqT7PmKuXSvG48AbzCRzcK7CI1bjvOt72PU9EkkYgquboiBcV3KyA6tLShMZ1mZl2Zt1GNukNRdmj6QDptUNMy4P6LNdTiNai7cSnukeERNF4cIpQCP8fH2A3Czl7lPGs3xdQAJNN10h4RIemGmsf90ldw1h/+9mL0rpIyYCl8E6CkoWbTe4y73Cc8tM9j9jLTCfqVVL03CE1VYSf55S/tzgSVWhYod3ow1IvTNaQWsMZZ60mXuS/IG0pNB9rvFuDp6iGnNcA5KuszfVmGCunlqXbzu4ju2i7lfWFuzd8f7465zg6vEq6f6JaEGwuR77WSctW/KswvI5cDd6Y4CaaPfxT/9Zaq7zAlzY3caySZl5Oa3POH3PR9q/jsVGAiH70PFIHv3MkWPKgvh6lmNxO93n8VfMwh5
- zIOL9xbA
- +iCw/wRV6yYVR4jj8cbP5QdP18SNQIHs/ofpMrSLmcg/Qu+DNNh6hQWT9q8ejHespIa0LQiaGHc/6A7eBa3b4mvyECjjlyhE/bTVK7we9aZ31bXa5e6DHJZmWbS3Q5S3pEbtV9PzoYfVACXVsD6kwjeiC0wV2EQgOFSsYVqSrljes6HbOz5RxC1dXuusHkrB0e9Zi5yzVCnBxCVTTOyYdmvr+x/5GPQvWReeRQaD5Rlv+BqgAytcj4duElqW29lMfFpcgE0I9PGseA4nY6njt5uXubxaCj0fudsPg/7Tbwlry53uZll24ofFBlE0mSjirJtkN+ju4ziwYQjDVe4BLeE8nbDLBZFqb1ZKm71McSIZGaFlCzhu6t7fqO299ANT+rYHMcx80dasGooHVsh0V+KTXrCAg8EiTj/il
+X-Stat-Signature: 1gpiitptct3gm11o3beuhuos6k6cd9i9
+X-HE-Tag: 1772205267-907266
+X-HE-Meta: U2FsdGVkX187KXoByY7iaDtI42YodOrru8LD/oO6LNiq2SKE3aZQn+kf7HRZ1ij5NLz7pkH3/pseamp8VFTu9CSWQzk7q7vMMftJrJk5cdvjVznxae/hZDg33Dd+vShzWP4GCUIgFqvl7U1ySfZlzrx17J+eSiSpljUpHdcLL4w/L6v/rCmcjtEsIFti1dP1anujEyzTzAQX9YeJ8ebuPBEPDF6IkW562lfWNHCB9BEzVkcG3uGGx8Mrzf1/uBjZPezfRGpljBPlYV41OA00v4jLZXSaBH/tRDcGSwVvRW1Zy9sBMUcMmORu2tZCz2ylm5RtIKL66HRUALJlO4iJRUZZNfOy504YjfWEZhEv1TjbHTs+NOQTL3O/24T7ugA+xWiYz9hsdwR7Ax65GXGxD7CiWy6fu1IuZxJQT9H61cjjQb4CBGRUJ8rgsNrNO4AZc8YWYbBFOn191EbuELe8fgPzCB3MdcvSq49LBLxUvnipkgyc9OmGSXCdW9FjcmZqIyy5Ysxmm4G1X2akFCvejevPndzhONRAst+JoGTIyBYrIIeLxi9eWMUqzzPF6biKfHfMCjeoreZnjgvNDPWxtiycU36OQfc4YWADXLHcyAWUckZTUSt55LZtWf9/UYGZ/LF5O1Mhvjjvo6FMbnxHv+fOBeZj9A+l+lx58UAuJmv1jj33DxMuSF523rSza8Y++Rjew+f42UYz+1YGkR437npRBzMWJnl+zsSKekkb4V7/Xv1qX4Bl93rDwNDZb5tPNSdIGbOtboindhsXU+m9ULprd+0TLzWATQtgLDJh1uK4OaKdmY++xqGIj1BCTyUYVv+cUJ56Bo95Hupa34yQpbOEQeOkW4D0yWbSDdmU97xHhQ5+OhNnXJHMiFw9NV6MEA3y2pZ8voDQhFXCnvg8NETzVpRGq7EG4mQp77tYPHerDwRGGxmd2k3pX/zOgx89hykbcDf0O7cvSJXU6QG
+ BH+/EEiq
+ QebQRi3TaQoJqTIIEmWt3IOGAvivBFjQrm903M4ixu1o42C2XSljpUdKLSHzimFLMTX+oXefvGme7IJpuqX+CAW6/nwsdGV4GVqocr6/K2KNQGspzGeCg1B20QvkNisXMbxm17ny/KzLfUV1wPB7rjGFPMf7TSu4shXxvch3ODzxjjKbLU81SLVdEJwpngB4KUgvuFSeXYpI7cXYpPqV65v7TEdxFg2tG1XbKDlmO7D5f6z5Te7G+AOUn/JpC20FYA1R02YDRwBUd0zzL3DmDe3xH/V+2OxW0MEecJNEbW8i7mH8NUVvyx+FMWC7FAOrxROnU1CLPVeVswfpOqZmhjxuNeqhuyRztinPCXnPhvkdHejF+AEojdHX1OE0j5lbnTi1KiIryuqnn5XqzQ/xTGdul56PBsfYkbHYt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,130 +168,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-02-26 14:32:01, Christian Brauner wrote:
-> Adapt pidfs to use the rhashtable-based xattr path by switching from a
-> dedicated slab cache to simple_xattrs_alloc().
+On Fri, Feb 27, 2026 at 08:25:46AM -0500, Mathieu Desnoyers wrote:
+> On 2026-02-27 08:11, Heiko Carstens wrote:
+> > This seems to happen because the return value of get_rss_stat_items_size() is
+> > larger than PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE:
+> > 
+> > PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE: 18688
+> > get_rss_stat_items_size(): 21504
+
+...
+
+> Which fails to account for NR_MM_COUNTERS. Does the following fix your issue ?
 > 
-> Previously pidfs used a custom kmem_cache (pidfs_xattr_cachep) that
-> allocated a struct containing an embedded simple_xattrs plus
-> simple_xattrs_init(). Replace this with simple_xattrs_alloc() which
-> combines kzalloc + rhashtable_init, and drop the dedicated slab cache
-> entirely.
-> 
-> Use simple_xattr_free_rcu() for replaced xattr entries to allow
-> concurrent RCU readers to finish.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> #define MM_STRUCT_FLEXIBLE_ARRAY_INIT                                                                   \
+> {                                                                                                       \
+>         [0 ... (PERCPU_COUNTER_TREE_ITEMS_STATIC_SIZE * NR_MM_COUNTERS) + sizeof(cpumask_t) + MM_CID_STATIC_SIZE - 1] = 0  \
+> }
 
-One question below:
-
-> +static LLIST_HEAD(pidfs_free_list);
-> +
-> +static void pidfs_free_attr_work(struct work_struct *work)
-> +{
-> +	struct pidfs_attr *attr, *next;
-> +	struct llist_node *head;
-> +
-> +	head = llist_del_all(&pidfs_free_list);
-> +	llist_for_each_entry_safe(attr, next, head, pidfs_llist) {
-> +		struct simple_xattrs *xattrs = attr->xattrs;
-> +
-> +		if (xattrs) {
-> +			simple_xattrs_free(xattrs, NULL);
-> +			kfree(xattrs);
-> +		}
-> +		kfree(attr);
-> +	}
-> +}
-> +
-> +static DECLARE_WORK(pidfs_free_work, pidfs_free_attr_work);
-> +
-
-So you bother with postponing the freeing to a scheduled work because
-put_pid() can be called from a context where acquiring rcu to iterate
-rhashtable would not be possible? Frankly I have hard time imagining such
-context (where previous rbtree code wouldn't have issues as well), in
-particular because AFAIR rcu is safe to arbitrarily nest. What am I
-missing?
-
-								Honza
-
-
->  void pidfs_free_pid(struct pid *pid)
->  {
-> -	struct pidfs_attr *attr __free(kfree) = no_free_ptr(pid->attr);
-> -	struct simple_xattrs *xattrs __free(kfree) = NULL;
-> +	struct pidfs_attr *attr = pid->attr;
->  
->  	/*
->  	 * Any dentry must've been wiped from the pid by now.
-> @@ -169,9 +196,10 @@ void pidfs_free_pid(struct pid *pid)
->  	if (IS_ERR(attr))
->  		return;
->  
-> -	xattrs = no_free_ptr(attr->xattrs);
-> -	if (xattrs)
-> -		simple_xattrs_free(xattrs, NULL);
-> +	if (likely(!attr->xattrs))
-> +		kfree(attr);
-> +	else if (llist_add(&attr->pidfs_llist, &pidfs_free_list))
-> +		schedule_work(&pidfs_free_work);
->  }
->  
->  #ifdef CONFIG_PROC_FS
-> @@ -998,7 +1026,7 @@ static int pidfs_xattr_get(const struct xattr_handler *handler,
->  
->  	xattrs = READ_ONCE(attr->xattrs);
->  	if (!xattrs)
-> -		return 0;
-> +		return -ENODATA;
->  
->  	name = xattr_full_name(handler, suffix);
->  	return simple_xattr_get(xattrs, name, value, size);
-> @@ -1018,22 +1046,16 @@ static int pidfs_xattr_set(const struct xattr_handler *handler,
->  	/* Ensure we're the only one to set @attr->xattrs. */
->  	WARN_ON_ONCE(!inode_is_locked(inode));
->  
-> -	xattrs = READ_ONCE(attr->xattrs);
-> -	if (!xattrs) {
-> -		xattrs = kmem_cache_zalloc(pidfs_xattr_cachep, GFP_KERNEL);
-> -		if (!xattrs)
-> -			return -ENOMEM;
-> -
-> -		simple_xattrs_init(xattrs);
-> -		smp_store_release(&pid->attr->xattrs, xattrs);
-> -	}
-> +	xattrs = simple_xattrs_lazy_alloc(&attr->xattrs, value, flags);
-> +	if (IS_ERR_OR_NULL(xattrs))
-> +		return PTR_ERR(xattrs);
->  
->  	name = xattr_full_name(handler, suffix);
->  	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
->  	if (IS_ERR(old_xattr))
->  		return PTR_ERR(old_xattr);
->  
-> -	simple_xattr_free(old_xattr);
-> +	simple_xattr_free_rcu(old_xattr);
->  	return 0;
->  }
->  
-> @@ -1108,11 +1130,6 @@ void __init pidfs_init(void)
->  					 (SLAB_HWCACHE_ALIGN | SLAB_RECLAIM_ACCOUNT |
->  					  SLAB_ACCOUNT | SLAB_PANIC), NULL);
->  
-> -	pidfs_xattr_cachep = kmem_cache_create("pidfs_xattr_cache",
-> -					       sizeof(struct simple_xattrs), 0,
-> -					       (SLAB_HWCACHE_ALIGN | SLAB_RECLAIM_ACCOUNT |
-> -						SLAB_ACCOUNT | SLAB_PANIC), NULL);
-> -
->  	pidfs_mnt = kern_mount(&pidfs_type);
->  	if (IS_ERR(pidfs_mnt))
->  		panic("Failed to mount pidfs pseudo filesystem");
-> 
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Yes, this works.
 
