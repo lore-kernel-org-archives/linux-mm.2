@@ -4,108 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1257FFEFB70
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 18:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A543FEFB6E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 18:25:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3111A6B0005; Fri, 27 Feb 2026 13:18:37 -0500 (EST)
+	id 3ED0E6B00B4; Fri, 27 Feb 2026 13:25:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BDEE6B0088; Fri, 27 Feb 2026 13:18:37 -0500 (EST)
+	id 3C4E56B00B6; Fri, 27 Feb 2026 13:25:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BC9C6B008A; Fri, 27 Feb 2026 13:18:37 -0500 (EST)
+	id 2996D6B00B7; Fri, 27 Feb 2026 13:25:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 03F056B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:18:37 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 912F78BE35
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:18:36 +0000 (UTC)
-X-FDA: 84491047032.16.987C253
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B8606180004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:18:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KFLIycYl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 183C06B00B4
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:25:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A629F1B8173
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:25:13 +0000 (UTC)
+X-FDA: 84491063706.12.2ED0E27
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 895D718000D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:25:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=M5HcbGYu;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="G qh9tuz";
+	spf=pass (imf16.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.138 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772216314;
+	s=arc-20220608; t=1772216711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HldltEwylDmL1wdxGO6fEBZOeSO9woQ0YjI+QHvFBts=;
-	b=fZQ+nR2EcGH/VTemqfdLDp13DFS3Eu4VsDTv4ATegQlQJrZmBHb2PoYtt8ouM/yoexWsq2
-	JUL69QMt6HccoBilskXiQgUxWsQZuHGg3ZDUKp5AkFLiOknbVwN5omUGWt6q/nd+yUAT7n
-	2vNofCGyWm3bDtu5KKt4bHfLi3MSx64=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772216314; a=rsa-sha256;
-	cv=none;
-	b=HvPnbOcYSRWLzqDkJ9EIJC1MaeihkME0Pi/fXiMcSCIkzPyCYKAXSAVt/f0G+j3eCpr2E4
-	rLR1oxuGdtsWPdggkvlU+URzpMga9q8RHk0aCzdiZ3VMl1z9Ge6nSQqoItoOQ4RmdB59fO
-	sVsidgy+pVk3bUA9q4YjlADA02hyOhU=
+	bh=h2MIetHNFq+qTvq+cXYYK0YgcuU2lcFpP3MOKL3SGt4=;
+	b=NK4X37EURkj0JWBRmj4iKvBJzayDU1rxILAH9XAjroYGh+BH+PcJ0HUDuuwYKJA9hf7GZo
+	3tD9R4tx3ldnBEUfabgQax7W4cS24svrBL0NuET/lNi16nKaMQC9DnjnGFSVM6WWDRgzRh
+	4T0Wu731pxB5WeSzsvwzh5xMidJoc5g=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KFLIycYl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1432E60054
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:18:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75DDC2BC87
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 18:18:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772216313;
-	bh=5zMV4Pw0vsBGtqEjrHtCXDgQOjiFZK53QZufpFdphx8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KFLIycYleDqFqiPTvzcuWrEnQKh2Pb50OV9U0Zi5AXqeSMrmz6u2vtVmM/SzZQGvx
-	 Tharxb/y5DzlXbkOUihqC6pTa9UnX5G1Zwzynh785MP0voCVZJnOQqNvpoqxurdQw5
-	 JgKXSHrlSuKE37knqmDuZlQnZwmJvCAbQd6i2ACIFt0FRvTHP9K0S4hdWL7+ZJKEvq
-	 kYHqa963FYR1h5Rb3E5NSf9zAKKbiAe5i8dRh3+NkT3k+Y1EBFRirXLClB+WOJZ9Vf
-	 idkCZnBb+c87k1LoZVVVntapTvP4wJqZctSNwno24WoR5KTWMw/pMfRpuWgoHGkw4l
-	 LnO0OkRJR4J1g==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-65f980cea07so3437634a12.0
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:18:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUYandsfL7OEeFn7k5BtXIx96q7YPFOo2rvxwLu7VG/KkpQEPaMnO2UKb1e/IOot06a/ZSDgwSs8Q==@kvack.org
-X-Gm-Message-State: AOJu0YyKdn2wF8Tt1St8HDizMoi6ZgPZh6MtcHw3izH1obr2t4XErhq+
-	G28bCRYfa+TvGZmWzcrsNOmH+q/U0Jzus2zxFV51uQ207dqcp51ddMKSxN+ZqoijC/Nnt8bdIPL
-	LDMCOp0g8By2q5pgoXW9glmVJcuuAqRI=
-X-Received: by 2002:a17:907:847:b0:b70:b700:df98 with SMTP id
- a640c23a62f3a-b937636ceaemr277939266b.5.1772216312497; Fri, 27 Feb 2026
- 10:18:32 -0800 (PST)
+	imf16.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=M5HcbGYu;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="G qh9tuz";
+	spf=pass (imf16.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.138 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772216711; a=rsa-sha256;
+	cv=none;
+	b=sXxivuDTYdlioZuNWThbjfu+LYNm/t9rKqNFstzfTDWDp3X5uN4EF6Hbj+dSljRAxH1Cqk
+	GAQTOp7duGcr599nJkQbsQ6A1qGRxfy5LRfEPkgfx/DL/kpMGo3qNCrtBQesXYSUanAd3x
+	SC7J7yn9mG9Ukp3BT9inWBQhNpZlSrs=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id E683C13014A3;
+	Fri, 27 Feb 2026 13:25:08 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 27 Feb 2026 13:25:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772216708;
+	 x=1772223908; bh=h2MIetHNFq+qTvq+cXYYK0YgcuU2lcFpP3MOKL3SGt4=; b=
+	M5HcbGYuV2I6ExGXjWjOd4SeeCigxt2cqKKirjhfZh06/QH5jWk5Z0JXXsThF4Fa
+	7RNYoPp8Q5eAqiRc4MvFU9TfVLtKQF2soXn5Oi+wy5mVV02Y9V6al1nzNE0dM4Kf
+	WM/D1Xyoo09YEP+zJELM7kvTK/Ul5KUP+3qr1TPLZTPStNtbStFcdz+hWfflEMCR
+	eQDCZ0Ft8O0kf3j2MmhqyBxK+mhdOncmKEF4Dp4ercNY5ApAahSRV2An/RJEd4i7
+	BdyHODrQLIwkBu6mJDWJbQjY2nSQJaubJmCsA0WpqDsoj1gNpOHZWdqR9igUU03x
+	BT+8ghQY6qxqc1r0rOqLpA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772216708; x=
+	1772223908; bh=h2MIetHNFq+qTvq+cXYYK0YgcuU2lcFpP3MOKL3SGt4=; b=G
+	qh9tuzfCH3lGFGrRjjXpdIFarDbZ9CPj/YT4lwdF5h6EzJZsS7JvnCF0Ks8Fnt0K
+	LLfTOS7cdqhASypxTn6RzcsJBbGS38oM2wwz7RMuVfeRK5coZnlcRuACt2MXtpC7
+	oHxISpVXtMqtiuv/OOXKhaJEtt7KniH7T4QEfK6G5L7z1cX/ZSU5pv5LbVF42vgh
+	Zas7Cla0p33GtwfHxAEvLwtGrQiXgWNPpsRDMpMBUt041aDFgywssveH5+UbFKfk
+	+EdQzATJOuDsuK2NDYiJdTUMuhVhgtTwQOO6Zr5EeJ3shSuZkI0NQLDWzZr01fnv
+	3H57jQf4QaTibPhvtFDqQ==
+X-ME-Sender: <xms:g-GhafZtSzmZsd9mg_1JeAf4a7CBH5YscM2LP9OxDN6vYBmrOT2RjQ>
+    <xme:g-GhacBgZvn3vllUUZAduJus40XYnJCARLd5Qn2lpnCZ3hm5LcKmaH3_ifCdg8nRc
+    bhfW2epKwLgco9PQY9RMjvB-8ySVXhjHa2szTFK4d0BoXgBo_sTQA>
+X-ME-Received: <xmr:g-GhaXh3-jN2zQNLkCxS_aGmExZJC3QTxFCBwgyNzGHK4F5uOcX9ANZcPzI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeeljedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeetuefgleefhfdvueegffdtffevhfffgfffiedutdetgffhheejtdekfeek
+    ieehgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeegiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepug
+    hmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehhvghlghgrrghssehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrjhgrhigrtghhrghnughrrgesnhhvihguih
+    grrdgtohhmpdhrtghpthhtohepghhrrghfsegrmhgriihonhdrtghomhdprhgtphhtthho
+    pegrmhgrshhtrhhosehfsgdrtghomhdprhgtphhtthhopegrphhophhplhgvsehnvhhiug
+    hirgdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhn
+    rdhorhhgpdhrtghpthhtoheprghnkhhithgrsehnvhhiughirgdrtghomhdprhgtphhtth
+    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:g-GhaZTBdxISglkYbGFG0qQfvpfCG4WwcCrRmOzReyBOsLRaTibMXA>
+    <xmx:g-GhaZuzpGX7ZWhZ_xeqPZZfg5xHy96idHFhKwVKbQXv6_voPSqgXg>
+    <xmx:g-GhaT_XKP-XkGzZ4qGYqUFyPdICEwLE_1eo3ZKj2dbSLvmaUQ6GRw>
+    <xmx:g-GhaVbO8hrlbCn4XT7ZfiNIekMI1_uwVcu6rbUJGDu-1KeSuemYKg>
+    <xmx:hOGhaZd0C4q89F5ZU_31WMqce-tyc-ZrNJ3uFW7ijN5Nq5kVoD4bQVYy>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 27 Feb 2026 13:25:03 -0500 (EST)
+Date: Fri, 27 Feb 2026 11:25:01 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+ kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+ Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>,
+ =?UTF-8?B?TWlj?= =?UTF-8?B?aGHFgg==?= Winiarski
+ <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>,
+ Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
+ across Live Update
+Message-ID: <20260227112501.465e2a86@shazbot.org>
+In-Reply-To: <CALzav=dxthSXYo13rOjY710uNbu=6UjzD-OJKm-Xt=wR7oc0mg@mail.gmail.com>
+References: <20260129212510.967611-3-dmatlack@google.com>
+	<20260225224651.GA3711085@bhelgaas>
+	<aZ-TrC8P0tLYhxXO@google.com>
+	<20260227093233.45891424@shazbot.org>
+	<CALzav=dxthSXYo13rOjY710uNbu=6UjzD-OJKm-Xt=wR7oc0mg@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1772005110.git.zhengqi.arch@bytedance.com>
- <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
- <CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com>
- <aZ-R87JfacQ2gGq1@linux.dev> <CAO9r8zPmgytmGHAbueFKXcZWY5SJaEwD3Pqk99ws4XeO2_hnKw@mail.gmail.com>
- <97e296ed-ef73-44b7-ab68-3d79749caa47@linux.dev> <e15c2304-4874-4adc-bbe5-58ba78b3b84f@linux.dev>
-In-Reply-To: <e15c2304-4874-4adc-bbe5-58ba78b3b84f@linux.dev>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 27 Feb 2026 10:18:21 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zP-peywvtq-3HF2-PjCx9X_ABHEQF2vMO3OFoGfVOHTAg@mail.gmail.com>
-X-Gm-Features: AaiRm50TLXHVX5j7xS88WvrO4MStBAuGwnOEEW7p2oMKLrYDnofUaDeqDh7Zhl0
-Message-ID: <CAO9r8zP-peywvtq-3HF2-PjCx9X_ABHEQF2vMO3OFoGfVOHTAg@mail.gmail.com>
-Subject: Re: [PATCH v5 29/32] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
-	mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
-	harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com, 
-	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, 
-	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, 
-	usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B8606180004
-X-Stat-Signature: wqhuw71fhrnkhmudghmx3icgpc7pcb9x
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1772216314-332649
-X-HE-Meta: U2FsdGVkX1+h3UFFYhv7gllVz1+rH97bApEY8opMSjzahUDEFBHUwepykTFHWsUv2eLmAByiUgoPBBFceaXbnp7zMsE1A9ii9UVVk1xh4nTwTnely3sKLCSTozN+FM90SYlYgyDBPLXmBctaMsftPeJRfR5i48HyZNnnYsFQVhzMPHDOquwOLpjAKGGRTmwyvO3lE9lkTvYe48B6bqjL4so7od7Xe93qYSh4TxXj7vVT+qlkls1CpKnJDe65E8WoOYbCpexXi8H4fNnJ3ATI1G708f0NMU/mqTEFE9KZpdssmQWTTsM/73DawyrQMJB0n9wsmnT5bi3MfrWiB5lD+NH8lxWIuZTQBmM84H7BC30KbMgxYwdBjNcmqWAz0rxqvPs48VV947DJZvBlg2xDmkhvcJu4V5viN/6F6RwIie5FCpBsClogW1hDuwGzqZrFCb0ihoUKVV0hG4gbnh3fcK9UoXfEDXYyNvU9gATgZJqjGN88nyQDgv4QCy/AxJb1H4UNYo/eeLOBPgZ1YHleKGw6qcklDH9fUxx4qoIw2TRS1UxmFEwEiPc5QG5hoExob3s4YWKsyjFffn1k1Rs64WDLmmKxtPWyzokFyZUxRpjaQncHMbbXDWtsOgHTirgrgNuZXvQnwLX921PqOvfp/FwWkehtAd9LKNhL7RAZ+qoqNP11h88/SgjebAga9nI7V4seCHSwBVq/qJVH+zOqhZcOw1zMhFgsMrwAeW3g1CkNTh7P6lg4kd4cXRpT2Khx/6UTCin+HHbEliVPsubuIOxqip91G/uVVNBAGkwqzBknDnWCmkgR4jvzUiwTpafABYqQ9n+MPgm6raYituswAoRGEmY9p1W80kz2mUjQAWWWJXvdl55kI/7thmTwiO3QoKeO1WIYePmD0ZQWz3bndIE0njIcAxROyeMn6DxCHgAt9kDgu3quAQTozcsFxc+li17rD6eZUAZQErIUiwG
- QJ/s+UjE
- XqyoCK0IA1VVigiufXU/IvG8/D2Uq9BR7ul8B2nQzBuV3yU5CFUZeeRSSe7ApCxcU/590wotXNj5qExNYXLSc2xTYpCaxjtxEkzNDKK6gp6A/IT6k2MPbC7tdYowrk6y5w0P9Ueuoof/DcKtPZwGKOahdUvO7MoazKUMgCdSGRR0kT73qXJ+PO4E3ETC6P1WEijrHtSjRbO+FrULGhtFWMaS1y+FR3yIF+Tr3VONNHORJI27vBdvpdXJ8LEk22jb3QZlUB9Es0rdHy8YEmEOJYL4oiUxlRwXAx/Eo
+X-Rspamd-Queue-Id: 895D718000D
+X-Rspamd-Server: rspam08
+X-Stat-Signature: xmskqmwgr6qhwhr3m5xsbqaax7cts1ey
+X-HE-Tag: 1772216711-596795
+X-HE-Meta: U2FsdGVkX1/Ob8i027W9d6pg/Nkx3Cb2Mrf+L5sUgbS+DWS2cLLMpk6slvzPz+iVj+LcohM3BdepGiT6u6FJ+zxQy+S9e85VDOqmIRpcuW38W/zyOo30nCnhvluSXTgwYG087F8KkuExm2uvyjXE3ucmx1ozjOsBhfP8y5ALUISQLomGJVDATz3RFmm9WB20B81CEbCovP372yU0PfyV01RpOHI6ioaQobhkeNGKcJ57Df40wdtuQdwC2Ulmr9xjXpdiL++sHQvAMunyNvtR/2+a6zQ1Cmu/PdVR5qi/jS9Y3uJW17ASwpFAcWRcKK4iQZv4I2BsldBce+xcr6UNyJahY6IvMhrjvRIIGnkDa/En4CJdnNo7gjwScVq8E7fbpFdWlvmYtUfNmZyUAL9V5qMajpilfsIcFsCter9pxPt7DVtT0UZfg6EEnoeo9CLteu5fMHjHUX9ySD6T1VemabZBDo4JSsdY53nmZGyVIgVSAJ86vlcpyT98+0/88Ghe2u2VbydHFqFqidkM74et4y7dzrsjpNfL27nG574+d/1MoDgw7Y++qhXL/XXvBP/7AacIYMQtM+O6RqYoKHvffg9oZq7WrtMZ1EbYJTxpHL5kol1R7FmHKGcHtTauuGucK84RhOTtM6EqyOsCMn9wjOoKrJ3AQFqH5OnzmlEeQIuFDz/NNTPWo2d04JQPIEnnLMo4WhS4/jjnoSqb7WwDcSWvOqmyfD9uk4YyyvT1smkNTRAxYNTlHO0iuE1inmPw5Ez9uVX9GCbR99NfFWCD9R9AmvA4kaypYz9TFpo9hIpCw2vz1enRAAAGDlZ29oXQhh1kUV3rp/3i1R/QWTx2yrZyje6oWApBPc1jauOANPG+vnWq3/aedjT5x/PqHVt1dyrqsb5Zy0OhfdwoPS7h66HV/2mVxZ8A6EHkCsPUucF+x8FH6Uf9xOKu/rTgGqjpkmz9Ep92VVGBkyYEYhA
+ YpWMYu3V
+ 6IKMOwne1fCNRwzsDzUqLiY55CgWPN5VYEFKq6N5DbisxsnCP7tXEveE9gbsP4QScJSTDIFdwlbq9wcoMsWxuiVu3ksKY8s39kX2unwG4qzuWPJFVGkF12wIUeeAT4shOtqB4+UbFBBUILAAZFVsQwSvg1uJqfHoWWhYpsfhFP4ZsEWwG9DqWmHcEJOSYbWHUam+KvazFPGvYA/ebBIzpiTGBVaFxIJW2dxlgY3yVhIKE3AGiFA6BpMeS7UVUZ+v4KR5nw7LnW31hY3anLoi2PojGSfpA8LszQE47P7uxjGxIGt93hQrIw1jGcN5crmOKK4VeAVjqUQpcEeZcuqEolribMnkJdluqed/nlE3jjQJwwEKEeWw/hiYGMOc6TnB+i1k7mf/VhaRJVgdQ+ypylNjvaVjEP0ntukmVNvYAvUBocF6L3WbjbLLmArNgwxpvkbJwnZjGDudpOypQsm15i7Jld7TSE+awuMfsjPC174P0OS0beucFy4UFKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,49 +171,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[..]
-> >> @@ -506,12 +517,10 @@ void reparent_memcg_lruvec_state_local(struct
-> >> mem_cgroup *memcg,
-> >>          for_each_node(nid) {
-> >>                  struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg,
-> >> NODE_DATA(nid));
-> >>                  struct lruvec *parent_lruvec =
-> >> mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> >> -               struct mem_cgroup_per_node *parent_pn;
-> >>                  unsigned long value =
-> >> lruvec_page_state_local(child_lruvec, idx);
-> >>
-> >> -               parent_pn = container_of(parent_lruvec, struct
-> >> mem_cgroup_per_node, lruvec);
-> >> -
-> >> -               atomic_long_add(value,
-> >> &(parent_pn->lruvec_stats->state_local[i]));
-> >> +               mod_memcg_lruvec_state(child_lruvec, idx, -value);
+On Fri, 27 Feb 2026 09:19:28 -0800
+David Matlack <dmatlack@google.com> wrote:
+
+> On Fri, Feb 27, 2026 at 8:32=E2=80=AFAM Alex Williamson <alex@shazbot.org=
+> wrote:
 > >
-> > We can't use mod_memcg_lruvec_state() here, because child memcg has
-> > already been set CSS_DYING. So in mod_memcg_lruvec_state(), we will
-> > get parent memcg.
+> > On Thu, 26 Feb 2026 00:28:28 +0000
+> > David Matlack <dmatlack@google.com> wrote: =20
+> > > > > +static int pci_flb_preserve(struct liveupdate_flb_op_args *args)
+> > > > > +{
+> > > > > + struct pci_dev *dev =3D NULL;
+> > > > > + int max_nr_devices =3D 0;
+> > > > > + struct pci_ser *ser;
+> > > > > + unsigned long size;
+> > > > > +
+> > > > > + for_each_pci_dev(dev)
+> > > > > +         max_nr_devices++; =20
+> > > >
+> > > > How is this protected against hotplug? =20
+> > >
+> > > Pranjal raised this as well. Here was my reply:
+> > >
+> > > .  Yes, it's possible to run out space to preserve devices if devices=
+ are
+> > > .  hot-plugged and then preserved. But I think it's better to defer
+> > > .  handling such a use-case exists (unless you see an obvious simple
+> > > .  solution). So far I am not seeing preserving hot-plugged devices
+> > > .  across Live Update as a high priority use-case to support.
+> > >
+> > > I am going to add a comment here in the next revision to clarify that.
+> > > I will also add a comment clarifying why this code doesn't bother to
+> > > account for VFs created after this call (preserving VFs are explicitly
+> > > disallowed to be preserved in this patch since they require additional
+> > > support). =20
 > >
-> > It seems we need to reimplement a function or add a parameter to
-> > mod_memcg_lruvec_state() to solve the problem. What do you think?
->
-> Since child memcg is about to disappear, perhaps we can just add value
-> to parent memcg without handling the child memcg. Make sense?
+> > TBH, without SR-IOV support and some examples of in-kernel PF
+> > preservation in support of vfio-pci VFs, it seems like this only
+> > supports a very niche use case. =20
+>=20
+> The intent is to start by supporting a simple use-case and expand to
+> more complex scenarios over time, including preserving VFs. Full GPU
+> passthrough is common at cloud providers so even non-VF preservation
+> support is valuable.
+>=20
+> > I expect the majority of vfio-pci
+> > devices are VFs and I don't think we want to present a solution where
+> > the requirement is to move the PF driver to userspace. =20
+>=20
+> JasonG recommended the upstream support for VF preservation be limited
+> to cases where the PF is also bound to VFIO:
+>=20
+>   https://lore.kernel.org/lkml/20251003120358.GL3195829@ziepe.ca/
+>=20
+> Within Google we have a way to support in-kernel PF drivers but we are
+> trying to focus on simpler use-cases first upstream.
+>=20
+> > It's not clear,
+> > for example, how we can have vfio-pci variant drivers relying on
+> > in-kernel channels to PF drivers to support migration in this model. =20
+>=20
+> Agree this still needs to be fleshed out and designed. I think the
+> roadmap will be something like:
+>=20
+>  1. Get non-VF preservation working end-to-end (device fully preserved
+> and doing DMA continuously during Live Update).
+>  2. Extend to support VF preservation where the PF is also bound to vfio-=
+pci.
+>  3. (Maybe) Extend to support in-kernel PF drivers.
+>=20
+> This series is the first step of #1. I have line of sight to how #2
+> could work since it's all VFIO.
 
-Ugh yes, I missed that, thanks.
+Without 3, does this become a mainstream feature?
 
-I don't think we can just leave the child's memcg wrong. Aside from
-the fact that I would be nervous if access to those stats is still
-possible after it's offlined (e.g. can userspace already have the
-stats file open, or maybe some in-kernel code uses it), there's a
-bigger issue.
+There's obviously a knee jerk reaction that moving PF drivers into
+userspace is a means to circumvent the GPL that was evident at LPC,
+even if the real reason is "in-kernel is hard".
 
-When the child cgroup is released, css_release_work_fn() will flush
-its stats and then it will be double counted at the parent.
+Related to that, there's also not much difference between a userspace
+driver and an out-of-tree driver when it comes to adding in-kernel code
+for their specific support requirements.  Therefore, unless migration is
+entirely accomplished via a shared dmabuf between PF and VF,
+orchestrated through userspace, I'm not sure how we get to migration,
+making KHO vs migration a binary choice.  I have trouble seeing how
+that's a viable intermediate step.  Thanks,
 
-Maybe refactor the part sof mod_memcg_lruvec_state() and
-mod_memcg_state () without get_non_dying_memcg_{start/end}() into
-helpers, and call that directly from the reparenting functions? Adding
-a boolean argument to mod_memcg_lruvec_state() and mod_memcg_state()
-will add a lot of churn, and naked boolean arguments are not ideal.
+Alex
 
