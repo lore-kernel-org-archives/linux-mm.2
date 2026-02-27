@@ -4,142 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F35FD9E26
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:13:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3514BFD9E26
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:16:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F31986B00FB; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
+	id 94DFE6B0136; Thu, 26 Feb 2026 19:16:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFF336B010E; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
+	id 8F7476B0140; Thu, 26 Feb 2026 19:16:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDD706B012F; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
+	id 7F6466B0154; Thu, 26 Feb 2026 19:16:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C447E6B00FB
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 669578B85D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:13:33 +0000 (UTC)
-X-FDA: 84488312706.20.4195F56
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4515080004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:13:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r1xwrMme;
-	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FB8E6B0136
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:16:05 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 19C0B1C0AC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:16:05 +0000 (UTC)
+X-FDA: 84488319090.22.8FF1AB8
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 26E738000D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:16:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=khyo8jLo;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772151211;
+	s=arc-20220608; t=1772151363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
-	b=tSIiXjFO2dHNckyEolf0MdNtA6/YoXzyfag0Hy7FGiti/WM8MJuUiEVB0KLWWuCm4VMYJ/
-	1iABaZ9FHA/qBCf+maWkgajvBlJtbG5Fts0/vvYZklE8ApE15tB4lGPv1taufJwQ9zA7Ig
-	z/s3NShjgqWyHAjxQEfRmzCvkjwbht4=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r1xwrMme;
-	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772151211; a=rsa-sha256;
+	bh=w0NZDAeKbMdiB3N/VIVp1qkQUzC1j+dSdVDcQsUuKlE=;
+	b=eu8gsyNersR+AakjWAOhhKdmM3ZlCksldb+MrNHXnqKTNyVRphfZBl8ybKC5Q0wufc7zHB
+	K2ljaGDjtwbJXUfx0cfwZmf9YwH9KcarU+ScmyRcePoFtlaVdFFAxB9uRPRH9U7+yugvHm
+	OJtAHbcwDV3/jHHeEsjRA60G9x5JScY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772151363; a=rsa-sha256;
 	cv=pass;
-	b=ZkG6ymxAa+oQH1lZhghD6B/KXg7m8mU0vhTYIHUb8VfO2cXbM9bxnIu2cJYBBH/7I+Hq0D
-	sRVfexzHyg1sr/gCYZr3wZXbw3onp/3pPRIF20jpRygs9jtzH73D85IHEKt+Yjtq82rMHM
-	juPWjDDf11/CKdnqHKB4IshtVsoUNbA=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48373ad38d2so35835e9.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:13:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772151210; cv=none;
+	b=FyfAdv8twp+SgKzvSKHcLlV/kaM19plcdUeZlJWz6rTWlZiOl09JXd4sGWrUtxrXLA8zHZ
+	VKS5rWtO/5gGEJVkRG/YX1r/yug9bNpDykiQxSn8XUVGNrLLZtpJIgxQdlLhH2N3QmItXK
+	CFog6K9ZrwSVCkoadjjc4sUtA13gE/Y=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=khyo8jLo;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c710439535so86986885a.1
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:16:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772151362; cv=none;
         d=google.com; s=arc-20240605;
-        b=Wv8McBKNw7kuMvqqB0zf5ZNUMGquK4R+NJ1cGVV+XA3YRtO7GXv/St3hpwW+D/zbwz
-         ehcVvOzMYVCf5yculpsZTb7OoiWY6FQxfC5oVVe8RYczltWEgMPW1kIlwsXG5tgTub1k
-         CfTm56tOdvfj74I9G3WCPvYu47Z5r6724F94DHsNqVvjg5LEoxrPh+ueCX9jSDJEVyIO
-         jzR+ejOiINZU3Im41JVBE5EYdrH0rBvm6l+UN8C20A6t1zKG7kGz/ey2nXUWEbboixjG
-         LzbCwjzwxzQGosPAkD6wY5/8ckYkHa7CDtfV4VK8qazdeGIgqu1jbKZ8vHLrR7ntZeZB
-         EMcw==
+        b=C2dRaypxAwEb8iU6WbOodE+C8dbx3fGCNduHIDscXBttOe7At7vSbm+KkxjFEsgFQ3
+         8WyodCctHc4aGbu+jUB7P/eIoom0d2qarFMfhZH0l+6p+3MhrqMAdLimf9MbO2FUb9Qh
+         ro3gAMz4e4oTwD6T37gFAIRd9SoM64ev8v9ML0OHX4BsstJ3izbrZAg3MP7HF4KkH9+N
+         b7ds5oQy3nsNNYXOepcsIj0lEBkoykE0EfHwIcyWJu5+Un90lLR6ieRVjF4lOcjK0QaM
+         GHv+fzm7b7MGeoHb8llZRUKEJS7MOSlOBvNUrXNyGMMAQYPYLfzT3D15sm36bzo8zrU5
+         4X8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
-        fh=XCa7uaLTci9QQjXtFcWOOH68y74N1Z1gPO5oHYAw1gI=;
-        b=j4torXRFAcYf92S0oJm5RtXD/I6ekhbBIXwKHMBPxCpdSPTaSCo1sCXgzYg+Y6lS3/
-         b5x3KLxkiZCPvI8hKJpawF5kqM4853u1Tg/vs5hPkWPSV/2LiWiiydYxV2Yfn8hsXvjR
-         Ox6OUiPaHyR1sonJFZz08MBKj9qf3KpwEwdTsBZ18jrW+Xdif7lN1+Hq0E1va6/8Bts2
-         P/kv9rTcUQqH+2072DrZbRDDcsGp9QfYVSLXiDQijLNEs4RbDSl50cFanN6H3WN7BiqR
-         26G+eaif7FCh9VBSNZ3lq0NVn2Fym7AJrq0/ecVds6sRYwy9vY93E/DIC7NQc3O7nk4F
-         J7HA==;
+        bh=w0NZDAeKbMdiB3N/VIVp1qkQUzC1j+dSdVDcQsUuKlE=;
+        fh=C6+AOUdjQAe3NAQgNekAzA7BLvLrEkEK4QCk/0/bMfY=;
+        b=Y6I3iY1N4hjqHCTYdCXXyIP9gkXOS+ZBeBs9idMdw14Zlc3pJF06MAhPKo9rjae47d
+         b4CN0RrSJJRFUTPkM50/Pdkf/KKm/Pyhr4yaBlAH3ZAK3JQr7uPi3m5eSdXZxdvpDYzG
+         0KyR50Idl9jdANwzKPQ2kuIpV1eaOzZCz0jocTkCjLu4Kdi3ZE5FReoSUPJOKPJZ40fu
+         bo8Dl7DUD9CwzkQMrxHagr5w5LcJLgpu6KAkt/rjJqoxRRHBYKkyby61Sz6RvfIhMaMV
+         OCZKHR9rlI+Yk+MnE2BJeQ/VKkXAjW2qOjbI3txJOqYYO8pm/U+E/xfuZEKOnoadnu/x
+         HORQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772151210; x=1772756010; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772151362; x=1772756162; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
-        b=r1xwrMmeve/wNouV/jicS0LFn7m2bdVi82PHVXYfXq553jlvVPHC26ISWtsby0c0Bh
-         VE7HqVPL6mfr7F39rcQGaKp4yRSdpdbIsafDW0KfIQNXG2TXPb3bZ9nradagS4nI2cqV
-         kz7OHS6W5IHIuX3wPM2Gw3Jebl0AdE1XQYgZky0A9d7seszZX64+YavKEkNwXWhiyvat
-         Xdq3VNv35NCsJ9gBrlzK6SBtZgbynwAfJXJAzTm5WcTq6qs3ifZzz4/TPNMba58vLa0m
-         +lAoQnelyyjuvcgsy98UpwfI0pzgWtorfQLRnKo+Ho9vuMRakfZ73qs1mjto2UWjyWH6
-         CXyQ==
+        bh=w0NZDAeKbMdiB3N/VIVp1qkQUzC1j+dSdVDcQsUuKlE=;
+        b=khyo8jLoZO9pah+hhZnaKPXlHhtayg9ovU4Kh0DCZHZqBdT/DXGhL/60JZeIPeCLx8
+         PtbISkoGpMfrBEox/Qg9LawpeQfHDqDgEcAuZmOvHxF6NIkqd6XZoPYbriAmFP6kD/RT
+         x9UZiewxxtEeN1GF5qL7BPdZ9V4soo53YZpexIPgiajvG08Vzkcix5L7XKcJumNHeWhM
+         Zl4AKJBQhVPM+QOKWUz/g75xVhY9i78iFYAwH6sVra9qjAPMWMaQLWc57mbLGvDkDS8j
+         A5zh1BpKH14hfRj97cHIFBIxjVHc+O3ApW5EjUD7pDzjiszASFxuXrsjj+KLmOo7LU0Y
+         joQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772151210; x=1772756010;
+        d=1e100.net; s=20230601; t=1772151362; x=1772756162;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
-        b=Ysqhwv80WZNi8fRD0VL8jbSkwPk+oa5/ECudtrREJzatsZ1yF5agn9/lK9SXSclJY6
-         ++TdGyvsJGjicdM16YAXbVosiJ7GATktr569NUuKxF654ewa1L3fi6ydphj2v5Lwh0wN
-         tJIwJZnnwvW2FEC//5fp3nDF+7B3VNdjQDHgBeKVZqZo9E3p63fKiTCF4zpwr/oIn+dA
-         hczx715mHufdItBuHlFw3rm7Ncym9mFMmZH5Smmnopujt3TMHcDv+RY4qutQB8jyz2yp
-         cVBQ011HAmv8xYDxdQxf/UTA8IhGnKLvq+EyqFUlF2SPnJ+WnUk6hGgm+kMEyaLQ2Z1n
-         ifUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVmK2PoswKjeUOBThqRRT4ledfaJvmB6tuGUxRPWe7igIoAdKiOdseT2lSvPhwVSwHStr6BGqKwQ==@kvack.org
-X-Gm-Message-State: AOJu0YxgMPhux0rdJlqVnrSAJ9nWYxxqGR3sDU0rr3Rb+/FtON48JuRc
-	aZhnHmll86mRoW7ntJPJhk8+TnKsctqapZtS45SMJAYcvJT48v+O8cX4MX0I+go01Jupfu3dgWU
-	KiahYYxsKzpl11p6j5N8+naNlj10ym1pzuc7OEuCs
-X-Gm-Gg: ATEYQzya8N1jM2l/B5YmUemqeQIM51/X0nAAHil97I9Z8QsnM2PYVj5VRbbMpbNudVC
-	PaWqlZEm3KhM1f6CKkDDxmteF0BztThRw6S34Y3XNbjCIKl02N8Z9hgHQxru7Yw9yl6zvDFSGkf
-	Dm6WPOVjLs+/QIz/mRCDM/UH97o7Dba7OMqQ61e5YWUhiFu1PjdzeUXz6fswEXtSOxryYgDCk0X
-	uYgh5kWAOiywL81E6M1urHVfSEjlWHAhskL8Fepd88VqZX8yIl81PX0P30WjOyCoTTnyTDBrAVW
-	nCsuQANcACW0mlfWIKxThl4Utq7aZkTL9VMuthRyeu6aJ/FVEBaFOtVVXy6satvJH7hXoQ==
-X-Received: by 2002:a05:600d:6446:10b0:477:95a8:3803 with SMTP id
- 5b1f17b1804b1-483c39f8080mr839615e9.13.1772151209186; Thu, 26 Feb 2026
- 16:13:29 -0800 (PST)
+        bh=w0NZDAeKbMdiB3N/VIVp1qkQUzC1j+dSdVDcQsUuKlE=;
+        b=TNl/Ho9No4jd+HxAm5gG51wQBWYGG+v2QeNSVXu3T1NZ//R4z+GcAASMooqZHB9qbQ
+         lTM8UGVPQfcrMaB2FXxWMDDs6JZD6lwTOmT/r1AAga0nA+wnJiq3KebykYoZQ/EEeBH3
+         WylJ79Jkd1Yf0tmLPhv+k01WSSyNiT+Aui+vGWKI0xB2e1opnH41+nK0qc/d1zhuxK/k
+         AZkrUSQRl+q/SGhx51kC3JQaFNEX8HhNUOBHo1zkQ461weuJAD1l0ys02w8L/eMrDgrK
+         nRiIyO1Yp1lJ0SN3wok/TTOR7bVifZKO5Fy/ti4j0s/7ngQUrxHg2I9hGkfnzFJU05Fe
+         V6XA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbchV/xNbxgdDY+roE3JONNTnO3CqtyarrqfzhHEnskwuwVbrrX1bk8mBlBKUgtYtlKzoNcAtHCg==@kvack.org
+X-Gm-Message-State: AOJu0YwvNg7AJEywkIujQ1dy+24BAdW/i9cRwXCn9pF+oa/IrCGbjI9S
+	sVBsCAi5o854KfZ12/TQ+GPSlXoSuNTh0k5RZMw90hylIBI/KIPuTINu9i1CCGNMGUKFgKUeh17
+	y+H4JPdu0A4beRfbszrq49HpI2Ze9Q5E=
+X-Gm-Gg: ATEYQzx+HpykbqY585Fsl7ccmtbopUYXYat3YIEf8awFTrOD26wM7a6ZOiwoiCbWmpb
+	GHB6FSN+UAcuYPUvoqizyken3nVbyV2QAqvkSQsVGztWuE6tW9zd7DQAs22Yrq+LmUhNyjaQMbs
+	5MHpKLqxKu3mLU/FcnlxxT+CdGz70XTQ/g8J2WNAiiJkdXSzTC5eYPHVNvWYIOskf9BSeMlrnA7
+	yk2gJDGIh4lJApGT1qwcmcwHO4E7bPK73CE7eRPhXlJAjRShe5W3Wrdu9L9LrHFp2fvDegptBbS
+	7VZaaQ==
+X-Received: by 2002:a05:620a:171f:b0:8c5:3067:903c with SMTP id
+ af79cd13be357-8cbc8e6a228mr122595985a.11.1772151361789; Thu, 26 Feb 2026
+ 16:16:01 -0800 (PST)
 MIME-Version: 1.0
-References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com> <CAGsJ_4zatnuLkCJyDe_o_yXmhngpc54kV6b7M3tu6JyvF-ZxDw@mail.gmail.com>
- <CAJj2-QEHAk-H6SSJY5OmLYuVyLRacSEgUupKaKefFFwGg7CftA@mail.gmail.com>
-In-Reply-To: <CAJj2-QEHAk-H6SSJY5OmLYuVyLRacSEgUupKaKefFFwGg7CftA@mail.gmail.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Thu, 26 Feb 2026 16:13:17 -0800
-X-Gm-Features: AaiRm53yJMkwbgWJFQhZjpThlXpBx0qFwZUc0UbsmNlpQHCVPi4MvDukFuHxL60
-Message-ID: <CABdmKX2mOD8CwAHPbn8Cha1uuMP8_mSXdH=914z5x_qTkJf7wA@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and Challenges
-To: Yuanchu Xie <yuanchu@google.com>
-Cc: Barry Song <21cnbao@gmail.com>, wangzicheng <wangzicheng@honor.com>, 
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, 
-	wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, 
-	zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>, 
-	"kasong@tencent.com" <kasong@tencent.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "weixugc@google.com" <weixugc@google.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
-	"willy@infradead.org" <willy@infradead.org>
+References: <20260225223712.3685-1-21cnbao@gmail.com> <2558f7d82b9a482387960f45409e1b76@honor.com>
+In-Reply-To: <2558f7d82b9a482387960f45409e1b76@honor.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 27 Feb 2026 08:15:50 +0800
+X-Gm-Features: AaiRm53P5clO_2juHQObOB0l4f9jyL9LfcjYoi5jGuXN8wzTTgjYnLWb54eQRDI
+Message-ID: <CAGsJ_4wV=OpV-ntZQGKQawrO0kemwdT8byySBCCZiOOgugcQtw@mail.gmail.com>
+Subject: Re: [PATCH RFC] mm/mglru: lazily activate folios while folios are
+ really mapped
+To: wangzicheng <wangzicheng@honor.com>
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Lei Liu <liulei.rjpt@vivo.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Kairui Song <kasong@tencent.com>, 
+	Tangquan Zheng <zhengtangquan@oppo.com>, wangtao <tao.wangtao@honor.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4515080004
-X-Stat-Signature: 695y45gnmcmnimydenqhbenj8jnparr1
+X-Rspamd-Queue-Id: 26E738000D
 X-Rspam-User: 
-X-HE-Tag: 1772151211-61078
-X-HE-Meta: U2FsdGVkX1/rVkEgjm57XjYuD6DAincfeTekeWyPuQLVRygRKUPS+DR/BJfZ5Xs53iDc8RXnrn7YYhCez1lLkW9PBdOzDhLol4r1mZ/jY5+tTM5BAUrCwZtvvOStrg122kySfUztb6lAo8a4XtJfrk3bA4Q4wMzUF9sRfSdbyWEhO8TOofntS0nOu4XgkbeOHReEtDxXcifD0p4YtfwU7eNTKuoEtbk/igQxKwCnZ+MGRkW0azEv1+fsJ2DJB0O5jK+Uqioz+Tv79/JaboOVDDIgAClhbFR+wAk/ymDi03YZ5BI6DAc/R/e4RZRlgcOjDz0w3/YuiV/l0sP/Wg/Evt7/6wZmuG9lqB8Iqu8/yRT14JorqmjIEHHb/004ZDkKQ7NQPeCS5xGxjDtC/+Sk1mHyCWhPl+Bf1vovBWnqhLYBFTBPP7cjiyDVvtNoheFsq+D9x7b66SZJdF6wtldPOlfenCr+q/AZUQeQ5r4zMCM8NDsLiTJfJxGnxk3a39CbqYRXo8j3aA8TdCsxi4pFOg0+TBk/gaSIiR3CKIWpKRtS9PGVEjiFx50Lps8dtetpyCkAbDjObKEN17Qb99ELQuYTgP37fdd/RE8ANjI8MujuSyOI520gAaXKX3tklYg4L/Ml7lFEV0hJaAQLFcyHkqkynZ/P4p+dOSDQ/Di9E7H0G9hUqk9ZaeL/xXVwQhrRbmlb3w8awJeV1hlDN9VcwU0Q5hHKDt2toja+ujlJPdPocQsg3nnxV+a8ZKovBgtKABhwr2xYAj56uvg4hWhGqjjxChs6vMcAXEuyyN/rfQ0eCv9L9ipS505Ld0ytjm2IDiIZGvuOBcgA8qdZ/2tcwB8+YpvLnTNXowCO/2K9+XDtfxeq0OPYReQcerBClglZloLdfeI6MdTYsrLzrSbsU8zNUPnb1YxzLZXnTlh8A9W/B62GoEXB8mbpbPsuabzbKivoPLiWNIJBm2OAIfW
- F9yjX85X
- SSVnYG7ScBTQHLRA8KyMaA01SLulQdGqS1CEtTcNnagoXzK4wsICCPDtqs71L2aMeVJ3Q8jOJS10DvxIQX7qqTvyjgpJp03T46U7sYElLfPjRR0bgiaHYxk0RSwvZHnw1Jz/MIeEqFm8pN+35wIOiVj2P5/gDtiswb8i4lrmzuLeiegpMI1Mh1LDPLhol58PBAtelq+oN3N5wzgFqMoDX62Wc6NUsSfIf9FtknN58gfC7rEG/DcwerMRFMNQbnZU6BLrQnXkZH+P4anNPUL3MwFXlpSf+Fr9pCU3EuPPVmxdmqRTuIM3jGb6+RsHYrUOLia2GMDgTWZCmAukP813jj/oss3IUjFD4yR0oFwdHcMFXdlXhYPysJ9b/SXnSEeznrrTN
+X-Rspamd-Server: rspam05
+X-Stat-Signature: uarc97dqya99shsqg1ro188cgagokqmf
+X-HE-Tag: 1772151363-998304
+X-HE-Meta: U2FsdGVkX1+WXOQ9ijNZKbi0JAtAAyISU0zkAXjDhk/+QfVP1O52/iX454pVRRBvvr1E2DSaw3C/ruw4NOoArLrvDdDcrerEagcBEA/MVC5GDx9O4intLd1XPu6mgTM5i7UsH+EuePgd/OVMrwZ6waU/N7mzlZHOfTQr8CmEmbkDsv9zLKuqiTEBZUMkWQujP3SaBs4mIaxSX0EEbkzE1Z9o/yazlDRVbbglxe8UpzoEyL6/6oCyB7SwtZ1F1FW4TRQADJnxKqckM9QaeynuzrVG8EbJx7g98CQUJrodi/vzxnoZ98cI7zm80HyPtlbc2OAXUaICHzqWL9SN4+vUvtrPzt6Fxq1HIZNdEub8dB8mB4Ixbqd9s9O7Cuvlaq2TgygBkGH/jI4VBoTf/JnTiVSK8YF1Xot+0pS9kFPhSiQsY19w6+sqVeEq91PFqK66F4Ksr92+36TmhnUX7Tcl6uk428L8dVQD5bONV6SUCgA+FUmOqznG8NmK0HLd1lT8NzCAvwXFw6PH2k2XdGFha4AQjeN9oM3VSQUlZQNoEugFffOzz4+i6IbbFQp5pzwcFJD+r7ljs3iLzy0dDSx8DD/7f8RsQPS+U7akW5zmHXBfQxY9r9n5MgA+HecJm2YBFq+t/virhFisS7wVSW5N7h4qXWOIP1S5nqBZrc1rDdvinb9GlbDc2kZmB7yAVIct/sQ/BNgZjplr+6vh31Wri1zAj6LX6wHrrPjgCD0sZ6ZTHPdrC37hoSYuq/RFSlcq1Hs4QvQu9End6q5eSc29rFBaxMAVwxxkSysSaafve8VrM0paYGsFBTVgmLDGe3HYix+MdTaj3alHaim2Slp5DMrliB6IeX1QO+c3ACkfYWK3wHNxMF9NJh6owhG6+OqKNglVeFdqT68FooUGMfGYAFf22PllQ+GaQA6ihaL/Avd3kIb1PsTfjX/HXbdXLVPq2g4b65U2tTIUkbSwutJ
+ dij8FAZC
+ UvHItwS/VimDFRZ+PDwVBfivRE4zKm9+wuRN6kCIfYIvPuQOKdOpsKQmQbZbmwV/ovTOs+tJTY1VIuMmyM7k4lndrlIvYSBhwKh0ukSTj+/asxlmu2my08YJucWBf0Civ4xmdwUSbSX4QERWXtBJ+zIbN7H75mBkwTOH7KaKvi4Pyvt7pg6Am1mnyNauz+gY0A8nP3Qkw+1B/fk+hgXia8ypJsZJ28ynHoA+4Xqun5qFJekXB3enmIMc8yhbUNPeomUvvscc8ZlfIM2dDkEhSNB9nGq7wdXAgTWJ8IFCqZtlnXDUX0+ZOXM9PbrfLO70VgJ1OI9uNNZKcr7RN23nvnPzMGtDr2mDOHemm/OZEOW9k+yQ8Fb8/GAeIUwb+4TqNHzgh6U+c8m4IdhbDVvkv88E+yqKFl+a1A/CUpmRKmanGkHZ9Ei9N6GMH70JboKavLdSQzLE9hxC5K9Z0XyEwpCbRGaGbEamJovXc/xzrL3HxhgNkCtmV45FSUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,125 +143,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 2:11=E2=80=AFPM Yuanchu Xie <yuanchu@google.com> wr=
-ote:
->
-> Hi Barry and Zicheng,
->
-> On Tue, Feb 24, 2026 at 2:23=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
-ote:
-> >
-> > On Tue, Feb 24, 2026 at 11:17=E2=80=AFAM wangzicheng <wangzicheng@honor=
-.com> wrote:
-> > > *snip*
-> > > Below is a short summary of what we see.
-> > >
-> > > Q1: anon/file imbalance and drop in available memory
-> > > Android apps workload show a persistent anon/file generational
-> > > imbalance under MGLRU:
-> > > anon pages tend to stay in the youngest 2 generations;
-> > > file pages are spread across multiple generations and over-reclaimed.
-> > > Tuning swappiness to 200 and ANON_ONLY does not fully fix this.
-> > > On a 16G media workload we see:
-> > > MGLRU: MemAvailable ~ 6060 MB
-> > > legacy: MemAvailable ~ 6982 MB (differs by ~1G)
-> > > Today we mitigate this via explicit memcg aging in Android
-> > > userspace [1], which is a vendor-only workaround.
-> >
-> > One fundamental design of MGLRU is that file generations and anon
-> > generations catch up with each other when the generation gap reaches
-> > two or more. As a result, even if swappiness is set very high, its
-> > effect on aggressively reclaiming anonymous pages is much smaller
-> > than with the traditional LRU.
-> >
-> > One workaround is to force old file folios to be promoted to relatively
-> > younger generations, but this could also cause problems by clustering
-> > file folios in the newer generations.
-> >
-> > I wonder if anon and file generations can progress separately to some
-> > extent.
-> >
->
-> To provide some context, the file and anon generations are coupled
-> primarily to simplify the MGLRU logic (Original Yu Zhao's intent).
-> Separating the two should allow for more flexible policies for sure.
->
-> > >
-> > > Q4: Lack of global hot/cold + priority view with per-app memcg
-> > > Android uses a per-app memcg model and foreground/background levels
-> > > for resource control. root reclaim lacks a cross-memcg hot/cold and
-> > > priority view;
-> > > foreground app file pages may be reclaimed and reloaded frequently,
-> > > causing visible stalls;
-> > > We currently use a hook [3] to skip reclaim for foreground apps.
-> >
-> > Interesting. This somehow reflects that the LRU lacks the user=E2=80=99=
-s
-> > context, especially on Android systems=E2=80=94for example, which apps =
-are in
-> > the foreground, which are in the background, and how long an app has
-> > been in the background.
-> >
-> > But this is not specific to MGLRU; it can also be an issue for the
-> > active/inactive LRU?
->
-> Pardon my lack of familiarity with the use case, in what ways are
-> existing memcg protection features insufficient?
+Hi Zicheng,
 
-I think he means that whichever memcg is next up on the memcg LRU is
-the one that gets reclaimed from first, regardless of whether that
-memcg is for a foreground app. Because there is currently no strong
-relationship between memcg LRU ordering and Android app state. Android
-updates oom_score_adj on app state transitions, so it'd be possible
-for the kernel to use that information from userspace to influence
-memcg LRU ordering, but I'm not really a great fan of that idea.
-
-Right, reclaim from foreground apps is not exclusively a MGLRU
-problem. There is an effort in both MGLRU and active/inactive LRU to
-provide some sort of fairness (now both are eventually-fair) for
-global reclaim, so that no memcg is the subject of disproportionate
-reclaim.
-
-I'm planning to investigate applying memory.low to foreground /
-top-app for reducing the amount of reclaim from foreground apps.
-However at the same time, we are also working on applying memory
-limits to all apps (memory.high) so that no single app (including a
-foreground app) can use all the system memory as a matter of Android
-policy.
-
-Thanks,
-T.J.
-
-> > Additionally, I=E2=80=99d like to add Q5 based on my observations:
-> > Q5:
-> > MGLRU places readahead folios in the newest generation. For example, if
-> > a page fault occurs at address 5, readahead fetches addresses 1=E2=80=
-=9316, and
-> > all 16 folios are put in the youngest generation, even though many may
-> > not be needed. This can seriously impact reclamation performance, as
-> > these cold readahead folios occupy active slots.
+On Thu, Feb 26, 2026 at 8:57=E2=80=AFPM wangzicheng <wangzicheng@honor.com>=
+ wrote:
+[...]
+> >  /**
+> >   * folio_add_lru - Add a folio to an LRU list.
+> >   * @folio: The folio to be added to the LRU.
+> > @@ -506,7 +519,8 @@ void folio_add_lru(struct folio *folio)
+> >       /* see the comment in lru_gen_folio_seq() */
+> >       if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+> >           lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+> > -             folio_set_active(folio);
+> > +             if (!folio_is_file_lru(folio))
+> > +                     folio_set_active(folio);
 > >
-> > See the code below and the checks performed by lru_gen_in_fault().
-> >
-> > void folio_add_lru(struct folio *folio)
-> > {
-> >         ...
-> >         /* see the comment in lru_gen_folio_seq() */
-> >         if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
-> >             lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
-> >                 folio_set_active(folio);
-> >
-> >         folio_batch_add_and_move(folio, lru_add);
-> > }
-> > EXPORT_SYMBOL(folio_add_lru);
-> >
-> > I could have submitted a patchset to address this by initially marking
-> > only address 5 as active, and activating the other addresses later when
-> > they are actually mapped or accessed.
+> >       folio_batch_add_and_move(folio, lru_add);
+> >  }
+> > --
+> > 2.39.3 (Apple Git-146)
 >
-> I need to read it more closely but that's a good idea.
+> Hi Barry,
 >
-> Thanks,
-> Yuanchu
+> Setting only non-filelru-folio in folio_add_lru looks reasonable and
+> should help with over-protecting readahead pages that are never
+> actually accessed.
 >
+> For our workloads that already suffer from file under-protection, we see =
+two
+> sides here: on the positive side, keeping only actually-used readahead pa=
+ges
+> in memory could improve performance; on the other hand, since we already
+
+Right, the fundamental principle of LRU is to place cold pages at
+the tail, not at the head, making cold pages easier to reclaim and
+hot pages harder to reclaim.
+
+> see file under-protect issues, it's not clear whether this change might
+> exacerbate that or even hurt performance.
+
+I find your concern a bit surprising. If I understand correctly,
+you=E2=80=99re observing that file folios are currently being over-reclaime=
+d.
+In that case, placing hot pages at the tail might make them harder
+to reclaim after PTE scanning (since they may still be young), but
+this seems to violate the fundamental principle of LRU. Moreover,
+when scanning encounters young file folios, reclaim will simply
+continue scanning more folios to find reclaimable ones, so scanning
+hot folios only wastes CPU time.
+Since read-ahead cold folios are placed at the head, relatively hotter
+folios may be reclaimed instead, causing refaults and further triggering
+reclaim, which can worsen the situation.
+
+>
+> We'll test this when available and report back. We hope to have a
+> chance to discuss this topic at LSF/MM/BPF.
+>
+
+Sure, thanks!
+
+Barry
 
