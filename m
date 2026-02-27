@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E53FEFB5A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E07BAFEFB5A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:16:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFE1F6B008A; Fri, 27 Feb 2026 10:15:25 -0500 (EST)
+	id 4FB4A6B0089; Fri, 27 Feb 2026 10:16:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA8736B008C; Fri, 27 Feb 2026 10:15:25 -0500 (EST)
+	id 474066B008C; Fri, 27 Feb 2026 10:16:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA1396B0092; Fri, 27 Feb 2026 10:15:25 -0500 (EST)
+	id 3A18A6B0092; Fri, 27 Feb 2026 10:16:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C507A6B008A
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:15:25 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75830160707
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:15:25 +0000 (UTC)
-X-FDA: 84490585410.30.86424BB
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 238656B0089
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:16:13 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BC17B8C12D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:16:12 +0000 (UTC)
+X-FDA: 84490587384.20.53A4277
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 05754180004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:15:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=McM9intw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nPhduoPp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=McM9intw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nPhduoPp;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7397818000E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:16:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2FuJYGnS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=euG43Sf6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2FuJYGnS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=euG43Sf6;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772205323;
+	s=arc-20220608; t=1772205370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n16DyrXNQJJWW+Jr2xePFGtnXxpA3QEZ+Wy5qwxXsU8=;
-	b=hMJu/H0/6unTQN5tA1O2iUgtKGCxkMadCEvuM8XA3MEbfNOB05eWcJZEfCnBXVpt4ux4tg
-	m7da5gnvMO/6mGCGDbH+mfwM+M6D+rh7Q+xSlCv89nw5/f5Oaj5BD3O2TcLx7MSnF+m4Yv
-	OJ1QhscjWjQexFwYKzFcwCFQWHpWi2k=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=McM9intw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nPhduoPp;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=McM9intw;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nPhduoPp;
-	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205323; a=rsa-sha256;
+	bh=5bT/5Ey+UiP9GkCUmIfSuz5KQqLzi1KyS/67r+nhyFs=;
+	b=PxRBaIr+LGefI2FXLIYc8nABkCZLf0HOUVVbMO5FoSRh+SRhnS3q7b6i8me10wl3ZyoxwQ
+	sTkPl8d1Ja5OiusbbMMas+taACg5abGj5we1JK/xvLt3OF3lkNgitYM9OChWcbgE9dMfzU
+	XAmbPXnxRVvMA9Ih8MoUTEBIoIINkiY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205370; a=rsa-sha256;
 	cv=none;
-	b=RgpAJ+s2eDMM3q8F/VGzezVu6mRceH6cXuQO02H3GfrqOd6oEmwL1viLmZ7V8m4jRdWzmz
-	qDMXdAQCyVfFZcbde2rGJoHXKh1jMaNnl8GkTXuHUFLUWV/OcKIyUVQ4cduLzsT54sgz51
-	iej3cYsN0xpNFK1RYYjX/dbj5iTLi8w=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=ibvLlgV3993KFk09SoW7a32FwplpcFyDVOjJZDDXbhFRlfEe6lPQbr4lPlBqZHssDNOAZQ
+	B7NsfGnSF03FvjaW343ciAzKSlU6bw1cV1XOtpZRZDSrb0eMXTV83wO4lkaZNbHR8WEWWq
+	1zZ6Pv7ax/5hynJzk1phxNUePR+tX5Y=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2FuJYGnS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=euG43Sf6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2FuJYGnS;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=euG43Sf6;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F4145CD90;
-	Fri, 27 Feb 2026 15:15:21 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 345DB5CFC1;
+	Fri, 27 Feb 2026 15:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205321; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n16DyrXNQJJWW+Jr2xePFGtnXxpA3QEZ+Wy5qwxXsU8=;
-	b=McM9intw4dirxWmBikLUCFafM+qqOFKvkFzEzBQKIUIUo01I5KXX+IugLybO2xPitFE12y
-	HYyw4WAS9OlflHpr6gRLel2LZHMVO6Bn6ar2N/CSETqJAFRxTCl9mZgE0Kp+D/5SwWaJuU
-	JxeSRcRje66izI0nDY9WuHAnvrtwjdM=
+	bh=5bT/5Ey+UiP9GkCUmIfSuz5KQqLzi1KyS/67r+nhyFs=;
+	b=2FuJYGnSwUJoxXJIPxzWy6iFa8O7PJR2pTuSP7UVBdgGiD9vKncPMG6CgPzCKTFxIKlzPW
+	z/4CRcsr4Em7WbXSVuwoKQrQxfyPlZWl1qkH0ytj5QxrAjs/ZXbPr41RF4ER4VEvKPjU/F
+	LlND7a++E9FOJhZBVXMY8PQG7sXFSqU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205321;
+	s=susede2_ed25519; t=1772205369;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n16DyrXNQJJWW+Jr2xePFGtnXxpA3QEZ+Wy5qwxXsU8=;
-	b=nPhduoPpt1VRceBdX36AOVfehD+5hdYNO3nYAZqf9TK0TM9u9kzDkUkPT//+UfWFUmdzsF
-	JWnydrZzTp4qJJCg==
+	bh=5bT/5Ey+UiP9GkCUmIfSuz5KQqLzi1KyS/67r+nhyFs=;
+	b=euG43Sf6v7MU+Xhf66zBmyXAAuu8uH+ZbLtijhXAJUpqP3U0Ki2m/xLStH40vWH2xOzVtM
+	EWXK9XSHIVpFJKCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205321; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n16DyrXNQJJWW+Jr2xePFGtnXxpA3QEZ+Wy5qwxXsU8=;
-	b=McM9intw4dirxWmBikLUCFafM+qqOFKvkFzEzBQKIUIUo01I5KXX+IugLybO2xPitFE12y
-	HYyw4WAS9OlflHpr6gRLel2LZHMVO6Bn6ar2N/CSETqJAFRxTCl9mZgE0Kp+D/5SwWaJuU
-	JxeSRcRje66izI0nDY9WuHAnvrtwjdM=
+	bh=5bT/5Ey+UiP9GkCUmIfSuz5KQqLzi1KyS/67r+nhyFs=;
+	b=2FuJYGnSwUJoxXJIPxzWy6iFa8O7PJR2pTuSP7UVBdgGiD9vKncPMG6CgPzCKTFxIKlzPW
+	z/4CRcsr4Em7WbXSVuwoKQrQxfyPlZWl1qkH0ytj5QxrAjs/ZXbPr41RF4ER4VEvKPjU/F
+	LlND7a++E9FOJhZBVXMY8PQG7sXFSqU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205321;
+	s=susede2_ed25519; t=1772205369;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n16DyrXNQJJWW+Jr2xePFGtnXxpA3QEZ+Wy5qwxXsU8=;
-	b=nPhduoPpt1VRceBdX36AOVfehD+5hdYNO3nYAZqf9TK0TM9u9kzDkUkPT//+UfWFUmdzsF
-	JWnydrZzTp4qJJCg==
+	bh=5bT/5Ey+UiP9GkCUmIfSuz5KQqLzi1KyS/67r+nhyFs=;
+	b=euG43Sf6v7MU+Xhf66zBmyXAAuu8uH+ZbLtijhXAJUpqP3U0Ki2m/xLStH40vWH2xOzVtM
+	EWXK9XSHIVpFJKCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EA413EA69;
-	Fri, 27 Feb 2026 15:15:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2B2333EA69;
+	Fri, 27 Feb 2026 15:16:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id l+XJIgm1oWk7GwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:15:21 +0000
+	id bSiECjm1oWmDHAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:16:09 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5A184A06D4; Fri, 27 Feb 2026 16:15:17 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:15:17 +0100
+	id EC09AA06D4; Fri, 27 Feb 2026 16:16:04 +0100 (CET)
+Date: Fri, 27 Feb 2026 16:16:04 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
@@ -113,23 +113,23 @@ Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
 	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 07/14] xattr: add xattr_permission_error()
-Message-ID: <hexzz2e3fgb7ww2xzs4vf44od4dkbdhrcbfccscdz3gbf72dug@vzpbafbt7tzl>
+Subject: Re: [PATCH 05/14] pidfs: adapt to rhashtable-based simple_xattrs
+Message-ID: <zfwhp3c4mtf4b7gw4qmxayfqrzf4h723s2vfjpfid62yfjz2zt@6ali24hx3ihp>
 References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-7-c2efa4f74cb7@kernel.org>
+ <20260216-work-xattr-socket-v1-5-c2efa4f74cb7@kernel.org>
+ <qxctwu77wp7gv4ua3hn6kg7r2vt57laomn3ebjisemzzaybagy@mvoo2wpvu2ux>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-7-c2efa4f74cb7@kernel.org>
-X-Rspamd-Action: no action
+In-Reply-To: <qxctwu77wp7gv4ua3hn6kg7r2vt57laomn3ebjisemzzaybagy@mvoo2wpvu2ux>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7397818000E
+X-Stat-Signature: tq4tj3anehdmm7od55usz8ezxcq4ox5g
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 05754180004
-X-Stat-Signature: m9awt8kxu8wehzwuijzg7fc9rntz7n7o
-X-HE-Tag: 1772205322-486184
-X-HE-Meta: U2FsdGVkX1/b0VzVGH6XRp9fUpf2cWxzGlKXn5ZZFtgGoQ31S6IkxPYPxQFDh8zOQi/hyduNtpvTKGS/zJ0BjTL4eujYXJatbvPyqSp8PXzP3in1ENAh5BjU0Ebzkj2oYm2IS3pl1uZwb135WVswnbK5ZebnTl2HfvBPeM4Fs/LZ+IvuDXNhhg7zrm0nRAHow8N8jTnejD4vysAarSXIdL05ziWL3u36XUSTqf3WKOXbcEHVxLQlIZrHJXDrQAnNI741NLyUOKm3WaqePUmfG8Z/eWoDwUIHghE2AnWnTcM90BSlNR5n+nulTyEae1LqSnjPIUWxmGwmYhxEbpzbpFwyq0g9v7Et7Da21yIvmnwOQgy3XhHFvOp+La/YGkqBMDfhXC74Uz/xL1/QudQMqY8WRc1IWyPawNnnaqTMq8m070LayAGZLhN6tCCQ4dWbN1weEVoIcAqKUcBT6uBRW3XNj88WH8r2M8QzVlDRy9Cr6qFdPQSQGoK8EbDG48EqWmhnCXP6GE/cvEr1FQJ3gdiQkmlN40BV3O4Vb5JbLxDaJguZf64McjSEgky4yw40cWnpfOnQXMAztZ+0mLAL0M95oDi0p/aqWxXNR97tLm283FabSSPWafcFmEH4YVVTNLAjjmaSqXP7AILgZ9qSpMFStFSbCz/0N6oULasXTt7/9vlwlluNhakEZMW1rDoV9UeHoYyfOehbkke3TIu0k3NVZzD0XleIzQN6OyQkkrTvQOWHPT2Mk4GO1vqCXBdJGAQXhso5IH+H+WBC6FA/tlNpLsucp1sxe6QKea+Mq6+nbkzQKO4NdJeRB2Et1DBtRPVP9he0V6FT2XzpgKnFbwGlhFRr0nQ/5IWYE6TO28Dd20I87ERtjDrGCV2TMT+nAbQYME9oH0BfWHaIGjrdkd9aUL+Fn4txPFxWC04UK4qU06VVU32G58AhopDR3aRL/h0R8hXK8qycXfu4cLV
- IKCp3O3s
- wiildf34DjauKXP7hL33UpMz9SpTd9ctN+36ECmAdAGT+Zd1ZHj1m07kIgkBRAH4KgKhEGXJkHAwLGZN8aa1+TQexzxYklQy+bgTfFLNAc1HybTTPVhLnE+QDkNATJy1bVwQsCOE+ckmP7r+rLI/+vWv33VxIq4Y2jEbGGcmoGxldjTfGALro9Q0B5nClNERR8IKyj5yJSRlJb8g3jxFyTsjoQrzlY3XGUh6F257g0WEJoCno1sRN/rpuJDFFKQ7weG6drpPfykW28Cgq8xxLNXMht2UmP2i4OW9y24EYjOWWjVm5KVS/4Q1My1GqJug7EhOx+tN22N6H+mHGOxh1kql89ITf+t+cRQNIw+bEIItJYMmTX+P26/Q3yvoOW0fjl6Zu8exGNcbDZQPh54euDogH+5LebXPtmgLz
+X-HE-Tag: 1772205370-764531
+X-HE-Meta: U2FsdGVkX19Z58cHU4Dsn/74+BybJMVC+zrC1mWDmxpJz4lRXdb6Ia+9NJweIJwpYpfIyB8LfmZuNYdkpBTxdP7zqGc0T0P7s8RjHSONhUkEK3sIYvmD6jlgEUjip6soSLQaHjPatzo31t3pMsLfSshRvcEPfljgfxf7Qrq2CeDeOs5hmAH+rDoH9Py86fGW2uAm443G0IamjNtJLPy2NE4KolcO7QNhI1nfowqDiU4yu0QtYbU7n8kJUdSkZkJr1itbBLGyK/p3cHxexxfXo6TVS/ieIKedd7PfjMcpgkXvAiRjxkScopCEWtv2EKjqZRkG6SmBtIjACla/fgjwy5wh4C9PPWyEhl36oXii7co9URE4hEGuMNczDU2hvzQgyiSNjR98+MFKttMV7S7oR91b2XND62VExuN7wLqvc1yZ6xDhwjSDHJwD8CgThBNTpSbLTv30R4nqghBulywj3NM4TXv2qxnNnjbFLoWDTbeuiq3BJTCf14zcGlXoHAEab0RYDTt+/0JL8lqiWWAypJH5zB8tyS/gFbiWEQlSLSDZcNKSxweGGTEGHahNujTA+5KUReqp2RrvADfueypEKeMO4BvmWxIMEpwnUOK/lSFnMpIsOy33MSQ4+ex/HDHD2NQqNXcTcpP7fGUBbnYmaw2j0AEg8cqVTOLXSgBvgaBlOLFYubWA8ktGTBBkRq4YpEb/n+2mabEamHHeQGx1nwT2yp/MAclkpIcySk+JxR1pvn1euLgk9fk7OCeF7FmE0D4r90ZG1hJXQGftIYs0aHzXp4uedrNoM7pf/RSz5iNSu7Rnbs9wQJIez8dXIk/tKfAoJVdkdtsgCM6Yr9WVb+YRrHq4iiGdrfKiChFcw2aMpWh/X4Z/6RDTmIn/VIwSDlhQYGHhfrQ+wgg1d/mpL0GmYFYQHLpFBIBoYt5qF2wMyn6YrvE1UYKbqPeDCvWUkNPGZv3RGFkDei/C5bW
+ H3oigr/i
+ XUWjwFLUnOiWigc2VndKffrEMpVOUyho+6/gPL2ZGQSX5zZ+mMJQzVtQcR+f/9JLb+ZWT5MP7ppCqpD9yChSuJBKT0bDmJRNUISEuzSF2xoW4cONqQeIZ5h+GK1TARt2SeVNESSzh/DnWoq4nEVyIC/9KipG0/Sjw2baJKXl22XSdy5Ya9kMjTn3Wie7yW3qFH9aPy9KKe8C5t+4YGoN3jBk+alny3n4uWM8jwrBTaPV3IQQHBSpJkcJnv6AUouQEE0vLBDihmzwpXUtpXFdfl5bPnzMPg1MTUbB3k3QRwHj7VJlbr8PDy4Vn3c3pNGHtbQpgaFMENLtIDxJtVk5LiP0VW/WYJ/EK/MuSrzIRy5MxAclX3JTezMbjt93LLT3i2hs1y5zobMQ8lZnzcdhtpFeKh1q+XUBLG+Fg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,62 +137,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-02-26 14:32:03, Christian Brauner wrote:
-> Stop repeating the ?: in multiple places and use a simple helper for
-> this.
+On Fri 27-02-26 16:09:15, Jan Kara wrote:
+> On Mon 16-02-26 14:32:01, Christian Brauner wrote:
+> > Adapt pidfs to use the rhashtable-based xattr path by switching from a
+> > dedicated slab cache to simple_xattrs_alloc().
+> > 
+> > Previously pidfs used a custom kmem_cache (pidfs_xattr_cachep) that
+> > allocated a struct containing an embedded simple_xattrs plus
+> > simple_xattrs_init(). Replace this with simple_xattrs_alloc() which
+> > combines kzalloc + rhashtable_init, and drop the dedicated slab cache
+> > entirely.
+> > 
+> > Use simple_xattr_free_rcu() for replaced xattr entries to allow
+> > concurrent RCU readers to finish.
+> > 
+> > Signed-off-by: Christian Brauner <brauner@kernel.org>
 > 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> One question below:
+> 
+> > +static LLIST_HEAD(pidfs_free_list);
+> > +
+> > +static void pidfs_free_attr_work(struct work_struct *work)
+> > +{
+> > +	struct pidfs_attr *attr, *next;
+> > +	struct llist_node *head;
+> > +
+> > +	head = llist_del_all(&pidfs_free_list);
+> > +	llist_for_each_entry_safe(attr, next, head, pidfs_llist) {
+> > +		struct simple_xattrs *xattrs = attr->xattrs;
+> > +
+> > +		if (xattrs) {
+> > +			simple_xattrs_free(xattrs, NULL);
+> > +			kfree(xattrs);
+> > +		}
+> > +		kfree(attr);
+> > +	}
+> > +}
+> > +
+> > +static DECLARE_WORK(pidfs_free_work, pidfs_free_attr_work);
+> > +
+> 
+> So you bother with postponing the freeing to a scheduled work because
+> put_pid() can be called from a context where acquiring rcu to iterate
+> rhashtable would not be possible? Frankly I have hard time imagining such
+> context (where previous rbtree code wouldn't have issues as well), in
+> particular because AFAIR rcu is safe to arbitrarily nest. What am I
+> missing?
 
-Looks good. Feel free to add:
+Ah, I've now found out rhashtable_free_and_destroy() can sleep and that's
+likely the reason. OK. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
-
-> ---
->  fs/xattr.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/xattr.c b/fs/xattr.c
-> index 64803097e1dc..c4db8663c32e 100644
-> --- a/fs/xattr.c
-> +++ b/fs/xattr.c
-> @@ -106,6 +106,13 @@ int may_write_xattr(struct mnt_idmap *idmap, struct inode *inode)
->  	return 0;
->  }
->  
-> +static inline int xattr_permission_error(int mask)
-> +{
-> +	if (mask & MAY_WRITE)
-> +		return -EPERM;
-> +	return -ENODATA;
-> +}
-> +
->  /*
->   * Check permissions for extended attribute access.  This is a bit complicated
->   * because different namespaces have very different rules.
-> @@ -135,7 +142,7 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
->  	 */
->  	if (!strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN)) {
->  		if (!capable(CAP_SYS_ADMIN))
-> -			return (mask & MAY_WRITE) ? -EPERM : -ENODATA;
-> +			return xattr_permission_error(mask);
->  		return 0;
->  	}
->  
-> @@ -146,7 +153,7 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
->  	 */
->  	if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN)) {
->  		if (!S_ISREG(inode->i_mode) && !S_ISDIR(inode->i_mode))
-> -			return (mask & MAY_WRITE) ? -EPERM : -ENODATA;
-> +			return xattr_permission_error(mask);
->  		if (S_ISDIR(inode->i_mode) && (inode->i_mode & S_ISVTX) &&
->  		    (mask & MAY_WRITE) &&
->  		    !inode_owner_or_capable(idmap, inode))
-> 
-> -- 
-> 2.47.3
-> 
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
