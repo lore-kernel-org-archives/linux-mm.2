@@ -4,106 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 317EAFD9E3C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 05:52:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C460BFD9E3D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 06:03:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64F986B0005; Fri, 27 Feb 2026 00:52:48 -0500 (EST)
+	id F1AFF6B0005; Fri, 27 Feb 2026 01:03:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FDBC6B0088; Fri, 27 Feb 2026 00:52:48 -0500 (EST)
+	id EC92A6B0088; Fri, 27 Feb 2026 01:03:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FC276B0089; Fri, 27 Feb 2026 00:52:48 -0500 (EST)
+	id DC7D16B0089; Fri, 27 Feb 2026 01:03:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 352276B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:52:48 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CAF7B1C5AC
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:52:47 +0000 (UTC)
-X-FDA: 84489167574.02.FE7ADD4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 67C5380009
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:52:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PX61LFfz;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C97B56B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 01:03:49 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F8221A052D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:03:49 +0000 (UTC)
+X-FDA: 84489195378.20.7C55FA8
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E97EA20008
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:03:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gB+YZJ+x;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772171565;
+	s=arc-20220608; t=1772172226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dtWNJDPoYaK6UoekXQbiIKRCxmmSnaHP4MoapppzNXk=;
-	b=T6XALQfWaRnkexJhl1XOSC/h5Bojpibio58VLgnR5cfQg7VbXlh6tBoQ8LVHkndFSHAEua
-	WorIapmiDEu1kJ2zx6NObENuVpqBh6zFNvaIMyBD18mx4eh1605PEZ9s1UB3hV4iU2NKBB
-	2qVjR/Gnii01o+kCpzFuGp4hJng0bHQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PX61LFfz;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772171565; a=rsa-sha256;
+	bh=sshwigJAX6f65gNTlOH93R2NUq9mh/IkLNRZoDBujjk=;
+	b=hVHYXnZsG4wR/jGkgXXFEHwdy3E6XtUn7OHKcM3bEnbq//lReEBn6WX91SbXfkpj/mUlfu
+	MMojciiy89drR8gEN+AhXlQpboHybHLSTxbg35baGaBiw1+IwCnoPCRCPyhQXkquSgh+1l
+	ndJoR0P79Q9sPLLAhKf6p3y6Mo/e9zI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772172226; a=rsa-sha256;
 	cv=none;
-	b=rcQf52/cMgjIHPP/lN/QtwJ1cm1XjtzeROa67FySQwQ+pC6sf+lOu9KM4+MUj4nI7GnUCx
-	o75+RfmLAYP1+UZWqBcaXBjspIUBKAqCokixwKv3AOdMUzbxIwZuEIbHlna3dbXWr4HAiW
-	tvSffbGjU767dFvzr6w/YAVpDTRrt64=
+	b=b8StYtWx+49afLrXNS6vCvDQePgex5v1BNr4fE4Dsfb+9p51m23QTQUxkaug41rP1IL/Fo
+	9Q0jZ0YWeNxQ4XgaAkFK3spvzrLvKsAWuK0Y37eH/a4g/r0SywK/2FX42jZo4hD6QOwpz1
+	m5qapxkI88UpVKfn+jYYp2uvAD1lebs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gB+YZJ+x;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772171565; x=1803707565;
+  t=1772172226; x=1803708226;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=LWOdmL0uan22tNsv3PGdyHuaOVgzT4VqOM5Rm/fNGco=;
-  b=PX61LFfzb4LqTCQuemgcs6mBocgxqmPdXcT+mFATJ+sDs2WYVU2I4YAy
-   a05DA2nZyAf1Ko9E5QbhQG7EfC6c/mX2i8cPjfScepAt+zxe79MdtOMmD
-   wexPHRlgz7iQvt+7LE3VxJkH+9haFQoQQtXDqAEOgcYhyrVEZ8gK66BIM
-   RXteMMx0oELiBNczxuCCwwLIpO+wUNOWKhGtEstXqxYV2LuFsWRhxB6/t
-   Lp5ViaRtO3Qg1t4lsRsu+FV2TO0Wx0mE2sO6RwqMDwf7sab34X2zfDUPV
-   bGb8qTI/qMsyxY8X5B8G6SOJjpRCYNRIc+Q8Cfo7mCx0uuxxhVLTn1eRu
-   w==;
-X-CSE-ConnectionGUID: MlFakGBPTL+cpQGtscO6nw==
-X-CSE-MsgGUID: wOm61TyQT4GuFfE+19b3oQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73121980"
+  bh=womFZoMcXmoknjkJ674fsDEBofqxqg/e+sw1HuqnxWc=;
+  b=gB+YZJ+xnubZqvIH0KuYUImARH+QyyrRmEZjvpesTtptBrRi/+B0NnsB
+   ufv2piUckrA4Taukwd9KTJKVxEfJf0J6cV+m1mx2MT41CLnfLEdFs9rBw
+   bSPUw6LcWPNNDBPuptCF/H7rR39xr4SL0Je0b2py14SP2IGs4h92kC9BT
+   OyHYcUZeOLU44CnR3mdT6dksbxCONjw+Q0EPri3Szadt1j9r4YdKysWv5
+   4QWfS4zLJdXjBRoGDFJjkHCu7HJxBUY/X/6rrIjksyDd25CylB08Hhn7f
+   HntdcLmiAzLiBovSn6u2rVa7+LYdXtETPBJn23vLz/4WYk6wkOSATt3PX
+   Q==;
+X-CSE-ConnectionGUID: qsduuaFESBm8WDvshkbt7A==
+X-CSE-MsgGUID: wp1mNDusS4S9xPHFe2fzJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="95868712"
 X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="73121980"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 21:52:41 -0800
-X-CSE-ConnectionGUID: 62b9Y3uDQlyrKfLirF6oHQ==
-X-CSE-MsgGUID: vnQDeMXOQSSCRScW/BACmg==
+   d="scan'208";a="95868712"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 22:03:44 -0800
+X-CSE-ConnectionGUID: vtUqWWtBTrqQu561y1GaXQ==
+X-CSE-MsgGUID: VE5jgSE6RpmJV3IxR2vKag==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="214993740"
+   d="scan'208";a="214690739"
 Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 26 Feb 2026 21:52:37 -0800
+  by fmviesa010.fm.intel.com with ESMTP; 26 Feb 2026 22:03:40 -0800
 Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vvqmA-00000000AE3-0V4y;
-	Fri, 27 Feb 2026 05:52:34 +0000
-Date: Fri, 27 Feb 2026 13:52:18 +0800
+	id 1vvqwq-00000000AEF-2p3i;
+	Fri, 27 Feb 2026 06:03:36 +0000
+Date: Fri, 27 Feb 2026 14:02:59 +0800
 From: kernel test robot <lkp@intel.com>
 To: Harry Yoo <harry.yoo@oracle.com>, venkat88@linux.ibm.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	akpm@linux-foundation.org, ast@kernel.org, cgroups@vger.kernel.org,
-	cl@gentwo.org, hannes@cmpxchg.org, hao.li@linux.dev,
-	harry.yoo@oracle.com, linux-mm@kvack.org, mhocko@kernel.org,
-	muchun.song@linux.dev, rientjes@google.com,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
-	vbabka@suse.cz
+Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
+	ast@kernel.org, cgroups@vger.kernel.org, cl@gentwo.org,
+	hannes@cmpxchg.org, hao.li@linux.dev, harry.yoo@oracle.com,
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
+	rientjes@google.com, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, surenb@google.com, vbabka@suse.cz
 Subject: Re: [PATCH] mm/slab: a debug patch to investigate the issue further
-Message-ID: <202602271320.ywOCYQx4-lkp@intel.com>
+Message-ID: <202602271339.xhIvS2iX-lkp@intel.com>
 References: <20260227030733.9517-1-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260227030733.9517-1-harry.yoo@oracle.com>
+X-Rspamd-Queue-Id: E97EA20008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 67C5380009
-X-Stat-Signature: m5m8c3xf917wzu4rh474syuc6jzxfs3g
-X-HE-Tag: 1772171564-372545
-X-HE-Meta: U2FsdGVkX1+/mnrkpsJkfswhTbko2cqVzBp/ScbUIob36ZnQhqGKzPsvP1zeeeeirD6umpHTwdTF7J0ek8m3aAfkwiNiCIkI8JYs5PDuTKgsXRkHZKBoI57vDmMab6ZDEXRtlsLz0RWTJUVXj0dA0Ho2UeG4IVFts8kiZbBBzitmrOjus+XPzOdKsxfH4FmOE9bjh4zD/ayRzxn3p9cOlqaIV7BfPWpuxQWL76CUwBUt70d+VPYdoYn73+RdPzZZu79Dh9dO+//WgrnnLobfHYxeiWxm0FwzyeMNynh/CTUYTb9zVnJAaiHHXKBRLXKXBijYNx4atJT8Rc8ilnBB+H0EBk5gVdpmfq7CPEPIlpCgDBO0EobyrXRK73Yyr63oTu3XgJx39mBqQnzpBEiDbRdSD3tyJw62QehjLPlNLbi3o6ScPRKdPuoI0ooxQ7exy/0NVMJlfR9m8l52g3JfMuPeYXlMBhGfxKdbzVUkmnuEJExaclHWLRqzC7cOCsQ+saNhQou0lLIf5GoitNS9A73ibrChtohTkrruWQmeNG3wu6byRoNbp6HjXSFH37WUXTbRRQQpvZEUxF3GdtA92C9M1Ngvkv69i2jU0TKYNvMh68dlqCwzSuoZ1KtctC3UcC9LEowimFalU/OSyXXkRBIdVrTAPdSgiFGb45MkNeejFe7yoXtp9saIfJduDXgmmWxVdc2SI+5JC2FlVcJKSbO4v5UWLxr2+Rbx3PsyZqwlN4AprUkt3CidxkjQmY6xSfgLknVUVuE5J3ghrSZ3Zy+gEl0eUc+CUSPBkKJeAwNZBCnvOCfbvU8kjDk9Ds/G1imrg3qH2WjgP0M8WusKolwOfZL24Xtxy+CzbAqtihV2pYrWQNZUptPXHA/8YFMxAzhhUEz1u4/SH929RhrbZPGvb3q7hmOaJ0aJQYNTkg3rW8g2etiMb0pG7QPAZyFmTva14oYXhv2qB1mGdzJ
- +f5aamuN
- TfomK9woMeM7XKKsLhm6T8qBNBe4Jhokm+VjDyAR9Bmy3mJ7MKxAaD4n3tNAYBEc3/s94ASUM1oFVopcX1mdy69GkRciTGiue4o2ocOzQRTiQv/XJ8/YigRsA59Yu3Vcj1BuIlssL7U83mafoAvQB3yhlyzQmZXWD+GwFbgq5IjD3NHOt8qtMu6VAVCZR4fYD/hSlNqObr3+IKadjcuL/G7vnPuF9+DZjPocXf8Y5GCiAnCDIfPQ4D9rJU9ZQXgh2oP0M8IALNFXhgwql8zo11DLjIvTSm/WJaGO0QE/5gmYwQKnPjPjUegYem0iHQGAfr3k1pcZ6uHcWYcUYxDIPhi031lb4HiG1OtmU
+X-Rspamd-Server: rspam05
+X-Stat-Signature: r6g3hob5bikwozmwbjdyifk7soghieqc
+X-HE-Tag: 1772172225-359866
+X-HE-Meta: U2FsdGVkX1/eMlKNLl61ibWSGlhuiKuEVGaoql1OZEdlzYdSjESOtBBFG3x9OfIQsHWqRncDbjoBVfrOHmC96U8SV1WzyGyMKAisFSBWPVgf+OjGtZVkbhEJfZRiIWrCtPcM2ktpH+IXi14q5XqROBmxq4JOsNDCqeLKJ2KbhHyIy5roW6omtsXORH0JHT6K4hHGAlROZGqOHTmpTO2A0olBWgBStft4SM5XD7OHsI9UOAJmUOEvgIJUeRd2+nKcdTeOUgUQrVw3O6nXigiscn8INUsSraKmt8+FMfmEPoPJfdnfPgTBXvQT8YvtNe53TI+MMcOaRuLVxJcbynF1iUQoBz4gUMAw7Mi0i/QVZYFxUSaiRf6W/Dr9owrPtZbEwbUsoUh/JAof+7WehECS0fYuQGEhSORxiSmoQ+Ao4OMZ8HxvM2ke90pxTTp9jxAMe04OuROy7AuAaIWL7rLCZxqPvdz20vKi2uSe1lJgcXkORgL2O8UaLhyMSxRzkp4T4gcE9OT4qokn0ni/tYMO/aRcfcwsYEDvUxGs+KYfiAVaoyEgAp2UAjTBZyybLNR1UuobJL9XMDDu6/kLX3O7vNS3smOLBldCXy53GyErxKcB5nAYqtI0yAzdnDJ/deV09vALG1LT7oAJeldZsb3ptIxfMde7tJa+MibhNkso+749M5RICoOEXR/tTHVC9FVWjeJfh6+Sv2wrECNw481D895rjUSjoP62pX8DDyYvGhiV8+ezc8vbz2jh9QTEvZmwV3q7EEOL/3vJK4dbi4IxwOw1heIjWVXAcREaZe7ZQiByJ8K+B7OP+FrSsfoznqg7e2vUJpIVo4kUoevamUWcQAy0dJctT6MlEl6E1hIXJwkN6D8h0b0aIgAyJS0DaY3cmoEsg+yE/rdjJn1+sFVl1e/4xhrFJ2DF7O4ZuHllfS12ctoDP/dhuIEuDQqVni87+gnENg/vNSbpr3gO+Gt
+ yz58uarU
+ KI9zic9BIlUqKVXALPWvQvE45e0BpQ+8Kr23+l/dUmH/MeyfsIMYeCt3R+0qYG9tre2LTkkPTblSKrPF576aG/2hF5fFWbA1WIqeKX7sAlAHlVoeS15pu3kZGHCFf+LZrVe0Y8pic5uXvYeFlJFEDyP28OfNvS7LYX3HekI9ZFj0SRAqyV9uW6vIFAAqh4uDb3QxOfiWp0w2xcsaSZAJuAyti/7CIX5pf0p+V+zqv3MnzJsFuSDAc0Px/X8M/z7+AY4ho4m/IdIHYubjRLygreX76eWIKExsdrJdBVE21ZeQKHF1fSYscQxd5REy3GUIzUiPqmT39DPt9a+CgGKQ6xWSmdDGp6RqBdClc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,34 +120,33 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Harry-Yoo/mm-slab-a-debug
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260227030733.9517-1-harry.yoo%40oracle.com
 patch subject: [PATCH] mm/slab: a debug patch to investigate the issue further
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260227/202602271320.ywOCYQx4-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602271320.ywOCYQx4-lkp@intel.com/reproduce)
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260227/202602271339.xhIvS2iX-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602271339.xhIvS2iX-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602271320.ywOCYQx4-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602271339.xhIvS2iX-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> mm/slub.c:1330:6: error: call to undeclared function 'obj_exts_in_slab'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   mm/slub.c: In function 'slab_pad_check':
+>> mm/slub.c:1330:13: error: implicit declaration of function 'obj_exts_in_slab'; did you mean 'obj_exts_in_object'? [-Werror=implicit-function-declaration]
     1330 |         if (obj_exts_in_slab(s, slab) && !obj_exts_in_object(s, slab)) {
-         |             ^
->> mm/slub.c:1332:16: error: call to undeclared function 'obj_exts_offset_in_slab'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+         |             ^~~~~~~~~~~~~~~~
+         |             obj_exts_in_object
+>> mm/slub.c:1332:30: error: implicit declaration of function 'obj_exts_offset_in_slab'; did you mean 'obj_exts_offset_in_object'? [-Werror=implicit-function-declaration]
     1332 |                 remainder -= obj_exts_offset_in_slab(s, slab);
-         |                              ^
-   mm/slub.c:1332:16: note: did you mean 'obj_exts_offset_in_object'?
-   mm/slub.c:793:28: note: 'obj_exts_offset_in_object' declared here
-     793 | static inline unsigned int obj_exts_offset_in_object(struct kmem_cache *s)
-         |                            ^
->> mm/slub.c:1333:16: error: call to undeclared function 'obj_exts_size_in_slab'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+         |                              ^~~~~~~~~~~~~~~~~~~~~~~
+         |                              obj_exts_offset_in_object
+>> mm/slub.c:1333:30: error: implicit declaration of function 'obj_exts_size_in_slab' [-Werror=implicit-function-declaration]
     1333 |                 remainder -= obj_exts_size_in_slab(slab);
-         |                              ^
-   3 errors generated.
+         |                              ^~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-vim +/obj_exts_in_slab +1330 mm/slub.c
+vim +1330 mm/slub.c
 
 81819f0fc8285a Christoph Lameter          2007-05-06  1311  
 39b264641a0c3b Christoph Lameter          2008-04-14  1312  /* Check the pad bytes at the end of a slab page */
