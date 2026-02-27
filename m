@@ -4,113 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD3FFD7F91
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 10:29:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDF10FD7F91
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 10:32:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A8956B0005; Fri, 27 Feb 2026 05:29:48 -0500 (EST)
+	id 1675B6B0005; Fri, 27 Feb 2026 05:32:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57FF56B0088; Fri, 27 Feb 2026 05:29:48 -0500 (EST)
+	id 115F66B0088; Fri, 27 Feb 2026 05:32:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47ECA6B0089; Fri, 27 Feb 2026 05:29:48 -0500 (EST)
+	id 021606B0089; Fri, 27 Feb 2026 05:32:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C3A06B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:29:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA1411A05D4
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:29:47 +0000 (UTC)
-X-FDA: 84489865614.18.F00A353
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CB771140008
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:29:45 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iGqrf4x0;
-	spf=pass (imf26.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E23966B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:32:16 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 216A059431
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:32:16 +0000 (UTC)
+X-FDA: 84489871872.30.B3273B1
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2D4D340004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:32:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+1pwwFR;
+	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772188185;
+	s=arc-20220608; t=1772188334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xd17JnoJo6S2aV2mn8sK+M+XLw8HZ0TVxPbJ5OTC9MM=;
-	b=hwIakSedPHFNBoBKDgh0a+rCOZf1S56+2KHs2yJXM9/7YTtpfcSJ2d6POxjXUbfj/cRfhb
-	MbFmxKD1wL3eN5DQxzz6NCKubfMul9UpjUxQ+v6QfXCh6AlaeQfqwbh2h2ahKcS920NxLv
-	5LWOsc21uSbKH4rnHhKMc4JKfFjPMDg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772188185; a=rsa-sha256;
-	cv=none;
-	b=10+RKrCOhusRBmIiOBoes7RwIO7aTzCRRa9AxWjr6nu7mGwU3YiuDwEkwDJEianksLCqBa
-	P/axqpp+C6A6AnE33v9hswuYbQ8iOAtNXJcXoPGm85eapji/cJNJjdYAAtnqbxGn6qWgsZ
-	ndHpL7WqCEN4g3ylkr8PPim3UGIOpCw=
+	bh=LT1HXP6ImCtKkrDGFwhhoLVXorV0oXPyJhBSmf51vOA=;
+	b=68Ow/F2u0IIg1omcacCsA3FoKfQHsSKg4i6x6Dl81haLj2YAJZOTR67Ie7s6CFynxlzn3h
+	sixlqz0En4GtYkvvIw8fveWMTyfC440GaIuYej6yEoyHOIjfA3+zC78z5h0NR9vU3GSofx
+	O+BgDY6HgfNl1w+BMlkXkFMkN2VyHIs=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iGqrf4x0;
-	spf=pass (imf26.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O+1pwwFR;
+	spf=pass (imf12.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.182 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-354c825dc77so905445a91.0
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:29:45 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772188334; a=rsa-sha256;
+	cv=none;
+	b=BNm8gzYzz2LQ6ChD71NPDwHWT/XVEYZ4mGYOu/wknxXsmXo76DNIzdj0at0+j9qiTorEVw
+	EI9/OxaI7tbCNFUx+n48AY0dvA5oYhGpip0z9QTXliHj21h56GvqsMWq/iYivoqq34NNXS
+	kJIsJvnuwjzzZa/px01/ZFoMuZw6wlA=
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c6dd5b01e14so661340a12.0
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:32:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772188184; x=1772792984; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xd17JnoJo6S2aV2mn8sK+M+XLw8HZ0TVxPbJ5OTC9MM=;
-        b=iGqrf4x07cLSRRPFdtvKRd4b1fJfBzd+4o3gqp9+5irUVynzG/A8bA7hEeb4esnRIU
-         E87C0QXg9lGhQ5Sr+ot1maoYF67c154o+Ojhd8PucjXZpdiBE/nQNUn/fkr5rqXC87y6
-         tzL6APZhWvEzePc60vNxK5Wgw7nDzwwPy7qw7ch2EPsFSz0a8bdmDRyuTZzmXyMxz8/A
-         QPjQdDCzIMzV4P8y3yHWXZVvFTTOA3/eO/cuj6g9Pzo+Cz/lrT+8O4pqqmn6P7HqT43v
-         F5sKC6CnYPTOraBc0Oc4Kz7q0Bq1D4yeFrKujviMIK8m8z5UuGW+p2zs5b1kRAjgjNoi
-         JRGg==
+        d=gmail.com; s=20230601; t=1772188333; x=1772793133; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LT1HXP6ImCtKkrDGFwhhoLVXorV0oXPyJhBSmf51vOA=;
+        b=O+1pwwFRliklUv6uuwjgxOI7cLV/u9Pd/pHl1uA8ebiw0+5uKUuJyGgiz6WuDLC9nP
+         TpQ2AwEJ32L+HlOtBPTmqSOB7q9bNvy3W1XXM5ThOD6D8Rb0Wux6ReH2I2ZEvLGzaa7R
+         aF5eYWOFZkrGc5cNIxYgjYKaPVAB6IRLXkm1ESCV4fIn+dOXFdDaOio4b7JrNcmsEqki
+         /gEnOO5kMfu9ZP48PxFPHjE4BNot27wBbsLy7eUxhEzFhsViQpj5RP95qf6k8moqcfPL
+         +pS0lnGuPC43kYCAr+zJyos9AgFprKHwzcnM30HSkJUEIIaE3Omr8ccwR+R9h8LdbvAx
+         8Q/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772188184; x=1772792984;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xd17JnoJo6S2aV2mn8sK+M+XLw8HZ0TVxPbJ5OTC9MM=;
-        b=GeGZXW6I/ZZxIg4rt8M5zWpT/b90hn+PVstXFOqB8ExZAapO8cE72+KbDT++idERE9
-         ebbIc4tttidq+eujpyAuO2UWRAGJyN70PYUBhEHd/rxTSzHuiL7u3Qiz+HUQHsKOOgbN
-         4bgafeVIe8L67+DVvFBCwP8JSa3q1bGShTh3Uj9e+0GN8EZWx2cgbNZT6VO9tSoy2rWr
-         O2ey23x1idPPh9kfoeWlNoUa/aF+5vnBjUZhYby62d43VNqNDNsilqxBHIzSep9WMNg9
-         pife1LkgC9kT8oC4wqO35h7p9cPusx/JuN1TkeP331JxKpg1WdhJYwIEqcsClb8S29Df
-         xyig==
-X-Forwarded-Encrypted: i=1; AJvYcCXW1u9FEn42FwDxGpPKE/5EO9Z363vwfP6RAQjuqia3u69XPZ/223u8pFMWVQC1UUrWr3cPDo6NFg==@kvack.org
-X-Gm-Message-State: AOJu0YwaqB837lafWdKSZOe2LYnir7xRCdSEzD0u7oUNn/jKtfpnydiu
-	Zake+ZcjqL3mlWvoH9Yf5tN1ojihTBG7SDSkHSMkkrkKQNkasGujLq4Q
-X-Gm-Gg: ATEYQzydxEHugHsUM4oPW9Vcea6YlLNTZmyUicaNS0tluwBLFTAMFmW7OskvP81sBhh
-	ZkvmnQR+0t2M41hPryQj80omW+hyrTrmTfPZdGN7zjZzH5KQMLiinxS0nCO5/9u8GsrulL7Iwdn
-	CnxxGQlOo6q64E5PBrXwN/1Y+Ts5ppblJWlKXk7tLDDd8ELo5ni1J8pqJ2KRvhe7zYnksC4tKyw
-	rqvw6Dag4bSrsYMIYyro8DC/yMlWYULKjjHLTZuUFUa6E8/gDSAGwkyqA4VM1l+bup2Nfyc6GVC
-	9SiFjRgvRRQaEW1z4J7O3iMY62P1XyvmfN6CYrVxVI2bQytieKej70Vx7uxm7u4XsRIsY/tzRbB
-	J/GYCnbQIyiE9eWWF5r8+FhPq7mhJXMxZhehaVUN+h9ryxkKdbRtpu0B7cwH7X6rfpPMeFuY2OS
-	xfjHOTRyrh0YAR9mgMiXYWA6LEZJ/WacX8wJlWVWX3NwlrGoSjy1HF/jkk4V1w+zHBdVBk5k6pa
-	h0f5Q==
-X-Received: by 2002:a17:90b:1ccd:b0:359:1063:6aed with SMTP id 98e67ed59e1d1-35965c92637mr1922312a91.22.1772188184368;
-        Fri, 27 Feb 2026 02:29:44 -0800 (PST)
-Received: from localhost.localdomain (n058152022173.netvigator.com. [58.152.22.173])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3590158f6e0sm11615239a91.1.2026.02.27.02.29.41
+        d=1e100.net; s=20230601; t=1772188333; x=1772793133;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LT1HXP6ImCtKkrDGFwhhoLVXorV0oXPyJhBSmf51vOA=;
+        b=rDcVz48TqS7RQXg5aiB1iBC04FQ71/LISxxRhF/MFcGgYEYAY8UMX7NF8EOeSHCfbC
+         lKY7MBsEtnmhJWio9p2kOvU8xL4oMnpjq9HzvFPn2UAK8CQZiVu4UtBPoxMcBtj98Ew7
+         sOot19txAKcP/NsmQpsFH14tKxOMXOnFyWJkPzoAGr3c3/z/cLtyavN6v5hZwL4aEUcj
+         GZIhrS2S6okZA/iF6bAvhv/bcrvhgX55Ldua3xlJVxrtBxmOnV6d0vWa9xOxWKkNY50V
+         6zrMhXSZ6P7j7wLOEJFsZLVL29ssveHmlUWORz7kvsCn5SLdISP4zz9KlUWCeaBNaVk8
+         LJwQ==
+X-Gm-Message-State: AOJu0Yw9xJGIK+SeSTVwf1rE3ff9Nyrl+ONjMN3NQcwzoAM60A3ahNvP
+	CoDo53WuUYKNkRCQIXHmZyZg7saUDCKSc4720J4OysvuNgBaf1KpTPrT
+X-Gm-Gg: ATEYQzxtQkH/iRKKHWdQtUgpfsVTqjPT45C77sQ8+xQn6G4baoAeEUD4YLdi60bQ64q
+	Q4hyCPU5xxPzE9mywNWDY6GTgT6PwtKlgvColQp3kY5R69jWUlzXe+wLOLqCbhSu7bMnW9JOHqs
+	KTvc3gC3BTyT+FWYCETyTrqglf/t8hgXdFv93wBfvyjskwLcQe3NhabYFx7B6q9l6EY8EhI0807
+	sglUaznTWGk3LW3D74vN8sUnqXokYbKA113dy/0Fe8rjLA9Dc0C9rLbx4KALTwJlXYO6aIfgfAq
+	QdrSShd+DOLL3MX32Rxok+yHY3mPbclvxcjdYJ6mEYrNTsrIWvDoPSavXruVDkxM7PkwAPiEwfX
+	lJkrCdmAVvYWb95f18PM2pkIekDkQ8OT+trUELS4MUendPU9uyBfoJSJKvLnh7lBtuERv9LAKx/
+	6SM3JEcp9K1Kh57tZf1Q==
+X-Received: by 2002:a17:90b:2884:b0:356:4ea0:e9e2 with SMTP id 98e67ed59e1d1-35965d074afmr2219544a91.34.1772188332691;
+        Fri, 27 Feb 2026 02:32:12 -0800 (PST)
+Received: from dw-tp ([203.81.240.187])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359134a0a2asm3170713a91.14.2026.02.27.02.32.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 02:29:43 -0800 (PST)
-Date: Fri, 27 Feb 2026 18:29:38 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	linux-mm <linux-mm@kvack.org>
-Subject: Re: [LSF/MM/BPF TOPIC] Improving MGLRU
-Message-ID: <f4c9b715-be7a-4587-90fa-97f6b72938eb@gmail.com>
-References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-X-Rspamd-Queue-Id: CB771140008
+        Fri, 27 Feb 2026 02:32:11 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
+Subject: Re: [RFC v1 1/2] drivers/vfio_pci_core: Change PXD_ORDER check from switch case to if/else block
+In-Reply-To: <a864b2ed-1a77-4aac-b0e8-d97b4bf8be47@kernel.org>
+Date: Fri, 27 Feb 2026 16:00:54 +0530
+Message-ID: <87qzq6h40x.ritesh.list@gmail.com>
+References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <a864b2ed-1a77-4aac-b0e8-d97b4bf8be47@kernel.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9jdgkpqbsmntytqkbcqxud4o6b9hzrse
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fbribzmypqpb79hbdqn114ye3zynwbg4
-X-HE-Tag: 1772188185-672123
-X-HE-Meta: U2FsdGVkX1/4KWrtDpioGL0+ASThJxwpLasleTOCqvtR2hWiGWOmp9zU4TzHMA/R3UNZnacNNsyJLRlyso4XFAW0aL6/JJp2n5ljByV13rlr9lKFB+X+cLW3eWfyFyqvDzMvK2VlirpTpgm9UkuwQJLNKUyy1P6ZjCGb7wt7lbNQ9ROb0wwvR4jDEOJQopdMAy5WPXeChg4GJDIZQ7B27IV6c17FeHn9kpEqx7k9o2OwOki6EkU3cAJCRb4P0r327ZdKJ26Gl9HoHqKPCJIKIm1e5k403uCJ9NP1xbJhL2lIB4v3sFO3/5V7DpscgsjKaJOBFy6BGRiObUMkFAnA4j/fCwiyLH2RgSTOdc7uXKrhf0JaJ37ng50epeU69C6snHMVjlBDy8e/fzznWF6+kftBmofNceFiYvJ+iftfxcnJ2dSKXjVZ8n0bU/ugkU2Z2lrcSSLuG+9DFyXzIltDdt21vpFVUwSYJfUV2K0m2bk7W9cSG8AAGARbp8pEHFvqtfuA9Nkd0GTqgvN3T+qWHtPUJDF1FyKqQQIFFjTuf6NxYV7g3TU4SZYAvq+PSPfwwMPB0eaiJ3yJKz+RjPBniPiV+3Iaz0MXOdKXDYzI7OK610xqdf5sFx/IlItvGe7Fbw5+4L7LUt/tMZSJeIo4BsS0Egym+rcXSt8NLq95jy4xNiXIKAK0UUtSiP6PDvspcQSJpGhvB1cH14rwZ0VdOf6iPJcOHR5D770PUAuIh3GAcoZ5YWZSVJOsZ6bBV7vMmkLoMr2mSKq488g9HbbEJ+rKbf+8vJUe1weA66GwfViG3Gl8DkuuX3M53x7Iei7K+ejo2acKK23kLKB7lqGtk4oBKnJ++AJcGWlT14ck+KoALdNsSHFVa7GYpfIKrg7kvLtNSf7ZXE/TkElK6fCpUXGYpA4ZfVZyxEM+9/rNgAvO9OriHThPZ7mb5vFMTnSGYVwVn2vG1TXnjUoRl8f
- ar1kdlfV
- OjnzBhOGM3pUPXp4NKeDSevO0mih/NOx49SXCZXrFBbsrZ36zvX4XcobHYs+cONX2gawfKmtUXYVPeWlg3/vrlgZEjaEwdfEHLi20GWZP/yOkTAhJ7hfEnGPQ1EDl+F8EcPwwj+VR+o0lP2WrYT1LEePTfqJX8r9+Nd1mNGD2pugQUuvq5ad6Nfb/DKoCiggY4SNMAMBaZ76ERMTM38aJPYDrOPBX6poUWPqAcq7msJIIp/MzffsuW1UmiYv+ofjBUG5S5h7U4ohl/8E9NyOcnR3QEr7qpmPns28Iwx+CuvVRqEaPrpeUBq5Qs2skWytujwRpJZ7824Y4laH95b6GjObZApyi23BpbyRhS3ZRNL8rLNZ+jEcba9LFcpk1UuF6+3mT7MV0uL8nQtEp5IPqtpbtERIrn8uz1Kp6HWYdxzGJw8Uyp+U/2E5rv0nENsklgCCfaQWdPS8Mq4OMTcJIDU4eVzC0lH4mJM+IoF93d/BD0wrV39fl3XEwkehK8LZr4s5Pc9wv94oIRMFjZoAouwVN5y9feKm4zgoICUJlq1l71Eo7ugR85zTcX1MeIPewc+TCgx6mUOK0vVrm+2KRiODTfTT4DwKwiYgwGfo4ziTSvLQm9cJw6aA1Mg==
+X-Rspamd-Queue-Id: 2D4D340004
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772188333-802539
+X-HE-Meta: U2FsdGVkX1+1wukRroiaP0AiyLSGyAoVeWakEQy4D5qCjcIXbBWuiw2XJkO6tRWKoLjjw+4nWR/20k+bovNxWQJg5br1Hp1dDFgEE4+lDG8QFAnPINz1Rjki40PzZhaIDLKsa8OZbUPu1sbIe6dma/msegc8yFnimjZPllC7TVgHoL2JdhhLitTEnq6NlkRlaU7dTR4CRDqv6ySbUrxSh5uM4g/pZ/0ewYVV5P4UcvYKeC/g9A/ozzoJMt3KejC0850U5HJSa+xa1JMLrU0/297Rw6x7kZFbYcNjh3OmbKARf+AAAQYgI6laHH7lyfd4+/R4ad/8fuavk9iVR2fbA06PaoX789ZmiQn++IvZmV/cWwro5c409XqpEEfrxKWOh6MWyo2fo/f3UYFgpZ+fGW/boADlP1Jl5OplKtQcVWWuAW17XeM+iZF5Tl40tcPx2khrV29GhZMVr2GJM3aba8Q0/NVuK4HRH0Uwt0IfHh8DrrbnvbyoGuMvKViKn5w7mPDkuupA71+y6HBfP7gD5GV6dXcmEC0mtz+ExxBWQz0y7XZps9v2/JUGdZUmuhlYYPUhUKvGLpkf0vSYOl5UOglIO09mf/4XbI/Ecx0LsEqtJ/jxQ+XiEUnNPldj+e1J8UcY5yp+bvOqOe5pF0hmTa5ZE9GHfgNymmg4lEG2BGxiKWMXAWxU5hCujvsQJwjXsTp9iqhPbEyk2irq/gJR+KoV51ymvgaKb9mIhqNfyfvAYZM99kMIdG3CmnpJQYOdz4GgHr1GOWMeoj03GB3XpkZi9sTi5oWsS+lMSTTqVDP5E6cOyntF7CGzQJQYpxNt7yIAwvYaXLOSfK143sWuN20Yr5Rsn8v4LoU7jBHq9hoOm+rDhSi6Ez7T5DP/kMHYQtBlz+7TmhJxhHqvBmbToqxhRfTeumt45uhJoOuEcYJqZrIs3tE3kaS/ZGEhWhAzG2lVMvCj6DQrrs7VA7j
+ FbrUY8bl
+ CiZaA5j2M1ZIAhDbERPZFigtFBix0noKooIEZxiT1rqOj8yYC16dtB4nmC3obCWW1kmLT5gtDSWbRL5in3Y9i9U845D9Ud4gIXi+XKjmwCGx6s4Ydk/1d3BGp3OzfBcKX2qYZ+wL3NqFgk8SDKtGsNTCxy2a8C3appyzBsAmhXAdAuxbaGUU6aDhXLRuwZk8TR9JOI8G85snWw32u7yG7xBQxWA0GiQVlXB/L0csTLvklRPiAqoBO5b/P/A8Y6ErY2DIn5OJ9KeQSQb3JuYV/67ehpvlWYO4YTjGm2NQCZFcpEO8OI2m5iQH19ZR4Vz2UrKkWHwotM2Q6flhX7yxdoTrDnsjRmYo/5H1G77WqgQcPuKfSiBYKGFo5sLPkdvlPV9bXcqLDkIX6H7VuQFXf55SHZIS6KyKSlgnk4oFmSUOTRAZDQ4o72oYHs5F1e5LP4q88at6nwJCPn5LJoiLt2vI/ra7K9Iremqb+mNM4BOfSlyIZz2aQQhD827VCl5IaRLI4CEk/UfXx/MrS12n6oRJokopMkBVMRvnAIFLawQKalprFHrp43nMwcP6Lmq5XNm3dTR5ig6S7Olc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,225 +116,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 01:25:33AM +0800, Kairui Song wrote:
-> Hi All,
->
-> Apologies I forgot to add the proper tag in the previous email so
-> resending this.
->
-> MGLRU has been introduced in the mainline for years, but we still have two LRUs
-> today. There are many reasons MGLRU is still not the only LRU implementation in
-> the kernel.
->
-> And I've been looking at a few major issues here:
->
-> 1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inactive
-> LRU.
-> 2. Regressions: MGLRU might cause regression, even though in many workloads it
-> outperforms Active/Inactive by a lot.
-> 3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
-> /proc/meminfo.
-> 4. Some reclaim behavior is less controllable.
->
-> And other issues too.
-> And I think there isn't a simple solution, but it can definitely be solved. I
-> would like to propose a session to discuss a few ideas on how to solve this, and
-> perhaps we can finally only have one LRU in the kernel. So I'd like topropose a
-> session to discuss some ideas about improving MGLRU and making it the only LRU.
->
-> Some parts are just ideas, so far I have a working series [2] following the
-> LFU and metric unification idea below, solving 2) and 3) above, and
-> providing some very basic infrastructures for 1). Would try to send that as
-> RFC for easier review and merge once it's stable enough soon, before LSF/MM/BPF.
->
-> So far, I already observed a 30% reduction of refault of total folios in
-> some workloads, including Tpcc and YCSB, and several critical regressions
-> compared to Active / Inactive are gone, PG_workingset and PG_referenced are
-> gone, yet things like PSI are more accurate (see below), and still stay
-> bitwise compatible with Active / Inactive LRU. If it went smoothly,
-> we might be able to unify and have only one LRU.
->
-> Following topic and ideas are the key points:
->
-> 1. Flags usage: which is solvable, and the hard part is mostly about
->    implementation details: MGLRU uses (at least) 3 extra flags for the gen
->    number, and we are expecting it to use more gen flags to support more than 4
->    gen. These flags can be moved to the tail of the LRU pointer after carefully
->    modifying the kernel's convention on LRU operations. That would allow us to
->    use up to 6 bits for the gen number and support up to 63 gens. The lower bit
->    of both pointers can be packed together for CAS on gen numbers. Reducing
->    flag usage by 3. Previously, Yu also suggested moving flags like PG_active to
->    the LRU pointer tail, which could also be a way.
->
->    struct folio {
->        /* ... */
->        union {
->                struct list_head lru;
->    +           struct lru_gen_list_head lru_gen;
->
->    So whenever the folio is on lruvec, `lru_gen_list_head` is used instead of
->    `lru`, which contains encoded info. We might be able to move all LRU-related
->    flags there.
->
->    Ordinary folio lists are still just fine, since when the folio is isolated,
->    `lru` is still there. But places like folio split, will need to
-> check if that's
->    a lruvec folio, or folio on an ordinary list.
->
->    This part is just an idea yet. But might make us able to have up to 63 gens
->    in upstream and enable build for every config.
->
-> 2. Regressions: Currently regression is a more major problem for us.
->    From our perspective, almost all regressions are caused by an under- or
->    overprotected file cache. MGLRU's PID protection either gets too aggressive
->    or too passive or just have a too long latency. To fix that, I'd propose a
->    LFU-like design and relax the PID's aggressiveness to make it much more
->    proactive and effective for file folios. The idea is always use 3 bits in
->    the page flags to count the referenced time (which would also replace
->    PG_workingset and PG_referenced). Initial tests showed a 30% reduction of
->    refaults, and many regressions are gone. A flow chart of how the MGLRU idea
->    might work:
->
->    ========== MGLFU Tiering ==========
->    Access  3 bit    lru_gen  lru_gen |(R - PG_referenced | W - PG_workingset)
->    Count   L|W|R    refs     tier    |(L - LRU_GEN_REFS)
->    0       0|0|0    0        0       | - Readahead & Cache
->    1       0|0|1    1        0       | - LRU_REFS_REFERENCED
->    ----- WORKINGSET / PROMOTE --- <--+ - <move out of min_seq>
->    2       0|1|0    2        0       | - LRU_REFS_WORKINGSET
->    3       0|1|1    3        1       | - Frequently used
->    4       1|0|0*   4        2       |
->    5       1|0|1*   5        2       |
->    6       1|1|0*   6        3       |
->    7       1|1|1*   7        3       | - LRU_REFS_MAX
->    ---------- PROMOTION ----------> --+ - <promote to next gen>
->
->    Once a folio has an access count > LRU_REFS_WORKINGSET, it never goes lower
->    than that. Folios that hit LRU_REFS_MAX will be promoted to next gen on
->    access, and remove the force protection of folios on eviction. This provides
->    a more proactive protection.
->
->    And this might also give other frameworks like DAMON a nicer interface to
->    interact with MGLRU, since the referenced count can promote every folio and
->    count accesses in a more reasonable and unified way for MGLRU now.
->
->    NOTE: Still changing this design according to test results, e.g. maybe
->    we should optionally still use 4 bits, so the final solution might not
->    be the same.
->
->    Another potential improvement on the regression issue is implementing the
->    refault distance as I once proposed [1], which can have a huge gain for some
->    workloads with heavy file folio usage. Maybe we can have both.
->
-> 3. Metrics: The key here is about the meaning of page flags, including
->    PG_workingset and PG_referenced. These two flags are set/cleared very
->    differently for MGLRU compared to Active / Inactive LRU, but many other
->    components are still using them as metrics for Active / Inactive LRU. Hence,
->    I would propose to introduce a different mechanism to unify and replace these
->    two flags: Using the 3 bits in the page flags field reserved for LFU-like
->    tracking above, to determine the folio status.
->
->    Then following the above LFU-like idea, and using helpers like:
->
->    static inline bool folio_is_referenced(const struct folio *folio)
->    {
->     return folio_lru_refs(folio) >= LRU_REFS_REFERENCED;
->    }
->
->    static inline bool folio_is_workingset(const struct folio *folio)
->    {
->     return folio_lru_refs(folio) >= LRU_REFS_WORKINGSET;
->    }
->
->    static inline bool folio_is_referenced_by_bit(struct folio *folio)
->    {    /* For compatibility */
->     return !!(READ_ONCE(*folio_flags(folio, 0)) & BIT(LRU_REFS_PGOFF));
->    }
->
->    static inline void folio_mark_workingset_by_bit(struct folio *folio)
->    {    /* For compatibility */
->     set_mask_bits(folio_flags(folio, 0), BIT(LRU_REFS_PGOFF + 1),
-> BIT(LRU_REFS_PGOFF + 1));
->    }
->
->    To tell if a folio belongs to a working set or is referenced. The definition
->    of workingset will be simplified as follows: a set referenced more than twice
->    for MGLRU, and decoupled from MGLRU's tiering.
->
-> 4. MGLRU's swappiness is kind of useless in some situations compared to
->    Active / Inactive LRU, since its force protects the youngest two gen, so
->    quite often we can only reclaim one type of folios. To workaround that, the
->    user usually runs force aging before reclaim. So, can we just remove the
->    force protection of the youngest two gens?
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
 
-Hi Kairui,
-
-I would be very interested in discussing this topic as well.
-
-In Linux desktop distributions, when the system rapidly enters low
-memory state, it is almost impossible to enter S4, the success rate
-only is 10%. When analyzing this issue, it was identified as the
-inability to reclaim memory. Further investigation revealed that:
-
-1. This phenomenon does not occur with Active/Inactive LRU, it only
-   exists with MGLRU.
-2. If force aging is performed before entering S4, the success rate
-   exceeds 90%.
-
-Detailed memory information is as follows.
-
-MemFree:          269944 kB
-Active:          4095536 kB
-Inactive:        2831960 kB
-Active(anon):    2667952 kB
-Inactive(anon):   247208 kB
-Active(file):    1427584 kB
-Inactive(file):  2584752 kB
-
-Since its force protects the youngest two gen, when wanting to reclaim
-memory larger than the "Inactive" size, the MGLRU hard to reclaim enough
-memory. e.g. hibernation mode call shrink_all_memory(3G).
-
-We addressed this issue by implementing a retry mechanism similar to
-memory.reclaim, the success rate of s4 has increased from 10% to 100%.
-
-If we could directly remove the force protection of the youngest two
-generations, this issue would also be resolved, and the solution would
-be more universally applicable.
-
---
-Cheers,
-Vernon
-
-> 5. Async aging and aging optimization are also required to make the above ideas
->    work better.
+> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
+>> Architectures like PowerPC uses runtime defined values for
+>> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+>> at runtime using kernel cmdline. So the pXd_index_size is not known at
+>> compile time. Without this fix, when we add huge pfn support on powerpc
+>> in the next patch, vfio_pci_core driver compilation can fail with the
+>> following errors.
+>> 
+>>    CC [M]  drivers/vfio/vfio_main.o
+>>    CC [M]  drivers/vfio/group.o
+>>    CC [M]  drivers/vfio/container.o
+>>    CC [M]  drivers/vfio/virqfd.o
+>>    CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>>    CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>>    CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>>    CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>>    CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>>    CC [M]  drivers/vfio/pci/vfio_pci.o
+>>    AR      kernel/built-in.a
+>> ../drivers/vfio/pci/vfio_pci_core.c: In function ‘vfio_pci_vmf_insert_pfn’:
+>> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not reduce to an integer constant
+>>   1678 |         case PMD_ORDER:
+>>        |         ^~~~
+>> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not reduce to an integer constant
+>>   1682 |         case PUD_ORDER:
+>>        |         ^~~~
+>> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_core.o] Error 1
+>> make[6]: *** Waiting for unfinished jobs....
+>> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+>> make[5]: *** Waiting for unfinished jobs....
+>> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+>> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+>> 
+>> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_core.c | 15 +++++++--------
+>>   1 file changed, 7 insertions(+), 8 deletions(-)
+>> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index d43745fe4c84..5395a6f30904 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -1670,21 +1670,20 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+>>   	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+>>   		return VM_FAULT_SIGBUS;
+>> 
+>> -	switch (order) {
+>> -	case 0:
+>> +	if (order == 0) {
+>>   		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+>> +	}
 >
-> 6. Other issues and discussion on whether the above improvements will help
->    solve them or make them worse. e.g.
+> Those braces are unneeded as all legs of the if/else are single lines
 >
->    For eBPF extension, using eBPF to determine which gen a folio should be
->    landed given the shadow and after we have more than 4 gens, might be very
->    helpful and enough for many workload customizations.
+>>   #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
 >
->    Can we just ignore the shadow for anon folios? MGLRU basically activates
->    anon folios unconditionally, especially if we combined with the LFU like
->    idea above we might only want to track the 3 bit count, and get rid of
->    the extra bit usage in the shadow. The eviction performance might be even
->    better, and other components like swap table [3] will have more bits to use
->    for better performance and more features.
+> ifdef could be replaced by IS_ENABLED() because PxD_ORDER and 
+> vmf_insert_pfn_xxx() are declared all the time
 >
-> The goal is:
+>> -	case PMD_ORDER:
+>> +	 else if (order == PMD_ORDER) {
 >
-> - Reduce MGLRU's page flag usage to be identical or less compared to Active /
->   Inactive LRU.
-> - Eliminate regressions.
-> - Unify or improve the metrics.
-> - Provides more extensibility.
+> 'else' is not needed because every 'if' leads to a return statement
 >
-> Link: https://lwn.net/Articles/945266/ [1]
-> Link: https://github.com/ryncsn/linux/tree/improving-mglru [2]
-> Link: https://lore.kernel.org/linux-mm/20260218-swap-table-p3-v3-5-f4e34be021a7@tencent.com/
-> [3]
+>>   		return vmf_insert_pfn_pmd(vmf, pfn, false);
+>> +	 }
+>>   #endif
+>>   #ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+>> -	case PUD_ORDER:
+>> +	 else if (order == PUD_ORDER) {
+>>   		return vmf_insert_pfn_pud(vmf, pfn, false);
+>> -		break;
+>> +	 }
+>>   #endif
+>> -	default:
+>> -		return VM_FAULT_FALLBACK;
+>> -	}
+>> +	return VM_FAULT_FALLBACK;
+>
+> So at the end we should get something like:
+>
+> 	if (!order)
+> 		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+>
+> 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order == PMD_ORDER)
+> 		return vmf_insert_pfn_pmd(vmf, pfn, false);
+>
+> 	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order == PMD_ORDER)
+                                                                ^^^ PUD_ORDER
+
+> 		return vmf_insert_pfn_pud(vmf, pfn, false);
+>
+> 	return VM_FAULT_FALLBACK;
+>
 >
 
+Looks a lot cleaner. Thanks!
+I will make that change in v2.
+
+-ritesh
 
