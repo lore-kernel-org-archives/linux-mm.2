@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D9C6FEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9348C1039894
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:55:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03DAA6B00F0; Fri, 27 Feb 2026 15:50:57 -0500 (EST)
+	id D8B116B00EC; Fri, 27 Feb 2026 15:55:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F37516B00F1; Fri, 27 Feb 2026 15:50:56 -0500 (EST)
+	id D38736B00EE; Fri, 27 Feb 2026 15:55:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E02766B00F4; Fri, 27 Feb 2026 15:50:56 -0500 (EST)
+	id C1A956B00EF; Fri, 27 Feb 2026 15:55:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0B06B00F0
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:50:56 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9C24C1A09C8
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:50:56 +0000 (UTC)
-X-FDA: 84491430912.14.EF97C4C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C4CCC4000F
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:50:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Yp/N+AHA";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF2D26B00EC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:55:26 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60763140949
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:55:26 +0000 (UTC)
+X-FDA: 84491442252.03.6FB4673
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A95191C0010
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:55:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pOXn5XWE;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772225454;
+	s=arc-20220608; t=1772225724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KWXlmmXKdelCzCKLDjNkzB9/r0zr/lTQHCtWbhvnuD0=;
-	b=HfmaAw+AUmQHrO1SIHiYxEjeG0ol+B1RHgRKbF9WQkDkzDqL2jCZIF1aIra2dhz8GHJSn5
-	iCRPMCE81je4XtqFVdOoWZOfN704M4XnDCm9cDzYvTY2yWJOb7jvZ2ulHiZafZM7Atolwz
-	cvN+Qp+7Jl0+UkJ2KlR+rQmRh+iCtTs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Yp/N+AHA";
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225454; a=rsa-sha256;
+	bh=4jhI9FUCWYVO2k0iNdiwAaoEYetc6c4Oh6fXJ9S4Opw=;
+	b=i3L6GO7LlbBjNR1winwZ/RHmeS6G6rwo4KwvVtBUe0l28flaIl7ynuzs3jJCOkKKI9qMQ3
+	nH2dPSYjq6yBD2ZSBDPhpBEgGkXh6uIA1qDlukhjjXB7mO8d1nuKxUvzYW+7fetLsKcS+b
+	s94B3L3JvgAyGV3TfK6/pVpRp/KjTDA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225724; a=rsa-sha256;
 	cv=none;
-	b=wtwP1P/A7AIuJKgWKNtyj1HyhXhvY1ACyC0ZanhAoOK++IVlGD+77/1JvMtju/L9W6GNQ9
-	s+6RNZxxMDGxkk8L1mROsMR7BzJaRHJ+bP/2lHNA2LsHzCz0ejQCGfOneiOGkrgoqWtCaH
-	HnBpsDlLaGqOFFbG/ugkNGz53MO2KQE=
+	b=HBmk8XROgZ8A8bB9IZAfFZOckA0aScCbp3ifJLpinVUPIr0oipuCvvNZ+x8/dTYMLK+gdE
+	PImXf/5ggSqCvRcYQsu/rxmupfJRNWxEPc5nVLVh3xd2m6/xkA4xbdTFzFLn9HzWXBYmW+
+	ApOGKdvGvqw+jawOIIZrQwGr33vgg8A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pOXn5XWE;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFD9F406BB;
-	Fri, 27 Feb 2026 20:50:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E355C116C6;
-	Fri, 27 Feb 2026 20:50:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1343C60054;
+	Fri, 27 Feb 2026 20:55:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E545C116C6;
+	Fri, 27 Feb 2026 20:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772225453;
-	bh=5PuNZnVNV+EiPA3O4jsUBabWtTF1lM09YKrIK9qPlgo=;
+	s=k20201202; t=1772225723;
+	bh=AWTR2K3dBXApAFBSFFqFKURejpZca+nk5sb7sA2btn4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Yp/N+AHAHv1CMk1qBXpZpVH1KLgND3ckyHFUGOaT5Y8KSi41RE5twx/rLgl1lWRJZ
-	 jQKCIbUB8AR3Zdi9riA/kGtRBCAIVgHpXCSVPEl7PNhBE571EoL5+tfc7uVDLbDCvB
-	 qEtObc4ptSrmviPlkEuJ8JbqeNPbca1p9OBZj3vbErKmgigKyuB+49gZ7FZU0UxnPU
-	 KBp/kduAFisTHska70iXJD0wOaN+z7RIerquCDHbzyJbfb1RjHWTcBLrsuF1EXAF75
-	 0cNuVVYUo/ZQ2wUyHw0uQxz5lC6CA0NQw+vwk/RLG4mv2Mh/FGRte62WNRchbg0Rn2
-	 pfsfNnnwbU5LQ==
-Message-ID: <7b4b4543-a614-46a3-87b8-dcb1988f4332@kernel.org>
-Date: Fri, 27 Feb 2026 21:50:50 +0100
+	b=pOXn5XWEcNoi0kYL+zqUzWF1ShgtL9v4L49YHqamUKLPOS5dtEVajb96mplr9Sbm8
+	 yJQKqwE2l+kmf1oUWqMj+mx0dFXHPbo2TurFgO+o2e62qIxcy5fG22NHBZkoGmhlox
+	 mScGjjtimSHCSHDcu7uMjRAdKE8vLsrFohYmIiPIiOfpARyT0IEScy1f0yHnw1nyjr
+	 qdVXVx+W4+2ZLNi+XQ8EqTFfrbmFupYKgBoj+ECnPCLQxfutqCfCxVj21dKURnzdBN
+	 h3bPcjGOyw0YyoHXP+hq3VPfe8RGbpyBYS9ZoMZNJ/jt0WnAkP+ip0G9UgRonJDzK2
+	 akxm3aT6u+I7A==
+Message-ID: <e16f31ea-3713-4149-b60d-655b52845644@kernel.org>
+Date: Fri, 27 Feb 2026 21:55:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Replace READ_ONCE() in pud_trans_unstable()
+Subject: Re: [PATCH] mm/debug_vm_pgtable: Replace WRITE_ONCE() with
+ pxd_clear()
 To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, linux-kernel@vger.kernel.org
-References: <20260227040300.2091901-1-anshuman.khandual@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Ryan Roberts <ryan.roberts@arm.com>
+References: <20260227061204.2215395-1-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227040300.2091901-1-anshuman.khandual@arm.com>
+In-Reply-To: <20260227061204.2215395-1-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A95191C0010
+X-Stat-Signature: bqe6dqd6ctmznwzmih3zb5339mssyr4a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4CCC4000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: pqz6wbh6urx8ct63z879oa4zgbm1xeoq
-X-HE-Tag: 1772225454-648443
-X-HE-Meta: U2FsdGVkX1+E/boP1KJPIgY8BC194j5jfnmGiP4rnzUt95yxpthCjBtq/V8/Y78e8k0EM71G0G76UdMMqMa6UzJqacHN0w8JMGvHXaAhg9y+4YfPTofedYEFoQmw2zvMVr9yO9OAXNnkGRhHTan6D4purydRegW8MWDuyiHLhGSZ/f+snJwYtffLcr+iLrLkHV4Rg9h3Xmd9c9YHOMn7+YI7LmgD3o33g7TqyTYjmKtP+c0o7v+nGsej9nRj1P7MsVPHEsvFJQXTMZmuuG9rJ5StYKU7o2PiyB27qj6B6Q2k6rVnoeWELtbLhxIXjlAZtlHAaVQig9vBWmEiwFbg6VRv9c1O2gYnM6QqNmezJBYFCA2AHyAOsG1hmAIB8AcOS9MHBMfEobfY+0Fb389m8rfpIxSRhIaaVGtfXaxwdlNtxnu+UEhXljUGP8yytfSJfdLB+2xRToxm5GjjUYWIZQW+2kPf0KPeplAfWLDH/Hvw+0/I2KIz/rvBFRfG1r8S5oTjD98sEGbRdY71ylkaDNJD35n81g28TZC0c5YYDkWUZSNVTftwNoS+pfhDLuOUoiDQ7Ep/PzL9zdmsM8mqqekXuGb02odvbU4EVgweamIEOvwDJB5cpM6YErnz6kqfbRsesPe0l+0GXT/A0QzovIbI9IE1V8OMQAg7w3whZ6VXdKj/iWgBAk8YkXc4zatt8ejGNGmWNmJ8lQuIagCzjxqjz+SD+xtjhtfDi+PtGcnqAw8QbEvAmkdjkxOgIUoDODJwamFr3uqZxrXTwZpmpDN1L1mN65ujh/Wgzdm4j+cbBDQQQumjnpR8N3g0bDVCab5DVgVNVimszLTMinkdXBdhZVEjsrJe/+3K1bvcqYg8Wrh1IiFvm1jKJx602hD9aiHO7Ujsf43GlBb9o+wrsybOvVYliKd8xeirVNxDQRQfIFHi8J8uzypCf4PuA2ONRnjxidJcdg0RgaEixUw
- yKknjrJh
- ouTZnYV+nFfPFYP0MKDjUB6apc6Ep55hxQMTElGyjI7I1Qd0rn/47zY5s63gKvew45II7iUuNIGawKW6w/fp5f4c8kA/V/Gm0yF50JUT085XHh8QQSKgjZnMYN2fmvo7/T1407LgSoSSRW/nAc2vuT8ryF9fBz7VWh8DdDz2KqUn7OusWw4dpRsDSg/msKNhyI7GB+pi5UjiXuVz5nqMwHuQ2MfxOzmdHko+kcw8AmmsQmYty8iI/Ju1CPlWXQdaOisBd2wnJtNETO3km46m1OlFCaAp0AD74glUtSB+5C6FSVOuVI4YshQUtojNCdUsXuXSWdCozhJFEu+dhlQ5PGa7kUFhd5pemqMGQUSbPG1fP1NsjJ6uajTWIiBTfMyrfSHicsrwIRNMQTbDAAnz9FVMWU0EYHjJ+tN/GMqf5pTEtqAMfpdWaK9dRfvFZZH5lLNLLiP0zjbGjhsWsS87sQ+sMfYIu+4mbqv0048AVUe4LKfyu9SLLuigUzACjopPNvybwTEDZbl+nJTInzgW8NeOjsA==
+X-HE-Tag: 1772225724-725788
+X-HE-Meta: U2FsdGVkX1+GI4r/gk2XcozAZUwujQbC1lmLBNfGmXOAaVoSniXsJIhlwEd5EPR626+CD1EoiBIiWjektScrXvSAaxXZPaUE12Jvphaea6nbAUQx+LjmTbS/aGa9uIKU35i2ZDPanAfzwvyosDm4/pYvh0pteqNjYW6zrlcuWIyo1PefzQk3h85xKei5KuDz3DXLht8wOlCKIM119TtNSAchPuRY9rvrVz51jAT5q/8CabDet4Spj069JyJyzIvsqR8D68+lSBLUkqQca/CF46IfoV8ZHT8Y6TzIC5lHBbTnrcvG7UccrMOE7okgeOgXHyKkHpiDxpFFnmNaRWcm+iwMTmnKQcnxTiNlurJbVOAbP005JCzz/gb4kdzMFan3mTeiAjejCPEMUXbIXmQkttmNcNnMFGh8SFpkJp1GYd28WGCbmb7opYsb8f/s/lZvfTqRW3yFn/aTVrb8OrUES++r8utaEPGU+q5WoFytKBt2rswi4FUyhVJgQa6Inca7MsM/LroVQ6qzk/CsmggwCwsn4FPyCoUqCEj0FBt7g5w/NvRrpQjGb52K/dzoOSvSSGja3+xu5Qo2IBjCa+Wu626a8uGTXGvoVFHTeC8B2dehdbgz3uWDajV3ZHKW98xjTdDYpaTRNJDLOWuLPdtK3ecD+AGQRChG20WI62f7nQkxZKZpEbGsdIXsIJ7pC32pyZcJhJ0275Xc4J2eZsTvQ0VPLqQkosY32z9nA6J9ep2QX6NGg6PXYEp1Lt4DjuHHm/UGVnQ7V0+7sl6E0+4dN/B9Dp9UEb+lSOPgfGEIKGvoq96f0XHwgNcP6vOsx+dPpYd9Exyfc0u0NIyLpQeqY2u9T3DnANnmNOQoBiezydETfZa41dUMGUGlnqYbuo2plYKfLQT/ivqIi2+RL16ZXwh8Uny59Jz9gCbIQDudIii+PGibX1fIx++Q6KSzptQmj5PSWLAD7ioBgWlYrrM
+ jEKmHdgf
+ evCa4v2bYa2ih3BwzBqgA7UAYmvQay6MtowWRhU+mK3pr5El6k7pCA3tiD+LjDWdJrBIldxWvAckCP/VJk9j8EGAzlW8EXr/qxIGcla9q5U4dVRAtlDVfJRd3NHo9OeAkA1wqmX6YIWQJ7QxPd7xr53B7RebN6wKWui+p/9N6htP/aygm/65sXIPrkoLxh4/rQa5FgAdrcjbnOBPhDYpU/B3Lz6E2Q3hnrHGYeyrYXeGM8hfXX/j2tQVS95EHuYVFeSdtf3kPFlXV1/m0RKH7EbDfc4NSkCb+XAcFsZX1587YFwHSAW46sF6GV28ZsZpAttzXdiXsqQhckWVE3UTi59UYN4AUm98l7GD/69F+W6StxiwV+2yZ8M4lEybLxwoqe7DNzgtChWEie/nU10oDc7VYxCuTUCPfKDXpdvSKh+Dh6b0G87DMmfWz0DaD2JINffmJ0rJlXXtSvc164zzRxYn0vGcNDxOLxEgQ5hB56gI7rV7gioNJuI2Mqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,20 +138,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 05:03, Anshuman Khandual wrote:
-> Replace READ_ONCE() with the existing standard page table accessor for PUD
-> aka pudp_get() in pud_trans_unstable(). This does not create any functional
-> change for platforms that do not override pudp_get(), which still defaults
-> to READ_ONCE().
+On 2/27/26 07:12, Anshuman Khandual wrote:
+> Replace WRITE_ONCE() with generic pxd_clear() to clear out the page table
+> entries as required. Besides this does not cause any functional change as
+> well.
 > 
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
 > Cc: linux-mm@kvack.org
 > Cc: linux-kernel@vger.kernel.org
+> Suggested-by: Ryan Roberts <ryan.roberts@arm.com>
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
+> Applies on mm-unstable and tested only on arm64 platform.
+> 
+>  mm/debug_vm_pgtable.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 83cf07269f13..23dc3ee09561 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -445,7 +445,7 @@ static void __init pmd_huge_tests(struct pgtable_debug_args *args)
+>  	 * X86 defined pmd_set_huge() verifies that the given
+>  	 * PMD is not a populated non-leaf entry.
+>  	 */
+> -	WRITE_ONCE(*args->pmdp, __pmd(0));
+> +	pmd_clear(args->pmdp);
+>  	WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
+>  	WARN_ON(!pmd_clear_huge(args->pmdp));
+>  	pmd = pmdp_get(args->pmdp);
+> @@ -465,7 +465,7 @@ static void __init pud_huge_tests(struct pgtable_debug_args *args)
+>  	 * X86 defined pud_set_huge() verifies that the given
+>  	 * PUD is not a populated non-leaf entry.
+>  	 */
+> -	WRITE_ONCE(*args->pudp, __pud(0));
+> +	pud_clear(args->pudp);
+>  	WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
+>  	WARN_ON(!pud_clear_huge(args->pudp));
+>  	pud = pudp_get(args->pudp);
+
+On some architectures, pmd_clear() does not set the pmd to zero.
+
+See s390x as an example:
+
+	set_pmd(pmdp, __pmd(_SEGMENT_ENTRY_EMPTY));
+
+Which results on 0x20 being set.
+
+Maybe we're lucky and all relevant architectures do not have
+CONFIG_HAVE_ARCH_HUGE_VMAP.
+
+Or maybe it just doesn't matter.
+
+We'll find out :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
