@@ -4,135 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3214FD530A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50FF8FD530A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44CAF6B0005; Fri, 27 Feb 2026 14:45:44 -0500 (EST)
+	id B22FF6B00E2; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 424D36B00AB; Fri, 27 Feb 2026 14:45:44 -0500 (EST)
+	id B0E3A6B00E3; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 323B96B00BB; Fri, 27 Feb 2026 14:45:44 -0500 (EST)
+	id A45006B00E4; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C3B96B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:45:44 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF1BD5B8FA
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:45:43 +0000 (UTC)
-X-FDA: 84491266566.06.585F949
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E47A9100003
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:45:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GSXhEPue;
-	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1F66B00E2
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C191BB748
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:46:35 +0000 (UTC)
+X-FDA: 84491268750.08.9585074
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A4B8040004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:46:33 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772221542;
+	s=arc-20220608; t=1772221593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Jbxq4nQ7cCHo0K9mO13qBbib2DHZAL310WhuqAgZmw=;
-	b=1h39gm5zfberP91E4+cR7Yf9ZPyx8EXceAxqyiKrOwkvnptqxK2fpa8WxGjYQXr/HriTJ6
-	4eVdPGJT8kTR8rZ0HbcpgLe73ER8Ow0Xi0kh5/f+reHPMr7P4SP7ZWDPMi6TBdGGOQRptJ
-	Zs53V77kHwpX9FitnxUcdlWwVMqiAQo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l5T0iL8DI1nGNFuwO3l69tcGuHXN+8usnX63z8h89mQ=;
+	b=J1tIAFo/7vH3uLRgmfd/PjcJXl/pzePIkGA7WGs9Y87YDD8Pb441IkALBetnE8MuW2US2I
+	BmUlrbshNGMBHLNHgitwS5F1XdzdBwAYyadn6QnqZdpZzQ0nn6X1SpNEsdy7GC/48kN6Ua
+	Ul+BmHkWQVfz0+bFYiTI4LF1RuBKLX0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GSXhEPue;
-	spf=pass (imf14.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221542; a=rsa-sha256;
+	imf27.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221593; a=rsa-sha256;
 	cv=none;
-	b=7ryDEv9egQj0VYJ1/9KZKdNeMPdyKahrsXtNDKiKs69RW88zdi5rou+Ld6ASd0EVVYLXgp
-	NrE5LPds+3zCIXw8e14VIVP0VxH+UW51izYcBSZIiAwJfAMGmDL/su/e7/d34n4m30Hg7H
-	rhTgvBEjdTHHd5fAjyMu/3a9lmipu4c=
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-679efb9eb0dso1812711eaf.2
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 11:45:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772221541; x=1772826341; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Jbxq4nQ7cCHo0K9mO13qBbib2DHZAL310WhuqAgZmw=;
-        b=GSXhEPuek/dTdfhhYylzRFUk0iH9gJXvoWEeZmmPA6iKK9/UCrSuU0LPmjMaSenb8Y
-         H4a9meeuWl6bFwp6x6Jfl3sda9Swrpn59DZY6vvyOd8tdG8QifynR/YDNM9Hc7eNMqbA
-         WWssl/niOp5pGDRmeZJff8vTacJljwEZ+OScuDzZGpvMZ7+M4NofZHF93t5PpKpQ8aaW
-         ZbPWUXfQUVpV8a0MMTJ+X3PxMNl4nysWta3HsyO8FWJSP7vqFRCOOprx3MByPlH3Tdnn
-         uH/45nUh6v9t8NKkMyOSfQErAbAWx2ruOF9+Im0E+RSB4JWi5pNt9lNiNoIasT2+N2wp
-         z4tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772221541; x=1772826341;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3Jbxq4nQ7cCHo0K9mO13qBbib2DHZAL310WhuqAgZmw=;
-        b=mtb2hu7i+sN9G2zw6yQa9bQ61JUkdT1sHvolqu4ITILtNQE3S6qyr0cn+bao7lOlsJ
-         b2wWOp1B/brl/inrvLjgf9Au+zRApCnKhCn/n6I5ZUH5UHA2a/TldTsvSvxREpJUI6RI
-         MzWzRqoQdCJJUrdxFpTb5ubBKeEQ1vNMTpXPXhEDqtvxECLMzzNzV+cX0hntrzq/kEGd
-         D5ZT1gDl8ZYfwltP4QijybAiLFjQ8G+yi27Wif+XLWxmB4H3ayu8sTOSr0C3hS/zk+GR
-         BjXG0ok89ozGj7Qr+/wdT7TYey8RuC/TCIT/6PnP4gEGB7Tzjt0uQ5lJplviA66m2PfP
-         ipQw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmvbzSqFUgY7BoMmEWP1ddX9piRQgfY0oEkQQ8k3vZZQAu7Ht0Rp6H7kjKoqR2p7VsoXghabzrlQ==@kvack.org
-X-Gm-Message-State: AOJu0YyqEcJvgmZK5k82+kkkVj6sw2rrEMG232xo3U0nbjUXE407xif2
-	+50pSgaCqIdwf5sKJHZLAdHAwlGTiCsT5/qzIh3bDWXabICgDM1BGVVv
-X-Gm-Gg: ATEYQzytO+AXtVRAcUGjUjLWK+45wiDXGnVkv/V0jzkhoiWsXhelfjWlCkFw0stv57+
-	HGSV14uBWAQX4Vg79g7YYIeJUA6/muRuL1jDNPMIyELQATOt4Bd+YKw60QnKl6ACZGbTNITrWYa
-	z9aGTQl9zY0SI29DLxSSk1tzuaLso0jEeXakjj5JRurwgKPBGaUnoEReQMkId3LiERcj587nzK+
-	YyJ/r1UrPJAFESPlB6S5LVBinD06GVH0aMq8w4J5Oj5jaX7znLL9il2qMT1naTbH3fO8ZpPn6Vu
-	k0xWP6Pr+cOSC/67qIhkLqFMbdCpTki8BSXXDTRqwecuHLYMHvUr/jHfeKk2ylzQBAzphj6BZpE
-	Z5gjbZ47xP9dsE+bR4AUFs093htWUFIXnTTsZ07Mkn9yDNRY3RwviSeYa2tqeduZSi95to4MnYs
-	IWDL7TA2WkPZmVRemsOijg2Q==
-X-Received: by 2002:a05:6820:8187:b0:679:e7b2:9fc6 with SMTP id 006d021491bc7-679fadc292emr2651719eaf.3.1772221540840;
-        Fri, 27 Feb 2026 11:45:40 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679f2bfee3csm4162972eaf.7.2026.02.27.11.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 11:45:40 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	oe-kbuild-all@lists.linux.dev,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 8/8] mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
-Date: Fri, 27 Feb 2026 11:45:38 -0800
-Message-ID: <20260227194538.928770-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <202602270607.dJP65LGH-lkp@intel.com>
-References: 
+	b=U1x906USstV5ZbpSzjS+jhdj34COeOQvA6Piwzr6Nh7TjpuDj4ji5+mfvG2+WQiXREvRbK
+	oJt+2BgUER1bPJQG+cAS/o17pP1xvujfpV0sidQX0t4nEV3N1M7tF6mgHH1RQljRUbpVyw
+	4jOTmUHGYGfSMcCtDazJWZKgZ/FIKAY=
+Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A64C8C2DB3;
+	Fri, 27 Feb 2026 19:46:30 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 73BB720016;
+	Fri, 27 Feb 2026 19:46:24 +0000 (UTC)
+Date: Fri, 27 Feb 2026 14:46:49 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu
+ Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Oscar
+ Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, "linux-cxl@vger.kernel.orgkernel-team"@meta.com
+Subject: Re: [PATCH v4 5/5] mm: add tracepoints for zone lock
+Message-ID: <20260227144649.3dbff742@gandalf.local.home>
+In-Reply-To: <ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
+References: <cover.1772206930.git.d@ilvokhin.com>
+	<ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/tqfZb3BP+WqZirC6uLCguAOnl9bJ5e/E=
+X-HE-Meta: U2FsdGVkX1+Ubmu8sp2dODz5b7SCRkSYEMDCN5v+Sc8RVUFnTWMyKXGqiKeiHhzkb2b1Dt/LC4TG2ySWIbTgjCHFE48LoFDsaEiICe/p8YN2/aPzcJqnY4OY5teYzActk2juaAd+qIppoE/NFDJjLbtNhjOKa04i3NUWuE7O7t9k7DBa3wPcVD/96J/S3S56BDlMtAEH2ZhsHViBS0zvjZ2m5MGhBwQ/3htcYvpQ5Camj+HNfnlj7k03cLgqGqiR5pfViHhEEPD4H0s2EEStIofDRZ+V41gzV4ABYYm5Qzx6r4lMEZFm+F36k0XQZ2gkUYizcUfjlEX3hLaZVHTupY1zOu+4rwAQlFtkxnG72c+Z0v97kHyhCGdUcY3IPgqS
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A4B8040004
+X-Stat-Signature: 75z95ye3rzrmfdo81wu9y48dgd3xrfx4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E47A9100003
-X-Rspamd-Server: rspam08
-X-Stat-Signature: gnhjjz1igb89474iyts1tyqu5x67e1kw
-X-HE-Tag: 1772221541-314078
-X-HE-Meta: U2FsdGVkX194pwiaoFQiZAdWDJojs+YipVvTFlDRFN/a8jzJvika36cg0pBWbmNo8aJhQjUlMGt2cyHBEDyapyW8FnlOM9irlmS3FdswJtNZ9jybGGouuX4Sb3+KEI9KQlfaGJPsGdnYl08gHvq+kUqR892XevsMfcK7QR2OTe+hs32GZATHrP/WzNR2Pz2ctbcS1wOp5eXViPvEewo7hdsd2GVZc5muZtZT9wZxyiYFPrsRNq665vXFGBgxjCQ19IOp2I3OkJccevRKEV4Wd5STtAvhculv2ZV5R50C05a57O4VFRKsc0o9x+SD2oVkC0F/nqaqfVJk2gdX5uqCZP1h7Iz1NTQ8X3Srr+dTX8S/KWY59nB4xQX5rzoRc0hN+s89X1WL9UwwM9s4xSziUowFxIfgYHnA0NhEahtW8xR75CcNtlBj7KSLV3HOGWkU8nJc/5OaQvg/91TXGAXaLu2xMYCHvCn4uq/8tl199K297iV/7X6GawAocbqC3buxIs552Ur+LWikZRrwWpXSTIfGF0MXav17z3bkabOhrJ7bNZlXj6ou5FHiQFs7c61eaUxP8R7jsUmdZpMK5GLu/TEZBDHektoY0r/+JnydglfP/ze8oVtvcRS8Sa1Owc0QrWEt/wmwFl+dN/RMzFZB470s+PLakAWmSks9xqids2VnIfqi8wBi5PIRqTtvTuZuU+495Io3Pjd2IuLX6fmjtKIAfKaGtSARMe2YPZJQLZeM+tF1oi2Qkp90IpufIkc7mOlLK2Y9rfAxD40UyG9bMdk6wzxfKN01O+x06UX+1nbfJFkMplBn5w7DWPCcyFOWahd+UXxe6GBhObG3WtxMrATrZhypJu0r3Hcz0941o2c8Xmw/kEm9zyHwmp7bgCbIs0w7LGk94Rlk3go30BMvEbRip4buEm4NrL6o5vqgEFYfruMafxcEFq3pc6Bxef6wL3f6VL1qxrneq6wLB3K
- C4e4Y8ZP
- gpOipjyAQCEvkKpPzFRiOUTTWzFkyysKhpkGWqzequIaMAP9RzzSB5scAt3f2718ze08x36mDZ7BBaEsFpjMV4ju0zC838XVYt5m3BFLZLgUx3H2T9FL/kESk/6LGgQdLHkVD9oQtqe9SGfN80iVX55UTs4P7w2XiHJjK9qLxDJdbocuvQrbgYAWn8GlvUE5rCfl+pJz0aiOE88+MPBBRfhcKMVANU3GJWHyEWNPxLihcyGadFeWs1wTs0KZnlwbEeattNN0t6SPJpYaVIKPzqcni7VZGn6tZHtSkmz/Myk/5YPDlNAK9MHIPlzGc9kqNTDYFtw2Mq2+g0FgPulUyhbVbpv7JHsGMoOnFLepwS8iWzHe4K4zz7nG3Tp8KUVci6a6IhCrwdmw4QXFULy0sD61Itm604kearHKd+9GusEatCLvA57sgkcjzzSguVILPJLc55SJSwTgS5HPWpSvuZXvCKVIrj7yH0d3bGbKr2oVzqHXXZ8onN8vgUMbdSBdz2yXtEq3QRxdPV32GoRzsYuvRgNrsKJeJZ/w5QhIuFozF5kd/Y3D7qCizkuBVV03kzd2K78piS8Kg4AM1QREhUu2m6uHjjL1afcJmwm9zk17QVflJLYHeG9/3h2bvnlFsemVW145KsccrTpA8U3vmzRNQENvBrCGSVdCv
+X-HE-Tag-Orig: 1772221584-850844
+X-HE-Tag: 1772221593-768876
+X-HE-Meta: U2FsdGVkX18NfDTDuIrOfUVsGFETEVi6nOAVoncRl28PLJOs+1eATalq+w3PcMaZyCgxqxH1VlgpN/pDsA9/yGMCVsKXNuPxdXaycH0cBR8FjOfn98RXelePdtV/naXOTq6WRJDubfUcAtvbO5PdwJL/Y9dm9xhCcCylC8LnRJjaXB6GD3Qkgx3xJT7gHCDj6EdBn9Wx0VXTWL+Vb0q04SibmNYhc3sT/FyN5a520KWPaZ3fXT5xdApqzXJlEK5GsgWEoafN5uyw9NEBa8L8YBbDviDyHe/o/WPmKHClBDk37ctzAiyyj0ho4+DZC8sIABsNOMrFwjFnEYipid4BNX4m5Q5HwmR7uOsgkyylGY9OVDJWIhhuN8aKcLCv9pYB23THHyBpol0d/kt+N8knjsbWtREc0/MjH6ld5fGav1Jn//ga4dS7NhMELAK6Pjz06LnFXzu91DV1196c0qH5ajcre+V/UGSC6n3e4M5mYeYUkwG6qwO/kUS8PwErbB21QcbvLuTimWZaX6DaC/D2Nc5+TnvgGYbxSwofxpv+YpgQamCPJ62VKHWeJvUzza7VmIX6r0sOte10vVVze+BqwsuSIZhQHSDf5aj7ptkz357egMezW6/HwWSKL7UaTVkVoRsEeYGtEqoJ9kttGuKpJrKV4Pi7TwwMSynvSPp0SuISgBLZ3hhFLx324GkTI87OBbtGi5i5fo5SBdkYbwmP6nCY+NTSB+ieIKHy3DRMZzH3DSRpGrCokfutT7qsHeVJlvVpX4HT9WiS9DahDHoHR6EuR0Mc5ydgZpwjycfeBQ0Yl4uSWfZav2cfxr7oR7FQzmYaeUsrQVPfx+bkWDoFw89WwpM1KEadpJFte0L4zr+lVkSOb41/eHNxdeymAkvIUcVVLZuSZ7yt1Cq2HluRK8dZ0cebLEv5Fp3xvPoDvSrJid59ZjdmtycBzCbq/RdMORxUF+e47sOTV1OI7ZH
+ hwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,49 +94,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Feb 2026 06:40:18 +0800 kernel test robot <lkp@intel.com> wrote:
+On Fri, 27 Feb 2026 16:00:27 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> Hi Joshua,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on axboe/for-next]
-> [also build test ERROR on linus/master v7.0-rc1]
-> [cannot apply to akpm-mm/mm-everything next-20260226]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Joshua-Hahn/mm-zsmalloc-Rename-zs_object_copy-to-zs_obj_copy/20260227-033239
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux.git for-next
-> patch link:    https://lore.kernel.org/r/20260226192936.3190275-9-joshua.hahnjy%40gmail.com
-> patch subject: [PATCH 8/8] mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
-> config: powerpc64-randconfig-r072-20260227 (https://download.01.org/0day-ci/archive/20260227/202602270607.dJP65LGH-lkp@intel.com/config)
-> compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-> smatch version: v0.5.0-8994-gd50c5a4c
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260227/202602270607.dJP65LGH-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202602270607.dJP65LGH-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
-> >> mm/zsmalloc.c:813:17: error: call to undeclared function 'zpdesc_objcgs'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->      813 |         bool objcg = !!zpdesc_objcgs(zspage->first_zpdesc);
->          |                        ^
->    1 error generated.
+>  static inline void zone_lock_init(struct zone *zone)
+>  {
+> @@ -12,26 +59,41 @@ static inline void zone_lock_init(struct zone *zone)
+>  
+>  #define zone_lock_irqsave(zone, flags)				\
+>  do {								\
+> +	bool success = true;					\
+> +								\
+> +	__zone_lock_trace_start_locking(zone);			\
+>  	spin_lock_irqsave(&(zone)->_lock, flags);		\
+> +	__zone_lock_trace_acquire_returned(zone, success);	\
 
-Hi Kernel test robot,
+Why the "success" variable and not just:
 
-Thanks again, this seems like the same problem of not defining
-zpdesc_objcgs outside for the !ifdef CONFIG_MEMCG case. However, in this
-case I think the change that needs to be made is actually to make the
-charging happen unconditionally, and within the charging functions
-check if objcg is present, since the node states can be updated even
-without the concept of a memcg.
+	__zone_lock_trace_acquire_returned(zone, true);
 
-Thanks again!
-Joshua
+ ?
+
+
+>  } while (0)
+>  
+>  #define zone_trylock_irqsave(zone, flags)			\
+>  ({								\
+> -	spin_trylock_irqsave(&(zone)->_lock, flags);		\
+> +	bool success;						\
+> +								\
+> +	__zone_lock_trace_start_locking(zone);			\
+> +	success = spin_trylock_irqsave(&(zone)->_lock, flags);	\
+> +	__zone_lock_trace_acquire_returned(zone, success);	\
+> +	success;						\
+>  })
+>  
+>  static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
+>  {
+> +	__zone_lock_trace_released(zone);
+>  	spin_unlock_irqrestore(&zone->_lock, flags);
+>  }
+>  
+>  static inline void zone_lock_irq(struct zone *zone)
+>  {
+> +	bool success = true;
+> +
+> +	__zone_lock_trace_start_locking(zone);
+>  	spin_lock_irq(&zone->_lock);
+> +	__zone_lock_trace_acquire_returned(zone, success);
+
+Same here.
+
+>  }
+>  
+>  static inline void zone_unlock_irq(struct zone *zone)
+>  {
+> +	__zone_lock_trace_released(zone);
+>  	spin_unlock_irq(&zone->_lock);
+>  }
+>
+
+-- Steve
+
 
