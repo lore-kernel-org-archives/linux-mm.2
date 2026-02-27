@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A6B2FEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:45:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3742FFEFB51
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C79496B00E2; Fri, 27 Feb 2026 15:45:19 -0500 (EST)
+	id 9D2396B00EF; Fri, 27 Feb 2026 15:47:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C404F6B00E6; Fri, 27 Feb 2026 15:45:19 -0500 (EST)
+	id 992326B00F1; Fri, 27 Feb 2026 15:47:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B461A6B00EA; Fri, 27 Feb 2026 15:45:19 -0500 (EST)
+	id 8A24B6B00F4; Fri, 27 Feb 2026 15:47:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A22C56B00E2
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:45:19 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 288B81608D7
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:45:19 +0000 (UTC)
-X-FDA: 84491416758.19.2A6DE1F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B9F16B00EF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:47:09 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2B2BD8C6F4
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:47:09 +0000 (UTC)
+X-FDA: 84491421378.10.F45BA7C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6C59A40003
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:45:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hMTGAwtP;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2979710000A
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:47:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U38+DtAZ;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772225117;
+	s=arc-20220608; t=1772225227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8+TKvzIegwtZODWiMAZutCkTguWVZP91GIUbiHPa3g=;
-	b=tFTY7ftVi+G0yNYJnr2BNNUwQqn1LllFXk3FPs7YqZT9O/G5ZufEXjlGxKEeBEpyVmxYQp
-	MB74AiIYdl2BZMQViZRkbT5HzNzsy7fuLQy6OeF/LEWfyj0S+C8xTOq+VvpIg4R0ybBthO
-	EWRBCUT8+LIaO4waY6LrP9+zWjVzrAI=
+	bh=p8fouIILW+kOEqFcPLc+dtAweW93xa3dq7gDjLmsLyY=;
+	b=7RIGkuIPj9deeJbB4RZ583YfT26quPDq91EQLiRPtoysR3Kd/DD22yGqEJsGiEli8rld8H
+	3FPxGNcoUB4FwgbSw+XPuA7938uf+9yxaiEet5r/YsZuGGwOlS3MYl6/rvLEF966Fx6DkO
+	ui6Pp84Vm59UXaMiugtXtPJf1Qb67Ec=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hMTGAwtP;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U38+DtAZ;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225117; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225227; a=rsa-sha256;
 	cv=none;
-	b=VCKMt7BQVQUAwvirji4dFOgxtlJU2l1Qsfo4xfBAaclRsNBltksbckuwMossbUP5q51wqA
-	qr9F9/CRwrw1s1YFYEdGkBlBG16oHSuKRPhkd7Gjy5RSaxZMJXugVbRqrEjOoDKuObHMg7
-	oufSNDgCrpiEsL7v/dO4jJOahXSvShk=
+	b=K0g1r+C0MqJ/QljSlTdInOjS/MP3Rc5vFAfoX79lfQNNEjR7wtmgNpwhqFI3KnoIhOh6F+
+	WT7vYJHmXrjG+v5BapPe0hBCpMsqsWYiFlblQCi3fVS787qSZHFHmwb1lxRPUu0wOAxC9X
+	AJjZogPTvACwyqbaLAUVzGh4MCbS5/0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6110740766;
-	Fri, 27 Feb 2026 20:45:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94C8C116C6;
-	Fri, 27 Feb 2026 20:45:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB3BA43BFE;
+	Fri, 27 Feb 2026 20:47:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC35C116C6;
+	Fri, 27 Feb 2026 20:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772225116;
-	bh=pYQSUC5jATh6DNwnolOOAOo17Nig2BgeHN6u2v19K7U=;
+	s=k20201202; t=1772225225;
+	bh=KiEZ634NcmDBBGpW41mXdUQd6VZVLW3WgbPtT1aB5vA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hMTGAwtPBNfebE/Z+l5VugFscaEc9S9I2bu5ydzPY/uWCWI9MSBPqjQEhQHfFmgs0
-	 LxMIdmM5vycoWY6/euBpDzv94By6NVToYu7ziitEzxbRukpSI2TMHTCrwpIhC7ZpQr
-	 jI8XZA9Yi4g9PvzeaEVhK1Xk8ky0FTDZ3J5jKRR3niPQuJrVAHK25OEX7urtGK25s6
-	 jfu/yAA+yLOA9sYGO0BOkpYsiclYBqfOhGUgmVk7frmqB8JQK4eXXOiF5LlP2Hx9Sb
-	 LEPvlo9zKZqZYMFSoDPVDCvHQFL8qlL+tJiQ1m+7fTr8TKf89HH3QHS+KZtZ3x8r0k
-	 mV7pQWXpxt6Og==
-Message-ID: <22faedef-99ab-40ff-aa8d-c3627beb0b3a@kernel.org>
-Date: Fri, 27 Feb 2026 21:45:08 +0100
+	b=U38+DtAZ4hheFkQsR6IvNxjwmIfGdSAJaWFMvwxrN5fKMOMBZi2Ydie+hnBGhh4Mw
+	 8Xps7pf/AWsCptlgvUpq2SdpnqsIXFC/Kvatgefm1fAl1yT1BKaQx5BAmIZ8UtFJdA
+	 tWP9G1+eUo+BTLxQraiXUjxYIh+MKWztJCd3Vh1uhuGiurXAZLpLVvsciXYphvo0Vy
+	 v9LOZa/XL9T7cXWFIyOUscgKZ71W4CfVIfkOyc5d5n2N8v1maxc3MlpePoFn7OmGD0
+	 C0ZLjb2gegz0VJYgzXX+zxlW7QFhXQu53U6T8h65al4jazzZ3GIQajhxJGkYG/ryST
+	 CKsDDCG3Sx15A==
+Message-ID: <3e406be3-3317-4385-a5b8-e2aa1481bde5@kernel.org>
+Date: Fri, 27 Feb 2026 21:46:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] page_reporting: add PAGE_REPORTING_DEFAULT_ORDER
+Subject: Re: [PATCH v1 2/4] virtio_balloon: set default page reporting order
 To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>,
  akpm@linux-foundation.org
 Cc: mst@redhat.com, kys@microsoft.com, haiyangz@microsoft.com,
@@ -80,7 +80,7 @@ Cc: mst@redhat.com, kys@microsoft.com, haiyangz@microsoft.com,
  virtualization@lists.linux.dev, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260227140655.360696-1-yuvraj.sakshith@oss.qualcomm.com>
- <20260227140655.360696-2-yuvraj.sakshith@oss.qualcomm.com>
+ <20260227140655.360696-3-yuvraj.sakshith@oss.qualcomm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227140655.360696-2-yuvraj.sakshith@oss.qualcomm.com>
+In-Reply-To: <20260227140655.360696-3-yuvraj.sakshith@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6C59A40003
-X-Stat-Signature: a5iyhucwhfg98wzpwkw7sn5f3q9gaaxm
+X-Rspamd-Queue-Id: 2979710000A
+X-Stat-Signature: wbr9fwk18prncqxnz5xc5azkfw4wrye6
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772225117-730522
-X-HE-Meta: U2FsdGVkX18QDCp3wLjvI7d3RCh9S5qKIeLR2poiLaIkLaUJwJSeHFUTRKMWaEO2GBWo2PMijQYSCqzH5f7VA83p7GiVIGumNf/tNMR9t/l6/sjSjW0fplMXpvMzxvJzaTHXwWwoJVWHQKBGY5c/6GAwG9NJy5Qbl0l9nUybd5ema0oyqd5w+PwmZiCBrJbkaDJKyMywEg9SgDAto/q1JlNfxJQxGA+XeQnG+CUHiOub06WGkCwp1mImXjvG3f1+2YfpO5rXw8830ixhzBut0cgZ5cjtUaQKGTTL9waudg9Ms62GHvLwCniB8bJBfw4hHGwOhF9UWAzLgsyljrvJBh2R9bVTXL4x/SXKvmJruho9ese9j/2ATUr3cGLxjeqfMv446xdy9r3m4Ed3lhDAsCdV1DlH/yJmdfdNYYp9OtFWSzYBMYHntS/TkEDz/qhkKMUp5j6pNQe4QCaPF3fZG4UG0xCmv7d2xi0Em76mjWfBs+FjsXrU1KYUPfF6sKgwP1hVq/4V0mY978W3WnyL4AMGQmYVME1LfY2e3c7ARc6HSQmF8t7ei19cvkLM7EIjy/oliV9Jlm5J12RJSgziKyXo9w3xlnazi+FkOk6t/QrJCdvzRZO6N8vG1PBT+k/O3a9DBEODv3tGyZHEauUtV0d2ama9HTDSRjpEAFLvF+p5j9zS6dYy/zxFq8E3waI9gRu1vyPsF2EItX2WLJAL1I0HN0W7v3tO83cmS60eeChx4YVn//y8bbfAb0Wc29v5SUrOLddlsvQu20TZkHcYcVpMVpVK90CCA0lby7GmGujcSt64MCx6RCmaJxWoydsfSy5ES3Zd0EVORp6bJG9K4jF7oZjaSYN3l0YjaFtGk28r3J6Wg5hdORh1VSlClYtGJ0djt4gYEZlXVGn7kO12no3/kH3DJpAnUrCXzXm1alRs2AdDYT4mcXYQZoEG198Jl+Yg+9XxN40mT1dyxrQ
- IGhhk5iP
- dnOnKzPjJXFxBF/w=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772225226-335197
+X-HE-Meta: U2FsdGVkX19ZFCPwZq8LVkiTqnnxffWmlUEEV0bs2z4GkgdUnUNE5Fsc7dcR3brrzUkYP//f2B/pB2K+UM0wJvRhNXXx/dYAOds7H4wMkuWBs1k/d/KzSy+5vWpimnMYxKj0ghFJhjjWYB58hdyLsY48LhOyb8DO/pThe23KVlYf76t/fmEKs6E9qyzlD9rhvf1mZDCUwXBMXyGOAOQRQ82hsPYLeIW2V8rxQktMpaX/T5I1K2fpBzakf/FskeNJADEWXBjllXETBDNh9v8gHSyHtQ6Z1Wi/xPrYYSV6XT90Uad3VMSXSG4cdRcIcCG6TIRLABbwYMjtcim/h/mpNiARwuLPxQvJaRX3C/mws5XhGQAS5wZvbAOkY9Tdo747a4MpLBTU8mKjCB388UsBUIOUvPJjKBFvHSu+lt98hTnzWwckvsISmFIrr/a+ewDlho3at899lUkU1drvz5RtbfTSbLbzfUkl/MZzliIkWrCWV7RMaambkX1VHBSTdoPpKrEvLYOdfhRckG72CcwTRzkde/3VZCCwRygiIA+0yu+YMa1BRlnWzRlzy9WhQ3E05D90KSG98C6rpJJYJqJsV+xEXsnHduNx+GvwjhQUWAi5zwssqeSMD3S354aL7exHOaHZxNdNWWjSw8yQALsXFQ9sE6Vdy2jqKXxmzvofsO4rJuD1xv6buarDRIB4JnaYcIRFpULDGSwz4VDjnb7lSp+Hn7atOf24fMU5zGsBVP7cxKuFRPv7Ve0saEsRByMmoQXAYmk6iPqalPDljz0OKmqebPRsL56Jgq2EQdnnhOivo7O8WPVgNAvlinzCV82437nG/q43ecwe0lKYF+x11ep0hjKOYzFCD6/zyAgA6V3l/Jm0DNJJE3pOAyHW4Pnai0lqj5nx6uOISLK8wBlEQO5qNVlhmslxFuEywSFVuyePXUXWkuUISPQFdh72SQYOkPBLLA6SabIjnORalnr
+ cJPVYZbd
+ jut16WVLwlkzC9DjaWfpbhREE41GJl/aO/klp8ufLmiL0snJSOUITYuXPYD/I+wUFG423vplUbpFykIpuh3wIupsqiWFhpMJRVr5+2mMa4FrKK18DbgIgBfShscMIoyidxIVbh3fm/GJiCcosKmunRqqc9+IA0DyJUdLH2sfHxPPh89e31zAUsmi5AkHr+m1rYCpgAfGmMQIsYEFfu9Ez2N113IGFp4BxEYP8HnnOtF4Jua3Z2gKozGYpRO8KonYhu0Z7oRoAK2HLTvbfIxYiLQNXe45HQTQA+29iA/y3bGgt2lHKyYxmFmMJug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,19 +146,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 15:06, Yuvraj Sakshith wrote:
-> Drivers can pass order of pages to be reported while
-> registering itself. Today, this is a magic number, 0.
+> virtio_balloon page reporting order is set to MAX_PAGE_ORDER implicitly
+> as vb->prdev.order is never initialised and is auto-set to zero.
 > 
-> Label this with PAGE_REPORTING_DEFAULT_ORDER and
-> check for it when the driver is being registered.
-
-Patch subject: "mm/page_reporting:"
-
-Might want to add "We'll make explicit use of this define in relevant
-drivers next."
+> Explicitly mention usage of default page order by making use of
+> PAGE_REPORTING_DEFAULT ORDER fallback value.
+> 
+> Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
 
 -- 
 Cheers,
