@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3F9F1039892
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B501039893
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09F4C6B00D0; Fri, 27 Feb 2026 15:09:13 -0500 (EST)
+	id 12F326B00D2; Fri, 27 Feb 2026 15:09:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 077846B00D2; Fri, 27 Feb 2026 15:09:13 -0500 (EST)
+	id 0DD066B00D6; Fri, 27 Feb 2026 15:09:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8D96B00D4; Fri, 27 Feb 2026 15:09:12 -0500 (EST)
+	id F1E7F6B00D8; Fri, 27 Feb 2026 15:09:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8906B00D0
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:12 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C5D2C2E5D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:12 +0000 (UTC)
-X-FDA: 84491325744.25.39BDC15
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CF21140004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P+U9FbqK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D43746B00D2
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A51D65B8FC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:27 +0000 (UTC)
+X-FDA: 84491326374.28.FE54597
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EC4D3A000E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TykYjpWv;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772222949;
+	s=arc-20220608; t=1772222966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Vvf+Q0fyJ0WZ546dSDkkC4qI/jyE57BnwDyTXGB58lE=;
-	b=gEmINTA/b3dYi6mge51sDYrg0Oj2PIwS5aCLvNtpQ1/8NzYYkD5olvQiASXpT1kLk+FfbL
-	2tSwFqkamGRx16MFEkrTul4cDPibI8r9CcG7WlyFX9pE+paHV3EXgGOHvzIxQMQ5NJoW15
-	cAmrlNp6WH+jliqVqGS56yn8HLpY4BA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SKaTaYabvIguXZmWNNd+BNDEApRXksbBfmtUQ8fhMNM=;
+	b=eZr8dG/UXkJnHamTklVvVtF1jGMiEfHCYz49DceHJBHzKZHSqt8rtc/QOjTfSBH2velQKC
+	AayXALPPU/b7xPtzYAJamaktdDk5O50BKIb7XYgCsBd/e5MbswV3/UFplHqfIHzG60iJlN
+	NNoTkMT8srr0sDaXg9rXoLn8ayt3X0M=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=P+U9FbqK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222949; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TykYjpWv;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222966; a=rsa-sha256;
 	cv=none;
-	b=hi1APuvEoiqHXi7pL1n/hIVtogeAV+JYim2DLQ8lEfTQHaXSkAxwP/ILw8O3ewTuxsPnRA
-	lbHHZ2VlMKSIHeKEE0Xtk5XmupbNTCNUlYMAe4Mt4CADslXAIaSz1EETd1Y9JWLUKaRkr1
-	5+Bc6fbA/iFkX6xbUjtQUlLswGOMAk8=
+	b=x/rmeVooGshZ6VpUtZdykFSjuXWCp9WgDfkyOSPdtfuVKTPuYqCpBqy26GX+zo2NLduomp
+	CvsZklGhcpvN9JZPikh/PnW+9tTEM4GLpxYSHzuin9ctHZWvb6JpVEWyWkatPW4jPNwjp4
+	WxX9J18SHldcAXxGyfTxJ86lLCSYV3s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2E336013C;
+	by sea.source.kernel.org (Postfix) with ESMTP id AEF0E434E8;
+	Fri, 27 Feb 2026 20:09:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80D2C19423;
 	Fri, 27 Feb 2026 20:09:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E88C116C6;
-	Fri, 27 Feb 2026 20:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772222948;
-	bh=uHYxem2rcFuwlV7scbCWwSyUtQMuMwhNJjysCrEHJOo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=P+U9FbqKF3CgiBsEPqPexZzZ93XmAcCqzSbUwaOX1Y8siePI12ijG2mxzI5YIf0mL
-	 /ms5mDjzZ41zbR+y1lyjSjd5si16Ajj3yoCRxi8QeNf7VJlp5WbLWxR/Cm1nnjaTYO
-	 IOJj8irdOEN+aJhdaLJh+fKK7+dKb7KlCCDxdNslqcoGrctiSrHy1YeE9LnRXJRhDK
-	 ivNZRpe0JCZ8M0dux5O/xFyufs7KMwSQdWCOqjqmQAjFgGIXu0NS+l21cUs4WBsHt5
-	 gFLiipJYdZxphu1iU6VvsVMrLyOefgdnpc25102oxNzG5Kz3JMlEpdrlW7fczulnx6
-	 d9eorSp6XyA4Q==
+	s=k20201202; t=1772222964;
+	bh=oTLLv1/LtvCwIvkJbROBPO/znHjTWfNn5494fkK85gk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TykYjpWvgGwljpM6p2COuJBm6vVZY9Djvp9ZNM6zX/Mg+sBmes0wCnbQ4WeSfbmW/
+	 SV+IDNBtumzcZhC3ElSbyAiv475EkpQUkxeCLhsWULdxAHfGnT0H335AmzCjAN+dQj
+	 QRAOmuBYMH+Ynj0dVRD7vPT/l9+4APLtjm8nWyekU8kueRKpx8XbFw5ajrTVTYHSCI
+	 fPG3LX2/4RfCF7sYKFaOg85sIPFkNtlXfBAxGEQ4tDcYAx7xhGzd19vCY9jvvC0Ulp
+	 O7aQ9sT3wfiLxfn9cUcpLrszMNdsrZRZprFMOD9AkXLMBxMByussndPeKhWeTlHo/m
+	 zYXuh1oeZiM/A==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
@@ -138,23 +138,22 @@ Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
 	netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v1 00/16] mm: cleanups around unmapping / zapping
-Date: Fri, 27 Feb 2026 21:08:31 +0100
-Message-ID: <20260227200848.114019-1-david@kernel.org>
+Subject: [PATCH v1 01/16] mm/madvise: drop range checks in madvise_free_single_vma()
+Date: Fri, 27 Feb 2026 21:08:32 +0100
+Message-ID: <20260227200848.114019-2-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260227200848.114019-1-david@kernel.org>
+References: <20260227200848.114019-1-david@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF21140004
-X-Stat-Signature: 335qyr5xmtthoxkai3r7d15jx1mscin6
+X-Stat-Signature: 7htyo1ajprce4c6p79r8te6n9cucxmp8
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772222949-380731
-X-HE-Meta: U2FsdGVkX1+eYqq61NzYMqe4E/lyaYU3ERVgOhNOn0/KNyqa9nR6CDO/aNz9UX6GrN+QG6/sQ+vIQwFS6Jj5KaBFWcA5Rn0ZQxuZv99NSgNn3EhgmU7Q54dh7HrXmEvzInOCvsuYS6vXL2mbj7CVqLRQXZCsJWZcg3UW1fpDBoGUZy3bKevYMXInnz+CrqI/GmKqWBiElZXNG9jGKpl3Hs69gRmZRq6GX12Po4MLi//PhISEyldgENX2JxC68Lf0nQSKMZMrXRqjE7BiwtcNcn7UmSq017XuUDC1+eAkp2OKya/9Z/xjlvbhysXBTy2k3IItg4D68b0l1Tp9Z2WC4wO4M5k5wXji7qTCmcN9AO/l2H4J5RFeP7HUxukPpy1xRvqzqeyBTeYDZZkmry1wnJyZCD/m205ujDj5N4g/weAnbNZzZsixR+dP5d+Xe90o2wEfS/S07/JMN1RAy+L4Ht6hKCVOu9A/zs6qIMs/asfxLD2Ne0sRFIslI9fkIsbVP3Yg/kebuLGa8Tm6VPzISfnPrw5ue5K/ytVo9zVwHz5GX/tjrDXD3nHaGWHCAXtGGGn45E7/6rm/vrFFeOg0yd341KUK+9YW4zwLxCpNHYrp+Lxs726kiTUJeDZGoo3/3+80jHX7SQl2yT12l2RY9wbuyRBAB/f6+EIWuXTn6U5zrlEIJhk73oMz/73l/YJyeL72HlFYDnc+FA9pnxlpEeVR9uDuVe3FtL6NP0Z4/aCi8L/UgeQ0C5eDS4J4Ywdx9v1aksqDRWRLtjyThJ8nlLpJjGiZA38Ol410EphM15rf3GiwtXKPEeg0avL7DgQdy3Dk6XXfs2BJzLZ+/6lFAucD0vjndUjGLNGWKfthC+LXlIjlxZV6OqBSUag9+Op1kWsPuZIRkiKg/QwToW9wBtNL5zjsurd77TMBhX4EQFwTjTxCojzg6UmbLYEH6WNvQjqQFBYlk/gw0pFVJ9I
- sQ3HYXTP
- HXoNBRYY0AO1ec+gImnc4PUAItABw70EGE4w5yop3PXQTDRp/YAHqm7dWx4CuOD6gcvD1JdxMCoCAzCTDS/Yn+ME/Fk1Iu4VbZNR0MTzP6p/1rJJ8Hla+6qSDPHurHL2C+y5jJ5bVrtXz9Ec3knxdQVhNOJsheHlCH2/si1arn939peQQXVxztKMcmaexuNufR6lNz675w3S3SQUg4WTBPJdjFHYhZI0GNqnM8XkF1DXPxzER6DqKf49yJtlCcecAtxbNEJHPBqfGcBdfI3e6ag2ug9ynO3qRgys5mtNBPWPtolMpKoxkSLqKAvPi11/rsEBe9Qas+7XIhiLDCB08QE4O1XAYfraBymzND0Lk4HgLLrrYtCw9j7cNPQapJDl9Qzbeot/zP7SbELJoV1iuTP++OaCr5tikRbP1fOlfyHd5xQvIuihRR5MQD9/J59jiMLCpI/vv9CUeuA9VtFmNRwbcgc21i+fe92/RSO+P+g72bqpvxS06z7IkpFojMdjDq9ZNNxkoHQqlvHDDjOL1Wwya/e0iPkkSg22Sh6j0mi5DAWxMvZkfLmHqgbVFuDKL6yt/fHjOrfJup/OxDCchdeZ036JLTf/mLzhXOFva2/20Ng0vi0JhkU9Ogk52qntiMgaM37I+Nb7G12WDSerHX1SqpT/rusX5lrkWddLoD9HTGhaN6qhfnAiD0i9RmNxoBsO8qDoERAgqciqme0dZmkSD/fZJiDtmzcrzPjfxo8L6Skflcuh2CuSQuIKhzvzVd66S8HLbu6FBHqfrhtF6KdIr8MmhmGnX21j8eRDY5YaI0J26LqDItLeY90OC0q0XXgfOoWwRjQiP9uVZInlI7ecVHVEcSqimy24j8GVeTHG8MeXhWP5ZY99ZzBehZ6aGNl1/YzWUJYmlC+qgOiR/Gb6iQyDr2TwjNQ/DQO0A0pRv8Y7ZxRUUhhDdyPyO10H43OgWs5ORvgxGSRcoBBJBbrLQ+EfW
- 2MNQmrwg
- N0vipAG4LlxDo41ms/4eX+7kEyrdwa2nln8pr000UWiFRytD2X2GJrvIicKsYhZ4WA4yl0ild/dma6RRZGee9XYhM9QbRciE06Q/PmkaGL0IE6jPJceoKymwVD5QXIJdETpxhDW7wrxxzy4NxqHHmEPwPLvi4Hiaqvd2BGqtROlmkudR4Sm+Z6haIg3wOm/7XsaccZawa6XTayZqHHHDxg==
+X-Rspamd-Queue-Id: EC4D3A000E
+X-HE-Tag: 1772222965-721304
+X-HE-Meta: U2FsdGVkX19Pap1b9YIeJzLc3H3HJEBP7NalsqrXVygBNSYzsGpLgNJqD6OXJuN3ZCEGZFeyQXQFjseXkwEJQCNWO+eFUzDogHQnoqCTFnQigl0LYfLtkFmk2IawPFHWc+4qp+/BOK/ehZdtNPJ2grEULJGwZjTbJCNLZxmzcIWx5aP2oMKCbbRKEzVSNJbknzRieaiVGK3FO2PNYVe3j9O60D4zZ2Q0uxK+BDdEsKfAI4NYw532t8TOKnUPlX6Od/3kzEQt7Z1BOKooonxczkx5d7+hZyYQsRvHb/WvUkC4bNRtnh2y7ODAwdwrabEoI/xO/nxhR2o5b4LDSKtGoav2CL9PJLIBfjCswRIC+XJLGTj2DrC2XGZBrxgDmRLroCwM3/0uMJV0LXgRLPqq75EKFiTh2rNmYUyfZWaR6hXjangNRf5vgRJbiPCImGgE5/D2RRKmhV/7mKFX1eQPTeLhmP99ENccxSJ/eJvMGmi8JPCUZ2lKy1Ve3mrhx6Kc057RYMSbPLNCJ1mwzFdWxgU0xddlBCzgcu7B3DVtw0v1wjYAGs0s8djTkS7rEtetayhAiK7jezdXUw3LVUcl7wcYCV2Y27wodbpjnHop3vcBzif3OWLLFmBBYUWssMR269fptLHcFjeCf7cygAqZU6ideBTphSoU9ztlThfjcGLQUG51N6qLPCSmRGFGEbl9pO+FFYzVZtVkZEm3WR6x993AT3ZPre1bOxKZSRcu+MONtMKVErLWi2t19wTN5UCfk4Qe+9I1PTN17xv232JFevkrPAgPEfTBtFQGxqR0ck6ogRjbEAguP951p8oSYg9rHyiGIggxC+tooAiwCG7Tf/4qvzgdmxaSNhDe+pHCI0tlPTZBj38r8d4gr/PGoQmEDoFIB6uMSJU3q8w7I38bx1FJk39/oiZMQuLqRE6PWvP0r4V1M2IHrK0sBqxmmriupLDqxk/lrgsA86oN64X
+ ClxO/gv5
+ cuqxu130z+JLYRca53mGd98JMvHV3v8UDbwtmkWhjG0tvRSAXwjsRbQGDJ6VlMeVr/7vdZdHJWhl7ARb3/EWukZFLzgGnEYeAap0JaDMEEO5m8Em0DCw+lEdrpeXJ6HZxbIIzF7aFf8Xi2DazQyLIFCS1mYJq9RHymc36iniovMOByFCSCH/0vKe9VWG7UO1IGhuoOPjEf/ecxD6oQiW7/fk2Z4yRAq3gK6TG+pzWiWBqlzKyu61YPaGVU1RnsS4GQhn6C2DfmizWTwjcyBBJ2toNkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,150 +161,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A bunch of cleanups around unmapping and zapping. Mostly simplifications,
-code movements, documentation and renaming of zapping functions.
+madvise_vma_behavior()-> madvise_dontneed_free()->madvise_free_single_vma()
+is only called from madvise_walk_vmas()
 
-With this series, we'll have the following high-level zap/unmap functions
-(excluding high-level folio zapping):
-* unmap_vmas() for actual unmapping (vmas will go away)
-* zap_vma(): zap all page table entries in a vma
-* zap_vma_for_reaping(): zap_vma() that must not block
-* zap_vma_range(): zap a range of page table entries
-* zap_vma_range_batched(): zap_vma_range() with more options and batching
-* zap_special_vma_range(): limited zap_vma_range() for modules
-* __zap_vma_range(): internal helper
+(a) After try_vma_read_lock() confirmed that the whole range falls into
+    a single VMA (see is_vma_lock_sufficient()).
 
-Patch #1 is not about unmapping/zapping, but I stumbled over it while
-verifying MADV_DONTNEED range handling.
+(b) After adjusting the range to the VMA in the loop afterwards.
 
-Patch #16 is related to [1], but makes sense even independent of that.
+madvise_dontneed_free() might drop the MM lock when handling
+userfaultfd, but it properly looks up the VMA again to adjust the range.
 
-[1] https://lore.kernel.org/r/aYSKyr7StGpGKNqW@google.com
+So in madvise_free_single_vma(), the given range should always fall into
+a single VMA and should also span at least one page.
 
-The CC list is already long enough. As these are simple changes to
-drivers/arch code, I'm only CCing maintainers of all changes but only
-reviewers of the MM bits.
+Let's drop the error checks.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Janosch Frank <frankja@linux.ibm.com>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Arve Hjønnevåg" <arve@android.com>
-Cc: Todd Kjos <tkjos@android.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Carlos Llamas <cmllamas@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Ian Abbott <abbotti@mev.co.uk>
-Cc: H Hartley Sweeten <hsweeten@visionengravers.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Dimitri Sivanich <dimitri.sivanich@hpe.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Neal Cardwell <ncardwell@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
+The code now matches what we do in madvise_dontneed_single_vma(), where
+we call zap_vma_range_batched() that documents: "The range must fit into
+one VMA.". Although that function still adjusts that range, we'll change
+that soon.
 
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: kvm@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sgx@vger.kernel.org
-Cc: intel-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-rdma@vger.kernel.org
-Cc: bpf@vger.kernel.org
-Cc: linux-perf-users@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org
-Cc: x86@kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/madvise.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-
-David Hildenbrand (Arm) (16):
-  mm/madvise: drop range checks in madvise_free_single_vma()
-  mm/memory: remove "zap_details" parameter from zap_page_range_single()
-  mm/memory: inline unmap_mapping_range_vma() into
-    unmap_mapping_range_tree()
-  mm/memory: simplify calculation in unmap_mapping_range_tree()
-  mm/oom_kill: use MMU_NOTIFY_CLEAR in __oom_reap_task_mm()
-  mm/oom_kill: factor out zapping of VMA into zap_vma_for_reaping()
-  mm/memory: rename unmap_single_vma() to __zap_vma_range()
-  mm/memory: move adjusting of address range to unmap_vmas()
-  mm/memory: convert details->even_cows into details->skip_cows
-  mm/memory: use __zap_vma_range() in zap_vma_for_reaping()
-  mm/memory: inline unmap_page_range() into __zap_vma_range()
-  mm: rename zap_vma_pages() to zap_vma()
-  mm: rename zap_page_range_single_batched() to zap_vma_range_batched()
-  mm: rename zap_page_range_single() to zap_vma_range()
-  mm: rename zap_vma_ptes() to zap_special_vma_range()
-  mm/memory: support VM_MIXEDMAP in zap_special_vma_range()
-
- arch/powerpc/platforms/book3s/vas-api.c |   2 +-
- arch/powerpc/platforms/pseries/vas.c    |   2 +-
- arch/s390/mm/gmap_helpers.c             |   2 +-
- arch/x86/kernel/cpu/sgx/encl.c          |   2 +-
- drivers/android/binder/page_range.rs    |   4 +-
- drivers/android/binder_alloc.c          |   2 +-
- drivers/comedi/comedi_fops.c            |   2 +-
- drivers/gpu/drm/i915/i915_mm.c          |   4 +-
- drivers/infiniband/core/uverbs_main.c   |   6 +-
- drivers/misc/sgi-gru/grumain.c          |   2 +-
- include/linux/mm.h                      |  23 ++-
- kernel/bpf/arena.c                      |   3 +-
- kernel/events/core.c                    |   2 +-
- lib/vdso/datastore.c                    |   2 +-
- mm/internal.h                           |   7 +-
- mm/interval_tree.c                      |   5 -
- mm/madvise.c                            |  24 +--
- mm/memory.c                             | 217 ++++++++++++------------
- mm/oom_kill.c                           |  15 +-
- mm/page-writeback.c                     |   2 +-
- net/ipv4/tcp.c                          |   7 +-
- rust/kernel/mm/virt.rs                  |   4 +-
- 22 files changed, 162 insertions(+), 177 deletions(-)
-
-
-base-commit: df9c51269a5e2a6fbca2884a756a4011a5e78748
+diff --git a/mm/madvise.c b/mm/madvise.c
+index c0370d9b4e23..efc04334a000 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -799,9 +799,10 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+ {
+ 	struct mm_struct *mm = madv_behavior->mm;
+ 	struct vm_area_struct *vma = madv_behavior->vma;
+-	unsigned long start_addr = madv_behavior->range.start;
+-	unsigned long end_addr = madv_behavior->range.end;
+-	struct mmu_notifier_range range;
++	struct mmu_notifier_range range = {
++		.start = madv_behavior->range.start,
++		.end = madv_behavior->range.end,
++	};
+ 	struct mmu_gather *tlb = madv_behavior->tlb;
+ 	struct mm_walk_ops walk_ops = {
+ 		.pmd_entry		= madvise_free_pte_range,
+@@ -811,12 +812,6 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+ 	if (!vma_is_anonymous(vma))
+ 		return -EINVAL;
+ 
+-	range.start = max(vma->vm_start, start_addr);
+-	if (range.start >= vma->vm_end)
+-		return -EINVAL;
+-	range.end = min(vma->vm_end, end_addr);
+-	if (range.end <= vma->vm_start)
+-		return -EINVAL;
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+ 				range.start, range.end);
+ 
 -- 
 2.43.0
 
