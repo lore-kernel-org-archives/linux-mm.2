@@ -4,117 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 142E5FD9E35
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 03:30:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C069FFD9E35
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 03:32:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B4506B0005; Thu, 26 Feb 2026 22:30:24 -0500 (EST)
+	id 06EA56B0088; Thu, 26 Feb 2026 22:32:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267DF6B0088; Thu, 26 Feb 2026 22:30:24 -0500 (EST)
+	id 018BB6B0089; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 183076B0089; Thu, 26 Feb 2026 22:30:24 -0500 (EST)
+	id EA8796B008A; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0034F6B0005
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:30:23 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 997C4160468
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:30:23 +0000 (UTC)
-X-FDA: 84488808726.26.18863A7
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BB269100005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:30:21 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OgnY+gpL;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D27876B0088
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B6FE160468
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:32:00 +0000 (UTC)
+X-FDA: 84488812800.03.8260238
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 796EC1C0006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:31:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=upLOXXJB;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772163021;
+	s=arc-20220608; t=1772163118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HQiXZ+kgARAPEGEExKJL8Pnyc8DlS+Lw/ZxK53C0NXk=;
-	b=ku5jLZQVivmnGmgyqNWtYiTLaG4Z2M4iO16Wi82M2aNJt2UhaQkITcNqEux/mZXiEhJWXf
-	8vCPkB9IxgABEeC/QjWUujMMxREKeYQ1IkYm6lZcNaD9MlnzAW9aizb6FtBjn9kKJ5Ncw5
-	YrjQBvLwMTESCEjcIsYdblT87tOY/bs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OgnY+gpL;
-	spf=pass (imf14.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772163021; a=rsa-sha256;
+	bh=Nr4zyboFdAPQ3Cak33Bpk6ampsu5iWEcatVRj6UGzbk=;
+	b=6YehUGV/pDjC0pljyE+R4gw6XQFP7A1xV1IjgcEvLQkdOM2LT/ckalbNbpsVqMo339uJFf
+	R//nWjdVdrzO4TPJCLKiMk1k19/9jReJ1sbmW4Oc0CK2Eo2gNEZ7Dvbj37Up2McAu4WmUg
+	0LZgpjcbdJ5WS3w1ZCEmH9E215jZkfE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772163118; a=rsa-sha256;
 	cv=none;
-	b=N0ZegknBMZZoiL7VdmTu0KtQUBNr9laIZOGGtaGoTsvmEUombs/zdkKXJawdO7YjUIbD9H
-	adwrn+l/TA5SFpenYMxLnUPJY3N14l+EvNq36GIID0NuGxf6ZrVvkYc+PG0HCHKBouLNkJ
-	L8zD2aQxPLLzoXXr7ESdw2832+Kygo0=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-35851eadc17so915657a91.2
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:30:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772163020; x=1772767820; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HQiXZ+kgARAPEGEExKJL8Pnyc8DlS+Lw/ZxK53C0NXk=;
-        b=OgnY+gpLC/+v13fJobslL2Pnd6oU75QQI6iDSjbyKCRxE7L/iI5ZPSF1oF3qLXI4TL
-         U00LTcviT28CxW2mzGGwczagxdIMHo6/6Yl3uU2YFozXUXRfE2ne3lubW3zhrOT787/0
-         QjhFZnZqn1p7q6HaqLKo1WVZwUSmQV6s+YiUVSX/X8a/ntXelHNLlgbxhs78wUOc64/u
-         3UatrKuXRFn1rP71Tvyrm/+7e1hHBTdbY8RGsWZr3Mp9kIIjZyZAMwV5+Qn6eLolrjui
-         twBUfH0dcsyYXake0gui5hPTfuuO6SLlW7UyTiGytgyyno7i0dh7njI73U+q1olTedIa
-         KDfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772163020; x=1772767820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HQiXZ+kgARAPEGEExKJL8Pnyc8DlS+Lw/ZxK53C0NXk=;
-        b=jjYfguWWEBn83iz/8iXThjMRiY5kOI6KgIq+A/C3JFvM+/cI4UQAffaMa5xFgO/Ld3
-         K2LjbkngimakwqT6+PAel2utuQzjZzemD7+uf3NWx6NgUmeBC4Nk+ouwbiVEaUJYYwnr
-         9swEw6wTXSWqofugHWLu6jjA7eH+rWwvfTCRZJl809kdUabrHfM1MEjULPgQNVFE46Pq
-         UKcMU3ZP9PZT87F98pLB0XfoH1cg97kL2tQI/J0eCUW+RfJuxDBmxjagmySq1sYLAYtb
-         KSs6tr1fAUy49kv1VP+v2gIM9JQM+vJ/fEY8Lb4NOrF+DrQs2iyTtRqgIo5H6LxIShRI
-         LdFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXp6DrmaSdqKqw6bYtdB16kNB3aALoK0fhXSYNJj65s+fHMm8a1h8aQHtRes0SKKwaHUuUwNomyEQ==@kvack.org
-X-Gm-Message-State: AOJu0YxAxdX2OQgBIZ1HxlmkqW+YL+Jd0tRyFeSdJa/tFOyX1eGYZro/
-	Y4eprnuV2snJL9FawT7/TSVEEr+Db6xrekLwbGs5DGMo+cpkYriNK+EC
-X-Gm-Gg: ATEYQzxeIwh8+2WoxJIiYY4ZJHI3MP0MUjrIDLNhMiwPQGvJnojTYFbdvZcAmyk7F6u
-	jjICIT2neqiQArPUIpYVTA+O3vJ8yIH4APJ8uPr0NmLXmvOQOhfxVjVVhyLzrYExDQ3HwScoY3P
-	MLjePNxGcThg3R4UddfeqIu8aB1H9hhnP+G3NLKA2igOCcuBQNWwCQVi/7JyoYN1kxl5bQGhPzF
-	5ofL17KN8Pnz5pNu1pP07oC1tRE9nWlI6m2w3HGkKxYng3Yq/UBDFYldJy5TAXhN1Rj9E9HdXE5
-	48KRC6BZxlXGZmNjr41FrPaXhtJuq3EsEDhIRtTdHsLuI81KiiQZkfUHT2yxB7khKW8sUQHAGQA
-	ZCl1lNO9HXGxvKfIKq7Cdt6tFNqk04naaeSznifYAPAXEH73DSQDpBuAtu1zjXgPAnc/ypY+ePd
-	o42T+JKcstf1F14E1jnX89YgXLDtNbB2jt8GRt
-X-Received: by 2002:a17:90b:4cc5:b0:354:a05d:9dc2 with SMTP id 98e67ed59e1d1-35965c2d153mr1259446a91.9.1772163020387;
-        Thu, 26 Feb 2026 19:30:20 -0800 (PST)
-Received: from Barrys-MBP.hub ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3591359fa2csm3326270a91.4.2026.02.26.19.30.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 26 Feb 2026 19:30:19 -0800 (PST)
-From: Barry Song <21cnbao@gmail.com>
-To: ryncsn@gmail.com
-Cc: axelrasmussen@google.com,
-	linux-mm@kvack.org,
-	lsf-pc@lists.linux-foundation.org,
-	weixugc@google.com,
-	yuanchu@google.com
-Subject: Re: [LSF/MM/BPF] Improving MGLRU
-Date: Fri, 27 Feb 2026 11:30:13 +0800
-Message-Id: <20260227033013.94901-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BB269100005
-X-Stat-Signature: dubsf5xspdaxfscoyjnfd7ia6nwmyt37
+	b=Ma6whtfxyzb9+Bg8ytO1AwonOTMuAtNspy/rm971GB9fK6tpvah8SdkNvvyus7Zn67neUo
+	7XcU3xwwPGBrSq7j85mJQfc8Bgsh0LlI1HHr+ybPddnV0Pu0mluuvF1+xcKornCBxZ5m6C
+	27yC0pJj+eNusaWMsAvrB7npPv2h4XE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=upLOXXJB;
+	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772163116;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nr4zyboFdAPQ3Cak33Bpk6ampsu5iWEcatVRj6UGzbk=;
+	b=upLOXXJB5UXrgeCQzrsGUxZEF1D3mrKy6Rj9kcUrj+82JPeXSw/miuAomPgutSLnzOce9l
+	d6n97fFDvsQpw27NUesDKBVP/e1Ra/v49rzBWLeDFaXtLPcDDe4KU0zKEfwkcXMdgvib2R
+	vl+2mbopA9te9KyKQuYniQDS8ShLqpE=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
+ filesystem
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260227025548.2252380-1-yebin@huaweicloud.com>
+Date: Fri, 27 Feb 2026 11:31:14 +0800
+Cc: viro@zeniv.linux.org.uk,
+ brauner@kernel.org,
+ jack@suse.cz,
+ linux-fsdevel@vger.kernel.org,
+ akpm@linux-foundation.org,
+ david@fromorbit.com,
+ zhengqi.arch@bytedance.com,
+ roman.gushchin@linux.dev,
+ linux-mm@kvack.org,
+ yebin10@huawei.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
+References: <20260227025548.2252380-1-yebin@huaweicloud.com>
+To: Ye Bin <yebin@huaweicloud.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 796EC1C0006
+X-Stat-Signature: fygphheo8j359jx4kd1jyamks3b9ecox
 X-Rspam-User: 
-X-HE-Tag: 1772163021-141547
-X-HE-Meta: U2FsdGVkX18vJ+PwVgmHDeMVrExhpoN6kG5DRZOmFQ0mS47JYcHsoTb29eMagxZWb0GGTw/JTU9VuN3ZRgE9udYuUriejSPk08pgV51bpGbW0PNhg2KpmXx9cw/rXWGjL58y4/J5Jy6UHWEduFQHKOLlQQaEA6xOXYVtOFFoqJO8yf15eBqr4y+zdN7nY5dtEkGtLVNtLgI8M/M2eUk6mnSMmQcRiinWa2jcYS4kRJsOUku7cWYP5nJOhy3vdJtpoE0TrArr1w9H28eS2IBQRMD3BNLYaIROQ9Zo37PqhM3O2HOm/InW0BUGaVgvugADCDmA7RyjwHkXxqSW3eUyP6RYCVpF4VCECyF9cAixf0nHIwE7c8cChD3JOHOiatJm/2imfWKT7an7FONjAiSm6P/xH47hj4OGtudYurwfeHtKlsYkAPzUjvnUQw2gdietcaCyLi+EgLMnqhfy/gADfqHbuntUIbVQGIADoSSYqGOgiKlE8q/QNvxvPK9WKuz7bb9Sa2OXAuegNvlA4oM84sw8XLhJa9Yxdhojwy6xLv2PtOM6B+yNPpuf0HUuxv3oDRTl6tZKaiAfLVIETmda7S0hSVYJrPECc58ukboDkBsXcbbRSkOnRSfO2eWL4sN8slgDDkTk9nvlrcMYCkq+DB8JzGtTGypONRrl4NjVWyzB4ajwuOAyTXJzxZ9N+Nc0HG+7MZP3DjrR50/BLdXQd4W+8qdq9Ab2Xh1VgWPO1HUr0cjC9ob6S0XLj3Z+GlAAFeOnbhWnCefc9bheGbiMj+L2iCVjItETtTLEg8O2RkzveAv3oirdpPiwyU04ltjUi2PY52JRqlvGOlulM5BK10O37J2jz6US6XnFViELgvSNgd0vshJg9JM+0J0XxLnsR+fFsdWiaohRXd4Pg/ToG0DbZPZM8L23Puztb93ln/KdX8rILNAyDGMjztEfo8hwn6Z4LyN43OaCLmiWvKJ
- kUsoqVDH
- vRp/nPJPm+EfwdBmkX8EoZW3fA/iJZd0HMoD7t2ybyppT6kiAassEPGXyGIa01OuNDVZwtO9qJRI+01KVaVTGHjyyqdHV47OYXfqpxyIiIUrLIYZ780W2i0DfO+8WISGHT2kYhFfH1q65slw/FyNcBsWgOPA1W9ZD87vTsmQncxkM/FyYo74MyYm6Xp9dQi90j8UtMehzTy/uZvIKca0o6lZjyNRzfAQth0pVIrwa2z7FX94Z0ReBGaLdZoVkQeUSucIruMxxILo1eKQZriAZvGNG41yisOCk/yDcNCbmoB1g6QBUZGcL/O8UC1TL8XVaQKPU7KJzhNiewP3ZxrqFpL0vMKBz2wspmZJmNfuSyXx7N2r8tiGiz6H9OxXAfHX52rVCE3k83whqIxzcaNG6fiy85qSDibODbkKBg6r2h0MSJ7g=
+X-HE-Tag: 1772163118-361103
+X-HE-Meta: U2FsdGVkX1/KdVdhXk1Z+l9y59FGA3Zk/DYM9G4mXykKA5wfy8tclrDGHCCHCP/7f0Xu2AqhGrnjDgUrAKCxiJE0nbIzuk7jUbCg8YJObHszXmtJ/CQ5eNa8be4JgSTh8bpdZEd1Rs/rNQ8qpRc+G7M1zlY+c4O+JAhwtV8vyEbNi+8DJipP5dhbSoV7wnDHDkK0Y2kT9/Qk/jEr13SXvcQM35KNEpi0wdjPBqpn/gFWab8Snsa0JmG0gaobm44VMY0HD9GmEFlBCOj3RFI3RLTDWvfxksL5zem/UlyPUqs4pXtSc/zmsuauMK5n/E6IqCZPisLlb7LK9LftRQxguaAWq/v03WhAPIsNvDsdsBgG0veYTk/BMD/pMRidWbnwucfNZrJ/ahJzoWI11jIrd7dEtWLD+ryi+Nc9IWzk9iHrfHJ85i7GoIewrh59l09XcDv5jO2Q2fiMd1Oc2+SZ03JbrLfdIkV466QSoH44Sh08mCn2NbJDqgYzaL6JovLtYY50rR2WQyZsaqNcgjvlkJFlGsyDQNiubhvngAkl6lI7KZM8arqyYHS8rpOCJNJuSdBGCzobRbyceuqIJ4twUgAJhFjYx4fUPOya7eQNTK7MmAUCBnZffJ/zkGKEpYavYpKbyVOyTz7tVcuUc8eqpQg1FAV1FdausWGs9Bocu59SxYJsOnU4ts4OIjhOGR3AaNqrRNvCeCvQUMEJ8fTaufXuaS9FwBIYf9P0MoBQje1pvki0wX9H04nXes81njeT0A6QubcQHoUyD0tDruUa/sp3VUEcrlHCTFFA5onuYzvZTpG6IdqPfuogserGWWRKWmMaZKPbQnKAJqjjDyM/aAE2xcdxTcbiKCBLMlnLjAlfMRwy03sitYWroHgXHwFFK+KoODmLss7efNV9JWeR9WxcLLPy2AWfODuiEjgpQOzVSkerw5aCYtyy+PFGzXvWxpY2R2pWNQ2ql1op69z
+ JU1EtIDK
+ A4y704Eg7WWzoL3bCbL4E1MOpWuubC7rNqAGnSYwHx0S5y5UvbSBP1JDXOxaIQiaIYoSojjB3MX8ci9ZQQXC/649mADxnoIWCPu4/uxg1M1dAv4DvwhiF5c2D/arwJSNvi6iZedq6pzENYqUDv1TnY2tAIBbnyp09rhtd0sd0sRxQ6VUYjjH7IhlN0UHgYLnlU+E9sp6g/JfLwbIj4k2Oy3a/xBqiymObU9w9ap4gt+02uf+hq/fwjVFbz2jdV6zAVNnNaDxDJLpzGOgbXVFlmKQIF5XO+U5BIiQZTUDkrWpe4OCVSoW21kAuSc878Em+fK2+YuLpK1mlRwXUy7TMlP5ADjjEP9E45BmOgAsxQGfdm9ubJzrvFoBeCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,25 +98,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 4. MGLRU's swappiness is kind of useless in some situations compared to
->   Active / Inactive LRU, since its force protects the youngest two gen, so
->   quite often we can only reclaim one type of folios. To workaround that, the
->   user usually runs force aging before reclaim. So, can we just remove the
->   force protection of the youngest two gens?
 
-I guess not—MGLRU needs at least two generations to function,
-similar to active and inactive lists, meaning it requires two lists.
 
-You Zhao mentioned this in commit ec1c86b25f4b:
-"This protocol, AKA second chance, requires a minimum of two
-generations, hence MIN_NR_GENS."
+> On Feb 27, 2026, at 10:55, Ye Bin <yebin@huaweicloud.com> wrote:
+>=20
+> From: Ye Bin <yebin10@huawei.com>
+>=20
+> In order to better analyze the issue of file system uninstallation =
+caused
+> by kernel module opening files, it is necessary to perform dentry =
+recycling
+> on a single file system. But now, apart from global dentry recycling, =
+it is
+> not supported to do dentry recycling on a single file system =
+separately.
 
-But I do feel the issue is that anon and file folios currently share
-the same generations. This may make anon and file be reclaimed more
-fairly, but isn’t swappiness meant to allow some imbalance? Sharing
-generations causes them to keep catching up with each other. We might
-consider providing separate generations for them.
+Would shrinker-debugfs satisfy your needs (See =
+Documentation/admin-guide/mm/shrinker_debugfs.rst)?
 
-Thanks
-Barry
+Thanks,
+Muchun
+
+> This feature has usage scenarios in problem localization scenarios.At =
+the
+> same time, it also provides users with a slightly fine-grained
+> pagecache/entry recycling mechanism.
+> This patchset supports the recycling of pagecache/entry for individual =
+file
+> systems.
+>=20
+> Diff v3 vs v2
+> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
+> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim =
+dentry/inode.
+> 2. Fixing compilation issues in specific architectures and =
+configurations.
+>=20
+> Diff v2 vs v1:
+> 1. Fix possible live lock for shrink_icache_sb().
+> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
+> 3. Fix potential deadlocks as follows:
+> =
+https://lore.kernel.org/linux-fsdevel/00000000000098f75506153551a1@google.=
+com/
+> After some consideration, it was decided that this feature would =
+primarily
+> be used for debugging purposes. Instead of adding a new IOCTL command, =
+the
+> task_work mechanism was employed to address potential deadlock issues.
+>=20
+> Ye Bin (3):
+>  mm/vmscan: introduce drop_sb_dentry_inode() helper
+>  sysctl: add support for drop_caches for individual filesystem
+>  Documentation: add instructions for using 'drop_fs_caches sysctl'
+>    sysctl
+>=20
+> Documentation/admin-guide/sysctl/vm.rst |  44 +++++++++
+> fs/drop_caches.c                        | 125 ++++++++++++++++++++++++
+> include/linux/mm.h                      |   1 +
+> mm/internal.h                           |   3 +
+> mm/shrinker.c                           |   4 +-
+> mm/vmscan.c                             |  50 ++++++++++
+> 6 files changed, 225 insertions(+), 2 deletions(-)
+>=20
+> --=20
+> 2.34.1
+>=20
+
 
