@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5B501039893
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 862BC1039892
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:09:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12F326B00D2; Fri, 27 Feb 2026 15:09:28 -0500 (EST)
+	id E37DE6B00D6; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DD066B00D6; Fri, 27 Feb 2026 15:09:28 -0500 (EST)
+	id E10706B00D9; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1E7F6B00D8; Fri, 27 Feb 2026 15:09:27 -0500 (EST)
+	id D0F0D6B00DA; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D43746B00D2
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:27 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A51D65B8FC
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:27 +0000 (UTC)
-X-FDA: 84491326374.28.FE54597
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B922A6B00D6
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FF1813BEAF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:45 +0000 (UTC)
+X-FDA: 84491327172.07.18B76BD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EC4D3A000E
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TykYjpWv;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 580E440006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BQHY4VRD;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772222966;
+	s=arc-20220608; t=1772222983;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SKaTaYabvIguXZmWNNd+BNDEApRXksbBfmtUQ8fhMNM=;
-	b=eZr8dG/UXkJnHamTklVvVtF1jGMiEfHCYz49DceHJBHzKZHSqt8rtc/QOjTfSBH2velQKC
-	AayXALPPU/b7xPtzYAJamaktdDk5O50BKIb7XYgCsBd/e5MbswV3/UFplHqfIHzG60iJlN
-	NNoTkMT8srr0sDaXg9rXoLn8ayt3X0M=
+	bh=nKsxamfwDZY3w3hGJq5MlXOZuo73MhJ/MeAQLw6AQi4=;
+	b=T+jD5OLL/pvNG0joWikHKfG6Id/MFy2fGNpi9ZOvLRJfv/3tSFmFljZ5noSIff1BiEt/ok
+	GO1wP58UFSwRu0JvqR0mbKJNYSZH40NzOfWWqziKWee9uUzEXpmgklETmeTA6cOxlmrxXJ
+	VCul0MKX77n7GVt9lFTfuHQUSl/j/Qk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TykYjpWv;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BQHY4VRD;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222966; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222983; a=rsa-sha256;
 	cv=none;
-	b=x/rmeVooGshZ6VpUtZdykFSjuXWCp9WgDfkyOSPdtfuVKTPuYqCpBqy26GX+zo2NLduomp
-	CvsZklGhcpvN9JZPikh/PnW+9tTEM4GLpxYSHzuin9ctHZWvb6JpVEWyWkatPW4jPNwjp4
-	WxX9J18SHldcAXxGyfTxJ86lLCSYV3s=
+	b=RWcciypqvyfFhZP3hzRqUumVdsCaIOiPOc/giypS++dmmLyWVQiPZgCKXBZE4Rp8mwqRz4
+	pPbcIVyWW2sci2rk73a+zgqslEwbBwT20ShRkvqZeiNt7lX9qQabnkXrP6Ordnf/GX6VrU
+	WFs/4ARXW+b9F/NDuwS296NncZ4nT44=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEF0E434E8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A4A4401D8;
+	Fri, 27 Feb 2026 20:09:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC1AC116C6;
 	Fri, 27 Feb 2026 20:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80D2C19423;
-	Fri, 27 Feb 2026 20:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772222964;
-	bh=oTLLv1/LtvCwIvkJbROBPO/znHjTWfNn5494fkK85gk=;
+	s=k20201202; t=1772222982;
+	bh=6rt1gIIqFtg8jcYMpGLsIsLBZas8CDATuKxsRIDKO5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TykYjpWvgGwljpM6p2COuJBm6vVZY9Djvp9ZNM6zX/Mg+sBmes0wCnbQ4WeSfbmW/
-	 SV+IDNBtumzcZhC3ElSbyAiv475EkpQUkxeCLhsWULdxAHfGnT0H335AmzCjAN+dQj
-	 QRAOmuBYMH+Ynj0dVRD7vPT/l9+4APLtjm8nWyekU8kueRKpx8XbFw5ajrTVTYHSCI
-	 fPG3LX2/4RfCF7sYKFaOg85sIPFkNtlXfBAxGEQ4tDcYAx7xhGzd19vCY9jvvC0Ulp
-	 O7aQ9sT3wfiLxfn9cUcpLrszMNdsrZRZprFMOD9AkXLMBxMByussndPeKhWeTlHo/m
-	 zYXuh1oeZiM/A==
+	b=BQHY4VRDSRTvpeKP+Itjk0UhkFl4s6G0uWMMDvYg1M2w57rF10GCj3c7odrrE5wWN
+	 VjrTpoY8Likic/JjgXgS14dJIl3eUZ+6M5FwyltQNCNf2ZuaYyTOBZf69RquFDnukC
+	 /4wLEeUtMJTFa/NRhc7WEM5x4w8QBOkBoTOacpxlvIgCCK+7PdgrNRjoDeCbwwYTJy
+	 FrznIcjK8BKOGMZ+Q63lAvvbNqww0pS1F9QN17GlyDPjQCPwrahp30ffoNjNZsJBgM
+	 IwdPAjvbaRoao5DNrG4O31TKtodgkmB+weVPUOBXFPAp6h+0N6Lq2+n4vSxzms/JLJ
+	 4LcC9G37N3BFg==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
@@ -138,22 +138,22 @@ Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
 	netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v1 01/16] mm/madvise: drop range checks in madvise_free_single_vma()
-Date: Fri, 27 Feb 2026 21:08:32 +0100
-Message-ID: <20260227200848.114019-2-david@kernel.org>
+Subject: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from zap_page_range_single()
+Date: Fri, 27 Feb 2026 21:08:33 +0100
+Message-ID: <20260227200848.114019-3-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227200848.114019-1-david@kernel.org>
 References: <20260227200848.114019-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7htyo1ajprce4c6p79r8te6n9cucxmp8
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 580E440006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dz9etnybjuwn37o6c71p8zepbxwe1hcq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EC4D3A000E
-X-HE-Tag: 1772222965-721304
-X-HE-Meta: U2FsdGVkX19Pap1b9YIeJzLc3H3HJEBP7NalsqrXVygBNSYzsGpLgNJqD6OXJuN3ZCEGZFeyQXQFjseXkwEJQCNWO+eFUzDogHQnoqCTFnQigl0LYfLtkFmk2IawPFHWc+4qp+/BOK/ehZdtNPJ2grEULJGwZjTbJCNLZxmzcIWx5aP2oMKCbbRKEzVSNJbknzRieaiVGK3FO2PNYVe3j9O60D4zZ2Q0uxK+BDdEsKfAI4NYw532t8TOKnUPlX6Od/3kzEQt7Z1BOKooonxczkx5d7+hZyYQsRvHb/WvUkC4bNRtnh2y7ODAwdwrabEoI/xO/nxhR2o5b4LDSKtGoav2CL9PJLIBfjCswRIC+XJLGTj2DrC2XGZBrxgDmRLroCwM3/0uMJV0LXgRLPqq75EKFiTh2rNmYUyfZWaR6hXjangNRf5vgRJbiPCImGgE5/D2RRKmhV/7mKFX1eQPTeLhmP99ENccxSJ/eJvMGmi8JPCUZ2lKy1Ve3mrhx6Kc057RYMSbPLNCJ1mwzFdWxgU0xddlBCzgcu7B3DVtw0v1wjYAGs0s8djTkS7rEtetayhAiK7jezdXUw3LVUcl7wcYCV2Y27wodbpjnHop3vcBzif3OWLLFmBBYUWssMR269fptLHcFjeCf7cygAqZU6ideBTphSoU9ztlThfjcGLQUG51N6qLPCSmRGFGEbl9pO+FFYzVZtVkZEm3WR6x993AT3ZPre1bOxKZSRcu+MONtMKVErLWi2t19wTN5UCfk4Qe+9I1PTN17xv232JFevkrPAgPEfTBtFQGxqR0ck6ogRjbEAguP951p8oSYg9rHyiGIggxC+tooAiwCG7Tf/4qvzgdmxaSNhDe+pHCI0tlPTZBj38r8d4gr/PGoQmEDoFIB6uMSJU3q8w7I38bx1FJk39/oiZMQuLqRE6PWvP0r4V1M2IHrK0sBqxmmriupLDqxk/lrgsA86oN64X
- ClxO/gv5
- cuqxu130z+JLYRca53mGd98JMvHV3v8UDbwtmkWhjG0tvRSAXwjsRbQGDJ6VlMeVr/7vdZdHJWhl7ARb3/EWukZFLzgGnEYeAap0JaDMEEO5m8Em0DCw+lEdrpeXJ6HZxbIIzF7aFf8Xi2DazQyLIFCS1mYJq9RHymc36iniovMOByFCSCH/0vKe9VWG7UO1IGhuoOPjEf/ecxD6oQiW7/fk2Z4yRAq3gK6TG+pzWiWBqlzKyu61YPaGVU1RnsS4GQhn6C2DfmizWTwjcyBBJ2toNkQ==
+X-HE-Tag: 1772222983-407817
+X-HE-Meta: U2FsdGVkX1+mgOf9ZDr4bWWaDlanwDrRlI73GxXiZQeSc4HmxhFfyV0+cBQmuQiGicQjP23YiliXpsJC9tCdVnC9a5gRR3PrMZxdW1QIwHdMLiAybtuoEFRhq2wUPnL/ONfdGMbdmIzSWrlcitPeo+5YgeUyIsfFxOgkIRi5y7moDAsaB4cUAW/h4vSCJFk7vJWCBYi28KzNMnQMaUfDTqM6j48vJGMq9cLMxiMGw2EuVpzAN/lSVSX+J1dPBZ0wkE9QxvGrq4k+UBVgC7Zkp2pXpFAXYuDbaaYHVPYt4M4o7/rts04qjT9HCDRwWZstUNeWrjPiTjVdne02L40+K0XIBs1wdaZJ3f9+K9UZgBDhWFL89qRV+LZXk1eiwp+q4bRXNmGtk7tLPk0HnQjluY2oUikTtHUfS8zYZBZb/MHFmxEuEzHWJIgrBXUw7RdG9xtjpWPBuRf4e/TgvDW8ivXI7LKeHFv+QlfjFyMjBLjbYQJo1H9cCuOXDl2TBEh+K+/Es0InMcUiBCKiHnv9k3P7RdDhjgll25Uc7cLarcAzXX9KvZdI+b8cTo29r0AnPeed34wwxzaBB6e4g2bOCvNy6ROJZsMsDd2/O1YsO0je9akOg1aAIMf0JNW1+JfAgmlwZiBsxV4oFLJEwxi4CvOFEQ0CPS4hFPHFwhkp4PAz987PpHoApqJ8Zw7NvZGI6iT7zD83GH/7LvusELwejls/bCxurCc7xBxoMkmcydtUvk50O/dYVdaQoE+3sQM2LHgjlVZxVxWPZDSMJVRM+iQNPtI+0Rbv3TNiW5+fj/R54WiVHuFnmCwOqDQpYKmxKV8WT9MBeXj6hT+MrDB/AiziGbn0CeHh/BmgN1A7ZfC5/BkbDqmdMLHaed8n9qZPnCCwGV/jK88JeABgD+eimGGgMUuT1P876xoUc3UgjLlLYOd9yvnDVMfwhDcMoug1nAUHrNpGcthcdcd8ReQ
+ 54Yqb24A
+ CR2Pd+Qai6VzgIL6ljbAZ442rA1jmr+5Qa9b4YErg7aEuyJDXL8snziw/h8rZ6H0Cfgrs4omuFdgG5lPCN5oUvxyhskAT1NmnYqaP6TsoRErzUssxXXV240TZiSjI6yzqB7hwBvZmH2QomHEFJ8jKc12bQUmCHUHr6hg49ZsbQtHSfNKhKN2E471DoJFsQbl9c64WabrPs2/L4IfJWPX5ez8dRI8QiH79yCH7sy/F+DVM6H2rd7umowSxF1jMHE71MaVLdKon7Qv9YyOVlcEE5+CM3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,62 +161,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-madvise_vma_behavior()-> madvise_dontneed_free()->madvise_free_single_vma()
-is only called from madvise_walk_vmas()
-
-(a) After try_vma_read_lock() confirmed that the whole range falls into
-    a single VMA (see is_vma_lock_sufficient()).
-
-(b) After adjusting the range to the VMA in the loop afterwards.
-
-madvise_dontneed_free() might drop the MM lock when handling
-userfaultfd, but it properly looks up the VMA again to adjust the range.
-
-So in madvise_free_single_vma(), the given range should always fall into
-a single VMA and should also span at least one page.
-
-Let's drop the error checks.
-
-The code now matches what we do in madvise_dontneed_single_vma(), where
-we call zap_vma_range_batched() that documents: "The range must fit into
-one VMA.". Although that function still adjusts that range, we'll change
-that soon.
+Nobody except memory.c should really set that parameter to non-NULL. So
+let's just drop it and make unmap_mapping_range_vma() use
+zap_page_range_single_batched() instead.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/madvise.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/s390/mm/gmap_helpers.c    |  2 +-
+ drivers/android/binder_alloc.c |  2 +-
+ include/linux/mm.h             |  5 ++---
+ kernel/bpf/arena.c             |  3 +--
+ kernel/events/core.c           |  2 +-
+ mm/madvise.c                   |  3 +--
+ mm/memory.c                    | 16 ++++++++++------
+ net/ipv4/tcp.c                 |  5 ++---
+ rust/kernel/mm/virt.rs         |  2 +-
+ 9 files changed, 20 insertions(+), 20 deletions(-)
 
+diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+index dea83e3103e5..ae2d59a19313 100644
+--- a/arch/s390/mm/gmap_helpers.c
++++ b/arch/s390/mm/gmap_helpers.c
+@@ -89,7 +89,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+ 		if (!vma)
+ 			return;
+ 		if (!is_vm_hugetlb_page(vma))
+-			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
++			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+ 		vmaddr = vma->vm_end;
+ 	}
+ }
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index 241f16a9b63d..dd2046bd5cde 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+ 	if (vma) {
+ 		trace_binder_unmap_user_start(alloc, index);
+ 
+-		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
++		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+ 
+ 		trace_binder_unmap_user_end(alloc, index);
+ 	}
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index ecff8268089b..a8138ff7d1fa 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2835,11 +2835,10 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+ 		  unsigned long size);
+ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+-			   unsigned long size, struct zap_details *details);
++			   unsigned long size);
+ static inline void zap_vma_pages(struct vm_area_struct *vma)
+ {
+-	zap_page_range_single(vma, vma->vm_start,
+-			      vma->vm_end - vma->vm_start, NULL);
++	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+ }
+ struct mmu_notifier_range;
+ 
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 144f30e740e8..c34510d83b1f 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -656,8 +656,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+ 	guard(mutex)(&arena->lock);
+ 	/* iterate link list under lock */
+ 	list_for_each_entry(vml, &arena->vma_list, head)
+-		zap_page_range_single(vml->vma, uaddr,
+-				      PAGE_SIZE * page_cnt, NULL);
++		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+ }
+ 
+ static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt, bool sleepable)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index ac70d68217b6..c94c56c94104 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7215,7 +7215,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+ #ifdef CONFIG_MMU
+ 	/* Clear any partial mappings on error. */
+ 	if (err)
+-		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
++		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
+ #endif
+ 
+ 	return err;
 diff --git a/mm/madvise.c b/mm/madvise.c
-index c0370d9b4e23..efc04334a000 100644
+index efc04334a000..557a360f7919 100644
 --- a/mm/madvise.c
 +++ b/mm/madvise.c
-@@ -799,9 +799,10 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
- {
- 	struct mm_struct *mm = madv_behavior->mm;
- 	struct vm_area_struct *vma = madv_behavior->vma;
--	unsigned long start_addr = madv_behavior->range.start;
--	unsigned long end_addr = madv_behavior->range.end;
--	struct mmu_notifier_range range;
-+	struct mmu_notifier_range range = {
-+		.start = madv_behavior->range.start,
-+		.end = madv_behavior->range.end,
-+	};
- 	struct mmu_gather *tlb = madv_behavior->tlb;
- 	struct mm_walk_ops walk_ops = {
- 		.pmd_entry		= madvise_free_pte_range,
-@@ -811,12 +812,6 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
- 	if (!vma_is_anonymous(vma))
- 		return -EINVAL;
+@@ -1193,8 +1193,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+ 		 * OK some of the range have non-guard pages mapped, zap
+ 		 * them. This leaves existing guard pages in place.
+ 		 */
+-		zap_page_range_single(vma, range->start,
+-				range->end - range->start, NULL);
++		zap_page_range_single(vma, range->start, range->end - range->start);
+ 	}
  
--	range.start = max(vma->vm_start, start_addr);
--	if (range.start >= vma->vm_end)
--		return -EINVAL;
--	range.end = min(vma->vm_end, end_addr);
--	if (range.end <= vma->vm_start)
--		return -EINVAL;
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
- 				range.start, range.end);
+ 	/*
+diff --git a/mm/memory.c b/mm/memory.c
+index 9385842c3503..19f5f9a60995 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2203,17 +2203,16 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
+  * @vma: vm_area_struct holding the applicable pages
+  * @address: starting address of pages to zap
+  * @size: number of bytes to zap
+- * @details: details of shared cache invalidation
+  *
+  * The range must fit into one VMA.
+  */
+ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+-		unsigned long size, struct zap_details *details)
++		unsigned long size)
+ {
+ 	struct mmu_gather tlb;
+ 
+ 	tlb_gather_mmu(&tlb, vma->vm_mm);
+-	zap_page_range_single_batched(&tlb, vma, address, size, details);
++	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
+ 	tlb_finish_mmu(&tlb);
+ }
+ 
+@@ -2235,7 +2234,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+ 	    		!(vma->vm_flags & VM_PFNMAP))
+ 		return;
+ 
+-	zap_page_range_single(vma, address, size, NULL);
++	zap_page_range_single(vma, address, size);
+ }
+ EXPORT_SYMBOL_GPL(zap_vma_ptes);
+ 
+@@ -3003,7 +3002,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
+ 	 * maintain page reference counts, and callers may free
+ 	 * pages due to the error. So zap it early.
+ 	 */
+-	zap_page_range_single(vma, addr, size, NULL);
++	zap_page_range_single(vma, addr, size);
+ 	return error;
+ }
+ 
+@@ -4226,7 +4225,12 @@ static void unmap_mapping_range_vma(struct vm_area_struct *vma,
+ 		unsigned long start_addr, unsigned long end_addr,
+ 		struct zap_details *details)
+ {
+-	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
++	struct mmu_gather tlb;
++
++	tlb_gather_mmu(&tlb, vma->vm_mm);
++	zap_page_range_single_batched(&tlb, vma, start_addr,
++				      end_addr - start_addr, details);
++	tlb_finish_mmu(&tlb);
+ }
+ 
+ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index f84d9a45cc9d..befcde27dee7 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2104,7 +2104,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+ 		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
+ 				*length + /* Mapped or pending */
+ 				(pages_remaining * PAGE_SIZE); /* Failed map. */
+-		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
++		zap_page_range_single(vma, *address, maybe_zap_len);
+ 		err = 0;
+ 	}
+ 
+@@ -2269,8 +2269,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
+ 	if (total_bytes_to_map) {
+ 		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
+-			zap_page_range_single(vma, address, total_bytes_to_map,
+-					      NULL);
++			zap_page_range_single(vma, address, total_bytes_to_map);
+ 		zc->length = total_bytes_to_map;
+ 		zc->recv_skip_hint = 0;
+ 	} else {
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index da21d65ccd20..b8e59e4420f3 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+         // sufficient for this method call. This method has no requirements on the vma flags. The
+         // address range is checked to be within the vma.
+         unsafe {
+-            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
++            bindings::zap_page_range_single(self.as_ptr(), address, size)
+         };
+     }
  
 -- 
 2.43.0
