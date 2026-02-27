@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01042FEFB6A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 16:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDFF8FEFB6A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 16:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A003E6B0088; Fri, 27 Feb 2026 11:01:16 -0500 (EST)
+	id B1B966B0089; Fri, 27 Feb 2026 11:01:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95F196B008C; Fri, 27 Feb 2026 11:01:16 -0500 (EST)
+	id AFD466B008A; Fri, 27 Feb 2026 11:01:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80CA26B0089; Fri, 27 Feb 2026 11:01:16 -0500 (EST)
+	id 9FC8E6B008C; Fri, 27 Feb 2026 11:01:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5918B6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 11:01:16 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id ED9F2C28D1
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:01:15 +0000 (UTC)
-X-FDA: 84490700910.10.CD5F306
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 895466B0089
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 11:01:17 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EA616140761
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:01:16 +0000 (UTC)
+X-FDA: 84490700952.17.C9CF77D
 Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F2C8B140015
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:01:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ve01KqIT;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 23A10180012
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:01:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ads08GM4;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772208074;
+	s=arc-20220608; t=1772208075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vL2gmeWvIXcKqpbeZJOT58tvlHDLMuAurr2dMdDct3A=;
-	b=dMJB6JKl+7bENwfILmlylak84hKri2iYs5xm1uJtR2LkJwSfUIkbpVmp0cXBL99RNm1wQb
-	7YKftK2rqMr65Q59JXMtvToq1bpgAkwBFS5GuTRXb4OF47JMubILNgtErN/NNBHO+3S83s
-	+7032UvpO+4XbLjpeNDMmaAmZeBw70Q=
+	bh=724OnEo1UU3p7rmjBisDMAoZBikcU2JAJeLCaC7K+74=;
+	b=1cfqvzBd4WJYZAlen/KM+BhN2OMUCEMpv0E7u2OIAfY+t9jtdbFitd0+Fz5V1xCfAZ+lWm
+	3mh+hXeAM6FFDLXyqVOT5cDs3vN6MKXcVe+9pNiZ1yidH9SENoWBGjVHECu9DVMPs8XrX8
+	3ktT2g+0H70s22GAIOf435oPNEEqCzU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ve01KqIT;
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Ads08GM4;
+	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
 	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772208074; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772208075; a=rsa-sha256;
 	cv=none;
-	b=C31btOzRiHKDkLiGkydERp9L3WF8ys5vQ9aY4iYm86yWzmTgrjn13hy5hA3ECe2ccN1Syf
-	sM2nqeMHa4a/HIOPvPqcz1zL1tkIA77tp9i9LrU1qYRKP4twD40EcM5TR0ABQtZrzeK4Dm
-	HdP3pvs0ibWHeAg4jueB3z6pGzAHeHE=
+	b=h6FQbMNy8FpunfimX75QxH0F9kQQ9bfZkd81ESbS1vDr8guiipJeoc62FwN08fOQxlrtr5
+	ubhNnpBrzHcUrT2+gBxUbFno6REdQrzTy7UUbDQm+7csPw97DaQxHsDZIEa8Ni9BTqKPHQ
+	EtVbdaflPrDfCopSzudy/lHRWbtjZZw=
 Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
 	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 1095BB2E33;
-	Fri, 27 Feb 2026 16:01:12 +0000 (UTC)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 0585FB2E3D;
+	Fri, 27 Feb 2026 16:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772208072;
-	bh=vL2gmeWvIXcKqpbeZJOT58tvlHDLMuAurr2dMdDct3A=;
+	s=mail; t=1772208073;
+	bh=724OnEo1UU3p7rmjBisDMAoZBikcU2JAJeLCaC7K+74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ve01KqITpLGHQ8GqeWzWYoY8WBzxqqlDBEIXDvb0e3G9boUo2qZvqP5SSWkX2H7QX
-	 lMzk6o2fI2gBVG/+okSBQJnWXDUAtMv7O2f+CzCcyKAP/MMh0KLogICFizFm/Jhgdw
-	 /nG6VP4fttxuHbSTD8PXdMlY1s+6+drq74v4vkX4=
+	b=Ads08GM4QklHSYJg9JjAkfvClZh1PdL7s1Zom5IVbi5MR2IUz7x39vX+WPonpa2do
+	 XymKHWAACKH16MY+O509a/c3myOo4i3GuMdw9XDKAiX5qogH4UEqNnyozv41v0vvnE
+	 zeRCXUuEUfFmCsPcLUnZPIpqjCuzwWNEy/rtSlrE=
 From: Dmitry Ilvokhin <d@ilvokhin.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -87,22 +87,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
 	"linux-cxl@vger.kernel.orgkernel-team"@meta.com,
 	Dmitry Ilvokhin <d@ilvokhin.com>
-Subject: [PATCH v4 1/5] mm: introduce zone lock wrappers
-Date: Fri, 27 Feb 2026 16:00:23 +0000
-Message-ID: <849dee9c47df1e6fba97c9933af0d5a08b8e15d3.1772206930.git.d@ilvokhin.com>
+Subject: [PATCH v4 3/5] mm: convert compaction to zone lock wrappers
+Date: Fri, 27 Feb 2026 16:00:25 +0000
+Message-ID: <3a09e46f52cf9f709b0725bc2b648cc5212843b2.1772206930.git.d@ilvokhin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1772206930.git.d@ilvokhin.com>
 References: <cover.1772206930.git.d@ilvokhin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F2C8B140015
-X-Rspamd-Server: rspam07
-X-Stat-Signature: mgifkcyi8b94uixnsa3du5ze9uhhfydh
 X-Rspam-User: 
-X-HE-Tag: 1772208073-726550
-X-HE-Meta: U2FsdGVkX19rLcbZcYtJk7bIRdm8pvcKt51xX8A9m5Gu38xFKRh4yHqgMb3jbh5shqp9OKVsyJnpn+mFPqXCdqHxcDIocngrOWCz+UhXkyhsICOzX035CmXOR39Qg5T4qDraxfEsnIsgn22bupcqGGnsSKvZ/wqeSV486gEHWXwToGV0ZvNmcbcSOk2u5YVJdEovW1PIXvSBZDT8LeYMVz36C0UkIUihJQcmTGo6sgSIzTfvZORYAJQI4oc5OGPZ2cLy97uXlQEtHUPUp8R32xPRJzYU5qQBBSy/IPPJDESudNka8DTEmanBaEsoZbDFjDIX8XQ5OsJ0byEl6YrXNb9ohFNQ0vuK4CmhHxKKSBZwQ0sjpB1HZpWZZ/5dQRfxUOHEK5G2x/afaJD/2qPn0B+3wHuOFNHRW7KLHF2fQIBIPXsyhO3ROt7mbQt1vCiyZ6kSKt75WtqIXEMm5q1rU4cTef93j+1z0DqwNpjbwBLUFQMRouSSD858r5+I8JRhdXrJfkmvaoQWhfjCYnGYcX2NTAhWYHRPReI+Yrjp6sq5nOd3OdXJo+NBAXH05czOmwISLhLCJNH4FXeQ4TgTHCg4SmWJxZhqsplAApjMDDdx1+O8FaGzLFkG69y5nwC4ToBPoUluNKHuglzuRJO77YBsQWE3ypztK3ad1rQlJHuUioKoyoW0u456+bO7BjZQOegLWxJBIXWqRhXm7AOUdXhzhFC7vSQrdd4OdyTi6tFBoXP2PaRnbRiXwavgvUL3U1wnM05pp4klXDWM3/4qfrhLpn0wC1vHlM85tfExopUWDhfU3Txogp2KfZk1w/6UymL7QhPjygaTDbpN2WV5fyoerqBS1Mq6rYdzH8+j7Ri1QKhCHmgCFrHg2CgnabOkZ0Ae8hsggSeosf8yuz8VyPdS7T+m/KtDJE6Bi7cs9AVmc0BUEQvfGSe+d/rRgqviAKOwBPEVpVOKE2QU3yh
- fgLTmtQA
- okLQeD6yez2JVRMHCQKzAs8n3pz0NUVFUI0BdlLmxztLqhOvu4SyOHzAHokXAVc5hKrQliUzEEtW/3K2ZkFc+KedZOBMR/PzYHs3nLTk+z2f8M7xjGeI2Syvud5J0Eei0zSJBx/4haoe6/2NjM/eZMK+fwwG+83HkPa8qOEDnKFOROODQhEOI8uyW7Dcko4AnFk7SsE6MNKrQZGGdZ0UVVe2jIJs/dGHLplnvPhUz8F4f1fgUVJiDA3TVM7m/kBQPbgkrAipj9ve89nMqVB7M+8mro5eiTj73Gu0exnS9fZeMaosk0XeHPLW5RxkQ4mJGCaCe
+X-Rspamd-Queue-Id: 23A10180012
+X-Rspamd-Server: rspam08
+X-Stat-Signature: seiw41wn3cy4t6gd775gtw3wj6i4xt8w
+X-HE-Tag: 1772208074-241092
+X-HE-Meta: U2FsdGVkX1/8yRGxP3DdLvFk1Lg2Ui7X32pNqU0b6LaGkr8oxH8MOtCHjZZV4w9B3rI3OYDSdlZEqM/3xQflB1E37fPqyLcrORLy5+H/C1kU8YlxSXkebyJ2Ba7fa8oohP9l8sEv5ud3NDJZvpRTk3bUPludDex3cMZ/6MrhwaeT/qruXHtU3ykTh9oodipWWwatOrBbox0cZyVCNW5VlAn3pSe/hA6rlMsZRHx/o6HTnq8NM3J7q1wpceFZuoQIP8CQ83iPJAArlVRcKfSxk43ADAyVQ6gqPyiI9wap0cAHYZcSw5P0wzRQHfVZSR5StVfkoJIc/BD8/luSmQiocEBIfAiYzpQpd8pAJKdiqcAhYLNnW2dl4G46Fbpk+DeVMAyfIdwuVVlmltGCwfICbb7tElMHmBjbaLNh08isSfYcbGsahlyAo44kerv8m8MUQ4rQ4uF5ZZx38LbHxt7aA9WeTL0D0flckDShW36zc5iAPSqk1lDyYBIQq17kn/U8LOXCqW7PMMaNia1gfZAMd7GjSaUtRQQH9WynPscHBQlOLD8Tsi2NHIdHyF0q2Dtlc1QaW8DdhqyEUSqrYVvwx8CyhkmxinD6Ndr2504OaBXJSAveXsq1xa7QYEWgd92EUCMzvzZHaw26k2pI1MiWae7D+AK1nVvJmBcEAk5ww9vuQ/Tkj2GiEhpCZFYs7FT33fCrbvvLlxTdGr4KCaMTKSU4N4hpP2WPwp5GvXRUg9TnRUkssKS2boceBKr+sPPDw3i47vStrZx7jJADeMFAA90Iha4lifqI/Zaxq+FEbID0jnQ+UUaVnh1hCmKwuidkVT+xip5lHSo4XJHA6WPIpxMaoKHMq5vRuYflGJTud3/DUQtew7uh/ZltCCZTR4ScHyT8v8Nk71KclS7F/q+MEVHP9TyRCtx51ETIrRBLE/MY7u4FNUIB9XHqlQ3taeNytjMmQtBbGLBFTh7XpGo
+ uySLvzrn
+ YpH78UUbikpJG/TMh+WEjk76FNtTFPRbpLaxFrKbf7gIg3ZdbxlJZEJ60VTHgKo9l9MEJ2ESJuwqih+c/YoZ1JXbcoSEIgEkiegFvgi9zth/VA+KohfKvf+UtZwMDGtyBMuvyT6us0HFbUDE4bXBQ5+vXA6ywwSo5Dl1ySSEGWYk8BsDgIDRq+4LIsVJQ7cJOjUkrAEvaLAXPBborw4guHSiwnwnCF0R8Qha53wcpzxPyJSkd1/aysc73SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,81 +110,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add thin wrappers around zone lock acquire/release operations. This
-prepares the code for future tracepoint instrumentation without
-modifying individual call sites.
+Compaction uses compact_lock_irqsave(), which currently operates
+on a raw spinlock_t pointer so it can be used for both zone->lock
+and lruvec->lru_lock. Since zone lock operations are now wrapped,
+compact_lock_irqsave() can no longer directly operate on a
+spinlock_t when the lock belongs to a zone.
 
-Centralizing zone lock operations behind wrappers allows future
-instrumentation or debugging hooks to be added without touching
-all users.
+Split the helper into compact_zone_lock_irqsave() and
+compact_lruvec_lock_irqsave(), duplicating the small amount of
+shared logic. As there are only two call sites and both statically
+know the lock type, this avoids introducing additional abstraction
+or runtime dispatch in the compaction path.
 
-No functional change intended. The wrappers are introduced in
-preparation for subsequent patches and are not yet used.
+No functional change intended.
 
 Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- MAINTAINERS                 |  1 +
- include/linux/mmzone_lock.h | 38 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 39 insertions(+)
- create mode 100644 include/linux/mmzone_lock.h
+ mm/compaction.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 55af015174a5..947298ecb111 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16672,6 +16672,7 @@ F:	include/linux/memory.h
- F:	include/linux/mm.h
- F:	include/linux/mm_*.h
- F:	include/linux/mmzone.h
-+F:	include/linux/mmzone_lock.h
- F:	include/linux/mmdebug.h
- F:	include/linux/mmu_notifier.h
- F:	include/linux/pagewalk.h
-diff --git a/include/linux/mmzone_lock.h b/include/linux/mmzone_lock.h
-new file mode 100644
-index 000000000000..a1cfba8408d6
---- /dev/null
-+++ b/include/linux/mmzone_lock.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_MMZONE_LOCK_H
-+#define _LINUX_MMZONE_LOCK_H
-+
-+#include <linux/mmzone.h>
-+#include <linux/spinlock.h>
-+
-+static inline void zone_lock_init(struct zone *zone)
-+{
-+	spin_lock_init(&zone->lock);
+diff --git a/mm/compaction.c b/mm/compaction.c
+index fa0e332a8a92..c68fcc416fc7 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -503,19 +503,36 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
+  *
+  * Always returns true which makes it easier to track lock state in callers.
+  */
+-static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
+-						struct compact_control *cc)
+-	__acquires(lock)
++static bool compact_zone_lock_irqsave(struct zone *zone,
++				      unsigned long *flags,
++				      struct compact_control *cc)
++	__acquires(&zone->lock)
+ {
+ 	/* Track if the lock is contended in async mode */
+ 	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
+-		if (spin_trylock_irqsave(lock, *flags))
++		if (zone_trylock_irqsave(zone, *flags))
+ 			return true;
+ 
+ 		cc->contended = true;
+ 	}
+ 
+-	spin_lock_irqsave(lock, *flags);
++	zone_lock_irqsave(zone, *flags);
++	return true;
 +}
 +
-+#define zone_lock_irqsave(zone, flags)				\
-+do {								\
-+	spin_lock_irqsave(&(zone)->lock, flags);		\
-+} while (0)
-+
-+#define zone_trylock_irqsave(zone, flags)			\
-+({								\
-+	spin_trylock_irqsave(&(zone)->lock, flags);		\
-+})
-+
-+static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
++static bool compact_lruvec_lock_irqsave(struct lruvec *lruvec,
++					unsigned long *flags,
++					struct compact_control *cc)
++	__acquires(&lruvec->lru_lock)
 +{
-+	spin_unlock_irqrestore(&zone->lock, flags);
-+}
++	if (cc->mode == MIGRATE_ASYNC && !cc->contended) {
++		if (spin_trylock_irqsave(&lruvec->lru_lock, *flags))
++			return true;
 +
-+static inline void zone_lock_irq(struct zone *zone)
-+{
-+	spin_lock_irq(&zone->lock);
-+}
++		cc->contended = true;
++	}
 +
-+static inline void zone_unlock_irq(struct zone *zone)
-+{
-+	spin_unlock_irq(&zone->lock);
-+}
-+
-+#endif /* _LINUX_MMZONE_LOCK_H */
++	spin_lock_irqsave(&lruvec->lru_lock, *flags);
+ 	return true;
+ }
+ 
+@@ -531,7 +548,6 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
+  * Returns true if compaction should abort due to fatal signal pending.
+  * Returns false when compaction can continue.
+  */
+-
+ static bool compact_unlock_should_abort(struct zone *zone,
+ 					unsigned long flags,
+ 					bool *locked,
+@@ -616,8 +632,7 @@ static unsigned long isolate_freepages_block(struct compact_control *cc,
+ 
+ 		/* If we already hold the lock, we can skip some rechecking. */
+ 		if (!locked) {
+-			locked = compact_lock_irqsave(&cc->zone->lock,
+-								&flags, cc);
++			locked = compact_zone_lock_irqsave(cc->zone, &flags, cc);
+ 
+ 			/* Recheck this is a buddy page under lock */
+ 			if (!PageBuddy(page))
+@@ -1163,7 +1178,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 			if (locked)
+ 				unlock_page_lruvec_irqrestore(locked, flags);
+ 
+-			compact_lock_irqsave(&lruvec->lru_lock, &flags, cc);
++			compact_lruvec_lock_irqsave(lruvec, &flags, cc);
+ 			locked = lruvec;
+ 
+ 			lruvec_memcg_debug(lruvec, folio);
 -- 
 2.47.3
 
