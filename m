@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50FF8FD530A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0F611039892
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:07:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B22FF6B00E2; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
+	id AA96D6B00D4; Fri, 27 Feb 2026 15:07:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0E3A6B00E3; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
+	id A82276B00D6; Fri, 27 Feb 2026 15:07:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45006B00E4; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
+	id 955FC6B00D8; Fri, 27 Feb 2026 15:07:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1F66B00E2
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:46:35 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C191BB748
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:46:35 +0000 (UTC)
-X-FDA: 84491268750.08.9585074
-Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A4B8040004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:46:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 804F36B00D4
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:07:10 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05E76C2BDE
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:07:10 +0000 (UTC)
+X-FDA: 84491320620.02.81F0E56
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2A7A3100009
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:07:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=a5J2lOY1;
+	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772221593;
+	s=arc-20220608; t=1772222828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l5T0iL8DI1nGNFuwO3l69tcGuHXN+8usnX63z8h89mQ=;
-	b=J1tIAFo/7vH3uLRgmfd/PjcJXl/pzePIkGA7WGs9Y87YDD8Pb441IkALBetnE8MuW2US2I
-	BmUlrbshNGMBHLNHgitwS5F1XdzdBwAYyadn6QnqZdpZzQ0nn6X1SpNEsdy7GC/48kN6Ua
-	Ul+BmHkWQVfz0+bFYiTI4LF1RuBKLX0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PjSuOZ+2Hbog2cPlQd+doqzqpzgxwzZPQF2OTOGrX78=;
+	b=xIjNS0IDSsZw6cfJ/P/mulvRhzlEJffiUhns484YTusX2YdLhqTn/Lq2c/HJI1533P+7SO
+	wWSYNWwXz0L1CXS3WmJybnBoMTWzv5fYBZbzNj7GOcu4fcx77F+paBuRg4omsXzL3wv5y6
+	gFNtTs2nyWBqkoRxPTxriiupv3RsG2s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221593; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=a5J2lOY1;
+	spf=pass (imf05.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222828; a=rsa-sha256;
 	cv=none;
-	b=U1x906USstV5ZbpSzjS+jhdj34COeOQvA6Piwzr6Nh7TjpuDj4ji5+mfvG2+WQiXREvRbK
-	oJt+2BgUER1bPJQG+cAS/o17pP1xvujfpV0sidQX0t4nEV3N1M7tF6mgHH1RQljRUbpVyw
-	4jOTmUHGYGfSMcCtDazJWZKgZ/FIKAY=
-Received: from omf16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A64C8C2DB3;
-	Fri, 27 Feb 2026 19:46:30 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf16.hostedemail.com (Postfix) with ESMTPA id 73BB720016;
-	Fri, 27 Feb 2026 19:46:24 +0000 (UTC)
-Date: Fri, 27 Feb 2026 14:46:49 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu
- Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Oscar
- Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, "linux-cxl@vger.kernel.orgkernel-team"@meta.com
-Subject: Re: [PATCH v4 5/5] mm: add tracepoints for zone lock
-Message-ID: <20260227144649.3dbff742@gandalf.local.home>
-In-Reply-To: <ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
-References: <cover.1772206930.git.d@ilvokhin.com>
-	<ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=kYjst6xSBS3MHOIM3qI1YkuNH9JPAAF14H8cbY1vtlVDOxO4CXTzCvb4TwGH3QYnXFc6B/
+	ABFtL1u+69yCENP1QU44Ad5AQupTVS79Su02yPG/mgE6jR2+myII1H6mFeRhl5TfYRoJ/U
+	E4WyuTwSq6JVNSLyOU+VTMi4OHrq9/A=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1271195d2a7so1453580c88.0
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:07:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772222827; x=1772827627; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjSuOZ+2Hbog2cPlQd+doqzqpzgxwzZPQF2OTOGrX78=;
+        b=a5J2lOY1KzjKssrP7UYU/sVHHu4fX8C5R9H8RDuYlZjxQ06nSEJnTSlIWQb2UT3JoB
+         kpQ5EXHxFFUY2YvQCMmI3/nZk2lGjhKa+JvXV1aXlBo/XHX0feej7Q7Ks/REh+sF2JQv
+         /W11NJln1rJ6P9i/zEDAsbpBYYmyxWqZAHUHmaKFe9oTc+hSHbS1ShWNV22LIUDMj4bN
+         NmOOfWkEdo5X8zsVBN7xrDVG7Acl+ABNifvMZHB757rd6du/AWQh80Rmq/W3bd/5dVuc
+         SdhWVTiicD/dgWImoXUFY3HzgB1gtWxK2AbQ8bBSu8sQQVDrNqLBvSTYPy15jB/Pm0We
+         IJCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772222827; x=1772827627;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PjSuOZ+2Hbog2cPlQd+doqzqpzgxwzZPQF2OTOGrX78=;
+        b=WVH2hWyEk8cYUAxPapeRwySAzmT9W6aZ3tMuO+p0jqHS3mmrp1Po7Gb5uItDtx5MMJ
+         6nouYTIA1qNzWbpjXrKtISDshEzVq9nnAjfO/1yv5mOjTOr/zXgFup4q+SwKTeYhV50s
+         EDbdwSKgqFIrmlPKWE6ul487Xx73oPVs50mjUv1Nysknf5wJk34B9eSgFzhTExY88M/o
+         dk1tLNjAXKAzaG7MWBrRceAWoTmzW1Tip05lpUKDCwjx01gxfowCorudYRnBNT4/iKb4
+         3al3FmAfHVVs76ZelecTMdtXLxjKC704tlqEOM0Tpib3zF036ym2ou6WM95AHqGHzEpY
+         L5MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXf9BcdpwR2IsQ/KBYmoqKTUiK0wW+ffk81XbnE6iRqhuG+6SNAlxKy+Kx6l0y/8+u6On8z6PvLxw==@kvack.org
+X-Gm-Message-State: AOJu0YxmCTI7Y/HzZiW0bqAniDxU7Gp+uDFVNaq57KihRdgi0A5bWOUo
+	OTAjt7FRFzPDP37qi7TqcidNCDEt1xzZyTAHLPdVr0iOZCNNaOeO41fR
+X-Gm-Gg: ATEYQzy5L9YYs+odkhHA0chAaZxS0/ae4lzhuxYzL1mk5ZJ6CpioAceB5g7+B2U9lyB
+	STX+aySr2sBM6uRErczienFqGUyBzuNg1GSiamprNDrOcB2aRptbEUyAxn6LuiEV4hJAX10KKJr
+	ubCZqFkQKQ+r3IjV5X7Jwb9XN8VQ1hPn/u+jZQF/hEA4w+ukjo0YEfOiKXAOz3WV6GDSZC5YKuZ
+	1BnyWYE5IcN7vE6xSHnDjjAHDRrzJ47fjKP9StzpvpZbQSn1jcUxQJ8FynprXk91HQBZI5cjXw3
+	7aiSOO6uf521jf5TkElYpibCfoezAbfZj/M9SKmG2Py1ENi4Uag6HCoddkCtxipBqFEe5M2XIFg
+	ZrqbgBNGantjYf4g6rYmxer4xkqt7JptxJuTM/QEFKkxVYGysmaQRRpU3fNPzqZGoF/LlLayuFZ
+	NZFYbQI/2Fd4uf4CnKzQwLHlzRpNBupxYKudORAktj5GCCYb13KVvDTxx0Gd/yJKC1HvYCDK+X1
+	DpE0n38zmcbc7M=
+X-Received: by 2002:a05:7022:b8f:b0:123:3bba:fc4c with SMTP id a92af1059eb24-1278fd2e6c6mr1713684c88.38.1772222826690;
+        Fri, 27 Feb 2026 12:07:06 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127899df36asm5492002c88.4.2026.02.27.12.07.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 12:07:05 -0800 (PST)
+Date: Fri, 27 Feb 2026 12:07:03 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	akpm@linux-foundation.org, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v6 0/4] Convert x86/mm/pat to generic page table apis
+Message-ID: <aaH5Z5HTC5GyJ6sT@fedora>
+References: <20260219020354.321088-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/tqfZb3BP+WqZirC6uLCguAOnl9bJ5e/E=
-X-HE-Meta: U2FsdGVkX1+Ubmu8sp2dODz5b7SCRkSYEMDCN5v+Sc8RVUFnTWMyKXGqiKeiHhzkb2b1Dt/LC4TG2ySWIbTgjCHFE48LoFDsaEiICe/p8YN2/aPzcJqnY4OY5teYzActk2juaAd+qIppoE/NFDJjLbtNhjOKa04i3NUWuE7O7t9k7DBa3wPcVD/96J/S3S56BDlMtAEH2ZhsHViBS0zvjZ2m5MGhBwQ/3htcYvpQ5Camj+HNfnlj7k03cLgqGqiR5pfViHhEEPD4H0s2EEStIofDRZ+V41gzV4ABYYm5Qzx6r4lMEZFm+F36k0XQZ2gkUYizcUfjlEX3hLaZVHTupY1zOu+4rwAQlFtkxnG72c+Z0v97kHyhCGdUcY3IPgqS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219020354.321088-1-vishal.moola@gmail.com>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A4B8040004
-X-Stat-Signature: 75z95ye3rzrmfdo81wu9y48dgd3xrfx4
+X-Rspamd-Queue-Id: 2A7A3100009
+X-Stat-Signature: cgn164fas5cc94hsygor9qg7rborxtm9
 X-Rspam-User: 
-X-HE-Tag-Orig: 1772221584-850844
-X-HE-Tag: 1772221593-768876
-X-HE-Meta: U2FsdGVkX18NfDTDuIrOfUVsGFETEVi6nOAVoncRl28PLJOs+1eATalq+w3PcMaZyCgxqxH1VlgpN/pDsA9/yGMCVsKXNuPxdXaycH0cBR8FjOfn98RXelePdtV/naXOTq6WRJDubfUcAtvbO5PdwJL/Y9dm9xhCcCylC8LnRJjaXB6GD3Qkgx3xJT7gHCDj6EdBn9Wx0VXTWL+Vb0q04SibmNYhc3sT/FyN5a520KWPaZ3fXT5xdApqzXJlEK5GsgWEoafN5uyw9NEBa8L8YBbDviDyHe/o/WPmKHClBDk37ctzAiyyj0ho4+DZC8sIABsNOMrFwjFnEYipid4BNX4m5Q5HwmR7uOsgkyylGY9OVDJWIhhuN8aKcLCv9pYB23THHyBpol0d/kt+N8knjsbWtREc0/MjH6ld5fGav1Jn//ga4dS7NhMELAK6Pjz06LnFXzu91DV1196c0qH5ajcre+V/UGSC6n3e4M5mYeYUkwG6qwO/kUS8PwErbB21QcbvLuTimWZaX6DaC/D2Nc5+TnvgGYbxSwofxpv+YpgQamCPJ62VKHWeJvUzza7VmIX6r0sOte10vVVze+BqwsuSIZhQHSDf5aj7ptkz357egMezW6/HwWSKL7UaTVkVoRsEeYGtEqoJ9kttGuKpJrKV4Pi7TwwMSynvSPp0SuISgBLZ3hhFLx324GkTI87OBbtGi5i5fo5SBdkYbwmP6nCY+NTSB+ieIKHy3DRMZzH3DSRpGrCokfutT7qsHeVJlvVpX4HT9WiS9DahDHoHR6EuR0Mc5ydgZpwjycfeBQ0Yl4uSWfZav2cfxr7oR7FQzmYaeUsrQVPfx+bkWDoFw89WwpM1KEadpJFte0L4zr+lVkSOb41/eHNxdeymAkvIUcVVLZuSZ7yt1Cq2HluRK8dZ0cebLEv5Fp3xvPoDvSrJid59ZjdmtycBzCbq/RdMORxUF+e47sOTV1OI7ZH
- hwA==
+X-HE-Tag: 1772222827-565407
+X-HE-Meta: U2FsdGVkX19gw2r3p01mWsCDkkrmcH9lMZy8Bmk91Wthk7lsyGq8WqhLeelXAPIFntR+JqA5vu58rGfP3R2l3Cgt0aqmu4QGaeZSZp1sk2w/00BXvhI5MQxlPAaUzAOtkMIoNuX3sFKtoEe/WBAObZ+L2L/7+LoGtmwQXfEQnfVcpZ/FllSKgJihgSXQtUy4OjkMUTMeve150nLYKxKOhUYnM3tjF9uZySJWjdEdan1quIZZS8PGtb+PPMBtA/UyfSbfvUcNK1aDxIx39iFr1OcKHzuIR29bE60E4DGhyf+v7BPFMTMlXgyYNJO8LdDJpFp4wK7WzRUAiGoAWsj/1iISoYY/C58x8F7SKi10m1UCG4vBokh8B3Z5ek3TkHgl2MAh/cLoZfBTzsqE4rQe4LaxEAFQKSDGs4reTadUeFD4/qsE3uvmxGJBDPuX8+0GlOryKP1B8P0E7FyfngM376Aru3T/bHvqYIYFHntHyMYyy/9atpq9BtYuNhVQ7kD9doXfL+IAgbJqpeZ6zM5hAD7M2WoRJecsHe3AgxVPWe7h15uy3PRXGWqP+Y520vYHEiplyqye4ZJX5Nz/d1+/spn/0GtYF7AfSRkebZ5CLJZv/NrDqNfsYcikDHRvmL61O2RlR57QkfzhfRBuTVff940Ps2JtBDtVBcOs1+M5PGXSrgWnXw3S6ECp5E1vTXwJWPmn/UpMCb5mD3SM/hJSgDaTJ5AcSoZ/VOaX2X+h/hHxstf5OLrDL9BfWi8dM8Xs1S2aojmbSPMxcCvo7Hbq7rydd665s8ur7ODnRuok50DFZv4n6lZ/Se22JaqQ95LMHmRohpjhAdppRSfb/fbnb+1Z9RfrRNVhjwuNAhwFzuM3I+OhtFa+VjOMB/hWYYu+yDn0XFKP5/Z+x0EuF5jXBlbst4/JdhabOFwEa2xTShTtoJ0o/0izADaBIOJ3reOwubs84w/SdQ/eYp2dYMs
+ W7lB7roi
+ FQZI46LHrJRjEFCzIOQbKxaIOu/Mv2/+RupnXgsoLW6dT6pcrRa2AaI4Qig0dRMVpvlK0EpBMWnWY/tSAh3gAY2yb/Sv/lLTI1VGCTyzAdJ3SZVR559WcRl4VVOifYan0ECTo4T5uAqZrbUsuNw9yXte5oUptLz/gpGzKh7jPZG3s5KXaPGxeyQvWPX2OTEE10bJUUlmoLEvTMG8rgcgq83pbMQcHptlEm0a/RjgLbwdfjuydbSFjxeTkCQ7JnZ0t84oRm45lqfxAu1WOBjY4/tRFVb2Dw1kyx6Plu2d0KvxQQTGdb9RK79a99RlpeksdLaDLGNFTo8E+PRg4b0tbWcHHvm/cQoebMNbGtrS39XVACakIoDCywqhMMk6I/+GroJV8fqZaG8vlPzc3C8uKUUs2AnBQ2CFHO6rz8G7XNYdiIBoNshKntpfXpgrruqK4Akt7nEMulU19IULRzSFah3n6II01RR9nHBisFRTiAKyrCWANdSg1MrKEznqns9wnolx+RbpmH6m1LTltXUDUn/vU+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,66 +120,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 27 Feb 2026 16:00:27 +0000
-Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-
->  static inline void zone_lock_init(struct zone *zone)
->  {
-> @@ -12,26 +59,41 @@ static inline void zone_lock_init(struct zone *zone)
->  
->  #define zone_lock_irqsave(zone, flags)				\
->  do {								\
-> +	bool success = true;					\
-> +								\
-> +	__zone_lock_trace_start_locking(zone);			\
->  	spin_lock_irqsave(&(zone)->_lock, flags);		\
-> +	__zone_lock_trace_acquire_returned(zone, success);	\
-
-Why the "success" variable and not just:
-
-	__zone_lock_trace_acquire_returned(zone, true);
-
- ?
-
-
->  } while (0)
->  
->  #define zone_trylock_irqsave(zone, flags)			\
->  ({								\
-> -	spin_trylock_irqsave(&(zone)->_lock, flags);		\
-> +	bool success;						\
-> +								\
-> +	__zone_lock_trace_start_locking(zone);			\
-> +	success = spin_trylock_irqsave(&(zone)->_lock, flags);	\
-> +	__zone_lock_trace_acquire_returned(zone, success);	\
-> +	success;						\
->  })
->  
->  static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
->  {
-> +	__zone_lock_trace_released(zone);
->  	spin_unlock_irqrestore(&zone->_lock, flags);
->  }
->  
->  static inline void zone_lock_irq(struct zone *zone)
->  {
-> +	bool success = true;
-> +
-> +	__zone_lock_trace_start_locking(zone);
->  	spin_lock_irq(&zone->_lock);
-> +	__zone_lock_trace_acquire_returned(zone, success);
-
-Same here.
-
->  }
->  
->  static inline void zone_unlock_irq(struct zone *zone)
->  {
-> +	__zone_lock_trace_released(zone);
->  	spin_unlock_irq(&zone->_lock);
->  }
+On Wed, Feb 18, 2026 at 06:03:50PM -0800, Vishal Moola (Oracle) wrote:
+> set_memory.c has a call to pagetable_free(), while the allocation sites
+> use get_free_pages(). This causes issues separately allocating ptdescs
+> from struct page.
+> 
+> It turns out that we can just use the appropriate generic pagetable
+> apis for allocation/freeing. This helps simplify and standardize the
+> code.
+> 
+> In the short term, this helps enable Matthew's work to allocate frozen
+> pagetables[1]. And in the long term, this will help us cleanly split
+> ptdesc allocations from struct page[2].
+> 
+> [1] https://lore.kernel.org/linux-mm/20251113140448.1814860-1-willy@infradead.org/
+> [2] https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
+> 
+> ------
 >
+> Based on current mm-new.
 
--- Steve
+Hi Dave,
 
+Do you have any more comments for this series? If not, could you please
+take this through the x86 tree. Thanks :)
+
+> v6:
+>   - Drop the renaming of *page* functions
+>   - Use existing page table api instead of creating new apis
+>   - Split the pmd and populate_pgd() changes into separate patches
+>   - Reword the cover letter to describe the new approach
+> 
+> v5 link: 
+> https://lore.kernel.org/all/20260211195233.368497-1-vishal.moola@gmail.com/
+> 
+> Vishal Moola (Oracle) (4):
+>   x86/mm/pat: Convert pte code to use page table apis
+>   x86/mm/pat: Convert pmd code to use page table apis
+>   x86/mm/pat: Convert populate_pgd() to use page table apis
+>   x86/mm/pat: Convert split_large_page() to use ptdescs
+> 
+>  arch/x86/mm/pat/set_memory.c | 36 ++++++++++++++++++++++++------------
+>  1 file changed, 24 insertions(+), 12 deletions(-)
+> 
+> -- 
+> 2.53.0
+> 
 
