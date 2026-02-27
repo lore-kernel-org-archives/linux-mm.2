@@ -4,93 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1A82FEFB42
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 12:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E076FEFB48
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 12:27:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 202016B0089; Fri, 27 Feb 2026 07:11:56 -0500 (EST)
+	id B19A76B0005; Fri, 27 Feb 2026 07:27:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0306B008A; Fri, 27 Feb 2026 07:11:56 -0500 (EST)
+	id AC79E6B0088; Fri, 27 Feb 2026 07:27:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AF2F6B008C; Fri, 27 Feb 2026 07:11:56 -0500 (EST)
+	id 9D3426B0089; Fri, 27 Feb 2026 07:27:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E62EB6B0089
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:11:55 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 59D52C22FD
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:11:55 +0000 (UTC)
-X-FDA: 84490122990.27.EE396DC
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5E08D180004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:11:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G73YvlTI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772194313; a=rsa-sha256;
-	cv=none;
-	b=BG3Y3cnbP6dkVik83u3gZze7+kXajS3XTwCdFfFAu6tFdooAT0fCM+vboHhBAnR98NfOqi
-	KoWiugg1gy2XoRBko1CmhH/zvqPwaHZoGfRbqQ//fJDT1ruKy2q7d7bE9Bh/DQENQRcCbU
-	HVmV5OzQavf3B0SDk414QPrJqVOGI0I=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=G73YvlTI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 853FD6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:27:38 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3E098C23DC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:27:38 +0000 (UTC)
+X-FDA: 84490162596.19.D70E601
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 69720140004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:27:36 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BP4naFIt;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772194313;
+	s=arc-20220608; t=1772195256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9VnUUVWt2OivEInnP/5hnH7A1kF+epUMtvXzdzCsRg=;
-	b=vBtBP1OHke0V6q5Y+zr3BnrnPznL3UP7qqGu9Ty+O4m9Uvq/C+sF2zJpTHlZd6HgMtELbS
-	IEbemB68JjdR2wSx/qSS+4To1+qm3M4r3inAxJlKIULrJrQuJDaS0LvoZv8F55EidOo4nP
-	wVt2M/zl1eMcxjoLcQz5dfVonVE+LrM=
-Message-ID: <4672053f-c9d9-4694-81ad-9b5fe741013a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772194310;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A9VnUUVWt2OivEInnP/5hnH7A1kF+epUMtvXzdzCsRg=;
-	b=G73YvlTItW/u/rHPyW7CK+7PMpVtGhIzMOv1+2p9NrT7k4zRVoaOf2NzDUgdgP0DB933Kw
-	FryLANPcbvAUfbuhOq0PAoZA9+6fSEp1UeRgwgS84+HZU3nq7i3sqNUZ2hl1aMgf8gchpW
-	Ttxn5+wmgqiIl17kKNPBrc5OfS3bRa0=
-Date: Fri, 27 Feb 2026 12:11:46 +0000
-MIME-Version: 1.0
-Subject: Re: [RFC v2 13/21] mm: huge_mm: Make sure all split_huge_pmd calls
- are checked
-Content-Language: en-GB
-To: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
-References: <20260226113233.3987674-1-usama.arif@linux.dev>
- <20260226113233.3987674-14-usama.arif@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <20260226113233.3987674-14-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+	bh=BBCa2Iq0/hu0sJwRb681qcL3bM1nOatkl9qB4gJ48xY=;
+	b=rfN0ZokF4wWE5KFav+P6/bgbO0n+1akU6Om7LPiK6XiEnLxOdfJB0lNUsafuwbRXbUYo88
+	PQpBMYh4gtJhUWnTlacP1QGTWFmGQjS3o6+Np1zkbOw88q6Evmy1v+q2faGks7GGFAz/At
+	dQ6xnS3vas4UeJOqjEjY3z6R9nDdGog=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BP4naFIt;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772195256; a=rsa-sha256;
+	cv=none;
+	b=KNV5A618HJ+CSB6kOnw2WdMSuz03WFOQyoHAY8/YA7DJyEZd2cFc9tj3U1VPrBOIt6aE5N
+	Mq/L4+JwAf2KctefIyS75oBxVvv05ruETImnujZHKMyx3TezWMGZZqW2pr5lq3/EOcOBUm
+	oXc23QftqOZVRrLYF0NLmFbt18P5raE=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-824b5f015bcso2354406b3a.1
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:27:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772195255; x=1772800055; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BBCa2Iq0/hu0sJwRb681qcL3bM1nOatkl9qB4gJ48xY=;
+        b=BP4naFItfTKW5Ua/V63Gxa35mgF2x+dBf7g0jId+CnrZWTKfSjkQQ7GvoOJZBGQemr
+         Ue+AuipbTpcf0eFLCA8gN16/iH0epEVQQEw1TTkbRAunhw7UwxuK1FLS8SsdyBSj1ayR
+         4/ME9xCPslQtdrpxmAXC/6lM4bQV4mdJO/GNpAc2nljd9ffb+EHWeJXjLyI6Cx7aeC3a
+         78UDlWkYH8MOoUXr/YEQSQqsyKVNYHAWg57Yi45VIeCjN5jWO0qRbBkHAFcqNO4xfdax
+         pyWr51PRAbK82RzlyCX4z6Y66sP2X6b4R7t43Q8hafbw1Y1BwMJvvAV2Dep7Blk1J7dk
+         WOMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772195255; x=1772800055;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BBCa2Iq0/hu0sJwRb681qcL3bM1nOatkl9qB4gJ48xY=;
+        b=MbVa5vT1uXHCjRdQuER6Kc9tP/UNO2NSRzqntBvvVekoJOwaHlWHXpbbTOV5IE1rlT
+         jL/duAjt7OKrX/XSDR/TerapqaRUPpvtxWFaV7fG9DYQoEuM0D7+EF0eJO2YdLWZcpZ0
+         5gwtrst8PYFtmUE2pu1khXc4ZkP8PjzxJQ8z6MMA5xmvMnAhbrAQe79VM5BxtgCnwIbH
+         FrJhHBSCAw0hoMhvDhw4NOJKiWxmLxKssrfBh9OtgW2kTTkAMa3qf13v5M6AM3CeSkT+
+         xuPSzEJ73ns9dxzOmfW9WFRpqzKBbCxJNqM8lIs0yjkAzUhq0kbQX+si6yFk4Lj6sm5l
+         VEmA==
+X-Gm-Message-State: AOJu0YxExjGLLbuMlw1KSzNdqBSlLxMQkndI8+Ahnfod0u2gcZJx6sAZ
+	11Xw+9tfGdUV8YYNn0SNKTUZYdAdTNYj5Yj5s8dybRFaJ+Ku9O1vtV+b
+X-Gm-Gg: ATEYQzyIIQNVaLSxRNmxs8cQVpMbspBwuiizuoOOb6NcOCSZQKdCfmh199oTqd0ycuQ
+	8K6eUajirth6yS6/L4bPH8l+hIfmN8/jD4kSx5M10CXbspLNcKTUA3Qy6pH4x5z1ZStD7x4K6VG
+	U83eQvZBaPBeHsChPSbxZz4meyqImRn5iYtHeBe91KT2wwDxEU++hg4nHtYnDYHC1Ah7kqr6mrt
+	9YDzrvld6DwBTM0Nxd1Q7DuHLQ/PqiShBxcURAvEf/prZz+dVMCZ/pSUapRbmSFU3sOGsRPEu8V
+	TuAqULQ5Rsw7bP6IYQ9n+4pBgjsaXFTQXSy2919DLJ+KXzIALDh/x0w9pP4BYzfmQirhXcwXG3r
+	pawWoowRVd4j5g0gc9Zc+YzAsRGhN35C9XBFz88CCLGqCmxsnWHoiYk9uoZbPUNyBcxGaMDoud7
+	cXE0BlraR1WY+shnFOZQ==
+X-Received: by 2002:a05:6a00:4c81:b0:81f:3ae9:3f71 with SMTP id d2e1a72fcca58-8274d9d0704mr2242350b3a.28.1772195255179;
+        Fri, 27 Feb 2026 04:27:35 -0800 (PST)
+Received: from dw-tp ([203.81.240.187])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739ff1c9esm5479908b3a.32.2026.02.27.04.27.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 04:27:34 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
+Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
+In-Reply-To: <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
+Date: Fri, 27 Feb 2026 16:02:25 +0530
+Message-ID: <87pl5qh3ye.ritesh.list@gmail.com>
+References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com> <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5E08D180004
-X-Stat-Signature: nnypoj8wihqzhdg6uanf53h9gri9e51t
 X-Rspam-User: 
-X-HE-Tag: 1772194313-696172
-X-HE-Meta: U2FsdGVkX18lKDrPw80LlMMU8qxO9CmAEBjPzc6ZnB3OG0kvXdGmRW95gEg0X34a+mmJOnpIY4CHqV6jgQ4BFHq0lRaSVcnylYyqAkwSCGJBM1tO7ewnkHLIQzwccI6jMFidAzLNCbgVRlifgpuSbmcbJFbuy2ukNBoKnRYz9oD8AeVeyRO+v5EcvJaRaZlcZaUxaVHkT3DHRETXDvLtmMzbPndtG4wepfDAcuUwIzRL4mALs1WmZiKmNU8s7N+pCwK0Ho0pzf7Ng4yk1W7BxjpGxIvzG4Eppo/Uxf0AKIIfB9RsAdHrWvGRakUzTqEVw8NoqiTpC200riD8sPwxhPCNRaW633kt/TmAeQSu35Xqrwl0s9DnBLzlncxOkO0betRGi68xSpL+jHiM56G4Y2XWBAW+QvmfeadTfRhpo5jm9VZRyp39uzEdHdzKvEXRPbPE/McotK/Vwh5YYES0iKcoX2HbuHeK3Ub2ZBep7yYIt7uOQWy6m/qH7qGgassx2KDlr+uXbltU2KYjjYxli7HIBxCu41HdFJvLyekgqCQy/nDOqyv6F7YoU3Ipom+DIzVXbP2fEY+vTVtpx7AEmr977V7ZR2aoKUj3kzXqhqk6rOPaxE/WUhuNlIU4JqKEf80FpprTtm/JGn/UsDxoRwwUgi2+zEPOZ9w4H7y6H+WV4mo+QACHSexSWBdx+ipwcSTI+E1gXZpiNnlKrGA6+M4H0p9fBg74XA5RhaIrROCMCQE37/SsoAXgQmSq85JcHmGeCAMODX9WoLGqcPi6ck/b0fw73SaMNPXsyTJ61GsBVfV2q2y2tDJW86vb8Ak7XN+3WE3XIo9GOHKq85a6PuXfhZY2GyKptTufGswnMusks9XbPi3T0SaH4cFZH1UjtQzI/Ykzo9hqgjkTUMN1SCRDqEzS8y1DabLGpJQVG6oPnr9D6NWCO9PCmsQWSk3xMlNugzs7pMnhEBiLlqM
- UMtCnng0
- UAItmEjEET0is31c9b1gjcsWL5c8PqaetCO4KMscPiz+pVslWNOtm8wHYxNP9pm8uONPVMsjVbBWD1ZvaWfexaGo/hlA97IdKC/z3ngZxfxMu4G01lygVAldQHUE6wD+c4WBPLnGpkonZSV8Ip/Zb/lNkiI22Tlnwy8TUHwJDuPr4K3Znw63lmGHUW/C69EjZHfRXBtXugFJOw/OhV1hf8WL/8Qq0oPn+5QJ7GeiSBDf6yJ142cQb/zBn9Br1qzbhlZdqUAbryqak/gZKPLMEz8JXBpharV7zMgCM
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 69720140004
+X-Stat-Signature: 9bzsej5j7hixbrwyzx9u5objjcgo8x6g
+X-HE-Tag: 1772195256-576570
+X-HE-Meta: U2FsdGVkX1/GKdCFjQ/aNjwjWXWTSYmVA+M2AsQJHSQyG5wqDu+RNd0lpgwGyns9E6oc9GVX8Gs35YxZN/1fQndF222mI4cdk54MgPxQZv4jZcst5KPj2iu1Lpi2FGz386V/PCaz+SDp5DxJMOcJoBe+ngc3Ocz/nmhn3v2JZmFcFdAhjTIEdeMizzXL6ZEg9G8Fk/0J8+0SW2WTUKrBdfIuvC2KmmFW8ZmSHIW8y6ow0orCKtoHjAwXmNuDEaLwN6Ap9tnAOA1yhWIBI4AaBpBXQngBp+s4lfh8SisIjEQlLKyXCDl3hoQKSng/8KU9qsP/Ev03msbjnPWbquNKuJsEt2LGEH3ET/TXMo0UyA3rh3QT+T93tsoY/HkAxwQfRo0C4qpxVI4jQb+aBMSoTcnydemM/QCXt6bVkld4/MHkQrtQYy2IP9yAumiEQD3toPC/qq5W7wM76nNbR83F9OVjYc9TOIeNiQc5mv62S/wgLyNcLDGxBu7XuGn12CLZ/pA6ZoxK3lmJtrBJENxpn09taMLAOxPeofnTf9Wau/zKNlxXlDzjwbe2yD+fqsHZ+rUQ6QCNElcHAGNGk8EtwztQYrkM/wNibn3Slmn4//UQuthPl6/P2IOriRDiU9Nee0v0I+SOz9WpbBqzAPbpqIMKTHYqe1kGDoHx1yZQY8JEMkiONKJyIx/XeQciMcITofrATqloJPeiwG0jwGRhiXxLo0xT0xm/Hl3TiOhI+DtJM7FB0GAuqvmRtE7bWqbXQnmVKyBvgxABvHGNaBbmJXvQbOw4st6/sf8GYgr3x/w0GVIR7jQUwnI6iiXJM/O66NVhvfUk5xdbldqqjcQ9ZdR/hfQvIOoU/83EmIiVwlDUQk8oQ7fuyjIeQyCrAJYVpVow5Z9916xBd6sbSzUw/f5sz56mUiWS8uJYM/4uhhp0nU7WnhCdlGR5nWDWbS3eeHAeYnEy92Tji2PAhZB
+ Yvwo7ZrJ
+ sL/fUB9B88Wx9b0Wuk9xpT6ID0vPKzS9lSGxJDVgLVFrBXadbjPDQBQhsGNlA68yPzTpYszLebpHMLTWGoyFgiSjocLOIOkQ1V36R48Hl1V4IHGWMfkVaAoiQpi4e5c5CsfTNuaPXFGw9SFYICcHHw/DAHPb2InD5KGtvjWKwoUMKb8OwilHTx9+c0p4hVqAux0W8vpqV1OKDw5IrcuZ1gIz67alwTzg6IZ6bSGH6ubx60KBgPAJHwOFzTbwDHkslr668vnAXZ9FNOy5HoTzsMlxix77Eifqt3lmPHcnNUyaV9krBor8lcZyJNUwKax6oz+w6SA4PpwBOAQCk+somD+eZfso0qhlsJe9qPFuPydQT4PdMWhCLeJ+A/UxKC6boVcWHINgx9OunU/0WHoKKU150nEqCImhz7Wgve4NzhmMG89VYaVAusYnwvLSPmITs0LRXvrUwg3eHqQTUS4Sk/Uo7Mg1jRUotxhyzEeiLAtu40aVgrmR9Zr094nSk7zVkw7Fj6uroMZl7MvFLt4rTMktmnv8qZ1CmfOZ9UpXLrmlNMxzheGgsfwJQSCwu4zfYyo6qRYi75+ccoQiG9OS5PKhzO+Ju0PNaMZ/0xZtFcBGkqhbhq9OGbITosw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,67 +116,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
 
+> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
+>> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
+>> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
+>> follow_pfnmap APIs.
+>> 
+>> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
+>> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
+>> VFIO PCI core driver already supports fault handling at PMD / PUD level
+>> for more efficient BAR mappings.
+>> 
+>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>
+> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>
+>
 
-On 26/02/2026 11:23, Usama Arif wrote:
-> Mark __split_huge_pmd(), split_huge_pmd() and split_huge_pmd_address()
-> with __must_check so the compiler warns if any caller ignores the return
-> value. Not checking return value and operating on the basis that the pmd
-> is split could result in a kernel bug. The possibility of an order-0
-> allocation failing for page table allocation is very low, but it should
-> be handled correctly.
-> 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Thanks for the review!
 
+>>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
+>>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
+>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+>> index dcd3a88caaf6..2d27cb1c2334 100644
+>> --- a/arch/powerpc/include/asm/pgtable.h
+>> +++ b/arch/powerpc/include/asm/pgtable.h
+>> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
+>>   	return __pgprot(pte_flags);
+>>   }
+>> 
+>> +#define pmd_pgprot pmd_pgprot
+>> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
+>> +{
+>> +	return pte_pgprot(pmd_pte(pmd));
+>> +}
+>> +
+>> +#define pud_pgprot pud_pgprot
+>> +static inline pgprot_t pud_pgprot(pud_t pud)
+>> +{
+>> +	return pte_pgprot(pud_pte(pud));
+>> +}
+>> +
 
-Kernel test bot reported that I missed one split_huge_pmd call. I will include
-the below patch in the next revision.
+In v2 - I will add above under #ifdef CONFIG_PPC_BOOK3S_64 
+to avoid build issues with 32-bit PPC.
 
-
-commit 9e1bb250ea8ef0a39c738cd4137ed6c98131ebb0 (HEAD)
-Author: Usama Arif <usama.arif@linux.dev>
-Date:   Thu Feb 26 10:45:35 2026 -0800
-
-    mm: proc: handle split_huge_pmd failure in pagemap_scan
-    
-    pagemap_scan_thp_entry() splits a huge PMD when the PAGEMAP_SCAN ioctl
-    needs to write-protect only a portion of a THP. It then returns -ENOENT
-    so pagemap_scan_pmd_entry() falls through to PTE-level handling.
-    
-    Check the split_huge_pmd() return value and propagate the error on
-    failure. Returning -ENOMEM instead of -ENOENT prevents the fallthrough
-    to PTE handling, and the error propagates through walk_page_range() to
-    do_pagemap_scan() where it becomes the ioctl return value.
-    pagemap_scan_backout_range() already undoes the buffered output, and
-    walk_end is written back to userspace so the caller knows where the
-    scan stopped.
-    
-    If the split fails, the PMD remains huge. An alternative to the approach
-    in the patch is to return -ENOENT, causing the caller to proceed to
-    pte_offset_map_lock(). ___pte_offset_map() detects the trans_huge PMD
-    and returns NULL, which sets ACTION_AGAIN — restarting the walker on the
-    same PMD by which time the system might have enough memory to satisfy
-    the split from succeeding.
-    
-    Signed-off-by: Usama Arif <usama.arif@linux.dev>
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca19..f5f459140b5c0 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2714,9 +2714,13 @@ static int pagemap_scan_thp_entry(pmd_t *pmd, unsigned long start,
-         * needs to be performed on a portion of the huge page.
-         */
-        if (end != start + HPAGE_SIZE) {
-+               int err;
-+
-                spin_unlock(ptl);
--               split_huge_pmd(vma, pmd, start);
-+               err = split_huge_pmd(vma, pmd, start);
-                pagemap_scan_backout_range(p, start, end);
-+               if (err)
-+                       return err;
-                /* Report as if there was no THP */
-                return -ENOENT;
-        }
+-ritesh
 
