@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB941039880
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C57BFD9E3A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A56F56B00DF; Fri, 27 Feb 2026 14:43:42 -0500 (EST)
+	id D18E16B00E1; Fri, 27 Feb 2026 14:43:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E936B00E1; Fri, 27 Feb 2026 14:43:42 -0500 (EST)
+	id D02DD6B00E3; Fri, 27 Feb 2026 14:43:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76F406B00E2; Fri, 27 Feb 2026 14:43:42 -0500 (EST)
+	id 81F0A6B00E4; Fri, 27 Feb 2026 14:43:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 565836B00DF
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:42 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06CE114088C
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:41 +0000 (UTC)
-X-FDA: 84491261484.24.C8182DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C2B3440004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UIRuX+z2;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FF346B00E1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20D0A8C729
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:43 +0000 (UTC)
+X-FDA: 84491261526.29.DEBED1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 25E28100002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PC0m/Cga";
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772221419;
+	s=arc-20220608; t=1772221421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bzoo16O7ZrITNC48RN5QZ0zww2292+HM1+oMv2xat4s=;
-	b=yRbJrby43zMoQmzyP1Eo4ZQcfb1grpdBIfwzFtUaqx5DTWXMUf4AOlbE1MMkI/l8F16Flw
-	AhJpfgmXw9dFTJBI3hSxnhdW3fYitQGxAHn+QoqkWb3N0yoatBZ1e7KtBBgJmkYwsv35uQ
-	L1rGiwZEta5bhXOaDxQQEOD0+RaOkmQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UIRuX+z2;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221419; a=rsa-sha256;
+	bh=UcJ8r9+9myGaXNcmZJTxEDzI8cwMAukJGYfFOhUtSK4=;
+	b=xm2HNfPP8NdGYvCLnx4seTulKr9q+u72EYPOvhSc2XpySpt14h4VCVxTSiVq0JCfw2UaZA
+	X1KQHQrh9W8ZotArCG2DRJnQGImxodeMpkhqzhd0cp/dgwoEoIXeSqeBIx527j9ehNlFyG
+	lke3zl/5hQQ0H9zoqFKiNnrTRHfA5bY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221421; a=rsa-sha256;
 	cv=none;
-	b=CBksIM320MMycjy+ZFyZqDSF+QDEaRQIpdP2xgII586VRYRGewuMR5CGFkO9+PHvzMeEI4
-	RxfzNTej/OexwhNNck1bXYfo5dRBDrtQi87/wRPvuKDcFTOGaf84kvZYov0kJUbrpj12Ru
-	IDJJ0nPWMZ0UpPCwDwcwP3/qexcVqUM=
+	b=HcrsH5uPx6bHvq+auyihGGLnct8N82ObIp2Dlc+dzZrbZkhsRwN5ZIXaV1Zys4tmRFnfex
+	6dXSjbuEjU+Nc9C7EXDe0BccEvjAXTZsv9OxzvCsY7pYP27n4+AZ1rWI1kERZ6nADnbN+a
+	CFExgLxfWdIvUCpcKSk1aYiNA04cQzo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PC0m/Cga";
+	spf=pass (imf14.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0D93445B5;
-	Fri, 27 Feb 2026 19:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C25DC19423;
-	Fri, 27 Feb 2026 19:43:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D7306013E;
+	Fri, 27 Feb 2026 19:43:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E88C19421;
+	Fri, 27 Feb 2026 19:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772221418;
-	bh=AzObIjwfDWqBbZbwfrWx+NLWeNrw3OUfYcbmIl3qAkE=;
+	s=k20201202; t=1772221420;
+	bh=ZAx3R9GqRsOU9srbTUp+FvCts3Vk9aVQHLhkmRYHaUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIRuX+z2/oYgfTN/fpVVkpEln3ystSpbtAeWmB8vYNF18xS9ZKEx6N2Bq2PxyKWxV
-	 mIRjOF2HxnP5D51DP9UKSXBTka0UUyMAVzqmq8mbddULWxN64kVxc3T5cV3ukYE2Ri
-	 wnEfA+I6OoKr9001nL+HFU8NA1oXImXvG+edpLacrbTzNQN3uW714wHsE/4RU/8sg+
-	 c4T01MUHa5vOXDkLJg6HE6+Gg0YQKSRdw1/88WYIwNC0Xjwh5X60apk/W7sZ4WPbrt
-	 x6ciOZOOWqMmACZ1NO73mwNeVpr8xzFVPgZmcpVenrZvex7Dzdui8tiy/6rSY6J5+Z
-	 aiBIKj+MNZjLQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4347EF40069;
-	Fri, 27 Feb 2026 14:43:37 -0500 (EST)
+	b=PC0m/CgatqGb61BR32ksOciiVWsh9kabYVfM4sb2/RkMf4uKu8sUINuIQ7YKsorvS
+	 X8meq6NX5tAjFYkJAMAc+U2k+i4eTGfCfbcG9qiUSR98uL66OKdBu2ZbkS7YGkr3nr
+	 SuVMPjXdhknEHPlp2uncDkaHD6hGh68Q2shP4C4O+bdyrQc93QztUAdoWdQJgpSWLO
+	 1u5BiZy+Da2laUwcso8n56StTGi1Kffc9Hdzym29pU9S1xsgQ7VKYCxtwMPHwAGeOM
+	 1bE4y5mtV6gJA4o97riwF48Al8mcaiN1rb+cXwo/XjnDN3KOVZmElpaA3kcNbpZ75c
+	 /6Ar4HIxZ1vow==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DF990F40068;
+	Fri, 27 Feb 2026 14:43:38 -0500 (EST)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 27 Feb 2026 14:43:37 -0500
-X-ME-Sender: <xms:6fOhaRljmtwCladvdVdTs1uKNBlldPgkpxj8iEjd6pRszwIE2LaaSQ>
-    <xme:6fOhaWCxgfvqj23kCSp1LLpbdMxNPTs-KSaEMHjY89SU2kIdVg2Nc9s4nmKbMyLkb
-    BP7xSOjfKZrAOa8Mq_R7D5RfGLQ9M_h60kia4SRprqJXTfpVlMsnik>
-X-ME-Received: <xmr:6fOhaRynwl0l9IvW3dBXKdzlRB8psU4IbyBZGWiQuggEG1HD7ezP0vRRD4hrhw>
+  by phl-compute-12.internal (MEProxy); Fri, 27 Feb 2026 14:43:38 -0500
+X-ME-Sender: <xms:6vOhaXubggs39m_iHxkE19Eq9hu-qDTewGwNs2J3KvicJ-8TDyBY0A>
+    <xme:6vOhaRq_YY0wM3gUjaruqNPflidLhEMMOlSsW87SO-UNQOtFLRMnAncA9UKz6GDf9
+    TmJcSe5URH__nx-T8DX7sb2rTQ6V6z4j07ieih5o7LZsT64IKEw-iA>
+X-ME-Received: <xmr:6vOhaU6b9bnfnO44Wsvs220hFH-nJgEtidc-Hcsc3LY2D-quMFF2K9Y39TNI8w>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeelkeejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpedfmfhirhih
-    lhcuufhhuhhtshgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgh
-    eqnecuggftrfgrthhtvghrnhephfdvfedvveejveehhffhvedufedujeefuddvkeehledu
-    hfeihfehudejffffiefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithih
-    qdduieduudeivdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrgh
-    esshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrd
-    horhhgpdhrtghpthhtohepmhhutghhuhhnrdhsohhngheslhhinhhugidruggvvhdprhgt
-    phhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllhihse
-    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepuhhsrghmrggrrhhifheigedvsehg
-    mhgrihhlrdgtohhmpdhrtghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtph
-    htthhopehoshgrlhhvrgguohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:6fOhaSei92AxKtDSNk7Tu4HEencE9E1hM3NnIzVlSUiaScfXq2KIpg>
-    <xmx:6fOhabz-zfd_LnAY0kPWAbgOFi1iGlLBMYMJtyc2SOKL5rBUCEwkAQ>
-    <xmx:6fOhac7hLe_myt9C81Hr2MqDxemPf7c3adCImg4mGg8cPUqGBMHmgA>
-    <xmx:6fOhaYygtQki3TFoxrt9HX5uwY_MfKcXs6RTkRi3fkF_oWQLsLttcQ>
-    <xmx:6fOhacYDqyd3Loj4RKa6CSF_PSzT8QpEqlmack8arkoZz8Twf1w2JHAk>
+    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihl
+    ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
+    enucggtffrrghtthgvrhhnpefhudejfedvgeekffefvdekheekkeeuveeftdelheegteel
+    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
+    udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
+    hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdroh
+    hrghdprhgtphhtthhopehmuhgthhhunhdrshhonhhgsehlihhnuhigrdguvghvpdhrtghp
+    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlhiesih
+    hnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehushgrmhgrrghrihhfieegvdesghhm
+    rghilhdrtghomhdprhgtphhtthhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpth
+    htohepohhsrghlvhgrughorhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:6vOhaXGHJuS7PtiXmnSE6B-g_1FNPKMXgA8MRdODV_MXJvFT7JCUDw>
+    <xmx:6vOhaT4b_oBjocIw7sF9fc9YXDuSrFTXQQJZEQz1hkGsuV9uuzIXJw>
+    <xmx:6vOhaSjRHpYcTP_XbTmXXQX_gvMAqbFdMtZrz1Mk9NHU5Kc7_4CDow>
+    <xmx:6vOhad5lTkgJplK5FXgb-XJWPKapPepvuL0R5_dW7i3dk-y58KJUQg>
+    <xmx:6vOhabCzlhPSJWpu803PVqtD4DFwGJAsyhQ7UGlxPIkg8I456R9GWqHZ>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Feb 2026 14:43:36 -0500 (EST)
+ 27 Feb 2026 14:43:38 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -127,23 +126,22 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv7 17/18] hugetlb: Update vmemmap_dedup.rst
-Date: Fri, 27 Feb 2026 19:42:55 +0000
-Message-ID: <20260227194302.274384-18-kas@kernel.org>
+Subject: [PATCHv7 18/18] mm/slab: Use compound_head() in page_slab()
+Date: Fri, 27 Feb 2026 19:42:56 +0000
+Message-ID: <20260227194302.274384-19-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260227194302.274384-1-kas@kernel.org>
 References: <20260227194302.274384-1-kas@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C2B3440004
-X-Stat-Signature: ja4zpyp5ppe4e9gcxihbzutme5txg8tk
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 25E28100002
+X-Stat-Signature: nq4u4wwtbwpm3frz9zn7n8jhrrrwpc5j
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772221419-738407
-X-HE-Meta: U2FsdGVkX1+FFfTuj/htE6qTQ7nc5cA/3qHZzi+CrFHZQ00TPBuPf/IZua6DGJRZWe8rm64Yjt7a0s5FXvogRO4WtHpmzkJ5cyu2csVUVyKgEotCOkuXtIskOM2xkTDoQaKXSHMYpnrvab7zrH5updtAG/l9asNb8b3y+PvbYK26ZjhudwaJHJ7mgYkQyulbU4KHc9HjKE+N8eB9sJfjCP2e4GjEo/eVxYkkYZa/2mBLiihY9wWEH8Kc9YePW7CteKnviIjQMGzzyT13wgdndlXaxD0GqnN+mPXEVBIIJxbPe7mD+UWMTbOj5QQzfb9Q10HGJGDFvENz2Hpg5egKkVYhLVGmqRkphgdVP8ghg1xzXUm4yCIxNSsyWAD8coiCVRi1/r2IfsGvJ3Be+2rRBumams789oCQui8qGoWVrIWg2G4qKnfvkMaxIUlUqvS4jtiuEDDew7yu08f3/ovBzws5MMm9zdUEKaBvJRmtzvoLnEiAHi93MJ3aDesLxf6RPnjXsPj+9L7NEl93TI7D5FF58mdXHf+0jmw0WRpBeDT4AfJEWokEGINBFnPXxirmni42xAKze6AXSe2Bx7k4dtOiSI4HjFk7tD9NXsezHLJcPu2nWwsAzSAGBC+8rcTImNC06Vw2VoRbyvVI0ClmBwtnuIwG9J/G1HV01jsCQBqFt1nWbPb7SF9fRvjGL7VtvfySgqCIovSysNkYgiNHVBEShBSl4Gkcz8eiWVNPxwsOjthNUGGaLVVkd9UwbukdKb8IAFlkS+OEpHAmOpi1I8iyu7tHOcXOQUhAs3IEEjW1ceHNybgWE3AbGuobIJWBGbTfIyzXnL5R49+nnlFaqsi+uc7tCyvWs5gMSAwdTph0a2kEKMFcAuQa9IFEDyf1FwBTgr9pcIHXz/MQFxcO77XF1bDAytPAXNXnr6Pv/y49t3ElbvHtDsQESOz8pq9D+1MmOiPZydMZf79fDa2
- 431VfMhh
- 12elF9UeilpjxBaqSr+DNyxWIl9mkyLXmSpcKPQlgJLDsV7eov2HxraWIoYTvllyOfByuuFzVdRDyyRFB1tbSWQesPjGHKdqoFFlHqcxU8BPFNCOe4/2Wx98OqRzlXOrmWbRGVPWRJvFm2ojYZVZLElFI/9fQ7/HPeeZXw74X7gdw7lk/PNRznZTL7BZU5cOx5S03OcCu9UMF2mBi63VoBZi66/RVIS0tVpur9n+9wCPfNg9G0qVgcAjFAzweAjWe7rnDDclcX8NK8Oek+BHvR/6SJZZQgncmem12ymuiB7fyK97lRTV/ghHbbqa9LllUMls0Fg07l4lo3jjmbv1i1zpurbdWpht7PvZR
+X-HE-Tag: 1772221420-516941
+X-HE-Meta: U2FsdGVkX1/XZaEMou3Jka/sWpRktmiK6njL1jBLFhwbA6W1/W8l2DmgioA705olmKCx5izIF//Wq0C9OP6rPHaWrt0uYVdCYJzxhwLi8aP7n9G1HlxjixJ76FU1d0um1b7RABpW1q80EwgXA3oXmH5g/C4zBY55OCgzpbwJw6s1w27EGm1Yp5dlEXe9CbGfKdtjCcLFFVTp0q5ZFlRgeaSTurAIJg+7ef4FkS1ZSi/KETv7+vpcc/evjUC9NDYDw3Q2qUJmnL9BkSRlRIjJttbigDab/wHizRdhXqOieMHaw2E15AaSkePRGNxBya+O88IrEQy8W37LXsQx/iQb/bB5LoezlTqFJfZizxlMWXkz5QtrxnUqwovqhzcx46DdcFnYfD7GNwyg2xwrcAcbP25gjSRJWs44yl7Nqvv2QyM4AiG49dRjeJmANzj1svyZDFFwID+MFtRlZRB46TVmeFMt/IpWmZxlhwZmvgqjXGyztulVmpdwOQKhPbnB417q43YSEBLBcHzZqOOz0KE4H7qpaTELgjkf6Q2HAnRH4GEIIgTxl1Q+gAN3eakaRhtKqRDi6ra7B56MyU+PbHrLSpEt/+H+U2GTupY0MRYVKb3/6VkytIy38KVJYrFWbY+49qAtdNf2PwOOWze5bRFkW9CkkxoIqlFj4j/sVWR7VhyAzEueQugEyHT/W5x/Vi7GzOZD+0BEysP+3+5NZOnDHDjSrGif+tTzrUh1X5ssYcC003bwXacJ5pApIa4C4cDRe/YI02bFevm63fYHhDLTFoUcnnhLv0jPFMSDCvlZKZbPEn1D1hjA2CrwnsJVVwZem0RUFoNeFWVF59Tk/12T9SoLgj8x8ebU7JgXCuR1mY64GkrtHoJcLvkMZcIEK9i9JZZRL2IB2GqnDAFY8DGTXqN6DrAmVB9O1H/GzQ7bJBH85QIf2ZQI5Hb5TwjZNW7F+U0HIqVT4jZYyYiIgDA
+ EtoAOYP9
+ MlVsece4zvzFtvlOkM2rTK3nrW02POqemzTMOhla60bW+EVRoSakGpUr3NzS6N3n2th2UUHMyQldZyU80thDew5x3f6cS+6uj7oRjyyfqHEVbQAngYEWYYDatl5ai1bhFya7omvHLlsFhmwzFHHSCBpsmWkkYo6cPf+ROt+B1UPCouY4CHvfm8O7sufuuSnSdFnN51co6It8WISL1Ek2EWwlYyc8/4LfXA436cd0IPOK4RQPk37GDi+F/v/Akl9khbn9o4QV1JvJsv8J/ILbQumqv9ipe8nwfr46wC9Rpmgq/ydTNlw2H0fYzTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,98 +151,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kiryl Shutsemau <kas@kernel.org>
 
-Update the documentation regarding vmemmap optimization for hugetlb to
-reflect the changes in how the kernel maps the tail pages.
+page_slab() contained an open-coded implementation of compound_head().
 
-Fake heads no longer exist. Remove their description.
+Replace the duplicated code with a direct call to compound_head().
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- Documentation/mm/vmemmap_dedup.rst | 60 +++++++++++++-----------------
- 1 file changed, 26 insertions(+), 34 deletions(-)
+ mm/slab.h | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-index 1863d88d2dcb..4aaef36d8971 100644
---- a/Documentation/mm/vmemmap_dedup.rst
-+++ b/Documentation/mm/vmemmap_dedup.rst
-@@ -124,33 +124,35 @@ Here is how things look before optimization::
-  |           |
-  +-----------+
- 
--The value of page->compound_info is the same for all tail pages. The first
--page of ``struct page`` (page 0) associated with the HugeTLB page contains the 4
--``struct page`` necessary to describe the HugeTLB. The only use of the remaining
--pages of ``struct page`` (page 1 to page 7) is to point to page->compound_info.
--Therefore, we can remap pages 1 to 7 to page 0. Only 1 page of ``struct page``
--will be used for each HugeTLB page. This will allow us to free the remaining
--7 pages to the buddy allocator.
-+The first page of ``struct page`` (page 0) associated with the HugeTLB page
-+contains the 4 ``struct page`` necessary to describe the HugeTLB. The remaining
-+pages of ``struct page`` (page 1 to page 7) are tail pages.
-+
-+The optimization is only applied when the size of the struct page is a power-of-2
-+In this case, all tail pages of the same order are identical. See
-+compound_head(). This allows us to remap the tail pages of the vmemmap to a
-+shared, read-only page. The head page is also remapped to a new page. This
-+allows the original vmemmap pages to be freed.
- 
- Here is how things look after remapping::
- 
--    HugeTLB                  struct pages(8 pages)         page frame(8 pages)
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | ---------------^ ^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                  | | | | | |
-- |           |                     |     2     | -----------------+ | | | | |
-- |           |                     +-----------+                    | | | | |
-- |           |                     |     3     | -------------------+ | | | |
-- |           |                     +-----------+                      | | | |
-- |           |                     |     4     | ---------------------+ | | |
-- |    PMD    |                     +-----------+                        | | |
-- |   level   |                     |     5     | -----------------------+ | |
-- |  mapping  |                     +-----------+                          | |
-- |           |                     |     6     | -------------------------+ |
-- |           |                     +-----------+                            |
-- |           |                     |     7     | ---------------------------+
-+    HugeTLB                  struct pages(8 pages)                 page frame (new)
-+ +-----------+ ---virt_to_page---> +-----------+   mapping to   +----------------+
-+ |           |                     |     0     | -------------> |       0        |
-+ |           |                     +-----------+                +----------------+
-+ |           |                     |     1     | ------┐
-+ |           |                     +-----------+       |
-+ |           |                     |     2     | ------┼        +----------------------------+
-+ |           |                     +-----------+       |        | A single, per-node page    |
-+ |           |                     |     3     | ------┼------> | frame shared among all     |
-+ |           |                     +-----------+       |        | hugepages of the same size |
-+ |           |                     |     4     | ------┼        +----------------------------+
-+ |           |                     +-----------+       |
-+ |           |                     |     5     | ------┼
-+ |    PMD    |                     +-----------+       |
-+ |   level   |                     |     6     | ------┼
-+ |  mapping  |                     +-----------+       |
-+ |           |                     |     7     | ------┘
-  |           |                     +-----------+
-  |           |
-  |           |
-@@ -172,16 +174,6 @@ The contiguous bit is used to increase the mapping size at the pmd and pte
- (last) level. So this type of HugeTLB page can be optimized only when its
- size of the ``struct page`` structs is greater than **1** page.
- 
--Notice: The head vmemmap page is not freed to the buddy allocator and all
--tail vmemmap pages are mapped to the head vmemmap page frame. So we can see
--more than one ``struct page`` struct with ``PG_head`` (e.g. 8 per 2 MB HugeTLB
--page) associated with each HugeTLB page. The ``compound_head()`` can handle
--this correctly. There is only **one** head ``struct page``, the tail
--``struct page`` with ``PG_head`` are fake head ``struct page``.  We need an
--approach to distinguish between those two different types of ``struct page`` so
--that ``compound_head()`` can return the real head ``struct page`` when the
--parameter is the tail ``struct page`` but with ``PG_head``.
+diff --git a/mm/slab.h b/mm/slab.h
+index 1a1b3758df05..7d3b929019ae 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -131,19 +131,7 @@ static_assert(IS_ALIGNED(offsetof(struct slab, freelist), sizeof(struct freelist
+  */
+ static inline struct slab *page_slab(const struct page *page)
+ {
+-	unsigned long info;
 -
- Device DAX
- ==========
+-	info = READ_ONCE(page->compound_info);
+-	if (info & 1) {
+-		/* See compound_head() */
+-		if (compound_info_has_mask()) {
+-			unsigned long p = (unsigned long)page;
+-			page = (struct page *)(p & info);
+-		} else {
+-			page = (struct page *)(info - 1);
+-		}
+-	}
+-
++	page = compound_head(page);
+ 	if (data_race(page->page_type >> 24) != PGTY_slab)
+ 		page = NULL;
  
 -- 
 2.51.2
