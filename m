@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B79FD531B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 09:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 383A4FD5327
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 09:55:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CA4C6B00A6; Fri, 27 Feb 2026 04:45:08 -0500 (EST)
+	id 410406B00AD; Fri, 27 Feb 2026 04:55:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 460156B00AB; Fri, 27 Feb 2026 04:45:08 -0500 (EST)
+	id 3BE1C6B00AE; Fri, 27 Feb 2026 04:55:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A3346B00A7; Fri, 27 Feb 2026 04:45:08 -0500 (EST)
+	id 2F4F06B00AF; Fri, 27 Feb 2026 04:55:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E02836B00A9
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:45:07 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 848BBBA388
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 09:45:07 +0000 (UTC)
-X-FDA: 84489753054.30.B74BF5D
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 021F01C000F
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 09:45:04 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tE+uxmJY;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772185505; a=rsa-sha256;
-	cv=none;
-	b=NcAo6QqEFy009WXCoebCi9s70S13E1dyLkFo7N6DFeWabtL83VkCCsb4edSlMfESgHUZxV
-	ioC5IwYAgYZgsWSf2SrfTrC5hFvXGpxEjFz9FyEssnCdtiW0mQsMUFiz0TFWtjEWalcgu9
-	EVDj46/XGROTJjvk37H0BHcaT635yUU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=tE+uxmJY;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 17AA56B00AD
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:55:04 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BAB75C2134
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 09:55:03 +0000 (UTC)
+X-FDA: 84489778086.03.00E730C
+Received: from out199-15.us.a.mail.aliyun.com (out199-15.us.a.mail.aliyun.com [47.90.199.15])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C842D40007
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 09:55:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YZZEheqn;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.15 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772185505;
+	s=arc-20220608; t=1772186101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z89VjCPOsBTAMzdOkBmmkyGLdD2D9prjOEPgmVbdWLg=;
-	b=tm1tki5Rzwp1ZnlSa8DbeZXdlxTgZ/W0da6F4zsNywjtYS8tazlxznCwVaoA2r3KYYJap/
-	4qSi0VQPpUwCYdMOIiQafOOqeMk3nlO8LPyb40TJnHxMZEoNsC/j8bOLLv3axkRYItWkDK
-	s8RulqH4wsVG5yRUfoOEg/wjgRx0Xpg=
+	bh=TFvgQ+JoosgOuHvCEtm/wySIDfFeyNBVmJ3HBIM12WU=;
+	b=esRhlvS2xe2TMHPGwvJ2quBMHaqXFLUS1C/y7N0yj+N82Vi36MpdNT2ORGsvI3mLVuVZeo
+	efhckkFXgPvl/Zsq6Ad8vdXsA6SBmOwx6K338TycHS/IPPWTMrcQfDdF5C13JKI+pQTvpf
+	sOQqdzs2Ql3eUiI5L5PiAfZB8pobK0w=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=YZZEheqn;
+	spf=pass (imf12.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.15 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772186101; a=rsa-sha256;
+	cv=none;
+	b=PLIPF0z9n6PTLMBfxf8p3qyhdCiXBnSNduhzBlyiCfH8t1LFMRT3tvbKd5Oujqa0TYmslK
+	U+3i32PyEgoAbNoepe2sA9LUzNoQmKls3jm+nIoUSZO7T6e7wxSBd4y/7AzMnD5EyWA6nG
+	vt+Q5y3GaaMgB0CNJrnZBrt5vxAGVsI=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1772185501; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Z89VjCPOsBTAMzdOkBmmkyGLdD2D9prjOEPgmVbdWLg=;
-	b=tE+uxmJYnVji7dwpZpIaaBQudwujNlrNedXqQkp+ukhpwAHd4qaEByBvx+yZ/iZy5Y6WYJg0IJ3tUuOb5k34Or7p0qbDP93XHvNkYLGVLzUkcCbOFHZhrrZlHUQQ5/70VQlJlxhpr8CmUCgaGrhsm8Eb9QNLL3LC2stIq40ZULA=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzu12vf_1772185499 cluster:ay36)
+	t=1772185495; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=TFvgQ+JoosgOuHvCEtm/wySIDfFeyNBVmJ3HBIM12WU=;
+	b=YZZEheqnk2jvdgXq975C2vSlhKYMX1PD8vV/4t7vnDwR+iFhlKsHPi/M+tk75C4DyMuhTlPFXU7Ueba0tAv3af3p0JQ28BmbD0Z4TY3R2wJcd3pLTZYuLs4PgnSeI1r2ZPbta3Dha2OjYnKHpHjeh2mQuY3MUi05o+/sp7YvDE8=
+Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wzu0LeH_1772185494 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 27 Feb 2026 17:44:59 +0800
+          Fri, 27 Feb 2026 17:44:54 +0800
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -84,22 +84,22 @@ Cc: catalin.marinas@arm.com,
 	linux-mm@kvack.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/6] arm64: mm: implement the architecture-specific test_and_clear_young_ptes()
-Date: Fri, 27 Feb 2026 17:44:40 +0800
-Message-ID: <5d9298b94607b2bf4f1f92ea29a4c96217c5bcc1.1772185080.git.baolin.wang@linux.alibaba.com>
+Subject: [PATCH v2 3/6] mm: rmap: add a ZONE_DEVICE folio warning in folio_referenced()
+Date: Fri, 27 Feb 2026 17:44:37 +0800
+Message-ID: <6562be8c92e07f0a69c8ffd4016d1b1e55198af6.1772185080.git.baolin.wang@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1772185080.git.baolin.wang@linux.alibaba.com>
 References: <cover.1772185080.git.baolin.wang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 021F01C000F
-X-Stat-Signature: z6taj8wc1djftrk3hwp59sanmsydfuj6
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C842D40007
+X-Stat-Signature: wesq3difchba58kzzink5rm9939nacz4
 X-Rspam-User: 
-X-HE-Tag: 1772185504-893904
-X-HE-Meta: U2FsdGVkX1820bFfA86UPp1bcKem/o/lJiZeOr1DMgX44twTxyFtiMQDrOejxyYGFOPLSmzAMs6bo4w3Sn9RoWGvbOMNqu2es/8jyf2YY6Bsv2dxQWGxTA0FwrFXlWAUkllgounABUlDJBgftPKm1fKpcIepke5KSZlWRgnajRtWVn5gRbSvpd+MGMbgAqfcW7LY1Vfv8mWRBgFVpDItNqr8h+gR5V6oz8pDjSBkmIN/VloBWtls5ACUos066Drp919oLELUDags0I/h8QwhHX8qo2o4hPEaWQ/0iA+8r4Z8QjOt3UHn7bgZ52Y47sr/bo51lgkg3lo/pV06OmzVVsxrREr1g8fMe/igvWg1QBmXNgBiSIXCEwAY7wPPm/gfkXu/iWJ64xNVTe8zzcBFeScfsfHZAN5RNMihvj5gmMOqy+Q6Pfo3UMAb7jqqduXZ7kd7V79FpdH4P1Vb/m9SUG84z7is6B1weg0awXo3HGpleBk9clBb1G0XKsboCr3KlokkaNhocU2fJ6buvWCsC1Aj7rqhq/tbzjOnihFdJY9FP3gxhsFPkzsX8sLAPxhaEc3oBQ93cqJME5NHVLj1CTdzHEOxLxRmFW7tzI01ezkJ2AW2kem9h3tkUd/3YWRI9chuwScximNtUCwCWmtAeR5f2IEvIF6w1lZjtmybocINHwifZ6Osq1HyLH9j8eys8UxqmDAdO7y3FHuXBB0uO5MDa9Ul+bW8QNRAfu9TwdnDnSqJfPZCHINvDzMUCWYQfBPBY0+5qORRAWwUB40q+SxJdRgh3+2GldxRs0yZknQVkG1FJV2YKczk0toBRRdq5d3EzQfJNlmBFTeEZK/5UYeACc9NYRacgyqww2gJ6lcVoYg/aP1z0xb7qPP1pU83IYyWlNGXW+iwvslJ4AJMPyY50xq3BD9JFqBcBrtSSZ0CCiZJIRwcWmpXQY8jsUIcPD2jkTa4aWUuHCbP7zw
- 5d+c1s36
- EvpXEOwqz6NJKvQm78qwEOAhWxiBUKCAhUWfrrTfYK2HprbAmCIfUlFKh9IMn1qr4S+SdC9En3swu8k4JgbMw55L7+J9KP/3JLFovPrxG7Xf3Go5DM76AVY7mH0kca+/U1llTKF2VDrswL+8+nVkweSsG8mXqIgF7K4VA2H35mF7hudDzlyMRfrrpMBQTP2uql4PHwnPpLV42MYbAQgv8kHuEjuZIoFCN5irku8aNESps8+9DVgNJI89mgsdyrP4KYkn26somXFRUbYwFiutmRQQfAanNeMDtHZrW/p9EgdJ+F/ibYVwuPyfz3ayWEOZl1KYnwvbSV6rmy/qQK9gAzyXHMM5xDvq3rMbDTyDCg5GBQDw=
+X-HE-Tag: 1772186100-945402
+X-HE-Meta: U2FsdGVkX1/NiSlLupw6QuC+MehX9JzScR7tWHIYTqufcr9nSXOEbyzK1ARtL76DyoGyM2g0yx+hgGM4PaISTLOnj/GCVS3i8C9ubusmaUNzKNGZ7vmKpYRcfY9ra5E1h4VkvmPCnpKNX8/2DuDNp3D5k7EL2kob7CsPLWM/ITJsmQhOky3N0yRJVYvy0HNfaPrW74F7+P2/MS3mymf8giszl45W4Iy1ZydC9lfsnq3WarkGidi2+xiJed6GG16/OZdcU1eVnrZkTEQdYT2tw070qC4kPmH0PH00bsHrfnLQgFwk4jD+vIWLF797LqYOPy1TlumpegUbOlERWEA7xJeaVUMuU6jKZjjd1Bj3M57PPdL8bIvd5aq6hM14SPYQj5UP5y4/2FJMFNrgNKv3ltra+TEE3T8pvWGaltlIoZUMQK6ArLRf9R5jH3beEM08gSj8+nsNa2LD9YH8EE3wyh7+VXt/xGYO7m5z+brIuhIHHmFIcUNc+uN+It+11NqICc4+OVHINoR3DKu2hukZPxzulWzOmfXyXpHBGaSn/OnZS20l4DDA7voJoqrAa1xxKSRGpkRLcoF6m4G6LD1LhZYVh4NPsdQs14tm2zuTarwlZ+in2AGzkDRi9q/RzxRcQqh36+h8qLJVfNekQzegogpaScOomhOL35pgvbJSr8xIaHuvosEVnHKgCBTHW85E/iSyazhrhThs7tB1tzBnjc9boDbzAcmeWZSBxqrgv2mqJrdRwGqnBYXlqPRpK4/zPhEDegYdZiusfFaJv4vEwRF/dwfm8M71m4JTzQmGSZohwEJIhbXf0jgwcPQ6zRbv1BOKRejY6dyPymjtzRLP2KBPha4VBUaVR7w+2X4ZtdEIxtKZYvVVNqv+eR8Xi6hwU43VsuoQ89YJs3SA8Nf1uikgeTd/VzRTlEwetUXikprx0m9NY79f4O7aynfm6G0K9KMTfnJb91PI+66HzqC
+ e8TVvGab
+ kuVa0THw83zm6PLbkv1snAvLHX8GbbL6AYY3mcMWrIPBqbO2XcROp7Y9XwmpyckMh/P9UkIqMXT8UMDkYPPzy87bPKjxP7eW2JytyIIxHwdW9QcUNzCn6ek19pSN/UL8G7ICYEPAdNzUUZNI13TfWBGSkvnD/GX+DIiOdMvKWgGoOcgEheY5fZImZoq5HbAY4nd+iRLfP/O1i4s3reLu5667tmSP0lmTiPrhmRnLHL/ue8FLWU8tl0iXAhihxrftBDFh/cr5LsYEW+i8nN86I8cnIw/iM1xh8+VjlXNypjfQtzsnYNY4p7h1NMOFcjADc2eoT4gkrqKJwirIlj4rlCsqt7xghPhijCHBydgpSrf8XIuHcgxQEdQUKoUTl/EOehmCe7IKNVZ4C8LXpR9Wu/hYVsOmEf+Wio/16xth22mYe3Sp9wTviqsqHKDk8/tndFrVy2bkYpcUeJgIT5kDLboespPp3EGElOQ5rNHLPtY40qKUKgU8ph+IUqwbABY5OwgRt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,70 +107,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement the Arm64 architecture-specific test_and_clear_young_ptes() to enable
-batched checking of young flags, improving performance during large folio
-reclamation when MGLRU is enabled.
+The folio_referenced() is used to test whether a folio was referenced during
+reclaim. Moreover, ZONE_DEVICE folios are controlled by their device driver,
+have a lifetime tied to that driver, and are never placed on the LRU list.
+That means we should never try to reclaim ZONE_DEVICE folios, so add a warning
+to catch this unexpected behavior in folio_referenced() to avoid confusion,
+as discussed in the previous thread[1].
 
-While we're at it, simplify ptep_test_and_clear_young() by calling
-test_and_clear_young_ptes(). Since callers guarantee that PTEs are present
-before calling these functions, we can use pte_cont() to check the CONT_PTE
-flag instead of pte_valid_cont().
-
-Performance testing:
-Enable MGLRU, then allocate 10G clean file-backed folios by mmap() in a memory
-cgroup, and try to reclaim 8G file-backed folios via the memory.reclaim interface.
-I can observe 60%+ performance improvement on my Arm64 32-core server (and about
-15% improvement on my X86 machine).
-
-W/o patchset:
-real	0m0.470s
-user	0m0.000s
-sys	0m0.470s
-
-W/ patchset:
-real	0m0.180s
-user	0m0.001s
-sys	0m0.179s
-
-Reviewed-by: Rik van Riel <riel@surriel.com>
+[1] https://lore.kernel.org/all/16fb7985-ec0f-4b56-91e7-404c5114f899@kernel.org/
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 ---
- arch/arm64/include/asm/pgtable.h | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ mm/rmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index aa4b13da6371..ab451d20e4c5 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1812,16 +1812,22 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	return __ptep_get_and_clear(mm, addr, ptep);
- }
+diff --git a/mm/rmap.c b/mm/rmap.c
+index bff8f222004e..11cc6171344f 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1065,6 +1065,7 @@ int folio_referenced(struct folio *folio, int is_locked,
+ 		.invalid_vma = invalid_folio_referenced_vma,
+ 	};
  
-+#define test_and_clear_young_ptes test_and_clear_young_ptes
-+static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
-+					    unsigned long addr, pte_t *ptep,
-+					    unsigned int nr)
-+{
-+	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
-+		return __ptep_test_and_clear_young(vma, addr, ptep);
-+
-+	return contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
-+}
-+
- #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
- static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
- 				unsigned long addr, pte_t *ptep)
- {
--	pte_t orig_pte = __ptep_get(ptep);
--
--	if (likely(!pte_valid_cont(orig_pte)))
--		return __ptep_test_and_clear_young(vma, addr, ptep);
--
--	return contpte_test_and_clear_young_ptes(vma, addr, ptep, 1);
-+	return test_and_clear_young_ptes(vma, addr, ptep, 1);
- }
- 
- #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
++	VM_WARN_ON_ONCE_FOLIO(folio_is_zone_device(folio), folio);
+ 	*vm_flags = 0;
+ 	if (!pra.mapcount)
+ 		return 0;
 -- 
 2.47.3
 
