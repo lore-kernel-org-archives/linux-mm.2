@@ -4,89 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5629AFEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED542FEFB51
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA3666B00EB; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
+	id 64BBF6B00ED; Fri, 27 Feb 2026 15:44:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6A696B00ED; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
+	id 613126B00EF; Fri, 27 Feb 2026 15:44:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D276B00EE; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
+	id 515C86B00F0; Fri, 27 Feb 2026 15:44:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 85FC46B00EB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 559E11B8343
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:43:22 +0000 (UTC)
-X-FDA: 84491411844.22.E5EB3C2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EBEE6B00ED
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:44:15 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BEC0BC075
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:44:15 +0000 (UTC)
+X-FDA: 84491414070.03.DD90C48
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C3AD4120007
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:43:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUXdrWcy;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 24C8D2000E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:44:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oOAuOjkU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772225000;
+	s=arc-20220608; t=1772225053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s4vAXpGLDQ59CKjdi5/XjsqP9csroGw2rRXY6YQw6rU=;
-	b=67ToGMl+P27t6LrxzMlQ1ZlNfo13aQKlqsayqC8CreJd7RlQMiodXjZZrB2N//zUsKQR2P
-	xvaGRP1kFUUM8J7JKGLBvVxVoNFbBGp5/h3TaGXAKh2ID0BktKqjz19Deus9fIZIbcJiN2
-	6Ye1Fdq3Xp+DOBXv0jQoL+lfmkR75NA=
+	bh=VIkt358Etf37InD5BtNd6N3/4Hn7wIs0q2JfQVZj8Hs=;
+	b=10TT/ySj7vThFoIf/cms7Dv13ilGHVlDr+IWR+q0YkhFM4OdHR/r3v1zKkk1gLvB3sU2mR
+	50hBu3o6LDBNdDuvsj3K1pw+++UC/Zl5m8+InNbGRj7XJccypVOlP9XWIfu4ax1C/7CjU2
+	4co0hYEExwRSoDGiF++T0wR01atO7B0=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUXdrWcy;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225000; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oOAuOjkU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225053; a=rsa-sha256;
 	cv=none;
-	b=BRz30gHM+hEE207M8cRREdsD0ZbEpcUlwumUobm8MLJsKYfwhDsme7Wlj0k0oigCRqvaPB
-	8Mgo3lV5J89ahqplMTOs8jrTrD5tbdO9BNUOFS4Ha6UG0IPBzQLpFBx7Bfj/X8xOFUE59O
-	ntne0wLwHLctw+GtXowrbyFuJSdEwbU=
+	b=V0SERH22DxvTVKmyPDrqrFF9rJ2iBJ5wtF6cy/EzXg6jlrn2Y4M/7oxhYoLT8HnVrCzopm
+	jN54qoG/KyI6/dWjb7Lv9DTSEsaGWMDwYFS5oufSVX9ta74TmrhSwrTk1zNTky3zPpGG91
+	6W8RCsX9Wi3zyc6oOMkG/vxK05l4kHM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 204AB60141;
-	Fri, 27 Feb 2026 20:43:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A74C19423;
-	Fri, 27 Feb 2026 20:43:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9FCF460126;
+	Fri, 27 Feb 2026 20:44:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC9FC116C6;
+	Fri, 27 Feb 2026 20:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224999;
-	bh=C5BQtFO6OyplUBcKY6HfwUHgCQXnt44u+6kJv+UGBZ0=;
+	s=k20201202; t=1772225052;
+	bh=RlLz8Nf4AkH8nV2nxyW0Rxk/9bF52X89NSCa8ZhU4q8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZUXdrWcycn9HDQGAt6dye4JUyNJBbLMu5XaFxuDIw08FKKSW4VKOKdc3x+Bd3/Uau
-	 IlJFrfPsZot75XBx1PKjmd5nwWgPB3ex6Ex3t3Ehp6vWDzzvn3QeyCclaSvrl2T7F4
-	 tWxoFkYagImEIgDHF3tdL+lGU84oA6uS7SqeMwQpSdwVI2WNUPwoZufWwfDPSktMxM
-	 wnPfATuJVBJ0ze8wVi/VROUhytYoqrvA75fib0rawNsT7hnC//NfRQxqv0ND26d9T0
-	 srY0tY7E0q8QSfFpZ2a/VKR+MWSCImCpNQvFMkeHCGwUJcu2IyugZRiLJiHVBQincx
-	 dAg45c0Z/o9vQ==
-Message-ID: <ca2ada49-08cf-43e6-a857-85994374549d@kernel.org>
-Date: Fri, 27 Feb 2026 21:43:12 +0100
+	b=oOAuOjkUW7IMZGQo1i21CTSIVY4JFqKbBBVzBQHEfOB6DW4g3pTxKqT0HrN3xBcST
+	 I4yLuWrb/S+kyiwhNBguxN0eQmLjX3Z/9TNeSMmlOAe/9CT2SN+BGGPsFkpm78GRAW
+	 wRVFvUOsebWDu+QoYzJqdD5JWZ+35Lix/699e/L9UhApjIJEeWpTbgRc07cXtoVUx2
+	 hgH4I1XJ86b2WoKkXKQOLU203ANhQzMxQU9ktGQFvP0tVqpyPonzdfBMbQnZtsnVW3
+	 G4B64tPdKNSB/D3YARx208WO6SfNSzQ4NWEpyFscgTKv/F5QL4mVmkqe1OTvWIaRih
+	 f0rswjD7njamg==
+Message-ID: <dc86d6ea-ec74-4071-ae88-1fd8c3313ee8@kernel.org>
+Date: Fri, 27 Feb 2026 21:44:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] mm: cma: Export cma_get_name
-To: Maxime Ripard <mripard@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- "T.J. Mercier" <tjmercier@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, linux-mm@kvack.org
-References: <20260227-dma-buf-heaps-as-modules-v2-0-454aee7e06cc@kernel.org>
- <20260227-dma-buf-heaps-as-modules-v2-6-454aee7e06cc@kernel.org>
+Subject: Re: [PATCH v1 0/4] Allow order zero pages in page reporting
+To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>,
+ akpm@linux-foundation.org
+Cc: mst@redhat.com, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+ jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-hyperv@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260227140655.360696-1-yuvraj.sakshith@oss.qualcomm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227-dma-buf-heaps-as-modules-v2-6-454aee7e06cc@kernel.org>
+In-Reply-To: <20260227140655.360696-1-yuvraj.sakshith@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 24C8D2000E
+X-Stat-Signature: ngphstxsr13t9ifyk144doe8b7ygxae5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C3AD4120007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: xuoj79uqzs75ycjzos3xwpkuiuh3ff9b
-X-HE-Tag: 1772225000-989407
-X-HE-Meta: U2FsdGVkX1+WL06QEEPvTnyhyAp5+r/q9XtK06PnPtG1pOUYMJhQ5cqGE2RcJH5rR4VCcrh0Sn0WFKyWiSz0+hEATBqBrPumd5atNi7ud1WSPg1lcrku3jYuOi9KGJMDNCFCzbQjEgWOwTEO5aD7x0t8W3kuJOAftD+CuraLqRyXstPYA7ueYGk2Z4z5ru0OKq3q+Q0BxBtrwXJgFaVq58x6VhRMpCPn17YPE2r/Jq6mgtlgcXiyk5i3+Yf5UQz6oanuZF7Rfuo8MjTpYlv/ZnD2Qb466CvcgTzwXlKRNCYA7ybLv14d1wntVrckcRAMuegeKnevOJv8CMWV/ewzhezm5v3Ln2uGdevw3ZdXVNTy4ARba63OfR12TqKMek3ksLYAD6rkjzpeUq7Ns7ybPT0kEzmjps/sbLwdI/6HDd9MCa2kB62Ei0rXI/YhLo0sLRGgFa32bdrU5gxAhRuzoaJFuBjRrLpLvwh4vpU89UFMVKaoYf7P7u8y/v9vrwFcTmLh39XAQfzp5HL6jsdzT9fNbOg3/5bjNLoe5lQLa4k/uQHIGEvCl6iTITqtC2s4aT6vKa/ucvI7Ay5DGk2kusvUkDcfNlOlMtEcRxskodRQcQUIv1r5mbK43078Lhqti23oqpwBvqPbKOcFxHy7Ngnmk3qJnMb6K1FuYPOJ4cJ8tl+T6k/qBJt8V8Uyv4COgybIEPNsKZtmOyGZtEwD0hUtr5eSlKGel0b6L47g+iKcCpDb1ym20FuzuWu2nK3maGWxeC5ACrGN/pCM52GfjL7l0iO/3HDT/BBWLXQstj82xAIWtKEwcCCR/QGG6QWJ7sQx/EykeFsZP0DE0Nj1UEyWyAKBWF+0TeklhcruDx3XnHUwu0BZKCBIvbh+Fm3zaYwhpvJ6cyJsJrJx1plMCYQWrJQNrplbFwuIVkRYPmmd3vbgbaeDPKKZWlphed/BuVuN5igvVMC6HC1Z0HG
- Ho7+IhId
- X/bYzV5Ygo1QN+Xc=
+X-HE-Tag: 1772225052-264951
+X-HE-Meta: U2FsdGVkX1859W7s5/Ns853UQ0iBd4SiDP8QDJvGK6Y1Ppp3330y/B1+rirEGzqlhuM3MxgsaO1zPMih+w5qnRnsy4UbozAyqwNBQ8WMkX8ru9tG3e59iY7SX0c2PKLNKub2c6dnk4n9tSDW/7K5iaoQrE/g2W6B2pQp3ULu+7IM/1U/E95crCGDIcgkTE5fskeFmdL52ti/PfMFtIVms0WZtWArWDj1Z6oCPnCagagJOLGB+NErOcOSyvVD0J0045vVs1SJhMy1MOezrkGN25NlpQzlAj6bNNP+0Mr5cGyXhZ6Qmxd/BZOgr6UaQLDsQsadeJwHXm7OxSXdFuQDd+BkZNV4ez8OBSRMWgDglpthzt9F0hsFYL+aPj8y9x9b40F7oNRyOvYJIL/OkSgSR7ietUIIM0Eixpgz4XsQ6Mb5Ei9FtAHXrXtCvtyUJLl/qNBCSgU9lzmK7GgqEwNsCyFCCIUJ4OnZXnceG2XfCAGCouFrjHGFxxtrS2KoriIlBJAsG4DHn+AtBG92kbSnhQ6h2gYWVI3I7eNvRnr07sb9wUqrcwyxN1N01MhTmX0HnyqnTD4dkNE2hcyEjVeMQsbNStEBZqfYhRN8rYpcu+XUZgEuKS56Zrz3dYNRQUj4B5EI1CnkOjUm48OoeWckFTqrmffoCzIJ2RJaNHH/JVNDpIAdzPok+/IIQbFqik6jSFqMGCiOUFDvJrmndDgrpKxdl5Bk/CN9cfIy5XwCgeGz4FnflpDNJfO4wiTatvJ4IWPF0h1gmOuHlx+svp8P8OhLG31G5Rd9+blcFdgeCjYtTunJqYI2VZLpzXuHSKmuDT2c8TtvcPh+eWeZ5Ac0C5n916kSYrUydjGimdXQxZofcvaVjMr62N4W+y/IhGujrZKLpH3fFvkGqI+p2ARvqg6D5wH4c2JryP0c95Fq4IXTDUjqzBg4oSEGKyy6gqsrAKfMZrXRDo3vKhbiCWh
+ Wq1u48j7
+ t8OONIAjTFnT3xrsEwGyI5qQPkpP046ezqetriSMTFIqNGcDgUxT9k5dqUMm0HhdqL14Bn2a47WM4Hsb5cbwGrh32XMyccMZaUTVFiOUrgY92RKwjmba7OrvRiQ6z4pv4K+N25Rt549Ggl8ucrI1/7/oQbYHJeUB8ZmuFxpZfphRwCxkBwjkQqbjwY2UoyCDx/oP7+SUw5LBZj6XaM+MFCs4RAd3LrNzVA0ICz6/Oak+sO5Qvxz2ZhZmVWAu91jKnEa6i+ptaDmxAB1s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,32 +144,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 14:15, Maxime Ripard wrote:
-> The CMA dma-buf heap uses the cma_get_name() function to get the name of
-> the heap instance it's going to create.
+On 2/27/26 15:06, Yuvraj Sakshith wrote:
+> Today, page reporting sets page_reporting_order in two ways:
 > 
-> However, this function is not exported. Since we want to turn the CMA
-> heap into a module, let's export it.
+> (1) page_reporting.page_reporting_order cmdline parameter
+> (2) Driver can pass order while registering itself.
 > 
-> Reviewed-by: T.J. Mercier <tjmercier@google.com>
-> Signed-off-by: Maxime Ripard <mripard@kernel.org>
-> ---
->  mm/cma.c | 1 +
->  1 file changed, 1 insertion(+)
+> In both cases, order zero is ignored by free page reporting
+> because it is used to set page_reporting_order to a default
+> value, like MAX_PAGE_ORDER.
 > 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index be142b473f3bd41b9c7d8ba4397f018f6993d962..550effb9c4e01cc488b5744fe61d55a5b70a6d6c 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -50,10 +50,11 @@ unsigned long cma_get_size(const struct cma *cma)
->  
->  const char *cma_get_name(const struct cma *cma)
->  {
->  	return cma->name;
->  }
-> +EXPORT_SYMBOL_GPL(cma_get_name);
+> In some cases we might want page_reporting_order to be zero.
+> 
+> For instance, when virtio-balloon runs inside a guest with
+> tiny memory (say, 16MB), it might not be able to find a order 1 page
+> (or in the worst case order MAX_PAGE_ORDER page) after some uptime.
+> Page reporting should be able to return order zero pages back for
+> optimal memory relinquishment.
+> 
+> This patch changes the default fallback value from '0' to '-1' in
+> all possible clients of free page reporting (hv_balloon and
+> virtio-balloon) together with allowing '0' as a valid order in
+> page_reporting_register().
+> 
+> Changes in v1:
+> - Introduce PAGE_REPORTING_DEFAULT_ORDER macro (initially set to 0).
+> - Make use of new macro in drivers (hv_balloon and virtio-balloon)
+> 	working with page reporting.
+> - Change PAGE_REPORTING_DEFAULT_ORDER to -1 as zero is a valid
+> 	page order that can be requested.
+> 
+> Yuvraj Sakshith (3):
+>   mm/page_reporting: Allow zero page_reporting_order
+>   hv_balloon: Change default page reporting order
+>   virtio_balloon: Set pr_dev.order to new default
 
-No real reason to not squash this patch into #5, right?
+These look like old stats :)
 
 -- 
 Cheers,
