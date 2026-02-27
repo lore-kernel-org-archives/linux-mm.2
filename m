@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC12BFD7F95
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 12:02:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0B58FD5323
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 12:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD9DC6B0005; Fri, 27 Feb 2026 07:02:40 -0500 (EST)
+	id 2F4D16B0005; Fri, 27 Feb 2026 07:04:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87986B0088; Fri, 27 Feb 2026 07:02:40 -0500 (EST)
+	id 29F446B0088; Fri, 27 Feb 2026 07:04:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5D946B0089; Fri, 27 Feb 2026 07:02:40 -0500 (EST)
+	id 1A16B6B0089; Fri, 27 Feb 2026 07:04:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A30536B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:02:40 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3BDBC1B6BDB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:02:40 +0000 (UTC)
-X-FDA: 84490099680.05.77A3483
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0697E6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:04:01 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AABEE1C7F9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:04:00 +0000 (UTC)
+X-FDA: 84490103040.21.887A980
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 42E0C4000F
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:02:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZIlhqS5C;
-	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9DBEF4000E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:03:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gQA4E8Vp;
+	spf=pass (imf17.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772193758;
+	s=arc-20220608; t=1772193838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARsZZaJbz4Se7XeH2kij1cdc9Sgjng1W/WgzOfkjGow=;
-	b=alPNTlYvF6r5s6E01wLvV6dvFG1Uk3/pDFTxrVhPzcq7ye0/BmWeRKdXg4oXXjxDuP7LZU
-	eCOfMvFKKbhERxNg7s5t0MAB1fdzdIqMBQTgUhrg4zK+pqRByLkxj36evPp0E4BNbWPoWo
-	mwDlpo/QbeXNhjTP3zX03Ygdb/mcGVg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772193758; a=rsa-sha256;
+	bh=SzJWcWsW4AQY0Ow0DI3RPlgohp0HYyfHWeugLHPcRG8=;
+	b=WeWSXbSQGhO1T/LMOELoYi5YHIwKSE2E/qcDB1JGmGdPbi5ZTN1U5e7jhzMG/1sheH5aqQ
+	v0L8Y0euxobsdT4FEE81YvPfSayl23kN2li1UINJD2lO9kEcfda21KEvmjYoQmCKUluO8n
+	PeEDmqYy8nT/vaSTxydqKNF1QIUwMbg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772193838; a=rsa-sha256;
 	cv=none;
-	b=MFOoHv9e2m6Cd0ayccntqxGVMzwHGdfoTcTXS9jPMe4enM5679TioqIAsdqSgI29FqfN7e
-	vylqXYpDH9723qx5+KFBW0nmwUy2AA0ZAleiIS1y54F2Wc4/0hshsXwUUdz2JzndOeSesd
-	K5C02cTcqJpy66WdmqLEO0+VrY5qsAA=
+	b=F/UyBX4X9xYgYMmkN8YxRBAN4x8eoKZ4wO4QaAxJG43MpzsKztUbJPHxeLOk6+DaQQSQJD
+	HUIxr3KmlwZ4VNpL5ZjcgSsNECbLZTRL2mZ1xuIHwJJJRhM4z/ykFMnwFKzbqwVSAFPitZ
+	/FiR6BqKAyVQZd7rmn+kSaxpORnd1Jg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZIlhqS5C;
-	spf=pass (imf07.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gQA4E8Vp;
+	spf=pass (imf17.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772193757;
+	s=mimecast20190719; t=1772193838;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ARsZZaJbz4Se7XeH2kij1cdc9Sgjng1W/WgzOfkjGow=;
-	b=ZIlhqS5C70oHUXCIdlQwSQpNsNA9fVDkThlbTzWKw1Dc0qgo+ClRn3htkjAW8764IxLZQf
-	86gTZluMYZyAfiIHBKNtxeKNb1XxD8zrkmEh+V4U4FHpCyavLPDCtkX/cCSPVIG0wqW02F
-	6r/ckX27+ntDkKbw4A87i3xzdGh62ks=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=SzJWcWsW4AQY0Ow0DI3RPlgohp0HYyfHWeugLHPcRG8=;
+	b=gQA4E8Vp++EL6hPPmfX5dG9/LiYeNyYLIxOInxS2qKGkng7XdAkrAD60e80xDLhLxudUf7
+	QFbzX9pBwI4DQ4IuDdn2M8LLzw8bGDqxFIA9Rm8EdRzzg4qf2Ja+aFJ9/ZjCEbNfpXvFOT
+	V87bfdfi5+8ZoLSfF2vwcd6LIrAzJkg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-CIEq5yPeNk-cclyWlY572w-1; Fri,
- 27 Feb 2026 07:02:33 -0500
-X-MC-Unique: CIEq5yPeNk-cclyWlY572w-1
-X-Mimecast-MFC-AGG-ID: CIEq5yPeNk-cclyWlY572w_1772193751
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-DPs_LF9INQm7yzIXJqq6_A-1; Fri,
+ 27 Feb 2026 07:03:54 -0500
+X-MC-Unique: DPs_LF9INQm7yzIXJqq6_A-1
+X-Mimecast-MFC-AGG-ID: DPs_LF9INQm7yzIXJqq6_A_1772193831
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 259E2186096A;
-	Fri, 27 Feb 2026 12:02:13 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4AA1A180034D;
+	Fri, 27 Feb 2026 12:03:51 +0000 (UTC)
 Received: from fedora (unknown [10.44.32.38])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id BC68C19540E9;
-	Fri, 27 Feb 2026 12:02:05 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 6CEDE1956053;
+	Fri, 27 Feb 2026 12:03:43 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri, 27 Feb 2026 13:02:12 +0100 (CET)
-Date: Fri, 27 Feb 2026 13:02:03 +0100
+	oleg@redhat.com; Fri, 27 Feb 2026 13:03:50 +0100 (CET)
+Date: Fri, 27 Feb 2026 13:03:41 +0100
 From: Oleg Nesterov <oleg@redhat.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
@@ -90,24 +90,25 @@ Cc: Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>,
 	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
 	Adrian Reber <areber@redhat.com>, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: [PATCH 0/2] pid: make sub-init creation retryable
-Message-ID: <aaGHu3ixbw9Y7kFj@redhat.com>
+Subject: [PATCH 1/2] pid: make sub-init creation retryable
+Message-ID: <aaGIHa7vGdwhEc_D@redhat.com>
 References: <20260225133229.550302-1-ptikhomirov@virtuozzo.com>
+ <aaGHu3ixbw9Y7kFj@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20260225133229.550302-1-ptikhomirov@virtuozzo.com>
+In-Reply-To: <aaGHu3ixbw9Y7kFj@redhat.com>
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: ZaiuEhD10KESTwGGIy3ALFllFfGO0VXeA_kOdEovO6E_1772193751
+X-Mimecast-MFC-PROC-ID: sLO1btBoX9ZI7Dgp5EYyDc-AhF394vR5WNEaGKADWiM_1772193831
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 42E0C4000F
-X-Stat-Signature: 1a8mh3431zjpeoj63wrtzszu73wpsgng
+X-Rspamd-Queue-Id: 9DBEF4000E
+X-Stat-Signature: 1xxz9x36s84npj15anzi6ip3e5xzfz86
 X-Rspam-User: 
-X-HE-Tag: 1772193758-312085
-X-HE-Meta: U2FsdGVkX1/BCW+3QiTD9NYlKSXMetQ+2eaEI4rEDLSH6iVarlikXVUrfIHYNKLNr+qR/50yAn9zm4kMiMZ8unBt03OpEPy/IuS3aWG2q6m89+Busydda99DD6TtMB6anOrdq+U7s6obR5zLTBvny63RKVpbTTct5YJgtiF4Bz3m8gKM87z89rCR11YcGCsrdy3A9MlZPpew0LW4tvFp7vancdiBY2IJTOC9gSxWUjF5sIFgHsnxJ6EYCFW94Nm1Xa99V+x3ftuLHG49pexndT/l5Kse+CN8Rr0QnB+1MgWUQNmvnwFLYJYScTNkEQ/NFy7uox0xQwss47b7ItO7sFc2PPxDXJ4LiRq8QdzM4tbxSKQLEY11T6CUEp0sK6yo7ZVxOhmKNse7SqdpVeB/+tE2QeTTziONliDZSfK+G79l4MWMRsVxYVNE7Vpv/dIEYlHYfXKnRBO90MN4xInQtuA5MVRFsurwvKgUB/OYh5gwuylFcCSoEnmHITa3fNg65fWPfimhncWKNo6HPjpEXjgC9vjgneBL0NWIzZUA8vK3alklotiYWL1aVMcqhe9tpCS15C8QzwFZLfueN5dqBjnCM8ZHTOJVl95CO9A6X7Uw81DGbG3OIgWf/OdIUfSH7n9ON+hylFnM5D07AhfhEcUJop4OnLyS6fYNmQt6ap+BaJB3Cph2IphFxmD+vKrxIh+Tz61iWvH6vVnh+Tr51OKtoX2++25IhixrgCGhp1DUduGSnWVJM5HqpdXefJ2PjSc8s2cCw66ECNnzVcyovodEzEp/dvlPS6Tr/2L7pfAUoQLOn9bGpb9R0rbKwIi8IcnD7VXEFD9OSBDLTBfm6qatF4srBOspCCr3SwaSzLn2CmkpjlUp1A1pDmDrvmRb+c2T5wuXfcygbapc1dt4oGyqwUq0tZVrmGqORjD95zm1C7nqt+51bUR7MlLpSepsp9xtx6WRmIakesU9jmY
- LjqlbDRS
- aarddMJPW27CMkEiszUXyyAU1IvKsjqMVJbx0uf/7vH4/G7ONtoqpj95zETePpr06HEMAPujOaD4cCO8IzON2JuxK8VF5gSmD2bR+7QfrMS224nv546lTqLSF+pChXlpm/8WZbvCXZSknFh5THITk8EfHFfmoUxhdAKcj2EsTUiTrarwp8L8xoT728r3lnQvLmvsYcEEguTXTMN1YsBqJJX3hqkto5eJ4EwIYXngIn6WdRIoU52nQRQDmFIxh5hJdTG0K8D3WoPxKFfm3ly8ybRcXJUz7hb+anthXmQgG0vyKH6Z7WXcrwIEcyRGoO2ddYoKk/9ggDKueVx9o7YkoOtFyEtcaF3cnwEk6
+X-HE-Tag: 1772193838-40368
+X-HE-Meta: U2FsdGVkX1+V65Bf8K4CHYSv39mBb3KXyi9syWDIozOvlDyvakurV7MfPFLuxaCBTXSduvoiKR2c4oFyXCh+LbgUkDlTqUf0dGZ3ZXZGlElU+wsJfOX0woNr7yseLcGHLtMPC0oASpBxi70w3ipev7Xd5uYStVmdj9Xlx+eRTFtocVJpyBwfC/1/5yS1jha/4x2GBDbvCZu+cl5y6dGPesClWppeaYK78/akoNpKsaLAsb/jx5EgSC5/SAp5mDywx++OZX9CVPnEzXpWlq3EOfDEElc7uLUG+l5XzcBULhB7Gx1RhdIFf56SXXL0/nqyCSw/s9ATv1eWD1L/4p3u4vZig6Ilb/2Bu/Bs2m/2nANjVK8s4dsXagToW/pLbtJ63KFmSbFw8tnYIVcF+6M/EJjv/nX4WPnc+sjbKuEtiOxqG9LQ0zOOel7fgda/UMo3Afvc9QS59F1y/2eR7IalPVAPpQm0mIlNNkMLqMG6+BXYnREYzyouepx4gqVDAa2/VpgTX738h8hBO3prZ8nRd1mORgY1AA7MdTdIEfB3sCE+ZnWxZLCP8B9WYwbM7PkPz0RVvyl96NjP6yFcsyvHosTFSc5OSiNQf4vfqXhQqM4Vl55MSDkBSp+eM443Tbsty53o4T15OaMYl/kLibeTjpQvI7dmayHLlmCeq8u2H+VIy4I1T+p4ZPF/K8z0r5oMY2e/Xaa2GDsnwDrIZYkhjAKKaqc0El1dYxNTMfwBPnKeEXbQpeEb8hGm82/Vb8t01xDYK5ZYRbmWLeuk0i+wtDJau+Kvd2uAPaqAx620Ba32mLRkMZ0NRsINL0JOxBJnT4xXJ5CNPVKDanO/b3AvzitOb8XV73DJQ7rWjEgSj3PPv4RSy3yuNVbqGTbt9z0YEiJu7rNakOwakcHVqsUS5VUZ2mcvsle5mSaLQu+ynZIJ5d7LlddNxoNIgmWE/3CMFGMKubPt7IkEnbC7G6m
+ FdztL1vT
+ cUizkeu4XbKlY9E87Bf/d+XGI2ZWE56la16jxycWOo0u7vIdOinwG4cS5T3vb1gXjavkNcMRU3jWuYAQiJTwM+87dida8ir+5jYCdce4T5b2SNSE/Ey/MMFxapqYH+exPo4DExaE3EzzFLMpJxOTXLRy47rxadcv3Oa8wGS4I3JaWHE1qysvkGz0vncNk3+wN7z8V9DzumoFycMKVp5MrXOQybVXgrnKAnsVoJUGculuwYOIAOvCJApUBiN/1Zy6gV4Ga6oob3cVJsoxTOR5Z/4F3skOOYEmdtJSi0uZoWlB1pCa/sSko0U3VnOoAYjscoEGDNbVdsMhqgN7vUZAqS5SQgx50fXqTcMlRP8WSuPOjiU6KJYGaVJVqFEt7EzcrYGcP1rJV/DWY/OluJQzCqHYXe6nlV0nFJiZfbMAa8cekAiY+M+hF7PqU0KWQDDlDjbBZNX3EbVvlE94=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,16 +116,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrew,
+Currently we allow only one attempt to create init in a new namespace.
+If the first fork() fails after alloc_pid() succeeds, free_pid() clears
+PIDNS_ADDING and thus disables further PID allocations.
 
-On top of Pavel's series but but doesn't depend on it.
-Can be applied before or after.
+Nowadays this looks like an unnecessary limitation. The original reason
+to handle "case PIDNS_ADDING" in free_pid() is gone, most probably after
+commit 69879c01a0c3 ("proc: Remove the now unnecessary internal mount of
+proc").
 
-Oleg.
+Change free_pid() to keep ns->pid_allocated == PIDNS_ADDING, and change
+alloc_pid() to reset the cursor early, right after taking pidmap_lock.
+
+Test-case:
+
+	#define _GNU_SOURCE
+	#include <linux/sched.h>
+	#include <sys/syscall.h>
+	#include <sys/wait.h>
+	#include <assert.h>
+	#include <sched.h>
+	#include <errno.h>
+
+	int main(void)
+	{
+		struct clone_args args = {
+			.exit_signal = SIGCHLD,
+			.flags	= CLONE_PIDFD,
+			.pidfd	= 0,
+		};
+		unsigned long pidfd;
+		int pid;
+
+		assert(unshare(CLONE_NEWPID) == 0);
+
+		pid = syscall(__NR_clone3, &args, sizeof(args));
+		assert(pid == -1 && errno == EFAULT);
+
+		args.pidfd = (unsigned long)&pidfd;
+		pid = syscall(__NR_clone3, &args, sizeof(args));
+		if (pid)
+			assert(pid > 0 && wait(NULL) == pid);
+		else
+			assert(getpid() == 1);
+
+		return 0;
+	}
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 ---
+ kernel/pid.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
- kernel/fork.c |  6 +++++-
- kernel/pid.c  | 18 +++++++++++-------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+diff --git a/kernel/pid.c b/kernel/pid.c
+index ebf013f35cb3..1a0d2ac1f4a9 100644
+--- a/kernel/pid.c
++++ b/kernel/pid.c
+@@ -131,9 +131,8 @@ void free_pid(struct pid *pid)
+ 			wake_up_process(ns->child_reaper);
+ 			break;
+ 		case PIDNS_ADDING:
+-			/* Handle a fork failure of the first process */
+-			WARN_ON(ns->child_reaper);
+-			ns->pid_allocated = 0;
++			/* Only possible if the 1st fork fails */
++			WARN_ON(READ_ONCE(ns->child_reaper));
+ 			break;
+ 		}
+ 
+@@ -230,6 +229,10 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+ 	retried_preload = false;
+ 	idr_preload(GFP_KERNEL);
+ 	spin_lock(&pidmap_lock);
++	/* For the case when the previous attempt to create init failed */
++	if (ns->pid_allocated == PIDNS_ADDING)
++		idr_set_cursor(&ns->idr, 0);
++
+ 	for (tmp = ns, i = ns->level; i >= 0;) {
+ 		int tid = set_tid[ns->level - i];
+ 
+@@ -341,10 +344,6 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
+ 		idr_remove(&upid->ns->idr, upid->nr);
+ 	}
+ 
+-	/* On failure to allocate the first pid, reset the state */
+-	if (ns->pid_allocated == PIDNS_ADDING)
+-		idr_set_cursor(&ns->idr, 0);
+-
+ 	spin_unlock(&pidmap_lock);
+ 	idr_preload_end();
+ 
+-- 
+2.52.0
+
 
 
