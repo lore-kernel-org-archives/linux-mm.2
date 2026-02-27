@@ -4,140 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E956FFD530D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 08:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94FEFD530C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BBEE6B0005; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
+	id 060846B0088; Fri, 27 Feb 2026 03:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 189FA6B0088; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
+	id 037296B0089; Fri, 27 Feb 2026 03:07:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068846B0089; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
+	id E78186B008A; Fri, 27 Feb 2026 03:07:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D8E5E6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:02:46 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64484595C5
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:02:46 +0000 (UTC)
-X-FDA: 84489495132.11.5EF5F00
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DCEC9160011
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:02:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=TfwXkisZ;
-	spf=pass (imf08.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CD9956B0088
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:07:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8638EBA0DF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:07:01 +0000 (UTC)
+X-FDA: 84489505842.10.7221C69
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8B93DA0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:06:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BH3JEO9B;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772179364;
+	s=arc-20220608; t=1772179619;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=il6r1vFMAYqm1JRXq9G41GUF0Xx8t8+WFnEYpvQ7ULE=;
-	b=O7rX76/cFsSUwN0sYjoOeO9IqW2H/tsdijnGzMNA9TpzCpJAVGxkp2OmT/Sp5olfB/p1pG
-	OFcE59eHXjER9L9iCdkqVGAkeTBBBVJnf0zp1/J7nbu/whldKM2RVviz+cW6rjOkn8OOVc
-	fi1d4MrlxFpTsRwClPP9ZKWalTzEYJ8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=TfwXkisZ;
-	spf=pass (imf08.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772179364; a=rsa-sha256;
+	bh=cTeZz0F/xvyPF1EACAmjGDgdsxghstNqLCL/uyUX4X4=;
+	b=iY5VKY9nV7YmGVGzogeLiCNoTnwaHQpivK6ZKoup0XufUdk2errRlMVBiIZwNwzEi1ortX
+	5jx8Ua25sIeCJoxZ6rK3QUnbBgHBQ/1cPF6+tMNMBTqQH5qz6ACgnjp3k24YcX9puu52Ir
+	EvZYp0sA36m3Isa6gyC4Mtgay0sYeZE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772179619; a=rsa-sha256;
 	cv=none;
-	b=1UyhLbKL0Pb6QzlucQlh+NxjhwxY4Xtjnr+hnZvdmhX0qiH7lkFSP0INtgbADW6t0TGww6
-	F4yAc8aL2O9jH50Zzn2nvkl3RYKKb5PVuGjAr3SGesCu9l4hbn/rYRkIZ17c6JIs1KLawL
-	5DWeFXQFbFGlgcHu699H+PuhHncNMbU=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R3DveF2848171;
-	Fri, 27 Feb 2026 08:02:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=il6r1v
-	FMAYqm1JRXq9G41GUF0Xx8t8+WFnEYpvQ7ULE=; b=TfwXkisZYq7Ezmkhr2OdoI
-	VHJ2GKUpL/dThRjWS3qeDODJqaU5j/y9dIrQ3YHJjUtllEcfmDQu5z7frb9f/aTb
-	dBZ5CLfSS0hbt1qrUbTeKEktCiJ1KAhG22h2TxAYUF6BYKcTOPFZIlkq0vLm8Uir
-	7r2oPp4BI7eHORXSaeKoJq4AdlSRUAITYYZNdjrRKkbDiEv1PwJ+NzANAZMQOeDx
-	LZM8OgeNmWZdes4wPaww8VMNSZetyd+fydB+otUom7BZtuaxoVcH+hVUJHNKeJKX
-	KCN4b1X+9n284rvcvIKZMPoA1T/vFF2XZIoKuGrPITEk1l2XI2f5Gx9hg7ZKFubw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34cjkd1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 08:02:37 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61R7xVME027794;
-	Fri, 27 Feb 2026 08:02:36 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfsr28rm8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 08:02:36 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61R82ZTx51315058
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Feb 2026 08:02:35 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FC34581C7;
-	Fri, 27 Feb 2026 08:02:35 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFE3D581C1;
-	Fri, 27 Feb 2026 08:02:30 +0000 (GMT)
-Received: from [9.61.248.160] (unknown [9.61.248.160])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 27 Feb 2026 08:02:30 +0000 (GMT)
-Message-ID: <dc88bc66-77ad-4762-80f6-18a1262d5355@linux.ibm.com>
-Date: Fri, 27 Feb 2026 13:32:29 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slab: a debug patch to investigate the issue further
-Content-Language: en-GB
+	b=eTL9RzFbUKFAEkP+hbjtR0LcICctiheVR7XKotvzFa7g+5D2PBvfPMW/OrpDPuDkEW3NNw
+	LTq+6xOeEXkAw/28thrtJRGdEs/QW1LvQ+7NSroqBL0MInD6YCXpTvlK0Nyx5PZMJu3EN4
+	xRR4wCRVoN08DEWF1uyx7KiNPdxyoRk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BH3JEO9B;
+	spf=pass (imf15.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 27 Feb 2026 16:06:37 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772179617;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cTeZz0F/xvyPF1EACAmjGDgdsxghstNqLCL/uyUX4X4=;
+	b=BH3JEO9Be6RKFr0ulxlKgajovzOPjD3SVKEk8f7tvapHX/F9vwCYOS/1cfL8VYubbKdHqN
+	KnqNmAcGDfq7Y9h0i2MPyBX6x7MPr3br8N9KQs8X9xELHZZX3rBVjxJKNHf7I7OjM+ujKW
+	zaeW/qL2IbjcwgEdAklxvl60e9BmVnw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
 To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, ast@kernel.org, cgroups@vger.kernel.org,
-        cl@gentwo.org, hannes@cmpxchg.org, hao.li@linux.dev,
-        linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
-        rientjes@google.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        surenb@google.com, vbabka@suse.cz
-References: <84492f08-04c2-485c-9a18-cdafd5a9c3e5@linux.ibm.com>
- <20260227030733.9517-1-harry.yoo@oracle.com>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20260227030733.9517-1-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA2NCBTYWx0ZWRfX++2rvsaEOQ5e
- 2u5EC+ssmYQcYLx91j0h9yMhyED3FKdECyWbvri6YrGoCcdhSApEyONHFjR5TF9JyKC2MKvZUK5
- W1COtaTP6gmH1YeTOZmywvdwdFE6zm6b1q0mPNEibPz8zjpe+Ysex6176gR4e2264wey6odJY8m
- 1BaxW6lO+DtkSpMcP3j6TnmKo5WZYNVKvPf2xksfCrhYtkB9J3hKjPhLU2gA5IRYRJoQVz3X9Mx
- RJQ5LG7WfPCoe8fMHnzUE6hs94moJ0PRdqsVFbn+eIoci88NNBS8WP7vlL1FAPTRrO+B7/SWn8D
- W8sxZZNLtISwpLjrfys6XAcgDa15qWC5JOQ67p2zb4N+I/7IO0U3ahyKgVRaVXJQYzmJOB2e83f
- tuLnkpVdAz5IRH+kZprU6Zdqatr9InD4V4narGTq4E7zWeOOR1BxiTjSrlszwcZ3RuW5YbB24G7
- JHw1yY3hN1TxgC1aJxw==
-X-Proofpoint-ORIG-GUID: AY74pt8E8C9QDZvphaxTWzgiKXMr-to0
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=69a14f9d cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=yPCof4ZbAAAA:8
- a=j6Jcq4vt9KwSvEVgIq8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: wCspGPMxLyjdQvxmzDYg9d52jyYZ_-Fk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602270064
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DCEC9160011
-X-Stat-Signature: a43rjiswipprxxuc7zfy57hxq5jq175c
+Cc: Alan Stern <stern@rowland.harvard.edu>, linux-mm@kvack.org, 
+	Dmitry Vyukov <dvyukov@google.com>, lkmm@lists.linux.dev, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Daniel Lustig <dlustig@nvidia.com>, Akira Yokosawa <akiyks@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Luc Maranget <luc.maranget@inria.fr>, 
+	Jade Alglave <j.alglave@ucl.ac.uk>, David Howells <dhowells@redhat.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
+	Andrea Parri <parri.andrea@gmail.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
+	Mateusz Guzik <mjguzik@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Marco Elver <elver@google.com>
+Subject: Re: [BUG] Memory ordering between kmalloc() and kfree()? it's
+ confusing!
+Message-ID: <yf7gon3s3efwiwpsdytujnhohnxjc3fgu7oabmia4tbhwqgcs7@rzb7sfy2wrbu>
+References: <aZ_lJAqxh_hNGr_v@hyeyoo>
+ <9dcd02b9-42da-455d-aa08-165e6ff0b921@rowland.harvard.edu>
+ <aaByMLSAIJM8HdbO@hyeyoo>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaByMLSAIJM8HdbO@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8B93DA0005
 X-Rspam-User: 
-X-HE-Tag: 1772179363-755941
-X-HE-Meta: U2FsdGVkX19+JTbAZDmH1diaZMZOpbNPh6QGuQgulHJJdpivxaf5QXjre3CPD/EQBNKuLddRv8NqtVf5VBYxbu6XdgJUwoMeg23HPyaP0dtK+I1NATqrDewIW5mKXnJwfskpS1o8rTgV80RnMTgoGgt04549qkBOFI++u7+Hd1+SUohIB8dwanGbk0gZthy7K/p/w9A5iTtHk+asGmFiaRP7QEahCBKzbRzkNxqZ0S84bBGy66OoEO8JmP83dTbW+a5q1t3y8Mdc6wMtBd3oxfJUQXBfKi/MCSC+HC9d4yQYP1TRVISGfFedZf0r04B4eDkRZJYQO1SFKiZyybBNTUVyBpRytgeUUOwDpg0hVxnVES77GKdNEEx4JJfNnf/LEv1k9PzQPodFZnXECq8Jxvq0Idf0pYRUThmIk8xGCZRtYWfYePlTcz1FBmWTCzXCelVVbG+whRARhneC12WpxTf3yxM4rpQD8Vlq1xMIgXv11DtEymkJFjwUm8+x6Kukh/5pyQ+SZCy7mUOvFCeUWcGoW68c6x2/d/4KlBL9lZ0gaHz8EPAF2gouXB2vhaCpGrCUS0yyV/zjkq1i69/g6pC1EQ0zsdLoG4AmrVL5TloiYehmMTEuFJ+L0XiitzioEZll91HxBvm9G0IQqnWEmVpXCtKn/IkQfPR6hhCY7/C6Cmb048DtGBo9b9Ynm+Z74YqNU1JWd/Ue4heCkHMTqzptuYjeWLLiipAJwmMninj+XPa6T9gpe+iKsyqnfLAAENI/FnflgRhIE3sA94Wwlbulky3Aw3NYlia3aiySLhSPQyKnpelq2Z6cG9vNGMKppfw3030pXwnZDAhuxZE3i2CfTtcdaKwdkXbREPEHKqNROi5kECx3UcTGVRht0W7+RLN+jngW/+308+7wsxsuyyntyncm8tLG/WfWRBfmP28JHPR1TObgWvLkAci6c30b+x9KODvhKzEQgo0Qzb0
- Qcs5J/nF
- A+vQL29V3PmYw29JppWsGYIHPAzr2SbpuDhqZ34mOWKSbW1gHe0vjVYWwa9ee78c9pteb9tC/dA73MiSGpusp1jjAuoIoVQ+IAC2ldDcQ+DJ+ZeJ804lWIRGmxX7dPGir2mCo3EoOoQ7w94eYhnHr9j4qQRgF8fH7UxDiDfweNgSdKX7mqMsZjHwuAC2DY1F1zSRJiqBfTEhNLO8EJc4bSLnjfaJ5vl52T4kCyyrPo2NTR7CdtYF7q9avx0O5yRZMJjB+J8iAq6ukzcTTY5rbtABZcTKE2cblYX3wlPsBuzoP//M+XC6zgF1exMvJ39lWvLbw9RBeltRJYQ23PQzvLuHIUQgmrkx2Betx7y12xF9uiwLpThlDcAYF0w==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: hfkn6ecb1bbeus93ngrezrozqpzcu8uq
+X-HE-Tag: 1772179619-567123
+X-HE-Meta: U2FsdGVkX18gHOflgZHk3HFk865+O9i5mK9oHwzEdDHczbkNrSiyGtNK1GC5yV3daxOPa6zzVpscDrnfCTm7nbSiEZ10n8tqGw07A6jU64S9iRmiqVdsUrPdjG07SVGuPnCaf6px3BIYDj/dauZHjt5Dkug3kOPmLWAF5HbMVDNpwQVFgSx4MiNYGKk5NCvEkYCmCQRct8pE81R0uEIjwKN40hLWdLp/+IGLVi2Kfm0uSWV9N4vQMXcYYBKDfry9u7sj52RMnS9ECdHFI8DhstHmtqXmvTvfm2jbdw6DB058F7VXaGYVvCtXj29iRlGo2V34akW002/kKpMPl8y41DaXjaizD1cchUFRCN70WDwDodox5tLasMHt893mLcWYuS3GDOnunl2XM2cNWohoffKKXh8wB4o7CnwiDXavHGhX8snFLKREkx9PWu7Syigeo9nKdgx0ZA244LKis3WYdOP6lvz3FKlleM2lRlbM7DnXQHV0Wmh+3AyUtz9yUi1cZrHv1EC492Z1/2OWcCjFXXIXuN78kl5e+X5C9m1pPEsz9gzvs09s5dwlxDmla7+1p+7nJ7SzvWt5Hoq4W/E7bxmtBfobRsOH4lD5XOQvtZucV33ObrmxepBWfIWb9CnOVpHNMILI3AArZLGQkiKvl2taTqnThgsTU8JBL2RobNZBUa6dBrkgJwQu2WvvP5qCm6Gm+cDcpdTzxdbaWQwqKJOc1WEXVDmy4lc60Mgd9VVKT7vp0FPoITQA7wPANBWRxAJfqNShL41UtWmbvWp0q4dugvEYGHbalXlBJ7hrXafoeRJeKwjoxB9aE0PV3v3ZUwf09KhK1IGKuoJFYbq81t6AsTzMrJs56hk5bmCNRaiE0STVhsFbV1l9DFNL2KwTNUeCy2wuwmbSkMPJdtJVJ97TGwkwXt8Z8oF5or0G23xXe2/7OQWDIwTlCVFEsR1yYKozAku16Vj9TFzl9LV
+ mFLDN4w7
+ 8hlXC8onx1MshhxnqWYt0yF8v63vg+AotsuUH2VHmawR09jinHkS+xEDfrcPWIGtp3PJ56FNky7HAo+Jizya+8w2O4t5+0MMY1hsD7ERyKMThToFFcn3APshDe6mAehEEkE69kGDVweOrwVmBPdpRc87Ul4+U9pjpFuKekOd45OtQatSbqCVwoAscBljh8jQVGpZYGoCtLABGf2Zxr9i66+d1D7YV6zx0KY79h0gwW2KLM+q/6vBM+BDouoU5pR+ApGpAlrV4xDHhnfxrsDw6v+F+3Lug4jt13G03bVEi6HKWGlI30LeJeV3yvXMU27qpRWlZNaMvdoeZtP9b8n+Tz131iyRr0jzjVmRwcnAiGVslQEE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,415 +101,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Feb 27, 2026 at 01:17:52AM +0900, Harry Yoo wrote:
+> On Thu, Feb 26, 2026 at 10:45:55AM -0500, Alan Stern wrote:
+> > On Thu, Feb 26, 2026 at 03:35:08PM +0900, Harry Yoo wrote:
+> > > Hello, SLAB, LKMM, and KCSAN folks!
+> > > 
+> > > I'd like to discuss slab's assumption on users regarding memory ordering.
+> > > 
+> > > Recently, I've been investigating an interesting slab memory ordering
+> > > issue [3] [4] in v7.0-rc1, which made me think about memory ordering
+> > > for slab objects.
+> > > 
+> > > But without answering "What does slab expect users to do for correct
+> > > operation?", I kept getting puzzled, and my brain hurt too much :/
+> > > I'm writing things down to stop getting confused :)
+> > > 
+> > > Since I have never thought about this before, my reasoning could be
+> > > partially or entirely incorrect. If so, please kindly let me know.
+> > > 
+> > > # Slab's assumption: Stores to object, its metadata, or struct slab
+> > > # must be visible to the CPU that frees the object, when it is
+> > > # passed to kfree(). It's users' responsibility to guarantee that.
+> > > 
+> > > When the slab allocator allocates an object, it updates its metadata and
+> > > struct slab fields. After allocation, the user of slab updates object's
+> > > content. As long as the object is freed on the same CPU that it was
+> > > allocated, kfree() can see those stores (A CPU must be able to see
+> > > what's in its store buffer), so no problem!
+> > > 
+> > > However, when e.g.) the pointer to object is stored in a shared variable
+> > > and then freed on a different CPU, things become trickier.
+> > > 
+> > > In this case, I think it's fair for the slab allocator to assume that:
+> > > 
+> > >   1) Such stores must involve _at least_ a release barrier
+> > >      (for example, via {cmp,}xchg{,_release}, or smp_store_release())
+> > >      to ensure preceding stores are visible to other CPUs before
+> > >      the pointer store becomes visible, and
+> > > 
+> > >   2) The CPU that frees an object must invoke at least an acquire
+> > >      barrier to ensure that stores to object content / metadata, etc.,
+> > >      are visible to the freeing CPU when it calls kfree().
+> > > 
+> > > Because the slab allocator itself doesn't guarantee that such
+> > > barriers are invoked within the allocator, it relies on users to
+> > > do this when needed.
+> > 
+> > It doesn't?  Then how does the slab allocator guarantee that two 
+> > different CPUs won't try to perform allocations or deallocations from 
+> > the same slab at the same time, messing everything up?
+> 
+> Ah, alloc/free slowpaths do use cmpxchg128 or spinlock and
+> don't mess things up.
+> 
+> But fastpath allocs/frees are served from percpu array that is protected
+> by a local_lock. local_lock has a compiler barrier in it, but that's
+> not enough.
 
-On 27/02/26 8:37 am, Harry Yoo wrote:
-> Hi Venkat, could you please help testing this patch and
-> check if it hits any warning? It's based on v7.0-rc1 tag.
->
-> This (hopefully) should give us more information
-> that would help debugging the issue.
->
-> 1. set stride early in alloc_slab_obj_exts_early()
-> 2. move some obj_exts helpers to slab.h
-> 3. in slab_obj_ext(), check three things:
->     3-1. is the obj_ext address is the right one for this object?
->     3-2. does the obj_ext address change after smp_rmb()?
->     3-3. does obj_ext->objcg change after smp_rmb()?
->
-> No smp_wmb() is used, intentionally.
->
-> It is expected that the issue will still reproduce.
->
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Hmm, this memory-ordering issue is indeed pretty mind-bending. I'd like to
+share a few thoughts as well. Happy to be corrected!
 
+For our current problem, I think the key lies in the relative ordering between
+the two variables, stride and obj_exts. To address it, we need to ensure that
+on the writer side, stride is assigned before obj_exts. And on the reader
+side, we need to guarantee that if it can observe the latest value of
+obj_exts, then it must also be able to observe the latest value of stride. If
+this understanding is correct, then even if the slab API caller inserts a
+memory barrier between alloc and free, or uses a spinlock (or any statement
+that provides an equivalent memory-barrier effect), it would only ensure that
+the writes to the pair {stride, obj_exts} as a whole happen-before the reads
+of {stride, obj_exts} as a whole. However, it still wouldn't be able to
+guarantee the ordering between the two variables: stride and obj_exts.
 
-Hello Harry,
-
-I’ve restarted the test, but there are continuous warning prints in the 
-logs, and they appear to be slowing down the test run significantly.
-
-
-Warnings:
-
-[ 3215.419760] obj_ext in object
-[ 3215.419774] WARNING: mm/slab.h:710 at slab_obj_ext+0x2e0/0x338, 
-CPU#26: grep/103571
-[ 3215.419783] Modules linked in: xfs loop dm_mod bonding tls rfkill 
-nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet 
-nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat 
-nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink 
-sunrpc pseries_rng vmx_crypto dax_pmem fuse ext4 crc16 mbcache jbd2 
-sd_mod nd_pmem sg papr_scm libnvdimm ibmvscsi ibmveth scsi_transport_srp 
-pseries_wdt
-[ 3215.419852] CPU: 26 UID: 0 PID: 103571 Comm: grep Kdump: loaded 
-Tainted: G        W           7.0.0-rc1+ #3 PREEMPTLAZY
-[ 3215.419859] Tainted: [W]=WARN
-[ 3215.419862] Hardware name: IBM,9080-HEX Power11 (architected) 
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-[ 3215.419866] NIP:  c0000000008a9ff4 LR: c0000000008a9ff0 CTR: 
-0000000000000000
-[ 3215.419870] REGS: c0000001f9d37670 TRAP: 0700   Tainted: G   W        
-     (7.0.0-rc1+)
-[ 3215.419874] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
-24002404  XER: 20040000
-[ 3215.419889] CFAR: c0000000001bc194 IRQMASK: 0
-[ 3215.419889] GPR00: c0000000008a9ff0 c0000001f9d37910 c00000000243a500 
-c000000127e8d600
-[ 3215.419889] GPR04: 0000000000000004 0000000000000001 c0000000001bc164 
-0000000000000001
-[ 3215.419889] GPR08: a80e000000000000 0000000000000000 0000000000000007 
-a80e000000000000
-[ 3215.419889] GPR12: c00e0001a1a48fb2 c000000d0dde7f00 c000000004e49960 
-0000000000000001
-[ 3215.419889] GPR16: c00000006e6e0000 0000000000000010 c000000007017fa0 
-c000000007017fa4
-[ 3215.419889] GPR20: 0000000000000001 c000000007017f88 0000000000080000 
-c000000007017f80
-[ 3215.419889] GPR24: c00000006e6f0010 c0000000aef32800 c00c0000001b9a2c 
-c00000006e690010
-[ 3215.419889] GPR28: 0000000000000003 0000000000080020 c00000006e690010 
-c00c0000001b9a00
-[ 3215.419960] NIP [c0000000008a9ff4] slab_obj_ext+0x2e0/0x338
-[ 3215.419966] LR [c0000000008a9ff0] slab_obj_ext+0x2dc/0x338
-[ 3215.419972] Call Trace:
-[ 3215.419975] [c0000001f9d37910] [c0000000008a9ff0] 
-slab_obj_ext+0x2dc/0x338 (unreliable)
-[ 3215.419983] [c0000001f9d379c0] [c0000000008b9a64] 
-__memcg_slab_free_hook+0x1a4/0x3dc
-[ 3215.419990] [c0000001f9d37a90] [c0000000007f8270] kfree+0x454/0x600
-[ 3215.419998] [c0000001f9d37b20] [c000000000989724] 
-seq_release_private+0x98/0xd4
-[ 3215.420005] [c0000001f9d37b60] [c000000000a7adb4] 
-proc_map_release+0xa4/0xe0
-[ 3215.420012] [c0000001f9d37ba0] [c00000000091edf0] __fput+0x1e8/0x5cc
-[ 3215.420019] [c0000001f9d37c20] [c000000000915670] sys_close+0x74/0xd0
-[ 3215.420025] [c0000001f9d37c50] [c00000000003aeb0] 
-system_call_exception+0x1e0/0x4b0
-[ 3215.420033] [c0000001f9d37e50] [c00000000000d05c] 
-system_call_vectored_common+0x15c/0x2ec
-[ 3215.420041] ---- interrupt: 3000 at 0x7fff9bd34ab4
-[ 3215.420045] NIP:  00007fff9bd34ab4 LR: 00007fff9bd34ab4 CTR: 
-0000000000000000
-[ 3215.420050] REGS: c0000001f9d37e80 TRAP: 3000   Tainted: G   W        
-     (7.0.0-rc1+)
-[ 3215.420054] MSR:  800000000280f033 
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44002402  XER: 00000000
-[ 3215.420077] IRQMASK: 0
-[ 3215.420077] GPR00: 0000000000000006 00007fffe2939800 00007fff9bf37f00 
-0000000000000003
-[ 3215.420077] GPR04: 00007fff9bfe077f 000000000000f881 00007fffe2939820 
-000000000000f881
-[ 3215.420077] GPR08: 000000000000077f 0000000000000000 0000000000000000 
-0000000000000000
-[ 3215.420077] GPR12: 0000000000000000 00007fff9c0ab0e0 0000000000000000 
-0000000000000000
-[ 3215.420077] GPR16: 0000000000000000 00000001235700f0 0000000000000100 
-0000000000000001
-[ 3215.420077] GPR20: 00000000ffffffff 00000001235702ef 0000000000000000 
-fffffffffffffffd
-[ 3215.420077] GPR24: 00007fffe2939890 0000000000000000 00007fffe2939978 
-00007fff9bf12a88
-[ 3215.420077] GPR28: 00007fffe2939974 0000000000010000 0000000000000003 
-0000000000010000
-[ 3215.420144] NIP [00007fff9bd34ab4] 0x7fff9bd34ab4
-[ 3215.420148] LR [00007fff9bd34ab4] 0x7fff9bd34ab4
-[ 3215.420151] ---- interrupt: 3000
-[ 3215.420154] Code: 4e800020 60000000 60000000 7f18e1d6 7b180020 
-7f18f214 7c3bc000 4182febc 3c62ff7a 386336c0 4b9120a9 60000000 
-<0fe00000> eac10060 4bffff58 3d200001
-[ 3215.420183] ---[ end trace 0000000000000000 ]---
-
-Regards,
-
-Venkat.
-
-> ---
->   mm/slab.h | 131 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
->   mm/slub.c | 100 ++---------------------------------------
->   2 files changed, 130 insertions(+), 101 deletions(-)
->
-> diff --git a/mm/slab.h b/mm/slab.h
-> index 71c7261bf822..d1e44cd01ea1 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -578,6 +578,101 @@ static inline unsigned short slab_get_stride(struct slab *slab)
->   }
->   #endif
->   
-> +#ifdef CONFIG_SLAB_OBJ_EXT
-> +
-> +/*
-> + * Check if memory cgroup or memory allocation profiling is enabled.
-> + * If enabled, SLUB tries to reduce memory overhead of accounting
-> + * slab objects. If neither is enabled when this function is called,
-> + * the optimization is simply skipped to avoid affecting caches that do not
-> + * need slabobj_ext metadata.
-> + *
-> + * However, this may disable optimization when memory cgroup or memory
-> + * allocation profiling is used, but slabs are created too early
-> + * even before those subsystems are initialized.
-> + */
-> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> +{
-> +	if (s->flags & SLAB_NO_OBJ_EXT)
-> +		return false;
-> +
-> +	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
-> +		return true;
-> +
-> +	if (mem_alloc_profiling_enabled())
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> +{
-> +	return sizeof(struct slabobj_ext) * slab->objects;
-> +}
-> +
-> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> +						    struct slab *slab)
-> +{
-> +	unsigned long objext_offset;
-> +
-> +	objext_offset = s->size * slab->objects;
-> +	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
-> +	return objext_offset;
-> +}
-> +
-> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> +						     struct slab *slab)
-> +{
-> +	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
-> +	unsigned long objext_size = obj_exts_size_in_slab(slab);
-> +
-> +	return objext_offset + objext_size <= slab_size(slab);
-> +}
-> +
-> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	unsigned long obj_exts;
-> +	unsigned long start;
-> +	unsigned long end;
-> +
-> +	obj_exts = slab_obj_exts(slab);
-> +	if (!obj_exts)
-> +		return false;
-> +
-> +	start = (unsigned long)slab_address(slab);
-> +	end = start + slab_size(slab);
-> +	return (obj_exts >= start) && (obj_exts < end);
-> +}
-> +#else
-> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> +						    struct slab *slab)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> +						     struct slab *slab)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> +{
-> +	return false;
-> +}
-> +
-> +#endif
-> +
->   /*
->    * slab_obj_ext - get the pointer to the slab object extension metadata
->    * associated with an object in a slab.
-> @@ -592,13 +687,41 @@ static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
->   					       unsigned long obj_exts,
->   					       unsigned int index)
->   {
-> -	struct slabobj_ext *obj_ext;
-> +	struct slabobj_ext *ext_before;
-> +	struct slabobj_ext *ext_after;
-> +	struct obj_cgroup *objcg_before;
-> +	struct obj_cgroup *objcg_after;
->   
->   	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
->   
-> -	obj_ext = (struct slabobj_ext *)(obj_exts +
-> -					 slab_get_stride(slab) * index);
-> -	return kasan_reset_tag(obj_ext);
-> +	ext_before = (struct slabobj_ext *)(obj_exts +
-> +					    slab_get_stride(slab) * index);
-> +	objcg_before = ext_before->objcg;
-> +	// re-read things after rmb
-> +	smp_rmb();
-> +	// is ext_before the right obj_ext for this object?
-> +	if (obj_exts_in_slab(slab->slab_cache, slab)) {
-> +		struct kmem_cache *s = slab->slab_cache;
-> +
-> +		if (obj_exts_fit_within_slab_leftover(s, slab))
-> +			WARN(ext_before != (struct slabobj_ext *)(obj_exts + sizeof(struct slabobj_ext) * index),
-> +			     "obj_exts array in leftover");
-> +		else
-> +			WARN(ext_before != (struct slabobj_ext *)(obj_exts + s->size * index),
-> +			     "obj_ext in object");
-> +
-> +	} else {
-> +		WARN(ext_before != (struct slabobj_ext *)(obj_exts + sizeof(struct slabobj_ext) * index),
-> +		     "obj_exts array allocated from slab");
-> +	}
-> +
-> +	ext_after = (struct slabobj_ext *)(obj_exts +
-> +					   slab_get_stride(slab) * index);
-> +	objcg_after = ext_after->objcg;
-> +
-> +	WARN(ext_before != ext_after, "obj_ext pointer has changed");
-> +	WARN(objcg_before != objcg_after, "obj_ext->objcg has changed");
-> +	return kasan_reset_tag(ext_before);
->   }
->   
->   int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 862642c165ed..8eb64534370e 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -757,101 +757,6 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
->   	return *(unsigned long *)p;
->   }
->   
-> -#ifdef CONFIG_SLAB_OBJ_EXT
-> -
-> -/*
-> - * Check if memory cgroup or memory allocation profiling is enabled.
-> - * If enabled, SLUB tries to reduce memory overhead of accounting
-> - * slab objects. If neither is enabled when this function is called,
-> - * the optimization is simply skipped to avoid affecting caches that do not
-> - * need slabobj_ext metadata.
-> - *
-> - * However, this may disable optimization when memory cgroup or memory
-> - * allocation profiling is used, but slabs are created too early
-> - * even before those subsystems are initialized.
-> - */
-> -static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> -{
-> -	if (s->flags & SLAB_NO_OBJ_EXT)
-> -		return false;
-> -
-> -	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
-> -		return true;
-> -
-> -	if (mem_alloc_profiling_enabled())
-> -		return true;
-> -
-> -	return false;
-> -}
-> -
-> -static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> -{
-> -	return sizeof(struct slabobj_ext) * slab->objects;
-> -}
-> -
-> -static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> -						    struct slab *slab)
-> -{
-> -	unsigned long objext_offset;
-> -
-> -	objext_offset = s->size * slab->objects;
-> -	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
-> -	return objext_offset;
-> -}
-> -
-> -static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> -						     struct slab *slab)
-> -{
-> -	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
-> -	unsigned long objext_size = obj_exts_size_in_slab(slab);
-> -
-> -	return objext_offset + objext_size <= slab_size(slab);
-> -}
-> -
-> -static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> -{
-> -	unsigned long obj_exts;
-> -	unsigned long start;
-> -	unsigned long end;
-> -
-> -	obj_exts = slab_obj_exts(slab);
-> -	if (!obj_exts)
-> -		return false;
-> -
-> -	start = (unsigned long)slab_address(slab);
-> -	end = start + slab_size(slab);
-> -	return (obj_exts >= start) && (obj_exts < end);
-> -}
-> -#else
-> -static inline bool need_slab_obj_exts(struct kmem_cache *s)
-> -{
-> -	return false;
-> -}
-> -
-> -static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
-> -						    struct slab *slab)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
-> -						     struct slab *slab)
-> -{
-> -	return false;
-> -}
-> -
-> -static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
-> -{
-> -	return false;
-> -}
-> -
-> -#endif
-> -
->   #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
->   static bool obj_exts_in_object(struct kmem_cache *s, struct slab *slab)
->   {
-> @@ -2196,7 +2101,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->   retry:
->   	old_exts = READ_ONCE(slab->obj_exts);
->   	handle_failed_objexts_alloc(old_exts, vec, objects);
-> -	slab_set_stride(slab, sizeof(struct slabobj_ext));
->   
->   	if (new_slab) {
->   		/*
-> @@ -2272,6 +2176,9 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
->   	void *addr;
->   	unsigned long obj_exts;
->   
-> +	/* Initialize stride early to avoid memory ordering issues */
-> +	slab_set_stride(slab, sizeof(struct slabobj_ext));
-> +
->   	if (!need_slab_obj_exts(s))
->   		return;
->   
-> @@ -2288,7 +2195,6 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
->   		obj_exts |= MEMCG_DATA_OBJEXTS;
->   #endif
->   		slab->obj_exts = obj_exts;
-> -		slab_set_stride(slab, sizeof(struct slabobj_ext));
->   	} else if (s->flags & SLAB_OBJ_EXT_IN_OBJ) {
->   		unsigned int offset = obj_exts_offset_in_object(s);
->   
+-- 
+Thanks,
+Hao
 
