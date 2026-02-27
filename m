@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2257C104891E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495F3103FFAC
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:19:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9E7B6B00B9; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
+	id 9F0216B00B7; Fri, 27 Feb 2026 17:19:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4C426B00BA; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
+	id 9C82F6B00B8; Fri, 27 Feb 2026 17:19:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4B906B00BB; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
+	id 8FEE16B00BA; Fri, 27 Feb 2026 17:19:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C1A246B00B9
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CA761B83C5
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:16:18 +0000 (UTC)
-X-FDA: 84491646036.09.7993CDD
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EC5A6B00B7
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:19:02 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 28A431CD89
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:19:02 +0000 (UTC)
+X-FDA: 84491652924.18.E0CF8CE
 Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9F7484000D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:16:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=h0Jo5g9c;
-	spf=pass (imf17.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6D82EC0007
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:19:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=htFgB1nn;
+	spf=pass (imf22.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
 	dmarc=pass (policy=reject) header.from=disroot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772230576;
+	s=arc-20220608; t=1772230740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
 	bh=pZgn6EROfNCTDjJXVBWH85Hc5zFSfKEyA5xUTLk80M8=;
-	b=Z5cjii7n57Yovx+oSCsXREF404Q5ASBzCVdXoy1ZwBwMFHegaPq4YOIYdOB3DhAo91qiDt
-	vmxxd4jdUeT1APCfV5NttEjBRGr9deTfrl/iRmcOOHzmvm9w+Rb9TXO82zUgvKbpZAkoZp
-	8iGV/u8nmZHKq9pwA4s3k93hvaaMFG0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772230576; a=rsa-sha256;
+	b=B4CjQI2o6jo3tr9nxiFK69FWzUcd1zrf1SeJ6uVZlEw/JSECRb7W3MbafQ33XN8rgNy6Mi
+	qozx2oAExudB5NsmrcBeq2fa3QO2cbO4P5QnoanCz3/DZbUDVurXsDTdCm8VW6SH9iqj/c
+	hIwcfZ12lb5lWkDwNMEYFgbJDYneakw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772230740; a=rsa-sha256;
 	cv=none;
-	b=0N5N0G8qJJ4+2JKa4wUzJwWiJQqkSiHQswdxQnqxPgpdeJqx7BNKgH4VdL023e8hqPTwQS
-	HsFGKaL8v1fLfRh+cczPb6S/lbIPxO17M1E6wmwVNchS5cLzG1QhfTT6DzFxdJBFTnhOhq
-	z62IRej28lW5DLz25BXefDHIy7U1+kA=
+	b=zOKxT8ZXU/vKmCLsyJGaqjbB4XbeVsUoHjedt9LTNWL5kJflvp7pnxgl20mZd9fsFF7xEf
+	/pfrWV84E4G9X1f+gUwO9sHdFBWNpIncoEf3SkAnjIhIxrbL545z+wnNSXiGczh1PmmlEh
+	sVMxmu6KV1LRSllr0+yS58oqDOxus2c=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=h0Jo5g9c;
-	spf=pass (imf17.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=htFgB1nn;
+	spf=pass (imf22.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
 	dmarc=pass (policy=reject) header.from=disroot.org
 Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 68D64267A1;
-	Fri, 27 Feb 2026 23:16:13 +0100 (CET)
+	by disroot.org (Postfix) with ESMTP id C851226F3E;
+	Fri, 27 Feb 2026 23:18:58 +0100 (CET)
 X-Virus-Scanned: SPAM Filter at disroot.org
 Received: from layka.disroot.org ([127.0.0.1])
  by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id MmUHzmlSBhrO; Fri, 27 Feb 2026 23:16:12 +0100 (CET)
+ id nJdiJIdBHx9I; Fri, 27 Feb 2026 23:18:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1772230572; bh=M1kB3xBO0gGt9Cq4a3VvzqYU8hJTnWIcMiuRFk/Dh4g=;
-	h=From:To:Cc:Subject:Date;
-	b=h0Jo5g9cRVnkUCNWUnuwgH/XGHTH4M2x8kSFlCE1lBYpa9pQ9KW6cKtOz7e42XAw0
-	 T/3mHdSmWuZYbBDjyTc0jPv1Z/evHjq1hq72/vS61a68xdVPAPqxktzrasfOpx7Kew
-	 GS68b1Rcse+K119wZyiVv+FcfQ5OkbCIiOmhbLxqaBn+c5vQkuMFrWpP/f+E19FHOe
-	 EotBVYjisw/m4E0OxbslAOMkZ/jOEm2ll3AFP+N7Ax3e8vn/G+d9H185tGzFS8fm9Q
-	 rY9hwOv1OWK7nKrMcBQFcgxFwLVNdmrcP+rPUjGJOtmVcHWP6RQSOuqGRXYs+64Tg4
-	 cwwZl4rNzKb2A==
+	t=1772230738; bh=M1kB3xBO0gGt9Cq4a3VvzqYU8hJTnWIcMiuRFk/Dh4g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=htFgB1nn59bHdPVnMCXKo75jFeyJrVAWA/Kmreo7lovpm+aVeeeN6Mu5Y5g2hdYBi
+	 GnmuHYUUpYSo9XPHI1NVlaWhJ47TBFzt4x0BTsF/KTnHzuiTUYg8rOrho5MvEe3/O5
+	 x2MCK+ZnCLOoKCNYRisqYK7TEVEMJhSHTYF/EXPk2QqUijiteysjSvr512J7hO9gTF
+	 v3vg2g62vpHrKpcoOJiHnqg48fU2drGob19wkwNd7Z5aad7LRSj+Tq5U0aS530csuD
+	 zPeKKn2z1d6AUonCB0sy9L6w+P5Bz9vI3Si0yjwvu7G0/C81OcADC9z2MIiomrvubG
+	 tt8Qz7Jcm3LZg==
 From: Benjamin Lee McQueen <mcq@disroot.org>
 To: akpm@linux-foundation.org,
 	david@kernel.org
@@ -77,18 +77,20 @@ Cc: lorenzo.stoakes@oracle.com,
 	linux-kernel@vger.kernel.org,
 	Benjamin Lee McQueen <mcq@disroot.org>
 Subject: [PATCH] mm/vmpressure: scale window size based on machine memory and CPU count
-Date: Fri, 27 Feb 2026 16:15:55 -0600
-Message-ID: <20260227221555.29969-1-mcq@disroot.org>
+Date: Fri, 27 Feb 2026 16:18:31 -0600
+Message-ID: <20260227221831.30346-1-mcq@disroot.org>
+In-Reply-To: <20260227163333.6394-1-mcq@disroot.org>
+References: <20260227163333.6394-1-mcq@disroot.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9F7484000D
 X-Stat-Signature: e1bu433obcing18tym9npzbhnmz6unsh
 X-Rspam-User: 
-X-HE-Tag: 1772230575-981608
-X-HE-Meta: U2FsdGVkX18bpIl7U9yCWN74pLkWrWAvcWTrqjsMZc0MYvTwgOtS8pOboZDbtbNrsUso2mOG69WQ2g0UNm3CBCy9EtHuC1/kcwtHkw40Z6wSMHwhCugpQfhJTPGdY1CTiSU8SGYCPOKcxjvM79flFoCzgdmoxp7wFLSUq2Y8cv+NKSjGOlPqH2R4q/2aQ7r8Nc2oPtZdKg48PMBZBGXdwo8SQQC4eXO47bldcaeZkTfB3aS/+RdZjIJYEWO/iZb0qELHch/nHDUCXIGvWGEbXaZA3tWrrJNYcJaP7H1fD2C++XrJv9kKjeW19H1eOuD0fIcdFa8XTiNUQMIQnCyG4gJK6GcCHtPcLIo25rbN3HEAQrbmwjc4eBG4gbsDopWf7wmGizGMyOHYvyYQrwihaDGI/IyuinRymQprWYPO57q4Zqxf9Vpm+k70bd2s3QUQLMOwOnxUW3tSJ4POjeaE1VhGwIhI2aDJd1Tib/Hn0MLTiIuo9hPopWhG8+vxVZoVGOtYoqPdMsaiFegOwEMM9YfAilr1AJ3QxwVwH8mdVIXp8XgRqFlrTJC9xXDrivivvBE84URcCDqZi6LLZ+J/prErnTUovKDAyiwqhYClLb5bdASBWsmy+QXUmWeTuCSYTYrwghJo/zNF2mS052XQOCjzq0lQBjmKb10OC5a8IbhhIWtDamFkW8qoCzxqBb03tRCCYuATnrK0hOjSu5V0Wtu8837cLez0cLu+6CojgwC2o95BtLm/8og7cdcH6ZoknxnslWsGyMtgUUQnumDZ8BDbzkWzuDjAR55BoD9VuSb+EPHEPiAVE4gyQh355SZ94kp7F0LqIxcHEpS3W0891+0qMOWqL2eQ8nO3jJbBXKZM6DYALiDw0uZYUwADyNnYkwJle1168MMP787cOoIfWwwTszbHOrHOKjg5eCEM4kpOyTJlRQl146fzpeop5u/UlvJl6C0zUJx3Gz7ovUF
- u4eL9XMg
- rEWl3o+v4Y6W2ZqBw90oneaTdNZdPRbz/mRw7uwdkn7W7Sz3vLHaiGiPYLpO93sbHXfHA2XNH9gTIww7JAW9aWKRqen5N8A0jvn2aSepCXqvFGuo4QQOkpbbSsET1k73QpXRqbhDOciISj422sdGag/Ll8Ytf7nzID30kJvGK6stYbyHCJvsyonJky90o0h334t9hegMZwVyWwaAo0NVUK/FSLzhVgXmwszR2gWtX4w0H0OO3jKZN5MI0M1FOJ+xAJ9RAimbamh7rsy9ZpXYLpx3zPQ==
+X-Rspamd-Queue-Id: 6D82EC0007
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772230740-327948
+X-HE-Meta: U2FsdGVkX1+IjQ6Ri+divixCZFaswjQGdEoRRYjF8PwUDb/3iCCd+ZWlVBUWWyKm1WLhwFxLpBqfk9tJnStzxwcu1VCfShdh3TKz400gpaX9h8+UjAgIcO2Mu99QNnJTmq6iH7xurKfgmW3T1LLt6/k9HlQTM240q9YT3nqrWinnizHYKoosKDoVHblFz2yH0vCbvdQh9tAC/DCsdGCeCrVWK9Tnq17xx1InCiZImspA2RJr8iHDxuRnGeNw1+hLQF6VTv1AucbK56D7HM7VtC5B+gKbEipv5Qvr6kWp0eOnPrB42r318Z3xivsPJniRABMjVWCgFROYxbdZIdIaV25R76D2gULGvSTlXIoby3KuCvrxDzXOxlvIjud0of3BNgAxHeMGfF31r8X669HoEP1Xu/tPBXhWKbJX5vAbP2VaZkRGtqSlHbP1mFEZ+oo7b9G0/zdHxPbOX7LbrDHb/LHcF3lj/6onwq9QEQqgCRtyUHU++389FQkl5oDK3BjoaNgeAgnNEIhEc/dYCw1R1DRIEeobtRI4Gp4b3KeVHHQViKAuyMU8zwvMe2xcBQ2K9ymrYknNJ5lb0UFo5iviBKC/iEVgSz2rgH764Gc6SlVc3fY3gxYNjvFV8zu9fmh5ELGwammaSEky7aN8CfIb/FTauQOmCM2EefHHzXetaigWQLb1kjstLgfGg7GWwJq400Nkyo5T4TucSU7MPCOZV4eKEujntX9RYuwNv63Npo3AjxYv5C8XQP3OuA2Osi87nSSNTOKqoYl8agf0cz5qS1p5nWEGuXZqkLcBmEcXlERMLJlzF6w4jY92YKDrvxLrZo0zISXPoV7JN3op/Xcvhn6HyKka9Vn2KRwO7plLfdEbcVkCx4gPXHOeVxE3OoQOg4uFJjtmRJF1CN/6ihZ/orxLEz2+FFRQHRuU+EkexyP+B70fza4+0vDr6Vhhpfi90q8kEWTVeEkT2Nyb61u
+ SelyeSLl
+ h8f9ZapMno3D4mkS3hAbVjATbkugaT7emjItxuwolNggKu7pHvmYO/0CtjlYsvT7Vt9AyzeJM1AgmVGzS7UU7K8U9pU9jMFkzGPI+Fz68p0kcqKL4Z2W2KYsAqJWb6NwZbFGZZpyYjdDAI/u7lVj4kzOAVm2mWn4EAiYhBJiWV9rx/PAJpsqPUuYsxUQS0zQrw1A1wZUcxdsJ7bA1VUUXOwx3ZjIlB4HmWUv0Yw5+s+I5XB4mrDki6w2k946dt33RL6H2NBxyFuwaUasaEnO06nSaFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
