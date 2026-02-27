@@ -4,144 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65532FD9E2A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:51:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C23FFD9E2B
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:51:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CF276B0134; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
+	id 6BB756B00CF; Thu, 26 Feb 2026 19:51:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97B536B027B; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
+	id 6696E6B0143; Thu, 26 Feb 2026 19:51:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 874D06B0289; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
+	id 568636B014C; Thu, 26 Feb 2026 19:51:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 699C46B0134
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E970C1ABF
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:27 +0000 (UTC)
-X-FDA: 84488408214.10.BBD6F44
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 31ADA120008
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=m7d9w3d3;
-	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B1426B00CF
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:51:35 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D404AB8525
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:34 +0000 (UTC)
+X-FDA: 84488408508.06.8DCA393
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D881A180002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="j+/OhOdE";
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772153485;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772153493;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
-	b=DMLUQ6SItogl3G3f3TumJETFXx2V9R1xi9uuPtp9iIm+J0n/UA1Y3L/pMRBv1X4/zCR2Bk
-	phrTehXTGuWd+snvMSHMJhOhCdQCbOPXal+M2jNgzlV56kP4YKj9HK2k4VAfEp413kQjgq
-	EXBHdlkvWAqSE4B60qYqB8nze61BROg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153485; a=rsa-sha256;
-	cv=none;
-	b=bWQlyoqHi4SPKiD12umDA/DSA+h5b/Dij7OxPt3ummOlugZHXilowTs/v4UloyUNZgA4OW
-	ljvhNnKR06EKf6CVGHOQQkq0gsxJayZ2r5dLHrobEGhfR/76sI1m8zWNgJUz6fN8hGHatH
-	iClE8dqO50WrAyrXV3LHF2IL3uFTn5Y=
+	bh=ziOF1sTr5P1k7Bu3IgRhG8faEgmBbG5xr8uehp4L0ys=;
+	b=jCRnb/R5VMUsh0CQ3BaRjqQryaSAq2xdBXB6qH33nviiSws+ue+JTviLWAj8bxTC4m0ja1
+	CY7vkEWBaDN4/RSl2lofaq94pB5CDJoF4NM3wHjbTTbTJoZwot954JHCYb2H833SWAS4Zq
+	mijtcydsuXP7795Zok3Mvaj2lAa6RDs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=m7d9w3d3;
-	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ab077e3f32so6414385ad.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:51:24 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="j+/OhOdE";
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153493; a=rsa-sha256;
+	cv=none;
+	b=qrUCjChgz+3IgP/i8qGH5lcCTp4pWbtXonR4HXu9OQzG24kgbXJTUxRq6rao3xDNacSVEE
+	fCUCazzh5y7Q6mf5hmJ8lwxRXiqFeaD0zTmSeZzDFmLR7Fquuj1ViJaQ0dy3t8AbuTsX2K
+	zW4aiGNJy8573pgDea21/ew2rd5OFTM=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8f8d80faebso422548866b.1
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:51:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772153484; x=1772758284; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
-        b=m7d9w3d3lvokUsnAFepVG5IuolpOXmIuE3HZ4LNqc/7Zfc3mG67xJe6A9f0a7bwqP7
-         swP9rp/H7bn1S9JSK66FuX8ZxEMlL83TpjD5e4VwbTRZQjRYbdaB2rV+yp0K2h7tFGeJ
-         9/X/naKeqIySzQrd+SgrO7ooOkG4PX3Cir1+kE1+IqVIfyfaG616xrJv5S6F2qkz2P7j
-         W/tukX0VX+zi7gO9tsbs+f/lAfKepPtyJkpS6oIdVNMc8CYUH/3CfZpQ9KeMlf4YclJ6
-         aelzhzhPzuVbr0Es1hG5oyGLo3rac3vfxzXOQ5wdnlvutEgqkx+kAz+1aHjeOiKkD3hn
-         Wjgw==
+        d=gmail.com; s=20230601; t=1772153491; x=1772758291; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ziOF1sTr5P1k7Bu3IgRhG8faEgmBbG5xr8uehp4L0ys=;
+        b=j+/OhOdEbrMBoXZjmrD1L1zRVSYoiAxBCDPEQY9EplLFSuQZ9BUA8dmNr7JlYvpRe7
+         lLe+nuOgLsX2XjKaP+mN1yYykpESrYkRXcwKXWJ4l/WCqMHN5MVELKpXWCAioZV+KJ0W
+         2saia/Ndor3DjubCeZX4a63KtlEjyJCgCy1Xp5DmRecUPqZ/vw4DPNgi0RRFItDKd8Tj
+         hOfASg4lxkdWKET4sXzCCssewZ+yEl32qoVFUbYHdWSd5IWkd66nHVEgqLPv460MTJSx
+         G1rVDwXOgpOzLXTrn4Sb+/0bXWaatp54cpR6pYHRm/g+G4ioOIEw6ZTXzxsIikvKAUzF
+         qq5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772153484; x=1772758284;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
-        b=ZGmqCBLBd6SmqyJzMfmhyeJylmbktUcKgER0UP68m4a1a/6iytoz2veusw3L9rk7nD
-         Aqr2Ujy6uyJ+DkZbXKgLvkAukSk2+nyLoqvZz1UwMofIgixZemgTaTWfk53RP6a28XVr
-         ICraRjXefJ/scR95GtMCfJGTfzzG8hyvbeRR0zmeROrbhv17Herpu7UsUMU4Txqx9MCk
-         Mz0Cve/1Dzp7zgPQubqFsVVNvI21De78r0e5YcjeqVpbc3WbHjHDuqQS5v+HcV4lnEjn
-         IpiVQApqHjyTX4JeC8ONhlRQPPwofRSIuyq9D31OWvqqRCaMQJ8NK8PaKsfQRkdngA0L
-         rhzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZyjnGf8DrNUp+eKo/RgUbwY5uMaGvEOUf7VqnRwpPAyy1PN6JjD216JgzgJPVcc9LyO0yt0z4eA==@kvack.org
-X-Gm-Message-State: AOJu0YxPCGSIxejUUulD+90CCQH/23KMQ0HY7hfO6N0KfEFtd1m4dto2
-	8LETxD3yo9eELdwbD107TZeSohVt42Xzc/JnUiu5uP50JwjKOcYnLIXOmXNl88nQTQ==
-X-Gm-Gg: ATEYQzw3O7SRqMR0MM7sQk4QUCseQ5vD+QisWqnxlpH4xO83uYXtmDjbhRV+XMq48Yz
-	EYGKLKv1WnPnOQiCxn3hOkRPoq9+IuSBqopSdB07sxiYLuT+lExEXMtErW/veMV8VvZBD5TIzKk
-	hZYGCK8ytFKL0PF9syJv9UtcfWhxf/lsVbaZi0NRxcuYYnyj3ZLe8gfe63xL5r9boI6lcu7cHua
-	slZKAfMdRqk0wBbO5kxWTMzem4Uu859aOO+x9kgye6juTWqujJg8Crj9/LVjr6n7E+u9CJ5jCB5
-	GEVdtqpOEjvgVyQspCPxdis1VMvjHQPpwpBrqh77DWNbQu4eJzPgatwAXA5bAME+3KQTQvG7dDI
-	uqdQL5ROLkONOGTOu+Yu+iEO7SxaFf2Ss+tG7U3dmsdmVxTaWsjQ2gyyoWjzrmmXLI6RSCgqsL5
-	jsiie7yZYjMCUzOhtKvWQ1NpdvrvSKzi4CrM3YPKFTSRpV4Jq7XlmAsYWdXjE6sg==
-X-Received: by 2002:a17:903:41cb:b0:2ad:ba04:40ca with SMTP id d9443c01a7336-2ae2e419430mr8325415ad.25.1772153483265;
-        Thu, 26 Feb 2026 16:51:23 -0800 (PST)
-Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b974csm34254135ad.65.2026.02.26.16.51.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 16:51:22 -0800 (PST)
-Date: Fri, 27 Feb 2026 00:51:18 +0000
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <aaDqhjdLyf1qSTSh@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-11-dmatlack@google.com>
- <20260226170030.5a938c74@shazbot.org>
+        d=1e100.net; s=20230601; t=1772153491; x=1772758291;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ziOF1sTr5P1k7Bu3IgRhG8faEgmBbG5xr8uehp4L0ys=;
+        b=KJ7EtZR6fzyrIjJLTEfA5sM99ujqOuvaKUeqs8gT1UFXm+KEYnMb+SalgRYyK9fv5h
+         sRXgop6amHhTyy2Yz2gLEjuLcaBSS0A+cVm1aH8HnzlFLuxww7y53seAfD65ClmhSxvd
+         tuA9y8K1fvfgjQgLuwx62PjkgZ+Jy2o3jAqEeg1KRu/wD5Rlum6xWqqhdwsBHH2OP+P9
+         EPTfAHI5WPOG9Mc+g0w/Qf41w24vZflOiOrNczCL0DfOxM4eidab+b95mejctFdXQcV/
+         V3JuaRs6M5YXVeBjiSKQQK0c8glaSV7jUskW3q74OSApdn5R4L4x6zNfZNLzS8d5VE22
+         KuDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfF+FmS2zfw/YUFX93HQ/mlYOlnBUPrR5XTqMtFDIYPyX8SF/vBDmKEtx3ym/0KjfOby7v6OzDJg==@kvack.org
+X-Gm-Message-State: AOJu0Ywl7c1kNvP9jpDlfnw3p7G1/iBIm6v8xUcz/Txr3J9xEk8d0Fh8
+	8hL/uCN4JCLrELtdipkCxG0g9jUukTm3e6RscYL2SFDQk7D9nc1ihcCr
+X-Gm-Gg: ATEYQzwT6RuxVLAMKCH63/gjIWv5i6c2CQ5mLxzI6MvA5Moj9LU2k+rkTeSjLj13p0Y
+	JSL1785QRSzS4HqXOFH7JRsrfZB8mQbiG2UkChlOfNU8mnQB86jIZpXHnN6WJey+OFMcoNvj1YH
+	nVYiBOalyxl5fOM42nYJI4RI5CX0a0JljkrZ8YVq5RFkgTRuUuOm4SPZhKIBA14IcTyWf6u7QXQ
+	TCLHR2sbKNY5wPm645cqv01ld6x9VNdu8pxO9JTzBq9/hds/vh8N+ywW3ZyxtiXUchLeiue2UPo
+	xQiWZhtMVTiWDxW37elz2qG8Pb/jFuTgH9GStRrMb9fopgP2xcMsCHibVsCBFPN4xOubh22xbAc
+	2JnzRtwplczhGDtSOaN7vdRmm23AtJITxsW8ArzNZKZb4glyEdFKpkyH7ugcfSOIVEVk7qb2F2v
+	LPZP4tLnjDb5+7hYre7Vp0vg==
+X-Received: by 2002:a17:907:968d:b0:b8a:e013:9c5b with SMTP id a640c23a62f3a-b937580caeamr73449966b.4.1772153490944;
+        Thu, 26 Feb 2026 16:51:30 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935aedd746sm100330466b.59.2026.02.26.16.51.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 26 Feb 2026 16:51:30 -0800 (PST)
+Date: Fri, 27 Feb 2026 00:51:29 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Linux MM <linux-mm@kvack.org>
+Subject: Re: A potential refcount issue during __folio_split
+Message-ID: <20260227005129.ujpgdvjjyqpemzxy@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260222010425.gbsjzhrew3pg4qrw@master>
+ <20260222010708.uohpmddmzaa4i4ic@master>
+ <6346656B-7518-4A55-8DEF-C2E975714C8B@nvidia.com>
+ <3e22afe6-ecf7-4180-9287-c48fea7b8be1@kernel.org>
+ <20260223115948.sbylmtqhznmabcth@master>
+ <097A507A-C60A-47AF-9590-1D6CF712B1FE@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226170030.5a938c74@shazbot.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 31ADA120008
-X-Stat-Signature: 36oaxc34a9cxfcpo5tgtwr4uyg6zxyz1
+In-Reply-To: <097A507A-C60A-47AF-9590-1D6CF712B1FE@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: kt1o91n1ufdua5634nc7u57nyaujz3hd
 X-Rspam-User: 
-X-HE-Tag: 1772153484-57063
-X-HE-Meta: U2FsdGVkX18MlUhk13lnvi5NEer3wQAEUt0ZMysBLFAdB6ZE5ZY0rQOwIAA73Qr5hUxS2lx4COjyyoEKGPj7g0fPCHqwQvOVI7Q0Cl0ZsqiqdBblOmT3GzDK8laZY2RbY+TT2i4+RmhVyK6iRzVXXX0q0Yjg/zhRLdzh9+K7vMRLgP1S19qZ8F7Oh5a9zYGYHjwWlnsCQw4qpeMvZ4XKza9sn5BGaltiicjIfxyRjopnmQRlAxefMYxr9NlciikAlyRlHNynoCXnz9uQGC4Cx+M3Iq/GfWHepSYdCUC6cc8h6OroY7TLWPmxVI49Lzs12K6Q/HtCDmgbwn1/iFHWHypCecKPBT58zOt7uPFg618E0iX0R2B78RlQ/2ZFt6rH8rxwnSW8lsFF9dowbqETaRg9YG/NknzYpEGZ7zQZNBTqtGhcU04own1oolv55y/2Ktz7sxRfZoUqO55hxuijAFGouvsdDgjTtr+9RUa0VnYmiGtLVNpBEg4PDTB1r85+LuWCy2s3P+GTlp4FOCxl/gfhhQZHl/RRReNO8z+PsAgV5hWBZH3J+OaoPHg7plK8XNfurj25nPaaXWJVw/R4rNFVim+h7nbVv33ZOIiZOzWNTYQ4FW+QRCLMS+aSp5MVvrza4xlejPyn8J8ZybYI8FziUHWa3o1yDEB6ju4S34uCHFq+MZuLoj4pj+LZvLYA73v4QH5iICrrd+kcI89G8BymI/7zKJIlUoUY8+YB3h3z+IAPRzakXpG2K+3pBdqTX4kq5RjPQc3uXu7hAmSFUwmgMhbi/AeAV4Myj6Blpozo3/NdQRRECINsTD+IgFh8NI0wZQlHP4y84bUkqNJGGOCZBpA39Gpr7gmGNsK9jLoQ5KTmq9eAbNJGtS9mUkJkrjwXoXTJMuheTAADwsMq/KDukqqkQPAHFZQubzWoxuB0RTw3NWf5J0+l54dn0tKUL2VRhMdONcrHIyhzjPe
- Vru6OIpO
- I80WMMjXN5IEntE74bZ0/X99WSEjsCXBJn+15eiDIxKrbvB+VtCsq0cjZoQoJw7cBF5rUUVWScnnmScQQwfcZ18W3XpTY/n1udfZNNGmkFdeA4OQKJ/KeEJLQ+b0Tx8w+uTyVwzghFGzSiaDacVvz/z4YavvLhM7iGGJUtabxqWbqjcy4LdKEOltlCaTVRb88nmDZvhpwPQ7OK/kcM7+oJ2zVSvaJw8uCUhBc0LFf4cpq3i8DzyyzjbJWulOwxTf9sRjIFQeYnOoRoCOg8kzOzOBHs4wHxqZj6q1N69N6SnJkAOIVae+VlIt16jKVhQfEhvbvNvXpOVpMY9gFvBvSZ2GtRQFCzJ+mjNWT5DeSkKwI4HLiIJZFwrI/BdXNS9xUgLaGiB345ke19YJgFy2h+dlxzsJisWZdBDXZ
+X-Rspamd-Queue-Id: D881A180002
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1772153492-95945
+X-HE-Meta: U2FsdGVkX18AZJZwektkkqSpyQdLpNQca9nLRjN6fXKBfS+YR5n6EkqSZe7Y58ijiI9l84omxiwC0Ym4wY5CD3XHdQQyR1wM60rpNEBkythhAU2rTo9YH0jhniCIoFsbKl1CJuJf7w06RiDEDU0JZoef+77FNZ3JCcVMFlMg1NGD8LWYxHQJa9iNPCpPKoSYe+F4Q1pltG2qdpLoVYsJS2FfEHMhBXoTUAlYAlgL2irUymLULnilmmciz1953aTnymyGvjpg8DyQIbh9b2UsbJGfGfB0Ga6QMM4wM2ILwEzWjnmM5DkuezdXb0wIvwRoBOWyJL7f5P6Pp22sY/3zWg9hsIJ5uSkFV/12ctRuyWz4NRfdOyydgMbi7GDMrGG1ZPnkqxZdMHwNAPQc56/A42tIvxXv9MlHgawrEd3EOod/QBrjwGE9YbjccBaaMbsqpuZgKa8K2R/6vMdNoYg3zzEG7ZpfjAiNuzSD5k357RE/NVTLBQSAUBDh4Y9Z6+h2Uh1PMsERzhOcaspgAmSdF7bg2rNUFq4lQo5JWmH9BFA+8gPqIkc7bDZAGWxxUsgAVJGQTWSg15U1ivfYVG3ovSCo889JIGBTRe3K7T1jqY+/hRoEXKaDfQAYoVtELkXEqmwmzOx+kallHayXCjjJJWVt1gjOKC0wlN3erCbJSxuG23k+6Ja4stKz8bfJXgWhBoOCmSRIRy85JEL0IqCJadTOuY74iq8Q5UXZULNReP+dDt4fZmL3kD8osFrzM0jKUxU9yHaHzWiCtwuNyPkGGcPjYWvnuvfJYouwOMcfr6epoqKGJ+/zMO0RnRTg9mWVMOJCvahYNgS5CfmURtG651S2N25RWdhmhXX5GpRwvOE6rgZZ15d1uHfyytIzgFPzY0/1eHLQgcZT3LZ/DFoJTRF4hfjcGTcY1GhWIjPsmt9lNJhRN5LeiJWO2eetyDLItdygpZ0BcnIyVXJttlk
+ 6g+T8NJu
+ Seh+/ZyDyBW+gUDoD8ON93jbgYM4Bw6OihyEIXQbJuHGJswpN62K2w6F/yzEiCJSc50g69Voy7wjizFvgGE84IGBAIc5XBpy2AAVU189KtOGIZgKahU/zI6OSD5v3MIFH9QHv6E3aeBDNGNOSlH9F+farBAa1b5RKlvsOMedQjtvIHf27o5RUixa0ZVO6x2EEJsYLVlHJEjKg8slTXgyvRyg3+rp2NYJltJWDcdXDrG9pXlOmZLnIezP5gRgXFkZKTMr9WtW3iIxBm7IqJKBQllIiCvvbqanpgEEv2tD5NjBNouP+gfQbiYJanH6GMCMehZBgeHzbuK8LcFCiIsdfmb/KyihI+FiLZirG5finEeDHRXWx94RSRlVnI/BlxFQnDtwQyBjrrbcxqlFd0hLlB0pGO552UVUQeVmUlEqf6beNMkp4gqhNjNQyb3m6k2HRN2ABnAc6TUnUYo32H1j4lmd0Mh3oT2mik3hRaqvi9fRkYTN/p3c7ZTZqC+P7pMUC7pRmvrU4EZV0OOj/pAE+7SO6lMFOieyiPaP2QkGSqlhaUb9eS2kt0MbPj+FFd2RcRmVxRZDnS9jLXmLUx2KL2alXEyd/KimYktzZiA4sXoXp6pZq2Dp5bLvsBdgC9dgoaIZs+JzlCiwK+ySgQk86KP8Hci45JLSRrFNfV+lTfq60r7FiyFBuay31i3caigDEWyT5eSrpnihIFhgkkkdGDUkkMPqT2D0ypI4Qh2nU9t58zPniFB9vwTYoXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,73 +125,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-26 05:00 PM, Alex Williamson wrote:
-> On Thu, 29 Jan 2026 21:24:57 +0000
-> David Matlack <dmatlack@google.com> wrote:
+On Mon, Feb 23, 2026 at 11:00:01PM -0500, Zi Yan wrote:
+>On 23 Feb 2026, at 6:59, Wei Yang wrote:
+>
+>> On Mon, Feb 23, 2026 at 10:23:11AM +0100, David Hildenbrand (Arm) wrote:
+>>>> BTW, in the folio world, I do not think it is possible to perform the aforementioned
+>>>> split_huge_page_to_list_to_order() pattern any more, since you always work on folio,
+>>>> the head. Unless there is a need of getting hold of a tail after-split folio after
+>>>> a folio split, the pattern would be:
+>>>>
+>>>> tail_page = folio_page(folio, N);
+>>>>
+>>>> folio_get(folio);
+>>>> folio_lock(folio);
+>>>> folio_split(folio, ..., /* new parameter: lock_at = */ tail_page, ...);
+>>>> tail_folio = page_folio(tail_page);
+>>>> folio_unlock(tail_folio);
+>>>> folio_put(tail_folio);
+>>>
+>>
+>> Missed this. Agree.
+>>
+>>> Agreed. Maybe it would be even nicer if the split function could return the
+>>> new folio directly.
+>>>
+>>> folio_get(folio);
+>>> folio_lock(folio);
+>>> split_folio = folio_split_XXX(folio, ..., tail_page, ...);
+>>> if (IS_ERR_VALUE(split_folio)) {
+>>> 	...
+>>> }
+>>> folio_unlock(split_folio);
+>>> folio_put(split__folio);
+>>>
+>>
+>> I am afraid it would be complicated?
+>>
+>> Well, we don't have this usecase now, could decide it when we do need it.
+>
+>The patch below should work, but for now, since we do not have any user,
+>it is better to update the comment and add a check to make sure @lock_at
+>always points to the head page if @list is not NULL.
 
-> > -	/* If reset fails because of the device lock, fail this path entirely */
-> > -	ret = pci_try_reset_function(pdev);
-> > -	if (ret == -EAGAIN)
-> > -		goto out_disable_device;
-> > +	if (vdev->liveupdate_incoming_state) {
-> > +		/*
-> > +		 * This device was preserved by the previous kernel across a
-> > +		 * Live Update, so it does not need to be reset.
-> > +		 */
-> > +		vdev->reset_works = vdev->liveupdate_incoming_state->reset_works;
-> > +	} else {
-> > +		/*
-> > +		 * If reset fails because of the device lock, fail this path
-> > +		 * entirely.
-> > +		 */
-> > +		ret = pci_try_reset_function(pdev);
-> > +		if (ret == -EAGAIN)
-> > +			goto out_disable_device;
-> > +
-> > +		vdev->reset_works = !ret;
-> > +	}
-> 
-> This could maybe be incrementally cleaner in a
-> int vfio_pci_core_probe_reset(struct vfio_pci_core_device *vdev)
-> helper.
+Hi, Zi Yan
 
-Will do.
+Below is my draft change for the comment and check. If it looks good, I would
+like to send a formal patch.
 
-> >  
-> > -	vdev->reset_works = !ret;
-> >  	pci_save_state(pdev);
-> >  	vdev->pci_saved_state = pci_store_saved_state(pdev);
-> 
-> Isn't this a problem too?  In the first kernel we store the initial,
-> post reset state of the device, now we're storing some arbitrary state.
-> This is the state we're restore when the device is closed.
+Look forward your opinion.
 
-The previous kernel resets the device and restores it back to its
-post reset state in vfio_pci_liveupdate_freeze() before handing off
-control to the next kernel. So my intention here is that VFIO will
-receive the device in that state, allowing it to call
-pci_store_saved_state() here to capture the post reset state of the
-device again.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2dbb35accf4b..8047f00bfc2a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4158,8 +4158,9 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
+ 
+ /*
+  * This function splits a large folio into smaller folios of order @new_order.
+- * @page can point to any page of the large folio to split. The split operation
+- * does not change the position of @page.
++ * If @list is null, @page can point to any page of the large folio to split.
++ * If @list is !null, @page must be head page of the large folio to split.
++ * The split operation does not change the position of @page.
+  *
+  * Prerequisites:
+  *
+@@ -4208,6 +4209,16 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+ {
+ 	struct folio *folio = page_folio(page);
+ 
++	/*
++	 * When @list is !null, each after-split tail folio would get one
++	 * refcount in lru_add_split_folio(). But all after-split folio
++	 * would release one refcount except the one at @page.
++	 *
++	 * So @page should be the head page for this case, otherwise the
++	 * refcount would be wrong.
++	 */
++	VM_WARN_ON_ONCE_FOLIO(list && (page != folio_page(folio, 0)), folio);
++
+ 	return __folio_split(folio, new_order, &folio->page, page, list,
+ 			     SPLIT_TYPE_UNIFORM);
+ }
+-- 
+2.34.1
 
-Eventually we want to drop the reset in vfio_pci_liveupdate_freeze() and
-preserve vdev->pci_saved_state across the Live Update. But I was hoping
-to add that in a follow up series to avoid this one getting too long.
-
-> > diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> > index 350c30f84a13..95835298e29e 100644
-> > --- a/include/linux/vfio_pci_core.h
-> > +++ b/include/linux/vfio_pci_core.h
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/types.h>
-> >  #include <linux/uuid.h>
-> >  #include <linux/notifier.h>
-> > +#include <linux/kho/abi/vfio_pci.h>
-> >  
-> >  #ifndef VFIO_PCI_CORE_H
-> >  #define VFIO_PCI_CORE_H
-> 
-> Wouldn't a forward declaration do, and the kho/abi include can be kept
-> out of the public header?  Also should be in the previous patch?
-
-Will do.
+-- 
+Wei Yang
+Help you, Help me
 
