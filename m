@@ -4,106 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C969CFD530E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 08:17:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1DA3FD530E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 08:21:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D380B6B0088; Fri, 27 Feb 2026 03:17:32 -0500 (EST)
+	id 2482F6B0005; Fri, 27 Feb 2026 03:21:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE2576B0089; Fri, 27 Feb 2026 03:17:32 -0500 (EST)
+	id 1F5A06B0088; Fri, 27 Feb 2026 03:21:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0F516B008A; Fri, 27 Feb 2026 03:17:32 -0500 (EST)
+	id 0F54C6B0089; Fri, 27 Feb 2026 03:21:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ABC4A6B0088
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:17:32 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E8991B7222
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:17:32 +0000 (UTC)
-X-FDA: 84489532344.12.7DAC7E0
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 874201C0006
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:17:29 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=A8U6QcFj;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yebin10@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772180250; a=rsa-sha256;
-	cv=none;
-	b=JnmET1pYpJI1KITeb43f4iawkqDuxnyzrqbrnhJhjhIVsnaKOnGHRipe2Uv8zEJD5va454
-	gLYn/U8OedfCG97D2jJ9CdQXoCqSrWsPg+jIqgVE6yqNdFRspQHp2e7iaJ8A9vae7obaXH
-	1gThFMQG4oQuf0rRMukNJhpZdv1EPps=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=A8U6QcFj;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yebin10@huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EAF746B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:21:49 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8F9461A0567
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:21:49 +0000 (UTC)
+X-FDA: 84489543138.06.6FB7585
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C22204000A
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:21:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XFvMVqTu;
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772180250;
+	s=arc-20220608; t=1772180507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DFRglj1idX0wl9sFMMaEKWZS+rbqYmOLqrcVSb6FkRg=;
-	b=8Mc2tYCb0NE8iUA18hb7YW8pAhXQW4izVuCy+IaEpW4JcXt4WquAufS7IuWTGfQC56MVmR
-	hkCcZJ1R6+ObDVDtkEYjZnexZzM6tSVE6VbnKZUjl2IrEIETS3OjhZ9BkBZysTinMReRMR
-	KHV4AQ/47kAnf9ntF00pDy6oaTo5nNs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=DFRglj1idX0wl9sFMMaEKWZS+rbqYmOLqrcVSb6FkRg=;
-	b=A8U6QcFjytjw4d9ak9Pn2C1V244l8CN4E3+JJsYsfYk/7nsZ1sWRMudBdJiEH8NR5VpGW0S6r
-	E+fqQNOokZqeTIfCl4ThRVKb/b7u1vRGeV0Lji1250NnuD0phzHTrLCSRb5UfN1/zMfoisV5WYM
-	NIsrI757GDcWIxM1MXCNT20=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4fMgzn5bc0zLlSN;
-	Fri, 27 Feb 2026 16:12:37 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id AF74240561;
-	Fri, 27 Feb 2026 16:17:25 +0800 (CST)
-Received: from kwepemq500016.china.huawei.com (7.202.194.202) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 27 Feb 2026 16:17:25 +0800
-Received: from [10.174.178.185] (10.174.178.185) by
- kwepemq500016.china.huawei.com (7.202.194.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 27 Feb 2026 16:17:24 +0800
-Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
- filesystem
-To: Muchun Song <muchun.song@linux.dev>
-References: <20260227025548.2252380-1-yebin@huaweicloud.com>
- <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
- <69A13C1A.9020002@huawei.com>
- <959B7A5C-8C1A-417C-A1D3-6500E506DEE6@linux.dev>
- <69A14882.4030609@huawei.com>
- <C63DBC11-B4CD-4D8D-9C09-E6A9F690FB21@linux.dev>
-CC: Ye Bin <yebin@huaweicloud.com>, <viro@zeniv.linux.org.uk>,
-	<brauner@kernel.org>, <jack@suse.cz>, <linux-fsdevel@vger.kernel.org>,
-	<akpm@linux-foundation.org>, <david@fromorbit.com>,
-	<zhengqi.arch@bytedance.com>, <roman.gushchin@linux.dev>,
-	<linux-mm@kvack.org>
-From: "yebin (H)" <yebin10@huawei.com>
-Message-ID: <69A15314.3080602@huawei.com>
-Date: Fri, 27 Feb 2026 16:17:24 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=VJq9az6bjggid+ayxEelbSnWqv4WCaON9zJSVCQ7fVc=;
+	b=CTPrOB6ZsUgV8sHmK8snes+3sUlXpjmhGnhw/pDkGUTf+jYRXTuGgj58dZnsLreCbFDGb6
+	8UagJY6YVxQ84mjla2hY7DqWV4PmSN9NLjRVbetRAFmCSxc7esuAYPlJBSHeq98ShYdnTV
+	6MymPlPb67PvpCPGM4MvRV3HzQtey6g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772180507; a=rsa-sha256;
+	cv=none;
+	b=CJDCVFCNlsacJS1h5zAk85MY/3KmkGW5hYfRn8cgwCAdTd4U8a+YMiZdhFV6WZdst7IrsH
+	oaTLHg12zfCywE8+RR0KKGfV/D8D0co77lNJNnBvXK1MZJ7aHrePXy26eKlTmbEggQYYMs
+	kGkniNpAX9iSL9eTSCK0uL0jiIf4zec=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=XFvMVqTu;
+	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ade574f05eso12261435ad.3
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:21:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1772180506; x=1772785306; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VJq9az6bjggid+ayxEelbSnWqv4WCaON9zJSVCQ7fVc=;
+        b=XFvMVqTuc3VA4Wwpvjh2lKlj5EyPoFW/lKILwzTy/VI0qCYAtf+OX185UadFvLxXIn
+         QgvSsNOGq/+RETcuLPnLnnkIT7jtbBX0edgfD1EiXMHfx4AR7zD5AtbLrZVm7EWlW7RV
+         HhARjyOTm32qnud+wyhTVmylw7SugO4SkrcZM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772180506; x=1772785306;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VJq9az6bjggid+ayxEelbSnWqv4WCaON9zJSVCQ7fVc=;
+        b=ErbBiI3RI04Gi4hle8GQ0Z3dEJK3DmRdGTEC1v7838rO7Nh56yzmAikODlu8GgcVG3
+         EJrZ31uTUSV2r+YFoufAxl66wPPgQiRYoUufFx80h0jBz7nQkCxD+xSjkLtEaI/BQ6UA
+         ShA6V/uaCYdyfDNZp+sqjoUX77h6eLvt4Lbg53/T2G/k2HM92VR+Vmqxei3JocRPOo99
+         B6NpwGcwOOtK7dFb9J3+1vtatzr1HXiNUEunVr2/vm6LCFDeoogaDs7FLevtoTOBDEU0
+         IEa6yGwPcyyj8GOLkcFU78DfmbY8I6h7Lk6No24A0UpmATMQcOsAlEGBwfgR+asqmdA1
+         lQRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpHSR3ne7uOSmtpjLiNdobpO3mTAD9gg8h8ywPwJNWm4Lfy/LweQnKFbV8e4UAeJDgL4IMDyy2Qg==@kvack.org
+X-Gm-Message-State: AOJu0YwOGSbi/Dsc61OlzUd9tSJixu9yq36ss4H32pM5bxJiN/geTG4y
+	/dg0fsR/423/6kxZNpWuR3T9DAog1l8YSs5tNmu5v4sdA//WgmQReMznTbdnXZgFUA==
+X-Gm-Gg: ATEYQzyuEaDev4ERo46f+PSsuu4KYKADoLVa78bX342qd81xpwl6rHxMw+eHfrtecF9
+	ljJ0TsqlGs1inSPEKK3jXBKnY4PQFMcfKXNGrGcXRhalxPjQUn36iCPCySW0NxVRpHcQLYuMGsj
+	ARt5aqsWViMWoC5VK2Gvsk0DEhsVXDJ+U/t5srCs4V+OuxlmDkS0b5BB1/srL2GZBSmIomW8Pr7
+	3oopvVg0qO7CswKAzrqo2SRojnVSdw8a0AsgiIGaNd9iKO1Lq1EXNv4HFNF19+GCctPZzyNhsX9
+	ORwXI9vvVVwvyoQ4lRt29rrruSBlLypvYXG+gpHCJ3WuRy2lkxkK6gPnZjmxr4e7mzHt7MGJmTa
+	n70Q+Wsyxks6JZhzB1kAxlmQ1qfoBMvFwFwbx18kbWXPXBEBuMGIIQcN5JWxegjKRaTsH2OFOdL
+	UO0axtimzgg9Y9tBlBcRFe+ehfLgCMqZUW0vow1H/oduzJD0YGO2vV8J2fxHmKoj8rdtOloSWbn
+	zsnLD8YLWSvLQ==
+X-Received: by 2002:a17:902:db0b:b0:2a0:e532:242e with SMTP id d9443c01a7336-2ae2e3e3c6cmr19505095ad.11.1772180506517;
+        Fri, 27 Feb 2026 00:21:46 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:280f:e47e:6718:7698])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69fa4fsm48796025ad.45.2026.02.27.00.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 00:21:45 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Minchan Kim <minchan@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Brian Geffon <bgeffon@google.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 1/5] zram: do not autocorrect bad recompression parameters
+Date: Fri, 27 Feb 2026 17:21:07 +0900
+Message-ID: <8a5d53d19a8dbd51d7d81d153676895163e0735e.1772180459.git.senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
 MIME-Version: 1.0
-In-Reply-To: <C63DBC11-B4CD-4D8D-9C09-E6A9F690FB21@linux.dev>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.185]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500016.china.huawei.com (7.202.194.202)
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 874201C0006
-X-Stat-Signature: pnxyz1oaxhutbz7ak9sibw8yk8fekec7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C22204000A
+X-Stat-Signature: qesnnfpdcsispk8on8kggh3c8sa5yhdk
 X-Rspam-User: 
-X-HE-Tag: 1772180249-458568
-X-HE-Meta: U2FsdGVkX1/6jFzSv/sPe4MjeYET71hX87y/0366DzRwzBhBqPPQ5fg3GVpLV5HaOeQPaEE8KK2otGJGmfChViwKj5FjD51U/e1+8Uc2TmEDNXBNCcqBpAxmaMwtu1zgrkVHmZ61uL4YCToW06O5Sivk02Q3HqBLuUYIZUal+XM8t7G46lclygL+2dePtegFx4YmVNKf79jUkTHyIF+9RZA6iYkO4u1ZF7FWBYkTpCfko1iJZilVeXhSYtibN+/zBlkGnNBJPljjEgddzUY7yuSE/65nBJI8Vxa4qT9N5oZ2kYvRYPMdFmkFGAJtyM1mTjPwnl9+QM/3w7pTsk0MUHIcZZ1Ctfw10jjuOccsa3BU+S+s+EY2NV5C8dR1aK/eoPFV6LV/Q75MuZ/XwYZdv0j5vD9/bj9htkhWsjrHLN+zzX10+7kxFve5Fvze4tuN5OByVPFNvy70w05/0CmHHOBE4XPXyA9IZh4MwnETO4V+3HXeGcnVQtwFzjFDSsd9Rzcw9bZAOhK+6sxGxBd4j1fVMzCsKx5U84dl0mzDmjUm8NwPnYcWT6kzI3LBEbuwjzxnKQapAAVkgiqs4jljItnuJ5tXJbGSrd+7K2BetJJfNmik8xD6CxT9F9a/UvvO5KYXHGNWUp6vK97zDoUGWoOFKutwxLc84fQ8xq+Et15ZPsDvynCsH3EoDPn3Bl+23kHWUw/QcdaOagzlZqEgv2Xbox3d4kdjFN+t3XP9WAESBL3dePDnPlAL9df6qf3onfAljMeMNVNFeZyDXqVKSp+X2mXZL1L97AlPFE1dNf68QNEzUdpzsGYJSC8O3GG16/nuoDwH5FBV4dnwRiAH/X2w4eghIf1yTzOUT0tQQ2RThqdhqMH6+Mqyr1qa2QCzP8qKyeDOflDS/mxs13gGh4Um0hXTi8Q655KnVBOtPlwY/z2a3pgVRqLrCjj08TbpPWfnajYivgbgAfB0Z0j
- 9iZCcAzo
- /VwTl//GP/UfzmIFkdRimtlqYtbg+9TLgFJ+PFTRqmkYwAwMJwd1kxEIwFEiIwF0ZrrCjvLwHMTfQv6t3r9aRcdfKLkZyH/IRm9DwjDLf1OfBl088MECqbGPG4+OQiX2H6ZSZ7e63uDsGYe73J34D1RlAYu5frzhukuqn+hF73Wb5dqEDjTKaA3mCMFt+SSOUmshl9o490/Y5J3+PiQ2tG4VZ3Xx173DxJpWWHTH24vACAumE69DcicPz09aPbaNZZ8QNCUzEYu7g1Asf0qI3M9q4h7XtTbo1QypS16w6bEaVUAo+suZ5oyJZ4Zg/xGX2JX/9+SU1A0oacI2yF39ZXPW6WRYaaKFv8CZ1qmrKpKsAoESiXFIS0ra6LbTPFArnbq/Dc/55ALAUZK8sdAEIBmhCKfCVaXjJVZ1+GYKlJMcVddzL6eAmiAx2VnreASv5uEVmITG8PM21fuznXBQXsPZ/0Bow4kjoy4rSLXBorQhDZnnszN0L+tawfA==
+X-HE-Tag: 1772180507-963549
+X-HE-Meta: U2FsdGVkX19pqnZ92leeITqWJp0Zx8yV4V4kXkJwIKb28sL+o6m31DDK/6qfQxOVNBHnOfyV+0udfA2WWi/Y5CZYIedHN55wkfgW/l9dvcwBmT11esc4hHvY7x3iAJYV4zljCmJB57ifjAVEYRWVhVj97duRf623L1yWhHXYGrxmo+XxAmAr/QQCJlgiFzoE6Uw/5yyg1efwLa9jY7+g4WZ3lUz9hQSHZRwGx+B78jVQoLt43HcpFWUUfjDJOA+Ams8M0JZsD9pRdrBElHyYnD5rNlNJxQxiQOJUKy9tLP3osJnEtgovtaSrQ36bNP/atEGjAcOKAwPcxN+JbLt4KsJqokKqkVIechqBnflx+wPMVy74tfEQkqFELAuee/e904n8HDWU6aUhf+94FXwSYp3Ye+EEdhAd8P9uLY0aVSgTjm1tYRSR9hBuhOIJbQvF3GqqRagk3fSnfwz39KwNXEd1/b29BD/+dArF6q/1PxyXcyJ9pABDDqvsaSYBxW7Tk/y7i9kum68Q4tJ/2YGNFie1fhtkX27rMC4yII8ql89M1jBLrsNGePb4MDeLVbIY50/WqC+SLG+8ezWTI22SVCpsggenAHKTzYBO3hoFq7cBbL0afMWNIy4FffZZB1UN1MBe8LnOZGmoOcSrOY6DD+5KGH4xmzGFCl1l2EPlXwCxalOg1T7kCdBS3SnGgJpCOab8mjUT1nOcrQxa63Fu6Iu+kERh7BaGqPItHo5BM+KsphVb603aVajmASyhb/+uyyBimdhuqLYjkpY6vk+hpus3S2OCWX57OQ1/mW7pUbST+q1MhrI8dn4eSq7ESyNNIl36m1x0RFC2iLpr4lXe9CxFcyJhNarBCOmf+7C7TYPfNOZEZ2h+5izGkRnbuc/MKNoXRijerHRKmz2uqjglTZoHR3JG9/nDgySN6TZjyPHgYIw0FZhEVq/mmVdRXiPBJFWlTkaxRRgG8zfG30c
+ eJeJ8pGJ
+ 4i0f5mw8Ot+XbV1FGBBQdc2tmAy8I4ff694uWHvQ10rRPa9PzaKiFpMxzyeYLHX+ifJaJY5NxKS1AsnbIuNH15sMNgDW+O2P2IAmR9ybeOm/OCeEidWfFkDXI3EvbUG2AFWR1oH/Dxvu1X08b37x0TszWZ4LvD+DfLSY/hx2f0qMJa5bYhTR5tF5H0pDLmvv1kvuobf1e9FiiOSol9cYYs5ffoxvQ+qaoXdWNvRJjzHD48CyNV0eFEmE+ygXBBjpyEGUMGxn8LmfrBdmJUuMO82P+FJVzDiyohHQ5g0k39Rdzd/I4ixO83xw2n9IzlKO52cd7+bO8v5CU8Ok=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,108 +116,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Do not silently autocorrect bad recompression priority
+parameter value and just error out.
 
+Suggested-by: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-On 2026/2/27 15:45, Muchun Song wrote:
->
->
->> On Feb 27, 2026, at 15:32, yebin (H) <yebin10@huawei.com> wrote:
->>
->>
->>
->> On 2026/2/27 14:55, Muchun Song wrote:
->>>
->>>
->>>> On Feb 27, 2026, at 14:39, yebin (H) <yebin10@huawei.com> wrote:
->>>>
->>>>
->>>>
->>>> On 2026/2/27 11:31, Muchun Song wrote:
->>>>>
->>>>>
->>>>>> On Feb 27, 2026, at 10:55, Ye Bin <yebin@huaweicloud.com> wrote:
->>>>>>
->>>>>> From: Ye Bin <yebin10@huawei.com>
->>>>>>
->>>>>> In order to better analyze the issue of file system uninstallation caused
->>>>>> by kernel module opening files, it is necessary to perform dentry recycling
->>>>>> on a single file system. But now, apart from global dentry recycling, it is
->>>>>> not supported to do dentry recycling on a single file system separately.
->>>>>
->>>>> Would shrinker-debugfs satisfy your needs (See Documentation/admin-guide/mm/shrinker_debugfs.rst)?
->>>>>
->>>>> Thanks,
->>>>> Muchun
->>>>>
->>>> Thank you for the reminder. The reclamation of dentries and nodes can meet my needs. However, the reclamation of the page cache alone does not satisfy my requirements. I have reviewed the code of shrinker_debugfs_scan_write() and found that it does not support batch deletion of all dentries/inode for all nodes/memcgs,instead, users need to traverse through them one by one, which is not very convenient. Based on my previous experience, I have always performed dentry/inode reclamation at the file system level.
->>>
->>> I don't really like that you're implementing another mechanism with duplicate
->>> functionality. If you'd like, you could write a script to iterate through them
->>> and execute it that way—I don't think that would be particularly inconvenient,
->>> would it? If the iteration operation of memcg is indeed quite cumbersome, I
->>> think extending the shrinker debugfs functionality would be more appropriate.
->>>
->> The shrinker_debugfs can be extended to support node/memcg/fs granularity reclamation, similar to the extended function of echo " 0 - X" > count /echo " - 0 X" > count /echo " - - X" > count. This only solves the problem of reclaiming dentries/inode based on a single file system. However, the page cache reclamation based on a single file system cannot be implemented by using shrinker_debugfs. If the extended function is implemented by shrinker_debugfs, drop_fs_caches can reuse the same interface and maintain the same semantics as drop_caches.
->
-> If the inode is evicted, the page cache is evicted as well. It cannot evict page
-> cache alone. Why you want to evict cache alone?
->
-The condition for dentry/inode to be reclaimed is that there are no
-references to them. Therefore, relying on inode reclamation for page
-cache reclamation has limitations. Additionally, there is currently no
-usage statistics for the page cache based on a single file system. By
-comparing the page cache usage before and after reclamation, we can
-roughly estimate the amount of page cache used by a file system.
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 4eaec24a23fe..53e0bbf9d6ec 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2524,19 +2524,16 @@ static ssize_t recompress_store(struct device *dev,
+ 				struct device_attribute *attr,
+ 				const char *buf, size_t len)
+ {
++	u32 prio = ZRAM_SECONDARY_COMP, prio_max = ZRAM_MAX_COMPS;
+ 	struct zram *zram = dev_to_zram(dev);
+ 	char *args, *param, *val, *algo = NULL;
+ 	u64 num_recomp_pages = ULLONG_MAX;
+ 	struct zram_pp_ctl *ctl = NULL;
+ 	struct zram_pp_slot *pps;
+ 	u32 mode = 0, threshold = 0;
+-	u32 prio, prio_max;
+ 	struct page *page = NULL;
+ 	ssize_t ret;
+ 
+-	prio = ZRAM_SECONDARY_COMP;
+-	prio_max = zram->num_active_comps;
+-
+ 	args = skip_spaces(buf);
+ 	while (*args) {
+ 		args = next_arg(args, &param, &val);
+@@ -2586,10 +2583,7 @@ static ssize_t recompress_store(struct device *dev,
+ 			if (ret)
+ 				return ret;
+ 
+-			if (prio == ZRAM_PRIMARY_COMP)
+-				prio = ZRAM_SECONDARY_COMP;
+-
+-			prio_max = prio + 1;
++			prio_max = min(prio + 1, ZRAM_MAX_COMPS);
+ 			continue;
+ 		}
+ 	}
+@@ -2609,7 +2603,7 @@ static ssize_t recompress_store(struct device *dev,
+ 				continue;
+ 
+ 			if (!strcmp(zram->comp_algs[prio], algo)) {
+-				prio_max = prio + 1;
++				prio_max = min(prio + 1, ZRAM_MAX_COMPS);
+ 				found = true;
+ 				break;
+ 			}
+@@ -2627,6 +2621,11 @@ static ssize_t recompress_store(struct device *dev,
+ 		goto out;
+ 	}
+ 
++	if (prio < ZRAM_SECONDARY_COMP || prio >= ZRAM_MAX_COMPS) {
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	page = alloc_page(GFP_KERNEL);
+ 	if (!page) {
+ 		ret = -ENOMEM;
+-- 
+2.53.0.473.g4a7958ca14-goog
 
->>>>
->>>> Thanks,
->>>> Ye Bin
->>>>>> This feature has usage scenarios in problem localization scenarios.At the
->>>>>> same time, it also provides users with a slightly fine-grained
->>>>>> pagecache/entry recycling mechanism.
->>>>>> This patchset supports the recycling of pagecache/entry for individual file
->>>>>> systems.
->>>>>>
->>>>>> Diff v3 vs v2
->>>>>> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
->>>>>> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim dentry/inode.
->>>>>> 2. Fixing compilation issues in specific architectures and configurations.
->>>>>>
->>>>>> Diff v2 vs v1:
->>>>>> 1. Fix possible live lock for shrink_icache_sb().
->>>>>> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
->>>>>> 3. Fix potential deadlocks as follows:
->>>>>> https://lore.kernel.org/linux-fsdevel/00000000000098f75506153551a1@google.com/
->>>>>> After some consideration, it was decided that this feature would primarily
->>>>>> be used for debugging purposes. Instead of adding a new IOCTL command, the
->>>>>> task_work mechanism was employed to address potential deadlock issues.
->>>>>>
->>>>>> Ye Bin (3):
->>>>>>   mm/vmscan: introduce drop_sb_dentry_inode() helper
->>>>>>   sysctl: add support for drop_caches for individual filesystem
->>>>>>   Documentation: add instructions for using 'drop_fs_caches sysctl'
->>>>>>     sysctl
->>>>>>
->>>>>> Documentation/admin-guide/sysctl/vm.rst |  44 +++++++++
->>>>>> fs/drop_caches.c                        | 125 ++++++++++++++++++++++++
->>>>>> include/linux/mm.h                      |   1 +
->>>>>> mm/internal.h                           |   3 +
->>>>>> mm/shrinker.c                           |   4 +-
->>>>>> mm/vmscan.c                             |  50 ++++++++++
->>>>>> 6 files changed, 225 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> --
->>>>>> 2.34.1
->>>>>>
->>>>>
->>>>> .
->>>>>
->>>
->>> .
->
->
->
->
-> .
->
 
