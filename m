@@ -4,115 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C56B2FEFB47
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 12:51:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1322FFEFB4B
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 13:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD1976B0005; Fri, 27 Feb 2026 07:51:41 -0500 (EST)
+	id CF4E96B0005; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7F776B0088; Fri, 27 Feb 2026 07:51:41 -0500 (EST)
+	id CA28D6B0088; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98B866B0089; Fri, 27 Feb 2026 07:51:41 -0500 (EST)
+	id B845F6B0089; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8279C6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:51:41 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E628140653
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:51:41 +0000 (UTC)
-X-FDA: 84490223202.23.E2B5CAB
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 08D5F100005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:51:38 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jHhtxwar;
-	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id A281A6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4235959A60
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:06:05 +0000 (UTC)
+X-FDA: 84490259490.04.2609ADD
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8E9261C000A
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:06:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fabxRk5j;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772197563; a=rsa-sha256;
+	cv=none;
+	b=kUhiYQwd8aW1C5aCiOZNARhh/yNeuE8Al1JyObK3J4osFw5V4EwiRMZQ3Smw4TLz3rYXPY
+	R1bp3xd1ktSpFYUEBH/mYeqJTF2oZRC5uDTmP3wIAl/3aw5Mm2Q8YxRQi1OQrkIR8b0eYj
+	+8NRGL8CB8Soargq87eEpc211BxyRzk=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fabxRk5j;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772196699;
+	s=arc-20220608; t=1772197563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJsL5ft8+uR36go2nZZ3KkNMsYpE/8dDd7y8kbPIygc=;
-	b=PKGSx6xSvL4k/ag5FJob+zp6C5QrLBM8dgrFfMNL+lE4aEK6uBx72W3/JO13V4e6g01lkR
-	PDXCfQhKPEGAEmWMlYPEJjIX2Pa3mG+6nsOuWk3XwYopW7Tpc4CXYaVgtqjvjUhy+8KEdh
-	y5kXNBK5BGvakvOaB4mg6+WGZm4MTRQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=jHhtxwar;
-	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772196699; a=rsa-sha256;
-	cv=none;
-	b=1AY33bUcwlPJ9DeZ5Vfg7hMqmdz6sggi3LUkg6FFnxaBaXgIYH7YkGwjBneofXtxzTwD4a
-	dvpTPC86tFzDsj8/f2YS7PjVQyiT2fm9bHU6sNCZrFGT4jxIuCtZAO6tmlLeiMj36IdRCS
-	JMLQe5Phi7t4ttvIzLupHbRVOEAc2Ww=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cb38e86cf2so204805985a.1
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:51:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1772196698; x=1772801498; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aJsL5ft8+uR36go2nZZ3KkNMsYpE/8dDd7y8kbPIygc=;
-        b=jHhtxwardLNMrMznEDbFawFHR4v3LQW0AAzlg+tQVIyPYst+VMrnN0mvhS9PRd9jYB
-         ETI5/u1wuqdrpOUmV83mPvu9VyjZ8hPdwraXApanX2xtM69GbCt+Bn3mFEH2ERAYXRlX
-         MzPv7q8O2B/d5hLsE79ADtc5wadu1GDheSl5mgOKCAKrYYwbF+gWMLRaUT2oP6e2GmD5
-         MSjQ7iNM6TQd/Yc/8CKoKQyekQLrOUfOHQEZn95l81upYV92qJDXU02njRFd+8pchTYp
-         4fqggwjsh15N82am/4CZYtlepKnIj2MoIUm9Aj5k2l5EUbha3ziy4NigNbGLj7+pT/XE
-         URzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772196698; x=1772801498;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aJsL5ft8+uR36go2nZZ3KkNMsYpE/8dDd7y8kbPIygc=;
-        b=mdDUtFVt1YqlYpci/+SuxK51dyyiDKAGloKTxlq4zAC92kaFTzzTBW4h2RN8RHjL0s
-         NVKrau3ytIxqxWm21aX6zbVZzW+Och3aQ2VwJBzbQMk6+zUoJNyc6ousu9ogiWbZAXGe
-         XiIKmGZ/HAtvNH9yskoe52MGzd2//vhyPPaM1Upa/6KPMLGQXxyuFN8eH3zvVUvN7qDN
-         6gH49y4gnd2Bm7hazXfl7TMI/MxDxbuBkOtemKY+w2WarAcAXDV+NC2sjv0SHFA+Knkr
-         3eD604bQZYz84UD4pwpEzNp/wDBcuwNYGXyqgHbLU5LfyUwojcxMZMAwSKgWakFDKLhn
-         JYMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWEY6cATNINwdvMdB87yCQzsU3RCaWcddJcyVejygNwqvhuJrJzKGTJdyUV5qyg46aJtMvdeKiFg==@kvack.org
-X-Gm-Message-State: AOJu0YxlsjOP5zY5vxsDQQ0AENJLlHdxRliCbKuKsetdSyTll+xv1piZ
-	rSToaolG2WUvbAtunYaOxFnIp3iRusza2gEQMsjl47D+I0X6HtvEoLTkBcvG7JyIFZA=
-X-Gm-Gg: ATEYQzyzIWOSDBw0dOzGTW9L8UszpWv4V3SC/yS07dHhJSQcOz3EGvmvv2SNClRoeab
-	RXxbOFzsWCTFy8JTfeAdIOM73CAViH5NhFDy6hToeF4urUPE3qUCFbTpt5RMC82IrmPgGV5DlWk
-	6HZEb4Cm0A5WDHC2S2sDBqma8H+cUwneWa15etkh0oBBAl+nXofiMVjBT2q7RL2wRAgo5htBAK2
-	/efI4JWyZUUtNorU8XVD0bWXwg6yK/kVKOlKBs2RZmyiQJjp6MLhjU2NHJauRdwVSBtaWqb1PDr
-	xUSPpXAUB4mmIvsBzuRO5EiTQWhMrNs8Xm3WgqZYm/dg8Uau/XEZvGDO25ZPGTk9qIhzL9/bo6F
-	dRyB3p4J00z+Qy5LoU0atm4+SqNVqO6Osaz4w5sr9r5QtAwSZWp6jEzioYSiIdPsWF36OoMNj04
-	mw+g1r1ollDUgktCQjfK3NSQ==
-X-Received: by 2002:a05:620a:318d:b0:8ca:3c67:891a with SMTP id af79cd13be357-8cbc8e0515cmr303454985a.52.1772196697812;
-        Fri, 27 Feb 2026 04:51:37 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf68b014sm472521085a.21.2026.02.27.04.51.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 04:51:36 -0800 (PST)
-Date: Fri, 27 Feb 2026 07:51:33 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	vbabka@suse.cz, harry.yoo@oracle.com, muchun.song@linux.dev,
-	akpm@linux-foundation.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] memcg: fix slab accounting in refill_obj_stock() trylock
- path
-Message-ID: <aaGTVWumz4jYEx9L@cmpxchg.org>
-References: <20260226115145.62903-1-hao.li@linux.dev>
+	bh=kFPcmXa3TYJ9a+ZatJmYfl714K9Z9gwrrVFBHqhQv2c=;
+	b=DvA3pv1VyeznAPxiaatYCU4X2sp4PuXd+mrvw10KYap6QKjkDThSSVXhJqtQDSTWqm/KVn
+	Ap5bTFVuQeCLOtEmDXqI/SrggrEj5mwdk16DAjN23dQHdMwWLo2H+vFF7RII7QpuXX0lsL
+	IpQsrqjfrN7eykabBlFamQpI3lXPrWc=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id AF3A4B2DEB;
+	Fri, 27 Feb 2026 13:06:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1772197562;
+	bh=kFPcmXa3TYJ9a+ZatJmYfl714K9Z9gwrrVFBHqhQv2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fabxRk5jF/Q/JG1+ocNkMgBf91sfzczJhGM3o0kjghaJ1n/QylUZQMESyBBa0UvFD
+	 g7EsxF3jkoSo0lnu/3ngvWkFv+dYHw50xqtbS/XcePqmmJLLUcAsZKnsFYZoQCHVPX
+	 nJkRoSKIPktk0xJIO84YpLx3wMaDeMt9gO6+W6SY=
+Date: Fri, 27 Feb 2026 13:06:00 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com,
+	Benjamin Cheatham <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v3 1/5] mm: introduce zone lock wrappers
+Message-ID: <aaGWuPxfAMeHSKL1@shell.ilvokhin.com>
+References: <5bcc39cd3a227944d0fbe75ff86cdac92b38d4ca.1772129168.git.d@ilvokhin.com>
+ <20260227003140.82789-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226115145.62903-1-hao.li@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 08D5F100005
-X-Stat-Signature: qgnddo78dap858aiizhmum5dijd6k661
+In-Reply-To: <20260227003140.82789-1-sj@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8E9261C000A
+X-Stat-Signature: 7dkd35fg5dt8f5h3rkzaoh913qjxboyw
 X-Rspam-User: 
-X-HE-Tag: 1772196698-619294
-X-HE-Meta: U2FsdGVkX18TXQ9A6nVwCYFaC+uWQ9SyciJq7kIUPCpwrmIQU7uMKbmJjp2fFUKTo8pI9QsXdrEjMZbOXULREboTCOb96Z2zfME0DPyhrBqxnD+USBl/Mkw85H7oBFLiEaRPETMbVgesFr8Xw+pyVwAtC9g9JhkbIH6CeppmnArdQRcNw62mXvQz0uNSKhQBRr7Vqcz7V8AF2XpRPfciQzK12nzhCBooMvrwCCTxWw5fN+y52wJD5mVm0bWalCDGP51OCbatzj4dh68jceL7CTd0kkzMnBTWb7rSOHbBAt7QtpUzH/bGiuJjIzZK6/0yCu1f0TlqO485XDgd/nRUdfRWAE71QggIU0sUXIBHQJIh2IG1Fw4WrFiQ6ZTF4QS4iwYpXOAE+G4Zrv/zKGrZn3qi1Mvt6TBeE0Exwb5AcXEJvzbH0AtV47Garcmhw3a8ylgfDPVEHBb9mpa3RFVz4/Hx9ZKXQF7nU7ZNznBlI4f5S0JjCLtjGt2G0peQdmn4e02hfLlRh1ntMFfQnoEszCfRKT752WLhE8JWD1/rUVjFE5NK90ALhSKBLGaRL1j4s3xTDwJLk6LpuIC7etq6SmPMOeuQa4RcGbzerOpDF8OGCLLuP8xOZMHNq8NGxDMtlZzXAckAMW4zBY1s4qg6yuqpkyZW5NataaOzYFBKB+T47RN+gfpWlJ8cwyO5/4FirpcEsq7pgBch9dAjc1N0QkFM8F6Ydtsd+o9a42KLwZPuiJIs/OQFA2Ac9y01ZHefQdx+uEUh05gPUPXuEwCoGrldsSPc6VpQyOjeJw6Q2x9UNrvwRWUmhnJNYaE4n7KRJZGdj9N1yeJi9vKUbyu8H5a5q5YVpA9s1vnQNcLcTWmi4F5ZxgkLbDalmImJAdphY0m7uNwlmpZIXNUtKVLWPsnE3R9trkYH3jkFaoPuPccSMYTS6/4fe0zP9W3Z9wuSiB/WWXGCJewyDdM3Q68
- uZarix8Z
- mPnRlyfFYJsK+uy0/4abSD56YUApyyK+YbT4gahZ+YGWQkxs5pVWEM09h5sgdqUwCV7MXDM18krIbJYR9PTSKhXPpwuMWObqxeKowvacEAohiat1uVvIfw69fblnziToUVtGpqPkCkb6PK/00r3BY6YjkO5ddPK4RxjxM5Dd1xXkM4/N29RMRSvML4udCVWc493u+9RkQu0B2WtTaR/VXfw5LVBOUaVwpYpOruFmtTODgJKleYoRgfNHqZrvyO2XFMH9Cc6qrWWmgTYJ2SPh0u12Qa9yPxgerqYzlP8q1fWBXedIqHoEDLG//Spd6geHAvW+5blwN3OTe/0boBTOHc4HwphqoEbnCXEGH2tJ1TuVeLIT59iP7FhRZuQYg6jnBt38PbO8zSi5jEj2+mSz3wx1xMgntlmheFc2LAMKLWrQm5ksC7XoVywTgXVO99wM5XqEBzFUNGCleBzIvd9efoY7/OONUWN/j8esDS8Og3mR/ndOVIWoIsvurUw==
+X-HE-Tag: 1772197563-993131
+X-HE-Meta: U2FsdGVkX1/Pa5hbRSpINa6VhPsRXN3H7jKTp/gsiQGF/8JuM8cZkRsZkPpDH0jy7tCcbWTbbyrOmEJZDU9uWsb2SM/UslAh2iOU/OiSYEGu7szWYPJfTG1lOeWJL3wdwMbmR32HTwWRlUYdXrhvB8YWniofunOEEEt4k8nkacKE6VyDVDghGBPeTvClwM2oj5+oVk25W4MU/iCBukKMopWD8vTRWxFPHNH+/ax0mG/rU6rNK0Obob+9Sitv3WhFLpbzLzWMy5uMQ4iJ6ldVx+PNygtSH2kR7gW/MO3Vz70KQFPoIpgh3tPqvkV92f+kodRzHRJxrj4dt0bh7p1rfx1ywF1ZAvhJCFFS5TnNgIqGbJKevNpI15zl8xvcJyr9SXztKd+C+QhvJANdJ74eEu/LJRt2Mi23AoQ4ERWs9UkThG83JFs02zE6Og9meZe41NNSOefZbMExjJmT9hoL4eAWLOgNXih4ah/lBtpMyrdZY1c8EvFO+RvoHwmYrkA18HhUN7vgV2oQPypnGVHPwDoYH5PFpDl+izZlAtrGq8lGqZr9PTxHgVt5y0qzxS117+OkeQzSKu27aTxjC28fUY414B6WC8FQmfbseK/IZSlAEVDEYfQ2tZFD3JcXWgFuW32xlNTEUnGNb9fCqlEiGC0yz5Hcjwm+X3hI0XNQF9K4wOHpD1jC0sHc6t6fxNEFMHHaenH2rzT6s1qq+97zPsdXchE+PdILkqr4144FkGx45LddiwiNtFiqiA/DL1Ige5Qw7QNPnWiufKdDqOWMMkltplN3IYS5GmhkySeL4IcwtYxb3Ga7KkcqhtFX8amc+Yo9MFHRROE/bMeuJyuspR7NqIYXUY7pQE2SmxLfs81fHalg7Wff7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,17 +103,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 07:51:37PM +0800, Hao Li wrote:
-> In the trylock path of refill_obj_stock(), mod_objcg_mlstate() should
-> use the real alloc/free bytes (i.e., nr_acct) for accounting, rather
-> than nr_bytes.
+On Thu, Feb 26, 2026 at 04:31:39PM -0800, SeongJae Park wrote:
+> On Thu, 26 Feb 2026 18:26:18 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 > 
-> Fixes: 200577f69f29 ("memcg: objcg stock trylock without irq disabling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Li <hao.li@linux.dev>
+> > Add thin wrappers around zone lock acquire/release operations. This
+> > prepares the code for future tracepoint instrumentation without
+> > modifying individual call sites.
+> > 
+> > Centralizing zone lock operations behind wrappers allows future
+> > instrumentation or debugging hooks to be added without touching
+> > all users.
+> > 
+> > No functional change intended. The wrappers are introduced in
+> > preparation for subsequent patches and are not yet used.
+> > 
+> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
+> >  MAINTAINERS               |  1 +
+> >  include/linux/zone_lock.h | 38 ++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 39 insertions(+)
+> >  create mode 100644 include/linux/zone_lock.h
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 55af015174a5..61e3d1f5bf43 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16680,6 +16680,7 @@ F:	include/linux/pgtable.h
+> >  F:	include/linux/ptdump.h
+> >  F:	include/linux/vmpressure.h
+> >  F:	include/linux/vmstat.h
+> > +F:	include/linux/zone_lock.h
+> >  F:	kernel/fork.c
+> >  F:	mm/Kconfig
+> >  F:	mm/debug.c
+> > diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
+> > new file mode 100644
+> > index 000000000000..c531e26280e6
+> > --- /dev/null
+> > +++ b/include/linux/zone_lock.h
+> > @@ -0,0 +1,38 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef _LINUX_ZONE_LOCK_H
+> > +#define _LINUX_ZONE_LOCK_H
+> > +
+> > +#include <linux/mmzone.h>
+> > +#include <linux/spinlock.h>
+> 
+> I'm bit worried if I will think this as a file for another general locking, not
+> the mm specific one.  I hence think renaming it to more clearly saying the
+> fact, say, mmzone_lock.h, might be less confusing.  Or, putting things in
+> mmzone.h might also be an option?  What do you think?
 
-Oops. Yes, I suppose the contended case is quite rare (this is CPU
-local), so I'm not surprised this went unnoticed for so long.
+Thanks for the feedback, SJ.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Good point. I agree the current name looks too generic. Putting it into
+mmzone.h would further overload that header, so renaming zone_lock.h to
+mmzone_lock.h seems like the clearest option.
+
+I'll make that change in v4.
+
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
 
