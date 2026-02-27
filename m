@@ -4,110 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A892FD7F91
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 10:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D35DFD7F90
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 10:55:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AE5B6B0005; Fri, 27 Feb 2026 05:47:50 -0500 (EST)
+	id 26CB56B0005; Fri, 27 Feb 2026 05:55:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 385B36B0088; Fri, 27 Feb 2026 05:47:50 -0500 (EST)
+	id 219E76B0088; Fri, 27 Feb 2026 05:55:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2847F6B0089; Fri, 27 Feb 2026 05:47:50 -0500 (EST)
+	id 0EF1D6B0089; Fri, 27 Feb 2026 05:55:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D8EA6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:47:50 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A8636BA3D5
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:47:49 +0000 (UTC)
-X-FDA: 84489911058.27.E444885
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D962C1A000B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:47:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=H9pzLPx9;
-	spf=pass (imf19.hostedemail.com: domain of 3UXahaQgKCBg7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3UXahaQgKCBg7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EBCCE6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 05:55:24 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A221596E8
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:55:24 +0000 (UTC)
+X-FDA: 84489930168.13.9372225
+Received: from mout.perfora.net (mout.perfora.net [74.208.4.194])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5E15F180002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:55:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ziswiler.com header.s=s1-ionos header.b=kvaOnlAQ;
+	dmarc=pass (policy=none) header.from=ziswiler.com;
+	spf=pass (imf06.hostedemail.com: domain of marcel@ziswiler.com designates 74.208.4.194 as permitted sender) smtp.mailfrom=marcel@ziswiler.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772189722; a=rsa-sha256;
+	cv=none;
+	b=wuRgkVCSTHZAuPy5Z109OTmOu+jl/dMCVkQVb0X08rK5+wW4gUwrZo5ZqjIfSdOY4IxBZu
+	0MnoZrd4qG1+d5SGkU0B5I/5dfdhguBOBXoRRburQD2o0dS/mspGbpC9Eif1YVBPWb4efH
+	VsOicv4/aLVHlZmgeRC9lcJYyvouyPM=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ziswiler.com header.s=s1-ionos header.b=kvaOnlAQ;
+	dmarc=pass (policy=none) header.from=ziswiler.com;
+	spf=pass (imf06.hostedemail.com: domain of marcel@ziswiler.com designates 74.208.4.194 as permitted sender) smtp.mailfrom=marcel@ziswiler.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772189268;
+	s=arc-20220608; t=1772189722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MIZdtDXTxmY5bMoPqmkr1xnlX1DtFVenM/eaR2GkvVM=;
-	b=bTyZ06p+4dORrYszbUXv6CqLwEbRjHxbMpDPJEe768d2VykT2xBuoGFjjN6FUjbNiJKVi+
-	MMIehiRh6llrkDw4HYZqCrKOBUN4rPXc9dHs8E81zLBIj3ubQIM2q4KFRCvURBWaFAS0ik
-	A2zBz70l3V7gpmskDNdZ73T0rpLp8VI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=H9pzLPx9;
-	spf=pass (imf19.hostedemail.com: domain of 3UXahaQgKCBg7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3UXahaQgKCBg7y08AyBz4CC492.0CA96BIL-AA8Jy08.CF4@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772189268; a=rsa-sha256;
-	cv=none;
-	b=R7//3GCer0q0I/nQrzzOivA13gpJVcUBlwWmNgodSjFev1vwRVWAzTwRJI+7QY0y0NhlxP
-	0WVFq+h2MA2bnqELLvtU3ogwdCGvZknzliTSPJj46+2Awnipj4qsdx/CNNPgG7zAv00b76
-	5uB3SjVpzBX3baWemmvGNBQbhDi1KPU=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48379489438so18521835e9.2
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:47:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772189266; x=1772794066; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MIZdtDXTxmY5bMoPqmkr1xnlX1DtFVenM/eaR2GkvVM=;
-        b=H9pzLPx9QHIPySGtxQUqZJNxnVIoDnJkE8FGCAQJzUowPCaY900IXs1EMOGmG6Kg3i
-         UIihz0OYQGTyBuHTWXJIqMM+Ee1sm+gn3+G9htqk4/rbr4NGkTKhzzQR75lpHjxfu3WS
-         x1+kNneW1imTUl49p8DAofO7Y7Dtgb70a85EE7wpxhHx49KiGJop9Zuw/JWvvNR16Zxl
-         T9frQv3dInMm31yt8jPKzsQRPfP/nPAjLfvviLVT4BunAa9ODuVZRg0xEFxIztQ14+o7
-         AM4z7Pv1N6qJq5OpRJMGTg6gTOKuvz1NQz0WjCNgRAwe8kWzdGIS8sWa4k0BTeacG9B0
-         Va0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772189266; x=1772794066;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MIZdtDXTxmY5bMoPqmkr1xnlX1DtFVenM/eaR2GkvVM=;
-        b=GL2LiPMuYwfUhk+2KtZMrktwB/WU4Lh0PliE/NN8eEuXQiUP6Cltc5mCJTdsvFW1IX
-         mdBtKS+OrDmTVqrXCDtVL/9ny+gEqxLdNScFqHZezkSMPpFfT6ofcQDSriWbFLLsJZWj
-         yZR5A3YdLvtiokmXgatbSnAtpKMAH9yj5S0wwt4sldwVKMzW4uN81YdJVAnrgJ0tpMUr
-         NOxThpDWAWXbF5ORCLT5HjOyeDxEDlqP7B3KKZCv61wbA+VOQ9d44LQ1PyYnD6rSk05f
-         5qMQoZRFE47I/pMsMow7IYq50W6ExsVdU7Ub/GXs+CHD0NxYlhj2u40mEnbUGS9R+hWY
-         CS1w==
-X-Gm-Message-State: AOJu0YyFbQdPP1pjh9gkK2i9H4CEECW/yrKsnD2xvsoWXUvIXtfJ7nvq
-	IS6gCJrnwwboYAPA0HTZp28ZPOWMNBPYXeSUng7tCpbHrSIST3Y61XXEjqYM3WgBiT5BYsHUM5K
-	jiqSQlEpaaBmNkg==
-X-Received: from wmjf8.prod.google.com ([2002:a7b:cd08:0:b0:483:291c:7f23])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:6447:20b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-483c9ba7e34mr24732745e9.3.1772189265937;
- Fri, 27 Feb 2026 02:47:45 -0800 (PST)
-Date: Fri, 27 Feb 2026 10:47:45 +0000
-In-Reply-To: <20260225-page_alloc-unmapped-v1-4-e8808a03cd66@google.com>
-Mime-Version: 1.0
-References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com> <20260225-page_alloc-unmapped-v1-4-e8808a03cd66@google.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DGPONXAKU7ZG.11C48FZY9OCPT@google.com>
-Subject: Re: [PATCH RFC 04/19] x86/mm: introduce the mermap
-From: Brendan Jackman <jackmanb@google.com>
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>
+	bh=JyFGZnhkCDmplKwplIYatSCSWGTAEQ+3aRFjhHnYafc=;
+	b=5vigiHfChESRkXlwtnLutQ069iTnXtiasIvdteXkQXyM7HptCNkGADpbvg5jk/cFIoWMqK
+	aPUYilKE1lb6yL9V045kHu1LyJVG4Zx+4H/1K5VKGmdf3ZfwopdS44y0FcBYYF///rzBuc
+	pIZEfUvdvPMLg1NZJLAUv0muR9L+mwU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziswiler.com;
+	s=s1-ionos; t=1772189713; x=1772794513; i=marcel@ziswiler.com;
+	bh=JyFGZnhkCDmplKwplIYatSCSWGTAEQ+3aRFjhHnYafc=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=kvaOnlAQi+lwkujcaUXQnO6rygGM08xpCHqocpHdxZAq+EUe54z6NtSg4kN8OAcu
+	 O7Rclntg1NwDbiWloFpfvnQLASw8vkGN79sZZI+LiIO1uzjHG+q48X/GAL98xcUeO
+	 Ne4p6js+PxJ15UHUkpoeUqiZ6OPQ11KsWA8YhUiALyItOrNvSPfW0E9n4yKyQh4gr
+	 iPYdQMN3BkE+s4rk8xSlDB45MpNhTk3aEeZ7of2CT6WTkuZBcudMvJjcz3sKOrsGd
+	 /ErBldEDbPwKKGBoEi98UU5jpWe88JFzHvzw4rcidh3Lluka4iaeY4CiNkKcbzGzz
+	 An4df2cAcC2VnvnZ3Q==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelay.perfora.net (mreueus002
+ [74.208.5.2]) with ESMTPSA (Nemesis) id 0MfFYy-1wKaBm3H4s-00XVO9; Fri, 27 Feb
+ 2026 11:55:13 +0100
+Message-ID: <d4e44b3659859e8967a1cee7cbbeeeeb399a4536.camel@ziswiler.com>
+Subject: Re: [PATCH v3 00/22] riscv: Memory type control for platforms with
+ physical memory aliases
+From: Marcel Ziswiler <marcel@ziswiler.com>
+To: patchwork-bot+linux-riscv@kernel.org, Samuel Holland
+	 <samuel.holland@sifive.com>
+Cc: linux-riscv@lists.infradead.org, palmer@dabbelt.com, pjw@kernel.org, 
+	akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org, 
+	devicetree@vger.kernel.org, surenb@google.com,
+ linux-kernel@vger.kernel.org, 	rppt@kernel.org, mhocko@suse.com,
+ conor@kernel.org, lorenzo.stoakes@oracle.com, 	krzk+dt@kernel.org,
+ alex@ghiti.fr, kernel@esmil.dk, robh+dt@kernel.org, 	vbabka@suse.cz,
+ Liam.Howlett@oracle.com, apw@canonical.com, 	dwaipayanray1@gmail.com,
+ joe@perches.com, Julia.Lawall@inria.fr, 	lukas.bulwahn@gmail.com,
+ nicolas.palix@imag.fr
+Date: Fri, 27 Feb 2026 11:54:54 +0100
+In-Reply-To: <176613180179.3684357.1299267450443574866.git-patchwork-notify@kernel.org>
+References: <20251113014656.2605447-1-samuel.holland@sifive.com>
+	 <176613180179.3684357.1299267450443574866.git-patchwork-notify@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (by Flathub.org) 
+MIME-Version: 1.0
+X-Provags-ID: V03:K1:UUplK9QahItW7favaUm4Q5d915hat+h5jRewnwaVbhTw3M+iOKz
+ NivRKam2ukd6XrGztVMAx7ufnqFaS0o0H8sAT8En/yEU0449jeV6Yxky+IHFvxmzpiIHgqc
+ e+oTWRBAZrV/b9JQcTj37R2Sw37SqeYcqEsP05M7zjZyx42P7HmWzbZLugPhPEWO73Nwlya
+ she/PX5fYi+oGB3VOdNGg==
+UI-OutboundReport: notjunk:1;M01:P0:+OThauVM/dQ=;T3PrC/aB3MTcKDZ+nVQmVOqdEzy
+ N2dU66/j0l3knCkOxj2rAa+UJg/YnO5J1PIzW6lESBJD6kbcdblu29UNdIdexnMyMo5TD7mLi
+ xESeyHnrqswHRBgoTrLyF4z8EkmVVcf159QIUGcYwNsoHmlt2GqMJpl3Jlfq6X6vUoeCvW4Qw
+ EpGJ8jHXrd/cdgRe0UTOeoG8ItQxw58irA8JBh3osLS3KQoaJ7jVaFGN3ClT65DPL+e4q+iwU
+ G7h6mnG1tsz6MXmFgemKc/9RFQ8XiJYXoQLHLr5+8cStFq2o+hNptRm5XB1XIeN8d/5CLPapC
+ PHUyXxQAsqvWlNydi2rKGqFDL3qXSV2RQLmWH6PgEtDKnOE7BwEsmFyeY4U3GBeBc+7ND5voB
+ EymOExcGAtoMaudGa3ODaRMiXG+zwzfDm15svkSNXeQU+vo8H+8lgzRtJNVLJdeQTiR3mTCOF
+ 7CscIhpLNsE/hHOd2Rch2OboqBLstKm8IbvCsKvXSIIuzM6LwAbOVAryP7H5z8hu9ACpF/w+d
+ TzQJXjoTKtExhIns58/uDKt/FtqAr0HjPbmyOslIxYKWckkY9qq3aviEEOXzas6z7eFy6HHaQ
+ hDnWevq1H9cXkwhc2iH0/U6TRNP48auqCeXyX+oaDv5P5pFU0AcFkmfKydm5UzBS3hGDGrZI2
+ nZx6pwYAv5X04i6sc+vZb7J+WJg9S8xKErLFlnBxYU8g+lrl2I8cc3X/TUPz5rLO+EMBMpGWM
+ KY4yMDBgChMOWfyFl4ju+copjhjJM+91bO+Y4SytOJ9sLq3JwWxuoQwJNFkQ8tt9ybvhItoMH
+ DPmzdUlYciRUuQHVZAzNO6mXRKtov+xLyhVWnookBjNUUEBBI33VkoXKKphBhsJsVetJtkwhM
+ byWhnSmGkTn7ok6pc9PC35OyJBiBOQN40yOfRj2AlKc7vfgaGqdwOtjMCGEjF/WDu6DZkrBt1
+ zYcj4+M1OWxoy4+FZChdsX1auRtC7hXIKpzIKZcVyzlbbj9EOW/wifIbXzXy1f1+1eWsji9FG
+ EjnDC2UfmcxsrQOueVdfMDddtKauvjq0kRl3OeDfUZMyhbAibXgCIjPagD1uXX3W7JDUIcl4b
+ a1pPFbRPXgzxeVSb2iwy47sxyDrIOfNXsadHHiqKOl8x3p/CzRMo6ljG4tKtE/mG9/WdUvpLW
+ 9uPnvImuZ80X20rqPEqha2mMSy97lkrQsh0Oc8u4bx2IH/WltVVox1mXfcLPrJrj9uBBL1iR/
+ jLtm7wyoOjakrucwgWhn0xsbBetL1xFlMPWS2dFvE+fnfgnti8e43NLDobz35JtA/X/RqZjgg
+ P5mEyZdvdy6du3mbJuh1awV8wkGjXjFWoWV7IkcP4vrdzMPJYoBBLF8kuRItqQXJu8KbrTWOm
+ to/3YCUwAlnXrM/JUQNMsKK9VOem1Q+iQXIiSwB7vxcn+CPwM+jteLn4LJ2YwtKTrw54BTd2h
+ NBFxAFjRtRO48jN7+Rx5qGPd6tGGztTEEeFX6AC+yOxzNNFh0afUEOBaynVGMftjHK8Tp+0Ds
+ GIRShmHNQoCBlDUCU11nTd13FkikovWXCQCqLBiBe/h3/XV58rGjtuuv6HezhlDQNA0oT7e+p
+ Sq3KKjkzU9RuE4lFbHHkHFdg3q0CNE61wXE6QKU+Ue108FZt8pSZZsWIui2pg9mGA5j6rMzfi
+ Z4GI4rJ8F/3zTi3qyYNxmEREKnbcSah2nJ9OGhkbAF0PzwAm9DdaRx7ZEqMwoF4qRxOc2lz2C
+ 1vAvmQX1rVRN0HtJM1f92+Oy90sRnGKBMTqQBU9MH/GYOGZ/rUL+Z9Q0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5E15F180002
+X-Stat-Signature: qkkg8y7ikxog7hwniyjidp7chdzo1omx
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D962C1A000B
-X-Stat-Signature: g69xfoi9c1tjte1ky8dpfdfdy4mnbwe7
-X-HE-Tag: 1772189267-747915
-X-HE-Meta: U2FsdGVkX19WF1u+GIVNW8XVb4UJ9XY9BBy+HiJBgLNw2znoEZqQn8VlVp6vohrwRozaKCYaARIXmXEqa+3RHotFWfUBCqCNUI5tJpmrB68ekATAqWtRS+vWUojzIGqy+q8l16aHbtZsHaUXb0oLTdGlf8D/qh211qsuHIlWoF/0hrDLDewQt4LObsb+RQCFFsunHT1UrMIYV5c1ZX31kHj07VcXCuYcMuudTVG6wVob1dnMiXyj/nWcDi1/DHLUj8iHV+EAjm5KfTmk1bI+5kohKgUHma/kX2L/+GCx38tanFVuvknl+EigKs6OPv1IAEyJKHUKtJ8SBHbXZoJv3NJejMg+oPh0Z4lIxshRY1APB6ixprOk9R7xsLKNLjqteExTty2laS5U8esSpgGCm1ZpYAYMm0GN3zbskXaeH8nz5zOzWrrycGXgEwJnQBF+fC6JBKdENxd9/hPwhAq5V4YImQkoPObn+hk20y3OHm0l+wbrQRWIRmivBF/Hq5STOZ7iy/Ub24dUtZmy/ueZjuRz3Rp1qwqJ1RrExVaTp5uoB7ciZiV2AnhhNmDqu+LJYe+CLZzGrR4lJIhlfwzeRyULKgh3VcITzC/PqwNTpSkp86sDcID0NDVXCei2XT68Ym1oQSkOQ3bsLkI9uP+EEJBUJxPfC25AWZ2KsTqhq3D8d5axzYWOvDDWkptY0Yt8PHNLXOlIwCeybadAoL2WRcGe8iyHvX3pVdzsAVJjnwK8UvhFkK0HFUieH18WA5eehz0DSWf3PU/CVwS+5nGQ2GXBEc/iM6oRHXIOo/OztbON65nkJz67nUs0azdrrrbtcZKCwvw6Jro8hndzLXpstRAvB5YhRLPWBEv+ykrh0niqNkfg0xrWBCNTAPWLSf7Fy1j4CjPv29U6CWetFyH0UDcQRdzD708m65TZvUq1JhWBjDnexq2VTmqGKVDCYaQht8zQpkzIAflDggMPCON
- TtIzvg/O
- 1vns5C+mhGjcBFRKbncJEt7aDdEf2deddZVR6PDNK622OWlaKHjk/t/KYueOi0qvb9ud+iWIFHpZsdBFgVYysYSezp6Pcff/mIKFHdTkOUSA62o3K5LiCQJlgIXyvpeyg7Qy7ZuXALy/yZ0kETzB/2xq8nNU2KjZsi/JVsjFFiY1tP5vOjBOlYL0aVsVJ3xD3ChaCkTWOhrA5CMy/WEXFn7IpGdtb+I04hN3M2fhL/JefIM+jBKtAJM1Y9ykrZuPVw8Ai6T+Ayx/om3dzJgkcLFFteXgkBedmcylBCRw/P6xvUvxksKqR+hgP0mPWGG6symK2DIl0N5wgrV5rc/AfSaSjJCdlNXfpKJ5q5Yaf67fYbunaBIt91dI0FQiUGab84S7y3sxY5A9OYMhmFoTQUILRAb4VrQIUZzp5vGkSK3G6o+0lepGJLSn4B2cM+7ppVNK11r3llF0dUHbrkIwKFCzPKERSdJz58uP5OB3AgThiKSaMlyiBts3lccOAEq4fkHh7RjsHJbE7ydkjKY+QLWUbBZXfCobp4iIAMpit0XjJefxfGsxiy8+8LBIXo+9BHjvARpq5us8WnKrnjg7gY3pc4YBk2nYe7dEoYID9N5Vpf33vb7hYXaIK6SOdTKpROMk+VTywmBTrhgpy2LnezlxDktssk+rIpSnU
+X-HE-Tag: 1772189722-928343
+X-HE-Meta: U2FsdGVkX18zRQD+uOiUR/NB7n5qlk5zTD0LYnDlYBd/9psdYKBjmDadqh9rsQCV73se3uktxkV+F//DDXH83+O7GDqICfQbVLdzEXCv8NOXbi4lmPfz2DD5peaPLmKgows33oHfPRzaiqyxdhBxbTA+/YUtisyhhmmrzcRlBVbYgS2JRb9NlAC0LlyCoZsiuuOzmtqZqjnnajBs6dI/jH7T6KmwWOUsg5nuupK/llmcIndg6cVP2YAhtWNoslrpvfuNoFsTENDo4uq9xluCmyu431psi4xw5ABZhlA/gKecF6cvetNt9reDwD8WSudptp/EyMJkR6s4+B6HwwlSVHM1EQc90oUCCsOK392dyx1Vn/vcBaiDAaIHXdutsiGCvTtByiZxMV5fn11INQHJMKUuKDUoAzZIFexeZLAGhAr9J8iVxPymnFrnydWuCNGMUfrbUTLkrcU0wSx1U2kl6J6CLqPl/IUR08cwRjl2kbW8N+2xWEGhu6cM3tfuFe+XFiKp+KE7Srtr5J6k8E5xLHxZt68og4kybPIymphnWnr5qWRxgskylEB+WLTd5ccV07RH6/Yf0wkOftILTWAMT3K0J5jbd5YpxE2aEiDow0quQe5hrUESLza/P7OLsZBxzxzHlLqwvgvpPka+pc3aP377lpVhmeNa7UfAUqVD1Xqd53TAlWI+I2xjZh0ZDXyuiNsliZtdQQAiND2k7mQ6t/1um7bdBoqaYEOXr6qYuQ0ANyiYi3pTY6dCH38nLEnzsKBHtSSfqR2f9mChy/cpOVN6trPfuzvmT8xpc+TZPgn0+SgF/YEQwyQ2tuK+w7cm6LE5NDpJLEVT3Eoi34F0q1jeYwTfRRiOjXXiKLs4SmlB6hsdUan09VIm5+iedN+3a2ApXAJqmBem2dCrLrZsKRxnADDGn+LDzfq8uXEmBcCC2ST2Sh8Lmv51U0J24bvkWWzlwEpr0uBoCIlFfi7
+ EDfb4lle
+ Bd6HrIu+UDit8/ohKdNlifzpYZtvQrwGgkQhoIWKEx3mfLARTLmBauEZ6wtzQpZOaklcq5P35gNKx3jE/yh3hFq8oV0fANBxNoaAxwCTgtnHrCdATv6uxWTYG5xz/WHSQn5dOWjXfidD4SifkD/vJtBClY44mAVX9xlGUE2qo0oOrEieQVTx+vkfJxTLL8ozFgJHmYxw2D0aLtqXtYPey/ceYGBlAQ67ikvOo8ZrZM+iSwWZHzLDK8ySIp+qVQP4wsGt9/6u5nua7JJUIp6RXUQCQ8vvkEc/S2zu2H0inGg009BEjupUcoCIUkvPqvix5c2WNen70q1JCrKuFjn+JyTkB9roWhJAmoRik13i2HCPOUTda8ksglM9LMk9FhX4tEsNm5N1g8Fg0T9UtbtFmQHrSbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,230 +134,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Relaying some code review from an AI that I wasn't able to run before
-sending...
+Hi Samuel
 
-(This isn't the AI's verbatim output I'm filtering it and rephrasing).
+On Fri, 2025-12-19 at 08:10 +0000, patchwork-bot+linux-riscv@kernel.org wro=
+te:
+> Hello:
+>=20
+> This series was applied to riscv/linux.git (fixes)
+> by Andrew Morton <akpm@linux-foundation.org>:
 
-On Wed Feb 25, 2026 at 4:34 PM UTC, Brendan Jackman wrote:
+Any idea what happened to patches 04-22 as I don't think anything other tha=
+n patches 01-03 ever got applied
+anywhere. Or am I missing anything?
 
-> +
-> +/* Call with migration disabled. */
-> +static inline struct mermap_alloc *mermap_alloc(struct mm_struct *mm,
-> +						unsigned long size, bool use_reserve)
-> +{
-> +	int cpu = raw_smp_processor_id();
-> +	struct mermap_cpu *mc = this_cpu_ptr(mm->mermap.cpu);
-> +	unsigned long cpu_end = mermap_cpu_end(cpu);
-> +	struct mermap_alloc *alloc = NULL;
-> +
-> +	/*
-> +	 * This is an extremely stupid allocator, there can only ever be a small
-> +	 * number of allocations so everything just works on linear search.
-> +	 *
-> +	 * Allocations are "in order", i.e. if the whole region is free it
-> +	 * allocates from the beginning. If there are any existing allocations
-> +	 * it allocates from right after the last (highest address) one. Any
-> +	 * free space before that goes unused.
-> +	 *
-> +	 * Once an allocation has been freed, the space it occupied must be flushed
-> +	 * from the TLB before it can be reused.
-> +	 *
-> +	 * Visual example of how this is suppose to behave (A for allocated, T for
-> +	 * TLB-flush-pending):
-> +	 *
-> +	 *  _______________ Start with everything free.
-> +	 *  AaaA___________ Allocate something.
-> +	 *  TttT___________ Free it. (Region needs a TLB flush now).
-> +	 *  TttTAaaaaaaaA__ Allocate something else.
-> +	 *  TttTAaaaaaaaAAA Allocate the remaining space.
-> +	 *  TttTTtttttttTAA Free the allocation before last.
-> +	 *  ^^^^^^^^^^^^^   This could all be reused now but for simplicity it
-> +	 *                  isn't. Another allocation at this point  will fail.
-> +	 *  TttTTtttttttTTT Free the last allocation.
-> +	 *  _______________ Next time we allocate, first flush the TLB
-> +	 *  AA_____________ Now we're back at the beginning.
-> +	 */
-> +
-> +	if (use_reserve) {
-> +		if (WARN_ON_ONCE(size != PAGE_SIZE))
-> +			return NULL;
-> +		lockdep_assert_preemption_disabled();
-> +	} else {
-> +		cpu_end -= PAGE_SIZE;
-> +	}
-> +
-> +	if (WARN_ON_ONCE(!in_task()))
-> +		return NULL;
-> +	guard(preempt)();
-> +
-> +	/* Out of already-available space? */
-> +	if (mc->next_addr + size > cpu_end) {
-> +		unsigned long new_next = mermap_cpu_base(cpu);
-> +
-> +		/* Would we have space after a TLB flush? */
-> +		for (int i = 0; i < ARRAY_SIZE(mc->allocs); i++) {
-> +			struct mermap_alloc *alloc = &mc->allocs[i];
-> +
-> +			/*
-> +			 * The space between the uppermost allocated alloc->end
-> +			 * (or the base of the CPU's region if there are no
-> +			 * current allocations) and mc->next_addr has been
-> +			 * unmapped in the pagetables, but not flushed from the
-> +			 * TLB. Set new_next to point to the beginning of that
-> +			 * space.
-> +			 */
-> +			if (READ_ONCE(alloc->in_use))
-> +				new_next = max(new_next, alloc->end);
-> +		}
-> +		if (size > cpu_end - new_next)
-> +			return NULL;
-> +
-> +		mermap_flush_tlb(cpu, mc);
-> +		mc->next_addr = new_next;
-> +	}
-> +
-> +	/* Find an alloc-tracking structure to use */
-> +	for (int i = 0; i < ARRAY_SIZE(mc->allocs); i++) {
-> +		if (!READ_ONCE(mc->allocs[i].in_use)) {
-> +			alloc = &mc->allocs[i];
-> +			break;
-> +		}
-> +	}
-> +	if (!alloc)
-> +		return NULL;
+For what it's worth I carried an updated patch set through up to v6.19.4 [1=
+] and latest -next, which at least
+on EBC77 seems to work fine.
 
-Oops, I forgot to account for @use_reserve here. The alloc-tracking
-structures should have a reservation like how the virtual address space
-does otherwise allocations can fail where they aren't supposed to.
+Thanks!
 
-> +	alloc->in_use = true;
-> +	alloc->base = mc->next_addr;
-> +	alloc->end = alloc->base + size;
-> +	mc->next_addr += size;
-> +
-> +	return alloc;
-> +}
-> +
-> +struct set_pte_ctx {
-> +	pgprot_t prot;
-> +	unsigned long next_pfn;
-> +};
-> +
-> +static inline int do_set_pte(pte_t *pte, unsigned long addr, void *data)
-> +{
-> +	struct set_pte_ctx *ctx = data;
-> +
-> +	set_pte(pte, pfn_pte(ctx->next_pfn, ctx->prot));
-> +	ctx->next_pfn++;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct mermap_alloc *
-> +__mermap_get(struct mm_struct *mm, struct page *page,
-> +	     unsigned long size, pgprot_t prot, bool use_reserve)
-> +{
-> +	struct mermap_alloc *alloc = NULL;
-> +	struct set_pte_ctx ctx;
-> +	int err;
-> +
-> +	if (size > MERMAP_CPU_REGION_SIZE || WARN_ON_ONCE(!mm || !mm->mermap.cpu))
-> +		return NULL;
-> +	if (WARN_ON_ONCE(!arch_mermap_pgprot_allowed(prot)))
-> +		return NULL;
-> +
-> +	size = PAGE_ALIGN(size);
-> +
-> +	migrate_disable();
-> +
-> +	alloc = mermap_alloc(mm, size, use_reserve);
-> +	if (!alloc) {
-> +		migrate_enable();
-> +		return NULL;
-> +	}
-> +
-> +	/* This probably wants to be optimised. */
-> +	ctx.prot = prot;
-> +	ctx.next_pfn = page_to_pfn(page);
-> +	err = apply_to_existing_page_range(mm, alloc->base, size, do_set_pte, &ctx);
+Cheers
 
-This takes a PTE lock, and we may have preemption off here, so this may be
-broken on PREEMPT_RT? Haven't checked. (Maybe I can just test this by
-running it with PREEMPT_RT and lockdep enabled?)
+Marcel
 
-If that's indeed broken, this is yet another point to discuss in about
-requirements for a pagetable library [0]. The lock is not needed at all
-here - we need a way to modify pagetables that lets you take advantage
-of higher-level synchronization.
+[1] https://github.com/riscv/meta-riscv/pull/602
 
-[0] https://lore.kernel.org/all/20260219175113.618562-1-jackmanb@google.com/
-
-> +	if (err) {
-> +		WRITE_ONCE(alloc->in_use, false);
-> +		return NULL;
-
-Forgot migrate_enable().
-
-(Is there a way to prevent this with the lovely new
-__attribute__((cleanup)) magic?)
-
-> +	}
-> +
-> +	return alloc;
-> +}
-> +
-> +/*
-> + * Allocate a region of virtual memory, and map the page into it. This tries
-> + * pretty hard to be fast but doesn't try very hard at all to actually succeed.
-> + *
-> + * The returned region is physically local to the current mm. It is _logically_
-> + * local to the current CPU but this is not enforced by hardware so it can be
-> + * exploited to mitigate CPU vulns. This means the caller must not map memory
-> + * here that doesn't belong to the current process. The caller must also perform
-> + * a full TLB flush of the region before freeing the pages that have been mapped
-> + * here.
-> + *
-> + * This may only be called from process context, and the caller must arrange to
-> + * first call mermap_mm_prepare(). (It would be possible to support this in IRQ,
-> + * but it seems unlikely there's a valid usecase given the TLB flushing
-> + * requirements). If it succeeds, it disables migration until you call
-> + * mermap_put().
-> + *
-> + * This is guaranteed not to allocate.
-
-This one isn't from AI, but I just realised that's a pretty confusing
-thing for an allocator to say. It should say it's guaranteed not to call
-the page allocator. (This is important coz I want to use it from the
-page allocator).
-
-> + *
-> + * Use mermap_addr() to get the actual address of the mapped region.
-> + */
-> +struct mermap_alloc *mermap_get(struct page *page, unsigned long size, pgprot_t prot)
-> +{
-> +	return __mermap_get(current->mm, page, size, prot, false);
-> +}
-> +EXPORT_SYMBOL(mermap_get);
-> +
-> +/*
-> + * Allocate a single PAGE_SIZE page via mermap_get(), requiring preemption to be
-> + * off until it is freed. This always succeeds.
-> + */
-> +void *mermap_get_reserved(struct page *page, pgprot_t prot)
-
-Oops, that should return mermap_alloc *.
-
-> +/* Clean up mermap stuff on mm teardown. */
-> +void mermap_mm_teardown(struct mm_struct *mm)
-> +{
-> +	int cpu;
-> +
-> +	if (!mm->mermap.cpu)
-> +		return;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		struct mermap_cpu *mc = this_cpu_ptr(mm->mermap.cpu);
-
-Oops, this should be per_cpu_ptr(..., cpu) or whatever it is.
+> On Wed, 12 Nov 2025 17:45:13 -0800 you wrote:
+> > On some RISC-V platforms, including StarFive JH7100 and ESWIN EIC7700,
+> > DRAM is mapped to multiple physical address ranges, with each alias
+> > having a different set of statically-determined Physical Memory
+> > Attributes (PMAs), such as cacheability. Software can alter the PMAs fo=
+r
+> > a page by selecting a PFN from the corresponding physical address range=
+.
+> > On these platforms, this is the only way to allocate noncached memory
+> > for use with noncoherent DMA.
+> >=20
+> > [...]
+>=20
+> Here is the summary with links:
+> =C2=A0 - [v3,01/22] mm/ptdump: replace READ_ONCE() with standard page tab=
+le accessors
+> =C2=A0=C2=A0=C2=A0 https://git.kernel.org/riscv/c/11119b19f62d
+> =C2=A0 - [v3,02/22] mm: replace READ_ONCE() with standard page table acce=
+ssors
+> =C2=A0=C2=A0=C2=A0 https://git.kernel.org/riscv/c/c0efdb373c3a
+> =C2=A0 - [v3,03/22] mm/dirty: replace READ_ONCE() with pudp_get()
+> =C2=A0=C2=A0=C2=A0 https://git.kernel.org/riscv/c/b4e53984f240
+> =C2=A0 - [v3,04/22] perf/events: replace READ_ONCE() with standard page t=
+able accessors
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,05/22] mm: Move the fallback definitions of pXXp_get()
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,06/22] mm: Always use page table accessor functions
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,07/22] checkpatch: Warn on page table access without accesso=
+rs
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,08/22] mm: Allow page table accessors to be non-idempotent
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,09/22] riscv: hibernate: Replace open-coded pXXp_get()
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,10/22] riscv: mm: Always use page table accessor functions
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,11/22] riscv: mm: Simplify set_p4d() and set_pgd()
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,12/22] riscv: mm: Deduplicate _PAGE_CHG_MASK definition
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,13/22] riscv: ptdump: Only show N and MT bits when enabled i=
+n the kernel
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,14/22] riscv: mm: Fix up memory types when writing page tabl=
+es
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,15/22] riscv: mm: Expose all page table bits to assembly cod=
+e
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,16/22] riscv: alternative: Add an ALTERNATIVE_3 macro
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,17/22] riscv: alternative: Allow calls with alternate link r=
+egisters
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,18/22] riscv: Fix logic for selecting DMA_DIRECT_REMAP
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,19/22] dt-bindings: riscv: Describe physical memory regions
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,20/22] riscv: mm: Use physical memory aliases to apply PMAs
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,21/22] riscv: dts: starfive: jh7100: Use physical memory ran=
+ges for DMA
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+> =C2=A0 - [v3,22/22] riscv: dts: eswin: eic7700: Use physical memory range=
+s for DMA
+> =C2=A0=C2=A0=C2=A0 (no matching commit)
+>=20
+> You are awesome, thank you!
 
