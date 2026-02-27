@@ -4,133 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 628FFFEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C72A41039893
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:33:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6BAB6B00E9; Fri, 27 Feb 2026 15:32:01 -0500 (EST)
+	id 3FE576B00EB; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2D196B00EB; Fri, 27 Feb 2026 15:32:01 -0500 (EST)
+	id 3BF146B00ED; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A18776B00EC; Fri, 27 Feb 2026 15:32:01 -0500 (EST)
+	id 2FF416B00EE; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D7386B00E9
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:32:01 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 347F51603AC
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:32:01 +0000 (UTC)
-X-FDA: 84491383242.14.E4D9EC6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9EAF2C0012
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:31:59 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kyuHOhzj;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1EE236B00EB
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E56FC140860
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:33:08 +0000 (UTC)
+X-FDA: 84491386056.23.B58D637
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5B89D40006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:33:07 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyjNx/Se";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772224319;
+	s=arc-20220608; t=1772224387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HAcmYxQyGIzXk3g2T2QkeEz1xqCTs6mD3orFZBdIEmU=;
-	b=7cF1BOes8xcXEbNcI8hrqht2HBUwR3FfWqNVXW9Y0T2ou381UU9mB29e2KlihzMFhjSPkL
-	ZA9iIDo+c4WvbLpRtDGe7MWgsZrd9qclbBlhhIx4GUV8kdSy486UKQ2+3Cj+2ncoGNRNU0
-	doJyzleNFnuvpTRm86ajw9cdbEqjHNc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224319; a=rsa-sha256;
+	bh=3uekEshW/xKjXBEvusLeqL0JjgByGtsyP7Oc65umvMM=;
+	b=R93Xk+ml/oPYjpXkyfYYP7CEWGdSPizteDEwwRhkSp61EP/xnU7tcEW14QAI0RbQuVJmEO
+	Om0c55KBx2sDii9JY3sDcjy9b4siapltV6jES/15qz3Zn1Ekqv1mespU4TA3J4eBzobCvy
+	pvvd58QrwNG0HsBhxX+wz3/qqkczq0Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224387; a=rsa-sha256;
 	cv=none;
-	b=dqftZRlDwCpHBXdBYRYIWbPcz3zWN11vhN1/lEiN/oy6Rj2I+fVHWp47wUCJH4yVImJiDV
-	9d6rn/lp81AdGjQM6+USZt5qIAnUdnjPDWbjaf9oDmx6UnvgLFzRTCWQRowhiL/4mDWpl3
-	8MIID5vbiSOwuDS2thdS30pGoQpdtK0=
+	b=02nrm8PNDyI9Jy911M4Chq7C5CBCGCBjdZevCtwUPaRZSTm4nSsU6Vby3cz6Ooszt7FiqH
+	pBadRrIDjfTrWqGBT09XIcDaTlpiYUogmvgbeThcOK8SgFaVghnkA+4aTKlUfBsG582wHL
+	tg4qrs3GhhpzgUditV0RqFpbEku4UqU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kyuHOhzj;
-	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyjNx/Se";
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A889F4415A;
-	Fri, 27 Feb 2026 20:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BD0C116C6;
-	Fri, 27 Feb 2026 20:31:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C576E60126;
+	Fri, 27 Feb 2026 20:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51087C116C6;
+	Fri, 27 Feb 2026 20:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224318;
-	bh=GsGJcM5lC5dbmgIT+M4WfJsd6FtHP9AI7W3MvjVlZXE=;
+	s=k20201202; t=1772224386;
+	bh=slkBastChf5NkGimBBG2KdI1m6NFtJss7zAk/GegKbs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kyuHOhzjPeaL9ZBX8v9BFk4Vl1+Z8aFaC9olyQsYhW+BEPn4gG+OirqiS0vjY7wSh
-	 08AMVtHAdfLIukZECBbxqF78N9qGu5FW8Bt5tRmyiQAQYFEw5wxcQuuzR9pqH6WqJw
-	 r3wShM1wgJAs/WfWXNGcQSjs2IlTlepCJqMP4x/V5zu2VMrV5sMU8NMr+KOPjW/OyS
-	 itN52VkP0EjHt7tbTWQfjPdKlfT5854ZDrWUbFljsH2eAU+gk+L6ltqkFxDegpDUJq
-	 GyMKzPup//vrXRRmPfxpL1HVKDjePjl8VyB6YHiKhoq6Y49SPP4z4wQTNnR2bzJ/f2
-	 3gdeO5LHu2EBQ==
-Date: Fri, 27 Feb 2026 22:31:41 +0200
+	b=EyjNx/SeP9lh/TRrToS5vPssRYmhM4HT9p1ZWZKlb0Bfps1aFY3b6ChEAluMcTyYq
+	 3U7EZvChT5nEPWS0froZu+zHpL2hUzCG/FRr3PUBmoB9hGZ+YSbEGTRqSbtjDbJpoX
+	 /q2y6uMhPIYlb3FKpC21qDfAUzWgYxPBSAGneu3BwiVDF0rAUAepOiivNkEZgeF8bk
+	 H0PnBeZPd4QvyYlIqu6qNM7d2zO6ovfkzqhykvPKdrvRNoo7J2XfX8F28TnEEU+D/C
+	 9R/34qGAr4DTM2s/ktGhTON2adcaeWy8ZP9XdZsQzKLrxC0ocrSkeAGoh0kjvh4544
+	 vm2RDzb9nfguA==
+Date: Fri, 27 Feb 2026 22:33:02 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Klara Modin <klarasmodin@gmail.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	Will Deacon <will@kernel.org>, x86@kernel.org,
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 23/29] arch, mm: consolidate initialization of nodes,
- zones and memory map
-Message-ID: <aaH_LVnl8FlERA_r@kernel.org>
-References: <20260111082105.290734-1-rppt@kernel.org>
- <20260111082105.290734-24-rppt@kernel.org>
- <b9527ed4-7a5c-42e9-8814-b276b3741f63@suse.cz>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] mm/hugetlb.c: Use __pa() instead of virt_to_phys() in
+ early bootmem alloc code
+Message-ID: <aaH_fgdQB7gm9XtL@kernel.org>
+References: <b4a7d2c6c4c1dd81dddc904fc21f01303290a4b8.1772107852.git.riteshh@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b9527ed4-7a5c-42e9-8814-b276b3741f63@suse.cz>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 9EAF2C0012
-X-Stat-Signature: 84e3yz3jc1nyfd67zpb5itm156doyi4u
+In-Reply-To: <b4a7d2c6c4c1dd81dddc904fc21f01303290a4b8.1772107852.git.riteshh@linux.ibm.com>
+X-Stat-Signature: ajfp6yxatk789kb8mgm3k4wcaz85eh98
 X-Rspam-User: 
-X-HE-Tag: 1772224319-19152
-X-HE-Meta: U2FsdGVkX18K6I0Q6RniwH5rAkO6mRLWyQnZDKPqZsTb2IvQjlZSKSCkFdA5VBKMSdmQYJN3TiWYim7IwGAfilgQVfe8V+93Jv2Wc/DjjdqNZoqgAVmItEzAtoFvR8iIHz/eRoxxGF5QurJmgZXA3sA8NPqgcnlcA3cUYnwRwTklsJx+bzzSax3x19cmXjemPOIDwrcB2iE3rfavJVSI4vH/ZI6knqrEWK40jNReA23ib4dvdW/H6TRrxIU6EoJzVBcj1feTRr4LV5UPAfxIF6a2+2V1RafNxvT9eS9ruyHc1Rtda3TPmMdJ9zaDC+X6ccLCw5NlvpqJb3lPRnK3aUy6FPOV2fvXBGPQ0/W/oVD/NEoIeH42RxWwrebELhhzcGyEuxLi9y/OTnaWnD8C9FNLjSshUdYSCQmCd4RudE5TWj2yVDQWsHHem2qaysY+AOM5E6/FUk6UwGNg53ADGoJwplV2r4mQOOoVfkWD3lR+ln2osU27XyeJbPq7160Ru/XqHK06kZcD8ZSu+asRzCE3N+ve9/VcTrI9Urcpz/sGcJp7s8EB6qXK57nah+In0ds8iFMd3uEXMv/CnKyrhpDmHmReKIaeu2/0zqOIh73DzX+8A6m26Fvmfa5kwdhHbNBXisV9O8naeA959PqFjd0g9Uzfssj+nw7RGJ+08bWP2ZHP3R9n0C2bA7kgJ7LnqwoQFQeXXPmgKR86I1lqGLShX2u8r3fTdngFuE9vznb5ivFageEHf/8NT6yyg6lwIcnA3y2Z48Cg5IfIZ5Q161jWBv5iTXhKkDysdttse5jJD7SxvPqoo76NK0Ucvjn/ychW7CpIL88kEVI9DPv7HFrCN4DD6/g9p34eonRPxGGw6hL3T/CZNx7VNTYQXJs5LnuX4hgpRKvxnP7WvH5i9lTKcMiHLUgWl5CIabvqUJWasntB9fzS/lZhKkwGcV4YcNEaxPjP4Rlf8aKKB2n
- 8p9o5Lse
- WLbisowOc8XnhGTHf4KXl50zcKA==
+X-Rspamd-Queue-Id: 5B89D40006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772224387-719332
+X-HE-Meta: U2FsdGVkX19nYdNveJwW97iGShvsti7sEILslk5+HQyc32pHIKH4FQUQLIdaNZEXJnmY0EeoOlnMjUSrTqIdGsrSb3KoBfJ4p5A0BbbvS9EJX1JkO3BXJGF0BLhDJVMbLoxoQ/+Z6Rq4CBxfxrvdEAcnMGQtOMhaQ6YL59H9rdb0cm0RWOD9JwO74lbpW5whNZWi5bKYjxXH+poj+PHdXwLXJF/Hki6jLkjJ9U5dxJK0m3zotBCgVrKcXz7xGRTsPpeFafT+qKxWhd2SNAkdW/ZQW5pKX48ZNKt6KVwIQAydz7wOrQzxoOn6CBoeCz7G9v8zxkttsRAoyX/b6wakuIvCBjfletr6OfdvHHVwq1TxXBX9SdTzATCKhdQqPlW8at+4vxzub2Uf2KBB3rwwvYhpTQOdlqplEh3vHQVpXrcj/8tBgvAfrR1tmcI+a5aaVVLyJemFdL58Z850MU4msuiSVgAWZkETvR4ALxGtEOBRj1XUaW171uf/QUK7dnAmFhsrPkPEjohC2tZbzTUjxRQfjKgDM2wEAq4p9eS6mzWKagP/oRo9OG8L9DBYbrRYTfr5rZyoVvmlC5Ot1wvDYyXtZlhlqo/tgcV0DXxeap/XXEtmz0Q/tiGPQ3DDvdkMp9DEpkfNH3eVlQ+RRX60X1XAO9f1K6VT3MrNwPwO+x8cXrZ7Q3iI5SSStmk0BofPEOyrUWi2Z3fRi/XWdxjQVe5aOjHW7kDHRk49C0clGfLRXuzvLuwDiETsN0mqeKSYg9y2clrQSpsJRWVCILICslBQy4L7nT/wl0uPw7q2v29VubhXF566dUTjItA/ace+6Hq3tQQ7KG7uokgxomw7McuRzNIV8mTlI4RfpXm/BtiSCnPIHoi6fna7Uo11k/XIacSDbyCyRZ7L3p2P0J+spfANKTbq6/weA8R8iVmQ99FQBbx3y53MZsY6+xCJWWfYpZYV/ZqWfF5Kro0/rEF
+ MKZ3Z/jO
+ b6n6CTLq9JGmAgxmwL4yKPgSKyCw1FRwQed4bqsULvcp+ceXwTzKZUDR274a7YTEMyUMjatHivUvDRfUIuhPrz3uUT+xZK0nhio4A/yqPdSImJq2b7zk991GZ9u11U5ItQtyDeCkhVYaarJxSqob0Qpp3nJ4KjBRthh32LRfrwRJbzequmTAU/4IderDY58iPzdN6uzvoW0y3h3Cji+Iow9h4eIPaO7EaKj/Bet5KWkWJwajl2Uyg0hCWOryOM2XSKD9SCHK9WEIL7S++giorZd+nvFxuloxwmRCRHEUQpZxBzqyQFPsPB8WER4sEPa19OfmlaBgTPq9+VA6nAV0ziiKiHfanQAD3iSJxjwQSEz5pP8UDj+/BMJDQz81+LbKiZa64mZqcqQVmAO7lY8z18AeXr9q5LMOAaVRY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,136 +91,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vlastimil,
+On Thu, Feb 26, 2026 at 05:56:30PM +0530, Ritesh Harjani (IBM) wrote:
+> Architecture like powerpc, checks for pfn_valid() in their
+> virt_to_phys() implementation (when CONFIG_DEBUG_VIRTUAL is enabled) [1].
+> Commit d49004c5f0c1 "arch, mm: consolidate initialization of nodes, zones and memory map"
+> changed the order of initialization between hugetlb_bootmem_alloc() and
+> free_area_init(). This means, pfn_valid() can now return false in
+> alloc_bootmem() path, since sparse_init() is not yet done.
+> 
+> Since, alloc_bootmem() uses memblock_alloc(.., MEMBLOCK_ALLOC_ACCESSIBLE), this
+> means these allocations are always going to happen below high_memory, where
+> __pa() should return valid physical addresses. Hence this patch converts
+> the two callers of virt_to_phys() in alloc_bootmem() path to __pa() to avoid
+> this bootup warning:
+> 
+>  ------------[ cut here ]------------
+>  WARNING: arch/powerpc/include/asm/io.h:879 at virt_to_phys+0x44/0x1b8, CPU#0: swapper/0
+>  Modules linked in:
+>  <...>
+>  NIP [c000000000601584] virt_to_phys+0x44/0x1b8
+>  LR [c000000004075de4] alloc_bootmem+0x144/0x1a8
+>  Call Trace:
+>  [c000000004d1fb50] [c000000004075dd4] alloc_bootmem+0x134/0x1a8
+>  [c000000004d1fba0] [c000000004075fac] __alloc_bootmem_huge_page+0x164/0x230
+>  [c000000004d1fbe0] [c000000004030bc4] alloc_bootmem_huge_page+0x44/0x138
+>  [c000000004d1fc10] [c000000004076e48] hugetlb_hstate_alloc_pages+0x350/0x5ac
+>  [c000000004d1fd30] [c0000000040782f0] hugetlb_bootmem_alloc+0x15c/0x19c
+>  [c000000004d1fd70] [c00000000406d7b4] mm_core_init_early+0x7c/0xdf4
+>  [c000000004d1ff30] [c000000004011d84] start_kernel+0xac/0xc58
+>  [c000000004d1ffe0] [c00000000000e99c] start_here_common+0x1c/0x20
+> 
+> [1]: https://lore.kernel.org/linuxppc-dev/87tsv5h544.ritesh.list@gmail.com/
+> 
+> Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-On Fri, Feb 27, 2026 at 04:14:42PM +0100, Vlastimil Babka wrote:
-> On 1/11/26 09:20, Mike Rapoport wrote:
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > 
-> > To initialize node, zone and memory map data structures every architecture
-> > calls free_area_init() during setup_arch() and passes it an array of zone
-> > limits.
-> > 
-> > Beside code duplication it creates "interesting" ordering cases between
-> > allocation and initialization of hugetlb and the memory map. Some
-> > architectures allocate hugetlb pages very early in setup_arch() in certain
-> > cases, some only create hugetlb CMA areas in setup_arch() and sometimes
-> > hugetlb allocations happen mm_core_init().
-> > 
-> > With arch_zone_limits_init() helper available now on all architectures it
-> > is no longer necessary to call free_area_init() from architecture setup
-> > code. Rather core MM initialization can call arch_zone_limits_init() in a
-> > single place.
-> > 
-> > This allows to unify ordering of hugetlb vs memory map allocation and
-> > initialization.
-> > 
-> > Remove the call to free_area_init() from architecture specific code and
-> > place it in a new mm_core_init_early() function that is called immediately
-> > after setup_arch().
-> > 
-> > After this refactoring it is possible to consolidate hugetlb allocations
-> > and eliminate differences in ordering of hugetlb and memory map
-> > initialization among different architectures.
-> > 
-> > As the first step of this consolidation move hugetlb_bootmem_alloc() to
-> > mm_core_early_init().
-> > 
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> I've bisected a problem with virtme-ng testing a NUMA memoryless
-> node setup (on x86_64) to this patch (commit d49004c5f0c1).
-> 
-> It's executed like this, where node 0 has memory and node 1 only cpus:
-> 
-> vng -vr . -p 8 -m 4G --numa 4G,cpus=0-3 --numa 0,cpus=4-7
-> 
-> This fails to boot due to:
-> 
-> [    0.095894] BUG: unable to handle page fault for address: 0000000000004620
-> [    0.097196] #PF: supervisor read access in kernel mode
-> [    0.098180] #PF: error_code(0x0000) - not-present page
-> [    0.099155] PGD 0 P4D 0 
-> [    0.099641] Oops: Oops: 0000 [#1] SMP NOPTI
-> [    0.100437] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-rc6-00152-gf206359553c9 #53 PREEMPT 
-> [    0.102201] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-2-g4f253b9b-prebuilt.qemu.org 04/01/2014
-> [    0.104313] RIP: 0010:mm_core_init_early+0x263/0x900
-> [    0.105271] Code: 93 ff 72 09 8b 7c 24 30 e8 da 82 00 00 48 63 44 24 30 45 31 db 4c 8b 24 c5 a0 7b 1d 9a 48 89 c3 4c 89 5c 24 50 4c 89 5c 24 58 <41> 83 bc 24 20 46 00 00 00 75 0b 41 83 bc 24 14 47 00 00 00 74 04
-> [    0.108863] RSP: 0000:ffffffff99403e38 EFLAGS: 00010046
-> [    0.109861] RAX: 0000000000000001 RBX: 0000000000000001 RCX: 0000000000000001
-> [    0.111223] RDX: 0000000000000040 RSI: 0000000000100000 RDI: ffff89597fffae00
-> [    0.112577] RBP: 0000000000000005 R08: 0000000000000000 R09: ffff89597fffa200
-> [    0.113924] R10: 80000000ffffe000 R11: 0000000000000000 R12: 0000000000000000
-> [    0.115294] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> [    0.116656] FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
-> [    0.118193] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.119283] CR2: 0000000000004620 CR3: 0000000060048000 CR4: 00000000000000b0
-> [    0.120645] Call Trace:
-> [    0.121122]  <TASK>
-> [    0.121521]  start_kernel+0x5d/0x780
-> [    0.122206]  x86_64_start_reservations+0x24/0x30
-> [    0.123079]  x86_64_start_kernel+0xd1/0xe0
-> [    0.123860]  common_startup_64+0x12c/0x138
-> [    0.124641]  </TASK>
-> [    0.125061] Modules linked in:
-> [    0.125646] CR2: 0000000000004620
-> [    0.126279] ---[ end trace 0000000000000000 ]---
-> [    0.127162] RIP: 0010:mm_core_init_early+0x263/0x900
-> [    0.128106] Code: 93 ff 72 09 8b 7c 24 30 e8 da 82 00 00 48 63 44 24 30 45 31 db 4c 8b 24 c5 a0 7b 1d 9a 48 89 c3 4c 89 5c 24 50 4c 89 5c 24 58 <41> 83 bc 24 20 46 00 00 00 75 0b 41 83 bc 24 14 47 00 00 00 74 04
-> [    0.131676] RSP: 0000:ffffffff99403e38 EFLAGS: 00010046
-> [    0.132684] RAX: 0000000000000001 RBX: 0000000000000001 RCX: 0000000000000001
-> [    0.134033] RDX: 0000000000000040 RSI: 0000000000100000 RDI: ffff89597fffae00
-> [    0.135412] RBP: 0000000000000005 R08: 0000000000000000 R09: ffff89597fffa200
-> [    0.136763] R10: 80000000ffffe000 R11: 0000000000000000 R12: 0000000000000000
-> [    0.138112] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-> [    0.139487] FS:  0000000000000000(0000) GS:0000000000000000(0000) knlGS:0000000000000000
-> [    0.141014] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.142094] CR2: 0000000000004620 CR3: 0000000060048000 CR4: 00000000000000b0
-> [    0.143448] Kernel panic - not syncing: Attempted to kill the idle task!
-> [    0.144833] ---[ end Kernel panic - not syncing: Attempted to kill the idle task! ]---
-> 
-> > ./scripts/faddr2line vmlinux mm_core_init_early+0x263/0x900
-> mm_core_init_early+0x263/0x900:
-> free_area_init_node at mm/mm_init.c:1721
-> (inlined by) free_area_init at mm/mm_init.c:1902
-> (inlined by) mm_core_init_early at mm/mm_init.c:2681
-> 
-> It crashes at WARN_ON(pgdat->nr_zones || pgdat->kswapd_highest_zoneidx);
-> because pgdat is NULL.
-> 
-> With some debug printk's I've figured out that in free_area_init()
-> we have:
-> 
->                 if (!node_online(nid))
->                         alloc_offline_node_data(nid);
->              
->                 pgdat = NODE_DATA(nid);
->                 free_area_init_node(nid);
-> 
-> 
-> But node_online() is true so this allocation doesn't happen, and
-> pgdat remains NULL.
-> 
-> And node_online() becomes true in init_cpu_to_node():
-> 
->                 if (!node_online(node))
->                         node_set_online(node);
-> 
-> But without having a pgdat allocated.
-> 
-> I was able to workaround this by changing the code in free_area_init() to
-> 
->                if (!node_online(nid) || !NODE_DATA(nid))
->                         alloc_offline_node_data(nid);
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-if (!NODE_DATA(nid)) is enough ...
- 
-> But I don't have the bigger picture, and also didn't check yet what exactly
-> about this patch results in the failure. Probably ordering of various related 
-> actions. Thoughts?
-
-... and there's a fix already in the mm-hotfixes-stable:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=mm-hotfixes-unstable&id=a4ab97e34bb687a2ca63fc70b47e8762e689797f
+> ---
+>  mm/hugetlb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 6e855a32de3d..43e0c95738a6 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3101,7 +3101,7 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
+>  			 * extract the actual node first.
+>  			 */
+>  			if (m)
+> -				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
+> +				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
+>  		}
+> 
+>  		if (m) {
+> @@ -3160,7 +3160,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+>  	 * The head struct page is used to get folio information by the HugeTLB
+>  	 * subsystem like zone id and node id.
+>  	 */
+> -	memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
+> +	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
+>  		huge_page_size(h) - PAGE_SIZE);
+> 
+>  	return 1;
+> --
+> 2.53.0
+> 
 
 -- 
 Sincerely yours,
