@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DE2FEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:40:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA2D1039895
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:42:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD71D6B00EB; Fri, 27 Feb 2026 15:40:34 -0500 (EST)
+	id 6CCB16B00E8; Fri, 27 Feb 2026 15:42:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A56796B00ED; Fri, 27 Feb 2026 15:40:34 -0500 (EST)
+	id 6A1A76B00E9; Fri, 27 Feb 2026 15:42:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 959DF6B00EE; Fri, 27 Feb 2026 15:40:34 -0500 (EST)
+	id 596606B00EA; Fri, 27 Feb 2026 15:42:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8572F6B00EB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:40:34 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 232B816095A
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:40:34 +0000 (UTC)
-X-FDA: 84491404788.02.3A09E1F
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 48D586B00E8
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:42:24 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFD4FBC02E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:42:23 +0000 (UTC)
+X-FDA: 84491409366.03.01BE2A4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6AC51180008
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:40:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HT+ggsBh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 1D869C0004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:42:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EqFMTeCp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772224832;
+	s=arc-20220608; t=1772224942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FECNkLlBKqZly2Xr+Ia0AutBeK7iF5hsUBM322qLxRk=;
-	b=PZNtg2LHAXUNrq1M0ItSoAY+wmHlbZdoZiFR7A+APZDrQbdA81/GSpPFnVpOtsD14gv1y9
-	5BTV+JQtolyTJZQVOkkhKhriV8BbrLyxUUFnLOBBfiayBdZP6xXkl6XoZKi5/AVWw1KhQC
-	MAeX8aPVB0RnyD8jsMsMFJFSas9kDN8=
+	bh=DzMaCCTu2BeDSrqOuo7E7DuXYBR5vbaB1fzg3WOxQps=;
+	b=fvr7BnGvI5RRT55l6I8A/qND6PGzCzGtMtS0aQ7t6SuHHBv9odmPiI/MggrWxastpLNljI
+	vNUJ5LGct3Kr8H9rG/ZNrcdCY5LY9yxSFfQk1pWtx/2HRV+aA13KaRFUbYTm3vaqc3Yiss
+	QhY8rMliAGiDTstl3dOinOPMKB+rrcQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HT+ggsBh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224832; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EqFMTeCp;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224942; a=rsa-sha256;
 	cv=none;
-	b=ppEeZtSRQV7IklxteFRyEJ2ho70utgOI/EeXgzc5JUo5zwt2Iw0ATLkajYd4LbdQz2lhht
-	GyeQQcq5/i73ngm75X0ThL8Hpe0EW8UrVusFr8Ahult93HR1NbM0kKUZAPrLj90zoUuJDk
-	xskanyb1AUC8BXw9gPOAxlY/0ZO/ezY=
+	b=1DX5oa9X+zxqRFC/qXMRhlReqOnGdMPTqJKF3T+N8Vv3cgoXeIQ0KzHw8At1WaLZUA48IM
+	naWOr5L2R5dD8hajoH8pXIq7SYPY7JPNxVzDop3iqbOoLXO2lWWRgqxJUHgbjnHBeg65bq
+	V+vmvdijUbRWigdFFqln0yPCVEXHme8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 43DBD4175D;
-	Fri, 27 Feb 2026 20:40:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6137C116C6;
-	Fri, 27 Feb 2026 20:40:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0444542B7F;
+	Fri, 27 Feb 2026 20:42:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DDFC116C6;
+	Fri, 27 Feb 2026 20:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224830;
-	bh=uXLTmn0UmbB9sAS28s5iTcu9N3dgOYkeLQKoVGtAmEY=;
+	s=k20201202; t=1772224940;
+	bh=tF4I9uEanrrL49/IrO6k2ajtwrnArvy+ifACjY+WOKQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HT+ggsBhM3HwcyKKY6D9Rx6imRkxiR53dmjIms7mdZaawluoHyaf0dvqDIVXt/9kP
-	 ELKCP0j4FGQlIbGw7LpI7TBvh9gQcq+varnTzdNoXgAu73lYql7meSLerSeKyiuKRz
-	 RFeag1g0FvfQ0RITxTJ75eILf43ft65j1FPTE+44ZBPC4xFDqtKw44KHhvFXYzCMiE
-	 nuZ1QR55gI4C4rl38plH/9LusXHM9LjS+VTjOuhzQl7PvPzKI/IUenlBlyusQ9owZB
-	 ONx852aPKUBjk4WJAFPgy3TtdHkyn5X340Igj8IcNRZt7b6vJSopk1aNP6ew0K7uYv
-	 TEbjZPd5Th6QA==
-Message-ID: <1a65d41c-316a-4fd2-9a7d-146644029738@kernel.org>
-Date: Fri, 27 Feb 2026 21:40:21 +0100
+	b=EqFMTeCpdccKnHFagxHFbfSZQ7k83CljVOzyZNeUfdyD5/mWD7u8MvVh7fCUgkah6
+	 H5XXuZNBOtuHNKlEiJIXFCilFFUA00P+ElZDSCxcO4Jp176slvu996zA0Y+0qpgWP4
+	 HID/JnTAICa2VPlzJykgPb/KYcRWluRLNPQxRJqB6x5hfiqaQ3DrSRF7nBuIRXkX+u
+	 FkRUS2xrbs9z3+dTD1Armjnrkb5xWJX/bqRAl9/naIpHU1EOr7WOCI/BmmMoSMDMus
+	 q9/iMX+dbLeLlP7ucuiOXbvdtsm1SWAlgb66xTsm1Ty/tVUzd5QQr73g6DGTTIu6/8
+	 QfpgILk9fYYUA==
+Message-ID: <cea5eb0a-6f8d-44e8-b60b-ecd1f7ee059a@kernel.org>
+Date: Fri, 27 Feb 2026 21:42:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
-To: Dmitry Ilvokhin <d@ilvokhin.com>,
+Subject: Re: [PATCH v2 4/9] mm: cma: Export dev_get_cma_area()
+To: Maxime Ripard <mripard@kernel.org>, Sumit Semwal
+ <sumit.semwal@linaro.org>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ "T.J. Mercier" <tjmercier@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
  <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- "linux-cxl@vger.kernel.orgkernel-team"@meta.com,
- SeongJae Park <sj@kernel.org>
-References: <cover.1772206930.git.d@ilvokhin.com>
- <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org
+References: <20260227-dma-buf-heaps-as-modules-v2-0-454aee7e06cc@kernel.org>
+ <20260227-dma-buf-heaps-as-modules-v2-4-454aee7e06cc@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+In-Reply-To: <20260227-dma-buf-heaps-as-modules-v2-4-454aee7e06cc@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6AC51180008
-X-Stat-Signature: txkkzzi4b437qse3c1pukg18g944bfq7
+X-Rspamd-Queue-Id: 1D869C0004
+X-Stat-Signature: m8njehxusjzb5o8wi1eh5g1q9i1m7mou
 X-Rspam-User: 
-X-HE-Tag: 1772224832-478951
-X-HE-Meta: U2FsdGVkX182qahdgGvU4AnYorEKiqsMaXBMb7ksZPpdUvCJYji4T9CMpcokDWLwzyQMR3sAeSSOrdgYdvDA8OcrFgM95D9GHmG192yxMRhseVbr5CcQkJCU+t4uY28r6AeYq4Sxb57KUI0VkQAiqaqnqdsHW0KvcnVcINmfnXBX0bTqNFA3y1MUph04OBCQC2ZCcPg+2jSSTCt9om4fk6cw/Ioo6MwOLsYNGVGvrrIAdvje8i2FbulZzpidRHCbtNnFiogA+Nrz1QMk6xw7wWG7sXipqR2uCf5MVwR+yfZH8T8hMIYli+CrlZU8Fy1fNHFAJrdR36IpdWxI/2MZWc+A1PsBXqpcOUTnMWD67pQQj1gpaApDp6eo31AACiTVGm6ulfyQSXTyu/D8aN9dg+P9SRPHTp3wpeJNEuyfyXdpQGYQ2RH5KLtUOEK6LTHP411k5lnCBqZJx0oDZuOh8r/iPLDBtGLgRZoXMynOYQiACsszr4HIfLR73/kAppDrf/Sp1nMT0jUVflGmey11HtfuUjotJccTOpTj7eGpemTiGvKgsrftzRYqo+xpWJQtmcanXyIz1hn25IY6HehkBL0VrCO3bhYX2OkrE4YO0PMpMCiM/oiMLTaPrRkfsbWFExMTSPD01j/KsiHqf7LyoP+6FRLsl/auZP9r3ZjKiDQ2lhItXgW6ptf8UQ4z0Xnnun77TETQjNMoBTNcv03x4QjJD8/r4Ej7pt3c6Pz0nQEFX7C//hQ0Y/PoUcwcVqEOoDjtc2YGqdCB+noOl9ESTubVuu4EQmFvgHBJtWei2DPA37fkUfzqf/6tG98fr42xLUDhGgl4fNEiHax9cav2dkHR7ID95rGGNpltC3kn/qJ03yHUQjRgLACLWaE6mVsREiWuRYgHL8sc/zS8G2yd1CmzsT67qGnaO81ImHfbJ43TWXYZ87KQvKlcFINSJRHKsss7H9vATcjzHBYfFjr
- Q4LomCaa
- VSqHYx8GDmKtN4Jg=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772224941-956273
+X-HE-Meta: U2FsdGVkX1/plb4Z+ehhS5hCqbJC69hD3Q/ZYROobu6E4gl+nAQdxUnWAupugKaJOQFGjwf91LPeHfUAB4ybe4hD2zMaUEH18u779jupsXqTWW7Du7kqyZDBxK7wKtNmjcYr10zfvRghmjsyHwThW+e3+bfX2gIXQziLnJHj25XsYsLK0hkhHy7qayP+qtTxSNYQcgejIHeHkrSVgkz+FhY345bXzdwjHBuNr3LD7vDbiCJragWiEnmiF12j2yV5NGYfL+sjaOrGKz31gpEZBiNj+iZB/pP6qcyafqw0IMu36hNbEnapT7wQylP5zAgiz8vPFbmsZo6/ixY+YSquXs6bgY7CV2rwJn49f+sXaIHyomej9Q6iSGJfj7kkrpwPgSXBoYLk2inzLroHglIEBL1W2rVBZsc0+d93iPI+wUZlT+1woGsyQoHm3G57TbxJvQ3loDUwIsXP3gf1XONfgSdHr3s5mQ531KhrGn8F1SK6vH45PhKraF0wZQ6xpqoJStiMUHnLklMbOaOZ8XzytLUnSeErgDtISzmg8O867mntROzq5L3gRAAKn36SFrCjXV9g6DjkpV6JgytuVVgWe/CE3xJ22mxSUCv5aJ9hPpnjuiy9+EAYc4bsmlRDV3560tXO2Yum6yqNu5aruYM+inaWHpWdMgOAUi0DA882DSYw9kQGWVf3DMVRpy+o0dPH6rCU3woSyInHMwD9KoGgovDXFQSFeP9cmAejAmNRNmo3UrGkpuU/HWHCd4vG39HhLqZZ/nRdWVi4fbJBVrjn64E/49KRKn5ik09UL2xELcfpyaMFfCvLPdeIN/fg6QHVSBPukwN/0o4Ddj4NW5s0w9Z2Z0gkKmVsrSFwDEi87xvdCBuFI8WJh79F6H0gGnBe5Iw0X0blvwAs+H71+aQgBlDm3Ka209RLu/qgqlKZJ9LnnvqE66Re5m4+pFWFON57pQH92pLbe7CZCMtofMt
+ xuNrjE84
+ zhcm2h6A2FQses3my+zFR0vyWDlZK15Y4yWZPVno68jGDhfxzyrvH+NIYjxNz64XmXjCm181Ui6Hdj7lmoyA6TDrZSybM6uSFiyL+dhnCV97hDjnSFDoKVcHBodsKh3hwZj7614gfRE7HI5PGdTXTf5Qs7+onTWaUZo+a628IgDX4kidO/hXKp33KkRHU2QTZjVZ3plY6rx6MZ15d8Oh/SuYVQXbFB3QdkAt68Kqm/0VteyqVWql1mfxeBcF8E4CUxKj1D1U2kvTIxUIdmT9akBHsRItUtCC+0FrBRa+MUmcFRxKIkFL8eX8T9LhyaCxZDGD9Pg9us7WHqEk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,22 +151,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> This intentionally breaks direct users of zone->lock at compile time so
-> all call sites are converted to the zone lock wrappers. Without the
-> rename, present and future out-of-tree code could continue using
-> spin_lock(&zone->lock) and bypass the wrappers and tracing
-> infrastructure.
+On 2/27/26 14:15, Maxime Ripard wrote:
+> The CMA dma-buf heap uses the dev_get_cma_area() function to retrieve
+> the default contiguous area.
 > 
-> No functional change intended.
+> Now that this function is no longer inlined, and since we want to turn
+> the CMA heap into a module, let's export it.
 > 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: SeongJae Park <sj@kernel.org>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
 > ---
+>  kernel/dma/contiguous.c | 1 +
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+The prefix of the patch should likely not be "mm: cma: " :)
 
 -- 
 Cheers,
