@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD00FEFB6E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16719FEFB6E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C44626B00AE; Fri, 27 Feb 2026 12:56:56 -0500 (EST)
+	id 78CF36B00B1; Fri, 27 Feb 2026 12:57:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C261A6B00B1; Fri, 27 Feb 2026 12:56:56 -0500 (EST)
+	id 76E7A6B00B3; Fri, 27 Feb 2026 12:57:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2F0A6B00B2; Fri, 27 Feb 2026 12:56:56 -0500 (EST)
+	id 677336B00B4; Fri, 27 Feb 2026 12:57:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E1356B00AE
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:56:56 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68F20B812B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:56 +0000 (UTC)
-X-FDA: 84490992432.12.1990F33
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 544F56B00B1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:57:01 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1BC211407D9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:57:01 +0000 (UTC)
+X-FDA: 84490992642.11.53DB75D
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C95AB80019
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 741DD180006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772215015;
+	s=arc-20220608; t=1772215019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QXyeT8pIqOAYKgI8qiYmrrmyq9xeakft/ySs45JvnkA=;
-	b=L6z0qKUWsdr1KX/9K8MzcoKDpkyWvhoGim5wfh4unie7YEBX3cescehKVmvfP2ck/8upvt
-	FYZws7kW9WolDFlKSQEHv3O3X32PeTickCeQoEBLPnl6qSRzi/1K4CzGQxV3x+lXaZX/Pa
-	mc1GkkKj4+CLyrrI0oihgk4DSdcRqXU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772215015; a=rsa-sha256;
+	bh=1J0dE2vosTLnnVgFfjV6gqZro3Fayve5qjLEvAWdjok=;
+	b=jJe5qXtLM3hSj1grwEivnDuoU8ZlnDikCDh9jYMYOiHIHBIk5ASvdTywj3TFjxxHanz/Rh
+	Eci3OTRchD9gXlAOqiXoPwHK+RjC0hLjUEsXrp7gs+04a/EoTV8oP7hTDw4X7HYkVhkGc1
+	9tTz3p8hyzYa2tCDcmbVLmW3/E6Qvzg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772215019; a=rsa-sha256;
 	cv=none;
-	b=0Ke3SbrqGQou+GAstWBC9AJtDtURfffe5vujL4jMB31JVe5Ckl2k6BQZ0RUdkWBPmkmGR8
-	5PXCp/ryRAUVjf4anwcbSoiIGSpaKfAZOtNDno5Ca8VUqV93oeGyt1S2WLPY0R3UH/1zJ1
-	8iPdj3kN1h0jPY5vYElJ9ag0yxkt2gE=
+	b=s47rez1cDxYNNxeypOnO5ZX4rr6+ScgBuI+T8c63vzJkSQsN6dlGPTvWaMhaRSS75k684E
+	XvN9aNHidx1hzL6LRSvw/9qBH9OfdscJPqVFYZSetaC7mqteaiIRR1xMJVO1m/XZYyD6k0
+	OMkb4CwQ6zi3a6Uu9hArW59YdPkiTqk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
+	imf06.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf06.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A6CE14BF;
-	Fri, 27 Feb 2026 09:56:47 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 50B681516;
+	Fri, 27 Feb 2026 09:56:52 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 85B283F73B;
-	Fri, 27 Feb 2026 09:56:49 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A3933F73B;
+	Fri, 27 Feb 2026 09:56:54 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -88,22 +88,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH v6 15/30] mm: kpkeys: Handle splitting of linear map
-Date: Fri, 27 Feb 2026 17:55:03 +0000
-Message-ID: <20260227175518.3728055-16-kevin.brodsky@arm.com>
+Subject: [PATCH v6 16/30] mm: kpkeys: Defer early call to set_memory_pkey()
+Date: Fri, 27 Feb 2026 17:55:04 +0000
+Message-ID: <20260227175518.3728055-17-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260227175518.3728055-1-kevin.brodsky@arm.com>
 References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: C95AB80019
-X-Stat-Signature: eijrqmtz7wbpq15emwgxc4i74dbwiibr
 X-Rspam-User: 
-X-HE-Tag: 1772215014-690033
-X-HE-Meta: U2FsdGVkX19HtVpQJ6NSSy+fEt5a6EXCdPPJ+2cZT9wzR9T36/79ybcfJwnnGYm1fTsDbcJDGbHVRNrewogT+O08/Zpkk2HkGXqNyVNe3FK7abGLXJdWhb4zcocOKmrWkuQPaDPU8PrNkPF8sfPrXONolG+NWL4fZHW+HC998cuIXWw5DOFJ95Tl8Ntuh1dYLzPJ+rCBCe0wg1VlRXM0ObkugvcZwIO26KOgkqj35+iot7KRFMVq+/VXXztQbVtNPoQEHdU31wV+0ViIkoPeWBSVkQ+Bz6D+s7/aVVnOAEQ8QsDPGMaWYhjLM8vdfGwrZPhHJhCVVy5rpWMA5FxjXmzoqqtUtsEUm2JsNmDhyBLdVz6Y7pVAyQl0pb78yCJIyGs/edUx+QdhpVlTN2fnr2M69DFIi+H/kCO3Ndsh6O2o0lwvROI5aKydAAVDMHpbn/VGMsWFLoI8es6278rqW4mw4N8reOeeYzfOMUnqgguJzPpq/AkSU1xyvhAA+I1lc4PxTykOWjnr7LDvuTTf8unq1IAzA5AK6oIWJzZqSKNzsIWTMWgIpLKoRTYTmMFmh8U7f5qjv1GVhgYtVrpWnxJFJrBafiRWner3UHcvSDFsllTL5vxA7PjfmALvJyWDQVnUncaiFF5lYOmPyNK7TtsdZLg1H3iN8dBfl+HEMzv6rt1xoiJBKP4Tql1ZeLKptGJDLh/nXaXAggB9T+9DrCPn1RDiLOGnSokgPj//svXU885324rNICz6z+O1Ntr9Z3l8vR2Acm7auaXjJ90xrjdKX3OL0jOl8vaHHizdS7mN6BCl0iAvPmTgKDHHs31gvMCrpG9OMyrqNttjG5YmuKRYRCZwIAQt7uHQFF1M+rRC60ykgzxqAg3bxHSPsTRtztau0zAZIBmH31ebZwvN3P/ftoUOE7waakWmndMTBOO08UHnhlP6LAJy9kHmMjvj79fMgGmAFZIK+BHHh4q
- 7I1l/aRz
- at2M367X4D9v7n/ajSDskLSl4cy78P8huoMvVU1df5FojyYwSU+0CtlSa+KuuOVICWXQcftZo+3dT6LL+oEMq1V8MVI6bbWgthswMjpbnvu16v7JWGfXWV1gJUQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 741DD180006
+X-Stat-Signature: 9pne6tes74ug9hbfodh98yfcph6eo6nr
+X-HE-Tag: 1772215019-569007
+X-HE-Meta: U2FsdGVkX19fWdW0W5Ng4ML3liInLkGXQK7IyGUfxGYX6tMtXizXeLyExK3gml/SNzXh8R4EgOpGPSZdFd1TPSlnLlRzACyMjXTiaV1R7EV0xlMzI30MYIn5zl6c/D9jHfDXj8nEXBZTya916IFwAct2DHcEvP3g/CyKogxogjcoHKiyW3KgQ+2HStddlB734fPonG1tO9LGupbOC3FkKVf7F0HzSgWXoT+Tqg45IbR/grogJmFdgz5xgVvHMPXJrcpaeLz/X0jHd80RJ3eVLD7/ACZMowAGr1Nm7mTEAeClmbvmDDlRYOSIhqeH6l004jg+3cAXfLoIVHzbjmKLiditgRyGj2YpyMqzEf0sKsGWfx+0MjIc5RV0bRtNPzZrPQvcrMKr5gFAl9P4CTnUt0Xpt9ahStrTAvBHHn7mMfndNWowTH0qXbXirRVZEBAu4FeoQbf654VNuT6AdIkt8+DQqmKgyMgHOudkHh1s4Q3V4RLW9sI543SOiP6Vb9AoyPOJ8+XN+r5xiOY6NlQ3+fWvHJcRwlVYsrQtOCIOIDUcOt+esbbxrbfB1vF5ev3lsK1T1EVcVj8E9qu0sVByMMfVE/z101LnraNLDBnCK/9GroM4x5Cfh8TST360uw11D77k0uojzZnD8JeDRHzOTwkt7dEv7fnZR8CGNuVMC7ea/0uRNX10oqtwPV3NKjfDNxtySkM9z3ysib9ultg7+VOU/4VP4yFe+ffPpmpt9x1IUDMTiZty7/7tGd797wtygYaJRt3hrQlCF1k9NtF5BpIYEJrN7tz7OYdveUZ7SIF8CCI2iu3s/O9qeaTlScQCTt1VLIy7PtEvt963gz7fx7cltpHalLlNrAW5tjPhLErnvAnprpC0+RqmSiC8jffSWFIDT+w4A7KyGWRg0z4QKfAyOCajvkmbqmf3DLj+R/KDSIuyq67R3JNRphGoEiPXQ60NVxU3zZXOMDqTaHo
+ wvwI4jOS
+ EyEp12EwYMpB/1WF4fvX2MGIXz58+DkAljP9jX1E3rWSw7h+UY65VVZqWcOIkWJdL1v4yVgboSbgRDf+EfYDujH1yUdAcWBDjn6tiM6nwQhAuHYU0cHFAw/ovNbD83MwDmjcKnoO+m9IgOM500DmBagS6PKEg22+hIQngfR7c3gudjSiE8BWWNT23Z4rO8VFQhSFXOLGkwG7nzrY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,320 +111,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When block mappings are used for the linear map, the kpkeys page
-table allocator attempts to cache whole blocks to reduce splitting.
-However, splitting cannot be fully avoided, if only because
-allocating a (PMD) block may require splitting a PUD.
+The kpkeys_hardened_pgtables feature requires all page table pages
+to be mapped with a non-default pkey. When the linear map
+uses large block mappings, setting the pkey for an arbitrary range
+may require splitting an existing block.
 
-This requires special handling because we cannot recursively split
-the linear map: to ensure that all page table pages (PTPs) are
-mapped with the privileged pkey at all times, we need a reserve of
-PTPs that can be used to split the linear map (inserted at PMD
-and/or PTE level). This reserve is made up of 2 groups of 2 pages
-(PMD + PTE):
+The kpkeys page table allocator attempts to reduce such splitting,
+but it cannot avoid it altogether. This is problematic during early
+boot on some systems (arm64 with BBML2-noabort), because the linear
+map may not be split until feature detection has completed on all
+CPUs. This occurs after the buddy allocator becomes available, and
+pagetable_alloc() is called multiple times by that point.
 
-1. 2 pages for set_memory_pkey() while refilling the allocator's
-   page cache. A mutex is used to guarantee that only one such
-   splitting happens at a time. These 2 pages are always available,
-   and are replenished by the refill operation itself (which yields
-   at least 4 pages: order >= 2).
+To address this, defer the first call to set_memory_pkey()
+(triggered by the refill in pba_init()) until a point where it is
+safe to do so. A late initialisation function is introduced to that
+effect.
 
-2. 2 pages for any other splitting operation (e.g. set_memory_pkey()
-   in another context or set_memory_ro()). In this case we need to
-   explicitly replenish the reserve before attempting the operation;
-   a new API is introduced for that purpose:
-
-   * kpkeys_prepare_direct_map_split() performs a refill if the
-     reserve needs to be replenished. It should be called by the
-     relevant architecture code and doesn't require locking.
-
-   * kpkeys_ready_for_direct_map_split() returns whether splitting
-     can be performed. This should be called once the linear map lock
-     has been acquired. If false, the lock should be released and
-     another refill attempted.
-
-The first group needs to be populated on startup before the
-kpkeys_hardened_pgtables feature is enabled; this is done by filling
-up the page cache in pba_init().
-
-The page reserve is accessed by passing a new flag
-__GFP_PGTABLE_SPLIT. This is probably overkill for such a narrow
-use-case, but it avoids invasive changes to the pagetable_alloc()
-logic.
+Only one such early region may be registered; further refills in
+that early window will trigger a warning and leave the memory
+unprotected. The underlying assumption is that there are relatively
+few calls to pagetable_alloc() before
+kpkeys_hardened_pgtables_init_late() is called. This seems to be the
+case at least on arm64; the main user is vmalloc() while allocating
+per-CPU IRQ stacks, and even with the largest possible NR_CPUS this
+would not require allocating more than 16 PTE pages.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
 
-Adding a GFP flag was just the easy thing to do - alternative
-suggestions welcome (new variant of pagetable_alloc()?)
+This patch is rather unpleasant (especially the arbitrary limit of pages
+that can be deferred), but it seems difficult to avoid on arm64 as we
+must wait to know whether all CPUs support BBML2-noabort before relying
+on it to split blocks.
 
-Relying on the owner of alloc_mutex to decide which reserve to use isn't
-very pretty, but there doesn't seem to be a simpler solution here.
+The case where the boot CPU supports BBML2-noabort but some other
+doesn't is not explicitly supported. In that case, the linear map will
+end up being PTE-mapped, but we will still use the block allocator for
+page tables. This may be suboptimal, but it remains functionally
+correct.
 
 ---
- include/linux/gfp_types.h     |   3 +
- include/linux/kpkeys.h        |  13 +++++
- mm/kpkeys_hardened_pgtables.c | 100 ++++++++++++++++++++++++++++++++--
- 3 files changed, 112 insertions(+), 4 deletions(-)
+ include/linux/kpkeys.h        |  8 +++++
+ mm/kpkeys_hardened_pgtables.c | 58 +++++++++++++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 814bb2892f99..34e882c9253d 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -56,6 +56,7 @@ enum {
- 	___GFP_NOLOCKDEP_BIT,
- #endif
- 	___GFP_NO_OBJ_EXT_BIT,
-+	___GFP_PGTABLE_SPLIT_BIT,
- 	___GFP_LAST_BIT
- };
- 
-@@ -97,6 +98,7 @@ enum {
- #define ___GFP_NOLOCKDEP	0
- #endif
- #define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
-+#define ___GFP_PGTABLE_SPLIT	BIT(___GFP_PGTABLE_SPLIT_BIT)
- 
- /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-@@ -146,6 +148,7 @@ enum {
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
- #define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
-+#define __GFP_PGTABLE_SPLIT   ((__force gfp_t)___GFP_PGTABLE_SPLIT)
- 
- /**
-  * DOC: Watermark modifiers
 diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
-index 303ddef6752c..983f55655dde 100644
+index 983f55655dde..8cfeb6e5af56 100644
 --- a/include/linux/kpkeys.h
 +++ b/include/linux/kpkeys.h
-@@ -124,6 +124,9 @@ static inline bool kpkeys_hardened_pgtables_enabled(void)
- struct page *kpkeys_pgtable_alloc(gfp_t gfp);
- void kpkeys_pgtable_free(struct page *page);
+@@ -133,6 +133,12 @@ bool kpkeys_ready_for_direct_map_split(void);
+  */
+ void kpkeys_hardened_pgtables_init(void);
  
-+int kpkeys_prepare_direct_map_split(void);
-+bool kpkeys_ready_for_direct_map_split(void);
++/*
++ * Should be called by architecture code as soon as it is safe to modify the
++ * pkey of arbitrary linear map ranges.
++ */
++void kpkeys_hardened_pgtables_init_late(void);
 +
- /*
-  * Should be called from mem_init(): as soon as the buddy allocator becomes
-  * available and before any call to pagetable_alloc().
-@@ -142,6 +145,16 @@ static inline struct page *kpkeys_pgtable_alloc(gfp_t gfp)
- 	return NULL;
- }
+ #else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
  
-+static inline int kpkeys_prepare_direct_map_split(void)
-+{
-+	return 0;
-+}
-+
-+static inline bool kpkeys_ready_for_direct_map_split(void)
-+{
-+	return true;
-+}
-+
- static inline void kpkeys_pgtable_free(struct page *page) {}
+ static inline bool kpkeys_hardened_pgtables_enabled(void)
+@@ -159,6 +165,8 @@ static inline void kpkeys_pgtable_free(struct page *page) {}
  
  static inline void kpkeys_hardened_pgtables_init(void) {}
+ 
++static inline void kpkeys_hardened_pgtables_init_late(void) {}
++
+ #endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
+ 
+ #endif /* _LINUX_KPKEYS_H */
 diff --git a/mm/kpkeys_hardened_pgtables.c b/mm/kpkeys_hardened_pgtables.c
-index da5695da518d..5b1231e1422a 100644
+index 5b1231e1422a..223a0bb02df0 100644
 --- a/mm/kpkeys_hardened_pgtables.c
 +++ b/mm/kpkeys_hardened_pgtables.c
-@@ -5,6 +5,7 @@
- #include <linux/kpkeys.h>
- #include <linux/memcontrol.h>
- #include <linux/mm.h>
-+#include <linux/mutex.h>
- #include <linux/set_memory.h>
- 
- __ro_after_init DEFINE_STATIC_KEY_FALSE(kpkeys_hardened_pgtables_key);
-@@ -35,6 +36,8 @@ static int set_pkey_default(struct page *page, unsigned int nr_pages)
- static bool pba_enabled(void);
- static struct page *pba_pgtable_alloc(gfp_t gfp);
- static void pba_pgtable_free(struct page *page);
-+static int pba_prepare_direct_map_split(void);
-+static bool pba_ready_for_direct_map_split(void);
+@@ -39,6 +39,7 @@ static void pba_pgtable_free(struct page *page);
+ static int pba_prepare_direct_map_split(void);
+ static bool pba_ready_for_direct_map_split(void);
  static void pba_init(void);
++static void pba_init_late(void);
  
  /* Trivial allocator in case the linear map is PTE-mapped (no block mapping) */
-@@ -79,6 +82,22 @@ void kpkeys_pgtable_free(struct page *page)
- 		noblock_pgtable_free(page);
+ static struct page *noblock_pgtable_alloc(gfp_t gfp)
+@@ -107,6 +108,15 @@ void __init kpkeys_hardened_pgtables_init(void)
+ 	static_branch_enable(&kpkeys_hardened_pgtables_key);
  }
  
-+int kpkeys_prepare_direct_map_split(void)
++void __init kpkeys_hardened_pgtables_init_late(void)
 +{
-+	if (pba_enabled())
-+		return pba_prepare_direct_map_split();
++	if (!arch_kpkeys_enabled())
++		return;
 +
-+	return 0;
++	if (pba_enabled())
++		pba_init_late();
 +}
 +
-+bool kpkeys_ready_for_direct_map_split(void)
-+{
-+	if (pba_enabled())
-+		return pba_ready_for_direct_map_split();
-+
-+	return true;
-+}
-+
- void __init kpkeys_hardened_pgtables_init(void)
- {
- 	if (!arch_kpkeys_enabled())
-@@ -94,7 +113,24 @@ void __init kpkeys_hardened_pgtables_init(void)
-  * freeing of full blocks.
-  */
- #define PBA_GFP_ALLOC		GFP_KERNEL
--#define PBA_GFP_OPT_MASK	(__GFP_ZERO | __GFP_ACCOUNT)
-+#define PBA_GFP_OPT_MASK	(__GFP_ZERO | __GFP_ACCOUNT | __GFP_PGTABLE_SPLIT)
-+
-+/*
-+ * Pages need to be reserved for splitting the linear map; __GFP_PGTABLE_SPLIT
-+ * must be passed to access these pages. 4 pages are reserved:
-+ *
-+ * - 2 in case a PMD and/or PTE page needs to be allocated if set_memory_pkey()
-+ *   splits the linear map while refilling our own page cache (see
-+ *   __refill_pages()). These 2 pages must always be available as we cannot
-+ *   refill recursively. They are protected by alloc_mutex and are guaranteed to
-+ *   be replenished when refilling is complete and we release the mutex.
-+ *
-+ * - 2 for splitting the linear map for any other purpose (e.g. calling
-+ *   set_memory_pkey() or set_memory_ro() on an arbitrary range). These pages
-+ *   are replenished before the split is attempted, see
-+ *   kpkeys_prepare_direct_map_split().
-+ */
-+#define PBA_NR_RESERVED_PAGES	4
- 
- #define BLOCK_ORDER		PMD_ORDER
- 
-@@ -128,12 +164,14 @@ struct pkeys_block_allocator {
- 	struct list_head cached_list;
- 	unsigned long nr_cached;
- 	spinlock_t lock;
-+	struct mutex alloc_mutex;
+ /*
+  * pkeys block allocator (PBA): dedicated page table allocator for block-mapped
+  * linear map. Block splitting is minimised by prioritising the allocation and
+@@ -174,7 +184,13 @@ static struct pkeys_block_allocator pkeys_block_allocator = {
+ 	.alloc_mutex = __MUTEX_INITIALIZER(pkeys_block_allocator.alloc_mutex)
  };
  
- static struct pkeys_block_allocator pkeys_block_allocator = {
- 	.cached_list = LIST_HEAD_INIT(pkeys_block_allocator.cached_list),
- 	.nr_cached = 0,
- 	.lock = __SPIN_LOCK_UNLOCKED(pkeys_block_allocator.lock),
-+	.alloc_mutex = __MUTEX_INITIALIZER(pkeys_block_allocator.alloc_mutex)
- };
- 
++static struct {
++	struct page *head_page;
++	unsigned int order;
++} pba_early_region __initdata;
++
  static __ro_after_init DEFINE_STATIC_KEY_FALSE(pba_enabled_key);
-@@ -143,6 +181,13 @@ static bool pba_enabled(void)
- 	return static_branch_likely(&pba_enabled_key);
++static __ro_after_init DEFINE_STATIC_KEY_FALSE(pba_can_set_pkey);
+ 
+ static bool pba_enabled(void)
+ {
+@@ -188,6 +204,28 @@ static bool alloc_mutex_locked(void)
+ 	return mutex_get_owner(&pba->alloc_mutex) == (unsigned long)current;
  }
  
-+static bool alloc_mutex_locked(void)
++/*
++ * __ref is used as this is called from __refill_pages() which is not __init.
++ * The call to pba_init_late() guarantees this is not called after boot has
++ * completed.
++ */
++static void __ref register_early_region(struct page *head_page,
++					unsigned int order)
 +{
-+	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
++	/*
++	 * Only one region is expected to be registered. Any further region
++	 * is left untracked (i.e. unprotected).
++	 */
++	if (WARN_ON(pba_early_region.head_page))
++		return;
 +
-+	return mutex_get_owner(&pba->alloc_mutex) == (unsigned long)current;
++	pr_debug("%s: order=%d, pfn=%lx\n", __func__, order,
++		 page_to_pfn(head_page));
++
++	pba_early_region.head_page = head_page;
++	pba_early_region.order = order;
 +}
 +
  static void cached_list_add_pages(struct page *page, unsigned int nr_pages)
  {
  	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
-@@ -179,6 +224,7 @@ static void __refill_pages_add_to_cache(struct page *page, unsigned int order,
- 
- static struct page *__refill_pages(bool alloc_one)
- {
-+	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
+@@ -227,7 +265,7 @@ static struct page *__refill_pages(bool alloc_one)
+ 	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
  	struct page *page;
  	unsigned int order;
- 	int ret;
-@@ -195,6 +241,8 @@ static struct page *__refill_pages(bool alloc_one)
+-	int ret;
++	int ret = 0;
  
- 	pr_debug("%s: order=%d, pfn=%lx\n", __func__, order, page_to_pfn(page));
+ 	for (int i = 0; i < ARRAY_SIZE(refill_orders); ++i) {
+ 		order = refill_orders[i];
+@@ -243,7 +281,10 @@ static struct page *__refill_pages(bool alloc_one)
  
-+	guard(mutex)(&pba->alloc_mutex);
-+
- 	ret = set_pkey_pgtable(page, 1 << order);
+ 	guard(mutex)(&pba->alloc_mutex);
+ 
+-	ret = set_pkey_pgtable(page, 1 << order);
++	if (static_branch_likely(&pba_can_set_pkey))
++		ret = set_pkey_pgtable(page, 1 << order);
++	else
++		register_early_region(page, order);
  
  	if (ret) {
-@@ -210,16 +258,27 @@ static struct page *__refill_pages(bool alloc_one)
- 	return page;
- }
- 
-+static int refill_pages(void)
-+{
-+	return __refill_pages(false) ? 0 : -ENOMEM;
-+}
-+
- static struct page *refill_pages_and_alloc_one(void)
- {
- 	return __refill_pages(true);
- }
- 
--static bool cached_page_available(void)
-+static bool cached_page_available(gfp_t gfp)
- {
- 	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
- 
--	return pba->nr_cached > 0;
-+	if (gfp & __GFP_PGTABLE_SPLIT) {
-+		pr_debug("%s: split pgtable (nr_cached: %lu, in_alloc: %d)\n",
-+			__func__, pba->nr_cached, alloc_mutex_locked());
-+		return true;
-+	}
-+
-+	return pba->nr_cached > PBA_NR_RESERVED_PAGES;
- }
- 
- static struct page *get_cached_page(gfp_t gfp)
-@@ -229,7 +288,7 @@ static struct page *get_cached_page(gfp_t gfp)
- 
- 	guard(spinlock_bh)(&pba->lock);
- 
--	if (!cached_page_available())
-+	if (!cached_page_available(gfp))
- 		return NULL;
- 
- 	page = list_first_entry_or_null(&pba->cached_list, struct page, lru);
-@@ -311,10 +370,43 @@ static void pba_pgtable_free(struct page *page)
- 	cached_list_add_pages(page, 1);
- }
- 
-+static int pba_prepare_direct_map_split(void)
-+{
-+	if (pba_ready_for_direct_map_split())
-+		return 0;
-+
-+	/* Ensure we have at least PBA_NR_RESERVED_PAGES available */
-+	return refill_pages();
-+}
-+
-+static bool pba_ready_for_direct_map_split(void)
-+{
-+	struct pkeys_block_allocator *pba = &pkeys_block_allocator;
-+
-+	/*
-+	 * For a regular split, we must ensure the reserve is fully replenished
-+	 * before splitting (which may consume 2 pages out of 4).
+ 		__free_pages(page, order);
+@@ -406,7 +447,20 @@ static void __init pba_init(void)
+ 	/*
+ 	 * Refill the cache so that the reserve pages are available for
+ 	 * splitting next time we need to refill.
 +	 *
-+	 * When refilling our cache, alloc_mutex is locked and we must use
-+	 * pages from the reserve (remaining 2 pages).
-+	 */
-+	return READ_ONCE(pba->nr_cached) >= PBA_NR_RESERVED_PAGES ||
-+		alloc_mutex_locked();
-+}
-+
- static void __init pba_init(void)
- {
-+	int ret;
-+
- 	if (arch_has_pte_only_direct_map())
- 		return;
- 
- 	static_branch_enable(&pba_enabled_key);
-+
-+	/*
-+	 * Refill the cache so that the reserve pages are available for
-+	 * splitting next time we need to refill.
-+	 */
-+	ret = refill_pages();
-+	WARN_ON(ret);
++	 * We cannot split the linear map at this stage, so the allocated
++	 * region will be registered as early region (pba_early_region) and
++	 * its pkey set later.
+ 	 */
+ 	ret = refill_pages();
+ 	WARN_ON(ret);
  }
++
++static void __init pba_init_late(void)
++{
++	static_branch_enable(&pba_can_set_pkey);
++
++	if (pba_early_region.head_page)
++		set_pkey_pgtable(pba_early_region.head_page,
++				 1 << pba_early_region.order);
++}
 -- 
 2.51.2
 
