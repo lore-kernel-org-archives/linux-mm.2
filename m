@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FDDFFEFB70
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEE14FEFB6E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81B846B00A6; Fri, 27 Feb 2026 12:56:33 -0500 (EST)
+	id 3696C6B00A8; Fri, 27 Feb 2026 12:56:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E2656B00A8; Fri, 27 Feb 2026 12:56:33 -0500 (EST)
+	id 2D5FF6B00AA; Fri, 27 Feb 2026 12:56:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 710036B00A9; Fri, 27 Feb 2026 12:56:33 -0500 (EST)
+	id 203766B00AB; Fri, 27 Feb 2026 12:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59E986B00A6
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:56:33 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FEAA1CA9B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:33 +0000 (UTC)
-X-FDA: 84490991466.28.AAC5376
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 07EC36B00A8
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:56:38 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB0811CA9B
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:37 +0000 (UTC)
+X-FDA: 84490991634.22.4D6BB28
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6D53D140007
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 02B95140012
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772214991;
+	s=arc-20220608; t=1772214996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yvPuv6sH8ptnova1Tbtix8h3gQ7QoRRh+xxQudFszJY=;
-	b=X31YJf3LVuDdxRwdcx9vfQ1WT+hiouRybkdMJ74tp1EzHE/Kj29d/blFJbMGuIB67x/iUD
-	Ry9EVyIoID894VQmUBtBELJadQjjotraLJbEMWylA+AUQU6T+TBP4wSllyCHDZUM0u/0xJ
-	EVe8mZIxSgY6c/bOicUIEyAmq3lq4ho=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772214991; a=rsa-sha256;
+	bh=mERVD61sY/5daxDXxeryajyl6Gvr2VmXYacv4kT6jOM=;
+	b=We1Zv27SU4DNVER+ui3i+bcxMOqHTdv7jsT0nr1XD3XpF/O0m46aOqBqaPhE/q15dhPIa5
+	go9J4HYeuPQ6OHReVNjoLyGaXgHtj9B6UX0vsxw4F00YDzpzs5r1y5Rqp/15jINV4F373J
+	r0CUrdAFk7pwPZVmx1IEcICV0nRFkts=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772214996; a=rsa-sha256;
 	cv=none;
-	b=Jn7HxSkAyMpMLRsajbWoMZOXLmSnnj5kOmGepwjFaazsUI28jxHyJ8h+z1usZ8F3zozF71
-	5chyX72tRpC6PJqw3YF3254Md7F1vkQArra0tCObmdbBwa8v1Psyo36w40oMz9YLdpWnnq
-	e9xTuL+vLmrftdalshE89iLCW2Cx6Zg=
+	b=VtVB0V46qtreqfuYGIZNSq3Dc8KkXCbo/8fU4WnufcthCi0JyIhFJlDn0dgq9hk9uIr+Wt
+	pgdnELV6XBxZEg79rJSnHp/V3CrTx9ulXs4RC83hzcVByBe8p4KquNrs6w0MeNVz/bwP2r
+	lf2mTv/tXf/rw96D3sO4QEa07LbHFio=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D25D14BF;
-	Fri, 27 Feb 2026 09:56:24 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D3DBC14BF;
+	Fri, 27 Feb 2026 09:56:28 -0800 (PST)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1637B3F73B;
-	Fri, 27 Feb 2026 09:56:25 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C17103F73B;
+	Fri, 27 Feb 2026 09:56:30 -0800 (PST)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-hardening@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -88,22 +88,22 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH v6 10/30] arm64: Enable kpkeys
-Date: Fri, 27 Feb 2026 17:54:58 +0000
-Message-ID: <20260227175518.3728055-11-kevin.brodsky@arm.com>
+Subject: [PATCH v6 11/30] memblock: Move INIT_MEMBLOCK_* macros to header
+Date: Fri, 27 Feb 2026 17:54:59 +0000
+Message-ID: <20260227175518.3728055-12-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260227175518.3728055-1-kevin.brodsky@arm.com>
 References: <20260227175518.3728055-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D53D140007
-X-Stat-Signature: zi9crgi4cz6qnzsw5tgj66n7zdco4r3k
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 02B95140012
+X-Stat-Signature: hy69asy5u5gnia7uds6mc5dissabei1h
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772214991-119342
-X-HE-Meta: U2FsdGVkX186YYKyQ1x2WHk8ioWhLPSbVGUHqVFO6znieySXJS1SeFRrwhGfFg+DuHCFIzD9zcsh49qXLNg/+Q8/O6dubqdZ4sH/ueOEoEiMPBrm5WsJwq49tbL+zOJeVOVCf3/Ieut2I4GU5dSlk0bxqJcpcwvqAroo2vYHfugMBZ2UbtYEHbQs0M1nUPm5daAq4pXvcVP2T7WSCc6DMC0dpzCsAxhqYoL9FH/wqxtdQhUr2rLaaPH6xY6VUrF8Rw5GbbR97Bwl/+BhBnQrKJT4xNwp6A+hFI6lu6VTSY+Zw/BhowHwpjrK2BgYJqziKcR7//5Th/smreGDroKpFaRhhwknGNpN1Z/gBnFIW1ZtsLB/HmB4K2ZcxXFMnSpKQGaMDhaKi9gB1lViWyB5dPVdr9DINHNq61grHt4MqnkNlXQZ0i+0MZc2Z0fdmBcuVWvjeakeoNZFiERQZnCF6WUyEVrbv9uW2MuIJRA+doaiIoqaKLLMLXQy71xCJOjLgqWQiAwONDJ1o/Hb0Le8e4thzg+//zN0AbHhbfSus5nZtUpqLE1J7RjbNRrc15jP3rGQN+VrLyPVjaFEVxYB7V7gffNjAzWnhD4wFI6m8AN+pUhxryKwthINkXMhoFObf/b/wEf/4xw8i4npl4yDRTBvOzq/THWgCTzDSAo4VVAIg+0Fn1XPoz0i9AjMLDViNwmLWvomU3xKJnpOcs7wpkGGwbD/Uobk2+wm8pUEWmsoELwegpdETYabwtzEM+jp0r8rAN2yED0HrXETXjKbbz6/eSM0YkLjAq6fbcHPIQC8wTlxxjo6gHs5h20KVgr27OV1GEVEMpBCGTJy8K134zpktawDxq3TEU3diQCv8BKPbu1UV7siNTUoYDmVBiMwwz4rEYDXqybeDzwC1o/IftYxDH/H9T2sc7fH1Fi0n1noWlr3vEy1UH7ExKax/R+NPMtP0oSqcRrm8hYGn3L
- sO+7b8r7
- io99uAxFtZ/aEVGRBnL0i4xFoJYHkfEzGLm475oRubLZD/pdPc81UkL8So7eph68luyzL4cH8MoiA42u8aLQNiPaAfbXKI5dtS7+ls9bcUXZLlw45Mvn7NlHMZMlBXTqnCiP5HLUqNtVWz4kGhvBdoITY0gtx4NJ+vaifN1PR+D+eO+1M/QVlMiKVOVMiBKUcjZ26GgwiaRQS0JZcvz4doog7fBTQDo9+VShBKhvAcDVrlKQ=
+X-HE-Tag: 1772214995-735993
+X-HE-Meta: U2FsdGVkX18jZNEZLlhgorj2yLS8aBV9hze53oNtX+kjzdYrM05JUUV3IDlxBXVPcGZk6/rYyQ/wNxdT8qTXFkGsDgD3DVLsGVh78ayqyVOBlrqQXjmBR+rhbJg9wYrb2NcKoOvHkXPHsQYLN/IIUqw1Hx6tbyANWrzf8JmZoaNhVPpa/xDC5mcWJPRWhY/YM0JAOyiL2YThGHctBrfdj2kxeLdghWF23/ztIbp6aX22MyAP7lLV6L+M4xJ2nsFJs3g21GUVK6CMUZEzhBb8qJ7zwyCkxBGtzWfmnwylyzVA6e5vAtKsZNlaX6wSKMH6hgJdpRR1UYwy/mqKfVuLUBzDBf9qSH9ikVOzxPdvsDEW4Ttgc4SicJdMSPv7vog1AYEzQy1H2bu3P5nQQD7p+cQN1alPsAoNp8uck5IE1AfZwep+sPHY5telab5HE7B44i5iX6TDOdqlWvLc4AN7kXSukxLuO1cNyZMfMARunWBU/rlnqnL9OBPMlKK0X1ErLVUhCkshcQNkP4bmosTo2kGufrMHvHNnm4UVjB+NFEneOugo31mlCr4YFdz5SVcFqnCsk0tDUqR4kD1c76YeZeUYb79shCbntN7ncPwPi2/W4C7WQcJthPnYgtqllWO+9RiAYQXqjCKUTzPB5EJbtPiAllXwY2jp3FJHX3i4+6wGlKO9EfG4fdjEEd82YYPyx6cLsFmGvI6SykGvQe/4AH1I43BKcaeSSmP6xWaZFYiPA0oxDqA3Ji2D0tOBXZ1O3fqXapLI9cd3ADXiJeHaZTvaCX+Pm33SgbkZeYPLpYBrYPtT9mxg29yqpB4PQ61TcytkeqirR62MZ9x4xA2v/iLRjzz53VsysIgzudeDNZXGG5VSpJWawFOyiWqFV2a3f1tzk8d9+B2nUZBGJK9uTJFlAHpiwjKl+5XOcj3a8abvOWMmwFU/fZQujKuYQFH74J81R9bo7maFP5RP+mC
+ 2Vp5h94T
+ /kds8mVYjF0Cl5NUxU+0Izzw+MKKBYIn7B+je1LUe9FrNHmRpPW5FljAWzwtpxhJ02Pv3Fp8H5eG7Lq+P9b50szIjS7NQi6p3xNQ75R1dfiEKsZHWuU2gJiBYQiqiSp3Z46f12d/eklEgh3KN2ui5Y1eLkS/qSFhrlmsv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,56 +111,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the final step to enable kpkeys on arm64. We enable
-POE at EL1 by setting TCR2_EL1.POE, and initialise POR_EL1 to the
-default value, enabling access to the default pkey/POIndex (0).
-An ISB is added so that POE restrictions are enforced immediately.
+The upcoming page table allocator for the kpkeys_hardened_pgtables
+feature will need to know the maximum number of memblock regions.
+Move the corresponding macros to <linux/memblock.h> to allow that.
 
-Having done this, we can now select ARCH_HAS_KPKEYS if ARM64_POE is
-enabled.
+INIT_MEMBLOCK_{RESERVED,MEMORY}_REGIONS may be overridden, but this
+should be fine as only arm64 and loong currently do that and the
+relevant header is already (indirectly) included by
+<linux/memblock.h>.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/Kconfig             | 1 +
- arch/arm64/kernel/cpufeature.c | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ include/linux/memblock.h | 11 +++++++++++
+ mm/memblock.c            | 11 -----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 38dba5f7e4d2..732d4dbbab20 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -2164,6 +2164,7 @@ config ARM64_POE
- 	def_bool y
- 	select ARCH_USES_HIGH_VMA_FLAGS
- 	select ARCH_HAS_PKEYS
-+	select ARCH_HAS_KPKEYS
- 	help
- 	  The Permission Overlay Extension is used to implement Memory
- 	  Protection Keys. Memory Protection Keys provides a mechanism for
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index c31f8e17732a..3b01a70b617b 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -76,6 +76,7 @@
- #include <linux/kasan.h>
- #include <linux/percpu.h>
- #include <linux/sched/isolation.h>
-+#include <linux/kpkeys.h>
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 6ec5e9ac0699..79f3ca8ff268 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -24,6 +24,17 @@ extern unsigned long max_pfn;
+  */
+ extern unsigned long long max_possible_pfn;
  
- #include <asm/cpu.h>
- #include <asm/cpufeature.h>
-@@ -2447,8 +2448,10 @@ static void cpu_enable_mops(const struct arm64_cpu_capabilities *__unused)
- #ifdef CONFIG_ARM64_POE
- static void cpu_enable_poe(const struct arm64_cpu_capabilities *__unused)
- {
--	sysreg_clear_set(REG_TCR2_EL1, 0, TCR2_EL1_E0POE);
-+	write_sysreg_s(POR_EL1_INIT, SYS_POR_EL1);
-+	sysreg_clear_set(REG_TCR2_EL1, 0, TCR2_EL1_E0POE | TCR2_EL1_POE);
- 	sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_E0POE);
-+	isb();
- }
- #endif
++#define INIT_MEMBLOCK_REGIONS			128
++#define INIT_PHYSMEM_REGIONS			4
++
++#ifndef INIT_MEMBLOCK_RESERVED_REGIONS
++#define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
++#endif
++
++#ifndef INIT_MEMBLOCK_MEMORY_REGIONS
++#define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
++#endif
++
+ /**
+  * enum memblock_flags - definition of memory region attributes
+  * @MEMBLOCK_NONE: no special request
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..954eb76aa0c2 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -29,17 +29,6 @@
  
+ #include "internal.h"
+ 
+-#define INIT_MEMBLOCK_REGIONS			128
+-#define INIT_PHYSMEM_REGIONS			4
+-
+-#ifndef INIT_MEMBLOCK_RESERVED_REGIONS
+-# define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
+-#endif
+-
+-#ifndef INIT_MEMBLOCK_MEMORY_REGIONS
+-#define INIT_MEMBLOCK_MEMORY_REGIONS		INIT_MEMBLOCK_REGIONS
+-#endif
+-
+ /**
+  * DOC: memblock overview
+  *
 -- 
 2.51.2
 
