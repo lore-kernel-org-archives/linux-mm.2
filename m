@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9299FD8FFD
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE04AFD530A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 532686B00CB; Fri, 27 Feb 2026 14:43:26 -0500 (EST)
+	id 769C96B00CD; Fri, 27 Feb 2026 14:43:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 482A16B00CD; Fri, 27 Feb 2026 14:43:26 -0500 (EST)
+	id 6A70E6B00CF; Fri, 27 Feb 2026 14:43:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 327E16B00CE; Fri, 27 Feb 2026 14:43:26 -0500 (EST)
+	id 4CCEE6B00D0; Fri, 27 Feb 2026 14:43:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D64F6B00CB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:26 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D9CBCBBBCC
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:25 +0000 (UTC)
-X-FDA: 84491260770.20.715FEC7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 27A9F6B00CD
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:28 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBA991A06E1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:27 +0000 (UTC)
+X-FDA: 84491260854.17.F081713
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B959EA000E
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N99mJ1+F;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id B73F7140010
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:25 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WsF21Cno;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772221403;
+	s=arc-20220608; t=1772221405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTwyNaPDLJCyC2RCm3Rtg30ru9t4znqiJ0NQjLPs3Pw=;
-	b=trg0i26AhlYS18JcFd6VYmquZJ/QudStkEfKokD2+wSQ99cBf7LcqimlTQYHVhxD/bjb9k
-	hWzhR96TIrjyDKY4M9i7EfoxFOJnB2Xy29yKQg84MmRrDJxwMe+VDQluOiyilKNd2q4IgT
-	/9Csq/wYLZIyjzrjib5yMfTfSQltl7Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221403; a=rsa-sha256;
+	bh=psX1/RN4D7tc0hPQm6iUSxbTVKqJFYhFZ0jsRV8hStY=;
+	b=Mnn1Nbq126jpuGdGwEcnoGfs6TOrexZ4w842KP8nMQH1H2YgsTnlY5HQv9fAQykRUmgTvl
+	WyX4nI+okaGN2tXWVCKO6iruibSWkQMYHTIPMvUmcLO26y5TKrRn78rvDUKbF+3osnqLsk
+	Irc1+xvvQsrBTa1QMmha1aUlbZplqc0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221405; a=rsa-sha256;
 	cv=none;
-	b=zn87etOoIPxMnoVSuZSGdqZQUb3YVZ9lBVfUf6x8ohOBZZ+hjSOUpDaULCXDJEmi5OsZ6u
-	UITkGmNP+IXlqFzehuk/5eoZNvdH0wD9jqwyAgCoptGiz6mUGqhs4Ppf+PgHQkZE3V1frz
-	J+Y13WfwLQnY9shnFA8ozPwb18Z5+Gg=
+	b=U4RN1/78Mj1ptnoc/N6kDOM3K2c5otQy+dF5uHzX56Eq0WZwNmV8z7qpLuGEYqN4yRU3C2
+	J996D0kOxuCZIEafXuSnfVtcjgX4EixQ5kfcLPYgwFe/fDFD1uCdpzk8KYwPhrXazmbKku
+	qjLux/pF1dgbH/LZ5qva0lRuhjxJwv0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N99mJ1+F;
-	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WsF21Cno;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7736442EA;
-	Fri, 27 Feb 2026 19:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22724C116C6;
-	Fri, 27 Feb 2026 19:43:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ED7A2441FB;
+	Fri, 27 Feb 2026 19:43:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D40C2BCAF;
+	Fri, 27 Feb 2026 19:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772221402;
-	bh=op4sRtUfkPTkGQoMOy4067b1J6icXmPW9c6oduSGytg=;
+	s=k20201202; t=1772221404;
+	bh=qL/9y03XAUyVqo5OQVqiOiCFnXGU+LUEF5AtRX0sSeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N99mJ1+FQjLCzjOGVupWJ032vDuW6bUL8Mx2bS8Qktq+luTJesvmE8D+X7nmIJw2M
-	 1a4lQXQ03nKInMT+ELEpVjqZngjmopA+z9uF0H2f5ZHy8EaKQLfiIN0BI2d/ZFpwKE
-	 oa/y3Zfu3hIYTJ0Gce/hCTlX5PjydK3cvEacHzViZnLWf93l3ZEvPoPuQi+RLkJ2n+
-	 xZibO7M0K23+mjRq4UTmNlqlpT9RZFDtp5G7gz6t1LJmPATbaCDq0hjhjpATHG01rh
-	 3ZjTAXmE3QdNRWt36w70Oip7kHQYq8Eot2ezJYOVQxsAQPpzhQ6N1D7DpWG55qerL/
-	 SdaVmAmBzoGxw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4D197F40069;
-	Fri, 27 Feb 2026 14:43:21 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 27 Feb 2026 14:43:21 -0500
-X-ME-Sender: <xms:2fOhaeqKGRRIH1VXLgXVQbWQ_LaRkFfx1qDTw9rlutLp3ibgbvWiUw>
-    <xme:2fOhaV1rF82URTV0TkbeynvbfrljHayoNzbQdE_GeWx3B7QZkJWbXk0F1hWv_lWk4
-    R4YNwRddrNWr5ZwQAva_PNSDzgdPVRQ27zRDX2DPWVTkN8n0X59dwgF>
-X-ME-Received: <xmr:2fOhadUl2Ppw8-2ChPPLJTFxOAa_XjCuZtul2FVkqrvG12E1yz3YpZYCD7k2DA>
+	b=WsF21CnoBKn/lu9boe37TDd991flEHr2mvygK8jdP/xwI8tdRmQVyjCZER9cJ77bd
+	 a+xKo9EPLTjaUm02KQbN48MIsPjUB0Bqbwc0v+DXSO8dcdiUEazkFFCvOQf7XGoD9T
+	 qwc5r9YRPYTdMSGLsROHXn4Ya/jVx/CMYC7MR1I2r8h26pOMTbx0dRysIp6ErSeTHp
+	 PN9tBPIfquvjX4bVSXx3fiJRgHkZKGpc0qcfEoRNzy9TAxyu7yHtoT4AWqxZRAKRpT
+	 0uFnRKPN+6Zl8QErCy47zLpFS5GtwgNb8Pob4rFxCkirfbypkjwvX/q+6qB1hQKlI8
+	 HqVy0HE/zUghw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D98C7F40068;
+	Fri, 27 Feb 2026 14:43:22 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 27 Feb 2026 14:43:22 -0500
+X-ME-Sender: <xms:2vOhadyXya4yLvxIDvteB3YJYYeoMaYCq9g6E25uN0uh7yKbZoZuBQ>
+    <xme:2vOhaegxw06N82H9lXQ43oKiaJudI9bL7m1bafOf5Z23YvIWdZngQwsuSrCcQb1x9
+    HQHhsQZMt6JGQVDOBhsS2d-IEC418amrnc2eAhYKLCeS2WDtes8Cl4>
+X-ME-Received: <xmr:2vOhaQMD9laGwgWVQMSP9q5ubihdvEbhHlXEE6v4dCIlZNnTSwq-N13i1l6pCQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeelkeejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihl
     ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
     enucggtffrrghtthgvrhhnpefhudejfedvgeekffefvdekheekkeeuveeftdelheegteel
-    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrih
+    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpeefnecurfgrrhgrmhepmhgrih
     hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
     udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
     hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhht
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeelkeejucetufdote
     rghilhdrtghomhdprhgtphhtthhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpth
     htohepohhsrghlvhgrughorhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgv
     rhhnvghlrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:2fOhaezMhNPYRIIh7I6pIsAkAEf9fYdengLDKyp7Ow88YAPwDRLe1A>
-    <xmx:2fOhaZ0y8tXkLPTnSPCbCrhWiATS9kXu0bVNT5QgaWBgpXkdLXH_dA>
-    <xmx:2fOhaZseoPzwjQWmYWTDSR5I9s6y6CQWvhhF8NNRsbGtXfuyskm4Zg>
-    <xmx:2fOhadWx9TiqSlashH7DNrmLvnpQLFieA6A5ngkfXtq2TIyIy7DVTw>
-    <xmx:2fOhadv1xRIvKyWR4OHHNwCHYg8OkDazisF5wv3m4XfBU2aJCCUMcD_O>
+X-ME-Proxy: <xmx:2vOhaWjk8lIr33h1293jPn5y6LMc3miT2U3bnD367YgKMKLx7RkndQ>
+    <xmx:2vOhaQo0zMbDHINM1yEBg-pnfKaI1Mb2MqjWOK6EjD2ObcuFzGVtIQ>
+    <xmx:2vOhaRiMUO1exAmM-IDCvqOhvN83Oj8h2KxUo766kyL0izRu4wwRGg>
+    <xmx:2vOhaWIWUc1NsaavpYvwG39l8_Q_GI0r6oI2iHag_LZH2QpiaoDLqg>
+    <xmx:2vOhae7x0N6Zdq1yCXZsP0Dh-1T8GeChfX4W3ZJwOmL57Lnp3nY0yskN>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Feb 2026 14:43:20 -0500 (EST)
+ 27 Feb 2026 14:43:22 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -126,22 +126,22 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv7 07/18] mm: Rework compound_head() for power-of-2 sizeof(struct page)
-Date: Fri, 27 Feb 2026 19:42:45 +0000
-Message-ID: <20260227194302.274384-8-kas@kernel.org>
+Subject: [PATCHv7 08/18] mm/sparse: Check memmap alignment for compound_info_has_mask()
+Date: Fri, 27 Feb 2026 19:42:46 +0000
+Message-ID: <20260227194302.274384-9-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260227194302.274384-1-kas@kernel.org>
 References: <20260227194302.274384-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b3xayztyzee8rg4m5n83jifk7p6a5znt
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B73F7140010
+X-Stat-Signature: pe4dy9ijsq9c1mfrruygxhzwbn566wdw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B959EA000E
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772221403-63972
-X-HE-Meta: U2FsdGVkX1+a40lgLAOgst2PxMk9bumwuOwdCsn/ngtNWTFXYwzUd3oqJUx7bgaq5/WavAhIZlEfTqxmxT0xW9tnEz0NCHumuqAuHF8HgAEtNu6M/JZqtvNP0iVnvY5FanrtMrLzMJcUZdHk8PvIpGAxYj2ykX/wZBGzcLX0Bnt2zy4aStA9VS/elmlLeOYgP96xayCTbFJZXGuYtTIUiIY09ogvkW5bZ5rBF/sxO1BlEhJyGzp73f7j+XDc56Eops2ZMdNKlJLlcpanhQNqxuV5XeWRMeEZzBLGXQZcRv+4hBptKPNDNM1/kHgpiXiYHb3MFX/tWonOfmvGfTC2cJPZf+AKXPqQZbeMyeIfhFi0uqtq5Vmxlr2IvjvuMiSphEn1RaKuzgL4vD7yAjddLQdsRlL6Cpxv2Ep6LAW+65sSc7ttiW/0+JS9t1J4XWYj4tAt4m9zFP22x1VpGY2H5TnGBC0l7hvafi2xu/76+/xe4Wo/slrZhKZgjRDp2r4zkNbBsCN++dCuuD+T9rpkNBy9+hZYgeMVbV8DyA6bOZ2kiO4UXI3PNKVZFShIP1HU2tGo2kVo+rsNii0rGiv3A/paWEv64JXcS5jFdqUS61n6YKHq+FOu2Uf5VP8P6b+pm2agJg/r2bIpvDvR1yxMC4aFAgEGPUw5bCE2VMRfavh9IbH5XQ6gxTxx4H9+G+i2Bh5hKTzGebhC4oC7G0//wbfzCF20+hat99cSjADOkyVGsDWiC2MY/cPfXATkdS56KwofdErFT+dLZAw4zJa1N2KvyJgNDgpA5hxO+MIb0EViVnzo5I2XupBMZ1Zvl2PZ2D79D5qXOlckGAga88dA0qbpSVqyxcJ9Ejc5Taef5OXGOXdtN3n1u8h0BRiwDt+bIN2D1fVC3tzGMfGNr4rcQ9lD6jQyyc4hI1c1ZlU2aiJRv5w88cZfFFBN+tbMpyKc8BhtjHAkxI7MLIzXCTP
- e+HWHzMq
- b93qiqIr9rZMc3ADUjcBe0v5L3mMad6Py9WxeLq8QdI39hwYzCmpnSdGyg9L6lx6JovQ0DWl7LcxqwHzddGgSLphdCIc0Hjinjs1HsxssZv2WMA/QKUNIAkzzZc2CWSqp7gnTGh9EOMK7NEUlpQ4V7RzHx77sIW/cEyWr+KXU/CmXul7MxcUdy/Q2NcyVChxSrNZ2uSNmrYdJsZlaVY1GfYC5y6dkJTVVu02bU8M0bZliA+WzNPbqWpRJPnDjVvWrh8lJ+7aMQ8xWVJVGge+jn4jEPIokil875k2+VxdGY5OorXu4QCJvoecs7dKhb9Q/xU43AMzZBimQ9mrxUJbfu4DlIae+sSf2PGQk/r2RGlw6SzA=
+X-HE-Tag: 1772221405-355844
+X-HE-Meta: U2FsdGVkX1+691QOMZq0j3t0EuCv6Y4wVb0qJXKD2cULIS6w+C2UdHyCEa7cUsBZEAHC4p9db9tSLFQdwc/uoaHDkvZdNy72QpkU3JwZY4cvPosbZ8FcGiLC+g4LUNbi2c1CujJAhIjNk8q8AdKRRLKvVEZ4Ymzn8BPudGXG9nSKSQA5R9eJe4gvpbLlOA98IwRHLZThtyv3Iz3m2UtfDq7rbkZFAVfy10CP7YBYfgsu9qE5kl5XSRABwJNpKMs/C6pbP3kSm//sYDBvcAcab4bxB0pNwF9Sv8OnhS5XLKKQj2JtR9rirbocI+PBbs5Ei+YNirShkFYh3Qe904bSq4q1/2QVoQecjYzeL8pmE0LFreY/cvv8foWH8UXtrXtLD78mw2e/WC4R7kTYbwpJgggL/FOihztD9PfUuiGuTjmMtyUH887l2iETeJF3EMxxxWFge9ok5WPsN5CeqR+0h3VMUfkEoBcCAfK38NBWZSUVTtpgsU9dJkhsDWy7BahTfzumWt/jQ+Kj6iISoGFjaZappn4rR4TRVMdKFyBs6pmwcHNoRuMJ1ct+TJgouHImlG28STv0NYn1ju98NWXdkCkqA+083Z9uBsj1urZdqZXwjYxiV6+AzxoGScW5wKVo/+eYZOy7HxWReJ4ifZ0XZ1lx71I+ZBPeI/jf29+EoTEfeXvuOk0NK7Xz4NX+rzzsoKJQL18fd5+77LRT+aljCm/Y1S4E3jNXSx7ifgjJMAlJlY7oaP9PVQxsRLWck6MKlHQnFA7cj2fQYET+EdKeLCwHgPnIYu2rEYQGmIwpH6UVApoZeRMp9MA1P/Ut8a3AxtvHdL0CtNPy/JGw6fSyFlqoz89wK9OsJByLD4Rnugc++SRkTdt6Ow4acwPUihpKsCEKFxMK8+klWxHPmVOWY1wjnOdhAQNPTjEiLIC0/KNOcciUql+sVuCmz0TIXZQw7QliWcZY+5v2XAYXi+q
+ dUTLECRq
+ sm1WSaVNZlhZzaFjwtM0VQdGNIb/pbUX8gdqHmInYng6J3JVxSkdd8ds/Ps7L6DWjpw8ZtUCBY1CgB1Yp0gkbFoUKRecd2Z+u+RTD2v2TJ6unOW0pfZ1vQ/cFGKCIh4L2gx+CBjlkEMP4KVWQ4ISaZ1Fw5dDcVNKm1qZnISD6rZarjpC/AFS4pFnIgLZGPBKfsjt4TpZxdRTIRIWpJVqb1XVVSoTfR0QK+ImS8j+BtVR7EEvla1KOijS2P8OfhK5UEUClhPx/sDVraBwI5XKr1VcLFPpSvceAVXxd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,237 +151,32 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kiryl Shutsemau <kas@kernel.org>
 
-For tail pages, the kernel uses the 'compound_info' field to get to the
-head page. The bit 0 of the field indicates whether the page is a
-tail page, and if set, the remaining bits represent a pointer to the
-head page.
+If page->compound_info encodes a mask, it is expected that vmemmap to be
+naturally aligned to the maximum folio size.
 
-For cases when size of struct page is power-of-2, change the encoding of
-compound_info to store a mask that can be applied to the virtual address
-of the tail page in order to access the head page. It is possible
-because struct page of the head page is naturally aligned with regards
-to order of the page.
-
-The significant impact of this modification is that all tail pages of
-the same order will now have identical 'compound_info', regardless of
-the compound page they are associated with. This paves the way for
-eliminating fake heads.
-
-The HugeTLB Vmemmap Optimization (HVO) creates fake heads and it is only
-applied when the sizeof(struct page) is power-of-2. Having identical
-tail pages allows the same page to be mapped into the vmemmap of all
-pages, maintaining memory savings without fake heads.
-
-If sizeof(struct page) is not power-of-2, there is no functional
-changes.
-
-Limit mask usage to HugeTLB vmemmap optimization (HVO) where it makes
-a difference. The approach with mask would work in the wider set of
-conditions, but it requires validating that struct pages are naturally
-aligned for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+Add a VM_WARN_ON_ONCE() to check the alignment.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Usama Arif <usamaarif642@gmail.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Zi Yan <ziy@nvidia.com>
 ---
- include/linux/page-flags.h | 81 ++++++++++++++++++++++++++++++++++----
- mm/slab.h                  | 16 ++++++--
- mm/util.c                  | 16 ++++++--
- 3 files changed, 97 insertions(+), 16 deletions(-)
+ mm/sparse.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 42bf8ed02a29..01970bd38bff 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -198,6 +198,29 @@ enum pageflags {
+diff --git a/mm/sparse.c b/mm/sparse.c
+index b5b2b6f7041b..dfabe554adf8 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -600,6 +600,11 @@ void __init sparse_init(void)
+ 	BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+ 	memblocks_present();
  
- #ifndef __GENERATING_BOUNDS_H
- 
-+/*
-+ * For tail pages, if the size of struct page is power-of-2 ->compound_info
-+ * encodes the mask that converts the address of the tail page address to
-+ * the head page address.
-+ *
-+ * Otherwise, ->compound_info has direct pointer to head pages.
-+ */
-+static __always_inline bool compound_info_has_mask(void)
-+{
-+	/*
-+	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
-+	 * makes a difference.
-+	 *
-+	 * The approach with mask would work in the wider set of conditions,
-+	 * but it requires validating that struct pages are naturally aligned
-+	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
-+	 */
-+	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
-+		return false;
-+
-+	return is_power_of_2(sizeof(struct page));
-+}
-+
- #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
- DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
- 
-@@ -207,6 +230,10 @@ DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
-  */
- static __always_inline const struct page *page_fixed_fake_head(const struct page *page)
- {
-+	/* Fake heads only exists if compound_info_has_mask() is true */
-+	if (!compound_info_has_mask())
-+		return page;
-+
- 	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
- 		return page;
- 
-@@ -223,10 +250,14 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
- 		 * because the @page is a compound page composed with at least
- 		 * two contiguous pages.
- 		 */
--		unsigned long head = READ_ONCE(page[1].compound_info);
-+		unsigned long info = READ_ONCE(page[1].compound_info);
- 
--		if (likely(head & 1))
--			return (const struct page *)(head - 1);
-+		/* See set_compound_head() */
-+		if (likely(info & 1)) {
-+			unsigned long p = (unsigned long)page;
-+
-+			return (const struct page *)(p & info);
-+		}
- 	}
- 	return page;
- }
-@@ -281,11 +312,26 @@ static __always_inline int page_is_fake_head(const struct page *page)
- 
- static __always_inline unsigned long _compound_head(const struct page *page)
- {
--	unsigned long head = READ_ONCE(page->compound_info);
-+	unsigned long info = READ_ONCE(page->compound_info);
- 
--	if (unlikely(head & 1))
--		return head - 1;
--	return (unsigned long)page_fixed_fake_head(page);
-+	/* Bit 0 encodes PageTail() */
-+	if (!(info & 1))
-+		return (unsigned long)page_fixed_fake_head(page);
-+
-+	/*
-+	 * If compound_info_has_mask() is false, the rest of compound_info is
-+	 * the pointer to the head page.
-+	 */
-+	if (!compound_info_has_mask())
-+		return info - 1;
-+
-+	/*
-+	 * If compound_info_has_mask() is true the rest of the info encodes
-+	 * the mask that converts the address of the tail page to the head page.
-+	 *
-+	 * No need to clear bit 0 in the mask as 'page' always has it clear.
-+	 */
-+	return (unsigned long)page & info;
- }
- 
- #define compound_head(page)	((typeof(page))_compound_head(page))
-@@ -293,7 +339,26 @@ static __always_inline unsigned long _compound_head(const struct page *page)
- static __always_inline void set_compound_head(struct page *tail,
- 		const struct page *head, unsigned int order)
- {
--	WRITE_ONCE(tail->compound_info, (unsigned long)head + 1);
-+	unsigned int shift;
-+	unsigned long mask;
-+
-+	if (!compound_info_has_mask()) {
-+		WRITE_ONCE(tail->compound_info, (unsigned long)head | 1);
-+		return;
++	if (compound_info_has_mask()) {
++		VM_WARN_ON_ONCE(!IS_ALIGNED((unsigned long) pfn_to_page(0),
++				    MAX_FOLIO_VMEMMAP_ALIGN));
 +	}
 +
-+	/*
-+	 * If the size of struct page is power-of-2, bits [shift:0] of the
-+	 * virtual address of compound head are zero.
-+	 *
-+	 * Calculate mask that can be applied to the virtual address of
-+	 * the tail page to get address of the head page.
-+	 */
-+	shift = order + order_base_2(sizeof(struct page));
-+	mask = GENMASK(BITS_PER_LONG - 1, shift);
-+
-+	/* Bit 0 encodes PageTail() */
-+	WRITE_ONCE(tail->compound_info, mask | 1);
- }
- 
- static __always_inline void clear_compound_head(struct page *page)
-diff --git a/mm/slab.h b/mm/slab.h
-index 62dfa50c1f01..1a1b3758df05 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -131,11 +131,19 @@ static_assert(IS_ALIGNED(offsetof(struct slab, freelist), sizeof(struct freelist
-  */
- static inline struct slab *page_slab(const struct page *page)
- {
--	unsigned long head;
-+	unsigned long info;
-+
-+	info = READ_ONCE(page->compound_info);
-+	if (info & 1) {
-+		/* See compound_head() */
-+		if (compound_info_has_mask()) {
-+			unsigned long p = (unsigned long)page;
-+			page = (struct page *)(p & info);
-+		} else {
-+			page = (struct page *)(info - 1);
-+		}
-+	}
- 
--	head = READ_ONCE(page->compound_head);
--	if (head & 1)
--		page = (struct page *)(head - 1);
- 	if (data_race(page->page_type >> 24) != PGTY_slab)
- 		page = NULL;
- 
-diff --git a/mm/util.c b/mm/util.c
-index 3ebcb9e6035c..20dccf2881d7 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1237,7 +1237,7 @@ static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
-  */
- void snapshot_page(struct page_snapshot *ps, const struct page *page)
- {
--	unsigned long head, nr_pages = 1;
-+	unsigned long info, nr_pages = 1;
- 	struct folio *foliop;
- 	int loops = 5;
- 
-@@ -1247,8 +1247,8 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
- again:
- 	memset(&ps->folio_snapshot, 0, sizeof(struct folio));
- 	memcpy(&ps->page_snapshot, page, sizeof(*page));
--	head = ps->page_snapshot.compound_info;
--	if ((head & 1) == 0) {
-+	info = ps->page_snapshot.compound_info;
-+	if (!(info & 1)) {
- 		ps->idx = 0;
- 		foliop = (struct folio *)&ps->page_snapshot;
- 		if (!folio_test_large(foliop)) {
-@@ -1259,7 +1259,15 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
- 		}
- 		foliop = (struct folio *)page;
- 	} else {
--		foliop = (struct folio *)(head - 1);
-+		/* See compound_head() */
-+		if (compound_info_has_mask()) {
-+			unsigned long p = (unsigned long)page;
-+
-+			foliop = (struct folio *)(p & info);
-+		} else {
-+			foliop = (struct folio *)(info - 1);
-+		}
-+
- 		ps->idx = folio_page_idx(foliop, page);
- 	}
+ 	pnum_begin = first_present_section_nr();
+ 	nid_begin = sparse_early_nid(__nr_to_section(pnum_begin));
  
 -- 
 2.51.2
