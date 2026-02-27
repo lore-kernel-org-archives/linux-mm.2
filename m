@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4194BFD5301
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 07:18:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FF0FD5306
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 07:32:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 440716B0005; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
+	id D6EC16B0005; Fri, 27 Feb 2026 02:32:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C3F46B0088; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
+	id D1B4C6B0088; Fri, 27 Feb 2026 02:32:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D1036B0089; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
+	id C1A786B0089; Fri, 27 Feb 2026 02:32:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1436B6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E0B059485
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:18:45 +0000 (UTC)
-X-FDA: 84489384210.18.E7E311C
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A46CF140007
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:18:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s0Qqfgv6;
-	spf=pass (imf09.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A95FC6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:32:29 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4BF09C1FEC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:32:29 +0000 (UTC)
+X-FDA: 84489418818.17.A94E8B2
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 76E82C000C
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:32:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xibT8yrp;
+	spf=pass (imf10.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772176723;
+	s=arc-20220608; t=1772177547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=avyklT8ko17OO+T4b2BCtg7wDKlzbbLPrf2QbaV4vBE=;
-	b=bfpLQ34+K+0VgSRUkzV64+JredZcAkKsWbgqR/zoMUXcps/UhmHw9tZcTb69bt+el4sXFs
-	uOpLNnUmYtmiOkP64I/q4HKSV6rfZdiRJIReqim6Sot4JaDoKf9Jcv+iIzE6FaBn6st1bM
-	Dc//xwBulSoukQzaCsvd1kRbSEIANrQ=
+	bh=FtzP6snTxb6/9Yfh1EYbBMx18ST1cVCB8Di30/9yAaI=;
+	b=xLYQ8VGfm1V9CL0HeMbbo03jw3xIkkhX8K8BkFIMet2t2iGhlEmroV0lHq4oOVGloSKPdr
+	q27S8nImH7LpJZjt7/5AxRwQ8J/VlPMUlzO+gxVWvRJnwyKfvBxUqX0y5vrC9gSncKE4RQ
+	cGQq8uqG16K+rWUenCmIq6q1s2SzblQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s0Qqfgv6;
-	spf=pass (imf09.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xibT8yrp;
+	spf=pass (imf10.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772176723; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772177547; a=rsa-sha256;
 	cv=none;
-	b=6uulogo6whF5cAhFWvWqSJwseOVBEzkD4+ozlshbmsTdWq1AVqLWTPDb/TBXwaAlG4yDOl
-	OBS9EqlRCHOBwSS4M2kwTsSWwZuCo+4QnuWyhVn66VcWxMvX8Y9SskDgWJ1TspOqmgIn2E
-	0bJGYkjZcbyCgXBHGzAxIY/GyWE6QL4=
+	b=INO7cZM+1mIoE5vjl9pf9dxfnWlzSK+w0pHNc26kyZTPZm5oLDM8Pmc3P2u44bA7s9LeKm
+	bIbSABs+cRaWBpfrThPDLfD/bHDsmJynLDB/rCGvdmpSu2qo4mljT6Ej25wZ1ay25cip9W
+	XRV2g8Kxxntdla+JkA1EGYXlew0JJjA=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=avyklT8ko17OO+T4b2BCtg7wDKlzbbLPrf2QbaV4vBE=;
-	b=s0Qqfgv6XXOMw0WL6SBdGWFuu/zOcDq311HqQfv3rZGLhyYWsQP+QOoGtNSsASop83hvOW6pL
-	6sNgjken/XLv0tubjuEugoPxYMyuL5Lgq1xX6PhrM4TzAOUL8zSJyNahh2xLrNC2s1FNBXb03eL
-	HMJqi0zYDffehJthhyGgZpc=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fMfgl0QbBz1T4Fq;
-	Fri, 27 Feb 2026 15:13:39 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8CA002021A;
-	Fri, 27 Feb 2026 15:18:33 +0800 (CST)
+	bh=FtzP6snTxb6/9Yfh1EYbBMx18ST1cVCB8Di30/9yAaI=;
+	b=xibT8yrpFyU5r1CHGZu7/2XwE3lL+8Sbz4s+zuFFVzXR8JG966qwAOjSfWgOSwBL3YE1MAgQf
+	8at/jTqnnkYjvaopov8TZGf2tG7AtcQ6Um8eFr4tCq5ompNGPvrlqF7zZpvcW9qGOdYVvuP9z4J
+	3hbrU2Cq4F0E8vt7JmSsC/Y=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4fMfzw4XzkznTWJ;
+	Fri, 27 Feb 2026 15:27:40 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3F2B94055B;
+	Fri, 27 Feb 2026 15:32:20 +0800 (CST)
 Received: from kwepemq500016.china.huawei.com (7.202.194.202) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 27 Feb 2026 15:18:33 +0800
+ 15.2.1544.11; Fri, 27 Feb 2026 15:32:20 +0800
 Received: from [10.174.178.185] (10.174.178.185) by
  kwepemq500016.china.huawei.com (7.202.194.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 27 Feb 2026 15:18:32 +0800
+ 15.2.1544.11; Fri, 27 Feb 2026 15:32:19 +0800
 Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
  filesystem
-To: Qi Zheng <qi.zheng@linux.dev>, Muchun Song <muchun.song@linux.dev>, Ye Bin
-	<yebin@huaweicloud.com>
+To: Muchun Song <muchun.song@linux.dev>
 References: <20260227025548.2252380-1-yebin@huaweicloud.com>
  <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
  <69A13C1A.9020002@huawei.com>
- <e4834869-4144-41aa-b370-9c4e6091322e@linux.dev>
-CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
-	<linux-fsdevel@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<david@fromorbit.com>, <roman.gushchin@linux.dev>, <linux-mm@kvack.org>
+ <959B7A5C-8C1A-417C-A1D3-6500E506DEE6@linux.dev>
+CC: Ye Bin <yebin@huaweicloud.com>, <viro@zeniv.linux.org.uk>,
+	<brauner@kernel.org>, <jack@suse.cz>, <linux-fsdevel@vger.kernel.org>,
+	<akpm@linux-foundation.org>, <david@fromorbit.com>,
+	<zhengqi.arch@bytedance.com>, <roman.gushchin@linux.dev>,
+	<linux-mm@kvack.org>
 From: "yebin (H)" <yebin10@huawei.com>
-Message-ID: <69A14547.3050803@huawei.com>
-Date: Fri, 27 Feb 2026 15:18:31 +0800
+Message-ID: <69A14882.4030609@huawei.com>
+Date: Fri, 27 Feb 2026 15:32:18 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
  Thunderbird/38.1.0
 MIME-Version: 1.0
-In-Reply-To: <e4834869-4144-41aa-b370-9c4e6091322e@linux.dev>
+In-Reply-To: <959B7A5C-8C1A-417C-A1D3-6500E506DEE6@linux.dev>
 Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.178.185]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  kwepemq500016.china.huawei.com (7.202.194.202)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 76E82C000C
+X-Stat-Signature: in3bu7h7q3358earnm6emuu4qdqn8ixx
 X-Rspam-User: 
-X-Stat-Signature: hsqupc4z7ajiyh6hiju4844myqdng5bc
-X-Rspamd-Queue-Id: A46CF140007
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1772176721-607014
-X-HE-Meta: U2FsdGVkX1++/2yXGsNwtp47I/eNwjYcMc5Tq5nvr/mZBPxufRwiAKps+1tA32wFszDV8HRDtz/S/uF2+b/LEhUvESA2V2FUFMBHtRlRqXoaRe9oohFcjA5FWZwYubd5EIqtmhldJRvVpCkbNHZlRdXbxWZITSjL+B7xCCJF6nRpQiT8kwIqNaf+1BSvdL/jXLPfr8tQkfe8CC6CZfxPFlJtH8gBUbIhPc5ql8UehHmPQwbxcpCx/3NOTE7dqg71zggoHd2yOcQajTmV22uwztBZraC2ktJFUqvuWK0gf6+Mbyo0qovqVJoNB64Xv9GzOE9dAQdbX/yCZGKFT//+a34hbohYxPZuUJdY2XA7C9l7Vj1ZfXDj/LyNM86c4B9Xb4TwNdpDfbOCUuaRi1xFqcDSX2AWD8mLCPxtOcCedQpV4GfvtKgfYUYOdkWomTwAzeZBTS4M/Vs9VaEC0OC5aVuSdtgqE1O134Y4vLjWK4bGK/zkkK9YHRcpu8kU+s/subu0BmnShofY8kF0no2QdAkhEaHp/L8/jzSPHTYFBl6I6u03FafYLSH+0FBB0A75vA/4MBiiEq+9LnhteqP9fJ/dEPQKYfT6mOu91FbZAKnVe1YnVGL789346kvA0FPRD8DahOJhub33aYgfTjWNDM4gX6v/NT6hBhC/OGLXanMoZ75g8x/dwAPTdtpR7KnU/7IT/r1+62oHMTi/D7Vci8AI9OZlZeAIzQszErDH8hokjE3j9hxtOXfNejhX17dNq+e4z64nIhSL+DV/M9MRaWEYzB20xMSl+nPcPIXildaZXhrLypNR+1irF/TLcGG7IoeaIMkwIkV7NFQndlo7W7Vf0JecgSKPw5Nrjvz88CgZomzVrSWaYfbwstG0fOU4j2ngbnwWGflMsPnoTtFRhMi2X/EQw5nWFX6lGZHnGldRU0l5HA4ya6BptzTBs1qOoaEhpEJfA/tZKYtxt01
- l8HKirlP
- SjOhfb53cl9n8YvxCDttvDtou9jfAho4QSQ3/Ip1IUxJkLEYGO3qupyykpM3LTFYk8iZ1uABW6vrDt58/r/oBVzsEN+yY3EytN+HSfBpfFHVFqJh036gqtmSsx9xZ355oQhOH9n4tPDWu0Vm3BSKWcYSTJOUwsfaPtplyYFhn6iLsvMT3ER8nqxV7L3YYfxqbjflBkP3MgyZOTsoXqQvsey95XQuz+aMfyw63dJbPcU8fSS8Y9KyGMYZqRecyqAiJAdJ6NF8UMKn3A6nBmO0FU1aIuQgrCTdh2r0u3e2BJPAFPoZ1XBP7DyOBD276Zi7hgQmSJ9rpMqTvW+HSABPBHaKKv92f5Qgp77wHMyR6x8+zZLmsFLUBI9NI5qd3ha4WrH9AxAXfTEIclK5GHNF9Peui4GAuNvbRp0vTSY68Uu02B8BUC80W+FIMHHob7eU/lGmvIKL5sShwHsI6ulD56LO79A==
+X-HE-Tag: 1772177545-207260
+X-HE-Meta: U2FsdGVkX1+3gtRnbV4rjaD5efRbGA4tKWQuPlSz8xVimh7fzaDTqdcWLbgUP3p5j6FS+fhtqowkjxK4No0X1FJKIa5/cfXXSq9wesivBVlCB2QZqF3KES4QoQu62GNg5L7OuGCu0dd3BsxrRS1vIWYGqo1unjsWA2RgFDhOsXVD4HWk43Bzac21Ms0h92h7fpYPkC8K+AsNKo3vUsJ3bKL2xxn2aYNkqMiSSisWiLLGfC+ZTQ7Qqb5rmMPWpFhRM+b7LXpjkErFugrXruMwyCLtCFIX+M+4iaIMj5ut5Y+Go9SQrNJZHbECbmaB93l14R/7Tr3teXNJazD5A7EvITR+n6UQmOlNzTwO02UHZB8v3lDnyWHQAbgKixQwGbM8HS+9PXi9bPbV0Tubpp39fTMOYIL3FwnXMbQkVCW9Zz9gN868ZfMcbyCNgMSsKko+4LNPSd6N3se0Kv5Ld1QWzzLOhTOlDrrmHqxIdPow6iY54EZYQB8kOPdImI3+zqCON1A+suxzCW7VCQI9dvQmX+oq+2Kcn3L4aMEMWdxGpwFIbu0U4a/0pR0xth1XpAOSJcM8SQNBIHjJZ+xLmsv+uxvW/CuaEgdPD4jL2JTAOSwh9U8xlwH3chdgINuREbw8hZ3VXVjP7I3oklmV3OwtSIP0W+zkKBatthiqtjJu5rRXdkOfcWBWcL3aGmgGa97AMXY/awpx5lco3NV7YbyAhxd2n5G0zJ4QgDR9Ue7qfqr9m0wylUBRP21cZA7GOTOLmYADZZ4ES7CKLmkUjM4Qu2cxkn7wjUefYi33Wd+4Xu5GTHYK8cBPGUNipw7vqsdJSfWBPj08iJe/LYaWtTLOv+dBNSvm6pISTzJrvhJyuVMrxyuxxDovk/0w1KnW6GjQ62cA2H42YIllZ1SY8ypwYIhJj5/NQ2phZB3GZ5SFz2mtEGO7pb2qbjbI8B6yLflu+RJqTeqMXLskeAXNg3V
+ En22Dq4v
+ mTMLJh0g/cvcDWi2ETvH/egJe3vxLuSgc8VOuLbLlWvDR3+6XcOI0pA4sygEimkDvx8vONEQxKy/UrUjJX/mFOk0nUP0tDb57M+3GvopP29Es8WMBKRUu5JHyIJ2i+7BEz5wTrKZg7nsV/DKRiafqmlYkuQhUPQ3JBMmn+ePeHShkYRlZBGHM5Ll3YXDP9hCdmFBdwUGCc0lV6qPyLJ3RpIHsLuH7lT9lYzvvitcdpXUZWiKlDFWfkJYFqkoBf1QPJPIvxyATgDBJjXsKjVEyVsNNRL0U/HXuhtVq/jN11iZ+UkaCGgUmnJ86IYQBnEdWgvvcHxJ19YM7T+yTkAIy4kA1OUWP9hZfn1z6P6thQK4/swPmGr27qYpO5oc7oYzSBRCqUUNR+C4XyByvAxrOtDEkvAW6HzadANLgQxyI21LUfDBvdk2KIUhsdcDmlklJXJ2WWQHzIzWwhbtjC8LvbzE/td1p3MWOuMe40qyZXf9YiMuEPmmUhvpzQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,10 +111,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/2/27 14:50, Qi Zheng wrote:
+On 2026/2/27 14:55, Muchun Song wrote:
 >
 >
-> On 2/27/26 2:39 PM, yebin (H) wrote:
+>> On Feb 27, 2026, at 14:39, yebin (H) <yebin10@huawei.com> wrote:
+>>
 >>
 >>
 >> On 2026/2/27 11:31, Muchun Song wrote:
@@ -123,69 +125,53 @@ On 2026/2/27 14:50, Qi Zheng wrote:
 >>>>
 >>>> From: Ye Bin <yebin10@huawei.com>
 >>>>
->>>> In order to better analyze the issue of file system uninstallation
->>>> caused
->>>> by kernel module opening files, it is necessary to perform dentry
->>>> recycling
->>>> on a single file system. But now, apart from global dentry
->>>> recycling, it is
->>>> not supported to do dentry recycling on a single file system
->>>> separately.
+>>>> In order to better analyze the issue of file system uninstallation caused
+>>>> by kernel module opening files, it is necessary to perform dentry recycling
+>>>> on a single file system. But now, apart from global dentry recycling, it is
+>>>> not supported to do dentry recycling on a single file system separately.
 >>>
->>> Would shrinker-debugfs satisfy your needs (See Documentation/admin-
->>> guide/mm/shrinker_debugfs.rst)?
+>>> Would shrinker-debugfs satisfy your needs (See Documentation/admin-guide/mm/shrinker_debugfs.rst)?
 >>>
 >>> Thanks,
 >>> Muchun
 >>>
->> Thank you for the reminder. The reclamation of dentries and nodes can
->> meet my needs. However, the reclamation of the page cache alone does
->> not satisfy my requirements. I have reviewed the code of
->> shrinker_debugfs_scan_write() and found that it does not support batch
->> deletion of all dentries/inode for all nodes/memcgs,instead, users
->> need to traverse through them one by one, which is not very
->> convenient. Based on my previous experience, I have always performed
->> dentry/inode reclamation at the file system level.
+>> Thank you for the reminder. The reclamation of dentries and nodes can meet my needs. However, the reclamation of the page cache alone does not satisfy my requirements. I have reviewed the code of shrinker_debugfs_scan_write() and found that it does not support batch deletion of all dentries/inode for all nodes/memcgs,instead, users need to traverse through them one by one, which is not very convenient. Based on my previous experience, I have always performed dentry/inode reclamation at the file system level.
 >
-> Using shrinker-debugfs allows users to specify the size of a single
-> reclaim cycle (nr_to_scan), which controls the strength of each reclaim
-> cycle to adapt to different workloads. Can the new drop_fs_caches
-> support a similar approach?
+> I don't really like that you're implementing another mechanism with duplicate
+> functionality. If you'd like, you could write a script to iterate through them
+> and execute it that way—I don't think that would be particularly inconvenient,
+> would it? If the iteration operation of memcg is indeed quite cumbersome, I
+> think extending the shrinker debugfs functionality would be more appropriate.
 >
-> Thanks,
-> Qi
->
-"drop_fs_caches" is similar to "drop_caches," but it only operates on 
-the specified file system. It does not support specifying the number of 
-pages to scan (nr_to_scan).
+The shrinker_debugfs can be extended to support node/memcg/fs 
+granularity reclamation, similar to the extended function of echo " 0 - 
+X" > count /echo " - 0 X" > count /echo " - - X" > count. This only 
+solves the problem of reclaiming dentries/inode based on a single file 
+system. However, the page cache reclamation based on a single file 
+system cannot be implemented by using shrinker_debugfs. If the extended 
+function is implemented by shrinker_debugfs, drop_fs_caches can reuse 
+the same interface and maintain the same semantics as drop_caches.
 >>
 >> Thanks,
 >> Ye Bin
->>>> This feature has usage scenarios in problem localization
->>>> scenarios.At the
+>>>> This feature has usage scenarios in problem localization scenarios.At the
 >>>> same time, it also provides users with a slightly fine-grained
 >>>> pagecache/entry recycling mechanism.
->>>> This patchset supports the recycling of pagecache/entry for
->>>> individual file
+>>>> This patchset supports the recycling of pagecache/entry for individual file
 >>>> systems.
 >>>>
 >>>> Diff v3 vs v2
 >>>> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
->>>> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim
->>>> dentry/inode.
->>>> 2. Fixing compilation issues in specific architectures and
->>>> configurations.
+>>>> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim dentry/inode.
+>>>> 2. Fixing compilation issues in specific architectures and configurations.
 >>>>
 >>>> Diff v2 vs v1:
 >>>> 1. Fix possible live lock for shrink_icache_sb().
 >>>> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
 >>>> 3. Fix potential deadlocks as follows:
->>>> https://lore.kernel.org/linux-
->>>> fsdevel/00000000000098f75506153551a1@google.com/
->>>> After some consideration, it was decided that this feature would
->>>> primarily
->>>> be used for debugging purposes. Instead of adding a new IOCTL
->>>> command, the
+>>>> https://lore.kernel.org/linux-fsdevel/00000000000098f75506153551a1@google.com/
+>>>> After some consideration, it was decided that this feature would primarily
+>>>> be used for debugging purposes. Instead of adding a new IOCTL command, the
 >>>> task_work mechanism was employed to address potential deadlock issues.
 >>>>
 >>>> Ye Bin (3):
