@@ -4,86 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C72A41039893
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C8DD1039893
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:37:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FE576B00EB; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
+	id 6E8BF6B00EA; Fri, 27 Feb 2026 15:37:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF146B00ED; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
+	id 69BEF6B00EB; Fri, 27 Feb 2026 15:37:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FF416B00EE; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
+	id 540BF6B00EC; Fri, 27 Feb 2026 15:37:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EE236B00EB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:33:09 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E56FC140860
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:33:08 +0000 (UTC)
-X-FDA: 84491386056.23.B58D637
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 42DAC6B00EA
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:37:11 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED499BBF2E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:37:10 +0000 (UTC)
+X-FDA: 84491396220.22.4976BBA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5B89D40006
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:33:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyjNx/Se";
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3ED6D18000D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:37:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tmDIHN6I;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772224387;
+	s=arc-20220608; t=1772224629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3uekEshW/xKjXBEvusLeqL0JjgByGtsyP7Oc65umvMM=;
-	b=R93Xk+ml/oPYjpXkyfYYP7CEWGdSPizteDEwwRhkSp61EP/xnU7tcEW14QAI0RbQuVJmEO
-	Om0c55KBx2sDii9JY3sDcjy9b4siapltV6jES/15qz3Zn1Ekqv1mespU4TA3J4eBzobCvy
-	pvvd58QrwNG0HsBhxX+wz3/qqkczq0Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224387; a=rsa-sha256;
+	bh=qSO5+iSjdTthd6BpICp0pDQBiDN7GWLSFgp3RR7fuQc=;
+	b=5OTzM7uTKIfQzSoRynrwh/M8FuJhQ1MQwrZUOUe0KsiQvpnGJWks/8/b2mw6eTrsMIPmn/
+	S+WNFM6SJPhyoXShojkwPUGJg6fCU1x4B4xatRgnhYNvhmV0Am22ygggz3B2yWxDaqyiRH
+	qSA9rv/9ckTlfCe/yHqVsfQ4jWof3aU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224629; a=rsa-sha256;
 	cv=none;
-	b=02nrm8PNDyI9Jy911M4Chq7C5CBCGCBjdZevCtwUPaRZSTm4nSsU6Vby3cz6Ooszt7FiqH
-	pBadRrIDjfTrWqGBT09XIcDaTlpiYUogmvgbeThcOK8SgFaVghnkA+4aTKlUfBsG582wHL
-	tg4qrs3GhhpzgUditV0RqFpbEku4UqU=
+	b=t2KjCU6ZkNmU4hX/eHmC3maVD9JrWsBjjztP0OZ4pFNPeqGhpvjAgXUKLA/7hTFkfIQZLX
+	A3t5vg2GKNhKtJsTxvu2DQWnw+DpyDAll2ojIBoyhj1wMMmFCy2XU420FIlqaOQBANKdn1
+	p7g5RamwVlrY7CprEQTAJN9+rApxYmA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyjNx/Se";
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tmDIHN6I;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C576E60126;
-	Fri, 27 Feb 2026 20:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51087C116C6;
-	Fri, 27 Feb 2026 20:33:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 957106013E;
+	Fri, 27 Feb 2026 20:37:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64D1C116C6;
+	Fri, 27 Feb 2026 20:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224386;
-	bh=slkBastChf5NkGimBBG2KdI1m6NFtJss7zAk/GegKbs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EyjNx/SeP9lh/TRrToS5vPssRYmhM4HT9p1ZWZKlb0Bfps1aFY3b6ChEAluMcTyYq
-	 3U7EZvChT5nEPWS0froZu+zHpL2hUzCG/FRr3PUBmoB9hGZ+YSbEGTRqSbtjDbJpoX
-	 /q2y6uMhPIYlb3FKpC21qDfAUzWgYxPBSAGneu3BwiVDF0rAUAepOiivNkEZgeF8bk
-	 H0PnBeZPd4QvyYlIqu6qNM7d2zO6ovfkzqhykvPKdrvRNoo7J2XfX8F28TnEEU+D/C
-	 9R/34qGAr4DTM2s/ktGhTON2adcaeWy8ZP9XdZsQzKLrxC0ocrSkeAGoh0kjvh4544
-	 vm2RDzb9nfguA==
-Date: Fri, 27 Feb 2026 22:33:02 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] mm/hugetlb.c: Use __pa() instead of virt_to_phys() in
- early bootmem alloc code
-Message-ID: <aaH_fgdQB7gm9XtL@kernel.org>
-References: <b4a7d2c6c4c1dd81dddc904fc21f01303290a4b8.1772107852.git.riteshh@linux.ibm.com>
+	s=k20201202; t=1772224628;
+	bh=REZBKPMip5Pk+kcsDPtKxHXJtVWbZbE6rgnLUZlun50=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tmDIHN6I/m6MfU4syrvtkjJ1nBgJ0kqrhbD05xVnWovau41AbUJWhMwOsTIjZ4M3O
+	 +8FRjhwMAFOBNRTWGZYaGjhOm64OeZl8OVoUpYLiVb9e1zOoOUUfyMKSp2DUzOu1kg
+	 e0qVYLEeU0NgkqCBPxgvn2ioZz24F9dI0dgoaDOJRc9UsKMShmV5dwpfJ05g2pqNSj
+	 9pcDEXiuANeGnHC9y5eHZHoVdaBAvK++5gsD0soVpKvt9k1pRgOHor4vctzn9sOMJb
+	 DN0Wb4++kVE7nMYnjAab9j1rJQ7aOiRzcN7q31LcBrJ5L/wEKVDRFRKZo3DmKBXTpx
+	 TkAO77LjZuKfg==
+Message-ID: <4ed265c9-9598-411f-82ca-bb7feb49e1b0@kernel.org>
+Date: Fri, 27 Feb 2026 21:36:59 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b4a7d2c6c4c1dd81dddc904fc21f01303290a4b8.1772107852.git.riteshh@linux.ibm.com>
-X-Stat-Signature: ajfp6yxatk789kb8mgm3k4wcaz85eh98
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] mm: introduce zone lock wrappers
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ "linux-cxl@vger.kernel.orgkernel-team"@meta.com
+References: <cover.1772206930.git.d@ilvokhin.com>
+ <849dee9c47df1e6fba97c9933af0d5a08b8e15d3.1772206930.git.d@ilvokhin.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <849dee9c47df1e6fba97c9933af0d5a08b8e15d3.1772206930.git.d@ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5B89D40006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772224387-719332
-X-HE-Meta: U2FsdGVkX19nYdNveJwW97iGShvsti7sEILslk5+HQyc32pHIKH4FQUQLIdaNZEXJnmY0EeoOlnMjUSrTqIdGsrSb3KoBfJ4p5A0BbbvS9EJX1JkO3BXJGF0BLhDJVMbLoxoQ/+Z6Rq4CBxfxrvdEAcnMGQtOMhaQ6YL59H9rdb0cm0RWOD9JwO74lbpW5whNZWi5bKYjxXH+poj+PHdXwLXJF/Hki6jLkjJ9U5dxJK0m3zotBCgVrKcXz7xGRTsPpeFafT+qKxWhd2SNAkdW/ZQW5pKX48ZNKt6KVwIQAydz7wOrQzxoOn6CBoeCz7G9v8zxkttsRAoyX/b6wakuIvCBjfletr6OfdvHHVwq1TxXBX9SdTzATCKhdQqPlW8at+4vxzub2Uf2KBB3rwwvYhpTQOdlqplEh3vHQVpXrcj/8tBgvAfrR1tmcI+a5aaVVLyJemFdL58Z850MU4msuiSVgAWZkETvR4ALxGtEOBRj1XUaW171uf/QUK7dnAmFhsrPkPEjohC2tZbzTUjxRQfjKgDM2wEAq4p9eS6mzWKagP/oRo9OG8L9DBYbrRYTfr5rZyoVvmlC5Ot1wvDYyXtZlhlqo/tgcV0DXxeap/XXEtmz0Q/tiGPQ3DDvdkMp9DEpkfNH3eVlQ+RRX60X1XAO9f1K6VT3MrNwPwO+x8cXrZ7Q3iI5SSStmk0BofPEOyrUWi2Z3fRi/XWdxjQVe5aOjHW7kDHRk49C0clGfLRXuzvLuwDiETsN0mqeKSYg9y2clrQSpsJRWVCILICslBQy4L7nT/wl0uPw7q2v29VubhXF566dUTjItA/ace+6Hq3tQQ7KG7uokgxomw7McuRzNIV8mTlI4RfpXm/BtiSCnPIHoi6fna7Uo11k/XIacSDbyCyRZ7L3p2P0J+spfANKTbq6/weA8R8iVmQ99FQBbx3y53MZsY6+xCJWWfYpZYV/ZqWfF5Kro0/rEF
- MKZ3Z/jO
- b6n6CTLq9JGmAgxmwL4yKPgSKyCw1FRwQed4bqsULvcp+ceXwTzKZUDR274a7YTEMyUMjatHivUvDRfUIuhPrz3uUT+xZK0nhio4A/yqPdSImJq2b7zk991GZ9u11U5ItQtyDeCkhVYaarJxSqob0Qpp3nJ4KjBRthh32LRfrwRJbzequmTAU/4IderDY58iPzdN6uzvoW0y3h3Cji+Iow9h4eIPaO7EaKj/Bet5KWkWJwajl2Uyg0hCWOryOM2XSKD9SCHK9WEIL7S++giorZd+nvFxuloxwmRCRHEUQpZxBzqyQFPsPB8WER4sEPa19OfmlaBgTPq9+VA6nAV0ziiKiHfanQAD3iSJxjwQSEz5pP8UDj+/BMJDQz81+LbKiZa64mZqcqQVmAO7lY8z18AeXr9q5LMOAaVRY
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3ED6D18000D
+X-Stat-Signature: f1syim3hb6y99jr7ju1xyu15pftf4dsh
+X-HE-Tag: 1772224629-329856
+X-HE-Meta: U2FsdGVkX19QYjgjBhqL1Iilh/XjaS/H+XZDY3X2uOjy9UxgsaH6VoeFValteEo7td8ms/bT2EbRjhYEU7mXtrMu1xfWMACT8hlwx8XkrwQh22KUKUESe71eF6IRQysktLIIgoY93/udHXw5qMd8H9QBUIkLMeiIaS6AjVudC1kaDAS1ka0rDEqNhvTB5Xk+MQ+iEupld44P2uJCO6gNgnsgWwRhjCTDf6vkJmLCnr+KOcvlGwkFaOmzIrScThWiEEWmTCnIQDyq5eQ1/Xbt5YKo9hUifq4zh0/V47t3o4SVZ/052Y3DfwGZsByox/PEHw9vI/mHXKsfBV04rxqq4wJbBCRhyTTCqN77/JlUELGx2XRyHrGEwYD7CdN/Lq0nyztAk/2PXa0ILpQSzIDOrFm/aHGHgnAYL2ynnpMpMjYiz5E1nc2pwCM2JnbtjdsJYoR9zNkmcb14O/YaTFpBzXLLe8CKTat6Aj5Fg1wO0/NvtftYXxEEk8uyXHuoVbQrCiY/k2jwYc2qkRGTYgGboFs6r/Rc9Xh3oddejIb6/B0sXYjUlTiUbS2qSmumAa3wLtkjDe/pj9Au+s8zIKNNBM72mGfgLyM7/wGV21pmSc//mI4nZHPl3YlBEYQhzXY2NHg6O1p9gB9iqiusM+YMvRCLu1hG/EU5u9ShRztycK7+yG0GY+HJHMEzezaiAzUekGgP8G3ptBkHfiNx0pKjYE8YotaEWj0O27FDGL9oQWsCeLbLFxxKnvYTaKSDbTaGVLEYDqWytI32q0K8CiNTffjW9emU+EEHZRIoNkqAyLbgaSoRy4leq1RNj6hoB3zXpbnH/fq/bhTbpKC0x+lPKqUSJ6ZaD8X2C+v99mqFwTEDCIxxYzWED53zebqopwduyHnZ7KrRbLV1KnjECOjWgj8hsr5qx2dqVY+0TV7Mw7fittVzEed+IGhMq2g8P7KXj1vDEeZM7MogGIZZ/Zb
+ GSdB8eGe
+ RNmtTnBjpCm5dH6SW+7/sCMZH6B21lhhtJydHw6WY8TGIaFCn5b7DlXD21wqScCON6buB1fg9ZcLHA5xVyXmtbrW4TTX3RzpFUsG6JLCmIt+Xgd5KqP7Vt0BypRDZPgZeV/TTiUz4u0rg3fIewPtBcO7rNE89YGnjm8rbedT2eTsm2R65zhyNZ+RCuLKxRsDHfrm0DpDiszKT356wKaF2mut+8gxR1HG3l7w9+H1Cj0ngyLCPiEd+c+W/GYw8jkn5bFt8FIV91agDr3C1Icykv0924NW9C14XsjC5zMQcRYFa6Uti7Eg4WT9QxCumcKvfhe4nQk2jUPtTspZd39Gv22psYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,74 +153,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 05:56:30PM +0530, Ritesh Harjani (IBM) wrote:
-> Architecture like powerpc, checks for pfn_valid() in their
-> virt_to_phys() implementation (when CONFIG_DEBUG_VIRTUAL is enabled) [1].
-> Commit d49004c5f0c1 "arch, mm: consolidate initialization of nodes, zones and memory map"
-> changed the order of initialization between hugetlb_bootmem_alloc() and
-> free_area_init(). This means, pfn_valid() can now return false in
-> alloc_bootmem() path, since sparse_init() is not yet done.
+On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> Add thin wrappers around zone lock acquire/release operations. This
+> prepares the code for future tracepoint instrumentation without
+> modifying individual call sites.
 > 
-> Since, alloc_bootmem() uses memblock_alloc(.., MEMBLOCK_ALLOC_ACCESSIBLE), this
-> means these allocations are always going to happen below high_memory, where
-> __pa() should return valid physical addresses. Hence this patch converts
-> the two callers of virt_to_phys() in alloc_bootmem() path to __pa() to avoid
-> this bootup warning:
+> Centralizing zone lock operations behind wrappers allows future
+> instrumentation or debugging hooks to be added without touching
+> all users.
 > 
->  ------------[ cut here ]------------
->  WARNING: arch/powerpc/include/asm/io.h:879 at virt_to_phys+0x44/0x1b8, CPU#0: swapper/0
->  Modules linked in:
->  <...>
->  NIP [c000000000601584] virt_to_phys+0x44/0x1b8
->  LR [c000000004075de4] alloc_bootmem+0x144/0x1a8
->  Call Trace:
->  [c000000004d1fb50] [c000000004075dd4] alloc_bootmem+0x134/0x1a8
->  [c000000004d1fba0] [c000000004075fac] __alloc_bootmem_huge_page+0x164/0x230
->  [c000000004d1fbe0] [c000000004030bc4] alloc_bootmem_huge_page+0x44/0x138
->  [c000000004d1fc10] [c000000004076e48] hugetlb_hstate_alloc_pages+0x350/0x5ac
->  [c000000004d1fd30] [c0000000040782f0] hugetlb_bootmem_alloc+0x15c/0x19c
->  [c000000004d1fd70] [c00000000406d7b4] mm_core_init_early+0x7c/0xdf4
->  [c000000004d1ff30] [c000000004011d84] start_kernel+0xac/0xc58
->  [c000000004d1ffe0] [c00000000000e99c] start_here_common+0x1c/0x20
+> No functional change intended. The wrappers are introduced in
+> preparation for subsequent patches and are not yet used.
 > 
-> [1]: https://lore.kernel.org/linuxppc-dev/87tsv5h544.ritesh.list@gmail.com/
-> 
-> Fixes: d49004c5f0c1 ("arch, mm: consolidate initialization of nodes, zones and memory map")
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 > ---
->  mm/hugetlb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 6e855a32de3d..43e0c95738a6 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3101,7 +3101,7 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
->  			 * extract the actual node first.
->  			 */
->  			if (m)
-> -				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
-> +				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
->  		}
-> 
->  		if (m) {
-> @@ -3160,7 +3160,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
->  	 * The head struct page is used to get folio information by the HugeTLB
->  	 * subsystem like zone id and node id.
->  	 */
-> -	memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
-> +	memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
->  		huge_page_size(h) - PAGE_SIZE);
-> 
->  	return 1;
-> --
-> 2.53.0
-> 
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+
+David
 
