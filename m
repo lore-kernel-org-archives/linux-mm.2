@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1322FFEFB4B
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 13:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A18AFEFB47
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 13:16:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF4E96B0005; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
+	id A009F6B0005; Fri, 27 Feb 2026 08:16:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA28D6B0088; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
+	id 9AE5E6B0088; Fri, 27 Feb 2026 08:16:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B845F6B0089; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
+	id 8ACB16B0089; Fri, 27 Feb 2026 08:16:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A281A6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:06:05 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4235959A60
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:06:05 +0000 (UTC)
-X-FDA: 84490259490.04.2609ADD
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8E9261C000A
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:06:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fabxRk5j;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772197563; a=rsa-sha256;
-	cv=none;
-	b=kUhiYQwd8aW1C5aCiOZNARhh/yNeuE8Al1JyObK3J4osFw5V4EwiRMZQ3Smw4TLz3rYXPY
-	R1bp3xd1ktSpFYUEBH/mYeqJTF2oZRC5uDTmP3wIAl/3aw5Mm2Q8YxRQi1OQrkIR8b0eYj
-	+8NRGL8CB8Soargq87eEpc211BxyRzk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=fabxRk5j;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 746296B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:16:50 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1B57114067F
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:16:50 +0000 (UTC)
+X-FDA: 84490286580.29.9F865B6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7C0502000B
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 13:16:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=atCPtfbS;
+	spf=pass (imf13.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772197563;
+	s=arc-20220608; t=1772198208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kFPcmXa3TYJ9a+ZatJmYfl714K9Z9gwrrVFBHqhQv2c=;
-	b=DvA3pv1VyeznAPxiaatYCU4X2sp4PuXd+mrvw10KYap6QKjkDThSSVXhJqtQDSTWqm/KVn
-	Ap5bTFVuQeCLOtEmDXqI/SrggrEj5mwdk16DAjN23dQHdMwWLo2H+vFF7RII7QpuXX0lsL
-	IpQsrqjfrN7eykabBlFamQpI3lXPrWc=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id AF3A4B2DEB;
-	Fri, 27 Feb 2026 13:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772197562;
-	bh=kFPcmXa3TYJ9a+ZatJmYfl714K9Z9gwrrVFBHqhQv2c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fabxRk5jF/Q/JG1+ocNkMgBf91sfzczJhGM3o0kjghaJ1n/QylUZQMESyBBa0UvFD
-	 g7EsxF3jkoSo0lnu/3ngvWkFv+dYHw50xqtbS/XcePqmmJLLUcAsZKnsFYZoQCHVPX
-	 nJkRoSKIPktk0xJIO84YpLx3wMaDeMt9gO6+W6SY=
-Date: Fri, 27 Feb 2026 13:06:00 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com,
-	Benjamin Cheatham <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH v3 1/5] mm: introduce zone lock wrappers
-Message-ID: <aaGWuPxfAMeHSKL1@shell.ilvokhin.com>
-References: <5bcc39cd3a227944d0fbe75ff86cdac92b38d4ca.1772129168.git.d@ilvokhin.com>
- <20260227003140.82789-1-sj@kernel.org>
+	bh=xR8WkGwNViL/78tIXFN5QS/jFLNi5GoLmlrRAJwZAA0=;
+	b=1YT/O9eFa/drowlJSDRFl98zfxZhUue16PRa3pod+BrgnTBtlzWIl7dnG+br7dxj0iPlqE
+	IN9Rqx52Q6eLHJr2vMKZzTK5y4Uh++uVvY0kL0/QhQiSykOWyfT5xvNJMKzH5n5ClXY11P
+	8tLyXb2fLiro+T37vGL03nghFTPb6Hs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=atCPtfbS;
+	spf=pass (imf13.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772198208; a=rsa-sha256;
+	cv=none;
+	b=rZVqrPMa9FM2ao1QWrfsfY7HKK+wLjM+qbC9kLDny+y6+dS73dyNMfptDUOcK1gs0vwRBs
+	+giUs+zHZ/wLyEE7mtL4Y7lMxQ6Ym2cuI3EmPS7IE1fGvbXs+MG/UF7qYMk5R+vBrg/3nw
+	/LLFuOZltsqKW/6xbTCtjrsrgPd0+mA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id BD99760054;
+	Fri, 27 Feb 2026 13:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA494C116C6;
+	Fri, 27 Feb 2026 13:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772198207;
+	bh=egCWlPm1x8iHr9PPIzoYHflwiSm/bh95WCzD6gZYC3c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=atCPtfbSo6Zvk5tUFHE0DZyHYYrtBPlRAIDk2mxNRXEtPE0XaZAfWxmPGH2sW5M6S
+	 eTxLV3zr0Lw2PBwhHycBLW1jVxNqhngWqtqMsPQ18NLiQjbwwCI3UxULojF/uzWeMP
+	 29DUDUetMPpyNPFuJY6WE/1Cy3CdrW4wN7E197m9W5mDYZBwlSKlfiYxDXPNI5Il0F
+	 5YHLwWvg3D5LnI5n9/gwS03rSP9SmZ3R0NmEo54rv7Yy6GfDTWHFKfl25+7ihDwaad
+	 2ogx1sYQqiPPwmqMAny/6zTX+/QzVrDuZsC5Ok3sVSRq/FE+86ymrA83rm6vE87Laa
+	 YWi8qZBOe8nHw==
+Date: Fri, 27 Feb 2026 14:16:44 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+Message-ID: <20260227-proficient-crazy-dinosaur-d2fb0b@houat>
+References: <20260225-dma-buf-heaps-as-modules-v1-0-2109225a090d@kernel.org>
+ <20260225-dma-buf-heaps-as-modules-v1-2-2109225a090d@kernel.org>
+ <60ecebf2-a708-4797-bedd-588c3e9931ff@kernel.org>
+ <20260226-impetuous-analytic-jellyfish-d4a86d@penduick>
+ <CABdmKX0KZLGaJWBoo3tkCxLvby3f4Fn0nMCLyz4a-H-9J_CtPQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="5ak2rz3ozdmtomty"
 Content-Disposition: inline
-In-Reply-To: <20260227003140.82789-1-sj@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8E9261C000A
-X-Stat-Signature: 7dkd35fg5dt8f5h3rkzaoh913qjxboyw
+In-Reply-To: <CABdmKX0KZLGaJWBoo3tkCxLvby3f4Fn0nMCLyz4a-H-9J_CtPQ@mail.gmail.com>
+X-Stat-Signature: oc19ahfkrifkinrsencu18icfiddwy83
+X-Rspamd-Queue-Id: 7C0502000B
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1772197563-993131
-X-HE-Meta: U2FsdGVkX1/Pa5hbRSpINa6VhPsRXN3H7jKTp/gsiQGF/8JuM8cZkRsZkPpDH0jy7tCcbWTbbyrOmEJZDU9uWsb2SM/UslAh2iOU/OiSYEGu7szWYPJfTG1lOeWJL3wdwMbmR32HTwWRlUYdXrhvB8YWniofunOEEEt4k8nkacKE6VyDVDghGBPeTvClwM2oj5+oVk25W4MU/iCBukKMopWD8vTRWxFPHNH+/ax0mG/rU6rNK0Obob+9Sitv3WhFLpbzLzWMy5uMQ4iJ6ldVx+PNygtSH2kR7gW/MO3Vz70KQFPoIpgh3tPqvkV92f+kodRzHRJxrj4dt0bh7p1rfx1ywF1ZAvhJCFFS5TnNgIqGbJKevNpI15zl8xvcJyr9SXztKd+C+QhvJANdJ74eEu/LJRt2Mi23AoQ4ERWs9UkThG83JFs02zE6Og9meZe41NNSOefZbMExjJmT9hoL4eAWLOgNXih4ah/lBtpMyrdZY1c8EvFO+RvoHwmYrkA18HhUN7vgV2oQPypnGVHPwDoYH5PFpDl+izZlAtrGq8lGqZr9PTxHgVt5y0qzxS117+OkeQzSKu27aTxjC28fUY414B6WC8FQmfbseK/IZSlAEVDEYfQ2tZFD3JcXWgFuW32xlNTEUnGNb9fCqlEiGC0yz5Hcjwm+X3hI0XNQF9K4wOHpD1jC0sHc6t6fxNEFMHHaenH2rzT6s1qq+97zPsdXchE+PdILkqr4144FkGx45LddiwiNtFiqiA/DL1Ige5Qw7QNPnWiufKdDqOWMMkltplN3IYS5GmhkySeL4IcwtYxb3Ga7KkcqhtFX8amc+Yo9MFHRROE/bMeuJyuspR7NqIYXUY7pQE2SmxLfs81fHalg7Wff7A==
+X-HE-Tag: 1772198208-500362
+X-HE-Meta: U2FsdGVkX19BTx2OF0Ml0PCpnNWKQ4+k6GDeDUko9SWxTKL79JrQi3kOLe95cgihAnMw3VMUVgm9KqGuNZ92ytG7bHn0lN24jIhABYO9P3HBzJ5LpuU5/KrhA5l7CLhMgC5WGZK704CxtJKoSElglc9FQsN39kcWnEgP5k6WAHf4mjG7YKef53u2Rw8YdLEYZMJp2HPp0sVub8VW92OAvhDiZPmAjUPV9hyLAkxxhhlYQkMQmUr12CDdrkI6HKTQnzb1dIpVK4zHrG1c1PidbCRmGU510+hdLVbvuatJPan8OyZtpWb0GGDE9zVbtUuqm6uU/qkvMoSnbXeIzXZfS3x3Ij/8DrxgBdOkD6hAQj8xsFXXeGPUSE04OMsc8pugBxycgsLJLak5COVJoGR2mph5ZS+IaJJK+ne2wUUsmRtE4UE+MlDRzAs7peIVy8jfVy8679BzNtQ+THnRk0SlzoJHanywe3DSeJt3AQcG+3MZ+fnUHBPX1od2fiP/qVb7uxct3V3NtZVzZfa2T0f+7xFrmVqqUl8E+xwUPrz0cdKpwSdPmsU+tSCsawRAmSIyMiNps/tvDENXAvl8XqEi8mar/8tSUHcD5HHBVbAhjDmX7ITVRuNCOsZdDohFH7PsOl411k05qT4Uck7BqDjvsqjEPTmEnIEJREZKfSYsFesc0z1+WEiaT2od7rL9MBGXVs1bYFBEK8U7V0iI3eC/vw5DJxQ6Ub1yDDGdAiyirta9fZaBQky17Tn7OkqnAxAERTz/+I7jakQuQcNIRQZxnGcgcLctum+cLCSiLAB7xLU+ks8+RHDmRgV2QmPeghWTugamMTF98dxNoN5OqB09+xA2rJRSObWfcgqKIbo0sybaCUfE1X3elcq1Xt2ILYR5+f8mRnOHM2I4YHUGFpULCfbhV+O9acUfuu0PPsCEbcWsG/PlFlXqkxO8YZba1wyQV+zNmEA3Sm7oubpzORD
+ 9t2IJZlc
+ iaLRUNxKKDufx9UvafoUZRDoBruyqxaDAsWpPUMpEo5ClFyq30DXLU+3NHXrH9XdjeEv2hshO9lpP+utCYbWbguDKDw80282r/Rq71JR3aoayjCyfx/1SFmsI6UQVgrSypebBsJIROPRnsAqd+aohsE0J0I1pPzVvt08QZqmxbJVrCKWJMZBT2RPrTLYwTRrayaIdTZpRVkVighmwMKg0nH/N6NsZSBnECgnx3lKQuUdhSmpsD7LRskFcX61tMtoQOhcd9ARWRcxNE6Rm4ygkxAOPmIbbhyTIoVGLIDPk73asIkA847YFQLikbYwqD8JrvfVcEW268BLbqbQ0puWMpQ/W97w1p+SiwDmXYkZVFQ8PKtgjBzQXmHsfBBTRmWmcS8sX5slIR6U/011nDAOT5/QEs7ux/oWxk5RqRu2NDZpueHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,70 +103,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 04:31:39PM -0800, SeongJae Park wrote:
-> On Thu, 26 Feb 2026 18:26:18 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> 
-> > Add thin wrappers around zone lock acquire/release operations. This
-> > prepares the code for future tracepoint instrumentation without
-> > modifying individual call sites.
-> > 
-> > Centralizing zone lock operations behind wrappers allows future
-> > instrumentation or debugging hooks to be added without touching
-> > all users.
-> > 
-> > No functional change intended. The wrappers are introduced in
-> > preparation for subsequent patches and are not yet used.
-> > 
-> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > ---
-> >  MAINTAINERS               |  1 +
-> >  include/linux/zone_lock.h | 38 ++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 39 insertions(+)
-> >  create mode 100644 include/linux/zone_lock.h
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 55af015174a5..61e3d1f5bf43 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -16680,6 +16680,7 @@ F:	include/linux/pgtable.h
-> >  F:	include/linux/ptdump.h
-> >  F:	include/linux/vmpressure.h
-> >  F:	include/linux/vmstat.h
-> > +F:	include/linux/zone_lock.h
-> >  F:	kernel/fork.c
-> >  F:	mm/Kconfig
-> >  F:	mm/debug.c
-> > diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
-> > new file mode 100644
-> > index 000000000000..c531e26280e6
-> > --- /dev/null
-> > +++ b/include/linux/zone_lock.h
-> > @@ -0,0 +1,38 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef _LINUX_ZONE_LOCK_H
-> > +#define _LINUX_ZONE_LOCK_H
-> > +
-> > +#include <linux/mmzone.h>
-> > +#include <linux/spinlock.h>
-> 
-> I'm bit worried if I will think this as a file for another general locking, not
-> the mm specific one.  I hence think renaming it to more clearly saying the
-> fact, say, mmzone_lock.h, might be less confusing.  Or, putting things in
-> mmzone.h might also be an option?  What do you think?
 
-Thanks for the feedback, SJ.
+--5ak2rz3ozdmtomty
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/7] mm: cma: Export cma_alloc and cma_release
+MIME-Version: 1.0
 
-Good point. I agree the current name looks too generic. Putting it into
-mmzone.h would further overload that header, so renaming zone_lock.h to
-mmzone_lock.h seems like the clearest option.
+On Thu, Feb 26, 2026 at 08:58:51AM -0800, T.J. Mercier wrote:
+> On Thu, Feb 26, 2026 at 2:38=E2=80=AFAM Maxime Ripard <mripard@kernel.org=
+> wrote:
+> >
+> > Hi David,
+> >
+> > On Thu, Feb 26, 2026 at 11:25:24AM +0100, David Hildenbrand (Arm) wrote:
+> > > On 2/25/26 17:41, Maxime Ripard wrote:
+> > > > The CMA dma-buf heap uses cma_alloc() and cma_release() to allocate=
+ and
+> > > > free, respectively, its CMA buffers.
+> > > >
+> > > > However, these functions are not exported. Since we want to turn th=
+e CMA
+> > > > heap into a module, let's export them both.
+> > > >
+> > > > Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> > > > ---
+> > > >  mm/cma.c | 2 ++
+> > > >  1 file changed, 2 insertions(+)
+> > > >
+> > > > diff --git a/mm/cma.c b/mm/cma.c
+> > > > index 94b5da468a7d719e5144d33b06bcc7619c0fbcc9..be142b473f3bd41b9c7=
+d8ba4397f018f6993d962 100644
+> > > > --- a/mm/cma.c
+> > > > +++ b/mm/cma.c
+> > > > @@ -949,10 +949,11 @@ struct page *cma_alloc(struct cma *cma, unsig=
+ned long count,
+> > > >     if (page)
+> > > >             set_pages_refcounted(page, count);
+> > > >
+> > > >     return page;
+> > > >  }
+> > > > +EXPORT_SYMBOL_GPL(cma_alloc);
+> > > >
+> > > >  static struct cma_memrange *find_cma_memrange(struct cma *cma,
+> > > >             const struct page *pages, unsigned long count)
+> > > >  {
+> > > >     struct cma_memrange *cmr =3D NULL;
+> > > > @@ -1025,10 +1026,11 @@ bool cma_release(struct cma *cma, const str=
+uct page *pages,
+> > > >
+> > > >     __cma_release_frozen(cma, cmr, pages, count);
+> > > >
+> > > >     return true;
+> > > >  }
+> > > > +EXPORT_SYMBOL_GPL(cma_release);
+> > > >
+> > > >  bool cma_release_frozen(struct cma *cma, const struct page *pages,
+> > > >             unsigned long count)
+> > > >  {
+> > > >     struct cma_memrange *cmr;
+> > > >
+> > >
+> > > I'm wondering whether we want to restrict all these exports to the
+> > > dma-buf module only using EXPORT_SYMBOL_FOR_MODULES().
+> >
+> > TIL about EXPORT_SYMBOL_FOR_MODULES, thanks.
+>=20
+> Ohh, ditto.
+>=20
+> > > Especially dma_contiguous_default_area() (patch #4), I am not sure
+> > > whether we want arbitrary modules to mess with that.
+> >
+> > Yeah, I wasn't too fond about that one either. Alternatively, I guess we
+> > could turn dev_get_cma_area into a non-inlined function and export that
+> > instead?
+>=20
+> I checked the history to see if dev_get_cma_area was converted to
+> inline at some point for performance, but it has always been that way
+> since 3.5. That'd be my only worry with un-inlining and exporting it.
+> EXPORT_SYMBOL_FOR_MODULES sounds like a better way to me.
 
-I'll make that change in v4.
+I just realised the new tegra heap is also going to use cma_alloc:
+https://lore.kernel.org/dri-devel/20260122161009.3865888-7-thierry.reding@k=
+ernel.org/
 
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
+I exported dev_get_cma_area() like we discussed, but kept EXPORT_SYMBOL
+for now in the new version.
+
+Maxime
+
+--5ak2rz3ozdmtomty
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaaGZOAAKCRAnX84Zoj2+
+dqUlAX0VyCWn5CEtDD/d5NgnlGbw9KsIwryYjK5R5t6xQFatxl8VgXaPSTMj/TUC
+FboTTuYBgI3AtXRp7wzZaBm9GIM0NkjXj8o4AB9rric8F0GeL82ApZqBGuoJreEV
+DfrgHnsiFg==
+=HATT
+-----END PGP SIGNATURE-----
+
+--5ak2rz3ozdmtomty--
 
