@@ -4,110 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E845FD9E26
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65532FD9E2A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:51:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9997E6B0161; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
+	id 9CF276B0134; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9478E6B0276; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
+	id 97B536B027B; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C636B0288; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
+	id 874D06B0289; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 71D126B0161
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 002411A03EF
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:49:29 +0000 (UTC)
-X-FDA: 84488403258.17.B588789
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 6E3B9C0003
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:49:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dW5VLMc4;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 699C46B0134
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:51:27 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E970C1ABF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:27 +0000 (UTC)
+X-FDA: 84488408214.10.BBD6F44
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 31ADA120008
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:51:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=m7d9w3d3;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772153368;
+	s=arc-20220608; t=1772153485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T2KlksqtDqDPZMdMNp2MdT1X4G1xoh049uiXqGS1sLU=;
-	b=7OuXF2UqhxDYbuN8bO82WvcRf/9OneNlYFGQynMmFBOt/iP8k57xP0Xzy9YLrw0eIGh1SE
-	/YqGVN8d5Wln4pHqJRiV/IqY5UOoerTW6J4kRZ+zcs2V+GyeaaITdLl7r2s+tKpGrKKgUZ
-	z84AF7SJ39kPO8Uo0JR/3ZMPCiVeqL8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153368; a=rsa-sha256;
+	bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
+	b=DMLUQ6SItogl3G3f3TumJETFXx2V9R1xi9uuPtp9iIm+J0n/UA1Y3L/pMRBv1X4/zCR2Bk
+	phrTehXTGuWd+snvMSHMJhOhCdQCbOPXal+M2jNgzlV56kP4YKj9HK2k4VAfEp413kQjgq
+	EXBHdlkvWAqSE4B60qYqB8nze61BROg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153485; a=rsa-sha256;
 	cv=none;
-	b=vFO0aqSf9NP2MaVXCTljIr7A5bYzlhs6V2Ckle2RkC2DqbOi70BiCO+tpCaCNCQWfGMpxM
-	TJFuHcaNL0TqD7g/6T7bWPCkmD9T7nJXEY2ZMBB2G+hpI2at5BcJFeAREd8Mwch6ZVqoDX
-	Ef42wLbQ7Rp2EsQcjn9cQvgbCdYwPik=
+	b=bWQlyoqHi4SPKiD12umDA/DSA+h5b/Dij7OxPt3ummOlugZHXilowTs/v4UloyUNZgA4OW
+	ljvhNnKR06EKf6CVGHOQQkq0gsxJayZ2r5dLHrobEGhfR/76sI1m8zWNgJUz6fN8hGHatH
+	iClE8dqO50WrAyrXV3LHF2IL3uFTn5Y=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dW5VLMc4;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A6F0960054;
-	Fri, 27 Feb 2026 00:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905B0C116C6;
-	Fri, 27 Feb 2026 00:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772153367;
-	bh=0ei8WZJE2FrdZHn/eCwJkCgGu/fralSeuheP3WYhs8U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dW5VLMc41+6wsYn1fqjBm5Z2dUQzsrLIbMzBUCUJdNzLWkt+tAliZNJIqTJnGoZiw
-	 YZcBpJQwV0umiTacTFuaTGPnJpiWNkDjtQ67O0D4xvd2HmOIoQ383C1NJZg6x0hTWl
-	 m9zMc8BqIYuIqA+2QC7M6Z7mAWWV0MIHAGQmg4fIDG/AFlCe8SM4+pyGsHQSuTmmOK
-	 WSZzOC+Ss3jHGxwo98vclmX6SceFPgJdF2AiwULvTinadsNnKEqAtfzrcN1Iu6oWZR
-	 VR1I//fmXR0l3+taU9//5+KG33gAyIHnLuySx+efG/BhDRB+2aE05s7mh14xOdHFi4
-	 JrOhqSjrBIMMA==
-From: SeongJae Park <sj@kernel.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: SeongJae Park <sj@kernel.org>,
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=m7d9w3d3;
+	spf=pass (imf29.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ab077e3f32so6414385ad.3
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:51:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772153484; x=1772758284; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
+        b=m7d9w3d3lvokUsnAFepVG5IuolpOXmIuE3HZ4LNqc/7Zfc3mG67xJe6A9f0a7bwqP7
+         swP9rp/H7bn1S9JSK66FuX8ZxEMlL83TpjD5e4VwbTRZQjRYbdaB2rV+yp0K2h7tFGeJ
+         9/X/naKeqIySzQrd+SgrO7ooOkG4PX3Cir1+kE1+IqVIfyfaG616xrJv5S6F2qkz2P7j
+         W/tukX0VX+zi7gO9tsbs+f/lAfKepPtyJkpS6oIdVNMc8CYUH/3CfZpQ9KeMlf4YclJ6
+         aelzhzhPzuVbr0Es1hG5oyGLo3rac3vfxzXOQ5wdnlvutEgqkx+kAz+1aHjeOiKkD3hn
+         Wjgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772153484; x=1772758284;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MbrSIpDE3Y8TNhyTW+6lYUs18ku3UAynLvTznEtk/Vk=;
+        b=ZGmqCBLBd6SmqyJzMfmhyeJylmbktUcKgER0UP68m4a1a/6iytoz2veusw3L9rk7nD
+         Aqr2Ujy6uyJ+DkZbXKgLvkAukSk2+nyLoqvZz1UwMofIgixZemgTaTWfk53RP6a28XVr
+         ICraRjXefJ/scR95GtMCfJGTfzzG8hyvbeRR0zmeROrbhv17Herpu7UsUMU4Txqx9MCk
+         Mz0Cve/1Dzp7zgPQubqFsVVNvI21De78r0e5YcjeqVpbc3WbHjHDuqQS5v+HcV4lnEjn
+         IpiVQApqHjyTX4JeC8ONhlRQPPwofRSIuyq9D31OWvqqRCaMQJ8NK8PaKsfQRkdngA0L
+         rhzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZyjnGf8DrNUp+eKo/RgUbwY5uMaGvEOUf7VqnRwpPAyy1PN6JjD216JgzgJPVcc9LyO0yt0z4eA==@kvack.org
+X-Gm-Message-State: AOJu0YxPCGSIxejUUulD+90CCQH/23KMQ0HY7hfO6N0KfEFtd1m4dto2
+	8LETxD3yo9eELdwbD107TZeSohVt42Xzc/JnUiu5uP50JwjKOcYnLIXOmXNl88nQTQ==
+X-Gm-Gg: ATEYQzw3O7SRqMR0MM7sQk4QUCseQ5vD+QisWqnxlpH4xO83uYXtmDjbhRV+XMq48Yz
+	EYGKLKv1WnPnOQiCxn3hOkRPoq9+IuSBqopSdB07sxiYLuT+lExEXMtErW/veMV8VvZBD5TIzKk
+	hZYGCK8ytFKL0PF9syJv9UtcfWhxf/lsVbaZi0NRxcuYYnyj3ZLe8gfe63xL5r9boI6lcu7cHua
+	slZKAfMdRqk0wBbO5kxWTMzem4Uu859aOO+x9kgye6juTWqujJg8Crj9/LVjr6n7E+u9CJ5jCB5
+	GEVdtqpOEjvgVyQspCPxdis1VMvjHQPpwpBrqh77DWNbQu4eJzPgatwAXA5bAME+3KQTQvG7dDI
+	uqdQL5ROLkONOGTOu+Yu+iEO7SxaFf2Ss+tG7U3dmsdmVxTaWsjQ2gyyoWjzrmmXLI6RSCgqsL5
+	jsiie7yZYjMCUzOhtKvWQ1NpdvrvSKzi4CrM3YPKFTSRpV4Jq7XlmAsYWdXjE6sg==
+X-Received: by 2002:a17:903:41cb:b0:2ad:ba04:40ca with SMTP id d9443c01a7336-2ae2e419430mr8325415ad.25.1772153483265;
+        Thu, 26 Feb 2026 16:51:23 -0800 (PST)
+Received: from google.com (239.23.105.34.bc.googleusercontent.com. [34.105.23.239])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b974csm34254135ad.65.2026.02.26.16.51.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 16:51:22 -0800 (PST)
+Date: Fri, 27 Feb 2026 00:51:18 +0000
+From: David Matlack <dmatlack@google.com>
+To: Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	kernel-team@meta.com,
-	Benjamin Cheatham <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
-Date: Thu, 26 Feb 2026 16:49:23 -0800
-Message-ID: <20260227004924.83661-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
-References: 
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	 =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <aaDqhjdLyf1qSTSh@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226170030.5a938c74@shazbot.org>
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6E3B9C0003
-X-Stat-Signature: xwmresquc9in1eh3h6pqmkaqmrd87jdi
+X-Rspamd-Queue-Id: 31ADA120008
+X-Stat-Signature: 36oaxc34a9cxfcpo5tgtwr4uyg6zxyz1
 X-Rspam-User: 
-X-HE-Tag: 1772153368-867794
-X-HE-Meta: U2FsdGVkX1+Kbwovl0KN9WrlCovdWOMgtr2hU3sfOwsUjcZUcYzH04gIRVKTG2SZnucTvkUqMhYvW0g5PuhGxQKcNSNLxfWQHWKW3gRAqstOftSsrhbDOOM6oebFI+c/E4aRZ656HG5mVy45X6NwpxB8umAdMznjkTmgMLdbBl72xuvgYThBoxUZksGWcOtBy0vpr88SfQ/qEGZ3lEKnPqzdGGn5C3YGPEoLTrS2E7NjQx2+CwrKDVntwQNrlJ7JCrlyvMfcL4yffvxfax3RSHJJ6d0DMzNp73+T4BzVg+gy2CL7lzisaxGDsqvXhNLtE0ey57M7P/Ov3zf0pRJKRURJnM6m82x0Qo0F0YHGoL2q7po9eLyPQU6qbo7sx4r0bQNtBtm79yT7x+DHBhLJhmB9x6p1Kl4gAaLuaE1brRpF5/YWL/DUsAWolOlNAOLZmxaGikn3fL+1VniFDBWX3veE0ySvUY4khGhITf0fjq2aEcmCqIdUZGp6epzy3vcb7AIk/NEnlSsCgYCPL/TuojmzNhH6jEGYm0uUx+WjXMb7nSYBuBN59B4ksrVuHiNKgU0T9ggP7lVmkXFAduw3QcB+2y9banv8aogv7ZIf8NZsIwRS7uDgdXGwD26iurEFpR6Nl9eed44oEXgKkuNLkbpw1JteWLnCsaRMg2KFl88SDavD20ObtYVDb/GSGfVXhhWiwvh7R/pVSMxq1LCgsfoKWLW9DXf4yvQhUHrY7HUQHyAPv4q15ASLK6jBRz0Dh1R1U+RVpn6Ku3JxqtThd4nVetqTMZt87RzwubvkbZa8U+W4/RYg4CXnhIa4D33I0DKYEyDr4Daeuh1IGYuBcjkctJaXsB3LfHu5ui7mSzYU9Vs6VsfIgR61PQUDyvyzdgyO1FAautnBA69EqdZxdjumRs6J9xXzu7UWALnTzQqnzrA4KEMilI5GJgGOgi/qu+i4vPc2hANUjDE99wD
- JEt76xg+
- ztRaqIbRq5/W2VHDAq0haerGiSC8/AkUXiBg84qTnkwJkA/3sHEvSUGW2v+tvMk3hQ+5iiCRGos/uxiqffR+imLYXB50EdMKk53qKs2efguq9JCimZOpAj23yR3r5rsqUk1mqwaV2mFl0EIx7kRKp3DIjY6X+l2DmEnzn17axTs4NBm0pMSdX89FuWZLP6WXkallXVMX4jk5uwH9xUoMfGsKJu1zhY3FsiO2JH8Qq0rGB1Ot4xfubXE+gWcxLSWaw92+butL2b9QwUEcqHLWCMmyCw9f4t7u0MGl9rJ/ixXLRkkCfyu8WsRBt5kxJciF/0BsvIu1EC5ffIZUw3ZQYBFy1n14qqyMJCle4EyuWfo0fclwUojwfR4/VMKfbsmZCWXhmddMPBUQHKaA=
+X-HE-Tag: 1772153484-57063
+X-HE-Meta: U2FsdGVkX18MlUhk13lnvi5NEer3wQAEUt0ZMysBLFAdB6ZE5ZY0rQOwIAA73Qr5hUxS2lx4COjyyoEKGPj7g0fPCHqwQvOVI7Q0Cl0ZsqiqdBblOmT3GzDK8laZY2RbY+TT2i4+RmhVyK6iRzVXXX0q0Yjg/zhRLdzh9+K7vMRLgP1S19qZ8F7Oh5a9zYGYHjwWlnsCQw4qpeMvZ4XKza9sn5BGaltiicjIfxyRjopnmQRlAxefMYxr9NlciikAlyRlHNynoCXnz9uQGC4Cx+M3Iq/GfWHepSYdCUC6cc8h6OroY7TLWPmxVI49Lzs12K6Q/HtCDmgbwn1/iFHWHypCecKPBT58zOt7uPFg618E0iX0R2B78RlQ/2ZFt6rH8rxwnSW8lsFF9dowbqETaRg9YG/NknzYpEGZ7zQZNBTqtGhcU04own1oolv55y/2Ktz7sxRfZoUqO55hxuijAFGouvsdDgjTtr+9RUa0VnYmiGtLVNpBEg4PDTB1r85+LuWCy2s3P+GTlp4FOCxl/gfhhQZHl/RRReNO8z+PsAgV5hWBZH3J+OaoPHg7plK8XNfurj25nPaaXWJVw/R4rNFVim+h7nbVv33ZOIiZOzWNTYQ4FW+QRCLMS+aSp5MVvrza4xlejPyn8J8ZybYI8FziUHWa3o1yDEB6ju4S34uCHFq+MZuLoj4pj+LZvLYA73v4QH5iICrrd+kcI89G8BymI/7zKJIlUoUY8+YB3h3z+IAPRzakXpG2K+3pBdqTX4kq5RjPQc3uXu7hAmSFUwmgMhbi/AeAV4Myj6Blpozo3/NdQRRECINsTD+IgFh8NI0wZQlHP4y84bUkqNJGGOCZBpA39Gpr7gmGNsK9jLoQ5KTmq9eAbNJGtS9mUkJkrjwXoXTJMuheTAADwsMq/KDukqqkQPAHFZQubzWoxuB0RTw3NWf5J0+l54dn0tKUL2VRhMdONcrHIyhzjPe
+ Vru6OIpO
+ I80WMMjXN5IEntE74bZ0/X99WSEjsCXBJn+15eiDIxKrbvB+VtCsq0cjZoQoJw7cBF5rUUVWScnnmScQQwfcZ18W3XpTY/n1udfZNNGmkFdeA4OQKJ/KeEJLQ+b0Tx8w+uTyVwzghFGzSiaDacVvz/z4YavvLhM7iGGJUtabxqWbqjcy4LdKEOltlCaTVRb88nmDZvhpwPQ7OK/kcM7+oJ2zVSvaJw8uCUhBc0LFf4cpq3i8DzyyzjbJWulOwxTf9sRjIFQeYnOoRoCOg8kzOzOBHs4wHxqZj6q1N69N6SnJkAOIVae+VlIt16jKVhQfEhvbvNvXpOVpMY9gFvBvSZ2GtRQFCzJ+mjNWT5DeSkKwI4HLiIJZFwrI/BdXNS9xUgLaGiB345ke19YJgFy2h+dlxzsJisWZdBDXZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,24 +149,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Feb 2026 18:26:21 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On 2026-02-26 05:00 PM, Alex Williamson wrote:
+> On Thu, 29 Jan 2026 21:24:57 +0000
+> David Matlack <dmatlack@google.com> wrote:
 
-> This intentionally breaks direct users of zone->lock at compile time so
-> all call sites are converted to the zone lock wrappers. Without the
-> rename, present and future out-of-tree code could continue using
-> spin_lock(&zone->lock) and bypass the wrappers and tracing
-> infrastructure.
+> > -	/* If reset fails because of the device lock, fail this path entirely */
+> > -	ret = pci_try_reset_function(pdev);
+> > -	if (ret == -EAGAIN)
+> > -		goto out_disable_device;
+> > +	if (vdev->liveupdate_incoming_state) {
+> > +		/*
+> > +		 * This device was preserved by the previous kernel across a
+> > +		 * Live Update, so it does not need to be reset.
+> > +		 */
+> > +		vdev->reset_works = vdev->liveupdate_incoming_state->reset_works;
+> > +	} else {
+> > +		/*
+> > +		 * If reset fails because of the device lock, fail this path
+> > +		 * entirely.
+> > +		 */
+> > +		ret = pci_try_reset_function(pdev);
+> > +		if (ret == -EAGAIN)
+> > +			goto out_disable_device;
+> > +
+> > +		vdev->reset_works = !ret;
+> > +	}
 > 
-> No functional change intended.
+> This could maybe be incrementally cleaner in a
+> int vfio_pci_core_probe_reset(struct vfio_pci_core_device *vdev)
+> helper.
+
+Will do.
+
+> >  
+> > -	vdev->reset_works = !ret;
+> >  	pci_save_state(pdev);
+> >  	vdev->pci_saved_state = pci_store_saved_state(pdev);
 > 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Isn't this a problem too?  In the first kernel we store the initial,
+> post reset state of the device, now we're storing some arbitrary state.
+> This is the state we're restore when the device is closed.
 
-Acked-by: SeongJae Park <sj@kernel.org>
+The previous kernel resets the device and restores it back to its
+post reset state in vfio_pci_liveupdate_freeze() before handing off
+control to the next kernel. So my intention here is that VFIO will
+receive the device in that state, allowing it to call
+pci_store_saved_state() here to capture the post reset state of the
+device again.
 
+Eventually we want to drop the reset in vfio_pci_liveupdate_freeze() and
+preserve vdev->pci_saved_state across the Live Update. But I was hoping
+to add that in a follow up series to avoid this one getting too long.
 
-Thanks,
-SJ
+> > diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> > index 350c30f84a13..95835298e29e 100644
+> > --- a/include/linux/vfio_pci_core.h
+> > +++ b/include/linux/vfio_pci_core.h
+> > @@ -16,6 +16,7 @@
+> >  #include <linux/types.h>
+> >  #include <linux/uuid.h>
+> >  #include <linux/notifier.h>
+> > +#include <linux/kho/abi/vfio_pci.h>
+> >  
+> >  #ifndef VFIO_PCI_CORE_H
+> >  #define VFIO_PCI_CORE_H
+> 
+> Wouldn't a forward declaration do, and the kho/abi include can be kept
+> out of the public header?  Also should be in the previous patch?
 
-[...]
+Will do.
 
