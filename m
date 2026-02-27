@@ -4,132 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B6A9FEFB5D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3DDCFEFB56
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFA306B008C; Fri, 27 Feb 2026 10:17:46 -0500 (EST)
+	id 18F5D6B008C; Fri, 27 Feb 2026 10:20:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA4076B0092; Fri, 27 Feb 2026 10:17:46 -0500 (EST)
+	id 163C96B0092; Fri, 27 Feb 2026 10:20:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7696B0093; Fri, 27 Feb 2026 10:17:46 -0500 (EST)
+	id 0661B6B0093; Fri, 27 Feb 2026 10:20:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9302A6B008C
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:17:46 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5391E1C953
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:17:46 +0000 (UTC)
-X-FDA: 84490591332.14.EAF3017
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D18431A0002
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:17:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kzk8gPWI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kdZmmjlN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kzk8gPWI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kdZmmjlN;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E293C6B008C
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:20:15 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A8397C21D9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:20:15 +0000 (UTC)
+X-FDA: 84490597590.26.7D8B629
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1748F180006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:20:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BP9gWk1R;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772205464;
+	s=arc-20220608; t=1772205614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1h6dSP2R/hvvqdXyOgaHEygft4A0JhA++XIXdBxaDAA=;
-	b=F1tMOefHEifqNyUO+3sbLe2IVlrDnMLIipchiJ54rvSoKHtcJjQtB2MMNuCtgxoNsXe964
-	syiCCnIWGWvPDfR3vRr60a55hQTK8kXDSVxEpXce5Y9bK1TnBO+E2MkHLdXPbYvm9NFjcK
-	kOf5YXOoxozgIL23WxqykwqW9QuQ9fU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kzk8gPWI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kdZmmjlN;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kzk8gPWI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kdZmmjlN;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205464; a=rsa-sha256;
+	bh=re+X6ck1AQZQchao0ynbIryXcVgPOwh7dKHH9EvgBr4=;
+	b=Uk1A3n/4/fRzevunfh34ElXUZ8jN2HWoxYVU0DjrqnVt21RK9i7l82ZwGU+GzVJS2BnQDz
+	RtqyTvBEYAHPcLVQ9NSQ8tV85laQ+a56olMDGVKetFjg1IfjxMm2vPc5hcTYKyJbsecRfk
+	3KLTfmrTmYB6zOCppK+li9/iEQGP09U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205614; a=rsa-sha256;
 	cv=none;
-	b=Pn8mtlFDv6+pv7ByxsEAu/yMfTKTDo55C34GHjncYWQnAlvvVEiSaYNZD5HvTqVtTiQyH/
-	aCtKxAQQTpDzpfN17fPzCHFRlOjJmQGTMXuqxaeyxEqyV5RB1J7evPkrUj2suNrV6UTLEQ
-	2DeJ3byqlimHgwfzUorjBd9nGw0G9ZA=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5D6C65C6FA;
-	Fri, 27 Feb 2026 15:17:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1h6dSP2R/hvvqdXyOgaHEygft4A0JhA++XIXdBxaDAA=;
-	b=kzk8gPWIke67mRHYIeZTdnV0jWr344Ixrz5IqeP5IIO+Y5n3kE/53ezEwVrJh9EpgoDe4K
-	q7/Q+/4cTBks0IR0DGcmKi8fSGYgAnGdM1ug3/77u79xuh65V5FBcegAwYd1iOYuHMVmxm
-	njUPjtue30o7ac0D3dqO9YeT1fb7XyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205462;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1h6dSP2R/hvvqdXyOgaHEygft4A0JhA++XIXdBxaDAA=;
-	b=kdZmmjlND/j+ZWuvLQ3rN9lnNuW6iUXWPzobKzWqIBNyaZHr4+G66FpCj6RI+xTlfWIvpN
-	BnCkBmQWLaFiXDDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1h6dSP2R/hvvqdXyOgaHEygft4A0JhA++XIXdBxaDAA=;
-	b=kzk8gPWIke67mRHYIeZTdnV0jWr344Ixrz5IqeP5IIO+Y5n3kE/53ezEwVrJh9EpgoDe4K
-	q7/Q+/4cTBks0IR0DGcmKi8fSGYgAnGdM1ug3/77u79xuh65V5FBcegAwYd1iOYuHMVmxm
-	njUPjtue30o7ac0D3dqO9YeT1fb7XyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205462;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1h6dSP2R/hvvqdXyOgaHEygft4A0JhA++XIXdBxaDAA=;
-	b=kdZmmjlND/j+ZWuvLQ3rN9lnNuW6iUXWPzobKzWqIBNyaZHr4+G66FpCj6RI+xTlfWIvpN
-	BnCkBmQWLaFiXDDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52E123EA69;
-	Fri, 27 Feb 2026 15:17:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Z3M6FJa1oWmzHQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:17:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 1B44AA06D4; Fri, 27 Feb 2026 16:17:42 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:17:42 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 08/14] xattr: switch xattr_permission() to switch
- statement
-Message-ID: <wvsbhwgtkeq77v5p6nwctpybzrie7m37xd27j3hmpwgoyuoltv@7vqndacm67tr>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-8-c2efa4f74cb7@kernel.org>
+	b=I/XwczPcHaN2V9nLB1GlXHWbOhwzjqbCSgeWliZTqAl194MhOAkT7VhrP9wzEq+LzIgGgA
+	aw6kAoAGjTGbPYqeDiv2lbARa8jwBgSs95MiBNdDfK56NPD57nQGEa4v++nP9gyzAve9Dn
+	WLiMxTC2FObT4v3YmPmopFmffinzRXU=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BP9gWk1R;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=re+X6ck1AQZQchao0ynbIryXcVgPOwh7dKHH9EvgBr4=; b=BP9gWk1RTiW1qovhNGxhD9zEDq
+	H24UnepRzhoEGp8jmVB75TB3tgUrUkwOAV2s9QulxkEWG6xFpqFV+BljiLpJeXGcWUKEFvcaq56lu
+	UY7cbVSBEONJ5NmV88jrLLgL7aTMrnsHfRWRXhiQPguUjSctEqAFP83fM4tESFmHx/8kivPpdgi/y
+	z7+zCF68ep7RIKRgMbJR6jrtlBmzgQQpUeA1dOv0RkmpzZF55PwtEjkyQUQcWmBd0J5Uf8cj9Uy7T
+	ktLJUj8cXYEevOxSRDdzzqgJh2xXNECvf7M+7fVZgcCO9/eaovNg6sKxAryWF5DSt8RGXTqA0TxDC
+	GB0qG6UQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvzdC-00000004kz2-17tX;
+	Fri, 27 Feb 2026 15:19:54 +0000
+Date: Fri, 27 Feb 2026 15:19:54 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pankaj Raghav <p.raghav@samsung.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>, Michal Hocko <mhocko@suse.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nico Pache <npache@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, mcgrof@kernel.org,
+	gost.dev@samsung.com, kernel@pankajraghav.com, tytso@mit.edu
+Subject: Re: [RFC v2 0/3] Decoupling large folios dependency on THP
+Message-ID: <aaG2GkICML-St3B4@casper.infradead.org>
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+ <aaEsOu0hgCUznzl3@casper.infradead.org>
+ <8ca84535-861c-4ab0-a46b-5dfe319ac8ac@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-8-c2efa4f74cb7@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D18431A0002
-X-Stat-Signature: m9g9c93tjthxemmhp4bmwadeymrsddb7
+In-Reply-To: <8ca84535-861c-4ab0-a46b-5dfe319ac8ac@kernel.org>
+X-Rspamd-Queue-Id: 1748F180006
 X-Rspam-User: 
-X-HE-Tag: 1772205463-30796
-X-HE-Meta: U2FsdGVkX19deFG/LdA5w3GxbYAHLh0OBxDFADfNa2o7iSrVhewiu+hUhflRyRts7JdSdISueSUiXy/W2fu3bZJoi7GIm5wlb6eE2Pfm+4wmrpMv90aGOTcznigp18iyO4kHuwTSm/o6qY9aDCXGDeFL/J6D6aglkFcjbhTCTT2PbrvzpHh77+Lm8mobHZOuyyhWn5mTrfrK3avMJRGS/hdl5gr6NAf91SwrW5ku/SOxZ92O+ziczMb4rnyW1tMQfM0azQTI37xHBlL8IiFnIYd/eawkV8VkWN+oFb+sD86qJp8+DLr+vicHuBUecMKqvcJU7Femi+vDWp6fXWe9rxzojKDGeEbxQJv6imGuemrdg+ZPxz5xquzNgcjy4mP1y5gcUamiiNBJAPWccuOaSn06/0xOGu3htPKPsCUBjfHf4FfLrteOtuHJoDDVwxOCIgf4Z8YLpLSmApPU9cuYIWO2n8E24sspFOP0zBe4MJPaYTSMg0ain9RMJ60kmXTdYa/afNAot4y6aCV4i8K565h4D+EddY5dqz8z1lqR+rtTA2LP42UW9AFFg0Z5wZlgVOEnoKCsjHh9OINqxIbBQGqxKXapeERcm4VMdPC8ltby37vq9ZwO6ZnyXl/pTC0z2mGfIe0aD9Mts/v4ruzvIGUMPdygvMJEuJ2f5+zjmu/6r229E4+9dSZ7SA2OPKsO8GtLN+v1nu1709vVadLD/y3OzMYtf9UX4vyGvYD3XNp6ghjopQhF/S51Xd1XnwIR9xfVwGoLAvQqno2QHPlH2JGBTtI3ygnlf1nCRHy1l6xekEh+aTz+kX/EGIyJ3Km3ASLWwXTJUV3bR10zxtW3C5tHcNnk+6biYCFpVzx0++vREkOCCEkXdt0K/MV2J3p3+O5VTL7r/MdXF713Kq6MEItEvGXQJjR9FKL9YqYwzTgVT7rxyqmeiENLj794dCXWaTO0RPcR7K4+fCixrfK
- 5/BrM3J6
- OWV53UF0vTCtXsvX2+YGMXqlcKDqRSeYQ6L9L8173H3CNtZz/CZaNibw54tDbUpJsMn2YnaI4S0o1tEtGzYFHyQP5uoDsiPBVZh4C0mvGXpABiXfV3acTOafjGiXhozyFaL67bpCR9UJYrmSX1IEdOKRF6mbKziDzYXw5ivYrAjQUgQdCHF80UGQLmCC+iu2Z6Nyb0fkCt0ezg3x5i/a9hxwF8uhPnhmxKJiW4m4GVjDuTocTLBSonElG71Jc3B13VyTBSjMyYqqdDA/1lM0hmq1BVYgs86e2/cLTX0nQwbvcH8h3BfwUs8a4zH3vjHcFsg/LruvEjYuUdr64wphlkXRZQZJB5/KC3L13LpVlGe+O73Kh6jGUS16rH34XZxxZboD8E8QY2cLvNfccrqrCKDba9gA8p+HrvovJ
+X-Rspamd-Server: rspam05
+X-Stat-Signature: a9t6m3kh77xjcbwiu9ukpiryi7n5t4wn
+X-HE-Tag: 1772205612-979465
+X-HE-Meta: U2FsdGVkX18x3LGErD2xnce++VqbMoHLIMQLdp8pTpSZXQdYg6jmWDbsl5yK0cDmQ1scqWedKxDIER9VR0b/+dgwzLVdJbCbZbcj8/O8T5vXUod28BlpTn87rdzMlHR4M2ZslTd0F28nH44qqBhShornVKVRhoLs7qphknGHgzqTcQruYN12v8S5Qsv1ky5HOfJPGEW9VMawsado/MoqXIpUBP6g0MRHkuv80n6Qaa5WWHkMep9/6j0dWmF8DqUrv/sWI1w3as5TaYz2ptOVqVHjxI2UDFfG8ZKzXhe3dg3p+4QuztpkHIqjap/One29kDUuJvYPCMAXiqouM/NTivRwPGMFLdO8QlJ2fPqCf4X7x0sFSIQrHLYFHsejkOCF+F2oNMRaVnPiMyz/uMUT9Gj5eJWxzZYkTtxbEdmEftHjen8yywTX1uGdlc5YqYqk0AY02oymUv2uoJrHSuT0OpUaSuNgdQCy89e8KBPYyLcPtgisOE0O5YB93xo4hwDhM7yDReHclzooeHFm6iG/KoM1VKE7gp9g9H1UiqCZGGqbQa12rEEe5Hk1gMW5knh8EPFmO/bQdp9h11SC9Uyny0eJiYYFZKGMBMn91fRte6nMXs+D1iSJ30AlMew/PgoxnsnWMbhCPTqiLhKCaTzQ2nG7XF4BK+Zzm03qC3BgZeeNug1UoNMwhAfUb0TyWzNVExGhdu9uIdrOl1qdjzl1IPGNonJ3aLWn9xnJ6LP1yxdsfTrWuWuJyOUP+H58vJ+FUhEg3oyjdQq64FCHFmmDQ9hAxjQsGklk3GFJS88d2GxcDEFflJJEe8zi2oMOv5UeNZ50nksdRsWSeVxRDUM+rvrmInmJKowp3Zb9ay21jlswE0mMwpuxgAjLEJPENXpdv9hKHznF6tujx4qBn6GdR1kWcYN37YOpKJEY0jW3v5j5X7JWNi1oLarSCjNIU0odoto+suAtgp4RtNOrkbd
+ AkJo+l9V
+ XOKf7K9jbQrtWGkqtwLX52YxkEyeaBvo+sLIft/o9w3MCApLEeSsCsFn39lNSY/LdgQVerb/sy9Ra/9LzmNtvf+JgMvfTZ+suKRCULo2Kh0Zrrw/YKTTrQzBvwTEhKhzgCLuesDGCexfxkB8gja4lgNV9z9gn3FJ445fjQAq1cxz0bc7Ui1T3phaIAuyqZ3e/PoDbzjha3eM4b/FGq8O7Qw/Aavf6Y/5cNie83j0ZCy0THfJ3e4rMiMufrtn2UyfWdQvl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,57 +104,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-02-26 14:32:04, Christian Brauner wrote:
-> Simplify the codeflow by using a switch statement that switches on
-> S_IFMT.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+On Fri, Feb 27, 2026 at 09:45:07AM +0100, David Hildenbrand (Arm) wrote:
+> I guess it would be rather trivial to just replace
+> add_to_page_cache_lru() by filemap_add_folio() in below code.
 
-Looks good. Feel free to add:
+In the Ottawa interpretation, that's true, but I'd prefer not to revisit
+this code when transitioning to the New York interpretation.  This is
+the NOMMU code after all, and the less time we spend on it, the better.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> > So either we need to reimplement all the good stuff that folio_split()
+> > does for us, or we need to make folio_split() available on nommu.
+> 
+> folio splitting usually involves unmapping pages, which is rather
+> cumbersome on nommu ;) So we'd have to think about that and the
+> implications.
 
-								Honza
+Depending on your point of view, either everything is mapped on nommu,
+or nothing is mapped ;-)  In any case, the folio is freshly-allocated
+and locked, so there's no chance anybody has mapped it yet.
 
-> ---
->  fs/xattr.c | 18 +++++++++++++-----
->  1 file changed, 13 insertions(+), 5 deletions(-)
+> ramfs_nommu_expand_for_mapping() is all about allocating memory, not
+> splitting something that might already in use somewhere.
 > 
-> diff --git a/fs/xattr.c b/fs/xattr.c
-> index c4db8663c32e..328ed7558dfc 100644
-> --- a/fs/xattr.c
-> +++ b/fs/xattr.c
-> @@ -152,12 +152,20 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
->  	 * privileged users can write attributes.
->  	 */
->  	if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN)) {
-> -		if (!S_ISREG(inode->i_mode) && !S_ISDIR(inode->i_mode))
-> -			return xattr_permission_error(mask);
-> -		if (S_ISDIR(inode->i_mode) && (inode->i_mode & S_ISVTX) &&
-> -		    (mask & MAY_WRITE) &&
-> -		    !inode_owner_or_capable(idmap, inode))
-> +		switch (inode->i_mode & S_IFMT) {
-> +		case S_IFREG:
-> +			break;
-> +		case S_IFDIR:
-> +			if (!(inode->i_mode & S_ISVTX))
-> +				break;
-> +			if (!(mask & MAY_WRITE))
-> +				break;
-> +			if (inode_owner_or_capable(idmap, inode))
-> +				break;
->  			return -EPERM;
-> +		default:
-> +			return xattr_permission_error(mask);
-> +		}
->  	}
->  
->  	return inode_permission(idmap, inode, mask);
+> So I folio_split() on nommu is a bit weird in that context.
+
+Well, it is, but it's also exactly what we need to do -- frees folios
+which are now entirely beyond i_size.  And it's code that's also used on
+MMU systems, and the more code that's shared, the better.
+
+> When it comes to allocating memory, I would assume that it would be
+> better (and faster!) to
 > 
-> -- 
-> 2.47.3
+> a) allocate a frozen high-order page
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> b) Create the (large) folios directly on chunks of the frozen page, and
+> add them through filemap_add_folio().
+> 
+> We'd have a function that consumes a suitable page range and turns it
+> into a folio (later allocates memdesc).
+> 
+> c) Return all unused frozen bits to the page allocator
+
+Right, we could do that.  But that's more code and special code in the
+nommu codebase.
 
