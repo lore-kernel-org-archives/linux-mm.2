@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9BBFEFB5F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAEFFEFB56
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:26:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1B5A6B0005; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
+	id 8775A6B0088; Fri, 27 Feb 2026 10:26:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF33C6B0088; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
+	id 84BC06B0089; Fri, 27 Feb 2026 10:26:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD52C6B0089; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
+	id 779426B008A; Fri, 27 Feb 2026 10:26:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98A846B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63CAD160141
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:25:23 +0000 (UTC)
-X-FDA: 84490610526.03.8D7D481
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6358F6B0088
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:26:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16FD31B7EF6
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:26:12 +0000 (UTC)
+X-FDA: 84490612584.02.A1A79E4
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 03F1D140010
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:25:20 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9D5DE1C0006
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:26:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dr07HTs4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0vIiX17I;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dr07HTs4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0vIiX17I;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772205921;
+	s=arc-20220608; t=1772205970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
-	b=ijrKjrl602MTLcjix6WRhbJYwhKzzk9w69KMvw2ropwP7z+pkPN9bi9xLHwuRZq4+7GMob
-	OOHbGXaRyO/S1H7ak2MSIxtdWufHCrXtG1440eFREHiip7toK6+y+OdjR9HObKZAH4TAA/
-	/mOikRpCCnQB5QagKduERtbLL81DEww=
+	bh=qc5kTPIg0SUn5GOy2ONe2+Zsp5R+gcLDDp/mn1CBSQk=;
+	b=Lytm3ZXB6LaeZe3tvO6cMs0ViCZy9ZnYvg7B8zrj58W1GKkBUOm/fZoi9eDJYQBgtTa21k
+	ozHtYbWa2eF1noSWDFYzBPI9xnUt+QIPmWy3PbbNNlEzma+tEWRFswnK2cawlhkhrWiBU5
+	xyKsL8yFeJymnaocMuNQmDpLz0DpGqo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dr07HTs4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0vIiX17I;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dr07HTs4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0vIiX17I;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205921; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205970; a=rsa-sha256;
 	cv=none;
-	b=RW+eKk/LwXgBCa01dvoUCARsM3aleVRZkoEwM7VxEaoppL/wYeduza0Ij21gxPPnYlLG2e
-	jvcQWWoSBH+XgVCKrQyhcbvHmqFmWO1vAj5mMdhVYMDbBB5/5nlVRBLD819rRFxV4QVKNg
-	2L1cReXXmWW4vHWEMvObS+A+2VRIPeo=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=8Vu+0NMOetmWfniQKarw7+LEdf6a5mmBkyqP5isBsQoZ6qLElgq4MqRkrWtE1hDvJTJGpv
+	1BfPfz8CbVOy7k1KkjSF02GEpBkRaS6+CpSqCnbW0l4eCLz1n/Z3EH0plGiKTXDjK8Fcvh
+	peStigZOyWf27hiY1etMjT507neMhKE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B1275BE3C;
-	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 41E9A5C1A7;
+	Fri, 27 Feb 2026 15:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
-	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
-	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
-	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
+	bh=qc5kTPIg0SUn5GOy2ONe2+Zsp5R+gcLDDp/mn1CBSQk=;
+	b=dr07HTs49SWh49lnsTVU/D1W1XQ+NDgzMo4yRr73NScjW1jcD9+lT2CGdh9n4STFj1Twfk
+	eEYeomyzXckJL5DnCF4EXmemOXro+O+K/ESSH/4FciOGhl7OY4U75AOJePTdiyTFb+wEFv
+	VMsHS5eS5NGXxv1shnbGbcLBNwhL3bU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205919;
+	s=susede2_ed25519; t=1772205968;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
-	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
-	dpoYpEhZ5rvMGgAQ==
+	bh=qc5kTPIg0SUn5GOy2ONe2+Zsp5R+gcLDDp/mn1CBSQk=;
+	b=0vIiX17Iyqw56xfSOzDLF2z6K+4GopLa4Hz9GmNCHeQS8CqXOSbnJtcepw2CkTQ6hVGJO4
+	kDUc9gOhmozmWhDw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
-	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
-	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
-	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
+	bh=qc5kTPIg0SUn5GOy2ONe2+Zsp5R+gcLDDp/mn1CBSQk=;
+	b=dr07HTs49SWh49lnsTVU/D1W1XQ+NDgzMo4yRr73NScjW1jcD9+lT2CGdh9n4STFj1Twfk
+	eEYeomyzXckJL5DnCF4EXmemOXro+O+K/ESSH/4FciOGhl7OY4U75AOJePTdiyTFb+wEFv
+	VMsHS5eS5NGXxv1shnbGbcLBNwhL3bU=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205919;
+	s=susede2_ed25519; t=1772205968;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
-	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
-	dpoYpEhZ5rvMGgAQ==
+	bh=qc5kTPIg0SUn5GOy2ONe2+Zsp5R+gcLDDp/mn1CBSQk=;
+	b=0vIiX17Iyqw56xfSOzDLF2z6K+4GopLa4Hz9GmNCHeQS8CqXOSbnJtcepw2CkTQ6hVGJO4
+	kDUc9gOhmozmWhDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47D283EA6A;
-	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 393A33EA69;
+	Fri, 27 Feb 2026 15:26:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NTGIEV+3oWnKJQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:25:19 +0000
+	id J6D2DZC3oWmrJgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:26:08 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 077C4A06D4; Fri, 27 Feb 2026 16:25:14 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:25:14 +0100
+	id 05E25A06D4; Fri, 27 Feb 2026 16:26:08 +0100 (CET)
+Date: Fri, 27 Feb 2026 16:26:07 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
@@ -113,24 +113,22 @@ Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
 	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 10/14] xattr,net: support limited amount of extended
- attributes on sockfs sockets
-Message-ID: <nvbbdg5v2o5tzyzhzfpj2cyldsstgxsnwr7qfr36vwsyks7qjv@ey4qw2ut6q7z>
+Subject: Re: [PATCH 11/14] xattr: support extended attributes on sockets
+Message-ID: <hy7vat2udvtkkgggofdj2z7hdwlky4ehpyuhpzdzrwdz43snyp@km35qarriknf>
 References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
+ <20260216-work-xattr-socket-v1-11-c2efa4f74cb7@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
-X-Rspamd-Action: no action
+In-Reply-To: <20260216-work-xattr-socket-v1-11-c2efa4f74cb7@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 03F1D140010
-X-Stat-Signature: 4fdxdhks8e6d83rbnszipiipk3yu9idy
-X-HE-Tag: 1772205920-343680
-X-HE-Meta: U2FsdGVkX1/vkc6EydYKzB1oA21SgwmoRT1OnUKPNEGHCbi/+J/1ee1UAbc6uMDCApPNIYxT0Fn1mZBLIuV1BxYDjpfbrLsWhex4G+rxMA8vtk8sjaUm++YU/YUNH11fVBA9hVfT2flS6gBl6FNZ/F1koxAOHuTfXojNMaebWilNbFmN2hDlNJtX/D3gSpllDvkzpzHVXwf73AcCmA+UWWsyEeRHlOwUgaUMbgwGHpbsCLElmYxEx9d+nDUpkrK+uPIRGt4083GK9Ner0FfjhvaGS9+VKbt16CheS+RfEER/FN9gF6gYb4mbY9OfmnfVr1/PFcTQGp+2lzD6Qz//lfhF0VJTccpmeGx2PJjCe1TVEOmE977L246AFZiu6l7Pnih9mXLru0Zitv6V+lZgbYsjK28cpsU7v1L2RJHTV2WZZsgSsCItm1/5/uY0emRhfBaQ/182KlZENqYwWSw68UuE/H5gkU4G7AOOQFHZqCeNzAxC32pWXm7ERqVqj63ln6nnEM8Sxvuyfln9eQk6Pn4vFWyJaIq/aMwe3VQT2Ta6n+FnShNWsKE3aG/qmVmgs/UuX1JeyOcrS3IMZXJa575J6Ew69+nTdyuoGisPo2RX2xCJ+Dwg4DzFn4JaDhEMOLLmSOd2hUb6OW8Efn/kq2yest9tIA49Km2cJAZo73bKQylX3hHislckaOmdIeo50ZXurkpRSn/j8BcsZASE22iHINnSfvCJpLXaFEEZ4AeMypwXohUXWHBy4z88F7rIWltQNmEC1Ec0Nko8GrU1AsyT7JHcyM4QcCGtptt9ZdrqLxz2302lGeFPeqmOHKrs8rbhHzmKXmUPhHGaQJiyTwWe8t6IARpTqyRSTZYMNP3SN4t8srtgvb+4SW7Ukvl1gS2N1oGW9k6uTU/Jw7dSvVAWN+zl5GonACnPcgNcLHXKFqBFicYo+p9bcllcM8Fuccl4HfBTQHWxhopK4Dv
- KIeqkXlU
- j5YrPCGLvAVtwHNv1wIM6TzDtCoJ1t8BtQPWfC709S5ggQoVwVW9Ntbvuu4Oao8LOocZAZkrLPZkelfr3zvmTT8MJ7D323L0LCsDcsdj1AMV18nzzvHGeexV5iLjfsvqNllNi/5BEuvsdcdpl5bsmFGAU/kJQB15ZiJNxvgD3hx5n30DWTfp19c7ZGp452K/9fnhlXWiCbRtKzW3nJY6heZH72v1AiyNxzbVk33PTMmOLSzpJhM5/MpizrwM44uXV4+8uN9247NW9O2KY9IY3OHXPTh3f14RpnueTUxDX0DWiJyA6S2A6szNwIyGjq0cZFYorsanS3lGmgBSAJwFyU/YDRxFB3/1v66f7m2S9XF3qdyE=
+X-Stat-Signature: hbyupqng9zbg8k6zju1ffhgxgbjchi9z
+X-Rspamd-Queue-Id: 9D5DE1C0006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1772205969-481413
+X-HE-Meta: U2FsdGVkX199oG0eRXpB19HABVEthJpPMbHR4ahuzhB4+3qc/2bn0OQLEA9QhipQicxmG5eFd8ryHMpufZ62o2KU5us+1ESgxAxfyf8CgaR5m8IUKobit5vNYx5AeE3aTXTk84GgjziEIODDrTnfpz092OX18o+TrATp/YPt/5RLBrzyUkyU5I63hLdkR+yE6qmlBVDCJkd9E3SQj3YxjymF0EvT0zw4H/J5/q+ibXaHv0rsVhET7ycQqIaahkVWltjlSTVpBFeN/+tsV/k1I7uR9ZER6n+5NNM2o+DRp/afaSqkI33y7jzMVqIBePCq+gkaMbbyN0Ev/PCj3s9y1jPp/KhUWkA3K9rnnK6gBPQyxn/x05Cw36taVocVAAB7sYngJFb4tkiDhB3PI0/0vBPDU1DEDIPsBGiH0hit+joVWKLZIHgLE2SLZOIn1p0aJaHZVh07B8dvO7qTskRgj116ImTl6wH1+MWV2ReLwb4rbok1fC0au2qXpUgOJX1zXDlDx3BeJDFAzkSB6iQ26oeY2t0oz8QLqB0pHs9BiepaWqahEwX/jeNqPuDn5iAhRsccVI2D7pm1mj6Bvz4eNjn6ffomTnXvFcf5s5WaKbvr944MK/+oZtYCBFOKJeVf7aVAcK22PyjIllgkPQqcGIbo0BuWkxenNnNjTsgjkGujjKp6AEFOlvQa2tXR+6uvBRvoAXcjaVyOMcT+ElMgbqI7rhwuGQNDQ0y5cEau82sbDriJ5dFEOG9LWTQWpspotOMhzhxLzxc5ppNv9YRcyookeWbBaKaGG92E6JlK01gDmuZctiz/qJhaz1oVOo4HqN1aWarHDHs3a/Y/+jjFWSBkp3DNJ5pm/yiCJ6wE3YMHEQcYh6mAON0+WI84315q9a7WRbsPm5Qs3swprNEtOJH8AOROCiEMvxlnEMSBDu0ke9A9G7xc294Z6LPpXWtflhUXFS89kuy/n9x8VF6
+ s8/ELj+6
+ QPW2fCO0Eaca2DRBQdGwPnSExhMVnaUVHUXF9NZin7m2ADtHfAn3S36AvWGPb6S+B5uzCj5MVr6DmM51RGU1rCSIy4qGXUkSqnn/uRgTaEsDNKVBlJWuEsG3a47xVFjN+Gj6EgL4Q0JBdVpftWz8hVzFkP8tKKvRG/8mKQ9zDugT18zhFbchxIsiCheVPsmh0Xaqm/3IcqCR3l5eZjxTEKs88zt23GOY2BHs8HHcvvDXhubm+ZD0jTqYXyJ4TYBtXXyUmPXYU4rKh7eUzVwFno4asLdfb+yycl0sAcYalSvAo1cnmyPDkc0uxTQzm1R0hd4tGVPP0CZ3G3LVphg+kOUzWexqvo3KNgActMykMVyNZ9cM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,214 +136,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-02-26 14:32:06, Christian Brauner wrote:
-> Now that we've generalized the infrastructure for user.* xattrs make it
-> possible to set up to 128 user.* extended attributes on a sockfs inode
-> or up to 128kib. kernfs (cgroupfs) has the same limits and it has proven
-> to be quite sufficient for nearly all use-cases.
+On Mon 16-02-26 14:32:07, Christian Brauner wrote:
+> Allow user.* extended attributes on sockets by adding S_IFSOCK to the
+> xattr_permission() switch statement. Previously user.* xattrs were only
+> permitted on regular files and directories. Symlinks and special files
+> including sockets were rejected with -EPERM.
 > 
-> This will allow containers to label sockets and will e.g., be used by
-> systemd and Gnome to find various sockets in containers where
-> high-privilege or more complicated solutions aren't available.
+> Path-based AF_UNIX sockets have their inodes on the underlying
+> filesystem (e.g. tmpfs) which already supports user.* xattrs through
+> simple_xattrs. So for these the permission check was the only thing
+> missing.
+> 
+> For sockets in sockfs - everything created via socket() including
+> abstract namespace AF_UNIX sockets - the preceding patch added
+> simple_xattr storage with per-inode limits. With the permission check
+> lifted here these sockets can now store user.* xattrs as well.
+> 
+> This enables services to associate metadata with their sockets. For
+> example, a service using Varlink for IPC can label its socket with
+> user.varlink=1 allowing eBPF programs to selectively capture traffic
+> and tools to discover IPC entrypoints by enumerating bound sockets via
+> netlink. Similarly, protocol negotiation can be performed through xattrs
+> such as indicating RFC 5424 structured syslog support on /dev/log.
 > 
 > Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Looks good. Feel free to add:
+OK. Feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
 								Honza
 
 > ---
->  net/socket.c | 119 +++++++++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 92 insertions(+), 27 deletions(-)
+>  fs/xattr.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/net/socket.c b/net/socket.c
-> index 136b98c54fb3..7aa94fce7a8b 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -315,45 +315,70 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
->  
->  static struct kmem_cache *sock_inode_cachep __ro_after_init;
->  
-> +struct sockfs_inode {
-> +	struct simple_xattrs *xattrs;
-> +	struct simple_xattr_limits xattr_limits;
-> +	struct socket_alloc;
-> +};
-> +
-> +static struct sockfs_inode *SOCKFS_I(struct inode *inode)
-> +{
-> +	return container_of(inode, struct sockfs_inode, vfs_inode);
-> +}
-> +
->  static struct inode *sock_alloc_inode(struct super_block *sb)
->  {
-> -	struct socket_alloc *ei;
-> +	struct sockfs_inode *si;
->  
-> -	ei = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
-> -	if (!ei)
-> +	si = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
-> +	if (!si)
->  		return NULL;
-> -	init_waitqueue_head(&ei->socket.wq.wait);
-> -	ei->socket.wq.fasync_list = NULL;
-> -	ei->socket.wq.flags = 0;
-> +	si->xattrs = NULL;
-> +	simple_xattr_limits_init(&si->xattr_limits);
-> +
-> +	init_waitqueue_head(&si->socket.wq.wait);
-> +	si->socket.wq.fasync_list = NULL;
-> +	si->socket.wq.flags = 0;
-> +
-> +	si->socket.state = SS_UNCONNECTED;
-> +	si->socket.flags = 0;
-> +	si->socket.ops = NULL;
-> +	si->socket.sk = NULL;
-> +	si->socket.file = NULL;
->  
-> -	ei->socket.state = SS_UNCONNECTED;
-> -	ei->socket.flags = 0;
-> -	ei->socket.ops = NULL;
-> -	ei->socket.sk = NULL;
-> -	ei->socket.file = NULL;
-> +	return &si->vfs_inode;
-> +}
-> +
-> +static void sock_evict_inode(struct inode *inode)
-> +{
-> +	struct sockfs_inode *si = SOCKFS_I(inode);
-> +	struct simple_xattrs *xattrs = si->xattrs;
->  
-> -	return &ei->vfs_inode;
-> +	if (xattrs) {
-> +		simple_xattrs_free(xattrs, NULL);
-> +		kfree(xattrs);
-> +	}
-> +	clear_inode(inode);
->  }
->  
->  static void sock_free_inode(struct inode *inode)
->  {
-> -	struct socket_alloc *ei;
-> +	struct sockfs_inode *si = SOCKFS_I(inode);
->  
-> -	ei = container_of(inode, struct socket_alloc, vfs_inode);
-> -	kmem_cache_free(sock_inode_cachep, ei);
-> +	kmem_cache_free(sock_inode_cachep, si);
->  }
->  
->  static void init_once(void *foo)
->  {
-> -	struct socket_alloc *ei = (struct socket_alloc *)foo;
-> +	struct sockfs_inode *si = (struct sockfs_inode *)foo;
->  
-> -	inode_init_once(&ei->vfs_inode);
-> +	inode_init_once(&si->vfs_inode);
->  }
->  
->  static void init_inodecache(void)
->  {
->  	sock_inode_cachep = kmem_cache_create("sock_inode_cache",
-> -					      sizeof(struct socket_alloc),
-> +					      sizeof(struct sockfs_inode),
->  					      0,
->  					      (SLAB_HWCACHE_ALIGN |
->  					       SLAB_RECLAIM_ACCOUNT |
-> @@ -365,6 +390,7 @@ static void init_inodecache(void)
->  static const struct super_operations sockfs_ops = {
->  	.alloc_inode	= sock_alloc_inode,
->  	.free_inode	= sock_free_inode,
-> +	.evict_inode	= sock_evict_inode,
->  	.statfs		= simple_statfs,
->  };
->  
-> @@ -417,9 +443,48 @@ static const struct xattr_handler sockfs_security_xattr_handler = {
->  	.set = sockfs_security_xattr_set,
->  };
->  
-> +static int sockfs_user_xattr_get(const struct xattr_handler *handler,
-> +				 struct dentry *dentry, struct inode *inode,
-> +				 const char *suffix, void *value, size_t size)
-> +{
-> +	const char *name = xattr_full_name(handler, suffix);
-> +	struct simple_xattrs *xattrs;
-> +
-> +	xattrs = READ_ONCE(SOCKFS_I(inode)->xattrs);
-> +	if (!xattrs)
-> +		return -ENODATA;
-> +
-> +	return simple_xattr_get(xattrs, name, value, size);
-> +}
-> +
-> +static int sockfs_user_xattr_set(const struct xattr_handler *handler,
-> +				 struct mnt_idmap *idmap,
-> +				 struct dentry *dentry, struct inode *inode,
-> +				 const char *suffix, const void *value,
-> +				 size_t size, int flags)
-> +{
-> +	const char *name = xattr_full_name(handler, suffix);
-> +	struct sockfs_inode *si = SOCKFS_I(inode);
-> +	struct simple_xattrs *xattrs;
-> +
-> +	xattrs = simple_xattrs_lazy_alloc(&si->xattrs, value, flags);
-> +	if (IS_ERR_OR_NULL(xattrs))
-> +		return PTR_ERR(xattrs);
-> +
-> +	return simple_xattr_set_limited(xattrs, &si->xattr_limits,
-> +					name, value, size, flags);
-> +}
-> +
-> +static const struct xattr_handler sockfs_user_xattr_handler = {
-> +	.prefix = XATTR_USER_PREFIX,
-> +	.get = sockfs_user_xattr_get,
-> +	.set = sockfs_user_xattr_set,
-> +};
-> +
->  static const struct xattr_handler * const sockfs_xattr_handlers[] = {
->  	&sockfs_xattr_handler,
->  	&sockfs_security_xattr_handler,
-> +	&sockfs_user_xattr_handler,
->  	NULL
->  };
->  
-> @@ -572,26 +637,26 @@ EXPORT_SYMBOL(sockfd_lookup);
->  static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
->  				size_t size)
->  {
-> -	ssize_t len;
-> -	ssize_t used = 0;
-> +	struct sockfs_inode *si = SOCKFS_I(d_inode(dentry));
-> +	ssize_t len, used;
->  
-> -	len = security_inode_listsecurity(d_inode(dentry), buffer, size);
-> +	len = simple_xattr_list(d_inode(dentry), READ_ONCE(si->xattrs),
-> +				buffer, size);
->  	if (len < 0)
->  		return len;
-> -	used += len;
-> +
-> +	used = len;
->  	if (buffer) {
-> -		if (size < used)
-> -			return -ERANGE;
->  		buffer += len;
-> +		size -= len;
->  	}
->  
-> -	len = (XATTR_NAME_SOCKPROTONAME_LEN + 1);
-> +	len = XATTR_NAME_SOCKPROTONAME_LEN + 1;
->  	used += len;
->  	if (buffer) {
-> -		if (size < used)
-> +		if (size < len)
->  			return -ERANGE;
->  		memcpy(buffer, XATTR_NAME_SOCKPROTONAME, len);
-> -		buffer += len;
->  	}
->  
->  	return used;
+> diff --git a/fs/xattr.c b/fs/xattr.c
+> index 5e559b1c651f..09ecbaaa1660 100644
+> --- a/fs/xattr.c
+> +++ b/fs/xattr.c
+> @@ -163,6 +163,8 @@ xattr_permission(struct mnt_idmap *idmap, struct inode *inode,
+>  			if (inode_owner_or_capable(idmap, inode))
+>  				break;
+>  			return -EPERM;
+> +		case S_IFSOCK:
+> +			break;
+>  		default:
+>  			return xattr_permission_error(mask);
+>  		}
 > 
 > -- 
 > 2.47.3
