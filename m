@@ -4,157 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667AD104891D
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:36:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F8C104891E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:56:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A96EF6B00B7; Fri, 27 Feb 2026 17:36:18 -0500 (EST)
+	id EB0C86B00B0; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A455E6B00B8; Fri, 27 Feb 2026 17:36:18 -0500 (EST)
+	id E5E486B00B1; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FD136B00B9; Fri, 27 Feb 2026 17:36:18 -0500 (EST)
+	id D40576B00B3; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E74F6B00B7
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:36:18 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C14826B00B0
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:56:32 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 223D28C8CA
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:36:18 +0000 (UTC)
-X-FDA: 84491696436.17.87DA685
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0655A10000D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:36:15 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r6c75sIX;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772231776;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 749B68C872
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:56:32 +0000 (UTC)
+X-FDA: 84491747424.17.3352944
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 39B531C0002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:56:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TcMq55DD;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772232990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QNS9W6SZfyDIUc8hBvcmHVCCa8aXdEVnnS9qGJqvemc=;
-	b=g2KX/7DW5iaBjzfMNLQ6FS0n9jO3QfsD/koJOtc5F0oi1LU/OYtpXa0xaNF3Q64u1brkYG
-	37aKd3rwX6Cf/S5FwGfJS+q8dB1LkeNyzyw3sWc7eKQecmkNuPi6S8Q1EebBTZ1gxP3vuX
-	XqRDzvqTxXQkPWIC0GLMx0F55cC2f2c=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=r6c75sIX;
-	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772231776; a=rsa-sha256;
-	cv=pass;
-	b=bOUFEcGIvtxxdt+eThFPs67KcXxcbkvMo9ERE7cRvely/1r2585b2hSqiwNGaAOMm0pexG
-	zqwYP0G7+xf2TDFP78pnSZ2npZXHkxXpifvSGspfQtDFDwdbKzzVd58qsKLUOA1+VRCOM0
-	FV3eOE7/wydAyT7GjfEobCVkM4YHR7k=
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3870778358aso6250341fa.1
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:36:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772231774; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OGkb9fB79TiHsC2pnsL5QyFZ05GrF4lEDziRqa5bI93v72pCw8cx6v1nO5MROWovj0
-         SYNhYoNUbam8KtYzVh53ikdfbP3A2QdpKRVGwnsFGd9IeEbHV4H8D9eOSJD0SD0k9OzS
-         2Zf0ZLQzyA3URPAeFI/uK0QVolPFa632bGsZvyjJkuFFFWe4yhceTOiDZ7P3p6532D4O
-         t6iIppThHokauGYo2hPdmkjZX5zUOjxwVITVoXxrISFmVeIGEMZtXhcmBXKWFDGcqy6u
-         o5sQRIyinMnp/UxJijA1UpskbKZVJI8Y8gRVtmlexRN3l8wWXFpHHz0zM6QHFe4YmQwu
-         R5Lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QNS9W6SZfyDIUc8hBvcmHVCCa8aXdEVnnS9qGJqvemc=;
-        fh=HcqL3aTYBLe7cHEWm20J01sh9c83nVqfH33ltVRPslE=;
-        b=HVyJWJ3OnvfUG9bNsCfoxXKzQS8W0OyTT85QTbBi9e8kJbpAsIgnU8ylsfq78eH91n
-         1HIYommDMZYl8hHcSO0DbSPdJLi63EPPenuTDWs6/6Ay1eFnXpT0NKVyszhZq9eOeVkw
-         d/mLvFsDx/w4CSVp8YB5MTHGgwIYDT3Y5nVXGdfS7z/qz8kETNx9x2qYQLjneukGlet4
-         VL1oWIClaLb0k73/ZirjuTaXN1FOjiZxuCxyksALEFW2km9t9CXGKHA7MQD6kRx8knog
-         Wu6LjiqBFBoIkHW6OLJWJEYx1thNHJPzrCbyzcXSNAvtDJocQZj5mju2zBoB7pPCweaJ
-         /8nw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772231774; x=1772836574; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QNS9W6SZfyDIUc8hBvcmHVCCa8aXdEVnnS9qGJqvemc=;
-        b=r6c75sIXMGGBXcNNaTJxPhYGBAP6uR99rB0IL/ZDT1MkelWBWrmsV+upkS3OFxMjQI
-         oYhS6OoC4M+q2coiCC/AngRLhTSLq7+SBoE9J5GCFy0xvd9F0xDunpVyhAZ7POKxBWYy
-         p82m9oEAgksQQAptf/6UWOzb6nkpSmld4UVWMd569TnXDOmRgb/fHqy5YPUIhr1uXL3l
-         6N4LdOBJE5lxXJwyY6npOS3NMdx68NOh2kM/TgE/Na/UxKqC+yERci+FIAgt9JHIMNWb
-         dkg0eESel049S1Myp0rF+ULBLgIRI4MSJT1oKvDyCDfqMUM5sKbpbEx6404EXS8zxbqO
-         wN9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772231774; x=1772836574;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QNS9W6SZfyDIUc8hBvcmHVCCa8aXdEVnnS9qGJqvemc=;
-        b=Io4tumNAIAGbRMNhd8bSl+qOGM1ha18FC7xKZuaMNK48zujfhTkHGLIXjOYvU+0kap
-         /smCBRKF4bflaH3G0luw32bsFyAjPO/CMtZmTT2CdJqtel//YmEiyi3tKMe9Hzl2etuU
-         siWKnnPbo7v6AKoB0s2wlXX9VenXKFcIFv8FkiAEcXFyFjlaij458EgFKlljXlYs+SzJ
-         4avlhCFqSMWTG5oaA8LsWJU+x9CJYhQr46wtq4uqgMY0ux6zGrSMJ+PnBybY0OW8/ElR
-         kqFYqPSnWDMxprR9zJRmG1gMPaGzVkRnMENWWBIW15ZbTZqtn0qFRYjkX3yLBYHH6SyC
-         YJHg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9Rp3G1Kma9sS8Jlyh5iFipXBrVXx2Fm3jkbWrdTNzUQmgmZfSQ9c4+yORY2isJqdV1gCUz04uZw==@kvack.org
-X-Gm-Message-State: AOJu0YyIE+d0IG2J23fzzbGW+UkoqpL0JHST/hozYEze3SgS/7pvaQ/E
-	4QXOp8p46gdYTUUy9LucwzHyXOyP7IOhys2v28Oj/9vvVPmmshwp6ZMTmiuxhuA1UDdCzmTi+9w
-	Xrp6qLCdxlW40CKg7hYjMGM6+n9WuRf5d+qzdQFW+
-X-Gm-Gg: ATEYQzwAm/zLrA6wRILW1Io99qP/37Jq/7CaaY08rHP6Gg7BxgKwBkh9NYDuqWBNgZ6
-	1ygo2grJztr7dX4qclc3XpVWuKa9qtH+2bZ8EFGwdj5ogBiv6M9K4XglhhTnY/Sc0Kpe+oCZ+KX
-	sUvnSFPhn947XsBsTHu26dgguq7xmsBV7mbb7XnLWE6gFTnF+Q9azZbW9OjNCkZYXwVydWX5W+T
-	20a5KNzIeDlG6Tzds3Gm2xGt78DNPj2IOrYjiONIuzzQLoBki0wFsfwFMG66+A2kvS0O0KNhzaq
-	mdaQELw=
-X-Received: by 2002:a05:651c:150e:b0:384:9355:6a7e with SMTP id
- 38308e7fff4ca-389ff144dcdmr32194241fa.17.1772231773691; Fri, 27 Feb 2026
- 14:36:13 -0800 (PST)
+	bh=Ek0Mzv1UK8N335lH2nTWNZGMwjB+aFaxAFp5rFNMzKA=;
+	b=3e4YBknitvWx0rd0yWkwew8LNNtg4qKc5jg0FQH8r0f/hQXfFJf3h1CsqhxRvObAWdDPMb
+	qDViJTDn0xdMowt/ZdKaEvwW4kzBufFO4YFYv8tpllFx1pM2ABtxxwqHjNhS6GGRFuYbx6
+	+sYWE8JJQtTXlrfz56ROmw5NStWy7BQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772232990; a=rsa-sha256;
+	cv=none;
+	b=XtSGmVYRBLpbbfo5Ex/VtgOOBdSqSwENxrZ8dFhqm3ZT161qRVMbjWFxGtcMPd3v5H5b9Z
+	jSnYNzUHWbyiN8vCD0VuYr1ezEElC543b7aI8mjEBDRegvmiAibcu6SAdsSnwzz7PcQZJp
+	c5n1jT/1NXpX8nzQ4L8o54agl6XTeXk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=TcMq55DD;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772232988; x=1803768988;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=U0J17v32ksmWhx/78xpg+Nz3+Nk3kvxsdR51MuM0I70=;
+  b=TcMq55DDh+cgOXREF3+p4qhe7sIlANRLPYgehrcXHEqDdzYXdYsvz0sG
+   uJbtiukvFrEH4KayM480vsOBCuKotfRy3PACv+z9T8nx8VPzriPELNEMg
+   i+Px5o9Yy9kQ2pjE2OgMZWFy3c7vzwuspgKX95UzSwGSZJ/+e6+Nn5tKM
+   3nzm3Yyg13bRJn7P1JplcH6UrqSqgBMr9KtXnM2woFXH/FPKPY798VTLJ
+   ojJXzCCzxHBo1/VKTebicIkhVTy3p/c1o7rq62+51A2TM45j7BK8vU91t
+   LW1aEBCuQW3s5kvBkn2HgHLIpL0ve8+FgfIyi9fvf7igAPcLGzacniGwH
+   Q==;
+X-CSE-ConnectionGUID: og23EqtYSaqum6XScqwjhA==
+X-CSE-MsgGUID: cGeJQ3M0QUKGGNtaepiTvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="77190601"
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
+   d="scan'208";a="77190601"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 14:56:26 -0800
+X-CSE-ConnectionGUID: Gj8OruRNS5+rloaJ2M5xNw==
+X-CSE-MsgGUID: ehdBotFtTHOu+IA4PxmIIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; 
+   d="scan'208";a="221172735"
+Received: from lkp-server02.sh.intel.com (HELO a3936d6a266d) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 27 Feb 2026 14:56:19 -0800
+Received: from kbuild by a3936d6a266d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vw6kp-00000000B8V-2dsg;
+	Fri, 27 Feb 2026 22:56:15 +0000
+Date: Sat, 28 Feb 2026 06:56:15 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
+	Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
+	Kees Cook <kees@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>
+Subject: Re: [PATCH v6 23/30] arm64: kpkeys: Ensure the linear map can be
+ modified
+Message-ID: <202602280610.KQRFmbR3-lkp@intel.com>
+References: <20260227175518.3728055-24-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-References: <20260129212510.967611-3-dmatlack@google.com> <20260225224651.GA3711085@bhelgaas>
- <aZ-TrC8P0tLYhxXO@google.com> <20260227093233.45891424@shazbot.org>
- <CALzav=dxthSXYo13rOjY710uNbu=6UjzD-OJKm-Xt=wR7oc0mg@mail.gmail.com>
- <20260227112501.465e2a86@shazbot.org> <CALzav=egQgG-eHjrjpznGnyf-gpdErSUU_L8y82rbp5u=rQ83A@mail.gmail.com>
- <20260227152330.1b2b0ebb@shazbot.org>
-In-Reply-To: <20260227152330.1b2b0ebb@shazbot.org>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 27 Feb 2026 14:35:42 -0800
-X-Gm-Features: AaiRm50D90uQBM2OzGa-RA7PnZi6CheC4aDHB2jS6rwjE4obcECpnTV5MTFBKgA
-Message-ID: <CALzav=fq-3J4WFD-uNd5zJ_Fx2sHGv0vL+EtpV7WvGO8ddG5mw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/22] PCI: Add API to track PCI devices preserved
- across Live Update
-To: Alex Williamson <alex@shazbot.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0655A10000D
-X-Stat-Signature: f91husx9tf6zarud3u1tcic7fyjruk6s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227175518.3728055-24-kevin.brodsky@arm.com>
+X-Stat-Signature: 3kiswh8uwjwhkqpkf1xfeo6fwcb4fje1
 X-Rspam-User: 
-X-HE-Tag: 1772231775-699078
-X-HE-Meta: U2FsdGVkX1/BV3hTVAw8hvD+XJ88FlLFM0LitSthjRMtQcfPMhKE2WLDSp2Gs9lnEOtlGTmwuz4DmafiFS2TswiitCa2f4bMpBDZ/eeOH/nqJusqS1keM7m8SmQo/DgyzsE25X5eWsLTH3Tonm2gf/XiCttFE5zzx3P2Ui0xRpPwnShhQsnr+OGC7nbM7bBBYP6x++mJfrXZhg4KMyONFOb+ac2SIvEv9b9L7ORBU7FpDTNW6hKRqoX1s2Il5VdxzaGh/vV8ZdBl0t+zbf8q4+Bf4wHeNzX3XSgoC1/R3Evga4ycxNjI2oefNcYE61cQGZRLw+O8rwcf8uyi/0eBIt/hREPIyxpzYyGpOSRlI9fHeaX584RqCLFjKwjwIOX88ZJf2Y5SW/i+jggfmGO2DenrmIDDM6YFpw6oDuMyMo3LTSVlVTM8wiawX8hNRBdTLOqOoq1B3ASXXEu1p0dQKT/HlBLxOX++pr76xV+4RegzJnh5nV9CNkOsAGQfnvQlgzoje5br07yUbD1CSaJryqEhjhLvQZB1U4ir9zdNBfa3tZ/xpoWIHhAPWo/qR9CkpYi61yIGEdgL6FbOcbFpBjbNaZyHQvrL/0yWhSa0po0NgupYlUEWQ13bKflqKfCzazZJeuGy6lIXx7mO0ADgmfKC0u12GFVwDupzRFg/5BD8LIqLk0sHfC3f1sf8RZmjPbyCuac3lsbSyFIbKNoSbevx/z9Gm7uQ6/Ou8+h7/icveZ/pxH8JLFuhVh1FlU2WPSW2a8j2PxFrBoSY1NLeHWJ2z60cdk7sDwciRQCZh1PVoq79wR+wJQp32o5M+y9yczKvvNl1auH+giPICMYnG3Z/9+612H7tHQcuZk94OdVj5Zvb7LU7zV9QFtEz7DKYMaBf9unn/BijLbyo9d0WmXeLmOUpeq5sh5tzcg5K5+2emxL/M0rqzgKKApKi4UzZmVpBB089p9y4Sqyro8S
- KEDRhwVb
- E5oTEwT7MCOne9l5dErr8OJFNKbr2CTHu1LPugswmPZlcds/h3t1npbd8PkOog1HeXxCTAa51thOFyyovlksbqrqHaju9ouCjKG0WTOu6zCjApW5H++iuUGAaULgkv8KieDfs08GWaC53ALRCbQZAIR9DRng0rezsQP6VWgPHruonjmqvPKgDK4JFbjNYQOyFC6RMZR4qd5CblxcEFeToHD5TCFhAQeITcInp328/z/2crdZR/x7kSWuUsxsf9QpUab/LamW+U3tiS/OecL/jlnG2RGw/TDIp6e2bslXw7VWBNVanbtcKTHH8sdC6Mbi0Qx8V385TfoiS2/LnsJLqh/+Nano/GYaxhEWvLwVARF7IHCOOcEeKAQET/genyTrAm9UFrnkn6GixZct39X35Sf/ibg==
+X-Rspamd-Queue-Id: 39B531C0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772232987-436495
+X-HE-Meta: U2FsdGVkX19f6SYu0BUqFAdnIJhCTDzStRHVAhc97K6muvRWVFQPv9E9LAHmShL1+SxfWW4zvsFgKgqMgczgQqbtNxUp+wBBcVqMzOgRsME81wSQsqzOOFj4eMjS3tsPYCjvqDCYiwPFOHTmLnz/b2d2fNU2u9SiXs93j7BXLleLSWOZ9WDwHhw1LyfS3z2TmRoBljlnRUbylE5S7HkTz8doCJ7SqSLAaZ5nDRRLT1MMZJ4QS3yFAhfnruEZisQgsZJYhgbo94Xd6BvaE6lBQM3mVUt415womH7menmFdcT51q2/FE7dXCO11kyHw8NmTI8f8hcr1uEGHe03lERdIJzPnG8YyQdTbxfcYBq432WYAAvTc3joILPPwSK/uOnGLOBplT5S+8DD8U076HuXvpWkbeoI2wmsgzdHHqZwhglgs2ezYLAawT0iEE2lyvdknKNea5Y8Cq34G5fZIwZhpe25EsZRTTo5p0BzX4tAnPhopcrcRgwisI9TGzom5D5X/WcGdE05U59rZmVJQGguJwLTFDOjwvip+riaYqpsYLXUjS02tGDCE3pyfstoKE8AvT25BiQTsl2XOJT3dxWlbbMKq0BmJA34rFulHJNzc7g/KPiHLvimofyj0EsepVtb+0VPsTjv99E3tLgMF3Y0EIgPbXl4TnWyWSVo1Z+GXIE7sFpYZm5Oo/Dazr0qWIdbfLyEqbe9MfzJiOnPkK5+o1z8zQ02hTKI1E/TVJIdnhbQKyC4AMy4nMk5BvLIcwSQxClaJ/0LYDNEv/PgfLl4RKy/nFqccph77zIoGnW9kC3V5cdZb0sAdy8wc90/uDg6OQ8RJcLEj65bn1zyHQLi17Rte+GfZRnzvRKWLBL3J1rRdam/yBRMLRkg2Ucl8kC2CbPOiwB/SL+RXMlhsyFTWghzMRcd7/v3FW628HJWS7Z2z2FQV7R+D160gI6HuRhYYM/S5OlOZo6TCKfTQRO
+ hsAFcnqs
+ 2ZqYQ2hL8XgEg1g8FbgYQNQVqDHu7i4qH4rzFpldnr1Wz3dL42IzauYOuUIbJ+UI9BOL6TvbH0HNwMkweaFSH4H4uo/vGOK2zXcgKSLb+dzIrgrz1WYumqrIhyPDMYjyCaEYWEJqIdannfsaqz4Gg5RvSs6g+HXkL/cK+uiMnJcfUg7ZhKjfihDIDTFKhany0f0w7mqBFEeUycRkcDowAXNuVk17PTqRuSOq9mZEVerHTgEuqKvuuE2uRKbC3VcNzq3T88XSiUKAy2dQ0QDqaxF+ax64oVl8w5IE2dyX0D4vwQ+U0OaN0R/H64Ws6wzhv0p0tMCNDR1mPx6aPQNto00dMcbHT72j89/aMwxD+XDBgWvvWyzEbWogBqcxnrwNa19ik06gQHofLQWw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,144 +130,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 2:23=E2=80=AFPM Alex Williamson <alex@shazbot.org> =
-wrote:
->
-> On Fri, 27 Feb 2026 14:19:45 -0800
-> David Matlack <dmatlack@google.com> wrote:
->
-> > On Fri, Feb 27, 2026 at 10:25=E2=80=AFAM Alex Williamson <alex@shazbot.=
-org> wrote:
-> > >
-> > > On Fri, 27 Feb 2026 09:19:28 -0800
-> > > David Matlack <dmatlack@google.com> wrote:
-> > >
-> > > > On Fri, Feb 27, 2026 at 8:32=E2=80=AFAM Alex Williamson <alex@shazb=
-ot.org> wrote:
-> > > > >
-> > > > > On Thu, 26 Feb 2026 00:28:28 +0000
-> > > > > David Matlack <dmatlack@google.com> wrote:
-> > > > > > > > +static int pci_flb_preserve(struct liveupdate_flb_op_args =
-*args)
-> > > > > > > > +{
-> > > > > > > > + struct pci_dev *dev =3D NULL;
-> > > > > > > > + int max_nr_devices =3D 0;
-> > > > > > > > + struct pci_ser *ser;
-> > > > > > > > + unsigned long size;
-> > > > > > > > +
-> > > > > > > > + for_each_pci_dev(dev)
-> > > > > > > > +         max_nr_devices++;
-> > > > > > >
-> > > > > > > How is this protected against hotplug?
-> > > > > >
-> > > > > > Pranjal raised this as well. Here was my reply:
-> > > > > >
-> > > > > > .  Yes, it's possible to run out space to preserve devices if d=
-evices are
-> > > > > > .  hot-plugged and then preserved. But I think it's better to d=
-efer
-> > > > > > .  handling such a use-case exists (unless you see an obvious s=
-imple
-> > > > > > .  solution). So far I am not seeing preserving hot-plugged dev=
-ices
-> > > > > > .  across Live Update as a high priority use-case to support.
-> > > > > >
-> > > > > > I am going to add a comment here in the next revision to clarif=
-y that.
-> > > > > > I will also add a comment clarifying why this code doesn't both=
-er to
-> > > > > > account for VFs created after this call (preserving VFs are exp=
-licitly
-> > > > > > disallowed to be preserved in this patch since they require add=
-itional
-> > > > > > support).
-> > > > >
-> > > > > TBH, without SR-IOV support and some examples of in-kernel PF
-> > > > > preservation in support of vfio-pci VFs, it seems like this only
-> > > > > supports a very niche use case.
-> > > >
-> > > > The intent is to start by supporting a simple use-case and expand t=
-o
-> > > > more complex scenarios over time, including preserving VFs. Full GP=
-U
-> > > > passthrough is common at cloud providers so even non-VF preservatio=
-n
-> > > > support is valuable.
-> > > >
-> > > > > I expect the majority of vfio-pci
-> > > > > devices are VFs and I don't think we want to present a solution w=
-here
-> > > > > the requirement is to move the PF driver to userspace.
-> > > >
-> > > > JasonG recommended the upstream support for VF preservation be limi=
-ted
-> > > > to cases where the PF is also bound to VFIO:
-> > > >
-> > > >   https://lore.kernel.org/lkml/20251003120358.GL3195829@ziepe.ca/
-> > > >
-> > > > Within Google we have a way to support in-kernel PF drivers but we =
-are
-> > > > trying to focus on simpler use-cases first upstream.
-> > > >
-> > > > > It's not clear,
-> > > > > for example, how we can have vfio-pci variant drivers relying on
-> > > > > in-kernel channels to PF drivers to support migration in this mod=
-el.
-> > > >
-> > > > Agree this still needs to be fleshed out and designed. I think the
-> > > > roadmap will be something like:
-> > > >
-> > > >  1. Get non-VF preservation working end-to-end (device fully preser=
-ved
-> > > > and doing DMA continuously during Live Update).
-> > > >  2. Extend to support VF preservation where the PF is also bound to=
- vfio-pci.
-> > > >  3. (Maybe) Extend to support in-kernel PF drivers.
-> > > >
-> > > > This series is the first step of #1. I have line of sight to how #2
-> > > > could work since it's all VFIO.
-> > >
-> > > Without 3, does this become a mainstream feature?
-> >
-> > I do think there will be enough demand for (3) that it will be worth
-> > doing. But I also think ordering the steps this way makes sense from
-> > an iterative development point of view.
-> >
-> > > There's obviously a knee jerk reaction that moving PF drivers into
-> > > userspace is a means to circumvent the GPL that was evident at LPC,
-> > > even if the real reason is "in-kernel is hard".
-> > >
-> > > Related to that, there's also not much difference between a userspace
-> > > driver and an out-of-tree driver when it comes to adding in-kernel co=
-de
-> > > for their specific support requirements.  Therefore, unless migration=
- is
-> > > entirely accomplished via a shared dmabuf between PF and VF,
-> > > orchestrated through userspace, I'm not sure how we get to migration,
-> > > making KHO vs migration a binary choice.  I have trouble seeing how
-> > > that's a viable intermediate step.  Thanks,
-> >
-> > What do you mean by "migration" in this context?
->
-> Live migration support, it's the primary use case currently where we
-> have vfio-pci variant drivers on VFs communicating with in-kernel PF
-> drivers.  Thanks,
+Hi Kevin,
 
-I see so you're saying if those users wanted Live Update support and
-we didn't do (3), they would have to give up their Live Migration
-support. So that would be additional motivation to do (3).
+kernel test robot noticed the following build errors:
 
-Jason, does this change your mind about whether (3) is worth doing, or
-whether it should be prioritized over (2)?
+[auto build test ERROR on 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f]
 
-I think I still lean toward doing (2) before (3) since Live Update is
-most useful in setups that cannot support Live Migration. If you can
-support Live Migration, you have a reasonable way to update host
-software with minimal impact to the VM. Live Update really shines in
-scenarios where Live Migraiton is untenable, since host upgrades
-require VM terminations. In the limit, Live Update can have lower
-impact on the VM than Live Migration, since there is no state transfer
-across hosts. But Live Migration can enable more maintenance scenarios
-than Live Update (like HW maintenance, and firmware upgrades). So I
-think both are valuable to support.
+url:    https://github.com/intel-lab-lkp/linux/commits/Kevin-Brodsky/mm-Introduce-kpkeys/20260228-020115
+base:   6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+patch link:    https://lore.kernel.org/r/20260227175518.3728055-24-kevin.brodsky%40arm.com
+patch subject: [PATCH v6 23/30] arm64: kpkeys: Ensure the linear map can be modified
+config: arm64-randconfig-001-20260228 (https://download.01.org/0day-ci/archive/20260228/202602280610.KQRFmbR3-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9a109fbb6e184ec9bcce10615949f598f4c974a9)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260228/202602280610.KQRFmbR3-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602280610.KQRFmbR3-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/arm64/mm/pageattr.c:100:3: error: call to undeclared function 'arm64_supports_kpkeys_hardened_pgtables'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     100 |                 arm64_supports_kpkeys_hardened_pgtables();
+         |                 ^
+   1 error generated.
+--
+>> arch/arm64/mm/mmu.c:768:3: error: call to undeclared function 'arm64_supports_kpkeys_hardened_pgtables'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     768 |                 arm64_supports_kpkeys_hardened_pgtables();
+         |                 ^
+   1 error generated.
+
+
+vim +/arm64_supports_kpkeys_hardened_pgtables +100 arch/arm64/mm/pageattr.c
+
+    86	
+    87	bool can_set_direct_map(void)
+    88	{
+    89		/*
+    90		 * rodata_full, DEBUG_PAGEALLOC and a Realm guest all require linear
+    91		 * map to be mapped at page granularity, so that it is possible to
+    92		 * protect/unprotect single pages.
+    93		 *
+    94		 * KFENCE pool requires page-granular mapping if initialized late.
+    95		 *
+    96		 * Realms need to make pages shared/protected at page granularity.
+    97		 */
+    98		return rodata_full || debug_pagealloc_enabled() ||
+    99			arm64_kfence_can_set_direct_map() || is_realm_world() ||
+ > 100			arm64_supports_kpkeys_hardened_pgtables();
+   101	}
+   102	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
