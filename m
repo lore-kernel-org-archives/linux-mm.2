@@ -4,93 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C069FFD9E35
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 03:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890A3FD9E37
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 04:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06EA56B0088; Thu, 26 Feb 2026 22:32:01 -0500 (EST)
+	id 51F966B0005; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 018BB6B0089; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
+	id 4CD166B0088; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA8796B008A; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
+	id 3EC316B0089; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D27876B0088
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:32:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B6FE160468
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:32:00 +0000 (UTC)
-X-FDA: 84488812800.03.8260238
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 796EC1C0006
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:31:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=upLOXXJB;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 28A406B0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 984861C50D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:00:04 +0000 (UTC)
+X-FDA: 84488883528.10.FCE1E77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 02EDE180009
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:00:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J9Cq02MO;
+	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772163118;
+	s=arc-20220608; t=1772164803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nr4zyboFdAPQ3Cak33Bpk6ampsu5iWEcatVRj6UGzbk=;
-	b=6YehUGV/pDjC0pljyE+R4gw6XQFP7A1xV1IjgcEvLQkdOM2LT/ckalbNbpsVqMo339uJFf
-	R//nWjdVdrzO4TPJCLKiMk1k19/9jReJ1sbmW4Oc0CK2Eo2gNEZ7Dvbj37Up2McAu4WmUg
-	0LZgpjcbdJ5WS3w1ZCEmH9E215jZkfE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772163118; a=rsa-sha256;
-	cv=none;
-	b=Ma6whtfxyzb9+Bg8ytO1AwonOTMuAtNspy/rm971GB9fK6tpvah8SdkNvvyus7Zn67neUo
-	7XcU3xwwPGBrSq7j85mJQfc8Bgsh0LlI1HHr+ybPddnV0Pu0mluuvF1+xcKornCBxZ5m6C
-	27yC0pJj+eNusaWMsAvrB7npPv2h4XE=
+	bh=S3FkP0WT8e5gqrjQH8xDPr6L3o+0cqY44xbHAQlK6vQ=;
+	b=WgLuYMIwlx6q1pX7ehZv27mbSA9Ab5ciuoWl7LQnbRvOurhuHQO+97qBhZxcGWtNqf3PNU
+	bMzx3vBLj9YwiRy8ophxUGjeAmtUziQD34tXGHHl5VqihjM8mTVoIOtvD3ATLBANmmO1i5
+	VaN8un2GxLvmDx/nkI+T056sfs60R1c=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=upLOXXJB;
-	spf=pass (imf21.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772163116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nr4zyboFdAPQ3Cak33Bpk6ampsu5iWEcatVRj6UGzbk=;
-	b=upLOXXJB5UXrgeCQzrsGUxZEF1D3mrKy6Rj9kcUrj+82JPeXSw/miuAomPgutSLnzOce9l
-	d6n97fFDvsQpw27NUesDKBVP/e1Ra/v49rzBWLeDFaXtLPcDDe4KU0zKEfwkcXMdgvib2R
-	vl+2mbopA9te9KyKQuYniQDS8ShLqpE=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
-Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
- filesystem
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260227025548.2252380-1-yebin@huaweicloud.com>
-Date: Fri, 27 Feb 2026 11:31:14 +0800
-Cc: viro@zeniv.linux.org.uk,
- brauner@kernel.org,
- jack@suse.cz,
- linux-fsdevel@vger.kernel.org,
- akpm@linux-foundation.org,
- david@fromorbit.com,
- zhengqi.arch@bytedance.com,
- roman.gushchin@linux.dev,
- linux-mm@kvack.org,
- yebin10@huawei.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
-References: <20260227025548.2252380-1-yebin@huaweicloud.com>
-To: Ye Bin <yebin@huaweicloud.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 796EC1C0006
-X-Stat-Signature: fygphheo8j359jx4kd1jyamks3b9ecox
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J9Cq02MO;
+	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772164803; a=rsa-sha256;
+	cv=none;
+	b=yyMfcTr6roZmlSvjAw1vEZGyf0LlgYrDIK3aQObi9lNLKqy3O9J+QAEcGT9lC55fTCPCZ5
+	SibN5iX7mN2yq13WA69H+37bcRAswtTooq9fnoA5ropVCn85oekl9VF4dgYWAWXveSi4AY
+	J6CqrjzDYbwr5SKXteGEI2hQfAlY7p0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F6E660103;
+	Fri, 27 Feb 2026 04:00:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8791C19421;
+	Fri, 27 Feb 2026 04:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772164802;
+	bh=1+lZ0E55IZSnlIC8aQoz0il+erk4zax1IShpIXOWWWE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=J9Cq02MOZz927TYLviYPTRy5DWxNgVdrOf9xFcrbrc3tbBR/HmexUgcCuLgDKBEFJ
+	 +fVvEagzJ5cI4qpkKtOszq9KN2TTk4zzzp21aWa4I6Cg75eJ9crAHf1jbVOlYrFMRq
+	 wLSotxJBw1IDOBnYnCuoZK5g8jFd5fiSEwFgKARaeLt1hKb7GmTtQBKSpre2AAa0zA
+	 PQ/zh8rUizHBbH9dwVifUIHul0ZV5T/NgvOa5YTJP/s3AWEo2MIikVpbd+8JPoSPCA
+	 k9EzevIjsvieLAAJeTQPQ3876jMGtGk4CDtmDuIfOLuoE5D0f/uDs4s8h40WOfupoE
+	 fps+qgy5TlhOQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E9839310A2;
+	Fri, 27 Feb 2026 04:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177216480555.1965102.13851630546170350105.git-patchwork-notify@kernel.org>
+Date: Fri, 27 Feb 2026 04:00:05 +0000
+References: <20260224061424.11219-1-byungchul@sk.com>
+In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kernel_team@skhynix.com, harry.yoo@oracle.com, hawk@kernel.org,
+ andrew+netdev@lunn.ch, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, ziy@nvidia.com, willy@infradead.org,
+ toke@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, asml.silence@gmail.com, axboe@kernel.dk,
+ ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
+ almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk, ap420073@gmail.com,
+ dtatulea@nvidia.com, shivajikant@google.com, io-uring@vger.kernel.org
+X-Stat-Signature: 9y3kip7164p97s98jungfkxthxeqyqka
+X-Rspamd-Queue-Id: 02EDE180009
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-HE-Tag: 1772163118-361103
-X-HE-Meta: U2FsdGVkX1/KdVdhXk1Z+l9y59FGA3Zk/DYM9G4mXykKA5wfy8tclrDGHCCHCP/7f0Xu2AqhGrnjDgUrAKCxiJE0nbIzuk7jUbCg8YJObHszXmtJ/CQ5eNa8be4JgSTh8bpdZEd1Rs/rNQ8qpRc+G7M1zlY+c4O+JAhwtV8vyEbNi+8DJipP5dhbSoV7wnDHDkK0Y2kT9/Qk/jEr13SXvcQM35KNEpi0wdjPBqpn/gFWab8Snsa0JmG0gaobm44VMY0HD9GmEFlBCOj3RFI3RLTDWvfxksL5zem/UlyPUqs4pXtSc/zmsuauMK5n/E6IqCZPisLlb7LK9LftRQxguaAWq/v03WhAPIsNvDsdsBgG0veYTk/BMD/pMRidWbnwucfNZrJ/ahJzoWI11jIrd7dEtWLD+ryi+Nc9IWzk9iHrfHJ85i7GoIewrh59l09XcDv5jO2Q2fiMd1Oc2+SZ03JbrLfdIkV466QSoH44Sh08mCn2NbJDqgYzaL6JovLtYY50rR2WQyZsaqNcgjvlkJFlGsyDQNiubhvngAkl6lI7KZM8arqyYHS8rpOCJNJuSdBGCzobRbyceuqIJ4twUgAJhFjYx4fUPOya7eQNTK7MmAUCBnZffJ/zkGKEpYavYpKbyVOyTz7tVcuUc8eqpQg1FAV1FdausWGs9Bocu59SxYJsOnU4ts4OIjhOGR3AaNqrRNvCeCvQUMEJ8fTaufXuaS9FwBIYf9P0MoBQje1pvki0wX9H04nXes81njeT0A6QubcQHoUyD0tDruUa/sp3VUEcrlHCTFFA5onuYzvZTpG6IdqPfuogserGWWRKWmMaZKPbQnKAJqjjDyM/aAE2xcdxTcbiKCBLMlnLjAlfMRwy03sitYWroHgXHwFFK+KoODmLss7efNV9JWeR9WxcLLPy2AWfODuiEjgpQOzVSkerw5aCYtyy+PFGzXvWxpY2R2pWNQ2ql1op69z
- JU1EtIDK
- A4y704Eg7WWzoL3bCbL4E1MOpWuubC7rNqAGnSYwHx0S5y5UvbSBP1JDXOxaIQiaIYoSojjB3MX8ci9ZQQXC/649mADxnoIWCPu4/uxg1M1dAv4DvwhiF5c2D/arwJSNvi6iZedq6pzENYqUDv1TnY2tAIBbnyp09rhtd0sd0sRxQ6VUYjjH7IhlN0UHgYLnlU+E9sp6g/JfLwbIj4k2Oy3a/xBqiymObU9w9ap4gt+02uf+hq/fwjVFbz2jdV6zAVNnNaDxDJLpzGOgbXVFlmKQIF5XO+U5BIiQZTUDkrWpe4OCVSoW21kAuSc878Em+fK2+YuLpK1mlRwXUy7TMlP5ADjjEP9E45BmOgAsxQGfdm9ubJzrvFoBeCg==
+X-HE-Tag: 1772164802-743721
+X-HE-Meta: U2FsdGVkX180uGcxXvtaJi3x0SwrUeg9bDDRvZ7f89X27IJo1HXvqmv0mYXzmUIli8g43t24DVf+FVehfY+CqiEIK0Z2kwSZGCcnMtHvcAnLbtGnKOIv2fLCyNA59+7ab9+Wv8yeZK1L67CVC/2Y94U1H1cdXCYg3YBazUqaR/Q107yFMXIVfn4C68zrxtoZGiofpYC1tOAKdJBf2i39g22GV7fXp9GrcLweE8ipCMc1KeI+KlYJ7EjoIMCHhe5RXS+TI9DYz0yHKkUh9mDqQ3dWxCkFzZCP3Fuch4ge4WOgN8Akn7I4K5XttZRNMi6K1JWQtBs8ITsGu2D9LHPTFX/0o9kf4Lh1ooaxVSWJ4jirGtl5tpKX1GwoSTkq2nBFRUR0Gt/l96FNEXLii2iUwBgGGUE+jB2IR3K4/LOxQ1Iuy4NnaTlTDwM+sI/ix3YOgScXAsbQgSBwufY/9Wwfutx4YHSRNYESvfR4kcSw/bf8unqCjg/ufsfN5LE6zgq0qcEfOS2SzxMS3+oOCIGj2JESZkCRXJbyL8y2tyaoQmiiull7bn0eWmxBdw2g5m3Y/OcAR5lvqyOVrK+rRZHC18bzYCHFTAABQWpgntjQ//rCEAjuyS93DW9XSLdsubhD2CMCf3Z7eGs5YJxaHhrf9I4tBQXlQRIA6xJs4pyn6msovqcI4eWxbLT+fLSWNSTCGwZnTgL1gvad3Bz5D57k4/tkbTMRMtmwSnGbqG5SNZjYv3N8+QTVN+mSYiIch9ernkyIYwNDL4/vaYG0zsaPXgTWd/9jvlL4vO++PjnOI5w1UO7UMiAMC2JiUix6JQiG0cou66wnsqhCW0ZVyihWTfjmdmxvlkFCIzYxXLc4qYo08BsCs4Cu5SY3LdZxojYrL2qQnjD23oNOQmDSymlAOCq+1+p9LnnRT2ioZx716wIvqNtOiN72mAPqNJvKQuIzQGErDhAfhJwWPVdPg7P
+ F88IUOt3
+ FH0GjCgLRWXRqdQm7lewRLmNAvBhXsisgi0OzeieKG0jfj+/0jE/LAutn/OkRdc74/Jti8PCHdGqeuMlgc2dzK6dO/Zm8M7z102JtTyoXY2Mur90Ipm4EOCQUUVGOVNtfwWfTkVM6Q2LeUy3FXUhj7seF11TpuCNI+DGuGv42m2JCAFE4WyB2Nwwq0nrcmBc/DoRygI4fovYJYbNwTfqHT/mGpBEhxPUwiwj69Tyju5N4m/6gBlDWaVxk3c/iTayBf55AfD4YNANjt2Hd0JCk0G0lCWE9qJRbOoit3KxwjaL1BLojGAlVQCmUkIm5sXJNNvyOvfwBaAeMRxEnWFK0YIF1op/W/S9gDaAf6VqDpUbLqy+u95Ch8SmzWbPnxP+Js5GTfvds6fRfVGU47RhQWkwGvfAZgoD6K+2yZqT87sVfktVwbOxX1yh0M5PQgQTXo6Li7Ob5it11QeE+Vo6gbeCeIu61+PCb7PluI6Y5oRlPcTivNNnbFjGAH0I9XkbSFe4c6jgvAqt2X+8trCjEp03oyZBzF+hmScB33YZ0uTgYktc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,71 +102,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello:
 
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> On Feb 27, 2026, at 10:55, Ye Bin <yebin@huaweicloud.com> wrote:
->=20
-> From: Ye Bin <yebin10@huawei.com>
->=20
-> In order to better analyze the issue of file system uninstallation =
-caused
-> by kernel module opening files, it is necessary to perform dentry =
-recycling
-> on a single file system. But now, apart from global dentry recycling, =
-it is
-> not supported to do dentry recycling on a single file system =
-separately.
+On Tue, 24 Feb 2026 15:14:24 +0900 you wrote:
+> Now that the pp fields in net_iov have no users, remove them from
+> net_iov and clean up.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+> The original post was:
+> 
+> [...]
 
-Would shrinker-debugfs satisfy your needs (See =
-Documentation/admin-guide/mm/shrinker_debugfs.rst)?
+Here is the summary with links:
+  - [RESEND,net-next] netmem: remove the pp fields from net_iov
+    https://git.kernel.org/netdev/net-next/c/fd6dad4e1ae2
 
-Thanks,
-Muchun
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> This feature has usage scenarios in problem localization scenarios.At =
-the
-> same time, it also provides users with a slightly fine-grained
-> pagecache/entry recycling mechanism.
-> This patchset supports the recycling of pagecache/entry for individual =
-file
-> systems.
->=20
-> Diff v3 vs v2
-> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
-> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim =
-dentry/inode.
-> 2. Fixing compilation issues in specific architectures and =
-configurations.
->=20
-> Diff v2 vs v1:
-> 1. Fix possible live lock for shrink_icache_sb().
-> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
-> 3. Fix potential deadlocks as follows:
-> =
-https://lore.kernel.org/linux-fsdevel/00000000000098f75506153551a1@google.=
-com/
-> After some consideration, it was decided that this feature would =
-primarily
-> be used for debugging purposes. Instead of adding a new IOCTL command, =
-the
-> task_work mechanism was employed to address potential deadlock issues.
->=20
-> Ye Bin (3):
->  mm/vmscan: introduce drop_sb_dentry_inode() helper
->  sysctl: add support for drop_caches for individual filesystem
->  Documentation: add instructions for using 'drop_fs_caches sysctl'
->    sysctl
->=20
-> Documentation/admin-guide/sysctl/vm.rst |  44 +++++++++
-> fs/drop_caches.c                        | 125 ++++++++++++++++++++++++
-> include/linux/mm.h                      |   1 +
-> mm/internal.h                           |   3 +
-> mm/shrinker.c                           |   4 +-
-> mm/vmscan.c                             |  50 ++++++++++
-> 6 files changed, 225 insertions(+), 2 deletions(-)
->=20
-> --=20
-> 2.34.1
->=20
 
 
