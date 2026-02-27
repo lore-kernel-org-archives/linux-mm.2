@@ -4,94 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327D6FD5307
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 07:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E956FFD530D
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 08:02:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 456C36B0005; Fri, 27 Feb 2026 02:55:44 -0500 (EST)
+	id 1BBEE6B0005; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405EE6B0088; Fri, 27 Feb 2026 02:55:44 -0500 (EST)
+	id 189FA6B0088; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 303806B0089; Fri, 27 Feb 2026 02:55:44 -0500 (EST)
+	id 068846B0089; Fri, 27 Feb 2026 03:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B8F06B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:55:44 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9676D8BF2B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:55:43 +0000 (UTC)
-X-FDA: 84489477366.10.580A5F3
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F0F82A0007
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:55:38 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=LYhVInJ9;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D8E5E6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 03:02:46 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 64484595C5
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:02:46 +0000 (UTC)
+X-FDA: 84489495132.11.5EF5F00
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DCEC9160011
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 08:02:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=TfwXkisZ;
+	spf=pass (imf08.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772178942;
+	s=arc-20220608; t=1772179364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2QQxJgo2nTQ+Zw3Bf081QKEft/GBg6KAyskkWtN3Ze4=;
-	b=X7Ysb/RHNvAvF6M3J5BWwzNU+ESomqpk5uTtYps5L2qZ/qsitzY06mB2w+0/zOLwJpLI5z
-	45NZ8WrT/4XfEjVvhkvQwQOWMsqRhksBdBQk9d6yYxyjXi1oLhGe43wlz9z3tsmgsNNzlY
-	qozhvOVi5fQrit8l6WtU7EpN0FTp2pY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772178942; a=rsa-sha256;
-	cv=none;
-	b=Kvyvr8HCKSwyT8j5NcjWc0X6uwf4uGxuDRkSvgZ4+y1FKoYPAi06I9bqJHS6SSWhqAIA+h
-	olSNCkXIOUXDSB3IutpnTOoWHQmKxH2F3YY4fjtsu6Y0YAw4CkMmN7QYba/K3h4ZbdBBMs
-	uVnPj5HEpL5UEZ3GHClZNCSy2/PmH2I=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=il6r1vFMAYqm1JRXq9G41GUF0Xx8t8+WFnEYpvQ7ULE=;
+	b=O7rX76/cFsSUwN0sYjoOeO9IqW2H/tsdijnGzMNA9TpzCpJAVGxkp2OmT/Sp5olfB/p1pG
+	OFcE59eHXjER9L9iCdkqVGAkeTBBBVJnf0zp1/J7nbu/whldKM2RVviz+cW6rjOkn8OOVc
+	fi1d4MrlxFpTsRwClPP9ZKWalTzEYJ8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=LYhVInJ9;
-	spf=pass (imf15.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 61R7r4ij010189;
-	Fri, 27 Feb 2026 15:53:04 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4fMgXF4db3z2P5pqq;
-	Fri, 27 Feb 2026 15:52:13 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Fri, 27 Feb 2026 15:53:02 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang
-	<huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH] mm: bail out when the PMD has been set in bloom filter
-Date: Fri, 27 Feb 2026 15:52:50 +0800
-Message-ID: <20260227075250.1128175-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=TfwXkisZ;
+	spf=pass (imf08.hostedemail.com: domain of venkat88@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=venkat88@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772179364; a=rsa-sha256;
+	cv=none;
+	b=1UyhLbKL0Pb6QzlucQlh+NxjhwxY4Xtjnr+hnZvdmhX0qiH7lkFSP0INtgbADW6t0TGww6
+	F4yAc8aL2O9jH50Zzn2nvkl3RYKKb5PVuGjAr3SGesCu9l4hbn/rYRkIZ17c6JIs1KLawL
+	5DWeFXQFbFGlgcHu699H+PuhHncNMbU=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R3DveF2848171;
+	Fri, 27 Feb 2026 08:02:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=il6r1v
+	FMAYqm1JRXq9G41GUF0Xx8t8+WFnEYpvQ7ULE=; b=TfwXkisZYq7Ezmkhr2OdoI
+	VHJ2GKUpL/dThRjWS3qeDODJqaU5j/y9dIrQ3YHJjUtllEcfmDQu5z7frb9f/aTb
+	dBZ5CLfSS0hbt1qrUbTeKEktCiJ1KAhG22h2TxAYUF6BYKcTOPFZIlkq0vLm8Uir
+	7r2oPp4BI7eHORXSaeKoJq4AdlSRUAITYYZNdjrRKkbDiEv1PwJ+NzANAZMQOeDx
+	LZM8OgeNmWZdes4wPaww8VMNSZetyd+fydB+otUom7BZtuaxoVcH+hVUJHNKeJKX
+	KCN4b1X+9n284rvcvIKZMPoA1T/vFF2XZIoKuGrPITEk1l2XI2f5Gx9hg7ZKFubw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34cjkd1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Feb 2026 08:02:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61R7xVME027794;
+	Fri, 27 Feb 2026 08:02:36 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfsr28rm8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Feb 2026 08:02:36 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61R82ZTx51315058
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Feb 2026 08:02:35 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5FC34581C7;
+	Fri, 27 Feb 2026 08:02:35 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AFE3D581C1;
+	Fri, 27 Feb 2026 08:02:30 +0000 (GMT)
+Received: from [9.61.248.160] (unknown [9.61.248.160])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Feb 2026 08:02:30 +0000 (GMT)
+Message-ID: <dc88bc66-77ad-4762-80f6-18a1262d5355@linux.ibm.com>
+Date: Fri, 27 Feb 2026 13:32:29 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: a debug patch to investigate the issue further
+Content-Language: en-GB
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, ast@kernel.org, cgroups@vger.kernel.org,
+        cl@gentwo.org, hannes@cmpxchg.org, hao.li@linux.dev,
+        linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
+        rientjes@google.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+        surenb@google.com, vbabka@suse.cz
+References: <84492f08-04c2-485c-9a18-cdafd5a9c3e5@linux.ibm.com>
+ <20260227030733.9517-1-harry.yoo@oracle.com>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20260227030733.9517-1-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 61R7r4ij010189
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1772178797;
-	bh=2QQxJgo2nTQ+Zw3Bf081QKEft/GBg6KAyskkWtN3Ze4=;
-	h=From:To:Subject:Date;
-	b=LYhVInJ9Malc6NILuWxejbXJ5GxewAQlHfOA6+1Af3L7l6159yOr47zzBxe5MWJjU
-	 CUPiuazfvVR2c28Rx5zy+x+vjpDxxmYNy4+4xaztPl0NkxWdWDBgo20NMaHx2zI45Y
-	 VE7NnvUEtS80jNYhKoC0g/2azoRFSr/PBLGk9QIrBGkXtZv3nFM8TjDLPKxJy1mmq/
-	 fKbj3gKpZTZ8Fy592zo7Ft5iPlWgnsIYhGlvO2PJonP2l+a4Yqf2+PEqDf7HVqXJXJ
-	 n+0fr77rnZIqKMtk46WIzaLjozZ7lB0SjTZ02xFdoYDMG0daV9bz4IfUzflevvwxF3
-	 2LXaHN2DBR9Fg==
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F0F82A0007
-X-Stat-Signature: xujp5ztigi1sxut5s6r4w19h4hu6ofby
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA2NCBTYWx0ZWRfX++2rvsaEOQ5e
+ 2u5EC+ssmYQcYLx91j0h9yMhyED3FKdECyWbvri6YrGoCcdhSApEyONHFjR5TF9JyKC2MKvZUK5
+ W1COtaTP6gmH1YeTOZmywvdwdFE6zm6b1q0mPNEibPz8zjpe+Ysex6176gR4e2264wey6odJY8m
+ 1BaxW6lO+DtkSpMcP3j6TnmKo5WZYNVKvPf2xksfCrhYtkB9J3hKjPhLU2gA5IRYRJoQVz3X9Mx
+ RJQ5LG7WfPCoe8fMHnzUE6hs94moJ0PRdqsVFbn+eIoci88NNBS8WP7vlL1FAPTRrO+B7/SWn8D
+ W8sxZZNLtISwpLjrfys6XAcgDa15qWC5JOQ67p2zb4N+I/7IO0U3ahyKgVRaVXJQYzmJOB2e83f
+ tuLnkpVdAz5IRH+kZprU6Zdqatr9InD4V4narGTq4E7zWeOOR1BxiTjSrlszwcZ3RuW5YbB24G7
+ JHw1yY3hN1TxgC1aJxw==
+X-Proofpoint-ORIG-GUID: AY74pt8E8C9QDZvphaxTWzgiKXMr-to0
+X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=69a14f9d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=yPCof4ZbAAAA:8
+ a=j6Jcq4vt9KwSvEVgIq8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: wCspGPMxLyjdQvxmzDYg9d52jyYZ_-Fk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602270064
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DCEC9160011
+X-Stat-Signature: a43rjiswipprxxuc7zfy57hxq5jq175c
 X-Rspam-User: 
-X-HE-Tag: 1772178938-607212
-X-HE-Meta: U2FsdGVkX1/Fr3vWXKFeLwhMQXpmvf8UboCI3+U4Wp+cL7s+JyvnKUHnLxIq+zIwkKHiFU+BAJO/RQhvLDYtygvk/y5ufT5elFietaEyDQydoi1v2gQmVxLamhYbse27mmrTVWqszq3063NlIhc5/FvjkJaO3jAXjqjYCjNz+AUAZ3gztKVAI05atfgFvMG/ZXhIIb5RaNXc9nbXZRN0CkP8Pq+cQfZMOKJb03TY6CEYRhIAYAi9ueyyTr1s6dCNxWe78BclquJdsfN2xYHRxDuG8omjbrFPa7unL+28b+HXSGr85EgheK4rnLw7u4kWd8SCIQdFjEKzBp3l4e5ztlu5eN8e1iqHHYDjPs55f3t5Q0H20BYbRQu0UVA0RAQO1LGRWbKzZo9EYnmI7k75uAgQwDnN/K/v688EkoVP5qm5zx2uVhobHe4VdP/8G+7ZmoDfAwLO811jRLtGu3/FV1+Z0OJ9+d6ibmGOII7Mb9d60EbGrFhp77W4Psx1fkls3GURmhg96t/nbOQ7odjk/Ne67zkyv4gZpIVPlxs9EY3oUOTYenmakB0pXkWKhItpbL+JdkJELXxlCVKUDgABUFxxf5uEfpvd+Kv4hkPRLEfqLIMrE/P6onYEyvMalCegG77xPWK+vNS0lqyr63vGkfbgqFw70R6JGaz64rJNBLNJ/SzP7izxVMdrSGajfS2XAyMNxvHVhkrM6FYywBAqBqQS9BjdxYPjoy+rvZrlCB/2O860T8EF2BZQHPHWHKDS83ITA4iDsEe/oHjPZslEeAsiUXOufYZap1b292xvBlvm/9jtVFCv5OxteUc0ojHBZaR+eiNcg7LrmMCZ3Hj6uL46Jdec04RDHqauvFXAB1t52GA3pzCV8rhlvwdCFyN2CxEkgi+6TGRFAOiuMpRsoOvAJInPT6Ll+9uQJZiQOF+1QaIROMLlgVMrkXXFFYyMyOh+4t0dohEYZQMazoV
- HHjWphfW
- 3O4rzM3Tl6Hg0898ewKzsx33Rej1haDLARQEBSggDdZ8uHVdXiSvTBnHoc+W0K04yLqmC12BzVwHkqTtKBZ8l4XBVFEVRPf4F5eY85n02LHGtlEhFcQqjLYHy7zwEx/MYrpQ7DCkRJFWSmVZemdpHtDQg1tk0+cdYCLwMVeWyGvODPv4rdgdF7ZuyyQFBmShxahkWm5cOYzUYhCLBQOeg8AzJnnjRa86SCAr3JtgdvwDoVliInM0+V4g+8yy9Vk32fXTUEnDKg2E95Avy8hU/tr9/HYRFyd+JMY4AOm3iZbfOUAgj6kJL7HSsUqkCrVDZwlog1wP+lBpj60HUbSETSt/ibVfdGPHq9l0k
+X-HE-Tag: 1772179363-755941
+X-HE-Meta: U2FsdGVkX19+JTbAZDmH1diaZMZOpbNPh6QGuQgulHJJdpivxaf5QXjre3CPD/EQBNKuLddRv8NqtVf5VBYxbu6XdgJUwoMeg23HPyaP0dtK+I1NATqrDewIW5mKXnJwfskpS1o8rTgV80RnMTgoGgt04549qkBOFI++u7+Hd1+SUohIB8dwanGbk0gZthy7K/p/w9A5iTtHk+asGmFiaRP7QEahCBKzbRzkNxqZ0S84bBGy66OoEO8JmP83dTbW+a5q1t3y8Mdc6wMtBd3oxfJUQXBfKi/MCSC+HC9d4yQYP1TRVISGfFedZf0r04B4eDkRZJYQO1SFKiZyybBNTUVyBpRytgeUUOwDpg0hVxnVES77GKdNEEx4JJfNnf/LEv1k9PzQPodFZnXECq8Jxvq0Idf0pYRUThmIk8xGCZRtYWfYePlTcz1FBmWTCzXCelVVbG+whRARhneC12WpxTf3yxM4rpQD8Vlq1xMIgXv11DtEymkJFjwUm8+x6Kukh/5pyQ+SZCy7mUOvFCeUWcGoW68c6x2/d/4KlBL9lZ0gaHz8EPAF2gouXB2vhaCpGrCUS0yyV/zjkq1i69/g6pC1EQ0zsdLoG4AmrVL5TloiYehmMTEuFJ+L0XiitzioEZll91HxBvm9G0IQqnWEmVpXCtKn/IkQfPR6hhCY7/C6Cmb048DtGBo9b9Ynm+Z74YqNU1JWd/Ue4heCkHMTqzptuYjeWLLiipAJwmMninj+XPa6T9gpe+iKsyqnfLAAENI/FnflgRhIE3sA94Wwlbulky3Aw3NYlia3aiySLhSPQyKnpelq2Z6cG9vNGMKppfw3030pXwnZDAhuxZE3i2CfTtcdaKwdkXbREPEHKqNROi5kECx3UcTGVRht0W7+RLN+jngW/+308+7wsxsuyyntyncm8tLG/WfWRBfmP28JHPR1TObgWvLkAci6c30b+x9KODvhKzEQgo0Qzb0
+ Qcs5J/nF
+ A+vQL29V3PmYw29JppWsGYIHPAzr2SbpuDhqZ34mOWKSbW1gHe0vjVYWwa9ee78c9pteb9tC/dA73MiSGpusp1jjAuoIoVQ+IAC2ldDcQ+DJ+ZeJ804lWIRGmxX7dPGir2mCo3EoOoQ7w94eYhnHr9j4qQRgF8fH7UxDiDfweNgSdKX7mqMsZjHwuAC2DY1F1zSRJiqBfTEhNLO8EJc4bSLnjfaJ5vl52T4kCyyrPo2NTR7CdtYF7q9avx0O5yRZMJjB+J8iAq6ukzcTTY5rbtABZcTKE2cblYX3wlPsBuzoP//M+XC6zgF1exMvJ39lWvLbw9RBeltRJYQ23PQzvLuHIUQgmrkx2Betx7y12xF9uiwLpThlDcAYF0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,38 +145,415 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-There are two reasons to have the recorded PMD bail out from doing
-the following iteration
-1. It is worth of doing such a trade off thing in terms of reclaiming
-efficiency as test_bloom_filter only consume 20~30 instructions in modern
-processors(25 instructions in ARM64).
-2. The PMD needs to accumulate young pages until aging happens while the
-new arrived folio reference checking under current max_seq refuse to do so
-which will affect carrying hot PMDs to new generation.
+On 27/02/26 8:37 am, Harry Yoo wrote:
+> Hi Venkat, could you please help testing this patch and
+> check if it hits any warning? It's based on v7.0-rc1 tag.
+>
+> This (hopefully) should give us more information
+> that would help debugging the issue.
+>
+> 1. set stride early in alloc_slab_obj_exts_early()
+> 2. move some obj_exts helpers to slab.h
+> 3. in slab_obj_ext(), check three things:
+>     3-1. is the obj_ext address is the right one for this object?
+>     3-2. does the obj_ext address change after smp_rmb()?
+>     3-3. does obj_ext->objcg change after smp_rmb()?
+>
+> No smp_wmb() is used, intentionally.
+>
+> It is expected that the issue will still reproduce.
+>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- mm/vmscan.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 9d900be478ea..e50e98291d0d 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4227,6 +4227,10 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
- 	/* avoid taking the LRU lock under the PTL when possible */
- 	walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
- 
-+	/* may the pmd has been set in bloom filter */
-+	if (test_bloom_filter(mm_state, max_seq, pvmw->pmd))
-+		return true;
-+
- 	start = max(addr & PMD_MASK, vma->vm_start);
- 	end = min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
- 
--- 
-2.25.1
+Hello Harry,
 
+I’ve restarted the test, but there are continuous warning prints in the 
+logs, and they appear to be slowing down the test run significantly.
+
+
+Warnings:
+
+[ 3215.419760] obj_ext in object
+[ 3215.419774] WARNING: mm/slab.h:710 at slab_obj_ext+0x2e0/0x338, 
+CPU#26: grep/103571
+[ 3215.419783] Modules linked in: xfs loop dm_mod bonding tls rfkill 
+nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet 
+nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat 
+nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables nfnetlink 
+sunrpc pseries_rng vmx_crypto dax_pmem fuse ext4 crc16 mbcache jbd2 
+sd_mod nd_pmem sg papr_scm libnvdimm ibmvscsi ibmveth scsi_transport_srp 
+pseries_wdt
+[ 3215.419852] CPU: 26 UID: 0 PID: 103571 Comm: grep Kdump: loaded 
+Tainted: G        W           7.0.0-rc1+ #3 PREEMPTLAZY
+[ 3215.419859] Tainted: [W]=WARN
+[ 3215.419862] Hardware name: IBM,9080-HEX Power11 (architected) 
+0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+[ 3215.419866] NIP:  c0000000008a9ff4 LR: c0000000008a9ff0 CTR: 
+0000000000000000
+[ 3215.419870] REGS: c0000001f9d37670 TRAP: 0700   Tainted: G   W        
+     (7.0.0-rc1+)
+[ 3215.419874] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
+24002404  XER: 20040000
+[ 3215.419889] CFAR: c0000000001bc194 IRQMASK: 0
+[ 3215.419889] GPR00: c0000000008a9ff0 c0000001f9d37910 c00000000243a500 
+c000000127e8d600
+[ 3215.419889] GPR04: 0000000000000004 0000000000000001 c0000000001bc164 
+0000000000000001
+[ 3215.419889] GPR08: a80e000000000000 0000000000000000 0000000000000007 
+a80e000000000000
+[ 3215.419889] GPR12: c00e0001a1a48fb2 c000000d0dde7f00 c000000004e49960 
+0000000000000001
+[ 3215.419889] GPR16: c00000006e6e0000 0000000000000010 c000000007017fa0 
+c000000007017fa4
+[ 3215.419889] GPR20: 0000000000000001 c000000007017f88 0000000000080000 
+c000000007017f80
+[ 3215.419889] GPR24: c00000006e6f0010 c0000000aef32800 c00c0000001b9a2c 
+c00000006e690010
+[ 3215.419889] GPR28: 0000000000000003 0000000000080020 c00000006e690010 
+c00c0000001b9a00
+[ 3215.419960] NIP [c0000000008a9ff4] slab_obj_ext+0x2e0/0x338
+[ 3215.419966] LR [c0000000008a9ff0] slab_obj_ext+0x2dc/0x338
+[ 3215.419972] Call Trace:
+[ 3215.419975] [c0000001f9d37910] [c0000000008a9ff0] 
+slab_obj_ext+0x2dc/0x338 (unreliable)
+[ 3215.419983] [c0000001f9d379c0] [c0000000008b9a64] 
+__memcg_slab_free_hook+0x1a4/0x3dc
+[ 3215.419990] [c0000001f9d37a90] [c0000000007f8270] kfree+0x454/0x600
+[ 3215.419998] [c0000001f9d37b20] [c000000000989724] 
+seq_release_private+0x98/0xd4
+[ 3215.420005] [c0000001f9d37b60] [c000000000a7adb4] 
+proc_map_release+0xa4/0xe0
+[ 3215.420012] [c0000001f9d37ba0] [c00000000091edf0] __fput+0x1e8/0x5cc
+[ 3215.420019] [c0000001f9d37c20] [c000000000915670] sys_close+0x74/0xd0
+[ 3215.420025] [c0000001f9d37c50] [c00000000003aeb0] 
+system_call_exception+0x1e0/0x4b0
+[ 3215.420033] [c0000001f9d37e50] [c00000000000d05c] 
+system_call_vectored_common+0x15c/0x2ec
+[ 3215.420041] ---- interrupt: 3000 at 0x7fff9bd34ab4
+[ 3215.420045] NIP:  00007fff9bd34ab4 LR: 00007fff9bd34ab4 CTR: 
+0000000000000000
+[ 3215.420050] REGS: c0000001f9d37e80 TRAP: 3000   Tainted: G   W        
+     (7.0.0-rc1+)
+[ 3215.420054] MSR:  800000000280f033 
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44002402  XER: 00000000
+[ 3215.420077] IRQMASK: 0
+[ 3215.420077] GPR00: 0000000000000006 00007fffe2939800 00007fff9bf37f00 
+0000000000000003
+[ 3215.420077] GPR04: 00007fff9bfe077f 000000000000f881 00007fffe2939820 
+000000000000f881
+[ 3215.420077] GPR08: 000000000000077f 0000000000000000 0000000000000000 
+0000000000000000
+[ 3215.420077] GPR12: 0000000000000000 00007fff9c0ab0e0 0000000000000000 
+0000000000000000
+[ 3215.420077] GPR16: 0000000000000000 00000001235700f0 0000000000000100 
+0000000000000001
+[ 3215.420077] GPR20: 00000000ffffffff 00000001235702ef 0000000000000000 
+fffffffffffffffd
+[ 3215.420077] GPR24: 00007fffe2939890 0000000000000000 00007fffe2939978 
+00007fff9bf12a88
+[ 3215.420077] GPR28: 00007fffe2939974 0000000000010000 0000000000000003 
+0000000000010000
+[ 3215.420144] NIP [00007fff9bd34ab4] 0x7fff9bd34ab4
+[ 3215.420148] LR [00007fff9bd34ab4] 0x7fff9bd34ab4
+[ 3215.420151] ---- interrupt: 3000
+[ 3215.420154] Code: 4e800020 60000000 60000000 7f18e1d6 7b180020 
+7f18f214 7c3bc000 4182febc 3c62ff7a 386336c0 4b9120a9 60000000 
+<0fe00000> eac10060 4bffff58 3d200001
+[ 3215.420183] ---[ end trace 0000000000000000 ]---
+
+Regards,
+
+Venkat.
+
+> ---
+>   mm/slab.h | 131 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>   mm/slub.c | 100 ++---------------------------------------
+>   2 files changed, 130 insertions(+), 101 deletions(-)
+>
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 71c7261bf822..d1e44cd01ea1 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -578,6 +578,101 @@ static inline unsigned short slab_get_stride(struct slab *slab)
+>   }
+>   #endif
+>   
+> +#ifdef CONFIG_SLAB_OBJ_EXT
+> +
+> +/*
+> + * Check if memory cgroup or memory allocation profiling is enabled.
+> + * If enabled, SLUB tries to reduce memory overhead of accounting
+> + * slab objects. If neither is enabled when this function is called,
+> + * the optimization is simply skipped to avoid affecting caches that do not
+> + * need slabobj_ext metadata.
+> + *
+> + * However, this may disable optimization when memory cgroup or memory
+> + * allocation profiling is used, but slabs are created too early
+> + * even before those subsystems are initialized.
+> + */
+> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> +{
+> +	if (s->flags & SLAB_NO_OBJ_EXT)
+> +		return false;
+> +
+> +	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
+> +		return true;
+> +
+> +	if (mem_alloc_profiling_enabled())
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> +{
+> +	return sizeof(struct slabobj_ext) * slab->objects;
+> +}
+> +
+> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> +						    struct slab *slab)
+> +{
+> +	unsigned long objext_offset;
+> +
+> +	objext_offset = s->size * slab->objects;
+> +	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
+> +	return objext_offset;
+> +}
+> +
+> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> +						     struct slab *slab)
+> +{
+> +	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
+> +	unsigned long objext_size = obj_exts_size_in_slab(slab);
+> +
+> +	return objext_offset + objext_size <= slab_size(slab);
+> +}
+> +
+> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	unsigned long obj_exts;
+> +	unsigned long start;
+> +	unsigned long end;
+> +
+> +	obj_exts = slab_obj_exts(slab);
+> +	if (!obj_exts)
+> +		return false;
+> +
+> +	start = (unsigned long)slab_address(slab);
+> +	end = start + slab_size(slab);
+> +	return (obj_exts >= start) && (obj_exts < end);
+> +}
+> +#else
+> +static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> +						    struct slab *slab)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> +						     struct slab *slab)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> +{
+> +	return false;
+> +}
+> +
+> +#endif
+> +
+>   /*
+>    * slab_obj_ext - get the pointer to the slab object extension metadata
+>    * associated with an object in a slab.
+> @@ -592,13 +687,41 @@ static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+>   					       unsigned long obj_exts,
+>   					       unsigned int index)
+>   {
+> -	struct slabobj_ext *obj_ext;
+> +	struct slabobj_ext *ext_before;
+> +	struct slabobj_ext *ext_after;
+> +	struct obj_cgroup *objcg_before;
+> +	struct obj_cgroup *objcg_after;
+>   
+>   	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
+>   
+> -	obj_ext = (struct slabobj_ext *)(obj_exts +
+> -					 slab_get_stride(slab) * index);
+> -	return kasan_reset_tag(obj_ext);
+> +	ext_before = (struct slabobj_ext *)(obj_exts +
+> +					    slab_get_stride(slab) * index);
+> +	objcg_before = ext_before->objcg;
+> +	// re-read things after rmb
+> +	smp_rmb();
+> +	// is ext_before the right obj_ext for this object?
+> +	if (obj_exts_in_slab(slab->slab_cache, slab)) {
+> +		struct kmem_cache *s = slab->slab_cache;
+> +
+> +		if (obj_exts_fit_within_slab_leftover(s, slab))
+> +			WARN(ext_before != (struct slabobj_ext *)(obj_exts + sizeof(struct slabobj_ext) * index),
+> +			     "obj_exts array in leftover");
+> +		else
+> +			WARN(ext_before != (struct slabobj_ext *)(obj_exts + s->size * index),
+> +			     "obj_ext in object");
+> +
+> +	} else {
+> +		WARN(ext_before != (struct slabobj_ext *)(obj_exts + sizeof(struct slabobj_ext) * index),
+> +		     "obj_exts array allocated from slab");
+> +	}
+> +
+> +	ext_after = (struct slabobj_ext *)(obj_exts +
+> +					   slab_get_stride(slab) * index);
+> +	objcg_after = ext_after->objcg;
+> +
+> +	WARN(ext_before != ext_after, "obj_ext pointer has changed");
+> +	WARN(objcg_before != objcg_after, "obj_ext->objcg has changed");
+> +	return kasan_reset_tag(ext_before);
+>   }
+>   
+>   int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 862642c165ed..8eb64534370e 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -757,101 +757,6 @@ static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+>   	return *(unsigned long *)p;
+>   }
+>   
+> -#ifdef CONFIG_SLAB_OBJ_EXT
+> -
+> -/*
+> - * Check if memory cgroup or memory allocation profiling is enabled.
+> - * If enabled, SLUB tries to reduce memory overhead of accounting
+> - * slab objects. If neither is enabled when this function is called,
+> - * the optimization is simply skipped to avoid affecting caches that do not
+> - * need slabobj_ext metadata.
+> - *
+> - * However, this may disable optimization when memory cgroup or memory
+> - * allocation profiling is used, but slabs are created too early
+> - * even before those subsystems are initialized.
+> - */
+> -static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> -{
+> -	if (s->flags & SLAB_NO_OBJ_EXT)
+> -		return false;
+> -
+> -	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
+> -		return true;
+> -
+> -	if (mem_alloc_profiling_enabled())
+> -		return true;
+> -
+> -	return false;
+> -}
+> -
+> -static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> -{
+> -	return sizeof(struct slabobj_ext) * slab->objects;
+> -}
+> -
+> -static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> -						    struct slab *slab)
+> -{
+> -	unsigned long objext_offset;
+> -
+> -	objext_offset = s->size * slab->objects;
+> -	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
+> -	return objext_offset;
+> -}
+> -
+> -static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> -						     struct slab *slab)
+> -{
+> -	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
+> -	unsigned long objext_size = obj_exts_size_in_slab(slab);
+> -
+> -	return objext_offset + objext_size <= slab_size(slab);
+> -}
+> -
+> -static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> -{
+> -	unsigned long obj_exts;
+> -	unsigned long start;
+> -	unsigned long end;
+> -
+> -	obj_exts = slab_obj_exts(slab);
+> -	if (!obj_exts)
+> -		return false;
+> -
+> -	start = (unsigned long)slab_address(slab);
+> -	end = start + slab_size(slab);
+> -	return (obj_exts >= start) && (obj_exts < end);
+> -}
+> -#else
+> -static inline bool need_slab_obj_exts(struct kmem_cache *s)
+> -{
+> -	return false;
+> -}
+> -
+> -static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
+> -						    struct slab *slab)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+> -						     struct slab *slab)
+> -{
+> -	return false;
+> -}
+> -
+> -static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+> -{
+> -	return false;
+> -}
+> -
+> -#endif
+> -
+>   #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+>   static bool obj_exts_in_object(struct kmem_cache *s, struct slab *slab)
+>   {
+> @@ -2196,7 +2101,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>   retry:
+>   	old_exts = READ_ONCE(slab->obj_exts);
+>   	handle_failed_objexts_alloc(old_exts, vec, objects);
+> -	slab_set_stride(slab, sizeof(struct slabobj_ext));
+>   
+>   	if (new_slab) {
+>   		/*
+> @@ -2272,6 +2176,9 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+>   	void *addr;
+>   	unsigned long obj_exts;
+>   
+> +	/* Initialize stride early to avoid memory ordering issues */
+> +	slab_set_stride(slab, sizeof(struct slabobj_ext));
+> +
+>   	if (!need_slab_obj_exts(s))
+>   		return;
+>   
+> @@ -2288,7 +2195,6 @@ static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
+>   		obj_exts |= MEMCG_DATA_OBJEXTS;
+>   #endif
+>   		slab->obj_exts = obj_exts;
+> -		slab_set_stride(slab, sizeof(struct slabobj_ext));
+>   	} else if (s->flags & SLAB_OBJ_EXT_IN_OBJ) {
+>   		unsigned int offset = obj_exts_offset_in_object(s);
+>   
 
