@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BBA6103FF85
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 21:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2257C104891E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 22:16:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 759AB6B00CE; Fri, 27 Feb 2026 16:30:04 -0500 (EST)
+	id E9E7B6B00B9; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71AA96B00D0; Fri, 27 Feb 2026 16:30:04 -0500 (EST)
+	id E4C426B00BA; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62A666B00D1; Fri, 27 Feb 2026 16:30:04 -0500 (EST)
+	id D4B906B00BB; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E4026B00CE
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:30:04 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB707C2CDC
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 21:30:03 +0000 (UTC)
-X-FDA: 84491529486.03.FEF2BB7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 560BA40004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 21:30:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tsQtuSWO;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C1A246B00B9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:16:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1CA761B83C5
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:16:18 +0000 (UTC)
+X-FDA: 84491646036.09.7993CDD
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9F7484000D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 22:16:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=h0Jo5g9c;
+	spf=pass (imf17.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772227802;
+	s=arc-20220608; t=1772230576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=ULqTZdB0/nGOoIg6KszlUOBrfXiR0UHDwkyJvGZOfck=;
-	b=TZBnPlND7CMguMp3pUnOZ16IXqc0/+zaqu+A/Y5TWahJXB6GDqmrOg28MyOCe2MP9vlW1Q
-	SH89j02yPtEsfqi4cUKHOL0xx9Kxomgb6HAMdBTfNOIlwwogGTrC7Y0Rqg+I3oN9oHOfY2
-	C4GfcEAihD2ZuH1ddWI6k1m2D/G4FuA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772227802; a=rsa-sha256;
+	bh=pZgn6EROfNCTDjJXVBWH85Hc5zFSfKEyA5xUTLk80M8=;
+	b=Z5cjii7n57Yovx+oSCsXREF404Q5ASBzCVdXoy1ZwBwMFHegaPq4YOIYdOB3DhAo91qiDt
+	vmxxd4jdUeT1APCfV5NttEjBRGr9deTfrl/iRmcOOHzmvm9w+Rb9TXO82zUgvKbpZAkoZp
+	8iGV/u8nmZHKq9pwA4s3k93hvaaMFG0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772230576; a=rsa-sha256;
 	cv=none;
-	b=fMeHtC4z0G8wiO2ypZAmb50OYEN/LY0zSUa5NiqX3PWvQ5as1BAMTIwLWKf850sxslfTek
-	kZ2B68sEJJ94C6iION0tD6pXqfAQCnKNy+xuThXeUQ8Upq13yjIdAshCdCMhu+b7tEL934
-	BZ5q3hbT1P6E4sjFZFv3487NFfQzCpY=
+	b=0N5N0G8qJJ4+2JKa4wUzJwWiJQqkSiHQswdxQnqxPgpdeJqx7BNKgH4VdL023e8hqPTwQS
+	HsFGKaL8v1fLfRh+cczPb6S/lbIPxO17M1E6wmwVNchS5cLzG1QhfTT6DzFxdJBFTnhOhq
+	z62IRej28lW5DLz25BXefDHIy7U1+kA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tsQtuSWO;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9A5860054;
-	Fri, 27 Feb 2026 21:30:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E84C116C6;
-	Fri, 27 Feb 2026 21:29:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772227801;
-	bh=zVjBpLnJja3QRANNRPRIoj7Orn3a8Dd4CBkiZNiAtU8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tsQtuSWOQfT0oEOWSDSDL+itRJ8xcnqx/gR3rTblUm3Vc5/VBwRmGWBRQ1eVGVfE/
-	 qrbf2SwGka7Z2SRQPq4jZC2HcPiyUDXG5I62FXkf5ec8RltuD2FoqkfIzcxlWE0wSj
-	 Ekc4SASh/4ilFk/4CuCYCp+eJ2xvdV+f75hOWiSdoNvhggvySmV3q+qfC9EvtB9N/v
-	 Uac0Y0r/TlouoT5nSr9xaKMhYvFKV1zN3TjxqQ4FvG2GY6hZrdl9+MDTSMBsCKoC4X
-	 VFgKPKY1BujCfDmZ0W3UXFqWrwHUbq2weAec1YtVFAqFbV2afDG1qOuVk88bBWkQUd
-	 /RmkfrhslNTIA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: [PATCH v1] mm/pagewalk: drop FW_MIGRATION
-Date: Fri, 27 Feb 2026 22:29:52 +0100
-Message-ID: <20260227212952.190691-1-david@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	imf17.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=h0Jo5g9c;
+	spf=pass (imf17.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 68D64267A1;
+	Fri, 27 Feb 2026 23:16:13 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id MmUHzmlSBhrO; Fri, 27 Feb 2026 23:16:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1772230572; bh=M1kB3xBO0gGt9Cq4a3VvzqYU8hJTnWIcMiuRFk/Dh4g=;
+	h=From:To:Cc:Subject:Date;
+	b=h0Jo5g9cRVnkUCNWUnuwgH/XGHTH4M2x8kSFlCE1lBYpa9pQ9KW6cKtOz7e42XAw0
+	 T/3mHdSmWuZYbBDjyTc0jPv1Z/evHjq1hq72/vS61a68xdVPAPqxktzrasfOpx7Kew
+	 GS68b1Rcse+K119wZyiVv+FcfQ5OkbCIiOmhbLxqaBn+c5vQkuMFrWpP/f+E19FHOe
+	 EotBVYjisw/m4E0OxbslAOMkZ/jOEm2ll3AFP+N7Ax3e8vn/G+d9H185tGzFS8fm9Q
+	 rY9hwOv1OWK7nKrMcBQFcgxFwLVNdmrcP+rPUjGJOtmVcHWP6RQSOuqGRXYs+64Tg4
+	 cwwZl4rNzKb2A==
+From: Benjamin Lee McQueen <mcq@disroot.org>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Benjamin Lee McQueen <mcq@disroot.org>
+Subject: [PATCH] mm/vmpressure: scale window size based on machine memory and CPU count
+Date: Fri, 27 Feb 2026 16:15:55 -0600
+Message-ID: <20260227221555.29969-1-mcq@disroot.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 560BA40004
-X-Stat-Signature: ycaxmm4sx8n1dj75d3brtqwjyue3nump
+X-Rspamd-Queue-Id: 9F7484000D
+X-Stat-Signature: e1bu433obcing18tym9npzbhnmz6unsh
 X-Rspam-User: 
-X-HE-Tag: 1772227802-530146
-X-HE-Meta: U2FsdGVkX1/mhH1i1spYlhCgQvqgtPBj7krgClcPtXx26xbgXpsWXTu5iwxvp8xGVezLyrT+ud9b4Q7HPfNfVxMAcNvcrnL5L1xTr94+GNaK1n/3JPJpXux5/7Vft9fPee6GTohofawtD1G5yN8JKTLAp4mcxzIoTxfjYqoE4pxJMpWKeDWvtjDyEPa2fJLq0/ctoRSMzdrO80M57Joi6Kd7DZg2rj9+Bdh72TDYBN0jgAlGI1kG+SxHvYCyhJFz/UHmpbjVxBYf2TSgJZeIcdblFpbZNbZdFhYXPWXKs1LTUNzVnu5ctHl4t5SiN+ltgCAU90QEJ5MV4rY4bJQglryXb3L55DnQGlrJbOkZLDQZfDjrE+B5QkM7PV8/gkxVY7PUXTa6h97EGeAD7X3R39rpPthFOM7aiAhZMSFmuziHF8H7LBRV71SI45nAloKwd7veR98CyX8h08hn5P6YNXafZqWphAWmH313dqWacDRgG2EvkcHx5lIFblftSY/hblzgq9ZDpYR2hb9Ij6hGkqPsFctZpOJklEmZrcNSTM0JuZPZKnbJsPfynaiI7f1mfufn9o5rM2zM7phVKzP193ifRJ/d6xsDykMOAcMD89OB4SNJsL8xGISJghXOHDjdELEnRlCH9UPMB07nA311LE5tBU82TmDnn3dhclRblu+XB5Kl3NYC+k/8Do/ExgLQO9YKPZqFuM9lWrJILsng2OZ929XqTcJn1M6xVgPDsQcxImWctrTlHv6QcyTMa62+CdDdsUoXQBGmfCeXhvmo/RklI1QotNu4thvcYEghupw3ruN8asj9HWKo3rUMbzwEOEQ+RyMp3LkyF2d7OgSjlmgvnAq3h9EYeBdloV79CvXSocobFmJjpj2Q9pSSLb03SJ/g5yS3l16J1jqfWn6wGWzfnJa7yZV2pAsXL3uBdZCIj0Jrt7x6sGVrJHotx+QX4QeaSl6vzGOlCZ56uS+
- UzK6mbfq
- 5eQoeOnjBxwl5fwyz72Snv3ubY6CPKFPZFJAEranMUNArTJ1PagLelZYvJq7pcTNqmpPMVvIZaxu89JkdPZfpQZ5pWL2oXoUlrjbHsGOXjW7YpOsrMEaa1j9No0sX938eb18/wm4fjRns3A8oSAJaQzmYzfP9PaWXkzZ788U5Ba1H5aZkMfuu3wIQ9hbhbBj4KpAyw5sy5ob5Nyq5DXID95o4Zi1EuuiNHGJrLMcDTKN/A7xWk7qSty19PN50zkj1Cip+wzMi5WZtpVDAJH7wSC0pb2u8jTZ+xppBe1K2z7P119hqydXcTk+hYGaGGZ3xMnnZdggFb4duO8hH7f7RMjDB1v5aBIJfAU7TtER2as8lME9Yb8DZ2pelzQYb1zE4i4oZuyJYmItXheP9kSAPZvl9giD2CiDvNdtQoKWywJq1Hjvgur3wZWkzQaHWnewipT99
+X-HE-Tag: 1772230575-981608
+X-HE-Meta: U2FsdGVkX18bpIl7U9yCWN74pLkWrWAvcWTrqjsMZc0MYvTwgOtS8pOboZDbtbNrsUso2mOG69WQ2g0UNm3CBCy9EtHuC1/kcwtHkw40Z6wSMHwhCugpQfhJTPGdY1CTiSU8SGYCPOKcxjvM79flFoCzgdmoxp7wFLSUq2Y8cv+NKSjGOlPqH2R4q/2aQ7r8Nc2oPtZdKg48PMBZBGXdwo8SQQC4eXO47bldcaeZkTfB3aS/+RdZjIJYEWO/iZb0qELHch/nHDUCXIGvWGEbXaZA3tWrrJNYcJaP7H1fD2C++XrJv9kKjeW19H1eOuD0fIcdFa8XTiNUQMIQnCyG4gJK6GcCHtPcLIo25rbN3HEAQrbmwjc4eBG4gbsDopWf7wmGizGMyOHYvyYQrwihaDGI/IyuinRymQprWYPO57q4Zqxf9Vpm+k70bd2s3QUQLMOwOnxUW3tSJ4POjeaE1VhGwIhI2aDJd1Tib/Hn0MLTiIuo9hPopWhG8+vxVZoVGOtYoqPdMsaiFegOwEMM9YfAilr1AJ3QxwVwH8mdVIXp8XgRqFlrTJC9xXDrivivvBE84URcCDqZi6LLZ+J/prErnTUovKDAyiwqhYClLb5bdASBWsmy+QXUmWeTuCSYTYrwghJo/zNF2mS052XQOCjzq0lQBjmKb10OC5a8IbhhIWtDamFkW8qoCzxqBb03tRCCYuATnrK0hOjSu5V0Wtu8837cLez0cLu+6CojgwC2o95BtLm/8og7cdcH6ZoknxnslWsGyMtgUUQnumDZ8BDbzkWzuDjAR55BoD9VuSb+EPHEPiAVE4gyQh355SZ94kp7F0LqIxcHEpS3W0891+0qMOWqL2eQ8nO3jJbBXKZM6DYALiDw0uZYUwADyNnYkwJle1168MMP787cOoIfWwwTszbHOrHOKjg5eCEM4kpOyTJlRQl146fzpeop5u/UlvJl6C0zUJx3Gz7ovUF
+ u4eL9XMg
+ rEWl3o+v4Y6W2ZqBw90oneaTdNZdPRbz/mRw7uwdkn7W7Sz3vLHaiGiPYLpO93sbHXfHA2XNH9gTIww7JAW9aWKRqen5N8A0jvn2aSepCXqvFGuo4QQOkpbbSsET1k73QpXRqbhDOciISj422sdGag/Ll8Ytf7nzID30kJvGK6stYbyHCJvsyonJky90o0h334t9hegMZwVyWwaAo0NVUK/FSLzhVgXmwszR2gWtX4w0H0OO3jKZN5MI0M1FOJ+xAJ9RAimbamh7rsy9ZpXYLpx3zPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,154 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We removed the last user of FW_MIGRATION in commit 912aa825957f ("Revert
-"mm/ksm: convert break_ksm() from walk_page_range_vma() to folio_walk"").
+on systems of different sizes, the fixed 512 page window may not
+be suitable and cause excessive false positive memory pressure
+notifications.
 
-So let's remove FW_MIGRATION and assign FW_ZEROPAGE bit 0. Including
-leafops.h is no longer required.
+or should window size be capped to avoid excessive notification
+delays on very large systems?
 
-While at it, convert "expose_page" to "zeropage", as zeropages are now
-the only remaining use case for not exposing a page.
+v2: better commit msg, also tried to fix the whitespace.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Benjamin Lee McQueen <mcq@disroot.org>
 ---
- include/linux/pagewalk.h |  8 +-------
- mm/pagewalk.c            | 40 ++++++++--------------------------------
- 2 files changed, 9 insertions(+), 39 deletions(-)
+ mm/vmpressure.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
-index 88e18615dd72..b41d7265c01b 100644
---- a/include/linux/pagewalk.h
-+++ b/include/linux/pagewalk.h
-@@ -148,14 +148,8 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
- 
- typedef int __bitwise folio_walk_flags_t;
- 
--/*
-- * Walk migration entries as well. Careful: a large folio might get split
-- * concurrently.
-- */
--#define FW_MIGRATION			((__force folio_walk_flags_t)BIT(0))
--
- /* Walk shared zeropages (small + huge) as well. */
--#define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(1))
-+#define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
- 
- enum folio_walk_level {
- 	FW_LEVEL_PTE,
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index a94c401ab2cf..cb358558807c 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -5,7 +5,6 @@
- #include <linux/hugetlb.h>
- #include <linux/mmu_context.h>
- #include <linux/swap.h>
--#include <linux/leafops.h>
- 
- #include <asm/tlbflush.h>
- 
-@@ -841,9 +840,6 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
-  * VM as documented by vm_normal_page(). If requested, zeropages will be
-  * returned as well.
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index 3fbb86996c4d..925659f28dcb 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -32,10 +32,20 @@
+  * As the vmscan reclaimer logic works with chunks which are multiple of
+  * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
   *
-- * As default, this function only considers present page table entries.
-- * If requested, it will also consider migration entries.
-- *
-  * If this function returns NULL it might either indicate "there is nothing" or
-  * "there is nothing suitable".
-  *
-@@ -854,11 +850,10 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
-  * that call.
-  *
-  * @fw->page will correspond to the page that is effectively referenced by
-- * @addr. However, for migration entries and shared zeropages @fw->page is
-- * set to NULL. Note that large folios might be mapped by multiple page table
-- * entries, and this function will always only lookup a single entry as
-- * specified by @addr, which might or might not cover more than a single page of
-- * the returned folio.
-+ * @addr. However, for shared zeropages @fw->page is set to NULL. Note that
-+ * large folios might be mapped by multiple page table entries, and this
-+ * function will always only lookup a single entry as specified by @addr, which
-+ * might or might not cover more than a single page of the returned folio.
-  *
-  * This function must *not* be used as a naive replacement for
-  * get_user_pages() / pin_user_pages(), especially not to perform DMA or
-@@ -885,7 +880,7 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 		folio_walk_flags_t flags)
- {
- 	unsigned long entry_size;
--	bool expose_page = true;
-+	bool zeropage = false;
- 	struct page *page;
- 	pud_t *pudp, pud;
- 	pmd_t *pmdp, pmd;
-@@ -933,10 +928,6 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 			if (page)
- 				goto found;
- 		}
--		/*
--		 * TODO: FW_MIGRATION support for PUD migration entries
--		 * once there are relevant users.
--		 */
- 		spin_unlock(ptl);
- 		goto not_found;
- 	}
-@@ -970,16 +961,9 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 			} else if ((flags & FW_ZEROPAGE) &&
- 				    is_huge_zero_pmd(pmd)) {
- 				page = pfn_to_page(pmd_pfn(pmd));
--				expose_page = false;
-+				zeropage = true;
- 				goto found;
- 			}
--		} else if ((flags & FW_MIGRATION) &&
--			   pmd_is_migration_entry(pmd)) {
--			const softleaf_t entry = softleaf_from_pmd(pmd);
--
--			page = softleaf_to_page(entry);
--			expose_page = false;
--			goto found;
- 		}
- 		spin_unlock(ptl);
- 		goto not_found;
-@@ -1004,15 +988,7 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 		if ((flags & FW_ZEROPAGE) &&
- 		    is_zero_pfn(pte_pfn(pte))) {
- 			page = pfn_to_page(pte_pfn(pte));
--			expose_page = false;
--			goto found;
--		}
--	} else if (!pte_none(pte)) {
--		const softleaf_t entry = softleaf_from_pte(pte);
--
--		if ((flags & FW_MIGRATION) && softleaf_is_migration(entry)) {
--			page = softleaf_to_page(entry);
--			expose_page = false;
-+			zeropage = true;
- 			goto found;
- 		}
- 	}
-@@ -1021,7 +997,7 @@ struct folio *folio_walk_start(struct folio_walk *fw,
- 	vma_pgtable_walk_end(vma);
- 	return NULL;
- found:
--	if (expose_page)
-+	if (!zeropage)
- 		/* Note: Offset from the mapped page, not the folio start. */
- 		fw->page = page + ((addr & (entry_size - 1)) >> PAGE_SHIFT);
- 	else
-
-base-commit: df9c51269a5e2a6fbca2884a756a4011a5e78748
+- * TODO: Make the window size depend on machine size, as we do for vmstat
+- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
++ * Window size is now scaled based on RAM and CPU size, similarly to how
++ * vmstat checks them.
+  */
+-static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
++static unsigned long vmpressure_win;
++
++static int __init vmpressure_win_init(void)
++{
++	unsigned long mem = totalram_pages() >> (27 - PAGE_SHIFT);
++
++	vmpressure_win = SWAP_CLUSTER_MAX * max(16UL,
++		2UL * fls(num_online_cpus()) * (1 + fls(mem)));
++	return 0;
++}
++core_initcall(vmpressure_win_init);
+ 
+ /*
+  * These thresholds are used when we account memory pressure through
 -- 
-2.43.0
+2.51.0
 
 
