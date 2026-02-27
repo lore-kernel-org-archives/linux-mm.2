@@ -4,97 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890A3FD9E37
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 04:00:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17711FD9E34
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 04:03:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51F966B0005; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
+	id 252446B0005; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CD166B0088; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
+	id 1FE1C6B0088; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EC316B0089; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
+	id 0FD526B0089; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 28A406B0005
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:00:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 984861C50D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:00:04 +0000 (UTC)
-X-FDA: 84488883528.10.FCE1E77
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 02EDE180009
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:00:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J9Cq02MO;
-	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EB1C86B0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:03:13 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A21B59031
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:03:13 +0000 (UTC)
+X-FDA: 84488891466.26.390BCE0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8F83B40004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:03:11 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772164803;
+	s=arc-20220608; t=1772164992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S3FkP0WT8e5gqrjQH8xDPr6L3o+0cqY44xbHAQlK6vQ=;
-	b=WgLuYMIwlx6q1pX7ehZv27mbSA9Ab5ciuoWl7LQnbRvOurhuHQO+97qBhZxcGWtNqf3PNU
-	bMzx3vBLj9YwiRy8ophxUGjeAmtUziQD34tXGHHl5VqihjM8mTVoIOtvD3ATLBANmmO1i5
-	VaN8un2GxLvmDx/nkI+T056sfs60R1c=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J9Cq02MO;
-	spf=pass (imf06.hostedemail.com: domain of patchwork-bot+netdevbpf@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+netdevbpf@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772164803; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=CJO1PBqdFrnBC33ihoT+zHeFUsA6brXJ/u8/cwSzNzE=;
+	b=yLcoDzjKJneLROB6PG0IRykvDX7lvJcdfgcSc+vVqtq/4K/+as/mKkMkri81bAnbcIoK6y
+	bv3JIFlLK1MlKP0OChDHvAcwjCccyQ1yhPE2BpErvsqqcbKJyUQ3HM2Gm+AyfhcbrQVsxY
+	Aecv5Fh04iBPHmDmbqCZlP8Z696u6ss=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772164992; a=rsa-sha256;
 	cv=none;
-	b=yyMfcTr6roZmlSvjAw1vEZGyf0LlgYrDIK3aQObi9lNLKqy3O9J+QAEcGT9lC55fTCPCZ5
-	SibN5iX7mN2yq13WA69H+37bcRAswtTooq9fnoA5ropVCn85oekl9VF4dgYWAWXveSi4AY
-	J6CqrjzDYbwr5SKXteGEI2hQfAlY7p0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F6E660103;
-	Fri, 27 Feb 2026 04:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8791C19421;
-	Fri, 27 Feb 2026 04:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772164802;
-	bh=1+lZ0E55IZSnlIC8aQoz0il+erk4zax1IShpIXOWWWE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=J9Cq02MOZz927TYLviYPTRy5DWxNgVdrOf9xFcrbrc3tbBR/HmexUgcCuLgDKBEFJ
-	 +fVvEagzJ5cI4qpkKtOszq9KN2TTk4zzzp21aWa4I6Cg75eJ9crAHf1jbVOlYrFMRq
-	 wLSotxJBw1IDOBnYnCuoZK5g8jFd5fiSEwFgKARaeLt1hKb7GmTtQBKSpre2AAa0zA
-	 PQ/zh8rUizHBbH9dwVifUIHul0ZV5T/NgvOa5YTJP/s3AWEo2MIikVpbd+8JPoSPCA
-	 k9EzevIjsvieLAAJeTQPQ3876jMGtGk4CDtmDuIfOLuoE5D0f/uDs4s8h40WOfupoE
-	 fps+qgy5TlhOQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E9839310A2;
-	Fri, 27 Feb 2026 04:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	b=Mjg9EVXAW79s39ROu4egiJlgQ4Hkf1jciNaJXbORCl4eK7VfdSbu7iKgjZyFAvBsoOgEc9
+	U1Y95tzzA04mCwZlBxVTeySwxNNALfudL8IwGkjSmHBtI1c0bhQBfSH1leGM2yw4DuDjyH
+	VaAm+QFYDbEwxD0ntuGhC5ypcZmcXiI=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AA0514BF;
+	Thu, 26 Feb 2026 20:03:04 -0800 (PST)
+Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2DCD73F62B;
+	Thu, 26 Feb 2026 20:03:09 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: Replace READ_ONCE() in pud_trans_unstable()
+Date: Fri, 27 Feb 2026 04:03:00 +0000
+Message-Id: <20260227040300.2091901-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177216480555.1965102.13851630546170350105.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Feb 2026 04:00:05 +0000
-References: <20260224061424.11219-1-byungchul@sk.com>
-In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kernel_team@skhynix.com, harry.yoo@oracle.com, hawk@kernel.org,
- andrew+netdev@lunn.ch, david@kernel.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, ziy@nvidia.com, willy@infradead.org,
- toke@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, asml.silence@gmail.com, axboe@kernel.dk,
- ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
- almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk, ap420073@gmail.com,
- dtatulea@nvidia.com, shivajikant@google.com, io-uring@vger.kernel.org
-X-Stat-Signature: 9y3kip7164p97s98jungfkxthxeqyqka
-X-Rspamd-Queue-Id: 02EDE180009
-X-Rspamd-Server: rspam07
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8F83B40004
+X-Stat-Signature: e7oxqoeyui4tps5yz33ui46h6qmnqkt4
 X-Rspam-User: 
-X-HE-Tag: 1772164802-743721
-X-HE-Meta: U2FsdGVkX180uGcxXvtaJi3x0SwrUeg9bDDRvZ7f89X27IJo1HXvqmv0mYXzmUIli8g43t24DVf+FVehfY+CqiEIK0Z2kwSZGCcnMtHvcAnLbtGnKOIv2fLCyNA59+7ab9+Wv8yeZK1L67CVC/2Y94U1H1cdXCYg3YBazUqaR/Q107yFMXIVfn4C68zrxtoZGiofpYC1tOAKdJBf2i39g22GV7fXp9GrcLweE8ipCMc1KeI+KlYJ7EjoIMCHhe5RXS+TI9DYz0yHKkUh9mDqQ3dWxCkFzZCP3Fuch4ge4WOgN8Akn7I4K5XttZRNMi6K1JWQtBs8ITsGu2D9LHPTFX/0o9kf4Lh1ooaxVSWJ4jirGtl5tpKX1GwoSTkq2nBFRUR0Gt/l96FNEXLii2iUwBgGGUE+jB2IR3K4/LOxQ1Iuy4NnaTlTDwM+sI/ix3YOgScXAsbQgSBwufY/9Wwfutx4YHSRNYESvfR4kcSw/bf8unqCjg/ufsfN5LE6zgq0qcEfOS2SzxMS3+oOCIGj2JESZkCRXJbyL8y2tyaoQmiiull7bn0eWmxBdw2g5m3Y/OcAR5lvqyOVrK+rRZHC18bzYCHFTAABQWpgntjQ//rCEAjuyS93DW9XSLdsubhD2CMCf3Z7eGs5YJxaHhrf9I4tBQXlQRIA6xJs4pyn6msovqcI4eWxbLT+fLSWNSTCGwZnTgL1gvad3Bz5D57k4/tkbTMRMtmwSnGbqG5SNZjYv3N8+QTVN+mSYiIch9ernkyIYwNDL4/vaYG0zsaPXgTWd/9jvlL4vO++PjnOI5w1UO7UMiAMC2JiUix6JQiG0cou66wnsqhCW0ZVyihWTfjmdmxvlkFCIzYxXLc4qYo08BsCs4Cu5SY3LdZxojYrL2qQnjD23oNOQmDSymlAOCq+1+p9LnnRT2ioZx716wIvqNtOiN72mAPqNJvKQuIzQGErDhAfhJwWPVdPg7P
- F88IUOt3
- FH0GjCgLRWXRqdQm7lewRLmNAvBhXsisgi0OzeieKG0jfj+/0jE/LAutn/OkRdc74/Jti8PCHdGqeuMlgc2dzK6dO/Zm8M7z102JtTyoXY2Mur90Ipm4EOCQUUVGOVNtfwWfTkVM6Q2LeUy3FXUhj7seF11TpuCNI+DGuGv42m2JCAFE4WyB2Nwwq0nrcmBc/DoRygI4fovYJYbNwTfqHT/mGpBEhxPUwiwj69Tyju5N4m/6gBlDWaVxk3c/iTayBf55AfD4YNANjt2Hd0JCk0G0lCWE9qJRbOoit3KxwjaL1BLojGAlVQCmUkIm5sXJNNvyOvfwBaAeMRxEnWFK0YIF1op/W/S9gDaAf6VqDpUbLqy+u95Ch8SmzWbPnxP+Js5GTfvds6fRfVGU47RhQWkwGvfAZgoD6K+2yZqT87sVfktVwbOxX1yh0M5PQgQTXo6Li7Ob5it11QeE+Vo6gbeCeIu61+PCb7PluI6Y5oRlPcTivNNnbFjGAH0I9XkbSFe4c6jgvAqt2X+8trCjEp03oyZBzF+hmScB33YZ0uTgYktc=
+X-HE-Tag: 1772164991-687059
+X-HE-Meta: U2FsdGVkX1+Qg8tFFNRB0g5yX/t8/xK5Gzeudhw5H3y+P+wE+yePcSkzh+ij47Xf2oMS40wujDhT+tH8l3KX8o3m+syr0w2ekuJlO+uKKWeIoa+dccHdERJsFBev6gAufulp9zdPkUJnV8S1w4edY7D30hIcTyztL8ZuCJlGoml6QqQPEfSK1ODLsB1srvmeT8o8SmgUvO8c6nhHW8l3mUP6pRoROFnNUWJtNmJ01qzQvHssTV+yrKP3wHjBwC/8jtz6Ne0afPCdFhMsMcxe4whL8OmYOAHdhLRBaiXdjHgQw6DHqlRu3TzcohEAMCWLH8WNCdzVAB4pyyumqId+oyXAwtzlFRdnRDZXRuieGKWGs1xr48W5OKtc/A/HSRywrtvAjXTX3cL+OM8H2Tq5uF3fRbjtyNsber2zEPl9xoKKQMUEhZzIL7soYwH3c5pJRV2I5VmLWaP3vD9L2LTZvOepY673OHNymh8uGwq4hIvQhfz3O7cd9PC6oRBc6BOy93xOEuNzZwKZO20PqaC6fQ35D7SduQs2EZtlehLqh0ZISpB/pOelonQksXYl/zX3i4x4ePgU3qTcEyxTvTwfHTIZs7Xj2mk31RDhXoKjQb654UYmc4oNiV9P8xC75ozvgipotZX4cVkwzxezcfUDOlqpNc9EX8kVCrSrToKYwFGHkG+2MfgwukASobrr216m/+61KTdpMec6njhCPhd2y1XNe1v6pCCvZGXKAKKPyphiUjN/n1uLbEP1eRRdYQO/OGuG1lnYqD+VX/0Qxgvp808pe54xEoyuwzh3+Y0AqQdxCP1HNQFvd/qvjHo1thM6jROti1CiqCPVZdfolFCAL+1poD/HD0XRrcqKunO285vc/TZVVn/cEEjVPPsA2GDIFQrxbAnafozv82k3T1ypwczTmPUAktnZ6HXipDnAZYRA+KToEvd8+uIbR9B8OhXBc8zjQF0zD0zC2Hxm1PZ
+ 6P7y8bGR
+ bT6zz89wC9zdNnQ+n0M5WrXhE2IwzRxcSYdTgb5MVLiARXuba7hFT/sYFhLeVwPuBSw3YFlyd+q5cGT0wjOCz1hwqpnaWfvfvdLPbo6b+5dMhwRAlsPZIA9K3HuEsy6yDSAT98mj0H8hdtFUO7SYQGHgEZS5Sfxae+x45w+XcI6FBWeWwhxTHF44W4q0hgkFVO6+pTcxZJonIV4y169BCKixosBmEteU734fXxbLbU7EX5P6M1qYA37NnGO2FzZiSleZF0rOpWpbr8XAOBOpZ45pryJfIlAOMkWjUBAdar74ndIauVgHT+cU1t8whIytq9MzQX9sIiAhQWjBTT7qJ6MKoekkLQ41VxCtdpm3leTH5P8GW9gcW6SIndb1MVk1ESxpbYEStxOhRxxdlLnwe06cTUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +82,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello:
+Replace READ_ONCE() with the existing standard page table accessor for PUD
+aka pudp_get() in pud_trans_unstable(). This does not create any functional
+change for platforms that do not override pudp_get(), which still defaults
+to READ_ONCE().
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+This patch applies both on v7.0-rc1 and mm-unstable.
 
-On Tue, 24 Feb 2026 15:14:24 +0900 you wrote:
-> Now that the pp fields in net_iov have no users, remove them from
-> net_iov and clean up.
-> 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> ---
-> The original post was:
-> 
-> [...]
+Part of the D128 series but independent. Hence could be considered on its own.
 
-Here is the summary with links:
-  - [RESEND,net-next] netmem: remove the pp fields from net_iov
-    https://git.kernel.org/netdev/net-next/c/fd6dad4e1ae2
+https://lore.kernel.org/all/20260224051153.3150613-4-anshuman.khandual@arm.com/
 
-You are awesome, thank you!
+ include/linux/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index a50df42a893f..d4826447bc93 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1989,7 +1989,7 @@ static inline int pud_trans_unstable(pud_t *pud)
+ {
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-	pud_t pudval = READ_ONCE(*pud);
++	pud_t pudval = pudp_get(pud);
+ 
+ 	if (pud_none(pudval) || pud_trans_huge(pudval))
+ 		return 1;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.30.2
 
 
