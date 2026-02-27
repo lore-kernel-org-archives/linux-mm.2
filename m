@@ -4,161 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D13BFD9E1F
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:00:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F35FD9E26
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:13:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BAB86B00F8; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
+	id F31986B00FB; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35FC86B00FF; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
+	id EFF336B010E; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 233DF6B0102; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
+	id DDD706B012F; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0740A6B00F8
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A71741A0279
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:00:41 +0000 (UTC)
-X-FDA: 84488280282.03.FECC401
-Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5FA1D100015
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:00:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b=KfdyHubK;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z glLpMD";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf14.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.139 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772150439; a=rsa-sha256;
-	cv=none;
-	b=0WJEbhsWJYWgkiJ5Zi89P8eJhWogewJLYVvpUEi4krTWbUjyTBV7i35ZYUP+rUr0Zdb/Oo
-	ct+nvEilu45781xUYn94H7YaEwryq3KuLT5Tb6fT5ARb2wVHAfyg3gE3I0RdH7zyylaBmu
-	UKs4eAiugdE/ooP/na08XYLMVexjaRU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm3 header.b=KfdyHubK;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z glLpMD";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf14.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.139 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772150439;
+	by kanga.kvack.org (Postfix) with ESMTP id C447E6B00FB
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:13:36 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 669578B85D
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:13:33 +0000 (UTC)
+X-FDA: 84488312706.20.4195F56
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4515080004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:13:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r1xwrMme;
+	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772151211;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=;
-	b=IkP5+FLCHKD+elecEANkjq6m+7SJx2ywMygXV+GHtejPNTrPFodpQeKp6YHk4E77KXSG4z
-	6skMGuOLPJXB9+G0/cgn1SbUgCLUP9Zwq/xpNTjK6NKLKIL4NpNu6PUUV4XYq41XLM1pJ4
-	aeeSBfdubpDzZ9MCSY0WuQm7hgDMM0w=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id C7E2F13010DF;
-	Thu, 26 Feb 2026 19:00:36 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 26 Feb 2026 19:00:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772150436;
-	 x=1772157636; bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=; b=
-	KfdyHubK7T6mgbCHRhIr5mD6ruTZ/iS4/fLNIWNjGnhl1gAn6fwi3ppJ06Gd2dJg
-	4j+2iEI1NgIVGtQ1kbajwBmSZ3kucQpabC7rYBW1w7C9Ns95JC7G2sCDHFGTcMha
-	kv7zoWe4YzeFKlalXC30X01vESpzdydowfQQQlWMPV+oZxWYLCz283lVR3zv2Nju
-	eVuYQ9dFy2UDeoXJmZYe7S7vvDRP/TCyDm8hpE/sG7rbMKSh1TvkY8QDSsY8Cpg1
-	4cwajHsmuyHaZiq7C2NI+9LmP/V6+FqeD6vXWgw/vHSpDK1AbcXQc1HLUA6FGUn8
-	/XDw5I/P8HNRXjdutcMDoA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772150436; x=
-	1772157636; bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=; b=Z
-	glLpMDrdH3ybIl6Jfbe8ZlqPwGEGiWIaKq84xdJ3XK72dVh252bgdeEHLhNGg88w
-	3pDfMb8G+6ch5QZiYiTb2vdJac0ZiodwaNo8erWlfsW8wftbBkxgQ4hNNT4SzETg
-	9xNYNGzd4JBoge3B2Vd6F//62u+9NBZ8XoKc5pbywbz8xoA1EsZcAiF6eo4hfyBI
-	JQaANqURgm9EvX0L6bVDkSvv6JL/0ItofsOMGisEwrBldJgavCTL7e3d4uzr8Pqy
-	wuJsoR33BNh7JMaPMshYytFmb9FjXE8o89NSJtN+p3BgZBE7aDmAMqP3zTdWMVzY
-	8D3Z60+RKBqTkQZw6Ixcg==
-X-ME-Sender: <xms:o96gaWTEnV5FxcL75W1_K7e8Bz0ZcR-1S0u_5NyytHtXv8SBEpirYQ>
-    <xme:o96gaYmGfC4xz6mPRb4i8ZcE1LMJgkqCiSZk9yheAKn241ll_R_etVV_6kTxHHE7w
-    H8cKRlU2sq26FM569T0VHWBriy5PaH5bhbbLCiPC0f2S_CXrBMYJA>
-X-ME-Received: <xmr:o96gaYDj2UgYwWTCfXWlvCbKyPOUQXrlnfVEIrq7NLCPnXZSaSIprk1Y1HE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejgeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgeehpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpd
-    hrtghpthhtoheprghjrgihrggthhgrnhgurhgrsehnvhhiughirgdrtghomhdprhgtphht
-    thhopehgrhgrfhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfh
-    gsrdgtohhmpdhrtghpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghp
-    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
-    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:o96gaQJHyq02-tY5B_dgovb6RPEIgf6Zra2A8BonvF1GTzX4maPZjQ>
-    <xmx:o96gaTq9myJ60d7pE_4qLYmIRw3gnIkLVp-szI7JBnBn6iTrqiLQZw>
-    <xmx:o96gaXeIGbQgQvAmt_4Ob1Gt3PjoRrw-qPHspQrSOhWEA3H5bkLJxg>
-    <xmx:o96gaboB8XLmP2v_WRvZDm7kWd2k5QB2M1rchi9hpS9YGiFsZlw84w>
-    <xmx:pN6gacyXTZuNPPKKceRhRy0cZc3qSkBNvPabhXzUVrNJ42U27GWaTM6T>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Feb 2026 19:00:32 -0500 (EST)
-Date: Thu, 26 Feb 2026 17:00:30 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
- Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
- kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Lukas Wunner <lukas@wunner.de>,
- " =?UTF-8?B?TWljaGHFgg==?= Winiarski" <michal.winiarski@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- Raghavendra Rao Ananta <rananta@google.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Saeed Mahameed <saeedm@nvidia.com>,
- Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>,
- "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=" <thomas.hellstrom@linux.intel.com>,
- Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>,
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
- Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <20260226170030.5a938c74@shazbot.org>
-In-Reply-To: <20260129212510.967611-11-dmatlack@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
-	<20260129212510.967611-11-dmatlack@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
+	b=tSIiXjFO2dHNckyEolf0MdNtA6/YoXzyfag0Hy7FGiti/WM8MJuUiEVB0KLWWuCm4VMYJ/
+	1iABaZ9FHA/qBCf+maWkgajvBlJtbG5Fts0/vvYZklE8ApE15tB4lGPv1taufJwQ9zA7Ig
+	z/s3NShjgqWyHAjxQEfRmzCvkjwbht4=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=r1xwrMme;
+	spf=pass (imf30.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772151211; a=rsa-sha256;
+	cv=pass;
+	b=ZkG6ymxAa+oQH1lZhghD6B/KXg7m8mU0vhTYIHUb8VfO2cXbM9bxnIu2cJYBBH/7I+Hq0D
+	sRVfexzHyg1sr/gCYZr3wZXbw3onp/3pPRIF20jpRygs9jtzH73D85IHEKt+Yjtq82rMHM
+	juPWjDDf11/CKdnqHKB4IshtVsoUNbA=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48373ad38d2so35835e9.0
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 16:13:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772151210; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Wv8McBKNw7kuMvqqB0zf5ZNUMGquK4R+NJ1cGVV+XA3YRtO7GXv/St3hpwW+D/zbwz
+         ehcVvOzMYVCf5yculpsZTb7OoiWY6FQxfC5oVVe8RYczltWEgMPW1kIlwsXG5tgTub1k
+         CfTm56tOdvfj74I9G3WCPvYu47Z5r6724F94DHsNqVvjg5LEoxrPh+ueCX9jSDJEVyIO
+         jzR+ejOiINZU3Im41JVBE5EYdrH0rBvm6l+UN8C20A6t1zKG7kGz/ey2nXUWEbboixjG
+         LzbCwjzwxzQGosPAkD6wY5/8ckYkHa7CDtfV4VK8qazdeGIgqu1jbKZ8vHLrR7ntZeZB
+         EMcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
+        fh=XCa7uaLTci9QQjXtFcWOOH68y74N1Z1gPO5oHYAw1gI=;
+        b=j4torXRFAcYf92S0oJm5RtXD/I6ekhbBIXwKHMBPxCpdSPTaSCo1sCXgzYg+Y6lS3/
+         b5x3KLxkiZCPvI8hKJpawF5kqM4853u1Tg/vs5hPkWPSV/2LiWiiydYxV2Yfn8hsXvjR
+         Ox6OUiPaHyR1sonJFZz08MBKj9qf3KpwEwdTsBZ18jrW+Xdif7lN1+Hq0E1va6/8Bts2
+         P/kv9rTcUQqH+2072DrZbRDDcsGp9QfYVSLXiDQijLNEs4RbDSl50cFanN6H3WN7BiqR
+         26G+eaif7FCh9VBSNZ3lq0NVn2Fym7AJrq0/ecVds6sRYwy9vY93E/DIC7NQc3O7nk4F
+         J7HA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772151210; x=1772756010; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
+        b=r1xwrMmeve/wNouV/jicS0LFn7m2bdVi82PHVXYfXq553jlvVPHC26ISWtsby0c0Bh
+         VE7HqVPL6mfr7F39rcQGaKp4yRSdpdbIsafDW0KfIQNXG2TXPb3bZ9nradagS4nI2cqV
+         kz7OHS6W5IHIuX3wPM2Gw3Jebl0AdE1XQYgZky0A9d7seszZX64+YavKEkNwXWhiyvat
+         Xdq3VNv35NCsJ9gBrlzK6SBtZgbynwAfJXJAzTm5WcTq6qs3ifZzz4/TPNMba58vLa0m
+         +lAoQnelyyjuvcgsy98UpwfI0pzgWtorfQLRnKo+Ho9vuMRakfZ73qs1mjto2UWjyWH6
+         CXyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772151210; x=1772756010;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=my/+LYo4A3vP/vd+8r8bbLsiMe25p21MkjnvWKVBUGY=;
+        b=Ysqhwv80WZNi8fRD0VL8jbSkwPk+oa5/ECudtrREJzatsZ1yF5agn9/lK9SXSclJY6
+         ++TdGyvsJGjicdM16YAXbVosiJ7GATktr569NUuKxF654ewa1L3fi6ydphj2v5Lwh0wN
+         tJIwJZnnwvW2FEC//5fp3nDF+7B3VNdjQDHgBeKVZqZo9E3p63fKiTCF4zpwr/oIn+dA
+         hczx715mHufdItBuHlFw3rm7Ncym9mFMmZH5Smmnopujt3TMHcDv+RY4qutQB8jyz2yp
+         cVBQ011HAmv8xYDxdQxf/UTA8IhGnKLvq+EyqFUlF2SPnJ+WnUk6hGgm+kMEyaLQ2Z1n
+         ifUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVmK2PoswKjeUOBThqRRT4ledfaJvmB6tuGUxRPWe7igIoAdKiOdseT2lSvPhwVSwHStr6BGqKwQ==@kvack.org
+X-Gm-Message-State: AOJu0YxgMPhux0rdJlqVnrSAJ9nWYxxqGR3sDU0rr3Rb+/FtON48JuRc
+	aZhnHmll86mRoW7ntJPJhk8+TnKsctqapZtS45SMJAYcvJT48v+O8cX4MX0I+go01Jupfu3dgWU
+	KiahYYxsKzpl11p6j5N8+naNlj10ym1pzuc7OEuCs
+X-Gm-Gg: ATEYQzya8N1jM2l/B5YmUemqeQIM51/X0nAAHil97I9Z8QsnM2PYVj5VRbbMpbNudVC
+	PaWqlZEm3KhM1f6CKkDDxmteF0BztThRw6S34Y3XNbjCIKl02N8Z9hgHQxru7Yw9yl6zvDFSGkf
+	Dm6WPOVjLs+/QIz/mRCDM/UH97o7Dba7OMqQ61e5YWUhiFu1PjdzeUXz6fswEXtSOxryYgDCk0X
+	uYgh5kWAOiywL81E6M1urHVfSEjlWHAhskL8Fepd88VqZX8yIl81PX0P30WjOyCoTTnyTDBrAVW
+	nCsuQANcACW0mlfWIKxThl4Utq7aZkTL9VMuthRyeu6aJ/FVEBaFOtVVXy6satvJH7hXoQ==
+X-Received: by 2002:a05:600d:6446:10b0:477:95a8:3803 with SMTP id
+ 5b1f17b1804b1-483c39f8080mr839615e9.13.1772151209186; Thu, 26 Feb 2026
+ 16:13:29 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5FA1D100015
-X-Stat-Signature: i6xpd4xphxpmgaowza16dx5ajaprf1a6
+References: <e5c8b5b9e7574dce8e4d4744595123e2@honor.com> <CAGsJ_4zatnuLkCJyDe_o_yXmhngpc54kV6b7M3tu6JyvF-ZxDw@mail.gmail.com>
+ <CAJj2-QEHAk-H6SSJY5OmLYuVyLRacSEgUupKaKefFFwGg7CftA@mail.gmail.com>
+In-Reply-To: <CAJj2-QEHAk-H6SSJY5OmLYuVyLRacSEgUupKaKefFFwGg7CftA@mail.gmail.com>
+From: "T.J. Mercier" <tjmercier@google.com>
+Date: Thu, 26 Feb 2026 16:13:17 -0800
+X-Gm-Features: AaiRm53yJMkwbgWJFQhZjpThlXpBx0qFwZUc0UbsmNlpQHCVPi4MvDukFuHxL60
+Message-ID: <CABdmKX2mOD8CwAHPbn8Cha1uuMP8_mSXdH=914z5x_qTkJf7wA@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] MGLRU on Android: Real-World Problems and Challenges
+To: Yuanchu Xie <yuanchu@google.com>
+Cc: Barry Song <21cnbao@gmail.com>, wangzicheng <wangzicheng@honor.com>, 
+	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, wangxin 00023513 <wangxin23@honor.com>, gao xu <gaoxu2@honor.com>, 
+	wangtao <tao.wangtao@honor.com>, liulu 00013167 <liulu.liu@honor.com>, 
+	zhouxiaolong <zhouxiaolong9@honor.com>, linkunli <linkunli@honor.com>, 
+	"kasong@tencent.com" <kasong@tencent.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
+	"axelrasmussen@google.com" <axelrasmussen@google.com>, "weixugc@google.com" <weixugc@google.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, 
+	"willy@infradead.org" <willy@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4515080004
+X-Stat-Signature: 695y45gnmcmnimydenqhbenj8jnparr1
 X-Rspam-User: 
-X-HE-Tag: 1772150439-824220
-X-HE-Meta: U2FsdGVkX1+Tsd9XDeppza1OEEMWAn/EE+9a3EfzV6UTej+1WMhK9S7szDC/Ux7W7wM6WsJBIRELIDRpetRtQqdVdSUicE40KWmgzyxEHZlU5ezYYKJJwD/BKBjU5n1ulCrMn6bPXtNZwPCpPsACX26Qge9mcICa3imAif1awSLVj6bbdH0KkUJXD7PX1w02h8PreGKjCpVpuEqPmqhSQ4Ra5OEXSK+VWTddhKPMboEHBYRwHpPylZ+kx6BR0NIpZuuTZnxkjZEax96KtlHneImfiB5Pc2IC9UfMkfnlaqCZgH0zBCJegunk0xfRMlAYQdscn9nXgIRpR8KKJxZrIUI8LyOC6Igy0SRcCUsu1pk+P5ivlUE66l4qJ8CFAzj5JH45DdD1qtA5utyfUOAZin+5RiArb358r71x33zMJNhdW7jPhwI5DywtZ9df209doaPI5whbFD0sBNEigbaYD/+1t5TKl6bS/lPgC7UcgODKBZnSbLlbqamppWOcZkfgYkumkyoM5tUCIbSOeaPTEij8srpSt19W1ovuKbTY/8pn71T0/y+e9nOiZ760Tr8DkRQ0zHpBCnAH8zw/nxPFdgDY+HX8naaFvoPKGoDfetrAdaYQaKQrSvaRY/CJQ2aj4UeAudhl7djsS1q0oDByiT5p37Tp+gSydwaQnx/iiz0cHZNAP5Dn8lX+iilfY5FZb96iahiRkoBiZDIaZpEXmRsaC0gM9ccolY/g13FyCaZhts5cdcdZHnSlP3BQgePMTU/jU29uP2MqL2mdpy096fngUCEPuhooF9GtTlt/6IZTh4nUUoFy/R8yAxooxnUEGD+keffF6iZYUknOGRwO+jfrxUHsWlqvtVC9qjS4BwxTctAbw289UJE8E5Nipjs5IzhwZmv+DtrRntMm81U+FRbIXWxrtbmGrhznjw6yBszPFIk4TVOiTv717gGN3iDfG3fA0ByveOWsZr+eJCl
- XAhQvSRl
- SJVd0RfZaj+GaFcAqywKEHVBkO6xzbKRnZ/kprL4C/Ne6Qzifsnr0UV9YP34bFgEjwvZb7BiWCN5QnHN9azaZdlcl66KrScor77VFA5g96TqChNi4aM7bVp+2j884KnF5KOfJy7nI3b3PIKFbR0UYTjtg2TDNisKVO4IAHD3b/5aWeYfNYlom3QiL+ztgM1dBAx8oh/qsMVNK44nTIRWxDqerNSsDrPgYuFuEZ8IT69vygGEyj5xLmo4+ch7CN8UE8BvUSZMcLFbrxBWPt+oxCtSNSWln86oVsm57A9jKf4zjGgUAbrmfoqr2o7RzAobwEiPMX/wN/3Agk9vInSpK1MZaGkSQfSd4e2L3
+X-HE-Tag: 1772151211-61078
+X-HE-Meta: U2FsdGVkX1/rVkEgjm57XjYuD6DAincfeTekeWyPuQLVRygRKUPS+DR/BJfZ5Xs53iDc8RXnrn7YYhCez1lLkW9PBdOzDhLol4r1mZ/jY5+tTM5BAUrCwZtvvOStrg122kySfUztb6lAo8a4XtJfrk3bA4Q4wMzUF9sRfSdbyWEhO8TOofntS0nOu4XgkbeOHReEtDxXcifD0p4YtfwU7eNTKuoEtbk/igQxKwCnZ+MGRkW0azEv1+fsJ2DJB0O5jK+Uqioz+Tv79/JaboOVDDIgAClhbFR+wAk/ymDi03YZ5BI6DAc/R/e4RZRlgcOjDz0w3/YuiV/l0sP/Wg/Evt7/6wZmuG9lqB8Iqu8/yRT14JorqmjIEHHb/004ZDkKQ7NQPeCS5xGxjDtC/+Sk1mHyCWhPl+Bf1vovBWnqhLYBFTBPP7cjiyDVvtNoheFsq+D9x7b66SZJdF6wtldPOlfenCr+q/AZUQeQ5r4zMCM8NDsLiTJfJxGnxk3a39CbqYRXo8j3aA8TdCsxi4pFOg0+TBk/gaSIiR3CKIWpKRtS9PGVEjiFx50Lps8dtetpyCkAbDjObKEN17Qb99ELQuYTgP37fdd/RE8ANjI8MujuSyOI520gAaXKX3tklYg4L/Ml7lFEV0hJaAQLFcyHkqkynZ/P4p+dOSDQ/Di9E7H0G9hUqk9ZaeL/xXVwQhrRbmlb3w8awJeV1hlDN9VcwU0Q5hHKDt2toja+ujlJPdPocQsg3nnxV+a8ZKovBgtKABhwr2xYAj56uvg4hWhGqjjxChs6vMcAXEuyyN/rfQ0eCv9L9ipS505Ld0ytjm2IDiIZGvuOBcgA8qdZ/2tcwB8+YpvLnTNXowCO/2K9+XDtfxeq0OPYReQcerBClglZloLdfeI6MdTYsrLzrSbsU8zNUPnb1YxzLZXnTlh8A9W/B62GoEXB8mbpbPsuabzbKivoPLiWNIJBm2OAIfW
+ F9yjX85X
+ SSVnYG7ScBTQHLRA8KyMaA01SLulQdGqS1CEtTcNnagoXzK4wsICCPDtqs71L2aMeVJ3Q8jOJS10DvxIQX7qqTvyjgpJp03T46U7sYElLfPjRR0bgiaHYxk0RSwvZHnw1Jz/MIeEqFm8pN+35wIOiVj2P5/gDtiswb8i4lrmzuLeiegpMI1Mh1LDPLhol58PBAtelq+oN3N5wzgFqMoDX62Wc6NUsSfIf9FtknN58gfC7rEG/DcwerMRFMNQbnZU6BLrQnXkZH+P4anNPUL3MwFXlpSf+Fr9pCU3EuPPVmxdmqRTuIM3jGb6+RsHYrUOLia2GMDgTWZCmAukP813jj/oss3IUjFD4yR0oFwdHcMFXdlXhYPysJ9b/SXnSEeznrrTN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,118 +147,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 29 Jan 2026 21:24:57 +0000
-David Matlack <dmatlack@google.com> wrote:
+On Thu, Feb 26, 2026 at 2:11=E2=80=AFPM Yuanchu Xie <yuanchu@google.com> wr=
+ote:
+>
+> Hi Barry and Zicheng,
+>
+> On Tue, Feb 24, 2026 at 2:23=E2=80=AFPM Barry Song <21cnbao@gmail.com> wr=
+ote:
+> >
+> > On Tue, Feb 24, 2026 at 11:17=E2=80=AFAM wangzicheng <wangzicheng@honor=
+.com> wrote:
+> > > *snip*
+> > > Below is a short summary of what we see.
+> > >
+> > > Q1: anon/file imbalance and drop in available memory
+> > > Android apps workload show a persistent anon/file generational
+> > > imbalance under MGLRU:
+> > > anon pages tend to stay in the youngest 2 generations;
+> > > file pages are spread across multiple generations and over-reclaimed.
+> > > Tuning swappiness to 200 and ANON_ONLY does not fully fix this.
+> > > On a 16G media workload we see:
+> > > MGLRU: MemAvailable ~ 6060 MB
+> > > legacy: MemAvailable ~ 6982 MB (differs by ~1G)
+> > > Today we mitigate this via explicit memcg aging in Android
+> > > userspace [1], which is a vendor-only workaround.
+> >
+> > One fundamental design of MGLRU is that file generations and anon
+> > generations catch up with each other when the generation gap reaches
+> > two or more. As a result, even if swappiness is set very high, its
+> > effect on aggressively reclaiming anonymous pages is much smaller
+> > than with the traditional LRU.
+> >
+> > One workaround is to force old file folios to be promoted to relatively
+> > younger generations, but this could also cause problems by clustering
+> > file folios in the newer generations.
+> >
+> > I wonder if anon and file generations can progress separately to some
+> > extent.
+> >
+>
+> To provide some context, the file and anon generations are coupled
+> primarily to simplify the MGLRU logic (Original Yu Zhao's intent).
+> Separating the two should allow for more flexible policies for sure.
+>
+> > >
+> > > Q4: Lack of global hot/cold + priority view with per-app memcg
+> > > Android uses a per-app memcg model and foreground/background levels
+> > > for resource control. root reclaim lacks a cross-memcg hot/cold and
+> > > priority view;
+> > > foreground app file pages may be reclaimed and reloaded frequently,
+> > > causing visible stalls;
+> > > We currently use a hook [3] to skip reclaim for foreground apps.
+> >
+> > Interesting. This somehow reflects that the LRU lacks the user=E2=80=99=
+s
+> > context, especially on Android systems=E2=80=94for example, which apps =
+are in
+> > the foreground, which are in the background, and how long an app has
+> > been in the background.
+> >
+> > But this is not specific to MGLRU; it can also be an issue for the
+> > active/inactive LRU?
+>
+> Pardon my lack of familiarity with the use case, in what ways are
+> existing memcg protection features insufficient?
 
-> From: Vipin Sharma <vipinsh@google.com>
-> 
-> Do not reset the device when a Live Update preserved vfio-pci device is
-> retrieved and first enabled. vfio_pci_liveupdate_freeze() guarantees the
-> device is reset prior to Live Update, so there's no reason to reset it
-> again after Live Update.
-> 
-> Since VFIO normally uses the initial reset to detect if the device
-> supports function resets, pass that from the previous kernel via
-> struct vfio_pci_core_dev_ser.
-> 
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c       | 22 +++++++++++++++++-----
->  drivers/vfio/pci/vfio_pci_liveupdate.c |  1 +
->  include/linux/kho/abi/vfio_pci.h       |  2 ++
->  include/linux/vfio_pci_core.h          |  1 +
->  4 files changed, 21 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index b01b94d81e28..c9f73f597797 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -515,12 +515,24 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->  	if (ret)
->  		goto out_power;
->  
-> -	/* If reset fails because of the device lock, fail this path entirely */
-> -	ret = pci_try_reset_function(pdev);
-> -	if (ret == -EAGAIN)
-> -		goto out_disable_device;
-> +	if (vdev->liveupdate_incoming_state) {
-> +		/*
-> +		 * This device was preserved by the previous kernel across a
-> +		 * Live Update, so it does not need to be reset.
-> +		 */
-> +		vdev->reset_works = vdev->liveupdate_incoming_state->reset_works;
-> +	} else {
-> +		/*
-> +		 * If reset fails because of the device lock, fail this path
-> +		 * entirely.
-> +		 */
-> +		ret = pci_try_reset_function(pdev);
-> +		if (ret == -EAGAIN)
-> +			goto out_disable_device;
-> +
-> +		vdev->reset_works = !ret;
-> +	}
+I think he means that whichever memcg is next up on the memcg LRU is
+the one that gets reclaimed from first, regardless of whether that
+memcg is for a foreground app. Because there is currently no strong
+relationship between memcg LRU ordering and Android app state. Android
+updates oom_score_adj on app state transitions, so it'd be possible
+for the kernel to use that information from userspace to influence
+memcg LRU ordering, but I'm not really a great fan of that idea.
 
-This could maybe be incrementally cleaner in a
-int vfio_pci_core_probe_reset(struct vfio_pci_core_device *vdev)
-helper.
+Right, reclaim from foreground apps is not exclusively a MGLRU
+problem. There is an effort in both MGLRU and active/inactive LRU to
+provide some sort of fairness (now both are eventually-fair) for
+global reclaim, so that no memcg is the subject of disproportionate
+reclaim.
 
->  
-> -	vdev->reset_works = !ret;
->  	pci_save_state(pdev);
->  	vdev->pci_saved_state = pci_store_saved_state(pdev);
+I'm planning to investigate applying memory.low to foreground /
+top-app for reducing the amount of reclaim from foreground apps.
+However at the same time, we are also working on applying memory
+limits to all apps (memory.high) so that no single app (including a
+foreground app) can use all the system memory as a matter of Android
+policy.
 
-Isn't this a problem too?  In the first kernel we store the initial,
-post reset state of the device, now we're storing some arbitrary state.
-This is the state we're restore when the device is closed.
-
->  	if (!vdev->pci_saved_state)
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> index 1ad7379c70c4..c52d6bdb455f 100644
-> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
-> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> @@ -57,6 +57,7 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
->  
->  	ser->bdf = pci_dev_id(pdev);
->  	ser->domain = pci_domain_nr(pdev->bus);
-> +	ser->reset_works = vdev->reset_works;
->  
->  	args->serialized_data = virt_to_phys(ser);
->  	return 0;
-> diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
-> index 9bf58a2f3820..6c3d3c6dfc09 100644
-> --- a/include/linux/kho/abi/vfio_pci.h
-> +++ b/include/linux/kho/abi/vfio_pci.h
-> @@ -34,10 +34,12 @@
->   *
->   * @bdf: The device's PCI bus, device, and function number.
->   * @domain: The device's PCI domain number (segment).
-> + * @reset_works: Non-zero if the device supports function resets.
->   */
->  struct vfio_pci_core_device_ser {
->  	u16 bdf;
->  	u16 domain;
-> +	u8 reset_works;
->  } __packed;
->  
->  #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index 350c30f84a13..95835298e29e 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -16,6 +16,7 @@
->  #include <linux/types.h>
->  #include <linux/uuid.h>
->  #include <linux/notifier.h>
-> +#include <linux/kho/abi/vfio_pci.h>
->  
->  #ifndef VFIO_PCI_CORE_H
->  #define VFIO_PCI_CORE_H
-
-Wouldn't a forward declaration do, and the kho/abi include can be kept
-out of the public header?  Also should be in the previous patch?
 Thanks,
+T.J.
 
-Alex
+> > Additionally, I=E2=80=99d like to add Q5 based on my observations:
+> > Q5:
+> > MGLRU places readahead folios in the newest generation. For example, if
+> > a page fault occurs at address 5, readahead fetches addresses 1=E2=80=
+=9316, and
+> > all 16 folios are put in the youngest generation, even though many may
+> > not be needed. This can seriously impact reclamation performance, as
+> > these cold readahead folios occupy active slots.
+> >
+> > See the code below and the checks performed by lru_gen_in_fault().
+> >
+> > void folio_add_lru(struct folio *folio)
+> > {
+> >         ...
+> >         /* see the comment in lru_gen_folio_seq() */
+> >         if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+> >             lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+> >                 folio_set_active(folio);
+> >
+> >         folio_batch_add_and_move(folio, lru_add);
+> > }
+> > EXPORT_SYMBOL(folio_add_lru);
+> >
+> > I could have submitted a patchset to address this by initially marking
+> > only address 5 as active, and activating the other addresses later when
+> > they are actually mapped or accessed.
+>
+> I need to read it more closely but that's a good idea.
+>
+> Thanks,
+> Yuanchu
+>
 
