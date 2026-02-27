@@ -4,114 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89908FD9E3C
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 06:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FDE5FD9E34
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 06:19:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBC566B0088; Fri, 27 Feb 2026 01:17:02 -0500 (EST)
+	id 54D726B0005; Fri, 27 Feb 2026 01:19:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E64E86B0089; Fri, 27 Feb 2026 01:17:02 -0500 (EST)
+	id 4FB2A6B008A; Fri, 27 Feb 2026 01:19:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91C26B008A; Fri, 27 Feb 2026 01:17:02 -0500 (EST)
+	id 3EF7F6B008C; Fri, 27 Feb 2026 01:19:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C25836B0088
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 01:17:02 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F0C2C1F76
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:17:02 +0000 (UTC)
-X-FDA: 84489228684.25.ABD1CCE
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D8310C000A
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:17:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PMPgSxth;
-	spf=pass (imf22.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 285826B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 01:19:19 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFF2D1C528
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:19:18 +0000 (UTC)
+X-FDA: 84489234396.23.FBBFD70
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 03A101C000F
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:19:16 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772173020;
+	s=arc-20220608; t=1772173157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=scUOVzAnRBW38ibEW6xQpgzOJyOZg1ewr63AX7NvRVM=;
-	b=Wahk5Q1LpAUlei4eTDfKJpDt9S1pnWqCL+VkkivfKpTbuKiMV9lYr8WwM4kd8wX/yS9XUM
-	usKfv5q5hMog/pydfuQ/q19Msk0/ba+pQAd2e98XWzo1Ak/cvEh006GZC+R3am4x43MpeA
-	NHoy+6U58HG7ahmCQsGAN9YBqFEmHX8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PMPgSxth;
-	spf=pass (imf22.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772173020; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Fy8I4DfvDIaiPhoKT5gdF9vbgVJgKjiNms1TxDu+mH4=;
+	b=CvKHzf/iI/NCru+5aUwFlVaYudMEEcyBVKNFahpl9fSoAIQeT1GfBn27fAMqW2DuMfIeZE
+	HDeBjs1xLslXkrpFOLxUYbj0M62jzQ0li8fKSAaNoO1oUhaUP35KGlt+y5NDfPmyZw9+NO
+	GsJQY49EdJ4PryZPWkQNm91LKbWK57o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772173157; a=rsa-sha256;
 	cv=none;
-	b=pELnOkiGTw23kuuIwl2udjW1LRn06Mh79iKZ1PhyXanSrxaHjz38WjmG9b4TdFCqNbO5av
-	vTUP4wOc3AiFYQcU1GNE5An9Kp8AoxaiXFoHHNwXo8+7J6b4lMBW0fk2PIPOiZhzRwOuHO
-	DaWImJfaCHyP1eATMTrHC+l3AMEVQt0=
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aae146b604so13028735ad.3
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:17:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772173020; x=1772777820; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=scUOVzAnRBW38ibEW6xQpgzOJyOZg1ewr63AX7NvRVM=;
-        b=PMPgSxth7dilL5J7HcqejkaXsUY4pKIfEwK6lDriJvga89w8yRRQeI38vGD0VnEG5s
-         Ko7oVK4NdkV26xb44prsRk2qCRxzj/LTrux77sVQJyM3rgTqgMTrLV+MPYofw7AC2mPO
-         sLIaXAjf3lHUnaa4uDKsrIGvLIfqKwvhNdbBja2VDCxnE/ayF9sl63BMSSg2eq+A6O8B
-         HuzdInnJwPycvs+eM2wpOUhOmcTYBrosoBBts38/kDPUuqRissyEAr5og5K+/yNm1C4o
-         htNiYEMo5GvSGRP53VMgB0EdpUCs7wCBV5sYWpbpYgDU0F1yqQBeqetKNsa5P6r/CH38
-         qNzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772173020; x=1772777820;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=scUOVzAnRBW38ibEW6xQpgzOJyOZg1ewr63AX7NvRVM=;
-        b=Zn4Ykkg1OFy34J9acopOA+L+EBnsXoyP2Fv4hfQWm+JT2UEaRNPOPMQftGcgAlcVHZ
-         Fcn+8CR/7SF0RhaFI69iAQ5re8zapzV44tUWahjMeZHCM2VmSkfFUtkjMAzXYkOU3/wE
-         9SIxpsLpyCZAHWqa6qtIM1r1YqhEqGshEGIP7pC8NoCUabCyMCcJJYV2pkmMA1Igka3M
-         B1nQtiZlS1DyWo5cKqXU8AjvPMXB1R3aWOvk+SHp+fmjpL0SWWuTxKZn6s5raWzoEHlL
-         A6d4oOrg5YVYUCAZaX/RdQh4FEHEiIcJecusaQb3VPPUi+7axUfkZO7nNkwf9hPmnN17
-         7vIQ==
-X-Gm-Message-State: AOJu0YyKZ6C3RcYkrJNab3FK0Dz/Shvu2JfHsMJrTO4x3SRbfa7TrfNa
-	RuzD7RPUCF5ZiQ+jdVGEyo4/QeFGqrmXGAW6Kt/Av/B14spzdV3Gr/AE
-X-Gm-Gg: ATEYQzy8XlGFLPP2u3g92xJ/6xW9gOlbqzfF/r/bWPavqzdlLi38iPZHtJyPcKUfmCM
-	lZzIwiowKZ9Mc2Uft1vSzBTc6tIXIbcQCtxLrFRtPhHek5eiVXOhBPEHwOWfq1bEwMdrOxnoo9f
-	mtRFn6pQk8jhrDYhcy3392A+kGax9h9bvPypO5/jG4KSyt7FCqL9YfkEPUVGPAVCcgul44jE6Aq
-	SKggOzLzUBhwv0HLMpew9zl8FjhJus4kvN+NA6UjXAJBTe1U1+Ihml/Pexr8Yd8EeOnSHIN0NNV
-	z4EHJnWdoQeFCsnCmtYn5BoJGYfC3oWTbmYodVpZ9Brr2LNMbjuEfQlPuRMX4hL6PdiWeHxOPj0
-	DemLmTBBcuvgH5x61rWMUc+7fftnkLDPDB0aV21MF8vFmFdY3ZGy7Dt01MRP4TfdoHpKVkU5bP9
-	6HflMP1cYhH7OVW/UZZtbjojJoILZW
-X-Received: by 2002:a17:903:1a06:b0:2aa:f0ec:3701 with SMTP id d9443c01a7336-2ae2e3e9a31mr15207155ad.2.1772173019761;
-        Thu, 26 Feb 2026 22:16:59 -0800 (PST)
-Received: from dw-tp ([203.81.243.177])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6d1913sm57837485ad.77.2026.02.26.22.16.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 22:16:58 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org,
-	kvm@vger.kernel.org,
-	Alex Williamson <alex@shazbot.org>,
-	Peter Xu <peterx@redhat.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
-Date: Fri, 27 Feb 2026 11:46:37 +0530
-Message-ID: <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com>
-References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com>
+	b=tETiAjCmY7BLklcQ4PGmdmDqNmo8hJ1oW62/Vqq154SUAf2boYWGYXxSo1WDRuO22UK3Dq
+	p4zc9k6yiBQw6I7SoGhSaYh1+zmPiZO+dfw7QQyM0spnl3ql5xu1o3AQDUY7kvwNs77G2b
+	cwL7Cs5w1HA9M5Xb3ovZ7+k9UrpAO3A=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9450214BF;
+	Thu, 26 Feb 2026 22:19:09 -0800 (PST)
+Received: from [10.164.18.47] (unknown [10.164.18.47])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 446B43F7BD;
+	Thu, 26 Feb 2026 22:19:12 -0800 (PST)
+Message-ID: <7f59b3ea-9346-46eb-b6c1-ae27b718f7e6@arm.com>
+Date: Fri, 27 Feb 2026 11:49:09 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: spew35rhkdm45fxe9mssejmpxaax9ztw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V1 10/16] arm64/mm: Route all pgtable writes via
+ ptdesc_set()
+To: Ryan Roberts <ryan.roberts@arm.com>, Usama Arif <usama.arif@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260226123747.801496-1-usama.arif@linux.dev>
+ <0ee7ff56-ac0c-458e-9772-b3c026389e65@arm.com>
+ <917f3bc3-1f17-4712-836d-ac75fdef3d16@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <917f3bc3-1f17-4712-836d-ac75fdef3d16@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 03A101C000F
+X-Stat-Signature: dbobodqo9tm9mtekykeskmzjbczoozp6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D8310C000A
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1772173020-926715
-X-HE-Meta: U2FsdGVkX19bmmUC8k+QjE1SewiNtH9IJgJKABIYDiCCnY422XDUe/Tt3cUGr59DwcHm395dqziYTrMH5R2LwbgIFP9jbi+8h+BfQt+9DZxay5MiGIT1Y97I4bGaz3DZ6sUXLbVm33Yfm14rfSkeaby2Ax6LZ39F2c3Dw7crMnLNDhGyB3felOnIrBwnPE7dXj9L2bwpnbu06XSI4jP2DGHCUBefCFl5JV01ISuDfipIuEC02wUHLZAfTTTnPK7uCqaai/+XVg+BDZ7hF+erKjbPWMU7S5do5uiojn9diRzEnHPIBY1DiolhUZYZwG/7A5FeJ3K/OpouVYj7dx4P4n59/VamcrxmGfdVqCMhGlBcO1YxnSu2lvMdtnYc7PTli3mtdUaEtEipdY+Cqi9wVNZR55JMxFJn5K0ItuP5eo7hsr3snJ9VwEfG6xc6R65+uUxfBYqE/vlsqP+GPtTRiLxJvQbO7fAjqRvrZcyTAv5aBFo8TGq4yugw9pdhyFAOf67AQncIolsssx8/8Tz8znW36wmhbzMNdfCY9r/uFcv55g/nFmSqTR4BCdlrGDJfMNzkbi/5pfeyTEjVHIP1UcQI93HaRmMHIGFJD8nJQw5TSjVejnazasuPzDD47NGQYBOsA/R6sZvl4SyjWQ/DLTHRH8/nN3v9vxDkRKqdFL9WCq2eunj/XiV61nHD7yi3C+9LBq07O2q1Dp+pFwDP4Drh0lDUGnnWemCgZvCyCfU3EJ42Wdqk0Ho4IofU+u9L0CXGl1bsN04rVfW/R//G/KIAHujiC6jtsvt01NSOzHBRp/pXXzMXjjTZYFDVef4Auig0j14Jx+S2mFL8U23MeSaNkP3B5P3UFOXgLlSaeO7pUHMl4N9rmF1hxMYJOvtUKoX9nMjE9pYMrX7x1+11p10rNxfBSyw7d9CSDs7PJUh9CzjhB7Ef3pxb3oYt5WjF88KK/thLVRnRjw5cLlJ
- 7K65TBlp
- 4lfImSL4kGVDsVCHXHqfPU3Vv5SOpIiEMzrTKsQhiMPyTDulGDevageZnJdS25tR670uHVlm8++/1rFipsdYTucG1tYQYiVoQoFacDmMv5WuLd//55dRGCh8cWu1I/zUH07axtiQYQ7QmQQGORAtf3LvZuGGAlRtnpnsr
+X-HE-Tag: 1772173156-132925
+X-HE-Meta: U2FsdGVkX1800O/WYo0JnxfCynxeT/fp8zWm0DS9b+v/L31Awrhapu2g49JfCJhTM4FrnYvVhXhbvDPNxcicXSiDdrFbABP8mZ/yVmHAEFp8cH4naJYcfCJPnv+dCM3Uw8jJ9G+qOz7Nv+sK+xsB1vnVQoDIgwwl9cwn9vcnZlbtQyvjWhciGOLtRLTP9Ntmao8REV+CRU/9F5n+/b85KwDQIHCEDJHsk9ASJR/g/YL1gFJWon9PlTXE/OAPuB6e1JEBdaWxV56Ak9Xepngg8zuN1ZNllEWSF9yBSinpPkwS6HetJm6hGHDok4QtvDMvBR4641c8nXUrrpntXn9v5RvRKmVr3pqo0vjjtkmfGr+ssUbovDQzDZUFtubTkj7XTiTkWmnwyt+FxKj9s54zzzmQocXajqGEb/GQnBaVuA+zUrrNGVGNAxmL7Q+MUI1BsyrI1h9lXp22UVwtiISNy5XKHFWLhNOv4s7U3taggSKxMbJ6Rq3+BzXNNTZ6EmToKj4WMEhqnCK+IYC7InmFdLNfMbsUcqTqjXxOhRJzhIl0JPKFM8AxSUZC0oFHlzw/UEeYVrKdQC8h3a153mypoyLcqwett7jTVXJzKjkMeW3aptbcUPDdyq4WzU+FZKAWnJG9mcWf9Du8ZeItUCaViH8Len2/hT0Mto0e8Q8sLak53rfH2qsFhfGMdc/kuvTmcH5MtRqOeT7mmkZscHvdp9MbxkbAKu0dpTqj7fVOFdZ85Jc+bS5OUblGlinSlyDbzPi2IrP+0vmJq8Lk4VawxzON59GY5JKgEY3AEWUohYlYz4LO+AWku0D7FEhSq4Ze3pM51qUQhMp1oGZLTk4G6qM7EXbJYC8sLmvJu88PS+D73Jp1OhPDOg/g5Dpn1F9U2vraRJ+taJVOwBTqylkuwmmml7RM3HTnHkhwj21N2HEs82BTKUQdEzpaqP9N/PjLZMDKKtsYVEYiAZR+eTw
+ MrwG/2AP
+ XPvYgfoHFiqPMRnANYAB603S2oixxaftx1hUbyeyWqtqgwq+k4WtQK41OE/uT/MUNwJZaw7/Kl/oOHwGlEbuVupjPsmuBc7SS/EGRVr+KhgY+lNEkwa+wBGev+hgFrBGuHeEwLm5RjGcT8Wcz2qlmZ32Cp6QPJ8Psyrb5jU9ZQrraCFbf7+JBekTCYrVZexexBj1PTuN01qbvS0ELn+2Ql9C9SZmmWD3lOX0uE1Kh+wMkjMV5ADFKGg1MIhMeIDoJhFd/d9Yp21uyeHnjMZwTWbOYpviww2WIgJ9yo8x7PxYShx/cSv5C7vx5huDPYZSWtxvUXBK77poLqwc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,104 +93,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
-This also adds support for {pte,pmd,pud}_pgprot helpers needed for
-follow_pfnmap APIs.
 
-This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
-it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
-VFIO PCI core driver already supports fault handling at PMD / PUD level
-for more efficient BAR mappings.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
+On 26/02/26 6:49 PM, Ryan Roberts wrote:
+> On 26/02/2026 12:54, Anshuman Khandual wrote:
+>>
+>>
+>> On 26/02/26 6:07 PM, Usama Arif wrote:
+>>> On Tue, 24 Feb 2026 10:41:47 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>>
+>>>> Currently ptdesc_set() is defined as WRITE_ONCE() but this will change for
+>>>> D128 pgtable builds, for which WRITE_ONCE() is not sufficient for single
+>>>> copy atomicity.
+>>>>
+>>>> In future this infrastructure can be used for D128 to maintain single copy
+>>>> atomicity semantics with inline asm blocks.
+>>>>
+>>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Cc: Will Deacon <will@kernel.org>
+>>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>>> Cc: Mark Rutland <mark.rutland@arm.com>
+>>>> Cc: linux-arm-kernel@lists.infradead.org
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>> ---
+>>>>  arch/arm64/include/asm/pgtable.h | 11 ++++++-----
+>>>>  arch/arm64/mm/mmu.c              |  4 ++--
+>>>>  mm/debug_vm_pgtable.c            |  4 ++--
+>>>>  3 files changed, 10 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>>> index 804ef49aea88..42124d2f323d 100644
+>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>> @@ -85,6 +85,7 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>>>>  }
+>>>>  
+>>>>  #define ptdesc_get(x)		READ_ONCE(x)
+>>>> +#define ptdesc_set(x, val)	WRITE_ONCE(x, val)
+>>>>  
+>>>>  #define pmdp_get pmdp_get
+>>>>  static inline pmd_t pmdp_get(pmd_t *pmdp)
+>>>> @@ -389,7 +390,7 @@ static inline pte_t pte_clear_uffd_wp(pte_t pte)
+>>>>  
+>>>>  static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
+>>>>  {
+>>>> -	WRITE_ONCE(*ptep, pte);
+>>>> +	ptdesc_set(*ptep, pte);
+>>>>  }
+>>>>  
+>>>>  static inline void __set_pte_complete(pte_t pte)
+>>>> @@ -856,7 +857,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
+>>>>  	}
+>>>>  #endif /* __PAGETABLE_PMD_FOLDED */
+>>>>  
+>>>> -	WRITE_ONCE(*pmdp, pmd);
+>>>> +	ptdesc_set(*pmdp, pmd);
+>>>>  
+>>>>  	if (pmd_valid(pmd))
+>>>>  		queue_pte_barriers();
+>>>> @@ -917,7 +918,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
+>>>>  		return;
+>>>>  	}
+>>>>  
+>>>> -	WRITE_ONCE(*pudp, pud);
+>>>> +	ptdesc_set(*pudp, pud);
+>>>>  
+>>>>  	if (pud_valid(pud))
+>>>>  		queue_pte_barriers();
+>>>> @@ -999,7 +1000,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+>>>>  		return;
+>>>>  	}
+>>>>  
+>>>> -	WRITE_ONCE(*p4dp, p4d);
+>>>> +	ptdesc_set(*p4dp, p4d);
+>>>>  	queue_pte_barriers();
+>>>>  }
+>>>>  
+>>>> @@ -1120,7 +1121,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+>>>>  		return;
+>>>>  	}
+>>>>  
+>>>> -	WRITE_ONCE(*pgdp, pgd);
+>>>> +	ptdesc_set(*pgdp, pgd);
+>>>>  	queue_pte_barriers();
+>>>>  }
+>>>>  
+>>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>>> index bcf32d1a92de..ffd307c546f5 100644
+>>>> --- a/arch/arm64/mm/mmu.c
+>>>> +++ b/arch/arm64/mm/mmu.c
+>>>> @@ -83,7 +83,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+>>>>  	 * writable in the kernel mapping.
+>>>>  	 */
+>>>>  	if (rodata_is_rw) {
+>>>> -		WRITE_ONCE(*pgdp, pgd);
+>>>> +		ptdesc_set(*pgdp, pgd);
+>>>>  		dsb(ishst);
+>>>>  		isb();
+>>>>  		return;
+>>>> @@ -91,7 +91,7 @@ void noinstr set_swapper_pgd(pgd_t *pgdp, pgd_t pgd)
+>>>>  
+>>>>  	spin_lock(&swapper_pgdir_lock);
+>>>>  	fixmap_pgdp = pgd_set_fixmap(__pa_symbol(pgdp));
+>>>> -	WRITE_ONCE(*fixmap_pgdp, pgd);
+>>>> +	ptdesc_set(*fixmap_pgdp, pgd);
+>>>>  	/*
+>>>>  	 * We need dsb(ishst) here to ensure the page-table-walker sees
+>>>>  	 * our new entry before set_p?d() returns. The fixmap's
+>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>> index 83cf07269f13..faf6a19a89a1 100644
+>>>> --- a/mm/debug_vm_pgtable.c
+>>>> +++ b/mm/debug_vm_pgtable.c
+>>>> @@ -445,7 +445,7 @@ static void __init pmd_huge_tests(struct pgtable_debug_args *args)
+>>>>  	 * X86 defined pmd_set_huge() verifies that the given
+>>>>  	 * PMD is not a populated non-leaf entry.
+>>>>  	 */
+>>>> -	WRITE_ONCE(*args->pmdp, __pmd(0));
+>>>> +	ptdesc_set(*args->pmdp, __pmd(0));
+>>>
+>>> The ptdesc_set() and ptdesc_get() macros are defined in
+>>> arch/arm64/include/asm/pgtable.h and are arm64-specific. This change is
+>>> in mm/debug_vm_pgtable.c which is generic code compiled for all
+>>> architectures. Other architectures do not define ptdesc_set(), so this
+>>> will would cause a build failure on other architectures..
+>>
+>> Agreed. Probably will add a local fallback for ptdesc_set() which
+>> defaults to WRITE_ONCE() for platforms not overriding. OR does it
+>> require making ptdesc_get/set() much more generic construct ?
+>>
+>> Probably missed this problem while building on some other platforms
+>> as DEBUG_VM_PGTABLE might not have been enabled in their defconfig.
+> 
+> I don't think there is any need for WRITE_ONCE() in this file? (and I feel like
+> this has come up before in some other context). Could you just change it to a
+> plain C assignment? Or even better, pmd_clear()?
 
-@linux-mm:
-Is there any official test which I could use to verify this functionality.
+Agreed and just sent a patch in this regard.
 
-For now I used basic ivshmem setup + vfio using Qemu and validated using some
-basic test to see that we are seeing these prints.
+https://lore.kernel.org/all/20260227061204.2215395-1-anshuman.khandual@arm.com/
 
-[ 4351.435050] vfio_pci_mmap_huge_fault: 3 callbacks suppressed
-[ 4351.435234] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x0: 0x100
-[ 4351.457005] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x40: 0x100
-[ 4351.463684] vfio-pci 0001:00:00.0: vfio_pci_mmap_huge_fault(,order = 5) BAR 2 page offset 0x20: 0x100
-
- arch/powerpc/Kconfig                         |  1 +
- arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++++++
- arch/powerpc/include/asm/pgtable.h           | 12 ++++++++++
- 3 files changed, 36 insertions(+)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index ad7a2fe63a2a..cf9283757e5d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -172,6 +172,7 @@ config PPC
- 	select ARCH_STACKWALK
- 	select ARCH_SUPPORTS_ATOMIC_RMW
- 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
-+	select ARCH_SUPPORTS_HUGE_PFNMAP	if PPC_BOOK3S_64 && TRANSPARENT_HUGEPAGE
- 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK	if !HUGETLB_PAGE
- 	select ARCH_SUPPORTS_SCHED_MC		if SMP
- 	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 1a91762b455d..639cbf34f752 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1289,6 +1289,29 @@ static inline pud_t pud_mkhuge(pud_t pud)
- 	return pud;
- }
-
-+#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-+static inline bool pmd_special(pmd_t pmd)
-+{
-+	return pte_special(pmd_pte(pmd));
-+}
-+
-+static inline pmd_t pmd_mkspecial(pmd_t pmd)
-+{
-+	return pte_pmd(pte_mkspecial(pmd_pte(pmd)));
-+}
-+#endif
-+
-+#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
-+static inline bool pud_special(pud_t pud)
-+{
-+	return pte_special(pud_pte(pud));
-+}
-+
-+static inline pud_t pud_mkspecial(pud_t pud)
-+{
-+	return pte_pud(pte_mkspecial(pud_pte(pud)));
-+}
-+#endif
-
- #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
- extern int pmdp_set_access_flags(struct vm_area_struct *vma,
-diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-index dcd3a88caaf6..2d27cb1c2334 100644
---- a/arch/powerpc/include/asm/pgtable.h
-+++ b/arch/powerpc/include/asm/pgtable.h
-@@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
- 	return __pgprot(pte_flags);
- }
-
-+#define pmd_pgprot pmd_pgprot
-+static inline pgprot_t pmd_pgprot(pmd_t pmd)
-+{
-+	return pte_pgprot(pmd_pte(pmd));
-+}
-+
-+#define pud_pgprot pud_pgprot
-+static inline pgprot_t pud_pgprot(pud_t pud)
-+{
-+	return pte_pgprot(pud_pte(pud));
-+}
-+
- static inline pgprot_t pgprot_nx(pgprot_t prot)
- {
- 	return pte_pgprot(pte_exprotect(__pte(pgprot_val(prot))));
---
-2.53.0
+> 
+>>
+>>>
+>>>>  	WARN_ON(!pmd_set_huge(args->pmdp, __pfn_to_phys(args->fixed_pmd_pfn), args->page_prot));
+>>>>  	WARN_ON(!pmd_clear_huge(args->pmdp));
+>>>>  	pmd = pmdp_get(args->pmdp);
+>>>> @@ -465,7 +465,7 @@ static void __init pud_huge_tests(struct pgtable_debug_args *args)
+>>>>  	 * X86 defined pud_set_huge() verifies that the given
+>>>>  	 * PUD is not a populated non-leaf entry.
+>>>>  	 */
+>>>> -	WRITE_ONCE(*args->pudp, __pud(0));
+>>>> +	ptdesc_set(*args->pudp, __pud(0));
+>>>>  	WARN_ON(!pud_set_huge(args->pudp, __pfn_to_phys(args->fixed_pud_pfn), args->page_prot));
+>>>>  	WARN_ON(!pud_clear_huge(args->pudp));
+>>>>  	pud = pudp_get(args->pudp);
+>>>> -- 
+>>>> 2.43.0
+>>>>
+>>>>
+>>>
+>>
+> 
+> 
 
 
