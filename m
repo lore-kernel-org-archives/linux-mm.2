@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 952BBFD9E26
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E845FD9E26
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:49:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBBB36B015E; Thu, 26 Feb 2026 19:45:59 -0500 (EST)
+	id 9997E6B0161; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8FC56B0260; Thu, 26 Feb 2026 19:45:59 -0500 (EST)
+	id 9478E6B0276; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D85086B0276; Thu, 26 Feb 2026 19:45:59 -0500 (EST)
+	id 83C636B0288; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C39686B015E
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:45:59 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8DA01140253
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:45:59 +0000 (UTC)
-X-FDA: 84488394438.02.F54AB20
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 71D126B0161
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:49:30 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 002411A03EF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:49:29 +0000 (UTC)
+X-FDA: 84488403258.17.B588789
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D7376A000C
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:45:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N5/u1IOs";
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6E3B9C0003
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:49:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dW5VLMc4;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772153157;
+	s=arc-20220608; t=1772153368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=86UkKb1KgMuBrh7/WgoHjehPXv4MORsHae533XC9OJs=;
-	b=Y0lKbuCfaqMLaAZwERV7gytfdI14NcdZ6eN/QQ7UYvpnVKu+UMzItHvjiPnvZ5OXgSX1Dr
-	hI5CWJGyKXFOELr+JDKdQCYnUH5bUjo9WO0pkvZoFPBm4iTxTASyMFy2B/MQFMpMi/wrNL
-	7XSd978aeZ+51BD5VgPO5uSHe9zXoBI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="N5/u1IOs";
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153157; a=rsa-sha256;
+	bh=T2KlksqtDqDPZMdMNp2MdT1X4G1xoh049uiXqGS1sLU=;
+	b=7OuXF2UqhxDYbuN8bO82WvcRf/9OneNlYFGQynMmFBOt/iP8k57xP0Xzy9YLrw0eIGh1SE
+	/YqGVN8d5Wln4pHqJRiV/IqY5UOoerTW6J4kRZ+zcs2V+GyeaaITdLl7r2s+tKpGrKKgUZ
+	z84AF7SJ39kPO8Uo0JR/3ZMPCiVeqL8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772153368; a=rsa-sha256;
 	cv=none;
-	b=dFvtai2r5bus0C+2g+F3URoGRj0CiuCKoPnWkfTXNIw5pcM+rI2e3DFGSN2TczqQYnmLEW
-	eYCtbFeM/EOo86zBUgroIddTNE9HON4EqceSBBR1vzcY2CJWCcLn6IxXF5qP564PJs2i37
-	4jKzax0C5FbFFBxj7EVAVFUo7D9tQNc=
+	b=vFO0aqSf9NP2MaVXCTljIr7A5bYzlhs6V2Ckle2RkC2DqbOi70BiCO+tpCaCNCQWfGMpxM
+	TJFuHcaNL0TqD7g/6T7bWPCkmD9T7nJXEY2ZMBB2G+hpI2at5BcJFeAREd8Mwch6ZVqoDX
+	Ef42wLbQ7Rp2EsQcjn9cQvgbCdYwPik=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dW5VLMc4;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 202AF600AD;
-	Fri, 27 Feb 2026 00:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE24EC116C6;
-	Fri, 27 Feb 2026 00:45:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6F0960054;
+	Fri, 27 Feb 2026 00:49:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905B0C116C6;
+	Fri, 27 Feb 2026 00:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772153156;
-	bh=7stlFYCl1LQeMv3JNhnoSvzt9QhLvt8aUlCsIpsOmHo=;
+	s=k20201202; t=1772153367;
+	bh=0ei8WZJE2FrdZHn/eCwJkCgGu/fralSeuheP3WYhs8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5/u1IOs51h8aCGcDabK8JxMaRFCCz3yl/81Kyfp2I9SmL8WNud2TGw1i6xPTNx2+
-	 YkBlcdmAlq03sHWV9EXKAPQF1dpu9RdaR/SmBF18k1H5a78VPeTzgZMyQr1463r7tt
-	 U8FPbQENYrGx1CPlO+DNYhbWgqVlCA8C186mEv6qpHCuntkOSqmQ/2LJJySaJ9STRB
-	 ipFC3tGfwLOEvSxvB/Xhgv0M7v0BhgXnlLVOKYZQjI30fOPWH5/HZt0+9InTZFnXJL
-	 1tDMAQMyXo0idZuX80df97Secsv4Lpq45x7LyGctpT7z9CBeMovuOgDwhIU4D1NJIt
-	 634MDT7vDZDUQ==
+	b=dW5VLMc41+6wsYn1fqjBm5Z2dUQzsrLIbMzBUCUJdNzLWkt+tAliZNJIqTJnGoZiw
+	 YZcBpJQwV0umiTacTFuaTGPnJpiWNkDjtQ67O0D4xvd2HmOIoQ383C1NJZg6x0hTWl
+	 m9zMc8BqIYuIqA+2QC7M6Z7mAWWV0MIHAGQmg4fIDG/AFlCe8SM4+pyGsHQSuTmmOK
+	 WSZzOC+Ss3jHGxwo98vclmX6SceFPgJdF2AiwULvTinadsNnKEqAtfzrcN1Iu6oWZR
+	 VR1I//fmXR0l3+taU9//5+KG33gAyIHnLuySx+efG/BhDRB+2aE05s7mh14xOdHFi4
+	 JrOhqSjrBIMMA==
 From: SeongJae Park <sj@kernel.org>
 To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -92,22 +92,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-cxl@vger.kernel.org,
 	kernel-team@meta.com,
 	Benjamin Cheatham <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH v3 3/5] mm: convert compaction to zone lock wrappers
-Date: Thu, 26 Feb 2026 16:45:54 -0800
-Message-ID: <20260227004554.83555-1-sj@kernel.org>
+Subject: Re: [PATCH v3 4/5] mm: rename zone->lock to zone->_lock
+Date: Thu, 26 Feb 2026 16:49:23 -0800
+Message-ID: <20260227004924.83661-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <01729baf359e4c6612aead53f1fcb644f782d1de.1772129168.git.d@ilvokhin.com>
+In-Reply-To: <1221b8e7fa9f5694f3c4e411f01581b5aba9bc63.1772129168.git.d@ilvokhin.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6E3B9C0003
+X-Stat-Signature: xwmresquc9in1eh3h6pqmkaqmrd87jdi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D7376A000C
-X-Stat-Signature: c71zxjisy4czntbwizbxatynpcqrtn54
-X-HE-Tag: 1772153157-335329
-X-HE-Meta: U2FsdGVkX18zP81Ae3kVEpIzLZoNuYoLInos2Kb+/2Mh48jkcA0NiVqW7fy+xwHGf6y9E1mU7r+CJygS8xYfLL65yqDZhNf+KyGifXMqgIH+V3WQh/ZCrkQaw4d8tj3oBZfHam5g9Tdwu0OPA5yUen5ZKeqwgDIEZnbbf0rJb1FJc7WDY8qcFK28XsLOO9JFIc2skY8KLF600tLUrNZfFseB4Dwzg0dZ1yuk1utWFmx3OO9yeRnwC1MxV8Vq10sWAyq3SmdtM4O5eBwl8NMKp8qqgDAxC+vKmpzie4bzd8/KH7ooWMb7I0XG8nSbZ+G5ZzRfB4Nm9lFXv3/gjZMaEBvnYOGAU1FVJcW4dayUsTQPCax8xX7pfMGZF4BzaY4xVxlsFiyBseykXft/SCvg2nZ2XhagA86iLYQn3gc2M1GKdGPD0a/Xv5BLId1fosWJcOfB/VtpGzX042cVDWSbRsBuIncn2ASP7Y0mO9OSHcFIqm3zzBWVAuQjUASyh+zkSCwQqNir3+uLxrqv36JFRGB3IX2BwXpHFj7ggZC7En/IeWYbVc87Ihcw/F+sE8Jjj8kaz4h2u/cXPxjUYm7AapHuNmUUE+5BZFj/tMw0Zp/LCUnOIYNTfA8dT4M1V77d/PqIHEg1qVfBApj9MjRu0EdE5K9K2JM0nPvjW31rWygVng/76RgCdNYLdMk3cajh7pz37X7wIpPKYDc8uM7M1Q81Ov2ZxDYOJrn4s2yoXCgEbgwpdvi8KuSgqXYgIdxVU6cvj2xmFmDnZzGuoemrpKZMZqQ8qGtc0IkDcRci60U7Y6WWvT7AKbZE5vvRNvYaLEpvh2bIClyw6KGOo8ziiMqdncdtKL00bXc02Bb9Rz56HY3xuObx2pqdvkM5gAVJCfysPPQhLDNsMGy8YRo8QeRU7rL7rO4SPL9orsO9si531LnFLblpS++sIBbGArmFYiLAtZgMGdDjTAd73xL
- +LoD9MmX
- V/XkfqDU0YvDoIgUnRenQH4qzER3x1XbBeOWhjd/j7qYbrVe8WUX86S1snzYwu3hXX+d8KnvvE681JjYxMBXnk6Y1qj7d1LPwWu9s5hvrcoiAhoB3vLPrsUUUfu0ugCMfVyD/fjNUR+cCufhA+wMxCl8NG+qmK0Ewd7Xa1BR4CEvZFHqyNY5ow/AngqSIZMWvh02td3QC47CMvP04tn8qhnbNlJeiXKoQ2pgJSD6QMnONcnPFdH5YHqu3+KJpsl481xjTpIOTurJLZ3k=
+X-HE-Tag: 1772153368-867794
+X-HE-Meta: U2FsdGVkX1+Kbwovl0KN9WrlCovdWOMgtr2hU3sfOwsUjcZUcYzH04gIRVKTG2SZnucTvkUqMhYvW0g5PuhGxQKcNSNLxfWQHWKW3gRAqstOftSsrhbDOOM6oebFI+c/E4aRZ656HG5mVy45X6NwpxB8umAdMznjkTmgMLdbBl72xuvgYThBoxUZksGWcOtBy0vpr88SfQ/qEGZ3lEKnPqzdGGn5C3YGPEoLTrS2E7NjQx2+CwrKDVntwQNrlJ7JCrlyvMfcL4yffvxfax3RSHJJ6d0DMzNp73+T4BzVg+gy2CL7lzisaxGDsqvXhNLtE0ey57M7P/Ov3zf0pRJKRURJnM6m82x0Qo0F0YHGoL2q7po9eLyPQU6qbo7sx4r0bQNtBtm79yT7x+DHBhLJhmB9x6p1Kl4gAaLuaE1brRpF5/YWL/DUsAWolOlNAOLZmxaGikn3fL+1VniFDBWX3veE0ySvUY4khGhITf0fjq2aEcmCqIdUZGp6epzy3vcb7AIk/NEnlSsCgYCPL/TuojmzNhH6jEGYm0uUx+WjXMb7nSYBuBN59B4ksrVuHiNKgU0T9ggP7lVmkXFAduw3QcB+2y9banv8aogv7ZIf8NZsIwRS7uDgdXGwD26iurEFpR6Nl9eed44oEXgKkuNLkbpw1JteWLnCsaRMg2KFl88SDavD20ObtYVDb/GSGfVXhhWiwvh7R/pVSMxq1LCgsfoKWLW9DXf4yvQhUHrY7HUQHyAPv4q15ASLK6jBRz0Dh1R1U+RVpn6Ku3JxqtThd4nVetqTMZt87RzwubvkbZa8U+W4/RYg4CXnhIa4D33I0DKYEyDr4Daeuh1IGYuBcjkctJaXsB3LfHu5ui7mSzYU9Vs6VsfIgR61PQUDyvyzdgyO1FAautnBA69EqdZxdjumRs6J9xXzu7UWALnTzQqnzrA4KEMilI5GJgGOgi/qu+i4vPc2hANUjDE99wD
+ JEt76xg+
+ ztRaqIbRq5/W2VHDAq0haerGiSC8/AkUXiBg84qTnkwJkA/3sHEvSUGW2v+tvMk3hQ+5iiCRGos/uxiqffR+imLYXB50EdMKk53qKs2efguq9JCimZOpAj23yR3r5rsqUk1mqwaV2mFl0EIx7kRKp3DIjY6X+l2DmEnzn17axTs4NBm0pMSdX89FuWZLP6WXkallXVMX4jk5uwH9xUoMfGsKJu1zhY3FsiO2JH8Qq0rGB1Ot4xfubXE+gWcxLSWaw92+butL2b9QwUEcqHLWCMmyCw9f4t7u0MGl9rJ/ixXLRkkCfyu8WsRBt5kxJciF/0BsvIu1EC5ffIZUw3ZQYBFy1n14qqyMJCle4EyuWfo0fclwUojwfR4/VMKfbsmZCWXhmddMPBUQHKaA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,54 +115,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 26 Feb 2026 18:26:20 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+On Thu, 26 Feb 2026 18:26:21 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> Compaction uses compact_lock_irqsave(), which currently operates
-> on a raw spinlock_t pointer so it can be used for both zone->lock
-> and lruvec->lru_lock. Since zone lock operations are now wrapped,
-> compact_lock_irqsave() can no longer directly operate on a
-> spinlock_t when the lock belongs to a zone.
-> 
-> Split the helper into compact_zone_lock_irqsave() and
-> compact_lruvec_lock_irqsave(), duplicating the small amount of
-> shared logic. As there are only two call sites and both statically
-> know the lock type, this avoids introducing additional abstraction
-> or runtime dispatch in the compaction path.
+> This intentionally breaks direct users of zone->lock at compile time so
+> all call sites are converted to the zone lock wrappers. Without the
+> rename, present and future out-of-tree code could continue using
+> spin_lock(&zone->lock) and bypass the wrappers and tracing
+> infrastructure.
 > 
 > No functional change intended.
 > 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> ---
->  mm/compaction.c | 33 ++++++++++++++++++++++++---------
->  1 file changed, 24 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 47b26187a5df..9f7997e827bd 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -503,19 +503,36 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
->   *
->   * Always returns true which makes it easier to track lock state in callers.
->   */
-> -static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
-> -						struct compact_control *cc)
-> -	__acquires(lock)
-> +static bool compact_zone_lock_irqsave(struct zone *zone,
-> +				      unsigned long *flags,
-> +				      struct compact_control *cc)
-> +__acquires(&zone->lock)
 
-Nit.  Why don't you keep the indentation?
-
-My impression based on below output is that mm code prefer indenting
-__acquires().
-
-    $ git grep __acquires mm
-    mm/compaction.c:__acquires(&zone->_lock)
-    mm/compaction.c:__acquires(&lruvec->lru_lock)
-    mm/khugepaged.c:        __acquires(&khugepaged_mm_lock)
-    mm/userfaultfd.c:       __acquires(ptl1)
-    mm/userfaultfd.c:       __acquires(ptl2)
+Acked-by: SeongJae Park <sj@kernel.org>
 
 
 Thanks,
