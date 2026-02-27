@@ -4,112 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E9B0FD9E26
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72AD8FD9E2A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:31:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13C486B026F; Thu, 26 Feb 2026 19:24:13 -0500 (EST)
+	id 9398D6B0271; Thu, 26 Feb 2026 19:31:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA2B6B0280; Thu, 26 Feb 2026 19:24:13 -0500 (EST)
+	id 8E77E6B0276; Thu, 26 Feb 2026 19:31:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2B266B0283; Thu, 26 Feb 2026 19:24:12 -0500 (EST)
+	id 7E5B26B0283; Thu, 26 Feb 2026 19:31:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D9F2A6B026F
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:24:12 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8CCEC1BCAA
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:24:12 +0000 (UTC)
-X-FDA: 84488339544.15.42FE2C9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CF2B32000D
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:24:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhpl98Fu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772151851; a=rsa-sha256;
-	cv=none;
-	b=EF/CXPlKEq+e8CyHCuNHF6BMg4nY7SF9GmpPjWe9jfxYMDQOULz/pyK4BtzIHpsAVM1PtN
-	uPPSFHDzPqQIOo8P+8iutAh59BT3wRlfc7CIJvBgF0AsRcJ6TESww0RZBTNaQuFQocgmM8
-	ffYT7RlOrYn9fe+n1oN/eWkW7yZFr4I=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uhpl98Fu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 67DD26B0271
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:31:45 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1743113A259
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:31:45 +0000 (UTC)
+X-FDA: 84488358570.13.6609392
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7F992180002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:31:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6wDT8Oz;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772151850;
+	s=arc-20220608; t=1772152303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Efz9q0poatbA8hHPKY8SNXfcnpnV3XZ9wxlVeadKTtw=;
-	b=E7DAmIWlWWFvTYeVAfZ6YwQNpNWswjnjv7RkidFymXeVnm8pmMnkyO6xbGUpLQxb/pli1c
-	RyiNIZy1C8N+ALCrk9UxKQez2RgjEBhMFz/uMH0uPAmEIt8H0ueh/ixCub8aSJSIbMgMIH
-	ttXxBrNYseDgi8phmzQOUzHF7dPFgDM=
+	bh=Qyy+ESG4KhSxhtTwVvtYSTPvTzaBu2N4NhQlAkP102s=;
+	b=eca9lgGG6JzfDejsvhT2sVqmGQ/3lMf4i++VgWgB2gbSHWDeWxDJVK8l4cQWGqbSHBlmIm
+	6YPT/t2jj+JboIrACsxpnz/kOMM5N1k5Gdt8DLQQO7SJjl6Zd5vIzheJoDVqwbUTKJN/kq
+	r0g/1FCCYXpoRRFWAdjF0VZzBY9h/Xs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C6wDT8Oz;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772152303; a=rsa-sha256;
+	cv=none;
+	b=KIWsZUtLMvcGEonAKeUrnfOAvK/7shhhLH5hQRL6nmsa/v6nAIJZc9VMH3Dd1fxmjsGZTW
+	HoveWRKHB80YUoM+ghO2rOEBeG6JDf5xP4Vo1QuETZCzdg5pICv8rboLKWyRoJ2F9qw5c6
+	vHiMcTZa9J6zi4IySTMEwSSLNhJ5u1o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 911404093C;
-	Fri, 27 Feb 2026 00:24:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880B5C116C6;
-	Fri, 27 Feb 2026 00:24:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C89C5600AD;
+	Fri, 27 Feb 2026 00:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BA8C116C6;
+	Fri, 27 Feb 2026 00:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772151849;
-	bh=fYwp4H6MZZvXqT9nHx4ALyOysK8KQnhb3bxCGINCOsY=;
+	s=k20201202; t=1772152302;
+	bh=wLUycsWy3gvgVrAlquArUpLMruKe7fYZQVQj/k79Xis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhpl98FuaQh0duTTyS/EnSNt8MlCHzX41pBZJpwol1vQ97QQM0uCzFB2kB6p6+0+U
-	 XaDuUYdqPbHIV5i2gJIh4Z8lmjK62h/i1h6qLtSpFCNLGF2ZPwAHyEz15dV/gn23oS
-	 /QA1Xy1SYBL6PnwjeWoy3jyVKeneg9oiZzkqh3CxgBxd18qPvhtxRe8eM/VBtTklA0
-	 lJyR7pL/Rsl2agMYVphHfUHsewgZv+cZ2j+RG2SLwyysL+ZftIATDnUiZb5H2EJeUT
-	 uFgrQC3ilKn7iZVGI4fE2ztLXoYi6AVlFlRJfYRI5Kjy4D6L8RNZ1GcK5AZCLrR2Wi
-	 YMG79qMk8rCQg==
+	b=C6wDT8Oz/lWsnUbLFCuR+IuSXz5zQ2VJkvYKpUXXoPZ/z8OhpxaWeRaa5c4TLRAhK
+	 O7HwYD8uJA3dEJRoQwpbdlwcpzKNFy6c6Y2rlnAx1i3MUOhZ/z/wkWiGmwlyEDFNXC
+	 vaDUebAFwFQlcm0XAcavOJXyB7KVONW6Amv1x/VM/BEqfAsScqIXsUOZWvgdkQsNfh
+	 RP9Vd2dE1ZBsotkGgdnOGvBNXFnxclpXgsKE2CpzjdRlrl1S7BjAGJs/sEPG20lVUt
+	 tynzhNe8Wu+Luo8aZjvsWO+8Ja3a+mPaM4kWOeJEWsw64nvk2eyHOUYV+et7xVXzvM
+	 4oAdfOn8IoOBw==
 From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	mhocko@suse.com,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	harry.yoo@oracle.com,
-	yosry.ahmed@linux.dev,
-	imran.f.khan@oracle.com,
-	kamalesh.babulal@oracle.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	chenridong@huaweicloud.com,
-	mkoutny@suse.com,
-	hamzamahfooz@linux.microsoft.com,
-	apais@linux.microsoft.com,
-	lance.yang@linux.dev,
-	bhe@redhat.com,
-	usamaarif642@gmail.com,
-	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 00/32] Eliminate Dying Memory Cgroup
-Date: Thu, 26 Feb 2026 16:24:05 -0800
-Message-ID: <20260227002406.82611-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	kernel-team@meta.com,
+	Benjamin Cheatham <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v3 1/5] mm: introduce zone lock wrappers
+Date: Thu, 26 Feb 2026 16:31:39 -0800
+Message-ID: <20260227003140.82789-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260225135706.28a93fd5817e0939387275b6@linux-foundation.org>
+In-Reply-To: <5bcc39cd3a227944d0fbe75ff86cdac92b38d4ca.1772129168.git.d@ilvokhin.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CF2B32000D
-X-Stat-Signature: kfrrkbcjohqjh65ks4m9cx151f9ub8b8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7F992180002
+X-Stat-Signature: 8gt13ai6txepzz1ufwkbhun5tiy6qwje
 X-Rspam-User: 
-X-HE-Tag: 1772151850-104981
-X-HE-Meta: U2FsdGVkX1+E5wATW81gqxvhqjFwUP9Sw1gW3HiBaT9QM4vBXmn63K6f4ftrB0e329asMrEY3DNu69X7x54kBjtNcndYmWIHRAk+5o8mxBaITvp21ryg6dwKV0JEOEbJME1M5KusGVxmNwF0CbknQ35bQSd5Qu3ChTdJ7M6Uhx4KPNs8RBHeRCJJXNXONRFY0ahxedbJ8XORBK/tU34SKds3KEMVVaM6xBKSWnkWEnSLxODOB7+alk3YWOvHCumIev3wjUUXvWKQykjQEoI9bJjsLinMz5AhAaiHZxPn6pQZkXLWf7FVQSquXRVGo7gtZZN3U+fbwNu7/j53Acm4oK/NQ1IIBbpZQ5Z9/2CQMJCWcFsm7ZCngXFU7vj1f3ljJcEFR9oVgGtDZEZzHC0O29Ecxgu4VfTePdKy2eHmfgMw89gNENoGz5kZfo7T0DlWpngLNSLbRscrsHR9Mx2eMx440hljNszL4nI+EiqUasEuD3gKNWZoqphChqYG1WDKvYEHYSKTlW7AglvI/bJ/px747/65T11QspJatAucWn5zv1xwTDvr2anmSce6oElE4DrXh0rC88N1g3Oi1zixiZ3Xcv8w6gyUr5pY75Z1yog8AXPhVuvq0/W6Iqmk+9buYZzqhdAPnkUFL/SYdVEBOJnCjm3W92rAeOuR4iF1WH5A2JGihgEqX2sL+UPFhEXos9sP3RorjtMGw4J55Mz7wrYtgR+E9p44VFZw7O1093m4ktCSzrZmbve37aZ/03dzPizpa1+t2Sc0lQX339o7AwCkeDZLZpUyL5VaWWiGc9Jqps7viymXsDd3zgf0MsW7rZN3juwsSrXg8zLtZIO2PZXevDr/uyolk/fyTvJji/IMpvwuurYA9EJ3+LYzgefzOW8/4D1PpfBYMHSWDdLzLHNWfaezMHMs9xQllSLwCs4d8/wENkPil1Xfe+GUjS+c0nJZBNrWXyIBrnAeFtz
- brhghSV0
- 2szdYG9C3Y1lSZaGudIyyAdS6PA4pL5KKaPcRNOCavHTxAo2sTgUpz3nzlh62FRRNYP//Aq1l/Pdqvh7HzPgVoRU3NcLobdQ+6TdIromgIL+0LAq6UUJT02uRlj99Zi1Hq3iSEkLxSBLKxECu6iltwVvOv61lDs/OUDh+R9vNImxYJqHTHslbmb5ofpwnMh4FzvzPE8v55+O9eqZeZbHH00lCTZZPnZyaq3l1qq6q7p4dF0qiMUGST6q5eu9qsPl6uunozQN6+qMxii8ak2y94Ht1hOVlwMhBdbRVNRpgapJJkgU=
+X-HE-Tag: 1772152303-597915
+X-HE-Meta: U2FsdGVkX1+Da3kLOjdKfE6hH0hbiyjwFhByqQYeoK5ZKobhzeIuWUccpeAUb5Z6B6cxFle6o/lra8KewD1hRW8C/KcTyWufCtTgQfdCauAAf1KDCMJAEPq6RA9TeyTKsffDbPN5UT2wfLZnvaeHOd7/1081lhktiJqNxIpAz49hZwxoKGNMswFV0JPxHapnYuYyyg+Jp6cH4+yUS9t0HMygIDxOdfOJo1ZAXtjNadIvUDCToscaOEpQ2V4QuQqtQZnVPS0LbswpHpyJaA4XUiwslJnphKktSE+norz6F7GAkgmp9jgTFV4sG7ifXu0MnDg+crsCNDQqlP9Uce8iuVmgUQCu75gny82rYN4C3vV92F2cpsVn1NgnKy8Vm4WH8f+Xy2iAD5eGc8vAkuykx6BFQklhDeIPQr0Dcn3jx4eJHrLk4U027/WPwbq9Vr3vZLPlY6BxRpdmmQcKKeTKHDWpl3DgPBM3O6JO1LDAfBMZiGrMjfXU310zXcyOkvYWTqGYrXwSAVVF0yRq8qb10qGWYZf+sZ7KOasgJssl3yYvNfbIFQE3vg44rgnznEhXuZRf0eXbuo8quxaVBsg2vvb80UDlWasKU5BGsuoMKLWUq/ZjB1KS1giNeEwWt9J9S6Nlep0SUGW6gL0NyT7+DJ889OMQMCsxyzVmTIUiUv4X7g7M6kvYQij43JgWy5gf2bI7ZnqPOTdGQYAqlOaS3IyZlaGbo8jNGTaf5ON6Xo2wbk7ag+vhA1cwLj92gt5TFtSdRZYUyBSXAQv4H4WkVAZb4671uIUDEtIat35qBv7AqzRHEI0ImGdBGXKA1BYGqmyfp8yonkJjRXmDkGnq3I20JBq5ePpPvZJbXxEZOXhtUHFFr0KfyEuDxKzIBSnay58wMEmp+sWYhzPL2jmPLDo988Zubcq01OEgz+zxXxe3y2gAppOGTN2XHpWts+8jNtEUX+5uWlJCZF7Ltel
+ JgHfq29R
+ 26EAaDfIdyEBUTA+iQ5tA/a4l32fpYpSbZmluMZB5ywXsoC6WXuYuJ8fB+4IiIVArQgeXj7Pcx1auOZSyEv7jhVyHFRThqJYpSRAw6xCG7DIZGQW91DePBTiYb9FqVbkJlOjAjdzSN9VXMir6zOR+e2SaMbPQqtG4Q546fz/neU6jmT7nUnN+MRgbKFHohTMhwP2FY+Z5DgRHG4iKFrb5LcnuyFNTZlZm7H1ZL86aCW83QONutH+CypmiKZjiucV2yHjCTiCx25xuqFPQFyzbWOWQkWIWYnzf2wKGV+k0uKU6WJnnNmKXLyeC/Yal+/Y1wBRQrj96d7TQdkvuiZUOvgLp0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,19 +115,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 25 Feb 2026 13:57:06 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
+On Thu, 26 Feb 2026 18:26:18 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> On Wed, 25 Feb 2026 15:48:33 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+> Add thin wrappers around zone lock acquire/release operations. This
+> prepares the code for future tracepoint instrumentation without
+> modifying individual call sites.
 > 
-> > This patchset is intended to transfer the LRU pages to the object cgroup
-> > without holding a reference to the original memory cgroup in order to
-> > address the issue of the dying memory cgroup. A consensus has already been
-> > reached regarding this approach recently [1].
+> Centralizing zone lock operations behind wrappers allows future
+> instrumentation or debugging hooks to be added without touching
+> all users.
 > 
-> Thanks, I've added this to mm.git's mm-new branch.
+> No functional change intended. The wrappers are introduced in
+> preparation for subsequent patches and are not yet used.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>  MAINTAINERS               |  1 +
+>  include/linux/zone_lock.h | 38 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 39 insertions(+)
+>  create mode 100644 include/linux/zone_lock.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 55af015174a5..61e3d1f5bf43 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16680,6 +16680,7 @@ F:	include/linux/pgtable.h
+>  F:	include/linux/ptdump.h
+>  F:	include/linux/vmpressure.h
+>  F:	include/linux/vmstat.h
+> +F:	include/linux/zone_lock.h
+>  F:	kernel/fork.c
+>  F:	mm/Kconfig
+>  F:	mm/debug.c
+> diff --git a/include/linux/zone_lock.h b/include/linux/zone_lock.h
+> new file mode 100644
+> index 000000000000..c531e26280e6
+> --- /dev/null
+> +++ b/include/linux/zone_lock.h
+> @@ -0,0 +1,38 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_ZONE_LOCK_H
+> +#define _LINUX_ZONE_LOCK_H
+> +
+> +#include <linux/mmzone.h>
+> +#include <linux/spinlock.h>
 
-Great.  I found the commit message on mm-new lacks the conventional "This patch
-(of X):" line, though.  Andrew, could you please add that line?
+I'm bit worried if I will think this as a file for another general locking, not
+the mm specific one.  I hence think renaming it to more clearly saying the
+fact, say, mmzone_lock.h, might be less confusing.  Or, putting things in
+mmzone.h might also be an option?  What do you think?
 
 
 Thanks,
