@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F14FEFB51
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5629AFEFB51
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:43:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D01D06B00E9; Fri, 27 Feb 2026 15:42:32 -0500 (EST)
+	id AA3666B00EB; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD6146B00EB; Fri, 27 Feb 2026 15:42:32 -0500 (EST)
+	id A6A696B00ED; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC2136B00EC; Fri, 27 Feb 2026 15:42:32 -0500 (EST)
+	id 96D276B00EE; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AADC06B00E9
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:42:32 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 533718C5A3
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:42:32 +0000 (UTC)
-X-FDA: 84491409744.11.93FD452
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4052F40008
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:42:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhCktEIb;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 85FC46B00EB
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:43:22 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 559E11B8343
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:43:22 +0000 (UTC)
+X-FDA: 84491411844.22.E5EB3C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C3AD4120007
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:43:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUXdrWcy;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772224950;
+	s=arc-20220608; t=1772225000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SsfMWNXjgJqQSqlAr8CeRmyug8KPYhUAxdXhYK5qcVk=;
-	b=UgEXmbOFtoZ7btE3+3d4iYxcJHZKf/3lWqHOQBFEkNOuCLCyaUeWgOs+eKMbptuljS9Apr
-	h4fIc3u8//5h/8p0YEAx90vpuO08qgUY+kU+i7utaq8MJzKpwNpgdTG6qQqsinmqv98ZoU
-	6R8y2YANr2IU8UksknYHaUDCHECWano=
+	bh=s4vAXpGLDQ59CKjdi5/XjsqP9csroGw2rRXY6YQw6rU=;
+	b=67ToGMl+P27t6LrxzMlQ1ZlNfo13aQKlqsayqC8CreJd7RlQMiodXjZZrB2N//zUsKQR2P
+	xvaGRP1kFUUM8J7JKGLBvVxVoNFbBGp5/h3TaGXAKh2ID0BktKqjz19Deus9fIZIbcJiN2
+	6Ye1Fdq3Xp+DOBXv0jQoL+lfmkR75NA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UhCktEIb;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZUXdrWcy;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224950; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772225000; a=rsa-sha256;
 	cv=none;
-	b=2AXbUgAdBG2UrHHyv9WbdDJn87zBK4zuShtdP2EO5W0CZG+XJyd64pSMjxrKcwz9es4qo3
-	OrL2j5uA8IIdyWhMAgXgQP6GOglIbV+1zzJj9j3Q88yRLl0+bqZlH4CQ/XUZFebcPfMupz
-	6HG2iaokJouLKMUwBoofHdSWibKEnJQ=
+	b=BRz30gHM+hEE207M8cRREdsD0ZbEpcUlwumUobm8MLJsKYfwhDsme7Wlj0k0oigCRqvaPB
+	8Mgo3lV5J89ahqplMTOs8jrTrD5tbdO9BNUOFS4Ha6UG0IPBzQLpFBx7Bfj/X8xOFUE59O
+	ntne0wLwHLctw+GtXowrbyFuJSdEwbU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A47742B7F;
-	Fri, 27 Feb 2026 20:42:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C769C19423;
-	Fri, 27 Feb 2026 20:42:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 204AB60141;
+	Fri, 27 Feb 2026 20:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A74C19423;
+	Fri, 27 Feb 2026 20:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224949;
-	bh=HoDEtvg3GBOF96zWJnOOBK0G0fY86adGkY74DzxijNk=;
+	s=k20201202; t=1772224999;
+	bh=C5BQtFO6OyplUBcKY6HfwUHgCQXnt44u+6kJv+UGBZ0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UhCktEIbAUDL9Zi2WQd3Bw9EURAPYLxkgEpK+CsepI+fOXULQE8JgHg1vl8KSTp23
-	 BLuUmlh415T01I4XECWLf4lkEYQfVTIHjBO1HWl+Gf1rcinKdsgi9q7UwyEy2uBgBc
-	 hdRSm4apydFPE08ex7f+FZgXbuXgU9FwuiYun8IavC+GtzddnGybOqXkl5ls345ewn
-	 1ojFHG8uNnNykR7DiXj331XVtk2Yj3w9NkeK9R7V6ZwqzrjhjI6ABcik8pxPGllw2/
-	 E+sRfHHAd4s2IFqMfo3SutLJVK9Zai0c+7IyApDHYdVKmZtnH7qYlA0rvLp2XdKx+m
-	 JSQkELTwQxkyQ==
-Message-ID: <8393137b-7eb8-4cfe-8963-ddd5ff75ef4b@kernel.org>
-Date: Fri, 27 Feb 2026 21:42:23 +0100
+	b=ZUXdrWcycn9HDQGAt6dye4JUyNJBbLMu5XaFxuDIw08FKKSW4VKOKdc3x+Bd3/Uau
+	 IlJFrfPsZot75XBx1PKjmd5nwWgPB3ex6Ex3t3Ehp6vWDzzvn3QeyCclaSvrl2T7F4
+	 tWxoFkYagImEIgDHF3tdL+lGU84oA6uS7SqeMwQpSdwVI2WNUPwoZufWwfDPSktMxM
+	 wnPfATuJVBJ0ze8wVi/VROUhytYoqrvA75fib0rawNsT7hnC//NfRQxqv0ND26d9T0
+	 srY0tY7E0q8QSfFpZ2a/VKR+MWSCImCpNQvFMkeHCGwUJcu2IyugZRiLJiHVBQincx
+	 dAg45c0Z/o9vQ==
+Message-ID: <ca2ada49-08cf-43e6-a857-85994374549d@kernel.org>
+Date: Fri, 27 Feb 2026 21:43:12 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/9] mm: cma: Export cma_alloc and cma_release
+Subject: Re: [PATCH v2 6/9] mm: cma: Export cma_get_name
 To: Maxime Ripard <mripard@kernel.org>, Sumit Semwal
  <sumit.semwal@linaro.org>,
  Benjamin Gaignard <benjamin.gaignard@collabora.com>,
@@ -86,7 +86,7 @@ Cc: linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
  iommu@lists.linux.dev, linux-mm@kvack.org
 References: <20260227-dma-buf-heaps-as-modules-v2-0-454aee7e06cc@kernel.org>
- <20260227-dma-buf-heaps-as-modules-v2-5-454aee7e06cc@kernel.org>
+ <20260227-dma-buf-heaps-as-modules-v2-6-454aee7e06cc@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260227-dma-buf-heaps-as-modules-v2-5-454aee7e06cc@kernel.org>
+In-Reply-To: <20260227-dma-buf-heaps-as-modules-v2-6-454aee7e06cc@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4052F40008
+X-Rspamd-Queue-Id: C3AD4120007
 X-Rspamd-Server: rspam08
-X-Stat-Signature: k9bwmete7qbc56om37qfw1ddj7m6w8ig
-X-HE-Tag: 1772224949-555170
-X-HE-Meta: U2FsdGVkX19819OIwIe5bpTmrtXjrLy/uE00dug/jbdb4Lgq5h+KOfhEr8/YH6h7E558i8uXP1BOByUPIvJXCvYhnDoB+PBtp5VQj7cCfowMl9+EWWoV1ULt2ejzztkejNrze4IlOzgbcjacnWlzCvZxhq5rRaq9kdlPZh6UUSBy0h/DAs7/VE4P7OVdslGcfWu9TZYqNR1zv+HOW//CyRVTqbbC5D/0UY0z/u0j44W9PH4xkYtwFkQrLj1bPEvGxVAzSruvhBhn/SeG8IzXYCSm3wiuTSP32eF2E1MABvyPFJxbCz+cfj9K5ofVCOpUk7EmrDEj9a4hLkLav8YMIUOTxLKttpP5gPqbxxcN2+jDCQafXDSbPl+FsuE2TgQzgo7Dk0A4iNnhW7etnrhDdcKFaKHUL62/rNJZRO0cLsAvu8LEhsvTt8pRDN/8tAQYhhvmR18JbGJw2/DYT9aeguNthrE1b56nh0zfGXL5qmjdEZahwyVuPYNsMtebI0QTC35ukwW0BQ2Rpdqk4Jp+D2wqTjSYhIwNquN/OuTwuvzYaB6T/OR4EoTKRgy52J3AHQ1t4fEIn8viQVYTxO6fsFjhsaTUps6h1xfnXlHhNuIqhBiTmTz6QdsF8sfAf1MUm5EQcDdWbXZxsayoia5DQPIAx6wQkCn08wKkJ84JeQWQc6rkE0T80JnjfnlHLB7CUdC6oBv5d9WWAt5iCotj49HmbXX4TwYTzGuP1fjP9i0ER/qY1IWOTkeRmGLXb7B2tQCPoftSssyRIvFddONahP4Gyin6J7SxzMTr53NP1WQmt+4gCWPHEY4mouG56BSAog5S973YLTYP9u0jikKQOk1Ewp57L4Xh+YvZdtX4RPZUbQdcv7+0pesrYWLXsaGRHuhZqAZtwLvAgtDdM51mqsJPlLuuBdNrRdwXETVqaIYpMzdWGcYhJMTWU9edzCVmhcOzXy5DM/S0cg2CS4I
- irIBr+Oj
- v22FgpuDFbrWcCpWonGFLcSpmBTBwODURQhGcTM6Hi99E+LUEEygekkmQlEUmNdFM6cmzgr0VBkrjapnnT+OgTWOiIHmwt48M8JXz5h+o6R69EhKRyMM/qf6Zofbr43ByxGJz5HORXTkDkS4MjvqCPp/LCHoeFJhARv4sfJbefB1y8zVA2zEhXsoPtNQDbFB64wK53+etVjCA5mQ9N0LfuZsPgMFtMbghCQj1K1AyBeX7icKWeB2/4qHxioA3BmxmpF9ksaBW7kuRM0205EK3EgzpmH3J023PfnsgokRQuLOLOqUynDeRrVelkAPKwAlNkl6rDNlDTp+vYwaNVBaq4Wq+Qzh0fe4UQlrz
+X-Stat-Signature: xuoj79uqzs75ycjzos3xwpkuiuh3ff9b
+X-HE-Tag: 1772225000-989407
+X-HE-Meta: U2FsdGVkX1+WL06QEEPvTnyhyAp5+r/q9XtK06PnPtG1pOUYMJhQ5cqGE2RcJH5rR4VCcrh0Sn0WFKyWiSz0+hEATBqBrPumd5atNi7ud1WSPg1lcrku3jYuOi9KGJMDNCFCzbQjEgWOwTEO5aD7x0t8W3kuJOAftD+CuraLqRyXstPYA7ueYGk2Z4z5ru0OKq3q+Q0BxBtrwXJgFaVq58x6VhRMpCPn17YPE2r/Jq6mgtlgcXiyk5i3+Yf5UQz6oanuZF7Rfuo8MjTpYlv/ZnD2Qb466CvcgTzwXlKRNCYA7ybLv14d1wntVrckcRAMuegeKnevOJv8CMWV/ewzhezm5v3Ln2uGdevw3ZdXVNTy4ARba63OfR12TqKMek3ksLYAD6rkjzpeUq7Ns7ybPT0kEzmjps/sbLwdI/6HDd9MCa2kB62Ei0rXI/YhLo0sLRGgFa32bdrU5gxAhRuzoaJFuBjRrLpLvwh4vpU89UFMVKaoYf7P7u8y/v9vrwFcTmLh39XAQfzp5HL6jsdzT9fNbOg3/5bjNLoe5lQLa4k/uQHIGEvCl6iTITqtC2s4aT6vKa/ucvI7Ay5DGk2kusvUkDcfNlOlMtEcRxskodRQcQUIv1r5mbK43078Lhqti23oqpwBvqPbKOcFxHy7Ngnmk3qJnMb6K1FuYPOJ4cJ8tl+T6k/qBJt8V8Uyv4COgybIEPNsKZtmOyGZtEwD0hUtr5eSlKGel0b6L47g+iKcCpDb1ym20FuzuWu2nK3maGWxeC5ACrGN/pCM52GfjL7l0iO/3HDT/BBWLXQstj82xAIWtKEwcCCR/QGG6QWJ7sQx/EykeFsZP0DE0Nj1UEyWyAKBWF+0TeklhcruDx3XnHUwu0BZKCBIvbh+Fm3zaYwhpvJ6cyJsJrJx1plMCYQWrJQNrplbFwuIVkRYPmmd3vbgbaeDPKKZWlphed/BuVuN5igvVMC6HC1Z0HG
+ Ho7+IhId
+ X/bYzV5Ygo1QN+Xc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,49 +152,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 14:15, Maxime Ripard wrote:
-> The CMA dma-buf heap uses cma_alloc() and cma_release() to allocate and
-> free, respectively, its CMA buffers.
+> The CMA dma-buf heap uses the cma_get_name() function to get the name of
+> the heap instance it's going to create.
 > 
-> However, these functions are not exported. Since we want to turn the CMA
-> heap into a module, let's export them both.
+> However, this function is not exported. Since we want to turn the CMA
+> heap into a module, let's export it.
 > 
 > Reviewed-by: T.J. Mercier <tjmercier@google.com>
 > Signed-off-by: Maxime Ripard <mripard@kernel.org>
 > ---
->  mm/cma.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  mm/cma.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 > diff --git a/mm/cma.c b/mm/cma.c
-> index 94b5da468a7d719e5144d33b06bcc7619c0fbcc9..be142b473f3bd41b9c7d8ba4397f018f6993d962 100644
+> index be142b473f3bd41b9c7d8ba4397f018f6993d962..550effb9c4e01cc488b5744fe61d55a5b70a6d6c 100644
 > --- a/mm/cma.c
 > +++ b/mm/cma.c
-> @@ -949,10 +949,11 @@ struct page *cma_alloc(struct cma *cma, unsigned long count,
->  	if (page)
->  		set_pages_refcounted(page, count);
+> @@ -50,10 +50,11 @@ unsigned long cma_get_size(const struct cma *cma)
 >  
->  	return page;
->  }
-> +EXPORT_SYMBOL_GPL(cma_alloc);
->  
->  static struct cma_memrange *find_cma_memrange(struct cma *cma,
->  		const struct page *pages, unsigned long count)
+>  const char *cma_get_name(const struct cma *cma)
 >  {
->  	struct cma_memrange *cmr = NULL;
-> @@ -1025,10 +1026,11 @@ bool cma_release(struct cma *cma, const struct page *pages,
->  
->  	__cma_release_frozen(cma, cmr, pages, count);
->  
->  	return true;
+>  	return cma->name;
 >  }
-> +EXPORT_SYMBOL_GPL(cma_release);
->  
->  bool cma_release_frozen(struct cma *cma, const struct page *pages,
->  		unsigned long count)
->  {
->  	struct cma_memrange *cmr;
-> 
+> +EXPORT_SYMBOL_GPL(cma_get_name);
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+No real reason to not squash this patch into #5, right?
 
 -- 
 Cheers,
