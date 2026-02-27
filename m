@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1114FEFB56
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9BBFEFB5F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 15:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25D6A6B008A; Fri, 27 Feb 2026 10:20:41 -0500 (EST)
+	id C1B5A6B0005; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2111D6B0092; Fri, 27 Feb 2026 10:20:41 -0500 (EST)
+	id BF33C6B0088; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13D906B0093; Fri, 27 Feb 2026 10:20:41 -0500 (EST)
+	id AD52C6B0089; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F1A606B008A
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:20:40 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8D7331C8DD
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:20:40 +0000 (UTC)
-X-FDA: 84490598640.10.E63F1DD
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 12B1120007
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:20:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oIw4CkYL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fldL9BQ4;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oIw4CkYL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fldL9BQ4;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id 98A846B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 10:25:23 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 63CAD160141
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:25:23 +0000 (UTC)
+X-FDA: 84490610526.03.8D7D481
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 03F1D140010
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:25:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772205638;
+	s=arc-20220608; t=1772205921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=jJbRsCzM3fTVyD3RrQhKXJWNJxLHpZ5K/gtwadbbnaE67HJhev1FkHnwJ+ilDtgtQ7pYfe
-	uecyzrqSKeFhA/C6VL/GKTBfg9TMi3+roPWN5zu3UPe3GUBn5Nn6ugqE3y5V/+P/C10DPC
-	dKOAlZt5GMkyEs3pyKOCv29tKZJXKuQ=
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=ijrKjrl602MTLcjix6WRhbJYwhKzzk9w69KMvw2ropwP7z+pkPN9bi9xLHwuRZq4+7GMob
+	OOHbGXaRyO/S1H7ak2MSIxtdWufHCrXtG1440eFREHiip7toK6+y+OdjR9HObKZAH4TAA/
+	/mOikRpCCnQB5QagKduERtbLL81DEww=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oIw4CkYL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fldL9BQ4;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=oIw4CkYL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fldL9BQ4;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB;
+	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205638; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772205921; a=rsa-sha256;
 	cv=none;
-	b=d5NOHkZmyWByIik1hLTz4VSkoLg5j9rqA09UHer5YQAy+kpgQtLnoyfK8cdfnlUzDLsBCo
-	DK9NdBY6qJqK2bpSBRJZZliWAovS87U4Cz8vmHwGeqZgc3i+HqHUCJJ9vtTWrBLpmnlHPy
-	Xw+JIbU0P4OLTC3zQqNH2gETeod6h7w=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=RW+eKk/LwXgBCa01dvoUCARsM3aleVRZkoEwM7VxEaoppL/wYeduza0Ij21gxPPnYlLG2e
+	jvcQWWoSBH+XgVCKrQyhcbvHmqFmWO1vAj5mMdhVYMDbBB5/5nlVRBLD819rRFxV4QVKNg
+	2L1cReXXmWW4vHWEMvObS+A+2VRIPeo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 776D13FCE2;
-	Fri, 27 Feb 2026 15:20:36 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B1275BE3C;
+	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=oIw4CkYLQOpmxTptEaLEpwgchUcB6ZrWHZKkqSdG4I6wJcvA6fOVElgduXUNVr7+7vM3oP
-	XtPWm3+jeqT/q9FdmB8QOiMD9Wt9UatM7eq/PscmMW6YeQJ3LjVpX51YHJTI1pXjZFnz7R
-	xAZYPt4+qWIJLnHpa0eZpbu8gwuGdaI=
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
+	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
+	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205636;
+	s=susede2_ed25519; t=1772205919;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=fldL9BQ4mj/6HJodbVPi3M2119O6qjKjK/Mzk/0VDb0yxMsjCRi6AKXq+Ap2y/Zyx4N/7o
-	1qSj71NtNBLdhyBQ==
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
+	dpoYpEhZ5rvMGgAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=oIw4CkYLQOpmxTptEaLEpwgchUcB6ZrWHZKkqSdG4I6wJcvA6fOVElgduXUNVr7+7vM3oP
-	XtPWm3+jeqT/q9FdmB8QOiMD9Wt9UatM7eq/PscmMW6YeQJ3LjVpX51YHJTI1pXjZFnz7R
-	xAZYPt4+qWIJLnHpa0eZpbu8gwuGdaI=
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
+	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
+	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205636;
+	s=susede2_ed25519; t=1772205919;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=fldL9BQ4mj/6HJodbVPi3M2119O6qjKjK/Mzk/0VDb0yxMsjCRi6AKXq+Ap2y/Zyx4N/7o
-	1qSj71NtNBLdhyBQ==
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
+	dpoYpEhZ5rvMGgAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A82D3EA69;
-	Fri, 27 Feb 2026 15:20:36 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47D283EA6A;
+	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nID8GUS2oWnAIAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:20:36 +0000
+	id NTGIEV+3oWnKJQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:25:19 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3122FA06D4; Fri, 27 Feb 2026 16:20:36 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:20:36 +0100
+	id 077C4A06D4; Fri, 27 Feb 2026 16:25:14 +0100 (CET)
+Date: Fri, 27 Feb 2026 16:25:14 +0100
 From: Jan Kara <jack@suse.cz>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
@@ -113,22 +113,24 @@ Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
 	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 09/14] xattr: move user limits for xattrs to generic infra
-Message-ID: <ba2xttc5jggmzjj3z273vwagyqqjdcg6yzwnnashqdgzwj5zbt@r7sa2xsllyau>
+Subject: Re: [PATCH 10/14] xattr,net: support limited amount of extended
+ attributes on sockfs sockets
+Message-ID: <nvbbdg5v2o5tzyzhzfpj2cyldsstgxsnwr7qfr36vwsyks7qjv@ey4qw2ut6q7z>
 References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
+ <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
-X-Stat-Signature: 6ctka7fpmucshjh3rytjmejxkajmb8qx
-X-Rspamd-Queue-Id: 12B1120007
-X-Rspamd-Server: rspam07
+In-Reply-To: <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1772205637-137963
-X-HE-Meta: U2FsdGVkX1+ntD+Qgo08ACjHKBmTBNFOtdTBpSgqaEDTjYimNBLQoFVTB8JRcWwi7WaNOKM8nU7Gh5CBxYgLCkRznur/LFYRg85EKlWVwl8oU4Lf3WoWqTyGncktAZ2pbvQq24MorjFsbprQxFaTAJY27a8nUAMJAiPqJxhx3xjDpKc+VT+jLxtD+x8VjhL0KcpzpRf+SbWc1omOcaFWjUrhEhwuqmB0dvv4qfkOxpPQG2yVuWTUKX9ooD3/K+iISCDL49gVE8WLvJ4Cdn6kyVB3ZVk44jlNexpHf4eMZIJ7bgZusZlnd8byqjwZM5y2jJaZnN3eOy+JpMQ7R69FQS95qCjxQqdGkB73XJqjwPYN6t2mhsu+Vu/nE2oteUWbxGDnZEalCncfUXBspGP5sQc5TPlei5SE9goM0oarVSpTH/XbjKtWJIfBF5eUQW6pyev82GMZq9o3z4qGjkK3pRDCrOaCNbZFQ/jJUU6SKpkcVPtNQop+cM5x2E9astZTEapuM6sYSDLpKySfqkXwZ1+CWJQ9hZleSEemxCluxnAjLSMGD9Hgr1ADGJUqD/tAD4pwj6kvD9iCDbdopsRMyjjZ7cDYzZQwGBi9GPxz9duKnkf5odCoZPZ7Ud+Y/p1Ajk/7pGjR0qKs20B3dgC/TcuR430OWXJyiIw/9yc4vp04B2jeKLqOErdMxAS4nm2MqjKfJkZYsdYuCIGH7mkE5Xk5pQiExAmK5Ukg4gAv/HksDEru6X4hiW5FUZc53tTPvZf4vl+u0qxq3SGxalWu9dNJNaDPYpRqh/pvkEiQp06BsiZjLwRIqwDY69IAq1lnRw7Vu0McZjaoa84o7KEGHydIXxzUKbWCEWdPREP9Fi/zGYQdlIM1jXzJEeqAB64GRtjIqm3YP+NzQo3hPG4s0m/hgCTYUUkScbwg3O5vvg8E7UTQZps6brKZS2obWpx1pXbr4jl1HpwuKmsKeZW
- 7bhXt5Z9
- 2KnNxbSRy5jr1Mfq/OCj/Hqfj/fBPGTHmnQfkuct6uolx6ETBl3ggDaUsJIQEEtGa89/J8RnKA1XSB6ROHGbLPOd4WhB9EImBZ9LkrUwp2imgHptTM0HI8HD22ZX7R7sqIWp+2zjXZ3bmWXKxj1rQl0yEvqw2qnntRWDxeXo/oFXO43jCo+bayQx1DVGloWkl4JqU7Q6ivhZv3ivbNLyO00PycgYtZajTygV8KlnPfwnQsevvlXbEcbvFHKvVtjvGbju9B3gcH3Dh387Sg49zpBmfAfPlkcKXfQxBwGsCxdxNhGpJtJImVXgSL0kK6CtwCJRgsrLjFIymaSOQlg8JovJ/DN/5DwPD98waD0CmRkOHagOERyOk/krOzc5WbKPGGC6bJivDSnhIQr0GVGE6Jzyx6w==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 03F1D140010
+X-Stat-Signature: 4fdxdhks8e6d83rbnszipiipk3yu9idy
+X-HE-Tag: 1772205920-343680
+X-HE-Meta: U2FsdGVkX1/vkc6EydYKzB1oA21SgwmoRT1OnUKPNEGHCbi/+J/1ee1UAbc6uMDCApPNIYxT0Fn1mZBLIuV1BxYDjpfbrLsWhex4G+rxMA8vtk8sjaUm++YU/YUNH11fVBA9hVfT2flS6gBl6FNZ/F1koxAOHuTfXojNMaebWilNbFmN2hDlNJtX/D3gSpllDvkzpzHVXwf73AcCmA+UWWsyEeRHlOwUgaUMbgwGHpbsCLElmYxEx9d+nDUpkrK+uPIRGt4083GK9Ner0FfjhvaGS9+VKbt16CheS+RfEER/FN9gF6gYb4mbY9OfmnfVr1/PFcTQGp+2lzD6Qz//lfhF0VJTccpmeGx2PJjCe1TVEOmE977L246AFZiu6l7Pnih9mXLru0Zitv6V+lZgbYsjK28cpsU7v1L2RJHTV2WZZsgSsCItm1/5/uY0emRhfBaQ/182KlZENqYwWSw68UuE/H5gkU4G7AOOQFHZqCeNzAxC32pWXm7ERqVqj63ln6nnEM8Sxvuyfln9eQk6Pn4vFWyJaIq/aMwe3VQT2Ta6n+FnShNWsKE3aG/qmVmgs/UuX1JeyOcrS3IMZXJa575J6Ew69+nTdyuoGisPo2RX2xCJ+Dwg4DzFn4JaDhEMOLLmSOd2hUb6OW8Efn/kq2yest9tIA49Km2cJAZo73bKQylX3hHislckaOmdIeo50ZXurkpRSn/j8BcsZASE22iHINnSfvCJpLXaFEEZ4AeMypwXohUXWHBy4z88F7rIWltQNmEC1Ec0Nko8GrU1AsyT7JHcyM4QcCGtptt9ZdrqLxz2302lGeFPeqmOHKrs8rbhHzmKXmUPhHGaQJiyTwWe8t6IARpTqyRSTZYMNP3SN4t8srtgvb+4SW7Ukvl1gS2N1oGW9k6uTU/Jw7dSvVAWN+zl5GonACnPcgNcLHXKFqBFicYo+p9bcllcM8Fuccl4HfBTQHWxhopK4Dv
+ KIeqkXlU
+ j5YrPCGLvAVtwHNv1wIM6TzDtCoJ1t8BtQPWfC709S5ggQoVwVW9Ntbvuu4Oao8LOocZAZkrLPZkelfr3zvmTT8MJ7D323L0LCsDcsdj1AMV18nzzvHGeexV5iLjfsvqNllNi/5BEuvsdcdpl5bsmFGAU/kJQB15ZiJNxvgD3hx5n30DWTfp19c7ZGp452K/9fnhlXWiCbRtKzW3nJY6heZH72v1AiyNxzbVk33PTMmOLSzpJhM5/MpizrwM44uXV4+8uN9247NW9O2KY9IY3OHXPTh3f14RpnueTUxDX0DWiJyA6S2A6szNwIyGjq0cZFYorsanS3lGmgBSAJwFyU/YDRxFB3/1v66f7m2S9XF3qdyE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,7 +138,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 16-02-26 14:32:05, Christian Brauner wrote:
+On Mon 16-02-26 14:32:06, Christian Brauner wrote:
+> Now that we've generalized the infrastructure for user.* xattrs make it
+> possible to set up to 128 user.* extended attributes on a sockfs inode
+> or up to 128kib. kernfs (cgroupfs) has the same limits and it has proven
+> to be quite sufficient for nearly all use-cases.
+> 
+> This will allow containers to label sockets and will e.g., be used by
+> systemd and Gnome to find various sockets in containers where
+> high-privilege or more complicated solutions aren't available.
+> 
 > Signed-off-by: Christian Brauner <brauner@kernel.org>
 
 Looks good. Feel free to add:
@@ -146,252 +157,195 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/kernfs/inode.c           | 75 ++-------------------------------------------
->  fs/kernfs/kernfs-internal.h |  3 +-
->  fs/xattr.c                  | 65 +++++++++++++++++++++++++++++++++++++++
->  include/linux/kernfs.h      |  2 --
->  include/linux/xattr.h       | 18 +++++++++++
->  5 files changed, 87 insertions(+), 76 deletions(-)
+>  net/socket.c | 119 +++++++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 92 insertions(+), 27 deletions(-)
 > 
-> diff --git a/fs/kernfs/inode.c b/fs/kernfs/inode.c
-> index dfc3315b5afc..1de10500842d 100644
-> --- a/fs/kernfs/inode.c
-> +++ b/fs/kernfs/inode.c
-> @@ -45,8 +45,7 @@ static struct kernfs_iattrs *__kernfs_iattrs(struct kernfs_node *kn, bool alloc)
->  	ret->ia_mtime = ret->ia_atime;
->  	ret->ia_ctime = ret->ia_atime;
+> diff --git a/net/socket.c b/net/socket.c
+> index 136b98c54fb3..7aa94fce7a8b 100644
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -315,45 +315,70 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
 >  
-> -	atomic_set(&ret->nr_user_xattrs, 0);
-> -	atomic_set(&ret->user_xattr_size, 0);
-> +	simple_xattr_limits_init(&ret->xattr_limits);
+>  static struct kmem_cache *sock_inode_cachep __ro_after_init;
 >  
->  	/* If someone raced us, recognize it. */
->  	if (!try_cmpxchg(&kn->iattr, &attr, ret))
-> @@ -355,69 +354,6 @@ static int kernfs_vfs_xattr_set(const struct xattr_handler *handler,
->  	return kernfs_xattr_set(kn, name, value, size, flags);
->  }
->  
-> -static int kernfs_vfs_user_xattr_add(struct kernfs_node *kn,
-> -				     const char *full_name,
-> -				     struct simple_xattrs *xattrs,
-> -				     const void *value, size_t size, int flags)
-> -{
-> -	struct kernfs_iattrs *attr = kernfs_iattrs_noalloc(kn);
-> -	atomic_t *sz = &attr->user_xattr_size;
-> -	atomic_t *nr = &attr->nr_user_xattrs;
-> -	struct simple_xattr *old_xattr;
-> -	int ret;
-> -
-> -	if (atomic_inc_return(nr) > KERNFS_MAX_USER_XATTRS) {
-> -		ret = -ENOSPC;
-> -		goto dec_count_out;
-> -	}
-> -
-> -	if (atomic_add_return(size, sz) > KERNFS_USER_XATTR_SIZE_LIMIT) {
-> -		ret = -ENOSPC;
-> -		goto dec_size_out;
-> -	}
-> -
-> -	old_xattr = simple_xattr_set(xattrs, full_name, value, size, flags);
-> -	if (!old_xattr)
-> -		return 0;
-> -
-> -	if (IS_ERR(old_xattr)) {
-> -		ret = PTR_ERR(old_xattr);
-> -		goto dec_size_out;
-> -	}
-> -
-> -	ret = 0;
-> -	size = old_xattr->size;
-> -	simple_xattr_free_rcu(old_xattr);
-> -dec_size_out:
-> -	atomic_sub(size, sz);
-> -dec_count_out:
-> -	atomic_dec(nr);
-> -	return ret;
-> -}
-> -
-> -static int kernfs_vfs_user_xattr_rm(struct kernfs_node *kn,
-> -				    const char *full_name,
-> -				    struct simple_xattrs *xattrs,
-> -				    const void *value, size_t size, int flags)
-> -{
-> -	struct kernfs_iattrs *attr = kernfs_iattrs_noalloc(kn);
-> -	atomic_t *sz = &attr->user_xattr_size;
-> -	atomic_t *nr = &attr->nr_user_xattrs;
-> -	struct simple_xattr *old_xattr;
-> -
-> -	old_xattr = simple_xattr_set(xattrs, full_name, value, size, flags);
-> -	if (!old_xattr)
-> -		return 0;
-> -
-> -	if (IS_ERR(old_xattr))
-> -		return PTR_ERR(old_xattr);
-> -
-> -	atomic_sub(old_xattr->size, sz);
-> -	atomic_dec(nr);
-> -	simple_xattr_free_rcu(old_xattr);
-> -	return 0;
-> -}
-> -
->  static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  				     struct mnt_idmap *idmap,
->  				     struct dentry *unused, struct inode *inode,
-> @@ -440,13 +376,8 @@ static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  	if (IS_ERR_OR_NULL(xattrs))
->  		return PTR_ERR(xattrs);
->  
-> -	if (value)
-> -		return kernfs_vfs_user_xattr_add(kn, full_name, xattrs,
-> -						 value, size, flags);
-> -	else
-> -		return kernfs_vfs_user_xattr_rm(kn, full_name, xattrs,
-> -						value, size, flags);
-> -
-> +	return simple_xattr_set_limited(xattrs, &attrs->xattr_limits,
-> +					full_name, value, size, flags);
->  }
->  
->  static const struct xattr_handler kernfs_trusted_xattr_handler = {
-> diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
-> index 1324ed8c0661..1d3831e3a270 100644
-> --- a/fs/kernfs/kernfs-internal.h
-> +++ b/fs/kernfs/kernfs-internal.h
-> @@ -27,8 +27,7 @@ struct kernfs_iattrs {
->  	struct timespec64	ia_ctime;
->  
->  	struct simple_xattrs	*xattrs;
-> -	atomic_t		nr_user_xattrs;
-> -	atomic_t		user_xattr_size;
+> +struct sockfs_inode {
+> +	struct simple_xattrs *xattrs;
 > +	struct simple_xattr_limits xattr_limits;
->  };
->  
->  struct kernfs_root {
-> diff --git a/fs/xattr.c b/fs/xattr.c
-> index 328ed7558dfc..5e559b1c651f 100644
-> --- a/fs/xattr.c
-> +++ b/fs/xattr.c
-> @@ -1427,6 +1427,71 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
->  	return old_xattr;
->  }
->  
-> +static inline void simple_xattr_limits_dec(struct simple_xattr_limits *limits,
-> +					   size_t size)
-> +{
-> +	atomic_sub(size, &limits->xattr_size);
-> +	atomic_dec(&limits->nr_xattrs);
-> +}
-> +
-> +static inline int simple_xattr_limits_inc(struct simple_xattr_limits *limits,
-> +					  size_t size)
-> +{
-> +	if (atomic_inc_return(&limits->nr_xattrs) > SIMPLE_XATTR_MAX_NR) {
-> +		atomic_dec(&limits->nr_xattrs);
-> +		return -ENOSPC;
-> +	}
-> +
-> +	if (atomic_add_return(size, &limits->xattr_size) <= SIMPLE_XATTR_MAX_SIZE)
-> +		return 0;
-> +
-> +	simple_xattr_limits_dec(limits, size);
-> +	return -ENOSPC;
-> +}
-> +
-> +/**
-> + * simple_xattr_set_limited - set an xattr with per-inode user.* limits
-> + * @xattrs: the header of the xattr object
-> + * @limits: per-inode limit counters for user.* xattrs
-> + * @name: the name of the xattr to set or remove
-> + * @value: the value to store (NULL to remove)
-> + * @size: the size of @value
-> + * @flags: XATTR_CREATE, XATTR_REPLACE, or 0
-> + *
-> + * Like simple_xattr_set(), but enforces per-inode count and total value size
-> + * limits for user.* xattrs. Uses speculative pre-increment of the atomic
-> + * counters to avoid races without requiring external locks.
-> + *
-> + * Return: On success zero is returned. On failure a negative error code is
-> + * returned.
-> + */
-> +int simple_xattr_set_limited(struct simple_xattrs *xattrs,
-> +			     struct simple_xattr_limits *limits,
-> +			     const char *name, const void *value,
-> +			     size_t size, int flags)
-> +{
-> +	struct simple_xattr *old_xattr;
-> +	int ret;
-> +
-> +	if (value) {
-> +		ret = simple_xattr_limits_inc(limits, size);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
-> +	if (IS_ERR(old_xattr)) {
-> +		if (value)
-> +			simple_xattr_limits_dec(limits, size);
-> +		return PTR_ERR(old_xattr);
-> +	}
-> +	if (old_xattr) {
-> +		simple_xattr_limits_dec(limits, old_xattr->size);
-> +		simple_xattr_free_rcu(old_xattr);
-> +	}
-> +	return 0;
-> +}
-> +
->  static bool xattr_is_trusted(const char *name)
->  {
->  	return !strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN);
-> diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-> index b5a5f32fdfd1..d8f57f0af5e4 100644
-> --- a/include/linux/kernfs.h
-> +++ b/include/linux/kernfs.h
-> @@ -99,8 +99,6 @@ enum kernfs_node_type {
->  
->  #define KERNFS_TYPE_MASK		0x000f
->  #define KERNFS_FLAG_MASK		~KERNFS_TYPE_MASK
-> -#define KERNFS_MAX_USER_XATTRS		128
-> -#define KERNFS_USER_XATTR_SIZE_LIMIT	(128 << 10)
->  
->  enum kernfs_node_flag {
->  	KERNFS_ACTIVATED	= 0x0010,
-> diff --git a/include/linux/xattr.h b/include/linux/xattr.h
-> index f60357d9f938..90a43a117127 100644
-> --- a/include/linux/xattr.h
-> +++ b/include/linux/xattr.h
-> @@ -118,6 +118,20 @@ struct simple_xattr {
->  	char value[];
->  };
->  
-> +#define SIMPLE_XATTR_MAX_NR		128
-> +#define SIMPLE_XATTR_MAX_SIZE		(128 << 10)
-> +
-> +struct simple_xattr_limits {
-> +	atomic_t	nr_xattrs;	/* current user.* xattr count */
-> +	atomic_t	xattr_size;	/* current total user.* value bytes */
+> +	struct socket_alloc;
 > +};
 > +
-> +static inline void simple_xattr_limits_init(struct simple_xattr_limits *limits)
+> +static struct sockfs_inode *SOCKFS_I(struct inode *inode)
 > +{
-> +	atomic_set(&limits->nr_xattrs, 0);
-> +	atomic_set(&limits->xattr_size, 0);
+> +	return container_of(inode, struct sockfs_inode, vfs_inode);
 > +}
 > +
->  int simple_xattrs_init(struct simple_xattrs *xattrs);
->  struct simple_xattrs *simple_xattrs_alloc(void);
->  struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
-> @@ -132,6 +146,10 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
->  struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
->  				      const char *name, const void *value,
->  				      size_t size, int flags);
-> +int simple_xattr_set_limited(struct simple_xattrs *xattrs,
-> +			     struct simple_xattr_limits *limits,
-> +			     const char *name, const void *value,
-> +			     size_t size, int flags);
->  ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
->  			  char *buffer, size_t size);
->  int simple_xattr_add(struct simple_xattrs *xattrs,
+>  static struct inode *sock_alloc_inode(struct super_block *sb)
+>  {
+> -	struct socket_alloc *ei;
+> +	struct sockfs_inode *si;
+>  
+> -	ei = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
+> -	if (!ei)
+> +	si = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
+> +	if (!si)
+>  		return NULL;
+> -	init_waitqueue_head(&ei->socket.wq.wait);
+> -	ei->socket.wq.fasync_list = NULL;
+> -	ei->socket.wq.flags = 0;
+> +	si->xattrs = NULL;
+> +	simple_xattr_limits_init(&si->xattr_limits);
+> +
+> +	init_waitqueue_head(&si->socket.wq.wait);
+> +	si->socket.wq.fasync_list = NULL;
+> +	si->socket.wq.flags = 0;
+> +
+> +	si->socket.state = SS_UNCONNECTED;
+> +	si->socket.flags = 0;
+> +	si->socket.ops = NULL;
+> +	si->socket.sk = NULL;
+> +	si->socket.file = NULL;
+>  
+> -	ei->socket.state = SS_UNCONNECTED;
+> -	ei->socket.flags = 0;
+> -	ei->socket.ops = NULL;
+> -	ei->socket.sk = NULL;
+> -	ei->socket.file = NULL;
+> +	return &si->vfs_inode;
+> +}
+> +
+> +static void sock_evict_inode(struct inode *inode)
+> +{
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+> +	struct simple_xattrs *xattrs = si->xattrs;
+>  
+> -	return &ei->vfs_inode;
+> +	if (xattrs) {
+> +		simple_xattrs_free(xattrs, NULL);
+> +		kfree(xattrs);
+> +	}
+> +	clear_inode(inode);
+>  }
+>  
+>  static void sock_free_inode(struct inode *inode)
+>  {
+> -	struct socket_alloc *ei;
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+>  
+> -	ei = container_of(inode, struct socket_alloc, vfs_inode);
+> -	kmem_cache_free(sock_inode_cachep, ei);
+> +	kmem_cache_free(sock_inode_cachep, si);
+>  }
+>  
+>  static void init_once(void *foo)
+>  {
+> -	struct socket_alloc *ei = (struct socket_alloc *)foo;
+> +	struct sockfs_inode *si = (struct sockfs_inode *)foo;
+>  
+> -	inode_init_once(&ei->vfs_inode);
+> +	inode_init_once(&si->vfs_inode);
+>  }
+>  
+>  static void init_inodecache(void)
+>  {
+>  	sock_inode_cachep = kmem_cache_create("sock_inode_cache",
+> -					      sizeof(struct socket_alloc),
+> +					      sizeof(struct sockfs_inode),
+>  					      0,
+>  					      (SLAB_HWCACHE_ALIGN |
+>  					       SLAB_RECLAIM_ACCOUNT |
+> @@ -365,6 +390,7 @@ static void init_inodecache(void)
+>  static const struct super_operations sockfs_ops = {
+>  	.alloc_inode	= sock_alloc_inode,
+>  	.free_inode	= sock_free_inode,
+> +	.evict_inode	= sock_evict_inode,
+>  	.statfs		= simple_statfs,
+>  };
+>  
+> @@ -417,9 +443,48 @@ static const struct xattr_handler sockfs_security_xattr_handler = {
+>  	.set = sockfs_security_xattr_set,
+>  };
+>  
+> +static int sockfs_user_xattr_get(const struct xattr_handler *handler,
+> +				 struct dentry *dentry, struct inode *inode,
+> +				 const char *suffix, void *value, size_t size)
+> +{
+> +	const char *name = xattr_full_name(handler, suffix);
+> +	struct simple_xattrs *xattrs;
+> +
+> +	xattrs = READ_ONCE(SOCKFS_I(inode)->xattrs);
+> +	if (!xattrs)
+> +		return -ENODATA;
+> +
+> +	return simple_xattr_get(xattrs, name, value, size);
+> +}
+> +
+> +static int sockfs_user_xattr_set(const struct xattr_handler *handler,
+> +				 struct mnt_idmap *idmap,
+> +				 struct dentry *dentry, struct inode *inode,
+> +				 const char *suffix, const void *value,
+> +				 size_t size, int flags)
+> +{
+> +	const char *name = xattr_full_name(handler, suffix);
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+> +	struct simple_xattrs *xattrs;
+> +
+> +	xattrs = simple_xattrs_lazy_alloc(&si->xattrs, value, flags);
+> +	if (IS_ERR_OR_NULL(xattrs))
+> +		return PTR_ERR(xattrs);
+> +
+> +	return simple_xattr_set_limited(xattrs, &si->xattr_limits,
+> +					name, value, size, flags);
+> +}
+> +
+> +static const struct xattr_handler sockfs_user_xattr_handler = {
+> +	.prefix = XATTR_USER_PREFIX,
+> +	.get = sockfs_user_xattr_get,
+> +	.set = sockfs_user_xattr_set,
+> +};
+> +
+>  static const struct xattr_handler * const sockfs_xattr_handlers[] = {
+>  	&sockfs_xattr_handler,
+>  	&sockfs_security_xattr_handler,
+> +	&sockfs_user_xattr_handler,
+>  	NULL
+>  };
+>  
+> @@ -572,26 +637,26 @@ EXPORT_SYMBOL(sockfd_lookup);
+>  static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
+>  				size_t size)
+>  {
+> -	ssize_t len;
+> -	ssize_t used = 0;
+> +	struct sockfs_inode *si = SOCKFS_I(d_inode(dentry));
+> +	ssize_t len, used;
+>  
+> -	len = security_inode_listsecurity(d_inode(dentry), buffer, size);
+> +	len = simple_xattr_list(d_inode(dentry), READ_ONCE(si->xattrs),
+> +				buffer, size);
+>  	if (len < 0)
+>  		return len;
+> -	used += len;
+> +
+> +	used = len;
+>  	if (buffer) {
+> -		if (size < used)
+> -			return -ERANGE;
+>  		buffer += len;
+> +		size -= len;
+>  	}
+>  
+> -	len = (XATTR_NAME_SOCKPROTONAME_LEN + 1);
+> +	len = XATTR_NAME_SOCKPROTONAME_LEN + 1;
+>  	used += len;
+>  	if (buffer) {
+> -		if (size < used)
+> +		if (size < len)
+>  			return -ERANGE;
+>  		memcpy(buffer, XATTR_NAME_SOCKPROTONAME, len);
+> -		buffer += len;
+>  	}
+>  
+>  	return used;
 > 
 > -- 
 > 2.47.3
