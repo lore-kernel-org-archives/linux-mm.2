@@ -4,77 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17711FD9E34
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 04:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 553F4FD9E34
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 04:31:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 252446B0005; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
+	id 33D796B0005; Thu, 26 Feb 2026 23:31:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1FE1C6B0088; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
+	id 2E9D26B0088; Thu, 26 Feb 2026 23:31:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD526B0089; Thu, 26 Feb 2026 23:03:14 -0500 (EST)
+	id 1E8756B0089; Thu, 26 Feb 2026 23:31:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB1C86B0005
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:03:13 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A21B59031
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:03:13 +0000 (UTC)
-X-FDA: 84488891466.26.390BCE0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8F83B40004
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:03:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 089816B0005
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:31:50 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D7CD1404AA
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:31:49 +0000 (UTC)
+X-FDA: 84488963538.21.FE0FD86
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E995F1C0004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 04:31:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RrZMENkT;
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772164992;
+	s=arc-20220608; t=1772166708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=CJO1PBqdFrnBC33ihoT+zHeFUsA6brXJ/u8/cwSzNzE=;
-	b=yLcoDzjKJneLROB6PG0IRykvDX7lvJcdfgcSc+vVqtq/4K/+as/mKkMkri81bAnbcIoK6y
-	bv3JIFlLK1MlKP0OChDHvAcwjCccyQ1yhPE2BpErvsqqcbKJyUQ3HM2Gm+AyfhcbrQVsxY
-	Aecv5Fh04iBPHmDmbqCZlP8Z696u6ss=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772164992; a=rsa-sha256;
-	cv=none;
-	b=Mjg9EVXAW79s39ROu4egiJlgQ4Hkf1jciNaJXbORCl4eK7VfdSbu7iKgjZyFAvBsoOgEc9
-	U1Y95tzzA04mCwZlBxVTeySwxNNALfudL8IwGkjSmHBtI1c0bhQBfSH1leGM2yw4DuDjyH
-	VaAm+QFYDbEwxD0ntuGhC5ypcZmcXiI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=55YZDGQMTCK7GTP+VSa2Zmv9jAEStT9QvPaozvGJSiI=;
+	b=F7qW3DYpU21AETMcDp262e5zpHW6ZQw45WT/NxmhRe+5PC7QjTcRCbN6qQnf++/D894nae
+	KvgcYUXvss2h63HkD75xxdoX39pjTEop93a9jV43jZk6ilLNvzk1Ct0JeeGS/ahxFwc5FP
+	qsH+ZG1ZqMyU3EoLR0KC3uZfVTSeCEc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AA0514BF;
-	Thu, 26 Feb 2026 20:03:04 -0800 (PST)
-Received: from ergosum.cambridge.arm.com (ergosum.cambridge.arm.com [10.1.196.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2DCD73F62B;
-	Thu, 26 Feb 2026 20:03:09 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: Replace READ_ONCE() in pud_trans_unstable()
-Date: Fri, 27 Feb 2026 04:03:00 +0000
-Message-Id: <20260227040300.2091901-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.30.2
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RrZMENkT;
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772166708; a=rsa-sha256;
+	cv=none;
+	b=5/1b8Kns2jeSHJeCXKgIK+IK5VIC0+2R7GPYQ8q93Nn2ZaWc0TiahQ3gT/n8a3JKkhCmpi
+	2uaNrqN5EUpJDpeDU3t8SQMFLkvWGTFTyAS7y0USQcLAhAhh2GccLkMjDifIH849SjrnKr
+	2FREbPi9YgwN71s1FR2M0yffSKsI/dQ=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ade574f05eso11197215ad.3
+        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 20:31:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772166707; x=1772771507; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=55YZDGQMTCK7GTP+VSa2Zmv9jAEStT9QvPaozvGJSiI=;
+        b=RrZMENkTuS4shx18mU4wlS16JdamhsOM7OUSJbpBoB+lqqbuFikaanVt8P1PT7+3SL
+         xNg3VX8sPMw3KybVoJCq4ij/szg/j18n67a+3mY4B43iSsmSntq83U3naVe6wNzcWe+b
+         k0YqIIM0o4O7oIJ6UkmYbLGQewVA3ghk8P/zvoeMWmVEH/PGoe1P4V05ge1LrKkccYKT
+         vtzqT6AzmKaXdgd2dnAtx1lm8yAW0d6G39Wfqrvd8EG+bYrwiPoIZor+jXIArmI+zWDA
+         MPaf0VvvABSWbQmIWqkH8fOr8ZjQXKIq/olXnuV4INRpsANSWwfDe/Ju/0Im4qzNiAOO
+         vurQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772166707; x=1772771507;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=55YZDGQMTCK7GTP+VSa2Zmv9jAEStT9QvPaozvGJSiI=;
+        b=eIN5ieYAU7koPicBEJNyUhgFuF/nuR5IO4FdEl46xfQ9We5yl9mTaawhL/gYBATH7k
+         hjf8NvwiTioc1yxO3QxuIvlLRA5slm/D/8t5btF9riCRRNbIL5n5uuRM9/GrSlfNlps1
+         UlEwkBNNh4fzSOxBsahO/eSvXSsa6FqoLlGTJ8XulAwTxZ1enx5Iu6A8oS6qIzI4ekea
+         uzCrQaw4puS5gr75o/vEXIYndzEfMH3GCQ743o1y0rBmSbHIqAcZ2TaiU5VcuYRzrmiK
+         cINAZxSMsxo7k6spzytrPo8824aF0ptnOB1eRqa+yTVu1GjiDDjpth/cOOi7SAr283hk
+         te5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVlOPw3P+qt9B8Mh27X1Flt+N6DOtKAqVJpch1Gnq3v9G1rYh0+/y91syHsLNQQdB0mTDV8yTBJ7A==@kvack.org
+X-Gm-Message-State: AOJu0YyCh1bzrguwQw+b1xTtoBcfUbUvX3/KqOBrEjD1RYKmlrDTS4Hc
+	TM75kEKMLLj+ATDqE7ZPhPomYK9um7Y5j33fgM2b0Ilo/t05M8WSYjan
+X-Gm-Gg: ATEYQzx916iiee+d8qqVk+JILnGSzizDUdbY4uYME1r+oa6Aep+vMJSlMAI+C6yDjPI
+	nZ5u/dz4EO+hVWt4wP/Rt1WjouphIaYqRr2cEW7cdw+971uTlQV4f1uDwaOwyEumTrEyURkAwb8
+	kW7/DR6i47Sls5SyPGkfadrwGRvuS78ofMPXG1/Mwgy9q65V4fvIF4OYiuNMS1Ula+IIJ9GsppM
+	bqm0+79NbKeBWtSLiDBPbtKnP/lopKSrMCeHAr5sDZZSVCEJy8WiWp4f25O+zIuRlXRAenXbiCx
+	TR3DyRImAW1VoUNQO9/WMmNo7GwK0YZrANS5ooI7ofXN6m2X6KnBO4HGLHsnBCD+cFpiAcfsi7W
+	CZQXYoVOJm+uiusE6nncSoK9jxVl0xpu1sAl6TFvge68NQbVA5chrGfZhFSHNDtjmR+U3/BuR/s
+	6wdMX7Sug+op1VgaGPphR57eqBEnENNBOHcuvJ
+X-Received: by 2002:a17:903:2283:b0:2ad:f7a4:af96 with SMTP id d9443c01a7336-2ae2e4b55ebmr16150475ad.42.1772166706662;
+        Thu, 26 Feb 2026 20:31:46 -0800 (PST)
+Received: from Barrys-MBP.hub ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b1035sm57973225ad.7.2026.02.26.20.31.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 26 Feb 2026 20:31:46 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: willy@infradead.org
+Cc: axelrasmussen@google.com,
+	linux-mm@kvack.org,
+	lsf-pc@lists.linux-foundation.org,
+	ryncsn@gmail.com,
+	weixugc@google.com,
+	yuanchu@google.com
+Subject: Re: [LSF/MM/BPF] Improving MGLRU
+Date: Fri, 27 Feb 2026 12:31:39 +0800
+Message-Id: <20260227043139.95115-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <aaBsrrmV25FTIkVX@casper.infradead.org>
+References: <aaBsrrmV25FTIkVX@casper.infradead.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8F83B40004
-X-Stat-Signature: e7oxqoeyui4tps5yz33ui46h6qmnqkt4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E995F1C0004
+X-Stat-Signature: o6cq74ongnufhzdn6bfsfhsx7dn175gw
 X-Rspam-User: 
-X-HE-Tag: 1772164991-687059
-X-HE-Meta: U2FsdGVkX1+Qg8tFFNRB0g5yX/t8/xK5Gzeudhw5H3y+P+wE+yePcSkzh+ij47Xf2oMS40wujDhT+tH8l3KX8o3m+syr0w2ekuJlO+uKKWeIoa+dccHdERJsFBev6gAufulp9zdPkUJnV8S1w4edY7D30hIcTyztL8ZuCJlGoml6QqQPEfSK1ODLsB1srvmeT8o8SmgUvO8c6nhHW8l3mUP6pRoROFnNUWJtNmJ01qzQvHssTV+yrKP3wHjBwC/8jtz6Ne0afPCdFhMsMcxe4whL8OmYOAHdhLRBaiXdjHgQw6DHqlRu3TzcohEAMCWLH8WNCdzVAB4pyyumqId+oyXAwtzlFRdnRDZXRuieGKWGs1xr48W5OKtc/A/HSRywrtvAjXTX3cL+OM8H2Tq5uF3fRbjtyNsber2zEPl9xoKKQMUEhZzIL7soYwH3c5pJRV2I5VmLWaP3vD9L2LTZvOepY673OHNymh8uGwq4hIvQhfz3O7cd9PC6oRBc6BOy93xOEuNzZwKZO20PqaC6fQ35D7SduQs2EZtlehLqh0ZISpB/pOelonQksXYl/zX3i4x4ePgU3qTcEyxTvTwfHTIZs7Xj2mk31RDhXoKjQb654UYmc4oNiV9P8xC75ozvgipotZX4cVkwzxezcfUDOlqpNc9EX8kVCrSrToKYwFGHkG+2MfgwukASobrr216m/+61KTdpMec6njhCPhd2y1XNe1v6pCCvZGXKAKKPyphiUjN/n1uLbEP1eRRdYQO/OGuG1lnYqD+VX/0Qxgvp808pe54xEoyuwzh3+Y0AqQdxCP1HNQFvd/qvjHo1thM6jROti1CiqCPVZdfolFCAL+1poD/HD0XRrcqKunO285vc/TZVVn/cEEjVPPsA2GDIFQrxbAnafozv82k3T1ypwczTmPUAktnZ6HXipDnAZYRA+KToEvd8+uIbR9B8OhXBc8zjQF0zD0zC2Hxm1PZ
- 6P7y8bGR
- bT6zz89wC9zdNnQ+n0M5WrXhE2IwzRxcSYdTgb5MVLiARXuba7hFT/sYFhLeVwPuBSw3YFlyd+q5cGT0wjOCz1hwqpnaWfvfvdLPbo6b+5dMhwRAlsPZIA9K3HuEsy6yDSAT98mj0H8hdtFUO7SYQGHgEZS5Sfxae+x45w+XcI6FBWeWwhxTHF44W4q0hgkFVO6+pTcxZJonIV4y169BCKixosBmEteU734fXxbLbU7EX5P6M1qYA37NnGO2FzZiSleZF0rOpWpbr8XAOBOpZ45pryJfIlAOMkWjUBAdar74ndIauVgHT+cU1t8whIytq9MzQX9sIiAhQWjBTT7qJ6MKoekkLQ41VxCtdpm3leTH5P8GW9gcW6SIndb1MVk1ESxpbYEStxOhRxxdlLnwe06cTUg==
+X-HE-Tag: 1772166707-696904
+X-HE-Meta: U2FsdGVkX1+pJX2lF+GCN21cHPydAK60hgHbjq4cllC/sO6MW79dJJAflZrSdCVIp8KxaY6VSUHtwsSH/o865tWct4JRf4cTrbgoly9uEszLuEoUVD9mDIkciwDXJ+KW+LeGPzUR8IRZP4c/cBNCCimGxgpvp54Af7mCx0YYZ3xdalf8vgJDM/xiZCWoC//9FuFK/eAra01QJX1nc1f0G7aUnuCsrN6vLX4IEDD/RcKYlxhopdpek+BJH0dy8M5ZMxTZiFX/eZfO9GjQrEuwkb0+/Wu0Y9Vn91bwK1IFBIDnxZmh+3M3gjZ1Gb8lzxOU6PhCULEz/Qfh8IHV8SiaQKHaNsqydOcU4y+AJPeQTS+WtRgliwN1bdMZ0XoltPjcHaNEwhFEiufMuUXmZUb8tnWOBMuux9fQUC2nyc+Xlrmc4M1ERA+qepbcY6CA5nEBIgRKNGrUc6qBqnmdZjCHCFc2bVhpi9474YIf245IArS5sZUc4nqawBn3xR50/2EyTJIh5x7tWL+SxeSWVetnREzoU0ITYbT59WvA6aoDio+uCWzunaCLgPWYG7R2b/Vd9MDwg1mEDjjN3fNJQqyxiuGHh9KECFh/WkjcEtNOYvJ39UA0T+VJEYb5CV9HNaG2Zj8IoUJsV9hpXI+2NR+V54BmFGmwBhi9dugrR6r2Y2lo5wHJ7zem+EOki3ZVJkMt9VEIf5cqgC2RkyeU76cyyghadp3hf6AKhHqUoqZtLTWNtrhMD1Sp2Bxyt0pXXX5w7EACI888dIVG0nABHS6GR0/qJbJZWRnGLN9/ErCnaxJ30GiSKB5EpZzkUr875bjxNPuowytFQE5XqVPCNArMaVtZTbr61XXQB484ptoXjxgsYRawZqkvPU1+47y7x5N2aQq1uVzAoIYMt3/MDzupx25TF4GViBufNme596jao6K48F3ofOtuuynS/A3IgUVljY/wN76yPEbZi5G+QcE
+ dedxUC9j
+ o7xozIBFnimzf6Ts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,42 +123,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace READ_ONCE() with the existing standard page table accessor for PUD
-aka pudp_get() in pud_trans_unstable(). This does not create any functional
-change for platforms that do not override pudp_get(), which still defaults
-to READ_ONCE().
+>> MGLRU has been introduced in the mainline for years, but we still have two LRUs
+>> today. There are many reasons MGLRU is still not the only LRU implementation in
+>> the kernel.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This patch applies both on v7.0-rc1 and mm-unstable.
+> To my mind, the biggest problem with MGLRU is that Google dumped it on us
+> and ran away.  Commit 44958000bada claimed that it was now maintained and
+> added three people as maintainers.  In the six months since that commit,
+> none of those three people have any commits in mm/!  This is a shameful
+> state of affairs.
+> 
+> I say rip it out.
 
-Part of the D128 series but independent. Hence could be considered on its own.
+Hi Matthew,  
+Can we keep it for now? Kairui, Zicheng, and I are working on it.
 
-https://lore.kernel.org/all/20260224051153.3150613-4-anshuman.khandual@arm.com/
+From what I’ve seen, it performs much better than the active/inactive  
+approach after applying a few vendor hooks on Android, such as forced  
+aging and avoiding direct activation of read-ahead folios during page  
+faults, among others. To be honest, performance was worse than  
+active/inactive without those hooks, which are still not in mainline.  
 
- include/linux/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It just needs more work. MGLRU has many strong design aspects, including  
+using more generations to differentiate cold from hot, the look-around  
+mechanism to reduce scanning overhead by leveraging cache locality,  
+and data structure designs that minimize lock holding.
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index a50df42a893f..d4826447bc93 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1989,7 +1989,7 @@ static inline int pud_trans_unstable(pud_t *pud)
- {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
- 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--	pud_t pudval = READ_ONCE(*pud);
-+	pud_t pudval = pudp_get(pud);
- 
- 	if (pud_none(pudval) || pud_trans_huge(pudval))
- 		return 1;
--- 
-2.30.2
-
+Best regards
+Barry
 
