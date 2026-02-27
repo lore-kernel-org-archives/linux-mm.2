@@ -4,113 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87ED3FD9E27
-	for <linux-mm@archiver.kernel.org>; Thu, 26 Feb 2026 23:57:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D13BFD9E1F
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 00:00:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F27F6B024C; Thu, 26 Feb 2026 18:57:27 -0500 (EST)
+	id 3BAB86B00F8; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A1766B0258; Thu, 26 Feb 2026 18:57:27 -0500 (EST)
+	id 35FC86B00FF; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89FCB6B0257; Thu, 26 Feb 2026 18:57:27 -0500 (EST)
+	id 233DF6B0102; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C8386B0204
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 18:57:27 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC006C09FD
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:57:26 +0000 (UTC)
-X-FDA: 84488272092.21.B4288FB
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	by imf08.hostedemail.com (Postfix) with ESMTP id ED97F160002
-	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:57:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HYRLerq1;
-	spf=pass (imf08.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0740A6B00F8
+	for <linux-mm@kvack.org>; Thu, 26 Feb 2026 19:00:42 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A71741A0279
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:00:41 +0000 (UTC)
+X-FDA: 84488280282.03.FECC401
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5FA1D100015
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 00:00:39 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=KfdyHubK;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z glLpMD";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf14.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.139 as permitted sender) smtp.mailfrom=alex@shazbot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772150439; a=rsa-sha256;
+	cv=none;
+	b=0WJEbhsWJYWgkiJ5Zi89P8eJhWogewJLYVvpUEi4krTWbUjyTBV7i35ZYUP+rUr0Zdb/Oo
+	ct+nvEilu45781xUYn94H7YaEwryq3KuLT5Tb6fT5ARb2wVHAfyg3gE3I0RdH7zyylaBmu
+	UKs4eAiugdE/ooP/na08XYLMVexjaRU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=KfdyHubK;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="Z glLpMD";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf14.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.139 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772150245;
+	s=arc-20220608; t=1772150439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VNUgR2Kd3YhmDJ/6Vafywh3aLwITPZTYfqFvR5qMllM=;
-	b=SSlZA1i3nn3iRQx0ixKJfJuUn3yRk1SuAoZIWyYRDcRR9K0dkj/BO+SFvjXE7oSw1vxIow
-	5OwFaJGwbHtesFpTCgNXxcAwvRKTb7DRehARPyIUwrWRqoBo0xADh0XTWyxTnkULcRvied
-	vam4z882yo0rw4TKSCIHkUI0+27JQEs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=HYRLerq1;
-	spf=pass (imf08.hostedemail.com: domain of isaacmanjarres@google.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772150245; a=rsa-sha256;
-	cv=none;
-	b=pCMkUbw4aIU3YxJmqxPIbjZ4Qwq/gzNOXpLonyNkosi8iolw3IBOt8PAGuek64OYffysft
-	0ETepz/PHgug9qdd9bYaRde/MKul8notvrsPFzdC1gi/KB1y8rsLdCipnTFM14g69em8FZ
-	VgEY4sqgSv4OW5byUpAH+qUp2lI/0g4=
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-124a60cc9a1so3937c88.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 15:57:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772150244; x=1772755044; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VNUgR2Kd3YhmDJ/6Vafywh3aLwITPZTYfqFvR5qMllM=;
-        b=HYRLerq13XWS5yakHjngeaPeV7WQ9PWIWSSK3Gy47hhpp7vo+zrwIzzSx6P4l7xafn
-         KTYs7VVQqGHS2yPkjfU8VxSL1S3oXSCKEIkgXGFemlx6Y1KYTefTVLS0f2TrmdpUyPtq
-         fYmeS4bvdNnyzggOOb41wCV9mEjhdFJcoCgjxS9b/sdZtxCmpIJG3eVNKdIiK5swdIoz
-         LHYPjzR0Csh0kRGfWoIPtrp6eiRkaxaoo5q61bDPxt9nVa12e+X8x+MQZdEd969NI6mp
-         utj3HhvUGsJ5LZzA3/JZs4tJ/3x74N65o+FDcKTafl2dSZvSkW1DKzCYNiI8eYAW0kjT
-         0Vjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772150244; x=1772755044;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VNUgR2Kd3YhmDJ/6Vafywh3aLwITPZTYfqFvR5qMllM=;
-        b=gAUik9LF+E8XZ+0bNyTqO6T8tB6aYWRCp6lLR+wdg+nXcpj2jWvWgeCE3vi8E2JaAG
-         7vKWVr0lxQAUT8S9WiSO6GsuwF6X1wBUnKFQX+KA9EnUlVlW8HajD3M8DMZZeNk+X7zx
-         VWSrZT5872KmZR6rDC6GnqeyKbmUCUQSuNUC4FLYa+BD28bd0ugHzQn2PM1pWZCNs/Kw
-         MQSAOi7RghFIYgRTBpuFvycn2bdkeeZEtCvc6Zxdt9a1Aao/JZgsu3Cb2gtf4ruty+Ak
-         qAeQEschvAdsUHx5loCEnoTfddirCbCwpuQ3i8CzDK4xDQRmVRnsie30PhYHAKbUDqVU
-         F8yw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN345QCn698mMj0looCveu5AxXzx4tk66LJrYOTDYDPzFvrTqRWA+hxIy3lYUmWS8m9B4Fd/8q/g==@kvack.org
-X-Gm-Message-State: AOJu0YyN0HjrceFm8AbrDEOYzNsyETq0cfyZHulW21/dcbldn0P7Mg1d
-	mqoCtg7fxh6/u1psE0zte3CmWdhXtgGg/b+i00Xp43YJ8ayjDthyw9ihNu+xf8H1wQ==
-X-Gm-Gg: ATEYQzxwFxzFVVvAW9GqkUllw8mpxTBTNdR/ZUaoummkR6/IKTj9AXeh31CHHiDuN71
-	2CKv0GK9cyqlTiVhA3dcKCeWfjl8KOHfTF3gw+Fcooti5e4aObJUuxX2oYzq6JM+7Jl/b+30/t3
-	6qv+OuyTS+2GC8sex+blJK7O0hG2M8RpK++wHReZzxc2HcxzzqyB7MUQ4unKMT1Cv2dLCvl1uqS
-	Ug3MTO8LUUdCTXPM8o0ghWlUbbd3Z4oWyoeo1up3Af4PuZzN/ww8/OgAagnmMgs2FphaxeUdKN5
-	9emEvXBw85Och5ik4h2sovrvXXGGDH456LNuQJzjRX2TNUQEMxZsOSJg8UaK4t7BzI1Z33hceI5
-	tOd/fTwLvQdJ+YQEs3fGx1855HpNWU8W2SGYG5KuBRKwIC3ol5CN6kBnFgvFUyE54ciyvFeI4OS
-	TtIkg0WNGkYzzkeDCHtgKkb6YwyxlXQncuHcCCKQtmMP/JSA7iCYfE9Gh3d35B2a1W
-X-Received: by 2002:a05:7022:983:b0:120:5719:624b with SMTP id a92af1059eb24-12788fcd440mr293274c88.18.1772150242894;
-        Thu, 26 Feb 2026 15:57:22 -0800 (PST)
-Received: from google.com ([2a00:79e0:2e51:8:d9de:6ece:634a:85ca])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2bdd1f45e23sm2765928eec.24.2026.02.26.15.57.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 15:57:22 -0800 (PST)
-Date: Thu, 26 Feb 2026 15:57:17 -0800
-From: Isaac Manjarres <isaacmanjarres@google.com>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org, rppt@kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] A pagetable library for the kernel?
-Message-ID: <aaDd3Rth4RLndjvn@google.com>
-References: <20260219175113.618562-1-jackmanb@google.com>
+	bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=;
+	b=IkP5+FLCHKD+elecEANkjq6m+7SJx2ywMygXV+GHtejPNTrPFodpQeKp6YHk4E77KXSG4z
+	6skMGuOLPJXB9+G0/cgn1SbUgCLUP9Zwq/xpNTjK6NKLKIL4NpNu6PUUV4XYq41XLM1pJ4
+	aeeSBfdubpDzZ9MCSY0WuQm7hgDMM0w=
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id C7E2F13010DF;
+	Thu, 26 Feb 2026 19:00:36 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 26 Feb 2026 19:00:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772150436;
+	 x=1772157636; bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=; b=
+	KfdyHubK7T6mgbCHRhIr5mD6ruTZ/iS4/fLNIWNjGnhl1gAn6fwi3ppJ06Gd2dJg
+	4j+2iEI1NgIVGtQ1kbajwBmSZ3kucQpabC7rYBW1w7C9Ns95JC7G2sCDHFGTcMha
+	kv7zoWe4YzeFKlalXC30X01vESpzdydowfQQQlWMPV+oZxWYLCz283lVR3zv2Nju
+	eVuYQ9dFy2UDeoXJmZYe7S7vvDRP/TCyDm8hpE/sG7rbMKSh1TvkY8QDSsY8Cpg1
+	4cwajHsmuyHaZiq7C2NI+9LmP/V6+FqeD6vXWgw/vHSpDK1AbcXQc1HLUA6FGUn8
+	/XDw5I/P8HNRXjdutcMDoA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772150436; x=
+	1772157636; bh=7/IXhnnADeIhqB8XjstCGNDdQ5WTGWIX32H4Qcjj2Qw=; b=Z
+	glLpMDrdH3ybIl6Jfbe8ZlqPwGEGiWIaKq84xdJ3XK72dVh252bgdeEHLhNGg88w
+	3pDfMb8G+6ch5QZiYiTb2vdJac0ZiodwaNo8erWlfsW8wftbBkxgQ4hNNT4SzETg
+	9xNYNGzd4JBoge3B2Vd6F//62u+9NBZ8XoKc5pbywbz8xoA1EsZcAiF6eo4hfyBI
+	JQaANqURgm9EvX0L6bVDkSvv6JL/0ItofsOMGisEwrBldJgavCTL7e3d4uzr8Pqy
+	wuJsoR33BNh7JMaPMshYytFmb9FjXE8o89NSJtN+p3BgZBE7aDmAMqP3zTdWMVzY
+	8D3Z60+RKBqTkQZw6Ixcg==
+X-ME-Sender: <xms:o96gaWTEnV5FxcL75W1_K7e8Bz0ZcR-1S0u_5NyytHtXv8SBEpirYQ>
+    <xme:o96gaYmGfC4xz6mPRb4i8ZcE1LMJgkqCiSZk9yheAKn241ll_R_etVV_6kTxHHE7w
+    H8cKRlU2sq26FM569T0VHWBriy5PaH5bhbbLCiPC0f2S_CXrBMYJA>
+X-ME-Received: <xmr:o96gaYDj2UgYwWTCfXWlvCbKyPOUQXrlnfVEIrq7NLCPnXZSaSIprk1Y1HE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejgeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepgeehpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegumhgrthhlrggtkhesghhoohhglhgvrdgtohhmpd
+    hrtghpthhtoheprghjrgihrggthhgrnhgurhgrsehnvhhiughirgdrtghomhdprhgtphht
+    thhopehgrhgrfhesrghmrgiiohhnrdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfh
+    gsrdgtohhmpdhrtghpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtth
+    hopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopegthhhrihhslheskhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:o96gaQJHyq02-tY5B_dgovb6RPEIgf6Zra2A8BonvF1GTzX4maPZjQ>
+    <xmx:o96gaTq9myJ60d7pE_4qLYmIRw3gnIkLVp-szI7JBnBn6iTrqiLQZw>
+    <xmx:o96gaXeIGbQgQvAmt_4Ob1Gt3PjoRrw-qPHspQrSOhWEA3H5bkLJxg>
+    <xmx:o96gaboB8XLmP2v_WRvZDm7kWd2k5QB2M1rchi9hpS9YGiFsZlw84w>
+    <xmx:pN6gacyXTZuNPPKKceRhRy0cZc3qSkBNvPabhXzUVrNJ42U27GWaTM6T>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Feb 2026 19:00:32 -0500 (EST)
+Date: Thu, 26 Feb 2026 17:00:30 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+ kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+ Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Lukas Wunner <lukas@wunner.de>,
+ " =?UTF-8?B?TWljaGHFgg==?= Winiarski" <michal.winiarski@intel.com>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ "Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=" <thomas.hellstrom@linux.intel.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ Zhu Yanjun <yanjun.zhu@linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260226170030.5a938c74@shazbot.org>
+In-Reply-To: <20260129212510.967611-11-dmatlack@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-11-dmatlack@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260219175113.618562-1-jackmanb@google.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: ED97F160002
-X-Stat-Signature: 1jo53e931azdo4jfkn8id3cbxkrb3sp8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5FA1D100015
+X-Stat-Signature: i6xpd4xphxpmgaowza16dx5ajaprf1a6
 X-Rspam-User: 
-X-HE-Tag: 1772150244-150
-X-HE-Meta: U2FsdGVkX19R/jf3yBPmvQzb0VIfq7N8UnhVhllC61UidjykL5IXTunbosTn7O3LPfe9uUjbJDwONROUiPBlDQcfVrr65RTvw+igyv84Nde62NyRQk9sucigq2GLMOhTTfhxmNVS7asoQqJChY75Pf/i7qcycBOtMXo9xiUf9x0AuuLnul+A31CU8gKwphJ5oRt7xJRE6XVhQ0JCApxf6dn5hMqM3nJZLpnT4Xc8ZxR6/+5ToHAMS6EJhGt7HB5Fpe76uu9Qit0lRQFlthf5CaxhtSvaYsRkhyxHfvqJB/Bcee5kgfoV2dYX15bGu01L6LirbelJngBGBLdKBBb1TecrG6e0c2gr5ZrrDSZyeaTNtfV4vuynbIhZi4fp0Mfd1mvh2B+azSYUCu/DLfGBcnzSq8VQdfAF2qGiDP4gObhvhr+oCzJGdhp1RdXrHZ+q+1FS47wg/1z5G+5hPq5r9vzoBe6YPhMRRRQlmRDPz980P3vGbkZ8JS6ufwT/BkHXEgLZ6Cwxjh3roLbQpL4dMXzJHOCMcZDjc73AN36/o325mVub+ZDKO9PCiJ8rg0LtN+aqpHKMy6Xr18h/GJHIp3N64P/+GlJUmWkYL5hglpnoBb+WhC2SqBBqnDnnKc99nV8NZudSSrPe80HMYvojaaLsFTECRvQEkCY0GyDhyKwbFxoF9pnTT4izHn0tj5Ij14vLKIyHeTOo24XNXFGEGadwhC+2owLL50dnJwXfFpLZ1UZAS85t4aS9Dvo2MoS4pcYx7MU3xjxhg/Vh+e6Ih3PlMvBra69d3ajtlhIL8xzSLLn8/2FD3OTC8Yh8czNiezpgMN9Hv/o7oyGxFiphEtDdvD0gz+zn6mRtLMeQb6nMALLSJ9Bi1g2pFINrj7enCTQYed+nnZQnELZ0vKWG1s8XtRF9C7bdN0+eRyaGpITnoiVvAIy2JK0RaHrdW8U4VVy/ztbdamfwZdVtolZ
- knrj8p6k
- s5lOY7vojmoE9sMoyN0Hqt886yjIEwznRZ9GF07iWXfdFn3dlXIPLzTioLgvUZew/mensf61IVkctQH+NWnqDGQjb+mRzChM30P9p+u8CquJk+xpGePKMjrIpKGXpxSKQP/a14PksmbmvjSCI+pDSdNM5RcZlxssBEB6g3CxX2ANNfCUn6Ecz6+gka3T/7DaZ5ecoT5djmUvWVH+PoRO0Z9SoVKk99+rIr/Tq+EzngntcVe+FKWJgR/U7PQMr+2GnLwl/E7fAKZeVO5aOl7uX/wfsxYRfbTE5IkGzng9wk0ghOfaN1JLaeJAFRgEpBHxwq1YxRV9TRwGo//JUgpadabJPOagigIUr8zLqYD7hFbr3A/fVm1/z+xKRIWDzOG/NGtba5DJkMB1nLS4DB3IoZ3bYLv7FjgOz50KSwcBL45ciHKu9BPBGlvjcJpkEJz201U2K4HGdx5q2eh6Qx7nJDME8SDYsvoAcmjzGDJb1a7ouZGrU0yFdReA/MTRpd++pRAg+J0XPjEUSzFF9v6IJLx3XxRghXUTGuN4EnC2u5O7vFro3wCJy543ZDw==
+X-HE-Tag: 1772150439-824220
+X-HE-Meta: U2FsdGVkX1+Tsd9XDeppza1OEEMWAn/EE+9a3EfzV6UTej+1WMhK9S7szDC/Ux7W7wM6WsJBIRELIDRpetRtQqdVdSUicE40KWmgzyxEHZlU5ezYYKJJwD/BKBjU5n1ulCrMn6bPXtNZwPCpPsACX26Qge9mcICa3imAif1awSLVj6bbdH0KkUJXD7PX1w02h8PreGKjCpVpuEqPmqhSQ4Ra5OEXSK+VWTddhKPMboEHBYRwHpPylZ+kx6BR0NIpZuuTZnxkjZEax96KtlHneImfiB5Pc2IC9UfMkfnlaqCZgH0zBCJegunk0xfRMlAYQdscn9nXgIRpR8KKJxZrIUI8LyOC6Igy0SRcCUsu1pk+P5ivlUE66l4qJ8CFAzj5JH45DdD1qtA5utyfUOAZin+5RiArb358r71x33zMJNhdW7jPhwI5DywtZ9df209doaPI5whbFD0sBNEigbaYD/+1t5TKl6bS/lPgC7UcgODKBZnSbLlbqamppWOcZkfgYkumkyoM5tUCIbSOeaPTEij8srpSt19W1ovuKbTY/8pn71T0/y+e9nOiZ760Tr8DkRQ0zHpBCnAH8zw/nxPFdgDY+HX8naaFvoPKGoDfetrAdaYQaKQrSvaRY/CJQ2aj4UeAudhl7djsS1q0oDByiT5p37Tp+gSydwaQnx/iiz0cHZNAP5Dn8lX+iilfY5FZb96iahiRkoBiZDIaZpEXmRsaC0gM9ccolY/g13FyCaZhts5cdcdZHnSlP3BQgePMTU/jU29uP2MqL2mdpy096fngUCEPuhooF9GtTlt/6IZTh4nUUoFy/R8yAxooxnUEGD+keffF6iZYUknOGRwO+jfrxUHsWlqvtVC9qjS4BwxTctAbw289UJE8E5Nipjs5IzhwZmv+DtrRntMm81U+FRbIXWxrtbmGrhznjw6yBszPFIk4TVOiTv717gGN3iDfG3fA0ByveOWsZr+eJCl
+ XAhQvSRl
+ SJVd0RfZaj+GaFcAqywKEHVBkO6xzbKRnZ/kprL4C/Ne6Qzifsnr0UV9YP34bFgEjwvZb7BiWCN5QnHN9azaZdlcl66KrScor77VFA5g96TqChNi4aM7bVp+2j884KnF5KOfJy7nI3b3PIKFbR0UYTjtg2TDNisKVO4IAHD3b/5aWeYfNYlom3QiL+ztgM1dBAx8oh/qsMVNK44nTIRWxDqerNSsDrPgYuFuEZ8IT69vygGEyj5xLmo4+ch7CN8UE8BvUSZMcLFbrxBWPt+oxCtSNSWln86oVsm57A9jKf4zjGgUAbrmfoqr2o7RzAobwEiPMX/wN/3Agk9vInSpK1MZaGkSQfSd4e2L3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,83 +166,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 19, 2026 at 05:51:09PM +0000, Brendan Jackman wrote:
-> As work on Address Space Isolation [0] trudges slowly along (next series coming
-> soon™... I promise... some details of the plan are in [0]) I've been running
-> into a common issue whenever I try to do new stuff with the kernel address
-> space: We have too many sets of pagetable manipulation routines, and yet we
-> don't have one that suits ASI's needs.
-> 
-> Similarly, I'm currently working on support for efficiently unmapping
-> guest_memfd pages from the physmap (an extension to [1]) - in this case I've run
-> into very much the same issues as with ASI.
-> 
-> Here are some areas of the kernel that manipulate pagetables:
-> 
-> 1. The collection of APIs that are specific to userspace pagetables: mmu_gather,
->    mm/pagewalk.c, some vm_fault logic, all that good stuff.
-> 
-> 2. The set_memory_* and set_direct_map_* APIs. (Which are implemented per-arch).
-> 
-> 3. Some non-userspace-specific APIs in mm/memory.c, such as
->    apply_to_page_range().
-> 
-> 4. mm/vmalloc.c
-> 
-> 5. Highmem logic such as kmap_local_*
-> 
-> 6. Boot and memory-hotplug support code (your architecture's version of
->    arch/x86/mm/init_64.c).
-> 
-> 7. x86's KPTI
-> 
-> 8. x86's LDT logic
-> 
-> (At LPC I started enumerating these off the top of my head and multiple people
-> spoke out with more examples I hadn't thought of - please join in if you can see
-> more!)
-> 
-> By and large, these components are designed completely independently from one
-> another. This is made possible by the smart design of the low-level helper API
-> (pte_present() and friends), and it does lead to nice explicit coding style.
-> 
-> Here are some "new" things I've wanted to do with pagetables, which are not
-> currently supported by any library:
-> 
-> - Have a second kernel pagetable (for ASI's "nonsensitive address space")
-> 
-> - Modify pagetables safely from a context where allocation is not possible
-> 
-> - Modify the kernel's pagetables while accounting pagetable allocations to the
->   current process
-> 
-> I think it's time to discuss if there's a way to scope out a "library" that:
-> 
-> a) Reduces the overall amount of code in the kernel, while
-> 
-> b) Serving the needs of the incoming guest_memfd and ASI features.
-> 
-> In this session I'd first like to do a quick survey of the pagetable
-> manipulation systems already in the kernel (that I know about), what purposes
-> they serve and what capabilities they have. Then I'd like to discuss some ideas
-> for the scope of a new "library" and which of these components it might replace.
-> 
-> Mike Rapoport has shared a prototype that he wrote for a generic higher-level
-> PGD abstraction, so I will be using that as inspiration.
-> 
-> This is mostly about looking for feedback and input from maintainers and
-> experts: what opportunities for refactoring might I be missing? What challenges
-> might I be forgetting about for sharing code?
-> 
-> [0] https://lpc.events/event/19/contributions/2029/
-> [1] https://lore.kernel.org/all/20260126164445.11867-1-kalyazin@amazon.com/
+On Thu, 29 Jan 2026 21:24:57 +0000
+David Matlack <dmatlack@google.com> wrote:
 
-Hello Brendan,
+> From: Vipin Sharma <vipinsh@google.com>
+> 
+> Do not reset the device when a Live Update preserved vfio-pci device is
+> retrieved and first enabled. vfio_pci_liveupdate_freeze() guarantees the
+> device is reset prior to Live Update, so there's no reason to reset it
+> again after Live Update.
+> 
+> Since VFIO normally uses the initial reset to detect if the device
+> supports function resets, pass that from the previous kernel via
+> struct vfio_pci_core_dev_ser.
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c       | 22 +++++++++++++++++-----
+>  drivers/vfio/pci/vfio_pci_liveupdate.c |  1 +
+>  include/linux/kho/abi/vfio_pci.h       |  2 ++
+>  include/linux/vfio_pci_core.h          |  1 +
+>  4 files changed, 21 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index b01b94d81e28..c9f73f597797 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -515,12 +515,24 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  	if (ret)
+>  		goto out_power;
+>  
+> -	/* If reset fails because of the device lock, fail this path entirely */
+> -	ret = pci_try_reset_function(pdev);
+> -	if (ret == -EAGAIN)
+> -		goto out_disable_device;
+> +	if (vdev->liveupdate_incoming_state) {
+> +		/*
+> +		 * This device was preserved by the previous kernel across a
+> +		 * Live Update, so it does not need to be reset.
+> +		 */
+> +		vdev->reset_works = vdev->liveupdate_incoming_state->reset_works;
+> +	} else {
+> +		/*
+> +		 * If reset fails because of the device lock, fail this path
+> +		 * entirely.
+> +		 */
+> +		ret = pci_try_reset_function(pdev);
+> +		if (ret == -EAGAIN)
+> +			goto out_disable_device;
+> +
+> +		vdev->reset_works = !ret;
+> +	}
 
-Thanks for sharing this! I this it's a great idea to introduce a library
-like this for the kernel page tables. I'm interested in participating
-in this discussion as well.
+This could maybe be incrementally cleaner in a
+int vfio_pci_core_probe_reset(struct vfio_pci_core_device *vdev)
+helper.
 
+>  
+> -	vdev->reset_works = !ret;
+>  	pci_save_state(pdev);
+>  	vdev->pci_saved_state = pci_store_saved_state(pdev);
+
+Isn't this a problem too?  In the first kernel we store the initial,
+post reset state of the device, now we're storing some arbitrary state.
+This is the state we're restore when the device is closed.
+
+>  	if (!vdev->pci_saved_state)
+> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> index 1ad7379c70c4..c52d6bdb455f 100644
+> --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
+> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> @@ -57,6 +57,7 @@ static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+>  
+>  	ser->bdf = pci_dev_id(pdev);
+>  	ser->domain = pci_domain_nr(pdev->bus);
+> +	ser->reset_works = vdev->reset_works;
+>  
+>  	args->serialized_data = virt_to_phys(ser);
+>  	return 0;
+> diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+> index 9bf58a2f3820..6c3d3c6dfc09 100644
+> --- a/include/linux/kho/abi/vfio_pci.h
+> +++ b/include/linux/kho/abi/vfio_pci.h
+> @@ -34,10 +34,12 @@
+>   *
+>   * @bdf: The device's PCI bus, device, and function number.
+>   * @domain: The device's PCI domain number (segment).
+> + * @reset_works: Non-zero if the device supports function resets.
+>   */
+>  struct vfio_pci_core_device_ser {
+>  	u16 bdf;
+>  	u16 domain;
+> +	u8 reset_works;
+>  } __packed;
+>  
+>  #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 350c30f84a13..95835298e29e 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -16,6 +16,7 @@
+>  #include <linux/types.h>
+>  #include <linux/uuid.h>
+>  #include <linux/notifier.h>
+> +#include <linux/kho/abi/vfio_pci.h>
+>  
+>  #ifndef VFIO_PCI_CORE_H
+>  #define VFIO_PCI_CORE_H
+
+Wouldn't a forward declaration do, and the kho/abi include can be kept
+out of the public header?  Also should be in the previous patch?
 Thanks,
-Isaac
+
+Alex
 
