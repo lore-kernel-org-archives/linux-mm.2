@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AD4DFD9E3A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFBEFD9E2C
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 19:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69E1A6B00D3; Fri, 27 Feb 2026 14:43:32 -0500 (EST)
+	id B1C526B00D5; Fri, 27 Feb 2026 14:43:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6560F6B00D5; Fri, 27 Feb 2026 14:43:32 -0500 (EST)
+	id B08B16B00D7; Fri, 27 Feb 2026 14:43:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50F266B00D6; Fri, 27 Feb 2026 14:43:32 -0500 (EST)
+	id 995466B00D8; Fri, 27 Feb 2026 14:43:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6B06B00D3
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:32 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E469E1B8222
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:31 +0000 (UTC)
-X-FDA: 84491261022.09.6C10A97
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7046B00D5
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 14:43:33 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26D51C2D24
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:33 +0000 (UTC)
+X-FDA: 84491261106.24.D1FF9B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D08A31A0011
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:29 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iPVMHXXh;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 02A13140004
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:43:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTNSIO9+;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772221410;
+	s=arc-20220608; t=1772221411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wXqbVsQhuJfiPKuBw4lZJzLl7Nq3hBwKbfHC9BhNVBo=;
-	b=sq/y9JRmmoUvi6jyZNldcEYYgLzkwQpE/lwFWuS+iIJUxcsLXL/RbK1l33XMoZBEHGF0Mc
-	t4YRbdUSo8QZWSt2Fzl6Ucqm4AzR+9cZ1eYe5JuGq2MfYQVu8MJEJxKcUoGEAhhycIGif6
-	N9nTNkMQSAHYymaA+mWBaoRDG3Qu1Ao=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iPVMHXXh;
-	spf=pass (imf19.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221410; a=rsa-sha256;
+	bh=+21rtgP9mqU6HBO/IylhHqs3PnzOyqvgX3AvZWox4RQ=;
+	b=cw+wGiDGMIOHFBJBVVT8foyAHj8zXOgui8eAmMyz7nP0dtuzO+vsyYO0ICJSaRdveJYUAH
+	6HRPedgIqRePHHFMySEFazT6l/Dm2hQcdxHu1lnHNQU4VcqQdCrXjgYKXVbfB/wJUQgAof
+	uH9hbjS+DKRxY+TKvnbgcnBp4EQQIfY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772221411; a=rsa-sha256;
 	cv=none;
-	b=yaXqKcDEyzvP+xt9x5w5lQnL3sTikUFaTY1kJtc8n4YZJURpvZV+nbhMlZ0eeolFyxsVlB
-	cvXoVDVLW+fxQAdCH6OnaqhTayf9Jb6C6N2pnyJ7CtOhZoX/7Kb9k9zcdcqBMKNLXbCYKu
-	N3KwMUI1yw9bk8bR2DjZkJ/e0PBXgYQ=
+	b=lAvPFXF02S3lg2SKahcrRd/i70tZo2zKfal4tlO36P3xUdXoYwjsh8WYrIuQtBSPnKe5li
+	s0qa/ve8yfm4/m9Iqzi/gQSwJ+7EtfZXyQzj6MJjVY//FhkWRHxeR6GIgDce2oVlamrOac
+	mXAR0TCmM/pMT0So4xlFPhXo9gH6xnM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uTNSIO9+;
+	spf=pass (imf23.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 83004445A7;
-	Fri, 27 Feb 2026 19:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E96CC2BC9E;
-	Fri, 27 Feb 2026 19:43:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B973644361;
+	Fri, 27 Feb 2026 19:43:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AC7C4AF09;
+	Fri, 27 Feb 2026 19:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772221409;
-	bh=gud3FwwIClhEmyWoGuFCwJEp0m9beXo/gim58y+k7v0=;
+	s=k20201202; t=1772221410;
+	bh=sftyYYIl4LYwBedYNGdqMNaop3rVqC0b5hlGvUe0QrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPVMHXXhYAi0AhUZq3bW+X6MD/K0c5MSJn+TsC8AOtTtbUFFz3ffyRMS0WviVcGni
-	 62mT9OgURd3x7sv9fsxrJdolzd8si5WsvQEnHCXatGff/w2mfIPm56k+FiSk3tMIEx
-	 CEyiWsjiEmW2J3Wh+7A+aIkbR1VAVxg68k2FmcxZALEpLRU3hLg0e6NHfNLuwcvyey
-	 NEVR96YD+9liaOwCJT+40rJsnlUv4jAWNMgIFVrp8pymkDJ8sCDTP+uSzW//0vE0dU
-	 UbN920BfT5alOYAzmv118aWwusSku8OQvk2Rya/EOE3wrXtpYPaR3F9sdfvr4+XMob
-	 rG0F1Izfn9mWg==
+	b=uTNSIO9+ytxEaW/DXQwdbLtyQUz0wnIO5m7zXnEOZ1MByuVXY7uu0wBWOn4LnW7AF
+	 4A0OlLjiHJ7HvkFapAjh8WnWvu4iAtSU7RnH+SyRY5SMnsTAoNdpUwVyyw0ydoXYer
+	 aykoR/shtDn5Te0MWmYtqbqJS+IPAUcOSuf6sfwuXCto1FG7L+fjcWA54wpuote5px
+	 5+lO7pHS/zSBLj0rxnqZ2oVDaVzFyca2iD2wi2/JWrScPahjq3KFa9OX6JS0klOYXf
+	 wKq+hwgjlXX5bpop4K4s3j2F81oPzmYpZurXVf1o+1YD6209uR7HrKKi4Nz0/m927g
+	 sZ+vRihSFnLTQ==
 Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9B017F40069;
-	Fri, 27 Feb 2026 14:43:27 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 27 Feb 2026 14:43:27 -0500
-X-ME-Sender: <xms:3_OhabA1ohqHXNU5qyJNz3ayihbTvK3cA9c3NeIZ0xeM1MM9lSR44A>
-    <xme:3_OhaasFPoEyIuUpNv0wUZw1T9AsYpGPB5jur1OagdNAAOFIcXX1o6UmejzHply7o
-    JEos8QXdiJ4oJkKjwD55DpkuqErIqIWSxv7Y6t9b0j31TPHUpEvWJo>
-X-ME-Received: <xmr:3_OhaQvt0UEdCKMeu209siQA0Vdm7tWGKBCe5XARr7O-MZNZ_FnsHw8613Kmpg>
+	by mailfauth.phl.internal (Postfix) with ESMTP id 36D45F40068;
+	Fri, 27 Feb 2026 14:43:29 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 27 Feb 2026 14:43:29 -0500
+X-ME-Sender: <xms:4fOhaZSeqJCRd6rFMXhdkqrRHp5yBgJKtXzeuLwI5Bbw1dlEHR5IdA>
+    <xme:4fOhab-GZe79KEk7p0UzxGkkbX-75hZScE53bVTEV83yfF_kDO60WzKrCfudhpn4H
+    6bm3LlZyDLxInHP0IpVzSRtKtNRMxgz4dhm1CW1lTlo58ldcwd9K0Y>
+X-ME-Received: <xmr:4fOhaY_aC5CfDSlleoGCJA3UppK0hGkGI0grGlmGyfNHhQByr_qzjt9vLmYJfQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeelkeejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepfdfmihhrhihl
     ucfuhhhuthhsvghmrghuucdlofgvthgrmddfuceokhgrsheskhgvrhhnvghlrdhorhhgqe
     enucggtffrrghtthgvrhhnpefhudejfedvgeekffefvdekheekkeeuveeftdelheegteel
-    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    gfefveevueekhfdtteenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrih
     hlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
     udeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgse
     hshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhht
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeelkeejucetufdote
     rghilhdrtghomhdprhgtphhtthhopehfvhgulhesghhoohhglhgvrdgtohhmpdhrtghpth
     htohepohhsrghlvhgrughorhesshhushgvrdguvgdprhgtphhtthhopehrphhptheskhgv
     rhhnvghlrdhorhhgpdhrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:3_Ohaeoioe6Sa8G-eKF1PjQM_fcot6QQ33vWyXbkJpHqPYj2ARiGUA>
-    <xmx:3_OhacMDbWD03RKTDgNiXsK3q3RADUxdVRA8AkVqkGTiT-ahMXTrJw>
-    <xmx:3_OhaclP2w1F1T-XaqMUWS1tmoLoPcwYmLOvusoieMwy1eq--4aKDw>
-    <xmx:3_OhaWv2wPdXpDysvWUxivqmsQUB-r_81ttU6zXN3TjjdRLKNtFNHA>
-    <xmx:3_OhabntOD3aP2UuglbO6GtArK7Cb_eZZ84aMTLBBXwLLWMSJplqa7Q9>
+X-ME-Proxy: <xmx:4fOhaR7cX7YfpXePbw2W5Q3b9FNGT8XRix_6Wn9CwlLLGGt7pt984g>
+    <xmx:4fOhaeeW9pp_rprYADoA02xCJhNyanlgRqi5UxU3oMzxHjFHxlkUmw>
+    <xmx:4fOhaR1O0XFowBKobhl61dJkegj9EtavwG_yXDje8xykloGb0JAdUw>
+    <xmx:4fOhaS-4bdelkNR3CfYJt4LlDa5yq-RtTGL_-Rbyfi_t5vdksQ6RZw>
+    <xmx:4fOhaS2GjUh46s0XDZI6R0OROaCL4cPEFS2lhVPlKTsB2NwcXaNDl3nH>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Feb 2026 14:43:27 -0500 (EST)
+ 27 Feb 2026 14:43:28 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -125,23 +125,23 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	linux-doc@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCHv7 11/18] x86/vdso: Undefine CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP for vdso32
-Date: Fri, 27 Feb 2026 19:42:49 +0000
-Message-ID: <20260227194302.274384-12-kas@kernel.org>
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: [PATCHv7 12/18] mm/hugetlb: Remove fake head pages
+Date: Fri, 27 Feb 2026 19:42:50 +0000
+Message-ID: <20260227194302.274384-13-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260227194302.274384-1-kas@kernel.org>
 References: <20260227194302.274384-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D08A31A0011
-X-Stat-Signature: bbaxzc3njdae1hpjyou3ih39eoqwhn4y
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 02A13140004
+X-Stat-Signature: qnbpioyc3qmk6jx3t59awms53rg7b9za
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772221409-880706
-X-HE-Meta: U2FsdGVkX18TvA/B9rxtvqtsiA+bVOnfJ2rgJZvNKY+7r5+j4LGQs2CyFo50sZ5s3kGdpnPO6MXwXgOckTVZb8QCEibgyAUxJ42vi2AOZ7nqIErbI28ntDmXENUvJQK6nPl/F4Nul70hyeK27RSReA1g0fBcZf8fY/Kh26j/HvUpXqOAhDe2KV3sjipOM0TQYR5xp+8jiFkmbrBMT5q9C79PXf7/7StnMQUSTnYVsx9LN1UHtc3sYaX00+JyUgZ3kewEkS28z/OhvTWLEMAkktEAPqNofQXueemPdXc9vBHWXy9aH+OQkZ0Yn6sqPQa5EdwJW405l+U0QDoBEGveft+M2oV6KPFStBL1Bv121ywL8BeftKnBBeY0aeg2klq3RjeJ0+x+CXvt7Uy5MaFzURZi9Udx5KWTQa7DZHRMjc0STj45tOrgHJWoA1jT4OwtBG3DeuDpHEZTvXOwJwmSu3BaSmn4hyF6ijnhzpddZyioWcikNICyoIakRHAxlvuGcTmnlv6SfbTwpE3C+iPMyWEtto71qDm7vyDb7JrvOGe5vy7EuNERHPNW76+OkMz30ZQlx1T3sL6FuN7e7Z4XE8Ifyae1VuFliGgva7RdS9owlddK45OlqVWCu6ggq/YkyKH5if/Om6EpHvdUYrIxeEkFUlLVBJLHxclVX1vri/WdZ9oX4s4JaqY+KnxUpVYdvDUqwIw7NwlEAhwXuhVeUOe2Y2uYfG2IGnqjHGg42bQ3HiYC8wEv+krs6K9P6F9YuN6PKJ+i79nIk/7lxLzobCbsCylXFiqNUD63EESVjyo8yiT6RSKy+XYkVwJjHO8YFT0En7NdUX5KPUGdsjBAFIf/geWWMQha/M/l6waaj+MpzQ7XiEIbID0KTF1IPXaSZRZ8y5hco+MpQjtf/OLntoq1cmNpmKR6xsGeOlDd5IeXBi8eudbKwNKDzqVEkzbUWD/9fPntf1/TdU59uxL
- 79sOlLIn
- xefAQCnfuWKM7W+vZkCUDh6Aqoiafuzi1Utc7RlSiq2UsqCaqpfJJtoa1abaPlHSiSj9twj4AStCw0sOQO6cngNc543nN7sozQo/ciEfGX2mnH/EV37unjTLx0dOX2/+MxgwMhSpDNNR6aBoBLkzxnVPYbWWXPNqkSFhk/Jk69D9KINHPQviafg3vak9nhGHKZNcysKpunJJHXJGaNxcglUrI13/dAypPS6+GAZWehVsx/S8Qo143VXeWnGHjgTN61D5nXfYXv0JxkdD5mNo7kfJjcbl1gbQ2ntQ6oMu+JRxNHAMZabAC+ShIsg==
+X-HE-Tag: 1772221410-98762
+X-HE-Meta: U2FsdGVkX1/69N6/EIsVGNspauFhM8xAVmpY1E7YUhmz7nhCfK6pkRCX6EXfCfIVLGcap8UX386qxzb06wdkkxUZ+QqDlH/HBaPf7nh/hM8KzlK1Oafo+QcDnXGq+PZ5AdSJKRw4nGa9lOv4rqhFMhhDgiJUQAsWvnPnVFKJOX6YlnNcYX4ZVJzQFOqwBaz0e6E4JRTz5niS4se64/QGUFPGcfFp+v+buaG1ud+iAteDdHsBKJQH2v2YyJ1l/EqmOJvjygvuTpfFWJijzZ5ZDz3Ks7udoQwUqF6r4zFVi6W11DrWJcEL2CaN2W6NelxBhJdTw2k4Ai1jePadn+ERdDnKOCbGueiwYi7VRkyUlSed9g2eI+EsbSdYHwJv0CyDbXtAOKjcua6/2E60fdEaXAyjLQy/weoMu0qaIL9Hrfx2YqBEUtgfWCETlBwmHNymm1AdgSwivFWLZcGmxdKYEf53p9BKKswjGC+Y4PIg4gtWhjBsx4zIz4rmgOvrfdVyeqzVLcrQNBgkZisbADhg9OwcSzc78G4VI2e7cMFEouRCD9sZU9g2QNMO8PruH3fbiC2Vmu8W3ApRh7yrIYBVq/sq25suzV4Q5paJFJX/MIzP2488cLBgbS/JT3FJN1+5dA7TCpYHBXoE9CDwMhmqjKLbhyo502HDoChXzXxfUvM2AM11dbvxmaZ3lqiAieNbSYiSHAf6wFS29cNJgKer6pv2xPu737CZQhgJxSzhXXY2OZXSQ1GocfgHi9zJsdyv+i0U2ysduKl2NDWr77IS4DTMGU6sgZjctqgIrcM2yV8IEnTeakuSsON94nO/ctmpwF5Tx4gvLuFUvG3XJaN2eTIVz3FYT5oyjKpWKN7EhC/3yE0OMyc5XxnCdKW2P8ThWxJdSMWIM9C7qurkePrNNZrMLEfB6T9lX/nORN6qrfxHRhxBEAY1BLB5BDQPhl21OYTEgcCsbqMMi4fLncg
+ UkT/KiA8
+ B0ToPvvIsHtcH4WtwBZrJb3EkmToQCJMT6qBOe3gFaa0cj/OjetqeUwfTmn/+VWobX3KrGc9pK5o7Zz1/Iql7XAeCPvEmXImLWXoiff2KelkH1mkrURTJReXBlzojfIGg9SglfZdIYNvp9ELwOhPbhAjCYP2VELaiJ9DaQXf7/9NTvLTZp31NFkm+beJd8CaomdYPw7bq/m1Xmv/w5n7M8OPXehaUAbdIfBzAUbBMMS++dzIwZiwChQEEYaRZK1vRCYGcmKw4JEfJcpA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,30 +149,345 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The 32-bit VDSO build on x86_64 uses fake_32bit_build.h to undefine
-various kernel configuration options that are not suitable for the
-VDSO context or may cause build issues when including kernel headers.
+From: Kiryl Shutsemau <kas@kernel.org>
 
-Undefine CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP in fake_32bit_build.h to
-prepare for change in  HugeTLB Vmemmap Optimization.
+HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+vmemmap pages for huge pages and remapping the freed range to a single
+page containing the struct page metadata.
 
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+With the new mask-based compound_info encoding (for power-of-2 struct
+page sizes), all tail pages of the same order are now identical
+regardless of which compound page they belong to. This means the tail
+pages can be truly shared without fake heads.
+
+Allocate a single page of initialized tail struct pages per zone
+per order in the vmemmap_tails[] array in struct zone. All huge pages of
+that order in the zone share this tail page, mapped read-only into their
+vmemmap. The head page remains unique per huge page.
+
+Redefine MAX_FOLIO_ORDER using ilog2(). The define has to produce a
+compile-constant as it is used to specify vmemmap_tail array size.
+For some reason, compiler is not able to solve get_order() at
+compile-time, but ilog2() works.
+
+Avoid PUD_ORDER to define MAX_FOLIO_ORDER as it adds dependency to
+<linux/pgtable.h> which generates hard-to-break include loop.
+
+This eliminates fake heads while maintaining the same memory savings,
+and simplifies compound_head() by removing fake head detection.
+
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- arch/x86/entry/vdso/vdso32/fake_32bit_build.h | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/mm.h     |  3 +-
+ include/linux/mmzone.h | 19 +++++++++--
+ mm/hugetlb_vmemmap.c   | 73 ++++++++++++++++++++++++++++++++++++++++--
+ mm/internal.h          |  9 ++++++
+ mm/sparse-vmemmap.c    | 57 +++++++++++++++++++++++++++------
+ 5 files changed, 146 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-index db1b15f686e3..bc3e549795c3 100644
---- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-+++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
-@@ -11,6 +11,7 @@
- #undef CONFIG_PGTABLE_LEVELS
- #undef CONFIG_ILLEGAL_POINTER_VALUE
- #undef CONFIG_SPARSEMEM_VMEMMAP
-+#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
- #undef CONFIG_NR_CPUS
- #undef CONFIG_PARAVIRT_XXL
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 0e2d45008ff4..883af2cb4e3c 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4482,7 +4482,8 @@ int vmemmap_populate_hugepages(unsigned long start, unsigned long end,
+ 			       int node, struct vmem_altmap *altmap);
+ int vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		struct vmem_altmap *altmap);
+-int vmemmap_populate_hvo(unsigned long start, unsigned long end, int node,
++int vmemmap_populate_hvo(unsigned long start, unsigned long end,
++			 unsigned int order, struct zone *zone,
+ 			 unsigned long headsize);
+ void vmemmap_wrprotect_hvo(unsigned long start, unsigned long end, int node,
+ 			  unsigned long headsize);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 492a5be1090f..610c9691fb47 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -81,13 +81,17 @@
+  * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
+  * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
+  */
+-#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
++#ifdef CONFIG_64BIT
++#define MAX_FOLIO_ORDER		(ilog2(SZ_16G) - PAGE_SHIFT)
++#else
++#define MAX_FOLIO_ORDER		(ilog2(SZ_1G) - PAGE_SHIFT)
++#endif
+ #else
+ /*
+  * Without hugetlb, gigantic folios that are bigger than a single PUD are
+  * currently impossible.
+  */
+-#define MAX_FOLIO_ORDER		PUD_ORDER
++#define MAX_FOLIO_ORDER		(PUD_SHIFT - PAGE_SHIFT)
+ #endif
  
+ #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+@@ -103,6 +107,14 @@
+ 	 is_power_of_2(sizeof(struct page)) ? \
+ 	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+ 
++/*
++ * vmemmap optimization (like HVO) is only possible for page orders that fill
++ * two or more pages with struct pages.
++ */
++#define VMEMMAP_TAIL_MIN_ORDER (ilog2(2 * PAGE_SIZE / sizeof(struct page)))
++#define __NR_VMEMMAP_TAILS (MAX_FOLIO_ORDER - VMEMMAP_TAIL_MIN_ORDER + 1)
++#define NR_VMEMMAP_TAILS (__NR_VMEMMAP_TAILS > 0 ? __NR_VMEMMAP_TAILS : 0)
++
+ enum migratetype {
+ 	MIGRATE_UNMOVABLE,
+ 	MIGRATE_MOVABLE,
+@@ -1099,6 +1111,9 @@ struct zone {
+ 	/* Zone statistics */
+ 	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+ 	atomic_long_t		vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
++#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++	struct page *vmemmap_tails[NR_VMEMMAP_TAILS];
++#endif
+ } ____cacheline_internodealigned_in_smp;
+ 
+ enum pgdat_flags {
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 3628fb5b2a28..92330f172eb7 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -19,6 +19,7 @@
+ 
+ #include <asm/tlbflush.h>
+ #include "hugetlb_vmemmap.h"
++#include "internal.h"
+ 
+ /**
+  * struct vmemmap_remap_walk - walk vmemmap page table
+@@ -505,6 +506,32 @@ static bool vmemmap_should_optimize_folio(const struct hstate *h, struct folio *
+ 	return true;
+ }
+ 
++static struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
++{
++	const unsigned int idx = order - VMEMMAP_TAIL_MIN_ORDER;
++	struct page *tail, *p;
++	int node = zone_to_nid(zone);
++
++	tail = READ_ONCE(zone->vmemmap_tails[idx]);
++	if (likely(tail))
++		return tail;
++
++	tail = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
++	if (!tail)
++		return NULL;
++
++	p = page_to_virt(tail);
++	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
++		init_compound_tail(p + i, NULL, order, zone);
++
++	if (cmpxchg(&zone->vmemmap_tails[idx], NULL, tail)) {
++		__free_page(tail);
++		tail = READ_ONCE(zone->vmemmap_tails[idx]);
++	}
++
++	return tail;
++}
++
+ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 					    struct folio *folio,
+ 					    struct list_head *vmemmap_pages,
+@@ -520,6 +547,11 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	if (!vmemmap_should_optimize_folio(h, folio))
+ 		return ret;
+ 
++	nid = folio_nid(folio);
++	vmemmap_tail = vmemmap_get_tail(h->order, folio_zone(folio));
++	if (!vmemmap_tail)
++		return -ENOMEM;
++
+ 	static_branch_inc(&hugetlb_optimize_vmemmap_key);
+ 
+ 	if (flags & VMEMMAP_SYNCHRONIZE_RCU)
+@@ -537,7 +569,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	 */
+ 	folio_set_hugetlb_vmemmap_optimized(folio);
+ 
+-	nid = folio_nid(folio);
+ 	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
+ 	if (!vmemmap_head) {
+ 		ret = -ENOMEM;
+@@ -548,7 +579,6 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	list_add(&vmemmap_head->lru, vmemmap_pages);
+ 	memmap_pages_add(1);
+ 
+-	vmemmap_tail	= vmemmap_head;
+ 	vmemmap_start	= (unsigned long)&folio->page;
+ 	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
+ 
+@@ -776,11 +806,26 @@ void __init hugetlb_vmemmap_init_early(int nid)
+ 	}
+ }
+ 
++static struct zone *pfn_to_zone(unsigned nid, unsigned long pfn)
++{
++	struct zone *zone;
++	enum zone_type zone_type;
++
++	for (zone_type = 0; zone_type < MAX_NR_ZONES; zone_type++) {
++		zone = &NODE_DATA(nid)->node_zones[zone_type];
++		if (zone_spans_pfn(zone, pfn))
++			return zone;
++	}
++
++	return NULL;
++}
++
+ void __init hugetlb_vmemmap_init_late(int nid)
+ {
+ 	struct huge_bootmem_page *m, *tm;
+ 	unsigned long phys, nr_pages, start, end;
+ 	unsigned long pfn, nr_mmap;
++	struct zone *zone = NULL;
+ 	struct hstate *h;
+ 	void *map;
+ 
+@@ -814,7 +859,12 @@ void __init hugetlb_vmemmap_init_late(int nid)
+ 			continue;
+ 		}
+ 
+-		if (vmemmap_populate_hvo(start, end, nid,
++		if (!zone || !zone_spans_pfn(zone, pfn))
++			zone = pfn_to_zone(nid, pfn);
++		if (WARN_ON_ONCE(!zone))
++			continue;
++
++		if (vmemmap_populate_hvo(start, end, huge_page_order(h), zone,
+ 					 HUGETLB_VMEMMAP_RESERVE_SIZE) < 0) {
+ 			/* Fallback if HVO population fails */
+ 			vmemmap_populate(start, end, nid, NULL);
+@@ -842,10 +892,27 @@ static const struct ctl_table hugetlb_vmemmap_sysctls[] = {
+ static int __init hugetlb_vmemmap_init(void)
+ {
+ 	const struct hstate *h;
++	struct zone *zone;
+ 
+ 	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct pages */
+ 	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
+ 
++	for_each_zone(zone) {
++		for (int i = 0; i < NR_VMEMMAP_TAILS; i++) {
++			struct page *tail, *p;
++			unsigned int order;
++
++			tail = zone->vmemmap_tails[i];
++			if (!tail)
++				continue;
++
++			order = i + VMEMMAP_TAIL_MIN_ORDER;
++			p = page_to_virt(tail);
++			for (int j = 0; j < PAGE_SIZE / sizeof(struct page); j++)
++				init_compound_tail(p + j, NULL, order, zone);
++		}
++	}
++
+ 	for_each_hstate(h) {
+ 		if (hugetlb_vmemmap_optimizable(h)) {
+ 			register_sysctl_init("vm", hugetlb_vmemmap_sysctls);
+diff --git a/mm/internal.h b/mm/internal.h
+index c76122f22294..928e79c7549c 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -886,6 +886,15 @@ static inline void prep_compound_tail(struct page *tail,
+ 	set_page_private(tail, 0);
+ }
+ 
++static inline void init_compound_tail(struct page *tail,
++		const struct page *head, unsigned int order, struct zone *zone)
++{
++	atomic_set(&tail->_mapcount, -1);
++	set_page_node(tail, zone_to_nid(zone));
++	set_page_zone(tail, zone_idx(zone));
++	prep_compound_tail(tail, head, order);
++}
++
+ void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
+ extern bool free_pages_prepare(struct page *page, unsigned int order);
+ 
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 032a81450838..842ed2f0bce6 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -325,16 +325,54 @@ void vmemmap_wrprotect_hvo(unsigned long addr, unsigned long end,
+ 	}
+ }
+ 
+-/*
+- * Populate vmemmap pages HVO-style. The first page contains the head
+- * page and needed tail pages, the other ones are mirrors of the first
+- * page.
+- */
+-int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+-				       int node, unsigned long headsize)
++#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
++static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
++{
++	struct page *p, *tail;
++	unsigned int idx;
++	int node = zone_to_nid(zone);
++
++	if (WARN_ON_ONCE(order < VMEMMAP_TAIL_MIN_ORDER))
++		return NULL;
++	if (WARN_ON_ONCE(order > MAX_FOLIO_ORDER))
++		return NULL;
++
++	idx = order - VMEMMAP_TAIL_MIN_ORDER;
++	tail = zone->vmemmap_tails[idx];
++	if (tail)
++		return tail;
++
++	/*
++	 * Only allocate the page, but do not initialize it.
++	 *
++	 * Any initialization done here will be overwritten by memmap_init().
++	 *
++	 * hugetlb_vmemmap_init() will take care of initialization after
++	 * memmap_init().
++	 */
++
++	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
++	if (!p)
++		return NULL;
++
++	tail = virt_to_page(p);
++	zone->vmemmap_tails[idx] = tail;
++
++	return tail;
++}
++
++int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
++				       unsigned int order, struct zone *zone,
++				       unsigned long headsize)
+ {
+-	pte_t *pte;
+ 	unsigned long maddr;
++	struct page *tail;
++	pte_t *pte;
++	int node = zone_to_nid(zone);
++
++	tail = vmemmap_get_tail(order, zone);
++	if (!tail)
++		return -ENOMEM;
+ 
+ 	for (maddr = addr; maddr < addr + headsize; maddr += PAGE_SIZE) {
+ 		pte = vmemmap_populate_address(maddr, node, NULL, -1, 0);
+@@ -346,8 +384,9 @@ int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
+ 	 * Reuse the last page struct page mapped above for the rest.
+ 	 */
+ 	return vmemmap_populate_range(maddr, end, node, NULL,
+-					pte_pfn(ptep_get(pte)), 0);
++				      page_to_pfn(tail), 0);
+ }
++#endif
+ 
+ void __weak __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+ 				      unsigned long addr, unsigned long next)
 -- 
 2.51.2
 
