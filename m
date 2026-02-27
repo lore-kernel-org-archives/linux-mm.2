@@ -4,151 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C3FDFD4600
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 06:35:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A65FD4600
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 06:39:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38AB06B0005; Fri, 27 Feb 2026 01:35:13 -0500 (EST)
+	id 847A66B008A; Fri, 27 Feb 2026 01:39:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 357BB6B0089; Fri, 27 Feb 2026 01:35:13 -0500 (EST)
+	id 7CADC6B008C; Fri, 27 Feb 2026 01:39:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21A0D6B008A; Fri, 27 Feb 2026 01:35:13 -0500 (EST)
+	id 6C9F16B0092; Fri, 27 Feb 2026 01:39:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0108D6B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 01:35:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C1AEC59112
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:35:12 +0000 (UTC)
-X-FDA: 84489274464.08.B91A0B6
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B2F2C100009
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:35:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Vx+vbNy+;
-	spf=pass (imf14.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772174110;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 55D806B008A
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 01:39:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DACDF8BD30
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:39:37 +0000 (UTC)
+X-FDA: 84489285594.09.DF1FD75
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 393AF140005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 06:39:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fal7Ym+U;
+	spf=pass (imf23.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772174376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5vaa8akeEgfUaZjeRn+BA3sQx4L7fWbq7ZmVurp4ODs=;
-	b=62fdpT5FchTp9tAv+JISBvB0xtCn8mBvP9JUr9TjtYIAq1aW88PAylhtC9pa/BbnNyNwpu
-	dJ5wi/rS7iymNtQEQOwdPypFiTwU0E2jmB7KDsUaiWGQdkVEDS6jIigQYmqLyRatvUxNst
-	jKqFeyc24O5IlZeSjRHbxfwur4FNwo8=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Vx+vbNy+;
-	spf=pass (imf14.hostedemail.com: domain of kaleshsingh@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=kaleshsingh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772174110; a=rsa-sha256;
-	cv=pass;
-	b=vCqYUwam999Gf9myYSilMJZK3IP2MQX6AVq4ksswz+x8AQ3FsBKh/XNmWn/idR0JPwivDb
-	xjJAL1bdp/kNQXLFcRAvZ/0cL9tdGECNVy7kK0zzGmCPRnRvIjm6SY9SPiylXOFKVXWh53
-	k3I25n+gpPa4GaMX/Lr3FZ6Y0mzXxTc=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2adb1c1f9d4so56975ad.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 22:35:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772174109; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TqVyOF1FkkpMnpbe2x6q5wydDqPtoxuNlTWZAnoJEzSIhh1RuQMNlkueSZ0xChCaUb
-         MHnC8ueKp3q0dItTBrGLN7JSPL7q3BnVVLnjpol2gEPi7oqXpSmyRWzk9xd9wfon+e2y
-         vb1x5sKQ5evbE3KRWoglffBEd0sTBmiVPOjtHxnm0bvu02ouj5ofhfxAIuQ+V2jh6st6
-         ROiBzbAjYNhS6DZZEpr0D6YelKG9ytZuveIR/5nnIuVAYewcf3vx5E0GPbSLXStxaNyf
-         91IEzLJwsZEgid5kChGEu/jnH4T1H+2B9iBHBU0texWNcayjB3EfpKmdSXye93RYdZ2a
-         EyXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5vaa8akeEgfUaZjeRn+BA3sQx4L7fWbq7ZmVurp4ODs=;
-        fh=kfZ5ttIDFDaU84ilDDi0gsNDWwfDyjKW85ldGVJqWzI=;
-        b=P6NiaDxAg++YsuF0LHZcX7zR8DcLzQSj9mcayORcpT8LAPHHiti8dHfO0Zdp8qTDS5
-         BMj47FtZG9OZuHaO1AeM8jeDq+WdGY8csUc6UKUFWlLA30OEcfabtRX3xRELiUZiPhnZ
-         AOuLhsm3hqDlu0TxFBQhIjrBgFDdOdHORm7OVhpoVXkZHIOqsDPacRBWLshI51ecvukd
-         OfsEM2YgJfGDBJiyp5zS2Ra17wEyB1Ehc3u3gUOBuPusYQyqW1H0vsybOqKztfjH1sYB
-         IBHSdoN0BCr7+a9A94zmlLJoYi99Aj3u1oNdSwRm1nUm3/Kp9J5mS9TtT6k3WWGbH260
-         dj1w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772174109; x=1772778909; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5vaa8akeEgfUaZjeRn+BA3sQx4L7fWbq7ZmVurp4ODs=;
-        b=Vx+vbNy+mbWg6dKBP9+6/vCFR8YHkD1lazxh7ouegKcgHb2KD3ZVJCprTEy5Hz200h
-         PzoE25pF+1JJxFJyru8XhQuU/I1M6+6EACb2AQt5IvG+Io7boyONpIVk5And4OJWCbxX
-         vbqktauAdFhQlTzCXc9gVCM1nj5h4L5dSQVai/4/hWZ/JmXr5IA8ExIrbKEg9hkYVCZ0
-         sj42kXNHJitGUlOqnHISUa87Che0+WnmJcmlaNYPNpizjTJ+ftaEhKtumrDrC6gWVVRJ
-         YSzwHehzoRSrzW9xblHB4hvXeE5z4LDBpjBPMWK1cmFOjMo4/++qjgNiKzUW2PWBqLTb
-         9jQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772174109; x=1772778909;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5vaa8akeEgfUaZjeRn+BA3sQx4L7fWbq7ZmVurp4ODs=;
-        b=vcK5Ui79rZBy2BOEPD3iiy60KUqwcWkRWqN4bl64gKtkZx1oEgWG9o4qZk0WEFW+NN
-         eFLYw1jnsV/m7hGl4CXtHyB2fyLm9Gjw97bUyIX9TFDVsDRQxlwVLN6qvtMMbLTuGSiF
-         tBxu3NhE1AWErORuURz1nP2aMiotY0VbmDEslBfLl8/SLST5qUBP1wUn1d1ZaM/wsXhT
-         Y3RPZQJxFrnoQFoiZQ2Ey1+eVvVfqoGyZubhtHszKeKrzqvCv5pZk+lZEI1StmkK3p84
-         vNRWe6GsnjSSBSmgnuAAMAymvloyaDyuwPXjsgB+izLq1Zeod2bUvPJ8ueIgymkS9iGi
-         7Tkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRngI2oim9YHXEtUZsexMtK7+4GX5dZ2mYv41/mKGJVtPCisYU4qbWtCwYw0IioTJIBB+OL61Q3Q==@kvack.org
-X-Gm-Message-State: AOJu0Ywn9Qxu+zkWeiNwPG8KXgoUbF3mlrxgD/w5wapxdQbdQDzOyKRQ
-	rO4OEBt7wWCkk6zeqm+RkozCVnfx2pOC7I1ZF9o/bhNK9yTk0h8nOBD9VuYhyGVLLxeVtt02ANd
-	MxWNBTYq1ZxouuVnrURVFnDHWmKYd5e/IwDW6cTKf
-X-Gm-Gg: ATEYQzxH4wB1LDrKDYCek/5eZRJZkX19RN+1rPTlXKRsBvA+Xd8KtKB2RV/aGTmuf4s
-	W+sY9ouq5vwPrd0zkQe4NBkjB8zQ1SM5L8nxA+caewDXBU3b6yDuWFYq3OdfKne2wKPqJpee40B
-	XCzaeJSphjLc2PisnUf4/mGgRA5IeK4GcUOp9y8pAYKxPCwikzdLXNG8k1VJxWQxnkO6gab5vrk
-	fezrdbMzVGbhn2p8cWyQEHw4o39SzPkPjxruVzrGmtL3Doaz4thbtngaqlC6A0ZUaaqJB1a0UCP
-	21IbNXKml1mYrWV28NdfghIiVGR9WRReAULsKZdF
-X-Received: by 2002:a17:903:2a86:b0:29e:27f4:bac0 with SMTP id
- d9443c01a7336-2adf77c692amr4716545ad.16.1772174108996; Thu, 26 Feb 2026
- 22:35:08 -0800 (PST)
+	bh=l/o+Q4AGikwIdB1bx+x/BsS3mTAPffNhVvHygGJp3gQ=;
+	b=6f3e7VmdUN4CTA5utl49Y113/cAxtTsUolkzMuzWzMmHSF2laG/+m3SsllW1SZDf2z95fZ
+	8uucRD5uICsEmLUoOwWCO0pK7qcCFbH2GNhVoOn/qR4Z6AUr+tasOYqLosgHWFlmA5N5+n
+	ZH2TLqWKbQGICdON6OU0r6Jpwno28j8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=fal7Ym+U;
+	spf=pass (imf23.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772174376; a=rsa-sha256;
+	cv=none;
+	b=okl0sym2zHjAnlv+qbc2wQt81XrqO0ul07Wu0JcX619iF11aqmlaR0gjPiJ3yN/B92+fpt
+	Cxv4IyHO2gqWpISto50lczxjbr+DKwzrZTT2/xuLtp+P1UTxb6SAhqCWLCwBIsQABqh/f1
+	PtL7RQCrDeP58Gs6KoQEqPxl7frteZI=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=l/o+Q4AGikwIdB1bx+x/BsS3mTAPffNhVvHygGJp3gQ=;
+	b=fal7Ym+UZ9TdpFDu8oxIToBd875duzVo5udOAcl/QqlARsvXZynsA51nqjSmpqCULkGIyBtHu
+	gR9UapoubELSqeSBYWoHctScqwjMyBFqGFb6LRKPcUTe+t96pXiVYrng1LLgmmEnDHB0x4DVEBS
+	3ZEy+yqNJmC5goD3zgqvME8=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fMdpr6Jjhz12LD1;
+	Fri, 27 Feb 2026 14:34:44 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 562A74056A;
+	Fri, 27 Feb 2026 14:39:24 +0800 (CST)
+Received: from kwepemq500016.china.huawei.com (7.202.194.202) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 27 Feb 2026 14:39:24 +0800
+Received: from [10.174.178.185] (10.174.178.185) by
+ kwepemq500016.china.huawei.com (7.202.194.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 27 Feb 2026 14:39:23 +0800
+Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
+ filesystem
+To: Muchun Song <muchun.song@linux.dev>, Ye Bin <yebin@huaweicloud.com>
+References: <20260227025548.2252380-1-yebin@huaweicloud.com>
+ <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<linux-fsdevel@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<david@fromorbit.com>, <zhengqi.arch@bytedance.com>,
+	<roman.gushchin@linux.dev>, <linux-mm@kvack.org>
+From: "yebin (H)" <yebin10@huawei.com>
+Message-ID: <69A13C1A.9020002@huawei.com>
+Date: Fri, 27 Feb 2026 14:39:22 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-References: <20250820010415.699353-1-anthony.yznaga@oracle.com>
- <CAC_TJvcaJdEzK8n9BK0qgEXdzjzXtbA_Zk-ybfmG8kjNExVCzw@mail.gmail.com>
- <b82a5ac3-33e9-4cbf-892a-f0c7f6fe0c20@kernel.org> <CAC_TJvdgvyjyJsU4v6W+3tHKx_2e8UMJU3RT2HKLSngcC+yH3Q@mail.gmail.com>
- <5tdailzxoywzzunbwhtlk4yjfmzunntniqtudkb52q6hib74ql@oq4mi226dedv>
-In-Reply-To: <5tdailzxoywzzunbwhtlk4yjfmzunntniqtudkb52q6hib74ql@oq4mi226dedv>
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Thu, 26 Feb 2026 22:34:56 -0800
-X-Gm-Features: AaiRm50sVIIQTfT7ctHM4g1t99KQJhS99wa_T7m6oioVRZFMpAuvQzucC4RWMJU
-Message-ID: <CAC_TJvdC+CSqvx+BvOv4gO2mJbwiBhb6OZO0sx=GXQ0CmA853g@mail.gmail.com>
-Subject: Re: [PATCH v3 00/22] Add support for shared PTEs across processes
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, andreyknvl@gmail.com, arnd@arndb.de, bp@alien8.de, 
-	brauner@kernel.org, bsegall@google.com, corbet@lwn.net, 
-	dave.hansen@linux.intel.com, dietmar.eggemann@arm.com, ebiederm@xmission.com, 
-	hpa@zytor.com, jakub.wartak@mailbox.org, jannh@google.com, 
-	juri.lelli@redhat.com, khalid@kernel.org, liam.howlett@oracle.com, 
-	linyongting@bytedance.com, lorenzo.stoakes@oracle.com, luto@kernel.org, 
-	markhemm@googlemail.com, maz@kernel.org, mhiramat@kernel.org, mgorman@suse.de, 
-	mhocko@suse.com, mingo@redhat.com, muchun.song@linux.dev, neilb@suse.de, 
-	osalvador@suse.de, pcc@google.com, peterz@infradead.org, rostedt@goodmis.org, 
-	rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, 
-	tglx@linutronix.de, vasily.averin@linux.dev, vbabka@suse.cz, 
-	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com, 
-	willy@infradead.org, x86@kernel.org, xhao@linux.alibaba.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, Isaac Manjarres <isaacmanjarres@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, android-mm <android-mm@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.185]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemq500016.china.huawei.com (7.202.194.202)
+X-Stat-Signature: w8443rdikse5aq37zs3ouagm5inq1iqj
+X-Rspamd-Queue-Id: 393AF140005
+X-Rspamd-Server: rspam07
 X-Rspam-User: 
-X-Stat-Signature: iw7576xzp1dki939cay99bhfbxmdd8pk
-X-Rspamd-Queue-Id: B2F2C100009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1772174110-719133
-X-HE-Meta: U2FsdGVkX18GAgjyqUqIUzi52w7eq0XMFynC1PMnrrLtnwN7UWF286wZkIt3NbZC2m0f9vngLWTrsZAt6rHW7DYtBkVGAt6+N9TVugyViorIkqNzYCW9/50RRav1eiwzJQDSu0feaLAXVc2NlhlLZEo4pKtmSowA+mr9s1nvmwZwLGxyehZrjwaxMtP6S2uhzxwnSMuzEcCScUNLUY4H9DxwVQWdM3c++qbGlf1NW2TwoXvxqO/nF3/0Iy8gB3NPDbLxAVb+/hyRvJORZWmAcpmsCCSKv4A+u8eAOKyQvOio0qGYlNt2kwfLkd7J5ecJSxiPCMJlv6lfQiHlxzm0i/LWiMUmwEV1B1I1CGmNozCJfr+l8DjahcHQUjth3OqhneeS45P7zib3rwwcm+xntu8tQE1VN+oBSLxtO48GdU6oIwP9CErCbHSo4gcG8pM7u7FnQNbqjCbc5/ww/E+rDKbLmheNtBRtEjgfKyhgkDajV8ufYjT8R7FVVypqVq+LX2tpPXtoQ8m+Icce1yGldjbYG0nPg36dwus7yaaTuS81Bgh85SOarjI1Xe1Xwcrm4BX0lHnVrYNxebJP1TzG8zJ2nqRGNyl3bBORsj7UFZROOreB8WO0lkJ0DpjJvcCG1Onqk2ZUP4agUkMKnpio9DK67QOBbEDYBCLw3K4KSVgSfSNSj7vDf9oZWZnRyObR38S/xzv1/26Yn2631N8IE9qJIYzgafxXDUo2gC0ft2liwc/1wKhxTeNuklFgjrE7j/AVGxSLO/+hiHgLAWsGU1S5D8FY5VaxQoe+r+Vb36JpJMq+EEWaChfPr/eD/nN39pPLNPntuoF1hLa5+mepI+CIq8cR8qJazvV864U9A1y3ti3Wa/xcCLBAw8I8VjEwGcEL1reNgKpt45aBy9v2cjRSI28cE+sRoCZlzwmBzsTuEvBEKa6tfOK3wUoMSWOEp5Ywdqo1o27QsWp2eMh
- SYcvQ4oO
- PyQOSoELDiVHrElx49njGaRwC6WnzHsYQLedZpt2RgF4DABD2AVjuYQI6snDEtnXC40r6DnPMJJmlsyclJxxpQxbvHkKwq7v1shJr5Wf6eGpQdu0JYCWLLhaJCylEET0/wzvlU8FA6raw9xX58PTtzmHAw6GOooK519+JmKvElFGUwdFLYxZkKvVjLnbzb+l2UjQ0e1gcNG0Jg9zUU0FiZxlRJiIHRgLgvh8pcQRUc5xhBUhGYM3rzwLCgp9pUxYtff3O0e6yF1Md8LOwcXnY+QGWu1iCtdpjNqNhX/mE5eNukV1rwg1hzyucU6/VtDbaN8u0ZTlpBr0YIvWB0TZ6xwrmrSYjVQERBo7uwDJN0n1RAbf/LzfoiImckeNDdObBnmPr
+X-HE-Tag: 1772174373-994099
+X-HE-Meta: U2FsdGVkX19msIGDgNAwafwjbAra1syV99IdGXW0+v7YiXs6+JoTw5FrJB/rBUocnFIUh08IPrKaEz/AQ3qW2ZxnWs/HmUyokUixDDdSuS+BhXhvKYcfRDdDniIfqgikg48UbGBM5Kd9RYjp1ThckB7neTQ0h8+Z07MzQmeDvs5DWPDul1VCEJUlV79m3S1IE3FboOtZou1XplWiS9QZZNzdrGMDUStINxi3QIN/RKDN8dJAQXRqQbEXw1QiHa73wmz4sZY29Q5IpsjkNGlJvO9spr93Ov3jpFc3wxC2zN7YJ++1Pec8laXzfO10huC0a8PfBYru+WiZb/UGK102EQbXAGwVoFsKsISERdOt96ASrI8SXrI5zZZei9Osx4mb+vKSwm/oi20Dl5er8IeVZ9n/T3eDG+zMbOksCm1ZaWe9wiFujpP7tpoVttKAYS8ifVercA1J7TIr9m2XTd1UzvU1OQs6kZ9LyFbepwrU4pWgtpnQHHCH9VpvwaoWC2Z6CLe91Z2w1B2M5GH5qe2ejff8EFFbZyu3rSfnltwHo0aEtG5A9CAjyP9prL4Ev0IAYvqL3wCCXq1mKZKybL7rOOf2gFlvavguRymUiA1BwIoP62GU3qTrG3keNUrqtF0vh0im7HD/d78tk0FBGUUOZsif9sVFqpPGkKQx1PsNHS36ElKcSMznn4xzARMkJbGAczk8Gds36Sch0WUSq4lQSb4Xm7TvnlysHJuoRciGfabL1BaLVB0pKivjp28VGOQPGa14fmaIQ6t1AnD3kmWwhq7mG3CvB7wJCWyl4l5V5EDQR/+9wEc8Nd6S2NjcC+pwo38zTwavglW0Q9edebAdgYXop6BdZ7wEcf0C3eE8Y6A++SpAkd/HvgnQJUXNKewdSSNzuqtEqlVNSOG2NdpMab6itDy7yN/AA3E5LjTZ7KIxef+U6AgyOMlIdo5mvAFRSZ590LUgh210RQ7ZLlJ
+ il3dsJme
+ QUcZ4r2yhNZtt5fUkI5x51Abi5zwmJafk+3sIAsoCqZBPxkjgfPDzKSensYGeJetPDgetx5G7Inj9SSMtYAkIVqkeFJgycU1b/t195rUoOxheA4rJreOiSHBqKKTE+ObJKFEbB0poF+zekpfpS6FbsKrbuMbbOy8nBhVbT8s+B5wYRJ2gGCHJ2v3c1bQR4SzqwEoWMyKLLwyMWNp5UwLwHfKn1pZ4t51fZMnH6qbmspsTH89A+hGTRrGAMr6QMWWlJb2rE6SIN58NSYluFRaQNoxHf/c74VKS0/U8kBl7KmRa4Mw2WKgr2ll+QpbipoN1fUe0MjbtBxA4e3D+QvJdNwq0g4uReOoprAHCvyr8+Hp/OQ4zEH6qijVh3P+tR/WqVc8YMK38SaQcaYpCw4IZuV6hGDtP5uzBodaXO397zKnikK1bLFLpo8QRC+rtycXwiMQ9r7m1Uw0CJnKXWzqMkCIcww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,152 +106,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 1:22=E2=80=AFPM Pedro Falcato <pfalcato@suse.de> wr=
-ote:
+
+
+On 2026/2/27 11:31, Muchun Song wrote:
 >
-> On Wed, Feb 25, 2026 at 03:06:10PM -0800, Kalesh Singh wrote:
-> > On Tue, Feb 24, 2026 at 1:40=E2=80=AFAM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> > >
-> > > > I believe that managing a pseudo-filesystem (msharefs) and mapping =
-via
-> > > > ioctl during process creation could introduce overhead that impacts
-> > > > app startup latency. Ideally, child apps shouldn't be aware of this
-> > > > sharing or need to manage the pseudo-filesystem on their end.
-> > > All process must be aware of these special semantics.
-> > >
-> > > I'd assume that fork() would simply replicate mshare region into the
-> > > fork'ed child process. So from that point of view, it's "transparent"=
- as
-> > > in "no special mshare() handling required after fork".
-> >
-> > Hi David,
-> >
-> > That's agood  point. If fork() simply replicates the mshare region, it
-> > does achieve transparency in terms of setup.
-> >
-> > I am still concerned about transparency in terms of observability.
-> > Applications and sometimes inspect their own mappings (from
-> > /proc/self/maps) to locate specific code or data regions for various
-> > anti-tamper and obfuscation techniques. [2] If those mappings suddenly
-> > point to an msharefs pseudo-file instead of the expected shared
-> > library backing, it may break user-space assumptions and cause
-> > compatibility issues.
 >
-> I'm not worried about transparency because this is not supposed to be
-> transparent. This is not supposed to be used by most core system software=
-.
-> This is supposed to help replace hugetlb page table sharing.
+>> On Feb 27, 2026, at 10:55, Ye Bin <yebin@huaweicloud.com> wrote:
+>>
+>> From: Ye Bin <yebin10@huawei.com>
+>>
+>> In order to better analyze the issue of file system uninstallation caused
+>> by kernel module opening files, it is necessary to perform dentry recycling
+>> on a single file system. But now, apart from global dentry recycling, it is
+>> not supported to do dentry recycling on a single file system separately.
 >
-
-Hi Pedro,
-
-Thanks for the detailed breakdown.
-
-Firstly let me state that my goal definitely isn't to derail or block
-the current mshare efforts.  I'm mostly just trying to gather feedback
-on what a "transparent", approach might actually look like.
-
-> Transparent page table sharing has other constraints. I like the idea, in
-> theory, but there are a number of constraints that make the idea unfeasib=
-le
-> for now. There are a couple of problems we need to solve first:
+> Would shrinker-debugfs satisfy your needs (See Documentation/admin-guide/mm/shrinker_debugfs.rst)?
 >
-> 1) Every spot where we modify PTEs needs to be assessed and use different
-> helpers (that can un-cow page tables). Every pte_offset_map_lock() can no=
-w
-> feasibly fail for OOM reasons (and that also needs to be assessed).
+> Thanks,
+> Muchun
 >
-
-What if we strictly limit the scope to just read-only mappings being
-shared? Would un-COWing still be necessary?
-
-> 2) Various bits of PTE modification/unmapping now needs special care wrt =
-TLB
-> invalidation. The kernel needs to be aware of how the page tables are sha=
-red.
-> I don't think the current rmap data structures are well suited to this ki=
-nd
-> of stuff (perhaps with Lorenzo's WIP anon rmap rework we'll get something
-> better). Basically every spot that goes "modify PTE, flush TLB for mm" no=
-w
-> needs to go "modify PTE, for every mm that maps this page table, flush $m=
-m"
-> (if you're thinking that COW will save us, it technically won't, or shoul=
-dn't,
-> because of stuff like try_to_unmap_one() that is used in reclaim).
-
-I think this bit might need to be architecture dependent. With shared
-TLB partitioning on certain hardware, this becomes much less of an
-issue. We could potentially gate this behind something like
-CONFIG_ARCH_HAVE_SHARED_TLB_SUPPORT (or a similarly fitting name) so
-only architectures that can handle the invalidation efficiently opt
-in.
-
->
-> 3) Reclaim loses even more information as now N processes share the same =
-A
-> bits. I don't know what effects this can cause. It would require
-> experimentation. Perhaps something like "if page table is shared, value
-> pte_young more". I don't know if this can work as a bandaid, but it's not
-> ideal.
-
-I agree this will require some experimentation. Intuitively, I like to
-think these shared pages might naturally stay "hotter" since multiple
-processes are accessing them concurrently, but we will definitely need
-to experiment with the reclaim logic to see hwo ti does in practice.
-
->
-> 4) It's not known whether page table COW fork() is a real win in most cas=
-es,
-> or all cases. Would want measurement.
-
-Our preliminary data on Android shows this can save ~200MB or more on
-mobile devices right after boot. On memory-constrained client devices,
-that is a significant win.
-
->
-> 5) It becomes even harder to estimate RSS and PSS for each process.
-
-For PSS (PAGE_SIZE / mapcount), I can see that a single mapcount from
-all the processes mapping the page through the shared page table would
-skew the result. Though, I find PSS not perfect already; I think
-processes can artificially lower their PSS by mapping the same file
-multiple times.
-
-For RSS, I'm not sure I see the blockers to aggregating across the
-private and shared mm_structs?
-
->
-> For these reasons (and more, certainly), I don't think working mshare() i=
-nto
-> a transparent, all-great thing that fits the zygote model can work. It ha=
-s been
-> discussed at length how to pull off certain hard bits like TLB invalidati=
-on and
-> locking for mshare, and with mshare we have the advantage of not needing =
-to
-> support every feature ever (tailoring it more to the big database users o=
-f
-> hugetlb). And we'll still need to adapt certain bits of arch code just to=
- get
-> it to work efficiently.
->
-> This said, if you want to discuss pulling this off, I'm all ears and it c=
-ould
-> be perhaps a fun discussion (too late for LSF, I guess), but I don't thin=
-k
-> it's workeable into the current mshare efforts. And, believe me, I would =
-love
-> a unified feature here :)
-
-I saw Anthony proposed an mshare topic for LSF/MM; I hope to be there
-as well, it would be great to chat about this in person.
+Thank you for the reminder. The reclamation of dentries and nodes can 
+meet my needs. However, the reclamation of the page cache alone does not 
+satisfy my requirements. I have reviewed the code of 
+shrinker_debugfs_scan_write() and found that it does not support batch 
+deletion of all dentries/inode for all nodes/memcgs,instead, users need 
+to traverse through them one by one, which is not very convenient. Based 
+on my previous experience, I have always performed dentry/inode 
+reclamation at the file system level.
 
 Thanks,
-Kalesh
-
+Ye Bin
+>> This feature has usage scenarios in problem localization scenarios.At the
+>> same time, it also provides users with a slightly fine-grained
+>> pagecache/entry recycling mechanism.
+>> This patchset supports the recycling of pagecache/entry for individual file
+>> systems.
+>>
+>> Diff v3 vs v2
+>> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
+>> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim dentry/inode.
+>> 2. Fixing compilation issues in specific architectures and configurations.
+>>
+>> Diff v2 vs v1:
+>> 1. Fix possible live lock for shrink_icache_sb().
+>> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
+>> 3. Fix potential deadlocks as follows:
+>> https://lore.kernel.org/linux-fsdevel/00000000000098f75506153551a1@google.com/
+>> After some consideration, it was decided that this feature would primarily
+>> be used for debugging purposes. Instead of adding a new IOCTL command, the
+>> task_work mechanism was employed to address potential deadlock issues.
+>>
+>> Ye Bin (3):
+>>   mm/vmscan: introduce drop_sb_dentry_inode() helper
+>>   sysctl: add support for drop_caches for individual filesystem
+>>   Documentation: add instructions for using 'drop_fs_caches sysctl'
+>>     sysctl
+>>
+>> Documentation/admin-guide/sysctl/vm.rst |  44 +++++++++
+>> fs/drop_caches.c                        | 125 ++++++++++++++++++++++++
+>> include/linux/mm.h                      |   1 +
+>> mm/internal.h                           |   3 +
+>> mm/shrinker.c                           |   4 +-
+>> mm/vmscan.c                             |  50 ++++++++++
+>> 6 files changed, 225 insertions(+), 2 deletions(-)
+>>
+>> --
+>> 2.34.1
+>>
 >
-> --
-> Pedro
+> .
+>
 
