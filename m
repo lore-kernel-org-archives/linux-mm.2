@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04C81039895
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED401039895
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:39:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C8B6B00E4; Fri, 27 Feb 2026 15:39:23 -0500 (EST)
+	id C89006B00E6; Fri, 27 Feb 2026 15:39:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FAA06B00E6; Fri, 27 Feb 2026 15:39:23 -0500 (EST)
+	id C617D6B00EB; Fri, 27 Feb 2026 15:39:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 503DD6B00EA; Fri, 27 Feb 2026 15:39:23 -0500 (EST)
+	id B398C6B00EC; Fri, 27 Feb 2026 15:39:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C82E6B00E4
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:39:23 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E180114092E
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:39:22 +0000 (UTC)
-X-FDA: 84491401764.07.0C9243F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A18466B00E6
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:39:54 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5DA651408AC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:39:54 +0000 (UTC)
+X-FDA: 84491403108.17.A599836
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 05674180006
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:39:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CesjGCgp;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8D1D41C0007
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:39:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxJ5UGqT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772224761;
+	s=arc-20220608; t=1772224792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MEydnCTGp1+mN3RamvP6sTGGXtWmTaRxD2brmbuFi1Y=;
-	b=dpyz171kBA55WWdKPk5omPELS8nQksYkYrogH2ELdeCFqv2MoBEHIJP7HqoVXeohjuzRbl
-	JuhrtnBJXXsRUeDHsQW4whmd6uyiLybTzJb61k++xy56n5He+WZcGgcxai/apDwpYK1cBt
-	9rh+v9rivtkIJK2HCTx+RCToqNGRhNA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CesjGCgp;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224761; a=rsa-sha256;
+	bh=YGi3bxBcCHARaFdNByMk5N/7ChiuaoCfCBiv8JgqY9M=;
+	b=IXC4M/tsiOnRVTUgK4gnqZSVIukLJw7wYetZfoSRc0/vYBT0Zvh/syRjxx1UyTTWvo0+Y6
+	3rtnArBypOAslvDs3hKMtupgGBNop8xll+wo+pa9ogPS3cg4KegXsE/RnSq07JzSyYid85
+	CuK9TYpbCc9L+RhGHYs6bd1WQZul8GY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772224792; a=rsa-sha256;
 	cv=none;
-	b=mYRsxCZHEeVz4L7QegZRp4nHhHzIZYUkEXijhEUUKF0YFJckafkeCyzzqysy7josgLpsBP
-	vbxKQWhgYUlz5hPT0ghSHrJ5ST87XW8SBqDofCZJuGpY+Xde5TZ0vOe7nC7sZNaVB4zk8R
-	ugc5Ms8apKHLUcw/e+VI0EJ4l5I2lo8=
+	b=fAFnZLS7fTX1D7bx1QcZiMYB/Hi6p3jssaPIRldH0zpS841eLCUQ2X3AycfD1lYE0lz6q9
+	7XkmJ+a50hE9CeOlpIy+awDuvOsjZiO4Ob/0HLSCMxB4F9WHso8IfiQZDJjn4zcsHHmhOy
+	ioJ/xXPb7HV7aMK5QPonGWcek5kuaSg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RxJ5UGqT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E9F3E40245;
-	Fri, 27 Feb 2026 20:39:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3D0C116C6;
-	Fri, 27 Feb 2026 20:39:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BE5FA4443E;
+	Fri, 27 Feb 2026 20:39:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A931CC2BC87;
+	Fri, 27 Feb 2026 20:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772224759;
-	bh=C0JYE9g4fNlb54nOcYXLDnmpOOfKqRtc3+52X6TvFkI=;
+	s=k20201202; t=1772224791;
+	bh=6KccSK+/RNVKVO6WapQi1OO/X6L6RhvwEhhnUVSuMAk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CesjGCgpHbnBs+6sVaZ1GtPvtTHPtngBOYi0yU7cJOzflnqlkNKD1zRkmSQtRHvuf
-	 6RzAWIzv+oglcgdELZAMMmLzdYi0OniFpNcJ7DvoeUrxBveINOzXB19noW0WPaJNxm
-	 7smt+degjri7ytTbnFLOLsDx03xtp2ABokJlba8Ifr1d1lWv2GatQUS2NJxcy5WIQl
-	 MG3ZmSXyib5rydb/zPJc7Zy+vvDD+K7hXdh6GjT59/YHHwXwPUWqhqOSjaVkNWnmu8
-	 33uOroiy7FwbgRu2ld9UOJHpsY/sIMZ3aSL9CQY7NjHhlsf/w4SnwmaQVVhWLc+beN
-	 Q+UM5TNtP5H8A==
-Message-ID: <7e93021d-53dd-4162-97e6-3bca1f46a0c6@kernel.org>
-Date: Fri, 27 Feb 2026 21:39:11 +0100
+	b=RxJ5UGqTMhNKcz3e5zUuS7yqBpKIKGYKnFYDUOtnD5ZGQYiDfsCs3wCJeST9JFUvq
+	 sHSPFQSEqskEEwbbJoyQ88m8jLoOqmfJfyN1omaSGxymfsx8E/0r9sYdLTnB1Hw0Cu
+	 5JpRAAhg7lQtSdbScJWLdwmqVjf4LuXHQFaFbHzrA3dG5b2kmC7Mb2pnvgsCAIDTv1
+	 cowpF/r/IiyD25YGy6faI6nHyxgGfu3ZQkrjKakFTJYana7ctcU0BXfvDurL0DwtTC
+	 JqWRfL6dzb9UhizOZkPWHGkGcxraV9ms7id1GN/HxwvK+TWTMu45VPdiY4/OgRIude
+	 EwKBgaQ0Od9lw==
+Message-ID: <d95ec932-fbbc-48b0-9ab0-f16eea8a6172@kernel.org>
+Date: Fri, 27 Feb 2026 21:39:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] mm: convert zone lock users to wrappers
+Subject: Re: [PATCH v4 3/5] mm: convert compaction to zone lock wrappers
 To: Dmitry Ilvokhin <d@ilvokhin.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -86,10 +86,9 @@ To: Dmitry Ilvokhin <d@ilvokhin.com>,
  Shakeel Butt <shakeel.butt@linux.dev>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- "linux-cxl@vger.kernel.orgkernel-team"@meta.com,
- SeongJae Park <sj@kernel.org>
+ "linux-cxl@vger.kernel.orgkernel-team"@meta.com
 References: <cover.1772206930.git.d@ilvokhin.com>
- <d26a43ebed2f0f1edb9cfe4fbed16dd31c7a069c.1772206930.git.d@ilvokhin.com>
+ <3a09e46f52cf9f709b0725bc2b648cc5212843b2.1772206930.git.d@ilvokhin.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <d26a43ebed2f0f1edb9cfe4fbed16dd31c7a069c.1772206930.git.d@ilvokhin.com>
+In-Reply-To: <3a09e46f52cf9f709b0725bc2b648cc5212843b2.1772206930.git.d@ilvokhin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 05674180006
-X-Stat-Signature: kigf5s8j9h3zjx3zi6dm34hs797u9fps
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8D1D41C0007
+X-Stat-Signature: ryntszbohyze1ef134pxgw89x66ib9nz
 X-Rspam-User: 
-X-HE-Tag: 1772224760-838714
-X-HE-Meta: U2FsdGVkX19yE6RlZU16TOPOXVVJNIHqRtXDdxXo2DMCn2Y3YDQqO6ap2r8R+/KiZMtKJCstZfFFYeyfGw+8/aXFMjniI8pulE06qmSIQLhs46Eoo+Doxhy97fFtS+3MTRPrvT+reJ1OBvsfjqnsKcGMywzTpfb+TEuhZqUvNgmRSoOmUnjg39JC8L0O0SE9eJRywsCbcrXxbzF5cNkpqzxKvqUkdro6C72+/dgSx3/cx5OVSy57hj+bp31x62NBr/P4kFiIulB+hnRyRwyM0sK4yhke+W4udvapIP+tXt+t80YIP2GokXEq2rrMYCcOSxVclRBaA0S0CIw8Nh3gIV6PWoE5gwi+7zpny9LKufRjSzyhc6FOA3JC1o4DJusRuqvvgrTayu4nnS0SNVsGLBOKPYsHK4bonmpZdRfDY3ZBHwgxXpdkxGOgw/oe0fxuWkhZpBY/L6DdKhOzMuZ1as0cqUa2MGQwfhLTha8gtnMsD0Y0Hsa9lF0xHwvv7NHYyS32cXkINDxYRALkqYmWHqNuCQyE71KzZ1GJFG+ftsQu/zVNRCV8NWr8/LTh9ulyZ6+Mcgo25ZP/ygZWvzXfTu2/iViJL95u0zV2HApj9pZLCvlpV0THFRVUjMpUEEzjdKarJY+3bFiRjMJkQIAk4PPY53k76tDbbK8CXjghUPIC0ZNrlled3W/EwuwczEf2AEveGh+zvP7aGl6xiLD5cQS0oj6wTxtG50fpwDSKjnmwwpySctKbgIXbpfSyZJy3qK/BVWvRJ7dSBMxmlEBsoV0lptO1IuOgWZX0SQFJlCEu4KY9hczZ3SPL+CjqFoJINNqD14zs51ygnZ9vVBxLzDKFAHWn8rjWEIhpNJsXePp3SwfURnG1DswiriyH7m6iWsHTDrl0u2oGIzbSQqd2LZo7GQLmoB3waV0Jc31ePazmIc0OtHeZ0ZsJyKzKomY/WsT7eW90YjxrvB8ODqP
- teBqe8mN
- HNcWo8MwWhehqFk2CltB4ZvACz+j0DXEuUxQWPMaKVbJkbbjUAy5kSORTy8GE+xi3g9yGMojs2LkHvfaCHLfndNkxjCkOVWNdo8LKngg6ne5jGLqoDlFwx53ZT3KjK2CKQMQbMGv01KPfk68a+AMsdg7AUmLrg/dxr/1NBy/QhUAgfJ2W2d+e3yhGOlYH1d0EByS+CW/zL+q2Gqrngp5X1KVq2oLEb6X5pigQhcUi+06p6XQyJKB+tNM7qnhA3zYjLFe5gqEXsCuLlb/G0mAwvNbsDUK+pf6dpcVFxrb0dT+Z2V6u8xyVDFwrkp5SIIzg6qV7k3dGcAhMxjIWfSXS7xpQaQ==
+X-HE-Tag: 1772224792-594736
+X-HE-Meta: U2FsdGVkX1/tIzWoGg0u8EwO1zox81kckSVTeSoup4bvgyl4ARQ6YRJ+zTQOrANEdJiiVxIRjwFU4/HU8TJHp9znVJfw7hkP3X6rHkAYHTpBF/4s8qpIfRwn+LF4JmWhqAQyrzO8TjZIJNT7rDdInGr8K+KOjXifYFkgmAQeIPU9pQEWX1T9NK4dPerHpBoSprAo0jSCFBZxRPhkP0Y3J9Y4dhISKK0OAX7UqKYjjf0G2xJ1t4VJYmV6XS2crE7jNZLRM/mlQA/MWOawoYp4W2cOO2Y42FIAHPG70SnwlUeWYic+gYY9rZD3yHBkSTDHvH6JjKykexVphY+h3xD3DeDZqOygBT6gh/OdaW6259XlWJeqkjWBpygp2BhRFWqZbPl4mHdcAAFuCf6AeFH5c4Iq7RIwtdG/6JWL6XjA8K7l05Zm3E6I7yk995ghWhDCfMEWKWuE1P3QpoLV/MnE27WnyaL+1yjUDFsUf6nSSc8Zn2B0uXZqx5kc3ce7HgGhI8giHBNxJpeOElZK+H404/B394S5zI/qMCBj06DHxt3fVJHyG7fAlNqiO/sab69ojp5/2Lrw1qlyH/Z6eO7ZebDZlDWhVQqxidLKeRzUY7jJ3LkA8SmbsVDqoCVbWf7idHtEVasSwoQ/K5xGE6lvhbZiPOes6jVV1APK1aUEursQRqve4WpLB8EwPxgCNA+n8Zx1wA8ohU/HHZRI1JgeFCi/StCD87fA5RA2RAh/P+6oG/2cti2q2Zl+ylxU1MHXp1reS30ZP5hLL7XGqVuWRgcso2yDDwAOaFNgE+QUtJ3GGGx/e4DPn4cBnPhhaQmIvGNSgonLjRyuVcVJaxQcxvFwzNej/Wak5FAA8lJ/2a/fd3T1tOX7vpu63Gyci2632TjBY3qgO96zWjK/CZAk6wnx+Q1pwwknhD5412xO9O6ySzjoG4S/2Ed8+0ot+QedZ1JcnHKCPQZ7NMHZWLN
+ C1ABL1CW
+ buEd9xUamFELj7tIiK5ZGx323HUpP4hJ7g/rdRp7V2muu4TKO5UUU9/6juUeerpktMAwDn0VZar+//oR1tqQVDPadRVUFz3q0GjhpDRR/LAQ9NETFdY2fwToMtwPZudFotRw24B6rVTnpUlzVdJluw6LU93IBO1nD35YqSPj8fknWjcjDzXugiW2P/5cbKP/b4UNXNHOwjRHOxx7Rfz79IpNWoLp3NCci1IOa2hXIWQqODQwx5ft8+AF473GdPD11TD07lnENL0kH8lo5lSkRvjx/OcJzTAgO4e36J1YfGsVns/B1rpEmyznDf3fY7C4caxCFFqnanaRA9uAqAGvBoONZUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,41 +154,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> Replace direct zone lock acquire/release operations with the
-> newly introduced wrappers.
+> Compaction uses compact_lock_irqsave(), which currently operates
+> on a raw spinlock_t pointer so it can be used for both zone->lock
+> and lruvec->lru_lock. Since zone lock operations are now wrapped,
+> compact_lock_irqsave() can no longer directly operate on a
+> spinlock_t when the lock belongs to a zone.
 > 
-> The changes are purely mechanical substitutions. No functional change
-> intended. Locking semantics and ordering remain unchanged.
+> Split the helper into compact_zone_lock_irqsave() and
+> compact_lruvec_lock_irqsave(), duplicating the small amount of
+> shared logic. As there are only two call sites and both statically
+> know the lock type, this avoids introducing additional abstraction
+> or runtime dispatch in the compaction path.
 > 
-> The compaction path is left unchanged for now and will be
-> handled separately in the following patch due to additional
-> non-trivial modifications.
+> No functional change intended.
 > 
 > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: SeongJae Park <sj@kernel.org>
 > ---
-
-[...]
-
->  #ifdef CONFIG_COMPACTION
-> @@ -530,11 +531,14 @@ static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
->   * Returns true if compaction should abort due to fatal signal pending.
->   * Returns false when compaction can continue.
+>  mm/compaction.c | 33 ++++++++++++++++++++++++---------
+>  1 file changed, 24 insertions(+), 9 deletions(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index fa0e332a8a92..c68fcc416fc7 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -503,19 +503,36 @@ static bool test_and_set_skip(struct compact_control *cc, struct page *page)
+>   *
+>   * Always returns true which makes it easier to track lock state in callers.
 >   */
-> -static bool compact_unlock_should_abort(spinlock_t *lock,
-> -		unsigned long flags, bool *locked, struct compact_control *cc)
-> +
-> +static bool compact_unlock_should_abort(struct zone *zone,
-> +					unsigned long flags,
-> +					bool *locked,
-> +					struct compact_control *cc)
+> -static bool compact_lock_irqsave(spinlock_t *lock, unsigned long *flags,
+> -						struct compact_control *cc)
+> -	__acquires(lock)
+> +static bool compact_zone_lock_irqsave(struct zone *zone,
+> +				      unsigned long *flags,
+> +				      struct compact_control *cc)
 
-We tend to use two-tabs on second parameter line; like the existing code
-did.
-
-
-Besides that
+... two tabs :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
