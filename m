@@ -4,65 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 862BC1039892
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:09:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC1841039892
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:10:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E37DE6B00D6; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
+	id 2A0D76B00D9; Fri, 27 Feb 2026 15:10:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E10706B00D9; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
+	id 274E46B00DB; Fri, 27 Feb 2026 15:10:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0F0D6B00DA; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
+	id 14D756B00DE; Fri, 27 Feb 2026 15:10:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B922A6B00D6
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:09:48 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3FF1813BEAF
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:45 +0000 (UTC)
-X-FDA: 84491327172.07.18B76BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 580E440006
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BQHY4VRD;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772222983;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F19E66B00D9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:10:07 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 797318C7CA
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:07 +0000 (UTC)
+X-FDA: 84491328054.27.520D203
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0761B40002
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:04 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772223005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nKsxamfwDZY3w3hGJq5MlXOZuo73MhJ/MeAQLw6AQi4=;
-	b=T+jD5OLL/pvNG0joWikHKfG6Id/MFy2fGNpi9ZOvLRJfv/3tSFmFljZ5noSIff1BiEt/ok
-	GO1wP58UFSwRu0JvqR0mbKJNYSZH40NzOfWWqziKWee9uUzEXpmgklETmeTA6cOxlmrxXJ
-	VCul0MKX77n7GVt9lFTfuHQUSl/j/Qk=
+	bh=DUhf1JuSB9OPze92qz/d6HbXdXDvs4qBvhHKIVZpPP4=;
+	b=QcGR2BZUclhyu19FRpVKYzEARhBlTja+raLrNcaRxnJY8AoOIhaGXvttz0i3T6s+4tRLH6
+	N2HWerxPkykknullAZZtK2nCHd0t0BwXs6mMOumi75Gm680VluTDpkaki5MxblwIg5nPAu
+	pP9TUPNaiTLXdxjQtEwb9Epf2pkXUHI=
+ARC-Authentication-Results: i=3;
+	imf01.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1772223005; a=rsa-sha256;
+	cv=pass;
+	b=W+SQIq2w6oBtxwC8f4wYZJB426c1bVy8Ohn2vdbYHdLasqkWITRbAXkxz1Oq6+174XfKHI
+	WKEaQQssnQzEKWjr9mADUO4qViVe6YXNtiTlXq6IC7BBsAa4g9BA0HIbEc7seWpbAn/dma
+	W4/SoXuzT3XFSNDfRIC4TP9AWTJPQKU=
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7350EBBE8E
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:04 +0000 (UTC)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 430321B82B9
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:04 +0000 (UTC)
+X-FDA: 84491327928.28.D5BA56C
+Received: from relay.hostedemail.com (unirelay02 [10.200.18.65])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4436F140008
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:02 +0000 (UTC)
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772223002;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DUhf1JuSB9OPze92qz/d6HbXdXDvs4qBvhHKIVZpPP4=;
+	b=b8OT9yRh42mxK/cjaf4MJpct1OyxKetrT3NtDFkIwCu/M4+UD9szumtmpA6zLyx946/GpW
+	AgFgu3qGMDOCFABzRJC9RLRlGRwr7YXzbluHfDafWYxUwUCmP8rGYUDkgxHLNMqs1JcwT/
+	bwW45iSqnWl2NK9wB9LmCXHg8SmsISU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772223002; a=rsa-sha256;
+	cv=pass;
+	b=24gOyxZIxk2QpThcrwSYpQHHntnfxk3Ex81K6DC+2xGZHCOtkfw1d5wXybKouvqgIlg36R
+	3TP0N5KO61uxJz2TfyjGts9w/rt3b/iDsAylhTGqkDMOTGF69WzTX3RXw5yLFnXsarfrYR
+	q/c9e7CU89oTfEUYRAeiNIfZXyl9jJM=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C2F0713BDDC
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:01 +0000 (UTC)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8CCC61408FF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:01 +0000 (UTC)
+X-FDA: 84491327802.25.3661320
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DC061C0013
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:09:59 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772223000;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DUhf1JuSB9OPze92qz/d6HbXdXDvs4qBvhHKIVZpPP4=;
+	b=esOj247NQTiL5Jm5NoNdZF3/fzxU15O0N+kVaLJ3AFifP8vMk1sh/wWAGm3L0X7a0vwZMD
+	c4OCOea1dH6xASv3IFNkgLYNM5kvQ3Skgvz98fzlAgHu/AcfXOUXpPdh9BSgCbh/7+kFdY
+	iFQsaNbOPId0RLHUYjVNhjrWyrbl+ck=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BQHY4VRD;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772222983; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SKSqFMwc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772223000; a=rsa-sha256;
 	cv=none;
-	b=RWcciypqvyfFhZP3hzRqUumVdsCaIOiPOc/giypS++dmmLyWVQiPZgCKXBZE4Rp8mwqRz4
-	pPbcIVyWW2sci2rk73a+zgqslEwbBwT20ShRkvqZeiNt7lX9qQabnkXrP6Ordnf/GX6VrU
-	WFs/4ARXW+b9F/NDuwS296NncZ4nT44=
+	b=g+pfdhyjBi+fciBELpSsuDgd82NqB3+rO+T6HoeD/HXePooArE8IYjy2fcrACaHNTkcA24
+	fQX7/PwqE5e9Yb6E803e2xwR0fOnZCvjJAr9P+A0s9LicNCR/pMaNHtSw7qFhm410c9cCs
+	NESeSy9DPFWILTlOuDW2k2mnfJqQAkM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6A4A4401D8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 04D8A4417E;
+	Fri, 27 Feb 2026 20:09:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E725CC2BC86;
 	Fri, 27 Feb 2026 20:09:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC1AC116C6;
-	Fri, 27 Feb 2026 20:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772222982;
-	bh=6rt1gIIqFtg8jcYMpGLsIsLBZas8CDATuKxsRIDKO5Y=;
+	s=k20201202; t=1772222998;
+	bh=6LDS5+Vnu1htyspttVgh9zMYsh7tIZY4ma3ymZBtFxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQHY4VRDSRTvpeKP+Itjk0UhkFl4s6G0uWMMDvYg1M2w57rF10GCj3c7odrrE5wWN
-	 VjrTpoY8Likic/JjgXgS14dJIl3eUZ+6M5FwyltQNCNf2ZuaYyTOBZf69RquFDnukC
-	 /4wLEeUtMJTFa/NRhc7WEM5x4w8QBOkBoTOacpxlvIgCCK+7PdgrNRjoDeCbwwYTJy
-	 FrznIcjK8BKOGMZ+Q63lAvvbNqww0pS1F9QN17GlyDPjQCPwrahp30ffoNjNZsJBgM
-	 IwdPAjvbaRoao5DNrG4O31TKtodgkmB+weVPUOBXFPAp6h+0N6Lq2+n4vSxzms/JLJ
-	 4LcC9G37N3BFg==
+	b=SKSqFMwcnc7VlfFpJ1YNAbm4Z+zF+/LGzUP4CQ7sh7kvhpYmsBKfiG+nk4e+qHYLY
+	 +Cdf6OJiVUJQfBE1Be1Oajv2J5qqAr7rTEQSaKgth6pGitrG8Hc1wPVk2TOXaWSysY
+	 5NZBg2/wRYlKWBg3m+g+8mhjmq7xDqKiE1UDk9cYXlckyJFxfD5ezJwIvK9pjt6B0f
+	 +9uLN2/GF+QIAANdneeZojFKTbtzB83JiF1S8jiEQTloHhUkWPaWDcFKguB8BRteav
+	 xs9wWSj8gILbDPly5WkEX4gjf8F5WAVfUBqcy1dk1YtENH/MRugbDFtWtjB0lCg6Ka
+	 Iqb4hdLjMfU5A==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
@@ -138,22 +192,30 @@ Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
 	netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from zap_page_range_single()
-Date: Fri, 27 Feb 2026 21:08:33 +0100
-Message-ID: <20260227200848.114019-3-david@kernel.org>
+Subject: [PATCH v1 03/16] mm/memory: inline unmap_mapping_range_vma() into unmap_mapping_range_tree()
+Date: Fri, 27 Feb 2026 21:08:34 +0100
+Message-ID: <20260227200848.114019-4-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227200848.114019-1-david@kernel.org>
 References: <20260227200848.114019-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 580E440006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dz9etnybjuwn37o6c71p8zepbxwe1hcq
+X-HE-Meta: U2FsdGVkX1/NOSgsJmv7I87gZYYvAL1HvedddRcu0hOaez63LO3r/RZeg5nSEJuUd+I512ZCpKgSbAHRHLLWDg7yi+v8yIGzSj/Y2t3OpqvKCKgE/77MNauB2LYisw7oy/5v2DREQc1nBwHmEzq9KtKRd5G36MOqUffyHP77haimJb919FlvKfeRqIRWugFB6MeCRTV0AZgT5zdXoMbb9kwZPzbQe9QBEQDnFSEcLLBu7uk/y1xkkzofqATTo9CzaJUtnsBERKy8adleKKI0uyahUDkjm5H/ilvKAk3AM6hEkradMjWsJVmX/SvhmG+O96NEcTc//kba2pwQooLFOZm6UfXoWq48ofiF32CnVxcPXqMFGZh3+VpMxYtyidWM/W5083Fh4auHFpbSuLF8Za78T5vVOle8dzEUM06C6gJBw5e5pXFhtzZJclOum5ba7ivFc8mzBb37kgg0XG/pFKXsBCJuFDIOZ9Rit2Ah5BpIrbkqZ/iGssH9DmHGLgzL9PwHPq/2E3DzCGMfRhOEcJb03RX65smafSTZKanVlKPArla8wJKaDIUQNnKl6vN5mcWj4WpBacqLgLg2pINjbh+aWbtErPlNMAuTcEI6d+waR2R1cv7gl9guzSyF25MAwkQS3++qJJ7Hq7VHZKGiD89bMmLnuaW1LH1NSnttrHoFSzVNQ8lT/C+3YR0MtO/vg3VRT35SQ3tr/5jeYwLN1+JsWXQUX2a5JG9alF3LI+qnpfHYV4r5UU1FIlhEYZh9xYGHAvO32HLUcpo4LuaFEfai21VtdzD9FGi5oI23y/1qiSJoYEKUkxU3vokFPu/RKeC9at+0LLCnwu7ylFVLfe9XOpBhRnXXULgJ7fAKDbVU3KrwPwr6Hz1h1CISimZPTlR5HEwUHvvm6S/vKnb0f9dEdhz8IjIKQBv0/2sU8YjtbsasbFDrDux2O4VJjpmGZlqbsQFWfEcOUci00uj
+ 3r/Ask1W
+ jeSKzsIzCyOZNdcQa0bPoCUHCHdWlukrXcTbd6PJ16JiRx24=
+X-HE-Tag-Orig: 1772222999-769917
+X-HE-Meta: U2FsdGVkX1/j80zThISmGRLzh76AnD9P5q6BOhmmBVhOL7M9bmEVgtXXGmpuR0MX0NNpy307RDXbXSms/zzg53Ky6RDYtpZ8pIYmzFRAWi3y492Xn2psV9b3Xe+2q/MiNJTb0D5NRc3ILG/zOdpWsajYUEc3c6mL3T2yBaPlywdHgx/3A+hooQ3plAiHVmJT8kV3bcMuT16Wq7rayxaIYBbflG2B6C+OysfiQsIC6Cluw0JSjsZDQyAnxt4MOh38J6Po663mO/bRXeTCu7gCbsSJb+n4oi3mUhyihIeqVPiiSG9Dc2GJMV8YWntoVbv8AFlYHwnnr4ohnet40fRTFBEMSptvcNpjP4TPCoh4g1wus3Aj0FRZcdoODx7231dJXShzVqBupTzIj4aXWc0UZWsHc+7YOelYJTKkeDb/8pP3HZSnZvmK5apO8KPQQ2Hf7A6iVoRVeP4qBCUcpGLZIsm2C1QP1R3U45xCWbmcFNcYCANqg5K+QjmVXq4asjvIZUtMERLdB/Tzq4llaBnHNKDwUnH6aq2arPpCZodhwR1oM6s7HZyQZApeuXxL7vuNcTh61L23J//gMSY748Ey5JyYzN0wI3P1e9TNZsu7oijGoGnb/NflL7m2sFkKyIFj6m8jl/xZfR66C4IQIrRO4R1bL+AM650ohcY9Jd97j0P0kNqST5hSfMOs1LJwW1F9affxp3f77dENllCIwqL0K/GtOd5LE+XnMhM0MS+LEklN1ayuLokKDoHCaAd0VCZ9h0KUCJ3Bp6zBCq3SWv4kKDX6uv05Ox3pA8QzOnzyGZ3bNp6rJojpv7ZmO43w4ULF2Pmzppzyol/0pHn8gVjWMPxBuBpy4cY4R7Hz4/Vw5fHNPhaNUMvrhuc2InuGKgiVRzEPJriCiVm7jrCtfSNReMw5ei6z9SL3YKuii/yrYCrju4OiuES4lIbs8Ag9qukr7qEk7RZb9RwXM43qXzH
+ tMjH61AR
+ cRQNyQfse8M49snyWEHmsVc2WIWEe2lOs4T1jISs6j2liDvOViW02Yo0yZbn6Fb1AcRVBSSpmBPZtXpH5C+yVwEG++lxSsyXxTYySpO0C6xeCyHb5iIKEz73Kl+cF4IELUIrROfQ3cyA4mky4TnuX2EytyLg87hJqOICgsQUZ3GhuvdujdeZUeoCKxq7NP1Kb6weRaGY7ZBbFVUPpDpzqcvYWhYE/12WajNkPOG+4XRXfduAd7Eu4Yy3s0m1rsHKrCKj4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0761B40002
+X-Stat-Signature: 9xos9zzuijmxajq9ow6ucmffzsm8f45s
+X-HE-Tag-Orig: 1772223002-346055
 X-Rspam-User: 
-X-HE-Tag: 1772222983-407817
-X-HE-Meta: U2FsdGVkX1+mgOf9ZDr4bWWaDlanwDrRlI73GxXiZQeSc4HmxhFfyV0+cBQmuQiGicQjP23YiliXpsJC9tCdVnC9a5gRR3PrMZxdW1QIwHdMLiAybtuoEFRhq2wUPnL/ONfdGMbdmIzSWrlcitPeo+5YgeUyIsfFxOgkIRi5y7moDAsaB4cUAW/h4vSCJFk7vJWCBYi28KzNMnQMaUfDTqM6j48vJGMq9cLMxiMGw2EuVpzAN/lSVSX+J1dPBZ0wkE9QxvGrq4k+UBVgC7Zkp2pXpFAXYuDbaaYHVPYt4M4o7/rts04qjT9HCDRwWZstUNeWrjPiTjVdne02L40+K0XIBs1wdaZJ3f9+K9UZgBDhWFL89qRV+LZXk1eiwp+q4bRXNmGtk7tLPk0HnQjluY2oUikTtHUfS8zYZBZb/MHFmxEuEzHWJIgrBXUw7RdG9xtjpWPBuRf4e/TgvDW8ivXI7LKeHFv+QlfjFyMjBLjbYQJo1H9cCuOXDl2TBEh+K+/Es0InMcUiBCKiHnv9k3P7RdDhjgll25Uc7cLarcAzXX9KvZdI+b8cTo29r0AnPeed34wwxzaBB6e4g2bOCvNy6ROJZsMsDd2/O1YsO0je9akOg1aAIMf0JNW1+JfAgmlwZiBsxV4oFLJEwxi4CvOFEQ0CPS4hFPHFwhkp4PAz987PpHoApqJ8Zw7NvZGI6iT7zD83GH/7LvusELwejls/bCxurCc7xBxoMkmcydtUvk50O/dYVdaQoE+3sQM2LHgjlVZxVxWPZDSMJVRM+iQNPtI+0Rbv3TNiW5+fj/R54WiVHuFnmCwOqDQpYKmxKV8WT9MBeXj6hT+MrDB/AiziGbn0CeHh/BmgN1A7ZfC5/BkbDqmdMLHaed8n9qZPnCCwGV/jK88JeABgD+eimGGgMUuT1P876xoUc3UgjLlLYOd9yvnDVMfwhDcMoug1nAUHrNpGcthcdcd8ReQ
- 54Yqb24A
- CR2Pd+Qai6VzgIL6ljbAZ442rA1jmr+5Qa9b4YErg7aEuyJDXL8snziw/h8rZ6H0Cfgrs4omuFdgG5lPCN5oUvxyhskAT1NmnYqaP6TsoRErzUssxXXV240TZiSjI6yzqB7hwBvZmH2QomHEFJ8jKc12bQUmCHUHr6hg49ZsbQtHSfNKhKN2E471DoJFsQbl9c64WabrPs2/L4IfJWPX5ez8dRI8QiH79yCH7sy/F+DVM6H2rd7umowSxF1jMHE71MaVLdKon7Qv9YyOVlcEE5+CM3Q==
+X-HE-Tag: 1772223004-488736
+X-HE-Meta: U2FsdGVkX1+YDnhU/ZIxYoKbPlsZ4zV64jxX0vhu9w7fZ8R1cOXfv+z0bv3b0+Qo7gwQSj6zV5D00dcJhRAk6UGiPBP+Ma8cmWFuOa+URv/VQRR/paQkLjCoAMcailN6nayCcb6AROlsh4Lsuw63HFH0KnuLCT6oTnDLmHfpLw27Ye3vus56YAZyVQDgs7SlnKSYyCh8S15T1OeGL1SfT1p6DusQu7wCPPhZhbcw9mlWYLh5zSvqe6EeQCNQW84f59npZ43EH0X0FiK7qHChWmkzI9hFsinI+wcMIyixsGq1Ax2e7YteanzbhKfOxxFVIW72s4he5vMV0nPskCrk8bh4f2Z3WnZLLdvrLfma4SSEvWNO7Q1OSxAORP0hf9HlpKvMs4Jvub33Nw24Km1JbexaIbE5ZgInvKMpeEareAgHQ+DqJP8xJH1omY+Rj5rdd0wb/hpgaXFlRDMbQ2tYvv8ap4aK9ZkTiueVahwJlAl5KyGKIuxtAl0AlUkM4GCLD3VU1SxsClyMBAoJ4HhdUWJ27PPdK1FCXzjRdlSWzzfEUKbOBOlKOwnV0yWw7S3Dqr7qqkrwJdoJB4gMUK6nFOLERbQ6MDbpN0gGfnFRDhM2I2Lth2iJ3XUOke3jnaJESb/YLVMi0ZLisebQ65krdfQhDhL6w0l5KUCo0YBzmjD8GnmceRKoOPlhEwpdhCmfO0Q4RMnxkST2Cs8kklgIqf5cn9duiQuNdMKLSuEgcSjsa2DEraR358o++jdJsciJTfwAjh6vUHuyO0eCXcsAb+VVrBhNp6XLdkiWewOwJ6NO2UpKDrEUS01Dzky4t2IToXSZSIVwIqCyVfXqJBg1KaKMn2hBoQzgxdlCTzyDZvmWjAAFiguORGgk4f1s3uizUd4z17dwuzTJR6zRuGvksSpIH/vEiDSOE5mR+u4OOfTfRh2/LyqBkPugM5DQs7kYaftDsOUD4b60b4wvTqh
+ Eq5imK5z
+ G82D6BltghMF4dGL1d8efAyJngQWGbeTBbwFYVRyzou4+TnQq5GN2k25dBEPrV8vlKcz3yV2YHw1gT/zD9+Ky7kJNBFug6nrLmuTfv+WHrSTXjilWdKMO2nDro7u3ee3jnAyeJGGCvboibD2B4LSD9P3UkgeNgV9o9Qxq/8qpBanWisQ/Cvn6ZACjhplVSqvsvv7LMuuHGhJp3vEFWx83x0rx+MAvM/u3b4cBxII4Et6vBFvHZS6a0kV1Ub2QLKp6xJDW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,201 +223,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Nobody except memory.c should really set that parameter to non-NULL. So
-let's just drop it and make unmap_mapping_range_vma() use
-zap_page_range_single_batched() instead.
+Let's remove the number of unmap-related functions that cause confusion
+by inlining unmap_mapping_range_vma() into its single caller. The end
+result looks pretty readable.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- arch/s390/mm/gmap_helpers.c    |  2 +-
- drivers/android/binder_alloc.c |  2 +-
- include/linux/mm.h             |  5 ++---
- kernel/bpf/arena.c             |  3 +--
- kernel/events/core.c           |  2 +-
- mm/madvise.c                   |  3 +--
- mm/memory.c                    | 16 ++++++++++------
- net/ipv4/tcp.c                 |  5 ++---
- rust/kernel/mm/virt.rs         |  2 +-
- 9 files changed, 20 insertions(+), 20 deletions(-)
+ mm/memory.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-index dea83e3103e5..ae2d59a19313 100644
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -89,7 +89,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
- 		if (!vma)
- 			return;
- 		if (!is_vm_hugetlb_page(vma))
--			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
-+			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
- 		vmaddr = vma->vm_end;
- 	}
- }
-diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index 241f16a9b63d..dd2046bd5cde 100644
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 	if (vma) {
- 		trace_binder_unmap_user_start(alloc, index);
- 
--		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
-+		zap_page_range_single(vma, page_addr, PAGE_SIZE);
- 
- 		trace_binder_unmap_user_end(alloc, index);
- 	}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index ecff8268089b..a8138ff7d1fa 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2835,11 +2835,10 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
- void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
- 		  unsigned long size);
- void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
--			   unsigned long size, struct zap_details *details);
-+			   unsigned long size);
- static inline void zap_vma_pages(struct vm_area_struct *vma)
- {
--	zap_page_range_single(vma, vma->vm_start,
--			      vma->vm_end - vma->vm_start, NULL);
-+	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
- }
- struct mmu_notifier_range;
- 
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 144f30e740e8..c34510d83b1f 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -656,8 +656,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
- 	guard(mutex)(&arena->lock);
- 	/* iterate link list under lock */
- 	list_for_each_entry(vml, &arena->vma_list, head)
--		zap_page_range_single(vml->vma, uaddr,
--				      PAGE_SIZE * page_cnt, NULL);
-+		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
- }
- 
- static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt, bool sleepable)
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ac70d68217b6..c94c56c94104 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7215,7 +7215,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
- #ifdef CONFIG_MMU
- 	/* Clear any partial mappings on error. */
- 	if (err)
--		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
-+		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
- #endif
- 
- 	return err;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index efc04334a000..557a360f7919 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1193,8 +1193,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
- 		 * OK some of the range have non-guard pages mapped, zap
- 		 * them. This leaves existing guard pages in place.
- 		 */
--		zap_page_range_single(vma, range->start,
--				range->end - range->start, NULL);
-+		zap_page_range_single(vma, range->start, range->end - range->start);
- 	}
- 
- 	/*
 diff --git a/mm/memory.c b/mm/memory.c
-index 9385842c3503..19f5f9a60995 100644
+index 19f5f9a60995..5c47309331f5 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -2203,17 +2203,16 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
-  * @vma: vm_area_struct holding the applicable pages
-  * @address: starting address of pages to zap
-  * @size: number of bytes to zap
-- * @details: details of shared cache invalidation
-  *
-  * The range must fit into one VMA.
-  */
- void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
--		unsigned long size, struct zap_details *details)
-+		unsigned long size)
- {
- 	struct mmu_gather tlb;
- 
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
--	zap_page_range_single_batched(&tlb, vma, address, size, details);
-+	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
- 	tlb_finish_mmu(&tlb);
+@@ -4221,18 +4221,6 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
+ 	return wp_page_copy(vmf);
  }
  
-@@ -2235,7 +2234,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
- 	    		!(vma->vm_flags & VM_PFNMAP))
- 		return;
- 
--	zap_page_range_single(vma, address, size, NULL);
-+	zap_page_range_single(vma, address, size);
- }
- EXPORT_SYMBOL_GPL(zap_vma_ptes);
- 
-@@ -3003,7 +3002,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
- 	 * maintain page reference counts, and callers may free
- 	 * pages due to the error. So zap it early.
- 	 */
--	zap_page_range_single(vma, addr, size, NULL);
-+	zap_page_range_single(vma, addr, size);
- 	return error;
- }
- 
-@@ -4226,7 +4225,12 @@ static void unmap_mapping_range_vma(struct vm_area_struct *vma,
- 		unsigned long start_addr, unsigned long end_addr,
- 		struct zap_details *details)
- {
--	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
-+	struct mmu_gather tlb;
-+
-+	tlb_gather_mmu(&tlb, vma->vm_mm);
-+	zap_page_range_single_batched(&tlb, vma, start_addr,
-+				      end_addr - start_addr, details);
-+	tlb_finish_mmu(&tlb);
- }
- 
+-static void unmap_mapping_range_vma(struct vm_area_struct *vma,
+-		unsigned long start_addr, unsigned long end_addr,
+-		struct zap_details *details)
+-{
+-	struct mmu_gather tlb;
+-
+-	tlb_gather_mmu(&tlb, vma->vm_mm);
+-	zap_page_range_single_batched(&tlb, vma, start_addr,
+-				      end_addr - start_addr, details);
+-	tlb_finish_mmu(&tlb);
+-}
+-
  static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f84d9a45cc9d..befcde27dee7 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2104,7 +2104,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
- 		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
- 				*length + /* Mapped or pending */
- 				(pages_remaining * PAGE_SIZE); /* Failed map. */
--		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
-+		zap_page_range_single(vma, *address, maybe_zap_len);
- 		err = 0;
- 	}
+ 					    pgoff_t first_index,
+ 					    pgoff_t last_index,
+@@ -4240,17 +4228,20 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
+ {
+ 	struct vm_area_struct *vma;
+ 	pgoff_t vba, vea, zba, zea;
++	unsigned long start, size;
++	struct mmu_gather tlb;
  
-@@ -2269,8 +2269,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
- 	if (total_bytes_to_map) {
- 		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
--			zap_page_range_single(vma, address, total_bytes_to_map,
--					      NULL);
-+			zap_page_range_single(vma, address, total_bytes_to_map);
- 		zc->length = total_bytes_to_map;
- 		zc->recv_skip_hint = 0;
- 	} else {
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index da21d65ccd20..b8e59e4420f3 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
-         // sufficient for this method call. This method has no requirements on the vma flags. The
-         // address range is checked to be within the vma.
-         unsafe {
--            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
-+            bindings::zap_page_range_single(self.as_ptr(), address, size)
-         };
-     }
+ 	vma_interval_tree_foreach(vma, root, first_index, last_index) {
+ 		vba = vma->vm_pgoff;
+ 		vea = vba + vma_pages(vma) - 1;
+ 		zba = max(first_index, vba);
+ 		zea = min(last_index, vea);
++		start = ((zba - vba) << PAGE_SHIFT) + vma->vm_start;
++		size = (zea - zba + 1) << PAGE_SHIFT;
+ 
+-		unmap_mapping_range_vma(vma,
+-			((zba - vba) << PAGE_SHIFT) + vma->vm_start,
+-			((zea - vba + 1) << PAGE_SHIFT) + vma->vm_start,
+-				details);
++		tlb_gather_mmu(&tlb, vma->vm_mm);
++		zap_page_range_single_batched(&tlb, vma, start, size, details);
++		tlb_finish_mmu(&tlb);
+ 	}
+ }
  
 -- 
 2.43.0
+
+
 
 
