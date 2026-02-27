@@ -4,114 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A36C6FD5306
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 07:11:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4194BFD5301
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 07:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDBCA6B0005; Fri, 27 Feb 2026 02:11:16 -0500 (EST)
+	id 440716B0005; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C89776B0088; Fri, 27 Feb 2026 02:11:16 -0500 (EST)
+	id 3C3F46B0088; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B88256B0089; Fri, 27 Feb 2026 02:11:16 -0500 (EST)
+	id 2D1036B0089; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C0396B0005
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:11:16 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 167E61B7780
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:11:16 +0000 (UTC)
-X-FDA: 84489365352.06.0AABF14
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 393004000B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:11:14 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dS+FyvoW;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1436B6B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 02:18:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E0B059485
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:18:45 +0000 (UTC)
+X-FDA: 84489384210.18.E7E311C
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A46CF140007
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 07:18:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s0Qqfgv6;
+	spf=pass (imf09.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772176274;
+	s=arc-20220608; t=1772176723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uf6oqA11mcpn0AW+vKlVmJZSOPAGQueKk4G0rxmoUfY=;
-	b=EdC+/25r/P1raKQzHJ0qQirwiOq7sxHmD9dEbHZ/fzdafcA6Ckob50ZEfnDtaO0nBqaeSv
-	yEv/sdT9Bx0/GbZEnu2mv10f4T8tRW0Kjq2II0RCPe3qO3OnfKbHJhEyWbbwmxIp6Qka1h
-	4XYEnvC2/yfniun9cknR4QGDTEQ3Vas=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772176274; a=rsa-sha256;
-	cv=none;
-	b=7bAzafW2pJQOMJJJHx5SVikk5IkZTg5idB6/wA5820k8NNNsMOyujHCqO+7dv3w6iSmOV+
-	FWWQ9thbOZbXLGeHClAkSJnydZkWADhK1Rey9J4e0eyc9Q+fYhc43flFte5xWKkFXAow+s
-	SrwhOu1ZfyVjapHCB7aTgTTfJL4cvPU=
+	bh=avyklT8ko17OO+T4b2BCtg7wDKlzbbLPrf2QbaV4vBE=;
+	b=bfpLQ34+K+0VgSRUkzV64+JredZcAkKsWbgqR/zoMUXcps/UhmHw9tZcTb69bt+el4sXFs
+	uOpLNnUmYtmiOkP64I/q4HKSV6rfZdiRJIReqim6Sot4JaDoKf9Jcv+iIzE6FaBn6st1bM
+	Dc//xwBulSoukQzaCsvd1kRbSEIANrQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dS+FyvoW;
-	spf=pass (imf04.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a964077671so59465ad.0
-        for <linux-mm@kvack.org>; Thu, 26 Feb 2026 23:11:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772176273; x=1772781073; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uf6oqA11mcpn0AW+vKlVmJZSOPAGQueKk4G0rxmoUfY=;
-        b=dS+FyvoWlBR2J4LN4JsfWvPG453eYJk4T4rRhi+tSjCZdtuVMLHIUYqRmgsxYWhV/o
-         qfHgDXU8BQzGOkXH+pyg4cQRD2HZpsbuDkmGtGjlqbeAjEkeZOEIHAeX6e0LMFsgPpql
-         e08Jz0GgYcnjYoTHIL/mwyyB2hnO773X7YbnfrvoI4YpV+kSvWTyyAMKd1C1Ibx+Cj+2
-         rwKUCGu+fec1quusReC5kK9+Uzi6rAcrBzQTUehrUEAISFv3USv66d1JecadwPPm+GEg
-         RC/41QmkmUlvzMJDyyyL+C1/aEXBH/tKbN4UE7cPiDfPF6QPkKfII6Gc7bZ2I+2I8b7A
-         JbRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772176273; x=1772781073;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uf6oqA11mcpn0AW+vKlVmJZSOPAGQueKk4G0rxmoUfY=;
-        b=FaaueE0jZZ7UnpAh/3KqZeHbPXmtM3k2W1Em1hX0U61iyk+2D4hx1upkI5lmkJ0QxR
-         iIIw9KA56hTOOdATwDvgmzQkptFqaFqh643QtgdmuQe0P7+7oebtXfSJ7y+/uZGaNObO
-         8IeV4OJjvQhCte42pXgif29vvAG5Mt4L7CsK/sN3jkqnmSywMW/J0Yz/DhywONccVN7t
-         aAPTfDK6fjWqkO5p3WyZ+xnRM5HE1i4eJnT7oOjySQsCWXFIzE9BB1b4qy7hgCbMf26V
-         n2WE5SNGtuNFWiLbfqwP+7whWn8PVw5Wb6YsTQsGIMULrnNs8uMYLIQ6A8bb+2DQa4JC
-         o91Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVeSZ58qfrRP0ZqMjuho4cy6uuQ/wozRLYE8tRW1bgx9WyhiUv31AMWKDLhZV7o6ZkPtSEK9nAq1A==@kvack.org
-X-Gm-Message-State: AOJu0YztGgX+UT0rRiADxcjBFvIcJezZCoCBKuzQocoejXoIaRfPIi48
-	cZXIX0ihbcumSPjz+IzNHEwrCQETOw6usvFJzGejK4vsCLxcZhJblTM/KRMDDATxog==
-X-Gm-Gg: ATEYQzwjkB3Up9FZlWnCalfed/6yiPD3qr/7hy2LH9SxUu8sx+62xPFaxdWOQTYL7IP
-	KnEeBqRz8MD05k3/NMhwz6Dj9owIOdj0LnOR161hzeWlPMzuvjIEITASNzK+BehhCuEblHTJupE
-	bURjTtWJdY4R+CPZ5aAOB06Cw31lARw8kYN8mGGPnfpFnJ95qd/O/pIkU3lXlD5cP+F9vcTHXPp
-	ji1LHNChYV/+Jvt4HGVrq+BgkE/D0xc7NdXFGrOTLill0ez3Kv4QDHlajKuJfXUxkcsFVgOidIs
-	W8Azuo0yp4/3uORtkTSKn38M67xI/yRaHD7oB0ZNgWFGiM3bO0Jdlz1LsZbkAuhlyEMpMQmr5Vv
-	GsB134QwEEVSDEazQXPnyp/pnKTsguTRO8+ibQW+RpeWdmLg5lei1jdGCUJJoF3zn44dUpw1Liz
-	V2j8IsxFUa+bW5I5nCmaTpxFRZ9WhtR781gzsZTNF8XpWEncfh/nJXRVNkzCRRF9GMA5t1JklXX
-	rVAVE8w5W5D1C+DUY9gEHAGCVg4YmshewbAVSoo7iB7ahBXZhw=
-X-Received: by 2002:a17:903:4b08:b0:271:9873:80d9 with SMTP id d9443c01a7336-2adff509edemr4003725ad.7.1772176272415;
-        Thu, 26 Feb 2026 23:11:12 -0800 (PST)
-Received: from [2a00:79e0:2eb0:8:9d0c:b43:ccc3:f5dc] ([2a00:79e0:2eb0:8:9d0c:b43:ccc3:f5dc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6e261dsm45839455ad.83.2026.02.26.23.11.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 23:11:11 -0800 (PST)
-Date: Thu, 26 Feb 2026 23:11:11 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Kairui Song <ryncsn@gmail.com>, Michal Hocko <mhocko@suse.com>, 
-    Shakeel Butt <shakeel.butt@linux.dev>
-cc: lsf-pc@lists.linux-foundation.org, 
-    Axel Rasmussen <axelrasmussen@google.com>, 
-    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-    linux-mm <linux-mm@kvack.org>
-Subject: Re: [LSF/MM/BPF TOPIC] Improving MGLRU
-In-Reply-To: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
-Message-ID: <87c70313-64ce-fb3f-4b0a-8db0526b6c54@google.com>
-References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s0Qqfgv6;
+	spf=pass (imf09.hostedemail.com: domain of yebin10@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yebin10@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772176723; a=rsa-sha256;
+	cv=none;
+	b=6uulogo6whF5cAhFWvWqSJwseOVBEzkD4+ozlshbmsTdWq1AVqLWTPDb/TBXwaAlG4yDOl
+	OBS9EqlRCHOBwSS4M2kwTsSWwZuCo+4QnuWyhVn66VcWxMvX8Y9SskDgWJ1TspOqmgIn2E
+	0bJGYkjZcbyCgXBHGzAxIY/GyWE6QL4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=avyklT8ko17OO+T4b2BCtg7wDKlzbbLPrf2QbaV4vBE=;
+	b=s0Qqfgv6XXOMw0WL6SBdGWFuu/zOcDq311HqQfv3rZGLhyYWsQP+QOoGtNSsASop83hvOW6pL
+	6sNgjken/XLv0tubjuEugoPxYMyuL5Lgq1xX6PhrM4TzAOUL8zSJyNahh2xLrNC2s1FNBXb03eL
+	HMJqi0zYDffehJthhyGgZpc=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4fMfgl0QbBz1T4Fq;
+	Fri, 27 Feb 2026 15:13:39 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8CA002021A;
+	Fri, 27 Feb 2026 15:18:33 +0800 (CST)
+Received: from kwepemq500016.china.huawei.com (7.202.194.202) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 27 Feb 2026 15:18:33 +0800
+Received: from [10.174.178.185] (10.174.178.185) by
+ kwepemq500016.china.huawei.com (7.202.194.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 27 Feb 2026 15:18:32 +0800
+Subject: Re: [PATCH v3 0/3] add support for drop_caches for individual
+ filesystem
+To: Qi Zheng <qi.zheng@linux.dev>, Muchun Song <muchun.song@linux.dev>, Ye Bin
+	<yebin@huaweicloud.com>
+References: <20260227025548.2252380-1-yebin@huaweicloud.com>
+ <4FDE845E-BDD6-45FE-98FA-40ABAF62608B@linux.dev>
+ <69A13C1A.9020002@huawei.com>
+ <e4834869-4144-41aa-b370-9c4e6091322e@linux.dev>
+CC: <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <jack@suse.cz>,
+	<linux-fsdevel@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<david@fromorbit.com>, <roman.gushchin@linux.dev>, <linux-mm@kvack.org>
+From: "yebin (H)" <yebin10@huawei.com>
+Message-ID: <69A14547.3050803@huawei.com>
+Date: Fri, 27 Feb 2026 15:18:31 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 393004000B
+In-Reply-To: <e4834869-4144-41aa-b370-9c4e6091322e@linux.dev>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.185]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500016.china.huawei.com (7.202.194.202)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: kxf3qujaeryw56r8nyw4qso4pkbx81cd
-X-HE-Tag: 1772176274-665846
-X-HE-Meta: U2FsdGVkX19Rx6Y1BdlPO/yLhatL0pt5a8K9NMch04zsCobJnt+5QbNjtbWHKlOc3U4P8vjKSgsGlaV3CLC51AdcTyeEjAr4E8BdmAfSJDSSjBIxR8W1XhZrqS6vxtZvAgy8+uIQlIhbg5Z6dygdTImHsHt3KOKXDV+DoWXlQuiKywmldqU+lsSenaKPtFpdWNIc6MfCBpIKvVSQP0LMEIzlEgWONUiHcG3GQiHLF/ka0RqJy+IUujWluE9qtlUrIRd2iWZcDGheJYcKBAXJEi0RDNaVxv0qfA1QPL33PEDrFmp/oP4uum8drAJiCK1qNuNaEyfL6kyaNwrbsO9/gmxu/WKgMn6WM/cRFLzQfsdDatTLKvspNH3F5Fx847tKxusZgiisd78TrhA0nkLEfLrKPEJvNeSrYQ3k/Of2qK72+HU3H1RFF4gzeIYvM9Dkxbt3NQDd0vMSRE/vhQ3Hwc4KcaL3qDEuVC3mYKz2YW5PCbg3p0vZsvn5Ua5A1Ucn+ZRBtzucNwmTQYqo/L7yMQK2yR0tnpOleGW+adU++bCUC2bdrCnWa5LseYFeFV6XU+OWPSHgQFVHDDuBtD2SuzVenQBf2RmMd53big0WrV+CYOFqBb2UpQ28H4Qwq5IF+iUesR64W4XqXhP1KTdzfIu0dWREjbIcLGs2Lfd+N5gFv4xkHwEn5TaYtGO5Ll+EXbMjEOYNTJpmrl3HqpY7kAgjDPDgahneUs1ZhNQBCYzlb7cOa3JxYDTMaUxa/vEOUou7LpLOpTkiebxo51x/fmVzOAMsX0gSw5aPCvaSfpBOrBR0RC4TLKpc738AKwyYTaCZ3XX7qebKUboShrIjnd6cGEpvhP6D3W0W986ZSe8NKaZJfednKiEX2RShSVOPI30AMTKtoubEbgWCLhAbbVAk3xzYeGq/6NZ/zqOWdtBVtFdFvSN7Hbu0hTew7eQfZ+tclEGOygUs8jDHgc7
- 53FxkwV/
- ZgyMdXFx8ne6dVJpnMUIfnSXqGcGn4ftp5uHsul4th4t+mGx304dXJ5h5yidu7uJc2w0hKzOfkiBBocy4AS9ELffnB73OY/dFKAuib7Znm9odRJeX0xNGre++0u71ZfvFQrKzNmqKsr0IXc9dTHSBBwxonA0/Guw1PgYEjKjotNQ9+8/fA/tuEE3aJ9KfxJKRBh9sLtBDHt4H1kuVboTf3Z7bI95JYquCfdcF/wv/Wyrw6DdKA+bEn40Q/1fRuO7kFYkqznLFs5d/okf64l3QQDYC/gGyoUKtvAV7+7RXznd1DP2GrhAW/BF2gWoC8IGHiKM0mbS68nLUQpjXhmywWdGSKG3/Tclsj3RfF5eIvGKfB/HOrZFmCYsVCg==
+X-Stat-Signature: hsqupc4z7ajiyh6hiju4844myqdng5bc
+X-Rspamd-Queue-Id: A46CF140007
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1772176721-607014
+X-HE-Meta: U2FsdGVkX1++/2yXGsNwtp47I/eNwjYcMc5Tq5nvr/mZBPxufRwiAKps+1tA32wFszDV8HRDtz/S/uF2+b/LEhUvESA2V2FUFMBHtRlRqXoaRe9oohFcjA5FWZwYubd5EIqtmhldJRvVpCkbNHZlRdXbxWZITSjL+B7xCCJF6nRpQiT8kwIqNaf+1BSvdL/jXLPfr8tQkfe8CC6CZfxPFlJtH8gBUbIhPc5ql8UehHmPQwbxcpCx/3NOTE7dqg71zggoHd2yOcQajTmV22uwztBZraC2ktJFUqvuWK0gf6+Mbyo0qovqVJoNB64Xv9GzOE9dAQdbX/yCZGKFT//+a34hbohYxPZuUJdY2XA7C9l7Vj1ZfXDj/LyNM86c4B9Xb4TwNdpDfbOCUuaRi1xFqcDSX2AWD8mLCPxtOcCedQpV4GfvtKgfYUYOdkWomTwAzeZBTS4M/Vs9VaEC0OC5aVuSdtgqE1O134Y4vLjWK4bGK/zkkK9YHRcpu8kU+s/subu0BmnShofY8kF0no2QdAkhEaHp/L8/jzSPHTYFBl6I6u03FafYLSH+0FBB0A75vA/4MBiiEq+9LnhteqP9fJ/dEPQKYfT6mOu91FbZAKnVe1YnVGL789346kvA0FPRD8DahOJhub33aYgfTjWNDM4gX6v/NT6hBhC/OGLXanMoZ75g8x/dwAPTdtpR7KnU/7IT/r1+62oHMTi/D7Vci8AI9OZlZeAIzQszErDH8hokjE3j9hxtOXfNejhX17dNq+e4z64nIhSL+DV/M9MRaWEYzB20xMSl+nPcPIXildaZXhrLypNR+1irF/TLcGG7IoeaIMkwIkV7NFQndlo7W7Vf0JecgSKPw5Nrjvz88CgZomzVrSWaYfbwstG0fOU4j2ngbnwWGflMsPnoTtFRhMi2X/EQw5nWFX6lGZHnGldRU0l5HA4ya6BptzTBs1qOoaEhpEJfA/tZKYtxt01
+ l8HKirlP
+ SjOhfb53cl9n8YvxCDttvDtou9jfAho4QSQ3/Ip1IUxJkLEYGO3qupyykpM3LTFYk8iZ1uABW6vrDt58/r/oBVzsEN+yY3EytN+HSfBpfFHVFqJh036gqtmSsx9xZ355oQhOH9n4tPDWu0Vm3BSKWcYSTJOUwsfaPtplyYFhn6iLsvMT3ER8nqxV7L3YYfxqbjflBkP3MgyZOTsoXqQvsey95XQuz+aMfyw63dJbPcU8fSS8Y9KyGMYZqRecyqAiJAdJ6NF8UMKn3A6nBmO0FU1aIuQgrCTdh2r0u3e2BJPAFPoZ1XBP7DyOBD276Zi7hgQmSJ9rpMqTvW+HSABPBHaKKv92f5Qgp77wHMyR6x8+zZLmsFLUBI9NI5qd3ha4WrH9AxAXfTEIclK5GHNF9Peui4GAuNvbRp0vTSY68Uu02B8BUC80W+FIMHHob7eU/lGmvIKL5sShwHsI6ulD56LO79A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,91 +108,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 20 Feb 2026, Kairui Song wrote:
 
-> Hi All,
-> 
-> Apologies I forgot to add the proper tag in the previous email so
-> resending this.
-> 
-> MGLRU has been introduced in the mainline for years, but we still have two LRUs
-> today. There are many reasons MGLRU is still not the only LRU implementation in
-> the kernel.
-> 
-> And I've been looking at a few major issues here:
-> 
-> 1. Page flag usage: MGLRU uses many more flags (3+ more) than Active/Inactive
-> LRU.
-> 2. Regressions: MGLRU might cause regression, even though in many workloads it
-> outperforms Active/Inactive by a lot.
-> 3. Metrics: MGLRU makes some metrics work differently, for example: PSI,
-> /proc/meminfo.
-> 4. Some reclaim behavior is less controllable.
-> 
 
-I think this would be a very useful topic to discuss and I really like how 
-this was framed in the context of what needs to be addressed so that MGLRU 
-can be on a path to becoming the default implementation and we can 
-eliminate two separate implementations.  Yes, MGLRU can form the basis of 
-several extensions that are possible, like working set reporting, but its 
-existence in the kernel shouldn't be based on future shiny features alone; 
-I think priority number one should be ensuring that these issues, as well 
-as others, are properly addressed with the goal of having a single unified 
-implementation in the kernel that does not regress for end users.
-
-One topic we can add here is oom handling with MGLRU, so adding in Michal 
-and Shakeel.  MGLRU has working set protection to avoid thrashing by 
-configuring min_ttl_ms in sysfs.  That can end up being very useful, and 
-would probably be even more useful if there was a per-memcg version of it, 
-but it doesn't work well for NUMA.  That's because we get a new oom kill 
-context that is triggered from kswapd threads when aging is done, not by 
-direct allocators like we're used to:
-
-4167)	/*
-4168)	 * The main goal is to OOM kill if every generation from all memcgs is
-4169)	 * younger than min_ttl. However, another possibility is all memcgs are
-4170)	 * either too small or below min.
-4171)	 */
-4172)	if (!reclaimable && mutex_trylock(&oom_lock)) {
-4173)		struct oom_control oc = {
-4174)			.gfp_mask = sc->gfp_mask,
-4175)		};
-4176) 
-4177)		out_of_memory(&oc);
-4178) 
-4179)		mutex_unlock(&oom_lock);
-4180)	}
-
-That obviously just calls into the oom killer without any context about 
-*which* node we're trying to free memory on.  The worst case scenario is 
-that we oom kill every process on a single node without ever freeing 
-memory for kswapd's node.
-
-So I doubt that anybody is using this to actively defend against thrashing 
-today, at least on NUMA systems.
-
-One way to address this would be to consider resident memory on the nodes 
-included in oc->nodemask when making oom kill decisions and then 
-initialize an empty nodemaks here, sets pgdat->node_id, and passes it in.  
-But it should be part of a larger discussion about how we handle targeted 
-oom killing on specific NUMA nodes that would be applicable for cpusets, 
-mempolicies, etc.
-
-For cpusets, for example, we only look at the eligibility of a thread to 
-allocate on a node, not the amount of anticipated freeing from that node 
-on oom kill.  We could trivially do the same thing here for MGLRU, but it 
-would kinda suck to go around oom killing processes that only have a 
-single page on your target node.  (But, hey, better than the status quo 
-today here!)
-
-So we should talk about node-targeted oom killing and how that would make 
-sense so that we can wire it up here if min_ttl_ms is to be used for 
-MGLRU, at least for NUMA systems.  It's a tricky problem in oom contexts 
-to be able to get at the information, per thread, that you want to 
-consider to determine eligiblity but perhaps even more of a tricky problem 
-when you have that information about what heursitic you use to compare 
-processes with lots of memory on the system vs lots of memory on the node.
-
-Has this been considered before?  For kswapd induced oom killing like this 
-to work, it would have to be solved.
+On 2026/2/27 14:50, Qi Zheng wrote:
+>
+>
+> On 2/27/26 2:39 PM, yebin (H) wrote:
+>>
+>>
+>> On 2026/2/27 11:31, Muchun Song wrote:
+>>>
+>>>
+>>>> On Feb 27, 2026, at 10:55, Ye Bin <yebin@huaweicloud.com> wrote:
+>>>>
+>>>> From: Ye Bin <yebin10@huawei.com>
+>>>>
+>>>> In order to better analyze the issue of file system uninstallation
+>>>> caused
+>>>> by kernel module opening files, it is necessary to perform dentry
+>>>> recycling
+>>>> on a single file system. But now, apart from global dentry
+>>>> recycling, it is
+>>>> not supported to do dentry recycling on a single file system
+>>>> separately.
+>>>
+>>> Would shrinker-debugfs satisfy your needs (See Documentation/admin-
+>>> guide/mm/shrinker_debugfs.rst)?
+>>>
+>>> Thanks,
+>>> Muchun
+>>>
+>> Thank you for the reminder. The reclamation of dentries and nodes can
+>> meet my needs. However, the reclamation of the page cache alone does
+>> not satisfy my requirements. I have reviewed the code of
+>> shrinker_debugfs_scan_write() and found that it does not support batch
+>> deletion of all dentries/inode for all nodes/memcgs,instead, users
+>> need to traverse through them one by one, which is not very
+>> convenient. Based on my previous experience, I have always performed
+>> dentry/inode reclamation at the file system level.
+>
+> Using shrinker-debugfs allows users to specify the size of a single
+> reclaim cycle (nr_to_scan), which controls the strength of each reclaim
+> cycle to adapt to different workloads. Can the new drop_fs_caches
+> support a similar approach?
+>
+> Thanks,
+> Qi
+>
+"drop_fs_caches" is similar to "drop_caches," but it only operates on 
+the specified file system. It does not support specifying the number of 
+pages to scan (nr_to_scan).
+>>
+>> Thanks,
+>> Ye Bin
+>>>> This feature has usage scenarios in problem localization
+>>>> scenarios.At the
+>>>> same time, it also provides users with a slightly fine-grained
+>>>> pagecache/entry recycling mechanism.
+>>>> This patchset supports the recycling of pagecache/entry for
+>>>> individual file
+>>>> systems.
+>>>>
+>>>> Diff v3 vs v2
+>>>> 1. Introduce introduce drop_sb_dentry_inode() helper instead of
+>>>> reclaim_dcache_sb()/reclaim_icache_sb() helper for reclaim
+>>>> dentry/inode.
+>>>> 2. Fixing compilation issues in specific architectures and
+>>>> configurations.
+>>>>
+>>>> Diff v2 vs v1:
+>>>> 1. Fix possible live lock for shrink_icache_sb().
+>>>> 2. Introduce reclaim_dcache_sb() for reclaim dentry.
+>>>> 3. Fix potential deadlocks as follows:
+>>>> https://lore.kernel.org/linux-
+>>>> fsdevel/00000000000098f75506153551a1@google.com/
+>>>> After some consideration, it was decided that this feature would
+>>>> primarily
+>>>> be used for debugging purposes. Instead of adding a new IOCTL
+>>>> command, the
+>>>> task_work mechanism was employed to address potential deadlock issues.
+>>>>
+>>>> Ye Bin (3):
+>>>>   mm/vmscan: introduce drop_sb_dentry_inode() helper
+>>>>   sysctl: add support for drop_caches for individual filesystem
+>>>>   Documentation: add instructions for using 'drop_fs_caches sysctl'
+>>>>     sysctl
+>>>>
+>>>> Documentation/admin-guide/sysctl/vm.rst |  44 +++++++++
+>>>> fs/drop_caches.c                        | 125 ++++++++++++++++++++++++
+>>>> include/linux/mm.h                      |   1 +
+>>>> mm/internal.h                           |   3 +
+>>>> mm/shrinker.c                           |   4 +-
+>>>> mm/vmscan.c                             |  50 ++++++++++
+>>>> 6 files changed, 225 insertions(+), 2 deletions(-)
+>>>>
+>>>> --
+>>>> 2.34.1
+>>>>
+>>>
+>>> .
+>>>
+>
+> .
+>
 
