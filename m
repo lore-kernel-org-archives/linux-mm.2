@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B09B7FD9E3A
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B341039893
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:10:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19FB86B00DB; Fri, 27 Feb 2026 15:10:18 -0500 (EST)
+	id 6D4216B00DF; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 157716B00DF; Fri, 27 Feb 2026 15:10:18 -0500 (EST)
+	id 68B1E6B00E1; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 021EE6B00E0; Fri, 27 Feb 2026 15:10:17 -0500 (EST)
+	id 555C36B00E2; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E0ADD6B00DB
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:10:17 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A30621A0961
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:17 +0000 (UTC)
-X-FDA: 84491328474.29.8FC4404
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0F6FD18000B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VgnVpkaH;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7226B00DF
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2FA69C2FC1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:34 +0000 (UTC)
+X-FDA: 84491329188.16.F24B336
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6DC3F1C0012
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBRHRg84;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772223016;
+	s=arc-20220608; t=1772223032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PNXJ3lchDes2Cf/t7ldca5KjaC3s+A85b9AScdfhZoQ=;
-	b=tNj2QtAxqfJPvSNBE60qdyPxKUfIFZEcI4JHifDKhIUd6qojPg52E21cRz+OzlFfuwoglA
-	cE6rRxE4iIUQ6YRQLXtS4dpGkrfN8nIhlWUjg2wITSmP5Wa6kes7Bn8HqYLoI3X/5v7dgr
-	4v/0JDi+pDieetohkbI1yRMynIMBb3A=
+	bh=adBcRZ6N/feIVBkm9Rv6T28TMxfba+nAFWMcJGZNc9E=;
+	b=dc5dJNyBZsNdeOLTgtyDTSSh6sL5QZRDmSU9I/VJexbllTp120yatIWp5bEd61TvVu1BCI
+	8YXbLWuSKRahJgvvljbt/yd146iPPijdjYiWMGo5YyQP5H2vc0VXKT2exP9XKWW1zbhUgK
+	/wG2HMlHfuU7r1l4Rv+KVEGBV6anb+Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VgnVpkaH;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBRHRg84;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772223016; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772223032; a=rsa-sha256;
 	cv=none;
-	b=U2eNDeP9NPqniGSJeLVw+TLa3HoiLe+DWGJBU3/v+4Ybuw+8ss6uk7ioYMSordiEHBrVOL
-	tlZnZrwWlel+nPUrQtMPwdcEpCRSkJGM12mwulQKJK3Jrl6NzOLM+ZK3K6PNsJUqA023UV
-	bkUX7U4LqaBCyANrC9NLt3fQbKvJ9Z4=
+	b=WiloxP8xVNUDLl4kQ5M0L/9lqRddQ1QVx9FODQuGEUs4yk8AZzLUb6z6I+h0tXI61L1Q+o
+	Pwvkwh21cBsG8K7KCg2PI8LrCiGPnBtZwkh39OP+Ef97L0Aac95Lr1aVh7rcihxm9VERqW
+	fht0Oivmhcv2tH9l0NXc/nN52XnDKII=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4085E60130;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A4DA432F8;
+	Fri, 27 Feb 2026 20:10:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E5C2BCB0;
 	Fri, 27 Feb 2026 20:10:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E261C116C6;
-	Fri, 27 Feb 2026 20:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772223014;
-	bh=hLgJdGT31V5wnxVFe1vHLMNm/KVuWNy5vLAGWsJg21c=;
+	s=k20201202; t=1772223031;
+	bh=GDIsuZYm2zKYxLFzdJGIwkOaoBFqEdMRlEhHeQ3/4/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgnVpkaHaAkciLTAeL0+EHoy6ULSwuu9fj3VyFkgJooaJcw9CuTij8hQME2UbVNWD
-	 Yvc/lVRhwFa8DPT/JmgPCmNWacY7labSQ2afT1BQfoxShbwEJk2Jn8z7NxsGfCsqtz
-	 PFpbCDhsNtcpqdguKU2gvD4AUwof1y66dauCjiXbAiMN6CyWf4CltYotNxCjssrHCp
-	 /q9YFMkt4jNd7FScndseUUa/D3NnepYZOmjVGGfCd+L3Hgug9STuzNp9OaPEgAhBvJ
-	 WiDRQIsjsWJIIKTyzXG8Pn+MIUoCY9cTsDjzXp52+rtBZSOfNAH+NerJi1RRj2Hxlh
-	 G0ODowk2+zwXQ==
+	b=DBRHRg84mUFFa5j1Ap08A/NiDuF3TUvfcRS7C3+9hv775NpD/8NroucXGTumCDp/q
+	 yrfW9Y3j7L6NHLbxDVoLPnwidDlbqQx43JL5ql1ycR4JGKaqhcycHzZzwNzJlcvc02
+	 dllhdtIOUZfDuMDJj+LoTseNq6O5uagn4G64tCcqE5fAIbrOu0ko0XkUr7ircdpbQh
+	 bXRyXmVj6xEUhwSFjMMxmlipUHZ264tacuMAwtSvAd5grFuLAF6s73NejFFuX4hEaz
+	 JPFck19AXo77usRat6V50+er5SScDpOmDuKTSvIT6gz+N5E8JF7nu9dERR/ctItvMT
+	 m5GfMgiKzWHMQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
@@ -138,22 +138,22 @@ Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
 	netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v1 04/16] mm/memory: simplify calculation in unmap_mapping_range_tree()
-Date: Fri, 27 Feb 2026 21:08:35 +0100
-Message-ID: <20260227200848.114019-5-david@kernel.org>
+Subject: [PATCH v1 05/16] mm/oom_kill: use MMU_NOTIFY_CLEAR in __oom_reap_task_mm()
+Date: Fri, 27 Feb 2026 21:08:36 +0100
+Message-ID: <20260227200848.114019-6-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227200848.114019-1-david@kernel.org>
 References: <20260227200848.114019-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F6FD18000B
+X-Rspamd-Queue-Id: 6DC3F1C0012
 X-Rspamd-Server: rspam07
-X-Stat-Signature: staqfgddac7nfmefkd9y8z1rasqkzw65
+X-Stat-Signature: n6khu3413c9ew1a55m5zijxbdqcg6dke
 X-Rspam-User: 
-X-HE-Tag: 1772223015-312137
-X-HE-Meta: U2FsdGVkX195lbot7eufRUauvDCXnDo1W61XE8K8EYFJ0gLqP+JYjj3otwEkEVKTloowWw9zAcCoQHtrZyIYJPmg8vQyR6BhaXS1BRv8pGrqpJ9NJ2U3L7PyyKzJsK9nsG9iIS3bOHQNcznyqYx/lN09ZMIwp/xjDpfy/8IuI5az3x0/SOQIBvrI5dVMlZLuJQFU0clVm0O1GbkVQae3XAmavQgmzKAKenl+qlQneKKgpsMXuIcQJWeFr6Y0v4hvnqB6+/dQ6Gtr4koHuw1NTgoZwTFqSyKYwCHi1pkIsjb5mX3JWN8ozNPjVUfz1QU1j0kqo83OBe1483u/OCdu0cxQn7AoR5+Sbx3qXcfowMUxbaQqsWJlfVvNykdecDAaV35hwLfeqx3034O9AVipU0XGUeKak7V4wpkYjWG+U2uuoiSIBPh4mXWYW7RrXh5kw5ei0TalaVIntu2IncNm93pL1+Lx2N9hmNQwhA6x5MSRq286QNMlVYNY+OKPD+ZQq4Ylyy+EGVno4d2b6qvGHl2Jn0qo6YKboJuZpll3pt1F/gQPlNozSJL1fHHzFXLCyRxw7ywpzf3TYk88TigzlrYnguHGPDzXN3NRMUz9aY2QIkInec6HZyyoMgDV9tL2ATvXBybYhMjHRLOZnhMiKUuaFwjsFohbszKayrPVioib4f60p4Z2usRe2/wnX9p8KwCfDYsUrMT08tRNxT6KQ1IIQv8zeDiH2ivPUHsATKEp7QuVdNbjEQD3ruQvAwtwXcIfBj6EYoY6dVvSeTMODSNE8labhjLz5mHdMYLfu58jKbIjXKwfwkSRgoAUR6M822BlutQURG5v3D1pCjx38jJyusty2izO9iX0j7vNHJMVNbwZcN9ooVqSw6UnQ1Z4bd9AQxcLWqNkxdu4ZDXblML5U1bzhOUzJYJB2L+LeADEbuVKtXXEuHQdYBMhw0C8tJyM0fWIP3LYqBlNQQE
- Ye3gNz2J
- XIVPjPRtTOr0Dltzxs9Dfys6AO71PsgU5M9hLM3AvsZJn9OZTVc5dLfkSjcjlFIU3Kv9gdPVmNkXtL6qPnOmxzZoQ/5Tio0ZMs/r1rBQgrpyKHY+au9U6Ttv7c8JF5IHZNXORKJqHktJEtKRwtwLRva0aolvjkU4U8dR7pk01vIBv/BTpZwwIju4L26TiupWFC8G3k12Xh4E4eVu7EQxiwkFOwvzREoCXFtjh+MUmcy4rl91+Tj3sxErp3sdxlGNDU7Hhl05isJTVeCavt1zkRdqitpwqFvK85GXeOxfB2EFNQECcydDQjmk+BSyrlIHdP3DK
+X-HE-Tag: 1772223032-192938
+X-HE-Meta: U2FsdGVkX18iJS8qYVUc5qP/SYdzBKa3a/IVNhgGyb8WFQN0QZtw+a+VXr6aj55hzSIUA9R15DhJOFiBIxuw5OMFEHJjk0mhjDo6Nm67qtZ4WXU2IjwRdQZ0tTU0BGWylPNogyuSfMmmZCivA3tstrK7rA2g9tB8e66nvDZ+A4yZkd5reE/45C7AlHt50bsUGYTcaIHC7UnXY1IDpsQC8iheTCFq6WW35uuIUAXKyRIyckypmk7gr9sVfKuK69Vn8SEAOl9LSuzs+cD7pbr6muVt7np1511mNlArpdNbk5cKTocqrq0/YRYHXnF9sDwxL9SGgtfdvZ3luDrIl1gKSQFIxj9Inq60xwfgeNN0pjAuL/WIuPqCR9vPaHi6dGEDH/1RtOjUEfhZkYGfN7jEyor62/3prMcDAcAU4+uG5CSUf/CAHKzqmeanjBM+NGR4nEP6DqUkQ0K3g5NyXQLTIFLsemvmXps+hZZyrabXpOZTK1tTnjHYGCWoya5lFb7KOEtkgY0tQH5DnnjbSydqPoX4tQjYNY3ggmDXPKR+x3XyZs9RntM1g09xkzl8UrXpUe6XxPPE/7Y+9bjEr1CMoZE+TyYpfHB/SBOeap2pdWd1E1fdeh+ud+vD8gdCL+0JMQyrTrLvIDmLq2d7EHYtOtLNGFvtF4P9jArdxhCzTCt8NwTdzM+15mtQk3GZhLXBfeHCrsfn5E5MIHbXe0NQk5NzFSmkQgvmoxjsVRyQdDF6DskkTSEe4m/kRLo7qn3E/gHmPDlfdj3NEMDL3EHGZYCKjjDinr2PKVVoiE9lwB6jkVkLHZGCFqTUNjdLboYk8RGqjO36nqaw5BvFkIlnOVm6ZvjBNt91Amida4W+gt+YuWmvCOg5u6mzgD12uq3wW9worVGp08JE5U7uB2aWHMovWc7Banz3B3iGcu57zZj4CKRwHHWSUJEXAdKVqgv/RbhYnYg72k57PxaTdcc
+ MoWQshPR
+ D4fH0yGycE9mA1JmG6EPKYZ8SwovdpQzybvRuc3XF7PhEGlSmfogVnkrz1CWgFmhOLo4eThcgc9wHzgT1Bj33bq8I6vXste6Tzb8Ybw8kF2k0s/wqCI8NYTFerPxFIbHMomy3KYYi3BkC41OAZqoPiLcwSkOe9iuUc3vwJ5b+ah7Qeen6pRmCtJ7DBfOm1sqO84M06sLOGcZAobTgzDl5j8qm9CAQ/JRnjkqleZU6kbCoIxz1R+/S/DyFY9LYtC4CUl4qPTKvgxlzGFKxZsEjF8ob6pqyZ/oOeADBH3jMragDmGRW7QnFSvE5EkO501uvYioS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,75 +161,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Let's simplify the calculation a bit further to make it easier to get,
-reusing vma_last_pgoff() which we move from interval_tree.c to mm.h.
+In commit 7269f999934b ("mm/mmu_notifier: use correct mmu_notifier events
+for each invalidation") we converted all MMU_NOTIFY_UNMAP to
+MMU_NOTIFY_CLEAR, except the ones that actually perform munmap() or
+mremap() as documented.
+
+__oom_reap_task_mm() behaves much more like MADV_DONTNEED. So use
+MMU_NOTIFY_CLEAR as well.
+
+This is a preparation for further changes.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/mm.h |  5 +++++
- mm/interval_tree.c |  5 -----
- mm/memory.c        | 12 +++++-------
- 3 files changed, 10 insertions(+), 12 deletions(-)
+ mm/oom_kill.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index a8138ff7d1fa..d3ef586ee1c0 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4000,6 +4000,11 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
- 	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
- }
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 5c6c95c169ee..0ba56fcd10d5 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -551,7 +551,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+ 			struct mmu_notifier_range range;
+ 			struct mmu_gather tlb;
  
-+static inline unsigned long vma_last_pgoff(struct vm_area_struct *vma)
-+{
-+	return vma->vm_pgoff + vma_pages(vma) - 1;
-+}
-+
- static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
- {
- 	return desc->end - desc->start;
-diff --git a/mm/interval_tree.c b/mm/interval_tree.c
-index 32e390c42c53..32bcfbfcf15f 100644
---- a/mm/interval_tree.c
-+++ b/mm/interval_tree.c
-@@ -15,11 +15,6 @@ static inline unsigned long vma_start_pgoff(struct vm_area_struct *v)
- 	return v->vm_pgoff;
- }
- 
--static inline unsigned long vma_last_pgoff(struct vm_area_struct *v)
--{
--	return v->vm_pgoff + vma_pages(v) - 1;
--}
--
- INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
- 		     unsigned long, shared.rb_subtree_last,
- 		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
-diff --git a/mm/memory.c b/mm/memory.c
-index 5c47309331f5..e4154f03feac 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4227,17 +4227,15 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
- 					    struct zap_details *details)
- {
- 	struct vm_area_struct *vma;
--	pgoff_t vba, vea, zba, zea;
- 	unsigned long start, size;
- 	struct mmu_gather tlb;
- 
- 	vma_interval_tree_foreach(vma, root, first_index, last_index) {
--		vba = vma->vm_pgoff;
--		vea = vba + vma_pages(vma) - 1;
--		zba = max(first_index, vba);
--		zea = min(last_index, vea);
--		start = ((zba - vba) << PAGE_SHIFT) + vma->vm_start;
--		size = (zea - zba + 1) << PAGE_SHIFT;
-+		const pgoff_t start_idx = max(first_index, vma->vm_pgoff);
-+		const pgoff_t end_idx = min(last_index, vma_last_pgoff(vma)) + 1;
-+
-+		start = vma->vm_start + ((start_idx - vma->vm_pgoff) << PAGE_SHIFT);
-+		size = (end_idx - start_idx) << PAGE_SHIFT;
- 
- 		tlb_gather_mmu(&tlb, vma->vm_mm);
- 		zap_page_range_single_batched(&tlb, vma, start, size, details);
+-			mmu_notifier_range_init(&range, MMU_NOTIFY_UNMAP, 0,
++			mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0,
+ 						mm, vma->vm_start,
+ 						vma->vm_end);
+ 			tlb_gather_mmu(&tlb, mm);
 -- 
 2.43.0
 
