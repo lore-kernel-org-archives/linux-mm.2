@@ -4,95 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB7CFEFB6E
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C716CFEFB6E
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 17:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 757B46B009B; Fri, 27 Feb 2026 12:21:26 -0500 (EST)
+	id B00516B0089; Fri, 27 Feb 2026 12:42:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F56C6B00A1; Fri, 27 Feb 2026 12:21:26 -0500 (EST)
+	id AAE346B008A; Fri, 27 Feb 2026 12:42:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 621DB6B00A2; Fri, 27 Feb 2026 12:21:26 -0500 (EST)
+	id 98FC26B008C; Fri, 27 Feb 2026 12:42:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8726B009B
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:21:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D47D59587
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:21:26 +0000 (UTC)
-X-FDA: 84490902972.27.C1D0F13
-Received: from sender-pp-o92.zoho.in (sender-pp-o92.zoho.in [103.117.158.92])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C8F24C0008
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:21:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=DPIqCyVR;
-	spf=pass (imf28.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.92 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	dmarc=pass (policy=reject) header.from=zohomail.in
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772212884;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 830106B0089
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 12:42:26 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3E57114077F
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:42:26 +0000 (UTC)
+X-FDA: 84490955892.30.ACC8704
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 53B0420003
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 17:42:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=a92XQnMR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772214144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/PXgNtx4T2EDcNsJJyYBmD4sC1UQhRcm7AytyAKVWw=;
-	b=UO23xk2NqL16Aq1tHVQXW02/PPmBKJ+p/9El5MB2X4StMJyeKT9ipXjynNUA6/rPkuMPvl
-	Zg9fzZ27zfCIHzTqqn/KoyU6QAZAl4iFtKlqYfljMuo1AzZPvK8OjVQcD0uVliJ1aGmLh4
-	u5UI3TpmeFG/KhYybtP57McOAn7U92I=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772212884; a=rsa-sha256;
-	cv=pass;
-	b=2TfUAXRKUsCHCPedi4mzQxK05Zn0Q/fYkNEv77CUbvccXW77sXAdqFNN0ZsOLj9nChirlt
-	WDEG673e+a8EQj3FsV1yBAGNHHBHhNapTyyWbB2lvJjh4AtC3J3ogdMvz8GqixRH+a4TX+
-	iDgb0NNtvgedILkDV18aI1BTh3yHxOc=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=DPIqCyVR;
-	spf=pass (imf28.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.92 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	dmarc=pass (policy=reject) header.from=zohomail.in
-ARC-Seal: i=1; a=rsa-sha256; t=1772212863; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=fupTqDv6G2R8UyDNa0HIF8BQSZDdjqUa2JqAb7YTeGUZL4q3wybv9olJp8gk+tprHtESOQWhDmB0i6XiOIvyxR6PTF1HBdtMOZDJ7a4IGxyFFjiOFGzApBlL9/0kRIkNdxD24Q6LOhsNcvAlYzMiNf7kVrWIL8mA+t+oiGN62Yc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1772212863; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=d/PXgNtx4T2EDcNsJJyYBmD4sC1UQhRcm7AytyAKVWw=; 
-	b=GQhVh80b746kA5gIk0dzyNnBn02DE6Enj1T/QfXJT92eIOpSfi1f6vMUYAL6vO/9+Yf07IgzDqHud1in6DT3dy3KLjJbR0cvziPzIu9a4jYFG5PWCRpnrIsuZUItwwXr+duzW5fYcWvFzhSChx+eZIKpSvcXydLHOUAdFUKd4vM=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772212863;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=d/PXgNtx4T2EDcNsJJyYBmD4sC1UQhRcm7AytyAKVWw=;
-	b=DPIqCyVRzm6yz9mH39+yBly/Pc1qJ5QtHQvQDTzvsB2Z9rbtjTDucuP4O/GJDXNu
-	VvAXM99Wtndef3P9KypHC8zXj5HSWRLdTDAKXQ3PswJAekcs9Egg6RySlJELYtkM+62
-	q0B7btuLipyp/ajcknNOPdfzpZAG+3Jb1WhAMJnw=
-Received: by mx.zoho.in with SMTPS id 177221285910125.312785977067733;
-	Fri, 27 Feb 2026 22:50:59 +0530 (IST)
-Message-ID: <7d65b7a0-9bc3-4fb6-b25f-58b0e07c2ad8@zohomail.in>
-Date: Fri, 27 Feb 2026 22:50:57 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] mm/vmalloc: vrealloc() shrink TODO - seeking direction
- before implementing
-To: Danilo Krummrich <dakr@kernel.org>, Uladzislau Rezki <urezki@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, aliceryhl@google.com
-References: <29e454bc-5a46-43b2-80b0-4d8d93e3feae@zohomail.in>
- <aZdBDOPUccXa85O2@pc636> <DGJ3LPUDBDTK.1TK1DXXFNXYPN@kernel.org>
-Content-Language: en-US
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-In-Reply-To: <DGJ3LPUDBDTK.1TK1DXXFNXYPN@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+	bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+	b=HR74N73k8TP+z7T3kEf9Hvymjhr+KYeMSSnPdAWEqvAOy83uB+Gm0x2qew85lLSs+nudFG
+	ko88wSP9aB33IGqsFbJ0vBSQVfUmce9sK3nPSxPL6kGqms2q5q/hbP2zgWtEuGyMFz1TkG
+	sRKMSYLSYLcLg+2pOixhyS0CZojI6rA=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=a92XQnMR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772214144; a=rsa-sha256;
+	cv=none;
+	b=hhnlfKXkROTSN1AFcftgpE41a0yhl6vLDgQLLGRSL1NnYW1Wq5/b7ZqP5xs3acDKjyNUZJ
+	PL6VcWzCFEYNUuz+LqijMvvEvZUqqdzANZxVhgu51MKq7HePNvuffP1rUj3Ie24G0zYj1H
+	KT0odNVljJsmaY4IEAOXp0q1BtfyZ2k=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so25275715ad.2
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 09:42:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772214142; x=1772818942; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+        b=a92XQnMRjt7VbHPU1bz8XfsHlZViwyE42ZC2Ea+LXmPDrIMVue8gspYxLJinJK4t3m
+         fyvW/1o/k1FiV7wcAgBdv00Gyz3z3ax0wwWwvOC/Z2lfKZVwlJZO4cgg4YRcqHigLIXO
+         131YAlO8jPbZT1tfDH6raloV7gM8iL2oAgJSD/Asvu5EXbtFIruDgJPi5haI6hozs/N8
+         r8TvjEIPVOccCFMEfeWBcdK9fQwqR1k4MA50/m1PolT/7skwY6o/ANL1b48sw1wju/7Y
+         TCWUn8mW10dTcd+xmcHASh+ATLhDappO96FJC+sEonTEvbbEwbkzr6VZcdv6qyoVk/yN
+         nt8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772214142; x=1772818942;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Et77aHJTeuGzmmNrAkPK/DYt1o94w5tXvKsba6OelYM=;
+        b=aHsTLm3eFqB2AkRm+RrGvKPhmimJlm//XpGR6yO9pkHBsDZ5zxRqtiv93meotV3kj/
+         7X/5r0cr1b58YTn5+O0r7TNh/Yh0KsfNSAmeta48l/9TcfBC1z8Po2fP1zVUtbg78zvO
+         qgYQGA5dKWb5juAlR0W1nu848agg60HrV8fiwwPHtOy5mjQtoH4/H+AswVdo9vnI6U80
+         1uRA2NTVNfIqVAz/ihhgkLied8OtpYt9xpf2o9TlWJ/7CHyEOQBEq1z9r6vta8ARfsj/
+         bmQDytHL3N0GsNiW82mdysNmnf0SAYU76Sz9gh+kFZIQuA36PUHzyR+ilMI15PZI3t5Y
+         kQpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVscb+BIkUk3I/bbvvCv65WvIZ8arbcVagDf192G09k/N63DneeSseKWzCS81Yv5gMkMOPuFEiiQ==@kvack.org
+X-Gm-Message-State: AOJu0YwiYFOWQNUox1r+qBvDTlY1idAvK5e/QVkAezociBdjv8SUs/xA
+	VrHZNfwM9bHoiThRZHY0/be+IqbOa7OrOElQj8vUP4XlxU3MG6Ob8n1R/aCa+w==
+X-Gm-Gg: ATEYQzxkC7R109awnw89zeHLD4qimtoc+ck9UnvVhDYnRVfsB9Wn6/O9Wq9G729atw1
+	x6hEEvwvwjZaJWTpZzAlw2EMxi17gcSf82yFq7h+6ctdKMa59v+K3TcYQj0qp14KfeZ8XWnT8i0
+	RJ9Z+Iqrj2gdhjxYuHberJ1h+qUJ3H7nDFzFHjVHeyZ0FSscODjsH2Fanp0Tdba37tU6x10ujbn
+	3WNCYcVOjKbVkxfZctm36Je2N6n7gAoT5RHoTAy8OgsfmeBuoxJWCQfOEtyPe6dsTiesGpqHhzn
+	RnGu3tZbkjqdRjJrm7gMugFcN04qxQQzAMR/AoQ7IbjiAJdVVdZrjKZOq9lUS5rDtkggdHAwCHz
+	cUusDIo2xyiiSaMrG8dU2ej5emxl3sniMaZh1yDDo+gNTyIO6cTsPPskp3VXZW+SfSLn2g/HANo
+	LO1maiqQmXrkmlQQrdJ6qtW+9v44Rc
+X-Received: by 2002:a17:902:f647:b0:2aa:d350:fbf0 with SMTP id d9443c01a7336-2ae2e4a5ff3mr42125155ad.26.1772214142121;
+        Fri, 27 Feb 2026 09:42:22 -0800 (PST)
+Received: from dw-tp ([171.76.229.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6b974csm58040095ad.65.2026.02.27.09.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 09:42:21 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, Mike Rapoport <rppt@kernel.org>
+Cc: Donet Tom <donettom@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-mm@kvack.org
+Subject: Re: powerpc/fadump: CMA init is failing
+In-Reply-To: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com>
+Date: Fri, 27 Feb 2026 22:39:53 +0530
+Message-ID: <87o6lagljy.ritesh.list@gmail.com>
+References: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 53B0420003
+X-Stat-Signature: w6nynigqsoyrkxspfg1tyw66ydmzxw4k
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C8F24C0008
-X-Stat-Signature: mcuqsdaedrbbnmyytqfua8jttzsnwt9q
-X-HE-Tag: 1772212883-544535
-X-HE-Meta: U2FsdGVkX1/olS8VE2wiSrM6Ooam8IybxdHY7a46bpj38mKg4Qixys9IJVFJ3x98LbOlqMFxiP/DWH9Vod87V2V3IvZ+USiBd2FCg/aYzIxV7SkK6uaI1CPd4a3NAgmffnFYz3IZgBqzqT2p6Fr9waPBK+aOfqasiIQvy/5it0FkpzT0rVg7gM0pg6I/g7Ir9nLc7+HjUGkOMdGttkQUfYxddQlyTzenCFE74zAf1ZDlAtYVLftpP6KPE/ChqXxGGUe+WMEoi9uIZC9cfCjFl/c518ehniipSiuloGz5VHjjnN1ekgTkMamu2kGG7zC+NNKos0urZJ6idU2XRGnSE3uGRvVuHL6C+iLEmH1D6IydJrXqKLKL2u3lUzsFVg9hnkRVFYBd0LzBNkxO91aRFLXrmMnO6VV+g+dT+HjKODCAz5wDDqPRwlrCpgccbSzTT3hK+dZi6Empuad6gQUPPL4SK6486STSfkRRP2U6qsXh0/eNIZwTgQuyZT4OXNb5/R0Nh7NXeJrNuIXbQ64ciYN3GCZ6klt0mBV3QQAlhjzHNbOWHKuuqcEWkOk+aRdhR4xDq1aKg2zOBk39spgI6ODW9qSLCSGktl5CMCXmOA2SoCRqKUCU1Ri6i6aX2yCGe05lEOXHiVyimMr+4HE17mNh11QIgnXOq3T1kTQ2BsDSXlGPjz/VFTpi99ZGLKlz3P46xg5NPIaML9MuuCKgx/tXS4VsdcNOToMKRUNV9DEV452b9Kbp4Yu422VdoQgcx/5hOZNqzl/zmGg/zek+vIyefH0KOAbsj0LcAEHAN9fcTWtwPvuRUhb9OoM+OrZmq32LtSKAJf5WGICIKHAroMkFOSwoFeGvMzc/LASfm8dnAnmp4KJtvXNeZIRABnDiHK3erKIOpsxg7SPTSnNAc4VY2D3FuwFZmPWiFcFrqcAIaLFQTjAfRjmmVHTB+SzD0JYbmplLCgE=
+X-HE-Tag: 1772214144-843334
+X-HE-Meta: U2FsdGVkX19J5Y4T10VZxiQ93CB8i+3vAGneKn47P3X5QbvPN+NcN9ZR1gIqA+3E+k+3qZ/PTxk1rV2aGR0to9B8enaXVO+8uqcKAOy0itjj3IRmvb6NVf7n4er9HezG1rEJeqezYG78gkSQyZ/FoDSpaaaITCt4YBNZgajJZLKN4Ajy5VkP1ldcJdl+0Jf3lpQMsrskRW79FOP968NmpU+1L4g9IH8Tzxt8jy8p6kZeMYrrpoVfb6ze0D4t+jdgR3jvkBdsoG+s0Sqlw23PCRNyypSsm+ApdF5zJ+dcH+4B6MX2bUoVKgGUoUUMyYo9nYhk0hKaEpiy7qf3j7rhsiukSTg6BF2AvQf9Nf8F5RmoPHHZ1kOw65a08Bsx6UHq4DJUyjgrbcsQxe6z6KAanNhXDVixoFIg9bqYfjmZciMYTYqkDhC4hdNjDNCPLOOTjNj6oJciXCJzNt7Zo7KUvon4knh+gSghFW9lNAV5MEcXAnxVe3LeYzRahAGilKhpVTLMohe7qOmHHTeNvdJEhwks+FhQPTQ6KHIAtO2rJt6anXGjZ1eTGyIYHoCmX4kxBIGtZMCtIMq8vIpHqUekcTndEE1gYuX8f7uJxAIe1I1bx7xri4ExBisWU61baw1rkTrc85nziYlm0zglvdm/XXHJx5sUhrA6DxlyKhAfeJkKPdCVV/bkHEIJCOlGHE7bcEOZMGgIpviVg6vGpe/FcY/wBk0Ksl87tUjjkox6F2Eps7/MT3ZCyTw6S+L8CAOS0EWlgiELPdPLQQ12BHg1im8rnFE3ukawQ6bIIFgc/l9D+Z7SdyeyZcirv42v3N4bs8F1Yy7KYEMDHk5ah495Ocg+WXS57V8rbk3j8mqvlDhvGQiBCAlxTiQfOJESX2T6q6DqBMJmfb7+5oP32IgpPFLooXv59hEjOL41Hcqbwz3B9sPPQq34Ihuvc4vCAabTpkSUcYX633Zg3xD185U
+ f1hCWn8P
+ A5wxtU6CVPQd0vImr4K5XV9xQKumRGpMgODLVqWQPn49MkSmTj6T0KkvqFASPIGf4h4SsgCHwNYEnZwXaS6xgKciDm4bmToZND4Csm5VxDzjCzPYW5NPnnmKyAlpts5hzLj5araVIx4a3ihTlIJTL+6R2HOLqxaiD+j7A+4w2ftT7r1jDAf4uMRTpiNFjMFTib+1NojpJe2wIhrGmrodtMJu4rgJL3X5F2n323hl8vDs3h4tDH7G/ckSrw7LJEmRrlQ1pOj1L8LTQJTeeQUjmwaegOV+V80oFyGHJVDg9JCrGzoZptNYIlna9vQ1HccreHnRS7FSkh2c1r5Ogh1vf0FoGj/v58HU5HDfguGn84xao+zF41n8Ys3ma2a5k3qhRYuycEkpfqHZRTrWryxOpEEDWN579wsEx5F1yJBvYJ88zy6SAGU2y7hU3MTrMm9MVsugIZCgOnUwyiDqLZ8rx7+CdJRrYtk/1IdysJd5X4xFoGHuzrU7SziRNa/qyRovm3KgSViLLMGXZxkBQt4Ib1bQep41b4iuWhGdvFzePNqIsS/QinBiWyvYQ3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,28 +117,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 19/02/26 22:31, Danilo Krummrich wrote:
-> (Cc: Alice)
-> 
-> On Thu Feb 19, 2026 at 5:57 PM CET, Uladzislau Rezki wrote:
->> I think we have 0 users of vrealloc(). It was added because of Rust folk
->> wanted this.
-> 
-> We just gained a user with the Rust binder driver.
-Hi Uladzislau,
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
 
-You mentioned concerns about there being no users and added complexity.
-The Rust binder driver has a user of kvrealloc for long-lived resizable
-arrays. I also have a patch series adding shrink_to support for these
-allocations, which is now in char-misc-testing [1].
+> I noticed CMA init for fadump crashkernel memory is failing.
+>
+> [    0.000000] cma: pageblock_order not yet initialized. Called during 
+> early boot?
+> [    0.000000] fadump: Failed to init cma area for firmware-assisted 
+> dump,-22
+>
+>
+> kernel command-line:
+> BOOT_IMAGE=(ieee1275//vdevice/v-scsi@30000070/disk@8100000000000000,msdos2)/vmlinuz-7.0.0-rc1+ 
+> root=/dev/mapper/rhel_ltcden3--lp12-root ro 
+> rd.lvm.lv=rhel_ltcden3-lp12/root rd.lvm.lv=rhel_ltcden3-lp12/swap 
+> fadump=on crashkernel=3G
+>
+>
+> Same issue with kdump CMA reservation:
+>
+> [    0.000000][    T0] cma: pageblock_order not yet initialized. Called 
+> during early boot?
 
-Given that there's now an active use case, I'd like to go ahead with
-implementing the vrealloc shrink as described in the RFC- in-place tail
-page freeing, skipping huge-page allocations. Happy to adjust the
-approach based on your input.
+Good that we added those debug prints ;)
 
-[1]
-https://lore.kernel.org/all/20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in/
+I think I know what went wrong, as part of this arch,mm consolidation
+patch series [1], I think the order of initialization is changed.
 
-Shivam
+With this patch the new order is ... 
+start_kernel()
+    - setup_arch()
+       - xxx_cma_reserve();
+    - mm_core_init_early()
+       - free_area_init()
+          - sparse_init()
+             - set_pageblock_order() // this sets the pageblock_order.
+
+Whereas earlier set_pageblock_order() was called from initmem_init(),
+just before cma reservations were being made. 
+
+start_kernel()
+    - setup_arch()
+       - initmem_init()
+         - sparse_init()
+           - set_pageblock_order();  // this sets the pageblock_order
+       - xxx_cma_reserve();
+
+So that means, pageblock_order is not initialized before these cma
+reservation function calls, hence we are seeing these failures.
+
+setup_arch() {
+    ...
+
+	/*
+	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
+	 * hugetlb. These must be called after initmem_init(), so that
+	 * pageblock_order is initialised.
+	 */
+	fadump_cma_init();
+	kdump_cma_reserve();
+	kvm_cma_reserve();
+
+    ...
+}
+
+
+So what if we do.. 
+
+start_kernel() {
+  ...
+	setup_arch(&command_line);
+	mm_core_init_early();
+    setup_arch_post_mm_core_init(); // and here we call CMA reservation functions ?
+
+
+References:
+[1]: https://lore.kernel.org/linuxppc-dev/20260111082105.290734-1-rppt@kernel.org/T/#m5adf1a845e0a0867066c4f7055f28e6304b73fa5
+[2]: https://lore.kernel.org/all/3ae208e48c0d9cefe53d2dc4f593388067405b7d.1729146153.git.ritesh.list@gmail.com/
+
+
+-ritesh
 
