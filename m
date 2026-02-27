@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B341039893
-	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:10:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E53DFD9E3A
+	for <linux-mm@archiver.kernel.org>; Fri, 27 Feb 2026 20:10:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D4216B00DF; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
+	id C11BB6B00E1; Fri, 27 Feb 2026 15:10:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68B1E6B00E1; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
+	id BC8EC6B00E3; Fri, 27 Feb 2026 15:10:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555C36B00E2; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
+	id AE8656B00E4; Fri, 27 Feb 2026 15:10:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F7226B00DF
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:10:36 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2FA69C2FC1
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:34 +0000 (UTC)
-X-FDA: 84491329188.16.F24B336
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6DC3F1C0012
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBRHRg84;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 983A36B00E1
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 15:10:50 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 490AF1608FA
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:50 +0000 (UTC)
+X-FDA: 84491329860.11.B0F3FA0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CD4EB16000A
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 20:10:48 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nfvnOh6G;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772223032;
+	s=arc-20220608; t=1772223048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=adBcRZ6N/feIVBkm9Rv6T28TMxfba+nAFWMcJGZNc9E=;
-	b=dc5dJNyBZsNdeOLTgtyDTSSh6sL5QZRDmSU9I/VJexbllTp120yatIWp5bEd61TvVu1BCI
-	8YXbLWuSKRahJgvvljbt/yd146iPPijdjYiWMGo5YyQP5H2vc0VXKT2exP9XKWW1zbhUgK
-	/wG2HMlHfuU7r1l4Rv+KVEGBV6anb+Q=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBRHRg84;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772223032; a=rsa-sha256;
+	bh=VzLysLIDiziqT+z+8O0U2+zIe52qtwqEAHv4JAZVhAg=;
+	b=XTsGYlfVKHc82xyoGkA15HA74t4nfryw2oR5tNNLpi48m9k1Nwsyc1Lb/9pFpdkOLckPSP
+	7OUEAXAO26heIrtjLVnmYxnjbj7Bewxv6GtqaEGz8FCKGTPSGdEVG+VuDL3O+c+cVj2mG9
+	1XpHVNKbrvMfvotvypP+CtUF6f2MCvs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772223048; a=rsa-sha256;
 	cv=none;
-	b=WiloxP8xVNUDLl4kQ5M0L/9lqRddQ1QVx9FODQuGEUs4yk8AZzLUb6z6I+h0tXI61L1Q+o
-	Pwvkwh21cBsG8K7KCg2PI8LrCiGPnBtZwkh39OP+Ef97L0Aac95Lr1aVh7rcihxm9VERqW
-	fht0Oivmhcv2tH9l0NXc/nN52XnDKII=
+	b=tFYkNrCkh8un0ZyIpuW1vVQZ6jJrNyjD/ga+6ma4lBOu5dNQAF6Ul3AjQt1teuy9G7EjB2
+	nsQqnVVMIh0FTVpr1dJqZ76YvuCoXwx2xrgJTGvx1/FUQMBU2FNpseCJwUNlPwJFiA+/J1
+	Ik6rkuZlP/xqPTyBWeihakD4B7Fh6YM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nfvnOh6G;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A4DA432F8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 265ED60130;
+	Fri, 27 Feb 2026 20:10:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8338C4AF0B;
 	Fri, 27 Feb 2026 20:10:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E5C2BCB0;
-	Fri, 27 Feb 2026 20:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772223031;
-	bh=GDIsuZYm2zKYxLFzdJGIwkOaoBFqEdMRlEhHeQ3/4/c=;
+	s=k20201202; t=1772223047;
+	bh=QGXGGpOpfFdi5KYtLppZ0pqbJn7DahplTB4anRf43p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBRHRg84mUFFa5j1Ap08A/NiDuF3TUvfcRS7C3+9hv775NpD/8NroucXGTumCDp/q
-	 yrfW9Y3j7L6NHLbxDVoLPnwidDlbqQx43JL5ql1ycR4JGKaqhcycHzZzwNzJlcvc02
-	 dllhdtIOUZfDuMDJj+LoTseNq6O5uagn4G64tCcqE5fAIbrOu0ko0XkUr7ircdpbQh
-	 bXRyXmVj6xEUhwSFjMMxmlipUHZ264tacuMAwtSvAd5grFuLAF6s73NejFFuX4hEaz
-	 JPFck19AXo77usRat6V50+er5SScDpOmDuKTSvIT6gz+N5E8JF7nu9dERR/ctItvMT
-	 m5GfMgiKzWHMQ==
+	b=nfvnOh6GFZtYgZiN0uOTy634vV7a2URwKLO9gYY3hSmWrxWYugIhQMwjmKAP0Ou7H
+	 E7yQ2swT+jt/BCllVI65b1rCvucLmydteEcAWJgvmR6s7NVl1dOcUQKed/pO6sinW9
+	 lwoqUdfj2/aHynj1hfJQjMN4BDqIw/yLezbCWepQA0SY428UknnSWvQAdl5uw8Pw0I
+	 ZMvoXeKbY2uAT7ljvl10AXyMqsQZJg6xW3aCfxZ3Rd8l7duGBMlC0mAecn8AsWYubD
+	 FGcjbDKLIzBns5l13QGee7VBjeTjFl4JHAPE0WATVKG/4R/uphdDwPX6uX4D9dFGKx
+	 IeNq3bC5UkO4w==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
@@ -138,22 +138,20 @@ Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>,
 	netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v1 05/16] mm/oom_kill: use MMU_NOTIFY_CLEAR in __oom_reap_task_mm()
-Date: Fri, 27 Feb 2026 21:08:36 +0100
-Message-ID: <20260227200848.114019-6-david@kernel.org>
+Subject: [PATCH v1 06/16] mm/oom_kill: factor out zapping of VMA into zap_vma_for_reaping()
+Date: Fri, 27 Feb 2026 21:08:37 +0100
+Message-ID: <20260227200848.114019-7-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260227200848.114019-1-david@kernel.org>
 References: <20260227200848.114019-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6DC3F1C0012
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n6khu3413c9ew1a55m5zijxbdqcg6dke
+X-Stat-Signature: sarq3qf9xtxityqogxgtxh7qqipen59k
 X-Rspam-User: 
-X-HE-Tag: 1772223032-192938
-X-HE-Meta: U2FsdGVkX18iJS8qYVUc5qP/SYdzBKa3a/IVNhgGyb8WFQN0QZtw+a+VXr6aj55hzSIUA9R15DhJOFiBIxuw5OMFEHJjk0mhjDo6Nm67qtZ4WXU2IjwRdQZ0tTU0BGWylPNogyuSfMmmZCivA3tstrK7rA2g9tB8e66nvDZ+A4yZkd5reE/45C7AlHt50bsUGYTcaIHC7UnXY1IDpsQC8iheTCFq6WW35uuIUAXKyRIyckypmk7gr9sVfKuK69Vn8SEAOl9LSuzs+cD7pbr6muVt7np1511mNlArpdNbk5cKTocqrq0/YRYHXnF9sDwxL9SGgtfdvZ3luDrIl1gKSQFIxj9Inq60xwfgeNN0pjAuL/WIuPqCR9vPaHi6dGEDH/1RtOjUEfhZkYGfN7jEyor62/3prMcDAcAU4+uG5CSUf/CAHKzqmeanjBM+NGR4nEP6DqUkQ0K3g5NyXQLTIFLsemvmXps+hZZyrabXpOZTK1tTnjHYGCWoya5lFb7KOEtkgY0tQH5DnnjbSydqPoX4tQjYNY3ggmDXPKR+x3XyZs9RntM1g09xkzl8UrXpUe6XxPPE/7Y+9bjEr1CMoZE+TyYpfHB/SBOeap2pdWd1E1fdeh+ud+vD8gdCL+0JMQyrTrLvIDmLq2d7EHYtOtLNGFvtF4P9jArdxhCzTCt8NwTdzM+15mtQk3GZhLXBfeHCrsfn5E5MIHbXe0NQk5NzFSmkQgvmoxjsVRyQdDF6DskkTSEe4m/kRLo7qn3E/gHmPDlfdj3NEMDL3EHGZYCKjjDinr2PKVVoiE9lwB6jkVkLHZGCFqTUNjdLboYk8RGqjO36nqaw5BvFkIlnOVm6ZvjBNt91Amida4W+gt+YuWmvCOg5u6mzgD12uq3wW9worVGp08JE5U7uB2aWHMovWc7Banz3B3iGcu57zZj4CKRwHHWSUJEXAdKVqgv/RbhYnYg72k57PxaTdcc
- MoWQshPR
- D4fH0yGycE9mA1JmG6EPKYZ8SwovdpQzybvRuc3XF7PhEGlSmfogVnkrz1CWgFmhOLo4eThcgc9wHzgT1Bj33bq8I6vXste6Tzb8Ybw8kF2k0s/wqCI8NYTFerPxFIbHMomy3KYYi3BkC41OAZqoPiLcwSkOe9iuUc3vwJ5b+ah7Qeen6pRmCtJ7DBfOm1sqO84M06sLOGcZAobTgzDl5j8qm9CAQ/JRnjkqleZU6kbCoIxz1R+/S/DyFY9LYtC4CUl4qPTKvgxlzGFKxZsEjF8ob6pqyZ/oOeADBH3jMragDmGRW7QnFSvE5EkO501uvYioS
+X-Rspamd-Queue-Id: CD4EB16000A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772223048-236272
+X-HE-Meta: U2FsdGVkX1+O28t8hRyyoRN8Yro3YYWRP9r+zTxxyuyBHHB9XRmt0cl6CXZMfuqQ4N/ixJYly4i8EEb1k78PGJqzmyGpGwChFzMFjLQyXfpJaR+RcJ4yTDq6kvvFs0cb3fnQK1UWC/eiWwCt1YPkp4ByxhWDuKQCHpkfdvtxZm6pRtb4bvfoUDES9ekrQdEt2P2xiEygNNzBFTywuEZ+vyRTYOf9MjeewCT11Yn0fx2hB2qGcVHm56zQaVcyjQEdug7eIdc48C/X2yY+h+8yZ3xd7/yZ+nkhOvFDuKmcFSdcairaVcmHP3aXB1ubY1UouEouX/4CsIy7/dfeGlnAK1kOelQ6jRhygrbYkTqDSNKhr9+wuluHyRf6TvdmE1wDn0bbluNxEn+G/Kr6rd7kSPTIF1yM7LHIeYZQlfa/aX2EzZpiq88aWzcM7dQKFTLl1DXo8rUbEUAW/i8/95Hfsho9Cw+q7HDNKRhRCn52szRt3aU/1TMRE5ZzTJZVwadIL7MhiMLRf4hSOlfeKG1C1/IUUL6Kl6zhC5f+AZ/90s4j+Uai/IuAKEJFDGjJjE/7ZG33waMJ3230wBF6KvGpNW3UOK3NM+80DZheowBoxmBzWgYXkXOO6WAeNk4iPCdQayBBwz1tU4OVxJxnOT7gLUX1u91XqhXl59nh0UVWzZVd7dbOelj/ahDskiyyqD+ZuC61zuLKSJavUPd2w+YwiaEEsPetB/8NJkSbx5rjcvQXYnYsNz7IiTuvhwpY7ji1ez/3ss+NFaLzByuc+5yz+pfl2yJtpPMMddljBsB8LsHsh6XygJIdBpKCvCa7R99C5RjscCKlTtD5yGKc2uN/FTDURdyXlHgQVFZ3i9lFk/5Vypv+w0g5WDff7iKbDiw0Vxvy+31wjQdcsGjAkaaj62mnFioh7Tz84mUwEyYyFS9oZIl513sQ+bpYAYvd6gjV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,34 +159,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In commit 7269f999934b ("mm/mmu_notifier: use correct mmu_notifier events
-for each invalidation") we converted all MMU_NOTIFY_UNMAP to
-MMU_NOTIFY_CLEAR, except the ones that actually perform munmap() or
-mremap() as documented.
+Let's factor it out so we can turn unmap_page_range() into a static
+function instead, and so oom reaping has a clean interface to call.
 
-__oom_reap_task_mm() behaves much more like MADV_DONTNEED. So use
-MMU_NOTIFY_CLEAR as well.
-
-This is a preparation for further changes.
+Note that hugetlb is not supported, because it would require a bunch of
+hugetlb-specific further actions (see zap_page_range_single_batched()).
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/oom_kill.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/internal.h |  5 +----
+ mm/memory.c   | 36 ++++++++++++++++++++++++++++++++----
+ mm/oom_kill.c | 15 +--------------
+ 3 files changed, 34 insertions(+), 22 deletions(-)
 
+diff --git a/mm/internal.h b/mm/internal.h
+index 39ab37bb0e1d..df9190f7db0e 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -536,13 +536,10 @@ static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
+ }
+ 
+ struct zap_details;
+-void unmap_page_range(struct mmu_gather *tlb,
+-			     struct vm_area_struct *vma,
+-			     unsigned long addr, unsigned long end,
+-			     struct zap_details *details);
+ void zap_page_range_single_batched(struct mmu_gather *tlb,
+ 		struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long size, struct zap_details *details);
++int zap_vma_for_reaping(struct vm_area_struct *vma);
+ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+ 			   gfp_t gfp);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index e4154f03feac..621f38ae1425 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2054,10 +2054,9 @@ static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
+ 	return addr;
+ }
+ 
+-void unmap_page_range(struct mmu_gather *tlb,
+-			     struct vm_area_struct *vma,
+-			     unsigned long addr, unsigned long end,
+-			     struct zap_details *details)
++static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
++		unsigned long addr, unsigned long end,
++		struct zap_details *details)
+ {
+ 	pgd_t *pgd;
+ 	unsigned long next;
+@@ -2115,6 +2114,35 @@ static void unmap_single_vma(struct mmu_gather *tlb,
+ 	}
+ }
+ 
++/**
++ * zap_vma_for_reaping - zap all page table entries in the vma without blocking
++ * @vma: The vma to zap.
++ *
++ * Zap all page table entries in the vma without blocking for use by the oom
++ * killer. Hugetlb vmas are not supported.
++ *
++ * Returns: 0 on success, -EBUSY if we would have to block.
++ */
++int zap_vma_for_reaping(struct vm_area_struct *vma)
++{
++	struct mmu_notifier_range range;
++	struct mmu_gather tlb;
++
++	VM_WARN_ON_ONCE(is_vm_hugetlb_page(vma));
++
++	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
++				vma->vm_start, vma->vm_end);
++	tlb_gather_mmu(&tlb, vma->vm_mm);
++	if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
++		tlb_finish_mmu(&tlb);
++		return -EBUSY;
++	}
++	unmap_page_range(&tlb, vma, range.start, range.end, NULL);
++	mmu_notifier_invalidate_range_end(&range);
++	tlb_finish_mmu(&tlb);
++	return 0;
++}
++
+ /**
+  * unmap_vmas - unmap a range of memory covered by a list of vma's
+  * @tlb: address of the caller's struct mmu_gather
 diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 5c6c95c169ee..0ba56fcd10d5 100644
+index 0ba56fcd10d5..54b7a8fe5136 100644
 --- a/mm/oom_kill.c
 +++ b/mm/oom_kill.c
-@@ -551,7 +551,7 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
- 			struct mmu_notifier_range range;
- 			struct mmu_gather tlb;
+@@ -548,21 +548,8 @@ static bool __oom_reap_task_mm(struct mm_struct *mm)
+ 		 * count elevated without a good reason.
+ 		 */
+ 		if (vma_is_anonymous(vma) || !(vma->vm_flags & VM_SHARED)) {
+-			struct mmu_notifier_range range;
+-			struct mmu_gather tlb;
+-
+-			mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0,
+-						mm, vma->vm_start,
+-						vma->vm_end);
+-			tlb_gather_mmu(&tlb, mm);
+-			if (mmu_notifier_invalidate_range_start_nonblock(&range)) {
+-				tlb_finish_mmu(&tlb);
++			if (zap_vma_for_reaping(vma))
+ 				ret = false;
+-				continue;
+-			}
+-			unmap_page_range(&tlb, vma, range.start, range.end, NULL);
+-			mmu_notifier_invalidate_range_end(&range);
+-			tlb_finish_mmu(&tlb);
+ 		}
+ 	}
  
--			mmu_notifier_range_init(&range, MMU_NOTIFY_UNMAP, 0,
-+			mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0,
- 						mm, vma->vm_start,
- 						vma->vm_end);
- 			tlb_gather_mmu(&tlb, mm);
 -- 
 2.43.0
 
