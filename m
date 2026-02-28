@@ -4,90 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80FDCFEE4C9
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 14:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5870FEE4F2
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 16:10:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA8436B008A; Sat, 28 Feb 2026 09:20:51 -0500 (EST)
+	id A9D6D6B0088; Sat, 28 Feb 2026 11:10:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FDB6B008C; Sat, 28 Feb 2026 09:20:51 -0500 (EST)
+	id A75366B0089; Sat, 28 Feb 2026 11:10:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D96AE6B0092; Sat, 28 Feb 2026 09:20:51 -0500 (EST)
+	id 973D16B008A; Sat, 28 Feb 2026 11:10:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C40D96B008A
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 09:20:51 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76A6B139E2E
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:20:51 +0000 (UTC)
-X-FDA: 84494076702.11.2894254
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B2BCE140010
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:20:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JcI/7Imt";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 84D656B0088
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 11:10:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 05A611C017
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 16:10:18 +0000 (UTC)
+X-FDA: 84494352516.21.9CA77C8
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 44746140002
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 16:10:16 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gjZIqbyC;
+	spf=pass (imf23.hostedemail.com: domain of lenohou@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=lenohou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772288449;
+	s=arc-20220608; t=1772295016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cngsu4QC/s/LsygBwa0X1EgXCc0toiqGLgWGzEjWZ30=;
-	b=TGux9wbF6Tm47TAOlX2HPHMhMMomtBmqFDAbcTTkMeb7uCy1xgR/BnWg+fV+32ASaTOc/q
-	djlDL9SuSz4kaVyiQBl6H/dvtHbjRL/7Np916IIVl0dgW2QZ89lzj1qw9/xOc56X3x2PGQ
-	Bi1uzzYznMZsw8+vEnGGXCw8aCLUIKI=
+	 in-reply-to:references:dkim-signature;
+	bh=MmNLVdGchA1yBtCPglJZ3Pu9g12dPbvz5wu2t4UwJbM=;
+	b=ywCqJBcXFLyq01MjFNHsQFFNipymQssk4A/Lgze/jZWzXxoaLFU5sgzVV+hNZ36aM8pFQk
+	v7liYliRDE46gipzeXPTpxgSplQv7SvD6lQICL+d225TTUzoksmIJuwv0cUXCjle2GcNIw
+	Q121+C2QAY5WkgBj/2zdAAhNgY92icE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="JcI/7Imt";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772288449; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gjZIqbyC;
+	spf=pass (imf23.hostedemail.com: domain of lenohou@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=lenohou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772295016; a=rsa-sha256;
 	cv=none;
-	b=6qBiesu6oM2YaTxK1DrmF8+RcFCqYHRZivDBcL9gxVzGOL+ZP/XUrp8CgGIK70jPqo2ujQ
-	obZ7d/ZDSAzQR0Ert3/jH+SePc9d15N8+BvwknbAcxPTK+HDQdapJ43b2lbKF6bojn6OXw
-	Kec1lbZKrEVv43pxJVSuitUwU2YG7KY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772288448;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cngsu4QC/s/LsygBwa0X1EgXCc0toiqGLgWGzEjWZ30=;
-	b=JcI/7ImtJYPNViw4hRAStRxiuwGD/K2BPN2nAe3Qmvd6t5RC1XpXCbi6w+EM62Bo875+l4
-	5tDwOAflDGo6MkCtOuMzbje/vhPK9w/h+fiw6v7rup3BxR94zCBkD1jBGwdz45EHLE8ITp
-	x150gwG5DGtZHS+kNuAC8Jjzi8/vgj4=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Daniel Sedlak <daniel.sedlak@cdn77.com>,
-	Meta kernel team <kernel-team@meta.com>,
-	linux-mm@kvack.org,
-	netdev@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 3/3] cgroup: replace global cgroup_file_kn_lock with per-cgroup_file lock
-Date: Sat, 28 Feb 2026 06:20:18 -0800
-Message-ID: <20260228142018.3178529-4-shakeel.butt@linux.dev>
-In-Reply-To: <20260228142018.3178529-1-shakeel.butt@linux.dev>
-References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
+	b=UkRW16cS6plKAhKk9nEnyYktQlpDvaGic2gSLOBrkKTmhbJTxbRkJcCIO8LWN5tSXXGTQb
+	dodgR7t8sygR936mPrChzqB/u1LEwot/c2haQJJH3JPRHHFVt+Pjtv8j+7bTrEfGyuZVAS
+	y+7uwVFt6bSXI7GM7N5Utb74JsEqHzQ=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-823c56765fdso1603872b3a.1
+        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 08:10:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772295014; x=1772899814; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MmNLVdGchA1yBtCPglJZ3Pu9g12dPbvz5wu2t4UwJbM=;
+        b=gjZIqbyCpu7DPD8DkAjCJE+B6zMquTezmxuILpJjzg45MFtSg9a5CBmDApjScoChpk
+         RazhvhOk6ICcF2E1vh0hv1Ol+3jqpuBgA03sPt1dFns7aNibMluSr6TlSzkFTSt4PGhp
+         cdJEXXS1CRWyz3pVx7JN2lxWfkAH+Tqgr8CXJT9jjMaOZQ4m4rl5K1dgH97otsdKBxvf
+         wxOOv0YB7uW0cD7EGOTNILLz4uGqDMmSXaAnTX4FM4RmqBHnhJYl+XC+vN3yIk/hbHwN
+         yw7YCQU38wXRNjlmp/F3DvGm+1LHoaU+RaO3WW1EMtW5nMul5qrvA3DOfjRGyMnz7ZXN
+         s10g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772295014; x=1772899814;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MmNLVdGchA1yBtCPglJZ3Pu9g12dPbvz5wu2t4UwJbM=;
+        b=jaGhTowJ/eaPAsbJ3Jw6cJp55UoScjZg9LNq00rlWcPLao6w7Cd2YrufcuofOXcuQR
+         hkT2VG64e+J2ydxchZMjT6Z5XsQaa05Z/4TAw1pA3o5YN86+0hPLSlOgtbp9ii/luheG
+         uAcBzCxk+os9Vq9YyH1UqIoA30834GBmC0rvJ9v3v9ZB5uA3fSNeoD7cZzRgnx+Mnicy
+         /eQE1IO7LgjaQOKvOhepP2oq3vEKtkKpQsfD0SYx7UJjjy7q4Ldjd2DB6FVFgOMJjEyR
+         W+LY1cr4j5F0CqRaRDl/Xe9/Mq2uD9a19loImgI953StbjXsnjZ0/Nr1bJ2+ap+bkTI7
+         K85w==
+X-Gm-Message-State: AOJu0YzvMbE8MnllNaaEwO8paqD1X/stmZ0dxj0db76YJqijwNFtxXFD
+	F+3YT9PgS0M5QKp2tLQqAxBIysa3zQPK/1IYKhX2yxif8o81mCIkXsWxdDVgMdvuoYt7i8oT
+X-Gm-Gg: ATEYQzzDuccEp1vwRzjQM/o3MSabtUNH34eIk846T7q4ukSjLhb6zbYdsqg7sndk2no
+	Txf+2zwQiiAYpbuooC1FRrHV0S9C5BxBa6ono1NeVlQmxYwkIas+Tq+jDXMz+PPetVT8ovs2412
+	sLSp/jQ4uoobgWhuiMPLnJReLtut50j2pSmMli1kRO4QMNIGqbWzZsVsQWMpo/aZtZJKTmHNdVN
+	vqPjIKY8d7SKiauQi1U4lUfMzr0N1J7BUTsuUWKHd3CaEzw1TfH7DTC3Re0phByreAecbzmx2RS
+	3ORAypJL6ARVwpX+XbzvqFX61LQJ/gYS57mwTfFOJBxERefszGWsUzy+krKENmwPjXasGslfA17
+	vhooD8I/25ZUcVkmTPfyj7xo/aZe/LqPzLVVJtQypPkF0qNdHvZEmbeW29A/Mec3e0jz0K7XQFJ
+	d7v8MinJhCxZplD0FmAde8r+QrB5t1JRSUlA+ZI+tdwojkQdwtMo5iG9h+yHg=
+X-Received: by 2002:a05:6a00:2e86:b0:827:2792:e40e with SMTP id d2e1a72fcca58-8274d9505cemr6761749b3a.26.1772295014111;
+        Sat, 28 Feb 2026 08:10:14 -0800 (PST)
+Received: from localhost ([124.79.56.150])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-8273a05c0b0sm8192679b3a.61.2026.02.28.08.10.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Feb 2026 08:10:13 -0800 (PST)
+From: Leno Hou <lenohou@gmail.com>
+To: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Leno Hou <lenohou@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Jialing Wang <wjl.linux@gmail.com>,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Yu Zhao <yuzhao@google.com>
+Subject: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+Date: Sun,  1 Mar 2026 00:10:08 +0800
+Message-ID: <20260228161008.707-1-lenohou@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2BCE140010
-X-Stat-Signature: 6rcaccrmijueusen8oobjtziwhs8c9sh
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 44746140002
+X-Stat-Signature: uo1qmborzthi5py5c3j6nqtdiggy1p8r
 X-Rspam-User: 
-X-HE-Tag: 1772288449-354613
-X-HE-Meta: U2FsdGVkX19PaWWgS72u+Q3cj2INE5JVLHQDHURXVB4CqngUtS7d89bqc4fGGQKiR10TnAIY8od/Zx/PGdxb4aJ8oLG/UXJDoyaWsc7CxeRlIoN4kpG6NcppJqRzNhMxRNOZpvE957YsnVONP+AvUct1s70ghWiexEE1rZRVs9M7/7LP4euo4huwTH1PpuGpSXKN7llNVDgWky7fCHNvm+I/QFdIt/YwBAooTj9Ke9Zow6/9hDXBbaltL9ANQl172qcADlve87NX5/uZ4UBZFjlsUNwy4Q0gdsn5Q7xdMaNJbNNUNRFkYsL8L/nlnzNBLQQDyXwj/Q7m038f+06TK48YoSMQNxeuxlnmc8pcFFSLHpgfJa4I01aYJc5osHdoWqvXcM0p9AGvjs4BkN2cOM8I+HAFbPexLgW2+L3Yf+/7xzqwTmF6DRXG4lcxKi/G2dpuyQ8ad+NEPMqsSkgddokndYQOk8Z5RoykWf9iXyQLiMrMatOkg8LOI1VbTKc/eAvy/+XzLBQzoBnED2nvIR1B3UUGwuei0HqaidLZPzGuEe3y+c5vK4g68RW3ky5TlayJ/f7njzjesYLMnh0Vwd+OMMoldObdVSqI/DzKpQwEZcDGRFXRSk7GXfFEnbPfe6Qt/AlIGCTT8VNVXgUGGr0W0Yxf5vBHJW7lAwZueyEniDtt+Y3DKWinIJ9B+p8Rx6NEH5APFxYPfRLClieoLgRnb/BQFIHYXMqN9NIXbY4ArPlVLd4vVCIoA1QBPVLmh0DjVWZO5RaKMTpAP9DJxxzen5AEYs1ahZw7p6b/wHANSrFt8viwqy1mxpjWMdYjs04qi0Wvc5z90NUG5u6o7dAfBGRstdmq03S4r5jXSIwvWURBCJiRIdAB7/MeLVJeuVdRLWkKM74jEuyaxVxdWXCE2s8JoCRwSJvOnoboKgoKXP8C6UOObggMo0QqJ9D9lXPXV2IgA8wpSvr+wbE
- 3JNtDDkL
- 78at89Up9ICLcCafsuCvSPxIi0iAUyhuVRcisr7x1Fn43eOJj9tCipVgzk2OuiDXMV4gD43RlHu2CwmludWZZgxXDW+4HiecNbBtiR47/SC9vbRVpBp93s/telhFjY8f+KFCdniIdmbVWJ1HZ50anP+Ex+6nR2Lpf8AUdVgZVPeuk5kZMHZhIBAUt7M/nR9tP+SeNvmArIUulUq9sB+8LlVKaYkgNe/HBpTVVhMMf9iuhHnrV6MAIkyco3oy6KoEnmGCRYOAX7b+TeZ4qgmFvcO5DCPZLEh5LFc/YBxPRMI9C5UI42X8gfuEtcQ==
+X-HE-Tag: 1772295016-983957
+X-HE-Meta: U2FsdGVkX19nCMnIqyscMm66qK2H9lPWEq5MfG6FeYqD0rAiVVMDRLPs6Iht9nP2uiGhdhrFG6931Xi8/8ke+u0vpi/k3Ei9zWx0rXbEpSuyep/LKplewbTE0n1ZEYjvP9mmCMS5rUsAYPtDxeCP6k2OCxp39HtJmQIx79LIp5deHrOx2cWBpq/4ovURQRMvK/07En4xEOGNVaAFu3FQCNmYQO8CYrm7NfdnU4CBV7/OjyOazR+YZQzZteSy0LIj1063issw4ICJDL8Gqxf+MxHhug/u2iNwNx48yT3oG/4gDabTOJhauWmVcTleRW3JIx7HVD1Hzis5wE//X8pWd+qv7aIvLHFlcenny2RYskAcHlb0ENbaeeX05QUV30ehtq3SfUaFoI8S9BmCbSaeTqAEtn+naH6eXFwux37xqKq/QZnWZREYhl81dSY9KuAI40I5JYMU730UvVAcpq3ch87dILSpJjU9Sh228s+nwQEMYuHYnThrn6Sbt5RPqbE4pWkq9oevlfRsVI7M9NlOzkCF72uVptm/cqdHAwpEBaT49JatxDj3u4sGgAizxz0nqXwIvPwzy7TaML362nms/gAhtW27bwFmQxR7nuz0jff2ANy5jzzMFzFxeXASjGSkqsKHcHWYTG+cIIEravjZQ9pB/o1wzMECm4bN4PIgSBIULCLf99/Y6Y9ub3f8zCN0OA8zDvR0K86VPypg4xzhXzkQLT7HA30oZ0E2nL5TrnswPRt0Fiu+O19YSEmzauw4+/MmSx0BQ7HsBxS9TD6Bm4xcldnIZsU/8aXPdEc8Y+VHQ4ocfr+05qI2VN3cHYnIo0EdX1GZMqN6QlzIhQtzWZyG9DDzu0w08UIvGEXHUuPcXy0yJl2cdYmuVLsuaco32YvLIq+qQZ5QBedLUTtLRMJWrkXZjbtMeXwgSC5sqpDgqq7nVhlymFA6uGy0a71P1t8G2I0pdH+l47MESds
+ vx6Tso3G
+ CQEBvar7dggb4Ew/px6ClfrX1UeYA8x6XGjiH8AApmIT75vCcqKnstSGPu/SCZJK8GN8FEByYOdDaBVkkMbhHxXwhAOhfoemV7Ukubzm/SwBbw80CxvvA2mI0FPddTjKmoChavMOq7sq8ToVowlEvbDQsMXZWwFdHE5LJNJN9GFe4tyYN0fDGQ3Yc73HqD04dE2+MN43Igf1uLB5Oc7fHApMack+13okiMu3coZZIvZ1PHdYbpIDjIMMEQlIdhsmc79AmUUcnS8OAeSg0MmBJ0LuFYDr0b8chpgIVLqLuRFvz76P3+upbgupdmyCjuZRLLTBXEg1IiHljMvDvJDdgMPeXpyRH8tkseE2sbeI81ilADg9OrzrBX+5dAPUjMCwhO9JFsLxBRf9qm37yXAMjAzhhvMIQgLUAShWMnUyDlu77oZlPcDfG2eWIvZPNzKRm0ppv7wwIjvMIg8uTi9ZO7+YQKuTpV7wwB6jZ+aAVyiGH8z3NQd0bLGoTgHoap3KlbAVkFHcsIiO9Fyk5E221va3Gd4Ksr/AnUx1SnJGVPOsf4AUlpnFj7eSOs1CLLD00LTXjEX5uh0quP2BFeHALMVz6K8QTPMJtivyU598cHCoqeTjBRuYSvw9b30vKrWRgNbbqDhzeztAPe02rQjFLWJzZcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,108 +121,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Replace the global cgroup_file_kn_lock with a per-cgroup_file spinlock
-to eliminate cross-cgroup contention as it is not really protecting
-data shared between different cgroups.
+When the Multi-Gen LRU (MGLRU) state is toggled dynamically, a race
+condition exists between the state switching and the memory reclaim
+path. This can lead to unexpected cgroup OOM kills, even when plenty of
+reclaimable memory is available.
 
-The lock is initialized in cgroup_add_file() alongside timer_setup().
-No lock acquisition is needed during initialization since the cgroup
-directory is being populated under cgroup_mutex and no concurrent
-accessors exist at that point.
+*** Problem Description ***
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
+The issue arises from a "reclaim vacuum" during the transition:
+
+1. When disabling MGLRU, lru_gen_change_state() sets lrugen->enabled to
+   false before the pages are drained from MGLRU lists back to
+   traditional LRU lists.
+2. Concurrent reclaimers in shrink_lruvec() see lrugen->enabled as false
+   and skip the MGLRU path.
+3. However, these pages might not have reached the traditional LRU lists
+   yet, or the changes are not yet visible to all CPUs due to a lack of
+   synchronization.
+4. get_scan_count() subsequently finds traditional LRU lists empty,
+   concludes there is no reclaimable memory, and triggers an OOM kill.
+
+A similar race can occur during enablement, where the reclaimer sees
+the new state but the MGLRU lists haven't been populated via
+fill_evictable() yet.
+
+*** Solution ***
+
+Introduce a 'draining' state to bridge the gap during transitions:
+
+- Use smp_store_release() and smp_load_acquire() to ensure the visibility
+  of 'enabled' and 'draining' flags across CPUs.
+- Modify shrink_lruvec() to allow a "joint reclaim" period. If an lruvec
+  is in the 'draining' state, the reclaimer will attempt to scan MGLRU
+  lists first, and then fall through to traditional LRU lists instead
+  of returning early. This ensures that folios are visible to at least
+  one reclaim path at any given time.
+
+*** Reproduction ***
+
+The issue was consistently reproduced on v6.1.157 and v6.18.3 using
+a high-pressure memory cgroup (v1) environment.
+
+Reproduction steps:
+1. Create a 16GB memcg and populate it with 10GB file cache (5GB active)
+   and 8GB active anonymous memory.
+2. Toggle MGLRU state while performing new memory allocations to force
+   direct reclaim.
+
+Reproduction script:
 ---
- include/linux/cgroup-defs.h |  1 +
- kernel/cgroup/cgroup.c      | 24 ++++++++----------------
- 2 files changed, 9 insertions(+), 16 deletions(-)
+#!/bin/bash
+# Fixed reproduction for memcg OOM during MGLRU toggle
+set -euo pipefail
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index bb92f5c169ca..ba26b5d05ce3 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -167,6 +167,7 @@ struct cgroup_file {
- 	struct kernfs_node *kn;
- 	unsigned long notified_at;
- 	struct timer_list notify_timer;
-+	spinlock_t lock;
- };
+MGLRU_FILE="/sys/kernel/mm/lru_gen/enabled"
+CGROUP_PATH="/sys/fs/cgroup/memory/memcg_oom_test"
+
+# Switch MGLRU dynamically in the background
+switch_mglru() {
+    local orig_val=$(cat "$MGLRU_FILE")
+    if [[ "$orig_val" != "0x0000" ]]; then
+        echo n > "$MGLRU_FILE" &
+    else
+        echo y > "$MGLRU_FILE" &
+    fi
+}
+
+# Setup 16G memcg
+mkdir -p "$CGROUP_PATH"
+echo $((16 * 1024 * 1024 * 1024)) > "$CGROUP_PATH/memory.limit_in_bytes"
+echo $$ > "$CGROUP_PATH/cgroup.procs"
+
+# 1. Build memory pressure (File + Anon)
+dd if=/dev/urandom of=/tmp/test_file bs=1M count=10240
+dd if=/tmp/test_file of=/dev/null bs=1M # Warm up cache
+
+stress-ng --vm 1 --vm-bytes 8G --vm-keep -t 600 &
+sleep 5
+
+# 2. Trigger switch and concurrent allocation
+switch_mglru
+stress-ng --vm 1 --vm-bytes 2G --vm-populate --timeout 5s || echo "OOM Triggered"
+
+# Check OOM counter
+grep oom_kill "$CGROUP_PATH/memory.oom_control"
+---
+
+Signed-off-by: Leno Hou <lenohou@gmail.com>
+
+---
+To: linux-mm@kvack.org
+To: linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Jialing Wang <wjl.linux@gmail.com>
+Cc: Yafang Shao <laoar.shao@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+---
+ include/linux/mmzone.h |  2 ++
+ mm/vmscan.c            | 14 +++++++++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7fb7331c5725..0648ce91dbc6 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -509,6 +509,8 @@ struct lru_gen_folio {
+ 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+ 	/* whether the multi-gen LRU is enabled */
+ 	bool enabled;
++	/* whether the multi-gen LRU is draining to LRU */
++	bool draining;
+ 	/* the memcg generation this lru_gen_folio belongs to */
+ 	u8 gen;
+ 	/* the list segment this lru_gen_folio belongs to */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 06071995dacc..629a00681163 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5222,7 +5222,8 @@ static void lru_gen_change_state(bool enabled)
+ 			VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+ 			VM_WARN_ON_ONCE(!state_is_valid(lruvec));
  
- /*
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 5473ebd0f6c1..b502acad3c5c 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -107,12 +107,6 @@ static bool cgroup_debug __read_mostly;
-  */
- static DEFINE_SPINLOCK(cgroup_idr_lock);
+-			lruvec->lrugen.enabled = enabled;
++			smp_store_release(&lruvec->lrugen.enabled, enabled);
++			smp_store_release(&lruvec->lrugen.draining, true);
  
--/*
-- * Protects cgroup_file->kn for !self csses.  It synchronizes notifications
-- * against file removal/re-creation across css hiding.
-- */
--static DEFINE_SPINLOCK(cgroup_file_kn_lock);
--
- DEFINE_PERCPU_RWSEM(cgroup_threadgroup_rwsem);
+ 			while (!(enabled ? fill_evictable(lruvec) : drain_evictable(lruvec))) {
+ 				spin_unlock_irq(&lruvec->lru_lock);
+@@ -5230,6 +5231,8 @@ static void lru_gen_change_state(bool enabled)
+ 				spin_lock_irq(&lruvec->lru_lock);
+ 			}
  
- #define cgroup_assert_mutex_or_rcu_locked()				\
-@@ -1748,9 +1742,9 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
- 		struct cgroup_subsys_state *css = cgroup_css(cgrp, cft->ss);
- 		struct cgroup_file *cfile = (void *)css + cft->file_offset;
- 
--		spin_lock_irq(&cgroup_file_kn_lock);
-+		spin_lock_irq(&cfile->lock);
- 		WRITE_ONCE(cfile->kn, NULL);
--		spin_unlock_irq(&cgroup_file_kn_lock);
-+		spin_unlock_irq(&cfile->lock);
- 
- 		timer_delete_sync(&cfile->notify_timer);
- 	}
-@@ -4428,10 +4422,8 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
- 		struct cgroup_file *cfile = (void *)css + cft->file_offset;
- 
- 		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
--
--		spin_lock_irq(&cgroup_file_kn_lock);
--		WRITE_ONCE(cfile->kn, kn);
--		spin_unlock_irq(&cgroup_file_kn_lock);
-+		spin_lock_init(&cfile->lock);
-+		cfile->kn = kn;
- 	}
- 
- 	return 0;
-@@ -4696,7 +4688,7 @@ void cgroup_file_notify(struct cgroup_file *cfile)
- 	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
- 		return;
- 
--	spin_lock_irqsave(&cgroup_file_kn_lock, flags);
-+	spin_lock_irqsave(&cfile->lock, flags);
- 	if (cfile->kn) {
- 		last = cfile->notified_at;
- 		next = last + CGROUP_FILE_NOTIFY_MIN_INTV;
-@@ -4709,7 +4701,7 @@ void cgroup_file_notify(struct cgroup_file *cfile)
- 			WRITE_ONCE(cfile->notified_at, jiffies);
++			smp_store_release(&lruvec->lrugen.draining, false);
++
+ 			spin_unlock_irq(&lruvec->lru_lock);
  		}
+ 
+@@ -5813,10 +5816,15 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	unsigned long nr_to_reclaim = sc->nr_to_reclaim;
+ 	bool proportional_reclaim;
+ 	struct blk_plug plug;
++	bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
++	bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
+ 
+-	if (lru_gen_enabled() && !root_reclaim(sc)) {
++	if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
+ 		lru_gen_shrink_lruvec(lruvec, sc);
+-		return;
++
++		if (!lru_draining)
++			return;
++
  	}
--	spin_unlock_irqrestore(&cgroup_file_kn_lock, flags);
-+	spin_unlock_irqrestore(&cfile->lock, flags);
  
- 	if (kn) {
- 		kernfs_notify(kn);
-@@ -4727,10 +4719,10 @@ void cgroup_file_show(struct cgroup_file *cfile, bool show)
- {
- 	struct kernfs_node *kn;
- 
--	spin_lock_irq(&cgroup_file_kn_lock);
-+	spin_lock_irq(&cfile->lock);
- 	kn = cfile->kn;
- 	kernfs_get(kn);
--	spin_unlock_irq(&cgroup_file_kn_lock);
-+	spin_unlock_irq(&cfile->lock);
- 
- 	if (kn)
- 		kernfs_show(kn, show);
+ 	get_scan_count(lruvec, sc, nr);
 -- 
-2.47.3
+2.52.0
 
 
