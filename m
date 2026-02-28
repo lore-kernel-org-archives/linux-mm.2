@@ -4,127 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F001048924
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 00:06:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 023491048924
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 00:44:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96CD26B0095; Fri, 27 Feb 2026 19:06:43 -0500 (EST)
+	id CDCC26B0005; Fri, 27 Feb 2026 19:44:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91ABA6B0096; Fri, 27 Feb 2026 19:06:43 -0500 (EST)
+	id CBEBA6B0088; Fri, 27 Feb 2026 19:44:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FC276B0098; Fri, 27 Feb 2026 19:06:43 -0500 (EST)
+	id BE7E26B0089; Fri, 27 Feb 2026 19:44:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 699766B0095
-	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:06:43 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0346D8C6E0
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 00:06:42 +0000 (UTC)
-X-FDA: 84491924286.19.4DBC0EB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B5CB81C0009
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 00:06:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hPSyK6/5";
-	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC4396B0005
+	for <linux-mm@kvack.org>; Fri, 27 Feb 2026 19:44:12 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E73C1409B5
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 00:44:12 +0000 (UTC)
+X-FDA: 84492018744.05.766D162
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 99DDF180003
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 00:44:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUSy53X0;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772237200;
+	s=arc-20220608; t=1772239450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-	b=RP3DoAdoJ5K9TqKrrjysxYCb8kgyO7K7OYPbxmGKpcwgpk06/v9JQIQ8fUtP3olFZZnOtK
-	XIJxtkFNCCSyzIl7eK6bCJ7RjbrBjX8GdbnB5hxRcKkHZpPTBTkb4Ufq/sGjIWTJHatjvY
-	BwNkQ4nbXXj4qjBwKM7A0EDNfMyaoEg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772237200; a=rsa-sha256;
-	cv=none;
-	b=JsFt09xG6VU2bpeQLWSHXaeE1r1Zbix/spb2qJQL3CF3e3U6cPfdFHNfDxEuWUJqod4tDX
-	0WVy0+ritc/HP+yia0IysKvvxkuf2pIC+mUrTxlfz6tqVpbtvqd7PUq05kK/s0F0YOeL3u
-	ciAU+6ywfHlCkC0s3RBXLKAoBwvW50E=
+	bh=EBwblb3CHX9Jab/Y2KovLLCIWamrFhoMAgXNfbYKr/0=;
+	b=v/vcKLfvyVqRvqFYCmjTHpzt4+RsyWJMIDzipINa6ExPkzrdEUgaoyij45cW/Xt9urgr6Z
+	llArvnBbiB4uJO61FeTpkXryzD0haooCo+Lr+eJMQUt3xtqL6VgB7p790ctqBjL/Cu4eBx
+	Kbjjp/HTCq/WdoplTmImbEuNHjfzjEU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="hPSyK6/5";
-	spf=pass (imf20.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772237200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-	b=hPSyK6/5DXbgLsVoX9ZM8ERQnrvcfthB+eyKV+5vl1J0TteT9OhMsLLAgoGRVs0t0rOZ5k
-	Xz9d1OsGiF9O2Yw6Ucx6A+kQifYBnysjS0jw5/MKV5NTCqoWwQJ3MEVFwI6WgdXZmKIm7G
-	rhFZm5Kaes8Ry4P1z/OO4/EZ8eoAuho=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-I6eGqY0CPfqu5KqBDExjXA-1; Fri, 27 Feb 2026 19:06:38 -0500
-X-MC-Unique: I6eGqY0CPfqu5KqBDExjXA-1
-X-Mimecast-MFC-AGG-ID: I6eGqY0CPfqu5KqBDExjXA_1772237198
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-64ca6895833so4036415d50.2
-        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:06:38 -0800 (PST)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUSy53X0;
+	spf=pass (imf24.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772239450; a=rsa-sha256;
+	cv=none;
+	b=BJHLgXCvOv/KLValc3tntuPnGueib2nZaIWZhDRtvf4gg0QUZLKUvbGrZJPWSfZNm5F440
+	oTqhaA1X2ChVKvhklff2PnKIKFCz0kWhbyK2NhTK7zW3lHkf5lDVlp1kZHkvOYwjL8CQGd
+	SsbNnuxFuQtBShHlYmm5Ish7uLmvtgU=
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12776bebe9fso1696678c88.1
+        for <linux-mm@kvack.org>; Fri, 27 Feb 2026 16:44:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772239449; x=1772844249; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EBwblb3CHX9Jab/Y2KovLLCIWamrFhoMAgXNfbYKr/0=;
+        b=nUSy53X09ecrRE1wEPgqv9B77M79xJ5oi8cTHUwvJKaC9Lpo34ToUZ/5Lx6M13DSCH
+         ZEWvEnja0d7cYZnOjemtFf4ByBa52fS0ri9Bez6m9J3s+ht85gXh22XSGaZoi/xsxoWU
+         9MqDekLXJtJX4JmtoGb6YYJkdkOfOXmIMl0H43yy80soC8X2ywxUVghZTfc5F7j3tTAg
+         6WvVz3KsgN1mTZPBdjdITWHPYuVKnFtpokPgwbceZq3Ouhw7WYR6yJueQExnygziJeMT
+         kgmoKeHepObP0N4YRZhvD1Ydc0coGpD0Xb7KYhji5dJ2/wdF6AiH+P2Frg18lY65/742
+         OezA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772237198; x=1772841998;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZgQjMLyBsefVKSZLFOZenbLdjl9yvSc36kLvDM5ApCs=;
-        b=uYVn9YMoxZ3TuymcjtTnJlp9B2nmJR+5+xXE59VHgsu/pZaW5CPqMwoMWs1ubX9WEB
-         +/w+4Lxh/Nm6YG6eE2Ou5IQin49kfCMvYhx/DbhxudP/5+gurFmc3C6EYMG52rA4+LTn
-         qGottrJAsAugEpqSA/Ml/iV/3phv+ctAYCABcnIaEgc3nAzuOSl15jKAVersdCoyHudx
-         Wb+TTu6tUL16uypXYAV+30ULFQapbu5yEaE9+9N6EQwWg41JoJ5VAQ4OG7AYipQIFmGe
-         IMc+cNhAb2ucQN255StSaSXYkTxnGuS6Uklc7p2u+NeZDtiphffes7auNJIC3OWwbpK9
-         ar7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVQNEGqcLvJ0S50yGIgBgw+YmX2qCaJcVHVT4rmvEoyYyScuPl1TwFQlX4B4R+IUksxaVIVNN20uw==@kvack.org
-X-Gm-Message-State: AOJu0Yxr6ZZo7cyVPztjnsyqCDHuUpx9okATz8nKb8+akQ/BL77V3dsc
-	BK8N4UPNchjb2HP6HKGU70BOMgslBJR+8w9vaOi8yI7VksE8a8rG7IiUfEUMedcQqhqmIRJlyAq
-	eJUmxPC/1XjfqJ5A1hc5axRoZI0uikZGgAogoGnkNCZq6FBrn8HbdThmAWSzs/391zU/fzNvhgo
-	DDDdKPLTTzRu261ceyGQBfnUVAS+I=
-X-Gm-Gg: ATEYQzwmgws1PqeTAcJ1HpBVreXVfNSxIbRGg2kPYQSQM7Ejm0pno7WuytBzwuYrEt8
-	yZJB0BYsGgQWntQ7T+goJTKQmA5qqHTTdq5vO0XEvG7pxFw8CqPtBpuyVAgKS8ZisLa+DhEsIae
-	z2RkZW5/2IFhnR+i7rnGphBnDeqSv+xP5veaZqr1sRrCd18p49JhoN3H1Cp5UBc1jN+I3AP/Oag
-	1+J
-X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id 956f58d0204a3-64cc2302f31mr3708802d50.76.1772237198208;
-        Fri, 27 Feb 2026 16:06:38 -0800 (PST)
-X-Received: by 2002:a05:690e:edb:b0:64c:9a08:9948 with SMTP id
- 956f58d0204a3-64cc2302f31mr3708764d50.76.1772237197814; Fri, 27 Feb 2026
- 16:06:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772239449; x=1772844249;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EBwblb3CHX9Jab/Y2KovLLCIWamrFhoMAgXNfbYKr/0=;
+        b=s2ByQsh9d0upPr7WKMSjN+GnoKx2XNveNmIfqR+VDun0amQmRS641vmY+zsMT3ExM4
+         /cvkhP6IAlpHEdxNTX9//1K7KSoSA7Db4xa86rYYBjVyrkC8L1YFLTeJDw+Sf1UurDL2
+         pRoB3Ur1W4gJ6ea750yQ4r+vJDfyGWo1aSmPQmuWQneSOwZynCtkhPKtzyNiq7hj6lZC
+         sYvAeIFesM8XmmIBByDVPQ/qgAr8akSgAChuiD+kPtVN+Fkm6Lw7/CHF3h0KHs/Zqwaa
+         RmWgD5XD5oHcE6d/FFGGWvkiWKf2LccoPrb0V4iaxp/XOf8w8tO+Hw0m1qpytcrowbIt
+         kFYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrs6nJjRMaXl9SY9kjZnjrh6ZckRDRYwYe4TVlXsqqIRLzTPHEaPC88dqp7wg8z9EWSPvBVcCHdQ==@kvack.org
+X-Gm-Message-State: AOJu0YyH/sFCBsuIuPhX9MuApDoi+Lsaqa2+oDw1NC/wC/j/weKggKu7
+	PlbKKyhgAJu7gKSc/ghUD3x98v5ML0Fj3HVZBbO6pYAEc4mAvX+LuAsj
+X-Gm-Gg: ATEYQzx4wQsDB+vsIPGgVBD0r+ejH/W0F385jYRK3YXo30d2NZy+y548uDWit/FiHNW
+	d7w0nVgQgw6pYoosMXQqnnIcSZAk27qQM41l7HbteFWBGU6Km1vUwOjRqPIk+aULPuEfkmKmPmq
+	f8KtD7a1CFaXYibbA2/itCLOi3URCNy8AP+HhK3VCdktPXabGHXmMkYZNuSrIykTz/bFUd/g/Na
+	grchImg1d6idxuwd+Ic7P9a2nMi9RGMlyNDxWAEP82BdFfm9blZpP+YGw3To2L0YtE4+G8+VRVq
+	Owi2sH7fpus8Cm245fq9kD1tSnoAm2ets7iq5tbjWqVDfVctgRkzyArsUZGA9YKxoa+0oL9z43O
+	Hg9QbHKq0FCesTQChALS6aOmLF5SFJNWzC5NOZGiRPNXjKBEimPLv9BUebQWW31RsglE7Az0QBn
+	f9mXhEfq9zaNeLjo9j9gaohPSxrkr6GQstvgJpgjwSxGofJClMwdOaLijYOxHo9cXnR7zfM/POT
+	8+IFu5dL32nYyo=
+X-Received: by 2002:a05:7022:2485:b0:127:5cfd:785 with SMTP id a92af1059eb24-1278fc28856mr2211264c88.4.1772239449165;
+        Fri, 27 Feb 2026 16:44:09 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12789a43885sm7533362c88.12.2026.02.27.16.44.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Feb 2026 16:44:08 -0800 (PST)
+Date: Fri, 27 Feb 2026 16:44:06 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	akpm@linux-foundation.org, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v6 0/4] Convert x86/mm/pat to generic page table apis
+Message-ID: <aaI6Vq-uyJ6F4P7u@fedora>
+References: <20260219020354.321088-1-vishal.moola@gmail.com>
+ <aaH5Z5HTC5GyJ6sT@fedora>
+ <2fe139df-1764-40e5-983d-48d7f97c2e39@intel.com>
 MIME-Version: 1.0
-References: <20260226113233.3987674-1-usama.arif@linux.dev>
- <CAA1CXcAYt3OfW_uBTYZgr-dBhg99x=5pUs5uvqtpg+PNJ1KxGQ@mail.gmail.com> <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
-In-Reply-To: <1d3a4e8e-9ea0-42e7-b8e7-d92fb27f80f4@linux.dev>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 27 Feb 2026 17:06:12 -0700
-X-Gm-Features: AaiRm50atKm0LplrPamqC93Qv4KgvjRMNXj12GuBsNodzUDc90TXdhaD9w6BIXM
-Message-ID: <CAA1CXcCygvA9uUJjB-+2J00srnHbiNGwbvcbqpRer8Vy8QBxWg@mail.gmail.com>
-Subject: Re: [RFC v2 00/21] mm: thp: lazy PTE page table allocation at PMD split
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
-	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
-	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
-	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
-	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
-	svens@linux.ibm.com, linux-s390@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ZZH0ugdAk1pYhmpNuxVlccVOIC8FD6QyIGQmFyT6cFw_1772237198
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: sqtdgy9n51kx3ehddy43wh1mdzg7y5ho
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2fe139df-1764-40e5-983d-48d7f97c2e39@intel.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 99DDF180003
+X-Stat-Signature: xu9nystxm4as63p17pi78xfkz37pwzub
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B5CB81C0009
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772237200-13893
-X-HE-Meta: U2FsdGVkX1+dA9itcTZrYR/s/mnu65ABgkN/TLKDMvTGdtfGUeZI3jIa9qOgSA8G9LwX6B7miBevPPdflKmPTDZyH99KAGS9uDSRgz3Lyk1tsXkYpSHgyJWLx7RdQWLwOLeb1OtUtWLjiaTT+Aob6H99WwY2V1KV2oIHiflair7DYio61WQhGNWFOTdlEEsAsjY1Q1ZGgwvLQ5LFqWyG4ejyht7yOWG6F0ZH45ei0sPQ+4zwql++tB+X1fWdkxMraifBJgLPh4GGDJxFCQdSPVghpxdQxya4BKS8vo+Orl/NDRmcKdSmfAghclV1LQEfQ6w2dZfkkjrU0VRaWVqrF9FZdw3+IDUx8xykkJEGdIihnJgxtTwknmDLqoOfZQnXL2zj9YL4Nx1Yyymc7ykLmtLYHzcnzU8ZQsCYwjVdIKPa0Ko/wrfTzHxZ4Z5tZ1VjOOp/wAdQzf/xwJB5PV4TUCZGXolHMDiKHQqS7AQhdJn8zz8ZGFdrJUhvPIZq4Brk2jiJCUVRAxTDGozWqvsYskm+FdsNUIs3kU1KEOvRp5VuecZiu9JAPwmchG1MJzojc2nYrB+MdeChiBfSghs2q/YEbngROR4DK0i/3xYke8UDVhIWudfNZW12BtxMgHceAS7PFLrlrIjKtwHcqEpm9kBnfo32aNYBOyYZB0pVVyrHhjXAZ2AerFrSGjFfI5wqikIjboevQrMp5FrTu5RvQXU5/iQWEU/B4PzMF3JOZz5jyt/mCLSDx6a1WcRQ1S1IdhGhTx/kuoXC8eMKGcfZWCai5vVG9HdeX3wXMdytxA3Rl8H3YkhzuUSzAszztGrwpcFknbsk2/m3SKCln3gQY5vzGUfxqeVEkjl8O94JW2MO5IUpUtKJ6CFLny47005Moms67x8RcDpowuS6IHgbEQVh72oMNJqoKO5DnY0rdk0bUVosJYdqhU1xouesR0Idta/Ltezsl8zInwfDka7
- 98hwdctg
- 318g5cFPDd1kjJxeeTlOgLkMYNcDu+US+vED7OmBFUUc/WxyHhPrq6zMXuYGQJP/0uZS8RIsus7xgtE6sYKxTQNU3Ygk+/cJg5+8G3XdbyZkZXE/9gCibcud1Ffo+QEEld3BeNle8DEghrVHkp45jOZMMtozj9tUUC5Yg6W4TyPEFR4Y57vTtarIEa7D9riG1BTiZ5gtW6Zmog+qs5CNNVU5IWGXu2ziRkcrj3tUkEqeKjtxlE2guGGMH96nijw2bPmrA0yaExfoZpZPtsNkbNQ0MD8cWZd9rrl8F267Yg0G/vyE=
+X-HE-Tag: 1772239450-563867
+X-HE-Meta: U2FsdGVkX193mLs9WI5oe+XUs00yDhIYQOCJC9bTVUQOOqDpcHozGFgkwadclYfUUr3cuz6yWf/mxapX/DZR/p5+wQHdH0i2j7x9Om/gttPxRha4NCVbJM5JXuC9B/EhGf+qRdB5W4BddSEPlSKa7EfRR1M9tgcWxs8j04wHIJzGF54qe639wPiW62Bhr+iwbeIpEVmVozgnyWs7yRaW1KrBj86YZMVB802VAK8qJjaWs6tMcwXncO6Jv0yEQfIxSTl1YSAfHYwcYT/9CrIPtr4D+gaBiecr47gt92jNhwnniVIcj9nFUE1aI4UNuQMKg2nUgNtTVEH+lpLDmB4VHajxUT3QvyacmoGjfLBBC80BjhzBm7GFFr4Sh6hqUU97JWdHGgJc2lk9+fY184JAwTVKRYHz4K3ceAQ27oVIBJOnf0EZGb/Nmfp52wcFOkN6bUdinQOqJUJPD4ly9KV/v8hIZDztrld11BGspPa+vWG/BrVFaqPEdpHSw1K3TmTIX8+hMidmM5UXGQdg9GPnig1gn5Lp4CP/JwqCjzhjiwXqCuEWGUNE4/u2yTU5H5y6w0P25nJRF0FLblYdFD2+N6csd1mZRC/xo4Pjl0+byBghnroxtFYDhUrZTee5X+HdEmuobPiM4L+nbyCKQDW/mU/jpVDdPRlpEesOrHvQ0/gTAR9j4ZWQXZX6zHXRXIMEsxFTbIu7h+uXkOhszwdGTPNZ1ieuB9GcqVXfZxTik6IHRy18/K3eBebqtjZ4XwuF6MHky+Fzf9qiTPBlomgKbPbxU4Jfpy8TaJAe+d5xR12YzNFPtilYeVaoV4hz+vViOnqlP0xIAmS+h+vKuaqqsR1EEFEpbafexM+STOavWBiF8Tg7RWPWm/kdKJFl3JNNaim5NjA9/wf9e9AHAuyL2au6EFbSI6KPTiIDsCNC9Wl5VUEfSTCHYCm8Co97lQLXNDrMtvCgHcK1Nnwo0Fw
+ hth2v8nz
+ VcqAu740AREB2nb/npW5Ced3xgCYTbnftcaMMNc7JBhq9ZPXI+Xy17vIGkli7RwxNcVunUzYgEfMwCxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,96 +128,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 4:14=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
->
->
->
-> On 26/02/2026 21:01, Nico Pache wrote:
-> > On Thu, Feb 26, 2026 at 4:33=E2=80=AFAM Usama Arif <usama.arif@linux.de=
-v> wrote:
-> >>
-> >> When the kernel creates a PMD-level THP mapping for anonymous pages, i=
-t
-> >> pre-allocates a PTE page table via pgtable_trans_huge_deposit(). This
-> >> page table sits unused in a deposit list for the lifetime of the THP
-> >> mapping, only to be withdrawn when the PMD is split or zapped. Every
-> >> anonymous THP therefore wastes 4KB of memory unconditionally. On large
-> >> servers where hundreds of gigabytes of memory are mapped as THPs, this
-> >> adds up: roughly 200MB wasted per 100GB of THP memory. This memory
-> >> could otherwise satisfy other allocations, including the very PTE page
-> >> table allocations needed when splits eventually occur.
-> >>
-> >> This series removes the pre-deposit and allocates the PTE page table
-> >> lazily =E2=80=94 only when a PMD split actually happens. Since a large=
- number
-> >> of THPs are never split (they are zapped wholesale when processes exit=
- or
-> >> munmap the full range), the allocation is avoided entirely in the comm=
-on
-> >> case.
-> >>
-> >> The pre-deposit pattern exists because split_huge_pmd was designed as =
-an
-> >> operation that must never fail: if the kernel decides to split, it nee=
-ds
-> >> a PTE page table, so one is deposited in advance. But "must never fail=
-"
-> >> is an unnecessarily strong requirement. A PMD split is typically trigg=
-ered
-> >> by a partial operation on a sub-PMD range =E2=80=94 partial munmap, pa=
-rtial
-> >> mprotect, partial mremap and so on.
-> >> Most of these operations already have well-defined error handling for
-> >> allocation failures (e.g., -ENOMEM, VM_FAULT_OOM). Allowing split to
-> >> fail and propagating the error through these existing paths is the nat=
-ural
-> >> thing to do. Furthermore, split failing requires an order-0 allocation=
- for
-> >> a page table to fail, which is extremely unlikely.
-> >>
-> >> Designing functions like split_huge_pmd as operations that cannot fail
-> >> has a subtle but real cost to code quality. It forces a pre-allocation
-> >> pattern - every THP creation path must deposit a page table, and every
-> >> split or zap path must withdraw one, creating a hidden coupling betwee=
-n
-> >> widely separated code paths.
-> >>
-> >> This also serves as a code cleanup. On every architecture except power=
-pc
-> >> with hash MMU, the deposit/withdraw machinery becomes dead code. The
-> >> series removes the generic implementations in pgtable-generic.c and th=
-e
-> >> s390/sparc overrides, replacing them with no-op stubs guarded by
-> >> arch_needs_pgtable_deposit(), which evaluates to false at compile time
-> >> on all non-powerpc architectures.
-> >
-> > Hi Usama,
-> >
-> > Thanks for tackling this, it seems like an interesting problem. Im
-> > trying to get more into reviewing, so bare with me I may have some
-> > stupid comments or questions. Where I can really help out is with
-> > testing. I will build this for all RH-supported architectures and run
-> > some automated test suites and performance metrics. I'll report back
-> > if I spot anything.
-> >
-> > Cheers!
-> > -- Nico
-> >
->
-> Thanks for the build and looking into reviewing this. All comments
-> and questions are welcome! I had only tested on x86, and I had a look
-> at the link you shared so its great to know that powerPC and s390 are fin=
-e.
+On Fri, Feb 27, 2026 at 02:24:33PM -0800, Dave Hansen wrote:
+> On 2/27/26 12:07, Vishal Moola (Oracle) wrote:
+> > Do you have any more comments for this series? If not, could you please
+> > take this through the x86 tree. Thanks 🙂
+> 
+> From a 2-second glance, this doesn't have normal comment style and isn't
+> using imperative voice. Quite a few "we's". Looks like it needs some
+> more eyeballs.
 
-Good news: as you noted all the builds succeeded, and the sanity tests
-dont show any signs of an immediate issue across the architectures.
-I'll proceed to debug kernels, and then performance testing. I will
-try to start reviewing the actual code changes in depth next week :)
+Ok, my mistake on the comment style. I'll fix that.
 
-Cheers,
--- Nico
+Sorry I'm not the greatest at imperative voice, I'll pass all my comments
+through AI to convert them all to imperative voice.
 
->
-
+In regards to more eyeballs, I've realized I didn't cc ALL x86
+maintainers. +CC the rest of the x86 maintainers and we'll hope
+someone else looks at it as well.
 
