@@ -4,83 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30CABFEE4ED
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 14:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5D81FEE4EF
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 14:20:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FF676B0005; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
+	id E02096B0005; Sat, 28 Feb 2026 09:20:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AD706B0088; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
+	id DB92E6B0088; Sat, 28 Feb 2026 09:20:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A26A6B0089; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
+	id CE24B6B0089; Sat, 28 Feb 2026 09:20:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 198C06B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FC5B897C2
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:06:22 +0000 (UTC)
-X-FDA: 84494040204.19.A03AB2A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C4D581C0004
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:06:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id BE8326B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 09:20:41 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6DFDC5787D
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:20:41 +0000 (UTC)
+X-FDA: 84494076282.10.BDEFF4B
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 977B7100002
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:20:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5tGin5i;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772287581;
+	s=arc-20220608; t=1772288440;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=t0+Pm93/3ss9gX6u1pYsXzkNT77jHWIcm5JBaNmPAZA=;
-	b=jhpahttrmz0yqVLjhl+0xHcwxMyfVLsUV87lWGPEiQ+LOz3zAY1YRwRD9w/XMlEJRMMF95
-	JPLc76xGo8eh+S7vGzsOPx8Wa43/RVBDuThJK2y3tr/30JAxT8LZBuK2xPvK5H9ik2PovQ
-	qT9ow4cqN38aXZBT/yYd6cHk+rbEXLs=
+	 in-reply-to:references:dkim-signature;
+	bh=ploXD4qKyGErpi2h+6GFoldO2iGJIFZ6IgaMbXbP9Uw=;
+	b=ZO4fwnrduc/NB5an5MEAgJO1P/OiDjWFwQ7C8K8wSHsvOHyE1ONQ++1RVDy6K4UK9NTkBV
+	9s8aPJklsCyPkN5uHZ18SS6DOLKGrvmbvvJAwNFJBulaX5PJ3jfGKSETz+6kxgilKrbfo4
+	9/bzFtV2RRAC14UOYA1CO9YjbBhxDug=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772287581; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f5tGin5i;
+	spf=pass (imf05.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772288440; a=rsa-sha256;
 	cv=none;
-	b=C3ddBct74SPmngZ2FsdCvepdQwF75bChWR/jj7bHB+BDIBENx94lpkJ7GwwrkIrzSOjVoC
-	WHNh8RYsr5uTP4z9FpS9jExEk/5MiIgvqLQg0d9kpFc4k4aXzgNZ0SzCQtRPy8G93XUsfj
-	kUy38tL8WTug9A/G9QZccy6gHl3hGRo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 465731516;
-	Sat, 28 Feb 2026 06:06:13 -0800 (PST)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 30F4B3F7BD;
-	Sat, 28 Feb 2026 06:06:14 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com
-Cc: riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	baohua@kernel.org,
+	b=S3OfdYJ0IxNPZS8mjjKScsuXKhque5svDpFzuHlhANP/eioB6obkJ8XVZ6FcDZ69KNJnXT
+	WoBYwVU5Clfgv4XbE9StCDC4hLh7all4ieH2RnBL9+ZLarn5aZadEX2H6BA6ucddMuTSja
+	sMI/K+XIU3s/x6tlS7Uk9vHjfPeU3ak=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772288437;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ploXD4qKyGErpi2h+6GFoldO2iGJIFZ6IgaMbXbP9Uw=;
+	b=f5tGin5iSOmhU2iID2/zFOti5Z8DzbJC7ulhLGGryEYrVJ++a2+qy9DKv3a8kQy4Q2iYVs
+	KtKhbGs8LIa3HSygX7IhUZK2Cva97yzJo4GguhIbLbtG/zA5s3+Vt5Q+IN+FrwN2ljAvBS
+	CbREK2Lrc78F+xacxiniKL0yMMXXEfQ=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Daniel Sedlak <daniel.sedlak@cdn77.com>,
+	Meta kernel team <kernel-team@meta.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	Dev Jain <dev.jain@arm.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH v2] mm/rmap: fix incorrect pte restoration for lazyfree folios
-Date: Sat, 28 Feb 2026 19:35:40 +0530
-Message-Id: <20260228140540.1774748-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	netdev@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] cgroup: improve cgroup_file_notify() scalability
+Date: Sat, 28 Feb 2026 06:20:15 -0800
+Message-ID: <20260228142018.3178529-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 977B7100002
+X-Stat-Signature: bzg4kirkdf3t4hh65iqo8dfje3qbxifz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C4D581C0004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: se683rj4adcyp6cttkfqm77ahfd76nkg
-X-HE-Tag: 1772287580-672667
-X-HE-Meta: U2FsdGVkX1+MRsNegtrwfIPNoKG/JycddW3X6xL2s+du/Sj4Esc5SXDXDW20Xct52mpcNYSxU8ZGCMVWLHWNXDv7BXUwwCZABXLxKQZIn+GgLW22KtfTCNof4sCsBszHKUhrFy0bOwgIpimAa09FhMTg2g32twl8pQYecyJvdBbvV6U7LP81n+OZLOSdbeGw9DfdDAMIPqM8uWJwDk/zw5JinjqO/AcvxgvBBowuQCJwwz/8X6PDWP9E8yTCARyUZVZ2YBcLb4rNrscsaocvcyR62Lvp1mUySEm4oYOgKDr7VBk3tpl8OMFa9EwKOlzPxx1urhvVKSg9tYVGhKLkghOz/gx+CbdAwWmIyvOtuuWw6UDZdqOX4mf70XeRaYRw8KaFGO3R1wR4XhleJ4KVaajZDNeJhceDstD1K+ANhQOh+mz8F9CE0zlpyE/yMILFZQoYqEiSBg5nPdK024HwYfJBBfoZHx9F5RvzNfXFWs0tDAO53k5apmvdxQHG8Q/nKZ0z30JJJpKnIvY9K2DGsxhfILhMsL9ltc0P1Lc7Xv4MXKNWqKhYhi45Dh+bENqPPsmB8budjiu6qkZReHKwnDHnTIXimN4Uzu0NQuIe284D7zMaWTsLm84qAX8IBUG7b3t2b3tHGtQhsKbGZFfixo6mVRCaidqQdNdSX8uOKFRe9Ut2ZstihRfXuNRBcRSRrAUzOq3Qf8mMD889iqiU4G6itvh0poB2FzMocl3qJ3jpPMtlOS22BFWWXgAQeV+unVcn2Nmln3CByqZ3iJ4A+9NEKoLPziZX3CnUZDQtJsFnG/Q50tnI+EBx5qA1K1lNJ0gM2PDdkaeuCKd8S43Deg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772288439-209016
+X-HE-Meta: U2FsdGVkX1+SlcjG9QYLDzM8V7ep3B5g4SCQptQOLOyo/+cdfTJCsIpbR7fmfsUx9ytADeW3dREUNO89jsZ/LeNlsMzJ1cQ6Bfhqicbu/T21NmWyADgAF8WWdr/iN6BvbNaVSbqbmShDNeWW17/YDfhRTdpjpZ27KZmnJuVfMd0oWibxtpo1CHEgQuOgurqQImI6C4vXc0I5C3Ffj2fcaWsEQ/xnEMU9QkxPwTmqOrTDyiDkO8dNyzK1ZeTmuz2ckKYW4zYytYOqT/u3O2G6u3A28j2qGgYGA8dT+lWXYCCkNBP4FyA3z7GvU8d2ROj2RjhF5Dok7MZtxI0isMuOwSCfZfQ8Qcfv5APts9uyk72WQIfUEtii443CtQ2uFxoKVC1cymeioauN31s/Wu5VAzhQKP3f2QqdQAuu2hAjxW8ciKa6DkFsEpYug+VS5hLOtY3Ty3ZbTohqu+utkyoSIdIXMxBPSkAaB2PT3WxzSb2M99QCrWGuhMJQDds+1SyLCFI/GScHbKMOX4lXO1Kd4Od1ayfjn/gLJ6vNPGE0TcbIAWNs7W0lmkt5E45MVnEdaApd231qErqcrHhJFQsukwfJfNYQgZ0t9wX6HPiwIgOXDCuhbxAOZ5ktTGLSBT3NoXVZc9YMT4sEQe8IbtXUb33DspS7kJwSe4841QNcU5YEIYkaFi8jR0X1BleMxsG8xHduL59ooNHKznKF/5RMbtiO/aXqAs/ND1VGp30tKmWBuCbqMIEJcS1WoAxLif+UQZueuHy3D/iVIvLH3JkYNAGqcxDeli307G8ekowY5K+NzrJH5WQ6NF8guz8Ut4zbZZexn0KFmrDfx3Xl1hb+UAo4kAw3rEfUCIe1dTJmkJRS0Utt3yoTKPaLGiZcQ9t/Gy99DeQnAdaspRrCNxw5/p8Gak9scbWUInBroUtESKGcK5jlpaOcJPykQ2y8Km8b2ALh1aOExgPMDDggVRV
+ H0zZ+WRc
+ dO3s2DZDPw2pBrzP3lWPalBf9/5WLTmHmJhWjq8ozMT7BLp6OYvY54SN/ZN9KlRwykymrXL8//1HsJJRCdtBOI/Wz7AImrJMI2bRkgQi13BNpBsM9UEBbtI+o5qDN23yALngCf44lIgkFaH+GAAKxVkwml1PrBYCrNeeXb76BDf2p7Bnm4pci8vThGfpI05QgGj+Qd1R79YxKhPIZU89gR8Xwgm4gxd2WQTX/rRx23lqACZ/Y6zJtp8GbkA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,187 +91,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
-If the batch has a mix of writable and non-writable bits, we may end up
-setting the entire batch writable. Fix this by respecting writable bit
-during batching.
-Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
-lost, preserve it on pte restoration by respecting the bit during batching,
-to make the fix consistent w.r.t both writable bit and soft-dirty bit.
+Jakub Kicinski reported that after the commit d929525c2e30 ("memcg:
+net: track network throttling due to memcg memory pressure"), in
+Meta fleet, the network intensive workloads started seeing extensive
+spinlock contention in the rx path in the function
+cgroup_file_notify().
 
-I was able to write the below reproducer and crash the kernel.
-Explanation of reproducer (set 64K mTHP to always):
+cgroup_file_notify() uses a single global spinlock to protect the
+cfile->kn pointer across all cgroups.  On systems with many cgroups
+under memory pressure, this becomes a bottleneck as multiple CPUs in
+reclaim call __memcg_memory_event(), which walks the cgroup hierarchy
+calling cgroup_file_notify() at each level -- all serialized on the
+same lock.
 
-Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
-fork() - parent points to the folio with 8 writable ptes and 8 non-writable
-ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
-determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
-the folio as lazyfree. Write to the memory to dirty the pte, eventually
-rmap will dirty the folio. Then trigger reclaim, we will hit the pte
-restoration path, and the kernel will crash with the following trace:
+This series reduces the lock hold time by moving kernfs_notify()
+outside the critical section, adds lockless fast-path checks to avoid
+the lock entirely in common cases (torn-down files and rate-limited
+bursts), and replaces the global lock with a per-cgroup_file lock to
+eliminate cross-cgroup contention.
 
-[   21.134473] kernel BUG at mm/page_table_check.c:118!
-[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   21.135917] Modules linked in:
-[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
-[   21.136858] Hardware name: linux,dummy-virt (DT)
-[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   21.137308] pc : page_table_check_set+0x28c/0x2a8
-[   21.137607] lr : page_table_check_set+0x134/0x2a8
-[   21.137885] sp : ffff80008a3b3340
-[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
-[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
-[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
-[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
-[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
-[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
-[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
-[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
-[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
-[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
-[   21.141991] Call trace:
-[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
-[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
-[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
-[   21.142766]  contpte_set_ptes+0xe8/0x140
-[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
-[   21.143177]  rmap_walk_anon+0x100/0x250
-[   21.143315]  try_to_unmap+0xa0/0xc8
-[   21.143441]  shrink_folio_list+0x59c/0x18a8
-[   21.143759]  shrink_lruvec+0x664/0xbf0
-[   21.144043]  shrink_node+0x218/0x878
-[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
-[   21.144763]  user_proactive_reclaim+0x2a4/0x340
-[   21.145056]  reclaim_store+0x3c/0x60
-[   21.145216]  dev_attr_store+0x20/0x40
-[   21.145585]  sysfs_kf_write+0x84/0xa8
-[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
-[   21.145994]  vfs_write+0x2b8/0x368
-[   21.146119]  ksys_write+0x70/0x110
-[   21.146240]  __arm64_sys_write+0x24/0x38
-[   21.146380]  invoke_syscall+0x50/0x120
-[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
-[   21.146679]  do_el0_svc+0x28/0x40
-[   21.146798]  el0_svc+0x34/0x110
-[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
-[   21.147074]  el0t_64_sync+0x198/0x1a0
-[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
-[   21.147440] ---[ end trace 0000000000000000 ]---
+Shakeel Butt (3):
+  cgroup: reduce cgroup_file_kn_lock hold time in cgroup_file_notify()
+  cgroup: add lockless fast-path checks to cgroup_file_notify()
+  cgroup: replace global cgroup_file_kn_lock with per-cgroup_file lock
 
+ include/linux/cgroup-defs.h |  1 +
+ kernel/cgroup/cgroup.c      | 50 +++++++++++++++++++++----------------
+ 2 files changed, 29 insertions(+), 22 deletions(-)
 
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sched.h>
-#include <fcntl.h>
-
-void write_to_reclaim() {
-    const char *path = "/sys/devices/system/node/node0/reclaim";
-    const char *value = "409600000000";
-    int fd = open(path, O_WRONLY);
-    if (fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
-
-    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
-        perror("write");
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Successfully wrote %s to %s\n", value, path);
-    close(fd);
-}
-
-int main()
-{
-	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
-			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if ((unsigned long)ptr != (1UL << 30)) {
-		perror("mmap");
-		return 1;
-	}
-	
-	/* a 64K folio gets faulted in */
-	memset(ptr, 0, 1UL << 16);
-
-	/* 32K half will not be shared into child */
-	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
-		perror("madvise madv dontfork");
-		return 1;
-	}
-
-	pid_t pid = fork();
-
-	if (pid < 0) {
-		perror("fork");
-		return 1;
-	} else if (pid == 0) {
-		sleep(15);
-	} else {
-		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
-		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
-			perror("madvise madv fork");
-			return 1;
-		}
-		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
-			perror("madvise madv free");
-			return 1;
-		}
-
-		/* dirty the large folio */
-		(*ptr) += 10;
-
-		write_to_reclaim();
-		// sleep(10);
-		waitpid(pid, NULL, 0);
-
-	}
-}
-
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-v1->v2:
- - Just respect the writable bit instead of hacking in a pte_wrprotect() in
-   failure path
- - Also handle soft-dirty bit
-
-Based on mm-unstable (df9c51269a5e).
-
- mm/rmap.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index bff8f222004e4..fb64829913052 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1955,7 +1955,17 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	if (userfaultfd_wp(vma))
- 		return 1;
- 
--	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-+	if (!folio_test_anon(folio))
-+		return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-+
-+	/*
-+	 * For anon folios, if unmap fails, we need to restore the ptes.
-+	 * To avoid accidentally upgrading write permissions for ptes that
-+	 * were not originally writable, and to avoid losing the soft-dirty
-+	 * bit, use the appropriate FPB flags.
-+	 */
-+	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
-+				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
- }
- 
- /*
 -- 
-2.34.1
+2.47.3
 
 
