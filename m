@@ -4,108 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03290FEE4EE
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 20:15:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7F7FEE4F0
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 21:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 698E06B0089; Sat, 28 Feb 2026 15:15:59 -0500 (EST)
+	id 98DA66B0005; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 670B16B008A; Sat, 28 Feb 2026 15:15:59 -0500 (EST)
+	id 93B1B6B0089; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5703E6B008C; Sat, 28 Feb 2026 15:15:59 -0500 (EST)
+	id 847596B008A; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 475F66B0089
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 15:15:59 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 026CC1C208
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:15:58 +0000 (UTC)
-X-FDA: 84494971638.27.DDCD6E3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B6C1310000B
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:15:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S1UZT41t;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4BB6B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C8CE1B741C
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:27:03 +0000 (UTC)
+X-FDA: 84495150726.10.E343F80
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3D52A20007
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:27:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d1g1ZRO0;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772309757;
+	s=arc-20220608; t=1772314021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+7gruwhhy02oG+7gbkE9luhnFnzdhwD35bIWupITR4=;
-	b=OuF2cSZvis90quz3mpUcy3XhMtzCaL8CBjfXzjjDqxwhHcQ7V5Qm3QVypqYgPgNBHB06NR
-	qzekQZeE75JWhpXIZvvuV/QznceudJzsITzn8xi/pM7fYpiSzpms1dpbDYSKaA+6hI7pE5
-	82Bcur/vCwYZYlpFlxUHI0OEf+ZWB8U=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S1UZT41t;
-	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772309757; a=rsa-sha256;
+	bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
+	b=0hizfQvIeCzUaQ2ss5oBUP2zzm5iWcq4nxHpY0iWxmqPSivgELghXO22UfpMqeqFFOsF0U
+	2hxvPge50VZopGG/Hd6D+/QeDjY2XUpnwJ3YkaCYF4F6baQ2ljhR+oOV/MB/uzQiD49eui
+	6MeN8rXIUnNX2nS5B8k3knmLw2zH7SA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772314021; a=rsa-sha256;
 	cv=none;
-	b=OmoJ6pNHmNtUj3NSfiOTg+pm/MIeM1aXzVM6JyojFHEHJk0qzg5u2bvqbLX7ntnAKFl4Pj
-	a4sFcSGagtZCFv0qSruYlJzQLv/tDQXeLrgFXpsJCAYSvMQadDKE/g0EQhi6ZP8vqkzWbg
-	mqrj4Fn+a2SY8ID12ue2FbYtIlRdMmo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772309755; x=1803845755;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5bfbx1262s2r8MchzD4Pi4s59qo613AKwoiy3cpHTrk=;
-  b=S1UZT41trJ0a+f7Rwd3L2ZjtKvQ/Z8dgSVEGaQUF8yAlTcBOdT/o3mew
-   A3fSbO0DpI2+yq4vetGVaAAjZcPa0BKzSO+K2421F6cbcixwYVrJrkS5r
-   jpbSXNhC+g1QmcpZFfK06p0n2kxd2PssZa1TvmJdxgaDJVe3/EHTn6O/H
-   ho8V0EKaGsNbQsAsTfhB2Of0f8AH+xZa50NkG0Qg2eC0CMQYGN/3AWgki
-   +WQFiInU5o4+sqEYkNNyaOZneFX/67+vndelyPAoihVUjap7jWwBeTPQ7
-   c6uTZshvWxFw1gASP/Gx4mhQrlHtRP6CjPK9U/2HxrfdsqT85OVqaX4Nd
-   w==;
-X-CSE-ConnectionGUID: b6kZjNfnT6a5n4HrXkOn6Q==
-X-CSE-MsgGUID: S3lo3So0RnyH23YDr8OLwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="76977755"
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="76977755"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 12:15:53 -0800
-X-CSE-ConnectionGUID: LZDtiQVkQNq5oSQJ257D8w==
-X-CSE-MsgGUID: X00eL+ZyQRGdIDrOBXn0tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="216463375"
-Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 28 Feb 2026 12:15:50 -0800
-Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vwQj4-0000000009t-41HG;
-	Sat, 28 Feb 2026 20:15:46 +0000
-Date: Sun, 1 Mar 2026 04:15:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Leno Hou <lenohou@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Leno Hou <lenohou@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Barry Song <21cnbao@gmail.com>, Jialing Wang <wjl.linux@gmail.com>,
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-Message-ID: <202603010435.MBtvBCTp-lkp@intel.com>
-References: <20260228161008.707-1-lenohou@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260228161008.707-1-lenohou@gmail.com>
-X-Rspamd-Queue-Id: B6C1310000B
-X-Stat-Signature: fjxzauymamzxhfiq9f66aibc4198wm4a
+	b=2YhOncZY97f2glMI74CV2m1nEV/iXWP6JOhf3T25GpEVCu1rpc4HCUqtHW3EcdNxOj6WyS
+	DbhDD0Nqwu2Cl8utV7fkTg3ssJr+Y6kMRnjBpRv0UK/4CpQzR+M0A+p7daw8jKpz+Cd1dd
+	a0jrJ7/Qx4jU2k5oTqGyqKZ1cCR8/Aw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d1g1ZRO0;
+	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aaf5d53eaaso22219905ad.0
+        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 13:27:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772314020; x=1772918820; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
+        b=d1g1ZRO0AmtPjyDBJKQLqpwfmUa7jz9AZhCsjSFhBNcG09Pm34gX6RysofRTkcM9Bk
+         YaHZtL5+89z26blGRK0As/pkag33FEaIlx9O4+79Qz82JI0VPCviiRn33ATo8ziugc3P
+         OVaZsCqcOvZTtKVw+gWVWF1pkDAbi+Wp3EfxPosqV9Aeei7d7Uq+GH7iV/f7pR6GgfvG
+         c392yXfsXMrf1AircRRqDtdA5kpt1FA/ur/0hlHBYxuUv6lMR4IWC3wW3kVXOayjM+us
+         Qcf6qo9dYSUnnXOE0nvCO4Xmxi4t0CqvCK3VXPh7Gm1WkgXe+GeQRETiJO3C3X1obKeK
+         +yHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772314020; x=1772918820;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
+        b=we6twJc9qo0Xock/kR74qZHLgJG7csTaCq/yKa32fBy6IBdTa53B9UyUwjVoTPiBl/
+         971XYcgVweeCCamdlEHflVg2h8LpMcIt4rj26EF72Yb8vl5mypcxMUkyMH4XnpbGYGYG
+         7zkOakYyoxQDE4rGi+GD4fsqxzycF4MugaZxXMbYBy03k69EjzO+whSLlhpb/HPabveP
+         0sA2juvLxDQd9ehlHGWHiIkhHsGY96bKQiVdDdgQ5lQBD5NQcilfsgHv/y+xwWRnDxPx
+         uh/6kMK5BVYHvpqPhjJLQ5tyIPt7vzbuuVSx9paZ30IIJO1bfY4S7aH0qFsOrs8wMU75
+         A32w==
+X-Gm-Message-State: AOJu0Yyz8C0tIO53OsTUnp5rJskrw73/jz+yFzVnGyTun5O+nHZpYpR0
+	K/NlQ6G0hDPP0n/2mpf9VgCsiFk64kCI0kJr+zYO+CV83WB8iwyjfebW
+X-Gm-Gg: ATEYQzxx4ksLbG+rd8T9YPtAf/3zASjmAJyzQwiofM0vks3QpYJI4YRlVUGHUmWRL9v
+	j+KxVMvg5uEey4iC6z01KtIUVaMx42kt7lnySrYtW75Wl7koBrB6VHwJZAEFBHs+kWv0XFUtd+I
+	RsVU3z2I18aRXGd6YP6SjW5m7+a4au5gBWDpGNi9Z3yX9AHUJYkAQk8bA3H242IobAw3Mim9do2
+	Hl9CfgtB8JlAcDyFYpWltp/pvKdunU26C0PeceLt027Pp4R7KgChE9MjTCDOhZ8zsUpVsfbiSuI
+	9OvQdLiqtESnzB+17aqKGeDz33u7NGLJKVsx6qUuTPpdDoACE9TSryYDeOffzeQxL37PLCk/Fzp
+	ccSIoH2m6utuAAa09f5YRxsJeyTSVxyABF1rz5+fNLZYxkUwEc6+xl1a78JMHrYk+TqgH/QQ9qM
+	xUtZKUV+sTSq6EH4xc
+X-Received: by 2002:a17:903:1aad:b0:2aa:ecec:a43d with SMTP id d9443c01a7336-2ae2e401f52mr62465095ad.21.1772314019931;
+        Sat, 28 Feb 2026 13:26:59 -0800 (PST)
+Received: from dw-tp ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae3e4e34e6sm26334335ad.30.2026.02.28.13.26.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Feb 2026 13:26:58 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
+Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
+In-Reply-To: <87pl5qh3ye.ritesh.list@gmail.com>
+Date: Sun, 01 Mar 2026 02:44:32 +0530
+Message-ID: <87tsv0in9j.ritesh.list@gmail.com>
+References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com> <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org> <87pl5qh3ye.ritesh.list@gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772309754-545384
-X-HE-Meta: U2FsdGVkX18jI5+Y1wXLGFRuIE62dXniBA7NG7HDlGLQcaSeNiHxHF30It0tY81hhGRqs4NsoVUgqa0sDwPhFz8+rI58VWY7LTIG3cXrviYJ8y3ftyY7+J75XontkfMPJ0Krdt4g5LBNs66wWKOHSVmVOsM3Fu0oJPw2PZXcbiL6NWin6vrjlnziOwy7BFbOX+X5AoCC/b9PVMnYNswsu+YEv7zj4fJ/I5foMdmv/WqxBG0cxwGTgpjEX8WIZFu2uEm7WuUjSffK5+F0o8pfPklcs4kJcleHX+5DwUDdTHBlloo8etvPV0slA4uCfHJOg1IqKhNZzjmffiPqw0yA4Jk83JV2jBivtqDs6sPXZRHnn7VN2F4eGobFGAZRecXKIxhDiMfMLfqexd/8Hv/EKaqWdWeXBCc1HoqVnnFhAnvaPUlRsi78erSxhbw1vYCLNo5HqM3aZnlyLToYZ4UVu3i41RoEgEO4BSIRq1kgvY2DdDtuQBS0XKNM4qQt4om+brp70doDiMm+z2nUyhB0QvuZEAUQMgNaA+0LVV/uLv1rpAyrcJD+ygKnqJg8r5mmu7AQmR5Kvk038xX2D2+JifU1KmGagsqi/J2rDlvrNl9oIYG8UunpSKUCjQuTyvq6tX5s15btjDpFZY07tncOW1NgdEtYiq93zALZhP/DX/8bieo2rKGj/qNk8vd1nbR6DUNWxpVt9BYAkrECpEApWo3x9qdGPp91iOQ6hWoB7NGNpx+aG8IFGkDCyxpA2JrnJctEI250IXD6cQFHnNPI9uKK4+XfQO9HvycYjYcAOGZDFWTYRVGYPbVxGJS0HE3cYA//qBkqf9owFqmWHL6iljQpwX4h6AL2mAS5avMHMoo0SoFVT/YMkSCs6n1NJImjnLn4ggfTPF6eju1BLM0UZR4kI6C3MN3SAS7GcE2XW5h3zrIThV6fMm52oS/6ffHFtfS9AtUFCzL7J9W/fdO
- BFYukukC
- 6b6QbIa1DM76HMnnfyCcCLotQCzmsIVm42vFtaWYiBZDLroi416mc98kXgjjjMwDZiTD2Cz61DGQigRiQ3dbxpvzM2nR0yzGD51B4IGIUPWDXKf9zrt6JVg1NjWnUisxrY3pQBV6qO5JKLxAOqZXED6n8gTuTGBOFwY4hUoJEMUcAmKapStqoRPGlW1s0GVWH48HLtNLcpy5PkhJ6umlZpDoK8BuJpyHTy59o90OMabMw4BswoOLyTGZwhfBHkMUMZ+I+5H47hj7ztOCpXq5tFCOSZKaUlWTtAeHRmH2CZTj7uDp9epcRwdR5qHLN0U+FS9Wt7TS/OictjWT0qfC05mjl2fkSsDGOnGovy5ew0pINwLilcNLwATRRTcHW+5ftEqnH5W9bCktjo/5BDCT1hGigL2+5+hL3SpMeDX/srr1Ke+dUKVlVsAUVl5BxZNQgEMS5
+X-Stat-Signature: 1ecsffy1yotznznazctqtwtzy9tak1ie
+X-Rspamd-Queue-Id: 3D52A20007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772314021-155150
+X-HE-Meta: U2FsdGVkX1812wN739sdHap17Sb9J66zGHMk5IBp8oGSm6uWVgsSwOZhTKl7wXQ5UVcJua0+OlSu/LL4GcomCSb/Qq/RIt00mWtW35Ufl0DP2rItSgOnPQ/gzINykdTs2FK4RbC7SGz+0RWcXGH9JLEaMX7lZDXR4h4J5pgEavpky8V/1udzx94yCDnCTMiZ+gu14TIo57257Z2rYKcaFWGuz14Nh5HALA0R/EDzB/iaxHEuMr/XmZZuhlcdC/UW1HXgitQvgc8zbGe/rqrQjFu/lyMpLtKGaH2XTLxu/Mx4Rue9PcH3ho+fM+fyt1fd4WA9E0qsOPjS8HtjoVbv/Dp5zRWicXQ4D04dI1VelkfNKWivlsbDAQJkeLNB226GI/afYolA9tMB4kEyqZtaW0MJTtGFOBU11XgSYETV0qDRXDEib427ye2+2CbJv4Muk9YPpwnSEO01Kjsx3TvfvldFY+wYnoi4se8DMz/yg2VucZ36YFOO7azY5Ruz/J3L6s8o4Xw9O2Js4K0Htbjg/xFphSi+bjWfHk74biioAxNsRXSPyfskZTVLUPlzBrz5QIAWfdTf45x93N45ir9Yu1BpEskJYVwW3ghYu8QN9cA/hL/aIl9Ww6g4ef682XHYsPnAOMklldZn992NhOiQosojemJLOQwgau2buAPmXCkptjd7euu7VHRRsMZeC/bAI8vgNTWPJyQLysuOYcgVBWQBO95QwR/siAiZUYC+c3/j8nzpmb5O7Ad1bE87pHYlZ5MGYnkhScdhUbNZ+oumZctv3dvmuET9xjPRoP3CJW/A/clEizGQDnJ4ULA/PM3vNriYHFtterZe44e+HtPZ+jRQBd9ZPnAuwgjXGBQHF0EZ6FqD0HhX8goBts2IrNC/Urb9C7EF5ssOFJYYq71ATsdAmhWu8+/Z8T7IsfrDT9Tm9bo5eHD3GTYqNFXQ9UAbeGTxy/1AO0yVzcquUGk
+ aNua2MEe
+ MN3ZGsx9xu+ncgfByJOmFnz1dbQpKN9woeekiK9ewy8N/QhiGVFSFYST64u6QhUIs8kqh6YYDsMsn47wh9DrkfgSBgdeEXCBNfkeduBITmEaRYdUAyq31JIHRjaeKSV3TEVPJDznwzDdBAePXLgrCw1xt3Kz303/mbKZ5gZdoe287A5mr6gJGKaVbKxAaesMpJ1H+0tihIr8Hgk6iyPlA3/YNwDFxXWC/2DVOEQ5wnBXhpmkbk9ZhEJpL8CnRJDvqq9jmznqBxbAEMWGIfMHnJuaF5ePcB/g/bJ2e8NBMGCZBk3M5rr4KYXbh2V9pV27tghA/WS6uh/azGBe57832BeqNYXu0OLlkdxqEhZnh+TfaCRCFgw1E0Aup9FSds1KDUHM7CSZw28UcNxeVWIj+ZoiHgIxCEtyRmGS/BCIq2DTj/sdS+Ran/9m1uz9IUxkAG+0MtqN3glJJbY77LfeKvrNeaNxyDFfCdR9E+n8ZwDwjNc8pBX8q1N02sOshOpTwEWQtGhX/u9nNZ01wIGaZBIJS29QqCwxKBHFJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,224 +116,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Leno,
+Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
 
-kernel test robot noticed the following build errors:
+> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
+>
+>> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
+>>> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
+>>> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
+>>> follow_pfnmap APIs.
+>>> 
+>>> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
+>>> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
+>>> VFIO PCI core driver already supports fault handling at PMD / PUD level
+>>> for more efficient BAR mappings.
+>>> 
+>>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>>
+>> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>>
+>>
+>
+> Thanks for the review!
+>
+>>>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
+>>>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
+>>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
+>>> index dcd3a88caaf6..2d27cb1c2334 100644
+>>> --- a/arch/powerpc/include/asm/pgtable.h
+>>> +++ b/arch/powerpc/include/asm/pgtable.h
+>>> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
+>>>   	return __pgprot(pte_flags);
+>>>   }
+>>> 
+>>> +#define pmd_pgprot pmd_pgprot
+>>> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
+>>> +{
+>>> +	return pte_pgprot(pmd_pte(pmd));
+>>> +}
+>>> +
+>>> +#define pud_pgprot pud_pgprot
+>>> +static inline pgprot_t pud_pgprot(pud_t pud)
+>>> +{
+>>> +	return pte_pgprot(pud_pte(pud));
+>>> +}
+>>> +
+>
+> In v2 - I will add above under #ifdef CONFIG_PPC_BOOK3S_64 
+> to avoid build issues with 32-bit PPC.
+>
 
-[auto build test ERROR on v7.0-rc1]
-[also build test ERROR on linus/master next-20260227]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On second thoughts, I am thinking maybe we should guard it with CONFIG_PPC64.  
+Currently the build fails on 32-bit since no definitions of pmd_pte()
+and pud_pte().  Though, we could open-code that, but I think as of
+today, this only gets excercised from follow_pfnmap_start() which gates
+it with VM_PFNMAP | VM_IO, which I think could only happen for THP which
+is only true for book3s/64. 
+But to keep the generic definitions of pXd_pgprot() and since pmd_pte()
+and pud_pte() are anyways available on book3s/64 & nohash/64, so let's
+just guard this with PPC64.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Leno-Hou/mm-mglru-fix-cgroup-OOM-during-MGLRU-state-switching/20260301-001148
-base:   v7.0-rc1
-patch link:    https://lore.kernel.org/r/20260228161008.707-1-lenohou%40gmail.com
-patch subject: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-config: um-defconfig (https://download.01.org/0day-ci/archive/20260301/202603010435.MBtvBCTp-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9a109fbb6e184ec9bcce10615949f598f4c974a9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603010435.MBtvBCTp-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603010435.MBtvBCTp-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
->> mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5788:37: warning: '&&' within '||' [-Wlogical-op-parentheses]
-    5788 |         if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-         |                            ~~ ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
-   mm/vmscan.c:5788:37: note: place parentheses around the '&&' expression to silence this warning
-    5788 |         if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-         |                                            ^                   
-         |                               (                                )
-   1 warning and 18 errors generated.
+I will amend this change in RFC-v2 and will keep the RB from Christophe.
 
 
-vim +5785 mm/vmscan.c
++#ifdef CONFIG_PPC64
++#define pmd_pgprot pmd_pgprot
++static inline pgprot_t pmd_pgprot(pmd_t pmd)
++{
++       return pte_pgprot(pmd_pte(pmd));
++}
++
++#define pud_pgprot pud_pgprot
++static inline pgprot_t pud_pgprot(pud_t pud)
++{
++       return pte_pgprot(pud_pte(pud));
++}
++#endif /* CONFIG_PPC64 */
++
 
-  5774	
-  5775	static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
-  5776	{
-  5777		unsigned long nr[NR_LRU_LISTS];
-  5778		unsigned long targets[NR_LRU_LISTS];
-  5779		unsigned long nr_to_scan;
-  5780		enum lru_list lru;
-  5781		unsigned long nr_reclaimed = 0;
-  5782		unsigned long nr_to_reclaim = sc->nr_to_reclaim;
-  5783		bool proportional_reclaim;
-  5784		struct blk_plug plug;
-> 5785		bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-  5786		bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-  5787	
-  5788		if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-  5789			lru_gen_shrink_lruvec(lruvec, sc);
-  5790	
-  5791			if (!lru_draining)
-  5792				return;
-  5793	
-  5794		}
-  5795	
-  5796		get_scan_count(lruvec, sc, nr);
-  5797	
-  5798		/* Record the original scan target for proportional adjustments later */
-  5799		memcpy(targets, nr, sizeof(nr));
-  5800	
-  5801		/*
-  5802		 * Global reclaiming within direct reclaim at DEF_PRIORITY is a normal
-  5803		 * event that can occur when there is little memory pressure e.g.
-  5804		 * multiple streaming readers/writers. Hence, we do not abort scanning
-  5805		 * when the requested number of pages are reclaimed when scanning at
-  5806		 * DEF_PRIORITY on the assumption that the fact we are direct
-  5807		 * reclaiming implies that kswapd is not keeping up and it is best to
-  5808		 * do a batch of work at once. For memcg reclaim one check is made to
-  5809		 * abort proportional reclaim if either the file or anon lru has already
-  5810		 * dropped to zero at the first pass.
-  5811		 */
-  5812		proportional_reclaim = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
-  5813					sc->priority == DEF_PRIORITY);
-  5814	
-  5815		blk_start_plug(&plug);
-  5816		while (nr[LRU_INACTIVE_ANON] || nr[LRU_ACTIVE_FILE] ||
-  5817						nr[LRU_INACTIVE_FILE]) {
-  5818			unsigned long nr_anon, nr_file, percentage;
-  5819			unsigned long nr_scanned;
-  5820	
-  5821			for_each_evictable_lru(lru) {
-  5822				if (nr[lru]) {
-  5823					nr_to_scan = min(nr[lru], SWAP_CLUSTER_MAX);
-  5824					nr[lru] -= nr_to_scan;
-  5825	
-  5826					nr_reclaimed += shrink_list(lru, nr_to_scan,
-  5827								    lruvec, sc);
-  5828				}
-  5829			}
-  5830	
-  5831			cond_resched();
-  5832	
-  5833			if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
-  5834				continue;
-  5835	
-  5836			/*
-  5837			 * For kswapd and memcg, reclaim at least the number of pages
-  5838			 * requested. Ensure that the anon and file LRUs are scanned
-  5839			 * proportionally what was requested by get_scan_count(). We
-  5840			 * stop reclaiming one LRU and reduce the amount scanning
-  5841			 * proportional to the original scan target.
-  5842			 */
-  5843			nr_file = nr[LRU_INACTIVE_FILE] + nr[LRU_ACTIVE_FILE];
-  5844			nr_anon = nr[LRU_INACTIVE_ANON] + nr[LRU_ACTIVE_ANON];
-  5845	
-  5846			/*
-  5847			 * It's just vindictive to attack the larger once the smaller
-  5848			 * has gone to zero.  And given the way we stop scanning the
-  5849			 * smaller below, this makes sure that we only make one nudge
-  5850			 * towards proportionality once we've got nr_to_reclaim.
-  5851			 */
-  5852			if (!nr_file || !nr_anon)
-  5853				break;
-  5854	
-  5855			if (nr_file > nr_anon) {
-  5856				unsigned long scan_target = targets[LRU_INACTIVE_ANON] +
-  5857							targets[LRU_ACTIVE_ANON] + 1;
-  5858				lru = LRU_BASE;
-  5859				percentage = nr_anon * 100 / scan_target;
-  5860			} else {
-  5861				unsigned long scan_target = targets[LRU_INACTIVE_FILE] +
-  5862							targets[LRU_ACTIVE_FILE] + 1;
-  5863				lru = LRU_FILE;
-  5864				percentage = nr_file * 100 / scan_target;
-  5865			}
-  5866	
-  5867			/* Stop scanning the smaller of the LRU */
-  5868			nr[lru] = 0;
-  5869			nr[lru + LRU_ACTIVE] = 0;
-  5870	
-  5871			/*
-  5872			 * Recalculate the other LRU scan count based on its original
-  5873			 * scan target and the percentage scanning already complete
-  5874			 */
-  5875			lru = (lru == LRU_FILE) ? LRU_BASE : LRU_FILE;
-  5876			nr_scanned = targets[lru] - nr[lru];
-  5877			nr[lru] = targets[lru] * (100 - percentage) / 100;
-  5878			nr[lru] -= min(nr[lru], nr_scanned);
-  5879	
-  5880			lru += LRU_ACTIVE;
-  5881			nr_scanned = targets[lru] - nr[lru];
-  5882			nr[lru] = targets[lru] * (100 - percentage) / 100;
-  5883			nr[lru] -= min(nr[lru], nr_scanned);
-  5884		}
-  5885		blk_finish_plug(&plug);
-  5886		sc->nr_reclaimed += nr_reclaimed;
-  5887	
-  5888		/*
-  5889		 * Even if we did not try to evict anon pages at all, we want to
-  5890		 * rebalance the anon lru active/inactive ratio.
-  5891		 */
-  5892		if (can_age_anon_pages(lruvec, sc) &&
-  5893		    inactive_is_low(lruvec, LRU_INACTIVE_ANON))
-  5894			shrink_active_list(SWAP_CLUSTER_MAX, lruvec,
-  5895					   sc, LRU_ACTIVE_ANON);
-  5896	}
-  5897	
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-ritesh
+
 
