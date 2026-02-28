@@ -4,111 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7F7FEE4F0
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 21:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6EB5FEE4F0
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 21:28:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98DA66B0005; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
+	id DEE3C6B0005; Sat, 28 Feb 2026 16:28:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93B1B6B0089; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
+	id D9BD06B0089; Sat, 28 Feb 2026 16:28:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847596B008A; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
+	id C9AEA6B008A; Sat, 28 Feb 2026 16:28:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F4BB6B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 16:27:03 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C8CE1B741C
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:27:03 +0000 (UTC)
-X-FDA: 84495150726.10.E343F80
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D52A20007
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:27:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d1g1ZRO0;
-	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B87AC6B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 16:28:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F2EE1388F8
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:28:49 +0000 (UTC)
+X-FDA: 84495155178.08.9C8C947
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6B8C140003
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 21:28:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hYWmmY2G;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772314021;
+	s=arc-20220608; t=1772314127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-	b=0hizfQvIeCzUaQ2ss5oBUP2zzm5iWcq4nxHpY0iWxmqPSivgELghXO22UfpMqeqFFOsF0U
-	2hxvPge50VZopGG/Hd6D+/QeDjY2XUpnwJ3YkaCYF4F6baQ2ljhR+oOV/MB/uzQiD49eui
-	6MeN8rXIUnNX2nS5B8k3knmLw2zH7SA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772314021; a=rsa-sha256;
-	cv=none;
-	b=2YhOncZY97f2glMI74CV2m1nEV/iXWP6JOhf3T25GpEVCu1rpc4HCUqtHW3EcdNxOj6WyS
-	DbhDD0Nqwu2Cl8utV7fkTg3ssJr+Y6kMRnjBpRv0UK/4CpQzR+M0A+p7daw8jKpz+Cd1dd
-	a0jrJ7/Qx4jU2k5oTqGyqKZ1cCR8/Aw=
+	bh=yZxZ2bJyypDd9ZV8NErVwlj1440hZcAv4s/39SJRyHk=;
+	b=5gH0V8oo+At3942cJDCsvwENauH/e7RcyOLGXbQMMoBx99ymXJx1YhzWrCYysur8NDqRP8
+	nx/r5edf46aZztuPIqQages6QV3/XLA74TFCfiV2ULECXUXt8ZsAZYj9ZneVd1G+d+0U9t
+	7npePBi4F3gCb1M7vHYIj6dyOHrJEtE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=d1g1ZRO0;
-	spf=pass (imf13.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hYWmmY2G;
+	spf=pass (imf07.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2aaf5d53eaaso22219905ad.0
-        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 13:27:01 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772314127; a=rsa-sha256;
+	cv=none;
+	b=1Jrvwy0F+B/sJ1+xWNMUgzmnlEEO0uiUXAfsyTJoWGWbhe6vsMSE1jqgEWoXOlm/SpOyIC
+	VT3wHbFSejedJQE/h7QXMCCjGXJndmR7mJyRd5OIdspi6sL6TaihOlaGN/4yoG/6V62LAj
+	5HkI1igArinERZZfYzQ5MrydwipVkIE=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-358ed90bcefso1823533a91.2
+        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 13:28:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772314020; x=1772918820; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-        b=d1g1ZRO0AmtPjyDBJKQLqpwfmUa7jz9AZhCsjSFhBNcG09Pm34gX6RysofRTkcM9Bk
-         YaHZtL5+89z26blGRK0As/pkag33FEaIlx9O4+79Qz82JI0VPCviiRn33ATo8ziugc3P
-         OVaZsCqcOvZTtKVw+gWVWF1pkDAbi+Wp3EfxPosqV9Aeei7d7Uq+GH7iV/f7pR6GgfvG
-         c392yXfsXMrf1AircRRqDtdA5kpt1FA/ur/0hlHBYxuUv6lMR4IWC3wW3kVXOayjM+us
-         Qcf6qo9dYSUnnXOE0nvCO4Xmxi4t0CqvCK3VXPh7Gm1WkgXe+GeQRETiJO3C3X1obKeK
-         +yHQ==
+        d=gmail.com; s=20230601; t=1772314126; x=1772918926; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yZxZ2bJyypDd9ZV8NErVwlj1440hZcAv4s/39SJRyHk=;
+        b=hYWmmY2GJif86fi9FP1K+AmNxqkV/P6vuUXpTQusMVD/71CIbz74+wwdUAUreDVCVW
+         qtfY0X1lzqtH5rcSaXcXgaOu/wm3cPyuzCD/2oNe+Yj8CXbuGm1I1l6otbTzGwUcsEbR
+         G82ooSgPkftwalJ+qtSEVdC+LH+U+GuMojb1H3apRwOL3GPEAu9W9Ez+G6p4hCOi1rF4
+         ov++7XG6LwToDCdAog7qd0U9Hp0rNxoaI0dm1h9f0/aVKQ4CV3/UVDiRJOKTvuO8DvLT
+         7TNMoRjZi2j4HkLQ3PkAUhv9FCl3IUoy8cIJamWqiI3t2Ca1E/9VoKq9k5T/dFVOQHYC
+         q6CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772314020; x=1772918820;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3u+tbCKuiO12lFJH2PgWftBt3LrL7T3icieNzOkjqcE=;
-        b=we6twJc9qo0Xock/kR74qZHLgJG7csTaCq/yKa32fBy6IBdTa53B9UyUwjVoTPiBl/
-         971XYcgVweeCCamdlEHflVg2h8LpMcIt4rj26EF72Yb8vl5mypcxMUkyMH4XnpbGYGYG
-         7zkOakYyoxQDE4rGi+GD4fsqxzycF4MugaZxXMbYBy03k69EjzO+whSLlhpb/HPabveP
-         0sA2juvLxDQd9ehlHGWHiIkhHsGY96bKQiVdDdgQ5lQBD5NQcilfsgHv/y+xwWRnDxPx
-         uh/6kMK5BVYHvpqPhjJLQ5tyIPt7vzbuuVSx9paZ30IIJO1bfY4S7aH0qFsOrs8wMU75
-         A32w==
-X-Gm-Message-State: AOJu0Yyz8C0tIO53OsTUnp5rJskrw73/jz+yFzVnGyTun5O+nHZpYpR0
-	K/NlQ6G0hDPP0n/2mpf9VgCsiFk64kCI0kJr+zYO+CV83WB8iwyjfebW
-X-Gm-Gg: ATEYQzxx4ksLbG+rd8T9YPtAf/3zASjmAJyzQwiofM0vks3QpYJI4YRlVUGHUmWRL9v
-	j+KxVMvg5uEey4iC6z01KtIUVaMx42kt7lnySrYtW75Wl7koBrB6VHwJZAEFBHs+kWv0XFUtd+I
-	RsVU3z2I18aRXGd6YP6SjW5m7+a4au5gBWDpGNi9Z3yX9AHUJYkAQk8bA3H242IobAw3Mim9do2
-	Hl9CfgtB8JlAcDyFYpWltp/pvKdunU26C0PeceLt027Pp4R7KgChE9MjTCDOhZ8zsUpVsfbiSuI
-	9OvQdLiqtESnzB+17aqKGeDz33u7NGLJKVsx6qUuTPpdDoACE9TSryYDeOffzeQxL37PLCk/Fzp
-	ccSIoH2m6utuAAa09f5YRxsJeyTSVxyABF1rz5+fNLZYxkUwEc6+xl1a78JMHrYk+TqgH/QQ9qM
-	xUtZKUV+sTSq6EH4xc
-X-Received: by 2002:a17:903:1aad:b0:2aa:ecec:a43d with SMTP id d9443c01a7336-2ae2e401f52mr62465095ad.21.1772314019931;
-        Sat, 28 Feb 2026 13:26:59 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae3e4e34e6sm26334335ad.30.2026.02.28.13.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Feb 2026 13:26:58 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, kvm@vger.kernel.org, Alex Williamson <alex@shazbot.org>, Peter Xu <peterx@redhat.com>
-Subject: Re: [RFC v1 2/2] powerpc/64s: Add support for huge pfnmaps
-In-Reply-To: <87pl5qh3ye.ritesh.list@gmail.com>
-Date: Sun, 01 Mar 2026 02:44:32 +0530
-Message-ID: <87tsv0in9j.ritesh.list@gmail.com>
-References: <0b8fce7a61561640634317a5e287cdb4794715fd.1772170860.git.ritesh.list@gmail.com> <d159058a45ac5e225f2e64cc7c8bbbd1583e51f3.1772170860.git.ritesh.list@gmail.com> <abfbe83b-23fb-400d-9069-b8bf4ad21d95@kernel.org> <87pl5qh3ye.ritesh.list@gmail.com>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+        d=1e100.net; s=20230601; t=1772314126; x=1772918926;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yZxZ2bJyypDd9ZV8NErVwlj1440hZcAv4s/39SJRyHk=;
+        b=T6GXo8pFsbuv/oobzHQU/HvS4WE7byxhV+HfJ2HyMd2kU+RJ5W4KsXSY7g43v75b/n
+         gg8j0srgbn6rfpjmHNTkgBd06cgucKma6YYnQFOnYXAPdz39BVRFZO1mE3jNkPaW6/hu
+         uFuy/+U9zUJK6SXC7XL66bauLuuMfAWeXjOUZMF/Pdl7qqA04ERhWwpTDM3shCqiH+4o
+         01eRnlWh+LDgfhZJrbL85+VZIPRaIG8K/OWFX304ncueywwh5BQQN4+vBRUoBxbHNpWo
+         GtmLvtNjO2v7f0sQhsE6pyQtYKbmkowHSFlN0b2Uh2ixVVITUnKfcKLuRbO8rCkGNYTF
+         cb6w==
+X-Forwarded-Encrypted: i=1; AJvYcCWIr+xLGE4Df1fC45D2SEaZ7BrMIqwC93pdU/VZ3Yo5mhp9BqDrip/3ryThJNaq6WcoyOiVpS7JHA==@kvack.org
+X-Gm-Message-State: AOJu0YwkliYBTMMYkFjfBSpGlQRMVg7YroV4yRsgiy69XKzD2ve9ub+y
+	1H/+acSBpSNCmacvzNfcvqIpkYKSt4vs5JGD6Sv9ltLauPYWV3NxUQp9
+X-Gm-Gg: ATEYQzyhD1HRb7/rpz1BSvxcIde29BoZ1IQl2hlA8uVbEOfXdCjudcYSmHWWegthXcf
+	9MYIQs+k5a2PrROpEqrI3l5zEmtqbmqsoSKl3qA5bzZ7j5kF8G/hmwRxM53Z2nSXVFFExEenjft
+	PpP5kL9zlY9EdPmZfvtg9GcCxcwpcI0jYgD/UOaGQ5AdeKjsy9KIb0qPkN5AVSVQ1VCzLqYni9B
+	aie6NaBFm1qyKNU2Zxm9CYO0bmr1LKC/0y//wQd9D+Dl7lWBBIif1TG9IlbgJnDdI31N1J7wCaT
+	7SDDzMbvyw9X2+Y7+2aMPbzY7VIQFHovyVWQqZlZqFNp9vNJ/yfdcSTM2b7MkYbWkyN4xcbBmlL
+	QrWLQ9mthyTfm2QqsxTfnvCFJBrhjdvnStqSTEtvx/uzfKgaqY9LdeZ9UGLMoQv91WBnhKQ+fpw
+	9SijEpyRI4kzxlZi9WrHsLrk4QlK46aCyqN9xKMHTaE0nnXJU=
+X-Received: by 2002:a17:90b:1f8f:b0:34c:99d6:175d with SMTP id 98e67ed59e1d1-35965c3b00bmr6653438a91.2.1772314126074;
+        Sat, 28 Feb 2026 13:28:46 -0800 (PST)
+Received: from Barrys-MBP.hub ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3591349c87bsm6656961a91.2.2026.02.28.13.28.41
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 28 Feb 2026 13:28:45 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: lenohou@gmail.com
+Cc: 21cnbao@gmail.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	laoar.shao@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	weixugc@google.com,
+	wjl.linux@gmail.com,
+	yuanchu@google.com,
+	yuzhao@google.com
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+Date: Sun,  1 Mar 2026 05:28:37 +0800
+Message-Id: <20260228212837.59661-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260228161008.707-1-lenohou@gmail.com>
+References: <20260228161008.707-1-lenohou@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6B8C140003
+X-Stat-Signature: fifojzwkfaw4buisdahb1ijrkp4z8w3j
 X-Rspam-User: 
-X-Stat-Signature: 1ecsffy1yotznznazctqtwtzy9tak1ie
-X-Rspamd-Queue-Id: 3D52A20007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772314021-155150
-X-HE-Meta: U2FsdGVkX1812wN739sdHap17Sb9J66zGHMk5IBp8oGSm6uWVgsSwOZhTKl7wXQ5UVcJua0+OlSu/LL4GcomCSb/Qq/RIt00mWtW35Ufl0DP2rItSgOnPQ/gzINykdTs2FK4RbC7SGz+0RWcXGH9JLEaMX7lZDXR4h4J5pgEavpky8V/1udzx94yCDnCTMiZ+gu14TIo57257Z2rYKcaFWGuz14Nh5HALA0R/EDzB/iaxHEuMr/XmZZuhlcdC/UW1HXgitQvgc8zbGe/rqrQjFu/lyMpLtKGaH2XTLxu/Mx4Rue9PcH3ho+fM+fyt1fd4WA9E0qsOPjS8HtjoVbv/Dp5zRWicXQ4D04dI1VelkfNKWivlsbDAQJkeLNB226GI/afYolA9tMB4kEyqZtaW0MJTtGFOBU11XgSYETV0qDRXDEib427ye2+2CbJv4Muk9YPpwnSEO01Kjsx3TvfvldFY+wYnoi4se8DMz/yg2VucZ36YFOO7azY5Ruz/J3L6s8o4Xw9O2Js4K0Htbjg/xFphSi+bjWfHk74biioAxNsRXSPyfskZTVLUPlzBrz5QIAWfdTf45x93N45ir9Yu1BpEskJYVwW3ghYu8QN9cA/hL/aIl9Ww6g4ef682XHYsPnAOMklldZn992NhOiQosojemJLOQwgau2buAPmXCkptjd7euu7VHRRsMZeC/bAI8vgNTWPJyQLysuOYcgVBWQBO95QwR/siAiZUYC+c3/j8nzpmb5O7Ad1bE87pHYlZ5MGYnkhScdhUbNZ+oumZctv3dvmuET9xjPRoP3CJW/A/clEizGQDnJ4ULA/PM3vNriYHFtterZe44e+HtPZ+jRQBd9ZPnAuwgjXGBQHF0EZ6FqD0HhX8goBts2IrNC/Urb9C7EF5ssOFJYYq71ATsdAmhWu8+/Z8T7IsfrDT9Tm9bo5eHD3GTYqNFXQ9UAbeGTxy/1AO0yVzcquUGk
- aNua2MEe
- MN3ZGsx9xu+ncgfByJOmFnz1dbQpKN9woeekiK9ewy8N/QhiGVFSFYST64u6QhUIs8kqh6YYDsMsn47wh9DrkfgSBgdeEXCBNfkeduBITmEaRYdUAyq31JIHRjaeKSV3TEVPJDznwzDdBAePXLgrCw1xt3Kz303/mbKZ5gZdoe287A5mr6gJGKaVbKxAaesMpJ1H+0tihIr8Hgk6iyPlA3/YNwDFxXWC/2DVOEQ5wnBXhpmkbk9ZhEJpL8CnRJDvqq9jmznqBxbAEMWGIfMHnJuaF5ePcB/g/bJ2e8NBMGCZBk3M5rr4KYXbh2V9pV27tghA/WS6uh/azGBe57832BeqNYXu0OLlkdxqEhZnh+TfaCRCFgw1E0Aup9FSds1KDUHM7CSZw28UcNxeVWIj+ZoiHgIxCEtyRmGS/BCIq2DTj/sdS+Ran/9m1uz9IUxkAG+0MtqN3glJJbY77LfeKvrNeaNxyDFfCdR9E+n8ZwDwjNc8pBX8q1N02sOshOpTwEWQtGhX/u9nNZ01wIGaZBIJS29QqCwxKBHFJ
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772314127-511381
+X-HE-Meta: U2FsdGVkX1/hMZa7DrObRKpDC5LWxxJxJN70bWJ61HNFADhIzh0HIiUkHrM8e7wnX20nxWynJ/emzMQP6nBf21G5d5ZY/DlswdwZsbzVH7RnvI3p6OmX+mbWDrbAR/5a7IIXQDjhLgIQQLD/xxfzI+u5ziR9PxN7wsGj9rpzj/l0hNwfVV+1qGd1gjNQn8Z5KSYqXqMREu5z7XFNSKEGIHl4fQdyEX1mDmcvL1JnHmsWgrYYJk0h5b1m94g6JkZ9A5lF4b9rsIVzO306nf6KQSDa3XTFvgsKpNXQRq8+lKVZDbXovzaOyKxtzN2h4O/EQ/o5dNtROVjc4VAQB2llCAyyS3UW7nC8q4FLb6AZf1ubh7NQALb2AIPdeHD2qF4NfCBlXXbgMu8dPliAAzuH76/REPlD7oumoati1IKRmA3Mxtulm4wbmInPK52JWke4FIw3/8PeS149FD4t3fInX1Oyn5WqTm9qanccGmM6WBWgn4QwCpX2m+uqUaP9lVmoUgpShUUuZfqe7m7wHRykT2LhBBAghDX4VkHzeqdCO61NYUMFVZ7eBIoztnF/AUCpBpfqUkfZOINz7NRx/0Uk1nu9Y4wWbFFG7mXqkXF9j2cM3zeAfQN1pW4mLFwdm8cln+OZtC2VU8AQqUZaUUfphLtwwJ5COnO0P31oNh9vitEXpchYRT3dxnxEDYr0ARVbTbLCYEwCH5cwKsz4G8M52VODN2ALgsD0XoB2hebKUpbAkkYqeyKP5MTttpx0jtBFbeQOQAC5ObVWGaSxgSSHeIYt084+cKxnblR88TOCQNW9Ul80cpU5pIW+nAwQrwOuvR9T+841B0wdfItRiANEIKiMw/mjDkvrbZOEdcWVF+ECyvXzVFWprUMUZF56y9AfdL57vjF6RxieYJmuKFGP9DCx04IUSlsOrS6/AdqeZVx69yizVWvD4CT8tF2gO/tvnNtTPKInAFJE+2RjVCN
+ Q/lZGyxp
+ y3OgfgvrTOVbnshIyBLMOmXuOKPS8svNZFsACFSoFFdnuIOMZCgh31yRL7Db41C2bG/qq1FGSopFbJPyJK3OucuwcZerSnlLSkXILHhHVkJEm9/Zelx2+O5rtzvNK8EeI/SOKzOeB/YA5d1psciw59JvogOicMM9/8TvcMPkO8jqMLlQKggX94GQ9jSlJdm0sxd5qfuFXtSAxlgZIAzlYrCfE1bVnXzh8YnKHvOzWVXYuZPIxjrwAcTelkrOX9prroS3NcLhnKaR5ODUKmtwTxPl5xAvhQ9U8dhHsYEpOgxBeinphqDlV8ZURZpef3UEBBhTiWmc6nd/gz72CMGp2ONvJHx+O02+oFkSkgQ2cuX0Umgqazqt6+R4tFKe67kFoZOYf+dPIYBIefrZtJblhsV/mHzKGcoR6H3k87A0NJE2IdrexQXVzHjPgna/N0zBVbjCdQgliI6Hf37Zzf2LsR8oh5KjRhUw4ua77GFemcVCmfwR5nmBIBTabQnOK1vMKuNhI8rI1N+iFSLjxugt4qN2SDP7x4y+kiHMoIiohL7Ua+eL9XOrEEKmFMa5DnKiWPbP1jkp1Olvx8ZMzLv+q+pA/Zk6gWe1v6knV4XJNb57aNcoan2CDyTRb/Lc77VNuSCbAF/IVDALm/7HBb53Dk0VR/QbQtl94P6/U9IxMvY4TCMH2FDaUhjqlVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,84 +127,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
-
-> "Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
+On Sun, Mar 1, 2026 at 12:10 AM Leno Hou <lenohou@gmail.com> wrote:
 >
->> Le 27/02/2026 à 07:16, Ritesh Harjani (IBM) a écrit :
->>> This uses _RPAGE_SW2 bit for the PMD and PUDs similar to PTEs.
->>> This also adds support for {pte,pmd,pud}_pgprot helpers needed for
->>> follow_pfnmap APIs.
->>> 
->>> This allows us to extend the PFN mappings, e.g. PCI MMIO bars where
->>> it can grow as large as 8GB or even bigger, to map at PMD / PUD level.
->>> VFIO PCI core driver already supports fault handling at PMD / PUD level
->>> for more efficient BAR mappings.
->>> 
->>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>
->> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
->>
->>
+> When the Multi-Gen LRU (MGLRU) state is toggled dynamically, a race
+> condition exists between the state switching and the memory reclaim
+> path. This can lead to unexpected cgroup OOM kills, even when plenty of
+> reclaimable memory is available.
 >
-> Thanks for the review!
+> *** Problem Description ***
 >
->>>   #define __HAVE_ARCH_PMDP_SET_ACCESS_FLAGS
->>>   extern int pmdp_set_access_flags(struct vm_area_struct *vma,
->>> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
->>> index dcd3a88caaf6..2d27cb1c2334 100644
->>> --- a/arch/powerpc/include/asm/pgtable.h
->>> +++ b/arch/powerpc/include/asm/pgtable.h
->>> @@ -63,6 +63,18 @@ static inline pgprot_t pte_pgprot(pte_t pte)
->>>   	return __pgprot(pte_flags);
->>>   }
->>> 
->>> +#define pmd_pgprot pmd_pgprot
->>> +static inline pgprot_t pmd_pgprot(pmd_t pmd)
->>> +{
->>> +	return pte_pgprot(pmd_pte(pmd));
->>> +}
->>> +
->>> +#define pud_pgprot pud_pgprot
->>> +static inline pgprot_t pud_pgprot(pud_t pud)
->>> +{
->>> +	return pte_pgprot(pud_pte(pud));
->>> +}
->>> +
+> The issue arises from a "reclaim vacuum" during the transition:
 >
-> In v2 - I will add above under #ifdef CONFIG_PPC_BOOK3S_64 
-> to avoid build issues with 32-bit PPC.
+> 1. When disabling MGLRU, lru_gen_change_state() sets lrugen->enabled to
+>    false before the pages are drained from MGLRU lists back to
+>    traditional LRU lists.
+> 2. Concurrent reclaimers in shrink_lruvec() see lrugen->enabled as false
+>    and skip the MGLRU path.
+> 3. However, these pages might not have reached the traditional LRU lists
+>    yet, or the changes are not yet visible to all CPUs due to a lack of
+>    synchronization.
+> 4. get_scan_count() subsequently finds traditional LRU lists empty,
+>    concludes there is no reclaimable memory, and triggers an OOM kill.
 >
+> A similar race can occur during enablement, where the reclaimer sees
+> the new state but the MGLRU lists haven't been populated via
+> fill_evictable() yet.
+>
+> *** Solution ***
+>
+> Introduce a 'draining' state to bridge the gap during transitions:
+>
+> - Use smp_store_release() and smp_load_acquire() to ensure the visibility
+>   of 'enabled' and 'draining' flags across CPUs.
+> - Modify shrink_lruvec() to allow a "joint reclaim" period. If an lruvec
+>   is in the 'draining' state, the reclaimer will attempt to scan MGLRU
+>   lists first, and then fall through to traditional LRU lists instead
+>   of returning early. This ensures that folios are visible to at least
+>   one reclaim path at any given time.
+>
+> *** Reproduction ***
+>
+> The issue was consistently reproduced on v6.1.157 and v6.18.3 using
+> a high-pressure memory cgroup (v1) environment.
+>
+> Reproduction steps:
+> 1. Create a 16GB memcg and populate it with 10GB file cache (5GB active)
+>    and 8GB active anonymous memory.
+> 2. Toggle MGLRU state while performing new memory allocations to force
+>    direct reclaim.
+>
+> Reproduction script:
+> ---
+> #!/bin/bash
+> # Fixed reproduction for memcg OOM during MGLRU toggle
+> set -euo pipefail
+>
+> MGLRU_FILE="/sys/kernel/mm/lru_gen/enabled"
+> CGROUP_PATH="/sys/fs/cgroup/memory/memcg_oom_test"
+>
+> # Switch MGLRU dynamically in the background
+> switch_mglru() {
+>     local orig_val=$(cat "$MGLRU_FILE")
+>     if [[ "$orig_val" != "0x0000" ]]; then
+>         echo n > "$MGLRU_FILE" &
+>     else
+>         echo y > "$MGLRU_FILE" &
+>     fi
+> }
+>
+> # Setup 16G memcg
+> mkdir -p "$CGROUP_PATH"
+> echo $((16 * 1024 * 1024 * 1024)) > "$CGROUP_PATH/memory.limit_in_bytes"
+> echo $$ > "$CGROUP_PATH/cgroup.procs"
+>
+> # 1. Build memory pressure (File + Anon)
+> dd if=/dev/urandom of=/tmp/test_file bs=1M count=10240
+> dd if=/tmp/test_file of=/dev/null bs=1M # Warm up cache
+>
+> stress-ng --vm 1 --vm-bytes 8G --vm-keep -t 600 &
+> sleep 5
+>
+> # 2. Trigger switch and concurrent allocation
+> switch_mglru
+> stress-ng --vm 1 --vm-bytes 2G --vm-populate --timeout 5s || echo "OOM Triggered"
+>
+> # Check OOM counter
+> grep oom_kill "$CGROUP_PATH/memory.oom_control"
+> ---
+>
+> Signed-off-by: Leno Hou <lenohou@gmail.com>
+>
+> ---
+> To: linux-mm@kvack.org
+> To: linux-kernel@vger.kernel.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: Yuanchu Xie <yuanchu@google.com>
+> Cc: Wei Xu <weixugc@google.com>
+> Cc: Barry Song <21cnbao@gmail.com>
+> Cc: Jialing Wang <wjl.linux@gmail.com>
+> Cc: Yafang Shao <laoar.shao@gmail.com>
+> Cc: Yu Zhao <yuzhao@google.com>
+> ---
+>  include/linux/mmzone.h |  2 ++
+>  mm/vmscan.c            | 14 +++++++++++---
+>  2 files changed, 13 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 7fb7331c5725..0648ce91dbc6 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -509,6 +509,8 @@ struct lru_gen_folio {
+>         atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+>         /* whether the multi-gen LRU is enabled */
+>         bool enabled;
+> +       /* whether the multi-gen LRU is draining to LRU */
+> +       bool draining;
+>         /* the memcg generation this lru_gen_folio belongs to */
+>         u8 gen;
+>         /* the list segment this lru_gen_folio belongs to */
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 06071995dacc..629a00681163 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -5222,7 +5222,8 @@ static void lru_gen_change_state(bool enabled)
+>                         VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+>                         VM_WARN_ON_ONCE(!state_is_valid(lruvec));
+>
+> -                       lruvec->lrugen.enabled = enabled;
+> +                       smp_store_release(&lruvec->lrugen.enabled, enabled);
+> +                       smp_store_release(&lruvec->lrugen.draining, true);
+>
+>                         while (!(enabled ? fill_evictable(lruvec) : drain_evictable(lruvec))) {
+>                                 spin_unlock_irq(&lruvec->lru_lock);
+> @@ -5230,6 +5231,8 @@ static void lru_gen_change_state(bool enabled)
+>                                 spin_lock_irq(&lruvec->lru_lock);
+>                         }
+>
+> +                       smp_store_release(&lruvec->lrugen.draining, false);
+> +
+>                         spin_unlock_irq(&lruvec->lru_lock);
+>                 }
+>
+> @@ -5813,10 +5816,15 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+>         unsigned long nr_to_reclaim = sc->nr_to_reclaim;
+>         bool proportional_reclaim;
+>         struct blk_plug plug;
+> +       bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
+> +       bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
+>
+> -       if (lru_gen_enabled() && !root_reclaim(sc)) {
+> +       if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
+>                 lru_gen_shrink_lruvec(lruvec, sc);
+> -               return;
 
-On second thoughts, I am thinking maybe we should guard it with CONFIG_PPC64.  
-Currently the build fails on 32-bit since no definitions of pmd_pte()
-and pud_pte().  Though, we could open-code that, but I think as of
-today, this only gets excercised from follow_pfnmap_start() which gates
-it with VM_PFNMAP | VM_IO, which I think could only happen for THP which
-is only true for book3s/64. 
-But to keep the generic definitions of pXd_pgprot() and since pmd_pte()
-and pud_pte() are anyways available on book3s/64 & nohash/64, so let's
-just guard this with PPC64.
+Is it possible to simply wait for draining to finish instead of performing
+an lru_gen/lru shrink while lru_gen is being disabled or enabled?
 
-I will amend this change in RFC-v2 and will keep the RB from Christophe.
+Performing a shrink in an intermediate state may still involve a lot of
+uncertainty, depending on how far the shrink has progressed and how much
+remains in each side’s LRU？
 
-
-+#ifdef CONFIG_PPC64
-+#define pmd_pgprot pmd_pgprot
-+static inline pgprot_t pmd_pgprot(pmd_t pmd)
-+{
-+       return pte_pgprot(pmd_pte(pmd));
-+}
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 3e51190a55e4..ba306e986050 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -509,6 +509,8 @@ struct lru_gen_folio {
+ 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+ 	/* whether the multi-gen LRU is enabled */
+ 	bool enabled;
++	/* whether the multi-gen LRU is switching from/to active/inactive LRU */
++	bool switching;
+ 	/* the memcg generation this lru_gen_folio belongs to */
+ 	u8 gen;
+ 	/* the list segment this lru_gen_folio belongs to */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..60fc611067c7 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5196,6 +5196,7 @@ static void lru_gen_change_state(bool enabled)
+ 			VM_WARN_ON_ONCE(!state_is_valid(lruvec));
+ 
+ 			lruvec->lrugen.enabled = enabled;
++			smp_store_release(&lruvec->lrugen.switching, true);
+ 
+ 			while (!(enabled ? fill_evictable(lruvec) : drain_evictable(lruvec))) {
+ 				spin_unlock_irq(&lruvec->lru_lock);
+@@ -5203,6 +5204,8 @@ static void lru_gen_change_state(bool enabled)
+ 				spin_lock_irq(&lruvec->lru_lock);
+ 			}
+ 
++			smp_store_release(&lruvec->lrugen.switching, false);
 +
-+#define pud_pgprot pud_pgprot
-+static inline pgprot_t pud_pgprot(pud_t pud)
-+{
-+       return pte_pgprot(pud_pte(pud));
-+}
-+#endif /* CONFIG_PPC64 */
-+
+ 			spin_unlock_irq(&lruvec->lru_lock);
+ 		}
+ 
+@@ -5780,6 +5783,10 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	bool proportional_reclaim;
+ 	struct blk_plug plug;
+ 
++#ifdef CONFIG_LRU_GEN
++	while (smp_load_acquire(&lruvec->lrugen.switching))
++		schedule_timeout_uninterruptible(HZ/100);
++#endif
+ 	if (lru_gen_enabled() && !root_reclaim(sc)) {
+ 		lru_gen_shrink_lruvec(lruvec, sc);
+ 		return;
+-- 
 
+> +
+> +               if (!lru_draining)
+> +                       return;
+> +
+>         }
+>
+>         get_scan_count(lruvec, sc, nr);
+> --
+> 2.52.0
+>
 
--ritesh
-
+Thanks
+Barry
 
