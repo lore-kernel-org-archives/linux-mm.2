@@ -4,106 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CEC6FEE4F7
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 19:23:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20D58FEE4F7
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 19:48:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B9D16B0005; Sat, 28 Feb 2026 14:23:57 -0500 (EST)
+	id 40BA56B0005; Sat, 28 Feb 2026 14:48:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 666D16B0089; Sat, 28 Feb 2026 14:23:57 -0500 (EST)
+	id 3B9896B0089; Sat, 28 Feb 2026 14:48:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5661D6B008A; Sat, 28 Feb 2026 14:23:57 -0500 (EST)
+	id 2B8046B008A; Sat, 28 Feb 2026 14:48:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4205C6B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:23:57 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D3B4A140222
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:23:56 +0000 (UTC)
-X-FDA: 84494840472.06.BB5A40E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 21D691A0002
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:23:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Dza6hlPK;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1793B6B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:48:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6242C119C
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:48:17 +0000 (UTC)
+X-FDA: 84494901834.21.D6D0CBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2335640005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:48:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C0iDGAR7;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772306635;
+	s=arc-20220608; t=1772308096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UhIzrTtUMqa93CBU2YCTGkUhAinboBhL9pWEgiMzLIw=;
-	b=Y6U50G03OuGCvyLCuppNPWhYM17jcm7pckTFRbMnMJnX0w9UR9eoU+bukDM1VuTOBu617B
-	fVTm79BjF/Ohpdf41IyxXHSJQAE1VYxZwuLz3bUvIcKSAiLCHrX6e5JgiFt6x1KBKEEM3V
-	d1hOKZ09nHW1NAP5zYtPEt2nPwqLugI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772306635; a=rsa-sha256;
-	cv=none;
-	b=upkQuNl6cYp2+tT4KjM3oJqhYn6Nq/gsp66W2i4So/syQVWAp93uDj80lteNoFs510sUQx
-	BTldH+iqXg2W2T5yez+pHkbMMW4KAgS62lc0IqCAcV89sarA4kozuqr5vUipZtJVHgf3O+
-	PzOWr0vJMT4rayp3Ps2iSX7BS63hx5g=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Jyi7kGSHLSyk5ifLeqQxljB4+bEytiYd2X7NTGXFnZI=;
+	b=A1bRPGpQEMUQ8Z3uhMQaDoUmD8SnHjzmEqTkIIG+c/DcYddd/HTsWl4AOHg4m5CLqEuTGd
+	Lwuqc4oZ/BU0SVLyFk/pPBlO7pd8jwr0VODvf295foVg7sEgDePNnrhqtz/lsISa0/fuVN
+	1ModIperRsAC7e+3UjhL9S+d8RNtUGk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Dza6hlPK;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772306633; x=1803842633;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z0YaTKoQyykIK7uZDjwfoLRsCjKJQeRAJv81t7QHMDo=;
-  b=Dza6hlPKPKu8zwYSVp42mRUoPqXfwWI/KmyJgUA42VJ4r5LYc9nf7a/F
-   /Fydl5Hui34VOwo0enlB4D5JjfjZDDoQeqVK6zRYgbZZTa1LcI6sxzRcZ
-   TyYsbnrGm4jZDWsxyLLKmY8y0qDND2i6BTQjlrwxIt8KgFZnZtehV/loI
-   rk0VW/v4jUaXedUMV/kPMf5eVr24xdL1sIO/vZcobe+u1xp642B9YWoq/
-   Fyiwwn/htdXAcwJ1ewjAmfHwr24Nf95ul/jLpHF3s9LVtK4QMM4y4eD/v
-   oM48+n38rMOWcPA9Y8850pPzfbpdnfX/ClvRsSpao0t24V5FHloy5lIm3
-   Q==;
-X-CSE-ConnectionGUID: jjMX1eYpQ6qwYxuOZdFpOQ==
-X-CSE-MsgGUID: rsbVIIJWQPaeckg07EWvuw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="77233689"
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="77233689"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 11:23:51 -0800
-X-CSE-ConnectionGUID: EiPGYCTiTI6ZZJtYSEOXyg==
-X-CSE-MsgGUID: mKCrLRFHTfmk2fLG9wMivA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,316,1763452800"; 
-   d="scan'208";a="221854951"
-Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 28 Feb 2026 11:23:48 -0800
-Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vwPuj-00000000089-2EHh;
-	Sat, 28 Feb 2026 19:23:45 +0000
-Date: Sun, 1 Mar 2026 03:23:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Leno Hou <lenohou@gmail.com>, linux-mm@kvack.org,
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C0iDGAR7;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772308096; a=rsa-sha256;
+	cv=none;
+	b=Ow48Ehftffjt2FujwFInF4YWUXxDEI1YyoH0BZ4ZRVSuZvKku32suLGoC9F/8oYEvf2Jqf
+	T2rxH/AaWDzKZjUFUOlitS5amHbg2q+P8DDjcdcebwpUPdmQ+6Gs+REHv+WutOldFXD3Aw
+	fP0c4FYfgx+8lWTPWcFjHLK5WNygZsM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6AAD460008
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8C8C116D0;
+	Sat, 28 Feb 2026 19:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772308095;
+	bh=kKwP5TvGMLK3hpwL7ErLXfmb6F8FsTV5dCMX7DdiB3k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=C0iDGAR7eWLKvPNsFwWexDEonJQJRh50W3bmQlHxuv7o8K39lmVIGVmGYfHhq7RtS
+	 15+rhhhiSqhRYA61EtHHH/No3yajwW32LGZdpj22uDDGukQarqXGrQLxOJ+f4cSn80
+	 6irunRMynuFhzOqrncqemcLMk+o73IkSTU5jF5cHRCf1O2LZbNQwScdjU/HkI+7wYd
+	 AKwuSmyUJZRUKAhg7ll6tnjnE+EwVZjtzwdHYYiaQnwtZzlb87NE51m6MhQna3UEtI
+	 JFn1hcrfzfuaeRVPDod1u1bzIeP+U8nZ/L0bsgyY7VPhZUkpPGZ1nWlh5N1NHaARdW
+	 Yxvna/LV1UA5A==
+From: SeongJae Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Leno Hou <lenohou@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Barry Song <21cnbao@gmail.com>, Jialing Wang <wjl.linux@gmail.com>,
-	Yafang Shao <laoar.shao@gmail.com>, Yu Zhao <yuzhao@google.com>
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-Message-ID: <202603010300.t6GYRWjK-lkp@intel.com>
-References: <20260228161008.707-1-lenohou@gmail.com>
+Subject: DAMON Release News (v6.19-rc1..v7.0-rc1)
+Date: Sat, 28 Feb 2026 11:48:04 -0800
+Message-ID: <20260228194805.97228-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260228161008.707-1-lenohou@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 21D691A0002
-X-Stat-Signature: mmr64wg3166wzueawgddkucgkwzsmd7c
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1772306632-436511
-X-HE-Meta: U2FsdGVkX1/6Js9YQItIoFa5/qztFvd9GQLLKCPkgSEsKOQOHpGcHFUzHafxAYlzM2YMsXcfqWD8Ed2vZMRg70jM52Y4bO2dMU/1i8aXdV/jX8Q1G9i+ppyqWNfv+72TBVX/PBOUbNeqdzXixbn3imvIE+g19iqu67Wu8HaYbUq1adnru3fxEN3VUKqfhetwSTCEYbGz0zVBIo+VAYyVosJzU+DxlTXyiKFPEKq1q/Y+cRCvuwevc07lE8bPM3oxPls6FImh/4qlVJCJG1/j/0C1Pp/IUC7g6pgWKscpKbAsgqL/RfsAx9I5kF26Cts96aQzOu1NJWloZxE3QjGjhxL6GilA4M6zpiwsZWkldI8L92R+jKAAO8mDlrPH1GSl51ff9qF9GPXCZiiFcddgAXAHtLDj4yYTynSTSO4hT5wFokKodXC2Iu1ws4YAg7TO68VJN66v3myRt6QNVzO3hTHVNvsHbvJw/wxXLmT/b5jlk+WJHHW9LVzy3LKjclTOHZpM8l7nrgUzvZHy1LpRKxM7zk0MjXzNZILHU8pVeyT8v6EojBuHQHGEWGkmbOmjkawoWJm+XZtNJEVRXHmJdVMrcSknGxIVat94lTE7hTBslNmXAQLYMX8/0ybRhULnzjTTxTJgJdlKGMNSwpRV3NOgLNQrPBpH7PXCrsVWtSFmyRut1xWKqlajGa8NQeTBzM+UpD7oRpYLQdHK1UzZ9lpTlRNFOskqOOx3ZD3SKqHRBs7ddifKqXJ1K05W6VgaSDEY37AJE+IZIN+CAH0H7uVGq38rjJ4/YvOEvV1CbqFA3OrCcos2YFiJFsRMMjZu5iagQh5S3r/ZE6GnmuuUmrHNW56K4KS0RDEnDhVhZH9ym03rahD2K5cGco6mzjASXRskeuNRcXUR5Rg3ozMSvRX8QziOF3fXCFGe0K6amps7EZAQIxr2rq08rD8OGKWYpwbap/KfLeY=
+X-Rspamd-Queue-Id: 2335640005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: x7dwgfjzujs897d3dnef7eqww51k1d5t
+X-HE-Tag: 1772308095-778342
+X-HE-Meta: U2FsdGVkX1/XZOvrEyFK1AWoe3wYBQd3dXnGetmg5XuqX4J4aSzpEiT8v2urnClJ4WGzrmDwYovn0esbzlvLQNn0ziFSUc5W2hEtxerMGQIFTjGvInWGOZctK7n81nS+XPvrW8B81PH8kbhPMItxQrt4sFGG1kOSt9bAJN8fWL662nlJUstJ3fFgz8NkimvKsjlEMTe0+o+zmr7Xno0jv0L8YaJjdfyu9tgZ3/IvR4zQ/Uv+63agqVLpl+FMtdW36CHLeUheyjpx4gCas25TvCbMuVUM5MqLZ7RopBhzHNapp2lfdNC1WfiaJozmbngb6HbKME1YF6Uyaox/m4kau1jgquNyOXTVX2TLVBy99P5Q/2iXms6jwr78CCSNDRY6iqgcSP9um3IHzx7vbf6s9ymMNHE/no4tHSib+v3j6w9Vvtb//ZG5T3OSajeX4dAX5+ziHnkDMH3pikQxrlO5VC0i3m48B+WGe1Dlq7AikWTpQh3IBkUARfrTp1le2XXsLXajMnBcGO4RK+ob1Ss3FG0OqfIe6BEwD2oNoQZRJICl/L0XrhN/Dd1NkI+6nPGuFm3NQfX2bAjvLqaybyclfRwh0BALBGRvgSWwvu701PcxR6DK8tUdFq/XPai5JdEwh/Rk4b/nQljYIr/JRYp71LGmK0E0q21gH2a7IkQAdGCfw3fYYSCfnrWK3TYQx+7PIm29TlZYQahCBF45IedhtRyBWqwpcxewUjgIW+Sv4ODx3KcjxTlRXP4Z48h++wePZjn5EnyWukEO9QLoq1APUZE+MXDCV6EBBXdM8s++njXKU8twezKwxUKfx9YLC+QRu0Uj1RoESBirUQAVLc/AaLNehOBX9HSh0JLcEioaKCLjF52/xQYuOyXogTbY/9RSBVSG4p4iheGlq2/1ynDp3YE0VRc5XLYPBApRIfoTT9LHLwH4JUVL+owd8vhlp4kieIbAEssM44ye888yMrb
+ WtHFAcl9
+ eUmomsmD3m0IY//R4MdaM46jb/4nubMSQiIEjNDyQVO3yMnKPAeJrUViReK8heuRUcYZPeBEdXwXWG01DEJLiHqKiAsPUPxOBZRCkUV3tMe6kOvrkNakRxcbMLi0trwY7hRb+IRQX8JB/cSgegsjY2eFA4J0F1zyqNiDIId6vzTPzklGhMbdnsndUdw/rrf9U3ZkAYqnXZ7jqXdSy1mSQX78yPwsSo6N9HkGdnUD/8NhVncbT5hcTb8J/Dl/OiyNu5HXD0IaXqUnAl4wqVaZN6R3v78EsOQSKhFZ4WYLA26g3mVF0tU2EJGMENwvvdK69IpxLfJP8oVDPPFt4+RReBAlH61HOFNGAXCPnIBKtLligWaG79bdgjfPZkgt7h44Z/TZYiaVtTkbJv8mQ4peiSzX95ggEkVdmfwIBGr04kGZx+38nlhyWOF4kdXQMr9GZQWZNZnn01Ov7MeHyi6gf4hfAR6UtsqdSX9qklWXmle8bw41Xyvx8hj0Z+thZsNJktyEDv2Cp9DWx/TDAtSj2/URd9ibcvWtwYlEbgIITRO1E8wofrIcUBKomWm2Z2hTl2PaU83OwonqFCZZPzz/Xwz48aqK+DLaFL2awiPrJfbzMSlws9nqfV6nXuWCRAPB0WOPwL88YvS+BF9/eUlZVXeXNrSyBDcMDYxfnPFW3TTVh3uZX0ueGFy0n07gC+yIhCaNrLZAGoFgVHAYf8Z2K7Ds4+I0g42bqzhX0vjbkgSCoj7goeueyPKo+5vGdaAHMDlDCZzWWuyf5+A5H5CDIjF2VCA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,224 +89,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Leno,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on v7.0-rc1]
-[also build test WARNING on linus/master next-20260227]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Leno-Hou/mm-mglru-fix-cgroup-OOM-during-MGLRU-state-switching/20260301-001148
-base:   v7.0-rc1
-patch link:    https://lore.kernel.org/r/20260228161008.707-1-lenohou%40gmail.com
-patch subject: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-config: um-defconfig (https://download.01.org/0day-ci/archive/20260301/202603010300.t6GYRWjK-lkp@intel.com/config)
-compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 9a109fbb6e184ec9bcce10615949f598f4c974a9)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603010300.t6GYRWjK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603010300.t6GYRWjK-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5785:50: error: no member named 'lrugen' in 'struct lruvec'
-    5785 |         bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-         |                                                 ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
-   mm/vmscan.c:5786:48: error: no member named 'lrugen' in 'struct lruvec'
-    5786 |         bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-         |                                               ~~~~~~  ^
->> mm/vmscan.c:5788:37: warning: '&&' within '||' [-Wlogical-op-parentheses]
-    5788 |         if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-         |                            ~~ ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
-   mm/vmscan.c:5788:37: note: place parentheses around the '&&' expression to silence this warning
-    5788 |         if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-         |                                            ^                   
-         |                               (                                )
-   1 warning and 18 errors generated.
+Hello community,
 
 
-vim +5788 mm/vmscan.c
+I shared DAMON quarterly news [1, 2, 3, 4] in 2024.  I was further planning to
+write that for 2025 Q1.  But I dropped the ball and never finished it.  I'm
+starting a new series of DAMON news, that aims to cover each -rc1 release.
 
-  5774	
-  5775	static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
-  5776	{
-  5777		unsigned long nr[NR_LRU_LISTS];
-  5778		unsigned long targets[NR_LRU_LISTS];
-  5779		unsigned long nr_to_scan;
-  5780		enum lru_list lru;
-  5781		unsigned long nr_reclaimed = 0;
-  5782		unsigned long nr_to_reclaim = sc->nr_to_reclaim;
-  5783		bool proportional_reclaim;
-  5784		struct blk_plug plug;
-  5785		bool lrugen_enabled = smp_load_acquire(&lruvec->lrugen.enabled);
-  5786		bool lru_draining = smp_load_acquire(&lruvec->lrugen.draining);
-  5787	
-> 5788		if (lrugen_enabled || lru_draining && !root_reclaim(sc)) {
-  5789			lru_gen_shrink_lruvec(lruvec, sc);
-  5790	
-  5791			if (!lru_draining)
-  5792				return;
-  5793	
-  5794		}
-  5795	
-  5796		get_scan_count(lruvec, sc, nr);
-  5797	
-  5798		/* Record the original scan target for proportional adjustments later */
-  5799		memcpy(targets, nr, sizeof(nr));
-  5800	
-  5801		/*
-  5802		 * Global reclaiming within direct reclaim at DEF_PRIORITY is a normal
-  5803		 * event that can occur when there is little memory pressure e.g.
-  5804		 * multiple streaming readers/writers. Hence, we do not abort scanning
-  5805		 * when the requested number of pages are reclaimed when scanning at
-  5806		 * DEF_PRIORITY on the assumption that the fact we are direct
-  5807		 * reclaiming implies that kswapd is not keeping up and it is best to
-  5808		 * do a batch of work at once. For memcg reclaim one check is made to
-  5809		 * abort proportional reclaim if either the file or anon lru has already
-  5810		 * dropped to zero at the first pass.
-  5811		 */
-  5812		proportional_reclaim = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
-  5813					sc->priority == DEF_PRIORITY);
-  5814	
-  5815		blk_start_plug(&plug);
-  5816		while (nr[LRU_INACTIVE_ANON] || nr[LRU_ACTIVE_FILE] ||
-  5817						nr[LRU_INACTIVE_FILE]) {
-  5818			unsigned long nr_anon, nr_file, percentage;
-  5819			unsigned long nr_scanned;
-  5820	
-  5821			for_each_evictable_lru(lru) {
-  5822				if (nr[lru]) {
-  5823					nr_to_scan = min(nr[lru], SWAP_CLUSTER_MAX);
-  5824					nr[lru] -= nr_to_scan;
-  5825	
-  5826					nr_reclaimed += shrink_list(lru, nr_to_scan,
-  5827								    lruvec, sc);
-  5828				}
-  5829			}
-  5830	
-  5831			cond_resched();
-  5832	
-  5833			if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
-  5834				continue;
-  5835	
-  5836			/*
-  5837			 * For kswapd and memcg, reclaim at least the number of pages
-  5838			 * requested. Ensure that the anon and file LRUs are scanned
-  5839			 * proportionally what was requested by get_scan_count(). We
-  5840			 * stop reclaiming one LRU and reduce the amount scanning
-  5841			 * proportional to the original scan target.
-  5842			 */
-  5843			nr_file = nr[LRU_INACTIVE_FILE] + nr[LRU_ACTIVE_FILE];
-  5844			nr_anon = nr[LRU_INACTIVE_ANON] + nr[LRU_ACTIVE_ANON];
-  5845	
-  5846			/*
-  5847			 * It's just vindictive to attack the larger once the smaller
-  5848			 * has gone to zero.  And given the way we stop scanning the
-  5849			 * smaller below, this makes sure that we only make one nudge
-  5850			 * towards proportionality once we've got nr_to_reclaim.
-  5851			 */
-  5852			if (!nr_file || !nr_anon)
-  5853				break;
-  5854	
-  5855			if (nr_file > nr_anon) {
-  5856				unsigned long scan_target = targets[LRU_INACTIVE_ANON] +
-  5857							targets[LRU_ACTIVE_ANON] + 1;
-  5858				lru = LRU_BASE;
-  5859				percentage = nr_anon * 100 / scan_target;
-  5860			} else {
-  5861				unsigned long scan_target = targets[LRU_INACTIVE_FILE] +
-  5862							targets[LRU_ACTIVE_FILE] + 1;
-  5863				lru = LRU_FILE;
-  5864				percentage = nr_file * 100 / scan_target;
-  5865			}
-  5866	
-  5867			/* Stop scanning the smaller of the LRU */
-  5868			nr[lru] = 0;
-  5869			nr[lru + LRU_ACTIVE] = 0;
-  5870	
-  5871			/*
-  5872			 * Recalculate the other LRU scan count based on its original
-  5873			 * scan target and the percentage scanning already complete
-  5874			 */
-  5875			lru = (lru == LRU_FILE) ? LRU_BASE : LRU_FILE;
-  5876			nr_scanned = targets[lru] - nr[lru];
-  5877			nr[lru] = targets[lru] * (100 - percentage) / 100;
-  5878			nr[lru] -= min(nr[lru], nr_scanned);
-  5879	
-  5880			lru += LRU_ACTIVE;
-  5881			nr_scanned = targets[lru] - nr[lru];
-  5882			nr[lru] = targets[lru] * (100 - percentage) / 100;
-  5883			nr[lru] -= min(nr[lru], nr_scanned);
-  5884		}
-  5885		blk_finish_plug(&plug);
-  5886		sc->nr_reclaimed += nr_reclaimed;
-  5887	
-  5888		/*
-  5889		 * Even if we did not try to evict anon pages at all, we want to
-  5890		 * rebalance the anon lru active/inactive ratio.
-  5891		 */
-  5892		if (can_age_anon_pages(lruvec, sc) &&
-  5893		    inactive_is_low(lruvec, LRU_INACTIVE_ANON))
-  5894			shrink_active_list(SWAP_CLUSTER_MAX, lruvec,
-  5895					   sc, LRU_ACTIVE_ANON);
-  5896	}
-  5897	
+This news letter covers DAMON features that landed on the mainline, and misc
+events that were interesting to me that happened in v6.19-rc1..v7.0-rc1 time
+period (2025-12-14..2026-02-22).
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+TL; DR
+======
+
+Interesting DAMON development ideas including PMU-based extension, automated
+THP application, and new DAMOS quota auto-tune metrics for CXL-based tiered
+memory systems have been proposed.
+
+Two DAMON topics for LSF/MM/BPF are proposed.
+
+In the time period, 12 grateful contributors landed 75 commits on the linux
+mainline.
+
+Notable Events
+==============
+
+In the time period, many events happened.  Among those, I think below events
+are worthy to be noted here.
+
+Release
+-------
+
+Seven DAMON hotfixes have landed on 6.19.
+
+    $ git log v6.19-rc1..v6.19 --oneline -- mm/damon include/linux/damon.h \
+            Documentation/mm/damon/ Documentation/admin-guide/mm/damon/ \
+    	include/trace/events/damon.h samples/damon/ \
+    	tools/testing/selftests/damon | wc -l
+    7
+
+Sixty six DAMON changes have landed on 7.0-rc1 during the merge window.
+
+    $ git log v6.19..v7.0-rc1 --oneline -- mm/damon include/linux/damon.h \
+            Documentation/mm/damon/ Documentation/admin-guide/mm/damon/ \
+    	include/trace/events/damon.h samples/damon/ \
+    	tools/testing/selftests/damon | wc -l
+    66
+
+Read below 'Changes Landed On ...' sections for more details of the changes
+including user-visible ones (mostly new features).
+
+New and Ongoing Developments
+----------------------------
+
+Enze Li proposed [5] to make DAMON supports loadable modules.  Because of the
+lack of the real use case, it is on hold for now.
+
+Asier proposed [6] a new DAMON module that finds hot processes and applies THP
+to hot pages of the processes.  We are aligned on the high level approach,
+though details might need some changes.  Asier is further working on tests.
+
+Akinobu Mita proposed [7] PMU-based access check.  It could allow sub-page
+level access monitoring and more interesting expansions of DAMON, such as
+per-CPUs/processes/reads/writes monitoring.  It may be restrictive for virtual
+machines, though.  Akinobu is looking at rebasing it on my page faults-based
+similar extension RFC code.
+
+Ravi Jonnalagadda proposed [8] new DAMOS quota goal metrics for weights-based
+pages promotion and demotion on CXL-based tiered memory systems.  After a few
+revisioning, I think we are now quite aligned on the direction of the change.
+Ravi continues working on it, with tests.
+
+LSF/MM/BPF
+----------
+
+DAMON is picked [9] as one of Linux kernel machine learning library
+demonstration use cases.  DAMON community promised any collaborations for that
+on demand.
+
+Two DAMON-related LSF/MM/BPF topics are suggested.  The first one [10] aims to
+discuss possible DAMON usage for THP, on production level.  It will share past
+DAMON-based THP improvement works and why it was inappropriate on product
+environments.  Further, it will brainstorm better approaches.  Asier's work may
+also be discussed.
+
+The second one [11] aims to make alignment on required DAMON-external changes
+for page faults based per-CPUs/threads/reads/writes DAMON monitoring extension.
+The very initial extension attempt was started from nearly the very beginning
+of DAMON, and I continued it from last summer.  Hopefully it will make more
+progress or happily fail early.
+
+Misc
+----
+
+DAMON user-space tool (damo) started supporting trace-cmd [12], making use of
+it on Android much easier.  It also started supporting command line
+auto-completion [13].
+
+DAMON development yearly retrospects for 2024 [14] and 2025 [15] are also
+finally posted.
+
+Statistics
+==========
+
+In the time period, 12 people made 75 grateful DAMON commits on the Linux
+mainline.  The script is availabe at my GitHub toolbox repo [16].
+
+    $ ./lazybox/version_control/authors.py ./linux --skip_merge_commits \
+            --linux_subsystems DAMON --since 2025-12-14 --until 2026-02-22
+    1. SeongJae Park <sj@kernel.org>: 54 commits
+    2. Shu Anzai <shu17az@gmail.com>: 5 commits
+    3. Enze Li <lienze@kylinos.cn>: 3 commits
+    4. Shakeel Butt <shakeel.butt@linux.dev>: 3 commits
+    5. Kees Cook <kees@kernel.org>: 2 commits
+    6. Linus Torvalds <torvalds@linux-foundation.org>: 2 commits
+    7. Li RongQing <lirongqing@baidu.com>: 1 commits
+    8. Aaron Yang <yangqixiao@inspur.com>: 1 commits
+    9. Kevin Lourenco <klourencodev@gmail.com>: 1 commits
+    10. JaeJoon Jung <rgbi3307@gmail.com>: 1 commits
+    11. Swaraj Gaikwad <swarajgaikwad1925@gmail.com>: 1 commits
+    12. Akinobu Mita <akinobu.mita@gmail.com>: 1 commits
+    # 12 authors, 75 commits in total
+
+DAMON user-space tool also got grateful changes.
+
+    $ ./lazybox/version_control/authors.py ./damo --skip_merge_commits \
+            --since 2025-12-14 --until 2026-02-22
+    1. SeongJae Park <sj@kernel.org>: 335 commits
+    2. Andrew Paniakin <apanyaki@amazon.com>: 2 commits
+    # 2 authors, 337 commits in total
+
+According to 'hkml' [20], DAMON mailing list received 440 mails of 111 threads.
+77 threads were newly initiated.  Among the mails, 223 mails were for patches.
+It included 43 series.
+
+    $ hkml list damon --alias tmp --since v6.19-rc1 --until v7.0-rc1 --collapse --stdout --stat_only
+    # (cached output)
+    # 440 mails, 111 threads, 72 new threads
+    # 223 patches, 43 series
+    # oldest: 2025-12-11 04:56:14-08:00
+    # newest: 2026-02-22 13:01:01-08:00
+
+Huge appreciation to all the great contributors!
+
+Changes landed on v6.19
+=======================
+
+All DAMON changes that landed on v6.19-rc1 via MM pull requests [17, 18] are
+successfully landed on v6.19.
+
+User-visible Changes
+--------------------
+
+Among the changes, below two new features are notable.
+
+    commit adf7d6cdd716e: Patch series "mm/damon: support pin-point targets removal".
+    commit d3946c5f4c1c5: Patch series "mm/damon: allow DAMOS auto-tuned for per-memcg per-node memory usage."
+
+The first feature allows more efficient and flexible use of DAMON and DAMOS for
+dynamic list of virtual address spaces.  It was motivated by Bijan's dynamic
+access-aware memory interleaving on CXL-based memory tiering work.
+
+The second feature is for general per-memcg per-node memory utilization based
+automatic access-aware system operations.  The motivation was per-cgroup
+fairness on memory tiering use case.
+
+User-invisible Changes
+----------------------
+
+Below non-feature changes that made for more reliable and complete DAMON tests
+are also notable.  The kunit tests memory bugs fix is now on all relevant
+stable kernels.
+
+    commit b5ab490d85b77: Patch series "mm/damon/tests: fix memory bugs in kunit tests".
+    commit e859a224fad65: Patch series "mm/damon: fixes for address alignment issues in DAMON_LRU_SORT and DAMON_RECLAIM".
+    commit 37104286f9390: Patch series "mm/damon/tests: add more tests for online parameters commit".
+
+Changes landed on v7.0-rc1
+==========================
+
+During the 7.0-rc1 merge window, 66 DAMON patches have landed via the MM pull
+request [19].
+
+User-visible Changes
+--------------------
+
+In the merge window, below user-visible new features are added.
+
+    commit 4835e2871321f: Patch series "mm/damon: advance DAMOS-based LRU sorting".
+    commit 4a6ceb7c9744c: Patch series "mm/damon: introduce {,max_}nr_snapshots and tracepoint for damos stats".
+
+The first series advances DAMON_LRU_SORT module, which protects hot LRU pages,
+to be easier to control.  Support of active:inactive list size based automation
+and DAMON monitoring intervals automation are especially notable.
+
+The second series allows more deterministic control and internal behavior
+observabilities for DAMOS.  The development was motivated by Ravi's dynamic
+page interleaving latency/capacity improvement-aimed CXL memory tiering
+approach.
+
+User-invisible Changes
+----------------------
+
+Also important changes for DAMON tests improvement, API/code code refactoring,
+and documentation cleanup were landed, including below series.
+
+    commit 94a62284ede02: Patch series "selftests/damon: improve leak detection and wss estimation reliability."
+    commit 6c59085fc0942: Patch series "mm/damon/tests/core-kunit: extend existing test scenarios",
+    commit 4262c53236977: Patch series "mm/damon: hide kdamond and kdamond_lock from API callers".
+    commit 50962b16c0d63: Patch series "mm/damon: cleanup kdamond, damon_call(), damos filter and DAMON_MIN_REGION."
+    commit 32d11b3208971: Patch series "Docs/mm/damon: update intro, modules, maintainer profile, and misc."
+
+References
+==========
+
+[1] 2024 Q1 news: https://lore.kernel.org//20240402191224.92305-1-sj@kernel.org/
+[2] 2024 Q2 news: https://lore.kernel.org/20241001002449.515043-1-sj@kernel.org/
+[3] 2024 Q3 news: https://lore.kernel.org/20241001191425.588219-1-sj@kernel.org/
+[4] 2024 Q4 news: https://lore.kernel.org/20250102211811.48322-1-sj@kernel.org/
+[5] loadable module support: https://lore.kernel.org/20251215142057.588500-1-lienze@kylinos.cn
+[6] THP-ing hot processes: https://lore.kernel.org/20260202145650.1795854-1-gutierrez.asier@huawei-partners.com
+[7] perf event based access check: https://lore.kernel.org/20260123021014.26915-1-akinobu.mita@gmail.com
+[8] node_target_[in]eligible_mem_bp: https://lore.kernel.org/20260123045733.6954-1-ravis.opensrc@gmail.com
+[9] ML library: https://lore.kernel.org/all/c24a209d5a4af0c4cc08f30098998ce16c668b58.camel@ibm.com/
+[10] DAMON for THP, LSFMMBPF: https://lore.kernel.org/all/20260211022845.68865-1-sj@kernel.org/
+[11] DAMON for faults, LSFMMBPF: https://lore.kernel.org/all/20260218054320.4570-1-sj@kernel.org/
+[12] damo trace-cmd support: https://damonitor.github.io/posts/damo_support_trace_cmd/
+[13] damo cli auto-completion: https://github.com/damonitor/damo/blob/next/USAGE.md#command-line-auto-completion
+[14] DAMON yearly restrospects, 2024: https://lore.kernel.org/all/20260216210625.68098-1-sj@kernel.org/
+[15] DAMON yearly retrospects, 2025: https://lore.kernel.org/all/20260222210102.153347-1-sj@kernel.org/
+[16] https://github.com/sjp38/lazybox/blob/master/version_control/authors.py
+[17] 6.19-rc1 mm pr 1/2: https://lore.kernel.org/20251203212918.82f1c9d3947940aeae263878@linux-foundation.org/
+[18] 6.19-rc1 mm pr 2/2: https://lore.kernel.org/20251211131127.defed99e5b82e49af605108a@linux-foundation.org/
+[19] 7.0-rc1 mm pr: https://lore.kernel.org/20260211192351.6684a77b8c70cc032a3e7a27@linux-foundation.org/
+[20] https://docs.kernel.org/process/email-clients.html#hackermail-tui
+
+
+Thanks,
+SJ
 
