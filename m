@@ -4,89 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E8BFD0045
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 22:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D30FD0040
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 22:28:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EBF26B0005; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
+	id 61FF76B0089; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37AE96B008A; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
+	id 5D3026B008C; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27AEA6B008A; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
+	id 493CC6B0092; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 191626B0005
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 31B836B0089
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 17:28:43 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A74281A02EE
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4B4D14030E
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 22:28:42 +0000 (UTC)
-X-FDA: 84495306084.15.7D8A2F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 3FF461C0002
+X-FDA: 84495306084.07.D9661B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 64A9DA0007
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 22:28:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eExcrfpI;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q8lIYuQs;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772317721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=k3j18GLMxV/tG2kzOw0L6wWwcexJlsnv40zEVE3BIM0=;
-	b=laxSu6IDa2NCr7XLJINFCUMiqQVhiIN6XOfz89YVW2FhfBaPU0Rdw6vcpat2Zl1gOTK+3F
-	1hih9tLQSkOqnNYf1w+8kL5i91D66iJMfNg+no9gJEPRb6ofWlk/IuTeYVYa8DrCOgJSQy
-	L2+3H51jFZKJK3LNco+t/VKra5lDy9Y=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MPEmhHO4pAQIDi8xz7kLYTysxcxYNnWBHxHCh77oel4=;
+	b=3Z3cvq0reItMx/Ow4/0rcd48f2dpRqY3odnckUePx6LMy7H0l3I0haXHtQITOV4BmgP+9Q
+	OSLuKlNtO4CXcH2MO6HckG2wCrUEne09onCtcBsqrU8kSAhObIMiFM2371dBGu87VXQI2k
+	QY0Psx4Z2KARcXCTK8aosx1JsyIa3nE=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q8lIYuQs;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772317721; a=rsa-sha256;
 	cv=none;
-	b=ldjQG0iTKja4fk++w7fcUpLUNMp7lO02QRcdwIq8KWerQM4okQ2wmgmsF9rOHyubQh8HNW
-	TK7TFqcpJdSToV7ISpSRaFDEwYfcM3Bx95aGff4tpbvXA3pSSrBoAlyvNnsDcyWOvCzkAE
-	M0U6QAGfPdZI+djahMyqaE1MzUwvroc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eExcrfpI;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=N38/oq1Ama9m1oIuTAqlO6AwdRyn0M3bWY9JdmIiz1pxXHcfbk9lvcpNtfOTPSejEe/VvL
+	2ghlNN0wmftlI9awUrw+1Nnc4Aiohx8JF36/cb5J9iLwsASNNEdGMMb9UYw7gPQgN3PKSi
+	VCv2+s3MM/JeY5AznBvW92AQLnGst4o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1112540DB0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D90C600AE;
 	Sat, 28 Feb 2026 22:28:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC3EC116D0;
-	Sat, 28 Feb 2026 22:28:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3316BC2BC9E;
+	Sat, 28 Feb 2026 22:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772317719;
-	bh=3nM294S6J5PfuhiMKe5iqRSZkPsVsLyIz8tFcgHPvZA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eExcrfpITzO0YCE1K6TX5+Qsc3Dba7Va+Tuai7Z1Evt+mjN3FhhBNp+VMYOyjAXz+
-	 IAxVuGkfbeRO/kOxzQKxDLdYj/VfcQp7DpISeFgVOoUrq2gZul6kxsAB1O7ZlhXifT
-	 PZRDY6GtNzg8VJuN8Be8JubTnckhpWWU3sAcppxCYiCwZ7my1kv02B/7wwXAmvjugf
-	 0v7Nsq7zidWeNHJFhu4FHfie1e+G3vcPyt4U0rfqMDCKSor52gIkan+tst0HeEL9HI
-	 tq63kx6cOnSmmTYgZF6zo2FRPLJ5VXfnYyZusBEXHsmmbEKQMEF8ApbNRbfb2Jcm6E
-	 6/j7OZl7ISnpg==
+	s=k20201202; t=1772317720;
+	bh=KfT9nJeTJCe56p+SPhAqwenoi3eGOWr/fZ5jtO4mm40=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q8lIYuQsGzvV67CbVGFm0yN9GQr68kEnaIcvIXk7t30Rrl6Iv5B4R1J23SgdgckC5
+	 dzSKdX8LWChQR8MKnaXacDJIBNSLWUAia9IVvEk16/Ij8CmgMgfS1VMTp7AlG4oG/H
+	 CcRKgWqyXVGyUxqrlZO6Pexq5clyEFCHdM/9xBlcldZkl+hsONx6dTzmHO3Fa/ZhP2
+	 oTz4SWep/4AHPOumZqqQQGclMNAIxd5yCIBr8wSXX5kF/jO6Sw1812xD56sYSFhPt0
+	 qU0pHIxWo0ODQdADPm90jTO2dhjUI3cIqOj6fjGDa+pjIGD3gb02hbOPGy6Qkkc1jw
+	 zUHrzJmrOX7MA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/3] mm/damon: strictly respect min_nr_regions
-Date: Sat, 28 Feb 2026 14:28:24 -0800
-Message-ID: <20260228222831.7232-1-sj@kernel.org>
+Subject: [PATCH 2/3] mm/damon/vaddr: do not split regions for min_nr_regions
+Date: Sat, 28 Feb 2026 14:28:26 -0800
+Message-ID: <20260228222831.7232-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260228222831.7232-1-sj@kernel.org>
+References: <20260228222831.7232-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dqhoxwoqgjokzmin4rb9wpgupxxng8x1
+X-Rspamd-Queue-Id: 64A9DA0007
+X-Stat-Signature: tyf4scxxe7gxi9ard8kr31dsghoojsxr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3FF461C0002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772317721-974192
-X-HE-Meta: U2FsdGVkX1/RrncmxZY3KNsHN+L2axJoCJBt1JiT+IlStT6lSd1BtFv1PJHvSH0KqhQh2udyNnHVvNjdPDCzB1eDwZ9ltFNQoXHKE5mSh7UJbYDkoPJKNGcRzUFLKm+bnj3zwbMctx+9+o9X3vGl2eIBwYqbPklZQqab/Vt5fyTNbEYThjnSPuNSmhw1mTjb7VlDWn2zPvd9RInryvXgZJdPAvqBm+UQDauFr+iGidslnUFATCzdZ4VPM45UF42Nk9qpvqDJte/DmwRi9+j/6O5nXvHMNxIvy7UiPDarTZImR+usIASr2Cm4wOtoEKpiJLeRfWozyHKNh8z8HEAdP+DolTdAC+sz5SYCnM3Bi0rdGTwnnUeltojYb+DI3uwRSQyJYp11RN6ceUWEh9SwVnPrCiKQmqK86kfhNRD7Z2OBW+Kuotgp5EvGYcW7ZkUlDDa16Gu/FSRB94VLwiQizdu7p9aHHh9xhJdL6rds89yqjHQIMsvHjpsswhN7xkwQMuxx8NV1i1aaOZ2OBOQ/YmtccU3ezA+BXbd0KVKlgyByVqM0ClgKIjjiMRST15Mwg13muQoFvf8PDhcpJ3dsaoxqMMnvWI150+kB+t+Acdd2d87sYhcscU/2lNTz+R6ZzcErf5lG9byIwyXhSyqH1CpUIOQf28jpR1Hi0GzAzM4H95zulGgEb4e+6mytwJUd35rxKvhb2HC+2te49/S1NxyX7NxKGK6/ce9fqLZUqV3eLAmX35nDlj/9e9bOs4KB5JSzO1rbqp9jUv5rT4QbjO39dNjOeWVVQoO0y/DkS0FPFKDT980SIxuwmJwfxfPpL8VVg6ymGApddIJyKxE4pHWw6/5kjcoz46YE1trUwaHxEuAK7wXpfXWvqkgPAMNB+hke3uYnze5zdxeMK807exiAIoOHKtwmPo0MvxxKzY6JHbxNq4fgoRSGNXFFbN6kcKAhRvpOEDYbhZpWZWu
- iCo/7myM
- XaIks
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772317721-161291
+X-HE-Meta: U2FsdGVkX1/jEGUPKTx0kc2OEQwa6c24uMzLsjkXK+nx091Qgo2zCNOWVOCb2eSxLXREyBhisQ8JoSGU5TFFs8FLbrXxf8365MdZjfy5NffixyhGOysuDjEBMzGpRs021twZ/5c1VEf/9kvg6A9sOECWB5V6lY4NKTpZaJ0AeRUZET0P+Zn8gOvlQyu+0ewil4Szg/MC1MY4VtHxxAq8sDQCgPQVWV+TttADUozUKxQ2CTR2+7kYx24xaxeDFHj2DEsDY69jhdPRjTIPSmtTfNqWqby+YBv/igKfAXQvyKrOsMec3VZb7UE+xDeNjavSzNrTmRauX4hRot3J3pVhKjuPocTRwTkjowYn2qo2ehKgrkRRfoMFbNufT0ZUMVnSOhsCiuEfXsXZ1pczYE7y65fFX4TODAZ/ysTuyHyguUcTLMSySdOr3ZhORn0GwjhosPncZ4xmwmKJ8w+2vJkwWaSpKOvKYwSNyW3n5XiNG83ccirmQNUcHeg9ajGLznBFyrBjv0AjS69X+ixpQdnSMmN7IADUgR67wrhlzLrkLLC6boKvCL3aCzpwt4EUCuAQszKeZJ7kV2iDD5URlr898Bqa4RGEfEfUfkauglnjQt0ZCSP1N/gVreQFKR1Q0kXvpG2Yknn6G7PkGwEV1/O4SbzdJIZSqhMXRbVlNwakAZhqfVZV1/cdZrF5mZ4loqIWk4sAJx7luh7P56uSwEGLYsXuJHUHivgSy+HM9Fdkw5cQ3/OghUjSeL1wD3fhIFSNHFeH1qHpadtqs0oyBEGCF12PEp4ztRVpLYZZgMBdAtBwAOJLNJnfNxJtbehM7omf+EF2Fu8wQCHRikw/hxzOa2XZT9UdpBdwMiOq8/gY1+qyZi1ugmrMZeqvpsP68xj5KzOPViE5C1vHDgFkULPdiWvyW8ekaGsC3hsgqQu0AOWKLW+y6Qww96H3YoRA3NVqrJSSzlZ77hnbWePrYz6
+ Pu7GekDh
+ qI6Zk1Obm6icIb9d1kpaN93Gicybq4tG4U5gCAFTI+8zI4myM/jlmFOrgnyyfUP37Jt0jUVvM5arRXvlKwJHWJLFpOcSOP5ta2zaC0BWDJP/a0jxTonGYThm3r1PARh7JVDh9mzxRJJgFWZmV8ueOiZn6xI6SCjGhY08Wa4fBK8+toqPGh9yJXwhZ5GcZLlgYIvKH0ilspYpLYVKTKVTpgUcukxEks4SDV1u22+TxvbTfLtIf7Zmk0wQcsnG4H+QQvSnPrIzFF819nJC4GNmE8R2Z7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,49 +92,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON core respects min_nr_regions only at merge operation.  DAMON API
-callers are therefore responsible to respect or ignore that.  Only vaddr
-ops is respecting that, but only for initial start time.  DAMON sysfs
-interface allows users to setup the initial regions that DAMON core also
-respects.  But, again, it works for only the initial time.  Users
-setting the regions for min_nr_regions can be difficult and inefficient,
-when the min_nr_regions value is high.  There was actually a report [1]
-from a user.  The use case was page granular access monitoring with a
-large aggregation interval.
+The previous commit made DAMON core split regions at the beginning for
+min_nr_regions.  The virtual address space operation set (vaddr) does
+similar work on its own, for a case user delegates entire initial
+monitoring regions setup to vaddr.  It is unnecessary now, as DAMON core
+will do similar work for any case.  Remove the duplicated work in vaddr.
 
-Make the following three changes for resolving the issue.  First (patch
-1), make DAMON core split regions at the beginning and every aggregation
-interval, to respect the min_nr_regions.  Second (patch 2), drop the
-vaddr's split operations and related code that are no more needed.
-Third (patch 3), add a kunit test for the newly introduced function.
+Also, remove a helper function that was being used only for the work,
+and the test code of the helper function.
 
-[1] https://lore.kernel.org/CAC5umyjmJE9SBqjbetZZecpY54bHpn2AvCGNv3aF6J=1cfoPXQ@mail.gmail.com
-
-Revision History
-================
-
-Changes from RFC v2
-(https://lore.kernel.org/20260221180341.10313-1-sj@kernel.org)
-- Drop RFC
-- Rebase to latest mm-new
-
-Changes from RFC v1
-(https://lore.kernel.org/20260217000400.69056-1-sj@kernel.org)
-- Split regions every aggregation interval
-
-SeongJae Park (3):
-  mm/damon/core: split regions for min_nr_regions
-  mm/damon/vaddr: do not split regions for min_nr_regions
-  mm/damon/test/core-kunit: add damon_apply_min_nr_regions() test
-
- mm/damon/core.c              | 45 ++++++++++++++++++---
- mm/damon/tests/core-kunit.h  | 52 ++++++++++++++++++++++++
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
  mm/damon/tests/vaddr-kunit.h | 76 ------------------------------------
  mm/damon/vaddr.c             | 70 +--------------------------------
- 4 files changed, 93 insertions(+), 150 deletions(-)
+ 2 files changed, 2 insertions(+), 144 deletions(-)
 
-
-base-commit: e4506bd63542dc58b2913cd374c518526c008a2c
+diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
+index cfae870178bfd..98e734d77d517 100644
+--- a/mm/damon/tests/vaddr-kunit.h
++++ b/mm/damon/tests/vaddr-kunit.h
+@@ -252,88 +252,12 @@ static void damon_test_apply_three_regions4(struct kunit *test)
+ 			new_three_regions, expected, ARRAY_SIZE(expected));
+ }
+ 
+-static void damon_test_split_evenly_fail(struct kunit *test,
+-		unsigned long start, unsigned long end, unsigned int nr_pieces)
+-{
+-	struct damon_target *t = damon_new_target();
+-	struct damon_region *r;
+-
+-	if (!t)
+-		kunit_skip(test, "target alloc fail");
+-
+-	r = damon_new_region(start, end);
+-	if (!r) {
+-		damon_free_target(t);
+-		kunit_skip(test, "region alloc fail");
+-	}
+-
+-	damon_add_region(r, t);
+-	KUNIT_EXPECT_EQ(test,
+-			damon_va_evenly_split_region(t, r, nr_pieces), -EINVAL);
+-	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1u);
+-
+-	damon_for_each_region(r, t) {
+-		KUNIT_EXPECT_EQ(test, r->ar.start, start);
+-		KUNIT_EXPECT_EQ(test, r->ar.end, end);
+-	}
+-
+-	damon_free_target(t);
+-}
+-
+-static void damon_test_split_evenly_succ(struct kunit *test,
+-	unsigned long start, unsigned long end, unsigned int nr_pieces)
+-{
+-	struct damon_target *t = damon_new_target();
+-	struct damon_region *r;
+-	unsigned long expected_width = (end - start) / nr_pieces;
+-	unsigned long i = 0;
+-
+-	if (!t)
+-		kunit_skip(test, "target alloc fail");
+-	r = damon_new_region(start, end);
+-	if (!r) {
+-		damon_free_target(t);
+-		kunit_skip(test, "region alloc fail");
+-	}
+-	damon_add_region(r, t);
+-	KUNIT_EXPECT_EQ(test,
+-			damon_va_evenly_split_region(t, r, nr_pieces), 0);
+-	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), nr_pieces);
+-
+-	damon_for_each_region(r, t) {
+-		if (i == nr_pieces - 1) {
+-			KUNIT_EXPECT_EQ(test,
+-				r->ar.start, start + i * expected_width);
+-			KUNIT_EXPECT_EQ(test, r->ar.end, end);
+-			break;
+-		}
+-		KUNIT_EXPECT_EQ(test,
+-				r->ar.start, start + i++ * expected_width);
+-		KUNIT_EXPECT_EQ(test, r->ar.end, start + i * expected_width);
+-	}
+-	damon_free_target(t);
+-}
+-
+-static void damon_test_split_evenly(struct kunit *test)
+-{
+-	KUNIT_EXPECT_EQ(test, damon_va_evenly_split_region(NULL, NULL, 5),
+-			-EINVAL);
+-
+-	damon_test_split_evenly_fail(test, 0, 100, 0);
+-	damon_test_split_evenly_succ(test, 0, 100, 10);
+-	damon_test_split_evenly_succ(test, 5, 59, 5);
+-	damon_test_split_evenly_succ(test, 4, 6, 1);
+-	damon_test_split_evenly_succ(test, 0, 3, 2);
+-	damon_test_split_evenly_fail(test, 5, 6, 2);
+-}
+-
+ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_three_regions_in_vmas),
+ 	KUNIT_CASE(damon_test_apply_three_regions1),
+ 	KUNIT_CASE(damon_test_apply_three_regions2),
+ 	KUNIT_CASE(damon_test_apply_three_regions3),
+ 	KUNIT_CASE(damon_test_apply_three_regions4),
+-	KUNIT_CASE(damon_test_split_evenly),
+ 	{},
+ };
+ 
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 4d6d8251d4199..b069dbc7e3d25 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -53,52 +53,6 @@ static struct mm_struct *damon_get_mm(struct damon_target *t)
+ 	return mm;
+ }
+ 
+-/*
+- * Functions for the initial monitoring target regions construction
+- */
+-
+-/*
+- * Size-evenly split a region into 'nr_pieces' small regions
+- *
+- * Returns 0 on success, or negative error code otherwise.
+- */
+-static int damon_va_evenly_split_region(struct damon_target *t,
+-		struct damon_region *r, unsigned int nr_pieces)
+-{
+-	unsigned long sz_orig, sz_piece, orig_end;
+-	struct damon_region *n = NULL, *next;
+-	unsigned long start;
+-	unsigned int i;
+-
+-	if (!r || !nr_pieces)
+-		return -EINVAL;
+-
+-	if (nr_pieces == 1)
+-		return 0;
+-
+-	orig_end = r->ar.end;
+-	sz_orig = damon_sz_region(r);
+-	sz_piece = ALIGN_DOWN(sz_orig / nr_pieces, DAMON_MIN_REGION_SZ);
+-
+-	if (!sz_piece)
+-		return -EINVAL;
+-
+-	r->ar.end = r->ar.start + sz_piece;
+-	next = damon_next_region(r);
+-	for (start = r->ar.end, i = 1; i < nr_pieces; start += sz_piece, i++) {
+-		n = damon_new_region(start, start + sz_piece);
+-		if (!n)
+-			return -ENOMEM;
+-		damon_insert_region(n, r, next, t);
+-		r = n;
+-	}
+-	/* complement last region for possible rounding error */
+-	if (n)
+-		n->ar.end = orig_end;
+-
+-	return 0;
+-}
+-
+ static unsigned long sz_range(struct damon_addr_range *r)
+ {
+ 	return r->end - r->start;
+@@ -240,10 +194,8 @@ static void __damon_va_init_regions(struct damon_ctx *ctx,
+ 				     struct damon_target *t)
+ {
+ 	struct damon_target *ti;
+-	struct damon_region *r;
+ 	struct damon_addr_range regions[3];
+-	unsigned long sz = 0, nr_pieces;
+-	int i, tidx = 0;
++	int tidx = 0;
+ 
+ 	if (damon_va_three_regions(t, regions)) {
+ 		damon_for_each_target(ti, ctx) {
+@@ -255,25 +207,7 @@ static void __damon_va_init_regions(struct damon_ctx *ctx,
+ 		return;
+ 	}
+ 
+-	for (i = 0; i < 3; i++)
+-		sz += regions[i].end - regions[i].start;
+-	if (ctx->attrs.min_nr_regions)
+-		sz /= ctx->attrs.min_nr_regions;
+-	if (sz < DAMON_MIN_REGION_SZ)
+-		sz = DAMON_MIN_REGION_SZ;
+-
+-	/* Set the initial three regions of the target */
+-	for (i = 0; i < 3; i++) {
+-		r = damon_new_region(regions[i].start, regions[i].end);
+-		if (!r) {
+-			pr_err("%d'th init region creation failed\n", i);
+-			return;
+-		}
+-		damon_add_region(r, t);
+-
+-		nr_pieces = (regions[i].end - regions[i].start) / sz;
+-		damon_va_evenly_split_region(t, r, nr_pieces);
+-	}
++	damon_set_regions(t, regions, 3, DAMON_MIN_REGION_SZ);
+ }
+ 
+ /* Initialize '->regions_list' of every target (task) */
 -- 
 2.47.3
 
