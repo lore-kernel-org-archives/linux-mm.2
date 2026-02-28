@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F195FEE4CD
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 07:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5531FEE4C6
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 07:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9966A6B0088; Sat, 28 Feb 2026 02:15:29 -0500 (EST)
+	id 1EE676B0089; Sat, 28 Feb 2026 02:15:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9741B6B0089; Sat, 28 Feb 2026 02:15:29 -0500 (EST)
+	id 16B066B008A; Sat, 28 Feb 2026 02:15:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88DC86B008A; Sat, 28 Feb 2026 02:15:29 -0500 (EST)
+	id EFC636B008C; Sat, 28 Feb 2026 02:15:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 793326B0088
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE0C36B0089
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 02:15:29 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BAC613C02E
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8C08A1CD42
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 07:15:29 +0000 (UTC)
-X-FDA: 84493004778.26.A51C161
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 748371C0015
+X-FDA: 84493004778.30.9A82AAF
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0370DC000B
 	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 07:15:26 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=b221ls31;
-	spf=pass (imf18.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=F2yxSYtM;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772262927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,37 +35,37 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SOSDprgL0d5fs/XXHSWHAOQEs7sQM/PZoje0g5bejM4=;
-	b=8F/PtReRJ7Dh0vkTcuTgVTMnzDzvvCrU8Lj1rmoJM2Yne0ArF/tnLe/lrDMuFpfY2pPNpz
-	6Q+kVo1r65rn/NxTOSyOYVoXdynNNm48nZMzFvIIDh6zsFIpcj6vkHxvVKqLqWoC3UB5Em
-	X36D6zmYKydj3o91JJVUepqyzKr/bwU=
+	bh=GY7w9lG2hNjdddPK/8x1giPete9XsAMvnf7gDXNDb+Y=;
+	b=nXDid8dIGFOH+KBNxWNV/XCdaNgNV/HBJ/RydqAoKKad4x8uvIGnrmVlnKvs6Q6t50cRs6
+	2F7TnG2Apwc+5VOVWCm65XglvcXhyPHFDRBTYILFR5gymgGcjsL8IaYc6WvHZyObDEhk1W
+	RK33oKdyIF40JBZkSccXxS7agSmisFo=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=F2yxSYtM;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772262927; a=rsa-sha256;
 	cv=none;
-	b=R1AJM8RGj3+tunDzLG7o/CLv2AY4C1bGQiJ1JNJpYJxxeff7czG1rz95x2cuqMm+vfSLo/
-	M87feydwbDmsz+XTY5MssI6C80cuJLNb+QKUH4yy7nnFg6UE/HhrAxhqLxNevoaNTGzp1/
-	0WRhIbPecGPt3ZawzLT1f2GBpe9Ka3k=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=b221ls31;
-	spf=pass (imf18.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	b=fZTgiImxxgYUgG6m6+VPs5jDTa9XxcRlDtGqTNOuvHIV9yHxd9NGuFeBi8T/BkFGaojq94
+	NuG0mMBhD+kvr9/n0U2EfQKLaLhgQ8dF4aMHgpHtUExwwwUFiWAvUXLq8B9VOt2cmg9Sw3
+	5ozqxnl2OTRnohOgbyvHxl0HlXXItx8=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=SOSDprgL0d5fs/XXHSWHAOQEs7sQM/PZoje0g5bejM4=;
-	b=b221ls319orrwaq2qXPX2X0zO6JRk7cd5joqvN2G2Lw2Z1N4/h1DK7lO7egszzySI87F0+NCZ
-	O0HVVtR/kXiJ5iHfgXHC74jXTGkIoz4xJ2UEd7vIeGKxB7f9+6BZDG0zz6yp0mKfUcKwuVer6nW
-	1joxT8IUuxM8Vaj5HB3NzDQ=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4fNGYh4GDDzLlT6;
-	Sat, 28 Feb 2026 15:10:32 +0800 (CST)
+	bh=GY7w9lG2hNjdddPK/8x1giPete9XsAMvnf7gDXNDb+Y=;
+	b=F2yxSYtM126iXPXdt97LlTD02LO7RRIbC7ASktZs819acq4FuUmUfnDGPoEXJ5gfBqoq++I+U
+	VDjuSx7eYE2bDrwHfE4kyrEq0bo0V6N7u9JZnmeORNH0RStBvhdzxjA5ALyY5zk4khG4RjBYism
+	OW4U8djntX5MznrWT8xvruQ=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fNGYM6X91zcb1Z;
+	Sat, 28 Feb 2026 15:10:15 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1684A40565;
-	Sat, 28 Feb 2026 15:15:21 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 041724056E;
+	Sat, 28 Feb 2026 15:15:22 +0800 (CST)
 Received: from huawei.com (10.50.87.63) by kwepemr500001.china.huawei.com
  (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 28 Feb
- 2026 15:15:19 +0800
+ 2026 15:15:20 +0800
 From: Yin Tirui <yintirui@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <willy@infradead.org>,
@@ -87,9 +87,9 @@ To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>,
 	<riel@surriel.com>
 CC: <wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>,
 	<yintirui@huawei.com>
-Subject: [PATCH RFC v3 3/4] x86/mm: Remove pte_clrhuge() and clean up init_64.c
-Date: Sat, 28 Feb 2026 15:09:05 +0800
-Message-ID: <20260228070906.1418911-4-yintirui@huawei.com>
+Subject: [PATCH RFC v3 4/4] mm: add PMD-level huge page support for remap_pfn_range()
+Date: Sat, 28 Feb 2026 15:09:06 +0800
+Message-ID: <20260228070906.1418911-5-yintirui@huawei.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260228070906.1418911-1-yintirui@huawei.com>
 References: <20260228070906.1418911-1-yintirui@huawei.com>
@@ -99,14 +99,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.50.87.63]
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Stat-Signature: totr8mmt3t5nj8hhguas17bjkeaswpyx
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0370DC000B
+X-Stat-Signature: g3f3h5e4ejwphhodcf5wgkianeeac57o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 748371C0015
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772262926-409794
-X-HE-Meta: U2FsdGVkX1/jka0NryAQXXxQkyZimG4WPW4oXcUqEYO/McJOMlwObP3H9/1TgG7KXnbpVFuO+KoZxiLdwBDmH5c0B1tx1HL2noCD6x/5sjoXntjQ+je8eNRjOr2yfXSe7OXYWCC1SYKcDlI/YKxJJfrQhkgK6vikhIQq876G4vFzGNrRsO0T08Yf3sVVbsyMjQTeoKMaLZF4psrZwcy8BBPtiBAOP8xZythST0klalfez/yjuelSSOmcEfTZ1xD6h3JX5Rb6znzPsCo0EQ8lQ510C8NYgrCtQC2L3+iA+6fbcyALrMvrcPadNNp6R6EL0xVzhR3JWP4dwoR4xHAt3WOuAsBAEH6+I2GX4xwSA0xxLBeGCDVsv18025awfsAEIR0A2QnUcl8lmVLIbxvNtCtkGAo4CqUR/H0/vGqzAA5PzAsgqtdIQQGycYGVzVJiZkV42UccIJ6F4vLNGAh8QSUgOggpvesuJwnU+huTgzu9+/jNiUnVvE3rKZFCArL9e550CBwX/hBMB0K49znRsFptLRYClcGkasNd5q3HE5IU2gnZFWlJzjfmHWkrD8fJDB21Wo8V2lN/SIezO71nc6WoxObwm1A+tq9r7MT3nyTewObjZG5eALs53RChaqFpLza9RPJyXwJ/a97dRKLGBj3kovMww18jIIMc5zq+2S3muKcNwkxXjkh5Ss1eTzgZbQuKgxskATtkr/pYP8kQliVZghJtUqIwRvD+ViJEYnZ3Vjm9mZQ2n/y0DLOIvKK48pBqWMUp6df+XTSOtNpN9xh4re04RI431HnLIVScsUHRmsnpwGZCXmiWcCa/Pcx94NW/WpVmSePEFrQX4qau9DGhJVujYYD3mZvoMFGC2nIhr0GDQX160W5ldTqVGG9kwCYRLclYnVhTR3Eid7gRqZ1TAdWZFBkkmf8KlNK5/9z+BVzTUsBFr5C6DgiLgfArIb84DPVj5SaPPPTPsBp
- BQb1zlIG
- pwW0AvN8yB2cFZZ7LC1MYZMB6XbfKoWSc7E12ycdlGlXbn1aT2tnFZ+dJARd8RP1JT49hgsrAsWgcOlAq4+yK3JsD1Vnl9iUzfBj7kR0YpQw6Ur4ppPimFJkTuzAeS97txFYyTbzVmKPJ6z8EG6y6D4fUUbpXdXV8v/RwewsbbTCwrlueZ6fT0MX01wV0l7gL54Y3wJLx4Vw/QxMZQw3QqTs1IzgRef01u3f8XGeuZkLBofh3/7WT8Vab5oM5MEkZDKyOTx26KgWndJxRrqtXS6JicTZ7QJnCdLNL/L3rYk+widkO8YCDilYzG5qTia6MNwcaQER2AyvXY8LFWfvgt/51iw==
+X-HE-Tag: 1772262926-140070
+X-HE-Meta: U2FsdGVkX18Lh6xr+A2QBTxJjFlxEEqJESLNiK0iWlwbVt2uEh+h4MhQtKF7CvTypDy2EJXZFnsZ7+eRGlF6iWGL9wOap4e41vQELtYX1x34zTuW8dpLQsEeNUsRXrcDGoeImnq/keebeNV9vBjGB5nfaXDzBASHSn9GuTecmacEtJ7pG+b45m1e3jQBa2P6hUgb+fySY56tvTMfDdLoNYYmMs/t8Q3EH7fTpWIC5c/mpyA+jiHnH0q9FxD9qC2JJTOV2QrmZK8JZfQadTkQgZJZ8grQfo2EcmupySQqOY8NI7q72Q8PS9Wzo3hLUIonmbk5+mIDVIIkrAyLoFLfTbERUAgNrzGF57LZmO1Jek5zNM1aaKGPcRXliw+o3uLc99/4lytBp/I+Htr3DvY9Dyhg7nJ5O4nOKanQ6CuNrWfbkK9GjnBpN/JaxmwZtFtnfR+UJvAL7ATzS+N39t+0z1Y99q1T4l97vzoaCKXjjGO9f4z0FLaJJNPyMN9Rbc8zfRPT9k3tiw5Wnq3ejTP5nACcghJXLtlEsZFcQ8KQKmWDk1XwaKau71nD92t/O77QUr3Oml99flduqrlYK5VCKsiIXn22Yfi499AVp/A1U6g0x80UHc0XsNUGUQCbZrmiIaJvEuQ6TsmQ6ilUkY4S5GHfN+IMUenaWUp2surj7C0WN3dm8Fle/5zYN0+cElZbOpshD5Wx5C1Pybo+83QsBEtzQ/KYPsw6yHFAItgTZE5XJB/1r0mHHk1FgPNS3zeE6+Met5RZjdFXBkjAk4HrEFnwR+2RV0c2EU2OL+LDupqeG/RaDXnXl0CflwIsJtFipuR8cdMjfiYAFMm5KdtOpivLQyPo/Z4TO1udletPmm9+6cGbHglvzaBP+PDH8Nrknd+XQYvSnpFUUAt7K56Fpbg9VTbhNc9Jx5bfJuHk8KKWgK/MJm/4z18W7Sz64VuNNkv4Qrx9Y+f2kCek2y+
+ 5MBLUF5h
+ vCe5TDsQSaM3j9HRw+Z0YugHJfsNUVLUxdB0/FKbHbjdFktuwOxfNw6x5pFFZo6h69/LzvypHECgs3WPCbWcjR229ElI7Cwahp8H8tPdBNzUMVDvA0X2yJdzn/UeyEghIQgUPnmMAwZ+5xhiiejZHF/H695PFmEUMA9vL96nfJxIHzFDtnpriVxS9OEQvuBCId21VckSB99SHb6lwHuy9bvbD3hWhp6lGXag2gUxiGB4S/VOuKyNz61v/N1mTZX5q8/xSyXkSM6D/jyQ432KQ4qTz/vkXv6Q1OWGtOSnogtFJi4toyFlHRw1YMsW4nBNsH7NOiH5/KXWZnbBmN/rHhITNt1//rJn8JyD/4RkYA4vf/UCGKFJac3ZKXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,60 +114,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With `pfn_pte()` now guaranteeing that it will natively filter out
-huge page attributes like `_PAGE_PSE`, the `pte_clrhuge()` helper has
-become obsolete.
+Add PMD-level huge page support to remap_pfn_range(), automatically
+creating huge mappings when prerequisites are satisfied (size, alignment,
+architecture support, etc.) and falling back to normal page mappings
+otherwise.
 
-Remove `pte_clrhuge()` entirely. Concurrently, clean up the ugly type-casting
-anti-pattern in `arch/x86/mm/init_64.c` where `(pte_t *)` was forcibly
-cast from `pmd_t *` to call `pte_clrhuge()`. Now, we can simply extract
-the pgprot directly via `pmd_pgprot()` and safely pass it downstream, knowing
-that `pfn_pte()` will strip the huge bit automatically.
+Implement special huge PMD splitting by utilizing the pgtable deposit/
+withdraw mechanism. When splitting is needed, the deposited pgtable is
+withdrawn and populated with individual PTEs created from the original
+huge mapping.
 
 Signed-off-by: Yin Tirui <yintirui@huawei.com>
 ---
- arch/x86/include/asm/pgtable.h | 5 -----
- arch/x86/mm/init_64.c          | 4 ++--
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ mm/huge_memory.c | 36 ++++++++++++++++++++++++++++++++++--
+ mm/memory.c      | 40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index a4dbd81d42bf..e8564d4ce318 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -483,11 +483,6 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	return pte_set_flags(pte, _PAGE_PSE);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index d4ca8cfd7f9d..e463d51005ee 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1857,6 +1857,9 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 	pmd = pmdp_get_lockless(src_pmd);
+ 	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
+ 		     !is_huge_zero_pmd(pmd))) {
++		pgtable = pte_alloc_one(dst_mm);
++		if (unlikely(!pgtable))
++			goto out;
+ 		dst_ptl = pmd_lock(dst_mm, dst_pmd);
+ 		src_ptl = pmd_lockptr(src_mm, src_pmd);
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+@@ -1870,6 +1873,12 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+ 		 * able to wrongly write to the backend MMIO.
+ 		 */
+ 		VM_WARN_ON_ONCE(is_cow_mapping(src_vma->vm_flags) && pmd_write(pmd));
++
++		/* dax won't reach here, it will be intercepted at vma_needs_copy() */
++		VM_WARN_ON_ONCE(vma_is_dax(src_vma));
++
++		mm_inc_nr_ptes(dst_mm);
++		pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
+ 		goto set_pmd;
+ 	}
+ 
+@@ -2360,6 +2369,8 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	arch_check_zapped_pmd(vma, orig_pmd);
+ 	tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+ 	if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
++		if (pmd_special(orig_pmd))
++			zap_deposited_table(tlb->mm, pmd);
+ 		if (arch_needs_pgtable_deposit())
+ 			zap_deposited_table(tlb->mm, pmd);
+ 		spin_unlock(ptl);
+@@ -3005,14 +3016,35 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 
+ 	if (!vma_is_anonymous(vma)) {
+ 		old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
++
++		if (!vma_is_dax(vma) && vma_is_special_huge(vma)) {
++			pte_t entry;
++
++			if (!pmd_special(old_pmd)) {
++				zap_deposited_table(mm, pmd);
++				return;
++			}
++			pgtable = pgtable_trans_huge_withdraw(mm, pmd);
++			if (unlikely(!pgtable))
++				return;
++			pmd_populate(mm, &_pmd, pgtable);
++			pte = pte_offset_map(&_pmd, haddr);
++			entry = pfn_pte(pmd_pfn(old_pmd), pmd_pgprot(old_pmd));
++			set_ptes(mm, haddr, pte, entry, HPAGE_PMD_NR);
++			pte_unmap(pte);
++
++			smp_wmb(); /* make pte visible before pmd */
++			pmd_populate(mm, pmd, pgtable);
++			return;
++		}
++
+ 		/*
+ 		 * We are going to unmap this huge page. So
+ 		 * just go ahead and zap it
+ 		 */
+ 		if (arch_needs_pgtable_deposit())
+ 			zap_deposited_table(mm, pmd);
+-		if (!vma_is_dax(vma) && vma_is_special_huge(vma))
+-			return;
++
+ 		if (unlikely(pmd_is_migration_entry(old_pmd))) {
+ 			const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 07778814b4a8..affccf38cbcf 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2890,6 +2890,40 @@ static int remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
+ 	return err;
  }
  
--static inline pte_t pte_clrhuge(pte_t pte)
--{
--	return pte_clear_flags(pte, _PAGE_PSE);
--}
--
- static inline pte_t pte_mkglobal(pte_t pte)
- {
- 	return pte_set_flags(pte, _PAGE_GLOBAL);
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index d65f3d05c66f..a1ddcf793a8a 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -572,7 +572,7 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
- 				paddr_last = paddr_next;
- 				continue;
- 			}
--			new_prot = pte_pgprot(pte_clrhuge(*(pte_t *)pmd));
-+			new_prot = pmd_pgprot(*pmd);
- 		}
- 
- 		if (page_size_mask & (1<<PG_LEVEL_2M)) {
-@@ -658,7 +658,7 @@ phys_pud_init(pud_t *pud_page, unsigned long paddr, unsigned long paddr_end,
- 				paddr_last = paddr_next;
- 				continue;
- 			}
--			prot = pte_pgprot(pte_clrhuge(*(pte_t *)pud));
-+			prot = pud_pgprot(*pud);
- 		}
- 
- 		if (page_size_mask & (1<<PG_LEVEL_1G)) {
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++static int remap_try_huge_pmd(struct mm_struct *mm, pmd_t *pmd,
++			unsigned long addr, unsigned long end,
++			unsigned long pfn, pgprot_t prot)
++{
++	pgtable_t pgtable;
++	spinlock_t *ptl;
++
++	if ((end - addr) != PMD_SIZE)
++		return 0;
++
++	if (!IS_ALIGNED(addr, PMD_SIZE))
++		return 0;
++
++	if (!IS_ALIGNED(pfn, HPAGE_PMD_NR))
++		return 0;
++
++	if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
++		return 0;
++
++	pgtable = pte_alloc_one(mm);
++	if (unlikely(!pgtable))
++		return 0;
++
++	mm_inc_nr_ptes(mm);
++	ptl = pmd_lock(mm, pmd);
++	set_pmd_at(mm, addr, pmd, pmd_mkspecial(pmd_mkhuge(pfn_pmd(pfn, prot))));
++	pgtable_trans_huge_deposit(mm, pmd, pgtable);
++	spin_unlock(ptl);
++
++	return 1;
++}
++#endif
++
+ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+ 			unsigned long addr, unsigned long end,
+ 			unsigned long pfn, pgprot_t prot)
+@@ -2905,6 +2939,12 @@ static inline int remap_pmd_range(struct mm_struct *mm, pud_t *pud,
+ 	VM_BUG_ON(pmd_trans_huge(*pmd));
+ 	do {
+ 		next = pmd_addr_end(addr, end);
++#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
++		if (remap_try_huge_pmd(mm, pmd, addr, next,
++				pfn + (addr >> PAGE_SHIFT), prot)) {
++			continue;
++		}
++#endif
+ 		err = remap_pte_range(mm, pmd, addr, next,
+ 				pfn + (addr >> PAGE_SHIFT), prot);
+ 		if (err)
 -- 
 2.22.0
 
