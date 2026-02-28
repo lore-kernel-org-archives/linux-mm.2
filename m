@@ -4,142 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1229FEE4EF
-	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 13:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30CABFEE4ED
+	for <linux-mm@archiver.kernel.org>; Sat, 28 Feb 2026 14:06:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8556B0005; Sat, 28 Feb 2026 08:46:50 -0500 (EST)
+	id 3FF676B0005; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 776666B0088; Sat, 28 Feb 2026 08:46:50 -0500 (EST)
+	id 3AD706B0088; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674FD6B0089; Sat, 28 Feb 2026 08:46:50 -0500 (EST)
+	id 2A26A6B0089; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 56B356B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 08:46:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF3061BFE5
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 13:46:49 +0000 (UTC)
-X-FDA: 84493990938.28.6C0031C
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 62095100003
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 13:46:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rgOOaLKc;
-	spf=pass (imf14.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 198C06B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 09:06:23 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FC5B897C2
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:06:22 +0000 (UTC)
+X-FDA: 84494040204.19.A03AB2A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C4D581C0004
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 14:06:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772286407;
+	s=arc-20220608; t=1772287581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0EXJKQ8KgtoZoI2jIZ7waJGT1vVb8Eepe+V8HPryizQ=;
-	b=5tsEwIGoyqpvaPcOLAUGDObLbGuXdjJBbq2Dwf/eCykapbRptXrj2cVqpWLY3njtQ0JAls
-	NIbXfHdRf5KUVh3GZHxGYpjrgEE/roJvlcG+DkfxJ2hfSyk4esdb5MhW6MkBb1MdEQ9v6X
-	b7OxYfN2Zb+2ZpafwGIOR9W51HWer6Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=t0+Pm93/3ss9gX6u1pYsXzkNT77jHWIcm5JBaNmPAZA=;
+	b=jhpahttrmz0yqVLjhl+0xHcwxMyfVLsUV87lWGPEiQ+LOz3zAY1YRwRD9w/XMlEJRMMF95
+	JPLc76xGo8eh+S7vGzsOPx8Wa43/RVBDuThJK2y3tr/30JAxT8LZBuK2xPvK5H9ik2PovQ
+	qT9ow4cqN38aXZBT/yYd6cHk+rbEXLs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=rgOOaLKc;
-	spf=pass (imf14.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772286407; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772287581; a=rsa-sha256;
 	cv=none;
-	b=wpQLPIY+zOc3+g3EYxE770Adm6s6gTJGzhIOBCK6DSiqDqUg2MWMjpV74TPLGdKg0HR4xY
-	oVtGzfLYgNdgQfnpDR0CtrXvDS9LeUUfa/NhPkXnrTI2IDYOpSuXdE7FmhC5NJKS4J9sE/
-	U3WUpe+J7YswC3No6gJQS4ic8uAtdCE=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61SDjoPq2612896;
-	Sat, 28 Feb 2026 13:46:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0EXJKQ
-	8KgtoZoI2jIZ7waJGT1vVb8Eepe+V8HPryizQ=; b=rgOOaLKcnwkp9J35cdBDUf
-	lCHPdkUzz5Vyzwb3HzWiwUg0zsFc0WXpScsOfZ7uW38Aex6UC76IMQWpQerTwxW9
-	l8UrdT0EM4yrHSZAwdwN5mCWsqjpV1ePxBfqjrND6P1fu+GOsiwlybzpWv8QaJSc
-	F4tUYexie9FTSeFKsvrQYj+wsTR/WmT1Nf3krpGnu7vXY8Kwba8NylOc1UcPgFMl
-	6U2G1cFI12w/pCHjRgXSSmtNwA0SSkOeDuBU2GUHxOdsRI9q0d+0/lZfjZNwIgB0
-	IjJ9xBcsEjTpie1HXiK+NoQ/e9cghsCr3NBysykbjMEQIi1LmB1KPH+y3sgSG7jw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskbgxa7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 28 Feb 2026 13:46:31 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61SAjDH7004541;
-	Sat, 28 Feb 2026 13:46:30 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfs8kej94-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 28 Feb 2026 13:46:30 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61SDkQQo43319576
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 28 Feb 2026 13:46:27 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E20B42004B;
-	Sat, 28 Feb 2026 13:46:26 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 40FCC20043;
-	Sat, 28 Feb 2026 13:46:24 +0000 (GMT)
-Received: from [9.124.209.149] (unknown [9.124.209.149])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 28 Feb 2026 13:46:23 +0000 (GMT)
-Message-ID: <6a0fc7ec-591e-4f23-b0f2-aec9aea88621@linux.ibm.com>
-Date: Sat, 28 Feb 2026 19:16:22 +0530
+	b=C3ddBct74SPmngZ2FsdCvepdQwF75bChWR/jj7bHB+BDIBENx94lpkJ7GwwrkIrzSOjVoC
+	WHNh8RYsr5uTP4z9FpS9jExEk/5MiIgvqLQg0d9kpFc4k4aXzgNZ0SzCQtRPy8G93XUsfj
+	kUy38tL8WTug9A/G9QZccy6gHl3hGRo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 465731516;
+	Sat, 28 Feb 2026 06:06:13 -0800 (PST)
+Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 30F4B3F7BD;
+	Sat, 28 Feb 2026 06:06:14 -0800 (PST)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com
+Cc: riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	baohua@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	Dev Jain <dev.jain@arm.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH v2] mm/rmap: fix incorrect pte restoration for lazyfree folios
+Date: Sat, 28 Feb 2026 19:35:40 +0530
+Message-Id: <20260228140540.1774748-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: powerpc/fadump: CMA init is failing
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Mike Rapoport <rppt@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Donet Tom <donettom@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>, linux-mm@kvack.org
-References: <4c338a29-d190-44f3-8874-6cfa0a031f0b@linux.ibm.com>
- <87o6lagljy.ritesh.list@gmail.com> <aaIDkB2xLABDyV1y@kernel.org>
- <87ms0th9xt.ritesh.list@gmail.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <87ms0th9xt.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 64-aI1JSamPa6-OAXTjSFOkfn4ujOU34
-X-Authority-Analysis: v=2.4 cv=b66/I9Gx c=1 sm=1 tr=0 ts=69a2f1b7 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=47IChveiNnVNrxUg3wQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI4MDA1MCBTYWx0ZWRfX2DF1OSDfsUT/
- ZYtsLcbSEit8DeUesUF/nKYn3Esq4ytJOBtNbtLetsiUYJOOD3PvBtv61FTuQmESBLnSyYYzrie
- l7AbG8/mR4YA4Yi8JEDELsWV/eFgFg7rqZWuZYzWtwKRFnNA6zy8OPFEWmBT81DqOvl6O6h/7aB
- OrvxFmwY6H5hsjsNubJaNfqc13lPHHUKAUp/6oE6BbYwLECUutRlHP7rcK5CcU4Fno2m4vraF7m
- N3TZ6CWLk1mVbfzYI9oQb85A7cSev4vfBocvaKRwr5b4pqehKi5XyWK9n1chVg1z5Ey+T9kruQS
- SPLoJfoIi0x7hGdtprWo1ksvVqs9M1OXMIFkn7EBR2HQFMCrptcj5XjRjtrHFWrpuTRV/LrGirw
- w1ehCXAW6hBITQLj0jhzdb67OPX4rI47EDoXFZV7yNVxF5UCMLaFwK/yJFaAdtOZzC/nt4m613q
- zrqrGk5po2cVcDYLZYA==
-X-Proofpoint-GUID: HnsQ0w4ztJoCl79kBZBod7RF8wisJzvH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-28_01,2026-02-27_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602280050
-X-Rspamd-Queue-Id: 62095100003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dzufn8ddm8i98mz6x5ngc6nwaepq3qw3
 X-Rspam-User: 
-X-HE-Tag: 1772286407-284193
-X-HE-Meta: U2FsdGVkX191eayvj9M3i79NRt1Btb533gCt3TBX/jX9UULnpabkjM38Ajhz/3YvpBjYao+0gIplCX57wmCXhyrpxjPn3tr8Aa5Naf1APCWOOjXG/fs7uCMOY/iUEKau+j56bl6w41frm5OAbNz/EG+YCM1Xgf0SihELrdZ7dwFmc8phs78jhq8nxUcqOGFOHPPk6e8ghXR+NO2MwITenKNgvJV0ifQCPadpGdhYLB29mBu9pcSUyKUeP0FGcq3KWlW6gjP/2BrgT4LCX9dFNOMgkCPxmzhp2iJVKP1n0FtXBuueq/lMsp2pc7gq0VyxkKsy3BGFsFxX09mIIq1gdE/MNTzPZJSgP+H9s04GtXhilEQjOPN5AQa8VCHgxzIkAVc0lC7PDQQScXLxDKwGRi06oYTexXxYINW7J3LJnJyIGgu526a7dWG3ip5kCTFk0/SueZ3XsIBSK5YaBbZFGQkoBB9LYkRkdJP1x8tt+ePv5uP5uTZCv0xaSVF6ZSKFs3v/ust5kpbTSK+NO6uWzzwCyeNqJebAoh99OQ6n6w7Xb9P7qNdY/GzCA6F5l8nz2+bBmbhirBgHo+0eRdMtodYD6gq7P4FDsdoz2cNbEVtgduua6RtBdParmAbZSvtJQ73Q5+OqizfIWBfb7EMr7C6ROyynzuFimBlqAI84EH0I576fa8g5H3yCmFh/2v1CbUN6lji/U71Hzmm1wi3Tk3r0dih9sY1Aj1263juL9HMcPI79KzZ4Z3AvYNJJ2O2WpjxQpWi0Nm+FT2cTeWJiwF8KaeoiqnzOXpOpT6im9Jkt55XrcIP8mx3DYWMulClOkL106DF+8bH2pFOGv6qnKFXnR/+t+yYhyc9+pVGvhRVmh5JBRkIXRaspirS4zHgWSyq3nKCO8cXLE0PVBFunUCBwmrfXanf00SzQa11gHQSSZPnrDmE28lQiiOLBozlp2WFo1hV8QiOccacThDa
- 7nKC5XK0
- PDn1EFUONnusfTrJJowpLLPAK87ouOhln18HjH/JBgLjTx2HxhauKl9DZSVY2Nc8TKQQHPusiycf/QcsewxF1W2GpQYzuXztPk9dgZkZIZPefhZFcVrURPBmxQ+OAR5eSymGYAoJDkDuJsczubMxAiI2/QRXlOO23j+l680gq5aCmOiKZ1Ky9BjAfQBpTxre1ItCHqaJCaTIii41l1zioosrxXubzZBWYgTUiPDJwwvZgc7hQ0MDJYY8Yukcru1jYs1wELfOvFitxb3tfnN8SpNaYKO4XLs5W2PHDU3AvCpbUyLXSxMq9sewGHjj1bKd9p1QUg6+rW/KsUTqHb/aaAaT12oH2iVdh0570HypjnQcShFUvNS9D0WQt6b0XL+suB/GNyHrCS+xwCcpPSa3/8UIYs1h0XZvZ/mV4wbDrXtmR4Q1SuB4jx12I/u+uHfUpQ7y7wiHYCtSlMm8=
+X-Rspamd-Queue-Id: C4D581C0004
+X-Rspamd-Server: rspam08
+X-Stat-Signature: se683rj4adcyp6cttkfqm77ahfd76nkg
+X-HE-Tag: 1772287580-672667
+X-HE-Meta: U2FsdGVkX1+MRsNegtrwfIPNoKG/JycddW3X6xL2s+du/Sj4Esc5SXDXDW20Xct52mpcNYSxU8ZGCMVWLHWNXDv7BXUwwCZABXLxKQZIn+GgLW22KtfTCNof4sCsBszHKUhrFy0bOwgIpimAa09FhMTg2g32twl8pQYecyJvdBbvV6U7LP81n+OZLOSdbeGw9DfdDAMIPqM8uWJwDk/zw5JinjqO/AcvxgvBBowuQCJwwz/8X6PDWP9E8yTCARyUZVZ2YBcLb4rNrscsaocvcyR62Lvp1mUySEm4oYOgKDr7VBk3tpl8OMFa9EwKOlzPxx1urhvVKSg9tYVGhKLkghOz/gx+CbdAwWmIyvOtuuWw6UDZdqOX4mf70XeRaYRw8KaFGO3R1wR4XhleJ4KVaajZDNeJhceDstD1K+ANhQOh+mz8F9CE0zlpyE/yMILFZQoYqEiSBg5nPdK024HwYfJBBfoZHx9F5RvzNfXFWs0tDAO53k5apmvdxQHG8Q/nKZ0z30JJJpKnIvY9K2DGsxhfILhMsL9ltc0P1Lc7Xv4MXKNWqKhYhi45Dh+bENqPPsmB8budjiu6qkZReHKwnDHnTIXimN4Uzu0NQuIe284D7zMaWTsLm84qAX8IBUG7b3t2b3tHGtQhsKbGZFfixo6mVRCaidqQdNdSX8uOKFRe9Ut2ZstihRfXuNRBcRSRrAUzOq3Qf8mMD889iqiU4G6itvh0poB2FzMocl3qJ3jpPMtlOS22BFWWXgAQeV+unVcn2Nmln3CByqZ3iJ4A+9NEKoLPziZX3CnUZDQtJsFnG/Q50tnI+EBx5qA1K1lNJ0gM2PDdkaeuCKd8S43Deg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,164 +88,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Ritesh,
+We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
+If the batch has a mix of writable and non-writable bits, we may end up
+setting the entire batch writable. Fix this by respecting writable bit
+during batching.
+Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+lost, preserve it on pte restoration by respecting the bit during batching,
+to make the fix consistent w.r.t both writable bit and soft-dirty bit.
 
-On 28/02/26 08:05, Ritesh Harjani (IBM) wrote:
-> Mike Rapoport <rppt@kernel.org> writes:
->
->> Hi Ritesh,
->>
->> On Fri, Feb 27, 2026 at 10:39:53PM +0530, Ritesh Harjani wrote:
->>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->>>
->>>> I noticed CMA init for fadump crashkernel memory is failing.
->>>>
->>>> [    0.000000] cma: pageblock_order not yet initialized. Called during
->>>> early boot?
->>>> [    0.000000] fadump: Failed to init cma area for firmware-assisted
->>>> dump,-22
->>>>
->>>>
->>>> kernel command-line:
->>>> BOOT_IMAGE=(ieee1275//vdevice/v-scsi@30000070/disk@8100000000000000,msdos2)/vmlinuz-7.0.0-rc1+
->>>> root=/dev/mapper/rhel_ltcden3--lp12-root ro
->>>> rd.lvm.lv=rhel_ltcden3-lp12/root rd.lvm.lv=rhel_ltcden3-lp12/swap
->>>> fadump=on crashkernel=3G
->>>>
->>>>
->>>> Same issue with kdump CMA reservation:
->>>>
->>>> [    0.000000][    T0] cma: pageblock_order not yet initialized. Called
->>>> during early boot?
->>> Good that we added those debug prints ;)
->>>
->>> I think I know what went wrong, as part of this arch,mm consolidation
->>> patch series [1], I think the order of initialization is changed.
->>>
->>> With this patch the new order is ...
->>> start_kernel()
->>>      - setup_arch()
->>>         - xxx_cma_reserve();
->>>      - mm_core_init_early()
->>>         - free_area_init()
->>>            - sparse_init()
->>>               - set_pageblock_order() // this sets the pageblock_order.
->>>
->>> Whereas earlier set_pageblock_order() was called from initmem_init(),
->>> just before cma reservations were being made.
->>>
->>> start_kernel()
->>>      - setup_arch()
->>>         - initmem_init()
->>>           - sparse_init()
->>>             - set_pageblock_order();  // this sets the pageblock_order
->>>         - xxx_cma_reserve();
->>>
->>> So that means, pageblock_order is not initialized before these cma
->>> reservation function calls, hence we are seeing these failures.
->>>
->>> setup_arch() {
->>>      ...
->>>
->>> 	/*
->>> 	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
->>> 	 * hugetlb. These must be called after initmem_init(), so that
->>> 	 * pageblock_order is initialised.
->>> 	 */
->>> 	fadump_cma_init();
->>> 	kdump_cma_reserve();
->>> 	kvm_cma_reserve();
->>>
->>>      ...
->>> }
->>>
->>>
->>> So what if we do..
->>>
->>> start_kernel() {
->>>    ...
->>> 	setup_arch(&command_line);
->>> 	mm_core_init_early();
->>>      setup_arch_post_mm_core_init(); // and here we call CMA reservation functions ?
->>   
->> Unless I'm missing something these cma reservations can be moved to
->> arch_mm_preinit().
->> It runs after mm_core_init_early() and before memblock moves the free
->> memory to the buddy.
->>
-> Right. I think, we should be able to use that...
->
-> @Sourabh,
->
-> I don't have access to the systems (travelling back...). Could you
-> please give this a try?
->
->
-> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-> index cb5b73adc250..b1761909c23f 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -35,7 +35,6 @@
->   #include <linux/of_irq.h>
->   #include <linux/hugetlb.h>
->   #include <linux/pgtable.h>
-> -#include <asm/kexec.h>
->   #include <asm/io.h>
->   #include <asm/paca.h>
->   #include <asm/processor.h>
-> @@ -995,15 +994,6 @@ void __init setup_arch(char **cmdline_p)
->   
->   	initmem_init();
->   
-> -	/*
-> -	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM and
-> -	 * hugetlb. These must be called after initmem_init(), so that
-> -	 * pageblock_order is initialised.
-> -	 */
-> -	fadump_cma_init();
-> -	kdump_cma_reserve();
-> -	kvm_cma_reserve();
-> -
->   	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
->   
->   	if (ppc_md.setup_arch)
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 29bf347f6012..5ba947e4fe37 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -30,6 +30,10 @@
->   #include <asm/setup.h>
->   #include <asm/fixmap.h>
->   
-> +#include <asm/fadump.h>
-> +#include <asm/kexec.h>
-> +#include <asm/kvm_ppc.h>
-> +
->   #include <mm/mmu_decl.h>
->   
->   unsigned long long memory_limit __initdata;
-> @@ -268,6 +272,16 @@ void __init paging_init(void)
->   
->   void __init arch_mm_preinit(void)
->   {
-> +
-> +	/*
-> +	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM
-> +	 * and hugetlb. These must be called after pageblock_order is
-> +	 * initialised.
-> +	 */
-> +	fadump_cma_init();
-> +	kdump_cma_reserve();
-> +	kvm_cma_reserve();
-> +
->   	/*
->   	 * book3s is limited to 16 page sizes due to encoding this in
->   	 * a 4-bit field for slices.
+I was able to write the below reproducer and crash the kernel.
+Explanation of reproducer (set 64K mTHP to always):
 
-The above changes fix the issue. CMA initialization now works for both 
-kdump and fadump.
+Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
+fork() - parent points to the folio with 8 writable ptes and 8 non-writable
+ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
+determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
+the folio as lazyfree. Write to the memory to dirty the pte, eventually
+rmap will dirty the folio. Then trigger reclaim, we will hit the pte
+restoration path, and the kernel will crash with the following trace:
 
-Thanks for the fix.
+[   21.134473] kernel BUG at mm/page_table_check.c:118!
+[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   21.135917] Modules linked in:
+[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+[   21.136858] Hardware name: linux,dummy-virt (DT)
+[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   21.137308] pc : page_table_check_set+0x28c/0x2a8
+[   21.137607] lr : page_table_check_set+0x134/0x2a8
+[   21.137885] sp : ffff80008a3b3340
+[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+[   21.141991] Call trace:
+[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+[   21.142766]  contpte_set_ptes+0xe8/0x140
+[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+[   21.143177]  rmap_walk_anon+0x100/0x250
+[   21.143315]  try_to_unmap+0xa0/0xc8
+[   21.143441]  shrink_folio_list+0x59c/0x18a8
+[   21.143759]  shrink_lruvec+0x664/0xbf0
+[   21.144043]  shrink_node+0x218/0x878
+[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+[   21.144763]  user_proactive_reclaim+0x2a4/0x340
+[   21.145056]  reclaim_store+0x3c/0x60
+[   21.145216]  dev_attr_store+0x20/0x40
+[   21.145585]  sysfs_kf_write+0x84/0xa8
+[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+[   21.145994]  vfs_write+0x2b8/0x368
+[   21.146119]  ksys_write+0x70/0x110
+[   21.146240]  __arm64_sys_write+0x24/0x38
+[   21.146380]  invoke_syscall+0x50/0x120
+[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+[   21.146679]  do_el0_svc+0x28/0x40
+[   21.146798]  el0_svc+0x34/0x110
+[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+[   21.147074]  el0t_64_sync+0x198/0x1a0
+[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+[   21.147440] ---[ end trace 0000000000000000 ]---
 
-- Sourabh Jain
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sched.h>
+#include <fcntl.h>
+
+void write_to_reclaim() {
+    const char *path = "/sys/devices/system/node/node0/reclaim";
+    const char *value = "409600000000";
+    int fd = open(path, O_WRONLY);
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+
+    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+        perror("write");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Successfully wrote %s to %s\n", value, path);
+    close(fd);
+}
+
+int main()
+{
+	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if ((unsigned long)ptr != (1UL << 30)) {
+		perror("mmap");
+		return 1;
+	}
+	
+	/* a 64K folio gets faulted in */
+	memset(ptr, 0, 1UL << 16);
+
+	/* 32K half will not be shared into child */
+	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+		perror("madvise madv dontfork");
+		return 1;
+	}
+
+	pid_t pid = fork();
+
+	if (pid < 0) {
+		perror("fork");
+		return 1;
+	} else if (pid == 0) {
+		sleep(15);
+	} else {
+		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+			perror("madvise madv fork");
+			return 1;
+		}
+		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+			perror("madvise madv free");
+			return 1;
+		}
+
+		/* dirty the large folio */
+		(*ptr) += 10;
+
+		write_to_reclaim();
+		// sleep(10);
+		waitpid(pid, NULL, 0);
+
+	}
+}
+
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+v1->v2:
+ - Just respect the writable bit instead of hacking in a pte_wrprotect() in
+   failure path
+ - Also handle soft-dirty bit
+
+Based on mm-unstable (df9c51269a5e).
+
+ mm/rmap.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index bff8f222004e4..fb64829913052 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1955,7 +1955,17 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 	if (userfaultfd_wp(vma))
+ 		return 1;
+ 
+-	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
++	if (!folio_test_anon(folio))
++		return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
++
++	/*
++	 * For anon folios, if unmap fails, we need to restore the ptes.
++	 * To avoid accidentally upgrading write permissions for ptes that
++	 * were not originally writable, and to avoid losing the soft-dirty
++	 * bit, use the appropriate FPB flags.
++	 */
++	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
++				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+ }
+ 
+ /*
+-- 
+2.34.1
+
 
