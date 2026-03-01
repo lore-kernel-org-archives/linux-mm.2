@@ -4,89 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F7CFD0045
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:44:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94279FD0049
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:44:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DDCA6B008A; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
+	id 0AA9E6B008C; Sat, 28 Feb 2026 20:44:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4927D6B008C; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
+	id 032DB6B0092; Sat, 28 Feb 2026 20:44:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8586B0092; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
+	id E818D6B0093; Sat, 28 Feb 2026 20:44:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B02A6B008A
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E3BDF1403EB
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:03 +0000 (UTC)
-X-FDA: 84495798366.17.3B1EECA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 58F8E140004
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n0zrOea4;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D60036B008C
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:44:24 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A909C1A61
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:24 +0000 (UTC)
+X-FDA: 84495799248.28.CDBD7F5
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BE2B61C0007
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:22 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SQspmzXB;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329442;
+	s=arc-20220608; t=1772329462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=EkqByFFAs9m9qqH28dsuxFQcy77o19Eg8F7Op2FWyks=;
-	b=O/QMX27rMxM/Gu7DvVhU7pb6WRRaKecbH+EZmBxn+mz+TzetvjefdcXD5sEWnxZkYFl+Oi
-	9DwAIwrUKZ6ezwsF/GOOXPW6pK59lIHz70A3vmyYS6237JIu/Dw2EEDFr0PuTBJ6xLcor8
-	+uadeAAFEBmhDS8EpPcfwCfqdIYOOfs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329442; a=rsa-sha256;
-	cv=none;
-	b=ST4VASvlykCHm/8ydAOx7S09lLeuseWjp7WeDJd4l8U0/d1bJKPt2pHZ60mEY5YekXiEGk
-	8RNJf3pimAr506dl3hAPaIPXR1B6O23ny7pZBsJyjIryH4p5bWYE9QEn3L/pfk3VW7+Beq
-	Luiw1ImhYhJ0EoKKSvXGOotuJCdxH68=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ep1r+TxTVXsjleXDRELngb1lJHdD0DP3WlzMub74vCE=;
+	b=w7V/PMVIpurjWtVx3K1AiqBUq9y70sWVCotx1aZVeXvR8T6Ly+kx9E+DIX+5Yqawjpl55I
+	FhYZIunvr91L7sLUb0LV1SlpkAIKh5UK6QfGSLL5C8Lqlo2gnHZisqC/fhE8CHnzwn7pIh
+	d+MxEF3fRc5qkgM24pEkd53MHRiZC08=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n0zrOea4;
-	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C72AF60123;
-	Sun,  1 Mar 2026 01:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC180C19421;
-	Sun,  1 Mar 2026 01:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329441;
-	bh=BD3vIuhqmYcQWLzqKsBrANaPfNkObiKWmnF5V79hJrI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n0zrOea4zxRr81GoybntTMpngg5CY97+QGQjJXCW15fLLvmN2WSpglK+GKEGxD8G6
-	 cUN47XBfih/jGC5YaGdOl6t+n3NVDDxAJIwXyZlKrJe5imQdMwt4ZJ71aTnFNAvWml
-	 kgK84Q1a8EJg820kHD0M1dB627WZLDCgO5mCk1OxwWNIUpwW7/JLLJ34a7f+JjCwHt
-	 IOxwOWdEcGQVaOAOE857vQ+nbbPuk72dBuAFjMrz1p+tgJ11NMqPaFtyBtaznCVrpp
-	 yyvtUAUtwbh00bJXU8wpo3Cd3+b00yU/aYtc7dtcu0R12fgQb+tl4Hac0TRP6FPJRw
-	 FPOZN1IGKEfSA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	kartikey406@gmail.com
-Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:43:59 -0500
-Message-ID: <20260301014359.1706097-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=SQspmzXB;
+	spf=pass (imf18.hostedemail.com: domain of rientjes@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329462; a=rsa-sha256;
+	cv=none;
+	b=PCGbmQsXUQZIHE4xNxOmHEQToPihEEMxGzMPQQzod09kbwYtCucYQCkLBMI54uomibUpo5
+	86iOSXkIdfGWwRG3Psr7j91SbQBPJLRivQJSMMT+j3P23QSUVCs/IbT+WSFtwFXGyIbpbU
+	7VPXiLYUljVxUWH5JJYQwVKsRWYkvOM=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ae3f822163so37855ad.0
+        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 17:44:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772329461; x=1772934261; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ep1r+TxTVXsjleXDRELngb1lJHdD0DP3WlzMub74vCE=;
+        b=SQspmzXBcjie1/H6rftYEz5ZmpvJk03piVYVE0iPeKLjkGRVLshzDyzAed1sztSxvB
+         txiwrEdrxXQNwH6QYXqD3/nsvBknUetqFb71VrfrcNq2qGoJ9ctprBefNmTv7aM6jJqZ
+         QuKLs/ZUhsvFd0GaJjSeRKNzsPmcaRf/26dzNHeYjazZZrcSpcMkNtTjPJBIs2pNZMTB
+         bHek3C0taARtXqLg8yfynekZRUa2foIRJnPAAHkXf8RShCR+HFj1O5gFKMUMqDeBLkNG
+         fd1Hok+9a61ybm7t5xPjTyT+BmKXwBGNQIoubLqTo/dCUhW72xCpg2jg9cdbMGYG8mpy
+         pnUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772329461; x=1772934261;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ep1r+TxTVXsjleXDRELngb1lJHdD0DP3WlzMub74vCE=;
+        b=Y/jy33IkDhrKUwM/1vRMuQ3pVH/Q2r/FMFnkTRDqfUPOmHYJRZaV9FHJr+XruHCchR
+         oSuU5v3WZmVVsUCAbikdlAIRQitKSTmYXSv/ebRQFOUpZ11FmGIHRg/iDIyYYc014Q1+
+         2ZugiAdof0yt+CIrzP+3Ev3v2cFLMYjowZMQBWQZ3iRBO5HUg+fsRlnkrt24+PREFs4n
+         7eWKw6+P7i0lUpbfyNufXG0Ey9MoWAPRZ1u4fgALP1PpkHVJ5W9dtWMwFuzHbbtiv8Bm
+         4f7V0F3w07o7iXBpiYyDrR9vxeo3GdyH2qNnjx2T09Sp2wJuKBgmVwhBYca82euypVw5
+         I1EA==
+X-Gm-Message-State: AOJu0YwtoiY3tn/3Y8CLVFqXMqvGzQOH4ju8iF2kTjNESh3d7yqCyUTI
+	AecncF2subcxd361LDs+yPokFDDdapsaauKyy1thFHB/FScZfHRShNTT6tS7NWRgqg==
+X-Gm-Gg: ATEYQzyr7N7QM2LozjVHBIylgvLATfTep940/92XZhR26oE6WmOdtk8WDLknvSxiFl6
+	rJmAdNZYzvITak7z3hfMRndcJrwYFjzvH1To91sdKTIfbHzP032Ffxgsh+olUWXN+ZHStR/PM9E
+	gWquzJ7uzC/NtqX4SvdjiQnpb0Nw92aI4XFLmgZie17xJge1AZS8dqNUjdmScsyUNJlYUX33yvn
+	R9WFEuANqwsf3TmcvfqQrY6q0HkklFQvUUvLoK334WX6DLcbr7iY8bVp0ByEWUBkuyTpo2welZ2
+	5ZTwLkU6qN4AoBFimuw7mKPH1VzSnNEPQMqAHw5cuEXCi7qUdbaXS3+YIGNDd6MO/L3ZPuAs/oL
+	UgqRCi+wNKt/E2GxcbAE/UcAbZ/2QzUauxqfrBpTBk2Mrr6Bxxhioc1rbJo4yWtRx3RSLMGAqr8
+	+LunotTCfbFmP/sD+CrzVmd9fVgdqCj5YgM/zDh+pkCI0FJz6RtbmO/ISlPuwnq6HCc6jLlocGP
+	UMIJeHgcSps7n8w2yuDrW4qFOktmDWr42Uz8EryyUPFFdm5HOjUPA==
+X-Received: by 2002:a17:903:3903:b0:2aa:d604:62f3 with SMTP id d9443c01a7336-2ae397254c0mr1958145ad.10.1772329460775;
+        Sat, 28 Feb 2026 17:44:20 -0800 (PST)
+Received: from [2a00:79e0:2eb0:8:963e:838d:a96b:8016] ([2a00:79e0:2eb0:8:963e:838d:a96b:8016])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a01a9dasm9104749b3a.49.2026.02.28.17.44.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Feb 2026 17:44:19 -0800 (PST)
+Date: Sat, 28 Feb 2026 17:44:18 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Alexander Graf <graf@amazon.com>, 
+    "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
+    Anthony Yznaga <anthony.yznaga@oracle.com>, 
+    Baolu Lu <baolu.lu@linux.intel.com>, David Hildenbrand <david@kernel.org>, 
+    David Matlack <dmatlack@google.com>, James Gowans <jgowans@amazon.com>, 
+    Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
+    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
+    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+    Vishal Annapurve <vannapurve@google.com>, 
+    "Woodhouse, David" <dwmw@amazon.co.uk>
+cc: linux-mm@kvack.org, kexec@lists.infradead.org
+Subject: [Hypervisor Live Update] Notes from February 23, 2026
+Message-ID: <8dff046d-a819-ac8e-c1fa-8b5a35740cbb@google.com>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 58F8E140004
-X-Stat-Signature: nyfmnekdbmictps3ery68ak8ozmu83s3
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1772329442-676880
-X-HE-Meta: U2FsdGVkX19hAVcW1Hsf8gB04+4oQydAl1jrDqpUfiJNTz9rLgAWTQd9UXpQi8xaDLxcj+I/PXLb5/jgPerhrK7ijpyX/e5Lyh5IgUFuJbbjOAfoky75cri9MwPrehQ8UXA55X+lxI1vJKRjJxgZPFpl34XtXz5ryZkZmrzylHja/WepFFAMXhxXEghZnP3gof/DsxicoXApnjcU9HpTbQFtUGgcjbjx5BfgWapBeJjd9RINo/aW8GykB6QxVVVotQJzhiIuqM5GA0++hBxIayIEbSI0EUAYhlFDzXpXrAoPzF/R2vO6azkB8vAOScfIDmb//wM49v5FncYnFbQTBblryhLkwyfmD38H04VTi+XrehmkT2Fbojjd2oAwO+/YdMa8JnLCh5a03IGFE7aWtMoaUbsPQwA9uVawtYNnJPSO3yZ5j+QjO1yoQOPxqRV/Bg7vsNKRKRs/Vss+5j1QCehJxj5YogxQinXZ7hp9/h7bNucBpacK5bEzLTK/wnftjNpLsuPjqGh7VPqhkPYL+iZsnMftBjnBVHD+hOTao7AKHPCwYklJwUN58w1VPWkk37RiA7P2dcDiqGeaWyzScyUL3Ijnk9j/DR0yjnHPPIM4LMTVw1HMw0pYj0teivsXLeVpVF1GGQnnBADnusZbJ93WrbzzaJzzC5ntDr42pqLy5l7FF+t5YDEbKew1Hu5ajOlPWyr3ixodNkGarY1CLqhhuJdzNsihzgrVsV6u7lxyFtiAHm7HVIvEGOmiIun9PUUduVC73OU65oh1snIStb1UozNcLxhPY5IdjFKyG+3q0AwWgXMc4ktejY/NC6ISPRapSXQag17FrRq1yH99tuCSgoKx9dWm0u7DMXiLOA+8mu1ztFbcf1BQ4fU59Hq/YZpMTNwbh+3+GvqxZENh2YBNXXPj81taQn7M5MVuydUEplk5Fax+pyhBhLW2LFlxerbYTyg3SAZHfOBUenw
- bWnHENg4
- JNlT7aVSt75yVyAX+qYzgiZtvWZMt1dhjxhVo83JNR2tvhIspzL0NLu5kJJx9Co9zCMRV+6RT7/zkngkXFGq0lqVeSTYPXxIVvKmon27wpnWDTBLXlSjbgohgc8yw6sVplNnr3rWjvX56uh5F2Wt50UYmU2MjEzgceqYCvDeAZ2PrSORw6Eyz8VCsB3RSHMD4eUXB15L0/F7eMzjE0QWtJQVY7S6eChxc/ROLb0exr2htt1cMGUDMcRNzGH6Ix8fi5LPJrJmjOD5xh8jLZJAFaQ1qnXkUTMk87YdUf52o+j2qf034oUGr5YRHDIt2dLKmMr09O32qcnT9NLVrVPJpCbWq3DYm8WXVNGzLP5b4N9SLkwrbFOhHtd1cfpN0zsAthZsmbBvjdEEUYiIfaVWWltPybR7mFWWd/wfTTCv/unUvZHOWtVE1hcQN9WmZMXqCEuvvDzu7ggmY1UMQfMJ5UV2ZkmhxRMTHyKwowTYRmeXKfk6j9pvdNRy1EZgMYc8NTIAbVWCcC4+Ec/xL1JYywiLKhsjBmnWRw6cS6BWEbMkCIpFhzcHYLZVdizIr6/MPk9YtTxWMoziMEyziWMisYfYAcXg7kJL/i04Pwj+XJfgPZtA4n3TE023M2frSUz+CAowGTX54O0CJGgI=
+X-Rspamd-Queue-Id: BE2B61C0007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: nhkhjjtinim8xr53jbmdyeua6a7tray6
+X-HE-Tag: 1772329462-741334
+X-HE-Meta: U2FsdGVkX18LLOubkKSSuVRw5mKPPiJ3Xbx3IaOrTgWr8+syyidwg6AXwB8cYXEf7Y5g4bSBcXZR0UteciHSZz9LymiccOIfJbUEpUOnV+9OlOAzW0UltPPiCwtRiEqP6uBjt1DTrdd3BjEOLWElOR4IqakpOGnYLTtG4WY1P0QvBqlXk5ywdqLKnpiJI7FVGz4wHcOeQu0ZDEio3fa0Gyx95nIPiA9Qd9L7vV5pXZM2u62MN2JdKYYWwZwArkchp5YQqDlAulcrITsaFFPhGb3VVmQvgKXJBWoHgYVYisxejIcwHMCAG3y1YnkDqFcxTQNuWJ1vz1ohWteRJJpIHgCLgt02LAEJOEOCrY44Tanrb/R0PozEFIIVOFkey9ErhYp/5D/ATtmcwMOakOXH5ZonCwFzbV0vUPTaquTceZkAmojdVAhmamr4D9PqbUbuFbowGStNe18+5E7406QbUpJl6b6YBEqSFjIeLUV8XdEGolDVOsEMUeaDq3dxTPFErTyhHXI00g9V+hgO09Q2mm2Oyqn9AGqp6jRWeiYneRUS7uGe8/QOiSi+2yw2/kU604gn1pwffCBd6N+Y1W/44hMYJltGhUqKpxLmLRsmgVnt7QXX2yBBdDOGlfAY9uHDCPvoOIQHcghHa2DjhCy0Ro0lYjmqMRVqSRHMvTjGUDPcLDH8Ff3kGH8IoXoFVoVxDDq8Dt816OcsU0aqf1hPhncZV/RCwUhuYjoSmjuEcJpV6BM4f6FMLFX9x4nyuFJhSdaMKXWzkYwgcLr2GkrHZC5eow9qkCZM3gh1O4Y1Ws951Hi1jB15OI8hyfDCndaCSUEs7yg87rXbO+b44l1gWDTTXiG7sXulH1cZxcquBnKjj80Y/Hw8+F00WF7jDnwmhhBijfVviBknQFabF2JkAwfJkycy7y7/syrVlhyVJpb5QIzL1A+LuEpStYMAYaKb3VkWSAYuy0+lUsQt4xR
+ XgG3/tkd
+ 4HUmNZe9KJFWo4sL7G/FDcJJiYJj9rJYZ6myWWoxOxtv6N4mVEzJNXhQB9BKU8ZceLAAZAZU4y5VYOlf6eS+luBiKgDYfm92jISxskrcyGGJPoRv7SiP6jjNnSGqv0vQsXs/WRyxoZITxOA5PNNcvoLx2GseNzCwF4gyAAuBsnHwKxI+NECCNTjKq6Uda0b/FRAz+vFkrQUUiYEcxhM9xneAFF2myFYQFYbqL3pMUVByRZYnrlfnexsXHT5m6LcBIv3jzjKZajB5N90v8QewiwYBIHUTNB5Fr/q8aVVMTRjXPW2IJKZ+twUZBpVXvWR7oBPkKGBZW0gwUQoP7e0kzwzFVCFsGn0+2tkTWhxPCaUGD153Qjj591DYPKDbWRzSHUktujKb1+dqA1uXRAW+mw15FR0H432bAS0XdvjwGK33750P8PU+PxxNxf9GkTj1suEqBpjH8qfNvjEwtfx46tRTItAQONfiXfH31gR4KJVOsp4l+7lhJ9qyflKximIDKyvOx0qEOJryHJbJlmVjwvYKCGj9DA5CZJlBYybu5ocJUmIU8ezrL9Jf7hMlYq48QxdMGUoIbbEaNuMzAKpqPPBxIhA/nxwobj6ghZZHgjHy/V2DfVf09tVm0/DyMjvO2DSJ7paO8iB6V/S7shBdtLbTDAvDTMOMVE93e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,102 +120,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi everybody,
 
-Thanks,
-Sasha
+Here are the notes from the last Hypervisor Live Update call that happened 
+on Monday, February 23.  Thanks to everybody who was involved!
 
------------------- original commit in Linus's tree ------------------
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Mon, 12 Jan 2026 16:06:12 +0530
-Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+----->o-----
+We briefly mentioned the luod design doc[1] and asked people for review, 
+Pratyush noted that he would be taking a look at it.
 
-When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
-locks.  Processing a large purge_list without rescheduling can cause the
-task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
-and potential OOM conditions.
+----->o-----
+Jork Loeser noted that he was looking at HyperV partition survival.  They 
+donate pages to HyperV which is a concept that doesn't exist in KVM.  
+These pages are removed from Linux entirely and cannot be accessed.  He 
+was playing with stateless KHO and extended some features but is not ready 
+to send the patches out for review.  He was wondering if there was a 
+possibility of landing changes in 7.1.
 
-The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-where iterating through hundreds or thousands of vmap_area entries and
-freeing their associated shadow pages causes:
+Pratyush noted that stateless KHO should go into the tree independently.  
+Any consumers of the radix tree can be independent and build on top of 
+those patches.  He noted that he would be happy to review the patches when 
+they come out.
 
-  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-  ...
-  task:kworker/0:17 state:R running task stack:28840 pid:6229
-  ...
-  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
-  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+----->o-----
+Pratyush noted that there were no updates for versioning support.  There 
+is a clear plan forward for it but it hasn't been implemented yet.
 
-Each call to kasan_release_vmalloc() can free many pages, and with
-page_owner tracking, each free triggers save_stack() which performs stack
-unwinding under RCU read lock.  Without yielding, this creates an
-unbounded RCU critical section.
+He said he updated the HugeTLB preservation support with the requested 
+changes from the mailing list but doesn't have selftests done yet.  In two 
+weeks, he was hoping that these would be posted to the list.
 
-Add periodic cond_resched() calls within the loop to allow:
-- RCU grace periods to complete
-- Other tasks to run
-- Scheduler to preempt when needed
+----->o-----
+David Matlack noted for interrupt ordering that discussions are still 
+ongoing with NV on the topic.  Right now the simple approach is being used 
+for disabling interrupts on the device and then reenabling them after live 
+update.
 
-The fix uses need_resched() for immediate response under load, with a
-batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
-even under light load.
+For VFIO, there hasn't been a lot of feedback yet.  He was going to ask 
+Bjorn and Alex to take a look.
 
-Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
- mm/vmalloc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+----->o-----
+Sami sent out phase 1 of the IOMMU preservation series and is looking 
+forward to the next phase.  He was asking people for review upstream.  
+Sami is using the VFIO patch series as a dependency.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 32d6ee92d4ff8..ca4c653286870 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 	reclaim_list_global(&decay_list);
- }
- 
-+#define KASAN_RELEASE_BATCH_SIZE 32
-+
- static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
- {
- 	struct vmap_area *va;
- 	unsigned long start, end;
-+	unsigned int batch_count = 0;
- 
- 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
- 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
- 				KASAN_VMALLOC_PAGE_RANGE);
-+
-+		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-+			cond_resched();
-+			batch_count = 0;
-+		}
- 	}
- 
- 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
--- 
-2.51.0
+----->o-----
+Ackerley Tng went through guest_memfd HugeTLB support; the link to the 
+slides are included in the cover letter for participants.  He briefly 
+touched on an introduction to guest_memfd as a guest-first memory provider 
+to KVM.  He then discussed how guest_memfd simply wraps existing sources 
+of memory like pages from the buddy allocator or HugeTLB pages.  The 
+folios are put into the filemap.
 
+Every page is individually tracked to be either shared or private.  
+Confidential guests can request a private page to be shared with the host 
+and vice versa.  For shared-to-private conversion, the userspace VMM makes 
+sure that devices stop using the memory requested by checking refcounts 
+and then sends the SET_MEMORY_ATTRIBUTES ioctl to guest_memfd; that unmaps 
+the range from the userspace page tables and records the page as private 
+before returning to the guest.
 
+Refcounting for a HugeTLB page is taken for the entire hugepage so we 
+cannot identify which page within the hugepage the refcount was taken for.  
+For all private-to-shared conversions this requires splitting hugepages 
+into pages.  Split folios have to be merged back together but may also 
+out-live the guest_memfd; for example if the fd is closed the memory may 
+finally be unpinned.  This requires tracking outside of KVM such as the 
+original size of the folio and which memcg was charged for it.  This is 
+also required for memory error handling.
 
+For KHO preservation, for guest_memfd pages (not HugeTLB pages) we need to 
+preserve the filemap and associated folios, mempolicy, and memory 
+attributes from the Maple Tree.  For HugeTLB pages we must preserve the 
+restructuring metadata.  It was noted that there is no memory failure 
+tracking today, it could be a future extension.
 
+Pratyush asked if we can disallow any conversions after prepare.  Ackerley 
+said if this period is very short than this should be fine.  Pratyush also 
+asked if we should associate the guest_memfd with the host VM which, 
+today, we rely on the VMM to do.
+
+For timelines, Ackerley suggested that we would be able to merge 
+conversion support with private/shared tracking in March and then HugeTLB 
+support without restructuring in June.  He was hoping to have 
+restructuring support later this year.
+
+----->o-----
+NOTE!!  Daylight Savings Time starts on Sunday, March 8 so the time of the 
+meeting may have changed for some participants.
+
+Next meeting will be on Monday, March 9 at 8am PDT (UTC-7), everybody is
+welcome: https://meet.google.com/rjn-dmzu-hgq
+
+Topics for the next meeting:
+
+ - stateless KHO patch status in Andrew's tree
+ - determine if luod would become part of systemd and discussions with
+   Luca; implementation and next steps
+ - versioning support for luod to negotiate
+ - HugeTLB preservation support
+ - ordering issues when disabling interrupts based on feedback from NV
+ - VFIO patch series review from the list 
+ - phase 1 of IOMMU persistence patch series, then phase 2 status and
+   updates
+ - hitless replacement for iommu domains
+ - guest_memfd HugeTLB enlightenment: conversion support, HugeTLB support
+   without restructuring, and HugeTLB support with restructuring
+ - live update related topics to propose for LSF/MM/BPF 2026
+ - KHO enlightenment for ASI
+ - later: update on PCI preservation series and next steps
+ - later: testing methodology to allow downstream consumers to qualify
+   that live update works from one version to another
+ - later: reducing blackout window during live update, including deferred
+   struct page initialization
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1] https://tinyurl.com/luoddesign
 
