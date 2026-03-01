@@ -4,106 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189D6FD0048
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 08:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B43FD0057
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 13:20:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 342B96B0005; Sun,  1 Mar 2026 03:25:59 -0500 (EST)
+	id DCE496B0005; Sun,  1 Mar 2026 08:20:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F0C36B0089; Sun,  1 Mar 2026 03:25:59 -0500 (EST)
+	id DA5FB6B0089; Sun,  1 Mar 2026 08:20:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EF716B008A; Sun,  1 Mar 2026 03:25:59 -0500 (EST)
+	id CB1766B008A; Sun,  1 Mar 2026 08:20:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DE576B0005
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 03:25:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAF60B818D
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 08:25:58 +0000 (UTC)
-X-FDA: 84496811196.20.ACE580B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2722FA000A
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 08:25:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Y+Noax4D;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC3C66B0005
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 08:20:47 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 57E001A05D3
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 13:20:47 +0000 (UTC)
+X-FDA: 84497554134.11.7BEAADE
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D471F1A0002
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 13:20:44 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772353556;
+	s=arc-20220608; t=1772371245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnmtOowvcLnGYWXBmjLfbTevphSDU8Ra/es7Vc8SERo=;
-	b=0uBW3a+RSr3ozIvi4E88vWuzVH5G0HlldKbL5p6+UnBBrm7ruvS1XWg6BKtNRvKiTPOPQI
-	Ka9uAq0mgjKxCDAAj4VjHSpU+Kg96ktpLUl7u+aC38Y1+i8zpWqhxKEDMc5B05HdT9BLCP
-	O3yDeYjO5FjOQc3rmlfTiVsa6YmcdWU=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Y+Noax4D;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772353556; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=N70PHx70HemaU0/j0mqCP3L/B5OCEkq4I46VvoZbMko=;
+	b=AIOogGKlDnFTlm1TSAb6kNI6NmWwrArlFDj/KgrXBQexroo+AhN5SZR9rG+LU+lWgCqRic
+	l+BXVvbf9zWz3B1PORA8ZchFdh1oyotyIrjbA9WZdxoxSM+cKJy+/P0JLnh4u52fq15CJ9
+	rpsDvxE8rCEjiiF12ZI49qWWJP2KmYg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772371245; a=rsa-sha256;
 	cv=none;
-	b=E4s5qUkjJKctxfyuFE5Jk2MCEchRtQdW6ZpS2lKFp67wKY2m0STg3G6456awr7l39JWUjl
-	hiD9WRB5VGi2auTQjDB9aec7vjStXzHrIPnRXdjbj5gJSj8lVHGaSDTqwSvo2xyt2732+n
-	M5btJWwsK0NC7cVjsCxmv2Bt9UHc/c0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772353555; x=1803889555;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=f2Pvjk7JSG65hzMSwpYeBqHr6b2wxFUS0wZ+zeQcS7E=;
-  b=Y+Noax4D9fg7b6Qv9uc6C8vCkiIrA+YSL3B+nN4RfvcnrM+CrSGorpMJ
-   fAKdUiYpr2uSXhCn0q/+9qzkqGKk2p11VvoRF7IqSgYE1d4LCmsValY/m
-   Ac9ZhFvWZlvYXmx59EE2tQ11VVN+VYe5D/KxiYjsDsZIELwe/U5OLpKaH
-   yHx7zPZ3ccLU6mIXYUtSY6PPacXeX4IncYKlOGmOj+ocMkBxGkhU+hz2B
-   5+JR92DSVeKfAvlR1rWnjjPxCisDOIUCejtLpH8/h/pWtAfweev/Y7+/V
-   T/nIVs/MNUtDdyWSgLrMwZq0JcsWJkRk72w7XnjtFA8l+czGzgwIMXWLT
-   w==;
-X-CSE-ConnectionGUID: SR7leyxbReWXHjvQYugJOg==
-X-CSE-MsgGUID: EnXANJEKRFWlyp0bgTFb3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="73430621"
-X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
-   d="scan'208";a="73430621"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 00:25:53 -0800
-X-CSE-ConnectionGUID: d8hc9fy+SdWghNOIGBnFCg==
-X-CSE-MsgGUID: qnJsAdZPQF+KgJQozITTMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
-   d="scan'208";a="215056542"
-Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 01 Mar 2026 00:25:49 -0800
-Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vwc7X-000000001LR-0n2u;
-	Sun, 01 Mar 2026 08:25:47 +0000
-Date: Sun, 1 Mar 2026 16:25:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matteo Croce <technoboy85@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] KUnit: memcpy: add benchmark
-Message-ID: <202603011603.4178c0iZ-lkp@intel.com>
-References: <20260301011209.4160-1-teknoraver@meta.com>
+	b=WCAKVC19wNszrmGlVjA6t7KT2pwwzfq5McFeaJy49ewmye19ANC2SyhG6eiZvX4u1c4LdH
+	c+qanhyTqeGSqXYRD2CdsA/KBj5PwpKRXcTp3TtvirsTGV8shVnjfCgHkGGx6qqocDZ8vX
+	rLDboWej+/kVlaxgOgG9t+KPeAlAICo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fP2jj3PkLzJ467w;
+	Sun,  1 Mar 2026 21:20:09 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 49B3440086;
+	Sun,  1 Mar 2026 21:20:39 +0800 (CST)
+Received: from mscphis00972.huawei.com (10.123.68.107) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sun, 1 Mar 2026 16:20:38 +0300
+From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+To: <gladyshev.ilya1@h-partners.com>
+CC: Gorbunov Ivan <gorbunov.ivan@h-partners.com>, David Hildenbrand
+	<david@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, Zi Yan
+	<ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Muchun Song
+	<muchun.song@linux.dev>, Will Deacon <will@kernel.org>, Yu Zhao
+	<yuzhao@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/1] mm: make ref_unless functions unless_zero only
+Date: Sun, 1 Mar 2026 13:19:39 +0000
+Message-ID: <a0c89b49d38c671a0bdd35069d15ee13e08314d2.1772370066.git.gladyshev.ilya1@h-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260301011209.4160-1-teknoraver@meta.com>
-X-Rspamd-Queue-Id: 2722FA000A
-X-Stat-Signature: 7ehtmiefap94zrtfhsya9u33szr1ng9u
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.68.107]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: o3bffgwzx7s7y6riox9jo83yhsq4heq5
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772353553-213781
-X-HE-Meta: U2FsdGVkX1/9rTZEftjMASSYULhCtempyEg1h2XiAnqbbGSc8BXwvpKGBVTeG4ijNsLOXD7FJLKa+bv2E/zDdCJg5pVW7LwBPOZhPxUyaPuvhZ7Y9hzgnsMCsO93fhUbM9ADePNa0R1B1N2aHmcybf49EJSi4ijLYr59TAMazA0f7SEmmXry/zsuiNJzubYxmaW9thjl+oNmIy/4Uy7nepttOKBnsb+dKihKkvlEKVK1D0nX1NFtj+MC9JEPgqb8Qvaq2zJzb1X/qAL+Flyy5kGR3dbQzxWE1BfpQXTxJtSgiKIC09xTC4tdVSF7MSjf98YV4UCwmfMBMWupnWeFkZMyrY9wP9KGgeWKj/v3Hb3eFLFwmhvS27YkBfCTzAwDkzmSrgU9PfG0KVnSD8zeH49didlRPkezogUpFVZyB+gDvOOHJAulpQMm2TBA4WiBbDufz+w2r/GmzXyGEcRUVejKSoqEpkNI44TGyqb1y0KbTWavAEGy4tjPrUdbytnaxrT9l2pvsZ7QpJl6A1bcpKRqAk2ArVMhFybzH5Ldc5d569COtkneMCBMW6/i/K4x8TBwnlvb4eFfNZKjGs26HW2xV5DXSGk6mc+VJL84UbHD8DEIQp1QnES5ypaG5t42DcjvdCGBytxriGrQVeb3spBY6w8xtU+cEIyHriMtSmJ00M4upC4wEqmicl4sLb4eq4newNZxmWSQoDLC1Yqtke2BJP6nLHhb5pX1bQgCY+3FRoOxr06yUbkCIVDC+y+oiVqBYUZJcp0VDrs2thviFFCrr/VtlbQPtefgilUPI3yRa57oKkRBWs04vPzQtB3UWBshmboB7WkORbUpI8qmeltcvQjBD3kdZucGmDjZRX8yWc46GO6HHuJaMCJfXEM1G2VRvl3J9xzA0jLNX8TLygcNsMUH0YeVe130lyQLdlqu+KfBsASb7jLAIqQNFRBdQ7P5HcSV3HIszdN2ZvR
- yepc+QuF
- oHwWvNGy26qFOOcy61Uypu0Hvy6tB8mxteDEuvHkVwzve5xkuTLT0JFZWtg+kxhVsjZvR+ve+vKS2dxTaQ+9hSwD8gKfjGPpHaKAykTI9iOpYWhc2deh5EbkLbQTMO3+W7VtbpcVxJm/Fj3VS1J22asuwKMXDJ98J/TpkNJYVw4ONSQ83y0riUULbRt+7ipXbFPKMWL9I81xQj1wp5/4JgtTRlz6sygcpyuLVRtgOBBgsuWSCNHCek7xnDxtdQ7cQOtpzdVhXwyNmbOjUwhwS9n+bjF2DP4qgS8MDed9Fgvfc1H4iK4+S6kRl6a0QvBlRvk/3Yj/AuhEv2If+AnM1TctNcQUUaUnwoE33Y7pG6JRxghIGSksSgQiZmVN3jPM4Arb8lYvhyAJZB7DAiWsQpqxU2AepRjC4CDHHX7Xjw/AgMm+xhZVO5mYPEL49Bi5ilWB8
+X-Rspamd-Queue-Id: D471F1A0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772371244-339124
+X-HE-Meta: U2FsdGVkX1+uLrN3qHNaV4fBNQDgIXE2j1/BUea/W++hxcpz7E55yx6M+i5UmNbOfUhX2FQXdFReXlNVu4Xz+UQVDhzB9e+nNVrRVh3IjXk1SmvxG9kWE79MRJ41k2AOsd6S34OAGmDmoMZW3XyxACKPtijz/JyfWpFrZNtB3vDhnCw9eHyhNqObR/zEvemZ8c2f3peBvXciNQlEdZgLXLG5+eV56VHyO7h4lvYxbg9KtzrSePkZgtyS8S0JCM7+z2yAqbDDTZLkcIHCJ/+3nPXVSb6LT/1tzwCmT+NkkUZqRpEerEfayv/J3pcuOcGQKBXfg1RPiFOxh/fC3phEJ9NPOVtBy/YdT88D4K/yYFZtOBga7ANOp1vttRrA4WDvixACQ9feFHvWpsgoNcSkLxNdiFqh+p4cL49tLM/rLpAx897W+prX645J25fXuSVexwYxxGp8j3Ir3bEtqiVsrJKEiD98A82bSbK51qB1r07q65OVuyi8eDsHJekqS4SbzIfYKs6Bt8S9L2XYujJCPl8vtc6oBrIF30N/WtVyx9rKtb8xhkUoX9CfA04QKO398C0PV+1l5MCAG6dynr5ACUuY6HIDbQWkyLZdD4IX1hKxy3EJ1MxohFRi4BGPdcBdkcBulsA2S2461UcnnOUexPyf1Sv/j6BYwQwYuiy9IPXaRarrJTptc/PUFhKcVoIYus63zYZZBXea1C/xa53qnVxF3clWJ0qSqhAWRGa9aTIBsoCodtOYSqSGj8gCWB3bvoFTUFNVPkqOWfvWvgiCk/bFtD4QOULUbvJi5BPKu9AjQiDad/468LkoSIesGnWzayYUK7tzR7fyAyI9J/mKsZf8xdidgINuNd9tYgwGSECX7N1IOm9Cl8PSJ9vVw6DaKMLWZQOeSM9bXbGoHdF5/v9bVnniLuydj4XvtOx+UD2AK0c4Ty3drOFIfhH2r4TKE1C+ae7klxEbFkZB2af
+ vKm7YkhO
+ xJX00NsCUs1lTXQ5HcrH0y4bytyrx5yduvmWZXseBNlRjy34VbpK8sRAZrH3V+nR62ojvxkpv8ut5pRJXiPlZJt786rS53eYmtvPs6o2Y9dcor6rKUZUo5IXvz5IxIlCbdRw1k/K3sdLZikEf9Azbfv1sHy6ZzJRtLM/fYuHKzFLPnS5G1MS4nW3kBtjIpHJo4/azWTmcouJjL+JKBSiDd7cK4+he91hylVYOZ/KmcIfT3EhrLKNX+m0tmj+rFofF9/X0y7TeU02GvHMGuVi7bfc/KawLX79rM1aDpFbV3OlQYcNnigVP5uEDlCmVBV1GVGMt6FFg1f0Pqj+9oq564SOSWRq1/SIMlIn0WvXdVBm5iCc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,35 +93,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matteo,
+There are no users of (folio/page)_ref_add_unless(page, nr, u) with
+u != 0 [1] and all current users are "internal" for page refcounting API.
+This allows us to safely drop this parameter and reduce function
+semantics to the "unless zero" cases only.
 
-kernel test robot noticed the following build errors:
+If needed, these functions for the u!=0 cases can be trivially
+reintroduced later using the same atomic_add_unless operations as before.
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on akpm-mm/mm-everything linus/master v7.0-rc1 next-20260227]
-[cannot apply to kees/for-next/hardening]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+[1]: The last user was dropped in v5.18 kernel, commit 27674ef6c73f
+("mm: remove the extra ZONE_DEVICE struct page refcount"). There is no
+trace of discussion as to why this cleanup wasn't done earlier.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matteo-Croce/KUnit-memcpy-add-benchmark/20260301-091336
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20260301011209.4160-1-teknoraver%40meta.com
-patch subject: [PATCH v5] KUnit: memcpy: add benchmark
-config: csky-allmodconfig (https://download.01.org/0day-ci/archive/20260301/202603011603.4178c0iZ-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603011603.4178c0iZ-lkp@intel.com/reproduce)
+Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603011603.4178c0iZ-lkp@intel.com/
+---
+Changes since v1:
+- Rebased on mm-new
+- Remove mention of the "next patch" from commit msg
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+No functional changes
 
->> ERROR: modpost: "__udivdi3" [lib/tests/memcpy_kunit.ko] undefined!
+Link to v1: https://lore.kernel.org/all/20260206133328.426921-1-gladyshev.ilya1@h-partners.com
 
+---
+ include/linux/mm.h       |  2 +-
+ include/linux/page_ref.h | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index a68f065399ee..1294d29c8d93 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1506,7 +1506,7 @@ static inline int folio_put_testzero(struct folio *folio)
+  */
+ static inline bool get_page_unless_zero(struct page *page)
+ {
+-	return page_ref_add_unless(page, 1, 0);
++	return page_ref_add_unless_zero(page, 1);
+ }
+ 
+ static inline struct folio *folio_get_nontail_page(struct page *page)
+diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+index 490d0ad6e56d..94d3f0e71c06 100644
+--- a/include/linux/page_ref.h
++++ b/include/linux/page_ref.h
+@@ -228,18 +228,18 @@ static inline int folio_ref_dec_return(struct folio *folio)
+ 	return page_ref_dec_return(&folio->page);
+ }
+ 
+-static inline bool page_ref_add_unless(struct page *page, int nr, int u)
++static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+ {
+-	bool ret = atomic_add_unless(&page->_refcount, nr, u);
++	bool ret = atomic_add_unless(&page->_refcount, nr, 0);
+ 
+ 	if (page_ref_tracepoint_active(page_ref_mod_unless))
+ 		__page_ref_mod_unless(page, nr, ret);
+ 	return ret;
+ }
+ 
+-static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
++static inline bool folio_ref_add_unless_zero(struct folio *folio, int nr)
+ {
+-	return page_ref_add_unless(&folio->page, nr, u);
++	return page_ref_add_unless_zero(&folio->page, nr);
+ }
+ 
+ /**
+@@ -255,12 +255,12 @@ static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
+  */
+ static inline bool folio_try_get(struct folio *folio)
+ {
+-	return folio_ref_add_unless(folio, 1, 0);
++	return folio_ref_add_unless_zero(folio, 1);
+ }
+ 
+ static inline bool folio_ref_try_add(struct folio *folio, int count)
+ {
+-	return folio_ref_add_unless(folio, count, 0);
++	return folio_ref_add_unless_zero(folio, count);
+ }
+ 
+ static inline int page_ref_freeze(struct page *page, int count)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
