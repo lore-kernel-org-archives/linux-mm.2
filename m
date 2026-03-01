@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A2B7FD0049
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:24:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B5C3FD0048
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:24:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F05E6B0005; Sat, 28 Feb 2026 20:24:11 -0500 (EST)
+	id F201D6B0005; Sat, 28 Feb 2026 20:24:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C0036B008C; Sat, 28 Feb 2026 20:24:11 -0500 (EST)
+	id EEB0E6B008C; Sat, 28 Feb 2026 20:24:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7286B0092; Sat, 28 Feb 2026 20:24:11 -0500 (EST)
+	id DF7296B0092; Sat, 28 Feb 2026 20:24:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 398716B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:24:11 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BB6213AA9F
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:24:10 +0000 (UTC)
-X-FDA: 84495748260.28.F879521
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CD0D76B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:24:58 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CFF11B7D6E
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:24:58 +0000 (UTC)
+X-FDA: 84495750276.05.D834738
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D65CF2000C
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:24:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pE/Seyic";
-	spf=pass (imf03.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id BA4A7C0006
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:24:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+yMWeeX;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772328248;
+	s=arc-20220608; t=1772328296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=RJU+nBVJv97LG4AvXLwbe6wbBEomOUTgf1rBOZHOnuA=;
-	b=7Gofrf90Usl8n+d50RrnupPHk7scXfxEf+2yaa2fXyToMWXL5dSAAsncWiJUUf7tZXuzrZ
-	qsI8v6L1UC8T84bYx3JGj2fA3DhiLz7KSWROcBvoxq45eFZr1yJE0aqPXzehyFc3/B7kwl
-	ua1Tt7Mml2cuBmwvNE34TgXnx50qPnw=
+	bh=E0xcDGG2ipBTAKOjGWurZmRFl/BhFdlRy7WAvDgw35g=;
+	b=iatplWH7KKcyLl6Zr3+T3K4Jf72rf86oqA2vKTIgSXoE+pQQZoRRogyLfc7w6q0Dt98mpC
+	M2Fo3hQKXAjBy09LO8fRquZY0hJP82fg/qx0D0kY/YxC6cMoKIVtejcihYmkqfZtvWctcv
+	Xjvb9pdyNU5VrTbCLMHZOEcvEk6E1TE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pE/Seyic";
-	spf=pass (imf03.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+yMWeeX;
+	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328248; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328296; a=rsa-sha256;
 	cv=none;
-	b=leEAnT7kt12mAOFF0hKpprvT6uZo1uYjZtuPhRbas+/V09np2ztjdhSI3T/MLe5qQAwISU
-	exncbzAf8dGcCLRht/W80A0VTRNeBAeKPiE3jj9RHJ4ZRRRNL1EkM0C0MIy6ZOBd53zFln
-	eJG7In8xhwaWa9W9fRme0nnhk/IwL2k=
+	b=7iWIGLUJUk4l+EQZP9YeH/c4/26eCyZ8cfLJZ0UyLaBUs0UwpZxiLuXNQtE0p4wnSeJyYK
+	tkgWoFlJewO5k9kXYZofnegHdu8+xoRorUGqdRyMxf4lmWcLocmjMmJOuJadOXaeVzjrrB
+	FAYg95dZdJwoeWclrjA5oQiOacvK/WI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E78D8438C0;
-	Sun,  1 Mar 2026 01:24:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160B6C19421;
-	Sun,  1 Mar 2026 01:24:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DE3504395E;
+	Sun,  1 Mar 2026 01:24:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23773C19421;
+	Sun,  1 Mar 2026 01:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328246;
-	bh=KksfMdpxkyvIDXGgasBLEr4mx4viiP1gKKA5/7q133g=;
+	s=k20201202; t=1772328295;
+	bh=q2iLO8KbI9ALryCX6/wUxMqfWYriV0dYXQW5wrcui7E=;
 	h=From:To:Cc:Subject:Date:From;
-	b=pE/SeyicvqVRcvFLSGyp4xr8jEVdlYn4uZrIOdR0gF1lG9xyvdyg4wA199PFfPAw1
-	 OoTFGLJuHdKEUWmClEVu7qWgo9i24KHrygJLe9gpsBgh2JkO+HiCZPinJebyWWY7wP
-	 9UCUn/ldTgc4Mr1FhwOd4SFYz+R9hEgOwvbz4j0ouqINRM9IJiqyeNmamGiyFUq6Y9
-	 GwQt/zecTU5PR4pip+Lq3Jj24USK/mA1mz5/YSjU/snVmOm+copxrt9P7IIxOX/PLv
-	 OyIbCF1KGK8zJk2UI9HtYqwZ1mPmD1CzPQtoJv/9VfoDRqjJM8K7zTEsHMnWBfTeuK
-	 Cnj/wFYWwOXQw==
+	b=X+yMWeeXj1pvQIPqcbKcmDHMpkw+d1FdTTM8zlMEOipUyBCtnhcfR2TnoxqfEfVam
+	 Y6VLdllNMi3qy7EMIbca7ySGK/E0vX3kU7AY4ykt/RYJLGZE9FJ/X8a2E4OO4mLrri
+	 Qdlvs2sr7afIW191kTtd3t1p5lDKQRbdYZ1Egcvwak2ZJxzRx0k+ru9kK6LFqHOLzY
+	 hMZ1KrtIG0Ept+RgXfzqM/gp17PzuYZiRRNRzV5QVLFHbsLaqbKybg8uChvOxTiUNd
+	 cI0Q0kiMga9Zcds0v9ynDzF6YoR1pxCQPJKStJGetd7k/ziJj9aae9ol9RxzKk+kfU
+	 JlZgmkhgRlC0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	kartikey406@gmail.com
-Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
+	williamt@cadence.com
+Cc: Max Filippov <jcmvbkbc@gmail.com>,
+	Chris Zankel <chris@zankel.net>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:24:04 -0500
-Message-ID: <20260301012404.1680833-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm/highmem: fix __kmap_to_page() build error" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:24:53 -0500
+Message-ID: <20260301012454.1681859-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D65CF2000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3ozg5g14uz7xisahk3wh5iekhdu7815x
+X-Rspamd-Queue-Id: BA4A7C0006
+X-Stat-Signature: kakukez95wyus1zfbfobynoiydkq9kni
 X-Rspam-User: 
-X-HE-Tag: 1772328247-461192
-X-HE-Meta: U2FsdGVkX1+rlOHWl3OKEz12CbulTITeokaCD9NvpujNwobxsPgV3vXvBf4jRw5Pabug4vqMVs5w7QjTIUDxd7+iNLx2pND6egOufuzk79bKo5GUJm55MpBG+3huI4c81Dl1OxGD+deZ/qDn7SKuM+VW/jDlUyyZqCI0Q3YEdqgQY+2fY5BzgDDd+vrrXSpVCKEolhQciPsGL8fQnJT6YC2lph/QxCcicAoYcKZZ84Yap2Cc2f8M+UJIGNhot1oF/KcRSe/oI160pgyASsoyyZDCpZJw0ksvhYQdBeYah4N4FoXWORUJCYq540/xXea9ZLgrdONKshPHme31Wid3neWCYJf1AXTWydHIft/73Sr7+TLDjVycF/Rgi/MrdzNTUAZsr6wRMOehEkv0ZMz9NT3W8pfZ4lE4kGJZzg1hRPkN/qOR2i7t889Hh+b8qGNNOXkU2ZR/qfnNBrBbEJ7rM/znrjLMs6EyQPjsob3FnhnpykfS9R98zKxvphcOzDhQAJl+fpj7/J3eA0x2IhGVggZNAthxBNScYp1c5A18FFNwd+WSm5P4YLy2Nexb8I9dKYJFBtz3EUi42F0hXvcCbABaw20JH0kb8hg/CyXyjzTOQtwYUJQ8Mif0fgcRmPUd0bK6ZcSkYsOUP3YLUJb/wnuR17/t2+pOslBnqp4szJTwFOlDe4UjBngARjBkNtgPn6jZx5WaJEs3sYSlZKc1lyfv/gq9uw0nXCKzoi+ch/xgQhapzlkcwkh459JZK8PDKW1oA8fsQxtRtMsVISN3AgBUj8YxTmNVb7xE3+0nRv2veqZeJ2tW9oPdFg3mSznyTMXYL8rP0cUeCOlBa5GiHMACkL/yj/pbe3fCtASoMORjdTO0sw4mjrR5X0CuE2GY0vUhFhgLk6TsevHFWzecnVd1oMFVJuikoOqM50vox3J0x21UW4YCJTbbNla3yLKZhbbW36syUI2NELd28oi
- okV9MHFw
- q9Nv0543zV9VnT90x73XpLWAEtC4PgBG31Jqh4IsPqj4sy8td4rdtLzAj6CPu+ZuXtXBvvnpWPStxPtKFgPhCIdKpxoMMbhFMK6ljYl6ClpidpEpsHcBecOMSzmPoo7UL0QS1kTMwc/blzej89yYPAtj75DOS5iKjFywTG+s7Htqts7sK/3yET5BRXAjHqryG0yHs7cFmJdVzwrUtuzBgEnSyZKNVWFtlGLkNtjdR/ClwtTpnmOgWtnEplv2umeIZAOTREiuvWv8FwaixnyF0Jh9976KgxEZAr4uwOD0vHZSZl7Ewwl8mXKyCdXRv58hKbLLcu0R8ZD4QHdHMLE4WnMdw/ZudZV8nStp/LW8HidRInnYukYdBGVfSIY9NbE8/i/szoiZ+khnashmBohSe+ism2C7sWg0Ape6JBR6qS8YpWqEubGiY/z5iDJIOSwYfZ0s9tcCnfMdqIbNZA/OBKFJHN0R70aklVf1C0d2T60Hmycnb1UJQUTv89YEBB6+IlceDQ9yr80hozj9wKvUMMW8M3wmIXxgI2LT4wrjPdKtfI5j1NcU5ZTVY4/YAj9Z38rF9DRlDWIwyM0T9LlOhEifFW/AF5adgamWfyhjEz3ghiXUI0XGeI6vHH5ARWaKn+tiqyWHBEYb4MQo=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772328296-848099
+X-HE-Meta: U2FsdGVkX19PTQTZrdUOkxklE6SV+b1+q2SkJMRkaupJ/yQEOvaQ5dn7Vn82+eGNUWEp2x0ieqsAoyN92A1VMov6qeWTBFTCDrNnjY+83n6ymW6DSXxRCZzCvMrT9Hegmct4nYdCvLI/ilLmQcp8P9e5Jw6pdjV7HzwrjUk+2SRIn5fVddT0Tsz55ohs9B6OazZjmqu+VmqTU4x3b4iazZdGz1i89Y8qALzMPx3RiAPvPKjohEU3M0mGzVjSGUkza0f3p0lpSC6qiSSr6GsKaa/o2vHqY1lmrxfhysMF5fe8ktcxb480p5tkPbEnCX9Tgd7cFcJgz2wdaA/h2qLCanAnia6kFqqvxTbQoUSDeGhgP1PfBTkkgSYp+5aczwFD2SJd9pH9NX3A2qf3XClXPKI19qDvrPtm0RqJoi1CNwyNi7AKY0Z6u3kF4WZJuwLrImWeQ8dxtAZ7azlOuJzhbRoaqCTEUYdqDgFTCB4LTm2AjOnnYPVrvawDCMu8PYy0Ou51NLht73PqpX4Gke97giiCofwMMXxJuY2lqp2FoJ9pIWPjYwPiYYZHxy0kvNQwJSCQVjbvzdvc/4+oeUA1ixDMmumBKCBQwt6U8gruaAl/qqAeQwLU4TQ+fAziX/kZz2BXCIKpkf7FEBGRlVGNC5bzP7waRfEIfuRdQO15Kkt7EuYZcrB/lew4J1k6HxI5ME9ak4bWxA+RORCTG6u01VfCyUCNogyxGKBQm9dpZHRFIJHXjMb2w5yMEAhiYAFfiZ4T41r8LcRLKXyP9NOv5rdcBSZ6jWwOo3uwOuN2rJGXKzCiGb2ovrZ6fTTHn8ssf4v3MWc4F/K5NdZyqP4iGCXFC1cCfnQtev97o4LUan2u0hEFtb4WuUeJS/VDBrjCLXcjh0baMYr65Gk84lVCyncIn/YxkmClNPE/XWaSe4L7cbvnRgON+9mj7HYXEEQuj9n7Iy+GA5Q/Et5ikEl
+ f/LX1Ae2
+ UN5ozTy133GQf3DR1+Bj3fycFRZBljXob65eaoldb6ZtfIUYESO83bhEeupwJE93RloL30wJl9CKYQjg5hDrQFW1CZ7Pg/SlvZkaj8XgOy0gzIrcfxA/e6CzwoSFbaz4YKeWNGPbX4BqdmtIPLl9ucGUhWmeAlA5fsPqbZNfA6lmfH/6dTuqTV3CHY971NLGiO7/44ssSvZnrY+oPFQ8WV/mO2BggeduSIG+x/6xPD1nMT83mRcOCPQH8q5MWUD68KGRvTfrMHttfz8+JUknvswOo22jyl4DrNhw8n8oCDJAuAGqYdG7pED2ftYOqD5g5Gj05ZCKqo5lWjAZZDsu1VzAOdy1Hxk3tpotNSnpF7kHx5xddK+cxKmJl48Zk5qcBg6HNoF019q9HTRqmr8PdssTc0aqvqt/DlOLdTSTC4CSh7wKC1ENVx63vQYiyu2lk/yqmg9d5Bp27DhsNp07x5ASgLfjyE5z52h4lNcFO6PBLpIisIMcI1IItTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,88 +103,53 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Mon, 12 Jan 2026 16:06:12 +0530
-Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+From 94350fe6cad77b46c3dcb8c96543bef7647efbc0 Mon Sep 17 00:00:00 2001
+From: William Tambe <williamt@cadence.com>
+Date: Thu, 11 Dec 2025 12:38:19 -0800
+Subject: [PATCH] mm/highmem: fix __kmap_to_page() build error
 
-When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
-locks.  Processing a large purge_list without rescheduling can cause the
-task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
-and potential OOM conditions.
+This changes fixes following build error which is a miss from ef6e06b2ef87
+("highmem: fix kmap_to_page() for kmap_local_page() addresses").
 
-The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-where iterating through hundreds or thousands of vmap_area entries and
-freeing their associated shadow pages causes:
+mm/highmem.c:184:66: error: 'pteval' undeclared (first use in this
+function); did you mean 'pte_val'?
+184 | idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
 
-  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-  ...
-  task:kworker/0:17 state:R running task stack:28840 pid:6229
-  ...
-  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
-  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+In __kmap_to_page(), pteval is used but does not exist in the function.
 
-Each call to kasan_release_vmalloc() can free many pages, and with
-page_owner tracking, each free triggers save_stack() which performs stack
-unwinding under RCU read lock.  Without yielding, this creates an
-unbounded RCU critical section.
+(akpm: affects xtensa only)
 
-Add periodic cond_resched() calls within the loop to allow:
-- RCU grace periods to complete
-- Other tasks to run
-- Scheduler to preempt when needed
-
-The fix uses need_resched() for immediate response under load, with a
-batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
-even under light load.
-
-Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
+Link: https://lkml.kernel.org/r/SJ0PR07MB86317E00EC0C59DA60935FDCD18DA@SJ0PR07MB8631.namprd07.prod.outlook.com
+Fixes: ef6e06b2ef87 ("highmem: fix kmap_to_page() for kmap_local_page() addresses")
+Signed-off-by: William Tambe <williamt@cadence.com>
+Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/vmalloc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/highmem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 32d6ee92d4ff8..ca4c653286870 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
- 	reclaim_list_global(&decay_list);
- }
+diff --git a/mm/highmem.c b/mm/highmem.c
+index b5c8e4c2d5d49..a33e411839517 100644
+--- a/mm/highmem.c
++++ b/mm/highmem.c
+@@ -180,12 +180,13 @@ struct page *__kmap_to_page(void *vaddr)
+ 		for (i = 0; i < kctrl->idx; i++) {
+ 			unsigned long base_addr;
+ 			int idx;
++			pte_t pteval = kctrl->pteval[i];
  
-+#define KASAN_RELEASE_BATCH_SIZE 32
-+
- static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
- {
- 	struct vmap_area *va;
- 	unsigned long start, end;
-+	unsigned int batch_count = 0;
+ 			idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
+ 			base_addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
  
- 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
- 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
- 				KASAN_VMALLOC_PAGE_RANGE);
-+
-+		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-+			cond_resched();
-+			batch_count = 0;
-+		}
+ 			if (base_addr == base)
+-				return pte_page(kctrl->pteval[i]);
++				return pte_page(pteval);
+ 		}
  	}
  
- 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
 2.51.0
 
