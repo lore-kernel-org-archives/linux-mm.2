@@ -4,125 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFE1FD0048
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 03:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FCF9FD0048
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 04:10:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17FBE6B0005; Sat, 28 Feb 2026 22:34:27 -0500 (EST)
+	id 07D8D6B0005; Sat, 28 Feb 2026 23:10:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 12E136B0089; Sat, 28 Feb 2026 22:34:27 -0500 (EST)
+	id 0011F6B0089; Sat, 28 Feb 2026 23:10:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 002006B008A; Sat, 28 Feb 2026 22:34:26 -0500 (EST)
+	id E24AC6B008A; Sat, 28 Feb 2026 23:10:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFC5F6B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 22:34:26 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B59D1C4A6
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 03:34:26 +0000 (UTC)
-X-FDA: 84496076532.19.6CF7C4F
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 24DD74000F
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 03:34:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=atqmPBN6;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf07.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CEF0A6B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 23:10:34 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40F4F13B1B0
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 04:10:34 +0000 (UTC)
+X-FDA: 84496167588.17.EDB49CA
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5F914180005
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 04:10:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cqIeyuF2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772336064;
+	s=arc-20220608; t=1772338232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8blWJ8aOcNrTsAtzklQWdnEP5eXPHVO124aNy2APDA=;
-	b=JjREmh84fVbXp3Y1nzxI5S40HW7VnazUtCCS3pMf65veXM4MNYqASn/Ha5biAfB/hZOWwU
-	q2/zk3stZzMwh9iLOizYpHaKkAqtOVutC/Sw179YwM1E1FnhMXXirSKLnEbKPMZknX47vc
-	3Zkk92YIY0pl8oXIqnsp+5XMdanJ+jE=
+	bh=bfkmYxNazmSUYov2VmIhFLWiffqz1ZOTBMBqaFvFj04=;
+	b=Tz+ctADh1U8qDkPnij6VyPBmlgJC0wFu5DwNvmVBvRb/nhl3Ou9KUm9CUOylLlZfuNjkxx
+	NevFPUc89z0/PgiESXI7ootDU8aHs+/IQ3yG0Z92Lr/ZkcilFGAp+nFs2NOuHBm633Nk8n
+	7Cd6iKl0N7lxdNeckC1kHfDEdKlTZhs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=atqmPBN6;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf07.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772336064; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cqIeyuF2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772338232; a=rsa-sha256;
 	cv=none;
-	b=koWja30Ienhz2AL7e3BG5rfeFPBgce/VZc7ujUp4Qn66Wd+eytXNwdWJoDY5KS7opViA1g
-	kfuciVwY34A0dr8tXAjk+XFBIp3zYnHUwSzMB5Hr6pBJxJ9nskRQ9ZaL9MW+E5rr2nlU7U
-	KDvmwS8+pzJoEBay/EUcP5kP34y0+VY=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b936505e7a0so410297766b.1
-        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:34:23 -0800 (PST)
+	b=Lb3OkH263/kppWVo9xe+PkpAUYA5W+Q3aWiq/gi2h4wy1kuzWvVdrLVfLGkRSvzxp+Jh65
+	kPLdQSsAkjS+A0AP+mnG39NFcMSAvCg01EweWjqnhoJzyaflXaM6YyMzNSpIcUH6g2vLQz
+	5kchsR/YegHqQavKo7oqu3QMAZWV/t0=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae43042ea7so6759905ad.0
+        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:10:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1772336062; x=1772940862; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=e8blWJ8aOcNrTsAtzklQWdnEP5eXPHVO124aNy2APDA=;
-        b=atqmPBN69qOQ1KKTtzE2qLu6z6BkRUe+xeF/UNTh9+xPv9Te0G/qIvqw+QHTFTaIIO
-         eANP9kPYADVUMWPYMZsJnkyK0EOC05bFfEmGTYezz9XbVvJvxGe0kuS4reZ3iGMxDcgn
-         Ez+I1v1Vaz6aaUeIFtxSoSPry6ltPDKdx9m+E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772336062; x=1772940862;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772338231; x=1772943031; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e8blWJ8aOcNrTsAtzklQWdnEP5eXPHVO124aNy2APDA=;
-        b=ELMFdJf1Ot7DV51Ty1kIfnUhr4GvHGDGbi37+hTC9wJEpEf2Pw6IAhsc3EmIc0UqHj
-         6134C9br6UYSYNK7gzIEQMmY4GUOdAqIdmRZT0TPpAkaIY3jOgZy9BQ6ryMqa+jiZ1Zp
-         Y1lm+s+kpCoFLPna5Up4o4Yqne4czcC8q8uRpG8H7cf1f9/2kJoZ3c8faiWxt/ByPTzN
-         4o91u0PG7cnC33RS9tTv90gT5owliXKQILvxMezbtYslkPHHrvfCHeLbfeh/GGStLRAg
-         CUqlPBW0kdTW0INo5WhE2yn5VcwRVz3lNn7epG5pmU0Jade0lLhZNTjzb6yAy/NqctLA
-         KTyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsu3HcmxDeyao0tY9I9XhkQ3pAVAqhl371m6v5ssDI9crlqizHvGftlMr5J+Do3u//Ia3W3yAF/g==@kvack.org
-X-Gm-Message-State: AOJu0YzoYYF5WFSuSZi9A9nGXz/nRtgI7cE8ENrZPxOl+/btyW9cHVb/
-	+tUoIYEOF29fQ+qMhEXe4Lv5tzIswf2jmP7RY3JIJBnhqOxkKd/JH4oKKRS3/W51xmdc0vJlGxt
-	BgsPCE9U=
-X-Gm-Gg: ATEYQzxg7QixLg66C2LhYeYS1hmYy6UNN5pzab82QrXHdO/cg0cxLozceXcBP1XiFlU
-	+BYPADeWHfQQds6Ecv5vOT3E80W6y0tK1xqsHqw/r1+BSd5CnhlrSltW85AocpLyi+EMWoo9OXO
-	sbqSuYFvB8K+X2oM0N4RK/AbpNL1fnxcV0B+NGaWzflUdxOcqMHqdIEz8J0nhia91FCvypvVMJC
-	9PpM9FbGinvR9VB0rKr0N/oa4jbFhZV8n2cm4NWeSqwJrzqVr10K1MCxY3JYfRFzFlqJQ+zifTz
-	tiMJMamw3MXZ/lFMbnqLNydDNKW1g4BWFGlCEeQ6AhZT6gpYvf+eB/71rBH1GFFyZVFAYQrPeWU
-	++9NEhEQB3ipLrYnZz0o7pIsFY8jmw8UoxtEGZcO/pjnIKAoGnmzUUo58o21vxBEOFQn5DTk2pu
-	HRko/xbZxRorVEGBoD/PLDjiSeHY83VO/rTUpJ9Dg7pfLTBJ+8DNAv76v3mIcOHiga317ENsfNI
-	4RFhZDgkw==
-X-Received: by 2002:a17:907:3d92:b0:b3a:8070:e269 with SMTP id a640c23a62f3a-b9375932ab8mr548424466b.14.1772336062105;
-        Sat, 28 Feb 2026 19:34:22 -0800 (PST)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac51431sm317668666b.17.2026.02.28.19.34.21
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Feb 2026 19:34:21 -0800 (PST)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65fa79f5c98so5662340a12.1
-        for <linux-mm@kvack.org>; Sat, 28 Feb 2026 19:34:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV2EG0nonQZq3tbEUNatiWypNd0pIKVo6EuVC13wcX508HHwRofPw3dgV3cyBO1rIyHO1kRMxXThA==@kvack.org
-X-Received: by 2002:a17:907:3f07:b0:b93:6bd1:a4ba with SMTP id
- a640c23a62f3a-b937580cabbmr562817066b.3.1772335665433; Sat, 28 Feb 2026
- 19:27:45 -0800 (PST)
+        bh=bfkmYxNazmSUYov2VmIhFLWiffqz1ZOTBMBqaFvFj04=;
+        b=cqIeyuF2lvGF90T4SkZ/QK9itiDTWGlYnUr8wvk74/kL0vnBafoytSz3bXtI1+U8tq
+         DcoIiqhX6ElfgxUWeBvAkIk+GR4EG5ulluuMhJJoR122scYP1bJBxdAe2mnXWZgY3MSu
+         r1o/JzOU65oSGX/O3v7nCbZdmEsMWEMWWoE+WK2th3mLYNeR+ZoEpviJknw5bqnBq/E1
+         iQOtqNuWodjUgcnoRx1TH6S+0UYy/5ekCw1llJDV9/O7DbXa4cCeKJp/ONxLTZfD42vV
+         kWtSCjxa+M+KQkNEyGiejfnhC+89+01WLxJ9AjwSLwjAGoTqGx4dJqhLNUvvPrtCbQVI
+         FGyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772338231; x=1772943031;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bfkmYxNazmSUYov2VmIhFLWiffqz1ZOTBMBqaFvFj04=;
+        b=srW/syvKs3PxPz/Qtmwvc46BdBtqEmw5DRynNtCs1FUf/nnGRXpsTNFLhQoyH63ji2
+         DsM/mEmMOl4mE6i+YDB6fVLYalADyjvpvcWAFISimAhrbMgjpZMax8KOpBRqEp3T+8Ss
+         lTtg0E1C2UdDI0e88kBcgx7f/PupFSjuIvXBGX5jhC6pig8L0mE2Ua/yXnw7s/e87GZ4
+         mzdkUPwTHSjumCTdji2genGMZpUQapjoFss8f4/zkJiNve6SXfqVKsURgPvUj/aVjJB7
+         A/icd9PlygGiDvwc7yCYRr81arRGQE91qnq+/vT+qjDNS1wYKJ00f+fJaO1VtITYxXVg
+         7pDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIg+FGWUZPcaBvkznpuqAF9xnLpHvq2HOjGCKwu9UxQ2oDkRR2skRT5TebiVi70241TOJ0QiU5nw==@kvack.org
+X-Gm-Message-State: AOJu0YzbiN1A8YlMHL/iwgGSaqhH5UPnKiarVuWsGxLOyCZTwEJdt2mt
+	iua5oAx4AIhKYYrSKmYDqmNIYUZHBlowcukK4Cif3hxx3zMPjnTS2ZwA
+X-Gm-Gg: ATEYQzw8UWN2uHIFVQ7UZvDMld0x+W8cNoJFOAIddVHyF29bkxZvxSlVCTGPxtO20oj
+	IhwMhmh2Cg9VQUfznJAQPIms8bpwG1Prz7bIQdjrjKzppmHJbuuffb13J4zgZoVcPkmwZDP2rzL
+	gVXSSGW2FeCeZVx3JAyiOAWG0eSXjN84RxOnXw+ddaW+9Cz2eePgOl+By3ulwIxqeZ6PrrfUhD8
+	XHpFzyFbuJwL19Wr0W1PtKUUZLeyH5rAYCS0KJop5gdaL+pydxeQKVJL2rj1bFdOigxasBXcXK7
+	JUeVNbIecv1xrBT1O61zmlNOllrtK0SdqgU/ZvLhraXzIEle2vcIK8431eufnBTNsOIm5H4v6L8
+	Q45Mcq6nWCI7zOxLbuiKYx2JyEe486mBY5AtBON9LwCYRAJzIpx/6AKDU997tnydDQc616dQQ7B
+	owYjbhBQ/kytZjuInx4ow0VMO2flGRSCGd+pHt
+X-Received: by 2002:a17:903:2c8b:b0:2ae:4a4:f483 with SMTP id d9443c01a7336-2ae2e4bbd3amr79194265ad.49.1772338230844;
+        Sat, 28 Feb 2026 20:10:30 -0800 (PST)
+Received: from Barrys-MBP.hub ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae489c3626sm8136105ad.8.2026.02.28.20.10.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 28 Feb 2026 20:10:30 -0800 (PST)
+From: Barry Song <21cnbao@gmail.com>
+To: lenohou@gmail.com
+Cc: 21cnbao@gmail.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	laoar.shao@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	weixugc@google.com,
+	wjl.linux@gmail.com,
+	yuanchu@google.com,
+	yuzhao@google.com
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+Date: Sun,  1 Mar 2026 12:10:22 +0800
+Message-Id: <20260301041022.66111-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <CAGsJ_4yCA008MKV8OKoV=Ge3B_KS1gnVxEPED7VQBmxJxR35hQ@mail.gmail.com>
+References: <CAGsJ_4yCA008MKV8OKoV=Ge3B_KS1gnVxEPED7VQBmxJxR35hQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com> <20260228141941.f6fec687aae9d80a161387f4@linux-foundation.org>
-In-Reply-To: <20260228141941.f6fec687aae9d80a161387f4@linux-foundation.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sat, 28 Feb 2026 19:27:28 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgfs7KqS8pD8F9F9yC8jwSgQtmifytbmmXVfz9xXrQzuw@mail.gmail.com>
-X-Gm-Features: AaiRm531sCUwemUstTzZzIWd7hU2AnSIoxD7IQcnp8JZvGjd-leCm0f4hxCzjVI
-Message-ID: <CAHk-=wgfs7KqS8pD8F9F9yC8jwSgQtmifytbmmXVfz9xXrQzuw@mail.gmail.com>
-Subject: Re: [PATCH 0/1] mm: improve folio refcount scalability
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, Yu Zhao <yuzhao@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Gorbunov Ivan <gorbunov.ivan@h-partners.com>, Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Kiryl Shutsemau <kirill@shutemov.name>, 
-	Dave Chinner <david@fromorbit.com>
-Content-Type: multipart/mixed; boundary="000000000000c58470064bee0d01"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 24DD74000F
-X-Stat-Signature: tkk9wn3p7rygjrexa198nt4rmtexydpy
+X-Rspamd-Queue-Id: 5F914180005
+X-Stat-Signature: jc4bqndm8wyiw3cygr8ud51craczh4cy
 X-Rspam-User: 
-X-HE-Tag: 1772336063-472703
-X-HE-Meta: U2FsdGVkX1/rYhcZS//3/E/eNyBPnHqwm1cR5u9nZx2FHFhFWW87Vsay7oEyly+lcdY4wywVGzzCqDiBUqKcXhVHA6HnOHOojU0FzRBh9JgJ4ck6fBjRaJoH8q2Fz/B4oSezi8Bq3vPMxcyJDeM+eNnHJuGt2avuXtM9r3O+sCexMPDhK9aVfiTNOLoHmVULdxYxVhp6oXTSom8Qc4GqkhRW08OR7jX3sbm0DZUkI1nWgI93xwccsGqEuxGubO6p5qVSypnBkkodgyYZjoSLYun2VE01L2YD7XY4Od0Pzrx0HHLTF2zEnC7pdQxZJbO8Sf3OEzTXDcxiPHTtdmgA3sRonoYfk97TSiWc1sQx+3FctXNpU3DyVG2KGBQj1z6n9qBWSWKQ8tpG96nEc+4cXqtgZkU0Yyzzg1fEbAE0hlQb0EeXVujYDKDeJv8jPvnMOfPw74qGwCldNCGqXq2zHTYXzk6axUZ7kU5nMOicWh1xcwcdVEu/swDLY6Dxr1ybEFwMLn8TEMJXglF81xuhQm9smv+jeGPcXfK5rP/KrzCGl2uEiA+RhcPTAfFctaohLVsQbwDK1h14zRor5ZQI82ZauuZlM/NG4kC1QshKvQ4R4fOVUoC79cibWYUmrcmEJHIRb/gKo8Y5x7Sg/npzUg7jusxUu+qJG5Lco1VuSv/C78MH+NgBcYDCDzPQa4mOm/Mt7oQOq98rvv6UCIzuXuahI8TqJMqQlU3o7mjJfJZ6dXLlBdY4YbcKpjotAFQ3oLhtAfYmg6lSv1bWGSqOLDnPc68nZVkvJlnlPqZAkJc2rJB+/SE1J+0vqOBbact9tAu1A1RWsUsVrerZkey5+S4jBCjVOPCvtMbNdbDI/D/t8K/aY93LFK5BeSF9vDEveSHdnuXXonHYN6AgSpmyxwPrkL9noCyNBWPEHtLp3uUPgHiZ12+kVfqe61hMUuV02kM4zPJYrC5ugHBINj1
- SCOoaeJM
- skMci12kLsvHSG2NM7mQuxP2sYYCjKK3KgK41LCuQ3p4aOO/xCmGVF+sCKwOuBCz8kZBNtpRasXdb9QSeUhfo5gnzt1kFZr6oCTMEUgWV4YL8zbRR2Yh9R+UkJIbDETrcFJnwm24rF3hRRKYVWUKr/uBnpBo+Du1wSB5QOtG79wOXbaBS9FZpcDq4YBD5tPBKzJU8e4TixnaksXSqKLEokvLDDGNYgJI5LvmZnc936wLYsqD6SIggAod1T2eZEzs6BR1es6GoYvmzkPkn5Gs9jRtwJto08NNJL82Y0HWn29XwRvFa1DPufWeBwtwE34kNVQ+6uXCzAHUKEUIxWOs8/Qv5c1nBK/6WvzXY4bp24OzT9cS/GiToZqU0XaAMCD2EyIzyIe+3ISQ18K/sWALjgilM4dKUDoV9gtZtxsAsn4dJKFb4+guUmB1wiZylxPYvsDfT0Dwr+183UE/O93V9/OrgfUaX3HDyd+IrjS3+NdVe/zKdCDrOzCGhAXbATk4Q04jY/xUJFP4fpMPaXObZNoNxSDJR3CfV4X6jMULsz4FpNTF6a/4+AKANzBfZBtl0/s5lveHtyG4zP29oT1NivKky6W0Rb35xTupz/lJWSoHWV9ohFm/xVk1nTyBPfexOElc5Jp+uYaxI0CInX7Ewf5tSc4Ub2aVpSB5q9uQYWr3xelhncipwiQwWNSoERC3CXD12Oai+PLAvMHn8f3GWkctTNw==
+X-HE-Tag: 1772338232-991196
+X-HE-Meta: U2FsdGVkX1/jtOWDvWl8r9e80SFFlGxTcH2IaRSUh4e0TQXA4vCffoO+bmlEQS0R8M1tPqhdAZbKARpfo3+bJxAeMyFL2ndczpQCd7BbXMqQ7kORwQH+ztdzt3pj+rYlU82WB+2mqTzx3dQ7k7a0/1JwQvtF9llamPT695MoCtzTStbMu9Q9PWz5IQ6daKxeHxItmxcQmAi9O7LaW5HfR9zTP0W4MAPXtrFzAMshHJ7eZt2Kb55naBhYdTkQj+CtQ+sjoCVmn98PStnZC0y5pTtre2R+k67OQCSsgNfnWDbTn5tBddwJD6wXyAR073Cu9IaHMQd75mtVFE9TpbIdzIR3k/57OuGDewogT1bGrRUCt84WiXn4ON+MRm6XUW4J8NhMWbw3G6itj8y/T4QD32FFnMothOa/wEobbMOVpo9UIG2Ci2not7KJlFtC3qFJnLlAa2IkWdp092tYEa26XSAEuKk0kU/aPAfEGfvksvNdXzXNSNISNp480gj3sp3X0dDAENnTVtAFWXfPMgPi5Z3JhyQeg7hv/jGmL2Oe19XEiEO69v5ozYyT4nO6CenCsd6dt5ity5SkVXgZWLS9v88QA7rZ7e0ePXx9SVs/u+yvS5CQpZaGeLfrCkIILHFtorVXwqZ8sMzX8VX23a+ZPfUO5Wqn3IDYOmUzSybed1e7L//7ChscZFJNhQnTQxw2BFGZFNC6/r00ctIrYmQl5SPrcD68XQbMH38mSBz8faU4SMiYB3HK1LwDg09db94SbZg/OvvxQXEe/1/Ly5cb1WHbF7kXuExk7pXTG4LhmtFmaaQ9yK6iQKq1knHjQkJC/f7nSIi+d6JnFC6EvIaTdDfNVkguNAwyq1mOFdRLQfO2qj52/vVTgY3BRBoafVLXIiFaztMKA7oDeVTcbqjq8lQmEF/q30CkZndZ2VeI3Oq0ovUqxFePRh6rPiB8SaTwAP0xZ/fLv9i4peNogPv
+ vF7nNOEs
+ nxcR2qPpzdP4HQvZZbQNCqJlw/Plcp0elmTvBsmqkXK1pxkXBLvofTLwwprUMXiRtfXzpO59RVBYmPSA0TAROl1nBbZSZoJxLGYqrwqopln5jDjucK+Pa6sx4M0MP588/VoKZToo6KPnPOnbPhXdME+lUlkv7sG3dYb1RFxGZ2JvcQToUTgNHi5BBjwE6dpkbFixZkmhdaNnTMZriYw+XvE1NEfnhcFcM5KNpvpecmFfWZj0Na30Um8Y3CmF4SIEep4uAvFZm2H95hHnUnyMM20xrJH7pEaNaZPN4PVT0lFdtXkX2bt3nPdA0EONb6g+UqMKchd0SpHVc6QUz6KjuMiD9gZvfOyQ6bqtzoPhwSp93Vf/ewU8v8gDBF9HyFSi3YgCUwjOzGMXfkeDC6qx3yRJjoMTaK/53plqNokJdODMZGEyb6aU2iQqSDi0LPSI2zR5uzUbK5EcccbyulDkA8oy4I/6DOS3XKwYO65+WgsVm+j/3xwDPZ06XeY+9nuYWneAl+ISr47XpkIfQhVjfpxyI9H3ph2qh4Ttd9Xe5u+Qd2bgBZHlDBBb7Nq7AjxAKwfu+w6U/Gz9eH/AFMm34wEnCnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,88 +127,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000c58470064bee0d01
-Content-Type: text/plain; charset="UTF-8"
-
-On Sat, 28 Feb 2026 at 14:19, Andrew Morton <akpm@linux-foundation.org> wrote:
+On Sun, Mar 1, 2026 at 6:41 AM Barry Song <21cnbao@gmail.com> wrote:
 >
-> Well it's nice to see the performance benefits from Kiryl's ill-fated
-> patch
-> (https://lore.kernel.org/linux-mm/20251017141536.577466-1-kirill@shutemov.name/)
+> On Sun, Mar 1, 2026 at 5:28 AM Barry Song <21cnbao@gmail.com> wrote:
+> [...]
+> >
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index 3e51190a55e4..ba306e986050 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -509,6 +509,8 @@ struct lru_gen_folio {
+> >         atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+> >         /* whether the multi-gen LRU is enabled */
+> >         bool enabled;
+> > +       /* whether the multi-gen LRU is switching from/to active/inactive LRU */
+> > +       bool switching;
+> >         /* the memcg generation this lru_gen_folio belongs to */
+> >         u8 gen;
+> >         /* the list segment this lru_gen_folio belongs to */
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 0fc9373e8251..60fc611067c7 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -5196,6 +5196,7 @@ static void lru_gen_change_state(bool enabled)
+> >                         VM_WARN_ON_ONCE(!state_is_valid(lruvec));
+> >
+> >                         lruvec->lrugen.enabled = enabled;
+> > +                       smp_store_release(&lruvec->lrugen.switching, true);
 >
-> And this approach looks far simpler.
+> Sorry, I actually meant:
+>
+>  +                       smp_store_release(&lruvec->lrugen.switching, true);
+>                          lruvec->lrugen.enabled = enabled;
+>
+> But I guess we could still hit a race condition in extreme cases—switching
+> MGLRU on or off as frequently as possible. The only reliable way is to check
+> enabled during shrinking while holding the lruvec’s lock.
 
-This attempt does something completely different, in that it doesn't
-actually remove any atomics at all.
+Sorry, I was talking to myself.... Since the switching and the 'enabled'
+state are not inherently serialized with shrink_lruvec(), their values
+can change at any time, leading to race conditions.
 
-Quite the opposite, in fact. It adds *new* atomics - just in a different place.
+Therefore, I believe the only safe approach is:
+1. Do not allow enabling or disabling MGLRU on an lruvec while
+   shrink_lruvec() is running.
+2. Do not allow shrink_lruvec() to run while MGLRU is being enabled
+   or disabled on that lruvec.
 
-But if it helps performance, that is certainly still interesting.
+Something like the following:
 
-It's basically saying that it's not the atomic op itself that is so
-expensive, it's literally just the "read + cmpxchg" in
-atomic_add_unless() that makes for most of the expense.
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 3e51190a55e4..c4b07159577e 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -509,6 +509,7 @@ struct lru_gen_folio {
+ 	atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MAX_NR_TIERS];
+ 	/* whether the multi-gen LRU is enabled */
+ 	bool enabled;
++	struct rw_semaphore switch_lock;
+ 	/* the memcg generation this lru_gen_folio belongs to */
+ 	u8 gen;
+ 	/* the list segment this lru_gen_folio belongs to */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 0fc9373e8251..aadf1e7c31cf 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5190,6 +5190,7 @@ static void lru_gen_change_state(bool enabled)
+ 		for_each_node(nid) {
+ 			struct lruvec *lruvec = get_lruvec(memcg, nid);
+ 
++			down_write(&lruvec->lrugen.switch_lock);
+ 			spin_lock_irq(&lruvec->lru_lock);
+ 
+ 			VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+@@ -5204,6 +5205,7 @@ static void lru_gen_change_state(bool enabled)
+ 			}
+ 
+ 			spin_unlock_irq(&lruvec->lru_lock);
++			up_write(&lruvec->lrugen.switch_lock);
+ 		}
+ 
+ 		cond_resched();
+@@ -5680,6 +5682,7 @@ void lru_gen_init_lruvec(struct lruvec *lruvec)
+ 
+ 	lrugen->max_seq = MIN_NR_GENS + 1;
+ 	lrugen->enabled = lru_gen_enabled();
++	init_rwsem(&lrugen->switch_lock);
+ 
+ 	for (i = 0; i <= MIN_NR_GENS + 1; i++)
+ 		lrugen->timestamps[i] = jiffies;
+@@ -5780,10 +5783,14 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	bool proportional_reclaim;
+ 	struct blk_plug plug;
+ 
+-	if (lru_gen_enabled() && !root_reclaim(sc)) {
++#ifdef CONFIG_LRU_GEN
++	down_read(&lruvec->lrugen.switch_lock);
++	if (lruvec->lrugen.enabled && !root_reclaim(sc)) {
+ 		lru_gen_shrink_lruvec(lruvec, sc);
++		up_read(&lruvec->lrugen.switch_lock);
+ 		return;
+ 	}
++#endif
+ 
+ 	get_scan_count(lruvec, sc, nr);
+ 
+@@ -5885,6 +5892,9 @@ static void shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ 	    inactive_is_low(lruvec, LRU_INACTIVE_ANON))
+ 		shrink_active_list(SWAP_CLUSTER_MAX, lruvec,
+ 				   sc, LRU_ACTIVE_ANON);
++#ifdef CONFIG_LRU_GEN
++	up_read(&lruvec->lrugen.switch_lock);
++#endif
+ }
+ 
+ /* Use reclaim/compaction for costly allocs or under memory pressure */
+-- 
 
-And that, in turn, is probably due the fact that the read in that loop
-first tries to make the cacheline shared, and then the cmpxchg has to
-turn the shared cacheline exclusive, so you have two cache ops - and
-possibly then many more because of bouncing due to this all.
+Thanks
+Barry
 
-Fine, I can believe that.
-
-But if it's purely about the cacheline shared/exclusive behavior, I
-think there's a much simpler patch
-
-That much more simple patch is something we've done before: do *not*
-read the old value before the cmpxchg loop. Do the cmpxchg with a
-default value, and if we guessed wrong, just do the extra loop
-iteration.
-
-This attached patch is ENTIRELY UNTESTED. I might have gotten
-something wrong. A quick look at the assembler seems to say it
-generates that expected code (gcc is not great at this), with the loop
-being
-
-        mov    $0x1,%eax
-        lea    0x34(%rdi),%rdx
-        lea    0x1(%rax),%ecx
-        lock cmpxchg %ecx,(%rdx)
-        ...
-
-ie the first time through we just assume the count is one.
-
-And yes, that assumption may be wrong, but at least we don't go
-through the shared state, and since we got the cacheline for exclusive
-the first time around the loop, the second time around we will get it
-right.
-
-What do the numbers look with this much simpler patch? (All assuming I
-didn't screw some logic up and get some conditional the wrong way
-around - please check me).
-
-                        Linus
-
---000000000000c58470064bee0d01
-Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
-Content-Disposition: attachment; filename="patch.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mm76tjhi0>
-X-Attachment-Id: f_mm76tjhi0
-
-IGluY2x1ZGUvbGludXgvcGFnZV9yZWYuaCB8IDE0ICsrKysrKysrKysrKy0tCiAxIGZpbGUgY2hh
-bmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pbmNs
-dWRlL2xpbnV4L3BhZ2VfcmVmLmggYi9pbmNsdWRlL2xpbnV4L3BhZ2VfcmVmLmgKaW5kZXggNTQ0
-MTUwZDFkNWZkLi5lZDNmMjYyYWE3ZjEgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbGludXgvcGFnZV9y
-ZWYuaAorKysgYi9pbmNsdWRlL2xpbnV4L3BhZ2VfcmVmLmgKQEAgLTIzNCw4ICsyMzQsMTggQEAg
-c3RhdGljIGlubGluZSBib29sIHBhZ2VfcmVmX2FkZF91bmxlc3Moc3RydWN0IHBhZ2UgKnBhZ2Us
-IGludCBuciwgaW50IHUpCiAKIAlyY3VfcmVhZF9sb2NrKCk7CiAJLyogYXZvaWQgd3JpdGluZyB0
-byB0aGUgdm1lbW1hcCBhcmVhIGJlaW5nIHJlbWFwcGVkICovCi0JaWYgKHBhZ2VfY291bnRfd3Jp
-dGFibGUocGFnZSwgdSkpCi0JCXJldCA9IGF0b21pY19hZGRfdW5sZXNzKCZwYWdlLT5fcmVmY291
-bnQsIG5yLCB1KTsKKwlpZiAocGFnZV9jb3VudF93cml0YWJsZShwYWdlLCB1KSkgeworCQkvKiBB
-c3N1bWUgY291bnQgPT0gMSwgZG9uJ3QgcmVhZCBpdCEgKi8KKwkJaW50IG9sZCA9IDE7CisJCWZv
-ciAoOzspIHsKKwkJCWlmIChhdG9taWNfdHJ5X2NtcHhjaGcoJnBhZ2UtPl9yZWZjb3VudCwgJm9s
-ZCwgb2xkKzEpKSB7CisJCQkJcmV0ID0gdHJ1ZTsKKwkJCQlicmVhazsKKwkJCX0KKwkJCWlmICh1
-bmxpa2VseSghb2xkKSkKKwkJCQlicmVhazsKKwkJfQorCX0KIAlyY3VfcmVhZF91bmxvY2soKTsK
-IAogCWlmIChwYWdlX3JlZl90cmFjZXBvaW50X2FjdGl2ZShwYWdlX3JlZl9tb2RfdW5sZXNzKSkK
---000000000000c58470064bee0d01--
 
