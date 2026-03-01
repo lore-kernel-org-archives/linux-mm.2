@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92543FD004A
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60649FD004A
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 076376B0089; Sat, 28 Feb 2026 20:47:38 -0500 (EST)
+	id A81046B0005; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F21A36B008A; Sat, 28 Feb 2026 20:47:37 -0500 (EST)
+	id A2DED6B0089; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4E566B008C; Sat, 28 Feb 2026 20:47:37 -0500 (EST)
+	id 957306B008A; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D65F96B0089
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:47:37 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E6D11397E9
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:47:37 +0000 (UTC)
-X-FDA: 84495807354.03.24738F1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 835136B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2AFB4B0099
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:51:22 +0000 (UTC)
+X-FDA: 84495816804.27.8F9B054
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A494340004
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:47:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AojH4Y7T;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 753E310000B
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:51:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QvUgzwYQ;
+	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329655;
+	s=arc-20220608; t=1772329880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=A5M197EAdkkYCAGNCwKBgSXlRs3oE+n6Zl2QqF4BQ3g=;
-	b=Ff+VGbe8zLEgaGe18RKUSJVwnRpvQpy+ZKYfB2yRo4mX6e6JTO659m7nNlbcw+d02ywDnO
-	u4IWw7SXsu0s+B11MWPxMlPiGb7GZbEomsc7yTVlUoPC7xF9Cc6wLrPHReC6/uiChyozEg
-	f5CRxZ7Vku07VjdWQ8yVVM3c0qtU1gg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AojH4Y7T;
-	spf=pass (imf01.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329655; a=rsa-sha256;
+	bh=ftAWyPxxZX5ZM+mRE16LgE+/EMN4fllXs2BDuUKHcT0=;
+	b=H7zzzSh/ACjxW3kV2d+GKu3G7JQUT3D/Q4WU9wsIwR9GnBL0yS5WxMK2HbhRELAhkZ49xn
+	R6Th6wlZlTKQtWQO0x3QVigHi+puGN/riEtgaq0ZaGjRsXZHpLqTe/6wX2bui3mkY/FrKU
+	FVuurZCQM6PZti7Qe18EXEpYbNcK2IE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329880; a=rsa-sha256;
 	cv=none;
-	b=iDSmaXSb9YPBfAGqNoNAAC7L8h8BuKShcI/8nAeUiIqOo9OfsNtp+TGNV8F9UTf9MqvRyu
-	duTLzkDKfbmkMj+WlWHQweXfrwEY35kOziZVITH7t6owveDJ018RA4IiFSmaaCRpTM/BFh
-	TVl0NvF+jcdfBwPdKRdg/Njfr+w1JKU=
+	b=LFhUEK3NoH1Jp0aSPR/HkePQw7nc2XKX1OTBwwNhJO/4uDuqdB61p1E7+SJGBwvx6+lS5r
+	+o8a+0zycjGeLrVSRAW7Ynp2RA7x+Ir6fWx3rBb8uy90NbnjCigtr6GxOAgd+AzzzQc+/J
+	ryhYpOW7NcILhyBaM6zIhXAIyWA2UfM=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QvUgzwYQ;
+	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FB4143DF5;
-	Sun,  1 Mar 2026 01:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD95BC19421;
-	Sun,  1 Mar 2026 01:47:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B9FA43941;
+	Sun,  1 Mar 2026 01:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6C7C19421;
+	Sun,  1 Mar 2026 01:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329654;
-	bh=8yvGc6/u3APT9EaaIgAuvoGpfEqpmnS6AZAeWpyz+dA=;
+	s=k20201202; t=1772329879;
+	bh=+9HMaBjuwAEDmbpqYj4os4AckSQwu1ygmdc/J4OWEAM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=AojH4Y7TniYV6cRSFQqnAlN6LL6YT4v6wqOokWxRFErEmk7TtT5lkBIqVeND07WvA
-	 5nie0wUduz9JytlkrR7b4ZQBmr6CZ0acKFfE5ZO53eXLgarqnjxA0sTOFwQqqpcFBC
-	 CUmUZ7FJOaNoo0AAulGzpam6981l3hVUMBPcVBkOlCWj9WsZq718lA0lLnsonMKMoY
-	 y1vxKKVJwdTuv7ks4iMofY3eh4GYw1kcvQeZtZ3nWET+G0ouhGOx2AojmCfAcjPjnX
-	 91Msloy85+O9jJoRC75n1bPlAFZPjeVY4Jyi0PhP2TZrSZ4a0maTdEdDCg2BQh+e4x
-	 CTcyX4VW7p+jA==
+	b=QvUgzwYQj1Jx/PcEk0gh/77haXgq7PJEmgTL3pnIr1Oo501rEL6s5TB+jlsHnaad+
+	 c6rR/jPmdBd2Pmii0pgZb5Xq1cx0ULP8HUJFGe/XKVXoFAaw5KXj7/ICDICBKQKWg2
+	 zmEN/Mgv8zeC8kXRO2Ki7FiCemQqcUsE6aGiZnsE3s9MMIY+fUtBNO5wL5riOtCfYz
+	 HWVVEfbiB/wQU0nAcJUkWY6b5UJ3k8lkElIQXibhTDBHCg/CO4IyZOplbIprMoz3sj
+	 kApByRKlbbrDN0d0a47xAGCVRfEgLbQeBwH1NO39GSkZgUpwq6s6SmzJBrt9Uv1RQt
+	 VNxUb0/qXBHRg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	cuichao1753@phytium.com.cn
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Gregory Price <gourry@gourry.net>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	vbabka@kernel.org
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm: numa_memblks: Identify the accurate NUMA ID of CFMW" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:47:32 -0500
-Message-ID: <20260301014732.1711498-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:16 -0500
+Message-ID: <20260301015116.1717542-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A494340004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tdfpe7cox4x9qjuspz7muq7r4wydt4f5
 X-Rspam-User: 
-X-HE-Tag: 1772329655-107472
-X-HE-Meta: U2FsdGVkX18sHhOoYFEQ/82M33Q/rr6DCmndH5nvCgS60R3KMnHuJ25TiG8jvM+e54DPbSxfAtrNTQnV2eDJr6nSu4e4KRUgNWBDSvNt49by1GtgOSVIJiZzHCLC0r1yy7aJJdO3dtNunvgJhJ2RxJuuhuydVw1jwXvRPs28i6Nqe9Br75O71fWrjgDtlqMJM+xaXCBSpPTWnpvrG+gWZ9pdSAURUX8K8RT1pgP6s+M7PV4E+qn/hYQTu0yhkxqyV6I8VFRxKaKCH/12CEHcrAcaQd47UawGBuiP5wqo0jm2eJWW5rEhxKWbDGzI5kQcz/XFls20/BaN/9rPmvIrle37CpKRq6KHxkaat/ZQG2Csc6A/AgREB0UW9oGM00Kg3lLZugEWAwebpERg1gEhBUqibvbvT9AEz51rHX0tbdts2LvtiYnQvRmLT0eSpvc6ezG9IJDFvfjA8kDMXyHSpfKfUGO/x4+izdVZjA3J6KvuhEmwYAm9Z7yLe2kBpZJP7Ch0vtb1s9ycMtXUJoUmP/ptA6FMUzf3bt3lGIj3vUP5G/C5awmiDkkiUdEzf8jgqSgHflkHsch/f88OmH5AKEOTNaDnDsUQuEROcK+EZfsgo0B25pOQPmYO0/dM9WVryPD5xz//J5bk8wOUTnUGjRVKFi2PBpT2NkjF2o82RErQ8iC/iSNYviYYgkW/ts8ABMJhYpv6uHTuqXXW54LVq/MxUIOWdbUWMg9lRmUCTqAYldpGddJGC57dEWIaEKBlM3CRnf6regRybIEMe8QJW1JsexuHkjSIDs3o2GE9oZpM3FkJ43LI9DfWX5U1YN4leuFZ05Chje/YHI0zITbPnpugvVnwIUyVPvS8LiGyzu0Nk5P7tH9EQbdPbIB3ZMhxM4Wvc+vaGIEpbDIKqTN+a9ehDEPwRPsCB4g4lLtaHM7uV5kT9HpEgOxemQjfigYnpFjAPinhZtAoOQimbOH
- k23ZzYaf
- QccHZcRcpR/2fgATFCcW0HkpZO9aHvU3hgPeqPCCCt/x/kTAvZ8m6J8/xV1ro9Z9QTbFElGRstZHHVk4WrstjynxviLo2ZnDIIpu0KzPYiH1wcFswN5I0h9OOgwSYAmb96h1/+LPAGtipj+PqDqFwOlaqm13Q+fBepWdgfkmJ02xkc5mRr0rZLY9JXLxs1fFUptFh7FfZnmQmtYi4+eCEgljxS8g1BOd1RAW5d1Sw92DcyL3e7HGpyoVEnicEvBctt5THkxdh8iLq11G+7gSBZEzq03qLzqSqejOf4rwL+1uU88TLbr45ymuDNdToleCzRC9xkJT3JQQUcfjNR8PE7BSHAmckImXKtqCtzW9+3H+BhFkW9rzF60Wk1WYrEHZ51mS6yUc5PUFPPOg2pRF5vBJd5UZSC0iaocdpr8wTSY3Jw6rrtBno8uGIKlWpQ2WelrFG9BuOVexDoJnCiXNCVpxrHWcED4URGBQHtVdN0RlHNGpxvsQ4ZNgrwxMJ55euF5djtOlH+OeYMFPVJ0Cs3DZ+KA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 753E310000B
+X-Stat-Signature: c48p1xbjiges3xk1qki8itfgpnsoe6fg
+X-HE-Tag: 1772329880-458123
+X-HE-Meta: U2FsdGVkX1/3vvbGEY33A7+/fF2+NNJ5O8ywdVZmXGreEm/z1+/9vNQlLHKwGAdCTwr5CLW9nq3wHtWbEVwq5rHa2CTdUXi5DU4h0NbtX3VLnsVgQhoGXabfDH/lhWU5QhF1a0twvE7Yd0su0jsMEuP/ZmDqzQNVeuR7G3VocAkxcsfzHLvetWseXvum4jBC831QaDp98GqZc1t0t74k9dePXVOKuI1KPNTjq0EI7puTZLyIfha+wUvJtq4uZz4I7h6VGR5sLCN+9CHac+sCXVrtiKW9Ef2aXarjwcWuiUhFHH84LJwwfJF5ogRwFgRyKyJs1ATdNKKdO0nFVzKjosPvJHpcvdxKDOvvV3rukYzfF5MeMPU1HgGP1hjkrjN+R6NSMq6sVmrfRLW/9AvDDO46k/Apaa9JTbS13RYmH4Q7YJR9vXv/Ewg7tGQShDI7kN7eRfmRJstxGrD8ITxbZfGzptYhdswkrqmV1Qy8lwAn8f2D7ETg+kzPF/d7nnPhe4Y07ry5CzLPPCL2CENRQvL5jKrj84Nah/oRUHhp8bs/36XUAqFensF+LC+sshnINMMxi3xD1uWhQaL4vBSzedFNGIED0t3Upo2/ITWOohCeeWgcgcbW0Aze8Op+T6BmGMTny9gnB7exnrg5JaUGs7UaTEsJnC5Z+Cpcw7p28shniTXxx66rtuxofDAYvdCiWk8lK1e1QSuoBehIXT+TS4B4fcRj59E/z7PHQMSVslR0eDsRhvB7EPQ/v82oviLsf8B6xqXTvsIjwW46k48ir9KStPJIiT2XSvGybu72/pLEqVTH6q2NoGet2l5xqR1Hmau7BL5Bprp5Zu25K8fBRbnymEa+IRrIcDhiB1h3WUeImYYY/RkOtLIVIIBxygkojGcN/cjesX5MHrxw7lQ9iWurvpkDTZKLsPIfJ+VW4d2Foz9yntpxbg43irUJpxpnp5ooIf1ypjOK9OlhKaq
+ xKZO2Nqu
+ vH0Qu1US2pVDrjhnnBeZvN8rzxEkRyOf4YlXCFYko5CjWDEP2NFe2AJjrBYq52GmE4JhX0uiyA7exZUufyluEgGrEiJPYsvtH2sui77X+7nmQZZqxxqq1imv29sv6lMW0LR6RMIuR5ZimPSTdTiyeUxcsScXt9a3hghtNXGYRFs4pcmWMgTKz3dsl/K1FlzXisI+fRmVy1/upfwo3kzGYxVg8uyaKgaEpaFIJ5yYW84HbPbb1bbzHnGzt9tgTPe+JiEEVqsaWAGITMmhx0bRFO7LYoTdymKT31sB/3+niqsLRFwNwPBIm4YomdXh5EmHrfT2+nhE7cZ6fN97Tha5kzl7uv/nLpZZAursdClKD8qo7TK/2Ez8uaKmOukTJXVcitYnBwBtpGcXXus6ZC4vAPr6T6MrtaypkyJX7UPS1E/kvtDu89MUrCnMCC1+m3bXvkV7FSvzkcbkPCuPJOlIizhr2aXgKm/RdscVgWcWEyqNTqqtpbNc7SsmhtUU85mYO3P5rV88Jb2rnTOMdqqhZS5VG01JbwBIJ1w+eAAQ7W85z6KBFgj4g83LSAIeg9tyFs/Cl/ArV6h90qOrFSAM95VC3CGdmipi23imNtdbYlzhYRIrAzuFS64Tlqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,7 +104,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
@@ -104,86 +114,93 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From f043a93fff9e3e3e648b6525483f59104b0819fa Mon Sep 17 00:00:00 2001
-From: Cui Chao <cuichao1753@phytium.com.cn>
-Date: Fri, 13 Feb 2026 14:03:47 +0800
-Subject: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
+From 9c9828d3ead69416d731b1238802af31760c823e Mon Sep 17 00:00:00 2001
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Fri, 19 Dec 2025 17:31:57 +0100
+Subject: [PATCH] mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP
+ allocations
 
-In some physical memory layout designs, the address space of CFMW (CXL
-Fixed Memory Window) resides between multiple segments of system memory
-belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
-segments of system memory are merged into a larger numa_memblk. When
-identifying which NUMA node the CFMW belongs to, it may be incorrectly
-assigned to the NUMA node of the merged system memory.
+Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
+local-only and all-node allocations"), THP page fault allocations have
+settled on the following scheme (from the commit log):
 
-When a CXL RAM region is created in userspace, the memory capacity of
-the newly created region is not added to the CFMW-dedicated NUMA node.
-Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
-containing RAM). This makes it impossible to clearly distinguish
-between the two types of memory, which may affect memory-tiering
-applications.
+1. local node only THP allocation with no reclaim, just compaction.
+2. for madvised VMA's or when synchronous compaction is enabled always - THP
+   allocation from any node with effort determined by global defrag setting
+   and VMA madvise
+3. fallback to base pages on any node
 
-Example memory layout:
+Recent customer reports however revealed we have a gap in step 1 above.
+What we have seen is excessive reclaim due to THP page faults on a NUMA
+node that's close to its high watermark, while other nodes have plenty of
+free memory.
 
-Physical address space:
-    0x00000000 - 0x1FFFFFFF  System RAM (node0)
-    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
-    0x40000000 - 0x5FFFFFFF  System RAM (node0)
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+The problem with step 1 is that it promises no reclaim after the
+compaction attempt, however reclaim is only avoided for certain compaction
+outcomes (deferred, or skipped due to insufficient free base pages), and
+not e.g.  when compaction is actually performed but fails (we did see
+compact_fail vmstat counter increasing).
 
-After numa_cleanup_meminfo, the two node0 segments are merged into one:
-    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
-    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
+which is not the intention.
 
-So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+Thus add a check for __GFP_THISNODE that corresponds to this exact
+situation and prevents continuing with reclaim/compaction once the initial
+compaction attempt isn't successful in allocating the page.
 
-To address this scenario, accurately identifying the correct NUMA node
-can be achieved by checking whether the region belongs to both
-numa_meminfo and numa_reserved_meminfo.
+Note that commit cc638f329ef6 has not introduced this over-reclaim
+possibility; it appears to exist in some form since commit 2f0799a0ffc0
+("mm, thp: restore node-local hugepage allocations").  Followup commits
+b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
+not succeed") and cc638f329ef6 have moved in the right direction, but left
+the abovementioned gap.
 
-While this issue is only observed in a QEMU configuration, and no known
-end users are impacted by this problem, it is likely that some firmware
-implementation is leaving memory map holes in a CXL Fixed Memory Window.
-CXL hotplug depends on mapping free window capacity, and it seems to be
-only a coincidence to have not hit this problem yet.
-
-Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
-Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://patch.msgid.link/20260213060347.2389818-2-cuichao1753@phytium.com.cn
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
+Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/numa_memblks.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ mm/page_alloc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index 8f5735fda0a21..3f53464240e8d 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
- int phys_to_target_node(u64 start)
- {
- 	int nid = meminfo_to_nid(&numa_meminfo, start);
-+	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e1cc0c9ed9479..3333524e879c4 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4818,6 +4818,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 			    compact_result == COMPACT_DEFERRED)
+ 				goto nopage;
  
- 	/*
--	 * Prefer online nodes, but if reserved memory might be
--	 * hot-added continue the search with reserved ranges.
-+	 * Prefer online nodes unless the address is also described
-+	 * by reserved ranges, in which case use the reserved nid.
- 	 */
--	if (nid != NUMA_NO_NODE)
-+	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
- 		return nid;
- 
--	return meminfo_to_nid(&numa_reserved_meminfo, start);
-+	return reserved_nid;
- }
- EXPORT_SYMBOL_GPL(phys_to_target_node);
- 
++			/*
++			 * THP page faults may attempt local node only first,
++			 * but are then allowed to only compact, not reclaim,
++			 * see alloc_pages_mpol().
++			 *
++			 * Compaction can fail for other reasons than those
++			 * checked above and we don't want such THP allocations
++			 * to put reclaim pressure on a single node in a
++			 * situation where other nodes might have plenty of
++			 * available memory.
++			 */
++			if (gfp_mask & __GFP_THISNODE)
++				goto nopage;
++
+ 			/*
+ 			 * Looks like reclaim/compaction is worth trying, but
+ 			 * sync compaction could be very expensive, so keep
 -- 
 2.51.0
 
