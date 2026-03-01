@@ -4,98 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B97F3FD0049
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:28:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BABAFD0049
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BC586B0005; Sat, 28 Feb 2026 20:28:30 -0500 (EST)
+	id C589A6B0089; Sat, 28 Feb 2026 20:28:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03FD56B0089; Sat, 28 Feb 2026 20:28:29 -0500 (EST)
+	id C03966B008C; Sat, 28 Feb 2026 20:28:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAB966B008C; Sat, 28 Feb 2026 20:28:29 -0500 (EST)
+	id B2D596B0092; Sat, 28 Feb 2026 20:28:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D97AA6B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:28:29 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 789B01B750B
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:28:29 +0000 (UTC)
-X-FDA: 84495759138.22.4F8E930
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A3C206B0089
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:28:36 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B5E31A0373
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:28:36 +0000 (UTC)
+X-FDA: 84495759432.01.478DC69
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id AD322140008
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:28:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K3uSM8T3;
-	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id AD1F7C0005
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:28:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGaUrFBy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772328507;
+	s=arc-20220608; t=1772328514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=OOfrKl+Um5EtMBdfonGSWUzDatad1HVwuDrC88O344A=;
-	b=nVD9CAdcoCOyVp0BIwHzJQ4Vp6RCfwixnToPOWg4ieZ5gpaJd/eKcJH88Yz4OOVvg1a1uY
-	B0JK8anqLCbpqQ7MvVIcchEofORtE130N+tnjHI9hNHg+2AO2TbhFdlLEZFOCvrHDui2N/
-	aOOgtMWX5d1goj9fUyQ7baFF6zTi5w8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K3uSM8T3;
-	spf=pass (imf09.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328507; a=rsa-sha256;
+	bh=gvotb5mqYoYKsZEykZCRp5Ub9gysSYDbZ743BN5BGKM=;
+	b=XqlIEWPWwcAjdfgKv5j9/3VMM9DVtYB86hB5CqE+01ios6OLYqtB9xZuJL2O8lU5sp79mu
+	hp27G/qYNeY0uslhNbY2ASvf7YlHATumf98t5VuJLKJNO+LdDbBjzhxpdALr66/0KCGPvj
+	PydeVVDEVsWmJXg4w3AX46cHRNoTn08=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328514; a=rsa-sha256;
 	cv=none;
-	b=Fo4+74pM02Nmro/lm/vLFSRPPu44LhtFMg0Bx7mStsJ2WFbIbTANWJTT5Uerhtul7BItgl
-	adOnl/xxI+P0znKB6v02TWelez9Aisx5X2186UaIr/0Ewe0n2Temgfgkv5pvuMC5OWF/Z4
-	bSmk4q2oHcc68a8gkuHBNnWs7ecmkS0=
+	b=BakaBBBSIvRY9xucOVqN74GxXe8/NoJbGhsy/7naa7MBz3GI2Ukdntff7/UHA96Et1mEe4
+	sP+p/7/E3QSKg9K52ibPCg2z0+yv1HgbkZ/i119lXslky90ejHWT9oP6LpA97vKrcSEB6I
+	T6+peSmsu38RTrc7oQkDfJYvlIRm+KU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGaUrFBy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8877341743;
-	Sun,  1 Mar 2026 01:28:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA864C19424;
-	Sun,  1 Mar 2026 01:28:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EF51A4348D;
+	Sun,  1 Mar 2026 01:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C623C19421;
+	Sun,  1 Mar 2026 01:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328506;
-	bh=+O76RfsTh16i6VAVyeQr5CmkQXtbbU5Iq6n/A3Vz5/g=;
+	s=k20201202; t=1772328513;
+	bh=8bfwFCO8SIFrbKV1cwycC69fkm4iZipWVhEKQ5L6dcI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=K3uSM8T3owkqgbaEfkbzjp+eeY+Z7L09OoYYWBDkLJHnWuzfrH8CG/MQYf4zlfd6s
-	 XFDWy5IT5s018NUV8AoOjMx0EkZTKh/1vTvkGYZ3oxsqAKpg41tWH1Nh12uDx3U+mL
-	 UPDJRBeTHlesWSTKScS0uXuDJi04TSvY2Y/1r/i/Drbf2H9hXaguYXLSHa+w0aD9Q7
-	 9XHZj6TYP1H/39JCf7C0VHaWMZ8a797+es7UtEKxVeFxmt7fq2XciICBfJ2+nicwKm
-	 tD81GNWv5jV+S/b7j3nZmK7aLzUVUkblch34NPYjSF6xPA6R6aUCxDGsgithh2yKQF
-	 u1dC+wTo1nNOg==
+	b=eGaUrFBycjIxreSz5k8O47OfOVXtrnqaQYRaseR+2Q1urnt/g9M7QSF+wY+bV6+7W
+	 c6fyrD9bkONk+3gILyKLscIKyA8XQh8eZJjOqtCT6alE7fWfXE48w7QYpkJw/BarBn
+	 rRgtfCrLhUXqB98oB+T3H3ANZsGQ/OaWsfeDJn586cIWRqokJQqO2GBZlA1hhIbUeR
+	 p7jMQlRnN8ZR23ryoaJCo2NbCebuK3JHlawmTbKFJmkDf5B/sqU+PWBjUrlM3PSGY8
+	 Suh/GdmqS/JWaZtgSncYTGoM+loAt0EC1jtcX0lMKNcxbq/LbxCP5f7kgyzA64GJa5
+	 i4BspvJG+rBlg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	mikhail.v.gavrilov@gmail.com
-Cc: Zi Yan <ziy@nvidia.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Brendan Jackman <jackmanb@google.com>,
-	Chris Li <chrisl@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	cuichao1753@phytium.com.cn
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Gregory Price <gourry@gourry.net>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/page_alloc: clear page->private in free_pages_prepare()" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:23 -0500
-Message-ID: <20260301012823.1686138-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm: numa_memblks: Identify the accurate NUMA ID of CFMW" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:31 -0500
+Message-ID: <20260301012832.1686293-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 86fmyficiicmpb1ugdhzaj5qcddcp188
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AD1F7C0005
+X-Stat-Signature: 6k4iedxzqkrmq8tepkif4or1dwnnd1ry
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD322140008
-X-HE-Tag: 1772328507-202064
-X-HE-Meta: U2FsdGVkX182DWUz91eKUwYGGa6CkpC60vOv4g5QbGLO3Eoq+2gZqDC714DAu2wjqdYzXTSry66psvwowdOgVk5nAhr5vr5xl2lOIfjpCxIJaxXdcz+iYyr6+j0oOp5l2O7wL0duQLmgR5vDmpP4m1dSd2QzszERY3ugYikL5xpPR/VIk1C1kg3luAj0bQCDxEZIrm12r07oIsjRhPKUgv+w7YUt2BAa+7alwnMgpnoB3ZkI7A0i/HuOiQeffBwNhqeEl9Izx1WaKCPIXKC2sKaIuxK2R9rICCA3KlQnEFMXCcF36n8IKiW6f931kPR8noWR817HuQAUz5sZEVStyptwmgk+gMo7ILS6a+ECsDzSAg2rDBatRcTFsKEAlRBhfz+KpFsoNM8agR3cY1QS50AdnX/r6pQ6FMTd8KJDn9j+xln2uaPUQ0dCF0jKtKIqKV8pI8AcpG8XjJxquiQcDawcpOB0mX4y6JvbRo0N1xl8DyngPLf78VhdQSX8A9EFTI1l8F5awvZnctgvWYROhFpULlSZ+gzQWaW4lJvAk5dN/9vfE95XziSAgg2vI+QPJ12p95HGcHBZVInrEkOgG+zhJhArw77EBxJqN6pu2VaA/4WSwguvyvssa1iCeinEvPLYa5ilQnMXkEzTlx2jiiSvyZN336EkNKjYPDWOOlyXC47JejLN6Af9CDl1Pj77T43TvFzVFJHffjEfYNgI1yLUMiSVQaRg7I5RYKbKmXBnbPNOP5Oc4eQP1HEqaDGgIKbcbeyGW4dLRRIkp//OC4kcEjXDfhfrEim2V75x8gt83myHgFBRB224wNBINP2+hbfHSbzcgKr2iJ8X4PU2H2A8pRDkvE2/8zUGwS57X4N87esQDy9J+aASBoK/eXYWge39J/CvSIMlSA4c37/RKs4KQcAuHfU4Mg+zWNkTmfV2asH61SGkJOb1o/l2zRuxs5FF9jhrivwZ4E36Upc
- PJlJ4MQW
- t4EEZvovMpuQBhWdj5Bl2TqWnDbQ6XsrLY5o58Opmo5Msjffq5TyVuCbGeIQ2jHFa/V3JJIB+tGYhPFZnsYHXgM+A6M3VEd36hwLXhJgDjUp28SrGonxrk3YcfiGM5tu1P51Sj5HHn096hfzE+t970SyQRIglE+0iW8HDhDoQFQeCh1uThqgkxhCjawsvLFxsG3fbK6a+z747D3umdBglByafcTeB7j9F9EGE8m8Xd5/rMcQS+DKTXBt9Jcs8tZKuGnEGKR+U/6W1wOJgAUiDToiPv6cFdEraiLiV40SG3SusbBx7JWv2Y9GGU1vMiLScxLKsSHk3DcLlR1IR165cSVZUsDsoSrdCJMEaBJZ5PLq/Wum20pk37C1yh2khvCslvs9IHVqbT5HZm2G6PBuc9fxV9SKSmpweTMdt+VVSiOBMVfRgG+3twpDw/ZiG6JJWpQ+YCYFYJ76qIxkMWQgXTSPTdGJ9L9OVMd9Jct0+qyAyQNLq8kbYebxi070kYynsMzCYlF+rH0z2ETFyQhsIeF5RGUulOuQXFpnuIFsF0S8/Gs+ExobeD4vWXBuEJhrH3VVDA/WyRhopqcqmZN+6mhRs12kP7T4r5kLYP+CJU1dng30aBIUUalfIxPKE5L4R6qLT89CHIRxzszjcZgIAWpTj8Q==
+X-HE-Tag: 1772328514-826117
+X-HE-Meta: U2FsdGVkX18W8fTzTe5Tj3Mw8hVU9NL3hhT1NFRkXblJ/+Bl/SBRm3ETc2q7ftM12kwjfiA4/G+5HnaA2B2tGtzMz2Nd0hVHjwQ+X8P3H+apyVKnslvZw1XNLIEi001xiWiCLCWfWFAzW8IrQ8RCStEdhqIOTCHuPT8QZ4jKOOuGVfrRe+EERDK9GPk5xC5Ze+PIdjXl+9Y/VxwTWc2WtMeBuxhLMoPFi84T//wBWZXkA4AqhcuwXpV1YxGyetPd1J/REsJvL5PhjJY/0mkgqublncQq8159J6d4vsQMW9Z9rzdkMbPgyoy+jXPdCfgyY0ZgNwNbM0QmIF5v/ihQ+6DX4J30ftc89wtqioamT1U1JLm/Sqqyq3lQrZRMymV+P/JehUdtGvQmqt8CMNQ7K4SRQRile0hG3cOrYXdqRLZRLcNuJMQTHzDQ3cbYbNsa+kzkkkVOwosx8iZrfoxYbp72BkpJdTRla+vtirBVPrhtDCuwZUmYCWJXgxh0gAEZv6JC1vynWpjTiWrXeg/kb+XVmNmxf+abcu1QroGbnBV7s6Ad3oSmZbNy0NRa1lzFvA9XlkHdI/T0Ex0NDrOvV+iQOeO7xqjBVsT/wi09vdmDw7+oYIVl2khimb/NqmtIf6lElmDncp09oxyxodOsmQVf9Td/JTi245wSBbToLdy2Lcj6zCOhoCixFZ+PN1H2Xp0dxTYVExF52f6D2Nu7RlhpMWsNaTJo65PlNS6z0NGIfEQV+qIAsfnHOlQkowSxGMqmA1EBEPe2lXNmXWEQz8tCTBkQMk1Wp8CuRqhVpzjGUMzWsMFhtpfLZWjFv+n5ArRwkgq+E3veDWd1bQmosquAsDjIPc7gMXbH3uyU2oX53Up9wlZHSzCJy9bexdc82z4EdaanLBiHjySECh8mz8+dijcoGeteV9LxOpcXN4t3vzQt2hobB+HWlCyBnfLax1jSf7Z4y1V32zQbC9z
+ 7NcDvRZ6
+ LqKCH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,63 +104,86 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From ac1ea219590c09572ed5992dc233bbf7bb70fef9 Mon Sep 17 00:00:00 2001
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date: Sat, 7 Feb 2026 22:36:14 +0500
-Subject: [PATCH] mm/page_alloc: clear page->private in free_pages_prepare()
+From f043a93fff9e3e3e648b6525483f59104b0819fa Mon Sep 17 00:00:00 2001
+From: Cui Chao <cuichao1753@phytium.com.cn>
+Date: Fri, 13 Feb 2026 14:03:47 +0800
+Subject: [PATCH] mm: numa_memblks: Identify the accurate NUMA ID of CFMW
 
-Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
-clear it before freeing pages.  When these pages are later allocated as
-high-order pages and split via split_page(), tail pages retain stale
-page->private values.
+In some physical memory layout designs, the address space of CFMW (CXL
+Fixed Memory Window) resides between multiple segments of system memory
+belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
+segments of system memory are merged into a larger numa_memblk. When
+identifying which NUMA node the CFMW belongs to, it may be incorrectly
+assigned to the NUMA node of the merged system memory.
 
-This causes a use-after-free in the swap subsystem.  The swap code uses
-page->private to track swap count continuations, assuming freshly
-allocated pages have page->private == 0.  When stale values are present,
-swap_count_continued() incorrectly assumes the continuation list is valid
-and iterates over uninitialized page->lru containing LIST_POISON values,
-causing a crash:
+When a CXL RAM region is created in userspace, the memory capacity of
+the newly created region is not added to the CFMW-dedicated NUMA node.
+Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+containing RAM). This makes it impossible to clearly distinguish
+between the two types of memory, which may affect memory-tiering
+applications.
 
-  KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
-  RIP: 0010:__do_sys_swapoff+0x1151/0x1860
+Example memory layout:
 
-Fix this by clearing page->private in free_pages_prepare(), ensuring all
-freed pages have clean state regardless of previous use.
+Physical address space:
+    0x00000000 - 0x1FFFFFFF  System RAM (node0)
+    0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+    0x40000000 - 0x5FFFFFFF  System RAM (node0)
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
 
-Link: https://lkml.kernel.org/r/20260207173615.146159-1-mikhail.v.gavrilov@gmail.com
-Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+After numa_cleanup_meminfo, the two node0 segments are merged into one:
+    0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+    0x60000000 - 0x7FFFFFFF  System RAM (node1)
+
+So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+
+To address this scenario, accurately identifying the correct NUMA node
+can be achieved by checking whether the region belongs to both
+numa_meminfo and numa_reserved_meminfo.
+
+While this issue is only observed in a QEMU configuration, and no known
+end users are impacted by this problem, it is likely that some firmware
+implementation is leaving memory map holes in a CXL Fixed Memory Window.
+CXL hotplug depends on mapping free window capacity, and it seems to be
+only a coincidence to have not hit this problem yet.
+
+Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
+Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://patch.msgid.link/20260213060347.2389818-2-cuichao1753@phytium.com.cn
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- mm/page_alloc.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/numa_memblks.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e4104973e22fd..77dcec36946f0 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1429,6 +1429,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
+index 8f5735fda0a21..3f53464240e8d 100644
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -570,15 +570,16 @@ static int meminfo_to_nid(struct numa_meminfo *mi, u64 start)
+ int phys_to_target_node(u64 start)
+ {
+ 	int nid = meminfo_to_nid(&numa_meminfo, start);
++	int reserved_nid = meminfo_to_nid(&numa_reserved_meminfo, start);
  
- 	page_cpupid_reset_last(page);
- 	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-+	page->private = 0;
- 	reset_page_owner(page, order);
- 	page_table_check_free(page, order);
- 	pgalloc_tag_sub(page, 1 << order);
+ 	/*
+-	 * Prefer online nodes, but if reserved memory might be
+-	 * hot-added continue the search with reserved ranges.
++	 * Prefer online nodes unless the address is also described
++	 * by reserved ranges, in which case use the reserved nid.
+ 	 */
+-	if (nid != NUMA_NO_NODE)
++	if (nid != NUMA_NO_NODE && reserved_nid == NUMA_NO_NODE)
+ 		return nid;
+ 
+-	return meminfo_to_nid(&numa_reserved_meminfo, start);
++	return reserved_nid;
+ }
+ EXPORT_SYMBOL_GPL(phys_to_target_node);
+ 
 -- 
 2.51.0
 
