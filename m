@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D4DFD006D
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A21D0FD0070
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E048D6B0089; Sun,  1 Mar 2026 12:20:47 -0500 (EST)
+	id B50036B009B; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB2596B0093; Sun,  1 Mar 2026 12:20:47 -0500 (EST)
+	id AD34A6B009D; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBE316B0095; Sun,  1 Mar 2026 12:20:47 -0500 (EST)
+	id 9D2036B009E; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BAF256B0089
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 12:20:47 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 698F51B88DF
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:20:47 +0000 (UTC)
-X-FDA: 84498158934.05.B7A0007
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5F018140004
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:20:42 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hGCldO+H;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=ak@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 861936B009B
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 074E41606C6
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:35:12 +0000 (UTC)
+X-FDA: 84498195264.09.A770044
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BDF534000F
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:35:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XcuAXeop;
+	spf=pass (imf04.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772385644;
+	s=arc-20220608; t=1772386510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RvAIZdhDU05bzhvS0yUK26gBgeDI/6YsEKJNf+GOzcI=;
-	b=4NjxqKUKRG9pS7/smpYali9HV9yl+G4q1xegCAux3sSiFtUNvaxWecUfv19BJjKtIXpoWp
-	XNzxldNfRKsjR//YE3WfD+4cFnP/G8tSM/vT9tpC8EgLYIQUWKZW5ngPsT7oyecX3Soqku
-	d8Z3m7/AEx78beAXCAofIP6kYu5+AfI=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=hGCldO+H;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf23.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=ak@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772385644; a=rsa-sha256;
+	bh=QbaWI1rdvFnK3dXsg9IM7gaVSYJE/E5Nt9w95el3T/8=;
+	b=4WqIO2a1/qQKaN7s96ekq+gtp2Zeiife9tIuE96j/a1hkeS7KRLXXnwWCraIKS3hTmkKfy
+	AA1hHIWqq6rfetbPdkhcVr1t0cXqquqdR9IXfjoRi6EyTWYzotHOrnAogTlQbwKTfrZeF3
+	+5qiN3Z1MSX9I/ViCV+YfEe74fp7gU4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772386510; a=rsa-sha256;
 	cv=none;
-	b=ANUOXTb5SzV0jgdaKMaDl8hkXxn9eDoH7hEQEyeGEMGutSzKuiOOWe/E4unfbMPzOl0dVT
-	7TDe55FQ6lS7tqGbV0SYik2EI0sl9ZyVqRlki4dzjisCYawX3t+O9UaX4/h46wBpqaGm9S
-	B9XnpDwHKLVh4EhzSCYVFNOPBjElFdw=
+	b=DlztMpBumpHfboi18wv1W61Cf8106yfqwqikKiT3kpyT4fiHFLTHa270XCbjpcTB5EyiVN
+	tITFKyGHugoN3cmz1q8b2iS+OXnRQHIzFczZHwS+httGxmkI65FV0ug27NDKkbqCFYfRZ7
+	mK6bAOZR/NjTUURfP9wxT8tNPwBw2dk=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XcuAXeop;
+	spf=pass (imf04.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772385643; x=1803921643;
+  t=1772386510; x=1803922510;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HsonetsrJq2UggU5a16zvuZ6J6004u7tBlJ7u6srMGQ=;
-  b=hGCldO+Hfq2DMFyWdGNFfFgK/pfzsROiVF2agsYOkXfSOpV2iVIFYZMn
-   3OHeWWok9maNoFTp9RWiIQ7bMXsLXxgue9lMztnNSVlIaNXwzVbnIpBkN
-   Ac0Z5swATMdzQ0tksfMDo9TfofWD8uJHB0uRkfubIEEMNp6/5LCUGi0Jz
-   3G9ULW82Lf/HM6+CLg/xHpmlYzi04PBL6rfmzacCZ1DVVCwNSTk53Dfn5
-   vg3elfHU4Z0LGiY2GzRp0eU79tK6GoeYO3haIR+e7SAyEA2DFrimEfx+o
-   iI+ppHcuQMmlgfUvawrpX88sk7vqlrpiH4mn26Z7dUjzAxunb482U0X05
-   Q==;
-X-CSE-ConnectionGUID: LnbrytoRQweMlVCFQXLG9A==
-X-CSE-MsgGUID: DGgBQ0F+TBuS0f9xYVG/tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="72606019"
+  bh=xjPAAHtXkL4Laj2flE1/mWKS7QSwyfAmuzBLpB07rhM=;
+  b=XcuAXeopt6xGBf7cxQx6jxnS3MhFqwCc9Y7PZ03GXYQMOka2Q9NXWJZ7
+   Va/VdX644wSTlU0VJuYbyHSEsSwHHS5v+02OVKHDnBKLHx/ui/uISWJ6A
+   4S3PHmhmlJjI8vR649KsI458CPFtHFSaivcx5htDBB/zG4Qg6KF7bXw61
+   FBDqWcsmYP/efFRIB5tTvOiLgixY+erQkl/xJD/lS0jq/i1+IObWI0TsP
+   gqjn28WHYzubVTsDPzV7TuL5Rxs5sFY03x2HxeFDrYCQTjok1UqQlhjBd
+   /D7shUYJhie6IzGynW559wp6Q38QKYgvityh7E78XRuCjAyxBCgjS4Ufe
+   w==;
+X-CSE-ConnectionGUID: /qv86TMzRM+L3bUyw/HuSQ==
+X-CSE-MsgGUID: GWdArtnfS7OqYCmN7d8CEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="98874309"
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="72606019"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:20:41 -0800
-X-CSE-ConnectionGUID: vqQEgz4/Thib1+dBCJO4Ng==
-X-CSE-MsgGUID: l/DHTZHkTFOTGJcWYbMiZQ==
+   d="scan'208";a="98874309"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:35:09 -0800
+X-CSE-ConnectionGUID: dooRbjHuRiGFxi6qskE6EA==
+X-CSE-MsgGUID: 19+eWo9dR1WLuG7+mpa5bw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="240419135"
+   d="scan'208";a="222404431"
 Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:20:41 -0800
-Date: Sun, 1 Mar 2026 09:20:37 -0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:35:08 -0800
+Date: Sun, 1 Mar 2026 09:35:07 -0800
 From: Andi Kleen <ak@linux.intel.com>
-To: Usama Arif <usama.arif@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org
 Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
-Message-ID: <aaR1W6evB8iylaxK@tassilo>
+Message-ID: <aaR4y-lCl7YPEcnX@tassilo>
 References: <20260225232708.87833-1-ak@linux.intel.com>
- <20260226120818.408966-1-usama.arif@linux.dev>
+ <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226120818.408966-1-usama.arif@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5F018140004
-X-Stat-Signature: 3nhn4te8bk5idki1m5fsdz8y38chsiw9
+In-Reply-To: <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1772385642-434473
-X-HE-Meta: U2FsdGVkX1/26k/nDCFNWpb8P2ztWoWqRoYdzgJ+nsqC+Ou64IaYigwjy28SvcL0pTPEQt72LaEei51Wq+p+8CgA/by+3CYtKY7003VhnG2HiWHq1qBl5bDoj9MLN4F3CQF02bfvf7UxcinE8F367rg/7LszwOJsDXKHpcMzN9YT28zcIantbrgfQziSAquQMPHQtBwdCVfSJb2HlMzu8PDgmn19LahplKupmrTevC86bav4f4CZnfs9wN4VHXaZQu2RaZW7ohKMK0qHONBhTB2+wuLGPLavZPDm5aKv2jSBsZhKAUi27hPuwayd095QCIm3VDBgeugGl7VeTdC8Z1rev8diERbWiDKLFBOVp+g6Fl03ClvXz6KPrVLxCmwb/n0H3pSAf2RiVYDlqebaCUrq1RA0aS8i6o/MU/2PhIkkCPNq/C8aTSF2FCygAAcVD6s21HVpjdy4Q7pJmFLE+bHf5wUUq4JdpTzc1iCB0JYbffcNL44yuJLhntCXOS9i9IK9ZhU5W7F0EDDrMg2qs2xlhV20Omuuo47FR7m9p8WG81kPJ1/Un31JugbQdQ2Xu3e2RMbyuAn93VKH+lc9Smcgf7fGwhywiYYO8TCZj1/HvJIQe0cMz1XxIDTY959ZG1EpRsvlMZHnx0gjdmrjET58fcOY1qg253nsr4uDyiF4VEWPdSgap3N6FlzXjqXwwvSsVhi2Mt78IioIvPoMTUJ/Y93rDJGUTs51YVp4vOu+HUKpH9kIE19FemF9SRtBsXfiTCs99Npi0GwU8UAttC14kQdvnpUZNC8sqgc0lsWotM+Kdb0oO3ugmrUcAJRsmaQ5axpybpyIUVtaUE6uHNC5eQmFY87XhxKb6U9+DaSjqrOf+8mltrqOZxSmjU9mlqJJGfpN2FwfIwFv+rvdL/qamsStah0FupZKPzqpM7twfsWvZ8SjQC0ch9HPXy4bozEniy3X0HpxcYgz9xi
- DIj1gd24
- h7f0wyNZC4hq5VlWNQ87m0H++r/cfFDihaJt3290G44XcUYmqBd8ZNa2akwDDbFDeTfJjzZmK1eDDQMyWd2D3kDgfgVW1H0U1bGlMflARLfoY5Fh446oHnwbBz6meDjCu9C+lW2bDzBg5ZjgtwCQylIW6J6Dsf+BQWF/68CA4NNElYUVW33eSTuJ6byKLuCQrlHYQ
+X-Stat-Signature: dct4f17pn6k1emmzhyj77ggqzh4zuyfu
+X-Rspamd-Queue-Id: BDF534000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772386509-487661
+X-HE-Meta: U2FsdGVkX1+yxFpZFfFZh0wEHkgRyQWHx9ucFmFjSDpQJR3ATEVH32Wke/L9fbPeNPdn395hnQBJl7gxBB99kalOtQD0okuG9OEad+SQPwfMGd3sgnKGpMOVLhEwAgVDxkdFRk2g4nVRYNvvjLpSMMn/ReP+kvB39R2N6Vr6Fo28+NgbPngSMBo5EmIfQ0+sUWFCOfTczXZuslrnKoScP8msZ1Kndb8hvH9dAFOLqSFWmwqVF5zyPZ+5A0WkIGeAjbl9qFTg4JaX8EuttbGVNgNI+X/6Ha4JU4tXhAXYOSGG64IdbNyjvz0UBJRvmvGmnZkM/+znZFnX4/hzv8ignkdUAWyVA6w2ffgt4HM/oVg+AU5zQBWP0Ps8yBAS6FgyrU94IROOe1CTJ1hoNxbq+rIOclwie0+JDISFEwmQ/dbgPervf8kzZDtL8D661FOJnjdmIGP+7xIqA8PeKJampsbT9dgnGbxzCD9D4TShIYU1JyYwMQGt1OQolpyjk69cjZAMIDDAeP588ABDVJg/FTy26cmJR/p4u+Lx61sNq2FCP8pYCsq0Gz3by1SGIZs91OP0DPX12p8vY2s9q4gqpMUku6A2zWAyzoBDDcrHY5xXe5yV4sWt+b+EmE+UijGFnJ3R+0kqCdZGWTo4/8zRV6oTw7I8hxgpqbXHHLmGTZoAJpt2DYQIykNXKxczPVrIKo9wIGsxFXdxqeOMjAydm2aeiq012gHZmzTECy07lGT0XXrD3Xe9GnXIhKE77VGm7DU0k30C0GRUxWTZLOoGUDArJXMoCiSTjF7Lo84REJk/w4wSDQyyZPgIrA5x6chdtvYA9exWw0ATyQeakGZ4QLixE8owxKUsCPYVF+5A61wk12Z7ZhbH8x5sSbschVUq6M97XIhevE6V/mCCa00dowwkYxSO2M8eiiu5ZvchaBybJIzOrS7MG9OFthnQCIpJ3GU31DxHSwPovidPaRh
+ vJt6IBxt
+ GE35/66svIDbWSFH8xQLLWGN7dgNq5nu9d4gIYuo5HPakce99F2/mFdTU6Wzq7LgN/M4DYhIjUgxo7cSGea2aegbCs6m+fZDzvXo3Dws0bdrggJ5wteTKf6RrbPk0UyONXVDUtC2Rfs7y/bIjxOK7j6JiMpKErJRHYDmDYsAz+2lh5+7YFz2ZuJAwRciCgB7mgfwt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,18 +102,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> When a VMA has no resident pages (e.g., freshly mmap'd but not yet
-> faulted), compound_orders will be zero and the for_each_set_bit loop
-> will not execute at all. This means no MMUPageSize line is emitted
-> for that VMA.
 > 
-> Previously, vma_mmu_pagesize() was called unconditionally and always
-> produced the MMUPageSize field. Userspace tools that parse smaps and
-> expect MMUPageSize to always be present would break on VMAs with no
-> resident pages. Should we always add it?
+> a) Just because a folio has a certain order does not imply that hw actually
+> coalesces anything. MMUPageSize is otherwise misleading.
 
-Yes that's a good point. Should fall back to the base page size
-then. Will just make the simple logic a bit more complex again.
+That's true. However reporting 4K for a 2MB THP mapping today is even
+more misleading.  That's where I started, it misled me totally!
+
+So you're asking for an architecture specific / cpu specific hook to filter it?
+I suppose it could be added, however it might take a very long time
+to get merged, and even that cannot handle all corner cases.
+
+> b) Simply because you find a folio of a certain order does not imply that
+> it is even fully mapped in there.
+
+Ok. I suppose the walker could handle that.
+
+> 
+> c) PTE coalescing on AMD can even span folios
+
+and d) it might randomly not happen due to various runtime reasons.
+
+It seems the only thing that would satisfy all your correctness 
+criteria would be to not report a MMUPageSize at all, but we cannot do that
+for compatibility reasons as you yourself pointed out.
+
+Given that your requirements are impossible, we have to settle on
+something better. I still think that what I proposed is a good
+compromise, although yes it's far from perfect.
+
+> 
+> But more importantly
+> 
+> d) MMUPageSize is independent of the actual page mappings, and I don't
+>    think we should change these semantics.
+
+That makes no sense. What is it good for then? Just a random number
+that looks good?
+
+> 
+> 
+> Let's see why MMUPageSize was added in the first place:
+> 
+> commit 3340289ddf29ca75c3acfb3a6b72f234b2f74d5c
+> Author: Mel Gorman <mel@csn.ul.ie>
+> Date:   Tue Jan 6 14:38:54 2009 -0800
+> 
+>     mm: report the MMU pagesize in /proc/pid/smaps
+>     
+>     The KernelPageSize entry in /proc/pid/smaps is the pagesize used by the
+>     kernel to back a VMA.  This matches the size used by the MMU in the
+>     majority of cases.  However, one counter-example occurs on PPC64 kernels
+>     whereby a kernel using 64K as a base pagesize may still use 4K pages for
+>     the MMU on older processor.  To distinguish, this patch reports
+>     MMUPageSize as the pagesize used by the MMU in /proc/pid/smaps.
+> 
+> 
+> So instead of 64K (PAGE_SIZE), they reported 4K. Always. Even if nothing is mapped.
+
+It doesn't seem like a good design. I don't know what that is good for.
+
+What is reasonable to report something at least approximating what is
+really mapped.
+
+> 
+> So you could indicate all MMUPageSize that hardware possibly supports in here.
+> I don't think it's that helpful.
+
+Right.
+
+> 
+> We once discussed exporting more stats here (similar to AnonHugePages/ShmemPmdMapped, ...)
+> but we were concerned about creating a mess with mTHP stats.
+> 
+> For this reason, Ryan developed a tool (tools/mm/thpmaps) to introspect the
+> actual mappings.
+
+
+Some magic other tool doesn't help with the current output confusing
+people.
+
+Yes I can always dump the page tables through debugfs (or at least I could
+if not most distributions don't bother to enable that config option
+for unknown reasons)
+
 
 -Andi
 
