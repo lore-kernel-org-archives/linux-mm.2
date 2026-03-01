@@ -4,86 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60649FD004A
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2569FD0045
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:51:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A81046B0005; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
+	id 01AE46B0089; Sat, 28 Feb 2026 20:51:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2DED6B0089; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
+	id EB5266B008A; Sat, 28 Feb 2026 20:51:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 957306B008A; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
+	id DFF976B008C; Sat, 28 Feb 2026 20:51:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 835136B0005
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:51:22 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2AFB4B0099
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE9216B0089
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:51:24 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7A862140361
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:51:24 +0000 (UTC)
+X-FDA: 84495816888.22.D15193C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E7BA340007
 	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:51:22 +0000 (UTC)
-X-FDA: 84495816804.27.8F9B054
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 753E310000B
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:51:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QvUgzwYQ;
-	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TsbMkB0/";
+	spf=pass (imf11.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329880;
+	s=arc-20220608; t=1772329882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=ftAWyPxxZX5ZM+mRE16LgE+/EMN4fllXs2BDuUKHcT0=;
-	b=H7zzzSh/ACjxW3kV2d+GKu3G7JQUT3D/Q4WU9wsIwR9GnBL0yS5WxMK2HbhRELAhkZ49xn
-	R6Th6wlZlTKQtWQO0x3QVigHi+puGN/riEtgaq0ZaGjRsXZHpLqTe/6wX2bui3mkY/FrKU
-	FVuurZCQM6PZti7Qe18EXEpYbNcK2IE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329880; a=rsa-sha256;
+	bh=xuHzCQ32whDVHGqzqbEj53Oth1pIr3Bd6yC7brU9gC8=;
+	b=MoybK+tqtyq8oUIldd8pwlv6h3BAiCpoFrlIZ/eYGiI2Q2/u9lej0ywRJ5cTla4rnesJj1
+	fm2nKryMgZrPa6+Zpn3QmCRd1ytM6nEcmZ7CGjeFPlIskYEj0AhNZWTz2JY8M8PXzkVote
+	bAqM+YhVF51RZOMrTwWcRp+7lFA1I1E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329882; a=rsa-sha256;
 	cv=none;
-	b=LFhUEK3NoH1Jp0aSPR/HkePQw7nc2XKX1OTBwwNhJO/4uDuqdB61p1E7+SJGBwvx6+lS5r
-	+o8a+0zycjGeLrVSRAW7Ynp2RA7x+Ir6fWx3rBb8uy90NbnjCigtr6GxOAgd+AzzzQc+/J
-	ryhYpOW7NcILhyBaM6zIhXAIyWA2UfM=
+	b=G4n3777O8TkeXBeMaAPTA9LirTOnTOaDJbMHuEDh2EDurJeRhUxV0KE+spbevrdxKk4Wxb
+	h0wvsJ3xnTExU1HHM5t4OKnYHHHUqAEpMmIeD43XJJ0eI2QqmnQkydFCXk28ABcCC4S0JR
+	4VaSg7YhKnFErWJhKx4Gv2ppYLa9Uh0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QvUgzwYQ;
-	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TsbMkB0/";
+	spf=pass (imf11.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B9FA43941;
-	Sun,  1 Mar 2026 01:51:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6C7C19421;
-	Sun,  1 Mar 2026 01:51:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 52BAF6012A;
+	Sun,  1 Mar 2026 01:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1714DC19421;
+	Sun,  1 Mar 2026 01:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329879;
-	bh=+9HMaBjuwAEDmbpqYj4os4AckSQwu1ygmdc/J4OWEAM=;
+	s=k20201202; t=1772329882;
+	bh=mOv9TmzW4EzgZxb7ueMc9wjwZ3QQD5/AONsSGNpFwdk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=QvUgzwYQj1Jx/PcEk0gh/77haXgq7PJEmgTL3pnIr1Oo501rEL6s5TB+jlsHnaad+
-	 c6rR/jPmdBd2Pmii0pgZb5Xq1cx0ULP8HUJFGe/XKVXoFAaw5KXj7/ICDICBKQKWg2
-	 zmEN/Mgv8zeC8kXRO2Ki7FiCemQqcUsE6aGiZnsE3s9MMIY+fUtBNO5wL5riOtCfYz
-	 HWVVEfbiB/wQU0nAcJUkWY6b5UJ3k8lkElIQXibhTDBHCg/CO4IyZOplbIprMoz3sj
-	 kApByRKlbbrDN0d0a47xAGCVRfEgLbQeBwH1NO39GSkZgUpwq6s6SmzJBrt9Uv1RQt
-	 VNxUb0/qXBHRg==
+	b=TsbMkB0/I4ehqS9VvETUbluDIw/2VgyRpwEWjyWVu4AV+5z7sCMJM5Hif4PlE5yp8
+	 af88wp3NQtj+0hCWZpetaALNQPlR6Gt4eAPjFvl8L70UwFH3HjnDr3eaQKS3+vcLw0
+	 wmRiPd/QTc4zB7EdbxWPSToBwH2L/jwaxklY8sfycXb4W3Fz02ESbZVGMhYaQUoH/y
+	 hA1+4z/Pg1rBV/IT8oZCm1Y0RkfGIpj/A2Y6+X7YfCGGmi50YFMl+cbEumexKpf3kX
+	 5LYgXxkaEqIwqilSaRnp9XmlsQQjaF+0pm8HO6Hzm2640LZUqw334aUwFYNXTX/YDp
+	 R7Q61vaAQ+3aA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	vbabka@kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Zi Yan <ziy@nvidia.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	liwang@redhat.com
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: FAILED: Patch "mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:51:16 -0500
-Message-ID: <20260301015116.1717542-1-sashal@kernel.org>
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: FAILED: Patch "selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:51:19 -0500
+Message-ID: <20260301015119.1717595-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
@@ -91,12 +83,12 @@ X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 753E310000B
-X-Stat-Signature: c48p1xbjiges3xk1qki8itfgpnsoe6fg
-X-HE-Tag: 1772329880-458123
-X-HE-Meta: U2FsdGVkX1/3vvbGEY33A7+/fF2+NNJ5O8ywdVZmXGreEm/z1+/9vNQlLHKwGAdCTwr5CLW9nq3wHtWbEVwq5rHa2CTdUXi5DU4h0NbtX3VLnsVgQhoGXabfDH/lhWU5QhF1a0twvE7Yd0su0jsMEuP/ZmDqzQNVeuR7G3VocAkxcsfzHLvetWseXvum4jBC831QaDp98GqZc1t0t74k9dePXVOKuI1KPNTjq0EI7puTZLyIfha+wUvJtq4uZz4I7h6VGR5sLCN+9CHac+sCXVrtiKW9Ef2aXarjwcWuiUhFHH84LJwwfJF5ogRwFgRyKyJs1ATdNKKdO0nFVzKjosPvJHpcvdxKDOvvV3rukYzfF5MeMPU1HgGP1hjkrjN+R6NSMq6sVmrfRLW/9AvDDO46k/Apaa9JTbS13RYmH4Q7YJR9vXv/Ewg7tGQShDI7kN7eRfmRJstxGrD8ITxbZfGzptYhdswkrqmV1Qy8lwAn8f2D7ETg+kzPF/d7nnPhe4Y07ry5CzLPPCL2CENRQvL5jKrj84Nah/oRUHhp8bs/36XUAqFensF+LC+sshnINMMxi3xD1uWhQaL4vBSzedFNGIED0t3Upo2/ITWOohCeeWgcgcbW0Aze8Op+T6BmGMTny9gnB7exnrg5JaUGs7UaTEsJnC5Z+Cpcw7p28shniTXxx66rtuxofDAYvdCiWk8lK1e1QSuoBehIXT+TS4B4fcRj59E/z7PHQMSVslR0eDsRhvB7EPQ/v82oviLsf8B6xqXTvsIjwW46k48ir9KStPJIiT2XSvGybu72/pLEqVTH6q2NoGet2l5xqR1Hmau7BL5Bprp5Zu25K8fBRbnymEa+IRrIcDhiB1h3WUeImYYY/RkOtLIVIIBxygkojGcN/cjesX5MHrxw7lQ9iWurvpkDTZKLsPIfJ+VW4d2Foz9yntpxbg43irUJpxpnp5ooIf1ypjOK9OlhKaq
- xKZO2Nqu
- vH0Qu1US2pVDrjhnnBeZvN8rzxEkRyOf4YlXCFYko5CjWDEP2NFe2AJjrBYq52GmE4JhX0uiyA7exZUufyluEgGrEiJPYsvtH2sui77X+7nmQZZqxxqq1imv29sv6lMW0LR6RMIuR5ZimPSTdTiyeUxcsScXt9a3hghtNXGYRFs4pcmWMgTKz3dsl/K1FlzXisI+fRmVy1/upfwo3kzGYxVg8uyaKgaEpaFIJ5yYW84HbPbb1bbzHnGzt9tgTPe+JiEEVqsaWAGITMmhx0bRFO7LYoTdymKT31sB/3+niqsLRFwNwPBIm4YomdXh5EmHrfT2+nhE7cZ6fN97Tha5kzl7uv/nLpZZAursdClKD8qo7TK/2Ez8uaKmOukTJXVcitYnBwBtpGcXXus6ZC4vAPr6T6MrtaypkyJX7UPS1E/kvtDu89MUrCnMCC1+m3bXvkV7FSvzkcbkPCuPJOlIizhr2aXgKm/RdscVgWcWEyqNTqqtpbNc7SsmhtUU85mYO3P5rV88Jb2rnTOMdqqhZS5VG01JbwBIJ1w+eAAQ7W85z6KBFgj4g83LSAIeg9tyFs/Cl/ArV6h90qOrFSAM95VC3CGdmipi23imNtdbYlzhYRIrAzuFS64Tlqw==
+X-Rspamd-Queue-Id: E7BA340007
+X-Stat-Signature: dqdp45abastrkphr89194uneorqkt78b
+X-HE-Tag: 1772329882-89986
+X-HE-Meta: U2FsdGVkX1/H9kuTmkWxJ6rj0qubN7+igATk4Abz3bwPLKcdXoUp6iITFMmp9viIJoIUrv6U8V+jLXjlZaL3WvjBjvx5wzW1U+Q4vqFveQTif48MarnugVgzhAdFIrzYTwHlRt0fRHumpfI1gdpJEkwtSKM7rZt3so6yU7aT7NPy60W6JaeNL0nOrrv5MBhvvpjiRiCB+biqCAxF8/JjSs2u2nii1WIJLiD2FYg5vLS76ZzUp+GXsHQmSWgLYsMk3CkkipCU0FPJsZV3yF+V3fS/+u9xBKQb02OMoYwNPZhZyO4VyBjrhOOW0KL9nxgLN58PZbf5kVgGkgUaveAl1ssBQaJb8wrEKLcg3BCpakxKUUh2N2i6/qoM1oEji2A6K4w4QA87edN9M/lc5RQZnWnIXb4vO8wgSIRoESWXPnGsp56qVU7KwmPtyG8ArZ3St6sQDZTleO8rZzSLYDmaol4ngQMNuQF1Pmi9pel7YxfeaYltPl2vjNJz4P2zWgKSSOPZxdPa7st439urAX6QKMSLEPeNoERizDnTBiUzxPIAhXKfOasz82jP0F3mMU7PidQOzSVM6K4Q2JPaPzZdBBMKF2sM1EYNeW1E6WV6DtuFJuRUvOTkP+rKmWeaKDpKoyTj85mfQ3QDcTWbHwt6nlx29ZCIrxQ+KF3ifIAD8qFi2nyG+Rm7VTfKhfPumJsGdvcu31CUqEPF5fZA4sZAnIQCnI7+o1CP7xMQrstsn+Ucj++Sxmzr9y/Ww55bnN+x0EvkU2jvuaufNOsOVTDRhDA1DW9swuIP5Sup/+WHKvp39viTYBaBqp4sis80TOT01iRIMtbcdYtE2nlABUxSO23r9b/KrLUq6H+NCZ6e0w/yrzJIHGPmvyr+U3t4eoJrU4Rw5qie1J2LFr8VgLcE83SOYeVWAco6lKkXSDYqAAsBIpooqFVBRXemVmnrRjIq6C1/0SJyghRHQPVedL5
+ ksDCf7jb
+ ABsqLQkD5gecnXD6Tbnz194H2YCSL1Adf9XIQaIowlKQal0IfcPpndqVPSAC5YklPHUJciYtPbXYdFR8XwO2a3g45ak8YFmIaa9n74XTu3RJMTZJ7J2gy5Az4NYewK//BmXAg1R12HUk2lhiWy4mmusVX/vOt/6wumJiCRMEA4Wn+daJE3yGE1lzjqJhGY9bgELw8oqyYr2OQufI1BFmSYcmqCl7yQZvR6Ct1rPWRjpHfAfyf4+Wce7vwKjnBwfb7FwCrX5waXR3/5QNY8kom/fubjBrgCmNOXah66zoEyaXvjoOIMZ92AhtejC5lM+qwutSmf55Uz4OVz9XCZE3HZBa9UEada/S3zXXcuxhQCe/5Kuc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,93 +106,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9c9828d3ead69416d731b1238802af31760c823e Mon Sep 17 00:00:00 2001
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 19 Dec 2025 17:31:57 +0100
-Subject: [PATCH] mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP
- allocations
+From 1aa1dd9cc595917882fb6db67725442956f79607 Mon Sep 17 00:00:00 2001
+From: Li Wang <liwang@redhat.com>
+Date: Sun, 21 Dec 2025 20:26:38 +0800
+Subject: [PATCH] selftests/mm/charge_reserved_hugetlb: drop mount size for
+ hugetlbfs
 
-Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
-local-only and all-node allocations"), THP page fault allocations have
-settled on the following scheme (from the commit log):
+charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
+fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
+this is smaller than a single hugepage, so the hugetlbfs mount ends up
+with zero capacity (often visible as size=0 in mount output).
 
-1. local node only THP allocation with no reclaim, just compaction.
-2. for madvised VMA's or when synchronous compaction is enabled always - THP
-   allocation from any node with effort determined by global defrag setting
-   and VMA madvise
-3. fallback to base pages on any node
+As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
+waiting for progress.
 
-Recent customer reports however revealed we have a gap in step 1 above.
-What we have seen is excessive reclaim due to THP page faults on a NUMA
-node that's close to its high watermark, while other nodes have plenty of
-free memory.
+=== Error log ===
+  # uname -r
+  6.12.0-xxx.el10.aarch64+64k
 
-The problem with step 1 is that it promises no reclaim after the
-compaction attempt, however reclaim is only avoided for certain compaction
-outcomes (deferred, or skipped due to insufficient free base pages), and
-not e.g.  when compaction is actually performed but fails (we did see
-compact_fail vmstat counter increasing).
+  #./charge_reserved_hugetlb.sh -cgroup-v2
+  # -----------------------------------------
+  ...
+  # nr hugepages = 10
+  # writing cgroup limit: 5368709120
+  # writing reseravation limit: 5368709120
+  ...
+  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  ...
 
-THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
-which is not the intention.
+  # mount |grep /mnt/huge
+  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
 
-Thus add a check for __GFP_THISNODE that corresponds to this exact
-situation and prevents continuing with reclaim/compaction once the initial
-compaction attempt isn't successful in allocating the page.
+  # grep -i huge /proc/meminfo
+  ...
+  HugePages_Total:      10
+  HugePages_Free:       10
+  HugePages_Rsvd:        0
+  HugePages_Surp:        0
+  Hugepagesize:     524288 kB
+  Hugetlb:         5242880 kB
 
-Note that commit cc638f329ef6 has not introduced this over-reclaim
-possibility; it appears to exist in some form since commit 2f0799a0ffc0
-("mm, thp: restore node-local hugepage allocations").  Followup commits
-b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
-not succeed") and cc638f329ef6 have moved in the right direction, but left
-the abovementioned gap.
+Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
+regardless of HugeTLB page size.
 
-Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
-Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Signed-off-by: Li Wang <liwang@redhat.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/page_alloc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e1cc0c9ed9479..3333524e879c4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4818,6 +4818,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 			    compact_result == COMPACT_DEFERRED)
- 				goto nopage;
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index e1fe16bcbbe88..fa6713892d82d 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -290,7 +290,7 @@ function run_test() {
+   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
  
-+			/*
-+			 * THP page faults may attempt local node only first,
-+			 * but are then allowed to only compact, not reclaim,
-+			 * see alloc_pages_mpol().
-+			 *
-+			 * Compaction can fail for other reasons than those
-+			 * checked above and we don't want such THP allocations
-+			 * to put reclaim pressure on a single node in a
-+			 * situation where other nodes might have plenty of
-+			 * available memory.
-+			 */
-+			if (gfp_mask & __GFP_THISNODE)
-+				goto nopage;
-+
- 			/*
- 			 * Looks like reclaim/compaction is worth trying, but
- 			 * sync compaction could be very expensive, so keep
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+ 
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
+     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
+@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
+   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
+ 
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+ 
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
+     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
 -- 
 2.51.0
 
