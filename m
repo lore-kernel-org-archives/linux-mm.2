@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B653FD004A
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D864BFD0048
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:47:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00BD06B0093; Sat, 28 Feb 2026 20:45:13 -0500 (EST)
+	id 4676A6B0005; Sat, 28 Feb 2026 20:47:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF8356B0095; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
+	id 44F736B0089; Sat, 28 Feb 2026 20:47:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0E3F6B0096; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
+	id 352086B008A; Sat, 28 Feb 2026 20:47:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CBE8E6B0093
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77CB61603D1
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:45:12 +0000 (UTC)
-X-FDA: 84495801264.08.1DC9497
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C0C184000B
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:45:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BErxteEw;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2478F6B0005
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:47:32 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C6E241A0327
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:47:31 +0000 (UTC)
+X-FDA: 84495807102.01.C3FB561
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 32F20140007
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:47:30 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bn95q+Vg;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329510;
+	s=arc-20220608; t=1772329650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=5cocrvgZdptDaiTKY3pjNLW1lzlJrT2VS0KU07FTYUg=;
-	b=qSs8Te4MKiMOHMrZx2KwRMGD13YxL40FngZY7nerWvBumUVaGuOTruheqIDbYYrnUC9RXj
-	IC6dqjwd0TEMUfSg+MKxs/psW4yX+nCRUSvkw9jflvFVGuVM384veRFewxXY/t0TVYcvfI
-	DQOz72UMbPJS9Ke6V5Du9JOVaAQbFno=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329510; a=rsa-sha256;
-	cv=none;
-	b=uX1buhDj/cYHeDC2ER/qPC+vLznUX/K0mYYG2rbCopiU2gi9LlHrCV1qEMsb6gM/9fRig1
-	s92OGmKXVHLCD6ZEEN7pGtyFKeA9gRqCTiE+7w6ZZzpu3e+RbEuJuyk4PMfD01pvGFavOI
-	sJY15RR9V1B0fv7te5n9UenedWdA1d0=
+	bh=YKPYFaW0XPAJcOQZl6MEdUsf/+mtr3qOA4R4m/l1cj0=;
+	b=jA8ceYFX6a9gI7R+z1YHC05fw/3FKkiMgiGM6gpCq7Apw7E12xv0iOnCM0cf57SBAmUqBs
+	6DYSt9vLTtUv8EsS8tsreOeJQXJzv00iyizwT/XMeXSJBHZLsI+3PBAP6tHyUeq09pMU+T
+	2cSmen1dT2xVHjMvrKiVD7+sz6GlPR0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BErxteEw;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bn95q+Vg;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329650; a=rsa-sha256;
+	cv=none;
+	b=sBXqGDQ2TJQIOktl+KitlZBiB/QA/Kzdm4TqidQOzK36GWCYQFaWyifsN4a4rGdUSOx71K
+	JulUP3N/wF3WRsc1ZfWmRdY3OE4pYicrDgUhQmAYwvRewNody4AQ2PCcdxmT5iqPXdKP5e
+	j3XO/WExCViHFj69qUDEYYe9svayUZ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC7EA407CA;
-	Sun,  1 Mar 2026 01:45:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A74C19424;
-	Sun,  1 Mar 2026 01:45:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 95F4760145;
+	Sun,  1 Mar 2026 01:47:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6E4C19421;
+	Sun,  1 Mar 2026 01:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329509;
-	bh=jg534zdcz6ZbicqVI0eVcQ15m42V1YwShpeGG92oE0M=;
+	s=k20201202; t=1772329649;
+	bh=piQ65YnUVlIt0z8UkIL3CX8AtUqGsXDg+GbwtyZgHbo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BErxteEwzzkrex8wuy1zhG2nczeL7ajymk6euZne2zYp2rFR7dud1tfZbZ+4QXWV4
-	 vTmH762E6a5qM2uRKE6tNkSF1Id0i5aDE1Ht0nM7PgP2VTt/oFzWvX+Ki74rZ2B16U
-	 c7KCqW/t7GnuTiCSG6nTmujabk2ZE1rDq1rx3NehGLgVTHeYCSUrRNYWvzAnD+BQK3
-	 5eDKijJLiKkUYe6H3NNzb7i7K6lonE/qBW8eyXN02yc/Fgyn4+rfvCkZOWSpMF3MSp
-	 gBdg8etNlEoUFA/kJrJP3kGLD4C+ewpvgBGVRwWgBv1yHC1AU6bTt5ua/ucvRvGTQn
-	 3HaoRrnZQgKfQ==
+	b=Bn95q+Vg9CgWaqEDtUpSUDOLFNPVgsap2gW1+otZmyLkmTPHq51T1UkmiyqpcgVzF
+	 CBuHs2vYVsnXQ+xQFF8Fv4Yd79IT/5Qd7QFtb90T6AG+0P/Eh8CoXBNgcq+XOd5vE6
+	 L8htsIJf2qsE1wui/o6rlhwIo9g+bkstR/xA/QpdJeW20QFtNG9W4pUTVv0XnmiYJ6
+	 Cp1USCGfr8Yw+3XcTztRw8/xgPwva+oH++t2dqYtiBbDzmvfWZKCVyIYS7C1fX+hiG
+	 YSmj/gSHEKGyDLEANPQ/p2Qb1iQVDarYJondtH2jnfdA6u6+oEjANVvgxOV9UcDTTZ
+	 rNoybNzy8UrcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	harry.yoo@oracle.com
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	mikhail.v.gavrilov@gmail.com
+Cc: Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
+	Brendan Jackman <jackmanb@google.com>,
+	Chris Li <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Kairui Song <ryncsn@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/slab: use unsigned long for orig_size to ensure proper metadata align" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:45:07 -0500
-Message-ID: <20260301014507.1707658-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm/page_alloc: clear page->private in free_pages_prepare()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:26 -0500
+Message-ID: <20260301014726.1711397-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: s4aegtq1m5hhrujyx3po8mt6pbm74yyp
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: 4zfukxc4yex8qf9ad3w87qbb4qiwwk3q
-X-Rspamd-Queue-Id: C0C184000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772329510-653562
-X-HE-Meta: U2FsdGVkX1/pMnZ2zZxtZcZnIitTF9e+Em2tsueutLyVbTDd8FEmCRmSKilrvVLz7oFjy19a0IrAxvRI1VUM1Mez5evlymF9XE0ezKefmf6jasDgeE+ynqiquD/DssnvAdChxpb2CJUEQMpeakV5gGjfSLu+5b3ZdocnM92GoHjTEZu5zxwjDJEKPA1ZOk8EkAvmSdOZLjbjuUJUkFjrm41VM0P6jXEhEt9JJ9CTxaaXwEKqzuUvwSsFUCcWqmhHqjeZYyMqsnzPOpZQqPm7J0tdTzco3hPgjTSWx4HJKav+nZYX2/DNbZ3s8WKlLNfw8O6lRUqip2rqYboGXyQsmCU7S54+IpFQTKIME4nwjg5T2RjE/fUpcwjLDSZ5Cn0RhRZgdbiZj0rWOBDa66Ox9HqtOwlfzcZHFp8We5oD8roqvKV84yAzH4fr/7bWqQ1BNtJcD5ymO1ZsUSx9f9qzOv4ewlQ92moNgXxFq6lJ+Ak4o7SLovtMWzYxEyHvL5eSLCxcEFAusi6BDDACwm6KJAhclGTmwV9k4n9+mWEbtiZrL7bCHVSodipIxvO1SZx2P2zgqFWFonEN/xcGIxdcyiMswB8DRIfNIV35djSxzSSgjzVLz7PsRYpWPdqpIsSLYQEL7LBOinUnbW0DwgibONlDWjHiXLxQpNppih11eTZluqmcst8xd5jxbW+/hvDsiJw7ypHHv3mmpN+xcmbth5ziTZ2/0/E9y6zQioO6q5j71ApcprLxDKvaSJ4hhVuwt8RnRNETKWN/hMHyOZVA8HQSj6JyjmCZbMov+Lxbjh6IYHDan4Gxm/EiSxnn0dRjgV41Rooqn4xGCQ/2T9LC/2hrhnbv8bYZTGzBJD8oms4+LWBmwvW7pHXsQnMtkSzPAPF45R2g0j8DxmAJCqYvgnz6qSGx7umkMWvZQTTA4IXcKiyHPmRNYe/IfnaJfsmIfGCRn7m3WfCn0cipQbL
- E6fY1CJT
- pmvqZETD8T15vaXrwdxiMIuMArEZhRS76hI5CjvpMGHbJPncwN+DNmfR8uHKXReKgi7rxyjQHHtHqcm8KqCb7NgrjsCYY0iWbIw3iB7rJy9SK+JAGj6GpH/zEmFhkAQXCoPczowNw3t588YgXsZq0wt5BORkg3NlQBvNlrgaksQzGSZspH4jX5B//kmqshi6EXNQ7A3SFC4EWNVJ2wjlNNK9x52KG8WHRsvpfkoyMj/6n//KKEGUXO1bSdeBhBDTumPNSu7V0cuoW5mQEPFuxyElaSN0QivYqs/uMOIpFMuTdSjOz86nOBc5zDAMftEgSRnx2KKernYbu/0rG0RzZKJcgVbr9lGiEgXL9a2KZgYqrkR5G7dLxzTWPSxyyQD+krHvIvk24kpG8eqP9NoNJR5dtEMTTb3eEEpDi6QyhDBhWY+n+5RXbukSGWsffFVn4szG8uWt+nfOpKxFvsWoJ1yDNxg==
+X-Rspamd-Queue-Id: 32F20140007
+X-HE-Tag: 1772329650-460933
+X-HE-Meta: U2FsdGVkX1/r0kAciUDFZDUsO7ZFmQaJ4tRa9e0hKwZIO2f9yQM2f+a/9CRw3QxAmqFRiRuNY7SsYn0ejFyuoRJCqjqWM+bSSY5sNviDhL1eyNhA1elihrrlAfOJxGKGMsLu+9Z2b0ACUJcPp02+3mODRrMx3x+ViDc3coHUvm08ryv2s3Y57s3/JDLDWw/b6uqqiblSj0GqhDGMxPS+xpboKdrc7lJ2ndoKGH0iaVfWdYPd7hHSizrNo4r1hX1ZNoM5g0v+ALdQeImp6Q+CdaGNsBg7VAVdi/LSppnzfOOhyvTCSC+4mxfAJel72HkOWna9fwBRlZbP11jednnWAJ0PsQXiwe2XmF1uqzs4IjMZE11wrVN5cCT2G0VZBUBd9unjQ6VwuWSUnvTjMyW/Q8rVLWnt8UDmG7lcI7rqh7KCKVowhuq+E335vB+SFEGKldEiCYttEWmXO6mWQMKPX+nevhBmpwBo/4X77/nn4QAnxRkH4Uoz6T3nusu7mcdROyo2EiviXbA9Fcsm4OafLV5EFtpM7W5Q3JZ/eQQA6Akgzjl7NfwYOZmgg8vvs+5oxtbenQdkOy9CuaBQz2r6Fzy1sLZIpDLuqUlPwjxFa+X7N2MgzjVTStEYkF1fwpYEz5FrA1HIS/QI0RRQf0l1aDdlHi50w1aMi5I8kIAxWduUPqSMNc9nCOFdbWEIdkQNvkj8bJ7kzH+PGUJT3XNBDF0mif6FIo2LDWDAtonC3/TsxqY8BF0TwQlyZP7OIXmFJDD6vMzgKUZxR57A/dRFJVaL2smyeGgNF4fp3IZfXueh8UF4mSQr06C+RS5bvUEk7euVsTnbuHLR9zIma0bhQWemb7NQwKTIeASVMnINJI0P2BL18UrfQS/elGQf2nan+3kPCgggpICzs6LJc+imJX521jjW0epfccYRoL6zBKhDK2J+FzxM1MSPRkY2JzaGL3sE7GqMB1KPQaFb+Lx
+ J0VOQSsC
+ JezaNGs0E4wrc+5/wmaBAtMU/3LWN0A7YUzvui5fMRYxdOs4iVD8lVr1tqYoMiSNIAX8/pWWhz9FcTLa34WpQ+hXTaH2n91G9IlMXAKq9M4Jlh2PEm5nIzUkTI3Aj9z9RWYJzPoaeHz6CMPwtaYH5s+U05LrPHwHzLb/OiCpWWVqs3YFHow2FlrszaFXGGgf/Xrwe3uqtta8tql2mLMg0amVoAL6PkZgVRK90BlTf2Lhi8lfZcIVbAwqMuiTsmvC1HwLrA5Zma4ZxAYHglwl6/ConjGll1KS5NqPvkhW8wXiYUl7VgPZbEAU1Ez1DOcBN8aKCs87NJ0FcJeUPfqvMpuX4lk/h6I6psbNAlzbTuqNGeWJqJqKZAL860TjYAl/jf9lex86zSqfYbUKZQMCA8qnrXTu1Og9qS0ITx1vp7B3t001+VHgewhtSCXGEKTtMI1XnsEgaQpzE6/PyRGi076IqH21WWxW7ntIeaXIGriChW8AAXgJWWE3F5Wtr8JE8hyDptV1VJkTopxooO4+oEwnQWOYoNdHd57pmw7nAD38vLqAdSt+Isn8WdsE8haG0AUQpRL6W44DSkctLzfuqhPwVpmqtWdZz78poHhhtaraTZwuthSsumqMuGFiRnJgk9US2SZQ5jx9MWhRaDoZUdImV2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,103 +113,63 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From b85f369b81aed457acbea4ad3314218254a72fd2 Mon Sep 17 00:00:00 2001
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Tue, 13 Jan 2026 15:18:37 +0900
-Subject: [PATCH] mm/slab: use unsigned long for orig_size to ensure proper
- metadata align
+From ac1ea219590c09572ed5992dc233bbf7bb70fef9 Mon Sep 17 00:00:00 2001
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Sat, 7 Feb 2026 22:36:14 +0500
+Subject: [PATCH] mm/page_alloc: clear page->private in free_pages_prepare()
 
-When both KASAN and SLAB_STORE_USER are enabled, accesses to
-struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
-This occurs because orig_size is currently defined as unsigned int,
-which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
-placed after orig_size, it may end up at a 4-byte boundary rather than
-the required 8-byte boundary on 64-bit systems.
+Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
+clear it before freeing pages.  When these pages are later allocated as
+high-order pages and split via split_page(), tail pages retain stale
+page->private values.
 
-Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-are assumed to require 64-bit accesses to be 64-bit aligned.
-See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+This causes a use-after-free in the swap subsystem.  The swap code uses
+page->private to track swap count continuations, assuming freshly
+allocated pages have page->private == 0.  When stale values are present,
+swap_count_continued() incorrectly assumes the continuation list is valid
+and iterates over uninitialized page->lru containing LIST_POISON values,
+causing a crash:
 
-Change orig_size from unsigned int to unsigned long to ensure proper
-alignment for any subsequent metadata. This should not waste additional
-memory because kmalloc objects are already aligned to at least
-ARCH_KMALLOC_MINALIGN.
+  KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+  RIP: 0010:__do_sys_swapoff+0x1151/0x1860
 
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo
-Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: stable@vger.kernel.org
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
-Link: https://patch.msgid.link/20260113061845.159790-2-harry.yoo@oracle.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fix this by clearing page->private in free_pages_prepare(), ensuring all
+freed pages have clean state regardless of previous use.
+
+Link: https://lkml.kernel.org/r/20260207173615.146159-1-mikhail.v.gavrilov@gmail.com
+Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Suggested-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/slub.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ mm/page_alloc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 152fe53d0fb5a..2c000dddcf74f 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -854,7 +854,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
-  * request size in the meta data area, for better debug and sanity check.
-  */
- static inline void set_orig_size(struct kmem_cache *s,
--				void *object, unsigned int orig_size)
-+				void *object, unsigned long orig_size)
- {
- 	void *p = kasan_reset_tag(object);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e4104973e22fd..77dcec36946f0 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1429,6 +1429,7 @@ __always_inline bool free_pages_prepare(struct page *page,
  
-@@ -864,10 +864,10 @@ static inline void set_orig_size(struct kmem_cache *s,
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	*(unsigned int *)p = orig_size;
-+	*(unsigned long *)p = orig_size;
- }
- 
--static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
-+static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
- {
- 	void *p = kasan_reset_tag(object);
- 
-@@ -880,7 +880,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
- 	p += get_info_end(s);
- 	p += sizeof(struct track) * 2;
- 
--	return *(unsigned int *)p;
-+	return *(unsigned long *)p;
- }
- 
- #ifdef CONFIG_SLUB_DEBUG
-@@ -1195,7 +1195,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += sizeof(unsigned long);
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1407,7 +1407,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += sizeof(unsigned long);
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -8040,7 +8040,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 
- 		/* Save the original kmalloc request size */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += sizeof(unsigned long);
- 	}
- #endif
- 
+ 	page_cpupid_reset_last(page);
+ 	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
++	page->private = 0;
+ 	reset_page_owner(page, order);
+ 	page_table_check_free(page, order);
+ 	pgalloc_tag_sub(page, 1 << order);
 -- 
 2.51.0
 
