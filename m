@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C91FFD0049
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:33:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4C3FD0049
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 020CE6B008C; Sat, 28 Feb 2026 20:33:55 -0500 (EST)
+	id 3638F6B008A; Sat, 28 Feb 2026 20:35:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F23226B0092; Sat, 28 Feb 2026 20:33:54 -0500 (EST)
+	id 2FA1D6B0093; Sat, 28 Feb 2026 20:35:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3CFA6B0093; Sat, 28 Feb 2026 20:33:54 -0500 (EST)
+	id 2105D6B0095; Sat, 28 Feb 2026 20:35:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3EE76B008C
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:33:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7ACA913AB86
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:33:54 +0000 (UTC)
-X-FDA: 84495772788.24.4215166
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BCB1610000B
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:33:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLMt2QnN;
-	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EACE6B008A
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:35:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB0FD13ABC6
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:35:00 +0000 (UTC)
+X-FDA: 84495775560.06.2B5451A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1ACC480010
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:34:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K15GfRyG;
+	spf=pass (imf02.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772328832;
+	s=arc-20220608; t=1772328899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=34WBdlE6DzKiO0RkIXb4dsDPrvfDM7FgyyAdooyYaVU=;
-	b=BMcMcOeMbeKLKSZo0fKUNZGoB3jsQy4JjjFy9yKyltTSydbYXD9O8kD41D/LZx5lsL6HUH
-	5HKSGwCz7y4lwWxlDhdCvhR/lTPfm/mrNyrwo7jazhx8RuLFnHa6sS7kSJjZv6GHRMl0/4
-	qE+icQC95ZD/eqTrivxfQiusWLgJHoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328832; a=rsa-sha256;
+	bh=No1Rlw5Z/5YVusT2vEKJQCkpttbrqz6fxRzUlIkqIlM=;
+	b=pcpUSrxuBT4lVGVB2G+qW+0Kwtg5Dj9hGH6jROdFZ2N2SQXh0ig7FvdpL8YBKE4U48Ro8F
+	PtaWEBAtJCh1fs82ZdPhZYVmWxYA3jcC88yY5Q5gOsMrATSPj9hrLFm8dOM+pdCKasoh9w
+	w/axz4pYLo14R/783gcUQf0OcgTeJIM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772328899; a=rsa-sha256;
 	cv=none;
-	b=CVtFZInNtoeNpED+yWdsixMKOJf7fwSBad5lR+ye1NmGGqo1YXNoBkItGhQmid7ZT/CCYt
-	8LDDKyLY8bkVNMesPV1jKh3BCyaPLR4EAQIy5Rz/0A0qBcLJPw4IFRQ02I4fhusAJPJpo3
-	u89G2iWZKQPgwfGAVra83k9FiOKynuw=
+	b=6dZIIuEeVfIGGRc5XegonVff2ViLzrEeP0nnqsPT9KeM+POntkf1T6DKe93IX90O5dKPeg
+	9554h03OOdqTCxG5AbSAMr+MfKIrNslFw7rld7L84CQWW07Q4TbfzOMZ+5Q1egbMund9G5
+	0agS2ImY+eObGK97qVFbbALlh9UdhzQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fLMt2QnN;
-	spf=pass (imf14.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K15GfRyG;
+	spf=pass (imf02.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E48A341B26;
-	Sun,  1 Mar 2026 01:33:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1368C19421;
-	Sun,  1 Mar 2026 01:33:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F78D6012A;
+	Sun,  1 Mar 2026 01:34:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F1AC19421;
+	Sun,  1 Mar 2026 01:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328831;
-	bh=xCgUwPogV42OkBJoUqReJ5nIgdvO6C+Voz98jiui1AI=;
+	s=k20201202; t=1772328898;
+	bh=P5OHEuIAYXzcT4K/YlOBcPV+HDpDVi/KKJ18ucbm0J4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=fLMt2QnNSnJMiKHYBeAjaM5al+awyjRu0DQCvnyjURPsRNrw1cDayFOHe5w4U/z2W
-	 o44N0/QN8wikZvUYt8e0KTcwB1ZKpy1DFpLdmSc7eS8P3JM1gcyhwkD7xPEJBLg6ZU
-	 U8PvUsI0mbnvAh7OeCpQMEf/NBSzt1axNmbfMAs5P+G0ooIGbLJVkGzVvbVgRFncTY
-	 Tk9sidPRjebKOD5d9R0q814g0B7+KwpnItAhWvziOECwejs5nGx+g5Oyal10BRgmIL
-	 HxaTQFbaUylscPr+0jfrhTwHKG6sIBwdJk11FdxJNMQbjZGFJIJmMYis7kZc0ZgCpm
-	 MIb/Ojv0aLNMg==
+	b=K15GfRyG7ZweUGIeml9tHNQK+uRqb7MHz+nn+1IIGjT1Gc/Em8zM9BNbrCRWwqjzX
+	 HL7zlpEwzZlSmTYODx9szaKri5A69EeG8fj5Fb7JFUAQ+tJ/ydf/AsSUG2E7okjsEm
+	 QiKvTR+3kqzC/L1wxlGgrG0uA8+wNa0mWouW4m1RXFq+Cu1BsViEbPZC7T9FZrwQ4j
+	 A6kmedgDweKe5OiYT2VrA9lww5LT3VxPpUMqe246QK/nxSYchyKOX6ltS+4ZVG2htH
+	 8u551/fqLWsieofpWVmWKzkuPgK6WNJX9FpVF+iFKFeh1IlaQtMkpVvzyIE1lae+25
+	 Kz4z6/YD1c/hg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	liwang@redhat.com
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
+	kartikey406@gmail.com
+Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Subject: FAILED: Patch "selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs" failed to apply to 6.6-stable tree
-Date: Sat, 28 Feb 2026 20:33:49 -0500
-Message-ID: <20260301013349.1693131-1-sashal@kernel.org>
+	linux-mm@kvack.org
+Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 6.6-stable tree
+Date: Sat, 28 Feb 2026 20:34:55 -0500
+Message-ID: <20260301013456.1694526-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: zsgst7e6xhz9x7aqkmq7dqwc3qtpawjz
-X-Rspamd-Queue-Id: BCB1610000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772328832-801279
-X-HE-Meta: U2FsdGVkX19w+pn0rmoWTRDNMwfRFTKyVj0fp8ZVXhGzDcAWW2zdZlbGvo5j7zUalkTg7i5nhDDFWIAVozkGufDulGDU+xlwqf1cqQGsZH3Lk1+FFbBZqgdjSpBvdSAUipinm6Nipeh8ROnd7+995chZFt/m7hAUT33CRh7VJr/Q4yGJh5z/hW3rnpNMT6qkX1cTGLj6oEUOTHwOKukz79VFROxk5SJdQd1SZTI7jbVTNUfkhl+LlwlFe4lN8/209Md6VyHb9rqv4V422KaxoZ085h9AYtSCx3qgdCezs5eLxSJ5mOykSOcYvGiHArdzIEmOuK8/5v7WGXxfT1M9k1/jHhcZI3UZVjIyF6t7HAOUlsvquAh8P65xFLPvtBKe1Blq/O3pDzIr+ZjXiSN3n1g6FppzEoZFxj72qD7glCYFGhQ4DsNY0wpCdrrLVeGHn7Usrz4ujr6/qnc3nsQCJyo1jUReid9x0ohHU0dbgvZkXgqIjcUi733uBg3W7rBNKzSlygIXORN4SM+xqNiLwjdDOfVVeOxXZTNg5d7U5eHf5qw9Ne05GSgIjPLxJaqw5ZI4tu79UX/4ddoyffH1KSyY3ZACpDO7MIvsDmlDoj/1J3WpSUqKC77oTq4PFq1GJmZyac777A+oKuBPPSVZrmqtKcK48grllIE2CceAf/8W22M3+IQW5JJKZOovpdiNMudaHBNdVXVCvxHvZen3q95sh3r69TqLvTjz2PdpMhYbTPjwO4oXt67KezDQIDKgFCvqOXR/TtrGphG6sVhmkM/UzZ3izSSWVYTCTHTKpb/2gOu9UxmxowCLwfCPddJYJfZ/9HI6bH3RpfauB0vj/s/zJCQHBVW3AB9YhVH3gtN+343k2jUd290RdJD++uSXwmSkwAXny5hm2UvkiLnI3PzgL3S9z6hIijShagkedSvD+lXtkFYhKiKCKHe1tnUL1JFB80gYkfJz4mh1fbT
- 2UNLH18r
- jEQ4om8nceup5Lq2VUn6YVkFG4mM+VXoXQh8h3asYOl/3GGIXC2SiMU64ZrBje6kj/nealWiFkdzJ1AvuWdV+BZm3QKeOJP9uVKkGFZ/7Z5xO22tk9XhZBp1KIweHxKDGlZk02U4msiPMcBCIQssV/6ucorJ418DxkQcT9V720E3BCQYVzXFQ5lqn4wDQQpnBA4K3bYG7U0cQLQdb10SMDvImkbAC6lppmZx4IDIQmTRi9aMOwcOMlZRDZMb+gw6gJmDDdg5A4ODKFr+rwCyVeq75yZs+Dol7lnlkYamWEZ8jutVPo5JiIqbRTcmIvh1fmxNPnmmeXoQqCXxOjaaNXlLVLwEmlvq3J/u4E7RzlSQWjQA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1ACC480010
+X-Stat-Signature: xig45y9hg4qhaw9euw18jkgbniercks7
+X-HE-Tag: 1772328898-975901
+X-HE-Meta: U2FsdGVkX197Mu9D002wLm9ZlGxB4kmAf7sqEBM/XQ6A4otHulJnGmibI5CdnD0aCPJwPFwm4eJC/eN7AxqgRl0/RSJrwUfhWiQ/lenXk1RmgfpfjKSuzrJ/7A07D53em/ejoULOnyg8fdysr3lAEXCgljoXOiCUzzWvHaXx1i8cQxe8YsCSivhuNWxHRj65FFpkhj2A2knpi23ZibHH7lDXnAm21efF74j6/l2zJpR4Je/Ue0/X9fabCVDyP7SKXoKOw9ylHH9mMYzKFBAEk3tnYgmqvnH+ECaIUW5kiVEm2csbb9BgjpKPncOPbQapMNtQK83LG1CD+byl7CxwRKVVbih7cOhdFmqh8dKMenHE+fQtPqxK7kQc1xb1JOWXQCOgjxXK7wW+eRlE1yX46NXG85SRtnsyONPdtlVRgvIBkmznNDPvmUvNdUP4CJwhMYeBwwPrGcHlUxQTBOzoNBi/57lQ6C17C6uxgEX1IjaX3OWpnPTRYO7SyTgdhrNQWVb6fWwGIHBBm2XUTVU+sHcDUMH1teK3BQPKUwPu+p7tIeZgMnQrdvAug5vmjFpnhoHU/TwJ5YUAcG2uUf68itqLTuFjGcvIs4wxcqXFk1XjLcwDEiVmIx6TQK0blSNUXc2sAzvyoJVLXzSGu1iZMwOejrGYsnUNhF9/z8WQofcS0w//fGA1Z426mga92L1LmR8UMhJc7QWOsfz3fDB+rwojyO5AnUtV6n82NKpY7xjHcyxKye4pgpVv+q5RNibvx3Ot8s64nDLnXQcz43rmtHhHFk1u/kUux+uZdg2axXO/ChMJsQiFL48gJRSEL20Gwb5h77ZckfGAEMtKtpcSuKhww0BLR+fIs/zvGJ73pIJmjBDnbd8lRmyaSWeFGml6swMEKCYu3/JI0gr6v5C2/Hv9K3U79Hi8qNh27URVFX+bC7bOdvPkkcY9SrEJUgPsw/br5WzmiRq7zsglXix
+ QwsivBIN
+ +BdwqOTErsJBPG3X43VH4sSQ/uPUX5qDBdj3Zs0GQ9cVvhhsgeK9AkCQEoyItFqbz5bIQW09oCV2YJrIqM4CmO0XNKnpgAQzyBAnyslR5P7SjhDbAD1kkelgczB+QmqwPEAQbOjQfqdfmYPICpkwyhmoOn3OI81p1fjKhoyiWgKWlbIEyo4p+Hf9BIJhoUcZr9py4qaUoH8sI5csq9NyqRAUNAUAcz3QJYqePffquhy//NaEFyhwP5yBiavNRsrSCpfy8W0GLZMiCG76NNi4rHZAzC3DnNZFm+9PRPNKVfOUUPmw+zsk6Zgp4jH6b+SWfUzyz5AVURmcaVqyxUS3+mDCfPBGqb6NVJmh8uiyrxl7ZOTZkgmF+CtppJxKMoT7RotiiZyWjQ4yWavdbY3VjltQU14OE4XYVviXJynS7c0in0FzKD2dCD0JjItanfyuFfQfDJpH86Qlq8NVy/3PG5KPNbdmmZdqtrg9QwcmQLal941QM8FeD7jUD0oPNT+tgAxFBVXwMqefwo+VbWq5UbZXa3MinrLtfZ30uVLket/jFAluA0IiO3hn8wn0BqQKDM0hQP2T8PqeIlEJreYmCmkx2iop01MIryD9OKPnxwop/g7yzpWqXcV8YXk3t/Dox+WNAMD7M6/dfpLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,88 +104,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1aa1dd9cc595917882fb6db67725442956f79607 Mon Sep 17 00:00:00 2001
-From: Li Wang <liwang@redhat.com>
-Date: Sun, 21 Dec 2025 20:26:38 +0800
-Subject: [PATCH] selftests/mm/charge_reserved_hugetlb: drop mount size for
- hugetlbfs
+From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Mon, 12 Jan 2026 16:06:12 +0530
+Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
 
-charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
-fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
-this is smaller than a single hugepage, so the hugetlbfs mount ends up
-with zero capacity (often visible as size=0 in mount output).
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
 
-As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
-waiting for progress.
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
 
-=== Error log ===
-  # uname -r
-  6.12.0-xxx.el10.aarch64+64k
-
-  #./charge_reserved_hugetlb.sh -cgroup-v2
-  # -----------------------------------------
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
   ...
-  # nr hugepages = 10
-  # writing cgroup limit: 5368709120
-  # writing reseravation limit: 5368709120
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
   ...
-  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  # Waiting for hugetlb memory reservation to reach size 2684354560.
-  # 0
-  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
 
-  # mount |grep /mnt/huge
-  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
 
-  # grep -i huge /proc/meminfo
-  ...
-  HugePages_Total:      10
-  HugePages_Free:       10
-  HugePages_Rsvd:        0
-  HugePages_Surp:        0
-  Hugepagesize:     524288 kB
-  Hugetlb:         5242880 kB
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
 
-Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
-regardless of HugeTLB page size.
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
 
-Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
-Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
-Signed-off-by: Li Wang <liwang@redhat.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/vmalloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-index e1fe16bcbbe88..fa6713892d82d 100755
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -290,7 +290,7 @@ function run_test() {
-   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 32d6ee92d4ff8..ca4c653286870 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 	reclaim_list_global(&decay_list);
+ }
  
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
++#define KASAN_RELEASE_BATCH_SIZE 32
++
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
  
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
-     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
-@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
-   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
  
-   mkdir -p /mnt/huge
--  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
-+  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
- 
-   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
-     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
 2.51.0
 
