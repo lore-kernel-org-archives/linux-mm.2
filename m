@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2961FD0045
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:42:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07F7CFD0045
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:44:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3826B6B0089; Sat, 28 Feb 2026 20:42:58 -0500 (EST)
+	id 4DDCA6B008A; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32C746B008A; Sat, 28 Feb 2026 20:42:58 -0500 (EST)
+	id 4927D6B008C; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DA666B008C; Sat, 28 Feb 2026 20:42:58 -0500 (EST)
+	id 3C8586B0092; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FBE86B0089
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:42:58 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AEA0B1B7DBD
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:42:57 +0000 (UTC)
-X-FDA: 84495795594.12.7C320E2
+	by kanga.kvack.org (Postfix) with ESMTP id 2B02A6B008A
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:44:04 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E3BDF1403EB
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:03 +0000 (UTC)
+X-FDA: 84495798366.17.3B1EECA
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2769480008
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:42:56 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l43vNT7Y;
-	spf=pass (imf30.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 58F8E140004
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n0zrOea4;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329376;
+	s=arc-20220608; t=1772329442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=nE690RGbRj1W+FjEFXQeEEtsm2MDfi9PmIMHFvnNorc=;
-	b=U06vI2DohLndg2tAokvem5D1rtCPR0wHgVYeXGmjBnCr0ilDhvTBLyTfydVorh++lQ4fAO
-	b+38KJqbDbmIwsw9OGATvbBFfTZAWHgpmbwBhY3S7Hh1T1HXeaXA9WTnBPtV5e8QTqoF4k
-	JhDiyqgAw+GgL59fg7vuhnVXStrbroQ=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l43vNT7Y;
-	spf=pass (imf30.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329376; a=rsa-sha256;
+	bh=EkqByFFAs9m9qqH28dsuxFQcy77o19Eg8F7Op2FWyks=;
+	b=O/QMX27rMxM/Gu7DvVhU7pb6WRRaKecbH+EZmBxn+mz+TzetvjefdcXD5sEWnxZkYFl+Oi
+	9DwAIwrUKZ6ezwsF/GOOXPW6pK59lIHz70A3vmyYS6237JIu/Dw2EEDFr0PuTBJ6xLcor8
+	+uadeAAFEBmhDS8EpPcfwCfqdIYOOfs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329442; a=rsa-sha256;
 	cv=none;
-	b=uVQgjy+PlhWnVcLdsGsDiTyP4tjcIY0dEb+B43ceLp+54fXcBedpiETqXCcl6WorCevIsv
-	QyAMbev0jrsoKnz3f/00qNdRX2d2BMYqiFEjGp/3GlOm+0j54c5IoS8hKgd3joRXnbiD15
-	tbNp/dYr4gsHkZEw9bSjyzdWX1tDVt8=
+	b=ST4VASvlykCHm/8ydAOx7S09lLeuseWjp7WeDJd4l8U0/d1bJKPt2pHZ60mEY5YekXiEGk
+	8RNJf3pimAr506dl3hAPaIPXR1B6O23ny7pZBsJyjIryH4p5bWYE9QEn3L/pfk3VW7+Beq
+	Luiw1ImhYhJ0EoKKSvXGOotuJCdxH68=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n0zrOea4;
+	spf=pass (imf23.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 903316013C;
-	Sun,  1 Mar 2026 01:42:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDE3C19421;
-	Sun,  1 Mar 2026 01:42:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C72AF60123;
+	Sun,  1 Mar 2026 01:44:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC180C19421;
+	Sun,  1 Mar 2026 01:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329375;
-	bh=tksX+9S5JDwFTjWOdD/EGgtN37eSD/ynyq68jTSBxow=;
+	s=k20201202; t=1772329441;
+	bh=BD3vIuhqmYcQWLzqKsBrANaPfNkObiKWmnF5V79hJrI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=l43vNT7Y+abQ37rbpEDa36NZQAXo7ksvm8jI7h7Fa5PAoUv/c/KFE877oYdSWsHK3
-	 hCrwgB2UCPZfa4Hsn/8wtefHFgcAIBasqjoZyWp7y/nj2EZEKheDW7EeROS3OD0n4W
-	 CzLPvgl/AsEqYUpkri71p1k3Hc/b84t9e1SuhbpS8uiOnNsDxRrrMHyC6ct2/j/y9w
-	 rydHnFCVbhsPUsKDUMr/6SIQCvp5M/iUaSRzkFZiE7XGz9dxmAweVrrLiZwLuZFpuW
-	 o5s3Lv8xd3UHWrvp0v84EIBgjaDhKNM9NXHH3knagBwEohFCoRo6SSN1l+dh7NqRLv
-	 CYzkAfz7itAHA==
+	b=n0zrOea4zxRr81GoybntTMpngg5CY97+QGQjJXCW15fLLvmN2WSpglK+GKEGxD8G6
+	 cUN47XBfih/jGC5YaGdOl6t+n3NVDDxAJIwXyZlKrJe5imQdMwt4ZJ71aTnFNAvWml
+	 kgK84Q1a8EJg820kHD0M1dB627WZLDCgO5mCk1OxwWNIUpwW7/JLLJ34a7f+JjCwHt
+	 IOxwOWdEcGQVaOAOE857vQ+nbbPuk72dBuAFjMrz1p+tgJ11NMqPaFtyBtaznCVrpp
+	 yyvtUAUtwbh00bJXU8wpo3Cd3+b00yU/aYtc7dtcu0R12fgQb+tl4Hac0TRP6FPJRw
+	 FPOZN1IGKEfSA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	vbabka@kernel.org
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Zi Yan <ziy@nvidia.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
+	kartikey406@gmail.com
+Cc: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:42:52 -0500
-Message-ID: <20260301014252.1704825-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:43:59 -0500
+Message-ID: <20260301014359.1706097-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2769480008
-X-Stat-Signature: asbrjneua3gm5s5hxtzbuqbo4iuxzgo6
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 58F8E140004
+X-Stat-Signature: nyfmnekdbmictps3ery68ak8ozmu83s3
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772329376-222434
-X-HE-Meta: U2FsdGVkX1//f1XSD/mx2J8O3G9/sF17XrauSLB/mS3rmuxIqYmHGMnwzgzmVDQ4ReF7AlWptKXJLYfpEr0FjfDCwN9P0KCRaZkjatZNFNsZueWLhOo4fOv47SNg8wc4onG5sQZiEEQHD0wTUG2hSVCwJ8mU4/agKHXdHf5w0Yj2VnNlwTt1Smc0StUAbWD21FDv2BV3Sl7vkvMFbKWjazOhMqcF9vIuGPoGggqrUCC8cYfUXkC2GqWYZ8rfyPnt5dLuy96145UVWDXywQ+62+4vJ0NFJmWfgVxXcryjlj3sFusAMFyQghbs0GKbdTdNdp4llBgKZBNt1XPOspn7OQaILR9YnvOPq4M3Z03ECkWo84+Vs7/01bfy8oESwEmwamXiJR3eMzgjtEo1ypJ14IHtBQlEtkVeLaIPTEEZV35HufsokuP2rwh0YwpGMoVU2HXoUp0EAtqxdcWcqpCMgYm+MEA4FxuEfvptlZ1mOt6xASHK5pAsgKVXySb9tvymOe24+tgPShdGhr6nG7T7iKIu7Tx7pwSEv2E7Jiy1B+PiDfIjJ6RRZOrLcBUc4y/9aAlSm27h4MaNaI7OxC3bNqEzsSRHx+LPcXNT65DyrxF5hOV6HDKdcTvyWyi3Zpb79J5vY8Cgk6+ncJnjMxSAhPv2XhuEHGj2+gQBzHuX8xTmL19aU6kTjeGy3jXa5FLk7bPrVWDSw7Ll1yb0cEdjTtWMXA8A/0GM/uVPhRByaZocgNKfRICDfN0I59QsOR+uTgWM1zCQJJEwaX/VpTZWiCVV40dFtGeuhRYT2JWmyacHnoAGRg/Om92ynS0WAo5bpqtjUNkakj17X5y+at3clQOGskjrsSO3xDO80YFt+u2GHEtUPmOMlaxP+pgSEVVhQQ98t/hyoaI0EQoF3yQ1TUc0YaTek+aTqZGIgLQS6+uk/gRwh2J8BwY4wY+8PNAl/FbWN61iO3kpxKgXCLg
- K8/Ocfxz
- dFNhJlAh7RLyAcdF8HQAgGA6que2O+MlpN8gicPHSNuwOZBM+fvdUnEG4S8+taANYMUM8B2VbWUmhM7NkHLD/gD3hj2zAJ9CHtz1h3LynS6TfG1ttpnW3Y7b/sxzYR3nXKsECdAJTYGSHL/hJW2//O7S1PBwpCo0551ZV3OG82boQX4w88AonU21K8LqckfKoI+7QdEoA3kpFnK5sNkyzy05rKKU7PiUOD8R7jZdVq6UFEWcxhLO9Csl9oFZGL7mORQ1ZxKmjjw57APPRhbh3k8GIw1/NSk61ZfMwuUHADXhB5yYdH5NxifGw7te5n3358QeNuOVKPfSwW+ZU7s8xD3NmD8fJkqLwC0LXqDqXLS3IcTMVGHofCQbBJresgk+aCvcyJ1pVGgQUsOLpR4b6Lfa6iRff2c1Qe1AvxS2q+xAiEs7lGy+Ez8ONgOIawriBMuAM9aKh2jwmdnMtQ50lwE7ahS6uo+mAKk5d/IV4GWJ0cbtRKIZ9LBLvSWDDD0hzLWxAloaIwJlXzDQirIRhIMoVST85jJl8oHi9KgymfwmsIdIasJVUVzPce7yGvSDAnz4QfaNI0G8q2k28joaa+5iBRwm3NTmBN2Bl3gXrz+XDx6hMmeiw3FJO7A==
+X-HE-Tag: 1772329442-676880
+X-HE-Meta: U2FsdGVkX19hAVcW1Hsf8gB04+4oQydAl1jrDqpUfiJNTz9rLgAWTQd9UXpQi8xaDLxcj+I/PXLb5/jgPerhrK7ijpyX/e5Lyh5IgUFuJbbjOAfoky75cri9MwPrehQ8UXA55X+lxI1vJKRjJxgZPFpl34XtXz5ryZkZmrzylHja/WepFFAMXhxXEghZnP3gof/DsxicoXApnjcU9HpTbQFtUGgcjbjx5BfgWapBeJjd9RINo/aW8GykB6QxVVVotQJzhiIuqM5GA0++hBxIayIEbSI0EUAYhlFDzXpXrAoPzF/R2vO6azkB8vAOScfIDmb//wM49v5FncYnFbQTBblryhLkwyfmD38H04VTi+XrehmkT2Fbojjd2oAwO+/YdMa8JnLCh5a03IGFE7aWtMoaUbsPQwA9uVawtYNnJPSO3yZ5j+QjO1yoQOPxqRV/Bg7vsNKRKRs/Vss+5j1QCehJxj5YogxQinXZ7hp9/h7bNucBpacK5bEzLTK/wnftjNpLsuPjqGh7VPqhkPYL+iZsnMftBjnBVHD+hOTao7AKHPCwYklJwUN58w1VPWkk37RiA7P2dcDiqGeaWyzScyUL3Ijnk9j/DR0yjnHPPIM4LMTVw1HMw0pYj0teivsXLeVpVF1GGQnnBADnusZbJ93WrbzzaJzzC5ntDr42pqLy5l7FF+t5YDEbKew1Hu5ajOlPWyr3ixodNkGarY1CLqhhuJdzNsihzgrVsV6u7lxyFtiAHm7HVIvEGOmiIun9PUUduVC73OU65oh1snIStb1UozNcLxhPY5IdjFKyG+3q0AwWgXMc4ktejY/NC6ISPRapSXQag17FrRq1yH99tuCSgoKx9dWm0u7DMXiLOA+8mu1ztFbcf1BQ4fU59Hq/YZpMTNwbh+3+GvqxZENh2YBNXXPj81taQn7M5MVuydUEplk5Fax+pyhBhLW2LFlxerbYTyg3SAZHfOBUenw
+ bWnHENg4
+ JNlT7aVSt75yVyAX+qYzgiZtvWZMt1dhjxhVo83JNR2tvhIspzL0NLu5kJJx9Co9zCMRV+6RT7/zkngkXFGq0lqVeSTYPXxIVvKmon27wpnWDTBLXlSjbgohgc8yw6sVplNnr3rWjvX56uh5F2Wt50UYmU2MjEzgceqYCvDeAZ2PrSORw6Eyz8VCsB3RSHMD4eUXB15L0/F7eMzjE0QWtJQVY7S6eChxc/ROLb0exr2htt1cMGUDMcRNzGH6Ix8fi5LPJrJmjOD5xh8jLZJAFaQ1qnXkUTMk87YdUf52o+j2qf034oUGr5YRHDIt2dLKmMr09O32qcnT9NLVrVPJpCbWq3DYm8WXVNGzLP5b4N9SLkwrbFOhHtd1cfpN0zsAthZsmbBvjdEEUYiIfaVWWltPybR7mFWWd/wfTTCv/unUvZHOWtVE1hcQN9WmZMXqCEuvvDzu7ggmY1UMQfMJ5UV2ZkmhxRMTHyKwowTYRmeXKfk6j9pvdNRy1EZgMYc8NTIAbVWCcC4+Ec/xL1JYywiLKhsjBmnWRw6cS6BWEbMkCIpFhzcHYLZVdizIr6/MPk9YtTxWMoziMEyziWMisYfYAcXg7kJL/i04Pwj+XJfgPZtA4n3TE023M2frSUz+CAowGTX54O0CJGgI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,93 +104,88 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9c9828d3ead69416d731b1238802af31760c823e Mon Sep 17 00:00:00 2001
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 19 Dec 2025 17:31:57 +0100
-Subject: [PATCH] mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP
- allocations
+From 5747435e0fd474c24530ef1a6822f47e7d264b27 Mon Sep 17 00:00:00 2001
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Mon, 12 Jan 2026 16:06:12 +0530
+Subject: [PATCH] mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
 
-Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
-local-only and all-node allocations"), THP page fault allocations have
-settled on the following scheme (from the commit log):
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
 
-1. local node only THP allocation with no reclaim, just compaction.
-2. for madvised VMA's or when synchronous compaction is enabled always - THP
-   allocation from any node with effort determined by global defrag setting
-   and VMA madvise
-3. fallback to base pages on any node
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
 
-Recent customer reports however revealed we have a gap in step 1 above.
-What we have seen is excessive reclaim due to THP page faults on a NUMA
-node that's close to its high watermark, while other nodes have plenty of
-free memory.
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
+  ...
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
 
-The problem with step 1 is that it promises no reclaim after the
-compaction attempt, however reclaim is only avoided for certain compaction
-outcomes (deferred, or skipped due to insufficient free base pages), and
-not e.g.  when compaction is actually performed but fails (we did see
-compact_fail vmstat counter increasing).
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
 
-THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
-which is not the intention.
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
 
-Thus add a check for __GFP_THISNODE that corresponds to this exact
-situation and prevents continuing with reclaim/compaction once the initial
-compaction attempt isn't successful in allocating the page.
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
 
-Note that commit cc638f329ef6 has not introduced this over-reclaim
-possibility; it appears to exist in some form since commit 2f0799a0ffc0
-("mm, thp: restore node-local hugepage allocations").  Followup commits
-b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
-not succeed") and cc638f329ef6 have moved in the right direction, but left
-the abovementioned gap.
-
-Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
-Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- mm/page_alloc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ mm/vmalloc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e1cc0c9ed9479..3333524e879c4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4818,6 +4818,20 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 			    compact_result == COMPACT_DEFERRED)
- 				goto nopage;
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 32d6ee92d4ff8..ca4c653286870 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn, bool full_decay)
+ 	reclaim_list_global(&decay_list);
+ }
  
-+			/*
-+			 * THP page faults may attempt local node only first,
-+			 * but are then allowed to only compact, not reclaim,
-+			 * see alloc_pages_mpol().
-+			 *
-+			 * Compaction can fail for other reasons than those
-+			 * checked above and we don't want such THP allocations
-+			 * to put reclaim pressure on a single node in a
-+			 * situation where other nodes might have plenty of
-+			 * available memory.
-+			 */
-+			if (gfp_mask & __GFP_THISNODE)
-+				goto nopage;
++#define KASAN_RELEASE_BATCH_SIZE 32
 +
- 			/*
- 			 * Looks like reclaim/compaction is worth trying, but
- 			 * sync compaction could be very expensive, so keep
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
+ 
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_node *vn)
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
+ 
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
 -- 
 2.51.0
 
