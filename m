@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A71AEFD0070
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75063FD006E
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:43:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFD886B00A5; Sun,  1 Mar 2026 12:43:36 -0500 (EST)
+	id 207346B00A6; Sun,  1 Mar 2026 12:43:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7CA46B00A7; Sun,  1 Mar 2026 12:43:36 -0500 (EST)
+	id 16A086B00A7; Sun,  1 Mar 2026 12:43:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B169C6B00A6; Sun,  1 Mar 2026 12:43:36 -0500 (EST)
+	id 0A93A6B00A8; Sun,  1 Mar 2026 12:43:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AAFA6B00A5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E4FA76B00A6
 	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 12:43:36 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 63D251C963
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 91B1013B917
 	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:43:36 +0000 (UTC)
-X-FDA: 84498216432.10.3CCF621
+X-FDA: 84498216432.30.876246C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DDD7220002
+	by imf02.hostedemail.com (Postfix) with ESMTP id E424E8000F
 	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:43:34 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KNGnR+3F;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7kM60CE;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772387015;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c732e8XaL3VPaykAXs7+eIum9q0sFTSfxWtm5rJcikk=;
-	b=5Amz4CdgMaaTn/FtcUL9Hpp3LW2oukJRgBEcHB6J+sIKAGSOQzHRgZa2Rku8OGyDqMuSOa
-	SfhYVCBm7nYN1fe6ygbSfTlXvsma1Fmunb685v8sGH5VuHw7226Lfy0+8mQxYnAWJkzlCs
-	/c/USd7xGgkTJ9RQsmAnU9O8YbdHN1M=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KNGnR+3F;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JEoOZh4aL7JRuh6wAuw06VMxdtW54HJvRP0C0PttKWo=;
+	b=3TC1bzvcVxKqNAbzAGohipil/IW3NRg8UkAmXA41Huv0Sn0VYq0YBLfiqyGU5Lf6AQLZgx
+	22hrp7BQp5FhzLS+UjPH30lQ/BFdSboxP5Q4I5UIIaxAmKHggKgIlema4yUha7bWIQA8H+
+	UwxTFMPTaq9TIl+GN81JpS3GYdN2ll0=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772387015; a=rsa-sha256;
 	cv=none;
-	b=dy2qDsSGsiAKy3p3K5PI9oIFGDqJ8AAMQV+teK7x81j4EC0M+oEr5N82jPby0Aqs02NAGQ
-	rYIDN5rNgvRqjGYd7UNXXJ30NFooo5GPnwzAkd5iqxNiLcyCvh8xrV49GqGHkGcn/YPnZQ
-	aJsHy/yRPJ8SDqrV5Q7jbnhHfTVUgxo=
+	b=5INQDk0eyCslZzPnJztgaK+rOXUmXXtz2jNwexoxxBZHHRKVSogKJfVWph/z4faVQtIgQ5
+	SW0O2NRqL+4+m9NaNtnCkY81hmFTO6+NyVLjQArOHYY5FY4Nn7EIi5pTNn8/aWM1MP0ils
+	fTWCjqinyhmCTqsA4WGqjUu2QQS2ubE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R7kM60CE;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 042C544564;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3578D4442E;
 	Sun,  1 Mar 2026 17:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C115DC2BCB3;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0281DC2BC86;
 	Sun,  1 Mar 2026 17:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772387012;
-	bh=DbZTn4AVN3XfN74TG8oRW8P+LKBDP3hbPLRg+ZDBhJg=;
+	s=k20201202; t=1772387013;
+	bh=7QL/RYpMYPTB1eC/p0ZRS1BwtD3YKWYXznWIGxGADnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNGnR+3FH8t7f/g/HbzsZJ1b+HxQSNxrNdNk5f9Ui7Ge2IAItZ5wh/tea1t/N3JBp
-	 TEQVVevvzupSjNXtNyFfcwJRQ3aV74r5SIXBO4J6Jo4OGuTV1+N5F+zm7VfL2JHsQ/
-	 9BoSHUCJ9+weUZp3mWKkDk5CRbTUgpWyndLY5XGsUvvUftRbgK2FNREvnRmqcPrHpI
-	 4eX4OjYPgt1eMRwykzNZsJ9saOMxKhN8+RRhsMU6/4G1UiUVMTeMBEWKkLtmB5j3Gk
-	 RMPUoZsLdM0Tr/MDLlLCUCOrxIHZskf4+I9mvm7iPmEvnjouzcDYG0WJcrvZzRzvKP
-	 sXyYx+rXCIONQ==
+	b=R7kM60CEmDaEzNJTLTipUMV58oimjOz6LLzz56XC7mxaW9NAFTZrX1ECyv31z3LXx
+	 47QuYTMJoYczO1ndrolzeKIUlFl5c7SpKgDLHOpUdGVDfNudPok6f6Pll/t/j5V5Vl
+	 Vhj50I5tC1d4Ph1ByHi5QzSbBI4I67LFXQ5/yTCee35voA5bJIynLeJ091CjVU8DZ4
+	 +pQEWpJ4115VEYgzKJiSf9O1oFwdMSyIXtoPLpYWIiYawScj8l0SOJaZbvVmxJWQKL
+	 4rMRRDxAzOtSWOmJDHNvSdLVkMtMRRdPoQhh/PMuJzNED+Q9286s2vTCNVnWvOAfrO
+	 NGGRBLLU8Ju/w==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v2 07/10] mm/damon/core: add damon_split_region_at() debug_sanity check
-Date: Sun,  1 Mar 2026 09:43:22 -0800
-Message-ID: <20260301174327.76849-8-sj@kernel.org>
+Subject: [RFC PATCH v2 08/10] mm/damon/core: add damon_reset_aggregated() debug_sanity check
+Date: Sun,  1 Mar 2026 09:43:23 -0800
+Message-ID: <20260301174327.76849-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260301174327.76849-1-sj@kernel.org>
 References: <20260301174327.76849-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DDD7220002
-X-Stat-Signature: dmjau9neknhbyhiccgtghkjy7a8ucxwn
 X-Rspam-User: 
-X-HE-Tag: 1772387014-871314
-X-HE-Meta: U2FsdGVkX1+oL1O8N7rLyrPzRx2UM4cWbwGy8xf6y1oG9vxRJa2brN3fq3cru0/YfC//CqOF2CCrShrShkyQT0AGCoQKlIUCsqGAt58oaCc64TNuuTCyaU2ZHISWY4b7nvhdFauush+qJP1nYo+cV4kbj5HScHBrTob8rUPOmZ+ULlVrTdM2Tq+hpoOLqd9245uucaXz8trAGaBtLhZbIQW7IGSmxTGd8D30k1ayCAKAEjN1O3JXhxZLr59x0+yhUPEtiAuEEhO3azABZFbQ0E98+qLg0eOCj0o4UrQBPceXL6hTy5z/b1GYqXGlxpSvZf3mve6xjaOK2GrhkdaddPzEVBJt+/tOILMLC/z1c0PUOaIfSENlCk1HcKqiux2LezagwtAxICtncoAhBdbEcNBKB8QsaVffT4tDDEwokV0JJPhwvrhxuZjHzRS3nO/qZmOX4sMoPqcCwUQ341fgFE0xZl53h0Wo4HAP+5IyU6pSGggZsIgg2J1m+NODI5F73IEEGgf6CU/UL4tNrXo5d+K5n3JFE6+rYwOPJsoP2JhjPAMgwzW1NNYvLHe0C9xxj+Ey0bvjF/4HUpt28jYebedis8rRAkBXukD8yppv3NEMRRaPpgXIVx00lYywZIeUr6h44mfBHRwdfCYMsnJYar43ws0At5H9LdutAF9R/wXPqZ8z9gz9R5n73YIjHy7Cyk+5uJyILFpARNId0haZpNVjmvuYIUNPXvkkpawDo02TlLpjPKawMGvWb257+eSEmPX6E2JQAYpZLbM5OhS2TCVT7aE5Hh/cINE4hLHXAx+VWckcr7lExDyVs+2R5dKdhse9fxuPS1H84r4enuUq7nxg7+B9uwJCl6oLXxlr/7NowDZQPaNhYMlwDrMBaR4QB7FRVdOQ6eT/vREea5CO80hXLCliB66xZ0IbM75KL5BJgiD13y1IHu9SWF2H/zxreu/wchQjIZdDsT7+Fw5
- uTT9isEy
- 16qZI
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E424E8000F
+X-Stat-Signature: 615pe8n4syj4oq7w154faaxjrmz4twtc
+X-HE-Tag: 1772387014-44887
+X-HE-Meta: U2FsdGVkX190Yn2DhOBZbq03nfuuStlOMaPYrgTaSIwctBvz/S7dNgMDkAEuA90fB50u/EPSvcF90GneWSlcKc3bFfrVxWD9pLiKA5nKmSAydJTRO/R+llAygJrDCOYcRqrNsZ0eLDb3+4o3j/FtwAokg2SFIJ+rAeF43dGM0Cf0rJoh8+4d5Y3V033RSvSXCwasFb/8AsO/czWvxISFBMEi0LSGaWujmPEeMCjnVZkqvNgGLcav6pugAx30yi9n+tRYbpr3UKpov+i2MXhMAQHw0zRtAHEc22w4PspbCRc+xrHuaV6DTUnFHGDTuKZ880LdP7T95ZmjgScf8zWWrOwTWhizk3aeWNGV+DFX/N57U0GtnljoV/PmtfhuATxpXsRksKJXvFLmT8dVnd1q7vQKGx/BeuJb+wMUMyEezWpietn08DJQQ8kgTQUg1Ej8/wuLLPdE4GNMVIE+eLHYKVE3YuarOQIt+CzDc5fyadJua2mNNEpS2bnc1OQ+hkhaELhEqiMLUTm67NNTtJ0C7ercNyenD1DWejAUibKoaIu78wulg3lHVX4Bc8mRcY67ucGHWQXlc7XVIv8q+hz2EE+fIstWkbvt5wCiT5EI80IEMXl82h6/sAbFACrZxKtsx5Nc/Dzb8Tcl48GXc2zFuipQaUTwKYSYMovAg0cIuXvlERNM/1xonWKXO0v2ppd/fWq6eqd37a0Tp0Qr1LRgijGqkyj6PlRESh8tQkzP7d1XYPQ/N+XnJDbDKBRwm2zYTse7YTps8cwRQPK88NDTRt9iSraQJeJO2udw/WTthoTEXt2dVd4UPUQ9jADLFxqjadIUUoS3vetg3XmKwmALs/lASWOm5exie7nchgQoQOP5RNMfCDiid0C6v9T2rirRaC+C01D9bsWC/jiVReygchUatKQnQBVl99/fAHENtoM9YitptmId9HsQVECLgsQAZ0105OmvuZzDVSX6iIe
+ Bdi0asL5
+ mIqNo8SJ4L3N/PcSJJYywIKxkXpMluTa/xyeGEleW5HzwDQJDvaIDFltUkmP3vOib65UxCItD4bDQaTvKGnYsykrIwIfnu+RZQDxiuMzpbHFOfzzHt8lMh/G7Lf5yYDGFlbpUK8yc48whLySMDnU7o+7Cf3/z+zNaFjzh5Fh1uHjjx5Gq/nUPeequ8IzYXfVMptguLuBbsUXoQinYoTRfXJzf11CgRNWGVWy2BfYkhQ3SM88PQU3mB8kuZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,48 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_split_region_at() should be called with the correct address to
-split on.  Add a sanity check for that under CONFIG_DAMON_DEBUG_SANITY.
+At time of damon_reset_aggregated(), aggregation of the interval should
+be completed, and hence nr_accesses and nr_accesses_bp should match.  I
+found a few bugs caused it to be broken in the past, from online
+parameters update and complicated nr_accesses handling changes.  Add a
+sanity check for that under CONFIG_DAMON_DEBUG_SANITY.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ mm/damon/core.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 93d1577b1ae07..be2300cf3aeae 100644
+index be2300cf3aeae..e8c44541754f7 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2586,6 +2586,21 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 			threshold / 2 < max_thres);
+@@ -1666,6 +1666,23 @@ static void damon_warn_fix_nr_accesses_corruption(struct damon_region *r)
+ 	r->nr_accesses_bp = r->nr_accesses * 10000;
  }
  
 +#ifdef CONFIG_DAMON_DEBUG_SANITY
-+static void damon_verify_split_region_at(struct damon_region *r,
-+		unsigned long sz_r)
++static void damon_verify_reset_aggregated(struct damon_region *r,
++		struct damon_ctx *c)
 +{
-+	WARN_ONCE(sz_r == 0 || sz_r >= damon_sz_region(r),
-+			"sz_r: %lu r: %lu-%lu (%lu)\n",
-+			sz_r, r->ar.start, r->ar.end, damon_sz_region(r));
++	WARN_ONCE(r->nr_accesses_bp != r->last_nr_accesses * 10000,
++			"nr_accesses_bp %u last_nr_accesses %u sis %lu %lu\n",
++			r->nr_accesses_bp, r->last_nr_accesses,
++			c->passed_sample_intervals, c->next_aggregation_sis);
 +}
 +#else
-+static void damon_verify_split_region_at(struct damon_region *r,
-+		unsigned long sz_r)
++static void damon_verify_reset_aggregated(struct damon_region *r,
++		struct damon_ctx *c)
 +{
 +}
 +#endif
 +
++
  /*
-  * Split a region in two
-  *
-@@ -2597,6 +2612,7 @@ static void damon_split_region_at(struct damon_target *t,
- {
- 	struct damon_region *new;
- 
-+	damon_verify_split_region_at(r, sz_r);
- 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
- 	if (!new)
- 		return;
+  * Reset the aggregated monitoring results ('nr_accesses' of each region).
+  */
+@@ -1682,6 +1699,7 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
+ 			damon_warn_fix_nr_accesses_corruption(r);
+ 			r->last_nr_accesses = r->nr_accesses;
+ 			r->nr_accesses = 0;
++			damon_verify_reset_aggregated(r, c);
+ 		}
+ 		ti++;
+ 	}
 -- 
 2.47.3
 
