@@ -4,98 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBD9CFD0055
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 06:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FD8DFD0056
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 08:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEDD26B0005; Sun,  1 Mar 2026 01:56:32 -0500 (EST)
+	id 617896B0005; Sun,  1 Mar 2026 03:05:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9AD86B0089; Sun,  1 Mar 2026 01:56:32 -0500 (EST)
+	id 5E17E6B0089; Sun,  1 Mar 2026 03:05:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA6D76B008A; Sun,  1 Mar 2026 01:56:32 -0500 (EST)
+	id 4ED7D6B008A; Sun,  1 Mar 2026 03:05:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C569C6B0005
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:56:32 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F38AE896F3
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 06:56:31 +0000 (UTC)
-X-FDA: 84496585782.04.EB3AB15
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 03F3F40004
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 06:56:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EMKrQY7W;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 3D5EB6B0005
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 03:05:59 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D05031B7ECD
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 08:05:58 +0000 (UTC)
+X-FDA: 84496760796.12.0714674
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9808D10000A
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 08:05:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mpn0wyOB;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772348190;
+	s=arc-20220608; t=1772352356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jVbiQXIQMX/1B8+z3NiDZcVvND9uVKdGlGO2tuqfdM=;
-	b=LyHXKhgEmvAIcqjxp5Fm4Jggii9l6GFQEB8e+bC23UZb5o1d1/35vMABpHKDUq3YVpzmpb
-	Wb5OaSfh92+v6xLbQ3BDC5/B8gFXNWqvczvHUQufPKjg+DdbcJJD9TgTGkKVHL/hsKKrib
-	9aD6cXnbIw7VufIf2QB2YMcm4NkjEpU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772348190; a=rsa-sha256;
-	cv=none;
-	b=rDsBDjpmzXgcrfr81+g8oXQjYWePBIi8/w/jxD9Yk7H8AnUlg81BwfP8fAB8ULJ0G6Rt0R
-	krwQ5hu63T51ydruQh+CZi3RHgWwxTlchSgR2HLl3jEPJXwBIYxe43udKIKiOcITJcZcEQ
-	6WLLAdszZs0/9UWSf9UDuoirwuWgnXI=
+	bh=oKexEmoXctG9tm+xRNz3yCPi9khsmdiDGG7Pq28q/As=;
+	b=yi8vmCVuPcu4j/5Zbg/R57CIXUn2rg6Ajz3Hi4AWO7dX8cW8mRxySo2+EpmmL/oVl5wXj1
+	rQuDoSeUR8ktuQdmZvRTlLVw5k3IzHvUw1S0UKypXywppuUY8CSUi/M2ybdkOiG9+iWPNj
+	6EpBuT3XPtU42qAUQvMO28Urpei1F7E=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EMKrQY7W;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <7454cd72-3816-4a05-89f1-ded8b99acb41@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772348185;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7jVbiQXIQMX/1B8+z3NiDZcVvND9uVKdGlGO2tuqfdM=;
-	b=EMKrQY7WRXO8kYWzx1xdMTU5rEVlMVp9IHizMuBLddZGHk9vGaaiFIPCtNKy/esjK1Fdcn
-	0f4AVHD0lMvSwDLyupaQdautjy8Z5F5qRfp4hQHxi2VKY2kFJD6nVSIzo6ArC2A9XtumQ+
-	DuHdDT4XyvQvlIfnfHqthTSkSmlZAzA=
-Date: Sun, 1 Mar 2026 14:56:14 +0800
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=mpn0wyOB;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772352356; a=rsa-sha256;
+	cv=none;
+	b=IV30v9ceH+dus6hcspaSAEcOPrdIGbF7GncKUcUAgy8XqP6pxYQ82lLzscCInUpo9ekG/+
+	i0GJQEylxnck91kc/7R65IdciyqXv5vwSdghikmPzxeo9oSsbPgnRZnf8Ocs7iAShDu/Z5
+	1lkLkX1cFClUR+9mMoM9tPu6WS9w0bc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772352356; x=1803888356;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3BZxcqBCNY7RTl2XSzcbbBHM11/xYWsKqBTf6uf+rbo=;
+  b=mpn0wyOBVBLgwvnG9QGC/pva2IdBBbQa2ZszGYtb3AZbdblLscUwRBu8
+   yt5cfE7x8oqrqaYWY32WhZiyaa0C1Z0gxYO485++WylCxeQ+fLSBtGPTN
+   iLw6SY9MOzuo7VCE3vIj74cN+5ZXJJXYTkEAAt1ngT112U9TBJsSMCmTc
+   b4lCr1rxrcV/7nJ3llkeP8f61t8+RpPs5U+MenFO+S3/oghX3d/k7Nuct
+   tTh+Wv8KNbb1XiEEk1JpMblv92v9wRmvM1rqcBEBIjZgiV/mVf8ivFA1E
+   zy2IfMue6bTCnz8J4OHvcpJq2oQJWN84OKc8jBhvqaDtSvIv5ONhEOV/w
+   w==;
+X-CSE-ConnectionGUID: 6aR4x8OYQvyrxLkUaOOPsA==
+X-CSE-MsgGUID: Zod/wzZkTXWooifQPBOKjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="72413917"
+X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
+   d="scan'208";a="72413917"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 00:05:52 -0800
+X-CSE-ConnectionGUID: 2VXKz50yT8qBRNpS9UgkyQ==
+X-CSE-MsgGUID: 0OoPDmusSqyB46Zw765MYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
+   d="scan'208";a="216462200"
+Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 01 Mar 2026 00:05:49 -0800
+Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vwboA-000000001Kr-3k0N;
+	Sun, 01 Mar 2026 08:05:46 +0000
+Date: Sun, 1 Mar 2026 16:04:49 +0800
+From: kernel test robot <lkp@intel.com>
+To: Matteo Croce <technoboy85@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Laight <david.laight.linux@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5] KUnit: memcpy: add benchmark
+Message-ID: <202603011649.A4pBbqqJ-lkp@intel.com>
+References: <20260301011209.4160-1-teknoraver@meta.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 3/3] x86/tlb: add architecture-specific TLB IPI
- optimization support
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, ypodemsk@redhat.com, hughd@google.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, arnd@arndb.de, lorenzo.stoakes@oracle.com,
- ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, shy828301@gmail.com, riel@surriel.com, jannh@google.com,
- jgross@suse.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-References: <20260202074557.16544-1-lance.yang@linux.dev>
- <20260202074557.16544-4-lance.yang@linux.dev> <aZ9Xcgxa0_ouGr31@google.com>
- <e3cdcbfa-525d-4e0d-885a-8f7d69a7ee3d@linux.dev>
- <aaCP95l-m8ISXF78@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aaCP95l-m8ISXF78@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 03F3F40004
-X-Stat-Signature: crtmrkchftpcg4z7rrq7fh4qs4th8d5j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301011209.4160-1-teknoraver@meta.com>
+X-Rspamd-Queue-Id: 9808D10000A
+X-Stat-Signature: xotkr1gcutpqfa6pwzft45jzzaz1u198
 X-Rspam-User: 
-X-HE-Tag: 1772348189-9028
-X-HE-Meta: U2FsdGVkX1/+HOZDf2QnB+odTplCZmYGQbPHMOGmQlSJBmE+QP2gcV/NKVJpm17O9Td8sRbqtW3YdnQAa41SnIsy1BBc/yBC3SLxgJIl5LYodHkJmDMMWQ5zKM5n0mPE9KTh0JTAPGJR+aooDFdf1D+Q5+fB02gB10f2ov0g8CnvrVD65LOdx8kQZoznq16VWSNtkKpvKSnCmJHdOFhpbgZF4dC5W2k8OyyXpCtgrcnH3Y3UkbDu52pBhYirbnp88eJG0ypbsdYgyjQqnJGDpdym3l2tFlW2cRroRoOiYYeqSiz+WMzVs0/HYbhRtr4Jeg8fnk2ZIYWULeotqD07A9oJzlAy2DXtqIR/feYK9hEe0sDugDOvjquFX90wuL5fmxIpfnd1QDB+DdbXWcoXF0j2hcNJ+CFZ7U8RYA4LztyjxhuzotPTZ+mYefvfXXoVp0Lp07KSqE+Zza8rGMxF25O+O6mzYMKNhu4YNcf5NuqULuwbwV25eXR1edVB6wiCQM3GDHOj+66Qke+YNnZKbLj6eP1QUI6PSYrE5Dq2wCVL9dI5qvauSsUsNmq5j4t+CeEMynmTFmPhur7U2FP1OBkSH86vTrY7vKihr3WozXMlpSmvbcbZ2MU8CvhKJBWOMz7TVmpG7FraQwuOgT+CHmUptVVYOH86MEp0e0YxPa/YYyYke3fN51AdvwGbAyKFwHjDG4WXymMVh8oSJsvCpc5QKkzeSYj0qzS1LwN6DfDJMISCyp1RTrIgFmnGmj/1e0YyHUJFfzoAmz75d4qVZCDY0dj2A+giH+76wmXhc4sxwKlPpGtXLGRes8nud9izo7mTnbRb6Vlbdy55+Qw8XiRZJr8DKBnPjjioohO8bO/dpi2a0GbZKKA8FfmWfMuLFRCr3EYMc+b/m+l8bKgpToOV9Ra5dxIQKW0ZA7F0nlCm6c3H/VdKdBkownh+93zOfQp/mOQOFTWrdqFTwQ2
- zgkE+1vb
- WWosIqPBH/59XRlbyOR28crvSo0KzzlUA85aj6Re9GmyyaGizYJABXGfcOaXDZ7RQWZxfxWwG8KPUlhINkpzTCDYiJsBYUn24zXeRWkfJwJvOTk4o8R57RS2n+J1B+1hTwJERm+tiZskZlNZbDaItgoFbudoDMNH6t0N2515vjq/83iGWx9yvVrTBxuN5qAqQDEtIudxNLv4u82AoN84G5hCKKA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772352355-441049
+X-HE-Meta: U2FsdGVkX180uIHWRb1lT55I871NPIp1Dj008juMJbveQ5Gu9ji2B61w9B91mfb7lPj5SN0Y+k2z+0bSf9GIK3ptKTaYkHQ5HrFYHBN13OxU85a3gTh48cq0CLxz6HSSbmbgm0WL/0DoWK3g2RWqIs5bxqh4cf1BpRhozXgeKXFjI+ckZ0ItqnIeUhLgDM0YIXDUnS5IaK7HpN+XC29DlW9iYw42VQGPlG6qwh+KjJ8l5MdeT4YVqyi7/70iqrougF1CTooiUPNzJFLbMW1dP0o7gzLxSqGEiKOGfR8X2VWxQJKUA76eMUQ7dSOsqrcpKuxFyxCoPRC6HqxdUrI3jKTcelSkOu1H5AheRV1kEIBAVq82MsvTCwr9tRagGyzWAJVAENNAzPSLXeQycsrUks6u9WNRR2eNz3tkqNYjZc/DCnQ3JXZPbPPsWyBz3/v86hMK0PkASjEbX8GnsifeDtduBwG1oha6bLG5qz9FxnOmJmLyIvdIjILiK4yq8KPoR+wPhQz5b2ZOycbOtc9asnfaU52SyMSqRmkQxYSeRFhgXPg/uIl2FjECRhCgDwO/PqRWiwwj9gQmgyQ4Jh7104IyWyRrgmBmfmsU23//XklZuWqjvYfLEtyOZTPmGw65U9iMhSjxQ8Vbh5GCeN90UZXDQWFsqMR8zit9ptZOsjREgN8zQ7ycEQ5XLQArbgHhTu/HyFTFDxxle/K5UzOhfPQBl6q1FuT8roGkaIoFPzXeNKND458DLvuOWFjmgpIFSKHewi93oh91KAOEZMz+e2vp55AMccxQ9lUj0UBUMTb8ELApxwwh0Iiz/90TxSiNr4Iqwa8KNf3L8ZVlseqeKabkAAYM/JtwR7FOWwWg1r3ViGWbPs6DiP/MIdhfgZaIzH8nGwy2poa2IuwY2qi2WiiS20//J17trPehNn/+t2pokNPHYRiJQKWE9T6CMSxwaS6OTDbrygNIQ7NeDDp
+ dQS45yy/
+ NfYuD8z/rAZ8+d/OPJVIEvPCySjcvNk2Gm1iGBtrCMWkjaXk/vlDge/w8IeiD17YELtCi3vTKJARmZCDN/re8RzHyqzeWj9FPidJd5cUnFIcSCBSCzR/xx9Dzng2eBL4XUVwzenSGdku3DU4kY4Cm2h6JZ8Wyesif2ZiD8Do6kSewyWDlcJ+ssGsFBcorkObkxj4UTZ0bBcsdI6HYKR08SAY6E35q6e4t0/l7pE5HMOqnJ1v8wqfRDhDKazy9Iapr0s7JwnHoOGzS+kPBm6LJ8ngGDrkVEfLPIhYYEA6dqvGwmP39SUPnAslNMTlLzHgubSBbwm9dpuYFiPWAAe/YCTFNmDTyUDiHt6v+wMS5K1iQtc6Ywbt+toddX+JyFnMe5rx3gK6IpNvbC7DIT1asJeQHEvax1t+uCTDyhISU7K3eI5zoAvk69IhzU/78jNdixAPk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,54 +111,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Matteo,
 
+kernel test robot noticed the following build errors:
 
-On 2026/2/27 02:24, Sean Christopherson wrote:
-> On Thu, Feb 26, 2026, Lance Yang wrote:
->> On 2026/2/26 04:11, Sean Christopherson wrote:
->>> On Mon, Feb 02, 2026, Lance Yang wrote:
->>>> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
->>>> index 37dc8465e0f5..6a5e47ee4eb6 100644
->>>> --- a/arch/x86/kernel/kvm.c
->>>> +++ b/arch/x86/kernel/kvm.c
->>>> @@ -856,6 +856,12 @@ static void __init kvm_guest_init(void)
->>>>    #ifdef CONFIG_SMP
->>>>    	if (pv_tlb_flush_supported()) {
->>>>    		pv_ops.mmu.flush_tlb_multi = kvm_flush_tlb_multi;
->>>> +		/*
->>>> +		 * KVM's flush implementation calls native_flush_tlb_multi(),
->>>> +		 * which sends real IPIs when INVLPGB is not available.
->>>
->>> Not on all (virtual) CPUs.  The entire point of KVM's PV TLB flush is to elide
->>> the IPIs.  If a vCPU was scheduled out by the host, the guest sets a flag and
->>> relies on the host to flush the TLB on behalf of the guest prior to the next
->>> VM-Enter.
->>
->> Ah, I see. Thanks for the correction!
->>
->> KVM only sends IPIs to running vCPUs; preempted ones are left out of the mask
->> and flushed on VM-Enter. So the old comment was wrong ...
->>
->> IIUC, we still set the flag to true because only running vCPUs can be in a
->> software/lockless walk, and they all get the IPI, so the flush is enough.
->>
->> Does that match what you had in mind?
-> 
-> No, because from the guest kernel's perspective, the vCPU is running.  The kernel
-> can't make any assumptions about what code the vCPU was executing when the vCPU
-> was preempted by the host scheduler, i.e. it's entirely possible the vCPU is in
-> a software/lockless walk.
+[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
+[also build test ERROR on akpm-mm/mm-everything linus/master v7.0-rc1 next-20260227]
+[cannot apply to kees/for-next/hardening]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks a lot for setting me straight!
+url:    https://github.com/intel-lab-lkp/linux/commits/Matteo-Croce/KUnit-memcpy-add-benchmark/20260301-091336
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+patch link:    https://lore.kernel.org/r/20260301011209.4160-1-teknoraver%40meta.com
+patch subject: [PATCH v5] KUnit: memcpy: add benchmark
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20260301/202603011649.A4pBbqqJ-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603011649.A4pBbqqJ-lkp@intel.com/reproduce)
 
-So any PV that has its own things and doesn't call
-native_flush_tlb_multi() directly cannot be trusted to provide the IPI
-guarantees we need.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603011649.A4pBbqqJ-lkp@intel.com/
 
-So we should only set the flag for the native path, which truly calls
-native_flush_tlb_multi() directly.
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
+>> ERROR: modpost: "__hexagon_udivdi3" [lib/tests/memcpy_kunit.ko] undefined!
 
-Have a great weekend,
-Lance
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
