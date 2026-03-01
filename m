@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A21D0FD0070
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B80FD006E
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 17:43:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B50036B009B; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
+	id E1F9F6B00A0; Sun,  1 Mar 2026 12:43:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD34A6B009D; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
+	id DC87D6B0093; Sun,  1 Mar 2026 12:43:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2036B009E; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
+	id C03E66B00A1; Sun,  1 Mar 2026 12:43:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 861936B009B
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 12:35:12 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 074E41606C6
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:35:12 +0000 (UTC)
-X-FDA: 84498195264.09.A770044
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BDF534000F
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:35:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XcuAXeop;
-	spf=pass (imf04.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AE4316B009F
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 12:43:34 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4DF081B8803
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:43:34 +0000 (UTC)
+X-FDA: 84498216348.22.7A77AED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A80ED140004
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 17:43:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="HMQeBh/5";
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772386510;
+	s=arc-20220608; t=1772387012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QbaWI1rdvFnK3dXsg9IM7gaVSYJE/E5Nt9w95el3T/8=;
-	b=4WqIO2a1/qQKaN7s96ekq+gtp2Zeiife9tIuE96j/a1hkeS7KRLXXnwWCraIKS3hTmkKfy
-	AA1hHIWqq6rfetbPdkhcVr1t0cXqquqdR9IXfjoRi6EyTWYzotHOrnAogTlQbwKTfrZeF3
-	+5qiN3Z1MSX9I/ViCV+YfEe74fp7gU4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772386510; a=rsa-sha256;
-	cv=none;
-	b=DlztMpBumpHfboi18wv1W61Cf8106yfqwqikKiT3kpyT4fiHFLTHa270XCbjpcTB5EyiVN
-	tITFKyGHugoN3cmz1q8b2iS+OXnRQHIzFczZHwS+httGxmkI65FV0ug27NDKkbqCFYfRZ7
-	mK6bAOZR/NjTUURfP9wxT8tNPwBw2dk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sElFkaRIpVdrMjTMNkTCnx1sWbP1AlZTmGDO9EQEwe4=;
+	b=J/tfF9uedWqC+A0n9cKwoDzxWv3ZUeRZavPlLMkhwdM6qgA6BHFtRkxvuU79Uf5QPJDOuG
+	8Uoket67vVAEli5d/z4Pw8ooBIvkRGveoMF+4EmMgAxpooVuIv4XOImEB+Yi882Qo3mmKe
+	aM4kHfHOM5ZWbSu/k/WeWpq78KFEhXA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XcuAXeop;
-	spf=pass (imf04.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772386510; x=1803922510;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xjPAAHtXkL4Laj2flE1/mWKS7QSwyfAmuzBLpB07rhM=;
-  b=XcuAXeopt6xGBf7cxQx6jxnS3MhFqwCc9Y7PZ03GXYQMOka2Q9NXWJZ7
-   Va/VdX644wSTlU0VJuYbyHSEsSwHHS5v+02OVKHDnBKLHx/ui/uISWJ6A
-   4S3PHmhmlJjI8vR649KsI458CPFtHFSaivcx5htDBB/zG4Qg6KF7bXw61
-   FBDqWcsmYP/efFRIB5tTvOiLgixY+erQkl/xJD/lS0jq/i1+IObWI0TsP
-   gqjn28WHYzubVTsDPzV7TuL5Rxs5sFY03x2HxeFDrYCQTjok1UqQlhjBd
-   /D7shUYJhie6IzGynW559wp6Q38QKYgvityh7E78XRuCjAyxBCgjS4Ufe
-   w==;
-X-CSE-ConnectionGUID: /qv86TMzRM+L3bUyw/HuSQ==
-X-CSE-MsgGUID: GWdArtnfS7OqYCmN7d8CEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="98874309"
-X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="98874309"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:35:09 -0800
-X-CSE-ConnectionGUID: dooRbjHuRiGFxi6qskE6EA==
-X-CSE-MsgGUID: 19+eWo9dR1WLuG7+mpa5bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,318,1763452800"; 
-   d="scan'208";a="222404431"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2026 09:35:08 -0800
-Date: Sun, 1 Mar 2026 09:35:07 -0800
-From: Andi Kleen <ak@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org
-Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
-Message-ID: <aaR4y-lCl7YPEcnX@tassilo>
-References: <20260225232708.87833-1-ak@linux.intel.com>
- <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="HMQeBh/5";
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772387012; a=rsa-sha256;
+	cv=none;
+	b=ODJgpOR1+ZP4Khbe2dO6i6BxO9j3getzeeiWFeLszi82Fx0LQckuvz/OPq5wiq/RyExwVm
+	9hRW1Lxt4Ff8wBqlk+3SZm6pQzs+injzUxi4eyZg8oK6ZY7AXPUC/itmSffHM8JpWXWxYB
+	oNWJ6xBU9nES9IkvFENgC5dvj0DZtv0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E5BD432D4;
+	Sun,  1 Mar 2026 17:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F4AC116C6;
+	Sun,  1 Mar 2026 17:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772387011;
+	bh=+CwkXbOh/Fg6OBVe8JUapRvY8ZYQMp73JI7BMgt63xE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HMQeBh/5DjKrwDG2HtHsTqzr3oTuh45Xn+J8cyc9lI0TmzjP/N1s9r/nywlh347yi
+	 h4lgUeq8iGAUN8KILGk3q8JeiFVMJvw3CoLHKwLh3M67Ozwhites3cKQRJhuqbciyR
+	 oz8VJ+LY0XSpTl+9LoxSPCjOS6Hk6a+/aaGiNqk4d760PDAI0fBOnm2ta4hcYLCW8S
+	 sK6Wmcsv5kXDzGefzFlR+tl5H61dsAna9Cv76OjegaRMdTCJnSGTcqK6Pc8QYApWSJ
+	 vsBGFlnwDmGFpy02IyztVzOK47cx5aTJgA34hARbxROOvjMzf61urrTP2WCHvhwOV/
+	 5pAlC4YTWud2A==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 00/10] mm/damon: add optional debugging-purpose sanity checks
+Date: Sun,  1 Mar 2026 09:43:15 -0800
+Message-ID: <20260301174327.76849-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A80ED140004
+X-Stat-Signature: rw7yao5wf1jh9ofky19aq8961ai9ft9k
 X-Rspam-User: 
-X-Stat-Signature: dct4f17pn6k1emmzhyj77ggqzh4zuyfu
-X-Rspamd-Queue-Id: BDF534000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772386509-487661
-X-HE-Meta: U2FsdGVkX1+yxFpZFfFZh0wEHkgRyQWHx9ucFmFjSDpQJR3ATEVH32Wke/L9fbPeNPdn395hnQBJl7gxBB99kalOtQD0okuG9OEad+SQPwfMGd3sgnKGpMOVLhEwAgVDxkdFRk2g4nVRYNvvjLpSMMn/ReP+kvB39R2N6Vr6Fo28+NgbPngSMBo5EmIfQ0+sUWFCOfTczXZuslrnKoScP8msZ1Kndb8hvH9dAFOLqSFWmwqVF5zyPZ+5A0WkIGeAjbl9qFTg4JaX8EuttbGVNgNI+X/6Ha4JU4tXhAXYOSGG64IdbNyjvz0UBJRvmvGmnZkM/+znZFnX4/hzv8ignkdUAWyVA6w2ffgt4HM/oVg+AU5zQBWP0Ps8yBAS6FgyrU94IROOe1CTJ1hoNxbq+rIOclwie0+JDISFEwmQ/dbgPervf8kzZDtL8D661FOJnjdmIGP+7xIqA8PeKJampsbT9dgnGbxzCD9D4TShIYU1JyYwMQGt1OQolpyjk69cjZAMIDDAeP588ABDVJg/FTy26cmJR/p4u+Lx61sNq2FCP8pYCsq0Gz3by1SGIZs91OP0DPX12p8vY2s9q4gqpMUku6A2zWAyzoBDDcrHY5xXe5yV4sWt+b+EmE+UijGFnJ3R+0kqCdZGWTo4/8zRV6oTw7I8hxgpqbXHHLmGTZoAJpt2DYQIykNXKxczPVrIKo9wIGsxFXdxqeOMjAydm2aeiq012gHZmzTECy07lGT0XXrD3Xe9GnXIhKE77VGm7DU0k30C0GRUxWTZLOoGUDArJXMoCiSTjF7Lo84REJk/w4wSDQyyZPgIrA5x6chdtvYA9exWw0ATyQeakGZ4QLixE8owxKUsCPYVF+5A61wk12Z7ZhbH8x5sSbschVUq6M97XIhevE6V/mCCa00dowwkYxSO2M8eiiu5ZvchaBybJIzOrS7MG9OFthnQCIpJ3GU31DxHSwPovidPaRh
- vJt6IBxt
- GE35/66svIDbWSFH8xQLLWGN7dgNq5nu9d4gIYuo5HPakce99F2/mFdTU6Wzq7LgN/M4DYhIjUgxo7cSGea2aegbCs6m+fZDzvXo3Dws0bdrggJ5wteTKf6RrbPk0UyONXVDUtC2Rfs7y/bIjxOK7j6JiMpKErJRHYDmDYsAz+2lh5+7YFz2ZuJAwRciCgB7mgfwt
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772387012-366899
+X-HE-Meta: U2FsdGVkX1/YJFesWqQHUA3gjuO2gi3iCc3YVgpWV/YqMGPiEzXfr5JZaYIm6s9t6X86C/+9P5dk52l3NjxaFmc/rp40S8bud43BbkyKQte6DThhSe1S6+YBcgbhT9nrvUBx+qf1GDKi/FVLOj6Wr/dpBYfxoZMVXTxPI/jWxTga8AZ0pSUsZxfydUD4E+K9aMPNZR0LoieiXHkgl0B9lJEoiRfSM1SpeRHShsLyApAOTYpLxwLK3fo0bwwBpCROeELnnBnX4MTQCNZn3dnwQbQiPc4y7tD+wxYV6oAjUYPJL5litfz345XAE7PldptLd7tX8wqHfpL1iw8JXmpUe5UUBq8IQMbNfRQ7UdUYlsfh2npr+6PicVd3KIxmWdoWK8cK2AOJ9ce0aIkrRB4y+n5f8DPk95FEg4uGLv2RuvDTOPA/maqz8HQOuBeredV55AzsxmeYlQWvRcfQoBpxezfQkCO1+Ui4UoygFysF/l/E5RgT3xxMb1y68DREXS/Q/gy5/Sxq5PIkq1UXszhOSLL69qLScYyW7sedDJyV8L4+ajs70JavM12uTqCKxyuu07FesOD6XKXs+erI9MmtxM7cBayQhrbdyLjFHsKX4EcUfg0BhHQ+U2Pn0C06xkYkSnwtZVeb0oJRweZ6S9tZ7LtuqqywYNihMCQm5WFU6r9GE/BDDy7+Zcv2ULDHvFYAprwmMx2/KREXpoLlJfrE/PK36jSwFPIZxWJ2Ev9uaRMpZQL4i3Vm+fb469HW+LoIK1ZkRLcSnGKlmotwY/zyhZCEfJnO9jQLkUxzU5NbBiBLh3treKxzbqVC227NcGRfQMlGN/BQ0rNxAfjNU7nCrFHTCBzuX9mCgKz+BUTjTcVmtEcZhemz7uxhP3d8yS5ZlqSUquE3yNwXv02xablwY7Y8oj2B74JNwVcOGZ7LCfhfjTlqr5dGdI1wISS8cpjK6xqHev5mPK2fPWSqQYw
+ nG3J+Ops
+ iGg0o4CQ1QcEKpYp1iGSsvQReEkTtN+eqNeVONlg8giidETNDAm+42PLrLsM5WRspkLoHxS5Rme1qSS6RYMUOyLp+Xlc+FECk+RNDMhkYrp0Zuj5uVWdXptvc4g+WphTel/B87zswF+d4ZLlxGJZlYQIYJLW87UmLhLuU273mGsNNHd0sOdXys4iv/D5qjV6zhTAEkAIsnOrsbinM0zoWEb8fnCDoE3x/Jv2AeZbXnevLSjsHCGelKmWCl6s7akvSdgOYRmllO3LXlgieQv7NZSWYwA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,90 +96,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> a) Just because a folio has a certain order does not imply that hw actually
-> coalesces anything. MMUPageSize is otherwise misleading.
+DAMON code has a few assumptions that can be critical if violated.
+Validating the assumptions in code can be useful at finding such
+critical bugs.  I was actually adding some such additional sanity checks
+in my personal tree, and those were useful at finding bugs that I made
+during the development of new patches.  We also found [1] sometimes the
+assumptions are misunderstood.  The validation can work as good
+documentation for such cases.
 
-That's true. However reporting 4K for a 2MB THP mapping today is even
-more misleading.  That's where I started, it misled me totally!
+Add some of such debugging purpose sanity checks.  Because those
+additional checks can impose more overhead, make those only optional via
+new config, CONFIG_DAMON_DEBUG_SANITY, that is recommended for only
+development and test setups.  And as recommended, enable it for DAMON
+kunit tests and selftests.
 
-So you're asking for an architecture specific / cpu specific hook to filter it?
-I suppose it could be added, however it might take a very long time
-to get merged, and even that cannot handle all corner cases.
+Note that the verification only WARN_ON() for each of the insanity.  The
+developer or tester may better to set panic_on_oops together, like
+damon-tests/corr did [2].
 
-> b) Simply because you find a folio of a certain order does not imply that
-> it is even fully mapped in there.
+[1] https://lore.kernel.org/20251231070029.79682-1-sj@kernel.org
+[2] https://github.com/damonitor/damon-tests/commit/a80fbee55e272f151b4e5809ee85898aea33e6ff
 
-Ok. I suppose the walker could handle that.
+Changes from RFC v1
+(https://lore.kernel.org/20260221193629.19332-1-sj@kernel.org)
+- Fix WARN_ON() failure on kunit UML build
+- Fix Wformat-zero-length issue
+  (https://lore.kernel.org/oe-kbuild-all/202602221352.odZW8x1R-lkp@intel.com/)
+- Rebase to latest mm-new
+- Make warning message less verbose
+- Use WARN_ONCE() condition
+- Do the verification asap
+- Minor cleanups
 
-> 
-> c) PTE coalescing on AMD can even span folios
+SeongJae Park (10):
+  mm/damon: add CONFIG_DAMON_DEBUG_SANITY
+  mm/damon/core: add damon_new_region() debug_sanity check
+  mm/damon/core: add damon_del_region() debug_sanity check
+  mm/damon/core: add damon_nr_regions() debug_sanity check
+  mm/damon/core: add damon_merge_two_regions() debug_sanity check
+  mm/damon/core: add damon_merge_regions_of() debug_sanity check
+  mm/damon/core: add damon_split_region_at() debug_sanity check
+  mm/damon/core: add damon_reset_aggregated() debug_sanity check
+  mm/damon/tests/.kunitconifg: enable DAMON_DEBUG_SANITY
+  selftests/damon/config: enable DAMON_DEBUG_SANITY
 
-and d) it might randomly not happen due to various runtime reasons.
-
-It seems the only thing that would satisfy all your correctness 
-criteria would be to not report a MMUPageSize at all, but we cannot do that
-for compatibility reasons as you yourself pointed out.
-
-Given that your requirements are impossible, we have to settle on
-something better. I still think that what I proposed is a good
-compromise, although yes it's far from perfect.
-
-> 
-> But more importantly
-> 
-> d) MMUPageSize is independent of the actual page mappings, and I don't
->    think we should change these semantics.
-
-That makes no sense. What is it good for then? Just a random number
-that looks good?
-
-> 
-> 
-> Let's see why MMUPageSize was added in the first place:
-> 
-> commit 3340289ddf29ca75c3acfb3a6b72f234b2f74d5c
-> Author: Mel Gorman <mel@csn.ul.ie>
-> Date:   Tue Jan 6 14:38:54 2009 -0800
-> 
->     mm: report the MMU pagesize in /proc/pid/smaps
->     
->     The KernelPageSize entry in /proc/pid/smaps is the pagesize used by the
->     kernel to back a VMA.  This matches the size used by the MMU in the
->     majority of cases.  However, one counter-example occurs on PPC64 kernels
->     whereby a kernel using 64K as a base pagesize may still use 4K pages for
->     the MMU on older processor.  To distinguish, this patch reports
->     MMUPageSize as the pagesize used by the MMU in /proc/pid/smaps.
-> 
-> 
-> So instead of 64K (PAGE_SIZE), they reported 4K. Always. Even if nothing is mapped.
-
-It doesn't seem like a good design. I don't know what that is good for.
-
-What is reasonable to report something at least approximating what is
-really mapped.
-
-> 
-> So you could indicate all MMUPageSize that hardware possibly supports in here.
-> I don't think it's that helpful.
-
-Right.
-
-> 
-> We once discussed exporting more stats here (similar to AnonHugePages/ShmemPmdMapped, ...)
-> but we were concerned about creating a mess with mTHP stats.
-> 
-> For this reason, Ryan developed a tool (tools/mm/thpmaps) to introspect the
-> actual mappings.
+ mm/damon/Kconfig                     |  11 +++
+ mm/damon/core.c                      | 109 +++++++++++++++++++++++++++
+ mm/damon/tests/.kunitconfig          |   3 +
+ tools/testing/selftests/damon/config |   1 +
+ 4 files changed, 124 insertions(+)
 
 
-Some magic other tool doesn't help with the current output confusing
-people.
-
-Yes I can always dump the page tables through debugfs (or at least I could
-if not most distributions don't bother to enable that config option
-for unknown reasons)
-
-
--Andi
+base-commit: b511f483f5fc7e85ad60679181503f16937feb6e
+-- 
+2.47.3
 
