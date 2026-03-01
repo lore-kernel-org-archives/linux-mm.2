@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42955FD0045
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:44:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B653FD004A
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Mar 2026 01:45:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC8D26B008A; Sat, 28 Feb 2026 20:44:34 -0500 (EST)
+	id 00BD06B0093; Sat, 28 Feb 2026 20:45:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA7136B0092; Sat, 28 Feb 2026 20:44:34 -0500 (EST)
+	id EF8356B0095; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD836B0093; Sat, 28 Feb 2026 20:44:34 -0500 (EST)
+	id E0E3F6B0096; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9092F6B008A
-	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:44:34 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3515A5893F
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:34 +0000 (UTC)
-X-FDA: 84495799668.25.61E9A3A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A4F62C0007
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:44:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IKUT8L/F";
-	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CBE8E6B0093
+	for <linux-mm@kvack.org>; Sat, 28 Feb 2026 20:45:12 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77CB61603D1
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:45:12 +0000 (UTC)
+X-FDA: 84495801264.08.1DC9497
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C0C184000B
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 01:45:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BErxteEw;
+	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772329472;
+	s=arc-20220608; t=1772329510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=ZVf2E4nRJnvbvCIJU7Jh3QNOF5lqJJ7wT+KX+XmJtOg=;
-	b=i5r0RHEJqBWbFnG4M2bX7Nnmz/NIzP5sBEtGk0lUmn6ZYnxhYPcpzKzooZ290Ps9M3unL+
-	/S/9SCrQH9pbukUsO8kH85dNRr9PvOUxZvhBQK6nWB5mnHjlPJduhXjzHDV8ZNk+j5WZxv
-	a3F0sSjc6NBIVxEbGSRRJbBN4rs+Q98=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329472; a=rsa-sha256;
+	bh=5cocrvgZdptDaiTKY3pjNLW1lzlJrT2VS0KU07FTYUg=;
+	b=qSs8Te4MKiMOHMrZx2KwRMGD13YxL40FngZY7nerWvBumUVaGuOTruheqIDbYYrnUC9RXj
+	IC6dqjwd0TEMUfSg+MKxs/psW4yX+nCRUSvkw9jflvFVGuVM384veRFewxXY/t0TVYcvfI
+	DQOz72UMbPJS9Ke6V5Du9JOVaAQbFno=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772329510; a=rsa-sha256;
 	cv=none;
-	b=jBXa1HV/Sd9Tyxnf3jQfjGgtDKhV8xAjCVjdVdrehrksl1oL7nFJ405dfRuusE+fWsY1sl
-	VjhjoD7q7OKwlT/Up5zqM9kbCK6n2g3qSXh42kHecVT4GhCm2SKy8Xin207KfibRnjcyOw
-	StxzXtxlkadtGoXrDphTFVNK526tE24=
+	b=uX1buhDj/cYHeDC2ER/qPC+vLznUX/K0mYYG2rbCopiU2gi9LlHrCV1qEMsb6gM/9fRig1
+	s92OGmKXVHLCD6ZEEN7pGtyFKeA9gRqCTiE+7w6ZZzpu3e+RbEuJuyk4PMfD01pvGFavOI
+	sJY15RR9V1B0fv7te5n9UenedWdA1d0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="IKUT8L/F";
-	spf=pass (imf28.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BErxteEw;
+	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3A9466013A;
-	Sun,  1 Mar 2026 01:44:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F140C19421;
-	Sun,  1 Mar 2026 01:44:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BC7EA407CA;
+	Sun,  1 Mar 2026 01:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A74C19424;
+	Sun,  1 Mar 2026 01:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329471;
-	bh=OKmzZFzyCAf20fXK+5ls4iExh4RiW5P4WUKUTWuBAk4=;
+	s=k20201202; t=1772329509;
+	bh=jg534zdcz6ZbicqVI0eVcQ15m42V1YwShpeGG92oE0M=;
 	h=From:To:Cc:Subject:Date:From;
-	b=IKUT8L/FfJ1o4aCg8zKFZhuaGGjKeC0PhEUSLBDo76kAR7yA1jnE1CovIXvFqebij
-	 u0ocq5boeIMTtVuzJd+7erG1sALkaJQ0tDBRD0rWs7AfORh8omSB8hpAH3tAVnsfDK
-	 XzrVY39XtLlLd4bNyo2OP1uuh5PG/jU44eqgYXAo+QryOe+KfNlUYBJpemnRYRdORC
-	 r/CWOR03vq3SqbIQvcA6B41bwyf8aiS5bnDXuk0u5utBLXPY8C743pUilDgoaUY33f
-	 88dsktIO5mY7BvLS/iYAexIFe6BDQyMtdDQXL9yYYdaaEvjeTYiqODM7lHlmRl1QRs
-	 HM5cF7AeltuUA==
+	b=BErxteEwzzkrex8wuy1zhG2nczeL7ajymk6euZne2zYp2rFR7dud1tfZbZ+4QXWV4
+	 vTmH762E6a5qM2uRKE6tNkSF1Id0i5aDE1Ht0nM7PgP2VTt/oFzWvX+Ki74rZ2B16U
+	 c7KCqW/t7GnuTiCSG6nTmujabk2ZE1rDq1rx3NehGLgVTHeYCSUrRNYWvzAnD+BQK3
+	 5eDKijJLiKkUYe6H3NNzb7i7K6lonE/qBW8eyXN02yc/Fgyn4+rfvCkZOWSpMF3MSp
+	 gBdg8etNlEoUFA/kJrJP3kGLD4C+ewpvgBGVRwWgBv1yHC1AU6bTt5ua/ucvRvGTQn
+	 3HaoRrnZQgKfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	williamt@cadence.com
-Cc: Max Filippov <jcmvbkbc@gmail.com>,
-	Chris Zankel <chris@zankel.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	harry.yoo@oracle.com
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	linux-mm@kvack.org
-Subject: FAILED: Patch "mm/highmem: fix __kmap_to_page() build error" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:29 -0500
-Message-ID: <20260301014430.1706774-1-sashal@kernel.org>
+Subject: FAILED: Patch "mm/slab: use unsigned long for orig_size to ensure proper metadata align" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:07 -0500
+Message-ID: <20260301014507.1707658-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: A4F62C0007
-X-Stat-Signature: 5gouuu74kgce6y3cj6jhhnw8usfnnwfu
 X-Rspam-User: 
-X-HE-Tag: 1772329472-919590
-X-HE-Meta: U2FsdGVkX1/Xx5YPYpeLZxweEpTsMl4sl+QP+I4fZlKAe50B4lOtTwdFXdh/tsc5ATM8tJJvBNS4CS03TtHDLy56ZDj5OAM/tcD/l5dpEgiyb9KyZoqoyGirls8MhcWtjsO3NC2yyQBQq2VbDSb2KCAYNoQzOeNKsXbHFvE3ZE95wiLOuEBDHl66CAuKVjHiWbDuoic17jUHWPL3EkEIz450thqTnPEva2xnGmKD6AKrmy2mxccSYBjcOchlDSP0wFS5wevRGQ2l+xL6FEIG8tNU928kmZiYdIaY6jX32k31Bgn0syGUVl6NtGGC44N1MKz2xA2lkDz6winW/w5jPUx4T5d3+l+4l9vC3g/VZTkIO+G4dB1Y//LHRJIMMVjuDDazF8tA8LyKMZgpjyUjstwjDxEPgoEzzKI9O7tX65K4Uw6XtuKa+5xavAu4g22j/lqa73APQifxoNHUrqzyiPpcVASbu9vEbkXpRqXBZZUp5id3A5RRlqNpG81mMETDcEuw3gSIkuXmU5efy7sfv3XfnWqVfAITsG119wIsxnhNX3tVwF68WdLZ6bJKvnG3VY9qJBVVolwgsmnC3Rl4yNy7CJ0oIsv1O5ejdAmmSxNmDRVgaIO6dAaLSymZ0zRRDrxeOO1Fc8lEfbPCOCSYXvIMj2pykvyI9bb7rEq3H8N3WLAKeo6NMT6G/vPaJO/7Ec1XzbwqlpQ14RO2+nm396rFanH12L6VjveIRSP6DWMhfhCyococKhakmLnbFIISeqxxN3e/iq9nbOL9be6In18//3J6QKLIfJkrBCspyS/uoxpJNQLe6CFyQH86SXk1PyzcypWZxkPu//zxH0sObcGk0UZ9qER6bETmw4mRO+97AhHpinMLyzpIGrqXjlNzuX/3w+V/sTnyJsp7evVb/7BTidT4cDeFJ3KhCZJ4qk2oEcxrbmNtnLUeEByH8k5BVFHfstcFMHsa3SqoRss
- +qhKyMdK
- ac56VfRHw8aS7oJLL/C66LdgXNMkhU9M4IK+h9wriWfIEKtYt2EbPSackyT+4Ti+3xx5h9vZr+rhZ+aBKZcAoIUvjjLHVfIHK1I67G21QkmgyzrBYI3O2X6WW44HmhEmsFMV3D3X0mk67pUcQz0HV+CCMSZJ9tCmFt2vABNLmXfNaNn0uvvZvd/1xa5GtIpy8NrmU3LkYlEZPECYu0gyya02+XCmdGovjycYcdJEaR/70UWMGOeu8h6YcdljkZ0EnRHkMN13+VzUmvmHB4nKjHukncTjCCT9F0mgxmVvXEwxwxme0Yn++mJ3w/UG+gYbBPFs/OB8wqbrifN/neiQJKXBzJhBZGP0iw+V7Z6t518jEKtodwNbh87qa7eQ0XuUOGGvOvzwjOJeyz20LZuaFRMzll7S9YHHSt1dt3fjKKmRwl8VULdpdAMiDGcjxiaVFXJr2BOIM2NNzbqQsYvzoj/K/gVp8qQHgkcl14O7PMfYS4E2Nz+0+gL6TDQ==
+X-Stat-Signature: 4zfukxc4yex8qf9ad3w87qbb4qiwwk3q
+X-Rspamd-Queue-Id: C0C184000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772329510-653562
+X-HE-Meta: U2FsdGVkX1/pMnZ2zZxtZcZnIitTF9e+Em2tsueutLyVbTDd8FEmCRmSKilrvVLz7oFjy19a0IrAxvRI1VUM1Mez5evlymF9XE0ezKefmf6jasDgeE+ynqiquD/DssnvAdChxpb2CJUEQMpeakV5gGjfSLu+5b3ZdocnM92GoHjTEZu5zxwjDJEKPA1ZOk8EkAvmSdOZLjbjuUJUkFjrm41VM0P6jXEhEt9JJ9CTxaaXwEKqzuUvwSsFUCcWqmhHqjeZYyMqsnzPOpZQqPm7J0tdTzco3hPgjTSWx4HJKav+nZYX2/DNbZ3s8WKlLNfw8O6lRUqip2rqYboGXyQsmCU7S54+IpFQTKIME4nwjg5T2RjE/fUpcwjLDSZ5Cn0RhRZgdbiZj0rWOBDa66Ox9HqtOwlfzcZHFp8We5oD8roqvKV84yAzH4fr/7bWqQ1BNtJcD5ymO1ZsUSx9f9qzOv4ewlQ92moNgXxFq6lJ+Ak4o7SLovtMWzYxEyHvL5eSLCxcEFAusi6BDDACwm6KJAhclGTmwV9k4n9+mWEbtiZrL7bCHVSodipIxvO1SZx2P2zgqFWFonEN/xcGIxdcyiMswB8DRIfNIV35djSxzSSgjzVLz7PsRYpWPdqpIsSLYQEL7LBOinUnbW0DwgibONlDWjHiXLxQpNppih11eTZluqmcst8xd5jxbW+/hvDsiJw7ypHHv3mmpN+xcmbth5ziTZ2/0/E9y6zQioO6q5j71ApcprLxDKvaSJ4hhVuwt8RnRNETKWN/hMHyOZVA8HQSj6JyjmCZbMov+Lxbjh6IYHDan4Gxm/EiSxnn0dRjgV41Rooqn4xGCQ/2T9LC/2hrhnbv8bYZTGzBJD8oms4+LWBmwvW7pHXsQnMtkSzPAPF45R2g0j8DxmAJCqYvgnz6qSGx7umkMWvZQTTA4IXcKiyHPmRNYe/IfnaJfsmIfGCRn7m3WfCn0cipQbL
+ E6fY1CJT
+ pmvqZETD8T15vaXrwdxiMIuMArEZhRS76hI5CjvpMGHbJPncwN+DNmfR8uHKXReKgi7rxyjQHHtHqcm8KqCb7NgrjsCYY0iWbIw3iB7rJy9SK+JAGj6GpH/zEmFhkAQXCoPczowNw3t588YgXsZq0wt5BORkg3NlQBvNlrgaksQzGSZspH4jX5B//kmqshi6EXNQ7A3SFC4EWNVJ2wjlNNK9x52KG8WHRsvpfkoyMj/6n//KKEGUXO1bSdeBhBDTumPNSu7V0cuoW5mQEPFuxyElaSN0QivYqs/uMOIpFMuTdSjOz86nOBc5zDAMftEgSRnx2KKernYbu/0rG0RzZKJcgVbr9lGiEgXL9a2KZgYqrkR5G7dLxzTWPSxyyQD+krHvIvk24kpG8eqP9NoNJR5dtEMTTb3eEEpDi6QyhDBhWY+n+5RXbukSGWsffFVn4szG8uWt+nfOpKxFvsWoJ1yDNxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,52 +102,102 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 94350fe6cad77b46c3dcb8c96543bef7647efbc0 Mon Sep 17 00:00:00 2001
-From: William Tambe <williamt@cadence.com>
-Date: Thu, 11 Dec 2025 12:38:19 -0800
-Subject: [PATCH] mm/highmem: fix __kmap_to_page() build error
+From b85f369b81aed457acbea4ad3314218254a72fd2 Mon Sep 17 00:00:00 2001
+From: Harry Yoo <harry.yoo@oracle.com>
+Date: Tue, 13 Jan 2026 15:18:37 +0900
+Subject: [PATCH] mm/slab: use unsigned long for orig_size to ensure proper
+ metadata align
 
-This changes fixes following build error which is a miss from ef6e06b2ef87
-("highmem: fix kmap_to_page() for kmap_local_page() addresses").
+When both KASAN and SLAB_STORE_USER are enabled, accesses to
+struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
+This occurs because orig_size is currently defined as unsigned int,
+which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
+placed after orig_size, it may end up at a 4-byte boundary rather than
+the required 8-byte boundary on 64-bit systems.
 
-mm/highmem.c:184:66: error: 'pteval' undeclared (first use in this
-function); did you mean 'pte_val'?
-184 | idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
+Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
+are assumed to require 64-bit accesses to be 64-bit aligned.
+See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
+"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
 
-In __kmap_to_page(), pteval is used but does not exist in the function.
+Change orig_size from unsigned int to unsigned long to ensure proper
+alignment for any subsequent metadata. This should not waste additional
+memory because kmalloc objects are already aligned to at least
+ARCH_KMALLOC_MINALIGN.
 
-(akpm: affects xtensa only)
-
-Link: https://lkml.kernel.org/r/SJ0PR07MB86317E00EC0C59DA60935FDCD18DA@SJ0PR07MB8631.namprd07.prod.outlook.com
-Fixes: ef6e06b2ef87 ("highmem: fix kmap_to_page() for kmap_local_page() addresses")
-Signed-off-by: William Tambe <williamt@cadence.com>
-Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo
+Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Closes: https://lore.kernel.org/all/aPrLF0OUK651M4dk@hyeyoo/
+Link: https://patch.msgid.link/20260113061845.159790-2-harry.yoo@oracle.com
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/highmem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/slub.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/mm/highmem.c b/mm/highmem.c
-index b5c8e4c2d5d49..a33e411839517 100644
---- a/mm/highmem.c
-+++ b/mm/highmem.c
-@@ -180,12 +180,13 @@ struct page *__kmap_to_page(void *vaddr)
- 		for (i = 0; i < kctrl->idx; i++) {
- 			unsigned long base_addr;
- 			int idx;
-+			pte_t pteval = kctrl->pteval[i];
+diff --git a/mm/slub.c b/mm/slub.c
+index 152fe53d0fb5a..2c000dddcf74f 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -854,7 +854,7 @@ static inline bool slab_update_freelist(struct kmem_cache *s, struct slab *slab,
+  * request size in the meta data area, for better debug and sanity check.
+  */
+ static inline void set_orig_size(struct kmem_cache *s,
+-				void *object, unsigned int orig_size)
++				void *object, unsigned long orig_size)
+ {
+ 	void *p = kasan_reset_tag(object);
  
- 			idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
- 			base_addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
+@@ -864,10 +864,10 @@ static inline void set_orig_size(struct kmem_cache *s,
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
  
- 			if (base_addr == base)
--				return pte_page(kctrl->pteval[i]);
-+				return pte_page(pteval);
- 		}
+-	*(unsigned int *)p = orig_size;
++	*(unsigned long *)p = orig_size;
+ }
+ 
+-static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
++static inline unsigned long get_orig_size(struct kmem_cache *s, void *object)
+ {
+ 	void *p = kasan_reset_tag(object);
+ 
+@@ -880,7 +880,7 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+ 	p += get_info_end(s);
+ 	p += sizeof(struct track) * 2;
+ 
+-	return *(unsigned int *)p;
++	return *(unsigned long *)p;
+ }
+ 
+ #ifdef CONFIG_SLUB_DEBUG
+@@ -1195,7 +1195,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 	if (slub_debug_orig_size(s))
+-		off += sizeof(unsigned int);
++		off += sizeof(unsigned long);
+ 
+ 	off += kasan_metadata_size(s, false);
+ 
+@@ -1407,7 +1407,7 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
+ 		off += 2 * sizeof(struct track);
+ 
+ 		if (s->flags & SLAB_KMALLOC)
+-			off += sizeof(unsigned int);
++			off += sizeof(unsigned long);
  	}
+ 
+ 	off += kasan_metadata_size(s, false);
+@@ -8040,7 +8040,7 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+ 
+ 		/* Save the original kmalloc request size */
+ 		if (flags & SLAB_KMALLOC)
+-			size += sizeof(unsigned int);
++			size += sizeof(unsigned long);
+ 	}
+ #endif
  
 -- 
 2.51.0
