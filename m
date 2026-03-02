@@ -4,86 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DEC3EB3624
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:53:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DB2EB3624
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 983B96B0099; Mon,  2 Mar 2026 14:53:31 -0500 (EST)
+	id 7DF046B009B; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 947286B009B; Mon,  2 Mar 2026 14:53:31 -0500 (EST)
+	id 78CBD6B009D; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8776D6B009D; Mon,  2 Mar 2026 14:53:31 -0500 (EST)
+	id 664286B009E; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 762E36B0099
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:53:31 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F0C2C1504
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:53:31 +0000 (UTC)
-X-FDA: 84502172622.16.ED9BADF
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8C1DB80002
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:53:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Q8zFL9Ns;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 539B76B009B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 105F6C1673
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:58:46 +0000 (UTC)
+X-FDA: 84502185852.14.9B53397
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 267DE180005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:58:43 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YJicS1ja;
+	spf=pass (imf24.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772481209;
+	s=arc-20220608; t=1772481524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vg2rbwRhJpGM/YZW+ccotHnBhwZDS+YIHJ2EbjRRlR8=;
-	b=Z9TGIkCWcJS1CctgJ3QdSq6eKrltR3H7Imwbde2lBEO8n+FDDub+3J01HRpdSSKMVg1rSU
-	N6SWAph3+l0ah6+aExnQCdHchNsiR3vR66FTZtTvRRvLjjJLLV7SYa83VME7Z9KKXaa1nE
-	i7tgdkQU18l0GjRV5hjNe9YhTd1IdQM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772481209; a=rsa-sha256;
-	cv=none;
-	b=w+4UeY1e/srcBypjo6LGtreHL7+16Tvh/tuoAFrFXGmy4Me880RIW+2GoBcGOfqLT6H6k1
-	NPa+bKzl4UikBnyaH8iVQC1Vg7G8h2Tl0OvGiBmk2YPksGYdFNHNsanhyEtP8JL3ee2Ccl
-	ARdD1GvcdgTBJ9qTFdgDW3Z8l1zoabw=
+	bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
+	b=iXaog9p/ucKB3tOZnKgCcwceYwxlr6Y1tBR93J2Q8EVZDzSjk2nZriUCilJt4tsouy8orp
+	UGK9S/5FK+BNuJFoL1SV5+WfbQSv9DLh+ema2uJQKnblYYA6Ie8Dnl6XoSHaXaUZXp4Osp
+	eeOsR4rKSibH8G+kNfn/mSFkNA3+S5U=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Q8zFL9Ns;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vg2rbwRhJpGM/YZW+ccotHnBhwZDS+YIHJ2EbjRRlR8=; b=Q8zFL9NswumAat796awyiryo+4
-	oL8Ex+qYvo5WvYaRj9Ls1PqeGQ4lmKBJdED+K5Z1EEu5dc2Sd69mQ+SZL1vM0bTBd3qV7/pwpd1MA
-	//s63mmdc7Fw6UkBnUofqgkEO9qnrn3hmvCBvR3A1w0BcgljSxjfiNtGn5Fx7OkIgNnDjzMHIGIuH
-	VoPaNVy/EpiEHrKN0D93Q9TgeXyT3oee/1B/XKi5bCjucPPhWbfchmAaHePn2V+D0UNJKk+kSiiOx
-	i8p7DygrDT/RXqyO9UaFmrUnATkOlokRX5q+L6yojgI+PSnwyYPPNTQ1zOsZGE9drkrcQC1y3BzZj
-	6uw2bL3g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vx9KZ-0000000A00h-2iCh;
-	Mon, 02 Mar 2026 19:53:27 +0000
-Date: Mon, 2 Mar 2026 19:53:27 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Alexey Suchkov <aleks.koyf@gmail.com>, akpm@linux-foundation.org,
-	dywoq.contact@gmail.com, linux-kernel@vger.kernel.org,
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YJicS1ja;
+	spf=pass (imf24.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772481524; a=rsa-sha256;
+	cv=none;
+	b=uEbzy+UeleOo3PX8z4/zDI3zqM7VRUND3Qt2kgjp5g0c1c1y0a2xjzWsSutWRvY4fru7kj
+	8shCP/+LDWCBEfQFe9VboXYy8QDlkvWHkdyHJ9eynlkvBYO/b2FlKN1bXKgzT3tx9UeGAs
+	ib9tAM9LNvsV/YRqWN2FDF/9D45cJlw=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65f73225f45so7752571a12.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:58:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772481522; x=1773086322; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
+        b=YJicS1jaBHoyrizwcQSJ3Ezky5jQUyYxUQoR6/mXAJxP6hFCURVYnTRqnCrpuLYGHr
+         68vxuZk0FLkOmUpN1TozCEzj8L4GHfCDrCh0UJz6V662DjI7upMTJXCI4QCn+ol5wo0W
+         JjHkiY0RTa1Phbn5xd6+Iz8oTZ3VfCWcnxUOATXIc4ab1LjypyZh+ZbT+PTzTL8LMEee
+         YR8pJHZhUxb22K3Xy4JyUJqkXswo3vMq9W3c9kwXAgh/ZHOlZlxgY7FVAnYtwh0WuR5j
+         3keII8z3Ydk89KMqtF37OU/x9zefborLPbDfRCC2Z+ywWubEpoZjP0nzUH0nKFNkqzZe
+         Iz/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772481522; x=1773086322;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
+        b=a+FXyTC62R95ZK/xE9+epZLj6ohWyb024jz8d2FnCUqKf+Pxz6dWSIUSW5Ag1wI9ZP
+         vrb8W6hc5UBIJvIaB5lUDVEFfNCM422HGH9vTgxargeoHossjiwMeE30TdIwykYJ2g9O
+         tmdKs+oClYWFPzfVkR08UufdzvEFRr9A+0lMCYNZPbAe5ZonH0kNgTTQg6G0WN2O7fJH
+         5tj0QmlUJ1YDDk9ogEoo132Omf+ZtmZwVvJUOmF6p9BmGgtMoejjMxi29iAvUMbiwZ82
+         zXZ5b4Ubdm57M+LTDyoqQbsyetY8a6oxrSwrG/MaQZMxh1RRXFX9TJ8tqrCi/UAjzHbw
+         SwOg==
+X-Forwarded-Encrypted: i=1; AJvYcCW3EdphYA7YPLb3Iyo7s1nD6V4lk90gpjsbFptHlRSVwNXglihKglxBIJ3zkT/S/qX9F77ZussSCg==@kvack.org
+X-Gm-Message-State: AOJu0YwaNeQi4HrDRY+yyLawO/DivSeX6qo5T+e6HfqcX2chiA9kVhap
+	EWovzefdRfZkPGvnbP5VaXwzeGCwAMHLbMhWGpEbNK8FR6gbzPk91m15
+X-Gm-Gg: ATEYQzzwzGEAUzZkw5dIDVKyrBJ/rgqvUfUCnn4j1dkdNI8mdpQsHnVs1+bUs0/PwQ8
+	thJtcSPkZvA5u+K/vKXGZgwQS8tjWqSzzAF0UNH2By94IhQbvHkUJJqaoyr5sM2NdOtRKRliHgD
+	LfZYqcGrRVOiWZ1++xT3dVvd45jW3JTxp95XTbRJjFXrSV2K1DFx2w3uOoQNMMnzv8dnqJOSkF6
+	Wq4qf7jM8uQFF5MYbODOKg636uynymJNAssfyQnGLDeTStmSDchRJTAZfxScDuQgvkzc0Uj2/dW
+	x0ePmUDV7KsN+lelTlMhVh3UJdXKjBmSadZ4B6ULYbHhOB1eN4XzLwSct98KZ4PBWKNephnR1hP
+	GVpZ9sJTM8ZP7syeo7ruMZLqdm3ngoioaVU/nCn4LBR7H6er5HIM/Fz9CVp6bVTDEHDlwRpiiO9
+	lXv5fzxliTpCOG+QXNQAyK3zml
+X-Received: by 2002:a17:907:3e9c:b0:b87:39d:2b9b with SMTP id a640c23a62f3a-b9376510a71mr974999566b.28.1772481522299;
+        Mon, 02 Mar 2026 11:58:42 -0800 (PST)
+Received: from ArchLinux ([89.105.203.98])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac75fd9sm501586166b.28.2026.03.02.11.58.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 11:58:42 -0800 (PST)
+From: Alexey Suchkov <aleks.koyf@gmail.com>
+X-Google-Original-From: Alexey Suchkov <dywoq.contact@gmail.com>
+To: willy@infradead.org
+Cc: akpm@linux-foundation.org,
+	dywoq.contact@gmail.com,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] [PATCH v2] mm: initialize 'seq' in gup_fast to remove
- -Wmaybe-uninitialized warning
-Message-ID: <aaXqt8TD7r5wcrRI@casper.infradead.org>
-References: <20260302193405.37961-1-dywoq.contact@gmail.com>
- <20260302194836.2932150-1-joshua.hahnjy@gmail.com>
+Subject: Re: [PATCH] [PATCH v2] mm: initialize 'seq' in gup_fast to remove -Wmaybe-uninitialized warning
+Date: Mon,  2 Mar 2026 22:57:49 +0300
+Message-ID: <20260302195749.39247-1-dywoq.contact@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <aaXog_u1MOGJp3hP@casper.infradead.org>
+References: <aaXog_u1MOGJp3hP@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302194836.2932150-1-joshua.hahnjy@gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8C1DB80002
-X-Stat-Signature: yhyay3yfidn4xrfq77cufgtsakhcauyu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 267DE180005
+X-Stat-Signature: 3zj1ui9j4ssg7ricp7ps57cywdh1yd34
 X-Rspam-User: 
-X-HE-Tag: 1772481209-61597
-X-HE-Meta: U2FsdGVkX192W1r4oJbJyxsQ5XpMN+4GVVQ88Oueu/Gx+o7ls1x2aGDuDqltAWGW/9nW922RQHQqLp06mYS1MVQeMzmNPB9yYXGpuVtWREK0Nxuy0qRGdCko0xzExwd7wrCDeE/LqQht451lrIufZoCByVK3tjZgwHvbtRN5S8KWLlRNKaJh/nzNEsQGYdWeR4pfHvZIFcPxOpVnXU3d5dL/iFfQeFSCEVa0sUCx4zuCO/sjiV9NrY5cJfGXlBg4za3rgLuTfgXHgOmt80J7i+ywFZ947UxWkEzFCpMqB7uv3g83pRRpyrrd1cUbFc238yFeaCdVPB6PCA2PGOjP0PihkgYNkE5AqR48ycG4IwFEH+CKm0FwN37NGl7NqybbAA6NzUKicYX88smAXxmif6POOGYLzcYzC/C2McWWqLULXf51xLRC+pZJdjPaqq8DitAOdgaiQd4D1nZCAG8lWNoPJxz9s/l352KdXuPePQZySZoRanO3zs9XtSXMaDEyVpuFZ2IYxnP4cMGywaKxofpXFe/bn1V0xc+dfRn84oFFXWQ3Z9pFGSlhwZBauM2TFVCnBuutzE0+X6TXJpT9FJOxkHHNUnR8bscxWxULnuitv4zVrrh5FjMmOl/ODchtdAC02XU1L7jow5I4ngfzYhjdmmij48F+AGK2GfwqwPEHSXwdVElDlFFyAr6mTjVxpjBwSK9hEmRu34eRWfsmPueNUJteA+Ff7EkGuFLX5h2EpIoBqGOl3tr1eT8iFLpBE7ucRA9omGkNbp7Fs69aRMAnsJWamPIVGl0kWY62QdZl6HipTit5B3tVz4kdfVW0/KZqLmlYc26HGymLsNQ8GZY2OKUfa/ndrk2bo+c6LilOCh06Z2rUyvRFWKK+Qcq8bBwZZOiP9aZ5+0wocOcyh7uzmqSzaCK48P19Yz9sJv6tkCEsAC69bPDz3LLHxAQMz0pdBaYR9KUSQfmGexe
- bPYHF0Jf
- Tn2zykZ+Co1vd+D36x7seznVY5Sp+qmXQk/XpEnLgX7K0IzWlKONf2/MD/cHoW1j51OqlYwE6OQACgSyY4/RI73KdqE6mxMyDlU2qeKkC2SbhrGow6Pm1U3BhPiy7X82arWhng8meJt+gpts09Z0w8jBm0fBJCjIRCTvqnFehhP5Ev+SQOih//bKNDvu0Btq5QhUrADNArFxLlGOZwYbg8wl6/8DEQUZUDKc/o1lGf/Sy+mEwDGXYhm3qJU81VWv/1ROSD16eU34n5OpT4YbMRUrjjbI2uYRGTYOIlT2sKjLhuyyGgxorbOufmISKrg8L1oajfSNSd+xWzjzgWuDLLbdL4TwK0lKVXjFkxo2qHReXEoA=
+X-HE-Tag: 1772481523-222201
+X-HE-Meta: U2FsdGVkX18l+4IRG4FkI7PCnG99Xlba6bHAxhpEChkP47rS8JXCXi96eAK4B6jYzdc39pEAaGu9FBviy7vYn+kkXUsVwtyHglgP7MmjCufn/nN5D8Xd3wCC7d5UPf5/7UBoGwLtUBTWNOelHNA4sg1hmMY4cwImw3amZHhQa3sU/++tx93yRXMISkrBVkdt7qsDRSkZhQFgXHb8Js+RehBuId5lSdEhjHpUdcKmDB5fDxN38n7Y0s2sM3Jh4hT1pmJFRgXKfhE6jZzQyHjYKTZQEOwdARC3OA3vuaRsfJ8LLWmEqlfDvcH/DJl8mq5ROXdP7jbTwP3qB15sdg+TQ928Gqbi6lUrjfLBHEiFMojuMiLmPLLeq/9RcqMD1iu3HM4BT/80bk+jXgmwNwjZD+1roEuRGbLeWnOGYv6RUkyywQEU2Z0boqE05vxSMiuwHAmpWZvGHCdJ9+6M8e7lSNNf+pDwUHOj49uzO/qLKvZoheieygMEVGKu1lHJurW8UFMmTTFbAPf/WHYH54WcVNo+s+G/13s/FrzSeX40em+bRqLFiqN4TJnh0XAKWWtbeNm8eu1OZ5i1651Ve3YjF/Mx81Rpf6ufvhNkflSrZj86r4solJSy9sAfPsIZgMzhKoJ9BHRGJSGuo1wqL+/dF2tcbtOJ+VxImH1KK3dKfVHWr4KCFuB2mt/PzaeeS27votvh2J/UkDNl6njtQSzSHEP/cT1qmh1yg2C9N1tY7HmCOmVtS8JFHhsw5nZ40zYhlO+2CDQrpVYWHqcI49uHKeWmFo/CufeXJLDcHjdJeq/XQ0XnTG8sEMXFbBbRu1bChZ1wYmJ4v59rO9qJ8joOq/MaKPB955mi14lTokoPHPu0Im+f5fUZ6v2Ufh79XpoTmxoRcpyBdH2annrtrVNm85LEnck/k5WFDN6cIE/KTsPkyiF7Vs1vfjfAI9JjKhyDLQRYrhGP+LoqZ2Tflnm
+ ucS/10LN
+ lPcyySkC9i1ujEYWfduEukcw7qw0hFfDa/AwwFqGCbtMgw6/051fv/ZcbrODUCTjw/t48FdVu34/6aU3vnFSjjRy9DKMCTUc19AWPyx9NL3J17HWVZm/5Sg71phQP/aPtkF2IYcmDBA734lsdPdgfozyt5dX1g7Pi1QzP8iTCp6JgyQfaMOo8Nqjr4YuP5FEn+6z6bTJhF2EjLyn+QAlpiJ1j82N3OStNyjeFBcU1BmqwXr8gacAnONfyi3iyhinhGzYckTi0/DldU0wdZzLAkv5TBnOHas9zHrbOhGc+gVnWDParT0iBsIlVvEyDThvmmG8mydwcGigHZKODCLCko2FaOfQUhV6pGW9fdlLH39Lz8IUhfLlCUucInt4vysAj9jFcessvSwFqXsWBrACNxY3n3kPw5uN6KAnME3N5K2a1If1hBmDggH5skZLWdPW94iXQ14rOXhkii3oAxmCrsKtVyyWhR92R/+ALjNzcNcMIrI41vHEFbO8XEIlb4RbKf6C7LdKC/hwsVVOO8eo/JGXd1SyfO7ZpX7DJCsvMSJZ7uqvO1DT4Nu4ybl21afNFA3LF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,14 +120,6 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 11:48:35AM -0800, Joshua Hahn wrote:
-> Unfortunately I think that this patch is still unneeded. The variable seq is
-> used in two places, raw_seqcount_try_begin and read_seqcount_retry, and nowhere
-> else in the function. Both are guarded by if (gup_flags & FOLL_PIN).
-
-Yeah, historically GCC wasn't great with that pattern.  It failed to
-notice that the condition was the same and so there was no path through
-the code that would use an uninit variable.  Hence my question about
-what compiler version he's using to see whether we can disregard this
-because it's an old compiler that we don't support any more.
+> What compiler?
+My compiler is GCC 15.2.1
 
