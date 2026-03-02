@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F844EB3633
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75826EB362C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:28:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 125B06B0089; Mon,  2 Mar 2026 15:28:25 -0500 (EST)
+	id DD3FD6B0093; Mon,  2 Mar 2026 15:28:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CC4F6B0093; Mon,  2 Mar 2026 15:28:25 -0500 (EST)
+	id D79B06B00AB; Mon,  2 Mar 2026 15:28:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC966B00AB; Mon,  2 Mar 2026 15:28:24 -0500 (EST)
+	id BFDC46B00AD; Mon,  2 Mar 2026 15:28:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D909B6B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:28:24 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A53A913A782
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:28:24 +0000 (UTC)
-X-FDA: 84502260528.07.0627272
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CEFC74000D
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:28:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adORPXSh;
-	spf=pass (imf27.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A99496B0093
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:28:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D982572BC
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:28:39 +0000 (UTC)
+X-FDA: 84502261158.13.74D1001
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id AA319180002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:28:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nB4qX4iC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772483303;
+	s=arc-20220608; t=1772483317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xU6+a/1Mwo7LQ8ULf3RySNQwmtd4DNo7YSkrODv4R6k=;
-	b=cYKJsPuy8Ol7w7rqAvsj37E80yplwhlETevx71SQeFL23iNjsfgjPWDbkr6JTEwOwAXa0o
-	ICcrxwINkDt3IgjzGAa6XiEASOn8iTkcDb+yREIuq343O/5XUJ5qi999JSpS3wq1uSH2A8
-	qAM1RfRH3z/bZSX1GcLcsXsFm9C92Kk=
+	bh=tLm0moBGyAyohFSWNxn6ep2kdOsMj6EMGxVsh6rtIgA=;
+	b=C00ibman+w2yizkHTTKCL9A8rmd5btqwgK7fXFjJtZQcr54TOefUXrhIeY44utep0HO760
+	hP0fb9uSU9xSJTY/C/B+9LypMCwzjrUnuXBltjrQHX1+SHJJziOFcB8xfpnXeSHTHX0GO+
+	KMB0QHvwFxDKtUfr5WDmy2F4PYfDl+A=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=adORPXSh;
-	spf=pass (imf27.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772483303; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nB4qX4iC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772483317; a=rsa-sha256;
 	cv=none;
-	b=OACIyCOC1CKk0NHmb3hOQYlaMNTppWHhLcBAcDe7E6INkNexE9TZ8+T5Win3ia2mg/LoOq
-	eWXJrV94HElW16fnEkG3JOcxF1IUKVu+KXGFxlpDoch+ZzkhtmfYf8uJ+DsSyARenlGDgG
-	nrtjxnJrsqICH3F196bnTb1THT75MQw=
+	b=HG4kDo9qkxKpLiswyd5h506HgqYIWcHZWR6wq61ZonSNAL+Aku18rziwlogh/T+OTmSFag
+	1WAhCViIPzig+OrpXOTeILcfq1G1tnF6qG/JxkBXlBdi4cbQWyRGZFuTVAcDkBYjuY1m07
+	nIOsF6zQ3KLsOYiTaiCpHVGhfLbOBto=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE6EF441DA;
-	Mon,  2 Mar 2026 20:28:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EF5C2BCB6;
-	Mon,  2 Mar 2026 20:28:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F4D76013A;
+	Mon,  2 Mar 2026 20:28:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14692C2BCB2;
+	Mon,  2 Mar 2026 20:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772483301;
-	bh=ILNBX20XMm1WGYeu4fSbxc7i4uyu2mHUuuBgFEHaTLQ=;
+	s=k20201202; t=1772483316;
+	bh=Or7iYbRQR6Ro+Fuj5qMWsLawwpEXd/6MxzP7NG3XnZg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=adORPXShDJaWeQRCvSdSr3L2lXo65cAtKpYBCDaRHoy0MKNKUvrF7aMymnslSSs4B
-	 AMdjhjFRvGdybr+uMutunCNdot7V1s1CHUjy6TEuq079//WixBAim/+w7whDBK17Ql
-	 sd2diEDzU8ZI+CvgWovO3j6esT6DeAP5TRyjb1iQdmS1xVBNOR15bGyfPt63Xj6X6a
-	 UEZVKUYin8jropztKyWus6l9QY2MA6uXm0QunpThKHKrDotZZJ4pcvPlDw2DJnQI6R
-	 2TeAOGs/0VwH5i/Xm+KY62RmHm3kRHZwqDCzK04Ymq6OabPDu+qR14tIW4YzVWfMYm
-	 NiqS4oO3UXgFw==
+	b=nB4qX4iCYlM35xdkH6/Uw6G9kPQXa2L8EjnyixkDTGHa3d38dYxuUOIMZIlgO0buI
+	 HE2lGeCQsT9WGrKguSE2Czg8rxw8eB+G6r3EQpQ1myFPqugBpbnnHapogszfWufhJm
+	 dRJEbdFSvRiki8hsTGDVS7502/vAIthh+AzzglAIjTNYO+a4tBX9NIo6fw3UlzEGdr
+	 NLVctwS/W2tAsoPR9l7d+mwjy56WWDqThK8jatFewHVyn8XVqD82EgmilmfN+JdjFt
+	 IWBD6ftQgREqH4wZBYHNuEls21K6UMs3WCge84SEbUI+MPaX1p74+Us/mwAoBNkyyX
+	 +BTuONLbJioBg==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:23:58 -0500
-Subject: [PATCH v2 014/110] proc: use PRIino format for i_ino
+Date: Mon, 02 Mar 2026 15:23:59 -0500
+Subject: [PATCH v2 015/110] nilfs2: use PRIino format for i_ino
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-14-e5388800dae0@kernel.org>
+Message-Id: <20260302-iino-u64-v2-15-e5388800dae0@kernel.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -185,36 +185,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1853; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=ILNBX20XMm1WGYeu4fSbxc7i4uyu2mHUuuBgFEHaTLQ=;
- b=kA0DAAoBAA5oQRlWghUByyZiAGml8fKhukipLxqLUFvO9iuDYAGOPry/2sA4SjKuNUK0omXcO
- okCMwQAAQoAHRYhBEvA17JEcbKhhOr10wAOaEEZVoIVBQJppfHyAAoJEAAOaEEZVoIVtoUP/R3e
- In/Btns6OtO77+sWMs3v1xqzUdt4DAPFPDwvgQ3x5gDTR9PmppRzZM33aV68PBKlwHXKMZxO7/V
- KmLhAIL0EMOzoOx4oVwoRmV2F5Gw5mMpRhTZOO5FsZv2WCle07tsqIXifbmkx8OgPQIB5wjlD/E
- YqqdFbIvbMnLqiPJnZdk6DC4DPRnZhVj+EDM04AaWnAImg6uwnAgAfaf0OSVnULRQjRb0bdjWad
- 7NOEkQH8pvNfiEF1ehH541oh1JzxjmRvzWJ4GzZXf+/hKptYyo1D5K6y/XzD4K31TehEcGgJGOn
- OJ3GBq4ovtNAlkjVawu/nHiS7VZy7DCdknM+nF32EXE1mn6R2JDGBi+hmCMlifzP1wU3lh4GLQC
- TfX70d8OPw+pAqWzvpZd5cxUJtZab6jpqaJnsurPw8kYnRAEHIvW7Ga6f7h3M4AdZAj+x3KiIam
- jA0RNbEbbRPl0M+91ZxAGncuHOdwHPCHt1zNtpRUGfVmgViUEjMcGQieyUpLcG/PoQ0Ljbn7miz
- aUqsyJCUqTyMcSvv5TBk068RoRkuiXb9wSbX/gcQ0EaqxmWyrD2jHcJPCFL6fm7i8IKDq4mcKAh
- avWiCOvFCb6F9ihaU6qIM2bsHjOee0SVqqRiazHpodnilhViUZ7MJ/zirvzO3KxKkWZ6aQGy9CT
- 2wGqM
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16704; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=Or7iYbRQR6Ro+Fuj5qMWsLawwpEXd/6MxzP7NG3XnZg=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfHzwdeQbqcbgLI0t0wCI2faFowE5GGxHJH6Z
+ 53+uguafKiJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXx8wAKCRAADmhBGVaC
+ FblPEACIUyAQba7TcUmoHV39z8VNqlHgNYtG7nJUQ/M9Ay+a3BVuy+SPDhRUC863GWzAUEzPPKB
+ p72eCRz7CssKpp/fw40BgFL5h4tIq3d5JFZ7DrHHJ7BE//OvLEZBepoVaB4g40LaQxtB8Q54d1Z
+ wOU8bV6lYUxZ4omB4tKpxyEQeT93dirbiZsrGfoyOOrQaCL/WR+un5vFkrk7+3Is1slFDfy/Zsa
+ h3mUQTy4cngiRStBazF4oXglOgEqG+bTzsVPS/N7YzKz5zYo8Obbw4dy2k1EiKSOv2vCbWorKfN
+ zHdFfJ0LjOLJ6N9IDCkyYrvrMSCDfSqFK2gbm577jR/Khm3Wi5Bo07ym7HiFez98LYL3BIj6o8d
+ HYL/uoZabfD8Z0Y4hySvnn2XBk2sMXKGb0FaqnrD/TjTnOoiIMIb+ndwpT31aR62zN1TSIYcBLL
+ vzxsq6/xBsTfJ9rxom7ylkaPD0m0ppYrxC36TRPZyZ1IG0j9MsFyKmmJkiK8BsDdMKAwpcUlvPl
+ k/iRTCrlhXSZZXnDnylSlvkBzXIEdvSAOkGnUG79nMhwpUSCxRTCILKWxW8bMA3REE3r+MpGACt
+ aj8tekLtOzvlNkGFCPTZpGwe4ZY4FIA55bZvXKS/4I3l6ffVClsq4VhH3NbSOTN8mt+8w4DWAN9
+ a2KYOjBAjzNOwdw==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CEFC74000D
-X-Stat-Signature: j1kimcfg88sya6nuf3p9remp9ca6ahpc
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AA319180002
+X-Stat-Signature: 55cxkajyxgzszdduu48ge4jp3kntpk6m
 X-Rspam-User: 
-X-HE-Tag: 1772483302-262751
-X-HE-Meta: U2FsdGVkX1/DDekykRTQf/x1vrFeOLRP/xVgQWWPPyx2Xvx0RM81qcJi0kolh8HlgPoa7nmx5cIKKY0LsgA9sQIw1eBtrl2cubigVLrkC0KqO+Xk7d4nXyfsP2zj2eA/kqt33oPNylDQO9an5sLvY4yxAi0yzjcQcSG+37wW997mPLlNXrjv72jKRZcDYYQdQs7DTPZalYR1zcXx56MH5rnz3wu8WzOzR4C3xgl2VGIfEhVDIX73jZTBDQgkeh1cwF07xeDtRQvz1JG75rn0iG/xafaT0YktMmDYtJlxZeNNl1idJaUVRCKFEvwjzx25/J6D7KTT+6An4kom78k3X6G3r15rpdUYwegfQfrtGDjgtpQUnT0Q7QuducAISQHnXv2IWp4fp0234Zrv1g+cCUKwzXwWx1EViETPrm0mCLk4UXkIg2reWY7WB5ML05c2IID6CXDVOybNiYU69HlcZeFwUwA4oXGrsTrKkCBHtFtLYwOvjN2qIJJZYRjuJ3h/4LanArzt39eBhToYNGWZRXFz1ZXeKbtp8E4VPoBlU0OWmeFxcivqwfnLmkM8rGYh43thIqBaoyUQ7H8e7w2khSY1NPsQGShwcNUnfFmgBjx48gsEx3TKd9ERIXj1lJMmsxYc8CfhPtCk49cTOa8tulQChWnJavdIxqcKBfM+wqeYR7j2iy4kkEPztNMyBsbP7LYVBEL2VwdDtKekQ9SYKeRrlZleU4uGEzy0PaIY/haaKxN/cATQSdGKPlBWUi3u5trm4ta88TcWY9DbQxwZFpHHCIqGCNr6AQtosNed8+Vc9T+9tWE04gtycI0LIX9s+WGHtB3rD6YG49syVk36f6IyQ9u/cN1GvrruofA0xCofMolib+oQ58kq+VH6Uf7feLjRS8URdH84fMoyqTPzz/6RQkSDigGpvCU56nqY+r2VYgng9r1j/9EQuapLX0chIRlaxwZAqrl2zzXREDT
- /ynvrVEs
- Qs+W6SsuHFrZVeP7d0zm0bsszEo1avevtxPhDa+f5LHXW78pMx750G54kq17qUkeSMPtaOjJw+oyA6hOoiV7FLPLdlNNq5tdR8fZSeQEBlOw3d7LUuZI+HW6QZmYzuHTN9/zUNQHicZ9qddu3J1A5OvlNN9Snb3r0ufOzWOPUA1pRuvE9DC3SQoUSdf/8m9yzAKO+Xjl6j3gRhH+DdSH0UFORLSJ0QkRSax6zt15hLvE4xxmuGf7gH/X4gj6jrcxz/z7ph6fPdwun97b+MJ+5Lo391t7/KP8zGTWWgcfgExyll0lgVNh14AH8iVPPhMWD6AtBkD4h6o2XK2RcJm7MjSc1TnCYH2ibUDlpdFXaS4/pQrkTB/EJhL05L3UzPS9go8yhlMH5OqekNue0IZ+hhKYWMWxCJnXizVdn4iEhzkCfgNS8wzHUU2bVy5WAOVYPeVf1Xft0mFePLLIopL4/SdUP2YIpFPDc3LH/pq2AmVgLbD2d7SeKSL4W2PYsFRaru4ECN50mi7lIjDevb3bz6KuAFJQDf47vO4/EopJWBvbpxp5sVvDvxPM983d14lC1iJKM/7m7necRtUF5KYYSBjl+HqbMwtjWUAM1j3QoOk//4ITmpCRY0fVazL1jT06GaALNKI/XA9hPs/YtLoAkDDl/L0pWbp5FTk0y/aWC/qObpE274iTKuKl+AAkqxW9ulq1n6/5I60NhGZl4B43tiAjs5zPH7lh0WpI2nUYRdLm3LqKUztku/84XXjni2p2VbhFOitarmcs8uKrdMmQ9E/RhlVx7qul8y9BgkTcKkT9pt6wHA0WNHwNFMoq2b6elV182y3vBKwKPf8kaJ1jL+e1LEOImJKZo94p/yoIX61Bq1OXydFkJ8I7PnUPRnbRc0qvqY64hiejJXwjCFV+uhlBi9X3C8378MBVD0FrDKzMAOFyEe5/WIoqUmeM4ODgsT1NIx6JOz4GnyPTnBU8mY5Bcs4ev
- 0I8AynH0
- uVP30gDfxHhBriwhrPDktrS/1QEFCjPJpcwxgnIsp9pUskIT9Fs82ou9rQ/SayXBRQsVIJMMUX1CVseGMb4ulGhHhOR2YGF03DiDktZE+LlQ2VKV45FE1XOrptSuQWzPir8pY/fs4VwU1evPxekdoTDamVFUwdyk/8J1+I95oMBBoXu7W9hVlP2y0KK+Sbzqek/Z3PmUshrKkUemVFu2wcpHE2T7TzwY48f7jmnKAVuRycpzol97RwntXjRAY9Dd64UkquV1iJ2n4LMSTdDhJlXAciB2zECUW7ZebzpWcCwGpUVNR6IQFTNgZU0v+0CSeQyVYtgSUdoUDj9ZMQmSOUlalDOMXVx1zZxK8BvAnf6F7n2qqmLGk4dWz4ylaEVd04WWQSbIW960GuvPQv06AuJSOPJr23qYYCXqrlWBxEPBailb/f661UMxsNuoTalQqPr8BC2QODOnzwyERA2QV9q3YLTntrqZoxmiMr+ZgmEvN51jqHCbe+07EvVZYop0TZVh/hm4xUfTFKee/v7LKV0lCEAoWlUKbQsqihQQZ7FhstTJW68Vb0DO4Z3K9pDOEERVu2wzQdKA7jUMroDi5ZEHtPQ1h0J3b6k7TgBR0y/6YDuyp0hqVtgvU09dmXQiV+2gGQlj2KkSnSitNFekG0yEMQy3BPxWqM6Y+FBRuQAwyzaNtwO4sWUP0F92XHVZnyyXd2c97b5YHTOrL+3Qup7HSGsWwJcujcXEvDL+O+sjQgum3Hbwb5eKjMLLbcQeqYycbUGRFqbl149hu4XT8tie0FJ6reKp03mgddJSH5nr2IrBNj7Uq/A8DA/ke36Ls/GGoXWNhGkfu4d0kehSCzehcuQEuSnhywgndSmcJecW13r9p4hVbdIki5voAorMsrN9PSnRz3CpPfUFHX7kb4/ArvTKHuEhpLzw9+lB/9krZsxSvta1yyFHm0Otc9Pg1UPBZord1wUVGtxm7c4ipUnWY2GTn
- YL7qGsy2
- zvY+3QEXbx0UWD/eRe4kgK/rpTx2LoPwq0feBh+ghby7jDa62LRPcCIbSoVSHUHdD/OJLpJV3t5VB+VKR8FiVkkJtZZStdSUW39RzZjfJ+fatNWQXaYXxYIs2QibDE6USmKq1UFGRL1U8xA4Nt5Pp/d6D1mEtVAF6KfYIw9GQNnBwQLsIe4KaiVOBfIvMHeQcSTIcrhk70T723TTCMeu53du7VNWAqhujSaTQfaGmFDPHHkiV+oVcLozqOBgFOWzNa0bThJGiL+9xFrCo0EDo+GMPqmtbzcBXZlWBwNHDDF+J+2NUhGl8mwC1tAivibuAuR/f3FS5dPvomYIm3u3YjMivnwt8nO+VsC2NZk2wxZs++32TEvkJzWTpwkP42V2CO8IToq5gCPPmItwZrcS9KLGlc8258N8ZQaCH5YzYQdRXl7t5CW/1tVOMQrjwYVe0FTW/7Xx57t1Bp+c6KUo3CWjdlEyQKOMu7D58eSFogzwxL1vKIzeNykglY8VlNqkygRRRh0fw+WkafXQMb2oOxQgkhGgiT6NH7gjN5hk14uJj3CLJ3bR+CUT0E+DOv3jVAQgJsZtAhgazUpA4WbK3DkcjJWax3FS1BZScloscWdd4lEuSe/klg8w2SkilN+mII2lewKZHt/c82fjwnG3AvZZ/0D9gDDAfKstziBkOa2oZjHFbDd48O9/Dzc6nD+mj+OBWVL4bVspR9rQ5gRIY9ErpGi7T7hRxVR2jvSjHD5mk96yUupxa4loN3QJN30aGeMb68X9lzZ+t9JEKdVODyedh6zHt96vAjQmAnxGA6RGsSW3lO23t1JwOFtM9ikzNNhG4Lko3s6em0/BxiBVHWI62W4I3Gwylwfia8ylrGby0Mj726xQVqLvk7uSBYEGV9Wcs2lvepEnnQPXVnu6v22yS1Snmn4uKbzM79sNPFlOEedOY1cLYdbzjVZBptRoN8d5nKflpR/is4sjaCKMcPCdhhMaS
- d5Dgvbm4
- /tb0YkPWflwz1rDeOC3tWflGnfPtJDXqw0jjNruOZRrcrhgbnY4rYZ5lQ1WzJ+8GntE0SrAHYgAuojQSdua89qZK86Qbf98dAD/OiIxvdsd5S6Y9dIkkauchWEWKbnvu5mpsSYXY9ZXKWjJEHqgV3iNchRXGqhk0a9BhAeXepNPv+UglKpmA/MMYOdA7oqekF3P5bmye6j7QML23KE9T//LwzCLDHCoClIWfbFp3EDRCN1YlS+zXCrVMCSmu6Vj64/yiJJgRjSc5eNzoISdnASlsVo67OXYDB9y41gBeQMiXS3TgYFdEleGA8tH6CBeAk5iRYKB2XshLYHTRFHB/qHmf2f4vfCg1Ca28lGIf7pEqzQ9Wg6tv/NLuOYwCIbvGQifDk6uacuRw==
+X-HE-Tag: 1772483317-230378
+X-HE-Meta: U2FsdGVkX1+hdUn+js347lI9OVkrKnufjGf6JZ+yUxqljafAbQsRIsKcA4FpEmHDukGMhMnaFKbYVmH14CS5H+hUG5oPR/fYw3vr9x5RpMql7VHuDUDt5dwETUWx9BBeZIzGV9weOJALHOQ0DJtyIPFKVTKeY/eWg95o8+deiJU+IoIQg0M/quNHnOo13PJyuKxTKAEwZX9kiRFG9U3jon6n6COOwmLMMBDfd0yDLdOB7zWJfdoLtwcaNJ6tuk+iNJa0A4KCqW0gbAYZpuskokOsJRtTQOZIEWsAlpQ5vFjywfrCav3vLDCz9zmgoGE7xNA2lL6xuAQFdmBSvKVOc0bcbIeqUoa+Zzx378GnraXpH2Icva+QIw2Jg7Ar86wiWEI5oGfY7GElWhfgDxnpHaUBmGcOxWCY3c6zwXDR9jn8PThB6OHh1+4yaXVVe5j0iVFvRO2BnOyik7sfE7lebajKKXQjNpY27uj73J5cAhYDXI8GXFeDPQv7V93dGUiRM9fpC20p1C6xoRYhCWMk03RYiXnbimnQ4A/oCGMEu9eB3uOTs6eNWsqA8mkmVWFSDT4UbNnudqCTktjHz565tbAFTy24dhbv7ruCJajmoI0Dl0wfQM94AoLMD7X0aA/zWk/mW4oAXhjwbj8iMBYp0cekX+/DNtyLNbY1M8+qJ7XTxIbP+H40oz8d84kN0r2FTiMMRXO1271J9eBhUFsSfQlXJtoaEZURs7+3nkIbRxpeqkXnDnf7r0oC6a5sbI+wn0ORxex2zBVFo4cEpOZR1F8H2muHFlgnfJ6fpSfIVUVZUjhnRV60x0Pv8IE5G+rl3Cno6tn8Jk2XLpM8s2P+wZLiPFfnxYW2WH8WGVHN5y0iVWb2NKOhRatqy31vCFxBEgKo5CYMEWXrSJZse2vz0yfSQX+Wd81tFKGtFfaBPx3KvFKRz/rh1tt4zSdsuPrp6JLRZqF5Cr7I7CDvNnR
+ 1G8XFp2b
+ C0qHaRW3x+AsSj3Q4PRaxMX9RwrU5VvLNgCTSBC9mOPjm6xj7jDf8Zq46bnFWGpv0YOEUF/ikKp5Qu4SIDwAjDudCiQBKiUESBvnRrG6MJxkaxgo4YyiEieGGK3UqrXnO72/FjIAclELtL0teQ1ZTv8gc5UuE2cg0ijwhRBFVjzISI4uRxJJmqVeYelNRewOB8iQSZrqrqI8k+VQmtXSL4kXFJijyfNucAGdSG7I9bMGUGp0YHc41sHrosI5XqZpYeMbNDZJN94bUIzMjFNmSjUb8F/ePOwcbKdGVWlU+845qbnf56vrwhxt0JvZLyMjQd6TxGoDknNiD0U5cBS5sBr9vcyZzO8qFAsoUtYKCPeHbzsn/Mcokf1QvQqdGG1jvUD4GakgsUixiujzzwBqILWGLFkQZyE3WfSPYEcejPUvUtkOyg9k5KfmFnrFw6aDB+L74LfYlVCJ+b/GhGEgNqca53/1PYvMTetu5nL5TweD0sqsaNubgHix2Ae8F2F3V487xnfMvwnNX3KqpPoQbHPq1FxRqk+Ni2SL88CvofrCntdbTMneIAqS4NTLL8muKhYwz05lPL2+BOMUVxnc5e9NVAI+a66vdo4sWPVXltrZ6pPb0wsKvDcNXdPToFKXRu1iLdo7zI9qC8tYM/NZiA9SWuS4w3lNqPkWhbiQn+rHf8114z31Fzyt9z2EH6TAVZgSVKrulMoDWin2NmshWk1lyw07eSMprDkTMn4cN4OxaK1A7MTz4IIHI1Vb04xreIluNXtbfNu7S9PttXpsYP7YKLn1W1UBy2Y2LcTwIEjgoD+UpCXMbV8wr7h7rhsYiaRb0NdWAIV0WDlh8INOrEo9mnJaIRkPY67IjllpF70eL5vJAuJGD2hf8y/bYWOOpfJb4tVQ/1vj3eU9LZUKOimOnfnBUqhCJFgQhRkXji3E1mplZP1FdV1AbMAbYQFgjVrE9xQrNASSTWU5M42fgDqNk1isB
+ atD4bRe2
+ vDIU+Saadrk0/+NhQAoUVozQ2yynSctFM2q/8SMoQZzF8hP4ZA+uPNDPjvBxsahQ1W51jgHMCqAn1INefb8b0SR7ssWhn2p5w16WAxGfSDNX0sNd0D6w+22MzfNIKCI7mZwwHFQ28YxgeUd1jacrVfXeVPocmVRrKk3iA/2xX2PeKPb0ybjb5WxuxfjXJu6SuMv8is+hfIAUC39z5dqAzMYi0eZes3pqWctyw/yf5T/qa47X4j/EzefDZG8PY8E1G4YjU/7bnzGf5W14w80OhA8Vn1G9TLLx/FiAe6oa+VIvQ9X4r4Y7eReCtJX+61MlcAdSmLl1Q/o++/NgWbuvmba0+RUHSCVUcnnzyG+pQn7EfmeXdwcAwZGIjXJl/2AnBFYt5urLY9vVqpGcA/GyLTozNjbeMV31Ob2MXscBsc+iZGLBAlmYbaSxKjWOeRBD1pXi0TMyd01yeZvNS8+vITnmBZtBn6lxAoczQPeWQxC9hQwjv3AOnysQGBOaX7I2T1SUTLMue3Cd/583i0Cp5a/4edhav5ReNX2RE8nGRiYZnT/RKXA50sjsPclDi7GPCNbwZ4Ob2Cw63ss4qsXUdqA4c13cUTEF/TP82UlNy0gbjkO/51rlU+FuxGboqu/EvQFpeK61t/SumiCf6SYRNxcA2PH1/Ya3vYrpkznvFy9od9FYj4w/aAC5WsmHB9wd2f1v1v21Ow+s8Hwwtmb0iaoIFbKJfjKyed+qs6Kyi4Cm6rXTZ/Qe/rZiqm5rEWmzKTTSR0VzGgkXiMUnDxF5ojcyehQ5bll8vhyWWa/3Vr5dVoLYUd4Qa5ww5sfY4I+F3T1XCUqgxTjbZHyOTOIxGvpQA3bulSNNY3oEXjoeqe5regAt0/CZ1TcTlYgqNZaQ5EjOpq26JV5rZ72QB4/sY/b44a7SqyfQa6gtlpqz/pyDBHvmj9GGdbhhB9SqVa7FhvL79geUXdsMQt6ZG/d4UgIJ9k060
+ ZLzqUY8B
+ 5gHCgE55lxqWz9FD1L/3WwCxid1/L3G59HnVYZ/Ty7wOG2B9xU2eycz2ki8u67BQoIzWKlIH+Ai9Phyoew4LTx9SzKv3dvMgzgVwqmChsADvJirXvOL2J+gBMsGIa9WnBSi/KCiS0tNjmCkrC5F6YLQsHwxUX8mSQiWRTnzIaZr+t/OFzvWCKlfKmjk7qtqt8OdX/UEr5FEjLXx+rgueDUyncruTehy6TzZxmOCt/zokNuTVRAb7IHh4jxAXJBOHs8HvaBqdhHR7TxY4KWpNafwWbe6gw0vPBY4s9GtTCEFlqqmQGNAoXqBaZItA48FCuLPSIChDAz5XnXGbLUqYcrFeUOOPTO9J4VwxizsKwkJgRSKXCZ1WpB1A+Qqlm5m7lT8afDHom4u+MPjBdTTaCJXZcJNK6KNkE2QL4jM7Y4TUy1Yy/bG/7lzgNIBOTgj9Zf03RJLqQqGLtPH2nDycS//ThdiTpUTtSYMbhm2BuI6Z9psLRhzt5Sbyuc9yzQdoGEx1y92iBBW9PipRi7Lr5sknZsKUup5ATvevfbRg72bHXo75UIKJCln7+71ogCbK/E9EE7FTDATs6vTuDugQ5J6Hq84TlGVuwTd5uUXVvjQYpb0oZJmjzcYGIgIfCT3ACluxr4l5tQ4IORBTToNGIxSRN4fvL0sfcaKQGZsKmPBeFUNFvTRaMG3SH0IybYLOlgs4moUISJgsA0q35gU/epPFNtVEJRzy9H12KjbwQKApySj4bcq+mswlJu962zZW19FIBkPLY8nW/OsMpOTgkiOr2C1Rd5LupOZaWuxWb7LhysYTPHTpopxgxOmQoXbMNc1d7Xm008Zkyw44hywEGx77KWEECV1kZGQx3RAeMNSU3AAdgBWT846aocvQjvIiyv1thnVfux2di7ESct9TTPVq1FRzzEK1Z7HkT7KGqd0KfE4Fi+eGnI8eMiCKHjCZOws9i5O55lcN3RriTvzdcwt5A6lYU
+ BERjUNeC
+ jNKqdGAz72s3Ih5s3m+EO7bAbnRp+BcS9CtkHn862ZM17qYHaexEGNUARZD8pwSeTwO3EV0G0B1uEhf/dEy3CZyqLmBSfP8DHKvgze4g1qnEzTYtfWLW1W0wxIOn3PgJ+7QCxUpHsfFAe02Vmeq5LU383YEgEkkWkz3Et0S48vkJmYZvpu+/r9LInpxiLIIm+VwINztQ0q15a3tjBm3WgYqCw+nwipABFUZ1G9hn0GDACeda9EWUzd/rlQOJ8BO7fZ7623bD0TQK51C4N3ez8AYB988WpPGslTd7HW0iqH4IQWjbziWeUPeC3ivFdYfvrrhNhnnSGTuc6FmkoqptSJ0zctXLuxTATwo6I4ogAHf1FEpQ3cWn+3AajbewuEi2gFsfASk+GHAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -222,53 +222,391 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert proc i_ino format strings to use the PRIino format
+Convert nilfs2 i_ino format strings to use the PRIino format
 macro in preparation for the widening of i_ino via kino_t.
 
-Update local variables and function parameters that hold i_ino
-values from unsigned long to kino_t.
+In trace events, change __field(ino_t, ...) to __field(u64, ...)
+and update TP_printk format strings to %llu/%llx to match the
+widened field type.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/proc/fd.c       | 2 +-
- fs/proc/task_mmu.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/nilfs2/alloc.c             | 10 +++++-----
+ fs/nilfs2/bmap.c              |  2 +-
+ fs/nilfs2/btnode.c            |  2 +-
+ fs/nilfs2/btree.c             | 12 ++++++------
+ fs/nilfs2/dir.c               | 12 ++++++------
+ fs/nilfs2/direct.c            |  4 ++--
+ fs/nilfs2/gcinode.c           |  2 +-
+ fs/nilfs2/inode.c             |  8 ++++----
+ fs/nilfs2/mdt.c               |  2 +-
+ fs/nilfs2/namei.c             |  2 +-
+ fs/nilfs2/segment.c           |  2 +-
+ include/trace/events/nilfs2.h | 12 ++++++------
+ 12 files changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/fs/proc/fd.c b/fs/proc/fd.c
-index 9eeccff49b2abf57d766ce17fe47070c379ed2c8..936d0258d688be5fdc384ee5c4dfbb8fa0d19dff 100644
---- a/fs/proc/fd.c
-+++ b/fs/proc/fd.c
-@@ -54,7 +54,7 @@ static int seq_show(struct seq_file *m, void *v)
- 	if (ret)
- 		return ret;
+diff --git a/fs/nilfs2/alloc.c b/fs/nilfs2/alloc.c
+index e7eebb04f9a4080a39f17d4123e58ed7df6b2f4b..a3c559c86e5a4c63b1c9dd4ca137f24749c3ee87 100644
+--- a/fs/nilfs2/alloc.c
++++ b/fs/nilfs2/alloc.c
+@@ -707,7 +707,7 @@ void nilfs_palloc_commit_free_entry(struct inode *inode,
  
--	seq_printf(m, "pos:\t%lli\nflags:\t0%o\nmnt_id:\t%i\nino:\t%lu\n",
-+	seq_printf(m, "pos:\t%lli\nflags:\t0%o\nmnt_id:\t%i\nino:\t%" PRIino "u\n",
- 		   (long long)file->f_pos, f_flags,
- 		   real_mount(file->f_path.mnt)->mnt_id,
- 		   file_inode(file)->i_ino);
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e091931d7ca19d71f31699913d177eec0821ca7b..702b0f0433f91077cd0d0af4a07e9d67d9fa9a45 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -442,7 +442,7 @@ static void get_vma_name(struct vm_area_struct *vma,
- static void show_vma_header_prefix(struct seq_file *m,
- 				   unsigned long start, unsigned long end,
- 				   vm_flags_t flags, unsigned long long pgoff,
--				   dev_t dev, unsigned long ino)
-+				   dev_t dev, kino_t ino)
- {
- 	seq_setwidth(m, 25 + sizeof(void *) * 6 - 1);
- 	seq_put_hex_ll(m, NULL, start, 8);
-@@ -465,7 +465,7 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
- 	const struct path *path;
- 	const char *name_fmt, *name;
- 	vm_flags_t flags = vma->vm_flags;
--	unsigned long ino = 0;
-+	kino_t ino = 0;
- 	unsigned long long pgoff = 0;
- 	unsigned long start, end;
- 	dev_t dev = 0;
+ 	if (!nilfs_clear_bit_atomic(lock, group_offset, bitmap))
+ 		nilfs_warn(inode->i_sb,
+-			   "%s (ino=%lu): entry number %llu already freed",
++			   "%s (ino=%" PRIino "u): entry number %llu already freed",
+ 			   __func__, inode->i_ino,
+ 			   (unsigned long long)req->pr_entry_nr);
+ 	else
+@@ -748,7 +748,7 @@ void nilfs_palloc_abort_alloc_entry(struct inode *inode,
+ 
+ 	if (!nilfs_clear_bit_atomic(lock, group_offset, bitmap))
+ 		nilfs_warn(inode->i_sb,
+-			   "%s (ino=%lu): entry number %llu already freed",
++			   "%s (ino=%" PRIino "u): entry number %llu already freed",
+ 			   __func__, inode->i_ino,
+ 			   (unsigned long long)req->pr_entry_nr);
+ 	else
+@@ -861,7 +861,7 @@ int nilfs_palloc_freev(struct inode *inode, __u64 *entry_nrs, size_t nitems)
+ 			if (!nilfs_clear_bit_atomic(lock, group_offset,
+ 						    bitmap)) {
+ 				nilfs_warn(inode->i_sb,
+-					   "%s (ino=%lu): entry number %llu already freed",
++					   "%s (ino=%" PRIino "u): entry number %llu already freed",
+ 					   __func__, inode->i_ino,
+ 					   (unsigned long long)entry_nrs[j]);
+ 			} else {
+@@ -906,7 +906,7 @@ int nilfs_palloc_freev(struct inode *inode, __u64 *entry_nrs, size_t nitems)
+ 							      last_nrs[k]);
+ 			if (ret && ret != -ENOENT)
+ 				nilfs_warn(inode->i_sb,
+-					   "error %d deleting block that object (entry=%llu, ino=%lu) belongs to",
++					   "error %d deleting block that object (entry=%llu, ino=%" PRIino "u) belongs to",
+ 					   ret, (unsigned long long)last_nrs[k],
+ 					   inode->i_ino);
+ 		}
+@@ -923,7 +923,7 @@ int nilfs_palloc_freev(struct inode *inode, __u64 *entry_nrs, size_t nitems)
+ 			ret = nilfs_palloc_delete_bitmap_block(inode, group);
+ 			if (ret && ret != -ENOENT)
+ 				nilfs_warn(inode->i_sb,
+-					   "error %d deleting bitmap block of group=%lu, ino=%lu",
++					   "error %d deleting bitmap block of group=%lu, ino=%" PRIino "u",
+ 					   ret, group, inode->i_ino);
+ 		}
+ 	}
+diff --git a/fs/nilfs2/bmap.c b/fs/nilfs2/bmap.c
+index ccc1a7aa52d2064d56b826058554264c498d592f..e12979bac3c3ee5eb7fcc2bf156fe6e48fc65a7d 100644
+--- a/fs/nilfs2/bmap.c
++++ b/fs/nilfs2/bmap.c
+@@ -33,7 +33,7 @@ static int nilfs_bmap_convert_error(struct nilfs_bmap *bmap,
+ 
+ 	if (err == -EINVAL) {
+ 		__nilfs_error(inode->i_sb, fname,
+-			      "broken bmap (inode number=%lu)", inode->i_ino);
++			      "broken bmap (inode number=%" PRIino "u)", inode->i_ino);
+ 		err = -EIO;
+ 	}
+ 	return err;
+diff --git a/fs/nilfs2/btnode.c b/fs/nilfs2/btnode.c
+index 56836712909201775907483887e8a0022851bbec..3d64f3a9223e5601dc2332ae6e1007edd5b4827b 100644
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -64,7 +64,7 @@ nilfs_btnode_create_block(struct address_space *btnc, __u64 blocknr)
+ 		 * clearing of an abandoned b-tree node is missing somewhere).
+ 		 */
+ 		nilfs_error(inode->i_sb,
+-			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%lu)",
++			    "state inconsistency probably due to duplicate use of b-tree node block address %llu (ino=%" PRIino "u)",
+ 			    (unsigned long long)blocknr, inode->i_ino);
+ 		goto failed;
+ 	}
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index dd0c8e560ef6a2c96515025321914e0d73f41144..57163e991fbc49e2bfba2fa543f1b8dbd77718f4 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -353,7 +353,7 @@ static int nilfs_btree_node_broken(const struct nilfs_btree_node *node,
+ 		     nchildren <= 0 ||
+ 		     nchildren > NILFS_BTREE_NODE_NCHILDREN_MAX(size))) {
+ 		nilfs_crit(inode->i_sb,
+-			   "bad btree node (ino=%lu, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
++			   "bad btree node (ino=%" PRIino "u, blocknr=%llu): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, (unsigned long long)blocknr, level,
+ 			   flags, nchildren);
+ 		ret = 1;
+@@ -384,7 +384,7 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
+ 		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
+ 		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
+ 		nilfs_crit(inode->i_sb,
+-			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
++			   "bad btree root (ino=%" PRIino "u): level = %d, flags = 0x%x, nchildren = %d",
+ 			   inode->i_ino, level, flags, nchildren);
+ 		ret = 1;
+ 	}
+@@ -453,7 +453,7 @@ static int nilfs_btree_bad_node(const struct nilfs_bmap *btree,
+ 	if (unlikely(nilfs_btree_node_get_level(node) != level)) {
+ 		dump_stack();
+ 		nilfs_crit(btree->b_inode->i_sb,
+-			   "btree level mismatch (ino=%lu): %d != %d",
++			   "btree level mismatch (ino=%" PRIino "u): %d != %d",
+ 			   btree->b_inode->i_ino,
+ 			   nilfs_btree_node_get_level(node), level);
+ 		return 1;
+@@ -521,7 +521,7 @@ static int __nilfs_btree_get_block(const struct nilfs_bmap *btree, __u64 ptr,
+  out_no_wait:
+ 	if (!buffer_uptodate(bh)) {
+ 		nilfs_err(btree->b_inode->i_sb,
+-			  "I/O error reading b-tree node block (ino=%lu, blocknr=%llu)",
++			  "I/O error reading b-tree node block (ino=%" PRIino "u, blocknr=%llu)",
+ 			  btree->b_inode->i_ino, (unsigned long long)ptr);
+ 		brelse(bh);
+ 		return -EIO;
+@@ -2104,7 +2104,7 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+ 	if (ret < 0) {
+ 		if (unlikely(ret == -ENOENT)) {
+ 			nilfs_crit(btree->b_inode->i_sb,
+-				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
++				   "writing node/leaf block does not appear in b-tree (ino=%" PRIino "u) at key=%llu, level=%d",
+ 				   btree->b_inode->i_ino,
+ 				   (unsigned long long)key, level);
+ 			ret = -EINVAL;
+@@ -2146,7 +2146,7 @@ static void nilfs_btree_add_dirty_buffer(struct nilfs_bmap *btree,
+ 	    level >= NILFS_BTREE_LEVEL_MAX) {
+ 		dump_stack();
+ 		nilfs_warn(btree->b_inode->i_sb,
+-			   "invalid btree level: %d (key=%llu, ino=%lu, blocknr=%llu)",
++			   "invalid btree level: %d (key=%llu, ino=%" PRIino "u, blocknr=%llu)",
+ 			   level, (unsigned long long)key,
+ 			   btree->b_inode->i_ino,
+ 			   (unsigned long long)bh->b_blocknr);
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index b243199036dfa1ab2299efaaa5bdf5da2d159ff2..b182da076c58c4813145bc3e501a1e9a188bce85 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -150,7 +150,7 @@ static bool nilfs_check_folio(struct folio *folio, char *kaddr)
+ 
+ Ebadsize:
+ 	nilfs_error(sb,
+-		    "size of directory #%lu is not a multiple of chunk size",
++		    "size of directory #%" PRIino "u is not a multiple of chunk size",
+ 		    dir->i_ino);
+ 	goto fail;
+ Eshort:
+@@ -169,7 +169,7 @@ static bool nilfs_check_folio(struct folio *folio, char *kaddr)
+ 	error = "disallowed inode number";
+ bad_entry:
+ 	nilfs_error(sb,
+-		    "bad entry in directory #%lu: %s - offset=%lu, inode=%lu, rec_len=%zd, name_len=%d",
++		    "bad entry in directory #%" PRIino "u: %s - offset=%lu, inode=%lu, rec_len=%zd, name_len=%d",
+ 		    dir->i_ino, error, (folio->index << PAGE_SHIFT) + offs,
+ 		    (unsigned long)le64_to_cpu(p->inode),
+ 		    rec_len, p->name_len);
+@@ -177,7 +177,7 @@ static bool nilfs_check_folio(struct folio *folio, char *kaddr)
+ Eend:
+ 	p = (struct nilfs_dir_entry *)(kaddr + offs);
+ 	nilfs_error(sb,
+-		    "entry in directory #%lu spans the page boundary offset=%lu, inode=%lu",
++		    "entry in directory #%" PRIino "u spans the page boundary offset=%lu, inode=%lu",
+ 		    dir->i_ino, (folio->index << PAGE_SHIFT) + offs,
+ 		    (unsigned long)le64_to_cpu(p->inode));
+ fail:
+@@ -251,7 +251,7 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
+ 
+ 		kaddr = nilfs_get_folio(inode, n, &folio);
+ 		if (IS_ERR(kaddr)) {
+-			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
++			nilfs_error(sb, "bad page in #%" PRIino "u", inode->i_ino);
+ 			ctx->pos += PAGE_SIZE - offset;
+ 			return -EIO;
+ 		}
+@@ -336,7 +336,7 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *dir,
+ 		/* next folio is past the blocks we've got */
+ 		if (unlikely(n > (dir->i_blocks >> (PAGE_SHIFT - 9)))) {
+ 			nilfs_error(dir->i_sb,
+-			       "dir %lu size %lld exceeds block count %llu",
++			       "dir %" PRIino "u size %lld exceeds block count %llu",
+ 			       dir->i_ino, dir->i_size,
+ 			       (unsigned long long)dir->i_blocks);
+ 			goto out;
+@@ -382,7 +382,7 @@ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct folio **foliop)
+ 	return next_de;
+ 
+ fail:
+-	nilfs_error(dir->i_sb, "directory #%lu %s", dir->i_ino, msg);
++	nilfs_error(dir->i_sb, "directory #%" PRIino "u %s", dir->i_ino, msg);
+ 	folio_release_kmap(folio, de);
+ 	return NULL;
+ }
+diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
+index 2d8dc6b35b5477947ca12a70288d3a3cce858aab..1084d4d586e078ab6825167976dd2a71d52bc8aa 100644
+--- a/fs/nilfs2/direct.c
++++ b/fs/nilfs2/direct.c
+@@ -338,7 +338,7 @@ static int nilfs_direct_assign(struct nilfs_bmap *bmap,
+ 	key = nilfs_bmap_data_get_key(bmap, *bh);
+ 	if (unlikely(key > NILFS_DIRECT_KEY_MAX)) {
+ 		nilfs_crit(bmap->b_inode->i_sb,
+-			   "%s (ino=%lu): invalid key: %llu",
++			   "%s (ino=%" PRIino "u): invalid key: %llu",
+ 			   __func__,
+ 			   bmap->b_inode->i_ino, (unsigned long long)key);
+ 		return -EINVAL;
+@@ -346,7 +346,7 @@ static int nilfs_direct_assign(struct nilfs_bmap *bmap,
+ 	ptr = nilfs_direct_get_ptr(bmap, key);
+ 	if (unlikely(ptr == NILFS_BMAP_INVALID_PTR)) {
+ 		nilfs_crit(bmap->b_inode->i_sb,
+-			   "%s (ino=%lu): invalid pointer: %llu",
++			   "%s (ino=%" PRIino "u): invalid pointer: %llu",
+ 			   __func__,
+ 			   bmap->b_inode->i_ino, (unsigned long long)ptr);
+ 		return -EINVAL;
+diff --git a/fs/nilfs2/gcinode.c b/fs/nilfs2/gcinode.c
+index 561c220799c7aee879ad866865e377799c8ee6bb..714962d010da4a23e9b5f40de8aaaca8b95a74da 100644
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -137,7 +137,7 @@ int nilfs_gccache_wait_and_mark_dirty(struct buffer_head *bh)
+ 		struct inode *inode = bh->b_folio->mapping->host;
+ 
+ 		nilfs_err(inode->i_sb,
+-			  "I/O error reading %s block for GC (ino=%lu, vblocknr=%llu)",
++			  "I/O error reading %s block for GC (ino=%" PRIino "u, vblocknr=%llu)",
+ 			  buffer_nilfs_node(bh) ? "node" : "data",
+ 			  inode->i_ino, (unsigned long long)bh->b_blocknr);
+ 		return -EIO;
+diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
+index 51bde45d586509dda3ef0cb7c46facb7fb2c61dd..0bc1c5141ec596b3c31e7d18e4ba3541bf618406 100644
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -108,7 +108,7 @@ int nilfs_get_block(struct inode *inode, sector_t blkoff,
+ 				 * be locked in this case.
+ 				 */
+ 				nilfs_warn(inode->i_sb,
+-					   "%s (ino=%lu): a race condition while inserting a data block at offset=%llu",
++					   "%s (ino=%" PRIino "u): a race condition while inserting a data block at offset=%llu",
+ 					   __func__, inode->i_ino,
+ 					   (unsigned long long)blkoff);
+ 				err = -EAGAIN;
+@@ -789,7 +789,7 @@ static void nilfs_truncate_bmap(struct nilfs_inode_info *ii,
+ 		goto repeat;
+ 
+ failed:
+-	nilfs_warn(ii->vfs_inode.i_sb, "error %d truncating bmap (ino=%lu)",
++	nilfs_warn(ii->vfs_inode.i_sb, "error %d truncating bmap (ino=%" PRIino "u)",
+ 		   ret, ii->vfs_inode.i_ino);
+ }
+ 
+@@ -1026,7 +1026,7 @@ int nilfs_set_file_dirty(struct inode *inode, unsigned int nr_dirty)
+ 			 * this inode.
+ 			 */
+ 			nilfs_warn(inode->i_sb,
+-				   "cannot set file dirty (ino=%lu): the file is being freed",
++				   "cannot set file dirty (ino=%" PRIino "u): the file is being freed",
+ 				   inode->i_ino);
+ 			spin_unlock(&nilfs->ns_inode_lock);
+ 			return -EINVAL; /*
+@@ -1057,7 +1057,7 @@ int __nilfs_mark_inode_dirty(struct inode *inode, int flags)
+ 	err = nilfs_load_inode_block(inode, &ibh);
+ 	if (unlikely(err)) {
+ 		nilfs_warn(inode->i_sb,
+-			   "cannot mark inode dirty (ino=%lu): error %d loading inode block",
++			   "cannot mark inode dirty (ino=%" PRIino "u): error %d loading inode block",
+ 			   inode->i_ino, err);
+ 		return err;
+ 	}
+diff --git a/fs/nilfs2/mdt.c b/fs/nilfs2/mdt.c
+index 946b0d3534a5f22f34ac44a91fb121541881c548..8629c72b62db33217d4747124885b6f727f182be 100644
+--- a/fs/nilfs2/mdt.c
++++ b/fs/nilfs2/mdt.c
+@@ -203,7 +203,7 @@ static int nilfs_mdt_read_block(struct inode *inode, unsigned long block,
+ 	err = -EIO;
+ 	if (!buffer_uptodate(first_bh)) {
+ 		nilfs_err(inode->i_sb,
+-			  "I/O error reading meta-data file (ino=%lu, block-offset=%lu)",
++			  "I/O error reading meta-data file (ino=%" PRIino "u, block-offset=%lu)",
+ 			  inode->i_ino, block);
+ 		goto failed_bh;
+ 	}
+diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
+index 40f4b1a28705b6e0eb8f0978cf3ac18b43aa1331..29edb84a0663caa4b29fa488c0495fc53358ca00 100644
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -292,7 +292,7 @@ static int nilfs_do_unlink(struct inode *dir, struct dentry *dentry)
+ 
+ 	if (!inode->i_nlink) {
+ 		nilfs_warn(inode->i_sb,
+-			   "deleting nonexistent file (ino=%lu), %d",
++			   "deleting nonexistent file (ino=%" PRIino "u), %d",
+ 			   inode->i_ino, inode->i_nlink);
+ 		set_nlink(inode, 1);
+ 	}
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 098a3bd103e04cd09b0689fe2017380d74664496..9a8bc3fa35ce9b447abbc2fb56cbd2b0cc5f76de 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -2024,7 +2024,7 @@ static int nilfs_segctor_collect_dirty_files(struct nilfs_sc_info *sci,
+ 				ifile, ii->vfs_inode.i_ino, &ibh);
+ 			if (unlikely(err)) {
+ 				nilfs_warn(sci->sc_super,
+-					   "log writer: error %d getting inode block (ino=%lu)",
++					   "log writer: error %d getting inode block (ino=%" PRIino "u)",
+ 					   err, ii->vfs_inode.i_ino);
+ 				return err;
+ 			}
+diff --git a/include/trace/events/nilfs2.h b/include/trace/events/nilfs2.h
+index 8880c11733dd307c223cc62ee34ebeff650ecb12..86a0011c9eeaf031cfa0b79875b2b106ef8b7cfd 100644
+--- a/include/trace/events/nilfs2.h
++++ b/include/trace/events/nilfs2.h
+@@ -165,14 +165,14 @@ TRACE_EVENT(nilfs2_segment_usage_freed,
+ 
+ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 	    TP_PROTO(struct inode *inode,
+-		     unsigned long ino,
++		     u64 ino,
+ 		     unsigned long block),
+ 
+ 	    TP_ARGS(inode, ino, block),
+ 
+ 	    TP_STRUCT__entry(
+ 		    __field(struct inode *, inode)
+-		    __field(unsigned long, ino)
++		    __field(u64, ino)
+ 		    __field(unsigned long, block)
+ 	    ),
+ 
+@@ -182,7 +182,7 @@ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 		    __entry->block = block;
+ 		    ),
+ 
+-	    TP_printk("inode = %p ino = %lu block = %lu",
++	    TP_printk("inode = %p ino = %llu block = %lu",
+ 		      __entry->inode,
+ 		      __entry->ino,
+ 		      __entry->block)
+@@ -190,7 +190,7 @@ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 
+ TRACE_EVENT(nilfs2_mdt_submit_block,
+ 	    TP_PROTO(struct inode *inode,
+-		     unsigned long ino,
++		     u64 ino,
+ 		     unsigned long blkoff,
+ 		     enum req_op mode),
+ 
+@@ -198,7 +198,7 @@ TRACE_EVENT(nilfs2_mdt_submit_block,
+ 
+ 	    TP_STRUCT__entry(
+ 		    __field(struct inode *, inode)
+-		    __field(unsigned long, ino)
++		    __field(u64, ino)
+ 		    __field(unsigned long, blkoff)
+ 		    /*
+ 		     * Use field_struct() to avoid is_signed_type() on the
+@@ -214,7 +214,7 @@ TRACE_EVENT(nilfs2_mdt_submit_block,
+ 		    __entry->mode = mode;
+ 		    ),
+ 
+-	    TP_printk("inode = %p ino = %lu blkoff = %lu mode = %x",
++	    TP_printk("inode = %p ino = %llu blkoff = %lu mode = %x",
+ 		      __entry->inode,
+ 		      __entry->ino,
+ 		      __entry->blkoff,
 
 -- 
 2.53.0
