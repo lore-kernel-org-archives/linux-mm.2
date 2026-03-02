@@ -4,89 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73321E9B342
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:14:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5EFDE9B356
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:28:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B2A596B008A; Mon,  2 Mar 2026 05:14:13 -0500 (EST)
+	id 2EB036B0005; Mon,  2 Mar 2026 05:28:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7D36B008C; Mon,  2 Mar 2026 05:14:13 -0500 (EST)
+	id 2A26E6B0089; Mon,  2 Mar 2026 05:28:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E38B6B0092; Mon,  2 Mar 2026 05:14:13 -0500 (EST)
+	id 176B26B008A; Mon,  2 Mar 2026 05:28:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 878186B008A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:14:13 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 027B86B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:28:02 -0500 (EST)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32EE9160BBB
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:14:13 +0000 (UTC)
-X-FDA: 84500712786.25.A855F37
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8DD924000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:14:11 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=afiln8Ly;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 118F8C33E0
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:28:02 +0000 (UTC)
+X-FDA: 84500747604.25.2D148B8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4E0AF40006
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:28:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Krl6+69H;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772446451;
+	s=arc-20220608; t=1772447280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=iTB8khiaDP6C34ZjGbxZIf00mczh0eYfY6sX1cyVTs0=;
-	b=P+DyPQ9xtOxePaTmem9hZ3ishTT75x3BhgdESl8dFC8lJ+DuyTSqSVqK7WLfQZQnUxLZ/j
-	RL9P4kWct5/2kVvVhmebVpf2BusAC/k7DhUoqCsjChkz3ZvLt+wui/+WZ6NKo5K4En5Eu5
-	5S83SnoTWuxKNbisuuGnLs80FKZ7460=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SJQ3L9PaI7+gOYTmqM2jgEqeJ1oyRkGI7Y+f7oqufMo=;
+	b=6S3snEZvlJ+i75VXsJfA1z3DpiS10ykqxRP6Vh9ksc1C5ObTK5Zm27WOV2Q7nWZ9SS1ER+
+	T+GiqW5B5YFdgEgw6zUMgjhyjz87+2ZrxWmguqNXFDdg/WBCMPpkGTBTP0LBch5lV60dz7
+	KfenN7HaI/pawDL3sl6i9T4LjMnCSCs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=afiln8Ly;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Krl6+69H;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772446451; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772447280; a=rsa-sha256;
 	cv=none;
-	b=0DXZj/tozGzNv9wcPm2eOJcYqXwdMNZS0r3R4y4Q/RBfE9uGRoupozVQ3fquNnLN2pq4qK
-	qW2YvF0CZIECmHU7QhfHQdntUyFFb34kHwJT6jSrcRgdYDVwyVIvU/gbQdVTFy/xqD+yy6
-	oVCljL104kgpN8g3763z6KXyFH/NZPo=
+	b=uHPhoO9e9XGBOMumPPLKvEkncZgh+rFbMB4J+4U5fHvZOgAPEBw6WJRWgoeTqiObhR8xlr
+	rzoeTtYbboAjsa0/WmWctOwoGq5bw/3vkBS4laiQ5GRjUZdGLYNh4P+MdYap+zP1PEsmrN
+	5RmZ8RQ9L7Zob9xI87b17DPCmn2VBXc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 980A543E32;
-	Mon,  2 Mar 2026 10:14:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F350C19423;
-	Mon,  2 Mar 2026 10:14:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 68891600AD;
+	Mon,  2 Mar 2026 10:27:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A46C2BC87;
+	Mon,  2 Mar 2026 10:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772446450;
-	bh=srIuuoMPtvXCLPWHQdRHEfgX1q8mmI8oAwkrIMF+mSE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=afiln8LyM7AC78D2PUw5VpRXzHkkUNG11OnO4Ogbvojhxje4apxM4JUVgnX2dEHPP
-	 TgDYh5/VNe8o+fa/cCbBGPNPDuz0hwb5Bo5HbFhsSacMlPz9tGyfHcAvjgke5I1bLF
-	 nJqjE4Ics+cAGxPoFozZdeMuzU0DpLUqtqYwioCDnm92a1YwsdGP/hhoSTisFXCKQJ
-	 VMMOu+kddr6p5qN7sIVT2Dq6K/1SLcqrz3itpDTbqtOPacvLxd5YtEUmi2xXVnI4zP
-	 Iq8uq7qvG7NIIWVZm0apyeoFGDdbbiF2H/xcpMTMt2LPrJ+7ATq0YttEhXlG0h4eQK
-	 KFivsK+cIImSA==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@linux.com>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [PATCH] MAINTAINERS: add co-maintainer and reviewer for SLAB ALLOCATOR
-Date: Mon,  2 Mar 2026 11:13:46 +0100
-Message-ID: <20260302101345.36713-2-vbabka@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20201202; t=1772447279;
+	bh=8Jbu9H2WLMZ/Y0rr095qrTvIs+zg55Kd2JEbFtyGHmY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Krl6+69HdQKfsIadgvHYi287ier/j1szZ993OZDT7DLhjavvKec7Gmr03hTpHVgXj
+	 X0/0EjLIMbPIDZrCrJh9in109yydXaY5xnii3BGEGQDsH91yBSGTL2rsyr6PES0xNG
+	 KzCTBZZYNcrS+JljktAcnv3r/4+UE5gSO+jilmVPIvLhvKH/uOqaeeaW5ID/ViHWtE
+	 1C/VnCBU/fOpg6j3zXJeKFB9GExjAgAF8c5qVzy1gVHvIfNNS90zmmwWo7JQbWGXi2
+	 hMrX3cYHDYRwL5mIhmHn77RYJyzkHV9dkffdxYZV/gl7j7Y90QzUkwjrqRa3JIEhbO
+	 Sst0s9UkPTtwg==
+Message-ID: <f2f3a8a1-3dbf-4ef9-a89a-a6ec20791d1c@kernel.org>
+Date: Mon, 2 Mar 2026 11:27:40 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
+ zap_page_range_single()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
+ <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-3-david@kernel.org> <aaLh2BxSgC9Jl5iS@google.com>
+ <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
+ <aaVf5gv4XjV6Ddt-@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aaVf5gv4XjV6Ddt-@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: enqm6d4itjbszy4ct5e7itwizmj4zq5g
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8DD924000A
-X-Rspamd-Server: rspam08
-X-Stat-Signature: sh9dqzcaifuj6g8enbsc9qnz4craawa8
-X-HE-Tag: 1772446451-224234
-X-HE-Meta: U2FsdGVkX18w03JIO6UQf2vmTI3SiDwkhtyVRZOvlrM6dmhSzk1gCh12HE1qs4wDi5SyhlUOBhmO4ZVoKIBxnu8tV+CCqIZA8S6fzZvRGqg5/1/aA4ohd7bqZpnyAe5MwW82pT2qxtCuA66s0jOsVGmvnFdn/M+nLo4Zpfnw4U+19fZb175u/jbEyHn+DBZG+tfx7nQMmIwI/rJ1oC2k3VFVU9Y4ZZ0x2YQZVcev2pcnGYqQ42Y2TEJePQElN4Eo/jHjY2KtTKwfSVAGw+MSStrUZoPrDiDdq0w5dNscTH3EAv5uj94Mz5l3H3RrzbIoBCjJkyRTXGCcEr6Wew/+swxhn0UMaIFZW/wZ0aExTkeoh3PaKyO2WVS5whfWX1JvC1BousDXyK3Le0SfjKLVFxQCxrOBMcBjKTn7fRhZl4SIu24WCd85+WmEAWcdO/JdLE/1wHWmy+hF1XjY7nLFatcx0eqSAEgMiBxvLE9UZ/xAKTmHr2/C2Fb7kfjUX2kRAa6SYCNJ0ONzbvkabDugw2c4aK0uxscY7qvKrvBQqnqinLvSHNYPPnbSEkvfbMxBmXReV/P9+YD6H1z9xehHFJclg83pWBEeduYpLtd1t4XjK8gKXtnGSfG0SwzIuIwKBz3ilbDWIwHZrkphyGC4Rrg3N71PSnAJa3qw0pwDBIcfiCee0h5Rtbh84sGH2OwpBloiLuB1u930nOQHVAiAzSYeqxCM7wTNj67XfP6ScVLbbSCbEOBJNbZEfMah3EhoE8NRIFBUSrbLcLZDLYuNSoavMKCk546cGs2pCQyTrAukBvaRuqSzP9VqzDwL3nMJ0mZcEz6DGRTOTHoJxrcoXyyFAFyy3o568XVAu4M6Y8UE6JIvwRBR1kvt/DfgEZwfmJfqGShddBVBaST518Mo9dYUlrSaXsbMpKxdA8U/S214c660OwV+6r3DkBlgDknhVlqbz6W7lKV4kL6hn/2
- kIoeCbVt
- 8aLtHNm2G4zhCBBghkxymj9gQSq1Te+BZ5gqNLVNjNqCX4MHTWuv3q6OoAuzO+nVTQs2KYDQ8i3F1fbhDmPrHDfcD4e9LM6ord0rb9ja8XWVEiXwwk8UIRZanWwW90dR0yE42XBXE6n68NUlXHr2cp2wAk8DQrzEQMbIBJ121ewZr9qOvCb+NJNrVl9QeNfI9/d6AcKVuNuiz0qhXND8ERYEUaH0tg43w5f90sS8A/2iu2VgscNkD3unqUDuxJcNpDH2jfUuIr+bDhgzFuXYpfLsQ8BxVl2nvVi8zulDyUg5rXzw5dkppUXXlq1fsEVIE4wfC+bRiK1tQ5EaeQGvhNzGfL4A1ZRlG+PFY+dBzDzqwYvSP2HGgkRl8bjwAp/Uvm56V2CWKfsYrHPtVubInRUS4+VOBndacXoLB
+X-Rspamd-Queue-Id: 4E0AF40006
+X-HE-Tag: 1772447280-619499
+X-HE-Meta: U2FsdGVkX19acO9SWwhYiKsvYlqS8uqszzVhC8UIjl2SbsZzDVMARcnv/88XaqLM9PXwCbAIm6kfGzr873KBQPvdktDI7ZFMKmmPtD+liVR2LRc+bDCT0KAZQLWivdGbHseukrDUlGSE9s0DcF8yj9QM5gcU6K3PcynBW/MPkParTzZ0kmKtF6SEv5q0X7TzbPEyNzpkfqMJXA4MLDGho//NXGEtqv93RULuIqp/7zGHK9VgOj7ZotiIIYUcCFuAa7sd9eYbUZx6/wQFuohZaO7fvnrkZbmReghKTzuF1gphUdjAd6CtPgm2FgRr9hwWMkMc0sNWGje4gr+N4dJ4QwZYZFdTS+L5N+bvDOE7jM22pKTo2esIECwNmbdXbd0+sJ6eAJ8b4sE0g5vsTGydlk0bRahLatbLoGqEsmX+LN8U9Jw8XzFP0SJzxCfpoBOByrqT3k/9+4dll4DO6+ve3VHmPwxEDZlRaGhj+ELEPvZvmVGHJ5xTmtmsfeq5hxCjkz0h8l014gp3GZKj4OD6ZTg/ku8NYgzF2onRcBIb/DRzp1bwG8qamXd8R9uP/+vgzyA7WenJU4sfGI2v5ox0eNCHIgvYpN3TF9CBblURlwnB/cvdIZrUhV24ACkN+EDFPwYfE1Y4urg0bZcGjGBYweqj9gmWD6flnZ/t9zu9uTRxIy/QiUiA+7RqLTkCdpjdfrw+sZq0VjWmi2c6B3BzlCKu/48M3aHfLaC7TwkgRQBAj7Ma+NcflOLxHXb0GoxwlwajriVB6lHIbzl9Ap3dN/5b0GJrULbUN30dm+cQlJS+Dnick+2klDcpysjj//96t7BF7DFjSmynssIn4jatPukdk4xKYa8kZoEqxAICbekCeZaCgk8/8Lf8Moj90E4gacYb6//ZqACEaTtv0ZkvekDlnCQlV0VrrqYn10y8jqKoP1e7BOG9l84m9tYjIEPkyFgOFVA9cU95roHMIoQ
+ sajvvoL2
+ gh03TTsYW/pmnIUe4O+N8OE7jPMeVIpo44RKYUnZNfrKxhjchUNj43Hi1FxjNP8jsnjg8+jC6ApWEAku04gvGQIaPVtP/y8MJGPrkSjMjdrfIfY/sOVB0RZsTdh74nBk74J8qHNf/Gf9n1Rem1epZmm119WIp+IR2DBBaM46ux0luBZ/x7VfTOoiEG+z2IkKJCpYR6eWzw9V9yvJ3FvH762/UvFr/dAw4EBQg8a/vgLlcC4v14wYWDW3O+Oi+3ROn8yu6NEU/P4Hb3Jm9CYZlAdMagiZbJelCSy3VAxel6EQAe3OkKZCl8/bDzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,36 +184,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Promote Harry Yoo from reviewer to maintainer. Harry's been involved in
-slab development for multiple years now and doing a great job.
+On 3/2/26 11:01, Alice Ryhl wrote:
+> On Mon, Mar 02, 2026 at 09:18:45AM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/28/26 13:38, Alice Ryhl wrote:
+>>>
+>>>
+>>> Please run rustfmt on Rust changes. Here, rustfmt leads to this being
+>>> formatted on a single line:
+>>
+>> Having to run tooling I don't even have installed when removing a single
+>> function parameter; did not expect that :)
+> 
+> Well, rustfmt comes with the compiler, and it would be ideal to build
+> test changes before sending them :)
 
-Add Hao Li as a new reviewer. Hao has been doing very useful reviews for
-a while now, so make it official and ensure the Cc's.
+At least on Ubuntu on my notebook where I do most of the coding+patch
+submissions it's a separate package?
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+I do all my builds on a different (more powerful) machine where the
+whole rust machinery's in place. Further, build bots that run on my
+private branches did not report any issues.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61bf550fd37c..5f3cc4193a8e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24350,11 +24350,12 @@ F:	drivers/nvmem/layouts/sl28vpd.c
- 
- SLAB ALLOCATOR
- M:	Vlastimil Babka <vbabka@kernel.org>
-+M:	Harry Yoo <harry.yoo@oracle.com>
- M:	Andrew Morton <akpm@linux-foundation.org>
-+R:	Hao Li <hao.li@linux.dev>
- R:	Christoph Lameter <cl@gentwo.org>
- R:	David Rientjes <rientjes@google.com>
- R:	Roman Gushchin <roman.gushchin@linux.dev>
--R:	Harry Yoo <harry.yoo@oracle.com>
- L:	linux-mm@kvack.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git
+
+> But no worries, I took care of testing it. Thanks for taking the time to
+> update the Rust code as well.
+
+I just did an allyesconfig and it does not report any warnings.
+
+So apparently, rustfmt problems not result in the compiler complaining?
+
+Or something else is off here that rust/kernel/mm/virt.rs won't get
+compiled on my machine, even with allyesconfig. I can definitely see
+some RUSTC stuff happening in the logs, like
+
+	RUSTC L rust/kernel.o
+
+Thanks for the review and for pointing out rustfmt!
+
+> 
+> Documentation/rust/quick-start.rst has details for most distros.
+
+Will read that the next time I feel brave enough to touch rust code.
+
 -- 
-2.53.0
+Cheers,
 
+David
 
