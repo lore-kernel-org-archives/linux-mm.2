@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54423D58E48
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:46:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B20D58E48
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:52:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8719D6B0005; Mon,  2 Mar 2026 11:46:06 -0500 (EST)
+	id C0A926B0005; Mon,  2 Mar 2026 11:52:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81E466B0088; Mon,  2 Mar 2026 11:46:06 -0500 (EST)
+	id BB75F6B0088; Mon,  2 Mar 2026 11:52:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72A596B0089; Mon,  2 Mar 2026 11:46:06 -0500 (EST)
+	id AC38F6B0089; Mon,  2 Mar 2026 11:52:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EE8B6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:46:06 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 08491139983
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:46:05 +0000 (UTC)
-X-FDA: 84501700332.20.88FDB84
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 62E1D80015
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:46:03 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=owS2QK6j;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97FBD6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:52:02 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E21B1B6FCB
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:52:02 +0000 (UTC)
+X-FDA: 84501715284.03.2C243EE
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AA934C0008
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:52:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772469964;
+	s=arc-20220608; t=1772470320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Vg7gqMeiyzPknt3qyMKgO+85Gcdawf8YPVMOwCXhuA=;
-	b=YcCx03HfWTh+WSZaSWqRK1n84pkc4IObIG3E7A3OpTv0gXVDhOU/auPNMQwxRJhVXuhisD
-	CuB7tlmUIzqbDIeZDTlW3uza68pZv20wmqgIVL43oRWsJV9Jjg1nXOWWkhb2L0vyVuA24v
-	OmBSEnQ6NSkmSZoPJU2bac/QGVKD4IQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=34CdxhqSKcgs+/bEb/I2po6b0nziCncT19SGJKNeP+Q=;
+	b=CAdFLkwkGsYDwZKE8/hpRZoQxjG4BDHBM4m1R3Hu/FRD0GvEUedgybtLoJtAK2MwtKdQ0l
+	bYsCgf0WP9ymqjRzwB883p2VI5bvS9lOdR9wyWr9Caz4prh6cHaZf0RkNJHrCAFA0e5Pmd
+	jdzC6XB/1V9T9oLk7RE5F6Bikj5cYOQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=owS2QK6j;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772469964; a=rsa-sha256;
+	imf28.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772470320; a=rsa-sha256;
 	cv=none;
-	b=3i5H3WpnxYRyBq2AHr75oBuuWg9GsLTwlS/4YFLyieKKYKzaOH7nk7EpiLotTGWp2Qvm5C
-	aA1ZLdtj5E7rJ7nAwqXe3pXLYfNgZMYwepo6mjw5JzXt9BghM5BPoXEMM16c9Gpf66c2tO
-	aXTDtZIWpZcc5+9GyOxCcnO+r1iBz/k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8Vg7gqMeiyzPknt3qyMKgO+85Gcdawf8YPVMOwCXhuA=; b=owS2QK6jKnt+GVdLtj0zS8Wvnv
-	omE+YRDnz15+BbCFScMK0nqhIE+g2d1g9cWeoRay+sPdP9qOR67XZZ1Hop8ALT8uO1s65oRagWMn7
-	lzM58aSkEa9MJwJf4RWxmXXbN+r17MR/kwfI4iE1z7i3nMP8Y322XYS90pMvSu2lHiW2rSQzNulb5
-	mPoNFIW2Tm0GTGn4inHkp5LiBPSQCt9Tgd0wv8Vqpp+TMEmesZYqJ0D/ZYz/5KIwR0IlwiQG48LPn
-	IDG7qFF/nIVP5yO/j+/qmADSO53CG+iTe/CdnxFa1UKEnuYum7FRAsPRpjHitiNuFMWbjxGK9E4pC
-	vNDIxDjw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vx6P9-00000009mbi-1QvE;
-	Mon, 02 Mar 2026 16:45:59 +0000
-Date: Mon, 2 Mar 2026 16:45:59 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: WANG Rui <r@hev.cc>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] binfmt_elf: Align eligible read-only PT_LOAD
- segments to PMD_SIZE for THP
-Message-ID: <aaW-x-HVQpSuPRA1@casper.infradead.org>
-References: <20260302155046.286650-1-r@hev.cc>
+	b=DBZ+/TUTmVv2p01hW9qk0GG+/A45S7WFhUEggwwWNnJ2S2BR/JSI1jj5SQj8jAxLL2Gq4A
+	6qD8DAw0qz+6sLiPhJK8DwRlLQFAR03le+uz76oQ/ALLrkBMlFrEc8J8N7TembjBVTUMty
+	spQvk7GSOtTi7Y1+Yh7WlY3O9Ng7S+U=
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3F16B6F12;
+	Mon,  2 Mar 2026 16:51:58 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 12AEB24;
+	Mon,  2 Mar 2026 16:51:54 +0000 (UTC)
+Date: Mon, 2 Mar 2026 11:52:20 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>, Qing Wang
+ <wangqing7171@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ syzbot+3b5dd2030fe08afdf65d@syzkaller.appspotmail.com, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+ <vbabka@suse.cz>, David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH] tracing: Fix WARN_ON in tracing_buffers_mmap_close
+Message-ID: <20260302115220.163f1249@gandalf.local.home>
+In-Reply-To: <e4deff21-2fb5-4f37-a7d3-ede5f69a4489@lucifer.local>
+References: <20260227025842.1085206-1-wangqing7171@gmail.com>
+	<aaFrmHzIAkEe7ufy@google.com>
+	<aaF0zS3xh5KgM_yy@google.com>
+	<aaF-bhAIhCgusG9k@google.com>
+	<20260227102038.0fef81e9@gandalf.local.home>
+	<20260227155601.18ebd3ca@gandalf.local.home>
+	<e4deff21-2fb5-4f37-a7d3-ede5f69a4489@lucifer.local>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302155046.286650-1-r@hev.cc>
-X-Rspamd-Queue-Id: 62E1D80015
-X-Stat-Signature: 7fayee5apakem6cx3qiyremzspehs6b7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19h1PiaoNVqS8DxrhucMqrMvzpHGLzoem8=
+X-HE-Meta: U2FsdGVkX18kHmqeYV5hrJyMsFisrRETeIsoWEpDA43T6JHuCdhwRt0JW75CZSS2ymTO0nidfGfavI0iciUpuawHd7vwGwvgCOlN4uVWdew/Hl7B0gvHkVuqy9AMfRSkAh8eNnP/iECo9y/okKPSWmwLTph1yQvBPV5TUenM21pXGwCTR0jG6HQ/gz4p2MW3FKEZfXjfCGJVjGsdJ7OcnwHQhxVT59OkPwRTyVBGTPrFNS9aHGzcBrO+Bsm/gR51IXgrFc3Fa94tBNlWF9mFfaOrcvlmGaCR4DTxEnbDFgpdZSRjLWRHwkfNWlEJkklXosVSxOxoY7I4Adh/7I8SCiVIcWf0qaS5
+X-Rspamd-Queue-Id: AA934C0008
+X-Stat-Signature: ga8zxnmmaot1unp1q5b7kx6effrhy9ft
+X-HE-Tag-Orig: 1772470314-185035
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772469963-828789
-X-HE-Meta: U2FsdGVkX1+EM7G18WwlXs1VNnIMRK5+Km/zu43OribWd/ER9zVvFIJlF3iQDugPXqWBlOD95fiUtDQggLTqMUfUjWyrxfINHOV7YrHyzA6HHPBQVok/E2mlIG6pPlVhoQRViB8LAdNYtJhLVjMHpifroj1B+6UOjXYFVlFUYDmJ/MS7+I2wh5dk7OQ1lzIIx3CiSYWUgapuMblz5Y66fMawTYaqRBgDjHYJQzdLW+y9YWoUsPFZ7DGNCs26hPW6HcSZMN+mHY3QgzFe2wxHmv21CFrA86B+9oTIqK30bw/SbIIrz1TY7hALK4+3EMquD3kCeIKalWQc084JJtrLxt7wsI3lxRJoPk8gnD60JEBx7SrbgvSeCdY1u7/jWjeQmOfNtEwkbd2KvlBx8TrGUaOetsQf+lLjhsC4JkvagsyF5tFsscxatc3eIbjfjodEkgUCbC+bBbnadEcdpYlljGTYzFSR2cXKSuCF+QvGDHkKmWB8ewd6Zhtwu0iIFh7ayck7b7sPW/rlkLwl317J8TXq1g/p04jpI0iqu/7y3kWh4FUniEOtMAvHwVU++QZlPUB3zGt+8vUZSYp3vnvK+Cv41B6Zmj1LBKLFa9bb6uHy8epuOFUE5p103JBiHJpEPb6GSdq2pBDC/gVtKV/Zh8zy4Vo1z0EuitPWv3Qf4K29fvXsHZpoZ8Mm7S4bTTsiwx15XzUDNhTRvcxxGIvcNDCoS9Bogr+4SkcbyS9BzP8tFbuUQda1KuhcOH887dCrhxRfmKHF9sB5dsd1YE/x48174+X9WaNR+m2+4BLGVZlynFieI7lA5WsTDdwkTVs3cr2+iQEDxAw0nUqpE+R2p//36PF/mGP4xKf2Se/wQqL+WAicAS61u1wWpZT4e51gi/FL71bTY1EO7ljqZjR9KLzGL0EuknvbmfEwnzyS4UKHkvPSvssSQeBZO5bv4NzauzQ1bva10baxdogmtXA
- uME8O6M3
- Q6kvi0YHR4pKeDf1LP0s/iuGlQANZKIP4DRrfQt8ol7KXQ1pbQ0/fmlSpvLAlaIQWwxetBQem6rRjXdadcUWHNpq1pAhlCk4eTUb3R9gd2JBvgzpPze2xstH1r7TpiqAGoJDY8BS1A6BKM8wW3Qt5Vzrf29l86xD9sshg95sgM6JI8miJuVcFEr1BqI9EkOzw3zht1pbIZo3nHeOxkrW2ssU0CqqvkWf62PS8qzjsqJ38Ft4xesFHfSg5CsDsWsKVcxWDuSbRfBk51dOnzvCuZft43Q6d38X7O6/9SIvHIMtRIqE=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772470320-160196
+X-HE-Meta: U2FsdGVkX1+J/CIpM2f9RlL9moa1BLwetynoqSn3JJFCS+tvOh+JvPUaiJ75UPKGr00KltEPjfxNM2+L6uLzhvZaBqHyqnJbsltntk7juswVrksr34rK0LZ068JI4V/L7F/fXRoKheu9rwdWFRkXOSQAWIL0BP7TzC1BB9OLQ8h50c0cuNNYAv1ELSAryBhynC4WdvhybBG45zIlTj3O8et88BVW9lrC6Ipi8tNoRMCekDf+5TeYlpeMFw4IwbQ8rslYCCe2OgrjysSy9v4XXAFNMKWP30QwHf1eTrcWeASIVkHps/vQ2lruxYazUB6L6UzELgA0k8PVzhsARJvb4jYqK7jmbXNVa2Rhs4LK7r8fm93z5Tku5gzU+erE6L0cJs27BK15WlVaTL7yj/zsCacz8pYBOdiLAhlS/HVwqn+8OY3rHkKnzpmxLFObkXvWxMJhplDQoyfmLp15pV2uljMnyRVG4+nPuip8xz73Bmy3v/QYHl/zsSomczVn+hADIzTtFhoDIv8ykpXK756lzZhqwUkY4M6Sx6pGdEuyse0GHWBPetRJ0N5TNoxhqySfk0DhDzZQqJtoBK8GdtCGcQOZu5afhZmJdPoaFrLbY6UVShmGrCoasb7ujKTRZ3VLmzeZiFfboZugvdrWQ8Nr9ybWUJCTc1np4RHfYTvqgnpdJsHyrq1Sqj5gXv8h1wBQu2epnGYu2cmsFCc7fxUrLlMX9aemZdKgZfmY+ONx62nTnFzEca1M2a1UwTVkjMnmPsao9OdH5evVbRfpg8DCz544E68N4BE9pFIGBSiEX3icjxfSpELVijdUQflyYS3sGMRlHj+DOTKvcnPDGqZnnInV9IQKkuQTbr+t6DefORS6ahlWREFMNpVDZYyNJ+F5eQmR/xJPJVjUO7+rHaO+C1I0dDeY3tNRdp7jUL1GWYLcaSt/FTHLHaviaMlMr7pCHOgOhu358TJBO3M8J0r
+ xwJrkN1d
+ hwTaDodx5aFGMqdcxReeCv2GKfWujxhloIRQFJQRDrB9o40TKBAuo8hfGP8ap1jDDuOG9NhdBaHdtuUtI+LQfaq8XODkgQ71tKIv+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,33 +93,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 11:50:46PM +0800, WANG Rui wrote:
-> +config ELF_RO_LOAD_THP_ALIGNMENT
-> +	bool "Align read-only ELF load segments for THP (EXPERIMENTAL)"
-> +	depends on READ_ONLY_THP_FOR_FS
+On Mon, 2 Mar 2026 12:13:24 +0000
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-This doesn't deserve a config option.
+Hi Lorenzo,
 
-> +#if defined(CONFIG_ELF_RO_LOAD_THP_ALIGNMENT) && PMD_SIZE <= SZ_32M
+Thanks for looking into this.
 
-Why 32MB?  This is weird and not justified anywhere.
+> > But looking at the various flags, I see there's a VM_SPECIAL. I'm wondering
+> > if that is what we should use?  
+> 
+> VM_SPECIAL is not a VMA flag, it's a bitmask of all the flags which cause us not
+> to permit things like splitting/merging of VMAs (because we can't safely do
+> them), i.e. that are one or more of:
 
-> +			if (hugepage_global_always() && !(cmds[i].p_flags & PF_W)
-> +				&& IS_ALIGNED(cmds[i].p_vaddr | cmds[i].p_offset, PMD_SIZE)
-> +				&& cmds[i].p_filesz >= PMD_SIZE && p_align < PMD_SIZE)
-> +				p_align = PMD_SIZE;
+Yep, I knew it wasn't a flag, and actually picked it because it looked to
+have the flags we may have wanted.
 
-Normal style is to put the '&&' at the end of the line:
+> 
+>         VM_IO - Memory-mapped I/O range.
+> 
+>     VM_PFNMAP - A mapping without struct folio's/page's backing them, e.g. perhaps a
+>                 raw kernel mapping.
+> 
+>   VM_MIXEDMAP - A combination of page/folio-backed memory and/or PFN-backed memory.
+> 
+> VM_DONTEXPAND - Disallow expansion of memory in mremap().
+> 
+> You already set VM_DONTEXPAND so you get these semantics already.
+> 
+> Setting VM_IO just to trigger a failure case in madvise() feels like a hack? I
+> guess it'd do the trick though, but you're not going to be able to reclaim that
+> memory, and you might get some unexpected behaviour in code paths that assume
+> VM_IO means it's memory-mapped I/O... (for instance GUP will stop working, if
+> you need that).
 
-			if (!(cmds[i].p_flags & PF_W) &&
-			    IS_ALIGNED(cmds[i].p_vaddr | cmds[i].p_offset, PMD_SIZE) &&
-			    cmds[i].p_filesz >= PMD_SIZE && p_align < PMD_SIZE))
-				p_align = PMD_SIZE;
+Well, we don't reclaim that memory anyway.
 
-But this conditional is too complex to be at this level of indentation.
-Factor it out into a helper:
+> 
+> I'd take a step back and wonder why you are wanting to not allow copying on
+> fork? Is this kernel-allocated memory? In which case you should set VM_MIXEDMAP
+> or VM_PFNMAP as appropriate... If not and it has a folio etc. then it seems like
+> strange semantics.
+> 
+> Are you really bothered also by users doing strange things? Maybe the solution
+> is to tolerate a fork-copy even if it's broken? I presume somethings straight up
+> breaks right now?
 
-			if (align_to_pmd(cmds) && p_align < PMD_SIZE)
-				p_align = PMD_SIZE;
+Yeah, right now the accounting gets screwed up as the mappings get out of
+sync when it is forked.
+
+> 
+> Without more context that I don't really have much time to acquire it's hard to
+> know what to advise.
+
+Fair enough, let me explain everything then ;-)
+
+This is a mapping of the ftrace ring buffer to user space. Until recently,
+the only way user space could get access to the ftrace ring buffer was to
+either read it, or splice() it to a file/pipe/whatever.
+
+The way the ftrace ring buffer works is that it is made up of a bunch of
+sub-buffers (must be multiple of PAGE_SIZE and usually is a single page).
+There is one sub-buffer called the "reader-page" which writers never write
+to (with an exception out of scope for understanding the mappings).
+
+The "reader-page" is a sub-buffer that belongs to the reader. When the
+reader is finish with it and wants to read more of the buffer, an operation
+is performed to swap the current reader-page with one of the pages that the
+writers have. The new page is now owned by the reader and writers will
+leave it alone. This allows readers to do a zero copy splice of the data in
+the ring buffer.
+
+Now we added a feature to memory map this buffer to user space. The
+reader-page and writer sub-buffers are all mapped read-only into the user's
+memory address.
+
+Another page is mapped called the "meta page" which tells user space how to
+read the buffer (which sub-buffer is the current reader-page and the order
+of the write sub-buffers).
+
+The read-page is what user space will read directly, and when it is done,
+it does an ioctl() on the file descriptor for the buffer:
+
+  /sys/kernel/tracing/per_cpu/cpu*/trace_pipe_raw
+
+One command of the ioctl() will tell the kernel to swap the reader-page with
+a writer sub-buffer. The meta page is updated and the user space
+application can read that.
+
+Now the meta page is unique per ring buffer and not per process. If there's
+a fork, any change to the meta page will affect all processes that have
+this mapped.
+
+If two processes map the same buffer, one process will see any updates in
+its meta page that another process does to it.
+
+Now there is nothing wrong with doing that, accept the user space processes
+will likely get confused. And we currently allow two separate tasks to mmap
+it at the same time (maybe we shouldn't have!).
+
+What we didn't allow was forking, as the code didn't update the proper
+accounting. It needs to know that the buffer is mapped because it handles
+splice differently. As the pages are mapped to user space, the kernel can't
+just allow splice to steal a page and send it off to whatever pipe. Instead
+it makes a copy of the page (basically killing the performance splice()
+gives it in the first place).
+
+We originally added the DONTFORK so that we didn't need to handle the fork
+case, but I'm guessing that you are suggesting that we should do that
+instead of preventing it from being duplicated on fork. Am I correct?
+
+-- Steve
 
 
