@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B0B1EA4E3F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6510CE9B37D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:33:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EA126B0089; Mon,  2 Mar 2026 11:33:16 -0500 (EST)
+	id A78CF6B008A; Mon,  2 Mar 2026 11:33:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63FB36B008A; Mon,  2 Mar 2026 11:33:16 -0500 (EST)
+	id 981196B0092; Mon,  2 Mar 2026 11:33:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39C056B0092; Mon,  2 Mar 2026 11:33:16 -0500 (EST)
+	id 7B6DF6B0093; Mon,  2 Mar 2026 11:33:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3B96B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:33:16 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E98141B6E33
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:15 +0000 (UTC)
-X-FDA: 84501667950.07.4F5B06F
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66E286B008A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:33:18 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 17EB91B6E33
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:18 +0000 (UTC)
+X-FDA: 84501668076.13.46D172F
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 826728000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:13 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Px5RJ27u;
+	by imf23.hostedemail.com (Postfix) with ESMTP id D042D140005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gF6mtCC2;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+	spf=pass (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772469193;
+	s=arc-20220608; t=1772469196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bzxdyxr5fMzjILh7ZrLFMuYDXIsd3Y8BQZBtrjNZH1I=;
-	b=LkQGrylQeXFJy3B1mXLk/iyHZ8xcmm1VssRgzsu/iRFPE1dGq8ojDqLJeUIiwXn3N2g7+T
-	i4EqrRLJT5xBseiY1yc9CeN4p28lU8PQ2GSi0/krmoi0lU/VgimLYsRrWHS22WDl8ooxPG
-	8MlG/fCZh+cN+V7/hsuAH3FlMSqSznY=
+	bh=7G3nZXHsqE2yQkCZwW4smxLN8eig4I///zOtQCLjyz4=;
+	b=f5PoUzeC/J2kduidBnB46p41HdzZGrF5IbcCKi3dWMDseDHVlqNm8jI6ul3HHT90G2xT49
+	lJWI77h6AH7qzQD0/St7M2rHuNl8PE5beO/CZ+lOo71Xi+zlgknBdvA4EPL4U7Ee4w2Ffs
+	CWcYia+QXNYujpBC2+DXVR28zI0D7dQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Px5RJ27u;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gF6mtCC2;
 	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772469193; a=rsa-sha256;
+	spf=pass (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772469196; a=rsa-sha256;
 	cv=none;
-	b=bHUpq79RRz0OeQDuXK8/cBXakLp4Nzcd3FbX+Jmx5IJ7L0Oa3r50F1RfkFKQdofn8Qf36M
-	2Yl3aAZSLqxGKzMKf1kQkX8zGqcx8w5LecAcDoSmr6WQlBnglTalaffSFbin4SjWSeFtT2
-	zWSnNY2Fe7KR+eHS14BTfRf94UAe4wc=
+	b=psLqDCycqVhPCMyg11wA2stlQ+63rve63pltnVHSpV9TXMJDYiWnUoKQFcAdNEqnleuClx
+	LRCYBFs1q0AisregI/tzeS/8En/wMurFcOFbV0WTMw1DAYLXZVANM0bHH9pF1iERK1L7by
+	4r+F8Oryz1OAob6bOqOnLvw1YaByA2k=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772469193; x=1804005193;
+  t=1772469196; x=1804005196;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=+dB6I97jnF3C+kz4LYr+QDqcLMSjhH89nLttR0xMEkA=;
-  b=Px5RJ27uSpVK7LyQjXcGMV2UI6MjEvHimn3nZ/Y4zOG4JeRdNXs9Siir
-   x+wsdeLhBgpmtignAWbKo2K95oHH9pz17WFQQkOh7S1FOVrPI2eR9EYbx
-   dvAsk+Lqdl/5OYD5cbuITEgGtsiXxM4iOHtbpPDnYMNlQXkhF2G3uBXWc
-   83TmUpL5YNibZ+CcNO7rjZ0X3QgzF2lCeExhkcDEY2wKttSlrERK3PM0y
-   ZqJPKc52ZcMj3f3GKjhZ3V9I/T09IFjjvN+FEM2htgcTOcitpYsytxb0b
-   ulN8zvtmrb+4GT6GBIZAG0oOeD6Mbnluo8YFDxFAKdzhKpJ9oz3ty+5JD
-   g==;
-X-CSE-ConnectionGUID: zhVJIoGoTja8tPnhcrzC3A==
-X-CSE-MsgGUID: c/FFShbwSZqeqghbS59zqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73447822"
+  bh=xybYJgKcjIrQv217e/P+1Z/wnP7KMdw9tzTC5IHcWI4=;
+  b=gF6mtCC2ciLYaLeBp3UALxze3DaVNWG3C8rqj1uO3Pcp+9KsB5v42150
+   kVq82JmBO5rf9+eM6hxWpZaEc8DHYUAePdrYHfmHqvmt49xeFW80nDDuB
+   dtjR3D5XefFpcvCC+76zsUKxHRE3qLvsXeVN3zvvuRXNOJXfI1FSRGiFj
+   YxE9ps2pL8K/XF+m7A9pw9oum6TbUGVV2sKIcZMONVO+1em7oZW3t2FCU
+   VE/AUq/ymBPFSlF6x3OM5beOZFVjj1YGZpQRiSxljjhnK+e9z7lVTe4ZP
+   5Yd9zI6bsJanGC0qMokA0BtlLwYO2DjlxZWUWQiOFjqBySrG7Rlp3h2nK
+   A==;
+X-CSE-ConnectionGUID: cpoqKi+1T/+Y23hXgddW9A==
+X-CSE-MsgGUID: ildhtUGpQv6kLFJVuJv9WA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73447840"
 X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="73447822"
+   d="scan'208";a="73447840"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:12 -0800
-X-CSE-ConnectionGUID: pUth11IySXeudJp5F/KqPA==
-X-CSE-MsgGUID: nOQS+yt6QGaZqsL5agaPdQ==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:15 -0800
+X-CSE-ConnectionGUID: HyEPAEjNRT+ouo20DbAkTw==
+X-CSE-MsgGUID: wN2u68H7QY274Oz8dz2kMw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="255564512"
+   d="scan'208";a="255564528"
 Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.81])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:10 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:13 -0800
 From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org,
 	Jason Gunthorpe <jgg@ziepe.ca>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Simona Vetter <simona.vetter@ffwll.ch>,
 	Dave Airlie <airlied@gmail.com>,
 	Alistair Popple <apopple@nvidia.com>,
-	dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH v2 1/4] mm/mmu_notifier: Allow two-pass struct mmu_interval_notifiers
-Date: Mon,  2 Mar 2026 17:32:45 +0100
-Message-ID: <20260302163248.105454-2-thomas.hellstrom@linux.intel.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/4] drm/xe/userptr: Convert invalidation to two-pass MMU notifier
+Date: Mon,  2 Mar 2026 17:32:46 +0100
+Message-ID: <20260302163248.105454-3-thomas.hellstrom@linux.intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
 References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
@@ -99,13 +99,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 826728000A
-X-Stat-Signature: zbhi1nmbxji6etcggpmixbwoowy9ujyy
+X-Rspamd-Queue-Id: D042D140005
+X-Stat-Signature: 9e87r7yooaztcsfaysyrknmddzbkzubq
 X-Rspam-User: 
-X-HE-Tag: 1772469193-894783
-X-HE-Meta: U2FsdGVkX1+2IF+x5iXZaPE9mOp78hwEmoD6sniBkA6cXALrrs6ev+SDHNw6L0CA90fOO8OhO35Uvr65uImyL/FT51/nD756Eyk3nc1kdmvf2oqZE7h/49pmD3zNuLy44Gg4Z50jFeoUzC/s7p5G2y+Rku41nS6SiyEzzWTk+LITq8qJBQJvb+T+uJP9VhL8yfkxrZ0cAv18jhARRNq2hsrRfKmFoDZWjpkEXFonZM/jJQDe29UCr87epVDzAeKxQbpPmjqX5za6OzMdx0LaCtcj8I76P71lLoS+jNNmxjauAcb0OTCX/VbXdZ/t2J7kxbGxWmqTSKwHxdeocnBopW/1r/YASk7UbwACX1oLxD2L7DKEIn/S+eCDK5zi1Bw+A6esPR4BA3JaL5YKyB7lMCHqqPq8uu8BVQHzEQnJ0zOUcQyB7rKw/2IexIURMqIw6U9xosjeSLHSCUzGkLT4R5v9kM2AGPtmcJT6FSdxSD4QZ1qlp3n3ADJqAASjeB8ohpLrEfHdWrtD1iIgOrAhjxUMpmqS/LjHBqESzLc1EjpfDtnVDkjRChY2ICVMc8wjQL6lYKwfVxkNMu8yBsLSfkwGs9YWnEgihpVswyaqrk7S8uky8eNofRpxWCxWwzMENiQXUPXr9bUo4853mSCDyQlcTDxNRX6WjGoivngk6kTrv0ZRabF6gq6IDJ/+rBpJwnyoJRoG1dUdhySkxJ8IDwmvK9X4PX82EihSFDqzxilXSpH1X+Jl1+FD8DFtv0gdY79A/LmT1kHfgjB0HWXiQ5AT9/m5p6rb4l39zyvOyoSNFmahK1lHzIYg2HnqhbdXh3WKd6jBmHcWbSpQ0XyVBGPuTn+/PPg6M1d7qJvjlN8O1yg2/C7bAZngtz7+r6ADBOj9JgiM6QNRji3W7WAaK+VJWFUxySF7hyjheqY5eltK/OB7JycuuQEWAA2v0B1j/hKUkAkrMqOiczmPVsE
- 0z0l0K3D
- NucRJHfku+MHILI2y92EZ69QnpwFqZjfjLFha4d3rzVjmk09RoU0mG2MbafUCXiK8yT6gaEbXNAd88rBoDsD6avUJ2imShwwRarK3dQ8zbYXxzDoE9AF0XZ34p7gn9elijKVR5eJUwRFoF3taldtBRUlIXTxMlQLdGx8aCXmhfoIMBOD+WOyew/QGuFtMCunY8KzilMpVDoLwxFnpOx6mOrMpbLKD0bDEaCD6Q7yHge3C7m9MX9ZCCcgOwOVsKPkbecB5ZBoY6xopXO8GnmZ7MDmX9uI0xJT7s3pn1/Sdse5Od/8oCg6vDognle3nwtfSU/MyVNUPtxA3SEW5sQidm8bjdK3+Qt42R29ylOaVWihmpOTahtSLoF4CJDQFXulIjPBeTaW4rRQJppoZItMDNu2V5WpgpegP3mVt0pP/X5d/olO8LRqRsAYQPnrrmWzuvTlNFTzdLoDdQ+vUpWZyGSsr5oG4on+znXQDw+tDM4W9F/yoPmL9S7AbjdGrE+dJ7LobSTYK1w9DH1GYqoezcZ4qRs2rjtUtHaJYIKfQDqNb7H954EXph6hDDPz6z+EnGAzqBnmDTZUbkZQ/aL/+C9ECdqixu4RKt/QUDgjeIXrJ1xo=
+X-HE-Tag: 1772469195-913381
+X-HE-Meta: U2FsdGVkX1823Vs9Ey+DREgrjiNCFdh9ptyU5OrERwSBKib60mSpZsnSJU0wLi4jnP03x668wsntj9fRLbFX/kQHC9MQBF5jja9Q26vmxjmnncD9WKtI8jSdXVe9l9mNh0Eqm81pZC40umSyukjMg+vW/QALqhxVErmhiVjsM4sVLfBBmisHo9kXwxk0K8LDnsKmHhaa6+mB2fsMt02GmR/MA3cQZodeQs05tdMng31PJONd00w2z1Mvj39/da5DRRyrZZqCQTEPxW6C1y6zCg1NupPMHYW8HysIr1sHvoA4NCxoz4KTCYMhhBDneExq8x7bX6EcNuuX4t5gkGIJ4D/c5B3JsCAPSqU0je0DDRpmpnEhtVmSXzr1nKCcSnFc29BcBWtegqxbu1h4W+7BVetKMWJN14Jbp6HfOsGluigPshLmWgMmhPlI1G9cjaRTOZH3C+y2ej3xOQVM7GNIZjC5cyt2TO5t/m2JReczvKVGVAMZuft+PIFr1ZDiNJekeOxVUYzVog5ilJbGvVhDoWtt1vT+ss0s9Et0bwp5uS45PJLdpbqkKrqgpzrXd3zFI6u3yUEOANAJah1Cx/JT4SEdAMXEbXKY9tc8J1P7GO69UHne0XjByvdkJ1GljPOl+FAXZO03BpVO2OkhF20EFiX02kdm24pG5h0uRua8hh7Cn1DISWLPkmE20Kszuwv/65TgqvDkg0mFjvfpT+9uNGRwSNtCFPL9hzuX9uWUGYkCgKWaeUfZU9w8neSICi+h600xbTBfQMHyeTHwvgkTzB6tdcuZMF+LL+EPa1952jNm2zfu0cIB569HCtIKsusL6hRn0T9wrsj1YdEFa3MYMHgGA279ip8OUDazEwLftjwvxVPa2wubQmhiBP3NiBgKS/RLGn/a4uuR+O2ipG4YjJMZTny4S+wZXzmvRuaw0o918cHk4zaas4zasmeOP4vLUPUmb9SZtx626dtjpaN
+ t6luquX6
+ Dl3i2A57WUEQpCsNMvA2ViWVhjnmINX+usYRwbdbpBvFqs8ijSYMl3RO5NtQGwIrSIgeISbe0g8LDiVoWXp/EOjkkI/G5EvgP67gpLZra0UTbQB6m4peMOZwFKQYg4BJo6u+tEQsnR7UnAgud2kxRcuDu60fPdH1PG77q4jHYKTT0DKd85qsA04cVFJmb1//XvFsMvGHVuO11u77ZRkPxm2kNcFrlt9dVgmigTjR1j+kOUkihlt7CONIeGPsHq9qxeXq7CsvCCF2JySY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,228 +113,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GPU use-cases for mmu_interval_notifiers with hmm often involve
-starting a gpu operation and then waiting for it to complete.
-These operations are typically context preemption or TLB flushing.
+In multi-GPU scenarios, asynchronous GPU job latency is a bottleneck if
+each notifier waits for its own GPU before returning. The two-pass
+mmu_interval_notifier infrastructure allows deferring the wait to a
+second pass, so all GPUs can be signalled in the first pass before
+any of them are waited on.
 
-With single-pass notifiers per GPU this doesn't scale in
-multi-gpu scenarios. In those scenarios we'd want to first start
-preemption- or TLB flushing on all GPUs and as a second pass wait
-for them to complete.
+Convert the userptr invalidation to use the two-pass model:
 
-One can do this on per-driver basis multiplexing per-driver
-notifiers but that would mean sharing the notifier "user" lock
-across all GPUs and that doesn't scale well either, so adding support
-for multi-pass in the core appears to be the right choice.
+Use invalidate_start as the first pass to mark the VMA for repin and
+enable software signalling on the VM reservation fences to start any
+gpu work needed for signaling. Fall back to completing the work
+synchronously if all fences are already signalled, or if a concurrent
+invalidation is already using the embedded finish structure.
 
-Implement two-pass capability in the mmu_interval_notifier. Use a
-linked list for the final passes to minimize the impact for
-use-cases that don't need the multi-pass functionality by avoiding
-a second interval tree walk, and to be able to easily pass data
-between the two passes.
+Use invalidate_finish as the second pass to wait for the reservation
+fences to complete, invalidate the GPU TLB in fault mode, and unmap
+the gpusvm pages.
 
-v1:
-- Restrict to two passes (Jason Gunthorpe)
-- Improve on documentation (Jason Gunthorpe)
-- Improve on function naming (Alistair Popple)
-v2:
-- Include the invalidate_finish() callback in the
-  struct mmu_interval_notifier_ops.
-- Update documentation (GitHub Copilot:claude-sonnet-4.6)
-- Use lockless list for list management.
+Embed a struct mmu_interval_notifier_finish in struct xe_userptr to
+avoid dynamic allocation in the notifier callback. Use a finish_inuse
+flag to prevent two concurrent invalidations from using it
+simultaneously; fall back to the synchronous path for the second caller.
 
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: <dri-devel@lists.freedesktop.org>
-Cc: <linux-mm@kvack.org>
-Cc: <linux-kernel@vger.kernel.org>
-
-Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
+Assisted-by: GitHub Copilot:claude-sonnet-4.6
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- include/linux/mmu_notifier.h | 38 +++++++++++++++++++++
- mm/mmu_notifier.c            | 64 +++++++++++++++++++++++++++++++-----
- 2 files changed, 93 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/xe/xe_userptr.c | 96 +++++++++++++++++++++++++--------
+ drivers/gpu/drm/xe/xe_userptr.h | 14 +++++
+ 2 files changed, 88 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index 07a2bbaf86e9..de0e742ea808 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -233,16 +233,54 @@ struct mmu_notifier {
- 	unsigned int users;
- };
- 
-+/**
-+ * struct mmu_interval_notifier_finish - mmu_interval_notifier two-pass abstraction
-+ * @link: List link for the notifiers pending pass list
-+ * @notifier: The mmu_interval_notifier for which the finish pass is called.
-+ *
-+ * Allocate, typically using GFP_NOWAIT in the interval notifier's first pass.
-+ * If allocation fails (which is not unlikely under memory pressure), fall back
-+ * to single-pass operation. Note that with a large number of notifiers
-+ * implementing two passes, allocation with GFP_NOWAIT will become increasingly
-+ * likely to fail, so consider implementing a small pool instead of using
-+ * kmalloc() allocations.
-+ *
-+ * If the implementation needs to pass data between the two passes,
-+ * the recommended way is to embed struct mmu_interval_notifier_finish into a larger
-+ * structure that also contains the data needed to be shared. Keep in mind that
-+ * a notifier callback can be invoked in parallel, and each invocation needs its
-+ * own struct mmu_interval_notifier_finish.
-+ */
-+struct mmu_interval_notifier_finish {
-+	struct llist_node link;
-+	struct mmu_interval_notifier *notifier;
-+};
-+
- /**
-  * struct mmu_interval_notifier_ops
-  * @invalidate: Upon return the caller must stop using any SPTEs within this
-  *              range. This function can sleep. Return false only if sleeping
-  *              was required but mmu_notifier_range_blockable(range) is false.
-+ * @invalidate_start: Similar to @invalidate, but intended for two-pass notifier
-+ *                    callbacks where the call to @invalidate_start is the first
-+ *                    pass and any struct mmu_interval_notifier_finish pointer
-+ *                    returned in the @finish parameter describes the final pass.
-+ *                    If @finish is %NULL on return, then no final pass will be
-+ *                    called.
-+ * @invalidate_finish: Called as the second pass for any notifier that returned
-+ *                     a non-NULL @finish from @invalidate_start. The @finish
-+ *                     pointer passed here is the same one returned by
-+ *                     @invalidate_start.
-  */
- struct mmu_interval_notifier_ops {
- 	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
- 			   const struct mmu_notifier_range *range,
- 			   unsigned long cur_seq);
-+	bool (*invalidate_start)(struct mmu_interval_notifier *interval_sub,
-+				 const struct mmu_notifier_range *range,
-+				 unsigned long cur_seq,
-+				 struct mmu_interval_notifier_finish **finish);
-+	void (*invalidate_finish)(struct mmu_interval_notifier_finish *finish);
- };
- 
- struct mmu_interval_notifier {
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index a6cdf3674bdc..38acd5ef8eb0 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -260,6 +260,15 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
+diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
+index e120323c43bc..440b0a79d16f 100644
+--- a/drivers/gpu/drm/xe/xe_userptr.c
++++ b/drivers/gpu/drm/xe/xe_userptr.c
+@@ -73,18 +73,42 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
+ 				    &ctx);
  }
- EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
  
-+static void mn_itree_finish_pass(struct llist_head *finish_passes)
-+{
-+	struct llist_node *first = llist_reverse_order(__llist_del_all(finish_passes));
-+	struct mmu_interval_notifier_finish *f, *next;
+-static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uvma)
++static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
++				    bool is_deferred)
+ {
+ 	struct xe_userptr *userptr = &uvma->userptr;
+ 	struct xe_vma *vma = &uvma->vma;
+-	struct dma_resv_iter cursor;
+-	struct dma_fence *fence;
+ 	struct drm_gpusvm_ctx ctx = {
+ 		.in_notifier = true,
+ 		.read_only = xe_vma_read_only(vma),
+ 	};
+ 	long err;
+ 
++	err = dma_resv_wait_timeout(xe_vm_resv(vm),
++				    DMA_RESV_USAGE_BOOKKEEP,
++				    false, MAX_SCHEDULE_TIMEOUT);
++	XE_WARN_ON(err <= 0);
 +
-+	llist_for_each_entry_safe(f, next, first, link)
-+		f->notifier->ops->invalidate_finish(f);
++	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
++		err = xe_vm_invalidate_vma(vma);
++		XE_WARN_ON(err);
++	}
++
++	if (is_deferred)
++		userptr->finish_inuse = false;
++	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
++			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
 +}
 +
- static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
- 			     struct mm_struct *mm)
- {
-@@ -271,6 +280,7 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
- 		.end = ULONG_MAX,
- 	};
- 	struct mmu_interval_notifier *interval_sub;
-+	LLIST_HEAD(finish_passes);
- 	unsigned long cur_seq;
- 	bool ret;
- 
-@@ -278,11 +288,27 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
- 		     mn_itree_inv_start_range(subscriptions, &range, &cur_seq);
- 	     interval_sub;
- 	     interval_sub = mn_itree_inv_next(interval_sub, &range)) {
--		ret = interval_sub->ops->invalidate(interval_sub, &range,
--						    cur_seq);
-+		if (interval_sub->ops->invalidate_start) {
-+			struct mmu_interval_notifier_finish *finish = NULL;
-+
-+			ret = interval_sub->ops->invalidate_start(interval_sub,
-+								  &range,
-+								  cur_seq,
-+								  &finish);
-+			if (ret && finish) {
-+				finish->notifier = interval_sub;
-+				__llist_add(&finish->link, &finish_passes);
-+			}
-+
-+		} else {
-+			ret = interval_sub->ops->invalidate(interval_sub,
-+							    &range,
-+							    cur_seq);
-+		}
- 		WARN_ON(!ret);
- 	}
- 
-+	mn_itree_finish_pass(&finish_passes);
- 	mn_itree_inv_end(subscriptions);
- }
- 
-@@ -430,7 +456,9 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
- 			       const struct mmu_notifier_range *range)
- {
- 	struct mmu_interval_notifier *interval_sub;
-+	LLIST_HEAD(finish_passes);
- 	unsigned long cur_seq;
-+	int err = 0;
- 
- 	for (interval_sub =
- 		     mn_itree_inv_start_range(subscriptions, range, &cur_seq);
-@@ -438,23 +466,41 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
- 	     interval_sub = mn_itree_inv_next(interval_sub, range)) {
- 		bool ret;
- 
--		ret = interval_sub->ops->invalidate(interval_sub, range,
--						    cur_seq);
-+		if (interval_sub->ops->invalidate_start) {
-+			struct mmu_interval_notifier_finish *finish = NULL;
-+
-+			ret = interval_sub->ops->invalidate_start(interval_sub,
-+								  range,
-+								  cur_seq,
-+								  &finish);
-+			if (ret && finish) {
-+				finish->notifier = interval_sub;
-+				__llist_add(&finish->link, &finish_passes);
-+			}
-+
-+		} else {
-+			ret = interval_sub->ops->invalidate(interval_sub,
-+							    range,
-+							    cur_seq);
-+		}
- 		if (!ret) {
- 			if (WARN_ON(mmu_notifier_range_blockable(range)))
- 				continue;
--			goto out_would_block;
-+			err = -EAGAIN;
-+			break;
- 		}
- 	}
--	return 0;
- 
--out_would_block:
-+	mn_itree_finish_pass(&finish_passes);
++static struct mmu_interval_notifier_finish *
++xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
++{
++	struct xe_userptr *userptr = &uvma->userptr;
++	struct xe_vma *vma = &uvma->vma;
++	struct dma_resv_iter cursor;
++	struct dma_fence *fence;
++	bool signaled = true;
 +
  	/*
- 	 * On -EAGAIN the non-blocking caller is not allowed to call
- 	 * invalidate_range_end()
+ 	 * Tell exec and rebind worker they need to repin and rebind this
+ 	 * userptr.
+@@ -105,27 +129,32 @@ static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uv
  	 */
--	mn_itree_inv_end(subscriptions);
--	return -EAGAIN;
-+	if (err)
-+		mn_itree_inv_end(subscriptions);
+ 	dma_resv_iter_begin(&cursor, xe_vm_resv(vm),
+ 			    DMA_RESV_USAGE_BOOKKEEP);
+-	dma_resv_for_each_fence_unlocked(&cursor, fence)
++	dma_resv_for_each_fence_unlocked(&cursor, fence) {
+ 		dma_fence_enable_sw_signaling(fence);
++		if (signaled && !dma_fence_is_signaled(fence))
++			signaled = false;
++	}
+ 	dma_resv_iter_end(&cursor);
+ 
+-	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+-				    DMA_RESV_USAGE_BOOKKEEP,
+-				    false, MAX_SCHEDULE_TIMEOUT);
+-	XE_WARN_ON(err <= 0);
+-
+-	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+-		err = xe_vm_invalidate_vma(vma);
+-		XE_WARN_ON(err);
++	/*
++	 * Only one caller at a time can use the multi-pass state.
++	 * If it's already in use, or all fences are already signaled,
++	 * proceed directly to invalidation without deferring.
++	 */
++	if (signaled || userptr->finish_inuse) {
++		xe_vma_userptr_do_inval(vm, uvma, false);
++		return NULL;
+ 	}
+ 
+-	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+-			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
++	userptr->finish_inuse = true;
 +
-+	return err;
++	return &userptr->finish;
  }
  
- static int mn_hlist_invalidate_range_start(
+-static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+-				   const struct mmu_notifier_range *range,
+-				   unsigned long cur_seq)
++static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
++					    const struct mmu_notifier_range *range,
++					    unsigned long cur_seq,
++					    struct mmu_interval_notifier_finish **p_finish)
+ {
+ 	struct xe_userptr_vma *uvma = container_of(mni, typeof(*uvma), userptr.notifier);
+ 	struct xe_vma *vma = &uvma->vma;
+@@ -138,21 +167,40 @@ static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+ 		return false;
+ 
+ 	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+-	       "NOTIFIER: addr=0x%016llx, range=0x%016llx",
++	       "NOTIFIER PASS1: addr=0x%016llx, range=0x%016llx",
+ 		xe_vma_start(vma), xe_vma_size(vma));
+ 
+ 	down_write(&vm->svm.gpusvm.notifier_lock);
+ 	mmu_interval_set_seq(mni, cur_seq);
+ 
+-	__vma_userptr_invalidate(vm, uvma);
++	*p_finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
++
+ 	up_write(&vm->svm.gpusvm.notifier_lock);
+-	trace_xe_vma_userptr_invalidate_complete(vma);
++	if (!*p_finish)
++		trace_xe_vma_userptr_invalidate_complete(vma);
+ 
+ 	return true;
+ }
+ 
++static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish *finish)
++{
++	struct xe_userptr_vma *uvma = container_of(finish, typeof(*uvma), userptr.finish);
++	struct xe_vma *vma = &uvma->vma;
++	struct xe_vm *vm = xe_vma_vm(vma);
++
++	vm_dbg(&xe_vma_vm(vma)->xe->drm,
++	       "NOTIFIER PASS2: addr=0x%016llx, range=0x%016llx",
++		xe_vma_start(vma), xe_vma_size(vma));
++
++	down_write(&vm->svm.gpusvm.notifier_lock);
++	xe_vma_userptr_do_inval(vm, uvma, true);
++	up_write(&vm->svm.gpusvm.notifier_lock);
++	trace_xe_vma_userptr_invalidate_complete(vma);
++}
++
+ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+-	.invalidate = vma_userptr_invalidate,
++	.invalidate_start = xe_vma_userptr_invalidate_start,
++	.invalidate_finish = xe_vma_userptr_invalidate_finish,
+ };
+ 
+ #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+@@ -164,6 +212,7 @@ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+  */
+ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+ {
++	static struct mmu_interval_notifier_finish *finish;
+ 	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
+ 
+ 	/* Protect against concurrent userptr pinning */
+@@ -179,7 +228,10 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+ 	if (!mmu_interval_read_retry(&uvma->userptr.notifier,
+ 				     uvma->userptr.pages.notifier_seq))
+ 		uvma->userptr.pages.notifier_seq -= 2;
+-	__vma_userptr_invalidate(vm, uvma);
++
++	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
++	if (finish)
++		xe_vma_userptr_do_inval(vm, uvma, true);
+ }
+ #endif
+ 
+diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
+index ef801234991e..4f42db61fd62 100644
+--- a/drivers/gpu/drm/xe/xe_userptr.h
++++ b/drivers/gpu/drm/xe/xe_userptr.h
+@@ -57,12 +57,26 @@ struct xe_userptr {
+ 	 */
+ 	struct mmu_interval_notifier notifier;
+ 
++	/**
++	 * @finish: MMU notifier finish structure for two-pass invalidation.
++	 * Embedded here to avoid allocation in the notifier callback.
++	 * Protected by @vm::svm.gpusvm.notifier_lock.
++	 */
++	struct mmu_interval_notifier_finish finish;
++	/**
++	 * @finish_inuse: Whether @finish is currently in use by an in-progress
++	 * two-pass invalidation.
++	 * Protected by @vm::svm.gpusvm.notifier_lock.
++	 */
++	bool finish_inuse;
++
+ 	/**
+ 	 * @initial_bind: user pointer has been bound at least once.
+ 	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
+ 	 * read: vm->svm.gpusvm.notifier_lock in write mode or vm->resv held.
+ 	 */
+ 	bool initial_bind;
++
+ #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+ 	u32 divisor;
+ #endif
 -- 
 2.53.0
 
