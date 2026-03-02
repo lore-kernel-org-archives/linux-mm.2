@@ -4,83 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CE04EB3637
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 21:50:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7FA8EB363C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 22:20:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B40976B00B0; Mon,  2 Mar 2026 16:50:23 -0500 (EST)
+	id A03FB6B0135; Mon,  2 Mar 2026 17:20:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3D76B00B3; Mon,  2 Mar 2026 16:50:23 -0500 (EST)
+	id 9B17A6B0137; Mon,  2 Mar 2026 17:20:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5A56B00B7; Mon,  2 Mar 2026 16:50:23 -0500 (EST)
+	id 8BDC26B0138; Mon,  2 Mar 2026 17:20:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BA916B00B0
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:50:23 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C1B4140341
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:50:23 +0000 (UTC)
-X-FDA: 84502467126.17.CC3E0FC
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id A012740013
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:50:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=edsmp5Uy;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 799CE6B0135
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:20:50 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 20E45160369
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 22:20:50 +0000 (UTC)
+X-FDA: 84502543860.30.425E7E2
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5179F140009
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 22:20:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zyKK0xdT;
+	spf=pass (imf26.hostedemail.com: domain of 3Pg2maQ4KCEUqvykhuypjohykznvvnsl.jvtspu14-ttr2hjr.vyn@flex--jordanrichards.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3Pg2maQ4KCEUqvykhuypjohykznvvnsl.jvtspu14-ttr2hjr.vyn@flex--jordanrichards.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772488221;
+	s=arc-20220608; t=1772490048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k5lnpElzH3MrjN324K8FfMsrblMzRrAFN5P279ZSW+U=;
-	b=FYKXPWOum8RiDh+HoWYSce/UmCJnQlPifATTSStn6PsqFWfnb/IEZc4KucBTZwis2Rh56P
-	VRm9h4LG64wWfCqxsI62TceN41DVsfAyHF80Wc+PQvn4I3Ost6JQGetm4yscuP2GsHRaaw
-	QhZ7NWNBZIudBDbwdwamYMl1Q8EWd94=
+	bh=5AFiFXZXtC1y0sH5xj9p2pt2KSm8pmrA6Rl7Jb2isOw=;
+	b=nXWSIztPhSQTFbSlzyREqIJ+y8VkYU7M/xdVBqGLqqtz4eDB9+GohLcZaWavOMp4utmRBS
+	zsryaO6vhby5AfrvD8zMNTBT2/5VuoKhAiHwko4HGiSWSsSwOl8eIftFn1qDhGjNyx661d
+	QGex0kC+efC120F/s99DLPs8lQW7hzQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=edsmp5Uy;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772488221; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=zyKK0xdT;
+	spf=pass (imf26.hostedemail.com: domain of 3Pg2maQ4KCEUqvykhuypjohykznvvnsl.jvtspu14-ttr2hjr.vyn@flex--jordanrichards.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3Pg2maQ4KCEUqvykhuypjohykznvvnsl.jvtspu14-ttr2hjr.vyn@flex--jordanrichards.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772490048; a=rsa-sha256;
 	cv=none;
-	b=4nULspD4fVzAqhFcLmR2fvnaxDVgEWgph64nPntKxMMrHCT0X0vdXHfwr0NV+9UWF8udC3
-	n2UXYcTh7oPlctb0j9NOZyrRVS/TZG/KMih314ece2viWAF8f/snb9BAPIBbhDO62t9kJW
-	DZcQc3TuA3nkZJhRDn1LgPA7o0aYmnA=
-Date: Mon, 2 Mar 2026 13:50:15 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772488219;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k5lnpElzH3MrjN324K8FfMsrblMzRrAFN5P279ZSW+U=;
-	b=edsmp5Uyhp5+B1N9dEt7Ode4WQXTQ5NrBczor22gjqdJcfVOgy70wrAFZ1cjUnP44vX1pi
-	OCCncG5ES3YLQJaypPSomfxvS+r+TxAVX8YGBiYEbd+m7bAfZdlq0d+1BuQnPhIlZKC6kk
-	2jCr/YsZcO2DQOo4yubQ0oMIb/HONPc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] mm: memcontrol: use __account_obj_stock() in the
- !locked path
-Message-ID: <aaYF-8p5Gvh3Kil-@linux.dev>
-References: <20260302195305.620713-1-hannes@cmpxchg.org>
- <20260302195305.620713-5-hannes@cmpxchg.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302195305.620713-5-hannes@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A012740013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dmo8sm87pcdq3358uawqgnmtkkcs1r4g
+	b=hJNBVsMY3MhWRv8lweYJmL1Z+g+BjZikeDdZQTAwaGrvlJecpCKWrfmStZCXJ5ilpYeFvq
+	NFX4pvykPnFjUtOuHaDJOjf0EcTvc5ibp0gNI0RdgklmDulfsGY5h1ngOQX0iPd2qqVpaY
+	OaoVVdriYcwiN8hu5cajObQRbAVHm8g=
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2be232ef3d3so67075eec.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 14:20:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772490047; x=1773094847; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5AFiFXZXtC1y0sH5xj9p2pt2KSm8pmrA6Rl7Jb2isOw=;
+        b=zyKK0xdTXp8y5g/6GQi3xHuOb2wzUSOOURfFyPjFdnZPSs0ZJ2xLSTn3PDrW/R37SB
+         3cyt0eWPdJO1g+6f1GjJ6BUrNX9ckao7wboJPD7OmVScjDAV90FbTtjefrxYiW2rmm1z
+         Mb3MFh++oX44j6auuD/kKHgyh8abGF8wx/gsEOVSAsJoRxt0xDOS9c0i8wDcDxc/QjgA
+         dyoVG0PGIqaiCQdvhN5CYb2E+vokg+4I9iXfzTqPgZQ/oDfvUsZO2cKdZ/92o8L7jXKT
+         vmOR0L6jMoGYWAL6aof/3tYwf8w0t2Ol9lk17BHi61kAlQQCVuw2sNoG7OJvV357yaOS
+         tXsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772490047; x=1773094847;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5AFiFXZXtC1y0sH5xj9p2pt2KSm8pmrA6Rl7Jb2isOw=;
+        b=paslumka5bTkIDdfH2rMeQ2vijrzoApDA89HANlqIBeplSIxjko246dmk4fyWmewo1
+         gpt9VyRjDjjG36DAUclklN2ekWYLgOWdtbYbTbbKgKHoVnHz2YyYFOf6/Fg8zOTUYsTq
+         GbMw8h5iIfC5H2sB4AH92EeaHeOPXO6Clq34eAxw4jh/rxOgGudDHvifvFpjX9df8RRa
+         rjurWknYNvZBnMF2LNwyspNqEAgE24xU3wfFduRwKBwubJuUCntoEBEY1CxBmh0tOi4y
+         /jyJP47cgZm3XaqDgGwp8K+HVFE/hgBHb/eI9wJGwP9agkyiBNruSY0U0G+Igtd19DGF
+         HzHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVEQckNPxV4JTnHeJ6AHnApYo9X0C9dbjEfebr9eOGfRad/4FRmuuj2eJR5USxibnQef2qwAJGuhw==@kvack.org
+X-Gm-Message-State: AOJu0YzUHtP6j0HgforBqQx2BbLjVvlVF03xpvPA1JM+AzfmjeJ2gcXL
+	NxpPVw76nYpGZnDkM55hvQ/1Nqi3icW8qga6OTNCJCm3ig9e7AJc1kBacBu/xMoeELMS7/kkmN/
+	suUzN/Y6ozxJI1h3YqeLDOa0gLnAUhEDRhSgjJQ==
+X-Received: from dybcr37.prod.google.com ([2002:a05:7300:aca5:b0:2ba:6ffb:dc6e])
+ (user=jordanrichards job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7300:72d0:b0:2b7:32a6:82d1 with SMTP id 5a478bee46e88-2bde1b574e2mr5884765eec.13.1772490046646;
+ Mon, 02 Mar 2026 14:20:46 -0800 (PST)
+Date: Mon,  2 Mar 2026 22:20:43 +0000
+In-Reply-To: <ebf0c9fd-9c45-4aa2-8cd7-fe8d5956ce52@t-8ch.de>
+Mime-Version: 1.0
+References: <ebf0c9fd-9c45-4aa2-8cd7-fe8d5956ce52@t-8ch.de>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260302222043.2432413-1-jordanrichards@google.com>
+Subject: Re: [PATCH v2 1/2] tools/nolibc: add ftruncate()
+From: Jordan Richards <jordanrichards@google.com>
+To: linux@weissschuh.net
+Cc: dmatlack@google.com, jasonmiu@google.com, jordanrichards@google.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	rppt@kernel.org, shuah@kernel.org, w@1wt.eu
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1772488221-491237
-X-HE-Meta: U2FsdGVkX19uS75e1hPnwCq28HQAxlTpOWnyoSmkmVZ3jIqoyrJH0ge+3DwrLvC/upjXYu7UihhbifS9bwVgHzef3Q9YqrOpvaSsfy7xolMNa75hebh3zP7KCBMp7cIO56P50eMJbIU8cX3JQcxv4IQrTUTT4Leu8cpHO3t/VrZ2AffEB5Stwk9jbI3adQN1FkSI2kWoZFIRvUaGu91hwm0LaQcVrtpDGfjG3kqtL2BYn0ViFj0PwYf3XSJq+lPpTGK84nCsRI2oML86Uk95NMYNheTPE/PVamo7BcW6DW6LySHvxddjbhUH7We27svONeW4MRojmelVRiEqbcE4Lp1YpQFjFYI3Rtfhh85Y/x8c8MKTMcodDYj4QaBsajyWCCbVmF2iQPVchCwDpi4O12xSX7K+U07DfV8UOykMYbB6rv2jsfiLdIzS2FuHmVmyPDv43+brs5SveRqqeUNMktwL+EzYRwWWatOi6nEfW4HjdYJgka+tVciqFglkoQWhrCzSQi8JNwmscxlRFq9oAdLj6cGXiVPAaL2k5ggntnup6MFvholR7RWiWvjGmHwNmIjX1QNbkVT1EdYFufuWNJ2CcSsFH7CXGkUm0O17qcd7DGqdR4L453iveHYW8sHrBOoplLuTu1jK++XrvoqGdUZKdACReDiHcEdXVBJCn1zNYtBQYDC2U1+qxP0Hb4WvPno3LDKmeFz4aFnPeXM6iSv/BrOz4NiY/nPstUNQOX/ewWqFFoOgkROPH3ICr4fKA4OEjvfoinknK/nsElLlv6k3LAEuB4Ybkm5b3wVu2GZyu+DJtKphmm/DJnNlCb6LIXoIc7P+DdarluUL6iIlV+ry6JXnMYbPC9C2oUsY/7sYJnvT5J4lnuYEGSVef6vDKUGhDFR1n5ypYRXmPf0DIWrqGFORTZdjoawscMoMGXrElXvOxqJI+LEnhQErU9XizDqF8GdydfU=
+X-Rspamd-Queue-Id: 5179F140009
+X-Rspamd-Server: rspam08
+X-Stat-Signature: wd63hq5ozq1dbgp63m3bessy1efqyzd1
+X-HE-Tag: 1772490048-252457
+X-HE-Meta: U2FsdGVkX18MH5emJIsQ/EL6LE66wRdFDl7EDaa4WUuMrbNMfqpToQRP5Y7ok7K4cDW0Dml8NziEZxpoNooYUC90YslWw8qaocKTMqeQtEWxuPm+j8BoFeAoWBuhrCOrtiS56di4rb0pEWh27rcGksFUFVQOzJ7xaEzNKUdwih1SmwtdlGBkh79wA5foa9nLVv0qW7HiMjDTUYZWf9C+mg9rtC9dhbt7bOjZZrHmTNBxys/E4mGthlv6AthnGmGAVyQLS3sWDdvjYgJUEWcRlYOMFj1wuT4BRNuk+J+oyGkhey61lbZKK2eCyCszaJpDrrH+bhb4jUmxeM5nsRjYzlJTKUq6Z4+eZZed3/gXzPFgVaU0jqtdMozImrKP5KGv12e+lzXo9g6RiGO0sYMZvShb0kfj1PLqlj7MWOAmeuMmpTXbqPz5OzAxtinzUsg8klLtD5kDQ1iHOvVfCWBQEuylftH1t7SpQ2kEpxp34VzDDvBGM9emTze87X65rAhlAsvkmhnq7sZ6QEirw0TrW231ICFOju4fnEHl/TQqgS1xjcW2KCb8rnwnxFmObvwP6da/8jcYHTSpVQ3XQVN1Mp/j27J4IyCNJxn6GFXpF4BgVTunckoJJkL44+/PDBs8VRN4/s6EDCSjopZB/G05G9aI1Nih0ZFQNRGolUu8ELw2cZuVwBhprxm2M3h1AVqjaoGYUzsn8/Sx/8347ujAd5ocA+vVAnM4uB483px3tfAerd121FBdX/xQifsqOGSW4w91ee0/M4Ln8ev9J2PJShuB/qa+HdkQWrp2J5t6BaZYC7e1j8Y1n3SR1HXhJbi5slcNbMv87C25AN8vzS52t2lRYXvKTM2cuToriAszMxLFqbZzx6ziEeKpgWMtqzxExfYnshCnoNjqozgJm1PVuOIUM8oBfiGR0vnR+NZyWcDSC6r6sdveMaqLk1LtyOHI+Qe+Xb+X808ev/WyqXv
+ ZkzhFs/B
+ cUIi7ZUA5Zv3m0mTQbethQSeNgy7jzhGW6SS7orjCqrwvjOtaU1AEIr6LCLqyo58lWNwl1tmZ+Dj8EsaPVcB6WnLdWOv27FIz+7+th0QcPa2KahGXvO5gBuQttWp9Lmg3R8uiNzuVyCinX7vit/Y0H7C1XuA05FyObcF5wDWCvT2tT1bFlwmWYUQO6WAXaAHy3W56fCsFkZLoFq3qhA9UVqFX7wLccciLK9s53OLKb+M4dJKPcpe9bWBl43Egm4ED4ha126W3bxO3NIpVAsOt/UVFugZYeUPdtqijWRhXg6nZQ//ihuYJVuL0WsPN8kqhRr80R41QwfyabVbDNs/Esyjtd2jN4xyPNhAcRSkLLvXdY3U/gHG2lny+WRbGtTL3V/MP3xNr1X8Hquq5Q76Uk7TD57Oqo8RfsUOSvIopcY/mOyJRsMw9dQ5DF/sAWEF8G0k8yhM0Ld0EDJfmyAqa3txjJJqG3H2Dyl/7w6gnnaMFI2l7wXWII9eD2JjTtsIKHJ0hSnj1dlk+AeKNS8VzldM8p4YUNubI+1QXZ3Nt4ijT2khHPDbiNHkHMlPV5o/uxscbP6bwBgpItp9DUwPGnZxMZHX8toHVJwL3Uu/l3cDVB7AjvyTtX0Rn67jUWW1F2t2Ps2NWRzUKv107zVslK/mU3NcPdlzpjNZ0EGtVRiLuOFYmMoZ4RmPsuhUAMzHLYYBPhYv50hu9Bdg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,14 +109,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 02:50:17PM -0500, Johannes Weiner wrote:
-> Make __account_obj_stock() usable for the case where the local trylock
-> failed. Then switch refill_obj_stock() over to it.
-> 
-> This consolidates the mod_objcg_mlstate() call into one place and will
-> make the next patch easier to follow.
-> 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Hi Thomas,
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> (please Cc nolibc maintainers on nolibc changes, I only saw this by
+> chance)
+
+Will do, sorry about that.
+
+> off_t is now always 64bit on nolibc. On 32-bit architectures however
+> __NR_ftruncate only takes a 32bit value, leading to the wrong kind of
+> truncation. Use __NR_ftruncate64 instead where available.
+
+Good call. On some archs (arm, mips, ppc) register pairs need to start
+in an even register. I assume adding a flag like:
+
+  #define ARCH_ALIGN_REGISTER_PAIR 1
+
+in "nolibc/arch-xxx.h" is appropriate?
+
+> Please also add a simple test to
+> tools/testing/selftests/nolibc/nolibc-test.c
+
+Will include in the next version.
+
+Thanks for the review,
+Jordan
 
