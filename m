@@ -4,217 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F02CEB3632
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7465EEB3633
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73BED6B00D5; Mon,  2 Mar 2026 15:34:10 -0500 (EST)
+	id DE9C46B00D7; Mon,  2 Mar 2026 15:34:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707026B00D7; Mon,  2 Mar 2026 15:34:10 -0500 (EST)
+	id D8A376B00D9; Mon,  2 Mar 2026 15:34:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AB826B00D8; Mon,  2 Mar 2026 15:34:10 -0500 (EST)
+	id C9F986B00DA; Mon,  2 Mar 2026 15:34:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4740F6B00D5
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:34:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F2AC1C2B1
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:10 +0000 (UTC)
-X-FDA: 84502275060.02.79A6C7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3B8F9100016
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=us9kuFVN;
-	spf=pass (imf05.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772483648;
+	by kanga.kvack.org (Postfix) with ESMTP id B3AE06B00D7
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:34:12 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BCE2160346
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:12 +0000 (UTC)
+X-FDA: 84502275144.15.69121AE
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011029.outbound.protection.outlook.com [52.101.52.29])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9E29E180002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:09 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=h5Na3SZS;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772483649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tgjzzd4kTuzFOqBn1f3nTdxFL+yQj9PGo5rW8JgGIpA=;
-	b=4ORbJvtFb/MaUSaeWoUcXTbNumoG2ZwAukLrIVzYxmw7efKTqAqySGY78VWktBQC/T8eNz
-	QeOQ37Huyjg065JBGn7ZN143dHkG2u5YFv8VBe5ya+4G8hIQyC7r37lwQn0DKqaV1IbGIc
-	OQ3NPikw66V/eHKGZonWTkeSEaLkTVs=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=us9kuFVN;
-	spf=pass (imf05.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772483648; a=rsa-sha256;
-	cv=none;
-	b=FBVSmtxNk4uU/ejWR91MF+oNNpYomFzYm3LmA1GbWZzqXTtwE8tdf9OOmyY04Wx1b2pOUM
-	a3s3oiDfwXfEsQ2pYP3ay56xIZ8bTjheZhczPStZNm8Qq2vZJ7fMPiCKEq9ecFtKCgvVDL
-	GQRG8VNDmWSrEAKl3CO/vLwYxh+E1kU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E4E86132D;
-	Mon,  2 Mar 2026 20:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE46C2BCB5;
-	Mon,  2 Mar 2026 20:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772483647;
-	bh=O6E/wWymcmTFXnHRYlBNuOEnEuI3iSQ7UQxyw69+kG8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=us9kuFVN5+eJcWNCT1WvuDJBcdT4qSgZm5FciUUdFDPVCrpEdAtotU3qdHtNsEZ6G
-	 fl67hg1lyDRhO2v+62bpFTS2fX6Q0GimDVN9ZxLUpCExms/R1PfW4BzRPaoGYFjPoM
-	 JVzFrDbkMmYLKuVFQWwOg6rPr/tNLhNz67Wp1T3cERICx4UHd1h8JDplhVBL6xmirR
-	 3BanCCeVRAD5haF1qLoNT1NvuAIvcs/+xUaBO7eNY7n0ywsCixWy7syP/vpLa2M6Ry
-	 mVkDEGojwZpP+AVFWleuKqc8Y5IvMQ8i5pkK5Qfy4RxYodcEvAeWB8GB1lOX8L8ZAr
-	 7sCX83iwYeaPA==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:24:22 -0500
-Subject: [PATCH v2 038/110] nsfs: use PRIino format for i_ino
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FIJR+S3VvBRrbI22E4eFJrKOLiW/e1x3KyERvj1h3RE=;
+	b=3/7J4qFChyriAfKgzYV4Dacho0Aw7KVzKSUDRhn+i3EwhcmNmXXVv/+UQdzjyCToXNp8fs
+	MOfWNoobrzz6XXzgvAJYSf3wOmujwNfzbgu/pqzLS4Ucq+Zo8pzGARul8FmyiFXZ9TV2uN
+	yOBV74fG1q6WkGFkyxwbkx7wS1gKsmo=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=h5Na3SZS;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772483649; a=rsa-sha256;
+	cv=pass;
+	b=PMO7TSz2Klr1Z/ZuDDIc57HvXuEvUEEI4UAXuWyk2uk6afSXnhUEuK+V0zVbQ0ZMRBP+XR
+	jS9RtLk5QqaIanMGlScSdUoIxUtesnQCOvexBvzrL2oIfdwMRnKRBQnltuxIB3cX0oJ5Zk
+	uMP8ecwchWeYS0pNeqspLOkp1UCp7Rw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=apw73pUQQJYEWAdraKoFNbL1Lc7QEnyf4DhDw9RvujAr+cQ4Cp+cS2JaogYeCNZzGVZXSsctwNWly7XNVlZzLSExxqEhGXV3to6Aew1fIdgcvPIuaznTDM9NUguAHT1pBpGiZJDK8PXZg77HHByaCW2KSXK1b7sFjVMNGumVml5cIplqwugFC9PyLa2xjwMri2XE9KBU+7X91ArXDcJNSIleyEveVZN7p0QC8/5v7OgOR86hip0iEFxs07khwm/wZ5LsYuTkSa/MYN/sPtZM4LT4UtegmhFXFZhdepzTHkujnGfYyHqk7A9IVdwU+9mHXQFDmRsTJOQu3Qj+Y4dDFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FIJR+S3VvBRrbI22E4eFJrKOLiW/e1x3KyERvj1h3RE=;
+ b=Ma5N/cJl36Pip83xZFWktGnnWs0nKCxMb4UOrVrfJfh2FE7g1yui9xuqik6gTLn8o1405wsElyRIhkHiePUIeULQvLky0l/ap4V7Zwc6OrYxECY4RJMghw70KkT/i4/Zl28kSIjS9UWb5zjKIudxJ6EwzqGb2O4cWsBQWS07zL6+BNugKEXHEvNHSKd0dGSw/I/AuiJl5l084+1Yzm6YC1OarVNY85xgudb+3fboGyJnh7CvjvX1etJD/7ylFKk9vY3Vdn/+BwmEO8WBX29D+6NJeqQ7Do09r35xQgTGvlYSBB11GWXNmc27A5/TTmsOB5xkgfM+7ThDeEE4f8vHVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FIJR+S3VvBRrbI22E4eFJrKOLiW/e1x3KyERvj1h3RE=;
+ b=h5Na3SZS2xuydCfTRz9mjr56SkBZIryh+0F2SmJ9u4/WLB0GyMBoo6klRxLkt20S+7wN3/BJ4CmdO0JtANmPW4ml978ozSuBhDAiIqbOBM5Gr5n2aGVlUIPyoBEmp00M0RTuofxf5L/txKa3btswePG6Ty+TJhJY9ydURLAGKb0J20veEPwh92jZvaETR/9g0MVGPUsoKUQDyWkBpok74J/7riN3bCfhP171Avip5sh9nMpiRnovZoLyJofYlFqbcZHiSgUtoRSVv7wgtf0cKNG1aZDvL+v9c8rUpn5yp/iopI4ca1xU7ULqEt3g1UJ0XhELm+WJ8Zo1HMu3snJqGg==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.20; Mon, 2 Mar 2026 20:33:57 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 20:33:57 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bas van Dijk <bas@dfinity.org>,
+	Eero Kelly <eero.kelly@dfinity.org>,
+	Andrew Battat <andrew.battat@dfinity.org>,
+	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/huge_memory: fix a folio_split() race condition with folio_try_get()
+Date: Mon,  2 Mar 2026 15:31:59 -0500
+Message-ID: <20260302203159.3208341-1-ziy@nvidia.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR08CA0014.namprd08.prod.outlook.com
+ (2603:10b6:208:239::19) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-38-e5388800dae0@kernel.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Dan Williams <dan.j.williams@intel.com>, 
- Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>, 
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
- Shyam Prasad N <sprasad@microsoft.com>, 
- Bharath SM <bharathsm@microsoft.com>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
- Viacheslav Dubeyko <slava@dubeyko.com>, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>, 
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
- Salah Triki <salah.triki@gmail.com>, 
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Yangtao Li <frank.li@vivo.com>, 
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
- Dave Kleikamp <shaggy@kernel.org>, 
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
- Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Mike Marshall <hubcap@omnibond.com>, 
- Martin Brandenburg <martin@omnibond.com>, 
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
- Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
- Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
- John Johansen <john.johansen@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Ondrej Mosnacek <omosnace@redhat.com>, 
- Casey Schaufler <casey@schaufler-ca.com>, 
- Alex Deucher <alexander.deucher@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
- Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, 
- Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Oliver Hartkopp <socketcan@hartkopp.net>, 
- Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Remi Denis-Courmont <courmisch@gmail.com>, 
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
- Xin Long <lucien.xin@gmail.com>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
- linux-x25@vger.kernel.org, audit@vger.kernel.org, 
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org, 
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1123; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=O6E/wWymcmTFXnHRYlBNuOEnEuI3iSQ7UQxyw69+kG8=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfH4nr1zAdiW5p2+lCqnezrC50G0DgPOGslhI
- SVgDwbzfQOJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXx+AAKCRAADmhBGVaC
- FQ7qD/9Crc5dXcYjfDYsJq0pJ2tGKu0dX9jXy1EPC80+gepRKX95KNN8/+NDUKNZJ2X8nun84QH
- 6CSV8mUcd36OvMzmw8CsOR23929nd8IU6sfDxv6IY6zF7iW/N/Q3lG9ZhxTP2VsC2MVnlg3ed4m
- gK97DBUZ1yLvx1MWYR5mNxUbaIdrFxlQufcHmLmQbnRK53W0PLahurhcvgndRQ1ARgjV8PPuKt6
- IqgUKKK54IiKTMAGPULJPF23H1eZJ5UHXRxsTqb0fD8ewbSM5HtaGAJ1PFLJR+lnfzc1mwR3ZA2
- WeK78R5S3k6/IifwNgBDKnno7pW8KBlUv5UmNgxKqGIhbm8umg6ZWPW1TWmn2eCwW/AuZT34LQ7
- cfpccxYJAjwdk0VRhRBJ50TtmVFhDS8v8qBaeqbQfHNUEe9a6sAsj90dAfDFBMvNdsUEXeoWJHM
- ZbfQbHc/28m9ydAf+AYHZkZiNXz3rlH/KwSUnkaOzozOshxNe65gvHTwoooRagSzjMWAN1nbyTT
- WSrnCapknoBfQW/lBNp10qtIs8c1ht8t+huigk6Jqw+qGpkFwO7bBk0mCm/p8jT1yKICL7bcZ8A
- 5+NgyIDMEPDvMUUcnc81ZJ/1yv9UUcs9daePE760epq5urvrcj6qyAiIIDPEhfzs8WLJiw+RRL7
- nYRmX3jQMrIuTWw==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB6373:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0694e7dc-ded7-41dd-9410-08de789b0723
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	jk0A9PT7wUxwelh7KmAM0eLvjmCNCElqUQkexeLP0mA06EywAuMQu40X0Pv2TbVRmUICMbwqhe7mOQAyoacsBrdYF0XbL62Bfza8tsoghSVXxLBI5qr7DXZkqLIfeQ9pOlMhgpGpm9Z7W6MJDotUtD0g/Hy2op7xsTewCiZv77ZttyDRR1NlL2e8v6pEPyWCM/nMskyJyiuLm2cdZW89+JWM8Dn8ywScPp00yfkV0Dh+YFpn4bggHhmbzB8LRTrEDdmgSf5kvonfRZ1wPXs/1nBqjBeAwtShrBUKRr2RAoqvSt1gcyiVgf7te9v+dnNEx4aPj723xYPTy7mf0l7OVIx0Km+sY9NUIidN/SkGdX2RDqNSBtAHJoY/iiwTn2fUQ9BXvubeFkt4jUIrulPKe+e40d+sD1rkIAv1TF/JI5oJ5YJVYWNLqcEzOoAp7zDiUA53aXAkPnm5AfjzwueDMow2REnhUOLPtywr/HX9uVSnb59WwHct6ZkuyjrNU0pXDbZHnyjBVdc2TODZ+V3lZXQP7SF2FNsPvufZtxVuvBoRr7Wdi2vlaJbyUJ45+V7gHtZRpcHOvHTCrxcyhcMAYTeIrJikFMxu5Rkm1dumpHgNAeaD8aXbslbnDTF1VHgVaaQXDUXElvTvPQR8oJlMlCh9vp22ZE6YOdpFa7An/2dKZxN455CMfygaX8lsIMpsSu2EZAErCpusSzPrPlVSh9xxM/hOY4eQsANhe+gspYw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dsQTy062+n6Mdku4TgnfE4W5Q+YPcElZNzjEQhjTIfzxB0xvvqhVKUZod8wh?=
+ =?us-ascii?Q?EHpijodYBvs8T4awiqQydI5MBc0kf1rNuWUK7RYffXBJnYAIkMw0c8m371x2?=
+ =?us-ascii?Q?qA77FcealKxkLMudlJdoj5y2a90IuYLsho8nh35i5qty0tUW6HUdhU5ogiO+?=
+ =?us-ascii?Q?RevaLeZFH0kDwfwCNM8kWi4/7J4WC6M5d/vVNI5TqdxJERBYoDbt2MxNK+8z?=
+ =?us-ascii?Q?FJV5AOq5tZQDBrO1J5TgTh5HtTpM2MauJ154C/DZ1NytT3OB0YnpzjKphlFr?=
+ =?us-ascii?Q?eFXqzb4mtAqN1JHyFImuT/fXVdKZDU17C3Wyu3bX8BcCRS5USoYHmqOoDEP7?=
+ =?us-ascii?Q?j5c7np5ifalJnJuPfpN527tRLEqC47Ng+LX7o7oUA2pexdeSgvb01fuLm/AV?=
+ =?us-ascii?Q?sqaTUiFowDLc4JnuTsLtjbIjW0nI1q1Th7e8Xkk+cah61pd4k5b1Itw8sjg4?=
+ =?us-ascii?Q?26AKdq/O2oq/tn4n4wy8b2875iRiyjD9DaPmM0Qf5PQJ912xfZKPs7Cc86jh?=
+ =?us-ascii?Q?OubaRi2HR2GNyqOvwupu72RL90JKxZaKXjf/XZDjP6uqJX713xcaWnQqYH0O?=
+ =?us-ascii?Q?MVm6lFbM1PBrq7nvmgZaPKavQZl2ReVQv9skddbE6GFWnJba6RdyiCVoCLVN?=
+ =?us-ascii?Q?OR82e5UQv4qxILQCMX6EE49GRQ2fe0+ZUKWuhzL7O0A0/vknkZHHDE1x7Ij+?=
+ =?us-ascii?Q?YcfBhV0Jmh9BH8yqbyBGfCCFpogGsYkyS5LjBKKb3v4kpL1CBliVQyPAv1eT?=
+ =?us-ascii?Q?f5Em7ikHOooClmISeIBPxbwHJT/FT9bgJcqwrKdyIna398uCEF16WeSSh2o0?=
+ =?us-ascii?Q?bEVV2PFxdMKAPWxuqJ+PTA61GRjFARdJTVJqzW2GlSylq2Rc5mBxSDEAR7Qh?=
+ =?us-ascii?Q?SAiyHqgcN+CsVO/lceVekjjApeEp8atGEjrTadQ2wTPrPf/i98/hl/9XLDch?=
+ =?us-ascii?Q?hwiUBc6NECCvoG7L8p7Iz7EeqgaSNVUR2RVAfyEi9ZXbqyvP4zNKmXPQ0v6v?=
+ =?us-ascii?Q?li4gMgxUkmqbu7cJPnav6S1HluEw715RWDriuB4Uq6C1dn3ch2ZWqUJXK0Sp?=
+ =?us-ascii?Q?/1k7WY0lBkgtso2r5bfdvpUG9HtWa52nfrEAOf3Jq3Is5eimxbhNoaZnAvOB?=
+ =?us-ascii?Q?Vjo9idLgzBAIqUfrgBRFZrb8SdF1EPSXLuBcRvVDLhq/DpNL2dERkZyj5hIx?=
+ =?us-ascii?Q?q6YqMAs90Ca8JeqFsoiZ6XY2/qpLHWud8lTJqJRyX4nNd1QzXngaomXUPNdp?=
+ =?us-ascii?Q?N5Ga/nYhS/Je03E+3SftK2L+7jg050cD4Evi9MsAhNlnMVKA8eyQ5K3wxB11?=
+ =?us-ascii?Q?FCOSiy1dIav5k0NVjcZjTuf2PCetAn6FKVVHYEsEgSpyoAkH50zHZ0nWIiPu?=
+ =?us-ascii?Q?YynaL0JZQYvT2i9C3G6DIHrkmZsMsdFM9L/SmHo/MXGnIivsX9h1HxQCZefc?=
+ =?us-ascii?Q?/W2qDmWeJqpLNbNvL8dWMPnUfUn9vKmelGWe3jebSh94NFji+3Zp7VKEdefA?=
+ =?us-ascii?Q?TR5DB0u0xTeUvsPGjih/bGFxDD8IU0S3GUb9cQveybIXYSk8+49c9L001x2J?=
+ =?us-ascii?Q?ZQeQSclD0ITFzAGjxwwwoYFB+wrdc04hqPZhgSMQee2dJ7GIA9XSj4ZRn+UN?=
+ =?us-ascii?Q?LdIE0Mnoxy1F7YjoQPwctlYUW0yb7FFpMHwUSvBdDDtm1Ild5jFTCLThFd0/?=
+ =?us-ascii?Q?HT/7k7ca04ySaTvJbIOo7rzlXlkikdf7fdrIV12OgevwvDrk?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0694e7dc-ded7-41dd-9410-08de789b0723
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 20:33:57.0184
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eajFENui4QHHZD3rfgCEV67fI2vuw5vrCNvnt90QEtx2+SLb9YLtsUQF9o275+Rp
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6373
+X-Stat-Signature: haoiepitdphzpx9qniojs4henhp8bi4y
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B8F9100016
-X-Rspamd-Server: rspam08
-X-Stat-Signature: kkox3e4bknknzqptq4qekei4sycw94n7
-X-HE-Tag: 1772483648-931786
-X-HE-Meta: U2FsdGVkX18HjeWW7NWSR4m8+K80DlM2pc/eg/z36w5l3QBfF20Oideou4qf1/fwdSpoa5Hn3A05QI59Gsl0iV4Dckhv2RkhvLciLyUcRMatXaDjwVrFHd+QHfmk+9PdEn9HsNxdj5GIOFl7w0MbvaX/xBbl07ClaI2TBnnxf9w1hDya/NvsDOp01CApQcgCdZKSyLW1aYxgC3I8JIKR4OMHSm0V4FirSJv5sx2mn+1pUFmtjnLmL4aaSkrQT8fcFPcJs247H+VX0tabhu1ZCIDemHt+yUxiN0s2iT3kTdWF50uHb6qrfQll5YFUQYmbXeter+xROIpMyTtCla8bAlv507iyshNPzRDbOWBRXbnqCejvJ9gUBbRL1cPWlQHivLmndYBYJ//gL51VfIcJttrVhFIkFJ0NS/EQCnz5xqDdHkIzifx0CwoESGppf9RAvdAktFAfqIbBXc1zq0Ycb/heIDMtSGw8JB0zkRK70x1wuKFAJO/HNwx6sCX0mZBX2n45njVxUFoEv9M9QUCVxjw3SIn9VIEhyNDDekxaBjIcYsZ1UpTpVibMulR2fuArRyCqeTryqfqwaVmkjHpsjtSNl/yYj4M6jjQ9e4ubfaVKEPDzL1xY7DDdvBsrbpRqa1oHgjycWn/i3/tKzcusf7xzI5PfUvVRgf/iDB5VuTtEFy/Dv2LhxzZbwX88lLaJkiqBygA3NSGSn4G+wDeJd/hE1KCPYv+E7EhS9faH1bKXeh2Y47EHTwxqNWrCyYFfN4PkkgUMMJ7YoVqxWIPRDf3bgNt7Olc8t5SIEPG8hcURsdZBv7dQrFgwXTp4YlR0e6Ak7eV5LSKvRlavLkMNlR7JYyH51AaAdrUr07MGgEtYv7p1XDcv00N/zyXEI6mgLbAqyuiNYnhqLP/2KO9DwbW5bIFeeUBfQT2YTwL5lhVNOs/O8R1PWCudgMIVWEEW9JCehDjChzDTPPBVV2T
- cbZsCIAS
- slaSuYpXJnc6PcYQQwvoz110Lc27PDTVDyF7Bdm0sx5uRLiJ2GtNEBultLF5vo6RZEcZiKoPthG06PffM4cUlmtobkVdONRioCCvoeJEn22a3nMuLB8zzzFLNvM61rxJFFK0QvsTuLBOzmgTjNt97zJNWDqF3/cLQLDUc4MCIkL/sUssANQD3RAFs4W1RBaa/MObvHqzW09PxQ06BgBpw6NZlDRje/vO9TRhPu4kdzH1i1JjHU/n417B3O/zZ4Y9dljKUdxU1cZ8E9BC4f/fI7mZzfR9ornc52tqadzLH7crntjbbRrDrYwaKnFFUGO/pkRqyPRSgrsv4e1QJfC1k7mxPPSMJEfk7oyuElGr6COdyX4Oosw1nB7A/KgAaN+FE4X9ldTbAfAkcyad8sX4Xisr4wNn54oimIooVc2+HBxpUI8q6q+KnRM+BmBHeIToUd7vNVnllxPZYfVxJ3gq251Vf7dph5VVdeJdw+4gnSP0SJJkbJNaxfjA2N9nEZiftM9RMS1j3qFGEal+BLy9q4QBlVlc2RIcQQyWBPozb9O+ep/kak2ysQqDL2xO09q0qy9ChIf6sfGGjFQ+rwBmUuRL4B106dmRDxU4vq+i/65Hqmdmjr7h0/mp4eQ2TNPwy/jeEIM5nXqQNnvdWLgtlXBJxeRW5YqWmh4srawo4HcSwsTb9CikT1wGhxVbgnDe7aEQqtH3KViH1jY81vWeJgBzMR46P75c1geeGwUdXwPxO7FkRvyZTtZE93illRIfLBKJEsK0tk6DHwgdS0hZxi5bxuwbTE/AlXtP0+HIOtl1aiRA+LYeskpCIzvUYrwPo1zYAJjq59cdrNSK42fIUgO1zlRlErXcABR7SDgHi3pA81owYj9LGHgMgl7woA/1SyV1uMQH9vG4GMLcX6GhQW5nP0efQsP0ZRcGHf2JrwZDgWp+j/KpKR3ByjDwu5lFtSmr2Jtn/r9ARO58OkVgM3OKKOrka
- YiGFOy+t
- n9VuCpdtETTYUj0MNNXGHFHdPtTbGCCLA8xmPmGo3TqJltBLZna78YWUmbjde+4ULudgK8GDpdMBvUy2wTbG422NKfgh0jhoZvUX6K5cf/mWbJWjAxcmN1KT5gbJMxtICBydwfceE7mLG6p5Pt21DMiszVO52MdrLGDq4IFOG89BWmZl8DD1pLdIaJb/HKj+uSRVdjMFPsNaWxABxHBvf0nJ99XH6oBGjppDj7skjfKeFqb45gMAkKxLzoLoApSjrZ+JBT/FJ7Ez7kq2bJG6l0HmQbMw9aHDaYgDTbEiAGz8ipf6kB6ns2HKdmYJmVQrWhd2NB3MAF6V503deaLN+WiZ2a9TCI7u/Ic4tS4mMsj+0IjW1NTm93jZ7aVLHjm7woT3J8lCEL/uPr1nciyWhl4z3/xhYXWpX+tVE1/ULrLYO2Kj0a3+exwNwigcH9OnD73LjhQLG6LBxn+lM5GMYEsCTf05o/2XORgm4pDh+rhwS/gglJ6USecfAoBqiLb/7B0nHl5Bsy/lWcxFYbpiv3M0os4dx4lnVlIlLZg/Z/ZVf0hiIX2LSqvibiKElFojkJTsInp9Im0oYDnEHCesnowygxyJHG4zKsMomqp3+8wVcHwMTC9PVvenUzqsv/DSNJWjscS9wwv5SbrQtxDkJWqnm0mzLpo7AfXBeawkksE5GLzCv3bub5rd7YhdOUK8iSO2Q/nXohtVxSdXTSEPGSfaNLwurI6PZMbZw5h6hSajEPwcuQuYXYyJDS7LRdOi5c1kHfykx0TemYBM/ZwRbCEGG5QhXosXZkHsXonj6E8Q42itzsas1NBYS1ikbDV3GboMNMG/O+VczaXO3aEdU/iyyqUCnvSIpD3qNyz8c5aKBb3R363xfepSLYqnYjUfRWFEQek8TpAehjTpo23v9TQ/tHbxgyZw2l4tgvqZBYbn6uj8vncp8IXgyFLj2Juk5/98AlT0nT2/5Fls5GoQIFwG03byl
- 7DTEhhHE
- xx+IdjyEsp19iTqdD3oFYbcFw/wGTIwv2jiGXrXFNsPkRJQj3Ad4gAL9oWLYrNoSzErAlswV1jyRkOhaxizInNzxb+X8Zeydh6AHcHIucG4GVzNRSJdH+LEJ6ntcMHAfM2QvkNgnHb1dRRpifMyOzes+30omQ8dzaGXh2T48Yymny76NHTFlLtKz5JBnHKRvK9pPZyTlTdjF9csa9v9dKV2r7NlZOaxq+t5h63TSByDWDsqUNKx25aK6/P2gKXvFIE0CevYiOJZVAgyunLhDs2F1TzS609P9lxUFS0vdNnJFjPQXJK8rdqH3WvDKbpBib6mVKeiJozFsDRHrnmNHIP5efgEkbeym0ni8j5wFlshpLSFpd9/cdnA4HaM4hyXOrRmUon7oZgJszVZhNiEBO7YIVbjBQA5y1EvOfDUVd5rfyQa9dat1BgAbDt2lmMsebW+olIWsYVypMb/MhbsIC7Te9mcjpnPIHkFNR4jCgr4dcK/DN10AlNcpjNTAyl8prRyS6oJwk1TF9JlmWT1TzV5gZrH1qdPU5wuwplG63R179N/+2CN/W8HX+X8Q65R4gFpUmsUtJtN6RMsGIg3B/+9WSixBjI7XHVM8K7NQcimWv8t/2DioRtUA9QDPx8ewxPzX+rfu71AF/5zUXZxRO9yS9FcdV0PMBPmZRU6zTq41oA2Ic1aGO9Dk6VQKmi9Cn0UdXzkzmw2+bMhu9tre2DoyrSP+BDRp+d+ctYR4toQ/r6YWAfcEDYczXW8QknVEUjp+W3kdzaJEGi685T4j/vx+8hzHW/+XzqS9tRnLWLx6XuhDOn+gS/G6krgfZDxjSaWQf6Yj93dggL33mSsoTMRBnW9YGNLAZNDjwI5nOjn2sWKEAX/O11THCo520Ewy2q6A9MnCTmPXcMnInN5342i16N8sGcMXP6PCvnc/LRBVKkDnyO/9ig+I7zVMGSpIHSASQeZEYIqq62izIIbPWMhN46KfO
- GcZI2quJ
- 5gbtGuH1zAxE4RrvwMFVqcRo0//qakjmuL2awjoAELChnL9RT4CLFUK9+j421PqGKU2rQvFrNKlQ6DG8Ebk95cvz2kwYGABWXgEQOwU973l3vA2kf0DflpcG4nkVRHKydWL41iZHpofskMdg7zgv2Rfe9mMv0/jR8viLDlGQJIWFeDYGpWxdf2HE+9Db2kfGZcQ9/mD+iXwOpd7tryE6zhSigqsmXy8mxqwdhhQMK6GfaB6ZRZ1xGcehk0IVxpK5ChS74ZXHQspOijb6zu5zEmGADKnqKVS4VmRIzfATmpqcevXWRmKxHR/q91kxRPAdUK0y4hBpATqlkpQmSZr5lJBMa2ELkQt+7yfKG47HgwaRxAk/cXciNlWDXZ6J8sCs+sqZSAZgE3hQ==
+X-Rspamd-Queue-Id: 9E29E180002
+X-HE-Tag: 1772483649-61814
+X-HE-Meta: U2FsdGVkX18Su5CfnXJtILMKWC626nlcIUfRfGtTZ4yWH6A6ErgJoiM3snhNfB5bR8HXRUcN4Cs3qa4sg017nz+2xHwDwV3U2Lh6f2iwr1JTUkEUCPJ9dFBfiUmleL/s3b+wosfcg+dBfLKJKq9IjDljKayg9tDZFhlZI3IPL9NCrYMe4dZYfTjngHhYnlLUqNF6u8v/v92FQUBJW4KMt64s8fg+9zX0Gn/opmoiMY/vPIE47bgMF6MUdanBw96cYkvKYBGxdNmkUlA9K31g+GA2PaENbs3WcAjzuFVQyVp3azK5XLAE97NZFThbkuv0addIM4UawqyjsXZfYFGYfml33U+TASaRwmDIMuRWru7WR/0+WxOjTYa+dadUGBET2cPJoQcVfsZMEDuMuZktm0fPOT6Wy7SQNB1e0TVcZpT7h7uk5cERbCJGXpJsbO5uspIyjvPZGSxeZ3CAGWTUbG9Nq8N5yMUitwFN+Qjgdb/k/a+O55l/3PsQg+Z6rWfBKZgDSpyYMLUrtp+jayAXAZqwFrbu7NQw/sTt0ZrORUBzGJoOQtJVldJohiMSQoeSQ3EHP07DzgeXMikajszczrD4RUbE8gzqxcY4VDU/St0z/C1NkwskaDMMjy98dkQcDK9leY8SRIlB+H4U3ScQdy3ZNaUTzlWRK/7bRgQr55xWFmv2vNA6BOSTDIXmCoAmNl/s5IPc3BW8CbQeDbof1JmsAHCUevSnVGfdfs2Dh0IGS+R3+EcliFCZZ+IP63kSiGxgrvAWy6jmp+b7qcsmPryXk6VOs9FqKBZCW8OStEetNYUKnYubnsguNOISMk4JUatERUQMKoKS65xsVxUM651o1yz05hGIJrxXc0iqwKDtex3IRYfjGPDe2/B0fJn77aRSYgJ0ZBjljIN5BMuaz6ZyTDT5fDlGNk5xYBjbKU6UhULCUEwA1jhYW8CjHrPyTDdfhnTUq2BRmJH+FRH
+ 6Qor2t9V
+ +IAjWtnuo3voyWmKBQ+IJN5bev2DoEt5TjKPoEG0UNU9oKJx4fdwQcaS5F2Ul+3aRsIDL7N/zuUyD7I65YkGZYV3ifBJfA61YvR+o9QIhAA18Bdso0mTFUBLtmtdcv9lTSDnExw3hvj0yijWslpwFNoqoQHSXvs+IBuhPYKPylxnGXXgkGJ6CSm5PsTaWOSEVkYFstNBAljTk3ZKy6zrylNaaDB3nPIk1mK169AYC+yNW1FdO+Cx27MWLRj10Nb8JR661lrNugHutoXo08HigQ7vMyIMvFFGL0mrOZDnJ5CqbnCjYhbV8EDhDDlMmzOzTPcm6rcjMlgAENZbbWuc07fsWQWFoQKG2adLJsETddDAvrAjF/QJ01RXiGFGHWa9QFi2KBYHM90D5iiHlUhy6TzCSQzgQ/IyoKOFF6GSDddM04lCcmMjH53vuyWo8mJOTPEtnPdgrbA5OhfenT+WWl1JuxQO9dDSIMLw5fzeOGT3UKDLIXUzqcyfnmKOnKT7PzJ7qkgopVf8+Yd5bqueMg6w9/MvdjzkgxHrl53DU7b1utX//0wmwSmDnHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -222,38 +172,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert nsfs i_ino format strings to use the PRIino format
-macro in preparation for the widening of i_ino via kino_t.
+During a pagecache folio split, the values in the related xarray should not
+be changed from the original folio at xarray split time until all
+after-split folios are well formed and stored in the xarray. Current use
+of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+show up at wrong indices in the xarray. When these misplaced after-split
+folios are unfrozen, before correct folios are stored via __xa_store(), and
+grabbed by folio_try_get(), they are returned to userspace at wrong file
+indices, causing data corruption. More detailed explanation is at the
+bottom.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+It
+1. creates a memfd,
+2. forks,
+3. in the child process, maps the file with large folios (via shmem code
+   path) and reads the mapped file continuously with 16 threads,
+4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+   large folio.
+
+Data corruption can be observed without the fix. Basically, data from a
+wrong page->index is returned.
+
+Fix it by using the original folio in xas_try_split() calls, so that
+folio_try_get() can get the right after-split folios after the original
+folio is unfrozen.
+
+Uniform split, split_huge_page*(), is not affected, since it uses
+xas_split_alloc() and xas_split() only once and stores the original folio
+in the xarray. Change xas_split() used in uniform split branch to use
+the original folio to avoid confusion.
+
+Fixes below points to the commit introduces the code, but folio_split() is
+used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+truncate operation").
+
+More details:
+
+For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+below:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f4 |
++----------------+---------+----+----+
+but the xarray would look like below after __split_unmapped_folio() is
+done:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f3 |
++----------------+---------+----+----+
+
+After __split_unmapped_folio(), the code changes the xarray and unfreezes
+after-split folios:
+
+1. unfreezes f2, __xa_store(f2)
+2. unfreezes f3, __xa_store(f3)
+3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+4. unfreezes f.
+
+Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+f3 is wrongly returned to user.
+
+After the fix, the xarray looks like below after __split_unmapped_folio():
++----------------+---------+----+----+
+|       f        |    f    | f  | f  |
++----------------+---------+----+----+
+so that the race window no longer exists.
+
+Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Bas van Dijk <bas@dfinity.org>
+Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Cc: <stable@vger.kernel.org>
 ---
- fs/nsfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/huge_memory.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nsfs.c b/fs/nsfs.c
-index db91de2086456bb9fe0547be7dbbd2de87c97ca7..0e099ee2121f8831645c3a25d759793ef2ff9ce6 100644
---- a/fs/nsfs.c
-+++ b/fs/nsfs.c
-@@ -46,7 +46,7 @@ static char *ns_dname(struct dentry *dentry, char *buffer, int buflen)
- 	struct ns_common *ns = inode->i_private;
- 	const struct proc_ns_operations *ns_ops = ns->ops;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 56db54fa48181..f0bdac3f270b5 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+ 	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
++	struct folio *old_folio = folio;
+ 	int split_order;
  
--	return dynamic_dname(buffer, buflen, "%s:[%lu]",
-+	return dynamic_dname(buffer, buflen, "%s:[%" PRIino "u]",
- 		ns_ops->name, inode->i_ino);
- }
- 
-@@ -394,7 +394,7 @@ static int nsfs_show_path(struct seq_file *seq, struct dentry *dentry)
- 	const struct ns_common *ns = inode->i_private;
- 	const struct proc_ns_operations *ns_ops = ns->ops;
- 
--	seq_printf(seq, "%s:[%lu]", ns_ops->name, inode->i_ino);
-+	seq_printf(seq, "%s:[%" PRIino "u]", ns_ops->name, inode->i_ino);
- 	return 0;
- }
- 
-
+ 	/*
+@@ -3668,11 +3669,17 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 			 * irq is disabled to allocate enough memory, whereas
+ 			 * non-uniform split can handle ENOMEM.
+ 			 */
+-			if (split_type == SPLIT_TYPE_UNIFORM)
+-				xas_split(xas, folio, old_order);
+-			else {
++			if (split_type == SPLIT_TYPE_UNIFORM) {
++				xas_split(xas, old_folio, old_order);
++			} else {
+ 				xas_set_order(xas, folio->index, split_order);
+-				xas_try_split(xas, folio, old_order);
++				/*
++				 * use the to-be-split folio, so that a parallel
++				 * folio_try_get() waits on it until xarray is
++				 * updated with after-split folios and
++				 * the original one is unfrozen.
++				 */
++				xas_try_split(xas, old_folio, old_order);
+ 				if (xas_error(xas))
+ 					return xas_error(xas);
+ 			}
 -- 
-2.53.0
+2.51.0
 
 
