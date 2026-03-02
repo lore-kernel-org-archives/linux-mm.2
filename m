@@ -4,116 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0118EA4E07
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545E3EA4E07
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:28:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00F236B0005; Mon,  2 Mar 2026 09:25:26 -0500 (EST)
+	id 3196A6B008A; Mon,  2 Mar 2026 09:28:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFF4C6B0089; Mon,  2 Mar 2026 09:25:25 -0500 (EST)
+	id 2F12A6B008C; Mon,  2 Mar 2026 09:28:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD3B16B008A; Mon,  2 Mar 2026 09:25:25 -0500 (EST)
+	id 1F41E6B0092; Mon,  2 Mar 2026 09:28:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E376B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:25:25 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 92F0356376
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:25:25 +0000 (UTC)
-X-FDA: 84501345810.21.6DF10E7
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 98DEC1C0017
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:25:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=O5KJ3nGQ;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.52 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 105226B008A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:28:24 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D6F31B5C2D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:28:23 +0000 (UTC)
+X-FDA: 84501353286.30.41ACF3F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id AE9F514000F
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:28:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+0g6yjn;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772461523;
+	s=arc-20220608; t=1772461701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TJvv+dHmg1dMk+zrpZ7EFL5nzk7Z7j7/n7g2yIloLCk=;
-	b=vp7Im+wuOPQMd+5zvHpUHa9OY8ORi04jjQT5+wr0diHkd2aPm4Ob2I5sec0rkgpltZ9+2+
-	3+8T3rxdxhwcH0tAHqMjYKBShIR7aXX8NlMLfNzqJld0ABHC8/+4x7eXMHyTyBJa4c4PkJ
-	uz4eyEZsUYC/MoS4EvCZv0DeNJTG8Do=
+	bh=H25MjrcFYnqNOtIzpF4yT2ROxg8z3gYJIY7rHwkWz/o=;
+	b=8KY9WDakOw/EhKuuowgb90fdVWGXElyiroihjfoKWa9pOTVg3vNDDsJU7V0ycoztVpESW/
+	TdaVgl8ke4aG1T0AFhwwQmxMbxNqdWmHD49HRLlnqgsI3yzsQea+Esn1oMxu2jj7YiG7rI
+	84F6XAzHcDUW19LKeoDxRexa3OewfMA=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=O5KJ3nGQ;
-	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.52 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772461523; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d+0g6yjn;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772461701; a=rsa-sha256;
 	cv=none;
-	b=lDzwi4vmQIn817EeLVMUb4lOAZyJO73eeOyhW2S+fCFCEGpY17i4u8rLnpFPHWTy7QEBdH
-	h4kDZrrqRwP8IMI+t4SMsHLKP6GJWRZep6eVU9ZbMt2wR9gL+KxQ6pX3HJoOJRSjIL1Xmx
-	24iuasPoO+S0M0+/78B6FP5IHgaCwNs=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-899ed41208fso29947026d6.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 06:25:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1772461523; x=1773066323; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TJvv+dHmg1dMk+zrpZ7EFL5nzk7Z7j7/n7g2yIloLCk=;
-        b=O5KJ3nGQkFQ8ZDtZVVvF/7HdsbwO4yaf21b/BAMpKbFxPcAAkjvuwn07WKpV0CCPWE
-         tnt8f4vqLwH18xYv2hz0Yt057m+JMySnm+L8Y8Lwu5BG2eIsh1Ls4Y6+yYh0NNDeggls
-         +sJ06MFsK/1dvYaFvKX3nLqPhpWH2Sn+ENUVeBlXesuHAxzRhE3Xic0GfziidNLDlZab
-         4VGRZgUIooAC3dT8zCScf0Fc1uP18QrATjVfgWJwV0RjuDqCVeL6GjWQq/zVtyMb66Y7
-         GFg3KrIXHgR6lFwx2lKDmrzodQmtLU8XZ4M6Q0HDA3F1Di1y91EV1NsLce2U5Jed0NR9
-         XuHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772461523; x=1773066323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TJvv+dHmg1dMk+zrpZ7EFL5nzk7Z7j7/n7g2yIloLCk=;
-        b=HqkZA0ehYjkm6Fl78JfOPudA4YLXRORBSZs7n6xvoiTs2qxd5oY7ITljtbqbliMtMv
-         XiM80Z/IXhJuOhgbFFF/bKK5rwGycuUXbwdwRUYC+/3jX/1ixRUQDT0pkEUBmzp4tYo+
-         Wz0WbnWkQ+mQtMXU/l2kjwQZZCGzBG/TUBJ05NroEe7yUK0ybMLmTpBpHctG/G6BK1qv
-         Em+1rMeNIliES2NJHBQZzDc7U8l/ogPBa90lgFIpjHt/9fFJgkdZAwG1/H/JUy3eN/YC
-         TkZNWYR5TLQutgM0vtNT+iLSKcjY8fseVwdO6VYKAwoZFvlM8ySryifFCi+VNya+tJVx
-         2YWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUB07CJ6/fD6euTR/QzZz00HUzDgpiVrRbMfIuIe2fxIuKuuoas7whTQTp7KIzrKbuzRY6vPr0Nyw==@kvack.org
-X-Gm-Message-State: AOJu0YxmhEpJ1ucz6j7DrF9+ZOW6oZbZ/QwAa7TXSNyDP2n2/wFnzSDe
-	eQbJj6pxhoxii2for4GWh0bpL9AkRVDXm7GUtadkylTMhqR9ZXrrY5RQCmUWY2v2HVg=
-X-Gm-Gg: ATEYQzwdPWTg7+9CBRB1eQnB+1J8Tz8vm2BjKw35vqckZEzIPD4M1bThV1WsIYgdr/h
-	6SQoYce8m/G+1Vd0P3LdE235LLji00RKTaG+yEltiE9EfHQfyiOfCJh+6hUYmCRqsJlw+QRr6le
-	zKdbUbSi3ki5xasK/7TyCSNMUSNqB1/858+e3Wqqq5VLU42WCz6YCxb8gGfXI5HTgES3RKSEct9
-	fa0MDFKJBs+qlGOMHg3Sz9mCLDa62cRDb8voT8iyd25wIJiq54w5QvsvUhNWedwvez5SiVXesOw
-	rg7dXVwD4HGd/E8AoTJvmf0d3fRMQPjZEUThDb8ZqLhN/iZBObTDauJDcs26V5Tj2WP3UFWDdqA
-	79iuZcia7t9LRjA55DaNw8qTj4/WfldAmTjUPXZ86Em+8uwqoqrIoGsBBbuwKnBVaC5+Wdkli0Q
-	gpO6GENKs6afyeybXsN8CiLBy2oFHMrOM+DqOyulSOo+3tYmovcz5Wf9L6C3VYosY9dWm3XKzYH
-	OA2zAu8
-X-Received: by 2002:ad4:5bc7:0:b0:899:f50a:6d15 with SMTP id 6a1803df08f44-899f50a7244mr66650266d6.6.1772461522653;
-        Mon, 02 Mar 2026 06:25:22 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f9261sm1158810485a.26.2026.03.02.06.25.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 06:25:22 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vx4D3-00000003gVp-1im1;
-	Mon, 02 Mar 2026 10:25:21 -0400
-Date: Mon, 2 Mar 2026 10:25:21 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/mmu_notifier: clean up mmu_notifier.h kernel-doc
-Message-ID: <20260302142521.GX44359@ziepe.ca>
-References: <20260302005222.3470783-1-rdunlap@infradead.org>
+	b=R/NDNhTpEMKi9ALnOmhPfYnhdNokLm9A0AnqYTRQFLI9I7PyiI4+4C2ULWmMVhR1N1+qU6
+	kFJ1pFWNOqtW7ZEG9A/wdg7OiTsti9ncTRmRAvlreZ8k/r78HOUS/e2gjVeBeWg1FPBHN1
+	5vF/ndFYWPc1AlfyVJ4tug+WEqnMIlw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A968944355;
+	Mon,  2 Mar 2026 14:28:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E98C19423;
+	Mon,  2 Mar 2026 14:28:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772461700;
+	bh=NHChwr26MecOHxxoRdWaM4AmCzT0wwXCZr7gSsRU8c0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d+0g6yjnQCN4aYh+WOUT93XZp/DuyCrZCxG65S61sRopnERaQHTmssaV+0HlzK2QQ
+	 PfLvTTJS2Ao0k8ZVxHfflUOHTWdTvao6ajK8n2zU0tjL9S+P4r6ZeGa6Ev32KzGDcg
+	 B9ynwUmY+vWB1pb1vc9rhM/ntTlp3bUax1d0heIA1uhvjTTchr+8XRR3e+LgTdgTtZ
+	 NGMB7msNIPRRIE2t1V8U3k2bycORDwl+Luo2H1OAkvbGau8eQcM6hqZc5EKdgljTf7
+	 bMmWssD/fmrGgcp2zLZ2h1mcl/YaUbPSAW78re+Chm1TsHRhNfvkbYi/ETVqjttG1b
+	 NzJEqWcLONsYw==
+Message-ID: <64fa6a73-8952-4ee1-b7c3-8b0ebef3ea78@kernel.org>
+Date: Mon, 2 Mar 2026 15:28:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302005222.3470783-1-rdunlap@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
+ folio_try_get()
+To: Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
+ Andrew Battat <andrew.battat@dfinity.org>,
+ Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260228010614.2536430-1-ziy@nvidia.com>
+ <d9e30bef-621f-444a-a1b0-510c50927d9b@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <d9e30bef-621f-444a-a1b0-510c50927d9b@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98DEC1C0017
-X-Stat-Signature: rpxnafqcgbap3i7sp17fpy4y6eqjc5am
+X-Rspamd-Queue-Id: AE9F514000F
+X-Stat-Signature: g5c5oda8gd9xo7u3pikskq4ppfzzyx1s
 X-Rspam-User: 
-X-HE-Tag: 1772461523-266436
-X-HE-Meta: U2FsdGVkX19QXM2RmBCbUkz5f3emSKdIC7LLa6EmpO9SwZjI1k/xwUaWvYVmBtWH2Y8A0rhhRyzKHfE6ZXy7A861UrfcOekGs7Ir4Hm4MEJnP66DnSjXJrd1NrL3sid9v6zRPCwvMcsEBcHvl5zBRXqJ52+tw3VM3/ulLWlmDmENG7vqnjqbD49emHilvoPL+iA0miRtGoND0w/prkeOmYlsUfeMNMF8TpSetHidxUpUihGrbyMruXdLf4D1TEWefOfU9QpHthH0vj5lDLsLYf8YAW7P1B1fdVXG24V1RhB6qa1NqJNlvJodUWIWH6SY6g40HGuWH7yVYnGCIGa8JOnB3lih6xgkB8FL76NV0kypJn7YM6s6iR82zfzfUpm92OJQAeIs67C1C2grR9i0ifDh++dfmBkMIwiGiwid6oBOYgMrLoaf5LhDFkZBJ65FBRbdJqaCKlJ0JhQpNPp81vW3/cQYprs0R4FJHYJd5rA4CL3Kobo2WDldRxqlNr/4ND/j1w1t8UZkk/GV2Q6kN3ibhebxIXwbtuX5kM5JM88VijU1urWi9dV1Q1RXX+Sqf1iywy1GxKJ0VjKfey7KRJ2Xj9ZpI+4SGgpgoe4GDM8AHDmDIC6dUfM+eSyOd29I0nUeFS+AydpAadwCtf5RJmBn8v8oIS/umVDj6DNgx/GZIRrYz9L+nFPoXkSbWquFdcHxPPh30l8SiCJXB2KSf8Fwrueqz/zINTy9GnyjxP6frwWF2Bg/dCBasF8dzEK3dqVxQkkNzuBxoZrLsr4T4WLa+OFrJ00bSXP0lTwFca/Oaz5FmGxutpSolpK9+ZJS2VyIJHZOkm4WctgY/rOCZpVaXqtSeIuXU5c/ZPOy7Dbaf08Cr6slBmKI+2iPz/k8je1iKmokK3igxhBPH/z+DGRwt/shq9tTtyTYveZ7tHGZfYWd4z0ykM1/ShwLTL+Kr7/j9mo31oQ/DpRqxiT
- tn1NIHtK
- N6BAawze/BvneNekV4xkBD0usMtbQfHeVl+SCSSgQtGKf5vm7+RbWAIj6WusJG6RrW5o9aTsojUimdhU3PBtXbVuDogXa+N22HfP4/1D52WKsEdQ07QOeD9YHho8N6C4Q5zfP63VL8vcqexpoCUaGGOrbA7g/3tRbD4zUDX/+6gPl9f9Uq2P16RfF0ohjSORPoFcyPbJJqCkGf5TfMIQAoGWRJCrR0HIFA+ZG3UNGqJ8yE12UB+QEurhhMV9JXA3SO3VKqHdqv9YsVdA7F3oK/ozCIzGDtm/9kmYAZYlSpUhiTDMMZr7CBzSBrzupfHUHIRcr/JXrSNyOG0aefDlBYuvHlId5eOjJHytHsWV7ZqE4g++5D3HyPW+6fQZPDidi5VMNgec+YVhVAE7wneAO8mtOTEoc6SxiiwFIAhqisYqahFsNeGi8+HDwYx0rlZwr/bwWSUOVFS+xamE4JmpftLwFOxk+2/FWrNTF3gsx8NEkNn8ecRYOSgIw7eHEcAxGH4/UAxGXm1AGMJ3nuwMwlOB5kLX6iJlj3MmystKVPa/HezmMTS91kwziiaxTr0gCuSPfTRHaIR74okFjHjUmiR7Ckg==
+X-HE-Tag: 1772461701-228185
+X-HE-Meta: U2FsdGVkX18teSQ9Epn49Ti+rg5tfk6cfSUHJuyl+JNo2QvGntR2hTdMSKiE7WwOA5O9U5Fp1d6FeW66b7dYwiSz2R7e9gP51QbCMQw9K6efH05ohQopfY6KOElipf39jsRXj6eY8DxdMgFgvBV79ryJMmDfZ2ei1fx5CLpW9QZvpq9cZZ5oXjQwkVtAa8TTQwFU739RAvMs+2S9+r9kcEErCfzOeMp6nLgMc/z6fUm7JyqoKgcrvot2GpUrc+GCF8P5gwR0xrkoLM//FY2lFI4e3dlZ29fpvHjBfAdDT6OaaF4YqtlptOQTNb2rjN+RTKbD4BM5cX1r5WAp3ghaFkSajsuMbL7IT/OjMEgZwE50w/gcnHkJuq5zGPsPFu+krDqmTlPkVTrhzuF9TqYaARnS+X8i9990SLB7duPL20EF/NknGe/qjZfAa13hmapK4cRpcvljk892rQaeA+8LBgY5UAiiGQmkgLTesN8Esae5fPRDt1zpMY7GKbJxVtOEKJtBvAi1VfBFyLl1vequcx7MPmgWhJjiJBenMEggvCLfLr14SHHs3aMxERbJTapezwizPcFuQeG8s+nJ7MVWJN1tuZmgMeQ6x9wERVJfA+6081cKk+D6KTpc36mKLx8aQtCNzOawZFZQeKNDbSL+bvHPO57Bdsvq2OX0zIFkpEIv5diAe7yAthM0llPIdhaIm9TN2hg5rZaBwxyS40iYezBFBQ5nk/RD37P3rDW5Ie6KGlQeDx6SEitKYLLSPcm1TEdXnOAzIHaTWryAqlcQ4jtF1ncmtvob5XWZKtvPgifDL4wM3GnKCkOAaIOhViAmAIjsOcPq3wQibqr4tN89oVrur8OFKK3eNcHQ7WsMT2dm4sdwUg/y7+PhvBZJk5n50FL9iHVGd1vic6D2LwgfKPD7ufaSmKExwiJIuiB5Vlhc0gAFGfiXTrkmxvNqKonpeqUreMzFzXHoaI0eJ2y
+ 4oEnXQuh
+ GfLQVPi6WNmQN0Bd7I1Zl3/aaZIv59lqPpEt9UyZ1JmGD4fY+zu+dXHOZsYX3Yz+cWU/8QSsKv72npe2ZiGHX0jdXQ5k+d8BXem6r3CUvv7Gyx2Aw2qILwEUSr3D088ajw8qXUpUEIT3+ym+XgTPGMwlADQusiSVK2k0qt0AL6r2rknn2GasVfDX4CgvzayvRnrOzGKoARX791JJpG8Wa+8FgQRt2SIjwq4A9e3oTrWbRckbxD0sQsdxeZ8YjMIF37+7pRZ8sGjwUHZA9DZzxJE5Bx11Q4fhxnlibj7idpWla6jH2eW3fmJi5j/eZghi5Efxivvij8h2XplJntLF2ZbS3kHs+mEO+Xyvpz2HxPiMQ44Bx8KyDfngIjpqpfmDuaaTH9wcv2+wwmC7P3anSz1ygeITK+GMb0b43nNixkZ7pXrjqgOMJ+AvU6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,41 +149,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 01, 2026 at 04:52:22PM -0800, Randy Dunlap wrote:
-> Eliminate kernel-doc warnings in mmu_notifier.h:
-> - add a missing struct short description
-> - use the correct format for function parameters
-> - add missing function return comment sections
+On 2/28/26 04:10, Lance Yang wrote:
 > 
-> Warning: include/linux/mmu_notifier.h:236 missing initial short
->  description on line: * struct mmu_interval_notifier_ops
-> Warning: include/linux/mmu_notifier.h:325 function parameter 'interval_sub'
->  not described in 'mmu_interval_set_seq'
-> Warning: include/linux/mmu_notifier.h:325 function parameter 'cur_seq'
->  not described in 'mmu_interval_set_seq'
-> Warning: include/linux/mmu_notifier.h:346 function parameter 'interval_sub'
->  not described in 'mmu_interval_read_retry'
-> Warning: include/linux/mmu_notifier.h:346 function parameter 'seq' not
->  described in 'mmu_interval_read_retry'
-> Warning: include/linux/mmu_notifier.h:346 No description found for return
->  value of 'mmu_interval_read_retry'
-> Warning: include/linux/mmu_notifier.h:370 function parameter 'interval_sub'
->  not described in 'mmu_interval_check_retry'
-> Warning: include/linux/mmu_notifier.h:370 function parameter 'seq' not
->  described in 'mmu_interval_check_retry'
-> Warning: include/linux/mmu_notifier.h:370 No description found for return
->  value of 'mmu_interval_check_retry'
 > 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-mm@kvack.org
+> On 2026/2/28 09:06, Zi Yan wrote:
+>> During a pagecache folio split, the values in the related xarray
+>> should not
+>> be changed from the original folio at xarray split time until all
+>> after-split folios are well formed and stored in the xarray. Current use
+>> of xas_try_split() in __split_unmapped_folio() lets some after-split
+>> folios
+>> show up at wrong indices in the xarray. When these misplaced after-split
+>> folios are unfrozen, before correct folios are stored via
+>> __xa_store(), and
+>> grabbed by folio_try_get(), they are returned to userspace at wrong file
+>> indices, causing data corruption.
+>>
+>> Fix it by using the original folio in xas_try_split() calls, so that
+>> folio_try_get() can get the right after-split folios after the original
+>> folio is unfrozen.
+>>
+>> Uniform split, split_huge_page*(), is not affected, since it uses
+>> xas_split_alloc() and xas_split() only once and stores the original folio
+>> in the xarray.
+>>
+>> Fixes below points to the commit introduces the code, but
+>> folio_split() is
+>> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+>> truncate operation").
+>>
+>> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used)
+>> functions for folio_split()")
+>> Reported-by: Bas van Dijk <bas@dfinity.org>
+>> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-
+>> sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> Cc: <stable@vger.kernel.org>
+>> ---
 > 
->  include/linux/mmu_notifier.h |   31 ++++++++++++++++---------------
->  1 file changed, 16 insertions(+), 15 deletions(-)
+> Thanks for the fix!
+> 
+> I also made a C reproducer and tested this patch - the corruption
+> disappeared.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Should we link that reproducer somehow from the patch description?
 
-Jason
+-- 
+Cheers,
+
+David
 
