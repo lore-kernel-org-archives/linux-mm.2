@@ -4,84 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DB2D58E43
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 00:52:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EDFFD58E43
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 01:51:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E71756B0088; Sun,  1 Mar 2026 19:52:29 -0500 (EST)
+	id 4158A6B0005; Sun,  1 Mar 2026 20:51:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F8F6B0089; Sun,  1 Mar 2026 19:52:29 -0500 (EST)
+	id 3C3156B0089; Sun,  1 Mar 2026 20:51:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E266B008A; Sun,  1 Mar 2026 19:52:29 -0500 (EST)
+	id 2A4976B008A; Sun,  1 Mar 2026 20:51:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C28C16B0088
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 19:52:29 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 21F8F1A0714
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 00:52:29 +0000 (UTC)
-X-FDA: 84499297218.26.DA95D1E
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A2FA11C0002
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 00:52:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=EIZnaf1L;
-	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 165E46B0005
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 20:51:05 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AF87813BD10
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 01:51:04 +0000 (UTC)
+X-FDA: 84499444848.11.710CC71
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9B18740006
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 01:50:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772412747;
+	s=arc-20220608; t=1772416262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7saKVzOxoyQVzyoMxc8/Swddr+JmA7XALf/AIy5p+cY=;
-	b=TH8xT88wZCWA7JqxD8ghLyLNPkgUxrW2iqm1pfKaNQHtwKewtWs0HiKnkXxj5iN9R9nGad
-	wr2BmHoBwEw4TZkvOMJriDayuPYzkqK0JY0wzLkkoor7rJLenxQlgkAmzAV6LCn28BvvFO
-	JQ8zLUq9C5F8m5RZ99WgJF8m2ovJmJA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772412747; a=rsa-sha256;
-	cv=none;
-	b=SnluAo+8HDpLs/6R3yH5YhiZNJjet51e3aBtZGyl0wB9wzGFodNsVyoB+Qjr8e/vt3UuA4
-	WtHuo1w8VRtx4jsyUtjvgqxrHsaFMwwwNNXsQct30CWsV4mz9iAS59g+Y5OIPbyYSNlkZt
-	mKZ/5pqnLS8Ee8hyYKt0eNxxIwBp+Lg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jCAhHuOUZDPh4a1QUtcgX8A9mCOOrliT9J4YqH5j5UI=;
+	b=m3Ia7MVea17GG3qD5WNFvFLXYw+JR/BCucNUsNTKHR+7A3+sUNCQb5xpKUP1wNSN4C5Fz4
+	2dsqA4WlRXJX6CEhD70haD/ZtkAtAcaAtSjKmPeEeXDiYFoRjcZi1VnqLmgC9NYvCsIp5M
+	Jp85IBFaG0g20fTdi7iBzQntkCxGDck=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=EIZnaf1L;
-	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=7saKVzOxoyQVzyoMxc8/Swddr+JmA7XALf/AIy5p+cY=; b=EIZnaf1LogeAFGwueIIyStDp40
-	dZvB6cVWaM1ypJEa1iEVroUhyMlGvdQFCu0plYLrJlfsrfe/x44Lsv49F2TTa82JZ+AX06vLXmjJ1
-	NrFxd7gOZPH3gG1ner+rVF+wnB4rIIEIHXoZEyBuwWWaqjiUw7XraUKw3p+QuLL3lfMXuOPTZeWCe
-	MuS7LohQDtELwvl1L7315gP9HLYfAyvgnJsz9yx1sApxiYJMVlmP84kkpvOnEArS1lOIG7IBhvjvR
-	kcNYmzxBuKX70JCX8WFaWXevM9aJscMtD69upRzt97V+n+JmJxXSCb6fMh8hnKZ2VnTsvhtuS8uUJ
-	E+WgBkUg==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vwrWK-0000000C28F-1yWy;
-	Mon, 02 Mar 2026 00:52:24 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: [PATCH] mm/mmu_notifier: clean up mmu_notifier.h kernel-doc
-Date: Sun,  1 Mar 2026 16:52:22 -0800
-Message-ID: <20260302005222.3470783-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.53.0
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772416262; a=rsa-sha256;
+	cv=none;
+	b=3b4yPJaZ9mnFHzW54qj6JiAy0qM2GbheJnLTwDn7olG249v7YB2cWAlYvn2Hc9ZsZC/WOg
+	pUJnOFmztMJP15xkNEFbdk6LoPcmMX54a0+t1FD4AVIzLbCM2Qo6QUQwXD4pUoc9DrzOUm
+	iY+r4q9nMqn7yW6qjqYOCEqMG/m2Izs=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fPMMM66TvzYQtLF
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:50:23 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 490524058C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:50:55 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAHtPT97KRp5TUGJQ--.53758S2;
+	Mon, 02 Mar 2026 09:50:55 +0800 (CST)
+Message-ID: <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
+Date: Mon, 2 Mar 2026 09:50:53 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zy6yrafdpcknk6t4s9euan7fjyu957uk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] cgroup: add lockless fast-path checks to
+ cgroup_file_notify()
+To: Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Daniel Sedlak <daniel.sedlak@cdn77.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ netdev@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
+ <20260228142018.3178529-3-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20260228142018.3178529-3-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAHtPT97KRp5TUGJQ--.53758S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZFyUXryxJF17CF4ruFWkXrb_yoW5uF1kpa
+	98CrZaka1YgFyj9wn2qa4jgFyrW397WrWUXrZ7X340yF47Cw12vayxCr1UWFyUArs7Wr47
+	JrWavrW7Cw1qya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Queue-Id: 9B18740006
+X-Stat-Signature: 1c68e3kopcdmewwa8gqiwzhcenbpuazq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A2FA11C0002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772412746-474100
-X-HE-Meta: U2FsdGVkX1+p61JGxPYvUwfKBt4OGv0ePP03x5cVgcKpkElS5GrhErIgYnTctaddzqdMSFWh7Vv7CajdE7SbXvU4fTJeLMldNgMxnzir56Nr58zo9WIx+98A59LQGt2CG1HYX3PFaAn9Goqr2fZNRlIfhx0lVK7KLeP0dvRypZatkqaBZyWPfw2/d203mfQ5OCTvrHjjWpe/W2il81bl+JvWSoO02cakfX+K0bh3WhWSNCRd3K9Vo+D0OY7aMJ0T5TnehCONNCwaLc5Dl7dvCGbZnmBesc/Bgmz/rqlzkPkTQ49SvKbHYVjfpFW4k9T0hQEIrnZ+9vgCbG2737RASSIYjTSQIguYMfO3CMCXFsqtk1bOuA7ihu0zhCE9qYBnl/Dyk2taK7UcCrYzAlmuCZ3AUP1Y9V6sYLVBtuP7hgZi6fq5xF9Ru1MfJ1UFYQ6NWHrYQ5X2Xq2J8FWZfHBh+qFmOynzxM8zoctjtDbtG8Px1/RkTnvx2eKmiSnhODvwvh7OAIhpZ3SoYnZTb9sexRfOYy6J4JpckgUgM+DtM0qY2IvtdU4F6nGuUxM1dqTw25TALHAnqPiWKAFZAFS6OUe9SCUd6KWrfQQwpPhiwVpeWNjNmwt4pZ7ka+JKirMtCB8KRVaoEJh2gx+Cgss4vDGzhSLQh5WPXFvSSOiTz0E7rrNUFvgwGPc3uYZ39xdWPoXQz9ehCPn3rVVA0eaXpKszhuSAsk2z6AcJV9M4rvwclLaTVPDxHwMzaDzEan748jtwP6ueHAtToTGHvRZ6A60lT7GGqNZKF1+DWFyKMNkfNnuewhEf5Cxbv+o7W+RhXAG9O1BOvI7GKQxmFZmWX3CnHzgXypY40SZTRIMoThfwrk5OccwkwIbrtG4qWiEvUhN1rXofrgyGYnQEUgPRSlakzXEX8LOpRRhmEl43SJAXlmaqHy6s0D0w/MkjeefmdLkBZSd2NJaHQD9M0X3
- PYetjjv3
- Yi+HKMjwFNZZZ6I1ydYG87o7r5bYN2yvYOZ/ivK02lNzy0vp+wIYJSEkXOFkiXDaZeFl6OUNUMlZ4IQ0+uPGJ4BSNhAEVg3JcCIYnazoqeAfoSoNJkUOAj98Z2auBSotpJ1oJrYZWsOBbcjBRBwm6cZWsaOycMsSMt1eKGdVmd8s0c44Kr+HNJla6zaVHR6gkKAzfA5gPeSbWzNKsrBAEV8hswwtN0ZDbTwlOzyIBBPZ4CUN3zY6fp1gtsuTTa8zgTFzrvToNUg3H0QZNzPkNblmN7m+Ng9Hp+FmuYJVJ4M4ESqpvNqkvIYcyeqaOPNixWRP+swJeJgRWbx+oq96nA5mG7/1G1iwKy0501EhOsvhbMC7cjNyjcXA45nwRY/Yom2g4vkv/zLdsrcG2OUoBFIQ0LzVBAIwSmQhkPaPmIMrONTrXmRgBGDdhG/aD4i8/FiHSP3yb/O/qCtUrlthNIx9N0GuxFkTWvcJQzlN4YRmSTw/iB1Fk3DgW0jsK/J5uE5awf52hj1GneD6I4mWsJUf/7exrJoOPY95KU8cJgdXDTFWRXxWCkBkY9WJ5VmaKnfRM
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772416259-5372
+X-HE-Meta: U2FsdGVkX18vhjQ1+Ku6qsboHRrq5l9v4IOfOvDzeGJ9ERXjhMp7B/iZ6POFwzJFWzwW5EVfWOY8PXaF3/R/NoXT+CtIiEr/X/V/NUUjeC4NxolTsk+DD3OjY2QBJ6sILiOWzDTYBo5u5geow67T+qK+nuvbuMqeI3BY39p/d0uxtB+jDxUUFSk5wi1rB03P1wWLiWDUrabkY+uRZ0LETf9WQ3QaNbTwl2DlRUjgGRN6Vy1OT9LFC4Vo7LfZBx6TsxgsutZ8tFUnEdL5ygLarcuzgn3zLSQWDmXnxWsFU2n7RTWWeUXn4l+ADC9blXFjsZJwe0buj++lsHTmXk8T+l16jh+wYp6Gf1VFBjNUSicR53gTkf5HVH/s4torURnQGib/4XVvg6vV+hC9050/AG8epptojleKfiKbz8tFggN001RNPrTZAqqVoCSDbgiK5L5P6l3r7fqKhcZILfkTEfz4ZzaXK3EldiF3qBWHxHTRmkP1UJMChtzdI1f9MFV1zOhszafTCKsNcDis1n5bV46Ki9A0semlBFscf3SwDIWWBBcQN99blnNBfxaTJQxwl4F03+tx92O3xevadjzdRfFxL7A/PVba7P9elvt5mDSfNpHS5Ifyrzv2AdL/5SrpPa/9Qo132ZzciAUb+U5Q5bpvUaNtY6Wup4YnOHcrYrFZG2Fx3AiRyTwvJWHl6mt6s24OJtnt+XpDQrg0v74aPbA/H5ZpyYbeLVYXtZ8X6y8biPMprNy/OelVG/OPvzV8gsRaMYJUWIpK38uTAqnYek2Snwm7HrESR+a19D756g9CTriDPnbQ9KL+F5GvuGXXWzs0laLdJLH1Bj7EIqVfDxI0ggS4m+7xHMiDltp32LKDyQ6XOEQCPzBbBLKtSiWMKzP3OOpLdRFrhdO1RtZCwfBH7279ODMHFQ7juctoNpFLb4j8Tl6MfeG0fHom9yxhJ3aC7rTWhg6SIEg0cNG
+ V4noaBUM
+ UDeIXVlnRnDzSCRmozOX5PKGKrpjdvHlfIhUPstw+zCdhtZUTzsui3b5tALogcJjaNqD4jUHHNub9T1lVeklprNgVQR1xVd9ogmxgxk7MY5fABJhsFjgIHEzCvK5seqUEvQr5L7TxFKhZt6roa2ZZJ6MF/cSSX4M4nPxspg3rlnMlSpGTIBAhbAd3oxRWzAaUBz8u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,110 +110,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Eliminate kernel-doc warnings in mmu_notifier.h:
-- add a missing struct short description
-- use the correct format for function parameters
-- add missing function return comment sections
 
-Warning: include/linux/mmu_notifier.h:236 missing initial short
- description on line: * struct mmu_interval_notifier_ops
-Warning: include/linux/mmu_notifier.h:325 function parameter 'interval_sub'
- not described in 'mmu_interval_set_seq'
-Warning: include/linux/mmu_notifier.h:325 function parameter 'cur_seq'
- not described in 'mmu_interval_set_seq'
-Warning: include/linux/mmu_notifier.h:346 function parameter 'interval_sub'
- not described in 'mmu_interval_read_retry'
-Warning: include/linux/mmu_notifier.h:346 function parameter 'seq' not
- described in 'mmu_interval_read_retry'
-Warning: include/linux/mmu_notifier.h:346 No description found for return
- value of 'mmu_interval_read_retry'
-Warning: include/linux/mmu_notifier.h:370 function parameter 'interval_sub'
- not described in 'mmu_interval_check_retry'
-Warning: include/linux/mmu_notifier.h:370 function parameter 'seq' not
- described in 'mmu_interval_check_retry'
-Warning: include/linux/mmu_notifier.h:370 No description found for return
- value of 'mmu_interval_check_retry'
+Hi Shakeel,
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
+Good series to move away from the global lock.
 
- include/linux/mmu_notifier.h |   31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+On 2026/2/28 22:20, Shakeel Butt wrote:
+> Add two lockless checks before acquiring the lock:
+> 
+> 1. READ_ONCE(cfile->kn) NULL check to skip torn-down files.
+> 2. READ_ONCE(cfile->notified_at) check to skip when within the
+>    rate-limit window (~10ms).
+> 
+> Both checks have safe error directions -- a stale read can only cause
+> unnecessary lock acquisition, never a missed notification.  Annotate
+> all write sites with WRITE_ONCE() to pair with the lockless readers.
+> 
+> The trade-off is that trailing timer_reduce() calls during bursts are
+> skipped, so the deferred notification that delivers the final state
+> may be lost.  This is acceptable for the primary callers like
+> __memcg_memory_event() where events keep arriving.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reported-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  kernel/cgroup/cgroup.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> index 33282c7d71e4..5473ebd0f6c1 100644
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -1749,7 +1749,7 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
+>  		struct cgroup_file *cfile = (void *)css + cft->file_offset;
+>  
+>  		spin_lock_irq(&cgroup_file_kn_lock);
+> -		cfile->kn = NULL;
+> +		WRITE_ONCE(cfile->kn, NULL);
+>  		spin_unlock_irq(&cgroup_file_kn_lock);
+>  
+>  		timer_delete_sync(&cfile->notify_timer);
+> @@ -4430,7 +4430,7 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
+>  		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
+>  
+>  		spin_lock_irq(&cgroup_file_kn_lock);
+> -		cfile->kn = kn;
+> +		WRITE_ONCE(cfile->kn, kn);
+>  		spin_unlock_irq(&cgroup_file_kn_lock);
+>  	}
+>  
+> @@ -4686,20 +4686,27 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
+>   */
+>  void cgroup_file_notify(struct cgroup_file *cfile)
+>  {
+> -	unsigned long flags;
+> +	unsigned long flags, last, next;
+>  	struct kernfs_node *kn = NULL;
+>  
+> +	if (!READ_ONCE(cfile->kn))
+> +		return;
+> +
+> +	last = READ_ONCE(cfile->notified_at);
+> +	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
+> +		return;
+> +
 
---- linux-next-20260227.orig/include/linux/mmu_notifier.h
-+++ linux-next-20260227/include/linux/mmu_notifier.h
-@@ -234,7 +234,7 @@ struct mmu_notifier {
- };
- 
- /**
-- * struct mmu_interval_notifier_ops
-+ * struct mmu_interval_notifier_ops - callback for range notification
-  * @invalidate: Upon return the caller must stop using any SPTEs within this
-  *              range. This function can sleep. Return false only if sleeping
-  *              was required but mmu_notifier_range_blockable(range) is false.
-@@ -309,8 +309,8 @@ void mmu_interval_notifier_remove(struct
- 
- /**
-  * mmu_interval_set_seq - Save the invalidation sequence
-- * @interval_sub - The subscription passed to invalidate
-- * @cur_seq - The cur_seq passed to the invalidate() callback
-+ * @interval_sub: The subscription passed to invalidate
-+ * @cur_seq: The cur_seq passed to the invalidate() callback
-  *
-  * This must be called unconditionally from the invalidate callback of a
-  * struct mmu_interval_notifier_ops under the same lock that is used to call
-@@ -329,8 +329,8 @@ mmu_interval_set_seq(struct mmu_interval
- 
- /**
-  * mmu_interval_read_retry - End a read side critical section against a VA range
-- * interval_sub: The subscription
-- * seq: The return of the paired mmu_interval_read_begin()
-+ * @interval_sub: The subscription
-+ * @seq: The return of the paired mmu_interval_read_begin()
-  *
-  * This MUST be called under a user provided lock that is also held
-  * unconditionally by op->invalidate() when it calls mmu_interval_set_seq().
-@@ -338,7 +338,7 @@ mmu_interval_set_seq(struct mmu_interval
-  * Each call should be paired with a single mmu_interval_read_begin() and
-  * should be used to conclude the read side.
-  *
-- * Returns true if an invalidation collided with this critical section, and
-+ * Returns: true if an invalidation collided with this critical section, and
-  * the caller should retry.
-  */
- static inline bool
-@@ -350,20 +350,21 @@ mmu_interval_read_retry(struct mmu_inter
- 
- /**
-  * mmu_interval_check_retry - Test if a collision has occurred
-- * interval_sub: The subscription
-- * seq: The return of the matching mmu_interval_read_begin()
-+ * @interval_sub: The subscription
-+ * @seq: The return of the matching mmu_interval_read_begin()
-  *
-  * This can be used in the critical section between mmu_interval_read_begin()
-- * and mmu_interval_read_retry().  A return of true indicates an invalidation
-- * has collided with this critical region and a future
-- * mmu_interval_read_retry() will return true.
-- *
-- * False is not reliable and only suggests a collision may not have
-- * occurred. It can be called many times and does not have to hold the user
-- * provided lock.
-+ * and mmu_interval_read_retry().
-  *
-  * This call can be used as part of loops and other expensive operations to
-  * expedite a retry.
-+ * It can be called many times and does not have to hold the user
-+ * provided lock.
-+ *
-+ * Returns: true indicates an invalidation has collided with this critical
-+ * region and a future mmu_interval_read_retry() will return true.
-+ * False is not reliable and only suggests a collision may not have
-+ * occurred.
-  */
- static inline bool
- mmu_interval_check_retry(struct mmu_interval_notifier *interval_sub,
+Previously, if a notification arrived within the rate-limit window, we would
+still call timer_reduce(&cfile->notify_timer, next) to schedule a deferred
+notification.
+
+With this change, returning early here bypasses that timer scheduling entirely.
+Does this risk missing notifications that would have been delivered by the timer?
+
+>  	spin_lock_irqsave(&cgroup_file_kn_lock, flags);
+>  	if (cfile->kn) {
+> -		unsigned long last = cfile->notified_at;
+> -		unsigned long next = last + CGROUP_FILE_NOTIFY_MIN_INTV;
+> +		last = cfile->notified_at;
+> +		next = last + CGROUP_FILE_NOTIFY_MIN_INTV;
+>  
+> -		if (time_in_range(jiffies, last, next)) {
+> +		if (time_before_eq(jiffies, next)) {
+>  			timer_reduce(&cfile->notify_timer, next);
+>  		} else {
+>  			kn = cfile->kn;
+>  			kernfs_get(kn);
+> -			cfile->notified_at = jiffies;
+> +			WRITE_ONCE(cfile->notified_at, jiffies);
+>  		}
+>  	}
+>  	spin_unlock_irqrestore(&cgroup_file_kn_lock, flags);
+
+-- 
+Best regards,
+Ridong
+
 
