@@ -4,116 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20E83D58E62
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 06:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FF15D58E62
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 06:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B206B00AD; Mon,  2 Mar 2026 01:31:41 -0500 (EST)
+	id 3F03F6B00B0; Mon,  2 Mar 2026 01:37:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 837C86B00AF; Mon,  2 Mar 2026 01:31:41 -0500 (EST)
+	id 394986B00B1; Mon,  2 Mar 2026 01:37:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7371B6B00B0; Mon,  2 Mar 2026 01:31:41 -0500 (EST)
+	id 272066B00B2; Mon,  2 Mar 2026 01:37:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EEDC6B00AD
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 01:31:41 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E446EC2C24
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 06:31:40 +0000 (UTC)
-X-FDA: 84500151960.06.FF4CBBF
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 34CD11A0002
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 06:31:38 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YibaaDZz;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772433099;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 16C1D6B00B0
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 01:37:26 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B92BC13BC88
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 06:37:25 +0000 (UTC)
+X-FDA: 84500166450.12.14C3E6C
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C595340002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 06:37:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QJXqeCYQ;
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772433443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I8gx42IHYEQCTDsiOiivkLZbaQbWhY24E85Lk6w39Tk=;
-	b=ncgc4pov80CSZyQNI1pFmje5GB1yiI59aIOaDZUYO4nSh7TMQcVP5LPa+VzTArpEkY7mJJ
-	fQKxjrAQ8VzjTagalimRwv6OrdYAypDdaG3QcrR7+ws8xQgWVYnfTMnjqtO8ONr9wBWqos
-	3WecD3GbHTP3e2GYfDc2pyQon7kxtEg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772433099; a=rsa-sha256;
-	cv=none;
-	b=lbBcAjWcqA6M18JniK9uxjDH45Rssp7xKJhpfj8VjqcAf+HE4z77+9OWb3A9ubG8ueAPv4
-	SP4ogXBXfC7zZOFCu1/71sOcyzSSPIOcF4r0PZ6lvokwxCHlyMOJTMBS9hr8jQGo7EDWsd
-	x4JkfH/JvX0YSlluvQTTwzbivfiqPJM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YibaaDZz;
-	spf=pass (imf19.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772433097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I8gx42IHYEQCTDsiOiivkLZbaQbWhY24E85Lk6w39Tk=;
-	b=YibaaDZzBLg3a/3Lzh5+odGfgFy4rKCclMUZCLJe8oVE/bwTQq5eeGRW2n/iATLhzlFuh5
-	X0ieBE+2QbmggG/hWHCuLDq7DvHNaU84T2oUFsxdeTGqgWB5DpcfOGmuitzwpJz9A6mSNO
-	KMYpAP3NT27u9rnisSuI3b0J57v1rSU=
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: peterz@infradead.org,
-	david@kernel.org,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	ypodemsk@redhat.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	shy828301@gmail.com,
-	riel@surriel.com,
-	jannh@google.com,
-	jgross@suse.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	boris.ostrovsky@oracle.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v5 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
-Date: Mon,  2 Mar 2026 14:30:36 +0800
-Message-ID: <20260302063048.9479-3-lance.yang@linux.dev>
-In-Reply-To: <20260302063048.9479-1-lance.yang@linux.dev>
-References: <20260302063048.9479-1-lance.yang@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7IDl+LWJ8AHh+JYc7/ewc8jtBLdZAOdgB+rr0WmQONk=;
+	b=c40qkx7+9MNguO0n8+Ugck6HKhacFG3MIlbUr+wN6p5rdQL7WcZXpXS+kqZ7VVsmxL+WfP
+	eL89yPH+naL35GJU+86vX5biqvblZG+x1Y5qobB9X00RNd2J8y/hC6z3t5o2XumSWgO53Q
+	j+y/YyfaDZ9ueT6dV//CZDkHj7dqEzQ=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QJXqeCYQ;
+	spf=pass (imf11.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772433443; a=rsa-sha256;
+	cv=pass;
+	b=D7HhvTvVyC5bc8O3qxlrX67BMbmcCAcsPFFUDCEMU/zplEDfKTrBuCPEhsd1T9hZhuCh0U
+	sP4OzrP8PhU+y3bCv6sTj6JHUSAVkIohDZyxUtmFE+CqBIGPNaYNWKgu4Y/lt7uyY3ZSh8
+	YtugmaBLZneLik3aa6jOEAi1OAZVMqc=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-899a5cb04f9so52726886d6.2
+        for <linux-mm@kvack.org>; Sun, 01 Mar 2026 22:37:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772433443; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WBU+818BuRPvmJ1+Mv3m85hZUwLMnWGCxtS420mSqMs89q33KKk6wAUwVUNqxHcEUy
+         ZiXSa3UZqckvaId1tP4r7vBCE7RYeGuIu0Kwj6RcfmuFlB6t4y0mefeW1blIPs2CHPJp
+         JBRjJLAX6vlQ427w+bb8j/ni5Oez40v087y84irw+vlT56EX9pcR0ouIRkzO3620MGOV
+         Dfwbtyqwq984voex27N5LqZOTOCRlW/4YYnlC0u0KY2sZVTzo4c/iKtqOY52Mrpr4d3s
+         rgm0TWjvFgh4dr6fkuRVYtm5gWlziwtol40AzNDQjJuPUhNqo/4CO+MhR46vRGxRy/6b
+         iqtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7IDl+LWJ8AHh+JYc7/ewc8jtBLdZAOdgB+rr0WmQONk=;
+        fh=h+QUFXV0SIqQDhHQxjm4hJ41yVSoFjdRIoQm2hpnoPw=;
+        b=LJpukaXxSDkjkd2N+rckn9WWl7xvIkrPLJxmYeqnofMZfHZhJukCyqihPuDjnJfZPn
+         vzmTTmMoBM/nAL+7maDkIZmvYQG90CRoIAnOoM7Mbrol+Rkh+DsZq2QQrv8oocVyFbe0
+         XDcYVQCdXZPnWy6+18h6PZj5VHAhKs12RiPdGmUByy6xPfx+VAE74Q7SZ8vVfw3g3zEx
+         ZHFAvKR0CWYJugZbylPTapnrMT4Xt8mxAQleaQiEaM5oRl30DjWtlFDVpYuMHI9ea0xZ
+         iwRFz7PgPlK+fSTBRkaM89+DkU48p0YEArr6KWzWoQKW2NRm92Z0os1B+LusyfNgSfKk
+         ryrw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772433443; x=1773038243; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7IDl+LWJ8AHh+JYc7/ewc8jtBLdZAOdgB+rr0WmQONk=;
+        b=QJXqeCYQWO5EYCj3VVWgIQ56Jkus87W4NQAZXSvaPq3GQKfYsXznmXfpbE5o2kqSSz
+         lZxrupLEqXze8USs4rol6OQKD7vBGScTiUjpC8rxCC4IFtM/FZjy1jiIzwwYO4sHomrS
+         l7g5yRww03F5eNpN6NMoxxG+E+Ei9VN8P2ab0Thgu6FSIGTv6sx+dQAGgIEZydn8YARC
+         Q+27NCDKMXgWyAxxJkauC7xelCekTajacKumyOrEgQUCnih5aRbC5mS2GeoiY9fhB4ol
+         Gq0ct78Wk8f6A6v/ACmYAtv35yFmp/einMoYn6otWDutbPPm/bet4Lpt/S1JjiiFuXy/
+         lU+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772433443; x=1773038243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7IDl+LWJ8AHh+JYc7/ewc8jtBLdZAOdgB+rr0WmQONk=;
+        b=t2EwhLYpwSlbq2d/ZhOReB2NQnQMysiTfosbTj3+ceIWvVRubPuYcXuHH/AQ/WSSjW
+         z0rUtd3Wp+eeKXAvswjecX3170oCBdHYEOjJ7Ff4A7GAqNsZyN29hZrsFmCrlVbxhQjJ
+         IYnZtI6Ytq1zFL1xTOYh1NqlROtGoONk6tvnJX/sfY10P0LFwlY4NtALOuJ/dOaJm+wi
+         bxS3hoMe7/B4LQqjveb5kF5jRWdRMLnZnN96vLfdOc1/DiQUNH5lNlX1pJGN9hE/Fsjn
+         MldNcZFx7Xo3ZHqYZ1CuH+tBWbTrxkYv2h1JsBhHJfT7K1UNMcj4/il+dxIR0hXcLFZP
+         Ifqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVG/dFK5IY5tpnuhKt5c0XLgDe7lAu7pj27wFv0nnm7ckMfgQ/FOELmiVDyucgK+bgxPgBroCr8fg==@kvack.org
+X-Gm-Message-State: AOJu0YwRR5dErqD/Qd1XkuP10VU4YwaRtZ9J0pXcgBz7/O/tNU5gLlUT
+	in0s7SVmtR5YJWgXMoCUk5xdvXrbUQUkUlx49Goi5n89fp11V4akr4vpkjx4t5fmKkeccU1pwif
+	XDYrijkGv43Kro4QDAEDpt21xuEIMTM4=
+X-Gm-Gg: ATEYQzy1tKCS7hxE5LKn8DDM8fO8xJOTfoNZTuqTNmoalt6ElGKppPJfdhb7MsAHeoR
+	o9O6kbCmgELtyfExdU2DY9DN2ua0Rns2ALYeUF102os1/YmkMKLZoXTNCNvjANQ5mTJZqYfaUM+
+	xG0iIUSf9Y6fycDiUT8SD7FLjrvEKlaWPYzHbyRLP+SlYxCiRDhPa/JoWaESVitqiNMMOOALj+C
+	GcXB5L1NelozLFkBbC4urYWtPJm5H+afinrxkguIuUVXfEYNKgxSh+GhQ7S9Wb6htnIBaQa7CRw
+	ZZPYVQ==
+X-Received: by 2002:a05:6214:21c6:b0:88a:57db:8e04 with SMTP id
+ 6a1803df08f44-899d1d723a8mr165013276d6.8.1772433442408; Sun, 01 Mar 2026
+ 22:37:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: mbuhxtjw6n51yr649nneyrtzyu9m71ej
+References: <20260228140540.1774748-1-dev.jain@arm.com> <CAGsJ_4ynq76B+qJmtJayB44eRehviCbhBNKu0sdU1NcdiSDVJw@mail.gmail.com>
+ <1709a9c1-628d-4cf1-bbc6-00b77fe70f3f@arm.com>
+In-Reply-To: <1709a9c1-628d-4cf1-bbc6-00b77fe70f3f@arm.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 2 Mar 2026 14:37:11 +0800
+X-Gm-Features: AaiRm50fsAbYRFZRh-wj0iSsJ7YEzVEzX760Q7L0ZcAabD80RaMmcptZg6zJ7Gk
+Message-ID: <CAGsJ_4w6dT61CSgR5bdnr_xOdgENK8uB9otShJR6_eE2NyPAfg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/rmap: fix incorrect pte restoration for lazyfree folios
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	riel@surriel.com, Liam.Howlett@oracle.com, vbabka@kernel.org, 
+	harry.yoo@oracle.com, jannh@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com, 
+	stable <stable@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 34CD11A0002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772433098-506439
-X-HE-Meta: U2FsdGVkX1+qynb58Qczc4oGIJy7m1kWAk6+6UTXxVDsJIEgekM36OUo7OaE8CZG920PY7Hke21HpdaG355czNtIpxQHds/Pht1n0pcnRcxMz1VHRYOi7/svfVVCM9v+WqdHyY14AlFYq8emEolKOY/pNH56qBNQwSlQBOKKDvW8o9cnygLo4aSxLZC9O1UJGL9q0bTvZRylIOjo2oF6k3KVTpbiuLJtBWU787ZFnFoeqQGWIHD3jPTrFEIxBFGO6zlVW8/aum/k6caplOVQ2eTEFkxR7SH7mn6zNdGEFoZMQIJZ0dnJeQyjoUZPGXB/vQ/42F5d9wkSz6JiVwvTqZYbSk0a/3JIoBkwRToapEcwbdbNDrj67D3polOrtLA2UJxkKxhRTqzy/x0CeYbR1jbEhVBCM3QzkcJ0GySZa3V2QQpVVMP6iZJACBEiPrYBZd22pugTRTavWWlzKYxsAPSK0kDOGkNmwO4rjfPE8RpQhzRe9d3Mooc4CZMIv5043Aqgx+CGlzzERaOF5SFlFKL++ONozR6td7KJd58coECwTntL6gA+wEjVb1Kn8xsgW6YG8JsBmz4ewZO23jn3U6ffLRKLDGTpuTv56Puve01Z+IwOkk0sV5skFEGoaq9EimoZsI3xJ2JHh7MsnXgYUEOv6/1i8hD/gKHbyuyyNEJgmf+9MV3vgNHacH7UvWaAJgH+Lapm+P4O2XjE7iz+X9hsyJb9sc/a+mOAoIImFW1wzE2oYzCPKJdPblZbU3vVNNWXJMaKFrtrAmKpaqJXKis96aDpjMa6fTeqsduuHC+Cwr1oGfO3uFW85Eh7gbgK/uiGsFTF83d6pvnTr30eB5kwugL0K2+7w4UB0eX5FcQV+FVsZDNj3QC/wPcApp8Q/LcNzVKDa/K110a3GDMP4H/kpD3D2H3XKUhY0JOLF5UFELWCRV0PzR6ZHHxGU1PrIa5bgY320/gLUBUgXC9
- 1+q+0STN
- yZG2UA7cweboYr9LjJR9NPvWAys3vrUNAfVRLeTkKHFdnNzy3lPbUcR9ZstBMx91O2LUaji2nVBUGFCQzT/nwxOLqUmSsiBTdtQgzrOmyxfoOmpS78VyCPPWcAsFwwwpyubyWkx3OrVx5k2luA4rm10XgGs+iqS7sFAia95TsES0neesBW8PlyAYEcj11KASsaxx8djxDPeKzmv7KH6x3YC0+Q1/o5momQhWwGQ326DD6NVb6d1KizlGgnpSM8750PQND
+X-Rspamd-Queue-Id: C595340002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: m7in1jhucmzsbgbobowgptcy7odn59t8
+X-HE-Tag: 1772433443-110000
+X-HE-Meta: U2FsdGVkX1+2IAnSAATcgDXeuqkakbGTelDix6EIy4UMT0l5u8X6ND/PG89IIVNZIJEwpDwonNHbRIFCYYRt0EApr1ry2v1PTaot+Fu0wNXGZn+xdWFOh+htXEkhT+FbDEnJoSlWH2HLIsq4AiHRstrhznqX0oapIgkb2l7EbQ1oLXqsxIMnIg9jutQ7cXhIZcP/D3WBBUAUMSDQp53BwhyfuJ/PC70uonY598o4OAb5M961eobLqT+phOSBYOg64W2PowjBWaqjuL+4DO3gaCG12VvnuyhUins5en3BivIQ2YuyntLtQKIWB1XYksKUjIcSS8/mRthr4ol0ilvNbfJTRgT/sLaap++6fZoXL7n4iR8ZFekApDRIjjmO4/sXaOJIjOqD5Pf4BtfB2iwt2RRepf62Uld1oyfk6MiQrqsCEU7F5ZrkTdVQs15gzzYnobwfAcUbAsn2ceh9fw3U7P2qv8EeAZVVPVhDIU/tBv3aZkEie/X+sbaXxDHtJNpTpN0nzcpL/C/lGgzZ72aPHZl3JzguWwsOxJKcNKJdvKHIm/CwhXsLUxXz0X6O9+Ncl3t9MVazzJl34AUptMfUOBBppKeAXFpH0QTcDBCwPtZYQ/SX7sHnGm1dt6R287eWjfRTupHI8jM3GK3ho1lFMPxFgTuaFuG7dj0VmZ3wgqYk/hgo6Pgea+HG81vn/DMzxkgZiSREZpNv2y+C3KKd89mmph2f9KzVwqEICtU8faqEMWtwWMNDCLzD/qGt3akxka9VWkiWb7o+bbvqZIUpDpKDlR0RRrOVsibHwKlMorLb3KwTWlmuceZbodHIlzFtvvgEd6wGdNvCFfgfvTKehp9lOUxurBVBeK1IiFbW4eyTSA5uVC15/5JZYQs4I5D4ha9YgYt2MhHxBwnXl+s4qraO9LXSjqyxErsbzlnO2xS15/JGkkYAvPO19hAK6uotFGrmdjSoYOs5KFkzYcn
+ Jn1f8Y3r
+ W1QFzi+LwPXDtwB0RAntqfQLq87rBEO4Z0GZpRvVleYhFwCs8wlc5XR170rkWTghlxJRyWyqQRbHh2E9J3nPvN5X0Kg9z6GoaT3SkRNrfHWLYqzqZAylfSvDFdRO3wEScjWfz5AfiwrOsObq2b5M+88quyNlyqdw+A+rJqA74iYVOg+7FKZd5RUlw6BU4n4cobZfkIO2/LagRxJwZkyAKXo0hX8l+uRd82k5hyc3ofN7UvWdvbDTd6N3sU85nv2d9shuV9rQPMGQgOI8xRpaqXAK8EufJkiTy6bW+uk7GCfqTHy79+Id0gs1q59omrHar+vmU82N0YXRdyn1KmYY+PlZPjCAGFhuCbAlRc3EQe3ut0sQHiN4K6HTiHsLGsODbOBGyrP3FRTJmcwvPcZ/naFFQx09rSSWVGXYMBcD0XI+ySqmO+v2jLpWZWaH7d/xnSif0kYln/IegelE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,165 +142,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Mon, Mar 2, 2026 at 12:26=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+[...]
+> >>
+> >> diff --git a/mm/rmap.c b/mm/rmap.c
+> >> index bff8f222004e4..fb64829913052 100644
+> >> --- a/mm/rmap.c
+> >> +++ b/mm/rmap.c
+> >> @@ -1955,7 +1955,17 @@ static inline unsigned int folio_unmap_pte_batc=
+h(struct folio *folio,
+> >>         if (userfaultfd_wp(vma))
+> >>                 return 1;
+> >>
+> >> -       return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+> >> +       if (!folio_test_anon(folio))
+> >> +               return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+> >> +
+> >> +       /*
+> >> +        * For anon folios, if unmap fails, we need to restore the pte=
+s.
+> >> +        * To avoid accidentally upgrading write permissions for ptes =
+that
+> >> +        * were not originally writable, and to avoid losing the soft-=
+dirty
+> >> +        * bit, use the appropriate FPB flags.
+> >> +        */
+> >> +       return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_=
+nr,
+> >> +                                    FPB_RESPECT_WRITE | FPB_RESPECT_S=
+OFT_DIRTY);
+> >
+> > Do we really need to differentiate between file and anon?
+> > I=E2=80=99d rather just return unconditionally by removing the
+> > if (!folio_test_anon(folio)) check above.
+>
+> File mappings don't need preservation of writable bit. I really think
+> we should differentiate this. It improves understanding of code by
+> telling the reader that after clearing ptes for file mappings and
+> losing the writable bit, the correctness is ensured in the fault handler.
 
-Enable the optimization introduced in the previous patch for x86.
+I understand this is the case for file-backed folios in
+the unmap path. However, I=E2=80=99d prefer to keep things
+simple. If file folios with inconsistent PTEs account
+for only a very small proportion, it may not be worth
+worrying about.
 
-Add pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast to track whether
-flush_tlb_multi() sends real IPIs. Initialize it once in
-native_pv_tlb_init() during boot.
+On the other hand, when we extend the current batching
+code to try_to_migrate_one(), the situation could be
+different from the unmap path.
 
-On CONFIG_PARAVIRT systems, tlb_table_flush_implies_ipi_broadcast() reads
-the pv_ops property. On non-PARAVIRT, it directly checks for INVLPGB.
+Anyway, I don=E2=80=99t feel strongly about this. If you, David,
+Lorenzo, and others think it=E2=80=99s better to differentiate
+between file and anon, I=E2=80=99m fine with that.
 
-PV backends (KVM, Xen, Hyper-V) typically have their own implementations
-and don't call native_flush_tlb_multi() directly, so they cannot be trusted
-to provide the IPI guarantees we need. They keep the property false.
+> >
+> > If we do want to keep two branches, why not use a flag variant instead?
+> >
+> > flag =3D 0;
+> >
+> > /* for anon folios .... */
+> > if (folio_test_anon(folio))
+> >                flag =3D FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY;
+> > return folio_pte_batch_flags(...., flag);
+>
+> Yep this is better.
 
-Two-step plan as David suggested[1]:
+Yep, that would be more readable, as it makes it clear
+that the difference is the flag.
 
-Step 1 (this patch): Skip redundant sync when we're 100% certain the TLB
-flush sent IPIs. INVLPGB is excluded because when supported, we cannot
-guarantee IPIs were sent, keeping it clean and simple.
-
-Step 2 (future work): Send targeted IPIs only to CPUs actually doing
-software/lockless page table walks, benefiting all architectures.
-
-Regarding Step 2, it obviously only applies to setups where Step 1 does
-not apply: like x86 with INVLPGB or arm64.
-
-[1] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
-
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- arch/x86/include/asm/paravirt_types.h |  5 +++++
- arch/x86/include/asm/smp.h            |  7 +++++++
- arch/x86/include/asm/tlb.h            | 20 +++++++++++++++++++-
- arch/x86/kernel/paravirt.c            | 16 ++++++++++++++++
- arch/x86/kernel/smpboot.c             |  1 +
- 5 files changed, 48 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index 9bcf6bce88f6..ec01268f2e3e 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -112,6 +112,11 @@ struct pv_mmu_ops {
- 	void (*flush_tlb_multi)(const struct cpumask *cpus,
- 				const struct flush_tlb_info *info);
- 
-+	/*
-+	 * True if flush_tlb_multi() sends real IPIs to all target CPUs.
-+	 */
-+	bool flush_tlb_multi_implies_ipi_broadcast;
-+
- 	/* Hook for intercepting the destruction of an mm_struct. */
- 	void (*exit_mmap)(struct mm_struct *mm);
- 	void (*notify_page_enc_status_changed)(unsigned long pfn, int npages, bool enc);
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 84951572ab81..4ac175414ac1 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -105,6 +105,13 @@ void native_smp_prepare_boot_cpu(void);
- void smp_prepare_cpus_common(void);
- void native_smp_prepare_cpus(unsigned int max_cpus);
- void native_smp_cpus_done(unsigned int max_cpus);
-+
-+#ifdef CONFIG_PARAVIRT
-+void __init native_pv_tlb_init(void);
-+#else
-+static inline void native_pv_tlb_init(void) { }
-+#endif
-+
- int common_cpu_up(unsigned int cpunum, struct task_struct *tidle);
- int native_kick_ap(unsigned int cpu, struct task_struct *tidle);
- int native_cpu_disable(void);
-diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
-index 866ea78ba156..87ef7147eac8 100644
---- a/arch/x86/include/asm/tlb.h
-+++ b/arch/x86/include/asm/tlb.h
-@@ -5,10 +5,23 @@
- #define tlb_flush tlb_flush
- static inline void tlb_flush(struct mmu_gather *tlb);
- 
-+#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
-+static inline bool tlb_table_flush_implies_ipi_broadcast(void);
-+
- #include <asm-generic/tlb.h>
- #include <linux/kernel.h>
- #include <vdso/bits.h>
- #include <vdso/page.h>
-+#include <asm/paravirt.h>
-+
-+static inline bool tlb_table_flush_implies_ipi_broadcast(void)
-+{
-+#ifdef CONFIG_PARAVIRT
-+	return pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast;
-+#else
-+	return !cpu_feature_enabled(X86_FEATURE_INVLPGB);
-+#endif
-+}
- 
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
-@@ -20,7 +33,12 @@ static inline void tlb_flush(struct mmu_gather *tlb)
- 		end = tlb->end;
- 	}
- 
--	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
-+	/*
-+	 * Pass both freed_tables and unshared_tables so that lazy-TLB CPUs
-+	 * also receive IPIs during unsharing page tables.
-+	 */
-+	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
-+			   tlb->freed_tables || tlb->unshared_tables);
- }
- 
- static inline void invlpg(unsigned long addr)
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index a6ed52cae003..b681b8319295 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -154,6 +154,7 @@ struct paravirt_patch_template pv_ops = {
- 	.mmu.flush_tlb_kernel	= native_flush_tlb_global,
- 	.mmu.flush_tlb_one_user	= native_flush_tlb_one_user,
- 	.mmu.flush_tlb_multi	= native_flush_tlb_multi,
-+	.mmu.flush_tlb_multi_implies_ipi_broadcast = false,
- 
- 	.mmu.exit_mmap		= paravirt_nop,
- 	.mmu.notify_page_enc_status_changed	= paravirt_nop,
-@@ -221,3 +222,18 @@ NOKPROBE_SYMBOL(native_load_idt);
- 
- EXPORT_SYMBOL(pv_ops);
- EXPORT_SYMBOL_GPL(pv_info);
-+
-+void __init native_pv_tlb_init(void)
-+{
-+	/*
-+	 * If PV backend already set the property, respect it.
-+	 * Otherwise, check if native TLB flush sends real IPIs to all target
-+	 * CPUs (i.e., not using INVLPGB broadcast invalidation).
-+	 */
-+	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
-+		return;
-+
-+	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
-+	    !cpu_feature_enabled(X86_FEATURE_INVLPGB))
-+		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
-+}
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 5cd6950ab672..3cdb04162843 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -1167,6 +1167,7 @@ void __init native_smp_prepare_boot_cpu(void)
- 		switch_gdt_and_percpu_base(me);
- 
- 	native_pv_lock_init();
-+	native_pv_tlb_init();
- }
- 
- void __init native_smp_cpus_done(unsigned int max_cpus)
--- 
-2.49.0
-
+Thanks
+Barry
 
