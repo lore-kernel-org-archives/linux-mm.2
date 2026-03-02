@@ -4,138 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2970D58E73
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:20:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 875CBD58E7B
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:22:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1763F6B0089; Mon,  2 Mar 2026 03:20:28 -0500 (EST)
+	id EC5FE6B0089; Mon,  2 Mar 2026 03:22:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162196B008A; Mon,  2 Mar 2026 03:20:28 -0500 (EST)
+	id EB12F6B008A; Mon,  2 Mar 2026 03:22:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061456B008C; Mon,  2 Mar 2026 03:20:27 -0500 (EST)
+	id D92E76B008C; Mon,  2 Mar 2026 03:22:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E69D46B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:20:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BAEAD8CA06
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:20:27 +0000 (UTC)
-X-FDA: 84500426094.15.AB75E96
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B4FB640014
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:20:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GTmiF77t;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772439625;
+	by kanga.kvack.org (Postfix) with ESMTP id CAB1F6B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:22:53 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 939808C948
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:22:53 +0000 (UTC)
+X-FDA: 84500432226.12.871AC6D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DF998180008
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:22:51 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fi9qbBnC;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772439771;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n/MmnzQ+uuC7z+d9fNNTsbHksWzosu4byGDS18oLwgk=;
-	b=w0GUP0nX6nr7uw/t4CGGRITpRpFfAkeZF/lw4R6TKfNoiCC8G1ZCGa02SPQ2shc43zFM8+
-	cPJtFNsMSJfi/H4HjAQxkSXnVrEMCo2x3HMkG6lml8RtPY4TKXNejkblYZJYzwvmgSAv5J
-	qdFa8Grt0xAhspAB8iqXXYl/CNro3ow=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772439625; a=rsa-sha256;
-	cv=pass;
-	b=A9vx/2ZtyfY/oOVeL/91pX8Sm0M4UNMFl2+8eXKvUPh92InvLBJaVIFynonBYU3u5J7Wi0
-	1GiYVxjkkJzWJtDLNIcAetagROuCB74P4DeNDS8wXgSZ7SctCnRxp/IYeWJORqBwmfc6Rf
-	ItMXvB1aVAyxC1p2TtkJ1V4zksB2psg=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GTmiF77t;
-	spf=pass (imf04.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8cb3e0093e3so404521685a.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 00:20:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772439625; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iTqeoUSZHW7wF8KnNJ9XOOGFvzS4bw3zEaRxIukoSQY1IoAdENlxigxc4D7jPgr3/q
-         Tfvb5Ok80vjT69j9Y2FSbNT/tAEu36L6xOVh4cuJ9xK94vbZNH5ZmXxpy1Jm0dNjwLi4
-         4PgjTQaE7xrHXn2SXM7vQe24ZL2X03vKf+bQbG7k1e/jBHXmFNvsJzADDaqeIj8Ad9MU
-         +/UuLR2mBhDuUFPU0uENzroF2/Uuid/FszS2h4vhXW/k2KIPKkKcY6D7c1aiUFCmSC/s
-         YJGwK3RKi7miRjh8DL1AokFfcyEaBTONBOn+rNc6uf3KA6fG6PrdP/CYUDjJNF9ah2CM
-         VA7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=n/MmnzQ+uuC7z+d9fNNTsbHksWzosu4byGDS18oLwgk=;
-        fh=GztdLv8519j1nUK9Cz5Yl0D3oy3Cdxc6zyINdQn5JgA=;
-        b=JFJjWmDH+5VqezMFqr93Dw/QtoKSHp7Eb/ekbsck5mt4u/vr0XvNOtyDmAQz5YC1cL
-         YErwSzQcfIfuDyb5hNIwGZfqydMZHZRjTny3XF/BbBSUt+RbSjK3ne2Acq4q7lQ2Y9Cx
-         ZSoBa8HdV0cWDy0vCdfMOTZzOBYKoIP20Sa8AlFdCFXuLPT1VHsrFEPP7yKogW8aCxYw
-         0uTzwgj0icnalkmg6n0Ngq1ALBMPMpqeNFAkyzNb0WzMj05YvBwrdDYHq+kOS+/hB2H1
-         rGzQL5cbTCDs3a2f/LVl/KKievYcnF44UFF8wq81tVMNarQBMn1a9OPi4HG84T8ST9BQ
-         pgjg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772439625; x=1773044425; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n/MmnzQ+uuC7z+d9fNNTsbHksWzosu4byGDS18oLwgk=;
-        b=GTmiF77tQbppqKV5M6k0a/CDkX8J0AunfMAVkiKB2crHYLsBXOOW7oiwDbSnwOgMaQ
-         4TBT4ULv1lk0r43CF3/DCfBzoqRPd5lo0jj5l+UmxgEJ8rVqklvTzcx1jtQLOu5wrNAP
-         c/RR9EORVKw3LosKA+iF3IRIXlQrqQOSL4cV4X4zhwff24Hyax3dZUTHUcQ8ESmbGuux
-         tBhsl3HsV0T+KKOI2/5RTKsSreAdWWcyl43TxitiO/Ycimsim+2iD/ld4bpKfr2R8w8e
-         fMkL4spHblYUV9YGGkQ2v67VlEYAZ69hAIL7rLRWahpUQL6QC8sD0UQQ2HA146NG6xNr
-         Zz/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772439625; x=1773044425;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=n/MmnzQ+uuC7z+d9fNNTsbHksWzosu4byGDS18oLwgk=;
-        b=OiZkMF8W7ok3sN/E49NN2BlqcsSVMEhvHNavdxQ5ovCTw2wP/YQJFTsmC5rH0SQyYo
-         trU97FuF4F+dfOVRqIC7TQu5R++jc01o+rfeF6ckZHRvoExrYNLHlPAnbhRBLKx3G5zr
-         R0YwblvQOCwltv13ANwpqRBtMyGWyBEF/6vTAK9Qwe/EcS5bpdaq0g2Wdut4RYrBaFHr
-         ZDYDD3TMcaELobRBSAxKMLnALMSZDO/GYXwHO1uMgAa56Qft1vvgEzSlQlEzN0VLvUpC
-         9zfbREwYF/6C62f49OrzgZXbgnd3GIm5dEzEB5azJomeHdlfTj3Gc3EEyFRzbypYo3vP
-         eZLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWr/0SwVkROlwZNSl84d6Mm4qVYqOsBEy2sJqqe25AA8LIOZOuwC+1qdtKhyC9waUdhqnr14ay2w==@kvack.org
-X-Gm-Message-State: AOJu0YwYzxNiKFhymk1zWXc4Z5R1Noqh4N/fQxkYmYpNIHGjCDZimXae
-	6g1JXoLHzV5zzWbXAQkUQnr0SjsLDYQIttgjJkh8HBe6ZoGkbb5o8hZugoaLzI2Nr/Tjay/Ayii
-	AJgwqJVhCM3rtEPYC4SpvGyNwmj15bDQ=
-X-Gm-Gg: ATEYQzykjBFeYse3swtdouOoHNaV8+Ez522oaKT5DAiIE9BsGVCkJ6wJT9c5vtPZGKI
-	iX7baThJnolAtCWSzquanTUEGHxBttfYTgjZ7cBAw3t8mkZ7lovVI6AanoIw0eMNdM/fmu0QU9L
-	4uTcPZi4W5yUpFInmtPCH/1zERsLbH8WZcfTS3rjlgHig4YJ+rfPM+4sG8fEz6zfa5xIdIJ55Vw
-	BHaDPJScr2kVbuAoDX56iYByPetcQCy+nLJDzXNYhuXSBSVo/c+i143KF+yjY2+o/7ppFuVN4M/
-	YGMTDw==
-X-Received: by 2002:a05:620a:458b:b0:8cb:baea:89c0 with SMTP id
- af79cd13be357-8cbc8da8367mr1334054585a.25.1772439624508; Mon, 02 Mar 2026
- 00:20:24 -0800 (PST)
+	bh=6xmCrFWw+yvgcWGK2jQ5KqFcskOI+oqjYmu3aekYgIc=;
+	b=htMqkeI2IbrcKe7/S4Q7Fvl5ER6pkdFcWb9XEJjj1bsdmjHjYkJyqvnUXAIWvAv5//L8jM
+	pzHXcphRZ5p344Y5+2FOg9CCStGkaVNCUn56I3ec5oNbePxUspuezBKP6R5z7RE2DMpdQk
+	AYK/3dUIUR+XBRLWvrb7UWvHZJ6Xp/w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772439771; a=rsa-sha256;
+	cv=none;
+	b=vxe+Vkf1/1OlVgtuZ/2ZifGiJURinxhghZvsUYp7YPLRj2cQAQ3rLOEJUfgxFjYBeBE1iU
+	3oLH+GtcZvBeOwmDu4npKEAh/rHuN90l4DMVzPL4sQ/K4un7SwCFVoDSvXMo4u8MRq5Amk
+	sJut8U1B47uqUhMmKT/xkR1n1l62X3o=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fi9qbBnC;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E055060018;
+	Mon,  2 Mar 2026 08:22:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6CDC19423;
+	Mon,  2 Mar 2026 08:22:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772439770;
+	bh=XDKJkaVhQfYzVUj3ho/S80emIEXa893QeTlONkL4P1o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Fi9qbBnCFSKTVd+ug21vuDlAi7DzRlnYMKJGAuXRQMzE43DC/DTPknV2/delTOlUN
+	 QA6XFh+xbVpMSMVu51hR58tTjm2Oi+IHTYmtFOwTUz5kDyM25Bv/CD47bqGImWTsGA
+	 Xx72UDJWQsYLHva66lVFR8w9EI6Q89wXI+87ro6UBqUVlO+W+Ve83utQ2uC8cfvToG
+	 +aD3dO+R2rZlEoqF7GuvEI+/NyO4JvLmd7EEDzu5pE/jvuvgfFLXABqTen2akk4FTT
+	 DHeWQN6tlgkQkbPQc02rL0mxOhVrxxRN8s7xO8qmNmz7FGmJaFy7IU4+i7AcWW0zxM
+	 u8BBuqn/3yaqA==
+Message-ID: <15fcc4f9-a2e8-4979-8e67-6a9c9cc86740@kernel.org>
+Date: Mon, 2 Mar 2026 09:22:31 +0100
 MIME-Version: 1.0
-References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
- <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
- <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
- <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
- <CAGsJ_4zAY+1feahcVHhJ0NyKHxFZZHJpey1Qd=FAnSnHhh3Yyg@mail.gmail.com> <CALOAHbCtYoBLbbzX0DU2xuTeDehW__LiJfd16ZrUBG+TijfH_w@mail.gmail.com>
-In-Reply-To: <CALOAHbCtYoBLbbzX0DU2xuTeDehW__LiJfd16ZrUBG+TijfH_w@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 2 Mar 2026 16:20:13 +0800
-X-Gm-Features: AaiRm5243XNSYhMXT2sA0lhvrFw-9VM2oeEvbeF59YP5pBeK27c2JH9dkBT4sLc
-Message-ID: <CAGsJ_4yR8_xr_XL5Fnemn27tc4GO7Y6bw2t8Bkw5r5StzD8ZqQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: lenohou@gmail.com, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
-	wjl.linux@gmail.com, yuanchu@google.com, yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: jykipa7dao8anseauiubxf5wamokjoeq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 14/16] mm: rename zap_page_range_single() to
+ zap_vma_range()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
+ <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-15-david@kernel.org> <aaLjK2Q2q5ghE-uE@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aaLjK2Q2q5ghE-uE@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B4FB640014
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772439625-126109
-X-HE-Meta: U2FsdGVkX1+WnWEZj6XnlfGwdQJXkkSjq+y7P/t5wMfGrqJFCshIUTIcmlukEz8r4fY8YgNEBxaQQrVCJArmLh6htOZzr2cwlWEfPEwh2FLQqg7Vvc2WvumjhIHUj2ZOt7tzWmd9c6uRw5kCvtruC6kN9NzTe9PxHb0oinGA190Hpu4KONki0t/mg817OemJSFxzegy6V+3jtEUUpfEmnR0SZZtLax01SCW3pgkKAbhnzhVQx+/TC0Br4rJjY5mZ83GszIJeXTuDBRWgbjFzZPTJiHilMvIA70aoHrHXFMSHGp/MfeGWCISymwIrYH2JLFO4wQqMiChAwC6tsIvk3zSj5+WYoc/nRoUWBhrKAXgNrhVNuL056Zyah9eprF0UT8h0JbZi+hOMTvQaz8/dnbcGplVcMz68rvox0DD6WR564pqRuesYX3R+OwXor6mpO6sDq98/WJY9FcA9UzkOEMJ2k93NMxRzyYKb5wpmyphhnMSp748dSpgD7AVyz5Xnf1gOIMGgpXuSFvagM2S7Na5Lxi27bFipoRIsej/iQtpoM2NzwppZX+MMYWxWyz5tvoixTpgQK0312cj9Mq9H3JmPS5BPqdUTsE6+xch+z1POIt/FkkCuoFfkZsH6K+Zvu7mfPsSOg29cMOsS4fRffIh+njUAyX78T4En8vsP2U8BZF6MxM2kmmlVe83WhHtuQZWV0nxUN3Xd5B3EQ8Cr1Bgl6v6c22qHMf9kuIJwb/2hr3R/mVWDgNT5IWuRA39BFLd0bVF+/JyHf+BVZRGdxk8Nq/no7kUhKYbAkO9axfx6uubovbc/jX1FyYx83GdIPhGXUCco2/3gZUU6+T1x0P+8qwpN6Q+s9rXgPIwIxPQDQlCGabnGNus4UVhoG+zqzdyXgNyUTgQoWt4VNeCjsHtj8q64HzX0hgmUevNr8hW3nSdwyfqZCd+a+DuM/DouXIk/bZklqxnHYdfa2jQ
- W2W9TUbJ
- zRDnxRKbG9V2ZRrt72rEBLRt6GEvKoPtsJq96U+7IZLw8qRUMd55Hy+1bmpxmjB773uDS4QkRmBkvWLJW1dLPT0I0oYVbaU97Kwxs8TSBIVgtXuC1YYewVYgBCgOrkXs8kezf6KUgZpk0kvGAxx5NzaVfMv5IyfLznUZqwQUZTxuY+m2HwCXDGXeggWmf+7M580Kj3GFYRXJ89VBxa77zX0z6Bz8/zHYuTTFe+nUOaObvs6fuVISHJxez97Orij1UlpFBGw6XKSC5dv0K+1a9yRqbmjuukBM2C0bYlBF+sHk8vxN/0/J1Fx05rx6F5y8WmbasJz3mD3lzd+BF+RSAmpU3PCTyriGi0xyNlNSNwGjV2vCZgFgIxNYDKBPc9CKkgQpcrLc2wXWVeOAQQ/gSOqewEPaPwNofwhqPe/kFqZtZ/zoSSuUVQVxGrEpAPVIDtq+Qo1gMZGGm0kOy3aK5TenyzE5bQ038+3rS2EJC6gFfqSc=
+X-Stat-Signature: n4oz53itetfud91gbdmahusbgzc48j3c
+X-Rspamd-Queue-Id: DF998180008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772439771-644986
+X-HE-Meta: U2FsdGVkX18e6hcPXuI+tzVe/ZKSR3zMqTmMYNZcEuj4cthEuAlBKLY4718K5IPpbop5IoY1kQnaFt5m5JzhJnCEgdWqCz/WNmZJPVN/R/tcy+gj/tDBt5p46fhMABUZJUybNSaWPstvKboIrwGhXyAYWnGauhOb+uWbnlE2R8za7gWg6ASKXt+slvPAihRezePDZX6rAsqZ+kYIEO2kW9CooVG5Z/9gquSYShDl+rWXt5YLNqE49uZkwOwT7FE0nHwk6fyaaI6NoCzZf2E/C8EWvm5r6/Wx17qRhqS9YnJlaD8oddo9uBf7apHVgtxrUv2Se+ZD5Xp8T1l7RnuNvp5ISfX8ml7oYnpy1IKnoRaKGYymGnkXYBIcVDSNyGtO37h4w0Z2tUNyQb+ZQUojwUV14/cOwyvjzeKoYqG7gctUwWCWFM05QI2nZ9yutKdS+cLNGqSLmo0Soz9NApQO8j260MrDd7wWF/bHXJjHE2tk/4nAW0GZtRzQfYhJuvsvQSNJt1GZAIchk+6lJ0MdSB8hHYmnt382AXHnIBuZOqkR+OvhIt7ZDv/tBTGD6bm0Ll+P7KRq7LzlNlWNv+BN3lqia5zAhw4a77tr+7fy0W6BftkaYYhxZRI5J43watGImQSO5tVw2FglGK0pbhWsKI+/SLxKQRateNrnWa3srm90BSrVgaigrcyMHwocGmUyTaZo8zS/dLyhBEjtS1NQP0xWwrLCvXEeSd2x4IuBNgSEj+8xYWCSSP3v20snl/T1ulA8mKrzHi1Q2w3hdQmsi8b/xHre+zS4SYVV/LcydoEgAzt+HNCpeVhhoCFItE/1Q6rdtVcmrOoRY59uwomAnh/r1e0V4ypUvWG3KG0GZluqEtAOlslqYZujf+qbTO4WbvfYNOUlCRboCMQpr3SO/iIzKJ6QSVwRGc4iJx3mNYuWWSTqXbfZ9Y2uWUVwO118A/3B0Qn17ClR8OIYg9Y
+ mziowze8
+ bjaddSKdQkFm4wd2dTufAEF6jRLZVDI9SxAR3idtAVcmlanvucdFNrQ7/d8RDcTpRN6Cg+pmLlN89fRf+RGmLN/6cWeC/mJ25jKmk2MzybCcUdBjwiA7T/zdMnXDT0rKPbF2CArFpiUTjoPOjpYKG0xkogN5MXcE6JTLp8njVHsNjytDYPFswFxkAPqFGDeWovOtB0Fniw/GXm/8gLk1Dy9qk6zBD/yzNzWMSjOuE8AbsfVBp8Vc6ZHT2awnMliGVTZf7qcXwJPSfFAuY/weSKY+tcqtFbjSDUWcxvIbfPWnTZBTTwCQGWUKuAwF1B2+JbzwXFE3Cnfn8sVM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,51 +182,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 2, 2026 at 4:14=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> w=
-rote:
-[...]
-> > > > If we want a per-workload LRU, this could be a good
-> > > > place for eBPF to hook into folio enqueue, dequeue,
-> > > > and scanning. There is a project related to this [1][2].
-> > > >
-> > > > // Policy function hooks
-> > > > struct cache_ext_ops {
-> > > >        s32 (*policy_init)(struct mem_cgroup *memcg);
-> > > >        // Propose folios to evict
-> > > >        void (*evict_folios)(struct eviction_ctx *ctx,
-> > > >                  struct mem_cgroup *memcg);
-> > > >        void (*folio_added)(struct folio *folio);
-> > > >        void (*folio_accessed)(struct folio *folio);
-> > > >        // Folio was removed: clean up metadata
-> > > >        void (*folio_removed)(struct folio *folio);
-> > > >        char name[CACHE_EXT_OPS_NAME_LEN];
-> > > > };
-> > > >
-> > > > However, we would need a very strong and convincing
-> > > > user case to justify it.
-> > >
-> > > Thanks for the info.
-> > > We're actually already running a BPF-based reclaimer in production,
-> > > but we don't have immediate plans to upstream or propose it just yet.
-> >
-> > I know you are always far ahead of everyone else. I=E2=80=99m looking f=
-orward
-> > to seeing your code and use cases when you are ready.
->
-> Don't say it that way, that is not cooperative.
-> We've only deployed a limited BPF-based memcg async reclaimer
-> internally, and it is currently scoped to our own workloads.
->
+On 2/28/26 13:44, Alice Ryhl wrote:
+> On Fri, Feb 27, 2026 at 09:08:45PM +0100, David Hildenbrand (Arm) wrote:
+>> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+>> index fdd97112ef5c..2fddd4ed8d4c 100644
+>> --- a/drivers/android/binder/page_range.rs
+>> +++ b/drivers/android/binder/page_range.rs
+>> @@ -130,7 +130,7 @@ pub(crate) struct ShrinkablePageRange {
+>>      pid: Pid,
+>>      /// The mm for the relevant process.
+>>      mm: ARef<Mm>,
+>> -    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
+>> +    /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
+>>      #[pin]
+>>      mm_lock: Mutex<()>,
+>>      /// Spinlock protecting changes to pages.
+>> @@ -719,7 +719,7 @@ fn drop(self: Pin<&mut Self>) {
+>>  
+>>      if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+>>          let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+>> -        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
+>> +        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+>>      }
+> 
+> LGTM. Be aware that this will have a merge conflict with patches
+> currently in char-misc-linus that are scheduled to land in an -rc.
 
-Don=E2=80=99t be so sensitive:-) When I say you are far ahead, that=E2=80=
-=99s exactly
-what I mean. I truly admire your work on making LRU programmable.
-That=E2=80=99s all.
+Thanks. @Andrew will likely run into that when rebasing, where we can fix it up.
 
-I understand that you have only deployed a limited BPF-based case,
-so you need more time before sharing it. I am not criticizing you for
-not sharing it yet. Please don=E2=80=99t misunderstand me.
+> 
+>> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+>> index dd2046bd5cde..e4488ad86a65 100644
+>> --- a/drivers/android/binder_alloc.c
+>> +++ b/drivers/android/binder_alloc.c
+>> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>>  	if (vma) {
+>>  		trace_binder_unmap_user_start(alloc, index);
+>>  
+>> -		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+>> +		zap_vma_range(vma, page_addr, PAGE_SIZE);
+>>  
+>>  		trace_binder_unmap_user_end(alloc, index);
+> 
+> LGTM.
+> 
+>> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+>> index b8e59e4420f3..04b3cc925d67 100644
+>> --- a/rust/kernel/mm/virt.rs
+>> +++ b/rust/kernel/mm/virt.rs
+>> @@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
+>>      /// kernel goes further in freeing unused page tables, but for the purposes of this operation
+>>      /// we must only assume that the leaf level is cleared.
+>>      #[inline]
+>> -    pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>> +    pub fn zap_vma_range(&self, address: usize, size: usize) {
+>>          let (end, did_overflow) = address.overflowing_add(size);
+>>          if did_overflow || address < self.start() || self.end() < end {
+>>              // TODO: call WARN_ONCE once Rust version of it is added
+>> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>>          // sufficient for this method call. This method has no requirements on the vma flags. The
+>>          // address range is checked to be within the vma.
+>>          unsafe {
+>> -            bindings::zap_page_range_single(self.as_ptr(), address, size)
+>> +            bindings::zap_vma_range(self.as_ptr(), address, size)
+>>          };
+>>      }
+> 
+> Same as previous patch: please run rustfmt. It will format on a single
+> line, like this:
+> 
+>         unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
+> 
 
-Best Regards
-Barry
+@Andrew, after squashing the fixup into patch #2, this hunk should look like this:
+
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index 6bfd91cfa1f4..63eb730b0b05 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
+     /// kernel goes further in freeing unused page tables, but for the purposes of this operation
+     /// we must only assume that the leaf level is cleared.
+     #[inline]
+-    pub fn zap_page_range_single(&self, address: usize, size: usize) {
++    pub fn zap_vma_range(&self, address: usize, size: usize) {
+         let (end, did_overflow) = address.overflowing_add(size);
+         if did_overflow || address < self.start() || self.end() < end {
+             // TODO: call WARN_ONCE once Rust version of it is added
+@@ -123,7 +123,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+         // SAFETY: By the type invariants, the caller has read access to this VMA, which is
+         // sufficient for this method call. This method has no requirements on the vma flags. The
+         // address range is checked to be within the vma.
+-        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
++        unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
+     }
+ 
+     /// If the [`VM_MIXEDMAP`] flag is set, returns a [`VmaMixedMap`] to this VMA, otherwise
+
+
+> with the above change applied:
+> 
+> Acked-by: Alice Ryhl <aliceryhl@google.com> # Rust and Binder
+
+Thanks!
+
+-- 
+Cheers,
+
+David
 
