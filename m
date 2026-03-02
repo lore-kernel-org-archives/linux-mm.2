@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92DA2E9B354
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF44E9B342
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 040526B0095; Mon,  2 Mar 2026 05:04:55 -0500 (EST)
+	id DD9FC6B0005; Mon,  2 Mar 2026 05:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F30276B0096; Mon,  2 Mar 2026 05:04:54 -0500 (EST)
+	id D5CB86B0089; Mon,  2 Mar 2026 05:07:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E667B6B0098; Mon,  2 Mar 2026 05:04:54 -0500 (EST)
+	id C5BD66B008A; Mon,  2 Mar 2026 05:07:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D700D6B0095
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:04:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D5D3140AF1
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:04:54 +0000 (UTC)
-X-FDA: 84500689308.06.F853A02
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B74FC6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:07:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6FBE11B90D9
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:07:02 +0000 (UTC)
+X-FDA: 84500694684.12.AE60474
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C0234C000F
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:04:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Q8e7CK;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id CC0191C0003
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:07:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HodwTgYJ;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772445892;
+	s=arc-20220608; t=1772446020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cd3FT/8GNoyYeQYzJRjJBckMEJPQxCEhJOROHE6C1Gg=;
-	b=2OIM/+YE3/SQcT54ehAnbYqi/9FNQBEFnXcaaNJuZF/HEcQ08IFJAV9yZHft2TSO/bs0Vq
-	CswT+L7KdNYtoqevFLsd/Hc1+j2Wq0LpcH1JCtKqRGWufU4nw3AjEe4if+Pnb8ts73rt+s
-	AtgzDqKdd4BLPKaxPtrmMj40A8+0/pA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772445892; a=rsa-sha256;
+	bh=+nErJpy/VyK0KcK69oybl4UKerIYZZqR6fXTYmDKhJs=;
+	b=rTdBaor3/3TvnD1QA5eTqYdlAhLreAyeSqO4O8XG5zdCb9kLkktmLTyp7YAkbEL83EccIi
+	hf4e20/kLW4HNYp9WAhLxR2YvaXsShVW170kju2inOozb8wtX4v3Y9Pe5KqKEVDIDb9nVx
+	UmX8uoxky/6SJB9Ivvk5dS8yzvsp824=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772446020; a=rsa-sha256;
 	cv=none;
-	b=osW2GbZn3GUK8wL19lr9txizMYF5wzlrc/XNAQK2tFzBTn7lFw9PkNnMyL+n5ZmEGKdxoL
-	KjbYV8edaoshZSb10/EKWI7BKIUdjCIoVd0J/m0pGF8hms/IALQiHxxnHM/Ofe/sTVVv/I
-	Hj46XlD6Phk6Mo1oXvSAWkchYVHplDw=
+	b=2PG7irrQW8kC6ho1pRKlFAvd4ou507lLJj4ZzHcQNKmtiRy7rS3dMTnTqwIngi8q7tmvMT
+	IimiI9hKDNBj6UMeiGOl4EEmE65/nwXVFIzqwoyf/miMbmiqe3UUS+ueqUW7x9OKMdFS8L
+	+Tj4l0LJvsdjbrWfPcIBPD2sGpsUZuo=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u0Q8e7CK;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HodwTgYJ;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 877D9444CE;
-	Mon,  2 Mar 2026 10:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519B2C19425;
-	Mon,  2 Mar 2026 10:04:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D19B2433C1;
+	Mon,  2 Mar 2026 10:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137CC19425;
+	Mon,  2 Mar 2026 10:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772445891;
-	bh=YlrMc651ElVPFy+ALZ1qaxHylbkJUWPRrT+8qQNXZks=;
+	s=k20201202; t=1772446019;
+	bh=g3floAcObkvaeafCOJ6rhcIBNt3NL60xTBljK0LwcnM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0Q8e7CKsEn/a60JV002qxWB2l69VuYXorh6IfMmeBVHbfr5GrTDAAkcgOCUyQQWt
-	 oZxFKSOZeZ2bTQRp7FCCx6FfA6ChKrC8lvdp7ByLF388fEO6/uheVmJkUk7B4xmuTN
-	 PYPDJBVMJXs+8Rp0PT+LsbGeZdzu9MX0yEXBVNOgbRRz4I40ppNh8PFA85DxiVE86S
-	 iJZabuTmozla4F7z/mpPfuOUIMgXRCH4QRnlqt5sWO6YgPR8NsD3FHd/F36dkSu9v8
-	 D9vGpYM43c32kFImaEY8WpiWFlCs1p9HVefJqBYr2RUO3UkcBrOXQ6WBWV8NYAYGaf
-	 QxovkfntqnONQ==
-Date: Mon, 2 Mar 2026 11:04:45 +0100
+	b=HodwTgYJRXawuioz6fWJbfhRDuJN9ptuur5qsUNjgkqN0KmODfHpQRQJWspSniAjF
+	 nVtktb3KfiT7easFF+PRVx8w7mBAOpd5sCjcthpTJ3rarmA49p/diJ+WKo9u34xOHI
+	 +4LbxYX7+gfPmg2CerBaEUWWDTI8Q7YkEwTvFnc7LXMvrTRT5xuFHe2VxdL+g2zejF
+	 FBhUl2mXFNvFK0jRBjJP9o0K+HCO/fHK1HLTjuHwUWkcA6gcguQtkJeeIKNpxW6XI3
+	 uTzyGPL3Qqs2GuL+HH1BfT7mBnEZA4ml1+oVXaxlNsY01vGXZW0eoWfRuy58lxNrYu
+	 DKAwDOS8XRyIA==
+Date: Mon, 2 Mar 2026 11:06:54 +0100
 From: Christian Brauner <brauner@kernel.org>
 To: Jan Kara <jack@suse.cz>
 Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
@@ -71,24 +71,24 @@ Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
 	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-mm@kvack.org, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 05/14] pidfs: adapt to rhashtable-based simple_xattrs
-Message-ID: <20260302-teilzeit-zuallererst-99c820d6a6f0@brauner>
+Subject: Re: [PATCH 04/14] kernfs: adapt to rhashtable-based simple_xattrs
+ with lazy allocation
+Message-ID: <20260302-wahnsinn-bettdecken-2107be02c746@brauner>
 References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-5-c2efa4f74cb7@kernel.org>
- <qxctwu77wp7gv4ua3hn6kg7r2vt57laomn3ebjisemzzaybagy@mvoo2wpvu2ux>
- <zfwhp3c4mtf4b7gw4qmxayfqrzf4h723s2vfjpfid62yfjz2zt@6ali24hx3ihp>
+ <20260216-work-xattr-socket-v1-4-c2efa4f74cb7@kernel.org>
+ <3cnmtqmakpbb2uwhenrj7kdqu3uefykiykjllgfbtpkiwhaa4s@sghkevv7jned>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <zfwhp3c4mtf4b7gw4qmxayfqrzf4h723s2vfjpfid62yfjz2zt@6ali24hx3ihp>
+In-Reply-To: <3cnmtqmakpbb2uwhenrj7kdqu3uefykiykjllgfbtpkiwhaa4s@sghkevv7jned>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CC0191C0003
+X-Stat-Signature: gcwww5ghuu8kw4xr4exboszund13zqd7
 X-Rspam-User: 
-X-Stat-Signature: ixauwtdf6znqgyrc3fyjgqoqn8qdchn1
-X-Rspamd-Queue-Id: C0234C000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772445892-238130
-X-HE-Meta: U2FsdGVkX1+HIPDVLFffDFqj/LwbfH6lFFByAoHAyDp3lAeR0KS+4mFX/M1xlXH4LB77nMuiv8zANcGQBkJ55Ajo2ZDF7PhC/h4WIPmLhKC7MsohgDQnli0hpV083FOCnYJM7SsOq2qzQY6TnBeXPTtywp26+DUvBHWi+TD4Rg17SGFTV6+C1J6NeAvoJh8fecWgeuc8EaT9M0rsFg5SNMnS/X0uIzd6Qx93t338y0Qq6We19ZgwOS90WBfoOs/Klzg3eS08W3cQ772bPCLwXCeBYEAAP8Qyes8uUU2pz+HvYpJzHUyjTWJdIQ17FGMZM9Ku/y6V1ZD2g3Ku887XyyGh1NqZ+rpdS69kP4bRu1xAx8/BN1DUzO/kWeWDiTUzvv83gpN3YZlaXLKIT5rf4h4IKdovAT6eyQLjgR8qf9bflWCb7VGHc6YWIZTEs0W5rlqpY4Fub68/SRPC/QtIRE+PcKtu2ny+clo1SXiVDDMwv+XIh/P5d9cAIiIosxf/u7OoIW+jGHu1FdzNr4H68M6RGbVqkVC/CYi3nNKQraex+wkzgiO6i/X6zZpt/BoRTD3IrYKgsjcr5/+r18HSYwBQAfdrjJVzdji6rXXeqzR8mp2IwVCd3GYvfpRxY9oZv0RFT2EQeGAZfUD9oywPGAXiDMFzVj0STtl0XZhczfAb1v3CI2ILSbe99chHo/FhAAe52n+Br9POtcpGZikj0eDnmv2JhI5gjFWWTMLeeshoihq9xahSDCec0uoGmvH9Da2GAZxq3nZG/DonW43EDhrr8uCH1iR5iQo2A67zjOemPJiOd+BZQo4eXiuVp/zWyKg1wB4NmCsqrsSIqVSF2fdCtPWvSSXmwFBKYR7F3h4r2dr0OCpY95tPO3ov65DZ1lh5FUWJBUXOvMVgZd2m4xBdz+pFSQJFcYNuZgpO+Qf8XZZRjCbtQMpNlnEmfTbuaD9shKywjPykEFV/XGB
- i3tVyop1
- rb9fdPdYnPOGmDDB6DKYWZGrBzoKSjyORP6QPiZKh2GYQjGbLk50B5ph4kOGkEu6qMNr9bk+BMuOAWoXseQ7WtmQ2gjNMC8PpYXJhgaCCqAcV8elan0dvJ799ZulSmvUpVxfgHoR1jNo7vb0jtcOf7H4bFq07E5qNY/ALuD/gphp3MDa1YlwYhKXAJV+rHKmCI4u07zqCjAiCeeDAHSAK2mfjuV6MU4mtG+dYsuZAhapBBhXfuIxOJeiYX0gaPm07vuTjIUXKSz7pPB1JPj7wn/mBbK0k3AUdJCGRQZ7/IvhFH7NQNjknv2NKWCsr+a2pcwma24dsWlQ80aGpSYrW6VKdpUm/9WH7w41xuyntH8s2vL8L/rfoyPS8uA==
+X-HE-Tag: 1772446020-959902
+X-HE-Meta: U2FsdGVkX19H/aIwV2i02BXm2rmdhncqMZKCOEM51+v/YuTA8F58/WGBIUuxUrnJwFWJBBVu8I2h5CdLuoC0WKi18eQEv51kCN+J5vjYAwYIJZb8wgW1UlsdMfG4sNXOjcWhARA79o3ACg9yrvh5sgEAf9Vy9atO+hibs84daRLUOUDZvLf9VBc0X2UXSU90rRv2fms8FjMay5HrlZXYIJzuVEpyoVf9PoYfIwAatnLBb7QcCGnmPySk/Bx7w1rUaiaZ/J07kClVpIBrMwLFaEoCKQbw1OJ12F4vHRFX9fb134bxNA+ru3Um/7OJdWYgVhgW90+c79pLC22OhdEHozZZELHXV/lt1ezgvTkRz0jbvIkDsIRVr34rfitSGWRKlwSKXvK18HPjg2Hkj6GfsTiZVJuEsovCcR2dk6xR1tmMxOfKxKhohTNGXdY9l8FBGd5Qgz/nJsX4AlPHlF2Gs00SQb54PKskGAASSnTz35b3ECBseYVgYjQ3RKDTAnDP2StOR/V4IqiS9X9dd7nrZM2vv5+6AKTzXpD+wh2BOEfGNNE87YN+pTQyh9xrzGW61OmA32Yoy1v2PRSimVMkmC+CH/FlqpAS/4DF1Z4nEOqGNe0D3gTwiucUxK7QEjnBhmIOuPsZj/suqtibLMCnmrPHegWNhkyCFb8hjwyF1KmsLvE1O9herBQwG+o+qAmMtWpSs4SwlfOGCHyIKUUGCcQENo0ikX43k7/tHTwjqQCx8vL4lMfgtm5ogBVdEJoGPYbQfIprU8lvs0mYF4vFWqTKZDYTDCoRvOmmNoji6SCiqDNEJE6TKyajFyIRZ7bv/fK5htxfllEEdAt0eFIbhiNHvj05Qi8aKnT3g+aDqBPurCbN1MBXJt978/Wygj2/VJ9r1Zj+FgxRIwXEwIm10fv1gjsQ67HEeYZy3skvWpaDi+tlmz6pVpmQyf9ZrmaVfgB8aOwdTYthFFrDCeO
+ YyFUwiEl
+ RreXNtGeh2pEDg+7gLaP8vCJHa2YS8WLG0gCzyhXyrcBjQRYrM7NC89HIjWFXj/224ZWb5fuzRwSzOLHJth3gjO55MHF7EF1ZczJIq55QTuHpNE/lZrPXVkv1boqJ+MqlRKQRgQwue87VBBvZu0vnZwm6mj1hLaV+8uAnLfEqVVS96pCqDN1z2jf3n19cUii2E+Pb81ZadjhOFqmWKczeK+C6tfj5WU7jxy0fZbL1r1t2HZXS+sNfR6kI21XNBDmkdlMuX64cn4LUzo5s6c4TBxzZAMN7A8iwJk32wYkkd9vuQCwNKdJuVRBG6MPWRmqcnqecD3TdcQTEn2hEhn8c/ZnwFdAAdcbQWjRTX8adjPVVVU1MF5BtGjlCsA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,56 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 04:16:04PM +0100, Jan Kara wrote:
-> On Fri 27-02-26 16:09:15, Jan Kara wrote:
-> > On Mon 16-02-26 14:32:01, Christian Brauner wrote:
-> > > Adapt pidfs to use the rhashtable-based xattr path by switching from a
-> > > dedicated slab cache to simple_xattrs_alloc().
-> > > 
-> > > Previously pidfs used a custom kmem_cache (pidfs_xattr_cachep) that
-> > > allocated a struct containing an embedded simple_xattrs plus
-> > > simple_xattrs_init(). Replace this with simple_xattrs_alloc() which
-> > > combines kzalloc + rhashtable_init, and drop the dedicated slab cache
-> > > entirely.
-> > > 
-> > > Use simple_xattr_free_rcu() for replaced xattr entries to allow
-> > > concurrent RCU readers to finish.
-> > > 
-> > > Signed-off-by: Christian Brauner <brauner@kernel.org>
+On Fri, Feb 27, 2026 at 04:00:37PM +0100, Jan Kara wrote:
+> On Mon 16-02-26 14:32:00, Christian Brauner wrote:
+> > Adapt kernfs to use the rhashtable-based xattr path and switch from an
+> > embedded struct to pointer-based lazy allocation.
 > > 
-> > One question below:
+> > Change kernfs_iattrs.xattrs from embedded 'struct simple_xattrs' to a
+> > pointer 'struct simple_xattrs *', initialized to NULL (zeroed by
+> > kmem_cache_zalloc). Since kernfs_iattrs is already lazily allocated
+> > itself, this adds a second level of lazy allocation specifically for
+> > the xattr store.
 > > 
-> > > +static LLIST_HEAD(pidfs_free_list);
-> > > +
-> > > +static void pidfs_free_attr_work(struct work_struct *work)
-> > > +{
-> > > +	struct pidfs_attr *attr, *next;
-> > > +	struct llist_node *head;
-> > > +
-> > > +	head = llist_del_all(&pidfs_free_list);
-> > > +	llist_for_each_entry_safe(attr, next, head, pidfs_llist) {
-> > > +		struct simple_xattrs *xattrs = attr->xattrs;
-> > > +
-> > > +		if (xattrs) {
-> > > +			simple_xattrs_free(xattrs, NULL);
-> > > +			kfree(xattrs);
-> > > +		}
-> > > +		kfree(attr);
-> > > +	}
-> > > +}
-> > > +
-> > > +static DECLARE_WORK(pidfs_free_work, pidfs_free_attr_work);
-> > > +
+> > The xattr store is allocated on first setxattr. Read paths
+> > check for NULL and return -ENODATA or empty list.
 > > 
-> > So you bother with postponing the freeing to a scheduled work because
-> > put_pid() can be called from a context where acquiring rcu to iterate
-> > rhashtable would not be possible? Frankly I have hard time imagining such
-> > context (where previous rbtree code wouldn't have issues as well), in
-> > particular because AFAIR rcu is safe to arbitrarily nest. What am I
-> > missing?
+> > Replaced xattr entries are freed via simple_xattr_free_rcu() to allow
+> > concurrent RCU readers to finish.
+> > 
+> > The cleanup paths in kernfs_free_rcu() and __kernfs_new_node() error
+> > handling conditionally free the xattr store only when allocated.
+> > 
+> > Signed-off-by: Christian Brauner <brauner@kernel.org>
 > 
-> Ah, I've now found out rhashtable_free_and_destroy() can sleep and that's
-> likely the reason. OK. Feel free to add:
+> ...
+> 
+> > @@ -584,6 +582,12 @@ void kernfs_put(struct kernfs_node *kn)
+> >  	if (kernfs_type(kn) == KERNFS_LINK)
+> >  		kernfs_put(kn->symlink.target_kn);
+> >  
+> > +	if (kn->iattr && kn->iattr->xattrs) {
+> > +		simple_xattrs_free(kn->iattr->xattrs, NULL);
+> > +		kfree(kn->iattr->xattrs);
+> > +		kn->iattr->xattrs = NULL;
+> > +	}
+> > +
+> >  	spin_lock(&root->kernfs_idr_lock);
+> >  	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
+> >  	spin_unlock(&root->kernfs_idr_lock);
+> 
+> This is a slight change in the lifetime rules because previously kernfs
+> xattrs could be safely accessed only under RCU but after this change you
+> have to hold inode reference *and* RCU to safely access them. I don't think
+> anybody would be accessing xattrs without holding inode reference so this
+> should be safe but it would be good to mention this in the changelog.
 
-Yeah, it was a surprise to me too. :)
+Done.
 
