@@ -4,135 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D8C7EA4E25
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5768CEA4E24
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:38:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBB896B0088; Mon,  2 Mar 2026 10:38:18 -0500 (EST)
+	id BCD2C6B0098; Mon,  2 Mar 2026 10:38:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D896E6B0089; Mon,  2 Mar 2026 10:38:18 -0500 (EST)
+	id B5A936B0099; Mon,  2 Mar 2026 10:38:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8BC36B008A; Mon,  2 Mar 2026 10:38:18 -0500 (EST)
+	id AA4AF6B009B; Mon,  2 Mar 2026 10:38:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B62856B0088
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:38:18 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79705B68C8
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:38:18 +0000 (UTC)
-X-FDA: 84501529476.06.AEFFEC2
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 709EE40006
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:38:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ijOoY+xJ;
-	spf=pass (imf07.hostedemail.com: domain of acastroramos1987@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=acastroramos1987@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772465896;
+	by kanga.kvack.org (Postfix) with ESMTP id 9B43F6B0098
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:38:48 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62FCA1601FF
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:38:48 +0000 (UTC)
+X-FDA: 84501530736.05.84DF8FA
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A46F9100018
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:38:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=bk19kqZA;
+	spf=pass (imf05.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772465926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dYG94TPbWCbZG8/V8D/k4AWAWl2gqqa5tdO0TdpBNkk=;
-	b=i7e4eKEmKaD6NLOKTR9P1zCKkfq7WBCJRhnGGSg4AeLM9uOgOSa9PDoH21AFfHNcR4brgz
-	ULl+o/i5Mpwp9aNgZeMeVloIGcQYXk3mNMkJp2Lw1BNQVPuXR1x/m5xEl3CG0UQzm/Pbgu
-	qFCkwmosXGJfs74dx7J6OJhIgo2Qkmw=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ijOoY+xJ;
-	spf=pass (imf07.hostedemail.com: domain of acastroramos1987@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=acastroramos1987@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772465896; a=rsa-sha256;
-	cv=pass;
-	b=e2Dg0WG+qRH9xehL557T1LMnfPwwdPed4Fc3L1GXQg5o0FQ5a6wmZs7Sykcg8IGqTuC6M0
-	H/39lIFaH1Tygk1enR4wrwDsHGsizSl1VHnJ4brMViyJDxr/jX44IRH2EVHN0gWL1fh7Wi
-	P5T8V+IaG42OG2wwK1+3NfwxB2Y3kQs=
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-389f200c26eso65162411fa.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 07:38:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772465895; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Y8TaL0k/er+Qs81H0OO/hyYJfiZc8/rgc2hqN6/OudfI1uhUzPtNvHIpmxa4+Lv8f3
-         K52F0pkofN6YKN4oiw+5wZ5BnWliDt8kzIfM/4yMIY/NGG/HsIazA5xh5BCcRd6gQ9z3
-         vaSXJDf+xrv65cn+TjPaWjOOt1sWv7OPsqYb00Sci0yhW6oyIp8PxlB6ocfR2/aHYU30
-         2Oy5ErupX1gxjZe5nXbLCM1cj1OEs9Izxd8pf2KwxTwLw3sDvQIgxZTc4nAAOF0Ln8Fm
-         6aTgy6HLn3AWrPbM31qdwfIfgB4ZNDVCsaNMqwdsIUX9LT9+0oWm3gZLBGuXRX7tDv9o
-         R5jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dYG94TPbWCbZG8/V8D/k4AWAWl2gqqa5tdO0TdpBNkk=;
-        fh=h1N6bRfcDDTQ8mGDe0bL7/MEkvHj8tcbF8cN7ExC7Rc=;
-        b=S40Vw0s/y2UC5H1wSWF6v4ya2hE4JKOztPHPXyJEIbKNHodag1cm+cs+nTnKpgy0io
-         hjVAjJGukoOk+1N+lMKHLb9kXH6fdvg+ptXU5leComT1/9uUpTrRdH11YpDzhCArS2r9
-         DJ+YuR+CV4YLWMVSuVqrcKKrNuK883tcDokLESSEOdHo03UWf8FqYDDrMuw6SbhQTORm
-         RgiSgogBDhOzJdOLFukDRb8ve+khZmTSqagZSIoxDm/kYRrm8+gnuilvcH5yocHFpaNl
-         747cyNyPO4L5lyZ/8dYDAeL8urDwpOp4tA0JGCmRvdcpEXrhTQZevFtLkY4rDnPxEysm
-         sb4A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772465895; x=1773070695; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dYG94TPbWCbZG8/V8D/k4AWAWl2gqqa5tdO0TdpBNkk=;
-        b=ijOoY+xJXnADQZjlJRskzXpgl7YpoCv1SCfvplmmvcBSr22/jhIqj9XtRWN7Upf6ld
-         n6Zy8vrER1bmoGbQPMHX5UjoOxvVI+37z6sPMgQorPnjomPsDWaGtKEw5HzT+HIiWuTV
-         jfmPuFgKjnZKI8jx2VDbYw//cz9Rr/nmDIf0ULXUe9sFcAxd2ur12vte1gY0SPpQDotJ
-         DuJ7GCtEn84c54jthtguv7Eg1lp7TDQ8wlvU3Ut1BLHXRuhZ1kyQohlyYwQRpyIvH5Wb
-         GwpRPulpZqfDxYPIZlDRlhoaIQxix5fcaCRjDZgAqNFE/vb1rsGmJEmSFSjDBllkNj45
-         99wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772465895; x=1773070695;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dYG94TPbWCbZG8/V8D/k4AWAWl2gqqa5tdO0TdpBNkk=;
-        b=c2sqkuFncK/7makOz5WUlpvCSLPfW1+RbWzSyaEamwtmS8ylvVAFxe4OT0R1iuGr9o
-         92sux0B4EtPdH8N8j2cFlO+/t5k2IX+HUKvascsVZOxM6dAkeI6fcWrYsuCdwhrbRBeH
-         rx/BjwMLpz28j3y3tsgJe49VMsOrdU4uIXq5zjfh2+gn+HXZ5q/6W0Odkp7ON8Y01lXo
-         OZC9J2DqcGK/l2Y1HnwWe/hi1Q7If7WjrYEe4THmDsb+xM+Lq0MDF49oO9ociNQ+kcJA
-         pRTpEG5Orky14mfuMWbtG/fKjKdRVpDOGdlqYqABhEPVus49zVEri///+ChZnD/zDFWG
-         YQVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvFGsrm9xLVjEuAX17PZcCLBWMpsWVj6/GAMkMX7GuL68Ewq6B+TQa+43Wmsh75FTok8YQb81NAg==@kvack.org
-X-Gm-Message-State: AOJu0YwZYAjG7KKQfxZLmmSElnzOBlsgd9EFeRr2x9tpJS6z/+cYUnl1
-	l7KS6QLl1Lno1K8os6lpbGmfw7SXbFlkkERfBqzXH5b412l2P9HwtyqcbvD62ob95KZpZG0dYDZ
-	9ByoOKuQxS4y0Zat1DXRv+dQNZjfeaGA=
-X-Gm-Gg: ATEYQzw2LQ43SNvvpThnZu74X/mnlflF+bLoCPMtUc/beMUdKfLqb6nQgx93TTPk8/u
-	ZBd0dbxOLEmaopSnXOTgtz+07aMlJYO1dQssIk8gNkmChAQt6mPPfuAHBeMegdCsZ8jxqy0eyB1
-	v0xgBi/Ks4QTjsuBgnBF54cESQWxVT4mn9A7iz2rifxFRvNVMrQKTV0+sVjHr2o8xFNpO5wIc+u
-	AEJgyZX0dOH9pb7aRK+nS0eCS1LZF1hux0hgUTMwXnmQhGTURLjaUsfKE13L98COUxm1pzSoumf
-	MPXUk2VSuHjU0CWUOqnKZZ5x0zoa5dlOFPsKv3KJ
-X-Received: by 2002:a05:651c:43d7:20b0:387:df8:9373 with SMTP id
- 38308e7fff4ca-389ff1197b7mr60947671fa.9.1772465894306; Mon, 02 Mar 2026
- 07:38:14 -0800 (PST)
-MIME-Version: 1.0
-References: <CALXtAv3u1hgLkBEbEgR3=r_iz3=KrnHB8B-=tg8Q3CEOWAPFiA@mail.gmail.com>
- <aaWonCzCLayQDXOT@cmpxchg.org>
-In-Reply-To: <aaWonCzCLayQDXOT@cmpxchg.org>
-From: Andre Ramos <acastroramos1987@gmail.com>
-Date: Mon, 2 Mar 2026 12:38:03 -0300
-X-Gm-Features: AaiRm50gg3Y5F9SqTPBhJaPRyGUa-m39VJsleid6bB5cl7M80SOXalQD6eP8Sbw
-Message-ID: <CALXtAv1=p2h7fH21SKgVktTSrafB654hL_hgUW2WNbROSr0wzg@mail.gmail.com>
-Subject: Re: [PATCH] mm: add Adaptive Memory Pressure Signaling (AMPRESS)
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	david@kernel.org, rostedt@goodmis.org
+	bh=lkos/UwEVF+f0nD+l8Noi+Rcb16prIOjHEXIGFnI3Kw=;
+	b=QDTqbN33GznDTbjPcxejzO5BYCsRCh8Qe3/Op6bfvLjEWg8/tWl2hCbPvTkkIn9pGkKLT/
+	8IsDRb41D2lUqGxaY/HHgdVWU8/0C3p9IeaTwAabwcqGXZEQDhcVlKWFP4QvEr9NVkwThE
+	Y8HU1NTExmdAA0CQ8PEvaWafM0CrOPs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772465926; a=rsa-sha256;
+	cv=none;
+	b=ozFHWBojFYuIgI+QKWVqCpsdf+sMm+b+W8ezN0VZC69YmCQWxchM32y4l4ZKHpRP3QFTcA
+	+TTMvp97zJhP35pQJgYLY4eNt06kITAkZFNq64bdCBl2jayhfUXjqfay3fBqH2u22Qxr+9
+	qVjYTcBLbTDdCCTll6oFk5nit5dj7LY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=bk19kqZA;
+	spf=pass (imf05.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=lkos/UwEVF+f0nD+l8Noi+Rcb16prIOjHEXIGFnI3Kw=;
+	t=1772465926; x=1773675526; b=bk19kqZAbr5o4/opp/mBF/FZ6PDOEGqipW5JazUz2mO5dAQ
+	wyHAhiczgLXT9xRkzBOlk94MpweKPnwhf2CoflZ4awrABHc3JoxQg6vA4G59HrVBcsU2lkixyw0ot
+	N2tQQp9S6uEQQU2uLCYUuxGmiRxC7mkq1/K2a4ASPyQCtMH5OihQlj7RGzPDG7QrEkAsP1Qfsutd6
+	yyF/O2BP84DZviGFlSe3cH+GG5c2+pOXcPMNB4/m8LcM2FDlermuanceGBDmXCNaB51dSMFmKB7ZN
+	nA82E49luDFOXr1HNlxlnH/g0uISb+rD9wUTRoE+ZPDScJeZe1vIQ4QdGU2+SrDQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vx5M3-00000006DCo-0pRn;
+	Mon, 02 Mar 2026 16:38:43 +0100
+Message-ID: <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
+Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
+ active.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Cc: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, 
+	linux-mm@kvack.org, Tejun Heo <tj@kernel.org>
+Date: Mon, 02 Mar 2026 16:38:42 +0100
+In-Reply-To: <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
+References: <fa4e82ee-eb14-3930-c76c-f3bd59c5f258@candelatech.com>
+	 <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
+	 <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
+	 <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
+	 <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wuoe1eomnqytcqshdzqn97dp16yppbz3
-X-Rspamd-Server: rspam09
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
+X-Stat-Signature: pougfdr87be9b498iz1sj6aobyxebk8c
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 709EE40006
-X-HE-Tag: 1772465896-198921
-X-HE-Meta: U2FsdGVkX1+xgCz/X22RGu2d6KiO5DcYCH4LO/iSueHMkfabXIWBJNSwb849F+fM9Ad75+4ihRrqCDjW9GsQW2Lpay1ExPVMqEeF1Lt7kPPrAKr4dcp6r6fXp24AZPbk1DvbZ0E7JJra1EbGwK6BieiZMjoew2wXRDZQ8Pq65KAIF/fYIXpniVRmBwJRoChTiRs8uej/RbGKmHcGEzSlEmlJMBQNuplGmcFYiwNqplgsw3QRIt9Vbxc0bhDKdDw4QB0H9TML5Pwu7Kde8so/SQAiXDqzEtcYY/4C0NgNIoyUuV9Fd3WcPiTAzmEvKFPCVt1TN+e/YuGU9G8yFILZyqEuHgTy4YcVZ91E7pzut6mKCEAUtIivddmqZfGzxEgVlPurUNcSLASOHdgYHwnZVs0PibtuRdyB+4G+1fT+eOcdXoFwWzj8oy3sIguFBBx22kCRTY+BFMEx2X8FO92EdB2aWnGHxnvgDpyKA8oKKvRNYTB1eUCAAj7hXEmUkgJpESMbvGzxUEw9hnvJA/jxOU2NCob2oFg7cA7jqUCdSO/Z3WBwsoXMDuYTZ96de5KuqV9AvXdjGpcKitBYT+QaIKvw7W7cd+gQLJz1GUeNBSTGbG+OYvAgi1d8bOfJYPQyY3eiGJKuqAggiaDLFY5JGfXWMZFvIisXh3j5nVmpbB0wyA0dw19ly6PYNr1C1MciHLNry094UsvZ0RmkkjsCw4q1Kjy23TcR69zMgWcGm3esM/pHmfzgDEya5p0tEwgO5MtD3780OTjNO2/9uv4NOSO2OgwzAl59Tt4qjvd3/jyTAT2SYIDvgYUcCIZu3WkNipjrc5hpCMPOK/jqX8vNJ5TeSXtiMER2ekgYgsP4t88Dal4/4WhGBUv2qQ8HUD7Ci1zWCwE9sZb8PWPGCqiUs+ummgfejmeP4+9xH/+YSTon85h1Unl/Cfg+WT8sQvc3L3Eh/OfUGsvwGsrnnkl
- 7ncM65S2
- T8GhaF5MF0g2JSERlFogXzRnbQ08RUgGfOX/7Tg/xMMCoZFh6gnlPHH0jFQGayuykkB7GUNHhI5kXL0h01KkPJYnPVvy8n2dYjdJ0GOrc/DTK6Gxnl475zmlmBH6v/vkwUo4lN0pgahcNThpfenHCPA7Szi3hGVjue8omJoT1hEtYWNQHforGm+Zfx8O/ur1rDVUw0DI67OU/W4Y1IN81Gq6bZJSygFXEen5iF24lja2B6e6nhpYJmbm2FN/QLERyO52aOGNxqhRp4wctTLMYu04Y64onUOElPCgkpuIeWzAWDfvrj3rEbJWx7f4OhgdRCfdkZKds0ft6aCtEKSFLuWo3urqkhv5k/A1qRs9B+APA62YQrvmGJ9hIBqR+F4ZE563o1I752/3hQ97H32vs2oG7GlE1titlh3v2aW2iZGchP2wDCne2EgR+en0DO7wvWdlzSjwbH5NgU+CITW32guCbesOvkUdK9x++UuxuzoqErxM=
+X-Rspamd-Queue-Id: A46F9100018
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772465926-779771
+X-HE-Meta: U2FsdGVkX185wFulh0AO2/eevp7r6htgI0nktZIaCq+Jd+U4xF0wAJaGP5eaZk7gMMZ8zMoVmIc+p0aKBFLozMFoJG3V3vbRk9MYgwpDIyXerI+fX0tN3ElAXHdI2+tHZpJ3WcyKYwx8+U5rkKIUV/eOhr4ob/JDgkd0eTq9a/M4JoNsiAVzfZZhsU0OmSWKPBxS7yJeXPGSC8eJ96+1eUtKbdPibn/qd1KlzAM9xGQHKxLS0ku4GYovvSsw1j3dfW6zl9lPlHPOPd/FrWg9YtDDEwWYdto5RDoD1WB4XnTEIkHFOQrTfYCxMh9YQMC4VbAtvRu380Pl/JWFwOT97eYdDFgHGIrjTutxQZPYtew/IfAz/trOgHeoLub/THf1wao7zCrDtqsQGhEsPvm/zxv/j9hv3ZAW7QFfuV2BXEPJL0OpU4izkzlsoy1/9o4ojEU5o3Sxwb0SoJhppZ61N10nXY/ACgIKWJf4GWIA3LqYfRkwZdTgUvmn8OLx2EdMo1FSQ5Vt4BCE/07a1YfyzSfkaZf3OyuEIfNcCI0VD9WMUjPKx7bofwCm8dfwYKA8S9ldmSiRS3xwH6LpMwN/KFLl3Q6BRSodiH/fAUhPccvbNAHqBUmkQQoYfeCOoxk6j0EFCe1Db03YEtBNzJdOly9T12uw/z2+AdZiRHkLW8LK+1rUZEjve1fgPbPIHqMmOp7mQ0A692ki/Cd5xQ4R3UfGf0K39xhlWoGglrPLRynFaqzuB8abMlzlee7/QoCFR40/bdp+8Xc0yUJo2EcTHjMoSJZjC0+nZb/cSlA6fmaZ/NAqTr9lvCMwdKtgR6Gb640anV6POh8u4UlUv16f8molyiYKjH30jNcgO0aMSqTfoMmYufMNJV+/U1ac4eeaj14Cw+pNtEtswiWj7jYVbRnhMTd/J/PYeGu46NhGWmv4NQXrPMmaylVwynWQV/e5soAHngnHjbL1vg8tw/w
+ zG+vrNiK
+ sXZ5VVmhxCNxm1jl4N8gwK7+lqRr2LJWjZnrXPCVihbiT+d99I1NHs+zQGQeU3kw3/+RO4qb32FPuNPjB09kAwSxl5fQTb9VSfPob+6iML+/4JWLXr79e64cCGSgzmHGUE7Til2nlbz8DlqmM+dAxwvKZFQUXRJtel6s2qSyVfqSwlz4P89y4s9Ej9o8CFR9du8LaUiaalIpRargHl8rNWgVgNrUKmtxvZBP7qHO7UBGoxkKgrHEUOZ99anSXyCtXlQgFWg1L1E+1hFwSEg8AAsy2aL6WnMgBFGwo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,15 +99,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you all for the review.
+On Mon, 2026-03-02 at 07:26 -0800, Ben Greear wrote:
+>=20
+> >=20
+> > Was this with lockdep? If so, it complain about anything?
+> >=20
+> > I'm having a hard time seeing why it would deadlock at all when wifi
+> > uses  schedule_work() and therefore the system_percpu_wq, and
+> > __lru_add_drain_all() flushes lru_add_drain_work on mm_percpu_wq, and
+> > lru_add_and_bh_lrus_drain() doesn't really _seem_ to do anything relate=
+d
+> > to RTNL etc.?
+> >=20
+> > I think we need a real explanation here rather than "if I randomly
+> > change this, it no longer appears".
+>=20
+> The path where iwlwifi acquires CMA holds rtnl and/or wiphy locks before
+> allocating CMA memory, as expected.
+>=20
+> And the CMA allocation path attempts to flush the work queues in
+> at least some cases.
+>=20
+> If there is a work item queued that is trying to grab rtnl and/or wiphy l=
+ock
+> when CMA attempts to flush, then the flush work cannot complete, so it de=
+adlocks.
+>=20
+> Lockdep doesn't warn about this.
 
-  David, Lorenzo =E2=80=94 understood on all counts: RFC tag, patch series,
-  and the maintainer entry. Noted for future submissions.
+It really should, in cases where it can actually happen, I wrote the
+code myself for that... Though things have changed since, and the checks
+were lost at least once (and re-added), so I suppose it's possible that
+they were lost _again_, but the flushing system is far more flexible now
+and it's not flushing the same workqueue anyway, so it shouldn't happen.
 
-  Johannes =E2=80=94 your pointer to PSI is appreciated. Given that it alre=
-ady
-  covers this use case more correctly and without the reclaim path
-  overhead, I'll look into that direction instead.
+I stand by what I said before, need to show more precisely what depends
+on what, and I'm not going to accept a random kthread into this.
 
-  Andr=C3=A9
+johannes
 
