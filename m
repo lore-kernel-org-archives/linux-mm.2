@@ -4,191 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CDDEB362E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 18:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CD8EB362E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 626466B0005; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
+	id 411646B0005; Mon,  2 Mar 2026 14:05:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3CF6B0088; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
+	id 3C88D6B0088; Mon,  2 Mar 2026 14:05:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48B886B0089; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
+	id 2C7816B0089; Mon,  2 Mar 2026 14:05:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5226B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B5AB91A02B3
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:58:15 +0000 (UTC)
-X-FDA: 84502033350.05.A1C4F7A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1489D40005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:58:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iZbgNlrn;
-	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772477892;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B26D6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:05:47 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C99D21C293
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:05:46 +0000 (UTC)
+X-FDA: 84502052292.30.8B12248
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 11C73100019
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:05:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M+0XXKHg;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772478345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yhojqot03CduyM+NDYiNoCmj0becmPzCDdcp/ONvQ9Y=;
-	b=TCGBwGYeMVidy4FJECb7STxo8xj7LZt3iJz1cu+983GFvPYeC3HywYPtVPUgrIjsQqIp8j
-	+58L6+F01sLCDCsT4NSpeo8sIkrAhj+zVevBqM48OvccLto4WqOVKKlnJXd+SesCHZHf45
-	fZGTs7h4TI2bzmDFZ7uXcoNCHnQXYO0=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iZbgNlrn;
-	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772477892; a=rsa-sha256;
-	cv=fail;
-	b=SBtpIGwthC+bSoOSuMmKRLklqCmHi4o6Met+ab7BF8Yn9weFrkldizBNZtlaf0ywKjxLe9
-	ebUGizF1KnMoN+NYfQVl2OLgfp4BP87oWB34scnB1yN1TPGaAG2ySMqTnL7Bd+q+ZLzVje
-	IMhZvHHw6xLOZ9ExiWOOlqDROFb13KY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772477885; x=1804013885;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=k85SXxA54F8xA11wCWPrjJpJwxtZFDsXhh204h9a5dE=;
-  b=iZbgNlrnQGqO8ENz25b8SK3M9MqN8gZSYMxfTJ78NVb888ouWcw223CH
-   TiYjITKNnCNAVXCSQvRWU66PhuEegqy8Rj0Vzc3bgo+Nr9PGXjTC7AFCv
-   ofc9gPyNCA+kGw7EbDzTtxCnQcJcc8cr+W6uJR5PqP4z4/97Pn7VTI8Zp
-   u1inff9VxdgBFO10NR40MAALzrAsjI8kdf24uD5Q1BEOGG+r3wP8JPQsH
-   Dntf8upqkoQ2CWU5HSsnJYEUdJhzpeHuRLJmtOs0FiNMDiqgW/SmJFl0n
-   WoO/CUK0gfL4OvQBVcU3wMK+knieL3cjC2sKWUQgySdLX2lnPWhxMbTB7
-   w==;
-X-CSE-ConnectionGUID: R8ZzAqi2Rt+qhc4fkiTCeQ==
-X-CSE-MsgGUID: XBijE8zBRhiIdb5SAIV4YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84848227"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="84848227"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 10:58:02 -0800
-X-CSE-ConnectionGUID: trRY+5brTUmpMObwjrR5zQ==
-X-CSE-MsgGUID: yhLEOr9DRYCEZ7MTmmv2nQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="244750109"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 10:58:02 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 2 Mar 2026 10:58:01 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 2 Mar 2026 10:58:01 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.15) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 2 Mar 2026 10:58:01 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cGAbaeVMmediRpEKqZEZFvtRqRM/q+nmODzrFq05Rfa1rPDgU1zdSTSRFhDsoWF+lsgCpl6F6Ta2lXHCW1lPU+/AkxV8dRDfXq9qWKaC0CxrBMuaTjWiaRQXTsuDoaxC3W/pyHciafk1gEIxzXpKjg0+5BDiRujQx41tqikMlZWYDQZrkMM5qevVjY0hey5VfjWzWDQntSGWElIKqouMd1qgdzzXudCIZhF9UaW4IkWMLAL8y3CeqRy2EXfapIaoTF1SCvMdH5Cu2TSsAya80CLT5uFyntJCFS4b7FspbZhVePBLhwkdCvs36B+i6OpUiOlsCt8TJF7FJ9YXLhGtBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AiZ5aYZuBNiQzlu5ItFNv7uDnz8b9X0WRLOvWM/arIU=;
- b=tEkFHovpkI8M1L/FVEpibt+oMbe4xvczP7XuuWICLoQ8AwxzxHDxys4sdrWmgLiaGcD7t3F+P1hT4sFlSz6CzSzU4/FwqilskDzyztTXFNG5FX65WiVsVXUKjFWyzzilxFETKCqlD+IYipS28EIgd4/yknwsolhpzoZ4JweA8qxIO4zuy9Afibv2ZpTBxv22Pfh73xdCCb8olnYUOCQS6WYC0xheagaWe68gysCtwJJqVlT7jPqJ8JjIZ1C0fA5WEp+WOo1p6qH1E0tcQ5v4KKiFzIEuGW8d+pfVZMZP4Id3/NbifzFqbzJ1c0i1j/wXH8bntDdUbLIvwoJ2tDbyUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by DS0PR11MB6517.namprd11.prod.outlook.com (2603:10b6:8:d3::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.20; Mon, 2 Mar 2026 18:57:58 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 18:57:58 +0000
-Date: Mon, 2 Mar 2026 10:57:54 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, Christian =?iso-8859-1?Q?K=F6nig?=
-	<christian.koenig@amd.com>, <dri-devel@lists.freedesktop.org>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, "Simona
- Vetter" <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>, "Alistair
- Popple" <apopple@nvidia.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/4] drm/xe/userptr: Convert invalidation to two-pass
- MMU notifier
-Message-ID: <aaXdsiRlux/cZ6WC@lstrano-desk.jf.intel.com>
-References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
- <20260302163248.105454-3-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260302163248.105454-3-thomas.hellstrom@linux.intel.com>
-X-ClientProxiedBy: MW4PR03CA0354.namprd03.prod.outlook.com
- (2603:10b6:303:dc::29) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	bh=8vhf/0FWk459FLv1vW4bL+d4OiDFct30J/wSVyAWpyg=;
+	b=Zh8xpQQjBc7e6vPewapjUxP6q19SNwCZE4LIMFtmd9ZFvf1NYp9kpmBhD9gEZ7Fq6qDrPF
+	rN4xVcWaToFjK45LwQoKGSWkWFmqKhPWSJWWVgEpKhgBzlq6GnScXvrLa3Z1gKPQLzmja9
+	effdFCZr5YAmzJXI1WPK2rIVVqUdgno=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772478345; a=rsa-sha256;
+	cv=none;
+	b=czvvT6kFVvx6ZMzi82/OKMCWNIJtfnYN1T5ys0hM10YKfTXpoyoAZ4JbkqaXM78syHNU35
+	Uw5NOzUZCxFYlsDJXDfYR60sIPs735S+PMHYPJl1R84R4jY6R0BANdEK15HSWB56RH4gQP
+	vP/OAGDzWxcBPYoflaZbq2vrfHRbL5s=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M+0XXKHg;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7001960008;
+	Mon,  2 Mar 2026 19:05:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F41AC19423;
+	Mon,  2 Mar 2026 19:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772478344;
+	bh=Rs0xjjVXHNzPEJvNlyD9Y9f5tY776JO3uZf6IxhqsxM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M+0XXKHgJxkwHL/M/gTgaKnfv4ZoRocr2sM9unMSykbt8TJjqWyU6s9EOzEw6n/rd
+	 lxuOQe9dK6iMMIHzoMqiEKO9hAm7D8lI5XUCENgUdURMd95vu+A3sQou5/7xw+HD9k
+	 RkAfE+v8qIh/mk7JGLyaTY0lquc7gPaEAFU+s9BDU8kyFG02ZomDWhdfV3AyCQQaKl
+	 itRR0slcD07SdcAn5ckkR+mAFJq52zeZ+J+EC2z7d2izdjBUDZvKY3555pzCsqaMwl
+	 pp/iTIYQwhcPFVnaBOdH2OFF79m4qxo9NcSskpMmPlH3hx7gKaRQWhMJUCQJxvHVif
+	 SbJD8T0CXz0xQ==
+Message-ID: <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
+Date: Mon, 2 Mar 2026 20:05:37 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS0PR11MB6517:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3935f7ba-f73b-4739-5257-08de788d9e86
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: F1OQdNIUlbDYjLvcWJ9v8br+AZXunN0klDKu011xB7uq83w0MbzE23jJdNFbOx0PbHJfFcp3pBibnvdLGcLkc/xq3dG4hBHx/djh7dLL8xRmZxEg85BLb8xFgMROLweSBjJWaZ1NnKMD02YWOGeV8xFjjizfPLDnOdeGDssJ5Q/0YfTFrfaH1RViSpzY7ggTuhrTByylq+bYe36xBne1CZk8WxShPEdNDgexV3PfnHh+nm4ErlegibFgjKg2FphHqf67rbQra9a789aMOk6XAXBzxsetvSeJDXAX+rVeg4B1OT9mds6RIhd7/Y18dwYnosghNbFKBCQiQ5LIdCb3vF0TbqynJqEb8cZpUlGMZoQXSy1el7cNUI4yimIMy3vbN7pAz4khlFElQtOywZgrsL2fa8MfAzgugIrpYgPCEbt3YXUmlTdVVtiuSq+A54L8dMhX8mA7PLBYdJu4SWsEGIVZ1Xkl9NCZsQQDs1LZVb5O3CSYKrG4F5bofLnIdYyYBg+UGOgvIAPqxNipnfP0amyXM/zUSNcxQsf5qTeLAZJa+5V0oLqWFWKSyylQegp5SA6nvru0bxvZ2YGEyAyWc9tGI+hDXrHWsfUJybPzzU7kWl25pCUEt2IcInXhZzDiUSBFQ2Z1Vzwvd0ZnYYDl5M07rL0rgT78rlME0FuxGaD10WjZIHuUeho9ddPzqcN0Z+DcdNBsIJ/qCkcdgUA1FNuexTKj+tMLL5M71LReR14=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?UyUKsRezdd45n9NVEo4knUaqTk4H3YIFMTzfpDmAL0fHFvoKOxeRc5Ig1h?=
- =?iso-8859-1?Q?ZzBwO9blIMHNz9VJDbmynGCIu/dKqPUJiFHu5n+fPb8xRev8CfGAPV2d5J?=
- =?iso-8859-1?Q?reQWPlTyHEGEmy/LxfvDkLjW7/24CXdN0E16i781b4zd8NJ8C93g1VnaDK?=
- =?iso-8859-1?Q?Hm/lc1xO40Vu+AcUqwO1aTxJYuog9R7R+CFZtvOM1hM+QVoIiI7j+5dLL4?=
- =?iso-8859-1?Q?xTLqlH4IW4h8/SlqSu+AfG3RpbKp23nf+VwvzdJP+B5kzShdcyE1TMl1yx?=
- =?iso-8859-1?Q?OuIERn2UOuRXJlRZJucVDmauU91EK2BG+BPBKeyK8GzaqT7y5edN28DvOA?=
- =?iso-8859-1?Q?GgkcXDolUD3/fqYJKeJRpKgH4nIhRrMzMu5qW7p6TN5TJDJCdqXAW7S/FO?=
- =?iso-8859-1?Q?Ukti2NdDzBA1K5xhtFPVq41Mm976iSRJ0hzZs7FxZibFg+OvG12lVcmExm?=
- =?iso-8859-1?Q?Te++QzUUAN/wqqIHuIjgOlw4nXHyXEIS0JYcw9uWpoIp2x8RU7wNKGEi1U?=
- =?iso-8859-1?Q?8RMuSvMbGXKoL/kULLsc4hGM/5Rj7Xe5ib4chMPI4KkId+cQx8mxQdMW3C?=
- =?iso-8859-1?Q?763LvKuRf4wSHmUUcHtKp0ClOnSKWGVFNO4irK186NOUqjCTAs3Z9yF/Sa?=
- =?iso-8859-1?Q?Mb+hlIbmGDMhuXHZ4jQnNLJL+qJ5ff4Gfs2T2By/zxM7pnvR8ZnmsX8ugb?=
- =?iso-8859-1?Q?W2H6m7+gM4xtEfHfpBxPktWnuQZsR03V4ZZfHl7K8Yr/JY9PF56F6CCXK8?=
- =?iso-8859-1?Q?j2moiv/6T98Q14atS6XzHYYiIoRd1wkzxoYG6lwruPXTJUuEeIcJE2Huxn?=
- =?iso-8859-1?Q?FkTW3vAWmUQsr6co6mzaPSIkwqaEoQG/VfkgA6+Fho8vpigYGWkzqJRnzv?=
- =?iso-8859-1?Q?1hw9oBIlIedePQYUPTkOvgzmENzkHXtZOI3vyCPjXNuUXd8XTSuICiwr0f?=
- =?iso-8859-1?Q?4pmIBAwUWKB01iuYCEbMmFqEPwEgpr3wDVq+eYwc7N9fpWwfeQA/F+vRwP?=
- =?iso-8859-1?Q?6UlVEBgLCdNNxe5PbI9o3T0IT9eiTZ7LhXDGpmkUH2uHxNtV+/+4B4zysE?=
- =?iso-8859-1?Q?c4v1mJAwzGLIDQ6NkCdehLN6PUzo9kYQ2cSmX7BhyI89bwoa/p3kLS67O5?=
- =?iso-8859-1?Q?f/t67vrZV20HRYL3JKfDmhE6nUlQSjtQI6ickaIUBlKiQomv2tAEfl8lK0?=
- =?iso-8859-1?Q?ddfKSW6kh43b8coetj3+VfVH8wNLEqywwD9LjY/KceBVd8pWuAtYiR95BY?=
- =?iso-8859-1?Q?64XURQU4W/L3P1UI6gb2aa530p9e9hjgH+dIgOC13GV+LKuhzQO6/NEoni?=
- =?iso-8859-1?Q?fG2FrP8pB3V3v9DUxJ2Qu3MODoZrgDagufubMJpB81BjB2dD2JjSihM7VZ?=
- =?iso-8859-1?Q?N6PZc8vkVXMRAzskhWwVhdC49+EXNmnL57cGW8dL1uynDOsygo6o3H35Od?=
- =?iso-8859-1?Q?3FIaAwknJX/CRcBbckyzwAZYPTHkNcsW0ziWTr1SZBqqWi9X9EB8zJIoeP?=
- =?iso-8859-1?Q?daG6J+t1jaMRnMLlhRknZy8sWvhulK4mvTeFmVOgTv3dyyEO0m/ZCmLplo?=
- =?iso-8859-1?Q?ppFQpCWDW5r3XE+AB0UAMBWC83YAqVf97UuEZN4Q2wuSTj1KYCcJl6Hn7L?=
- =?iso-8859-1?Q?BUyswHdVcuBY+29oG96UATAgAF6ZKYYsfjIWKl6ZYnbaHkJY9nJlk1A+AB?=
- =?iso-8859-1?Q?fZS6VDyVKlCooqtNWMX6IMmq4wqCSDPcNMsaFZ6G7Yle2heTk2ed2YtNAg?=
- =?iso-8859-1?Q?6nptRAg9W2cug/1dsIp7I53sF3jQm+azpQE2UzcjmRJpNfpYPugVc+QK2+?=
- =?iso-8859-1?Q?RxsXYXV98LrNR6rxGcZyYA6u/nLya9o=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3935f7ba-f73b-4739-5257-08de788d9e86
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 18:57:58.0334
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yOSOuZQLdb6kuE8uLrl2lBPco2SXR+CmZw6j6MLsB+QUDuY46VCBTqle44+gZITSKzAOyqCpG88p9Ffd5kkr4Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6517
-X-OriginatorOrg: intel.com
-X-Rspamd-Queue-Id: 1489D40005
-X-Stat-Signature: yk5qwesacz54pga84hyybb73s6f64kfe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/huge_memory: Fix use of NULL folio in
+ move_pages_huge_pmd()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Chris Down <chris@chrisdown.name>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>
+References: <aaBVg6nPQz-WvyzT@chrisdown.name>
+ <27c260d2-796f-48a6-8b1c-751ab172d480@lucifer.local>
+ <89d988b7-846f-48aa-9b69-c316f2179d61@kernel.org>
+ <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772477884-94487
-X-HE-Meta: U2FsdGVkX1+WpOAUweW7ity5TsHuRnmKySIhFDKjL5vuqz71RPoqegKg0aFD4TvBb0KYuvefhpMid5iOYP3CQQ7uNYaVsLoyRL95XFFeGQxHZ7pjl4XJu5EhDCgs2DhsiH5+Nmcw4i49d/Bxdn6FBlgL20K/lMKO2skMKMMuixCyswaYxVkNdoH05e9TScozUE3JK6gcrmI8jitRMQqIgz5jLg71QI7j87BczLQTZ3j+XcPkUzXkhDmILLrcFhC4N8MboRQR47QIh34vDCPWb8HiQoJkUUJwLZ8P+eDgEoF3ccf17xdISIrt97NoPr7L74Fv1B16ynIexa+kWV/sRls2gZMsKMcrd9N4KgP68HPbctXnF2gsuNFC8qcl9fM0f7qYDqzwweCbtEbbU53QpWnAiFnxQ2bPrx8L/p/6DkmXUL5628CuiRcZNoho1uM+9j7Fah/nPJeQpcwXL4mso8UNUsQVqrun8O3KmVRMtGyFK3jkkJ9iVhJAj9lWksZaHtJaN/lrMBi3e1zUYX0Y0Nbqa8Sip340cixCg8irw1h3eXL49+1TPP2GE3pZSsoJyZwRjeMRStYnRjTKlKfJe99bEjyYGslVTy7xNAingFELiL2CC70dMIOJ3JFm2ag1e5Reau/hrIVv6Qhgh7iLjVUFbY5KGemZELw3LWYMUiMyD+qpnUF0SIZAoP8Un7hoJNtP2Y5677JM+kkQY57myeywyHowEvs5UszLifM2IypOuKrX6fgNjT7ivoCPnJ7cJnh3BdKA/+omKO6oLf/N6h81QFuD+26Oc7yP88C2cxg0d/nS/BTyRe7/zYsFD5xIMraIZAaD/XPzlOXdsBUW5q7/10nwjKpwIuprIA8D8cKeGORhr3MFekvjXIe1UFaVjc/xjzawZ/hfcMTX/JHb+pNVE3BuzLrG1ZYGBmzm8jl5014np9zsSezkWDI0XGFn54eVTiFf9zz33lrzlhL
- 2SbiEoGo
- 72BQjM5j/DZFAgvnP99KHshXX03v5BUmkKSPnQyUsi4vw07YXZK0Q/sJQ7MEfnEZHKjFAL6LJ8IQ/RM+RuGYbbbWPaVwh1qTnTl0QYoDA+WPpID1qrfLObudbHzc9D+2NV0WVRZltKqo+7Cohoe0vokzB/OlWLBMiGy6lT8YBGR7ffJTFWkfzVzen+5biWjQyAFLIO6Q+WksijdoYwVDBsAuF/6nPqHtMJ71jn2c2UUwc+cSlWgUKV+s8jG07GyUpI6icCTYDuvhWS83b3fbGrk8sMlP5kNWLGFh4OlDqQCIW3QqarxRPmO4vtyt54ecGF2Ff5BvFPaAZ9Rj+gzlyabXSr0xgGITItAZnHJTBJ9DaRkrJsfpLRwYzLMcVtKRPl+GDSwE1wBRg/UUjoX0FcjSjRH729rXOgUfXAZtqpi8v//kCOQ65iZ/GGcLOfxvlacnHRygSyt2CK/ARKd84tmraGtRwzdtNgxSastOOUKU3Z8GWoV14HKdUKgUB7X4INrHzKx/vnP72rMlL892516/Ppg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 11C73100019
+X-Stat-Signature: 17t6i36ut1ejryrgnkmpq7xy91fwyytb
+X-HE-Tag: 1772478344-704857
+X-HE-Meta: U2FsdGVkX18b1kGSds698UGAuqCe0B4NOxxpNLNPDNcpg0LsFCwP+vpBdyB3oK9Rjk/z3juq+F61+y7gthSe86SGFyCeXRsnevlSPngLz6biA5rm9qMUozXch8untCZB8MXiLycaVdxjacJyHW/uZ1FMXjcdsKVPk6+2s0kArLqPxYbcuvcWM5n2IQ7pZV4cJc+cnxnlgJItTxSVnoD39w6J7NnAx/m56BT8h4qL72OJEwL6dgJEvUxoffIUIFQ6qF2fMiHqHbhIdgRPwDOnJQKpQwP5F97qrKMG0PjazB7mc4PxsqCIWbMriyO9gW26lrE0bPVfnkOVey0zZQzN3Q4PiTaZs6/b638tUZUtL6wpz+YQUMQwokQk3+pSxoiy2qS//tnuMe/jzidquXtG+U5ik+1Rq1EpL681vzLLuIDDgdxdWzm137XqrNZAHgwhMWlum7UbiMF0L0r4IMDip+Kx5NXgwizVyfAG4lsLD54dKOS2kF7T49bZwLnXoLSSXCgRq3uL3/e7O8jbbMob0jxTpWmZ1NK5EoMjeWXR5S9HkzPO/9JI0YHZMdXFc1sho1Rn5ZC20kH859LDtBU9cQ+0B34TsbVD9Jwx+3GA6ZYvetfOiZrIuO9EAG6V+Jxcwj5xL3JKt8t3WQokXwXe705M4RLMPgOtPTApLuE1dLF+SJUzbe3k5eRYgryyvRg1PBOkdqYeLur+5MCCQ9cv9xeuS1VKTrCZkTSZCnnMiKPwKmK/WW0VyRvedyT2CSCpUs4MA1+GLognVQWGzETfJCsU2nb4DCUx5d+hRnkLbs7zCwIWScKmTZ5ezfVRXug7c2A3W4XDOfI/mi6LCeBjndtxQ/qmLnGqEQEU+iNNDMO14XTjjW5Gk/1WdwiArPvJZhYkUiMMrM9PVyTwHfN1cMNNaE7kOYdMk8J+Qy9BirX2j1sxjFrms9uLkgcpriNlkvup3aqQb2dR2VY8+EJ
+ xNPpw6jO
+ WopRWgQAimHdUWHIW1tDNGDogNsNBwDqBLcSu09wj6D8z/2Q6djazo/923pjtTwhX3n35mFzZf+MvyiKQM2buqwwOZ+Yr5pN7gnRrzdG76m86+aiNY4+79pBrA5ONisqaCN4zt6dyloeHYO7RQXTnXv0il17sKVd0YagVlDblkESiR41Lb7Sq5PJac2vHrZ+uugucy4uXGifbphRL/ngldcOaetoBlW72LfiCCLhI//XZX1uWHysdA5tl3oTXLCqsglj2rnS+7+HV/FU7OrSMaRZeGuoxA+tOEOacdfc4GAg2FQ23m8fBkFuu/ani4Hqfm7QfakhJrC/n9e8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,252 +147,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 05:32:46PM +0100, Thomas Hellström wrote:
-> In multi-GPU scenarios, asynchronous GPU job latency is a bottleneck if
-> each notifier waits for its own GPU before returning. The two-pass
-> mmu_interval_notifier infrastructure allows deferring the wait to a
-> second pass, so all GPUs can be signalled in the first pass before
-> any of them are waited on.
+On 3/2/26 18:43, Lorenzo Stoakes wrote:
+> On Mon, Mar 02, 2026 at 06:35:46PM +0100, David Hildenbrand (Arm) wrote:
+>>
+>>>
+>>> I prefer my version at [0].
+>>>
+>>> Cleaner to actually pull out the zero_folio into a local variable, and also we
+>>> should mark it special to be consistent with other codepaths.
+>>
+>> I argued in v1 that we should handle it similar to an ordinary move
+>> during mremap()->move_huge_pmd() and not split it over two patches.
+>>
+>> It's still split over two patches, which doesn't make sense.
 > 
-> Convert the userptr invalidation to use the two-pass model:
+> Yes, let's not do that, I made the same comment.
 > 
-> Use invalidate_start as the first pass to mark the VMA for repin and
-> enable software signalling on the VM reservation fences to start any
-> gpu work needed for signaling. Fall back to completing the work
-> synchronously if all fences are already signalled, or if a concurrent
-> invalidation is already using the embedded finish structure.
+>>
+>> https://lore.kernel.org/linux-mm/0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org/
+>>
+>> I don't think there is no need to get the folio involved at all if we
+>> know that we have a well-prepared PMD (zero folio, makred as special).
+>>
+>> The less code we have that has to deal with setting PMDs special (and
+>> possible messing it up), the better.
 > 
-> Use invalidate_finish as the second pass to wait for the reservation
-> fences to complete, invalidate the GPU TLB in fault mode, and unmap
-> the gpusvm pages.
+> Yup I agree, I replied accordingly. That's a more elegant thing than duplicating
+> huge zero installation code.
 > 
-> Embed a struct mmu_interval_notifier_finish in struct xe_userptr to
-> avoid dynamic allocation in the notifier callback. Use a finish_inuse
-> flag to prevent two concurrent invalidations from using it
-> simultaneously; fall back to the synchronous path for the second caller.
->
-
-A couple nits below. Also for clarity, I'd probably rework this series...
-
- - Move patch #3 to 2nd to patch
- - Squash patch #2, #4 into a single patch, make thia the last patch
-
-Let me know what you think on the reordering. I'm looking with the
-series applied and aside from nits below everything in xe_userptr.c
-looks good to me.
- 
-> Assisted-by: GitHub Copilot:claude-sonnet-4.6
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> ---
->  drivers/gpu/drm/xe/xe_userptr.c | 96 +++++++++++++++++++++++++--------
->  drivers/gpu/drm/xe/xe_userptr.h | 14 +++++
->  2 files changed, 88 insertions(+), 22 deletions(-)
+> I had just assumed that there was _some reason_ why we wouldn't want to do that
+> given the original patch from Suren didn't just do that, and for the sakes of a
+> backport no need to think too deep on it.
 > 
-> diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
-> index e120323c43bc..440b0a79d16f 100644
-> --- a/drivers/gpu/drm/xe/xe_userptr.c
-> +++ b/drivers/gpu/drm/xe/xe_userptr.c
-> @@ -73,18 +73,42 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
->  				    &ctx);
->  }
->  
-> -static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uvma)
-> +static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
-> +				    bool is_deferred)
->  {
->  	struct xe_userptr *userptr = &uvma->userptr;
->  	struct xe_vma *vma = &uvma->vma;
-> -	struct dma_resv_iter cursor;
-> -	struct dma_fence *fence;
->  	struct drm_gpusvm_ctx ctx = {
->  		.in_notifier = true,
->  		.read_only = xe_vma_read_only(vma),
->  	};
->  	long err;
->  
-
-xe_svm_assert_in_notifier(vm);
-
-> +	err = dma_resv_wait_timeout(xe_vm_resv(vm),
-> +				    DMA_RESV_USAGE_BOOKKEEP,
-> +				    false, MAX_SCHEDULE_TIMEOUT);
-> +	XE_WARN_ON(err <= 0);
-> +
-> +	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
-> +		err = xe_vm_invalidate_vma(vma);
-> +		XE_WARN_ON(err);
-> +	}
-> +
-> +	if (is_deferred)
-> +		userptr->finish_inuse = false;
-> +	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
-> +			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
-> +}
-> +
-> +static struct mmu_interval_notifier_finish *
-> +xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
-> +{
-> +	struct xe_userptr *userptr = &uvma->userptr;
-> +	struct xe_vma *vma = &uvma->vma;
-> +	struct dma_resv_iter cursor;
-> +	struct dma_fence *fence;
-> +	bool signaled = true;
-> +
-
-xe_svm_assert_in_notifier(vm);
-
->  	/*
->  	 * Tell exec and rebind worker they need to repin and rebind this
->  	 * userptr.
-> @@ -105,27 +129,32 @@ static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uv
->  	 */
->  	dma_resv_iter_begin(&cursor, xe_vm_resv(vm),
->  			    DMA_RESV_USAGE_BOOKKEEP);
-> -	dma_resv_for_each_fence_unlocked(&cursor, fence)
-> +	dma_resv_for_each_fence_unlocked(&cursor, fence) {
->  		dma_fence_enable_sw_signaling(fence);
-> +		if (signaled && !dma_fence_is_signaled(fence))
-> +			signaled = false;
-> +	}
->  	dma_resv_iter_end(&cursor);
->  
-> -	err = dma_resv_wait_timeout(xe_vm_resv(vm),
-> -				    DMA_RESV_USAGE_BOOKKEEP,
-> -				    false, MAX_SCHEDULE_TIMEOUT);
-> -	XE_WARN_ON(err <= 0);
-> -
-> -	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
-> -		err = xe_vm_invalidate_vma(vma);
-> -		XE_WARN_ON(err);
-> +	/*
-> +	 * Only one caller at a time can use the multi-pass state.
-> +	 * If it's already in use, or all fences are already signaled,
-> +	 * proceed directly to invalidation without deferring.
-> +	 */
-> +	if (signaled || userptr->finish_inuse) {
-> +		xe_vma_userptr_do_inval(vm, uvma, false);
-> +		return NULL;
->  	}
->  
-> -	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
-> -			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
-> +	userptr->finish_inuse = true;
-> +
-> +	return &userptr->finish;
->  }
->  
-> -static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
-> -				   const struct mmu_notifier_range *range,
-> -				   unsigned long cur_seq)
-> +static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
-> +					    const struct mmu_notifier_range *range,
-> +					    unsigned long cur_seq,
-> +					    struct mmu_interval_notifier_finish **p_finish)
->  {
->  	struct xe_userptr_vma *uvma = container_of(mni, typeof(*uvma), userptr.notifier);
->  	struct xe_vma *vma = &uvma->vma;
-> @@ -138,21 +167,40 @@ static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
->  		return false;
->  
->  	vm_dbg(&xe_vma_vm(vma)->xe->drm,
-> -	       "NOTIFIER: addr=0x%016llx, range=0x%016llx",
-> +	       "NOTIFIER PASS1: addr=0x%016llx, range=0x%016llx",
->  		xe_vma_start(vma), xe_vma_size(vma));
->  
->  	down_write(&vm->svm.gpusvm.notifier_lock);
->  	mmu_interval_set_seq(mni, cur_seq);
->  
-> -	__vma_userptr_invalidate(vm, uvma);
-> +	*p_finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
-> +
->  	up_write(&vm->svm.gpusvm.notifier_lock);
-> -	trace_xe_vma_userptr_invalidate_complete(vma);
-> +	if (!*p_finish)
-> +		trace_xe_vma_userptr_invalidate_complete(vma);
->  
->  	return true;
->  }
->  
-> +static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish *finish)
-> +{
-> +	struct xe_userptr_vma *uvma = container_of(finish, typeof(*uvma), userptr.finish);
-> +	struct xe_vma *vma = &uvma->vma;
-> +	struct xe_vm *vm = xe_vma_vm(vma);
-> +
-> +	vm_dbg(&xe_vma_vm(vma)->xe->drm,
-> +	       "NOTIFIER PASS2: addr=0x%016llx, range=0x%016llx",
-> +		xe_vma_start(vma), xe_vma_size(vma));
-> +
-> +	down_write(&vm->svm.gpusvm.notifier_lock);
-> +	xe_vma_userptr_do_inval(vm, uvma, true);
-> +	up_write(&vm->svm.gpusvm.notifier_lock);
-> +	trace_xe_vma_userptr_invalidate_complete(vma);
-> +}
-> +
->  static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
-> -	.invalidate = vma_userptr_invalidate,
-> +	.invalidate_start = xe_vma_userptr_invalidate_start,
-> +	.invalidate_finish = xe_vma_userptr_invalidate_finish,
->  };
->  
->  #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
-> @@ -164,6 +212,7 @@ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
->   */
->  void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
->  {
-> +	static struct mmu_interval_notifier_finish *finish;
->  	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
->  
->  	/* Protect against concurrent userptr pinning */
-> @@ -179,7 +228,10 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
->  	if (!mmu_interval_read_retry(&uvma->userptr.notifier,
->  				     uvma->userptr.pages.notifier_seq))
->  		uvma->userptr.pages.notifier_seq -= 2;
-> -	__vma_userptr_invalidate(vm, uvma);
-> +
-> +	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
-> +	if (finish)
-> +		xe_vma_userptr_do_inval(vm, uvma, true);
->  }
->  #endif
->  
-> diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
-> index ef801234991e..4f42db61fd62 100644
-> --- a/drivers/gpu/drm/xe/xe_userptr.h
-> +++ b/drivers/gpu/drm/xe/xe_userptr.h
-> @@ -57,12 +57,26 @@ struct xe_userptr {
->  	 */
->  	struct mmu_interval_notifier notifier;
->  
-> +	/**
-> +	 * @finish: MMU notifier finish structure for two-pass invalidation.
-> +	 * Embedded here to avoid allocation in the notifier callback.
-> +	 * Protected by @vm::svm.gpusvm.notifier_lock.
-> +	 */
-> +	struct mmu_interval_notifier_finish finish;
-> +	/**
-> +	 * @finish_inuse: Whether @finish is currently in use by an in-progress
-> +	 * two-pass invalidation.
-> +	 * Protected by @vm::svm.gpusvm.notifier_lock.
-> +	 */
-> +	bool finish_inuse;
-> +
->  	/**
->  	 * @initial_bind: user pointer has been bound at least once.
->  	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
->  	 * read: vm->svm.gpusvm.notifier_lock in write mode or vm->resv held.
->  	 */
->  	bool initial_bind;
-> +
-
-Unrelated.
-
-Matt
-
->  #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
->  	u32 divisor;
->  #endif
-> -- 
-> 2.53.0
+> But you're right I don't think there's any reason we need to diverge from what
+> mremap() would do.
 > 
+> That does have:
+> 
+> 		if (vma_has_uffd_without_event_remap(vma))
+> 			pmd = clear_uffd_wp_pmd(pmd);
+> 
+> Though rather than unconditonally invoking clear_uffd_wp_pmd().
+> 
+> Is that correct?
+
+My conclusion was that UFFDIO_MOVE will never move uffd-wp information
+(just like we currently don't do for any moved PTEs).
+
+mremap() might sometimes. But it also effectively moves all (most) uffd
+VMA properties, so it has slightly different semantics.
+
+-- 
+Cheers,
+
+David
 
