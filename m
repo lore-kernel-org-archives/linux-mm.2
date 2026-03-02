@@ -4,126 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F4AEA4E22
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39A2DEA4E26
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 247106B009D; Mon,  2 Mar 2026 10:53:32 -0500 (EST)
+	id 3A7276B0098; Mon,  2 Mar 2026 10:53:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AAE56B0098; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
+	id 245166B0096; Mon,  2 Mar 2026 10:53:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0CFE6B009B; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
+	id EA2886B0099; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B6C0A6B0096
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B6F8D6B0098
 	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:31 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C5301C18C
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60EB5140180
 	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:31 +0000 (UTC)
-X-FDA: 84501567822.17.DB0E44D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8A7BCC000A
+X-FDA: 84501567822.04.AC094EB
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7AA11C0009
 	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Nl1ciV1n;
-	spf=pass (imf22.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WtHonB/J";
+	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772466809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5je42QRO4AOiyaMXgXsTKWPYijh9+PVOYu2ob4k4BI=;
-	b=3U2Fp96L3vahy546pYnd/fKpe6W8+bWjz8IK8csFmYu6EGI17I2+6UCOMT2Y8CUZTZZXBo
-	+zPsn0UIVhFA0g/J+RSrS8biZaiG3blVg1cWUg9Ai/zK1DoniRC3Sm82okI4uzABGGAsps
-	KXPKgOX3LpuBINpaGLkUix79eANMEPg=
+	 message-id:message-id:to:to:cc:cc:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0FcJExh6URZjyjWUCUvehL157kXxK4+CRdEnZ1Cl6Yg=;
+	b=dMSanPkxkwFatb2Jv6VG1gXpPE03k+1ir2aIZWAEILyvlqS+RgRFKEFm27RlprGeZu3GkA
+	kh+mnZaDaGn0+ReZ+TqmZJSRTJMaLBHCjdW43hLABPs53CkchIQKJbDNViY0cc/AGu6LAq
+	keG3ckvgDbJpWaYTtt1rTrxLUHrSaPc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="WtHonB/J";
+	spf=pass (imf28.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466809; a=rsa-sha256;
 	cv=none;
-	b=TKP7bokAywtZtCBrm95axb3Luq8TFbrTI2ZtnanNFfl/SQgxpDENApLXfA9qcimXp27x/g
-	x2u0czWcqyAqcIRxwfG0SEdes8/luKCtrNTS+XdStRDnNquduL2aJ3hM/CmECE34GZIz9T
-	FxYcdyq31wMhH4Ts+jRbQXvpoankBT8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Nl1ciV1n;
-	spf=pass (imf22.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	b=Q710xvcWFNAHTbsLtWxmyHKFRFYj4d94oUU7AHBxjOC7QZ6oa7aWb0bp62n4d/nA2qPUtX
+	KBmKnlKKDI1grnfO52YTQ3DhsRBLrTVBcROSZNYor/RbiqMZFx2nsbLtvHG7AVZyJ9Jxq0
+	xNAzUBf6phYLV3kjdUUf9mvtsHeEGJk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1772466808;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q5je42QRO4AOiyaMXgXsTKWPYijh9+PVOYu2ob4k4BI=;
-	b=Nl1ciV1nk9HNdv1ZcB4W5QFNKojATCaQg6wET/Me1eqHEbTP7Z7pu0bDuTLAAHLjD7z7Jr
-	Sa0LeMqUYntbel5Rc8VYPBwkXK6JtaZH4fwZzKqes7YF7HSTFlzyhCMjEKQV+8bGB0ZdrY
-	gCZl/Ls9cbu4FlK6kSulfBBeuLwj3nU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 to:to:cc:cc:content-type:content-type;
+	bh=0FcJExh6URZjyjWUCUvehL157kXxK4+CRdEnZ1Cl6Yg=;
+	b=WtHonB/JUgn6iA+Ad51qso/oTYz481PsfZ+0jZ0UgxPbVZ1nfVoHdER4rOiJwPny6mOaO6
+	8EzeThN9qbKm28FMeNlxkfYkEf1qP0Al8kj+kFYxwYz7ISuAIeXIUoqFka+UDdcLcCnIXe
+	7+VabKNx0+jXWahbe14oP4AtcEuPktE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-tvROHLPWMWegtmx-T6a-ig-1; Mon,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630--FvjyvKDOCyFg5cYcHDD5g-1; Mon,
  02 Mar 2026 10:53:25 -0500
-X-MC-Unique: tvROHLPWMWegtmx-T6a-ig-1
-X-Mimecast-MFC-AGG-ID: tvROHLPWMWegtmx-T6a-ig_1772466802
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: -FvjyvKDOCyFg5cYcHDD5g-1
+X-Mimecast-MFC-AGG-ID: -FvjyvKDOCyFg5cYcHDD5g_1772466803
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 32AE21800365;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E30319560A7;
 	Mon,  2 Mar 2026 15:53:22 +0000 (UTC)
 Received: from tpad.localdomain (unknown [10.96.133.6])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E899119560A7;
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0BC881800594;
 	Mon,  2 Mar 2026 15:53:20 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 82AC5401E0CDF; Thu, 26 Feb 2026 08:41:09 -0300 (-03)
-Date: Thu, 26 Feb 2026 08:41:09 -0300
+	id 874C0401CED19; Mon,  2 Mar 2026 12:53:00 -0300 (-03)
+Message-ID: <20260302154945.143996316@redhat.com>
+User-Agent: quilt/0.69
+Date: Mon, 02 Mar 2026 12:49:45 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Message-ID: <aaAxVbt/DQyTgIs3@tpad>
-References: <aYs6Ju2G4bm6_tl2@tiehlicka>
- <aYxviLoWsrLqDU7o@tpad>
- <aYywl1hdBQP2_slo@tiehlicka>
- <aZDw6xI2izFDfuuu@WindFlash>
- <aZL45yORfkNvS9Rs@tiehlicka>
- <aZcr255pGT3B/eaL@tpad>
- <aZdk19MqYhWK90Do@tiehlicka>
- <aZzM_44L1vKzcOCy@pavilion.home>
- <aZ3ejedS7nE5mnva@tpad>
- <aZ9ugjKvb4U7_R93@pavilion.home>
-MIME-Version: 1.0
-In-Reply-To: <aZ9ugjKvb4U7_R93@pavilion.home>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: VvQkf_3jtiBH5qsTcibM7q7NE-HEXq1g2K2XKPVw5RQ_1772466802
+To: linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@linux.com>,
+ Pekka Enberg <penberg@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ Leonardo Bras <leobras.c@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Waiman Long <longman@redhat.com>,
+ Boqun Feun <boqun.feng@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: OFezU6u646QVBXL0nBTJogwnPQZfY633g085cQDY5os_1772466803
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7AA11C0009
+X-Stat-Signature: bgexrc93zm4n1yc8ed7uq8trz51ea4rc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8A7BCC000A
-X-Stat-Signature: ti9ytmj36z7n36jgyngsicjgsgrs56hk
-X-HE-Tag: 1772466809-170715
-X-HE-Meta: U2FsdGVkX19S7oGsa6CQpeyZ7LoaJGH3PsRsqLl75cSZjlLfSQ1IHsAwEWIXSYUFPu5qsL0oYdAm9U8SZJtuEIotTNuXRDPebMyLypVl8Lyx7RMsRDCUAT+ct5SHxI6skSRYlIfP/4644IQ2Oa3O91msTbMat+6VIKuU/ef1biqWIS8gT9fuUNJKoxtVXwcOEvKNooraGMYae1Qab0qc3CJNwr7JclycfLWZcE4s3n6E0+JypdqewYQ7PVj1IWWYKBf5Pi5mM02oeTSnW2N5251SEIx6KtsmJxyhd7NxirTosfwwzb6oVA0NhiyOsywrkL12+uCFIGPQPxeHc1+MgUsadZ3+Ud7nYirMm7vRPw/pOnAylE7fWBiZ277AjQ7R/BBSbawBHxWArDrkVoMxn1rV7HcN8vNssMNbpNwUB+X00DocSq6Y9LHXg4ZNLWQuX9WNb35Lbr2DZPeIlQvvI8O3YSnRABlQkjOXJWTAcBAkURoQuNGiTZZBQjoKC08msKMigUWsi8t7k/98CzZNhY4xgSV/+9gFflNlffaZEwH9tnN1hJ0IbjG/iu4Nc0fKzN5BHp0AmHewAaePXupQgE2wqvT0gafNx/uZ5QTEXgX0OQufu+lSVQVI+KH9QVB06ulHIKuRwauj3eRaTGf2BV+urTinoXlJQfT6oerVUkTLQ50VkqWdjDh2rCgbWpcOl/2bagail0mH/5vlCAdmnkwWn5JTwK49e8hbn6qbCqoELNqTQDBFxKuiZLk4c4t3gKaE2oZTmt+UjRFIpn/DU3J3JWrDVOg59/D6ullj4m5HtAQUHTfn/gcU0l23+iPNhJHdasQVNBZllbkGGgyKKzeh1FNKiQ5m2SbzdRtfD6u3+3Ik1VgymysHC8meOphEPY1E4i7NKLadiZ7U7uKpTxo+yEbkDrdm5qnPiIwgsWM+70YTaQKBRj5dP0Fs4AFfxfiw5QydN/Vbyoge4uW
- s03XRVQu
- z7tYlrmZid6H/hS3Rf8xR0XArksv/O8mC8rXA4shy5sd274TDXvv/IpTMa4e+w4BS1FJer8L0/cx7JB0iMQokeAfMJLZeNOKrx0uie5lFIaZEmb3rE3yhHtXmFu2mLVZqx1IwGscrb4XvN6fhx7MT6a3O8nLOQNz51CaQr/C2wgtJI1ZSId3K+7N9B6AszAPPEKUDEBPfmZFVg/ehgufsd9dW1n92FE9N4gpbUio95XqyGKUqSLMqnnBpEwtzxNBNy3SECmzAugq+n1bRoNmWNDHClwtD3Yo6mk/KLsV0/+Kz9U/8TSm7IdRTpq4aWT4rSoR9JNxMj0jOxfvM7JBr5fdFgn1k6OSag65hRlAw+/QjhNTOng5M17n6U98zoMfmAHQWfGoohHRSj+sCDJ3D0qLlN2y9aY+S/RFtXVNnigxXI7gC9vKxlF8VORYMnDCZEdxs
+X-HE-Tag: 1772466809-753382
+X-HE-Meta: U2FsdGVkX198mhanK3h9TrO0o2t0BxshDovHdgMvda7NOyc+qZZJImHMLhaMcfPckixnF1Bj6/ubHPI29G3idX5z/O4WPdphaE/eZo2jJnTjYk3PAxffjEN8CF6qLSIMMm1Tnw/FzVKcdps1x3+lOrSvBthYMoHljDQLeiyb6p8v++mI4dZzcUalz9JDxkxoEP1m76S8ndwGbo1qtFz1J850oCUSvQ5xYcrzcvCsefPm8iHzZofVb4jl2A0t7jDnIbOFw1Qw/tBoHNf8YAyOxilibDKRku5VCAthrYnZMboMPz2RhvS3vZkl2ztKLbKAIRczdxwDS02MXonbZGRZrIbEo5kEHN8MvIRYzivIC9284I1Rl3UI2pfLvT5xRm1PtGuHD6AQbv52M6JZkhZLZszeDDhHMc3BELLut5hOvSXHPOFF9iSuvt2zA5mYSGnzSpbw7gSqqcl6YTJG6FV14C3bcfqTrKw5uoS1SUzJ5UuacWOu8va0JZzvFDwzOrOpzTiABfR6wk1JtGFdPbO0XTxe08H43lQXUHG3FvjRo+e+A9eCcl9+lLPy1YcOo0JalLUVzFP5MPp5sMgGUQlL62daLeweN8ZQTNBy3zmgyqxLiRyobFRF0DIV/jGNVjJ+jynDKOuNZJAlFaRn906ZrBkZ2r0fAs+a9MRb6FXlasO5yEFxgydoR2DJgOGx2klOY6Sgz9ogGxK3q3Iz3OGaT3VyYNK65v5fS33YLAgFVK3c7QMU0pTMB5Cg6IbbPVjFL1OzF7a9vEJt0RhybwTVCp1VzIJeIDUwkof+QsAf35TlOo4jEAGzmwGzDWRzfWUnKcF/4bwdefk05/wU6e8pKFGPnvwvNwbeEO/EJDjtzfKfiziyq3elbyF+ABdxOn3Hvd/QxD2ZvHDY+OZHxSKOp9uY9ZTUH1XzX30sQHrcJBkrsN9pYp7q486HF7MYWsq1hNVfOUQMuYSIi0JVtLD
+ F57Ck5YA
+ IBSHgAdVx0nFUaztJClW0BH7DZimW1MvnYcZ2BaETGnZu2Pq3jITUwlAf22n1QsMi3U+5o5yFiDHctofuhVLUHQfXtQIi3AWPSHCT/2fKzR6Mufr/cPfpB0gYxHerDgqLaRBA2EDoahITWJfFIDrXvymFv8VF2ila/gR1KXt8c+hFOJIno69dBKtwvB7eZ7JRO4mhD7RRrFd429g9G5ZePdE/MxZ3RgdtEgnbsVrF+eT3hpwtuGfMWmEKaEpv8lCAlBZ427KJnWTmBmNq1l2JfAbf2rNlMvQJCvskyagnw4UhrN3MkZJi7jOqb56PqtkNdob1EsddvJWoTJIJq/v64xe8AOt16BlA7T6zHyh1GTglg+5PxOHuFz8ZWgXg/4dWoSsRVaHwwkVFPOYm57AEgjrLLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,44 +116,254 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 10:49:54PM +0100, Frederic Weisbecker wrote:
+The problem:
+Some places in the kernel implement a parallel programming strategy
+consisting on local_locks() for most of the work, and some rare remote
+operations are scheduled on target cpu. This keeps cache bouncing low since
+cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+kernels, even though the very few remote operations will be expensive due
+to scheduling overhead.
 
-<snip>
+On the other hand, for RT workloads this can represent a problem: getting
+an important workload scheduled out to deal with remote requests is
+sure to introduce unexpected deadline misses.
 
-> > There are specific parts of a simulation that are intensive, but
-> > researchers try to minimize them:
-> > 
-> > I/O Operations: Writing "checkpoints" or large trajectory files to disk
-> > (using write()). This is why high-end HPC systems use Asynchronous I/O
-> > or dedicated I/O nodes—to keep the compute cores from getting bogged
-> > down in system calls.
-> > 
-> > Memory Allocation: Constantly calling malloc/free involves the brk or
-> > mmap system calls. Optimized simulation tools pre-allocate all the
-> > memory they need at startup to avoid this.
-> 
-> Ok. I asked a similar question and got this (you made me use an LLM for the
-> first time btw, I held out for 4 years... I'm sure I can wait 4 more years until
-> the next usage :o)
+The idea:
+Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+In this case, instead of scheduling work on a remote cpu, it should
+be safe to grab that remote cpu's per-cpu spinlock and run the required
+work locally. That major cost, which is un/locking in every local function,
+already happens in PREEMPT_RT.
 
-You should use it more often, it can save a significant amount of time
-:-)
+Also, there is no need to worry about extra cache bouncing:
+The cacheline invalidation already happens due to schedule_work_on().
 
-> ### 2. The "Slow Path" (System Calls / Syscalls)
-> 
-> Passing through the kernel (a syscall) is necessary in certain situations, but it is "expensive" because it forces a **context switch**, which flushes CPU caches.
-> 
-> * **Initialization:** During startup (`MPI_Init`), many syscalls are used to create sockets, map shared memory (`mmap`), and configure network interfaces.
-> * **Standard TCP/IP:** If you are not using a high-performance network (RDMA) but simple Ethernet instead, MPI must call `send()` and `recv()`, which are syscalls. The Linux kernel then takes over to manage the TCP/IP stack.
-> * **Sleep Mode (Blocking):** If an MPI process waits for a message for too long, it may decide to "go to sleep" to yield the CPU to another task via syscalls like `futex()` or `poll()`.
-> 
-> **In summary:** MPI synchronization aims to be **100% User-Space** (via memory polling) to avoid syscall latency. It is precisely because MPI tries to bypass the kernel that we use `nohz_full`: we are asking the kernel not to even "knock on the CPU's door" with its clock interruptions.
+This will avoid schedule_work_on(), and thus avoid scheduling-out an
+RT workload.
 
-Of course, there is a cost to system calls. However, considering
-"low latency applications must necessarily remain in userspace,
-therefore lets optimize only for that case" is limiting IMHO.
+Proposed solution:
+A new interface called Queue PerCPU Work (QPW), which should replace
+Work Queue in the above mentioned use case.
 
-Should avoid interruptions whenever possible, for isolated CPUs
-(in userspace _and_ kernelspace).
+If CONFIG_QPW=n this interfaces just wraps the current
+local_locks + WorkQueue behavior, so no expected change in runtime.
+
+If CONFIG_QPW=y, and qpw kernel boot option =1, 
+queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+and perform work on it locally. This is possible because on 
+functions that can be used for performing remote work on remote 
+per-cpu structures, the local_lock (which is already
+a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+is able to get the per_cpu spinlock() for the cpu passed as parameter.
+
+v1->v2:
+- Introduce local_qpw_lock and unlock functions, move preempt_disable/
+  preempt_enable to it (Leonardo Bras). This reduces performance
+  overhead of the patch.
+- Documentation and changelog typo fixes (Leonardo Bras).
+- Fix places where preempt_disable/preempt_enable was not being
+  correctly performed.
+- Add performance measurements.
+
+RFC->v1:
+
+- Introduce CONFIG_QPW and qpw= kernel boot option to enable 
+  remote spinlocking and execution even on !CONFIG_PREEMPT_RT
+  kernels (Leonardo Bras).
+- Move buffer_head draining to separate workqueue (Marcelo Tosatti).
+- Convert mlock per-CPU page lists to QPW (Marcelo Tosatti).
+- Drop memcontrol convertion (as isolated CPUs are not targets
+  of queue_work_on anymore).
+- Rebase SLUB against Vlastimil's slab/next.
+- Add basic document for QPW (Waiman Long).
+
+The performance numbers, as measured by the following test program,
+are as follows:
+
+Unpatched kernel:			166 cycles
+Patched kernel, CONFIG_QPW=n:		166 cycles
+Patched kernel, CONFIG_QPW=y, qpw=0:	168 cycles
+Patched kernel, CONFIG_QPW=y, qpw=1:	192 cycles
+
+kmalloc_bench.c:
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/slab.h>
+#include <linux/timex.h>
+#include <linux/preempt.h>
+#include <linux/irqflags.h>
+#include <linux/vmalloc.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Gemini AI");
+MODULE_DESCRIPTION("A simple kmalloc performance benchmark");
+
+static int size = 64; // Default allocation size in bytes
+module_param(size, int, 0644);
+
+static int iterations = 9000000; // Default number of iterations
+module_param(iterations, int, 0644);
+
+static int __init kmalloc_bench_init(void) {
+    void **ptrs;
+    cycles_t start, end;
+    uint64_t total_cycles;
+    int i;
+    pr_info("kmalloc_bench: Starting test (size=%d, iterations=%d)\n", size, iterations);
+
+    // Allocate an array to store pointers to avoid immediate kfree-reuse optimization
+    ptrs = vmalloc(sizeof(void *) * iterations);
+    if (!ptrs) {
+        pr_err("kmalloc_bench: Failed to allocate pointer array\n");
+        return -ENOMEM;
+    }
+
+    preempt_disable();
+    start = get_cycles();
+
+    for (i = 0; i < iterations; i++) {
+        ptrs[i] = kmalloc(size, GFP_ATOMIC);
+    }
+
+    end = get_cycles();
+
+    total_cycles = end - start;
+    preempt_enable();
+
+    pr_info("kmalloc_bench: Total cycles for %d allocs: %llu\n", iterations, total_cycles);
+    pr_info("kmalloc_bench: Avg cycles per kmalloc: %llu\n", total_cycles / iterations);
+
+    // Cleanup
+    for (i = 0; i < iterations; i++) {
+        kfree(ptrs[i]);
+    }
+    vfree(ptrs);
+
+    return 0;
+}
+
+static void __exit kmalloc_bench_exit(void) {
+    pr_info("kmalloc_bench: Module unloaded\n");
+}
+
+module_init(kmalloc_bench_init);
+module_exit(kmalloc_bench_exit);
+
+The following testcase triggers lru_add_drain_all on an isolated CPU
+(that does sys_write to a file before entering its realtime 
+loop).
+
+/* 
+ * Simulates a low latency loop program that is interrupted
+ * due to lru_add_drain_all. To trigger lru_add_drain_all, run:
+ *
+ * blockdev --flushbufs /dev/sdX
+ *
+ */ 
+#define _GNU_SOURCE
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <pthread.h>
+#include <sched.h>
+#include <unistd.h>
+
+int cpu;
+
+static void *run(void *arg)
+{
+	pthread_t current_thread;
+	cpu_set_t cpuset;
+	int ret, nrloops;
+	struct sched_param sched_p;
+	pid_t pid;
+	int fd;
+	char buf[] = "xxxxxxxxxxx";
+
+	CPU_ZERO(&cpuset);
+	CPU_SET(cpu, &cpuset);
+
+	current_thread = pthread_self();    
+	ret = pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
+	if (ret) {
+		perror("pthread_setaffinity_np failed\n");
+		exit(0);
+	}
+
+	memset(&sched_p, 0, sizeof(struct sched_param));
+	sched_p.sched_priority = 1;
+	pid = gettid();
+	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+	if (ret) {
+		perror("sched_setscheduler");
+		exit(0);
+	}
+
+	fd = open("/tmp/tmpfile", O_RDWR|O_CREAT|O_TRUNC);
+	if (fd == -1) {
+		perror("open");
+		exit(0);
+	}
+
+	ret = write(fd, buf, sizeof(buf));
+	if (ret == -1) {
+		perror("write");
+		exit(0);
+	}
+
+	do { 
+		nrloops = nrloops+2;
+		nrloops--;
+	} while (1);
+}
+
+int main(int argc, char *argv[])
+{
+        int fd, ret;
+	pthread_t thread;
+	long val;
+	char *endptr, *str;
+	struct sched_param sched_p;
+	pid_t pid;
+
+	if (argc != 2) {
+		printf("usage: %s cpu-nr\n", argv[0]);
+		printf("where CPU number is the CPU to pin thread to\n");
+		exit(0);
+	}
+	str = argv[1];
+	cpu = strtol(str, &endptr, 10);
+	if (cpu < 0) {
+		printf("strtol returns %d\n", cpu);
+		exit(0);
+	}
+	printf("cpunr=%d\n", cpu);
+
+	memset(&sched_p, 0, sizeof(struct sched_param));
+	sched_p.sched_priority = 1;
+	pid = getpid();
+	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+	if (ret) {
+		perror("sched_setscheduler");
+		exit(0);
+	}
+
+	pthread_create(&thread, NULL, run, NULL);
+
+	sleep(5000);
+
+	pthread_join(thread, NULL);
+}
+
+
+
+
+
 
 
