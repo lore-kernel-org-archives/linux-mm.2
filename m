@@ -4,123 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 917BDEB3624
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EF4CEB3625
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 043746B0088; Mon,  2 Mar 2026 12:18:40 -0500 (EST)
+	id 982806B0089; Mon,  2 Mar 2026 12:18:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1C5D6B0089; Mon,  2 Mar 2026 12:18:39 -0500 (EST)
+	id 919386B008A; Mon,  2 Mar 2026 12:18:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E08206B008A; Mon,  2 Mar 2026 12:18:39 -0500 (EST)
+	id 812396B0092; Mon,  2 Mar 2026 12:18:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CECD76B0088
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:18:39 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B0941B6FEA
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:18:39 +0000 (UTC)
-X-FDA: 84501782358.30.3D9B515
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A429DC0010
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:18:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z2WUpdj0;
-	spf=pass (imf28.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 70FA06B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:18:50 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45D4C160242
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:18:50 +0000 (UTC)
+X-FDA: 84501782820.08.0F72CBC
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 76143A0013
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:18:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=s2lsXKO2;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772471917;
+	s=arc-20220608; t=1772471928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gmjyFqn2IXkUrXbwMN6/szcLPp+gfk/WNKWPoNt3xHc=;
-	b=F5+gSGqgLlJrHxGye04bUjY6YGNWbHspe4WV1bd+tRYUNU5+iJ6ukvx3ipUJCTG2p1Czo4
-	RutOzyfIvDUW66Un7t9u+qyqn6vdUH13ebxWYibpSCoom7/BPGfbIOIl3J2UnpTg/d/rnp
-	W3Xb1TRD7VPxW/ZHhSklEYDVD6rWWLM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772471917; a=rsa-sha256;
-	cv=none;
-	b=F4terdlk5VdcVB5QVeUXtaqxnAH26B3ngcIH3eW7eH52l5Bk4N9VqvMXXXPGvZtURHFiYb
-	1z+6iexufia0w7g7lXUetQYhtXEmQW+ILKSPD/6Nliacr0/j+IgNIimsFmYvtSKHPwZNbm
-	3L8RJKNWNWOzLNqI0hZELPa4lIzHok4=
+	bh=9jiAd70OQeRHoiPXbEJ51axrqw+4XgbTYUr4MIjZbMw=;
+	b=jXaIIpr6ezAYl5CA+g4WlGgnHDtWkvnv7qsiahQfbyiXBOrsw2xTXYrbdUrbp6bwSoXc2D
+	HZDPlRDC/ypjfL5NsuYXwmQx9RAefkTqZB9Nol1+FnzgE1d2r7i4czb4VkxesvnB4YVWca
+	dOebxeyqVjjfA2fvVS9bnjQz2EZktyI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=z2WUpdj0;
-	spf=pass (imf28.hostedemail.com: domain of cmllamas@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=cmllamas@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ae49120e97so105955ad.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 09:18:37 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=s2lsXKO2;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.45 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772471928; a=rsa-sha256;
+	cv=none;
+	b=DXZ66gw4jzuDfoMGtQDi2UEce7x70KdMvWQ2YwExBEkYoV+JDgqqnFAEsVZGrIREox8iND
+	SyOFz1RNkHn7aPb262fp/VcmjlihkRn/H+4s6ctShU2UqIc2LnXlTjxfO3JB0OV1SPfVdE
+	3ft0rGMSbVMwWOR1UAlNm/aGOJjdpBw=
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-896f4627dffso66175446d6.0
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 09:18:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772471916; x=1773076716; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1772471927; x=1773076727; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmjyFqn2IXkUrXbwMN6/szcLPp+gfk/WNKWPoNt3xHc=;
-        b=z2WUpdj0M45VibCPAPWzwW/MUytd/hHe7t3xqn16f8nsghkVR25cWPsC9MXAPuHniT
-         uP4ZzvhPU43FVCVN7WtoKmKixkyGy+QcXOrTxboLt+zbKECLymqE0/KenEjzPHBKVWva
-         06Uo1qafUHYkWMR/fcnReOvTQ4+cwq45qcyMtcID1evmBeB3CtmGHWfPJGlgp9e2ECWT
-         f982NZiJELJ16QUeCGgl4uKDXH85UTXlu8B2I9PCC/DaGRPrQU+y4Bd1LEl1r7yqE4sn
-         rPV5UC5bNNvjaB3gl43uYAiFoFFfQaEvsbwEWXjNDzOTcmFxqoFvlJiIyD1gj1tD7U+H
-         vVyQ==
+        bh=9jiAd70OQeRHoiPXbEJ51axrqw+4XgbTYUr4MIjZbMw=;
+        b=s2lsXKO21HT6BsxIZspFl6cFmn9BECPmN3DdNL4NqNybzFyALVwlFynEiSKh9ZmtAu
+         QkAm+SDjAKndoQ6V3C3pIhuRrxxmjCmkhTciXAi8tQEkNUH6Xkd0Y+wvITYrQeonzlaq
+         uxSr1ibY8mktvDLtsx6vgH3EOQuSblp8IXDB3XcF+l+KvOobYX9C6R0V4Wswfl4CHig8
+         rmqAjf7oBoA6g5yKI4SIpYQPSR3dY7Iq5OKp4cnGWcRjMLpanbfPKkVN2xCEdAuRxU7d
+         rMdD4SCjmMmGO+lMHeZAmEmyZIHAr2g3+KoGUHOgohLFu0yNMjp7o03cr93hlbNBf0ow
+         5n2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772471916; x=1773076716;
+        d=1e100.net; s=20230601; t=1772471927; x=1773076727;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gmjyFqn2IXkUrXbwMN6/szcLPp+gfk/WNKWPoNt3xHc=;
-        b=tW9/nMele20P6SzO0pszZNs45jX0Cw3yLqWnTq2inmSgsoIcrWFZxgCs58aNVPGtLj
-         BuIxP9yF9oQuJF0TrYvv+Dhsyx7S2i37FbE4pBVlsEFOA/h/9Io84WOMqAk1PqcoiBGH
-         MN+0jCHw4O/ixeeMT4tbsv5g0yfQaLd0GArHdrNzbLsf9ASrqj22E1Uny7lLiTWPLJOQ
-         0eHqILHJDDzAnJOkcYRKAC0g0II/yaujADBallb1rXfE+OW4y0MKUazBr2eD0RXfXWgx
-         6zIJRTY9Jlco/SHCwTE2ZF9h1bVebysKdU/p7fuFUgVCECv50+1L3sr+8MAOuKHCA50Y
-         ZKAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSv0GeZGxraFlqPVw87XQlf4npoFgU0r8RrApC3Kw/3C8sG9xY197RcxoQ6lnF85Ok/MwovaR93w==@kvack.org
-X-Gm-Message-State: AOJu0YzGUaIdT12oAuY9tk1+bvSOuI0VG4gnDjfpr5a4c5bT3/Y6S8Jf
-	P6hnv59U5WgmUqP1xdU7aCwwNHiYWS3NEI8ySJibK5AiUsqHBH4Mq4MU/B3ArMmH+UMJ10z8gah
-	kSxfJuw==
-X-Gm-Gg: ATEYQzw1J5+HIBjBlFrYgjvYjAS70Q+42hL22pRYchWSVxA6FK9vJYb9iHn9x1FjAQ7
-	FPf/TeF4tnNJGlMReNeXTPt+9zpJiLmCAp6SXyih+FV364dZfwZRUft8nl84tD8IMmwFPsyG0yE
-	pfTw4XNSkpjT72ADXXddTk3sB7r7YCDAwNsqQtNQWbq/+HYmwGpcpBkNMtePcL7zeVawg0J1pC1
-	Wy+4qXnrNH434O2v+SAn0mw78g7tYwCzMLDPTphYpdrZSonKVdTWC9CzjMlN5h5DQ3A0PYIDJhF
-	729d9punZnY5BhgYdgTUqPLBq+l+OuzLYwuWLBodUAUNr0UA/ru2rFQ1X0fHb/Jfu9hNsGlENNr
-	8qG3VQKDLKu7gbdEBy68w2a36YG+35MvGNevwZ4v8LuSW9tem6cKmcTB7iognaxap0bxTT9ikPj
-	FZl3Yl2mSusRu3yGh3OHQ5R7by6/oWPn3adZBAC3oWQ/VLDmdpjVzu3DEPuoQHqe4Uremqtb8S
-X-Received: by 2002:a17:903:2d1:b0:2aa:d5fd:5d76 with SMTP id d9443c01a7336-2ae3b3868d1mr2934195ad.1.1772471915887;
-        Mon, 02 Mar 2026 09:18:35 -0800 (PST)
-Received: from google.com (154.52.125.34.bc.googleusercontent.com. [34.125.52.154])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae4802645bsm55239085ad.12.2026.03.02.09.18.34
+        bh=9jiAd70OQeRHoiPXbEJ51axrqw+4XgbTYUr4MIjZbMw=;
+        b=Q6LvLjlwYa+z1iDzutXyglHWrEu9PYoN0KYlG7jGPZ3SSogVzixA9jktYh/UGwBUg7
+         ZpzHVVm+oG/7wGPLmUFFEB5nKyQqreYbUc/Rz7+7Ct1ZC1BX5q6JM3d3Kj8KjkvZSTkm
+         8OLHC56tkQdqQKr9bhtor17Bb20ViBDChnz0a2nVIpZnSKsF414Ky3KxKXqSM5oelUuS
+         VPvjexiat1kuu6YvdXQ3MeRJMm0jWe4T7r+R35KGJxoB6nMhbp1ZmFRIO+dtOzQHHZna
+         jWSPk9/++3NoFiAqnuvf4yGvqBSkMLHcugfachDj1Od71ZCeu7WS3wX08GaGPNopgMlR
+         LUCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUS9piRpS2XBEPZLA7MDTPQ7KBv3BstKhTnRqJAnfYkMAAF/5IVtNHu6rrkiuWHUHIYuOX7FdqHpg==@kvack.org
+X-Gm-Message-State: AOJu0Yx7oNk/jkShdtSKLxhUFcE0u4fl8Zd8XxGdHqXEOl9Vq6EndXZW
+	QejVbTO1iV0550YkRGMvTq2hEE7ve8AfA3wbybD1cS9rR46tCsp9kOvrx4GLbj5lxk7ZkTt68Dq
+	5w876
+X-Gm-Gg: ATEYQzzBNc9sG7lv9jyxmlXawrFw2EANQCltbfFGbpIIhYkGIszaWUbbTU6d9bMZHQn
+	QqGPXJ8gPTGzPSCgz1zJLgiCiT/ZsIO5hYx0NHS35+DbxLgzZbgMiMGVRJ+Ua20pGVilaMWXoR2
+	zFz7zaNBWrV4mC2EFfMJiVyv0HKolu7zbFnUdYfpjx3jB9ab1wlb5tF7pTHMk5Hd/B7VOKvxL3+
+	lVSmRkHNI+T0OqCLX7Zc36CD5ZjCVLc/RT5QLAqNVHXJgSrW6rRdm3aiSAVDpV9u+e5bFOG3b6C
+	vxexEIkNMfOv8zey0r2EI+Rv4nIoOYvjFdOIGFbm4kBjmmhR2XGXBpFrbbaN4E4dXDGyJI9MyXU
+	2QUmqBEKt43Sa3FGWrZcgWDrXEjkSd/f2J+ubFllQN9l3RBmsGkRVfQsEuZrcKJ+9mYDvLCsKhH
+	gocvvhayZiDGhubwBw59XrCjOZ13FCbsBZ
+X-Received: by 2002:ad4:4ead:0:b0:896:17e6:b3da with SMTP id 6a1803df08f44-899d1dba572mr185242286d6.26.1772471927483;
+        Mon, 02 Mar 2026 09:18:47 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a083a95fbsm982926d6.38.2026.03.02.09.18.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 09:18:35 -0800 (PST)
-Date: Mon, 2 Mar 2026 17:18:30 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jann Horn <jannh@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust_binder: check ownership before using vma
-Message-ID: <aaXGZlfAmk-DCuBW@google.com>
-References: <20260218-binder-vma-check-v2-0-60f9d695a990@google.com>
- <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
+        Mon, 02 Mar 2026 09:18:46 -0800 (PST)
+Date: Mon, 2 Mar 2026 12:18:45 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Matthew Wilcox <willy@infradead.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH 3/3] mm/page_alloc: remove pcpu_spin_* wrappers
+Message-ID: <aaXGdccssMyvmz5R@cmpxchg.org>
+References: <20260227-b4-pcp-locking-cleanup-v1-0-f7e22e603447@kernel.org>
+ <20260227-b4-pcp-locking-cleanup-v1-3-f7e22e603447@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260218-binder-vma-check-v2-1-60f9d695a990@google.com>
-X-Stat-Signature: pnqumrsec6qmunap6ngs3gb63j3t8qu8
+In-Reply-To: <20260227-b4-pcp-locking-cleanup-v1-3-f7e22e603447@kernel.org>
+X-Stat-Signature: 1nzotcqwopopwyx3gf6umc1j18wnukhk
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A429DC0010
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772471917-813842
-X-HE-Meta: U2FsdGVkX18S526mXXp1YzAFarxZmOYReJYQgQ7RnxcqKJRg1qD5hEl4tdXriaC/n40B664mIHe5Trt61hVQghVCCqIoyg0qT1f7frASaFP8fMkkdotoDRITrTWLwvmbONtlmfUmMJVbccX+b2KXPx9raUieIHUtE2C0BvMk2BHuRFY5DONg0nImCx/ITfiUTxu9DuhuHh7nvXcqk8gSiMokIasN8BGh4+oKA7TwGAgVZMKuU6ekTtAgPN1VgDSs+UIqxqR6oNJ8VhW+wuqXelbtQVfOo6H8TdXoqPsgLF0jFClgg5Nb6fElHX6fGFZ3+dt5ezmWsNACvlNfsFmD/xvbhsRfWh95/YYTR74YczUOQYeKplYZtc7PLhlbHWyPBmsYG2p0h804sKRST7QG3uSliX9zUZyQi+vEnTUXruPEKV8ivz10N6qxUOL1NJ3johUCo9r80c+pt9VmeopSNM+D3ybZQBRacXcknYF1qENFDFc3lOtQLrV8OPAYStG2Vy/Pcv4rqXa1vVCvCLrPcu+qwIgOqbUMO6cYv9FVhHmtMeqqpeP/Zem9or3zbrxvIiRFhWJHiflkkUwxH4EvjyZCW6bpCg2he2ETP/AyCbjCRm0GTX4JcQQ1Dgqvdl+cVulhcjGoUYpGpW01Miq+fEqWUmlSmukXkuj//coPpCvlCzTYxREM9OUHPG1UIkc10Tky9J1QU/wO/H6ZWvi+J+/adR1btloPs3RuyiA/UeS+6JhE29+zZVpeV9XkMFOg6355ItzCFZ+l8ecgL6oY0TNZhx99qaZ5+hzQ665RCRx1+KskxWjsyeZEfPccU8PI4BG73QMeLwDHNCCdV4C+W3KuSrqhXg2HTYKkV77bSwL6R/xO4eRjMmSP2134kbESnsM2aqt8azPLGMyo+TJZ/n++BUetk1ODGXZVkIjw/5kW/6778GpbMb8WKw+1sjXbz6FEBHBbBT8M7E7/i2S
- n0Dz3pz5
- UvsexD7MItIEG9efefSLmqMMKeWLBueP5MjvP6p3fl5Tn8EHyfjeu9AXtu2e3LDKDMl4Q7AayJLuQZd7t9OvHyTMEbjm4yD1BnLQnGii5GUR6qQg/r9ecSD3icrvzA2zeEeNp4ZeYtym7Sw+19BNS1TuM73Kt5Nzepfc+W7zvjZU3NQWCBDWDEWZUR9539T4LNCffHWT9IySIGb/RZ3JTbKMwEO01AQ5GHdaXToiE74BwWQV+s5bM2JstCslvgCN1n399SAI6hqagrJqxozxVAPwSg8bhuTyfpbZ6JzKxwR5WmYd8o5hgJq0d7gUfV5ycQAw81FoQsIUB15wQzeYOB3e92wKXYNHIM6yLKlRBzXVVrMT1grLl/tGStI4+nphsyzq702yI4CePZYWcuEGlQr5SM+rDjDIPLBgL
+X-Rspamd-Queue-Id: 76143A0013
+X-HE-Tag: 1772471928-419665
+X-HE-Meta: U2FsdGVkX1/lomCAngsIAiFwSrYb+xb0EMlpEjmnu/H/iZeLzNpgN+gbXouPFVPdbGDsiG37iAjBRfEiqQaSNiBFMI7XKmjET2dlt9uGBKzuXLHumnL9cpogW7s+nmhvhTGNZudGhEXpXQToEkKRdtWGs/X7MLPKGnRK1a1+u5xIlrTu43dMgwHshpPlyhZ6I+9CvDuAmH5RC+OEykfLxwuIv3qbMp3B2o+6scL1NBiKpiPOmgvTCzTHmn7xL9j4ZScX1CSlzracsG1c11QzxGKnly1usuo52+JoSO/gtVsujY2b56KT5h6hIF6rRYUCsXRkMtlvcTJBX/zaMIQtT9coOGzxGXzbV/KC+hTFS8O4oW7M4VJhqGv/ExeT/GzHe0dCQnbu6hpQzPUwzwZ2kylyqRtSDh/Mt/XDd3OE4M5Ko0Xn5kJq/uhJHrZPktpJh1FnwQCJu6Z03XDZmX1uCP0oNK+TlXJixPyF0nWQNcAe9BwgaAmShA1iyUpICNWGVB/OoY1Hw593BuAW29hawiEn25xsSZH+xPlfEUK0OQVAkuhH7VxvxNz6Uh+EH71oPqhbpGM9xs/fqMX98Jav77dLtxL2+jvwJwaHNVJRq/yVFC0LCDz5MiDi+BOJHLzC6+7fxaJ+oO6HVCO0N1M03IcPLI46z+w0+z0KmYqlnyus1j3sufZu9mCZAP/MplnnOQBEVRtG1TQ17JuMseIupPmfV6uVbs/+aWWJ9SATE6EAqfVAEYaBAHIOLwJD5pQKdXEIauIzsa8tFFZWgp/s7c/qp8EJsxZgsiSQ+k1Zb3ClSbeNG71P+AOd1OdBNwR5mAZzkvhBDC9Lm50qt6aaYhwVchQW2cqKZ55fKswQbV1Zo9zJKC0tgvlzBdFv0vSdVzAXu8kKisovxA3g8sNpF0TjVc+3vPKVbcmiUykNebOL1FGE6yAfSzgTKQKqu23SCRRvaFV9eB+xmMKBihD
+ V2/TQdyx
+ fGOCuASOtYFJEBZi8XLONLASxTx+4Eo7rtygYJdicYo2tYoqSVticCUrSHnTw2CbiceY4/MNwazro8JyOc+yUDScIOKU0KCB9O4Q25AK7c4OHMe1N0xaeqD0hcQaJibJJ4mpNwJZQdm/AXZ4/p0DXM4PoDQekkdeBFSb9ohbujqXvLAENwXZw4yim7KjNGUE30ZWmep744PPtNe2bWi6/ukCqoQF+Jdz4OMDG0jVJmg81CZ02SJg/o40rrhefD4nNJb9Qz81Wqia5meejceJaEE0rHluFgPLRA6VU5zyK3DKcZsX9Ua6lXdLNBNHyYcMtAi2nBjhH6WKSehW+rNKuxy6LZCJDHPDLxwD6nbEKb73J/XanhtPkDBHXxz+1Up6scQbnQ7Ht2RkTjGrPGE4m0051rLtXryNLeW034m/YLwPETWtU0KIzOnA9IaLZY5XrhDYQz9Indlc/ieYmLoupQtfhiRMH4GSvOFEulrkL22QSJvT3Lp+zHtivqE3fdHsGongnl833AAbEPM2rcR1Sp6kFtbzBfwpZhFy6VNtlSCcSjsr2UEb25YmcGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,24 +127,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 18, 2026 at 11:53:26AM +0000, Alice Ryhl wrote:
-> When installing missing pages (or zapping them), Rust Binder will look
-> up the vma in the mm by address, and then call vm_insert_page (or
-> zap_page_range_single). However, if the vma is closed and replaced with
-> a different vma at the same address, this can lead to Rust Binder
-> installing pages into the wrong vma.
+On Fri, Feb 27, 2026 at 06:08:00PM +0100, Vlastimil Babka wrote:
+> We only ever use pcpu_spin_trylock()/unlock() with struct per_cpu_pages
+> so refactor the helpers to remove the generic layer.
 > 
-> By installing the page into a writable vma, it becomes possible to write
-> to your own binder pages, which are normally read-only. Although you're
-> not supposed to be able to write to those pages, the intent behind the
-> design of Rust Binder is that even if you get that ability, it should not
-> lead to anything bad. Unfortunately, due to another bug, that is not the
-> case.
+> No functional change intended.
+> 
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-This all makes sense to me. What I'm missing though is why not reject
-VM_WRITE mappings all together? Is there a downside or something that
-prevents us from setting this check?
-
---
-Carlos Llamas
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
