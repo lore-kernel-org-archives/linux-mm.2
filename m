@@ -4,87 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BDBEA4E3A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:14:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 436EBEA4E3D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:27:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3891E6B0005; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
+	id 6766F6B0005; Mon,  2 Mar 2026 11:27:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 336876B0088; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
+	id 64F006B0088; Mon,  2 Mar 2026 11:27:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218EC6B0089; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
+	id 5237E6B0089; Mon,  2 Mar 2026 11:27:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1371C6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B589A89FB6
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:14:17 +0000 (UTC)
-X-FDA: 84501620154.27.4DD33CC
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8DE721C000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:14:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YG01ILjL;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 40A3B6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:27:05 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62E645751B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:27:04 +0000 (UTC)
+X-FDA: 84501652368.30.2B57838
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5896AA0019
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:27:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KiKWkXJu;
+	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772468056;
+	s=arc-20220608; t=1772468822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MLL8CQedq0WsIHC423sVIgR4mj4t68qiQx4HMXd9uDE=;
-	b=3sSvfUPpNVx3KNFxhtJO8+pjbaOIXyvUrikd++eucSk4Fg/1wIkHo/yJWYztx44GP2ry1g
-	w8OEHtTBcDChGbJENXMp9raDEM7PSGeR0mYsjwo623MZpJZpczbXtgm3EJJTyUDS8o1xjn
-	Qvi0g1jyHnGA0n4x9oam5OhfhRA799k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772468056; a=rsa-sha256;
-	cv=none;
-	b=p8LE4YsvNZYbvMjnW27llD5hKfuwzio8m4SThhKfOc/3kDle9Ej5AC8HDpgE6TyxyxZ0Aq
-	BvMrBVXBwVHnKE4nz9RObbHSSisO7eWt16bjZ85EMk4cvcVa4pKEwWCyUBEDz25dKQHxQ0
-	zn66rSrkMU+dq/T8JLXrfxomof0SXto=
+	bh=7UE1GGVwWJfObl7uKLI6Yeo5E4IPeQzQFVK8w6lFswI=;
+	b=oyWMN2ZlVbNDjtpdGhvMh746CQjxyGhOtZpfsdbsNySUGrrUa5eXGqWh/S+8yP5L/n63cn
+	/jQkSGS/yfDovJNJJOTNgROr74Gl14lJ/b1kLcLdJZH7d1eSf3E09FwltCg4xUMU1aUfuY
+	xinztuERYqv2YaQh1W2WD7DMb9ELTuU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=YG01ILjL;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 2 Mar 2026 08:14:05 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772468053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MLL8CQedq0WsIHC423sVIgR4mj4t68qiQx4HMXd9uDE=;
-	b=YG01ILjLYI0dk46V+QncPZZT1q3hBjoc84PeXOZJVUm0yLSx284+Q4kliCpzftFLybp+5L
-	kpTVPFxfUITqsKaMqQAgDHi5QNKoE5mvAK0ecsIL/CeH8tWyYKJTYft+DRokoxgqFSwbBG
-	1ptqeewLBnfoxD5xDpCIAv4liTj8Y2c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 2/3] cgroup: add lockless fast-path checks to
- cgroup_file_notify()
-Message-ID: <aaW2feETIF7I65i1@linux.dev>
-References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
- <20260228142018.3178529-3-shakeel.butt@linux.dev>
- <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=KiKWkXJu;
+	spf=pass (imf15.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772468822; a=rsa-sha256;
+	cv=none;
+	b=MtRnuVPLbs8d4qyOEyBe07mYrsjxABoFJAPCt5m5bnhbPog7I9+Rz7snwbCDPwHZrj9Ny6
+	VGoe7PvpycJHXikV6dil7d+LTxynAX5Vtu+tIFYl95O1ur7qua6NeEes0eVk8pYlfDt+oW
+	E9jpSzTSxavmGBqXe2ebuR9Oxgc11AY=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4836f4cbe0bso39984125e9.3
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 08:27:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772468820; x=1773073620; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7UE1GGVwWJfObl7uKLI6Yeo5E4IPeQzQFVK8w6lFswI=;
+        b=KiKWkXJuUScFQB5vNmIdkywxX/GNyZ356l70wVgQhah4/4GYv5aW7WjFr7xG7bjg8c
+         WN9eKUjdpCkbM2N17tSUM0C6UMMXug8legRdueuGNVJwcF4JfGlDCkdn1QtuYcPQE0Sd
+         ebrP1B1NOjPp3WE++X7U8jcfmAA+LpDOZrofY4glrc3+wKTOUl+XGMP6yhzbpIVO/zPx
+         JnCkGhEWCu2pAurm0bva6RgtrxxZg9vKUytesKHpddR7dhuk5pJ62sdZoqHluiRQLk+d
+         voYl33szmObYNwPn6+yjk9m1bZzbpOlB/F9YYwYLfg2QReZl5byDg52uh4JIjsuLmw2h
+         Ey+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772468820; x=1773073620;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7UE1GGVwWJfObl7uKLI6Yeo5E4IPeQzQFVK8w6lFswI=;
+        b=YFhYog3YgIyyK8G3K4cRBgCPYHWC7ai9M2889Oi5jbWeUuhr9cWSYAPgrSQZUOZKe+
+         RY1rQSbOrQWYARby9QxT/Pa7tBJR9S/LyTxQHosf7SFzvNpdiZKYXEcRirQsNhj7qgLE
+         aHLoz5BBM36hE63s2il0VaGIF8qkMPqoI0pQ6c0PHAu+XsEIOe1hPZvTuP+6mGv1zSdk
+         z61dJufAelZMmd/gSp9+jh/EquXHKE62ojIDMF/twshOW8zmccxm9t0BQgbzDrHzVFi0
+         03Y6UTex1JLqXM2+Ror35b08sSTLsL6SX9LXaJAY0dTCxxrFP0YaIzKbcgpXDAPb1uZj
+         Xkmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVH55s74mZG3HfeAN2UGVx81edMOSJqUaqV0DjUyrFMVkXkoyBnp+4oggR4jk/TK3Mkct5TPZTxvg==@kvack.org
+X-Gm-Message-State: AOJu0YzgsNKVSwDDSdhTPpssJe7KmVq8g+S7eYBwW3YMmAXtSdN/8Rrm
+	SVrnOyuGRg3R9ig44oAUJ7wr7KrhIwLbaBFtyKgxgIiFR0w3RKbSG8AC/j4pIwYNAcA=
+X-Gm-Gg: ATEYQzyAsdQKPw1ipuku+OGWfUy+gVVVuHUbY4ItycCru52YL7usWvgJ+J3h30oU3ma
+	3okggAtA4TRADZqbIFDXqsPbAl2OzaQPEDBJd062J6CKA4HZhu1ZrbDw+J/Ry+7CSDdWJrR1GNM
+	WuunqAuU3q6Q0eqgSzuYHxZ7VilwHb3Ja8uufWVElSuMv2pWrAC/oEn56FlTGreG5vTM3T6f0Pl
+	RjivD4eZkSShvE0V8NN3GzrRgGj6+yBmp2JK4wMadfKTsVXcQd+vZUFyjILiyJJ8l/EpBiz7Laa
+	Ewp0eKs2Hx2oWCYaXCX6fb+qH8x+oRC+o2+Txq5oy72ChRKEW3ar+ofC0shKtMAH9fF9a3VtIyn
+	aqwPK5YZe08EvPuABUvVNIA6IY36owmoGuhYxIwTQW5qzafY8KV/Ruw7hlJW6s6xEf6Er3MstHi
+	PnF4avelqORNXX1EVmuBb6hAl19mcVBYBFXBiM
+X-Received: by 2002:a05:600c:4f11:b0:477:7925:f7fb with SMTP id 5b1f17b1804b1-483c9babeaamr244554505e9.10.1772468820507;
+        Mon, 02 Mar 2026 08:27:00 -0800 (PST)
+Received: from localhost (109-81-20-148.rct.o2.cz. [109.81.20.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfb8724bsm170155795e9.11.2026.03.02.08.26.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 08:27:00 -0800 (PST)
+Date: Mon, 2 Mar 2026 17:26:59 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Yafang Shao <laoar.shao@gmail.com>, Barry Song <21cnbao@gmail.com>,
+	lenohou@gmail.com, akpm@linux-foundation.org,
+	axelrasmussen@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, weixugc@google.com, wjl.linux@gmail.com,
+	yuanchu@google.com, yuzhao@google.com
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+Message-ID: <aaW6UwI1JuXIgz59@tiehlicka>
+References: <20260228161008.707-1-lenohou@gmail.com>
+ <20260228212837.59661-1-21cnbao@gmail.com>
+ <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
+ <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
+ <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
+ <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8DE721C000A
-X-Stat-Signature: 7kb6r7g7bwiwwn98aqentm44knh9xfaa
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5896AA0019
+X-Stat-Signature: kh16hqkt9k7z3ksbiimb5pcgpacwfrqs
 X-Rspam-User: 
-X-HE-Tag: 1772468055-41725
-X-HE-Meta: U2FsdGVkX1/9YvRGX1XBN0Nk5QiE5amDrEJRLPlcYnxW33btNzujePo6uW8Teitn2zZrL7WTW4h9akr0tFBrnVgWfePeO9yPWVFK1Zqg0/y5gNRANZQEDcicj71D0oEfnoIaA4trgp2l+3w1mhptbXQJiYdD4u9Vkb/CswhnCyEzAOTF7fMJ6p/f5J0fOXGKJgL7XD3jYzpBEdgYAoyAOMFaxpmGtiBv+8YD8d5HOTi49moXF8e6JPHdhEb2QNyDcpWpS+N8FPfBJM+o/+VAM4HMgj0HaQHrmCm7xBU3A6IrxfcpXDR46nAIlB+sAnIctmcCKT/kZUenhmm9CAWQNMxdWAC50y/0THlJaxlZcaRG/tl32J9qAaHqKVKM1uUxD1wLGZUAlvZav0lkoAXtFhQl9iiwKSasMQdiU8u9uDdSNpODCwgxinWJObUYC7X9HBefIAVpF13esh8+EQLetbHvHmhk5cgHaQ3p70KgUvbwq46DUtfRqbSJkISrAE6wOAelXqyx5D9a6OTjkCVyW6Y9DK/zFRKGXz1VJ+fw98LOZQ9zynCaZpKh+CWLsLN8Y7D3vWOT0uGKyGyXrDCYSxOvXJUL9WImqZLLeHDq9e9hK4w+l96IWEexKy7ZmK8lckX24EYevSvh0yoHVjL/h2NxvKxjc+7ohJAqUzgDxukZPeIHMjWtUZUYfBbMMFMGUrjq8LLltdI2JrFiS36SC4eTxcbrZWvdBR+1sIckELoN6v1g35cunGYhbjbNgOK0jGAnt1sLNP9sAvNsF8jGv6kjeY22kj+x3Wbj0sJixkp7H3zfY0itMo/mhezMKxLyRI+7AnQjWzimrEXdh6F9eaU5RItDCueDRDBZa1Twr/S+lB/2TPw29NycqocIyflUPIGbF93nUF2OE2G/7wdAyPxFUcYyuOsvoXq6jS0WD+DGn5Lm4Kc/YTi5KcMagBJztnQMk98GX63mR2I/mPi
- 2EWJg0eo
- pPaPhY+8GRQzBjgzpSq9ja+4CW9Djpgz2XPWJ8L7E4bAksSPzNdLAx9/y0MuC9+krOV36xlA5Uu2VWL0nkMhu1TC5PEOedbod6rel7zY9Gca+tmPBIuSjMWcmrqCDcXCSovYqWUVF0OUwZN9QLEVLsuidNY0ZgJfd1P/PZtvN04GSaYpwnfvjQw9N4InCLc9D5RZHXeeAGSBQwlIV2bEfxbuDai9kPgz4BOH5F9beVaN96jKpPbQRkpbHylCZjcwkhy5yRuiMV43ryJ1H/bztDv44WA==
+X-HE-Tag: 1772468822-821587
+X-HE-Meta: U2FsdGVkX1+QpnQFdUu0RHDeRBGzlVzcdWMlT3RngOKjZ83XYC9vVCY2McPtqsjwILHoigJZ3LzUTFS5tUYEuyt21QFOL3uGA5iVc3PePVPQwkD3XyC6NMbnufLu0gQKQ9L5guF+2kl3IOvGremBVIn1KT5OiJjkzDC5VxkXBG2GUbHXDv4s8RsP+OvEhhaUkA4XWvWuZCCXmScW0rwYU+WpmpQTn26TVTtIU/5MHFBiPtkKW0zcF3FPnJRJLvZHZIqI9sYlqDcaTxFqxb8f/a33WuCWljYEOEIFXs939mNWr2xv7skeLgs39mfVv1U06iP05X8BjSnx85fUzisBE3Xf4qiP1xqs0PTHmprnUlamrH79sl8WTDn6J9LPv8UxS1f3jcRJL/0k8eRc1EMwNk40HxVnViSYKCStbYs1tDVTIJhr5RN13k24fkI2NodIecFqKRuT8QLFQ62rA0TXWScJDuW/c6X0ZIClnV9W91utjoqVjB9E0M08VEArH/drsUY7htm3m6kvK6/dq010YurugfRO1PmHqmSML0qRuw9Uas3fbLlaojb1+FK7BnV3/kCFr7FgIq4y1gaMHtjXkYzIC979xJo7kthv6mHiLqJ2IWFfZbo2+2aQQTvv6OAyzQLPFtSy2p3Ui9CYudBGbO14yaVc1EzgBdCXVzx2cYOXI5+0qaiaeVv14qzAe3WiN2nREZGEew4pVouYsB7CP84sg52pCurB3cjlWIITiDKDCY1HTxXFNH0xSvhVd8CQVBbzeknfbCAfV7lGeH/WqlWhEbLIZzOqjz8yhm2MzhX0L0+u3dA5dtq1beCi1jMC3F61eox+ZJePb+sajoYeSz/cA4B2sUzpYkRg3lskJfEYPQjRkt86PgFRhZIl865SRv7DHOfBer6NxghN08uiQMcs6QRcxVRnE0raj98wxWe/iGMJa+zDEw3RlYFYpiMtwLF9KfZrHqzCIqgz3PC
+ z7cZD6hj
+ dT2Yxlq/OMNz6m+TYM/fa6h9vjnRrm/I4xoMwEXpbouIcevJd6FCzpi0aFFuvWb13OSChjrm/ENfcekIpou8VNnYJ5oiH4vADpiUXn3sHbvWghRJxprfivob3qWbs5q/lUfT99dFFGLEM0tRD0y8TKJltJahAZsfn4r8T92+F8i6q+SR1pof7M4cKdFQ9oBZx5qAKY5LWpDVG63cgM/VXtY6EyRzfKrO5sqZHdQ07248TSQPfIbBEytgNbRrnYzFX9R/TmlPDxChzfpAJuNzTfeB0uBFyTOvLeyOahQ6o4kBjbVhiCy8rXyJwJGdyB0Af9AA/DPic+LNwqwDzKGvAVNsY7JBIgXEx+uZQO6DqQt4stNQpjaWax2+9J301d7aMKHHqhd8+T6G9G9HUzpO8WVclIDmZLkDYCRbx49+5/3xCcVG1zEv7mX9oKR+VC1op1hM8X1X0bA5LELxPSGd4XC8/roV3XrK0/7wTw9JXOxf3gqLHtkbt4T+Ly+Y8h6UEmVQN+AycG4f3kCnKPyqP/1vCXKYgKoDfZfKcyjxwRXAYHzt4Es75tYBFOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,87 +127,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Chen, thanks for taking a look.
+On Mon 02-03-26 16:00:03, Kairui Song wrote:
+> On Mon, Mar 2, 2026 at 3:43 PM Yafang Shao <laoar.shao@gmail.com> wrote:
+[...]
+> > > To be honest, the on/off toggle is quite odd. If possible,
+> > > I’d prefer not to switch MGLRU or active/inactive
+> > > dynamically. Once it’s set up during system boot, it
+> > > should remain unchanged.
+> >
+> > While it is well-suited for Android environments, it is not viable for
+> > Kubernetes production servers, where rebooting is highly disruptive.
+> > This limitation is precisely why we need to introduce dynamic toggles.
+> 
+> I agree with Barry, the switch isn't supposed to be a knob to be
+> turned on/off frequently. 
 
-On Mon, Mar 02, 2026 at 09:50:53AM +0800, Chen Ridong wrote:
-> 
-> Hi Shakeel,
-> 
-> Good series to move away from the global lock.
-> 
-> On 2026/2/28 22:20, Shakeel Butt wrote:
-> > Add two lockless checks before acquiring the lock:
-> > 
-> > 1. READ_ONCE(cfile->kn) NULL check to skip torn-down files.
-> > 2. READ_ONCE(cfile->notified_at) check to skip when within the
-> >    rate-limit window (~10ms).
-> > 
-> > Both checks have safe error directions -- a stale read can only cause
-> > unnecessary lock acquisition, never a missed notification.  Annotate
-> > all write sites with WRITE_ONCE() to pair with the lockless readers.
-> > 
-> > The trade-off is that trailing timer_reduce() calls during bursts are
-> > skipped, so the deferred notification that delivers the final state
-> > may be lost.  This is acceptable for the primary callers like
-> > __memcg_memory_event() where events keep arriving.
-> > 
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Reported-by: Jakub Kicinski <kuba@kernel.org>
-> > ---
-> >  kernel/cgroup/cgroup.c | 21 ++++++++++++++-------
-> >  1 file changed, 14 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-> > index 33282c7d71e4..5473ebd0f6c1 100644
-> > --- a/kernel/cgroup/cgroup.c
-> > +++ b/kernel/cgroup/cgroup.c
-> > @@ -1749,7 +1749,7 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
-> >  		struct cgroup_file *cfile = (void *)css + cft->file_offset;
-> >  
-> >  		spin_lock_irq(&cgroup_file_kn_lock);
-> > -		cfile->kn = NULL;
-> > +		WRITE_ONCE(cfile->kn, NULL);
-> >  		spin_unlock_irq(&cgroup_file_kn_lock);
-> >  
-> >  		timer_delete_sync(&cfile->notify_timer);
-> > @@ -4430,7 +4430,7 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
-> >  		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
-> >  
-> >  		spin_lock_irq(&cgroup_file_kn_lock);
-> > -		cfile->kn = kn;
-> > +		WRITE_ONCE(cfile->kn, kn);
-> >  		spin_unlock_irq(&cgroup_file_kn_lock);
-> >  	}
-> >  
-> > @@ -4686,20 +4686,27 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
-> >   */
-> >  void cgroup_file_notify(struct cgroup_file *cfile)
-> >  {
-> > -	unsigned long flags;
-> > +	unsigned long flags, last, next;
-> >  	struct kernfs_node *kn = NULL;
-> >  
-> > +	if (!READ_ONCE(cfile->kn))
-> > +		return;
-> > +
-> > +	last = READ_ONCE(cfile->notified_at);
-> > +	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
-> > +		return;
-> > +
-> 
-> Previously, if a notification arrived within the rate-limit window, we would
-> still call timer_reduce(&cfile->notify_timer, next) to schedule a deferred
-> notification.
-> 
-> With this change, returning early here bypasses that timer scheduling entirely.
-> Does this risk missing notifications that would have been delivered by the timer?
-> 
+Is there any actual usecase other than debugging to switch the reclaim
+plementation back and forth? In other words do we really need to care
+about this issue at all? Is the additional code worth it?
 
-You are indeed right that this can cause missed notifications. After giving some
-thought I think the lockless check-and-return can be pretty much simplified to
-timer_pending() check. If timer is active, just do nothing and the notification
-will be delivered eventually.
-
-I will send the updated version soon. Any comments on the other two patches?
-
+-- 
+Michal Hocko
+SUSE Labs
 
