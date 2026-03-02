@@ -4,103 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE71EA4E24
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:51:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E73C4EA4E24
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 306BC6B0089; Mon,  2 Mar 2026 10:51:13 -0500 (EST)
+	id 289A26B0092; Mon,  2 Mar 2026 10:53:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4786B008A; Mon,  2 Mar 2026 10:51:13 -0500 (EST)
+	id 26B846B0093; Mon,  2 Mar 2026 10:53:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B7A06B0092; Mon,  2 Mar 2026 10:51:13 -0500 (EST)
+	id 182166B0095; Mon,  2 Mar 2026 10:53:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0919B6B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:51:13 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B9C43B6AFF
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:51:12 +0000 (UTC)
-X-FDA: 84501561984.01.FBEA312
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8EED4C0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:51:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b=UcP8pAu9;
-	spf=pass (imf28.hostedemail.com: domain of greearb@candelatech.com designates 67.231.154.184 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ED9456B0092
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:24 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A79FFC0A90
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:24 +0000 (UTC)
+X-FDA: 84501567528.11.A8EAFDE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B90CD80002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eCB+SkR+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772466670;
+	s=arc-20220608; t=1772466802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PrZSOcC8NP1oMTlU139M/8g9ZNzpyyGjonNgscrN3Oc=;
-	b=r/cNASpIiCoDQtSymqTJjpP31TjoA432/oBq2rKQmJUv9XDA5mAzIzMYyk1kNiaQXkQG+4
-	U+SC5d38CrP2PrSzL7Uh0dT7aoxB7d4yqSkFsOXU+lYHyYTMDhmuwy7IytN2w06kvad3U+
-	139RCvGJTklaWNGmFOithKjoLbipmvc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466670; a=rsa-sha256;
-	cv=none;
-	b=w8PRf5lb0dKGwvk8VESZfvaHLw+KhJ62EM6au6jeFMf4V9MvI94XnIirw0Ijwo/TYYIAOA
-	bWviRePdlGBG+gwDno+fj/35HLHgz6rt7E21XkVxOd1lo9tAYzNbWV7FSjCg9PIBFvzmGR
-	TTIgwY5SkMQ7S8j9/eDC+Kl84zv1sY4=
+	bh=gyfk8Ct0gbq0nakfN24rSGwTY74ocAXMAVYAL3jugUU=;
+	b=mC2SOXTvc4vx+AKcwix9tKaQFIYjRp0CGxes2t8mF9WyVjihZAcB++VHlD/C1NMx2evYAu
+	3RBSjvH4D3qDPAbb0ci0mLb/VARuNe4iaXlSjJjfmDmaWh08kFTF2x51qewSWUw3/9XlJ3
+	Elgb/c7xhiZLpTbse7nIuxC16oSfCNM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b=UcP8pAu9;
-	spf=pass (imf28.hostedemail.com: domain of greearb@candelatech.com designates 67.231.154.184 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 82C064400BA;
-	Mon,  2 Mar 2026 15:51:07 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.35.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 8BE5313C2B1;
-	Mon,  2 Mar 2026 07:50:59 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8BE5313C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1772466664;
-	bh=4yf8YFL7jyHSnGLpl3oF2CsMir9We4DXATnMYeZZZBo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UcP8pAu9WPTja7HnxC7Y4KHGOdjNHxThfs+inCHchvGGM4vrPvZjlAfsVwSAnDUZ7
-	 nbFQCAkeTfQ406GHMNnsen2H4SukP8oj/ELgUIAXXZ44/ieZcVtIcKTlDAd8+yhuuy
-	 5Nw+nP9yHBkbKqk4cFSFbjddjiNTyzw0P7p6bU4Y=
-Message-ID: <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
-Date: Mon, 2 Mar 2026 07:50:56 -0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eCB+SkR+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466802; a=rsa-sha256;
+	cv=none;
+	b=jl1sLkp4QBXCEWYb8hF1zKxqz5K+F71g+Tgb1P3r6oCcov9zICenoFW8KE5BfaQjqRk2C1
+	NCjRV9krJvUgUMTzF3/zxQCvHGsW8LqIMD7IWby57A3vq9cba7rL54aGugngG4kr6VUjBs
+	zPVDzWk34UidMvm67zkrnKMvV8Em348=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CD62A44501
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66FFC2BCB8
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772466801;
+	bh=Lzcw9bSxmejm0gJDOTach+8XGgnELPRdfMZnwQFuwiY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eCB+SkR+v2AojvuGPK20HGDla7EykNAGMD5qya144xypRtN5GzUmuArNyTTTiJaFs
+	 6IIYsGXW6bpBJvgMIwI/dnIrOGTDYgDijE01p81q0RHg6e7tLEuTtW3wI/qAF5DlCW
+	 hwER0nCkM02bkQ45v78lSXTUHYd0U3U/YjmRTQOFs/2zSn3+MOoFDt0N8RyXIba0i4
+	 GVpEMeLV5gN1v3kNRfJvfhsR/754C06q7sGynIQUOjasUyfRJgLQezitgBTEr+Z1dq
+	 xdeVlklYTDmUz4N4SboVuIeuyscuKyaEc3qdtfg6Rnb0kjIR7kdTMU6ifFdnVllAHc
+	 G+S+E0noPWL/g==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b93698bb57aso99704866b.0
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 07:53:21 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW4VaUdqCSLhmmwWjKuNTH7KLIKCAt72vo+G4EirmyNxRDCjDRhkJ/N0hbKxSCSB4HV3sRah/LBYw==@kvack.org
+X-Gm-Message-State: AOJu0YyBRlWHr0DV+yavkRyhSAoy5/rPcCriOqH8aewmTQKj+8kiA+0p
+	0wCe7Y9qcD0F5VAKO0h57ALbuR5fFfu5IyUKabu8cGUEabDDbvdRfdMlwKAJs3UjAhw4cXljbQj
+	BggbXF2Vba4MZw1IiJU7Ukb3ww51zF5g=
+X-Received: by 2002:a17:907:7b8e:b0:b8e:a126:66be with SMTP id
+ a640c23a62f3a-b9375932a96mr906965466b.18.1772466800366; Mon, 02 Mar 2026
+ 07:53:20 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
- active.
-To: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless <linux-wireless@vger.kernel.org>
-Cc: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- linux-mm@kvack.org, Tejun Heo <tj@kernel.org>
-References: <fa4e82ee-eb14-3930-c76c-f3bd59c5f258@candelatech.com>
- <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
- <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
- <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
- <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
- <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1772466668-vkB9hMjGlWtI
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1772466668;vkB9hMjGlWtI;<greearb@candelatech.com>;4238417753472804730e2a8cda7a2ac7
-X-PPE-TRUSTED: V=1;DIR=OUT;
+References: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
+ <20260228072556.31793-1-qi.zheng@linux.dev>
+In-Reply-To: <20260228072556.31793-1-qi.zheng@linux.dev>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 2 Mar 2026 07:53:08 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zNYFvNnz_oTu10kPBYL6=1ZewKUMRYcMmcMdSqbro_miA@mail.gmail.com>
+X-Gm-Features: AaiRm53G0wvbwkndbhtmVzlFp2bgI26S0fTTYledhanzWTm5GQC0n2lE4RDJ0yo
+Message-ID: <CAO9r8zNYFvNnz_oTu10kPBYL6=1ZewKUMRYcMmcMdSqbro_miA@mail.gmail.com>
+Subject: Re: [PATCH v5 update 29/32] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com, 
+	kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, 
+	apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, 
+	usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B90CD80002
+X-Stat-Signature: 6qxc38megj987uzb3iifpu3zoq7t1zdo
 X-Rspam-User: 
-X-Stat-Signature: wixqftyyzpdysm6e9gyam6ui97yzqbmw
-X-Rspamd-Queue-Id: 8EED4C0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772466670-38648
-X-HE-Meta: U2FsdGVkX18RjP3bjcfcjPc9SfuFz0ZJEFPC5qtaxhrjldGfKcWhckolm8WvjdrBHJKSgBoCKiiBoDJ/94OUMZjawSELyeFRVTbksM9tAKd9PzWkR+I7vQ3t4P0F7zqhcdRK/6s0XISpQkJXa1PCqJBd+PvktWR27onjt9cUrFVil02DINH8pf63ehpFRn/Q+KRNJIE1JXyp4+sw3kWXefR/C8/8Xf1yELlwW2h5E1X8DnQ461Co/prKv+PWA/rjzW8TkdGPmwsFEoRNMnbLBq8OT/Zyg+WovsGhyltTb4S+StdQ0Bht3YU5SwcO1Cxn6ZY7skMgv/UO5uxwmWlVjl+TGJ7xyfM41Gl3jz6h7bXL5H22ieZ4yy3MSeLH10D4y5zOVaWC1bbQ9uss4GurIOeSRnE/R+EqrhMHVt9JiCo9hifB9tpC05VcyxsjbdW5qEPUwzDZpPTHWdO5cvU6bxMC5V8Q60Y3G61Cxh99laXtZmSJ5an7/W3beK4B519+p9D/wm0syfGUshiGW4JgT/y/DdhaeGB//3Qq6yeT38jOvl4aUT1kSE/dz2M8JszvrbhHurehbf0J712cz+T5G8LZoaa4riUkSOwGAPU4sbCJvq2vBU5YOfK+6wuiNoopNTLDFf3xor7DHtHHtNqJMRx14j8xxEMvR7gRZZe7gWOF0GOOG9MpE8mCEy+OgMOBtIc1gSElig61zuD2M+7NZgsqlPzuT0PYeNgwcc4fUIIOITs1Fx5p0dc5BuLSP/ymNNOr9+8SvYrDSQYLbJrzFIzQPVwSk1iGmXPaFb6OJ7CLwDbkDVOIc/bAY4zKikPgaU2Dh5HyLAjI6NSSNu9D6PGRXRKEShA6rLOeddlaAbdXLE+dYzC2wtX7syMO89TTvl4LSiJnhO7GTLaQuw9We4gcd32ebHzfixuuh60J+P9DZnIpBBjoD4RcMwtGglbgmS9uplb+cXhZuzdJNM7
- b/9Ae/GN
- BikDtwTZ9tVsgiEx7rB3nhi1McRXOxZYF5xPQZTNbokuQw282YnAy/k0awwyvmoy4ndX9zxlodKHR9oEF2j0xeA/QHlu7bepZewoyf8yFkDZKanBfwJb3pG0n0hGwP4VUNm5HVtmrCM4ChYR9OfDr3aSSHQWSPwiR7giLdS5u5iRDnOz/6ixxfzCvBg8s0FRuHfwrftIV+GnXHhTnbLxe8JAkBjUmoype5mJf0Nq9VHIB9mjzMo0mHjbnRWGe+q3p1V37rfAdPSAnKsydjA8aSjA1trzGHSg4Q8xnx6WTKQJz6uE3O7Ij2LYdISpXa3JF4TcibaXMGPex/LV3p7aC+rEUakuKyBcMfxEpaS/APJhsh6MwR545cb5DQefC1/4BpHgVobj+Wjk1ddIXu3cCQqXQSJ/jyzDNFvUG5jiVnHePJ7w=
+X-HE-Tag: 1772466802-953639
+X-HE-Meta: U2FsdGVkX1/eOHatGdAEMGByj89fJ3vBdw/xggoxmRIh9Ba+wo/Cy08LIppYxCLhoK/6/ckwCMESboRQgVvfF/upymT3eh6721dVomevyS7khSGt5DPuO4pBS6OFYy71ODj2bcIK4EU1uF6pZDFiocaS4Yt1/ZbpVOwgtNup/ZHQrKB+n18R+J6Xr63gnAPHaDH0uWAx42cNTRs+2qkkux9i0OjoiB+/QNkrvJbTlLl+WPYM7ZsDRb698s6mH5BZRKROuo9YUaH/wTprl192DsJfEjUJCNNDaZvEp3GaemOChn2LeyoRT6wNgNIZIXF/k48eDdECAoD5T/k97SkQcBdv5qA2yycGH2VgrGZJuIEOl16+DgFm5GdfoYQXCHIIpn+Qmix2uhsWR9oGNb/i+2unrkJeCA1dRLfmVUZ5+stW95wDYIP8T8Nua1BY88h27Ncn6bgCfO2g57LvGnDtcRj7d1H9VJBEHkey2Ss5NLMisvCs7Ispqo1V3dwTBCNJc+OAYYrCG9sDYvsWTjrApmB1xCPskgl7Ib0aEq/VdPG2plgBehFMLUDIAKxonDgsos8/G2G1WrVbUW2Z83cgiC+ID0KQWUfmscMMthNELuCl5w+I37MfKP8Z0wpSK4glgg7aEo5zr2owMhQrJ5QX+NgBDvMwSYoPudVJTOiGv4S+kRIzcpKBdR0yko3USus13fO1s2tPtJgkLgnNjg2pr6WXBd5z8A4BaP/62N6IkNgn2eJ5iSizsiJoQjIOYdyjbSKMIdwPxrjccR7lzOy9QsG5GDbqHK7E4y5olrcVZvmCB7WET+ufyGxEOo/FZDHxVmRweputFYwVI5V4rMyMOrt8JTICY4Ni+K9qJW/8y8F8wWpUx6Pd2tpAR8XUl/7M6Cz7lJeOP9VUvTYIbf5D1TUDiPdRWXx0vZ+RDhZAZREb6XJVhAgO2oE1K/Zv6+W8ZSMUjdYdqTqCYAhxGGc
+ 1VMbqa/s
+ 2HCcPqIhKUD3iJM5Oi13lt3YYQEC/L0QaagvUZweYbeQ/NTX5fmA3qSkKFXXRFoBekKOUKUfx9Nnvmuxc7Ory3vxne83ANO2T6KkUVNIxt9eIWVJqBrOwSP/jB3YysQR2XLS4SkDwU46hei7IPC0DMxkFbaGAM5B/28bB4srVkXv9tCcWaM0wOflkzX9ADJKK74sIgQ7PGzf70ZYbWKNE7CgT9FWQgi8gtTYXzE9bX9omUMqtTTiGpK0jL8MRY7vnFNIirhDgdht7BWb3Ts+9QljMMV8fk27dGv0S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,55 +110,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/26 07:38, Johannes Berg wrote:
-> On Mon, 2026-03-02 at 07:26 -0800, Ben Greear wrote:
->>
->>>
->>> Was this with lockdep? If so, it complain about anything?
->>>
->>> I'm having a hard time seeing why it would deadlock at all when wifi
->>> uses  schedule_work() and therefore the system_percpu_wq, and
->>> __lru_add_drain_all() flushes lru_add_drain_work on mm_percpu_wq, and
->>> lru_add_and_bh_lrus_drain() doesn't really _seem_ to do anything related
->>> to RTNL etc.?
->>>
->>> I think we need a real explanation here rather than "if I randomly
->>> change this, it no longer appears".
->>
->> The path where iwlwifi acquires CMA holds rtnl and/or wiphy locks before
->> allocating CMA memory, as expected.
->>
->> And the CMA allocation path attempts to flush the work queues in
->> at least some cases.
->>
->> If there is a work item queued that is trying to grab rtnl and/or wiphy lock
->> when CMA attempts to flush, then the flush work cannot complete, so it deadlocks.
->>
->> Lockdep doesn't warn about this.
-> 
-> It really should, in cases where it can actually happen, I wrote the
-> code myself for that... Though things have changed since, and the checks
-> were lost at least once (and re-added), so I suppose it's possible that
-> they were lost _again_, but the flushing system is far more flexible now
-> and it's not flushing the same workqueue anyway, so it shouldn't happen.
-> 
-> I stand by what I said before, need to show more precisely what depends
-> on what, and I'm not going to accept a random kthread into this.
+[..]
+> @@ -763,6 +851,64 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+>  #endif
+>         return x;
+>  }
+> +
+> +static void __mod_memcg_state(struct mem_cgroup *memcg,
+> +                             enum memcg_stat_item idx, int val)
+> +{
+> +       int i = memcg_stats_index(idx);
+> +       int cpu;
+> +
+> +       if (mem_cgroup_disabled())
+> +               return;
+> +
+> +       cpu = get_cpu();
+> +
+> +       this_cpu_add(memcg->vmstats_percpu->state[i], val);
+> +       val = memcg_state_val_in_pages(idx, val);
+> +       memcg_rstat_updated(memcg, val, cpu);
+> +       trace_mod_memcg_state(memcg, idx, val);
+> +
+> +       put_cpu();
+> +}
+> +
+> +static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
+> +                                    enum node_stat_item idx, int val)
+> +{
+> +       struct mem_cgroup_per_node *pn;
+> +       struct mem_cgroup *memcg;
+> +       int i = memcg_stats_index(idx);
+> +       int cpu;
+> +
+> +       pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+> +       memcg = pn->memcg;
+> +
+> +       cpu = get_cpu();
+> +
+> +       /* Update memcg */
+> +       this_cpu_add(memcg->vmstats_percpu->state[i], val);
+> +
+> +       /* Update lruvec */
+> +       this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
+> +
+> +       val = memcg_state_val_in_pages(idx, val);
+> +       memcg_rstat_updated(memcg, val, cpu);
+> +       trace_mod_memcg_lruvec_state(memcg, idx, val);
+> +
+> +       put_cpu();
+> +}
 
-My first email on the topic has process stack traces as well as lockdep
-locks-held printout that points to the deadlock.  I'm not sure what else to offer...please let me know
-what you'd like to see.
+I don't think we should end up with two copies of
+__mod_memcg_state/mod_memcg_state() and
+__mod_memcg_lruvec_state/mod_memcg_lruvec_state(). I meant to refactor
+mod_memcg_state() to call __mod_memcg_state(), where the latter does
+not call get_non_dying_memcg_{start/end}(). Same for
+mod_memcg_lruvec_state().
 
-Thanks,
-Ben
-
-
-> 
-> johannes
-> 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+> +
+> +void reparent_memcg_state_local(struct mem_cgroup *memcg,
+> +                               struct mem_cgroup *parent, int idx)
+> +{
+> +       int i = memcg_stats_index(idx);
+> +       unsigned long value = memcg_page_state_local(memcg, idx);
+> +
+> +       if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+> +               return;
+> +
+> +       __mod_memcg_state(memcg, idx, -value);
+> +       __mod_memcg_state(parent, idx, value);
+> +}
+>  #endif
+>
+>  static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+> --
+> 2.20.1
+>
+>
 
