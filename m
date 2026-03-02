@@ -4,85 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434DFD58E7A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:06:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5115CD58E7F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB5836B0005; Mon,  2 Mar 2026 04:06:34 -0500 (EST)
+	id B68C16B0089; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A62D26B0089; Mon,  2 Mar 2026 04:06:34 -0500 (EST)
+	id B200B6B008A; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964EB6B008A; Mon,  2 Mar 2026 04:06:34 -0500 (EST)
+	id A228E6B008C; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 844056B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:06:34 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D9A7C317E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:34 +0000 (UTC)
-X-FDA: 84500542308.01.3260051
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4336840005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:32 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 968E96B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63D081A0A7C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:43 +0000 (UTC)
+X-FDA: 84500542686.28.C196567
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B44AF40008
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PXZDi68O;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772442392;
+	s=arc-20220608; t=1772442401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/+l9L2S+nKgITOxtBLBgCw1ASgJIlDtgIJ1rboK87DM=;
-	b=ybr3V8WLeeIxnFQDg3G1FWdFoomHHHdL7GMULOTnx2w7rvoB74PcH+eac6y7VYv7baQFcn
-	STj6dbilEvmuvZ0Ta6ZETUuKaRnYRVx4y9CL2Ko5YlxP5UsAmicyye93MEEUcKXXpixEQm
-	mu8UxIdcvJWL1lPQHM0f/2hv3AJbe4o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442392; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fz9PU6yGrGAnFeykCmGYPANR64LRTPHWLKdEGK4i+cY=;
+	b=7Y6qNTpfTf0aucoaRpFYCduJFw6nHeRk+6IVMSzH9hhFZbILDjnUGwkLj06rKJWLSDv5o9
+	2fl4v/L+SIw2/o8j1un954wcyMr1TMyQJ+zpmr682NoXawWFy7mKeizUtjHRkjLKIu3zYz
+	ZiKajHrEDUVwmmUPLnTKTE+S2uf+ujs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442401; a=rsa-sha256;
 	cv=none;
-	b=2o2JLAlRw+VDwErYjB8SMCMCAB6MDrGSXJKQ8QcO9Jg8vez+HUwP4xe6BOeI0KqDb81MZj
-	RSIQfXLcdBjb0+JGEF0rI8IiX+YipkNlixH4xiah24wEbnvzhHffTBnBaBAoEYfd50fWRF
-	tKSw7kl1WOAGmTjb5EYp9WPNJVq81Ys=
+	b=q1bakYj09B6YUEuLRTXvzSPz6+4ibY9pj8sMVPGjvr9rMDiGxj1s2uA8919Wk4YYDTcHBO
+	VcaIDtus9Xo7yLzpPQNBXZ4WYmO1/o5x5BpXJfReihsQdhH4AP/+yN5F39AMgealh6bfwF
+	Q90J/icGIvyElroGHf0ZbHDGOwQHufA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9832B14BF;
-	Mon,  2 Mar 2026 01:06:24 -0800 (PST)
-Received: from [10.164.19.52] (unknown [10.164.19.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 881973F73B;
-	Mon,  2 Mar 2026 01:06:26 -0800 (PST)
-Message-ID: <99e4c72f-dc2f-4b26-9b32-0dd716789060@arm.com>
-Date: Mon, 2 Mar 2026 14:36:23 +0530
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PXZDi68O;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 03A96600C4;
+	Mon,  2 Mar 2026 09:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF8C2BC9E;
+	Mon,  2 Mar 2026 09:06:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772442400;
+	bh=pQFhLP4PM8OJ3gckm7uOewqs59ad2rc0IT7killTS50=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PXZDi68OIkGQWMoUTGLt4XIaUHVd4G+sEoKT1/p9h0RyErEX6giNUZBCMcLYmcfqc
+	 FGPxo52bZ7J4fZlefWlJ05v0utqdjcmiGCrmAsbDt0iKs1MaS1fnxXDuXkpI0nsi7g
+	 Ub7JCcJRbujEcpMPDf0eoiC2htBvMF9w04RTC2Ay9i3jRe8o4o7CZHAF+zTmbQhI6T
+	 xzoh1y6jSQOCHfXIaus+L9RODhOPffPVKfvO91IwrVet8x/tcn0MsRS8KKah0Q1O0O
+	 FXQk112GMwOSB/YVnM3C2SFc+RiUxLn1GWzf5U0bTO1nRNx6Opt3QEzJSvgb1VHUIJ
+	 fUGCMn/GbLCKg==
+Message-ID: <177f3071-3303-4db1-aec2-469921d91b7c@kernel.org>
+Date: Mon, 2 Mar 2026 10:06:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/rmap: fix incorrect pte restoration for lazyfree
- folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@kernel.org, harry.yoo@oracle.com,
- jannh@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com, stable <stable@kernel.org>
-References: <20260228140540.1774748-1-dev.jain@arm.com>
- <CAGsJ_4ynq76B+qJmtJayB44eRehviCbhBNKu0sdU1NcdiSDVJw@mail.gmail.com>
- <2703daae-3854-492a-a3d8-8bedd6a58aaf@kernel.org>
+Subject: Re: [PATCH v2 2/6] mm: rename ptep/pmdp_clear_young_notify() to
+ ptep/pmdp_test_and_clear_young_notify()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1772185080.git.baolin.wang@linux.alibaba.com>
+ <283d103c5131e32879bd847263c93b768df64d15.1772185080.git.baolin.wang@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <2703daae-3854-492a-a3d8-8bedd6a58aaf@kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <283d103c5131e32879bd847263c93b768df64d15.1772185080.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: y7fy3y6x6m6e8aa915t39sfhd6tcyst4
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4336840005
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772442392-465209
-X-HE-Meta: U2FsdGVkX18DbGufA2Cq5z/vMQjHROKnRZM7wwdKtm+9tpIgoY6fxuQsUToYJg40Z8d4zTSfLZzfmILD4b211bizaUbfMOjvyaSgcLndV41azhnnp7CACqwUn0iVDnwOX1IAIuhFv5UYvjMQSbNJRZV+M/b2+5Blec4MHaNR3I7A0/RnCTz2cf1BqDu4KoKjIBnT82elHKzvrP3iYkLhoIgMqstOhDceqoh7o7pAjLTTVU60ayw1/zAYu41XEmUcAvuGNXa+MRMOjwOk9Pmhy0gB6Sk1czxtm9BzDf5JlDPAbr6aMDIjpXFc0zEuS0k7aOwuD5buPHEJftcSpIKJVz8ektMQBo6iuirUvg58P68LBcMUAWBdlmT/ChnnTdRC/mbX8KAhsSHaBEfNHSOJr2lqccgDaZU+4LJ7l51xFDWTuwKxVvkVt/I70OL/qIrmw3ydLFvH5s+/AMCorxae3iL1AQKam55eslY/9P8PBmH/uJSWEtOmkCaXYWRyhVvicU8QeZ/cDK1Ma0cQx52RswzvZUjY4I5zRZbtWYzcAqgebx2sufclQUzTYEE9HE1siwTnrD0fT99xe8yHjg/sWDPasPSKky0eZvYd3mMFEZBt8gWOEXdf+kRzqqkI+/ZFsfKpO8EdvW0kTnL31WVPT5B4w9XRLUFLH6otYVQhhcWKfnTkuDFio3VoTORIsxLpoQvLCtF4turfpIEXH3zFGU6+aAMDB2lFMiqP4kLTeL5E670wbuci8DFRDnXMtS0t/bEftqUsHeQSI0hMn3VBN3jNMT5aV3Mwov+ez1j9d1Br7hhEPhoCuf4L7EGkw2oRFlYgNwVkkxpYG/E5f6L/0wLGJl3+yFI1YhZOPh6oCfx5CySTYXssy4JzfdqBTefz4ziPrpPxUREzVAFIs0B32EvORQzsEAjNgb8mxQ7lghfsUduwSt4bc6jdtETWeMJowd8h14x5l0v+4FzJ8QR
- q52ryc3V
- bszLPZop6xUPlT78QU90HhA/51S/CopgtIAYSB8xg1+4ppGWyGVk1QsaUoq84M+N65qZq/FZKhD22CWoRvE02FXiOAVOtIeORD7G8g9gN8xGPG3pExPejablCcSjvGpzWdwMWhJkQd+x5Pb8bb28i5afVrB7NVp3xyCDz08cIJFZq1TjOQEpkHddXr60ILYdzganDQKEWM4SsXsLUDZJlgsx80QnYI57U+MpQ+6CXz4pIoEQhcaGn1YUUvLFuGVfq9xaL
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B44AF40008
+X-Stat-Signature: 68741ifr7mqcrogp6ehtisn7en4pn3g5
+X-HE-Tag: 1772442401-171140
+X-HE-Meta: U2FsdGVkX18bjkxQjfE4kgTEKKpWV2Wvi5YPN5/4GGzLlY3nvKUkKJBNNKl8gUJaRi8+nkrEAi8DVHem7f8kuebglC/wAHodXoAIIjoYfjSlU1OEQ6Ug7Ou/hNcU3vpodkercQHd9gFObemQcL+AGGYMLaMBmVHs1qqUMQCx93vWoUKW+mQ2GW6JTcQ8CTMTIC8edARp4FC7EzjSsPt+nFrmNaJkgwpWLITnMa+fijo0Zu4ePsF5XIjptjK0483UtQpbYX/EqfDdziBI6XPKUz2gpDcTO/3STEzvhQst9CAcx6hzf5bfzzvE0dWZvXnc6t9DrSFUpf6SGbFHQqkiL/7NdMZ5YK3R/eWiYeN8wX9uXijVbAj348A/qVffVg8u4c78em14dD1PL1x7/ViWG1UFldY1BlPS7tc5jbRRBmoqB+6R5h9Y8eUjTiakeBWNgQ2RSnpqgrTlttwjyYI+130JhvWN6Rj62SYe8AvBOLMZ7bImlGvsyBrBDaIfvypbZmc9Sm0cJOcfPopTLoeCkZz2J73Vs5Cz6lo0dB39MUEZa6qv5g5CIHn3uAQpfSvA2p70x/q6cii33euobhul2WLSu0Xn0Jhp29WkQ/BquiJj6Cuc7LeA2pxuB2eVSSlw6sJpo5vfN0Pj4Uf9OMg7g9TvzO/eQDHST84eo3lsuRUPkk5FTI486kAXYJTcd8za/LtDRrHTptuzUyHOUSncpZOGZOUJmyABptYAvD1+UwWmATe0o45GEdDJEjbJbtyvKQZIK/C0692PHYkzPO1mM8h6Ty+rf+4Kk3MVG3Ry5E6BuM8KSQy0DkkGmpSqcarbuMhRJLeGOyLV8j84lspuT93/8Mn3PLz9vj1VDWCKmX6smeBAL9i9JImwShi8twr1Ml64ix2gw+xXU03yK2XsXv4mMQvIYnBxjrkayO+KJGEnlgJoFhsgoSK1rU1/DmQB6R3T0AmCGEen/QDyh8o
+ G/G+xsrp
+ eVCWunNffZAoVD3SAvPr4Ur1VNL1xjoZAoAkI+/xXvqFwaBb+GPDl+j1G7hOFPkIGjZVK5macZhinR+CpG/6WQedc7H1FdJU7VeeZ0kd7ty5Y2IqC2skOfJAvgYvfqr3Bg4qwO+MPHJZhRKiD3T2fQBQyK3QEtzioIZ5bu2vNIg+2Q1XenU1S2Cg+zjUL3egVC5wc1K1WsJbPS+zmW0ejtCOqGNlBQUQPSpGnaxUzj7xhhTcCVp3AVQs4XUK9AInYORKO3qKoWHrfEhwkBjOQxczEIWOcujoqqNEExUVYJMFOOKsVnyBi8uUd3RKjDTv0ea2OoBhHazkqp5nK0hBRWnTlCShi29QLBX6HCIYTzi561ENJG77iEpoKgaOo12fU4Ivw9gttC2mZUrY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,214 +145,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 02/03/26 2:14 pm, David Hildenbrand (Arm) wrote:
-> On 2/28/26 19:34, Barry Song wrote:
->> On Sun, Mar 1, 2026 at 3:06 AM Dev Jain <dev.jain@arm.com> wrote:
->>>
->>> We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
->>> If the batch has a mix of writable and non-writable bits, we may end up
->>> setting the entire batch writable. Fix this by respecting writable bit
->>> during batching.
->>> Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
->>> lost, preserve it on pte restoration by respecting the bit during batching,
->>> to make the fix consistent w.r.t both writable bit and soft-dirty bit.
->>>
->>> I was able to write the below reproducer and crash the kernel.
->>> Explanation of reproducer (set 64K mTHP to always):
->>>
->>> Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
->>> fork() - parent points to the folio with 8 writable ptes and 8 non-writable
->>> ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
->>> determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
->>> the folio as lazyfree. Write to the memory to dirty the pte, eventually
->>> rmap will dirty the folio. Then trigger reclaim, we will hit the pte
->>> restoration path, and the kernel will crash with the following trace:
->>>
->>> [   21.134473] kernel BUG at mm/page_table_check.c:118!
->>> [   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
->>> [   21.135917] Modules linked in:
->>> [   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
->>> [   21.136858] Hardware name: linux,dummy-virt (DT)
->>> [   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
->>> [   21.137308] pc : page_table_check_set+0x28c/0x2a8
->>> [   21.137607] lr : page_table_check_set+0x134/0x2a8
->>> [   21.137885] sp : ffff80008a3b3340
->>> [   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
->>> [   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
->>> [   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
->>> [   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
->>> [   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
->>> [   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
->>> [   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
->>> [   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
->>> [   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
->>> [   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
->>> [   21.141991] Call trace:
->>> [   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
->>> [   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
->>> [   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
->>> [   21.142766]  contpte_set_ptes+0xe8/0x140
->>> [   21.142907]  try_to_unmap_one+0x10c4/0x10d0
->>> [   21.143177]  rmap_walk_anon+0x100/0x250
->>> [   21.143315]  try_to_unmap+0xa0/0xc8
->>> [   21.143441]  shrink_folio_list+0x59c/0x18a8
->>> [   21.143759]  shrink_lruvec+0x664/0xbf0
->>> [   21.144043]  shrink_node+0x218/0x878
->>> [   21.144285]  __node_reclaim.constprop.0+0x98/0x338
->>> [   21.144763]  user_proactive_reclaim+0x2a4/0x340
->>> [   21.145056]  reclaim_store+0x3c/0x60
->>> [   21.145216]  dev_attr_store+0x20/0x40
->>> [   21.145585]  sysfs_kf_write+0x84/0xa8
->>> [   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
->>> [   21.145994]  vfs_write+0x2b8/0x368
->>> [   21.146119]  ksys_write+0x70/0x110
->>> [   21.146240]  __arm64_sys_write+0x24/0x38
->>> [   21.146380]  invoke_syscall+0x50/0x120
->>> [   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
->>> [   21.146679]  do_el0_svc+0x28/0x40
->>> [   21.146798]  el0_svc+0x34/0x110
->>> [   21.146926]  el0t_64_sync_handler+0xa0/0xe8
->>> [   21.147074]  el0t_64_sync+0x198/0x1a0
->>> [   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
->>> [   21.147440] ---[ end trace 0000000000000000 ]---
->>>
->>>
->>> #define _GNU_SOURCE
->>> #include <stdio.h>
->>> #include <unistd.h>
->>> #include <stdlib.h>
->>> #include <sys/mman.h>
->>> #include <string.h>
->>> #include <sys/wait.h>
->>> #include <sched.h>
->>> #include <fcntl.h>
->>>
->>> void write_to_reclaim() {
->>>     const char *path = "/sys/devices/system/node/node0/reclaim";
->>>     const char *value = "409600000000";
->>>     int fd = open(path, O_WRONLY);
->>>     if (fd == -1) {
->>>         perror("open");
->>>         exit(EXIT_FAILURE);
->>>     }
->>>
->>>     if (write(fd, value, sizeof("409600000000") - 1) == -1) {
->>>         perror("write");
->>>         close(fd);
->>>         exit(EXIT_FAILURE);
->>>     }
->>>
->>>     printf("Successfully wrote %s to %s\n", value, path);
->>>     close(fd);
->>> }
->>>
->>> int main()
->>> {
->>>         char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
->>>                          MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>>         if ((unsigned long)ptr != (1UL << 30)) {
->>>                 perror("mmap");
->>>                 return 1;
->>>         }
->>>
->>>         /* a 64K folio gets faulted in */
->>>         memset(ptr, 0, 1UL << 16);
->>>
->>>         /* 32K half will not be shared into child */
->>>         if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
->>>                 perror("madvise madv dontfork");
->>>                 return 1;
->>>         }
->>>
->>>         pid_t pid = fork();
->>>
->>>         if (pid < 0) {
->>>                 perror("fork");
->>>                 return 1;
->>>         } else if (pid == 0) {
->>>                 sleep(15);
->>>         } else {
->>>                 /* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
->>>                 if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
->>>                         perror("madvise madv fork");
->>>                         return 1;
->>>                 }
->>>                 if (madvise(ptr, (1UL << 16), MADV_FREE)) {
->>>                         perror("madvise madv free");
->>>                         return 1;
->>>                 }
->>>
->>>                 /* dirty the large folio */
->>>                 (*ptr) += 10;
->>>
->>>                 write_to_reclaim();
->>>                 // sleep(10);
->>>                 waitpid(pid, NULL, 0);
->>>
->>>         }
->>> }
->>>
->>> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
->>> Cc: stable <stable@kernel.org>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>> v1->v2:
->>>  - Just respect the writable bit instead of hacking in a pte_wrprotect() in
->>>    failure path
->>>  - Also handle soft-dirty bit
->>>
->>> Based on mm-unstable (df9c51269a5e).
->>>
->>>  mm/rmap.c | 12 +++++++++++-
->>>  1 file changed, 11 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index bff8f222004e4..fb64829913052 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -1955,7 +1955,17 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>>         if (userfaultfd_wp(vma))
->>>                 return 1;
->>>
->>> -       return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
->>> +       if (!folio_test_anon(folio))
->>> +               return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
->>> +
->>> +       /*
->>> +        * For anon folios, if unmap fails, we need to restore the ptes.
->>> +        * To avoid accidentally upgrading write permissions for ptes that
->>> +        * were not originally writable, and to avoid losing the soft-dirty
->>> +        * bit, use the appropriate FPB flags.
->>> +        */
->>> +       return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
->>> +                                    FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->>
->> Do we really need to differentiate between file and anon?
->> I’d rather just return unconditionally by removing the
->> if (!folio_test_anon(folio)) check above.
->>
->> If we do want to keep two branches, why not use a flag variant instead?
+On 2/27/26 10:44, Baolin Wang wrote:
+> Rename ptep/pmdp_clear_young_notify() to ptep/pmdp_test_and_clear_young_notify()
+> to make the function names consistent.
 > 
-> I suspect Dev's code might generate better code, as the compiler might
-> not want to provide two variants of folio_pte_batch_flags() where it
-> propagates all constants; and even if it does, we'd end up with two
-> essentially identical functions in the kernel binary.
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Interesting.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> 
-> So if we want to special-case anon folios, I think we should use Dev's
-> variant.
-> 
-> But I also wonder whether we just want to keep it simple for now and
-> just unconditionally check FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY.
-> 
-> I'd vote for simplicity at this point.
+-- 
+Cheers,
 
-Fair enough. I'll do that.
-
-> 
-
+David
 
