@@ -4,108 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD8BDC624C6
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C35CC624C6
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:34:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37BB46B0093; Mon,  2 Mar 2026 11:33:25 -0500 (EST)
+	id 003486B0099; Mon,  2 Mar 2026 11:34:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC496B0095; Mon,  2 Mar 2026 11:33:25 -0500 (EST)
+	id EEF896B009B; Mon,  2 Mar 2026 11:34:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BCE86B0096; Mon,  2 Mar 2026 11:33:25 -0500 (EST)
+	id DB0FA6B009D; Mon,  2 Mar 2026 11:34:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07EBF6B0093
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:33:25 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 89AD8139C51
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:24 +0000 (UTC)
-X-FDA: 84501668328.30.8272F7A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2E1061A0015
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=POUneRu2;
-	spf=pass (imf19.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772469202;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C88986B0099
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:34:52 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D4111A0235
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:34:52 +0000 (UTC)
+X-FDA: 84501672024.11.1A8F473
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012067.outbound.protection.outlook.com [40.107.209.67])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 920C4160017
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:34:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="R/D5KoTB";
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.67 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772469289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RoJu2TZQJ6DUDvByKakWyLdyfBWLzd6QHY5e5dLWvAs=;
-	b=hJtmJhtreZccZ5xTCLoGi+DW5cISEeGZGDcPVhtLM4kONCB7UrlFD3YoffyzZcU78F3thJ
-	y9Iz1mMP0HMqh20bKp194OygtNV6YIaRzR2zUQiPoShebrTTTUHHCSkOSZGS25pk7P4Xrb
-	Ay5SjrBt31JKA1NuE5GP9ydRD/zNLMI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=POUneRu2;
-	spf=pass (imf19.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772469202; a=rsa-sha256;
-	cv=none;
-	b=AIC8rP3mtyHf4giUjWCmlKw3uzf07cBbOcqgLdI0U9eNn28XLq9gPFc5fzPxUNikHLWPLm
-	jm06NX8q6dVXg/DVFgcIZZDfO4N6O+41r0VEE8ZpCDFKA1S36fXxTXeW1r3v3xLxxof4ir
-	9UvM1/UUrPmNdN833NKQh46DKmXzNbI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772469202; x=1804005202;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gr/Rm/LmHwRqu0m9Cj42RM/GXccyftGf8yIDm0daZ4M=;
-  b=POUneRu2jjEuFYt+S1RsLTv0hxC6rveLh9+NuqLI4S/ZUkcMMsepnTMd
-   FLjSl02O7hVpLcGviioVoEENpCg5V6R15tdxf4i+v7eOXbrfBOu0KvhG9
-   qHck7G9Wq8Juv8IoHXLndaJmhFMy43NvnP4JM/XPjZGkzKi5is4SblRzq
-   mYbOOhHMVTjPzITuKCT1y2Ij+0uD8Tz2jufpHJrQ5PK+E38ZAcH2w3ROA
-   nOhht0bkcM+59OsmcNIJQ0Ta9qOFofQjx37AHZslY1aiYZu1ncphuoaJp
-   DNGNAaO8JkGDo+WulttJyYtbx/OY/C5oWBXWx/a+eKAgHQLesENkbll84
-   Q==;
-X-CSE-ConnectionGUID: 2KobnuD9SuqeDTa78fNiBw==
-X-CSE-MsgGUID: /CBN0oonT8S5dOu2e8hWXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73447871"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="73447871"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:21 -0800
-X-CSE-ConnectionGUID: TpC3DWhCS0uNy94/GNPzYg==
-X-CSE-MsgGUID: vuRGhG7cSu+atzC1e2EzwQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="255564537"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.81])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:19 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Dave Airlie <airlied@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] drm/xe/userptr: Defer Waiting for TLB invalidation to the second pass if possible
-Date: Mon,  2 Mar 2026 17:32:48 +0100
-Message-ID: <20260302163248.105454-5-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
-References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
+	bh=3wgpbH+wIz/e9LGhulaqNm5Bs1d1MFlXbk+bpqAczfA=;
+	b=vV+PxNDr56ASQYJ0ad/gA8qnHpwo/MvZFBkOtgwA5lk3nDDLfbIVvmXJq2qmPTeJ5eh50d
+	JyStSmC7wZbNT+4JUvWzGxHKXBPREPCdoNpd9RXi4bXkYtvIM8VxRrCP0ACGzFBw9fY8Ej
+	bAlF0d2BbfqyayQcqaqbaecapOTNL40=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="R/D5KoTB";
+	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.67 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772469289; a=rsa-sha256;
+	cv=pass;
+	b=up13VCRWtGscTritr8X8qCwLK8BwIhdH6X9o/Gw2UAitIPuPP/eKShQFHC0G+wSueg32O/
+	scU7zb1FAUpXDjhTSPRt2BC5JhxzR6KtpkXfx0AlFqWfyEk/K1KYIBBmioE/aktd95aHWO
+	ThZENS49+GUB6wJp/1lNmAxtdGPnQnY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=U1aMpLyyQCK1kWDVD9MUq04DEK0pMspustnhFhDLZH347QtqKWyscqbe9VggTQbwBsFGaDmiRKztxJrMit92G7fQ53wH0dtW0AbYVYeC0Mu9VGFxoW4EV1c4bJ+pQoBA5r2j+WzIPVT33wlTOVSBoLiZjQrMQ2jklfdpIn/kf/RTCZWsihxyNdsybTzYhJ34nUdu5emPBReZSg2hj9EzXK4Z8TkMYHJ/DS5bKBx1+V1SjZbMjczRCBUVv9+AGBfzUr8pkMlHehe3fLFS1eMu8Jh4F95VxzoCJS2nsziIcLjNXjwjRZyDuJi7vj9hcBr+z0gQym/Z7INxuUfjy5wa6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3wgpbH+wIz/e9LGhulaqNm5Bs1d1MFlXbk+bpqAczfA=;
+ b=hn87AIsvX13iMN2tZW8c5OfHAZapa+H5KcSqR+kVLramhi45kTDLnkxg/H3YWtCo2jblYabJVFVBmeJCk3nySSQ1e6epUDdM5Yex8HPfRC2R/d5S2KnYxz5mVi7Ow9UGrNcmgVklmh/uhy9+vmh0pyj2YASSCX6zVHI06eZaHCNlOQpSWJ00R8unmPOh24Tjw2aCEvJfrr7Lqx/SJpaiq3976wPCJ+NrUBklbDtf6v6giGE9/mwnxKMbG6aBi4U+jp4QQ+RXA7xGHPlyHk4BELIDuIBAz2Yarj4UvsOSi8FWNoGKAEIqjh7isVBfju16zfXgT3a60ou0fimXV2d4rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3wgpbH+wIz/e9LGhulaqNm5Bs1d1MFlXbk+bpqAczfA=;
+ b=R/D5KoTBBBakAZxWLQm6+2Ht9ocVtnGw1yLmBCBWY6djqHfXRfNZ8ap+idjhxzun0Y4/k0XnEfWthZR7tFFWeMOHPm+BYSApfgBk2lzANy5QAAf5xKTGlgzfceNWTDBdWPnQOScpL/NeeNwi6EMZMeeqJYlLWuhu5PliFc0dUmczTTV1JougtlJk3fCoO4SJh25my5VzKJ1dddja0vVeugeYSFzdLTtR0Zj8MuuEjr3chp+77gTSWlLwO/3kvLVM2/uAQzSYAugRHJSDTxwH+aW1Fs4us08h34n6f37VmwovxcyDF2O1ZkLleGtt4ucUJ6fjDbMJB7C4nxFOq0y4Ng==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CH3PR12MB8879.namprd12.prod.outlook.com (2603:10b6:610:171::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Mon, 2 Mar
+ 2026 16:34:40 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 16:34:38 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
+ Eero Kelly <eero.kelly@dfinity.org>,
+ Andrew Battat <andrew.battat@dfinity.org>,
+ Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
+ folio_try_get()
+Date: Mon, 02 Mar 2026 11:34:32 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <7CC37A14-9909-4F2D-9AB8-C02F6EF91604@nvidia.com>
+In-Reply-To: <f41facc9-42b1-4c58-a681-715961631fce@kernel.org>
+References: <20260228010614.2536430-1-ziy@nvidia.com>
+ <f41facc9-42b1-4c58-a681-715961631fce@kernel.org>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0125.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::10) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m7npw3hm3anxzky8adwa3egrocsd6h8k
-X-Rspamd-Server: rspam09
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB8879:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3ba69d7-3932-415b-61a3-08de787998b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	kh/V9mORTByB2XURJBWfrGiahfeQL5i+z3vcxO+QO6vw0C2oSV1FnfNkGEpQjx4DvCiTZvyD9suMIvvghNfOsJdD1gxSJJp6fmLepFBnY2DNn2pK4eEtTsKEKN143IvwA3uZX3tc7b90UJBh6RwuazlKDvoiNb8u2YA9igiQcYv0ZQnFTD+S0g5cEZcRmsPRzWlw2j/5USxKOXLyZKAcHnM5z1NOD79h1w+LXTcNAAVZSzJHzmLgd9bF74fUO0xw6Aba/yQBSO7QKzNwWJ1aQzrQwmyGj7REhT6wSrj6pkqnKgYx6TBw5APqU179AbA6/lC/y4i7RjXTP1LGT9iTbt0KeAezOmdtLdgzMIMt8Im58fRyzzPvUjPBAKRQVwIL57Z2Ae4Y6KhK6YJPwoocl8SPaerULNED0mgkDxS+YCHO0yV7KjxfNEYBvO0Q9dsmAqfAG5/15l/m1SmPuUug7arufP2ahazJHDaeAauRB7NMYCdauKyXvMqA4H53KZ1gm5wajooBhNwhAXxlFymaGLvIKuZ681jdMTzevPYirIaG4JlzxR14Ed2TDWF0Uya2HBFVOX9JkgkMltsfyzwZFJ/glCXpA3aWM6Eo/kv+UMeapbDAyWxe259TCffr0hRNNh6K5AHKg0EFDRigisT+QOM8tHJE47Y/kI+I9WqIKuZphbcwQZo7C6+J+3KOo3eMBwQquNGTZ4Qi/yY8hXUJAH0z8JcWeHX6w8PQmUIFeyg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?T2FZmNLOzZp8LEX0eMecq6Ou/MWmX6R6T5bBjuij0NAtdN8x9pNCY8mGJcak?=
+ =?us-ascii?Q?OewtxjGYVAh6ICATazKbgZUcyw0SR4xsLgwhITMJKn38yeZ1mfYrY9QhNYbv?=
+ =?us-ascii?Q?ip38Dmt0O0xxhpGTWqaW6bd1/rx9Ry6Yrr+6vQL3bMvrXD3+EM84g7nfqRu8?=
+ =?us-ascii?Q?d1RB1kmVC7asFoV1w+vQ5OUZh3UPbQmI3r8Y3mmuA+MQ/g/9oJXAo/+e42/6?=
+ =?us-ascii?Q?v1eosPCo4vo5ooASH2SN1HSMrH8ZCIc4EaewQH/BgCx87hH0HpnfCPthIVlr?=
+ =?us-ascii?Q?BabRTZeLA4melQASmWHQM33r0j+cEOCpZ9emuGZrPGwUHWeLSCl8LUQcewJW?=
+ =?us-ascii?Q?cJWYdfplFdAGyZtLEISgzw6zHg2AXJci+2ZthIJmY9A1zL1H+vva6H2K6Zjw?=
+ =?us-ascii?Q?7xyNik35/WX72Qn8Dwd1Hm5Wm5Z/b76X3lWq5twSlXN0VEScggswmzFMJdw5?=
+ =?us-ascii?Q?YDXoVskZi2deD/s5Utq9sI7DXTBFYrKjczwusH3R9gCmJQTwUoFy6odFBC+u?=
+ =?us-ascii?Q?SMDbLg0g5bUpr3ISbsMQtrJaB84CSZp1xivwWBdTbVYUtNfjjfL/7/PMd+XM?=
+ =?us-ascii?Q?OCsgVV96bIuppxvu6b25UGQUQidos10nBXgKJcAco9t1/gK2GB1l8xQ18zK6?=
+ =?us-ascii?Q?oXvOGFzKhsrC+R5Fdgz3PDo7cIpQTShRbN3XOmLLkveXOsIG8xSd97TCx/5X?=
+ =?us-ascii?Q?b0AOEXfVxpGIn7Ughua4/sBuEoB04YK11jms/+XUGdHLNIPwvmMLGi4ftpkj?=
+ =?us-ascii?Q?Jq/E/jC0pukiGJ5yWKFlC6Sd5WpF9NSEjrXFSiFWC0ujD9sU3EISyPHA3HUk?=
+ =?us-ascii?Q?eve8J90UMQDnRfMdA1Pkj1gd1X5UBdIELrCEWE2kMabGvMLzJ+/ztPxt3f6g?=
+ =?us-ascii?Q?ePp5X6IngMEfNCeiMo9iRqxR0n6In7flEcFrcSoR3WKQzN+tkN9vRkN9ot2H?=
+ =?us-ascii?Q?kkNF+RtBacWUtv2pcqkTou6BCJ/eOPsYv2ovMwSFlDDT9D/itkWZuP1DMJRT?=
+ =?us-ascii?Q?ktw+1iSYh+mdEYfXN6nG8V7Zk2JDON0absbRfwqv8nGxJG3T+G1hvzvuS8zt?=
+ =?us-ascii?Q?JxAdq1Glzz6rvnY6VSXPn7/DX75D5BweAWTQXI9PGZLg/gcQLjymVgQRt8nA?=
+ =?us-ascii?Q?RggvIHrQ5QrVw8RpNTdjVDfM2wgHpkpDs+MTJNXRxEE4+3f7OMQlMNP37td7?=
+ =?us-ascii?Q?7FOOPcyMFMTc7TF2vms+YX0tRrpBDmSdEgiF6oP9TTqGY126lkfKjMTq6nD4?=
+ =?us-ascii?Q?HsiIhfIH/LfRzb+hToC+Ydv+K3KVz3PndIkIsm4s2QyWUxbd4WGRciNZrfDk?=
+ =?us-ascii?Q?+MmQwSQ0l5YzuZt3LA+X0JwWHAP0fq0KrjoekovZ8+qsFG/kRLDtCkHqFpd5?=
+ =?us-ascii?Q?0Tux7D+qoBvwM7HFo7Eib3VW8XnedtSVx9S5zlg3w9m2NwKrmGI3bkznTIbJ?=
+ =?us-ascii?Q?XkvbUIOp38fkkW/mHteZqnMICsvhd60aw9CxAm0qSEG0gPs5nAZYazMKbUpd?=
+ =?us-ascii?Q?2TjCWY33+jRZBzIp8SqYjioOZ0ppt+knDmIvoymwhvoUQdMTsChL2dMio/bR?=
+ =?us-ascii?Q?IxTF50r19mg9WU78FaPnDoZF9LrAWiDaHdEPLA+4C1JlooHyG4mu/lc04RGW?=
+ =?us-ascii?Q?kMdejrwcvbFy7/yge/Y1JG7gsdrwgzNNoG4QfNEZORtgVJROHvLRgUwVCJg/?=
+ =?us-ascii?Q?HPlsHHwYYF1i0K25a0tzaXR9BolNnJEC/Nj8heOz0R+dwppGtk7Fy15YU4di?=
+ =?us-ascii?Q?M8PZcBNo+g=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3ba69d7-3932-415b-61a3-08de787998b2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 16:34:38.3535
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: A8O4dZLr8BZ8dZoJd/vjGp0h9VRU6NNF/EDBQbvPTbScaaN7sx9w/LXFff26HKWP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8879
+X-Rspamd-Queue-Id: 920C4160017
+X-Stat-Signature: dexqgh7f4p99aacw5a1gesq8wm4jt657
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E1061A0015
-X-HE-Tag: 1772469202-258612
-X-HE-Meta: U2FsdGVkX18Rgr3hUwpzSDba+7owXS2V0KVHQ2MJJyRFeYC4LDiTKyO6R3m+MMeN8/MhtcsSChA9Q1y/1IAWrUxkeo5CcgP24f8AQECtDZWuYv2fbSQFxhQ1f7nm3+UMxCB8fBa2spV70bU+gSryURPDU6lLk3sC+dh/fJB7TEgEsh5LDnpqBb9cTUqp39PAwiH46zBRHgposkr+sq1xgbIXehf7b7znGNCmDvlilXQ7MoKVUNdDm+vO2++fA6td64sELeSQA5MQvWjhohkmUw5rRLBtfSDjtWaDTrhxsMecH5Re1udNHRpGdYBfM/AZwLOqEYQpgBGM7AxCiKmrDEmmfqovi6VZc3YkKPzU7lr7utX3wcloNiHwTmqwrGb/WNWjaNYLqRSTAXIt7o/N78CK7ZUOexe8wyuy0M2sF1D4GGmZjSI3ccfGs4Z4PJa8bMHDSTQ4aIJls09CXrGW5RmsiJhPV6W0Tne/Q5MkoUdHgVVJdiiiOzgDD4wxESW6u1KxZpOgQZ7CVem0ThvqErcdJMhFSrOIGqO6gFL5PBMwCC+6rB8Bl89vJ1cX/FgHMn4vlTDiW355ZFSjFndvDHY5WBbP9pK/nTL87qfgtZQwxfFWyYCXqoSZNfh/vldvvjIBGu4nSEvEA7AR0vIvVvy+ai1bjHjEam+JhfurVkkc/E+QGGs9BYpJ5QydB3FI+ZLtVMvSe9AN4lv9OcxEQlX3O2hGzGPgacHZa9YlO6ktcDXB1SB78vUjRwYmnCX2a4yaWnIqjBMvPMf8pedHx/GaKYMEUueNb8aIcA6rVZt4r9Ti0uxHITtlJoDD+b49fdjQ8w25oh2azfPBdTau2451Q1vFWsd+oN1760Ek1yS7OlQRvgcE9h2Nz1cN+J5uzST72VikA4XwFKYb4PS7EHlCJLrYFpcTJzaF1djL/BF5qfqTHlNzne+PrvZWYorENecgREVSUdS31au3ged
- 3YECLHXN
- Mav8tsu6pTygvGSO4mcWYzMBy6vCmRwfz0GohpZzGpSIERVxqF9Fh5L5B6yJcNeCZJ+tQUN66EpLgvbIWsox1MMtQHDgDGRluqiUO0iKM/ut4NRZuf4OgMgfReMyY1S7LfQMCX7iJR8JnHX9Yyvons6+JyJxgtdNtoB9KYqNKwAjeAefxwismzqLWZK+X2qTbSNWV6Eg5n84iINTuyFQ+18qdbP7Fb4tIshSqUf1wyjYDZZ8RYERx3c6X8nAWigACPGbDyUXMFk+TLN8=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772469289-301988
+X-HE-Meta: U2FsdGVkX18Z/IPeEymYtqSWYRYPHnXSoZWRPLfq+fTSaRfIbKgMyxS1jl6QTNNttwOb5WzVl9qrp60hMj/4D+gpZXdCf0z2FgBj5CRE4UzSzk5I4TcrWl87IGJ+JktAWDeIHAsZ6E5Kijlrp6/N4VMldRXGF928ONQ6SYaVi1pYvZR/g/iPEZ3slIBqK9CQ3oe0xU3tTpl5daiP+Gz1t5qR1hM0muJVs8ubPdTY305eDA/UN0fkbcluEZtH6TdcwvU4THkvcydWkZ4WB8ZqBrpztpkkP3XG4PVPZyEZT37Vp4KXIDQYjGnxTjGuaO/qPzv45NJFl7aI+P02HBhkNfuQIfS1tjQ0JNZsELHFNixUOrsmvzKDYPQQXsNQ/eZotCjtEQu2ePgPbDEGF9K3ju91+P03ZkNhRGJzU9+EDkyoG5AXcgNyc5VJ5GJFel6pmGykWWHmu+23JO3wpqk/91CFxrOKu0qfizxfZLcqoSaie0zdzsc5x8uT+tZKEs6xwF945iNGOIl8NP7OOCX7+UYWcECP+A1bqkZ0VuyXCTJEpmVw642dCIhzZEKL/KFKFVuAWyAUeGR2+dSQsB6ck9Fc70QSRH1wpxsfeCkc01ZEQPwoPoKm+FrMfUEu+xgcwNVaG27X2o5j50zBJnJTrAHxd0EO8ds50zDYV5OUGigd3ut67VOqbZglrmIBTS4Wm/GgmOvGXbUuuSdhANDi8C2WmGs6jM4wD6aihWcTKRmVW0CL0vojz3c6Pmb375qJg2TjCY0Tt1sc27ROcdHgrmBqbCIRhFH0qf1Pg6/SWZkTuuSmYHRfbdtYFSxhiFtWdk2eRH5G5F2Z66DANbdGLozieIw0pVRb/hT0VzhLpV/ANekh8uL+6hS8a8vaQqwKv8BhXT3YoiKBHDhbEEOqJGuYjGYZNX+ABxnxLc5FrW8lWCsbHM5lwO2UliZGKfRpyK9MsCkQfJ8aQ1SiANP
+ tC4uIVSg
+ KoMz3G2ZgtbtHXhmsa1Wg0EEudh0wJoZsg6JxbukhcobfDkgF3/z4tXL+stvoB1nOUefL6dEa2/tB01FsFy+UarZ/qvKjognyRronjxwLY0nR6B24mZI81/tHlfu0k2te2PY8xAyrzQfwhQ3t8v6kKqABwDettgVdJ/KTeJYMiFm7A5TMfWQC04jp0iTM1xXjlkAEc6ayr7TAiNsjWl7Sj6YLGUrhXtgg6K9yzG8oEB7L0V/HNZUdObli3NfPKLqSuHkYIX4p83q7OqmxoJbaIWdDfwvfp8KZaI28aZgie801g6WUxNqLIs2+i84007Cz0JcbFmjGr4foi7V9vPEKumIwl45gV76CkRTUbr6E+GN99ajWVa6+lijpvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,290 +169,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that the two-pass notifier flow uses xe_vma_userptr_do_inval() for
-the fence-wait + TLB-invalidate work, extend it to support a further
-deferred TLB wait:
+On 2 Mar 2026, at 9:40, David Hildenbrand (Arm) wrote:
 
-- xe_vma_userptr_do_inval(): when the embedded finish handle is free,
-  submit the TLB invalidation asynchronously (xe_vm_invalidate_vma_submit)
-  and return &userptr->finish so the mmu_notifier core schedules a third
-  pass.  When the handle is occupied by a concurrent invalidation, fall
-  back to the synchronous xe_vm_invalidate_vma() path.
+> On 2/28/26 02:06, Zi Yan wrote:
+>> During a pagecache folio split, the values in the related xarray should not
+>> be changed from the original folio at xarray split time until all
+>> after-split folios are well formed and stored in the xarray. Current use
+>> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+>> show up at wrong indices in the xarray. When these misplaced after-split
+>> folios are unfrozen, before correct folios are stored via __xa_store(), and
+>> grabbed by folio_try_get(), they are returned to userspace at wrong file
+>> indices, causing data corruption.
+>>
+>> Fix it by using the original folio in xas_try_split() calls, so that
+>> folio_try_get() can get the right after-split folios after the original
+>> folio is unfrozen.
+>>
+>> Uniform split, split_huge_page*(), is not affected, since it uses
+>> xas_split_alloc() and xas_split() only once and stores the original folio
+>> in the xarray.
+>
+> Could we make both code paths similar and store the original folio in
+> both cases?
 
-- xe_vma_userptr_complete_tlb_inval(): new helper called from
-  invalidate_finish when tlb_inval_submitted is set.  Waits for the
-  previously submitted batch and unmaps the gpusvm pages.
+Sure.
 
-xe_vma_userptr_invalidate_finish() dispatches between the two helpers
-via tlb_inval_submitted, making the three possible flows explicit:
+>
+> IIUC, the __xa_store() is performed unconditionally after
+> __split_unmapped_folio().
+>
+> I'm wondering, though, about the "new_folio->index >= end" case.
+> Wouldn't we leave some stale entries in the xarray? But that handling
+> has always been confusing to me :)
 
-  pass1 (fences pending)  -> invalidate_finish -> do_inval (sync TLB)
-  pass1 (fences done)     -> do_inval -> invalidate_finish
-                          -> complete_tlb_inval (deferred TLB)
-  pass1 (finish occupied) -> do_inval (sync TLB, inline)
+IIUC, __filemap_remove_folio() calls page_cache_delete(), which overwrites
+that stale entries with shadow, which is NULL here.
 
-In multi-GPU scenarios this allows TLB flushes to be submitted on all
-GPUs in one pass before any of them are waited on.
 
-Also adds xe_vm_invalidate_vma_submit() which submits the TLB range
-invalidation without blocking, populating a xe_tlb_inval_batch that
-the caller waits on separately.
-
-Assisted-by: GitHub Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- drivers/gpu/drm/xe/xe_userptr.c | 60 +++++++++++++++++++++++++++------
- drivers/gpu/drm/xe/xe_userptr.h | 18 ++++++++++
- drivers/gpu/drm/xe/xe_vm.c      | 38 ++++++++++++++++-----
- drivers/gpu/drm/xe/xe_vm.h      |  2 ++
- 4 files changed, 99 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
-index 440b0a79d16f..a62b796afb93 100644
---- a/drivers/gpu/drm/xe/xe_userptr.c
-+++ b/drivers/gpu/drm/xe/xe_userptr.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/mm.h>
- 
-+#include "xe_tlb_inval.h"
- #include "xe_trace_bo.h"
- 
- /**
-@@ -73,8 +74,8 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
- 				    &ctx);
- }
- 
--static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
--				    bool is_deferred)
-+static struct mmu_interval_notifier_finish *
-+xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma, bool is_deferred)
- {
- 	struct xe_userptr *userptr = &uvma->userptr;
- 	struct xe_vma *vma = &uvma->vma;
-@@ -84,12 +85,23 @@ static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvm
- 	};
- 	long err;
- 
--	err = dma_resv_wait_timeout(xe_vm_resv(vm),
--				    DMA_RESV_USAGE_BOOKKEEP,
-+	err = dma_resv_wait_timeout(xe_vm_resv(vm), DMA_RESV_USAGE_BOOKKEEP,
- 				    false, MAX_SCHEDULE_TIMEOUT);
- 	XE_WARN_ON(err <= 0);
- 
- 	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
-+		if (!userptr->finish_inuse) {
-+			/*
-+			 * Defer the TLB wait to an extra pass so the caller
-+			 * can pipeline TLB flushes across GPUs before waiting
-+			 * on any of them.
-+			 */
-+			userptr->finish_inuse = true;
-+			userptr->tlb_inval_submitted = true;
-+			err = xe_vm_invalidate_vma_submit(vma, &userptr->inval_batch);
-+			XE_WARN_ON(err);
-+			return &userptr->finish;
-+		}
- 		err = xe_vm_invalidate_vma(vma);
- 		XE_WARN_ON(err);
- 	}
-@@ -98,6 +110,24 @@ static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvm
- 		userptr->finish_inuse = false;
- 	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
- 			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
-+	return NULL;
-+}
-+
-+static void
-+xe_vma_userptr_complete_tlb_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma)
-+{
-+	struct xe_userptr *userptr = &uvma->userptr;
-+	struct xe_vma *vma = &uvma->vma;
-+	struct drm_gpusvm_ctx ctx = {
-+		.in_notifier = true,
-+		.read_only = xe_vma_read_only(vma),
-+	};
-+
-+	xe_tlb_inval_batch_wait(&userptr->inval_batch);
-+	userptr->tlb_inval_submitted = false;
-+	userptr->finish_inuse = false;
-+	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
-+			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
- }
- 
- static struct mmu_interval_notifier_finish *
-@@ -141,13 +171,11 @@ xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
- 	 * If it's already in use, or all fences are already signaled,
- 	 * proceed directly to invalidation without deferring.
- 	 */
--	if (signaled || userptr->finish_inuse) {
--		xe_vma_userptr_do_inval(vm, uvma, false);
--		return NULL;
--	}
-+	if (signaled || userptr->finish_inuse)
-+		return xe_vma_userptr_do_inval(vm, uvma, false);
- 
-+	/* Defer: the notifier core will call invalidate_finish once done. */
- 	userptr->finish_inuse = true;
--
- 	return &userptr->finish;
- }
- 
-@@ -193,7 +221,15 @@ static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish
- 		xe_vma_start(vma), xe_vma_size(vma));
- 
- 	down_write(&vm->svm.gpusvm.notifier_lock);
--	xe_vma_userptr_do_inval(vm, uvma, true);
-+	/*
-+	 * If a TLB invalidation was previously submitted (deferred from the
-+	 * synchronous pass1 fallback), wait for it and unmap pages.
-+	 * Otherwise, fences have now completed: invalidate the TLB and unmap.
-+	 */
-+	if (uvma->userptr.tlb_inval_submitted)
-+		xe_vma_userptr_complete_tlb_inval(vm, uvma);
-+	else
-+		xe_vma_userptr_do_inval(vm, uvma, true);
- 	up_write(&vm->svm.gpusvm.notifier_lock);
- 	trace_xe_vma_userptr_invalidate_complete(vma);
- }
-@@ -231,7 +267,9 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
- 
- 	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
- 	if (finish)
--		xe_vma_userptr_do_inval(vm, uvma, true);
-+		finish = xe_vma_userptr_do_inval(vm, uvma, true);
-+	if (finish)
-+		xe_vma_userptr_complete_tlb_inval(vm, uvma);
- }
- #endif
- 
-diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
-index 4f42db61fd62..7477009651c2 100644
---- a/drivers/gpu/drm/xe/xe_userptr.h
-+++ b/drivers/gpu/drm/xe/xe_userptr.h
-@@ -14,6 +14,8 @@
- 
- #include <drm/drm_gpusvm.h>
- 
-+#include "xe_tlb_inval_types.h"
-+
- struct xe_vm;
- struct xe_vma;
- struct xe_userptr_vma;
-@@ -63,6 +65,15 @@ struct xe_userptr {
- 	 * Protected by @vm::svm.gpusvm.notifier_lock.
- 	 */
- 	struct mmu_interval_notifier_finish finish;
-+
-+	/**
-+	 * @inval_batch: TLB invalidation batch for deferred completion.
-+	 * Stores an in-flight TLB invalidation submitted during a two-pass
-+	 * notifier so the wait can be deferred to a subsequent pass, allowing
-+	 * multiple GPUs to be signalled before any of them are waited on.
-+	 * Protected by @vm::svm.gpusvm.notifier_lock.
-+	 */
-+	struct xe_tlb_inval_batch inval_batch;
- 	/**
- 	 * @finish_inuse: Whether @finish is currently in use by an in-progress
- 	 * two-pass invalidation.
-@@ -70,6 +81,13 @@ struct xe_userptr {
- 	 */
- 	bool finish_inuse;
- 
-+	/**
-+	 * @tlb_inval_submitted: Whether a TLB invalidation has been submitted
-+	 * via @inval_batch and is pending completion.  When set, the next pass
-+	 * must call xe_tlb_inval_batch_wait() before reusing @inval_batch.
-+	 * Protected by @vm::svm.gpusvm.notifier_lock.
-+	 */
-+	bool tlb_inval_submitted;
- 	/**
- 	 * @initial_bind: user pointer has been bound at least once.
- 	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 7f29d2b2972d..fdad9329dfb4 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -3967,20 +3967,23 @@ void xe_vm_unlock(struct xe_vm *vm)
- }
- 
- /**
-- * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without a lock
-+ * xe_vm_invalidate_vma_submit - Submit a job to invalidate GPU mappings for
-+ * VMA.
-  * @vma: VMA to invalidate
-+ * @batch: TLB invalidation batch to populate; caller must later call
-+ *         xe_tlb_inval_batch_wait() on it to wait for completion
-  *
-  * Walks a list of page tables leaves which it memset the entries owned by this
-- * VMA to zero, invalidates the TLBs, and block until TLBs invalidation is
-- * complete.
-+ * VMA to zero, invalidates the TLBs, but doesn't block waiting for TLB flush
-+ * to complete, but instead populates @batch which can be waited on using
-+ * xe_tlb_inval_batch_wait().
-  *
-  * Returns 0 for success, negative error code otherwise.
-  */
--int xe_vm_invalidate_vma(struct xe_vma *vma)
-+int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch)
- {
- 	struct xe_device *xe = xe_vma_vm(vma)->xe;
- 	struct xe_vm *vm = xe_vma_vm(vma);
--	struct xe_tlb_inval_batch _batch;
- 	struct xe_tile *tile;
- 	u8 tile_mask = 0;
- 	int ret = 0;
-@@ -4023,14 +4026,33 @@ int xe_vm_invalidate_vma(struct xe_vma *vma)
- 
- 	ret = xe_tlb_inval_range_tilemask_submit(xe, xe_vma_vm(vma)->usm.asid,
- 						 xe_vma_start(vma), xe_vma_end(vma),
--						 tile_mask, &_batch);
-+						 tile_mask, batch);
- 
- 	/* WRITE_ONCE pairs with READ_ONCE in xe_vm_has_valid_gpu_mapping() */
- 	WRITE_ONCE(vma->tile_invalidated, vma->tile_mask);
-+	return ret;
-+}
-+
-+/**
-+ * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without a lock
-+ * @vma: VMA to invalidate
-+ *
-+ * Walks a list of page tables leaves which it memset the entries owned by this
-+ * VMA to zero, invalidates the TLBs, and block until TLBs invalidation is
-+ * complete.
-+ *
-+ * Returns 0 for success, negative error code otherwise.
-+ */
-+int xe_vm_invalidate_vma(struct xe_vma *vma)
-+{
-+	struct xe_tlb_inval_batch batch;
-+	int ret;
- 
--	if (!ret)
--		xe_tlb_inval_batch_wait(&_batch);
-+	ret = xe_vm_invalidate_vma_submit(vma, &batch);
-+	if (ret)
-+		return ret;
- 
-+	xe_tlb_inval_batch_wait(&batch);
- 	return ret;
- }
- 
-diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
-index 62f4b6fec0bc..0bc7ed23eeae 100644
---- a/drivers/gpu/drm/xe/xe_vm.h
-+++ b/drivers/gpu/drm/xe/xe_vm.h
-@@ -242,6 +242,8 @@ struct dma_fence *xe_vm_range_unbind(struct xe_vm *vm,
- 
- int xe_vm_invalidate_vma(struct xe_vma *vma);
- 
-+int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch);
-+
- int xe_vm_validate_protected(struct xe_vm *vm);
- 
- static inline void xe_vm_queue_rebind_worker(struct xe_vm *vm)
--- 
-2.53.0
-
+Best Regards,
+Yan, Zi
 
