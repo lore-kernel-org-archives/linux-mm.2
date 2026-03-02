@@ -4,97 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450E9EA4E1D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A968EA4E20
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:14:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AB4E6B0089; Mon,  2 Mar 2026 10:11:46 -0500 (EST)
+	id F1A4C6B0092; Mon,  2 Mar 2026 10:14:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 962696B008A; Mon,  2 Mar 2026 10:11:46 -0500 (EST)
+	id EC7F96B0093; Mon,  2 Mar 2026 10:14:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 881A26B0092; Mon,  2 Mar 2026 10:11:46 -0500 (EST)
+	id DF13E6B0095; Mon,  2 Mar 2026 10:14:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71F256B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:11:46 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1633556E57
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:11:46 +0000 (UTC)
-X-FDA: 84501462612.14.DF607C0
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B0FF5180011
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:11:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oT5+jyWw;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CC5816B0092
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:14:00 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86AE91A0173
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:14:00 +0000 (UTC)
+X-FDA: 84501468240.09.91734F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DB0E3A0009
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:13:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KHCLrJMt;
+	spf=pass (imf25.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772464304;
+	s=arc-20220608; t=1772464438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jXXw9BNPUOHdywM1sGGDpV4CuKnSXirRfOqdKTWATAU=;
-	b=NWe/V2KjYDIop4AR4ab0rQ7XDPYzo1yBytQ6Dpy3xRuebZ3fLqIFtEQ9Qv/BoGUhGXVHjk
-	OF/FPFJtAeO77qLzz7aBcNGz60OSlAcTbm7tAsWntdlVlSDIrxgY7Lsr8ePr74plylNLzD
-	sfCsLTrcdtmC9qYvmTEry6vm5pihu44=
+	bh=j3V4BahR7IXzqVuDDXZOzgcPmItK9Mg1ehBV/s23e24=;
+	b=lg+lNsHzt/YGmKZ5Uhxt109tQoX36waUwcHX+ZqcXsWCXFO0u9n/uU3SPK0E64pF/Qh7nC
+	nxCN2Ia6wa4rsrugFaVceQc0wmzJMFBAuc6rOg+iooy8GVCFKmLtWnuWuc9ENcMfixd+T2
+	I6nsgU+Zv0eybOyUUEEOhs8GjS4S4AA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oT5+jyWw;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772464304; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KHCLrJMt;
+	spf=pass (imf25.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772464438; a=rsa-sha256;
 	cv=none;
-	b=Ox9AFyUr1cOG5UGmXU2NO5r7w46RVEYkQhY7Grz2iOWeu3aOsiA3YosPdKBiHYrCJ6h3wY
-	JHvdvJ0DpiImEf6D2kyZxLfbHD1u1zc3NTbWgt1w7cDc+nAVxKg66oIA0+J1Z8ZUO3LQz6
-	qwKeV7jV9FOONEi9N+RrqOTNNYsVEbU=
-Message-ID: <6a568d3c-daf3-46ba-a3ce-0a0deca824c2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772464301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jXXw9BNPUOHdywM1sGGDpV4CuKnSXirRfOqdKTWATAU=;
-	b=oT5+jyWwG/YxILKJmwFoom9NuVkMPFACb21bQYP02+BuJNutRR82NYY4ImmIDBhgFQ/5gR
-	sfpjsJtrYJFEB8GJg9Fx1BbwjJqXGIgL+gQPoU7+5lJI75HtJA2X/KGCd0sgCBDh2FnPzG
-	hZGcZvbRoFHZQzg6m6SI1Dz7B6yg2fE=
-Date: Mon, 2 Mar 2026 23:11:27 +0800
+	b=W1P1oRgS/s1vPLOuClJe693NJ62rQotKwoFcgtk0e62I7LziMrHt35fE/EEEav377DWo1N
+	5qNjfmGvrxcfhVEhtNpDuFhLS4g1FnPzDDGzrdyp4S022RG1PjxqRw5nuOr8sez7mnXo+4
+	Ax1/MC8EeRc1jOyDn/qDuh9f8SZ1OeA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 324B060126;
+	Mon,  2 Mar 2026 15:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B513C2BCB1;
+	Mon,  2 Mar 2026 15:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772464437;
+	bh=ZT8Rkh38N7Xs6QE7w/qwKyFa7Or8QcWXgoC+H2FSYno=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KHCLrJMtDlAuGbl+p9NZXrjPBzr9DU93OV5tKLUwLKX1GhQRgFht2Myh7tGEoXijm
+	 3DmuG0VjGCj3WTyGOKhHj8Mj0eEnJMA8RSc8cnDq+NHTaknL9rqXA5kFObpZuxST8R
+	 7v6Z60RMtQEh5tDV0XE8VqLpAMKK38Kmki8zwQgtv+XZVMmxvnLrWa3c3+ksP6x3tb
+	 HVo9q3rV74RKGMa65eexLpHF3v/Ce4ZtuWfNaF53mNDhsO/9uIvZd4z+5tjTZN6bIF
+	 1KJwhXRHHkQWtVjijbVMSD7Sz5uPjnIwFL3pVn1ciQGSWEa5NhMQDVkOSJRKeZxhnt
+	 gfe06uGc1kIMw==
+Date: Mon, 2 Mar 2026 10:13:56 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>, Zi Yan <ziy@nvidia.com>,
+	Gavin Guo <gavinguo@igalia.com>
+Subject: Re: VM_BUG_ON_VMA in split_huge_pmd_locked: huge PMD doesn't cover
+ full VMA range
+Message-ID: <aaWpNEeZgWRE8k7T@laps>
+References: <aZ78kFBEA2SjgT93@laps>
+ <24cbde8e-53b1-48bb-b44d-2b4bdc674d55@kernel.org>
+ <9e273ce7-8471-495c-a344-d9bf61cb808c@lucifer.local>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
- folio_try_get()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260228010614.2536430-1-ziy@nvidia.com>
- <d9e30bef-621f-444a-a1b0-510c50927d9b@linux.dev>
- <64fa6a73-8952-4ee1-b7c3-8b0ebef3ea78@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <64fa6a73-8952-4ee1-b7c3-8b0ebef3ea78@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: B0FF5180011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: a1i1kqkgyruincprffanpxsjiwo898pa
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9e273ce7-8471-495c-a344-d9bf61cb808c@lucifer.local>
 X-Rspam-User: 
-X-HE-Tag: 1772464303-708003
-X-HE-Meta: U2FsdGVkX1/tSYJ/X6J+0Ve9V3lpK9tT/cxsOIMkaTlUg0Wo9NvCAIwshILLpbTHIITw/t6fylnKedWXi5yYwmZsnjapeI1r/OASVOtuNmgmYjLPqvClsGhxhZOwgpM1sRCA1LtOFUi2jSAu11BW/iJlB1IUdN4tz8HMqUIEfVQ+dWiqXT994nYqICLcmfNNYosCVwgxN3jymbXqyGWzyOEa8TFtakhjioZ5z1LgXY5F6UljCy0LGyiwX6Ea6iPj8anmA6y0ogc9ZD9vvXT5Eg5Pn2x17q055iOiwp9Ekjs19rwFO6bnV8m6vxbMitBxUr4KKUwubRf5WKhrgcpwnMoHxrMFj0IF1fNVG6jX6RthALmvb5D5i1xv3jSirRlJGn5Kpg3uvs/Ig2kJFnXN4/BLnPRznpNEAeghPfGtWjM0B6az99h+2nnDVTf10I3UcfcQdL6m6Ke88eTW5U8iHoAVoHTZMo9Qt1SyZJ3zAa2PMMasTT/fd5e78rIPbEV1u6Y+pTIMH5nBhLaXSS/OT4GF8VIk0Vcgur8SM7MSU1OPLKUO+cqE7JkYUU9b1lmaoHNxXYQuLGqhao4ibOb6WvQ45Ilu2Quq771BNbT0rFGBfzv+VySybMtIET9eS9WtRFqYONP+VFES80KehPGkiDX7mQPC35zevH3rSv6LXRodNZMnbYsuogTvkNvngaphqYg2E7+VkgNZ+mARbAIQ2wAlciKTEUo8d6f1kcw2RlC0XOcVOZpIQX6OQ5/jcxNXR9Xgnsk+l/eqTDFO1PawyXWwnzGOsndOqMt8Tz5Dvbw81D2jDuQluTB+RnlAeKI0pcReBlXdPYNsAVPEHUSkXN/A+Lh2pSiVqQ7Jl50hbpGw0AryX8JY+YaX3kikD8t6tC7lF3SJkgoIdEqz5fJub5/vitMyD3ZCkSwz+5JlWPWxcycj3tCGyDxPSVlfBrXUctXR54KbNvUL19WX8eh
- UWIobPKa
- 4s8hpT8hBg/z5Ytte7n3+zIcY50DkAu/I4UcDJ8t91FBOrzSTjvxLpFTfVhNLnEeePyo71f6kYrR+v3HS7L+VYtdjW1BmvNLQg1uQO9MCykG1phEmz5Zrdr596QDaizbdzpVlOCc1EmPZg6SzNMb27SRLS0w+v2QhVWK/5DveiwC+GPVHiSae8uMMUB+pi1RZZ6Nxo9N2NvQgqMIvNVhHBVtmzRvbUuRH0k3E2pENBPTE+l99Y9DJ4m1qlrC9SWugKGRUTR9kgOUnJ7ci63A25dNR6+YQYVC4kFMSmK/mYzeRCuqLkPVhZLhM6pTMr7TSjZ0jaxR28njucLuJL2lrnG6+RUjTlpHSyrpHoh5OV3hIlej984oAUaA7o7zFgckTL2EAUTC1j44u8Gnd1h/dKXdAXm+XPnvIxrw7
+X-Rspamd-Queue-Id: DB0E3A0009
+X-Rspamd-Server: rspam08
+X-Stat-Signature: xzmp18deqnh7mp48mghfhk7bh67e87q4
+X-HE-Tag: 1772464438-14179
+X-HE-Meta: U2FsdGVkX1+xELO3tLIOzbKsYdE+41IpPjch1Job3vOgNNyCBhu5eNNlX5JeDyTi58gYRG8orXeg2NnV15TI/iSLTbyaBgsHVs4bE5HTCNT/sIgZ35vOgEl1t/4nu50xRXHD23jxY3Qwlnr7PMGlyd7p8yzBF+IyFaTfMG/x1iFosfn1ao8qDYcZRkNxco4jN+6UyHf7a5vyf0asf5VyhNSIzhSRLoOr/k0QkR4fYXnKrnxrurd19Pw0RX0iI7Id2HMsyn4vwbCvM3clzBf13tMlEvaEnL9OFp7nVnSwJO4DQhGgSQL6SxWb42RNK3qLDQ/M9g8KgrsOWGIyk63iXxNgM8KIErvkCzGBXZDFfFzyODWTVhJRRBrYhhkRgz1VYzK61YudT6wZTn9NuO5SGMacCs4cr+GKs2NIVVPCLb9HK2Zbkb8qr7pwwjCY6dDKIVqcmuyrS0gGKrrX+7gQNory+k6gwW9tYuKutGaVgZYkn04fyhsu51DcihbK7UD1rxsGHAwcoLaNO8P561QN6v0mUndVk4GooYon+k4QQUkQVU2RW8e9mTUe8MfSTyranurU7VRA4brgongjM+ErFUrFrwE7tAjHTBDAHcHhuy5hTAYWg6u/O9IT0EFMzjccYYR6Ab189mUPs43uQjFIBi7y+9oftb17D3QBNuR0cPlw0nJdqj37FHaBIWet34rtp9xr6gRzf1GPTKceHfMRyOvKT2SyxeUWhWRHOZhrDwYed9IiXhZRQp5mtvHt2HV+wAqSn6gMvTGXKZ48rYR9lencPXkWUO5QeCFh8TJzeg31CaCmxazxtvVlVNLbhm/59Yg0Nf/OG/vCHKLX6skMGo1PdBtXyjYB5JDseXbCGJTPu+qLp3clKi+/sZMGo9JB5lFazpKKirNgfLCFyHjfhnorVX1Esl2G68B5k6h/0YLSF5Y5kZedBf7WusRH2aBGVj00nlyd9PHelbjQuUq
+ mCTW7i12
+ 7uKq9pVXty3Uw5KfKH5mXphBu+G0XeGz+lfwN476w4Aa05EUaWFesdWjFqvzQEvbYvG78hqjdhicSQjnfzK3Lxj+0hAtT/ZQ7vwxVn0OO8QgQiqP+vpMVR9xrzi9xJJUxHJ09lz624LBaYKreynp1YOt6vi7Uj5BAQJTq52lBczVFDyqa/ggHfaXD2g2RTSB6F0+s8VcqC1bHbPv4hyvCaHmWlpBpwN5vcrmeoIxarNNStnxH+/pK/UlD1un0KPtN1rE03luB2kwgDyvgMrh/OVxWNdk8qp4RoE3MylYdqIk/28cL9ou86H0XEiK3NEn6po0x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,61 +98,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/3/2 22:28, David Hildenbrand (Arm) wrote:
-> On 2/28/26 04:10, Lance Yang wrote:
+On Mon, Mar 02, 2026 at 10:57:47AM +0000, Lorenzo Stoakes wrote:
+>On Wed, Feb 25, 2026 at 02:50:16PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/25/26 14:43, Sasha Levin wrote:
+>> > Hi,
+>> >
+>> > I've been playing around with improvements to syzkaller locally, and hit
+>> > the
+>> > following crash on v7.0-rc1:
+>> >
+>> >   vma ffff888109f988c0 start 0000555580cc0000 end 0000555580ce2000 mm
+>> > ffff8881048e1780
+>> >   prot 8000000000000025 anon_vma ffff88810b20f100 vm_ops 0000000000000000
+>> >   pgoff 555580cc0 file 0000000000000000 private_data 0000000000000000
+>> >   refcnt 1
+>> >   flags: 0x100073(read|write|mayread|maywrite|mayexec|account)
+>> >   ------------[ cut here ]------------
+>> >   kernel BUG at mm/huge_memory.c:2999!
+>> >   Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>> >   CPU: 3 UID: 0 PID: 15162 Comm: syz.7.3120 Tainted: G
+>> > N  7.0.0-rc1-00001-gc5447a46efed #51 PREEMPT(full)
+>> >   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-
+>> > debian-1.17.0-1 04/01/2014
+>> >   RIP: 0010:split_huge_pmd_locked+0x11a0/0x2f80
+>> >   RSP: 0018:ffff888053cc7338 EFLAGS: 00010282
+>> >   RAX: 0000000000000126 RBX: ffff888109f988d0 RCX: 0000000000000000
+>> >   RDX: 0000000000000126 RSI: 0000000000000000 RDI: ffffed100a798e43
+>> >   RBP: 0000555580cc0000 R08: ffffffffa3e62775 R09: 0000000000000001
+>> >   R10: 0000000000000005 R11: 0000000000000000 R12: 0000000000000080
+>> >   R13: 0000000000000000 R14: 0000555580c00000 R15: ffff888109f988c0
+>> >   FS:  0000000000000000(0000) GS:ffff88816f701000(0000)
+>> > knlGS:0000000000000000
+>> >   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> >   CR2: 00007fe2ac1907a0 CR3: 0000000021c91000 CR4: 0000000000750ef0
+>> >   PKRU: 80000000
+>> >   Call Trace:
+>> >    <TASK>
+>> >    __split_huge_pmd+0x201/0x350
+>> >    unmap_page_range+0xa6a/0x3db0
+>> >    unmap_single_vma+0x14b/0x230
+>> >    unmap_vmas+0x28f/0x580
+>> >    exit_mmap+0x203/0xa80
+>> >    __mmput+0x11b/0x540
+>> >    mmput+0x81/0xa0
+>> >    do_exit+0x7b9/0x2c60
+>> >    do_group_exit+0xd5/0x2a0
+>> >    get_signal+0x1fdc/0x2340
+>> >    arch_do_signal_or_restart+0x93/0x790
+>> >    exit_to_user_mode_loop+0x84/0x480
+>> >    do_syscall_64+0x4df/0x700
+>> >    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>> >    </TASK>
+>> >   Kernel panic - not syncing: Fatal exception
+>> >
+>> > The assertion VM_BUG_ON_VMA(vma->vm_start > haddr, vma) fires at
+>> > mm/huge_memory.c:2999 because a huge PMD exists at PMD-aligned address
+>> > 0x555580c00000 but the VMA only covers [0x555580cc0000, 0x555580ce2000):
+>> > a 136KB region starting 816KB past the PMD base.
 >>
+>> Do you have a reproducer and would this trigger before v7.0-rc1?
 >>
->> On 2026/2/28 09:06, Zi Yan wrote:
->>> During a pagecache folio split, the values in the related xarray
->>> should not
->>> be changed from the original folio at xarray split time until all
->>> after-split folios are well formed and stored in the xarray. Current use
->>> of xas_try_split() in __split_unmapped_folio() lets some after-split
->>> folios
->>> show up at wrong indices in the xarray. When these misplaced after-split
->>> folios are unfrozen, before correct folios are stored via
->>> __xa_store(), and
->>> grabbed by folio_try_get(), they are returned to userspace at wrong file
->>> indices, causing data corruption.
->>>
->>> Fix it by using the original folio in xas_try_split() calls, so that
->>> folio_try_get() can get the right after-split folios after the original
->>> folio is unfrozen.
->>>
->>> Uniform split, split_huge_page*(), is not affected, since it uses
->>> xas_split_alloc() and xas_split() only once and stores the original folio
->>> in the xarray.
->>>
->>> Fixes below points to the commit introduces the code, but
->>> folio_split() is
->>> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
->>> truncate operation").
->>>
->>> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used)
->>> functions for folio_split()")
->>> Reported-by: Bas van Dijk <bas@dfinity.org>
->>> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-
->>> sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> Cc: <stable@vger.kernel.org>
->>> ---
->>
->> Thanks for the fix!
->>
->> I also made a C reproducer and tested this patch - the corruption
->> disappeared.
-> 
-> Should we link that reproducer somehow from the patch description?
+>> Lorenzo did some changes around anon_vma locking recently, maybe related
+>> to that.
+>
+>A quick glance doesn't suggest any changes I made should have had an impact
+>here.
+>
+>_Should have_ :)
+>
+>I think without a reproducer this is going to be hard to pinpoint. Hopefully
+>syzbot proper should figure one out eventually?
 
-Yes, the original reproducer provided by Bas is available here[1].
+So no luck just yet.
 
-Regarding the C reproducer, Zi plans to add it to selftests in a
-follow-up patch (as we discussed off-list).
+I did hit a different issue, which the LLM was able to triage, and I'm running
+with the patch right now to make sure that the issue doesn't reproduce.
 
-[1] https://github.com/dfinity/thp-madv-remove-test
+I'm not sure if it's related or not, but I'll send the WIP patch as a reply.
 
-Cheers,
-Lance
+-- 
+Thanks,
+Sasha
 
