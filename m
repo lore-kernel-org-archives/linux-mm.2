@@ -4,116 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3869EB3632
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6652EEB3631
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07A4B6B0005; Mon,  2 Mar 2026 14:48:42 -0500 (EST)
+	id B59836B0089; Mon,  2 Mar 2026 14:52:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 027D96B0088; Mon,  2 Mar 2026 14:48:41 -0500 (EST)
+	id ADCCE6B008A; Mon,  2 Mar 2026 14:52:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E68EF6B0089; Mon,  2 Mar 2026 14:48:41 -0500 (EST)
+	id 9BE106B0092; Mon,  2 Mar 2026 14:52:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D65CF6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:48:41 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AEB481B7219
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:48:41 +0000 (UTC)
-X-FDA: 84502160442.03.D4135FF
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	by imf05.hostedemail.com (Postfix) with ESMTP id BBC28100004
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:48:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="gxeJppu/";
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772480919;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Puy9yrqJbk0e9aaEAb6IkFimwFJOtZJS6lRexavpIMI=;
-	b=8PWBHx5BM4c/g3g24pTbkg1dMTuup6Of4CzzrOwJMTa5ATMv4CodN3G3B/IRCtdEI8P3L1
-	prWQ8G7rourRlpXFhaCPfmCm3J6uHYYL9YIDVseBJdO4Z0Z6eTVmXGRlYVuLiFBtLsPuTG
-	+yunlznkjwLAPauZPL4E/OCzb00pLDI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="gxeJppu/";
-	spf=pass (imf05.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.180 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772480919; a=rsa-sha256;
-	cv=none;
-	b=YGu9QtCg9Lv4HMoN6/g0xN8FIaRKFyRp8M+THRhQU7/Ag016i7C5hVOKPYjQffS5OgOzOO
-	yk4brWknBkizEn9I9mqyccwCv62XG1bTj2fhJRX/Y7vm59BEYiLkqdTHuvqiCRxXi912YK
-	yG69zZfw30MJNwiLWO3vO2kJVh9C+mw=
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4645dde00a7so6139147b6e.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772480918; x=1773085718; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Puy9yrqJbk0e9aaEAb6IkFimwFJOtZJS6lRexavpIMI=;
-        b=gxeJppu/68tgQio8uKEl76MiiKT5kdhtXl6b5LvZFdPa28EM5Cxepo18k7Ye+dG8zD
-         DJB2tUP7U/4YMoXLqpSbybalrUq4r7j3FiFhoOO9Oo7QglAvaGCQOD3deRb61Ntb3NJv
-         y97x7uq5a7yhbf4VGgqtrEMhxVeGuibUeAQUBFa8tSIe/QGKW84LjhXmES4AKisjsotd
-         kzmU8diyjRk2an13TuUhkuNVFCC8rDeWzW1Ek0Po6Hh85uM/Mbv086l9cCF5/7RjjFre
-         bU2baaAT7ezRHBA4vv4VkxYJ/bnD9dScCXnQMJarkmWg49TGu/LfxrPsFk8uvRJItP6c
-         lZkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772480918; x=1773085718;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Puy9yrqJbk0e9aaEAb6IkFimwFJOtZJS6lRexavpIMI=;
-        b=mZUroWKDaRnrFpceK9ihZpcmcaqxM0TXJhtH7YQTyXj7cOSJVuQNWvhZfCYfQhU8CX
-         EURL1ypocIk268WoLNT8+gqjlHOmPxgEj5nqLozpTiKdSHzr1ye76SGmbrQDhXJS/W56
-         MoFONQiq3mI90Q8p8kCLCOZs91mIyoAgKDpjm6OrWrNoSX0YGjpRI8GjFACRpp+UT7Zz
-         cP0xQ219CiVqaqlkjAvttl6VLcx0GGIFZCVoWTo4JJzwtiH61pfZd08BV140pmTWiJkd
-         vGdRLKnvAAKfhREG1ozKMIzAXQGIYNF6SQ2/a4/Rvica1weOYUNiv3orbZLYArtq4/nd
-         SP4g==
-X-Forwarded-Encrypted: i=1; AJvYcCW6QRgCWMFnFjmlc5jmoQT7xaAs2vKoXQ/JuDZbMqBN6W2AyreZJQZfwSGK/wmnfPgd9d38tsQwjw==@kvack.org
-X-Gm-Message-State: AOJu0YzpU3h6qQrlb5deNEYGgWtZCDFZcXcy6xRP8EhripkPfWIh8RBE
-	2g6iuMFIXh3YBXkjBk43FInHNMcw8vjjc5+5FlLk/BCCHSHcEZHHVoAf
-X-Gm-Gg: ATEYQzzZh7VyJLx/D0omdXkCUzrVmgJNqIzM/l4y9MOLDSFfAy7/cBPJcIgt3lsbwlo
-	FMdv/2fmA21Wtyu04giBxKE2/6EGnQyQyxujpAt+I3mDIVbunDgb5oFytDQJ7lFvLepaPFneJpq
-	QopLF18kzptsUdXDo8k01l4heEuVmqTIpGJDbKNMawO6PDGeZbWxdrm8Wm+vBcfbUtGDbuwBVl0
-	xItWDv6PAlMVC8PN5UJxWLU+MBcP6DIAKY552rNA9TMh0xFBgrSPNJ3A69fXBtoHqp+3PZaw4fr
-	1SlgE9FHjSX6t93qxKQq+dnSgrt4LIHxHzrAQ3TWtjL1dRt+HXetHvXuPbk7bKd4HzEVzQSJKaU
-	416v7f7rWcMfQ68Zs5+gXTwK0WYe2NNFOioO6Rl5cyL92I5OaJxPXyLf7UHp9CdRocY0CZHGPsH
-	kI6809LCKDJM9QqzRqKZN+FQ==
-X-Received: by 2002:a05:6808:6601:b0:450:b87b:1ec4 with SMTP id 5614622812f47-464bef0f899mr7178418b6e.15.1772480918630;
-        Mon, 02 Mar 2026 11:48:38 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:56::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb5da37csm8384121b6e.17.2026.03.02.11.48.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 11:48:38 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Alexey Suchkov <aleks.koyf@gmail.com>
-Cc: akpm@linux-foundation.org,
-	dywoq.contact@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] [PATCH v2] mm: initialize 'seq' in gup_fast to remove -Wmaybe-uninitialized warning
-Date: Mon,  2 Mar 2026 11:48:35 -0800
-Message-ID: <20260302194836.2932150-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260302193405.37961-1-dywoq.contact@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 869F56B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:52:44 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1E8B8ADBE
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:52:43 +0000 (UTC)
+X-FDA: 84502170606.04.9E80709
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5F70F40003
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:52:32 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=temperror ("DNS error when getting key") header.d=intel.com header.s=Intel header.b=IWMNA123;
+	spf=temperror (imf11.hostedemail.com: error in processing during lookup of matthew.brost@intel.com: DNS error) smtp.mailfrom=matthew.brost@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=temperror reason="query timed out" header.from=intel.com (policy=temperror)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772481152; x=1804017152;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=J+mr/GKSRCO193qthYWBMQE1KJ4gSJs+0Co44XU8Kmk=;
+  b=IWMNA123kv/9o9KRtYvh8TU/uL+JqVVB/EQw7x4RVoaDNXE77hQrMtJY
+   vuLRbtigq1XaNQlyUa1ZDt7KlwS/oXf1mZ3aQgkVhbTzO2JcwixVcKABK
+   aHcrF4DJX9gHyq9uInVnfVFAHnRqX51oTArEX+ZsJ/fWj9YlTNz3YZP1A
+   NXfBuYJ9h+k/80M3hCckHpDFBvztCpy/fH3qhFYz5gN4IbTcVtWzxH7tR
+   OaUXp08dzJ6oC2AdspK6xQx/4i+pvHUBxO78C6CTyQbVI+l6aNCRSDr/r
+   RcjWDivFAdoMpEZJhpzY6OCTyG9QNpsimy3MmM6SECZNgaIF5zqlGuZfT
+   A==;
+X-CSE-ConnectionGUID: Ox1tLPisRS6+e93JPyPu0g==
+X-CSE-MsgGUID: XijEQ3PnSKyIIDpM1aWnmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73407537"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="73407537"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 11:48:27 -0800
+X-CSE-ConnectionGUID: 0z6rJKVTTbCNqBVgNbYDHQ==
+X-CSE-MsgGUID: Rl5eTqZkQkaJmrQI2+Almw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="215355262"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 11:48:27 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 2 Mar 2026 11:48:26 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 2 Mar 2026 11:48:26 -0800
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.44) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 2 Mar 2026 11:48:26 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hAEBS/A7UqEgA5t9XUJVl81UKbIla9gVTQoyOjRO3kmd2Gskwk042ZVRgRP/ts94Be9ERueseUk67BuBsTbm0SavcrL6tNtD0orQev2odtQ492xgFpnBWH+cc+vFFAu7AGGU7W6NB0VDNKkAQB1jI1untqCFw+Wt3utGZgt7P6VuuDbtJAX+X2i1jxc+FkEDffmrEblctawKRwAeLa7HZ5ykEvzBgYV+nvnsu20Ds1TDFSLDQBZuNJ61TJu3YKe+X1eEnc3ku4xqBYE8VNWnq29nsfSWl+wa6IRwMYXDXDcN5WRL144AF1P7HFABIwQ6V0JPnM5V6q6Un/JH2/p3pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Lt3C9Tn+dDNV0f8+/NGHfd8Xmainwq3yqLwmbqqDp9o=;
+ b=CFHhDoQchzzq0Qzf0gq8/lVLNjTPN2QC5i5jZW/uFnWU0kayMCJ18lsrGKyCanO4ndR4osQ7rq7It43pkpEwwa4bhTyiJLJckHjo+xEszNDGlTVZSBmYJZoZ6wWowRRxGophk6i9Qj/PrdIw/+lgoixV1CW26DwhSal0Uee+QgOInfkh4W94LErGwvYo/lh2PgwDeZxY1hTX1wO07YK2skkOQMbFE3T6dxODLgQJJoUXMtF1E9FVfDY27VKjW2TGi28nfiQJsva3scOTpMrSUkbTeAazZRZQGYT1i6Vcwtep5A/fxIsdHnxVs30tEJmCWkgAgCtFgPFOqXtETH+U9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by IA1PR11MB7317.namprd11.prod.outlook.com (2603:10b6:208:427::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 19:48:20 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 19:48:19 +0000
+Date: Mon, 2 Mar 2026 11:48:16 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Simona Vetter <simona.vetter@ffwll.ch>,
+	Dave Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>,
+	<dri-devel@lists.freedesktop.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>
+Subject: Re: [PATCH v2 1/4] mm/mmu_notifier: Allow two-pass struct
+ mmu_interval_notifiers
+Message-ID: <aaXpgCUVXAKCfVCK@lstrano-desk.jf.intel.com>
+References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
+ <20260302163248.105454-2-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302163248.105454-2-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: MW4P220CA0025.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:303:115::30) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|IA1PR11MB7317:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92c5e4cd-f9c2-40c3-3d21-08de7894a7af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: 7cUBLXk8Wy7cTaztZaOE7iVyV+godeA6TX1vdZce1QZUspR/ZQvbTq1wmrMY7QQwiHE5Qup24A16pXyfYcXGmXSY/jzvsZqi2pInO7XtUK+NnV9JIXz1UF7aweDjHyABNxKL7Q1ZhiyPBdshCBUSTM5BMSykbOJYrHchCULhXaMaQW9tkmeedpgYo9c26NIRil8OtkyL50EtDCHnnclg7Pmpzr5l2f2GryHLm9j6yXYsYow3lABnopOmqbpcq/6IMTtjfh0CpS0FtSJbT5gvDQCP8cDYEbBpb/PGDeLpNXq/yJQcLk9ufUmx4ojhyf6hnI9lAo54dTpnHOU9m5WBk1e+WSkYcFwYGqRhSup6hXcCUmJxNTW2s8LzURGENn3Mqmncu7W375QPN7d1wVUasB/tobbMGASqWW0Bg127dhb4Y8vYV6oTSiGBnLA8EVxqHFqbpq9KJxzCrEXQLHiwlQhtr7DWPhrEhkbF3yTUpktuav3vkZSwJzrwu2kCgIf4uWaYg2qBZdkNQttsz9muSWJ8mETdoJwRxMJiWGt2vuaoGkWEZNeHOCWGrwRtTxJjyeFtydspDGPX3ZMbAkpuhtDdNcBi98ewIoWHFVIGCz0CbaDYevgmm5kiHrSN1VkyRkcUdvLVJFyDSfih2Ygx5Ls2RHWSQsBajs7YnP/0Fwd5x2otMK+MrdpdiylMK4eH9BdffHAsOEC3IgMoOPO4QGOsRaIQvo+JXpDanFBbpU4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?CQEZ2F2avUehzyktrRe4bpQubAjXea3tB86MJQFhWEJqe12BkNIGjpfO2z?=
+ =?iso-8859-1?Q?m0ehIVsqQeJ4HUSkjAWGHMhCbOC+8Cd2hiAZlVA0WR1trRywdI/OWzAw70?=
+ =?iso-8859-1?Q?eFGo1ALgZ7si6Js2PMaiNygyu5Fr6JbvIudNcE4PE5g8HJkPpSh15Q3rkH?=
+ =?iso-8859-1?Q?8NbSfTTHljcWaiMnzS/DZNqpI1SLKdSbZVPIsER6af8yShBoe+HIOV9Whq?=
+ =?iso-8859-1?Q?daaWTy1YrmU6+jBAjir+sjgwydv0XDmvzyg4aCKnrJ9+xajamAbrM8990F?=
+ =?iso-8859-1?Q?2GNhKMzEAn6Of+gqAkRVuPwl7nznio0B2cXMkH7v4GESoG+CRzfQD8Y+IZ?=
+ =?iso-8859-1?Q?SP/ZC3x8w32BHnH6XWEIRN+9IcjBsek7wLNHXQn4h+/b0ngBLMa8p/3L94?=
+ =?iso-8859-1?Q?3D009WEVSv5FKvhqjJw4WgX3uez56vMm7TswjZP8LrZeOaHIMeTAdL2Tl5?=
+ =?iso-8859-1?Q?RIUVJ2tRuYRXYta78pCRM/c3ySa4eA/zYrSJaajkxSYJukc8sOcv6bc5Ye?=
+ =?iso-8859-1?Q?nfDtUzTLYroy6EtCaxU4o0yr3+zUiihvGn6x2AR2VFzFV43qMX+JTsFE37?=
+ =?iso-8859-1?Q?hCG9541jhgrD7LVfZltBrxo30/I68p07X4emxrMAk3RfxORD3Arq3ACxQJ?=
+ =?iso-8859-1?Q?ARls4y5Va0fvNeRHD1CQBDdv7xVob7MqaxHsfV6pj/Qxc2GyyAshXH1jRT?=
+ =?iso-8859-1?Q?hCJCxLpDjNv9rDU4AjvXbRuYFgfa2iMMgdMLZ2eKUYxb4yWhQJuXTt1k99?=
+ =?iso-8859-1?Q?y0hnKykGRYnWq2h8n1Q+0RT1KSJjnjQiJOmQJ507cUQiO8806spG29gY43?=
+ =?iso-8859-1?Q?T7XjWMlA6NaSdaW6QrDmnMu0ba8zbUCQOUt1d0aRlMEqnzwPYtHJLEHNF5?=
+ =?iso-8859-1?Q?TbpjtSnqiXDT4Uc34mAApwrwQtJU21wztLX+DsXwbYusAEFbMZzz4K4T+8?=
+ =?iso-8859-1?Q?hsfR1A5auWyY1Lv7WO92Qh/032yqtz+b3zYSevwzADy8L5dz3VDVklZw+d?=
+ =?iso-8859-1?Q?sFdFe8IErjtpHRcx+Kwc+aBKDc3mCm74KbPfB4UdyYtNzqTz/2TjFvyBm4?=
+ =?iso-8859-1?Q?R/oHgKsiYhiWTChPvtlUIpNNhClALFf1I+aSINnX42Aao2QP3Tf7rmoSXj?=
+ =?iso-8859-1?Q?ynW3mWx9lw5vmkM23xXp85Bu8mSA6LYZyPdgCeESFQVRZRUPxQ8zE9fzRp?=
+ =?iso-8859-1?Q?ktC9lZEL2GtP088qTEvUG6Mk9K5/ulgAsdyllkaSNd9NpM5Quo33RWbGKc?=
+ =?iso-8859-1?Q?/lTU175u6Ms+J5CTCAy5KxTs09Ppwi89olIf2hFm3RxuqsbGOz22qYcNq2?=
+ =?iso-8859-1?Q?l55qJwmjAyi5FPDWrGMZiagyyXEyjw/abQ7TiE7uqAFTL93mFm7jDkiznQ?=
+ =?iso-8859-1?Q?rYZPTGlyZF1Li4k9VJzIFcvXk1CE1fe1lCE4aHs9EsjMC0T7y499AFQl51?=
+ =?iso-8859-1?Q?53kGoiNy1xY8r/1r4PRiwIYL8956tL/duRikupxJkxagnfBX667odw9ltp?=
+ =?iso-8859-1?Q?L9yvxnJczaE4zQl8jc/0OuweyDRm2s20gFFwuWki2m3u8NP+fMx+siHA8x?=
+ =?iso-8859-1?Q?WssdqdgCWF2MvKfIkR4Pue8zQHrr761sBp3rogUGHJiIHAjxESzZ7mziHm?=
+ =?iso-8859-1?Q?CrgQScvYftEUsj1I1+SmzB03I47opxU1s+fQnzj8uUk9vWyr6LqgxgHC4T?=
+ =?iso-8859-1?Q?FTfarKH/3qardAbd0ZZtm1n+PuRK3xvg6UoCUalIfwBGJeyzHr30RUjKl6?=
+ =?iso-8859-1?Q?knO3aeHt1l1F2KOexxcs1OL+uIaE9okqylmGsczoSh2KZnQOaAjHcjcwjb?=
+ =?iso-8859-1?Q?u6kHA/PvGEFbh8Vfo7eDEsyij2VL2XY=3D?=
+X-Exchange-RoutingPolicyChecked: zMgEjw7U9OEyWY0+5ayv173dUIUhomiWqrZ9EvyfneVEEymq1z8yD7VyuTLOxJE3/E+5AD+ikvFhgr1rJQfWC3bJvrdbobxCcSgHed5VQ3++WfZAVvdXH2CwuHsZz5hoJI5dQnEJaQjm1KsIh207LlvXG+RaB1cl2qPQssX+QcgklJdSpK7ajPFhvFIGV9SUJSH5fL4hi8Latmt34rPy/1yEjCg8Vy7y7Pj61rZA3t0BaH18U5Pym8Cl37eBpK6Jmwwl/qwzIbfNofCf4a6xjuGja2L5qtfMsw0LUDsmydxDUqaZiBrZoKdxqLjA9uKgdM6/WOjYTRGXDX7vQsxd8w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92c5e4cd-f9c2-40c3-3d21-08de7894a7af
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 19:48:19.9456
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2DpLHeFf/2cjGs+JnnLYIbanzvteOQc0ew+4XNU8H+LqzMeMPh4yqo33MVvoE9erES4YK2Hls2ScZzqZaMmA/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7317
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5F70F40003
+X-Stat-Signature: 6j4cziqcsmponiozahsjq1768t8ekq81
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BBC28100004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5myxmw1fdaenoq6n6oqb8nnmw1jgb8eb
-X-HE-Tag: 1772480919-302235
-X-HE-Meta: U2FsdGVkX1+JxHlbZD46QFMUjhOZkNe08U/dsxHs9zO9uj5ZY4lsHQiRAx7cmYy0mzjZ1hF4+5aCerHamzwppY6CVHAJ8BnEN/vl/hjv4f7sazMJMCu421qqtrqa02SuZqooh3MRH2bGndWqfMq4L1WhHsYGGtXZDdIAfMp9rGKWQr/yjoN6akQivXMZEyEWROFtWtvKXI8+dT9U1SXYj94LWoeAZx1+qyf9TKtjTNdLazs1VUJZELHar8G6VfrL2P07cPulNjIQSIbCThZ+8LTFrkHl7CQCKxOxnKW78NOubELw+uAatkMO9y4jSTPB9/cIwAtJbTtzwuWgze9DI3lGyS/3qms2ye9c5jo3ip7dgFyMi08Rae0kcnlb6sCYTourG/ghccRzhoGcdSZGNMcxD8V8Vnzgv+AGqs1eoevUUvKpajQNq14vl/Wth+EIrj7X/KFl5Npmgb8efbjUpfFlU6s3QyH30Bd+S6nYH5FERL4/AcpyZiavouqkCl7nlZn7PqnArChBfyRF7rylEVgaQTnBsHv5uUgkF9EbRkyg3Z1xQKXRQPHd46wPD1E8ojdbT0ztoCz//y+5nYaa/Ga8HDBl426xbWnVQ90iYtr4YCX2/FUkDs6eZ/MnbEqLaOprIGVZUFx2MtZ+Z96O0/uXKgiwC+3VbOdgkL5wYmLI9AoXCFuiBa6r2btwmWpBLQGOkVuBJTh0IGCTavSOOiVGGgXcCPDciEBTl41J5KhrZxeXCgVVUyq8qnkr1XKgafAFXnak7X2aaGCKkwFQ/jdHJ6ubQbqNF9tW1uR2Q/0trtHUst08R94YiiCSA9cz/v+VOGlZD8FXV64jThRNBm43TZOXEfQVNdFisAlVE4dXzy0DbjqBp1sxijQF3iMe0obyIJYgRImgo9tHF33mZVccA+PPMXmf5DlQ5aZhyfIEIxkNqKI61O5fWUx1yD+Zk3Bi99SyYzrBspn+jdQ
- /3mrzJPJ
- ULaskrZZz0U2JybL6AtbHRbGkAtsqxUQ2b0IU5gspjZ/4Z34VdJg2IqnNicx7M5yMMoHlVG7lk2ML3BxuN0U5iJdMoEe+KbyLDMl5X1pQU6WTawHJ0bjJChhrRvq2rXqIcarURNsojwUnekXyRotwd+nHG+RkGmtKGj0XM6GvVjh9/cegDZV1UeKL7h/R2wpHM4TnjRwxjUddheaUjqTje0ZLeIuxdptucCWMgci58/sn3N8DIco5wR0fm7EQb/0o4rjipLHL5qmMXaW1KnKSbUrJLd4IqxKrcIFJjynkGx+SowMldUPWmupj8MCSKzdw2szuQOKMmkW5e57FonlA0ilHGGtzT5VPmf4VQ/wcbqkYyoqzh0xE8838kO0uxavaNfs4NTORZXlEIxCxD2jVBZDRvDIo7F1YDIMQHJd4nwG37JMR7qhNqPhHvaWVdF3X86ERjeGRgoEsf4r+lWqla/rvUDnP7//m2l62vJe0JyBUWh2fuC1ZhMmhWR/Zjezx2RYzbZJjR1YhERkGbzRW0xGurtTRML7t4Q92N1cXFFBxec3EjLggM+XGK2ktbR3W8ulL37zWzYTvqxvE5IbsGfl4R/rvUxJpFeSSPkP7JP9kP2GYo6XsgOHvRtpLro9Z7PdncDEHoipPvr8=
+X-HE-Tag: 1772481152-274169
+X-HE-Meta: U2FsdGVkX19kzVUM5cJUyuFN6xqAsS4A1ak+VTQ2FZuR3ViUYcRPbMfC/Te9kp6hHdcMn/gnH2Z8DYyOA3UEFcgx9Z2+UlHXqq4ggbZgq8QqedVGXZfqWjX8wMqYzaQlFYnH+vvHR/HHwHaX381bODnKaf1eu4OIbtEawl2FS+70i8wW/xWQRf9BOweWf/T1Ob9cQJU09OCY/wBK2SnwkxNirjGgYD8GoRGqRBpvRpQ1tsuIEFfsGpHpW1T2v8sPVUtaCwmvwOqssbg/DNnfurpVg+a61Ahz7veKmIEzgdfg8AZ1HZSnHLEGP5ddWMZJ4AhmbJCAJb1vWJ36QG/C01VNuiBSLlXMCvnuQ3/D0M0OhM05yGwveWc61AFKRhxS3iOZKTCs9t8kuX1WGuheYDJL90l3pm62SfiDN6npsf389qXRmeHUNXxQjeyYtpTGmVHBg+ROQNQHCbwxKVYfuDrDk80iMouRA43Hlz1y/5Am06UXnOZqS72fcsct/0TmKq7Dqy0pxjPEGxVBskunh6hRG/ZaGgG3y5+WEPurkcrq+tiJ3oOqxUUqzZhGn2u/5u02ayv1bDWoqufdVXenpcbBEsrH0SXdmiS62NnBSwAgKVOx9+xmTfgYsKLUdsZ6WA5eh7/EwnkKQm5C+z+DWf52V23yFHDjLivt7TmuR4YzI/56akBspssdle4FNXnyCJAuevieGEUXsGcva5DE1yQr39TYd4InOClPJy4oWzWMA41lQkP6CEMpmQOYqW+QZGX93QGgyXWzReSfbO05vOWphA8qe0P9EfDj3VeThukCZT1EH6De+B/jEIgqLpO6Dihhp5vXLhvpiyNHH5b97Iaf0NzPT4NGgFqWpSH0xh0Vlm7XxBj4XPqti+0kF/w7W60W1XgkD4sUDHjGFAobPot2iDJqV3pfxPI+GkGZGEDz1k3oUiOdix1J2wz92HEZZKqrFB/n1gpX0vN7eXi
+ k7OjdRbh
+ 9SYuYyzxun48FScxE3qgUfp1WldLirxS/qL4Jww9yt/R6feWOxj8Oz/9bYF/9EqrQI2BZ4Fj9B6Xmlf594sorSKlB3WVx9qgYbDol3AqssGuXg99IUCQyfxqNfRc0gv+8Fy3T2++MPkUQbcwP9CPBodccw5ib0+Mh9Fj06rze4ABjVG90eWr+g3oU1HUi4NJMmc+gR0pxCyESGdi9y5i0/zVPkvf2nh9CMRLi2f9u333WZ/o1ApcSDvEattyJFZhwHIPE6lOWiAtRuCdsbdDKee+T4A4cfdQCmfi+ODdS4d1GEtYNOHp7HdyWhWm0wowju2jZARqeLrXgd5rMkiKrF3eNIsB+ee1ZpKXPszxpw05qS8s/EAj+B1vNWOG5gLTyQm0XMNEHnEwNOZ9YtqZ0WqwzSNzgwAKGXDgCBdBT4mQd/LOKkV6lKtjv5XUqcDQSxpK5rOjHwmYGLQg8ZTvl7gFygsUKvl0Uj2/vW0RknhtX9jvqIXovIELjVPA4mTBNqZ54BkOxIdtsi0ECWGtt0LEsgfbFAxltzRKrDqfjeod277iuF9OkLp02qD1RW300pk1tILk+jG+ycRjuqpC/jnZs2nyDslDmXXkb8MzSMxQZvtjmGYp7F0QNsxZ4GFVGuJZ+ZNfBzN92CyCgMSKPKXuBoeAOEEQl6VS3e7hq4jiaiKBx+CMBoVa0XGF/DTFd1RNXasD8nY7G5tLkzd0Kg1K+dF3dwtlYOBf5Tlbm5E5KXqBc2FJNcXQFBqr+aqYyIY9OEpBp6tMaiXeoPTXS5yBPkChaD3oehFk6BuFyqXpTqdqsBtI+POjwAE4+gWfspevmKosUtakElKVQXLSZ97EOCI6nUVJZc12NJQAreC1ie8ATKPgkiAKPKnTfOkEwR8PpiEF67YajcwPtx6E07rbRWfT0TWV+ibrb+tOszwU6CICkuBHMvnRaVWHG7hsBa3MqIO4n/jFc7IX+KlLDvABKhEOn
+ VUb8lDZu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,58 +177,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  2 Mar 2026 22:34:05 +0300 Alexey Suchkov <aleks.koyf@gmail.com> wrote:
-
-> The local variable 'seq' in gup_fast (mm/gup.c) was declared
-> without initialization, which can trigger:
+On Mon, Mar 02, 2026 at 05:32:45PM +0100, Thomas Hellström wrote:
+> GPU use-cases for mmu_interval_notifiers with hmm often involve
+> starting a gpu operation and then waiting for it to complete.
+> These operations are typically context preemption or TLB flushing.
 > 
-> mm/gup.c:3165:20: warning: â€˜seqâ€™ may be used uninitialized [-Wmaybe-uninitialized]
+> With single-pass notifiers per GPU this doesn't scale in
+> multi-gpu scenarios. In those scenarios we'd want to first start
+> preemption- or TLB flushing on all GPUs and as a second pass wait
+> for them to complete.
 > 
-> Initialize 'seq' to 0. This does not change behavior, since
-> read_seqcount_retry() always writes to it before use.
-
-Hi Alexey, I hope you're doing well!
-
-Unfortunately I think that this patch is still unneeded. The variable seq is
-used in two places, raw_seqcount_try_begin and read_seqcount_retry, and nowhere
-else in the function. Both are guarded by if (gup_flags & FOLL_PIN).
-
-raw_seqcount_try_begin is a macro that sets the value of seq.
-read_seqcount_retry is a macro that indeed reads the value of seq, but at
-that point seq has already been initialized by raw_seqcount_try_begin.
-
-So I am having a hard time seeing where it would ever be used in an
-uninitialized context. The compiler should be smart enough to expand the
-macro, see that the writer and consumer are under the same if conditions,
-and realize that it is always initialized before being used.
-
-I'm curious to know if the compilation warning above is theoretical, or
-if you've actually it it during compilation.
-
-Let me know what you think. Have a great day!
-Joshua
-
-> Changes since v1:
-> - Removes the accidental formatting from v1.
+> One can do this on per-driver basis multiplexing per-driver
+> notifiers but that would mean sharing the notifier "user" lock
+> across all GPUs and that doesn't scale well either, so adding support
+> for multi-pass in the core appears to be the right choice.
 > 
-> Signed-off-by: Alexey Suchkov <dywoq.contact@gmail.com>
+> Implement two-pass capability in the mmu_interval_notifier. Use a
+> linked list for the final passes to minimize the impact for
+> use-cases that don't need the multi-pass functionality by avoiding
+> a second interval tree walk, and to be able to easily pass data
+> between the two passes.
+> 
+> v1:
+> - Restrict to two passes (Jason Gunthorpe)
+> - Improve on documentation (Jason Gunthorpe)
+> - Improve on function naming (Alistair Popple)
+> v2:
+> - Include the invalidate_finish() callback in the
+>   struct mmu_interval_notifier_ops.
+> - Update documentation (GitHub Copilot:claude-sonnet-4.6)
+> - Use lockless list for list management.
+> 
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+
+I thought Jason had given a RB on previous revs - did you drop because
+enough has changed?
+ 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: <linux-mm@kvack.org>
+> Cc: <linux-kernel@vger.kernel.org>
+> 
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 > ---
->  mm/gup.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  include/linux/mmu_notifier.h | 38 +++++++++++++++++++++
+>  mm/mmu_notifier.c            | 64 +++++++++++++++++++++++++++++++-----
+>  2 files changed, 93 insertions(+), 9 deletions(-)
 > 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 8e7dc2c6e..879798de5 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -3131,7 +3131,7 @@ static unsigned long gup_fast(unsigned long start, unsigned long end,
->  {
->  	unsigned long flags;
->  	int nr_pinned = 0;
-> -	unsigned seq;
-> +	unsigned int seq = 0;
+> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
+> index 07a2bbaf86e9..de0e742ea808 100644
+> --- a/include/linux/mmu_notifier.h
+> +++ b/include/linux/mmu_notifier.h
+> @@ -233,16 +233,54 @@ struct mmu_notifier {
+>  	unsigned int users;
+>  };
 >  
->  	if (!IS_ENABLED(CONFIG_HAVE_GUP_FAST) ||
->  	    !gup_fast_permitted(start, end))
+> +/**
+> + * struct mmu_interval_notifier_finish - mmu_interval_notifier two-pass abstraction
+> + * @link: List link for the notifiers pending pass list
+
+Lockless list?
+
+> + * @notifier: The mmu_interval_notifier for which the finish pass is called.
+> + *
+> + * Allocate, typically using GFP_NOWAIT in the interval notifier's first pass.
+> + * If allocation fails (which is not unlikely under memory pressure), fall back
+> + * to single-pass operation. Note that with a large number of notifiers
+> + * implementing two passes, allocation with GFP_NOWAIT will become increasingly
+> + * likely to fail, so consider implementing a small pool instead of using
+> + * kmalloc() allocations.
+> + *
+> + * If the implementation needs to pass data between the two passes,
+> + * the recommended way is to embed struct mmu_interval_notifier_finish into a larger
+> + * structure that also contains the data needed to be shared. Keep in mind that
+> + * a notifier callback can be invoked in parallel, and each invocation needs its
+> + * own struct mmu_interval_notifier_finish.
+> + */
+> +struct mmu_interval_notifier_finish {
+> +	struct llist_node link;
+> +	struct mmu_interval_notifier *notifier;
+> +};
+> +
+>  /**
+>   * struct mmu_interval_notifier_ops
+>   * @invalidate: Upon return the caller must stop using any SPTEs within this
+>   *              range. This function can sleep. Return false only if sleeping
+>   *              was required but mmu_notifier_range_blockable(range) is false.
+> + * @invalidate_start: Similar to @invalidate, but intended for two-pass notifier
+> + *                    callbacks where the call to @invalidate_start is the first
+> + *                    pass and any struct mmu_interval_notifier_finish pointer
+> + *                    returned in the @finish parameter describes the final pass.
+> + *                    If @finish is %NULL on return, then no final pass will be
+> + *                    called.
+> + * @invalidate_finish: Called as the second pass for any notifier that returned
+> + *                     a non-NULL @finish from @invalidate_start. The @finish
+> + *                     pointer passed here is the same one returned by
+> + *                     @invalidate_start.
+>   */
+>  struct mmu_interval_notifier_ops {
+>  	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
+>  			   const struct mmu_notifier_range *range,
+>  			   unsigned long cur_seq);
+> +	bool (*invalidate_start)(struct mmu_interval_notifier *interval_sub,
+> +				 const struct mmu_notifier_range *range,
+> +				 unsigned long cur_seq,
+> +				 struct mmu_interval_notifier_finish **finish);
+> +	void (*invalidate_finish)(struct mmu_interval_notifier_finish *finish);
+
+Should we complain somewhere if a caller registers a notifier with
+invalidate_start set but not invalidate_finish?
+
+Matt
+
+>  };
+>  
+>  struct mmu_interval_notifier {
+> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+> index a6cdf3674bdc..38acd5ef8eb0 100644
+> --- a/mm/mmu_notifier.c
+> +++ b/mm/mmu_notifier.c
+> @@ -260,6 +260,15 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
+>  }
+>  EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
+>  
+> +static void mn_itree_finish_pass(struct llist_head *finish_passes)
+> +{
+> +	struct llist_node *first = llist_reverse_order(__llist_del_all(finish_passes));
+> +	struct mmu_interval_notifier_finish *f, *next;
+> +
+> +	llist_for_each_entry_safe(f, next, first, link)
+> +		f->notifier->ops->invalidate_finish(f);
+> +}
+> +
+>  static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
+>  			     struct mm_struct *mm)
+>  {
+> @@ -271,6 +280,7 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
+>  		.end = ULONG_MAX,
+>  	};
+>  	struct mmu_interval_notifier *interval_sub;
+> +	LLIST_HEAD(finish_passes);
+>  	unsigned long cur_seq;
+>  	bool ret;
+>  
+> @@ -278,11 +288,27 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
+>  		     mn_itree_inv_start_range(subscriptions, &range, &cur_seq);
+>  	     interval_sub;
+>  	     interval_sub = mn_itree_inv_next(interval_sub, &range)) {
+> -		ret = interval_sub->ops->invalidate(interval_sub, &range,
+> -						    cur_seq);
+> +		if (interval_sub->ops->invalidate_start) {
+> +			struct mmu_interval_notifier_finish *finish = NULL;
+> +
+> +			ret = interval_sub->ops->invalidate_start(interval_sub,
+> +								  &range,
+> +								  cur_seq,
+> +								  &finish);
+> +			if (ret && finish) {
+> +				finish->notifier = interval_sub;
+> +				__llist_add(&finish->link, &finish_passes);
+> +			}
+> +
+> +		} else {
+> +			ret = interval_sub->ops->invalidate(interval_sub,
+> +							    &range,
+> +							    cur_seq);
+> +		}
+>  		WARN_ON(!ret);
+>  	}
+>  
+> +	mn_itree_finish_pass(&finish_passes);
+>  	mn_itree_inv_end(subscriptions);
+>  }
+>  
+> @@ -430,7 +456,9 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
+>  			       const struct mmu_notifier_range *range)
+>  {
+>  	struct mmu_interval_notifier *interval_sub;
+> +	LLIST_HEAD(finish_passes);
+>  	unsigned long cur_seq;
+> +	int err = 0;
+>  
+>  	for (interval_sub =
+>  		     mn_itree_inv_start_range(subscriptions, range, &cur_seq);
+> @@ -438,23 +466,41 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
+>  	     interval_sub = mn_itree_inv_next(interval_sub, range)) {
+>  		bool ret;
+>  
+> -		ret = interval_sub->ops->invalidate(interval_sub, range,
+> -						    cur_seq);
+> +		if (interval_sub->ops->invalidate_start) {
+> +			struct mmu_interval_notifier_finish *finish = NULL;
+> +
+> +			ret = interval_sub->ops->invalidate_start(interval_sub,
+> +								  range,
+> +								  cur_seq,
+> +								  &finish);
+> +			if (ret && finish) {
+> +				finish->notifier = interval_sub;
+> +				__llist_add(&finish->link, &finish_passes);
+> +			}
+> +
+> +		} else {
+> +			ret = interval_sub->ops->invalidate(interval_sub,
+> +							    range,
+> +							    cur_seq);
+> +		}
+>  		if (!ret) {
+>  			if (WARN_ON(mmu_notifier_range_blockable(range)))
+>  				continue;
+> -			goto out_would_block;
+> +			err = -EAGAIN;
+> +			break;
+>  		}
+>  	}
+> -	return 0;
+>  
+> -out_would_block:
+> +	mn_itree_finish_pass(&finish_passes);
+> +
+>  	/*
+>  	 * On -EAGAIN the non-blocking caller is not allowed to call
+>  	 * invalidate_range_end()
+>  	 */
+> -	mn_itree_inv_end(subscriptions);
+> -	return -EAGAIN;
+> +	if (err)
+> +		mn_itree_inv_end(subscriptions);
+> +
+> +	return err;
+>  }
+>  
+>  static int mn_hlist_invalidate_range_start(
 > -- 
 > 2.53.0
+> 
 
