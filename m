@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A6B5EB3633
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:48:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8364EB362C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:48:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 772416B0146; Mon,  2 Mar 2026 15:48:02 -0500 (EST)
+	id 5F3596B0148; Mon,  2 Mar 2026 15:48:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 746CB6B0148; Mon,  2 Mar 2026 15:48:02 -0500 (EST)
+	id 5C7406B014A; Mon,  2 Mar 2026 15:48:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7FB6B0149; Mon,  2 Mar 2026 15:48:02 -0500 (EST)
+	id 44B546B014B; Mon,  2 Mar 2026 15:48:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CAE76B0146
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:48:02 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 241571A02EB
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:48:02 +0000 (UTC)
-X-FDA: 84502310004.25.ECB9414
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4B63F80013
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:48:00 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlzXdd2d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DC786B0148
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:48:17 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DE79114030B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:48:16 +0000 (UTC)
+X-FDA: 84502310592.22.762B356
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E9173180006
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:48:14 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qYvZToX+;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772484480;
+	s=arc-20220608; t=1772484495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4I43so+eOz6MDgvt6KXeiiHjphmLaCw9w8PYzc+JLMk=;
-	b=Kbwli2hMy2N0aK41Jj9a3pnSBFk86YbSwP8yzkmnginkEmmY/WY2GO5wbVsKn/5F6tWgpW
-	VSLWd/41nzvEBFciTrMMPmri0ZrsRNr1DU4iiWafh8O3ffp/vAhEbmSfxaGtLrOLEzHrV/
-	qYmEj+IlXo+wm2KyupPgbC50AxmjYUM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484480; a=rsa-sha256;
+	bh=tCQZLBlOAWCoKN2lPJg9DpxFoTb3ygjINr9L8vhsjOg=;
+	b=N+eV0XnIexLCUtEfVlMLHe1ygXFUPKwmCkS1zF8jtco4zx/8epWq0S1mkK8M9quKxsyVxE
+	rFhJkopxZn3srPJcYFPu6Jf3RLos+hcJOBgfKQRl0eW1dnVz/n/M4ACvZMAMgz0u9OdAuA
+	oH+8ANjEKwsbtySfK/q/zYXtaq/TuOs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484495; a=rsa-sha256;
 	cv=none;
-	b=ML/SLZGrCGv0LQ1l8SJkqb8z3IsvkqvtFTzcy1oIjqjpcwpbKsJ3BcD1sJh2OPfPhk5i83
-	kivhtJKdGEQdS1IkeUtao7mqGRZUvzxD9s0l+qUW6RVA3Yz4SGvI4v4NpzDvRBk8OdE/CE
-	tOPhQCnkxWK022FV6uwpRaysGeCJXNY=
+	b=GEzia3g9kCojnlUyPeQG4lNi+q+0WXh/Q1pj2nQtGYMSx5U+pLKhJdU0J9qvzT7TcNvU08
+	7OFCy6agx3Ql+P7ANPxGF4iUcugbrhzMj8EDVcxiM0atrNOayTyPE7akIySN+Mov4KN5vd
+	vDEEPk0bqEEr/xKX9eYncqlGgAKdlyw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nlzXdd2d;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qYvZToX+;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABA346111A;
+	by sea.source.kernel.org (Postfix) with ESMTP id D5E0A401EE;
+	Mon,  2 Mar 2026 20:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99479C19425;
 	Mon,  2 Mar 2026 20:47:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E051C2BC87;
-	Mon,  2 Mar 2026 20:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772484479;
-	bh=aRx+vBv2M2iRm6msaGNPhasqatamVupEcEqra1pj50U=;
+	s=k20201202; t=1772484493;
+	bh=VLxqFGLaIhMintPLK8Ua3eD+K7GKUrN641EQG/OifU4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nlzXdd2d2jmb6ZCZJlUjsUWRxHX5Ef4p0g3CYJDJ6NRTC9wfC8nnMXQz81G3kHFIf
-	 bk3ktV1oHOpMcMQOnvKOeWGTvG6ZnQ/MocHukfvCturZOxU/Bi8OvGApPLNcUd/hK4
-	 bhwDnT+CVtxrCw78WPAaFCT09qXHfgAYMWpTDutUEUGqFkMaNaLBVSyEo0cNPh7I3Q
-	 h9fZyYNh4rrnUZV+4xi2MJGXnJEhnuj+XvYPzs61Ct4ZpVnyPq3IXEWJt7Ine4BMIk
-	 /gTcT4ElgQ2QlP4iB+YuH6gEdPvIx61yjxxZ3x4tL+yQ5hudAkroDrPOeTNPOXK5Wv
-	 EYBb/ZIP/1i/A==
+	b=qYvZToX+XOZEkcsl/mGLqIFaBK0DnOQQncTCQB0uSPW2LSyEzk+kCnvpiPCehwY7h
+	 RWBVAgeXjEbKFeHMYCeCo/LFoRNbJRwdiISms5TpWEjz7pBwIgo+XhPgZb9JLuZWNi
+	 oO9o0KNSBaTeye7QZNrRdIEy3elkbBH63KlSFReYmDCh2pvGlsYPNXYfDNFpxAk96L
+	 gZWGp33Qw8bNJ/lnZaXvFzCIAy/LDlJFqL1dcknr4bSDTVXaLO1vLww3g3OkhA4eeN
+	 ejYXMWzPam876uCclBHh09VGqvxzFmJFJiu7qjk0Ve3fw72/0GzDm9F6erOyLQCAgF
+	 a8AYWWUJHXk7w==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:25:20 -0500
-Subject: [PATCH v2 096/110] qnx6: replace PRIino with %llu/%llx format
+Date: Mon, 02 Mar 2026 15:25:21 -0500
+Subject: [PATCH v2 097/110] ubifs: replace PRIino with %llu/%llx format
  strings
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-96-e5388800dae0@kernel.org>
+Message-Id: <20260302-iino-u64-v2-97-e5388800dae0@kernel.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -186,36 +186,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=785; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=aRx+vBv2M2iRm6msaGNPhasqatamVupEcEqra1pj50U=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfIJiw1odsluet/XL7Mqa4kgajSxQPLdtlQBP
- Cnhi68Zt2uJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyCQAKCRAADmhBGVaC
- FabQEACmwH3xIV1kMlBE8jZgQl7+E4xyQ9Ct8W8zuWbIuWwDYMbjqugxPOEv67u11lXTH29X2dg
- T+teVLNpE9KEA+QSZStGPzfwjKkV2dmFsTfKy60GPnda3f/FkiCLwnnd5OPZ80Q+3AnEBxZHH6f
- wAWAjTFt9+1olQE+oiRr2tCPwDyirwOWOhhzxpvJoDphHy9s/VnilrBBjEMj6H2mLI7JbcMEroZ
- awVclVwRnT+oYmRgjWvjJf6E5h9jseIrrvPZz0RDJyl0oW9Bgd1rd0fJ/aaA8iaijQhkqrz53M2
- wfSxfIEH8oZCg2cxuxhf09hMyZoEB7LosomyOY/lHkHSRNeaXoKS/vu++fmfG4Zetr0mv2qRTP5
- X/CZConNXt4BZWWp5ZTPBSrRraBWY2RnP8jO0mp3Ju+6PBk2uvnbjniN7GNlDPpdLvINPUYoyX3
- tIl+GoSDldlirpwTmIkMxsPtzVi1aNgq5PflX3rr3L35rBTC/Ag2NHL82QBb0bpG5hUB/wEDzAf
- BQ/2pzx8lCQp1KW0rqYQ3+NZ9O5fVnj13wHOKy1FiOOK94ifA+A9WKPPTy/wVGIsarmfnH9D5Zl
- KYc8wQvQe0PIpa6fpTWJxlUHZ617zXMAkBSZldBDPIZrtfWQm65IggBJCjJnu6Y9BueSk6yfJlT
- fi7dwf/3MTPla3g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=21246; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=VLxqFGLaIhMintPLK8Ua3eD+K7GKUrN641EQG/OifU4=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfIK3lkXG/7Is/ZPT7B70hsPbrLg1R8GgCU99
+ 1bcvBACKWCJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyCgAKCRAADmhBGVaC
+ FcKOD/9LfmtBUnSGb14XCzOVd+cAYHM4HhdKEBV9he/9L4INnhCw3RZ8Q75f4KDClAlVgvmItur
+ Dm4q+2MpdAVsqTDqUQ/1lS3JvGlRk+bwx3wc60kr1Tg/cybiTCJipd+2e8lXiallIPnDia2ICcj
+ 9CgtbbVum1ITDC1sbwbppk10vqxKYQEt8zCReP2IhvPu2yYvEQJadjvTLjg39jMVz/TtHg3HDtR
+ gKSxD5RQHaco5J8gu3UrBXCwmEvjeskmKWpP4VW35H1/EE4kq1pU5atgZ1Hv2Zg9Pu0tiBB4YL4
+ Qedv6R9xKXi6wP2BWmgQC6f221+G9ust4CoizhEH4KERFHWVrQtvTYhGbY+WT4iRPPQLGlZUbzj
+ SilUeo4NqQ06rHyRzHNQmxGq0K05M94m0oUwmQyzcV4SSnX/Qx5UpjmaU95bMog1k18uXJ/IQ0h
+ 1NsMSrMeXiBpZhKMtiqfwUk6Fk2opR4LFu5sdAAfgElX4XalA1DSWvy3sc02kLDvgvuyNt8FkQn
+ nyGOwd0uBDjbKyiS0BMnuKInr7RdiBJQaN7pImoq6xTmlYVtyltEflQ0yOvIpxq54TQTrSOaNqV
+ Ol/9yKJpIa7gB0cJIflKclBFel9mUAoPP3hFCZhNIp4620zKEQzwyv1RbsdlO5Q/TAWaaM9ly4k
+ b22PlumdHQ0m8dw==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4B63F80013
-X-Stat-Signature: qpksxb4sg81pg78ga98cffsxyez98yfr
 X-Rspam-User: 
-X-HE-Tag: 1772484480-427130
-X-HE-Meta: U2FsdGVkX19pqVy7oD1OSbPpge4mVThrucCnROxqo1CcW3MyGoSmvSlPE6usJNNg71ysDM/7zFOB82pB5kYiCG53hJsl6t6v6WvoH4KYT5v8kCibOw4jFomIQtL2wOuSNeXNK5jchO3zq8FBXFKhwSdkTzt2glNozr2OOZheJXhVAz+LJVXELu931hlQmGgU/sb0/r83B1IkARdz+nmtl0ySLSSktJj0Vch6BtEHLaGJJxABGWLuPOsqacA9gwc066ybX9QzaacEpvblqSctN1xVccOYE+V4aCzK+bYr090Mab/VympccFwrNomEOnGlf/CNZwHmp91RzQOs4+1ID/Jjem5ekmnhTFbIeBcEkcJOK+KTScx/izOneX15rtmAhv0LWgJNRLDO2qE3bV4YTgpsWwplqLmdJCtq7DgUSl9VZGZAVbQX5znMQqBgEaS1wKbCgct7LNSYg+JLYD5ae3SI/Izr7VPx0qmw9G4ayOqq0+3+u+KEu5QbNCYIOOMNhDiN5J7EpFGeG/4vtBREYyVgEMFwaUzFuepXP6GxKeIk7bNbinNz5C+JLY3X5zN9yDmTe6XXp4xph7Ckk68FyWOhmGT2oW747/pdb9HzX0yXkBbdOfq3C3GRUvG7ShhZqd5+5iM0FzOLxwP8nNkQeifBv4PIsIgqWK1BCf7+7M8+sPeeGr+aP6aY2Y8FoHuKi+hQzWWcwBDej7Sso4chBMD+SDwGP9kJmXen8FzjsZQ/aNCKVN6EsS9r9T/+LFNT3gtOkHEWKnjooJyYvM0PnaahLhCxR//pcuKR60izjUvxZohIQvI9Srdj6mgCHr4vpx5hrV0fwtWzAtpl1tU+RF/XA6Kmq7CPtvJM4yhX42AUYO8QdsVWVhmzBWYUlhFmiRrHcQIbMURM9j78ouQTNoxtUHQ91NBuF5uJ8X4AQ/kpanUD0fm2xOZVCePe+NGaW76q2T7FgiBMFPxwtY/
- WhEXG8EI
- kelqFV6INLifYC4qhp5sTuf6Sn+z75UQ6BraY1Ba2RiWpgCbXgLatn8zenMDSvKCY8/hwQk+L3M03I8OLxk5T7OEpdjBoBwRDBcQGxRkRP+kSUzxc4w4wn+XPN0EoA05vTvKrJwhKCl8eNO0YiJax6kQyWoTsXGWDkFSxe3XsDUOjDsESTC3bPZvBVbiQgx89DKnFB3WL7JpmdQtoadwPQKkEdgUJ9OI88YjYrEf+Z8PfwDu/JdXJe1fNx/EugguWZ7wb8MXD8lg9OUtRGWoncEns1KxcMqPIBvopHJodLyXP314S9OUBQZYeO6kyanHK0h22kP8CezBY7RksXxyZhQV1OQX1nHSdl9yD9VA65pV175LJQrGlMulrZ9iwJFwTT8GP78lNoNjnuONI7F/7rLJJKBG2z6NB/KCTshqXJNgRJYW8CjzuStd5zReOCAAKMiemR26Sx77LB70O8R3hVaTR/Tl3XV0VnUNa4Pm76KYMkYQcL/pQfqQ+mh9PhMDwg6n91nzHUcM8gIMkodgZd9PG9q6BDYf3GFVNnBDGoPOm6F62VkTYp5ab1kdMSiDdoFK2cA4HQxDofs2UDvXAO08enRwiiGbitT3MHFOYXxMYiSwI/Feb2zudncKitHfB4B/hd8O4e46qzhj+/6Lq7UIZC2rhxoq966ec4svMoX2mPhALcvSuoPfb86qw81WxwmDlTE/IsGC0vVwB9SptJSdXoeL9SOhxh3lCefSkGpHLXAGyCZm9LvY/ELNsToWmjcmXas/4DVfMcXbpHLyT+1GyA/DynBXyNJzZJn7f1kR30lg104XYebxXRypMhxdUV5ZxSJq0kwgb780TV5PaJ0gZbXXmQ2XHQIp2wZJ4fbmfJyeUDiJoYISVOSojU6gy7gOM8COByx6s7dpRq2Qyr540AmjP4xqVsUaCQD15N5gUcBQH6EIQDNR+spiRGoPkmbDSyVxXFck8updGNwuPiEh4eLAb
- ycfmxX8B
- 3QQ5awWsJLaQj6wn1Z4mg9cHEOu4wE4Z66ui4A7twi6MTGz+zBej4IVtXttDVCkYEFrojma5YqRb3BE1jj/t+C71CrJmXV7TWG7dSUkZULkGiSAhQt/RyKFMDs20Uw9riGXI1QsjouRIRevzkwdGLxrKjCOAMDhkx2YuyitprsoOVVHfun6++9G9WCmR5nUnCQPbwOnlLLqFG4+AYvSU+Mh/06IW5Z2W6k/rfkPneCgmCvADSRzkvZ3i8SWpP2whuMMy0SaCz05nYykSCA5sGAjnb8bQ2bSe3O1wcT6O90dAuVvJMRHJDmiAgUpyjhG01xevR14t8VN3Y5ubFPRsbVAA+tG6R6wSBbZaHTDclZltPze6nIptQP4diy4KWJHJb9hk5t/tu52CRPcma4bJ9CV9Y5CZy+SoY4wWiYGIdMqvExmQDoLG20VmPQZhSQZXH30O0pWmP6R4yH4RrgVh8QBAPaBL5+gw3n4Wwb7CEUbjN79u+9b70Xx91+b7Zgwxr89dpp6vEk0YiVG+7Vb4wctfsO614qRg//urn1HCAKSTr6gppRfHRpMR7jdMkCcFqZzpiesq4l66Mm7s5Z57Q/sf0aUmHqomLLSd8LDelL5bCEjgy3rI9d4r+TW7cPIebZ7vPltmgIE+JUm4IMRYUiBTanMQlpaIEPCe5h5/lauUfhZ4pEP+FqeOXhaMV4Alo4gZ7ZZVvdzhhY5bFn6gv2WudFSsGkhO1lxbiucUbzdbCWM6nmW2I4hSUL0HFmfdFcib+h2xKDQxuwA1W8+y04vjQXhgxmv3I1QEvfQsx4wxKBVDPHPFyuMZeGvKyhXBD7miDAt0l4QJZ7oQcSHle4XMqeHjihc4A7fcr5eG+xJooEKUJC8I8gG1gJASybwj0s9vqb8LTuI1EobbnlEyAm+akj9c29PElSpXr+AIBgQWiO/CMbv//ubqFaNvrQPUhOBZkarVZy92DxhYqkto709D1LRx0
- VH0p2/mj
- Wbe1AGaOyP8mrNilRk1TIkp0U9sRkANgxo0tZl1SEpYuRAjoV93tvxBMNCHGpPNUx32Ra2rTl/aVfA3sCSkGf1iteJz1kMXTEjlwj3LYBSsrpKQwu5VQhzVWco6L6lNWMGRmmxsKdYQ/NKxWPrsKixXOEr7kPjR5vI36wgrCzcT+Vfi6/fg6MgQoshyEgSKPAYeLB1lC2odvRLpbFR2SlXiwspdA6kDqA8KPuk9EI8YKP3pR39bn/mXLQ8P968m7lo7yb9uZs4poxUuplpY37johdLxCw7GTMgVHKhQVh2fsqRrKp92i7rvxppVYA0hoiRS+kaopYOi9HYi6CLS4fXJyrngVYj8flWrJ+fa+rSXj0ZhNnA53Kc3bHQLpaT0ZuY/4hmTYBkZpDBgZ6yo5MGfUJPxl+QZ4PQbxacnTHhbxtb4sWO/3HS6a/XrT5m6MnWm+w6CoBhLRD+CSgMSkxFkjvemqHMUjxk9Zp+GfbJ/bzbdiqHWcLeNztrzg6cdIYOmHdsXO9rJHwrRC2pF6bsO3seIU5b5pVXMZsXMUTUDVmrXAy588JSNi+uN+atl2J1Z9AXDoCEcxQp0nxcvDziA9e0XuRnjFcAzVBezvl6N8JLF1d7hij6nufKZpSOlFl1hhnw0DoYCjXfGcT9LBLAQz8ZUiIegfWp5W8EBwSYG/cgMOrvnvFG9Trm37o/RlMlqFabq2TKh12YWmODJXq0tNu5nBr7tXbvTppeCUA0LWSZYxztuEGvzMU5FtFYWWFF7R/H12L8KjRmuQBzzON8YGd5TjVIlR32Kxn3yVfqozuRcAzRXWacSi7fpZrZ4F8eU3rc2FhG1P/4Ly3eLRK/fX2gcwC6UOEEBcntIGnLc5b16lVlL7WNmdq59wIKDURiDyOb+MR+WnTJ9QcQhje8LalT7UHcmsmudT3OHttLl5jLkOec+6aOb7ft/F20ske3AEMdPeeknL2Nwt7CeOLfgsiWATI
- ruT4rORW
- Vu9SYo3siYHL5UlAEWIoo0mRCVOhRYv4X26no+TzD/NSrDF3BNHEmFulazw+RsgzqfK6m7foCJIStn/z6lcPzhMJ/FVdWhqQrX3iz8v4sDENEEE7nKvd3I+QewVZVACeJ4XBqpV5bsjiHgjPqnKGuQgsmDAJH36Zhe0XX2KNnmJzrFOakX7xxaEfm/bdj6vKL2gjjcP8Yw+JUf+zcWFagd5+erog6nzdfOu1AcC4Y7XXGjV/VB1/bhjIxxX9ZbikbCFlsBhVWMwgJ2AyqjmCFOZWgjkhmw14+Xknkp9VE5Y4EWtYNud6cqRSCvIA//1EmyyKebvIZladclGvGqdniIF7Wr0PIbaDk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E9173180006
+X-Stat-Signature: 3pp9fawwog1jmf8kgxy3srmzfwxteny4
+X-HE-Tag: 1772484494-31107
+X-HE-Meta: U2FsdGVkX18HyNq6H9EMMAUdW/hGIVU80DKHFf2O5CzfEQGZKf5xNdXbErQ2y5qCj9P4RcOk2Z+o5YB8YtaoQM+vGXqWHHf0mcWqfyYxKV0+MDT0BqbLZbyYwP1trrBXsQSewO2IQwsv/LNZMQHl3v7H+8qMnAvnGsSTThs7snm7WcdBfWJrNCsdLaWKoOYGhwIybtNslGbmgeN7SRbwwJk9phUFdyXFJkl/uEyIJ1U+03MoayK9Klp76Xvpg1DXyu2iL0iKRk6l7sAArwy5ZqXzdKAUkjUTjp3emAYQp3du8VUQuJYXAHWLCFkAmGUpgJl9+IuFxOYFnrFxzOxpT+L+oPBl7oReC7SPZo/YudZENdCQ7ftY1bppWV14Zbj8Np/nD6hBVjSOuqCmN2yvxhfDLSFxivR7r7DLXjch4Mhu4to/9w4msr564mfY3i+6UJw+HUWq7UjPYzlYb+IwYVYh+FFINInAYWTQ0JPMcq9/JxI68vscCMfqpZvaR/mLDZgulOSqkAVm7KrNm1DUTQN2zFKzhmTfSKgdq3nU7lEQqqHPV/TbfgBcCKQWaPe7aJ5rjPaq/2JDTCC7CM3jRT1nGbEd2HK76CliRCK/kDEV9dOiBXxJnWTh4EtQB9Tqe070oT9rT2O8AXzbpFM8Yosv1VZl51rR3ls9O4o709yZ2cm5Fx7TkK035jztstKCgOfPR81sC1JBYoYl8VfwVA+2To+t1s7Y6EHuQtZ5G38boMb1nmfMS9ELTOiufDNgfeBYu4jcj2cJXKFCmlQYUgPTLHz1vLUZkVpvDFnBAHRc9hrNGFPudyrmI11aaTuZP1fAGt84ncLfDaFnwTxIOOAe+sgQ7qq65Nd4w9yqrRqAYuQKOJn71T/wgxkxJVac3oZ5QTnU/8+IIiFjKubi8EA/tNg+CIj21SpSRJmdSlTDeSA6zNQQMpndEMzil9NMb0vD84+DJ5bOL1+pik+
+ vi/FfqvK
+ ay/KuO5yBubZUN3ztGnVCTLuZPsaLGhfN0QFTDVAEWHGgmQdAYIvIQC7PNYW4k+mIG0ax3afOGolzbwhbxR/DUtdMNfiKZoH6WjvSRcMZPOffw+RiAHP2mDc3jRVEsP9iGQ7gz86vzO7SPLkvz666qk4pHeX5/qb8StSmdjg7aS3Bo2r38gJvbMDeYwgfCFZGlvcW0gvDE+Kg2Lq5GgrcxwHhiR8dnA0eZx28YKHulEShr1QhZxJERwOdXqeUX9KnvNe/uDyfCPk1AF7JLhk4XtcRvnrIguY6C5ibeKgzISu8BO/LliA4d8duOhLO+eu7BTvx8XpC1htnJEqoveOKZ1dFahQ01SRsDXhRuBXCRN5rNgI+/LbttV1ZY/QtQDwS6QvAgHtUzuO8BUzaty1+sR88sWdvxZZp8HiQv7GUHTZddZTSRN63HwbN+M1VB2q2ieFtvE/x2r6yFq4YnHmTHptLv74H4QN/dI6NYxWU++p+kamSdbYOayukWKiadraS2IcDJLmiTActDidr1cEvNiVsuQVR8OD7Xx3RWTL/ZRwapFUxUPP5t5pNB4+Fb8Lc0KWFQpMalRURyS8qwjsT4w3fh7iOqXriIEPoYpLdv1hKEjz7AcP9d3IHc3DHu+DjDUA1Y1II9T6JluUMtrIMomwHedukHO3l9esMKxdcmBjJeE6F4at5MsPl4yy2v9SCKg6E2POf4HeO6vdgE4oMSjm0LfB8seRgr9Ap2aKjF5FVi/hMT5P7CFf3GGCR45UTPLMxugYClW86GHNZ7ZRU3oeqLKrzKXMed+wtoS8ahoE/pUUOzs5biagLIvSxz+3HoAqP6j789Tcv4+ru5ZiGERqf3sgw0tR188n/vpx+msJia5eZButP33Lv8+x2e16I2A7PWXXyRhbnO9nPsK/mcS8e0aP2HNg4HRC42bWTi+dwExc3bQuKGXWCsRBkbIf4Oj/agws/sCBgX4LDHSV+AslrXqkV
+ dkbN9ng+
+ 0CgzzeHqXVTgAfGdFmXVOwwUG/sCLD+h0TBIspB9FXLVaW5ldb8Iao6HQ5YGvCYKhY5MzYGdsPlQFcKVyFupGYxzZ7vRN19xtbeumcZE4dy2wkdSAFsYh5x9keLJ92c4XT5oeSMCD8faATvkwfZLrzy2uhh2PdZ+O5i35Ea7efvHIGnW7/JvI3vN56nM7Ahmdiiut/yjhO88CrC9fFjWk1lVtPK19cdezzppU+qxk4/mK0Dy/kdmp8eWSD/JkfOzNzBGvugBfmI6a9o8w2GZsHxT1hj0ykWBrmT0hUuNSgQSyw0/6JIT3+96qGRNxc68EFTevXoO0EjsGXkSenQoTXSrKtzz4gix8BhNXID++sI89B+senQ37GNBayF2K4/cG4NCjrXTLtUKoD9oF9iObhe+yDm401dH1na1cUeyxPDUEOZbl/smA+oLEDwadbalUS07mAt8U7N5LQeRkU1DhvfprVLFMafw9KWOlAi6lwezHThD5fdWQ/6eva41QCR1b2+swFF5HiIiAJiQ3EnvJYdTuNUAtuUNauRUsuLMrc8pdVh6sbyuLXNeudQY9qD06w+rpyBQAmnsFBGH5jApHzpqdq2dPl+b4s3jurKXnY+rb0agjgrLNhSyiGRGwMOvvE89sDXLDEPjCCdLTFBFpUPBcxf/baoLRlALSVEmRZs10VAM4aMt6uXK2rBKCHqKGY4KWf4vPfWYnYPIJokpFobKSjOvXoEmVMfD8SPjLJ03KJMrqR8Afi7U3Zb4zGw6ckiJbAEsVh91sz5t4FXuKulH3V9nxPkNBzlz82QfEePBfLH/U0L0OASJJ5STeTu2o/s0inzuHuSDFpcezIWDylcKgZnbStFLzot9YGRQ4CACodQsnPhSdQCCdKl/CT7D+ryZLXjcnEam3igct9Hw+jKUVW3qhyVT9xRmBQSydFGZuNprqTKPxy0PYd/XivlurwB427TWjfuCv3FgHY57N4yVAyuYv
+ acjVKAs2
+ 5SEvWcC/w1W5x7DkQy1Oy6Uuhm1rsy0pUS7/MTVQsapMssvH0CHkfh2EMnZ0OL4VvdfXMeeMSHIixQb94WmCrHj7QIgNF4DPDnz0KWoQs0rVJmdrBvIrjWc9XfAZjpdBQkualVM+DcYe1ZRFm/nqE7zW1VP3QtE8n0Ext/7Z/Kbpia5lyWxTWnU1d1wsoHo2fjUZVlFHeZN2treJ8A1yJ47rQwUoyU1Mrpevg7JkqW0LA017Gl7etORdLFXiiHtBzigCoblZE2QV6LhRuZhvYZp9gkgk0wF1RWCkx6Y8eWgLPWjvS+YNdSZT7FUVSW69riCCxUR6pRENVL08jZQRR3UxICmv2YHylwoL2swCOTk2YtaLRVV0HtxFZnb0VIuJMhyvgdUaEOZJSF5ZvW0rIx1IVNUJbyUccPHJt/6lGCbFoi5Q2/C9d81LoEhIlxYPwDYbpDWrXrPLLWXv9T1aKqc5UmioBsUmwrsErAhPTl0seijQNIf6HKibDOTuTOnopYw7jXy2Uq/DWYY1F1ABnqFZPnssHLGpyDrxrBlbiW3xQ0dr/UHoxAQlpJnpQKrVDbfHjeNywKVUKLSW7FB2+OFRHYTSxkpMSV09om2fV37cYTNWPywKrMMqmQ25je/VQ5H6pCtquv4tjII3aOx8vWqlGks/J/EcqL7nv+5rVaC0aOHOFN7FP105MOjBKwXUAiNs6zx+uyIJeoV8umK4xpzuqJH8S1xgm6FLw7Km7YYpSxN2LmO7xJ/pivgcQ9nH2yyAugS3frRRbZ8mAKbyTZ9fozUQ3ThC7197yc67o3lOKc5/8R7s/lKN2jCvWHFI8evTXFHSUKwVu23ifY2AQ1f+bXRpce7eM2ZIAq12v4VYUXtkKokJmjqxNxEhE8ysJqpBnmazBF0VhdaWTCIaCWqe5spXoyxY/B9ksA+PNot+k2o3MM6N7fRrfHGd2NBmZ8EfdTypUMR/Mi9q4CbRegDCS9m/d
+ MXR9XiNn
+ ADxgWnCyodZSpr3HJ+yjtI7j5L5cNum2MsAHvFHtST9zvTSQhPnXI5ZMoYy3fiR/s7Hi/Fd1Pu2gEweqPtrMUX5xnZ6BckA/0ChIgUNuUViOX7z0jVjd4Rj7F1VPSFP16ak0qV9l7VTQEK73nRm2Nqgd+mMSVAhwEwb87/mIW2fbNwzLArW7lL8NeRgnzXKD7LyFC2XqWbHoWJzvX4V5WOsCd7FmpxbDb07RgYU0HxjzutWXIaXDufxwsdLyFMmFPg8F4rLPK1vAVUK/lIp1vic417qZzwUXTDDZZFJR/Vq9bOU0gNyjln6UFzkx0SMTi661CGE31DOUQV9sR0GP/x0O4OH7DKex+Ar74fR9Mog93iioRZF1ttX2XFUXQpB3s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -224,26 +224,502 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that i_ino is u64 and the PRIino format macro has been removed,
-replace all uses in qnx6 with the concrete format strings.
+replace all uses in ubifs with the concrete format strings.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/qnx6/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ubifs/debug.c   |  8 ++++----
+ fs/ubifs/dir.c     | 28 ++++++++++++++--------------
+ fs/ubifs/file.c    | 28 ++++++++++++++--------------
+ fs/ubifs/journal.c |  6 +++---
+ fs/ubifs/super.c   | 16 ++++++++--------
+ fs/ubifs/tnc.c     |  2 +-
+ fs/ubifs/xattr.c   | 14 +++++++-------
+ 7 files changed, 51 insertions(+), 51 deletions(-)
 
-diff --git a/fs/qnx6/inode.c b/fs/qnx6/inode.c
-index 630ebaa8a1c554b4d83ae75e5940a512e847bf51..6de49333acadbf08a8ce20d86e566433bc911f7d 100644
---- a/fs/qnx6/inode.c
-+++ b/fs/qnx6/inode.c
-@@ -75,7 +75,7 @@ static int qnx6_get_block(struct inode *inode, sector_t iblock,
+diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
+index c7c7dbf0e4c546c7213effa5c849dbba0532f9ed..5794de5a9069f20302b6630c39c1452183137acc 100644
+--- a/fs/ubifs/debug.c
++++ b/fs/ubifs/debug.c
+@@ -230,7 +230,7 @@ void ubifs_dump_inode(struct ubifs_info *c, const struct inode *inode)
+ 	int count = 2;
+ 
+ 	pr_err("Dump in-memory inode:");
+-	pr_err("\tinode          %" PRIino "u\n", inode->i_ino);
++	pr_err("\tinode          %llu\n", inode->i_ino);
+ 	pr_err("\tsize           %llu\n",
+ 	       (unsigned long long)i_size_read(inode));
+ 	pr_err("\tnlink          %u\n", inode->i_nlink);
+@@ -1101,7 +1101,7 @@ int dbg_check_synced_i_size(const struct ubifs_info *c, struct inode *inode)
+ 	if (ui->ui_size != ui->synced_i_size && !ui->dirty) {
+ 		ubifs_err(c, "ui_size is %lld, synced_i_size is %lld, but inode is clean",
+ 			  ui->ui_size, ui->synced_i_size);
+-		ubifs_err(c, "i_ino %" PRIino "u, i_mode %#x, i_size %lld", inode->i_ino,
++		ubifs_err(c, "i_ino %llu, i_mode %#x, i_size %lld", inode->i_ino,
+ 			  inode->i_mode, i_size_read(inode));
+ 		dump_stack();
+ 		err = -EINVAL;
+@@ -1163,7 +1163,7 @@ int dbg_check_dir(struct ubifs_info *c, const struct inode *dir)
+ 	kfree(pdent);
+ 
+ 	if (i_size_read(dir) != size) {
+-		ubifs_err(c, "directory inode %" PRIino "u has size %llu, but calculated size is %llu",
++		ubifs_err(c, "directory inode %llu has size %llu, but calculated size is %llu",
+ 			  dir->i_ino, (unsigned long long)i_size_read(dir),
+ 			  (unsigned long long)size);
+ 		ubifs_dump_inode(c, dir);
+@@ -1171,7 +1171,7 @@ int dbg_check_dir(struct ubifs_info *c, const struct inode *dir)
+ 		return -EINVAL;
+ 	}
+ 	if (dir->i_nlink != nlink) {
+-		ubifs_err(c, "directory inode %" PRIino "u has nlink %u, but calculated nlink is %u",
++		ubifs_err(c, "directory inode %llu has nlink %u, but calculated nlink is %u",
+ 			  dir->i_ino, dir->i_nlink, nlink);
+ 		ubifs_dump_inode(c, dir);
+ 		dump_stack();
+diff --git a/fs/ubifs/dir.c b/fs/ubifs/dir.c
+index 8197948e490d6e5cea9ddd31b44562462cafb9b4..86d41e077e4d621dbb8c448acd0065c8ac7ae225 100644
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -223,7 +223,7 @@ static struct dentry *ubifs_lookup(struct inode *dir, struct dentry *dentry,
+ 	struct ubifs_info *c = dir->i_sb->s_fs_info;
+ 	struct fscrypt_name nm;
+ 
+-	dbg_gen("'%pd' in dir ino %" PRIino "u", dentry, dir->i_ino);
++	dbg_gen("'%pd' in dir ino %llu", dentry, dir->i_ino);
+ 
+ 	err = fscrypt_prepare_lookup(dir, dentry, &nm);
+ 	if (err == -ENOENT)
+@@ -281,7 +281,7 @@ static struct dentry *ubifs_lookup(struct inode *dir, struct dentry *dentry,
+ 	if (IS_ENCRYPTED(dir) &&
+ 	    (S_ISDIR(inode->i_mode) || S_ISLNK(inode->i_mode)) &&
+ 	    !fscrypt_has_permitted_context(dir, inode)) {
+-		ubifs_warn(c, "Inconsistent encryption contexts: %" PRIino "u/%" PRIino "u",
++		ubifs_warn(c, "Inconsistent encryption contexts: %llu/%llu",
+ 			   dir->i_ino, inode->i_ino);
+ 		iput(inode);
+ 		inode = ERR_PTR(-EPERM);
+@@ -318,7 +318,7 @@ static int ubifs_create(struct mnt_idmap *idmap, struct inode *dir,
+ 	 * parent directory inode.
+ 	 */
+ 
+-	dbg_gen("dent '%pd', mode %#hx in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
+ 		dentry, mode, dir->i_ino);
+ 
+ 	err = ubifs_budget_space(c, &req);
+@@ -386,7 +386,7 @@ static struct inode *create_whiteout(struct inode *dir, struct dentry *dentry)
+ 	 * atomically.
+ 	 */
+ 
+-	dbg_gen("dent '%pd', mode %#hx in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
+ 		dentry, mode, dir->i_ino);
+ 
+ 	inode = ubifs_new_inode(c, dir, mode, false);
+@@ -460,7 +460,7 @@ static int ubifs_tmpfile(struct mnt_idmap *idmap, struct inode *dir,
+ 	 * be released via writeback.
+ 	 */
+ 
+-	dbg_gen("dent '%pd', mode %#hx in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
+ 		dentry, mode, dir->i_ino);
+ 
+ 	err = fscrypt_setup_filename(dir, &dentry->d_name, 0, &nm);
+@@ -589,7 +589,7 @@ static int ubifs_readdir(struct file *file, struct dir_context *ctx)
+ 	bool encrypted = IS_ENCRYPTED(dir);
+ 	struct ubifs_dir_data *data = file->private_data;
+ 
+-	dbg_gen("dir ino %" PRIino "u, f_pos %#llx", dir->i_ino, ctx->pos);
++	dbg_gen("dir ino %llu, f_pos %#llx", dir->i_ino, ctx->pos);
+ 
+ 	if (ctx->pos > UBIFS_S_KEY_HASH_MASK || ctx->pos == 2)
+ 		/*
+@@ -764,7 +764,7 @@ static int ubifs_link(struct dentry *old_dentry, struct inode *dir,
+ 	 * changing the parent inode.
+ 	 */
+ 
+-	dbg_gen("dent '%pd' to ino %" PRIino "u (nlink %d) in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd' to ino %llu (nlink %d) in dir ino %llu",
+ 		dentry, inode->i_ino,
+ 		inode->i_nlink, dir->i_ino);
+ 	ubifs_assert(c, inode_is_locked(dir));
+@@ -836,7 +836,7 @@ static int ubifs_unlink(struct inode *dir, struct dentry *dentry)
+ 	 * deletions.
+ 	 */
+ 
+-	dbg_gen("dent '%pd' from ino %" PRIino "u (nlink %d) in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd' from ino %llu (nlink %d) in dir ino %llu",
+ 		dentry, inode->i_ino,
+ 		inode->i_nlink, dir->i_ino);
+ 
+@@ -941,7 +941,7 @@ static int ubifs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	 * because we have extra space reserved for deletions.
+ 	 */
+ 
+-	dbg_gen("directory '%pd', ino %" PRIino "u in dir ino %" PRIino "u", dentry,
++	dbg_gen("directory '%pd', ino %llu in dir ino %llu", dentry,
+ 		inode->i_ino, dir->i_ino);
+ 	ubifs_assert(c, inode_is_locked(dir));
+ 	ubifs_assert(c, inode_is_locked(inode));
+@@ -1018,7 +1018,7 @@ static struct dentry *ubifs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	 * directory inode.
+ 	 */
+ 
+-	dbg_gen("dent '%pd', mode %#hx in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd', mode %#hx in dir ino %llu",
+ 		dentry, mode, dir->i_ino);
+ 
+ 	err = ubifs_budget_space(c, &req);
+@@ -1096,7 +1096,7 @@ static int ubifs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	 * directory inode.
+ 	 */
+ 
+-	dbg_gen("dent '%pd' in dir ino %" PRIino "u", dentry, dir->i_ino);
++	dbg_gen("dent '%pd' in dir ino %llu", dentry, dir->i_ino);
+ 
+ 	if (S_ISBLK(mode) || S_ISCHR(mode)) {
+ 		dev = kmalloc_obj(union ubifs_dev_desc, GFP_NOFS);
+@@ -1183,7 +1183,7 @@ static int ubifs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 					.dirtied_ino = 1 };
+ 	struct fscrypt_name nm;
+ 
+-	dbg_gen("dent '%pd', target '%s' in dir ino %" PRIino "u", dentry,
++	dbg_gen("dent '%pd', target '%s' in dir ino %llu", dentry,
+ 		symname, dir->i_ino);
+ 
+ 	err = fscrypt_prepare_symlink(dir, symname, len, UBIFS_MAX_INO_DATA,
+@@ -1349,7 +1349,7 @@ static int do_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	 *   ino_req: marks the target inode as dirty and does not write it.
+ 	 */
+ 
+-	dbg_gen("dent '%pd' ino %" PRIino "u in dir ino %" PRIino "u to dent '%pd' in dir ino %" PRIino "u flags 0x%x",
++	dbg_gen("dent '%pd' ino %llu in dir ino %llu to dent '%pd' in dir ino %llu flags 0x%x",
+ 		old_dentry, old_inode->i_ino, old_dir->i_ino,
+ 		new_dentry, new_dir->i_ino, flags);
+ 
+@@ -1597,7 +1597,7 @@ static int ubifs_xrename(struct inode *old_dir, struct dentry *old_dentry,
+ 	 * parent directory inodes.
+ 	 */
+ 
+-	dbg_gen("dent '%pd' ino %" PRIino "u in dir ino %" PRIino "u exchange dent '%pd' ino %" PRIino "u in dir ino %" PRIino "u",
++	dbg_gen("dent '%pd' ino %llu in dir ino %llu exchange dent '%pd' ino %llu in dir ino %llu",
+ 		old_dentry, fst_inode->i_ino, old_dir->i_ino,
+ 		new_dentry, snd_inode->i_ino, new_dir->i_ino);
+ 
+diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+index 90248f5a91cdd71a9d3c353a5cd8d1f95377fddc..e73c28b12f97fd1fbeb67510434e499eab84da70 100644
+--- a/fs/ubifs/file.c
++++ b/fs/ubifs/file.c
+@@ -90,7 +90,7 @@ static int read_block(struct inode *inode, struct folio *folio, size_t offset,
+ 	return 0;
+ 
+ dump:
+-	ubifs_err(c, "bad data node (block %u, inode %" PRIino "u)",
++	ubifs_err(c, "bad data node (block %u, inode %llu)",
+ 		  block, inode->i_ino);
+ 	ubifs_dump_node(c, dn, UBIFS_MAX_DATA_NODE_SZ);
+ 	return -EINVAL;
+@@ -106,7 +106,7 @@ static int do_readpage(struct folio *folio)
+ 	loff_t i_size = i_size_read(inode);
+ 	size_t offset = 0;
+ 
+-	dbg_gen("ino %" PRIino "u, pg %lu, i_size %lld, flags %#lx",
++	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
+ 		inode->i_ino, folio->index, i_size, folio->flags.f);
+ 	ubifs_assert(c, !folio_test_checked(folio));
+ 	ubifs_assert(c, !folio->private);
+@@ -162,7 +162,7 @@ static int do_readpage(struct folio *folio)
+ 			dbg_gen("hole");
+ 			err = 0;
+ 		} else {
+-			ubifs_err(c, "cannot read page %lu of inode %" PRIino "u, error %d",
++			ubifs_err(c, "cannot read page %lu of inode %llu, error %d",
+ 				  folio->index, inode->i_ino, err);
+ 		}
+ 	}
+@@ -212,7 +212,7 @@ static int write_begin_slow(struct address_space *mapping,
+ 	int err, appending = !!(pos + len > inode->i_size);
+ 	struct folio *folio;
+ 
+-	dbg_gen("ino %" PRIino "u, pos %llu, len %u, i_size %lld",
++	dbg_gen("ino %llu, pos %llu, len %u, i_size %lld",
+ 		inode->i_ino, pos, len, inode->i_size);
+ 
+ 	/*
+@@ -526,7 +526,7 @@ static int ubifs_write_end(const struct kiocb *iocb,
+ 	loff_t end_pos = pos + len;
+ 	int appending = !!(end_pos > inode->i_size);
+ 
+-	dbg_gen("ino %" PRIino "u, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
++	dbg_gen("ino %llu, pos %llu, pg %lu, len %u, copied %d, i_size %lld",
+ 		inode->i_ino, pos, folio->index, len, copied, inode->i_size);
+ 
+ 	if (unlikely(copied < len && !folio_test_uptodate(folio))) {
+@@ -599,7 +599,7 @@ static int populate_page(struct ubifs_info *c, struct folio *folio,
+ 	size_t offset = 0;
+ 	pgoff_t end_index;
+ 
+-	dbg_gen("ino %" PRIino "u, pg %lu, i_size %lld, flags %#lx",
++	dbg_gen("ino %llu, pg %lu, i_size %lld, flags %#lx",
+ 		inode->i_ino, folio->index, i_size, folio->flags.f);
+ 
+ 	end_index = (i_size - 1) >> PAGE_SHIFT;
+@@ -680,7 +680,7 @@ static int populate_page(struct ubifs_info *c, struct folio *folio,
+ 	return 0;
+ 
+ out_err:
+-	ubifs_err(c, "bad data node (block %u, inode %" PRIino "u)",
++	ubifs_err(c, "bad data node (block %u, inode %llu)",
+ 		  page_block, inode->i_ino);
+ 	return -EINVAL;
+ }
+@@ -913,7 +913,7 @@ static int do_writepage(struct folio *folio, size_t len)
+ 	}
+ 	if (err) {
+ 		mapping_set_error(folio->mapping, err);
+-		ubifs_err(c, "cannot write folio %lu of inode %" PRIino "u, error %d",
++		ubifs_err(c, "cannot write folio %lu of inode %llu, error %d",
+ 			  folio->index, inode->i_ino, err);
+ 		ubifs_ro_mode(c, err);
+ 	}
+@@ -987,7 +987,7 @@ static int ubifs_writepage(struct folio *folio, struct writeback_control *wbc)
+ 	loff_t i_size =  i_size_read(inode), synced_i_size;
+ 	int err, len = folio_size(folio);
+ 
+-	dbg_gen("ino %" PRIino "u, pg %lu, pg flags %#lx",
++	dbg_gen("ino %llu, pg %lu, pg flags %#lx",
+ 		inode->i_ino, folio->index, folio->flags.f);
+ 	ubifs_assert(c, folio->private != NULL);
+ 
+@@ -1106,7 +1106,7 @@ static int do_truncation(struct ubifs_info *c, struct inode *inode,
+ 	int offset = new_size & (UBIFS_BLOCK_SIZE - 1), budgeted = 1;
+ 	struct ubifs_inode *ui = ubifs_inode(inode);
+ 
+-	dbg_gen("ino %" PRIino "u, size %lld -> %lld", inode->i_ino, old_size, new_size);
++	dbg_gen("ino %llu, size %lld -> %lld", inode->i_ino, old_size, new_size);
+ 	memset(&req, 0, sizeof(struct ubifs_budget_req));
+ 
+ 	/*
+@@ -1258,7 +1258,7 @@ int ubifs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	struct inode *inode = d_inode(dentry);
+ 	struct ubifs_info *c = inode->i_sb->s_fs_info;
+ 
+-	dbg_gen("ino %" PRIino "u, mode %#x, ia_valid %#x",
++	dbg_gen("ino %llu, mode %#x, ia_valid %#x",
+ 		inode->i_ino, inode->i_mode, attr->ia_valid);
+ 	err = setattr_prepare(&nop_mnt_idmap, dentry, attr);
+ 	if (err)
+@@ -1308,7 +1308,7 @@ int ubifs_fsync(struct file *file, loff_t start, loff_t end, int datasync)
+ 	struct ubifs_info *c = inode->i_sb->s_fs_info;
+ 	int err;
+ 
+-	dbg_gen("syncing inode %" PRIino "u", inode->i_ino);
++	dbg_gen("syncing inode %llu", inode->i_ino);
+ 
+ 	if (c->ro_mount)
+ 		/*
+@@ -1495,7 +1495,7 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
+ 	struct ubifs_budget_req req = { .new_page = 1 };
+ 	int err, update_time;
+ 
+-	dbg_gen("ino %" PRIino "u, pg %lu, i_size %lld",	inode->i_ino, folio->index,
++	dbg_gen("ino %llu, pg %lu, i_size %lld",	inode->i_ino, folio->index,
+ 		i_size_read(inode));
+ 	ubifs_assert(c, !c->ro_media && !c->ro_mount);
+ 
+@@ -1531,7 +1531,7 @@ static vm_fault_t ubifs_vm_page_mkwrite(struct vm_fault *vmf)
+ 	err = ubifs_budget_space(c, &req);
+ 	if (unlikely(err)) {
+ 		if (err == -ENOSPC)
+-			ubifs_warn(c, "out of space for mmapped file (inode number %" PRIino "u)",
++			ubifs_warn(c, "out of space for mmapped file (inode number %llu)",
+ 				   inode->i_ino);
+ 		return VM_FAULT_SIGBUS;
+ 	}
+diff --git a/fs/ubifs/journal.c b/fs/ubifs/journal.c
+index 7c4edfe98d13245982353d42231d4d87806ca50d..40a95a2fad50039f39917e71da7b71a735237469 100644
+--- a/fs/ubifs/journal.c
++++ b/fs/ubifs/journal.c
+@@ -982,7 +982,7 @@ int ubifs_jnl_write_inode(struct ubifs_info *c, const struct inode *inode)
+ 	int kill_xattrs = ui->xattr_cnt && last_reference;
+ 	u8 hash[UBIFS_HASH_ARR_SZ];
+ 
+-	dbg_jnl("ino %" PRIino "u, nlink %u", inode->i_ino, inode->i_nlink);
++	dbg_jnl("ino %llu, nlink %u", inode->i_ino, inode->i_nlink);
+ 
+ 	if (kill_xattrs && ui->xattr_cnt > ubifs_xattr_max_cnt(c)) {
+ 		ubifs_err(c, "Cannot delete inode, it has too many xattrs!");
+@@ -1743,7 +1743,7 @@ int ubifs_jnl_truncate(struct ubifs_info *c, const struct inode *inode,
+ 			int dn_len = le32_to_cpu(dn->size);
+ 
+ 			if (dn_len <= 0 || dn_len > UBIFS_BLOCK_SIZE) {
+-				ubifs_err(c, "bad data node (block %u, inode %" PRIino "u)",
++				ubifs_err(c, "bad data node (block %u, inode %llu)",
+ 					  blk, inode->i_ino);
+ 				ubifs_dump_node(c, dn, dn_size);
+ 				err = -EUCLEAN;
+@@ -1987,7 +1987,7 @@ int ubifs_jnl_change_xattr(struct ubifs_info *c, const struct inode *inode,
+ 	u8 hash_host[UBIFS_HASH_ARR_SZ];
+ 	u8 hash[UBIFS_HASH_ARR_SZ];
+ 
+-	dbg_jnl("ino %" PRIino "u, ino %" PRIino "u", host->i_ino, inode->i_ino);
++	dbg_jnl("ino %llu, ino %llu", host->i_ino, inode->i_ino);
+ 	ubifs_assert(c, inode->i_nlink > 0);
+ 	ubifs_assert(c, mutex_is_locked(&host_ui->ui_mutex));
+ 
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index c6dcb62827f3da0f6dd021c5c062059afd56ca00..9a77d8b64ffa70f9d5b695fb3d87c22cb223704f 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -92,7 +92,7 @@ static int validate_inode(struct ubifs_info *c, const struct inode *inode)
+ 		return 5;
+ 
+ 	if (!ubifs_compr_present(c, ui->compr_type)) {
+-		ubifs_warn(c, "inode %" PRIino "u uses '%s' compression, but it was not compiled in",
++		ubifs_warn(c, "inode %llu uses '%s' compression, but it was not compiled in",
+ 			   inode->i_ino, ubifs_compr_name(c, ui->compr_type));
+ 	}
+ 
+@@ -248,14 +248,14 @@ struct inode *ubifs_iget(struct super_block *sb, unsigned long inum)
+ 	return inode;
+ 
+ out_invalid:
+-	ubifs_err(c, "inode %" PRIino "u validation failed, error %d", inode->i_ino, err);
++	ubifs_err(c, "inode %llu validation failed, error %d", inode->i_ino, err);
+ 	ubifs_dump_node(c, ino, UBIFS_MAX_INO_NODE_SZ);
+ 	ubifs_dump_inode(c, inode);
+ 	err = -EINVAL;
+ out_ino:
+ 	kfree(ino);
+ out:
+-	ubifs_err(c, "failed to read inode %" PRIino "u, error %d", inode->i_ino, err);
++	ubifs_err(c, "failed to read inode %llu, error %d", inode->i_ino, err);
+ 	iget_failed(inode);
+ 	return ERR_PTR(err);
+ }
+@@ -316,12 +316,12 @@ static int ubifs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 	 * As an optimization, do not write orphan inodes to the media just
+ 	 * because this is not needed.
+ 	 */
+-	dbg_gen("inode %" PRIino "u, mode %#x, nlink %u",
++	dbg_gen("inode %llu, mode %#x, nlink %u",
+ 		inode->i_ino, (int)inode->i_mode, inode->i_nlink);
+ 	if (inode->i_nlink) {
+ 		err = ubifs_jnl_write_inode(c, inode);
+ 		if (err)
+-			ubifs_err(c, "can't write inode %" PRIino "u, error %d",
++			ubifs_err(c, "can't write inode %llu, error %d",
+ 				  inode->i_ino, err);
+ 		else
+ 			err = dbg_check_inode_size(c, inode, ui->ui_size);
+@@ -357,7 +357,7 @@ static void ubifs_evict_inode(struct inode *inode)
+ 		 */
+ 		goto out;
+ 
+-	dbg_gen("inode %" PRIino "u, mode %#x", inode->i_ino, (int)inode->i_mode);
++	dbg_gen("inode %llu, mode %#x", inode->i_ino, (int)inode->i_mode);
+ 	ubifs_assert(c, !icount_read(inode));
+ 
+ 	truncate_inode_pages_final(&inode->i_data);
+@@ -375,7 +375,7 @@ static void ubifs_evict_inode(struct inode *inode)
+ 		 * Worst case we have a lost orphan inode wasting space, so a
+ 		 * simple error message is OK here.
+ 		 */
+-		ubifs_err(c, "can't delete inode %" PRIino "u, error %d",
++		ubifs_err(c, "can't delete inode %llu, error %d",
+ 			  inode->i_ino, err);
+ 
+ out:
+@@ -399,7 +399,7 @@ static void ubifs_dirty_inode(struct inode *inode, int flags)
+ 	ubifs_assert(c, mutex_is_locked(&ui->ui_mutex));
+ 	if (!ui->dirty) {
+ 		ui->dirty = 1;
+-		dbg_gen("inode %" PRIino "u",  inode->i_ino);
++		dbg_gen("inode %llu",  inode->i_ino);
+ 	}
+ }
+ 
+diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
+index 67836e71f698ea60fa1e0622ddf2fb59c95ff757..c9d8935f667805d89b1307628a78ccf32f11212b 100644
+--- a/fs/ubifs/tnc.c
++++ b/fs/ubifs/tnc.c
+@@ -3561,7 +3561,7 @@ int dbg_check_inode_size(struct ubifs_info *c, const struct inode *inode,
+ 
+ out_dump:
+ 	block = key_block(c, key);
+-	ubifs_err(c, "inode %" PRIino "u has size %lld, but there are data at offset %lld",
++	ubifs_err(c, "inode %llu has size %lld, but there are data at offset %lld",
+ 		  inode->i_ino, size,
+ 		  ((loff_t)block) << UBIFS_BLOCK_SHIFT);
+ 	mutex_unlock(&c->tnc_mutex);
+diff --git a/fs/ubifs/xattr.c b/fs/ubifs/xattr.c
+index c070b658bd05baab3921a8d3fd8448639ac0e08b..b5a9ab9d8a10adcf49e6d7228d385cb986e6e75e 100644
+--- a/fs/ubifs/xattr.c
++++ b/fs/ubifs/xattr.c
+@@ -76,7 +76,7 @@ static int create_xattr(struct ubifs_info *c, struct inode *host,
+ 				.dirtied_ino_d = ALIGN(host_ui->data_len, 8) };
+ 
+ 	if (host_ui->xattr_cnt >= ubifs_xattr_max_cnt(c)) {
+-		ubifs_err(c, "inode %" PRIino "u already has too many xattrs (%d), cannot create more",
++		ubifs_err(c, "inode %llu already has too many xattrs (%d), cannot create more",
+ 			  host->i_ino, host_ui->xattr_cnt);
+ 		return -ENOSPC;
+ 	}
+@@ -88,7 +88,7 @@ static int create_xattr(struct ubifs_info *c, struct inode *host,
+ 	 */
+ 	names_len = host_ui->xattr_names + host_ui->xattr_cnt + fname_len(nm) + 1;
+ 	if (names_len > XATTR_LIST_MAX) {
+-		ubifs_err(c, "cannot add one more xattr name to inode %" PRIino "u, total names length would become %d, max. is %d",
++		ubifs_err(c, "cannot add one more xattr name to inode %llu, total names length would become %d, max. is %d",
+ 			  host->i_ino, names_len, XATTR_LIST_MAX);
+ 		return -ENOSPC;
+ 	}
+@@ -390,7 +390,7 @@ ssize_t ubifs_listxattr(struct dentry *dentry, char *buffer, size_t size)
+ 	int err, len, written = 0;
+ 	struct fscrypt_name nm = {0};
+ 
+-	dbg_gen("ino %" PRIino "u ('%pd'), buffer size %zd", host->i_ino,
++	dbg_gen("ino %llu ('%pd'), buffer size %zd", host->i_ino,
+ 		dentry, size);
+ 
+ 	down_read(&host_ui->xattr_sem);
+@@ -498,7 +498,7 @@ int ubifs_purge_xattrs(struct inode *host)
+ 	if (ubifs_inode(host)->xattr_cnt <= ubifs_xattr_max_cnt(c))
+ 		return 0;
+ 
+-	ubifs_warn(c, "inode %" PRIino "u has too many xattrs, doing a non-atomic deletion",
++	ubifs_warn(c, "inode %llu has too many xattrs, doing a non-atomic deletion",
+ 		   host->i_ino);
+ 
+ 	down_write(&ubifs_inode(host)->xattr_sem);
+@@ -641,7 +641,7 @@ int ubifs_init_security(struct inode *dentry, struct inode *inode,
+ 					   &init_xattrs, NULL);
+ 	if (err) {
+ 		struct ubifs_info *c = dentry->i_sb->s_fs_info;
+-		ubifs_err(c, "cannot initialize security for inode %" PRIino "u, error %d",
++		ubifs_err(c, "cannot initialize security for inode %llu, error %d",
+ 			  inode->i_ino, err);
+ 	}
+ 	return err;
+@@ -652,7 +652,7 @@ static int xattr_get(const struct xattr_handler *handler,
+ 			   struct dentry *dentry, struct inode *inode,
+ 			   const char *name, void *buffer, size_t size)
  {
- 	unsigned phys;
+-	dbg_gen("xattr '%s', ino %" PRIino "u ('%pd'), buf size %zd", name,
++	dbg_gen("xattr '%s', ino %llu ('%pd'), buf size %zd", name,
+ 		inode->i_ino, dentry, size);
  
--	pr_debug("qnx6_get_block inode=[%" PRIino "u] iblock=[%ld]\n",
-+	pr_debug("qnx6_get_block inode=[%llu] iblock=[%ld]\n",
- 		 inode->i_ino, (unsigned long)iblock);
+ 	name = xattr_full_name(handler, name);
+@@ -665,7 +665,7 @@ static int xattr_set(const struct xattr_handler *handler,
+ 			   const char *name, const void *value,
+ 			   size_t size, int flags)
+ {
+-	dbg_gen("xattr '%s', host ino %" PRIino "u ('%pd'), size %zd",
++	dbg_gen("xattr '%s', host ino %llu ('%pd'), size %zd",
+ 		name, inode->i_ino, dentry, size);
  
- 	phys = qnx6_block_map(inode, iblock);
+ 	name = xattr_full_name(handler, name);
 
 -- 
 2.53.0
