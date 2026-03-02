@@ -4,146 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52EBFE9B365
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0B7E9B365
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 10:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FFDC6B0005; Mon,  2 Mar 2026 05:56:39 -0500 (EST)
+	id 84F9C6B0089; Mon,  2 Mar 2026 05:56:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AD756B0089; Mon,  2 Mar 2026 05:56:39 -0500 (EST)
+	id 7F9B06B008A; Mon,  2 Mar 2026 05:56:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68EEE6B008A; Mon,  2 Mar 2026 05:56:39 -0500 (EST)
+	id 6D27A6B008C; Mon,  2 Mar 2026 05:56:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5976D6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:56:39 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DBF938CD56
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:56:38 +0000 (UTC)
-X-FDA: 84500819676.23.7B09C17
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CCEAC1C000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:56:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MceG+ZEc;
-	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772448996;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 608F16B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 05:56:59 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0B1165C169
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:56:59 +0000 (UTC)
+X-FDA: 84500820558.25.F51642F
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2A6B11C0002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:56:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kcE7Vb0o;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772449017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fO53EIEqZf3EeMJEV5MFvgG6rIsJTFc2D98eC5UlMU=;
-	b=s8FCTh2dfd5UDommnEAByc7gF+AL0tDxxRUgNfPC6keSac3wNErzQ5mvmY7dgwyb8gKrsd
-	md4VgcetiGApZqXPwRqukTOSPIPupT8/pIud7ttV8ivGYQZVEBydoFE9U90t8kCw3TO8bv
-	rkDj9G7s7bGdmQfq9Em/NdgrkpgzWjg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772448996; a=rsa-sha256;
-	cv=none;
-	b=hSaWonDJHy8Yt1sZKxzDimGx2F2yXnipXtH8gIFvYRwPq37skDKFHHkTWzVKdYfjIy6tFD
-	1odJ7MOfKbBymwBoGN0g3i8dbglUiHTD8YiJGPMfUV9iWofsMDnnt3mgSBnAlM54Oqj0kU
-	7yWm7QLfL+UdofjLNro1N8HwIPp3Sl4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MceG+ZEc;
-	spf=pass (imf18.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14C30600C4;
-	Mon,  2 Mar 2026 10:56:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2511FC2BCB0;
-	Mon,  2 Mar 2026 10:56:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772448995;
-	bh=QIorwtQv/JYtsIRrCdeqpsv5dj2Fg5DePeC8vwGY8zk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MceG+ZEcp3/SuWG3t4ZJKUbTlcyKR9LQl0gmjP34KPmM1OPcpJ1jT8FA55hODX/4L
-	 AJaIDVM9ISd1REbQj31AJSXJ6mgqV7dO39fYKTD72i5OSI59HlX7/ws/s88h1Vs9hT
-	 fWIU+rQVC6tOrQ9fKp7AAVhOq/8Pe4N3GvBE7rbrZzLnzDK4efKsY3qsaFdk/B44i9
-	 TGfQMIWfs0PuBOIFl+qyLinNrr1bARru7CjCwNCMBx91f8qA7CboXDT9kyYjZNXXFb
-	 nKd/9BWu0Ydc2CnUDlNVSEaVw7rcPdfAcNh4kX0g9Bg0p52D9Pe6tsHrDrTwOlwO/q
-	 7XwQMPB8jcVng==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 245B7F40068;
-	Mon,  2 Mar 2026 05:56:34 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 02 Mar 2026 05:56:34 -0500
-X-ME-Sender: <xms:4myladjV01iWsOUtjtzcj3vZupj1Y1XZ52NB9CTcS42N2KVYqebmBw>
-    <xme:4mylabMmI-f6TLtFwjswwP2yHngZCaAvMI2sOn5bsBZjXBTfu-1Owz5vCGlXXgrHJ
-    5XA2TBeo-AvKsI4gmrM5H1M3Hu7R75Og4XdJj_eyAdhgwPDGrdE78A>
-X-ME-Received: <xmr:4mylaXMtbuPsATgmuxJHjV89K0zt3CuvIB_boPi7x3NPTZBs0D_CosHxgsWlog>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheejgeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucgoteeftdduqddtudculdduhedmnecujfgurhephffvve
-    fufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpedfmfhirhihlhcuufhhuhht
-    shgvmhgruhculdfovghtrgdmfdcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrf
-    grthhtvghrnhephfdvfedvveejveehhffhvedufedujeefuddvkeehleduhfeihfehudej
-    ffffiefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epkhhirhhilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudei
-    vdeiheehqddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvg
-    hmohhvrdhnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdp
-    rhgtphhtthhopehkrghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrkhhpmheslh
-    hinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigsehghhhi
-    thhirdhfrhdprhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrdgvughupd
-    hrtghpthhtohepsghhvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheptghhvghnhhhu
-    rggtrghisehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhrsggvtheslhifnhdrnh
-    gvthdprhgtphhtthhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehf
-    vhgulhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:4mylaTL_5a_Tm5FcC4DkzFyVnPOUD7NWAMruXiJ7cLUt4G70LqyDxg>
-    <xmx:4mylaWt-BwsGNwvyb1I9YB3jtaA0LQ2aYs58v6i_bSjprG2Qy9v14A>
-    <xmx:4mylaVF5tD6lw22TzAR11tltaMNEpftkfceacgzzxR6iJ7oYNXtewg>
-    <xmx:4mylaVPV5xjJwdJ_j2BWUtR4lUjIQ7DmcR0whs3UjzW6Fbzus43HZQ>
-    <xmx:4mylaYFG6vRkUEa9tC7J99RSubdP_bO__GGYLVU8KE4yvCzo4jTLrzXq>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Mar 2026 05:56:33 -0500 (EST)
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-To: kas@kernel.org
-Cc: akpm@linux-foundation.org,
-	alex@ghiti.fr,
-	aou@eecs.berkeley.edu,
-	bhe@redhat.com,
-	chenhuacai@kernel.org,
-	corbet@lwn.net,
-	david@kernel.org,
-	fvdl@google.com,
-	hannes@cmpxchg.org,
-	kernel-team@meta.com,
-	kernel@xen0n.name,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	lorenzo.stoakes@oracle.com,
-	mhocko@suse.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	palmer@dabbelt.com,
-	paul.walmsley@sifive.com,
-	rppt@kernel.org,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	willy@infradead.org,
-	ziy@nvidia.com
-Subject: [PATCHv7.1 17/18] hugetlb: Update vmemmap_dedup.rst
-Date: Mon,  2 Mar 2026 10:56:28 +0000
-Message-ID: <20260302105630.303492-1-kas@kernel.org>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260227194302.274384-18-kas@kernel.org>
-References: <20260227194302.274384-18-kas@kernel.org>
+	bh=7Ajx9lhLo3HWwz+XGG3Q8SmphJQ44iQsGWcpJwHngMY=;
+	b=BBEz2tNTHPHmTQqQV1UmTsu1R/5bxbinOLLXEtbM8zw6LDPWh5WFCOUzdPgwycTM9qk1GY
+	kwx0KIuFYCbfRWii8T07kMQr36F0VO6GEpTklZeFa9xHFFjgRmTa3CYElOHYcDfAWj+c8t
+	a7uXsQ2nGYjLv99hzr4x6shxQ0ZYSXk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772449017; a=rsa-sha256;
+	cv=pass;
+	b=ulj397dLNqGFKMtzaw3TF6N2thNbNvmNp+UjyDhbgRbVni+ZtK7Rvchi2A7sJK83MHaWn9
+	ADklxbj1OcnO+X8K9MoZbhRMTzoU5p4HYdhuh8/eR5lYks/ZZC22xjjPli9iy2tE8JsiRi
+	O5S4z3ihjLk7MOcRi9DoDIM1SFsN5UI=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kcE7Vb0o;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf21.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-899e85736e2so15714706d6.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 02:56:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772449016; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VHmWUEPysl/El7DarSE70lKGu/YqEa79rQKHSClnK1Cu3XVHCBNHPEkCZIF/0LujPa
+         nq3OhQlPfPESeBBu3uKSpCF3bP+ruWZrmKMh17WNUUYJWapB6mB10ojqKI4fYvCpsSef
+         mGgtX1rVJDCEQRxTPD9B3tjk0wtOODMhKZ5oQsH6zUod7GprCJ+SbdHCk81t//GKIsbP
+         wLWnZJh+9pyIIGSyrdlRm7nEJqmWYXl7CqS9JzkjZ2+trHf1c1nOXqJuD19E5X/E94dP
+         ACyE/kip/7DFD+N8ob3t8BGYCsLjLv6/yfWDiHBW3aH0D8JJ/aLxHsm8L0n17td8FSY0
+         Qqtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7Ajx9lhLo3HWwz+XGG3Q8SmphJQ44iQsGWcpJwHngMY=;
+        fh=02cpICd3uJ5SYLGchF8XE0rIJ+s5rfjG8IVpQUFEOFM=;
+        b=JAyDVymYUcBgGmk5X/+MNr/fwGCH9LQ4inGEC/OFUvU5pfcI54ia9CUCumNVg4FHe9
+         ZcN4WKORAs2cD8K8NUDT5zySdlcDIdv/IZjTvFzd5XNGZqUlzpUTGN627l9snFK0l0nD
+         pehmaHlYXCJ7ZNHl+hXNGxW/MrjbPdVGX02n6VW0F/uflHldu0dbNs1fzQK7SYPXiPB+
+         MD08bwknjzXiADHitYWuj/lTKpYQjIPKW7OxFTEtjSHFODhyNrlx5rALOqx7wubeEwim
+         Pf/j7//8UwRKQ2TAfV/Sk8+k18955h8loPXWmHUjFiM6u4kWodASCv3Ev96fI1JfqIfH
+         i4bw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772449016; x=1773053816; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Ajx9lhLo3HWwz+XGG3Q8SmphJQ44iQsGWcpJwHngMY=;
+        b=kcE7Vb0o84faRGzk4VImFrrJfZnSfsRMi/uvZMymjtNHIOQiOqhj4FURbmUMr3+6PM
+         siE7CfkHsA9P6XhpmVOjBVo4980cFLj+2fESPUh0VtlkSi+NIxlzWc8w7QWoSEzNGcon
+         Q7EG22fF2csuXerJA7mZOgMt3rE69S50A47Z9f80RGKNQEUsjJUST7Vxpl2Tdc3yL0AI
+         uZQQOUHqMkNJsNkYr8bLEmWoyNf6zhz1bPKcFqqzI9T9gfrpYjGLMYCUPaHHmn/vkN+X
+         j3jLMwUosS90nmRzF5QeJYxI4dW/vl+8VXH0ExspunYdD/t1VaNx1QPStgLIElAU0mY0
+         HeLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772449016; x=1773053816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7Ajx9lhLo3HWwz+XGG3Q8SmphJQ44iQsGWcpJwHngMY=;
+        b=A3RXXshFlonxtyPAxQUXW/apXWtYxrIAkpN+p0oqYOAK9OjXtJe5BoV+3DSzhaCmWn
+         p+uQ/1onnCNR4pLQA5Ft43U5qqAN3QaW2z3S7nTdxSWqa2D4zfHzaIgWDmy6nKXXdoOe
+         tf1p7daxjVsSQOysEXjNWLtU/l+Oc9kVHSQ860WIodLTa4uTbYnrnzL7DHdrgb15Xfjd
+         aNdgRuvID974NR9k7Ibux53Ad7Uw8V7USnihY9c4hWe0PxvMuQY0s+n7fFpLGGUbmTTt
+         zMqby0xSpcKjI2/n5g0eP2lCktgEklYmPZD/mlBHv9s5hC0ZAP7qd//5HUEel1NF2JRv
+         FO2w==
+X-Gm-Message-State: AOJu0YyUCxQiKy7o8O/gPHDNNmoiDbZaXt7tSeKX9oX2NcXtZUiKtfPY
+	GZsGZMrP6LV34hdCdqVmUvwM6bND4QMhi9+j/w5U+jEXEev5PpNrI6MsSTDrgiNT1ljpR3dh3W5
+	qjJ3lVhWHbBfni0XZsmMigQm4DsyehWo=
+X-Gm-Gg: ATEYQzyX9HTuKvRDobnbFO9O+kHqbil369EKfbuss6YQDHv0jyscTtA7a7LWMtFWh9w
+	QqtQQp/UZ5DVqQdb/cjavRqxAyE5F91Grgdi3aaVUnmVdbGeCmUgkrR4aDDX2qwBFXTWlo6u4F/
+	ogFp24VrKkIOgwC2XuL1P5C8b8ZeABFccKiABz8sJGed5PK1bAtcWarnHidOnrxDUVAomCZePd6
+	JDplIIRwDY2lKLmgIk+jZ3sVe6fAbBvujJ4Y/eXjVAjy4dtoaSdSJZKeh2uJQz70RQ5fVbUZKKe
+	P7Z7Ng==
+X-Received: by 2002:a05:6214:2a87:b0:894:5d38:2e38 with SMTP id
+ 6a1803df08f44-899c67f21edmr217812936d6.18.1772449016038; Mon, 02 Mar 2026
+ 02:56:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260302104016.163542-1-bhe@redhat.com> <20260302104016.163542-2-bhe@redhat.com>
+In-Reply-To: <20260302104016.163542-2-bhe@redhat.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 2 Mar 2026 18:56:44 +0800
+X-Gm-Features: AaiRm52upSMFVSGiA7FtYK0a7sLTIYIcmD-dwDNNJ6XI-ZMSBKIWmEOJ2vRC_iE
+Message-ID: <CAGsJ_4zBG96YbL7YpZMyLUsNOc6WRCZgntx0mSvJjZvhturoyw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] mm/swap: rename mm/page_io.c to mm/swap_io.c
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CCEAC1C000A
-X-Stat-Signature: gwo6c463xi6a39xdefm3oidij91b6e18
-X-HE-Tag: 1772448996-197101
-X-HE-Meta: U2FsdGVkX18+zFsT4TlN3CbzskZ1sopE+IjB89HMVDO9HpIj+8NZapNmcld0kllHh59XjR4TZB55bCHPUJhulZdd1R0ZTD5NBz4u20Em7I8QV9OIpMQSyxQUhSZGMJ+jwuwXCirtp2bbFl9ijgLfkF8VsWEU1DRad9cgdPZlXwysnBug7KLfHBfSChyEqcHZXdfuzNQDLkcYiohll/sgUwE62aw69+edIPpPzKVUVr2kLdAdqqSA8mH1vtTJNLmENZwmXEzMbD8fyL1veDiJNNLZJ2t+Z/6y6fuKUxzPvE4RkGHPI70URIaanDLbYgaTVu8dxabJC9I1fwb+vWpvifIRr2OOz8IOnvkVPRlZTVofhJSw7B0el/ocjlhb0HwJaCCAwA8pQ362FjAmCzHMHCtPoL2AfxPaRUVg+KRb/dG99mIljUWHhUDgcJvrvKqfcL453zDj/gakVxrq6Rle0YfgWWNW3eExU5D7zXtdOCUShpPqiieKy5fiAbY6DFhS7WoMkNoilEmUVbTmnU4WCxhPC7w1oxpP0Vrh9AaspAycCjI4fWC09Rx5dymC+S9sx7UB/Zsqydc3KTB2obmEgineIK/BiiB8jL62b8efw6eg+6w5ao4ROxfhFqv34A8krVy7bmLzyiflHM7VjVNhahmTDStZDUCPdrfOIDlp+eamzLt8wVUnrA4A5ixiVh1qZe79Sv9afkNur9Bu5sHrkyiztUyyQF+YhSGvx6tG27DuQrhRMXA8X9hNlsSjgJuSn2NYZN7vq61p9D4CjsD1r3P9/5EFsh5gMnJIsotjS99p9+XjaWTbd6yflEGgwVG01kqSA8AZPKtqQ0xAuQQ0+8XsYyD5Z4n0WFuK3qC2YjtUf9wjIW1GvLgljER0Q2TAXqr+qg9GzIHVaBbkMatv1wCRb5rmAI2hlDCiedqLtxHj4m4n9PHTo9/iN7ttSDHa1ucK4Fs6XLQt5u27fJp
- IvjxCwAf
- GCwSEwc/0LqWAG2Q8xczvxgR9946IFJ0+OWyoAolqgc8YOV5ZJG7TFdqROWm3ZcL8Ea9Csj90gAIc0+3vTVLWxVjCWaMTWI2N0P514CmtsY2Kxv/rAqAMVIbZV9ZGTRjcz+0RLW12qxmcxWVqxTPlpULQSLY/Tae8rnRegATcnjXREsmRo2EretH/cQSfkSi0oo7sk/ugL0LjNevOJS7yPau4poe/nI/s2ngdw+0+4dBn6Hrn52Sp6Tlvxw+rIzVJZljXGhnVwzgAnE6E60me/9WJOd0HLTzqCZOBAZaloiMQbktyV99NFvSrNyzO31DpHo/wmyx1uWEZKG4pvj3ExQ0Kpg==
+X-Stat-Signature: ocd3os8scwwmfs3axkiiocjouz51medw
+X-Rspamd-Queue-Id: 2A6B11C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772449017-911575
+X-HE-Meta: U2FsdGVkX1+m2QouRET8nVQSGncO3eMqGtNjKSu5ir5Bn2BHB+6uShZruprkj5HdoR6nVeYKZlBec/gJprsnl+eil9KuijwRI2Yfji1fUT3edLq4FbVIWVLZDaH6mwXzy8BzrXWjxBPgqbbIdxFNpLU8M+BbvGjq8W/5D7hU5A5ZpP/1BL7PDCtx7WOuikqcncYoGRvJHFISN7z8PtiQmPPgbLvhKy9RAwdGG4WQrCb+i8sR9MIa0FUly6BVY8INYmvsoxti4ViSi6tbC5/Us+6s9SMJH1VwJsdKKy6PRYWCgiiyHGd4aMifK3FwrlqvS9c+rqjCMKelkRMhKkA2P1aCO73fi3QQvQve8BNM64qRBsRJz+6iRAEHFU33dKZsjo2Goe/hLtVXNvluF28PeK8mqASo9r2SZRYENt6PNiXSK8JLD8fe+aBWXSWJTZtRHKZtM2sGWrOIDbgGW5t0uTsRHLRTZlCw0zbqBQ3+sO+EnN+hby4RfK+2o/0QX7GGzRDF8O3v4ZUHo7RxT6zKwx+vB4enAKYxx6cqd0c2uwtmugLJASdVK1iAwcCOgaobuQe64EgcvJDmTyXD2/IBllY7vnPe6G1xCVUU/YTQ7pAv5ap48ZIf7u7pde80JJnFZk5JcXVZ9muar0xUNDHQ9VH8m9VORcGqfQwHJk/QkvpnsRFef637RuI0DXMPC/iuMrIudyJU7XPQJz+eQ9M+jSIs/9+3t1TnSS93rMRAkq7YpBlKefUvmyK0ukpry801GSpKfdDorRA1VD5cn9fsNusnEfrUWmy1cbUnYoh7ha+55yh8znAYkOV+ZZW8t1azk8Wl7IAeUCV+s9v/BZbts0EiqQseC8sJxDX4zTqUdArUqX6xD/gEdPAh5dvbW6GYsEnGYj7bNWgGQXDadH0UrCjD6tiK5DrpL0NX73spJmBFRfIIVuQawLl9rLGzTuk3BhklhGpm3aeEihWqX8e
+ dsVEsI8Y
+ gppmK+a0L8obqJskiia9rS1hdGB5hVMqCZeSsb/iNcMlBwYAPALWbWLBrbWIs9qYHF72/+1+5zdGi21NNQj0cSvuiJ4SiAgqXc3afo3KlOPyWgBWZndXHFS5U4vcHHsb52qUMfttE7Tu68khtCIChip9iT9wTONTf+S8TSpEtBdHsSEv/5UGLjPErdGBxxku3aZAPNNh7eiaI2Iq6BXcCIJAE5A0pZt8SoryIKdrK7/IU2sylB4Gn4PWVdiMsMwnvLuQ9GDWMkxeNTwlLD5ExblIm3zKYLh2bgP+uw+EmwHpT3jCZT8nZklBcfGyRBl4F1imPVdKQCN9m/zR9dPWHjJvSgaLkWVUdZOtvfOuSebU8NUXAD7UMbApEij6jrNV4TKo5kOZXp0GgWXrFpUxUXtfrZ1Xi9Jl3EhVq7xvpdVVSKj7Kdl05hYnBJK2npc1S1x22CAEIRU34W/4gGaa9Q+3kdTo4g191wlgyvRYNjPKm0c9YpPLp7Dz2+5wbQqDvCaf7jtcYUqCr47Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,106 +138,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kiryl Shutsemau <kas@kernel.org>
+On Mon, Mar 2, 2026 at 6:40=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> Codes in mm/page_io.c are only related to swap io, it has
+> nothing to do with other page io.
 
-Update the documentation regarding vmemmap optimization for hugetlb to
-reflect the changes in how the kernel maps the tail pages.
+That is true. Meanwhile, swap.c and swap.h contain a fair
+amount of non-swap-related code, such as lru_xxx and even
+file-related functions like deactivate_file_folio().
 
-Fake heads no longer exist. Remove their description.
+Perhaps we should consider moving these to more
+appropriate locations.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
----
- Documentation/mm/vmemmap_dedup.rst | 60 +++++++++++++-----------------
- 1 file changed, 26 insertions(+), 34 deletions(-)
+>
+> Rename it to avoid confusion.
+>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
 
-v7.1:
-  - Add missing period (Randy);
-  - s/per-node/per-zone/ (Muchun);
-
-diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-index 1863d88d2dcb..9fa8642ded48 100644
---- a/Documentation/mm/vmemmap_dedup.rst
-+++ b/Documentation/mm/vmemmap_dedup.rst
-@@ -124,33 +124,35 @@ Here is how things look before optimization::
-  |           |
-  +-----------+
- 
--The value of page->compound_info is the same for all tail pages. The first
--page of ``struct page`` (page 0) associated with the HugeTLB page contains the 4
--``struct page`` necessary to describe the HugeTLB. The only use of the remaining
--pages of ``struct page`` (page 1 to page 7) is to point to page->compound_info.
--Therefore, we can remap pages 1 to 7 to page 0. Only 1 page of ``struct page``
--will be used for each HugeTLB page. This will allow us to free the remaining
--7 pages to the buddy allocator.
-+The first page of ``struct page`` (page 0) associated with the HugeTLB page
-+contains the 4 ``struct page`` necessary to describe the HugeTLB. The remaining
-+pages of ``struct page`` (page 1 to page 7) are tail pages.
-+
-+The optimization is only applied when the size of the struct page is a power
-+of 2. In this case, all tail pages of the same order are identical. See
-+compound_head(). This allows us to remap the tail pages of the vmemmap to a
-+shared, read-only page. The head page is also remapped to a new page. This
-+allows the original vmemmap pages to be freed.
- 
- Here is how things look after remapping::
- 
--    HugeTLB                  struct pages(8 pages)         page frame(8 pages)
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | ---------------^ ^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                  | | | | | |
-- |           |                     |     2     | -----------------+ | | | | |
-- |           |                     +-----------+                    | | | | |
-- |           |                     |     3     | -------------------+ | | | |
-- |           |                     +-----------+                      | | | |
-- |           |                     |     4     | ---------------------+ | | |
-- |    PMD    |                     +-----------+                        | | |
-- |   level   |                     |     5     | -----------------------+ | |
-- |  mapping  |                     +-----------+                          | |
-- |           |                     |     6     | -------------------------+ |
-- |           |                     +-----------+                            |
-- |           |                     |     7     | ---------------------------+
-+    HugeTLB                  struct pages(8 pages)                 page frame (new)
-+ +-----------+ ---virt_to_page---> +-----------+   mapping to   +----------------+
-+ |           |                     |     0     | -------------> |       0        |
-+ |           |                     +-----------+                +----------------+
-+ |           |                     |     1     | ------┐
-+ |           |                     +-----------+       |
-+ |           |                     |     2     | ------┼        +----------------------------+
-+ |           |                     +-----------+       |        | A single, per-zone page    |
-+ |           |                     |     3     | ------┼------> | frame shared among all     |
-+ |           |                     +-----------+       |        | hugepages of the same size |
-+ |           |                     |     4     | ------┼        +----------------------------+
-+ |           |                     +-----------+       |
-+ |           |                     |     5     | ------┼
-+ |    PMD    |                     +-----------+       |
-+ |   level   |                     |     6     | ------┼
-+ |  mapping  |                     +-----------+       |
-+ |           |                     |     7     | ------┘
-  |           |                     +-----------+
-  |           |
-  |           |
-@@ -172,16 +174,6 @@ The contiguous bit is used to increase the mapping size at the pmd and pte
- (last) level. So this type of HugeTLB page can be optimized only when its
- size of the ``struct page`` structs is greater than **1** page.
- 
--Notice: The head vmemmap page is not freed to the buddy allocator and all
--tail vmemmap pages are mapped to the head vmemmap page frame. So we can see
--more than one ``struct page`` struct with ``PG_head`` (e.g. 8 per 2 MB HugeTLB
--page) associated with each HugeTLB page. The ``compound_head()`` can handle
--this correctly. There is only **one** head ``struct page``, the tail
--``struct page`` with ``PG_head`` are fake head ``struct page``.  We need an
--approach to distinguish between those two different types of ``struct page`` so
--that ``compound_head()`` can return the real head ``struct page`` when the
--parameter is the tail ``struct page`` but with ``PG_head``.
--
- Device DAX
- ==========
- 
--- 
-2.51.2
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
