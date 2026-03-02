@@ -4,84 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D003AE9B37D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 13:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951E1E9B37D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 13:42:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 426706B0005; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
+	id 0A3766B0005; Mon,  2 Mar 2026 08:42:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDE06B0089; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
+	id 026096B0089; Mon,  2 Mar 2026 08:42:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334B56B008A; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
+	id E74B56B008A; Mon,  2 Mar 2026 08:42:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 233A76B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id D24346B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:42:51 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B03C21BF64
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:40:17 +0000 (UTC)
-X-FDA: 84501232074.17.62FBA91
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A84E3180007
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:40:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q5huK15E;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A55A9140128
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:42:51 +0000 (UTC)
+X-FDA: 84501238542.17.59B6581
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E8EBC4000B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:42:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V1c4sB+k;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772458816;
+	s=arc-20220608; t=1772458969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EallJz9xECdXZv48leuK2XpZ4lpwJqacaSIYP0recMI=;
-	b=vK7is+OdSeqe8wQXYHAYPqWk9ZcRt2TMTfZoljADi9PmSEUuipKYwafVifScLop0/773Ch
-	9/P0XjGpU3QGi29w9dzyR52bTnlDDAR/uNgYsydP4v5wDyBLLWjQoAw+pamDC6rcIki77m
-	UEAenkyIIZ/CUxQV79122oBe+QryDig=
+	bh=g5nL6pl+9mW+ohWT8myYwLj00gIeNCohVyN4wXSCk7c=;
+	b=gefTSclHR23FB+h9FCeev2dcFi90iuxK35nQVnKHpshv8n1DI4PvF9v8hkHBzdZKbxLJVz
+	17WNiTVINXHHGrmAez/7OPse5CTkUCZrpVm/1qwahLTqUgIBmNT4HguzKui3WdCGOSAqWa
+	X57hvf8FirpYPogMw5/iWCHdZmGSlk8=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q5huK15E;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772458816; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V1c4sB+k;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772458969; a=rsa-sha256;
 	cv=none;
-	b=f+44Bzi7t/6XcTAwoqApCMY4svfxPisYXHABZ5SsEQYGf78KW+sXwYgtW+x7o8QuA9X4db
-	d8e9HVKXz/XZIqXwsIH6wau7Cs/jiEZCH+Jjp7mCWzDOv0hpNY4ASYpuAkJLC9EDYAwfB0
-	TYLoLRvBP9HTF+7lL32LlvWSG89VEFc=
-Date: Mon, 2 Mar 2026 21:39:58 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772458813;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EallJz9xECdXZv48leuK2XpZ4lpwJqacaSIYP0recMI=;
-	b=q5huK15EqTTRO+3nHPePBsbko6xZ/0GeIwD5hy4IMqxyOVCUVD3C3s49qDBmmzo/XQPQcD
-	FIvJ31jWoXhgpkpUNzcrfrGPRGZZTXKXamFlkqfPYkN6eKMgOcASCdenvQQfc5cWypXMuz
-	CkR6Xv198yxModDZcGRESazm5muz/nk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Harry Yoo <harry.yoo@oracle.com>, 
-	Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH] MAINTAINERS: add co-maintainer and reviewer for SLAB
- ALLOCATOR
-Message-ID: <qjsfacsbh2lkzhng77zl4xyknsjybxvsuqulbfegy5moac4za3@i5gg57ddh27n>
-References: <20260302101345.36713-2-vbabka@kernel.org>
+	b=SPg78WKwF2KHPHCnw1fC09bxSb9rLojnVcRo90dKayFO5H5GJn+36fcelhOvYdP2qb3Xrr
+	fjz0xLYF5wu/2OukcofxNQDiC4mqasJqtq9DF3FwfwcuKJ5m3/DzGDTK3eFJkTPkC+HDGT
+	k+nxZzuUvWt8MYwKIPzvLEGFk125/Hw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3648060008;
+	Mon,  2 Mar 2026 13:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D80C19423;
+	Mon,  2 Mar 2026 13:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772458968;
+	bh=T4ELE2GlSVO5CmnLs/7hGrzjhmHmj0CYFEE/iaXHyhI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=V1c4sB+krAO6rzRO/3BlZXIkReiTa+ctQFZ2SSgJsfzM6L3rNjATxtDInNdN5WDJU
+	 SvsOiKiYjNzjT13mS3ZXu4VU2HJwSBVgvfjM6O/nAYJ/N3lneoUlCQBrfQ1wZ53plX
+	 9/P7s2XoQ4uc3JcmUhEGXQXseHnftgmB1in8SfS8fZR3+vqQe55z9A/fmxr+TAE+xl
+	 9d6rTSJJJPH7UqznRs/aTMLRtEz8YG5d+jEAjuyyoZX8MvGbPjTs0+gFaxH6Qa9nfy
+	 tuYvLqBntsibmTWP6ykzHiUdCP5V8Ufby5roOZQ+DAzHmGiEsbZP7yiAPXNyvjh9Yn
+	 ldNSLHYvatfmA==
+Message-ID: <75655aa3-7d53-441c-aa08-59b99b999991@kernel.org>
+Date: Mon, 2 Mar 2026 14:42:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302101345.36713-2-vbabka@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A84E3180007
-X-Stat-Signature: ed978n37andsjjys4hmh1mk9emmsfbzf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/5] mm: convert zone lock users to wrappers
+Content-Language: en-US
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ "linux-cxl@vger.kernel.orgkernel-team"@meta.com,
+ SeongJae Park <sj@kernel.org>
+References: <cover.1772206930.git.d@ilvokhin.com>
+ <d26a43ebed2f0f1edb9cfe4fbed16dd31c7a069c.1772206930.git.d@ilvokhin.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <d26a43ebed2f0f1edb9cfe4fbed16dd31c7a069c.1772206930.git.d@ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772458815-811170
-X-HE-Meta: U2FsdGVkX19U3DNZYtKpPR3nOF5XsG7MnLAKfesnN9tsaewpDuaNSzPGb+2Q7AV/WPQhYOYH0DWugXE4ngiDS5Jxw0Hh/XEQ5dEUpuF4U00AEK3b5VKxPRho1UVCO2uSUHb5M8ebax/qI4dfBFn6esjZyNwdj1e9Yq4m4PT73HGfqAoIKRAbpQ6SYH3PYNpF5+XvS8d5/d1+Svl4zaYtFNMkdYrFtMj4SmjjGSVpM0S36Ukg5n0WxigdugUTjA3wHD40jhQJr5ubZgFCLgYfvFBH5U+bAVS5tYZASbrU4aJt6fyCMgRkz4ff2pJaJx2/Rffmfsdh07u2AmWWOLUk1W5X12QabOAQkVVOtnVe9PJw/S4PEhJdBTEGrENRtXm1gLWhMVQxaPHWs33g4j17c5HC4m0uzHL07ESrh7FJm4gFpJxuFaqs2PmyfJ+vnSE3Uq0EY0oAyGQcrkQKfd0my00jfWXm12X0y9OlWVb/q0HggVexg22ZjtWJj/O4/tzsHwOmYFTfXWZU86cFH3d6RcOV1duCjjzM4dndKIjmZCEOsyFYbjmvAK3jA/2TX8AzWdyvhbGasXHiX1vW9TJVIJoHOI1rvUmEFDBGS1ijYg9bsFDJ+Rpx2gcmvhhOGAj3iczRatf7WzjVqe1GCR5b+tOGGQ9Uj62zGixSMwCK0SgIMeoepgmZ1uzk5ekPiwBVGM7SuRPud0fzhoOb6G76cIf+Owv0MZKj5QtE8mmqJ7b/0RdoXug4ZKLWFxCEaN//JuPzfzDsQET0daeQfaYLbGvyReStjoTGNomHzZzG/xGnejIuvMZKd4SUR8mMrDryYn/h6/bWYabj1xCSvHttFVDcyr8jY8Ftib/UmBMMn5AQorrmKahdXJsDuRIS589NTHu/BjUZDkJUYzyLbRtBw3PkDoFThMbGa5kVnaBYGQPzTKmR/RTJkm9EhvIVcAYDg+eOLKQcd35v31d6RTV
- 9XOcwnDk
- 8KZ3sDlJySTcsj1Krz0SEWCT3+Vf1anQ8OeV6VfB9WEwDlJHeeo88PWLzylzDT/GViX0LIwqjOCZ5DsTNcmaK/NxAvKXdrF/Dj1yLaGgM6DkS0aEACoadPEjgJeJLPoRDi/8frDOXOrIchINaoYtMJdKFEujmAA2cjiuIpmPVpBykfK4v7k3+h3wNu0FYJmHusUpMT+bme8cjY4/vlW9mjI13p8iOIWPSDPFmWjKsds0RkOx/Pe6R3jNX+FC62IDlB3Cw1Gv9Qw7A183uQCqJM3XLTyRlKUtNtiU/TdBx6gZKey/sXRhTuG1Ef50UXcg0arYgzbG3g06XF/NmLhR6uAwy9vB1S1y+9g9xopg0hIL/8840k5WFawltlClmYeO+gEfqJ1ijDu6VSgnFgY3FG2uELbutDcSURaPBoZzdpa4H58bJ1sLigD+PjLmWdxeeLNvCNpwIA65n7ik=
+X-Rspamd-Queue-Id: E8EBC4000B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 66fmxtcezw6uqq88wrmme55kha3ucukg
+X-HE-Tag: 1772458969-256418
+X-HE-Meta: U2FsdGVkX192SQmWMIxzv+b/mp/zIT8a9ARs4CRg7q/ixYRz7+X4qncOJrkLL2Gd+CW2/sY+TELohNijEds7f4Rc/07VghC5DMiu2o+nI4ufVrJHZMs91CH0napqSX+6xvvwc+pif5bNShsRmyTQIIkY+DZ0K8PGEzwY5HNv+x+d3DdC6fSGyBcec9oO773rpZluLoCoB+RoGNsybGqpHHH59jQMNM93WAUIlvV0G4G5OGgK0ksfdxRxApduWZPm2Tp4jOnsPSRqyamQeWd2c+2/L5Mymbg1WjjDGccmkcppQ96z92W09DKR2MoMHaupGxbvUZSp2D6mvUhGShow2am0ejoZtYq3jZb/+MrLHyROVRNAHeuClRvTDVFK/8vw0cQvheMNrqy/2f+gCPhs0sfEx7BTcuoflnGiu8rs0NTyvZJnxPqiCP1hnCFihxzOkUjXkFgyoKHWTd+m5eUFzK0K21KA65Rd5rvZiwUw5s1yD4J1SzaNLbSgweoHwfvP5S+PqWvxNGxIS5nQROruPt8noAFPhUYuJ6BfYotJiPmCGR2X6oLjbKll4tcCsrz44ioCgxrBqnOoPot8bpLp5FXj7sPf+4kanrP1pkphgTCkuoB57Oq9LquwcIgjzExZ04BYD3doNZtmofEobfEnGcuzkjZqaJIgtRBHNjTSvNLjM4dMVXp300+M1gAJ3Uo9e7uq+pdYfcU7M695bzvk9Iz1JO0TC4CqcAcB+us7hTycMaLID5CNDYUq1UvL5BOaIgvAdWLTpHgA5UFimCfa6AOGrmg0asZqv45LIUydn25AqZD35IdsXvjIb9ZkXXCTPff1WoraZCYJtZqZ++kLKCu+jdTo0nYxMiBoAt1gockb8kkaFaSlNeuwaz8QcdC7hCqL/yIed0i052adFDEDTAfSu1OwT2WtbXKgU1YpC6Ax4ZwhxIBVAGPpL9mx3i/V6od8tNWxwYRyPgzT0fr
+ LUP08PgL
+ 5kaOXcNt8H9Y0I0e+IIUHPr8FRrU7DIihaGeLO/lzWVxL+3jxGpBKn/KdsxNv3BlWfluP9I4V23MXuTA3/lV0ceRA84zSnVWqZ5XjzX7ALLlUQFNVtKTLOM+YqX5vCflYfinPZkElGcXcTrNACYOqPqBSgzaX2CHUuLygoncr1nU9R9j1ND0gcV8r6ABZ+aCiEiLYqsjBEK6CswCQPMpWNPSOPmJdlNvPu5D1c21MEULTpGNaFPQnOvYw9tqKbKQF67XgWSA4XP+Ood+cfz0ZyU6JR446Q/t9TEnMMlhHjoDhfoRgAmc9uVaeBSGgEe1wC9ayGa3/w0TjlzzlIjHaRmKeyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,59 +111,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 11:13:46AM +0100, Vlastimil Babka (SUSE) wrote:
-> Promote Harry Yoo from reviewer to maintainer. Harry's been involved in
-> slab development for multiple years now and doing a great job.
-
-Congrats, Harry! Well deserved. Looking forward to working with you in the new
-role!
-
+On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> Replace direct zone lock acquire/release operations with the
+> newly introduced wrappers.
 > 
-> Add Hao Li as a new reviewer. Hao has been doing very useful reviews for
-> a while now, so make it official and ensure the Cc's.
-
-Thanks, Vlastimil. I really appreciate the trust!
-
-Also, thank you for the patient and constructive feedback and for taking the
-time to engage with newer contributors like me on-list. I especially
-appreciate you proactively Cc'ing me on relevant slab threads (even when I
-wasn't on the original Cc). It helped me stay in the loop and get involved
-more deeply. Happy to help with slab reviews going forward.
-
-And thanks, Harry, for the kind words. I really appreciate the encouragement.
-You were the first to Cc me on your slab patches and actively invite my input,
-which really helped me feel involved and start contributing more. I've learned
-a lot from our collaboration and look forward to continuing to work together.
-
-Thanks also to Lorenzo for the congratulations.
-
-Acked-by: Hao Li <hao.li@linux.dev>
-
+> The changes are purely mechanical substitutions. No functional change
+> intended. Locking semantics and ordering remain unchanged.
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->  MAINTAINERS | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> The compaction path is left unchanged for now and will be
+> handled separately in the following patch due to additional
+> non-trivial modifications.
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 61bf550fd37c..5f3cc4193a8e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24350,11 +24350,12 @@ F:	drivers/nvmem/layouts/sl28vpd.c
->  
->  SLAB ALLOCATOR
->  M:	Vlastimil Babka <vbabka@kernel.org>
-> +M:	Harry Yoo <harry.yoo@oracle.com>
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> +R:	Hao Li <hao.li@linux.dev>
->  R:	Christoph Lameter <cl@gentwo.org>
->  R:	David Rientjes <rientjes@google.com>
->  R:	Roman Gushchin <roman.gushchin@linux.dev>
-> -R:	Harry Yoo <harry.yoo@oracle.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git
-> -- 
-> 2.53.0
-> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
 
