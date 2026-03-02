@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BED8EB3632
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E983EB3632
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:41:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7DB6B0110; Mon,  2 Mar 2026 15:41:35 -0500 (EST)
+	id E3B926B0111; Mon,  2 Mar 2026 15:41:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A6B46B0111; Mon,  2 Mar 2026 15:41:35 -0500 (EST)
+	id DB4F46B0113; Mon,  2 Mar 2026 15:41:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 759466B0112; Mon,  2 Mar 2026 15:41:35 -0500 (EST)
+	id C37F46B0114; Mon,  2 Mar 2026 15:41:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 601586B0110
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:41:35 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 07CC914029B
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:41:35 +0000 (UTC)
-X-FDA: 84502293750.27.B0A0706
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4EE7C180004
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:41:33 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KG7Mj5pQ;
-	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ABDF36B0111
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:41:49 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7046F584CE
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:41:49 +0000 (UTC)
+X-FDA: 84502294338.24.7876427
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B6E6E140008
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:41:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/phi7gi";
+	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772484093;
+	s=arc-20220608; t=1772484107;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z4IeV0gJD0BYTgf1oQ8MZsxO0wH0GBtBt1YuxCm41Jg=;
-	b=QsLsbAYDyPlvy4/714dNtg4aH1MmtyC6YUirRFZ6pGpk0aBUUjyIZJ+YJ+NUQmoOW9TjdC
-	jECIepchObZu40xJrI4Y6nm5lhy/9Hr02b+K0qYYz9wgkcL9d+2wxqcNLDaLyYUttK8zen
-	FEkiE6pvRWEaj2Wjru3PtADblUNI91s=
+	bh=87ihwadu12RwMh1f+CD9Cci7xtbgwi60tE+T+BS0JHo=;
+	b=WsXU0wCU0XiItW2c7385jtEKierrc7105o/nzpoE1HsL4YzbhCVUCRfSUiADbVuzYHgPy9
+	LqZrWQeIqZMjGcv+UQpFIHnyt9eOFAh+mTpW0cD4F7ue//d1dlcS1ZmDScj4D0dabFtQeg
+	aLpJ+6cXFNSu1e2YaaiMtpS+LODBtQc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KG7Mj5pQ;
-	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X/phi7gi";
+	spf=pass (imf23.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484093; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484107; a=rsa-sha256;
 	cv=none;
-	b=hH9qDzPgGa5T5dcyANzNVBLxdnWQhh7DDvOVarhCF1qzofgukYajHpbcsniruV8D0a5R2S
-	giok4VkLMNbYjddo3z4I+RQErVWBA6hJKcs2kemv5M6VxeGMKipwzUpn8Z3fDHRR6tHrVB
-	d46hYdRkclDyg/sMzJwmRU6qCUHF3Go=
+	b=unP2wKnS5Kmqfm/y8e3tILvOa3DZHwLEDCGI/9fmcsyhUTZRrJ2WXmAzkwZ0Cz1XfDeIPc
+	PJGh9tg7s7CkZWUrnj9+o/DvNJwy/G5ACal9G2Rf616qoBbc2uETm5P/afIPOlzuoxJN14
+	ccunE7ZpAx7rDGUDDJfol1/P/v0x4hg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D81060128;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F46241909;
+	Mon,  2 Mar 2026 20:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E3CC2BCB5;
 	Mon,  2 Mar 2026 20:41:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A40BC19425;
-	Mon,  2 Mar 2026 20:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772484092;
-	bh=z+GoXLxi9bLI354RrSKEEChGrCAoldiE2cGdeVIr/zg=;
+	s=k20201202; t=1772484106;
+	bh=vNkzHuGLAk6SRSLBijwmtGmdFlDfgPU49VRuVG8BzJA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=KG7Mj5pQw2C9P5boHntE0Ghr4TxhKwYJ6LSbBh9N/soeBMeuRNOiWU0wIySPbvkBQ
-	 2it0/WYiOK9B0OYFYMqKhnK5RXdPUm5n7x43Rdte3as/5XyfLVnahhAnS7Xu6aKrZT
-	 4hKezLXc71x+3b0LHl0lfdwuIN/lNoMY53fj+nF8XqpHadkMQwLewmbcgt0X0mZeBJ
-	 UjxPF1QFPSDBGe2r9ovenCfoJjvv+Df+c9pFt/fOQ0VlyyC2GN3pXnt/RUG633Cyp3
-	 OjzSFX3mH5wL6RhvSEgvlCKKf0RbtJ284iXcxQScso27VxJLQ4d9lGP/TrwYmrsyZZ
-	 wem4sXKZMmzZw==
+	b=X/phi7giFaiaj1D5rEFCicJuPbTWAsn004MqbAjC0lc7T3FifsJTWN6txiKvvhPxR
+	 oIB8oR1w/cMe51tLB8DbblN3yOgcW4zdAnbjf5yO4FCsvs5RMrq0qTihvN2IseYp40
+	 +QunU7MlsngzRdOyWxLaFxrJVOED606+Nr+pIr+mZKTzfVojHse/GuifEIFhh1hUKn
+	 A/5CxguwtMB2GqqnCaIVPuZ8bqQZmmsgab86o88A3MEM2rlxJQEPPclKHNjtulT8qj
+	 i+E9qCaozbnzrTSAInWiG5fTyZXUKm2QpPYfZqjb9hAn7PUwtwMGxcOGcBAslnC8+p
+	 f0evqvl1eIhKw==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:24:53 -0500
-Subject: [PATCH v2 069/110] 9p: replace PRIino with %llu/%llx format
+Date: Mon, 02 Mar 2026 15:24:54 -0500
+Subject: [PATCH v2 070/110] affs: replace PRIino with %llu/%llx format
  strings
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-69-e5388800dae0@kernel.org>
+Message-Id: <20260302-iino-u64-v2-70-e5388800dae0@kernel.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -186,36 +186,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3846; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=z+GoXLxi9bLI354RrSKEEChGrCAoldiE2cGdeVIr/zg=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfIBlRioLxetKmbe/+123D2axdZMP7yB1p5AP
- ZIwIMFWYBKJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyAQAKCRAADmhBGVaC
- FUQ6EAClP2DTcxhoC0jLOwHAMWTN2Bu1WeWsZp+kIjvAmvXgTjXTlST7dTUKrgqeJXcZmI47Hb7
- QoZFAK6/+WsQmjE3V1zEd8dvPwukz8eoan+h8TJE0/4lYSbQgbcsunSbPqtVOUNmBRfnklBF0pg
- JYYxPNAYNkNIcIRut76MiM9XlvEpZ3Rr5SopWqYV94xe3nz56AIheTXBdIu9K2gQU3wBJrPhjfF
- 2gx8oQAUUlaJS4fzKIvRJxJ3h5QKmY6lHTJ8rOcYE6k6kojUezVcQuvj2JJ3RmfMleGLYeYtwu4
- P460bajwaIQKQ94ZfscMnu49KRuV5cpybNFBObKOwoedpxajH175lEuk9dZMEqzzPboTXQDVcgo
- 9CwmBJuUdDs2tg44a78wXyopgLHtBNiDIOAUVdf43BhooUigMVnFyQaE3xSZCk6JIhwgV9wCYx7
- kEWqVPbvbIBKgvU22URbypE76XP1UcK1nGdraGeVkSNrohPO0YGPOKHNjRGdg3yEG9npp02Tgkp
- ohKkfwv+CNOYbH49WOghlrhGfCuYK+PTywMmczTX88MhpFD2wr0fiRtWDGhKBFE2o8eHxFtz4B4
- I13e/2vkayBZiAUHUK8aGamLFdzKfStgZfP8ppeA3w3G+dPmen4J1tYgrpRwthvxLw/pgZpqryc
- EGi0Af3D/fYukcQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12112; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=vNkzHuGLAk6SRSLBijwmtGmdFlDfgPU49VRuVG8BzJA=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfICX1Jxnt0SgWXJk6o0J3qu6igz5r+jH8R/L
+ pnDRJJlhteJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyAgAKCRAADmhBGVaC
+ FdM5EADXgpT6XXk4/t6U1lGf/D91W3n6UCz5rUXRXJvxglEv4H2rIa4+9wcmkUfftfPhsOiPXhQ
+ CYcCa+mL1tE5ShaNZijMFX1p78taK83nEzxe6bP4j/iJPiXBwfpvKwS6Sq2rcTFfwmJ3FXKrEhO
+ PH3duzRbwNBvAmHPMj8EAWexWj4ASOMuUZdK6jXjYyFrSN+a/MCBai+8yYabyGOo4cMepM6wdTx
+ JSiYjJiq8M+YN8GvqxmDiAk4FpyHJqEMGx3ruCWks3LuPHakheWi+qndFj6c6G77jUJrue/C5mf
+ FhvsCWRlJEIKH8jTgtdyJWt5mDRuiKuh3iO+HflCjHlw/jb+Q18gipr/Yv3WFHyPG1gKBjpP46D
+ BKFnIxHLsDlD52tUH2S4iXa76L0j+hgk0NS8GFFLhO9ifPYZsgit8R8oaTvovtbqj3VbmgmDppb
+ oCREEYsP4ZMu1wNvM+Fu5CSRlP+WiY/LEMZNosat/fGxfjzsXjlH185lU9hDmsU1bZvVL1Ca8ie
+ 3hvK7wfHF26GolLrq33oXZY3n57DEqySFiyzBGAmTSZ/zkZX3BQmsi5AM4NmcGxgsq8UAV5Ukgy
+ 3tz8EmMCwtxdmMYYQtPxpbT0meSfhd1XAEBMSFsN9evDOiLTQ/KjA17PT3PzqoRTn+rMke7e3Yt
+ njvdWX9LkqIDaUg==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-Rspamd-Queue-Id: B6E6E140008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: estwitike496m4iakd36apmdzbjqwua5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4EE7C180004
-X-Rspamd-Server: rspam08
-X-Stat-Signature: p98dxxr8mfw75tgekxrkuabiccrtik68
-X-HE-Tag: 1772484093-250529
-X-HE-Meta: U2FsdGVkX1/82cVw9Ajj2jLVDYtFUE/p0I9ORV3dXznKm9binpN5XeQj3K3FTxJN3MmEM8nN4DClZychGqMddvB28UGP4YziJlRmN3+OqTdlb5BnxdecZTXBD3jNy659/Xa/reDYCHcmx4gB3hgfSgdaHU85XRYQx14z+lqGpK4R1jDRr96rcEYrSjjMUYXFK/Ss8mEC1tqyA1wqvH9LsZidsyYUGWVFFpNHuWlKt0EzvN2pCJloYQFaEVEAS81PvBtzJgg2Mw+wfGulwxJqCT4cOHymS9yTqLX0sqbk3I0Hf29cFH/Gk8ynjg1MbotQLaa5oSQha4/bT8W/6QbubOK3A5PJoqfSAmDGbk90QobUNPGMUGo9bDg7cXt+cWeIypUcXU2TR8Ks2OfoAE2vFEgbT6eQGxgy6YTX5ynB202LXPys7yokrewzQwZkLvIYCMT8+HgdwtGozGcCU58EpelJyNpFQ8qy2/jF80S+mdPDFIsfmlNe/d496LsKhi58l6TF/UwCKhnW8fBXk8eeuIeH7/Nl07IOYV92cYYs8mhLiob3sVv/LQsKZKfnR6SJj2ttE9f0e8G2Frcxkj75SaGLz7KKssXi2uSZq+fubj5jIpVOD6avSVwFlETSS3epUecYSXpVk58lSr9bclAkA3QRJJn7yzGZ2rxiRhEw+NpFEL+EhB9Jbo8xi0iK8SSvvcgJfectrzZnyX9sxZpynz7t4bjn0Fg6cDSSo9Ign50DfPtH63vNe6xtouOy+L4KocfMBOEo0CPIZKWhqLzz21AGi9SzDt/oV+A1H6JtAGc1nb85+o8TPQbZ1Wx1s3S8QcjDmR31ZuEFuFqfDc+bgIX2Go/W59gUy3W14YLyOk8lCNBIzuEbaFsME8oMvCmJGN4fGG9MLeQd8ImCKBP7m92JVEwXx1G4FPaGqXmQ0xxNq8+YesSfJccpsRdVVv697K3+s85Bqe8Xrs9bxlo
- 884DB0Ni
- SjTKbwL5yvKKFiTDJS648amujQ7V3RSfi5mEBszgIlohKJCOm6MvorcccRON399rESH7qMjyv7B8w+lFC1An/cO8yQyM6UBVYZJNZSK5OtulclwkGcmUEQbgMobjK2jLGf0CGwXhC9Y26FYZhcIcCfWpbTStmioGF64zeCLl8C6/RW4jOen4eQGECuQw+lxAS+UWUq7yZCLgDY5l1rq5gxIn8vLcoRk2pniXepK/KRBmvkXab6a6hBJUKDBDshXI1zukFor9NEuGVezjnwS9mFM08JwB56P7gkKnWo121xgN7bzJIlkx31CNx7yDJBoU3U0H1wH/NcXnumYjqoVINEtgBZlZnFcKGsowMWV20qRa5FqAYaeQtgc0uobyD7h0H/AFp2GWDHgHCMAQ3PpvDJCkTAZCAHWbe9g7BFVLzan4pxvzYYHIVwm4A68lEmSTqtydgimKtCXNrQ40fi6SWp5SSud4tFaPlmRQdEyVWNzuZkSVmcGo89bz2Wmx0jNzNTehtM8FzrIWGSuSAa13D8rpFo7OhaRAh9wwc7oyAGdl0e3+dRXj7IjzV2KKiqHO2FYZ3YE3evaYSIDHdbNybbnPG4Hiv/UFFRTx4k/PiaQncRBghZ613cnXs8OIvf7gpppDt+J6MG0kRASc3X6c+X/FjHHO6VVEpfFdwFy53xpIwfAbU+OMpRBy9d7WlJ49hbMvjdVJS376NtBCoy8bt7e/S6DId4rr2MQpmmiw14d6N8ukaZg/bRSIVv6Wc4JcIatJcEG7jQrGhF+uKR7cKZnlI6obVagltzsiGZqwm1HkdPXVTB41DyAV2uQ3a8T1JXIgs630H0ux2O9OWSO8Vi6hV7AkxqDibjtOismbljmuhhWuauBk63l/RwZlau3hF+lFQp4YkeDD9MFPcNRjmxImctTfUvLbAyk5Y0Pss4Y1fSvA6nOYrilsW3EIn0m05PzmCNhuJbdM37Mm2Uv+pOi7rBPLd
- FwecbQBw
- mf19kjOngeXmT85VbYuW93Xij8SuSitb9IQXOpChVhWyLz9Cqavomerh69kAp9cDsidb8xNIkH52gcLfqhArjcUHCQsGAD7ZpDcz23ZAJbb5zpCdPJ0/5VgVJH4RGGVqdHl/YrkpjYqIJwSjYAZ0A3cc7whPeujJhKnHsQzIKGc5Lte1WUXVvryFwv6din1qvf9aJCmLhiR+4IV5Z8Q82Hqf+1VCfhbckXjXULcL2FGJxHW81L8rW6ssvSCigIyV1baxxEDYxgpu1Y7wyom6TGVxvrqHfRsQTDqiA1QigTVNpHAdE0UytMVzxQvxa5r/zd5dg4v9tmOKd2sraWb3bwqmaXZHfEk2izHuDMTPJWqRFCj5jWqTllK0cmS2/mC/pXcr0AeXqyJ6JpmMu+yIMVzj5Wo668Y0BWayk6pLxGp2jZYL9Jq+R4ccCXL5hZOUx3ksrxpMzLNFnNMi9LfFB6VI9b14XIAS22d8kQHqNCBKIQ8NnT0P1tLrfUS9j8xZNj6xwwGsci9UQkFnSgtnQgOhq5SoXEuxXGdX9KPOOZJMro3eEi65UzqTRFypTzLl+FIwsUYffVhfeF4BoamwXBJ8tQgaFU2m5mgxWdntmVmQWxvrlaZQof0wqWMEM/stPcT/Lnbxya06gpfb3lhKUXtg/+ekw0u9wykuwv1Y8ydqW0FqvJVn18LOAjc7qgkevPDZ6wWH8pO23aEu1uURLdWhkOxn4sIl70o5Yy0flW071BQjfH49djlcUDlMMYNm/IR/aXsu9eHk6sbhKTMuY4cFF8iaKSdcC445/pP4ekNU33mKwfTXS0xl5/ds2iazj3UBvY+2T8PxQr+MNnzNqFJLUQL5CPmqIqkcwW1+3SpJrrOhQwNJPhz58TyAfu/vvEMMyz/d6WxWnLapW94fEqkuchwkKTPOz3scjkP9dlTqviHLqSw8diEEwlgmKsK9PYFdLr1zyesdChIALVrLMeaQuzVRb
- 9kYYY/zq
- gu+4A8nnjOM5i7zS1+Rv/0SozwKr2+K9Bt1BmyUXLuI4DAYd+X2c+n1u8pIJTon4DYs/+qb6/85GZgAOfeKK+kDaBcuBDp7PCf6w4NV5I3nSEmVRQfvStsnXtUNqcx/ZLdEoGfm0u+JQ8G6MYTyJAuqLaPOqEGWAo8L+PL/cOpwv9QRlskNQi3KG4aTt+gfZtYeoOgNcFno3smXcdjpHE3Fj9FbFCty/3/1x3wuyuyjuqCvI/rQ7+cFsbVS0VrIfr2gP/HyN7QTOr+Nwdiq5agA67xuFkKzoDzsiHPGBxcYvtEwTZf65GNmr3Jkwg3WmIghnottreRwylGhHN7ZXu7osNuHiTzXteC0QVHHdNdcFrFtVxw7ck5qd2oFFxfM3q5TrxCH57HkHaMbOSIGknUln8koCZ/Ezm1tFGP1bdtNuzvwcsZn5cl3yQzUv6EHnR71P7EZt+fgDP0OHrDjdlckrChx51aLUABa/IB5MaktE7fJf9WwG2873oUGdTfKh8Ak2KZs+7GqCKmtPJ9eYAXDVVu+WEhMmTpmlQhbRLaj5iz+nhpXMrMhPQuYJE8wwilAno8c4wCM0F0yQ+P1lEFd2Ql+o6ixvPBJ8cS4VC93URQsLJh6iBZsuLltyi2pGrYC8sFmQnVXa+ncBgsABMUl4YH8OX0KaChVqt/RJ7ITNb2DxNIH7R14BXzJIghplyQ2VTr8gvRaTAP4IWxoZrTtIsmE7+u1JTkkWIAGHm9oZw8cKdx+PnI8+Tx0/Df6RDPplMFLDnCv+RtKdprmp0/MCoja6hgTwQvoE1Jpkx67CDMDCCQKkD2RR3iPdcZxourw+wW7BD3KF4bKiZ67PY0giJcH5QPZf03TujRaDrBGgSzUifmQg3TvAMlyaUPnYJ5xkUjpUWO3iT8gaSq743otiOsyrsyMAE93vLhWOfRliY4RZ4TIWBl1CxwP/Rwrr3o2eWYa97JXB7HRJp8/wnBHp/2Tbd
- ZE2rxgoy
- R1LjTui4m3mWEDHjEtJn7dTtFeu1n92bydSYDASt+Tq7j+DiG1r+r+YRDQL2eFozP8etogSU7ollJgD5rjyhY90cj+TRkzrAcpMmLDWwwwyJQvhLomg/m+ZT3jLKPFCUxK01F83ty5b346nv/J/rvUuZTWCqceLmS5ULQi8LaQbq4W8LQt+qTBeH+LBJe4OHGWriu6ykmoqXTWfEkGWjvWU2G3N9Hhj+GHU3pDv6VHpD4HY77N8Iz5ycBMzatm7erIlzZopjjVm1oAEhMRacNvZSa1D8X6JGOY8iS6/i8vllCh7j7xgaXOTZ8UKDvkN6odeY/RLP7CK5UJ+sJ7Qwf9
+X-HE-Tag: 1772484107-30166
+X-HE-Meta: U2FsdGVkX19844fPDyHbthCh90gnzs6ji1FPYiPJiNb/FhEpjZrg3atsxMXCJ5bT8zGF5ci698mcnsCeur2edIG+QIZVCyBZ8oQclkPdkAUsNBfEShrePoRzAwO5rRPPxsqi0iSRBAPCcqbETRJiv41fIh7Ps/5i7Xy7dDgr6TaCvenbpaeXTDTfBWGx/g1DMRIjC/nAu3mDxHlFZBNqcsRkxzI0yL/uYi7URnszhhMe9lCrmISWMmdLRRD00NUBC0/0eg2vO+kY3EQ1qDKwLXbZmJdc04OLWntSe/Pjy/gmnVXsYuT3Lu+E0lJpD1475HoCndfTsmPFk2op4Wg3v3UbTicNt967ELAfHHgRhlcsr2dLNrfBhvj5SBu08+FI3nl5hgd838cSqViGaY5nRfvZ0M/KjoHj21N+/XWkjw9It2Ln6RdEwyi6zbgLWa+hjwOtUUe1GEBzu+CW1NVkzZNf6ZAc7IDiAvbXtobvN4xNtNCjWCgLm028hGmEu3c04FxnlUGVQC8hEozgHXiZF8znIDu8sXNSZ93hADdr5FHGWSb6d75x9wuReimG7dyBM16eBhOLHdzNU61gSakx31A4saJeVeaYnVaD+zXrqUZrVfhRWO8h3d6RlDbKC9uX3WBsB5DuhwTz6ahymUdAX8Z+X2QNAMMCwruiPtomfRDKYd+O60GLFmtJM1Q13YTXCml+iZpUSFLLfRAGazFbgcVRZvOARmWMfNCA8XfT2sKjWBg9G9/FJA79PoVAeyQhtBYk7r1kt3DUlOSaDuc5Ki6T0fGruNvWfisDAcuTkOqHZy/AwNMPqB6tk1A4t/0yvNII2ZtFb27AIGc7DPGGCwjf4KumrOglq779HwudVqH5eUKoPls0wNpmDR0Yq0Z1VR2UZID1rKBih5d3GCcArLkSUWQhgTVsNpTg85fC5SGeA4KO4oG/Ql1VnJiagRtQBSr0KH/X6qnASyVr8eP
+ KgfHjFA6
+ hAblZQjGMEFBS7mxnXKwtiXkV4q+TxieO9D4v8xyhjWeY4BVr1NZkEASxDzetf+o0T1tyfaUau0g3vI/wkfRlxHL5POPWr4wtIFoR578hkS6e7Fzb/EhPvYq0x/fz37wXxsC8eeixsr+76JAcC2/7xE2dykb51V3/uJDf55LDI75Ebj5kb1wLYdMShXqJj2j97vDnUoq4nf0zGQPNuyLUc99waeJKZRGZIeuz6gCDwdRie8R7Vk24g99N71WjDJUt9ko8iHWAcvj4rUXrQGBGCK6Fh4zuGS5qA6rcuFrkVixl2/0Bxik5mCToEDVs2u6e97j1MUydN0fU9xT4m069XaXCagzmt2tIPULeZHuXbz7PaVRhAsAuBveNLqq8B26wm1EPhouRPe8js+tjSjyGkpb4kHnUGhBrLBdwO5II39kpy2XuFtlc52Q/SD4/glYyrIHYhsIzGDFvNA7dYJakHwFU81nn1oqHnWXb6Jv210L8ock4fUDgnE+eUEmmnaXt4r88oQnkdnKPYpWbWPKCrlqo2RTi+gKASSQtOD0aaCXhNjcr/XVeZLFzLIZM3uy0YC8OmJMXjBofI3dYT2XxGzLtml6RsSiKFxJLeb+wz3NXW3WXPGullE84OtolHlC7OTwJBV1ZXCY0C49VDHjkBuEcohD1zqtoiiTGz0rnxLRtBeTT+MxM2JXYp5zYMuJHFZZ/232AqW+DBd8t7yVBImiXO7ZeGCQjKqapA4sRD0o/kZb1y4WPr6cn9leaoRxfVQO+ubd1RRKsnRbrFnqhblE17L9HKmp+eNjogr91vxKA8X8GVUG9mejaXu6fUiVqIINfk1KUrBLy92oIShxQsvp2dEHc7th0+89aOY1mW4NZBMSS0Nb7HW2Si7VMpM117y5gcba6gVBdG8NFkUtYC3EOoEc9C1M63JJ++5iiAZOV3Sp9coP3nJD20Um0/otxXO1mBSYKgvyLDVee2Ujc7qw3Ta4c
+ CnUogYEt
+ f+QbbU2EgY41ij4IdcAyUbepOOq51qc6c9q6FcbCi9VYu+Zcy2+Dn9mCPtkvShQp/5Za7yad/zPfAjNtWAhQPwUGN6X2g6Gshd6ZVe58wbw340wmZNWcykImanisyjw1L5Vf4G9V1gj9HINk998oOgv4LK1+0qPHAkseMzn+rzltrW3dCi1K3HjfF5wnzhVAwXBnHl6S22TGhvocv1/5yTZhh6dFrMtLk89cDTqNgSpc8L7opsI/Yz61G6RoiAbZ1toOoYtdTFG7ohuuOX+4eg0Dw8Nqs0MVjCOblUxESd7xEZwUW9os//ukurVj4FsIs/BJ+T9AGsvPJJaBlqswOiXBo/Y1sWFBaAW7gdlihTmpgr5ascCCIUV+uLEZeQLo11MFm0R5hSRauhKwDkRMiNtUTQG0zNUJ87z+vYMYUooizqKAtJQiRD9xTaeEtDC4kUB6ob0ci4SPAmq+ufpEkgs9v5LHEvlJ97X70HF/tJnRz3JAi56F+oRCW4PLqj/h0A8tXuYM4ZPsWGNG9X8Oi4cMc9T7fleAkAjJw/zUcOvddSr4CY1fj5ZtLO402oiCDPJYYN5Dq3j1JalBa3JG1i23tsGb6Q9S9lixzCwhhwbrOFj8tLk3W2dxQZ9s/Bq3HxCjAMrqMn4zT/B1KSDlNunYXC9a387y2TjWiGecxiXPKwwu2CcOfqvyNx7UCKLXnDerdooD8qoNbghVOJr3rBih94wpwrYS5m1jCfjfGIVMg44ztKSsY/Pc0XhuKl/jW6nPzBHRYU7Bem5CnA7hDR4Ne2q4viCJm2MgLmYbarML0GJM3SOqpFPXKUOrEmDbeciF2Sur1tLhTlWrLNfiFESQWOnAmouRjIbZLNarJSX4GIiMWsKZj0A7qSu1JxeqMIinbbe+Xi7rQLT2RKPjhvtsq32qeaBKULG0ALtgSr12YLOuzCoOs0V+KzM25kiukP9GdR312bm/ddBZf0dxQUQ+xqatI
+ AEK61XoE
+ bu/LKP7dCMaPe2oP7HD39TWI9FqgVbX3rMVRY7AmSmjSbl2GXUN2fTP+AhRMSY/uvJdgSbGCNpQEm37fNhgzoi7UrDaD/Jy0vUPm9pszZGByGD1WOWZsE8iv1OW3yk/lbvu+CUyEKkI9rUwG/wGNUwolQDd9YXrpiTCKybieSO3akaszR0XhHWVkpkTj2HMGsVArvkihR3W4yNrEdNtSLHZRIUbdwb44RyVMwjBuJ1FSvUJn4yinzXNiAReNH4TKr3GZRatM2Kj2umGkzcYcW2gPsjKTYydOLVFrLSegfCEwjuFzO+7e4drvg5gBlKka8x0d2Id68vt75PpNTG/PYhiHCzaBzRo82fPxOD5XGIrZs4qTWoUnSxoRGEGRGpVQu89wYd3dNbeEhmEkmSzzZt3Tqyz9fkS8V97v4ZwqCYT74HJti+Z+uHJivmzep8sevZocYI+2sBJgFNHotIr+5E8SqL8dhy7Q+H1AYd8RqAlX2HF3FXTG60Ln5FHs5DwXFZnIzCRWR+Kr9v2GT4+eYmGt1xX2zHlsKD5aSGscKllciRP5FjQ0tiLlEFM+3MJnFq8+3vJh3cqvzaRimKlM+hh2+itrIJHxcqnfg0ZXLS4HmvJZqpfZ2GhgLnG10hTJqi2FXsG+ClmyVurYiaKF1PXdLtM+CNVsuguV+S/QV58dTrGVC4f1jXAhZQn264wvwrhL8B1WV6cckyPzvTBakVgQBApahHUdCVhMzAVBE7Q4vp4nM6gHfh8MmLYA2ynCpf98lesXgdTYOoWwF0horpHOIEjCnBmbWEn3BVFUKkzxvnS4vnr6BENW1V01uMpSMoepkH8dRjft6ZeFafqZAFq18DvdVABSN1Qzn3Xg8g2ZmpxtbrdQbt1WAAlTEqJauE99VHb5Gs1ttvs2Q5XmxjbvNnAglpGOBLaGpkrrhHyngrYTifTJfCyLfoblxLn+yxbVnS37Hu8N6gZM/VvpeM8kG6AR1
+ X5iXpbMg
+ 3M8KyVAJc8wTB+qFTRS11N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -224,99 +224,316 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that i_ino is u64 and the PRIino format macro has been removed,
-replace all uses in 9p with the concrete format strings.
+replace all uses in affs with the concrete format strings.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/9p/vfs_addr.c       | 4 ++--
- fs/9p/vfs_inode.c      | 6 +++---
- fs/9p/vfs_inode_dotl.c | 6 +++---
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ fs/affs/amigaffs.c |  8 ++++----
+ fs/affs/bitmap.c   |  2 +-
+ fs/affs/dir.c      |  2 +-
+ fs/affs/file.c     | 20 ++++++++++----------
+ fs/affs/inode.c    | 12 ++++++------
+ fs/affs/namei.c    | 14 +++++++-------
+ fs/affs/symlink.c  |  2 +-
+ 7 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/fs/9p/vfs_addr.c b/fs/9p/vfs_addr.c
-index 59c1d3f3c45300f5c796a2a441842a1a781e7291..c21d33830f5f021904f490ab6185db5fd40f736d 100644
---- a/fs/9p/vfs_addr.c
-+++ b/fs/9p/vfs_addr.c
-@@ -36,7 +36,7 @@ static void v9fs_begin_writeback(struct netfs_io_request *wreq)
+diff --git a/fs/affs/amigaffs.c b/fs/affs/amigaffs.c
+index 0e1939cf27bba0c10d2b657b94f3cd5dbee1a61c..b401aacaa06744130eb191daf334bdf979fdc0a6 100644
+--- a/fs/affs/amigaffs.c
++++ b/fs/affs/amigaffs.c
+@@ -33,7 +33,7 @@ affs_insert_hash(struct inode *dir, struct buffer_head *bh)
+ 	ino = bh->b_blocknr;
+ 	offset = affs_hash_name(sb, AFFS_TAIL(sb, bh)->name + 1, AFFS_TAIL(sb, bh)->name[0]);
  
- 	fid = v9fs_fid_find_inode(wreq->inode, true, INVALID_UID, true);
- 	if (!fid) {
--		WARN_ONCE(1, "folio expected an open fid inode->i_ino=%" PRIino "x\n",
-+		WARN_ONCE(1, "folio expected an open fid inode->i_ino=%llx\n",
- 			  wreq->inode->i_ino);
- 		return;
- 	}
-@@ -133,7 +133,7 @@ static int v9fs_init_request(struct netfs_io_request *rreq, struct file *file)
- 	return 0;
+-	pr_debug("%s(dir=%" PRIino "u, ino=%d)\n", __func__, dir->i_ino, ino);
++	pr_debug("%s(dir=%llu, ino=%d)\n", __func__, dir->i_ino, ino);
  
- no_fid:
--	WARN_ONCE(1, "folio expected an open fid inode->i_ino=%" PRIino "x\n",
-+	WARN_ONCE(1, "folio expected an open fid inode->i_ino=%llx\n",
- 		  rreq->inode->i_ino);
- 	return -EINVAL;
- }
-diff --git a/fs/9p/vfs_inode.c b/fs/9p/vfs_inode.c
-index c3eee0d7a70dfe07ba09ce36458228fb00c5855f..d1508b1fe10929d8d847af313f7661d693167d96 100644
---- a/fs/9p/vfs_inode.c
-+++ b/fs/9p/vfs_inode.c
-@@ -1245,7 +1245,7 @@ static int
- v9fs_vfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 		 struct dentry *dentry, const char *symname)
+ 	dir_bh = affs_bread(sb, dir->i_ino);
+ 	if (!dir_bh)
+@@ -83,7 +83,7 @@ affs_remove_hash(struct inode *dir, struct buffer_head *rem_bh)
+ 	sb = dir->i_sb;
+ 	rem_ino = rem_bh->b_blocknr;
+ 	offset = affs_hash_name(sb, AFFS_TAIL(sb, rem_bh)->name+1, AFFS_TAIL(sb, rem_bh)->name[0]);
+-	pr_debug("%s(dir=%" PRIino "u, ino=%d, hashval=%d)\n", __func__, dir->i_ino,
++	pr_debug("%s(dir=%llu, ino=%d, hashval=%d)\n", __func__, dir->i_ino,
+ 		 rem_ino, offset);
+ 
+ 	bh = affs_bread(sb, dir->i_ino);
+@@ -147,7 +147,7 @@ affs_remove_link(struct dentry *dentry)
+ 	u32 link_ino, ino;
+ 	int retval;
+ 
+-	pr_debug("%s(key=%" PRIino "u)\n", __func__, inode->i_ino);
++	pr_debug("%s(key=%llu)\n", __func__, inode->i_ino);
+ 	retval = -EIO;
+ 	bh = affs_bread(sb, inode->i_ino);
+ 	if (!bh)
+@@ -279,7 +279,7 @@ affs_remove_header(struct dentry *dentry)
+ 	if (!inode)
+ 		goto done;
+ 
+-	pr_debug("%s(key=%" PRIino "u)\n", __func__, inode->i_ino);
++	pr_debug("%s(key=%llu)\n", __func__, inode->i_ino);
+ 	retval = -EIO;
+ 	bh = affs_bread(sb, (u32)(long)dentry->d_fsdata);
+ 	if (!bh)
+diff --git a/fs/affs/bitmap.c b/fs/affs/bitmap.c
+index 904cd5bc5a4bd5719017bf1820a053557c35d67c..40bc4ce6af4ac9d8dba81809e22516a58f0aaf15 100644
+--- a/fs/affs/bitmap.c
++++ b/fs/affs/bitmap.c
+@@ -125,7 +125,7 @@ affs_alloc_block(struct inode *inode, u32 goal)
+ 	sb = inode->i_sb;
+ 	sbi = AFFS_SB(sb);
+ 
+-	pr_debug("balloc(inode=%" PRIino "u,goal=%u): ", inode->i_ino, goal);
++	pr_debug("balloc(inode=%llu,goal=%u): ", inode->i_ino, goal);
+ 
+ 	if (AFFS_I(inode)->i_pa_cnt) {
+ 		pr_debug("%d\n", AFFS_I(inode)->i_lastalloc+1);
+diff --git a/fs/affs/dir.c b/fs/affs/dir.c
+index 127741d9cac940a45a832bf78b36296dec77cd40..11e2bac2e391896a32109335530a6af5543a0abe 100644
+--- a/fs/affs/dir.c
++++ b/fs/affs/dir.c
+@@ -90,7 +90,7 @@ affs_readdir(struct file *file, struct dir_context *ctx)
+ 	u32			 ino;
+ 	int			 error = 0;
+ 
+-	pr_debug("%s(ino=%" PRIino "u,f_pos=%llx)\n", __func__, inode->i_ino, ctx->pos);
++	pr_debug("%s(ino=%llu,f_pos=%llx)\n", __func__, inode->i_ino, ctx->pos);
+ 
+ 	if (ctx->pos < 2) {
+ 		data->ino = 0;
+diff --git a/fs/affs/file.c b/fs/affs/file.c
+index e2129cc3411f1cc6cf8bf29fe6740e619554e420..a51dee9d7d7ec3724c642725812415bd33c76273 100644
+--- a/fs/affs/file.c
++++ b/fs/affs/file.c
+@@ -24,7 +24,7 @@ static struct buffer_head *affs_get_extblock_slow(struct inode *inode, u32 ext);
+ static int
+ affs_file_open(struct inode *inode, struct file *filp)
  {
--	p9_debug(P9_DEBUG_VFS, " %" PRIino "u,%pd,%s\n",
-+	p9_debug(P9_DEBUG_VFS, " %llu,%pd,%s\n",
- 		 dir->i_ino, dentry, symname);
+-	pr_debug("open(%" PRIino "u,%d)\n",
++	pr_debug("open(%llu,%d)\n",
+ 		 inode->i_ino, atomic_read(&AFFS_I(inode)->i_opencnt));
+ 	atomic_inc(&AFFS_I(inode)->i_opencnt);
+ 	return 0;
+@@ -33,7 +33,7 @@ affs_file_open(struct inode *inode, struct file *filp)
+ static int
+ affs_file_release(struct inode *inode, struct file *filp)
+ {
+-	pr_debug("release(%" PRIino "u, %d)\n",
++	pr_debug("release(%llu, %d)\n",
+ 		 inode->i_ino, atomic_read(&AFFS_I(inode)->i_opencnt));
  
- 	return v9fs_vfs_mkspecial(dir, dentry, P9_DMSYMLINK, symname);
-@@ -1269,7 +1269,7 @@ v9fs_vfs_link(struct dentry *old_dentry, struct inode *dir,
- 	char name[1 + U32_MAX_DIGITS + 2]; /* sign + number + \n + \0 */
- 	struct p9_fid *oldfid;
+ 	if (atomic_dec_and_test(&AFFS_I(inode)->i_opencnt)) {
+@@ -301,7 +301,7 @@ affs_get_block(struct inode *inode, sector_t block, struct buffer_head *bh_resul
+ 	struct buffer_head	*ext_bh;
+ 	u32			 ext;
  
--	p9_debug(P9_DEBUG_VFS, " %" PRIino "u,%pd,%pd\n",
-+	p9_debug(P9_DEBUG_VFS, " %llu,%pd,%pd\n",
- 		 dir->i_ino, dentry, old_dentry);
+-	pr_debug("%s(%" PRIino "u, %llu)\n", __func__, inode->i_ino,
++	pr_debug("%s(%llu, %llu)\n", __func__, inode->i_ino,
+ 		 (unsigned long long)block);
  
- 	oldfid = v9fs_fid_clone(old_dentry);
-@@ -1305,7 +1305,7 @@ v9fs_vfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	char name[2 + U32_MAX_DIGITS + 1 + U32_MAX_DIGITS + 1];
- 	u32 perm;
+ 	BUG_ON(block > (sector_t)0x7fffffffUL);
+@@ -534,7 +534,7 @@ static int affs_do_read_folio_ofs(struct folio *folio, size_t to, int create)
+ 	size_t bidx, boff, bsize;
+ 	u32 tmp;
  
--	p9_debug(P9_DEBUG_VFS, " %" PRIino "u,%pd mode: %x MAJOR: %u MINOR: %u\n",
-+	p9_debug(P9_DEBUG_VFS, " %llu,%pd mode: %x MAJOR: %u MINOR: %u\n",
- 		 dir->i_ino, dentry, mode,
- 		 MAJOR(rdev), MINOR(rdev));
+-	pr_debug("%s(%" PRIino "u, %ld, 0, %zu)\n", __func__, inode->i_ino,
++	pr_debug("%s(%llu, %ld, 0, %zu)\n", __func__, inode->i_ino,
+ 		 folio->index, to);
+ 	BUG_ON(to > folio_size(folio));
+ 	bsize = AFFS_SB(sb)->s_data_blksize;
+@@ -566,7 +566,7 @@ affs_extent_file_ofs(struct inode *inode, u32 newsize)
+ 	u32 size, bsize;
+ 	u32 tmp;
  
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 18a3792afb4fedcc870a6090ad364a7ed3c5e9a6..71796a89bcf4745363b59af1047ecfd7e3f4d956 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -691,7 +691,7 @@ v9fs_vfs_symlink_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 	struct p9_fid *fid = NULL;
+-	pr_debug("%s(%" PRIino "u, %d)\n", __func__, inode->i_ino, newsize);
++	pr_debug("%s(%llu, %d)\n", __func__, inode->i_ino, newsize);
+ 	bsize = AFFS_SB(sb)->s_data_blksize;
+ 	bh = NULL;
+ 	size = AFFS_I(inode)->mmu_private;
+@@ -634,7 +634,7 @@ static int affs_read_folio_ofs(struct file *file, struct folio *folio)
+ 	size_t to;
+ 	int err;
  
- 	name = dentry->d_name.name;
--	p9_debug(P9_DEBUG_VFS, "%" PRIino "u,%s,%s\n", dir->i_ino, name, symname);
-+	p9_debug(P9_DEBUG_VFS, "%llu,%s,%s\n", dir->i_ino, name, symname);
+-	pr_debug("%s(%" PRIino "u, %ld)\n", __func__, inode->i_ino, folio->index);
++	pr_debug("%s(%llu, %ld)\n", __func__, inode->i_ino, folio->index);
+ 	to = folio_size(folio);
+ 	if (folio_pos(folio) + to > inode->i_size) {
+ 		to = inode->i_size - folio_pos(folio);
+@@ -658,7 +658,7 @@ static int affs_write_begin_ofs(const struct kiocb *iocb,
+ 	pgoff_t index;
+ 	int err = 0;
  
- 	dfid = v9fs_parent_fid(dentry);
- 	if (IS_ERR(dfid)) {
-@@ -734,7 +734,7 @@ v9fs_vfs_link_dotl(struct dentry *old_dentry, struct inode *dir,
- 	struct p9_fid *dfid, *oldfid;
- 	struct v9fs_session_info *v9ses;
+-	pr_debug("%s(%" PRIino "u, %llu, %llu)\n", __func__, inode->i_ino, pos,
++	pr_debug("%s(%llu, %llu, %llu)\n", __func__, inode->i_ino, pos,
+ 		 pos + len);
+ 	if (pos > AFFS_I(inode)->mmu_private) {
+ 		/* XXX: this probably leaves a too-big i_size in case of
+@@ -710,7 +710,7 @@ static int affs_write_end_ofs(const struct kiocb *iocb,
+ 	 * due to write_begin.
+ 	 */
  
--	p9_debug(P9_DEBUG_VFS, "dir ino: %" PRIino "u, old_name: %pd, new_name: %pd\n",
-+	p9_debug(P9_DEBUG_VFS, "dir ino: %llu, old_name: %pd, new_name: %pd\n",
- 		 dir->i_ino, old_dentry, dentry);
+-	pr_debug("%s(%" PRIino "u, %llu, %llu)\n", __func__, inode->i_ino, pos,
++	pr_debug("%s(%llu, %llu, %llu)\n", __func__, inode->i_ino, pos,
+ 		 pos + len);
+ 	bsize = AFFS_SB(sb)->s_data_blksize;
+ 	data = folio_address(folio);
+@@ -854,7 +854,7 @@ affs_free_prealloc(struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
  
- 	v9ses = v9fs_inode2v9ses(dir);
-@@ -798,7 +798,7 @@ v9fs_vfs_mknod_dotl(struct mnt_idmap *idmap, struct inode *dir,
- 	struct p9_qid qid;
- 	struct posix_acl *dacl = NULL, *pacl = NULL;
+-	pr_debug("free_prealloc(ino=%" PRIino "u)\n", inode->i_ino);
++	pr_debug("free_prealloc(ino=%llu)\n", inode->i_ino);
  
--	p9_debug(P9_DEBUG_VFS, " %" PRIino "u,%pd mode: %x MAJOR: %u MINOR: %u\n",
-+	p9_debug(P9_DEBUG_VFS, " %llu,%pd mode: %x MAJOR: %u MINOR: %u\n",
- 		 dir->i_ino, dentry, omode,
- 		 MAJOR(rdev), MINOR(rdev));
+ 	while (AFFS_I(inode)->i_pa_cnt) {
+ 		AFFS_I(inode)->i_pa_cnt--;
+@@ -874,7 +874,7 @@ affs_truncate(struct inode *inode)
+ 	struct buffer_head *ext_bh;
+ 	int i;
  
+-	pr_debug("truncate(inode=%" PRIino "u, oldsize=%llu, newsize=%llu)\n",
++	pr_debug("truncate(inode=%llu, oldsize=%llu, newsize=%llu)\n",
+ 		 inode->i_ino, AFFS_I(inode)->mmu_private, inode->i_size);
+ 
+ 	last_blk = 0;
+diff --git a/fs/affs/inode.c b/fs/affs/inode.c
+index 14f6a6352662ba9514a64ea0893e848e79abed63..561fc0185e89c47947c83bd1a56cdc8be46f8d0e 100644
+--- a/fs/affs/inode.c
++++ b/fs/affs/inode.c
+@@ -32,7 +32,7 @@ struct inode *affs_iget(struct super_block *sb, unsigned long ino)
+ 	if (!(inode_state_read_once(inode) & I_NEW))
+ 		return inode;
+ 
+-	pr_debug("affs_iget(%" PRIino "u)\n", inode->i_ino);
++	pr_debug("affs_iget(%llu)\n", inode->i_ino);
+ 
+ 	block = inode->i_ino;
+ 	bh = affs_bread(sb, block);
+@@ -171,14 +171,14 @@ affs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 	uid_t			 uid;
+ 	gid_t			 gid;
+ 
+-	pr_debug("write_inode(%" PRIino "u)\n", inode->i_ino);
++	pr_debug("write_inode(%llu)\n", inode->i_ino);
+ 
+ 	if (!inode->i_nlink)
+ 		// possibly free block
+ 		return 0;
+ 	bh = affs_bread(sb, inode->i_ino);
+ 	if (!bh) {
+-		affs_error(sb, "write_inode", "Cannot read block %" PRIino "u", inode->i_ino);
++		affs_error(sb, "write_inode", "Cannot read block %llu", inode->i_ino);
+ 		return -EIO;
+ 	}
+ 	tail = AFFS_TAIL(sb, bh);
+@@ -219,7 +219,7 @@ affs_notify_change(struct mnt_idmap *idmap, struct dentry *dentry,
+ 	struct inode *inode = d_inode(dentry);
+ 	int error;
+ 
+-	pr_debug("notify_change(%" PRIino "u,0x%x)\n", inode->i_ino, attr->ia_valid);
++	pr_debug("notify_change(%llu,0x%x)\n", inode->i_ino, attr->ia_valid);
+ 
+ 	error = setattr_prepare(&nop_mnt_idmap, dentry, attr);
+ 	if (error)
+@@ -260,7 +260,7 @@ void
+ affs_evict_inode(struct inode *inode)
+ {
+ 	unsigned long cache_page;
+-	pr_debug("evict_inode(ino=%" PRIino "u, nlink=%u)\n",
++	pr_debug("evict_inode(ino=%llu, nlink=%u)\n",
+ 		 inode->i_ino, inode->i_nlink);
+ 	truncate_inode_pages_final(&inode->i_data);
+ 
+@@ -353,7 +353,7 @@ affs_add_entry(struct inode *dir, struct inode *inode, struct dentry *dentry, s3
+ 	u32 block = 0;
+ 	int retval;
+ 
+-	pr_debug("%s(dir=%" PRIino "u, inode=%" PRIino "u, \"%pd\", type=%d)\n", __func__,
++	pr_debug("%s(dir=%llu, inode=%llu, \"%pd\", type=%d)\n", __func__,
+ 		 dir->i_ino, inode->i_ino, dentry, type);
+ 
+ 	retval = -EIO;
+diff --git a/fs/affs/namei.c b/fs/affs/namei.c
+index 725a005a0aec9d4727b6bf561333b236844ae7ec..8705321926007f559bac1af42fbadca8da67afcc 100644
+--- a/fs/affs/namei.c
++++ b/fs/affs/namei.c
+@@ -235,7 +235,7 @@ affs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
+ int
+ affs_unlink(struct inode *dir, struct dentry *dentry)
+ {
+-	pr_debug("%s(dir=%" PRIino "u, %" PRIino "u \"%pd\")\n", __func__, dir->i_ino,
++	pr_debug("%s(dir=%llu, %llu \"%pd\")\n", __func__, dir->i_ino,
+ 		 d_inode(dentry)->i_ino, dentry);
+ 
+ 	return affs_remove_header(dentry);
+@@ -249,7 +249,7 @@ affs_create(struct mnt_idmap *idmap, struct inode *dir,
+ 	struct inode	*inode;
+ 	int		 error;
+ 
+-	pr_debug("%s(%" PRIino "u,\"%pd\",0%ho)\n",
++	pr_debug("%s(%llu,\"%pd\",0%ho)\n",
+ 		 __func__, dir->i_ino, dentry, mode);
+ 
+ 	inode = affs_new_inode(dir);
+@@ -280,7 +280,7 @@ affs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ 	struct inode		*inode;
+ 	int			 error;
+ 
+-	pr_debug("%s(%" PRIino "u,\"%pd\",0%ho)\n",
++	pr_debug("%s(%llu,\"%pd\",0%ho)\n",
+ 		 __func__, dir->i_ino, dentry, mode);
+ 
+ 	inode = affs_new_inode(dir);
+@@ -306,7 +306,7 @@ affs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
+ int
+ affs_rmdir(struct inode *dir, struct dentry *dentry)
+ {
+-	pr_debug("%s(dir=%" PRIino "u, %" PRIino "u \"%pd\")\n", __func__, dir->i_ino,
++	pr_debug("%s(dir=%llu, %llu \"%pd\")\n", __func__, dir->i_ino,
+ 		 d_inode(dentry)->i_ino, dentry);
+ 
+ 	return affs_remove_header(dentry);
+@@ -323,7 +323,7 @@ affs_symlink(struct mnt_idmap *idmap, struct inode *dir,
+ 	int			 i, maxlen, error;
+ 	char			 c, lc;
+ 
+-	pr_debug("%s(%" PRIino "u,\"%pd\" -> \"%s\")\n",
++	pr_debug("%s(%llu,\"%pd\" -> \"%s\")\n",
+ 		 __func__, dir->i_ino, dentry, symname);
+ 
+ 	maxlen = AFFS_SB(sb)->s_hashsize * sizeof(u32) - 1;
+@@ -395,7 +395,7 @@ affs_link(struct dentry *old_dentry, struct inode *dir, struct dentry *dentry)
+ {
+ 	struct inode *inode = d_inode(old_dentry);
+ 
+-	pr_debug("%s(%" PRIino "u, %" PRIino "u, \"%pd\")\n", __func__, inode->i_ino, dir->i_ino,
++	pr_debug("%s(%llu, %llu, \"%pd\")\n", __func__, inode->i_ino, dir->i_ino,
+ 		 dentry);
+ 
+ 	return affs_add_entry(dir, inode, dentry, ST_LINKFILE);
+@@ -511,7 +511,7 @@ int affs_rename2(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	if (flags & ~(RENAME_NOREPLACE | RENAME_EXCHANGE))
+ 		return -EINVAL;
+ 
+-	pr_debug("%s(old=%" PRIino "u,\"%pd\" to new=%" PRIino "u,\"%pd\")\n", __func__,
++	pr_debug("%s(old=%llu,\"%pd\" to new=%llu,\"%pd\")\n", __func__,
+ 		 old_dir->i_ino, old_dentry, new_dir->i_ino, new_dentry);
+ 
+ 	if (flags & RENAME_EXCHANGE)
+diff --git a/fs/affs/symlink.c b/fs/affs/symlink.c
+index 05ec904089fb8287545ccc8128ba4057175576cf..de31ed2e71dfcb71b770a98c9b43a248de8d7041 100644
+--- a/fs/affs/symlink.c
++++ b/fs/affs/symlink.c
+@@ -21,7 +21,7 @@ static int affs_symlink_read_folio(struct file *file, struct folio *folio)
+ 	char			 c;
+ 	char			 lc;
+ 
+-	pr_debug("get_link(ino=%" PRIino "u)\n", inode->i_ino);
++	pr_debug("get_link(ino=%llu)\n", inode->i_ino);
+ 
+ 	bh = affs_bread(inode->i_sb, inode->i_ino);
+ 	if (!bh)
 
 -- 
 2.53.0
