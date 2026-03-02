@@ -4,116 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C5CD58E7A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D5CD58E7A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:13:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9224D6B008C; Mon,  2 Mar 2026 04:12:18 -0500 (EST)
+	id 00D396B008C; Mon,  2 Mar 2026 04:13:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F9DB6B0092; Mon,  2 Mar 2026 04:12:18 -0500 (EST)
+	id EFD7B6B0092; Mon,  2 Mar 2026 04:13:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F92B6B0093; Mon,  2 Mar 2026 04:12:18 -0500 (EST)
+	id E00716B0093; Mon,  2 Mar 2026 04:13:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E51B6B008C
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:12:18 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C68F1C106
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:12:18 +0000 (UTC)
-X-FDA: 84500556756.07.7A844E0
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 268801A0011
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:12:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmy78eN7;
-	spf=pass (imf19.hostedemail.com: domain of urezki@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id CC0FD6B008C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:13:35 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 695978CB4B
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:13:35 +0000 (UTC)
+X-FDA: 84500559990.26.23539BA
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 27B2C40004
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:13:32 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IvEjFCwM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AqAAIUzO;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F9W9Vysl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7AZC4XVw;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772442736;
+	s=arc-20220608; t=1772442813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1CYixJp12ZhPkZvZ3ThEa39JLsy53oAR5qacM7OtCDQ=;
-	b=I4H+NH3z20MPLlMYdwUXCThv3ZHBmyl54EVaNDi3DpEmRLcGnxpjqQ/9WBTz8rSBcTqyl/
-	eQ0CgUdE2LHF4R/W/T2LAKP09+WoQw0k0dDAkw3+T4zyWf0dXCnY3g4d6DhLnWe1aLrrnZ
-	N92Q2mBdCZHe+lMP1nO0hBSbKDtx5W0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442736; a=rsa-sha256;
-	cv=none;
-	b=lf/HvQJdAxce95zAyT8DP1GDA7Yr6nYSE1D1rEoCJZZdWdL6j1q3YU3gPqyzAJMK79E6cj
-	WbOiJCv83X5uwEGseYubTnh8s1Fh4kfDv6s+7ZO5uBz+zjhIjBwhiCAJEJraN2yjQmHhdY
-	P1APZDwkJCWcCxhpaQ0RRkmfJMUa06c=
+	bh=yiUa0ECJNPtkTnLKrDvGHBfFKQ79sQHYL43l9NzCiHc=;
+	b=ZRUPWI5EPXgD4FPaTj7HJbYpjSVLfk+PtJ9Bm+ojL/JYcWScUOoZHDJQP3Z3bsj5EE5kiV
+	WKDEI2Fr0rPXxk8IxyFSWABHjALfpy5Bj88xxHoRWu2SOGr6nXkdd8CG0Hzz72KbuZXDl1
+	4yzzUoBUGMui4Nrq3y5DaFMs7vEAABk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmy78eN7;
-	spf=pass (imf19.hostedemail.com: domain of urezki@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-439b97a8a8cso500074f8f.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 01:12:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772442734; x=1773047534; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1CYixJp12ZhPkZvZ3ThEa39JLsy53oAR5qacM7OtCDQ=;
-        b=Dmy78eN7bfPpNY7iE80Mm/nE1sXURKIPEVnN+Gb/RumkBu6HJdZVUi1NBBerezWO/E
-         /uZ/pqrEaK13bqE7FAw5DXpQX8N7iY98icai9RzPVLUMq1mtydByoN1PexW1HE5eI+b9
-         OxXdGQDFJADV4CdFAo6yy3TNadA6IJ0U5A3PdapGMUtbB5nqy5/st8YhtETQVbiLMdgK
-         bSI8fuGEy4mWQRnp8QMgHkh3y+qgDy5W7dNQrNu3P6pq24+gaebmmkd5+UB2bhQwGaam
-         rYHpFbIID3lIuaKkzQxNlG7zV5uNiD8z5pNAQhWcUjw5Wk1S6w63jUEbOMpuydyx6QV+
-         hmvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772442734; x=1773047534;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1CYixJp12ZhPkZvZ3ThEa39JLsy53oAR5qacM7OtCDQ=;
-        b=AfPlzEcdHDP4QuxSkfwnRckNpdtJHwx28dI5Q3Wlp/u7jdkMmx25NpVGLgrGGcpj+t
-         0ncVNk5esQC4GGidw6fLBTaPK72tfDcLNs83nXlybk0WELuTRFduD3JW7K84UBDjBvPO
-         Xais/dt+T9HI00y0KibhraSXd5lQiFgEPwE0pkw9ZNnkV+vT7niCXkPgGj2/vl3Bl+Y3
-         4gst7AffWj0ZJMpP8zT4ZEU6es2s8SOiuaGnWxijx9WLuWBS3txApxN84uwyz1EIZWXb
-         oDzZkLAcZoyQfR1okKHUM1hS1t8uYd1ljapaAKgSJ/Lpnn0wmHVUT7y9fGwLWZ+SUudf
-         W9xA==
-X-Forwarded-Encrypted: i=1; AJvYcCVVrOPrm82zY8ZTuA83YxX2kz0ocZCjAKAmP5mzGkpaJm/X6Iyfr/FxRbJdOb6ud8gBKGd/mmXsUg==@kvack.org
-X-Gm-Message-State: AOJu0Yxc/Gxlcz7P57uKu4+O964jZgOPerkDDfsywJNJSoOlD46ltsml
-	10Z+bREO3JvIFUd78bx7ACIhsAlpxVZka3ssWvTsLzfKW8wvZnTe4mlg
-X-Gm-Gg: ATEYQzyZ8Tk5T4LmBiEOtscKTasE3CDd9POF3nWRCx+70K9GTAsOo+OKo0jKLIA4+mA
-	99OakDY7IJshOxrpgBonj/VbA/MYpcmiIZAllH7fAa1l4cMQQB1ti1pDCcOrCVMgJwR0Xj+d2SR
-	tYYJP23tPHWJaQTvGEvjT5EjkU4aHRSh3DDCJ/Y3F/hiJ1j4o+vkKLnMS7rrgSHpnBPva7jF7p/
-	I5etFtRGqQTdJ9IEsOcL7BSrVKG1O0f4+Z3PyFzRw7P6Js6L3Z9OqfXnHiwHx4x8yMaXtrJU47T
-	+HZV7rBFCPeDvAYc5OspY5H5ByHCDVFrK3VSahpvqxgBJMiWLnLagGSIL1LgcVqPK4/1+svJj/m
-	w/yz8l6+Wotwt/d9xQdXfBKUxe4hKJ3ASCtJ9kINh7wdo79TYSmOL/7R3XDfQfPMjU226SngbOc
-	gEsQbbpLTiSaRqUYA=
-X-Received: by 2002:a05:6000:1a8b:b0:439:b486:ba71 with SMTP id ffacd0b85a97d-439b486c4cdmr6649684f8f.56.1772442734219;
-        Mon, 02 Mar 2026 01:12:14 -0800 (PST)
-Received: from pc636 ([95.214.255.238])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c60f764sm26405956f8f.3.2026.03.02.01.12.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 01:12:13 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 2 Mar 2026 10:12:12 +0100
-To: Shivam Kalra <shivamkalra98@zohomail.in>
-Cc: Danilo Krummrich <dakr@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
-	linux-mm@kvack.org, akpm@linux-foundation.org, aliceryhl@google.com
-Subject: Re: [RFC] mm/vmalloc: vrealloc() shrink TODO - seeking direction
- before implementing
-Message-ID: <aaVUbJ8is-9hYeEe@pc636>
-References: <29e454bc-5a46-43b2-80b0-4d8d93e3feae@zohomail.in>
- <aZdBDOPUccXa85O2@pc636>
- <DGJ3LPUDBDTK.1TK1DXXFNXYPN@kernel.org>
- <7d65b7a0-9bc3-4fb6-b25f-58b0e07c2ad8@zohomail.in>
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IvEjFCwM;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AqAAIUzO;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F9W9Vysl;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7AZC4XVw;
+	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442813; a=rsa-sha256;
+	cv=none;
+	b=BphYPF8fgiQKXFmyKxgv811DZCMTzQmsa10JJlLOLpq3LfwGdfHMSJF73saGH2RsyE/6Sd
+	r90krRyeil7VDPUJKYVLePlUyeiAne0UKue+kExLDAW2d6qOkCwYUflMQBpS12TEBYAzA4
+	9N+iWHc421g1/s9+ZonlUwqsgMPhnno=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 310733E7C9;
+	Mon,  2 Mar 2026 09:13:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772442811; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yiUa0ECJNPtkTnLKrDvGHBfFKQ79sQHYL43l9NzCiHc=;
+	b=IvEjFCwMg8Ig9GtG1dDAi58hup1nQvtBAtjeECQAyWwZdCIo/N2Wtz9V4ScqMC3i1Kc/9P
+	BJl8rCMRij6Dzd7CULioRD1AxUHgYCUfs/G8b7USMupWSeSxwvTSSVBBvhg1adhiQUbsDL
+	N8sjoY6XUREb5Rjda6utCrHWcrwv+6o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772442811;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yiUa0ECJNPtkTnLKrDvGHBfFKQ79sQHYL43l9NzCiHc=;
+	b=AqAAIUzOF2Yy8M0YGYw+xIT5ecVWBxEF7GGlyH2RlDAtVRjY8xURwtY0Fge1fc1Eu6m1b4
+	1IWqT4IXLYEjjuCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772442810; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yiUa0ECJNPtkTnLKrDvGHBfFKQ79sQHYL43l9NzCiHc=;
+	b=F9W9VyslnpsJVBa1jGUWLmw0W8jMV2z6VYvjzKm7M03b5bnq9P5qwL7/U0i1ZSQU6C2pbI
+	YsbQUDFVtuTCrLlmWhf7TnblMwGoP1Lob8tLesykv8mR+l4wD8IjEbdEXww5Ti9BrUDE7t
+	y0ogEiknF9fugD7F1izz71MC8hRbBh0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772442810;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yiUa0ECJNPtkTnLKrDvGHBfFKQ79sQHYL43l9NzCiHc=;
+	b=7AZC4XVwYmP//tW6373ZF3FORac015k3gIhkGjb//YXMNtGKxtqEb4iA817SUEpzMJ1ChM
+	YqxVvGdP8on/5MDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 174783EA69;
+	Mon,  2 Mar 2026 09:13:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sbavBbpUpWnXYAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 02 Mar 2026 09:13:30 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id CAF0DA0A27; Mon,  2 Mar 2026 10:13:29 +0100 (CET)
+Date: Mon, 2 Mar 2026 10:13:29 +0100
+From: Jan Kara <jack@suse.cz>
+To: Tal Zussman <tz2294@columbia.edu>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@infradead.org>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org
+Subject: Re: [PATCH RFC v3 2/2] block: enable RWF_DONTCACHE for block devices
+Message-ID: <blipvn6pfxno5a2cih3e7y2l7g3cbj4yjb6hhwxrer26ma5x55@ez6hhpdfsi63>
+References: <20260227-blk-dontcache-v3-0-cd309ccd5868@columbia.edu>
+ <20260227-blk-dontcache-v3-2-cd309ccd5868@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d65b7a0-9bc3-4fb6-b25f-58b0e07c2ad8@zohomail.in>
+In-Reply-To: <20260227-blk-dontcache-v3-2-cd309ccd5868@columbia.edu>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 268801A0011
-X-Stat-Signature: oqk6h9ef5uppoza56naqpjheydwj8n1j
-X-HE-Tag: 1772442735-251457
-X-HE-Meta: U2FsdGVkX1/MllR8SyUsSac31YGZToJWo56adgAXyAP9DsVES5dycbuJMOerz2PXh+ILHS+UIMXzIDqjqMNST/EPaBRhgsCN27xcfVYP9AJt23RAQU3ON+e1MI56loAW8mrokE9K1Bu3q5wqzXuZHJDJOx2s/RKXtTMovTbRlzRZFguQkmbnagJRBmufnTwKQUw4D+T1ylMbDPT/wUIBgd8tNejOgpsbKO5Vt/mm+zSR8Gj82ciKv1MIdQX+bukAFYHlrn4dzKVLnwr+Hsp6C36LAXLCu5dezSPxeW3phvWqyQxs/DfylnwZHmooNz3jXapI+MOjRoJQSNG7wGXolQjM3L9g4ybTFrm1kGSMWBZ7IiNM9Jzt5nlhPhGH3fyyCwNNGbvuXq7fenW5CrmqXFQWbNLbzqVBuTrcKcOYTpO5SzCxkqtZ3j8SmKAY/m2zLCUZoUTq56XMUAtYee6Qm/pL+ATXuSTvpD05yepUcF5HI+jOLcZ5pnfVNKKPE1DQ/ulb+40UAlYwqmAj0UYo+dh/kS27mm62S3iDRmLPHwkc4D5kIlOlHoh+Dp8ug+52/XoToSGxBheMDpDSfK9hlFgLB/LLTX+aaTJUDABQdqOodMvSUHB3vyu86RrjmZYPflBSeCFTJAAj1SdZrLzF3wEU8QoB7xQmkaYRPdvympLk6lgbmq+B9cWUNjevVJkQLZvy2qIQZch9QptvkXpoz77QTtQ6hrSOWtnEEi5tZHlVHgS3qcC0vQUflgNbBxrmEWw5LTbWU67pAcuJiZ6AfOAe88hmYYb0kUzMwjpE8ptTSYsDXxowW/0vpSKlrPLdnmg0ouXyZHCoMHMqBgx0hyJxvr0Bpl62+DCmlMjpAfljOlKaZbW6YhiJRa1JH05R8xI3HYfhqeASHhnSG0NmILDCyql6pb9+8uzsC90S48kcvEkronrAqaZRa1faJDvUJZtkQpDUu3KHJk2PSsV
- h6CwA8wV
- V9c9GtRCOHenfL0FSYXAIbQU239FoAkTFVQ2EhTo68pZRnKQAYr+RyaUCcTqju82z7X+O0Vygcg3695sR2MR+QA6v3PzGTQ6Cm7D5gwBMmi7tn2sH1gA2xTIhy/kx58C6HaiGl1I4w4oCfruUZ8jJahSOn0CRNqD8Mnb/HrUN4y2vcd/N/L3vP7eEstufyaeuENR5QFHBc+s88H7KBCxxIGX7L8p1ZSUrEN+YaqZenG33ga72YUgeZv32+8mDm3xjHsU2s33RimVdQTjxVRUEO5S9c3kXDRW0GIOuGtWfibdqauSClVAYIbo63kxiEC5R+0LmDxL4/LdmsAkApe+phBjtPctrBEh80hLEI+141xzI9R2bZfI5tUduzhuL6El6z4yGtaUPR1wOJuX3uuz8rBfviGTmFw15TiqVeGSomdYe3pEb60IBoSpFoZiEI/JsCn2fd7FQM56eBJ8=
+X-Rspamd-Queue-Id: 27B2C40004
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 9c9n1sm6eqrs7dezm6p3e6qthwej1p9c
+X-HE-Tag: 1772442812-145428
+X-HE-Meta: U2FsdGVkX1+xvbd20J9QNPL/iPVUZEc9yRrJIqgz+tg2eYcNP+9x+LVzjYDUu5e0yi8nxIEU8UGGZ53OJpmLT6bFPitUZc3NNDLslX7kNv0ogwObcu43n7zMQZgWqV4oBQ0JZIY+AoJzVRLtEkKYeI3ryX7AnXGdhyUsS11sjjA9oBdNRTYfwfooyer+Z5y1ZVOgHcpw6Of1PiuHyvhDwvi6ezXqqI/JsBUF5PFOk+Ov3YjUVzXEu75ZKZI6pvYgrvdYTwJu/utCwA3WkokzPUB2WksliqvGQAdVG5KBj2xUGYRpTuk8j7fxjsw7PxhEhFclZmZE4MtDIsWlnCaR+RZcer8awtzcl+gaetzCTSxSxYKsxlF4SnUY+adKlYcqvMsv4bdl20wvXa1O0G8q7rgJFpnYh1YvYeQDm67Upetp5CvaW8bOfPjWyVlep5/yLaBNBlix7f8c4lW8GnfPggAeVgWOi/j2SOShOAUniZUe2/DJp6M6NFP/4QkwIEsKm/NU/nYW+s7hrMC7MvK3sY4AVfZO+SD6ZrpwHKxzBrc5ph6zzverwt1FsXg913cM+LuX0AZj+Y7nVeHJV/1npLDQVXqFRSdq7h5X8FakkCWV7ulct9rk111XYs0L3n+fZrVGBi7X6f2ahA68R/d5yJ1kP4tXkSrqiHkBRVQU0ZNIQPgj1JfKVwkB0FVS2n0hr7niymgi05TjczZIOFT+JjPHYH8m65O3m7owVB99YfGPjLZuz1hsiUM1uaD9M0Z17g1FoHo3x/sa9ty/RdkPt/G3fW7NFwt+27yOBWL+E3KDAKHJgv1Do0WMS2PNBeGMAmQie6ne6CtGTLYlYNYe+U3YBdpjCaGRQk8OhAZ7XQYfUD0qsGs/Jz2u15nVmynhWcpVQLlk7gBgCvRr3OSe1BUyOoEkMLjL5QyUUn+odaHG+f3sbtjdpciIgEcEx1g47xviSKPSrizTZsmQ7W/
+ /AMEUvIA
+ MsfpN4rMp7DhcOLezR1eaCJn3a6Ep0fNee9H2MquDC03AZq0vsaykYgqdbmKfFw5iIt4JD5E6p01s7iplUzDNZ4TCrJcbM02BKMCJv3LU1e6fCripWRE0Ry+EZqB/g5Fe7+uujEKqA/8rPBeaM7QofJ3RZl01skNubDC+vsHsDgKS000K5iRjtMGoyw/peghEmLzozwfm7BFIa2jN8I3alZFDelks5GCRRyfWG+JQghrorgzUJVknuU++AzoNB+jRC30RRqjp3CFmZnYryxkmE3RGxAnmwUN5gyPG5sWE0SrAFdofjZGhTtTc9VggYZrckqn9LxMfsqGJ3Bswh7VcKCfmPujaHeG8ZXqLc231qCJDnU2x/5vG8/DkbpnYWmAxqQgSJF/s2eToMI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,33 +140,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Shivam!
+On Fri 27-02-26 11:41:08, Tal Zussman wrote:
+> Block device buffered reads and writes already pass through
+> filemap_read() and iomap_file_buffered_write() respectively, both of
+> which handle IOCB_DONTCACHE. Enable RWF_DONTCACHE for block device files
+> by setting FOP_DONTCACHE in def_blk_fops.
+> 
+> For CONFIG_BUFFER_HEAD paths, add block_write_begin_iocb() which threads
+> the kiocb through so that buffer_head-based I/O can use DONTCACHE
+> behavior. The existing block_write_begin() is preserved as a wrapper
+> that passes a NULL iocb.
+> 
+> This support is useful for databases that operate on raw block devices,
+> among other userspace applications.
+> 
+> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-> On 19/02/26 22:31, Danilo Krummrich wrote:
-> > (Cc: Alice)
-> > 
-> > On Thu Feb 19, 2026 at 5:57 PM CET, Uladzislau Rezki wrote:
-> >> I think we have 0 users of vrealloc(). It was added because of Rust folk
-> >> wanted this.
-> > 
-> > We just gained a user with the Rust binder driver.
-> Hi Uladzislau,
-> 
-> You mentioned concerns about there being no users and added complexity.
-> The Rust binder driver has a user of kvrealloc for long-lived resizable
-> arrays. I also have a patch series adding shrink_to support for these
-> allocations, which is now in char-misc-testing [1].
-> 
-> Given that there's now an active use case, I'd like to go ahead with
-> implementing the vrealloc shrink as described in the RFC- in-place tail
-> page freeing, skipping huge-page allocations. Happy to adjust the
-> approach based on your input.
-> 
-> [1]
-> https://lore.kernel.org/all/20260216-binder-shrink-vec-v3-v6-0-ece8e8593e53@zohomail.in/
-> 
-Go ahead. Send out a path then we will see what we have.
+Looks good. Feel free to add:
 
---
-Uladzislau Rezki
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  block/fops.c                |  5 +++--
+>  fs/buffer.c                 | 19 ++++++++++++++++---
+>  include/linux/buffer_head.h |  3 +++
+>  3 files changed, 22 insertions(+), 5 deletions(-)
+> 
+> diff --git a/block/fops.c b/block/fops.c
+> index 4d32785b31d9..d8165f6ba71c 100644
+> --- a/block/fops.c
+> +++ b/block/fops.c
+> @@ -505,7 +505,8 @@ static int blkdev_write_begin(const struct kiocb *iocb,
+>  			      unsigned len, struct folio **foliop,
+>  			      void **fsdata)
+>  {
+> -	return block_write_begin(mapping, pos, len, foliop, blkdev_get_block);
+> +	return block_write_begin_iocb(iocb, mapping, pos, len, foliop,
+> +				     blkdev_get_block);
+>  }
+>  
+>  static int blkdev_write_end(const struct kiocb *iocb,
+> @@ -967,7 +968,7 @@ const struct file_operations def_blk_fops = {
+>  	.splice_write	= iter_file_splice_write,
+>  	.fallocate	= blkdev_fallocate,
+>  	.uring_cmd	= blkdev_uring_cmd,
+> -	.fop_flags	= FOP_BUFFER_RASYNC,
+> +	.fop_flags	= FOP_BUFFER_RASYNC | FOP_DONTCACHE,
+>  };
+>  
+>  static __init int blkdev_init(void)
+> diff --git a/fs/buffer.c b/fs/buffer.c
+> index 838c0c571022..18f1d128bb19 100644
+> --- a/fs/buffer.c
+> +++ b/fs/buffer.c
+> @@ -2241,14 +2241,19 @@ EXPORT_SYMBOL(block_commit_write);
+>   *
+>   * The filesystem needs to handle block truncation upon failure.
+>   */
+> -int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+> +int block_write_begin_iocb(const struct kiocb *iocb,
+> +		struct address_space *mapping, loff_t pos, unsigned len,
+>  		struct folio **foliop, get_block_t *get_block)
+>  {
+>  	pgoff_t index = pos >> PAGE_SHIFT;
+> +	fgf_t fgp_flags = FGP_WRITEBEGIN;
+>  	struct folio *folio;
+>  	int status;
+>  
+> -	folio = __filemap_get_folio(mapping, index, FGP_WRITEBEGIN,
+> +	if (iocb && iocb->ki_flags & IOCB_DONTCACHE)
+> +		fgp_flags |= FGP_DONTCACHE;
+> +
+> +	folio = __filemap_get_folio(mapping, index, fgp_flags,
+>  			mapping_gfp_mask(mapping));
+>  	if (IS_ERR(folio))
+>  		return PTR_ERR(folio);
+> @@ -2263,6 +2268,13 @@ int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+>  	*foliop = folio;
+>  	return status;
+>  }
+> +
+> +int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+> +		struct folio **foliop, get_block_t *get_block)
+> +{
+> +	return block_write_begin_iocb(NULL, mapping, pos, len, foliop,
+> +				      get_block);
+> +}
+>  EXPORT_SYMBOL(block_write_begin);
+>  
+>  int block_write_end(loff_t pos, unsigned len, unsigned copied,
+> @@ -2591,7 +2603,8 @@ int cont_write_begin(const struct kiocb *iocb, struct address_space *mapping,
+>  		(*bytes)++;
+>  	}
+>  
+> -	return block_write_begin(mapping, pos, len, foliop, get_block);
+> +	return block_write_begin_iocb(iocb, mapping, pos, len, foliop,
+> +				     get_block);
+>  }
+>  EXPORT_SYMBOL(cont_write_begin);
+>  
+> diff --git a/include/linux/buffer_head.h b/include/linux/buffer_head.h
+> index b16b88bfbc3e..ddf88ce290f2 100644
+> --- a/include/linux/buffer_head.h
+> +++ b/include/linux/buffer_head.h
+> @@ -260,6 +260,9 @@ int block_read_full_folio(struct folio *, get_block_t *);
+>  bool block_is_partially_uptodate(struct folio *, size_t from, size_t count);
+>  int block_write_begin(struct address_space *mapping, loff_t pos, unsigned len,
+>  		struct folio **foliop, get_block_t *get_block);
+> +int block_write_begin_iocb(const struct kiocb *iocb,
+> +		struct address_space *mapping, loff_t pos, unsigned len,
+> +		struct folio **foliop, get_block_t *get_block);
+>  int __block_write_begin(struct folio *folio, loff_t pos, unsigned len,
+>  		get_block_t *get_block);
+>  int block_write_end(loff_t pos, unsigned len, unsigned copied, struct folio *);
+> 
+> -- 
+> 2.39.5
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
