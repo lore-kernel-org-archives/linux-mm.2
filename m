@@ -4,115 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39DB2EB3624
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91591EB362C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:10:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DF046B009B; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
+	id D034A6B0005; Mon,  2 Mar 2026 15:10:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78CBD6B009D; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
+	id CB1406B0089; Mon,  2 Mar 2026 15:10:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 664286B009E; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
+	id BAFD66B008A; Mon,  2 Mar 2026 15:10:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 539B76B009B
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:58:46 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 105F6C1673
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:58:46 +0000 (UTC)
-X-FDA: 84502185852.14.9B53397
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 267DE180005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:58:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YJicS1ja;
-	spf=pass (imf24.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A9EA26B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:10:33 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5CE63B81A6
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:10:33 +0000 (UTC)
+X-FDA: 84502215546.28.8F4AE27
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 260182000C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:10:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FXTMu1kA;
+	spf=pass (imf03.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772481524;
+	s=arc-20220608; t=1772482231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
-	b=iXaog9p/ucKB3tOZnKgCcwceYwxlr6Y1tBR93J2Q8EVZDzSjk2nZriUCilJt4tsouy8orp
-	UGK9S/5FK+BNuJFoL1SV5+WfbQSv9DLh+ema2uJQKnblYYA6Ie8Dnl6XoSHaXaUZXp4Osp
-	eeOsR4rKSibH8G+kNfn/mSFkNA3+S5U=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YJicS1ja;
-	spf=pass (imf24.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772481524; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=YXHDmRAJblDSr/w50pZwQvB4W3B++p0nNeeyprSaq/8=;
+	b=md2NxAI7TYNISsLc/0mzlf/kFFR1+5PFLv26dUePDLO+P5pSICU1oSy6vCqFtQ40KO4MIP
+	pNTpoCV8HTY+p/DZq1wwuYoxPdjM64VtmLga9F2rQzpTycjr57ZFNOLWHss/B6p2NPfLPK
+	e+zNHFl083SAzqIJuxo2xg3RucV4iy0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772482231; a=rsa-sha256;
 	cv=none;
-	b=uEbzy+UeleOo3PX8z4/zDI3zqM7VRUND3Qt2kgjp5g0c1c1y0a2xjzWsSutWRvY4fru7kj
-	8shCP/+LDWCBEfQFe9VboXYy8QDlkvWHkdyHJ9eynlkvBYO/b2FlKN1bXKgzT3tx9UeGAs
-	ib9tAM9LNvsV/YRqWN2FDF/9D45cJlw=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65f73225f45so7752571a12.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:58:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772481522; x=1773086322; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
-        b=YJicS1jaBHoyrizwcQSJ3Ezky5jQUyYxUQoR6/mXAJxP6hFCURVYnTRqnCrpuLYGHr
-         68vxuZk0FLkOmUpN1TozCEzj8L4GHfCDrCh0UJz6V662DjI7upMTJXCI4QCn+ol5wo0W
-         JjHkiY0RTa1Phbn5xd6+Iz8oTZ3VfCWcnxUOATXIc4ab1LjypyZh+ZbT+PTzTL8LMEee
-         YR8pJHZhUxb22K3Xy4JyUJqkXswo3vMq9W3c9kwXAgh/ZHOlZlxgY7FVAnYtwh0WuR5j
-         3keII8z3Ydk89KMqtF37OU/x9zefborLPbDfRCC2Z+ywWubEpoZjP0nzUH0nKFNkqzZe
-         Iz/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772481522; x=1773086322;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gEl50ABQhTqEQntCqZp4kuzeiyPggySh3JaJn5xG/vM=;
-        b=a+FXyTC62R95ZK/xE9+epZLj6ohWyb024jz8d2FnCUqKf+Pxz6dWSIUSW5Ag1wI9ZP
-         vrb8W6hc5UBIJvIaB5lUDVEFfNCM422HGH9vTgxargeoHossjiwMeE30TdIwykYJ2g9O
-         tmdKs+oClYWFPzfVkR08UufdzvEFRr9A+0lMCYNZPbAe5ZonH0kNgTTQg6G0WN2O7fJH
-         5tj0QmlUJ1YDDk9ogEoo132Omf+ZtmZwVvJUOmF6p9BmGgtMoejjMxi29iAvUMbiwZ82
-         zXZ5b4Ubdm57M+LTDyoqQbsyetY8a6oxrSwrG/MaQZMxh1RRXFX9TJ8tqrCi/UAjzHbw
-         SwOg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3EdphYA7YPLb3Iyo7s1nD6V4lk90gpjsbFptHlRSVwNXglihKglxBIJ3zkT/S/qX9F77ZussSCg==@kvack.org
-X-Gm-Message-State: AOJu0YwaNeQi4HrDRY+yyLawO/DivSeX6qo5T+e6HfqcX2chiA9kVhap
-	EWovzefdRfZkPGvnbP5VaXwzeGCwAMHLbMhWGpEbNK8FR6gbzPk91m15
-X-Gm-Gg: ATEYQzzwzGEAUzZkw5dIDVKyrBJ/rgqvUfUCnn4j1dkdNI8mdpQsHnVs1+bUs0/PwQ8
-	thJtcSPkZvA5u+K/vKXGZgwQS8tjWqSzzAF0UNH2By94IhQbvHkUJJqaoyr5sM2NdOtRKRliHgD
-	LfZYqcGrRVOiWZ1++xT3dVvd45jW3JTxp95XTbRJjFXrSV2K1DFx2w3uOoQNMMnzv8dnqJOSkF6
-	Wq4qf7jM8uQFF5MYbODOKg636uynymJNAssfyQnGLDeTStmSDchRJTAZfxScDuQgvkzc0Uj2/dW
-	x0ePmUDV7KsN+lelTlMhVh3UJdXKjBmSadZ4B6ULYbHhOB1eN4XzLwSct98KZ4PBWKNephnR1hP
-	GVpZ9sJTM8ZP7syeo7ruMZLqdm3ngoioaVU/nCn4LBR7H6er5HIM/Fz9CVp6bVTDEHDlwRpiiO9
-	lXv5fzxliTpCOG+QXNQAyK3zml
-X-Received: by 2002:a17:907:3e9c:b0:b87:39d:2b9b with SMTP id a640c23a62f3a-b9376510a71mr974999566b.28.1772481522299;
-        Mon, 02 Mar 2026 11:58:42 -0800 (PST)
-Received: from ArchLinux ([89.105.203.98])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac75fd9sm501586166b.28.2026.03.02.11.58.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 11:58:42 -0800 (PST)
-From: Alexey Suchkov <aleks.koyf@gmail.com>
-X-Google-Original-From: Alexey Suchkov <dywoq.contact@gmail.com>
-To: willy@infradead.org
-Cc: akpm@linux-foundation.org,
-	dywoq.contact@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] [PATCH v2] mm: initialize 'seq' in gup_fast to remove -Wmaybe-uninitialized warning
-Date: Mon,  2 Mar 2026 22:57:49 +0300
-Message-ID: <20260302195749.39247-1-dywoq.contact@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aaXog_u1MOGJp3hP@casper.infradead.org>
-References: <aaXog_u1MOGJp3hP@casper.infradead.org>
+	b=262dpJWYcc+yl4sPdfqmb1K2YuRbZN0d5fqYbwNtQD3VGHofJh99d/D5v0KginM17Oo3dH
+	wbvsM8crCWj3GTrLu5lbbxkpgUDnJUht1pFYC+/4MJIEiAoeSYNlAitPDFB5Rzif509KEN
+	ZRhTJVKJOj81NCwIl0l3mh5KLKD+SQw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FXTMu1kA;
+	spf=pass (imf03.hostedemail.com: domain of jane.chu@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=jane.chu@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 622IHmIF1634555;
+	Mon, 2 Mar 2026 20:10:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=YXHDmRAJblDSr/w50pZwQvB4W3B++
+	p0nNeeyprSaq/8=; b=FXTMu1kAfZ4RicZOUMGvxNl8da7oOgR8DbsDjhUPkNbvv
+	yvYGASonEYFZbK4yJ0mY4cCcNiZeKFxncdobuT5V6jhuSFM8VbR+6du0UPFNawSP
+	aaHLc5ZCiWoqwZCsgNTUzKgaWR8ZXGZQofPWHn5gE/HAM+zZ5idSUiVcdz1R15g2
+	gIW0/pYCdKzGyWkSdmB+blF22zVodwQVP4Nb7TvtShkWb8sySy78nnWqFiFCSKuR
+	A7xUKa7afzhSeWyG/FyKP5iQEtWuoVYQHDIALv/B9necioBoHjxvsm4ZHMi+z5HL
+	jn2Hnsssj1JOsLG+I5WSP4La5A12EvyLMgtT6NqoA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cnfpj062d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Mar 2026 20:10:23 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 622I983t029717;
+	Mon, 2 Mar 2026 20:10:23 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ckpt9e0en-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Mar 2026 20:10:23 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 622KAM7F009395;
+	Mon, 2 Mar 2026 20:10:22 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ckpt9e0db-1;
+	Mon, 02 Mar 2026 20:10:22 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: akpm@linux-foundation.org
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+        lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+        rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+        skhan@linuxfoundation.org, corbet@lwn.net, hillf.zj@alibaba-inc.com,
+        linux-mm@kvack.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] Documentation: fix a hugetlbfs reservation statement
+Date: Mon,  2 Mar 2026 13:10:15 -0700
+Message-ID: <20260302201015.1824798-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 267DE180005
-X-Stat-Signature: 3zj1ui9j4ssg7ricp7ps57cywdh1yd34
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_04,2026-03-02_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 mlxscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2602130000 definitions=main-2603020154
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAyMDE1NSBTYWx0ZWRfX/aRjviUkUNsS
+ ubwvcAFlejuDW0gxuCKMqKHXv6qHw60BP3pyimBglmlcgu8qnPolrB4WKtuoiEunG1RPBJ+lBWn
+ kbCunwB1Xq4niYZ+fnqNRw+aoEk2QYduNuoMuVvplWJWapvD4ekDdGAF5vxkx3HGWKcWfAK6+2u
+ AC7K0cZ6Bjfp7uRMtNan49sNCz+A13qXnO463vZGFs5tPH85GnN07kXm2QxJLOPt0vztB1MvTIj
+ TABxTkltFz+bkKYa0MgLV3y+OV9CGkzMA6FYYuNieNkCO525yF2pB1xCCdyo4Jb0BZYWEUZaDU9
+ Bzkz1RQQ5I7jida80mIg+oOylmCtH88JIjIWT4NLy0LV6uXnjmmbIqxX7aPObrviG2Lef/afxKa
+ cEUf+qzNLr/a8JvKaVuPuSxJ0O2QL+JMrQ3n5w/zgAEEG/VU6koBAfjXB8+4jVwu66mxUvaL34P
+ XTfhiSNxtVfThD68tHQ==
+X-Proofpoint-GUID: MxYdjxIQBqfr7kRa_UJU7v7ptt2NEbdO
+X-Proofpoint-ORIG-GUID: MxYdjxIQBqfr7kRa_UJU7v7ptt2NEbdO
+X-Authority-Analysis: v=2.4 cv=JPM2csKb c=1 sm=1 tr=0 ts=69a5eeb0 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=7Gl3-_t3PgB9XO-mQDs3:22 a=yPCof4ZbAAAA:8 a=A5wE46Q82j-DBPHovb4A:9
+ a=FWFfLhjteEdX4JCrYqk8:22
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 260182000C
+X-Stat-Signature: xwf3nwf8fzg18mc3dkj5emau3mogo6qs
 X-Rspam-User: 
-X-HE-Tag: 1772481523-222201
-X-HE-Meta: U2FsdGVkX18l+4IRG4FkI7PCnG99Xlba6bHAxhpEChkP47rS8JXCXi96eAK4B6jYzdc39pEAaGu9FBviy7vYn+kkXUsVwtyHglgP7MmjCufn/nN5D8Xd3wCC7d5UPf5/7UBoGwLtUBTWNOelHNA4sg1hmMY4cwImw3amZHhQa3sU/++tx93yRXMISkrBVkdt7qsDRSkZhQFgXHb8Js+RehBuId5lSdEhjHpUdcKmDB5fDxN38n7Y0s2sM3Jh4hT1pmJFRgXKfhE6jZzQyHjYKTZQEOwdARC3OA3vuaRsfJ8LLWmEqlfDvcH/DJl8mq5ROXdP7jbTwP3qB15sdg+TQ928Gqbi6lUrjfLBHEiFMojuMiLmPLLeq/9RcqMD1iu3HM4BT/80bk+jXgmwNwjZD+1roEuRGbLeWnOGYv6RUkyywQEU2Z0boqE05vxSMiuwHAmpWZvGHCdJ9+6M8e7lSNNf+pDwUHOj49uzO/qLKvZoheieygMEVGKu1lHJurW8UFMmTTFbAPf/WHYH54WcVNo+s+G/13s/FrzSeX40em+bRqLFiqN4TJnh0XAKWWtbeNm8eu1OZ5i1651Ve3YjF/Mx81Rpf6ufvhNkflSrZj86r4solJSy9sAfPsIZgMzhKoJ9BHRGJSGuo1wqL+/dF2tcbtOJ+VxImH1KK3dKfVHWr4KCFuB2mt/PzaeeS27votvh2J/UkDNl6njtQSzSHEP/cT1qmh1yg2C9N1tY7HmCOmVtS8JFHhsw5nZ40zYhlO+2CDQrpVYWHqcI49uHKeWmFo/CufeXJLDcHjdJeq/XQ0XnTG8sEMXFbBbRu1bChZ1wYmJ4v59rO9qJ8joOq/MaKPB955mi14lTokoPHPu0Im+f5fUZ6v2Ufh79XpoTmxoRcpyBdH2annrtrVNm85LEnck/k5WFDN6cIE/KTsPkyiF7Vs1vfjfAI9JjKhyDLQRYrhGP+LoqZ2Tflnm
- ucS/10LN
- lPcyySkC9i1ujEYWfduEukcw7qw0hFfDa/AwwFqGCbtMgw6/051fv/ZcbrODUCTjw/t48FdVu34/6aU3vnFSjjRy9DKMCTUc19AWPyx9NL3J17HWVZm/5Sg71phQP/aPtkF2IYcmDBA734lsdPdgfozyt5dX1g7Pi1QzP8iTCp6JgyQfaMOo8Nqjr4YuP5FEn+6z6bTJhF2EjLyn+QAlpiJ1j82N3OStNyjeFBcU1BmqwXr8gacAnONfyi3iyhinhGzYckTi0/DldU0wdZzLAkv5TBnOHas9zHrbOhGc+gVnWDParT0iBsIlVvEyDThvmmG8mydwcGigHZKODCLCko2FaOfQUhV6pGW9fdlLH39Lz8IUhfLlCUucInt4vysAj9jFcessvSwFqXsWBrACNxY3n3kPw5uN6KAnME3N5K2a1If1hBmDggH5skZLWdPW94iXQ14rOXhkii3oAxmCrsKtVyyWhR92R/+ALjNzcNcMIrI41vHEFbO8XEIlb4RbKf6C7LdKC/hwsVVOO8eo/JGXd1SyfO7ZpX7DJCsvMSJZ7uqvO1DT4Nu4ybl21afNFA3LF
+X-HE-Tag: 1772482230-752822
+X-HE-Meta: U2FsdGVkX19qAWSGPeJfXpabeF9uhl6mTTtpyzGVC9wHtItZOK/cdD6Pn04Hpkgl+7QvZhpozwn+hCBGj/zJItbf3pqhCaZJDzNXgX91hQH7mK9SuMuDpNFHTxG7lP2b/OlWp32Sw/XPw94fVwcXTGK2UGODUbhfUzyyrrrh+7oQ29+Jo0WrZs28nlmuHya7oF+qZ/oJw/qFZeErVUUnDM7QfGnUQwOj8P1VDey6ANqF0v31IsVZ5mvBsg3xmfzDaYaZ6w2fGyPoPglFugrrg5cs3hkgZOffWVqunX2Xrqo6disQ328IAv42ct8wWeljgIMvOOl2tj2FGiFnEICyMKWWPm3UkLoBdCb4ud4/9ixbQMSzDCtUcVJPLo4fQ7YXT1NGZRXeDvyszahJoQNwUNsZ9j3ERqfehh9dYdLWond+pbmhS6ZaslMlS4R1Bu/L9FGhK0VYG09vjqBT1DuzMEST6B2miz79yL6K3EQpx/G980o9R+J9V2yBaZbEgwCYPcX4AbMgsza8aolkmk9MFewgfHH46uQS0nGoWJN5Jx1SUlYLsHgLxrGuwNXfrlLxIDkW2i89ytwk+gZhfZte9rhY/Mfd7UmP7iFODCVruS3WW5UFLmh3cq0J2xQMV9S1m7JayILoLAAC64/VuXoLz4w+kp5hgSAqqHIXslOP/3+hHWPZnJ4Ae/sqjeVsnWY1vdEaxJNbm8rFhDYPzqJ+pNRr84M2ZMqFGrXj/4pmQDF2Zm4YzAg+qtjMtzGeJciTIYxVZegoq3URRQ1ZJBCeUYCNHCm0RWjip98hatufrggtqPhK53+wpyG892H0Ajb3JytNr2uvmrMvU2IXWlDO0veSGMa/zFNP7OFhV/K7+ixJZeU1Dqwr61hA3s3P4CmY5BptxvHkMQN64CQq4znZRR14ppwJZiJdQFf75o/PGLKx+a7rHCHfg15QcT5lNbA/eL9Sq4GhKnuqxj5s4/M
+ /4YHqg6Q
+ fsdB0OGeM4aD4blsyuLPWGY7/Le5ZnisYnpvxsZhYamoj+TpgjbC7hw39QUrs+jEDTvNIZ0yQKpw+lymXFEWgz8oQLrIWKuTqcre4oSzF0HMaleLqOvqM2JqvHqL00/+t69X05lisV6WkZyk4Q3imiVxLYVV+47PIJ2J8nUKO3JhraitTamx9IXikt+BRuNsSjsLWRFQdAMXjxfZfQmds8s1c8wxuQw3gEIPIi1feHk/cjvtXiYu6YcAb6iCQuPdwBuEmRhQO37tTu4QFQmAJSssiDD/oIHJmxJzITiJh0hCfUbMExPfID2PTBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,6 +128,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> What compiler?
-My compiler is GCC 15.2.1
+Documentation/mm/hugetlbfs_reserv.rst has
+	if (resv_needed <= (resv_huge_pages - free_huge_pages))
+		resv_huge_pages += resv_needed;
+which describes this code in gather_surplus_pages()
+	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
+	if (needed <= 0) {
+		h->resv_huge_pages += delta;
+		return 0;
+	}
+which means if there are enough free hugepages to account for the new
+reservation, simply update the global reservation count without
+further action.
+
+But the description is backwards, it should be
+	if (resv_needed <= (free_huge_pages - resv_huge_pages))
+instead.
+
+Fixes: 70bc0dc578b3f ("Documentation: vm, add hugetlbfs reservation overview")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+---
+ Documentation/mm/hugetlbfs_reserv.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/mm/hugetlbfs_reserv.rst b/Documentation/mm/hugetlbfs_reserv.rst
+index 4914fbf07966..a49115db18c7 100644
+--- a/Documentation/mm/hugetlbfs_reserv.rst
++++ b/Documentation/mm/hugetlbfs_reserv.rst
+@@ -155,7 +155,7 @@ are enough free huge pages to accommodate the reservation.  If there are,
+ the global reservation count resv_huge_pages is adjusted something like the
+ following::
+ 
+-	if (resv_needed <= (resv_huge_pages - free_huge_pages))
++	if (resv_needed <= (free_huge_pages - resv_huge_pages)
+ 		resv_huge_pages += resv_needed;
+ 
+ Note that the global lock hugetlb_lock is held when checking and adjusting
+-- 
+2.43.5
+
 
