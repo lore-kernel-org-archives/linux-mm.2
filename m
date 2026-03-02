@@ -4,117 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65CCDEB362C
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:34:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0811EB362C
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A62446B0005; Mon,  2 Mar 2026 14:34:34 -0500 (EST)
+	id 482D06B0005; Mon,  2 Mar 2026 14:36:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A19B36B0088; Mon,  2 Mar 2026 14:34:34 -0500 (EST)
+	id 43A136B0088; Mon,  2 Mar 2026 14:36:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2196B0089; Mon,  2 Mar 2026 14:34:34 -0500 (EST)
+	id 367906B0089; Mon,  2 Mar 2026 14:36:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E29B6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:34:34 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27A9D8B170
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:34:34 +0000 (UTC)
-X-FDA: 84502124868.30.78D00B0
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2CA1A120004
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:34:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W8GEjMfv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 20D126B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:36:07 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E28791C18D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:36:06 +0000 (UTC)
+X-FDA: 84502128732.18.0872203
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1ED8340007
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:36:04 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rpTFX/R1";
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772480072;
+	s=arc-20220608; t=1772480165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PoMWMeFpV+41+73EqmHf5v/mpaZlLM4LbfRc6LGuF48=;
-	b=hc2OzOXJVLGB+9TG60c99A3RA7bpptPs3ujBLDvmIYNydnnIhXBiyq9qQrZ1G4nKGSClAh
-	/Y8n5XX9iOesoALomH8B9Ji7BosNywEy9g/sNHzr7WSlGYjDFT9iJMrIUfVHd+HKO0Pkdh
-	xkewg7Dtey9/stdWpzletj3HzOTHlso=
+	bh=ll1zVLFoCdzxILtFeORl9PKfpfKiREGHp3dCHsEJNDM=;
+	b=Gu8C/5uNhRWg1OB8IsVSWCXu1padM03Ds80sTFLSvMsscFYy0mFwM+9/nljiaw4TZQGHD0
+	xeQAxtErIAFJPqJSMgN2LL3iEvHjR6Tj3GXdOyvmyuJHIx7JNdVT2JosSZp+ujf+C+t79j
+	dDsnQQm6HTquvsMphb9MAl23uidUi1c=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W8GEjMfv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of aleks.koyf@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=aleks.koyf@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772480072; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rpTFX/R1";
+	spf=pass (imf12.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772480165; a=rsa-sha256;
 	cv=none;
-	b=5SoZN5FQnQouA1XUETPkOl9OJCTLSAI6WMKFUVJbloYUYVQjrP7xNh54jQ/ceCx+fMurvi
-	LORJUhlfC2zbdy2zNqiH75RTP1Uu+5h5zb/w8VHT3IlqQC4mtQXC4LBMA0Bk1RA5v3bTb/
-	7CzeuG58wo65vIToEIhJMcqgeiVXqdQ=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-65f812e0c83so9148960a12.2
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:34:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772480070; x=1773084870; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PoMWMeFpV+41+73EqmHf5v/mpaZlLM4LbfRc6LGuF48=;
-        b=W8GEjMfvDqN8H75nQI8Sa7OkH4rjk4gXWPpto7OnapeO7hcwcmi6D2+kMJGh8kh4GI
-         Jwytx3XNMJVtrKySAn5HeKOQKeWrqz1Jes3qqv5IsY2g+8DdNIcXK1cvWQm561AWY+l2
-         yFf6K7qRVYRuL3iWqyJODK4iJrswnYFp6QMsUNW2a/FtFwG9Zh55CXuN8xyqgLY6uKig
-         U3EGeUygYDhQk5n2m1GX7NF2xGg47xIKB9/jZBa2fEsKPOWPLwsvNCtQBCo9MHnbTeN/
-         ZibzNX87RfsvErF37bqaSAOlT4tTWoWYI3jCZEx9uUNGQ+zUgscOnjauQNe9w6RSpLTZ
-         vuTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772480070; x=1773084870;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PoMWMeFpV+41+73EqmHf5v/mpaZlLM4LbfRc6LGuF48=;
-        b=HHFwYE+fhCX/OKh85jOtkdJNUvt4Ix3dn5vs+U+cxD99VOmpTrhaMMcuziq/RJ23pn
-         v3CixdDusf/krjBIIi6IwJqKWqtEXDpeIQMnTlsef4fZt5ng9+t/fPinnsjaEsRVqJ1y
-         E2Ko+m2K3BBpaxkudXYRpOafkuiCl1c5iGBF875kWIErDpN2gEXHetBX74gdhL5kZhWy
-         SadYo1SDHwoHY6eODq69homkjZ0ycm4m5sep/e0fRbHusJSxUJw7QvSpHnWSY2YAJXVf
-         F5l8EyWLSPh0Ev/Oj9sXE0kD5M1rHX9y8XxjqifYtCTWzaJcwpjd7bqkP8sufcY7kMqY
-         iZZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbHEYbSGyfcSLDmE60f0ziTmZvj6RuoBbTp9baojbl3UR0IPZNBwTQ6XxW2iru/tWnAOmtAACupA==@kvack.org
-X-Gm-Message-State: AOJu0Yy/PQTrZW6IfYaHIlZwPXJJcKsvWX4CfebQDybq9qbaVQpDUnxb
-	DbiGx+0A9VqphwH76YGE3gRoBilFejRebAC7kt5PXlsw7feGUSn7durf
-X-Gm-Gg: ATEYQzzd0kOe9oH5yN5dQUlR8e41nQY8IInpwmwT0GAeZ4hCMbKFODhXyW6qKc365nw
-	304K2Jspr7gYJloM1fMAAwfoWv0aWtsTS7Vk9nf7UwXWHLD8hQIpQUuCALasUVddtxqJhlABMR5
-	6EupwqQ+Y7/m/G/z2zXm3dvN5cRZPAHpFTWtkFhttSxQhHp3dV2+cBR6Xpw9/BUrEztopw+TNH/
-	7DTDCETdCbI3eYSQmiBTDTkCD6qKBfWNYycriF8cF8LnS5j1VZEpSs3tTcGcWiObAvIZ4r00PNC
-	34t1Q9QERhp/wyHF4qhKcRS/qBRBoVrcba3z7rdo5KN+A/VGrgrg5PLVwHQS9+a/q7ABLG4CxN8
-	SUEIIyOUV2PzakzWBN6yB4SotiRgwu84SjWHhQkiXj+FAWWDMKpMOk2nxWdZAIYEHNKIfc6J//B
-	5fxiSjlwWO8/n+FDeH3L12vYlt
-X-Received: by 2002:a17:906:c145:b0:b8f:6699:a036 with SMTP id a640c23a62f3a-b93763a28dfmr864928866b.19.1772480070292;
-        Mon, 02 Mar 2026 11:34:30 -0800 (PST)
-Received: from ArchLinux ([89.105.203.98])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac51843sm520925466b.16.2026.03.02.11.34.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 11:34:30 -0800 (PST)
-From: Alexey Suchkov <aleks.koyf@gmail.com>
-X-Google-Original-From: Alexey Suchkov <dywoq.contact@gmail.com>
-To: aleks.koyf@gmail.com
-Cc: akpm@linux-foundation.org,
-	dywoq.contact@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] [PATCH v2] mm: initialize 'seq' in gup_fast to remove -Wmaybe-uninitialized warning
-Date: Mon,  2 Mar 2026 22:34:05 +0300
-Message-ID: <20260302193405.37961-1-dywoq.contact@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260302191237.34375-1-dywoq.contact@gmail.com>
-References: <20260302191237.34375-1-dywoq.contact@gmail.com>
+	b=WJcFF3DiTxGHqGacdhLM2+XrxX8/ewfaEkhNuwqHRak8JM+abJQaAKWESUGsCxm5E42zqX
+	gWapKOd6CL1GzMbYf7CaO/dAsQAjtpEK9AxRXDNm3X2d9xJUgNsj91y21QrBr7ed/y9ETA
+	ffGaRTlDqEQYuidrY4v7nZwoFJf2OKw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 87718600AE
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDA0C2BCB1
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:36:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772480164;
+	bh=/TPMrf0mYCs4hSJ7iK2Xaq+/0Ax5mSYXNGvZttrksbY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rpTFX/R1FC6uYBKWV4SKW//6p0UW+Hy0F0X/0nFVC4P/sOfpzUlWJBmcK8Zwaps1V
+	 Gst1Trl+nNrv+0UouI+GXSZ8qsRFDdtFi1BUAbXk/1Hy422bs4U8GiVkCbGlSCFm0E
+	 RBNvNe6Va3QBD6U5OyIg3201xbCYOFVMSie1u0TagBXs5rxmZhtGZnRHSEF9Fa4/sH
+	 PiSRRckFtU+JItD3HlWOJnjAbrQGm6Hx1V4OspA8KqeQvCA4q58dguaqk4rn5jhjjf
+	 cu64yEtMVwKwh9W6kCf8kSVuhy6zpIq7kjdZ74ZfLDxwMbSnLyCaS+YcuhDFxPbV9F
+	 5buI0EZFmv3XQ==
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-64ad79df972so4605182d50.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:36:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXxlA+iahDNU7vAgrD5YC11AAjnVTKngARqcWG4IDoMsvFHEASD9IcrjbWw+xaUGOhcUJfBY3+ufg==@kvack.org
+X-Gm-Message-State: AOJu0YwTTiOhtDyVr650epL0D7gIv6wEjDXBr+ZAP98825sYhJhgpFm4
+	BQVP4WbCU0gQvIHIORHK9cFI26plNGNQcDrAi+Xg0WnQYwSzWDDSLxUkq2dVLbcJo+e3NwLB0SY
+	vciPDfLxcksy31wlXhK/eEcqgkZsaTegCAoMAxGorkA==
+X-Received: by 2002:a05:690e:15cf:b0:64c:99d7:8d14 with SMTP id
+ 956f58d0204a3-64cc204a1f1mr9775613d50.13.1772480163537; Mon, 02 Mar 2026
+ 11:36:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2CA1A120004
-X-Stat-Signature: u6q3kfesox551ynxkaaeuzc37f9fhoky
+References: <20260302104016.163542-1-bhe@redhat.com> <20260302104016.163542-3-bhe@redhat.com>
+ <aaWaM57jui+iuEj1@yjaykim-PowerEdge-T330>
+In-Reply-To: <aaWaM57jui+iuEj1@yjaykim-PowerEdge-T330>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 2 Mar 2026 11:35:52 -0800
+X-Gmail-Original-Message-ID: <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
+X-Gm-Features: AaiRm50oJRMmXbWRCfP-wyxdo0gZoE0mCqXlHleXG-PuVhejH4RZE-s8SUbGAlY
+Message-ID: <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mm/swap: use swap_ops to register swap device's methods
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: Baoquan He <bhe@redhat.com>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baohua@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5fqy3hrfffyw8xgrsmcnigyacmn3puqm
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772480071-265595
-X-HE-Meta: U2FsdGVkX19aW9XgymPGydhvrEHrrwKzX2q7J8W3TWVGaAIW8N4ftCLZUW3hx+6K3pdv1goiVDfAHNvxUg5p0asrtxdmW5O1WzqyiRtOJ/33tq8NB0S9O59jF+M1ICCs37ADKVb17EHsSCTK7cLL8hUa07q1alc6DZLu7l2yMo5NGu59k3mLVmJ9kjEC3WOdfs9qxUE0Xg/Ktr6htgXSA57vE/j3Lqkfi/tjYn2hDMzQv7xh0AVyZpbeQj/Sedu/N2ymKgd+uo6ipYEn1kGnKfwFPCGogovrNv46Ufh+VDPkjvnXJYg/ELIX/B3Xzjslm0h0rnySdBfitYVlnsS1teD8Ghv6e/5nIsiYOiDPy3nz1CU7Q3x3baKNjEL86BmfHCsXN0IAgaUtoVsoQbFLGfI9UBqZFa6D7WYM9n1JgwuhOoGRXqyzplFhY7P8YhVwEjD/O4c1B7K1/i1iik10yslOCZbWk/r/T4hCvaoQ9O9igubrRpTMPKtOpXn1cpELyLZsiiWCrblp/UCfiE0PxnDsSza2gXi5RlFYV7+TB3Sfyx4epQX80IOgt4HB9U+JlqkCr/kV1j2VS3pxomYAU3FVpvIRl+ZqGPpkseTJNpkMnjq2lpyGLITOyFXt0SYzAb2qEZmnHXAcTChs/czsJc1JdJeyzpU22YYMwQKG1LS4WBeW2uS254ik7n/5+4ng76xLilObM0Xh7JbLZCII6/mCXQxFKFoH/gxJORnsSC+FFOMugiINUY43vNS06zuf8avTmk3Dpw/RGx3CdWfa2SABXfNSycPmwhmN43BBTmEROctSKv06b6tQZlYcHrGnv5L2lJfhhz09H8Lt0n+I7Nbfm4mDQfXQMRNYmLZKcrHgSTR9z2DsAwc+em1PckIKv8Gb6VjqItf23+rLZu/XdZ87rpbQG4H99eyNR3UzA1GT7g10IinteSMNYgR6uzdUeIAFl7LjCtCOZ1lCyYq
- V8KwpEGv
- TNf6nYFBSCn6Yo2Q9XOeNkHmGIFWQwznDaTWAOblwDqMP+pB5s0cf+KZfrv/bJb6ArDDETBHUAlC1ZY4ktlRxyZe6gFMgUs/0WG3q7zmF7/2j4Yd65SpqwPSBkgHGvW/oLzbysHDQQaE+7D1479ChNwlHt5wm9H7fjOwr0yqdXdDiUKDnNGaabSfi8f/68Kr3Or6kouzly5o1yoMtR3obuKAhIrrPXhf4DqkEGRqejZpav9OhruI79KLGnCDaokrkhfPRMP04tYme1yfaCyT2A4OFloA1Ag16kuQ0fYHq4o1uE8IVSQQard4znFuRaBGTr5VAEU0h0kUrEdHrD2Iw/e7IM5khuJqHrmYYpDc0GPBUe5w6lJnX/QFXQz3tpM4kUcSDI8aHey/yHKvIx6+vl7Am7IVEA3fihK/89Nsl1Riw0qxkcqxmtHtm4KZBDJLzgc2xD+dWuYzqMS1Euw8T9Nezervxaf7SLqvuCyrxjiVKl0npxA4NUI4sKD0U2GIgRSePDkj/reUwONSSYtfjmlYdtRv0mkhnYBFjdKdSPd54M2X2pSGeK3hzijWlMHjO7EQV/uFh2ihi4vV898gTpM6nkg==
+X-Rspamd-Queue-Id: 1ED8340007
+X-HE-Tag: 1772480164-999562
+X-HE-Meta: U2FsdGVkX191wR7SUNTgo36JhrqJf4kdhuydMXL5rx4juiHZDBTeBO4naYiNsHg9DV0Sm4Ogmbvrzqgt4wG/brurTiN5Yiq3jXNWncL3XQXPxLWaoWT/+84a1Dw/9HiL6ZASBXMjpozroZNrf2I654ZU960Q/PyXljrYVQXOtnrxmdAjYAv2Wk5+pIjAHN8/qKCPM6zTgFAKbX5SA+72A5M3AHsyHWwG8APK/+q5lFmPJPYQo4/qcidC5Pdx4HuRMFjszpUsWIkROSa/NtasWiP/h9Hz30DhcmCmFS0vpQpjRWnHIsI/H6NFsNOf6TafFi1FialI4Mg/7YPVt86KAg1sDIOQrAISyGzOl98ZZxeHwVub4Qd/lLEodCidIoIaNVdvXwgJxEH0ifTBtdzRFQyUlLKBNOokNNDZY1n9kQ5kKbgtQvGlQhBc9Ivj3QhdjPPvG1AxKNslBcNKDkhxCINO8anUi890xBBiMC4oBA3+ZurjkAsG1VDiVpE+h1epiHB4itVNxxaQLjFKhyOioKj468Bb6HlXVSp8P2ZOYUdcleefDaTLyqPLbqOf6/6znCFXXVVa+Yp2Eg6si2bq0oz2ROP992SEj2ti0nARDocu037BqvF8Zg9XAB9BK8yqHX6MdtG6mgqb0OZUQ/Nngb6H7xaLQXN86JvnbGsrsk5/IyCKVffBcwUeLUL69Vx9wMNyBLhWxM6gWvObFcq26+jeVGZlsNw7FZfm8QJHdf+PIesWFC7fybAmnP76sGAPnWtYtNIJw/HfIz3BlC10AKcaCu9ySmZfzMcGdt9PYsrlTHSK9zfQVL3PZnlpsYBtbpcSMyp4RxniUShHunTm4qcTpPwxg06V2w6hioIVcfFN5LttOohOKaRQtVizwpuY2JUxV3FjKecjck6yM/HWwe14/0o5fAQpjWnXeUxcWZg6YiAGRR9qb5bhbREPkl5SOCp3qYrKDVNBBTt9zHV
+ pOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,36 +103,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The local variable 'seq' in gup_fast (mm/gup.c) was declared
-without initialization, which can trigger:
+On Mon, Mar 2, 2026 at 6:10=E2=80=AFAM YoungJun Park <youngjun.park@lge.com=
+> wrote:
+>
+> On Mon, Mar 02, 2026 at 06:40:15PM +0800, Baoquan He wrote:
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> >
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
+> >
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  include/linux/swap.h |  13 ++++++
+> >  mm/swap.h            |   1 -
+> >  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+> >  mm/swapfile.c        |   2 +
+> >  mm/zswap.c           |   3 +-
+> >  5 files changed, 76 insertions(+), 45 deletions(-)
+> >
+> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > index 0effe3cc50f5..448e5e66ec5c 100644
+> > --- a/include/linux/swap.h
+> > +++ b/include/linux/swap.h
+> > @@ -19,6 +19,7 @@
+> >  struct notifier_block;
+> >
+> >  struct bio;
+> > +struct swap_iocb;
+> >
+> >  struct pagevec;
+> >
+> > @@ -222,6 +223,17 @@ enum {
+> >  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
+> >  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
+> >
+> > +struct swap_ops {
+> > +     void (*read_folio)(struct swap_info_struct *sis,
+> > +                        struct folio *folio,
+> > +                        struct swap_iocb **plug);
+> > +     void (*write_folio)(struct swap_info_struct *sis,
+> > +                         struct folio *folio,
+> > +                         struct swap_iocb **plug);
+> > +};
+>
+> I think swap_iocb is only required for fs-swap
+> (swap_folio_read_fs/swap_folio_write_fs).
+>
+> If the goal is to support fs-swap through swap_ops, it might be worth
 
-mm/gup.c:3165:20: warning: ‘seq’ may be used uninitialized [-Wmaybe-uninitialized]
+Consider this series as a starting point for discussion. Nothing is
+set to stone.
 
-Initialize 'seq' to 0. This does not change behavior, since
-read_seqcount_retry() always writes to it before use.
+> considering a more complete integration, including activate/deactivate
+> and swap_rw from aops, rather than only adding read/write hooks.
 
-Changes since v1:
-- Removes the accidental formatting from v1.
+Can be add as follow up patches to introduce active/deactive and
+swap_rw from aops. In fact I want to see it as incremental patches
+rather than add every possible swap_ops in one go. It is likely easier
+to review as well.
+>
+> So.. we could keep SWP_FS_OPS as-is for now and just split
+> sync/async paths, and revisit a cleaner fs-swap integration later.
+> (I mean removing fs ops, and call swap_read/write_folio_fs on sync/async =
+ops.)
 
-Signed-off-by: Alexey Suchkov <dywoq.contact@gmail.com>
----
- mm/gup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You can propose incremental patches to add your additional swap ops
+and into the series as the later iteration.
+The sync/async split is just a MVP to introduce the first step of the swap_=
+ops.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 8e7dc2c6e..879798de5 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -3131,7 +3131,7 @@ static unsigned long gup_fast(unsigned long start, unsigned long end,
- {
- 	unsigned long flags;
- 	int nr_pinned = 0;
--	unsigned seq;
-+	unsigned int seq = 0;
- 
- 	if (!IS_ENABLED(CONFIG_HAVE_GUP_FAST) ||
- 	    !gup_fast_permitted(start, end))
--- 
-2.53.0
-
+Chris
 
