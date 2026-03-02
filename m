@@ -4,165 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA939EA4E3E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:30:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B18DEA4E3E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:33:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FAD76B0088; Mon,  2 Mar 2026 11:30:57 -0500 (EST)
+	id AADB06B0005; Mon,  2 Mar 2026 11:33:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D3AB6B0089; Mon,  2 Mar 2026 11:30:57 -0500 (EST)
+	id A5B6E6B0089; Mon,  2 Mar 2026 11:33:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF7056B008A; Mon,  2 Mar 2026 11:30:56 -0500 (EST)
+	id 95A006B008A; Mon,  2 Mar 2026 11:33:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DF4F66B0088
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:30:56 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89179573DD
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:30:56 +0000 (UTC)
-X-FDA: 84501662112.04.6A96CAE
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010055.outbound.protection.outlook.com [52.101.193.55])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7B28C4000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:30:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=B66nIzRj;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.55 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772469053;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 82B156B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:33:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 195321A021D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:15 +0000 (UTC)
+X-FDA: 84501667950.01.C185F45
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 47D07140017
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:33:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MPht9I0C;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772469193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=96/z9kV5tl8DmdNDAkqdNXPSRRvTFkL7agbtGVEdxcg=;
-	b=WEwNekLuuGCP39URz0Q+Mjv5OpGgcAsUpZDWPNo+/9Wq5j2SmoactKFcqN+cOJfts7hf6/
-	F+bcyxl32h/ndY6ahIw8uOPl8CwP2Pvvip61A39BEGPUShIw3lyVB9dXOFxpd3XZgtyM0r
-	7DoSuFZs6D0yLgBfMoNt2Kyu1YPunbw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772469053; a=rsa-sha256;
-	cv=pass;
-	b=rUl6ixiVWGxWNbakKFjhOVyAFoiHNAJeKXw/pXdVc+Ye/9Uc6DoFVtKdz67MO2r+JoH9q2
-	NyNqWjuVfuBqrvFFw6tri2VpXK7KbwzNhG1NVb9KH383nXXmXgX4dlRZQccUqdVB1FJwX4
-	FoHkKWnY7PqC12xBSF+7K6YI7Y62/wg=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=B66nIzRj;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.55 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CYc0zVhjd3JoxmnN2uwt2wvv3hSOAO1V878/h1kf3j0vpEvfEAuNJrQElLVaJP6y4m7dSFNxGa6QihHjBwBbxLR3iUF17pWCpWIK+S6Q+fojR8lKt8xEu+sr9fpbmDUnUlFXbnW31Vc8sr9vGZquy0qBw3amjdEdHUpPQpI7FPadAkLMbxmAkmYvkvz9VuQn+LPXk6LvJF2CZTLniCEBNCk/QZbJcc/gBi9mdsiWOHxGpJp26fnVLhP8PZYtbFjhng+K25qxjY+NbdP/CRNhz1srWeVC+dKeioAmoEsAIqibtQ14xPXNaOUJRYQUDlrL7am2PjejWs5h/AnKkX37aA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=96/z9kV5tl8DmdNDAkqdNXPSRRvTFkL7agbtGVEdxcg=;
- b=WH6/KTrniwy9sWRUyYe9FdyQHTrMwHsCVpspGycU9XuRt6dZsEUxWQ2Lk2vhpE4wrOy2nedmUanfDVT1bqz6wIiQBIiwnmHC/2b/yOFUb+PjE/SPiQE4s4sULKZ1yiOjiEu5gc7zZI2bi7OWEbYVYu4bltCKrJE2zKXs6su/GuSQI9j33GPZ7Yfeejtyn4vlEpNmrjDl6bE/6+2ip07jhBV54idajMw8Quo2/DwudG41OJIZQWW/vBbYcwhj+gISTyqMkHwZ+hjFrRblc6nq87aVjMgkHHis1mViLPEG6wgVqRKN27ZzHjUHF+jZP5xo8GlA9ttiwb5JpjTUESEdWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=96/z9kV5tl8DmdNDAkqdNXPSRRvTFkL7agbtGVEdxcg=;
- b=B66nIzRjUoAx6DNPrrS8P67psTyygmZxZFkN5pMw5q2DQr6r83MQ0lG2aktjxVDxNHANreGtxOUVoRj1whUzX3DRTQe0JsS6/TpinQTVE/McQbznF+vKRyEy5Yzz50kUjzpBuHUy0mjdV+CmEYGv3CaAt9e7jnhuPa+qJS0DUvH3acv0GbFnSviOx3egh/82PcGcm4Cc8mKvBg/wenuufEdQ5IMYOh8wd1Rnd6IlKFvNXA6V+rLUlFRC/2l2fSbdJGHkSfj6jYJQSTabsCsvBIYToD4D5c5CE+2WyrHjYkulFoMm3bXAFZKXQWtiEaJO3/edgxrHpBRoObIR8wXb0g==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- DM4PR12MB9070.namprd12.prod.outlook.com (2603:10b6:8:bc::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.18; Mon, 2 Mar 2026 16:30:45 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
- 16:30:45 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
- folio_try_get()
-Date: Mon, 02 Mar 2026 11:30:39 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <34AA9329-A6F3-48C4-A580-8BE3E4F9A3A0@nvidia.com>
-In-Reply-To: <54a4d554-d4cd-47d2-bdc1-8796c5d7d947@lucifer.local>
-References: <20260228010614.2536430-1-ziy@nvidia.com>
- <54a4d554-d4cd-47d2-bdc1-8796c5d7d947@lucifer.local>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BY5PR03CA0019.namprd03.prod.outlook.com
- (2603:10b6:a03:1e0::29) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vZIGt91sZdinZKTw2B89DN96+kaO2jn/5qbxRwh01CE=;
+	b=I/xUKezHlAAAopAKo9b1bYR0a7Nd9d6KacRdzgknbNxF/V4+lEYDmoJwBeuIrpYuActEof
+	vZcvJYYL/ZIRZYGIm5yuFxo7WESS9OIdeAeJPzWm2C1TRISh2VM94Aa40yeib0in2SodVW
+	ExiSK6TrCV/mk1xCbO/thQ1i+vefP4A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MPht9I0C;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf23.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772469193; a=rsa-sha256;
+	cv=none;
+	b=QVFsUtBZzsZlaM0UnOeXCxToo+Y1CTGKb6XoHJF8h1vGDQjFNl8Z2G0bPWdfrv+GoHDyrt
+	07qKqYk1uWQBqPVAFOdljw4/nG0WIFya3NH54VaE2mL613JAdENcMx7EAYNG4oJRFEKnhu
+	8EKg8Z9sYfQhvqNnCFFlSo3xe3rnjfQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772469192; x=1804005192;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kfMIc0OUpsgkTCkMzSFFXGItn5Z0YPAU5KqBEO/YCjU=;
+  b=MPht9I0CYGF5rKhVJNMAuvNHirMJK1yIDjR5NVz2KuKzvUi9Suq+puXn
+   BYg3OUjJvidGl0UcbnPs11bCCvxvZ64h6ioIYTF7MAyfjYjQcYyB8sbs6
+   JuEshh+1yyiWT0YuIijhgfQCYznRJ2KT0E4x6dBeZZiAWNYjaBE06yj+/
+   obfjhJF9I24szyZDW+ay0Qmfe4017BDZzL3zaW6m9G8pUiW90KAX23rqO
+   MzU8qqG1KW8Qvk6MY3PL0FJNzwoHFAjYra3XondLzuJcOtppQwSVf2N9w
+   PTE0ClvJJPd0UFT23INyTAq9uLQgH9fXJs9t83DJZStqqQbQKQ6SUGGAM
+   A==;
+X-CSE-ConnectionGUID: 9q8Ch17YR0q/jxRQWGJG7w==
+X-CSE-MsgGUID: ybrqGuSJQZmYTNv03zCr8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73447810"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="73447810"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:09 -0800
+X-CSE-ConnectionGUID: vr/4G302QFOqlxJOv5pghQ==
+X-CSE-MsgGUID: zDQUWEPnTW23jzI2q1uvMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="255564508"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.81])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 08:33:07 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Dave Airlie <airlied@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH v2 0/4] Two-pass MMU interval notifiers 
+Date: Mon,  2 Mar 2026 17:32:44 +0100
+Message-ID: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DM4PR12MB9070:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2161c800-b509-4124-c862-08de78790ded
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	I6ZRb7L1aKjm9q3th768MhO3opX8YIDO3CbnCebDmXjuqR1vbXfoO5XbyFQhoIiX5RoPH5NZIvyYoPcTnXixy0We8x8mgHYWvmFcx35EIcvhCn+OZSGKdaSlaS6+j40aMCeyPFXt3CGpx+l/OG+8gurGQldiIL8mcFq7QPouJoxqafrStulfI6rsi5kFZhzLaRagLO6Bh5yeSnWIy1tDS1OmR81qEYKwXuceTo9KuQwaDJN/UPSo5k5O/ae7vZ0wA0rgphhO8dft0e7PeyWrfHVBZVDluAZd80T2iM5iLXrkF6pRUjh4Cm4vS23EbVTgeORYI1zcxy2f4odyuJXYLUcFxUihRYt1YO7Mb/5ElCxuGD1Gb+oQBVlDfpBNGYOc+/q0v1PxeiDkeMybzG7AgQKDG0qYIS7OCNZZdW20jvyyTgtNpBh6Fue4y7scr2rDUANSih3rGfLUCOkCTe/DtU+uwyCdX9HT7AK05wfIK3TqTaeHuhFaPzXr/w5+oztxPpD3nlnkgGDugnW/cnMRe+ges3jPE9tw3OT5Ei9e7WcELrPM42ZNTJqE36sSB4Bq0dsuYoherB5BWoKowxL+hXpzZUMGcK3TKfwkry4atD/xdW9wgE0Ki+3bhC9HiEMXPdgYAXKmxtl5HLs2Td3Fq8lIaeOipCZmHBh5+W6K+OnZVlJtysjURUjujvLMNKIVoPxWyGigDNJQOP+XK+Yfv+mraUTAiCCDEYIBtySrcaA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L8yS/48ZCOdZRvqZ259wDGgfDq5omH2n2uPPR1nrjzkXdnIIHLjgvyfrV2vo?=
- =?us-ascii?Q?0gzOOBdcjumh+OxWOO9PN6dCsadzIBr7OR80oywze1U3E8z1+KheFwa87ad9?=
- =?us-ascii?Q?XAIwMEKg2zYa7FibubpEFam8GkGa3a4+3zCuvJJfaNjy2rVfk4LPA6FmdAlL?=
- =?us-ascii?Q?D+Nehd0mNIB3M5bpiLKHsSb4M75WFDUViBNZ63tMsNN+GkJezU8ZQxnNbHfV?=
- =?us-ascii?Q?1nNDwbHbO93xXtEgTpWSzxfG2DjrU7i1WfNihP2jpEQqBRh5mRk2yDbpz90T?=
- =?us-ascii?Q?TAtJbH5KrbVaX7Xhw9dC8aVVDZydEzGgX5wZlSdhsHviET9FszIn6fCOxTgH?=
- =?us-ascii?Q?n+f7oZsN/K1RE5DPH2F55EuJKbkmGD4Wlzj/cs5spMGNtRKxLrLiDuKXw0zo?=
- =?us-ascii?Q?QlbEVxaGYpWa+yOZQ4bhsBq7/4TNyfPdIZC9FDrQLurMGpMHQDEQ7SfcB3FM?=
- =?us-ascii?Q?uGYnO19ILYOGovWbvNR2zEZ1zSD2q/JkadaZ1Eew1DWhf081uGpDgpa5vxL1?=
- =?us-ascii?Q?9f2AVoSVyTvjQJ3HvENFh930CG/B3+k3Ooe38X5tLyhFGeq5fdAng4tnFdx9?=
- =?us-ascii?Q?+FZZuQJBkHu4RmxnwUMxGU/soVQJHVCHg8vHc9Bh99UgHvVQ0Q0pQ2ThN6hp?=
- =?us-ascii?Q?gcdRGn/Lug3VnhtM3FNoSi/qSSZeAWeXnCW6u2YhUuL67qp6MCyjpJ0P3hoa?=
- =?us-ascii?Q?QLpYN92GD2hx51DcZplwzVqzRf91rqqSM5WlS+NpsQ/er6bedgabwTj1cRkc?=
- =?us-ascii?Q?WqeJUpH6xyGNRB16lkQEZGT3iNIHyzFsqqpnuZUCBYaYOLJdNUdVJZgbMqgY?=
- =?us-ascii?Q?CApNJO2FdsHkqfpuJ5ryzFbHDnVyEpcWQODTw1Nqja7Nntig0p/DfSwZlCne?=
- =?us-ascii?Q?1loQZ1MhuyBJz2fQKXtw/6rNMSesFAsJlL2EWMBR72EFrXsBNWVQYkXQpSA2?=
- =?us-ascii?Q?YPrGgGjTa+rjnMeLdsXRm/O9EFROyR7OaR0bcxbX4ocz8YHj8pDWR1CWgccR?=
- =?us-ascii?Q?8+bVw/ZbFquN51QO66FQCyX8tR9yYXIqsX9Azx8Y6PLFLyv/+c1puCko+mhs?=
- =?us-ascii?Q?P4oSiUVfq6gExOMUcPXYxz5/lLAfnKq4zls6jgHquor1hvauR7fsQI6YA1VG?=
- =?us-ascii?Q?igZ+2JV5pGfxAt1c7qIzKJPM8BEe34ckNo7HWTuRy7wnF7UPiyZWIyyxQ2mt?=
- =?us-ascii?Q?Ba2QjSSkcjgV+Jc4Doao/65ZODA1ZbBfUhgfp6/s79E4I4QE2wTVdEcOsjmn?=
- =?us-ascii?Q?9iLg0V5/BjDQAU1uolkAwRFa410nWZ6XSyI+RSt9pAJwvokTM0xtSf0B5wyu?=
- =?us-ascii?Q?F6/kklQHEmyqeO99UprV6gJ6fxeoF2zfuUf3cX5KEPDJNu/v/egzYFytXHbj?=
- =?us-ascii?Q?NSlfW6XgQFE82hXl4hH0KfkvTcLF4/XzAUev9nGhEcBM/Mbx0xH0qk11aTrO?=
- =?us-ascii?Q?Ovfdc4UGmC/31XuGxw5snIFzo0wKvVtfmJ1pgQvGSj00admUl+bTlNaKqs0m?=
- =?us-ascii?Q?yul4+KQ+fEUVQ35H/bGBtBceKAC+AO11Cmbmjg2vXlzR4AyP1W6+G1w0B8O2?=
- =?us-ascii?Q?juXU4qA84sTeb/mY/uzbXG/cAB4rEVeu0VNOKe1xi74zNpSWVxu+5qxUix7p?=
- =?us-ascii?Q?20lziZv18QZU3mcvpnVBE/4i9PuXONq5RHwm3zblyUkEMEs/YM5+NvQPlQjL?=
- =?us-ascii?Q?MvIjCRYtDuovH9WeWoHDkUTanBobs0QV0uvnOfZdD9ckF8dOcW+a2CmIr84P?=
- =?us-ascii?Q?NEiNDDedeA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2161c800-b509-4124-c862-08de78790ded
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 16:30:45.4633
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ep8qeqNDemG0/JpFjR6d7zBCzdRgOXF4uUVHRfuu5B2Ckvw9NFU8tLx7B2N6w8U2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9070
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7B28C4000A
-X-Stat-Signature: 7pgytbgzbew46zw6ugx5r6k3bs6b7ojg
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 47D07140017
+X-Stat-Signature: uhxhk317u6yce9xkftn1j3nk7aacuhy8
 X-Rspam-User: 
-X-HE-Tag: 1772469053-797957
-X-HE-Meta: U2FsdGVkX1+zPxpE6FE6sHQj8a+CxoUF14bRTR/58+Tp2+1sSXc4bQnbou04kl3pJzFVdw2YJ1+YDEmjJY6m7jhUP2UjOJy8qSFygiFdGgN2FmwtYhSIlyGcqeEQJDBrt2CnU00+qIcK5VC/lmeWOR8ivM1YQ+yK7rNhZJ5V1ARycAwq6xAUV5LSMlvceUlQyY0s79aqglaOfq8dTomgx7T5g5AvcCCV0f1dLvXdROHnPH+U/SPztKN4TcBpWFMxVkAoQW0dj59Zv+e/lokyBvL1oQA2eJlms05sNz7IXoYRGAYcUThVqOzT6kCqPJ/s7trl3GNV9WJPhkVm4NuiEgXFHZlEj8h8UFuRQ3JctzV9u/JZt/cDAkA5OxFpniU2GXt/jMupz8HNeXNUe6WNRIV+JulJqTySDQ7MmUl3v+BKqIKE0cSsacYdEneZ0nO089eyya8IOTel3wIU7yddHdOKWeXwAV9ulkxdn5/hgcd1GMfiMykmWZ9FAChxp+O42Rx3ImranqY/Urk2LI9BxqVU4N7ISsyVVWwLIKAhQL9hljRDeq8e3FiPCG0oQi4ntaCFCLeRUbsFKq8EfJLLUH/leTvP6fNoadxbvCAGJAcC+IytFrtDcs/UldxJLrdIDId8sxNkcxialOajoz+MEUAgQJSdNMpfRJJ/w/ihTtswfmq9Xd49oUUrTk8xe8iSwqRnxbYcmZq3T7fHiUHHoy8lOD5U5uifpnIOE3irk4vqo4JMmu7XWyj7QoN5Pj32h4TuGudJRhJleQrwoJOY9RwpNpGdzFA+5Yf/jp81Jt7noI1dnLRmj07UexwFsWl75YFFbK+yMaBaUGTd/jB1lOlpnYDRakzuEFI6MjDOAKHPj96bYkV/RJaknrZ7Fv7ZFO5JWeRqwhz8b3sKtvcIP0Wd27dMfoionrDhRRdV+C2NO7IqIudjPRq2Y8Gi0KMYFOuJfozr7/IZOEMqrXv
- p6WJo56x
- mqtzZh+IiS0qblqZilk2TO4pZTFDrDmE3Rvo3qsPOvX/nB2MoGuFRYgF9Nd/njohDiZh7JtFKwm48xP0zAko1dwkPNyDwRYOQ1x5L5YcTVHKKeZ+1ltH0GAPu9S7THCTcztYF+KOO4ZISlHPkx1Zhhh9OOKVegZbSUF98wbgIig8/eBz36mmBN422PSfLQlgh/ClobRlqfhfpxvFYX2K4pXXYyZK6TViFikEyrXxX5BcJrh3SEXHp8j0lKol70YKToEUy7HdK5ndgooN4V7q+jLymLjF4Cwx58sR2ejgfccNpUBWBzelJEEoHA2JtHq2Bs+jd8z14wSfPwrpNqNPnPXPHtJiPQNnM/edmPX1yWrP1r93kunLEzG3LrmqEincr5gYxo4hC0LZkdYwG0LPNXQTWYVpDf7Du1WfZi16Rg9mAqptM2Ik7D7PclI3mAwCrN0liNB6oL4ccYNIZ0vllPI/ZHQqI2JhgBN/h9bkwd0dKaHr67MRNDUcAmDHooKKlM/WEMAG1c84V1G4rksgLsftNXBKYU7ML281P
+X-HE-Tag: 1772469192-156069
+X-HE-Meta: U2FsdGVkX191ndBV+eNPzhRhXNN7imx0HkjeXQnbFOv0U+7U/h6lfwdzvkzAELZPG9g4cMpbmEp7BsAXV+J+EyrTQogpK3FtLY6cz0dxkVnLkC1AAq8RvjnLEpVCrNtwHMELW6b+QN2i0VSXouEAoVCA8liEruWwjdd6qYeCieLWSo2LTMktl0S0DpdAQAVNPNRIQ8QB9lyyFoqRbk7v/1fifkjACuv9F5JyfHdjJu68KqzZA0Vwp8gGDBhD483LyrxilICsY6Thlpd3nFMpqjLGE3wnCMPG7ZL+LVQ50Y8YRjXv/pfg90Pq1oF302x/QJ8CFvPNmXbqLiHnkoo6fGPOuR+mJ8+hr9+yyXf84asy2kZNagjLxhsZJdy4VPlAjHkDZ1jRQTZgdsY1f7xb8eODf/90GVEl59nJKzCtBQ3zXCksT5M6ZLlkLq24gdwjiErCjWO6EqOK4r5oOK+limlzEEfibO6v1VTLCMDnWhVEe4/ni+l9wkWWQ+5sCPrbKVnE4ywGs+mnXMmNxm7bOoh5F0iKKMkr9gD6c1/ksxlD1dtRgjHTPXOVYg7URebqNatxnc6VQ6yn9kqbdQ+Cc9yfOywC9CDdiydwmOf6ShHeQy5sPtZUfBko7kSkYXb8LjqQS8jVEqfvQKrJdx8JADWaHdzGxJqXEPqZEDbww0zmZTNfX5KBao4jH53sBIUebkvRgcICjmjhPJfJM+s2fr8TAPwbPM0x1wf0CRzHQ36O8fuNBLRoNKtWTjjDjUpnFa3FK94TTmCQXxWGJuFI6zjR7XzWCyqDg47XlvalES3PZTQxISoCT/JlayA9Sj/U+lbJInWAdyz5DNpJ/BZwZ3MuRC/UgmrOoUnlkH7ZJFxqSn2oibg1UEjNyBbbcQW7bc2pma4Bt1/tv422M0Kt/Aataz4zqgK+VwTkrHGas+9QA/7Z4r2yA07O+oqMdSksRLYoMeizt99kd/M4oAz
+ bghDkpND
+ y56PHfGQeMer+CtVaHIgK8+z6Tvpl8gPKb8OKWiQz2VN22mJlTsGaWbWV00Z0ECKSKs6rFkPq4dO91VRH7YOlwnjfupfvfvxgqmbr59nC6mH6qxx4BeLy949NvB0PDzj9Cp0UUCF3zHhfWUFibRNKf6gJrVGaJzRPX8t1CBXAMhiOvsL/mNpaTHE/OSZx862uCFtAyB3CxqDM8SJe0B5gR8BVY+IrwsF24QIeG7YG26QzD3j0hq5THj+4Bl5u2CijOi0Gw2vOhV7S4ZNz/CzsD266dRWGxJaB1Np4KzXcMXTuy5tZty6mtlMv7wdtvbWqv7HfU5e+4NOUKhKZtEjs5YtOmR+lAKjDyuMqAXXE7Q0bXjOjuz7dLYBGsIW/bX8+aWL39VHhe5SMwVGoKmWVhKCWGiZErXqr2Yn2MDufw9RHBMTZ4kZHpmr0UCGLxxt3uyajk+VWWhX7+eKGacBFXos9NH4g6XxIjDskY3oRQNUhL2i/Alk8uvIGbf9RJ7LhNALcHZCKAU31GxrMDhaqRjpAux+CNMpPGbgjYx2+Jk1+meU2zIAe1EDolUePFjgld+gMg/wERM/1AzBMXyPd7ZVRlVPxbW2TYDctuSA5iSOwzXE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,226 +110,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2 Mar 2026, at 8:30, Lorenzo Stoakes wrote:
+GPU use-cases for mmu_interval_notifiers with hmm often involve
+starting a gpu operation and then waiting for it to complete.
+These operations are typically context preemption or TLB flushing.
+    
+With single-pass notifiers per GPU this doesn't scale in
+multi-gpu scenarios. In those scenarios we'd want to first start
+preemption- or TLB flushing on all GPUs and as a second pass wait
+for them to complete.
 
-> On Fri, Feb 27, 2026 at 08:06:14PM -0500, Zi Yan wrote:
->> During a pagecache folio split, the values in the related xarray shoul=
-d not
->> be changed from the original folio at xarray split time until all
->> after-split folios are well formed and stored in the xarray. Current u=
-se
->> of xas_try_split() in __split_unmapped_folio() lets some after-split f=
-olios
->> show up at wrong indices in the xarray. When these misplaced after-spl=
-it
->> folios are unfrozen, before correct folios are stored via __xa_store()=
-, and
->> grabbed by folio_try_get(), they are returned to userspace at wrong fi=
-le
->> indices, causing data corruption.
->>
->> Fix it by using the original folio in xas_try_split() calls, so that
->> folio_try_get() can get the right after-split folios after the origina=
-l
->> folio is unfrozen.
->>
->> Uniform split, split_huge_page*(), is not affected, since it uses
->> xas_split_alloc() and xas_split() only once and stores the original fo=
-lio
->> in the xarray.
->>
->> Fixes below points to the commit introduces the code, but folio_split(=
-) is
->> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() =
-in
->> truncate operation").
->>
->> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) func=
-tions for folio_split()")
->> Reported-by: Bas van Dijk <bas@dfinity.org>
->> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OL=
-umWJdiWXv+C9Yct0w@mail.gmail.com/
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> Cc: <stable@vger.kernel.org>
->> ---
->>  mm/huge_memory.c | 9 ++++++++-
->>  1 file changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 56db54fa48181..e4ed0404e8b55 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *=
-folio, int new_order,
->>  	const bool is_anon =3D folio_test_anon(folio);
->>  	int old_order =3D folio_order(folio);
->>  	int start_order =3D split_type =3D=3D SPLIT_TYPE_UNIFORM ? new_order=
- : old_order - 1;
->> +	struct folio *origin_folio =3D folio;
->
-> NIT: 'origin' folio is a bit ambigious, maybe old_folio, since it is of=
- order old_order?
+This also applies in non-recoverable page-fault scenarios to
+starting a preemption requests on GPUs and waiting for the GPUs 
+to preempt so that system pages they access can be reclaimed.
+    
+One can do this on per-driver basis multiplexing per-driver
+notifiers but that would mean sharing the notifier "user" lock
+across all GPUs and that doesn't scale well either, so adding support
+for two-pass in the core appears like the right choice.
 
-OK, will rename it.
+So this series does that, with pach 1 implementing the core support
+and also describes the choices made.
 
->
->>  	int split_order;
->>
->>  	/*
->> @@ -3672,7 +3673,13 @@ static int __split_unmapped_folio(struct folio =
-*folio, int new_order,
->>  				xas_split(xas, folio, old_order);
->
-> Aside, but this 'if (foo) bar(); else { ... }' pattern is horrible, thi=
-nk it's
-> justifiable to put both in {}... :)
+The rest of the patches implements a POC with xeKMD userptr
+invalidation and potential TLB-flushing. A follow-up series
+will extend to drm_gpusvm.
 
-I can fix it along with this. It should not cause much trouble during bac=
-kport.
+v2 hightlights:
+- Refactor the core mm patch to use the struct
+  mmu_interval_notifier_ops for the invalidate_finish() callback.
+- Rebase on xe driver tlb invalidation changes.
+- Provide an initial implementation for userptr instead of drm_gpusvm.
+  The intent is to handle drm_gpusvm in a follow-up series.
 
->
->>  			else {
->>  				xas_set_order(xas, folio->index, split_order);
->> -				xas_try_split(xas, folio, old_order);
->> +				/*
->> +				 * use the original folio, so that a parallel
->> +				 * folio_try_get() waits on it until xarray is
->> +				 * updated with after-split folios and
->> +				 * the original one is unfrozen.
->> +				 */
->> +				xas_try_split(xas, origin_folio, old_order);
->
-> Hmm, but won't we have already split the original folio by now? So is
-> origin_folio/old_folio a pointer to what was the original folio but now=
- is
-> that but with weird tail page setup? :) like:
->
-> |------------------------|
-> |           f            |
-> |------------------------|
-> ^old_folio  ^ split_at
->
-> |-----------|------------|
-> |     f     |     f2     |
-> |-----------|------------|
-> ^old_folio
->
-> |-----------|-----|------|
-> |     f     |  f3 |  f4  |
-> |-----------|-----|------|
-> ^old_folio
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <dri-devel@lists.freedesktop.org>
+Cc: <linux-mm@kvack.org>
+Cc: <linux-kernel@vger.kernel.org>
 
-This should be:
+Thomas Hellström (4):
+  mm/mmu_notifier: Allow two-pass struct mmu_interval_notifiers
+  drm/xe/userptr: Convert invalidation to two-pass MMU notifier
+  drm/xe: Split TLB invalidation into submit and wait steps
+  drm/xe/userptr: Defer Waiting for TLB invalidation to the second pass
+    if possible
 
-|-----------|-----|------|
-|     f     |  f2 |  f3  |
-|-----------|-----|------|
-^old_folio
+ drivers/gpu/drm/xe/xe_svm.c             |   6 +-
+ drivers/gpu/drm/xe/xe_tlb_inval.c       |  82 ++++++++++++++
+ drivers/gpu/drm/xe/xe_tlb_inval.h       |   6 ++
+ drivers/gpu/drm/xe/xe_tlb_inval_types.h |  14 +++
+ drivers/gpu/drm/xe/xe_userptr.c         | 136 ++++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_userptr.h         |  32 ++++++
+ drivers/gpu/drm/xe/xe_vm.c              |  99 ++++++-----------
+ drivers/gpu/drm/xe/xe_vm.h              |   5 +-
+ drivers/gpu/drm/xe/xe_vm_madvise.c      |   9 +-
+ drivers/gpu/drm/xe/xe_vm_types.h        |   1 +
+ include/linux/mmu_notifier.h            |  38 +++++++
+ mm/mmu_notifier.c                       |  64 +++++++++--
+ 12 files changed, 389 insertions(+), 103 deletions(-)
 
-after split, the head page of f2 does not change,
-so f2 becomes f2,f3, where f3 is the tail page
-in the middle.
+-- 
+2.53.0
 
->
-> etc.
->
-> So the xarray would contain:
->
-> |-----------|-----|------|
-> |    f      |  f  |   f  |
-> |-----------|-----|------|
-
-This is the expected xarray state.
-
->
-> Wouldn't it after this?
->
-> Oh I guess before it'd contain:
->
-> |-----------|-----|------|
-> |     f     |  f4 |  f4  |
-> |-----------|-----|------|
->
-> Right?
-
-You got the gist of it. The reality (see the fix above) is
-
-|-----------|-----|------|
-|     f     |  f2 |  f3  |
-|-----------|-----|------|
-
-But another split comes at f3, the xarray becomes
-
-|-----------|-----|---|---|
-|     f     |  f2 |f3 | f3|
-|-----------|-----|---|---|
-
-due to how xas_try_split() works. Yeah, feel free to
-blame me, since when I wrote xas_try_split(), I did
-not get into all the details. I am planning to
-change xas_try_split() so that the xarray will become
-
-|-----------|-----|---|---|
-|     f     |  f2 |f3 | f4|
-|-----------|-----|---|---|
-
-
->
->
-> You saying you'll later put the correct xas entries in post-split. Wher=
-e does
-> that happen?
-
-After __split_unmmaped_folio(), when __xa_store() is performed.
-
->
-> And why was it a problem when these new folios were unfrozen?
->
-> (Since the folio is a pointer to an offset in the vmemmap)
->
-> I guess if you update that later in the xas, it's ok, and everything wa=
-its on
-> the right thing so this is probably fine, and the f4 f4 above is probab=
-ly not
-> fine...
->
-> I'm guessing the original folio is kept frozen during the operation?
-
-Right. f is kept frozen until the entire xarray is updated. But if the xa=
-rray
-is like (before the fix)
-
-|-----------|-----|---|---|
-|     f     |  f2 |f3 | f3|
-|-----------|-----|---|---|
-
-the code after __split_unmmaped_folio()
-1. unfreezes f2, __xa_store(f2)
-2. unfreezes f3, __xa_store(f3)
-3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4,
-
-and a parallel folio_try_get() that looks at the second f3 at step 2
-sees f3 is unfrozen, then gives f3 to user but should have given
-f4. It only happens when the split is at the second half of the old
-folio.
-
->
-> Anyway please help my confusion not so familiar with this code :)
->
-
-Let me know if you have any more questions.
-
->
->>  				if (xas_error(xas))
->>  					return xas_error(xas);
->>  			}
->> --
->> 2.51.0
->>
->
-> Thanks, Lorenzo
-
-
-Best Regards,
-Yan, Zi
 
