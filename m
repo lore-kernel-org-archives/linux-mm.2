@@ -4,138 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE816D58E73
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:15:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F087D58E79
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:19:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 603176B0005; Mon,  2 Mar 2026 03:15:41 -0500 (EST)
+	id D162D6B0005; Mon,  2 Mar 2026 03:19:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AD466B0089; Mon,  2 Mar 2026 03:15:41 -0500 (EST)
+	id CD7756B0089; Mon,  2 Mar 2026 03:19:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AF336B008A; Mon,  2 Mar 2026 03:15:41 -0500 (EST)
+	id B8BCC6B008A; Mon,  2 Mar 2026 03:19:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 38D8A6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:15:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0C18EBC480
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:15:40 +0000 (UTC)
-X-FDA: 84500414040.26.D63394E
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3A01920011
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:15:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ZqVZ62A/";
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772439338;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A62106B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:19:08 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60C5C160A85
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:19:08 +0000 (UTC)
+X-FDA: 84500422776.13.D384E10
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9C137120010
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:19:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VtcHjAcd;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772439546;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rlPy6TCG0fyz9oYgOS+bZqXSUGQTPNilmq+1ckiGH+g=;
-	b=k5UjlUqEfc9MUpELmePMfCvSEOz5AvWngTuKG2NTF8i1TqPpxsfp/rA5/7YPccP9x2u3mS
-	2Dri5ppkyBpl9vCK3oLlW4z1ObtT9geqcGmDHvF9d7HnzJrq4Bn+ZIBZNGboWxETt64YdB
-	toIKVz0DSrUkpF1b71YcxqUvwLaxU5w=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772439338; a=rsa-sha256;
-	cv=pass;
-	b=O4hQxKVbpJDbrYheqkb0qjmqI30wMU+wV2V4BebmIlJ6X3oS4yYG4b5UeKzoHs+a4i/u0L
-	P4g0y349ZKPBS1T0j+S6EKFCcfO097jDNb8M6LwIjTSY+TBbCVeZftKuuZgxDbPyuSfefS
-	MaQaBaQe+gYV0JFwgR7Yvrq93nAvh0g=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="ZqVZ62A/";
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.172 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cb38e86cf2so439043585a.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 00:15:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772439337; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SkUfsKE9rrvn9MxH1uZzK/P57d2+4ndanIvl4ig5I76JQxSNaXzVa7S3fSHFWb+p0d
-         tMMgKE/1JhpciBk2NfmQxhM1+WoyI2Kqp/U04XSLoDVhYZmd2E08IGex793nLBkOH9XW
-         c/CQ/PlcL3BIHyBid/T6POJapgPgpOXpKapqtAscvb4D4vG2MlnA80jO21Jx+1AITNJ2
-         xt/lMQLgtwIuFfMoomKT9Xct+gKHjBCma9CySmNQsNl9wn7yOHr0qfVuJZBRXABHl3GS
-         530kLzXUVZHtR0k6zOvvKoa/a4DorP46iQFkADC5sQQyun6/9Hr20t4H0m+2MbBdLwAH
-         4Vcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rlPy6TCG0fyz9oYgOS+bZqXSUGQTPNilmq+1ckiGH+g=;
-        fh=fj/+Bce1ThelWVlV6rsQ7liVHMEEm5WVssfE4AnLc+g=;
-        b=QRKaYgReYgr0naDn121bPIVTL5BYqAWqLTNiLjWVrLREiPAafpJoy7sRbrxOZzIz5c
-         g1qxU16rhMU2xyhj+qPv31q5Otn2rrR8De9DEEglBOdgbNEVRcbAWniFqdMiCXjnBrkh
-         xUqKJ5TzGrUQp5lRqTixOUwyiS5Tk6aztmNv4G5P7r2UtGRTFKY9krYqz0CXA1Vc9DzE
-         k6xhkUr9JZgZjXvTXLrABp1KqIjv6ZdatjLZWGC+SfoxbvlOJoCKEeFRaP8ePXtYeWdt
-         558Rg/HwwZILb3O3R7f+YlEYEt+WlmFyqu4jYdPbpNh3H3zfuiXAgC+Xh6TshSQ+8Ryz
-         HFfQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772439337; x=1773044137; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rlPy6TCG0fyz9oYgOS+bZqXSUGQTPNilmq+1ckiGH+g=;
-        b=ZqVZ62A/doFbRL/TbVMPWAgbqptIfIN+gvEznqu0UpcrLHnLjYVkZq7tMnqsUeSV+p
-         Ca/cjw+JK3Ws6EndYSbaGP2X/Lv2ijdQ21y50GYj09mEqsavOf6Op6h24s/bCeBwl9C8
-         j/ewAVx2lj53ET4wwtQzXD3O0Xx8jiFOn/6gkICDE9bq/dFhMxol2bi+puqL9GVS1QwY
-         Ad5ALFTEPkzz/3d1aWYwvUPZYsMI2pBggEYuXurNbVwipiHmnf5/wXIJKcchlE6w3lBB
-         T6k9J02za6p3bIwOmbgIFRH6HQVNDPrDMvYkpZaiXl3C+hxkAyG5F9khERrzKuQ41LOb
-         CLnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772439337; x=1773044137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rlPy6TCG0fyz9oYgOS+bZqXSUGQTPNilmq+1ckiGH+g=;
-        b=FAVxvwV5a0zrsE7tisP4JAOSunykk7m6QHUsI17m0mJhhAvMWaRx9SrVKzLUuZ7tpG
-         UCimfvi77Bcrrm0Tk40w0NNwiXD4lrBkBlq7HVMsGXN3RO0LN6Z33pDc0H/lLoPuwKFG
-         Bn9PyhBndv/hPZzh9owCFP6SDl1GfMWaaDrZ410j5se5jvwjwm5opFfnP84UoNT/mq+B
-         pjyTKNBoYKetnLCtnB9dN+EkSK7aJFTqV1t0ZRkrmXC9HKZ8ktybxB15pD+RYGDbnqPY
-         giQCwksdwQYD9p5Hzf+wQe3zwSEMMe9qKsdlK3OXS5Wsse9oO0dDI0qYbq/yc40DQZ4i
-         rQZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWef2KcrBIWkpBBqovVs2xxGubj5ntrlgLJhGGY2HvaJs7DYfsBfC5SYv9EQa0s61yp+rVXIyg3ew==@kvack.org
-X-Gm-Message-State: AOJu0YygfoeLtMrr8pY7qjnJv8AbFRpvUxy5haU6Ysde7bdOv/pKgKzo
-	Iz0U6A9gFk87897tuvUVBn2a3EV0c5ZymheVtWTlZsIgvvQE95lKenkF07yYBOM7+d//SxktPu0
-	YqNkA9MHDDMZ4wdbzohNK7AzPKPpSfU4=
-X-Gm-Gg: ATEYQzwLU11Jlszq2NA1KO5Wa5eF7+V3I0isqrazMf6DggTlZxk/WA6XeqqoQZbbRWd
-	VGsTjNz8LmZ4yiAd9XI/RHlmnqqip7Pd1oIMzfuxx2DJEtfaQMCLTcPyXybM7n58AzwEz3WfCV6
-	xt+iPV7LrpX+G9+fvhZx1cxkkm8a8b0rhtr0U6tf+6V0UGII6P2+oYdfup6xZTyhmX1FaNhy99c
-	AM5G7LoH+aTssM35ky27KJz+EgJnL8d6MdH3ysUXRk1t3DBjdsNF/HWwvZmo1MFR0hEx4ItdMYm
-	4moc5A==
-X-Received: by 2002:a05:620a:2981:b0:8c7:f62:21c7 with SMTP id
- af79cd13be357-8cbc8da8a91mr1469764385a.20.1772439336903; Mon, 02 Mar 2026
- 00:15:36 -0800 (PST)
+	bh=Igypx7l3IKNdtGaG+I4FfjkpBJrncwUml+1yFoAO2Yk=;
+	b=wLcMBm7ATN3hLW4L1RJqfmAPAsi1UksKaq4gpY4YommUjKqx67Z+GHX6tOqClZgx7A/+1q
+	CUB6v4Fh/5APty42zCExN3qttG/js6KPM9mLvOEJ8yN7O9FJ0TqH0CoIu5f2KM/4+2yZjM
+	u33OE93JwxVVENsKpfGkh/M06aIqjGE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772439546; a=rsa-sha256;
+	cv=none;
+	b=hOGCX7am3LLxzSsS0cfZeYCLH4Dc+C/KlKvcmtgn/5IVCl8WsxRD2HFc+vQbYdGEE/hQXC
+	9Q8t4nWPVXGjZNAes4IXe7fWTQB6x3pvuHdjhhA2zJBKi24wYWAkOQwtRtMkgM88PkgMDm
+	ZczwusReJLSh86FDLyI3sVJJvagg2WM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VtcHjAcd;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 81674600AD;
+	Mon,  2 Mar 2026 08:19:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C3C19423;
+	Mon,  2 Mar 2026 08:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772439545;
+	bh=WmUymOIJMfyfhcBz2h3rfkkfmDcPbAvC1z+3AaqwZ0g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VtcHjAcdNUspXks9MnWnffCAOqhBHNybP+7Ni7w8KdFY/trDOnhcMQKmf8ZqBAo9v
+	 2oPq6TzzmlTs/C9RNRmZ/bhgByD+u1nfj6UxwxomjOQCu2sY9HuCtu0I3smP44soG1
+	 z3JiHjnOWXVROlMpnAOszR6Llw0KBEFBuQA/dpMNDX95fR6stQpR5WnTZjAG5K+8C3
+	 J8dr/QWrvH7T+g/mBKT5sBlBT5fQFIHiyIyYAdI/Wil4qScmZd5DeCh046NcNpwp9+
+	 rTrW2LUZVcITpNBX5owhZeWoh57rxakj8ZFLJUaCvflED3tgx9mlEtXGwa4FzT086v
+	 UCdEEMmXLFPAA==
+Message-ID: <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
+Date: Mon, 2 Mar 2026 09:18:45 +0100
 MIME-Version: 1.0
-References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
- <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
- <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
- <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com> <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
-In-Reply-To: <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 2 Mar 2026 16:15:25 +0800
-X-Gm-Features: AaiRm532VjPwyE9BX_5lUymFogsxzHtD_Avi7D_69MEdnBOJ-GjvxJ2fUchjICo
-Message-ID: <CAGsJ_4xXup2O=u24kYmEPT_vW--5Jsr233zCXObnCQ+KQ0WHZg@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Yafang Shao <laoar.shao@gmail.com>, lenohou@gmail.com, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	weixugc@google.com, wjl.linux@gmail.com, yuanchu@google.com, 
-	yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
+ zap_page_range_single()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
+ <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>,
+ Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-3-david@kernel.org> <aaLh2BxSgC9Jl5iS@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aaLh2BxSgC9Jl5iS@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: aw8ki3rfs8t3twwomfbzq4u1gdmeky1d
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3A01920011
-X-Stat-Signature: u317xuubu47198a6jyn7huhh3zggc13s
-X-HE-Tag: 1772439337-295277
-X-HE-Meta: U2FsdGVkX1+MeDTN2xgZAdq/kG+smSKgcniVYUW1a6Pa08p21CVFZFYlKH0moJFYd5f2WV3WBtTKjoHcW5UUEzGnPZIpg4VCXbscYsaWg5cAIPH4JmWOVxDX/0GCVYdbu3GNlyg94WPT5+cRqkLsHpbJrLLMqh0loGGnakbd6Qm3Ay1DNS7nFzveuhWf/lwSB37pYSNxFR0jP5bs9oXceYboDujjTLoaBWmPeyQtzTLV71x8Sr1rU4NrZ62LJ3l1hdHeA3QkMSpk2R84VELW7Hhq7XMOXMkNn5GYdEoqh0PTFiXrJQpVzkNpUOHKZpQtx840SXim0p2qEq9zd8K/Ylqpru1j3+9su1p/HDOhvghNYNF/lIHw0UbGrLSBcF8s3w6yXq3UIdW282OfY/aM3Rno1bOIrSd8ejCCEO+OrAeh1bfKdPb4tIZwz+GkoQNBqia9K6r0GICgY+T13rUmEn9svvl6OawAKwKEW1G2ViNwQQDDdrc+crq08ngAGua+w/S2tV0Y3Nw8qvqWv/eltIJPNtkqCwsrRNnQsV6+r054tdS04qYfCKyFI4VBj4YOCRKE+eyg6uLUsxnm3EzAOuF49uayjOl4eZSgSNCPDpyiB3TeQq0udc1kcA6cJ0S2DCQRzVQjUuOvTJ72NbHUFA7dSDq6NFSaw2db1K1xaf8FFc0BEzZ06O/DDU3Lw6dogT4G8MjBa0SQ/A5+1bmB7EqGxUk5lVGzi4wx5LOCdqObxN0eGWVJQBYI/7ZXY4Q4EvS4WTWPt23QDnf8uyLYb/pmrH5uZb5nXp1GyT4/syI+gL4czCkvSEQadDT2xD6JO9A4atI35lSCyH9dDSm2RRlG7aeAPZBzrqdHQd7ciEm7MUdsDDDd06vwNqlWyNe8lFdsdk5TKukmb3UzjE7welEq1rmIK3be+DOrcZF/phJX6DkVwfbVy4gsN6hbUW0Q2GnV8KMiiSehXNx28N6
- AruEUDRW
- 9O4B5pE6HgtOF7Rj/Ms9B4IS8D9nG1LUyUyOtiFhzJEg4/KU5l2b5C/LvL2Frc1hq5Dzp9hORqb4sEoWkZSpQ4Z9ohEclM2q/3m4DvFu/5RlSns92Xdx3Olt4RUwWsJdTKIuy
+X-Rspamd-Queue-Id: 9C137120010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772439546-469021
+X-HE-Meta: U2FsdGVkX18q9IK+bFLNm5clZaWdLdB3EwCEXXw9wVnVItC+xhDwSQ2w3GWd8YCuVpV4TFuKAH4sXyRXCCF8dMcpQECtygfl876OI5Jcoo9hKGaHJ5+wA9t0VDyPPNSM1jT0+q8OuOXJ+voChF4kBeu+TO2atvaR45twWKgJybonV0SOt6LQ94Pke/MSNoH6WtcI7ZdpbmNc6jaSbztmYIcZaD1WyzLHp1qj8Vnc3hdLUb+QOd3afcGogWDlrdWBPFZ0OSGOGvxDFSKzJMLShQ2OXAjC9JaTqM/BbQqqd7uPsHVJAWyc7Tte1MQATPwontzW9wJ5BzazFAdrqmMM/O7ubiDkaSaOEMDgQBP2b4eJsp5l0CDleawPkcOFelkmrVd/RPpwP5uS+O00wfKqrYal28GsFfspIpI9hb51SccpWFJd6FmKW/QRNdGTo/rF3qLDDgxLNI80VXPx0JLIX+lU552PIAdVqsFX0oqKZTkEIUqrL00M0BgM8iUm4wkHJ3xM/XtgiOXiHbMJOr1C435XmSWWxkp9kYcoZpb78LkrRb12TlWMcySmmVzs3/XtuWxy/YYOtgwC92Qqj3K04TY9wBLw2dwVNHyBbDFd2b+8r54osstPdHvAM3fdavsZTjS8yJOXfA7qd+c+/9muQM2FBC7qSACBi1jKQnbr+7P6oqQsNFNTIbfqCS9q/hjsfs2/79iikXyqBe6nI52/eWlhrW1QQMuJP/8/6CS47usuaisIDoBZ1cv5U69kfFG1CG2HgpyNvaCoYSCAKn6TLDeoWnCRKejHIDuHJkAH0DzkemTRRP+75YGmh1jL4YFyINfkgbL8rljTjiOHjM7e6PA0cLRvZThVqtTG/v469mpVlBAyCPebJXVUWGd6plF+XbbGlfbdohC4M207MCZBQNeLwM0fjAD7XpP3nobGj/LoBM74AKPxSo2UPEW569vRG+VFCMB9Ngvlu5tAQ/a
+ UkVsXnnR
+ ATTlioyeckcP3FNWuzyXRqlx2sbCye/l2maw1Xh69qqIFFiGqrUfOjPN02jWbmvzP0ZLxCS0Yh4MrIaiJuNMG63xgrVaEc3ksL+R0wwXv57gNtNauNVNQU7hbgOov4iFTJu8wELqRg4ir/lI0B/MjO8esGV3shSLukF9DszHXR8S3GsuIkxiVGDlzylZ7f7JOcjzYDsslHnueeNCX27nzCCwQ9YxVLi3ZEAHadJuAXT9ew/WKJpcGFD043E5AnWYzkR+zTcjyk3OJrwzCt7CUNl42r9gxXVzTWGU5FCeG1GLo7iYYD6nI71+tm2AVT9FSL2fyekDvPrqA5CsTmw9xxHzAh5kSEbBqw/ka
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,61 +182,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 2, 2026 at 4:00=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
-:
->
-> On Mon, Mar 2, 2026 at 3:43=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
- wrote:
-> >
-> > On Mon, Mar 2, 2026 at 2:58=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
-rote:
-> > >
-> > > I assume latency is not a concern for a very rare
-> > > MGLRU on/off case. Do you require the switch to happen
-> > > with zero latency?
-> > > My main concern is the correctness of the code.
-> > >
-> > > Now the proposed patch is:
-> > >
-> > > +       bool lrugen_enabled =3D smp_load_acquire(&lruvec->lrugen.enab=
-led);
-> > > +       bool lru_draining =3D smp_load_acquire(&lruvec->lrugen.draini=
-ng);
-> > >
-> > > Then choose MGLRU or active/inactive LRU based on
-> > > those values.
-> > >
-> > > However, nothing prevents those values from changing
-> > > after they are read. Even within the shrink path,
-> > > they can still change.
->
-> Hi all,
->
-> > If these values are changed during reclaim, the currently running
-> > reclaimer will continue to operate with the old settings, while any
-> > new reclaimer processes will adopt the new values. This approach
-> > should prevent any immediate issues, but the primary risk of this
-> > lockless method is the potential for a user to rapidly toggle the
-> > MGLRU feature, particularly during an intermediate state.
-> >
-> > >
-> > > So I think we need an rwsem or something similar here =E2=80=94
-> > > a read lock for shrink and a write lock for on/off. The
-> > > write lock should happen very rarely.
-> >
-> > We can introduce a lock-based mechanism in v2.
->
-> I hope we don't need a lock here. Currently there is only a static
-> key, this patch is already adding more branches, a lock will make
-> things more complex and the shrinking path is quite performance
-> sensitive.
+On 2/28/26 13:38, Alice Ryhl wrote:
+> On Fri, Feb 27, 2026 at 09:08:33PM +0100, David Hildenbrand (Arm) wrote:
+>> Nobody except memory.c should really set that parameter to non-NULL. So
+>> let's just drop it and make unmap_mapping_range_vma() use
+>> zap_page_range_single_batched() instead.
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 
+>> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+>> index da21d65ccd20..b8e59e4420f3 100644
+>> --- a/rust/kernel/mm/virt.rs
+>> +++ b/rust/kernel/mm/virt.rs
+>> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>>          // sufficient for this method call. This method has no requirements on the vma flags. The
+>>          // address range is checked to be within the vma.
+>>          unsafe {
+>> -            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
+>> +            bindings::zap_page_range_single(self.as_ptr(), address, size)
+>>          };
+> 
+> Please run rustfmt on Rust changes. Here, rustfmt leads to this being
+> formatted on a single line:
 
-I agree that the shrinking path is performance-sensitive. However, the
-bottleneck occurs when we move folios out of the LRU, performing
-reference checks by scanning PTEs with rmap, unmapping, and compressing
-memory. I believe that either the branch or the readlock is too small
-to noticeably affect shrink performance.
+Having to run tooling I don't even have installed when removing a single
+function parameter; did not expect that :)
 
-Thanks
-Barry
+> 
+> unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
+> 
+
+@Andrew, can you squash:
+
+From 5128f2e34d219722a8883c1fa94e057bd34601f2 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 2 Mar 2026 09:17:19 +0100
+Subject: [PATCH] fixup: mm/memory: remove zap_details parameter from
+ zap_page_range_single()
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ rust/kernel/mm/virt.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index b8e59e4420f3..6bfd91cfa1f4 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -123,9 +123,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+         // SAFETY: By the type invariants, the caller has read access to this VMA, which is
+         // sufficient for this method call. This method has no requirements on the vma flags. The
+         // address range is checked to be within the vma.
+-        unsafe {
+-            bindings::zap_page_range_single(self.as_ptr(), address, size)
+-        };
++        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
+     }
+ 
+     /// If the [`VM_MIXEDMAP`] flag is set, returns a [`VmaMixedMap`] to this VMA, otherwise
+-- 
+2.43.0
+
+
+
+> with the above changed:
+> 
+> Acked-by: Alice Ryhl <aliceryhl@google.com> # Rust and Binder
+
+Thanks!
+
+-- 
+Cheers,
+
+David
 
