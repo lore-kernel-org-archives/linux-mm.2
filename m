@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2301EA4E08
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:10:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 774CBEA4E04
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1E306B0089; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
+	id B9E6A6B0005; Mon,  2 Mar 2026 09:17:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF65B6B008A; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
+	id B75CF6B0089; Mon,  2 Mar 2026 09:17:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C0E6B008C; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
+	id AA2816B008A; Mon,  2 Mar 2026 09:17:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C8CE86B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A672B65B4
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:10:13 +0000 (UTC)
-X-FDA: 84501307506.16.D279AD0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D7D73A001C
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:10:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XC26fhYW;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 95F636B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:17:01 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 574FF140116
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:17:01 +0000 (UTC)
+X-FDA: 84501324642.15.D34F3B3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AB70C14000E
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:16:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y2223cUk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772460612;
+	s=arc-20220608; t=1772461019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jAjD2mFruhLA6S5Uyea3rqvdarrNjuiCTh+l7kuBuUw=;
-	b=ZKGSd4NVMNdKvsR0G42APqf4YjQSH39vvqI8kFxPuVqPjh/lqagD9w2azFw2t4mKu381M+
-	PbFcXp/ooZw5gLBpMWmRqIruderj9qzcTrf7n/lrhdrVyQhFeQfqAJvgpgZGWofI2TpCnb
-	ZCslGi27o8jGiMHdOTsr7gAPL4Z5vBU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XC26fhYW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772460612; a=rsa-sha256;
+	bh=JvpNt3osEjYd3dt1DAr3Ouk32hQgCG4wbSIMYSLa1rA=;
+	b=ZAgpihwTbYvYwZFnrw4vf1ldz9wVOcYGUl7wnuIT7we8Ze3V43YJipD2RrCN61670EYRQv
+	Y9pWiucsr6QjrzEu1tsfb9B//+omNzzlKZpMRh6sIPNorjgPWZTd3SYtjMStrbAzjntXv6
+	nb9m7DzbbDgZLY+Km6LACQiKC4ASsPc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772461019; a=rsa-sha256;
 	cv=none;
-	b=31MCIQe1SfF2AftUmbqhq0gC7niJKod5fc7i1bciUQtuSusOEwHODT+ymyNehgjN9mR1Qm
-	55a9p+HRZgCUiLgQO7YjtKu98cMtlo45Caz9zX/iIqD41f/KMgrNLasTH5MlaofiFypH4P
-	ekdPDCJujBvONvIcn1b8L4DXqXa/bHg=
+	b=Yl37KT5liOfvD5zBQHgzty/rMHdkNPt9NdtpjEgqROPh1xnmpwL//eVVhvgl4OMFK0E9sK
+	wXaMDYhIkDadZClvNaQWS6F85Q/cT7cfSCay7TIMxPuluIQcMec0tcczQV10Z8qIBDf1NX
+	clAiOfO1Kye5GwpWJRsHcZAI5QEXkeY=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Y2223cUk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC71F40A17;
-	Mon,  2 Mar 2026 14:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2039AC2BC87;
-	Mon,  2 Mar 2026 14:10:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E570860103;
+	Mon,  2 Mar 2026 14:16:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40ECDC19423;
+	Mon,  2 Mar 2026 14:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772460610;
-	bh=Iw7aUP2S7mWahuhzCJO/BUcWFftOh4Nm7vHQ0zIqiJY=;
+	s=k20201202; t=1772461018;
+	bh=eOi621zBxOkJY1UKHW4ZO6+feq9RArS0Wq0cDsH50hg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XC26fhYWvpCZWb4IyVpvt4Oen+imcRPCYbXTeuSc1MLlCUVRgZc5v3AQ4m82UcGUX
-	 /J8tyC2i62wPJE9f2KQeG9fs5nPTejtD+H/hMq3v7rst6nBeN1ODJCRZRR51tNy7Et
-	 JA4yuGwd/7yzIxU3CFW5yUHMty4FxLR94ARGLlXdTSPM/bQlHoL5ZEPokxwStEWYFW
-	 V7ebXMDn9zkqFfMb0FW2qZOtiDsDH+uin4ubx7X8NfFN4Y4Gh5IQEQFSpsZ1R6ACE2
-	 N/xRfzgEZMD3s/djPCWs+RIbSAfQhxV/2Y4iOcJ+Zk9ZPFy7TgynrP/LmhqHoW7jqO
-	 OnzfcZeYpd+3g==
-Message-ID: <0f340324-502b-4719-b3e7-c7ccd4378385@kernel.org>
-Date: Mon, 2 Mar 2026 15:10:03 +0100
+	b=Y2223cUkvjYf8lYJZDxKuyv8L0iTzBaH3j6FhQOjgs5aA+bbaXbTF1IxZkZV9Al3C
+	 Lo/KTxpqgArklPvabIdDAElOmALZG3jaHCo1ZVAshHi2SaPPvhl48Fjffx6p11UKGa
+	 a6pyqPdjAPbd8lb9rg0HhBJurH3FFmMB6zSa0NG3mroIECbWt6m88JmfasymxL0PLW
+	 2GM+f5yDLwg+NyrNWmqhK5rYUqt4Z7hONlA0bmg/ZlamYi1huD1U+DabiPVzOQnlD2
+	 U1H6jkDOW6gfpm9hXavn1QO1rNkcFlI/Ixm0BDH+Uu5ilSfACUbRoe+WhdFScYxNuS
+	 szdsnJ1D5LMRA==
+Message-ID: <502e0f7c-cdf7-4a2d-b038-cfd4b993c9bc@kernel.org>
+Date: Mon, 2 Mar 2026 15:16:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Subject: Re: [PATCH v4 5/5] mm: add tracepoints for zone lock
 Content-Language: en-US
 To: Dmitry Ilvokhin <d@ilvokhin.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -88,22 +88,21 @@ To: Dmitry Ilvokhin <d@ilvokhin.com>,
  Shakeel Butt <shakeel.butt@linux.dev>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- "linux-cxl@vger.kernel.orgkernel-team"@meta.com,
- SeongJae Park <sj@kernel.org>
+ "linux-cxl@vger.kernel.orgkernel-team"@meta.com
 References: <cover.1772206930.git.d@ilvokhin.com>
- <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+ <ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+In-Reply-To: <ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D7D73A001C
-X-Stat-Signature: 7yon77m9epoz8hue1xeoif9ak8gc44ez
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AB70C14000E
+X-Stat-Signature: 9pcrqi3nhs8jof4k43fepgqh6r9dr1p1
 X-Rspam-User: 
-X-HE-Tag: 1772460611-560637
-X-HE-Meta: U2FsdGVkX1/yZ0wxT+sa5rwf7fg/9i4Vk20GF0FpSePV8v9oUBYdtmKyXJXF+S8g4eoie0AK925lMzO5cFcvMO/r0KatF5aNm0luk9+uIota/1fL8SUGGeMiBuDwI+lSh+2yYK07opkUKjENfeHLkIAFlg62EM4/T1r10TgXSES8e0A4Vs0SL5qSujIACRHfc4QyjoYAxDMkoEWORjxEjsOQjEYQfllQzU1D5i0mpIObYZeKbOL2zNReiL+H9mGt6k35ket/JYlpZnRiW93NJ6bSJ/DozeHEzS3Zp28/6oddF26y56ejSePAJcptCWg2LF9ur9OqyzLzmNKc00yQNFUAEsxmCnY3bPI2SFBIPNlGHI1ygl6wB893lRQvPv7DyXdvxIgS4VyWOXrS/R11EgZMNC6KdpYdXaupmmn6hcVRl1HlFw9ykQxBXurgP5jU3YS/UqdHwxN5mEB6Q8bL7QQzW9IKLRcaRLWIsL9pd7PgwP3ZTvHVM5aujRmNQUARoJaOJ5WjZ4s8sz6/Dg0BRDDsf5/IAcDvvH4NKJNQqs8Ii3SQuy3nbazwL4t0Vtp5EMk4EXvIYXMXtr1sk54148B+R5p6y1PCtGcCiGLB5vJuTR6wG9CAL2vzGnGDL4sP9cqWjsbnq9qB0y19FSJ1CbBSSwywdo5xYvvEX9K4V2ybnkv2uTW6HDvLhuBEz83XRDLIpmWiKzCM6EKjTYIuIWbnlk1lZMUzyiA3nqZ/cEMz8zNgNH02EIj24dqmB/gxmTvXP66cnehbvjstsWTe1gLHEOxVzHHpWPJPf112gHwCfUo6EOBkRSw6NbPWlITnfIpLyCSXw+HiKjQSJD0NnZn8X8qKOWkJZd74JksACkRiOybnLh9YVrzWgTDntM+Z3cexlph1dMrv9ONnxK7tJKWDq6OwY26X0VL9ys30mooAh/y9qgboKUyqGw5GzdK8x74+hQdvFjSMZEEvnjS
- 2QTZXEs/
- oT9UZg2eWOyg6bAmYbKnrq8TQg5eVJJ0rBR43kwRuAX6/ldAUnvmdLuTDoF2KWRTXgS7e2NzBb9zkGe+coFMOBfDUuW+RrQfkzZPPOlnfqOEDY6pNzYXKsQymHwJZWNxM9W/EWYgi+TnuY+bz01skPfGCGKI2mbFjTwFzcaVbgcF9SUaM+bmTsOk6doX+hvOS5lA97Dv+MJne59nKasH71ik5vaf4b7qmeKE7s25rtconn+Bfg1WspqQ3Nno74VaNydIHxO+hTCYUVfnmYLYTTnQT+45kFDb/+zwB6Xdk9lEic4n1zzDOp8qR3sEw6LV3g5vl2+8OBzL5DlBanTsa4Fo8pU0giIeEC2LyWsOPjVBkxmWGK0KzF2TgxUtFb8pwrS69hjsMqjyOTPGsY5WXuuWMOYSuFI6wSUgMFzVADxVYXyOIoMbyiVABuvDNqoqCFjcn
+X-HE-Tag: 1772461019-195705
+X-HE-Meta: U2FsdGVkX188ybmwEuCi1j0CZRxy66mik89frAJJKmgFpyHLZD7ZRhq/7t6GWV9WGS0dJTc5so7KgchncjpyYhj6GLNmQv48qFSBjSPz6U+jSeoPDvZqeRyJdO4TIaGvKz20sLGQTjgFDTfjshbHaIXNJFHr4blod2501R2do8oU9wswT6aW95nF/+3sSbiT4Gh3g8/Egl86n3OWNOMAPEytKYdvmo6OXTikKK4JQ4Dl9AiYkEnHukeXhzU6sak9mESpdaGS12krtVetNJieH8IDbO58hzkTI4oSWcWwR0AhfHd3LGzycyAaSMfltmWaHCqZn+qOZEFxuvkp/vXnWElLuSGpx7cJneyU13/Kklb5MeM29vFbS6dUsp6o/yHue6vMmEUGgAxpR0K/J0id3JYyFOnbyv5bdsHLhGxEciSUdl8OQI9SxUdLTVBEitBdb4SUL0hE3ryPfJpaoOWy+oKc+v7rim5b5flEDa+jc8YTjXgbdyArT85oPJgVTYHuOzf/GROE0eU1S0V2XJtdaX2p+iKWaScNCVdHd0RPIxvGkC0woNnqXNb3lUXpqiUlWGDfdNee2EojBbHkh8Fhkbo2wLOe6u3/V86zmsAC0dfSzwR4Ohu1wRJCZpdjeY2czrOUjV0z0HMsC1P9jFbBHQfEQsGGc5IncFi3gjbv/7z8VdQt9o2sKBC7enoZ8DlepkvQ36GkHlKlhavnNMaAzj1BLWmoyc7PHSnukou4lL5BVhn7Trg+gxcis4AbVNXbbmjEj+5nttT+UtS4T9m9nlnm/UXY/5G9TeQMbgLhZsgf/K/IrlEdYoB91iYnR7brpWTNV+EBLxAJCZPjf4HZHu+Ui2XIIrkbUN+bOV3yoKCKMFFgvz/u7mp/P57/3ykverTX1f53JaJGYecfidig9VECFigQIJoZtziAJzcEaH83AWIICAlOJKv+ZS80BbZNA5KQm4TIDKpf1FA6hdL
+ qNfTXdAV
+ Eliqqm3mAweM0IcreZzBJFIphT0cElibmnxMz+GD7mKfDGld/LZy3Ha5WJMpiR80z6KV0G9FbXiv9XPBB2Cq5xP3bMBygZZTXgN7R+/oNfPLTzlyU8kUwhmU4Uy0zAa90t2GgCOhIipFicv6J4vIhOOswR4WK+pIUfazod1CfaYBaFNQ9jU6ERXm6QSUnGCITNMvONQ/2XtviuIX5JvrZYxyTlfOlO+MxoLC0e2dyn/Ex/p+pY+eMwDVVK9AyW8JdNxzuObCNGb7yHVVxRcp7VZtKAfed75rFX+sPWZpjwlx73VTgGZa2OsyXKOraF+V9CQaCOEcBYBDEfNAL8qci6XrJBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,21 +111,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> This intentionally breaks direct users of zone->lock at compile time so
-> all call sites are converted to the zone lock wrappers. Without the
-> rename, present and future out-of-tree code could continue using
-> spin_lock(&zone->lock) and bypass the wrappers and tracing
-> infrastructure.
+> Add tracepoint instrumentation to zone lock acquire/release operations
+> via the previously introduced wrappers.
 > 
-> No functional change intended.
+> The implementation follows the mmap_lock tracepoint pattern: a
+> lightweight inline helper checks whether the tracepoint is enabled and
+> calls into an out-of-line helper when tracing is active. When
+> CONFIG_TRACING is disabled, helpers compile to empty inline stubs.
 > 
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> The fast path is unaffected when tracing is disabled.
+> 
 > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Acked-by: SeongJae Park <sj@kernel.org>
 
-I see some more instances of 'zone->lock' in comments in
-include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
+Agree with Steven; otherwise
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
