@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40478D58E48
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 02:30:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 766F9D58E49
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 03:11:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F22B06B0089; Sun,  1 Mar 2026 21:30:32 -0500 (EST)
+	id 7BFAE6B0092; Sun,  1 Mar 2026 22:11:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA5D36B008A; Sun,  1 Mar 2026 21:30:32 -0500 (EST)
+	id 76CED6B0093; Sun,  1 Mar 2026 22:11:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1EC6B008C; Sun,  1 Mar 2026 21:30:32 -0500 (EST)
+	id 66B496B0095; Sun,  1 Mar 2026 22:11:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CCB876B0089
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 21:30:32 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C9331CC99
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 02:30:32 +0000 (UTC)
-X-FDA: 84499544304.07.8E5288F
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A90F1100003
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 02:30:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Oy5lfPc3;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5491B6B0092
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 22:11:45 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8812459E83
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:11:44 +0000 (UTC)
+X-FDA: 84499648128.11.9B67622
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D31A120002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:11:42 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWQnUevh;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772418630;
+	s=arc-20220608; t=1772421103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CZmVkvEA0MEnZ8U+s7EY+/k40UTfgu8GKtx0XwLwjrA=;
-	b=MesRoXTKiOO9BsnoXZzz+MyqMMlokXoGLmFBvB9T5HqnD0lQaaeNPVLOoX2d+Douk9na/+
-	fzmYNjqfJJe/4CKJWgiJeSqmLNjlVzpDNrVxC8v3mk0zly0isgmIeOR/5MjzRkhkHOkooz
-	wrR4TfvqOZqg2MzBPc3OIGjUKEVEzjo=
+	bh=c80IjFmwrSTyfEdA2osb6JnCGS7RM2etVw9Vzge3vcA=;
+	b=L/sz8oWkwjX7SCWufRTtFcBiGCbusQ8sbvbzcO/9ozxeZekRHo9TO0SiMmvcugf4FaiCKC
+	7hoU8Z0a2l1EpFKMdY6uyFRVspauc5HpaIm0G/3tGu82EaV65wTdWhSypAYCH7kBiuox2X
+	dWs1CbTN7e2dBYnxs3d19Th4RAEpx5k=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Oy5lfPc3;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XWQnUevh;
+	spf=pass (imf03.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772418630; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772421103; a=rsa-sha256;
 	cv=none;
-	b=3OOvbDFbW+jTbBwp/rLOo65bJjjFprny16DmwUUicuWa4fTqAjg9GixpjGaVNYqf4wtfLf
-	4yFgoDy5kAEVX9fyaSlucegqrRFd7kpzWVdUVCv926pPLaWShP+dETHMRfLd9KEuNTg6j3
-	esvGJwd4FHcpg8TL1FcjxP53A4p8tqQ=
-Message-ID: <953e1e1d-1c76-4703-8d22-5b060d5e5832@linux.dev>
+	b=qNByQpMtgPPEG8A8igFboTFG+l58/luOowsq3BkC8BpBMF9QnaRUyTOlzkS1eucd3AY+Lj
+	0EKU0DaoYG5dwOzbXpNRnecOf1gyMoRernPQoTtb6S7w5Rc0EJVD19eCx43fOoQLM38mrO
+	3CF+SOEeWPQtKUZjd5GHI8dexuD7TWk=
+Content-Type: text/plain;
+	charset=utf-8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772418626;
+	t=1772421100;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CZmVkvEA0MEnZ8U+s7EY+/k40UTfgu8GKtx0XwLwjrA=;
-	b=Oy5lfPc3zRop4/4ghKao1ZS7ddX7Oskv61dxkNI/s8vhiy+cWdLgCcLOqawPbV/DcqKrdv
-	EmJwfvd1XKVJVcykhHNeUYYCNAFGFP992+87AgbCgGkUcGVIKj4CUTz8MZTv36p1GDbnpg
-	CF7dVnqh4gFkgcheIajmEBx7d7rSzf0=
-Date: Mon, 2 Mar 2026 10:30:05 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v5 update 29/32] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, Yosry Ahmed <yosry@kernel.org>
-References: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
- <20260228072556.31793-1-qi.zheng@linux.dev>
- <20260228110800.50bfca2a90912142c11e2922@linux-foundation.org>
+	bh=c80IjFmwrSTyfEdA2osb6JnCGS7RM2etVw9Vzge3vcA=;
+	b=XWQnUevhvW3qqt0n4MlcEcWHSZ9PyYGSKnaoUT9LD7wZytjhOoL4nZQVilpTsPHWq03g7t
+	cWdDmURaQq8W53Sfoqq1cwyqVh/BY7X9Q3O30L3PFDo0vomLWjqiuHGs12JSmtR86BFf6N
+	6SN+deifYZIQ7qmRKRLZh9ibPTEC1/Q=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.400.21\))
+Subject: Re: [PATCHv7 17/18] hugetlb: Update vmemmap_dedup.rst
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260228110800.50bfca2a90912142c11e2922@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260227194302.274384-18-kas@kernel.org>
+Date: Mon, 2 Mar 2026 11:10:54 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>,
+ kernel-team@meta.com,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A2A3453A-DA4B-43E1-B970-F704B140A4D3@linux.dev>
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-18-kas@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A90F1100003
-X-Stat-Signature: e3yx558rkjd5ajhqsm3ipo5ht78e7w33
+X-Stat-Signature: 1x4oj4rtziji5zz68ic6m59fwczqtebt
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772418628-487195
-X-HE-Meta: U2FsdGVkX1+VOG8/aWzN7WatxlwNbj2FlBFVG2xO4Be4QxAKiMTihMeNOihD2gpCspnjVz5YvFg5ZYZapSLX0sKhNFHaUo0fw4zw/kVfKtAm3rCyDaojJi8n7h98uitKwW4+y9zkonRFnj0yET9nnnrrrN9a+yUtcegdwuKSUwjhyovMnlfhLrn9ZwZRdZCL36NYBnruHYlPrwuWfnfkYF2FE+tOwciS72sOSjR6XnIMZz/y8juGk9tyGwg3ElupFc78huba5WhXhP5lvOyv+sDDe6cicLybTL/2ED0kUo76DpOOY1Xx12dIPFwEP4MmYMJ3Xk0mOJGTkyby8xhC2s/xj16xHHxtq8VY998bsUU4Gn4QMALLXorGPDD+I16sis0P2N9/dMfmvzfv1zMECQEC8D0st9KXWxdy357YxxrkX0KBYrEZGqzIp/sVG4rxv4+TkxyWjCmp2QrhuPGeKf+Zyj+Lblr1hGJef1zy21kuaiCkiVieF7nZAjaTpBjGsPCIP//foNHYjxt0lNxOHWPsVt9+UhiDkhwvYKptkKjZ52F/N7wQz1y1rd0vFXiBGj7x2fykLHtNzr7XD0bY0bZz/0hcEGpeo9t/1zlV5Yjzo903OjHmSTlgloRQRLUbb+tCId7N1ApyABfDaUul4r2PJdGXOzEKV2PLpBAO0GL/5VWoJF1daAJ8SGPGhuZIDWrGZKDC9FQu3dzgneSD0jYZFluPn1IK7ISWy4+xUtvHpIpHfMo/Y6R/tWA8jHwaGQPCyK3hxstmwf1O+8cxjWhnbQ2jlZBoOo9JmuTHOYv+fXK+9rtSGfnwJ/Vvxgf2DgY/PvLaeW4g81zdEwR9IvqcVlt3IoQKBPU+83EHVGA3URzC+6b4Vq3cyAeRrXJVBKh59X8cdNrp0nR1qmz9e4KF8qulC77hA5OrHZIZFuzxgdK2FsLsi1fDvJfsQse8+kbKn2OgVrrwh2H3poH
- HAab9ZkW
- bF5AFinD0Ti1DZ2lCDiCbzLRox8liwOI2BtROfWKgXXPsammPx/lDgCvYYx69TEpYBaGtCKjL5xmaq0j+Cxxim06j3TlOHRGtZrLUfYfD3x437S21XoNkzxk+JwbDQOgce00IHWcqz6uJW7onDEL6pDwR/72rPrVqXPaLwysq79eeeO/x1fS+NgtGuMVEyX2Dr7DSCQxjP3rtvtlXP+tV6ZEoWg==
+X-Rspamd-Queue-Id: D31A120002
+X-HE-Tag: 1772421102-739336
+X-HE-Meta: U2FsdGVkX19RDwES9vLFoSjHjqF24nWtHLTZ5unaV5fWLA6QwyA3Kur/10kMgWTZMMfJKIfoNjBz5LAWwG6RdvmOsevOyXcM2A1+1FB5U05kk47UbZXrCqeoD0qG2kO8W5gM3Gy8rk321tm5jslEmCb+yaorAE0ajbx3XXd98d0dSNhz6GCibSlCD5gGLCeWi4jsnhgbOmfaUPeaM0MshqYVtnwV8xyLXSUoGfT54Kh58yQzS3nuATRDChXh9iVOQoQtXrkPlLonAqxK8RMXcF0QBPUFLn2+VddBWRghuDnu7VLX/yXjhyz87EYuRvjxo12ZqOhsTT1cuTO3SNfonR6zuduqrajB/h+w/IeYbmOdOpKHtdVR00YUwSZBipnPjoJ+OGAPh7WI2fCj2tY3CPfFhCNnzGDnzneewvjN2smag2oSKn1zVOcwC3ZK33EpHn4dWjN8M0fGT1xFEO+tv/p3Wud73dEZGpVRbvNE2/2SXrImrd3AwT91shFwvi+JwZYJi0addTPno7gRQe/n0zF78bhtrPKZA8XKPrc4szn2WxsOvekY3GJkGoKeJUgUbeNJZIe+ecixxuGORvKz46iH9RkEIcLQ+uH+0aMr5X5m/P2Rg2FW5m2zr5D8kn4OgIKUv3hiU7DaRViRP+pFxTXcVI4npsT1wSa9yNJlc+aJ1tOJ2ZfvFCo48UuDlG9mb25zy1caRWZdEcBX1SZBykMuh+maNrjWPwmXV9D3RYmfigRKt+vGQqCnpKuG6YhGyoXZuIMDzJ1k8V2j/fGPAZjV0OIQpH+xnKrxGw58IQN7UVTOKAAmRGxFzAfx6hIbzBx0DZ5eW+fX7eHBPRhM2rb3cIYGIiN8x+yINXZgQf+BGt48SYsqLw/7+VCaFl47fBanuzgj1Pj04XLey/FFLgWqXcBxdfH5PVzj8DAmSBPRRUTD4uYOli1rUMKeNns/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,284 +112,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
 
-On 3/1/26 3:08 AM, Andrew Morton wrote:
-> On Sat, 28 Feb 2026 15:25:56 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
-> 
->> To resolve the dying memcg issue, we need to reparent LRU folios of child
->> memcg to its parent memcg. This could cause problems for non-hierarchical
->> stats.
->>
->> As Yosry Ahmed pointed out:
->>
->> ```
->> In short, if memory is charged to a dying cgroup at the time of
->> reparenting, when the memory gets uncharged the stats updates will occur
->> at the parent. This will update both hierarchical and non-hierarchical
->> stats of the parent, which would corrupt the parent's non-hierarchical
->> stats (because those counters were never incremented when the memory was
->> charged).
->> ```
->>
->> Now we have the following two types of non-hierarchical stats, and they
->> are only used in CONFIG_MEMCG_V1:
->>
->> a. memcg->vmstats->state_local[i]
->> b. pn->lruvec_stats->state_local[i]
->>
->> To ensure that these non-hierarchical stats work properly, we need to
->> reparent these non-hierarchical stats after reparenting LRU folios. To
->> this end, this commit makes the following preparations:
->>
->> 1. implement reparent_state_local() to reparent non-hierarchical stats
->> 2. make css_killed_work_fn() to be called in rcu work, and implement
->>     get_non_dying_memcg_start() and get_non_dying_memcg_end() to avoid race
->>     between mod_memcg_state()/mod_memcg_lruvec_state()
->>     and reparent_state_local()
-> 
-> That's a big update (delta patch is below).
-> 
-> What did it all do?
 
-Oh sorry, I forgot the changlog.
+> On Feb 28, 2026, at 03:42, Kiryl Shutsemau (Meta) <kas@kernel.org> =
+wrote:
+>=20
+> From: Kiryl Shutsemau <kas@kernel.org>
+>=20
+> Update the documentation regarding vmemmap optimization for hugetlb to
+> reflect the changes in how the kernel maps the tail pages.
+>=20
+> Fake heads no longer exist. Remove their description.
+>=20
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> Documentation/mm/vmemmap_dedup.rst | 60 +++++++++++++-----------------
+> 1 file changed, 26 insertions(+), 34 deletions(-)
+>=20
+> diff --git a/Documentation/mm/vmemmap_dedup.rst =
+b/Documentation/mm/vmemmap_dedup.rst
+> index 1863d88d2dcb..4aaef36d8971 100644
+> --- a/Documentation/mm/vmemmap_dedup.rst
+> +++ b/Documentation/mm/vmemmap_dedup.rst
+> @@ -124,33 +124,35 @@ Here is how things look before optimization::
+>  |           |
+>  +-----------+
+>=20
+> -The value of page->compound_info is the same for all tail pages. The =
+first
+> -page of ``struct page`` (page 0) associated with the HugeTLB page =
+contains the 4
+> -``struct page`` necessary to describe the HugeTLB. The only use of =
+the remaining
+> -pages of ``struct page`` (page 1 to page 7) is to point to =
+page->compound_info.
+> -Therefore, we can remap pages 1 to 7 to page 0. Only 1 page of =
+``struct page``
+> -will be used for each HugeTLB page. This will allow us to free the =
+remaining
+> -7 pages to the buddy allocator.
+> +The first page of ``struct page`` (page 0) associated with the =
+HugeTLB page
+> +contains the 4 ``struct page`` necessary to describe the HugeTLB. The =
+remaining
+> +pages of ``struct page`` (page 1 to page 7) are tail pages.
+> +
+> +The optimization is only applied when the size of the struct page is =
+a power-of-2
+> +In this case, all tail pages of the same order are identical. See
+> +compound_head(). This allows us to remap the tail pages of the =
+vmemmap to a
+> +shared, read-only page. The head page is also remapped to a new page. =
+This
+> +allows the original vmemmap pages to be freed.
+>=20
+> Here is how things look after remapping::
+>=20
+> -    HugeTLB                  struct pages(8 pages)         page =
+frame(8 pages)
+> - +-----------+ ---virt_to_page---> +-----------+   mapping to   =
++-----------+
+> - |           |                     |     0     | -------------> |     =
+0     |
+> - |           |                     +-----------+                =
++-----------+
+> - |           |                     |     1     | ---------------^ ^ ^ =
+^ ^ ^ ^
+> - |           |                     +-----------+                  | | =
+| | | |
+> - |           |                     |     2     | -----------------+ | =
+| | | |
+> - |           |                     +-----------+                    | =
+| | | |
+> - |           |                     |     3     | -------------------+ =
+| | | |
+> - |           |                     +-----------+                      =
+| | | |
+> - |           |                     |     4     | =
+---------------------+ | | |
+> - |    PMD    |                     +-----------+                      =
+  | | |
+> - |   level   |                     |     5     | =
+-----------------------+ | |
+> - |  mapping  |                     +-----------+                      =
+    | |
+> - |           |                     |     6     | =
+-------------------------+ |
+> - |           |                     +-----------+                      =
+      |
+> - |           |                     |     7     | =
+---------------------------+
+> +    HugeTLB                  struct pages(8 pages)                 =
+page frame (new)
+> + +-----------+ ---virt_to_page---> +-----------+   mapping to   =
++----------------+
+> + |           |                     |     0     | -------------> |     =
+  0        |
+> + |           |                     +-----------+                =
++----------------+
+> + |           |                     |     1     | ------=E2=94=90
+> + |           |                     +-----------+       |
+> + |           |                     |     2     | ------=E2=94=BC      =
+  +----------------------------+
+> + |           |                     +-----------+       |        | A =
+single, per-node page    |
 
-> 
-> I've bookmarked these reviewer comments:
-> 
-> https://lkml.kernel.org/r/CAO9r8zOhZgrym6oSrtg7b+HmNHEfWuAzZ0i8eYhm5-OEnfFLdw@mail.gmail.com
-> https://lkml.kernel.org/r/aZ-R87JfacQ2gGq1@linux.dev
+You've changed it to per-node-per-zone. Need update.
 
-Based on Yosry Ahmed's suggestion and diff, the method has been changed
-to non-atomic mode, so there is no need to test the perfomance impact of
-atomic mode.
-
-> https://lkml.kernel.org/r/aZ-kefGBeT-RzGcG@linux.dev
-
-This redundant declaration has been removed.
-
-Thanks,
-Qi
-
-> 
-> Were they all addressed in some fashion?
-> 
-> 
->   include/linux/memcontrol.h |    1
->   mm/memcontrol-v1.h         |    1
->   mm/memcontrol.c            |   89 ++++++++++++++++++++++++++---------
->   3 files changed, 68 insertions(+), 23 deletions(-)
-> 
-> --- a/include/linux/memcontrol.h~mm-memcontrol-prepare-for-reparenting-non-hierarchical-stats-update
-> +++ a/include/linux/memcontrol.h
-> @@ -956,7 +956,6 @@ static inline void mod_memcg_page_state(
->   
->   unsigned long memcg_events(struct mem_cgroup *memcg, int event);
->   unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
+> + |           |                     |     3     | ------=E2=94=BC------>=
+ | frame shared among all     |
+> + |           |                     +-----------+       |        | =
+hugepages of the same size |
+> + |           |                     |     4     | ------=E2=94=BC      =
+  +----------------------------+
+> + |           |                     +-----------+       |
+> + |           |                     |     5     | ------=E2=94=BC
+> + |    PMD    |                     +-----------+       |
+> + |   level   |                     |     6     | ------=E2=94=BC
+> + |  mapping  |                     +-----------+       |
+> + |           |                     |     7     | ------=E2=94=98
+>  |           |                     +-----------+
+>  |           |
+>  |           |
+> @@ -172,16 +174,6 @@ The contiguous bit is used to increase the =
+mapping size at the pmd and pte
+> (last) level. So this type of HugeTLB page can be optimized only when =
+its
+> size of the ``struct page`` structs is greater than **1** page.
+>=20
+> -Notice: The head vmemmap page is not freed to the buddy allocator and =
+all
+> -tail vmemmap pages are mapped to the head vmemmap page frame. So we =
+can see
+> -more than one ``struct page`` struct with ``PG_head`` (e.g. 8 per 2 =
+MB HugeTLB
+> -page) associated with each HugeTLB page. The ``compound_head()`` can =
+handle
+> -this correctly. There is only **one** head ``struct page``, the tail
+> -``struct page`` with ``PG_head`` are fake head ``struct page``.  We =
+need an
+> -approach to distinguish between those two different types of ``struct =
+page`` so
+> -that ``compound_head()`` can return the real head ``struct page`` =
+when the
+> -parameter is the tail ``struct page`` but with ``PG_head``.
 > -
->   unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
->   bool memcg_stat_item_valid(int idx);
->   bool memcg_vm_event_item_valid(enum vm_event_item idx);
-> --- a/mm/memcontrol.c~mm-memcontrol-prepare-for-reparenting-non-hierarchical-stats-update
-> +++ a/mm/memcontrol.c
-> @@ -234,11 +234,19 @@ static inline void reparent_state_local(
->   	if (cgroup_subsys_on_dfl(memory_cgrp_subsys))
->   		return;
->   
-> +	/*
-> +	 * Reparent stats exposed non-hierarchically. Flush @memcg's stats first
-> +	 * to read its stats accurately , and conservatively flush @parent's
-> +	 * stats after reparenting to avoid hiding a potentially large stat
-> +	 * update (e.g. from callers of mem_cgroup_flush_stats_ratelimited()).
-> +	 */
->   	__mem_cgroup_flush_stats(memcg, true);
->   
->   	/* The following counts are all non-hierarchical and need to be reparented. */
->   	reparent_memcg1_state_local(memcg, parent);
->   	reparent_memcg1_lruvec_state_local(memcg, parent);
-> +
-> +	__mem_cgroup_flush_stats(parent, true);
->   }
->   #else
->   static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-> @@ -442,7 +450,7 @@ struct lruvec_stats {
->   	long state[NR_MEMCG_NODE_STAT_ITEMS];
->   
->   	/* Non-hierarchical (CPU aggregated) state */
-> -	atomic_long_t state_local[NR_MEMCG_NODE_STAT_ITEMS];
-> +	long state_local[NR_MEMCG_NODE_STAT_ITEMS];
->   
->   	/* Pending child counts during tree propagation */
->   	long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
-> @@ -485,7 +493,7 @@ unsigned long lruvec_page_state_local(st
->   		return 0;
->   
->   	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> -	x = atomic_long_read(&(pn->lruvec_stats->state_local[i]));
-> +	x = READ_ONCE(pn->lruvec_stats->state_local[i]);
->   #ifdef CONFIG_SMP
->   	if (x < 0)
->   		x = 0;
-> @@ -494,6 +502,9 @@ unsigned long lruvec_page_state_local(st
->   }
->   
->   #ifdef CONFIG_MEMCG_V1
-> +static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-> +				     enum node_stat_item idx, int val);
-> +
->   void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
->   				       struct mem_cgroup *parent, int idx)
->   {
-> @@ -506,12 +517,10 @@ void reparent_memcg_lruvec_state_local(s
->   	for_each_node(nid) {
->   		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
->   		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
-> -		struct mem_cgroup_per_node *parent_pn;
->   		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
->   
-> -		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-> -
-> -		atomic_long_add(value, &(parent_pn->lruvec_stats->state_local[i]));
-> +		__mod_memcg_lruvec_state(child_lruvec, idx, -value);
-> +		__mod_memcg_lruvec_state(parent_lruvec, idx, value);
->   	}
->   }
->   #endif
-> @@ -598,7 +607,7 @@ struct memcg_vmstats {
->   	unsigned long		events[NR_MEMCG_EVENTS];
->   
->   	/* Non-hierarchical (CPU aggregated) page state & events */
-> -	atomic_long_t		state_local[MEMCG_VMSTAT_SIZE];
-> +	long			state_local[MEMCG_VMSTAT_SIZE];
->   	unsigned long		events_local[NR_MEMCG_EVENTS];
->   
->   	/* Pending child counts during tree propagation */
-> @@ -835,7 +844,7 @@ unsigned long memcg_page_state_local(str
->   	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->   		return 0;
->   
-> -	x = atomic_long_read(&(memcg->vmstats->state_local[i]));
-> +	x = READ_ONCE(memcg->vmstats->state_local[i]);
->   #ifdef CONFIG_SMP
->   	if (x < 0)
->   		x = 0;
-> @@ -843,6 +852,51 @@ unsigned long memcg_page_state_local(str
->   	return x;
->   }
->   
-> +static void __mod_memcg_state(struct mem_cgroup *memcg,
-> +			      enum memcg_stat_item idx, int val)
-> +{
-> +	int i = memcg_stats_index(idx);
-> +	int cpu;
-> +
-> +	if (mem_cgroup_disabled())
-> +		return;
-> +
-> +	cpu = get_cpu();
-> +
-> +	this_cpu_add(memcg->vmstats_percpu->state[i], val);
-> +	val = memcg_state_val_in_pages(idx, val);
-> +	memcg_rstat_updated(memcg, val, cpu);
-> +	trace_mod_memcg_state(memcg, idx, val);
-> +
-> +	put_cpu();
-> +}
-> +
-> +static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-> +				     enum node_stat_item idx, int val)
-> +{
-> +	struct mem_cgroup_per_node *pn;
-> +	struct mem_cgroup *memcg;
-> +	int i = memcg_stats_index(idx);
-> +	int cpu;
-> +
-> +	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
-> +	memcg = pn->memcg;
-> +
-> +	cpu = get_cpu();
-> +
-> +	/* Update memcg */
-> +	this_cpu_add(memcg->vmstats_percpu->state[i], val);
-> +
-> +	/* Update lruvec */
-> +	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
-> +
-> +	val = memcg_state_val_in_pages(idx, val);
-> +	memcg_rstat_updated(memcg, val, cpu);
-> +	trace_mod_memcg_lruvec_state(memcg, idx, val);
-> +
-> +	put_cpu();
-> +}
-> +
->   void reparent_memcg_state_local(struct mem_cgroup *memcg,
->   				struct mem_cgroup *parent, int idx)
->   {
-> @@ -852,7 +906,8 @@ void reparent_memcg_state_local(struct m
->   	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
->   		return;
->   
-> -	atomic_long_add(value, &(parent->vmstats->state_local[i]));
-> +	__mod_memcg_state(memcg, idx, -value);
-> +	__mod_memcg_state(parent, idx, value);
->   }
->   #endif
->   
-> @@ -4174,8 +4229,6 @@ struct aggregate_control {
->   	long *aggregate;
->   	/* pointer to the non-hierarchichal (CPU aggregated) counters */
->   	long *local;
-> -	/* pointer to the atomic non-hierarchichal (CPU aggregated) counters */
-> -	atomic_long_t *alocal;
->   	/* pointer to the pending child counters during tree propagation */
->   	long *pending;
->   	/* pointer to the parent's pending counters, could be NULL */
-> @@ -4213,12 +4266,8 @@ static void mem_cgroup_stat_aggregate(st
->   		}
->   
->   		/* Aggregate counts on this level and propagate upwards */
-> -		if (delta_cpu) {
-> -			if (ac->local)
-> -				ac->local[i] += delta_cpu;
-> -			else if (ac->alocal)
-> -				atomic_long_add(delta_cpu, &(ac->alocal[i]));
-> -		}
-> +		if (delta_cpu)
-> +			ac->local[i] += delta_cpu;
->   
->   		if (delta) {
->   			ac->aggregate[i] += delta;
-> @@ -4289,8 +4338,7 @@ static void mem_cgroup_css_rstat_flush(s
->   
->   	ac = (struct aggregate_control) {
->   		.aggregate = memcg->vmstats->state,
-> -		.local = NULL,
-> -		.alocal = memcg->vmstats->state_local,
-> +		.local = memcg->vmstats->state_local,
->   		.pending = memcg->vmstats->state_pending,
->   		.ppending = parent ? parent->vmstats->state_pending : NULL,
->   		.cstat = statc->state,
-> @@ -4323,8 +4371,7 @@ static void mem_cgroup_css_rstat_flush(s
->   
->   		ac = (struct aggregate_control) {
->   			.aggregate = lstats->state,
-> -			.local = NULL,
-> -			.alocal = lstats->state_local,
-> +			.local = lstats->state_local,
->   			.pending = lstats->state_pending,
->   			.ppending = plstats ? plstats->state_pending : NULL,
->   			.cstat = lstatc->state,
-> --- a/mm/memcontrol-v1.h~mm-memcontrol-prepare-for-reparenting-non-hierarchical-stats-update
-> +++ a/mm/memcontrol-v1.h
-> @@ -45,7 +45,6 @@ static inline bool do_memsw_account(void
->   
->   unsigned long memcg_events_local(struct mem_cgroup *memcg, int event);
->   unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx);
-> -void mod_memcg_page_state_local(struct mem_cgroup *memcg, int idx, unsigned long val);
->   unsigned long memcg_page_state_local_output(struct mem_cgroup *memcg, int item);
->   bool memcg1_alloc_events(struct mem_cgroup *memcg);
->   void memcg1_free_events(struct mem_cgroup *memcg);
-> _
-> 
+> Device DAX
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> --=20
+> 2.51.2
+>=20
 
 
