@@ -4,181 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2295BEA4E16
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A93EA4E0A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65D326B0096; Mon,  2 Mar 2026 10:02:05 -0500 (EST)
+	id 131796B0005; Mon,  2 Mar 2026 10:11:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 607C46B0098; Mon,  2 Mar 2026 10:02:05 -0500 (EST)
+	id 0DF4F6B0088; Mon,  2 Mar 2026 10:11:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E9876B0099; Mon,  2 Mar 2026 10:02:05 -0500 (EST)
+	id F205B6B0089; Mon,  2 Mar 2026 10:11:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8C96B0096
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:02:05 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DEE19139617
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:02:04 +0000 (UTC)
-X-FDA: 84501438168.07.902B6AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 13F322001A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:02:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWobLmgR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E10546B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:11:10 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D0771395DD
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:11:10 +0000 (UTC)
+X-FDA: 84501461100.11.6F93C22
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6DBC310000D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:11:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=invisiblethingslab.com header.s=fm3 header.b=bv1cihPJ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RzaYC7Vh;
+	spf=pass (imf14.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 202.12.124.149 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
+	dmarc=pass (policy=none) header.from=invisiblethingslab.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772463723;
+	s=arc-20220608; t=1772464268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4purr9g2jDLq1xATzSq4NNlN7ztx3MpQ0ZlkoqljMqc=;
-	b=B+zPDE/QByRlqvoOs0emVUFqF4Q40Ki9DdPPwairEC8Ow31Zrylfzvjp70A4vPl4Kbz8H4
-	83g3h/x925N+U4XxfeYqT99PC3ubPG1HW8zI5Y5f+Sg22Q9aqIP2uBvL/1QaQETz1JswKv
-	csamj8KRAHnAGH/PmvbfZ2dE1LpsuVQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lWobLmgR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772463723; a=rsa-sha256;
+	bh=G24RGZBjHPFOcShGwGjtJ8caC1FzHlA/t0hF5wZgn9c=;
+	b=I47BgxWykQWUm/RIQVbWe1kENobId18kHLYpRaraFYgV8FvXahBZ0EWsgkLhjt7hzKawH5
+	sZiVF91FMJLxwqK3d2d407O6AU4OCrl3SID6v+Vx/utpLXuXN0zaND/zeelFpuYGSqgXao
+	4PBWuLt9iiO7/bdsK8O/cY054yDtnaA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772464268; a=rsa-sha256;
 	cv=none;
-	b=UVu69B47/V7h/gZkKY5Lfo54x45Bpj3g9MuyK48IsAwcxDAJdtnOHUlXGv9d7IjbeqDDce
-	exk9EPQaMZlE77sAZnG2dnSMMBAlIWN60YpG0scNMpTYlwzhPs9aduV+03MMD2RJg0zrmU
-	CaSoJkpbW1NrrT/WO92BEqMu8iVjRNc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1FD3943C3E;
-	Mon,  2 Mar 2026 15:02:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EBCC2BC86;
-	Mon,  2 Mar 2026 15:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772463722;
-	bh=uVJ5W8RDb0Q88US960LmNDSuXSSlf4Uim4+IPeDSNK0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lWobLmgREDwCa6QJLQmI5nIpISCGpMz7a96V/QGuOD82cePN323mHvFoxTP1HMQXE
-	 TEaW5klupi0q9iOOyV3zX0p+vJPBLURsBza5jkwf8oHWEiS+DmrV90MsaZJvyIAWXA
-	 LmJUzzTz9OeLqMT8490VjGBPuNCuBi0cOHGtUDPW5mA5DUM4g5gYhCAjJgHjclfQQf
-	 Wyh6s4c/gljdfNCRpBViW0sUIvwawSGQ0A0NjL+baYteKTP/noHei+HmgPZ2rtoz4v
-	 16jo5mwPvKK0NVOkHwqcyW/lppDuIFNh/+BCNXyFZc2ZcygDWLUOa4LNBq8ExGNTvh
-	 HavSfwlo4KjgA==
-Message-ID: <5f8dcb7f-9e4f-4484-b160-3a9ce541d63c@kernel.org>
-Date: Mon, 2 Mar 2026 16:01:44 +0100
+	b=TFnh0HD+iZrpx3M5hRgIdfVfE53sOzGg2Cg74/X5kw4El04j7WW6/8Yqq3JxBTfzXzIDA1
+	6QpMETC9DvoUXGSvdYC+YHigNP1Bp6YLD8CSxLtXgZA7g0S8AUlU630tajeD7EbayeEZiS
+	+f15fM700PA9BbbtRjNnXEj9sn5xeRg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=invisiblethingslab.com header.s=fm3 header.b=bv1cihPJ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=RzaYC7Vh;
+	spf=pass (imf14.hostedemail.com: domain of marmarek@invisiblethingslab.com designates 202.12.124.149 as permitted sender) smtp.mailfrom=marmarek@invisiblethingslab.com;
+	dmarc=pass (policy=none) header.from=invisiblethingslab.com
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4C57C1D00231;
+	Mon,  2 Mar 2026 10:11:06 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 02 Mar 2026 10:11:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1772464266;
+	 x=1772550666; bh=G24RGZBjHPFOcShGwGjtJ8caC1FzHlA/t0hF5wZgn9c=; b=
+	bv1cihPJhnbx3v8DhHB79R5TJpJVuiU8OxBRgcisWXPnWAzwq7uBh/hdDfN4Ae3X
+	C2seMVC7kxmEO9BbMEQu80P/Dnj+NttxSLMlNdBGypCOpAmedaXG6N0lUUUpB+Cj
+	q43QNt1hnX7nkxtns4wkWVjc7C+VGAj3Wgz896nEM5xoHflPY5hspRRKBxDLAVXG
+	z3hyGypHxksDyYAQO2lSRnaqluqgHGoQysr/2HZuS4S7UrCuNYpchPT3IYYd15rW
+	GfK++/ZJrCa/B1N/aEaIc9+Cb92iIFeLKhqviT+TPYj91s8JkXL7XeOH64thER+H
+	xEebQpaFpIhU/6yJCZu8Pg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1772464266; x=1772550666; bh=G24RGZBjHPFOcShGwGjtJ8caC1FzHlA/t0h
+	F5wZgn9c=; b=RzaYC7Vh/wmZhzD40BszbqWPqEsg6FNcOJ3gDqILrdiCUd3De62
+	oBk0QpWJFrhJfBQRWs3GywP8gYLaLD0EFuoLv2bm/To7bthv6/vIrdPB6AypB7ga
+	jy5gXdHL9D7R9uMtaS3ZCjvV8vTHbPb5KXT0icjeGMGu9bc5Msp5Xq3i/K0AEc25
+	UiBIFdICkA4FkWPjbM0naS5AnHHVhlR0giMSohwJKG0dcWDYsEqaRonnvXvk6Y/j
+	UbYwGtzcWfMDB+3iT6tn+0nwQHUfd+BQSgfg1hzijj4AEeAfxKB8HSYNZVKCDiQj
+	8YhRUZjAOXZ1oZGxLREmdSJT3b0yXD1if9g==
+X-ME-Sender: <xms:iailaeDZpghtf44tYRwCqGWLaodyWbf0EqSgh1ziUadKBZETYPOJxg>
+    <xme:iailaawIGLDLCQMf2Ogvf4tEZx66Bz2AoMLz39YyoqYdHw4wBAut7UqKAMUs1rhCs
+    VWxtM3zoTkpTwxFyx5Qso4vCGC-EPTrsKPadIvEugq-LlZgKA>
+X-ME-Received: <xmr:iailaT0V2qNAShIpa2T78FrSl4oThmckKSJbVUG_zo-6lDeure62MdJXAprRZ4ztMQVJheMdF6TTb2yqzW70MfS5P40iKSHdI08>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheektddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgvkhcu
+    ofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinhhvih
+    hsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfduleet
+    feevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghksehi
+    nhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomhdpnhgspghrtghpthhtohepjedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtohepjhhgrhhoshhssehsuhhsvgdrtghomhdprhgtphhtthhopeigvghnqd
+    guvghvvghlsehlihhsthhsrdigvghnphhrohhjvggtthdrohhrghdprhgtphhtthhopegs
+    ohhrihhsrdhoshhtrhhovhhskhihsehorhgrtghlvgdrtghomhdprhgtphhtthhopegrkh
+    hpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepvhgsrggs
+    khgrsehsuhhsvgdrtgiipdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorh
+    hg
+X-ME-Proxy: <xmx:iailaSxH27vpVDLkqdCVspOgFPwiPOpM4qNXirK0raRbIqF2uMIusw>
+    <xmx:iailaSGqkwoKZ1RmBj433ikmczZCAUHBNAh3887YfgivKuw__GrQIw>
+    <xmx:iailadZ1cvLoKdtL8fvkm7dSCh4A9DVKEgYEwbkEfVPw0sVzS6Lt3w>
+    <xmx:iailacDLvLk-EPzP9Gw_sa0I_ZHT2y9ellDxAdphOKSSnBObA-4ZXg>
+    <xmx:iqilaY0HnQb33ioVr7cH80GymHby5IbQVsy_teNrOWas96u321-31s9f>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Mar 2026 10:11:04 -0500 (EST)
+Date: Mon, 2 Mar 2026 16:11:02 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+	xen-devel <xen-devel@lists.xenproject.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
+Subject: Re: Excluding init_on_free for pages for initial balloon down (Xen)
+Message-ID: <aaWohimzb5P8n0YU@mail-itl>
+References: <aaRVcVmtv2UBD-GF@mail-itl>
+ <513e624f-35c1-4d43-ba3f-c96af613d400@suse.com>
+ <224968e6-7236-4efe-bcc0-ab39ac0c6c45@kernel.org>
+ <aaVuB3x3y4ROr5XA@mail-itl>
+ <663cff60-8181-4a47-beff-204bfe01bb06@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from
- zap_page_range_single()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-3-david@kernel.org> <aaLh2BxSgC9Jl5iS@google.com>
- <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
- <aaVf5gv4XjV6Ddt-@google.com>
- <f2f3a8a1-3dbf-4ef9-a89a-a6ec20791d1c@kernel.org>
- <aaVnifbdxKhBddQp@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aaVnifbdxKhBddQp@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 13F322001A
-X-Stat-Signature: zicxsaujr85cc7eandb7cj1unzjntspo
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="MpPnWTvKkkn2ESlm"
+Content-Disposition: inline
+In-Reply-To: <663cff60-8181-4a47-beff-204bfe01bb06@kernel.org>
+X-Stat-Signature: 75dmkberuyaxs5n791hc3ujo4icr1scw
 X-Rspam-User: 
-X-HE-Tag: 1772463722-154315
-X-HE-Meta: U2FsdGVkX1/wG5PlMgi6b/Rnvb1dYm5gzvkKvKtzGchxqlkqAFHR6M2/mJ5a58fatpQuB3V6GoYXagYnC8RrQXzdkaNxag3kNi0fyeUX0OXXJF5DePM4wSrFmecEFp+ZVQ+ugMpZ35bTzceAOPewbn/iD4y6zQ2mG5hvumSl4p/3kpHfiZjdlBU/iPDeKDlQCTBhR1FKLcwQpuFlVXGSGbyUjH95gwL6ZbSdqyj3Xw/lQcdtR89hnIm2vOWucygzDdriVJ2OpNK2rVIh6yqly2vHWGsrXc2X9ChVAowTbg66EjxKwzSNrCM0YjSB/IwRnJBpp3U9CoVJHuoml/6Tt67QfDv+jI+RTI15wx6bEJzfsACz6P1X45aJzcU0HEOGX04vNzrBqpOc/25/M2NM+7cfXchI5XU/Dg90j7Bsozq3Kcuf1ljXD9DBM2K9HAsA6yLu5++jfXCs9gJw2h2lIx4KtvPReQ5RqjYquXrRNnZm8QwfXFkETTg0furvVkg5fn9rdtMLqZ569vJnzXF5ynbKoEvb82OMSmuMZo1DVfiy6M/VGw6hTbdN7qhiqTpM1onqd4SCNbQfn+vVcrAcd+wIDxd5yO3dECJDhdqNILv7qMy+/dHCdqlZedJPHHSgh38nN0C1hz06Ufk29qztrrQUBG/icnVekwBcRKO68SX8Kiob7bffrtH769gCnMiZPNW3zJvzCtmkTtqulnG+R8ZHt+gR1SUNF4btuPkF1WheWhMHZ0Oc6UUP/RfA931Nv296XSIx7QlGz5em1z+iD6rC+ubgm8R5W3FUR538b7O3rgYZw3Mdyq2Pz8LFo2q/jvbTd8q6fvrfcvXCVexwBBZVikG/FufYwAPhFiqoupIwXFCMvD0c7/W8J9tnrEz39sNz8rVIyce1N8sGTKXD0mlueQFh2iCXjTAeYaFgglOJkwtpvDov4nzKbS3xuUhhdLO9bN791bbTeDE4AVW
- srrout1Y
- l3cPvGFX5T6uuVYQ=
+X-Rspamd-Queue-Id: 6DBC310000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772464267-270766
+X-HE-Meta: U2FsdGVkX1+N1z0JUSQ6wk67ULd+QDB/L8UtPdIqOy0oDu0+I/hK2nPwBisQ3F4vyvZTcGp0B9pG6ujOcSj6kDhbvn6y47IvZ+5V0DOAAFgfN/n2gvAHAls9DqAGX3PDxkwx2rvgkQv5PwWNaR3W50I/Yk6Hoi3+ti1l6yGdrY4fZHbVpHfDr64ZgJsZQtBVkc+eYXu2SzXGpTdb6mCfgRiIQMRjDTZ7NGOThONAe9a6bHIdXSgfD398q4te/FRYrMpwXxVNLFzevLjPzhnsIBLhQGAac8wKvUGUqYsvg7DTq9RyYlfgZ/vgRRZ0kWieJsNrmW4vZQZaDeuzP4TdaSJTq7ZYb8Ks6zcqVuzXJWy8uh9vK+luLyH8Rww9C+58GEOAdfYUDFAMLJgYUrkNfuTDBcn7StBKTCx2wZDjNfBi9BsiUfmjLfjNo0mXAcXk/8sC9jFscr2evu/1CQNk14ORl+VTSgevr9LNVlvPDZ70IUXfRiE2jf0iGt+n8ZD1J4x6gwPZn6De+F11FAzqXV3Y7OP9v1faR/wBfzqYcnlAnN39KyMzZBARUjL4GJ/unLnUj+g57iG/gep0mK2Dr84OLlhnxaRCEziypdOzwpA4rCoXB64NuZGa8qtRrp2QkmNOhx7yG7nW/YY3JRk68Ks3DEFqwHnBljH+09Acjwsr/NB3SXW+MIVy8iKRO9tFku47bkB/zYXHNhaWttZuLo+c4EWjVo4tZkIjZX62J8XGrCd7zSnS44gNGKYwlWb/fxgZ3IHnt+l27GoGRJdQc5SwmP0KMSa/Zv7xofY2rBUon9y6Epj5KorS+pFYRlC2DvvnCRbkW3aOmTl1hsqcJycvJvzMCbsDfhD59ZS5LQYOUM2uGAZd1zot0nfJSlHHrl/HleTKZpRHvQYD+8YJdb+eysomI15UokDhKIr/spQTd56sj6c63c1hCdPF6pywp5gWmtfLIdYAWnlk68w
+ 4Tk1n6oa
+ z6AzyxFIXarwys3mA28TJWNdvnti4QxbrGiAjddTXqoNTRZ0LNOVbrMMY71O4kmxfoR+7tWygILuXxui+cQT5cMiOCtI3M8fNZ0yO2Ie1bX3rLNydM6j8E0+ouZWV9kuwr2fOBuE6Dxd5pbFtUDH113VYgcN3FEAuGgH1lBOl+PT6YEjjNU1VgVVJwpVaevoXK+FmPj+BGA0LbJ9uOELMcEM5b7CuT3JLYyAJCrYyCd3FbmzLwPRj0SzP0yF13WoeGsY1kIm/V15RCbZKt/CGMQHpVex4yk7R1fFyt6/YTC5qB6sfE2Kcdfkjoa3pdta4WRkKzDg5MWvIVsM8hZ+HawIhXKMdPDoSxabX9AdqVtWDTVwMGMDxTjwWvy85+Myu3Fg1c/GnyDH8daE7BbBN0ZjDRU/Bw9e6uVBIJdAKltvbOU9uxT97+oRsSCrbwaA5nBVjjISdUuQUPJ9VY9r4WrOcmSlKCJh87FEPDcc+dZE46CmoSIfJagROP0+OPrcnla/FycK3IT88N+bBZgeA+L+yeAXEXF9Hvh8UVqXUqNloc28=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,46 +141,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/26 11:33, Alice Ryhl wrote:
-> On Mon, Mar 02, 2026 at 11:27:40AM +0100, David Hildenbrand (Arm) wrote:
->> On 3/2/26 11:01, Alice Ryhl wrote:
->>>
->>> Well, rustfmt comes with the compiler, and it would be ideal to build
->>> test changes before sending them :)
->>
->> At least on Ubuntu on my notebook where I do most of the coding+patch
->> submissions it's a separate package?
->>
->> I do all my builds on a different (more powerful) machine where the
->> whole rust machinery's in place. Further, build bots that run on my
->> private branches did not report any issues.
-> 
-> There are some build bots that check for rustfmt, though not all of
-> them.
-> 
->>> But no worries, I took care of testing it. Thanks for taking the time to
->>> update the Rust code as well.
->>
->> I just did an allyesconfig and it does not report any warnings.
->>
->> So apparently, rustfmt problems not result in the compiler complaining?
->>
->> Or something else is off here that rust/kernel/mm/virt.rs won't get
->> compiled on my machine, even with allyesconfig. I can definitely see
->> some RUSTC stuff happening in the logs, like
->>
->> 	RUSTC L rust/kernel.o
->>
->> Thanks for the review and for pointing out rustfmt!
-> 
-> Similar to kerneldoc and other similar targets, formatting isn't checked
-> in the normal build, but make can be invoked on the rustfmtcheck target
-> to check it.
 
-Thanks adding that to my cross-compile chain.
+--MpPnWTvKkkn2ESlm
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 2 Mar 2026 16:11:02 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+	xen-devel <xen-devel@lists.xenproject.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
+Subject: Re: Excluding init_on_free for pages for initial balloon down (Xen)
 
--- 
-Cheers,
+On Mon, Mar 02, 2026 at 03:54:12PM +0100, David Hildenbrand (Arm) wrote:
+> >=20
+> >> Whatever leaves the buddy shall be zeroed out. If there is a
+> >> double-zeroing happen, the latter could get optimized out by checking
+> >> something like user_alloc_needs_zeroing().
+> >>
+> >> See mm/huge_memory.c:vma_alloc_anon_folio_pmd() as an example where we
+> >> avoid double-zeroing.
+> >=20
+> > It isn't just reducing double-zeroing to single zeroing. It's about
+> > avoiding zeroing such pages at all. If a domU is started with
+> > populate-on-demand, many (sometimes most) of its pages are populated in
+> > EPT. The idea of PoD is to start guest with high static memory size, but
+> > low actual allocation and fake it until balloon driver kicks in and make
+> > the domU really not use more pages than it has. When balloon driver try
+> > to return those pages to the hypervisor, normally it would just take
+> > unallocated page one by one and made Linux not use them. But if _any_
+> > zeroing is happening, each page first needs to be mapped to the guest by
+> > the hypervisor (one trip through EPT), just to be removed from them a
+> > moment later...
+>=20
+> The same is true for most balloon drivers, including virtio-balloon.
+>=20
+> So far nobody really cared about that, though, as init_on_free usually
+> comes with such a high performance price tag that people in cheap VMs
+> (where you overcommit etc) don't enable it.
+>=20
+> __GFP_BALLOON_OUT is just nasty.
+>=20
+> We could probably have a special allocation interface (not exposed to
+> arbitrary kernel modules) and have things like mm/balloon.c consume that.
+>=20
+>=20
+> IIUC, xen balloon does not use the memory balloon infrastructure,
+> though.
 
-David
+Is there some fundamental reason for that? By looking at the code, the
+migration to use mm/balloon.c shouldn't be that hard (famous last
+words...).
+
+> So we'd need some EXPORT_SYMBOL_FOR_MODULES() magic.
+
+Then this wouldn't be necessary.
+
+> Like an
+>=20
+> 	struct page *alloc_balloon_pages(gfp_t gfp, unsigned int order);
+>=20
+> Where we only support a subset of gfp flags, for example, to now having
+> to deal with mempolicy.
+>=20
+> But it needs a bit of code to make it fly, so I am not sure if the page
+> allocator wants to support that.
+
+
+PS adding linux-mm, which I forgot initially...
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--MpPnWTvKkkn2ESlm
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmmlqIYACgkQ24/THMrX
+1yzgLAf/ZIEUT6k9z5/fgbuUUNXHUz/cYZVPQQ7+FxWEUSulVLSDU11knsr8AE8V
+KxL6265ebqfUlsCxJC/wi4zFN29L+Dy9JHUy5hMAPUSoQF2DPjKjG6JKvFYixjiA
+pT/r6IV65IORZtyKlkkhrcoXI/hKSWclI05axyUwS1xvtEtEmoS1Mb8bZy3jlOue
+N9tMSkq7MECf8cTg6CXK+koIG3A3WZDS1ZN3jZy7sF9/tKhQILstDQnsBsm8unfb
++vOUYUGxftpEGYeJLBHcq/ExwQS9E6FX4aaDF/ISzt8Z06KWRxyROBQYFXvPkftN
+zhM67qb2vVV2kFIVpKHV6mat3UONCg==
+=sXTT
+-----END PGP SIGNATURE-----
+
+--MpPnWTvKkkn2ESlm--
 
