@@ -4,143 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64996EA4E09
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDECEA4E07
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6F396B008C; Mon,  2 Mar 2026 09:40:36 -0500 (EST)
+	id 60D286B0005; Mon,  2 Mar 2026 09:43:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B46696B0092; Mon,  2 Mar 2026 09:40:36 -0500 (EST)
+	id 5BAAE6B0089; Mon,  2 Mar 2026 09:43:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A69216B0093; Mon,  2 Mar 2026 09:40:36 -0500 (EST)
+	id 4E4216B008A; Mon,  2 Mar 2026 09:43:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 97BEE6B008C
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:40:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 423F8B6874
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:40:36 +0000 (UTC)
-X-FDA: 84501384072.14.BE9CAB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 837084000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:40:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i3jVvCCf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A3006B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:43:24 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EA07A1B5F2C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:43:23 +0000 (UTC)
+X-FDA: 84501391086.01.97D1F62
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 951B4180005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:43:20 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772462434;
+	s=arc-20220608; t=1772462602;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qa6g6TnMMEkaRKPiNfgt8jxQ7MgzSzUcxh0lMlIw+vw=;
-	b=shUGI6TgaZquU+E7JY+98yY8kjNPe6GyQX6xI5rCmM0AWQibF6InKOzaVHICaip3zvUBXJ
-	IyUKdKePZj2aRr0oZjLzprQx4Sq/Cgah2tEBq1hDE4jnnVYOEKpjJh+N8PAFK1jFHxTzQo
-	zLEKRF5invg8gXhRBtULWhd7+N62frA=
+	 in-reply-to:in-reply-to:references:references;
+	bh=sTOxeQUythKBqQ0Mf8KCN7EvwN/l9/1rfOnnFjXHzOE=;
+	b=7yPoru45B5lL1n3MhTO/K+4Mdy8SB5tQMdrPX+m1iSLKl3v9X3dOlV0HhJV3vj0nwQjIlr
+	Lvdy/+4BJ9Er8Cf2u7x6tmaUQPAJGMvjeT7VU1KiZEZad2rk851jyqTWnm5hZYUIcR4Rtf
+	FjOsS4DCMIgi79RxEAnqsmDc4sWetws=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i3jVvCCf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772462434; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772462602; a=rsa-sha256;
 	cv=none;
-	b=Dp+sBO7yoP/FrLg7CeS7i2H9dC62ZIv8/8jdwFfryAWX2mvdo9cPNStIcH5dIALlSqneWs
-	/jyGqSFieaShkyEjj8DDd458WdfAv0XJhVnqH2BqThh1kj358agUeY7Qu6LGZA2JrAwcME
-	1IJaev+pZGi+NaE2C9jpKN9BZlikoGI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D496E60008;
-	Mon,  2 Mar 2026 14:40:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB07CC19423;
-	Mon,  2 Mar 2026 14:40:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772462433;
-	bh=wpFu9y+6TnLxJpo9lrnsoN4LUcOEqD5oLyYF4BEFJyk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i3jVvCCfvaFrhQXN+TRWNan8/m8GQBfWL/HDjS+ZSau1QmHjw2jGc1vQn2tsHxnbV
-	 miA+rIyjjUT/x3C7hSXPZ9Z1WLdHN86DQhaoUuLeAAPDbHBZ8LaQhx9SwE4G4XjGSF
-	 tLEuyQ7iz/EPQFJX9GLkf9louxvnrl6IJjkuCXGkIpj+opXB/oAA9gSBnRGJT7PNqJ
-	 t2Xm0ISLIIb6Nl78y9uUOpKF+Tq2AvR0+ycjAVlFK6hOLfy94vXI6N+45b2rUHKXdH
-	 9GUSZrrT0jfy6OYrTTmfTKLOSPIFKl/tJ3toKQzqnFQNg1gwX7haV1FIWnYE6mF12q
-	 XCtRX1jJXIRcQ==
-Message-ID: <f41facc9-42b1-4c58-a681-715961631fce@kernel.org>
-Date: Mon, 2 Mar 2026 15:40:26 +0100
+	b=lMbUfuj2U0KRJhZeuxjsHbnzbEJ4nYxHLpsl22NBs00mJzSfRE6yEWPqXIPjIPR245Q82S
+	OEJfFznHZaH8zHUyAzyJc546nfkzvgbdmxQI4lMtYvB50N69uHsV8lOc3Y/bcCOyD/1ctv
+	kzagyfyjjQ4D+juiN78bOSqPWgvVp+Y=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 2 Mar 2026 23:43:17 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Mon, 2 Mar 2026 23:43:17 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	baohua@kernel.org
+Subject: Re: [PATCH 0/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
+References: <20260302104016.163542-1-bhe@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix a folio_split() race condition with
- folio_try_get()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260228010614.2536430-1-ziy@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260228010614.2536430-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 837084000A
-X-Stat-Signature: j8snhfdzndz8xi4nztm6tch8h1et1a53
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302104016.163542-1-bhe@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1772462434-602680
-X-HE-Meta: U2FsdGVkX18gp2oeWwd9JwNi7qaFUsEmo5g3WB8D4KevZooYkOaUCY3LJOy/TH/0RH3A0RbFHT9u1V7+bGxibVUrlENL72pU2zR3Gv0BNDIAVHpRLy0usrRR/G2VaoluOApMBMGdZzYnboB35hlMT0HGqYFh8Gjf/iWZGBa1k2okusFpRzftWGLNRciuWZZ7qKAdtOLLmroEHljienSEKE/B7FPjd/rXyKZVC8PCp9iWXx0YkVQQFcjBOQSNMzl/WQlphEFk5eMPL+SOg3H+fko3NZ2sScaciO3TmOzroctHYZKrN8kKCSAQzbhvTwIu0EW1/ExSrUR9fwPTGFW6LBrZeBjVRXyiTUqFo1k8GFldhAR8/0U+4+pbcv+9lcWQIVbNNO54G5KCFVtxG2KyfKzqB/kwIcPi0RPJRNDgU+7uiE3NPplK/nTF5j+lR47KQsmO747tssMd73efueWCMtHDBYMBkxwOJI/5Zmk3Q99J85zEJs/6rusxyeB2e4bcwPCjAc50Ee1jXJ1FmGrkBUJ2S0WuRJbr4a3qV0umqhC4MylsTO3GKNDbnaf0v0JoJ1+P2VN5xsZZ8mmYUHA82pVXDN+ajEV1KHbfBFAFQ1aNOOO0U7+h7iJO0IEGHDBclR10YLDL0cRs0D6zcVUAPN5TgHX6XgEQMUT4kmBr0XWypiN/Q5IcfmQ7dxaSjFkNnHr0QlCI6/LUQNPJtDyfbLipqvY57mkBPe1BBLrk/WYyddFxflnXMHhPIb4xXACbOYY+LzfZHuYebOYwzCfbB3BJj+4r1/R18gdcvld+jOJa0/y8LniKjM1Q459F+Nz5tnN8WP5YXscAmidksYsudVPKqzefO3cvCGkOc+ahEsrBt8f1VKk/7C1AjOjq7QQaZVsBtC5T+AHg4eHB8uNfOehIU9l0x5JUY+H53sIevkfzQv1hWNndBo+Ju6v7lfERPaXPEnsFOdZga60nDrF
- GfyFfLJw
- fhfQ0ghcv15FbueqYIoiFT+k2tdl6rHfJiuv9LDae5/tKu10I17kWgDvt4xcWdXeQ77fzykDhBhS8hdaEuwo18HblzO6IGWPKjQ7eAsG9cmhgecqdO5e6OSezbqbj+fTYkfsU5EeMNCjCfO1R7nU9GyLzeCEMpWkSXMfQs2snA6yvw+rd6l69Z1GtoLJhln/B95f4VU/CwtbtLetNtwjoIDqiwN7ZG+Iu+t6/NA9IayaWekjG2C9NTjeQLEEuqyoBvoHqC1Tes0Wyev1E+Wg48U3Rj2v7gHYTpR8al6hbRLKz204qfpyCH56kUw==
+X-Rspamd-Queue-Id: 951B4180005
+X-Rspamd-Server: rspam08
+X-Stat-Signature: pq7kmrukp9dhnrassoxzdsewa5mh67sh
+X-HE-Tag: 1772462600-432937
+X-HE-Meta: U2FsdGVkX183g/hwZAxQO1d6xAfpEm9j2W3pdN1a1Bt9aLzBiAytxsiJ9xMV5TkoJlMRUwOQuxFGe6p2w5SL9uQMFXHbEI6RE+ea0PkuIhz7dljkRm91VlJS9hMM/5706AKm2zqKs2N/0Dr+HgTIAzmecysbl51nQ99uwQTUdNX3u3D5YCpuiv7X/SmL1KBTAnr3MvoAYJStyXBZRsaLgTEzxTW8jKQZlf4+sAgj1TGxvExfkCxZrNmM1nb1F63GJJJDjlCgzKIzcM959MEL9lKHrVaXsmDZb8abRq+W9W1cqDmQ9xQ8wFg9cqyGONAihpEuOrDtl0qBe4lt0sbTUSWIJ+eXwYmxTOEsywDQLx4CBC5lOwEa/XPhqWO2FYAw5q2KlRxWz+WOoYyTCwkJ4GidEDy3CjX8vnO+SFs5a+XBshH3oL1k1OBR5UL409dZocCObjZ50gEvSWaBR2OpKHW9Zo395rze+QMFLRLX0RRGlVW8nd2uYx3/OHm62oEwgE1jsIwd8CpIfSty5U1gCv2lBUVZ8c0XADnDMhrXlTnUXiElGIPph/cHeykBwf48usOmOL7qrOD3X2L7zlnKEbsDzg6+vcg6+UzCVKyAatdkfXRL5jI2sRm9tj6W02SvK/bWDRaufNM8N9kUZW1fVXmQcfRfZBzXVBVYQ6pTaF+fmW/LLqsiwsEfXklfjoZT10LdnJyKBPasgBeDVsF730QlqItV8TDAM19G0Wqg0ilHeQchpbtq4l5uL4m7/NlgraVkNwu5Av/xXmAxG7TKiPUrClk11LdmS2Osp90hrRmAA/BzxczfgNyIMkNAQ8qdV8J985HaBYibKdKnfGG8Wn2Bs1qHto0/REEpRYQuu+ypx3BHk4SD+LeejmomLvkeEgrMTGQj98tFMoEQtE4qIgEELjV9gsRi7hp7Bgi1TU2IhyNDgwMM1Gyc+Sdj5jE5LL21reZWFoZcvcSzLQP
+ TA/1qdyC
+ wD8g2GEGghufQiUngOWDqEOeqziRcM8uS3ge+zqiLlgkC910e7DGcnTKzPf28cTrIOGxDguqs3f41Zd/0PPCEKid5lnXyCpPYUCfamNz35hDEONEaK1a2suwsxE1hi9JKe5x2xpIk0+0y9khRga6h4naitAsgrYCgMyL5ylXXQBhFecz9elXkFHY43SfK5qv2f4KIrZgC4PTt30GilhcVisZ/ZmP3C2jqXEXDVKlYgps5NDQq/WOqiai0cQh2Ohp2wbrvBMGvM5YIeER9+YXo3QxV1YOfUPHbgDIq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,36 +83,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/28/26 02:06, Zi Yan wrote:
-> During a pagecache folio split, the values in the related xarray should not
-> be changed from the original folio at xarray split time until all
-> after-split folios are well formed and stored in the xarray. Current use
-> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
-> show up at wrong indices in the xarray. When these misplaced after-split
-> folios are unfrozen, before correct folios are stored via __xa_store(), and
-> grabbed by folio_try_get(), they are returned to userspace at wrong file
-> indices, causing data corruption.
+On Mon, Mar 02, 2026 at 06:40:13PM +0800, Baoquan He wrote:
+> This can simplify the code logic and benefit any new type of swap device
+> added later.
 > 
-> Fix it by using the original folio in xas_try_split() calls, so that
-> folio_try_get() can get the right after-split folios after the original
-> folio is unfrozen.
+> And also do renaming in this patchset:
+> -------
+>    file renaming:
+>    ---
+>    mm/page_io.c to mm/swap_io.c
 > 
-> Uniform split, split_huge_page*(), is not affected, since it uses
-> xas_split_alloc() and xas_split() only once and stores the original folio
-> in the xarray.
+>    function renaming:
+>    ---
+>    swap_writepage_* to swap_write_folio_* in file mm/swap_io.c 
+> 
+> 
+> Baoquan He (3):
+>   mm/swap: rename mm/page_io.c to mm/swap_io.c
+>   mm/swap: use swap_ops to register swap device's methods
+>   mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
+> 
+>  MAINTAINERS                 |   2 +-
+>  include/linux/swap.h        |  13 +++++
+>  mm/Makefile                 |   2 +-
+>  mm/swap.h                   |   3 +-
+>  mm/{page_io.c => swap_io.c} | 104 +++++++++++++++++++++---------------
+>  mm/swapfile.c               |   2 +
+>  mm/zswap.c                  |   3 +-
+>  7 files changed, 80 insertions(+), 49 deletions(-)
+>  rename mm/{page_io.c => swap_io.c} (91%)
+> 
+> -- 
+> 2.52.0
 
-Could we make both code paths similar and store the original folio in
-both cases?
+Hi Baoquan,
 
-IIUC, the __xa_store() is performed unconditionally after
-__split_unmapped_folio().
+Thank you for the swap_ops infrastructure patch. This is very
+relevant to our flash swap work, and I believe it could
+significantly help with our future contributions if the framework
+is extended further.
 
-I'm wondering, though, about the "new_folio->index >= end" case.
-Wouldn't we leave some stale entries in the xarray? But that handling
-has always been confusing to me :)
+As I understand it, the current patch serves as a foundation for
+future infrastructure. However, from our perspective, the swap ops
+are currently configured statically, and we would need a way to
+apply or register custom ops for our use case.
 
--- 
-Cheers,
+I have a few suggestions (mixed with questions) regarding
+extensibility.
 
-David
+1) Could the ops be replaced at activation time, similar to how
+   SWP_FS_OPS works — i.e., giving block device drivers an
+   opportunity to override the ops when the swap device is
+   activated?
+
+   This would allow block devices to handle swap read/write
+   through swap_ops rather than doing it in submit_bio, which
+   feels more generalized and leaves room for future extension.
+
+   This direction would be the best fit for our use case.
+   However, considering ongoing swap work that may involve
+   managing multiple swap devices, I wonder whether binding ops
+   to a single block device would still be appropriate in that
+   scenario.
+
+2) Would it be possible to defer swap device activation via a
+   lazy registration interface, so that the ops can be registered
+   before the device is fully activated?
+
+   This would open the door for entities other than block
+   devices — such as kernel modules or other forms — to act as
+   swap backends. (Of course, block devices could also benefit
+   from this path.)
+
+3) Alternatively, are there any plans for a static binding
+   mechanism, or any other extensibility approach you have in
+   mind?
+
+As an additional thought, if this ops framework could eventually
+be extended to cover cluster allocation as well, it might enable
+a model where base swap functionality is provided by the core,
+while each vendor can freely plug in their own additional use
+cases on top — making the swap device truly extensible.
+
+Any thoughts on these would be greatly appreciated.
+
+Best regards,
+Youngjun Park 
 
