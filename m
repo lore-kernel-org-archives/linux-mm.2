@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB15CEB3632
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:40:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F02EB3624
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:40:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DF6E6B0109; Mon,  2 Mar 2026 15:40:38 -0500 (EST)
+	id 7A3906B00D2; Mon,  2 Mar 2026 15:40:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 588E36B010B; Mon,  2 Mar 2026 15:40:38 -0500 (EST)
+	id 76DF76B00E3; Mon,  2 Mar 2026 15:40:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44A616B010C; Mon,  2 Mar 2026 15:40:38 -0500 (EST)
+	id 5FB936B010B; Mon,  2 Mar 2026 15:40:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 319796B0109
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:40:38 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E34B913A7C2
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:40:37 +0000 (UTC)
-X-FDA: 84502291314.13.1654C05
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 271FBC0011
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:40:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaNzVyfi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D3356B00D2
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:40:52 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1A2AB16032E
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:40:52 +0000 (UTC)
+X-FDA: 84502291944.16.E149E81
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 33DC2C0003
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:40:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m+cQsJz3;
+	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772484036;
+	s=arc-20220608; t=1772484050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=23b3TTXy57DCPKYbWh9/eqRxUKCwtHCp+9ijkcQlbZw=;
-	b=7ZWc8G8KXyAi2LS5w/aRyn3/Gk5NXkTfsNaMk4iOFC1zO4p5nvzEpBbQLB9XHT+j6HypXa
-	qmYT70Fs7Wz07ONT9Ft0rpf2+jU2DnfFZbaq2AtA/xh4YaWxOhBZB4lfGvZAga7NIZn5VU
-	dcekU/FYRdJKwAwYkuCqo+EuqWtteHY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RaNzVyfi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484036; a=rsa-sha256;
+	bh=dT6fK/x+4Bt6qo6SA5ClpthLnGEOvYOzDfjZSeEA748=;
+	b=dfq5P7aFBWXbKeU2kJ9QZ0PVmSd4TFNozg6JB3K+pTLVuLkUciW8VcZwa3EKaVARnLd2da
+	LjA+IYUdG9Ewq5L47fVQF2/ZAeNnEvHS90fHa5t5UUeQhioblA/ba9kl1FuvbAkT9KH2el
+	yFsbmqtgw1MoBH9GtEY/+7hCZrkNaOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772484050; a=rsa-sha256;
 	cv=none;
-	b=HeWMe9D2edK/JLeTfLIW94lSmoJPrgzkq9oYkSP9Ua6auGf5he+9SGSX5m7GK5Qf04/xht
-	HIFepmHVATNl92vghLzr4VxzOZo36j/i5QBPZbLO6FaWO4OLgKFwhM64UCp+xBqxfqmqyy
-	ncYLnoqsdwOkbRQHzcsV4nQFsFKREHI=
+	b=luWqDpEqcQ8lBo/p/ouqenjqy6/CcbHoUzQzWZ1RY3v7FzBnRTgCHMRXBLEkhuoa4Fs9NY
+	eUPq+tAm7MggLi35fMW+Xz4aIQklPfOE4GEEDDCc8Dcq1d5KS8Wb3ZwRFVl+nmaX4DvCtt
+	9YR0DA43vQ5KIuc9z+q46rhBZQoCaLA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m+cQsJz3;
+	spf=pass (imf22.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3107B6132B;
-	Mon,  2 Mar 2026 20:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F00C19425;
-	Mon,  2 Mar 2026 20:40:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B159415F6;
+	Mon,  2 Mar 2026 20:40:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD2DC2BCB3;
+	Mon,  2 Mar 2026 20:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772484034;
-	bh=yO1yMmg0dwPX1fI0sTtRhW8x1CrMPaFqOu2H6Ax2kkQ=;
+	s=k20201202; t=1772484049;
+	bh=HyR4sniz95teBoJHWgP/H2+rStT6qfCUCVZPgmMuwcs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=RaNzVyfijH/c6p4B2SXoYuH4Ts3aLqIp3RAQ1xn5pdewGvVyqqZvLwMfzkh6bQfFS
-	 G2/sw0Kl8MIYHJq2ginScBGrSkPULoLlZsbF8N/72QL8u87GWEWAy7SqIFTDoZ8SAP
-	 Jx4lXNTJy8iq3gUKGSa5w/vYE98fEABQIuz9fk0GpAS+Bp0xLtxhShzYWEQDKhodvn
-	 QOjDKBcQi5N2cgY/KEDjaqQgHuMm5HWbYjp8Wa/Gjvszvssa/g1/M9tJ+KaAoN2dgV
-	 oEieWwh3fpEq4Z75X8GpUovCyX1AnGJwcs5S+RlzcdaFTl5/Le9iUEvO4XXNsmcDIg
-	 qH6cF/ks3ORrw==
+	b=m+cQsJz3LSlySQ/LkV8g0UkbIMSqSvNRtu7xio/tlhYMu/YSnzafEF+V8yjx+SjoM
+	 yl0M/ozfu9C0JcgOkGK/507Jp7sC4ljOg6kEdREcBn4IkMyNyOJ4T84BND1Zg7v78x
+	 ecHvzizX37InYHwAZdg/VtThEzoQyj1CdG+IztwgFiQ6MfW/1qLXGYYw+CWVbCT3b0
+	 nGPk0wgOJFoUd918Owmtl8+//s429jEFvcNcVLX+GX0/YsE9Z2aPE0UNuexhzbxM4P
+	 gBngfBKui4FXJQDOZXLnIHPqvzn5fUbR/gxU02itW5JApfugQvpKnJGfTWDqkVmMnz
+	 /I5TauxXOf9mQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:24:49 -0500
-Subject: [PATCH v2 065/110] nfs: replace PRIino with %llu/%llx format
+Date: Mon, 02 Mar 2026 15:24:50 -0500
+Subject: [PATCH v2 066/110] nfsd: replace PRIino with %llu/%llx format
  strings
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-65-e5388800dae0@kernel.org>
+Message-Id: <20260302-iino-u64-v2-66-e5388800dae0@kernel.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -186,36 +186,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14445; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=yO1yMmg0dwPX1fI0sTtRhW8x1CrMPaFqOu2H6Ax2kkQ=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfIAbD2/gwiF/L++ZM5qrIQXAw9/YlFLERfHx
- pFZJQOOKWWJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyAAAKCRAADmhBGVaC
- Ff4PD/0c5cFlopSIlNwNkKoNw5Ioc/S6OJN6rwd0kDCdjm/rwwTGiZf9s+GHSJWVV5PjoqHGz6u
- g86QP3/w9Vd6JfZiWzJ0tbnX2k1ROFHfoi9fOCju8BYgBXXmX37pGDNJrh8+XT3hkfTDJZCkn5r
- dTJNLrqmELTcYz7WB1FV9/5RSflHso0nzvBum1EdenbsKxRsDBYmukUGTkVSsyqZbrcewp0k8WM
- G1WL9MoF9Xws2VE6R3HRRtYN6DIDsW2S0MznQI3mFC09WWApVWj+pOxiwj/ppSLz7dvojUihw65
- OUkKZYWUx/2wnTaGhqFcqQ7UJVUmAdTOauVJkaL7ixRvM2Dey6I7eLAcKidtHOyLUAlHUkhHrOd
- rh3RLWlIz4//syk5EPOi24luEdMzeCjvpcID4/OBtklaGVdFvY8+ADCkY44I/CNxB3ouOEKvV4g
- ZzOjIkUNdzqxpaqcTD+KwUqCvS96dO+AP5hxS8vpgqyX5AGLBEXyIKoj+5cIvAXRTU42Gew51Vn
- GXQzA/dDuLQmwP9HdG6yy7HR4HAgV4IytfsO5eLS+O/ks8L4jXHadJCkuQbnpgU+1j0WBli7Hf5
- 77fmTh9noyZQZItRwrjZBhqezHoJGHXO/e+GtfoKeN2hckYcTDt17sOX2qBjq3JyhRVmL4YeoWN
- anCFq1GO+tNHZJQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3151; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=HyR4sniz95teBoJHWgP/H2+rStT6qfCUCVZPgmMuwcs=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfIA0Fa1714anVwENAiRmnB+U/0TA0CuNSmGy
+ S5/qF96pyOJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXyAAAKCRAADmhBGVaC
+ FW3MEADU+whCFtqkgurCGlaONnct++YahRLhSTluVahbwEwdjbrbG7/7TsgiZPqagHMLlQ75BmW
+ ylyzoMJID0RQLRuriVYXFqgM1bsGBWwWUE5vQeLlq/U6V9hQ14AflkyIYQCaxrhsZ/BRchuJOVe
+ YGfTn8zZLGQyhgcOMKgJPctCMtYNJI0dDTP+TdxEAXO4FVzGpuq4ISjGB4rVspIzqwJZ9vTDDeH
+ RaPDWEy47VzON4mSIyPGs2bMeKXmNuzabCV42blfkozkCYDmWnCoil2ws40UOZyww0F2inVxIm1
+ biCcqKW/4hLNP+Jg6A+FMqTdqxNXscogSoAZzVZ8SHrisiZqvfqY0cwdhGKoIb3oPmZzfohHl7I
+ bEk6mxpcNHe0P05heIjqcvKOXsnJUP+v4/D62nRiOfEtOJny85qobmr26MZxCVFiq6a3Ct1b5mN
+ y1XG538Y1/cHD9aEh7GND7hy1awXpMnPjoVqIjeMXMSRKNn/0LY7Be9TT21yUHp+08h0uxyOnik
+ 1idly8EzgBBEw1zwwIybPJxNgbwUjqF9nlUaZ1p4VRHFedCPKrra1FIbZuRVqhQU4P8fHZ0BwK8
+ mTiKztWgspKLCYLbVwNJ96kS6/jElrgR3RBA/IxZyawPb5WdB+8xtUZZoi/8ynJDTOwOB4MOfoN
+ M20Iy7wAit/xe/A==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 271FBC0011
-X-Stat-Signature: ni9634j1q5djxei7by43x5qditttyma5
 X-Rspam-User: 
-X-HE-Tag: 1772484036-219616
-X-HE-Meta: U2FsdGVkX19o7ZInxqJCsfDyY8g5BD+ABs/WbkbqnZwfpOvIT28ird6zr0fgq3h8qunGIPn8Nd6hQ0zCOfTzQLyJd8HkX+HKvZ9bdfGx3wTBFijIhZT+rljzJ7C/0hIS3c3p0s72ZWgp701Z1inbSMNTNAXvCvFN/B9XUE3CexxT8QJROmIBpAkin8sFfRxppbB6/oK/umgKOeFpHQA7ikOOIS0vFn39oQUnRVybwmlc5iJExGI++5DI7HY8cRLFO7LI3wvAwCfzMuwKZ49pg5qP3Xpt5cqnrEGRjAot1N9kFSQbtIma+DUNCQ+7Se3OG78xSHrC58tzHCEOnH55lqsRPTWqxyLBy1Hbn4YGeRclH/QBWWraNBXdeyzPG8UScTdpiTUKPcaHwLv7xTr8x65wS01V24hL5m2WeKdiDqlyUCZWsDwoKLH8yQpf4cmXzpH820rUcG/cYx5NdkSxELVHMRHR+qGDflS25JcXssOC6IsRWVkuEWaCdhRK4BwByoctBxZR9YXVGfyygKwY7AtBJn+PDmeITYzcuh9j+ktvn5EFISDCgCiALBkpE8iLi8VbMUWdoChAwPzmOx7Z68qjEhCEY8yJiIEmhGXfipPoLwPX8MbZbx9RcRIy+nO9NbKJ173uvqoXDuIlcnVq/29+R1Zo5h38JkTOao5FDqVmbwnZ14ndoNcdT3q1wQodjISc+Hx/Y2UFzdC1R6Ejs2y+nhNxcpZ3iO07Gg5CLkaLZiDOJA5WO95K7WdYYe7FYynOxgXlz1gBtXgik/zVAEjQzAIMbIp1XAflP5vBbT5DrC7glFXXbukUZo38zhYFzACqBYo6phkL86t9hP3gAP7Vt+a56bm75jqmy1+SiXGF90RpB0CwuPj2IbMFq4NFoaLfBLBYWrL8b1wWT7+6M/9qnkJzSF2lsCxqZtEefSLJ/lEfvKyESJbaQkLT3P0jjvuE5F7jvadb8lLHUYK
- 35NFRA6K
- xU/VcrpUeluQsXy/czOrAgSzLDkqnbImOIFIJKNRcahG+8+bNzol6yJu+ZP4Eew0BOGN/qSBMs37M6KcuMQnW8jf7/fU3nhMYOF+bBKnsLquu2zar1r1AC6PTeQMY5ITtpGtl0ZDwtQ+UE8nH/3ShDzz3mxa+DZgTwJaeG1lqSNC+LH/D7wU7GmZSBe1eRcrECJ3Rwy2CAay2qisXQyF4TRRSlTgc8hdwg7P8BYlfSJ+dodaqEnLy2MMCVeXj+euRQs+b0TE3a9t5KbFYnZzjjdwix+F6zKlP32hKm7w3U35GCIq+ZxCAhCpWlyjZSUaIr47A6QkV1+XyfAy18NreokDCIwttZx5UZWD6eZIVw+8AzZUbx9Hd3XB+XVAIEVnUgH/I8IQucgz8V8bQAbNriJDFSwpiYLUyBr+UpERfTBnTy2a9yUJxyT+fU8/z0BH73r4aVv0toNc88SU6D9Flo3wse7sPheIaSoKnurYg+RVFbea7CeBg/b5fFRDfAVjqY7H9MIn68jwks7QltaZ4La0nXfyhTxqQJ4KTJ5DBhL7thtWdRaMR2YZtN9qLm7w3fZ/3IupFHG9DDLnZwJtxZVKwImpoRyJltQUWMlXgqxFN+A7Ib1vXStUXEWZ5J1Na7KVzZ1yhw3nNsQ0pZP/zsL4LcwAjb81SH+X9bgSaJhjVTDPIyUIRU5WV4KKnhwggrSuZWRqDptYPquRWNxrHzkEt6kP6jZUHD0kDL1OMzfV5wPfDHAjC5Ab11fCnBM9/H9cKBB8vK4p8dsfRZACLpH6e8X++q4cFuszs9J8xyeXxfgeC7EPlAYpM8KfmYcgLXnYOXwMNB6n52SYwZtHFAZMQ1XpqgizTcNj2aHl/lz3Temzip3jq2g3rzjS19d6ppZKZJncIa7CfVHCuZwdm7/f6Xr5G/tiGC9LIhIbOxbk0Wz5DPtKXo1pvKjcQ2exU0QHnGM02euyfvmsru3ICnwf+wWhk
- HiugkMzc
- z3I7eubJDq3SzGpPdwB+2gaZ6zRl4KQTAshS1ndFOQ8CsNXd2JpIBgesAxcY+OuO9HRYglx2pUYyHKjSTKyhmtAnuf2pe//5wsf1PtR2BvcePCtjMhkky9pJQVAiFW2pUsemO1wzuziyeepD+BIudaOTtrXXy+EnVaAWh22R93fawHXMzD4sgjWxWlkvKxWSpMkATB40fSTan9nWfp0atMtOlFjEgBDAJbgm9UfjybRKsi7mlROHhyz0XJXaqH+0jTwe1PBmvyPNbsmoSudxtJl7cFa/fMmmEib5XUPFCODRTF6OVb45nByVUoc8pQtP2izsvhQQChxoJdNJTaAxWfZ765dcNhhRr5Y2tndvqGWG0W12SnT1Y6FO+zr53qgiP/PjvDCdDfvBOh+r3JaQd1dVJoz2mpnE6wnHFt5OBE2hjzG1fpKdWe0gX/5tk5dc9Iz0JqKMHQpVHhV0WykVdSAAnZsDITzcEo80oqd5j1zmESmldGL5xVi2D9/OFLIgPIjELF5BRbuD8ZG11q4/jRh4VwO0H6+vfpE/yYwjgIbX9hpDtO4R+SQqalghzMCrqUMcyCnSpO/cYPVIfjb2Pm0OlrrN1XKXr9+rRpn1gtWtpBk/4GJbYmqXO0AXh6otJFnr0wxI5JIK/4BH/VbCpeGglEOx/efmOCUEv3hns1sFd9VdiC9DrFaGxxTtDqjsDFSvIbFj2a86Vz6y1HZZx4WOu6kgzoGuH9C46sZShWNBzF85oNYiO1tLtUKi1cLNBknf/KXk98fML2wjh3Lu+mUYHsl/ECt2Yo19xDbv1zv6W95Ftpdm1Opw1rX+MLgZWdBl3z2xx0ZFRfVCx4aNYCJSHpa/1OjXOz1o14opEmQM80+Ta3cHM0G7sK5u+ITz9ncfFFGzSSEZ/5qix9vWvMFfmd5khBzde1OBQzmHGHVoBQ+50HddiPJbmxWEpjgICXpRy4tvjDYO3/4mLqNVvZo+YV89k
- m+awbsiK
- KtVtqoWckFBEDGobb2bVu4sW9JKb6Ph765sm1A+5s1LWlFsIoufl4hwg1FrD4qGQ1x9lVq24ESdxHWohmWFeYhN/ygCfMfc3XPGv4X1O3zhEY5hyKzSoTT1WRct+TATDDqW0PvxOCffBk7AJqqXXotQL0X6kmdnGo/5/iwkq4taS0qbY+As7fDZhIRjPlEc9HzmjgZy+NJX47N8EArpcp2pFsAsLm8iohJVIdyGUmbEYnzZzyvImN6TSrfWcvngPT6W7lE+YPPlsnJGdAtns3cEzfs0cxChMFmSCI5rwwwL36FDqnts9Qpp1ZRYJvp5m3bx+B7NkhwJJRlp6jfjQCMAcMiBIOHf9YgAd65O+fcafUfU4ZEy9Cj6Ss+POtKIoYC3RpfyghXz1xAGMBYskyqjD/Xg5j6ZYHLekE4RtaOTcDMIhrOpcZjMhu6Or70UxKCkEi9YfwE9ol/EurxvucvypgL47Pk8aVGwPKcV1eoDpKf3rYp+M+9TcOip5gsBur78VIngoNyT+nRGfZUb4d5I99FCFS60lZjtBR0a277STzPWyL6n4C6h/SeIcEtkXDHK0zEXYSh2UCMSupEBf9ihE7n6zywCwOXb6WYyh24eaX063PPs6Ltu2NUSs3RsT5D9K5YuBUSPMjjXN9HAVVeRECqPD+6bS3WH+FhEO6v8ZMpjMsl2BmYihrkDfHOWKt8c/eonEM4K6+Yd93mJo3YvJ3Z5NwGtN/uG6qAbIlFrK149PPZauwfC4ItwcbCryXupNTSsYV2VWKBl4tZ9Uzrawydd/Tbau4P+PkCB6Dsq+DWdmae9fzrHGyQuWHcM81DknHVT/g0Dts1WwOtPqFiIRkWscKm+prz1yucPbcrVFJr26Dk4c3eQcq8lts78r8g5XAOdG1S55/vaq5RTQ6nkPi7iIMo6L7UfbAiqnrirWTpzjxPHnewCLHWAnSTVw0MOUpEl5cybk6l7ACSgSWX6dKhAeu
- 6yHiM+ho
- nZb2UxmSmeJHOjwM/m9ApV4ENzIGr6IXUV7ziAY/jwEPV8naE6ovTq4RbUho9bQ/28ZGreigtEyyoAo+4Z0xS0+5lnZITznsybYtfJUHMjJJI3Cx1NBCR04VtUus4wuuO000CTFEKrgvozoKdq0BfCwqi7M5fsZUdKVCa9xRr+m+xlKewog/sXwkJX1u5S2ZQPi6g1eqSjmCyJa9zy7H4pbCW8lENNqTtyc6dfgjgqXNLZi4tCWFKRrx+BPoK+nCbs6siyMblHHiRSMUrovNzTZSvTyhWEdk/QEtYFEXY3TfOUiTB9ViP6FxSAMmiQpRv755QLbqaU22Xc8Zb7scb9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 33DC2C0003
+X-Stat-Signature: ng94ems5kmhpfs5xwdinztfyxteuhmrt
+X-HE-Tag: 1772484049-292106
+X-HE-Meta: U2FsdGVkX19Mhgd8byyvS6kbDwi7mibiXQ6JEsSIxzUdSpJSIZmh1mCYXb/HjIkDlmo/vCEDdNb7283r4UsiNzht8eEEXmjoeUqK/HvF/DhpB8yJA98UV6fxaXZ90itw4sxDK5+mw2t777j213K1qbseWF27qDcFwe3ARpunZHyQzvzJ6jaaRA9uJFK85UlUAXSjScMqyAIsQvE0YPfM5hQlEPj0OqeYTn4hWQ0+9+6Jk4TUWHsV9IvRvLxOZFAkacwEekK5Q8XQ+CUdSGsV76sKJH9YnaqPfWtdO2AkmD5o2aRhUC7ve3oG1P1t6f3tc2oO1tkhv6Gah5M6I8Lf2lwV0qCViJZCzcQIizotxL9eBmg0bHkamTjQ+jSjibakzJXPLu1iZ6sb5+12IYineJ1u3K/udkITqD6JJ/LfkLU2ueXlevPxbdUhWDQKOj06EBPj4WD7+NF2eCLSgta1ud43/ruqcbMqeM+4CjeVBUDt0Eab4+lyF6WasYukWVIl+oCphRwZDFCNN+zF4vXcikvX47vpmiDhuRZphlKSyQ6Hr0fIJSkgpMHogEFhtkE89MBnhKys6weeDZgplGs3xjJjh09gBdjsneZyhDQUdCJGEgkwPTiQNV9mLvDGSb+aD4Ae3nkLcI0JnpT94pPMXtjXr8guzhEIcgM1A5Hhm37bxD7kWRL6T7acEPYzFwiCgfhEeG3z/OKxGVKH4orvJ13K3fdaQ5faDsyeGcxPwd/1oPLPgeFXe1dJCAdrFQvMdqVqmrXk6PBdv17+3Ohhkykx/VOMbvYrclDmjX8X4XlW0kR9XNDRaHt3f/TcbvbtJS1zlskMfjVQicJNmozzKRTFQ42dzBzOGIwz319tMqv+krAYhEppfUuOo9QmOCZOc04s35P7b7QNlPvBDKxVcekRmknEVmRiLKn0sYjC2om9rzkC6Zf0I7sVZid90M2cyg1J4/5jDYXNlklAwXY
+ zOdh+NY4
+ CsyESfCq4dViGgpMPHP5ENKNrcu82vg0rd7ovk8rVA3E+1mwgsRxVWz0DQOe+mtWqIsEOUA262kANkekc58EfGC1bT6GCJSR5nTOyauNTu0MHmHmVFXDEJx+nOqOHm2+cfMzp1SyqQ5dyV8OOjMGKaqxdziftaUWr+pC2kkFLzJy9l4C4t3Nu8pG9RN8j8uL9YNrhgaSIg54gC25kmjXXFKdGJSY+SEkRal7fNhTURSN4z+HZTrqI1PahvbVrk6ZQf3KOYdBaCfbGT6K4HaEUYptnk9SGRMxUpoDT3i477tXLZyH5HLl8XJh9bLQvyUCQVV0IcaLaeLsheiYTPLA6fsToutcEfYyuYzGt+kx39pDhbcpRX23bMFO9jbii91E601a6EUrBZZpjkYp5rmzZkqfTcLcQ2qw379CBzSRMvaS+i8y84PRQTAvrTq1ITPjSRHu26J3t7PsBwcaLYl2ynBFxPqTdjzjbZCWfCf0sz5HhUqZjSyPDJfOG7409JLb3NAexTRt2X3IGZngi/OB9SEpI3gIq6sxnfHzIQvVWGzTK7DWnZjXc4kVXAF11WSnnSww/ezWAAqXJmWmwz+Gi98OjncGdOmLuyJjLI8zOm+z5SA1al+LVF0kS+5H70BcG3XPcTjM3pwChshyAA+5i61qxCuwsctRIm8cGMI+8TlGLaNY9/k0oX+rWOB67IZi5nlWJkRHpBnJ7AdC/WLDz8VEJm07sQh1eaZrkHfUlTos+2AYhOZwkykBc8gQfhlWUXqBvgDSTZFKRXA3XuCi97D2wuZhUTBsTN2FlAzGLZcwzaC5itpgj8SuCNNUBZm/5dTXiWqGqnEquFgvKd8/oYRrcaeaNQdrKJ01CmtMydP9zELH8VQXQKC4M5lIYNjq94Gy8lUT3UN9s4pGM8mrYnI7KdmsOihJm7ApOeYI2lSpceLtCMxno0JjoJ+SxeyFAk4YBM9DDWMnP1WMadlAtStxnWgyQ
+ Z3/p+2k8
+ zC6jEK4X0/1gHjF/JNmENhvBYE0fxgDsCNoMvCOINBsNeHyEsLsT8bzx75VSoyNgcQmM7M26qmI2hICbjkNGDfqbr+yd4bykflukIbfVV8pCBq/JkILOxZzNvZTXrAc4lPH+Q4qizQdotOvuxrTzmfh/5EiRRK3DlaehAjiQtpBkKp1Fl7PRWOMmH4lxBeY0qsOg0fgQiVX+yewA4sbQzkA2lc9yEHNWXjG9roIZWFMtUbmGH0GVlhUI3ieRtmXeOBm9Jk29UttPd3tv2fVUE4nf+ZyQsM5KTVhcRnP/usLkCq/uigefc/jenApkIaRjMIxpcAq2OiB1+OT7YnB+DUf0Wnp/5Xs/Uxc8iY7Vq/TEyN3cJwS+TmezfXIsit3oYoAuvB28G8O9V0icQjqVZhmg84OjPwkTnQF8ZhHK5jNcFoLtPttNeyJTvzwqUy97VdVM80vVFfemqYodzNIB8/3++VYMQnbaHnmsUah9fkVyjaHlkUIYU5Fp1uuQM0H0O6MbpBs6B4Ecm1pkp8f8EEhMwK9xqojekBW5TFFvTXIel3WoDfnijl7Rq63vgnbcRrXb94lev128IdI5wdcH+acUyiSGzfBVxLqxrq5ksCNliVCQFixcwzXxyTjK/iu5h8TtOoo6o93x69H2bopY6mw59bmjEqG2S32mtoRuJks+NXaSV/Bnwt3XFThOSUN6sw8BSG3w8+emqqNxn5MPw6gPYHFbjmQtc/H/ALnYtPV37pP3qMFV5uX4nIDSm0XdHVCOTrIQpKTuCFk256ONB1zt0hXzlF2udvv325SNGoO/htjC5V6mHHhe/Z6rxsrSw4O1T9qjqYEi58a/qpX15VfDoFUJDkPjYnQFZ3LrO0tCK7ksgCbH5zeBQEYV//4OMitSLTjN1Zc1A2S3mFMWm0IIFPtqyeSQgPUKGAIfj6KBvvRw/7HqhjgeSceHMcDET2OIIa+32epnt7/4I3uK6WpiZTfAy
+ xQ83Z60G
+ Bue3quk+6rXiat/nfhYpAuoG6XCRCu6JjhPFF3BRRCIhXLCwzz4I0te0CVOxjTHHlYGfysgz1pLXRem+KA5IB7Q/7NiOrvjuPZvf/dmbQRdeU1FK0wKQ23vpE9nOaVnUctCFhlsj/gajVfJVOt3xWfzXUEhZVklCXEpaSa+Cn0AlHQXRHx4mK6ssZ23eyg549p8VZnDAYTuvXylnJJYTr6OtXGycwy64J1SChjajf6WIuZrGL+6IjkGZs1GjWKmW+ppkTRHtb/GnWKOHd2rD6lAxr4k8yPbHYKtuxPx353/xlQuq8/LONRMDmd+G2PcFeLMvWunz8DHS03xeGnvwTN1KhrWP5sEW22hd7zH/JvLnbG+wsSbeaMXHyFQeJSNoLFHXwXOMSKUn5jE0e9zXMklI6WTk4S3QHBDrKdrxqe4vRaaz2VSO9Wkk5FRHwpXNV2Ihlad5HG/7/i8ZoNi7o//ggFR5JNaEcyAhSE3MS0MEmc/HDphKQTHcXHkRD9d4hRqPXQ+vF7bPZi+8g9JWUhTxTA8+y0105VD95q1sYgqQfCDQjgSr6vcFHtuZjOnS+Hk+i6w0dtoBAVygOpW/Mya5xO7Rbltzbd3FSZxf/XmectB+kbTKs2gCV68K87oZrY9t6lzG77lBPiMxjBnLyBkbPWNFqKSqujUiNANSmPjCcAR5fpFgKLZFRXRscgG5xFoNSPSfBAWDyOtHJaXNxJgV7pUR68fkOxj9fHr0+GehtqRaUC3ICSaUwsjNszeBKV0A670SL/jpJdWjn91EGTVm+c6L1bzBaq7ErRv6st3mcNYoT+TtRfSWcgLVStwoICOI3cqB+SzQ3ZMNUuH0bQJvj7Qx49k2rBZBKqxd8H69Ml/QxENI/bKIG0In/VkaFNVTo6YVbjFAs83BNU/TgpOdaa9PB2YD3S0+JaTBBYmmsaAY2MydnI5zDQ60N6Kjs+eZKiscwX99GpAkFkJY7z6hR5MQU
+ N5twciX5
+ J5Xi1SS1rm/Hx5MKSr7KFF18G+SphuBJ0Cf2OSIbgPcgbthOm4fAI1R7ConTs28J29mT8KGP3XI7ETOqWQsXWn6HTQbq4daSBsMPp/sEQYfMHGRnJD6EQ5Vl3YfIw2zJPtBbr66G2XYzwiPTfZhao4q7Zwnrjq2kDqVazS+YNp4XlTxSUav7Ick+dDzE070ROnxuZfIt7lUw1lTjANObgDyuaMIcoIKG/nGC+nB1KaWEuXwisR/jqA0Ic4ijr35qTAl/60JxKN7TNiExp7/vIcvnVyJcq9v/bfROrZseS4Ddqs++FHKOM0hYs1F/vGk1hja46W96E06WzbPDU7lXWMS934CCAz/Uc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -224,344 +224,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that i_ino is u64 and the PRIino format macro has been removed,
-replace all uses in nfs with the concrete format strings.
+replace all uses in nfsd with the concrete format strings.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/nfs/dir.c                           | 20 ++++++++++----------
- fs/nfs/file.c                          |  8 ++++----
- fs/nfs/filelayout/filelayout.c         |  8 ++++----
- fs/nfs/flexfilelayout/flexfilelayout.c |  8 ++++----
- fs/nfs/inode.c                         |  6 +++---
- fs/nfs/nfs4proc.c                      |  4 ++--
- fs/nfs/pnfs.c                          | 12 ++++++------
- 7 files changed, 33 insertions(+), 33 deletions(-)
+ fs/nfsd/export.c    | 2 +-
+ fs/nfsd/nfs4state.c | 4 ++--
+ fs/nfsd/nfsfh.c     | 2 +-
+ fs/nfsd/vfs.c       | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index e69d34ab42ea30fec939cb9cbec2226967ccbadc..ddc3789363a5f8a2ef0169e37aa2292d075092c4 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1906,7 +1906,7 @@ static int nfs_weak_revalidate(struct dentry *dentry, unsigned int flags)
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index 5dfdd836bbb63d6af17204c8df7ecf3f450998c2..d2259d948cc33e1c192531d34679123b826cf4dc 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1039,7 +1039,7 @@ exp_rootfh(struct net *net, struct auth_domain *clp, char *name,
  	}
+ 	inode = d_inode(path.dentry);
  
- 	error = nfs_lookup_verify_inode(inode, flags);
--	dfprintk(LOOKUPCACHE, "NFS: %s: inode %" PRIino "u is %s\n",
-+	dfprintk(LOOKUPCACHE, "NFS: %s: inode %llu is %s\n",
- 			__func__, inode->i_ino, error ? "invalid" : "valid");
- 	return !error;
- }
-@@ -2121,7 +2121,7 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
- 	/* Expect a negative dentry */
- 	BUG_ON(d_inode(dentry));
+-	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%" PRIino "u)\n",
++	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%llu)\n",
+ 		 name, path.dentry, clp->name,
+ 		 inode->i_sb->s_id, inode->i_ino);
+ 	exp = exp_parent(cd, clp, &path);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index d9d548225afb764326b2bb211919e24c87f15a00..a569d89ac9123d66bb47e7d74c7c98610de21da2 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1253,7 +1253,7 @@ static void nfsd4_finalize_deleg_timestamps(struct nfs4_delegation *dp, struct f
+ 	if (ret) {
+ 		struct inode *inode = file_inode(f);
  
--	dfprintk(VFS, "NFS: atomic_open(%s/%" PRIino "u), %pd\n",
-+	dfprintk(VFS, "NFS: atomic_open(%s/%llu), %pd\n",
- 			dir->i_sb->s_id, dir->i_ino, dentry);
- 
- 	err = nfs_check_flags(open_flags);
-@@ -2404,7 +2404,7 @@ static int nfs_do_create(struct inode *dir, struct dentry *dentry,
- 
- 	open_flags |= O_CREAT;
- 
--	dfprintk(VFS, "NFS: create(%s/%" PRIino "u), %pd\n",
-+	dfprintk(VFS, "NFS: create(%s/%llu), %pd\n",
- 			dir->i_sb->s_id, dir->i_ino, dentry);
- 
- 	attr.ia_mode = mode;
-@@ -2442,7 +2442,7 @@ nfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
- 	struct iattr attr;
- 	int status;
- 
--	dfprintk(VFS, "NFS: mknod(%s/%" PRIino "u), %pd\n",
-+	dfprintk(VFS, "NFS: mknod(%s/%llu), %pd\n",
- 			dir->i_sb->s_id, dir->i_ino, dentry);
- 
- 	attr.ia_mode = mode;
-@@ -2469,7 +2469,7 @@ struct dentry *nfs_mkdir(struct mnt_idmap *idmap, struct inode *dir,
- 	struct iattr attr;
- 	struct dentry *ret;
- 
--	dfprintk(VFS, "NFS: mkdir(%s/%" PRIino "u), %pd\n",
-+	dfprintk(VFS, "NFS: mkdir(%s/%llu), %pd\n",
- 			dir->i_sb->s_id, dir->i_ino, dentry);
- 
- 	attr.ia_valid = ATTR_MODE;
-@@ -2507,7 +2507,7 @@ int nfs_rmdir(struct inode *dir, struct dentry *dentry)
+-		pr_notice_ratelimited("nfsd: Unable to update timestamps on inode %02x:%02x:%" PRIino "u: %d\n",
++		pr_notice_ratelimited("nfsd: Unable to update timestamps on inode %02x:%02x:%llu: %d\n",
+ 					MAJOR(inode->i_sb->s_dev),
+ 					MINOR(inode->i_sb->s_dev),
+ 					inode->i_ino, ret);
+@@ -2888,7 +2888,7 @@ static void nfs4_show_superblock(struct seq_file *s, struct nfsd_file *f)
  {
- 	int error;
+ 	struct inode *inode = file_inode(f->nf_file);
  
--	dfprintk(VFS, "NFS: rmdir(%s/%" PRIino "u), %pd\n",
-+	dfprintk(VFS, "NFS: rmdir(%s/%llu), %pd\n",
- 			dir->i_sb->s_id, dir->i_ino, dentry);
+-	seq_printf(s, "superblock: \"%02x:%02x:%" PRIino "u\"",
++	seq_printf(s, "superblock: \"%02x:%02x:%llu\"",
+ 					MAJOR(inode->i_sb->s_dev),
+ 					 MINOR(inode->i_sb->s_dev),
+ 					 inode->i_ino);
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index 22df07be0650d9260a30e12c1371ccc4f89234db..ee72c9565e4fe85356674b22b4505d3d531dbe40 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -601,7 +601,7 @@ fh_compose(struct svc_fh *fhp, struct svc_export *exp, struct dentry *dentry,
+ 	struct inode * inode = d_inode(dentry);
+ 	dev_t ex_dev = exp_sb(exp)->s_dev;
  
- 	trace_nfs_rmdir_enter(dir, dentry);
-@@ -2578,7 +2578,7 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	int error;
+-	dprintk("nfsd: fh_compose(exp %02x:%02x/%" PRIino "u %pd2, ino=%" PRIino "u)\n",
++	dprintk("nfsd: fh_compose(exp %02x:%02x/%llu %pd2, ino=%llu)\n",
+ 		MAJOR(ex_dev), MINOR(ex_dev),
+ 		d_inode(exp->ex_path.dentry)->i_ino,
+ 		dentry,
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 4c2095c83503e7fddc7e1ec528f55e36b6a326a4..eafdf7b7890fdee55ddf802d040363f33a7be628 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1163,7 +1163,7 @@ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	} else if (unlikely(host_err == -EINVAL)) {
+ 		struct inode *inode = d_inode(fhp->fh_dentry);
  
--	dfprintk(VFS, "NFS: unlink(%s/%" PRIino "u, %pd)\n", dir->i_sb->s_id,
-+	dfprintk(VFS, "NFS: unlink(%s/%llu, %pd)\n", dir->i_sb->s_id,
- 		dir->i_ino, dentry);
- 
- 	trace_nfs_unlink_enter(dir, dentry);
-@@ -2638,7 +2638,7 @@ int nfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	unsigned int pathlen = strlen(symname);
- 	int error;
- 
--	dfprintk(VFS, "NFS: symlink(%s/%" PRIino "u, %pd, %s)\n", dir->i_sb->s_id,
-+	dfprintk(VFS, "NFS: symlink(%s/%llu, %pd, %s)\n", dir->i_sb->s_id,
- 		dir->i_ino, dentry, symname);
- 
- 	if (pathlen > PAGE_SIZE)
-@@ -2660,7 +2660,7 @@ int nfs_symlink(struct mnt_idmap *idmap, struct inode *dir,
- 	error = NFS_PROTO(dir)->symlink(dir, dentry, folio, pathlen, &attr);
- 	trace_nfs_symlink_exit(dir, dentry, error);
- 	if (error != 0) {
--		dfprintk(VFS, "NFS: symlink(%s/%" PRIino "u, %pd, %s) error %d\n",
-+		dfprintk(VFS, "NFS: symlink(%s/%llu, %pd, %s) error %d\n",
- 			dir->i_sb->s_id, dir->i_ino,
- 			dentry, symname, error);
- 		d_drop(dentry);
-@@ -3414,7 +3414,7 @@ int nfs_permission(struct mnt_idmap *idmap,
- 	if (!res && (mask & MAY_EXEC))
- 		res = nfs_execute_ok(inode, mask);
- 
--	dfprintk(VFS, "NFS: permission(%s/%" PRIino "u), mask=0x%x, res=%d\n",
-+	dfprintk(VFS, "NFS: permission(%s/%llu), mask=0x%x, res=%d\n",
- 		inode->i_sb->s_id, inode->i_ino, mask, res);
- 	return res;
- out_notsup:
-diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-index 10ce5261c1660942203794f4a82b8e4b0d98e68e..25048a3c236436f334c87e2d58614f8af8929560 100644
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -391,7 +391,7 @@ static int nfs_write_begin(const struct kiocb *iocb,
- 
- 	trace_nfs_write_begin(file_inode(file), pos, len);
- 
--	dfprintk(PAGECACHE, "NFS: write_begin(%pD2(%" PRIino "u), %u@%lld)\n",
-+	dfprintk(PAGECACHE, "NFS: write_begin(%pD2(%llu), %u@%lld)\n",
- 		file, mapping->host->i_ino, len, (long long) pos);
- 	nfs_truncate_last_folio(mapping, i_size_read(mapping->host), pos);
- 
-@@ -432,7 +432,7 @@ static int nfs_write_end(const struct kiocb *iocb,
- 	int status;
- 
- 	trace_nfs_write_end(file_inode(file), pos, len);
--	dfprintk(PAGECACHE, "NFS: write_end(%pD2(%" PRIino "u), %u@%lld)\n",
-+	dfprintk(PAGECACHE, "NFS: write_end(%pD2(%llu), %u@%lld)\n",
- 		file, mapping->host->i_ino, len, (long long) pos);
- 
- 	/*
-@@ -557,7 +557,7 @@ static int nfs_launder_folio(struct folio *folio)
- 	struct inode *inode = folio->mapping->host;
- 	int ret;
- 
--	dfprintk(PAGECACHE, "NFS: launder_folio(%" PRIino "u, %llu)\n",
-+	dfprintk(PAGECACHE, "NFS: launder_folio(%llu, %llu)\n",
- 		inode->i_ino, folio_pos(folio));
- 
- 	folio_wait_private_2(folio); /* [DEPRECATED] */
-@@ -647,7 +647,7 @@ static vm_fault_t nfs_vm_page_mkwrite(struct vm_fault *vmf)
- 	struct address_space *mapping;
- 	struct folio *folio = page_folio(vmf->page);
- 
--	dfprintk(PAGECACHE, "NFS: vm_page_mkwrite(%pD2(%" PRIino "u), offset %lld)\n",
-+	dfprintk(PAGECACHE, "NFS: vm_page_mkwrite(%pD2(%llu), offset %lld)\n",
- 		 filp, filp->f_mapping->host->i_ino,
- 		 (long long)folio_pos(folio));
- 
-diff --git a/fs/nfs/filelayout/filelayout.c b/fs/nfs/filelayout/filelayout.c
-index 390ed5f5f92d025e179a7c07c181a8369b24ab2f..e85380e3b11d7271a9b795e62840074834d77a72 100644
---- a/fs/nfs/filelayout/filelayout.c
-+++ b/fs/nfs/filelayout/filelayout.c
-@@ -241,7 +241,7 @@ filelayout_set_layoutcommit(struct nfs_pgio_header *hdr)
- 
- 	/* Note: if the write is unstable, don't set end_offs until commit */
- 	pnfs_set_layoutcommit(hdr->inode, hdr->lseg, end_offs);
--	dprintk("%s inode %" PRIino "u pls_end_pos %lu\n", __func__, hdr->inode->i_ino,
-+	dprintk("%s inode %llu pls_end_pos %lu\n", __func__, hdr->inode->i_ino,
- 		(unsigned long) NFS_I(hdr->inode)->layout->plh_lwb);
- }
- 
-@@ -456,7 +456,7 @@ filelayout_read_pagelist(struct nfs_pgio_header *hdr)
- 	u32 j, idx;
- 	struct nfs_fh *fh;
- 
--	dprintk("--> %s ino %" PRIino "u pgbase %u req %zu@%llu\n",
-+	dprintk("--> %s ino %llu pgbase %u req %zu@%llu\n",
- 		__func__, hdr->inode->i_ino,
- 		hdr->args.pgbase, (size_t)hdr->args.count, offset);
- 
-@@ -514,7 +514,7 @@ filelayout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 	if (IS_ERR(ds_clnt))
- 		return PNFS_NOT_ATTEMPTED;
- 
--	dprintk("%s ino %" PRIino "u sync %d req %zu@%llu DS: %s cl_count %d\n",
-+	dprintk("%s ino %llu sync %d req %zu@%llu DS: %s cl_count %d\n",
- 		__func__, hdr->inode->i_ino, sync, (size_t) hdr->args.count,
- 		offset, ds->ds_remotestr, refcount_read(&ds->ds_clp->cl_count));
- 
-@@ -1001,7 +1001,7 @@ static int filelayout_initiate_commit(struct nfs_commit_data *data, int how)
- 	if (IS_ERR(ds_clnt))
- 		goto out_err;
- 
--	dprintk("%s ino %" PRIino "u, how %d cl_count %d\n", __func__,
-+	dprintk("%s ino %llu, how %d cl_count %d\n", __func__,
- 		data->inode->i_ino, how, refcount_read(&ds->ds_clp->cl_count));
- 	data->commit_done_cb = filelayout_commit_done_cb;
- 	refcount_inc(&ds->ds_clp->cl_count);
-diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
-index 716ffc14cca8b0f2ab3e06c4297070129b668e9e..8b1559171fe3977f1b8461db6266c8c0d6c51ba5 100644
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -1631,7 +1631,7 @@ ff_layout_set_layoutcommit(struct inode *inode,
- 		return;
- 
- 	pnfs_set_layoutcommit(inode, lseg, end_offset);
--	dprintk("%s inode %" PRIino "u pls_end_pos %llu\n", __func__, inode->i_ino,
-+	dprintk("%s inode %llu pls_end_pos %llu\n", __func__, inode->i_ino,
- 		(unsigned long long) NFS_I(inode)->layout->plh_lwb);
- }
- 
-@@ -2136,7 +2136,7 @@ ff_layout_read_pagelist(struct nfs_pgio_header *hdr)
- 	u32 dss_id;
- 	bool ds_fatal_error = false;
- 
--	dprintk("--> %s ino %" PRIino "u pgbase %u req %zu@%llu\n",
-+	dprintk("--> %s ino %llu pgbase %u req %zu@%llu\n",
- 		__func__, hdr->inode->i_ino,
- 		hdr->args.pgbase, (size_t)hdr->args.count, offset);
- 
-@@ -2245,7 +2245,7 @@ ff_layout_write_pagelist(struct nfs_pgio_header *hdr, int sync)
- 
- 	vers = nfs4_ff_layout_ds_version(mirror, dss_id);
- 
--	dprintk("%s ino %" PRIino "u sync %d req %zu@%llu DS: %s cl_count %d vers %d\n",
-+	dprintk("%s ino %llu sync %d req %zu@%llu DS: %s cl_count %d vers %d\n",
- 		__func__, hdr->inode->i_ino, sync, (size_t) hdr->args.count,
- 		offset, ds->ds_remotestr, refcount_read(&ds->ds_clp->cl_count),
- 		vers);
-@@ -2336,7 +2336,7 @@ static int ff_layout_initiate_commit(struct nfs_commit_data *data, int how)
- 
- 	vers = nfs4_ff_layout_ds_version(mirror, dss_id);
- 
--	dprintk("%s ino %" PRIino "u, how %d cl_count %d vers %d\n", __func__,
-+	dprintk("%s ino %llu, how %d cl_count %d vers %d\n", __func__,
- 		data->inode->i_ino, how, refcount_read(&ds->ds_clp->cl_count),
- 		vers);
- 	data->commit_done_cb = ff_layout_commit_done_cb;
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 81c2ab599e2f7a93c004219dcc52a5817b894cee..75ef33eb35c7fdb5ee95af47f4d5fd20796423cb 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2258,7 +2258,7 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
- 	bool attr_changed = false;
- 	bool have_delegation;
- 
--	dfprintk(VFS, "NFS: %s(%s/%" PRIino "u fh_crc=0x%08x ct=%d info=0x%llx)\n",
-+	dfprintk(VFS, "NFS: %s(%s/%llu fh_crc=0x%08x ct=%d info=0x%llx)\n",
- 			__func__, inode->i_sb->s_id, inode->i_ino,
- 			nfs_display_fhandle_hash(NFS_FH(inode)),
- 			icount_read(inode), fattr->valid);
-@@ -2288,7 +2288,7 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
- 		/*
- 		* Big trouble! The inode has become a different object.
- 		*/
--		printk(KERN_DEBUG "NFS: %s: inode %" PRIino "u mode changed, %07o to %07o\n",
-+		printk(KERN_DEBUG "NFS: %s: inode %llu mode changed, %07o to %07o\n",
- 				__func__, inode->i_ino, inode->i_mode, fattr->mode);
- 		goto out_err;
+-		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%" PRIino "u\n",
++		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%llu\n",
+ 				    inode->i_sb->s_id, inode->i_ino);
+ 		host_err = -ESERVERFAULT;
  	}
-@@ -2358,7 +2358,7 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
- 				if (S_ISDIR(inode->i_mode))
- 					nfs_force_lookup_revalidate(inode);
- 				attr_changed = true;
--				dprintk("NFS: change_attr change on server for file %s/%" PRIino "d\n",
-+				dprintk("NFS: change_attr change on server for file %s/%lld\n",
- 						inode->i_sb->s_id,
- 						inode->i_ino);
- 			} else if (!have_delegation) {
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index f66683a6663e879e9b66de587abe0a6c471b68a0..d839a97df822abb9fb0efd25f3402fcca82d4038 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4714,7 +4714,7 @@ static int _nfs4_proc_lookupp(struct inode *inode,
- 	nfs_fattr_init(fattr);
- 	nfs4_init_sequence(server->nfs_client, &args.seq_args, &res.seq_res, 0, 0);
- 
--	dprintk("NFS call  lookupp ino=0x%" PRIino "x\n", inode->i_ino);
-+	dprintk("NFS call  lookupp ino=0x%llx\n", inode->i_ino);
- 	status = nfs4_do_call_sync(clnt, server, &msg, &args.seq_args,
- 				   &res.seq_res, task_flags);
- 	dprintk("NFS reply lookupp: %d\n", status);
-@@ -10019,7 +10019,7 @@ nfs4_proc_layoutcommit(struct nfs4_layoutcommit_data *data, bool sync)
- 	int status = 0;
- 
- 	dprintk("NFS: initiating layoutcommit call. sync %d "
--		"lbw: %llu inode %" PRIino "u\n", sync,
-+		"lbw: %llu inode %llu\n", sync,
- 		data->args.lastbytewritten,
- 		data->args.inode->i_ino);
- 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 9a335fc06c68e30c27c8b46ad0521026370449da..e79deb9bf664df3424d9c26d3390799969d0499e 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -891,7 +891,7 @@ pnfs_layout_free_bulk_destroy_list(struct list_head *layout_list,
- 	while (!list_empty(layout_list)) {
- 		lo = list_entry(layout_list->next, struct pnfs_layout_hdr,
- 				plh_bulk_destroy);
--		dprintk("%s freeing layout for inode %" PRIino "u\n", __func__,
-+		dprintk("%s freeing layout for inode %llu\n", __func__,
- 			lo->plh_inode->i_ino);
- 		inode = lo->plh_inode;
- 
-@@ -1440,7 +1440,7 @@ _pnfs_return_layout(struct inode *ino)
- 	int status = 0;
- 	bool send, valid_layout;
- 
--	dprintk("NFS: %s for inode %" PRIino "u\n", __func__, ino->i_ino);
-+	dprintk("NFS: %s for inode %llu\n", __func__, ino->i_ino);
- 
- 	spin_lock(&ino->i_lock);
- 	lo = nfsi->layout;
-@@ -3055,7 +3055,7 @@ pnfs_try_to_write_data(struct nfs_pgio_header *hdr,
- 
- 	hdr->mds_ops = call_ops;
- 
--	dprintk("%s: Writing ino:%" PRIino "u %u@%llu (how %d)\n", __func__,
-+	dprintk("%s: Writing ino:%llu %u@%llu (how %d)\n", __func__,
- 		inode->i_ino, hdr->args.count, hdr->args.offset, how);
- 	trypnfs = nfss->pnfs_curr_ld->write_pagelist(hdr, how);
- 	if (trypnfs != PNFS_NOT_ATTEMPTED)
-@@ -3181,7 +3181,7 @@ pnfs_try_to_read_data(struct nfs_pgio_header *hdr,
- 
- 	hdr->mds_ops = call_ops;
- 
--	dprintk("%s: Reading ino:%" PRIino "u %u@%llu\n",
-+	dprintk("%s: Reading ino:%llu %u@%llu\n",
- 		__func__, inode->i_ino, hdr->args.count, hdr->args.offset);
- 
- 	trypnfs = nfss->pnfs_curr_ld->read_pagelist(hdr);
-@@ -3314,7 +3314,7 @@ pnfs_set_layoutcommit(struct inode *inode, struct pnfs_layout_segment *lseg,
- 	if (!test_and_set_bit(NFS_INO_LAYOUTCOMMIT, &nfsi->flags)) {
- 		nfsi->layout->plh_lwb = end_pos;
- 		mark_as_dirty = true;
--		dprintk("%s: Set layoutcommit for inode %" PRIino "u ",
-+		dprintk("%s: Set layoutcommit for inode %llu ",
- 			__func__, inode->i_ino);
- 	} else if (end_pos > nfsi->layout->plh_lwb)
- 		nfsi->layout->plh_lwb = end_pos;
-@@ -3363,7 +3363,7 @@ pnfs_layoutcommit_inode(struct inode *inode, bool sync)
- 	if (!pnfs_layoutcommit_outstanding(inode))
- 		return 0;
- 
--	dprintk("--> %s inode %" PRIino "u\n", __func__, inode->i_ino);
-+	dprintk("--> %s inode %llu\n", __func__, inode->i_ino);
- 
- 	status = -EAGAIN;
- 	if (test_and_set_bit(NFS_INO_LAYOUTCOMMITTING, &nfsi->flags)) {
 
 -- 
 2.53.0
