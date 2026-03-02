@@ -4,93 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE2F6D58E4B
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 03:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03513D58E47
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 04:26:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091276B009E; Sun,  1 Mar 2026 22:57:05 -0500 (EST)
+	id 2B5EE6B0093; Sun,  1 Mar 2026 23:26:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03E3E6B009F; Sun,  1 Mar 2026 22:57:04 -0500 (EST)
+	id 263166B0095; Sun,  1 Mar 2026 23:26:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E62E76B00A0; Sun,  1 Mar 2026 22:57:04 -0500 (EST)
+	id 1827A6B0096; Sun,  1 Mar 2026 23:26:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D24DE6B009E
-	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 22:57:04 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B3A4C2BC6
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:57:04 +0000 (UTC)
-X-FDA: 84499762368.15.1304DDE
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B0F531C000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:57:02 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0417A6B0093
+	for <linux-mm@kvack.org>; Sun,  1 Mar 2026 23:26:35 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 478E68C6F5
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:26:34 +0000 (UTC)
+X-FDA: 84499836708.22.BE69F8C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1A6E9140006
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:26:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of 3jQqlaQkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3jQqlaQkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772423822;
+	s=arc-20220608; t=1772425592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=JmWvfmtgAcDRz4bFImh8rJEfEmq6Cak2/bFtX09VN9Q=;
-	b=NfOsQjaCVeDzhTnDAHtuKCWDR4caOpuBNzBHuDYAQXFf1RX7g1TqAg0vZnS9q5qOb7rZKi
-	JwwqII7LG7XG4IO4Dr9gHUe49BJ3tXBb2moKMC46+ziemcAIyULirgZDVvw8P+6ZpONZRr
-	Wr0zf7MCyHBZJ65SH4acTInjb/R3BpU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772423822; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7hIO1W0NHMhBrt1GAqzy6/9qk+IeopueP+Y3nNz4EP0=;
+	b=Sx442UejbMpzf0kzdoEWbwxHlPTjGRoLuWYX3bByEOIu1TODvql4B1RQiAYTKOJ8THnm+s
+	TriPJkfNYIO84iNvPPXan0lAQ0JCkiXPaZAlTFgXQCdrg1BNSPFmZeTHg3jH1h/gnWyHGy
+	6Ilt6Fok4izVuriQJIBO1tqYldgjboo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772425592; a=rsa-sha256;
 	cv=none;
-	b=eHQVESJg+bJgXlQwKmvgF+i01FbyVZbKyTS4RsU28pbuwAKsAfMePeUFdSyaGfZ2ZhSvUn
-	BbXF/fMnxneUd5NpBZeqmZhkBEZxh+aylgIaEX/2InwpYebwp/PbkexHlY3ToccvSABBES
-	mmIWSSvxWBoVVqkcV0bKvPXVF3prun4=
+	b=xjbIRztNcURl+YwLtAxU95MTmJf2Hi7CXpwY1EOJenctErLgkWnC0tFpuiFtjy9ZX4IL9v
+	Gx69yZb+swU5a6Lk0dBLuM6l/PbQnF99uWeh/PBwQ9a1QArSUr+acDgVdCo6FKQPaXYeCF
+	a2/0HuAGcziZR8C9kVvMOEtKg3XWFqI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
+	imf09.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf20.hostedemail.com: domain of 3jQqlaQkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=3jQqlaQkbAIo6CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-67995e1ecacso84743051eaf.0
-        for <linux-mm@kvack.org>; Sun, 01 Mar 2026 19:57:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772423822; x=1773028622;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JmWvfmtgAcDRz4bFImh8rJEfEmq6Cak2/bFtX09VN9Q=;
-        b=sTAYbOQuAIzhi+XqH68p7Tn8Nu2dcipZ+l7ivP74Dk+sLbWuoqGf9t2QFTOeha5DHz
-         XzKN44LPNMYMPSqGHI04d8qJ8JDF+GvSa6rjXoG4s5Kpw8lcz23BeDIUVfWoMnj1T1cL
-         UuXq8cOTXPadK0bJBYRobIUzEcE6Y3zXq6LD6Z4TMzfFvgY0wQEBkcbgWyQWjj3ZVJ1v
-         KP+4U8TtKzpiiRH9b30lreuu1DkQ5NzMR2kAsctzaAzQCXnUJ2A3QQ623T6owjCmg91T
-         EEkJId/gjVw9D5r5wZ8HyZ7fv1gB29ngenEkB7OBtAN8rv3vBNnll9+gijFQ4WeYbAav
-         TO8w==
-X-Forwarded-Encrypted: i=1; AJvYcCURTu/tAaMuwpPFMk+pjN+1hDsL6U580q/alrru0yLcWJ5IqHnXRvJm8M73p/q70+qhsg7bioMVug==@kvack.org
-X-Gm-Message-State: AOJu0YwBus4aPvM8O63GaKTH6xnBQ/J2a0+u5Fi5lhnYaj6iWVRxSMRV
-	edfXEE27pN8aCriVaNEJJQs2HIWrpsQcD5CBMhYqhifM7ehbDk3UUpKmNIkdrlkHMIARuUCMvfk
-	pa+B7loiv0JtypLHNhUv0LztcVnv7wmX3AbxdIekx/PMBFCqQl4GSulVXSls=
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C99814BF;
+	Sun,  1 Mar 2026 20:26:24 -0800 (PST)
+Received: from [10.164.148.48] (MacBook-Pro.blr.arm.com [10.164.148.48])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 754813F7BD;
+	Sun,  1 Mar 2026 20:26:26 -0800 (PST)
+Message-ID: <1709a9c1-628d-4cf1-bbc6-00b77fe70f3f@arm.com>
+Date: Mon, 2 Mar 2026 09:56:16 +0530
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:418e:b0:67a:61f:646b with SMTP id
- 006d021491bc7-67a061f67bfmr3305124eaf.74.1772423821722; Sun, 01 Mar 2026
- 19:57:01 -0800 (PST)
-Date: Sun, 01 Mar 2026 19:57:01 -0800
-In-Reply-To: <20260302034102.3145719-1-wangqing7171@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a50a8d.050a0220.3a55be.006f.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, chao@kernel.org, jaegeuk@kernel.org, 
-	jannh@google.com, liam.howlett@oracle.com, linkinjeon@kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@suse.cz, wangqing7171@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B0F531C000A
-X-Stat-Signature: kp33464a673jjc5pgb7dwjpeptj37wrj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/rmap: fix incorrect pte restoration for lazyfree
+ folios
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ riel@surriel.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ harry.yoo@oracle.com, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable <stable@kernel.org>
+References: <20260228140540.1774748-1-dev.jain@arm.com>
+ <CAGsJ_4ynq76B+qJmtJayB44eRehviCbhBNKu0sdU1NcdiSDVJw@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4ynq76B+qJmtJayB44eRehviCbhBNKu0sdU1NcdiSDVJw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1A6E9140006
+X-Stat-Signature: 8rsnkzkredu8qf488qw6q1h13be49nre
 X-Rspam-User: 
-X-HE-Tag: 1772423822-811172
-X-HE-Meta: U2FsdGVkX183uKa0UDGgfLg+JYS5HC5pvGO/Sc1VjbSBu1QpK9D0IfH2BZ/HnShwC7aJmJ0owfNIULGDyd9PR+7HFz83A3yMbKECF5N02Hi8NQHQQ6pn3fFL/QZzoI8UUPmROL12tUYZwa/GfZ0HBaYo9ZdIhHGieivK43a9gkd9iYJe2Pyxtnemp6nhbsoaCfjXmvdqj2vX7FKZMH7dmWSM4wimWTnndNustJYodj1BG5pkMDxadwOd+vXg70o+BEYog6S7YsrK976tt4dbcATmnvIuB8JVWktrkxL+Ga0ThCIL8MTJeF2pJ6kQcFRgJVKsqMFQnKUiZb8YirpQOruSwvtKTr/S/eapaw9uU1nSB+wFMWvblfUkqnc9Hr/3vEc3i4bX7CPNafludVawJQe4195XARvGzeYznbaqRv/4dShZtJkd4VXY1IeBWFSgv6ejWihZAMNyaR9Iifflgcs2bp8HDOGcSYts9x/N+PmIGnNliSGe1yDbFfSJgTFbSCXDwIH0pYgAWVz8eLoPItJqxhmrPqxXaxFrIz3tYRcCa08ZJ3GSvGApcb22mNSUjFZv75V+s6gXyRjDM2vZQvACR/QGykJ4UV7ZkImjksU+k/AzWkAc4AkOiKzn5W4p6GkNLDV5UMTwlD4Yvdcg7PYJmmYnO3xrFx32JgPiGzYKF0q4Z8WfEJyhfgC99vinOoyf6QIuSlXL0X/XjKA3NvnKer2FWmjU+peR3Hfd3i8+wNhHKBs9ZNe1rp3sWd9eq2NaxtvjLfjBELxHmnH8Q2JBy40dXFeFwR0u/EQg4w6H512TaCFu7dJ0CvOEghAwVSZQXylWfMOMfg6rptsdZp0loKIx4Dk19SehzmNxR6AC9oR4/nBHXxvzkOOS08MJoxwWRibekx7WV1wOQOfCtLnboNosVF0ags2dhXHb8bBYczox9vxfGHdzCDR7fqh/nQg5KLJ6D5/ho5K/b5r
- wTjR7jWq
- mYR72QxVQpd4M0UR5IpjoGB8akNENKFWHC8qFGGFe/F5PSl3FVXUbWFFdx+BQgFes2zaR9ixgiOwpdEJt9pw+gsSQxhZ6PYZw9BIL2fnKKDQO1ruQqI+xEnxrWxxLMeVI9Yh2p/U23rPRK+s+IfoikZasnotoeFCV8hWlUU06FjgdF+rrMJbLOlrq/r6kQZulrxtj39xrGX8ANvmQJ3EqOSO5KsOVLvX/Q2UwVrmRAZvnx9EoC5KVuNFwHujwq5YoLuz7caJ0pJal2ug+fCmbFsjcnYKXm4a53EQ+zjs/ZEVgnjRBQTxRk5JSToLfHmT0HGmqJv2XYYQfyjp3nGdBI7xAn8RReS3zQbfo4RqVr7A43EhAGgUHEFD2AbilvKsVNzXnC2cZ2PuXf1ZPdFpUgHaVao3VZd7riY1nfQYJuIPG8pfnQ0nLUSWOxhhp/Ay7OSH0WPeNooYIBiwz2bb2mhU2wachPxyE9K0MyrVu99x7yPbI0PPtny31K1Xm+SR1wOIzxEX+pqeVPwQ9VmdQXld8Wem5Y+vZVEI04wcLwuOIyZq3Az3u2J9BPNskQ60L1AMEf7+zjOFBk75Ccd73H5qzVXWw8SxZOk7OQ1VtG9PSpw6vMmL+iQlkff7befXvHWQ8T0JvM5GiUx0uwIA+BkcanLkJ/jsh65XGLJjB5vcSxkB0gkqv2wV9PnKzJsyFEPVVEVRfx+w3f4unJFg2LwV6f0d0gDZYiFDKEnzOX90YTZutDHRsMmY98kJ9IRLmL8dl6H81UClH6oG/7MXhHcSZ/RKzgfpevG+1YvI+vafUt/cyQYezQ4Yv/BaUiqN38KLyy9Neoj0FdhNYaIPHSDr6In7Ix2crRqVBtPKPtHvToS3rnWBbQ5XprFhyE8mBUAW7KSFboHnQUymrxuYyOxtOJiqwZ1OWUdgbUOqFAwqhzBfYGg9CzUSMhw==
+X-HE-Tag: 1772425591-19899
+X-HE-Meta: U2FsdGVkX1+V8Rovu9De76FIYwZfFN+5E2Bm64zLlC4WB03AKT9Jpa3Z2BcAFl7IOEkjjb+mPUNUHOlEhUObmHallDVPH4PITMgvNvPEUZ5Dy7PDvdIwv6u82tD5fmsbmGKVZVOyjApmDZJ9K/a5/bJxumozuY/eW0yCYh4V3qqtPCk7+xt9oOLJjZILfUHHt3AuZ4nftf2JBM4TQ6Dj0zcBAxyS1ez9o1sV+mPYqTQVtFJDnSwkE2/2az6gq1E4eDcjVVaoDb7aP+NaJD4Or5nFfXrBNgdtzb8KM55VZykbeRXfelw4mnifUCw3b4LaHH9gBIokjeKEN5EUcA4rmJMqAzQnFNPkcelKhywzgSxRgeJqB6ulslUBFSoiA485Ir8Nx67LkadpoqegC5MCsRWrNOLAVqL6CztxURC56o5O5ZK5lqrwcwXMUchbkumbpAyR3BZ0qetV+L4qJOUVpZAkE25tdWRxNTrNd+yh0GPy9lIVTwrJogkQQS4dToxh+j5TBZoVFcApUrWw+Iklt04t5yTutDHS7UZ7t8nhUrknVpnMeGRZV2LUunW2BjB/aWhUmCFUGv1J0eW6d0IegL00GoIESO2D1AABpzs3X8r5oiPJBUIL3ueqK8JyqHLoQvzbyyFTJ8dpenJ+0SYNehW8gWKdTBbnsVtJuCmb4UeJJeWfytw6k1K4gjU408xPeETYXaPwDezUcQS022g9fxgNETut7+Fs5EobP7IDHLcyKWRHsHcYQmzwpXplcvoNuVPqvc4s2/Bgpgd8tsVUh1xjpIvWRPsdLNp8MO3hF2MmJHzSamw3V0UT2JlXIlevnu3zaTZ8MrWXBHIMKcavtZnObylO4hHO4hBD3vRzBOF1f2Dqx2HRwn3o3MDV6di28Zu1RNC4LOLeqtwhVPyv+oZ0fPX8dAm97VJDOTt3DT8tGttO7x1dTdQVrRt4XC2+o3R8fc40B6jk/j1s7AO
+ g3PsQNac
+ A8P0RWbuEQPGDCCDIlUrmA9rCdvfsuGYA4DarCrGeP0gSpTHKvE/3D27MzVzw+K+VbdKgoEMrMfekfDj6cCpBSClMOyGpQ9jwKAbzf8oI0QxubqLOi5xUjixfVxIKLUJN54R9Pr8ysApbjCoymCwgE2Lub4vOzfjrgYFdRU+Ko7IOj8SDnVB1yKT/BruRZv8p5RDNesVfi41OUI1gAvvrAYAu8arzwjEVmzQTnnmkMhGwSC1xdzU5Tc8ni15fsLQulAUc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,213 +89,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-memory leak in __pcs_replace_empty_main
-
-BUG: memory leak
-unreferenced object 0xffff88810005fa00 (size 512):
-  comm "swapper/0", pid 0, jiffies 4294937296
-  hex dump (first 32 bytes):
-    00 2e c5 05 81 88 ff ff 00 a2 96 0a 81 88 ff ff  ................
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc ee49fed0):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    alloc_full_sheaf mm/slub.c:2834 [inline]
-    __pcs_replace_empty_main+0x1e4/0x260 mm/slub.c:4602
-    alloc_from_pcs mm/slub.c:4695 [inline]
-    slab_alloc_node mm/slub.c:4829 [inline]
-    __kmalloc_cache_noprof+0x3ac/0x480 mm/slub.c:5353
-    kmalloc_noprof include/linux/slab.h:950 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __irq_domain_alloc_fwnode+0x37/0x140 kernel/irq/irqdomain.c:95
-    irq_domain_alloc_named_fwnode include/linux/irqdomain.h:271 [inline]
-    arch_early_irq_init+0x1c/0x70 arch/x86/kernel/apic/vector.c:803
-    start_kernel+0x931/0xb80 init/main.c:1114
-    x86_64_start_reservations+0x24/0x30 arch/x86/kernel/head64.c:310
-    x86_64_start_kernel+0xce/0xd0 arch/x86/kernel/head64.c:291
-    common_startup_64+0x13e/0x148
-
-BUG: memory leak
-unreferenced object 0xffff8881008f8c00 (size 512):
-  comm "kthreadd", pid 2, jiffies 4294937339
-  hex dump (first 32 bytes):
-    00 d6 04 00 81 88 ff ff 00 92 96 0a 81 88 ff ff  ................
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc f2ef5290):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    alloc_full_sheaf mm/slub.c:2834 [inline]
-    __pcs_replace_empty_main+0x1e4/0x260 mm/slub.c:4602
-    alloc_from_pcs mm/slub.c:4695 [inline]
-    slab_alloc_node mm/slub.c:4829 [inline]
-    __kmalloc_cache_node_noprof+0x3ef/0x4e0 mm/slub.c:5366
-    kmalloc_node_noprof include/linux/slab.h:1077 [inline]
-    __get_vm_area_node+0xc6/0x1d0 mm/vmalloc.c:3221
-    __vmalloc_node_range_noprof+0x1d3/0xe50 mm/vmalloc.c:4024
-    __vmalloc_node_noprof+0x71/0x90 mm/vmalloc.c:4124
-    alloc_thread_stack_node kernel/fork.c:355 [inline]
-    dup_task_struct kernel/fork.c:924 [inline]
-    copy_process+0x3e5/0x28c0 kernel/fork.c:2050
-    kernel_clone+0xac/0x6e0 kernel/fork.c:2654
-    kernel_thread+0x80/0xb0 kernel/fork.c:2715
-    create_kthread kernel/kthread.c:490 [inline]
-    kthreadd+0x186/0x250 kernel/kthread.c:848
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff888105c53200 (size 512):
-  comm "kworker/1:0", pid 23, jiffies 4294937917
-  hex dump (first 32 bytes):
-    00 a2 96 0a 81 88 ff ff 00 d4 04 00 81 88 ff ff  ................
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc d24dd055):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe9/0x2c0 mm/slub.c:5700
-    free_to_pcs mm/slub.c:5753 [inline]
-    slab_free mm/slub.c:6154 [inline]
-    kfree+0x352/0x390 mm/slub.c:6467
-    vfree.part.0+0x1d5/0x4d0 mm/vmalloc.c:3485
-    vfree mm/vmalloc.c:3456 [inline]
-    delayed_vfree_work+0x5b/0x90 mm/vmalloc.c:3398
-    process_one_work+0x26c/0x5d0 kernel/workqueue.c:3275
-    process_scheduled_works kernel/workqueue.c:3358 [inline]
-    worker_thread+0x243/0x490 kernel/workqueue.c:3439
-    kthread+0x14e/0x1a0 kernel/kthread.c:467
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff888105c52e00 (size 512):
-  comm "kworker/u8:5", pid 4440, jiffies 4294937918
-  hex dump (first 32 bytes):
-    c8 2c 04 00 81 88 ff ff 00 fa 05 00 81 88 ff ff  .,..............
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc a68b63de):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe9/0x2c0 mm/slub.c:5700
-    free_to_pcs mm/slub.c:5753 [inline]
-    slab_free mm/slub.c:6154 [inline]
-    kfree+0x352/0x390 mm/slub.c:6467
-    call_usermodehelper_freeinfo kernel/umh.c:43 [inline]
-    umh_complete kernel/umh.c:57 [inline]
-    call_usermodehelper_exec_async+0x1c7/0x1f0 kernel/umh.c:119
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff88810a96a200 (size 512):
-  comm "udevadm", pid 5177, jiffies 4294938175
-  hex dump (first 32 bytes):
-    00 fa 05 00 81 88 ff ff 00 32 c5 05 81 88 ff ff  .........2......
-    00 12 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc 94107438):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    alloc_full_sheaf mm/slub.c:2834 [inline]
-    __pcs_replace_empty_main+0x1e4/0x260 mm/slub.c:4602
-    alloc_from_pcs mm/slub.c:4695 [inline]
-    slab_alloc_node mm/slub.c:4829 [inline]
-    __kmalloc_cache_noprof+0x3ac/0x480 mm/slub.c:5353
-    kmalloc_noprof include/linux/slab.h:950 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    kernfs_get_open_node fs/kernfs/file.c:543 [inline]
-    kernfs_fop_open+0x4f3/0x580 fs/kernfs/file.c:718
-    do_dentry_open+0x202/0x8d0 fs/open.c:949
-    vfs_open+0x3d/0x1b0 fs/open.c:1081
-    do_open fs/namei.c:4671 [inline]
-    path_openat+0x154d/0x1e20 fs/namei.c:4830
-    do_file_open+0x121/0x200 fs/namei.c:4859
-    do_sys_openat2+0xa5/0x140 fs/open.c:1366
-    do_sys_open fs/open.c:1372 [inline]
-    __do_sys_openat fs/open.c:1388 [inline]
-    __se_sys_openat fs/open.c:1383 [inline]
-    __x64_sys_openat+0x82/0xf0 fs/open.c:1383
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-BUG: memory leak
-unreferenced object 0xffff888109d58400 (size 512):
-  comm "udevd", pid 5176, jiffies 4294938222
-  hex dump (first 32 bytes):
-    00 12 47 2a 81 88 ff ff 00 ee 46 2a 81 88 ff ff  ..G*......F*....
-    00 12 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-  backtrace (crc af8b5cec):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __kfree_rcu_sheaf+0x164/0x240 mm/slub.c:5887
-    kfree_rcu_sheaf mm/slab_common.c:1608 [inline]
-    kvfree_call_rcu+0x1f6/0x3c0 mm/slab_common.c:1957
-    kernfs_unlink_open_file+0x194/0x1b0 fs/kernfs/file.c:604
-    kernfs_fop_release+0x55/0x110 fs/kernfs/file.c:783
-    __fput+0x1b5/0x4f0 fs/file_table.c:469
-    fput_close_sync+0x67/0x120 fs/file_table.c:574
-    __do_sys_close fs/open.c:1509 [inline]
-    __se_sys_close fs/open.c:1494 [inline]
-    __x64_sys_close+0x4a/0xc0 fs/open.c:1494
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
 
 
-Tested on:
+On 01/03/26 12:04 am, Barry Song wrote:
+> On Sun, Mar 1, 2026 at 3:06 AM Dev Jain <dev.jain@arm.com> wrote:
+>>
+>> We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
+>> If the batch has a mix of writable and non-writable bits, we may end up
+>> setting the entire batch writable. Fix this by respecting writable bit
+>> during batching.
+>> Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+>> lost, preserve it on pte restoration by respecting the bit during batching,
+>> to make the fix consistent w.r.t both writable bit and soft-dirty bit.
+>>
+>> I was able to write the below reproducer and crash the kernel.
+>> Explanation of reproducer (set 64K mTHP to always):
+>>
+>> Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
+>> fork() - parent points to the folio with 8 writable ptes and 8 non-writable
+>> ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
+>> determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
+>> the folio as lazyfree. Write to the memory to dirty the pte, eventually
+>> rmap will dirty the folio. Then trigger reclaim, we will hit the pte
+>> restoration path, and the kernel will crash with the following trace:
+>>
+>> [   21.134473] kernel BUG at mm/page_table_check.c:118!
+>> [   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>> [   21.135917] Modules linked in:
+>> [   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+>> [   21.136858] Hardware name: linux,dummy-virt (DT)
+>> [   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>> [   21.137308] pc : page_table_check_set+0x28c/0x2a8
+>> [   21.137607] lr : page_table_check_set+0x134/0x2a8
+>> [   21.137885] sp : ffff80008a3b3340
+>> [   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+>> [   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+>> [   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+>> [   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+>> [   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+>> [   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+>> [   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+>> [   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+>> [   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+>> [   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+>> [   21.141991] Call trace:
+>> [   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+>> [   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+>> [   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+>> [   21.142766]  contpte_set_ptes+0xe8/0x140
+>> [   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+>> [   21.143177]  rmap_walk_anon+0x100/0x250
+>> [   21.143315]  try_to_unmap+0xa0/0xc8
+>> [   21.143441]  shrink_folio_list+0x59c/0x18a8
+>> [   21.143759]  shrink_lruvec+0x664/0xbf0
+>> [   21.144043]  shrink_node+0x218/0x878
+>> [   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+>> [   21.144763]  user_proactive_reclaim+0x2a4/0x340
+>> [   21.145056]  reclaim_store+0x3c/0x60
+>> [   21.145216]  dev_attr_store+0x20/0x40
+>> [   21.145585]  sysfs_kf_write+0x84/0xa8
+>> [   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+>> [   21.145994]  vfs_write+0x2b8/0x368
+>> [   21.146119]  ksys_write+0x70/0x110
+>> [   21.146240]  __arm64_sys_write+0x24/0x38
+>> [   21.146380]  invoke_syscall+0x50/0x120
+>> [   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+>> [   21.146679]  do_el0_svc+0x28/0x40
+>> [   21.146798]  el0_svc+0x34/0x110
+>> [   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+>> [   21.147074]  el0t_64_sync+0x198/0x1a0
+>> [   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+>> [   21.147440] ---[ end trace 0000000000000000 ]---
+>>
+>>
+>> #define _GNU_SOURCE
+>> #include <stdio.h>
+>> #include <unistd.h>
+>> #include <stdlib.h>
+>> #include <sys/mman.h>
+>> #include <string.h>
+>> #include <sys/wait.h>
+>> #include <sched.h>
+>> #include <fcntl.h>
+>>
+>> void write_to_reclaim() {
+>>     const char *path = "/sys/devices/system/node/node0/reclaim";
+>>     const char *value = "409600000000";
+>>     int fd = open(path, O_WRONLY);
+>>     if (fd == -1) {
+>>         perror("open");
+>>         exit(EXIT_FAILURE);
+>>     }
+>>
+>>     if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+>>         perror("write");
+>>         close(fd);
+>>         exit(EXIT_FAILURE);
+>>     }
+>>
+>>     printf("Successfully wrote %s to %s\n", value, path);
+>>     close(fd);
+>> }
+>>
+>> int main()
+>> {
+>>         char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+>>                          MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>>         if ((unsigned long)ptr != (1UL << 30)) {
+>>                 perror("mmap");
+>>                 return 1;
+>>         }
+>>
+>>         /* a 64K folio gets faulted in */
+>>         memset(ptr, 0, 1UL << 16);
+>>
+>>         /* 32K half will not be shared into child */
+>>         if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+>>                 perror("madvise madv dontfork");
+>>                 return 1;
+>>         }
+>>
+>>         pid_t pid = fork();
+>>
+>>         if (pid < 0) {
+>>                 perror("fork");
+>>                 return 1;
+>>         } else if (pid == 0) {
+>>                 sleep(15);
+>>         } else {
+>>                 /* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+>>                 if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+>>                         perror("madvise madv fork");
+>>                         return 1;
+>>                 }
+>>                 if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+>>                         perror("madvise madv free");
+>>                         return 1;
+>>                 }
+>>
+>>                 /* dirty the large folio */
+>>                 (*ptr) += 10;
+>>
+>>                 write_to_reclaim();
+>>                 // sleep(10);
+>>                 waitpid(pid, NULL, 0);
+>>
+>>         }
+>> }
+>>
+>> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+>> Cc: stable <stable@kernel.org>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>> v1->v2:
+>>  - Just respect the writable bit instead of hacking in a pte_wrprotect() in
+>>    failure path
+>>  - Also handle soft-dirty bit
+>>
+>> Based on mm-unstable (df9c51269a5e).
+>>
+>>  mm/rmap.c | 12 +++++++++++-
+>>  1 file changed, 11 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index bff8f222004e4..fb64829913052 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1955,7 +1955,17 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>         if (userfaultfd_wp(vma))
+>>                 return 1;
+>>
+>> -       return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>> +       if (!folio_test_anon(folio))
+>> +               return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>> +
+>> +       /*
+>> +        * For anon folios, if unmap fails, we need to restore the ptes.
+>> +        * To avoid accidentally upgrading write permissions for ptes that
+>> +        * were not originally writable, and to avoid losing the soft-dirty
+>> +        * bit, use the appropriate FPB flags.
+>> +        */
+>> +       return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>> +                                    FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+> 
+> Do we really need to differentiate between file and anon?
+> I’d rather just return unconditionally by removing the
+> if (!folio_test_anon(folio)) check above.
 
-commit:         11439c46 Linux 7.0-rc2
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1277a202580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2c6ad6fefffa76b1
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=13801006580000
+File mappings don't need preservation of writable bit. I really think
+we should differentiate this. It improves understanding of code by
+telling the reader that after clearing ptes for file mappings and
+losing the writable bit, the correctness is ensured in the fault handler.
+
+
+> 
+> If we do want to keep two branches, why not use a flag variant instead?
+> 
+> flag = 0;
+> 
+> /* for anon folios .... */
+> if (folio_test_anon(folio))
+>                flag = FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY;
+> return folio_pte_batch_flags(...., flag);
+
+Yep this is better.
+
+> 
+>>  }
+> 
+> Thanks
+> Barry
+> 
 
 
