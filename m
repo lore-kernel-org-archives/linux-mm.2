@@ -4,92 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43917EB3636
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 21:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B925EB3632
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 21:29:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1CB6B014E; Mon,  2 Mar 2026 16:28:06 -0500 (EST)
+	id D87916B0088; Mon,  2 Mar 2026 16:29:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7648B6B014F; Mon,  2 Mar 2026 16:28:06 -0500 (EST)
+	id D11846B008A; Mon,  2 Mar 2026 16:29:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6756A6B0162; Mon,  2 Mar 2026 16:28:06 -0500 (EST)
+	id C34DF6B009E; Mon,  2 Mar 2026 16:29:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 59D016B014E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:28:06 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 182281A0319
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:28:06 +0000 (UTC)
-X-FDA: 84502410972.13.29200AC
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9D00F10000D
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:28:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=POwJT585;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B3AD86B0088
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:29:33 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 520351A0306
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:29:33 +0000 (UTC)
+X-FDA: 84502414626.10.A656E72
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 62FFD1A0013
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 21:29:30 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kNN46ziz;
+	spf=pass (imf19.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772486884;
+	s=arc-20220608; t=1772486971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fyfyeOjenhJY4nI2/2R4evalYM5N/W5OnG79VEXJQZE=;
-	b=HUpes7dMI1ZRX9FIAPgCgR/9RVLUHg0y5wflWra39hY0qCSaC0uCUd6G2zrW1J0IGnLSE1
-	fTP5wZERR/EnSyi7MW9FKN/nf+PItk7F393bVYly0bMb0JwzkKihefD5mEzdz/e4jqUIOE
-	ZtMeHh1GI0pK31vn1eEm00/FEE0jAOw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772486884; a=rsa-sha256;
-	cv=none;
-	b=GlkyenTapeL9Pop0xhCFgDeDAr190jdZN4aJ1K+0/JXSb7BjV5GmtuzWfqt58SEIVCRmAn
-	xaAs4jqUM8WGbwPJow29VZLpJDgXi7thIeOWkb0wpykJ+qczgqPC5/a+iORZ+8bTulOtle
-	I8lXko/zCMMZRgh0tOIjId5Wa3f+/yU=
+	bh=zyhhYDKWyw/H3pNxeE+c6W+xfMq1qQr2IVam5HpqEvI=;
+	b=d7QOfdg1tfKnIsCj1YPmE7M7fX1Y5hoILyN8uTrqk8YOQeuM7hZEQ09KKi3oiuCEehU4t4
+	bb+MWtQ1HP63OIkBVSppabwZhX7q8zKObmbVnn1+IhOkgu+b/BVrO8BLxx23gA2hQCeSqC
+	BU1fQRbNgd9tDk1v3hFmH3SVilltJK8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=POwJT585;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Mon, 2 Mar 2026 13:27:31 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772486877;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fyfyeOjenhJY4nI2/2R4evalYM5N/W5OnG79VEXJQZE=;
-	b=POwJT585eR2dlo1KJTx/3uvC6mpuYWU3W0nMBUG2I/bRe8JnlV/JzJVz4OSQr55ga1M54A
-	hd7BOGWLF50IkWQRT0l32SEV0gmtOWsi9t4xMyB3Zrlr38OfnN6IxqoaCog9gJFwL7WsQx
-	Y3HEYTAwA36vnnQYTaBzxS4rfqbyLvA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Chris Li <chrisl@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <aaXM58EsMtbGri2B@linux.dev>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
- <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
- <aZjxP2sTavBRGC1l@linux.dev>
- <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
- <20260221163043.GA35350@shakeel.butt@linux.dev>
- <aZpY1FIjYLtLdu5F@yjaykim-PowerEdge-T330>
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kNN46ziz;
+	spf=pass (imf19.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772486971; a=rsa-sha256;
+	cv=none;
+	b=hyDyqix7SRUXVBWZmTZTZCkULkNBlameIsBtPqSOnCq/m8ZZ8kmPsY4ng5k8oFIkqjG8xi
+	H4JqsCCXSoJWNEdYvc2h9HuIQD7ZIzq0B1znUWkfhh0r8HoSpMswjq1UVPLYNm+XDHSFqF
+	o0Re8+Mh/f/3LYwsGtNrIs9Md93nnlA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772486971; x=1804022971;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=07aJIhDXKQRWkJrUR+usIWWewW9SYLrb5gvHIC47BsQ=;
+  b=kNN46zizUPUJtUVfLddu3JlQD2u5Ppl2Rijtme720+46AQtES9yHpcWU
+   Uh1bLTbAulQzcKTwzHnLOlqd9oUTEPFfeFtwi6B/OP/VuHKJkJiYne6qh
+   kb4EXjEecwUWhAlGDqJtFI69IjV7xfIyFad4GUpMraa85S8fTp8rDLAaA
+   XCPiQqSD6sVhfjoA5+NB3V8SVnv1XzVd7AcdnfxYIimLfCLKnJKlIYK3g
+   ta09TCxCv5kjE+JngDu5zqkW9kjtNQx+bZmJQ0pfFF1U9AvY2UvCkVL+B
+   SNpe1RFUrD8ItNaa20f6WRZjjr9QIjp2/rK2rI4DPjvrq0uNE2VmwlJcN
+   g==;
+X-CSE-ConnectionGUID: WVPKSDMySN6mY6g+dUdPuA==
+X-CSE-MsgGUID: KynkyXYZRfWf12mGRcsIwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="83847755"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="83847755"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 13:29:29 -0800
+X-CSE-ConnectionGUID: Lx2duXLqRJySSZPf1AOGgw==
+X-CSE-MsgGUID: 1eKTNmjASpOPxgeT7ayHGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="221941335"
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.183]) ([10.245.244.183])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 13:29:26 -0800
+Message-ID: <d7a0cd033766d2fae1a62e35f5abcd7d701b7c80.camel@linux.intel.com>
+Subject: Re: [PATCH v2 3/4] drm/xe: Split TLB invalidation into submit and
+ wait steps
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: intel-xe@lists.freedesktop.org, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org, Jason
+ Gunthorpe	 <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
+ Simona Vetter	 <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
+ Alistair Popple	 <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 02 Mar 2026 22:29:22 +0100
+In-Reply-To: <aaXfzrTSvRpiX8An@lstrano-desk.jf.intel.com>
+References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
+	 <20260302163248.105454-4-thomas.hellstrom@linux.intel.com>
+	 <aaXfzrTSvRpiX8An@lstrano-desk.jf.intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZpY1FIjYLtLdu5F@yjaykim-PowerEdge-T330>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9D00F10000D
-X-Stat-Signature: 54iyidsgwr7c9ucenhex636ubbd17sgx
+X-Stat-Signature: wq4d45jhntx5tesz3arjxoxkspgtrqye
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772486882-395983
-X-HE-Meta: U2FsdGVkX1+dbr9SqIp7jOncM5dkLhfShb7blWzCQeQyw5uPb90dTMLNM7e8bOUVrkRP37Lp/nWkkN4fC/ypGC5NIrq3bUAkiqNh9QiM9n/C2sx9AW/QhBZBTruYTt/lvvi/87e5b6uF5udL3N9gnxl4pgwyRgQP2IlZmU+xjztCBNMectn5dJ9VGN7ea9D9HHJe+kHf+UK6RUOj5js96uv3t9djUvS3z5zpYT7nckiCQliDJB6x+euz6kqQfv64mgs2yd0M9LMaj2UsfI2oSVGzrmkGzdM7mEzgY5nassqDsmKdsjHLFtBn1q2fh6zGZpNetO6rLfDggAxAjR6zMzjAsYf2KrIQ3vi75mvAOfjLk1o25XRKOmBi/NR/UzzkZPvHfX8WVNS3gAdmxhUA2kk2z3kL+aur44NdnYfw5bbgqj0sGFX7xqU1j5JhfuQ7j6gJKvF3GcIlf7mrLCPcBGtGvNvfn/PDcpGoVpWgwa0uOT+WAsD+HIJz1M+m4GCJOCoEad/J9hlTqBO1+fSQ7lpcY3uh5H2O/e47mu6jsBZn/GsG7Zrr+/NsysI++8gJ/HfP03pL7gcYU2LmsdhUYWlv39Mz/8TrqibE6tpa6yoXmk+2y1dqZ+HzqBRy5DmCtFjYa91PYqDg9fTl2/9RfN+lMkNkyjCI3CnE7LVPFomjY3xLkm4cXUrHChsuERRmbgye7dIFA+7maBoAenpAaOl25Xmvw7palszr7/NtAne68v9aWmOA6DaiCy0eWVcm2nAqyToVjZ6IDOp/CCiU6RGswD0vP+eJLHM5Q5KjMogSb/osmkSSoC2ro1CoqdBbyaghdG35RjNU1Eh3FqEmRQATf2DuqdvLe3VrCFlrsrAaeF8PRgUcUqxHiAMgU2XgE9tXsS6WO7FYH/pqXa+asiimBctbTBZG6dD/BSk3wrZpjnqWHI9xYQaOq+k+aT4imPHijbRlVEFuBy0VmUQ
- 670kzASw
- Xw+/BlarNAihpJbhK+U3LhZPZepV3f6HasdgVoTG0mcFwxOcifqYuhOo4ZOKy2OFLkL4XfK/odeRxVOM8N7mnWwiPLpfvc6OwmVkOE41Dbn7sOOvhiPB1bFZu8z4oFPli/UApRvGTNI5WKGHrOfIJzG1r1n7gfVTueqZG1l1h9x+l7LS4S8npsDyZVSgBdt5dSInVhjWOkVB82db+plr+Xfg1Jw==
+X-Rspamd-Queue-Id: 62FFD1A0013
+X-HE-Tag: 1772486970-949764
+X-HE-Meta: U2FsdGVkX19QbooElyZpuCnvDLkwQn2KcdMU8mVy3eQ5hhi0kEaenw8PbY8BNZbEY9jfBA/iElcNiSKYCDVt8AGXt6cRXz7GjDLR240hlx/Ew2beaAZuzspiipcVoMZ6q5wJISgAwOKsVPDhIQI6X5BM+C3ntzXf/MRsC1UJJYI8M+iDP0WWDU2euODpm/4HK9UlEkzA5jiqqZtWQqjxkP4G1PSmXLXZmOMGxCefOO6SK15WtmrpaDaz8Z2HmZccs7Zz5jvM0AlMfsONPtfukPUndom2srnW8NRt+2L4hbOheXYpWjdQOiXXyeO6eXAi0KWXVwHu8QDROVTtWgXQX9TaUabGc1lz+7qzrm6rT3qyLgMMJ8rTo8aRSFNOG/9+KqI982rqMS618N48T7gjVV///rrzSX+GHNbJ56m86LCBjsGtjkkuqg1js8kcBG0RNA9dtpraV6mRbjtm7JLl3clrnI1hCBTAZfD4Q/gksi26oU9WqD27F/GJ3Bt8/ueRo8ienGZp3wfpH5XnTbIjb87lJIX+A+MOfTWnIIWccSyIA1wFdL4EV63C/+pDrkAqhwzVqRPsFyLXT0YXoV+v3GsbweiE5aoxo1VDtUWIg5yL9dvoS/08iMd++SODllPmSPZkoNzjW/VFkbU9/ZVrapUj2adTwAHeCl2RGzMkgEMW/CmI4n8M1KziptoJXYxxXuCLHmiqtP9KZpmrWjytcjVBaqr7gctGyhlPIOeJZYuVuX5TvdRPNxiyU6PW0MnlE5b5gnMiVqDQLIwl12C3FgQKGbjDhW0I0Zk5cLgS/KN2y0BhlEjXYZI/0e2+ulzD5ER2a0DVSjjj/Sb4h7FLKGmN7/unqPfp4uP6o2oPvvw0zRwCZ6qq8MWyAej10Up4nuR780CFifv3Jd6jJd3D3zwTo7VegjDXAciGh/4g9UzX/BjX5IXWBfq4sv3ob9uSCAERUVTG1EOo43pRkWX
+ +RYuDfMv
+ xrY8nG0ShvoyyG9e9AiF6K3DlX+Wge19P7Hje8yWGvLITyQ6CfU/x4CUdauryxLVmKcl4bz8sT1JbRH9ctr6WqaoqvWMKWZaOOuP4Eg+klIG0lFKD392VZL7PPZpiDhuYHmYC1WfqybRqT49NJlPByJir9GwNh5wtPCKxHwBsM1f7Di3fqlPwMwxGVBR3RND9mTXEIpHW+6Ef4gvWxohTRgpETEsMw8aF5pP1d+WEi2bqxRmUy/5XyUwj6xHQ0dL5GaygVf8iTpkMjSQnrFvQw+v4lA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,74 +112,483 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 2026-03-02 at 11:06 -0800, Matthew Brost wrote:
+> On Mon, Mar 02, 2026 at 05:32:47PM +0100, Thomas Hellstr=C3=B6m wrote:
+> > xe_vm_range_tilemask_tlb_inval() submits TLB invalidation requests
+> > to
+> > all GTs in a tile mask and then immediately waits for them to
+> > complete
+> > before returning. This is fine for the existing callers, but a
+> > subsequent patch will need to defer the wait in order to overlap
+> > TLB
+> > invalidations across multiple VMAs.
+> >=20
+> > Introduce xe_tlb_inval_range_tilemask_submit() and
+> > xe_tlb_inval_batch_wait() in xe_tlb_inval.c as the submit and wait
+> > halves respectively. The batch of fences is carried in the new
+> > xe_tlb_inval_batch structure. Remove
+> > xe_vm_range_tilemask_tlb_inval()
+> > and convert all three call sites to the new API.
+> >=20
+>=20
+> Mostly nits...
+>=20
+> > Assisted-by: GitHub Copilot:claude-sonnet-4.6
+> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > ---
+> > =C2=A0drivers/gpu/drm/xe/xe_svm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 +-
+> > =C2=A0drivers/gpu/drm/xe/xe_tlb_inval.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 82
+> > +++++++++++++++++++++++++
+> > =C2=A0drivers/gpu/drm/xe/xe_tlb_inval.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 6 ++
+> > =C2=A0drivers/gpu/drm/xe/xe_tlb_inval_types.h | 14 +++++
+> > =C2=A0drivers/gpu/drm/xe/xe_vm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 69 +++------------------
+> > =C2=A0drivers/gpu/drm/xe/xe_vm.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 -
+> > =C2=A0drivers/gpu/drm/xe/xe_vm_madvise.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+|=C2=A0 9 ++-
+> > =C2=A0drivers/gpu/drm/xe/xe_vm_types.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 1 +
+> > =C2=A08 files changed, 123 insertions(+), 67 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/xe/xe_svm.c
+> > b/drivers/gpu/drm/xe/xe_svm.c
+> > index 002b6c22ad3f..6ea4972c2791 100644
+> > --- a/drivers/gpu/drm/xe/xe_svm.c
+> > +++ b/drivers/gpu/drm/xe/xe_svm.c
+> > @@ -19,6 +19,7 @@
+> > =C2=A0#include "xe_pt.h"
+> > =C2=A0#include "xe_svm.h"
+> > =C2=A0#include "xe_tile.h"
+> > +#include "xe_tlb_inval.h"
+> > =C2=A0#include "xe_ttm_vram_mgr.h"
+> > =C2=A0#include "xe_vm.h"
+> > =C2=A0#include "xe_vm_types.h"
+> > @@ -225,6 +226,7 @@ static void xe_svm_invalidate(struct drm_gpusvm
+> > *gpusvm,
+> > =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct mmu_notifier_range
+> > *mmu_range)
+> > =C2=A0{
+> > =C2=A0	struct xe_vm *vm =3D gpusvm_to_vm(gpusvm);
+> > +	struct xe_tlb_inval_batch _batch;
+> > =C2=A0	struct xe_device *xe =3D vm->xe;
+> > =C2=A0	struct drm_gpusvm_range *r, *first;
+> > =C2=A0	struct xe_tile *tile;
+> > @@ -276,7 +278,9 @@ static void xe_svm_invalidate(struct drm_gpusvm
+> > *gpusvm,
+> > =C2=A0
+> > =C2=A0	xe_device_wmb(xe);
+> > =C2=A0
+> > -	err =3D xe_vm_range_tilemask_tlb_inval(vm, adj_start,
+> > adj_end, tile_mask);
+> > +	err =3D xe_tlb_inval_range_tilemask_submit(xe, vm->usm.asid,
+> > adj_start, adj_end,
+> > +						 tile_mask,
+> > &_batch);
+> > +	xe_tlb_inval_batch_wait(&_batch);
+>=20
+> No need to call wait on an error but it is harmless.
+>=20
+> So you could write it like this:
+>=20
+> if (!WARN_ON_ONCE(err))
+> 	xe_tlb_inval_batch_wait(&_batch);
 
-Hi YoungJun,
+Sure.
 
-Sorry for the late response.
+>=20
+> > =C2=A0	WARN_ON_ONCE(err);
+> > =C2=A0
+> > =C2=A0range_notifier_event_end:
+> > diff --git a/drivers/gpu/drm/xe/xe_tlb_inval.c
+> > b/drivers/gpu/drm/xe/xe_tlb_inval.c
+> > index 933f30fb617d..343e37cfe715 100644
+> > --- a/drivers/gpu/drm/xe/xe_tlb_inval.c
+> > +++ b/drivers/gpu/drm/xe/xe_tlb_inval.c
+> > @@ -486,3 +486,85 @@ bool xe_tlb_inval_idle(struct xe_tlb_inval
+> > *tlb_inval)
+> > =C2=A0	guard(spinlock_irq)(&tlb_inval->pending_lock);
+> > =C2=A0	return list_is_singular(&tlb_inval->pending_fences);
+> > =C2=A0}
+> > +
+> > +/**
+> > + * xe_tlb_inval_batch_wait() - Wait for all fences in a TLB
+> > invalidation batch
+> > + * @batch: Batch of TLB invalidation fences to wait on
+> > + *
+> > + * Waits for every fence in @batch to signal, then resets @batch
+> > so it can be
+> > + * reused for a subsequent invalidation.
+> > + */
+> > +void xe_tlb_inval_batch_wait(struct xe_tlb_inval_batch *batch)
+> > +{
+> > +	struct xe_tlb_inval_fence *fence =3D &batch->fence[0];
+>=20
+> Would this be better:
+>=20
+> s/&batch->fence[0]/batch->fence
+>=20
+> Personal preference I guess.
 
-On Sun, Feb 22, 2026 at 10:16:04AM +0900, YoungJun Park wrote:
-[...]
+Yeah, I typically use the former to make it easier for
+the reader to remember we're pointing to the first element of an array.
 
-Let me summarize our discussion first:
+>=20
+> > +	unsigned int i;
+> > +
+> > +	for (i =3D 0; i < batch->num_fences; ++i)
+> > +		xe_tlb_inval_fence_wait(fence++);
+> > +
+> > +	batch->num_fences =3D 0;
+> > +}
+> > +
+> > +/**
+> > + * xe_tlb_inval_range_tilemask_submit() - Submit TLB invalidations
+> > for an
+> > + * address range on a tile mask
+> > + * @xe: The xe device
+> > + * @asid: Address space ID
+> > + * @start: start address
+> > + * @end: end address
+> > + * @tile_mask: mask for which gt's issue tlb invalidation
+> > + * @batch: Batch of tlb invalidate fences
+> > + *
+> > + * Issue a range based TLB invalidation for gt's in tilemask
+> > + *
+>=20
+> Mention no need to wait on batch if this function returns an error?
 
-You have a use-case where they have systems running multiple workloads and
-have multiple swap devices. Those swap devices have different performance
-capabilities and they want to restrict/assign swap devices to the workloads. For
-example assigning a low latency SSD swap device to latency sensitive workload
-and slow disk swap to latency tolerant workload. (please correct me if
-I misunderstood something).
+Sure.
 
-The use-case seems reasonable to me but I have concerns related to adding an
-interface to memory cgroups. Mainly I am not clear how hierarchical semantics on
-such interface would look like. In addition, I think it would be too rigid and
-will be very hard to evolve for future features. To me enabling this
-functionality through BPF would give much more flexibility and will be more
-future proof.
+>=20
+> > + * Returns 0 for success, negative error code otherwise.
+> > + */
+> > +int xe_tlb_inval_range_tilemask_submit(struct xe_device *xe, u32
+> > asid,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 start, u64 end, u8
+> > tile_mask,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct xe_tlb_inval_batch
+> > *batch)
+> > +{
+> > +	struct xe_tlb_inval_fence *fence =3D &batch->fence[0];
+> > +	struct xe_tile *tile;
+> > +	u32 fence_id =3D 0;
+> > +	u8 id;
+> > +	int err;
+> > +
+> > +	batch->num_fences =3D 0;
+> > +	if (!tile_mask)
+> > +		return 0;
+> > +
+> > +	for_each_tile(tile, xe, id) {
+> > +		if (!(tile_mask & BIT(id)))
+> > +			continue;
+> > +
+> > +		xe_tlb_inval_fence_init(&tile->primary_gt-
+> > >tlb_inval,
+> > +					&fence[fence_id], true);
+> > +
+> > +		err =3D xe_tlb_inval_range(&tile->primary_gt-
+> > >tlb_inval,
+> > +					 &fence[fence_id], start,
+> > end,
+> > +					 asid, NULL);
+> > +		if (err)
+> > +			goto wait;
+> > +		++fence_id;
+> > +
+> > +		if (!tile->media_gt)
+> > +			continue;
+> > +
+> > +		xe_tlb_inval_fence_init(&tile->media_gt-
+> > >tlb_inval,
+> > +					&fence[fence_id], true);
+> > +
+> > +		err =3D xe_tlb_inval_range(&tile->media_gt-
+> > >tlb_inval,
+> > +					 &fence[fence_id], start,
+> > end,
+> > +					 asid, NULL);
+> > +		if (err)
+> > +			goto wait;
+> > +		++fence_id;
+> > +	}
+> > +
+> > +wait:
+> > +	batch->num_fences =3D fence_id;
+>=20
+> Should 'batch->num_fences' only get set on success?
 
-> 
-> After reading the reply and re-think more of it.
-> 
-> I have a few questions regarding the BPF-first approach you
-> suggested, if you don't mind. Some of them I am re-asking
-> because I feel they have not been clearly addressed yet.
-> 
-> - We are in an embedded environment where enabling additional
->   kernel compile options is costly. BPF is disabled by
->   default in some of our production configurations. From a
->   trade-off perspective, does it make sense to enable BPF
->   just for swap device control?
+We need it for the error wait below, after which it gets cleared.
 
-To me, it is reasonable to enable BPF for environment running multiple
-workloads and having multiple swap devices.
+>=20
+> > +	if (err)
+> > +		xe_tlb_inval_batch_wait(batch);
+> > +
+> > +	return err;
+> > +}
+> > diff --git a/drivers/gpu/drm/xe/xe_tlb_inval.h
+> > b/drivers/gpu/drm/xe/xe_tlb_inval.h
+> > index 62089254fa23..a76b7823a5f2 100644
+> > --- a/drivers/gpu/drm/xe/xe_tlb_inval.h
+> > +++ b/drivers/gpu/drm/xe/xe_tlb_inval.h
+> > @@ -45,4 +45,10 @@ void xe_tlb_inval_done_handler(struct
+> > xe_tlb_inval *tlb_inval, int seqno);
+> > =C2=A0
+> > =C2=A0bool xe_tlb_inval_idle(struct xe_tlb_inval *tlb_inval);
+> > =C2=A0
+> > +int xe_tlb_inval_range_tilemask_submit(struct xe_device *xe, u32
+> > asid,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 start, u64 end, u8
+> > tile_mask,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct xe_tlb_inval_batch
+> > *batch);
+> > +
+> > +void xe_tlb_inval_batch_wait(struct xe_tlb_inval_batch *batch);
+> > +
+> > =C2=A0#endif	/* _XE_TLB_INVAL_ */
+> > diff --git a/drivers/gpu/drm/xe/xe_tlb_inval_types.h
+> > b/drivers/gpu/drm/xe/xe_tlb_inval_types.h
+> > index 3b089f90f002..3d1797d186fd 100644
+> > --- a/drivers/gpu/drm/xe/xe_tlb_inval_types.h
+> > +++ b/drivers/gpu/drm/xe/xe_tlb_inval_types.h
+> > @@ -9,6 +9,8 @@
+> > =C2=A0#include <linux/workqueue.h>
+> > =C2=A0#include <linux/dma-fence.h>
+> > =C2=A0
+> > +#include "xe_device_types.h"
+> > +
+> > =C2=A0struct drm_suballoc;
+> > =C2=A0struct xe_tlb_inval;
+> > =C2=A0
+> > @@ -132,4 +134,16 @@ struct xe_tlb_inval_fence {
+> > =C2=A0	ktime_t inval_time;
+> > =C2=A0};
+> > =C2=A0
+> > +/**
+> > + * struct xe_tlb_inval_batch - Batch of TLB invalidation fences
+> > + *
+> > + * Holds one fence per GT covered by a TLB invalidation request.
+> > + */
+> > +struct xe_tlb_inval_batch {
+> > +	/** @fence: per-GT TLB invalidation fences */
+> > +	struct xe_tlb_inval_fence fence[XE_MAX_TILES_PER_DEVICE *
+> > XE_MAX_GT_PER_TILE];
+> > +	/** @num_fences: number of valid entries in @fence */
+> > +	unsigned int num_fences;
+> > +};
+> > +
+> > =C2=A0#endif
+> > diff --git a/drivers/gpu/drm/xe/xe_vm.c
+> > b/drivers/gpu/drm/xe/xe_vm.c
+> > index 548b0769b3ef..7f29d2b2972d 100644
+> > --- a/drivers/gpu/drm/xe/xe_vm.c
+> > +++ b/drivers/gpu/drm/xe/xe_vm.c
+> > @@ -3966,66 +3966,6 @@ void xe_vm_unlock(struct xe_vm *vm)
+> > =C2=A0	dma_resv_unlock(xe_vm_resv(vm));
+> > =C2=A0}
+> > =C2=A0
+> > -/**
+> > - * xe_vm_range_tilemask_tlb_inval - Issue a TLB invalidation on
+> > this tilemask for an
+> > - * address range
+> > - * @vm: The VM
+> > - * @start: start address
+> > - * @end: end address
+> > - * @tile_mask: mask for which gt's issue tlb invalidation
+> > - *
+> > - * Issue a range based TLB invalidation for gt's in tilemask
+> > - *
+> > - * Returns 0 for success, negative error code otherwise.
+> > - */
+> > -int xe_vm_range_tilemask_tlb_inval(struct xe_vm *vm, u64 start,
+> > -				=C2=A0=C2=A0 u64 end, u8 tile_mask)
+> > -{
+> > -	struct xe_tlb_inval_fence
+> > -		fence[XE_MAX_TILES_PER_DEVICE *
+> > XE_MAX_GT_PER_TILE];
+> > -	struct xe_tile *tile;
+> > -	u32 fence_id =3D 0;
+> > -	u8 id;
+> > -	int err;
+> > -
+> > -	if (!tile_mask)
+> > -		return 0;
+> > -
+> > -	for_each_tile(tile, vm->xe, id) {
+> > -		if (!(tile_mask & BIT(id)))
+> > -			continue;
+> > -
+> > -		xe_tlb_inval_fence_init(&tile->primary_gt-
+> > >tlb_inval,
+> > -					&fence[fence_id], true);
+> > -
+> > -		err =3D xe_tlb_inval_range(&tile->primary_gt-
+> > >tlb_inval,
+> > -					 &fence[fence_id], start,
+> > end,
+> > -					 vm->usm.asid, NULL);
+> > -		if (err)
+> > -			goto wait;
+> > -		++fence_id;
+> > -
+> > -		if (!tile->media_gt)
+> > -			continue;
+> > -
+> > -		xe_tlb_inval_fence_init(&tile->media_gt-
+> > >tlb_inval,
+> > -					&fence[fence_id], true);
+> > -
+> > -		err =3D xe_tlb_inval_range(&tile->media_gt-
+> > >tlb_inval,
+> > -					 &fence[fence_id], start,
+> > end,
+> > -					 vm->usm.asid, NULL);
+> > -		if (err)
+> > -			goto wait;
+> > -		++fence_id;
+> > -	}
+> > -
+> > -wait:
+> > -	for (id =3D 0; id < fence_id; ++id)
+> > -		xe_tlb_inval_fence_wait(&fence[id]);
+> > -
+> > -	return err;
+> > -}
+> > -
+> > =C2=A0/**
+> > =C2=A0 * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without
+> > a lock
+> > =C2=A0 * @vma: VMA to invalidate
+> > @@ -4040,6 +3980,7 @@ int xe_vm_invalidate_vma(struct xe_vma *vma)
+> > =C2=A0{
+> > =C2=A0	struct xe_device *xe =3D xe_vma_vm(vma)->xe;
+> > =C2=A0	struct xe_vm *vm =3D xe_vma_vm(vma);
+> > +	struct xe_tlb_inval_batch _batch;
+>=20
+> Why not just 'batch'?
+>=20
+> > =C2=A0	struct xe_tile *tile;
+> > =C2=A0	u8 tile_mask =3D 0;
+> > =C2=A0	int ret =3D 0;
+> > @@ -4080,12 +4021,16 @@ int xe_vm_invalidate_vma(struct xe_vma
+> > *vma)
+> > =C2=A0
+> > =C2=A0	xe_device_wmb(xe);
+> > =C2=A0
+> > -	ret =3D xe_vm_range_tilemask_tlb_inval(xe_vma_vm(vma),
+> > xe_vma_start(vma),
+> > -					=C2=A0=C2=A0=C2=A0=C2=A0 xe_vma_end(vma),
+> > tile_mask);
+> > +	ret =3D xe_tlb_inval_range_tilemask_submit(xe,
+> > xe_vma_vm(vma)->usm.asid,
+> > +					=09
+> > xe_vma_start(vma), xe_vma_end(vma),
+> > +						 tile_mask,
+> > &_batch);
+> > =C2=A0
+> > =C2=A0	/* WRITE_ONCE pairs with READ_ONCE in
+> > xe_vm_has_valid_gpu_mapping() */
+> > =C2=A0	WRITE_ONCE(vma->tile_invalidated, vma->tile_mask);
+> > =C2=A0
+> > +	if (!ret)
+> > +		xe_tlb_inval_batch_wait(&_batch);
+> > +
+>=20
+> Here we skip the wait on error, hence my suggestion to skip waits in
+> other code paths or at a minimum make call sematics consistent.=20
 
-> 
-> - You suggest starting with BPF and discussing a stable
->   interface later. I am genuinely curious, are there actual
->   precedents where a BPF prototype graduated into a stable
->   kernel interface? 
+Makes sense.
 
-After giving some thought, I think once we have BPF working, adding another
-interface for the same feature would not be an option. So, we have decide
-upfront which route to take.
+>=20
+> > =C2=A0	return ret;
+> > =C2=A0}
+> > =C2=A0
+> > diff --git a/drivers/gpu/drm/xe/xe_vm.h
+> > b/drivers/gpu/drm/xe/xe_vm.h
+> > index f849e369432b..62f4b6fec0bc 100644
+> > --- a/drivers/gpu/drm/xe/xe_vm.h
+> > +++ b/drivers/gpu/drm/xe/xe_vm.h
+> > @@ -240,9 +240,6 @@ struct dma_fence *xe_vm_range_rebind(struct
+> > xe_vm *vm,
+> > =C2=A0struct dma_fence *xe_vm_range_unbind(struct xe_vm *vm,
+> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 struct xe_svm_range *range);
+> > =C2=A0
+> > -int xe_vm_range_tilemask_tlb_inval(struct xe_vm *vm, u64 start,
+> > -				=C2=A0=C2=A0 u64 end, u8 tile_mask);
+> > -
+> > =C2=A0int xe_vm_invalidate_vma(struct xe_vma *vma);
+> > =C2=A0
+> > =C2=A0int xe_vm_validate_protected(struct xe_vm *vm);
+> > diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c
+> > b/drivers/gpu/drm/xe/xe_vm_madvise.c
+> > index 95bf53cc29e3..39717026e84f 100644
+> > --- a/drivers/gpu/drm/xe/xe_vm_madvise.c
+> > +++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+> > @@ -12,6 +12,7 @@
+> > =C2=A0#include "xe_pat.h"
+> > =C2=A0#include "xe_pt.h"
+> > =C2=A0#include "xe_svm.h"
+> > +#include "xe_tlb_inval.h"
+> > =C2=A0
+> > =C2=A0struct xe_vmas_in_madvise_range {
+> > =C2=A0	u64 addr;
+> > @@ -235,13 +236,19 @@ static u8 xe_zap_ptes_in_madvise_range(struct
+> > xe_vm *vm, u64 start, u64 end)
+> > =C2=A0static int xe_vm_invalidate_madvise_range(struct xe_vm *vm, u64
+> > start, u64 end)
+> > =C2=A0{
+> > =C2=A0	u8 tile_mask =3D xe_zap_ptes_in_madvise_range(vm, start,
+> > end);
+> > +	struct xe_tlb_inval_batch batch;
+> > +	int err;
+> > =C2=A0
+> > =C2=A0	if (!tile_mask)
+> > =C2=A0		return 0;
+> > =C2=A0
+> > =C2=A0	xe_device_wmb(vm->xe);
+> > =C2=A0
+> > -	return xe_vm_range_tilemask_tlb_inval(vm, start, end,
+> > tile_mask);
+> > +	err =3D xe_tlb_inval_range_tilemask_submit(vm->xe, vm-
+> > >usm.asid, start, end,
+> > +						 tile_mask,
+> > &batch);
+> > +	xe_tlb_inval_batch_wait(&batch);
+>=20
+> No need to wait on error.
 
-> 
-> - You raised that stable interfaces are hard to remove. Would
->   gating it behind a CONFIG option or marking it experimental
->   be an acceptable compromise?
+Will fix
 
-I think hiding behind CONFIG options do not really protect against the usage and
-the rule of no API breakage usually apply.
+Thanks,
+Thomas
 
-> 
-> - You already acknowledged the use-case for assigning
->   different swap devices to different workloads. Your
->   objection is specifically about hierarchical parent-child
->   partitioning. If the interface enforced uniform policy
->   within a subtree, would that be acceptable?
 
-Let's start with that or maybe comeup with concrete examples on how that would
-look like.
 
-Beside, give a bit more thought on potential future features e.g. demotion and
-reason about how you would incorporate those features.
+>=20
+> > +
+> > +	return err;
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static bool madvise_args_are_sane(struct xe_device *xe, const
+> > struct drm_xe_madvise *args)
+> > diff --git a/drivers/gpu/drm/xe/xe_vm_types.h
+> > b/drivers/gpu/drm/xe/xe_vm_types.h
+> > index 1f6f7e30e751..de6544165cfa 100644
+> > --- a/drivers/gpu/drm/xe/xe_vm_types.h
+> > +++ b/drivers/gpu/drm/xe/xe_vm_types.h
+> > @@ -18,6 +18,7 @@
+> > =C2=A0#include "xe_device_types.h"
+> > =C2=A0#include "xe_pt_types.h"
+> > =C2=A0#include "xe_range_fence.h"
+> > +#include "xe_tlb_inval_types.h"
+> > =C2=A0#include "xe_userptr.h"
+> > =C2=A0
+> > =C2=A0struct drm_pagemap;
+> > --=20
+> > 2.53.0
+> >=20
 
