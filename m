@@ -4,98 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 631A5EB3622
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E4DEB3626
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D047B6B0005; Mon,  2 Mar 2026 12:39:05 -0500 (EST)
+	id 463206B0089; Mon,  2 Mar 2026 12:39:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9B656B0089; Mon,  2 Mar 2026 12:39:05 -0500 (EST)
+	id 44AA46B008A; Mon,  2 Mar 2026 12:39:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B94156B008A; Mon,  2 Mar 2026 12:39:05 -0500 (EST)
+	id 361206B0092; Mon,  2 Mar 2026 12:39:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8FD86B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:39:05 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 71AC08AAC9
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:39:05 +0000 (UTC)
-X-FDA: 84501833850.06.1D6CEDF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 67F6C180009
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:39:03 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WtaaRsAO;
-	spf=pass (imf24.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 210E36B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:39:19 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAB091C1B7
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:39:18 +0000 (UTC)
+X-FDA: 84501834396.18.D51AFC3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 593F28000D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:39:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BjOZhIS1;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772473143;
+	s=arc-20220608; t=1772473157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKQFeYilQCYD5V+HWcLb2j7WG4VTlY1a/c+d6LeyDK8=;
-	b=Tg56YzpMcyJxb/MbMpnWkQv+6raXFxsuYLeBcapg/TDoAJ/uZ8LL6jzJm4r1jO1lYFQMtk
-	y2FVl0cKTEO6w5CryXA0ciN4tBDmM+LXJiUTtfWRiObT8mYAwzSIu/UfWK7C9LBVWsiYJ1
-	7x/m6RDzqAxN4slzBuzxP7ejqs06pk0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WtaaRsAO;
-	spf=pass (imf24.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772473143; a=rsa-sha256;
+	bh=M5LTMoF4KMrqf/CGd745vvekKKpL7OsO1+1zUQfeN/I=;
+	b=MeXzqDkEz7cHlCMtMJLVwWI/Ovcr8/dUS5o6jWpRff22ss3Sbq30lCmLB+00husk8xuUjY
+	5SXUasEyYpGPzU+Z7F8NzS7vZAbnbrk1lqSt6XCtQOo65uPBprARxZFlOzcGQ8dIE6609T
+	XlsmSPalu7MM3HIdoCUNWdKCnSwzVR0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772473157; a=rsa-sha256;
 	cv=none;
-	b=YdaTgDuEDF6mWA0dHiJEp+aL7Ns63E3vOIDMHRE3HwAkb+A85xiKrc9XWFDf3DtpYRjIg6
-	C6utMxVAoDt1ivbDG1RNNfT0Lt4h6rqbN27EoZzg9at7ERKorhwJRLrEIbLVYH6Ud1S0If
-	j1Lq9q0as2ezSglbovo86lzcAdEjEns=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772473142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dKQFeYilQCYD5V+HWcLb2j7WG4VTlY1a/c+d6LeyDK8=;
-	b=WtaaRsAO0OOkj2HhsWvH4ZBHKJ+gI/YvpEIvNJJSOhvWaTVVGVaVWy7mgJa3dwebqQrBFc
-	Z1B+Sg7JHmQtvZiX7OFqIYTdCRQmfVQEHZ5ipYLux/zZXMDucVOe3/ErH6Etx3Yhz3x5EU
-	HbfcgbUuCcwYPeg7FC8ljcyg8hoQAk4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-_nfFaGn4NbC25tEozXyXIg-1; Mon,
- 02 Mar 2026 12:38:59 -0500
-X-MC-Unique: _nfFaGn4NbC25tEozXyXIg-1
-X-Mimecast-MFC-AGG-ID: _nfFaGn4NbC25tEozXyXIg_1772473138
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 53AD3195605A;
-	Mon,  2 Mar 2026 17:38:58 +0000 (UTC)
-Received: from [10.45.224.173] (unknown [10.45.224.173])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C6761956053;
-	Mon,  2 Mar 2026 17:38:55 +0000 (UTC)
-Date: Mon, 2 Mar 2026 18:38:53 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-    Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>, 
-    Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
-In-Reply-To: <20260302114740.2668450-2-urezki@gmail.com>
-Message-ID: <a8010888-ce49-9232-f132-338de8e18cee@redhat.com>
-References: <20260302114740.2668450-1-urezki@gmail.com> <20260302114740.2668450-2-urezki@gmail.com>
+	b=bXMnU9EL1c22A8q5Bd3PABj2jFlJBTb+5Md9HgqARSBi1movUZ+G7d348lTt0yPECslvaA
+	dmtPlFO2xee2mdeapXX5cwuylS+DtMGVcyty0cih7/EHLd6tKz7zrjr6mJTcyldpAEZbEr
+	D3jMZqKS0enVlSuXD3Ht8na7qHAbJQ4=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BjOZhIS1;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DEDA600AE;
+	Mon,  2 Mar 2026 17:39:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E44DC19423;
+	Mon,  2 Mar 2026 17:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772473156;
+	bh=J8SlytO19KJ8aK5m93CHmbOOhXWaxaJUlrp7HsS4cTs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BjOZhIS1yc20H42TEcja7V1LtLcQtD/sowaDcRoB8M5YN0JULXjrFHrcG5WiOLMSB
+	 oeOIiOgu98Xk4+j7XkTkXIgDPkagca7mE6OBA8PlHIKSrtVc5a098iX302zu47G6AL
+	 if4cluD/VCnpuV26h3fvt4ZlwXfHc6Qx9tZS4WSSvwciTCKAPIT9WnvK6iLOkKTAZf
+	 kfQRQZ0ExBqYaEN77Rff6MQezyvJk+oT4O+O9nqgwhhqmHe5gwDgWuZpDGnr9Rc6i3
+	 M+l4ItAtm9Q5tRDbFyE3uEGKDDRBeWlNL+N4w3wM0NwkDpAzDfIo97Bw1Ow8vfIxmN
+	 xko9/C7T0oleQ==
+Message-ID: <334fd7f2-1054-441d-84b9-d0f94eddc43f@kernel.org>
+Date: Mon, 2 Mar 2026 18:39:10 +0100
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: 4OWBV4Zwtg0X56NUMQbmDvO58sEMjJXSDd0GIjF0njg_1772473138
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 67F6C180009
-X-Stat-Signature: j5rdp1ht1zsjsham8w9ckay385d8o5j8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] mm/huge_memory: Fix use of NULL folio in
+ move_pages_huge_pmd()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Chris Down <chris@chrisdown.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>
+References: <aaBVg6nPQz-WvyzT@chrisdown.name>
+ <27c260d2-796f-48a6-8b1c-751ab172d480@lucifer.local>
+ <b6096c06-9fbe-48a5-9efe-ae611a2e650b@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b6096c06-9fbe-48a5-9efe-ae611a2e650b@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: sce6di3b8yhi9jcccg7qawwzqwg5cwzp
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772473143-738537
-X-HE-Meta: U2FsdGVkX1/KhuMDvJld6R8U41/Z9/JF1v/046zlr3MSdMnAiBt1iY+BA4sqgPsR43r/lpfn/K4x9omT7sJ8XvavX0GfWlJyf7TBsCdPRFNfjlFs9IEb/32TMrffwxnUhM61XJaL9peePct86CcneMsnjltCKQjCPdic3PenG0dHE97ASjRLHM7pXgULN257QvY2MlJPPTe4ewD5kIieqtttubrPPoHe4y3aWLJIKUN7CzAb1R/sSZNYXQj3WMHyeqJ+2trkmOdqNKwqoJsIf7AUsm3j2oVaLZpJI3jq+uDhqHw34FPb5sNT8ouXIA1Mpj6JGktxDp+/FlNlZx9cpbUp+IIXgnBvMwMP2Zk+oQhoP23Skdn0J0+d+6NW5QntmIgOnYO9255WQo2GiQK/bGzi/TscfVeehkhWCX0nMBv/pgNYeWkew2pIflBmalKcHP4U4dYDPLL9YAOLkrZZiVrXnWMJHagv/1rIltfvYmHEX79BLehM6tzS/MjqO/0AS1bY8tm0puZ5rffhdRL1DTl2V7uq+mTGUly5WUjTkiFI63lniRhSdh/FJyUVd7YQTGtIEjboKQSocka0WbUNz4nAcuXBHB9qwpBkj6/sJxKWzc3x5BGnpTCu8VZzPGyC93jvaNSZAZowoloxUaSr8IPqx/FcAgpUzJ6DvAnJcnOvv5WSpp+bRBJvVHOJky5/qt5Y8t4Wsgknu2tl0zOJBU5BcpR2uM2iIf6rNEa9IRQ/VfFPAMuBJbz2oVCi4v421vZnoaPLMNMUx8AbC5+/KBTRS9XzRuUB3P2/3Yd8mq3TJgdm8hqe0eQE1XPzj4fcRP6XPdblPsLzFXtTQQ2g4pmiafSs5KPBwKMljWJSGUIE7eK6u9gXBh+QfI/UlOzo6MiibDIh45mHhY37wTdtZw0RYUDRSkVoGy54kBvVgHjPUg905mCEDvrruKRX5PONCs0I08LBdmafS7pGKip
- 1E+noZa9
- 1KmleH1V9W7NiNbJ9Ij/mVFv06Cp08IQu90kc2JcpktComyLtxZXJ9+Pllvps+FhaPkA0wbjlRtjrQiNYWXrjev9KiEOIBhLjd7gLGYcyWCg5wFJgsScOqwmIgK9pNjWC4Bqu1Q9U2cs2RSoyjYR51rReWet1XnWAm9L6/FJqwwMMfJl9dabUsS+vwNK1jK6hkpv9zC/tSaeSnFQ423iCqccH/rs/8+Q6HZFqOLTp6UTyZyKI32U+dhVPYqV1gEB1+5GDOoSShs3SqsGb87FqeLi+Wq9ivSGmD3HmwbOKFejz/FHtj7kgkeq8lPFwGjcln+QWjz7RbZz8+WQB1zxq6emZROgR71RXsUkCc0HjKHqyEevjusogpqX+U+MCShstvTjiKYZKtmkhYMOcePlQ+Bu9K1H1RizotXdpUT7bu4RJ6iU4FZiZDmVKsFQsu2PndTwxBqM7aefIzTaiWF127sJ1pspVl7HDCg9HSlIv5W/lc4gwsdC+o+KgY6+wxWgTJ2TWx2TDLGzlc8DZShmL3yr36i2BvwgFyCTpEUeoyAnwbsJFfoeS3Aa0wg==
+X-Rspamd-Queue-Id: 593F28000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772473157-940350
+X-HE-Meta: U2FsdGVkX19O7J5Kkxrz4YTOeFN5M8vO9OpQF2+Y3TcPEaWY3p3LbeuHiEUKAXYfKMMyWGBjCo5xoeNEFuqQ2qfWPiqnOD0VdGhYaGZfX7dT970Jg6OgB3AJV27ync23ZsxlHcogu5mTSmTl+dI0nwKdx/zFdDL+7Nu8qctORV+ThgCzcbN/a61ycPJ02Wrt1rbX2EbqMMjK+Dzig8YoVw03v4dEYrUrFivFZBpRf3Mq53hXelcX2gy78UqeKI4Rq+zToTobr1Fy5UgXceEg9gCTB2w3vVL0P8V7ilgovS+bDLzTf797XB/vi6Avuh4F9LYa+IcrUBVLUng/raMoCL9/LDhgVENRP2lfrWOBduHebwHSwFrGlys+uT/cIaWNvayGNMYrsZ8X0cS7TdbPtqXgZTTAoVpnvW6LcSwjVVz43EmzOI/UdPb/6lSZaC91XhjCbKSJQdD9th6WTYPS+QEaDQoFX6kzzRt1urjmBQh1z3LRW+0uiznkA0hDwZW/qksXIk1ylu2+KvfIMjnEQUymSceROLYiAAaXdn8+iXyo5U2U/47zmwq2kCvm7cjdAfSbPCPcVwTjP5DKIH/81JqHrk0/tI5wHPfDHrOLL2J4LGJefkVT9eY+xYw9+sJSWBKqqkq77/IoShP+sgeY5kQ1O4t25uaXXg+vCtbzd9+dH+rqZnkzmPsonzbb40fscmBOAImEXBem1QhRSFIXP6v7rcFqfvxvru35Dz7TX4prnLOwxKzyvpkHbJmUzGwhbSJ1isZl97VINeYrFRTKXRChLFy9DMhUjIkb+CXm5SqArscE4AMiZSh/95aD3pUiTAomr5TKgY1JwIlAEY1npqpUsdSU9V0hsA4vvbrbh3UmxVCUpK5+Dupwrq+TVxx0C1vY7r2zNEGKEf+fIqoWaaNLj5cvjUdm7hI3IN+A3+zIGCk4gQzrrlmPJdwVEcYwZTedRr2V05ocG4SRf+f
+ 36hRQMP8
+ h3qmp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,109 +146,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Mon, 2 Mar 2026, Uladzislau Rezki (Sony) wrote:
-
-> From: Michal Hocko <mhocko@suse.com>
+On 3/2/26 18:36, Lorenzo Stoakes wrote:
+> On Mon, Mar 02, 2026 at 05:23:30PM +0000, Lorenzo Stoakes wrote:
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 44ff8a648afd..fed57951a7cd 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -2794,7 +2794,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+>>>  		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+>>>  	} else {
+>>>  		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+>>> -		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+>>> +		_dst_pmd = folio_mk_pmd(page_folio(src_page), dst_vma->vm_page_prot);
+>>
+>> I prefer my version at [0].
+>>
+>> Cleaner to actually pull out the zero_folio into a local variable, and also we
+>> should mark it special to be consistent with other codepaths.
+>>
+>> [0]:https://lore.kernel.org/all/20260302170619.867056-1-lorenzo.stoakes@oracle.com/
 > 
-> __GFP_RETRY_MAYFAIL and __GFP_NORETRY haven't been supported so far
-> because their semantic (i.e. to not trigger OOM killer) is not possible
-> with the existing vmalloc page table allocation which is allowing for
-> the OOM killer.
+> OK ignore me, I saw David's comment and agree with him, as I said to you in the
+> 2/3, let's just take that as the patch and mark that fixes e3981db444a0.
 > 
-> Example: __vmalloc(size, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-> 
-> <snip>
->  vmalloc_test/55 invoked oom-killer:
->  gfp_mask=0x40dc0(
->  GFP_KERNEL|__GFP_ZERO|__GFP_COMP), order=0, oom_score_adj=0
->  active_anon:0 inactive_anon:0 isolated_anon:0
->   active_file:0 inactive_file:0 isolated_file:0
->   unevictable:0 dirty:0 writeback:0
->   slab_reclaimable:700 slab_unreclaimable:33708
->   mapped:0 shmem:0 pagetables:5174
->   sec_pagetables:0 bounce:0
->   kernel_misc_reclaimable:0
->   free:850 free_pcp:319 free_cma:0
->  CPU: 4 UID: 0 PID: 639 Comm: vmalloc_test/55 ...
->  Hardware name: QEMU Standard PC (i440FX + PIIX, ...
->  Call Trace:
->   <TASK>
->   dump_stack_lvl+0x5d/0x80
->   dump_header+0x43/0x1b3
->   out_of_memory.cold+0x8/0x78
->   __alloc_pages_slowpath.constprop.0+0xef5/0x1130
->   __alloc_frozen_pages_noprof+0x312/0x330
->   alloc_pages_mpol+0x7d/0x160
->   alloc_pages_noprof+0x50/0xa0
->   __pte_alloc_kernel+0x1e/0x1f0
->   ...
-> <snip>
-> 
-> There are usecases for these modifiers when a large allocation request
-> should rather fail than trigger OOM killer which wouldn't be able to
-> handle the situation anyway [1].
-> 
-> While we cannot change existing page table allocation code easily we can
-> piggy back on scoped NOWAIT allocation for them that we already have in
-> place. The rationale is that the bulk of the consumed memory is sitting
-> in pages backing the vmalloc allocation. Page tables are only
-> participating a tiny fraction. Moreover page tables for virtually allocated
-> areas are never reclaimed so the longer the system runs to less likely
-> they are. It makes sense to allow an approximation of __GFP_RETRY_MAYFAIL
-> and __GFP_NORETRY even if the page table allocation part is much weaker.
-> This doesn't break the failure mode while it allows for the no OOM
-> semantic.
-> 
-> [1] https://lore.kernel.org/all/32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com/T/#u
-> 
-> Tested-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Signed-off-by: Michal Hocko <mhocko@suse.com>
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/vmalloc.c | 17 ++++++++++++-----
->  1 file changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index a06f4b3ea367..975592b0ec89 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
->   * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
->   * GFP_NOFS - memalloc_nofs_save()
->   * GFP_NOIO - memalloc_noio_save()
-> + * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save()
-> + * to prevent OOMs
->   *
->   * Returns a flag cookie to pair with restore.
->   */
-> @@ -3806,7 +3808,8 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
->  {
->  	unsigned int flags = 0;
->  
-> -	if (!gfpflags_allow_blocking(gfp_mask))
-> +	if (!gfpflags_allow_blocking(gfp_mask) ||
-> +			(gfp_mask & (__GFP_RETRY_MAYFAIL | __GFP_NORETRY)))
->  		flags = memalloc_noreclaim_save();
+> Assuming you agree David?
 
-I wouldn't do this because:
+Yes, that's what I suggested I think.
 
-1. it makes the __GFP_RETRY_MAYFAIL allocations unreliable.
+But if Chris is not able to get it done in a timely fashion, maybe you
+can take care of it.
 
-2. The comment at memalloc_noreclaim_save says that it may deplete memory 
-reserves: "This should only be used when the caller guarantees the 
-allocation will allow more memory to be freed very shortly, i.e. it needs 
-to allocate some memory in the process of freeing memory, and cannot 
-reclaim due to potential recursion."
+I asked something similar in reply to v1:
 
+"Chris, do you have time to follow up, or should I look into it? The
+issue looks quite bad, so we should tackle it ASAP."
 
-I think that the cleanest solution to this problem would be to get rid of 
-PF_MEMALLOC_NOFS and PF_MEMALLOC_NOIO and instead introduce two per-thread 
-variables "gfp_t set_flags" and "gfp_t clear_flags" and set and clear gfp 
-flags according to them in the allocator: "gfp = (gfp | 
-current->set_flags) & ~current->clear_flags";
+https://lore.kernel.org/linux-mm/7da49940-e1a4-4018-9db1-208411598e77@kernel.org/
 
-Mikulas
+-- 
+Cheers,
 
+David
 
