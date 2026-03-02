@@ -4,158 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0895D58E78
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63062D58E73
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 08:14:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 530AF6B0005; Mon,  2 Mar 2026 03:09:26 -0500 (EST)
+	id 89D1B6B0005; Mon,  2 Mar 2026 03:14:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DEA06B008A; Mon,  2 Mar 2026 03:09:26 -0500 (EST)
+	id 84BC16B008A; Mon,  2 Mar 2026 03:14:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38C3A6B008C; Mon,  2 Mar 2026 03:09:26 -0500 (EST)
+	id 701F46B008C; Mon,  2 Mar 2026 03:14:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 26A866B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:09:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45089C2FEE
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:09:25 +0000 (UTC)
-X-FDA: 84500398290.27.25533B6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 68448120004
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:09:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TF6xmoM1;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772438963;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E5CC6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 03:14:04 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC5021CEAE
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:14:03 +0000 (UTC)
+X-FDA: 84500409966.02.00CD474
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2745A20002
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:14:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mVCfRYEh;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772439242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3EW502Ai4m9SnR7c/+uLrup92MDLZfgqK2HsNoUQ7Ko=;
-	b=faORCpUcVtv/HgRvO8qiiNFCkvQXG0uKUXJVEBLugz/PrP8ZbuuhFT8cdj4p8NMtACnz8w
-	eVz9qDjID8eWfx26EMBGXj6akTHy0zOyxpee27mvlH7rlMxLAai4e236L4eGulCE/Og/u3
-	Rg/QITQJ+WPVyoVKtlgpODX/XhokAI4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TF6xmoM1;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772438963; a=rsa-sha256;
-	cv=none;
-	b=Gj2AMN+epem0LcJYv++EjQjA6uiAiaGh/YfrtWb2kD7OH7EL49LenZu57eSIAG+evBeaPO
-	8M3DW2rvm4FsWhXu/PxeDTw7UQAtP16aXEw9v1KpugkiUxWdMPSHqMx67v3j7VpDolNtLx
-	NWEWYAs85Y68slv4xwA8SdlOzcti+Ag=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 60526440C1;
-	Mon,  2 Mar 2026 08:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35630C19423;
-	Mon,  2 Mar 2026 08:09:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772438962;
-	bh=FqBCPiof80sYQVn6PUFltJWkTioFCV7WXdE9UKQ7PRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TF6xmoM1xb1BmDnHJGEYYK4djC4sZPGpc5YK/nAz7HzJ1voYUouiCetVuo4MDwIpB
-	 6zABBzdYxHDeL41uNqVAX1tuBhYFK91ibtgQRO3fwM1RvwD5iMZYlIFEuIDv2pkz/u
-	 UfmnJhWi16+xkmfzi4Mr6GzFG0kCrcEryF3fjlWJ94GUjDYfn+xqfI4lLa6y9wv3l2
-	 CDygaFMQ4D+7OXNntYjczvYmpenkTHXU7sBr1ZEaL3BTj5QsLgUPSPuPc0ohEzyIF8
-	 Y6Fv8UYd+pvl01YZ4KQwdKLNNBRMW0+MN0Wc1pYz4LP9dyabdnwudPjvSu3mkYbDAu
-	 mI4cxujLVJIAA==
-Message-ID: <a0133403-8ce3-45a4-987f-96fb7421f920@kernel.org>
-Date: Mon, 2 Mar 2026 09:09:13 +0100
+	bh=VUV2wqGxB8FWFkLM2m+rBSW5hlZukSDeL86QKhDIRqA=;
+	b=MgreOzLc5QPw0OVGHkMzqvSDnQa3twvcIt/V76ui2tVjG6LiF77JWlSZ/aaPvvh2xwShg2
+	fVHPea2dVoCSPxqVT8qH/ZWhNpYo4PoA0xTsdYKeEIwRlVtOboJcYC/4tsGRcYm8fqxl64
+	rBWS0DKpl6xMOnp5tSgqVq2MSLz2xDk=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mVCfRYEh;
+	spf=pass (imf03.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.54 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772439242; a=rsa-sha256;
+	cv=pass;
+	b=bZHvEUZHDnlDX5FjOPrcgYdBW288thZnjiNJ9p606sN+2hPjllsZlVzujBcDx9MnwBU8Gn
+	I93luGIl4X9d8L/MkPvVOIiv270FjDmkE5W/WJfIWKne3B7pK4L6INeQmsxtY+Qv5t0c93
+	gkAVh4mtbS0lf+2J3rjsqMFRC0qhuz8=
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64ae222d978so3675132d50.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 00:14:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772439241; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Eiq+7vz+v3E5o4SFLxGtBp0Id8ikKRFf44dSQK5wa2ecpgtQWZlr0Se8R9rfJhV94o
+         PbKXoWSeir3MuA9tiTAUhyXEubeH1U7x3eekzPZMsKn6rpb2K6D9wgAw0y3vVarU4z53
+         GvGH9fbG0iPn1GMRhXQYwYRnCYOQd4SnIjZWhQUkkIrqCFwyttpDO80TB0feyYvH4n1N
+         9KXy8fF6PYB6xR9ERemyeLVPX19bsn0f5YgpD3pDW5vvIhXRLQxcXM1NiCZDGIB6PtcP
+         QZNMd7gkmlNG/DWZ7EvWmcrlM0yiraKx8prKexhPRW0z8D8771h4FVCkh+3G9KMLxpfF
+         UoKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VUV2wqGxB8FWFkLM2m+rBSW5hlZukSDeL86QKhDIRqA=;
+        fh=nPi9JXyCywYl+/kcQsjs4tQQEjfzi8L5WDYE9LA9tYM=;
+        b=KxSZf6Z5FybarIo/VmcAZ8P45rEgRe3fRP2AaLEYMHhuWI/uCiP0ylbLd/CfjZy+eD
+         UEkqwdsgGKBvrrIpeFzi268zPO49dNxczigtj7X6KI9nA8h7+ABO9fGXgtfstnEeaQ95
+         L3JQgMW+YnBe5/l4pNpXmxhDqCZ3ZoS3eTSs/RdvMGErAz2xq5gM2PvVmu7ma1hMHF1R
+         smPWTZ1X5XTgJpiFLjpkqdHxvp5xJbYkIsbM09Q/jFPXxMUdOubMlmwEiwRy6U7BMCkH
+         YbWd9Dt5Z/rN0mo0wkW73BHh369IFv8rj8Habk9f/ajJk1KgFl1bAaganbRahGOTeHQP
+         u0gg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772439241; x=1773044041; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VUV2wqGxB8FWFkLM2m+rBSW5hlZukSDeL86QKhDIRqA=;
+        b=mVCfRYEhPmfbRp7A40ZjegeATTUA4NCpZvcg1odhutflxw23cJm2pZFDGHYbjJzCfo
+         1bCunZ7/V/8YBvt9bJDx/C/BkFQQEVMmTxyO66ucNwYq7BFa2Yxx9DFRaATq6XmXZAMg
+         UnvQBwN2xUMwQ/aWKVeNIP+AIZfupaJzSGQXYeL0UgnLiSPJmarNo94zgFpeMoWltfvN
+         Pg0FPIOHrs03CfX/R35YstfWCe8jxOS+RqCduHnMWqt/cPQEl98Peg0nfU9TlMqJ9odK
+         iPfR9g5ujfht5KGwWUpPNDeZBTeTy9HuTenEVpf0y795TfEZgkT+LAQbo0KDmfjsZn8q
+         DkWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772439241; x=1773044041;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VUV2wqGxB8FWFkLM2m+rBSW5hlZukSDeL86QKhDIRqA=;
+        b=WdOIa8CHZpkCfpxD2EQPMb615T2pn5EQ3YMGOG59MDwu/sfDFBUd1EGX65HcCAS3zd
+         8UrHYuewjIa1FJs8qIoih8aPmbHT6F+Qx4mvYrUwJsUpYJgSKtXsVZmS8CkhgVfKoAsB
+         DmgkDR/Fue0oXR9iUCKm3yXMvmcS6OYK7K0wK7FTwtGaK4KY+E8/Y03dCu6+W3wbpmOw
+         w4jEo6mt1ohEecyohNTtZ5AkjjmE+uHnIZ/6Zz/CbzioZV1qLDpw9umXYVZGPS+ozVC0
+         cVwgGUNe61XnJugPt01VbgtMCVWipeW4uXNhaqqBlOTHXPu1uWpTSTdlia8QmargCOXC
+         0gMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQB3YqUQWclQRxwo/h+SJQM3rarFwbhHl0WFN3aIUBUJaRtxFnWMXJuPdDDbzzXWtfK6K6uHb+ZQ==@kvack.org
+X-Gm-Message-State: AOJu0YxCVLlETXr6bRBfKV4gLs4/DLnKgBfkekwHRk3eryVlr+FHcNkR
+	nd/V4TBMmZrDW7uje9TEH3q94rj0DHSf2ealKEgp2mRkB6nUoQr8tJggfgoYUr/p+6v65HCnRSI
+	o1UvuYcrskuDkoU8t6mdvcOo7l+X25og=
+X-Gm-Gg: ATEYQzy1h+I82yOlbi0ZbNVzp+ASvvd7UfuHViRIDueEliFx4ZpQvHpWH6yzyrEQcSf
+	sv7e50SRbt0+PTzyhs/PJ5v9UzMGbaowad7JBOMml5pC0JLz0hXZ3G2th8rbnQY7zS/wRjkNy1l
+	8JoYSi6REvy0IU64BxthkthRajlH3krsUDSHJt9C1wodWwqLa+zsqJa9Ny6KdGtnAmAd0Vo9o2b
+	nU5q+BYQg4gSEzfBfu1hCYf/KF9dwjKnazXb7A7hs3o6hdmHryTI+ND8ZlLup1V82bkTfozos5/
+	/nchOXGp
+X-Received: by 2002:a53:e1fb:0:b0:63e:2715:5ac6 with SMTP id
+ 956f58d0204a3-64cc20c45admr6504476d50.35.1772439241073; Mon, 02 Mar 2026
+ 00:14:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 4/4] page_reporting: change
- PAGE_REPORTING_DEFAULT_ORDER to -1
-To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>,
- Michael Kelley <mhklinux@outlook.com>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "mst@redhat.com" <mst@redhat.com>, "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "decui@microsoft.com" <decui@microsoft.com>,
- "longli@microsoft.com" <longli@microsoft.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
- "eperezma@redhat.com" <eperezma@redhat.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "ziy@nvidia.com"
- <ziy@nvidia.com>, "linux-hyperv@vger.kernel.org"
- <linux-hyperv@vger.kernel.org>,
- "virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260227140655.360696-1-yuvraj.sakshith@oss.qualcomm.com>
- <20260227140655.360696-5-yuvraj.sakshith@oss.qualcomm.com>
- <c618e7a4-42c1-4438-9bc2-9c41450a81a2@kernel.org>
- <aaUE7M9QkfnYh12e@hu-ysakshit-lv.qualcomm.com>
- <SN6PR02MB4157D37B3D254251F0135B04D47EA@SN6PR02MB4157.namprd02.prod.outlook.com>
- <b1390b24-eaef-40e0-a16b-77c27decb77e@kernel.org>
- <aaVDiwEPl5t2UPX4@hu-ysakshit-lv.qualcomm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aaVDiwEPl5t2UPX4@hu-ysakshit-lv.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 68448120004
-X-Stat-Signature: t6116qi6u53mbk1kh5481p3y4889m1rd
+References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
+ <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
+ <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
+ <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com> <CAGsJ_4zAY+1feahcVHhJ0NyKHxFZZHJpey1Qd=FAnSnHhh3Yyg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4zAY+1feahcVHhJ0NyKHxFZZHJpey1Qd=FAnSnHhh3Yyg@mail.gmail.com>
+From: Yafang Shao <laoar.shao@gmail.com>
+Date: Mon, 2 Mar 2026 16:13:25 +0800
+X-Gm-Features: AaiRm51mmCBoiXyZcW7LOaP9NWc_fWF9G9p2dFdDHlvC0uf7PP0-31j7rro31v4
+Message-ID: <CALOAHbCtYoBLbbzX0DU2xuTeDehW__LiJfd16ZrUBG+TijfH_w@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Barry Song <21cnbao@gmail.com>
+Cc: lenohou@gmail.com, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
+	wjl.linux@gmail.com, yuanchu@google.com, yuzhao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2745A20002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cq396cng1crg7e5su9kghzu3d7g56h7g
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772438963-430653
-X-HE-Meta: U2FsdGVkX18VjOsoymgVoLUCoYeYoXh5zpM7NRzIXYK8tNLSpbNm27/YHmYsezQ1TVo9/8WNNoPj0LlaXGdnEii1ni+QbPcFJEWrgTKcPRY7GekO0hGJ6Gmwz4hFuP1BAAjGDE3jFaMUiQIVB0QuNwj/yS7igbQIl5OugbnMVdiil5wBHTSh0zix2bkHp2jOA+HsPgoTjv/gsQRNY84YgD2H/g9F9hoPJiTPyGnzcM5llNNn0xb+RMVtR6kNnoZsiwmEeEnJnk7kfUYAB4PsrUBz0oaZifKvTtRLkP7xvSHB0RRfkg0p4RCS7eKQMyv5brDDtw/SZlOPHztihz3xJBAXE0HA7PN26hDWmqnNV1VNo3eSX/QhffVBd6yVVgz2kA/DwdeP6vVihAfCAa1w1l0yHQu56uuVFcVyBwuWJDuQqzegF0LWsFNEFDHr/dO9mtuyUVT4C65zgDoQttlughChjCAjLUMUCAD0Tu+ub/v0zftBiReOK5F0NG8Sw7vlNbRtKoRaKfBYcaBt1UEmSfWlNKoDj85nm+W4bnRoIGLW3mNaCkavqEa+0odKUHpLxldRpbacq48A82Kdnv+u3kX9pTW7hYw8Bs49RLA6/JRyAcNeKyNMkER8ClePhBgrpgN0LyWFIqvGctR78iqpEDEBX8TvRVNAmFfUrAn8rwl8cdjbQAYBIDWdxbOOQ/vK99Q8gX156+3mxNcEop4wKxq2q4oDJTTU0Bp+Ly/6JuNAsczHyoWoI83nc/YojfhwjaVRQ4ifVE3X3NLq4zT2rOCqjSdfJuCP7D7mUZMW6XJQjd9ycIsn4HoKWJ9kU/GE3uZhC75LvRP9VpUKGJ3psj8OIvopXFLTn8CeCskugxZX0jJVofjrfSbiiK33AfP/q/nUZV1DUGh9o/gzd//mELnBwhY/BD3fOGOoh/HHMrTcs/W13MTTfHwFSRBP1L5vmhsnTY6DI7HKVM2kfK1
- rzHkbrks
- KhJUZwUgiwHEirnZFnF1cPlqq1qNJUkdigh+Mw1VurzIPcZKOcShNrp8aiNCoSOmNQJAmtDI2N4Y5lelS9rItmsAMY/+D5Vx4qQnbZ0ZEOT3KrhaEu8nVV5qxroudkqCnTeWiZ/cgIGolTlUr602Kp2sNG8e/igYm5ja0ksLJCN0t+Whb44zDvVOWkkpsbkmRXL3H4Ggv6uGY/1qbXZ/IzNoa5JWMH2ehJm6pU8tTxXRKRzXDHMpFlIOUfmRFqIHwFFhoshiEkRSvWmvUNYK3848zCUva6KblYdt+MjTvnuyJFB9lqXWcjZcrh9JNesQFxYQhJU6Hv3Ywo72yAcDIjL1NAXdDS1r7mDiHp+HMXLhOmAcZFyAgzn0VKHpOBipfGv5PjotUNRDsFyGYGiDR6I8FQQ42DBdvpHkO7klzdf+P6JzODaL9+l2Hqw==
+X-HE-Tag: 1772439241-291423
+X-HE-Meta: U2FsdGVkX19JDngteoIU8TJ7KkTJoAIfcXonYEmRs7mpONhV5wWuYuAP7Pmofc8BeRGgULfPG9CXIHiJDmBzCdhpgH25iq2LNkcsklh3e3EMa8n5V01aAEode6HA+4r7BBCLXQh2BeuT+MKD+38U4ljHud6AjeUIb+Bi9TDfESBZj2Gv2OBPeSkzC33kz7BsLmc0LbhIovcNODh4NaS7b9uLm1IayNmb7SPPAWs3ci4+Csim/i1B+SPZR3K2jRBKURIJ5Rm4c3ZwNNi88cttb1lMET594Fzh9MAPM+skuYmqV/LgP0cdFCry6IXsmaNYB9uUw0hCjoFFVK06Aai53Hrn9l+3zs48aHDl9UcbQoNujFD0KdQ5GA/SDh/U7F2xK4yBoorYA4dKivBb0Bke6gQyZmCLJrNZHlZCncBjrtCff0PX2IZYve8u2TcJIjxaCqIetDBIvLeYSrp3UbqaQLpZJ59DwSN9vy2T9CgH1Oy1h6RhHj1apWe4hwabUpI05KIDgvCVqO2kaBtbuiXifKnCiC8RQnUHAHIApNFA9sWjsMBT/0FSvJt8Gbt17lRt9OZMTqkhcImvDM+XSBcYhaqbSdh1CLYS/7dGx5Qepqj7U8oMlGCvD/m99Q0tv7t/7FaV7+spVPd0am/BqelfXLVImrZLMpRiSEMznhwqJNGPauujtUxLsF61INYGwfHxihcoMNnfTAuEB+HkMHFpTkHc8KAUcMEo8T9Nv7sEjnqfUJPscr/JTmulI3GFn/hwzY/Tz4KUURnhw48Q5scBFJuVS+Xo9U1MbfXw+p41VokE/k/XjDqgmkiKcfy/tzfrBtzpSw4exiOc1iz8u7rLsixt9CUA6TrqFG80rPd7FrytNCI09Hq5xy2QisgZwkfUg5PKb2FE2a09raCxPSs4iir9mDARIEJzGnXYkBQ4/ceZ7tA76ujxL5wuOsXNpoMdCImUCQtVDSZaprcG59+
+ 8OMgewSn
+ 8zjkvfg7BYPsmtaK1FEegMz7YdsdzqH0iv6hiW7C5mkXv7sk/eYHM51wLIQ2N9Pd2UBk4RqyFmisFv9tAZY/cxx4HaxLXhg/PurdeoUMNm99sKIlCyZ8vgJuFNG0Lu5/DvVjAdTzABaBfMtVjK+WWE6WK5/U0qCrIadTS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,92 +142,355 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/26 09:00, Yuvraj Sakshith wrote:
-> On Mon, Mar 02, 2026 at 08:42:57AM +0100, David Hildenbrand (Arm) wrote:
->> On 3/2/26 06:25, Michael Kelley wrote:
->>> From: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com> Sent: Sunday, March 1, 2026 7:33 PM
->>>
->>> I don't think what you propose is correct. The purpose of testing
->>> page_reporting_order for -1 is to see if a page reporting order has
->>> been specified on the kernel boot line. If it has been specified, then
->>> the page reporting order specified in the call to page_reporting_register()
->>> [either a specific value or the default] is ignored and the kernel boot
->>> line value prevails. But if page_reporting_order is -1 here, then
->>> no kernel boot line value was specified, and the value passed to
->>> page_reporting_register() should prevail.
->>>
->>> With this in mind, substituting PAGE_REPORTING_DEFAULT_ORDER
->>> for the -1 in the test doesn’t exactly make sense to me. The -1 in the
->>> test doesn't have quite the same meaning as the -1 for
->>> PAGE_REPORTING_DEFAULT_ORDER. You could even use -2 for
->>> the initial value of page_reporting_order, and here in the test, in
->>> order to make that distinction obvious. Or use a separate symbolic
->>> name like PAGE_REPORTING_ORDER_NOT_SET.
->>
-> Option 1:
-> 
-> if (page_reporting_order == PAGE_REPORTING_DEFAULT_ORDER) {
->         if (page_reporting_order != PAGE_REPORTING_DEFAULT_ORDER
->                 && prdev->order <= MAX_PAGE_ORDER) {
->                 page_reporting_order = prdev->order;
->         } else {
->                 page_reporting_order = pageblock_order;
+On Mon, Mar 2, 2026 at 4:04=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
+:
+>
+> On Mon, Mar 2, 2026 at 3:43=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com>=
+ wrote:
+> >
+> > On Mon, Mar 2, 2026 at 2:58=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
+rote:
+> > >
+> > > On Mon, Mar 2, 2026 at 1:50=E2=80=AFPM Yafang Shao <laoar.shao@gmail.=
+com> wrote:
+> > > >
+> > > > On Sun, Mar 1, 2026 at 5:28=E2=80=AFAM Barry Song <21cnbao@gmail.co=
+m> wrote:
+> > > > >
+> > > > > On Sun, Mar 1, 2026 at 12:10=E2=80=AFAM Leno Hou <lenohou@gmail.c=
+om> wrote:
+> > > > > >
+> > > > > > When the Multi-Gen LRU (MGLRU) state is toggled dynamically, a =
+race
+> > > > > > condition exists between the state switching and the memory rec=
+laim
+> > > > > > path. This can lead to unexpected cgroup OOM kills, even when p=
+lenty of
+> > > > > > reclaimable memory is available.
+> > > > > >
+> > > > > > *** Problem Description ***
+> > > > > >
+> > > > > > The issue arises from a "reclaim vacuum" during the transition:
+> > > > > >
+> > > > > > 1. When disabling MGLRU, lru_gen_change_state() sets lrugen->en=
+abled to
+> > > > > >    false before the pages are drained from MGLRU lists back to
+> > > > > >    traditional LRU lists.
+> > > > > > 2. Concurrent reclaimers in shrink_lruvec() see lrugen->enabled=
+ as false
+> > > > > >    and skip the MGLRU path.
+> > > > > > 3. However, these pages might not have reached the traditional =
+LRU lists
+> > > > > >    yet, or the changes are not yet visible to all CPUs due to a=
+ lack of
+> > > > > >    synchronization.
+> > > > > > 4. get_scan_count() subsequently finds traditional LRU lists em=
+pty,
+> > > > > >    concludes there is no reclaimable memory, and triggers an OO=
+M kill.
+> > > > > >
+> > > > > > A similar race can occur during enablement, where the reclaimer=
+ sees
+> > > > > > the new state but the MGLRU lists haven't been populated via
+> > > > > > fill_evictable() yet.
+> > > > > >
+> > > > > > *** Solution ***
+> > > > > >
+> > > > > > Introduce a 'draining' state to bridge the gap during transitio=
+ns:
+> > > > > >
+> > > > > > - Use smp_store_release() and smp_load_acquire() to ensure the =
+visibility
+> > > > > >   of 'enabled' and 'draining' flags across CPUs.
+> > > > > > - Modify shrink_lruvec() to allow a "joint reclaim" period. If =
+an lruvec
+> > > > > >   is in the 'draining' state, the reclaimer will attempt to sca=
+n MGLRU
+> > > > > >   lists first, and then fall through to traditional LRU lists i=
+nstead
+> > > > > >   of returning early. This ensures that folios are visible to a=
+t least
+> > > > > >   one reclaim path at any given time.
+> > > > > >
+> > > > > > *** Reproduction ***
+> > > > > >
+> > > > > > The issue was consistently reproduced on v6.1.157 and v6.18.3 u=
+sing
+> > > > > > a high-pressure memory cgroup (v1) environment.
+> > > > > >
+> > > > > > Reproduction steps:
+> > > > > > 1. Create a 16GB memcg and populate it with 10GB file cache (5G=
+B active)
+> > > > > >    and 8GB active anonymous memory.
+> > > > > > 2. Toggle MGLRU state while performing new memory allocations t=
+o force
+> > > > > >    direct reclaim.
+> > > > > >
+> > > > > > Reproduction script:
+> > > > > > ---
+> > > > > > #!/bin/bash
+> > > > > > # Fixed reproduction for memcg OOM during MGLRU toggle
+> > > > > > set -euo pipefail
+> > > > > >
+> > > > > > MGLRU_FILE=3D"/sys/kernel/mm/lru_gen/enabled"
+> > > > > > CGROUP_PATH=3D"/sys/fs/cgroup/memory/memcg_oom_test"
+> > > > > >
+> > > > > > # Switch MGLRU dynamically in the background
+> > > > > > switch_mglru() {
+> > > > > >     local orig_val=3D$(cat "$MGLRU_FILE")
+> > > > > >     if [[ "$orig_val" !=3D "0x0000" ]]; then
+> > > > > >         echo n > "$MGLRU_FILE" &
+> > > > > >     else
+> > > > > >         echo y > "$MGLRU_FILE" &
+> > > > > >     fi
+> > > > > > }
+> > > > > >
+> > > > > > # Setup 16G memcg
+> > > > > > mkdir -p "$CGROUP_PATH"
+> > > > > > echo $((16 * 1024 * 1024 * 1024)) > "$CGROUP_PATH/memory.limit_=
+in_bytes"
+> > > > > > echo $$ > "$CGROUP_PATH/cgroup.procs"
+> > > > > >
+> > > > > > # 1. Build memory pressure (File + Anon)
+> > > > > > dd if=3D/dev/urandom of=3D/tmp/test_file bs=3D1M count=3D10240
+> > > > > > dd if=3D/tmp/test_file of=3D/dev/null bs=3D1M # Warm up cache
+> > > > > >
+> > > > > > stress-ng --vm 1 --vm-bytes 8G --vm-keep -t 600 &
+> > > > > > sleep 5
+> > > > > >
+> > > > > > # 2. Trigger switch and concurrent allocation
+> > > > > > switch_mglru
+> > > > > > stress-ng --vm 1 --vm-bytes 2G --vm-populate --timeout 5s || ec=
+ho "OOM Triggered"
+> > > > > >
+> > > > > > # Check OOM counter
+> > > > > > grep oom_kill "$CGROUP_PATH/memory.oom_control"
+> > > > > > ---
+> > > > > >
+> > > > > > Signed-off-by: Leno Hou <lenohou@gmail.com>
+> > > > > >
+> > > > > > ---
+> > > > > > To: linux-mm@kvack.org
+> > > > > > To: linux-kernel@vger.kernel.org
+> > > > > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > > > > Cc: Axel Rasmussen <axelrasmussen@google.com>
+> > > > > > Cc: Yuanchu Xie <yuanchu@google.com>
+> > > > > > Cc: Wei Xu <weixugc@google.com>
+> > > > > > Cc: Barry Song <21cnbao@gmail.com>
+> > > > > > Cc: Jialing Wang <wjl.linux@gmail.com>
+> > > > > > Cc: Yafang Shao <laoar.shao@gmail.com>
+> > > > > > Cc: Yu Zhao <yuzhao@google.com>
+> > > > > > ---
+> > > > > >  include/linux/mmzone.h |  2 ++
+> > > > > >  mm/vmscan.c            | 14 +++++++++++---
+> > > > > >  2 files changed, 13 insertions(+), 3 deletions(-)
+> > > > > >
+> > > > > > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > > > > > index 7fb7331c5725..0648ce91dbc6 100644
+> > > > > > --- a/include/linux/mmzone.h
+> > > > > > +++ b/include/linux/mmzone.h
+> > > > > > @@ -509,6 +509,8 @@ struct lru_gen_folio {
+> > > > > >         atomic_long_t refaulted[NR_HIST_GENS][ANON_AND_FILE][MA=
+X_NR_TIERS];
+> > > > > >         /* whether the multi-gen LRU is enabled */
+> > > > > >         bool enabled;
+> > > > > > +       /* whether the multi-gen LRU is draining to LRU */
+> > > > > > +       bool draining;
+> > > > > >         /* the memcg generation this lru_gen_folio belongs to *=
+/
+> > > > > >         u8 gen;
+> > > > > >         /* the list segment this lru_gen_folio belongs to */
+> > > > > > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > > > > > index 06071995dacc..629a00681163 100644
+> > > > > > --- a/mm/vmscan.c
+> > > > > > +++ b/mm/vmscan.c
+> > > > > > @@ -5222,7 +5222,8 @@ static void lru_gen_change_state(bool ena=
+bled)
+> > > > > >                         VM_WARN_ON_ONCE(!seq_is_valid(lruvec));
+> > > > > >                         VM_WARN_ON_ONCE(!state_is_valid(lruvec)=
+);
+> > > > > >
+> > > > > > -                       lruvec->lrugen.enabled =3D enabled;
+> > > > > > +                       smp_store_release(&lruvec->lrugen.enabl=
+ed, enabled);
+> > > > > > +                       smp_store_release(&lruvec->lrugen.drain=
+ing, true);
+> > > > > >
+> > > > > >                         while (!(enabled ? fill_evictable(lruve=
+c) : drain_evictable(lruvec))) {
+> > > > > >                                 spin_unlock_irq(&lruvec->lru_lo=
+ck);
+> > > > > > @@ -5230,6 +5231,8 @@ static void lru_gen_change_state(bool ena=
+bled)
+> > > > > >                                 spin_lock_irq(&lruvec->lru_lock=
+);
+> > > > > >                         }
+> > > > > >
+> > > > > > +                       smp_store_release(&lruvec->lrugen.drain=
+ing, false);
+> > > > > > +
+> > > > > >                         spin_unlock_irq(&lruvec->lru_lock);
+> > > > > >                 }
+> > > > > >
+> > > > > > @@ -5813,10 +5816,15 @@ static void shrink_lruvec(struct lruvec=
+ *lruvec, struct scan_control *sc)
+> > > > > >         unsigned long nr_to_reclaim =3D sc->nr_to_reclaim;
+> > > > > >         bool proportional_reclaim;
+> > > > > >         struct blk_plug plug;
+> > > > > > +       bool lrugen_enabled =3D smp_load_acquire(&lruvec->lruge=
+n.enabled);
+> > > > > > +       bool lru_draining =3D smp_load_acquire(&lruvec->lrugen.=
+draining);
+> > > > > >
+> > > > > > -       if (lru_gen_enabled() && !root_reclaim(sc)) {
+> > > > > > +       if (lrugen_enabled || lru_draining && !root_reclaim(sc)=
+) {
+> > > > > >                 lru_gen_shrink_lruvec(lruvec, sc);
+> > > > > > -               return;
+> > > > >
+> > > >
+> > > > Hello Barry,
+> > > >
+> > > > > Is it possible to simply wait for draining to finish instead of p=
+erforming
+> > > > > an lru_gen/lru shrink while lru_gen is being disabled or enabled?
+> > > >
+> > > > This might introduce unexpected latency spikes during the waiting p=
+eriod.
+> > >
+> > > I assume latency is not a concern for a very rare
+> > > MGLRU on/off case. Do you require the switch to happen
+> > > with zero latency?
+> > > My main concern is the correctness of the code.
+> > >
+> > > Now the proposed patch is:
+> > >
+> > > +       bool lrugen_enabled =3D smp_load_acquire(&lruvec->lrugen.enab=
+led);
+> > > +       bool lru_draining =3D smp_load_acquire(&lruvec->lrugen.draini=
+ng);
+> > >
+> > > Then choose MGLRU or active/inactive LRU based on
+> > > those values.
+> > >
+> > > However, nothing prevents those values from changing
+> > > after they are read. Even within the shrink path,
+> > > they can still change.
+> >
+> > If these values are changed during reclaim, the currently running
+> > reclaimer will continue to operate with the old settings, while any
+> > new reclaimer processes will adopt the new values. This approach
+> > should prevent any immediate issues, but the primary risk of this
+> > lockless method is the potential for a user to rapidly toggle the
+> > MGLRU feature, particularly during an intermediate state.
+> >
+> > >
+> > > So I think we need an rwsem or something similar here =E2=80=94
+> > > a read lock for shrink and a write lock for on/off. The
+> > > write lock should happen very rarely.
+> >
+> > We can introduce a lock-based mechanism in v2.
+>
+> Honestly, the on/off toggle is quite fragile. For instance,
+>
+> folio_check_references() is doing:
+>
+>         if (lru_gen_enabled()) {
+>                 if (!referenced_ptes)
+>                         return FOLIOREF_RECLAIM;
+>
+>                 return lru_gen_set_refs(folio) ? FOLIOREF_ACTIVATE :
+> FOLIOREF_KEEP;
 >         }
-> }
-> 
-> Option 2:
-> 
-> if (page_reporting_order == PAGE_REPORTING_ORDER_NOT_SET) {
->         if (page_reporting_order != PAGE_REPORTING_DEFAULT_ORDER
->                 && prdev->order <= MAX_PAGE_ORDER) {
->                 page_reporting_order = prdev->order;
->         } else {
->                 page_reporting_order = pageblock_order;
->         }
-> }
-> 
-> 
->> I don't really see a difference between "PAGE_REPORTING_DEFAULT_ORDER"
->> and "PAGE_REPORTING_ORDER_NOT_SET" that would warrant a split and adding
->> confusion for the page-reporting drivers.
->>
->> In both cases, we want "no special requirement, just use the default".
->> Maybe we can use a better name to express that.
-> 
-> Agreed.
-> 
-> If we were to read this code without context, wouldn't it be confusing as to
-> why PAGE_REPORTING_DEFAULT_ORDER is being checked in the first place?
+>
+> However, `lru_gen_enabled()` does not indicate the actual LRU
+> where the folio resides.
+>
+> `lru_gen_enabled()` is called in many places, but in this case it does
+> not accurately reflect where folios are placed if a dynamic toggle is
+> active. During the switching, many unexpected behaviors may occur.
+>
+> >
+> > >
+> > > >
+> > > > >
+> > > > > Performing a shrink in an intermediate state may still involve a =
+lot of
+> > > > > uncertainty, depending on how far the shrink has progressed and h=
+ow much
+> > > > > remains in each side=E2=80=99s LRU=EF=BC=9F
+> > > >
+> > > > The workingset might not be reliable in this intermediate state.
+> > > > However, since switching MGLRU should not be a frequent operation i=
+n a
+> > > > production environment, I believe the workingset in this intermedia=
+te
+> > > > state should not be a concern. The only reason we would enable or
+> > > > disable MGLRU is if we find that certain workloads benefit from
+> > > > it=E2=80=94enabling it when it helps, and disabling it when it caus=
+es
+> > > > degradation. There should be no other scenario in which we would ne=
+ed
+> > > > to toggle MGLRU on or off.
+> > > >
+> > > > To identify which workloads can benefit from MGLRU, we must first
+> > > > ensure that switching it on or off is safe=E2=80=94which is precise=
+ly why we
+> > > > are proposing this patch. Once MGLRU is enabled in production, we c=
+an
+> > > > continue to improve it. Perhaps in the future, we can even implemen=
+t a
+> > > > per-workload reclaim mechanism.
+> > >
+> > > To be honest, the on/off toggle is quite odd. If possible,
+> > > I=E2=80=99d prefer not to switch MGLRU or active/inactive
+> > > dynamically. Once it=E2=80=99s set up during system boot, it
+> > > should remain unchanged.
+> >
+> > While it is well-suited for Android environments, it is not viable for
+> > Kubernetes production servers, where rebooting is highly disruptive.
+> > This limitation is precisely why we need to introduce dynamic toggles.
+>
+> Perhaps we really need to unify MGLRU with the active/inactive lists,
+> combining the benefits of both approaches. The dynamic toggle, as it
+> stands, is quite fragile.
+> A topic was suggested by Kairui here [1].
+>
+> >
+> > >
+> > > If we want a per-workload LRU, this could be a good
+> > > place for eBPF to hook into folio enqueue, dequeue,
+> > > and scanning. There is a project related to this [1][2].
+> > >
+> > > // Policy function hooks
+> > > struct cache_ext_ops {
+> > >        s32 (*policy_init)(struct mem_cgroup *memcg);
+> > >        // Propose folios to evict
+> > >        void (*evict_folios)(struct eviction_ctx *ctx,
+> > >                  struct mem_cgroup *memcg);
+> > >        void (*folio_added)(struct folio *folio);
+> > >        void (*folio_accessed)(struct folio *folio);
+> > >        // Folio was removed: clean up metadata
+> > >        void (*folio_removed)(struct folio *folio);
+> > >        char name[CACHE_EXT_OPS_NAME_LEN];
+> > > };
+> > >
+> > > However, we would need a very strong and convincing
+> > > user case to justify it.
+> >
+> > Thanks for the info.
+> > We're actually already running a BPF-based reclaimer in production,
+> > but we don't have immediate plans to upstream or propose it just yet.
+>
+> I know you are always far ahead of everyone else. I=E2=80=99m looking for=
+ward
+> to seeing your code and use cases when you are ready.
 
-I proposed in one of the last mail that
-"PAGE_REPORTING_USE_DEFAULT_ORDER" could be clearer, stating that it's
-not really an order just yet. Maybe just using
-PAGE_REPORTING_ORDER_UNSET might be clearer.
+Don't say it that way, that is not cooperative.
+We've only deployed a limited BPF-based memcg async reclaimer
+internally, and it is currently scoped to our own workloads.
 
-> 
-> Option 1 checks if page_reporting_order is equal to PAGE_REPORTING_DEFAULT_ORDER
-> and then immediately checks if its not equal to it. Which is a bit confusing..
-
-
-Because it's wrong? :) We're not supposed to check page_reporting_order
-a second time. Assume we
-s/PAGE_REPORTING_ORDER/PAGE_REPORTING_ORDER_UNSET/ and actually check
-prdev->order:
-
-if (page_reporting_order == PAGE_REPORTING_ORDER_UNSET) {
-	if (prdev->order != PAGE_REPORTING_ORDER_UNSET &&
-	    prdev->order <= MAX_PAGE_ORDER) {
-		page_reporting_order = prdev->order;
-	} else {
-		page_reporting_order = pageblock_order;
-	}
-}
-
-
-
-
--- 
-Cheers,
-
-David
+--=20
+Regards
+Yafang
 
