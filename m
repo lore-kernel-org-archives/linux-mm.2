@@ -4,115 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D480BEA4E24
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BDBEA4E3A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 16:14:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD9276B009E; Mon,  2 Mar 2026 10:53:39 -0500 (EST)
+	id 3891E6B0005; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E13C6B00A0; Mon,  2 Mar 2026 10:53:39 -0500 (EST)
+	id 336876B0088; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 850C76B00A1; Mon,  2 Mar 2026 10:53:39 -0500 (EST)
+	id 218EC6B0089; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DE086B009E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:53:39 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 026FD1A01CB
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:38 +0000 (UTC)
-X-FDA: 84501568158.03.037599E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 06F5C120005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:53:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZBNHOI6i;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1371C6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 11:14:18 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B589A89FB6
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:14:17 +0000 (UTC)
+X-FDA: 84501620154.27.4DD33CC
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8DE721C000A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 16:14:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YG01ILjL;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772466817;
+	s=arc-20220608; t=1772468056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references:dkim-signature;
-	bh=c8Ff9E/yYCuTDlBqHrRgyjN1kyuwiuuy9fAwp4DzOAs=;
-	b=Z4WnUFcO4+UZRT8e3IJ00tt5YYV04yBIaQ7CghEFaH+OFQZj7MS4tHXSEmo/drIcJWma9x
-	G2AlH5bIdN6RInwsUiBt3AyAOLotvh3OZLJXG8pvK36Ra/e5o9EtKSkigA555RcBSTz4hd
-	qrALU+tObT03y2sVum2W4Vs+ass7VXw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772466817; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MLL8CQedq0WsIHC423sVIgR4mj4t68qiQx4HMXd9uDE=;
+	b=3sSvfUPpNVx3KNFxhtJO8+pjbaOIXyvUrikd++eucSk4Fg/1wIkHo/yJWYztx44GP2ry1g
+	w8OEHtTBcDChGbJENXMp9raDEM7PSGeR0mYsjwo623MZpJZpczbXtgm3EJJTyUDS8o1xjn
+	Qvi0g1jyHnGA0n4x9oam5OhfhRA799k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772468056; a=rsa-sha256;
 	cv=none;
-	b=Fp5k0p3+45imiiLPQOJpOL4yCNig07MU4MGDrR3ed4d0Vd9sICSR0MHFSV9+hG19FGOt5R
-	e4O1yGqUcS0MZyvaXMCyXaOnyOB48vpP+Mk4vRfvTlBnwrAjpaqIk3FANKDfaMwWAMy5m2
-	H04hoiw+Vz0pMCX718xrI7ZRBHWpDq4=
+	b=p8LE4YsvNZYbvMjnW27llD5hKfuwzio8m4SThhKfOc/3kDle9Ej5AC8HDpgE6TyxyxZ0Aq
+	BvMrBVXBwVHnKE4nz9RObbHSSisO7eWt16bjZ85EMk4cvcVa4pKEwWCyUBEDz25dKQHxQ0
+	zn66rSrkMU+dq/T8JLXrfxomof0SXto=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZBNHOI6i;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772466816;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YG01ILjL;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 2 Mar 2026 08:14:05 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772468053;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=c8Ff9E/yYCuTDlBqHrRgyjN1kyuwiuuy9fAwp4DzOAs=;
-	b=ZBNHOI6ix/2fEK27UPfhftREEfycdeYKJCB/mmK+awRsQV5E+P4C2eN9YoLfzzBUGRO7Wv
-	Cdk1Ulyaywu/xmwO4w1hkbf9zx53hNUTublE9XF9FNyhsMggWCmFDOVCcOOkhlegjgzrrU
-	yyd6zN11RNArFsf12H2AZHFJtKqkfIg=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-HhEEhgGyMaGdkol-nmx2ug-1; Mon,
- 02 Mar 2026 10:53:30 -0500
-X-MC-Unique: HhEEhgGyMaGdkol-nmx2ug-1
-X-Mimecast-MFC-AGG-ID: HhEEhgGyMaGdkol-nmx2ug_1772466807
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4A6071956056;
-	Mon,  2 Mar 2026 15:53:27 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.6])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 207F819560A3;
-	Mon,  2 Mar 2026 15:53:26 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 9351A401DECF6; Mon,  2 Mar 2026 12:53:00 -0300 (-03)
-Message-ID: <20260302155105.214878062@redhat.com>
-User-Agent: quilt/0.69
-Date: Mon, 02 Mar 2026 12:49:47 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@linux.com>,
- Pekka Enberg <penberg@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Joonsoo Kim <iamjoonsoo.kim@lge.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Leonardo Bras <leobras.c@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Waiman Long <longman@redhat.com>,
- Boqun Feun <boqun.feng@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
-References: <20260302154945.143996316@redhat.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLL8CQedq0WsIHC423sVIgR4mj4t68qiQx4HMXd9uDE=;
+	b=YG01ILjLYI0dk46V+QncPZZT1q3hBjoc84PeXOZJVUm0yLSx284+Q4kliCpzftFLybp+5L
+	kpTVPFxfUITqsKaMqQAgDHi5QNKoE5mvAK0ecsIL/CeH8tWyYKJTYft+DRokoxgqFSwbBG
+	1ptqeewLBnfoxD5xDpCIAv4liTj8Y2c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 2/3] cgroup: add lockless fast-path checks to
+ cgroup_file_notify()
+Message-ID: <aaW2feETIF7I65i1@linux.dev>
+References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
+ <20260228142018.3178529-3-shakeel.butt@linux.dev>
+ <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: brKHcfNyc0JTsHLzKOMAsZQFyohNJlKP65FMAjuhhe0_1772466807
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 06F5C120005
-X-Stat-Signature: 7fjyankmsjgz4kx8meqkhbhqaugkoiie
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8DE721C000A
+X-Stat-Signature: 7kb6r7g7bwiwwn98aqentm44knh9xfaa
 X-Rspam-User: 
-X-HE-Tag: 1772466816-38767
-X-HE-Meta: U2FsdGVkX1/lVzgIhiTAB9WjMU9LrnXYMeGVrxUActRdc2SjzNXJu0U1WF4dsuDcD0G8tgUDMKEt0gtOoLcQUThoJi4s3YpNEjS4CXJ1EjaGaSiJv4fhucJX20hAjvBLf+nu3jYOiVBeS/DmMIpKaAzJC9vvyXtxrZ0Kb84v+EhDxS0A/mycOED1rL1HTHAjhCIQQ7XgSyfwM4Ns58DvPCC0APjSf9vfxu97jiP1eftPZl3gUsg8VJqXuzNlBN9BxH1MGCYs49NTL8p/baDm4/Mthaej6J6aLLj8NcJVxU+MJSVl8xTDgFVEPC1s+fNvNW5cf5E4XzIgxWHros23M0Lg/IJzS/X4w1myO370KAtXm5qnoG/EKAXaDYUTozq7XlMgAWz5WJJxI+mhVxHnwqR9X5UemmfgD+YS+W6pIcxiDMPtJrDnSEle2xVDmizjw6YcCi4+zxwM38/WqehQLC52O1rbKNRTwojjeReNk4jC9lED0/Qil8f0l0YEKAu+TK0BF3HXx4RAHYDAefZPKOU6pJ7UrBH2QkS1dJUMdLcxvqZ7pRZLPiep8Qfsc+l1oTlapAmBblVt3lDYbKG9dGmclezmyJ2NpmgEgb/DI78DhHBozk8fPJxSMgf7FSr2fob+zEy+W8uTyBIxX3ejTzeHhrR9s0hIaZKm6N4qepRzmzHvmkNt7bA5we7EzWMSbmX9M+EJC0+SRmitElAit69Os34FQNF3ZvHzaowk/5ZsENoCZRweqdkfvKJQivOPXjXRB00CzLNxKUURThXqBf10x0ZGN+1vayzcBiRIMRfOUGonsSUKCb59Ofl0BVbPkL+0a/Z6GylXmOqSn36kUvMcxrIdAi7BOjTpSx/pYyb8Ab+WkrdeAmZz6C5w9iHcxOEEuj8c/+LfThshKKcpzUDYsIiVqXBRCepkf69x3Pv2/awrrVx3yGxix+5xi5oEHkN7tk63Gcdgw2JWoq3
- 6BFtTiYR
- 0q5lpu40Wm7HII0Ju5cyAniDBHDMPVfnX3jlv9CK9Whv7KlKU+xvbuQpHkhLmwMhAC/R4QwiDCw5RioYIvdb4Gb2GVfSprvMOmK9TDohzYy24ph/i0QwmdNgdep+b6kpSrpDgOpCvRlhJ6znNClAxJkSPh66SeuYyK/Qxzj+sasUtm6OgUnyMJdIKZwPB51rD5V+VAXIXQAKbd/eTBTf+0Ruj+MHCUXxMxtlf04IFkZMiASotSSKazF8Gjt8kke7o9LuD4bAq31UrIWTZ0OFfhO9U5AQiI6v7TRKFT2Fuj/MPU08RYY2m2v47bC6QWodlDJnXyo9E4D7Jldz0XE/LWU3zb8OZLofPx9zEUfW5z+rzh3b0p9/S5WUCfX6j7c+yXdGaOYRMl/mA1mnFmKpg8DJ5GYuNEy7A/iMrGZc3BayeyDZxnFmb4JB61GnBi5pY5Td9L9C+yH4l08+xOxxJ/VAqtFpKNe7Idgim
+X-HE-Tag: 1772468055-41725
+X-HE-Meta: U2FsdGVkX1/9YvRGX1XBN0Nk5QiE5amDrEJRLPlcYnxW33btNzujePo6uW8Teitn2zZrL7WTW4h9akr0tFBrnVgWfePeO9yPWVFK1Zqg0/y5gNRANZQEDcicj71D0oEfnoIaA4trgp2l+3w1mhptbXQJiYdD4u9Vkb/CswhnCyEzAOTF7fMJ6p/f5J0fOXGKJgL7XD3jYzpBEdgYAoyAOMFaxpmGtiBv+8YD8d5HOTi49moXF8e6JPHdhEb2QNyDcpWpS+N8FPfBJM+o/+VAM4HMgj0HaQHrmCm7xBU3A6IrxfcpXDR46nAIlB+sAnIctmcCKT/kZUenhmm9CAWQNMxdWAC50y/0THlJaxlZcaRG/tl32J9qAaHqKVKM1uUxD1wLGZUAlvZav0lkoAXtFhQl9iiwKSasMQdiU8u9uDdSNpODCwgxinWJObUYC7X9HBefIAVpF13esh8+EQLetbHvHmhk5cgHaQ3p70KgUvbwq46DUtfRqbSJkISrAE6wOAelXqyx5D9a6OTjkCVyW6Y9DK/zFRKGXz1VJ+fw98LOZQ9zynCaZpKh+CWLsLN8Y7D3vWOT0uGKyGyXrDCYSxOvXJUL9WImqZLLeHDq9e9hK4w+l96IWEexKy7ZmK8lckX24EYevSvh0yoHVjL/h2NxvKxjc+7ohJAqUzgDxukZPeIHMjWtUZUYfBbMMFMGUrjq8LLltdI2JrFiS36SC4eTxcbrZWvdBR+1sIckELoN6v1g35cunGYhbjbNgOK0jGAnt1sLNP9sAvNsF8jGv6kjeY22kj+x3Wbj0sJixkp7H3zfY0itMo/mhezMKxLyRI+7AnQjWzimrEXdh6F9eaU5RItDCueDRDBZa1Twr/S+lB/2TPw29NycqocIyflUPIGbF93nUF2OE2G/7wdAyPxFUcYyuOsvoXq6jS0WD+DGn5Lm4Kc/YTi5KcMagBJztnQMk98GX63mR2I/mPi
+ 2EWJg0eo
+ pPaPhY+8GRQzBjgzpSq9ja+4CW9Djpgz2XPWJ8L7E4bAksSPzNdLAx9/y0MuC9+krOV36xlA5Uu2VWL0nkMhu1TC5PEOedbod6rel7zY9Gca+tmPBIuSjMWcmrqCDcXCSovYqWUVF0OUwZN9QLEVLsuidNY0ZgJfd1P/PZtvN04GSaYpwnfvjQw9N4InCLc9D5RZHXeeAGSBQwlIV2bEfxbuDai9kPgz4BOH5F9beVaN96jKpPbQRkpbHylCZjcwkhy5yRuiMV43ryJ1H/bztDv44WA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,541 +92,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some places in the kernel implement a parallel programming strategy
-consisting on local_locks() for most of the work, and some rare remote
-operations are scheduled on target cpu. This keeps cache bouncing low since
-cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-kernels, even though the very few remote operations will be expensive due
-to scheduling overhead.
+Hi Chen, thanks for taking a look.
 
-On the other hand, for RT workloads this can represent a problem:
-scheduling work on remote cpu that are executing low latency tasks
-is undesired and can introduce unexpected deadline misses.
+On Mon, Mar 02, 2026 at 09:50:53AM +0800, Chen Ridong wrote:
+> 
+> Hi Shakeel,
+> 
+> Good series to move away from the global lock.
+> 
+> On 2026/2/28 22:20, Shakeel Butt wrote:
+> > Add two lockless checks before acquiring the lock:
+> > 
+> > 1. READ_ONCE(cfile->kn) NULL check to skip torn-down files.
+> > 2. READ_ONCE(cfile->notified_at) check to skip when within the
+> >    rate-limit window (~10ms).
+> > 
+> > Both checks have safe error directions -- a stale read can only cause
+> > unnecessary lock acquisition, never a missed notification.  Annotate
+> > all write sites with WRITE_ONCE() to pair with the lockless readers.
+> > 
+> > The trade-off is that trailing timer_reduce() calls during bursts are
+> > skipped, so the deferred notification that delivers the final state
+> > may be lost.  This is acceptable for the primary callers like
+> > __memcg_memory_event() where events keep arriving.
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Reported-by: Jakub Kicinski <kuba@kernel.org>
+> > ---
+> >  kernel/cgroup/cgroup.c | 21 ++++++++++++++-------
+> >  1 file changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> > index 33282c7d71e4..5473ebd0f6c1 100644
+> > --- a/kernel/cgroup/cgroup.c
+> > +++ b/kernel/cgroup/cgroup.c
+> > @@ -1749,7 +1749,7 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
+> >  		struct cgroup_file *cfile = (void *)css + cft->file_offset;
+> >  
+> >  		spin_lock_irq(&cgroup_file_kn_lock);
+> > -		cfile->kn = NULL;
+> > +		WRITE_ONCE(cfile->kn, NULL);
+> >  		spin_unlock_irq(&cgroup_file_kn_lock);
+> >  
+> >  		timer_delete_sync(&cfile->notify_timer);
+> > @@ -4430,7 +4430,7 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
+> >  		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
+> >  
+> >  		spin_lock_irq(&cgroup_file_kn_lock);
+> > -		cfile->kn = kn;
+> > +		WRITE_ONCE(cfile->kn, kn);
+> >  		spin_unlock_irq(&cgroup_file_kn_lock);
+> >  	}
+> >  
+> > @@ -4686,20 +4686,27 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
+> >   */
+> >  void cgroup_file_notify(struct cgroup_file *cfile)
+> >  {
+> > -	unsigned long flags;
+> > +	unsigned long flags, last, next;
+> >  	struct kernfs_node *kn = NULL;
+> >  
+> > +	if (!READ_ONCE(cfile->kn))
+> > +		return;
+> > +
+> > +	last = READ_ONCE(cfile->notified_at);
+> > +	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
+> > +		return;
+> > +
+> 
+> Previously, if a notification arrived within the rate-limit window, we would
+> still call timer_reduce(&cfile->notify_timer, next) to schedule a deferred
+> notification.
+> 
+> With this change, returning early here bypasses that timer scheduling entirely.
+> Does this risk missing notifications that would have been delivered by the timer?
+> 
 
-It's interesting, though, that local_lock()s in RT kernels become
-spinlock(). We can make use of those to avoid scheduling work on a remote
-cpu by directly updating another cpu's per_cpu structure, while holding
-it's spinlock().
+You are indeed right that this can cause missed notifications. After giving some
+thought I think the lockless check-and-return can be pretty much simplified to
+timer_pending() check. If timer is active, just do nothing and the notification
+will be delivered eventually.
 
-In order to do that, it's necessary to introduce a new set of functions to
-make it possible to get another cpu's per-cpu "local" lock (qpw_{un,}lock*)
-and also the corresponding queue_percpu_work_on() and flush_percpu_work()
-helpers to run the remote work.
-
-Users of non-RT kernels but with low latency requirements can select
-similar functionality by using the CONFIG_QPW compile time option.
-
-On CONFIG_QPW disabled kernels, no changes are expected, as every
-one of the introduced helpers work the exactly same as the current
-implementation:
-qpw_{un,}lock*()        ->  local_{un,}lock*() (ignores cpu parameter)
-queue_percpu_work_on()  ->  queue_work_on()
-flush_percpu_work()     ->  flush_work()
-
-For QPW enabled kernels, though, qpw_{un,}lock*() will use the extra
-cpu parameter to select the correct per-cpu structure to work on,
-and acquire the spinlock for that cpu.
-
-queue_percpu_work_on() will just call the requested function in the current
-cpu, which will operate in another cpu's per-cpu object. Since the
-local_locks() become spinlock()s in QPW enabled kernels, we are
-safe doing that.
-
-flush_percpu_work() then becomes a no-op since no work is actually
-scheduled on a remote cpu.
-
-Some minimal code rework is needed in order to make this mechanism work:
-The calls for local_{un,}lock*() on the functions that are currently
-scheduled on remote cpus need to be replaced by qpw_{un,}lock_n*(), so in
-QPW enabled kernels they can reference a different cpu. It's also
-necessary to use a qpw_struct instead of a work_struct, but it just
-contains a work struct and, in CONFIG_QPW, the target cpu.
-
-This should have almost no impact on non-CONFIG_QPW kernels: few
-this_cpu_ptr() will become per_cpu_ptr(,smp_processor_id()).
-
-On CONFIG_QPW kernels, this should avoid deadlines misses by
-removing scheduling noise.
-
-Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
-Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
----
- Documentation/admin-guide/kernel-parameters.txt |   10 
- Documentation/locking/qpwlocks.rst              |   70 ++++++
- MAINTAINERS                                     |    7 
- include/linux/qpw.h                             |  256 ++++++++++++++++++++++++
- init/Kconfig                                    |   35 +++
- kernel/Makefile                                 |    2 
- kernel/qpw.c                                    |   26 ++
- 7 files changed, 406 insertions(+)
- create mode 100644 include/linux/qpw.h
- create mode 100644 kernel/qpw.c
-
-Index: linux/Documentation/admin-guide/kernel-parameters.txt
-===================================================================
---- linux.orig/Documentation/admin-guide/kernel-parameters.txt
-+++ linux/Documentation/admin-guide/kernel-parameters.txt
-@@ -2840,6 +2840,16 @@ Kernel parameters
- 
- 			The format of <cpu-list> is described above.
- 
-+	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
-+			and remote interference mechanism on a kernel built with
-+			CONFIG_QPW.
-+			Format: { "0" | "1" }
-+			0 - local_lock() + queue_work_on(remote_cpu)
-+			1 - spin_lock() for both local and remote operations
-+
-+			Selecting 1 may be interesting for systems that want
-+			to avoid interruption & context switches from IPIs.
-+
- 	iucv=		[HW,NET]
- 
- 	ivrs_ioapic	[HW,X86-64]
-Index: linux/MAINTAINERS
-===================================================================
---- linux.orig/MAINTAINERS
-+++ linux/MAINTAINERS
-@@ -21553,6 +21553,13 @@ F:	Documentation/networking/device_drive
- F:	drivers/bus/fsl-mc/
- F:	include/uapi/linux/fsl_mc.h
- 
-+QPW
-+M:	Leonardo Bras <leobras.c@gmail.com>
-+S:	Supported
-+F:	Documentation/locking/qpwlocks.rst
-+F:	include/linux/qpw.h
-+F:	kernel/qpw.c
-+
- QT1010 MEDIA DRIVER
- L:	linux-media@vger.kernel.org
- S:	Orphan
-Index: linux/include/linux/qpw.h
-===================================================================
---- /dev/null
-+++ linux/include/linux/qpw.h
-@@ -0,0 +1,256 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_QPW_H
-+#define _LINUX_QPW_H
-+
-+#include "linux/spinlock.h"
-+#include "linux/local_lock.h"
-+#include "linux/workqueue.h"
-+
-+#ifndef CONFIG_QPW
-+
-+typedef local_lock_t qpw_lock_t;
-+typedef local_trylock_t qpw_trylock_t;
-+
-+struct qpw_struct {
-+	struct work_struct work;
-+};
-+
-+#define qpw_lock_init(lock)				\
-+	local_lock_init(lock)
-+
-+#define qpw_trylock_init(lock)				\
-+	local_trylock_init(lock)
-+
-+#define qpw_lock(lock, cpu)				\
-+	local_lock(lock)
-+
-+#define local_qpw_lock(lock)				\
-+	local_lock(lock)
-+
-+#define qpw_lock_irqsave(lock, flags, cpu)		\
-+	local_lock_irqsave(lock, flags)
-+
-+#define local_qpw_lock_irqsave(lock, flags)		\
-+	local_lock_irqsave(lock, flags)
-+
-+#define qpw_trylock(lock, cpu)				\
-+	local_trylock(lock)
-+
-+#define local_qpw_trylock(lock)				\
-+	local_trylock(lock)
-+
-+#define qpw_trylock_irqsave(lock, flags, cpu)		\
-+	local_trylock_irqsave(lock, flags)
-+
-+#define qpw_unlock(lock, cpu)				\
-+	local_unlock(lock)
-+
-+#define local_qpw_unlock(lock)				\
-+	local_unlock(lock)
-+
-+#define qpw_unlock_irqrestore(lock, flags, cpu)		\
-+	local_unlock_irqrestore(lock, flags)
-+
-+#define local_qpw_unlock_irqrestore(lock, flags)	\
-+	local_unlock_irqrestore(lock, flags)
-+
-+#define qpw_lockdep_assert_held(lock)			\
-+	lockdep_assert_held(lock)
-+
-+#define queue_percpu_work_on(c, wq, qpw)		\
-+	queue_work_on(c, wq, &(qpw)->work)
-+
-+#define flush_percpu_work(qpw)				\
-+	flush_work(&(qpw)->work)
-+
-+#define qpw_get_cpu(qpw)	smp_processor_id()
-+
-+#define qpw_is_cpu_remote(cpu)		(false)
-+
-+#define INIT_QPW(qpw, func, c)				\
-+	INIT_WORK(&(qpw)->work, (func))
-+
-+#else /* CONFIG_QPW */
-+
-+DECLARE_STATIC_KEY_MAYBE(CONFIG_QPW_DEFAULT, qpw_sl);
-+
-+typedef union {
-+	spinlock_t sl;
-+	local_lock_t ll;
-+} qpw_lock_t;
-+
-+typedef union {
-+	spinlock_t sl;
-+	local_trylock_t ll;
-+} qpw_trylock_t;
-+
-+struct qpw_struct {
-+	struct work_struct work;
-+	int cpu;
-+};
-+
-+#define qpw_lock_init(lock)								\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			spin_lock_init(lock.sl);					\
-+		else									\
-+			local_lock_init(lock.ll);					\
-+	} while (0)
-+
-+#define qpw_trylock_init(lock)								\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			spin_lock_init(lock.sl);					\
-+		else									\
-+			local_trylock_init(lock.ll);					\
-+	} while (0)
-+
-+#define qpw_lock(lock, cpu)								\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			spin_lock(per_cpu_ptr(lock.sl, cpu));				\
-+		else									\
-+			local_lock(lock.ll);						\
-+	} while (0)
-+
-+#define local_qpw_lock(lock)								\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			migrate_disable();						\
-+			spin_lock(this_cpu_ptr(lock.sl));				\
-+		} else									\
-+			local_lock(lock.ll);						\
-+	} while (0)
-+
-+#define qpw_lock_irqsave(lock, flags, cpu)						\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			spin_lock_irqsave(per_cpu_ptr(lock.sl, cpu), flags);		\
-+		else									\
-+			local_lock_irqsave(lock.ll, flags);				\
-+	} while (0)
-+
-+#define local_qpw_lock_irqsave(lock, flags)						\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			migrate_disable();						\
-+			spin_lock_irqsave(this_cpu_ptr(lock.sl), flags);		\
-+		} else									\
-+			local_lock_irqsave(lock.ll, flags);				\
-+	} while (0)
-+
-+
-+#define qpw_trylock(lock, cpu)                                                          \
-+	({                                                                              \
-+		int t;                                                                  \
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))                   \
-+			t = spin_trylock(per_cpu_ptr(lock.sl, cpu));                    \
-+		else                                                                    \
-+			t = local_trylock(lock.ll);                                     \
-+		t;                                                                      \
-+	})
-+
-+#define local_qpw_trylock(lock)								\
-+	({										\
-+		int t;									\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			migrate_disable();						\
-+			t = spin_trylock(this_cpu_ptr(lock.sl));			\
-+			if (!t)								\
-+				migrate_enable();					\
-+		} else									\
-+			t = local_trylock(lock.ll);					\
-+		t;									\
-+	})
-+
-+#define qpw_trylock_irqsave(lock, flags, cpu)						\
-+	({										\
-+		int t;									\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			t = spin_trylock_irqsave(per_cpu_ptr(lock.sl, cpu), flags);	\
-+		else									\
-+			t = local_trylock_irqsave(lock.ll, flags);			\
-+		t;									\
-+	})
-+
-+#define qpw_unlock(lock, cpu)								\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			spin_unlock(per_cpu_ptr(lock.sl, cpu));				\
-+		} else {								\
-+			local_unlock(lock.ll);						\
-+		}									\
-+	} while (0)
-+
-+#define local_qpw_unlock(lock)								\
-+do {										\
-+	if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+		spin_unlock(this_cpu_ptr(lock.sl));				\
-+		migrate_enable();						\
-+	} else {								\
-+		local_unlock(lock.ll);						\
-+	}									\
-+} while (0)
-+
-+#define qpw_unlock_irqrestore(lock, flags, cpu)						\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			spin_unlock_irqrestore(per_cpu_ptr(lock.sl, cpu), flags);	\
-+		else									\
-+			local_unlock_irqrestore(lock.ll, flags);			\
-+	} while (0)
-+
-+#define local_qpw_unlock_irqrestore(lock, flags)					\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			spin_unlock_irqrestore(this_cpu_ptr(lock.sl), flags);		\
-+			migrate_enable();						\
-+		} else									\
-+			local_unlock_irqrestore(lock.ll, flags);			\
-+	} while (0)
-+
-+#define qpw_lockdep_assert_held(lock)							\
-+	do {										\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
-+			lockdep_assert_held(this_cpu_ptr(lock.sl));			\
-+		else									\
-+			lockdep_assert_held(this_cpu_ptr(lock.ll));			\
-+	} while (0)
-+
-+#define queue_percpu_work_on(c, wq, qpw)						\
-+	do {										\
-+		int __c = c;								\
-+		struct qpw_struct *__qpw = (qpw);					\
-+		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-+			WARN_ON((__c) != __qpw->cpu);					\
-+			__qpw->work.func(&__qpw->work);					\
-+		} else {								\
-+			queue_work_on(__c, wq, &(__qpw)->work);				\
-+		}									\
-+	} while (0)
-+
-+/*
-+ * Does nothing if QPW is set to use spinlock, as the task is already done at the
-+ * time queue_percpu_work_on() returns.
-+ */
-+#define flush_percpu_work(qpw)								\
-+	do {										\
-+		struct qpw_struct *__qpw = (qpw);					\
-+		if (!static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {		\
-+			flush_work(&__qpw->work);					\
-+		}									\
-+	} while (0)
-+
-+#define qpw_get_cpu(w)			container_of((w), struct qpw_struct, work)->cpu
-+
-+#define qpw_is_cpu_remote(cpu)		((cpu) != smp_processor_id())
-+
-+#define INIT_QPW(qpw, func, c)								\
-+	do {										\
-+		struct qpw_struct *__qpw = (qpw);					\
-+		INIT_WORK(&__qpw->work, (func));					\
-+		__qpw->cpu = (c);							\
-+	} while (0)
-+
-+#endif /* CONFIG_QPW */
-+#endif /* LINUX_QPW_H */
-Index: linux/init/Kconfig
-===================================================================
---- linux.orig/init/Kconfig
-+++ linux/init/Kconfig
-@@ -762,6 +762,41 @@ config CPU_ISOLATION
- 
- 	  Say Y if unsure.
- 
-+config QPW
-+	bool "Queue per-CPU Work"
-+	depends on SMP || COMPILE_TEST
-+	default n
-+	help
-+	  Allow changing the behavior on per-CPU resource sharing with cache,
-+	  from the regular local_locks() + queue_work_on(remote_cpu) to using
-+	  per-CPU spinlocks on both local and remote operations.
-+
-+	  This is useful to give user the option on reducing IPIs to CPUs, and
-+	  thus reduce interruptions and context switches. On the other hand, it
-+	  increases generated code and will use atomic operations if spinlocks
-+	  are selected.
-+
-+	  If set, will use the default behavior set in QPW_DEFAULT unless boot
-+	  parameter qpw is passed with a different behavior.
-+
-+	  If unset, will use the local_lock() + queue_work_on() strategy,
-+	  regardless of the boot parameter or QPW_DEFAULT.
-+
-+	  Say N if unsure.
-+
-+config QPW_DEFAULT
-+	bool "Use per-CPU spinlocks by default"
-+	depends on QPW
-+	default n
-+	help
-+	  If set, will use per-CPU spinlocks as default behavior for per-CPU
-+	  remote operations.
-+
-+	  If unset, will use local_lock() + queue_work_on(cpu) as default
-+	  behavior for remote operations.
-+
-+	  Say N if unsure
-+
- source "kernel/rcu/Kconfig"
- 
- config IKCONFIG
-Index: linux/kernel/Makefile
-===================================================================
---- linux.orig/kernel/Makefile
-+++ linux/kernel/Makefile
-@@ -142,6 +142,8 @@ obj-$(CONFIG_WATCH_QUEUE) += watch_queue
- obj-$(CONFIG_RESOURCE_KUNIT_TEST) += resource_kunit.o
- obj-$(CONFIG_SYSCTL_KUNIT_TEST) += sysctl-test.o
- 
-+obj-$(CONFIG_QPW) += qpw.o
-+
- CFLAGS_kstack_erase.o += $(DISABLE_KSTACK_ERASE)
- CFLAGS_kstack_erase.o += $(call cc-option,-mgeneral-regs-only)
- obj-$(CONFIG_KSTACK_ERASE) += kstack_erase.o
-Index: linux/kernel/qpw.c
-===================================================================
---- /dev/null
-+++ linux/kernel/qpw.c
-@@ -0,0 +1,26 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "linux/export.h"
-+#include <linux/sched.h>
-+#include <linux/qpw.h>
-+#include <linux/string.h>
-+
-+DEFINE_STATIC_KEY_MAYBE(CONFIG_QPW_DEFAULT, qpw_sl);
-+EXPORT_SYMBOL(qpw_sl);
-+
-+static int __init qpw_setup(char *str)
-+{
-+	int opt;
-+
-+	if (!get_option(&str, &opt)) {
-+		pr_warn("QPW: invalid qpw parameter: %s, ignoring.\n", str);
-+		return 0;
-+	}
-+
-+	if (opt)
-+		static_branch_enable(&qpw_sl);
-+	else
-+		static_branch_disable(&qpw_sl);
-+
-+	return 1;
-+}
-+__setup("qpw=", qpw_setup);
-Index: linux/Documentation/locking/qpwlocks.rst
-===================================================================
---- /dev/null
-+++ linux/Documentation/locking/qpwlocks.rst
-@@ -0,0 +1,70 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+=========
-+QPW locks
-+=========
-+
-+Some places in the kernel implement a parallel programming strategy
-+consisting on local_locks() for most of the work, and some rare remote
-+operations are scheduled on target cpu. This keeps cache bouncing low since
-+cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-+kernels, even though the very few remote operations will be expensive due
-+to scheduling overhead.
-+
-+On the other hand, for RT workloads this can represent a problem:
-+scheduling work on remote cpu that are executing low latency tasks
-+is undesired and can introduce unexpected deadline misses.
-+
-+QPW locks help to convert sites that use local_locks (for cpu local operations)
-+and queue_work_on (for queueing work remotely, to be executed
-+locally on the owner cpu of the lock) to QPW locks.
-+
-+The lock is declared qpw_lock_t type.
-+The lock is initialized with qpw_lock_init.
-+The lock is locked with qpw_lock (takes a lock and cpu as a parameter).
-+The lock is unlocked with qpw_unlock (takes a lock and cpu as a parameter).
-+
-+The qpw_lock_irqsave function disables interrupts and saves current interrupt state,
-+cpu as a parameter.
-+
-+For trylock variant, there is the qpw_trylock_t type, initialized with
-+qpw_trylock_init. Then the corresponding qpw_trylock and
-+qpw_trylock_irqsave.
-+
-+work_struct should be replaced by qpw_struct, which contains a cpu parameter
-+(owner cpu of the lock), initialized by INIT_QPW.
-+
-+The queue work related functions (analogous to queue_work_on and flush_work) are:
-+queue_percpu_work_on and flush_percpu_work.
-+
-+The behaviour of the QPW functions is as follows:
-+
-+* !CONFIG_QPW (or CONFIG_QPW and qpw=off kernel boot parameter):
-+        - qpw_lock:                     local_lock
-+        - qpw_lock_irqsave:             local_lock_irqsave
-+        - qpw_trylock:                  local_trylock
-+        - qpw_trylock_irqsave:          local_trylock_irqsave
-+        - qpw_unlock:                   local_unlock
-+        - queue_percpu_work_on:         queue_work_on
-+        - flush_percpu_work:            flush_work
-+
-+* CONFIG_QPW (and CONFIG_QPW_DEFAULT=y or qpw=on kernel boot parameter),
-+        - qpw_lock:                     spin_lock
-+        - qpw_lock_irqsave:             spin_lock_irqsave
-+        - qpw_trylock:                  spin_trylock
-+        - qpw_trylock_irqsave:          spin_trylock_irqsave
-+        - qpw_unlock:                   spin_unlock
-+        - queue_percpu_work_on:         executes work function on caller cpu
-+        - flush_percpu_work:            empty
-+
-+qpw_get_cpu(work_struct), to be called from within qpw work function,
-+returns the target cpu.
-+
-+In addition to the locking functions above, there are the local locking
-+functions (local_qpw_lock, local_qpw_trylock and local_qpw_unlock).
-+These must only be used to access per-CPU data from the CPU that owns
-+that data, and not remotely. They disable preemption or migration
-+and don't require a cpu parameter.
-+
-+These should only be used when accessing per-CPU data of the local CPU.
-+
-
+I will send the updated version soon. Any comments on the other two patches?
 
 
