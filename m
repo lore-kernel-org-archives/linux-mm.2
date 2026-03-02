@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7924EB3624
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99E6BEB3631
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 19:53:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4F276B0095; Mon,  2 Mar 2026 14:53:19 -0500 (EST)
+	id 6AB406B0096; Mon,  2 Mar 2026 14:53:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B6066B0096; Mon,  2 Mar 2026 14:53:19 -0500 (EST)
+	id 6003D6B0098; Mon,  2 Mar 2026 14:53:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7911F6B0098; Mon,  2 Mar 2026 14:53:19 -0500 (EST)
+	id 4CD806B0099; Mon,  2 Mar 2026 14:53:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F0706B0095
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:53:19 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 203381A0287
+	by kanga.kvack.org (Postfix) with ESMTP id 3F0CD6B0096
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:53:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CD918A168
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:53:21 +0000 (UTC)
+X-FDA: 84502172202.26.B293C3D
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 32FBDA000E
 	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:53:19 +0000 (UTC)
-X-FDA: 84502172118.28.337C255
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4B7F140008
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:53:17 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=eZhPDW8n;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=uEMuPTW+;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772481197;
+	s=arc-20220608; t=1772481199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9SxQ/eLtCsKDNFbOz1QdWcfhbyrBVWfPJbSjku1OsMI=;
-	b=Z5AdETb4VjLSiCPPy5PFFAnT42EWxUHqoOzfMRgYfeinAIV9YmDK5UiJb9TK5WQBsp3DRY
-	r/U4KOPgXYDR26TJ+DONoYXT548XTOdqHcvw2raEKGT/OYqQo3WIfciejsV7CW116Cl0tV
-	LTeucLXVWrkAIuKZmBQeEk3ja7Cvhvk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=eZhPDW8n;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772481197; a=rsa-sha256;
+	bh=IA4kjBdpYkYKS/nfolmQRGvXpsjWiFeExJHfqapx5Xg=;
+	b=t0UISHVFT5enM3W2WP3u5k16OcjIculLOtGQJWtcULuOl6jlOiQ+bD4RkF2XyMMmwLRUVy
+	Dy79DM/Iwmf6Wo+8vXa/OompnavTownB5eCIX5GZbHUyff3FMo1Qf10JE+3t879ZID+Vbw
+	UbsMKMfM/OwbZka0/apJptgIoIkT85I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772481199; a=rsa-sha256;
 	cv=none;
-	b=MOfLCL9o2E3wSZbk5gymJ4X7UcSGqIvOoD6n5TlTgjKj6Jh95Rj7GFax/dGFv+PseLAZrq
-	tAYBivC9vlo43XD8OAhOFVRZmIgQeQcO3vArH6OgzFwHJ4HZM6bIb4GCgJqtvG9bLW0lWC
-	rF58gq7BNiJUN3oj+dgavy3qqGQUTv4=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb3e0093e3so469028385a.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:53:17 -0800 (PST)
+	b=II5A4eq9N7uw3Gbl2E6bRcSG/dNZUmmoyFfUQYPMuo8T4I8JGQ/jVyrWTeuW6vbILenqEP
+	5eZH2MjE3RaogaU+45rqW3HiNUPXfnA3tHwqs3wdFLtqxdshf/FhSc7ez8rNeIs++0dOYD
+	rlOEDK6rByLk/l7OymvyioqPPmAzoU0=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=uEMuPTW+;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.51 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-899d6b7b073so42643016d6.2
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 11:53:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1772481196; x=1773085996; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1772481198; x=1773085998; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9SxQ/eLtCsKDNFbOz1QdWcfhbyrBVWfPJbSjku1OsMI=;
-        b=eZhPDW8nKysl5er5C0iDxnpgGPivNtCmJTrFlbQ2hmQN0uir1OQ34wlOWQ+aDXZgJL
-         U4vrLaHT/obRty/zZlV3DHuDCipHfMinek0pyp8fSZ4HJvHbk7TTxKhlee9BAhrlvGjQ
-         XxdBw6dGBuKDjRLSyIJecL3IhI7tFlYQlxsVJ/Ib12d1X1jP+Qrnn/KQmZGUBj4jgybk
-         6whvvT4edbZJGeWUMxWMWp0Vw+HmbRwcE54deqXltFxvy2b106fcTQgZ0TuqmTLBUyEs
-         vjyXWEEIk4MJ3T1a7ytJDEzBJaPEY2fUGdYohBiaJkBX8/sNV7V818xqKNxeTMc0tC4q
-         DLPg==
+        bh=IA4kjBdpYkYKS/nfolmQRGvXpsjWiFeExJHfqapx5Xg=;
+        b=uEMuPTW+35bo4ezYYvqRfpN8fn1aEwhroeRM/zau10M0Are6mxicqyF/aIynv3t5bu
+         VffQAtD7mK/uj46Tc1JRJxYy1LCbGuk5l2dsapOtqNacJSL2TehXJ/bOVtydzP0gyOoo
+         55Gu3hjwsUMki8hwxw3TFJQjSwM94KVrhGtNSyOegPTDCG6tQ3SX9ViHmuF2X3bVWF9j
+         /7asjrmifcfAF/SoGGiGSoEp0pJmhEP1wzBmvWYf7tixnAY29dLclmAz1GL0kn3BFMBe
+         hhuW2KJh+TODGEVP+yJZYAxhZ/Pns88YjmIo/5JhX7msMBoZjHZ7lBfqop3Kg9XlWDuX
+         A1lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772481196; x=1773085996;
+        d=1e100.net; s=20230601; t=1772481198; x=1773085998;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9SxQ/eLtCsKDNFbOz1QdWcfhbyrBVWfPJbSjku1OsMI=;
-        b=ApHpyZNabcoyJ/ybD/bgVMtZycU4HrNzYNgXO4ndoHaLjy8NobOSlF/UwzE0fkiJKz
-         k/8DKn0koo7SHYF3juwp055FnpZkvX2urBVdxroNKAql/0VqadAO0C6WfopwSR3AZyQO
-         bCul3HyD5ImnKGde5/K7Wja1L2QK9nHI2NTVa+HUzH1giOh/48tSWKARWy02iVPtVmzr
-         zs0TQ3wFMzPX0HrE2SJKK1HwtEzkcaBvhob6Z9qrhP7ACg/nG4aENVc51SUj9tNy7Gzv
-         zVtqZRvkhGTlZyq3DY/2kEgE4V+aIYfku2rmDywXB6TeAATelNtVquZaDFVVLFgWugRG
-         NK8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX7Jn+FFxbumonJYBTlVLrqCsDu2e7uAkt5KqNQRZAfHl0wTE5OOxmBpBLZsJoG6nq4nUQhL8sKuQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywl5BKIAyE2XH1asI5sVpXokfgNV6SMN8vLvXUlhu1YmhuG8ZiJ
-	qitoLV2+LpD+7eqoZGWbfA3QfIUw6JRH5U3Sv81jIF9ij+8rzwVTV7hWG4p+6JqUSKg=
-X-Gm-Gg: ATEYQzwCm13pyDd+wdoKtN9zEYhim16880dk9VbdWYv35F7+hzHFt+iFGswHEM8L7Kz
-	Kp0wMkX9MY2EZC14ZffRy6Mhx3xaJbp4mYiueqOeWs4SiYE17dTlppddGsYWd6QIqfDU/9eMfB+
-	it8TPOmvpYal3q8YIvi1xJCKi7o5QtprPaXBaV3x9UPEO5aXtnW9+pQbuVs2DCet+HzJKj7P1fO
-	m8c07QcgRHrzNcU9DQ+tSu/VyPdDlDgtQ+pv6FEyf9S/BDIfsSbNUQZ8jKIao3qZc9gfvDmnBaK
-	KQhKBd9WD58r0J4mim5U3i+yz0WlTXS+sCZl4ldxz9USC+248YLITpHjSo6ZWgR+/z5NvQYxaXn
-	3XueQemBdW+zT+k3Hj3A+cS+JFIXfqADheByNkR9vilpqs0OrJJaMQlodzdJd7K91kunUdiooHp
-	jvlskE5hP0omFS0mDfkkYsTA==
-X-Received: by 2002:a05:620a:400f:b0:8c6:ff02:d825 with SMTP id af79cd13be357-8cbc8e03048mr1741310485a.48.1772481196370;
-        Mon, 02 Mar 2026 11:53:16 -0800 (PST)
+        bh=IA4kjBdpYkYKS/nfolmQRGvXpsjWiFeExJHfqapx5Xg=;
+        b=i8gGC/pU7gvY8udrmbGrzV+QlwcRnaSwOIu4cttRqB0POnC1JDnbKeo0Cli8xDcxed
+         TqNIekh/aUPlKT3+A2Wzahv6XfMmX/8Kv9lWIOUqPy1zAQfoe6NFCgcc8bqH5yCFzm0D
+         2PqZfxiWB9bT6+FrL63AhZtWA25l8n84y3vPjjuAA6v0XktjfdmRxq3K9UwWKHOHjnRS
+         AT/uV2QHVam/hK+3iv9v8V3w7Qe8sPAWS9Rp/0Dxv1NKMrCNhBJ+HoPSkHMyslOCbi/p
+         tzpE1xm1L4aI6k0yKwykAsK3IWHcyqRL3PNOdPoy38OEV4oWYqolzMu78NB3l3lD63LQ
+         FWkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyTHS2+rNIEJ1nLH5cATg83P9qOwwMMW/mJYy8WNskx8rpyWazwlquqsMbyh0xdAqnkN4HttSoSw==@kvack.org
+X-Gm-Message-State: AOJu0YwuNrGuq+Hdm5QhBnnU5aGvUUkExjm2hgDQzKhd4vZUgdvlhxW4
+	5I44dHEhFqvNX+ovHxd82axCKUBf8IpnVXLeMv1Sru4uRCO8eeGb39jlmn5oRS/rbbk=
+X-Gm-Gg: ATEYQzxHNSndecTg0zGmoJONpN8eqXmC5GFsCiMpyILRe2ViacukmJ7QvMqTVIRCivS
+	7GHQ6CT1JDbw6IGSXjiN1nKS4PJUbWla6qzCi/6osnTmMZ/TccctCgKgoy+xCng5sYOsPcKFjDI
+	JxXLwBIAZNLecf43OrtSLEvUctscK09fRuO9DD6AsVMilmWlRyDAE96eakBH12xS09xcU9JCzR3
+	EpRM/JZ9UyE8DmqgF2AdqG9Oy+CgM1iOzOm7bd1812o7nsjGFX44rx8SJykKuXDzghWN3CE8Yym
+	oF5lX7BbBKsz8LwtK8MAN/UyOlRE4oyD8ZXSMnf0HikC7Q8LxbOqBZ3hXhoxP43tjUCZEm9kVZP
+	obBjHl1X9PmFWZYpNp7bjHnO8HGr7Qpxg4hptJN6wxSAu2hqGd8JtSLOysamZx7wWpyovDzYyiT
+	UZMCIoH0cTPV3w+CRLLk+ThvKa4m4P5M+5
+X-Received: by 2002:ad4:5ded:0:b0:89a:4f:1172 with SMTP id 6a1803df08f44-89a004f1317mr42550936d6.50.1772481198200;
+        Mon, 02 Mar 2026 11:53:18 -0800 (PST)
 Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6535b4sm1217544685a.9.2026.03.02.11.53.15
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899f4fb208dsm44178686d6.28.2026.03.02.11.53.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 11:53:15 -0800 (PST)
+        Mon, 02 Mar 2026 11:53:17 -0800 (PST)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Hao Li <hao.li@linux.dev>,
@@ -101,22 +101,22 @@ Cc: Hao Li <hao.li@linux.dev>,
 	linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/5] mm: memcontrol: split out __obj_cgroup_charge()
-Date: Mon,  2 Mar 2026 14:50:16 -0500
-Message-ID: <20260302195305.620713-4-hannes@cmpxchg.org>
+Subject: [PATCH 4/5] mm: memcontrol: use __account_obj_stock() in the !locked path
+Date: Mon,  2 Mar 2026 14:50:17 -0500
+Message-ID: <20260302195305.620713-5-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260302195305.620713-1-hannes@cmpxchg.org>
 References: <20260302195305.620713-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4B7F140008
-X-Stat-Signature: xwburkorw91aenw4gx3ciq41m78jc5b1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 32FBDA000E
+X-Stat-Signature: o79d5o55ty1caetfszc913ykeukjcdh9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772481197-874052
-X-HE-Meta: U2FsdGVkX1+zONEWxQOLelTwNiCGkFG0oj0nV9UQudChLK/EOEaAqAUQiu6jLT9AST8mVsuySZzkyRvgMzHsFaPVrwA3YPPXY3eMJl+b7I8V31l6wi1sMe5kE8ueo8trqR38fF6rbELBz5vDXAQqMC/DCBcCc+T+WsXe93mbozAl2TtP4k9ZzNpdNQRA7bRObP+NWV/8VZRnataG+tdh74JKoCV6ODtLk8gVorhuHEh/1gIrWHZOJfgdjipVppWK1PXk1AFteXYIT7FEIs6wsQNrbebyMe7fWC94KhfjcL7xNhR41wVg6eHYdjddn+bqLyQ5oZ5Cl0UkdgGlNWE0g3/ARfbNMqFk5ZTtqVE0z6Zsbm0GAUhDv+NeLAexx7qOO1sUhanqbDS0jHU9qA6cw6MUcebmGwl6uAS3oZhDT12p9GnzDZ37W+kbJQ3pTR3zJVXjO1vLTK0RjHI4mPjnP6e3uVA1fP4EI6zn4VG5DU8lra1/5JmQSphXhsDhHzK17bATyDdEn/wBwzW+ghckLr2YWXUZqPRlKLudgjIOC6YUqja4dd4lEYvGfKvzwK5ob2r6Y4sHLhVDWZpdpAU/xLHcv27BYM6GFVsxeVv2ZCG9+H2RvWLDeBuMvImAE0UvkyH/t4z4VYwieFpdR0n57PJAj8A0fcrb76TxqGoGriLtSNA+2L9EaGNiSp5JRlhuPYqs5i5kXuUQ4OyTFwAnTS46FbyNjZP5tkpIohSdU3G9yGhaAWlAb4ztIUY7vzI9vtoqorpu01gra8mpIJxu/S2YKO00CHZFXn3JrZoLXxcJGu99iVHfdb+b849A/mkKNp96I8sF70jda0NsHRIUNUQKfWx8MxeiICL2agRbaL1BvtUszwS0rVHUCJAoaqq8NKVo8ofpzcSq5crA676J1wPkJZYeAj+9bksUKyQuiLyrhCbnOO8desQvAFIMPeRRbuTkQMOmhk+y7SxFhNM
- NUXKXOei
- LsW8ogkNDZd2YiX9jcK7ua8NsmA8xSKc6S+FgKHDMD1c4rTqy7hvIgSiBL1vrMp7DL4ri9CucrB7rKtylw0Z/bBZYyIbO0AapiWhFVNsO3xhM4S9iuCzNB/f9ixAfHq9r6hyzO+4R87e6SxZwnJueHzR/5ROBKi9fMeUOObMqjsOtbVoB23/jf2rJpDVjaeO/J3iGAPjKdF178z2dlp1SGsTcbaoX23MjEeEM8Liinhx4zv7r905dsLRh/tTPtklJnkDZVaIlQf17qTjOAnwXSA73OgUB/Vq/PQY8c/qoVTEgVZxBjYw8szwp6jr8JJ4IWLp7cBxulImQA2HlBScguthijilZ38ak6dgdzJEi2O7rTPdb9XDkd+4J2sn68E/jL3vy5NZpvTYPYq8=
+X-HE-Tag: 1772481199-611611
+X-HE-Meta: U2FsdGVkX1/QrsctCRXeQY3Ox+zPCUtjAfwGok+W5ZwlpQRUI1E5/uyAzQd2LHSAIDAlQSDYTnTrNlXH4OcphHhVLnVYXn0aNFyWP5UF39sAm/NbRkQPJ+Jzevi+yQ9k1bUSCR29SQjIoGgWkB8PQfGaxXFfyzI9qZ37nx1SqYekHxeNd3n4C35UsR8RhTGC0zkyO9UpL/2Ds2I52neLzYHQyoiDz+hERA0y9RJo2Y5VzNXLApQ45FcozXzNOxxFBDEApU5kyDIrStVHXaJ/VZl0mO5jRVZcrMNeEUNYheTuB68HUl/vi/yz++1Ylnrq3OMgivRSla5aV1EBlqEIDFk8csLGec/3Vk68KHjsAiYAwW5vl8EHhlbT2MvApcpsrl/O7GzSYO3jIds0oF4+NSdhqj1YEi6hUXEsm/OprOi0aIkVv0HnYnkgWymeffj+D7I3fr/Oo5tCxWD99Hqn5N5WxnC2S9LxdYTgc2/Og2URBt+FIymHVgOBO9IyWyIns4dRlGlSWIPHKIbPwnliSfq5SI4KxJI4qZdYQpdWxeITQuPdYRvrr5/BWiDN890a/HuZy+Gf+k1egbYalB8IIv3vca6yOkPnmQtYv3G1RF9QblRMpqR0Mdk/2OaT+YgTfBY3CR6VaFphbYpUzGx8uQq3GBLb7GBnbI8bQt4VklfnF96zkNprdM+/0EYCYLdGaXB26V+co+fIfxJ6wWa053Zo001zCDtqil4b3uvJ5Ld54zIV8jgUlyqCtCtPQ7SsTF/sdGwUMwA/Ht6RSEFvz9SMCjGunMnIJRmn7qcWD7xvDXJi7B3EuKIfoqK8eKwI7URSY1Ik7yz31B2BvCeQbJpXOImjRmi2qE8kd+TMez93cV5pzQuyilLLz/zeVeE9h62pj5MTF91D1RKIhK0Za1F+t19OR552SaO1I3+X6UcHuCKL30utW3J1OXV9fAZwBWs+UXYsUlKMvwQQ+g7
+ 7duQmb1H
+ sR9r0XFUFliLAL1MG2MQzN1m4q/BV+Hw/buwQLjMsHEjRDS7KcjKVPfqjPy288KpZDQ44qDftqi1e50bHUp2t7kadO252GfKIksor8WKPUD6yfP9XVOo4OwrzpsaluIhZsGpplwNvMn3LIXWBCHdZb1pxdSP88E9xlEduArjw3vCfW1wPR4h74Qk7GmXK4BuvS4JeAOUYcErjQ+fRCU7Ge8sg/Rk77+5TCCmwi/MtoHXKXamJbrn8kHGMCBbfdSpyf5EL4S90GAp8wvGrfvasMG+CLph7X13elt2JBlGJ0c+lmhfoM+W9Su2UP0EOLvN285OcjtYCfeaeoC1W+ktSf97hmsB/gITc7SX9Hgxmb6s4j4gZ/nIdjhmQFPfI9vNBa5B8rSxS+ABnD3TGTvi8ASnbGUxtCgVm1c54dWNFDKjwwZ5O4/VnvQueSCtpFA2TOejTAKxtM/C3RKYDjbdyzy1Hojzhs884vT2T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,56 +124,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move the page charge and remainder calculation into its own
-function. It will make the slab stat refactor easier to follow.
+Make __account_obj_stock() usable for the case where the local trylock
+failed. Then switch refill_obj_stock() over to it.
+
+This consolidates the mod_objcg_mlstate() call into one place and will
+make the next patch easier to follow.
 
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- mm/memcontrol.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ mm/memcontrol.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 0d0a77fedb00..32c09b4d520f 100644
+index 32c09b4d520f..4f12b75743d4 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -3414,10 +3414,24 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
- 		obj_cgroup_uncharge_pages(objcg, nr_pages);
- }
- 
-+static int __obj_cgroup_charge(struct obj_cgroup *objcg, gfp_t gfp,
-+			       size_t size, size_t *remainder)
-+{
-+	size_t charge_size;
-+	int ret;
-+
-+	charge_size = PAGE_ALIGN(size);
-+	ret = obj_cgroup_charge_pages(objcg, gfp, charge_size >> PAGE_SHIFT);
-+	if (!ret)
-+		*remainder = charge_size - size;
-+
-+	return ret;
-+}
-+
- static int obj_cgroup_charge_account(struct obj_cgroup *objcg, gfp_t gfp, size_t size,
- 				     struct pglist_data *pgdat, enum node_stat_item idx)
+@@ -3227,6 +3227,9 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
  {
--	size_t charge_size, remainder;
-+	size_t remainder;
- 	int ret;
+ 	int *bytes;
  
- 	if (likely(consume_obj_stock(objcg, size, pgdat, idx)))
-@@ -3446,10 +3460,7 @@ static int obj_cgroup_charge_account(struct obj_cgroup *objcg, gfp_t gfp, size_t
- 	 * bytes is (sizeof(object) + PAGE_SIZE - 2) if there is no data
- 	 * race.
- 	 */
--	charge_size = PAGE_ALIGN(size);
--	remainder = charge_size - size;
--
--	ret = obj_cgroup_charge_pages(objcg, gfp, charge_size >> PAGE_SHIFT);
-+	ret = __obj_cgroup_charge(objcg, gfp, size, &remainder);
- 	if (!ret && (remainder || pgdat))
- 		refill_obj_stock(objcg, remainder, false, size, pgdat, idx);
- 
++	if (!stock)
++		goto direct;
++
+ 	/*
+ 	 * Save vmstat data in stock and skip vmstat array update unless
+ 	 * accumulating over a page of vmstat data or when pgdat changes.
+@@ -3266,6 +3269,7 @@ static void __account_obj_stock(struct obj_cgroup *objcg,
+ 			nr = 0;
+ 		}
+ 	}
++direct:
+ 	if (nr)
+ 		mod_objcg_mlstate(objcg, pgdat, idx, nr);
+ }
+@@ -3382,7 +3386,7 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+ 	stock = trylock_stock();
+ 	if (!stock) {
+ 		if (pgdat)
+-			mod_objcg_mlstate(objcg, pgdat, idx, nr_acct);
++			__account_obj_stock(objcg, NULL, nr_acct, pgdat, idx);
+ 		nr_pages = nr_bytes >> PAGE_SHIFT;
+ 		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+ 		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
 -- 
 2.53.0
 
