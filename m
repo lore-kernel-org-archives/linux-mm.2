@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCC3EB3632
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09DEDEB3632
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 20:29:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6A266B00B5; Mon,  2 Mar 2026 15:29:36 -0500 (EST)
+	id 6E7AE6B00B6; Mon,  2 Mar 2026 15:29:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D09FD6B00B6; Mon,  2 Mar 2026 15:29:36 -0500 (EST)
+	id 6A8C66B00B8; Mon,  2 Mar 2026 15:29:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEC686B00B7; Mon,  2 Mar 2026 15:29:36 -0500 (EST)
+	id 55DB06B00B9; Mon,  2 Mar 2026 15:29:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADE136B00B5
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:29:36 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6FE401C14E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:29:36 +0000 (UTC)
-X-FDA: 84502263552.02.5C53E61
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A10691C0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:29:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APIWiey4;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 3F9DB6B00B6
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:29:51 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F325E1C2CB
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:29:50 +0000 (UTC)
+X-FDA: 84502264140.26.4C534F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 126FE1C0003
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:29:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dby9Dgm3;
+	spf=pass (imf20.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772483374;
+	s=arc-20220608; t=1772483389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vvq9DofwNGS37Ccn2Gk/7RrJF1Z3iyhp4tZgsXGNqHE=;
-	b=CwK3+SLOQ54JFLMnVjOQcwlCK5XRCAIJZBpXLf53JEoAQk23xe0jaxNflvnFlL1bfc+GJP
-	zPondAdrU3AIKjVUNwNCMVP+MT0AubP4FVy84VLouJtlWEO5rb3mCJUx0CeZahRBG2Wxq3
-	izbk93ydGBtAnTFemBdeyWikSLo9zR8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=APIWiey4;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772483374; a=rsa-sha256;
+	bh=w86rpYCfQXYS5iQ5+EAm9nqiVuGJ0fulGCu4Po/LuWA=;
+	b=LQphQTAwBXOpEJk9Aod6zmcM8YuHBwgRErSKuwkx4aiXW5qbxfHnmFQZgSSCSajRu8hBtn
+	+593GBq0i+57GrjXc9qdSCyQC5qkOXMhVfrNIJ9SQVJsKXCehyEcPz2KN7s4WygMo8PKsA
+	jW0/zgAsfBBmh5u+X6AA8/4R9R8Ne6M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772483389; a=rsa-sha256;
 	cv=none;
-	b=oSr8Rq7j6k3RYw7OagBYuJG8euRQ7UAe7si85Y1Y5EWMP8xR5erw+ZhuZ0XZTvRquT8XMq
-	z2T5cA9PvnxrhJHH/Hj5ly7YilIrJwIKL8XwhV5J7OL//V8KZmegyUbGYT4H8B9pZ2DRB1
-	ABltkVdP9mCXJvK2X+37WPhCzejoeLk=
+	b=P/P1X/fbk234/WL2Mv1i5Gz89Cijnlv9GrELyJb50EDct9Qom9qJMdvc0Wer2TzSdOXSrp
+	Hbym2osOVjPplmslhgUVbNX/77Nw+8vPYmDb8ciVSEs+bkr96AnP455auYhWIDtQJ2++C/
+	1/znhwUF0I8de+XQhsbDyE5HsnK2k6M=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dby9Dgm3;
+	spf=pass (imf20.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 067906014B;
-	Mon,  2 Mar 2026 20:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96829C2BCAF;
-	Mon,  2 Mar 2026 20:29:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3289C423DD;
+	Mon,  2 Mar 2026 20:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E821AC19425;
+	Mon,  2 Mar 2026 20:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772483373;
-	bh=2RJcyjz9ZeepO9vr+z/SvIbxdF+oLrZ3JyX/sNvQFOI=;
+	s=k20201202; t=1772483388;
+	bh=8R+tpWiGjDe+xDyyVkNhWfDz6BdmeMn5aKOhywEIznc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=APIWiey4U3dasR0GqDP5lzqiatNJ/0sd/9IPXYTGa0AnIUb8in7RwdYg1yIwqrCgS
-	 NJHoiVaZ2uxVHpOgfc3xAPCiTirraHQ3NBF+Akq+CRSUOPxxeoKo5SVV9V5Qbl29kz
-	 /LlOzqmjkRJ+JvjOVpfruNcuGD0FqGDrfn8XNzgWcU+MXhbs53ffYLQOcm8TEnvUgq
-	 sRITLz9UEm/xqmGgU4l9z4ugevXhqrsZ9q9P94UpvlH9NWtv4MGDCTa65OzNlOGCVK
-	 /MqAoToFOmYHHjPwpuQ02igo30+X2doISjUzfLNJVgd0QpQZ4MMG8RzW9qWlDY8TN4
-	 ajUXKzdEw4vQA==
+	b=Dby9Dgm3UOiYE49pHDnOJpgExxCLknWI9d0RI9gSsNHqQwFObqzGeFCIMSEtmDUS+
+	 X2nRCtvwGXVvTDmxHK1H6I3a1BUqDkotAQqMJsjjNB05hl1SIw/r5Gpg6/et2t7obo
+	 jRGaBZN7RlOv1Q7YS7jJUH30hY25+MHsJquwZTgNkCa5wM1XYFSrzcY+E/iPMVaCah
+	 QiGaZVoR7T3S4iM140lDhJactcYjR9unuKhxOgdFoViO7+gAW72a3STL7BlM6R0eX+
+	 g51E/Nf3gUXmy1kOw3vCgFkVwHvALqdv8t9GOOAN48HkRzW6zbjCfMHfuIW0OriqI6
+	 bVXjKFws2zXZw==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:24:03 -0500
-Subject: [PATCH v2 019/110] autofs: use PRIino format for i_ino
+Date: Mon, 02 Mar 2026 15:24:04 -0500
+Subject: [PATCH v2 020/110] befs: use PRIino format for i_ino
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-19-e5388800dae0@kernel.org>
+Message-Id: <20260302-iino-u64-v2-20-e5388800dae0@kernel.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -185,36 +185,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=928; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=2RJcyjz9ZeepO9vr+z/SvIbxdF+oLrZ3JyX/sNvQFOI=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfH0lfPeH+lXXMPPhgtyZwPlwVBd02yrBNJF1
- cfR3ubKSfOJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXx9AAKCRAADmhBGVaC
- Fd52D/9S3JOF2DmRqLy2J/Rw1CSYpFxiI0GSgzdt4oasCoIaNzZcFYo6MA7ZjyhM3CbBv30Ppcv
- H3I8pTide5u371BYpAw3g313farXvCypcfrGQUxkOrKbCgrWUMPf1KXzvC6vnCs8uyagsVRaStl
- zLiKg5VXiWj2JvGBYQEAUjFLo4G7ihjSTjiW4yeFr/kdTd1seolERoXYneFY2hgFdA4iwpZoLPp
- fGuc/QRrMc7R3VD9jLgORDGR1KIHUd5gDkKhkOlw0cnKEC+SSD1e6XH8l/oAwhszaxL7W5pT8+C
- eI0A3imTsJRmCaVypsIF7cSR/vKcMbZ3xU1ZllXMRHWdeY5kie7Q3NrE0SA2vauj/gXcZ/iMBXK
- nQKGjEzRnhOH31rcaDiCpcKhSMZJwNqukRxD1wDm094BEgLg2NUC6cWh2BQgovQGu9RzCt0C9ra
- R++dBBKpb361aYp+N6ye4/P4iqz2oQhI2QgN8TkkwUXkPGMrkLxCRSpzXgCzZrbLY2uZDu3kNz7
- vRQZrpvv8ILesrYhEFDbyODHPv3ZKZlSrfC0eGPdN3Do1q1ZYtBlQeoyYexj2BkVRaopCfLwVU3
- 9uCmXoYZIN4T+60axuvwlKrOpNjzaO1pHROb3wTknmqqrLWdW82bVM/wBKoqWubTnT+F1QfbNsy
- eEHguUfBX8+zoeQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4100; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=8R+tpWiGjDe+xDyyVkNhWfDz6BdmeMn5aKOhywEIznc=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfH0g7s70j/Qt0Y0J0IJTO3BfuEQNEZbYximY
+ oVEul2DEEWJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXx9AAKCRAADmhBGVaC
+ FXmqD/4yA0oAZPPpmK3woMEmcPi2HCHFa+yCwsUZPxOKFLM6uIgzefxZhY+NFia1GQ3ssvcKHV1
+ ZXnpRrRhNspdFH9/SYnnDjETDl1UPhXAwRqH5gpryFeqqY1YzRqG9a7sHMJS3NYj0DppfRZPujp
+ AP5VKBo2vE+JBFqD9o7cjAz0nlyUIPSELaE4LX/14Cxpe8x3ZZg4nJZaNq3I1fStXFU4BODBd0o
+ YkRQy3fs7ZD9oXRgPu8sXoZMXaNk2doKNzD+tg/SGNftYnlvSNfMcf+nnvey4+zBC/BNwf2ZiVO
+ F4QQXPIBWOenSD2B/QAmHVGXBuqHJwesN4ewidmwqu9eBSVkVYaRCc4zfepQB6D9NjA4FeKDDN3
+ 7QRQ5vgx51GaOCR0UcT2usuJfwK9mEUCi/zzu1C5cuXoPgRFwLjiBy/6+QMhfSZwgCqE+y1Tx3y
+ dfxw2kE3bM78dQHVg9fOj1lKq07nPTtW4eBLgrRtLBJdAjil+uTiYpuBFFnZ9MeQwolmTJr4M+n
+ KvlA5nvejLX8tsV3bbImOKE9R6fbdLVvdJeavm0bdX6qOQ3anZReCi3ZEkhVEs2Pq4M3+54/sY1
+ es6rg4KWDnDBFGYEIoxkBkAuqPhMh097ch4uqA98YWQEaJjZnFaNnDbjT4fUuRgh+p4EDvkXscy
+ 8G4BAXHGFp/r4sw==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Queue-Id: A10691C0005
-X-Stat-Signature: nai1hq85ramxjz5jdb3ipfb75d6bd9c7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772483374-491033
-X-HE-Meta: U2FsdGVkX1+iMG9bJsIsKmrTIXDNTymQJTnWluiS7UeXGXnsKhShCNx4vtwqFuCAkUUC7QPGSgNyeHI/AjUVuoy3KJ4QCfqKIDqDcu5FXx8+VL8cS4NX8Z+RmT63uV7SH2Ccl5JO8QzNgZ7ZVhZnHuwmm7hw8bk3hQO5YEIBVS/oLGAhxx5jtIL/v9TpaO+sSFMpeBi2lxwyUREg/Ju9sPIMO/LDel1d6G8gTIsq+i/lmsbSI/C1MQXJJ+JViVj5QuyjZpgu6k9KynhmCjRIuUgM03MmaUTSVdPPbrhDzpGciZ+OXPbhR/Fv+hKuPI8NUZYTSadfV0nat/FUBxYYDiDQm7W//rKjkFF0ZaopFfh2fshi8yHaNPvhrgBA5cPsXcmDypxtgm89hAucW68RRK+moR+tlewLUQXFS/zUlfqIunf7znxe3Nf9Jo33LVw/cj//J0dMjKz8SR+e/WTBoRpqLw4ZwJPPwH04eGheZ//4jhDl1V8e8cARc62z6ZbPNHiHG+EJJXU2efxVHnGz8EP/FniA7A32pMqWSek1kgKBOzNaJ518MDDSA3fq04/h01qjjJ9MSo/wxNpe9Ue5FiuITdCw5P/zptEh6rvybK4ZJK2J4HH4yQQ3yVxXZPkivbz72ELd4fKhO7SR+VNMi+HnaC4cmCOD1SWRWmX5X8wqPxjFTGzshXzT8+i4YbVs/J/Jar68aOqbjVwmjjD0qZroMUbT24/rc4e9oVaMv8rutRPb7O6g7GJV28k3N7U/UedAqicfA4kOtREmWgoGeq4mlNTfYv1YmCVPvC85ehIqUKhcQDe1r8/fLEU1tbpxPlB78rGNW99BouvAuKcwkpvRKci3/1JeC271fojGf+UyIBPsnSztE5P6wsOeIUxx/NmtALgYMT6jQr11nx0DNaOSBKNCH+GhaSspyT7AV2qkLlMHOWlFwCregwi8D2emaeoOpjisVJHyTglYyhB
- Zj2+8yRn
- 4SB6BZvh3yW5pNUoaZI5cAzZs88WA77k6JJE7BvYFTBY/+DQ7vkOlGzom8cX8xzZAmyz78rg+ClnEcOP3tBaZkR/X9wXq8WYgR20rxvTOSnSPZziOyQW7GfdajYXk1DvhG+RwL8pTAwq8RRjvDWgLjm6ckpRccUU6rkctLuW8CoxKymYrj7baNegk+odh+uqD+lYwQhtQNDNI4VJdqshmWj4HzfrZ+p3XgkY6O4Qcpx1Gk6N36y/lvqzOiqJ/RQrnUdtxy5enHwT8WTI2Fov4JP34hngsvdLN5c3QvpvYsqzOEodVnvO3ZQWens4+wxQtPa6nCXPfWZzE9sTSdHUTxPbqbZrCwuw6ihq5g/lz39KISKWetCogF1j0oU4SSep9EU4oih2IszeO+05fRYjDkEddeL0agUuHnUa8Cd1BqTlqPoATpdX02+TO3SnsC9cQwHjxVoPI7acjDZ/GrrCQmjuWk/QpYrGFTdH5CngYN2tOSJtxAZW8WD2canMHJxLAa9xXsocVUTeLQHZykMLGtna3yhPlR86L0Dq9JTUZGTblOBdNSnlBb1YtgRQb9yhfemy4r5MRRP8gc+wN5NEMZs730BpbAFvmOgEOw1Uor9zaLUrYG2UOMaTsdrxkIPvS4VwRcbnoPwPvy5spI2LIW5MrCmoiDbt36GM0G3riEo7k/R0FD197xAYcCzDvhvs6DhhrUYSPxQmjXK3bBXfGxu1CB+LPWpwc4lOdGI3CMnlRefxMNeNuoXMO0pQwAAJLjV4lANmUt6UX750FmX+Tz5VRhv14jEiGn4EmHSurjnFd62oVi5sH8QRyWwT20274RTMojGdkpgaPAjJ3S8wBUZr4bH1hMmmWO6ylup9sQn988LrQnzSJVW/WymS4YOz+LI4Ce0Mu/FcOO2zo3o44wKq0aI88jQy8r3iQoY+NiEAnJNY0YjTrBF8JiBiiVwH1k15vDuqmgBDdT1uh/XXg5wsBDIbg
- WSTaOJG1
- Yd9zwJtFxXntlczUfB1t6BGTswZVHAPcL1VkOoCryWBD2sjcoRgeqTNXRKMW3igLGpyKx2v7XcZFlEFT0XrFMS5DJFe6dBLqHT0Bak9uMzRx8l7HijOTLHzxS4YFHBqVlswwezMJugUAh3wZTF3FJbDdFysWctPmnsjUf/B3Z+aX1hM3GFVHmx4VzXo4cl4v4+9bqglKXyTKkJwwjj5trUPkHrCiUv7syKhT5AeaEfcFRIRHksRXayTPw+xsbk11sfZtsq0WmRzwwW9LzheinpvftKbAdlDqoP6cLO/EkAO6wI77o8wu32UhhGC9oa2UThaYLcPOGUMYRcAQ0IjMfRyKmjS5ozBS7NcfUMxzoNyIjiVjLfpv3D/Taw93wtik4o0XcX8TGyzes1eowgSBFxR9o+Zu64eZvg/VkT6Bs/xLmBhYhbVmwxvg8IAkk7KkayijJLuv0biYRiOTf0R+VAT9tlgmKToZlqed7GgCmaM80FpvOpY2KZBXB6lSCtLftrsOiOOAY8JO/+WEvF/AyfHQD4ALQ8y2yYCYcW7fl6ZRIc2WnkzoTkFa6SzO3BC1mxZyir3+/7FleimS3+oOOi5DdPrqcsFMMlSuMgukHIS+WL5WEBJrb3aV4+kIu3eVET6KQlAsiAAnarLM7lhLr5AgsrveXOwSzvbB4pdyJ7YaPnngHj60k5/8ztEI6mH0UIqMwNaWSRmwIr/X89VqUW0kqr7B+ApwK+ahHxB3FXm93EbKbudu990RPyrFHhluNAM/6T2bn9eleD8vmsO94z5AtAP5b1np08/sUvDYIYF5VKXBXvy4mWCwAEwNwi9amZO3bhqQotkwh0VPYDOSY/BBU/2e2EzzE4B2ce4J8GMldKd9ZhzBB+7Mv07NbuHyNSq444oXzJQuXQpyqct1IlkosnMNmaf+1yYfMvV8PUExB6PPl7pTa20wBGx0yPXtffpWzjoeu1xldQA4FNNwotu8jI7Rs
- AV9DmyVV
- 1lMEUctQ7ZMvVFaaPG45/xu5S+wHtylvs64Jl1cXu04uM8wEZ1lJQseXnzwSuRN7h9zq8/06VbNCvcCw0lm2ZKufnArTSpStwTdnc7qiBQ2aGDP7OmJZ3AEpc8SdsYLLYojbQoEJbkOJTJ6h1RY1nSQ7Ab+Q8EQBZzPmdyFnXMdkO04OrVPJ9buJC2ijO2eMzmD2Lo5/wGl5uNNO/aVMSTIo30wVyGCS+YQ+QpC0teWDrw55QeTH4ZzoeAR9HTm6P9pgt2eGn9aoh3daO8oJ+KzzlHEScMRnpjDv08jPMP+I7DUxekkAPKP3PyI4LgCGNS7k2mo3nRr9cY0HwwKefPXGd66FZyTlnNAgXldhWtIjeosn+IANqA0iitkDDiPwbHSWo6/XDYGbk07sDwj1ThW58p+er9FlF/5u5RjHFFrsMnT6lFYAYJLgtd/7gIzOaa5jdu+6ToW5EZnVerHA5UOvteWNm1dOjP/Ajj7VJ6bOLpKP3eZYY5dz0/qWWzgnTzFDSCCtIpkg7IaHW9G3XpcfuTfyjyoGF24yhBhWaXKquw9aWhNyfcjNUcvZKAMkSAl5etT+tDJ17cxZWElqgpRJdW/GcZ8zX0KDmicN7oH+lvqYn5KcX0DxA4tMQYu9rX+0Z8G6l5Z+ORcRQThVUanfBjl06kCpQMaq7StosVJgUwjlF2dDDEXGRcmzvANTDRqhxnxVYss21MY0CSEwwm/1XDenaCk59vtG7yHqWU1O1oOLGRQTeQ3jSgzV2UFOdJcARq16I6rwdrf1B21y/9yEvvmEigPMQF8SGXNOVau4pohPkQz1wvlTx2CQXybr9wZba64UvHuj7KxJyx0fi5/EOMtCkPxBaFsgHIaAO5FkdjczRMpfoj6SmYUES5vur6Uk5b21GlSOQZypF7yyTW7LiOlXFYr82mlchtJAw5vRqJFWRRr0LoeEAygNCbXA7t2faeVDpeeqK5bt28Fh6Khh4LlBY
- /zDvMZSl
- rd/BFoTD9ZQJ4ZT50DDeQgBrj1heNW2v5rGaPCmZj+3BTsuc87F0T9Xto2PN9WLmYXqtQgrzYhUNZOFK95WzAyRHpcKsPZ3C5uN2h6AybOzInJimZS4JjOMkwIdVqJ3XGJPvHViLRBLpLRIn2jJnAr2RGHV9O+0GikHZRLBtmP1fruQYsL0XuWRcv26Wpmwfaj2OmF5csgmdaoYLEKOa9PBQ1ZVTDsGDSgQQ+t5h4lxqepZMxBJn/xhu2/VXcysNauJnNN+duCBc25DiZmXI/qBYiqM28gzIYmEda9wUoqCtiLQ9wVvp05q4IXgXXMp9cKtatVwi//66VaMSwapipMoOlvTrlpyWbz0t4Aq2d2rA3BLmon4wy6yT/AqvCu/aCCDL1m6EWvRg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 126FE1C0003
+X-Stat-Signature: har46ufi34c9qhfxz4nps1wbsd3ktx8m
+X-HE-Tag: 1772483388-505531
+X-HE-Meta: U2FsdGVkX19OyRSXIl8I6zleKeyQt5B7x5ybWe2FlhUVUjTwWT6atm9Tc/IbhkZAJADgEyNCv2CC76L+shVrdKgdUipQ1f4W9i4nLmjvo7ZYjmrr7dDYF+DAF4PH1sq9UdhbY/ZwFEqGVKbyrLULsY/QHfBoYOOHp/tM/C2eInZO5PCu6bgBe3NkkeHq62EXLtsv053YGhMD3qlNYTLnPMnE9S56KJttoJEaR5EX93XJCEtitsHTydeVEwpNnWAu6Icq+/PMKj52P5aQhn0HiUCjwa0nH69S13p1EmGbe9nsFyfOd7QQ6T53m8g4HPWNg+wOD9mW07YRNtz/l+IIBoHqFP27K+QuZgevOZK+llJ+FuvTYzS1yKHtOJ1ZP7/Wd1ZtRUpSYCDdcbHWOnyVXv+BKNW5b74XghgqFX7NSL7LlKORJPCKktJ2T9dN+oIkS1etMyk4zH9MkDd8n2XXDyVUIH1jvlf6EBnucZDMCutfG6nj7v2XGAyIv2Zj7ppLX5rV7idf+CvXsUGYTXWunPBspeBfxnzZPy1LDZU6zlvmAAQZDfA2gJuVOkAto8yfb/fa9ya+WU18JsnLu/xThx68/IIZ138vouyf3nxwOudcsFuhTJ1r0CT5B1EP3VQm4P//gbmXR/x121mwaK6XOA+L4lmo8m2u/BgtPhnGOYWS4vhBtBAvo3UE/ClcrdD4KxDGhguX6woEiRNspzexmGDK9GJ9L75dAFQHYTgx5ZH2gjvIaEorPGCPllPLYtdFj82unAtv46bk1nxoaMyKhmH9OrzGTMiylD7jMFGneBaM+g5/tzra9aqOqKN3g0DemjoAAh17Rm1Q9bQpFSXQl1yAOLASdBEggnWPGXvV1JRBNt58wy/FNn0FF4ZfXmYaMq7916SpX9OlVu1Apy/Cxkr0oVXK717BvajekOCohMxanQaEH9TsqAkAFzECuES19BxZ2VBD6pxaEWbSr74
+ f87tB9vd
+ EXQb6Op6gTfJ0ftU++fycYFA06Y4e1JKyfX+9hN2XvaMT7/aL3LxzqKlaPV6YEljsICK1pCPeVNkYyJLi4TXDf42NLWCHlVxtQeFSIwf+49kcFjTA1QkFB7ax3WiRNjp2cNXhdILhLVNjUxzQHcbf4pnOsduYbNuwuUvX716lxfY12zC5I4KN/OiG6vILxCybMVxQauyb6WLmtBgyhkmpvkAc6+tn5wj4azZRG0jGm4Bn1Z7eFkilrJx9VnfrWEzg5nSQDwsaX1tYP8slh+XnG2H97glNzRH3cE06MxxaPKPWnUsVxO+wkcL1cHHicM/bWjHFQHnR0pKApTc3D2hodkw3GY3nXfTxBh81MkJ+GWK1bNMNZUxe3yes56qpTA40dFATr3o5Sa0WjbkZgMKw6/pNQomlxwfJyQ+3j5k9NFuxFD12OUZhFyGderWLrYc7ocjEuXZOhlAOb9gPxUhLM5giaak89A739BzQn2pZZUIJT+FCqw6BouBPq56BLxyb83WC1espl6TNRhI1six234+AS4O/dGBgdBHV1N/ynuTa7eHMipGs9prVacmW/3Y6SbEmnztvA4BFM3h40Xm1CuWjLXGjnWY5vlGgHBRRbj1xUvhcE/tFGCdaSTVyOf/Mmm3cPSvGCWRQqYMjPu99+NnSDbhiH1QxFF3q6J7hxLMsK1yOFtcT8IjhtRwYA4sMJ1t+gGh7xNwWJZRS9O45l/mJEXTK7ikUtgRnBlZS66ZJcq1azZ5ACywi8x/IqckAlWr0v5apZwUsESskst17qckAIDoB1uJu/4pKO/lAwyVWkPCjM9Xr22D0YkodcgD1/vn3UgCAR0ODJJEZm6aIHkyGTxmaUGSQGVfJeAbjAIOxxy8XyeCR1TIH+TdXPyWo4kljUpXjgwEJwF0uXTQCEyqNAFEBlwRg/ZnO2bbAjWlQMzKFNu1Q6Hdpbrtf5QE4MPMi/hcYkQDHh6mZCeLrcx2UQfgC
+ OyLEJGjn
+ WBA5ofAu/MoOgN3TY7LE/u1PGWbDZ5b6ClzLA5DMhNOdXznDy3veo15Hf0Ch7QNK83/smP1XSs6I3MHJ8l82I6P81lsVfpR5rwNjzOVcPwrFeveqT35ZS6AtSwUhZ9tqtx75jEWzGheBfcwpV+H5f26bIsATyoU3S6B1zpranEzF7QSUxGbL2vDT4y7khufMPIYrOC1rcQ5WIAlxfNTX91WR3HXRU3Yvl3JUgreswAwoRYku3gBbbLMTuwdi3hhVK6HfvfrUltA1CjQTCXDgkeakt6LycgGF+yuWVkfNMcPURsMHuvqpEJPZbOKR7EgS2XqIx8qNsdPdy1CiT4xMDbsTw3NyQfi76qEkTU6KEArEX+EH3GHpdDd/7183viK5Vgcxpm/WcCDXKFTmTOoD39XGi+vjSWO86kDtaua5xMWW8I7hAmZw/cOwKcHarrCNTGWAiVyXT/RidoSRtDVSGeu5XBbvto6/0FUhExTUNfoAu479vpXzxJqeuhkQpUymQ8eKgTymq1UjcBIrc8kJ3MrMBLtu6Zs3ReX+IyMYKrMqMF7vbpUK+kXjbfUcI7/WcORLEzZApsv0o2TZ/zbH8wiNrjqxz9P90jmFq7ISVLqRmpIJt4Gi8njbyiRiainF2KT7bV+RwixhdNGV3FxVs/Jeg5KdO1c9EJtGQwq263hM+A31sQyPoElQ+oThcv6y/Tr/TiAGi6xE1rIemJ7Z1c8eAEJI/Q2v7i9HIuLjzwT8muJCQuiPrsPYZ2px0gLqgWEEdLkmKE/Rh47RIxBNLx7mXt6tIjKSC5ghK1QRYfSgZdzSfO7P4LEsnQ0vSyrhyMyqZYpnS6mk9ab8XELZFw9JT4txn1ecIw7W9nL+gbY1eECY3hgVSgjNsTcNgkcDluT6LkbeEv2IiL+Z1sW6qlKBYS37XDKB4IlWu80pv1eRM+eCKzhyOy2ufhQrPSv2XCPgEbgKJbXB4Wfu9p2ZdisWGHAK1
+ xnqwabzT
+ 85HTewATpnd0mxOyH2kTKCEZWrxXdOizr0sFwcrmqp6kOCVv2WzxaDYr4MoEVWfibnF8MTUisK5DBzJS/CWCSmZTNJcG1aXcy4QlZHWtHreyGp7nGVryzwDCiEaGijiLqHbNVXDh3mP+5LdGk9sJBqllnzjb9aJxNZbxgNUQAI7925uOH/OEkjHd8LvfXBesN3mBsJlLJMxA8fcyiAzp+EUqf761Y6OHwp2xv0ZXpvp97CtZP5nEqMgT8MzeS7s+ZuMbnMW8Gts7PTrEoFldcdsZEkixzzRG9SXFIm5GRQiRqgPXliBxW7fTcl2bgkK1rWX0+iIZ3BRlOFuxyv8jHBAK2pnx43/GZe/dkWepbdRK3B6hqtC6EDGuvKvIG9j0MIA2IHTUneZb+AtCwHBSvM5ubGklxh3M/MsBWvDikQSkUD83CD/OtNmYQ+ZmsH4n1Q1iKDTohxF3jCK7iewX9nQqejAQMV5EQM5o2a4+6aGzgSK3WoYuEftXUaVJeplY1d56w2IwXcONyO4KgHw0jyi44AUHkO3nICdqT/FyEzhnWxnj1/72ifKx1dIlJeXQBoHdV8pluPPNidBRvaxe1cmvOzDC/Yf+WGsg72q7gHRamo4/opa0zcrhISpSmQd5aKk/mSKHLdTp9DIU+zehU7WA0qqkHNuoYMsebfUBF4Iv1/cyBjaOr86fAlTOH47122b8vS+hvkNuvGI/A+/9+HPIF3mXhcbTO3tLbwPXD98Aa0xPm1uI7ygAUPGk1tLpQLRv0eAs/zBI7wFo/RKwwJTNHNsI99wWL03g6uES2mNrYZL0U/xq4vUIp/fafjlcP/jrnYh9DaQe33QafkGqBBKQXYRqUT9ADRIxopNd33zsMnAZdW+9IqUkWXYqDhvBB1tQ0TXYzvMz8Ey+pAdexBfBnWkrvb4wbJRNN7BLdsUrnIcTrno6aVAmEvPjw6ef+aZNVyA/ULJfNU6ynQdUMPLBEbmYr
+ cdGwBi0S
+ q6BE1sz34EG5PIe6fkWJddpE2/AtfpR+nViRO9leJuHQ4hRb1ETmbsTnjXgHM6gwp6Xai6IdxqNO8Fp89w5v/MDOy7GNA/QPvh6ZDqUEqlsQ++SsFrdZpE/knRsr14SimVIU5kEGHenDviocYCWmFaxW1BfGBEfRH1qVThrhB7GzcAaknLZOPfh6iKKYPvc8upOYUWJebTQ+zQRqEdVCFryqCHXirl+TK/h7XD0vO3uKeZ1IGnsiljnjFcW27OoSNQ+hIa3ay5LWLYTtIgKt5Jwrxhz8inR6R6SyPtO6E8bSZDBBitpxDM5C4rGXMaBvyybybqlFXIJKM51UBri4/yiLbVnxjiTFqbfpQsteuwiLo8pw/KZX6sIO0lBqAw2eErLnd2zzcDNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -222,30 +222,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert autofs i_ino format strings to use the PRIino format
+Convert befs i_ino format strings to use the PRIino format
 macro in preparation for the widening of i_ino via kino_t.
 
 Also correct signed format specifiers to unsigned, since inode
 numbers are unsigned values.
 
+Remove now-unnecessary (unsigned long) casts on i_ino.
+
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/autofs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/befs/linuxvfs.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/fs/autofs/inode.c b/fs/autofs/inode.c
-index c53dc551053ba53fa7c85ca57eb877fff74a4ed1..ef3444d57f6ee15767f744a5ecda020c247095d7 100644
---- a/fs/autofs/inode.c
-+++ b/fs/autofs/inode.c
-@@ -92,7 +92,7 @@ static int autofs_show_options(struct seq_file *m, struct dentry *root)
- 		seq_puts(m, ",ignore");
- #ifdef CONFIG_CHECKPOINT_RESTORE
- 	if (sbi->pipe)
--		seq_printf(m, ",pipe_ino=%ld", file_inode(sbi->pipe)->i_ino);
-+		seq_printf(m, ",pipe_ino=%" PRIino "u", file_inode(sbi->pipe)->i_ino);
- 	else
- 		seq_puts(m, ",pipe_ino=-1");
- #endif
+diff --git a/fs/befs/linuxvfs.c b/fs/befs/linuxvfs.c
+index cecbc92f959aa5098313050b515c9af38662c8e6..c36216e23eb3678645cbdece913cc260fd10f4f8 100644
+--- a/fs/befs/linuxvfs.c
++++ b/fs/befs/linuxvfs.c
+@@ -140,20 +140,20 @@ befs_get_block(struct inode *inode, sector_t block,
+ 	int res;
+ 	ulong disk_off;
+ 
+-	befs_debug(sb, "---> befs_get_block() for inode %lu, block %ld",
+-		   (unsigned long)inode->i_ino, (long)block);
++	befs_debug(sb, "---> befs_get_block() for inode %" PRIino "u, block %ld",
++		   inode->i_ino, (long)block);
+ 	if (create) {
+ 		befs_error(sb, "befs_get_block() was asked to write to "
+-			   "block %ld in inode %lu", (long)block,
+-			   (unsigned long)inode->i_ino);
++			   "block %ld in inode %" PRIino "u", (long)block,
++			   inode->i_ino);
+ 		return -EPERM;
+ 	}
+ 
+ 	res = befs_fblock2brun(sb, ds, block, &run);
+ 	if (res != BEFS_OK) {
+ 		befs_error(sb,
+-			   "<--- %s for inode %lu, block %ld ERROR",
+-			   __func__, (unsigned long)inode->i_ino,
++			   "<--- %s for inode %" PRIino "u, block %ld ERROR",
++			   __func__, inode->i_ino,
+ 			   (long)block);
+ 		return -EFBIG;
+ 	}
+@@ -162,8 +162,8 @@ befs_get_block(struct inode *inode, sector_t block,
+ 
+ 	map_bh(bh_result, inode->i_sb, disk_off);
+ 
+-	befs_debug(sb, "<--- %s for inode %lu, block %ld, disk address %lu",
+-		  __func__, (unsigned long)inode->i_ino, (long)block,
++	befs_debug(sb, "<--- %s for inode %" PRIino "u, block %ld, disk address %lu",
++		  __func__, inode->i_ino, (long)block,
+ 		  (unsigned long)disk_off);
+ 
+ 	return 0;
+@@ -181,7 +181,7 @@ befs_lookup(struct inode *dir, struct dentry *dentry, unsigned int flags)
+ 	char *utfname;
+ 	const char *name = dentry->d_name.name;
+ 
+-	befs_debug(sb, "---> %s name %pd inode %ld", __func__,
++	befs_debug(sb, "---> %s name %pd inode %" PRIino "u", __func__,
+ 		   dentry, dir->i_ino);
+ 
+ 	/* Convert to UTF-8 */
+@@ -224,7 +224,7 @@ befs_readdir(struct file *file, struct dir_context *ctx)
+ 	size_t keysize;
+ 	char keybuf[BEFS_NAME_LEN + 1];
+ 
+-	befs_debug(sb, "---> %s name %pD, inode %ld, ctx->pos %lld",
++	befs_debug(sb, "---> %s name %pD, inode %" PRIino "u, ctx->pos %lld",
+ 		  __func__, file, inode->i_ino, ctx->pos);
+ 
+ 	while (1) {
+@@ -233,7 +233,7 @@ befs_readdir(struct file *file, struct dir_context *ctx)
+ 
+ 		if (result == BEFS_ERR) {
+ 			befs_debug(sb, "<--- %s ERROR", __func__);
+-			befs_error(sb, "IO error reading %pD (inode %lu)",
++			befs_error(sb, "IO error reading %pD (inode %" PRIino "u)",
+ 				   file, inode->i_ino);
+ 			return -EIO;
+ 
+@@ -324,7 +324,7 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
+ 	bh = sb_bread(sb, inode->i_ino);
+ 	if (!bh) {
+ 		befs_error(sb, "unable to read inode block - "
+-			   "inode = %lu", inode->i_ino);
++			   "inode = %" PRIino "u", inode->i_ino);
+ 		goto unacquire_none;
+ 	}
+ 
+@@ -333,7 +333,7 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
+ 	befs_dump_inode(sb, raw_inode);
+ 
+ 	if (befs_check_inode(sb, raw_inode, inode->i_ino) != BEFS_OK) {
+-		befs_error(sb, "Bad inode: %lu", inode->i_ino);
++		befs_error(sb, "Bad inode: %" PRIino "u", inode->i_ino);
+ 		goto unacquire_bh;
+ 	}
+ 
+@@ -407,7 +407,7 @@ static struct inode *befs_iget(struct super_block *sb, unsigned long ino)
+ 			inode->i_op = &simple_symlink_inode_operations;
+ 		}
+ 	} else {
+-		befs_error(sb, "Inode %lu is not a regular file, "
++		befs_error(sb, "Inode %" PRIino "u is not a regular file, "
+ 			   "directory or symlink. THAT IS WRONG! BeFS has no "
+ 			   "on disk special files", inode->i_ino);
+ 		goto unacquire_bh;
 
 -- 
 2.53.0
