@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5115CD58E7F
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:06:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38577D58E7A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 09:08:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68C16B0089; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
+	id 9765B6B0005; Mon,  2 Mar 2026 04:08:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B200B6B008A; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
+	id 924B36B008C; Mon,  2 Mar 2026 04:08:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A228E6B008C; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
+	id 826DC6B0092; Mon,  2 Mar 2026 04:08:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 968E96B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:06:43 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 727B06B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 04:08:07 -0500 (EST)
 Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63D081A0A7C
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:43 +0000 (UTC)
-X-FDA: 84500542686.28.C196567
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C8BE1B8FA6
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:08:07 +0000 (UTC)
+X-FDA: 84500546214.28.299479B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B44AF40008
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:06:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PXZDi68O;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 632AA120006
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:08:05 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxdegIGr;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772442401;
+	s=arc-20220608; t=1772442485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fz9PU6yGrGAnFeykCmGYPANR64LRTPHWLKdEGK4i+cY=;
-	b=7Y6qNTpfTf0aucoaRpFYCduJFw6nHeRk+6IVMSzH9hhFZbILDjnUGwkLj06rKJWLSDv5o9
-	2fl4v/L+SIw2/o8j1un954wcyMr1TMyQJ+zpmr682NoXawWFy7mKeizUtjHRkjLKIu3zYz
-	ZiKajHrEDUVwmmUPLnTKTE+S2uf+ujs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442401; a=rsa-sha256;
+	bh=JqA8pWrLTn2daGgqxW0mg2qM3wHa7RtaBj9mNTputgA=;
+	b=GKSlLa3S8lWD4PmQNvfgz2Tjkt3qfolpUs7rQ3z7evlsW8hQs81xvwXst60ENybTPafX6Q
+	nGCSN2qWnfENLnRyBhKvUZioyv26+5HLMYOOOzjpV6XOr6zjrGkOm/zdBmE57HvOlPcbON
+	NOrMEh0WEQFDzKViAkajZDoI2tY8kXM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772442485; a=rsa-sha256;
 	cv=none;
-	b=q1bakYj09B6YUEuLRTXvzSPz6+4ibY9pj8sMVPGjvr9rMDiGxj1s2uA8919Wk4YYDTcHBO
-	VcaIDtus9Xo7yLzpPQNBXZ4WYmO1/o5x5BpXJfReihsQdhH4AP/+yN5F39AMgealh6bfwF
-	Q90J/icGIvyElroGHf0ZbHDGOwQHufA=
+	b=S9+9d2w4JrC4F7ZY4T8A+C4iuDgi823Ekqc88xp7AFg7pnUhS2dnzCBnMrIYFA9j/CtmMb
+	x8F8Q3WaaseSWc5DdYtnCfQLl4ygBYpkDoF1XAVHa/uszFhJFrlAgnOrdQ7lcKlZT2FKz6
+	CI0KLMLDU3sD2cnoJ1kT54A00HZ/k+E=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PXZDi68O;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fxdegIGr;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03A96600C4;
-	Mon,  2 Mar 2026 09:06:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FF8C2BC9E;
-	Mon,  2 Mar 2026 09:06:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EA1660018;
+	Mon,  2 Mar 2026 09:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12D2C19423;
+	Mon,  2 Mar 2026 09:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772442400;
-	bh=pQFhLP4PM8OJ3gckm7uOewqs59ad2rc0IT7killTS50=;
+	s=k20201202; t=1772442484;
+	bh=WKix1w6VLBg/gDg4vRJkY+zCH4JxsvUzp+EQmAzwonY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PXZDi68OIkGQWMoUTGLt4XIaUHVd4G+sEoKT1/p9h0RyErEX6giNUZBCMcLYmcfqc
-	 FGPxo52bZ7J4fZlefWlJ05v0utqdjcmiGCrmAsbDt0iKs1MaS1fnxXDuXkpI0nsi7g
-	 Ub7JCcJRbujEcpMPDf0eoiC2htBvMF9w04RTC2Ay9i3jRe8o4o7CZHAF+zTmbQhI6T
-	 xzoh1y6jSQOCHfXIaus+L9RODhOPffPVKfvO91IwrVet8x/tcn0MsRS8KKah0Q1O0O
-	 FXQk112GMwOSB/YVnM3C2SFc+RiUxLn1GWzf5U0bTO1nRNx6Opt3QEzJSvgb1VHUIJ
-	 fUGCMn/GbLCKg==
-Message-ID: <177f3071-3303-4db1-aec2-469921d91b7c@kernel.org>
-Date: Mon, 2 Mar 2026 10:06:32 +0100
+	b=fxdegIGrNkd+cX69aJMFxp0N5Zvug5H74CNpP97ZzYvt9YRpInSubQ5GWJkZ71rTX
+	 lNT7GYrcfaDXCfN10BeRSSsNGMy+o89TQjbMDhh9oZZP1rK4QN+3hyOPVfaDuJtylO
+	 m4eQDfzM10HN85HDJT9qwHfGc4DESRK5dVX+vrSfxIxW+A+v4DOnbQmPw0LQ9upPln
+	 2DH+gISXJIyzKWXs0LmrLBKr8dugdDbNC/zja84rqdQvqtTkeZI7mHD5j/QEnru5oS
+	 CHcVMS2f8y4HU1adWcYPFuU3/9+sfOb+0RYp5WuSdkeNRiRsYZYlFjP23iGb3Uus3J
+	 Q5sLtB7fcxjdw==
+Message-ID: <be90d12e-304a-4c26-984d-2410a8850293@kernel.org>
+Date: Mon, 2 Mar 2026 10:07:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] mm: rename ptep/pmdp_clear_young_notify() to
- ptep/pmdp_test_and_clear_young_notify()
+Subject: Re: [PATCH v2 4/6] mm: add a batched helper to clear the young flag
+ for large folios
 To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
 Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
  ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
@@ -80,7 +80,7 @@ Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
  zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <cover.1772185080.git.baolin.wang@linux.alibaba.com>
- <283d103c5131e32879bd847263c93b768df64d15.1772185080.git.baolin.wang@linux.alibaba.com>
+ <589d743f4e048dc749002a7e1a1aec5d511c406b.1772185080.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +127,15 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <283d103c5131e32879bd847263c93b768df64d15.1772185080.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <589d743f4e048dc749002a7e1a1aec5d511c406b.1772185080.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 781zxju98566yqs6k8tioydf8sjpx6jz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B44AF40008
-X-Stat-Signature: 68741ifr7mqcrogp6ehtisn7en4pn3g5
-X-HE-Tag: 1772442401-171140
-X-HE-Meta: U2FsdGVkX18bjkxQjfE4kgTEKKpWV2Wvi5YPN5/4GGzLlY3nvKUkKJBNNKl8gUJaRi8+nkrEAi8DVHem7f8kuebglC/wAHodXoAIIjoYfjSlU1OEQ6Ug7Ou/hNcU3vpodkercQHd9gFObemQcL+AGGYMLaMBmVHs1qqUMQCx93vWoUKW+mQ2GW6JTcQ8CTMTIC8edARp4FC7EzjSsPt+nFrmNaJkgwpWLITnMa+fijo0Zu4ePsF5XIjptjK0483UtQpbYX/EqfDdziBI6XPKUz2gpDcTO/3STEzvhQst9CAcx6hzf5bfzzvE0dWZvXnc6t9DrSFUpf6SGbFHQqkiL/7NdMZ5YK3R/eWiYeN8wX9uXijVbAj348A/qVffVg8u4c78em14dD1PL1x7/ViWG1UFldY1BlPS7tc5jbRRBmoqB+6R5h9Y8eUjTiakeBWNgQ2RSnpqgrTlttwjyYI+130JhvWN6Rj62SYe8AvBOLMZ7bImlGvsyBrBDaIfvypbZmc9Sm0cJOcfPopTLoeCkZz2J73Vs5Cz6lo0dB39MUEZa6qv5g5CIHn3uAQpfSvA2p70x/q6cii33euobhul2WLSu0Xn0Jhp29WkQ/BquiJj6Cuc7LeA2pxuB2eVSSlw6sJpo5vfN0Pj4Uf9OMg7g9TvzO/eQDHST84eo3lsuRUPkk5FTI486kAXYJTcd8za/LtDRrHTptuzUyHOUSncpZOGZOUJmyABptYAvD1+UwWmATe0o45GEdDJEjbJbtyvKQZIK/C0692PHYkzPO1mM8h6Ty+rf+4Kk3MVG3Ry5E6BuM8KSQy0DkkGmpSqcarbuMhRJLeGOyLV8j84lspuT93/8Mn3PLz9vj1VDWCKmX6smeBAL9i9JImwShi8twr1Ml64ix2gw+xXU03yK2XsXv4mMQvIYnBxjrkayO+KJGEnlgJoFhsgoSK1rU1/DmQB6R3T0AmCGEen/QDyh8o
- G/G+xsrp
- eVCWunNffZAoVD3SAvPr4Ur1VNL1xjoZAoAkI+/xXvqFwaBb+GPDl+j1G7hOFPkIGjZVK5macZhinR+CpG/6WQedc7H1FdJU7VeeZ0kd7ty5Y2IqC2skOfJAvgYvfqr3Bg4qwO+MPHJZhRKiD3T2fQBQyK3QEtzioIZ5bu2vNIg+2Q1XenU1S2Cg+zjUL3egVC5wc1K1WsJbPS+zmW0ejtCOqGNlBQUQPSpGnaxUzj7xhhTcCVp3AVQs4XUK9AInYORKO3qKoWHrfEhwkBjOQxczEIWOcujoqqNEExUVYJMFOOKsVnyBi8uUd3RKjDTv0ea2OoBhHazkqp5nK0hBRWnTlCShi29QLBX6HCIYTzi561ENJG77iEpoKgaOo12fU4Ivw9gttC2mZUrY=
+X-Rspamd-Queue-Id: 632AA120006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772442485-149711
+X-HE-Meta: U2FsdGVkX1+8m/DAYtzsVSH7Fpnz21mxdvlTvWPSgryrN9AoLKdHMSFiZKZo3UXco6I7zKYEDb/PvawQ8chhcmzRcDq9Lv5lWbdbFg2zgLRvHJfbiKFh+d7/MT+lgk/FMXtiL+Fp8gC5ocA6oL8NxKqsDBTCxucumhhPhXSsoJtumHEfsNDGSqVLC3SX/nrScT4nZwkch/q3VFt4hySe3ThViWccqz2/ZDJ/im8Cry/ffrZmvc9r8JAmER3E+yA0Uqa35K7d4RNnvS0qqs2+vceKX1s1ueJUUsSJj1T9RrUrffZUwkZECBTK6rQJdBHbj9YstIDefpdYbqWk8hlEv6WNTmO/ViWsJvO1rEVAnwF9gDR9E9rI9r+awwU7rZ9dNvDoHQQdK9+ZEIBtKIEvL2mmeaD3PFDBIT6LQNDiaDXX/vkfcweHpwP013BXURZdhcogsNZMLpvog+WSWDJmpeW0ruNyuZ2TS4O6UqIjQPz3hZq6+wxvOfC+hfSYbF8ENglPxZqVEYQuYvpGrM3xTrlZvR36HoHMZkwKsERTC2VqTqkV71XS80XdwbKz8R6bklvawe6wAkFbfJ8hyXfPpYd1b8YNceSUV/mN4rZFWgeY/ecgyzGqv0n1OhBGiNW3ai4g74Jw5O2q1QKpEuArbGx0fPHDvi2KRDBYSOsxuBT7f1zopxK6lv4lUXexp4zizO7P2aEgp+YFB0is18V1OQclKm11Hte2h/FJCzSQRLWgnhFM/rEo66x0dmFU7uB5IMs7kk14ZRiU6PkrrOHSkc4Oh+d+AwfXk3Z4fzejPsezQVExfCtdhgsTHn8IdLr7pmfVlVz+cg2Y2Z/lq+y2zi590YuLpPqKg7Kz/26vBq4PtxvtmSwiYEccLMB2B7rx6T/q2uyAeIq0K8AY1nvcQxmfyBfB2YFR6ZEIUZ/HuFaBo0wPLPjPdw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,13 +144,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/27/26 10:44, Baolin Wang wrote:
-> Rename ptep/pmdp_clear_young_notify() to ptep/pmdp_test_and_clear_young_notify()
-> to make the function names consistent.
+> Currently, MGLRU will call ptep_test_and_clear_young_notify() to check and
+> clear the young flag for each PTE sequentially, which is inefficient for
+> large folios reclamation.
 > 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Moreover, on Arm64 architecture, which supports contiguous PTEs, the Arm64-
+> specific ptep_test_and_clear_young() already implements an optimization to
+> clear the young flags for PTEs within a contiguous range. However, this is not
+> sufficient. Similar to the Arm64 specific clear_flush_young_ptes(), we can
+> extend this to perform batched operations for the entire large folio (which
+> might exceed the contiguous range: CONT_PTE_SIZE).
+> 
+> Thus, we can introduce a new batched helper: test_and_clear_young_ptes() and
+> its wrapper test_and_clear_young_ptes_notify() which are consistent with the
+> existing functions, to perform batched checking of the young flags for large
+> folios, which can help improve performance during large folio reclamation when
+> MGLRU is enabled. And it will be overridden by the architecture that implements
+> a more efficient batch operation in the following patches.
+> 
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
+>  include/linux/pgtable.h | 38 ++++++++++++++++++++++++++++++++++++++
+>  mm/internal.h           | 16 +++++++++++-----
+>  2 files changed, 49 insertions(+), 5 deletions(-)
+> 
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 776993d4567b..29bd9fd04e1e 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1103,6 +1103,44 @@ static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
+>  }
+>  #endif
+>  
+> +#ifndef test_and_clear_young_ptes
+> +/**
+> + * test_and_clear_young_ptes - Mark PTEs that map consecutive pages of the same
+> + *			       folio as old
+> + * @vma: The virtual memory area the pages are mapped into.
+> + * @addr: Address the first page is mapped at.
+> + * @ptep: Page table pointer for the first entry.
+> + * @nr: Number of entries to clear access bit.
+> + *
+> + * May be overridden by the architecture; otherwise, implemented as a simple
+> + * loop over ptep_test_and_clear_young().
+> + *
+> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
+> + * some PTEs might be write-protected.
+> + *
+> + * Context: The caller holds the page table lock.  The PTEs map consecutive
+> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
+> + *
+> + * Returns: whether any PTE was young.
+> + */
+> +static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+> +					    unsigned long addr, pte_t *ptep,
+> +					    unsigned int nr)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Two tabs ...
+
+
+What happened to using a boolen as return type and for "int young"?
+
+> +{
+> +	int young = 0;
+> +
+> +	for (;;) {
+> +		young |= ptep_test_and_clear_young(vma, addr, ptep);
+> +		if (--nr == 0)
+> +			break;
+> +		ptep++;
+> +		addr += PAGE_SIZE;
+> +	}
+> +
+> +	return young;
+> +}
+> +#endif
+
 
 -- 
 Cheers,
