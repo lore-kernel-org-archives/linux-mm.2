@@ -4,99 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE404EB3622
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F83AEB3626
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:42:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 636756B0005; Mon,  2 Mar 2026 12:41:39 -0500 (EST)
+	id 7C4EA6B0088; Mon,  2 Mar 2026 12:42:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DDB86B0093; Mon,  2 Mar 2026 12:41:39 -0500 (EST)
+	id 76B9F6B008A; Mon,  2 Mar 2026 12:42:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D6B6B0005; Mon,  2 Mar 2026 12:41:39 -0500 (EST)
+	id 68E946B0092; Mon,  2 Mar 2026 12:42:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 401846B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:41:39 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C3F41C1F5
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:41:39 +0000 (UTC)
-X-FDA: 84501840318.12.FE3B716
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E0172C0004
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:41:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Lg7ySvj/";
-	spf=pass (imf10.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5BAF06B0088
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:42:07 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23F4BC1338
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:42:07 +0000 (UTC)
+X-FDA: 84501841494.20.EA232E8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 80474140007
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:42:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=a42+4d0j;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772473297;
+	s=arc-20220608; t=1772473325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IfLRwYk4oBRwu9+5TUeOLiLw3MOcjHWn/WHPZdFC1ec=;
-	b=eKh/EkpPCCMER3JuDAu0TTgGbTsPRtiePUAKyAsNgcMB1jZFwaKH8QnT4FzLl++h86yFvG
-	ff02Du+XZR9GV5o3sxbVK0XApeLlATI1Hp2W+bAQ4eXfZJM17uaM6Tjw2N5ZqqvQuNdF+C
-	idOZMKq5dJSEXk+OKzOftjgaxWt9aOY=
+	bh=OyqRQXmyeow1Ax++bz4eoQlAeCJ22rHQ0OvcJyCtics=;
+	b=uQY9YMQjTq4ssCw6DFMWDCjK8G6Ymvd4GzV3MtaEoFvKWMtlwPJADQgOcasL+fDKjVBNJA
+	5RX17U5kANk5usQNBQU+2PQbe3Hl6gWcNm0oKahxOjr1mG74aYp6vXDmBIKq3K4Ti3TGVK
+	3w0F7NEStGOoq26CmCdu0C6RyX8qPFE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Lg7ySvj/";
-	spf=pass (imf10.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772473297; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=a42+4d0j;
+	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772473325; a=rsa-sha256;
 	cv=none;
-	b=FIHz1sFUxM8ypa8qzDD/U7TIUp/UEYW14uTYgewmEy8XlgJIzLfAXAkIH5GpeicNDXWFnf
-	Z5r2ZOCrSPtBZRt3u+K9VduSxy4QfMrhUhzlAVZzsFAGLLCit2bIQvslMnD9I3yxvuQ4Cu
-	UTUq2xPHT1csWRz0p7MbA/DMJc4AMGM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772473296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IfLRwYk4oBRwu9+5TUeOLiLw3MOcjHWn/WHPZdFC1ec=;
-	b=Lg7ySvj/K24EHDKvlRdIqo9KdhX8tCHmlNDybAOO21EgjFlR+FB3ReCuRLwEQpo1UsSkaP
-	CD8HEPsFg48YUTBLBLxJ5k6tZJUmMtEua6FDQkeErskjZZAQ1U8FuFDP2GiX2U6TS48jL6
-	HKcQnXJB7HG+/sWJ5yVXcJbU3Ogj47E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-191-9v5o2HTGNQeJAb_86j7xLg-1; Mon,
- 02 Mar 2026 12:41:35 -0500
-X-MC-Unique: 9v5o2HTGNQeJAb_86j7xLg-1
-X-Mimecast-MFC-AGG-ID: 9v5o2HTGNQeJAb_86j7xLg_1772473294
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C60301956067;
-	Mon,  2 Mar 2026 17:41:33 +0000 (UTC)
-Received: from [10.45.224.173] (unknown [10.45.224.173])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CDD0219560A3;
-	Mon,  2 Mar 2026 17:41:30 +0000 (UTC)
-Date: Mon, 2 Mar 2026 18:41:28 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-    Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>, 
-    Baoquan He <bhe@redhat.com>, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/vmalloc: Fix incorrect size reporting on allocation
- failure
-In-Reply-To: <20260302114740.2668450-1-urezki@gmail.com>
-Message-ID: <d227e804-5a75-ec3b-01db-93c144407c15@redhat.com>
-References: <20260302114740.2668450-1-urezki@gmail.com>
+	b=sakfMxUZL0HqCr+XY96c+zV7nsVVxee/Sst+Pu6QTulfIcJfUR03dcLvQX9rhgoGNoroMt
+	gOUWcwf2CR2t++zJeFkFpR6SLgmcRkSNxnT+h5WvUD2lQQj2t9fTCPF4aRD/sIo+VgOrng
+	IqBjvZA7KFUBPHQkoc8aVDa3ETtUhd0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=OyqRQXmyeow1Ax++bz4eoQlAeCJ22rHQ0OvcJyCtics=; b=a42+4d0jt2MGw+3tvzq6tHZF9T
+	KMVGjuKfsUnQbOELMM8O7tKpX9KBPlfUPTJTu5V9RAI1l/1ZUi/OwbSggoyl1msDUmSN+CgfvGYAT
+	+XBBExPqckdHeflS1QgVJoyN4innxdporThqLlqay7HSrM72w1UZgjFWZkrOAOdBcxSSyrkwfVSYW
+	3Vcsu1BOyOY8g+Uo15LEkC9q9olDZ5UZjXlrCIvHZ8CxBdOGplt1jyp+dNQYrwJ7/LU5baVnDRjjF
+	rJPu9vPm3ZIiPQ+ry7lEUYvA4epsMoRgF4rZuvfrNsFUKG0zWz11bT7R+rjb8goRalNtcgaRAkqHX
+	Bnexi7lw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vx7HP-00000009qlL-0cKj;
+	Mon, 02 Mar 2026 17:42:03 +0000
+Date: Mon, 2 Mar 2026 17:42:02 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Chris Down <chris@chrisdown.name>,
+	Andrew Morton <akpm@linux-foundation.org>, kernel-team@fb.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] mm/huge_memory: Prevent huge zeropage refcount
+ corruption in PMD move
+Message-ID: <aaXL6oJamjnfhh5d@casper.infradead.org>
+References: <aaBVz7eb6-VBCvaz@chrisdown.name>
+ <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: FnvoDJV3VTgPqRzWc07Jn0-9HDqnKgzlO3bx1P7iYOI_1772473294
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E0172C0004
+X-Rspamd-Queue-Id: 80474140007
 X-Rspamd-Server: rspam08
-X-Stat-Signature: ym5u59w16gn4nnnq4f598sb9m47ibmgq
-X-HE-Tag: 1772473296-728996
-X-HE-Meta: U2FsdGVkX1+OGfONFgEUeko+vKGJzhfdaUlLyh5/LvhKIu0FB0DRsy05gSN4TqjWN4BXvcLF2ZBkxkKNWTtIhGWfJZ31FK8Bbr8Zo3n+TBnRTRWFs6lwmVVVKFvnNXKWKBdDQhg+4RmYz/vvpLicthqOmZlNhcWSYrTqGSr8RDSN2enjTfj6IQy2DVhfP64TKHDgdFzVEY/t5mgNEEs2Xp8XjegUXBGk6ya5qEb08Qwj4yWkFgk37hsD+332e1VSLVxhBtcFBx2TG1qXGeNBump8ELhGysuXz7/mcormlHIL+UplZTpc+0Vm5wO1SsQ0GZDVhq6ibmBbWM8WiPXIWgUHsx1iLhhoPy7HWnu3OjHe0+vome1WZNRqWc6TehT7g6cwGTX/M3NDK3z+DpiE+6Ys2Sjncdh+kPgG5N5MbgtS9UY0Jkzzh0Vy825qQKRL31ojTTa5QyIZgsLfs9fIg40rCVsV545bPtT1CY+4nH4SRbK/stdWB9qmAPgEGvMmhPTC5L9/gumKqfECABTy+Lk1AXR7CHaKNDi+VETa0x/qb14l9FJ0x1jWHsMm2noy2ltdEKsyuuDABWeEBJPGUqLF4lzLqCJaz2gDcKhfjUjg81atRqklOpT1c4lhwTOrrwmIOklbF8Bi4DeQvXITeb0J/JqQhYAv8/JLTCb24iHGrNJC/6l123rekK2A091NWPVWkhShf/XDsRJD2ekuabcdETvUdmFMN60AHIkXx8dJOaArB6x56vIjTAg+Pt9ngbe1LBiAPW+jnF+T9sOEzVuEwPy0w9yoX+tmHXpO1TPAJa22FtLZWUGau9uom6H9a/R9v7Lojjoe6jy+ecgA4YiMkJhfuhpOACWiQ2awuxuurpySba/rQO6M55B6RiNrxl6VNWKvcTjyV6bldcI4Usr285TwZRdC5HAEdSrJ160B2i1DbWFJZgKCfzziC2S7+fG5NKfN46+SoXQ9IO4
- dL1qVdTG
- J+cCbpf7aJ9TDoDMxqgT0p+d31XyEF1DU+W2PTgPo6Fohyqcx4z39tsmS17wsYorsA37tF0Px86ibua5vjfb5nmCsFTxwskMAyW0j1yol0QAWxDNOivHmbiYJDCRICtq+l1VH/FSsdaQQhpi+VkCe83g6S9BllWRcrsp81jkXkO+Y5OO6jVFz8iadJ3UOhpiMzPKSdyQ3dG8qsTOLHK0uxNs+lTAIfLQNduhlmhoRBmxCTsJhK79j0nqZ/30Mpltar679sLMwjVC4PLtpL0jTA9z3Pi4rn4pMlAbe/b49h9rPygIVFFYoeRH8zOjPOogkkeERjExqxTOJRf3zp5fX/b9RKLHHseEVnKwtPiyfE/MpWoysow1jQY/9pawAT8QdBzjIZ9ZYkeGDjwzPp2CmMGqnqar2A8dEWd9QxhbCK/pFFnrAedI2VxSEPw==
+X-Stat-Signature: c9oux8qtnp8okakt8kuowjm1mau6c6mm
+X-HE-Tag: 1772473325-951938
+X-HE-Meta: U2FsdGVkX18rJwGlTfmyG/zRWxYbWdSj39VPJBlpR2fsvXo711+C8zNyHSeVkI3lqEjDzZbdhmw/2MJVYZPPxKwqhuO9cprsmb+qk1XDWbUOu3PWq157RJeMOcLt+S58TnRUMv9UJeyKYPd4vJcTiscvJ0mAnXlKxuxJ2FlUWneAsNRubfC7O+f9RwV8AUjZokdTyOrak9UKNPwP20qsi3PsietHSSC8ux+NdhHa45BoB/WEWYLm7OZBifnn/RA/l+3qhg8AIiSgJmKH4l3Ekyktyur7zEWz3PdogbMJ5DA6KmAKkRkqKsNGaT2Gm/plkAy3kTvIldEFRafMrWHCVYiAd54VZVuBXmrj6BbgQ/qcFaSuWxiSl07xHwkT0xZjvd+syPDTj0mUz7CDpPTrkax0WrR1ICyXLHZegQ+SDub5gvKK6p8ydqdyhGQFlD3vEG4+AjgRPNW9CUiPLq8iMvJnECcyejO0NDLNM6hH5B4X+8TtTkoA06xEsiyOEDDYCofLmBrVnSb8lMyeocw+x/fiqnaOzApBDZHZYQFcpJ9sPxVVVbg93H6lu39+kGRknZ2TjrOCRnIhOchfbV16M5H2E4Q/eG1BuoZeze1xdCZMA0mgLQyImFs3mEk+Jv0W4BqgpFd5U15O/5mBoND6jf9Ww0GNmxSMqnVMMm1WkBpja/He53xS9gJWq2GjSLgUChrMLCI9Egj/Wq1PpQm093T+gP5UA7371aDL/T0ZDw8QgB5R3D7J/ce2Mr1zT4Sbd1L5E2+9OQYwc/Hxsm/dYuJF9P2AZa7bmlgHtY7mxlySxxMovgNresfIvT50Q8kaQI2C1p95pChNZqcvBk/XVaOIm3lXMeXw4CQJvRX4Cp1pVTRq7LEy95lksu1lBkEhv7YiMCgJT0j95BCTg7aH/qfO0dFfo4gtN+JJUvZY3S2HWNYvR+C5Jjsuq3xIKlTRhA7Jl8ig6Fnl9yRyRQp
+ tPvO8zYP
+ ZeNDGaqzhz8pE37CfJcyp5v24L7kllVi/8Sss5fEly9DkSkli1pMbEo+wj2EKf8lspxtzlEMuWGFntpCb1lCHZGi9DkrdLdTmcwaIwNiAwOc2X0StIaXv6r8lK12LfTtQVZIaygwLaFTx7rmAyqPqX3L+mSDv/2ZA3s0DafIZIsve34mcSUYTgO3EpbyVKpErP98dNLhTHZzw95eM1PqB1Xw2XwGiWZ/uHXUFDLlzS4clMZZDCUNwzlqehSXy2JPFOCo4NMg0mEBuGdOJM3PJ7bWCtEtkIdcKyNmg7QZltl+zRmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,46 +92,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Feb 26, 2026 at 04:17:31PM +0100, David Hildenbrand (Arm) wrote:
+> It doesn't make sense to leave something partially fixed in #1. It's
+> been completely broken from the start. folio_mk_pmd() should never have
+> been used.
 
-
-On Mon, 2 Mar 2026, Uladzislau Rezki (Sony) wrote:
-
-> When __vmalloc_area_node() fails to allocate pages, the failure
-> message may report an incorrect allocation size, for example:
-> 
->   vmalloc error: size 0, failed to allocate pages, ...
-> 
-> This happens because the warning prints area->nr_pages * PAGE_SIZE.
-> At this point, area->nr_pages may be zero or partly populated thus
-> it is not valid.
-> 
-> Report the originally requested allocation size instead by using
-> nr_small_pages * PAGE_SIZE, which reflects the actual number of
-> pages being requested by user.
-> 
-> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> ---
->  mm/vmalloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 61caa55a4402..a06f4b3ea367 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3901,7 +3901,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
->  		if (!fatal_signal_pending(current) && page_order == 0)
->  			warn_alloc(gfp_mask, NULL,
->  				"vmalloc error: size %lu, failed to allocate pages",
-> -				area->nr_pages * PAGE_SIZE);
-> +				nr_small_pages * PAGE_SIZE);
->  		goto fail;
->  	}
->  
-> -- 
-> 2.47.3
-
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-
-Mikulas
-
+... mk_huge_pmd() should never have been used ;-)
 
