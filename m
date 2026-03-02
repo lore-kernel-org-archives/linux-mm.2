@@ -4,77 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F895EA4E07
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:10:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2301EA4E08
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 14:10:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2D9A6B0005; Mon,  2 Mar 2026 09:10:02 -0500 (EST)
+	id F1E306B0089; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDBE76B0089; Mon,  2 Mar 2026 09:10:02 -0500 (EST)
+	id EF65B6B008A; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDAFF6B008A; Mon,  2 Mar 2026 09:10:02 -0500 (EST)
+	id E0C0E6B008C; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D08FA6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:10:02 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 963EF88DD8
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:10:02 +0000 (UTC)
-X-FDA: 84501307044.22.8127D81
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 79EEA180013
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:09:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	by kanga.kvack.org (Postfix) with ESMTP id C8CE86B0089
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 09:10:13 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A672B65B4
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:10:13 +0000 (UTC)
+X-FDA: 84501307506.16.D279AD0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D7D73A001C
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 14:10:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XC26fhYW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772460601;
+	s=arc-20220608; t=1772460612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h+A1jdEuVFIGRt3JP/1dDbbwID37mr9DN4s7r3ER7VU=;
-	b=4BI8qhc2hyUfpM0tlvc8bTEFwO9MMfzJr+iOS7Kb3aLlGGT+zJdm+K66Ti+BbS0iRGRYmC
-	LKqdxycYYLi5c0JIgeJOnO5ruoCZD+bxPZ3TopuoRkS5uNEGsr1F4ZnSfTzaBJB+3kLMGD
-	CisF+jesNDQuxMm/yLVeAP/kTPn3DFU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772460601; a=rsa-sha256;
-	cv=none;
-	b=GNKKsLj/pjW1rPMlOWLg1bgWeYoCGHcQT8Q94Jt1jubzq6GHnDaZETVFGO7sKl5hMpBewo
-	lWoolBgiQl+sxyKlL/0Z+HG6P2EUrdI8d7NB2uIl3KeLAPiiJ/AMHJ1vy+Y23fYvSBXfQL
-	w577zAo74JvG+tEBC485qt5qBv+WHkY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jAjD2mFruhLA6S5Uyea3rqvdarrNjuiCTh+l7kuBuUw=;
+	b=ZKGSd4NVMNdKvsR0G42APqf4YjQSH39vvqI8kFxPuVqPjh/lqagD9w2azFw2t4mKu381M+
+	PbFcXp/ooZw5gLBpMWmRqIruderj9qzcTrf7n/lrhdrVyQhFeQfqAJvgpgZGWofI2TpCnb
+	ZCslGi27o8jGiMHdOTsr7gAPL4Z5vBU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 2 Mar 2026 23:09:55 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 2 Mar 2026 23:09:55 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	baohua@kernel.org
-Subject: Re: [PATCH 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <aaWaM57jui+iuEj1@yjaykim-PowerEdge-T330>
-References: <20260302104016.163542-1-bhe@redhat.com>
- <20260302104016.163542-3-bhe@redhat.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XC26fhYW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772460612; a=rsa-sha256;
+	cv=none;
+	b=31MCIQe1SfF2AftUmbqhq0gC7niJKod5fc7i1bciUQtuSusOEwHODT+ymyNehgjN9mR1Qm
+	55a9p+HRZgCUiLgQO7YjtKu98cMtlo45Caz9zX/iIqD41f/KMgrNLasTH5MlaofiFypH4P
+	ekdPDCJujBvONvIcn1b8L4DXqXa/bHg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DC71F40A17;
+	Mon,  2 Mar 2026 14:10:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2039AC2BC87;
+	Mon,  2 Mar 2026 14:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772460610;
+	bh=Iw7aUP2S7mWahuhzCJO/BUcWFftOh4Nm7vHQ0zIqiJY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XC26fhYWvpCZWb4IyVpvt4Oen+imcRPCYbXTeuSc1MLlCUVRgZc5v3AQ4m82UcGUX
+	 /J8tyC2i62wPJE9f2KQeG9fs5nPTejtD+H/hMq3v7rst6nBeN1ODJCRZRR51tNy7Et
+	 JA4yuGwd/7yzIxU3CFW5yUHMty4FxLR94ARGLlXdTSPM/bQlHoL5ZEPokxwStEWYFW
+	 V7ebXMDn9zkqFfMb0FW2qZOtiDsDH+uin4ubx7X8NfFN4Y4Gh5IQEQFSpsZ1R6ACE2
+	 N/xRfzgEZMD3s/djPCWs+RIbSAfQhxV/2Y4iOcJ+Zk9ZPFy7TgynrP/LmhqHoW7jqO
+	 OnzfcZeYpd+3g==
+Message-ID: <0f340324-502b-4719-b3e7-c7ccd4378385@kernel.org>
+Date: Mon, 2 Mar 2026 15:10:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302104016.163542-3-bhe@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Content-Language: en-US
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ "linux-cxl@vger.kernel.orgkernel-team"@meta.com,
+ SeongJae Park <sj@kernel.org>
+References: <cover.1772206930.git.d@ilvokhin.com>
+ <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D7D73A001C
+X-Stat-Signature: 7yon77m9epoz8hue1xeoif9ak8gc44ez
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 79EEA180013
-X-Stat-Signature: zrsicccti4qnzwd14zrfj31wsog3k3sb
-X-HE-Tag: 1772460599-696580
-X-HE-Meta: U2FsdGVkX18mD1WX4WACdrPDwYOhiOtjy5idXz22rmTa4BYujIMEtqJ+mxBP/xQIacl+JiyIMlgibzUhqKa0c+d9J9qcHt/luIc5BYZMTNPPZm169ZWc0CEDvEJYMXp1E51S1OsO1/9++Uos0uUShYVZwXHoa+VdSP7HeDarzMq4aEt3CME6Ce2CAi9QiRYZmBQP6Hcg+QOhXobFiDSKfvrWyc21f66WFDOgtyhZJN/WoCkbcrO5n2u0sPUve4EPZMbTMlJAmUhDZjOR/tKbzZ//jf+jYaDcLI1wwI8Pv/xYdF7Xg6ZBbMyb51gM05gPxDshotLVdc7Ys3NoMMqEdC1UiC+gr00iVIRjy/pM0hUXb+qoIMitTZ8kEY93Vd7sL4AUhHtoG+hGgH4z7ORAi2NEaLFYOeUWoxqSDJmwRuuAYXJoRP20gL+BhReJxecvqY1Rn5kfqFptt5uBqFQS8o4NEDxrA5SMmX4TUA0dKIAB5tiN6RwAbHul3u5yczFsP51Ck/VfbD8c1LMTtuljO28F5qkX3tB8L0LVYdKA37l7EkKlJh8ERWk0l3iP3m0Mzicb5ibOyzn5AckmO5EL3gmCkllYypW0N3UlVlb3gmbz4e7bN5s3V8dhTLhmYZBtLhaFks4EfmT2Q+9iXcwFs97mJP+DcHWAyIf6omhadVPEcJuRo07kQtIOKLj9xp0STk4Y9+fmNKqvwYJymIMi0dJzHbRi+n+O3n1gOhXAwnStXR/i2QItXuE46IQRAlIsmXkL4QH+YomWuBrECycNs00wZo0/Z4BFU19ww611DBQnaeZO76LnhxoVJbvEpUbFaICLGaIEDw3Wn3g7OzQuFyU6K6iIHF0uAPUniZSbfuDWm7qpUBDdyBQNP/K9yAzuvKDe5wB1o4Kp7p0ilNx1BZVMU/9YBQzYg3W+c3GLQkz+Nkhd4vWoBtpucLgyXsWuUl0+33YAvwjHnqlOhGE
- iZ+5ltPw
- FMoAY0STfFF9PyNjeWfx0Yta8vF/+LBGPp2S3n+JUI00b85jufxnpp4f36L5xD6b6ILOhAW9obB0mC9nGB03SAnSKvGWXsz2yv7lI/gh3niJcLZhZPuXjnGl/HN9Mu4wIfS8q/lb2dy6Ud0Upq/rDXmzFN9l4WGo0qHrBWLEwVi2MXz8vJUibmM1EZUVN5S3rjcsoSCqglsi7NlYMURzKJCEWfZkliBz/6KsNAInaAs7MKNdiPbiVl0gc5XEx6+PgpVQfTYxiX69MEhXvkHr7cspaUWhjAXqXHunj
+X-HE-Tag: 1772460611-560637
+X-HE-Meta: U2FsdGVkX1/yZ0wxT+sa5rwf7fg/9i4Vk20GF0FpSePV8v9oUBYdtmKyXJXF+S8g4eoie0AK925lMzO5cFcvMO/r0KatF5aNm0luk9+uIota/1fL8SUGGeMiBuDwI+lSh+2yYK07opkUKjENfeHLkIAFlg62EM4/T1r10TgXSES8e0A4Vs0SL5qSujIACRHfc4QyjoYAxDMkoEWORjxEjsOQjEYQfllQzU1D5i0mpIObYZeKbOL2zNReiL+H9mGt6k35ket/JYlpZnRiW93NJ6bSJ/DozeHEzS3Zp28/6oddF26y56ejSePAJcptCWg2LF9ur9OqyzLzmNKc00yQNFUAEsxmCnY3bPI2SFBIPNlGHI1ygl6wB893lRQvPv7DyXdvxIgS4VyWOXrS/R11EgZMNC6KdpYdXaupmmn6hcVRl1HlFw9ykQxBXurgP5jU3YS/UqdHwxN5mEB6Q8bL7QQzW9IKLRcaRLWIsL9pd7PgwP3ZTvHVM5aujRmNQUARoJaOJ5WjZ4s8sz6/Dg0BRDDsf5/IAcDvvH4NKJNQqs8Ii3SQuy3nbazwL4t0Vtp5EMk4EXvIYXMXtr1sk54148B+R5p6y1PCtGcCiGLB5vJuTR6wG9CAL2vzGnGDL4sP9cqWjsbnq9qB0y19FSJ1CbBSSwywdo5xYvvEX9K4V2ybnkv2uTW6HDvLhuBEz83XRDLIpmWiKzCM6EKjTYIuIWbnlk1lZMUzyiA3nqZ/cEMz8zNgNH02EIj24dqmB/gxmTvXP66cnehbvjstsWTe1gLHEOxVzHHpWPJPf112gHwCfUo6EOBkRSw6NbPWlITnfIpLyCSXw+HiKjQSJD0NnZn8X8qKOWkJZd74JksACkRiOybnLh9YVrzWgTDntM+Z3cexlph1dMrv9ONnxK7tJKWDq6OwY26X0VL9ys30mooAh/y9qgboKUyqGw5GzdK8x74+hQdvFjSMZEEvnjS
+ 2QTZXEs/
+ oT9UZg2eWOyg6bAmYbKnrq8TQg5eVJJ0rBR43kwRuAX6/ldAUnvmdLuTDoF2KWRTXgS7e2NzBb9zkGe+coFMOBfDUuW+RrQfkzZPPOlnfqOEDY6pNzYXKsQymHwJZWNxM9W/EWYgi+TnuY+bz01skPfGCGKI2mbFjTwFzcaVbgcF9SUaM+bmTsOk6doX+hvOS5lA97Dv+MJne59nKasH71ik5vaf4b7qmeKE7s25rtconn+Bfg1WspqQ3Nno74VaNydIHxO+hTCYUVfnmYLYTTnQT+45kFDb/+zwB6Xdk9lEic4n1zzDOp8qR3sEw6LV3g5vl2+8OBzL5DlBanTsa4Fo8pU0giIeEC2LyWsOPjVBkxmWGK0KzF2TgxUtFb8pwrS69hjsMqjyOTPGsY5WXuuWMOYSuFI6wSUgMFzVADxVYXyOIoMbyiVABuvDNqoqCFjcn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,62 +111,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 06:40:15PM +0800, Baoquan He wrote:
-> This simplifies codes and makes logic clearer. And also makes later any
-> new swap device type being added easier to handle.
+On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> This intentionally breaks direct users of zone->lock at compile time so
+> all call sites are converted to the zone lock wrappers. Without the
+> rename, present and future out-of-tree code could continue using
+> spin_lock(&zone->lock) and bypass the wrappers and tracing
+> infrastructure.
 > 
-> Currently there are three types of swap devices: bdev_fs, bdev_sync
-> and bdev_async, and only operations read_folio and write_folio are
-> included. In the future, there could be more swap device types added
-> and more appropriate opeations adapted into swap_ops.
+> No functional change intended.
 > 
-> Signed-off-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/linux/swap.h |  13 ++++++
->  mm/swap.h            |   1 -
->  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
->  mm/swapfile.c        |   2 +
->  mm/zswap.c           |   3 +-
->  5 files changed, 76 insertions(+), 45 deletions(-)
-> 
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 0effe3cc50f5..448e5e66ec5c 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -19,6 +19,7 @@
->  struct notifier_block;
->  
->  struct bio;
-> +struct swap_iocb;
->  
->  struct pagevec;
->  
-> @@ -222,6 +223,17 @@ enum {
->  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
->  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
->  
-> +struct swap_ops {
-> +	void (*read_folio)(struct swap_info_struct *sis,
-> +			   struct folio *folio,
-> +			   struct swap_iocb **plug);
-> +	void (*write_folio)(struct swap_info_struct *sis,
-> +			    struct folio *folio,
-> +			    struct swap_iocb **plug);
-> +};
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-I think swap_iocb is only required for fs-swap
-(swap_folio_read_fs/swap_folio_write_fs).
+I see some more instances of 'zone->lock' in comments in
+include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
 
-If the goal is to support fs-swap through swap_ops, it might be worth
-considering a more complete integration, including activate/deactivate
-and swap_rw from aops, rather than only adding read/write hooks.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-So.. we could keep SWP_FS_OPS as-is for now and just split
-sync/async paths, and revisit a cleaner fs-swap integration later.
-(I mean removing fs ops, and call swap_read/write_folio_fs on sync/async ops.)
-
-How do you think? 
-
-Thanks
-Youngjun Park
 
