@@ -4,102 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37348D58E6A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 07:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E44C1D58E6E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 07:19:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677F86B0089; Mon,  2 Mar 2026 02:03:56 -0500 (EST)
+	id 096F36B0005; Mon,  2 Mar 2026 02:19:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6600F6B008A; Mon,  2 Mar 2026 02:03:56 -0500 (EST)
+	id 044766B0089; Mon,  2 Mar 2026 02:19:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 576046B008C; Mon,  2 Mar 2026 02:03:56 -0500 (EST)
+	id E68B26B008A; Mon,  2 Mar 2026 02:19:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D336B0089
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 02:03:56 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 145B2BBAF3
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 07:03:56 +0000 (UTC)
-X-FDA: 84500233272.06.40C12E2
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7FFDDA0007
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 07:03:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JlUQLry+;
-	spf=pass (imf25.hostedemail.com: domain of 3WDalaQgKCK0OVaTWVNbTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3WDalaQgKCK0OVaTWVNbTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D73236B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 02:19:06 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E883C2BF7
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 07:19:06 +0000 (UTC)
+X-FDA: 84500271492.17.B362915
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C0C261C0008
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 07:19:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l9ZaeF4a;
+	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772435034;
+	s=arc-20220608; t=1772435944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=b68BgO2svrQ9zkYU7SLhBTPAbCEH/OdSzC0ZL6Lj1bw=;
-	b=wgbvQlhOsgE6kfLqVA6FoDlzyoxU6JlVhfjhge5R8DKwEoR6VEgc73ox5hdiAHkg1dsxm+
-	KXJC/Gbb09LkahDJtLyLre3up1U7tmS3ppURaJWEdwsbtjglTVs59nj/qc/whVdvyKbl0d
-	Rkn8z4v6G8LpUHI3AA18F1WJz4QpzfE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IWFUYHylqRFZaRm5r8RrLRDa3YLgSmjWVVLiN7LHGy4=;
+	b=XLbD/PKDDy4EozCxMtFoKBnBnx/05Q9FP7WViDzRPT8tYQWp52N+OENXGPikemn6sB60bz
+	enfnF74bOpG/MWNYxCHGJml3znSl6R7ER8D6Qx78hYHtM9zQPoI2k5jQwRejWYFgw2YRLv
+	7hL4dDxcGyjXcDUbqMZMtnLcf2grzyE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=JlUQLry+;
-	spf=pass (imf25.hostedemail.com: domain of 3WDalaQgKCK0OVaTWVNbTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=3WDalaQgKCK0OVaTWVNbTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772435034; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l9ZaeF4a;
+	spf=pass (imf20.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772435944; a=rsa-sha256;
 	cv=none;
-	b=HJMx/f7m8nJoWHTlTAbi+th9mcEwKEvtKKe5x9ef6cLDZ8ZFXnsqmV0xBQYQX8oXM7heoU
-	ukauGKKE6t26MlOmCsKqGK9lniJFKQvULWjRVXfqnJcrHCrTIQoOuFSYLDnljGjdMg97Bs
-	hKVCXZtKNKz/01Bu1rGpr6c35rU82/g=
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1279caef718so1328408c88.1
-        for <linux-mm@kvack.org>; Sun, 01 Mar 2026 23:03:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772435033; x=1773039833; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=b68BgO2svrQ9zkYU7SLhBTPAbCEH/OdSzC0ZL6Lj1bw=;
-        b=JlUQLry+YZJtqFqLtwESCkfO2v6Oem1Fawg+KaSX1bcY0FwjHeB7OmybpasJ26XX1/
-         eccCYlJaCT0MTLBIA4ndj8BQPt+J2zxEdQ5bVmY9Orr+Plsr1cIy3pBuam5TBLBU7rXa
-         /9qA3fvajr9mkhgfU0hkqsyIZkE4xBOc5rGXnLzPbF3nQGPt0X99cUqUETS1ebUJNBNz
-         fQmDI7Wcae4n9RYYVx5WxVKTAzQ4CZ2NA1+tduNlmU6LIsIpPYVI+TjiCl0aQDlZgWve
-         82MkSaBvpoxSk05MC5QQx321CFybunJkNuYdS0XBVilOHzuv2grh5ChQRs+FEoikRKaY
-         B8vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772435033; x=1773039833;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b68BgO2svrQ9zkYU7SLhBTPAbCEH/OdSzC0ZL6Lj1bw=;
-        b=GIb/7GZqMd6MBY1r2pek1RPDUKjzWkwQOrEMXtTDKxZ5lW7PeAs6GFRd8W1IPq8s/R
-         oiYzdWNGckxcNExydrkBLhHAcismzKsmIgbPXK11CH+zAH+W2hMh3jsgrL4V8u+mFCda
-         Yh0sc61IN1HzDZZ7AFppu2ByjsV2yFWPFw+CPAH4ssKKNyPC7yapC9WwWTr1hjNbbxcd
-         qzluaRK6GX7VR2kte3+lUsN0uTt1uHkd53TzJO1LAS8gDxlwn37ZhRafdtWZbNvDXjgH
-         0Ixz169Sdz87c1Hy21RjPyu2exyLjI5Xivwp0gybhIqlPHHUgOJ0D5H6cIQI9qkGZGLV
-         JUJQ==
-X-Gm-Message-State: AOJu0Yz1ys9xXTW+lB/2GZP4SYevZUokE6LlInwvRX5OEXz8UWdlMcn8
-	p553LhK6CRtRlPa5X6is/f4BLgN1k6UXy7YrUokc983HHHZK5cIka87ciXMtXCOWApjYPqeI732
-	Hnv0oIMdNOawIxJt335Fxn6LtdGFUSW/Hr+sMODP63bQkgrMi2NsxigURjCsNaQIl12pNnZFmf+
-	uLlfnCFSBNlXKeQahRXGsl9zzAQNRObd8pl6DV/nv+ZQ==
-X-Received: from dlk29.prod.google.com ([2002:a05:7022:11d:b0:127:78f8:34b0])
- (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:4384:b0:124:9acd:3a38 with SMTP id a92af1059eb24-1278fc4dedcmr3132169c88.35.1772435032931;
- Sun, 01 Mar 2026 23:03:52 -0800 (PST)
-Date: Mon,  2 Mar 2026 07:03:26 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260302070351.3465439-1-bingjiao@google.com>
-Subject: [PATCH] mm/vmscan: restore allowed mask in alloc_demote_folio()
-From: Bing Jiao <bingjiao@google.com>
-To: linux-mm@kvack.org
-Cc: Bing Jiao <bingjiao@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7FFDDA0007
-X-Stat-Signature: 4zxud195b1zyyfeehc3w5mxinnkpxhxm
+	b=qgTjHtraQmoBPg8l6Kwyk0i3GyehfjTI021mrNAR/tqHYIEsbBfYq10VhBhEz2xhKXyueW
+	KnS/cLBhmnevjYRML6lEe1OLQ3QSZwZ2jSryDexjscWsY1GkBrWP1rWMjugq+5uNNr5oQ1
+	91j7/RjiHmzD7ZP6lt1gEzPOtliFivk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A2AA643C2B;
+	Mon,  2 Mar 2026 07:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D3EC19423;
+	Mon,  2 Mar 2026 07:18:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772435943;
+	bh=IWFUYHylqRFZaRm5r8RrLRDa3YLgSmjWVVLiN7LHGy4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=l9ZaeF4aPU2R5rFFz1KzYT2AzZwYDAcXSFOWGleyGX4IJCSYh3ey9X9MFaec25Jvt
+	 R41n5ogriJLHLbTnbAhRUlTENuE8zHqJZ4hmXfIoI14lQa1CZ833Zh2NufwlrmebRa
+	 uRquDMiQ7euErjNofmy94n80bTQAgtr9fYExYWtiCa7u6OSqVRwgJZtiI9fbt0Id5d
+	 X42If6KFdaneLbuS8GYtRtOBZ+FwIRmVTq7yyXCkl7+v+oM/ByWo3UXqtNZIjzLubr
+	 CxI1q1dwT1MHjvxnZsz6xERpo7UqyUz5qw5zjzCMpgHhrhI/5JG2NlqgMLZulaFmBF
+	 wrN8cEwrndjoQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, Gary Guo
+ <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge
+ Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin.linux@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen
+ Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Uladzislau
+ Rezki <urezki@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v16 01/10] rust: alloc: add `KBox::into_nonnull`
+In-Reply-To: <DGRQNTVD3N23.33347CYLKMKEH@garyguo.net>
+References: <20260224-unique-ref-v16-0-c21afcb118d3@kernel.org>
+ <20260224-unique-ref-v16-1-c21afcb118d3@kernel.org>
+ <eeDADnWQGSX9PG7jNOEyh9Z-iXlTEy6eK8CZ-KE7UWlWo-TJy15t_R1SkLj-Zway00qMRKkb0xBdxADLH766dA==@protonmail.internalid>
+ <DGRHAEM7OFBD.27RUUCHCRHI6K@garyguo.net>
+ <87ldgbbjal.fsf@t14s.mail-host-address-is-not-set>
+ <DGROXQD756OU.T2CRAPKA2HCB@garyguo.net>
+ <DGRPNLWTEQJG.27A17T7HREAF4@kernel.org>
+ <p7rsBPaYxHKSMFCYVUFY5hdI1H6jxHK0s7lxLQkqH4rylM6yS03Yt52SCjiTO5qBVUmc41ZHZ7XZ0_3w_U-O0g==@protonmail.internalid>
+ <DGRQNTVD3N23.33347CYLKMKEH@garyguo.net>
+Date: Mon, 02 Mar 2026 08:18:47 +0100
+Message-ID: <87ikbebsx4.fsf@t14s.mail-host-address-is-not-set>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: C0C261C0008
+X-Stat-Signature: 84k68ouztt4z8mmh8nq88qq3yu7xmy59
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772435034-25651
-X-HE-Meta: U2FsdGVkX1++WXjyCq7isLEd1GjIJEpwaQ+87smpxqAPdAunVi0gkExPQzAcH7rmIausIa+X58OaH3URpE43el3fbmWT3fHFsEeK1gl95Oav4rnqJsO+e/xn74RyhhGxXeLz6fOvn0utPYkrptyiSkoANgysjmu0bmmrA0+wHiHDNwuDWWregI6f4CgFJ4LB+vk5Vft2ZzrG4IK/AmTsD7o2o3C2zrwHdBaAhvYgfyw+P687avyUyULJa+yJxtiT4lWGcq2/7lNb+HnJR74N9eH3TMh41CfT3aKdlcLOEGb7vq7YE34Px63R4fMFOSG1dZQ5KMQSMs65ttbJD5A4+3tNpLI0D6j07IlTFHMUrDOHKZRNvLlZX19MelXNN39HR2JCHqujX4oldSfJ3K1ypS9OF/MuL62JCvppbMtmwWp+hPppTccQSeauJuF/Ou7MX+ZQYyaGwlWYxkOkxMuxzPhjRVJMjv1VJZguAMeh3+mqfLa87Uwi/QsOukvjF6hwHdslqrYXJ2rZZZN/FtD84+KJmrf0V63iinwCUcRBNd5HlbwjIDNPEtqatDb2265UGA9ldMCur+u03621w4tPAxmbIOI5SZ8UqxJfB5rUxdz8Ccp5jKysSi+PV7ucA5IGhE7XPQS6mreA3g8dhkTx4ORfK6HOLXPOk3FYo3r/qVgZaPHDassfFMbUyVW8usfKO3H0eUtpAyYHuYr6fx3HNF9MyVl5454xw7/YRJ7IGJ2r+lQnM+deU3QZ1vE1WvxLl6rthRe/PDdinhF/J5XQmRyBmDKO4z7TILd7f+gune3UPIDb4FnSe2PL9uZ0oocdvvdOvkJ/wmLNJtbZhnnd9Erz2h+qMSVa0H7BxfVrQpQVX8/9gY+2loLs3/PZgDo2yxUzew5/QWP6/rChaCDdyF8vmRirNt4ir+y8tz9TUR4hqj50azg3xEiIjwnH29qIINPcJuLCh+1YNLxpCsH
- pmgvZiKW
- ftzooF9mY+z/oq45dkqB0P5X9qqaOXELUM31J3791lF7JEz9ceARUyvaZFQxF6/9trMXtP0039N57BGVwGO5mqG6QBZxWYiZFXUZWpU0Lz68gKOuBg1mLPn6mzarxrBEA7CXllwItBnA4V3JEpcTW4jNDcGgyFBHg0Fv6gNVtI4V+8PDVp1pFOrsTLMf/vsSrhVKYgAvLqwD/0gekjP/LCcQAqjyz+DNMUGUBG/TDVH8HiWsHPWiOoLSaBiZlsHzEhcI0DVy35nGI3HYgmABSNBiMyMj6PNAbbDoUj83IVC9PVpz4HWBxcEhk+Tn0OpkOR4E9CKm6IPFpf81vNgsk5+esMJyiqgNhKLoIO/rxnfQhUFFPDiZcpNXCIOjfcc0LNx4HZszEEw4Ph57mcVvu+6wR2g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772435944-848488
+X-HE-Meta: U2FsdGVkX19tyPHylxYhwmNLLu7uHFEp3NymY3s7H9gVZXcTDHplMTuDVYUGW3jUGXnt29gqfuvalkvNino0Un3QJTyaFSun5vfMVxyoT+OdmgzpUHb8iGg5nZtfRoK4XPpabc5fuAaCEcO8SI0hn5eKoMBseEi49Gvz+AF3wZ3zizx4gCgKvkpV/XvXeJfgIQxBxTXKCWOSk7DVAV25lGOXOE/8dksxpy5RELQ5Au+Wf0KQBjtBnQlk89y+7KHykwCyEz4lhx9cepUfekuqZrKI17frWk4Uq5vG6vFIsIWwnKi9Jjq0odGkOg3MV4zZqds94zC9ujY7ptnQfzNGzN11OQ/NSXQWAXkGYwzMSpQbc6yIRpC+cU3JjNzm5WpOiBvx7JTNadGAh/IqOMxBTf9rjkt+nLr/c0yv14ayDse1ohdUczaESYHZqnLJOv098x5iegvhDAv5mbQlBXHtLXTInK+nmY59zGcKUFBn6kknnfmjcEbCqlkBVmKvPFloYaP+pKhdrcW3ZtZOfsC0cZzYNUkqzM9BCNT6O2r75cV9SYApXio+H02VVOBX9l+16GM49XORDiHHr9t7jR4hs9jdniDuBtxt3iJ3Bb/rGhRcb7mTu6H2MZP4IxuhwwIN96DdghxBjsTEH0MGOV7uvu54xZZTEcC1UdOpjVYlMhvGOB5wFmqTqpWI2bNQuekteRG86RC4lPsX2Nxx5D2y7jPL5WnqHqoxUDwBHpyi3EP1G13xqI2z0zGZYcGQml4Q4+D8NrhQBEAA4bbevG8unHPDL/bYod3DWXM/MeGIHWzPfZAnbvLDEjaZukuDPr1hSSvzSP1CBiOroDkl/YiNrH4bEFOVqkddgiqZMt9ciDV6Cl5giPKC7ObC76bTAR9Pi3B8u61X1rb1+LrcF6FFy5km1oqkgZsO+XJxQXz67AknYY7Xc4wDg7ORX1Rf+xwoxKnLpf2I0iUGOwFTP10
+ s0Tb2vzA
+ rVGclnixakIOWdZLVOiJvScu/DmheKilVRHb+r5me5y+r9JZFKxaWf2IaNvNPKNHdIWKI24EEz1IsVAjLu3mWHtma8vX/K4We/6K8yLV3Fn8kXjyrZ8gkIIGbBUWhDLsKwEYLv2PHsMQshl+WWZrKBfySmWvQdf044LP9cjj+sd3Bg99GMGl1eUbJ+6YMS9u36MFmvvgTNyqhL+TZDHFlh8imyieRGoxDRnfTZfquq1Jog5xPLPgfCMzEUOFGC/e8FjRFkB3IB1774wIKkf1GivFkxWH6WCFT4DqUXjrtrtAAVL0QKTE0xEErSFrbqdeRSa6CpVNqGofIQM3T7KqSoppPlodXNq4cGxAceRuOFyBIzGkgM8jJ6/fXYyFkNU5KKL1Wqy7OoKPCxPDoHufYOPx0ni+YTqiX2iqXIvjkB9lLHxQgV1fNpITiNu3ol5iVqVbH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,39 +117,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In alloc_demote_folio(), mtc->nmask is set to NULL for the first
-allocation. If that succeeds, it returns without restoring mtc->nmask
-to allowed_mask. For subsequent allocations from the migrate_pages()
-batch, mtc->nmask will be NULL. If the target node then becomes full,
-the fallback allocation will use nmask = NULL, allocating from any
-node allowed by the task cpuset, which for kswapd is all nodes.
+"Gary Guo" <gary@garyguo.net> writes:
 
-To address this issue, restore the mtc->nmask to its original allowed
-nodemask after the first allocation.
+> On Sun Mar 1, 2026 at 7:59 PM GMT, Benno Lossin wrote:
+>> On Sun Mar 1, 2026 at 8:25 PM CET, Gary Guo wrote:
+>>> `#[inline]` is a hint to make it more likely for compilers to inline. Without
+>>> them, you're relying on compiler heurstics only. There're cases (especially with
+>>> abstractions) where the function may look complex as it contains lots of
+>>> function calls (so compiler heurstics avoid inlining them), but they're all
+>>> zero-cost abstractions so eventually things get optimized away.
+>>>
+>>> For non-generic functions, there is additional issue where only very small
+>>> functions get automatically inlined, otherwise a single copy is generated at the
+>>> defining crate and compiler run on a dependant crate has no chance to even peek
+>>> what's in the function.
+>>>
+>>> If you know a function should be inlined, it's better to just mark them as such,
+>>> so there're no surprises.
+>>
+>> Should we set clippy::missing_inline_in_public_items [1] to "warn"?
+>>
+>> [1]: https://rust-lang.github.io/rust-clippy/master/index.html?search=missing_inline_in_public_items
+>
+> That requires *all* public items to be `#[inline]` regardless the size, which is
+> excessive.
 
-Signed-off-by: Bing Jiao <bingjiao@google.com>
----
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I was thinking something similar, in clippy or checkpatch.pl. If we
+should always have this attribute for small functions, we need to have a
+check.
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index cbffc0a27824..b42abd17aee7 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -985,11 +985,11 @@ static struct folio *alloc_demote_folio(struct folio *src,
- 	mtc->nmask = NULL;
- 	mtc->gfp_mask |= __GFP_THISNODE;
- 	dst = alloc_migration_target(src, (unsigned long)mtc);
-+	mtc->nmask = allowed_mask;
- 	if (dst)
- 		return dst;
 
- 	mtc->gfp_mask &= ~__GFP_THISNODE;
--	mtc->nmask = allowed_mask;
+Best regards,
+Andreas Hindborg
 
- 	return alloc_migration_target(src, (unsigned long)mtc);
- }
---
-2.53.0.473.g4a7958ca14-goog
+
 
 
