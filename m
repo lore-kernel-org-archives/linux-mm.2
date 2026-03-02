@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D44BBEA4E21
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E12BEA4E20
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 15:18:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303D96B0098; Mon,  2 Mar 2026 10:16:01 -0500 (EST)
+	id 527496B008A; Mon,  2 Mar 2026 10:18:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29ABE6B0099; Mon,  2 Mar 2026 10:16:01 -0500 (EST)
+	id 4F55A6B0096; Mon,  2 Mar 2026 10:18:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15BFA6B009B; Mon,  2 Mar 2026 10:16:01 -0500 (EST)
+	id 401946B0099; Mon,  2 Mar 2026 10:18:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 033156B0098
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:16:01 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB45E1A01D9
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:16:00 +0000 (UTC)
-X-FDA: 84501473280.19.1ED0C55
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 090FC1A0018
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:15:58 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UuShyuh/";
-	spf=pass (imf19.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B9356B008A
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 10:18:54 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2D9F88CF7
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:18:53 +0000 (UTC)
+X-FDA: 84501480546.16.E1343FF
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ECF4CC0012
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 15:18:51 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=oXpdMlRz;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772464559;
+	s=arc-20220608; t=1772464732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=795qb2XPmTikXRuI9wWh/wmdX65Q+l1P/vz+K2y8gWw=;
-	b=8EgVw60WoAIlpL2I89BS20Yrhgmz/xaUXVnSSnqXBk+MQ+qf4RjWYGxmMQJSEsUoPjYge5
-	PTSDhMJPDF8JcSjgdsmTs5LkLc92Z7FzbuUiM3xDUBelykSzRlo5Ti+4svOJqVRiWr3iZW
-	iVlWQDvNtOS0GHblw/JCB3kaPNuGKso=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772464559; a=rsa-sha256;
-	cv=none;
-	b=iflfKhP+ea/EII/yn3wqP4jBoMA6npSDbqtCt4k2mfL4TfCGyx23JeFEyJDQ9reqUyQaue
-	pqHdaqr4BjBEeg3L4FXVquDoW9TgJ8+U9jQJ32Y3eRxRVKeIOloMebekSj6/2QFTaNoCRE
-	ne5BEfzUzSYMPf7JAilk0zjntUCatZk=
+	bh=BFYzZEBixlS+zcZl7LsuEKBEMzuKJceTVNM40UE/LP8=;
+	b=jwwBJdJLg5ZRlj/3KOhS+KWh+x+CdMnk9BqLEUbp0/RbrBIcw5GlsEqPHOtbqoKawPmzLu
+	kWrV7PkdDRecrH7vozVXkMjbFxlO7ydFO/MXllmcPCs+YsHGu8me4R+1ZqFuvXDdx9opji
+	UZ26vN2d78/azKv80XZy4U3Hb2jUFjo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="UuShyuh/";
-	spf=pass (imf19.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 090F343E2C;
-	Mon,  2 Mar 2026 15:15:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED769C19423;
-	Mon,  2 Mar 2026 15:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772464557;
-	bh=3+JOWRGzFxXHP0onO2qJa4UBvnD923gCutsUvkicEeE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuShyuh/ZlJhCyQkAT1EPymurTXjiIysMRaTjzwDcOxWociXs+dpYDhw0peM3Dysz
-	 uEYoKK0FO4GH9fLb3l0EkO0ZHj0SjUrZSdBnjHyBaraORA31jbBkSawjcnBykVb23q
-	 8RZHTeYPuUcA+HIhPCUt6q8dg2en+j/mWcoJF3ynGGQIQkE7v0bWJ6ECq9NkY+44L1
-	 n15gBNY2gTSVTk+k0B1WMcMOH18NEOhzuzb8OQCueeDnYI44PjYcQgTfPRrN2GnBwR
-	 vhgd2f7rqEwXU4r/hgFOyjjPNrROq36ugiJcWIb3RsSwHzR85DI58Tl5U2HbYQNlsj
-	 hjYSrURkPJxWQ==
-From: Sasha Levin <sashal@kernel.org>
-To: lorenzo.stoakes@oracle.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	gavinguo@igalia.com,
-	hughd@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	sashal@kernel.org,
-	ziy@nvidia.com
-Subject: [WIP] mm/vma: clear dst->anon_vma on anon_vma_clone() failure in dup_anon_vma()
-Date: Mon,  2 Mar 2026 10:15:47 -0500
-Message-ID: <20260302151547.2389070-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <9e273ce7-8471-495c-a344-d9bf61cb808c@lucifer.local>
-References: <9e273ce7-8471-495c-a344-d9bf61cb808c@lucifer.local>
+	imf28.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=oXpdMlRz;
+	spf=pass (imf28.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772464732; a=rsa-sha256;
+	cv=none;
+	b=xgIlZrMTlM832raswPeF84CB331kQn83QOmrAqHqh8X68WXhSifcUD9kU7plw5UElQT4Th
+	Ue/f1BNiM6UcC1UCya3ySBfEEVBPImJcRw1xE4/1+uT+WNwx5DDQylU+PRKzNefJUWO8FL
+	f5HwwMnUS1EHF5VCNwVi/Zj1kbLI8WE=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id A32A2B3085;
+	Mon, 02 Mar 2026 15:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1772464730;
+	bh=BFYzZEBixlS+zcZl7LsuEKBEMzuKJceTVNM40UE/LP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oXpdMlRzh3dhWg4L7e1wNlTox7fVWTR42Pud1whiidbKQmr2FQfBFHS0BOCTKSpBe
+	 R2DIdS6d5ws7XChDY9B/cUn27jM6mwloRl+Pgb1LAhHjBvlEMht6wQWyutSDnREvtR
+	 IOe0L9Ulmzror287UzM5h85fSgdc4Gtg+B8D00DE=
+Date: Mon, 2 Mar 2026 15:18:45 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] mm: add tracepoints for zone lock
+Message-ID: <aaWqVZ4t5AaJfih7@shell.ilvokhin.com>
+References: <cover.1772206930.git.d@ilvokhin.com>
+ <ae145fe890f028409f727b4921904b547346fa0b.1772206930.git.d@ilvokhin.com>
+ <20260227144649.3dbff742@gandalf.local.home>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 090FC1A0018
-X-Stat-Signature: fo77mduiyq319ydcegnqcg3mzkak4mok
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227144649.3dbff742@gandalf.local.home>
+X-Rspamd-Queue-Id: ECF4CC0012
+X-Stat-Signature: cjuwq4xij6p7kd7pg6guoc97r4o5gyxp
 X-Rspam-User: 
-X-HE-Tag: 1772464558-11934
-X-HE-Meta: U2FsdGVkX1+I3F4pW6cWhpEr49XNmEX2O23oYGDqI5o433+HhZ21IktvqXvhoGMK88PpH/YPpUaTc4HNDpFpBFHPTiQReM+4+xJIjJtLfYcqGhcvROUIub/WO1loKOwGhkQ4WgB1ebgXNFOyTToty2RRXT6DxtS5p1ZKmxOWG44ll4WGx3tQfgFYbYFqxNFbQN9ML9kj8obPc1UdBaFRSyFb93jQJjr5SHtgM3t91igEr/yv4e0teVhOLIxUHXZcAhW/F7dY+5p8pidfJxIXtE66ESofc9GaqX6F/+f/IDPV36270k60062/bqRbej3xsRz24FOVrkCzMs7ikDSyaEEsqWL1AclTSZ5TYEyluXw0H3Ztpn49Edei0xhHJ2VrSugFiXRi5BSfi6g5YHIkH+zmD+c6ZIxUm9+/3C25svQ9Zo693qs042IOmxFR3kLCaVezR9gUHiWxOLGsb5rV4iLkwDOOY0Ka1R0gOlZdA/2lrj9orGuNvfxFw+Gjs/VfE4IlR9NuHR8/z6Us9Nt61SnSmSTRVDB6UicjKJZPttCoadfZf7eNm1bLtmfGSqyPOwyIoll6CltGsjBh0DypQIGktAhTYz4VPJXBx8ZJOM5W4b7QfO66cPD2JwRwCMk/W5pK5/hMvAchfTcKBTAu47zM6/qBke/1v817wH1xoyiYZVBES1zHTZnTZ3sZcwS69wlEI5SW8zfl9N8uPCkMiUIBW1WaeT9mHHpfBavP6DosBsF6ccR6sP3xyuXdXAG3uDuqyWcLB6YhdnA5G9VE0sKmFGc9zqOOXqtlqVr+wP1dLlLw32XPKzjKd6ko7lHGxZYsS5mQSEWQIrsFaYk4fWT1SUf9DEfCnY4UDfjITXbyDX1qJB8PP1N7CfHaVaoNCvZ6E4nbQ+cRun4XdaGjlHUOXWRR+FIUhDBD/McJx6f5cmHNXuh3xnWDJUBXEi7wxwE6fAreCaHt6LnmlVa
- T8MsVFUR
- WhWtjkWWQhoCsZOF5udIi2NluDS54gK/pRMJkfFu66+e5jlOXR7VZnu+BfDnvgkuQW+vCByqU2vCvRvmcJp+1ZEUYKhXG0OdoySnrukPw9dKIByW/KM0wUMsHP7Qccn6oiaBqZXrVMOxK2GmBkdZIiyNTlvPdETUG24KHdOxyFH+4Vthu8/pOZlsjIGv/VarQW/jJg4vAF2QKPQKWlzTVOghTMLHpe09q+GLmKUWmb9Y95AjccuwFKGFhXyUkca4otnzGQ3YDheqkUuQU6mmI3dbfiw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772464731-454506
+X-HE-Meta: U2FsdGVkX1+UbbTMMNujzaI8O8DuHbt/QmcVIbckLnQWeDyLUu8O2ViGFxWQ+BsxNV4Ql43sBFHshRoTJcTmFMPtI95zH5HCoLOfE/ZoiS/6Rd90/XwQGRNcLEyYQpQuUjKiJ0Ljj1MxD5EORSM7bccPhV+LHfNMqfSO41WX9rjk1uCDByCeuYalPkhgd5E0Me12NMC113AtGpdZCk08/NoGGEBNuiJteXv0tXduyo+qg1mhxlFx49Kz5Di5oynAc5ap6JsHpOCMs3FwLfgIvT2BrTga9+Nsdqjerlgh4+P/cazHRzJaUW8TI1G3Uewww1zWSb8xeSMqLIZV5v6NKZc7/24K6YjIX4B2IIpV/TUYwuJ7jLOHv2tzMsgeekeCGZFGanzqRd6Y2eXDnB12XHyVogDzGVsIoPfY3swDquFewLsidIuF750D7g8jp/pqv6jgPokbfUlQYbYd/5NY/THQesWHpC2/zIKmwy4Yrzj1POsZQqFIhWHPuO6TfqelrA03Q5JMKUdUtDtvCYJ/yT8XYjIrNMlDhbZcV6b4tDpAkAVzlqaSDCXf8pErKdcx4hsaUArJUIYlNOeABIPnrA/WZxYyaI0v25ZNWq0QM9PEh3QwV0OYhYv2q+PMPBn6DwbH9Ri1b7EssUAIGmX6rrTMuzH0pyoNHH1+bUpY8gNkO3NgtyjLXQpsiLAKhbPyaAlgyqZeaoLap32+NRQVsGlC91/Srz3NaqWkOIQmLG3doPtOppGYEVldws8hd5Q3MlibA7ld6IhGCJclgAVk/RGrIpy9FWgmrrF7K9L8Ris6f/K3FnH4gJsItsW4UXWJvbtsWaRvE/I2cQCSNb43KgyYl9+Dzdo4kX1p86MrNvfTs+9LGb+u9BrqaF2x9Vx+odgyi5NHBb3OxS28Ixaj5ZTCog3BqOUcfdTl29VjBvUC3GYedcYd9np+82Kgdld7qqbm9yANFKEE6PG8M5F
+ HhydXPPC
+ rEPbHI4CErtRhq9WTg1ZEeYakGfQfPkXPPccLVMMfv2dBeNVtwTS+sp/wZqaFX9+wD4SNz/jVMb2SNoYMIIoi+3fpEn5u94nwMHN8JfyAw+AhQJlBQjcrUc2dev+LdHzaiLbFL/vhOnTUTc6RHehMRvQSRHEEMBDWs5Vt9aj84BSokGSPXgicry6ml9wjzPsBnxcFPN7b8M3zCMEHYiIdtNSUieZ2pmbUm3feNosjYZOQ+S4LoK6FTTmQdcJjrsFZcMCfPz80AAfgFVNq0XjVvhy7RHCoix82XWxh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,79 +106,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When dup_anon_vma() calls anon_vma_clone() and it fails with -ENOMEM,
-dst->anon_vma is left pointing at src->anon_vma without a corresponding
-num_active_vmas increment (which only happens on the success path).
+On Fri, Feb 27, 2026 at 02:46:49PM -0500, Steven Rostedt wrote:
+> On Fri, 27 Feb 2026 16:00:27 +0000
+> Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> 
+> >  static inline void zone_lock_init(struct zone *zone)
+> >  {
+> > @@ -12,26 +59,41 @@ static inline void zone_lock_init(struct zone *zone)
+> >  
+> >  #define zone_lock_irqsave(zone, flags)				\
+> >  do {								\
+> > +	bool success = true;					\
+> > +								\
+> > +	__zone_lock_trace_start_locking(zone);			\
+> >  	spin_lock_irqsave(&(zone)->_lock, flags);		\
+> > +	__zone_lock_trace_acquire_returned(zone, success);	\
+> 
+> Why the "success" variable and not just:
+> 
+> 	__zone_lock_trace_acquire_returned(zone, true);
+> 
+>  ?
 
-The internal cleanup_partial_anon_vmas() correctly frees partially-
-allocated AVCs but does not clear dst->anon_vma. Later, when the VMA is
-torn down during process exit, unlink_anon_vmas() sees a non-NULL
-vma->anon_vma and decrements num_active_vmas without a prior matching
-increment, causing an underflow. This eventually triggers:
-
-  WARNING: mm/rmap.c:528 at unlink_anon_vmas+0x68e/0x900 mm/rmap.c:528
-
-First, fault injection in the mlock2 syscall path:
-
-  FAULT_INJECTION: forcing a failure.
-  name failslab, interval 1, probability 0, space 0, times 0
-  CPU: 3 PID: 4261 Comm: syz.6.96
-  Call Trace:
-   should_fail_ex.cold+0xd8/0x15d
-   should_failslab+0xd4/0x150
-   kmem_cache_alloc_noprof+0x60/0x630
-   anon_vma_clone+0x2ed/0xcf0
-   dup_anon_vma+0x1cb/0x320
-   vma_modify+0x16dd/0x2230
-   vma_modify_flags+0x1f9/0x350
-   mlock_fixup+0x225/0xe10
-   apply_vma_lock_flags+0x249/0x360
-   do_mlock+0x269/0x7f0
-   __x64_sys_mlock2+0xc0/0x100
-
-Followed by the WARNING on the same task during exit:
-
-  WARNING: mm/rmap.c:528 at unlink_anon_vmas+0x68e/0x900
-  CPU: 3 PID: 4261 Comm: syz.6.96
-  Call Trace:
-   free_pgtables+0x312/0x950
-   exit_mmap+0x487/0xa80
-   __mmput+0x11b/0x540
-   exit_mm
-   do_exit+0x7b9/0x2c60
-
-Fix this by clearing dst->anon_vma on clone failure, restoring the VMA
-to its original unfaulted state. This ensures unlink_anon_vmas() will
-correctly bail out early at the !active_anon_vma check.
-
-Other callers of anon_vma_clone() are unaffected: VMA_OP_SPLIT/REMAP
-free the dst VMA on error, and VMA_OP_FORK explicitly sets anon_vma to
-NULL before cloning.
-
-Fixes: 542eda1a83294 ("mm/rmap: improve anon_vma_clone(), unlink_anon_vmas() comments, add asserts")
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- mm/vma.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/mm/vma.c b/mm/vma.c
-index be64f781a3aa7..4cf6a2a05c10a 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -629,8 +629,10 @@ static int dup_anon_vma(struct vm_area_struct *dst,
- 		vma_assert_write_locked(dst);
- 		dst->anon_vma = src->anon_vma;
- 		ret = anon_vma_clone(dst, src, VMA_OP_MERGE_UNFAULTED);
--		if (ret)
-+		if (ret) {
-+			dst->anon_vma = NULL;
- 			return ret;
-+		}
- 
- 		*dup = dst;
- 	}
--- 
-2.51.0
-
+Good point, passing true directly is cleaner. Happy to respin if needed.
 
