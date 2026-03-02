@@ -4,148 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EB54EB3625
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:33:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A05EB3625
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 17:34:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0C2F6B0005; Mon,  2 Mar 2026 12:33:32 -0500 (EST)
+	id F12076B0005; Mon,  2 Mar 2026 12:34:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE3AF6B0088; Mon,  2 Mar 2026 12:33:32 -0500 (EST)
+	id EBC966B0088; Mon,  2 Mar 2026 12:34:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5D86B0089; Mon,  2 Mar 2026 12:33:32 -0500 (EST)
+	id DCC9D6B0089; Mon,  2 Mar 2026 12:34:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AB63B6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:33:32 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60F2C5797F
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:33:32 +0000 (UTC)
-X-FDA: 84501819864.23.AF4F977
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 638221C000E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:33:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=L8FDIujR;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id CC4466B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 12:34:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 998A3C0C3D
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:34:07 +0000 (UTC)
+X-FDA: 84501821334.04.0636A69
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 844B61A0019
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 17:34:05 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKeWZJYZ;
+	spf=pass (imf19.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772472810;
+	s=arc-20220608; t=1772472845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trTsSxZrTWkQLZJIlDPSoDSBM4dbobHN9KokPDEXX0A=;
-	b=ex1x9nD8xA9VKxHjuvpkmmlGym2c+zpwk5Sg3DQEjs1TFBgN28KlFlVgqYfcrfnbXY8ggU
-	Uk8LRTYVS0x8b4ssNMBAWhPfF/edaYxQFt3IdC5p3/b1oIr/7ZZBgB45/N56o57W6G3UWQ
-	JcP/mFvb+Pgy+GCP+IMj03mrhelERYk=
+	bh=aR7wBC+ansRdnpr2xRHWq+wiTXZewXFu6CEriISZqzI=;
+	b=YBeP/XjIRn7TtdwBcr9OLahFHtMGm6XtAn4+ObkhuuBUyYemZqEqQEs6wdZEmHj/J9ttI2
+	L2+qOPb9O4Apoh+Mzbe8nuLt66mtwYQ1v2nfVKIm7E6+0fcAlu9SmzSsZL13dIaJp+qqKf
+	nWddQmPdgQBYhtixHErQkhQDwAsApVg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=L8FDIujR;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772472810; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=aKeWZJYZ;
+	spf=pass (imf19.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772472845; a=rsa-sha256;
 	cv=none;
-	b=jmBlTVZFCsP9Mae5YjphTw0wHqO5tO6WCRAnCltqxfiSY6684a5VjnzBYbft7wpnlg/nhw
-	3wofi7vb6OyYsgo24Uf1BTJaobGxsV2qoxfQWvxYibzPuvc6+WEgPXOmYhdnkw/IH8Lt+I
-	XJ+JBnpRdvCuxkBdp/ijKR2hqXrkzrQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772472809; x=1804008809;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1RnLvMl4SaaPb1RpGzXgI+NG37Ip+Bl87/IC9CvyY6c=;
-  b=L8FDIujRMM0FltZJD14aGXnHtLZmPOR5/KlecLDd495RwE/esDksv6dD
-   xzHffSctplBqInU1mB0eqQHJAtcXPt7QTI46lvOtLBnqVFd4HhWTrrX+O
-   xKdRZK48p35lPr1kJPd3fO1JlUENeON3fFsiFFNn9VD2wvEbWOkU8tkEl
-   HzYiZdsY28Y+ijzn7/icV1SzLLJUCfuVxK/bo64waCkZceQaqwM0gcSg/
-   Rl7shnAl2VPJ0N7fS2ddL8beARYIns0lYHswC/iDwvzU/3ctOPwX2IxEZ
-   rwHrJZHuUl1UdpHTISoUC6cysAp+kdR4gE14y8V0Vpw7lQXNbl6AxfXes
-   A==;
-X-CSE-ConnectionGUID: fVVnpiEQRUqTrRXwAwlb7w==
-X-CSE-MsgGUID: E4HsuPsST7iScdDE0gCi8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73395497"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="73395497"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 09:33:27 -0800
-X-CSE-ConnectionGUID: 0fexQWVjSsO7Q+tgjjd/KQ==
-X-CSE-MsgGUID: 3p1hQa1xTj6kDEJl3/mhrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
-   d="scan'208";a="222712695"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.108.54]) ([10.125.108.54])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 09:33:26 -0800
-Message-ID: <bf7d3f8b-8cd0-420b-b418-8b45bcfbcfcc@intel.com>
-Date: Mon, 2 Mar 2026 09:33:31 -0800
+	b=uHwhTjnqdWXf2FWvCMQyS3X17uQUOSSO6Zb9HCFpkZ6RGyTor9PxjjtImJBGY/dSZp1wLW
+	xGhBqF4oj8tIFzm3BDSovDmNuzW8KWmcXgmU7EOhF844UVlZmD8V4hQu1C1DeCO/Hsgt7J
+	oh0cgbdAjwIkJNVqkblTHv1NgC73QEI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772472844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aR7wBC+ansRdnpr2xRHWq+wiTXZewXFu6CEriISZqzI=;
+	b=aKeWZJYZJPQw7agFCUuXWPmnnw5r2S6y8/rSC0ekZkb50IfIRlZZv1IYkJL/134Wl6Cr9t
+	vLtOwSyLRJH+pqcTdTwDZjzaL10ZnNx3tDlBeX9u/MxDH32OlmcVyRuOoPt2lQTQ34QHot
+	OPwpehRQBmlNuiAcRSlY4JtbvPoN2qI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-477-paCPR8LDPzGitr8yBq-Dwg-1; Mon,
+ 02 Mar 2026 12:34:01 -0500
+X-MC-Unique: paCPR8LDPzGitr8yBq-Dwg-1
+X-Mimecast-MFC-AGG-ID: paCPR8LDPzGitr8yBq-Dwg_1772472840
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E942019560A7;
+	Mon,  2 Mar 2026 17:33:59 +0000 (UTC)
+Received: from [10.45.224.173] (unknown [10.45.224.173])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8672D1800666;
+	Mon,  2 Mar 2026 17:33:56 +0000 (UTC)
+Date: Mon, 2 Mar 2026 18:33:53 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+cc: Christoph Hellwig <hch@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+    Uladzislau Rezki <urezki@gmail.com>, 
+    "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, 
+    SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+    zkabelac@redhat.com, Matthew Sakai <msakai@redhat.com>, linux-mm@kvack.org, 
+    dm-devel@lists.linux.dev
+Subject: Re: [PATCH] mm: allow __GFP_RETRY_MAYFAIL in vmalloc
+In-Reply-To: <aZ2zPzyoFUUNWdJ7@linux.dev>
+Message-ID: <5382696e-25e0-cd41-0a63-a79f019cb6ae@redhat.com>
+References: <ff48283b-be21-7f9a-d616-e303a4a1ebe6@redhat.com> <aZykWyxLy34o7PKr@fedora> <32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com> <aZzPwsBp-Z4XM58U@tiehlicka> <aZ2N9a4XgxnurOhz@pc636> <aZ2YDD_l5JN78DJC@tiehlicka> <aZ2voRA5VJytcfLp@infradead.org>
+ <aZ2zPzyoFUUNWdJ7@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/4] Convert x86/mm/pat to generic page table apis
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, akpm@linux-foundation.org,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260219020354.321088-1-vishal.moola@gmail.com>
- <aaH5Z5HTC5GyJ6sT@fedora> <2fe139df-1764-40e5-983d-48d7f97c2e39@intel.com>
- <aaI6Vq-uyJ6F4P7u@fedora>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aaI6Vq-uyJ6F4P7u@fedora>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k9jzaituimb611wygropk9bbjikxmo9s
-X-Rspamd-Server: rspam09
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: i00XQZu9gMJlagKTDbIiG30fz9bRjYKTVBSiGhHJBRQ_1772472840
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 844B61A0019
+X-Stat-Signature: 1f3ynqp8ecnix4tgkf741e99ohrzq3mg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 638221C000E
-X-HE-Tag: 1772472808-218818
-X-HE-Meta: U2FsdGVkX1/g7ktcbc1cW0YdZb/w3vVa13CPg5xEaH6zaZww2OmWXFMzT8NemuvBj07zhln/WSFhtvOlo8Su8nFzrRyIs6QR1jBQG12D+pfte/gyCzqJc5oBTOfpOYz3UwhLVl10uUfeSAXuHkr9OG+Nz2wGnxuEqPS/DZc9FTSHJTEwb2003pogl3heRvy47sqMWJnJqXvGi2bkrPSbhzwRtOMsi+nvFYEQaygWyv8J43GSlgj3G6xrDDm47405MxsolAboRk6YO2OFIf7IOc52qYMUErcVSpfodMp/cFM0QtKfoU80LlK0iHEivUhNySEe4+cDxy0IVWaiJY4qtrGofo4seMKeqoGhIWT0/PaK00Z2oW6PED3APRKhgfm1GgcyatVN/wRsS5ZrXSPeeYMdMGJuP7hbCl7CBakeRwtH7/IJI09cVo3SZabKluO/X9BFRmfU9BXWKLH32/SS8V6ci8xATH6SoGkPSKdRilqPjVFAvrOuX28OmiRTLaGvTkmFYCED3gT3WcgWdvewWRo6RUKphDoXLHl3TOmgfUBhni/DzFinW+XJGf98UDOFZTVDS5nWvXDu92nkFLaZoI/otaZbtkd4HpzXDvJrffMNTGtvK58pGYV9hYEYOwZooeXaw0CsUJP7HO6XK1+J2G5LbMvv2DYSlgPOhgeYQdp9WCevMmWcbhFrLalHVKaE476sZCRGcRsYMcAU3YrBfBv0ycVhOdOpdsuWiVVCLCrw1kIaEqZxjwEG3kCrJU54vOxfWbkTJhnXM5H4NJezULiHDMXDdVuxJaDvq/YgFKL5ir0GVPzxwulESx2LHTZLZqXfHbfT8gDDsJbHCO1E/UwvHYzCO0LgT0YbsuY4Ip8/b7SrWhTdXbptkC/w0PCzZydtuQVFOdP3b1ifzfXHTlO2mUreqSVX/oY5sUYdZ94sXnfzRswFzHlKwPHQtej8q1+oefMuNsU=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772472845-743058
+X-HE-Meta: U2FsdGVkX19BMFgmNjb906jA6k8S1dfyrLZlYTTklTkhu5Zhhikb3EyJwax4AlNfN6/d1Grgl5F2+W39SSKSL9j9NEzg3VQNcbA/ok/bw6CGu+xQRkRe2JLF1H4CUTp1wHh4fn+OLWUfnH9G085x5rxAPBv49nWyhPLt7LZy0wkchBBuNonYsh5Hq61carPKNig3jFao+R9Qdx5PwFGW/D2Ky0ICkqbBM09rKX/1mGz/Z6SFlLT8XSDz7AC/N++xTVlec39O1uX5QmPEShLiwD//Fl1vkWcj/JcToTzsSLHCLnQ9UGgsUZ3g5TmANZ+mnFTJ4lsptCwLjniKYIJPHz5Wx6S3N4RjBSsr6miDZprYI1GQZfkqLbfpE0XBQiB76gHynDcMg0jo9J093PDbGM4/i8t/XKFfQN6EMi0flr6D425TEg/BJYrOcFBm1NkTfhuERfTnEEJjGsRW1/vNUv3t1kPO2WQfvVKwmClLTO+YjjrrpI0Ik8Pz2RnPk4PqxM2a7Uu21LNRHX9nGMIG+2uyV3x2DHj/RJyfsyzWJS20/lzN6BUbbsaIC1z/fv2N3bX07TuhqKT4EgvBJGWRDH1FTtZT+5NUWmU1vXsnELpdtd2BgaVeg9pKIAHUGl5hu3NCinpacxx7D/5mOj/BnprVefo9ZF5oN4NB33W6cGGSOrIg1FXaw1N1DJqUZF6FVyagaEqzVv5NFLMkNFhjh0zyafdlmzRUmq0UPA5tdXv+WzIybtevvsDv315jXa6M4HIVnOJklk9RIBcIwiy4HicE2bvFEHP5EttwE5Om318E1pV1+URKMD3UPGeS8g95zw/jDkDTqma2pTW0GX60C/09HXjFiBNVlys27h+Q0uRSLskOOriznICCiPIFO0nsOYPIlRKJDMJdW52BuExP/sbCRYclIU0nxC6mfdv+eIWH9UI9UYd5TVdT33Khj4epbeEMBfX2s6hMLDveaLw
+ 30H8dPB8
+ h/p/171spujE8I6skjkGlE2Z6gAwaTPMD6R6uW+qMK2gCmsOS8oBZxGolw31PQNLldDaq8EOdV1YofAZfJgr6/7Hr5VLKIDweBzP6x8G80vOnVEsP445P/Ap9WWdXIboKPeHyvQ7+4Bi0WLlwXakxwYsMTRhV05yY+64kL0WY/nFJmjTOgMgJX2NZ4halDR3bLDIiZy75hYO852okOdNLeXYjG5J5g5mkkHozExt8Z5KnitCmjT0GdFNQqH93W2xX8gc2BasPy5f3jQlGmKHm33zOx8EB+lW4pwk5NwPBLbt9tw3H/rjagFb5YztPfq6Lie0EyIWMeRqLjOXa/LoTROKGCIzYcbsTKeNoNou7srl08fRnD1IfRrMiN+fQP7f2T4s9O+4A48ddt90PRmgJGBoSksW755lsvVoWWnZux6p3ck+Yxo0xZJkPIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,25 +108,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 16:44, Vishal Moola (Oracle) wrote:
-> On Fri, Feb 27, 2026 at 02:24:33PM -0800, Dave Hansen wrote:
->> On 2/27/26 12:07, Vishal Moola (Oracle) wrote:
->>> Do you have any more comments for this series? If not, could you please
->>> take this through the x86 tree. Thanks 🙂
->>
->> From a 2-second glance, this doesn't have normal comment style and isn't
->> using imperative voice. Quite a few "we's". Looks like it needs some
->> more eyeballs.
-> 
-> Ok, my mistake on the comment style. I'll fix that.
-> 
-> Sorry I'm not the greatest at imperative voice, I'll pass all my comments
-> through AI to convert them all to imperative voice.
-> 
-> In regards to more eyeballs, I've realized I didn't cc ALL x86
-> maintainers. +CC the rest of the x86 maintainers and we'll hope
-> someone else looks at it as well.
 
-I was actually kinda hoping you'd be able to actively go out and find
-some reviewers other than the maintainers.
+
+On Tue, 24 Feb 2026, Shakeel Butt wrote:
+
+> On Tue, Feb 24, 2026 at 06:03:13AM -0800, Christoph Hellwig wrote:
+> > On Tue, Feb 24, 2026 at 01:22:36PM +0100, Michal Hocko wrote:
+> > > One thing that we could do to improve __GFP_RETRY_MAYFAIL resp.
+> > > __GFP_NORETRY is to use NOWAIT allocation semantic for page table
+> > > allocations as those could be achieved by scoped allocation context.
+> > > This could cause pre-mature failure after the whole bunch of memory has
+> > > already been allocated for the backing pages but considering that page
+> > > table allocations should be more and more rare over system runtime it
+> > > might be just a reasonable workaround. WDYT?
+> > 
+> > Why bother?  __GFP_RETRY_MAYFAIL has pretty lose semantics.  Trying
+> > too hard to allocate PTEs is not breaking the overall concept.
+> > 
+> 
+> One thing __GFP_RETRY_MAYFAIL is very clear about is to not trigger the
+> oom-killer which is not the case for GFP_KERNEL. There are users who explicitly
+> use __GFP_RETRY_MAYFAIL to avoid oom-killer.
+> 
+> Mikulas, is that the reason you are using __GFP_RETRY_MAYFAIL in your use-case?
+
+The VDO is deduplication storage driver - it needs to allocate large 
+amounts of memory - for each disk block, it needs to store hash of the 
+data in memory to be able to detect blocks with duplicate data.
+
+If the VDO driver attempts to allocate more memory than what is available, 
+we want the allocation to fail; we don't want to kill user processes.
+
+Mikulas
+
 
