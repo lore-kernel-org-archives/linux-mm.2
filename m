@@ -4,105 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3674DE9B37D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 13:34:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D003AE9B37D
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 13:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EEBC6B0092; Mon,  2 Mar 2026 08:34:49 -0500 (EST)
+	id 426706B0005; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 898676B0093; Mon,  2 Mar 2026 08:34:49 -0500 (EST)
+	id 3FDE06B0089; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 771906B0095; Mon,  2 Mar 2026 08:34:49 -0500 (EST)
+	id 334B56B008A; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AD666B0092
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:34:49 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1315DC02B7
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:34:49 +0000 (UTC)
-X-FDA: 84501218298.13.67D062D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3DE9B1C0010
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:34:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cJzFxhlE;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 233A76B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 08:40:18 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B03C21BF64
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:40:17 +0000 (UTC)
+X-FDA: 84501232074.17.62FBA91
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A84E3180007
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:40:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q5huK15E;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772458487;
+	s=arc-20220608; t=1772458816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ny78k2NJq34CpDWboS16uyq2R3/xJSjQAKBSWnCwwh4=;
-	b=1uc2hkAboPHXkkt85ezzceOSt2bW/9UsEoq7uIC30MqKK2uaizSJTUIv+OApbo2GmdlxqC
-	0d0zSoeRlAk9soLH1vOtnYbalEBGOR3CLNtYx/mH0kN9j8HtCQUzmN8NOzU/IedQBZd5vT
-	oVnOTBcc4cMYRLvGaMpQjYDlZZiHpes=
+	bh=EallJz9xECdXZv48leuK2XpZ4lpwJqacaSIYP0recMI=;
+	b=vK7is+OdSeqe8wQXYHAYPqWk9ZcRt2TMTfZoljADi9PmSEUuipKYwafVifScLop0/773Ch
+	9/P0XjGpU3QGi29w9dzyR52bTnlDDAR/uNgYsydP4v5wDyBLLWjQoAw+pamDC6rcIki77m
+	UEAenkyIIZ/CUxQV79122oBe+QryDig=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cJzFxhlE;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772458487; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=q5huK15E;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772458816; a=rsa-sha256;
 	cv=none;
-	b=SqfK+KQ2Xc3KZKR7zLb6hOG+NLB7qg1WV5+4wthaoE8uujSHZKIFJI1roG5FAbutFgM7Cx
-	ticLtf/F85qyefA52Wtka3CymR8XGho8zB+e+8MA5LUhhjtT7h5vVzAa/I7X2QqZEvzJfV
-	ItjI1DwkiRPDwryEBmD85Rwir4dIzoY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F5AC43FC9;
-	Mon,  2 Mar 2026 13:34:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85061C19423;
-	Mon,  2 Mar 2026 13:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772458486;
-	bh=7f9Gcp4+1LkfzXFPCa7PcQqPFKqy4PcM0mCYaMby60g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cJzFxhlE4FbWzbo5g/MSsO88667jBeaaySLaLoBd1bxFWGi77nyUK3rvGNE5eZ6FS
-	 OvQoFyJcHhWifxV97kZV86n/hrxIAwuPOywLDum7x+i2buY4ipn0S/kYasF0ykquWo
-	 MqP4Pt7NdGDVxT7awVmTEDXGPnTxD3fJ92vd2DIk/1t0qCZniFUQYMFmzuYvTb2xB1
-	 uk5T6zUHG6+PXx6wYCCtaXWGxbqfIdwEcbqt2MsLYkNE63m6ccC2X3Y58rxrEegEUA
-	 z5mqdciGCt7Ldwv/T7JBKY/c2pYkt1omagB+CrCX3Nr6XSO0kWDu0k976LiWpBDgVJ
-	 6gmvj29jmeaKg==
-Message-ID: <303e86f9-f86c-4dc9-bfc8-d32c8eeb91b3@kernel.org>
-Date: Mon, 2 Mar 2026 14:34:38 +0100
+	b=f+44Bzi7t/6XcTAwoqApCMY4svfxPisYXHABZ5SsEQYGf78KW+sXwYgtW+x7o8QuA9X4db
+	d8e9HVKXz/XZIqXwsIH6wau7Cs/jiEZCH+Jjp7mCWzDOv0hpNY4ASYpuAkJLC9EDYAwfB0
+	TYLoLRvBP9HTF+7lL32LlvWSG89VEFc=
+Date: Mon, 2 Mar 2026 21:39:58 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772458813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EallJz9xECdXZv48leuK2XpZ4lpwJqacaSIYP0recMI=;
+	b=q5huK15EqTTRO+3nHPePBsbko6xZ/0GeIwD5hy4IMqxyOVCUVD3C3s49qDBmmzo/XQPQcD
+	FIvJ31jWoXhgpkpUNzcrfrGPRGZZTXKXamFlkqfPYkN6eKMgOcASCdenvQQfc5cWypXMuz
+	CkR6Xv198yxModDZcGRESazm5muz/nk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Harry Yoo <harry.yoo@oracle.com>, 
+	Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH] MAINTAINERS: add co-maintainer and reviewer for SLAB
+ ALLOCATOR
+Message-ID: <qjsfacsbh2lkzhng77zl4xyknsjybxvsuqulbfegy5moac4za3@i5gg57ddh27n>
+References: <20260302101345.36713-2-vbabka@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm: introduce zone lock wrappers
-Content-Language: en-US
-To: Dmitry Ilvokhin <d@ilvokhin.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
- "linux-cxl@vger.kernel.orgkernel-team"@meta.com
-References: <cover.1772206930.git.d@ilvokhin.com>
- <849dee9c47df1e6fba97c9933af0d5a08b8e15d3.1772206930.git.d@ilvokhin.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <849dee9c47df1e6fba97c9933af0d5a08b8e15d3.1772206930.git.d@ilvokhin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302101345.36713-2-vbabka@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A84E3180007
+X-Stat-Signature: ed978n37andsjjys4hmh1mk9emmsfbzf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DE9B1C0010
-X-Rspamd-Server: rspam08
-X-Stat-Signature: aiyjrwyf7jdtmkcgetdd9s8bygpben56
-X-HE-Tag: 1772458487-353519
-X-HE-Meta: U2FsdGVkX1+RRX78SemfNzl1/xLsGGNpTll4u4291WOcL/aP4pJgf++MDe2cirwLA0P8IXa0RdUd7Zcc77F//he/rmVIYPvLjlSZSe/Qn27oPUQehX1lLE94WQijFriUnjPtNhOb84PKsn3FsPMVQOoHEneptPZFyvGJqY07GB2eCgUQaaDfUpURZiBteVKz/BmSbopOtPBSNAmDSjdUW3TWKfgYMLzpFI+zk82qu0CAn++cM5hoIqGjMyQstNTQ9UTzyG5yG++IJR6Y7/2wbE43t0qj3eT8gIScIHU4jt2dBXZpQC4NMsoA9dOjOt4D5KVWqG9MtpLPwS3m+gqFrU2ajrr8/h/VsjmnIhYlwYP1DRZa9v+DinCvCqSI0iuu3Cagzf9bHX3HmDdZ9SpPkIbMriRHivomr4aBGp/JDOUYID+yV347o7mV3GCDZkuhoUMONjKpW+NT6rpZ2TzNkVLpWzoQ+Aue4+T0p0dZCVxBX1EyxN4NjklB+o6ImIGEsHIvEuh7T12sMViHAeOfdwEs9801413e6+d6urhQJwe6sNhG3aSom1yQjYgXaAjt4aWkrFh0EXUwhb9zWV8c8Xk+wh9eTrJl29VTn2McsKO27GESKxtZtGZQDOZIdFTF4kTRgmXitke93oHnnQxRERLgyHuzvlWu5VeZizdQRrRMUlPVEtxAehVjnfCoedZfrB0YVbWLETT4IDcD3qHTx4gCDVPO1Pqz3RNAoOfqM4QOKmnsW8Zi3Cz+6J/o9UgCP3p9rADKYV7RU3x8wVK9kQsRhuGFdbzE79OW6SvsIK4cauhuxM9hD6xACBH42azWU+E7lRc79QWUTLf1WsxIR+LrseaNESzEP3Ss8AgxWsiGjGzj4dad7obSvFEZrw57RHKbjzHjXkM+efXNy1iEWUDSTcpEo/OtZyWpd2Cx/X1jmyqvGyCb2+Vp2d9CmwK5nNqvA27LKmycTm0OqNT
- 7vFEqUIc
- uaCkOr2vkLypdv2Uw+0unDCcxwIa9nUL2B9QP2hUWZjfF7JR70b1ForrN4z47a2dsIKARqi+9cCiHpoD4tPM7O+Z5IO++ys/movmmR4nloTm50YmYYGMwLx5yhMrkepVBdNvLpLWeBejHWULPtLGMDxD5ZQCQvTLVqkYFpQM2nL0mcyUMMoP5bdz1Aqy0wD719J5ERj7RMfbmtAGww7MwIyP/OxuM6/yoh4XSP/kBHxOn2Ce89e0gelBRaHPEWyyiaeH28ff8qHLAPxW/IDlBpLNW65ode/pxLeA4/uq2tsxJhVMrq4J85P1E0kzMAacsyfrQ9B76qHAvqhIBd6u/JqsEL/f87E+pcgI3iTJ47+PyLwLLShFwLFL/VA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772458815-811170
+X-HE-Meta: U2FsdGVkX19U3DNZYtKpPR3nOF5XsG7MnLAKfesnN9tsaewpDuaNSzPGb+2Q7AV/WPQhYOYH0DWugXE4ngiDS5Jxw0Hh/XEQ5dEUpuF4U00AEK3b5VKxPRho1UVCO2uSUHb5M8ebax/qI4dfBFn6esjZyNwdj1e9Yq4m4PT73HGfqAoIKRAbpQ6SYH3PYNpF5+XvS8d5/d1+Svl4zaYtFNMkdYrFtMj4SmjjGSVpM0S36Ukg5n0WxigdugUTjA3wHD40jhQJr5ubZgFCLgYfvFBH5U+bAVS5tYZASbrU4aJt6fyCMgRkz4ff2pJaJx2/Rffmfsdh07u2AmWWOLUk1W5X12QabOAQkVVOtnVe9PJw/S4PEhJdBTEGrENRtXm1gLWhMVQxaPHWs33g4j17c5HC4m0uzHL07ESrh7FJm4gFpJxuFaqs2PmyfJ+vnSE3Uq0EY0oAyGQcrkQKfd0my00jfWXm12X0y9OlWVb/q0HggVexg22ZjtWJj/O4/tzsHwOmYFTfXWZU86cFH3d6RcOV1duCjjzM4dndKIjmZCEOsyFYbjmvAK3jA/2TX8AzWdyvhbGasXHiX1vW9TJVIJoHOI1rvUmEFDBGS1ijYg9bsFDJ+Rpx2gcmvhhOGAj3iczRatf7WzjVqe1GCR5b+tOGGQ9Uj62zGixSMwCK0SgIMeoepgmZ1uzk5ekPiwBVGM7SuRPud0fzhoOb6G76cIf+Owv0MZKj5QtE8mmqJ7b/0RdoXug4ZKLWFxCEaN//JuPzfzDsQET0daeQfaYLbGvyReStjoTGNomHzZzG/xGnejIuvMZKd4SUR8mMrDryYn/h6/bWYabj1xCSvHttFVDcyr8jY8Ftib/UmBMMn5AQorrmKahdXJsDuRIS589NTHu/BjUZDkJUYzyLbRtBw3PkDoFThMbGa5kVnaBYGQPzTKmR/RTJkm9EhvIVcAYDg+eOLKQcd35v31d6RTV
+ 9XOcwnDk
+ 8KZ3sDlJySTcsj1Krz0SEWCT3+Vf1anQ8OeV6VfB9WEwDlJHeeo88PWLzylzDT/GViX0LIwqjOCZ5DsTNcmaK/NxAvKXdrF/Dj1yLaGgM6DkS0aEACoadPEjgJeJLPoRDi/8frDOXOrIchINaoYtMJdKFEujmAA2cjiuIpmPVpBykfK4v7k3+h3wNu0FYJmHusUpMT+bme8cjY4/vlW9mjI13p8iOIWPSDPFmWjKsds0RkOx/Pe6R3jNX+FC62IDlB3Cw1Gv9Qw7A183uQCqJM3XLTyRlKUtNtiU/TdBx6gZKey/sXRhTuG1Ef50UXcg0arYgzbG3g06XF/NmLhR6uAwy9vB1S1y+9g9xopg0hIL/8840k5WFawltlClmYeO+gEfqJ1ijDu6VSgnFgY3FG2uELbutDcSURaPBoZzdpa4H58bJ1sLigD+PjLmWdxeeLNvCNpwIA65n7ik=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,93 +89,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> Add thin wrappers around zone lock acquire/release operations. This
-> prepares the code for future tracepoint instrumentation without
-> modifying individual call sites.
+On Mon, Mar 02, 2026 at 11:13:46AM +0100, Vlastimil Babka (SUSE) wrote:
+> Promote Harry Yoo from reviewer to maintainer. Harry's been involved in
+> slab development for multiple years now and doing a great job.
+
+Congrats, Harry! Well deserved. Looking forward to working with you in the new
+role!
+
 > 
-> Centralizing zone lock operations behind wrappers allows future
-> instrumentation or debugging hooks to be added without touching
-> all users.
+> Add Hao Li as a new reviewer. Hao has been doing very useful reviews for
+> a while now, so make it official and ensure the Cc's.
+
+Thanks, Vlastimil. I really appreciate the trust!
+
+Also, thank you for the patient and constructive feedback and for taking the
+time to engage with newer contributors like me on-list. I especially
+appreciate you proactively Cc'ing me on relevant slab threads (even when I
+wasn't on the original Cc). It helped me stay in the loop and get involved
+more deeply. Happy to help with slab reviews going forward.
+
+And thanks, Harry, for the kind words. I really appreciate the encouragement.
+You were the first to Cc me on your slab patches and actively invite my input,
+which really helped me feel involved and start contributing more. I've learned
+a lot from our collaboration and look forward to continuing to work together.
+
+Thanks also to Lorenzo for the congratulations.
+
+Acked-by: Hao Li <hao.li@linux.dev>
+
 > 
-> No functional change intended. The wrappers are introduced in
-> preparation for subsequent patches and are not yet used.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-
-*checks patch 2 diffstat*
-
-I think we could do it as mm/zone_lock.h even and not pollute include/linux/
-Even kernel/power/snapshot.c could include it in a somewhat ugly way.
-However we should also later look at moving that particular code somewhere
-under mm/ really...
-
-Anyway,
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
->  MAINTAINERS                 |  1 +
->  include/linux/mmzone_lock.h | 38 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 39 insertions(+)
->  create mode 100644 include/linux/mmzone_lock.h
+>  MAINTAINERS | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 55af015174a5..947298ecb111 100644
+> index 61bf550fd37c..5f3cc4193a8e 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -16672,6 +16672,7 @@ F:	include/linux/memory.h
->  F:	include/linux/mm.h
->  F:	include/linux/mm_*.h
->  F:	include/linux/mmzone.h
-> +F:	include/linux/mmzone_lock.h
->  F:	include/linux/mmdebug.h
->  F:	include/linux/mmu_notifier.h
->  F:	include/linux/pagewalk.h
-> diff --git a/include/linux/mmzone_lock.h b/include/linux/mmzone_lock.h
-> new file mode 100644
-> index 000000000000..a1cfba8408d6
-> --- /dev/null
-> +++ b/include/linux/mmzone_lock.h
-> @@ -0,0 +1,38 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_MMZONE_LOCK_H
-> +#define _LINUX_MMZONE_LOCK_H
-> +
-> +#include <linux/mmzone.h>
-> +#include <linux/spinlock.h>
-> +
-> +static inline void zone_lock_init(struct zone *zone)
-> +{
-> +	spin_lock_init(&zone->lock);
-> +}
-> +
-> +#define zone_lock_irqsave(zone, flags)				\
-> +do {								\
-> +	spin_lock_irqsave(&(zone)->lock, flags);		\
-> +} while (0)
-> +
-> +#define zone_trylock_irqsave(zone, flags)			\
-> +({								\
-> +	spin_trylock_irqsave(&(zone)->lock, flags);		\
-> +})
-> +
-> +static inline void zone_unlock_irqrestore(struct zone *zone, unsigned long flags)
-> +{
-> +	spin_unlock_irqrestore(&zone->lock, flags);
-> +}
-> +
-> +static inline void zone_lock_irq(struct zone *zone)
-> +{
-> +	spin_lock_irq(&zone->lock);
-> +}
-> +
-> +static inline void zone_unlock_irq(struct zone *zone)
-> +{
-> +	spin_unlock_irq(&zone->lock);
-> +}
-> +
-> +#endif /* _LINUX_MMZONE_LOCK_H */
-
+> @@ -24350,11 +24350,12 @@ F:	drivers/nvmem/layouts/sl28vpd.c
+>  
+>  SLAB ALLOCATOR
+>  M:	Vlastimil Babka <vbabka@kernel.org>
+> +M:	Harry Yoo <harry.yoo@oracle.com>
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+> +R:	Hao Li <hao.li@linux.dev>
+>  R:	Christoph Lameter <cl@gentwo.org>
+>  R:	David Rientjes <rientjes@google.com>
+>  R:	Roman Gushchin <roman.gushchin@linux.dev>
+> -R:	Harry Yoo <harry.yoo@oracle.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git
+> -- 
+> 2.53.0
+> 
 
