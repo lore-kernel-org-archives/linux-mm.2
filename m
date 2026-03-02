@@ -4,115 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6432EB362E
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 18:51:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CDDEB362E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 18:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4F796B0005; Mon,  2 Mar 2026 13:51:31 -0500 (EST)
+	id 626466B0005; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD3846B0088; Mon,  2 Mar 2026 13:51:31 -0500 (EST)
+	id 5D3CF6B0088; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADFDD6B0089; Mon,  2 Mar 2026 13:51:31 -0500 (EST)
+	id 48B886B0089; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EC436B0005
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:51:31 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3B3305820E
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:51:31 +0000 (UTC)
-X-FDA: 84502016382.27.B5AF7CF
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf14.hostedemail.com (Postfix) with ESMTP id F2DB0100006
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:51:28 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FU6TgQyQ;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772477489;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F5226B0005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 13:58:16 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B5AB91A02B3
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:58:15 +0000 (UTC)
+X-FDA: 84502033350.05.A1C4F7A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1489D40005
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:58:04 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iZbgNlrn;
+	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772477892;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5JQ76xqporR72La0Gtzvw92CKKW0Qc86jR/6DhxsEDo=;
-	b=1Qxe3v+geleVjl12E4qo4GMeq5TbF7xnXK6K33LCcjqMzwfEELXXE2CcGn1E1gFVzHWJbH
-	0gYS0YkMEYWP1lmcfUHtxWjJvdNd+tQ23cnFYYdeY1Sbgbt+vI4Lyns3OVkp/IaVEGcir9
-	2DT6xKMAN3Hj4fdN4eJrdQ2ASh+OdF8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FU6TgQyQ;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772477489; a=rsa-sha256;
-	cv=none;
-	b=gvZhj7LNN+k2x+QXmiaU86iGGK+DERcQX3bofkxvr4BHAAwQ+KYxCO6GNB/35vO8Kcpm7d
-	EvUCCmD+uas4y96cQAc167CE+QDofh6hR8Ryf1ImixrQNsbjryhKCpMRPyVT0PkXIHhCTT
-	BJ6OSc87cWWLxt1/ILamLHCffD7kMEQ=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4836f4cbe0bso41231615e9.3
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 10:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772477487; x=1773082287; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5JQ76xqporR72La0Gtzvw92CKKW0Qc86jR/6DhxsEDo=;
-        b=FU6TgQyQ6+Fx9wDQaKo7NiBtwHuqNCDJzo+WOiarMH99WIsG/Dzyw+UFDMe+JgM7d9
-         3TNIJT7GyNF4d9IvvY1Fq6uU4LirweVDwFVH/d0SoCLWfCjqCFzvGzr1c1fbSGpKyyvZ
-         xCvP3qKvZPSL2Ohaf17s3Dpai4hC/RFRNCloxhVItTV/qYbH3gTDCD6Y89tXz/c51Zzo
-         m9daDxwCX0VTFnzat9yK7RXWZC6aqNQn7WLRB7ocSws7VxbcC126Hy/VGUaQeiDEKWUm
-         UCIL7sAgs9/+c89TGrITqO9U3y4O4hkLisW/ob58dkj76sNmKcFSvdO2YjAEGb5piMFM
-         /S6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772477487; x=1773082287;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5JQ76xqporR72La0Gtzvw92CKKW0Qc86jR/6DhxsEDo=;
-        b=I0bridhx3Ex+K27cBTjNMwfsnuHhriRhL7VUlwYmHCkWBQQyvG8NSIpLnTd+I+Bs+d
-         wudJt8avBAYqR1dTAmzumITFT7ai9p4f1ZrxwuOtWG+5vUtocCVWFDQPP3ZRQl2kiQDt
-         e9fng48HnjbTA2zNZVLLeep6BVB8iFIBO3GXss20Hy3HEdthe3l2tnVBBx8dbNyKkGBo
-         uAw20shULzG088hHONbomayrTdeghx+j566hV1+Z6/vVE40Zo5ndy7JzxRJ37Cm0N1Jc
-         hk7pTyb7IqAEdfrPdC2FKlKiw2XPUur0npr6CP0QAAE1uMkZj3TGeaCtXzBiXZw53Qbv
-         1SSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWz+bd/5MaKZgqGiZSi9OIXU+gsF52PL9Cwbn2xEcGDaL8AWN49S5GcW/KbumsY+0nygiSSKVvu+w==@kvack.org
-X-Gm-Message-State: AOJu0Yx1zOV2kMWliXsaQtrAqGygXhh8m7EKiH1eUTZmNC5syQbm0NW6
-	N8XLpAt6wy9K/G9+TXE89k0+eStcSNOZskPmIq+pWALM4HMyNRPkQjJ4E4kXedMRCX4=
-X-Gm-Gg: ATEYQzyJpr6TyKfKtAGC9GNLov+8mwNxtpZv48PG0VMb5zx5hDnNCObiXNINMUN7QWz
-	ZQ5gUeqr6mGE5CsOwtsnalPEI4zgIOBxYuiXQd3+xAAV3ZDP25OD+rR5xy0SFqsuR6O9x9TPUXE
-	iDq03qMshv9nBtyrsL1Qm5IUkHrAXPxN/QPn6xx1SVx/SqpDEt9EbWiIX+7r58h5zwzSdaLZEFh
-	oHRJWpVUHDlRqNPnYT65bn0f7sZELzCMLkvuiQt6FZsA2rZa/iUULLWff2HhU+xp7RPvhIWRH89
-	6B9ha6upDvq5nbA32ESLR2mw9NbCSxJsPtlBlXYlwhgscpelNAEXFJYF1ZXjSN+q1CE6GiH7SDv
-	zQRUK2gL0D5n5SEg7O+aAkgqn4P9t5zcsUKkTwHYBS01y7f2wXinRCgEBxQcDYMTSL+55PEcHgV
-	o36N1B9os33K/nn7L8ol5ftcafWbYTGKZDwgx46fZIee9HyJE=
-X-Received: by 2002:a05:600c:4e05:b0:483:b505:9db7 with SMTP id 5b1f17b1804b1-483c9c0b940mr203343295e9.32.1772477487242;
-        Mon, 02 Mar 2026 10:51:27 -0800 (PST)
-Received: from localhost (109-81-20-148.rct.o2.cz. [109.81.20.148])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfb87030sm136547875e9.10.2026.03.02.10.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 10:51:26 -0800 (PST)
-Date: Mon, 2 Mar 2026 19:51:25 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Mikulas Patocka <mpatocka@redhat.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>, linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vishal Moola <vishal.moola@gmail.com>, Baoquan He <bhe@redhat.com>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] vmalloc: support __GFP_RETRY_MAYFAIL and __GFP_NORETRY
-Message-ID: <aaXcLRdhq0IyoNIG@tiehlicka>
-References: <20260302114740.2668450-1-urezki@gmail.com>
- <20260302114740.2668450-2-urezki@gmail.com>
- <a8010888-ce49-9232-f132-338de8e18cee@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=Yhojqot03CduyM+NDYiNoCmj0becmPzCDdcp/ONvQ9Y=;
+	b=TCGBwGYeMVidy4FJECb7STxo8xj7LZt3iJz1cu+983GFvPYeC3HywYPtVPUgrIjsQqIp8j
+	+58L6+F01sLCDCsT4NSpeo8sIkrAhj+zVevBqM48OvccLto4WqOVKKlnJXd+SesCHZHf45
+	fZGTs7h4TI2bzmDFZ7uXcoNCHnQXYO0=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iZbgNlrn;
+	spf=pass (imf11.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772477892; a=rsa-sha256;
+	cv=fail;
+	b=SBtpIGwthC+bSoOSuMmKRLklqCmHi4o6Met+ab7BF8Yn9weFrkldizBNZtlaf0ywKjxLe9
+	ebUGizF1KnMoN+NYfQVl2OLgfp4BP87oWB34scnB1yN1TPGaAG2ySMqTnL7Bd+q+ZLzVje
+	IMhZvHHw6xLOZ9ExiWOOlqDROFb13KY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772477885; x=1804013885;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=k85SXxA54F8xA11wCWPrjJpJwxtZFDsXhh204h9a5dE=;
+  b=iZbgNlrnQGqO8ENz25b8SK3M9MqN8gZSYMxfTJ78NVb888ouWcw223CH
+   TiYjITKNnCNAVXCSQvRWU66PhuEegqy8Rj0Vzc3bgo+Nr9PGXjTC7AFCv
+   ofc9gPyNCA+kGw7EbDzTtxCnQcJcc8cr+W6uJR5PqP4z4/97Pn7VTI8Zp
+   u1inff9VxdgBFO10NR40MAALzrAsjI8kdf24uD5Q1BEOGG+r3wP8JPQsH
+   Dntf8upqkoQ2CWU5HSsnJYEUdJhzpeHuRLJmtOs0FiNMDiqgW/SmJFl0n
+   WoO/CUK0gfL4OvQBVcU3wMK+knieL3cjC2sKWUQgySdLX2lnPWhxMbTB7
+   w==;
+X-CSE-ConnectionGUID: R8ZzAqi2Rt+qhc4fkiTCeQ==
+X-CSE-MsgGUID: XBijE8zBRhiIdb5SAIV4YA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84848227"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="84848227"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 10:58:02 -0800
+X-CSE-ConnectionGUID: trRY+5brTUmpMObwjrR5zQ==
+X-CSE-MsgGUID: yhLEOr9DRYCEZ7MTmmv2nQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; 
+   d="scan'208";a="244750109"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 10:58:02 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 2 Mar 2026 10:58:01 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 2 Mar 2026 10:58:01 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.15) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 2 Mar 2026 10:58:01 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cGAbaeVMmediRpEKqZEZFvtRqRM/q+nmODzrFq05Rfa1rPDgU1zdSTSRFhDsoWF+lsgCpl6F6Ta2lXHCW1lPU+/AkxV8dRDfXq9qWKaC0CxrBMuaTjWiaRQXTsuDoaxC3W/pyHciafk1gEIxzXpKjg0+5BDiRujQx41tqikMlZWYDQZrkMM5qevVjY0hey5VfjWzWDQntSGWElIKqouMd1qgdzzXudCIZhF9UaW4IkWMLAL8y3CeqRy2EXfapIaoTF1SCvMdH5Cu2TSsAya80CLT5uFyntJCFS4b7FspbZhVePBLhwkdCvs36B+i6OpUiOlsCt8TJF7FJ9YXLhGtBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AiZ5aYZuBNiQzlu5ItFNv7uDnz8b9X0WRLOvWM/arIU=;
+ b=tEkFHovpkI8M1L/FVEpibt+oMbe4xvczP7XuuWICLoQ8AwxzxHDxys4sdrWmgLiaGcD7t3F+P1hT4sFlSz6CzSzU4/FwqilskDzyztTXFNG5FX65WiVsVXUKjFWyzzilxFETKCqlD+IYipS28EIgd4/yknwsolhpzoZ4JweA8qxIO4zuy9Afibv2ZpTBxv22Pfh73xdCCb8olnYUOCQS6WYC0xheagaWe68gysCtwJJqVlT7jPqJ8JjIZ1C0fA5WEp+WOo1p6qH1E0tcQ5v4KKiFzIEuGW8d+pfVZMZP4Id3/NbifzFqbzJ1c0i1j/wXH8bntDdUbLIvwoJ2tDbyUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DS0PR11MB6517.namprd11.prod.outlook.com (2603:10b6:8:d3::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.20; Mon, 2 Mar 2026 18:57:58 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9654.020; Mon, 2 Mar 2026
+ 18:57:58 +0000
+Date: Mon, 2 Mar 2026 10:57:54 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, <dri-devel@lists.freedesktop.org>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, "Simona
+ Vetter" <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>, "Alistair
+ Popple" <apopple@nvidia.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] drm/xe/userptr: Convert invalidation to two-pass
+ MMU notifier
+Message-ID: <aaXdsiRlux/cZ6WC@lstrano-desk.jf.intel.com>
+References: <20260302163248.105454-1-thomas.hellstrom@linux.intel.com>
+ <20260302163248.105454-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <a8010888-ce49-9232-f132-338de8e18cee@redhat.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F2DB0100006
-X-Stat-Signature: 33tc3r9kdenryx4ccer36ae4yzmkcmfp
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302163248.105454-3-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: MW4PR03CA0354.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::29) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS0PR11MB6517:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3935f7ba-f73b-4739-5257-08de788d9e86
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: F1OQdNIUlbDYjLvcWJ9v8br+AZXunN0klDKu011xB7uq83w0MbzE23jJdNFbOx0PbHJfFcp3pBibnvdLGcLkc/xq3dG4hBHx/djh7dLL8xRmZxEg85BLb8xFgMROLweSBjJWaZ1NnKMD02YWOGeV8xFjjizfPLDnOdeGDssJ5Q/0YfTFrfaH1RViSpzY7ggTuhrTByylq+bYe36xBne1CZk8WxShPEdNDgexV3PfnHh+nm4ErlegibFgjKg2FphHqf67rbQra9a789aMOk6XAXBzxsetvSeJDXAX+rVeg4B1OT9mds6RIhd7/Y18dwYnosghNbFKBCQiQ5LIdCb3vF0TbqynJqEb8cZpUlGMZoQXSy1el7cNUI4yimIMy3vbN7pAz4khlFElQtOywZgrsL2fa8MfAzgugIrpYgPCEbt3YXUmlTdVVtiuSq+A54L8dMhX8mA7PLBYdJu4SWsEGIVZ1Xkl9NCZsQQDs1LZVb5O3CSYKrG4F5bofLnIdYyYBg+UGOgvIAPqxNipnfP0amyXM/zUSNcxQsf5qTeLAZJa+5V0oLqWFWKSyylQegp5SA6nvru0bxvZ2YGEyAyWc9tGI+hDXrHWsfUJybPzzU7kWl25pCUEt2IcInXhZzDiUSBFQ2Z1Vzwvd0ZnYYDl5M07rL0rgT78rlME0FuxGaD10WjZIHuUeho9ddPzqcN0Z+DcdNBsIJ/qCkcdgUA1FNuexTKj+tMLL5M71LReR14=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?UyUKsRezdd45n9NVEo4knUaqTk4H3YIFMTzfpDmAL0fHFvoKOxeRc5Ig1h?=
+ =?iso-8859-1?Q?ZzBwO9blIMHNz9VJDbmynGCIu/dKqPUJiFHu5n+fPb8xRev8CfGAPV2d5J?=
+ =?iso-8859-1?Q?reQWPlTyHEGEmy/LxfvDkLjW7/24CXdN0E16i781b4zd8NJ8C93g1VnaDK?=
+ =?iso-8859-1?Q?Hm/lc1xO40Vu+AcUqwO1aTxJYuog9R7R+CFZtvOM1hM+QVoIiI7j+5dLL4?=
+ =?iso-8859-1?Q?xTLqlH4IW4h8/SlqSu+AfG3RpbKp23nf+VwvzdJP+B5kzShdcyE1TMl1yx?=
+ =?iso-8859-1?Q?OuIERn2UOuRXJlRZJucVDmauU91EK2BG+BPBKeyK8GzaqT7y5edN28DvOA?=
+ =?iso-8859-1?Q?GgkcXDolUD3/fqYJKeJRpKgH4nIhRrMzMu5qW7p6TN5TJDJCdqXAW7S/FO?=
+ =?iso-8859-1?Q?Ukti2NdDzBA1K5xhtFPVq41Mm976iSRJ0hzZs7FxZibFg+OvG12lVcmExm?=
+ =?iso-8859-1?Q?Te++QzUUAN/wqqIHuIjgOlw4nXHyXEIS0JYcw9uWpoIp2x8RU7wNKGEi1U?=
+ =?iso-8859-1?Q?8RMuSvMbGXKoL/kULLsc4hGM/5Rj7Xe5ib4chMPI4KkId+cQx8mxQdMW3C?=
+ =?iso-8859-1?Q?763LvKuRf4wSHmUUcHtKp0ClOnSKWGVFNO4irK186NOUqjCTAs3Z9yF/Sa?=
+ =?iso-8859-1?Q?Mb+hlIbmGDMhuXHZ4jQnNLJL+qJ5ff4Gfs2T2By/zxM7pnvR8ZnmsX8ugb?=
+ =?iso-8859-1?Q?W2H6m7+gM4xtEfHfpBxPktWnuQZsR03V4ZZfHl7K8Yr/JY9PF56F6CCXK8?=
+ =?iso-8859-1?Q?j2moiv/6T98Q14atS6XzHYYiIoRd1wkzxoYG6lwruPXTJUuEeIcJE2Huxn?=
+ =?iso-8859-1?Q?FkTW3vAWmUQsr6co6mzaPSIkwqaEoQG/VfkgA6+Fho8vpigYGWkzqJRnzv?=
+ =?iso-8859-1?Q?1hw9oBIlIedePQYUPTkOvgzmENzkHXtZOI3vyCPjXNuUXd8XTSuICiwr0f?=
+ =?iso-8859-1?Q?4pmIBAwUWKB01iuYCEbMmFqEPwEgpr3wDVq+eYwc7N9fpWwfeQA/F+vRwP?=
+ =?iso-8859-1?Q?6UlVEBgLCdNNxe5PbI9o3T0IT9eiTZ7LhXDGpmkUH2uHxNtV+/+4B4zysE?=
+ =?iso-8859-1?Q?c4v1mJAwzGLIDQ6NkCdehLN6PUzo9kYQ2cSmX7BhyI89bwoa/p3kLS67O5?=
+ =?iso-8859-1?Q?f/t67vrZV20HRYL3JKfDmhE6nUlQSjtQI6ickaIUBlKiQomv2tAEfl8lK0?=
+ =?iso-8859-1?Q?ddfKSW6kh43b8coetj3+VfVH8wNLEqywwD9LjY/KceBVd8pWuAtYiR95BY?=
+ =?iso-8859-1?Q?64XURQU4W/L3P1UI6gb2aa530p9e9hjgH+dIgOC13GV+LKuhzQO6/NEoni?=
+ =?iso-8859-1?Q?fG2FrP8pB3V3v9DUxJ2Qu3MODoZrgDagufubMJpB81BjB2dD2JjSihM7VZ?=
+ =?iso-8859-1?Q?N6PZc8vkVXMRAzskhWwVhdC49+EXNmnL57cGW8dL1uynDOsygo6o3H35Od?=
+ =?iso-8859-1?Q?3FIaAwknJX/CRcBbckyzwAZYPTHkNcsW0ziWTr1SZBqqWi9X9EB8zJIoeP?=
+ =?iso-8859-1?Q?daG6J+t1jaMRnMLlhRknZy8sWvhulK4mvTeFmVOgTv3dyyEO0m/ZCmLplo?=
+ =?iso-8859-1?Q?ppFQpCWDW5r3XE+AB0UAMBWC83YAqVf97UuEZN4Q2wuSTj1KYCcJl6Hn7L?=
+ =?iso-8859-1?Q?BUyswHdVcuBY+29oG96UATAgAF6ZKYYsfjIWKl6ZYnbaHkJY9nJlk1A+AB?=
+ =?iso-8859-1?Q?fZS6VDyVKlCooqtNWMX6IMmq4wqCSDPcNMsaFZ6G7Yle2heTk2ed2YtNAg?=
+ =?iso-8859-1?Q?6nptRAg9W2cug/1dsIp7I53sF3jQm+azpQE2UzcjmRJpNfpYPugVc+QK2+?=
+ =?iso-8859-1?Q?RxsXYXV98LrNR6rxGcZyYA6u/nLya9o=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3935f7ba-f73b-4739-5257-08de788d9e86
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2026 18:57:58.0334
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yOSOuZQLdb6kuE8uLrl2lBPco2SXR+CmZw6j6MLsB+QUDuY46VCBTqle44+gZITSKzAOyqCpG88p9Ffd5kkr4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6517
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: 1489D40005
+X-Stat-Signature: yk5qwesacz54pga84hyybb73s6f64kfe
 X-Rspam-User: 
-X-HE-Tag: 1772477488-936846
-X-HE-Meta: U2FsdGVkX19YHrxh3t+UQA2fQoiE2VvkFqUYUviZrqnxKYalsRV1JIJCMDdsTrSV+Lkzxxb7dCFLY7IkDrjisl/l+81pSAvnQ79Gbo0tES4imb2fepfRpKv3FKPacWOrn6Vt3RKB4CYNXXvcHGuW5aGzivacl4CWQjW53+Cy01LnoIAAqBP1qFZEp9R636gTzhWNGD+EhNd4HYm2brd80gVygonLpX9bBOU9dqAOUmdUDx6BF6//Ok8WoCQp9aRK5PuloyRR0szjgYf2zDJGgtzu1Bj8MgdRgFcTpLKE558VQkiIogSlvfE+Ev+YFXG4t/9le7YYUJXF6UvO7kwo0TrQjsY6aMYaPTrA6KEBYdSvU+WXxhio+gCN8UEoZmwapcS0g7vAhf1uWHIdG65wl+XiGOsqYHmB5/WM9/loVTLaZtiwxskE1hJzzt8eN41BipX0H8RQaSHnIEM5Hadp4IHf5ELw6UUoDfAxctT87tRtkP6prbU+pL8xysqKTSlvu4o5EdVfoppRkBPu4LMQpW4UDzGRoJ99l4BqpvnPN71j0mm4alukk1OIKdALxtqC0x0acaPqpfV9sRZeO+2xXWKuTw9n/j0Ns/Q3umQi7zqXhaABCjmzdwzDFoaIM2HrTkloNoSuZeo650v7zLHrhR7t8pKhbIq7lq73on4rbBz+mv3vO1ePXj6+Lrh+nFsYSnv84g4uaQ64LeqZELrvcCPXezRnrlEP5rvdrPCVCCgSd2rHHQe8Vq6GeD3Loa2fubaObG1w8igfmE/yacavXJi2PWwV1BNs40BQBT1h/Qe5jN84l8vEEyjYWfcE7XgEBTsGYLeScKKJ/EXgAcGqqmC6FfM+ExAmtXIVocKfo4y1hzHOUF0n4Qugj+jCy8ujlThTccsWt+Kusfj6933ZPPAsJmnlf7W3BCNfD9GQu9/HRKi0YLTGvMDQqUKEwcWEmj76Mf+2xf8Aj+pxnft
- GrybXloH
- BKYZGHLERSOu/5oVXHHJ+UErBhcKoObNPHWdD3n1ZWCMmcVcUVU/IykkmGE0IlMQld0Uvw/axvgrQONWFCLHXWaIwn7jLF/xVHZWlG6Cpr8mbqI3cnPFmm/LQswLEhGyj1LKX4MOoThvStn8HNrWPOv1O9UVgR+CmO5KwVAMV3yKH4wYimboM8D7NSy2UcOS00HMzlT7Ud3DsbqFCAFxGIeUQil9alEzPijNfdTMG0/fGdmDBMw0Zv+aDVyr3rgtel1u1Sccu9rnFV7XBkxmdA/6FOjN7TmwVOVapOTAEHRWlHRy6CoqRGYEpWE1/JI4ine6CC1b1gTOGbERfa8kL/kQoLr7V02X6QNw5JcazAxMJipXxR47fcPG/tYt6QGZUhKwbh17WmalsRKXOaUah/HiRjcsNHRSAdNml2XLFf/9gx71UdCHoW3DtE+0IjwlkJhFKph10N79f+c/tAiKGfWkuZDBzwB9+wFPG9xvVo6CyDPgS2ENeb7MAZXN7zEpa72/1XzbIyMuEEgFRrlCtsDV8A2I8U3WXrTFQ1iKoZtvXYyg+nudC6ShmGcuMxWjdEpBkTWENhh+B3pBpvXYg0TiEQH74IYMltXK/
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772477884-94487
+X-HE-Meta: U2FsdGVkX1+WpOAUweW7ity5TsHuRnmKySIhFDKjL5vuqz71RPoqegKg0aFD4TvBb0KYuvefhpMid5iOYP3CQQ7uNYaVsLoyRL95XFFeGQxHZ7pjl4XJu5EhDCgs2DhsiH5+Nmcw4i49d/Bxdn6FBlgL20K/lMKO2skMKMMuixCyswaYxVkNdoH05e9TScozUE3JK6gcrmI8jitRMQqIgz5jLg71QI7j87BczLQTZ3j+XcPkUzXkhDmILLrcFhC4N8MboRQR47QIh34vDCPWb8HiQoJkUUJwLZ8P+eDgEoF3ccf17xdISIrt97NoPr7L74Fv1B16ynIexa+kWV/sRls2gZMsKMcrd9N4KgP68HPbctXnF2gsuNFC8qcl9fM0f7qYDqzwweCbtEbbU53QpWnAiFnxQ2bPrx8L/p/6DkmXUL5628CuiRcZNoho1uM+9j7Fah/nPJeQpcwXL4mso8UNUsQVqrun8O3KmVRMtGyFK3jkkJ9iVhJAj9lWksZaHtJaN/lrMBi3e1zUYX0Y0Nbqa8Sip340cixCg8irw1h3eXL49+1TPP2GE3pZSsoJyZwRjeMRStYnRjTKlKfJe99bEjyYGslVTy7xNAingFELiL2CC70dMIOJ3JFm2ag1e5Reau/hrIVv6Qhgh7iLjVUFbY5KGemZELw3LWYMUiMyD+qpnUF0SIZAoP8Un7hoJNtP2Y5677JM+kkQY57myeywyHowEvs5UszLifM2IypOuKrX6fgNjT7ivoCPnJ7cJnh3BdKA/+omKO6oLf/N6h81QFuD+26Oc7yP88C2cxg0d/nS/BTyRe7/zYsFD5xIMraIZAaD/XPzlOXdsBUW5q7/10nwjKpwIuprIA8D8cKeGORhr3MFekvjXIe1UFaVjc/xjzawZ/hfcMTX/JHb+pNVE3BuzLrG1ZYGBmzm8jl5014np9zsSezkWDI0XGFn54eVTiFf9zz33lrzlhL
+ 2SbiEoGo
+ 72BQjM5j/DZFAgvnP99KHshXX03v5BUmkKSPnQyUsi4vw07YXZK0Q/sJQ7MEfnEZHKjFAL6LJ8IQ/RM+RuGYbbbWPaVwh1qTnTl0QYoDA+WPpID1qrfLObudbHzc9D+2NV0WVRZltKqo+7Cohoe0vokzB/OlWLBMiGy6lT8YBGR7ffJTFWkfzVzen+5biWjQyAFLIO6Q+WksijdoYwVDBsAuF/6nPqHtMJ71jn2c2UUwc+cSlWgUKV+s8jG07GyUpI6icCTYDuvhWS83b3fbGrk8sMlP5kNWLGFh4OlDqQCIW3QqarxRPmO4vtyt54ecGF2Ff5BvFPaAZ9Rj+gzlyabXSr0xgGITItAZnHJTBJ9DaRkrJsfpLRwYzLMcVtKRPl+GDSwE1wBRg/UUjoX0FcjSjRH729rXOgUfXAZtqpi8v//kCOQ65iZ/GGcLOfxvlacnHRygSyt2CK/ARKd84tmraGtRwzdtNgxSastOOUKU3Z8GWoV14HKdUKgUB7X4INrHzKx/vnP72rMlL892516/Ppg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,127 +196,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 02-03-26 18:38:53, Mikulas Patocka wrote:
+On Mon, Mar 02, 2026 at 05:32:46PM +0100, Thomas Hellström wrote:
+> In multi-GPU scenarios, asynchronous GPU job latency is a bottleneck if
+> each notifier waits for its own GPU before returning. The two-pass
+> mmu_interval_notifier infrastructure allows deferring the wait to a
+> second pass, so all GPUs can be signalled in the first pass before
+> any of them are waited on.
 > 
+> Convert the userptr invalidation to use the two-pass model:
 > 
-> On Mon, 2 Mar 2026, Uladzislau Rezki (Sony) wrote:
+> Use invalidate_start as the first pass to mark the VMA for repin and
+> enable software signalling on the VM reservation fences to start any
+> gpu work needed for signaling. Fall back to completing the work
+> synchronously if all fences are already signalled, or if a concurrent
+> invalidation is already using the embedded finish structure.
 > 
-> > From: Michal Hocko <mhocko@suse.com>
-> > 
-> > __GFP_RETRY_MAYFAIL and __GFP_NORETRY haven't been supported so far
-> > because their semantic (i.e. to not trigger OOM killer) is not possible
-> > with the existing vmalloc page table allocation which is allowing for
-> > the OOM killer.
-> > 
-> > Example: __vmalloc(size, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-> > 
-> > <snip>
-> >  vmalloc_test/55 invoked oom-killer:
-> >  gfp_mask=0x40dc0(
-> >  GFP_KERNEL|__GFP_ZERO|__GFP_COMP), order=0, oom_score_adj=0
-> >  active_anon:0 inactive_anon:0 isolated_anon:0
-> >   active_file:0 inactive_file:0 isolated_file:0
-> >   unevictable:0 dirty:0 writeback:0
-> >   slab_reclaimable:700 slab_unreclaimable:33708
-> >   mapped:0 shmem:0 pagetables:5174
-> >   sec_pagetables:0 bounce:0
-> >   kernel_misc_reclaimable:0
-> >   free:850 free_pcp:319 free_cma:0
-> >  CPU: 4 UID: 0 PID: 639 Comm: vmalloc_test/55 ...
-> >  Hardware name: QEMU Standard PC (i440FX + PIIX, ...
-> >  Call Trace:
-> >   <TASK>
-> >   dump_stack_lvl+0x5d/0x80
-> >   dump_header+0x43/0x1b3
-> >   out_of_memory.cold+0x8/0x78
-> >   __alloc_pages_slowpath.constprop.0+0xef5/0x1130
-> >   __alloc_frozen_pages_noprof+0x312/0x330
-> >   alloc_pages_mpol+0x7d/0x160
-> >   alloc_pages_noprof+0x50/0xa0
-> >   __pte_alloc_kernel+0x1e/0x1f0
-> >   ...
-> > <snip>
-> > 
-> > There are usecases for these modifiers when a large allocation request
-> > should rather fail than trigger OOM killer which wouldn't be able to
-> > handle the situation anyway [1].
-> > 
-> > While we cannot change existing page table allocation code easily we can
-> > piggy back on scoped NOWAIT allocation for them that we already have in
-> > place. The rationale is that the bulk of the consumed memory is sitting
-> > in pages backing the vmalloc allocation. Page tables are only
-> > participating a tiny fraction. Moreover page tables for virtually allocated
-> > areas are never reclaimed so the longer the system runs to less likely
-> > they are. It makes sense to allow an approximation of __GFP_RETRY_MAYFAIL
-> > and __GFP_NORETRY even if the page table allocation part is much weaker.
-> > This doesn't break the failure mode while it allows for the no OOM
-> > semantic.
-> > 
-> > [1] https://lore.kernel.org/all/32bd9bed-a939-69c4-696d-f7f9a5fe31d8@redhat.com/T/#u
-> > 
-> > Tested-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > Signed-off-by: Michal Hocko <mhocko@suse.com>
-> > Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > ---
-> >  mm/vmalloc.c | 17 ++++++++++++-----
-> >  1 file changed, 12 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index a06f4b3ea367..975592b0ec89 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3798,6 +3798,8 @@ static void defer_vm_area_cleanup(struct vm_struct *area)
-> >   * non-blocking (no __GFP_DIRECT_RECLAIM) - memalloc_noreclaim_save()
-> >   * GFP_NOFS - memalloc_nofs_save()
-> >   * GFP_NOIO - memalloc_noio_save()
-> > + * __GFP_RETRY_MAYFAIL, __GFP_NORETRY - memalloc_noreclaim_save()
-> > + * to prevent OOMs
-> >   *
-> >   * Returns a flag cookie to pair with restore.
-> >   */
-> > @@ -3806,7 +3808,8 @@ memalloc_apply_gfp_scope(gfp_t gfp_mask)
-> >  {
-> >  	unsigned int flags = 0;
-> >  
-> > -	if (!gfpflags_allow_blocking(gfp_mask))
-> > +	if (!gfpflags_allow_blocking(gfp_mask) ||
-> > +			(gfp_mask & (__GFP_RETRY_MAYFAIL | __GFP_NORETRY)))
-> >  		flags = memalloc_noreclaim_save();
+> Use invalidate_finish as the second pass to wait for the reservation
+> fences to complete, invalidate the GPU TLB in fault mode, and unmap
+> the gpusvm pages.
 > 
-> I wouldn't do this because:
-> 
-> 1. it makes the __GFP_RETRY_MAYFAIL allocations unreliable.
+> Embed a struct mmu_interval_notifier_finish in struct xe_userptr to
+> avoid dynamic allocation in the notifier callback. Use a finish_inuse
+> flag to prevent two concurrent invalidations from using it
+> simultaneously; fall back to the synchronous path for the second caller.
+>
 
-__GFP_RETRY_MAYFAIL doesn't provide any reliability. It just promisses
-to not OOM while trying hard. I believe this implementation doesn't
-break that promise.
+A couple nits below. Also for clarity, I'd probably rework this series...
 
-> 2. The comment at memalloc_noreclaim_save says that it may deplete memory 
-> reserves: "This should only be used when the caller guarantees the 
-> allocation will allow more memory to be freed very shortly, i.e. it needs 
-> to allocate some memory in the process of freeing memory, and cannot 
-> reclaim due to potential recursion."
+ - Move patch #3 to 2nd to patch
+ - Squash patch #2, #4 into a single patch, make thia the last patch
 
-yes, this allocation clearly doesn't guaratee to free more memory. That
-comment is rather dated. Anyway, the crux is to make sure that the
-allocation is not unbound. The idea behind this decision is that the
-page tables are only a tiny fraction of the resulting memory allocated.
-Moreover this virtually allocated space is recycled so over time there
-should be less and less of page tables allocated as well.
+Let me know what you think on the reordering. I'm looking with the
+series applied and aside from nits below everything in xe_userptr.c
+looks good to me.
  
-> I think that the cleanest solution to this problem would be to get rid of 
-> PF_MEMALLOC_NOFS and PF_MEMALLOC_NOIO and instead introduce two per-thread 
-> variables "gfp_t set_flags" and "gfp_t clear_flags" and set and clear gfp 
-> flags according to them in the allocator: "gfp = (gfp | 
-> current->set_flags) & ~current->clear_flags";
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> ---
+>  drivers/gpu/drm/xe/xe_userptr.c | 96 +++++++++++++++++++++++++--------
+>  drivers/gpu/drm/xe/xe_userptr.h | 14 +++++
+>  2 files changed, 88 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
+> index e120323c43bc..440b0a79d16f 100644
+> --- a/drivers/gpu/drm/xe/xe_userptr.c
+> +++ b/drivers/gpu/drm/xe/xe_userptr.c
+> @@ -73,18 +73,42 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
+>  				    &ctx);
+>  }
+>  
+> -static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+> +static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
+> +				    bool is_deferred)
+>  {
+>  	struct xe_userptr *userptr = &uvma->userptr;
+>  	struct xe_vma *vma = &uvma->vma;
+> -	struct dma_resv_iter cursor;
+> -	struct dma_fence *fence;
+>  	struct drm_gpusvm_ctx ctx = {
+>  		.in_notifier = true,
+>  		.read_only = xe_vma_read_only(vma),
+>  	};
+>  	long err;
+>  
 
-We've been through discussions like this one way too many times and the
-conclusion is that, no this will not work. The gfp space we have and
-need to support without rewriting a large part of the kernel is simply
-incompatible with a more sane interface. Yeah, I hate that as well but
-here we are. We need to be creative to keep sensible and not introduce
-even more weirdness to the interface.
--- 
-Michal Hocko
-SUSE Labs
+xe_svm_assert_in_notifier(vm);
+
+> +	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+> +				    DMA_RESV_USAGE_BOOKKEEP,
+> +				    false, MAX_SCHEDULE_TIMEOUT);
+> +	XE_WARN_ON(err <= 0);
+> +
+> +	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+> +		err = xe_vm_invalidate_vma(vma);
+> +		XE_WARN_ON(err);
+> +	}
+> +
+> +	if (is_deferred)
+> +		userptr->finish_inuse = false;
+> +	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+> +			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
+> +}
+> +
+> +static struct mmu_interval_notifier_finish *
+> +xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+> +{
+> +	struct xe_userptr *userptr = &uvma->userptr;
+> +	struct xe_vma *vma = &uvma->vma;
+> +	struct dma_resv_iter cursor;
+> +	struct dma_fence *fence;
+> +	bool signaled = true;
+> +
+
+xe_svm_assert_in_notifier(vm);
+
+>  	/*
+>  	 * Tell exec and rebind worker they need to repin and rebind this
+>  	 * userptr.
+> @@ -105,27 +129,32 @@ static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uv
+>  	 */
+>  	dma_resv_iter_begin(&cursor, xe_vm_resv(vm),
+>  			    DMA_RESV_USAGE_BOOKKEEP);
+> -	dma_resv_for_each_fence_unlocked(&cursor, fence)
+> +	dma_resv_for_each_fence_unlocked(&cursor, fence) {
+>  		dma_fence_enable_sw_signaling(fence);
+> +		if (signaled && !dma_fence_is_signaled(fence))
+> +			signaled = false;
+> +	}
+>  	dma_resv_iter_end(&cursor);
+>  
+> -	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+> -				    DMA_RESV_USAGE_BOOKKEEP,
+> -				    false, MAX_SCHEDULE_TIMEOUT);
+> -	XE_WARN_ON(err <= 0);
+> -
+> -	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+> -		err = xe_vm_invalidate_vma(vma);
+> -		XE_WARN_ON(err);
+> +	/*
+> +	 * Only one caller at a time can use the multi-pass state.
+> +	 * If it's already in use, or all fences are already signaled,
+> +	 * proceed directly to invalidation without deferring.
+> +	 */
+> +	if (signaled || userptr->finish_inuse) {
+> +		xe_vma_userptr_do_inval(vm, uvma, false);
+> +		return NULL;
+>  	}
+>  
+> -	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+> -			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
+> +	userptr->finish_inuse = true;
+> +
+> +	return &userptr->finish;
+>  }
+>  
+> -static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+> -				   const struct mmu_notifier_range *range,
+> -				   unsigned long cur_seq)
+> +static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
+> +					    const struct mmu_notifier_range *range,
+> +					    unsigned long cur_seq,
+> +					    struct mmu_interval_notifier_finish **p_finish)
+>  {
+>  	struct xe_userptr_vma *uvma = container_of(mni, typeof(*uvma), userptr.notifier);
+>  	struct xe_vma *vma = &uvma->vma;
+> @@ -138,21 +167,40 @@ static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+>  		return false;
+>  
+>  	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+> -	       "NOTIFIER: addr=0x%016llx, range=0x%016llx",
+> +	       "NOTIFIER PASS1: addr=0x%016llx, range=0x%016llx",
+>  		xe_vma_start(vma), xe_vma_size(vma));
+>  
+>  	down_write(&vm->svm.gpusvm.notifier_lock);
+>  	mmu_interval_set_seq(mni, cur_seq);
+>  
+> -	__vma_userptr_invalidate(vm, uvma);
+> +	*p_finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
+> +
+>  	up_write(&vm->svm.gpusvm.notifier_lock);
+> -	trace_xe_vma_userptr_invalidate_complete(vma);
+> +	if (!*p_finish)
+> +		trace_xe_vma_userptr_invalidate_complete(vma);
+>  
+>  	return true;
+>  }
+>  
+> +static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish *finish)
+> +{
+> +	struct xe_userptr_vma *uvma = container_of(finish, typeof(*uvma), userptr.finish);
+> +	struct xe_vma *vma = &uvma->vma;
+> +	struct xe_vm *vm = xe_vma_vm(vma);
+> +
+> +	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+> +	       "NOTIFIER PASS2: addr=0x%016llx, range=0x%016llx",
+> +		xe_vma_start(vma), xe_vma_size(vma));
+> +
+> +	down_write(&vm->svm.gpusvm.notifier_lock);
+> +	xe_vma_userptr_do_inval(vm, uvma, true);
+> +	up_write(&vm->svm.gpusvm.notifier_lock);
+> +	trace_xe_vma_userptr_invalidate_complete(vma);
+> +}
+> +
+>  static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+> -	.invalidate = vma_userptr_invalidate,
+> +	.invalidate_start = xe_vma_userptr_invalidate_start,
+> +	.invalidate_finish = xe_vma_userptr_invalidate_finish,
+>  };
+>  
+>  #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+> @@ -164,6 +212,7 @@ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+>   */
+>  void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+>  {
+> +	static struct mmu_interval_notifier_finish *finish;
+>  	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
+>  
+>  	/* Protect against concurrent userptr pinning */
+> @@ -179,7 +228,10 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+>  	if (!mmu_interval_read_retry(&uvma->userptr.notifier,
+>  				     uvma->userptr.pages.notifier_seq))
+>  		uvma->userptr.pages.notifier_seq -= 2;
+> -	__vma_userptr_invalidate(vm, uvma);
+> +
+> +	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
+> +	if (finish)
+> +		xe_vma_userptr_do_inval(vm, uvma, true);
+>  }
+>  #endif
+>  
+> diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
+> index ef801234991e..4f42db61fd62 100644
+> --- a/drivers/gpu/drm/xe/xe_userptr.h
+> +++ b/drivers/gpu/drm/xe/xe_userptr.h
+> @@ -57,12 +57,26 @@ struct xe_userptr {
+>  	 */
+>  	struct mmu_interval_notifier notifier;
+>  
+> +	/**
+> +	 * @finish: MMU notifier finish structure for two-pass invalidation.
+> +	 * Embedded here to avoid allocation in the notifier callback.
+> +	 * Protected by @vm::svm.gpusvm.notifier_lock.
+> +	 */
+> +	struct mmu_interval_notifier_finish finish;
+> +	/**
+> +	 * @finish_inuse: Whether @finish is currently in use by an in-progress
+> +	 * two-pass invalidation.
+> +	 * Protected by @vm::svm.gpusvm.notifier_lock.
+> +	 */
+> +	bool finish_inuse;
+> +
+>  	/**
+>  	 * @initial_bind: user pointer has been bound at least once.
+>  	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
+>  	 * read: vm->svm.gpusvm.notifier_lock in write mode or vm->resv held.
+>  	 */
+>  	bool initial_bind;
+> +
+
+Unrelated.
+
+Matt
+
+>  #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+>  	u32 divisor;
+>  #endif
+> -- 
+> 2.53.0
+> 
 
