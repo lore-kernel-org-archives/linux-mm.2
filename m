@@ -4,104 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC12EDA686
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:34:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927BFEDA68E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 801336B00D8; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
+	id A34916B008A; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8DF6B00D9; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
+	id 9E2A56B0092; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E4F36B00DB; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
+	id 8EE526B0096; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EB656B00D8
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D83989C68
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:34:51 +0000 (UTC)
-X-FDA: 84505149582.25.1D4F241
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DBBF514000D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:34:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BNOnXQzD;
-	spf=temperror (imf23.hostedemail.com: error in processing during lookup of ak@linux.intel.com: DNS error) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF626B008A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29688C11F2
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:43:38 +0000 (UTC)
+X-FDA: 84505171716.18.FE18C5B
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E289514000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:43:35 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=U7PBQddm;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772552086;
+	s=arc-20220608; t=1772552616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iOzTlA9Q1Hh95wpgJXpxS8PX0KPJ9xZrKE9BFwAgi/g=;
-	b=B8kCwSpgJZRcagSBOPtwrV6GtwR4do54IdyGKXAiJpi6WGkevIjVvkNzTyKkwsdSm46u3g
-	oOIdQq/6iLr+R2z9/P6+z0FdklSUlUaGrKLsfujbOy85j9Sn1PcLmJzwTIxnC1mp5A6AuY
-	4WXK1P2VYsw6UnHojYKHr9ywCiHAuO4=
+	bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
+	b=Ogh3Tl0KJrS5dHKTxYEe9KHZ6ftE4jdEjCMmLvWIfTEgFCf+MJgknxAFozoe4SBhI5BoXN
+	shLDBMzIIUxjMyr0utZBEmD0cMYGNAaaUebVk24meCJ5N5MJCYLyDuam/JzSoqs1T2HwiE
+	iu2v1ZOAY7oEO6o8isx8zwsstjQaI2k=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BNOnXQzD;
-	spf=temperror (imf23.hostedemail.com: error in processing during lookup of ak@linux.intel.com: DNS error) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772552086; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=U7PBQddm;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772552616; a=rsa-sha256;
 	cv=none;
-	b=bJ7PFT4rn9XNW8GzXY2qH3VZB6kHnouMCOmyoa6BQ+y6afC6Qchq5Gpd9HsNwPcJlJ+LK4
-	u6l/npyMiRkcbxXIBtWUk8D/Bf0yeZQuvLGHgqAoqusGDwbUiCFcBX2VFcB0oPLdMPrgYp
-	PyypJ7d5gu6hgxEQgMX/Th1Zdy6qB68=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772552081; x=1804088081;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SJ3H5MuWnPGJaNMwps3UfGolG6H6CdjpYf/y1cQ5PJ4=;
-  b=BNOnXQzD3jXXMZSNd0+9Bg6YFYaw8Gx7DhVBN+Ent8ZUYSDzAr690deu
-   AfAC4AtcHF/gEOS9TYlBMG4dwDB5pW6dXu5JJsexp1TCjTu8upkkh9cNq
-   WiqwXwcgV8vrlKWf07DXn4RJwW9uyiInHaMmTZ5JS3A/eJySiaYd+gdAA
-   48cwUl34pSfZhiH15HoNbg3gaPo151DL6QC5NefBkZC0rFlwD3AMrnctA
-   +tyh+WHRqQ73avzkMwKPblP4YIgfGS26ZApYzN2HRRyPS1P0/VgU+qlVT
-   I09i62pevzJpoqJk/wFFEdZKramuI5lD49aRnt2GeR7WwlOA0Ftw6Dc/K
-   A==;
-X-CSE-ConnectionGUID: Ws+B2C26QX2oyupagNFM4w==
-X-CSE-MsgGUID: UE/p/fyzRWybMjER6qe64A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="83931180"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="83931180"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:34:37 -0800
-X-CSE-ConnectionGUID: iVp9sCndTqK96kxZPvYD0A==
-X-CSE-MsgGUID: rsYFXQKeRx2/z7GYR6AU+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="218144917"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:34:37 -0800
-Date: Tue, 3 Mar 2026 07:34:35 -0800
-From: Andi Kleen <ak@linux.intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
-Message-ID: <aab_izbib9GzSeRc@tassilo>
-References: <20260225232708.87833-1-ak@linux.intel.com>
- <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
- <aaR4y-lCl7YPEcnX@tassilo>
- <af715d91-6d49-462f-9e9f-3a513ff2ef77@kernel.org>
- <aaX2B9Efh0dBed6c@tassilo>
- <4a08a249-211b-40b9-b6bd-7c54af2b9d15@kernel.org>
- <aaYFpEmiH99dryA4@tassilo>
- <72667151-816f-49a7-90e7-c68db3ac3390@lucifer.local>
+	b=ehJW9MgND6piV0pnVH2fWgoaK9io3WL6o+fcPhFcipvB0M9whtyk9tIP87r74ixjoL2gNK
+	kZT0C8Bo9mepsyGqb3/sEY0K9b/m3RKs6Lb8IPpv3xEjJLJDjszp6v1wjc/r9oVKWyNnh1
+	5dNGtcWWP81rWOb6hMKZPxb2F8pAFb4=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c711959442so554695685a.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 07:43:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1772552615; x=1773157415; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
+        b=U7PBQddmyPZqPlhJdOamZvY6538vVXZ0OFHv46CFl7RKwDYcER6JI8IXDX1mKFU3eF
+         rtt1PHpXbfAdkMA2C15zFvL5jXtNW2GdohYZ2GY1g9ad/x6OrUvJlVG2EuyZi0LOy8hg
+         9XojcxfbqSRcxPbDWI3/xt8AEUH9vU9K86gSQfkAkDJqELqkVLLGzw/z0BBMXqBZKDts
+         hZpSz92sw1Lx2b9VWFLDkPP4wR4PWo6vadYLmyNeCmMA0NJxFI7VSl6VbTQVgnep0PJE
+         88OyS7+KHWNNim3idrmixCMac3eZMxrZjewORxXxgXOAaMGxMuYk3+OWglSa5feghx79
+         kVSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772552615; x=1773157415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
+        b=aI+hLp5+8uS8EnDfE4dE8h0+Hnlxb1KM1mnV7GCX/rMdG6taz+bo15Fy7FgCjmu/Yl
+         LiJeXsbc0y9z7T4EeEmNKzn4Q/lNsKuDBv9VFcDfnis+dn6Da5Uknm7bd+dCwMH/0JEO
+         I9cPtUqjduynf/7cWupeuLx2zsgIeeMVcTPy2ndZTzZw2kqKS2nIYmbrZlYSV2ls5OIt
+         LK0tPit8o7XSIzlYpJSehaw5F4WQtYGYd6XFpyqezazvYUYdjxmXhFITQ1m89RX5No3i
+         SbvNlaUoyV40F0Liikty/Y++KsrsMC3JpAtmA8QfSyyxr5IroXDBh95Zxpuy0ORfH6iR
+         6Ggw==
+X-Forwarded-Encrypted: i=1; AJvYcCWoRS0pJb7jmGG8QzCzvwkwHxJyMYO3LkQurv8RBv1zqExSpQ2VkrslZ4+VDcnLhiI06loFRab/Fg==@kvack.org
+X-Gm-Message-State: AOJu0Yx+aIZW/LqmMuE71wiMdCMhqj9kIBxs/nV8jylCj1ec+LYXsyBr
+	MFRe+Kbq8hIZPKKufIZih09GGs2wKUfuL2yLmS0LI4DYprnKMRTe8FEpQCSuzScGkN4=
+X-Gm-Gg: ATEYQzznyw8Yr6FPvJ11B8G/jh7szGncLIftl5IqRm6WsEHPlcLz0l/FyVeMTRqCupz
+	Tu2aSi6jZ3RvK/gyQFplIjpbGrLck3pMTFrrWwCZYou588MignBBjDyQw2hkXBmQ969cKkyYc3p
+	YwDACdXmzVVLrSSygcvDyesp3Gd+xB3+0LJ+1MpvJWcEhvVZfPsRneA9XOvQSt5r8NY6UqlyGQj
+	e054hrJNLApTuRKFXIC9/YUiky4Xi5FuSgn11ZAc4S56udGF5XJkMEmYJUSm/2PHWRXlV9z4Z3+
+	ieRCZXAUfgmekK6fCnC+OOVYdQh2dt1ZsFonWU3sgneHnhASce4wlGwRM2l//a1GBOQo8ekPMpS
+	hk/czkraEhhGAllj+JKd0uc9wCfvSwpTItgoBg43xMbwlW9wsD/1E218EGtsg0+KHNM/8xzWOiH
+	ubJ/B5Wh8HA5rqz5+/HDj3U206gaUEjbT6
+X-Received: by 2002:a05:6214:21c7:b0:899:f39f:b884 with SMTP id 6a1803df08f44-89a0a86c9d5mr33626696d6.9.1772552614690;
+        Tue, 03 Mar 2026 07:43:34 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c7374e07sm134729676d6.33.2026.03.03.07.43.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 07:43:33 -0800 (PST)
+Date: Tue, 3 Mar 2026 10:43:29 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] mm: memcg: separate slab stat accounting from objcg
+ charge cache
+Message-ID: <aacBoazC21TAi-Q2@cmpxchg.org>
+References: <20260302195305.620713-1-hannes@cmpxchg.org>
+ <20260302195305.620713-6-hannes@cmpxchg.org>
+ <ji2jjt4vtmt2ox7wzytpivttc4z7j3u6cwmv23r6xit5322gns@te4t4djl5nlk>
+ <541a6661-7bfe-4517-a32c-5839002c61e5@kernel.org>
+ <aablae2eFl9ne5fW@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <72667151-816f-49a7-90e7-c68db3ac3390@lucifer.local>
-X-Rspamd-Queue-Id: DBBF514000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: yc7h3wuhqotr8e7z8woa7yhqgwyxzsft
+In-Reply-To: <aablae2eFl9ne5fW@linux.dev>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E289514000B
+X-Stat-Signature: 4yeyzfwxjchgntfx3k5wgrbx73bbeqs1
 X-Rspam-User: 
-X-HE-Tag: 1772552080-169863
-X-HE-Meta: U2FsdGVkX193p2P+du8xh9Ici+HZYt9u6wNtP4T8bbdMIErFXh+u8bYALSNYhcpWBk1hXPoddyFDUzsE/t60ZExmOF4IqnC8fQfPwZ4Q/s6uwjhJfMypsPrn4Q+ilkDEIkkhH8wY1ZvtuB0uy/kO8RKWZwh1/LioxGB+Gz6qlFSD7UX8FEYlxfC5VIH5Hkmr8OVw0QAhkYRYsFUW5SIyYT7SzzsIgfovaH1IGrPJMNHQsrfy7kQXNME/5MLnQGnDjKFAPZNKFKnEakFHf7sTz/mORps4M9AbHYrd6pPHFHjplmAH7ahHx9foIzdZGwxXowyY09kpoqN5/PIm+QEHbf8jjxjxPwgyjNz5eRIC/WORFfGwKaw7CNlsKnewDgmX92wTG9RNDlSLeR7qQLRNvCzJZhbqXXn6q2ZrP5nJTkDh5Bt5WTvnIlHpBJL10lB8HJ/hk2AmMefYPpHmZUsTEf0ZFZl7Ujwv2921paX0L0miKj3yA/7x54aHkNANgkaeEeuo2uulJKITsxt9MJ1TD/GPfb2URAbIm47pypYGC3oI9WXeRa18HiByKjaeNXWo3mjZxm4cBjysoYmg1xCgfmV1diLzKm6EiIhYxytr+ryFL+ibJZSWNuhqOZIVyNadH73tyMUKSaoOiSipMXHcPllCeHjfu9nSTYztlzh3dxhANGGh8DIv6InGVZtLEJJIrMz/YsFXOyiv5GlM+iL0e4IXgdAgujCoo10Gk1rljOF/YIo7WDYVG6wLFDlJjRKHA1pClgejuVt+/K0/OmIdOCe3wKD8vXa+cm/AX7uoGmLEfLHQGeBONaIkm20tEfLibb9BPTh/uKUwBGSb1GnNcYyJ9y8/RbKCm+U1uV/V4pP8cp2ACLdcWNRryd2VY9XHEc1cNaWWrbmL6M53rhIW4/8oqiCXpuVkC5uMPeb9kohRmxlleg42p+YOcuIANqzm899L/sdBn7ENTqxfkre
- JY/KpCXb
- XfKwXnbJ3TB4t9SV7GPOpLD8qh2QBQV0NBTik1mlFGXsmT+t5qGorFgbSOJhKslTXcmRbYGegdTpQV7OkCsVXLSHqVM3zulKPIVo4ApJ0AdSKm4XnSiAZdCowSA+tPqV+mOQ/ND+49yQIisWI/nFPOhQU5sLT58pZwJ6mTVcAMm6hF5MfywAOazb4/oIdJJpIZiyRkJzIaUIvKcqQkEQ0uq3y9VURMUEaqu3M0b9X07CV28QAw6m6/xs3Pg==
+X-HE-Tag: 1772552615-405186
+X-HE-Meta: U2FsdGVkX1+iuVc7PFPIaF/pj2aO0xxqDzIKWvQESxkCvobWX1pZAin6kSDuw5FKr5y8W4LLGpZ2n2IadDb4hHZuuFHqIuQwXvYjpUhh1x7/cYE+bvO1CIW7kh0TZumat11z2hINqU2/pJJyfSRnzjvmZ1OzNwwEJaOQ6oekeyhPnIqpXzRStcVpTMIUXu0T8pgg21qDyLg/AIB5+xF0323VtoL7tAOx8V4z6mn44MMQWdxT0Xh+XmeZqKby9RghaUOFrOKmbYgQZGARNzhn83VsI485E5ox5rm6eCJMja+j7OhmE4Pe7jHrcN/+UL+A/97zTq9xygMr0b4dr0NgPpnZ7hV7Zoi72MmO+eNHbUI7v15zHYFenLYym/QndN+HicpgG2V1Np8iy6D6p6DMUy0zjLifn0opmouj9v3D4itJzyD/Jfl0K3ghTWQGVcvD/OslQuy0pbLimFrxr99LEARH4iqiAk372HrXLLGu9nPzXktSGaUBauyPJ/KwYzhOOlmJvHypwegLf0jrXudSGQIbxmMYhaDZ4c62YqRqXM2oZy1zCVtPBhL3DVyugIGK+GMP6D8xobdS7a8kkE0DV07wcdPrp+ueSIXf3g09nJKAmV1P4RUrIa6x3HB1Eam4hHLViekBTk/1kiX7UsCHwjwIE6uGUskLsSWfDIK2F0ROtn/UZ5FQjtlqLc40a19aHde/T1yYwrm8eedolTvgZasDBXFEEM8sFhTjSc1CuYV/ap+rdsGgiWOSbBXKYkUPfGE9rlgzQGhU0BuX9k6RjeJipPwPIEXV1SYdM+kosBJQYYNL1GwKae6ZeJqmASFb2l81HItz+a6GUIqSYEK2bXdEd1Soz71sMexzvx1VqVwWg0pcBUk39ETaqgXjcI7Jf9o1QDRBVZYGXI+3n8WSDn7q7fXGjWtSliwFjitFwzxNGYdPa2T8k5k0BB4E/N1sX19fWkHWH1U93vEKLfB
+ BARX1fSN
+ u8gPtAsqLyGNEYt/HnqzBiLQbI8xs/hGhCie1xXEH26r0UAWcv/Ml5EZpJbThRjPkveOwBlYy5E3oBwK/hpzcLZmIjiF2J7bnMI/7HOmLnPFOwYDJoYdd/UElqdIDKex0QT1IfGfMHypgrpcJBb+hEtYF9yM1LI4+rwWzAwwnqGFTumgeKiLFwlbxQhd+l7b+y7K84fL1RLsNUpqzvuSkCrqu0TQhBLbtH3dBER+WsLVyvR4/GF4KLpKT6l9xK8mhLG8haEQn6Y1UdMs/T82/o9SGbubj1WjKSCaDO/jULXcQyXBIe48bBJfbSQpY7oPIgxpRwsi9D9JO62AN+K7F5Yqif3igckRK3PF5fH7MOGf9ssmyOz3vK9zf14xAJlgkvEhvqp0WyKCeu1Z9TB+7vefoDJ2OE+emul6xzx59IkF7DLE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,99 +126,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 09:39:14AM +0000, Lorenzo Stoakes wrote:
-> > > actually crosses two 4k pages. So it must be aware that mmap etc operate
-> > > in 64k, but the underlying emulation might be smaller.
-> >
-> > Sounds like a very contrived use case, which I'm not sure actually
-> > happens.  From my past experiences most software usually doesn't use
-> > complicated enumerations anyways but just hard codes something
-> > reasonable (like in your example just always assume 4K worst case).
-> > From their POV it makes sense, how would you test
-> > a complicated enumeration for cases that don't happen on your
-> > current system.
+On Tue, Mar 03, 2026 at 05:45:18AM -0800, Shakeel Butt wrote:
+> On Tue, Mar 03, 2026 at 11:42:31AM +0100, Vlastimil Babka (SUSE) wrote:
+> > On 3/3/26 09:54, Hao Li wrote:
+> > > On Mon, Mar 02, 2026 at 02:50:18PM -0500, Johannes Weiner wrote:
+> > >> Cgroup slab metrics are cached per-cpu the same way as the sub-page
+> > >> charge cache. However, the intertwined code to manage those dependent
+> > >> caches right now is quite difficult to follow.
+> > >> 
+> > >> Specifically, cached slab stat updates occur in consume() if there was
+> > >> enough charge cache to satisfy the new object. If that fails, whole
+> > >> pages are reserved, and slab stats are updated when the remainder of
+> > >> those pages, after subtracting the size of the new slab object, are
+> > >> put into the charge cache. This already juggles a delicate mix of the
+> > >> object size, the page charge size, and the remainder to put into the
+> > >> byte cache. Doing slab accounting in this path as well is fragile, and
+> > >> has recently caused a bug where the input parameters between the two
+> > >> caches were mixed up.
+> > >> 
+> > >> Refactor the consume() and refill() paths into unlocked and locked
+> > >> variants that only do charge caching. Then let the slab path manage
+> > >> its own lock section and open-code charging and accounting.
+> > >> 
+> > >> This makes the slab stat cache subordinate to the charge cache:
+> > >> __refill_obj_stock() is called first to prepare it;
+> > >> __account_obj_stock() follows to hitch a ride.
+> > >> 
+> > >> This results in a minor behavioral change: previously, a mismatching
+> > >> percpu stock would always be drained for the purpose of setting up
+> > >> slab account caching, even if there was no byte remainder to put into
+> > >> the charge cache. Now, the stock is left alone, and slab accounting
+> > >> takes the uncached path if there is a mismatch. This is exceedingly
+> > >> rare, and it was probably never worth draining the whole stock just to
+> > >> cache the slab stat update.
+> > >> 
+> > >> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> > >> ---
+> > >>  mm/memcontrol.c | 100 +++++++++++++++++++++++++++++-------------------
+> > >>  1 file changed, 61 insertions(+), 39 deletions(-)
+> > >> 
+> > >> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > >> index 4f12b75743d4..9c6f9849b717 100644
+> > >> --- a/mm/memcontrol.c
+> > >> +++ b/mm/memcontrol.c
+> > >> @@ -3218,16 +3218,18 @@ static struct obj_stock_pcp *trylock_stock(void)
+> > >>  
+> > > 
+> > > [...]
+> > > 
+> > >> @@ -3376,17 +3383,14 @@ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+> > >>  	return flush;
+> > >>  }
+> > >>  
+> > >> -static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+> > >> -		bool allow_uncharge, int nr_acct, struct pglist_data *pgdat,
+> > >> -		enum node_stat_item idx)
+> > >> +static void __refill_obj_stock(struct obj_cgroup *objcg,
+> > >> +			       struct obj_stock_pcp *stock,
+> > >> +			       unsigned int nr_bytes,
+> > >> +			       bool allow_uncharge)
+> > >>  {
+> > >> -	struct obj_stock_pcp *stock;
+> > >>  	unsigned int nr_pages = 0;
+> > >>  
+> > >> -	stock = trylock_stock();
+> > >>  	if (!stock) {
+> > >> -		if (pgdat)
+> > >> -			__account_obj_stock(objcg, NULL, nr_acct, pgdat, idx);
+> > >>  		nr_pages = nr_bytes >> PAGE_SHIFT;
+> > >>  		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+> > >>  		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
+> > >> @@ -3404,20 +3408,25 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+> > >>  	}
+> > >>  	stock->nr_bytes += nr_bytes;
+> > >>  
+> > >> -	if (pgdat)
+> > >> -		__account_obj_stock(objcg, stock, nr_acct, pgdat, idx);
+> > >> -
+> > >>  	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
+> > >>  		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+> > >>  		stock->nr_bytes &= (PAGE_SIZE - 1);
+> > >>  	}
+> > >>  
+> > >> -	unlock_stock(stock);
+> > >>  out:
+> > >>  	if (nr_pages)
+> > >>  		obj_cgroup_uncharge_pages(objcg, nr_pages);
+> > >>  }
+> > >>  
+> > >> +static void refill_obj_stock(struct obj_cgroup *objcg,
+> > >> +			     unsigned int nr_bytes,
+> > >> +			     bool allow_uncharge)
+> > >> +{
+> > >> +	struct obj_stock_pcp *stock = trylock_stock();
+> > >> +	__refill_obj_stock(objcg, stock, nr_bytes, allow_uncharge);
+> > >> +	unlock_stock(stock);
+> > > 
+> > > Hi Johannes,
+> > > 
+> > > I noticed that after this patch, obj_cgroup_uncharge_pages() is now inside
+> > > the obj_stock.lock critical section. Since obj_cgroup_uncharge_pages() calls
+> > > refill_stock(), which seems non-trivial, this might increase the lock hold time.
+> > > In particular, could that lead to more failed trylocks for IRQ handlers on
+> > > non-RT kernel (or for tasks that preempt others on RT kernel)?
+
+Good catch. I did ponder this, but forgot by the time I wrote the
+changelog.
+
+> > Yes, it also seems a bit self-defeating? (at least in theory)
+> > 
+> > refill_obj_stock()
+> >   trylock_stock()
+> >   __refill_obj_stock()
+> >     obj_cgroup_uncharge_pages()
+> >       refill_stock()
+> >         local_trylock() -> nested, will fail
 > 
-> I'm sorry but it's a legacy user-facing stat, we don't get to change it or add a
+> Not really as the local_locks are different i.e. memcg_stock.lock in
+> refill_stock() and obj_stock.lock in refill_obj_stock().
 
-I would rather call it a legacy user-facing lie at this point.
+Right, refilling the *byte* stock could produce enough excess that we
+refill the *page* stock. Which in turn could produce enough excess
+that we drain that back to the page counters (shared atomics).
 
-Labelling something with 4K that is only 2MB is just wrong and
-incorrect. 
+> However Hao's concern is valid and I think it can be easily fixed by
+> moving obj_cgroup_uncharge_pages() out of obj_stock.lock.
 
-> > > >> I'd expect other cases where an architecture might have to care about
-> > > >> the actual, smallest possible MMUPageSize it might be executed on while
-> > > >> running the program.
-> > > >
-> > > > That's fine, they can use the min, or just the first match
-> > > > (which is always the smallest)
-> > > >
-> > > >>
-> > > >> It's a shame we had to add MMUPageSize, but maybe it might resurface if
-> > > >> we ever support emulating 64K/16K user pagesizes on 4K MMUs.
-> > > >
-> > > > Okay, so if I follow that correctly you're suggesting
-> > > > to change KernelPageSize, not MMUPageSize. I can do that change.
-> > >
-> > > Not at all. I'm saying that we leave KernelPageSize and MMUPageSize
-> > > alone, just as they are today.
-> >
-> > That doesn't solve the problem that motivated my patch
-> > smaps is confusing today and would stay so.
-> 
-> Except as you've been told you can find this information out in different
-> ways.
+Note that we now have multiple callsites of __refill_obj_stock(). Do
+we care enough to move this to the caller?
 
-Yes I figured this out by myself, but only wasting a lot of time caused
-by the confusing and incorrect legacy interface. That's the problem
-I'm trying to address here.
+There are a few other places with a similar pattern:
 
-Thank you for rubbing salt into the wounds.
+- drain_obj_stock(): calls memcg_uncharge() under the lock
+- drain_stock(): calls memcg_uncharge() under the lock
+- refill_stock(): still does full drain_stock()
 
-The crazy thing about this is that hugetlbfs even does it correctly,
-it's only THP that is blatantly wrong.
+All of these could be more intentional about only updating the per-cpu
+data under the lock and the page counters outside of it.
 
-> 
-> >
-> > >
-> > > Instead, if we want better statistics (and I think we want) regarding
-> > > how things are mapped, we should look into a better interface.
-> >
-> > I don't see how a new interface helps really. Some of the problems
-> 
-> I mean, you want information X, we're suggesting the providing of an interface
-> to provide information X and... you don't see how that helps?
+Given that IRQ allocations/frees are rare, nested ones even rarer, and
+the "slowpath" is a few extra atomics, I'm not sure it's worth the
+code complication. At least until proven otherwise.
 
-My goal was to fix the old interface to not blatantly report wrong
-information. A new magical interface doesn't really help with that.
-
-
-> 
-> > you mentioned earlier could be either solved today with smaps
-> > (e.g. handling the case when a folio is mapped partially and just
-> > report the smaller page size), or are unsolveable in the general case
-> > (what the TLB actually handles)
-> 
-> We're not having multiple entries in smaps for every mapping size, it's broken
-> and ungreppable, and very liable to add additional confusion to users.
-
-Okay, I guess one way to address your objections with "ungreppable" 
-would be to report the majority page size in MMUPageSize and call
-the minority page sizes something else that doesn't trigger on grep.
-
-(MMUSecondaryPS or something like that)
-
-If you don't like numbers I guess we can spell it out.
-
-
-> A new interface gives us flexibility to do what we want, we aren't running out
-> of syscalls or places to put statistics.
-
-I don't see why a new interface is needed TBH. Can just add fields
-and fix the existing fields not to lie. Yes need to take care of 
-compatibility, I don't disagree on that. But just adding new interfaces
-for everything instead of maintaining the old stuff properly isn't
-the right answer.
-
-
--Andi
+What do you think?
 
