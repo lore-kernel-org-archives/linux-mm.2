@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28A6EEC1431
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84942EC1431
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18F136B0141; Tue,  3 Mar 2026 06:30:45 -0500 (EST)
+	id 4FAAB6B0145; Tue,  3 Mar 2026 06:30:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164396B0143; Tue,  3 Mar 2026 06:30:45 -0500 (EST)
+	id 49B706B0146; Tue,  3 Mar 2026 06:30:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EADF96B0144; Tue,  3 Mar 2026 06:30:44 -0500 (EST)
+	id 301B86B0147; Tue,  3 Mar 2026 06:30:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D89616B0141
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:30:44 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7BC8886F62
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:30:44 +0000 (UTC)
-X-FDA: 84504534408.25.D7A031A
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3DB9F2000C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:30:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=RFbjZohE;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=NCPLwqNQ;
-	spf=pass (imf03.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 19BAC6B0145
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:30:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D889113815C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:30:45 +0000 (UTC)
+X-FDA: 84504534450.13.6BAD473
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 820B620003
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:30:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QIFxFnmb;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=BO4B9uid;
+	spf=pass (imf13.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772537442;
+	s=arc-20220608; t=1772537443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSSvKdrdqNtUffp+vZHypJOUj06k8TVBSBVgyR9aCmM=;
-	b=ms1vVZaEAWyf0ZTdmSZWPBHX5mHLTn1EouFVsVTLjo4rvP+nENbYUXSFfDLMSr3r6nS2kr
-	lNGoxMzESB1rIAg1Ci+OCgrIn1BEu175oqAQSK2wrwAS+8CPsDJOPO/WVwINqTNocKDxJB
-	t00GjA/JyteZrlWblP7exmjAXwJW0pE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772537442; a=rsa-sha256;
+	bh=zrUsPz7mski9Qb/OvkgQW1KGt3Ejhzi6jRFHoRkisBI=;
+	b=hPiWaJNnOIKcYD7UL5QeKRPcPc4g8erFtQAvmnT4jdIktpTtONZF59uL62+LppozuRB4j6
+	A2wH7WacIFqf2wyUaYevn9aUBG9m7yBLH1ojHLEsNY1ZoJt8+Pv/1jr9+BagbXVKtpeOj1
+	C7urD4aKITTG5JxQX4dFB/yvXr5Nu4g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772537443; a=rsa-sha256;
 	cv=none;
-	b=4/4QeWgHOP36/fmiDphZhG5e4otKTsVoQXCbEl+TC87Vt+kOX0XHEbsbDoioePK8wdoLB4
-	JO83NJ18GxIlbcK2Q06+f9NJu6ocg5VsqA51qNAplZARo3MI2FjkQOyYIvIC0qW8nQhLF2
-	sOmh3mqBvyxcyBoHlpyXmx7x/DS6/R8=
+	b=3SrZYEbPhFeZgfsp4UznQXBL2CqjslWout2txYJ3rZXzE/KBnQWnL+avnC9/EYYUo6RFdJ
+	9Hx4CPxLZCokRP8BgeMqPiRYd+n62DnBNWfUX+dEchUDBfkqDq3bqxQxPCx5/9iwcHaZYq
+	KXBPWNcyn/2k9Dp1m+mjiCkdG/IPRog=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=RFbjZohE;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=NCPLwqNQ;
-	spf=pass (imf03.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QIFxFnmb;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=BO4B9uid;
+	spf=pass (imf13.hostedemail.com: domain of yuvraj.sakshith@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=yuvraj.sakshith@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239mxom3996898
-	for <linux-mm@kvack.org>; Tue, 3 Mar 2026 11:30:41 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6239moLL2614205
+	for <linux-mm@kvack.org>; Tue, 3 Mar 2026 11:30:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=rSSvKdrdqNt
-	Uffp+vZHypJOUj06k8TVBSBVgyR9aCmM=; b=RFbjZohEdYhFNtNFyhW4v07d1Xy
-	t7Atad8LzCi6bRyYwCMaTj0Njuntt7rDanIojjQjtoPBxUWmKBFMmGb8NlDjrwxl
-	LLGgSA8EdVb0zSP0nhFaWQiC+H6I3Ddf+VaFGvorGD/WHg3Wg4mdikgYxTtwuIp6
-	XIvFpZGhRpAIH8/iUObyhlnJU8WLvBN0eAR1Gtl8fj+qlGDtreSm9SecY8HyVUee
-	TA9/+pCZLavcYwyWdxRbvhfND4qU09bQvVhy4i+v5SqRSWibrWaFd0b1HQgGv35D
-	2KNtCAObhJ7eU5FYHma1tNFzrUoh3OwNjSEtt43fwHtPPRd5iyNOMHAbSbg==
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cns5fs958-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=zrUsPz7mski
+	9Qb/OvkgQW1KGt3Ejhzi6jRFHoRkisBI=; b=QIFxFnmbXG6Yb7INz7t4sLwL7mN
+	ZVGVg3uC6kBrgYgBPgIyevgE640WHF2F2g6Ee/N8dUy1fhW5T7ENVQf2IzX52DXq
+	wGwk+eOQ7HYbv7bK1rTo1NLv3Ob6QwRIJLQ3qZN4qJRQEYNyFvGWtC7ofbJUlk7r
+	SFhuOAIAR3sJ8WPaQwrSowQGpmt3NVKshjAAE3SSBORhXHAwZpR3usEvQUkxTt1x
+	oCy0DYmoL+NSt4qjUvBMdb9JKiemCouKNA5vW06xuO09/mVHokr6zmrIRsapb0Ur
+	PRXp09N3P1i6jXoo1PCoW3eZNeXIobnFjPjeZbDqgzSFMNrU62HoZL+3qaA==
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cnvxf8dk9-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 03 Mar 2026 11:30:41 +0000 (GMT)
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7d4bd29099eso67182382a34.2
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 03:30:40 -0800 (PST)
+	for <linux-mm@kvack.org>; Tue, 03 Mar 2026 11:30:42 +0000 (GMT)
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-46454b2fd81so57005837b6e.2
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 03:30:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1772537440; x=1773142240; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1772537442; x=1773142242; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rSSvKdrdqNtUffp+vZHypJOUj06k8TVBSBVgyR9aCmM=;
-        b=NCPLwqNQ8h8B/+Fw6UUlsQNr9yak1QwF636jCl2VdPGXroHFOaxA7+XjvRtNjbySCA
-         7CoZPW/hOQquhU8QvG+25asp7b0sZzS3MpWbyyPNjQw7YOntD2e8fjP27a3IMjiiqQBg
-         9RFjmQzxb+hxn9oBKE1bYuXBycOQT7LHv/lBeCqY7f/0NvqOR09mGMXIN4YyLU8ZW/Be
-         FuTMKqjQDLuXE0LV3nwh15SLABJEdqDXsCCUw/5H7YuOalPhPsV9RtezvWPZUM8tu7o3
-         G+hWUYFaxdi04C8gI6UsgKct0PlXM5XGVR5N2hit905KsUVTHQRKELI7sOmnkb5NjQ0Y
-         QIvw==
+        bh=zrUsPz7mski9Qb/OvkgQW1KGt3Ejhzi6jRFHoRkisBI=;
+        b=BO4B9uidZnnmYiIZesDtUpM8d/rB9sp4M2bBhNJXdnYak2+X85U7r+vR5OuSEKZIRx
+         4DU8d69nukt/S2cQdgRDin7qMzMN+gHJ+UxXbVhGSq+oBglq2HCsL7+Cd6TrCJmtrxXI
+         PR1INf8xLoPMt3lYZqWvI/SAUrNHfsyGJ5tIf665kfnNQU1ZAqdqlMAfXC5A7yzG9Uer
+         zZk8HYJKgYXgxxFY/Zez1NkxM1FWW+HjY4SB+tyLXE7IT9WkzwwLPBhJnHFVZ3rAwxA5
+         0aU7tDJKoAUNBeI0yCM7+pP2NNCAlMoPhhnIQ72arlUskfDqsRoFEpTLyaJP2D1KTkW1
+         Eukw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772537440; x=1773142240;
+        d=1e100.net; s=20230601; t=1772537442; x=1773142242;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rSSvKdrdqNtUffp+vZHypJOUj06k8TVBSBVgyR9aCmM=;
-        b=Gy7iX01Wokuzfl6o5sZVwW8PMgcW4FPHajCLMKuYp0/S6PuclOh02zgqKd9v0Az0m+
-         wke5/SUQATAzR7vqcnGMwdxG7bEuOcD7wZf9EJ7aK5nj6bKBQ275AhpAgC/mKMkyYkOe
-         RNwwbPM3/bgI/5gPF5MF0OulrWHJqIcymXMxmrL+P9jbAC68sTkbSVpwlftYkQ+NDtcN
-         7Yqf9gyGF/TSc6h5pEnaFjEvVcmA5h8p0aPEEQ+w7AgWa8M1dtfHRpxMCrBiuptdRxiF
-         7d9N6xsnrMSQBpdV2r0eQAhxqFtNsj2Pt+8xPEv8ncNAM7sOevJUpcw1i7LRGsnEk832
-         72YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4Wk+AHkeOWj8EWjw5QRJw+Z3SY3NdeOL785+1J+DxogTHY4LGcxbcBVFMZaeJiCvBG5RvWJVoBQ==@kvack.org
-X-Gm-Message-State: AOJu0YxIbSyc6c4Ayu2hsOI2g60RKQ5OEcXbAo1vmyBlJgRpYqaA1yf1
-	Yhx0j2lWiyjPzIlcHEiMpNwHt1kolbAybyHBVPME5zJrz9duoc59I/sipHgtNXLwprKR3f3Vkdl
-	TB8OixAMecieXU0fEzMCxlmJhjIaIT30Gf711EUyuaytBjpSHc6inCw==
-X-Gm-Gg: ATEYQzywLpgaelNCQQICaKImqMQ95GCgz47d1H16ui48B8srmIOgVbMjUAYoBgIbqEQ
-	+3B/7v1djCfSBWtlE28zcIUFnp4dYfERjR1btvkeDcP5QN5lklwwI6MuuyYIP8JSuL6uro8I26Z
-	1YBOJhnDDMwR6uWMc8CVuqjiRDZweHPyKHJbkjFXVVlf2+cwow37xOtHJpcnyT9fjGdh4rJp2UZ
-	t44/JxQp1OrL9qY1HvF+uzocfQIqskHQYN3+KhOUj/tEVs5DufGzHHS7ZsS1oI2mHSy8zlxWHSf
-	nQTjBAlFLkkFiBkC8mmmtN8mRFOja7fHvTYQfq40M4aPfdd0CpjU9wjlbhh1idjrxK0PhJk3oSh
-	/NALp4KdDyks5HB3Jp5ZxEtVnWPQM6uEM++jETf4fctSPK6w2FRyTMZXsq4lEkjrx7GbZ6++H3Y
-	C7tcLX
-X-Received: by 2002:a05:6830:6a97:b0:7d4:5057:5ad1 with SMTP id 46e09a7af769-7d591b27bd8mr10409236a34.13.1772537440281;
-        Tue, 03 Mar 2026 03:30:40 -0800 (PST)
-X-Received: by 2002:a05:6830:6a97:b0:7d4:5057:5ad1 with SMTP id 46e09a7af769-7d591b27bd8mr10409206a34.13.1772537439862;
-        Tue, 03 Mar 2026 03:30:39 -0800 (PST)
+        bh=zrUsPz7mski9Qb/OvkgQW1KGt3Ejhzi6jRFHoRkisBI=;
+        b=AfjIPlWGv2PSQKNmuZ4V+Wxnnjd1EXXi3zVAkTRdRJ+n+sqTWm6eLo6r8Pik2P4j8B
+         j0Pvh0WuYAsLJCiw1TcXMVGF76Xt2OWAiloSzkxUL2eAB0ZE4nleBgPhzY5nW5ahVFmG
+         l0S11sQAOmKIK7vyuclxnxDdmTtG5HxDxnF816p1pS8ulZa0EgqllaRIDeot59qp4opS
+         zhkjcdEkw8tomreSNLx5+kO8y/lUDF5CFOVTVTZlrBDiQHlBHPRWphFzKe36BJbBMnH5
+         8nGlvbfq9grZYw7mtO9YSjQ272v4v/LV/+Pm/49k3inMJQ+quVyeg2MTfBrONz55ZMpw
+         wzww==
+X-Forwarded-Encrypted: i=1; AJvYcCVufCsSGapZ31ZY117dPSC3U7I7omcZV4GFHoqtGvwPT3iZjKp0wl+C7OyLyRp97rytmrYpzmbZfg==@kvack.org
+X-Gm-Message-State: AOJu0YzGnpzNo/p6wSQeLkTjWcznbIOuygo+Yl4XQV5hJcRgrrt15lQz
+	07pJ8kKCUbwCBHjE/pIETq9oQes+n2KM4DtmRXBi4CXpWPkRYKG+oXVnVeABZcF8UwPtacmV5oh
+	isGgb2fN8XzfoMhNak5ixmoZhkXecWESeXnrpDePrcKNfqcrSPgxc6Q==
+X-Gm-Gg: ATEYQzxN4vWL1YBweDZtn/fsmUFSMTjhxkpyHaVdobc6p0SXde3633m+oW36qBVPYIQ
+	IuyyMWcBY/6fJv1L0zcHIhiNG4iH2ri95CzWnRyvxeOxjaoH/a4AIaXAIPUXRhtRCN23K/c11Ju
+	LW7hITrLEcnCd4zVwtSrO27QwxyaitNZROdK4T4oStXMk8+h7zQgnspGcDnT3u1v2fmHc5ArXav
+	Afl0HAEFbVUR89SaBI9wcRnmEsAio4jVs4+UalBiuYAOqyanrCydRj9ToWnjNpsVe44RbPUxfET
+	4RbaFUZLqnm47e8UAOXt8+9GSUNaSdhXvNLiBC4t78fwHfrhxl4eeSFrbMXkii5jkxfy33qEog/
+	Z83n+y+deABUjgcDLmcGT1I6K+toQEktkgvNnZXhC0elZFUnxb6EulqmkKjfNGZymXXYqZDJ8kz
+	1q0Ukm
+X-Received: by 2002:a05:6808:318e:b0:45e:ed45:15f4 with SMTP id 5614622812f47-464beeffd1bmr9623222b6e.35.1772537442050;
+        Tue, 03 Mar 2026 03:30:42 -0800 (PST)
+X-Received: by 2002:a05:6808:318e:b0:45e:ed45:15f4 with SMTP id 5614622812f47-464beeffd1bmr9623187b6e.35.1772537441604;
+        Tue, 03 Mar 2026 03:30:41 -0800 (PST)
 Received: from hu-ysakshit-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d59785d8d5sm9311790a34.17.2026.03.03.03.30.38
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d59785d8d5sm9311790a34.17.2026.03.03.03.30.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 03:30:39 -0800 (PST)
+        Tue, 03 Mar 2026 03:30:41 -0800 (PST)
 From: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 To: mst@redhat.com, david@kernel.org
 Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
@@ -122,45 +122,45 @@ Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
         hannes@cmpxchg.org, ziy@nvidia.com, linux-hyperv@vger.kernel.org,
         linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
         linux-mm@kvack.org
-Subject: [PATCH v4 3/5] hv_balloon: set unspecified page reporting order
-Date: Tue,  3 Mar 2026 03:30:30 -0800
-Message-Id: <20260303113032.3008371-4-yuvraj.sakshith@oss.qualcomm.com>
+Subject: [PATCH v4 4/5] mm/page_reporting: change PAGE_REPORTING_ORDER_UNSPECIFIED to -1
+Date: Tue,  3 Mar 2026 03:30:31 -0800
+Message-Id: <20260303113032.3008371-5-yuvraj.sakshith@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260303113032.3008371-1-yuvraj.sakshith@oss.qualcomm.com>
 References: <20260303113032.3008371-1-yuvraj.sakshith@oss.qualcomm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=Pv2ergM3 c=1 sm=1 tr=0 ts=69a6c661 cx=c_pps
- a=+3WqYijBVYhDct2f5Fivkw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA4OSBTYWx0ZWRfX2Mb4aDrjnJ7W
+ xNswlMI2MI/75M6U5aQyUm5UHDKfTWOdjii6NY67ooiNBBcTNOT7BgALxXdr5cgoLMA1SkT3TkV
+ /sWdPB0u4cuqcDxQJ7zvlev2k6Og/Rxcgqc7j7hzQXrtvla8mFw2r5ZpzQpimFP3FwgeRcTtiQD
+ oOqOr91fYuz+IRnuQdXiBCT2K1TofWsTtvrlUaHV4AvWZplz27ARgamzrPPdoMlhGJch4LAffVU
+ vN23JgXjd840z6ILGe8vMQwMfuKdrqJCnFTHPw/7tJY4Dwj3LkWJFx0q1GmVS1TtzK4GMS0woni
+ Pp8a5rRPBaJE4+/dT0EVsHYd5+WecUA14kbB3uopkzjLHs7YaW68qEgZhFLrZJq3znWPKH/g5Mu
+ aRfyiyPf31iapPPqC/Y+sQzb4QCqDJh+ghlgkoAgt7G/uXmzjWaY+KtHzRyvtRNmMmGazs6t48b
+ A76ZPrUvXhEzf0VBsow==
+X-Proofpoint-ORIG-GUID: mPS5e4izzC1B2xEd7Wv3s3tlp0P5Ag7a
+X-Authority-Analysis: v=2.4 cv=S+HUAYsP c=1 sm=1 tr=0 ts=69a6c662 cx=c_pps
+ a=4ztaESFFfuz8Af0l9swBwA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
  a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=yAl3Rinrq36N4FMOn3wA:9 a=eYe2g0i6gJ5uXG_o6N4q:22
-X-Proofpoint-ORIG-GUID: HwIDR0nAV-MYBH8yx7cXGElah6-72eD9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA4OSBTYWx0ZWRfX8GF0hZ4koaqX
- S11dtYhaLyBwO3r1FbjWZHBRUkdwlOyDczTfg3A7hhFpcgqeTsSAV8OPQ+AzTXpiWkTpzzOsNn0
- gbpTtTXaGriz4OmgJaJe4yp5L/O1ZBYCdIyYNK3sqQnmWMInJCalqnMloNp3XuTuvwNaodSV7qE
- UtEOTeddX6Krb5e7QSq0ZLboXaXPevqPiYGeRucfYS4/ncLDccTyciCMoOBQg39NEtpcaFT/JAi
- KUjH7lspisTNz0ygq7XDBdKjoW1W4lsByFMFfVp7OXh9m6b/esgllvhdrxxXdAnVuvOzfTA5bnT
- e7Ym5kEzbFovCgZ8rkjhQeaGVEzCaYaAlaNLXE58sODlmPRrSVav7DoHUkQrQ7ypMngIPjeQOiT
- UvzGtDG/hsNzFCo9ozKn/kmPmwrIIlL5EuQ/GkaY0zqrr6AmXGHaRaJGTfHUYrnfvs7xnxdrGr7
- Ut8R3nqMPd6Pk2foquw==
-X-Proofpoint-GUID: HwIDR0nAV-MYBH8yx7cXGElah6-72eD9
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=c6WgzpUFESAvjm-ZtrYA:9 a=TPnrazJqx2CeVZ-ItzZ-:22
+X-Proofpoint-GUID: mPS5e4izzC1B2xEd7Wv3s3tlp0P5Ag7a
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 impostorscore=0 malwarescore=0 spamscore=0
- suspectscore=0 adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 spamscore=0 priorityscore=1501 adultscore=0 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030089
-X-Stat-Signature: faxqopcsih3dbpj7dk9pqn5shw7dnx1d
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 820B620003
+X-Stat-Signature: 3f1eemnspdm3u4y1zh8xwsyejntx1fcs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3DB9F2000C
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772537442-562433
-X-HE-Meta: U2FsdGVkX18SzJpzNUs1v+FXX8q+dAECUxGylRRQfRc6WCFVxKzDQzUWwHTnAAi7V2jWarvXS3R0t9+g00qtrmCXGM4cry24Fiy4v5Oygx/T0J7ZrDppVPgthzJqAwcMOFG+EoPXceY+DoH3+ZCUpDJOSaTCvK6bwq2vqEviODve2/ejm6jdhltDAcJ3owis8dSj9ER1P2CKULm3vEcZ5MuLYsmsuQk53PxpuIWW/MmAVWDD2yVhafRv7dKb58so5aMA55PdBzwPVz0jIsdciYqH/DLkybXVh4opjFHQ312uTv4UK2zmVL/KB89XlBBzoI0vNY1hvApdH9CdvautXjG5eZqHPvq8O42BO7Vst1iSR5HtRNI2jNZ5DbtggbEtzOx9xl+99CdQ1G9nH9sLPJumuxxiR4YMbAefj/14BdngCx8iobB11kCWUegYHvGqjv/0TP2ZWe3GvmwrZDj8q3aseYjbjvQZsACP+fyyasllKBQFaQWVTow0FOMqp5MS39LK/zSoXosFleDaYgd8rvXzcQ/GtNogwtg4TQIK8qTwJUyp8LzEAZ9lrvM9YjvR9MYJfr6wgTMXsfQWu+YIJ1CVC18yBYPviIVTavZbI7Jw8ZY204gss7WVqiPwYTqzwYC/QL5GHT4OOjr9yLMD701z0O21CdTm5hBmSpmDS9Z/Vh9fcNls0Ux2J4QY1hckd1Njowlnl4wamWS7+fzRF171x1H887EXA84l59rqxaTF6R9bZsIUuIqxk/J7VL4CphJjBU8+eLYobXoh10pEriE6lvWoa9r5WC6slwYu26amvNfE/8xFne5yLNNICIxQTsrat84zgAtiLiDSEbP9lGjbGVwJq4lr2jNzT2CLN4VER5u3CE1+Ew6Ru0dZ4Cvrh1EaBUSLyq1PwMs8ITDa1bl3ZkuFCUPem69M+jSQlRGCXByc4eRNnwBNU/WfO9YobO3iEb9HeTKL1nf+khx
- FbcnfWcR
- 2miHmF+S0KSmZTI1YyqXKysiVo1ZFZAndSj6NWFJNGBVSN3hvzPEvJ0aGaH5RjQoGnSn7T1wM2I1+Obfzi8gnmejzDAE/XwpW2RURMexk/KIXxvynMDXP6DiTxpH7BkDq3TGZxkHZT0Ct5f7034YIBPns+76Kc0sadthfihi2rjGmRmlJZKifpPxVObWiexncC2HKkI0F/ItXrXJ3Cnfc4e3AhXg6MLZIEHTED02rbN094sA=
+X-HE-Tag: 1772537443-932519
+X-HE-Meta: U2FsdGVkX18N1pLarheZzY4AiCc+w6MK8usXHY/Nv/Zr85WfH43eMvj1yw9GruV5oM5fBD9+5ptITq5e1aBSxqVXhQhbUoT8nqt5VbfUCe0RVUWEqmhyrgm6hvkQTipg66kgZdkWFUFnvcq0+NnI4AXdViIREMadN1jqqoKwnBPLfRSgNY+bbm5AC/KoPInXdAfFG5TG6qLwhs1HpRFL51GZ51YLergCoW0EgozoMUyzFesm7uQrgN3Vdg4WL/hDvqHp17cyRZCRG+UlQqD7MDilr+5UUlTbfmN8emwLSuk58CDx6ZBOn647n3mASAiBprC82Ik6a8a6g+sjqCPxrynTlDMxx5hXDxm9AyaKnoHDbJfoLgsCVfzfvV8jTMzFliKen3W/r+LcgTCPuCZRwzoN4yfGRg8SjW/jbxvNeArUznK1m/vveGqAoZnQGuVEtSf9ZdfauuMMlbrQx4gKYHqBUMeaFqFH79OighjYse3OkfJYCZ4SCfF/Je7YbIPM+LZ5FmJKsp0kYWXXv3Dm3Be2fu3o5bHaRvWEpGw1TppTWuTsmw5fSb7SbeT+q0Hv9DoPnnUXegGcNWez7HUoQ0l61RC20G4jWYEY0+kjYHfMpLLFIEZY/0HdC765xrILxNF/+CB7HHT8yCWIoOyfchZJf+tuy3/fpEMhepqLn6gBlIQTGdL9kRPc09jC59Bbnms1MNs1Zc5pZgfBsPCHgmlhBJkR3joYTxvsNTk4ytwZi7fENCgDuiPQSrGva1PryNZK1yJKGc5OM1vJ/k5bknYf91CMizoq/R/uxLH4/tikEemPoS4WbW9v21wlI8KcsCUf1rJIl/alWvwwzMojbN8EQxvRxHxkfw4PosLJB48/PIU9zu7JhQqKPcgvVEDz/S/b6G3m4K3qAFqp6kzCITfQn6HW9Mr92DU+aJTHDuVHzn7xYXkmKnwWstrq/Bkqaze9zV94QlGgW6jdZDU
+ bJzFGaLm
+ WehVPEfy68WPn83UzDqGzbe1xLF5Xn09Wun4MSQzpkc4C55cRAFirnAyu3+W82xbVtKOXJYDsxD0SwpDO8rhFKuG+trHyCisP8yczA//p2fMcSmXhmqJwG8MBUNqEi63RaVK8YRF6qAivnHq464UnxICQPEHt4m1cvVxASd3fQFC1ALeeeYPfS7INNGH/vlTuwAAT7QUlKBdI0r8p6hWDuWum6zrP3qv+xkB3voOxgS6AmHq6bDGzaFKI8hLXwE43MT3hQWrrF68DOiqnsVASBwZkHbSxWHcFFCh8jUnMKCV32xgNFDbHq+Z8pi2ZLhsXJDI21/pNlCvg9aDGbixbjpmj9MpJDYiu/0gaBbV0nMMgC5ByJV+X2S4A72Nww+qm9WilV5lw6zJXTBupGLpumeoO6pa6BaJPV3K1tliY0UFJAZWHvax2j887OknQOVMNXQUeOR2FID7qiw2lfbO/0kDCDX8kTi2/qftfY6+Bp7pYM7By3IaaP5tzctj+ZPjc3zA3DsWhPRwe/q4ZlfKbjgRjfkqkx0bKJW/nRYJ1+Kdw0iCwR+GD2B0J5gbdSt+QCiRK4RoBcofWRUb6D+Rn3Vg/gg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,29 +168,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Explicitly mention page reporting order to be set to
-default value using PAGE_REPORTING_ORDER_UNSPECIFIED fallback
-value.
+PAGE_REPORTING_ORDER_UNSPECIFIED is now set to zero. This means,
+pages of order zero cannot be reported to a client/driver -- as zero
+is used to signal a fallback to MAX_PAGE_ORDER.
+
+Change PAGE_REPORTING_ORDER_UNSPECIFIED to (-1),
+so that zero can be used as a valid order with which pages can
+be reported.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 ---
- drivers/hv/hv_balloon.c | 2 +-
+ include/linux/page_reporting.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 2b4080e51..09da68101 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -1663,7 +1663,7 @@ static void enable_page_reporting(void)
- 	 * We let the page_reporting_order parameter decide the order
- 	 * in the page_reporting code
- 	 */
--	dm_device.pr_dev_info.order = 0;
-+	dm_device.pr_dev_info.order = PAGE_REPORTING_ORDER_UNSPECIFIED;
- 	ret = page_reporting_register(&dm_device.pr_dev_info);
- 	if (ret < 0) {
- 		dm_device.pr_dev_info.report = NULL;
+diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+index d1886c657..9d4ca5c21 100644
+--- a/include/linux/page_reporting.h
++++ b/include/linux/page_reporting.h
+@@ -7,7 +7,7 @@
+ 
+ /* This value should always be a power of 2, see page_reporting_cycle() */
+ #define PAGE_REPORTING_CAPACITY		32
+-#define PAGE_REPORTING_ORDER_UNSPECIFIED	0
++#define PAGE_REPORTING_ORDER_UNSPECIFIED	-1
+ 
+ struct page_reporting_dev_info {
+ 	/* function that alters pages to make them "reported" */
 -- 
 2.34.1
 
