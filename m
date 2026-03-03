@@ -4,100 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50108EB3644
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Mar 2026 23:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C40CEB3641
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 00:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75DC16B00FE; Mon,  2 Mar 2026 18:58:37 -0500 (EST)
+	id 757D26B00F0; Mon,  2 Mar 2026 19:20:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7158A6B0100; Mon,  2 Mar 2026 18:58:37 -0500 (EST)
+	id 6DB286B00F2; Mon,  2 Mar 2026 19:20:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 614606B0101; Mon,  2 Mar 2026 18:58:37 -0500 (EST)
+	id 5BCF96B00F4; Mon,  2 Mar 2026 19:20:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EF116B00FE
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 18:58:37 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6D7EB8924
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 23:58:36 +0000 (UTC)
-X-FDA: 84502790232.07.5B204A4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E66621C000A
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 23:58:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MT+Id71O;
-	spf=temperror (imf18.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 499756B00F0
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 19:20:22 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DAEEE8B8A1
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:20:21 +0000 (UTC)
+X-FDA: 84502845042.29.46FBFBE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C79D02000C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:20:19 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q020LqpM;
+	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772495915;
+	s=arc-20220608; t=1772497220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=KGAT9q+QuTDt3o2J/leIBfmNoi0ZcIn7WiOPRFy98RE=;
-	b=L26QYCyEDsIncHOHXssyjjKHm9ooG6oep7EOE4nwgK7POnMbBJpYCLqyrCzmR4PYyK9LJO
-	UaMwdYHxcD01SS/17Q7DcZnN3x1aTBE71ahpxseZSawjJhGzJ4PEKn3ZJXNnTwk8B6Xb4a
-	3fdCNycoxZTIjbx+huQU99Hz93uMUak=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=MT+Id71O;
-	spf=temperror (imf18.hostedemail.com: error in processing during lookup of lkp@intel.com: DNS error) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772495915; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+PxAs2WvNVOxCftZ/jr64yaJOBUiDO5P1MZH42ytmr4=;
+	b=Kp7td/LjCNXAA10D4/AqGeEQ9s5KdSCouNh/xD0QLPfrY8GE/8g+d4YS/kG7bBFhA1lfru
+	F0V2UjZFCHajHrmAszP9yjAbA0Z7d0ePfXEqNakxcclRtfiMmUcpfjZSSiIbPvTxPliz+i
+	h+TgH4ivuZSHCqyrke5NSNz2vj2Gr7c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772497220; a=rsa-sha256;
 	cv=none;
-	b=26XSrddvzqXoIaEeLuPoPIo51MFpc7+BT6uovy4PyG1bDvIniwcSa0GB2xtOBi0qyr+i3C
-	RXvGqSuZfBulmoBOY3ufuUU04RJyCCxI3icR6lgp/7is7GLqnF4ezqCPuO8lWHZ+JQmB49
-	y0QPKtWUO7rS7nXN0xeMOZF0jLdV1CU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772495910; x=1804031910;
-  h=date:from:to:cc:subject:message-id;
-  bh=koyzbirrC6lzDW8hEJh/FRkKUFYgp0uyt/Dbpy1ooe8=;
-  b=MT+Id71O9dephlQk2S7YwTB52UX4UBIRUBLUuhppTkMwsC2ksEyzM0td
-   HWiinSHNGxDH2JPB3UKTtDf/DwLOgOFk5fnyxlzaLhDsTcS9YtSFjox3n
-   7xBc+i48H0l4pZstP26GcmsxKM5YEL2fXAEAr0oIlDmhcdhBMucWsl3tI
-   AvcsUkwOZEgLsRUrCRm/6o8fOMkf42TbyqPUYJj9QyXM67OFUHc98ujw8
-   kQkFZAKMXda0J3TSn+ELXvi/DpLUVWV07BFy0uK8GxlO98JD8sDjitS3b
-   tAVeoLXdRJPUxp1CA8WUZBG2RKCHeog8ZmPkE1smmkw6pnXWb5le/Whxa
-   Q==;
-X-CSE-ConnectionGUID: suEfty+sQGiWk/7kDbwxlA==
-X-CSE-MsgGUID: NMVQrYmLSGmsGV+eOu7wcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73387132"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="73387132"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 15:58:28 -0800
-X-CSE-ConnectionGUID: 21tX4vP/SZCjQxwFAY9zEA==
-X-CSE-MsgGUID: pTa/K8d5ROa8XOMIKd59sQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
-   d="scan'208";a="217048389"
-Received: from lkp-server01.sh.intel.com (HELO f27a57aa7a36) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 02 Mar 2026 15:58:26 -0800
-Received: from kbuild by f27a57aa7a36 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vxD9b-000000001Wj-28RH;
-	Mon, 02 Mar 2026 23:58:23 +0000
-Date: Tue, 03 Mar 2026 07:58:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Arnd Bergmann <arnd@arndb.de>
-Subject: include/linux/compiler_types.h:631:38: error: call to
- '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-Message-ID: <202603030747.VX0v4otS-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	b=t/lzAjkdA5t9CbL4AvRTigkdlFTezbvj5domu+0wbffK3fJPMYBWMSRYuB0M5+qm7mprzu
+	m/RrWsC5kG5TpgtVExyWsrCI2lYHPEbT9pJpw+fLv78bZ9skdeUzdPXIRLVn22XCuYJ5XC
+	pcZmMFzL3RYtiTYqpDP/V9QZ5KNNq44=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Q020LqpM;
+	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772497219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+PxAs2WvNVOxCftZ/jr64yaJOBUiDO5P1MZH42ytmr4=;
+	b=Q020LqpM+CYjLP9qlMt+IWiBpBytDhOGDQH/ohlX/Ku9y6d3i+lu2hM/2Smo5JU0AmAHAr
+	jb0sfNgSV9RoB32rbcDldWlURwwnEiiejnnN7D/pWrncFpm3qHVZFHL9P6CKMDJb1falN/
+	cD1P1y41NC7j/9idj2LMUiC/OBunNq4=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-377-6OCu4L77MnWbFpTG33YaJw-1; Mon,
+ 02 Mar 2026 19:20:15 -0500
+X-MC-Unique: 6OCu4L77MnWbFpTG33YaJw-1
+X-Mimecast-MFC-AGG-ID: 6OCu4L77MnWbFpTG33YaJw_1772497213
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BBD21800366;
+	Tue,  3 Mar 2026 00:20:12 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.6])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BC4521800348;
+	Tue,  3 Mar 2026 00:20:09 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id 17973401CFE28; Mon,  2 Mar 2026 21:19:44 -0300 (-03)
+Date: Mon, 2 Mar 2026 21:19:44 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Leonardo Bras <leobras.c@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aaYpICV55B70U1I2@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZjY9h3XXMNY-Ytd@WindFlash>
+ <aZwYmNuucBspCYhk@tiehlicka>
+ <aaJDjmnfuo8AM6J9@WindFlash>
+MIME-Version: 1.0
+In-Reply-To: <aaJDjmnfuo8AM6J9@WindFlash>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: lBdhemGGYfXJcAolnA6vvSi1WddKqr_QR9y1QKGQAl0_1772497213
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C79D02000C
+X-Stat-Signature: p95akfps53t96gz3nzpnxetmhck6mnud
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E66621C000A
-X-Rspamd-Server: rspam08
-X-Stat-Signature: eng3uxx9qdkxuonc76g88xgcr4eiyzu4
-X-HE-Tag: 1772495909-670549
-X-HE-Meta: U2FsdGVkX19V+YYe0w8/emZLZxITHhwic1s9n5WBY2UzeNrusI3X+MS84I9zMQELn4xTrgmcv9iAb+ARxoa69vuZM4qiJcVV8iDactm83jbbCl7MUVpS1DWWSQmg3xuW5JLafMYYYVOB71XvBBZA5VTDB7y7wf0vD6vgsYW4hev1Sx3QhU89fECHIRPvskHv+8K/5sa+buYSe7fsCt86HhG+lSFbeAOU1Ed3qeAhFZRdMOegpxdKHkuj4hbOLMSLn4hKk3+2NnOGxKjxOZ3oUq66d3ra0oAuvLhNL+QlVE4y5ntxM8zrdP6a/sFJ0oGFqE8aiIw9uezItr+dpMEnWgwuaD4IKgsxDDJgjLkqNfFyE5Zk7JyaTivzTDkr7LTYuzFvRXLJwpv+B+k74aEQmljcEfptKL9Pevzv8Zxeir+jVrOanLl4twweRzEDVIXz9B2B7+Je43jeUM/SX2nPWE4jpYZWsbXyA3UCGAhoBX6mQt5WAk3kHqQgSMlcAsz7XdtLERg8e3vucktAEQDWUv8ylF1UL3Fjxehh+GikGPgXfL0a9hNSpDRC8+eWJ63UH4690byNAOmNul4bZsZZn2BNw76StaFa13LfGhPlQwIBk656IrZFBZocPmEWS3bf9UP9wLaArtpw5vNHnq73VExfZjtUBAXMinLcOUH1gLUVOInM+IJTP3x8hsgcweijEiKZOiUuggTao0Nant55UDhXJspgtAt3nYsV3XMuVxVdYFO09LnnlvaYEgZNTtOXRE9aNO+9u03OQ8XoNud0v5z38bVOoGM6uCaokxYV8TG4rwLCs9LuCwbD+Uw9sECMHAhuURqhwl1NYMvwuXVxITWJ6/JuS6w6dfYt1RSwUjE/bphzcZgAbBu7i5c25SER3rIloNw8+Xv0RXeSX05BcSJCEtozTzWpS5tnxIEUMKjZmRWUivJhy1TM/YTk3AU9du0b/NvDEw8yRaNHzr8
- tHl0Oaka
- TCW3B3w4A9ZKF5BPDP5Pk4SwXivSsH2zgp/t8NPJCx72cVewdK9uj5MmWmJkgJeiJU77sM1xXy+BbLohpPSugVqJOTB/RE8unIhxf28D6hizHXqJDG0nc5+WGCLrQLJRdT63sAdf4niq7XEx7F/dKyt2pw3GFYoew/dtAd4T0PRW59pJx41JiMQBtpscxWQDelcmAn6SxBbKcUuVxJgGh7fnP14YAEb1gtdDZHN5VfVEA7NExb5FfWcBln3uEhjpem6qo7e3OQ6MrqJZrWtb24Uh6py597kxWEWs0lcQX/sjlkY0kbX4qa1p5m3aHcdO0KUPbplesjzEJplpr+vvUcbRUaC8vKfQN7N3j
+X-HE-Tag: 1772497219-335899
+X-HE-Meta: U2FsdGVkX19EjK3dbzTLdwu+ejKmmyHHVwSYgLpZ0+r2PSYmy+WN2Z3senASYJbl7TiQf9rM7gwyhOApYEUI0WrkXLjU3VmIT2/opLWMjOqPD6F85tqlvHmD99JRGb8hXjk4GhnVeUmQMVReNCoNxWN57a6uSph00DsopVDBR/HRDtbbncjerU96CWi80ENDJq6/5rxWZWn6YpJglHUlNIILmR5VtqlSJuggNcabXqs2CDU5BPi6rE0bjbxj667I4rcfQhRoXp09TCPlmcA6zF2arLcpver2587iIcDKDR2Q3ZgBrV3opZ5mpaZjPHz22hsFpcGjHKsIDBepl9kyjZJoFF/ZP2fPgSnJzyDSh5sCF3o7Xuh4UhsofQCmU+6WnJyXzKT5fWPM+fIp5lYrWCvcwXkoRsC6z3237ViKSRjAPm67AtFaasp/QnvOPkKvpBdeDR6pxgDhyJ3CqqDqtsDwhkAaoiS3GV4YR5QtojnSD80NrKuWbEm03S0ydxqxrJFW3M3/JWYUOgugYPioMA0OOeITXdEBuJjurBPGtdiahthMQdwoGd8QMAtwDKbDu5NiSdSG/EQLM+X6WNtgEsgdfGLCWqpdYWppIY5kaF0d7Bt1pGStAmmzllnxeHcN1AeFa1tcebN5oY4eJshgP6ApVm+aSlWZ2bLKINSRPz4qYBEPNCxIRtgP1BxgvgyutFWpV2kzECA8XMMLr27XTCi9fieQIB7slu4supjqfagRj5AZSl0H9CTcpRV7qIZ+yBmIGdvXxQKJw3w12g9nOLRENApQMsmUZ+eOAwXMZUxUnyFm5X1LBl1ItJeFSV1bG74l1wREyrC2wJvZ3TgEl8DDCj8ISDMZgrrNV3xu0Ld6sDdoSARQs9sgthFSpyWCUFswWV9W0tDugHh9loNO5wReZ1np/qPTES+pfhu4Ws8ds+1IQbXZPzLiZCqrcyO7H1T/v6Z1Mh+nZ/vapl+
+ 6zhZjAsC
+ tURATaTqRaY0zRbaUWldIS1BNxENGMLUNDh3MxWic7E9COGKurWLCa0moanzgdGbSx1s3uGveaDJZKO5ntgBIj1qb8q1Eh3cXDC99
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,78 +127,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   af4e9ef3d78420feb8fe58cd9a1ab80c501b3c08
-commit: e428b013d9dff30f7a65509e33047ba975cce8ba atomic: specify alignment for atomic_t and atomic64_t
-date:   5 weeks ago
-config: m68k-randconfig-r133-20260303 (https://download.01.org/0day-ci/archive/20260303/202603030747.VX0v4otS-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260303/202603030747.VX0v4otS-lkp@intel.com/reproduce)
+On Fri, Feb 27, 2026 at 10:23:27PM -0300, Leonardo Bras wrote:
+> On Mon, Feb 23, 2026 at 10:06:32AM +0100, Michal Hocko wrote:
+> > On Fri 20-02-26 18:58:14, Leonardo Bras wrote:
+> > > On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
+> > > > On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
+> > > > > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
+> > > > > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
+> > > > > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
+> > > > > > [...]
+> > > > > > > > What about !PREEMPT_RT? We have people running isolated workloads and
+> > > > > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
+> > > > > > > > have requirements as strong as RT workloads but the underlying
+> > > > > > > > fundamental problem is the same. Frederic (now CCed) is working on
+> > > > > > > > moving those pcp book keeping activities to be executed to the return to
+> > > > > > > > the userspace which should be taking care of both RT and non-RT
+> > > > > > > > configurations AFAICS.
+> > > > > > > 
+> > > > > > > Michal,
+> > > > > > > 
+> > > > > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
+> > > > > > > boot option qpw=y/n, which controls whether the behaviour will be
+> > > > > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
+> > > > > > 
+> > > > > > My bad. I've misread the config space of this.
+> > > > > > 
+> > > > > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
+> > > > > > > (and remote work via work_queue) is used.
+> > > > > > > 
+> > > > > > > What "pcp book keeping activities" you refer to ? I don't see how
+> > > > > > > moving certain activities that happen under SLUB or LRU spinlocks
+> > > > > > > to happen before return to userspace changes things related 
+> > > > > > > to avoidance of CPU interruption ?
+> > > > > > 
+> > > > > > Essentially delayed operations like pcp state flushing happens on return
+> > > > > > to the userspace on isolated CPUs. No locking changes are required as
+> > > > > > the work is still per-cpu.
+> > > > > > 
+> > > > > > In other words the approach Frederic is working on is to not change the
+> > > > > > locking of pcp delayed work but instead move that work into well defined
+> > > > > > place - i.e. return to the userspace.
+> > > > > > 
+> > > > > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
+> > > > > > paths like SLUB sheeves?
+> > > > > 
+> > > > > Hi Michal,
+> > > > > 
+> > > > > I have done some study on this (which I presented on Plumbers 2023):
+> > > > > https://lpc.events/event/17/contributions/1484/ 
+> > > > > 
+> > > > > Since they are per-cpu spinlocks, and the remote operations are not that 
+> > > > > frequent, as per design of the current approach, we are not supposed to see 
+> > > > > contention (I was not able to detect contention even after stress testing 
+> > > > > for weeks), nor relevant cacheline bouncing.
+> > > > > 
+> > > > > That being said, for RT local_locks already get per-cpu spinlocks, so there 
+> > > > > is only difference for !RT, which as you mention, does preemtp_disable():
+> > > > > 
+> > > > > The performance impact noticed was mostly about jumping around in 
+> > > > > executable code, as inlining spinlocks (test #2 on presentation) took care 
+> > > > > of most of the added extra cycles, adding about 4-14 extra cycles per 
+> > > > > lock/unlock cycle. (tested on memcg with kmalloc test)
+> > > > > 
+> > > > > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
+> > > > > operations (even if in a local cacheline) in !RT case, but this could be 
+> > > > > enabled only if the user thinks this is an ok cost for reducing 
+> > > > > interruptions.
+> > > > > 
+> > > > > What do you think?
+> > > > 
+> > > > The fact that the behavior is opt-in for !RT is certainly a plus. I also
+> > > > do not expect the overhead to be really be really big. 
+> > > 
+> > > Awesome! Thanks for reviewing!
+> > > 
+> > > > To me, a much
+> > > > more important question is which of the two approaches is easier to
+> > > > maintain long term. The pcp work needs to be done one way or the other.
+> > > > Whether we want to tweak locking or do it at a very well defined time is
+> > > > the bigger question.
+> > > 
+> > > That crossed my mind as well, and I went with the idea of changing locking 
+> > > because I was working on workloads in which deferring work to a kernel 
+> > > re-entry would cause deadline misses as well. Or more critically, the 
+> > > drains could take forever, as some of those tasks would avoid returning to 
+> > > kernel as much as possible. 
+> > 
+> > Could you be more specific please?
+> 
+> Hi Michal,
+> Sorry for the delay
+> 
+> I think Marcelo covered some of the main topics earlier in this 
+> thread:
+> 
+> https://lore.kernel.org/all/aZ3ejedS7nE5mnva@tpad/
+> 
+> But in syntax:
+> - There are workloads that are projected not avoid as much as possible 
+> return to kernelspace, as they are either cpu intensive, or latency 
+> sensitive (RT workloads) such as low-latency automation.
+> 
+> There are scenarios such as industrial automation in which 
+> the applications are supposed to reply a request in less than 50us since it 
+> was generated (IIRC), so sched-out, dealing with interruptions, or syscalls 
+> are a no-go. In those cases, using cpu isolation is a must, and since it 
+> can stay really long running in userspace, it may take a very long time to 
+> do any syscall to actually perform the scheduled flush.
+> 
+> - Other workloads may need to use syscalls, or rely in interrupts, such as 
+> HPC, but it's also not interesting to take long on them, as the time spent 
+> there is time not used for processing the required data.
+> 
+> Let's say that for the sake of cpu isolation, a lot of different
+> requests made to given isolated cpu are batched to be run on syscall 
+> entry/exit. It means the next syscall may take much longer than 
+> usual.
+> - This may break other RT workloads such as  sensor/sound/image sampling, 
+> which could be generally ok with some of the faster syscalls for their 
+> application, and now may perceive an error because one of those syscalls 
+> took too long. 
+> 
+> While the qpw approach may cost a few extra cycles, it operates remotelly 
+> and makes the system a bit more predictable. 
+> 
+> Also, when I was planning the mechanism, I remember it was meant to add 
+> zero overhead in case of CONFIG_QPW=n, very little overhead in case of 
+> CONFIG_QPW=y + qpw=0 (a couple of static branches, possibly with the 
+> cost removed by the cpu branch predictor),  and only add a few cycles in 
+> case of qpw=1 + !RT. Which means we may be missing just a few adjustments 
+> to get there.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603030747.VX0v4otS-lkp@intel.com/
+Leo,
 
-All errors (new ones prefixed by >>):
+v2 of the patchset adds only 2 cycles to CONFIG_QPW=y + qpw=0. 
+The larger overhead was due to migrate_disable, which is now (on v2)
+hidden inside the static branch.
+My bad.
 
-   In file included from <command-line>:
-   In function 'qlt_queue_unknown_atio',
-       inlined from 'qlt_24xx_atio_pkt_all_vps' at drivers/scsi/qla2xxx/qla_target.c:331:4,
-       inlined from 'qlt_24xx_process_atio_queue' at drivers/scsi/qla2xxx/qla_target.c:7903:4:
->> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u)
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/compiler_types.h:612:4: note: in definition of macro '__compiletime_assert'
-       prefix ## suffix();    \
-       ^~~~~~
-   include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-     BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-     ^~~~~~~~~~~~~~~~
-   drivers/scsi/qla2xxx/qla_target.c:216:2: note: in expansion of macro 'BUILD_BUG_ON'
-     BUILD_BUG_ON(offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u));
-     ^~~~~~~~~~~~
+> BTW, if the numbers are not that great for your workloads, we could take a 
+> look at adding an extra QPW mode in which local_locks are taken in 
+> the fastpath and it allows the flush wq to be posponed to that point in 
+> syscall return that you mentioned. What I mean is that we don't need to be 
+> limitted to choosing between solutions, but instead allow the user (or 
+> distro) to choose the desired behavior.
+> 
+> Thanks!
+> Leo 
 
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for NET_SELFTESTS
-   Depends on [n]: NET [=y] && PHYLIB [=y] && INET [=n]
-   Selected by [y]:
-   - AMD_XGBE [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_AMD [=y] && (OF_ADDRESS [=y] || ACPI || PCI [=y]) && HAS_IOMEM [=y] && (X86 || ARM64 || COMPILE_TEST [=y]) && PTP_1588_CLOCK_OPTIONAL [=y]
+I think 2 cycles is acceptable.
 
-
-vim +/__compiletime_assert_431 +631 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  617  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  618  #define _compiletime_assert(condition, msg, prefix, suffix) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  619  	__compiletime_assert(condition, msg, prefix, suffix)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  620  
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  621  /**
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  622   * compiletime_assert - break build and emit msg if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  623   * @condition: a compile-time constant condition to check
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  624   * @msg:       a message to emit if condition is false
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  625   *
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  626   * In tradition of POSIX assert, this macro will break the build if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  627   * supplied condition is *false*, emitting the supplied error message if the
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  628   * compiler has support to do so.
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  629   */
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  630  #define compiletime_assert(condition, msg) \
-eb5c2d4b45e3d2 Will Deacon 2020-07-21 @631  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2 Will Deacon 2020-07-21  632  
-
-:::::: The code at line 631 was first introduced by commit
-:::::: eb5c2d4b45e3d2d5d052ea6b8f1463976b1020d5 compiler.h: Move compiletime_assert() macros into compiler_types.h
-
-:::::: TO: Will Deacon <will@kernel.org>
-:::::: CC: Will Deacon <will@kernel.org>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
