@@ -4,66 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BB8FEC1426
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:35:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D46EC1423
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C11F86B008A; Tue,  3 Mar 2026 05:35:02 -0500 (EST)
+	id 4D55A6B00FC; Tue,  3 Mar 2026 05:35:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB1FF6B00F5; Tue,  3 Mar 2026 05:35:02 -0500 (EST)
+	id 45F0B6B00FB; Tue,  3 Mar 2026 05:35:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4B406B00FA; Tue,  3 Mar 2026 05:35:02 -0500 (EST)
+	id 29AED6B00FE; Tue,  3 Mar 2026 05:35:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 932BB6B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ECEE06B00F5
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:35:02 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 556811B7B77
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE6791C330
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:35:02 +0000 (UTC)
-X-FDA: 84504394044.25.5107BC7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2EB2B1A000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+X-FDA: 84504394044.01.E5FAF24
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8D5A7C0006
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:35:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O3zBfOEm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AYiwz28S;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O3zBfOEm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AYiwz28S;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772534100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QO8o5He/MgdurPMedhqMOBFnFjvpq9ujrQ5sKzQcc7U=;
-	b=cw+6ngnFUgJ4De50pxlimiOJPmgzcRpTUyzgRPMVl61tK3UOzVJn37zWVApUI6mWi+oKAf
-	+06Fam03OuseOGuD6EhMUDgQ4fisYrN8euM1D3y3R2OafSN8hYryJ4pkxdMy/EIV8WkcPh
-	VUMYs7+LTqPGKC1t+NBTFqcDqnPK2s0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
+	b=8oozzHih48i43YvSQ1PtUEvYY+P6AazrX8dvq8IlKbb+SBpda7HvClkZE70TDMt15RQS7O
+	HF6sQQ7BhdKTnGRyhRYs+TJ1T+hcWGAdoXv3pMwfBP0RCjVTRestR6yx4yadtIpLnNDk28
+	4Ol6DpcdCAhexRhk0Y6nYgv+ePzAQH4=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O3zBfOEm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AYiwz28S;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=O3zBfOEm;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AYiwz28S;
+	spf=pass (imf22.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772534100; a=rsa-sha256;
 	cv=none;
-	b=GpuCrU/hNNge3aZF/0khYNUGUZuexMVGdIvEDNvC1+T3e6AtZqcH3FhzdM8oPQU6x4dvEl
-	0rZH1sVMrtZI5/kRa8G06y/17u/mvCCl1NQgCg3276cXF7eOZycoHVswRzL8KynwvLdc2u
-	Mqg3Ns5pqWCu3T5d48nPSyTWqK1nZsw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=BJeBzBEJjp9+VFpUAM1lPqXjGkaNKflbO5oLZ/wMf56oZ8ViAxAgxCr0TrQW7yAJYuCdI3
+	s/m/cSI2hFmhmI08ejozDmlFv3ovBIbq90X6uluVmDlt7hNNn6KkQwi1OWRLsfIgNShCeK
+	jVfIXrPUsMXJgkJu8oRvmbdudCbSAeM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0350F5BE05;
-	Tue,  3 Mar 2026 10:34:45 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E625A3F8F5;
+	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534084; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
+	b=O3zBfOEmswK/ytkTA6R+NKxminmWN9raaPx+DDA8G6HEaUf1hV5TXIsSkgyryuuFkJz2nG
+	pjyQkyNFZpV2ge+5DrFOVEiQBLJ5Y5xEoL1vvI4CO3OHvrYWEx+SVSTQ2HbV/9sc9dDTfV
+	pDBq4x4p5qQ075pAM2h6ugKlanJqgCo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534084;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
+	b=AYiwz28S7e6WKGWDkovy93oKVAOkYtd2/WXEA7MNma3vwGoP3ekJUV5vEsPpsbjEbgH0sk
+	dLp91HkIhcHzg6Dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534084; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
+	b=O3zBfOEmswK/ytkTA6R+NKxminmWN9raaPx+DDA8G6HEaUf1hV5TXIsSkgyryuuFkJz2nG
+	pjyQkyNFZpV2ge+5DrFOVEiQBLJ5Y5xEoL1vvI4CO3OHvrYWEx+SVSTQ2HbV/9sc9dDTfV
+	pDBq4x4p5qQ075pAM2h6ugKlanJqgCo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534084;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIk+3PM+jG2PiQ44UnRCyz0Pc5nehV9CBwg+OwnTyLw=;
+	b=AYiwz28S7e6WKGWDkovy93oKVAOkYtd2/WXEA7MNma3vwGoP3ekJUV5vEsPpsbjEbgH0sk
+	dLp91HkIhcHzg6Dw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E95B63EA6F;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD4683EA6D;
 	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PDP4OES5pmltFQAAD6G6ig
+	id 2K4ENkS5pmlmFQAAD6G6ig
 	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:44 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 88128A0B3A; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
+	id 7F836A0B2F; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>,
@@ -80,31 +124,24 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 08/32] affs: Sync and invalidate metadata buffers from affs_evict_inode()
-Date: Tue,  3 Mar 2026 11:33:57 +0100
-Message-ID: <20260303103406.4355-40-jack@suse.cz>
+Subject: [PATCH 07/32] bfs: Sync and invalidate metadata buffers from bfs_evict_inode()
+Date: Tue,  3 Mar 2026 11:33:56 +0100
+Message-ID: <20260303103406.4355-39-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260303101717.27224-1-jack@suse.cz>
 References: <20260303101717.27224-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=759; i=jack@suse.cz; h=from:subject; bh=NDPLTZYpyB8AvjWnfTi4NCpTDfiFBgirFbbT2/Tf5G4=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprkk8HckfhJ1pkI9JwuC2AULW5aPa2lEuXAbV pQDis2S6F+JATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5JAAKCRCcnaoHP2RA 2VFcB/41q8HZKDIyAi9JxfZV2iGf/oWzNNQqiIJu/TgJ83dhPE9JdflB+QrDuZ5WfWU2+g6BnDd 6TbFhNQ7N/GBBAW7OF8mCHQ3CwOAQf+zGJF4sm87/0Um7Cn/fpIOecJsKuVVQZrn7h4roCLAj/b J9WZceJCnZUkZoWPbl6JWLzlCtCnhCVDfHBinSApEgSuDp7g08pLQ+GLT5e+71QrF8saJqnQo5p oUJurV3B9ZeYu3k5S3HIB3JuuoPuuXCwEstfzcII5Fjo5kh+t+jb0bOPZjY0U/c9Wj3DtTung41 IQFDRdiyX/bQtHRK/mcCv1Q2ScIF+tm3tT/3K7+DEDeEsd0z
+X-Developer-Signature: v=1; a=openpgp-sha256; l=801; i=jack@suse.cz; h=from:subject; bh=K9wrCKmeO7BfHLYf4wsyZtDcyuSx9fmOTys9wQHOC9M=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprkjZOEr4SoMR6litD6xJZ9vyOu7Qv8MRlaIP MceIDomSlWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5IwAKCRCcnaoHP2RA 2VB+CADgFJh19nlSbb70V3fRZwmBUEdqZKelbD2FwM1YKdE3CysN9YBk3d+n0xXje5DqWmFag7J CxfH7uwKQu1nkTgmg+d3F0Ykl3vPQVHl1hA33iwJP/xJWFW2W4lQjysTSuRfixonmgSXdix48eW +LiYGnMgXGA6ywu9FKZ4mrqy9/DP+Xntvp6P98n+Sl5btTcyfCxHgL774GZz9EQ5iFewtj6l0ad 2TGEA8v4kTLREsHeER1VFM3L8LOfwT/7/vrigo9gLT9URxDK1F3nsy8O40f/UX+DZy2n9fg2zf0 sJFonpT5GTYRGT6Ot4tf8e2X7k4qszNew0ctiXB2Zr+DkncM
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Stat-Signature: xfw54g3ryahr57ca9qqfru33iqy5aoeg
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8D5A7C0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4ioq8xjprohk71hiitw576yyoba5611e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2EB2B1A000B
-X-HE-Tag: 1772534099-587147
-X-HE-Meta: U2FsdGVkX1/ulkjp/uIvgaIxf5VBjldYVHy5YoGgRCIXKMtZSPagkAtZUrz05C006bzwbb0mEIH/fWJGAQG73MPAxXRO85bO3vTWpKUl8naXs3gyaDjL35674h4LQZjAvt9PBfVfk5W0Jve+mO0X89pSwtRSTHjLW5yK2TcahbeE2BnnYiE3Aj+NdzuzLHuK/MIf1ZH+qfTamnt4M6sbH+IMhjJshNNC2RL0Z8NzRnc2zJJ2o1pyTRKQRuHpho8YmXojN1Xg0SPHle37kdn5EZ2ZfGELFWfaM2glrHSareL8jBytNkls12nvPgHlSWJKTnKT8XQHgysRjvvmK5aTRrc7hGPg20qeE7h9L4jH6avsylAIv1rFDxWAD0kJxnyxCD+BSTjWeKdFUE0UiE+AyhTyxPpGvWRnodTbFq38FcNjRX9g9ldwsxLzwazwvB3WKFOeVVmC577UAxfNeO+vfRly5kv0x9L4zmloWHTxaPu3QhlW0nZ9yrspZTh5VmGK4ILwcav7S5IXpx/OIccWA14UsUvEYATrZeGdxE0Hpfh0GrP0wmjRInN89QExLwE9Jith1vNdZGvTOrUmR58pVgKHetiaxmyJRiTrpWwsFjpWjuh1sscBF4Z4TXddX3CGT/YdFsG3xjyWzMN45Ss3ywR682KtxoRXpYmQI364dOgRJ4gSsMYeQ/kf+11IbUuJZEZ8nBOjbqWGXepPU87S6rg34ll5GHQgTtzb0lLM/jnL7PxTm/9EAejVDu17ErSc+IuWeJi+9ZFY5yr3J9ADZtWt+bhQD9mkKZa/4N55ovyrE6fn/YHpNI25WHWVbEEGUSAIa943wqdKUWWl2zhoSvgOIaPFKGiXtlhGdUxpT/0zfxsP5zwR+FuJj+6KVlT5rWzKpyPHuhgoiVAZMzcArqEBBuuFf6zuOzLFTAHhuBwpHVo9ONsig3LHn8r5MwxYbJBjYYpub72AVn7nxKD
- t4E9WgMv
- P3X2WWhXQrEwjhAW4/BJP81mTJ4w2Mi6FQ92UHy6lL9RXxqqByL73xmIui1kauyGGbc5HHqdyOeYoWpy1qh/muvzvnbDSjafe/7dabgwEHbwVs3SrR0FNteREhCL27bhZULzVebdHD5i7X3OW+q+1qyeLiEyW/I5B6vznR+0Z3rOzLAk8CRIwCjkFyb+sA9EEhdee
+X-HE-Tag: 1772534100-444435
+X-HE-Meta: U2FsdGVkX1+YmbGTobnXkeNU0p+vW72KwIkJzsCiRVTqa+o21/QvXs+YRzhn8BMUx1DXOoWx8WkDh8O4zmM+L4vzmGaJiB5EECnGvI3K/BIKOvh5HtJZIHz3M6WOxHZs15a3F98mJ6nqGnccJE8MyT5j2JP7bGeh/myRIkNQzyIV/r3HpO3Yi0SEVaWsQNrSRsF+OsziXHC/Buyg44p+GwYCLlRq4KC5yTJfo3V3jbXWvAVBkB/jUk6eekTFwTJ6oHt9y3ClmNGyumQtpIkmTcFpBs4QzfUwoD5Vfp3ARr8zcP6PdQiGrXoOk2sJYkgHnnjkNc4EuNZ5DUyrcyDgrvM6jWkRdfvL32jA8lNGhkPXfe0XhvVLQuhu4foSm9n3DVtdwJYMNntsMyQ8f55MicuFWpiGqI/FFNxzcbbk1cF59YnU+sb2Bn57msZ2qu0c9neilh98f0OiS1eAi2Z+hBNk18TGUyruCf9ysSC2alRfcVv3mmGgMYtpyglsRRgZRz35LwqOzqKOSApLI3u+9ioFdE1pLzufiMuoUYv2TwMgGRwpnMQFSM78q1nP/UX19VliR37IsSLNk7/94TaEt0Xis2Urbp+2iJuzyj1sxLsV2NbwPP0ns9Pp9B5iXtNPW2b2cDjQQjyW+jRr7zQy6vcdnIu7+4tHuZyyXHRnhaNTsXI9B1r7eMA/T7CX0BBcAaDaWuozWvqFHg1m3jzrl2CW58PadDOj+NlwG5tnZYmB4tnjMUSzGN6jDOeHqZ/oizSOkgg9J+QwO0B2Mcs3DdEi4G22CZ1LRhG5d6fN0JoRBrt3HzytNtIDgw7wVj+peo4Ppa1s9AEPfRU96BdQECf3cxDiCUzTZ9HDinPmLHnbhVT0OCq4hEJgk1IW0296BwNe9JcCeLpm0Sfuphrg47PPx8vqMoiLc7aF4d8cfCCxXJxQwAh6rxa1ZGgXc1tknUjmNAkxKRGI7zW1jiB
+ FzUkjlzl
+ xPeJ1fiaRI8AkWr2uvU6EiB9SG6+uPfjimKjklpMMSaJALUQDyAEUhN2FZ29tKK3/Buy0UAt+iJfehMyZdDe4OIiVBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,22 +156,22 @@ metadata buffers attached so write them out and prune them.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/affs/inode.c | 2 ++
+ fs/bfs/inode.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/affs/inode.c b/fs/affs/inode.c
-index 0bfc7d151dcd..84afa862f220 100644
---- a/fs/affs/inode.c
-+++ b/fs/affs/inode.c
-@@ -267,6 +267,8 @@ affs_evict_inode(struct inode *inode)
- 	if (!inode->i_nlink) {
- 		inode->i_size = 0;
- 		affs_truncate(inode);
-+	} else {
-+		sync_mapping_buffers(&inode->i_data);
- 	}
+diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
+index 9da02f5cb6cd..e0e50a9dbe9c 100644
+--- a/fs/bfs/inode.c
++++ b/fs/bfs/inode.c
+@@ -187,6 +187,8 @@ static void bfs_evict_inode(struct inode *inode)
+ 	dprintf("ino=%08lx\n", ino);
  
+ 	truncate_inode_pages_final(&inode->i_data);
++	if (inode->i_nlink)
++		sync_mapping_buffers(&inode->i_data);
  	invalidate_inode_buffers(inode);
+ 	clear_inode(inode);
+ 
 -- 
 2.51.0
 
