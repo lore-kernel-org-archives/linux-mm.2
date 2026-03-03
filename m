@@ -4,260 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F6B2EC142F
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E770EEC142E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:08:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150456B016D; Tue,  3 Mar 2026 06:05:12 -0500 (EST)
+	id 5EBB46B010C; Tue,  3 Mar 2026 06:08:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D4186B016E; Tue,  3 Mar 2026 06:05:12 -0500 (EST)
+	id 56EAD6B0110; Tue,  3 Mar 2026 06:08:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E99A16B016F; Tue,  3 Mar 2026 06:05:11 -0500 (EST)
+	id 4A51D6B0112; Tue,  3 Mar 2026 06:08:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D4D186B016D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:05:11 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 807ED8BA05
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:05:11 +0000 (UTC)
-X-FDA: 84504470022.18.FB798B8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9E0104000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:05:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdLDbc3L;
-	spf=pass (imf17.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 394766B010C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:08:15 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EEE021B723A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:08:14 +0000 (UTC)
+X-FDA: 84504477708.28.C7B2374
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8324C20013
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:08:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pi97jkDc;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772535909;
+	s=arc-20220608; t=1772536093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VAzdDu+fY/TrXXihVW+Bid6PbFsi3c7W9dDHRxK8+Wc=;
-	b=VTpWU4AcO6CG4oS3Kd91Gddb5YKy0+FI5HkHiGIONsq5MhmdnN/42Eze9gzCEDICkSXwOp
-	0Phl5ni3mjtuAxmM3MqNHHsLVRfN2q2P5YZ3eQ6yn8MTBdaaXissO1iDfWPUDuvrruJAj3
-	LSpT0lAvNGCqBSKWAgST4I/cXJfIr4c=
+	bh=MIt4ITi+By4AbKL/dIBaDVHvVVQ+lcrikGYk06XOcrA=;
+	b=iKyU5oVvAp8QBeB6wfao33YmGbcofxly+zWj6Nh8QwAZqfWjRGhG4xWhWjVsJ9Cw/Xgnun
+	ZDa0nb2e2g2mmYRjP6ckvYKPC3Rc8Qb1nkgfPEbC40LS98vL2Yr55WsrzQlp+uIeJZIMbo
+	fZDcG0/pUui0imSBKJ8Et/G0J+QreTg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdLDbc3L;
-	spf=pass (imf17.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pi97jkDc;
+	spf=pass (imf13.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772535909; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772536093; a=rsa-sha256;
 	cv=none;
-	b=ETniJ78ibw4/hfUFWSH4aOYJNNDE22dpyDO+HRI376FLCExJkq4jR7tUqaf2Jkzy96LHvB
-	a0HTNFNfuO6EBDxnvvEWmUOOBnHAeNT8H7juR0jC9O3rbg9g3CEK18iUIZUlt7s/CCtPRT
-	IkzsUbVy+Rvayv/bShGJbtjcIYlzvTA=
+	b=z5cVLd3gxCSe7kS4hMpsJ0YJZ+otl6XvW+rRwyb9EfZV1p/OTZ0rlp3n5/lEnLV496Ono0
+	Tm6pYSk7id+EsIlhCO8pFD0AjU+mYsaUwUu1FgV6NAVJreUVEqzgvZuP1xj5NjVqlzahbL
+	BpqfMWS7t5bhzaedp75mh+VxvtoBIhk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 61DDC4391D;
-	Tue,  3 Mar 2026 11:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E18EC2BCC6;
-	Tue,  3 Mar 2026 11:04:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DAA9F60123;
+	Tue,  3 Mar 2026 11:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187F5C116C6;
+	Tue,  3 Mar 2026 11:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772535908;
-	bh=QbX73wCXwRkr1HV7bEMnhXfnmc2ghikMMn+yFzCU/s4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=QdLDbc3LspoMdzF3yOKiS+2/bUeNd88SSHjCuT7BH1PZu1IwQEogRoQSu8GuYzJ+I
-	 hpWGLoUh+GTROb0CySxfl/puC0FvszABaio+jS6fONHEdgq/FmTqONvmSud82z6v/W
-	 Qtzf/6fNZkahrT0m8/+6Gau5nXY0CUEepz3EyoxuCjfqJMbL2WmwAoDJm1HdQWFqNy
-	 QsSMVRYs+yeBOEHTxADK1VTZCs95KN4idlKoNWMnHAbPNwRAhNXAPO5DZAo2X1V0bd
-	 QL/EUNzsawwZDF+680pke+4oUr+Dq4LAL4NtV4KYqvQE7YdWUch7FadAjHY5IFmcVi
-	 L2huhQ2zHojSQ==
-Message-ID: <7a0165fe39e82a1effd8cce5c2c4e82d6a42cb3a.camel@kernel.org>
-Subject: Re: [PATCH v2 003/110] audit: widen ino fields to u64
-From: Jeff Layton <jlayton@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Steven Rostedt	
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Dan Williams
- <dan.j.williams@intel.com>, Matthew Wilcox	 <willy@infradead.org>, Eric
- Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o"	 <tytso@mit.edu>, Muchun
- Song <muchun.song@linux.dev>, Oscar Salvador	 <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>, David Howells	 <dhowells@redhat.com>, Paulo
- Alcantara <pc@manguebit.org>, Andreas Dilger	 <adilger.kernel@dilger.ca>,
- Jan Kara <jack@suse.com>, Jaegeuk Kim	 <jaegeuk@kernel.org>, Chao Yu
- <chao@kernel.org>, Trond Myklebust	 <trondmy@kernel.org>, Anna Schumaker
- <anna@kernel.org>, Chuck Lever	 <chuck.lever@oracle.com>, NeilBrown
- <neil@brown.name>, Olga Kornievskaia	 <okorniev@redhat.com>, Dai Ngo
- <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,  Steve French
- <sfrench@samba.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam
- Prasad N	 <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>,
- Alexander Aring	 <alex.aring@gmail.com>, Ryusuke Konishi
- <konishi.ryusuke@gmail.com>,  Viacheslav Dubeyko	 <slava@dubeyko.com>, Eric
- Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov	 <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
- <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, Marc Dionne	
- <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, Luis de
- Bethencourt	 <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian"	 <aivazian.tigran@gmail.com>, Ilya Dryomov
- <idryomov@gmail.com>, Alex Markuze	 <amarkuze@redhat.com>, Jan Harkes
- <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,  Nicolas Pitre <nico@fluxnic.net>,
- Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
- Christoph Hellwig	 <hch@infradead.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>,  Yangtao Li <frank.li@vivo.com>, Mikulas
- Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse	
- <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp	
- <shaggy@kernel.org>, Konstantin Komarov	
- <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Mike Marshall	 <hubcap@omnibond.com>, Martin Brandenburg
- <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Anders Larsen
- <al@alarsen.net>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Damien Le Moal
- <dlemoal@kernel.org>, Naohiro Aota	 <naohiro.aota@wdc.com>, Johannes
- Thumshirn <jth@kernel.org>, John Johansen	 <john.johansen@canonical.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu	
- <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley	 <stephen.smalley.work@gmail.com>, Ondrej Mosnacek
- <omosnace@redhat.com>,  Casey Schaufler <casey@schaufler-ca.com>, Alex
- Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	 <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet	
- <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni	
- <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, "David S.
- Miller"	 <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon
- Horman	 <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
-	 <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho
- de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
-	 <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>,  Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, "Darrick J. Wong"
- <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>,  Eric Paris
- <eparis@redhat.com>, Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann
- <marcel@holtmann.org>,  Johan Hedberg <johan.hedberg@gmail.com>, Luiz
- Augusto von Dentz <luiz.dentz@gmail.com>, Oliver Hartkopp	
- <socketcan@hartkopp.net>, Marc Kleine-Budde <mkl@pengutronix.de>, David
- Ahern	 <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>, Steffen
- Klassert	 <steffen.klassert@secunet.com>, Herbert Xu
- <herbert@gondor.apana.org.au>,  Remi Denis-Courmont	 <courmisch@gmail.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,  Xin Long
- <lucien.xin@gmail.com>, Magnus Karlsson <magnus.karlsson@intel.com>, Maciej
- Fijalkowski	 <maciej.fijalkowski@intel.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Jesper Dangaard Brouer	 <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, 	linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, 	fsverity@lists.linux.dev, linux-mm@kvack.org,
- netfs@lists.linux.dev, 	linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, 	linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, 	samba-technical@lists.samba.org,
- linux-nilfs@vger.kernel.org, 	v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, 	linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, 	ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, 	audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, 	linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Date: Tue, 03 Mar 2026 06:04:51 -0500
-In-Reply-To: <CAHC9VhRnmBuXEKkUPQhJ_LDzcksjoAJL-ne6mFoJdR1hnDdzsg@mail.gmail.com>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-	 <20260302-iino-u64-v2-3-e5388800dae0@kernel.org>
-	 <CAHC9VhRnmBuXEKkUPQhJ_LDzcksjoAJL-ne6mFoJdR1hnDdzsg@mail.gmail.com>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=k20201202; t=1772536092;
+	bh=Pg+bxff6RLm2vjCjXAjEClO/zTnaUHcveVBLVQYUn1c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pi97jkDcT/ZjH3j1UUJ6X1W7VKCwQsInCbpeBFP2WSVyZpLzXJu8QPzcM+MpXLHaP
+	 v5fS7YCVHzOkRmsCOTvuoXmGSPdwd3i7T6x9y8gY1ZZEe7GFJ0w4TFdDGSPW2IFV0O
+	 Rl7Ox3oKMYqpsUiSjnHzKLW80EIJLqCnlDmaidVAx9ChJ9HN8OizgUIjCoqB6JFQjw
+	 9wBJDinzGnXWndQrjDIPTncYKV9DPeK2E/9jBboaAV2+942cFv7Vb5JkoLtFKJUHFK
+	 b9HlDor/+weZnR5MYZV+X3vw19vXWqNARlzTRdKwKemmjkEwoDKfcf9zbEO4CUb1c7
+	 LlzlaYyt5bL8A==
+Date: Tue, 3 Mar 2026 12:08:09 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>, Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aabBGcuhVaFVwtus@pavilion.home>
+References: <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
+ <aZDw6xI2izFDfuuu@WindFlash>
+ <aZL45yORfkNvS9Rs@tiehlicka>
+ <aZcr255pGT3B/eaL@tpad>
+ <aZdk19MqYhWK90Do@tiehlicka>
+ <aZzM_44L1vKzcOCy@pavilion.home>
+ <aZ3ejedS7nE5mnva@tpad>
+ <aZ9ugjKvb4U7_R93@pavilion.home>
+ <aaAxVbt/DQyTgIs3@tpad>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 9E0104000B
-X-Stat-Signature: nmfq859kd96d8egsc971f5hgaffixe5x
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aaAxVbt/DQyTgIs3@tpad>
+X-Rspamd-Queue-Id: 8324C20013
+X-Stat-Signature: d4bkba4uidifi7464middtmufr4muieq
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1772535909-650938
-X-HE-Meta: U2FsdGVkX19q+2mZXawYsXApKNBaMSYsDKJ76YPNYzCkpwPfgNQY5i+hXbe4BrNHE1CRBTZPLHmRFJYQgXtv4dS0YKYjPKQG8UmQusOq4XZFxwACiIRsM7DbOfhhAE3pc5W0r8bUfktvSZvIZpYH5avxHJav+gn4BRbXG50GHsPwn/lzVWifllGb2A2QGO+2bSJmmmJU7y1VQyFLUk4HS04093JgaB7eYxUA4DqZ39vb13NzqGISxm6f+t1bcNzNN5N/q6m63QlaVZi5wIBBaoZTBY0G2r9eAFxAnllpuD3gHy27a5UWNelIXtq7FD25h0GF7TSUYOmLWYpt2WNFgaCh3oP9jSW2/EB008IWrXwt+JbhzmPi4LMTdJPMsRhhrGUvhFXcxE8YvTLcspa5G7TreFCsVVVwdDuW0+V96+pW523FKg0MXyyoPxuTBD/RHp7FonT4CQafhKO6jYPEcDAwN5IOZOw7AWSpbYOVE7VWnd8P1QeWiui1dr3cziaeRQSDc53BNSEGjIzs95z9k389ovLTPtlTVogh/UjLu/IFZUdHTBJE//fJY13rhgxQrcWptq0Uns9w6NIQ4YY1a/F4nX/S/0wxYGDqxhynEPvGwklVFjhjFz9fhdrovbVzcZMAxSyzN1QmV35PtEFn9kem39iySM2/gPfYWQaYUaO/Hf9AnEOt6WR/efeI3pTe6GP8xVqkhtSx66G4VySGtkGn+6uKNXKEG8J05xHsThA03DDDsMijhuShdmRzgzO0SH45ugsk0xDEMQkpi4I4wBsVG5xlo5htDwGEoJSssQz3klZ97bvjod4HFj2Ci0QqPo1WwKpP5U6dsaK1BnDaxNf9sxYFihw9B4y7ebhvv+FLvnw3f35xL1DS0C9nrqBZemBboj9nYaCD5TJ/PRzG3QAcoLyVLjnZtaMONxCykWXpvJIz7RIeCkJE3YSrhprgf3JrnHMdkfuZxoLTFZl
- dQViPfLU
- pSdnSugUIQAZ9RiAj26rT3db5TQcqQ4fhwgPtn3+Dcc3itSY7AAcql+Dbc4LTxGglEytoBe0OIQRuvoarfdphESQ6ah1XorQsUHGhoyg9khRk8Yvsz/3o+gZ1rcawFeUSWRSpGxFCI6y/C5WekYgG3CRjEgS5OXce7smvxDjCtXV3rcky+9fK7ExkhvHXCFeUmuzY1I1N70diD68WDzthHJEAxbWawZlqvTJZ3IEF02k+mvWGcLflIRMuT1ks+yvKmL2xg+S1LMWEVnPHBB+HIuE+YRgRnRbyidgNbHcdM+2UJU1k0MUIS5HZYc+P+iloW0fUT5aOovhvUFKuBXC0BMRPELjf+mlv+NKhztmewaeq0iiuoaSneAGPShb6FcUKTu9kNvxTHaS6kjL0ILRn8DWfveBLm66q11V38umETeuG0Q97nP1DGWY/xJAeQUjHOA3+787zkTWfnJ2neEK3Cr+uCvkPlXC+WGcV2wapbV4AWkZYSOZco/XRRLMokZxmvFxmx9taHBlUvpEyA4oDzU4lEuc2qClgkmtSUmt33RlpN0eT2PizExzQfglpJQKZmhzpC9IncPPuOqvxOju0R9W0Xusa8Vc/ePQT5H/ql7LFlfNgQBWmANFWdXS5nr4ux8TY+6tIziHHJNJHCAV9OH95uMB/MZOHv/c/5IhWaykgtBYY6DGAfcZq3xipNSCf3Rp2LlCPQx5XUOWNhu01Owwhohlgb6pLJALPmeOwJ2QMo+YkyteEvDUDnR8vkWMSBB3AzbCsD1n+QTh+DC5P+uFCeu31SkkkGapW8l8Hcb/bjzZxkG929Xr7203UQF8tkZhNTO58KUgUccZlqYV86GPOdgntrmP4GUqF/Sau7VYOM/o6nQVTb7c/OIMwrcK8WvHNu8swrvwbt/yAkTBuIuuaq8sf2NtuyYWSOybbxP2t6GXX52G356Ke6e0hRmdE7Dbx2JYx9bbO4261XgC0DhUuL4ze
- FmWecx2+
- pUmrHl0Xgxkh8OcoKxxxOqF2dIoX6OONpyJjyj1BMbk+6jTY1FrrLlFAeEmqBylmXzAmSi/nVkIYrxncKbJRmtIU8shlGOx5XqEnauZRmvmkPRMJOdViWlz0POUMWhAe0GOxiKxiKbgqc2L0yVwUa6OahSL/3GLEGSqRWkeqqqRjxuPamH8yZR1VFnwCc0k4qORDwvFADysb58UKVZsDfW+gO9ViYrX+gq6oSgYi59glm9IKVqRk8xcw6tH5th64U676VjjrR8ZROuGq9bes17bzJUu4oU9SbHZMqRyRHpO9u976Li2cT/2nYjqfcQqawPA/0zbQUTRcaezeyhiVXUlzzj5viOKXjs6bY8aJ9lnRrlHGvE28NeGpj+8Ouak3OenS8AjJP+X84DpXK/uCPQiknS4VBEICxqg4yJJjGOOKGmN3bHY8M6KjmMNHvfF8iQa4J3w3cB2hMxqe5aKcH0I6GXyML6BUs6HMy0haBQPsRcowHt5NSjAY1UX4rpGuNjBPHhtqC0lfUUU9ISA2EhBppaUFjOZNRMgHgA3vKbAKIZ9o82yF2nysdBjIWZFfOeikopFKshlsnJQeysHR90LV+nV6H/ZM04ewWTqoW008o6lOAmuMoXF2A475YLcsjLFbP9yCqrHsjuwtz1fhpG8LDOET8sDpDyIXzFGRFsZNS2D7pdl+P+bP/dU6aPZo7oUr8zujA+rb4ajy2BZqxRkgV4F5yUYeC+5DH4+PFp04YFNbMAt4FQAQc37VVW9atF17wbl6Y1a4RrHcrWNTCP018C2O7grZlzhuRs4MUH7/81lQuohsEYRjrp6FS4Ay7XPwi0Y2TQAZJ0jY6V5kyLYOz0E6jR9GwkxUtPjYChgkGy7pgHF2MV50naRc9wW6Gn7kRlG2abT1taPrp59bwbj70NVCFobDRKzWpeHWfIRnuo2lPLoos48F1/n4NwwELTdNbHjS/kb6vR2yhSTkeYrrVs3Vs
- O0gELw/S
- HtFLSMJC7ZzpbMpzHXCgT+9iFaGFU6F9yeIPLTliYa4SgLXLBL+NgWCs90MeM+bUicNRAinB3v/OuTqATr/oNn+KvElku3HJeR7dsjfSVCGzc7WuxjBUoIGFM99iXWvHvAj2n4+UXRRxwIuNxbbCvA1lOc7h+1jruopmVahAfBDUQ1BKrJAzshjTht2D6kdxExzBoxlGyRT4Xh2aivqsc1UYJ9nmrzw99XSQk57BJndd+VGI5tOYfsI5lXEWQL6El5+We6ZoDPaYNUpTEVA57+n3w5G+mTuAy9/xZYHrgcFyku9n3ZLnqoT76xKbo2ahBQAx4Nyw5pCaXnufPzvFZZPvKluV8M9fXmpdGsIV9sC+CfVhD+sqZsyu+OB3N7UOisFXe9sAMXF8i02EtGXJok8TWWQ9dJxJzRapriH50rnt562nTRDV5mYhcW41Ykx7BTPQFLlJu9aOX5QkQLGkpFbE5azYRTqnbMT+iGthdZKVmrxIRQfPjN6fpErBm0V0khtJ3dO9UPIIr3kCk93173Z1LbhyV6kRxbkC30nT5BTYvhP2OTTBehE+0Yr5ztQ6T0Q7Eg3ABMTYyU+il3v4AFmONq2qWRTY5jB2EbsfldH3l06WgMEm4HwCrpCdLvMPgEmUfNb/BaKtDMC3utbjChXQKAXWCN95eKqgAIJmQTpmoEUoniH3N4tMMhptzGm4P+qdM/Qf53HzBV43PTl7XOjGhLwzFKioU3ilkgYNgZJG65028qg3a0FzvwutXUN1bEv8ozKqRE92bEYAwjYYJs7jUNxmgh0qgQB+ulK/DU1IPKE+WG31/2AL9yvimBSnX3aZvIUjhuuA3HlVI9NM93Ypz0pwEI0l9ZSPxSH0mMJUn555IJO3I06UCQZLqw3B4iyh/inASqOOBxqZWW3enJMNvv3gaBw0Lfb1A2uQ/BvyTA2p/LYlnugQ7GA5kGMPS2+Gtb8/fWansRYvy/Qiwh7LSwAK4
- Jqvvxgwq
- qC+NEKEAu719VqklQ3ifmiE7elvdMyn6/4I7aI5aRG3+K0FQPgnA/0TFT3JS9YF8pYlfbhliC7XFoRWdc3YFwaLlHO0vt6oGw+EAb9J37hM3lbM+GS7CwW55O2vhQtq+C/UikcR3KicEj9NeqFLysHC/1BpnD/ch/WfpbvNLsfYlb2UWl3mXUjMkqLgx95H9KAnP9kuSB2IgQmsXwIgElPqkoUCEhdvEcsSFocbVJ6tJs0TjVRvPnwkLL7J8YcUJQXPg9GUFwVC1GaLB6bKJtYnTEgRULOVFcBNXKjx9qPgqCQw2N6FI9onNGX/o6Xb8xj8BX0lVP08ZRbOauileMM8yjg+pC9u9s=
+X-HE-Tag: 1772536093-46407
+X-HE-Meta: U2FsdGVkX18q2xBdoGW0XbFYMtO8GGX5SdckHi+Sj+lVnXh8H7C5qejPj/JXyg6H/n/so42vIAnNPCoJIlAH/UWHT0sOfiL9jI7rFldPO4rPGYCd92SrnNJbbQHLNKM142DW56mXxHqvxB7uy1Uj/6uAHBqrwfMAiIwyrU4rqd3x2d8dd4v6yMgdPRudnTrRqCDtMSdeLgEJEcb4YQ7y3osm74jY2QS5O9vaqfQw7XAS328e6SiXQuoh3C3xyZyUkmIRCHOB0QTOlOJoiPE3g8KZmVborZ4ItnT7S0/BeaP5HdEqK3wlDPu7VCeVXGf/XqGJ8es1qxo+Sp0Fdsu0/VZrOLzKiLnotj1yiy9EqEaZJdX0ZxDlXZPvyi10o8fvObav0tY6PlsOaRSQwG5BMr/gDtYMMKJQcIq0c8CF7cTLKLzAFSyz0cwiKHzCcHBFw2YHby0eVTCwczbHS0UUdcgV5ZYP37csLKEeKp/ZjpPBf4+LCZBAL6FNZyouIGpoeKtURGt2DNahCw7E06jZhqADA2Dr35RR7jGdect2Dt08rSIEwyjfGnPZjepCMgML7URP6OP1ohJX4d2kpivsF+JvKvDEHaP+4EXYg8WwHUpiXnnBWbWzv2JuNlb8heoPWbhiJmSAFrLCgYkm8q/CjxeHHQQRfJfaz3Cuxo7RiY9WQ3bjviSLja/grVRLXxEWWwhfcIDybX+Rpc5oVGYNSOEjuKFOWHgeWc5xj1FmI2yfI1nuhaHcYzLz94XaHTOVUeyMrMBEgyy0mkyibZoLFHZg3A00GBbQNHL88SDhWdve3cxGSZB+5WXM6oAW9wKnBGTikIBQdxCnBBdYTL/uU0kloiknqg6Qw5KDCYniSgHVU5bFQZOGA8zP74aSseoE1ZOZkMi6Oqlafff/xI/bGh6RT4jngVX1p1DLrmGA90XAFZtu1yCuyqoS9JSwfQfnUZfDbZ0ZahGCidcSaZ+
+ kMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -265,45 +114,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-03-02 at 18:44 -0500, Paul Moore wrote:
-> On Mon, Mar 2, 2026 at 3:25=E2=80=AFPM Jeff Layton <jlayton@kernel.org> w=
-rote:
-> >=20
-> > inode->i_ino is being widened from unsigned long to u64. The audit
-> > subsystem uses unsigned long ino in struct fields, function parameters,
-> > and local variables that store inode numbers from arbitrary filesystems=
-.
-> > On 32-bit platforms this truncates inode numbers that exceed 32 bits,
-> > which will cause incorrect audit log entries and broken watch/mark
-> > comparisons.
-> >=20
-> > Widen all audit ino fields, parameters, and locals to u64, and update
-> > the inode format string from %lu to %llu to match.
-> >=20
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > ---
-> >  include/linux/audit.h   | 2 +-
-> >  kernel/audit.h          | 9 ++++-----
-> >  kernel/audit_fsnotify.c | 4 ++--
-> >  kernel/audit_watch.c    | 8 ++++----
-> >  kernel/auditsc.c        | 2 +-
-> >  5 files changed, 12 insertions(+), 13 deletions(-)
->=20
-> We should also update audit_hash_ino() in kernel/audit.h.  It is a
-> *very* basic hash function, so I think leaving the function as-is and
-> just changing the inode parameter from u32 to u64 should be fine.
+Le Thu, Feb 26, 2026 at 08:41:09AM -0300, Marcelo Tosatti a écrit :
+> On Wed, Feb 25, 2026 at 10:49:54PM +0100, Frederic Weisbecker wrote:
+> 
+> <snip>
+> 
+> > > There are specific parts of a simulation that are intensive, but
+> > > researchers try to minimize them:
+> > > 
+> > > I/O Operations: Writing "checkpoints" or large trajectory files to disk
+> > > (using write()). This is why high-end HPC systems use Asynchronous I/O
+> > > or dedicated I/O nodes—to keep the compute cores from getting bogged
+> > > down in system calls.
+> > > 
+> > > Memory Allocation: Constantly calling malloc/free involves the brk or
+> > > mmap system calls. Optimized simulation tools pre-allocate all the
+> > > memory they need at startup to avoid this.
+> > 
+> > Ok. I asked a similar question and got this (you made me use an LLM for the
+> > first time btw, I held out for 4 years... I'm sure I can wait 4 more years until
+> > the next usage :o)
+> 
+> You should use it more often, it can save a significant amount of time
+> :-)
 
-It is indeed very simple. Here it is today:
+I fear the earth doesn't have the resources to serve daily use of LLM to us
+all. Meanwhile it was a pleasant surprise to see it in action and answer questions
+I had to myself for a long while. And I might use it again on the rare occasions
+where a simple search engine request doesn't do the job.
 
-	static inline int audit_hash_ino(u32 ino)                           =20
-	{                                                                   =20
-	        return (ino & (AUDIT_INODE_BUCKETS-1));                     =20
-	}      =20
+> > ### 2. The "Slow Path" (System Calls / Syscalls)
+> > 
+> > Passing through the kernel (a syscall) is necessary in certain situations, but it is "expensive" because it forces a **context switch**, which flushes CPU caches.
+> > 
+> > * **Initialization:** During startup (`MPI_Init`), many syscalls are used to create sockets, map shared memory (`mmap`), and configure network interfaces.
+> > * **Standard TCP/IP:** If you are not using a high-performance network (RDMA) but simple Ethernet instead, MPI must call `send()` and `recv()`, which are syscalls. The Linux kernel then takes over to manage the TCP/IP stack.
+> > * **Sleep Mode (Blocking):** If an MPI process waits for a message for too long, it may decide to "go to sleep" to yield the CPU to another task via syscalls like `futex()` or `poll()`.
+> > 
+> > **In summary:** MPI synchronization aims to be **100% User-Space** (via memory polling) to avoid syscall latency. It is precisely because MPI tries to bypass the kernel that we use `nohz_full`: we are asking the kernel not to even "knock on the CPU's door" with its clock interruptions.
+> 
+> Of course, there is a cost to system calls. However, considering
+> "low latency applications must necessarily remain in userspace,
+> therefore lets optimize only for that case" is limiting IMHO.
+> 
+> Should avoid interruptions whenever possible, for isolated CPUs
+> (in userspace _and_ kernelspace).
 
-It doesn't look like changing the argument type will make any material
-difference. Given that it should still work without that change, can we
-leave this cleanup for you to do in a follow-on patchset?
+Very low latency requirements really should bend toward full userspace.
+But you're right that isolation (even full with nohz_full) should probably
+not be limited to that. HPC shows such a usecase where the workload is not
+perfectly isolated and yet nohz_full brings improvements.
 
---=20
-Jeff Layton <jlayton@kernel.org>
+Thanks.
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
