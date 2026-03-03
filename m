@@ -4,95 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C57E67A62
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:57:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33109E67A72
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC056B00BE; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
+	id 8CA466B00BF; Tue,  3 Mar 2026 09:57:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D4006B00BF; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
+	id 8A1C26B00E2; Tue,  3 Mar 2026 09:57:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FFB06B00E0; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
+	id 7AE626B00E5; Tue,  3 Mar 2026 09:57:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 309836B00BE
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C4A5C1C19C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:56:59 +0000 (UTC)
-X-FDA: 84505054158.16.B455CAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1A432C0003
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:56:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J0KG0k1k;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BF846B00BF
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:57:26 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A96F140227
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:57:26 +0000 (UTC)
+X-FDA: 84505055292.19.585207D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4D4CE40015
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:57:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aj8aPiYm;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772549818;
+	s=arc-20220608; t=1772549844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6WrENax+sUD4gQp+dJwQG59dAxFL4UYh9VdUk0MCKQ=;
-	b=KVAqvcWXzPVMXRfzoCS9TjMWy9PN6iadsxyr6WZo4kroHA8Fp6o3ClhPF3PNBXDspQTRc+
-	fV2zfeYx0vRtvZ7dl0gGm3IfJnThjQHhT7+qa5aG0O1stqr00Ag9cIcprGXyorwau8/bMq
-	RCIj9sUuvHmRH/0hAi64pldoTosaIN4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J0KG0k1k;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772549818; a=rsa-sha256;
+	bh=KsqaJV2MFFgF1pjq02LfT3JVP+o60wkLV1TxCBoMKfY=;
+	b=V64vX2cw8gm62Le50G67k5InQB+H36Tl8q0YOUTnttx5gd7E2alC8u1+l2gktdHu/pIeJ+
+	5yNDdYgvwNJtVkUff3W4/STkD+nSwLuCVzX1jg9bnTjaZuXd8pzVqCvOkvNhQ9qc5f7Kcl
+	aK5shj9553tX9taRSlMYbsY/xnm9z+c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772549844; a=rsa-sha256;
 	cv=none;
-	b=2BOzqhs5PjjqpQ45oPlT4Yu+fF55AlxauXa6OFmXsq5DEhkzPKDaMjFfwNmcumo9OAS4xv
-	2JgkP1ZzBkcb35pLWAniPAbmomHvDMqHahLbnuGAxp7wZtm4AO6urQve/JwM4HyZwOROps
-	1+hziTrS6sEjXRlJOrM02wzDhedCE9g=
+	b=h+nYMibj07YgNBIMnEtHqckspYAHY++nxSQDh6jflM/1WwI+yGFjFwECjvyQD9fWMo93Hz
+	jh40bgP5bDFAp6hj/NEWOu6SnGxidsssOemBB52FWJnR+7fzSFGT1c6xoJm7z8txdX6KHK
+	0lMNrgut9XERm7GqPo0trbcBRlHvles=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aj8aPiYm;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1584043F22;
-	Tue,  3 Mar 2026 14:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CC0C116C6;
-	Tue,  3 Mar 2026 14:56:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 843FB600AE;
+	Tue,  3 Mar 2026 14:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16C7C116C6;
+	Tue,  3 Mar 2026 14:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772549816;
-	bh=YDDRbdkOmZu4woFY/biSTxPY9XVlmlte9LluXIX79po=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J0KG0k1kdbUbJLb4ilLyBDyMYnY2ac0zwF9AnGwtN08Mqs30xW8p6PTwiRV0xzCU1
-	 1WUmDa9S22Gx5SOYFBQJn1CfcX+Arl81UgBduK30jmWV/WjU+A9HnAAcZHuKEMAZrt
-	 NDm32zqff115xaiAPy83OAUrSXS1pTMn0kqTxJS3ulhjptOIuVQm4f6BlJZfIB7toZ
-	 +V2oljnwyK9K3blbhGzVTagIct4fGIiu81pzZHNcTJp2ERLL4aSfGfZg0SpQIIUo6p
-	 duFtMMOIxOrYJyAMZPR7CGFuOQEIXgHMdudxRzHDu6dQyXItPuQto2ZGpcRMR1GNH8
-	 mROATaBd/5T+Q==
-Date: Tue, 3 Mar 2026 14:56:54 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v5 update 29/32] mm: memcontrol: prepare for reparenting
- non-hierarchical stats
-Message-ID: <46bgg2vwqvmex7wtk2fkvf454tqgaychb7l4odnnrx7svci5ha@vy4b4ophm763>
-References: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
- <20260228072556.31793-1-qi.zheng@linux.dev>
- <CAO9r8zNYFvNnz_oTu10kPBYL6=1ZewKUMRYcMmcMdSqbro_miA@mail.gmail.com>
- <de1476aa-20a3-420e-9cd7-9238efd3c85f@linux.dev>
+	s=k20201202; t=1772549843;
+	bh=ZZ+qmiecneAZ4xQmAmygqxuLBiEj4PedcYMuL50QNXA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aj8aPiYmKukdRQi6O7Ps1KrQTuP9LNpCm0E+O1TzYfd/9YDeJBJH3G7GRSQVG5ewX
+	 vkRKhZgyakeaiEN9r/eN78cI/Souq4jGJ+Ui7URFynaSn4ycqasn4AxKMc4t1m8/cd
+	 kuNXW6vyuvyGwTVORsjgBDjHIE4A/+FxPKeliCuyGyjcWpXzJjUu8sK8obBw0Pod85
+	 wOyDHBrMnRgzHCGSI3vaJqSFEBHDv9NxjdXDx5LA7YHiuZZPaKRr7MpHGWX3vR/9x9
+	 fl7jkcGygkreaZlZo81cr7GCVlwZt33I7heip/fTmjlvqgk7pp1rIb6PuK0SA/MUzE
+	 EpRu1xyur2sEQ==
+Message-ID: <bd7214a6-fd17-4d8c-9849-5f1a55caa2bd@kernel.org>
+Date: Tue, 3 Mar 2026 15:57:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de1476aa-20a3-420e-9cd7-9238efd3c85f@linux.dev>
-X-Rspamd-Queue-Id: 1A432C0003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jo5ncn4xbnnhmkuuxewbareh6b8mc7h3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] mm/page_reporting: add
+ PAGE_REPORTING_ORDER_UNSPECIFIED
+To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>, mst@redhat.com
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, longli@microsoft.com, jasowang@redhat.com,
+ xuanzhuo@linux.alibaba.com, eperezma@redhat.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-mm@kvack.org
+References: <20260303113032.3008371-1-yuvraj.sakshith@oss.qualcomm.com>
+ <20260303113032.3008371-2-yuvraj.sakshith@oss.qualcomm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260303113032.3008371-2-yuvraj.sakshith@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4D4CE40015
+X-Stat-Signature: 3rgcgo1nprq3ucn85e64agzsbsc5ekg4
 X-Rspam-User: 
-X-HE-Tag: 1772549817-298930
-X-HE-Meta: U2FsdGVkX1+EGWZ1+l4ugtBkP64ceZgWUPqSbYU9To3f1EF/d26104Md5Ja8iCeOxmQH7Xdgu/KHYd7UnhcZG4huo3S7APRIud7HOkyrkGmK+n/J8eDEaqVX0b155nVEOmr1V3A2xWJxY7wH/qICc43x4SRz62tLPqACeCOUIUOA62jqxOSq8T67iGcecwJpx7j0Aa92g/aW8LTOH0sTRxB3kZho/qJ1Lq+Wlre3YCspi40CHhv28BPLWACmnKOfS2lTGwPzWqQqBsGjnAusOSOc79fNtxkIdh2m1JvvHHAtCO+DgN4qGa5OF/y/mdWeaRGUN5z2wRPZBmRkQIp2aJbd/HCUOwyAr6zd2ex7ergSSr4xEwnVI1v5erlq6kJBxiSkx/K7k8NMc24PWtcqhfQQDgz3eot+uDLcOuaXurrR+nd5iWaK+J+hxgrOPDCESCZFVafk67/W3S6NDs09vQmHP3p/hXj66VDlh5ZzczBy+l1xpMGA1+UouHTAm7clqakT6unCoWBNpBxy5YLeAwx4EtvYMwzH/VCbvOtr97MuwCuNTxJZtIztNBGmMxuW/ZZMqFfpCoHsjJtowMtOArFwtYdOJ71MhNabyG0/GFE8SnhL3RHwTdaBxTRyt1Mw+e9cAZ3UcpUuP7vsAhKhkX1SjKFBhYgSrKDyAVbQrRbi0P00FIFfLkgz8uE8GKruuLFW6HZGCTsX1aSqGA19JqjjVJnRSxEq9bAfAlTX8wsak/MaIOHKbyZuzKk6DHAQvGpFJbXBOjqMrKbLfxhFK6bQFRA6F8XZfdDxFwrA4I0KNPyvHcp/LSVFZk1XSsF/mJkGetemQXuU3llFJo1SREFooO3NzSjMZMp13EV6r545/rNCWtmvPIf+d0XwBMzAjAIFm3hHumIob2KOU2TPmRyWCLIMCDJqHU1joVyr08XDXBDE43S+aAKMgn06UuyRHAv4v2CjnEvaOT4IV27
- ne4Nkm97
- CdcENI/AUepSnhUcj0boOA9cauEzcXI+XlayPBEDd+psLWyouSeKlwU3wQFW82n3Ph5ZV7szB4y3DY1cq5GxKVNq9v9DuwV08XgRdkbn7X/wOAYUQp5TkH/rYO1bwyeOzWmRdEDkywdx02/SfkaWgzQ4OxwyWOxFxCilnLuS3/eRobtXIqUTM3N8MMa67nojBHrOahroaxfq7JMDyjFqaeJB8N/VDOnx+sEmNE4tJ4qdA90KNfyyYA5e3PNK4h//7RXMQ
+X-HE-Tag: 1772549844-841693
+X-HE-Meta: U2FsdGVkX19SSBmxjsYiziFPkup6TczomNUM97C2PO8mRhFc0oNFQowYfHqkMrCI4/nqsp6sg34c6vvjAcaYr640j2snBwzODc1Rlc+MYCx1+VYsEBpgouTvv8Z7K6P+Pv0ySP31c7tqWzfjVaAH9exC93dO5ZboUOhA2jyVqP6aHw4fdexx23pCmR+mPGrgHDTsSSERTm3c30InfbNFkXosT4tusVMACvBx8jcY1LqIHlRQYNkZ4+tc2HPv50eZnruItZGEjlh0kxiY3EGvuinRerKMuEXTxeNru2ri9xww8+9oxYVwJv5rhpelt/QL1j6MquZPvD6aqHvwXfASCz7eTgIJbhgaETZ/kFIoA5V5r8f2ujFCWDsXzQYwqFz83JL5tWxofZVPvl6Scc/Q8a5FFt4Whb3W4609sCNubTfcV1lRjDNq+siMH97baSsHJttwUM0VkGEY8wqWgzWDGBFUg1PlRwDo101rNgdq39yaXM1h6UahxWuWSxfk6peROaCZ93y9Kmnarorn5WmvUacZ3iFRn9J7G/qatZd3kz0qpvL/XeOeocQdtsGX2H/0UrjQ5DHthltm2sBGbJR5RKYNEnRnoo7RKEDEncw9PxoShay2wWE/P4cuO+8YumaVZbTIVFFLXA5xuO44Hub6jFqBhAj8HRb/DSyOolDirALZ/QDjNaZulnppRBX0y+kFLOBvd9KvSE83lvjz1WsFmqmFPRDjC11jLlD4o9XcmKpe4ZJufyo+HvDQct5whJ5jUo6ekq4cX+vdoAj+aVtKJTpuLIsE4CdpZ8R82d8R8ZbFGNTkQlxIvBn6UJEZ+ju/YRzEEBI0+AzEDMeloC2zBCz9O485UeRzzUPqW4ywgRL+tlqzDVRSrohr7XfRResX9YO1q+9RWpUtL25lHs/HGw2Vz0Oe7URjHXMKMXUf26HN2/hY6Mr384N5fu86TuJFjZN5n72QpOgEkwUf8dd
+ 37JMQgZV
+ s2rnM2bzG/aqyBI8ez6OGdQRv5F0gi6TIr18dL4X3K/t60NweUnSWv4SRFzJwQr8nlWHih0wPqIEUylIFkdBf4kmBfZFXzYQRJhVGQLBqViRcrsqn8jPttZU/kwb9xxXIRuTFbRV3VS0BXGIr9wDQgI8JHmKR7VoXqh5jhN8/or4JfydKXxAQhFpIi8sqFtmhyzqXI34Lfnwv2ekmPCJP0xUT146xXMxp16dci0EJ8M+Z09zVeEkruJiHYXm2uaOWKISr4bHkLkdK14+F3qlkvGBPBxYyksH1rJ0ol+SikZO7pJlyaejGCoMWBD4/HGT3JSuQ0wj7xtGF4LK+LJcfyvtEBrJ7pYk3czUN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,227 +145,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 11:08:56AM +0800, Qi Zheng wrote:
-> Hi Yosry,
-[..] 
-> > 
-> > I don't think we should end up with two copies of
-> > __mod_memcg_state/mod_memcg_state() and
-> > __mod_memcg_lruvec_state/mod_memcg_lruvec_state(). I meant to refactor
-> > mod_memcg_state() to call __mod_memcg_state(), where the latter does
-> > not call get_non_dying_memcg_{start/end}(). Same for
-> > mod_memcg_lruvec_state().
+On 3/3/26 12:30, Yuvraj Sakshith wrote:
+> Drivers can pass order of pages to be reported while
+> registering itself. Today, this is a magic number, 0.
 > 
-> Okay, like the following? But this would require modifications to
-> [PATCH v5 31/32]. If there are no problems, I will send the updated
-> patch to [PATCH v5 29/32] and [PATCH v5 31/32].
+> Label this with PAGE_REPORTING_ORDER_UNSPECIFIED and
+> check for it when the driver is being registered.
+> 
+> This macro will be used in relevant drivers next.
+> 
+> Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
+> ---
+>  include/linux/page_reporting.h | 1 +
+>  mm/page_reporting.c            | 3 ++-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+> index fe648dfa3..d1886c657 100644
+> --- a/include/linux/page_reporting.h
+> +++ b/include/linux/page_reporting.h
+> @@ -7,6 +7,7 @@
+>  
+>  /* This value should always be a power of 2, see page_reporting_cycle() */
+>  #define PAGE_REPORTING_CAPACITY		32
+> +#define PAGE_REPORTING_ORDER_UNSPECIFIED	0
+>  
+>  struct page_reporting_dev_info {
+>  	/* function that alters pages to make them "reported" */
+> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+> index e4c428e61..a97ee07cb 100644
+> --- a/mm/page_reporting.c
+> +++ b/mm/page_reporting.c
+> @@ -370,7 +370,8 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
+>  	 */
+>  
+>  	if (page_reporting_order == -1) {
+> -		if (prdev->order > 0 && prdev->order <= MAX_PAGE_ORDER)
+> +		if (prdev->order != PAGE_REPORTING_ORDER_UNSPECIFIED &&
+> +			prdev->order <= MAX_PAGE_ORDER)
 
-I cannot apply the diff, seems a bit corrupted.
+Nit:
 
-But ideally, instead of a @reparent argument, we just have
-__mod_memcg_lruvec_state() and __mod_memcg_state() do the work without
-getting parent of dead memcgs, and then mod_memcg_lruvec_state() and
-mod_memcg_state() just call them after get_non_dying_memcg_start().
+	if (prdev->order != PAGE_REPORTING_ORDER_UNSPECIFIED &&
+	    prdev->order <= MAX_PAGE_ORDER)
 
-What about this (untested), it should apply on top of 'mm: memcontrol:
-eliminate the problem of dying memory cgroup for LRU folios' in mm-new,
-so maybe it needs to be broken down across different patches:
+	    ^ aligned here
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 753d76e96cc67..f0d55e1f9c49a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
- }
- 
- #ifdef CONFIG_MEMCG_V1
--static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-+static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 				     enum node_stat_item idx, int val);
- 
- void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
-@@ -536,16 +536,17 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
- 	int i = memcg_stats_index(idx);
- 	int nid;
- 
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
--
- 	for_each_node(nid) {
- 		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
- 		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
- 		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
-+		struct mem_cgroup_per_node *child_pn, *parent_pn;
- 
--		__mod_memcg_lruvec_state(child_lruvec, idx, -value);
--		__mod_memcg_lruvec_state(parent_lruvec, idx, value);
-+		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
-+		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-+
-+		__mod_memcg_lruvec_state(child_pn, idx, -value);
-+		__mod_memcg_lruvec_state(parent_pn, idx, value);
- 	}
- }
- #endif
-@@ -831,39 +832,42 @@ static inline void get_non_dying_memcg_end(void)
- }
- #endif
- 
--/**
-- * mod_memcg_state - update cgroup memory statistics
-- * @memcg: the memory cgroup
-- * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
-- * @val: delta to add to the counter, can be negative
-- */
--void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
--		       int val)
-+static void __mod_memcg_state(struct mem_cgroup *memcg,
-+			      enum memcg_stat_item idx, int val)
- {
- 	int i = memcg_stats_index(idx);
- 	int cpu;
- 
--	if (mem_cgroup_disabled())
--		return;
--
- 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
- 		return;
- 
- 	cpu = get_cpu();
- 
--	memcg = get_non_dying_memcg_start(memcg);
--
- 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
- 	val = memcg_state_val_in_pages(idx, val);
- 	memcg_rstat_updated(memcg, val, cpu);
--
--	get_non_dying_memcg_end();
--
- 	trace_mod_memcg_state(memcg, idx, val);
- 
- 	put_cpu();
- }
- 
-+/**
-+ * mod_memcg_state - update cgroup memory statistics
-+ * @memcg: the memory cgroup
-+ * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
-+ * @val: delta to add to the counter, can be negative
-+ */
-+void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
-+		     int val)
-+{
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	memcg = get_non_dying_memcg_start(memcg);
-+	__mod_memcg_state(memcg, idx, val);
-+	get_non_dying_memcg_end();
-+}
-+
- #ifdef CONFIG_MEMCG_V1
- /* idx can be of type enum memcg_stat_item or node_stat_item. */
- unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
-@@ -882,35 +886,26 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
- 	return x;
- }
- 
--static void __mod_memcg_state(struct mem_cgroup *memcg,
--			      enum memcg_stat_item idx, int val)
-+void reparent_memcg_state_local(struct mem_cgroup *memcg,
-+				struct mem_cgroup *parent, int idx)
- {
- 	int i = memcg_stats_index(idx);
--	int cpu;
--
--	if (mem_cgroup_disabled())
--		return;
--
--	cpu = get_cpu();
--
--	this_cpu_add(memcg->vmstats_percpu->state[i], val);
--	val = memcg_state_val_in_pages(idx, val);
--	memcg_rstat_updated(memcg, val, cpu);
--	trace_mod_memcg_state(memcg, idx, val);
-+	unsigned long value = memcg_page_state_local(memcg, idx);
- 
--	put_cpu();
-+	__mod_memcg_state(memcg, idx, -value);
-+	__mod_memcg_state(parent, idx, value);
- }
-+#endif
- 
--static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-+static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 				     enum node_stat_item idx, int val)
- {
--	struct mem_cgroup_per_node *pn;
--	struct mem_cgroup *memcg;
-+	struct mem_cgroup *memcg = pn->memcg;
- 	int i = memcg_stats_index(idx);
- 	int cpu;
- 
--	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	memcg = pn->memcg;
-+	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
-+		return;
- 
- 	cpu = get_cpu();
- 
-@@ -927,20 +922,6 @@ static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
- 	put_cpu();
- }
- 
--void reparent_memcg_state_local(struct mem_cgroup *memcg,
--				struct mem_cgroup *parent, int idx)
--{
--	int i = memcg_stats_index(idx);
--	unsigned long value = memcg_page_state_local(memcg, idx);
--
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
--
--	__mod_memcg_state(memcg, idx, -value);
--	__mod_memcg_state(parent, idx, value);
--}
--#endif
--
- static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 				     enum node_stat_item idx,
- 				     int val)
-@@ -948,32 +929,13 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	struct mem_cgroup_per_node *pn;
- 	struct mem_cgroup *memcg;
--	int i = memcg_stats_index(idx);
--	int cpu;
--
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
- 
- 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	memcg = pn->memcg;
--
--	cpu = get_cpu();
--
--	memcg = get_non_dying_memcg_start(memcg);
-+	memcg = get_non_dying_memcg_start(pn->memcg);
- 	pn = memcg->nodeinfo[pgdat->node_id];
--
--	/* Update memcg */
--	this_cpu_add(memcg->vmstats_percpu->state[i], val);
--	/* Update lruvec */
--	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
--	val = memcg_state_val_in_pages(idx, val);
--	memcg_rstat_updated(memcg, val, cpu);
--
-+	__mod_memcg_lruvec_state(pn, idx, val);
- 	get_non_dying_memcg_end();
- 
--	trace_mod_memcg_lruvec_state(memcg, idx, val);
--
--	put_cpu();
- }
- 
- /
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
