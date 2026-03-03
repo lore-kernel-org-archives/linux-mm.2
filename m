@@ -4,98 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4BCEC1458
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF5DCEC144C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:17:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D15816B00E4; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
+	id 0EC9A6B00EC; Tue,  3 Mar 2026 09:17:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC8626B00EC; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
+	id 0CE816B014B; Tue,  3 Mar 2026 09:17:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCA886B00EE; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
+	id F0F836B014C; Tue,  3 Mar 2026 09:17:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD79F6B00E4
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 680A31397E9
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:10:27 +0000 (UTC)
-X-FDA: 84504936894.21.EC0E075
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BEE96A000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:10:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Mzf8zM8b;
-	spf=none (imf25.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E08976B00EC
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:17:37 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 903B1B70D7
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:17:37 +0000 (UTC)
+X-FDA: 84504954954.07.F43A2FB
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9270CC001A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:17:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nAHolJpm;
+	spf=pass (imf10.hostedemail.com: domain of p.raghav@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=p.raghav@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772547025;
+	s=arc-20220608; t=1772547455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a9u56EZ3PSfIb2btDXq4/JS3z6i9/jf+AUwQRPvsces=;
-	b=48cK3XjBTdMlU8O7AsPKNlBp+OwMhML/WEJ7S0conEm5y+FIiPXq6TDs/9yL2nYhv5TWn7
-	N5lTBgfZuxCkCq/6diGTSlnqprD7KIhpxSVCCobgOAaAr3jH2kVMVPdlYGHv+0bxzMmlks
-	lMDATQNUdYd524R3QPsgM57/uzExU+o=
+	bh=yI63eG0TpyudB4EbuxKXYS2S0olMXbkfWRAVH8sYml4=;
+	b=Qm6nEIPnqrjVe3bweZxzgPaqFBlcoUlr221A//YxpQLmKHs4J58P66bmvo3BWN7EQN3ywL
+	MydFJlcURwUqfw3yVggQMy9nFZd8s8u/RCO3OjEGtK8+7Qu3DglHN+dmHD0o3A/OTrHO+7
+	Iv8n2DUfKUqhaDznWYcX9x9yHgyRpDw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Mzf8zM8b;
-	spf=none (imf25.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772547025; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=nAHolJpm;
+	spf=pass (imf10.hostedemail.com: domain of p.raghav@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=p.raghav@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772547455; a=rsa-sha256;
 	cv=none;
-	b=QLhIQZ9Y6Ep+cXPkeBsMZfx5Gc94FXfiX0xoNiio9IJR7RlPOgkXcUi85sAhnsEd92skJR
-	xzPNzfpJmYMNHKFxDUq+fiGh3dxNpM07E95wCYCVeT3GL1A5f3sosHWkQP1lijSm5LIdUK
-	wJRQp5gYVd0X86JBL63/Zbi1AFaSHoE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=a9u56EZ3PSfIb2btDXq4/JS3z6i9/jf+AUwQRPvsces=; b=Mzf8zM8b6LFOygmPYqODqdSM9e
-	Tp9BXCcIo947iDR4+2TmKKK3BbGix8IyIB277AjxFH1u8jUvwxi2SDp3iEjHXK2/0u2GNXRQrfXmV
-	lzkQ/lqP2x7DEcw4eigUo7yL6pyux0Bzy5ibhpKNxLVwtdUFuQk6bKwLAtfTAsLBw96AQ9iQuifl3
-	nTFmpV4yMywEPCs+BB4fbsm+1UM0zbdp4vCanMWq+Xx7QL2e9/b/CtdZjXxMqsOaA8Dj/v53MkgYD
-	U5dES+gMZeAXhWT7BcpfbVvpAmTOK/925okF+7ySgncqEqszHZbCKcU1GfMrwASKH+ljRvFlu5ffU
-	dyaoXHPA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxQRr-0000000FI4y-0fQd;
-	Tue, 03 Mar 2026 14:10:07 +0000
-Date: Tue, 3 Mar 2026 06:10:07 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel-team@cloudflare.com,
-	Matt Fleming <mfleming@cloudflare.com>
-Subject: Re: [RFC PATCH 1/1] mm: Reduce direct reclaim stalls with RAM-backed
- swap
-Message-ID: <aabrv_xrsKPx9jZf@infradead.org>
-References: <20260303115358.1323188-1-matt@readmodwrite.com>
- <20260303115358.1323188-2-matt@readmodwrite.com>
+	b=pEO+TlrQZWH5EuO4LBummmBknbzb7u7YREpCtkGZissJ0mm7zVZvOIEto/QzTx1m1rVqr8
+	A+IRkIjq9bNgQn5KfyzlW3QWPVpO0sjpesKuaA67OcL81gf4ECC3tcOxU0wZq7F6fF0Lvm
+	QRanGrWdfN3i6AmHDY+3GugxsxxjVaU=
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260303141732euoutp01c173abc2cbe880404384266f8517678f~ZWoQu_Nea2706227062euoutp01S
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:17:32 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260303141732euoutp01c173abc2cbe880404384266f8517678f~ZWoQu_Nea2706227062euoutp01S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1772547452;
+	bh=yI63eG0TpyudB4EbuxKXYS2S0olMXbkfWRAVH8sYml4=;
+	h=Date:Subject:To:CC:From:In-Reply-To:References:From;
+	b=nAHolJpmRCQ4gHFFWFKGXTt1mm4rLcsJZwxxRVqII9a8+aRkttC5F2e0ONfQcPxHw
+	 3JVo+Gtcdd248Xf0fW4Swmdfb+xq06oSLF0CjoSYEG/BzpexuQVYcWOeNUqJmrX3w1
+	 sIlwE2iFK4XGOA1aW7Y+5ZaIEhTK0qNMGjWb6dwo=
+Received: from eucas1p1.samsung.com (unknown [203.254.199.20]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20260303141731eucas1p2e2776e83eaddf31d46a04572d08ecb6d~ZWoQeWN_70751407514eucas1p24;
+	Tue,  3 Mar 2026 14:17:31 +0000 (GMT)
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260303141731eucas1p294a43af96c9468f35fc3b88ddda944b8~ZWoQMnWCl0751807518eucas1p20;
+	Tue,  3 Mar 2026 14:17:31 +0000 (GMT)
+Received: from CAMSPWEXC02.scsc.local (unknown [106.1.227.4]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260303141731eusmtip1a2108785e03078cd80aeba1cd79b3739~ZWoQEqtIM1956719567eusmtip1N;
+	Tue,  3 Mar 2026 14:17:31 +0000 (GMT)
+Received: from [106.210.248.154] (106.210.248.154) by CAMSPWEXC02.scsc.local
+	(106.1.227.4) with Microsoft SMTP Server (version=TLS1_2,
+	cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Tue, 3 Mar
+	2026 14:17:29 +0000
+Message-ID: <6e86c417-c410-4deb-9b47-08e3d5d9be71@samsung.com>
+Date: Tue, 3 Mar 2026 15:17:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303115358.1323188-2-matt@readmodwrite.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: BEE96A000B
-X-Stat-Signature: iorjerw1dxt8qufbpxtobmkw9nyk9gha
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 0/3] Decoupling large folios dependency on THP
+To: Matthew Wilcox <willy@infradead.org>
+CC: Suren Baghdasaryan <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Michal Hocko <mhocko@suse.com>, Lance Yang <lance.yang@linux.dev>, "Lorenzo
+ Stoakes" <lorenzo.stoakes@oracle.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+	<baohua@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Nico Pache
+	<npache@redhat.com>, Zi Yan <ziy@nvidia.com>, Vlastimil Babka
+	<vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, Jens Axboe
+	<axboe@kernel.dk>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-block@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<mcgrof@kernel.org>, <gost.dev@samsung.com>, <kernel@pankajraghav.com>,
+	<tytso@mit.edu>
+Content-Language: en-US
+From: Pankaj Raghav <p.raghav@samsung.com>
+In-Reply-To: <aaEsOu0hgCUznzl3@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"; format="flowed"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [106.210.248.154]
+X-ClientProxiedBy: CAMSPWEXC01.scsc.local (106.1.227.3) To
+	CAMSPWEXC02.scsc.local (106.1.227.4)
+X-CMS-MailID: 20260303141731eucas1p294a43af96c9468f35fc3b88ddda944b8
+X-Msg-Generator: CA
+X-RootMTR: 20260227053155eucas1p2b4b92cca44cefd084ae528fea27419d3
+X-EPHeader: CA
+cpgsPolicy: EUCPGSC10-065,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260227053155eucas1p2b4b92cca44cefd084ae528fea27419d3
+References: <20251206030858.1418814-1-p.raghav@samsung.com>
+	<CGME20260227053155eucas1p2b4b92cca44cefd084ae528fea27419d3@eucas1p2.samsung.com>
+	<aaEsOu0hgCUznzl3@casper.infradead.org>
+X-Rspamd-Queue-Id: 9270CC001A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: c5jafzft89imkszsspu1hti3iu45ujaz
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772547025-3135
-X-HE-Meta: U2FsdGVkX191sV7G2aKPHwyjAngbOJtyAF+3dE/q+bXJHxR/cmOaAv2R37BzlF7b3huyisGxxwyuI5vnH+zfbdtMGZpvo6vRp0d3RBTaB6GLyQZ0ySHuGKq3cDQyUai+06WASYOtM1ALnQ+CAzhhaM4P/XfK0sITd8QB5RtpuhuedTGsLJES9F4oTzGgQJtO45Uobg049cBUnNM0hcsf4s0sO69UZvpla0vrqLEuuKbU1GD4cH6wyiopc7jYaQ/PEbZabBuWzFC1sy8xIYs57pVa64VkuTlvj4rB4IMYc73BLM7mreMxvSZDo5MSB9fXbxWIBTWxU6bdx7T6I4Y7cIx2Iq1ydIJy8y3mEMz7h7DXVQWv+efRPB6q5nKhmZwx3CR7zLJHuljFO/Viu6XVTr7uBEnBxxCsM/H5Q9ukm5qumPvrHN7fwE8XWfSohLasRc3Eh+rR3OvynNNAJeI3/C3VwiMmD/0hnf+HP8u5vlqV1t9fqb1CS2OI+0v233yoMtx0Ma/mZUNQLtwK8/0m+evCebo/sTzeKQKf06JHRJTUMItK48mEaKzbPpF72JdWHwAvthPIxi/xkX9Iqm/vZxsBKQLfn12MuO9cCGspkJqKmjQBLbd3dVzRyd9IQ8gNrv9RRzfDAxoOxmrKrrgOQQkF8WGLaqwVki+7r2/b/5rXoNWWZNWtm/1dUl4mPqYgcCndaxvVaoM1cGaIdVdXCi5wjFNyOU+CAXx0TGKBukVPAzBocP2dJaIzl//1lB6THyKz1vL6b3W/O1sTvEnBw6qILxxYGwGOwpWPCO104yTXjxYxpANbC8B7zzmotu0ALX7iFkX7kQ8375f2do10FLFzNLYxAbrYeEY99cVncaA8YlB/cQwZF7IED9jIUQkzutA4xy8aAVwWfZ1dsVm8CHlCUXbXgoypzwuUQTrju3oC0h2gECG/AApKFBlkbJ4UxRz2QHPrLkcJ7DHymK4
- 6ScWSnaj
- v7uCX1djFWgAljU8pTA4qXuQ8reyxPcqAy3TSUWNw7aq2s/8q2R3g7h7cw+uLaTjrJV1DH6MUocwtRQJSR+Z088yS2693JYLlETZEqScl7nDWe8wgJhJijU0UuF+8uu7L2/7MMb0u4gEH9TcfCI73nRl/NOmVSfnpC3AdC97vKla7TILVlQcomQrFs8hUe7v+14Tg/1g09tcbL7aYMOKj3aMaDCWpsOUb5xvDtVQZUK0jUZGqGMbzChALxB7S25QjtwtLvDRVTRrxkS8zH75g4aXijzuw/rB8NAWvK45I6iZfIiBLALknYRDDLiJ+B4ubpDA1lAhzOfIiwm3GTjhhlRu/huA7+g2phLuIcDoQclgftRCWWXlQ4x6yg0mRy6ek1Dl4JGruHlWA5g1JAGtWHMUsESnVCmS9iEgZOrmfl6G7YfSAdH0NN3lUKv1E3St5LBirq0jjrpVRaggRRmoiT8dOMqeR7bQIN5pxjdT0xpdxr1lyCADv6/fw8A==
+X-HE-Tag: 1772547454-326222
+X-HE-Meta: U2FsdGVkX18vfyOqG++bPA2LLBtjdydqYSYpbtF5Cl2kqNnXKzSd4uOiMo20JzxPh70Fad4nfUCU18gFKNJPim7X2EwkFZuSDJvuxYbm5kI7CkPtKYQ115bYoaSyY5fgfQWxKXxIeOrAbms8rzSuN4ppZKO8YymXUqh5b0WcWIUjGdhh7y32kiJf8d6dzR2sdMYji0hSsVrvt53i1VJQ6b2KJMRC7S8YAf35lSHZoYrV1kyAm20BNdq01vUnmYsPcxhTw0g7Uf6C+gV7zyqKnlvXIrI8MbKThc9KWBx8fQt4HCR84BQUur966Koz27EyJQpYihLAb9nOXG/LqJvo8GwGudsfRnsNRjNAzOeFFPZfM1HUx90t6VDhFcjeOCQTFXsIRgWqdxp3GPltdlOGTLmaOjAA+s4cWUVET3hrjXSqj3ANEDmf8u6oaAW8L9cXmS3f6U6+XE0iYOWYRjF4sQ3hFicvrPqYjIg8OoiI3EHwGzkAjAD8uSJ+pi2/gY4GQPPLDWyvrP76sLWm/ljFBLbN5HwFvv9DrlwW/QN/i/YDpRHd81F76fj61F5Bjeg5xAS9XpO5D7ysl9smozwEWu+5iU/zYOZdNmlZvcIT0eNl8c3nMe2j1hNwqn/c+CElSbEnwZ50SFSo/KcRVNOml0ro3QSFOnAtmWxXiBWzthJ3jWzQ9noCqKN/dHMAbnxpi5i9cx5RCraAV4PD3wxx2TkZSjnHvrvhZdxPOTvi3N8SUg71878u/1wpeKa1Yb/Moj7KbriEe7jS+Yj1SyZeFBglcO/kVXa6QhNwJoBRwf4C7wLnoBe8x5zVHUWG/RkSzxTC6/hrukW5KgNUtQJTCV0c5x1Dg/ejvtVhvjOG7hVLx7wvZXGKYb7hi16api9aNiGNb7YTXCd01Kfv0EvGjiV8LUCst/KwARMRHxnCRI2cGbD/9JnP+/oJMyFULLdUDNguklSbS7fNeb+Xq0r
+ V3w1MhSQ
+ +U6fIDmP+M2WG90hOB1I5Z5Q9OVc0XrfmYNj6+DsRPtVo7LG8y4QIKS6E91/z8AtQe7wq6z4xh7BsHsZOWOeG0m7BB99QBFnSb6JLl4IHDVwTQ7B00nixEDqUSoUKfyujY+7VYx6UDOCYBySuuL0GOJvZG7fBnRdwOL4kPgNQkiqT0WtcemH9nEFCn55+xoGm0fxBsMuQHSYCzaY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,9 +127,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-No way.  Stop adding hacks to the block layer just because you're
-abusing a block driver for compressed swap.  Please everyone direct
-their enegery to pluggable zwap backends and backing store less zswap
-now instead of making the zram mess even worse.
+
+
+On 2/27/2026 6:31 AM, Matthew Wilcox wrote:
+> On Sat, Dec 06, 2025 at 04:08:55AM +0100, Pankaj Raghav wrote:
+>> There are multiple solutions to solve this problem and this is one of
+>> them with minimal changes. I plan on discussing possible other solutions
+>> at the talk.
+> 
+> Here's an argument.  The one remaining caller of add_to_page_cache_lru()
+> is ramfs_nommu_expand_for_mapping().  Attached is a patch which
+> eliminates it ... but it doesn't compile because folio_split() is
+> undefined on nommu.
+> 
+> So either we need to reimplement all the good stuff that folio_split()
+> does for us, or we need to make folio_split() available on nommu.
+> 
+
+I had a question, one conclusion I came to was: folio splitting depends on THP, 
+so we either need to implement the split logic without THP dependency or just 
+make sure we don't split a large folio at all when we use large folio (what I 
+did in this RFC but not a great long term solution).
+
+So even if we implement folio_split without any dependency on THP, do we need to 
+re-implement or make folio_split available for nommu? I am also wondering how 
+nommu code is related to removing large folios dependency on THP.
+
+--
+Pankaj
+
 
 
