@@ -4,170 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 702F2EDEBE6
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 19:12:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8879EEDEBEB
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 19:35:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 306EB6B008C; Tue,  3 Mar 2026 14:12:26 -0500 (EST)
+	id 90F156B0093; Tue,  3 Mar 2026 14:35:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DE876B0092; Tue,  3 Mar 2026 14:12:26 -0500 (EST)
+	id 8B2346B0095; Tue,  3 Mar 2026 14:35:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EA796B0093; Tue,  3 Mar 2026 14:12:26 -0500 (EST)
+	id 7BAD76B0096; Tue,  3 Mar 2026 14:35:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 064CA6B008C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:12:26 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E72713A64B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:12:25 +0000 (UTC)
-X-FDA: 84505697850.18.FA615AB
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010054.outbound.protection.outlook.com [52.101.46.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AC1C6C000F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:12:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uABAHe8I;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 52.101.46.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772565142;
+	by kanga.kvack.org (Postfix) with ESMTP id 6B2C26B0093
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:35:20 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EDC91A030A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:35:20 +0000 (UTC)
+X-FDA: 84505755600.11.E21390B
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C96851C000A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:35:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="TeFjwA/Z";
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772566518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qBlya9OxhpnOgd9HUk8VmO/UTZ6qEYrdSZMzcbErs+k=;
-	b=WXYABh0kEe47RZ6fZ9GrUEnqDOLQVFTZnRd6wm7y1C57vNRrXyUDn9O8c0qpaN1OfGgMem
-	PRMZXzi1AFBn6HeNOVVTD62cE+mUYqYzEnuzGTUSbsj7j59Ie9TTmMrrVBxENQYYuEvhDM
-	kd5MUvc3HfQ0B6gzJZp15NsgxA4Squg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772565142; a=rsa-sha256;
-	cv=pass;
-	b=r++XP/bMuCfrpso+VdoHwQm/8EsQZYiEPIbjjxaIHOqRGHa01Ro8ngl/6VBpvkJJ4sZvr0
-	PJmRXR/kxFxn5t5jzWXO0lsyU3v/FO24iipU7jWVWLaGBw/q9X94X/Gk/rmg9IjQK3W1f7
-	JHSuXSbZTsSkiWG242HcgpJTz0g4nVA=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=uABAHe8I;
-	spf=pass (imf28.hostedemail.com: domain of jgg@nvidia.com designates 52.101.46.54 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iC23MJt2EZIp+ncOWrIyOwSGcFg4HjIjrq0aqnstBd+WoT4m3O7aOrNTkxB0Gfljv6yZ4IHOjaLbn8H20nusTwevrZDR4qDDzHvqLXSkyaQsbS0KDolKwjWBNBYELYcQFXKQXl+BZoeHINa9XCvE8tMcdeWEv4ULepDlrRFdXkcIYAOE0TZOpw0hwiR8q6fyhrjqSrty9ZeKdOFmngpZNFHYrheSf+TfebhuxHJ/z7XrGWzfcM5so0iL9DMokxMqHAQMgki76XxkiGXiX8GUD9JPKT26vcnVJ7A7WJfaLcGdgP1UA3wqF3fsfjl9K527GKyy8rxmhiuIgGWLZjuu4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qBlya9OxhpnOgd9HUk8VmO/UTZ6qEYrdSZMzcbErs+k=;
- b=bvd6Bs1a88cek1D+6Fa8GvP6YR6KKML00+uh72ZqbIC/pK9sec+xSJ+NHswvx2Fm6jW7fsGfk2iJ8275d6ktVX7/lL8IDeluLZMBI4Dy3Pz1S+3WkicscRB+5scpApC6bgcXT6mlwm3BYyzNYPKs1gtmX+jML9H7YKX6mQTHpB90NPJP3Ql6Kv+KW0MF43y5+IYBfrJIsTZvCWuTWe/+yy5Y2X74AN9KfTc2DY8tkzGgShxfqlml8F6mymNVnAxpfb6n62xMggAsg3q1hZfMscunr2TcR5em93/SAoC1XP+TNrHwUEyuQ3ZcOvRpEBO6HxKk63TQ9geSqSPoxcUOtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qBlya9OxhpnOgd9HUk8VmO/UTZ6qEYrdSZMzcbErs+k=;
- b=uABAHe8IeSdUp7KOmff7ncpStnom4r3JwfNPWrD2oQRp84Meh75ChJEHk273gnKvf5QC3n+A7JYKia8gdRIQSL1co5JOZglp5S0lX+3LI2tkPnUfSGiqufUeo0Lp9U8QDx71BsGi/D/NwvNygF+JUVCz4HrNXi+hPF14Nl+ULEnU47XW7u4N04kxgmbPgFmsJnRWFixBfcZ5+Bmf792kMERROQ2dEXiaTL9PhiDGzkJsSuZeHt5yJ0fctkNd8BibC2RA46zbj1OTnVEoAB+uL/jukQzpX7pZ/JnOcvm1ID7pPH2x6nE2hMsSchFj1klkcJIwaij6PadSQp+GdHPStw==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA4PR12MB9763.namprd12.prod.outlook.com (2603:10b6:208:55a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 19:12:19 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 19:12:19 +0000
-Date: Tue, 3 Mar 2026 15:12:17 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <20260303191217.GD972761@nvidia.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <0a10ea33-937a-4294-b9a1-9323c706434d@arm.com>
- <aacohVRfAK46lOjo@box>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aacohVRfAK46lOjo@box>
-X-ClientProxiedBy: MN2PR10CA0019.namprd10.prod.outlook.com
- (2603:10b6:208:120::32) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	bh=xTHkte2RUvSWtiFL+zim574JKvRQEGOa3ktAOhw9pjM=;
+	b=IqSX0M1zkBVfOrmEawBOMXBG+zQZxqDzResenflx48cjTch3yC3W9UxCDKchqJtsTJ4ZmL
+	hkiFJNqEw0Nz21OrRCC9rHD1hDWStgyc5AK93oDyrQmK1I2I+il8O6BVNdZS+l8bnJZVIF
+	uHsqP3gNp7FWEpFPIYT1ugfNmba068Y=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="TeFjwA/Z";
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.47 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772566518; a=rsa-sha256;
+	cv=none;
+	b=7jAcYJl2PTfGaM4+5BgCAZXe7RQB61ziiZ9u0V5oY8hHBnPSyN96jYbq8gOFMaB9eM6BIj
+	uetXIlpnv9q8DAo/6OgZmtAsfCARHa5ckHf/SvbtlF9Gj8xq0BfDzyXWiON6xYzRmFDLST
+	JjIzd6fibR+6DBckrsYwqEHp0oxkWpA=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-899a9f445cbso76152516d6.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 11:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1772566517; x=1773171317; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xTHkte2RUvSWtiFL+zim574JKvRQEGOa3ktAOhw9pjM=;
+        b=TeFjwA/ZVKKlt0EvAI3FrsZiupTdRUFFqxrWrU1BR8lvg2VH5/xBZVtoQeuHCtAyYs
+         U0okRznGf0i6i9XYaDlBJgEK/Tt1ZStuzDRFbRa5GCk8OJOY567r6GsG56etQwg7y3ud
+         gjzu9tsSjy0e5atysl/kIDSCewEJxF6ULfCSsgDIysc4SV/9foMfnNfcVJJr/BuVKemM
+         eIypZQybcAdwAnWmi0E8qQDZJZK9u6ug1Qmw52/40q3MduVTPZ63UoT+rV40+xSFuHM3
+         FAhCJ38IvoeAIKkTFQIlfRDhgJXHqlcNN/HdHuQWj47Nk1awf5P2s3HYYY+w8lQkjIwl
+         dGHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772566517; x=1773171317;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xTHkte2RUvSWtiFL+zim574JKvRQEGOa3ktAOhw9pjM=;
+        b=KsW78subxybqYsTDxvcs12KhJfOKgIeVX359OV5MrGYg9zct/OulimyjJc8qZAlzTs
+         lpxOp0D6GHv8Pe4NZBQDG0phPAweLB3M7Dot4aIs1dSYdumjpUUVq8XI4tS7dWws+diA
+         M7dseDIdN4vF6gPH+TPVcIW+QQ3jMxUHYVlCG1iXPAcTCdeRon1V5ftiM3G4cjlig0iK
+         KFBKYUNcToS1lg3RKDP379erPJOfAi46wRu/5Fa6iY+5r4WgRcE0yVQsuD7JnDB+KMw/
+         f4wcmmwTG60+IZuvp1OBRCM7+6EqKGqb5LYLvjiynhTyR9tvUiGiYtQ/H+5b59sD8R8K
+         YPWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWxGlqIw9XoysnTVOsSaQoe72gStuJBB2RrvQ5vkkw4SX/JEz+7Tl0JwqLWkzG/6UaBrIlB0em41A==@kvack.org
+X-Gm-Message-State: AOJu0YyjXw9rAmxIrfkwCnwQaRpdyxHAk+0O5w7Z19ZhdO4Ss4os/6ZF
+	+hMnjIoAr7UH3PP2lJXkTMJMoWeQX9Qf2r7vc08xmi7u3pqwPhm2Kc1JPRAeZTxUIhg=
+X-Gm-Gg: ATEYQzzb6Xj8QaTVrnyYsfFyE8a/nz9FJhCx4NIwj7tPSEIfJjzxTPaZJLq40oNLsY0
+	SatBZ6cFlGCMeoKMn70kS4LPWgwbYHN/jMUWzbKCmy3sSSr3VrZRAOKzwFBS0rgbAy/SFOlBH+K
+	ubrl9XihkZcjKM9zU99YHf9aEn8jSgNe8vzORFjM0XK4zr3Io/StwNt5c5I5T5QBbBGcnp11N8l
+	xNnMw6PoTIBRa9WhYR7BRr09S6woocwIhjnU1YUni1uDoUgZkHbLsYifSjCb08VaFbsk1SaMcnM
+	NtGX11LRsOneS3mwdXGH9y6LxVz5UOY6TFeTvw+fCRWYbvP08RV5iW/0SouuJds33Nbu+9N9ODU
+	bZWCid25xCdd20Ss+gWIGI9cYHjnwGqnmK87+ZYvKLYuxM4sG8L/0u/35PfQETB/5jANdwUSFTo
+	LuUVoHw8VTjF2P2eQk6YQVpg==
+X-Received: by 2002:a05:622a:190f:b0:502:98a3:3496 with SMTP id d75a77b69052e-507529912c6mr206565681cf.45.1772566516729;
+        Tue, 03 Mar 2026 11:35:16 -0800 (PST)
+Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50744ab2fd9sm133192891cf.19.2026.03.03.11.35.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 11:35:15 -0800 (PST)
+Date: Tue, 3 Mar 2026 14:35:12 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: Re: [RFC PATCH 0/1] mm: Reduce direct reclaim stalls with RAM-backed
+ swap
+Message-ID: <aac38JHJCRB0PbjJ@cmpxchg.org>
+References: <20260303115358.1323188-1-matt@readmodwrite.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA4PR12MB9763:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5901998c-87c4-4378-8add-08de7958c9f8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	mTHXT/WsbNdjMMfW6FS1D6eGjaVeIXfqjEpJ5zDfdkteXneqrJKKUdJqmSY29tSXKiop6srSCs4oqieXZP/gyNA5f0S24DqTXN+GPDMGmmJbIg+fU+YiKW0BfLwj2f6VbdGx60zjO8TrxogaGAnbqO5cE7Grfsc+U1PScDUcKBH1SCkyjY+TpJFFUUjkSWZk+iMgtU1aeWNRMDlKQpNYjJfUVaslP9hRDqLiXe4uAm/6j7RkTijO4ECJtAnzgqi4Gm+nnRriCw5j/MZ3inEij5pUVe9BFH/LOOXntdFHNCL8ZSBNIF3Vgzp5JM6BJJMk8mhWGMySfMOUFz/CI85kisZJXHI8vpNHya/AHbK2ra9lITZQpNtiL18Zy7DJejsdJE7e2FCwKAvluBkaZp8b/tG4MuFVUarVIFcl2Web1EVdh3kn3A+L/gasv3aCjwvfeB6nbQNnnOpNZOjYc7cq4SEM70m5TXXC7F7Os6aOgXl2k2FU/S6a3n2FM3FSQoVrANyPNGb5CoCJLDFBoe0LT/feFeLjtUZ7xueSYaR+6OEA568GbwOx/C4KV+GCaavfW36AQwmbTFyX4KTNNLzEjJ+RIihoFlFx0TE9lZTyilUumHkLP64JRwx+0SC+81Fu6i+211PtL2/MFCDEUMW+MC4Vcha3GO9I6HYaFrrVAZat4IYm8ozaAlzvzreFePXfwTnoy9nfWYX4KVrk9mOr/JjKKkm6J6LzvKFL+0F/uGc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bVpHTk9nVmxYcGRrU2wvb1lXRnZFQzFjUWY3UW9ob2tmWlpNa2VGN3JuRVlY?=
- =?utf-8?B?RGU0NzVjMThBelhCdkNnZVRadEVvczhKR2d1VTdBN1lhLzdhN3BuSWFDeW1U?=
- =?utf-8?B?QmVBMnhMWHFEMlo0dnRmcDBsakdHVVZZTVJlVkl1UXBNRkJJelV5MVBKK0VC?=
- =?utf-8?B?SUpPMjlhbFlWOHNZcEhhUnd6YnBQUTAwa2V3a0VSSGZNWmtEY3dEVzJWNW50?=
- =?utf-8?B?SU54cU5GQzd2dVBPUG8zeXBtbWRjYnJZWVE4LytJOGVVMndBeHRhSTc5N3Vx?=
- =?utf-8?B?RW5VcnlXOHhjbDM0RXZrbXFyRTVDTWRWcWIzSFZ2WVA3Zm8zZkxVRXdacGQw?=
- =?utf-8?B?S05PWWxHR3F5b3dtdXZ0dXRLQUJMdGo5RlRyUkV4djZHK25kMDY4TW1ZTldn?=
- =?utf-8?B?TzdMN1BBbDRHN285dFdSejRDVHJVdWp5aHRBdTZsUXE2Ry9SK2JLMENoN29l?=
- =?utf-8?B?RWNWYkZlTTBsSUpNbkRuSkxWTlArVEIrS2VpbDlkYVJPelhmNjFhWG93Mk02?=
- =?utf-8?B?SjYzT3crYlRzc2huR3M2VTlYK1B6K01LNmpKTVB4T2xkMVlCYUtaRnd2a241?=
- =?utf-8?B?NTErUmhuZkhpMVVTQ1c3TC82VXBPTFNuNGppK00vbXFzaU5vOXlmMXBybysr?=
- =?utf-8?B?ckR0QzdXcDNRcGZocGV0RWpBUlZiaUVsZGdDQksySktlRXpUMmVCM3FMR3Rv?=
- =?utf-8?B?SmR0UmppTDFiRjQvaHR3djVBaVdMNWVKUHhJaWNsdGVHRzk4OE5aNFpCZUYx?=
- =?utf-8?B?Vy92a3NkWEZ0R2huUDBpSlErSTRKcWw2azZWbVRZQWNDSmFqRjA4bHJrekg1?=
- =?utf-8?B?b3BpOFI1cjl6UndpalpnQ0tGL3gzVlBtdllFcnBLWm13RU9RbGtlenUwRW1N?=
- =?utf-8?B?bG1SeWhEUldmZ3JBTVcyc29jSjJqbUN3ekRLMTl0bTQveGdrMENxVHJuRUNK?=
- =?utf-8?B?R2RCQm5FVHljTHpSaEdVUUpWcktFa2hhNWdHN2gvUXhWRDZxRHNRWXN5eU9D?=
- =?utf-8?B?Yjc4UVRHempHUGloSnRLUW5mZStob0VkUGZXSmwrSzVxMStKRFhxSDU2eUhi?=
- =?utf-8?B?MmwrS1dlcUhGWGpuT1ZrOUkvUDVveTA3MTJGQmhNem5ueTVoR1dKdW0yVXhr?=
- =?utf-8?B?M2lFMVVzVzcxR1VXNklJYUE2MmcrdXNlRHk1R2tBdlpzYzRDYTdrWXlvS1lz?=
- =?utf-8?B?c2JHcXY4VnUxWmdHbXB0VzBOeS9tdGFQMDk0bDFBU2ZkckFVTUxHUm1nOEpn?=
- =?utf-8?B?SWpwOGMxSVBMK2pHOC9ucmU4TTdOY0hyWTd1dHVFa0JmV0dZYjEzdXpLL25V?=
- =?utf-8?B?L2hWL0JCd0g0REFHYVRUNEZ6Umo5WVdVSTEzMmVJN25JRlZZWW1US3ZjZjNK?=
- =?utf-8?B?bG5LQWEwNCtGV3BURmZSRjBUQ015cnFBRmtzQXk1Y3ZDYUY5WDR2akwxbzJ3?=
- =?utf-8?B?Nm4zRE4rWGxPMmJsR0tvSERqay9LOERwM21PY1ZDMkZsZEpldk5IbzdGU0ZZ?=
- =?utf-8?B?UnBtcWFNa2NRMjlFUWhTTXlYRFh5V1laWHZvaXBmcERSbE02TVJJOExtMERu?=
- =?utf-8?B?Um9YcnJQVEFsYitsbjA0VCs4VG52WnZRWUZ0WVhhMUdHNUJGMEpqOWVidjFo?=
- =?utf-8?B?M01FQ09xS2wyRTduRlN2SHg0a2haR1ljU21HYlNZdkNYMVQxdk40MzRaaVZU?=
- =?utf-8?B?WlZkdUFUSVdZVG55T2tBTDA0dEJzSm83K2xWMGJlb2VkOXhhMWsxSC9VeXBU?=
- =?utf-8?B?RVpybk1PL0NvTnFIb280cWJMdVRaU3EzbG9sUlN6Y3dxdU52TGF4clB0Z29u?=
- =?utf-8?B?bmgwN1BYcU9VVkVrbm05M2VyVmRWZ3hNY1lUOGRFajVKNWlMblZOSGg5Nm54?=
- =?utf-8?B?YTBpS0xKZUhvdHlueUhFRFZFRTZFZ2xrVElleCtQRFIvM0NZWndMM1dBL05W?=
- =?utf-8?B?bGVtc3pOWFVzajJjNDh3a2NjNzFDMmxZQTRnamhLUitKYXZ1dWhsVE53VGVU?=
- =?utf-8?B?SXNnNUhCbHowa1JoNHV3U1ZhYzhSdWtTR2xyNXQ5WnAvamV3NGJkdDVrQ09l?=
- =?utf-8?B?bkpCOTZYWXZWelBCWUx0TW84dmNCMzRRblYwTW92V0dQSDQyOGxiZDJrNEd4?=
- =?utf-8?B?RDg0TysxQnBtcWdCWFdlUjlhQzA1LzVjU1lZc0oxMXd1RGtaVU5Id2NsY0VS?=
- =?utf-8?B?aDJHUndJdEN3WE1FT0IyeHpCUlF1b0h1ejdTcE9VSkxreCt2MXlMa3RsdUZI?=
- =?utf-8?B?YnZrTzgyNDNKZ2hyUWw4WjVHNjBGSkZMNkJDdmFiZ3E3bnN5N3d5MDhFYjJq?=
- =?utf-8?B?Ri9TRzkwSGozWlJjSzRvaGdjZ2hJbFpjRWdYdUVVRzhKdU5mS1lCdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5901998c-87c4-4378-8add-08de7958c9f8
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 19:12:18.9873
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MqLr079Tx61bMyFaKoyRszOLMRH7P7yq6CeU7x27ZmfAom8kNl+xJnWszVYr4fkH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB9763
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AC1C6C000F
-X-Stat-Signature: oy65mqgn5j8meafz65qjd54tixmx9487
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303115358.1323188-1-matt@readmodwrite.com>
 X-Rspam-User: 
-X-HE-Tag: 1772565142-244
-X-HE-Meta: U2FsdGVkX19yeDx1lfkO73zt6xMGAKaOuH1HvgPSX+S16XWzjyPaSk1mUiVuseXPs76BRylDcw296Zah2rIW+pSqLBrc0N49p/1XohGTJIOkY+6TC9UsNgjvcUE/QbChXXxEf38ehHzcsBdo4MQcLRKf+AgtQC3QYZABvYI7yScm4g8eaI41qL61CK2L/6E/2LT+kud+lB479vjd7g0l0s/dbffKpZQZ01FpXN+C/zKPMLMn55nd+oSE91yhW94Dv4JLkPYtlsRoTOHe6KLXQ4kw6mfKrm69azd1j6LsBBvrV6kKQYb+wCi6bKQ45YpZT9LTkDjp+ufB7pq/W/AaNjPvq3/b5qht6KRF6AeItnQmmVHP/uaTAz9hTN/NhrTOTIh3Jk5koGltDbK9mebZxIDrwFXU1VprxFFbUbLGox8cSHkwxrSAgPJK+1t3hg87ef1BlQFsLI/7t4Ku3oYpE8FhJ+dGvwamODm2Jc5ESj+tvMA7c8QOIFvcoZI7Y+YjPHYeDLo5JYNmF8n61DFb8ZE+Yr2fh25Zl8Z1dih8eMuZTNHelAZvpe8LnnHWSASFXY2860B3O39m2d6y/BHsPPyLOjLGcHP8EJ3+1CY10XweJP4alCnGhorkhZ0C+8amOkeNWTBQylqTBnqzc6pwnNatGQiV+9RF8l2yS8T4efeQxVKtehRjDbPX3MeeYyXg4EJ3ndDRWc3awMuYqLaKBKt+vwX7P3VpwZdVry/ERgEK9KslokdpVVUNcjygyY7paO7DQ9CrQcySe8XSvDGQKoTtMjsdxtz4A7xda3mWvYLZ8YAmdzQoENcD/Q79rao9bRopvKBftIgwAA+A7zmS5VjP2nDiHnqm2ko+F4KDh1zca6JYJpKRRjg9Ktd0QoBCUH/ZYJcwQHySXdNXka6rBmWUgmcxhoDmpaLwAcSHrt5Wc60a+xw3r5C9efOCclBAd33MjdAjudhi8MM2ZwF
- K3YbYpQ1
- gUwZrrbt2kOUXJYopSTtjwRC79Mn652n/7TFMwQsMF6ZiLfceeu1OAzB8Chns/BH8SHDeKEpIrLW6hgAz3fktG6xjTiDklNYq1dBvJLSeZe6NQHUaluNbvlNKeo6x/Zuy0TZbEaozxeo8Jo0ca/ZDsH1ovWFXslHo3ninik3cIW/llT6b9U6iFaQJNNMXuiSloEsaeGhU5CYH51eWHQV20sVG4EXbOdHRONxyKamqG2G6NqWlb3olnrs52EjY5VaNz1HeHc9iwa5TPaSqbRjmwcaNi+W3eejqQxCru3iQd0znQU1EUbFil9QuLzizW7d5x+awVavxf0FW/RFxbZpdzmAjtmnWOjF2hiNaxdTNxS+oD8t1L55QXyP8SpS7Qj2ZmgjZ9y1OjUmwkFdFKhQhMzzOYRxVMYUjrWCStM/6K7w4rvNvgQb452JuupRCOrB1/nvJoSh3oA6JtKrAvIsptMrzFyJlU2RC1ten9d9A1L5IeQbYPJQ03Fns/aftFjcZYIw0
+X-Rspamd-Queue-Id: C96851C000A
+X-Rspamd-Server: rspam08
+X-Stat-Signature: a5nk984xo9e57o76176i9a68xpc4honr
+X-HE-Tag: 1772566517-830078
+X-HE-Meta: U2FsdGVkX1/Vdq4TdDZeM/0/bPsYJ67p54l3YNoPFzYc6P6kPnifhNLY7ZyUSyutEqRLzdMiYhDZSVIdFsEnxj4Lvr+/N2Njq7qUhF9Qd1pU9jDgvCF8n8YL8GuLBT6umRqe+3TTX/A3tBRzuknO3nl40dcLnOX7QJiPpGmikbmIfwZS024RBdLGyB5aFXubOwSb//w2laoBYdXQkrBLS20m8ZBt4dLKPxdDbuh/EPYVAh3k+9EsuXPMu8uyQQc2yZ1hPFepJjPH8rOyFUQGlza9hRPjfRHiS5YrYXl0dcT3gEZl6mbxB/pH2nhgeVTx07NSEwTaizA7nkUaqvPSXxP+oOe8fiUiSLzq/jnssMmH7UjlfK583Z4LBkZ4nHP/HDJpHHyX3Z0vKdbk3uud7hOnT9GXfnhQdLLUzqPRUgkvoJao2jCuEBONXbpLii0lJwzPqh4MrTUZs9nOenaE4vQp2hDHFvN/QdmdKul44hgj2hnx0fEt5tPbGvfwH2fMwxEn5f11y6JIloPMLl1JzjSP1wQc5BndMJT4LEq7APOSiY6l17XZTi52B5FzpCqfL/ydpvAhIyoVoPw2hexq8fCzWwRlzzxcAbUBk3FQbXcN1O+cxQ+ECa7QD8H3aGG/Jnrttio4MUPTgQRozSGfvIj/HhpQRVxgRPqL5DxWTkmIU2d3w3YZgVCF6VnZ2TSBL7W9YyRadulCADWGiAyQaqP0ppp+0HiatpATS/RXAeOxlCS4kk0DS7GZG/p9RAmXeaNa6Jrry9xFKxPRDkwxBKtUUDo+4lV15mBMbZG5Xq0aonG6yLq1TixHm5hvbpYlUNwT4okAE72o2UrFMjbgEiqSrQQGYyNV+enKLZ6TJdhYp/h/Q33AIgF+uQkq8OR6+meJ9cTUmdZ3Njbs2PSP+f/LhcBwL/3UHFkPCBsm+JIAB1Xt50vt9/WOX1fW+Fxdck8geGSHMfJVMjqPcmI
+ z4fZzAup
+ JShjYZwZzwJSXHNWPkjmSvwEQS8W7Kuwh78rggW40wzCTkX032owrXnnsqV0r14m+X6EuyrwZjKNsXS5RB+f2rd3bqBaGlHW4IEsYiJhjDVDBcSXdG2q3xaNv0H63/iDp3PXQUCjmP8glEGil+CLo+uTHHltl8rGUlddUN9uQUojVPZVT87QtmR5+bvWAor3gTwj7Jog/kgottNe6GVw/yniKDmLjypTxQ6cstOFKhwhWmekBPXKcpD/livR2WwmJeA/npi0iWDVJfpc40jiohYCrUnqif1cm0RzXaDdmzipj5j/VDx3MnThLfzW3V4noXRl5U0PKLGQWwhVu4iJzvNuk3suCGR+9tPkoW1Ix/uuZrrmb6CCzM2q3b0LOaXvyQ1RagIKdEJ7GJ0RIJfybXjt2VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,227 +128,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 10:40:00AM -0800, Piotr Jaroszynski wrote:
+On Tue, Mar 03, 2026 at 11:53:57AM +0000, Matt Fleming wrote:
+> When all active swap devices are RAM-backed, should_reclaim_retry()
+> excludes anonymous pages from the reclaimable estimate and counts
+> only file-backed pages. Once file pages are exhausted the watermark
+> check fails and the kernel falls through to OOM.
 
-> > If my reasoning is correct, then I think arm64 hugetlb has a similar bug; See
-> > __cont_access_flags_changed(), which just checks for any form of dirty. So I
-> > guess hugetlb is buggy in the same way and should be fixed to use this more
-> > stringent approach?
-> 
-> Given sw-dirty is managed by sw, is it correct for sw to ever create a
-> PTE that's sw-dirty but not hw-dirty? If not, then I think it will still
-> work fine for the SMMU case as sw-dirty implies hw-dirty, and if it's
-> missing then we will set both. But for thoroughness it could make sense
-> to be stricter and add some comments there as it does feel a little
-> fragile. I'm very new to this area though so probably best for others to
-> comment and tackle this.
+What about when anon pages *are* reclaimable through compression,
+though? Then we'd declare OOM prematurely.
 
-I also am not so familiar with SW dirty, but the big thing to be
-sensitive to here is that the CPU can get by with setting something as
-RDONLY | DBM and the CPU will flip off RDONLY without issue, so you
-might not notice it.
+You could make the case that what is reclaimable should have been
+reclaimed already by the time we get here. But then you could make the
+same case for file pages, and then there is nothing left.
 
-But if handle_mm_fault() is called on something RDONLY|DBM it *MUST*
-clear the RDONLY for all CONT entries, or fail the fault. Otherwise
-the SMMU SVA explodes.
+The check is meant to be an optimization. The primary OOM cutoff is
+that we aren't able to reclaim anything. This reclaimable check is a
+shortcut that says, even if we are reclaiming some, there is not
+enough juice in that box to keep squeezing.
 
-However, I agree the __cont_access_flags_changed() looks concerning.
+Have you looked at what exactly keeps resetting no_progress_loops when
+the system is in this state?
 
-I spent a few AI $$ to cross check this and it echo's Ryan's concern
-but did not find a specific counter-example where PTE_WRITE |
-PTE_DIRTY | PTE_RDONLY can happen for hugetlb. I don't really trust
-this negative result, so I'm inclined to agree it should be made more
-robust. I like the look of the patch (below) it proposed too.
+I could see an argument that the two checks are not properly aligned
+right now. We could be making nominal forward progress on a small,
+heavily thrashing cache position only; but we'll keep looping because,
+well, look at all this anon memory! (Which isn't being reclaimed.)
 
-AI ramblings:
-PROMPT:
-Review 20260303063751.2531716-1-pjaroszynski@nvidia.com.mbx and focus
-on __cont_access_flags_changed(), huge_ptep_set_access_flags(),
-hugetlb_fault(). Does it have the same issue as this patch is fixing,
-considering the following additional note:
+If that's the case, a better solution might be to split
+did_some_progress into anon and file progress, and only consider the
+LRU pages for which reclaim is actually making headway. And ignore
+those where we fail to succeed - for whatever reason, really, not just
+this particular zram situation.
 
-A big thing to be sensitive to here is that the CPU can get by with
-setting something as RDONLY | DBM and the CPU will flip off RDONLY
-without issue, so you might not notice it.
-
-But if handle_mm_fault() is called on something RDONLY|DBM it *MUST*
-clear the RDONLY for all CONT entries, or fail the fault.
-====
-
-Analysis: Does hugetlb __cont_access_flags_changed() have the same bug as the contpte patch?
-
-The contpte bug (what the patch fixes)
-
-The old contpte_ptep_set_access_flags() (contpte.c:614) used ptep_get()
-which gathers AF/dirty from ALL sub-PTEs via OR, then compared the
-gathered result against entry:
-
-    // OLD (buggy):
-    orig_pte = pte_mknoncont(ptep_get(ptep));   // gathers across all sub-PTEs!
-    if (pte_val(orig_pte) == pte_val(entry))
-        return 0;
-
-A dirty sibling makes the gathered PTE look already-dirty, even though
-the target sub-PTE still has PTE_RDONLY in hardware. False no-op → SMMU
-infinite fault loop.
-
-The fix replaces this with contpte_all_subptes_match_access_flags()
-which checks each sub-PTE’s raw bit values
-(PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY).
-
-The hugetlb code
-
-__cont_access_flags_changed() (hugetlbpage.c:400-418) does NOT use
-gathering for the no-op check – it reads each sub-PTE individually via
-__ptep_get():
-
-    for (i = 0; i < ncontig; i++) {
-        pte_t orig_pte = __ptep_get(ptep + i);
-        if (pte_dirty(pte) != pte_dirty(orig_pte))
-            return 1;
-        if (pte_young(pte) != pte_young(orig_pte))
-            return 1;
-    }
-
-So it does NOT have the exact same gathering-based false no-op bug.
-
-But it does have a weaker form of the same conceptual problem
-
-The check uses pte_dirty() which is:
-
-    #define pte_hw_dirty(pte)  (pte_write(pte) && !pte_rdonly(pte))
-    #define pte_sw_dirty(pte)  (!!(pte_val(pte) & PTE_DIRTY))
-    #define pte_dirty(pte)     (pte_sw_dirty(pte) || pte_hw_dirty(pte))
-
-It abstracts over HW-dirty and SW-dirty. It does NOT check PTE_RDONLY
-directly.
-
-If a sub-PTE were in the state PTE_WRITE | PTE_DIRTY | PTE_RDONLY
-(SW-dirty but HW-readonly), then pte_dirty() returns true (via
-sw_dirty), and the check would say “no change needed” – but PTE_RDONLY
-is still set in hardware, which the SMMU would fault on.
-
-The contpte fix’s contpte_all_subptes_match_access_flags() would catch
-this because it compares the raw PTE_RDONLY bit directly.
-
-Does PTE_WRITE | PTE_DIRTY | PTE_RDONLY actually occur?
-=======================================================
-
-Looking at all the arm64 PTE manipulation functions:
-
--   pte_mkdirty(): sets PTE_DIRTY AND clears PTE_RDONLY (if writable)
--   pte_mkwrite_novma(): sets PTE_WRITE, clears PTE_RDONLY if PTE_DIRTY
--   pte_wrprotect(): saves HW dirty to SW dirty, sets PTE_RDONLY, clears
-    PTE_WRITE
--   pte_mkclean(): clears PTE_DIRTY, sets PTE_RDONLY
--   HAFDBS: can only CLEAR PTE_RDONLY, never set it
-
-None of these create PTE_DIRTY | PTE_WRITE | PTE_RDONLY. The invariant
-holds: for writable pages, PTE_DIRTY => !PTE_RDONLY.
-
-Tracing the RDONLY|DBM scenario through hugetlb_fault()
-
-For the specific scenario: all sub-PTEs are PTE_WRITE | PTE_RDONLY
-(RDONLY|DBM, clean writable), and handle_mm_fault() is called:
-
-1.  huge_ptep_get() gathers – no dirty siblings, so vmf.orig_pte =
-    PTE_WRITE | PTE_RDONLY | PTE_AF
-2.  huge_pte_mkdirty() sets PTE_DIRTY, clears PTE_RDONLY
-3.  entry = PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-4.  __cont_access_flags_changed():
-    -   All sub-PTEs: PTE_WRITE | PTE_RDONLY | PTE_AF
-    -   pte_dirty(entry) = true, pte_dirty(sub) = false (RDONLY set, no
-        PTE_DIRTY)
-    -   Mismatch detected -> returns 1 -> BBM proceeds
-5.  BBM rewrites ALL PTEs with
-    PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-6.  RDONLY cleared for all entries. Correct.
-
-With some siblings HW-dirtied by CPU (e.g., PTE #3 has !PTE_RDONLY):
-
-1.  huge_ptep_get() gathers: sees HW-dirty sibling, calls pte_mkdirty()
-    on gathered
-2.  entry = PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-3.  __cont_access_flags_changed():
-    -   PTE #3 (!PTE_RDONLY): pte_dirty() = true -> match
-    -   PTE #0 (PTE_RDONLY): pte_dirty() = false -> mismatch -> returns
-        1
-4.  BBM proceeds. All PTEs rewritten. Correct.
-
-With ALL siblings HW-dirtied by CPU:
-
-1.  All sub-PTEs: PTE_WRITE | !PTE_RDONLY | PTE_AF (all HW dirty)
-2.  entry: PTE_WRITE | PTE_DIRTY | !PTE_RDONLY | PTE_AF
-3.  __cont_access_flags_changed(): all pte_dirty() match -> returns 0
-    (no-op)
-4.  But RDONLY is already clear on all PTEs, so SMMU won’t fault.
-    Correct.
-
-Conclusion
-==========
-
-The hugetlb code does NOT have the same bug in the sense that it doesn’t
-produce false no-ops with current code. The key difference is
-__cont_access_flags_changed() checks each sub-PTE individually, not a
-gathered view.
-
-However, Ryan Roberts’ observation is valid:
-__cont_access_flags_changed() has a latent weakness. It relies on the
-invariant PTE_DIRTY => !PTE_RDONLY (for writable pages) rather than
-checking PTE_RDONLY directly. If this invariant were ever violated
-(e.g., by a future code change), the no-op check could falsely pass,
-leaving RDONLY set in hardware and causing SMMU fault loops. The contpte
-fix’s approach of checking raw bit values is more robust and should be
-adopted by the hugetlb code as a defense-in-depth measure.
-
-The recommended fix for hugetlb: replace the pte_dirty()/pte_young()
-checks in __cont_access_flags_changed() with a raw-bitmask comparison
-similar to contpte_all_subptes_match_access_flags(), using the mask
-PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY.
-
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index a42c05cf564082..34e091b398123e 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -389,28 +389,24 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- }
- 
- /*
-- * huge_ptep_set_access_flags will update access flags (dirty, accesssed)
-+ * huge_ptep_set_access_flags will update access flags (dirty, accessed)
-  * and write permission.
-  *
-- * For a contiguous huge pte range we need to check whether or not write
-- * permission has to change only on the first pte in the set. Then for
-- * all the contiguous ptes we need to check whether or not there is a
-- * discrepancy between dirty or young.
-+ * Check all sub-PTEs' raw access flag bits rather than using the abstracted
-+ * pte_dirty()/pte_young() helpers which conflate HW-dirty and SW-dirty.
-+ * This ensures PTE_RDONLY is checked directly: a sub-PTE that is SW-dirty
-+ * (PTE_DIRTY set) but still has PTE_RDONLY would be missed by pte_dirty()
-+ * but will cause an SMMU without HTTU to keep faulting.  The access flag
-+ * mask matches the one used by __ptep_set_access_flags().
-  */
- static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
- {
-+	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
-+	pteval_t pte_access = pte_val(pte) & access_mask;
- 	int i;
- 
--	if (pte_write(pte) != pte_write(__ptep_get(ptep)))
--		return 1;
--
- 	for (i = 0; i < ncontig; i++) {
--		pte_t orig_pte = __ptep_get(ptep + i);
--
--		if (pte_dirty(pte) != pte_dirty(orig_pte))
--			return 1;
--
--		if (pte_young(pte) != pte_young(orig_pte))
-+		if ((pte_val(__ptep_get(ptep + i)) & access_mask) != pte_access)
- 			return 1;
- 	}
- 
-
-Jason
+And if that isn't enough, maybe pass did_some_progress as the actual
+page counts instead of a bool, and only consider an LRU type
+reclaimable if the last scan cycle reclaimed at least N% of it.
 
