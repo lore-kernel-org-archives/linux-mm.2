@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF4EE67A9C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0873AE67A9C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:49:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA456B0095; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
+	id 6FE516B0096; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 381916B0096; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
+	id 6CC786B009D; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 259246B0098; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
+	id 5A42A6B00A1; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11F6D6B0095
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B52E31C2DD
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:48:29 +0000 (UTC)
-X-FDA: 84504125538.19.D907FE5
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F356B0096
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB9DC1602B8
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:49:24 +0000 (UTC)
+X-FDA: 84504127848.12.4F30E69
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D841C14000C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:48:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQFhgWr1;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0DF43180003
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:49:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/72Vv2c";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772527708;
+	s=arc-20220608; t=1772527763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OEcS0O25UdeCMwiY1wLq2u87+WK9pnAlpOZelh9i9R0=;
-	b=v4Vf8LUpFGY4xj0wXiqV+lVe+SDGpRIUSErYDVgzMCFG+0nBJKd9r38/8lHSI4lYMYtt/O
-	E2vOnFzhxlCNpiRj9qHDTlQZNjcqzGlvylIqhlEPKl016gZMZP0hVmFnXTEfaCHJqLzykU
-	LDe7O9lp3Grko3hXpSSDoolToDr1j3A=
+	bh=gbGWYBMaMvRnDZWdaGCfThHaOw2+2lhf0ftPsW5hryg=;
+	b=czuKr+BmS5QP/0X9dcUs+yQRQxcRyg0YWUG+Pe6dMQiSuwSSjjFM82gvW3ik4nuJFpsdoJ
+	K7f7Ur3HBUBk3yTiGdTnv/atwUiGLYFr0PxUTwuQlbgXHc4DulTeDGcuiCGVnwY8Nar70z
+	RFXOt6hPMysEJ6b8zDHHVP5Aj/RLfkg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQFhgWr1;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/72Vv2c";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527708; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527763; a=rsa-sha256;
 	cv=none;
-	b=dPtjGkXJduf/Lf2X2JxoiV/sqOmz7VVnWMDD18xZcKXVWB29FWnWrsCuVx1Fkb/0z/fmiV
-	t17ZTx2y7lSwiV3Bu2a5+Klst6aBENHznOox80QtdGlNVfXFygQkyoasWwI7vknqBaWLRk
-	NQpPrLR/I4FokGO0tovTb1q2LuuTR48=
+	b=xuHieOfkW6OEgvmupD+mVRCEKsDLfd8QkP2tE3p7kTpMrpOhlB8NcVhVhMRgiTlZLk7NLP
+	cIKNkcCKjckYjn17W0CgPOg/8g+hutqQN2rJjwsK16ayn3mJGg4w7PVp4lKwewyrTVbeTW
+	5scYivjYpAtbtDJrgF4wKmwj+JNbhvU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BF0E242BB9;
-	Tue,  3 Mar 2026 08:48:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F9C116C6;
-	Tue,  3 Mar 2026 08:48:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3A0854413E;
+	Tue,  3 Mar 2026 08:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B26C116C6;
+	Tue,  3 Mar 2026 08:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772527706;
-	bh=epD00FefbJXRoRgkmbGok8xKZSTpyougdaUkz5Nbp/Y=;
+	s=k20201202; t=1772527762;
+	bh=JaD79dXQHufCQnM1pCE8hYRquoIOvY5KaE/X/JmRPFU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sQFhgWr1bBwgDvH5hRq8G47VTi6WQCJ47jZwoimCj2jKA7Enu2hks2eyJoG2hcuu9
-	 +T9aQKru/QcnhjqptMENpxixzOMs7BYgp1Ca4+8tHTygnwlYHehpvkmwb2pQrx7Id0
-	 1rpjAeAG2ZA5qwxzkzlpxPNxwKhlXEux0+4Y056pdU6ojid6y/I7WySaGK1iYBObpw
-	 9rzO6kLeeuQSv3dClKh6EI6i+efYyyiX2Pt3cOhHVAOOI0AfY3Qh1kpiBJloV1+FLF
-	 9g+dbil+xnT1DQ4OIKE3h5qWQSP4bHu8NbGxtESdCq0SCAJUCTIyEMpNnRyR992wNP
-	 foYgUBA1GAOYg==
-Message-ID: <56a23a23-cbed-4ace-acef-3ada41bc182d@kernel.org>
-Date: Tue, 3 Mar 2026 09:48:19 +0100
+	b=J/72Vv2cjiRCjXUsiQrPB1gIu96TS7IExQyAgZolreyw41sVbQb0G+pb+PBfOUyO4
+	 BT4v9iTvSH/1Cb7uCZ7tgNLFRH8Zdt48mm4ctlT9ezNtMH0fTTFa+YTAsWrcknEJJ7
+	 Jn+VvKYIRQHCAfHwqRhKo5sgm3LUm63RcoLE46XcMa2fIanDS3kHAl2NZ64dALZuCu
+	 VGKIPNo/gkkcfkzhXlk1BfJNI9Au3hJQ2Gsp4BRwvI5n9TWDGiRSmOrVMmEMFsB9D0
+	 6q9jBIAtgAuB69Xa1Qxm6OcYw/K45SosrJZ1xTvfMQKxBZforaU4xKB9IYSacKcsi5
+	 b3dSX3KC2vWmQ==
+Message-ID: <b1499bfa-a16f-4242-8715-ddd9a4246fe3@kernel.org>
+Date: Tue, 3 Mar 2026 09:49:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
- with folio_try_get()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
- Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260302203159.3208341-1-ziy@nvidia.com>
+Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: fix memory corruption on huge
+ zero page move
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Chris Down <chris@chrisdown.name>, Suren Baghdasaryan <surenb@google.com>,
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260302170619.867056-1-lorenzo.stoakes@oracle.com>
+ <901fec30-c5c2-46c5-b48d-f9a8f5e5c928@kernel.org>
+ <f11357fa-29ac-436c-a9a9-8406f516ea30@lucifer.local>
+ <20260302125032.313797b0ec908cd133f3ed82@linux-foundation.org>
+ <a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
+In-Reply-To: <a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: meesbe1esyccfogpfn5m14tk7qrjrsmq
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0DF43180003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ybwjws1pj3psrnhjw4k7grnj8huqo8ac
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D841C14000C
-X-HE-Tag: 1772527707-7296
-X-HE-Meta: U2FsdGVkX1/RNfJj7JbDXknvPvP33XO5G6h/+nRc8MSPiNBRrD6S3JnyQcJfbiDxUntsSyTEwoXLgB64seRfj4ROkrzk6AWJxmx9GXTNPMAj8u7WpAo8rIU+b92TaYgwcU8alQKHhlxsX77+XN9uvL0Ya0F1XFUJNNunJ9/Y9IGtEfMujuWFhB3Y8Tgh/sOBme4BBJAe8Sg8u6aps2y5fYnuraDLGvr2Up5FQOtVKkYps5CRB79mLwVRvQmT37Ld476Cv8ejP9IKVJJqrxLt3rFRA0QmhgZ2PCOalBAGUe79uPBPofQXPfK+u+eubaUVj0yxUYq+W26xlZ7oX0x1MKAULyj12CdO8Q58Q87qdg/OEesc+6c+fMTKNj5dw/8cRWwe5PGCusvJF+5L0oboMtDB+NEMyOYZ+CTjKHXqqw4ERszxM/T8E90v6BXrFfJ76zB2h7s7Wc2KDEfd85ttKFJqSsYp3+nzDKJY6fdax46TgcLiRkgo1vZDW8UkmWrknDlEDxrv4pFLkVDmrRyxO/R6H5SY5VstOeyrAj3OFbg36YR0psnq8zwFnW6tc8536uaESm0qbXv+mnMTi9RpkdFBFyEaKG+BjTvISpfOUM7AqLLSJJT52ENyxfsscNZ/05oe0N6VawmnpM5tJU5yleumTmMOfZn8bFnp6JgPf52jfE4XqptIG22zeBMe8sosa6x4JNXQxlY8q9c2c0FvlxIc8mkplU3PuQwjXVHjLgt46FdW80hhN8yNyicwqRSfw9uo08ZJvu2RuIKLmhpE7IFX0Eg035WlwMl9g8nMEJ7YInPN5HUjMnESgYvMTwCqFYJfax5P7Oueq/YFzM+toGfWMPwIz9C454tX7n/DI0sWanj4Xfs04fftw+F/fPCu1aHzAjvWrzjs7eC4jjrU6d2lZJuoZYe/FghR/mfdZ8Zm4rgDKtAvQkejvUaL8noBOwZngWAL8qPtfmo0Vgw
- Dv1wXkh0
- jMHEcQoI6QUWQBY9rf7rAROxJFOIMjpjilnAKkKrS5ppcLdgRe0VqTBbCQLZWRkbjD6Z8V8FFViqrNj+NaqFsPm3XHxuJ4suNcPUNvDsl5GDrKj5wi1JT6wMzg7s/NWjSIxpxs9uQEutvl5BSzPx0JRY4F74mhy7KnmKQkfO/K8oQRUu6keKiPok/0iecltvIX6sa1hVYNPb+7WCnWt04ftfIO704IA6Iq57Wjl3X9WErVb9RUVkw7xW5zg0JEAMzujTbJ22LHE6AZM8Z0svtDrfd6Ud3Erf8+uV3vIA/XcLDdxSQgokh4rGnBfYKA0ngdl+VutjtP4WGctD3bDU8fd+QPVeFdUtu/uzeZZ3iwgz1n0XONqddJ4ln5/6piwjpoCOkTQm3Uf38qBcxZjyM0m/cgvhiQISHsBclc06hYGdemjafFADrVr1AeB6XLV0Hzxgf0QeJUCtI84o=
+X-HE-Tag: 1772527762-490373
+X-HE-Meta: U2FsdGVkX1+DCKT4hjaRN4GvHzF+O/QmwiAWC8R+AjT89y9NAI1PdfPFZR/AoDAw/9+h1oiw9C8l72LB0od1PNTfn+9aLNBOlOogbfp9ImdD5JOzzBwuQgHOCAMZtWjJsVyVQ3nYPQ9dVMHfJnSvqL/BDfz2+Eav9Cz2Me5hnMzkkReyUdQu7rr5zXWci+llmiza/NWWiZftEwAzmxpLq/c7L2XlBGJxVKkmUn/EldSRz6MjPadSi8HyLu0iLOqznbZrshvISbSyEguHHVtMnRuhdTc3QALJp5vqq6I+CdfIwyV4/u/fVjcya5VZUxM/dU/wCy4L8TGxfC0M/LQZdNHSFPvJTnfatIbxMHE/iya3kXFY/vXSo910z5NPdZsTLJUC/IECsVASvYhL+PD8qBsv4CgHF65HibC3NFNoFvEF21ED65WMADJvwDFdJ35xL4Qnnfo2I2ORPZahP0DSes76TOQZVgt6HbGtd0fPCQwe6eLrYFTQZjuxUOAd1V8M3v/MhxSgC6gSiDm/znkQgz0Vg4LY7Gz+bzD/O+MaaYVAXJ7AimF2aUKneR+8+YgQjdwLjN+b5Hn/LCD3XXLWDKjm1PAsMOBZ2UubavbC8li28gOYdo+ueZoIJoVe6WFl56w4OrtBqI76tIqSw/AfV92VM3ex8tE+Ok3I2dT9d318kr10KiXpILZyM+LWR1MyI2lHpwLzO0cTfx1fhLTdEVgVrimYZ3Q9dPnSL5b+1vcdx6NnBaeMyuuWWYJtsD7wOaY0PQtSahZqNRi73uxlCPWlxjVx+zsX8lFe5KWblqQa0HZ+a/cC5VVKawnrQI0mAHjouz4RvcFdgs6Rl86P950x0P/nP2gMn1U81j5NWtQIyDgkMePF+QlLrfTyQwS48K/FBPTfcRKs3Cr8bMIxEYivlsQJID/xRScm3KkzxvqklPGwGecKnJPNdUGYqcUKE2QONDAX3r+jLA0VRDY
+ 6RpJ1RcT
+ G/szJkyol/p0N2Zn6qrS+sarWEhGQ3QvN1Kwi2lN8vNSQWAEZQezAVxfCtQkaJChvDoI2FWa0Vcz/3qTz4V7lyPe0awi3+jTRN4rdXNo9Yqtk/4UxxVr7wCj+FwFY3JngGJ1+RxMNdPIX30GBOA93E1E3za/IkNVhFdwm68dOlLqeGzQWqvZxsTxyZPUbfoTOyW66nvxAPue2dDyaddBBRcnC30kooOOpYdQR/4zZ3ra+upttzlN9eI2DgFPizPeinL6UYlDzTDiwwQ17QPqmIXgayrOTMcC/DSGCLnfBBBU2CrSJVLAcMHPedxS6V2ueGhCy7aQur48r45c2fvQrmCYas9gbGlwfDhxH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,121 +149,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/26 21:31, Zi Yan wrote:
-> During a pagecache folio split, the values in the related xarray should not
-> be changed from the original folio at xarray split time until all
-> after-split folios are well formed and stored in the xarray. Current use
-> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
-> show up at wrong indices in the xarray. When these misplaced after-split
-> folios are unfrozen, before correct folios are stored via __xa_store(), and
-> grabbed by folio_try_get(), they are returned to userspace at wrong file
-> indices, causing data corruption. More detailed explanation is at the
-> bottom.
+On 3/3/26 08:25, Lorenzo Stoakes wrote:
+> On Mon, Mar 02, 2026 at 12:50:32PM -0800, Andrew Morton wrote:
+>> On Mon, 2 Mar 2026 17:19:15 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+>>
+>>>
+>>> Yup, if people would actually cc the right people I'd not have wasted my
+>>> afternoon.
+>>>
+>>> Replying there.
+>>>
+>>
+>> I'm not sure where this is headed but I'll queue this patch for now, to
+>> get it some testing, to lessen duplicated bug reports and to generally track things.
 > 
-> The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
-> It
-> 1. creates a memfd,
-> 2. forks,
-> 3. in the child process, maps the file with large folios (via shmem code
->    path) and reads the mapped file continuously with 16 threads,
-> 4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
->    large folio.
+> Hi Andrew -
 > 
-> Data corruption can be observed without the fix. Basically, data from a
-> wrong page->index is returned.
+> We should drop my patch and take Chris's.
 > 
-> Fix it by using the original folio in xas_try_split() calls, so that
-> folio_try_get() can get the right after-split folios after the original
-> folio is unfrozen.
+> However, life isn't so simple :) as there's been some confusion with his series
+> since his email client seemed to mess up somehow and a couple patches need to be
+> squashed on one another.
 > 
-> Uniform split, split_huge_page*(), is not affected, since it uses
-> xas_split_alloc() and xas_split() only once and stores the original folio
-> in the xarray. Change xas_split() used in uniform split branch to use
-> the original folio to avoid confusion.
+> So to make life easier, I enclose a squashed patch (combining the commit
+> message from both), with my R-b, T-b tags attached, please replace my patch
+> with this one.
 > 
-> Fixes below points to the commit introduces the code, but folio_split() is
-> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-> truncate operation").
+> Also, could you make this into a 2 patch series with
+> https://lore.kernel.org/linux-mm/aaBWG4fajXXbjpVN@chrisdown.name/ _after_ this
+> one?
 > 
-> More details:
+> mm-unstable (I'm not sure why we're rushing changes there so quick...) had
+> _only_ this regression test patch in it, so we were left with a kernel that
+> splatted on running mm selftests, which is not what we want.
 > 
-> For example, a folio f is split non-uniformly into f, f2, f3, f4 like
-> below:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f4 |
-> +----------------+---------+----+----+
-> but the xarray would look like below after __split_unmapped_folio() is
-> done:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f3 |
-> +----------------+---------+----+----+
+> (It seems to me this is what mm-new is for, and it seems we have some holes in
+> our testing still since this got thorugh).
 > 
-> After __split_unmapped_folio(), the code changes the xarray and unfreezes
-> after-split folios:
+> Please drop the patch you have for this already in mm-unstable and make sure we
+> only have it _after_ the fix is applied :)
 > 
-> 1. unfreezes f2, __xa_store(f2)
-> 2. unfreezes f3, __xa_store(f3)
-> 3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
-> 4. unfreezes f.
+> Thanks, Lorenzo
 > 
-> Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
-> xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
-> f3 is wrongly returned to user.
+> ----8<----
+> From fbabbc38c000308d2c621a4b3ec1f4bca1d71c1d Mon Sep 17 00:00:00 2001
+> From: Chris Down <chris@chrisdown.name>
+> Date: Tue, 3 Mar 2026 07:21:21 +0000
+> Subject: [PATCH] mm/huge_memory: Fix use of NULL folio in
+>  move_pages_huge_pmd()
 > 
-> After the fix, the xarray looks like below after __split_unmapped_folio():
-> +----------------+---------+----+----+
-> |       f        |    f    | f  | f  |
-> +----------------+---------+----+----+
-> so that the race window no longer exists.
+> move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
+> zero pages. For the huge zero page path, src_folio is explicitly set to
+> NULL, and is used as a sentinel to skip folio operations like lock and
+> rmap.
 > 
-> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reported-by: Bas van Dijk <bas@dfinity.org>
-> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
+> In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
+> pgprot) passes NULL through folio_pfn() and page_to_pfn(). With
+> SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
+> pointing to non-existent physical memory. On other memory models it is a
+> NULL dereference.
+> 
+> Use page_folio(src_page) to obtain the valid huge zero folio from the
+> page, which was obtained from pmd_page() and remains valid throughout.
+> 
+> After commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of the
+> huge zero folio special"), moved huge zero PMDs must remain special so
+> vm_normal_page_pmd() continues to treat them as special mappings.
+> 
+> move_pages_huge_pmd() currently reconstructs the destination PMD in the
+> huge zero page branch, which drops PMD state such as pmd_special() on
+> architectures with CONFIG_ARCH_HAS_PTE_SPECIAL. As a result,
+> vm_normal_page_pmd() can treat the moved huge zero PMD as a normal page
+> and corrupt its refcount.
+> 
+> Instead of reconstructing the PMD from the folio, derive the destination
+> entry from src_pmdval after pmdp_huge_clear_flush(), then handle the PMD
+> metadata the same way move_huge_pmd() does for moved entries by marking
+> it soft-dirty and clearing uffd-wp.
+> 
+> Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 > ---
->  mm/huge_memory.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 56db54fa48181..f0bdac3f270b5 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  	const bool is_anon = folio_test_anon(folio);
->  	int old_order = folio_order(folio);
->  	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
-> +	struct folio *old_folio = folio;
->  	int split_order;
->  
->  	/*
-> @@ -3668,11 +3669,17 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->  			 * irq is disabled to allocate enough memory, whereas
->  			 * non-uniform split can handle ENOMEM.
->  			 */
-> -			if (split_type == SPLIT_TYPE_UNIFORM)
-> -				xas_split(xas, folio, old_order);
-> -			else {
-
-Just wondering whether we should no move the comment over here now, so
-it just covers both cases.
-
-> +			if (split_type == SPLIT_TYPE_UNIFORM) {
-> +				xas_split(xas, old_folio, old_order);
-> +			} else {
->  				xas_set_order(xas, folio->index, split_order);
-> -				xas_try_split(xas, folio, old_order);
-> +				/*
-> +				 * use the to-be-split folio, so that a parallel
-> +				 * folio_try_get() waits on it until xarray is
-> +				 * updated with after-split folios and
-> +				 * the original one is unfrozen.
-> +				 */
-> +				xas_try_split(xas, old_folio, old_order);
->  				if (xas_error(xas))
->  					return xas_error(xas);
->  			}
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
