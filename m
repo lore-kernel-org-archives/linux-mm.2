@@ -4,159 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C853EC1421
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08CA9EC1430
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:50:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C30126B0092; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
+	id 4F5AC6B00B1; Tue,  3 Mar 2026 07:50:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDDFB6B00B1; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
+	id 4A2A36B00B4; Tue,  3 Mar 2026 07:50:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1D86B00B4; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
+	id 3AE686B00B8; Tue,  3 Mar 2026 07:50:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3656B0092
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D4A85641D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:45:43 +0000 (UTC)
-X-FDA: 84504723366.12.B272AD9
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013065.outbound.protection.outlook.com [40.93.196.65])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 802B8C0004
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:45:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Az/ekstt";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772541940;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 284666B00B1
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:50:16 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B0E91160111
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:50:15 +0000 (UTC)
+X-FDA: 84504734790.11.4A26FE6
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B9B814000A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:50:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=arQFzala;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772542213;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
-	b=KVFs9hsNKKwtvUJ6ssindfWmiBpscf9NhbcrsIwB91FtjQxzb+nxFYSDQp4t6rbsmWBKt0
-	myxuUhEviiK/9YkXQwz+c2egqoU5t7ubZmml2SL+qSP1BM458NgHB3G0OGi7t2i6a5+ZmD
-	ek+yx8BH9jxSGRmvUm1uvMlf7z7MqIo=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Az/ekstt";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf10.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772541940; a=rsa-sha256;
-	cv=pass;
-	b=bbrg91mFgD7bo8CuXgj2Bpar35/6hGDfQR+qdP7UMrT4o7OSSt3NikfIzbWn01KdvJ/1V8
-	eCWJyXXo8qT3/X8vuyti6eqwnY1GYiuPsOiViGC2EXcc1TEHBzm4mspG/4KCHWvZx7wl/o
-	T8I0PcPJpt4FvUfAhgRNETO9JlPi+14=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=heqh0n7uV51CYE4xQwwKpAU252aNQcXrXulVsBCAyV1mA1Cw29XoDkyu8pVCKVRAFP8SOcVNvdEyrwxhRS/H5ReGQsj4CVlT4Z/Lk7cpN6WQRWdhy+BKiswGbe7n3yDPINji3IiXdlLkoMHbaNP+kX1xxE65quXzp/ofrZGl17t/ddnwGOoBNHR0huxIIeKyR7e95o8bHe5OC1CqFf1aYi+U8jLyA2I018N7kS8cZBstvR5edvQ6uYO99+nDpLKyjnkA+Gbmc4vcAFfB4HOGWmuQcTSN5tNhSfJ2q5CHbIPQkzqaaEuU9IBqVEgiId3b5At/a2Ar7f2ypmTcqZkJQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
- b=TeUtbclmynPSF/aGOYPIVLEg0uNtK8D9iYr+A362wl0zwfakMdk8uWfNqTKCJ5U7GTHDfvclvINPDg0T837OH16KXpV+B7dch5zBCA26ZICWZ7VEN35VUbTlUmuzTFLyyt9dZcZbLoUPp7FvRC7J/F864KQrAZUsxbnrLcc2ZCF/xQI4sim8m18/HcWHdwK/RcPu4wgA+Wv7C/jTlPuZxxfglEpdxxdm+FAKyF7E8MEgNgmbqZpG2xl4SH2jmeZsoMNXFQtHyPPlO47EKh5AHPrKLeDNfwWGoKFNh3rTGSL/2oBFJRV0M/Vw9xYDqE466XgtC73huaDPuUzo1qqJig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
- b=Az/eksttVohjSIo5OA5EE6gGXDh0I0tpQxKJQMgTtlPrEO9UjdulY6DmB8pFbJ/fiOLPgYz5tqSmlnPMtcGHgtBcS/ze2mFHhh/OUHGuKx3F1rizqyrpoCBRwsfOZOFvst5By3ewGosLqzaA04+We15heAsNuaocbBYR3FAxB8lVEyy6ZubqewoywWd4+LpE0YowG0YtqdM0UgSI5SvoRepKuUJJDtWd7knkPFVGsYdqveZKVNNDK/CQOVy6FlMs29HEHXUq0eYQMdtJ6/ebBX0FBZp1r1ORMW42TjCkdHSVGvDOI/+0tPUkvWRvfCVY6ul1JfxZu4eW9cJ0oSMZsw==
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SA1PR12MB7271.namprd12.prod.outlook.com (2603:10b6:806:2b8::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Tue, 3 Mar
- 2026 12:45:34 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 12:45:34 +0000
-Date: Tue, 3 Mar 2026 08:45:33 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: James Houghton <jthoughton@google.com>
-Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <20260303124533.GA972761@nvidia.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com>
+	bh=eQR3yhh4HdUVDg2I8t6pZIuvCqPm8OVYSM3fHUXSeCQ=;
+	b=BlzKzeeblo8s3SLtLCNp9VtHbV2yggIIOjzJIF/8PK+j+VBhTY4aH2qgELILYnbU2jhEGF
+	UIxNYWjYSLUPnT/7XzE1NkkkP5iAZ8fPpcem1TD2H4G29/8DUNxj8ER3GD4tOBzupPkqak
+	+QDnwf0+ngqebSBM0BRu3unqDV2jZx4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=arQFzala;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772542213; a=rsa-sha256;
+	cv=none;
+	b=l/qicqILQvhjhKccvIsLupYqdCRBTtRv070iFyvdCeD9J5OUiET3Fpnt82W9shV+/DrmS2
+	ReCeiztNBtEaCgG8pzRwGi7XBJvSBvKPtOLWkqeJTLOrVyXymMv+/vQuHDi5VebwUO7wHj
+	aXrh/WQmyUirVCsCmYQpvDiYUcFykbo=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8f92f3db6fso832383666b.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 04:50:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772542212; x=1773147012; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eQR3yhh4HdUVDg2I8t6pZIuvCqPm8OVYSM3fHUXSeCQ=;
+        b=arQFzalaGm06nARWE6iD7jvqNzr/Mt/3tiG7S53AyvwoeQDh+YM5Q9K2h4UFkgkeCR
+         XT9Ynb6novPSksnnXm42sDSLIvLUmbJ4SOMQ2Q4+T3F9J4MCI+AyNY4+AfIi89TbJP+U
+         PNSLpYVf1R1ITHMcrvPyE0N1c64Lxhyy6Ot0GSBL1xB+olc7ZW1AWzHWo88145bFXxri
+         SVAXHKWa9rcaDchE48delTzAQFdU543NTLD77gpbJI31TeeuRVxVp/EScvA5Gbh0rCjQ
+         1/z+7/5gGOuOUcxoq2nhpItHu2fdtvPoDkjxe4PExjCQbkuHFQ1RB+hVFFEeZVD0Zu1s
+         YB+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772542212; x=1773147012;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eQR3yhh4HdUVDg2I8t6pZIuvCqPm8OVYSM3fHUXSeCQ=;
+        b=UlrOwo9JqVyBoFkZXVJf+PNRV7IhmNCEZ6TwH/rJDaYO4mnT65FF2o0xj51dWQfcnF
+         wUvOlK8IrEzjQcwKBvaq9C7RWzRpFp+p6y/TyGhTv1Rif6kWEJbC+H+Ba4S/u0zWilAh
+         bQzvkkI0Oz/2fqrJutoExCzvnjqDp31JoZLwloB3utzfJd1TXmh6gDW8PGDUyjCn9Zq5
+         qgIQ8HsL3i0VTMC1SMQYWgj0ebuwh9EPorDBt5UIkt81Wrign/6CSYW0xprf2Ouk0XkX
+         Gfm2PN6kBR8oLrILeopaiElT5cAXEH5JaeVcV1lC1DR7jbG6BjeXL3lqgPWwZbtzZIO5
+         ESCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpxT0lQrWYGd20WLCD1r+Uw1+15H9ok2STst8Nic+mJrsqxJ/g3INg3JiqvgSyAfCHkbCqKXpmVw==@kvack.org
+X-Gm-Message-State: AOJu0YxRQVgefFwidqk+jLiQpjp0a+iF695TvYVEyVjiNA18PfL3iv/h
+	TbcpVjkP5xb9MI172KSRiEZYzJLsDOQHY2Kbc+88vzdYKb5dHAJF4EM0
+X-Gm-Gg: ATEYQzyBE7vj0IcMUZnXsZ5FNCcborYo6vAb+y5Ad1jKatx121ImOC7OJ1SQmkhn964
+	FpgIqvq6phmSThNuJl1lFRP6K7oSdP6SzXxtmrGt1czfznYqvKyzBnqRKnmpwUbATok7GMUwAAQ
+	ueYBwY3NvyS8Dib1S6mzzpOxNmvWYZw4k14p5rTJLKzK2Hk1iyu3JcUtTnH4YD3Vq08b56y+YwT
+	oYWfpuTFTMOaviqt+rYW/IXw0QBdLEnoPCAlnlEY/wgrywf1VXoKIPv6D2965UHsN2zJjZ7LiV3
+	cqBn9sE6c76nhAbg1K3yCGo/M5hv0r656yYcTHqZcx5oQXARx0SVCSIwiu6Oz0scS5kGDoayJ2a
+	IlU1V+d6xCIiBY+dKuJfyb9MwF4CG7AJoqucJ2+hJxxSRoast6Vn4vmGIRXTuS1IBhviWl1Of4n
+	xQpCZgwDszXPdnzhwHo5xYQA==
+X-Received: by 2002:a17:907:3d0d:b0:b8f:d13:def3 with SMTP id a640c23a62f3a-b93763a65bamr955636166b.19.1772542211770;
+        Tue, 03 Mar 2026 04:50:11 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ab13558sm602304866b.5.2026.03.03.04.50.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 03 Mar 2026 04:50:11 -0800 (PST)
+Date: Tue, 3 Mar 2026 12:50:10 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
+	Liam.Howlett@oracle.com, vbabka@kernel.org, harry.yoo@oracle.com,
+	jannh@google.com, baohua@kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, stable <stable@kernel.org>
+Subject: Re: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree
+ folios
+Message-ID: <20260303125010.54j3bmu3joixezkk@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260303061528.2429162-1-dev.jain@arm.com>
+ <20260303121727.ss3d3gbzituygb6p@master>
+ <257aa379-64cf-47af-b48d-8817f7bca257@arm.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com>
-X-ClientProxiedBy: BL1P223CA0044.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:5b6::17) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA1PR12MB7271:EE_
-X-MS-Office365-Filtering-Correlation-Id: c543519c-bc9d-411a-aad8-08de7922c2f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	tRx0n676EuXLC/NbCyBMEKl51emlF1LR/AAwcGVLl0egtzwca/EbWq0LU89OmZGhWb9XjBTA0Zv/nuPDyzwAZCK9zPLRUxgt1kYXTXPO0wgFVS9zgcWpYwJbSuzzCcZjdbzYuTq66GVpqnIB6aVRYLgCrex9oHkpX5kUDvImwVqiNgKvCeVQ0GME4t1TnFBz5po+Skm+S4ZK0ujDHdoSap3o3eXJHhdTdih6unEaHUXQ+AY+IWoPLlALivOsWyIew2cvRKHv31kEkf75qfG+eJ+Ty93vxGs7zed5nQHtyoXVNsQlP4jrr602NFO/TV3pO8rB9RA1lBsjPuaTfRrkXb5Lj7HSTvlKLuOY13UI02E9FboSFIxwEKylYFkwhQjVQfNNH4siLc/eMv9D24nrgNZjxEcQYfWPnfhbYQs+nswtQjGnYpQqvSALNZLM5u/aUWYd8Q/3EFi7jEtz36eodf/AGi9cRtP2ZPQlAgp4iFiB2iNCOf0VWp447m4AehCghlhjDqD2DZEf0xdIsv6zsPKe19Oo/wo7EEHq+SP5F5z3N8RMzyyCIw5wxOIpg1xL2FSilbiI9igXqJ8aZYnwewMOkNHjuaadI18CGiYuL24EBhOId1a+yzj87p/zqNSw73ivKA3WxBVCo3NkPsOFGTnIbvy6FtlHKJKpsYSdeuKq8KGv8DWAuCQ9/vLkRWPMiBsXIhOXgHGAQFrpdGt/7ILWE7X6tmYOK5zoi1uJTWs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Zw906pUMEcMxm0DMnLPRCWicrl2r/TItvInbdoE8rlO+FAVIVa3axc0WYI/4?=
- =?us-ascii?Q?tvNlIG9PuafM8Y+hIv7AW/x7vtVIeuS/WpyzCYqCvhRGjwl8u0NIcDwoGB26?=
- =?us-ascii?Q?gH3tpmryLOiYZk+VBG0w2DzhHYP2TUNuMQK/NL6bE2Q4qLR1DTHuEl25QMm6?=
- =?us-ascii?Q?W55KDv7LMTxPCINqHfH2j/f7nP8H4ZLSW6uatSM1d1hOi3HDE9XRBKYTg3ap?=
- =?us-ascii?Q?mCGQqVPU+N19RJ5izbSHyaoE+9ioas9jKV4bDVyiilQ6R2+70Qnxz1CmBIan?=
- =?us-ascii?Q?j4djIJFcmK1hirslSNy3e1MMIEuHjzmI26tL+cbuhIViBWtm1ZhL+QNybpwm?=
- =?us-ascii?Q?XJVl6AV763LUHf9NyWHnFbz5bB9MN4g7T2jJf4S7zF5DgGeqW2c/3AL04JJT?=
- =?us-ascii?Q?uC/oRPdEfEZ7EDPYWu2QZnLoLrqHTeovpWiB+GCbiQrYWRLYjWRkesKO4+fR?=
- =?us-ascii?Q?3VAqGIiimltU/shwbz2HqdK/qGe5B9A0m7rqYLU8xefeMkvGUv4rh/h985b4?=
- =?us-ascii?Q?frlSmKtTHDhMZUFkpxRjeFvkDov/+KeLYnhvutT0BeN1YFlBoXFMDHe6EclM?=
- =?us-ascii?Q?OUv+L/aJJDBb6+hWOVzEp4oErRHSt4riRoV7HlFF8FS1Fb3buYaaYZdtqVoz?=
- =?us-ascii?Q?OVEZDbmsi4vEzSLZCKhDqEHiOBHwcKaG3NscQHAHLYgQqkOFzSOjn6YiyzJw?=
- =?us-ascii?Q?CozcwmAhLJNRixgTCAQAt0D9mVE2zJ8kYhJYMMv/9MJiDotCLikRlmkUD0sH?=
- =?us-ascii?Q?TZip4/lafo09bdvN/ZGAmtQCSEc015oYMp9sLlCbfgtNJYW8lH58U/vrNcWu?=
- =?us-ascii?Q?GoSl76CHcVePSQTSLJSPOwlkoo9XNNThL7kgFJjuJGNR2pnEsbaYav+WP5ld?=
- =?us-ascii?Q?aJiV5S9tAUZ4Zmq7m0TCGqiscjvBD5+Rf7Q3WqRfvNtn5MiDQD3tkqJ3+T/q?=
- =?us-ascii?Q?G41mxYgEDQQ0GRTjAq7FeDVmP0P746m+MNTzn6r/v0WA7zLg3r5N09QneMaZ?=
- =?us-ascii?Q?XNvGlAVr3mOmMPSsmTuOhwptCaFd69rR96L7GQG1X5qkxqAzGv5Wwqb7z8TP?=
- =?us-ascii?Q?ZbP0aCPoNuRK5o0jo6BywVfCoLCEPxkwee4fM62XUgOt3sXeeozj0Yv6qYKs?=
- =?us-ascii?Q?LTHbQ3BVR55GiYdiEDAOaZCNVQRMq+okCuzctJJFuaP2IDPAQP3cZ96rQ4cj?=
- =?us-ascii?Q?gvLKozcdCRIhsMNDth0CpnZJPnOPuYc3AxX1dla3/V39xXHFSYVLKxxx94ch?=
- =?us-ascii?Q?yaf0IZtyX2ed+iIJLKZCjGppxWjY8S4gASnZOrmwNX8HSK27Uaux6hdUs/GZ?=
- =?us-ascii?Q?8ZsgBxGUEKISBNr7uk83h5+NG+d7H9L20FItc+k1wJfcpr0plZe9Ge+DJOcH?=
- =?us-ascii?Q?tBf7Zqw268KmixAcT6VZxB/x78hMwZR5JgW3y0g27aQtNUuFZVVn1gHUx0Gt?=
- =?us-ascii?Q?XMy5ksYePbqofqEXFbVbGYBysf/B5HSO8zE6LKbVsJ59r9HmPHlJk/xHiTYZ?=
- =?us-ascii?Q?YTxDnGucCoYO8Fmg8myvqludGsipsROLdRt/0a4rc9KooRF0PoC2NseS73LL?=
- =?us-ascii?Q?NUdRC+nd9YjrMI+bTAVJqDz4TiER7I7yyuHRnbJr+Z48/AKe4p4IHJqEjCCf?=
- =?us-ascii?Q?YrWrq4EuPZ3iganDgr27RY53al1641dTEYWbSZhb3DCmvyitGAfTruUx0/4g?=
- =?us-ascii?Q?tWfXWvk3tkrLSRzQqRLEMWG8JlkWFWDfGzYtcxKN24u2McL6sBxZG5bh7kwP?=
- =?us-ascii?Q?0Q/4XVVzwQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c543519c-bc9d-411a-aad8-08de7922c2f0
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 12:45:34.1200
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jkDQhm+eNDHeEoaBDNe26YFIr3SDrQZqRJP3E/T3vcWtelmz/VrGnAerPMRBMC3B
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7271
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 802B8C0004
-X-Stat-Signature: 9bmkyt3tznn834x53ufkut5gfg9d9n9s
+In-Reply-To: <257aa379-64cf-47af-b48d-8817f7bca257@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B9B814000A
+X-Stat-Signature: 8k7kwsuiqubw4wtzrng7qoy8t3ypkz7y
 X-Rspam-User: 
-X-HE-Tag: 1772541940-64373
-X-HE-Meta: U2FsdGVkX18iUCb/NEX49BD+/+vDUIg78Aj85F2FlJ1PcXROonZHQzDJGdzVxSoIdA1HbZVH+skRUxwrg7qpdFOIQXAgjsNLsFgjJyFGDWNCx7FpM6oias4zr/NacCJrQu3o518h+mXPqtyKqPw8ytAPqAq/SQHCIu6/QWQRPcolVEHjgqfI7ShiPSYQctcbaTPAmDwGTqC5YwN4iBKgfQT6xDu2/kjpwKZ2RlfpALW+UQGFZNzcJSYQ0VHEz8BJ9S2eklUP8BZH7OAdAsy+ha/c8sz4T6MK1haRhyG2Z4ocEuXpImKXfC8xMTf6Uoy+JQDZ7gB6ATbZfs160vLdKmsbJ7bGCDGCXaKQa5JHU0hzZ5UQYtU1b6i1yFtpfm8VDU5vK6W4OvrbgasefRTXbcM39pAr+OUwvonYsD2NdymqcovZfD1Km34wU3jnw9U/rwJg8folQzaXn5giyoLqPo5qf49j6Zom8xqw8m43UXmPJX495twsiFs/FTs6ZTaHHHf3n0ea2Ro9ZpncHEc/xUf77ybyRNbnc/tzkkMjoDlIKU9zC+wg0F0qCeMKMWz+Pgb1MISpd3iiO7aWgEkPc2A3qZJUQXcjlw3+U7AO7By45g69bOrbqrUB4V9htz1u1+rMv4Xo3VqjNaJrAM+rXrORtvTjTYgSDrjE3n2XhnGONE85HutJQNONi1Y7P66VQExW9k75ZtFGII7NViDgFOebhEBgwZ6I9yN+oKioHtksTXjJy6c+0vCEj//I6Dmi2vRB/vFYpaJ5zRPRAffG8d+aZ6AoobTNUxXEYxgh3fNEKkkZesIzQHUn729dpCtfJDxM0k35MH07HTVSaD4+rwqZ1wIw4T3t98rELF/XCSmYeC7H/9f0iUY9CbTSavNb43F1bJUGsnYlr8T2fd/OpliaUy9/Braco+RmdHESMXBw+UW5H7UjWPoeyMAdNL58LOFVmHr5a3b1R7ZvPK6
- /XbuIR3J
- PLm+3HFE3PdnvRqjg1wqyqV5h9tRU5OcvZpW9VDsXME0G/9gYC4CldTNaHkEw0YstV4tn/HpTvenms5QANeI4kEghti9tJxUOKJcMueJ5LQaGVW1BYZ4iYJUZyZ11MmVfPXGzJXbq3KNKx0SsX2aJzjBlWsSGBgBi6ez8RG6Cvo8JmBPdvhTYh/jvYG4XUI3yBjqDuTDtIOxswL/8RhUQDcxlRBtO00ww2dEreFxsnqM1sR3x9SL3ccn2Bw4SmQ5/FHt9ddvtmEfjQQkheARxleouXrMrTaqHG6Cz0eJXY951uKcrRuKOZepOZWnmdSGlPCxVbN7+7gWO8vMikVy3GWHQgXq6gD6t06KSiSGk8a7YjAWXoFB38BRgSWonDcZWAN60Mj2AE9gjY8v84MsjkG0Is4IkWFw2Sf99vyITXquGyMKqSWLIjzu6NxmghGa///j1/KvLbyMmxM0=
+X-HE-Tag: 1772542213-898850
+X-HE-Meta: U2FsdGVkX18bBOCs8LPJ+9g4DjD+2TSfBeWndgXp8/8dcoWmU/YDRqT/etq5iLiN3uTafQeF2VOoWRawfS/AatrkvRGipptxl0lCFAyThgWNnMWeQqC5q2ilnxWhn+L0L4eVjCKY5Ur7FfgyId7/ZkQLmsZGgKEZpPyGJ2mhf/PTjQr/itLYywDDWoChnFXvSaRXvXqrIlbkJZokH8HkWCGiszGS7XRVEhqxifM1r66lx5Umo256A/0f8xaDYdRmiUru2MRJ+IaqXQd+oOGWYC8WSpk70OLmbrP5/pYpMBHqCXpGXYeoDBNJtBMbO1E2hRPtt8ydbyvOSZHwb1W4rDLBIN5zL/b0lfvUJjKkhbAgrSp+JrWplzaAtZ4PFN2vt/gGbByAPGw2U/qIr9zeZCCT7fR5fe4FBopZSvm9jF/1bgSIqwZiRNo7yL1leL4ptlgP54NAm20aHzkBMDnnqLFLbaxasZDmXSMk3F7MH9UiCaWk7hg13rBonuuWFn5w1ROCqU4gIqfv46//dBVSGfMW1JM5BIBGOlmYrZwFXgVIjFwpCl6srfT7pZoMHLTfqArPMwCe4tuxTyDBLXV1Q7r1wTT0RpS/ul7Od5/PvqD7Jow6aniibvti/fN8RHtnEfVp1D9NnjynhXvu7B1BGzAHK0UXEuq1TYkjjNoZKsdqGXsHRwxqKAGMsf2s2xc2nf45TTRpfISXLGAPl7/el3tbMFt0vtPcdgxWUiMz/v8UafOtw/LIpAOd6oTRmpw/zpKo/RnFMjnlG7OSXy3ZSIsnhGP/vnasvnJfbq3IDYFoYp0fJTIDDIdzLEdC/Z1+GFSqlXKLpqWxRRQ0T0BmP+PEha2i5jlu4koA24UOGJJDd53nc8EaLzbqNP8ZvJP2B6bMDFmYCPtNJHxfPM/zgNqfi58QikXJNaEduHSUmaM7iitn1X+9rBisuv/+DwB2D5TQCmud/OURN/2tRbl
+ P15U3sNu
+ RbyEQMqI5ZIbdK1fjvUFbG/E+0Q6zIu+tuH3Csf0rBqXkGITg9MnSQc27nPaKblf2pm455M/oMx/jEkh6KFFRa1pHpC+HrXGDCdmlQSGnjrjP0rSvvgk0RE/cJs4w9er+N7L8U4K7F19X7hFIEluehHLox7wGQ0bzjy4YuJ4p5RDUotXEOIIK/DNzgE0Mr6TYoHRTeY+Y2ksCPV3Mz8p4Bov3nP0+zBa+XGrefjVZPVVluxnBrMzQ5RF5Ne0RTs2C2NkXxEl1JTZqURuAX53ErgNGKAM0+zczDdmlkSOZPfp0YNKeATCUiEmSz/jqDIhfbGg6cQo7C2/8A/EN0vSs09YJ3E1tTzLWqDoVrswMk5gOfH4byQCSwms2+azvnqM4XaC1+XOU60eGLOqBa3Opg47SPV9Tt2eaP7kTm/tzv+CWuDljYneX+4IbvHttkQKtDDZGNw+XPOkX077p6LWWsyGrMtvmBH/frGC+tbE8PSnzbrJwBB1W4zNj+iTzeHmlPjdPpod4Dfa19f3hTIBIIkbIYKn44ILAHeA28oLZWNWR/PgypEPWWUePaMizbhTl8u1AB2UE2P1p5NVH+D7c0g5Al0v9ffcDAiZhDpTLkswiA7XhkOim6OnYstH2QH6DFDQrHK0XA4xIZUHViPB6H1uNiq9EksJhokb9e7YGpCEEeCaO0YskPGsv3a55S9vb5Tw9Yl+XRJYUgYL5rxOIdT8gVqoxb27xhA7hxHX+gGb2N+sU+g2Wjgyi77+1StIgojRuVaelGaY7wClt9xBQ35hmDFs/Pg9Nbs/r4z+NqICBwtg6y4BIc4Y/5NdPPkM58aD2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,37 +126,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 11:19:46PM -0800, James Houghton wrote:
+On Tue, Mar 03, 2026 at 05:55:58PM +0530, Dev Jain wrote:
+[...]
+>>>
+>>> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+>>> Cc: stable <stable@kernel.org>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>> Patch applies on mm-unstable (9af4957ef127).
+>>>
+>>> v2->v3:
+>>> - Don't special case for anon folios
+>>>
+>>> v1->v2:
+>>> - Just respect the writable bit instead of hacking in a pte_wrprotect() in
+>>>   failure path
+>>> - Also handle soft-dirty bit
+>>>
+>>> mm/rmap.c | 9 ++++++++-
+>>> 1 file changed, 8 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index bff8f222004e4..5a3e408e3f179 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>> 	if (userfaultfd_wp(vma))
+>>> 		return 1;
+>>>
+>>> -	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>>> +	/*
+>>> +	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+>>> +	 * upgrading write permissions for ptes that were not originally
+>>> +	 * writable, and to avoid losing the soft-dirty bit, use the
+>>> +	 * appropriate FPB flags.
+>>> +	 */
+>>> +	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>>> +				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+>>> }
+>>>
+>> 
+>> Hi, Dev
+>> 
+>> When reading the code, I got one confusion. Current call flow is like below:
+>> 
+>>     try_to_unmap_one();
+>>         nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+>> 	..
+>> 	pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+>> 	..
+>> 	set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>> 
+>> We get pteval by folio_unmap_pte_batch() but it is set again by
+>
+>folio_unmap_pte_batch() gives the batch size, not pteval. pteval is
+>given by get_and_clear_ptes() after accumulating a/d bits.
+>
+>> get_and_clear_ptes(), which maybe a different value. Then we use this pteval
+>> to restore ptes.
+>> 
+>> So even we fix folio_unmap_pte_batch(), how this impact on the final restored
+>> value?
+>
+>By respecting writable bit, we ensure that the ptes in the batch do not
+>have a mix of writable and non writable ptes.
+>
 
-> This is similar (sort of) to a HugeTLB page fault loop I stumbled upon
-> a while ago[1]. (I wonder if there have been more cases like this.)
+Thanks for your explanation. I got it.
 
-We spent some time here looking at what the ARM spec requires, and
-what kinds of HW implementations are possible..
+Then the fix LGTM.
 
-I think the consensus is that SW must never write individual CONT PTEs
-that are different from each other.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-For example, a possible HW implementation could fetch a cache line of
-PTEs, see the CONT bit at the VA's PTE, and then always select the
-first PTE in the cache line to load the TLB.
+>So, if pteval returned by get_and_clear_ptes() is writable, then it is
+>guaranteed via folio_unmap_pte_batch() that the all pte values of
+>these nr_pages consecutive ptes, are writable. And vice versa.
+>
+>> 
+>> Hope I don't miss something.
+>> 
+>>> /*
+>>> -- 
+>>> 2.34.1
+>>>
+>> 
 
-Alternatively HW could just always load the PTE from the VA that is
-faulting.
-
-Since ARM ARM doesn't restrict this, SW must assume both possibilities
-and that means it must synchronize all PTEs since it cannot predict
-which PTE will be loaded by HW.
-
-DBM will only write to a single PTE, which means HW can create
-inconsistent PTEs. However if SW is fixing a fault, especially for
-different walker IP (SMMU vs CPU), then it must restore the
-synchronization since the PTE selection of one walker may not be
-compatible with the HW update of the other.
-
-Thus, I think any place where SW is creating inconsistent PTEs, or
-leaving PTEs inconsistent after a fault is a bug.. We found a Rule
-statement that seemed to require this as well.
-
-Jason
+-- 
+Wei Yang
+Help you, Help me
 
