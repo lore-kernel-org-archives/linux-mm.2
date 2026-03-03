@@ -4,66 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66013EC1423
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84769EC1428
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAE3B6B00F0; Tue,  3 Mar 2026 05:34:56 -0500 (EST)
+	id 2EAB06B00F6; Tue,  3 Mar 2026 05:34:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE1266B00F6; Tue,  3 Mar 2026 05:34:56 -0500 (EST)
+	id 1CA766B00F8; Tue,  3 Mar 2026 05:34:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943F76B00F5; Tue,  3 Mar 2026 05:34:56 -0500 (EST)
+	id F235B6B00FB; Tue,  3 Mar 2026 05:34:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5456B00F0
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D70546B00FA
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:34:56 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AB491603FA
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9C5038B93E
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:56 +0000 (UTC)
-X-FDA: 84504393792.20.797990E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4489B140009
+X-FDA: 84504393792.08.FDBBD0C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3F5A0180005
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1PXNg7w0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0yNP3QSG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1PXNg7w0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0yNP3QSG;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772534094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ccwnpdOWfUVYMgf2o3zfELj1JMki4h2I4Y3YIVvljn4=;
-	b=ThGzT92HHHWN5Xz+2lFgA2mtePZ++RGpjUuziNxPMifMRnOstr3CciynEwjRMoo7RtJAX4
-	8fSGrF1yIoeabg7XWeZUsJmBrZU8qpojpaxfbpcLA3VOM/8DqpKgeNm/rgpj3Y4SNikDi4
-	q65xXcu7/bZjvIBK2absfWWSJee7ryE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wZ//apcpVW94xq1ae7enGtSi0L9g8IU352jjMI8FbxM=;
+	b=Yw3EVZWA/eRCqtBBYGy9l+yPMUoukIFQwWfc/TEFsXhDZFu/TSMt0295p5bmBXmS5gdu6I
+	HUYyLIAVroKsFRhvTUtwtMZePhRxF07RptBzYJRlpXanEEll6eUEP3yKh/w6C7GOtP9Pks
+	tfwqtcJxEOPOpW1FwI6nH/aGMobvfLo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1PXNg7w0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0yNP3QSG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1PXNg7w0;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=0yNP3QSG;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772534094; a=rsa-sha256;
 	cv=none;
-	b=107LJWkmfnIdmwVod05XzIMnCpqHCNFZZEHU5vA5FQGAEtJhnCg95C6xD+iNUlk+zBgUAb
-	UHDmysXEwJERoiqNNGsP5sCy5mka+kDhY65tBPpAOJm10s5EiayBZeMKxpzlKlkcX8jfHo
-	7uEUtuizol33Q2WVZ4DHdfm+CUmIQZY=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=DlJ/96VLnM9FGkMj625qOoBsMVk2+P6ck5RLpqsSdU+EE8FtMKfKqRf6aVZFBqDCpqxCjP
+	Q8tqiHUjP8F5ekjkqdCmDuT0tKnyDfbuD9YTk+dEeiqkma2SYQLd7spE88UbN1OtAuAbYg
+	A+Jho7bYX3f/iPtGkORN0qaBmEl7zzo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E498C5BDF3;
-	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C49A63F8FB;
+	Tue,  3 Mar 2026 10:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZ//apcpVW94xq1ae7enGtSi0L9g8IU352jjMI8FbxM=;
+	b=1PXNg7w0sgjA+IeL2N72IePtRMm5Uas8WgRnS0k2/z3q4ipdWBqe9Qoz9n0CCPynjQ0vww
+	BnWQlMfCP103VD3e8vSPghoFjE9Qbw2j+XSM8OtzRjjSg0lPtslRs1m0WFFZwBbK0UPEJ5
+	MvhoHUC3LT8sHhFeAWSkq5D6fNp2cCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZ//apcpVW94xq1ae7enGtSi0L9g8IU352jjMI8FbxM=;
+	b=0yNP3QSGNShW6EPYB08ryvgSD04QbI2sW1aUH/js1sqARP8w4RrZpvtrZG2KLmI2Tnaiz9
+	zPqnVKQnHF1usPAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZ//apcpVW94xq1ae7enGtSi0L9g8IU352jjMI8FbxM=;
+	b=1PXNg7w0sgjA+IeL2N72IePtRMm5Uas8WgRnS0k2/z3q4ipdWBqe9Qoz9n0CCPynjQ0vww
+	BnWQlMfCP103VD3e8vSPghoFjE9Qbw2j+XSM8OtzRjjSg0lPtslRs1m0WFFZwBbK0UPEJ5
+	MvhoHUC3LT8sHhFeAWSkq5D6fNp2cCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZ//apcpVW94xq1ae7enGtSi0L9g8IU352jjMI8FbxM=;
+	b=0yNP3QSGNShW6EPYB08ryvgSD04QbI2sW1aUH/js1sqARP8w4RrZpvtrZG2KLmI2Tnaiz9
+	zPqnVKQnHF1usPAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D91923EA6C;
-	Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB4BC3EA6F;
+	Tue,  3 Mar 2026 10:34:40 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SG0ANUS5pmljFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:44 +0000
+	id hU1ZKUC5pmnNFAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:40 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 770BAA0AFF; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
+	id 664BBA0AE1; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
 From: Jan Kara <jack@suse.cz>
 To: <linux-fsdevel@vger.kernel.org>
 Cc: Christian Brauner <brauner@kernel.org>,
@@ -80,29 +124,24 @@ Cc: Christian Brauner <brauner@kernel.org>,
 	linux-aio@kvack.org,
 	Benjamin LaHaise <bcrl@kvack.org>,
 	Jan Kara <jack@suse.cz>
-Subject: [PATCH 06/32] ext4: Use inode_has_buffers()
-Date: Tue,  3 Mar 2026 11:33:55 +0100
-Message-ID: <20260303103406.4355-38-jack@suse.cz>
+Subject: [PATCH 04/32] ext2: Sync and invalidate metadata buffers from ext2_evict_inode()
+Date: Tue,  3 Mar 2026 11:33:53 +0100
+Message-ID: <20260303103406.4355-36-jack@suse.cz>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260303101717.27224-1-jack@suse.cz>
 References: <20260303101717.27224-1-jack@suse.cz>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1532; i=jack@suse.cz; h=from:subject; bh=NSocyVgO/kQGAErs8cha/4S5lFQVkvyp5VDOz50TMvM=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprkjDcPjRe968iOjtyTk4+S02xDNjEq4RENFS zbxRWwejuiJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5IwAKCRCcnaoHP2RA 2QhkCACpRJHTWCgp3UVShmcjh3k1jfzIfqAWQr1o6ZxLfxYJPnN2AThktcbpTOawdqDzL8zNAF7 TPKXNMDZwSJ62WeoErOrqaZkd8I++A/Aed6Zptq4hY0qEUDYnW6DTw5jKyOwDIAih1w/EP1l4DA qWg7/PuX3cHPXX4FNRnBpnRQwfnGvN2qAEDR7Jn7X4tL2wltRxpcJyBuQYk5vwLLQnB45B44d3j SQAS12MqhIvj8PhOFpJV+6B/9DPL8lDLWvj1AniE9WlrsLtl+SiJBsplxP17ZztDbbVTfZppE5w KWfFd/pvRhppjHcrxes4jlejCtzwSOEMzyw48JePwQ1aXBuU
+X-Developer-Signature: v=1; a=openpgp-sha256; l=828; i=jack@suse.cz; h=from:subject; bh=KCb+G0Cj2eFjBT81lEvc82rl7DfHgEwXKgkjHk8fdQs=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprkhydADQX+7VdRDW1mPf110GpSWmRUvbEo7O PCx4Adt/5KJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5IQAKCRCcnaoHP2RA 2d1YB/99e12GNzLteSvmrAGKqt/jAqRskrgiz6YVLBDDWB8IVAaiVYO+1BBErNEjii3QXmdSryS waEUm0VfTLspBWQfaCGnD5RtXXUwig45Ytn435HFSK1utVdXzW9rpzjyc7QicSQhuoHKs4vEUx8 Pu/fn+n98C+SVI+OVFJG6fMN+rn5Lq2CfmnqjLylhn1/isTHhZ1GKIz9hR4v7mFHzag6/c8aXp/ Op7M8IpIpeZMhIm2PdqjCgdmfxTwOU1dK4uHjK8hgLZ+d/IChSuSvdv3oLrhnyJGYz4fCq66WcM Dg4L1v5FMFlT0+22tylV5dMJJeyIR4j04oq9mgdD02ndUfhK
 X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3F5A0180005
+X-Stat-Signature: 8f6c83hzd6qwy3torxmithpt9rz36a8h
 X-Rspam-User: 
-X-Stat-Signature: 1oxhjww5ibcqzpju7yyirfzxjroxwn1m
-X-Rspamd-Queue-Id: 4489B140009
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772534094-374551
-X-HE-Meta: U2FsdGVkX1+s4N4fZ1Z954mjN2OODBB3Pm+CZY8MyDxcrAtYO4rbpbv7wY7PLqPiQ+E5cKYv6hNTv9JOrnlAXFE9Ra142G7q1aCM/rmR68c5cZ2tuvqeQtcPwGudtbQWWdi6QNTEc52Z0B7A8Y2ApiOYmb+LfWK1PQxJoRI3EoFUk3+4A4U5sOmq9+yi1gDck7MxUj1Zxcqx3cNrJMeGiae6t+M9PAypa/ep6W9KyE0zsOSMmLjZvTPvW4YTDf3Vhe1RkB/4AYOc9A6lESZ1Qbz8zsUALbP4K6GMViC83hBAmLSLv9MzYs0X2fv1tiS5GWd1Gu0L50SLWchWrgoMS5ozwF2QcS6TFnqM5gl/YJzYlnT5UMyWP+reM3XLlxYKtNrY36KKCIbQf6K5ED01qpaxX40g4WmlM1eINauEGPppbYTLuf7jSOuijWiUyFIg1LuA/4ebvCzEHRiFKC8xZwpcMVF2rpNMaobBi+h2Epc55z8LHC6UsApb+ZZHoI2PD7kpx9dZGsF2W/4d6dNNl9oBp2uoclxznjct/DrlRoz2Sw95EO3yFxNvBpMTzim16HP6M/NdjStFaCg1nVAijyLPgP7KEIS+UUSxVvm64uEueRNqouFziAU9TkdKjuDSSwHtoElGDV4+Z5x2CzkKikRU/LvH346opZx4glgcsrU62lbR5w6MgHzIN8+QYy2NWqPXTx/c2b1lsA1dI8HbN7TtVgQHxhE3HyL9HDKVCkk1AiUHe8jzLbAcpbosl5eyOoyp0azFG4ujiewKzBWmo1Hzn8xH6VDTtklMxbawGTDURy0Wa777bI/OEFntnhCLbAxAPyBH1IYK+10COd8qC/sRrW5PrExr9SRpN/hZtzQxRnop+UwENJBBObgYDAnSdZFUG8TechLeAQO/D8uk3MNwEdfPCuu1hSw8R8unJ3s=
+X-HE-Tag: 1772534094-924823
+X-HE-Meta: U2FsdGVkX18rbI/ynrwQiXVjQCDBsvGw2tbk0BJ8FluJnuhMRSlW709nTRnXm4eyRPPnaA5e6Fk8X4jg/KnizfG8NIjc4A2XsSbfe4jHtB+FaMsZobK9IGpYQZ5YFYZmVC/DobrlTsYXWxfV6jUGU+JqYTRySkgbiw0M/Q4d+MP39eG/jKSViXGpMV6Caf5o1/yoqnKco3VPFCE+bD6zg1QwTP4tR5IKwmnbxSe9gByfzpnhZ5HL4jlM7HQd8Zgioadn9diIjVl/lrxU5e5YMutlLs5XdjKYziea8oceM9qeEJ1zV9gx9ArmDsNwoW5/RFpJpJZvimv26B2/9s7Lc2ooioUjRqSLuIUl21Lo2X7YGXGhBwtAgn8sX0R3BaPFRBZ9d5p0vXBsML8bNbLhcbpqfsI0bYrgFkSCSMZ+2QAYJd8coiZJVjD1Hpx+psCz8apRQsaqwLV1oyivRiYYb0tAu3WauzpcF0DGWmxl3sHjmmjtsizqAmjW6Ni/BR0AvG07y+WTRJ4QSB6FQBGl3mrBYnvmdO2+d73QN9et1RxH7lfDDuqhy+o3VeSRpYy75mMxavT3HZCsBqzlTEMd10zd4dsVmmKkubaVSraq4lOhJRrWlK/reGvSyaPUBQPtuAiCVV3H3iLpTsYHpOTyyhP04QEw43TqJ64zFhoBldBpJwxYOmZatBHobxCTLWxpS97JBNgXoTvUAk7Vf82djXgwveLIIccIhh04B8JCKpUkNH+Ov1qUP3KGItKFNx1P7x10/FA0rg0wHyAsu1hLHhBgG1NvzT5FxcNWBY6j5fuRG1fHnL6VyWVgOyICUjzuFGDRCUap6ejhyvDs58d5JQ303h2+grWTv39qX+lKBfieK/Uren8v0NL/TCQkesbobbD/LQZjPmQlFtHQ1LDlBqLMyD9GBNjmJVP3jnRs/ShsbytTVBcNvIEmD0Oz/WfJSke5yJcD1dhvMD8KSaf
+ 4IiAI3pf
+ MCGNpjtlc1JRuZ6Uuvpn1zx536QLLB7mOrhRE5RarDrSb42dezcPuf6bivNKjJDMhseHbK+EPJaDXd0fcQadcKkf+APkxp4I1IHVJUHpWMP+5XY1Y8Nmqs95Uptd2Lgkb8SKx/+TQWzVYHx4pQbpKupBo07/rW8jPe0yrWS+57ICmTnas1ZOdLl1+4C5q2+hELu7+jJEjBA2gp+42IxvqeGB9kTfQ9Pu0DgDanO70/dVWXFGZhA6yWHZ1DtkcTXLFNypRD/APFz3MPKIWa/aLaMLUQeayexw2UesgdeTbfWLsrDtHHBqu0kZN7Jql/wRdSs9Hg2F/bvTv9HpOiNAbl8V9USGalH+mRB42Ym6KuIMPxGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,50 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of checking i_private_list directly use appropriate wrapper
-inode_has_buffers(). Also delete stale comment.
+There are only very few filesystems using generic metadata buffer head
+tracking and everybody is paying the overhead. When we remove this
+tracking for inode reclaim code .evict will start to see inodes with
+metadata buffers attached so write them out and prune them.
 
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- fs/buffer.c     | 1 +
- fs/ext4/inode.c | 5 +----
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ fs/ext2/inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 22b43642ba57..1bc0f22f3cc2 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -524,6 +524,7 @@ int inode_has_buffers(struct inode *inode)
- {
- 	return !list_empty(&inode->i_data.i_private_list);
- }
-+EXPORT_SYMBOL_GPL(inode_has_buffers);
- 
- /*
-  * osync is designed to support O_SYNC io.  It waits synchronously for
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index c2692b9c7123..6f892abef003 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1422,9 +1422,6 @@ static int write_end_fn(handle_t *handle, struct inode *inode,
- /*
-  * We need to pick up the new inode size which generic_commit_write gave us
-  * `iocb` can be NULL - eg, when called from page_symlink().
-- *
-- * ext4 never places buffers on inode->i_mapping->i_private_list.  metadata
-- * buffers are managed internally.
-  */
- static int ext4_write_end(const struct kiocb *iocb,
- 			  struct address_space *mapping,
-@@ -3439,7 +3436,7 @@ static bool ext4_inode_datasync_dirty(struct inode *inode)
+diff --git a/fs/ext2/inode.c b/fs/ext2/inode.c
+index dbfe9098a124..fb91c61aa6d6 100644
+--- a/fs/ext2/inode.c
++++ b/fs/ext2/inode.c
+@@ -94,8 +94,9 @@ void ext2_evict_inode(struct inode * inode)
+ 		if (inode->i_blocks)
+ 			ext2_truncate_blocks(inode, 0);
+ 		ext2_xattr_delete_inode(inode);
++	} else {
++		sync_mapping_buffers(&inode->i_data);
  	}
+-
+ 	invalidate_inode_buffers(inode);
+ 	clear_inode(inode);
  
- 	/* Any metadata buffers to write? */
--	if (!list_empty(&inode->i_mapping->i_private_list))
-+	if (inode_has_buffers(inode))
- 		return true;
- 	return inode_state_read_once(inode) & I_DIRTY_DATASYNC;
- }
 -- 
 2.51.0
 
