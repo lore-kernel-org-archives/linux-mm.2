@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A78EDA69C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 16:32:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9A5DEDA69C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 16:41:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9225A6B00B7; Tue,  3 Mar 2026 11:32:56 -0500 (EST)
+	id 2FD996B00BA; Tue,  3 Mar 2026 11:41:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F9B66B00B9; Tue,  3 Mar 2026 11:32:56 -0500 (EST)
+	id 2DEC86B00BB; Tue,  3 Mar 2026 11:41:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8236F6B00BA; Tue,  3 Mar 2026 11:32:56 -0500 (EST)
+	id 1DD906B00BC; Tue,  3 Mar 2026 11:41:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 724B56B00B7
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:32:56 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20F688857B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:32:56 +0000 (UTC)
-X-FDA: 84505295952.27.B2162B1
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB546B00BA
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:41:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B11F14024A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:41:07 +0000 (UTC)
+X-FDA: 84505316574.14.FD47331
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 47E8A40011
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:32:54 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nDNY2kBm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id B3C2880019
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:41:05 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hqoRkAxf;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772555574;
+	s=arc-20220608; t=1772556065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FEL/TtVbe5ASgkwZnfcfemXJ7VYjUN4DKcL0dOBph1o=;
-	b=n8x1uw257GVeeUrQ09NJ91bahLexZw9UmIjXv9nYvBkF85CwaqsalQZRQwFd8EnQ50jw1i
-	RcnwHsfyrBBxo978kKc/iLNgkGW08lN6J3oaIgTbLNng9f0UJ/gbzik8styv0m6EnSu9ig
-	Fm+gKPfoGWaubqFE82Ca+vAGbDCvBVs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nDNY2kBm;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772555574; a=rsa-sha256;
+	bh=qCSHDHc/8ypToeqPN8PoWJeRLF0T6o3MKkWY9OPr7/4=;
+	b=BiDWAXaIrj5HMV2CMNicxX4ynuK5msAYpdoNGd43W/odNn0bLC1PY3GlHI6gl2l1kCDKhw
+	dHiEjK68iL2a/svd8906aHgKm1q0QndZp0rn+i7znLyBg0jv1QuUZUrP+mByWTzxc2iYLI
+	L7hSnJxie8DtTcZCw9Mv20mCZsWkwv0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772556065; a=rsa-sha256;
 	cv=none;
-	b=e691bfptmp9PhAUj+0S2i2CuzRwojpT1NvJhOPWwAVTnqfvn/30l3AlVPg5s7MWnLfTRSF
-	8E4oQakadW/BeIuBoy9a4fu7ok82pZmfYqQt3ENujeVpZhdY/tgBKp54ovBKUpTDjqxVZy
-	MVB7biz+NiBJgpHmWM1WF+NV+l/o074=
+	b=hvML+mX3Y6WMnBnsu5PjLJ3+ogV3sg6JX6M9o8bV1mcySvkNtni+halFYzo+0M/Eog07cQ
+	PNo3jsW9S+o1Wh2Lp2g7BH5DQB0iZJ3jaJIAM1U9EM8wvBeamkgnNqz0t8S3WrpVJEjSQ2
+	rDKceQQ3xRNQsyRwvSPv818xL2t9EJc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hqoRkAxf;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3449A43F0E;
-	Tue,  3 Mar 2026 16:32:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008A2C116C6;
-	Tue,  3 Mar 2026 16:32:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B5D9E4349C;
+	Tue,  3 Mar 2026 16:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BD9C116C6;
+	Tue,  3 Mar 2026 16:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772555573;
-	bh=2Sl7aDOLhWSrJiQTk8Mgcff8zbQx95VCCn1PoV2FpZY=;
+	s=k20201202; t=1772556064;
+	bh=0LFa7vXZyD9LMEFVvzGin3tMycV+fpDYSnfRCbWLcEE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nDNY2kBmYN+NuwFo3thQ/sWHyhRgfQeHTyWHfBniHNjPL0oQI7rwVP4BAGGka2BVO
-	 X2eonOQTORKw4QyAvBe8SHzxKvYYXyRcQkhx11QEY4iezHoyT64BtvBlX/zrslkt8o
-	 TmzoL3Y7w1lww4tC8ombT9QBKmAzjT4qFDkONDvfp2oR2t+yNFM1oHn2WfDjnZrf73
-	 BuRfV7dQttvocIgye8lvZLJHANLxlbrfIiIalPMQ6tZuJeSyCAHEsrZwI4tw/4bZbD
-	 QmvrR7XLBlf8skl2ht4g6ytJIQCVDZVIfR9GCQISCD5amk7k+O3aibTOEoIWlXUS4c
-	 s5pzS6NssRWLA==
-Message-ID: <c5584cf8-1389-4df4-9fb7-19d9ee26ab9c@kernel.org>
-Date: Tue, 3 Mar 2026 17:32:43 +0100
+	b=hqoRkAxfE5twbIJWM8Ud9CZqn2sf98qKjlHpYvR8ECBXvt8ol3xRSaeN3+irT6sZB
+	 /1GDoD4Y1P7qEsKPh92/JptcJVXV3grvE8FdpeQCTzoMK1VNA9NwLI/ddd3FOhN32B
+	 LAw9wRjM5pfLAUnQ/rFdLuhbIoBlD58yH08Q9Oa4Y9wZkmM4k4+jm9wUOFPWEJR0bB
+	 x7Rq7FGb3nH9RSRPkzdn9r7PUUIWIqAF4sA97GNw6Ewd3//K4RjHZWizQuO5U21W1S
+	 so3AlHzhXfaFGCsaJRJV83dn1sbvi62l2YHvxlUrwvYq0oMSKtiZyBjdhsMSS9T2Z8
+	 B9cHur4uyhIbg==
+Message-ID: <139c7644-99e8-4d5a-a88e-74bf2b14f2cc@kernel.org>
+Date: Tue, 3 Mar 2026 17:40:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/13] mm/migrate_device: Introduce
- migrate_pfn_from_page() helper
+Subject: Re: [PATCH v6 02/13] drm/amdkfd: Use migrate pfns internally
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -81,11 +80,7 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
  ying.huang@linux.alibaba.com
 References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-2-jniethe@nvidia.com>
- <9ee22635-a219-47bb-a397-bc4e141b408d@kernel.org>
- <cf547dbb-af45-49d0-87a0-5267dedf0470@nvidia.com>
- <5182bb7d-f7cf-4b8e-8320-996c52fe24d8@kernel.org>
- <faaa84fd-095e-440b-9922-b4037a67416d@nvidia.com>
+ <20260202113642.59295-3-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <faaa84fd-095e-440b-9922-b4037a67416d@nvidia.com>
+In-Reply-To: <20260202113642.59295-3-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 47E8A40011
-X-Stat-Signature: fa6u3ppim7kb4o97k7gwo1wejxsd7yg8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B3C2880019
+X-Stat-Signature: ooipng7q97ikkbd7zsstbxgtuh19gn75
 X-Rspam-User: 
-X-HE-Tag: 1772555574-5360
-X-HE-Meta: U2FsdGVkX19v+lf74eOEF7jsRtx/d84TGZ9thMMC7mo6shoqDPo6IE3nCBBGgZzU69JxtBvJA1HtlBIBgJNv5fRjwoo5wyH3bIbaLQhQqn3vY0qUZrGT3t9MpcF8x/Mqm6tqbMKd2Qh3BoWjjf2KqdLLrCbGf308DH8bVbyyEVTONzEIYIroYKsQR5liEH8kgIwaFIQDAI3RQJaSsLXIE7YfWBNRQv//sU/KeG8Cc9CSxgGFd1Ya0PXDW8+Sle+B1S4j9e+i83SjZU+RmDTST1yQXKoYbTT1iNlnG40tIl4EvrJBnbI5OVwiKxdX8A5i2H0iC/aJxZBg8qApsdOSHcfLP9BC2WKkQDg4P36HtOLMfK9bfXMMehHx/EZj/RyfJwyyll8S3fgl9nTNwSdSLrF7VVMSldQ300KJLNGSfC5joJMgNC8Ek4or/nztMjwohVTuN0QkmcRmV2q3M9oYvonnwYpSH9QPxVMl3lhDdYGIiZeVYz/f5OUcNXCidpk6TQ8+KhiejVyt6otcbJGDGMDRK+VK4PnYubQ1nnJzfo9638cLBdrdmR7HVhiQFSqFVRNzu/SG3ZVxrlEb2wOuMmRFQq0BlpzfsJmwDHkWvpcKDsnK3F53UGs/QRLvaQ3YW3Uqre5v4d9sT1fn1C1qeJ+GrguZgzrE/Rox5NuJFYBsw7J+uPHyq0Al2GvR/3Giq6SNHermutLQmg4Px1LoI9RiBH2NHSTdKRdp8JiVD9Y2DEMw4rjiJhoMsqBKsdpFXTtAmG4zzbhoCLEePRAwcwgxgYxr+7i2pVA2RiCINxLY4DzYXBmsSgqZhWTsr7GTk15ZfJ22/26rxIySHl1IePklYNfePYTiSv4RJVlcamKTTg4Zpq4XYz3Pq/7h1S4COdutWqWLbgW8K1W+GPA0fS1TIhJTIAW3LTeG/4cplc91sgMpArBd1AEYoIGz3BRxEE12O3nm7/QzotSQtvQ
- /tJ4+xRb
- fWkSqzbH3aJG447a2IR6RybuTGlD6AZHnvYXrHCYtQA6B2br2NQ0breyf4BUDNpfBg+xwSgTF5R0ZfTDSie0OMUxlxt5bTTayrQ4LGWJKmIPUgcLNwx9PgS8xjvEJyLLj3+Y7MtmMaaJA4+zenM4z9/ITW3nAjImdcJAIpFV1gZcA0pjGaty5v2nnYQ/bSuevAual6ite45PMOqIcMiApbiaMZbGTG6cLT/Ltjov9s8XFV1QkkH4wjunpNjD8rsEInoQNfrzaA2y9KmVJ4MAdXcnRaxRVDq0ilcQAda2KPBsts/F/Rd2580uad3Al7+B2nn8vlcKRkFjA0bY=
+X-HE-Tag: 1772556065-812355
+X-HE-Meta: U2FsdGVkX1/yx0AHCat9mmtzI97SvL/eiJLaZsNiHyUfkK5lBQhfQy0Bj/O9aPAqZNjsPRNKRz/ayyYsYgCKG9JOZC7k+4oLq4UkaCK5rUObH/LO+s0JC69fE92v84Xklejz7Lo1bQL0vKXWAV+NslH11An+NpqaFUHV3Cr883RXy+8ro3jFRnbetVuitdCvjNkE/ov+zgGj0MqAwitvPmdurotnhL2y6eMESG8zYob2G8/F4+aBKQHq2KqF5FtMvTd4TJHJj/hx9F4vY0lYm8xgJMxolHPtPco7jqFi1muEmzPrHbyzj2zE5rYfNeaXiroZyaJZVa7YPevya/ytc+0Kd4qoYePuL+rwWo3qFLnWiXl5uCXOC3uXcCM+vAicMALN5DbX9rUiAVl4AFOBcfJCDZHMHGLz9/pUg3k/Yj20P0oCewcz535B/Hq+GmlGH93E89r+SemCHxueVEWIvhbU32AugDPOg54mKkSXE5z/Pp+y0lcAYVdwJrUZ1fNI/LL7EguBT2nIFp+Fj8gEeZmxu4SpX2iRN9NgqCLX5/PU2Va6fdSIGVVsMVdmw4sJUPnmxNfQqoQFM8dsqyYalzH9IP/TFSdJY+tqsnIOtO4UWNCw8Bbp95cCMQzxXkd1iYwc/zrx7DHsFnLZ2AHGPGztvNwi5ScqOBhS2azXPjMUDTatf7u9dWbcj3aHt9dQwguw+vKMt2VtrUAeyFrNyIXhjVKtVAUAWFCi5V6T0JqgjT9plxI5FT5v1VbVQ6K3gmH4EBYPCgGV7ttDu+aFAHq6C9eAACVsxnXX7Mxdqe5nnmW1IDKFK2CdHkuOwBGbjam6Kw+6gRcf+RO34L0NdnDYmE+Ts5CwejsmZJDq8qzQblaYxxVlaWJRB9Hcr1OD/QeoIdePxRelumD5HxinlhgX2Wtr5bH3kwWBNOF+/WCZ4dNNzLT9MaLb4A3mAQNui7d3kT2EulVXc5V66Oo
+ 3S9GnAGU
+ cyg2jST7Xg/M1FvDKQYQErTC+cHSTyi1Jvb8qwPTQ0bNuk5nzuodxg4ZKI7etIDVJIeM9waFTOWXY+WWE/nLwNiVI7wtWOg686QzJxYuYYBQOF9hkKLRodQE48bvFb7qsg7VL9ivXlqq9mA/bkFuuFn0HZYkDg78KrICyVm7qcIRXr4e6AuD3ja3ytTBUihs4Ap6pzIpYoIxY6v4e90nqiNwjYcF49WsxJWDOXzAvxtN6XBDsad563U0Kj1C3PljG/xbE0x274MZizMPrChGm1P1OK7g1e8MQo6Ndfg8DfcHjI85CKRd4U5TymA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,72 +145,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 06:52, Jordan Niethe wrote:
-> Hi
+On 2/2/26 12:36, Jordan Niethe wrote:
+> A future change will remove device private pages from the physical
+> address space. This will mean that device private pages no longer have a
+> pfn.
 > 
-> On 2/3/26 20:22, David Hildenbrand (Arm) wrote:
->> On 3/2/26 00:38, Jordan Niethe wrote:
->>> Hi,
->>>
->>
->> I'll go through he remainder of the patchset this week.
+> A MIGRATE_PFN flag will be introduced that distinguishes between mpfns
+> that contain a pfn vs an offset into device private memory.
 > 
-> Much appreciated.
+> Replace usages of pfns and page_to_pfn() with mpfns and
+> migrate_pfn_to_page() to prepare for handling this distinction. This
+> will assist in continuing to use the same code paths for both
+> MEMORY_DEVICE_PRIVATE and MEMORY_DEVICE_COHERENT devices.
 > 
->>
->> While skimming over patch #2, I was wondering whether
->> "page_to_migration_pfn()" would better fit "migration_pfn_to_page".
+> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> ---
+> v2:
+>   - New to series
+> v3:
+>   - No change
+> v4:
+>   - No change
+> ---
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 15 +++++++--------
+>  drivers/gpu/drm/amd/amdkfd/kfd_migrate.h |  2 +-
+>  2 files changed, 8 insertions(+), 9 deletions(-)
 > 
-> I guess you were thinking about migration_pfn_/from/_page() rather than
-> "migration_pfn_to_page()"? Renaming it to page_to_migration_pfn() would
-> be fine.
+> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> index 297fa108ccf9..b6075a2808c2 100644
+> --- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+> @@ -210,17 +210,17 @@ svm_migrate_copy_done(struct amdgpu_device *adev, struct dma_fence *mfence)
+>  }
+>  
+>  unsigned long
+> -svm_migrate_addr_to_pfn(struct amdgpu_device *adev, unsigned long addr)
+> +svm_migrate_addr_to_mpfn(struct amdgpu_device *adev, unsigned long addr)
+>  {
+> -	return (addr + adev->kfd.pgmap.range.start) >> PAGE_SHIFT;
+> +	return migrate_pfn((addr + adev->kfd.pgmap.range.start) >> PAGE_SHIFT);
+>  }
 
-Yes. :)
+To make it clearer that the result is a "migrate pfn" I'd call this.
 
-page_to_migration_pfn() and migration_pfn_to_page()
+svm_addr_to_migrate_pfn()
 
-But really, we should only be dealing with folio migration longterm ...
+Not sure if maintainers have any other preference.
 
-> 
->>
->> ... and I was wondering why that code deals with pages instead of folios.
-> 
->>
->> E.g.,
->>
->>     page = folio_page(folio, 0);
->>     mpfn[i] = migrate_pfn_from_page(page);
->>
->> Should just be
->>
->>     mpfn[i] = folio_to_migration_pfn(folio);
->>
->> Right?
-> 
-> This patch is quite limited, essentially just converts usages of
-> migrate_pfn(page_to_pfn()) to migration_pfn_from_page().  However, I
-> agree, there could be scope for moving some of those usages to folios.
-> 
-> Was that example from drm_pagemap_migrate_populate_ram_pfn()?  There
-> 'page' goes on to be used elsewhere in the function so we'd need some
-> further refactoring to fully benefit.
-> 
-> I see migrate_vma_collect_huge_pmd() as a candidate for a
-> folio_to_migration_pfn() function too.
-
-All that code should be converted to folios (unless I am missing
-something important). We only support migration of folios, and all
-ZONE_DEVICE pages correspond to folios.
-
-E.g., in migrate_vma_setup() we're implicitly converting from page to
-folio multiple times, which is rather wasteful.
-
-Now, I don't think the conversion is your responsibility :)
-
-But you'd provide the folio helpers and use them where we can already.
-
-I'm fine with leaving the code the still operates purely on page to be
-converted later.
+Apart from that LGTM (someone should convert this code to use folios ;) ).
 
 -- 
 Cheers,
