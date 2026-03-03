@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971D6E67A8D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:01:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC1DE67A92
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9E716B0005; Tue,  3 Mar 2026 03:01:36 -0500 (EST)
+	id C58766B008C; Tue,  3 Mar 2026 03:04:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4C756B008A; Tue,  3 Mar 2026 03:01:36 -0500 (EST)
+	id C10576B0092; Tue,  3 Mar 2026 03:04:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58796B008C; Tue,  3 Mar 2026 03:01:36 -0500 (EST)
+	id B3CE36B0093; Tue,  3 Mar 2026 03:04:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1CBE6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:01:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57C9B58F5E
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:01:36 +0000 (UTC)
-X-FDA: 84504007392.07.F902976
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7C55F20007
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:01:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BXqhCwYE;
-	spf=pass (imf13.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A2A9D6B008C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:04:50 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 23172B6A78
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:04:50 +0000 (UTC)
+X-FDA: 84504015540.24.9819FC3
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4C8D84000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:04:47 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qGN2w0xo;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772524894;
+	s=arc-20220608; t=1772525088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lGygmojsLtPwlOT4v2cotNZ1hHvskz3elg0StMnNUFs=;
-	b=OefhBBu5plBpGWnaMSZ3+Pec1JQw5NDzZwSaLwm7ab7z1/P0eInCy9LUHJvi9OqFrhQdtf
-	ZCCL9FNvOdZ65wzH+kKyaKoIkNOg+5HHbnPuvjZDyiUAKr8VHfBi7juJewdqzjxEhC5Ytu
-	4J26pEObHVyXWic0QrRu548/NwMZXW4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772524894; a=rsa-sha256;
-	cv=none;
-	b=50RsL8VAhDqDsfdZJSLILmJzOogAJ37czKOScEWAKZ+N1wHDmNbPlo0MKX8lTioniU6eNZ
-	sVf9TVohFk8S904dPM88U0CfbxTOKprLKAB9GsFg/Lt4DTUJz87tQjclyuICac5Au44kuo
-	N5nbFabAxNyscHYArQEzfL3HLRfRbJo=
+	bh=B1olKPwJrw0HPqha0pGqwBcGovlFv0ViSzNeBpR5uKw=;
+	b=A/AXAW9BiAKtKO/NULDtXm8kkrxPbCka/ThaOuVunYNvQzIpCS/OuyFuoSo0N8r3fp1eiB
+	XG7nIabVjW8J0rpP80+9xXLG3FJiIlalV68msUCb0tjnf1bJtVFGL/brCbu6yBXmdOtUH5
+	RbFCQA/jbK3fBaMAcGaX+cW9WFfg0dw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BXqhCwYE;
-	spf=pass (imf13.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qGN2w0xo;
+	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 3 Mar 2026 16:01:09 +0800
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772525088; a=rsa-sha256;
+	cv=none;
+	b=DbUvghN7wLZPNhC60GzoHQiM6vPS/j6W9KoEqQwxcrdB+65OIryiVmYym771TWcgREmnDd
+	XFuvvUR5NizbcSpQHzZrhQgcZjQ+6rUlFmRrd33N7frj1sPupDSprxbMJ+8k7RH7SgCwDg
+	THDqVdBi8LYp8RyDxDPpk0H88QzmloA=
+Date: Tue, 3 Mar 2026 16:04:28 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772524887;
+	t=1772525083;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lGygmojsLtPwlOT4v2cotNZ1hHvskz3elg0StMnNUFs=;
-	b=BXqhCwYE2S38CiFbKca5uY00d0nIpLm2ad9nlVUytP1FEw0bJJIuQII3Bzg+L06fmX44lc
-	NT+5yFIP1YqUkeKcL8yplHcogpgiv0zEbzj1Oc5hz2lJJ+xhHvPIpNIUGNIOv4p05df69m
-	i6azEqah0au/LLCArNfgVXIRqMiV/20=
+	bh=B1olKPwJrw0HPqha0pGqwBcGovlFv0ViSzNeBpR5uKw=;
+	b=qGN2w0xoPIQkHpmB23EbWQhs+9z8HadV+MAkC2eb+04L2gzSqE7RAH3UQHQiRvAIWNXF4A
+	1xn0BdO+A9kz+F4sGF6sSP5hL5R7HUMgT/WExEg6Jt+IMZK30mTOQG5VjGnwlPDd2oFQzG
+	9JVhfOFi2ZfbZ4q/7ahHWwuRpbgPEoA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>
@@ -65,25 +65,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
 	Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, 
 	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Johannes Weiner <jweiner@meta.com>
-Subject: Re: [PATCH 2/5] mm: memcg: simplify objcg charge size and stock
- remainder math
-Message-ID: <xhv6zv5atecuzfsf75cyh4mynbloc56e7ukgwhgdgf2qvrrpwy@x7o7qldvxku7>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/5] mm: memcontrol: split out __obj_cgroup_charge()
+Message-ID: <vcsu7qnouykstvezcmhrqp3spl47nxb4uc6plriena33qrqarf@bitgnusw22cq>
 References: <20260302195305.620713-1-hannes@cmpxchg.org>
- <20260302195305.620713-3-hannes@cmpxchg.org>
+ <20260302195305.620713-4-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260302195305.620713-3-hannes@cmpxchg.org>
+In-Reply-To: <20260302195305.620713-4-hannes@cmpxchg.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7C55F20007
-X-Stat-Signature: j88oc3totq9b91538e454c36ki38pqcc
 X-Rspam-User: 
-X-HE-Tag: 1772524894-861359
-X-HE-Meta: U2FsdGVkX1/iwpYHRixgBwb+B7UEi0yVu77S7mknhjlfICB1OMDzLQ8dwtm4cZonT6JbRIvr1463Q4kW05wncUesoA9bq/kXcEP55A07npR++bsRRF1yTtiR8yB2jMs6g1odt/hQTkaF/jmBsEefxBm3S7e5KKKIs8OfOPo2wBX0VIJ2VagBhcO+Tf3K5rjhUbIhv9Af8d0wUgQynibkUAQBu0xwQDn8Z+IPs9zHqkoW/UBBMOgz7EOzkWz8MbQv3e3lQZMbyPZDEvIUIkxm6W5EqlBLIHofCYO7mReHhINDSQB1bD7boIFBl22XeMtiTmOijtZQoFMJnbmEiIZT0gJtw26Q6/3e8W9X7cnNo7aFrQP3G1ABhiyK8URc7aDniSICFOIne6d4Pvgzj3deYkyPkdtAKbIg0JZAPP6VNhN6dmgOFYERk1g5PpC7+/9aVIlXZjQN9rxEtPDRy50lFj0j1hv7HZmFRj2Fz0mlXcSmV5VEYLVoI/1b+tXmi/5np18ql//ivjS8adXjcEtTY6T8mXYljK7ii0liOZQhGOdZ3Clwh0E0aM/QhVQku5p5M6A2FYaYvLX5Jb9IMjUDm/ChdHKQUtxK8hU6i9JSOJs6yteJc0m40CeyzjLbgyOBOL4yLJ2VU2x7WgKJA+ctawVltJaia5zj1pjL5+BOrqAL0qeS3ihsr8U2S4omqjybkS1tqLLZnkYUXgXyMTPVKz+p7ZeS/oKEpU3B/CUzIOjdYVzN4Io2C0f8IPFkEU4TP4zUnJMn7NqPDs/b1sICx1RFv/zGKUqYTfUQp0iE5h24YpZWFLOaOQBf52ym23OwJJsRfyZO4BqWnoc8tQQKFALM9/KOGABEmzG2FnWlnTbPupe1uH5gsFeQPeyDt2UYIliJItlru9SlJJ0AAwyc3WyguFUF1A8fiFzExwY5UbCzv+uEZ9HBoQroKLoTZf8r7ApdgXZP+U55h//Od6C
- O486VWVd
- MJXoOwb+PvcCjFlz1F/wCEcSCVOhigqREj5H667dRqGHucGmfdrQ4uRst7/2AV6EaXKVF5oTEcnosQXF57GUjlr+HMoIbFDFf4vAwMHwd6CKlZZFItkhG3KA8eUSnl/JF7bEZpeJbE2p/ktP74R2cu6sC+sctM0yTpSWqHpPiSuti1qsHEhlBOmYol9ytLlnk9MIJmPTQQ4t1DtoMNuLowC9eXp3dGN28na7J0/xGaRmZ46tLUE4nwo/MRCKMcxJkQy/pdOPBcWOHn3wNLUKe22ZWrrDp0poM0uUZcfe0ahdsxFFVb0bhAP8Iey2Ny2Sbl6ucR1+jADclBks=
+X-Rspamd-Queue-Id: 4C8D84000B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: m8hpk8n97zuuog9fhcbprs49qprtane8
+X-HE-Tag: 1772525087-240074
+X-HE-Meta: U2FsdGVkX1+XoRolgt6R0YxCky3qQKRiPhi2lH9Fvm7/GQSRoYJKRg2cxCi5+l16eTP/CuUjLG/X6h0n+AF+kyoH95Ve7GtWdMHAxnNvM6hpy3v+6PiMUuwgd4fROW3E2LPvHpbwc6JYrUnHZUWPjrIdTHb0vQ8n3Fzyg1pOxRYGdy9STb4NYzCHjuvJbZUlD4bY2X6eMtFNn9UBlMLmnoWYDg+FVBl489LmE70Je2dqgpE96eImztO2kmiPoGV6vi53El++M9It2yv+HaunyhSaeYNrpPlf7hLYUjooED4x+am82tWCDS3s2CQAUX2cstu600m9nyUx06Tzr1CFpal946ZNhsDEUIn1MIqnn5DzEbFGGhayEC0ybLnLXJ8xvvtPaaANUbMLHoK09lBN2bB9yi/ixyFw1/aljleWdKqs6lHFnGu2dMHYCxRwXKuWlfAoKyt92vWlTltS5NOJYu3DHtAv4EjyEgGSgvr0wVwRXaklTeF64tkKj+OctKPoq0hiD0+1H/8AZOqjzWNSaRjuGt58imT1ZlEXrA3HQxIUmZ/VQlmUl3My2R7TMTk7KVv27oH0GeuHEYQ0wio8VICtj1lN6yXhLUrRFSllZFDFJB5oTjiPIb/+/1CeVaZsn16ebksC4EU4BUNineEAux+zxiHxmlN79VFLk6r1q+ReA/SjvfJoISNoHiAyYuYXA1288BNFMNE4rm87v/D0U3puPFhsOTHT7PmBBpwVCTWwTWsi4fHuHoq8I04fX1QM4pYvmi2dRoQax/PxvHSfS4ztsfyJTYvAGhSel+7Y9tO4aKudUj9SU9Rr7EuvXEl8I/PJGAjEeuGghzIkULtgmVS5SgJdQ29b0mIhmdW+n8aHzs1ZJ3B7rR1Q3tnbc0PwH/sM97xN3UDFoJCBPlRNbMMJu7Qrsa2l7xA8RKpvv8eAPEeu3yXP/yycBUXXDdxxUOGq5TYb65u0mAxctE0
+ czLdUUc8
+ eCW8ehtSSRh0hZLW2HQhAkkqZx0sQJhXcG6uowKgBLNI1O+l2lmsr/tUBuR5U95gC74JI4rnwFpLng3Fa7kRnOcoWQSNdBTDc4hEL+Ws6IP3ly8VyUn7P7Tp4SQsPp3MWBaH+z1b0rK84Tsk8YJrdVm7p69fMJLXN7wE5okHM9juiGW50stch523Ca2yCu1n2Qw7OME0ksz+nVS5KCNHrj+PGyFvzBs3LX9J1Y2Z8Z/GjIvVb+n2OF2ztPrTLlVX+mjFMBjv6RrV8R+SYY0PUtPVU/pMDLFFOoSXTKxjjjiCzX/SjgX+heDUcqG+3S1cAFJbM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,17 +90,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 02:50:15PM -0500, Johannes Weiner wrote:
-> From: Johannes Weiner <jweiner@meta.com>
-> 
-> Use PAGE_ALIGN() and a more natural cache remainder calculation.
+On Mon, Mar 02, 2026 at 02:50:16PM -0500, Johannes Weiner wrote:
+> Move the page charge and remainder calculation into its own
+> function. It will make the slab stat refactor easier to follow.
 > 
 > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > ---
->  mm/memcontrol.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
+>  mm/memcontrol.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
 > 
 
-Nice rewrite!
+Looks good to me.
+
 Reviewed-by: Hao Li <hao.li@linux.dev>
 
