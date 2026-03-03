@@ -4,106 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0836AEB364A
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26A80EB3649
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 900546B00E5; Mon,  2 Mar 2026 20:00:47 -0500 (EST)
+	id 666686B00E4; Mon,  2 Mar 2026 20:06:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 876716B00E8; Mon,  2 Mar 2026 20:00:47 -0500 (EST)
+	id 614456B00E6; Mon,  2 Mar 2026 20:06:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74D8B6B00EA; Mon,  2 Mar 2026 20:00:47 -0500 (EST)
+	id 520146B00E8; Mon,  2 Mar 2026 20:06:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 557166B00E5
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:00:47 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD555160462
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:00:46 +0000 (UTC)
-X-FDA: 84502946892.09.69C9E32
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3F2FC1A0014
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:00:45 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD9F6B00E4
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:06:12 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6EAD160458
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:06:11 +0000 (UTC)
+X-FDA: 84502960542.05.B59DD1D
+Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 665F81A000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:06:08 +0000 (UTC)
 Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3OFbP1+N;
-	spf=pass (imf19.hostedemail.com: domain of 3uzKmaQ4KCA4x25ro15wqvo5r6u22uzs.q20zw18B-00y9oqy.25u@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3uzKmaQ4KCA4x25ro15wqvo5r6u22uzs.q20zw18B-00y9oqy.25u@flex--jordanrichards.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dkim=pass header.d=unisoc.com header.s=default header.b="Qze/a0x+";
+	spf=pass (imf19.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772499645;
+	s=arc-20220608; t=1772499970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mfeVH3tlpXkPPnmAI2AR7odlrVEab2813t68CJAClt4=;
-	b=EzNkIpoUTrR4gueFldX46xsGAgrHClBhimH9vDM7N351WFWqiM1IJMgsgGbfbBB+Ph222+
-	EKYw/2tgB7FZEiEQA0DFzEj/8DQVJ9UHqJGog+hNm+RWN+b+DUb9eMyn8NSKmkNi/1vHQg
-	3boF3djsruqP+mbrGR4MB4b7/hbgfRc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1t/onS7jzftf/Zy0Y0jvNvAAfyka6oPianOa4p+o0n4=;
+	b=K7DL3OWJRz02+3kThZQzo6b/NNV/0CdJzCHj+cu2sq3oAhbH7fqFPTBxhRkMd1kpyKnI2k
+	qQ5jUf+uPa+NizXAPE6KcVd786P8bvrUY6B1lDRxa5VrWxfqvOEGRiiSo3bvYHz/9b1Xkm
+	QBLB/tjkF1jJkRp0aKdAW7yX53VOEtc=
 ARC-Authentication-Results: i=1;
 	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=3OFbP1+N;
-	spf=pass (imf19.hostedemail.com: domain of 3uzKmaQ4KCA4x25ro15wqvo5r6u22uzs.q20zw18B-00y9oqy.25u@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3uzKmaQ4KCA4x25ro15wqvo5r6u22uzs.q20zw18B-00y9oqy.25u@flex--jordanrichards.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772499645; a=rsa-sha256;
+	dkim=pass header.d=unisoc.com header.s=default header.b="Qze/a0x+";
+	spf=pass (imf19.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com;
+	dmarc=pass (policy=quarantine) header.from=unisoc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772499970; a=rsa-sha256;
 	cv=none;
-	b=Z6edDqnS4rNxjjlIZLI0xquNrjapCpzZ8iS5/Q91y813mUT9C7VsMON70mkRVH6ijSt+Jq
-	XY6rxUYyc4w9rHmhmfZASVvW0Bd0/LRzVCMvsIcdPs42S4Vc62dz88lirqGGnZ+z+EjJ3y
-	k4fYGcKudSJ652oMgbPjIFxt8OwqgQM=
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2be232ef3d3so2126347eec.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:00:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772499644; x=1773104444; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mfeVH3tlpXkPPnmAI2AR7odlrVEab2813t68CJAClt4=;
-        b=3OFbP1+Nt8+af9MnkTzaRYEu4yQmMtGqlLL48ABw6eSx5/5ReKI+FgM/LFY0jqeBkt
-         aslEJsOV7ScahEiHyBIVGo9c0BOJw3DoX2E0b1Nu9Sg2a7Kuhgno6nIGsOxmM7DxaDPX
-         FKXG1aI3eVqw+tcKTvd2g2fCVYeeYjfp5jUmOtbzNSOaYddvp4LHCKKkdFRW1juRIbJ3
-         tGiQrnE6PY3MsbK7VfXD5fUVX/UFG1NYkDFCQV/G9E9ZRRoBRyd5JWTxfXrFCCLqvFtl
-         qlGfWs/e0nFe5pc2rVUNdbv6PKAyXQsoRHeHlncjlwMJVTbLPktS2DusC+jsU4xCQsl7
-         /V7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772499644; x=1773104444;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mfeVH3tlpXkPPnmAI2AR7odlrVEab2813t68CJAClt4=;
-        b=racqwN0PeJaFfdW4W2NDziFYMFueQ9SnDkQT6EvadhP6eHjQVuyJA1vMwIPt6P4JuY
-         RCN7dPu2UVY6X9zImfUVnI9Ch8T0wPsuM7z6xuGZP8PI6SddNHcgFx43Gthf12fumEQR
-         D0IZuyBboRh0ITezwZS15GtaTQubowRybySCrxAreqa9aYQI3pOS5Q8t5HQQnbVAyoPR
-         ueblF7ZDd1Ka20/j8bGFfX8djftrqYVyJT8WFreqUT5YuiEahNlojFdA6kvlpQxllRvJ
-         1lCXVeHEIlhPpAwtRl8gKXOv0pQPtpcaIzBy6JKBYG7/xTJ00wzDpTCNG/66m8mE2ZBv
-         dxQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmHdRxx0TNNIQYNbxBiFvm9xTqHje0TY96TSb5ZkRpJwW8vCBJXidtVewQY+cpen8yq/x6gB5BLw==@kvack.org
-X-Gm-Message-State: AOJu0YyL9fVFQLh10sM5qOEjylvqu3jVVKoKUzZJU6nn8fLnc2jFhvoz
-	VYmBOYU7LrOj2BHiMfdQg/2OjGXu2/+6w75VzneAS40nANa25UBF2tC4hY4Z2VidKfhsS2WfAj6
-	v7NQKOjTCci7IvlhdmQ/0PGD6iUFFiXRW9Lc2Ow==
-X-Received: from dybsl12.prod.google.com ([2002:a05:7301:730c:b0:2bd:fcea:a76f])
- (user=jordanrichards job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:caa:b0:2be:140c:bc4a with SMTP id 5a478bee46e88-2be140cbf63mr2054909eec.3.1772499643785;
- Mon, 02 Mar 2026 17:00:43 -0800 (PST)
-Date: Tue,  3 Mar 2026 01:00:39 +0000
-In-Reply-To: <20260303010039.2969125-1-jordanrichards@google.com>
-Mime-Version: 1.0
-References: <20260303010039.2969125-1-jordanrichards@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260303010039.2969125-3-jordanrichards@google.com>
-Subject: [PATCH v3 2/2] selftests/liveupdate: add end to end test
- infrastructure and scripts
-From: Jordan Richards <jordanrichards@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>, Willy Tarreau <w@1wt.eu>, 
-	"=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?=" <linux@weissschuh.net>
-Cc: Jason Miu <jasonmiu@google.com>, David Matlack <dmatlack@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jordan Richards <jordanrichards@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 3F2FC1A0014
+	b=7xjaL6SmXKCfp0VGiddO5V1Eyqr//4nCRO0nXKy8TGkd/zeTRyseus2RlOs3pQQDttRCnM
+	obTyji/Z1z0BhxQTuB5p7yaFLpOeba9Lpdz1EfCc0ZCIdLwbePKn43FGOPA0bWLW9hHulr
+	DNRwx0ePm1zgFDqUUUXi7N/dbNyqaRI=
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTP id 62312wlX042068;
+	Tue, 3 Mar 2026 09:02:58 +0800 (+08)
+	(envelope-from zhaoyang.huang@unisoc.com)
+Received: from SHDLP.spreadtrum.com (BJMBX02.spreadtrum.com [10.0.64.8])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4fPyF23QRxz2N7Y4c;
+	Tue,  3 Mar 2026 09:01:58 +0800 (CST)
+Received: from BJMBX01.spreadtrum.com (10.0.64.7) by BJMBX02.spreadtrum.com
+ (10.0.64.8) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 3 Mar 2026
+ 09:02:55 +0800
+Received: from BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7]) by
+ BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7%16]) with mapi id
+ 15.00.1497.048; Tue, 3 Mar 2026 09:02:55 +0800
+From: =?utf-8?B?6buE5pyd6ZizIChaaGFveWFuZyBIdWFuZyk=?=
+	<zhaoyang.huang@unisoc.com>
+To: syzbot ci <syzbot+ci8d828f9cb74f67f6@syzkaller.appspotmail.com>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "huangzhaoyang@gmail.com" <huangzhaoyang@gmail.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        =?utf-8?B?5bq357qq5ruoIChTdGV2ZSBLYW5nKQ==?= <Steve.Kang@unisoc.com>,
+        "yuzhao@google.com" <yuzhao@google.com>
+CC: "syzbot@lists.linux.dev" <syzbot@lists.linux.dev>,
+        "syzkaller-bugs@googlegroups.com" <syzkaller-bugs@googlegroups.com>
+Subject: reply: [syzbot ci] Re: mm: bail out when the PMD has been set in
+ bloom filter
+Thread-Topic: reply: [syzbot ci] Re: mm: bail out when the PMD has been set in
+ bloom filter
+Thread-Index: AdyqpivCfGONClyQTxyiuGx6c5rhMQ==
+Date: Tue, 3 Mar 2026 01:02:54 +0000
+Message-ID: <85f9e0cb6cc44a36b0ce624b6766ddc6@BJMBX01.spreadtrum.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.0.93.65]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MAIL:SHSQR01.spreadtrum.com 62312wlX042068
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
+	s=default; t=1772499788;
+	bh=1t/onS7jzftf/Zy0Y0jvNvAAfyka6oPianOa4p+o0n4=;
+	h=From:To:CC:Subject:Date;
+	b=Qze/a0x+OvkUMABdzRNR6KW+lSQBR4ygz5tBH58ydE61tVmtSQpCtFuyJYwEm3Hzg
+	 aRgN1RylaRSsETGoZlFDVQsTse87pbSBfuBR+y4aVrxMf6Btoi4zheyiv3xCObSfH3
+	 c1yFyqKVxgjHeB34FSiNONZQmXqstxtW5NUEU1gv5wArgq1uJwsSmx7qqVsWpzNAsq
+	 28zMiF8DhlI7J5Uy3QdO3EuHBjmpAcMMmY4TLlwFi8SK0b556DcYTS5lTjirlKQHc2
+	 T1R/2PsfJVEIjOpEV4PmSb8AIK4SyPYk5Ag7snI+PX0aAZ5/5APXLEsBy4LcdWlPtj
+	 eYzl1BWJ6Xk1g==
+X-Rspamd-Queue-Id: 665F81A000B
 X-Rspamd-Server: rspam07
-X-Stat-Signature: csujpjodrk4qyosgz7mja8c8m857hg3f
+X-Stat-Signature: c5qskmk8ymikiiqe9d7i1bre3cttqni3
 X-Rspam-User: 
-X-HE-Tag: 1772499645-671027
-X-HE-Meta: U2FsdGVkX1+TGioWjHm7cTR2UXCUBrn6CqgXTYu7omWJBS7Ltem3vfq//ADRfEUQ40+yyNkYu8qbNIxX3PuWTQeoTYkA4wdQhEA/kIQWSuK2mlXMp48Clzk4ATjN8jx/oY8FGUy8A/k2Kl+pVpcsemHMtwu/7LqNfO2gBkireuoOxPVQSsWMg74FBJQFm2iK9XZwfg95/st49jDCzV9PzjcUzn3UiXwfZ3dyu9JsSMB7pUwu0EE68/SqrzzNt4Loj0F+Y6S5h/aEj/uWL/gUuWYblaAdElPI9P9P9fhbEssLSRcF/wuwXdLDbo5inqvfuOfkOvoUqt97ZiEtmn7njLVW6zcoyHSObcJRrjeVk6GWbrXs55NO7maVzGH4GQjYRlZcSBmBhMrlPVKXu0AXYg/vRjodU2Z/4LaqL+E5UHy7T96kaqsZg/pVc8sDztlYGVfjD734mDE4wEgMs8YU8pbdormfpjJAMGQhZVOesw8Y6NyJbq8frxML1QP/aRKDnsg3mq4srPMwI3NUON0+H38Q+rg/wdkEWjWjG0MisItptWeNGX+iext6KcNfgjrnAdJIQScaizxTPq8qbBI5NGnF0mXO43QMXj00xvvDK+zI3J5PP0RKedqLhrCOZhp8YQtU6TLa2gR2GvOkEqSYAjrY9BhWjNlm7E2n79mx7zU+YeyYusCCf0gFFUfPVmKla26RzKFeh7pbCyshMofh0v5BxdzbOW+L3VuzSRqjBDJ6a+JgNZ8kSfHbRH9CNlRfO0PtoBBSBygNTzR+Jo8nJRz0SayccEs48BG78Q4W2QeQ0mnGc7mBoiEzO4QKiqJvJ5EoIeWWMdxbTFV3UNihfFthEsHQZ1HlYSxieYmlEQHdmmD2CHEDOBF102TDfdHQAXJQ/K4wel2158ieZ2QikVfToZoA4sJJpgf9TdWNFSRjmmWd5BJ4+X7hDzhvF0BgGldmbVKtKM9iZ+v4wrv
- zL0SN+Hb
- fue0xraNrDuj4lBx+udw9OZedXDwL+fHidjmGwxoeWSstLeh0AzjDxiDVE+eC3wHYhavmoJ4nuYJ+7bkUjpiRWebTsyS3JoKAcBzfg7JShGDez6n6/gGtA8O5SRnYLX+buX0oSm7ew9j2+F6TzXmx8vdiJlfIn3OH7SoJcto1wo6JKQM4nZ7j3Y1OWyFHn49+RbMJ2snEqQj4lD3pDKBHXWT0TxlW2/vA+w8r/BldH3unegrsIemwNXt1OKsAOHT8guD+dgL0BK8LtR9RVUVdJ/DjinjqIKNbXHoG8GQXP5IbvDe+FyKzd1Bn+78xW55FKvCOpoRj+U5RtuU7MtJLpD3CK3vSjolKHs11ZMSdt5TrdO8S8PtU42PcCj5/9Y6Ug8JgEVyBJ54QtstG0E6X3VaZwQ==
+X-HE-Tag: 1772499968-584641
+X-HE-Meta: U2FsdGVkX1+HUBhLNbBKroNpF58Dr/AC5a6GlWvaLqn1MSv2Utb+C5b/D/vJS9FHTmqH2rFczE0sDDHf1QhiM1p/Mky1NwjczRXNAz0AXcnIPo3E+9HCedMig13s4Mt7CWUpxtJXM7PRN+YTtHYsVUy9MFuOY9MhBg/H/pUZ84dRjhJXdVe/ZQLHdabDOX2hBFA6KsIFtHfY95KpULKe8M3ojCHtvPQfKd+DXd0409Bp8J2Uhmv9Ksyfd4jum4WydARz1oeZcDbt7n92ZCnwRQ+JBCUwTRpvRWWvcFc6/LeTk0/9aCZiI8oyO95Yhs9q9tE7/MyiNKtogsQVCdaTXRpD2xSsK645PMmhvYTXRGmDZqny3YAQBH9cWvzCSTsbBwrRGlQEgxHHoSYQ8rgIemsKQCSh0+Te75xMUIZLlyGHUYcEbb7FEQkJbkUa6bnzNmxhw2jr1ObphqfVi/amG2S9GQdPqwzNx+jzrQQMY0oqWBvVgI9wuj3GhcMMBObHeiOgP/8bbf3z261ja8OF0D68leQAX/DWNpJ43l7P0KIjKy5ssXWD9LpXgP/Bmkf80WcZU9uJ9YS6hjj4mjqvCbxQWP5Pq44FaA+Iu9zXqYv0ZINnXjzzlWKduguJHkrNbA5ZDPVVIDq1BWXt38fd8B+vA7SR9uJJeVXK/xhFPQ6uMtczQDZymC1fnUzLD3txkfE9+9QkJ+cCbmfURPQ+e4ZMmp/StYXuY5yrqQjyIF8S4FgPBKhnioVVDy6PXSulbkdIZ0hV6u559jUkuNdDAyVzsu6yR3mlxkZnWDozmBLDRPAX/iJ2v9HQ9vPl/uLYWWIGrj4+b4SE0Qj9eLIuftdMI5DxR0yrT0s4QHAYtV+t3kqN4tqx2qpm6X4bC6YrA/fYrSu4dOzRx7OISgQuRWYb3em4A4iLyYR+O4ZepBljPx3FX6OYGD2EMAHaTCY3ne0gaM4UMCde3/JSdYY
+ 8jK8mI12
+ xSWebLTr4KhEYbd4xu8CtfFNwVdt3PKR6locagRSSIL8bAAn7faIGy7QA8URiVAZuqCYvVRkQrOXcWsi8GCzljBx7Xui3xBhrSbsUxQs73Ay/XYn7jfkncvx19oyVpsoMt0zz7xcbWRKiKstOt9lkuKjXqAIQ1yZ8UVYNERBLFJ48LW4gseegpCGeOOmhdOMdshzdk9a5wYXmeDVemyZ4K+TTm7fB8puShupH2n1nRhivguSyF0AyasiSdgqsuUtYzgbmy2pUjMjJ1umFIVXuuQt6TT+POtPaF7AkRDdYDyIrTdlSSix0Pbx6vkXjZgmgyPx15JHpV1E3NOojqrgsF3W4K6fhp2goS7KcMoNp51Ew2dmqJyyAheasiuD+uogrn9DQhAuBpvK82kGc1apJGWZfmB2WJYfYtLkLjrabpoaBKDJKG7A08A+L4O9AT7zgdM5Br8908kui4wl/ySkn5gV5engb/mzPdiiKtCzNMWKXa7STrMjG+lGruKNlRxJSYq4kcTBwqIPWS5FYWZw6EGGhGQXWKzH44bGVh7DxI7Pw2CuoquYFSF+S9qStuNx3nQLXfTZuEwz0qPPK8B+4R7i7+Xz6E/SghJbz15tE6HY+YbqeF2kmtfVF8nqAaHS3A4P2iqzl2EISVRafNEUnLwM8eTzlSC8BNxHG0I0YFSHE7i2qAeY4K4g1e4W9/ytHBeQoliKsv67qe5TEyEmv9qYFSoWoxL3v3JSz65btJoYG+SwPs4AF0SOAaXmRDMs7znSYS7N/vUSFXdeoxwlJpxX55sgNgMmdby/bfqlO7H8wdvFXErb4ae/3AlqHVbsEDJzdLpP/HsKcNxYcK1AXGm6e7LwXModdv82uML655V5fH0m1jfvwm3CgtXCrRT7XiUm4OlaezWv2gZXBI2Z37SQEPBWjdW1GCG4wgEnYhpoS6UZW7RtwKKm58J/nv1PuoRfoDKf9ekrIycYaQhL7kNZu4rKf
+ U9EGCex7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,712 +115,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-
-Add the end to end testing infrastructure required to verify the
-liveupdate feature. This includes a custom init process, a test
-orchestration script, and a batch runner.
-
-The framework consists of:
-
-init.c:
-A lightweight init process that manages the kexec lifecycle.
-It mounts necessary filesystems, determines the current execution
-stage (1 or 2) via the kernel command line, and handles the
-kexec_file_load() sequence to transition between kernels.
-
-luo_test.sh:
-The primary KTAP-compliant test driver. It handles:
-- Kernel configuration merging and building.
-- Cross-compilation detection for x86_64 and arm64.
-- Generation of the initrd containing the test binary and init.
-- QEMU execution with automatic accelerator detection (KVM, HVF,
- or TCG).
-
-run.sh:
-A wrapper script to discover and execute all `luo_*.c`
-tests across supported architectures, providing a summary of
-pass/fail/skip results.
-
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Co-developed-by: Jordan Richards <jordanrichards@google.com>
-Signed-off-by: Jordan Richards <jordanrichards@google.com>
----
- tools/testing/selftests/liveupdate/.gitignore |   1 +
- tools/testing/selftests/liveupdate/config     |   1 +
- .../selftests/liveupdate/config.aarch64       |   2 +
- .../selftests/liveupdate/config.x86_64        |   2 +
- tools/testing/selftests/liveupdate/init.c     | 179 ++++++++++++
- .../testing/selftests/liveupdate/luo_test.sh  | 276 ++++++++++++++++++
- .../selftests/liveupdate/luo_test_utils.c     |  23 +-
- tools/testing/selftests/liveupdate/run.sh     |  63 ++++
- 8 files changed, 534 insertions(+), 13 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.aarch64
- create mode 100644 tools/testing/selftests/liveupdate/config.x86_64
- create mode 100644 tools/testing/selftests/liveupdate/init.c
- create mode 100755 tools/testing/selftests/liveupdate/luo_test.sh
- create mode 100755 tools/testing/selftests/liveupdate/run.sh
-
-diff --git a/tools/testing/selftests/liveupdate/.gitignore b/tools/testing/selftests/liveupdate/.gitignore
-index 661827083ab6..cb08ddb0dfee 100644
---- a/tools/testing/selftests/liveupdate/.gitignore
-+++ b/tools/testing/selftests/liveupdate/.gitignore
-@@ -6,4 +6,5 @@
- !*.sh
- !.gitignore
- !config
-+!config.*
- !Makefile
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-index 91d03f9a6a39..016d009dba13 100644
---- a/tools/testing/selftests/liveupdate/config
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -1,4 +1,5 @@
- CONFIG_BLK_DEV_INITRD=y
-+CONFIG_DEVTMPFS=y
- CONFIG_KEXEC_FILE=y
- CONFIG_KEXEC_HANDOVER=y
- CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-diff --git a/tools/testing/selftests/liveupdate/config.aarch64 b/tools/testing/selftests/liveupdate/config.aarch64
-new file mode 100644
-index 000000000000..445716403925
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.aarch64
-@@ -0,0 +1,2 @@
-+CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_SERIAL_AMBA_PL011_CONSOLE=y
-diff --git a/tools/testing/selftests/liveupdate/config.x86_64 b/tools/testing/selftests/liveupdate/config.x86_64
-new file mode 100644
-index 000000000000..810d9c9d213e
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.x86_64
-@@ -0,0 +1,2 @@
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-diff --git a/tools/testing/selftests/liveupdate/init.c b/tools/testing/selftests/liveupdate/init.c
-new file mode 100644
-index 000000000000..fb08bd58b9b9
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/init.c
-@@ -0,0 +1,179 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+#include <fcntl.h>
-+#include <linux/kexec.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mount.h>
-+#include <sys/reboot.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#define COMMAND_LINE_SIZE 2048
-+#define KERNEL_IMAGE "/kernel"
-+#define INITRD_IMAGE "/initrd.img"
-+#define TEST_BINARY "/test_binary"
-+
-+static int mount_filesystems(void)
-+{
-+	if (mount("devtmpfs", "/dev", "devtmpfs", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Warning: Failed to mount devtmpfs\n");
-+		return -1;
-+	}
-+
-+	if (mount("debugfs", "/debugfs", "debugfs", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Failed to mount debugfs\n");
-+		return -1;
-+	}
-+
-+	if (mount("proc", "/proc", "proc", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Failed to mount proc\n");
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
-+static long kexec_file_load(int kernel_fd, int initrd_fd,
-+			    unsigned long cmdline_len, const char *cmdline,
-+			    unsigned long flags)
-+{
-+	return syscall(__NR_kexec_file_load, kernel_fd, initrd_fd, cmdline_len,
-+		       cmdline, flags);
-+}
-+
-+static int kexec_load(void)
-+{
-+	char cmdline[COMMAND_LINE_SIZE];
-+	int kernel_fd, initrd_fd, err;
-+	ssize_t len;
-+	int fd;
-+
-+	fd = open("/proc/cmdline", O_RDONLY);
-+	if (fd < 0) {
-+		fprintf(stderr, "INIT: Failed to read /proc/cmdline\n");
-+
-+		return -1;
-+	}
-+
-+	len = read(fd, cmdline, sizeof(cmdline) - 1);
-+	close(fd);
-+	if (len < 0)
-+		return -1;
-+
-+	cmdline[len] = 0;
-+	if (len > 0 && cmdline[len - 1] == '\n')
-+		cmdline[len - 1] = 0;
-+
-+	strncat(cmdline, " luo_stage=2", sizeof(cmdline) - strlen(cmdline) - 1);
-+
-+	kernel_fd = open(KERNEL_IMAGE, O_RDONLY);
-+	if (kernel_fd < 0) {
-+		fprintf(stderr, "INIT: Failed to open kernel image\n");
-+		return -1;
-+	}
-+
-+	initrd_fd = open(INITRD_IMAGE, O_RDONLY);
-+	if (initrd_fd < 0) {
-+		fprintf(stderr, "INIT: Failed to open initrd image\n");
-+		close(kernel_fd);
-+		return -1;
-+	}
-+
-+	err = kexec_file_load(kernel_fd, initrd_fd, strlen(cmdline) + 1,
-+			      cmdline, 0);
-+
-+	close(initrd_fd);
-+	close(kernel_fd);
-+
-+	return err;
-+}
-+
-+static int run_test(int stage)
-+{
-+	char stage_arg[32];
-+	int status;
-+	pid_t pid;
-+
-+	snprintf(stage_arg, sizeof(stage_arg), "%d", stage);
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return -1;
-+
-+	if (!pid) {
-+		char *const argv[] = {TEST_BINARY, "-s", stage_arg, NULL};
-+
-+		execve(TEST_BINARY, argv, NULL);
-+		fprintf(stderr, "INIT: execve failed\n");
-+		_exit(1);
-+	}
-+
-+	waitpid(pid, &status, 0);
-+
-+	return (WIFEXITED(status) && WEXITSTATUS(status) == 0) ? 0 : -1;
-+}
-+
-+static int get_current_stage(void)
-+{
-+	char cmdline[COMMAND_LINE_SIZE];
-+	ssize_t len;
-+	int fd;
-+
-+	fd = open("/proc/cmdline", O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+
-+	len = read(fd, cmdline, sizeof(cmdline) - 1);
-+	close(fd);
-+
-+	if (len < 0)
-+		return -1;
-+
-+	cmdline[len] = 0;
-+
-+	return strstr(cmdline, "luo_stage=2") ? 2 : 1;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int current_stage;
-+	int err;
-+
-+	if (mount_filesystems())
-+		goto err_reboot;
-+
-+	current_stage = get_current_stage();
-+	if (current_stage < 0) {
-+		fprintf(stderr, "INIT: Failed to read cmdline");
-+		goto err_reboot;
-+	}
-+
-+	printf("INIT: Starting Stage %d\n", current_stage);
-+
-+	if (current_stage == 1 && kexec_load()) {
-+		fprintf(stderr, "INIT: Failed to load kexec kernel\n");
-+		goto err_reboot;
-+	}
-+
-+	if (run_test(current_stage)) {
-+		fprintf(stderr, "INIT: Test binary returned failure\n");
-+		goto err_reboot;
-+	}
-+
-+	printf("INIT: Stage %d completed successfully.\n", current_stage);
-+	reboot(current_stage == 1 ? RB_KEXEC : RB_AUTOBOOT);
-+
-+	return 0;
-+
-+err_reboot:
-+	reboot(RB_AUTOBOOT);
-+
-+	return -1;
-+}
-diff --git a/tools/testing/selftests/liveupdate/luo_test.sh b/tools/testing/selftests/liveupdate/luo_test.sh
-new file mode 100755
-index 000000000000..1520711b1d35
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_test.sh
-@@ -0,0 +1,276 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -ue
-+
-+CROSS_COMPILE="${CROSS_COMPILE:-""}"
-+
-+test_dir=$(realpath "$(dirname "$0")")
-+kernel_dir=$(realpath "$test_dir/../../../..")
-+
-+workspace_dir=""
-+headers_dir=""
-+initrd=""
-+KEEP_WORKSPACE=0
-+
-+source "$test_dir/../kselftest/ktap_helpers.sh"
-+
-+function get_arch_conf() {
-+	local arch=$1
-+	if [[ "$arch" == "arm64" ]]; then
-+		QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
-+		KERNEL_IMAGE="Image"
-+		KERNEL_CMDLINE="console=ttyAMA0"
-+	elif [[ "$arch" == "x86" ]]; then
-+		QEMU_CMD="qemu-system-x86_64"
-+		KERNEL_IMAGE="bzImage"
-+		KERNEL_CMDLINE="console=ttyS0"
-+	else
-+		echo "Unsupported architecture: $arch"
-+		exit 1
-+	fi
-+}
-+
-+function usage() {
-+	cat <<EOF
-+$0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [-k] [-h]
-+Options:
-+	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
-+	-j)	number of jobs for compilation
-+	-t)	run test for target_arch (aarch64, x86_64)
-+	-T)	test name to run (default: luo_kexec_simple)
-+	-w)	custom workspace directory (default: creates temp dir)
-+	-k)	keep workspace directory after successful test
-+	-h)	display this help
-+EOF
-+}
-+
-+function cleanup() {
-+	local exit_code=$?
-+
-+	if [ -z "$workspace_dir" ]; then
-+		ktap_finished
-+		return
-+	fi
-+
-+	if [ $exit_code -ne 0 ]; then
-+		echo "# Test failed (exit code $exit_code)."
-+		echo "# Workspace preserved at: $workspace_dir"
-+	elif [ "$KEEP_WORKSPACE" -eq 1 ]; then
-+		echo "# Workspace preserved (user request) at: $workspace_dir"
-+	else
-+		rm -fr "$workspace_dir"
-+	fi
-+	ktap_print_totals
-+
-+	exit $exit_code
-+}
-+trap cleanup EXIT
-+
-+function skip() {
-+	local msg=${1:-""}
-+	ktap_test_skip "$msg"
-+	exit "$KSFT_SKIP"
-+}
-+
-+function fail() {
-+	local msg=${1:-""}
-+	ktap_test_fail "$msg"
-+	exit "$KSFT_FAIL"
-+}
-+
-+function detect_cross_compile() {
-+	local target=$1
-+	local host=$(uname -m)
-+
-+	[[ "$host" == "arm64" ]] && host="aarch64"
-+	[[ "$target" == "arm64" ]] && target="aarch64"
-+
-+	if [[ "$host" == "$target" ]]; then
-+		CROSS_COMPILE=""
-+		return
-+	fi
-+
-+	if [[ -n "$CROSS_COMPILE" ]]; then
-+		return
-+	fi
-+
-+	local candidate=""
-+	case "$target" in
-+		aarch64) candidate="aarch64-linux-gnu-" ;;
-+		x86_64)  candidate="x86_64-linux-gnu-" ;;
-+		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
-+	esac
-+
-+	if command -v "${candidate}gcc" &> /dev/null; then
-+		CROSS_COMPILE="$candidate"
-+	else
-+		skip "Compiler '${candidate}gcc' not found. Please install it (e.g., 'apt install gcc-aarch64-linux-gnu') or set CROSS_COMPILE."
-+	fi
-+}
-+
-+function build_kernel() {
-+	local build_dir=$1
-+	local make_cmd=$2
-+	local kimage=$3
-+	local target_arch=$4
-+
-+	local kconfig="$build_dir/.config"
-+	local common_conf="$test_dir/config"
-+	local arch_conf="$test_dir/config.$target_arch"
-+
-+	echo "# Building kernel in: $build_dir"
-+
-+	"$kernel_dir/scripts/kconfig/merge_config.sh" \
-+		-Q -m -O "$build_dir" "$common_conf" "$arch_conf" >> /dev/null
-+	cat $kconfig
-+
-+	$make_cmd olddefconfig
-+	$make_cmd "$kimage"
-+	$make_cmd headers_install INSTALL_HDR_PATH="$headers_dir"
-+}
-+
-+function mkinitrd() {
-+	local build_dir=$1
-+	local kernel_path=$2
-+	local test_name=$3
-+
-+	# Compile the test binary and the init process
-+	"$CROSS_COMPILE"gcc -static -O2 -nostdinc -nostdlib \
-+		-I "$headers_dir/include" \
-+		-I "$kernel_dir/tools/include/nolibc" \
-+		-I "$test_dir" \
-+		-o "$workspace_dir/test_binary" \
-+		"$test_dir/$test_name.c" "$test_dir/luo_test_utils.c"
-+
-+	"$CROSS_COMPILE"gcc -s -static -Os -nostdinc -nostdlib		\
-+			-fno-asynchronous-unwind-tables -fno-ident	\
-+			-fno-stack-protector				\
-+			-I "$headers_dir/include"			\
-+			-I "$kernel_dir/tools/include/nolibc"		\
-+			-o "$workspace_dir/init" "$test_dir/init.c"
-+
-+	cat > "$workspace_dir/cpio_list_inner" <<EOF
-+dir /dev 0755 0 0
-+dir /proc 0755 0 0
-+dir /debugfs 0755 0 0
-+nod /dev/console 0600 0 0 c 5 1
-+file /init $workspace_dir/init 0755 0 0
-+file /test_binary $workspace_dir/test_binary 0755 0 0
-+EOF
-+
-+	# Generate inner_initrd.cpio
-+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list_inner" > "$workspace_dir/inner_initrd.cpio"
-+
-+	cat > "$workspace_dir/cpio_list" <<EOF
-+dir /dev 0755 0 0
-+dir /proc 0755 0 0
-+dir /debugfs 0755 0 0
-+nod /dev/console 0600 0 0 c 5 1
-+file /init $workspace_dir/init 0755 0 0
-+file /kernel $kernel_path 0644 0 0
-+file /test_binary $workspace_dir/test_binary 0755 0 0
-+file /initrd.img $workspace_dir/inner_initrd.cpio 0644 0 0
-+EOF
-+
-+	# Generate the final initrd
-+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list" > "$initrd"
-+	local size=$(du -h "$initrd" | cut -f1)
-+}
-+
-+function run_qemu() {
-+	local qemu_cmd=$1
-+	local cmdline=$2
-+	local kernel_path=$3
-+	local serial="$workspace_dir/qemu.serial"
-+
-+	cmdline="$cmdline liveupdate=on panic=-1"
-+
-+	echo "# Serial Log: $serial"
-+	timeout 30s $qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults	\
-+		  -accel tcg -accel hvf -accel kvm				\
-+		  -serial file:"$serial"					\
-+		  -append "$cmdline"						\
-+		  -kernel "$kernel_path"					\
-+		  -initrd "$initrd"
-+
-+	local ret=$?
-+
-+	if [ $ret -eq 124 ]; then
-+		fail "QEMU timed out"
-+	fi
-+
-+	grep "TEST PASSED" "$serial" &> /dev/null || fail "Liveupdate failed. Check $serial for details."
-+}
-+
-+function target_to_arch() {
-+	local target=$1
-+	case $target in
-+	     aarch64) echo "arm64" ;;
-+	     x86_64) echo "x86" ;;
-+	     *) skip "architecture $target is not supported"
-+	esac
-+}
-+
-+function main() {
-+	local build_dir=""
-+	local jobs=$(nproc)
-+	local target="$(uname -m)"
-+	local test_name="luo_kexec_simple"
-+	local workspace_arg=""
-+
-+	set -o errtrace
-+	trap fail ERR
-+
-+	while getopts 'hd:j:t:T:w:k' opt; do
-+		case $opt in
-+		d) build_dir="$OPTARG" ;;
-+		j) jobs="$OPTARG" ;;
-+		t) target="$OPTARG" ;;
-+		T) test_name="$OPTARG" ;;
-+		w) workspace_arg="$OPTARG" ;;
-+		k) KEEP_WORKSPACE=1 ;;
-+		h) usage; exit 0 ;;
-+		*) echo "Unknown argument $opt"; usage; exit 1 ;;
-+		esac
-+	done
-+
-+	ktap_print_header
-+	ktap_set_plan 1
-+
-+	if [ -n "$workspace_arg" ]; then
-+		workspace_dir="$(realpath -m "$workspace_arg")"
-+		mkdir -p "$workspace_dir"
-+	else
-+		workspace_dir=$(mktemp -d /tmp/luo-test.XXXXXXXX)
-+	fi
-+
-+	echo "# Workspace created at: $workspace_dir"
-+	headers_dir="$workspace_dir/usr"
-+	initrd="$workspace_dir/initrd.cpio"
-+
-+	detect_cross_compile "$target"
-+
-+	local arch=$(target_to_arch "$target")
-+
-+	if [ -z "$build_dir" ]; then
-+		build_dir="$kernel_dir/.luo_test_build.$arch"
-+	fi
-+
-+	mkdir -p "$build_dir"
-+	build_dir=$(realpath "$build_dir")
-+	get_arch_conf "$arch"
-+
-+	local make_cmd="make -s ARCH=$arch CROSS_COMPILE=$CROSS_COMPILE -j$jobs"
-+	local make_cmd_build="$make_cmd -C $kernel_dir O=$build_dir"
-+
-+	build_kernel "$build_dir" "$make_cmd_build" "$KERNEL_IMAGE" "$target"
-+
-+	local final_kernel="$build_dir/arch/$arch/boot/$KERNEL_IMAGE"
-+	mkinitrd "$build_dir" "$final_kernel" "$test_name"
-+
-+	run_qemu "$QEMU_CMD" "$KERNEL_CMDLINE" "$final_kernel"
-+	ktap_test_pass "$test_name succeeded"
-+}
-+
-+main "$@"
-diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
-index 3c8721c505df..084d76cd79d2 100644
---- a/tools/testing/selftests/liveupdate/luo_test_utils.c
-+++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
-@@ -20,6 +20,7 @@
- #include <sys/stat.h>
- #include <errno.h>
- #include <stdarg.h>
-+#include <linux/unistd.h>
- 
- #include "luo_test_utils.h"
- 
-@@ -32,8 +33,8 @@ int luo_create_session(int luo_fd, const char *name)
- {
- 	struct liveupdate_ioctl_create_session arg = { .size = sizeof(arg) };
- 
--	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
--		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
-+	strncpy((char *)arg.name, name, LIVEUPDATE_SESSION_NAME_LENGTH);
-+	arg.name[LIVEUPDATE_SESSION_NAME_LENGTH - 1] = '\0';
- 
- 	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_CREATE_SESSION, &arg) < 0)
- 		return -errno;
-@@ -45,8 +46,8 @@ int luo_retrieve_session(int luo_fd, const char *name)
- {
- 	struct liveupdate_ioctl_retrieve_session arg = { .size = sizeof(arg) };
- 
--	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
--		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
-+	strncpy((char *)arg.name, name, LIVEUPDATE_SESSION_NAME_LENGTH);
-+	arg.name[LIVEUPDATE_SESSION_NAME_LENGTH - 1] = '\0';
- 
- 	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_RETRIEVE_SESSION, &arg) < 0)
- 		return -errno;
-@@ -57,7 +58,7 @@ int luo_retrieve_session(int luo_fd, const char *name)
- int create_and_preserve_memfd(int session_fd, int token, const char *data)
- {
- 	struct liveupdate_session_preserve_fd arg = { .size = sizeof(arg) };
--	long page_size = sysconf(_SC_PAGE_SIZE);
-+	long page_size = getpagesize();
- 	void *map = MAP_FAILED;
- 	int mfd = -1, ret = -1;
- 
-@@ -93,7 +94,7 @@ int restore_and_verify_memfd(int session_fd, int token,
- 			     const char *expected_data)
- {
- 	struct liveupdate_session_retrieve_fd arg = { .size = sizeof(arg) };
--	long page_size = sysconf(_SC_PAGE_SIZE);
-+	long page_size = getpagesize();
- 	void *map = MAP_FAILED;
- 	int mfd = -1, ret = -1;
- 
-@@ -204,16 +205,11 @@ void daemonize_and_wait(void)
- 
- static int parse_stage_args(int argc, char *argv[])
- {
--	static struct option long_options[] = {
--		{"stage", required_argument, 0, 's'},
--		{0, 0, 0, 0}
--	};
--	int option_index = 0;
- 	int stage = 1;
- 	int opt;
- 
- 	optind = 1;
--	while ((opt = getopt_long(argc, argv, "s:", long_options, &option_index)) != -1) {
-+	while ((opt = getopt(argc, argv, "s:")) != -1) {
- 		switch (opt) {
- 		case 's':
- 			stage = atoi(optarg);
-@@ -224,6 +220,7 @@ static int parse_stage_args(int argc, char *argv[])
- 			fail_exit("Unknown argument");
- 		}
- 	}
-+
- 	return stage;
- }
- 
-@@ -251,7 +248,7 @@ int luo_test(int argc, char *argv[],
- 		fail_exit("Failed to check for state session");
- 
- 	if (target_stage != detected_stage) {
--		ksft_exit_fail_msg("Stage mismatch Requested --stage %d, but system is in stage %d.\n"
-+		ksft_exit_fail_msg("Stage mismatch Requested stage %d, but system is in stage %d.\n"
- 				   "(State session %s: %s)\n",
- 				   target_stage, detected_stage, state_session_name,
- 				   (detected_stage == 2) ? "EXISTS" : "MISSING");
-diff --git a/tools/testing/selftests/liveupdate/run.sh b/tools/testing/selftests/liveupdate/run.sh
-new file mode 100755
-index 000000000000..5637668ef7b6
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/run.sh
-@@ -0,0 +1,63 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+SCRIPT_DIR=$(dirname "$(realpath "$0")")
-+OUTPUT_DIR="$SCRIPT_DIR/results_$(date +%Y%m%d_%H%M%S)"
-+TEST_RUNNER="$SCRIPT_DIR/luo_test.sh"
-+
-+TARGETS=("x86_64" "aarch64")
-+
-+GREEN='\033[0;32m'
-+RED='\033[0;31m'
-+YELLOW='\033[1;33m'
-+NC='\033[0m'
-+
-+PASSED=()
-+FAILED=()
-+SKIPPED=()
-+
-+mkdir -p "$OUTPUT_DIR"
-+
-+TEST_NAMES=(
-+    "luo_kexec_simple"
-+    "luo_multi_session"
-+)
-+
-+for arch in "${TARGETS[@]}"; do
-+    for test_name in "${TEST_NAMES[@]}"; do
-+        log_file="$OUTPUT_DIR/${arch}_${test_name}.log"
-+        echo -n "  -> $arch $test_name ... "
-+
-+        if "$TEST_RUNNER" -t "$arch" -T "$test_name" > "$log_file" 2>&1; then
-+            echo -e "${GREEN}PASS${NC}"
-+            PASSED+=("${arch}:${test_name}")
-+        else
-+            exit_code=$?
-+            if [ $exit_code -eq 4 ]; then
-+                echo -e "${YELLOW}SKIP${NC}"
-+                SKIPPED+=("${arch}:${test_name}")
-+            else
-+                echo -e "${RED}FAIL${NC}"
-+                FAILED+=("${arch}:${test_name}")
-+            fi
-+        fi
-+    done
-+    echo ""
-+done
-+
-+echo "========================================="
-+echo "             TEST SUMMARY                "
-+echo "========================================="
-+echo -e "PASSED: ${GREEN}${#PASSED[@]}${NC}"
-+echo -e "FAILED: ${RED}${#FAILED[@]}${NC}"
-+for fail in "${FAILED[@]}"; do
-+    echo -e "  - $fail"
-+done
-+echo -e "SKIPPED: ${YELLOW}${#SKIPPED[@]}${NC}"
-+echo "Logs: $OUTPUT_DIR"
-+
-+if [ ${#FAILED[@]} -eq 0 ]; then
-+    exit 0
-+else
-+    exit 1
-+fi
--- 
-2.53.0.473.g4a7958ca14-goog
-
+Pg0KPg0KPnN5emJvdCBjaSBoYXMgdGVzdGVkIHRoZSBmb2xsb3dpbmcgc2VyaWVzDQo+DQo+W3Yx
+XSBtbTogYmFpbCBvdXQgd2hlbiB0aGUgUE1EIGhhcyBiZWVuIHNldCBpbiBibG9vbSBmaWx0ZXIN
+Cj5odHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjAyMjcwNzUyNTAuMTEyODE3NS0xLXpo
+YW95YW5nLmh1YW5nQHVuaQ0KPnNvYy5jb20NCj4qIFtQQVRDSF0gbW06IGJhaWwgb3V0IHdoZW4g
+dGhlIFBNRCBoYXMgYmVlbiBzZXQgaW4gYmxvb20gZmlsdGVyDQo+DQo+YW5kIGZvdW5kIHRoZSBm
+b2xsb3dpbmcgaXNzdWU6DQo+Z2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0IGluIGxydV9nZW5fbG9v
+a19hcm91bmQNCj4NCj5GdWxsIHJlcG9ydCBpcyBhdmFpbGFibGUgaGVyZToNCj5odHRwczovL2Np
+LnN5emJvdC5vcmcvc2VyaWVzLzc4Y2UwNGZmLWMzNmUtNGJjYy1hMDk3LWY0NTdlM2VkOWU1ZQ0K
+Pg0KPioqKg0KPg0KPmdlbmVyYWwgcHJvdGVjdGlvbiBmYXVsdCBpbiBscnVfZ2VuX2xvb2tfYXJv
+dW5kDQo+DQo+dHJlZTogICAgICBtbS1uZXcNCj5VUkw6DQo+aHR0cHM6Ly9rZXJuZWwuZ29vZ2xl
+c291cmNlLmNvbS9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvYWtwbS9tbS5naXQNCj5iYXNlOiAg
+ICAgIDg5ODIzNThlMWM4N2UzZTFkYzBhYWQzN2Y0ZjkzZWZlOWMxY2ZlMDMNCj5hcmNoOiAgICAg
+IGFtZDY0DQo+Y29tcGlsZXI6ICBEZWJpYW4gY2xhbmcgdmVyc2lvbiAyMS4xLjgNCj4oKysyMDI1
+MTIyMTAzMzAzNisyMDc4ZGE0M2UyNWEtMX5leHAxfjIwMjUxMjIxMTUzMjEzLjUwKSwgRGViaWFu
+DQo+TExEIDIxLjEuOA0KPmNvbmZpZzoNCj5odHRwczovL2NpLnN5emJvdC5vcmcvYnVpbGRzL2U5
+NzZkNDA4LTU4N2MtNDE2Zi04NWFiLWE2MDk0MDY3NGYzNS9jb25maWcNCj5DIHJlcHJvOg0KPmh0
+dHBzOi8vY2kuc3l6Ym90Lm9yZy9maW5kaW5ncy9lYTkyZTFhNy02OWJkLTQ2MDgtYmMyYy0yZmY0
+Y2ExMThmOWMvY19yZXByDQo+bw0KPnN5eiByZXBybzoNCj5odHRwczovL2NpLnN5emJvdC5vcmcv
+ZmluZGluZ3MvZWE5MmUxYTctNjliZC00NjA4LWJjMmMtMmZmNGNhMTE4ZjljL3N5el9yZQ0KPnBy
+bw0KPg0KPk9vcHM6IGdlbmVyYWwgcHJvdGVjdGlvbiBmYXVsdCwgcHJvYmFibHkgZm9yIG5vbi1j
+YW5vbmljYWwgYWRkcmVzcw0KPjB4ZGZmZmZjMDAwMDAwMDAwMzogMDAwMCBbIzFdIFNNUCBLQVNB
+TiBQVEkNCj5LQVNBTjogbnVsbC1wdHItZGVyZWYgaW4gcmFuZ2UgWzB4MDAwMDAwMDAwMDAwMDAx
+OC0weDAwMDAwMDAwMDAwMDAwMWZdDQo+Q1BVOiAxIFVJRDogMCBQSUQ6IDU5NjcgQ29tbTogc3l6
+LjAuMTggTm90IHRhaW50ZWQgc3l6a2FsbGVyICMwIFBSRUVNUFQoZnVsbCkNCj5IYXJkd2FyZSBu
+YW1lOiBRRU1VIFN0YW5kYXJkIFBDIChRMzUgKyBJQ0g5LCAyMDA5KSwgQklPUw0KPjEuMTYuMi1k
+ZWJpYW4tMS4xNi4yLTEgMDQvMDEvMjAxNA0KPlJJUDogMDAxMDp0ZXN0X2Jsb29tX2ZpbHRlciBt
+bS92bXNjYW4uYzoyNzg1IFtpbmxpbmVdDQo+UklQOiAwMDEwOmxydV9nZW5fbG9va19hcm91bmQr
+MHg0NWMvMHhkMjAgbW0vdm1zY2FuLmM6NDIwNg0KPkNvZGU6IDIyIGJlIGZmIDQ4IGM3IDQ0IDI0
+IDQ4IDAwIDAwIDAwIDAwIDQ4IDgzIGMzIDI4IDQ4IDg5IGRkIDQ4IGMxIGVkIDAzIDQyDQo+ODAg
+N2MgMjUgMDAgMDAgNzQgMDggNDggODkgZGYgZTggOTcgYjUgMjggMDAgNGMgOGIgM2IgPDQxPiA4
+MCA3YyAyNCAwMyAwMCA3NA0KPjBhIGJmIDE4IDAwIDAwIDAwIGU4IDgyIGI1IDI4IDAwIDRjIDhi
+IDI0IDI1DQo+UlNQOiAwMDE4OmZmZmZjOTAwMDQ2ZTVjOTAgRUZMQUdTOiAwMDAxMDI0Ng0KPlJB
+WDogMDAwMDAwMDAwMDAwMDAwMCBSQlg6IGZmZmZjOTAwMDQ2ZTVlNjggUkNYOiBmZmZmODg4MTEw
+MGIxZDAwDQo+UkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJTSTogMDAwMDAwMDAwMDAwMDAwMCBSREk6
+IDAwMDAwMDAwMDAwMDAwMDANCj5SQlA6IDFmZmZmOTIwMDA4ZGNiY2QgUjA4OiBmZmZmODg4MTEw
+MDhmY2MzIFIwOTogMWZmZmYxMTAyMjAxMWY5OA0KPlIxMDogZGZmZmZjMDAwMDAwMDAwMCBSMTE6
+IGZmZmZlZDEwMjIwMTFmOTkgUjEyOiBkZmZmZmMwMDAwMDAwMDAwDQo+UjEzOiAwMDAwNTU1NTg1
+YWY0MDAwIFIxNDogZmZmZmVhMDAwNmE2OWZjMCBSMTU6IGZmZmY4ODgxMTQ0NTcxNjgNCj5GUzog
+IDAwMDA1NTU1ODVhZDk1MDAoMDAwMCkgR1M6ZmZmZjg4ODJhOTQ2MTAwMCgwMDAwKQ0KPmtubEdT
+OjAwMDAwMDAwMDAwMDAwMDANCj5DUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAw
+MDAwMDgwMDUwMDMzDQo+Q1IyOiAwMDAwN2Y0NzUzODE3ZGFjIENSMzogMDAwMDAwMDFiOWE1ZTAw
+MCBDUjQ6IDAwMDAwMDAwMDAwMDA2ZjANCj5DYWxsIFRyYWNlOg0KPiA8VEFTSz4NCj4gZm9saW9f
+cmVmZXJlbmNlZF9vbmUrMHg3MjQvMHgxMzYwIG1tL3JtYXAuYzo5NjINCj4gcm1hcF93YWxrX2Fu
+b24rMHg1Y2IvMHg3YzAgbW0vcm1hcC5jOjI5NzMgIHJtYXBfd2Fsaw0KPm1tL3JtYXAuYzozMDc4
+IFtpbmxpbmVdDQo+IGZvbGlvX3JlZmVyZW5jZWQrMHgzYzAvMHg1ZjAgbW0vcm1hcC5jOjEwODEg
+IGZvbGlvX2NoZWNrX3JlZmVyZW5jZXMNCj5tbS92bXNjYW4uYzo4NzAgW2lubGluZV0NCj4gc2hy
+aW5rX2ZvbGlvX2xpc3QrMHgxMDA4LzB4NTI0MCBtbS92bXNjYW4uYzoxMjM3DQo+IGV2aWN0X2Zv
+bGlvcysweDNmODIvMHg1MDkwIG1tL3Ztc2Nhbi5jOjQ4NTMNCj4gdHJ5X3RvX3Nocmlua19scnV2
+ZWMrMHhiNjIvMHhmYTAgbW0vdm1zY2FuLmM6NTAwOA0KPmxydV9nZW5fc2hyaW5rX2xydXZlYyBt
+bS92bXNjYW4uYzo1MTU3IFtpbmxpbmVdDQo+IHNocmlua19scnV2ZWMrMHg1NGUvMHgyYjMwIG1t
+L3Ztc2Nhbi5jOjU5MTEgIHNocmlua19ub2RlX21lbWNncw0KPm1tL3Ztc2Nhbi5jOjYxNDcgW2lu
+bGluZV0NCj4gc2hyaW5rX25vZGUrMHhhNDEvMHgzYTkwIG1tL3Ztc2Nhbi5jOjYxODggIHNocmlu
+a196b25lcw0KPm1tL3Ztc2Nhbi5jOjY0MjcgW2lubGluZV0NCj4gZG9fdHJ5X3RvX2ZyZWVfcGFn
+ZXMrMHg2YTIvMHgxOTgwIG1tL3Ztc2Nhbi5jOjY0ODkNCj4gdHJ5X3RvX2ZyZWVfbWVtX2Nncm91
+cF9wYWdlcysweDJmZi8weDg3MCBtbS92bXNjYW4uYzo2ODExDQo+IHRyeV9jaGFyZ2VfbWVtY2cr
+MHg4MjcvMHgxNTYwIG1tL21lbWNvbnRyb2wuYzoyNjQyDQo+b2JqX2Nncm91cF9jaGFyZ2VfcGFn
+ZXMgbW0vbWVtY29udHJvbC5jOjMwODQgW2lubGluZV0NCj4gX19tZW1jZ19rbWVtX2NoYXJnZV9w
+YWdlKzB4MzJhLzB4NTMwIG1tL21lbWNvbnRyb2wuYzozMTI4DQo+IF9fYWxsb2NfZnJvemVuX3Bh
+Z2VzX25vcHJvZisweDFjMS8weDM4MCBtbS9wYWdlX2FsbG9jLmM6NTI3MQ0KPl9fYWxsb2NfcGFn
+ZXNfbm9wcm9mIG1tL3BhZ2VfYWxsb2MuYzo1Mjg4IFtpbmxpbmVdDQo+IGFsbG9jX3BhZ2VzX2J1
+bGtfbm9wcm9mKzB4NTY5LzB4NzEwIG1tL3BhZ2VfYWxsb2MuYzo1MjA4DQo+IGFsbG9jX3BhZ2Vz
+X2J1bGtfbWVtcG9saWN5X25vcHJvZisweDM0ZS8weDE2ODAgbW0vbWVtcG9saWN5LmM6Mjc5Mg0K
+PnZtX2FyZWFfYWxsb2NfcGFnZXMgbW0vdm1hbGxvYy5jOjM3MDAgW2lubGluZV0gIF9fdm1hbGxv
+Y19hcmVhX25vZGUNCj5tbS92bWFsbG9jLmM6Mzg3NSBbaW5saW5lXQ0KPiBfX3ZtYWxsb2Nfbm9k
+ZV9yYW5nZV9ub3Byb2YrMHhiZDkvMHgxYTgwIG1tL3ZtYWxsb2MuYzo0MDU4DQo+X19icGZfbWFw
+X2FyZWFfYWxsb2Mga2VybmVsL2JwZi9zeXNjYWxsLmM6NDA0IFtpbmxpbmVdDQo+IGJwZl9tYXBf
+YXJlYV9hbGxvYysweDEyZC8weDE3MCBrZXJuZWwvYnBmL3N5c2NhbGwuYzo0MTENCj4gYmxvb21f
+bWFwX2FsbG9jKzB4MjJmLzB4NDcwIGtlcm5lbC9icGYvYmxvb21fZmlsdGVyLmM6MTQ2DQo+IG1h
+cF9jcmVhdGUrMHhhZmQvMHgxNmEwIGtlcm5lbC9icGYvc3lzY2FsbC5jOjE1MDcNCj4gX19zeXNf
+YnBmKzB4NmUxLzB4OTUwIGtlcm5lbC9icGYvc3lzY2FsbC5jOjYyMTAgIF9fZG9fc3lzX2JwZg0K
+Pmtlcm5lbC9icGYvc3lzY2FsbC5jOjYzNDEgW2lubGluZV0gIF9fc2Vfc3lzX2JwZiBrZXJuZWwv
+YnBmL3N5c2NhbGwuYzo2MzM5DQo+W2lubGluZV0NCj4gX194NjRfc3lzX2JwZisweDdjLzB4OTAg
+a2VybmVsL2JwZi9zeXNjYWxsLmM6NjMzOQ0KPiBkb19zeXNjYWxsX3g2NCBhcmNoL3g4Ni9lbnRy
+eS9zeXNjYWxsXzY0LmM6NjMgW2lubGluZV0NCj4gZG9fc3lzY2FsbF82NCsweDE0ZC8weGY4MCBh
+cmNoL3g4Ni9lbnRyeS9zeXNjYWxsXzY0LmM6OTQNCj5lbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3
+ZnJhbWUrMHg3Ny8weDdmDQo+UklQOiAwMDMzOjB4N2Y0NzUzNTljNzk5DQo+Q29kZTogZmYgYzMg
+NjYgMmUgMGYgMWYgODQgMDAgMDAgMDAgMDAgMDAgMGYgMWYgNDQgMDAgMDAgNDggODkgZjggNDgg
+ODkgZjcgNDggODkNCj5kNiA0OCA4OSBjYSA0ZCA4OSBjMiA0ZCA4OSBjOCA0YyA4YiA0YyAyNCAw
+OCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDczIDAxIGMzDQo+NDggYzcgYzEgZTggZmYgZmYg
+ZmYgZjcgZDggNjQgODkgMDEgNDgNCj5SU1A6IDAwMmI6MDAwMDdmZmYyZTQ4MGQ5OCBFRkxBR1M6
+IDAwMDAwMjQ2IE9SSUdfUkFYOg0KPjAwMDAwMDAwMDAwMDAxNDENCj5SQVg6IGZmZmZmZmZmZmZm
+ZmZmZGEgUkJYOiAwMDAwN2Y0NzUzODE1ZmEwIFJDWDogMDAwMDdmNDc1MzU5Yzc5OQ0KPlJEWDog
+MDAwMDAwMDAwMDAwMDA1MCBSU0k6IDAwMDAyMDAwMDAwMDBkYzAgUkRJOiAwMDAwMDAwMDAwMDAw
+MDAwDQo+UkJQOiAwMDAwN2Y0NzUzNjMyYmQ5IFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6IDAw
+MDAwMDAwMDAwMDAwMDANCj5SMTA6IDAwMDAwMDAwMDAwMDAwMDAgUjExOiAwMDAwMDAwMDAwMDAw
+MjQ2IFIxMjogMDAwMDAwMDAwMDAwMDAwMA0KPlIxMzogMDAwMDdmNDc1MzgxNWZhYyBSMTQ6IDAw
+MDA3ZjQ3NTM4MTVmYTAgUjE1OiAwMDAwN2Y0NzUzODE1ZmEwDQo+PC9UQVNLPiBNb2R1bGVzIGxp
+bmtlZCBpbjoNCj4tLS1bIGVuZCB0cmFjZSAwMDAwMDAwMDAwMDAwMDAwIF0tLS0NCj5SSVA6IDAw
+MTA6dGVzdF9ibG9vbV9maWx0ZXIgbW0vdm1zY2FuLmM6Mjc4NSBbaW5saW5lXQ0KPlJJUDogMDAx
+MDpscnVfZ2VuX2xvb2tfYXJvdW5kKzB4NDVjLzB4ZDIwIG1tL3Ztc2Nhbi5jOjQyMDYNCj5Db2Rl
+OiAyMiBiZSBmZiA0OCBjNyA0NCAyNCA0OCAwMCAwMCAwMCAwMCA0OCA4MyBjMyAyOCA0OCA4OSBk
+ZCA0OCBjMSBlZCAwMyA0Mg0KPjgwIDdjIDI1IDAwIDAwIDc0IDA4IDQ4IDg5IGRmIGU4IDk3IGI1
+IDI4IDAwIDRjIDhiIDNiIDw0MT4gODAgN2MgMjQgMDMgMDAgNzQNCj4wYSBiZiAxOCAwMCAwMCAw
+MCBlOCA4MiBiNSAyOCAwMCA0YyA4YiAyNCAyNQ0KPlJTUDogMDAxODpmZmZmYzkwMDA0NmU1Yzkw
+IEVGTEFHUzogMDAwMTAyNDYNCj5SQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiBmZmZmYzkwMDA0
+NmU1ZTY4IFJDWDogZmZmZjg4ODExMDBiMWQwMA0KPlJEWDogMDAwMDAwMDAwMDAwMDAwMCBSU0k6
+IDAwMDAwMDAwMDAwMDAwMDAgUkRJOiAwMDAwMDAwMDAwMDAwMDAwDQo+UkJQOiAxZmZmZjkyMDAw
+OGRjYmNkIFIwODogZmZmZjg4ODExMDA4ZmNjMyBSMDk6IDFmZmZmMTEwMjIwMTFmOTgNCj5SMTA6
+IGRmZmZmYzAwMDAwMDAwMDAgUjExOiBmZmZmZWQxMDIyMDExZjk5IFIxMjogZGZmZmZjMDAwMDAw
+MDAwMA0KPlIxMzogMDAwMDU1NTU4NWFmNDAwMCBSMTQ6IGZmZmZlYTAwMDZhNjlmYzAgUjE1OiBm
+ZmZmODg4MTE0NDU3MTY4DQo+RlM6ICAwMDAwNTU1NTg1YWQ5NTAwKDAwMDApIEdTOmZmZmY4ODgy
+YTk0NjEwMDAoMDAwMCkNCj5rbmxHUzowMDAwMDAwMDAwMDAwMDAwDQo+Q1M6ICAwMDEwIERTOiAw
+MDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMw0KPkNSMjogMDAwMDdmNDc1MzgxN2Rh
+YyBDUjM6IDAwMDAwMDAxYjlhNWUwMDAgQ1I0OiAwMDAwMDAwMDAwMDAwNmYwDQo+LS0tLS0tLS0t
+LS0tLS0tLQ0KPkNvZGUgZGlzYXNzZW1ibHkgKGJlc3QgZ3Vlc3MpOg0KPiAgIDA6ICAgMjIgYmUg
+ZmYgNDggYzcgNDQgICAgICAgYW5kICAgIDB4NDRjNzQ4ZmYoJXJzaSksJWJoDQo+ICAgNjogICAy
+NCA0OCAgICAgICAgICAgICAgICAgICBhbmQgICAgJDB4NDgsJWFsDQo+ICAgODogICAwMCAwMCAg
+ICAgICAgICAgICAgICAgICBhZGQgICAgJWFsLCglcmF4KQ0KPiAgIGE6ICAgMDAgMDAgICAgICAg
+ICAgICAgICAgICAgYWRkICAgICVhbCwoJXJheCkNCj4gICBjOiAgIDQ4IDgzIGMzIDI4ICAgICAg
+ICAgICAgIGFkZCAgICAkMHgyOCwlcmJ4DQo+ICAxMDogICA0OCA4OSBkZCAgICAgICAgICAgICAg
+ICBtb3YgICAgJXJieCwlcmJwDQo+ICAxMzogICA0OCBjMSBlZCAwMyAgICAgICAgICAgICBzaHIg
+ICAgJDB4MywlcmJwDQo+ICAxNzogICA0MiA4MCA3YyAyNSAwMCAwMCAgICAgICBjbXBiICAgJDB4
+MCwweDAoJXJicCwlcjEyLDEpDQo+ICAxZDogICA3NCAwOCAgICAgICAgICAgICAgICAgICBqZSAg
+ICAgMHgyNw0KPiAgMWY6ICAgNDggODkgZGYgICAgICAgICAgICAgICAgbW92ICAgICVyYngsJXJk
+aQ0KPiAgMjI6ICAgZTggOTcgYjUgMjggMDAgICAgICAgICAgY2FsbCAgIDB4MjhiNWJlDQo+ICAy
+NzogICA0YyA4YiAzYiAgICAgICAgICAgICAgICBtb3YgICAgKCVyYngpLCVyMTUNCj4qIDJhOiAg
+IDQxIDgwIDdjIDI0IDAzIDAwICAgICAgIGNtcGIgICAkMHgwLDB4MyglcjEyKSA8LS0gdHJhcHBp
+bmcNCj5pbnN0cnVjdGlvbg0KPiAgMzA6ICAgNzQgMGEgICAgICAgICAgICAgICAgICAgamUgICAg
+IDB4M2MNCj4gIDMyOiAgIGJmIDE4IDAwIDAwIDAwICAgICAgICAgIG1vdiAgICAkMHgxOCwlZWRp
+DQo+ICAzNzogICBlOCA4MiBiNSAyOCAwMCAgICAgICAgICBjYWxsICAgMHgyOGI1YmUNCj4gIDNj
+OiAgIDRjICAgICAgICAgICAgICAgICAgICAgIHJleC5XUg0KPiAgM2Q6ICAgOGIgICAgICAgICAg
+ICAgICAgICAgICAgLmJ5dGUgMHg4Yg0KPiAgM2U6ICAgMjQgMjUgICAgICAgICAgICAgICAgICAg
+YW5kICAgICQweDI1LCVhbA0KI3N5eiB0ZXN0DQoNCmRpZmYgLS1naXQgYS9tbS92bXNjYW4uYyBi
+L21tL3Ztc2Nhbi5jDQppbmRleCBmY2Y2YjZmMjFlYjkuLjU1NThhMjRkMTU2NCAxMDA2NDQNCi0t
+LSBhL21tL3Ztc2Nhbi5jDQorKysgYi9tbS92bXNjYW4uYw0KQEAgLTQyMzUsNyArNDIzNSw3IEBA
+IGJvb2wgbHJ1X2dlbl9sb29rX2Fyb3VuZChzdHJ1Y3QgcGFnZV92bWFfbWFwcGVkX3dhbGsgKnB2
+bXcpDQogICAgICAgIHdhbGsgPSBjdXJyZW50LT5yZWNsYWltX3N0YXRlID8gY3VycmVudC0+cmVj
+bGFpbV9zdGF0ZS0+bW1fd2FsayA6IE5VTEw7DQogDQogICAgICAgIC8qIG1heSB0aGUgcG1kIGhh
+cyBiZWVuIHNldCBpbiBibG9vbSBmaWx0ZXIgKi8NCi0gICAgICAgaWYgKHRlc3RfYmxvb21fZmls
+dGVyKG1tX3N0YXRlLCBtYXhfc2VxLCBwdm13LT5wbWQpKQ0KKyAgICAgICBpZiAobW1fc3RhdGUg
+JiYgdGVzdF9ibG9vbV9maWx0ZXIobW1fc3RhdGUsIG1heF9zZXEsIHB2bXctPnBtZCkpDQogICAg
+ICAgICAgICAgICAgcmV0dXJuIHRydWU7DQogDQogICAgICAgIHN0YXJ0ID0gbWF4KGFkZHIgJiBQ
+TURfTUFTSywgdm1hLT52bV9zdGFydCk7DQoNCj4NCj4NCj4qKioNCj4NCj5JZiB0aGVzZSBmaW5k
+aW5ncyBoYXZlIGNhdXNlZCB5b3UgdG8gcmVzZW5kIHRoZSBzZXJpZXMgb3Igc3VibWl0IGEgc2Vw
+YXJhdGUgZml4LA0KPnBsZWFzZSBhZGQgdGhlIGZvbGxvd2luZyB0YWcgdG8geW91ciBjb21taXQg
+bWVzc2FnZToNCj4gIFRlc3RlZC1ieTogc3l6Ym90QHN5emthbGxlci5hcHBzcG90bWFpbC5jb20N
+Cj4NCj4tLS0NCj5UaGlzIHJlcG9ydCBpcyBnZW5lcmF0ZWQgYnkgYSBib3QuIEl0IG1heSBjb250
+YWluIGVycm9ycy4NCj5zeXpib3QgY2kgZW5naW5lZXJzIGNhbiBiZSByZWFjaGVkIGF0IHN5emth
+bGxlckBnb29nbGVncm91cHMuY29tLg0K
 
