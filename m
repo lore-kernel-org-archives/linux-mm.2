@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D685EC047D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:34:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23ADDEC0463
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B651F6B00B2; Tue,  3 Mar 2026 04:34:27 -0500 (EST)
+	id 82E0B6B00C5; Tue,  3 Mar 2026 04:37:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22296B00B3; Tue,  3 Mar 2026 04:34:27 -0500 (EST)
+	id 805326B00C6; Tue,  3 Mar 2026 04:37:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5BA06B00B5; Tue,  3 Mar 2026 04:34:27 -0500 (EST)
+	id 731EB6B00C7; Tue,  3 Mar 2026 04:37:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 925CB6B00B2
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:34:27 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3526713AABB
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:34:27 +0000 (UTC)
-X-FDA: 84504241374.20.46DAE1D
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FB3A6B00C5
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:37:39 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CB8150449
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:37:39 +0000 (UTC)
+X-FDA: 84504249438.25.9A931E3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5CA334000D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:34:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TrgZIT4+;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 48628C000F
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:37:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QfwWX0/a";
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772530465;
+	s=arc-20220608; t=1772530657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpSS4EIXQ00IZEPJD8F6ezjT19ORTYn2gwyOKDkMdiU=;
-	b=kV5CxCFcQMqWPdrSsRYtlVeSMoHvbRSY77FfVHmlTvHof8FDFapdtsxC+x5zhmS/oKTxAw
-	8uH+xOgB2Ios7eqbFDcvwSkgyBA4jRulGLUZMb9ymISGbAiWS3hOBRF+VhDtjiusr606R2
-	BMKNecdMVFORvvvnk7ZZTl8dXq5D11o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772530465; a=rsa-sha256;
-	cv=none;
-	b=zT2ZjUsAiMaS+Uib0+JzJhXO8Ecsl8FHBcb3puw/HyQ1P90+tRJz1wDrINSwx1T48dcPz0
-	f8yrYvN9MI85dkLMN6SEr+4n8PFFHrbgZ1BQSoU8pQEuhZG41aY+OAA+vTg2QijlPoOHFz
-	mKdgqLKyhoAptcni7qnkeC1t5WecKDA=
+	bh=cedbXozPWUY7s8Df24mEVtGVT18inJhg4t5Shp1b5nY=;
+	b=ldGjVwroZ4j0UaQRJgqvyxeCCeMbio2fqULSgPNO07czoUG11euzs+RV7gSVL/cFkJJmZX
+	U6HQctuWzfSijoHGbfYvty9hfCY2+ROnszBGHzapyrRZq8FvgUsuHKvk9/BSvM50Vgifoi
+	uvG7NW4ty5rVSaccKb4Mn6XqIDHRvdI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TrgZIT4+;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QfwWX0/a";
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772530657; a=rsa-sha256;
+	cv=none;
+	b=xjoRBWZb0xt4UQwdLqYRmWCRGCVtxyqh82W8M7XLfP2EN7q+cxZlwEcJYwnsTk/EBapWzm
+	bK+uuqqaJYPf8p26QSbno3b8BYqweAyf7+pJAIEyHMery+w2bRtiK8dMEGFwE0KHWzyD5L
+	KGzYlS2lBaYdmJErFv56NI5M+KNTEOs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55E4F43E42;
-	Tue,  3 Mar 2026 09:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E94C116C6;
-	Tue,  3 Mar 2026 09:34:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F32F4056F;
+	Tue,  3 Mar 2026 09:37:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDDFC19425;
+	Tue,  3 Mar 2026 09:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772530464;
-	bh=aF0geMfZfg7K36R3UA50A5lGdrThrnCyNqDKuaHXlUU=;
+	s=k20201202; t=1772530656;
+	bh=HWIX1VXWGP5HassDQ1MCakNYhPt303yxu0dwTHvL5BI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TrgZIT4+ZXZ5Ij0Pckh4JcvO6r3FTtQqoX3igL1DYRgXGSlUB2kmvsCk2EWI3KSOD
-	 onrlbftUWavPQo3y3shH+1g15Lr3BxFMVeJsqyZhGmTL+Hi569qcQBiA+c0+nBRiU/
-	 U16dsnQKo6xoeAX5L2v4GQ/tjadQ1c/ddea9YUAXMMdyIov7FAaogWAnGnhuRzsy+c
-	 R/4BJT/0udRLDF2MjHIcVxziOE3GLDi7v2dH7cg6Ws7zBMYALep8TU7+o8tqygQYQo
-	 hNtH2kzCuJIIUJyJ7FSnrGzIG2lLUna0yfybyDh5aMZVdC0IpopPBjIZQTVKjfzaMa
-	 pTJrRFC3GzrmA==
-Message-ID: <8580309c-7166-4475-80de-fb2a11a8a1e8@kernel.org>
-Date: Tue, 3 Mar 2026 10:34:19 +0100
+	b=QfwWX0/abWuzpZ4Aya1NffXUEnkK9KWGoLslHJu+eBpOgpTbau/lAw3+VKWop/2UA
+	 iZTS34s56/mZqD1RrvBlfhj6ZWejOKi5TNXlIsulfiiESX3mLZ45oaC3MipTgyOhDQ
+	 3OsDZI/KJmGEY2iNi1GSksPHUHwUXdVMeQbTuxerajttSvcgOVu6WyM5qbg2KqbTnM
+	 eOhxzTAIZG/ieJiGyqKtut308v5thEBAbWZJXY6YhN2j8VKsgFZWfniXlBbO1+q5wY
+	 lUUobbSZvR6IFZbWHROwfvATggC2tL3mqV7R5rAhQMfwNXtGB3UrpTzufIqpAQWNe+
+	 cYtKKePQu4XSQ==
+Message-ID: <8d78db89-2f84-48c5-870a-6bb1fc1ddc88@kernel.org>
+Date: Tue, 3 Mar 2026 10:37:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] mm: memcg: simplify objcg charge size and stock
- remainder math
+Subject: Re: [PATCH 3/5] mm: memcontrol: split out __obj_cgroup_charge()
 Content-Language: en-US
 To: Johannes Weiner <hannes@cmpxchg.org>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -77,22 +76,21 @@ Cc: Hao Li <hao.li@linux.dev>, Michal Hocko <mhocko@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
  Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- Johannes Weiner <jweiner@meta.com>
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260302195305.620713-1-hannes@cmpxchg.org>
- <20260302195305.620713-3-hannes@cmpxchg.org>
+ <20260302195305.620713-4-hannes@cmpxchg.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260302195305.620713-3-hannes@cmpxchg.org>
+In-Reply-To: <20260302195305.620713-4-hannes@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rhkoh3fsj15646egcyqumebnk9ahri9t
+X-Rspamd-Queue-Id: 48628C000F
+X-Stat-Signature: pq6745k31dwox9z5e5jkdhskocsiwkcz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CA334000D
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772530465-493759
-X-HE-Meta: U2FsdGVkX1/XQBHeDAgL9zCNK0CGzIMAwcZhwLTV1ZBRM+xBj6B2oW1LwO5rEokNZI5mU+jhlBJRqEViP0bH+sv17wKsBwFcJGlKGC7uK8q7nQpIBxwd500fS9lpapMHomUQKesrkBwx8MDPxFHhJFs0LHsfkSc0WCJdmkYNjSTj0qsSF9FNH92ayuAOMcMM7uDWjKig913e8r05Gwk+KO4TeA0xNMvO/HT1cJeTnG2yLyICYWz96AlCq7XotqlvDeITOU21m+frEsyXtNX0YRHHf4hNCF+e6XvS4NkY/Q8+jmos52wOsZ5TznzWJvw7GCRDpD0dBZVD74j2UAw2HiwU7oWtaIURzm0lSDYzShWzEEzwZJF3Kdlv/X7hmQWcAXTc4Dj75Lm+Bw8i6wLkdJxX3/0I4K2ZFmpDIhVmDG4zc4/tePPfm+I3CVDZelk6pDwsTtQvxqVVVDZiYmxvCGzULgtEBAGfg09O3aIIkIv/oJPgpq6OtKRzUd7QyCWmlwOMNP6zxmse+Ir2+UTfBr8blqybFR/ZYgxDlfs0h8p+3LZgKRAVfmKm69xL7zboTi509BRWarFgfXtH64Q9kY1z/lO/6gWeW6N725I6VpA7FqkH8q1xbLXL4ucrZRoZ0Hx1Qcm1Ee8eUJr0PdhDAFsSABmjkbU+vx10TKMkK8w3H5LcY6N3RlKvBjIW20og8z/uxoGovTlqd9WLmhYBG+NNDoWnbSrM6b4IIeVyySbF+LaZNqXGNUeaeUxUSj3Q/PLS6Nk3MyvsirXI5aoUcaav3n616W67mJAkoAU6m4C51+7kzxSSVCHMGJWsSOYAC2nEixIFcbW+W0sKXBSv8b1TQ6HfK1wmR1oxRErYjw3lnmc46Al1MZTZ6H/wHbhrATD3aOIgnUMV2H3uik3qnyV69F73IyaiVHmbl5R8SLn8XombyY11dlpyNCBjpb0Ogc+xia6LmGdorS3MMBT
- gJ3eu+1K
- tXpDpu0DAghnRzhOywix/osk2QJisEhWZPTsfF3tVHXEWCINaV5nUMNmRRSijfTjjCAnvqd4RRso/Kvreu+SLAWqu4wwCaw6sKhDDEOq6UEBGTinEHQo3bSZUXvmxslV0B1ngXl33QDHHNO3fNPrROR1V1HwU4Uazgm5iBY597sdlPou/kn+kg9GAVFkUPpRCEn1Gc4M2ndTM6UgiO9Xa/XAXJQhb5Iozw0vrQsboPEQv7e1fewq4FWa0tgMEursrqd/HfMYVe5qB0CRVnWiKM5GgKPiK0jJSywX7iM5UX85I2ms7E00rlhajxLfddRQk4p2hPScXzmKuWGWm5offRZTnCpI2v2Ov3HF/KLBHwyg8Si0Z+i5wC5rIHQ6f73Wq/16uoudpfqmF9ayjKDUzl8Ss1Q==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772530657-593423
+X-HE-Meta: U2FsdGVkX18M1GPnd3tSdqRqDupMI2bmmrotNBWS0FhfMNAeibxDujqRagYZ2/Q6nJBEYBO4gvtFRhxbHM6oCwMAp+2fl9/zLx5GxR4OSAgq7qnvf49EAIT894oOzHvBWBG4fAnnoqJsKaQUH3hQNAkuegCRJ+y598lNR+cxxH6lJKr/XJO+CL6Kl+AX3J6ebhaxcMtgan1RxtF9uNIxwdITPdQOk6+1lbD2I9pHXSuqNNBYFCh2QboSL4vVMMqaJb73D9ciyf4Gs1RNW4k3mCp7XlWLcbjRAcxAUyR9RHQ002TYcD8xh15yaHc1/awytMzhqL8qRibdjSgSwMWOfyGO4u9w2aphKcfrJKcOb7XXvQpqIPBPGJCblLTUss6x+kHxYiCXrMVWTjiUJ1ppauK4esUkFSTxpYZ06QsZ8VwoOahd2Pn2msmFflEvEb0ShjT1JV3SokcOIlSOe+z8RJ0vukRwndpRnAUIhsdWsc4P1NZOhbZNw4j3uU7VGPBPiGIC6j5LGqXASoP1drBxGJ5/3u9QfzhDA3wSRpQM9mCnQRMS9cNa+zXNkQisqViswE9JR+HZGVj4nE154e7jHRgWvvLjsv+fL+565ik9sYySQymrp4zuKP9QdEKLfV0p2qKPffnwTWCZX8Esq1KLQ21nHypG07AVG0O6shhxIiyzTzfcUm591kB3ANNjuQAuuX3agebyJCOADylVSP2uS37MSYGJcuUrtKQviKC/YRgPuvlLNEXIfpKEWBokGq+7UPzqr2v4k/wk3BAXZN8spDlLLfe9MwP721BwUsz5n8ujEURqQADOAHQkRJoqQGM5q4LBrOcvHESVdm5q7PCQxdN2LvJ+bY//MS52LVDfL4GFQFjK+ZtkFX+yu4GlzCQCCdupui46WWEuBsRHMgu84lFca3U4lCbiUqfNNlDiFGqCCzK6AvdlgAuv47Y5gXVMiDJpLHzq6SJJkgAbqZL
+ gyf59kb3
+ mmz9FSxU0tPqRHmV4/Odg3D9SZEbbGW0EBSE+n3FPDZ4GR4wamtjZhwbZZ3kB5I2AeTeE4AKHsd+46FByyMlqugofbTWWVWT0AApNDvh1P0/FuVTE607rXL6YKL3rlmj0Gq3sAa8Vsd1zuHWllnZW2n+oNNRV2AejkksW0iLRVrKoXSH0B47HiLuNnSwJe6ez7jirGOtpw+byXaPIh1O6PKXeoV61fPz3KuNR5gM27JCksoGhj3pljD6sSTqd4CaYOvZEAcZJKcxDHvck0Zh922y4Ot0eelgd5D2c7Vp1eG3RBYioU6e3ROybuiQlmqno3QsebwZl+8eTtabxd1ZrJQICuHOLyuZeXaNUHjK6Bn5BV3sBPkUaX9Ss3OKSqWXGkW+s5aG5+kWaxIMaay1fOwX05kcP012F5ex/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,52 +99,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/2/26 20:50, Johannes Weiner wrote:
-> From: Johannes Weiner <jweiner@meta.com>
-> 
-> Use PAGE_ALIGN() and a more natural cache remainder calculation.
+> Move the page charge and remainder calculation into its own
+> function. It will make the slab stat refactor easier to follow.
 > 
 > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  mm/memcontrol.c | 16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a975ab3aee10..0d0a77fedb00 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3417,7 +3417,7 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
->  static int obj_cgroup_charge_account(struct obj_cgroup *objcg, gfp_t gfp, size_t size,
->  				     struct pglist_data *pgdat, enum node_stat_item idx)
->  {
-> -	unsigned int nr_pages, nr_bytes;
-> +	size_t charge_size, remainder;
->  	int ret;
->  
->  	if (likely(consume_obj_stock(objcg, size, pgdat, idx)))
-> @@ -3446,16 +3446,12 @@ static int obj_cgroup_charge_account(struct obj_cgroup *objcg, gfp_t gfp, size_t
->  	 * bytes is (sizeof(object) + PAGE_SIZE - 2) if there is no data
->  	 * race.
->  	 */
-> -	nr_pages = size >> PAGE_SHIFT;
-> -	nr_bytes = size & (PAGE_SIZE - 1);
-> +	charge_size = PAGE_ALIGN(size);
-> +	remainder = charge_size - size;
->  
-> -	if (nr_bytes)
-> -		nr_pages += 1;
-> -
-> -	ret = obj_cgroup_charge_pages(objcg, gfp, nr_pages);
-> -	if (!ret && (nr_bytes || pgdat))
-> -		refill_obj_stock(objcg, nr_bytes ? PAGE_SIZE - nr_bytes : 0,
-> -					 false, size, pgdat, idx);
-> +	ret = obj_cgroup_charge_pages(objcg, gfp, charge_size >> PAGE_SHIFT);
-> +	if (!ret && (remainder || pgdat))
-> +		refill_obj_stock(objcg, remainder, false, size, pgdat, idx);
->  
->  	return ret;
->  }
 
 
