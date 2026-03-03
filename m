@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF6C0EC0465
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:01:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86277EC0460
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:04:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B29196B00AA; Tue,  3 Mar 2026 04:01:41 -0500 (EST)
+	id DBA336B00AC; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEA5B6B00AC; Tue,  3 Mar 2026 04:01:41 -0500 (EST)
+	id D6E4D6B00AE; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F9676B00AD; Tue,  3 Mar 2026 04:01:41 -0500 (EST)
+	id C7D806B00AF; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD6C6B00AA
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:01:41 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5AEFF1C3EF
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:01:41 +0000 (UTC)
-X-FDA: 84504158802.28.3B339F0
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B77B56B00AC
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 782D1C1A81
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:04:33 +0000 (UTC)
+X-FDA: 84504166026.16.E820D31
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 79225A0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:01:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u2PKA6Op;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7A42F40013
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:04:31 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bwIg7by1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772528499;
+	s=arc-20220608; t=1772528671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dp99y/RowSASEil7hX6aGMwy2AdtEggOJ6ufOdrT85g=;
-	b=X8/qqv4m07d7kIEqUXz8ddAH624amvF3fJHlL1pjXkC1zySuut0yatXTwdYIYTBJaYekdy
-	0l8H4mqvXI2khL8kWnKNiPdtA9YMLDV0n6ZoyQ+RBpUEk07aisrwErLeymGHvFpjPknJQA
-	t68i8EQ0CsbXz1xYGuwpE4IVe27N0PE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772528499; a=rsa-sha256;
-	cv=none;
-	b=3mzq7CvmxBGaiwPhFAFTK2bN39QrLOseBAoPE+8avzQTH+yG+wJxZU3N7/lG3zNHK2UBXp
-	bMAVkYPbyCfRo7APHURQrqbMnbTir7a44srxaDWuh0yM1JbNkKGIZNt2DmyrW6PlrEz2Km
-	UYHn7RsJQjCTi/8lrfSO9e5057AnbJI=
+	bh=SLx2Bl9bORAU4WVbUx4nwnnYBAKxsx/PfZU/j2qQwi4=;
+	b=ovbm23KHPfFe9yISObJOZezndfK+9rN3t4jwWd8RL1V/7I9HE/KfUSS2YiSV07GWfwT4ME
+	XHAIdDK0x8hutyJQT/xuKB5f3Pktx/E11kALq+DFuJci7yGXeOqn64FaRgfuaO4qsVV5/3
+	L3I6uZKVSuynX9JiXA3jbyGv6v5oBOo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=u2PKA6Op;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bwIg7by1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772528671; a=rsa-sha256;
+	cv=none;
+	b=2aBtMgDTSkAxumMZwbwDRbGVeZ772fKrJ7wO3Kq+qfjduKgh2M6J1meOfHVecD25J7h2JH
+	xXbl0ySXQ11KHRtY8Nw5OdfbnobAWxG6VvKvOCkqfFQi0NlbKY+YC7iUnD6Hg4dd5/ZoXv
+	g3apZieBF+h0kXUuz1YOa1+qL78YIO8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B75740549;
-	Tue,  3 Mar 2026 09:01:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D258C2BC87;
-	Tue,  3 Mar 2026 09:01:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CE7942BAB;
+	Tue,  3 Mar 2026 09:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6CBC116C6;
+	Tue,  3 Mar 2026 09:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772528498;
-	bh=xIDhhFKu+QZGhGNatZGNHd+2DpHd3ohKIeS/HtirohI=;
+	s=k20201202; t=1772528670;
+	bh=pcRg7UWy0oARLBPCzhsxNcvTwx5WBbNiYe8TNPnBms8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=u2PKA6OpAxboIzAOfCcmy+G38IYeBYHiSzDBnTwnqDXel41RKhECx7XETmIzP9vt6
-	 DZr9207euHyJHUzt5C6WbVacT2DDye1Alml7Gdn8K4KXbH/0IAwGCRYb98PFLCcZ4I
-	 zM/iu91PB6qE4p8kj1P1+LuZVa4rHssBAe5a7bX5pL6NWMikW8KB51v4px0krgUmDD
-	 ach1EGskWjUlfa/Yc4d2yEbay344J8v3Wmzfbj7VEyQ2Skh7XX3HBrXXZmh21o6JKY
-	 +AhVc+0nzM2znyP+1aJeB6aPx6/vGVgoPGmtGUhfahoTlyXI6nbVUBvb+5jZhFDt82
-	 jznVIHjdPOIBQ==
-Message-ID: <94297332-45d8-4b8a-b368-ad66e128f273@kernel.org>
-Date: Tue, 3 Mar 2026 10:01:33 +0100
+	b=bwIg7by14/5Ml7GW5fG35Fybc0TWws4oWZAyqe1+hYdj4ZFel58Ezue5rsG8gjtAC
+	 Yg6gNAhYGp2wPP41LGs3qtEBF/Vk4AvoLjtLfxWmrE4gTF5kA9r/c6K3YxArzWAQrL
+	 BxxSdp9ycAwcg1Qu7kwPB0f9yLdLy4t8CnqCepfaHToGgZAD51vpW0ekyCw2QANT3+
+	 rybJCFWvfrIPw52F/oB1oSnhR+HsyAdjPe77nDzKwIkW9QkEn9IZH7eTaRf+WWxujU
+	 7x2pOm7B3QudTSqhVH5AB+Ed/bkj4rpTvlQ45FdazcS0AvKpf4q1pLg7AOdePTHnlA
+	 5CF0w2qRGr05Q==
+Message-ID: <f67087f4-d787-43b9-b3fe-7f0d5bb801c4@kernel.org>
+Date: Tue, 3 Mar 2026 10:04:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/vmscan: fix unintended mtc->nmask mutation in
- alloc_demote_folio()
-To: Bing Jiao <bingjiao@google.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, hannes@cmpxchg.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@kernel.org, shakeel.butt@linux.dev,
- weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com
-References: <20260302070351.3465439-1-bingjiao@google.com>
- <20260303052519.109244-1-bingjiao@google.com>
+Subject: Re: [BUG] mm/mempolicy: possible double-unlock in migrate_to_node()
+ on 6.6
+To: Matthew Wilcox <willy@infradead.org>,
+ "liying3@sungrowpower.com" <liying3@sungrowpower.com>
+Cc: akpm <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, victor7q <victor7q@163.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <2026030310525141773825@sungrowpower.com>
+ <aaZgUNxAyKC2IwuG@casper.infradead.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260303052519.109244-1-bingjiao@google.com>
+In-Reply-To: <aaZgUNxAyKC2IwuG@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 79225A0005
-X-Stat-Signature: c1d1mrnxoewhc4iigarapg8f5z5m6wt1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7A42F40013
+X-Stat-Signature: qguo13pomi4nyezn86ed8ozx81zh4h43
 X-Rspam-User: 
-X-HE-Tag: 1772528499-124651
-X-HE-Meta: U2FsdGVkX1/qxml4AFS3RzgI0VVB5PTDAYM5Xk9sx8SBJWIKk8QnOIiHXhTaCXhO641fqFFoCrcS/6hU0bICeFlzvRhsAOCsTlk1tWLWkJBwWSjAvh0mVO1mNHfYkdOGod2wEm/L0UPeGPuZDA2vUZlOHfYkJ2uG3FuagYl9McVmVYIFozQVfzqQEgDiejDFo+XHiS49DknjtNPrxDVJouZA8TMgOKqmuX5ZdehxSf6KePIukayQj47fh2NEO9ROlGh8iPQ5OEX13sBnVXR6klZs5/eHKoCUX9gMeEDrhuKWUKvDn4lkVrgZs3A/oLrto7D3C0olvD8RlpLRjF+N0Nz9ZrwO6D/GN9EDy+3rySBurGz6SygOGHhCd4rdYZvhOa+TrAxbOD5RYTzV+6gjHWJ6AymfMqvJriPp2fDleSfqeY5wTJgmU5hJPrPeAUnNGqV3CJXLZoe1H3NcqR3On+cGs63bcPfm6st2t3ttt6nBWUQ9nzl0KBdb3JDjxVJEHboUTHB8aMGkaWsuVZ2g9ltUTRWDgS93SY7/Yu2S4Xbwg34yNSZhDHzNrBI/8IwdnptfI1eBEZBex4u1p8Zy5CI3Ph8AbGc2N+2QRRLCT3l39U4bzv6v0BJM8MshL4QfzqiK1WPyD38xVUZCl63YYl9rFfdK1Log+vzsdqYDi28UnrX8QA9xObe9Cyeyx64/biwzE5GiVLWUmrkbt3SeOATnI/1WY0NO9cHgGNM8prXPqR+53SEDbX0M1sGxtw9RPL6Xc7s8ADQUqNHCMjIuf6edPXpwle1ZTa2y+lKpmFrrLV53/IAUqCvEy6hqZsmlb8knUqVk4cl86ipcR8mfaCof5WyfreQ0QofhvAcVkSbVxKy+l4q0rWT2f+4r8j/UaNbSV9JUJGWTmtlZjOSu4p+rydg5h+9aT2JmQDo2G7e1mC0cf8YWwxaqO+j+RbkMNq/60fuWBoi/6EbWUjq
- a1/SALrw
- K1Kn8OJo33ffo9xYuDE6rcf4d/sMMEEa22JFTiF3nX4xPwolhR12zxFF1RF1PXI+EVCD8T5pVPEmFzgX5NPFwvn2lSK73IAXvqImWPX58zJkI6UXFic1H0fhGWnOVpwPxOm3YbkQ2douSWXEAQX7MpIOHaAIRdl91cDG6VQiv+lC+Xz0jEalQsitPqwksRjSprDEqqAR5Wff5zDy8c8eGphf2Eh3YISQZbdrlsf3/uqliycJgxQ7yOER164qwPbDj3lRB7uNvMIdJVgOlUC2ldY4bktzOnzrSp3ZjeDTuP0Ag89vpAPv+VNxOPC3Zo4TRVkfpWSJ6STdK8uLZpoW01Pp663LsZ1pq5FGwn4iDClBJGCsAuWRJWFG34GdXzpl+OEENBABMMXsOUy0HFh/VW+6SwA==
+X-HE-Tag: 1772528671-753087
+X-HE-Meta: U2FsdGVkX18inBmEF4+v6QI5rOkGGsbwQuqeX/UD6MA7n7HVb8NyESJP/qQKp9+aasznFT3JBVswifWP34HvmplQ6CnjRzZwLkcIjR95NY5p21qh00Dfay6hM3eCshgVvEbsBMBJKo/Xa3bveBUP56VuFk3jecKO7z5spCbd+6YujoK45DeR1FptPNhSZMOaGKhSkaF2XmtR0MjE29805HMfmBBV4Xk5uNoNchWNKmFBPEfyMOjGz+qKAW8BYggC6/1GERmFgroSEE2X5uN71pEn3M7u/KS0mf518Y+B3l/o/rNEZpb/JcrWXj0wvQDO4cK2HLsFX3/tmRnZUlpJvA+G3bX/k8vDGOy9qb5axCEuTFVFA8q0XvGujlYdPwLQqgW1QqTAeoYbkDPYi84Va1DrFzfqfFo9YKU9yCXxw5pwlFGaNUweckwu0A08CK81iRiqb1bBqFABvN2m7Xd5vXKwgN/kBE+f40U94AmAXqHthaoblzRxwGKBvYA0Tw61nyBcBZjCm1XZd1f4jjdNjFGes+ZIxGPzyoR2uaYTTC5qjd0/tkoG7otWZ0jqbdoIXlRrEk17RfpZbodWFWUd3nOeXTIYPNGX65CV+PXbC0uQTIBJD6m+tq3qGrP4Z3x1eBrJkaDgwzDyDFw8QDKyci2ML85NZjCn3PgqM6aW2bTx//nb6CcxAP+zTWdmmwdqcW82gx+JxzEBtnDYu5EY/Fd0Z1gbiVxci/r6p1hnSql3j5uoVL4wifNkXehq7BZf4fxZmkMsn/UJedzgDiyfbKV8hhw/JLwhnRa9/5y9kgSAaEpFDF2JJTSheEHdAY2vuzu2wAU17DSPjvxr2Pg2WeR0+Z7b2wo52nZ+tXzmeAmVsSRQIggIb5V2OCawM3u9pX/1MjGe01qooFkdO654Oxm5cY5sZfVugmx3ssgGD7+7+H97V9KcXJUE33xHZjzL0O/w5s5G6OvBekhiRQv
+ 3FrV8C3G
+ w1l8KYbWyNlfAxwhmKf29u9JT56TI6JGuedDoZpfSYmBtDdaNUM5zP+M7WAviKN5C4FIzOV3cw6AuBmeK/NqVPJT8SDVJeuneyPHso8lukLcS8XO23nj4T7mcgvlNMHjmnVR/CMoeMhNBwHnNaVfVfVE985NQPQNqnOUCQRa9O/aM2rI76RK/TGFdzWJoEF/ao9QcP/eqfCFVw69KypsZT4akDbtmAlxkmOLViTZ1n5VeduMGqBUdLga8TTYlww8jyXyZU1bc0SKDZ0NskjuiBnD+8VYJPlo/9TFtvrh3c0fezHCVTGHrw2U2Ev5v+O10yS9UzCdDP86o8n0aha22tkArqNGIZM4fbhd/gNP+b8oFbO5yltLEe8ofBY0jhBZW5iL2nTlO7KUfADg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,25 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 06:25, Bing Jiao wrote:
-> In alloc_demote_folio(), mtc->nmask is set to NULL for the first
-> allocation. If that succeeds, it returns without restoring mtc->nmask
-> to allowed_mask. For subsequent allocations from the migrate_pages()
-> batch, mtc->nmask will be NULL. If the target node then becomes full,
-> the fallback allocation will use nmask = NULL, allocating from any
-> node allowed by the task cpuset, which for kswapd is all nodes.
+On 3/3/26 05:15, Matthew Wilcox wrote:
+> On Tue, Mar 03, 2026 at 10:52:51AM +0800, liying3@sungrowpower.com wrote:
+>> Hi Andrew,
+>>
+>> I found that a fix is required for this submission in branch 6.6.
+>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=a13b2b9b0b0b04612c7d81e3b3dfb485c5f7abc3 
 > 
-> To address this issue, use a local copy of the mtc structure with
-> nmask = NULL for the first allocation attempt specifically, ensuring
-> the original mtc remains unmodified.
+> Agreed, although your email should more properly have been directed to
+> David and possibly Greg.  Are you going to submit a patch to fix this,
+> or do you prefer that somebody else does it?
 > 
-> Fixes: 320080272892 ("mm/demotion: demote pages according to allocation fallback order")
-> Signed-off-by: Bing Jiao <bingjiao@google.com>
-> ---
->  mm/vmscan.c | 14 +++++---------
->  1 file changed, 5 insertions(+), 9 deletions(-)
+>> Regarding the difference between branches 6.6 and 6.12, in branch 6.6, mmap_read_lock() and mmap_read_unlock() are called outside the migrate_to_node() function. 
+>> Therefore, mmap_read_unlock(mm) should not be invoked inside migrate_to_node(); otherwise, it would result in a double unlock of the mm.
+>> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+>> index 54f1b78d1b2c0f..94c74c594d102a 100644
+>> --- a/mm/mempolicy.c
+>> +++ b/mm/mempolicy.c
+>> @@ -1071,6 +1071,10 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
+>> VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
+>> vma = find_vma(mm, 0);
+>> + if (unlikely(!vma)) {
+>> + mmap_read_unlock(mm); // this line should be deleted
+>> + return 0;
+>> + }
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Right, that unlock must go. Let me know if I should prepare a fix.
 
 -- 
 Cheers,
