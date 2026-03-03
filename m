@@ -4,136 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44592E67A79
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D33CDE67A70
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:05:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 615EF6B0005; Tue,  3 Mar 2026 02:00:47 -0500 (EST)
+	id 455C76B0088; Tue,  3 Mar 2026 02:05:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C3C66B0088; Tue,  3 Mar 2026 02:00:47 -0500 (EST)
+	id 403866B0089; Tue,  3 Mar 2026 02:05:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A5616B0089; Tue,  3 Mar 2026 02:00:47 -0500 (EST)
+	id 2E5686B008A; Tue,  3 Mar 2026 02:05:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 370446B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:00:47 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CF14B59EE3
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:00:46 +0000 (UTC)
-X-FDA: 84503854092.03.0AEBBC0
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D0E4280003
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:00:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=K9bcrcrC;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of r@hev.cc designates 74.125.224.44 as permitted sender) smtp.mailfrom=r@hev.cc
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772521244;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AC266B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:05:13 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7B31E13B5FF
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:05:12 +0000 (UTC)
+X-FDA: 84503865264.16.98112BC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2FC874000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:05:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=b7bGWMoL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hCBv1slS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cdiT0o1t;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=G6vp1Oyj;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf07.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772521510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mdDAqhN3rl5RL2XosH5lbLdupO3Vv/WKtZ8EOPEylcE=;
-	b=GxK8VqoIDx6JthzzhdJW1U8j2n/6R8RI4uzqlmTeCQBDZPQwGa5GeU7dF4kalmfXCB8yTr
-	/zDy/TST4XivCcM8HrY3r0G3FOyzo/eyLMUYw31/6jMGeyFV0rVl8P8nrv5vEcyZ6wqYyy
-	xmKxFidQYmYj2WtKcrY2ksV/ontiLrU=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=K9bcrcrC;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of r@hev.cc designates 74.125.224.44 as permitted sender) smtp.mailfrom=r@hev.cc
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772521244; a=rsa-sha256;
-	cv=pass;
-	b=T10h/ei6sx6u+8H0E1NUSlVjn5vcYBVPZJ4Ip97f02Ha+ZjHAYRPTSvtEZMYsQLwXHslhj
-	KiLvpNWwEN6Vy96MBLYfn7vCGh4uuMWZ340ChVMTPqv9DPWfQFz7PKRh1PBXABDKjuedW6
-	K6CzYqYQR5sGXgwIlBYfwLDdkXE+YmM=
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64ad8435f46so4978806d50.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 23:00:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772521244; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UBqddjoJuVNsxFqDQtcv7T++3D8sKLCqTZ8gxzXJC6RNLNb8b0g6/j/z398tq/Feoy
-         tthSpzGdD/gINYohZlsRe66e0wT8GJ4lU4721ScaArM/rYCIPlUg78sOYxjCkABbe+xa
-         lL9EvnQjCXN9xTkQvLBvn+PHCJN+0LQEiM/BOX/eVrTuvRs73A7kyc6ZPmnx8PxpdKe2
-         ww649GEUbLiQ4hmi8Tsxa4xFGMnCCXOg65aKyvsvv2XlQ5VOh0TT4NcClX5s+ZssPIcm
-         bEnPkyB34fOpPglSb6jBr+zxiUPsw5dfAep3qGBSPCLe3iN2MNu74BkXOsocnFzaAYIp
-         PX/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mdDAqhN3rl5RL2XosH5lbLdupO3Vv/WKtZ8EOPEylcE=;
-        fh=pKvaLZ7Owpo0BhuqvTdg98HJoWqVT/Fr7lJc4+Mi0AU=;
-        b=hpT1Oeiufw4aCvbYiIsfp9RHB3UoxjYhrw7JfMQte4XL/CSk+RNWFOSHIg4MVs+wrY
-         SJUxkM5S0PP+PMdhK1PB5GlxXF2qT+caZ8o7JiUU0rGZ1XXLePW3aba21+96J/FeX/39
-         2lGJczFcytaqoSlpZGgA07+bzlXfnxsPl6/B6w5cxGF/kE3hNRtITwiWh6wRhd/Tfs7W
-         k/d/L/rSyGJg291T+QE9ZUQI325uA36tqg/PrufIplyRGeyzk5m6DcW9ASFXZSNk1Lkt
-         EqKg4Ce5r4U3YutAsl9g45TYWHgXXRw3W56vVL/KdvYU3k/hOsk363ldHoi+98FA57U6
-         uDmQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1772521244; x=1773126044; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mdDAqhN3rl5RL2XosH5lbLdupO3Vv/WKtZ8EOPEylcE=;
-        b=K9bcrcrCvwJrNDocPMhGI0lYUFXe9S2kTB+B6F/l7JRjKrO8cNTftyi2K+NzCUjxqa
-         llpvfGw3yTlpLvUvJOFc2riz4Zz8vIhx7IAYdQ26df+8dpd75Fik8j9qs+XULSwG9PqR
-         HaLXs1swNXNi2VKS8wHRgvKGF/fZ8jNsOh0Tw1rXhMGnLWcskwWd0+iRuybJOFCqfx7A
-         SMSgDXCMDYW9q7oLtx8pX3fnx8h3x1yDskvsAtujCqmKj8XkrUEPIPdL1huTXy6OSA1r
-         IgouXbW3NjAt9ZbJPfUR805xrfLICmcukRzakUEA92xSJ+gQsr4efZarHPlH0DcsZku8
-         FuCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772521244; x=1773126044;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mdDAqhN3rl5RL2XosH5lbLdupO3Vv/WKtZ8EOPEylcE=;
-        b=bQF5FRYZhguyLROF3fxOnznM0Ah4o9G8QZztGJolrd2fpNjQ+MVSzQ+FmubTb/tFlT
-         KMENFibJla6LtlMn/xNBA/OHmuagy1l6ApuCxGSPNvnLlh9qFFDaDbBTce8QcJokbJUH
-         keu0OoYs1zqNXP79Jej/TFywOKUdYA+2maO6mpjcgTJzpeUnEatUMtej7EUb6flmkxzK
-         jYx1r0TZTBu9cA9UGSC2C1IAxPZdNrv/BlA3Ca7qEdZ/zoNeLxkJRwBt/vSgFUXEYGS5
-         ycw1+ojDZyC6Z37qudZLS4Pl+mIjIiRI59uyKgJQ2OMUNUB/F/fGgcQ0iwV9Ij5rAkcu
-         wyMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBAz5zt69kzoSKhaqsJp4za84T+GFMkldjd0ZkstX1My95axMKi/C31nTWSNNtKSJUCVP5Uk1DVQ==@kvack.org
-X-Gm-Message-State: AOJu0YyZ2R6d2qTQ4Vg4xCrwkj6hs83szb7u0OZIM2ZtUq+EFLMXKtyx
-	j7YCuhHUMGGw30PnGg7eQvwmjL3dT/6HN1K7jlUeEz/RAB8S7A8goBGQ/0JgvTG3rYrQ9+CtolR
-	WJLA4MfQHTpe6Dq8yzlA8QMZNjwEbVTWbJc2Mll7N2A==
-X-Gm-Gg: ATEYQzwuDwyXNexBL4BCmprPfP0IcJkQIn9NYkD5x3EmS6a7kPSQMsCgHYJ1pBSZdRV
-	wpX0Q67f3luVlaXiEcEM+qOLr7CaxFIZi7jaOTxLnpuHaWfO04LmeeA7Q+ZJx1G6bfuBueBxrTJ
-	jQ25aLl0/YSa/FXu/gFIlro4mX1GOVfbf23CiVu8vaVcTZth12TWBqR4Bja2n/VG2gTfm7saG+6
-	/h87+TCtEb0acZUVLvVgrKXablme/lFI/Ej0euE0JVnyBYeBMsbQBSy11Z1p9aQlK4rbzqglCAT
-	337TlYf6OF7B7QHdfC1+VVNLwYq3DUdmJK2cfCtgnPq4FyoCc6/C
-X-Received: by 2002:a53:d888:0:b0:64a:edf2:e769 with SMTP id
- 956f58d0204a3-64cc2080baemr9787968d50.10.1772521243655; Mon, 02 Mar 2026
- 23:00:43 -0800 (PST)
+	bh=SbqtGQb2uRnaIeW2MpYChMLVJcwORfI33Kj45iR5gD8=;
+	b=vjVUpdaFJ+W4eEeYtsie8kIjbl7B0CWe7Fbtlc8NSBGgNN8NN+irLWu8npe64kkHD5StVo
+	NVvnUF/HL9huYrJl3J7SB5YWPfUQb6/WFicDVcv8spGFyn1hcDN1b87fedtJAfKKuNbw5+
+	nOEBroNmlpEneuMjhU/qUxS6STSr81Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772521510; a=rsa-sha256;
+	cv=none;
+	b=jt/98GPy9FGMilGJukWZB1V9/oc6Vjm9w7nkYG8JEqu5XnjDj7WR2hgaw9GjxS9Q8z+Ol/
+	EbBsOrbDRKh7xRPxYOEU9/4jM9zv+fgBt1KXLRBSAfyQ/YDGiK4AtGnBAe7L4rF6AG1zhY
+	V0cIQjiRmiz6gRHw0kIQ4XilEDLG7lg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=b7bGWMoL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hCBv1slS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=cdiT0o1t;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=G6vp1Oyj;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf07.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D9CBC3F82F;
+	Tue,  3 Mar 2026 07:05:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772521508; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SbqtGQb2uRnaIeW2MpYChMLVJcwORfI33Kj45iR5gD8=;
+	b=b7bGWMoLOoDCZ26WjcpqihlrGzrArS2YeOhAXLEKm5snTwFGoZVqkZ8XCkQJIk3VleLja6
+	dSO/ktVRHj1VHBGHNtaNsBi2SSmGDZ0FfpDJOPspMRsmvBDDTFcjgPko5UmfEEkO1kH/YO
+	q3FO9HHRDUYRrnRqpo/x3UhrspaowLY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772521508;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SbqtGQb2uRnaIeW2MpYChMLVJcwORfI33Kj45iR5gD8=;
+	b=hCBv1slS+nbBHnG32l+Y5Nc/BsLk9YqcZV5QF+5TH+iyedtJVK7fAYvYHU3F5XuLmVW6Hg
+	5ggeAEQdM+3JuAAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772521507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SbqtGQb2uRnaIeW2MpYChMLVJcwORfI33Kj45iR5gD8=;
+	b=cdiT0o1tQF4nCZN2lEtBxgukeo3434zDN8hmYw3dTOybk1kMrAwbpBUOzRGkpkCa29Y5IZ
+	7SqnSzwY6tYvFD3Xrcro3bFLKXNykay6t5c22n2TNsPIy+2/w/unLaur3sxrquFoltJArI
+	gSBLP6Sersr4fFGye5MSSvzSLNi9d9E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772521507;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SbqtGQb2uRnaIeW2MpYChMLVJcwORfI33Kj45iR5gD8=;
+	b=G6vp1Oyj0nd2IqH6dGlJSzy0/UfhTeBd3Uk6Lgm58EZK1e+QazOV8G3wPnzDf1PSSDt+Ro
+	N4M+SeFm945QbBDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2BF7D3EA69;
+	Tue,  3 Mar 2026 07:05:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id toBfCCOIpmmDLwAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 03 Mar 2026 07:05:07 +0000
+Message-ID: <a8851c28-bd31-47e3-9af9-e299ed0780cb@suse.de>
+Date: Tue, 3 Mar 2026 08:05:06 +0100
 MIME-Version: 1.0
-References: <20260302155046.286650-1-r@hev.cc> <aaW-x-HVQpSuPRA1@casper.infradead.org>
- <CAHirt9j-appZ+Mn=8AoG=SW3Lrqi2ajdZDGp8yYWiBWkzBbQ9g@mail.gmail.com> <aaZyg0GT4_f52UEr@casper.infradead.org>
-In-Reply-To: <aaZyg0GT4_f52UEr@casper.infradead.org>
-From: hev <r@hev.cc>
-Date: Tue, 3 Mar 2026 15:00:31 +0800
-X-Gm-Features: AaiRm52m82PzF35zggyHMFL96K9Z2hLwy17XjN4QOrmMazJ6hfUaYOxSxnYbtkI
-Message-ID: <CAHirt9ikm_n1KHtOSBcUpBM3nNRX90AZhr1K0PaLZuL-8ww97g@mail.gmail.com>
-Subject: Re: [RFC PATCH] binfmt_elf: Align eligible read-only PT_LOAD segments
- to PMD_SIZE for THP
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D0E4280003
-X-Stat-Signature: 6tw51tzf37tdzxgfoqj8hcdu5nmqsnj5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: remove bdev_nonrot()
+To: Damien Le Moal <dlemoal@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, Song Liu <song@kernel.org>,
+ Yu Kuai <yukuai@fnnas.com>, linux-raid@vger.kernel.org,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+ David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+ Theodore Ts'o <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ Andreas Dilger <adilger.kernel@dilger.ca>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, linux-mm@kvack.org
+References: <20260226075448.2229655-1-dlemoal@kernel.org>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260226075448.2229655-1-dlemoal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2FC874000B
+X-Stat-Signature: haafmurxht9syziugguanpuswbn9rgrq
 X-Rspam-User: 
-X-HE-Tag: 1772521244-116446
-X-HE-Meta: U2FsdGVkX19dv6ZPGFCXKnEWj5loaBUe6DRvZJ8t1Ihxaac+4JLAGm4DrvXiZJfAAJcxsAsKK4jMMgtbEkgFe72CXwOELirXMgaTVkR0bFnffW5D7lDe4ZFe+SPcY4IRHjjp8CLkMn81N8wVYw8DQw3QQ4poP5luoE94HTZEwNpxLH047QFzXCybw0627uQ6yVhIaf4UFuO1ezNMgp+uxcQUPc/8yB83mND5z3DCc2MCRdE2kp2A57BrBWnAboZP054uGjMS/t0y0C3ivo70UxXid28fWGOvEO8F0rAw//7BZRi6ZNoLJUCs3sN4wceQYpCnDFeye/fBEOj4ChjFI1vC44WuGqg02LDZJP2oDw3GiDJRsQRfeGnK6NnRiKO62rQAQvbsjZNskdXO8EneJXhxHoRCZrsabYDKWgXEUWfE4uIew7Wa+pqcY0AXcq+XztaGc9KxIgpEPp0KDKNbcq1Amx1LG+xz4nvVxMace/3OpK9uuLMIVvL/QRJqBz1XM82/7CeYkQbCm1ni8iDIx7HH2pfySMTE6XkJNF/4t+rez6JZaPi2xt4SFfdse+3aTmHxH+rfv0Ko64IxErpXSUPee1/5YZtQ+vZJSyRWnWN/gu4Gylyig9I4RgcEz9fPpxkMIzemC1Bp0eu1RVoe5WyIA99eITOj4DK7RtyJtOPc3xUYAlqwCGSwznN35tFtgE6ZyqlLPsUd3KgCoRUsRvjjBqCiBNV+CLSDT251kcNoi8ZsN/sagR9L7Af682F5Zawna5bHB9LKeWRY1y8pARF17M5obHo//EOS7AWR0cx5alsFRLwjCSoLPxSxzVz1WKdS6bPH9slXrCMDF69kseLPeku7vOc0M8p6nhvEf3+Fr6dns9pdII2enBDhmDCkT+wyhq2wKIiVWbV8Rg5jl5sAkt/fcz2o69CniYFtYq6hTe5JmaN+mlB0iknEE8QfabVHHCjIqyaZp7diKNb
- xzIGaf4t
- +WWAiN7maU4tFjc1vdl9lEc3Y8RwBVa9vtgTUUaXrWqyfJxIkl1Yo+zAbclq07y9h81KAt9mPMe4UYQxvy/1LGUVUiUzAeCs6JVMKNxKAF6NanhAdrXsEjBg0tKyM7mSeFoMpTm8Qi+T6/LWCNp3KMOoKxMNOm4JwKNHcqOc94IjEbUchPliRYbZDDBpixFTD9xobGVaaIQNFDlj8Kfi/8jc3FFYz/0kRp//tzaEAtPsmqqaYR4lVCvJUAopaJU6q4N63wyugkjKb8YcNPlPoJ2tzRStN257G69uSmODYutEjJ0hEC32R2bi5NylxgZj/M9oNRuRS0LzF8cF2LTCAyxF8sGGb9JrvXz1iwXgooGonEDTgWXKPZ7u1x+B+IinNNmeXzFVkRjrSXZiocM+/zah2vpZQh6fycwIVITaeL12Wy8prRPWUb25+1slkW9uyoVUXV2dtWE56H8Bf3K3fGSJd6r+WZlesWIpILx9PIEl8a92cMbkp0EqHZA==
+X-HE-Tag: 1772521509-542408
+X-HE-Meta: U2FsdGVkX18ziCQvMFL66VSrOhdSUtKirYEHQjeQ63jKOoL0i4X++iZKGMhIHWyAzBHKI//eWwB5oZmb/IJMlHsGGKcKt+9e83RSGdNoE4fZY4McE1AFbVnPUePMpm5vLOyCwF8D9gcMj2UzKk468xy8A/mHE97ramJYDNCqg1Qh1TV9jweJoz1vtqMcD+bvZa9IR0XijQPos7ToOxf1XymIf5XamS4p6PuQCZXLjVcDGqWZ0ceYU6pIKrxyrdHcQv/sX2fO9UR8fEEn3jPn2iBO5mrVS4waOXNJXqYapNzudE3s9zdWBJ1RisJVQMIwEzMHzByqU83nYY5G3VQWqLA7xIygumXIVVHoFqY2qhkwidwk551ONaTnV0JTO5LbWU78J7GDXls7SPZIX3pWxYWGDoEMeqspaRXtrhg4bW+yzlWUZHMIAH+GEraKGmf+ExmQXiE0pvE8nob1Tv143PYiHA7TEKoknT/p65RpxCa29ayR6ESB1H2BiDzbWXHdeb/+x5ElYHigSZrz/IpZLwR4tf5VhU4ulHdNHaRUChbTzGjLN2N12uIhzB5v2W3UpELYAv2oNogB9TeXrry53BBhhjReTbpvA1gRKkxj5ZDkGJOSIcy33YDNy7s3h94g6Ib0DMfoaFydrcG2lkg7N0D+pmRBTrgVv2+oLStpexmiEFzDLtqjoNOubnVQhNf9/Jkdf8q/LD06mAtfOvYbh+4PMVf7c/3+a4Q+WoJuX+aroBnCFM/UCX5sZjsFDhC552g0bqwGyfk76Z7cf4Bs5OVZDeJ3h/6j74a+OmaIVhBqHPTLjpV/jjDfnQnqi1sYvgFR8B8XBxo89y50wwuXDXUSjjsZ83j39SFBgUrzcovYzxhiZuxMqHMrvIeJOhDsPQo005VBFNOsqZSc94JBKkReBEVeFWzzXuOo7zIf5XtcNfN8a8jISS8SMmwJuXGDTPbBoxyWuN+ZJeqom2h
+ EReosvHM
+ dgh/8hcsFy9nxiGVm/Eq95lW+fJ7iNRRUQL16azwl8klQz0J4b+yvccPtF6zxAO9IM4pXfGQLH2SvAmCRk+addfK7gfJUTdAQE2YpkPDnLRkRWsX8f3VeTuKyPdXtRLP6zzFw11/z4+YwrjUIdqRYEK6EerQoiOQ11ouNWzNW2/5kXQBXbPY6fFOx/zUfu7sbaLF/cdY4O6Vzj2y5a2bLHYOBbmE4535Tx4u7dTV4kxHmZCeblLfJnpXR0ERStJC3SOpNn7/GXFFEx+uKGiSwGYM5nSnJdi95Q4l9ieYrlAVO4amPB1OYWt/Hsy6uLKjtbn6AKDKDB93qAen3GgEUr9g6prGolmOyHqnJ5sElvU+cLiDaDkuSnuMWpcpXWO3Z86q7KNGg6zOF1x0u3L4KqOZmiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,63 +143,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026 at 1:32=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Tue, Mar 03, 2026 at 12:31:59PM +0800, hev wrote:
-> > On Tue, Mar 3, 2026 at 12:46=E2=80=AFAM Matthew Wilcox <willy@infradead=
-.org> wrote:
-> > >
-> > > On Mon, Mar 02, 2026 at 11:50:46PM +0800, WANG Rui wrote:
-> > > > +config ELF_RO_LOAD_THP_ALIGNMENT
-> > > > +     bool "Align read-only ELF load segments for THP (EXPERIMENTAL=
-)"
-> > > > +     depends on READ_ONLY_THP_FOR_FS
-> > >
-> > > This doesn't deserve a config option.
-> >
-> > This optimization is not entirely free. Increasing PT_LOAD alignment
-> > can waste virtual address space, which is especially significant on
-> > 32-bit systems, and it also reduces ASLR entropy by limiting the
-> > number of possible load addresses.
-> >
-> > In addition, coarser alignment may have secondary microarchitectural
-> > effects (eg. on indirect branch prediction), depending on the
-> > workload. Because this change affects address space layout and
-> > security-related properties, providing users with a way to opt out is
-> > reasonable, rather than making it completely unconditional. This
-> > behavior fits naturally under READ_ONLY_THP_FOR_FS.
->
-> This isn't reasonable at all.  You're asking distro maintainers to make
-> a decision they have insufficient information to make.  Almost none of
-> our users compile their own kernels, and frankly those that do don't have
-> enough information to make an informed decision about which way to choose=
-.
->
-> So if we're going to have a way to opt in/out, it needs to be something
-> different.  Maybe a heuristic based on size of text segment?  Maybe an
-> ELF flag?  But then, if we're going to modify the binary, why not just
-> set p_align and then we don't need this patch at all?
+On 2/26/26 08:54, Damien Le Moal wrote:
+> bdev_nonrot() is simply the negative return value of bdev_rot().
+> So replace all call sites of bdev_nonrot() with calls to bdev_rot()
+> and remove bdev_nonrot().
+> 
+> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+> ---
+>   drivers/md/raid1.c                  | 2 +-
+>   drivers/md/raid10.c                 | 2 +-
+>   drivers/md/raid5.c                  | 2 +-
+>   drivers/target/target_core_file.c   | 2 +-
+>   drivers/target/target_core_iblock.c | 2 +-
+>   fs/btrfs/volumes.c                  | 4 ++--
+>   fs/ext4/mballoc-test.c              | 2 +-
+>   fs/ext4/mballoc.c                   | 2 +-
+>   include/linux/blkdev.h              | 5 -----
+>   mm/swapfile.c                       | 2 +-
+>   10 files changed, 10 insertions(+), 15 deletions(-)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-I agree that a compile-time config is not a good fit here, and I=E2=80=99m
-fine with dropping it in v2.
+Cheers,
 
-Relying on ELF-side changes is problematic. Increasing p_align in the
-linker inflates file size due to extra padding, and more importantly
-it cannot help existing binaries. The loader is therefore the only
-place where this can be done without ABI changes or file size
-regressions.
-
-The logic here is deliberately strict rather than heuristic: the
-segment must be read-only, at least PMD_SIZE in length, and PMD_SIZE
-is capped at 32MB to avoid pathological address space waste. If these
-conditions are not met, the layout is unchanged.
-
-I don=E2=80=99t see a reliable way to make a smarter decision at load time
-without workload knowledge. With READ_ONLY_THP_FOR_FS already limiting
-the scope and the THP policy applied at runtime, this keeps the
-behavior constrained.
-
-Thanks,
-Rui
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
