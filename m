@@ -4,127 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC7E7EB362F
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 17:51:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD544EB362F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 18:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C96776B00A7; Tue,  3 Mar 2026 12:51:46 -0500 (EST)
+	id DF7536B0005; Tue,  3 Mar 2026 13:02:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C43E86B00A8; Tue,  3 Mar 2026 12:51:46 -0500 (EST)
+	id D8E2B6B0088; Tue,  3 Mar 2026 13:02:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B25776B00A9; Tue,  3 Mar 2026 12:51:46 -0500 (EST)
+	id C661B6B0089; Tue,  3 Mar 2026 13:02:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A0FCF6B00A7
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:51:46 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C96D160207
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:51:46 +0000 (UTC)
-X-FDA: 84505494612.04.543E5B2
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4EAD5C0009
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:51:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B7AFC6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:02:06 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 68DA813A6A1
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:02:06 +0000 (UTC)
+X-FDA: 84505520652.03.126F9CE
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 859F3C0020
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:02:04 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CzVutgI8;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772560304;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jtDyRlB3;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772560924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fL6WbRDTWPclsvE0UMM34YVtaLXqlF6tBavQfG2bQhc=;
-	b=z8Mvc4xULQ3CLJ0zdnd2Fh2QY8Gv1k/ZJ8pgTBYAlxUHWsdbLdJR7PkJwE5h4FP19uMqa4
-	eTkoyvVXCDKq8wc/eQBHEez8GktyOIlF3UcogSmoJV3XaMF0eRm4rA2+OH/gtBPtozu1oH
-	PdWj5rRZpG8/gZxWWqOl/SZJ1ObutGw=
-ARC-Authentication-Results: i=1;
+	bh=foIbnYRvZEeozwct/vuUZhLqaBM8H9J20Y5TG3JAcfE=;
+	b=PMQTOx2crKJyJ/sJliizbv7Ni9E5wfuL8+eda8bB5SgqWKL/poLJRJQOf6SglMGLnssido
+	bk99ptxymK8+GKc6JNst6rqzTVeTOYnRYBWMkMbqZ9HCBTzRku3j5jQn7+uZMI52oPZjyn
+	6kkkM6B8MCgSVXe1lbKFysJduqqhDZY=
+ARC-Authentication-Results: i=2;
 	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CzVutgI8;
-	spf=pass (imf28.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772560304; a=rsa-sha256;
-	cv=none;
-	b=u7ziekZVSH+xl+yewUHhkb91MKvDmAioO4/CFJZb/hoSuzlbUqEfnPTk4z/+CDNQyn0akg
-	P1yei0KfjUPeNgspMSVb6eP3nm6EHRVuy1TWQUvNBk2teD5KY5f0vc8Cuy+cKGQwUIMi6n
-	iTZT26nURkq04GdNxL5M8nxgJHNtOxM=
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-46394090d2fso2175391b6e.3
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 09:51:44 -0800 (PST)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jtDyRlB3;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772560924; a=rsa-sha256;
+	cv=pass;
+	b=k34YZ1RiXCWCNjeATWmtQwTDf+jWf/y9+bKsW3sPjQ/xLpmfHrXf763JWRB9X6Gf8qw34u
+	uWJDdnG4Md3g3NXjKsUDr7yfU4/D2rd2dd7nf4DwSJYcKrhcl6Zy/jYYXEZs/vm0my5jh3
+	VGM8hIEnICZ0LOuGjp7Ytf/AL88vD5A=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43991064db8so6132136f8f.2
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 10:02:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772560923; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bQwi+Po+PgcplkxQwcRP/2ExMZzcJVtpqDgLwbcg8XqzQLGtzf7Wo38NruFlvdPHGB
+         mDHAlLIqSH7q0nXNjViQwG2PyaAE5zwNd8BKKxAX/OoozZPuLcgKgHM4QzKwZtQsoWfH
+         UPa0J2ZKTHlGmYfWODRSDqUcKNH6jZbnnfhE9rk1psOsEhcLFYkT98/jIIIDie41PCE0
+         DFb8eyzqfWIEIWjBkltJ1Og/hcEek+Wsv2v9L0ghu+DT5ryKdYtkVBiCymjPnawuHOCa
+         jJPYvHtlIWl8ioAD9ESplgEvhHPMNyCuJocdPsWE2ZvA2PH4rBDU27+nqX9JNUHIhPTI
+         PQNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=foIbnYRvZEeozwct/vuUZhLqaBM8H9J20Y5TG3JAcfE=;
+        fh=RPAEwETKbquasmjLjHlJLYF3WwY98ib6fvReEscynZY=;
+        b=hmw2wClqQF2bPJxI3rfy/3h8jhLEHRVkOg0As7uLQ7ggJBe36pDLvJObaQIlODCNsm
+         bgEIu8JJ56DL22T8/ByZQaQx3BZoSwnJVDgT0kEhxpnD2laymUsc53q8Shdqyq+jpV+V
+         9BlBHljTt/8PIeL6U0Qp+0RN9Gyzfv92eoU2JdQLTJVY+SrELE4yDHit36yBl5bI0nFX
+         GmjVpxmfJH64/xw0WlLDh8V6VAqqrVIM7cQDvWbH8pXYs2TMVVjqJeTlQF/RbvxDOD+d
+         jzROAihgnCusaEgdrDZupw84srLDqaw7OQ6DbnE0tnQFh2+q5Ena8rrAtVOaHkXvK/f4
+         iXBA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772560303; x=1773165103; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772560923; x=1773165723; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fL6WbRDTWPclsvE0UMM34YVtaLXqlF6tBavQfG2bQhc=;
-        b=CzVutgI8qZcTStoVbJjusOSzO4hLR8WcuXLHrMF9zvl8jWVhJHhKmf7+jUgV8QfHKi
-         o/KjBxeGV5Xe/x3fwfnNafKYqI/AgejCc4gKAktkNVKPzb2BipvDEctuojwcmPkzwFGI
-         q9SH90Y8zs7PIP3bHEO1A4gs73b9GnXmR5or4Z0Q4zGPckgeeqWwXD8OK8lY2WFpuIUK
-         Ccj+H+Cl5d03GQsBz/7EoMuv6SdUQBPq1BMh24KwCtwkc0kZ6Ue/ip8/uLPzTzw+jzq4
-         lg2pUgpj/ccNeOqwXmdG5Ww0wHDeMr5RElRAU6MyxmlLMVPNwcEiP4MC3bipo+W7FpJF
-         9Vyg==
+        bh=foIbnYRvZEeozwct/vuUZhLqaBM8H9J20Y5TG3JAcfE=;
+        b=jtDyRlB3oImdO2lJmQsXhSqu+YYXsfhNHJM52kMgWPg+goSUSssmvfFaWFJ6nG6mnZ
+         Tim/x677EWrRZYSu87J5Gut8dtFBWi3SAAJYi/HF8ftsiwpF9METLZgtgajIEUE0EGG5
+         6GIFkITpYMpDXUaLsQ6+ux4PArBFF4IGNhm0tgW9PJk+qqhGwUyG2UsA0h1uSVaVJjbM
+         ZjMdoXo73ZE0uIgERXc8PIV+WP6IqPAsSJUcHNU/EGNvsAKg5rX4ZKuWBe7jUEUSU1mM
+         Pnn4LPNNlrgRnTfDQrBcmlO2WGPfH/3Chc6Tr6AxK87ZUDBEf2sbnT56bqsitaZhkBlq
+         fcLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772560303; x=1773165103;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1772560923; x=1773165723;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=fL6WbRDTWPclsvE0UMM34YVtaLXqlF6tBavQfG2bQhc=;
-        b=hP2CEq+cv932+sI7l2ncpgbxD0DXv2+sVUREbIGzBfpvLeuNNtLlAS+pBRNEEogLVa
-         6KXCPOZlwT6rdifu59O04q3x40di0znyuU8+8QTuCriw3u50YrWkhvTKZnKYMI7sc4Q6
-         +0/rvIATKWOX1X7+VyGYf6woGcprV+aDiSLKy3KegTpKyudZ+rsOjuKF7MRmKBcqlEwX
-         rOackuol046qMPIqBoBhvS8vOanb7aFgJgtrphqbxSyWxZT2HcjR+8csPanbGRpBXHKy
-         F9+svTTMDqtUEQfB3OGMU3lGCxgtJ6bydrUMv1/yYLhKvhir9c3vx1lPxM71uKcX/MHu
-         xtWw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLrbMeEV+FtHXBu6Zw3zLit1uU+oy8e5oGmyU+YDkYmNz6XKd7CXQqGYyoZJl/w6DfrA9OE7lH2g==@kvack.org
-X-Gm-Message-State: AOJu0YwW+1+lUIS/wUFExlR8VDb8SVJ8NmEDBED2eJpGLRyiGdW+O/zy
-	6db6O/W+tO6j/Rhx77LD5udxw1IyREPIWhtA1UWIykHxZUtuK012RsOV
-X-Gm-Gg: ATEYQzwmIWAEamJHdrnveSWpE+hzwDqu99TyOZywlsQiqvNk+ge8FBAwishXxF9DHkn
-	MnFDaDSQvU1WnDmc2UVBV7rlBZRLuJeA31+RnDk29VgGkBhw8PE5kA28wj5xpTDipouBY7/LMUz
-	gwWh83u8cTAwPHeb+Cag3hUp1YEUl9GKZo26iITAtJmMr5B4pxQY1xJg5npx8DH4CxbY7XdPNDO
-	RJOP9yZ88yd/EWtXVFT90s7Fi1VBYG2dBL5xzKWn6VWK7JCMPoj67gbvib8qgSxw4De8a6YN7J+
-	jSxP5R8SZzsvSj28cI+XviThMVHjKkEiOvt4wuPxCKt1lSmQjmNEmN2ewTIxIyYt0j8UBgvx3jX
-	NA3rU+zdwNEOa5KrNW+w3VeLd5AnldO3yacJGsLM8NdIEYUwcIEhD2OIybnWEJv0MdZMjc6yxnP
-	vQP+d/T9R8KGsqVWIkw5C0iw==
-X-Received: by 2002:a05:6808:4f08:b0:450:4782:2b0e with SMTP id 5614622812f47-464beca70e5mr9277735b6e.15.1772560303135;
-        Tue, 03 Mar 2026 09:51:43 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:44::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d586474d4csm15115726a34.9.2026.03.03.09.51.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 09:51:42 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/8] mm/zswap, zsmalloc: Per-memcg-lruvec zswap accounting
-Date: Tue,  3 Mar 2026 09:51:38 -0800
-Message-ID: <20260303175140.1032459-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAKEwX=N-yzg66Ge5YgDNG7nh3ues62fSjmi6oGq1B=gkz6e2Uw@mail.gmail.com>
-References: 
+        bh=foIbnYRvZEeozwct/vuUZhLqaBM8H9J20Y5TG3JAcfE=;
+        b=tghkkitdWruBPKJxlRF9we0E938wjZyx/VxvJiuOfXGQ1xoS+G6LfGn8v2ShGwy7wI
+         MzSh0GT3iXTHh0GILc9WDhcq7UU5W+nS+DgEstAEeXobvW+tMDxj+Xo5dEIUuces5daU
+         +qdiICQ8MFKmz9vNAYdjz42tFMIMdjZ8x2zUAWV6EEsVGyYgYsyOww+mqE/m/kDdhxzm
+         HcXWLGD4yesyJKrTrAhSjs2urT2l5nSWQMJS35KQVy2GYG1AY061YzDRozmBcRuTfrgS
+         nTTWZt+zjXbdif4CZr0LgVUSlg7OCazULJ/RhSjYvNgc8lMDUpvuNN6x8ie81+gcjm3j
+         GpGA==
+X-Forwarded-Encrypted: i=1; AJvYcCVY2X9nFHFqNDCV6Dv3GS/kRQXYin0uwxdA7vKMbml+umaQMugsqrN2hUD997VIKDBKX1htMO36+A==@kvack.org
+X-Gm-Message-State: AOJu0Ywl4uzQJUL/rG0bN8svQV/385b3HMxeHl/bICBKMoaZ0IKxGcMu
+	HCnUDO+TU03D0hNsDKMP/Hp0nVMIFqxoAI+VkXxHZBNuJGjZgfnv7KFxKYubvoUnCEiGW/BuRj3
+	3k24K3kZgpIg+3DQDbWt6uZ813tVAFhY=
+X-Gm-Gg: ATEYQzyt993gdIws+kiwKE35ynar/IvMVq9ZHLVZnEVBV1HtofCzRImS9qXSVWauFKr
+	kA2Lp3fKwXcnZW2HVjfO/fSvFtPbq312ewhXHhn8vVrsrifbETgH1FruDZUts0h4ooUVfAXQ34I
+	RXMBSTOnxvR5J8kuJCfpDe9Y3zVjtacPbRYaV1ZDNsLd8QmRPH+Yzfy9cx78Q1pt0/C/kS9LQxK
+	VeWY4NMg9H0H8o/aevMmus9DHKJ+3Wa6QqyDNuiPcGTI+MRhCUSnjisdzJOPA1emJkHaFheHitv
+	uD/GuA8YkAAoWUUC6qyTRdBbUY5spT3/I7B9XLE=
+X-Received: by 2002:a05:6000:238a:b0:439:c550:d92a with SMTP id
+ ffacd0b85a97d-439c550d9d5mr2304995f8f.53.1772560922568; Tue, 03 Mar 2026
+ 10:02:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4EAD5C0009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tsno1k84a15kftqm6eabfsyyp67yzj53
+References: <CAKEwX=N-yzg66Ge5YgDNG7nh3ues62fSjmi6oGq1B=gkz6e2Uw@mail.gmail.com>
+ <20260303175140.1032459-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260303175140.1032459-1-joshua.hahnjy@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 3 Mar 2026 10:01:51 -0800
+X-Gm-Features: AaiRm52gDOCcmDbHXVyYPo26Ma_Va4b_HvYpOS1jbz0JVcTO_7EGhjCQqYnuMK0
+Message-ID: <CAKEwX=NW75_ftM5ZuJJRMB2CLnB-25KPvamb4L1eP=i0XuFS_g@mail.gmail.com>
+Subject: Re: [PATCH 0/8] mm/zswap, zsmalloc: Per-memcg-lruvec zswap accounting
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Nhat Pham <hoangnhat.pham@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, cgroups@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 859F3C0020
+X-Stat-Signature: cdcmg671hrgs3xbnz8zh1azowtteq7r5
 X-Rspam-User: 
-X-HE-Tag: 1772560304-852195
-X-HE-Meta: U2FsdGVkX18A5w8PFl1q/hF0krpNEtYwuv8SZlJVwZb2u9VTpDEmP4I5Jogy2X5qbs8HUzH+k82gLr1BoutwDtVYvMmWNCviBajk7nmAN/Ft7iftR/Zx3JeKEL0P6fQB9YiWRCJzA8CVQAqL7+f30E+DIUI2iLfcboVe0P8xCqefkj9j/FtbXr5OFSFyEQqDh1ngprcuJdOFvjpVBNnDwCD4kRmgPsrN1anl8M2qNtTkhh1x3zyWqIGrIk+mgBxDbIOAwUxGnYrGnQJ8ll3e8bxECOM2Afs3LYzcZ6LsvZ/8n73cb8ge2axoRmPoelDG66+ldrNnbH8XkOtbe0mVN+Ko9aNTLH6RPf+USLOYS0r3Y4KwF4fk/Jf9nJXVbqI7lmORtnkaUI+RxukIzX2Ov+37JI8QlYlRtJ6HEiEXmgqU45OWCYV1Enct1P6n/JezDfd/8GyyHa6CCfybRRIk4bsYJrmzbYMXTI+0f0kh06ealvsoASW48SR7/C/X2wihfoJ9wH1ZMbXjqUST9V20IYtoKqgWAWYg8h+h5ibs9Mp5OV+Mrge504UzClisOsI5+KE33S3q5uZTYS1W6OtP4LB/oFEUzNgOFEtZl/hR5znBov8mb3IbbC8GNbR9D0LQEpv6u1MC0Pdo4k0nhdM5osrOx4XDJUgmxNAAcrE0RpOFxAOTccS2EDvVx0HZBGp7hPpffTZ2Xm5PXXQvLWyFz39x9bS0cbRVTIW8EvDHdIbXR7iLcioAmGlgLg6WnnnQ00Kl+fXl2WAAnYUTUMyeoYbo+fNyUe1PfFR9rsT0JLYDxiwK1Qo75fZI31je7hEOdnrw8MtyYzo65t0jtr1v59bj77E/J0/QdwlHJVPXTuhRPScC4FB2fiohg+ba8YcYSVgV44CG2W2KJXWtbDEc2TiBZiVJFr36o3AzXjHkmnmrXJ/7lCVwStYsqPOpkX+7NraFz6QWk3FmtgKtM/l
- AJMFKYc3
- AU7oHXt+lvnlfSXmQcTfWVnGcqfyxWPrauM3S4eNkVJYr6cCfWMKkJVEmEL8xMv+liHaa97cAb4hoQsudf9LLYKNsX0PYvpa+RANGUQpFnIpEyvROO8xLaBV0Ko1JYEYafDKg8qgv8SL4LQU1UPrzSnDm4ZagtJMbTUoXkLjUcgCbcz7QAPZyoO0hFIPwy8WjOTzPg6Klugjm6fhqPWEOyxQuaA58j9Daj0k+MJOlD++o4nGBP7anbx3/bYY4xwhcT9xjMKzidZjaEmoxkNJjbYAJYNLpnK16EgtO+s5p7YiRZWuedFOl704gERBAKCYp+f9TETwT/3ui0Cup+Gh4I5UWFvVekq1SE/i9m9H8eDAm14sxzhOpzd9WJJBQOUuWxuuWws7+/h/ifWZ4mhFuMeUvP8CfBeq12sHIQ9NCoi8zazIa40JRC8UW/x5WfYSw0A2EvENPpMRt9Iig2J44YtXE/7P4s1IMpqbRTgCcqvR3NQQk6wfHasd1A8o30GRdM9gSpk04OEXfzx+K8vqg/euLcpZPot1kC3Hj
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772560924-300150
+X-HE-Meta: U2FsdGVkX1+NtaEhXIYIuc2xNCPRmlnVTlmz1/7ZsH+wThRLsaeDCY04tsrrxsVzEhYp34wEscCFZm/7EXRFzC2A0GPy4Xu4XnCyudxyKGqjIneCNVU9Ht8vfL7gi1awO+uoXfu7Rjd/0kMQ2I3BuAXWbzGbTeua/4XjyjDVJosSEK9Yl3qvxkM1Gq/KC+1EORAY88qSJvoplPNY8E9x5azOD1Z2cTQAO8YBlmcTT6xaJpcH71q8mYtjr0UFUMBWU1fT+pgFEBTnmd5HOUhrRS4OzNmfxTYC95U+D+j1nRJ3RSw3qMUepaZXB2iSXdCE7kTk/oZaK+E6B9bwchtvbE365h2iv2l3hNNG79QMwwHV1mZT0vNc++1pVi1jItxPIdLgxkAo6SMzvXKw2YmkzSXKeHrfJ3k7FN6rQWmX0kzatpy/SbMTbk1Lja78TSTiJt0E/V6zDNB83KzvTi1m4oeqjX4TbhewgrCRS4OUuNRxNka5OLzDEWJpWKt32FRRHVuxpyiveUEaJ+giI2fkAyMT52NLvYPPArCZBfzCJf++nk7J7lOj9U/xujrmNRYcrVdnfPYpAjNJChJSNLCoKdb2B1r5UMnJasNvc0WldeWnAHxbaUciNLN1IYJME24tEphZ0rY/ZyfKA2VEpR2wH0OnTl/BWUQ+hoe0Xqyd8aPS4LJvz9Pg6oebJvFTEflsa9MEB6AHeheV6mKrze5MGTbY/z47TrrHMcUCcV6oaBGQbBE9Xr2SWYvQXl0lS9mWPlIwGCW1LZi8nAxOHh0395Cs8omEcQvzhz4NirzAM3zouPQIBOIHxJ36vtkMI6iM9lu1a41dkZy7OY6PgPPB1gvz9IHFBpxZ4BUPCl6lquF78iFcFs9Yr3FUGqmO7+4WkUXOcr+ok5BtD4uk6KOxOQcDCGQGrQTqKOnGZLSO2CsmdA+rZpufS/23BSJs1ZCpvuYyGCVp5gCp2C6qtxp
+ SYn2FfTM
+ ferWo9CuVExJTsqIc2CXBtWW4VM3bqGtxmMSvUftxnd1xMLHJ1fEv9SrqHmrFtI/mSJNugCSqSNNBPkkx5QF/mtDAtNG7amt314MhrLOA7YFFSidhFRCxLD83eQrmpj7Ojz55
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,136 +144,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2 Mar 2026 13:31:32 -0800 Nhat Pham <nphamcs@gmail.com> wrote:
+On Tue, Mar 3, 2026 at 9:51=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gmail.com=
+> wrote:
+>
+> On Mon, 2 Mar 2026 13:31:32 -0800 Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> > On Thu, Feb 26, 2026 at 11:29=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gma=
+il.com> wrote:
+>
+> [...snip...]
+>
+> > > Introduce a new per-zpdesc array of objcg pointers to track
+> > > per-memcg-lruvec memory usage by zswap, while leaving zram users
+> > > unaffected.
+>
+> [...snip...]
+>
+> Hi Nhat! I hope you are doing well : -) Thank you for taking a look!
+>
+> > I might have missed it and this might be in one of the latter patches,
+> > but could also add some quick and dirty benchmark for zswap to ensure
+> > there's no or minimal performance implications? IIUC there is a small
+> > amount of extra overhead in certain steps, because we have to go
+> > through zsmalloc to query objcg. Usemem or kernel build should suffice
+> > IMHO.
+>
+> Yup, this was one of my concerns too. I tried to do a somewhat comprehens=
+ive
+> analysis below, hopefully this can show a good picture of what's happenin=
+g.
+> Spoilers: there doesn't seem to be any significant regressions (< 1%)
+> and any regressions are within a small fraction of the standard deviation=
+.
+>
+> One thing that I have noticed is that there is a tangible reduction in
+> standard deviation for some of these benchmarks. I can't exactly pinpoint
+> why this is happening, but I'll take it as a win :p
+>
+> > To be clear, I don't anticipate any observable performance change, but
+> > it's a good sanity check :) Besides, can't be too careful with stress
+> > testing stuff :P
+>
+> For sure. I should have done these and included it in the original RFC,
+> but I think I might have been too eager to get the RFC out : -)
+> Will include in the second version of the series!
+>
+> All the experiments below are done on a 2-NUMA system. The data is quite
+> compressible, which I think makes sense for measuring the overhead of acc=
+ounting.
+>
+> Benchmark 1
+> Allocating 2G memory to one node with 1G memory.high. Average across 10 t=
+rials
+> +-------------------------+---------+----------+
+> |                         | average |  stddev  |
+> +-------------------------+---------+----------+
+> | Baseline (11439c4635ed) | 8887.82 | 362.40   |
+> | Baseline + Series       | 8944.16 | 356.45   |
+> +-------------------------+---------+----------+
+> | Delta                   | +0.634% | -1.642%  |
+> +-------------------------+---------+----------+
+>
+> Benchmark 2
+> Allocating 2G memory to one node with 1G memory.high, churn 5x through th=
+e
+> memory. Average across 5 trials.
+> +-------------------------+----------+----------+
+> |                         | average  |  stddev  |
+> +-------------------------+----------+----------+
+> | Baseline (11439c4635ed) | 31152.96 | 166.23   |
+> | Baseline + Series       | 31355.28 | 64.86    |
+> +-------------------------+----------+----------+
+> | Delta                   | +0.649%  | -60.981% |
+> +-------------------------+----------+----------+
+>
+> Benchmark 3
+> Allocating 2G memory to one node with 1G memory.high, split across 2 node=
+s.
+> Average across 5 trials.
+> +-------------------------+---------+----------+
+> |            a            | average |  stddev  |
+> +-------------------------+---------+----------+
+> | Baseline (11439c4635ed) | 16101.6 | 174.18   |
+> | Baseline + Series       | 16022.4 | 117.17   |
+> +-------------------------+---------+----------+
+> | Delta                   | -0.492% | -32.731% |
+> +-------------------------+---------+----------+
+>
+> Benchmark 4
+> Reading stat files 10000 times under memory pressure
+>
+> memory.stat
+> +-------------------------+---------+----------+
+> |                         | average |  stddev  |
+> +-------------------------+---------+----------+
+> | Baseline (11439c4635ed) | 24524.4 | 501.7    |
+> | Baseline + Series       | 24807.2 | 444.53   |
+> +-------------------------+---------+---------+
+> | Delta                   | 1.153%  | -11.395% |
+> +-------------------------+---------+----------+
+>
+> memory.numa_stat
+> +-------------------------+---------+---------+
+> |                         | average | stddev  |
+> +-------------------------+---------+---------+
+> | Baseline (11439c4635ed) | 24807.2 | 444.53  |
+> | Baseline + Series       | 23837.6 | 521.68  |
+> +-------------------------+---------+---------+
+> | Delta                   | -3.905% | 17.355% |
+> +-------------------------+---------+---------+
+>
+> proc/vmstat
+> +-------------------------+---------+----------+
+> |                         | average |  stddev  |
+> +-------------------------+---------+----------+
+> | Baseline (11439c4635ed) | 24793.6 | 285.26   |
+> | Baseline + Series       | 23815.6 | 553.44   |
+> +-------------------------+---------+---------+
+> | Delta                   | -3.945% | +94.012% |
+> +-------------------------+---------+----------+
+>
+> ^^^ Some big increase in standard deviation here, although there is some
+> decrease in the average time. Probably the most notable change that I've =
+seen
+> from this patch.
+>
+> node0/vmstat
+> +-------------------------+---------+----------+
+> |            a            | average |  stddev  |
+> +-------------------------+---------+----------+
+> | Baseline (11439c4635ed) | 24541.4 | 281.41   |
+> | Baseline + Series       | 24479   | 241.29   |
+> +-------------------------+---------+---------+
+> | Delta                   | -0.254% | -14.257% |
+> +-------------------------+---------+----------+
+>
+> Lots of testing results, I think mostly negligible in terms of average, b=
+ut
+> some non-negligible changes in standard deviation going in both direction=
+s.
+> I don't see anything too concerning off the top of my head, but for the
+> next version I'll try to do some more testing across different machines
+> as well (I don't have any machines with > 2 nodes, but maybe I can do
+> some tests on QEMU just to sanity check)
+>
+> Thanks again, Nhat. Have a great day!
+> Joshua
 
-> On Thu, Feb 26, 2026 at 11:29 AM Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+Sounds like any meagre performance difference is smaller than noise :P
+If it's this negligible on these microbenchmarks, I think they'll be
+infinitesimal in production workloads where these operations are a
+very small part.
 
-[...snip...]
+Kinda makes sense, because objcgroup access is only done in very small
+subsets of operations: zswap entry store and zswap entry free, which
+can only happen once each per zswap entry.
 
-> > Introduce a new per-zpdesc array of objcg pointers to track
-> > per-memcg-lruvec memory usage by zswap, while leaving zram users
-> > unaffected.
-
-[...snip...]
-
-Hi Nhat! I hope you are doing well : -) Thank you for taking a look!
-
-> I might have missed it and this might be in one of the latter patches,
-> but could also add some quick and dirty benchmark for zswap to ensure
-> there's no or minimal performance implications? IIUC there is a small
-> amount of extra overhead in certain steps, because we have to go
-> through zsmalloc to query objcg. Usemem or kernel build should suffice
-> IMHO.
-
-Yup, this was one of my concerns too. I tried to do a somewhat comprehensive
-analysis below, hopefully this can show a good picture of what's happening.
-Spoilers: there doesn't seem to be any significant regressions (< 1%)
-and any regressions are within a small fraction of the standard deviation.
-
-One thing that I have noticed is that there is a tangible reduction in
-standard deviation for some of these benchmarks. I can't exactly pinpoint
-why this is happening, but I'll take it as a win :p
-
-> To be clear, I don't anticipate any observable performance change, but
-> it's a good sanity check :) Besides, can't be too careful with stress
-> testing stuff :P
-
-For sure. I should have done these and included it in the original RFC,
-but I think I might have been too eager to get the RFC out : -)
-Will include in the second version of the series!
-
-All the experiments below are done on a 2-NUMA system. The data is quite
-compressible, which I think makes sense for measuring the overhead of accounting.
-
-Benchmark 1
-Allocating 2G memory to one node with 1G memory.high. Average across 10 trials
-+-------------------------+---------+----------+
-|                         | average |  stddev  |
-+-------------------------+---------+----------+
-| Baseline (11439c4635ed) | 8887.82 | 362.40   |
-| Baseline + Series       | 8944.16 | 356.45   |
-+-------------------------+---------+----------+
-| Delta                   | +0.634% | -1.642%  |
-+-------------------------+---------+----------+
-
-Benchmark 2
-Allocating 2G memory to one node with 1G memory.high, churn 5x through the
-memory. Average across 5 trials.
-+-------------------------+----------+----------+
-|                         | average  |  stddev  |
-+-------------------------+----------+----------+
-| Baseline (11439c4635ed) | 31152.96 | 166.23   |
-| Baseline + Series       | 31355.28 | 64.86    |
-+-------------------------+----------+----------+
-| Delta                   | +0.649%  | -60.981% |
-+-------------------------+----------+----------+
-
-Benchmark 3
-Allocating 2G memory to one node with 1G memory.high, split across 2 nodes.
-Average across 5 trials.
-+-------------------------+---------+----------+
-|            a            | average |  stddev  |
-+-------------------------+---------+----------+
-| Baseline (11439c4635ed) | 16101.6 | 174.18   |
-| Baseline + Series       | 16022.4 | 117.17   |
-+-------------------------+---------+----------+
-| Delta                   | -0.492% | -32.731% |
-+-------------------------+---------+----------+
-
-Benchmark 4
-Reading stat files 10000 times under memory pressure
-
-memory.stat
-+-------------------------+---------+----------+
-|                         | average |  stddev  |
-+-------------------------+---------+----------+
-| Baseline (11439c4635ed) | 24524.4 | 501.7    |
-| Baseline + Series       | 24807.2 | 444.53   |
-+-------------------------+---------+---------+
-| Delta                   | 1.153%  | -11.395% |
-+-------------------------+---------+----------+
-
-memory.numa_stat
-+-------------------------+---------+---------+
-|                         | average | stddev  |
-+-------------------------+---------+---------+
-| Baseline (11439c4635ed) | 24807.2 | 444.53  |
-| Baseline + Series       | 23837.6 | 521.68  |
-+-------------------------+---------+---------+
-| Delta                   | -3.905% | 17.355% |
-+-------------------------+---------+---------+
-
-proc/vmstat
-+-------------------------+---------+----------+
-|                         | average |  stddev  |
-+-------------------------+---------+----------+
-| Baseline (11439c4635ed) | 24793.6 | 285.26   |
-| Baseline + Series       | 23815.6 | 553.44   |
-+-------------------------+---------+---------+
-| Delta                   | -3.945% | +94.012% |
-+-------------------------+---------+----------+
-
-^^^ Some big increase in standard deviation here, although there is some
-decrease in the average time. Probably the most notable change that I've seen
-from this patch.
-
-node0/vmstat
-+-------------------------+---------+----------+
-|            a            | average |  stddev  |
-+-------------------------+---------+----------+
-| Baseline (11439c4635ed) | 24541.4 | 281.41   |
-| Baseline + Series       | 24479   | 241.29   |
-+-------------------------+---------+---------+
-| Delta                   | -0.254% | -14.257% |
-+-------------------------+---------+----------+
-
-Lots of testing results, I think mostly negligible in terms of average, but
-some non-negligible changes in standard deviation going in both directions.
-I don't see anything too concerning off the top of my head, but for the
-next version I'll try to do some more testing across different machines
-as well (I don't have any machines with > 2 nodes, but maybe I can do
-some tests on QEMU just to sanity check)
-
-Thanks again, Nhat. Have a great day!
-Joshua
+I think we're fine, but I'll leave other reviewers comment on it as well.
 
