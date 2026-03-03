@@ -4,139 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24322EC1427
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8125DEC1423
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:41:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E6EA6B0161; Tue,  3 Mar 2026 05:39:54 -0500 (EST)
+	id E9C5D6B0162; Tue,  3 Mar 2026 05:41:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE6D6B0162; Tue,  3 Mar 2026 05:39:54 -0500 (EST)
+	id E744D6B0164; Tue,  3 Mar 2026 05:41:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CAA96B0163; Tue,  3 Mar 2026 05:39:54 -0500 (EST)
+	id DA0A16B0165; Tue,  3 Mar 2026 05:41:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E19F6B0161
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:39:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E02CD1602E8
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:39:53 +0000 (UTC)
-X-FDA: 84504406266.14.525E35C
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 77802180012
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:39:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cNqkvYj4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a68tipc5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cNqkvYj4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a68tipc5;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C680B6B0162
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:41:49 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 718958B713
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:41:49 +0000 (UTC)
+X-FDA: 84504411138.05.BB412A3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5B34A40006
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:41:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e4ta6hfT;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772534391;
+	s=arc-20220608; t=1772534507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UDKEWjSVOqkrZc6vTVeKneTnpLaNmie+ySjDkZuCOrk=;
-	b=RZ2f3o7Nk2oHISoFi75QbOb3jO6cUU+VOwtHafnAUbLNPeQChMQL/btv+2eMhDs5KHdDdP
-	Hyq7Vzxs1WAlZM58B528x60F1uXwSt5HKa+kn9UDmk2MUdcGZg3uNs6vHZI88aZV7sjsQe
-	oOeArE625v/YrGdDIbf/SAN9pWZG+6Q=
+	bh=/Re2vvxmKHDUNoRlLMlN5C18DNibzpykpL7D4wljfn8=;
+	b=RGge1pU5du66v+QxisMHW5694/BaH9rnOVWKsq1vZNsB2gWVlbemz/NIVc8CVavQd30BEX
+	FNSUd20c/n+V9bE6BALqW3G/tKs24R5xOFx0U+a2yPtDiuwqBmAKqrZ7pNwGiVEfrn9HPV
+	vNI+yktWnB/gh/Dp3tMUQ6WtI4DqNTg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cNqkvYj4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a68tipc5;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cNqkvYj4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=a68tipc5;
-	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772534391; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e4ta6hfT;
+	spf=pass (imf07.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772534507; a=rsa-sha256;
 	cv=none;
-	b=JMcgAZ1H1oMtXTzTcfrz68YngF8Dd3grGe8AKRBcm8YrLuDpXG+0V7yjscyh1DAPsspij+
-	AFKyZUSlmU3UAt+pEdg+z3SqoTMiqJ8q0ExGhnclU/jwpPPZ++MLm3uxnHQtWFzBpZJY1M
-	Sx25ePzLx25sr+/9lxlmH5yQb3NAzIE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	b=z6XirZFiVsTC4VWUNTkgeiOFo7gdb7DFJIsty7Vyw1D2Pxy9eOsxRT8HsComkgFmauzRkw
+	HK0ofBKg4UKUYK9qRSF50rcKVGKo5IT+CGClbYmynjM7e5oN/TARwJCTttT8tsdkNaSin9
+	iAn58aPD+1b1IIk4QAmN3pxzHcg9zd0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772534506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Re2vvxmKHDUNoRlLMlN5C18DNibzpykpL7D4wljfn8=;
+	b=e4ta6hfTpnCuPa1a06cq+CkwF1jG7hRMA+oG+BVTZEqXRBwHx7dv/1/MDgcHb310LNXyrM
+	mI+npHPXzN9DnB1e7htBYYLYXhgA4++74M859L9zZ5JqlI4MGZu29pzJV5JOP1k4rgod3q
+	mFg3TEmGDqbcjNHUOwQB7QhYyGcg0Zc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-390-ovpAPNhVMYeamDaMeNtVpA-1; Tue,
+ 03 Mar 2026 05:41:42 -0500
+X-MC-Unique: ovpAPNhVMYeamDaMeNtVpA-1
+X-Mimecast-MFC-AGG-ID: ovpAPNhVMYeamDaMeNtVpA_1772534500
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AE4CF5BDEA;
-	Tue,  3 Mar 2026 10:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772534389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDKEWjSVOqkrZc6vTVeKneTnpLaNmie+ySjDkZuCOrk=;
-	b=cNqkvYj4wBqDXl9j0WVpUChli3T7qASE5M+Zr17hq13Fr7BvA48MgQnP8lMjEFS3zlyQdx
-	QDa9vELibp292cA2BJMaMq9suPmVkz2N0oZuaSSgwV8yvT2uX0t9129X5pKdNEXzQtPDn0
-	2GQD7e8QJZwustXF+VSTHc709NeA/Q8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772534389;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDKEWjSVOqkrZc6vTVeKneTnpLaNmie+ySjDkZuCOrk=;
-	b=a68tipc5Waz0LebOf6mtviHCUF0ztGCOw8awtTpbzJ2vBfITtpK+dl6TJPz+cXJR1FuREe
-	B6XG/A7VhOlQbnCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772534389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDKEWjSVOqkrZc6vTVeKneTnpLaNmie+ySjDkZuCOrk=;
-	b=cNqkvYj4wBqDXl9j0WVpUChli3T7qASE5M+Zr17hq13Fr7BvA48MgQnP8lMjEFS3zlyQdx
-	QDa9vELibp292cA2BJMaMq9suPmVkz2N0oZuaSSgwV8yvT2uX0t9129X5pKdNEXzQtPDn0
-	2GQD7e8QJZwustXF+VSTHc709NeA/Q8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772534389;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UDKEWjSVOqkrZc6vTVeKneTnpLaNmie+ySjDkZuCOrk=;
-	b=a68tipc5Waz0LebOf6mtviHCUF0ztGCOw8awtTpbzJ2vBfITtpK+dl6TJPz+cXJR1FuREe
-	B6XG/A7VhOlQbnCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A29173EA69;
-	Tue,  3 Mar 2026 10:39:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UTCrJ3W6pmmwGwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:39:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5E5C8A0A1B; Tue,  3 Mar 2026 11:39:49 +0100 (CET)
-Date: Tue, 3 Mar 2026 11:39:49 +0100
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Tal Zussman <tz2294@columbia.edu>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org
-Subject: Re: [PATCH RFC v3 1/2] filemap: defer dropbehind invalidation from
- IRQ context
-Message-ID: <aaybsigvp33i54w244jy4jarwf53zph5mzwjy2hcfm4v7m5o5o@e5hljmjqa3kq>
-References: <20260227-blk-dontcache-v3-0-cd309ccd5868@columbia.edu>
- <20260227-blk-dontcache-v3-1-cd309ccd5868@columbia.edu>
- <wen63cjbk3k54mjzgw7zftsuze6bzxmdk5u5wdjabzdiqg645k@67666k5lrevh>
- <aaXK0_HqEnU5SK61@casper.infradead.org>
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C16E18004BB;
+	Tue,  3 Mar 2026 10:41:40 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.42])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95F4230001B9;
+	Tue,  3 Mar 2026 10:41:38 +0000 (UTC)
+Date: Tue, 3 Mar 2026 18:41:32 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	baohua@kernel.org, youngjun.park@lge.com
+Subject: Re: [PATCH 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <aaa63OdTm-JFVa1J@MiWiFi-R3L-srv>
+References: <20260302104016.163542-3-bhe@redhat.com>
+ <20260302145307.320941-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
+In-Reply-To: <20260302145307.320941-1-usamaarif642@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: M7AJX5tmcP-fBNPKV8AT0D6ccc2fwRuIuRM4z20ejs4_1772534500
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aaXK0_HqEnU5SK61@casper.infradead.org>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 77802180012
-X-Stat-Signature: 3wd7swt8rtoyw7dnuni4smcuxwdazs81
+X-Stat-Signature: s5wbg9jo465ay3gubfyeefrpcub8o7gj
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772534391-390751
-X-HE-Meta: U2FsdGVkX1+qteR9mmVKch3La37xFsNmKvVF5CDFHnYwVyt8ZJLsLPqQ911lUU/YdAWJ+MGunEIVJwAImcBw+jSHnGdIPYDGMczsPURawYDzWVTKnVr9lwb5/n5cTvRDvULh0DwFacfRn58f0FAM5+Kd7nULV4yGDdYtYRsPJ7WWeR5c9EVZS0zCqvSSScM3vJSpjLTT6dewp8gfvcryVuVQs55QgxnUfVXY5xFkMt9kKBh+aDuNMsFd4Lq+VOaFg2JtiM8A0dnrDFI2H0GNEAGn86AxuYVLkxQYSU5IycMmNXLYL9CID16WeKCvDRNXJLUe+GnmzQHGzUIworMwpY7KLk0yRI4mcMA1DD8kDTc3IpHvFBqujg/mVVU4apeIDHE9FG6Th/MP/rgKBLS7yDkz09yR0B4ua7CwFdurICeU9CgvwZe79ju1UDZ7AUTxVSD6ORYvme/pme3Fc6IafYATiQ1E4EoF4KQ0zhHybt1tPR44R4PDPcsLUUwqF0uj5qysMTIqCQQH7zKdaBd37in42MJAEFdQTDb0YYfbiq2H3ChCQqIvPizT8UrKFVDNgTGKgL2iCQL9ar/Iq3F1xaipgG4PYZpsXCoPDL+vJOHX2hCla59aGDg8mbz2NFJglFVfArjacDT0BOvs7zSWwx+D7bdKK1WDHv+HzXP3/SNdZ2n+3lfPA5DhbmyLRNk1xRTvvaVIa0N14B4fQexGiq0Ah95UFdD11ii+VBkov4A3GXqYlSLBXfYHt7HcVE/+akI6t5DggvqY4c4WayStOUfds66gk2kWUPXMj/mIekRJ8B/4/mYE/uNiTgbt11SIjc+JkK+9KjlEaIh8osHC0c/dgtZxU2bwijkXGZDCXcVN7vQHp13BC5kp/Gf4+6zJK4S9pp0FRFycbfi7QdoYfWpmSRD4qobKKi0vbK2UA2vqwQF2YqPVr8kZeOGbSwveF4IWnsxfJOeaDpRPffa
- uVFp0Wbo
- DN+g1QzCkSb1S9dj14NEH1CjZkr5iNj/EpExO08RkL6btDpYEGCKt6xKQyKA5ItHD2dscp+Bh5PncTMVS1mxa6i8D/YYnf9NVEm8sKKSg6eI3B7MrFcUl5zOneIT3SsQuYe8zM112OoNYzOS1m1iNivkKPhAbS2ZU53I5LHaWQmZPEpQMj1Ce3zCJsKTln8OU2TfbMigSCaZonztLQeZi9b0Ux47ANW0FZ4fOqiGF18NGLDaA/3NnaF4Xx1muGZ75lByNsocizKm0uoS7fYxKH2KokWUnTBHAR7DUw8M9tsWdDfFSDuWwSFhq/Xlwu+7xWLV7SQfiky+ihqnzCodA1EXqdeFr8oZFGx/Hh0eu8OLMw6KyRVJ6W/MtQkWcuRSjsI+PM4DpKojR3AH+hh5qkMrBmBbwPvB+tZIW78oO/Jn74Xw=
+X-Rspamd-Queue-Id: 5B34A40006
+X-HE-Tag: 1772534507-962640
+X-HE-Meta: U2FsdGVkX1/O+dvlOVl7QHTQV4Z0GojWkNmMTy8CuOSPo/AXI7Xvw+uoisAsHU/TQJbj4vCEjsaP4NGbhcDeJfI0nkfwVla2A2LU4HtlxIzPQ9LgzVGTweUV6O5nINwCtAORPrPjVJ3wEFTDTwxGoyC+1iXX/W8VTcrrzQ1hpnqSayavxtp3kO7bwn9FQDfsWSG/N2VWN4y/GEv9It7FpNRDGKRtAtE44m+Xq+O7Vr9jvCmjVxhK7emsUUcOduws3agrY9uHqYUMdHwf0FXSKatO17E/mADjLz1584WSAxhlrXWlvStiS/1yShoUlrH08gu+dr7k9eZgfuVzD9Xw+xxRSJM7q2Bopuvk3UV0ulS88zjWSle0ZTWVOxciikgQxIjhQdoL1DI1oGwIMFCkaaqCDy5GIzgiaBzdSgwTpJphzwSOJmdwaQY8mEvr7NpRQbzG75rKBFGiYE2SBWSndXvXxLFrtpvYoXRA7LUtlGsyqknaBPrvF4hLRwFnrBuF+iPBsPPpBYh+EEx96/YRZqLwPLFT8jOEgCQ3BuzKIEL2XVrLhfNkW2yX5JavN7GUREFUVa5RLYTqpSv+o1myrpeZuTHkrJRlR/YJ8GytxyXAuuDOfMMykKDoXPCWX5ppIZ91oif1DtP6ImbcknNOCf/qiXBcZnvPiixWgXT/KYmwsoPzeezALec/pVd2mL5f3fZgYZTPnq8Llg1DwmyQ9MhO6AtJITdzAjGZ03+X8FAIhI6ZMiJk+8K/COrR61pIPJHzR627VGZB++OgWMxSXJNhrhbfxrFF9UNyfkAW27xQw2z/wDryUWPbjTaH4YhSweuERjthBfj2AMSja/vcnmmsloCRDnHQ3IJyagtAudVgulraByjcmvuRdaiezo0FqHBYY/t4CosnX1robfUBvZQ0hd0aohgsQD4X9oGj8hHOUTAz5T0C2pyvTZ2s5uiUOIhOq/s6Nb5mdUdn1vk
+ lkMLtZQH
+ Dx/PGreyWAeJ0NDi9wC65bukbgV+CkqX5O33pcTQ4aTsUUrQsHHM9Px0Rti4GUloJ0njfVLIeWZimNoxoDeXYb/GUPT8TKBLWgKv7AYPJAxJf2pe7vpCnINXYgRwB9HnyPuTwFtfRJrBPMChwLu0N7AY591iIddrhwGyUAlrYBfo91403HxVWOURNDLhiVUeRKmc0lRhiyzDRtXH9GQFtS062FVwsA4xE2zpmrie+e9LRwgzK9thvkP+XUY1D6dUBZwURkZgDBxr3XQkUQ5SqmqVSlUXHwePFqUHTVwPNizRoBWa/QFrr10o0w3v7zJLx/25K3mx1kaVO8NbDVvOPtnsbCms1sAqbGR1fykah0FlKBWzI3S/cfsfA/quTbUVb7UPJr4DmeDgEnmDrOq0yWWR0HlrkUfgEqiQA3MHmpCvj8MgQnNBHOfSQbjPR7MIl/EKQoSZF3MPS13GGtrDGyZQvV43p1stNVz9S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,25 +107,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 02-03-26 17:37:23, Matthew Wilcox wrote:
-> On Mon, Mar 02, 2026 at 10:11:19AM +0100, Jan Kara wrote:
-> > Folio batches are relatively small (31 folios). With 4k folios it is very
-> > easy to overflow the batch with a single IO completion. Large folios will
-> > obviously make this less likely but I'm not sure reasonable working of
-> > dropbehind should be dependent on large folios... Not sure how to best
-> > address this though. We could use larger batches but that would mean using
-> > our own array of folios instead of folio_batch.
+On 03/02/26 at 06:53am, Usama Arif wrote:
+> On Mon,  2 Mar 2026 18:40:15 +0800 Baoquan He <bhe@redhat.com> wrote:
 > 
-> That's why I think we should allow the bio to be tagged as
-> "finish the bio in workqueue context",
-> https://lore.kernel.org/linux-fsdevel/aaC3LUFa1Jz2ahk3@casper.infradead.org/
+> > This simplifies codes and makes logic clearer. And also makes later any
+> > new swap device type being added easier to handle.
+> > 
+> > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > and bdev_async, and only operations read_folio and write_folio are
+> > included. In the future, there could be more swap device types added
+> > and more appropriate opeations adapted into swap_ops.
+> > 
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > ---
+> >  include/linux/swap.h |  13 ++++++
+> >  mm/swap.h            |   1 -
+> >  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+> >  mm/swapfile.c        |   2 +
+> >  mm/zswap.c           |   3 +-
+> >  5 files changed, 76 insertions(+), 45 deletions(-)
+> > 
+> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > index 0effe3cc50f5..448e5e66ec5c 100644
+> > --- a/include/linux/swap.h
+> > +++ b/include/linux/swap.h
+> > @@ -19,6 +19,7 @@
+> >  struct notifier_block;
+> >  
+> >  struct bio;
+> > +struct swap_iocb;
+> >  
+> >  struct pagevec;
+> >  
+> > @@ -222,6 +223,17 @@ enum {
+> >  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
+> >  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
+> >  
+> > +struct swap_ops {
+> > +	void (*read_folio)(struct swap_info_struct *sis,
+> > +			   struct folio *folio,
+> > +			   struct swap_iocb **plug);
+> > +	void (*write_folio)(struct swap_info_struct *sis,
+> > +			    struct folio *folio,
+> > +			    struct swap_iocb **plug);
+> > +};
+> > +
+> > +int probe_swap_fs(struct swap_info_struct *sis);
+> > +
+> 
+> Would it be better to put these in mm/swap.h as they are only used in mm/?
 
-Yeah, what you suggested there makes sense to me. The workqueue would
-probably have to be a per-cpu one for performance reasons but otherwise I
-think it's worth a try.
+Right, other reviewers also pointed this out. Will change in v2.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> 
+> >  /*
+> >   * The first page in the swap file is the swap header, which is always marked
+> >   * bad to prevent it from being allocated as an entry. This also prevents the
+> > @@ -284,6 +296,7 @@ struct swap_info_struct {
+> >  	struct work_struct reclaim_work; /* reclaim worker */
+> >  	struct list_head discard_clusters; /* discard clusters list */
+> >  	struct plist_node avail_list;   /* entry in swap_avail_head */
+> > +	struct swap_ops *ops;
+> >  };
+> >  
+> >  static inline swp_entry_t page_swap_entry(struct page *page)
+> > diff --git a/mm/swap.h b/mm/swap.h
+> > index 161185057993..c390df3f5889 100644
+> > --- a/mm/swap.h
+> > +++ b/mm/swap.h
+> > @@ -226,7 +226,6 @@ static inline void swap_read_unplug(struct swap_iocb *plug)
+> >  }
+> >  void swap_write_unplug(struct swap_iocb *sio);
+> >  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug);
+> > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
+> >  
+> >  /* linux/mm/swap_state.c */
+> >  extern struct address_space swap_space __read_mostly;
+> > diff --git a/mm/swap_io.c b/mm/swap_io.c
+> > index d1cdb10ba133..47077b345ae3 100644
+> > --- a/mm/swap_io.c
+> > +++ b/mm/swap_io.c
+> > @@ -240,6 +240,7 @@ static void swap_zeromap_folio_clear(struct folio *folio)
+> >  int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+> >  {
+> >  	int ret = 0;
+> > +	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> >  
+> >  	if (folio_free_swap(folio))
+> >  		goto out_unlock;
+> > @@ -281,7 +282,8 @@ int swap_writeout(struct folio *folio, struct swap_iocb **swap_plug)
+> >  		return AOP_WRITEPAGE_ACTIVATE;
+> >  	}
+> >  
+> > -	__swap_writepage(folio, swap_plug);
+> > +	if (sis->ops && sis->ops->write_folio)
+> > +		sis->ops->write_folio(sis, folio, swap_plug);
+> 
+> The old __swap_writepage() always dispatched to one of the three write
+> functions unconditionally. If the guard condition is false (ops is NULL),
+> swap_writeout() returns 0 (success) but the folio is never unlocked --
+> the write functions are the ones that call folio_unlock(). Would this
+> leave the folio locked and lead to a deadlock? Similar issue in swap_read_folio.
+
+Hmm, for now NULL sis->ops won't happen. But we could have it in the
+future, means there could be a swap device w/o read/write_folio methods.
+
+> 
+> >  	return 0;
+> >  out_unlock:
+> >  	folio_unlock(folio);
+> > @@ -371,10 +373,11 @@ static void sio_write_complete(struct kiocb *iocb, long ret)
+> >  	mempool_free(sio, sio_pool);
+> >  }
+> >  
+> > -static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+> > +static void swap_writepage_fs(struct swap_info_struct *sis,
+> > +			      struct folio *folio,
+> > +			      struct swap_iocb **swap_plug)
+> >  {
+> >  	struct swap_iocb *sio = swap_plug ? *swap_plug : NULL;
+> > -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> >  	struct file *swap_file = sis->swap_file;
+> >  	loff_t pos = swap_dev_pos(folio->swap);
+> >  
+> > @@ -407,8 +410,9 @@ static void swap_writepage_fs(struct folio *folio, struct swap_iocb **swap_plug)
+> >  		*swap_plug = sio;
+> >  }
+> >  
+> > -static void swap_writepage_bdev_sync(struct folio *folio,
+> > -		struct swap_info_struct *sis)
+> > +static void swap_writepage_bdev_sync(struct swap_info_struct *sis,
+> > +				     struct folio *folio,
+> > +				     struct swap_iocb **plug)
+> >  {
+> >  	struct bio_vec bv;
+> >  	struct bio bio;
+> > @@ -427,8 +431,9 @@ static void swap_writepage_bdev_sync(struct folio *folio,
+> >  	__end_swap_bio_write(&bio);
+> >  }
+> >  
+> > -static void swap_writepage_bdev_async(struct folio *folio,
+> > -		struct swap_info_struct *sis)
+> > +static void swap_writepage_bdev_async(struct swap_info_struct *sis,
+> > +				      struct folio *folio,
+> > +				      struct swap_iocb **plug)
+> >  {
+> >  	struct bio *bio;
+> >  
+> > @@ -444,29 +449,6 @@ static void swap_writepage_bdev_async(struct folio *folio,
+> >  	submit_bio(bio);
+> >  }
+> >  
+> > -void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug)
+> > -{
+> > -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> > -
+> > -	VM_BUG_ON_FOLIO(!folio_test_swapcache(folio), folio);
+> > -	/*
+> > -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> > -	 * but that will never affect SWP_FS_OPS, so the data_race
+> > -	 * is safe.
+> > -	 */
+> > -	if (data_race(sis->flags & SWP_FS_OPS))
+> > -		swap_writepage_fs(folio, swap_plug);
+> > -	/*
+> > -	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> > -	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+> > -	 * is safe.
+> > -	 */
+> > -	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> > -		swap_writepage_bdev_sync(folio, sis);
+> > -	else
+> > -		swap_writepage_bdev_async(folio, sis);
+> > -}
+> > -
+> >  void swap_write_unplug(struct swap_iocb *sio)
+> >  {
+> >  	struct iov_iter from;
+> > @@ -535,9 +517,10 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+> >  	return true;
+> >  }
+> >  
+> > -static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+> > +static void swap_read_folio_fs(struct swap_info_struct *sis,
+> > +			       struct folio *folio,
+> > +			       struct swap_iocb **plug)
+> >  {
+> > -	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> >  	struct swap_iocb *sio = NULL;
+> >  	loff_t pos = swap_dev_pos(folio->swap);
+> >  
+> > @@ -569,8 +552,9 @@ static void swap_read_folio_fs(struct folio *folio, struct swap_iocb **plug)
+> >  		*plug = sio;
+> >  }
+> >  
+> > -static void swap_read_folio_bdev_sync(struct folio *folio,
+> > -		struct swap_info_struct *sis)
+> > +static void swap_read_folio_bdev_sync(struct swap_info_struct *sis,
+> > +				      struct folio *folio,
+> > +				      struct swap_iocb **plug)
+> >  {
+> >  	struct bio_vec bv;
+> >  	struct bio bio;
+> > @@ -591,8 +575,9 @@ static void swap_read_folio_bdev_sync(struct folio *folio,
+> >  	put_task_struct(current);
+> >  }
+> >  
+> > -static void swap_read_folio_bdev_async(struct folio *folio,
+> > -		struct swap_info_struct *sis)
+> > +static void swap_read_folio_bdev_async(struct swap_info_struct *sis,
+> > +				       struct folio *folio,
+> > +				       struct swap_iocb **plug)
+> >  {
+> >  	struct bio *bio;
+> >  
+> > @@ -606,6 +591,42 @@ static void swap_read_folio_bdev_async(struct folio *folio,
+> >  	submit_bio(bio);
+> >  }
+> >  
+> > +static struct swap_ops bdev_fs_swap_ops = {
+> > +	.read_folio = swap_read_folio_fs,
+> > +	.write_folio = swap_writepage_fs,
+> > +};
+> > +
+> > +static struct swap_ops bdev_sync_swap_ops = {
+> > +	.read_folio = swap_read_folio_bdev_sync,
+> > +	.write_folio = swap_writepage_bdev_sync,
+> > +};
+> > +
+> > +static struct swap_ops bdev_async_swap_ops = {
+> > +	.read_folio = swap_read_folio_bdev_async,
+> > +	.write_folio = swap_writepage_bdev_async,
+> > +};
+> > +
+> 
+> Should we have all of these as static const struct swap_ops?
+
+You are right, I will fix them in v2.
+
+> 
+> > +int probe_swap_fs(struct swap_info_struct *sis)
+> > +{
+> > +	/*
+> > +	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> > +	 * but that will never affect SWP_FS_OPS, so the data_race
+> > +	 * is safe.
+> > +	 */
+> > +	if (data_race(sis->flags & SWP_FS_OPS))
+> > +		sis->ops = &bdev_fs_swap_ops;
+> > +	/*
+> > +	 * ->flags can be updated non-atomically (scan_swap_map_slots),
+> > +	 * but that will never affect SWP_SYNCHRONOUS_IO, so the data_race
+> > +	 * is safe.
+> > +	 */
+> > +	else if (data_race(sis->flags & SWP_SYNCHRONOUS_IO))
+> > +		sis->ops = &bdev_sync_swap_ops;
+> > +	else
+> > +		sis->ops = &bdev_async_swap_ops;
+> > +	return 0;
+> 
+> The return is always 0, so this function could be void.
+
+Yes, I will change.
+
+> 
+> > +}
+> > +
+> >  void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+> >  {
+> >  	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
+> > @@ -640,13 +661,8 @@ void swap_read_folio(struct folio *folio, struct swap_iocb **plug)
+> >  	/* We have to read from slower devices. Increase zswap protection. */
+> >  	zswap_folio_swapin(folio);
+> >  
+> > -	if (data_race(sis->flags & SWP_FS_OPS)) {
+> > -		swap_read_folio_fs(folio, plug);
+> > -	} else if (synchronous) {
+> > -		swap_read_folio_bdev_sync(folio, sis);
+> > -	} else {
+> > -		swap_read_folio_bdev_async(folio, sis);
+> > -	}
+> > +	if (sis->ops && sis->ops->read_folio)
+> > +		sis->ops->read_folio(sis, folio, plug);
+> >  
+> >  finish:
+> >  	if (workingset) {
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 915bc93964db..af498f9af328 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -3625,6 +3625,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+> >  	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
+> >  	enable_swap_info(si);
+> >  
+> > +	probe_swap_fs(si);
+> > +
+> 
+> Should probe_swap_fs() be called before enable_swap_info() rather than
+> after it? enable_swap_info() sets SWP_WRITEOK and adds the device to
+> swap_active_head, making it available for allocation. At that point
+> si->ops is still NULL. If another CPU allocates swap from the new
+> device and reclaim writes to it before probe_swap_fs() runs, the
+> write will be silently dropped.
+
+Good catch and I agree with you. I will change to call probe_swap_fs() 
+before enable_swap_info().
+
+> 
+> >  	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+> >  		K(si->pages), name->name, si->prio, nr_extents,
+> >  		K((unsigned long long)span),
+> > diff --git a/mm/zswap.c b/mm/zswap.c
+> > index a399f7a10830..7ce906249c7a 100644
+> > --- a/mm/zswap.c
+> > +++ b/mm/zswap.c
+> > @@ -1055,7 +1055,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+> >  	folio_set_reclaim(folio);
+> >  
+> >  	/* start writeback */
+> > -	__swap_writepage(folio, NULL);
+> > +	if (si->ops && si->ops->write_folio)
+> > +		si->ops->write_folio(si, folio, NULL);
+> >  
+> >  out:
+> >  	if (ret && ret != -EEXIST) {
+> > -- 
+> > 2.52.0
+> 
+
 
