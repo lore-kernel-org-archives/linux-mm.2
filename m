@@ -4,114 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1136EDEBF5
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 22:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA92BEDEBFA
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 22:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C806B0088; Tue,  3 Mar 2026 17:15:30 -0500 (EST)
+	id 1A93D6B0088; Tue,  3 Mar 2026 17:18:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0C056B0089; Tue,  3 Mar 2026 17:15:29 -0500 (EST)
+	id 156CF6B0089; Tue,  3 Mar 2026 17:18:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E35CE6B008A; Tue,  3 Mar 2026 17:15:29 -0500 (EST)
+	id 0596F6B008A; Tue,  3 Mar 2026 17:18:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D0D276B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:15:29 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68098C0127
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 22:15:29 +0000 (UTC)
-X-FDA: 84506159178.18.04C9BF3
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 642CA40006
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 22:15:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=W22hhrGe
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F4F6B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:18:27 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 969391A0129
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 22:18:27 +0000 (UTC)
+X-FDA: 84506166654.23.87079DD
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C0656C0009
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 22:18:24 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TDgirRMe;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772576127;
+	s=arc-20220608; t=1772576305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=piafCis23NCwy+3hKybLRiRLSfcLpmfKa+7uPVWZ6PI=;
-	b=U+pRvClbnUchhAcB8ZRKpMWJHTJmDKR8u/M/zQUQHQIa9q2gzgkzjgTWbG/chV4WFETwLA
-	sJqyJ/4cmqn731owxzeo3Wwf2Sh8tDAwqtrauihvdKj9yhW5NcwkUqV7JtNHPk6tX7p2XE
-	gKCwHuxIfLp0hkjXKg8KSKqPHJXIbmc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772576127; a=rsa-sha256;
+	bh=BP2R36w3xYUknyVVM5sNFE0Pq2fJT7cuN70tvl8P0F8=;
+	b=thIkiMEksAhI+g32XsqnWuAcCE1gd03Hb8z+I9vr0AMSmH9LZhqcWlR6VCHYB1dyeFnJev
+	39U5X/8f/LFHNCIl/XRXdHli+OZSnomTTwnY5Nk1VkTrrE+EiHmNaly4CRI7gDRpwGh0OM
+	lL9GvKx82QHJz+tu6HIDB7OZP2jUBB8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772576305; a=rsa-sha256;
 	cv=none;
-	b=tfUWlT8zmvT1idYTIlKheRCehPLWDJUG2o7kmOAAknU7CGBW/yhFhmnHBnQznhyxOLo4z0
-	IMMlaRyXrHIvXA6vxDYBEpEuV+qu48CPkJKm2r1CEmpme1WRXrCTMK8whLCMN3MNnISOTR
-	o6w7KqH23m2bwmOfyD1drhJPK9Mt+hc=
+	b=g8N77zpjVWu88pakbleMCHssWjWlShwx8cmUn41aXr6VUo0TX+da8Q0Fh+PTM2Y/JnXXz5
+	38ljgUc6PGlikEEz8dNf5DTYS14v2ZNawMy021dw4N5xf7G1FoVB62H7LE3yO98TujQi0O
+	q4YCl4bWBpAKna56RqhhrqK23wp9bXA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=W22hhrGe;
-	spf=none (imf12.hostedemail.com: domain of fthain@linux-m68k.org has no SPF policy when checking 202.12.124.150) smtp.mailfrom=fthain@linux-m68k.org;
-	dmarc=none
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 227981D0016B;
-	Tue,  3 Mar 2026 17:15:26 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 03 Mar 2026 17:15:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1772576125; x=1772662525; bh=piafCis23NCwy+3hKybLRiRLSfcLpmfKa+7
-	uPVWZ6PI=; b=W22hhrGedB+A1rCDhsRdkAHKpaBntaqnCvnaV42OcnZLElVbUoM
-	TUXwJCVwQzpTQkCQwajcZ7KidszoJdL+37h/l+Si300aCe2MV9X3zlyq240sefyy
-	H5wmj3hUdrH1PJPdCd2czsOwqB1zVgxFQWbZC7MZ62JhkBQio9NEb74HRaf950IP
-	zDmS+Uy+6WvdRCsnQlfVVzj0K+0LKyC4xmzJDpcvhH8EBdTPx2VEBRBlC+GpvB26
-	VuGLvehAk1hB59/JnNz2AV+cN7r9XJM/jbn2ttLgLfZtU+4DogpCOgsANpE2ZL6U
-	hnxLtCUdFuYEK/ObrgfUTB6/+eocG47+LNg==
-X-ME-Sender: <xms:fV2naRPDpYdtLi-R5USiC63zncx05O2u_R2r9FrYsU5OIJeP95NNrQ>
-    <xme:fV2naUqPCo3dYUBD6lyTfpIJLhKPQC8ivZdTAQS2LCfKx8ALKNNzf9RrRtl5cpi8p
-    HV07dUEFaCi37JsjX0neuBEmdnfqHQMuD2QiUOAVicV-QV0l_bmUJ0>
-X-ME-Received: <xmr:fV2naedSKBYFcwgqRVSSAKUMQmoBAZ2ZzL3am6WZ7YRKuwCR2t8WSboVgaTbFmQFXMgkRAwsDOYy22CjalTyWjiBsbw48vYfveA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedujeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
-    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeelueehleehkefgueevtdevteejkefhffekfeffffdtgfejveekgeefvdeuheeu
-    leenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfth
-    hhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehnjhgrvhgrlhhisehmrghrvhgvlhhlrdgtoh
-    hmpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegrkhhpmhes
-    lhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqkh
-    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
-    mhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohepohgvqdhksghuihhlugdqrghllheslh
-    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlkhhpsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:fV2naSQ26LraRJxxakwoUpoYm_Ssq53fdytouAACbUdjpp5Db394sA>
-    <xmx:fV2nafbAjcpEURecGS4O6oMs6JSmtiBffiK2AyPf9JJnVxuuFrVmCQ>
-    <xmx:fV2nadcn6V6dQVLsS4atfcPplqQEKj2eXWibPYg_K-IDMFDO1JUiZw>
-    <xmx:fV2naYLe0aI-PAIvDrT0F7-XIhfm73fZwBPZFkWxgHz316fQ4wRKzg>
-    <xmx:fV2naQka-MXz1YjE_ijnj0YDbJXxFO8AVAucrlvVQlOqapuYVTQT1yOl>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Mar 2026 17:15:22 -0500 (EST)
-Date: Wed, 4 Mar 2026 09:16:21 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Nilesh Javali <njavali@marvell.com>, Arnd Bergmann <arnd@arndb.de>
-cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-    linux-mm@kvack.org, oe-kbuild-all@lists.linux.dev, 
-    kernel test robot <lkp@intel.com>
-Subject: Re: include/linux/compiler_types.h:631:38: error: call to
- '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-In-Reply-To: <81916ff0-9296-4de2-bbf9-40ef0eb4c60f@app.fastmail.com>
-Message-ID: <a081b068-d14e-943c-54eb-3c263077c8bb@linux-m68k.org>
-References: <202603030747.VX0v4otS-lkp@intel.com> <6bc11e2f-393d-16a2-9664-a20e2f1d3767@linux-m68k.org> <81916ff0-9296-4de2-bbf9-40ef0eb4c60f@app.fastmail.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=TDgirRMe;
+	spf=none (imf10.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=BP2R36w3xYUknyVVM5sNFE0Pq2fJT7cuN70tvl8P0F8=; b=TDgirRMe9e/+WYFoYTAQq7tOTs
+	n3lhPxA0uC4xXUHSKUoGdyS0FUEYdY1lsPT5yDeY3Jl04CutcDvjaJ6+Q3Vu/fL9sBAb+wTfurQgf
+	t0li1gR28N452WXjgi643PV+t5nUfSdHHLUCcr3US0LAE29SxoPZgIT3T8W3ga9RKqK18QBz4wp7R
+	LnCMIGqtRLRdW0teAYWqC/dxqac2YaDztPOn03I+oybc/z62V2MBEnsBSiG2HCMj9yv9s2/SIP6Mh
+	lL5pqNxRI3v1TIuIBG7viDAXylqbpfoKmluG3AcOeO3K2fvSOBBIkl7YyUDTo+enLV1giDl9ay39o
+	o2wr4APw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxY46-0000000CJPp-2JLA;
+	Tue, 03 Mar 2026 22:18:06 +0000
+Date: Tue, 3 Mar 2026 22:18:06 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org,
+	david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz,
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com,
+	pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com,
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+	agordeev@linux.ibm.com, svens@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with
+ vma_start_write_killable()
+Message-ID: <aadeHiMqhHF0EQkt@casper.infradead.org>
+References: <20260226070609.3072570-1-surenb@google.com>
+ <20260226070609.3072570-3-surenb@google.com>
+ <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local>
+ <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 642CA40006
-X-Stat-Signature: 8k8f56tn1skh8843aj6kzyq7jux6duhj
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1772576127-739721
-X-HE-Meta: U2FsdGVkX19GIUWHcIwEfGGwAe58BIXfR0Bws5RgdKWuzeyi3LcBheoQgbNeCMMF/64YqDmVTDpJwaD/HmN0M3TrUL1GCn4nd+diulFYChGipORa3O8PYTiDSZOy5Hrz4V20x4v01sBi7cQafV0XKDqN8Qdi/s6P6BqQm5GG1dgSTOswaor8OsWUe9CGx6IARVWNVbckeEkPNwsOBrH0don7oCIr/wuyvs5wibqdUwFcj7GyzV8dHirqarUTOgMx6Zw+FOXnwsr0O4paA12iQZQxHtYguu0xMGYenBWxWbrQ4RsPLyO/ZKPo3+h0XFbLIvPigExgwdR0NCvXUb4pBqNCXp+Ym6b1VGQHzBnT2J/4cPVswBIFDUbWkqqi43b1bmqC5Bc+LMnt90iI7TAyD5gCJwxcZlHHxFvN9xT9smKwQ9+2+DcLoxi+XqNHtBoEIVXGsLS4uVTLuIU4mo/TtBASdofwHqZeDKucmIeyhUQE8fhKnJAJQjUSTGs4G8ddniCkctdqwM3xjAgNr6DrYjplLU2uNIGwTco99mTwIfPxaXODMrSlyUJ/al3psNLL0ywf07K8yMK35JJWwWqiZY/YgtqXdj4cMU8uZ4rZFZ5RC8Ixe0DGlIsgWJYeG0RCx9N4acJbP0HkpEfJZwGcgA/N6pgvlLM7CP1Bsfs/s+UHEqN36L2TmRTSdgVojGTJZpXQ3siFRZeKKVNmcjAUr9RWuvE8hg/P84HUv/88EsEBQHAGl8yeCGBXePLxITLtp6XzuMepXiHGwqDL5HkkckmE/wgyGgFvch71KN5AtI3czqUMNI3snazzitPbH4TjZIGLgKXf8NPOrlNCsGfPVSkBZaosg45dFu7ZTnluHUot0gP5I0UhDUsBK6m/Xegs1vJ/49BrRBjZP8iels784prp6b2OAxz4CwEbnl8JwSUM7Nss3QQnIWwSnEwM6ip0bQ69J2xLOi7rwyEwfAy
- e4KfLEF1
- LRqasRveIm8d1vCfHmGJsk22iSUi25v2zkNNm1Kcp8/fv8CjaQjViuQJ5IvERCb1sw2uKYAyC3dvPd1f4b0y4E9mwDHELd9HJUIOXw1eKSLjJsRhGpgXzDg1V2tn6t/LJFSP/RKeFYofFbfjzN3GkcLvQud2gglAyrUufnRMGp88I8iCsg1N0HigYEBh8yS46unsMoNozZ3TYK/5fHvXh+Y0ehAybV6sr2w+NkgUkpj2z0yau7rghm5iMbzDl5qISbOxN22qbzbglwhayoQ1zxsFT/B68zjJFhpxdrG8I521T2FzIHe32IvUofwTUCi62+wVKbaMKPCZjuho=
+X-Stat-Signature: mcmxwyk5ctgu1cam6qpo83zs6mmdqs7y
+X-Rspamd-Queue-Id: C0656C0009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772576304-262199
+X-HE-Meta: U2FsdGVkX1/XWqxT39XxTQviakRYEOAPhok/CGbV1WlORUbaHd/TSLTRWR+na3Tu1koiZCFr5UAv/61DD9KPDgFs0F7hXu76TPfp3hEtVTLmjMDIhM2MdhY9BLEMIjGLCKkKhcDtNuArs6cycSuWKiyoq7TW/81XEuf7kziix5qbwNVt+HRYz+82WLuM9BevJc7UYY4JwQ0Enzg72A22PIKuzw8BcWfxrbrgLO0XlrSrW0b8YQbOxnDykBunCCqAjQ9GXbzT49ehdA+VFdcYRDipJRYJYbX0XIHXbHRuoaXia1i4d8XcN+c5OHvF6etKy4/7SmdQ8NhseKxTSZFxJhKry07eKWO/lHdISbOGcGRcMLIHXZm/YAuqIrLEdkbTX7h9vJumkho9A658mLHqnE2nVBNNZYUT1vYc/fl5eJWoNtBKrQVVAb5Sh6GJds29ZePLNhwsymaYJUHtp1Ccg6vCmjgjcsTVygym+MsKPdknsFcymTdA8opPG3cnxIjajtL8MKe7FwBAOBcQAjKd4ke4/Pykfvkq6re6BQzfPxtJZoRhF5N8BVkbz85iieVammIktEXZEUl5nGBpg7yJbjHKNQZy0IoM0joUB+USiJsUTZr9a2u+v4Qx8y4xMoyLlUSwPXViA0QSizHgHrBGFiMlUHGMd9ovjXpreKM+M/F6Cmo4DHxPtDg5nDyAheDHjiKu6wXxUvru4xp+SyAtjQXFq4tEIBIyCjhCqKSgSCULQ2jLB1Rt44FAuEAO8wmqAtbgJPUtE6HQkKzNOdJ8+6XkkVi7oOsps/2RAzwFSnbDtA+MLHIHtho3dyf9nBFp2jm6BFYsguLrSBac6vJMisCdIya9imjRCCkWeFTlWiF4BeiXYlEQrT7b7ewlj9dUupCt1mZNWGp7vbuKJ7hSAfKo5i0uJ56pGUI7Mk20DVxYXhLuvLp7hvVAJPL24Ndzwor53Xnb5wyWXT01Uy9
+ 5NQYv2a1
+ Ef/BLQdF3FYJhKObxS04mxx3cVisF0RcY9F+OH039Qo0WMh6YxrBSxLpepvmuieG0Kqn6TRayGwisITZh7H3A9qW9EFCzJRdOeWAG8F6tPdEt/BS4N70XgLgtdUSPQyRB90OJcCoeuI/qGFlqABpUK5rCoIE+S48+1OEgEGLp+tfSo5NU2Vb0eOVGyL8qMBcDaxi1E9rvPg1ZIBmEwYelLUlybZt44wUkA+dP/78yftjSp9oR4Y0H3vGG+Mvb/lKa1qiJsExwNtlJoBrQcs7hWLuCSKeIesHMFLtMK1JjvndTuxwJJNVD0Hi+1qUXLsA/04DlgP/8l0O/kKz2kbcAlTOwGODcEbVSs0ev+TV1uTRNKyNOL809owS5XFnc1pxSHvHQ5acp6BXjszPbwkd4rx4fOpnyP5BrVIwK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,63 +109,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Tue, 3 Mar 2026, Arnd Bergmann wrote:
-
+On Tue, Mar 03, 2026 at 02:11:31PM -0800, Suren Baghdasaryan wrote:
+> On Mon, Mar 2, 2026 at 6:53 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
+> > Overall I'm a little concerned about whether callers can handle -EINTR in all
+> > cases, have you checked? Might we cause some weirdness in userspace if a syscall
+> > suddenly returns -EINTR when before it didn't?
 > 
-> As far as I can tell, the assertion is always true on all architectures 
-> other than m68k because "struct rsp_que *rsp" is word-aligned and 
-> "struct atio_from_isp atio" is either 64 bytes long. The intention of 
-> the assertion is to ensure that nothing got added after atio, though the 
-> way it is written does not take misaligned atio into account.
-> 
+> I did check the kernel users and put the patchset through AI reviews.
+> I haven't checked if any of the affected syscalls do not advertise
+> -EINTR as a possible error. Adding that to my todo list for the next
+> respin.
 
-Hardly an m68k issue. The same thing could happen on any 32-bit 
-architecture under slightly different circumstances. (Nevermind 
-Linux/CRIS, would would be affected in the same way as m68k is.)
-
-No, the real problem is the assertion itself, which is a failed attempt to 
-state that no struct element follows 'atio'. It isn't about alignment or 
-padding and yet the assertion is written in terms of sizeof(). Go figure.
-
-It is about the non-existance of an non-entity. That is, something with no 
-name. I don't know how to express that in C. It may require the help of a 
-fancy compiler.
-
-> > I suppose the assertion could be motivated by some code elsewhere but 
-> > I haven't yet found it. So perhaps the assertion can simply be 
-> > removed. An alternative solution could be to increase the 1 byte hole 
-> > to 3 bytes, and prevent tail padding that way.
-> 
-> The simplest way would be to force atio itself to be aligned regardless 
-> of the architecture, either by removing the __packed attribute on the 
-> struct nack_from_isp definition, or by adding alignment on the variable:
-> 
-> --- a/drivers/scsi/qla2xxx/qla_target.h
-> +++ b/drivers/scsi/qla2xxx/qla_target.h
-> @@ -844,7 +844,7 @@ struct qla_tgt_sess_op {
->         bool aborted;
->         struct rsp_que *rsp;
->  
-> -       struct atio_from_isp atio;
-> +       struct atio_from_isp atio __aligned(8);
->         /* DO NOT ADD ANYTHING ELSE HERE - atio must be last member */
->  };
-> 
-
-I'm fine with that, but I'd add a comment like the one I pointed to in my 
-previous message, which explains some gratuitous struct padding added to 
-satisfy a BUILD_BUG_ON assertion.
-
-> In general, the use of __packed attributes in this file seems a bit 
-> inconsistent, with outer structures being packed but containing aligned 
-> inner structures like atio_from_isp and nack_to_isp. It may be best to 
-> review all of them and remove as much as possible, but that's not 
-> necessary as a bug fix here.
-> 
-
-I'm fine with that suggestion too. Thanks for your assistance, Arnd.
-
-Nilesh, let me know if you'd prefer a patch to change the struct padding 
-or packing, or something else.
+This only allows interruption by *fatal* signals.  ie there's no way
+that userspace will see -EINTR because it's dead before the syscall
+returns to userspace.  That was the whole point of killable instead of
+interruptible.
 
