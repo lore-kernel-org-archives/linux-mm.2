@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8DE2E67A68
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 05:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9E54E67A6B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 05:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 058E96B0005; Tue,  3 Mar 2026 00:16:44 -0500 (EST)
+	id D04DB6B0005; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006B86B0088; Tue,  3 Mar 2026 00:16:43 -0500 (EST)
+	id CB2426B0088; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47FA6B0089; Tue,  3 Mar 2026 00:16:43 -0500 (EST)
+	id BB4536B0089; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D00006B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:16:43 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 705D459AEE
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:16:43 +0000 (UTC)
-X-FDA: 84503591886.19.26C453A
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 67E73140013
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:16:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=WV1xdUM8;
-	spf=pass (imf09.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id ABFCC6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 54E2C1C866
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:25:43 +0000 (UTC)
+X-FDA: 84503614566.13.5F09ABA
+Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8642F180009
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:25:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2ttx+WDT;
+	spf=pass (imf06.hostedemail.com: domain of 303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772515001;
+	s=arc-20220608; t=1772515541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GP/GiWYeS0pMiBqvJFMNVE6SyM3tMRMwuL8KlnPDFIo=;
-	b=oXW2AiQJ3CxEmf72KuGKUkpILkRXCo6JgNzhwmwukkpnZjUVrdf27AMQPs5IQ+iJsBnYKn
-	Vm+LJY+pd1/uyD/voROImatFPj7I6LZYwsMonjvRMyBN2kCeUqoZenbW4qMtE02hgwKZ6o
-	e0+pQJTc2GoESHvv39wroAV8rBhA9sI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=WV1xdUM8;
-	spf=pass (imf09.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.52 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772515001; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
+	b=JHDRQI7SHUiOTbq3PhCEea7NbxX23Y1lSIvO8LTJVTPoq6vpQkqYTpAotjHMXNhFp1Q+Mv
+	ZvAiC8QhMgTUoZN4S2478XuaRJupfHFp0CH53Ep8cSE30T1o5TgphAYp2GMahdfdNrxfkT
+	os/ft5Z8kJs4cR4/61cGgSyE2hZ6NT0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772515541; a=rsa-sha256;
 	cv=none;
-	b=0zUJtIitNr9EFHofPYmupB4PW3mUqsnkwZ0RNhoi7XcchN2q3srYUYAsHm+XGO60hTdXdF
-	ZaFSWqFED08wQ3Fqy8Jvs33VZ94brYvEuyTTtAgUYX8VYbh5WGZm3dsgzf8kH/FJIeJvPX
-	Uv9ZMATe36sq19UK6+OqSKmPmR7BGaI=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4833115090dso53837865e9.3
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 21:16:40 -0800 (PST)
+	b=UP+eBcGEX8u7gkqdDrCUQtkpMz6nZ4wD3DH+eTDOylZ+Ic/n8SwTCKHuI17ugHC9Dl7jLj
+	VTgkRudBfWcrXcV17usaMC43npqg0FaVFaUDHTLwbnmslKWX+JShfULHps60iPGuTn8pC4
+	TbYHQG42KNX5jbtuW3YIlUS60KT7eFk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=2ttx+WDT;
+	spf=pass (imf06.hostedemail.com: domain of 303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1276e71652fso9378853c88.0
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 21:25:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1772515000; x=1773119800; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GP/GiWYeS0pMiBqvJFMNVE6SyM3tMRMwuL8KlnPDFIo=;
-        b=WV1xdUM8x6C3xKlI+sroTx3zZyVO0NWUOwfjVQbae40ZCSyKHbkv+egvxslma3ITm0
-         xrL5VsexmkooQqryZ9/c1DlcGbkuf+431V2dnGfVC2C+Z+yCUAcKRQH6P4yDQr5CF8sI
-         29uCactztMhmMaj7FHwn8p8Z3Mkyj52psjlTjbDSUO9vOY4g0iQa1ZKfMAZviQ7RC07m
-         rObDlOL8oyKrZ/TqKFz8GJECquQv1pfUkRFJCAuTPA+DNe2FxD6E83culmvH9oqz51a+
-         9U/rvEkUYpSwZ1LQCtSges8QsvnOHcVnUieo2FWpqsgD5uQOZn1VBPcWvzR9001q6bkg
-         R4Iw==
+        d=google.com; s=20230601; t=1772515540; x=1773120340; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
+        b=2ttx+WDTuel5JAOv+j1le8+maSJnPlncqWWGlPBgGosX0Hr8NBP6d269qcrNEOLldP
+         5497RShqBZwgvTI8kBjzzBJofVVSFwswVX8okX45KblclyWs9Hy9Lf2WUfvqUEnCnQJF
+         6KuZu1C9+AMr2heBp0HnmHihW5otRF/blgGGOvMapy2Tkto5c3/jsDztIXhazEzPnL+r
+         MjPernTnxqdTuRU2HmojoCQcVBoQ/GLWQtMwyZWIf2jPpQU5YUqc4tv1FFKMEaZoz6rL
+         9EJkEf2iB2yq60KFBTYSL25sgFbsM7n5ZgMr3zURQUjoTE+rmtGOx+8Xlh7Dm9tcO89w
+         sqLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772515000; x=1773119800;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GP/GiWYeS0pMiBqvJFMNVE6SyM3tMRMwuL8KlnPDFIo=;
-        b=OkzPtA3Lc/8KjkJ3Eje5ogN/5W6er+50g/JHbYUDInhhT2y9Mx9GmgBNjVZUhEWtlY
-         reqgb8lbI809xKI5z++OWZgY8Di5dlhVRhhZSSMnVSQVjmjKEkBoSMqL2yZxkA/arnyH
-         DS1B7tpR1WfE2BQeZfE+2wNerxp46mF5vF2p2jaEzMstcz19xYNbjwXsDVl3NnMv7034
-         qBKCIFwjhyQ7YCo6oMRH96r6MzGSHnP3y6NpH/sIzzv/u3vlAChVXsucE+feUy+sgh8S
-         V6u2z7fkCyJEWRitKgZrv6pbF0cHxSbZPVykVGq919Bm4h7L3j1i6ykADUHFVsl/h9PW
-         YmMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpzly/kG9s/u4vxPrbkguj3yi5XGSoWAoHbNPwo/zs5luA8vFZrs4vJnozChzGF1r4JbXaK05a1g==@kvack.org
-X-Gm-Message-State: AOJu0Yzl+tBOo3F2QuyhD1143GJXr+6XkiKWeDX15NeNvE2OcowGNs1G
-	dBuugFAaLLsqY4SAq+uydfSBiY6GQK0/hoeHf+tuF/Inr5HqRxvC80UZ4UDGy5fjkAg=
-X-Gm-Gg: ATEYQzyi8IaWzt7r3TyK5h51soMdxUCmz39SmRm57klhC3jSJKpSbnRNCBgcycbJStb
-	OVdtdGCgvTtzye0finQeIldLXKcE7sD5Fe7ZPTXz8VznCYydVhwUhbluRnVlzt4K6TxRLSekZkk
-	hZ5wEt0xlpAzj3ZeZ6HNlk2iKouz+swxeLwjhosksCXMWjm65d5JTVAGa46AdNmFBJMs/z7LIa8
-	yJL8gxfpzy9hE/49dbliKlgXEQpJLwC86kcb75B8rQ1LyjiqTFIAiuTudkCJG8mKf7glAOyos4r
-	6I8SBFlDMxs+0dji1fbDwejn1rSNwkhCCFS2LJNsB5td8oY487uAcyKxsqvZL8QWl/u4RyZuShf
-	fJK+LUKMoeMDyhk8Woy3yShEoujMuCcnrXHWrIHk+JOKiHOHmXCjv8wH2NXgcl3UtZOxGxmNWfU
-	yHM/2J/zf3x7neSQrNLXeuzc7TW6oSq+n5IC+Z35I=
-X-Received: by 2002:a05:600c:3108:b0:483:887:59b0 with SMTP id 5b1f17b1804b1-483c9c1cd2bmr278984465e9.35.1772514999496;
-        Mon, 02 Mar 2026 21:16:39 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485133a9511sm8016005e9.17.2026.03.02.21.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 21:16:38 -0800 (PST)
-Date: Tue, 3 Mar 2026 08:16:35 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org
-Subject: [bug report] kho: update FDT dynamically for subtree addition/removal
-Message-ID: <aaZus68Dao_6Ckwf@stanley.mountain>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 67E73140013
-X-Stat-Signature: ym9yirtoiap88gm6fid1pe866q1za1dx
+        d=1e100.net; s=20230601; t=1772515540; x=1773120340;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
+        b=P9Zw06raMSQRyqMB8HOw3Q53WWEkzzwFvg7GlefV9VfD6fMq9fNRRZ+AJ4o5PfEuBn
+         V5IjuOhmPzu19xjxP5tEj4BGrM/BtUMS9UAVjGQaLQvCT+bFF/w3G3wKr9rYGNM4aJph
+         wohDMm3hVYVhGbA5NKHh9KHQMNH2/G+ZUvu/NqJ8s+lBRPXGhVCl2RisypSOfTg/FZif
+         SRzAUD1BQ65Oy6+XWtuALILcxCHB4K8+fY9dazOOT22dFO1hzs8bIEgRXw7AZyWhDmy1
+         V2uktMQzT3O4n4YDkTIVJPcGxVZswquzztxTIycV/mo3uCy5ZamVVViG/eTeUrqdhCsU
+         mqlg==
+X-Forwarded-Encrypted: i=1; AJvYcCXE3BDrqzOI2jDWYMzgft+UO5+bqSj04CoLoj8Qkkz6BTRzGFsNtgO5qBAcSpvScqc5EQcDJlcbxQ==@kvack.org
+X-Gm-Message-State: AOJu0YyIbj+nerBf0vaeHumsqhhZWBujGrSSfmudLjb/44puS+z2eaiF
+	3uBYCxLf+Yu2jriZQyxKrJQvk9KeaDIm57ZBJkJOsxzUHg2gMBTL9tAlyHLnoTsa9g030DMO2/J
+	sd1hY6/9svLL8Mg==
+X-Received: from dlbpd8.prod.google.com ([2002:a05:7022:1408:b0:127:8d0d:ba17])
+ (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:248a:b0:124:b11f:67ec with SMTP id a92af1059eb24-1278fc6f217mr5778394c88.39.1772515539799;
+ Mon, 02 Mar 2026 21:25:39 -0800 (PST)
+Date: Tue,  3 Mar 2026 05:25:17 +0000
+In-Reply-To: <20260302070351.3465439-1-bingjiao@google.com>
+Mime-Version: 1.0
+References: <20260302070351.3465439-1-bingjiao@google.com>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260303052519.109244-1-bingjiao@google.com>
+Subject: [PATCH v2] mm/vmscan: fix unintended mtc->nmask mutation in alloc_demote_folio()
+From: Bing Jiao <bingjiao@google.com>
+To: bingjiao@google.com
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
+	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, mhocko@kernel.org, shakeel.butt@linux.dev, 
+	weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8642F180009
+X-Stat-Signature: w7zyhkqajxg3fa87pib3tpq1t5nmp8pw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772515001-633020
-X-HE-Meta: U2FsdGVkX1+oOfBDiGJvXl8YNzA0UDoew2/k9A/ZyORzRM+AeJE57et+Zx8/giGIPVqcxDwakvHdeNWKDw+6t04/VbwlFU7fwFioi82H78f/nJoRafxtsKpng9WKQPkFo1ngiffp0KxEyQkCmbTFGj/J2QiN5XV9Pr4evDpA34L6Y2mlcgPzIho4TupK0Sy8K9iM5p0HzTQFG8Kim0VaBINNcwTJ6jwgaD1i+aacmJlX8HrR/MAVKALKFNF5Rs5lwMs99Bbq6w1FoYeleU1v/FjF3dpR2q2KL9Jyu368w1rs+0EW7K0KjDhcJuoKEwWgCDc/9OHWpGTx3DvS/vrPA1Zmq8bNkYkbnj+hYw/srSedMz3IZf4g5+zmoQ1GJm/WbhC6SR2mhn6WZfyHtf924YafTWOhLpSsBwIWs/tievtomuSg3RJOnjeQfTDkKR84p9RMvb720GE/uX9sKcYYluaGPzzCArarUG3XoJNotGwDeg2ZpdF2w8QrksJ+oucoCtdYWfPH1gp5H9HGBJzAQhwBdu76sDaq+Du/UPGZt909jes0YhFyGloBxELkfeVmZOG/8OjG5kVK+2DLZIHVWW28ryBHiv6fIppTJUpQaXO7n7HPXheTdTcvYjFPcDAiwTp0NWQtNLNc8nOaYq7Fwm7aUyQ/ctKSkQXuR3enK3fn0cbJiXqxD3bXpTuPkv6qKBKeGLZGxconn0nAWdx3kzamMh/GrBHGdYwOpy55APFWeKf5pfngEeS/5+StoYs31mkr29swE8Tjq599bSP3b7ONXIrYNPuJC0Ui1gXrWx7R1fycj4HR1/0exkDU38G3OoBafYNlJqF2s3RbommlqOy8zA4HgqPlpU13kRaLz+5m2f/973KHrS4TPbuuSd/DvaRFx71bN3pp/E9SPvFI9CeKsMIlw77xmzFhSzh/wPnWIQa5mThQVh3TNzQvlE6sF8gxKAUSJ2BZKVQbsmv
- 9fC8+H2j
- dQt7OljhvTgC9qjfgRCtnZNSGHZIPqcSwAN+mU10c66J7P968n5I3qniYeQ2IIvTEF8zbjDtTa00aaJ6wyMqQ8LK/EHfedpjqIDuQRZYGsVaBOLHxb68krfRQ1Cjs4f3sUEN+rYwIXls202mzX+zsGlAFw3BfMUzR/W1yzIpvoCCa0g1hPywgBFEvyHAte4ma+amnbzvB4oXaSLfTN6dyUhsJU8mb4cdqkxlEkYxqycvvl/wE4uRj42q8dXnNTIk1ZW87LJsLh8COkcjlxWPJFy5kWPcTOhWmIK2X7sLOPHBp4tK/8PJk5TNw5+3mAtrX3oiJz23LGRaDtEUF4lEHPGZVHv0bIMYEJszyIPwA67JppH/iTuRSj0n93zXh5xAQfWX9sC1zhbOfkVnGmuN0K7aMNEu+selKlanBlX/gBEBBZ2A=
+X-HE-Tag: 1772515541-911438
+X-HE-Meta: U2FsdGVkX1/m3ds1jN0HWRA0CwnWEF1yr6N5oOO0EmfDK85D/xc5JfCt0nWlNyVBtqDwv/4Phx3Qh0EG7NviDII3isjm4oCQqAn8YK9nt3/eUh8uwiz/tIxASm9XlAdEQOx1rN9TObTeot5VfbhdmdaARBuM8wH1Q24sZmzRDTR9lU4Uad9ydJlPMYk1p9SqzmvCa0TRUL7qaAfnWEoiIjuraLQexFKapmHr18O8yexE4fE5FndKJUZtgUk3Tk3py2gDnlDtrpR1gQvWrHKoPV/aWdHyNsFMY8bA88ew25ACbwxCAxLnKVV5qGB9D9YuPwH6uaAudv8oYcAzaoZjgFDptBLvCo8p+s7p+wIItnykn8YnPemb+70P4acoTI8eqrcH9z52huFFdC3OmTsqJX25EAJ3yQsJaGvrQzVS97VnACgznc7Ed/GNNDt3eWQzIYsulQA91isaRKmfdzvO61MBOO8W6+zTyqUw7X0thfM4Moui0/QSteGaq4YAJwfBOmGoh/uWLrBly35N8LIL14qhjA7/SK3LooaKeBgz5toNwxHb46pC+TbViCiAT7KagklqZVhcHJMXlx23bF03Vtz9C9y59cMpGN2BUMZvvhFvzp/xlpPDltDpUaLAfk2cBdgaXULxJB1nBszBRXX2mPICw39dGqILqtruRLWc0l4QX7u566tojJ3sjjBQlB1RcKzV7+oy6sontWLU7NuhPgS+squhgQrbiKIU5IEUEYarZOLNIme9F+cSI1gNUMhVvvi7gPhY465a9HvntH78l2bm+7rc/cf+sKUySYYU7zIaSUkRd1/Qr8gunGMonZQIqgR7pruSuqE6D0ofVD+gyLmi421b/SS3ywQBmyVLrVthC4RPtksDvHtrUMaWuvt8uHabHN1zvXosz/jWbiNzVpjAsdftzZped1TUJJPU6oDi7+M4IzgTSoSdsjtweEZTUG1tdulYybHyRwulTs0
+ hBFrTyWQ
+ st0WPYsBdXaM5ndgU1mqb0H+JfLMemoqVEb417cPQPn5lW6py5AgH9SFXKXj32Xt7JuAjtEvQm81igxx5J04u18r6rkQ++XAYqCaCk4G3g9/7tK1Xqzqk89fmw4fIvu2rfLsah34mu6ltBUW/nlGkcIIfM1nEKFXplVFOkQQTd6/bDxM6pUNLgAvdBpIP5Q48hhDtOY2QEPIOPCeprHtyRum2w9OhMM5L25QbUHDgXHJeVlVHK5LVHI08NEXkBajx2TTEpeAsET4sBIjTSmzy+Nd1sQg2Uz/jcYWvptucAgHenhh+Yj++kFh22iafySKwjyb0w5kvzeJe3sHqxzEEQ1eocDjgSf7Ml+yXbnA4z+LXyMUkyfOjy5CWoXQMvPO6vNiw3RpipJWiHVjiDh/7zk/2TEJXHS9M7nvmE3/QcdkffscPZRelCN4WiqrCrW4gn+65zc7fjhuTI4AxkCHpFDlQDshK9TZnPHlcUhU3hNzSaLUqmLMWRgm3QbCop2JWjYTqHTrZkS2ed3wIUsV7TPxzGApCVhV50RUQjqgXdjetDbwnQnS1vuesFo10A6smMGjzBH/A4tmwO3zV4wXm9TZFLVrrhNVqoLuJsm7iSgDIKw5/0QvyHrOc8ZstWr2kuUPT7vsglaGufVKnBVGTkLu4zA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,54 +109,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[ Smatch checking is paused while we raise funding. #SadFace
-  https://lore.kernel.org/all/aTaiGSbWZ9DJaGo7@stanley.mountain/ -dan ]
+In alloc_demote_folio(), mtc->nmask is set to NULL for the first
+allocation. If that succeeds, it returns without restoring mtc->nmask
+to allowed_mask. For subsequent allocations from the migrate_pages()
+batch, mtc->nmask will be NULL. If the target node then becomes full,
+the fallback allocation will use nmask = NULL, allocating from any
+node allowed by the task cpuset, which for kswapd is all nodes.
 
-Hello Pasha Tatashin,
+To address this issue, use a local copy of the mtc structure with
+nmask = NULL for the first allocation attempt specifically, ensuring
+the original mtc remains unmodified.
 
-Commit 8e068a286aef ("kho: update FDT dynamically for subtree
-addition/removal") from Nov 14, 2025 (linux-next), leads to the
-following Smatch static checker warning:
+Fixes: 320080272892 ("mm/demotion: demote pages according to allocation fallback order")
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+---
+ mm/vmscan.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-	kernel/liveupdate/kexec_handover.c:777 kho_add_subtree()
-	warn: return mixup? 'err' vs 'fdt_err'
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index cbffc0a27824..c4e0ce737e03 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -966,13 +966,11 @@ static void folio_check_dirty_writeback(struct folio *folio,
+ static struct folio *alloc_demote_folio(struct folio *src,
+ 		unsigned long private)
+ {
++	struct migration_target_control *mtc, target_nid_mtc;
+ 	struct folio *dst;
+-	nodemask_t *allowed_mask;
+-	struct migration_target_control *mtc;
 
-kernel/liveupdate/kexec_handover.c
-    767 {
-    768         phys_addr_t phys = virt_to_phys(fdt);
-    769         void *root_fdt = kho_out.fdt;
-    770         int err = -ENOMEM;
-    771         int off, fdt_err;
-    772 
-    773         guard(mutex)(&kho_out.lock);
-    774 
-    775         fdt_err = fdt_open_into(root_fdt, root_fdt, PAGE_SIZE);
-    776         if (fdt_err < 0)
---> 777                 return err;
+ 	mtc = (struct migration_target_control *)private;
 
-Why return err (-ENOMEM) here instead of fdt_err?
+-	allowed_mask = mtc->nmask;
+ 	/*
+ 	 * make sure we allocate from the target node first also trying to
+ 	 * demote or reclaim pages from the target node via kswapd if we are
+@@ -982,15 +980,13 @@ static struct folio *alloc_demote_folio(struct folio *src,
+ 	 * a demotion of cold pages from the target memtier. This can result
+ 	 * in the kernel placing hot pages in slower(lower) memory tiers.
+ 	 */
+-	mtc->nmask = NULL;
+-	mtc->gfp_mask |= __GFP_THISNODE;
+-	dst = alloc_migration_target(src, (unsigned long)mtc);
++	target_nid_mtc = *mtc;
++	target_nid_mtc.nmask = NULL;
++	target_nid_mtc.gfp_mask |= __GFP_THISNODE;
++	dst = alloc_migration_target(src, (unsigned long)&target_nid_mtc);
+ 	if (dst)
+ 		return dst;
 
-    778 
-    779         off = fdt_add_subnode(root_fdt, 0, name);
-    780         if (off < 0) {
-    781                 if (off == -FDT_ERR_EXISTS)
-    782                         err = -EEXIST;
-    783                 goto out_pack;
-    784         }
-    785 
-    786         err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
-    787                           &phys, sizeof(phys));
-    788         if (err < 0)
-    789                 goto out_pack;
-    790 
-    791         WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, false));
-    792 
-    793 out_pack:
-    794         fdt_pack(root_fdt);
-    795 
-    796         return err;
-    797 }
+-	mtc->gfp_mask &= ~__GFP_THISNODE;
+-	mtc->nmask = allowed_mask;
+-
+ 	return alloc_migration_target(src, (unsigned long)mtc);
+ }
 
-regards,
-dan carpenter
+--
+2.53.0.473.g4a7958ca14-goog
+
 
