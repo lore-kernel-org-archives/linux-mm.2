@@ -4,87 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0873AE67A9C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB97E67A9C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:50:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FE516B0096; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
+	id C64D16B0005; Tue,  3 Mar 2026 03:50:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CC786B009D; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
+	id C33086B008A; Tue,  3 Mar 2026 03:50:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A42A6B00A1; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
+	id B355C6B009D; Tue,  3 Mar 2026 03:50:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49F356B0096
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:49:25 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB9DC1602B8
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:49:24 +0000 (UTC)
-X-FDA: 84504127848.12.4F30E69
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A28CA6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:50:41 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A6131B79A8
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:50:41 +0000 (UTC)
+X-FDA: 84504131082.05.425D245
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0DF43180003
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:49:22 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/72Vv2c";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 85C2B20003
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:50:39 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HRRJr7WX;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772527763;
+	s=arc-20220608; t=1772527839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gbGWYBMaMvRnDZWdaGCfThHaOw2+2lhf0ftPsW5hryg=;
-	b=czuKr+BmS5QP/0X9dcUs+yQRQxcRyg0YWUG+Pe6dMQiSuwSSjjFM82gvW3ik4nuJFpsdoJ
-	K7f7Ur3HBUBk3yTiGdTnv/atwUiGLYFr0PxUTwuQlbgXHc4DulTeDGcuiCGVnwY8Nar70z
-	RFXOt6hPMysEJ6b8zDHHVP5Aj/RLfkg=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J/72Vv2c";
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527763; a=rsa-sha256;
+	bh=ZC9e5v6+jkPb+OFVKVc1ctROV4qKJmhZ/7MGoT7HTlc=;
+	b=u9y20jQHtL0BZjtXQsKBMcL/uGdODV43MukbfLz2DkVk7ubj1esXtH27c/stn3UP0WBAEe
+	CBoy3bmKnFR6XIO0jE1ldZsiCwZBH6lpBMfCTZBndpHZTfB2pDlzjHzXlHxJ8V2wL7v9D6
+	EeiINWrgAUblvs0LtCBCYO5P/IkBlW8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527839; a=rsa-sha256;
 	cv=none;
-	b=xuHieOfkW6OEgvmupD+mVRCEKsDLfd8QkP2tE3p7kTpMrpOhlB8NcVhVhMRgiTlZLk7NLP
-	cIKNkcCKjckYjn17W0CgPOg/8g+hutqQN2rJjwsK16ayn3mJGg4w7PVp4lKwewyrTVbeTW
-	5scYivjYpAtbtDJrgF4wKmwj+JNbhvU=
+	b=vNXSirW4FfsSnrZFhCijjgV4ip+Z+SA7JUL9YAcVes4WosmkG9gdf9vOLgPCDGloun0Sds
+	2Ul7cB8VkJqNQ/VrMgMhHMS0kWZrbyAqPERuy8xLEEDh/YI1qjRL66uK67H54oXE8t/dpq
+	Z7Xh5+5vwirYIxWaBlAsCOSPXyH6fPk=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HRRJr7WX;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A0854413E;
-	Tue,  3 Mar 2026 08:49:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B26C116C6;
-	Tue,  3 Mar 2026 08:49:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 804884408A;
+	Tue,  3 Mar 2026 08:50:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59612C116C6;
+	Tue,  3 Mar 2026 08:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772527762;
-	bh=JaD79dXQHufCQnM1pCE8hYRquoIOvY5KaE/X/JmRPFU=;
+	s=k20201202; t=1772527838;
+	bh=r87qOY77XSbIU/UY4K8bEMsqNQIs4ZK2kU3+22aYxro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J/72Vv2cjiRCjXUsiQrPB1gIu96TS7IExQyAgZolreyw41sVbQb0G+pb+PBfOUyO4
-	 BT4v9iTvSH/1Cb7uCZ7tgNLFRH8Zdt48mm4ctlT9ezNtMH0fTTFa+YTAsWrcknEJJ7
-	 Jn+VvKYIRQHCAfHwqRhKo5sgm3LUm63RcoLE46XcMa2fIanDS3kHAl2NZ64dALZuCu
-	 VGKIPNo/gkkcfkzhXlk1BfJNI9Au3hJQ2Gsp4BRwvI5n9TWDGiRSmOrVMmEMFsB9D0
-	 6q9jBIAtgAuB69Xa1Qxm6OcYw/K45SosrJZ1xTvfMQKxBZforaU4xKB9IYSacKcsi5
-	 b3dSX3KC2vWmQ==
-Message-ID: <b1499bfa-a16f-4242-8715-ddd9a4246fe3@kernel.org>
-Date: Tue, 3 Mar 2026 09:49:16 +0100
+	b=HRRJr7WX3U+HslYZrW4zj5LwAwTyLP1FAwli/qKgJc4vfgD3Y9U5iR0l30qeRxdn/
+	 FXyVKofRRFXyPHPylxSqYp9x4ejqAgV8WmcbwbYIctfycq4cjD2/TSxLi8B4//hzan
+	 5YOOkdJh696gs5AiOwNcTe8lwiUgKJxUGHR8dcb/4g3LpeFSPgPSFH51xGYnEAGGr2
+	 vaRa6MHO1IwsUzgo55iQmw8Zo8eYXFARXjRNDtj8rRUTXj9IP8ec6kMpT/OEKTfFm9
+	 dfuwfF5VzLXSdEVqp4loxaFbK4Lr6S8P89wjl78nW0WIK/TTNcE15s60mHMP4gjOHQ
+	 Z7PZfRCZDtdcw==
+Message-ID: <e372b7e0-fc65-4296-a246-a14ff0856f4c@kernel.org>
+Date: Tue, 3 Mar 2026 09:50:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: fix memory corruption on huge
- zero page move
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Chris Down <chris@chrisdown.name>, Suren Baghdasaryan <surenb@google.com>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260302170619.867056-1-lorenzo.stoakes@oracle.com>
- <901fec30-c5c2-46c5-b48d-f9a8f5e5c928@kernel.org>
- <f11357fa-29ac-436c-a9a9-8406f516ea30@lucifer.local>
- <20260302125032.313797b0ec908cd133f3ed82@linux-foundation.org>
- <a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
+Subject: Re: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree
+ folios
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+Cc: riel@surriel.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+ harry.yoo@oracle.com, jannh@google.com, baohua@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable <stable@kernel.org>
+References: <20260303061528.2429162-1-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
+In-Reply-To: <20260303061528.2429162-1-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0DF43180003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ybwjws1pj3psrnhjw4k7grnj8huqo8ac
 X-Rspam-User: 
-X-HE-Tag: 1772527762-490373
-X-HE-Meta: U2FsdGVkX1+DCKT4hjaRN4GvHzF+O/QmwiAWC8R+AjT89y9NAI1PdfPFZR/AoDAw/9+h1oiw9C8l72LB0od1PNTfn+9aLNBOlOogbfp9ImdD5JOzzBwuQgHOCAMZtWjJsVyVQ3nYPQ9dVMHfJnSvqL/BDfz2+Eav9Cz2Me5hnMzkkReyUdQu7rr5zXWci+llmiza/NWWiZftEwAzmxpLq/c7L2XlBGJxVKkmUn/EldSRz6MjPadSi8HyLu0iLOqznbZrshvISbSyEguHHVtMnRuhdTc3QALJp5vqq6I+CdfIwyV4/u/fVjcya5VZUxM/dU/wCy4L8TGxfC0M/LQZdNHSFPvJTnfatIbxMHE/iya3kXFY/vXSo910z5NPdZsTLJUC/IECsVASvYhL+PD8qBsv4CgHF65HibC3NFNoFvEF21ED65WMADJvwDFdJ35xL4Qnnfo2I2ORPZahP0DSes76TOQZVgt6HbGtd0fPCQwe6eLrYFTQZjuxUOAd1V8M3v/MhxSgC6gSiDm/znkQgz0Vg4LY7Gz+bzD/O+MaaYVAXJ7AimF2aUKneR+8+YgQjdwLjN+b5Hn/LCD3XXLWDKjm1PAsMOBZ2UubavbC8li28gOYdo+ueZoIJoVe6WFl56w4OrtBqI76tIqSw/AfV92VM3ex8tE+Ok3I2dT9d318kr10KiXpILZyM+LWR1MyI2lHpwLzO0cTfx1fhLTdEVgVrimYZ3Q9dPnSL5b+1vcdx6NnBaeMyuuWWYJtsD7wOaY0PQtSahZqNRi73uxlCPWlxjVx+zsX8lFe5KWblqQa0HZ+a/cC5VVKawnrQI0mAHjouz4RvcFdgs6Rl86P950x0P/nP2gMn1U81j5NWtQIyDgkMePF+QlLrfTyQwS48K/FBPTfcRKs3Cr8bMIxEYivlsQJID/xRScm3KkzxvqklPGwGecKnJPNdUGYqcUKE2QONDAX3r+jLA0VRDY
- 6RpJ1RcT
- G/szJkyol/p0N2Zn6qrS+sarWEhGQ3QvN1Kwi2lN8vNSQWAEZQezAVxfCtQkaJChvDoI2FWa0Vcz/3qTz4V7lyPe0awi3+jTRN4rdXNo9Yqtk/4UxxVr7wCj+FwFY3JngGJ1+RxMNdPIX30GBOA93E1E3za/IkNVhFdwm68dOlLqeGzQWqvZxsTxyZPUbfoTOyW66nvxAPue2dDyaddBBRcnC30kooOOpYdQR/4zZ3ra+upttzlN9eI2DgFPizPeinL6UYlDzTDiwwQ17QPqmIXgayrOTMcC/DSGCLnfBBBU2CrSJVLAcMHPedxS6V2ueGhCy7aQur48r45c2fvQrmCYas9gbGlwfDhxH
+X-Stat-Signature: on966bwzzywssqjbnzowtnb9kmsw5ayt
+X-Rspamd-Queue-Id: 85C2B20003
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772527839-365943
+X-HE-Meta: U2FsdGVkX1/+EDIX+YA0zu4zuxhzPcaSl+7yDzHmwBiBZH3qCuVo97vd+Tvd95V8WaYV0XYhQblLNthcHakwYESEHtMxevinEkEW0a/Z/6ENKRYBbWEFNdpxfeENeEOJjec0Yw3sLtICbKz5VlcDuKk8KK0jkRQvUp3krWe5msFSvPxHB14uInjQ3HDf2jeG7GsMRF+awQ2uZSgt3OCM6u2rExatIzhuKaiUvn7zytVx4MLaesJS8fJXPiQWkRz6scxyDXuh87B8ZHKQdNi+qVzuMbiUC6hppJ/IeJVUH3mCtlNdI8LXgmG4A5C1u2jASzCIYt0UYgcp6f5PGq0nz1m7nJHaY32Q3/rOTgqMsrnmYlHJqAJd+c0lxxDjDXdmUaG20cruVLm/kYPkGTMRCyPRPfTfsXWWMfvP6pZa2wBQrB9FnQBf24zBtt4MqQaKmZLdvxaHsGOpnLnOmsQf0ZVSIsXUu02gzlqxJCvtL8dLQh+01BNf/GDa/UnXkxlS9qmG4pth9aigfkFQ1uRz6ufrvfYUFbb07pFc90zOTDIfSJcW22BDcpypR4nUteiIMgcnonS10vdy67IAqK2tv9a8zBhez/PBBV2mcNrzr2WoBSMXIj7lzJHAAdZDeGsq/JXEj3J/YGxfW1uEv37xqcgvWnYC9AjczJkyLy5FD8q7NB4rfZU5cHU9yPkX7iND6j2lufF9JscCngxChzTCP/o6lpoeAAl6HNmJ+4+GoVWLGwPPInvymLZzcrvx+xWduSODRSG0qGyVCBZPAK599J+dUTxLL9DyGtkl1wWzlZawr3+hp7vX4ShHT9MpeZAz51UpltV6FXHePvF7dWbqssHJ9nZ8ib2lfYzCHtQlMP9n42i38rt0MumNyMwYIGdvib+cdqnVUmDIiMhmY2HqZ3Ym9TT7c793Ox4euiYtcYmGROSzsfqGOGaeyfv/dW3kn67xRfAIGpkv54oYloF
+ abc25QTZ
+ t8YnI3b8UYcVA4BTEZnM3l+VYZACwzaXt8NoMXDAGs0lqrJ9B2DOyKyAL2q1jMPzYIDbiPBk/0nB9tso5OX2nkET0TYd5qWDw733GX/S92H3W8TTlCgh9/1pADS22Zra0hsCmi1cYAOCTzylkWKiV50ahwZDk8Z4YU3CHEH3LnBuWKIrDPDsbjk+2wQyJZR5doVSRyck9HBUyJqhaFHefKI9qO5AVpLxF9cpJlhhgC6Pzcuy9Dq+AuD+qE2jl2wsBKXS/yiTgSl49b+eHrVVIkupHlCN54xCp82HkBKzKGP8xCtWn1RewJ78z0EZ6cY/RKeeYEcSaPmB9NuOKNbgh9Imqug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,90 +141,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 08:25, Lorenzo Stoakes wrote:
-> On Mon, Mar 02, 2026 at 12:50:32PM -0800, Andrew Morton wrote:
->> On Mon, 2 Mar 2026 17:19:15 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
->>
->>>
->>> Yup, if people would actually cc the right people I'd not have wasted my
->>> afternoon.
->>>
->>> Replying there.
->>>
->>
->> I'm not sure where this is headed but I'll queue this patch for now, to
->> get it some testing, to lessen duplicated bug reports and to generally track things.
+On 3/3/26 07:15, Dev Jain wrote:
+> We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
+> If the batch has a mix of writable and non-writable bits, we may end up
+> setting the entire batch writable. Fix this by respecting writable bit
+> during batching.
+> Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+> lost, preserve it on pte restoration by respecting the bit during batching,
+> to make the fix consistent w.r.t both writable bit and soft-dirty bit.
 > 
-> Hi Andrew -
+> I was able to write the below reproducer and crash the kernel.
+> Explanation of reproducer (set 64K mTHP to always):
 > 
-> We should drop my patch and take Chris's.
+> Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
+> fork() - parent points to the folio with 8 writable ptes and 8 non-writable
+> ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
+> determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
+> the folio as lazyfree. Write to the memory to dirty the pte, eventually
+> rmap will dirty the folio. Then trigger reclaim, we will hit the pte
+> restoration path, and the kernel will crash with the following trace:
 > 
-> However, life isn't so simple :) as there's been some confusion with his series
-> since his email client seemed to mess up somehow and a couple patches need to be
-> squashed on one another.
+> [   21.134473] kernel BUG at mm/page_table_check.c:118!
+> [   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> [   21.135917] Modules linked in:
+> [   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+> [   21.136858] Hardware name: linux,dummy-virt (DT)
+> [   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> [   21.137308] pc : page_table_check_set+0x28c/0x2a8
+> [   21.137607] lr : page_table_check_set+0x134/0x2a8
+> [   21.137885] sp : ffff80008a3b3340
+> [   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+> [   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+> [   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+> [   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+> [   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+> [   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+> [   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+> [   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+> [   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+> [   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+> [   21.141991] Call trace:
+> [   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+> [   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+> [   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+> [   21.142766]  contpte_set_ptes+0xe8/0x140
+> [   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+> [   21.143177]  rmap_walk_anon+0x100/0x250
+> [   21.143315]  try_to_unmap+0xa0/0xc8
+> [   21.143441]  shrink_folio_list+0x59c/0x18a8
+> [   21.143759]  shrink_lruvec+0x664/0xbf0
+> [   21.144043]  shrink_node+0x218/0x878
+> [   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+> [   21.144763]  user_proactive_reclaim+0x2a4/0x340
+> [   21.145056]  reclaim_store+0x3c/0x60
+> [   21.145216]  dev_attr_store+0x20/0x40
+> [   21.145585]  sysfs_kf_write+0x84/0xa8
+> [   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+> [   21.145994]  vfs_write+0x2b8/0x368
+> [   21.146119]  ksys_write+0x70/0x110
+> [   21.146240]  __arm64_sys_write+0x24/0x38
+> [   21.146380]  invoke_syscall+0x50/0x120
+> [   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+> [   21.146679]  do_el0_svc+0x28/0x40
+> [   21.146798]  el0_svc+0x34/0x110
+> [   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+> [   21.147074]  el0t_64_sync+0x198/0x1a0
+> [   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+> [   21.147440] ---[ end trace 0000000000000000 ]---
 > 
-> So to make life easier, I enclose a squashed patch (combining the commit
-> message from both), with my R-b, T-b tags attached, please replace my patch
-> with this one.
 > 
-> Also, could you make this into a 2 patch series with
-> https://lore.kernel.org/linux-mm/aaBWG4fajXXbjpVN@chrisdown.name/ _after_ this
-> one?
+> #define _GNU_SOURCE
+> #include <stdio.h>
+> #include <unistd.h>
+> #include <stdlib.h>
+> #include <sys/mman.h>
+> #include <string.h>
+> #include <sys/wait.h>
+> #include <sched.h>
+> #include <fcntl.h>
 > 
-> mm-unstable (I'm not sure why we're rushing changes there so quick...) had
-> _only_ this regression test patch in it, so we were left with a kernel that
-> splatted on running mm selftests, which is not what we want.
+> void write_to_reclaim() {
+>     const char *path = "/sys/devices/system/node/node0/reclaim";
+>     const char *value = "409600000000";
+>     int fd = open(path, O_WRONLY);
+>     if (fd == -1) {
+>         perror("open");
+>         exit(EXIT_FAILURE);
+>     }
 > 
-> (It seems to me this is what mm-new is for, and it seems we have some holes in
-> our testing still since this got thorugh).
+>     if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+>         perror("write");
+>         close(fd);
+>         exit(EXIT_FAILURE);
+>     }
 > 
-> Please drop the patch you have for this already in mm-unstable and make sure we
-> only have it _after_ the fix is applied :)
+>     printf("Successfully wrote %s to %s\n", value, path);
+>     close(fd);
+> }
 > 
-> Thanks, Lorenzo
+> int main()
+> {
+> 	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+> 			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> 	if ((unsigned long)ptr != (1UL << 30)) {
+> 		perror("mmap");
+> 		return 1;
+> 	}
+> 	
+> 	/* a 64K folio gets faulted in */
+> 	memset(ptr, 0, 1UL << 16);
 > 
-> ----8<----
-> From fbabbc38c000308d2c621a4b3ec1f4bca1d71c1d Mon Sep 17 00:00:00 2001
-> From: Chris Down <chris@chrisdown.name>
-> Date: Tue, 3 Mar 2026 07:21:21 +0000
-> Subject: [PATCH] mm/huge_memory: Fix use of NULL folio in
->  move_pages_huge_pmd()
+> 	/* 32K half will not be shared into child */
+> 	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+> 		perror("madvise madv dontfork");
+> 		return 1;
+> 	}
 > 
-> move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
-> zero pages. For the huge zero page path, src_folio is explicitly set to
-> NULL, and is used as a sentinel to skip folio operations like lock and
-> rmap.
+> 	pid_t pid = fork();
 > 
-> In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
-> pgprot) passes NULL through folio_pfn() and page_to_pfn(). With
-> SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
-> pointing to non-existent physical memory. On other memory models it is a
-> NULL dereference.
+> 	if (pid < 0) {
+> 		perror("fork");
+> 		return 1;
+> 	} else if (pid == 0) {
+> 		sleep(15);
+> 	} else {
+> 		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+> 		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+> 			perror("madvise madv fork");
+> 			return 1;
+> 		}
+> 		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+> 			perror("madvise madv free");
+> 			return 1;
+> 		}
 > 
-> Use page_folio(src_page) to obtain the valid huge zero folio from the
-> page, which was obtained from pmd_page() and remains valid throughout.
+> 		/* dirty the large folio */
+> 		(*ptr) += 10;
 > 
-> After commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of the
-> huge zero folio special"), moved huge zero PMDs must remain special so
-> vm_normal_page_pmd() continues to treat them as special mappings.
+> 		write_to_reclaim();
+> 		// sleep(10);
+> 		waitpid(pid, NULL, 0);
 > 
-> move_pages_huge_pmd() currently reconstructs the destination PMD in the
-> huge zero page branch, which drops PMD state such as pmd_special() on
-> architectures with CONFIG_ARCH_HAS_PTE_SPECIAL. As a result,
-> vm_normal_page_pmd() can treat the moved huge zero PMD as a normal page
-> and corrupt its refcount.
+> 	}
+> }
 > 
-> Instead of reconstructing the PMD from the folio, derive the destination
-> entry from src_pmdval after pmdp_huge_clear_flush(), then handle the PMD
-> metadata the same way move_huge_pmd() does for moved entries by marking
-> it soft-dirty and clearing uffd-wp.
-> 
-> Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Chris Down <chris@chrisdown.name>
-> ---
+> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+> Cc: stable <stable@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+
+
+Thanks Dev!
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
