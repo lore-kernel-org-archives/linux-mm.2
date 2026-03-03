@@ -4,142 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5996EDEBF3
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 20:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B502EDEBF0
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 20:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52816B0093; Tue,  3 Mar 2026 15:36:25 -0500 (EST)
+	id 82DB16B0096; Tue,  3 Mar 2026 15:49:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A01906B0095; Tue,  3 Mar 2026 15:36:25 -0500 (EST)
+	id 7DCC76B0098; Tue,  3 Mar 2026 15:49:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D4776B0096; Tue,  3 Mar 2026 15:36:25 -0500 (EST)
+	id 693E66B0099; Tue,  3 Mar 2026 15:49:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0F56B0093
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:36:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2416B1B75B6
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:36:25 +0000 (UTC)
-X-FDA: 84505909530.05.042D0DC
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3A91C40006
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:36:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dNggxgEF;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772570183;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 557CB6B0096
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:49:24 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E0903C17C4
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:49:23 +0000 (UTC)
+X-FDA: 84505942206.15.4EDD09E
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf26.hostedemail.com (Postfix) with ESMTP id DFC39140012
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:49:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nACZJOsA;
+	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772570961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HSMo5+Ht+OJv6fxlprT7RhyGGgmGe3zydeGluTTF1Sk=;
-	b=2b6MBwACOFhteCt0rpqBZ89aq07+8H5cKoPYiDI6tMp9puOWZ8yIKzA6bMGH93mZtF6Cbd
-	ftoC81T6bwiwoxekXkONRrnrrwEoXLv9RSgBZcp/T1A+MZa3sBRXaLEJEJaU/hUNczJU2Q
-	XO3YtsKVvQZVmzl8lZEi6ss67UMI0bw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dNggxgEF;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772570183; a=rsa-sha256;
-	cv=none;
-	b=31SVdbXOmMgPvsNuhqfHjGkNo0tYG1cJYAm+QjjuloEhaBQwdITq6iPCYnEgSw5C8yymMG
-	xj6dcfgiJHtBW9ws+428KiECv/tSV5/7Bu2LNmeDzvSSq1kL3m1RDeKg0KOV+qnKhZQQFL
-	3CNefUPw8UuzXBsL8ioOvfTiLX4FRzM=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cb38e6d164so791825285a.3
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 12:36:22 -0800 (PST)
+	bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
+	b=SrUzNwvoUe0OpdDS5UM231Mt7H17/wARu2qKLVOrVs4Jre8gcX72qhzPovPXL6oqpoUrDC
+	GwP564PGKRDNCmTepR3lJOK6rnzMf9TuqBUlCgtsGzW760fXd5oeJsTEIX2gZ5SN/xgI1O
+	TBycOfmJIuqHj7T+MPdnBbcIsurC0uc=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772570962; a=rsa-sha256;
+	cv=pass;
+	b=25AnHbUGCOp/28eyIGNLs68IRX5iRd0OV+btX1+R+msoEinx2SRRnAwHfSKswfNBm4hY/6
+	SfToV+0OdjYiE/+RhubE1x0fw/qBGspymelqBWz9YVLy1VlA2mokYO7SJI/DiMQwpwUgtJ
+	ryTyOmRBa0I84dciFFt+77cNFA17NTE=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nACZJOsA;
+	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2bdff6c15a5so165090eec.3
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 12:49:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772570960; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T/RYBAfliN5Y/1LAA51xfIJW1zwjvBsSg3wETij49Wt0wjFmgyU98UgOEcSsfK0+Xg
+         d/g6dLFBaSpIBZf1bCQe7CcqaLg16OMyiGlYf43AJwYP8ZLZ8aCQRyPIvWk0GESw3b50
+         GXOUg3DvymWrbXCqpsHT78F70tlKP14GXCHOOqpElLAIWbk6LRrBsFvw3jlBNKFDAsAj
+         7PaMi+15nMCRLsdGEdHVZNXM+NZR3I46R9Z0Yfe0Q/dZTKqXQAXWJIgoTpDu/UotlCS2
+         UYvIgaxkxsr4ZHjQz0V369OtLT7G7twim9HXsCbHw4vYy2MaxKYXNfZIf5i7Q25FjEsv
+         aFxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
+        fh=M/Cgp857LYGFDWUVEaS4n/kv8T76tybGBScGJALbjFc=;
+        b=FYNa0nau0OvJz4sF2S8VbDOme7TFzYbN7ookVD/tFrfZb+WqvrkRXHtl3M868nog+o
+         Wuj90095XcN2dFw0ufIH5rkKCnd3Wus4hQE81sBJHtsNyUuZXHvwy0gSU/PDV4CmF9nm
+         hMNzfiWowSS/5YicuAFq4wu9Gy9+HOqqYEgLfAWN5lBKTmus/ASe/6tI+OO62t7SJ0jB
+         6vRq3LGkSc1jcpPIotOvrQS5KYFeQaKdrHI3YQZE/wWwSO3HFMWdeNxybklrH7rSxtY4
+         1JNWc5pVtQiKHxAppgSo7EcXNsYCuns3bYlH3qxIpeVo0TKqcsxvK2mEsrw/UF+P2BkR
+         qh+w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1772570182; x=1773174982; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HSMo5+Ht+OJv6fxlprT7RhyGGgmGe3zydeGluTTF1Sk=;
-        b=dNggxgEFkNkLfio7ftnYdhj5GIXBnFNhhCYRm29+LS73eNkzv4VI1w4OvytZbGfb2Z
-         4/2xTdNEzPmRM9ESvb3OfjEyGH4EAxvfXEvSjdfCFIKTEJH56hS0K8atBT4KVT1Qd4Pz
-         Z1c0EebsfWjMeRmgifs2A4kg7QR09df+9sC8x94Uplv6KGXG+x37ahp79uiMTtOL08fx
-         ji63vlTXf5oeAhV2hmbFmclxpVJacqHo4HhgwmM9wusqe4ci1RE3aDDCykkLYDHMDJxR
-         TArWp8QC6OsjDjgu54dyTpt0Fh+1PShDtSjbfuScCLCkOwRAX3Zi/2G9c75MZ6PWkd9W
-         9Lmg==
+        d=gmail.com; s=20230601; t=1772570960; x=1773175760; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
+        b=nACZJOsA7vM6HJHDLnp4DlXPOd65zjhlkMyArbQa7ulXFrFDhFw551KmK32zjVN/eX
+         Ot5hbWaszCp048IDLSCOGzqU/M9uI2bCTKWEP/My49d/zZG7guTp3slnK33Lr9HiSxAJ
+         xUDTyVk9J0ZZuaFHTBSFuws/krYZFCussebR/3HZ1bDDLiRw+Zr8uWPG7+tQ9fVuJcLj
+         L3oJPOmGPN5cserehRZP39m9CdM/4fDiAEBJFl9TsU+dpErg3ezftfCEPSVk+AVe8ekL
+         nQXIfqfChKlWJLBZqRKDcZ872RAcgZsMls7WdRRnb0gm3BBSQfIMqEu6urxdyqacwSuo
+         zHfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772570182; x=1773174982;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HSMo5+Ht+OJv6fxlprT7RhyGGgmGe3zydeGluTTF1Sk=;
-        b=AizVDXdmHAISzRx4Tcy+MmORW11EY4hFgmFzQWRyPHgyCsfuZlRsZfVhoijk72f0k6
-         YlK4owjEdIwo0i616gEblXiu4Tok8pm/bSuelgOEPO29FSfhkJVepH3/KqhayPsh35Jx
-         vShBYn+Z8tNtDDoSXXjBgpRKjBmvq9z98K9Eg9v1WM0TzHwRvTOTMEaUWWLgLMALuJnZ
-         TmviTJ82iHLnOOCN+PTDqPKsiDSuQFnBpUnCG1zAjKV5HH9W7/Yb7ercDril6OmbMsk6
-         MmsLvlzGZA3ssCjxbre+7OPMe3p8lFi8GwXrfJGE3RwB8jt2W2NQ6YMLbq9CdCo17Nv4
-         jqvA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRGtNq6U8teMOCFEe2y+Wsj6YvB9YDCzRf5zydZ5ZkfFgZvaJ1G9TaTc6FFrEaANAfkNTQ5f2ROw==@kvack.org
-X-Gm-Message-State: AOJu0YxLbmfQmXIdnzdkqfLAq0i6AICdmBJUOccMM51dJhzWAPTwBKjf
-	0QYjUxyMxYmPHzID/8CWe1XMEQD33OgmP9oMB4iZx1kcftqWtULfvelOWLeVAF1Jzqg=
-X-Gm-Gg: ATEYQzwuUgJokNneZxy2yWHCUpzmd1VenkyKkjqMaEz+1n5OL8LrgjehLSWJ9Bqpjob
-	QBw/VfvpSMHoAmCvuxId7SqKPg02nrTfi08wqex0Ucb2Mt9zF4swdONPFRYrol5oETkns4j5bL2
-	JkLmnYe/LmMPRo3qIofUKqchVnQmiUfk362DMPtczhUt3jTDpWGT+xn4qEO4kAzwh0+4Y08mAoY
-	IOf03T2T0hg8uAhbwzXeyng9/4kRYjEengLszdTbSihzOpthivT4/GRWv5ZMeNyy+AMfaSWH0X5
-	bubTO0FTX0V0Kqf4E873S1SerdEfPSFDu54yXOKDMfb1SRD/YdStr21DmHBnHoSV5/1vbKpcFFM
-	Z8k9h0a/8gDSX7HrBHsISrj8R0vyjR5Ro06cw/hBytGDM9SSDxI8rqgx+IXEJICx+XsHoGgaTc8
-	V5vI40CI2tLRXVgb0ayC0nMeaK6uWkkTqDmxQgweVHqsfD/beiyJzmZ3gayuENKM539nGa4uAD5
-	W3/m+4ANw==
-X-Received: by 2002:a05:620a:4720:b0:8cb:5442:d539 with SMTP id af79cd13be357-8cbc8dc28b1mr2313709285a.2.1772570182058;
-        Tue, 03 Mar 2026 12:36:22 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899e89bf39bsm79243066d6.18.2026.03.03.12.36.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 12:36:20 -0800 (PST)
-Date: Tue, 3 Mar 2026 15:36:17 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: lsf-pc@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	damon@lists.linux.dev, kernel-team@meta.com,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, longman@redhat.com,
-	akpm@linux-foundation.org, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	ying.huang@linux.alibaba.com, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
-	mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
-	baolin.wang@linux.alibaba.com, npache@redhat.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
-	lance.yang@linux.dev, muchun.song@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, jannh@google.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, pfalcato@suse.de, rientjes@google.com,
-	shakeel.butt@linux.dev, riel@surriel.com, harry.yoo@oracle.com,
-	cl@gentwo.org, roman.gushchin@linux.dev, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, zhengqi.arch@bytedance.com, terry.bowman@amd.com
-Subject: Re: [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory Nodes (w/
- Compressed RAM)
-Message-ID: <aadGQXXpayvFOZpy@gourry-fedora-PF4VCD3F>
-References: <20260222084842.1824063-1-gourry@gourry.net>
- <fzy6f6dpv3oq3ksr2mkst7pz3daeb3buhuvdvcw4633pcl7h6u@mxjgiwpg5acv>
- <aZ3BEn_73Rk8Fn7L@gourry-fedora-PF4VCD3F>
- <a6izpi2wlqro72erhbvxhlx2lwdnae7my3ghfs6t33ivtixo4h@bi2u4x6qv7ul>
+        d=1e100.net; s=20230601; t=1772570960; x=1773175760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=z5K9TC0MkEO8By22h3GqX8xxcKLeF0UtxgZ/D1gjfh8=;
+        b=GtGD3ceR5jeI1yrNnLKWaAv593f+5YtI4gJwCHuvlx20GNwWzR3x01YU3Kb2x9cMpv
+         C24lgw0fRD7qyQXlsIEZADC2EQEOGhEebHug3M1/MQrsNlIc79KuiV1KpK6PJ//QISCK
+         4HCpOsXeG+rW8nFSH1H3U7RwaTUJrf1b4i266/E1LUAssUKcw7EEFBQxLGFuwUacWCGG
+         zm8YAUASQ//5TNba8jkXedYoWqilACd5RZvXxmDKlbnJ6PV01Qtos56WP61pNQdprcD/
+         aaddwCT7/BUuT+lZb+yd3thkbLDAjopS2kNhR4W0qPMGNIfTmxfahkZXZq+AxT1YAvo0
+         eRaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZVKMAfxPRj0oFHy3/VMLBadvgpFzQc44sdCIcXla54kSUsBCJBaS5rGqtWxsoIr+vM4ZExjB1Yg==@kvack.org
+X-Gm-Message-State: AOJu0YwTwp45aWe23Q+1Wbu/e9xNK34W05MqiQuh46sCEyCQbxiqmEK8
+	9fERvRk7lQxY2GqqvVyi/Q+c15q04lc6O4fdA4fVgY3RWt1x+r2XSLCY/Whc5n7dx2UkS2QL39j
+	s1nrQ8gikWuBqFrrWbi19xB0ucld3KHs=
+X-Gm-Gg: ATEYQzyh3MPENaUFUr77xxYSvlJTbcIe4xq+TZ8XfnjXi3YbZEezc0T1gKAwx/8dSFr
+	pJR3bFVTTfpiecW0me5hlJBmdwUemPqwNPV3kCqxVcYN56IHjNyLARVx7STkx3Sg8HcNKfLTFHV
+	9Top9DyEETSPHITOokvFUZHPPW1VmAVsmY2JbpigfLrV8/ss2cBNLA/ILHSLGmD0ELfV+wa55Pe
+	Y2z3A3ugvgAH/mibxI8CCOPQe37CLvja59iD5GlUgFiWldp6UgRPVGNRyvKeLQe8v6v8BU8X/oE
+	FJHzyKeEekqGcDDaEcjNkmMA4UDIfkbono02qQuhNnS8ebhAEov83D5G4ZFWGZ5ou/rL/9+6Kqx
+	w2xRaQXgmpHV0lC+oAvJopD39
+X-Received: by 2002:a05:7300:231e:b0:2b7:103a:7697 with SMTP id
+ 5a478bee46e88-2bde1d4bc79mr3350396eec.5.1772570960234; Tue, 03 Mar 2026
+ 12:49:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a6izpi2wlqro72erhbvxhlx2lwdnae7my3ghfs6t33ivtixo4h@bi2u4x6qv7ul>
-X-Stat-Signature: 5tjhy64syjxz9uj6im6y57rfruwppbcb
-X-Rspamd-Server: rspam09
+References: <20260227200848.114019-1-david@kernel.org> <20260227200848.114019-3-david@kernel.org>
+ <aaLh2BxSgC9Jl5iS@google.com> <8a27e9ac-2025-4724-a46d-0a7c90894ba7@kernel.org>
+ <aaVf5gv4XjV6Ddt-@google.com> <f2f3a8a1-3dbf-4ef9-a89a-a6ec20791d1c@kernel.org>
+ <aaVnifbdxKhBddQp@google.com> <5f8dcb7f-9e4f-4484-b160-3a9ce541d63c@kernel.org>
+ <aaWvtn48X8UizaaN@google.com>
+In-Reply-To: <aaWvtn48X8UizaaN@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 3 Mar 2026 21:49:06 +0100
+X-Gm-Features: AaiRm50lUTXkxHRxiLsKpWNGF1HIgeoo2SkrDpQfQSxM22wzlSiellk8rvn7q80
+Message-ID: <CANiq72nK8P1rUYw=y3fMzWZR3f_mW2v0_LSLWR1i0dQTtOqu2w@mail.gmail.com>
+Subject: Re: [PATCH v1 02/16] mm/memory: remove "zap_details" parameter from zap_page_range_single()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A91C40006
-X-HE-Tag: 1772570183-613045
-X-HE-Meta: U2FsdGVkX18lBp3YozOQycl2s/btHTja7G/FGVmsbFgzq4phG5GUleri7FagEsgAaMtisLuZeaSRfslVswS+oeDrcTu/sWQxjFglbfUS0pHVA/e19kCh5E1WJ1je+4zW3mB28YOdxJn7dYSON31ybkJmwQ2Fs9TdRMtQB/H+97SQEl/bvePlvQSQ2YM6Q7plzOXj09a1FGOQG/WkVjyY0U+R66ENOXQMGQH4o2FL1Q3VwfrntW8x9R07JvVjxW+fG62fOEcm8Ufi/c/5mfV5GjeZ/6oMI+JjofPB7NbwHPEO2eSuyZyHGV1hc4m+b+r5LsEczdo8FqBCd668nWFcox9+zqQ0oTJ92PqxyxiX7/ocSYCoK6lBIdUbMq8eSBcFQjd2FuPsxVaqJOhNaUWJEyHPvHgvOb0nfp0b3whpmXPRPBCkycl7w4wyQNAQPLw+9wajdclv06cIQ15QJEaCdPHfxJRkkac1xgLJt+Kic1Pu9NnnRW8tGMYdwpc8ULs5XDrLqdfFuXi8WYfgoT6Oc2/N5+w1erFG4S24rP2PBzWpgZAfJfkIVhUEodOuVyhn+etvNClrat14RVxtHwHCNb/1l20qHQ38Yzt3CmceA28B3CIZgetOj9s+mr6h2h9yAfVssXI9OJ9fDWkaQPJmdQtTK2FHLzkgy/VIAjRivh3QlXD3oZ4mDQztiMoXj88XGIjkYGOZedpLP8rH8fO/wUWC/4seMiozakf7VxY/eCAbmgbmtYc39rG5EcktYpRpGcwPkcDIStstw0+838Hv3DkRjyQPxDXcekkW4hLu8wt05o1YP+goPZ0WzRrNWhLMI3uSgtlRxC1Jg2nJ1LQARRQlGZhrkmp/+i6Sfs4JRyTiYR0GfdrKDV6ZmQ9BMr5TEesuAM4mL/cX+K2Hm3e/wvg+Szv4ua+hF/S/cA+3TtSfKa/5fytHc06hfxzo1L7ChnW76smhlZ52UlkP7tg
- 4L7jIgLk
- e+gJqhH1nuvmG09+vTJK/r66GgEySNRC/OwFHPUejtFpvygW9YqlgkxlWAmioxTYw8UGx/y5rD4RzIG8p97xFUlTLDGsy/j/0p85+sbFvQ3TFj/AsS+hJNLmglIoO/2ajJCt9DH/g2xZ52mkzBPPFvv1N9jXYRkGEsPGJv2q6ij08lPCGwZHelAgVkhbNHJBcDezWo4RuGVdzVwFaJ59+YCDBc6GXmoqZwZI7PwLbQlnmbxlxA5ZduWtHwr6cVimMmeDg2cXszETEoWco4aGRrL18/ZfYoPg2DCiqQfo8jJYZpNlyv9JOOO3O5XndlmFIDEeLs4XU3xqceieZtPfKxNNDeSAREEBDuMHedUSwElOvahX827TzqQ+UUawmNo9M5RcR6yLQouwTfvemvw6/ue7V7GIeztGtfBSDxSSQbdpahCEmvljUW5JJHofi6Sp0IX+kee/izEqeO5s=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DFC39140012
+X-Stat-Signature: 3m4znyjtey3hys8j1wjk46a4ikpmdusr
+X-HE-Tag: 1772570961-522164
+X-HE-Meta: U2FsdGVkX1/282VHczBe5clkOUH7nHSezy292nT9fsGZFYIzmgONA7QWTIOoVv+W/18Q/38OvnVKtX7nwxfeHpJK5zmFv2newSrww5t5Uqc2DJDzbo0BYnRx3lCjibsehEy1SZvy98pkKkdmcNaveYvwCZ7Rt5K1fsI4YJ/HmAY0YZhv3NEvzlyw0ke2s6rPXr/PKMwy01AaNXQIW1H7I3XEUE8qNWZYZFHJ+cJ+wokPhZrioib1UZb32pvARzmuW9ANzVdlcLSCNUXFRy2/djDDvAzufYXX7Eyz78DzIokWV7+Xiyib0h1d3WqJ6UW/92yavcdMtjbH9SXNAO4iuarWaMzleIR37Bwm0bNEaloveQeR+Y2M4PIunySeJdmaKTiP8NAGLRAPxCVyvFBPd5l0HHM3D1h88w441YrR7fokrVNNcBeV2lOtqRc9xmcZwjdRze+xHTOkmwXWZMFpuoPpdLNOGgn67Fc2A0nbOTc93U6E5NeSK+J4F3ePXRKlG3udymS4Oz3BcYT7c56cCHXv/rXA1jTnXVUefhAFpmWKa7WSSCYlvYzxUlPluIUcZViA8lrv1suUKyQ3hvAOHYb39cSdgbQNBnrkjyOurqxOGzaIZgMdvgLgSRcOeCd5rfSYwBRECPXXXVG4b26hBXX8LVYoEAfUvqW6ZnKnX4vqPUKVwSLjxvChUfwfW6NBMihZfLQx2UZFjR5XR7BwOPJTxRsPJ2UwehTZU8zXbHHArewvjRSQm1mdBy+WaY9l0Mxiu6M+/gWW9GcayUuyT8XHmh0GSSCE200uHQjh2Fq41+bmWJFULeGBX6I6yxXWr/WTqspzKPI8QdKJeiIjU1fLWMxewuQVfSzOY6/n6r+7bdkErArlNwdHWOlqko/PBQnR29U3XegoFtuaIVkBy6QIxS0dBVfS31DLwFN7EEz4PemiJKjgbX5tY1NeWSblAMZtnqYJRS2chkCrg7R
+ 4o56kXKW
+ W0XxG5yD0ydMV2TXlLJEmPMj62qC8bTJAovhkKLcQDhYxX2Ua4X0c2sAYMhCyWVUIOudi9sevC+JJ06o4c4DUMf3P8BufGVdiKJ21wwyyUMUZ4Sr0JjNDfvbtOQRMG0NjUbOTYXnvjUMZnSEoSmb/1U7WECcT8qCEBdxaMrbTCHi+POtqCvksL9m5v0unialh+j16po6NvfCyE13Kbt0irw6q2wKaTaPQppnEgYCNT93uCJguTPeaXJqQ4T+gLofFwVjMHANigefqypJxJapBvT2MTbG9mOkGndPdCINLqCHRnG00uyyZ6L4PnSRU4p4npREHmiXVe1Q1Ue8DJG4m0HrYiX9xkdmD9petWUSDIIBantKyU+AS2DvAFkdgPBvTTObWfSoU/sjsiLbjf17+nikQGc8cMPd7NIVvSN+TxNLXBljneTKSmHly+p+d0JjvIYni/EBl9ygmpXdEcE+io7vpYmdJZkd3SJRTp9FFsHJnJoxRayGcWpYjdta3ztxYxudQqZQDwYPf8x02aBMw7io1fj9AtCIgkgJHFfSxTz0cPl7mY4eBPHoP6nILup4HBxcpumgrpDKmFLg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,145 +174,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 26, 2026 at 02:27:24PM +1100, Alistair Popple wrote:
-> On 2026-02-25 at 02:17 +1100, Gregory Price <gourry@gourry.net> wrote...
-> > 
-> > If your service only allocates movable pages - your ZONE_NORMAL is
-> > effectively ZONE_MOVABLE.  
-> 
-> This is interesting - it sounds like the conclusion of this is ZONE_* is just a
-> bad abstraction and should be replaced with something else maybe some like this?
-> 
-> And FWIW I'm not tied to the ZONE_DEVICE as being a good abstraction, it's just
-> what we seem to have today for determing page types. It almost sounds like what
-> we want is just a bunch of hooks that can be associated with a range of pages,
-> and then you just get rid of ZONE_DEVICE and instead install hooks appropriate
-> for each page a driver manages. I have to think more about that though, this
-> is just what popped into my head when you start saying ZONE_MOVABLE could also
-> disappear :-)
-> 
-... snip ...
-> > 
-> > You don't have to squint because it was deliberate :]
-> 
-> Nice.
-> 
+On Mon, Mar 2, 2026 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> It's not relevant in this patch, but another thing that may be useful is
+> to add CLIPPY=3D1 to the make invocation when building normally. This
+> causes additional warnings to be checked using a tool called clippy.
 
-I've had some time to chew on this a bit more.
+Yes, please do use `CLIPPY=3D1` -- the build should be Clippy clean
+modulo exceptional cases that may slip through (and soon linux-next
+will probably start reporting those warnings too).
 
-Adding a node-scope `struct dev_pagemap` produces some interesting
-(arguably useful / valuable) effects.
+Thanks!
 
-The invariant would be clamping the entire node to ZONE_DEVICE
-(more on this below).
-
-So if we think about it this way - we could just view this whole thing
-as another variant of ZONE_DEVICE - but without needing the memremap
-infrastructure (you can use normal hotplug to achieve it).
-
-
-
-0. pgdat->private becomes pgdat->dev_pagemap
-   N_MEMORY_PRIVATE -> N_MEMORY_DEVICE ?
-
-   As a start, do a direct conversion, and use the existing
-   infrastructure.   then expand hooks as needed (and as-is reasonable)
-
-   Some of the `struct dev_pagemap {}` fields become dead at the node
-   scope, but this is a plumbing issue.
-
-   There's already an similar split between the dev_pagemap and the ops
-   structure, so it might map very cleanly.
-
-
-1. "Clamping the entire node to ZONE_DEVICE"
-
-   When we do this, the *actual* ZONE becomes completely irrelevant.
-   The allocation path is entirely controlled, so you might actually end
-   up freeing up the folio flags that track the zone:
-
-   static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
-   {
-        ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
-        return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
-   }
-
-   becomes:
-
-   folio_is_zone_device(folio) {
-       return node_is_device_node(folio_nid(folio)) || 
-              memdesc_is_zone_device(folio->flags);
-   }
-
-   Kind of an interesting.  You still need these flags for traditional
-   ZONE_DEVICE, so you can't evict it completely, but you can start to
-   see a path here.
-
-
-2. One dev_pagemap per node or multiple w/ pagemap range searching
-
-   Checking membership is always cheap: 
-
-        node_is_device_node()
-
-   Getting ops can be cheap if 1:1 mappings exists:
-
-       pgdat->device_ops->callback()
-
-   Or may be expensive if range-based matching is required:
-
-      node_device_op(folio, ...) {
-         ops = node_ops_lookup(folio); /* pfn-range binary search */
-	 ops->callback(folio, ...)
-      }
-
-      pgmap already has an embedded range:
-
-      struct dev_pagemap {
-        ...
-        int nr_range;
-        union {
-            struct range range;
-            DECLARE_FLEX_ARRAY(struct range, ranges);
-        };
-      };
-
-   Example: Nouveau, registers hundreds of pgmap instances that it
-            uses to recover driver contexts for that specific folio.
-	    
-	    This would not scale well.
-
-	    But most other drivers register between 1-8.  That might.
-
-   That means this might actually be an effective way to evict pgmap
-   from struct folio / struct page.  (Not making this a requirement or
-   saying it's reasonable, just an interesting observation).
-
-
-3. Some existing drivers with 1 pgmap per driver instance instantly get
-   the folio->lru field back - even if they continue to use ZONE_DEVICE.
-
-   At least 3 drivers use page->zone_device_data as a page freelist
-   rather than actual per-page data.  Those drivers could just start
-   using folio/page->lru instead.
-
-   Some store actual per-page zone_device_data that would prevent this,
-   but from poking around it seems like it might be feasible.
-
-   Some use the pgmap as a container_of() argument to get driver
-   context, may or may not be supportable out of the box, but it seemed
-   like mild refactoring might get them back the use of folio->lru.
-
-   None of this is required, the goal is explicitly not disrupting any
-   current users of ZONE_DEVICE.
-
-
-Just some additional food for thought.
-
-As-designed now, this would only apply to NUMA systems, meaning you
-can't fully evict pgmap from struct page/folio --- but you could
-imagine a world where in non-numa mode we even register a separate
-pglist_data specifically for device memory even w/o NUMA.
-
-~Gregory 
+Cheers,
+Miguel
 
