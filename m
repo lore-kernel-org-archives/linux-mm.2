@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86277EC0460
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9274BEC0460
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 09:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBA336B00AC; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
+	id E846D6B009D; Tue,  3 Mar 2026 04:05:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6E4D6B00AE; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
+	id E0DCB6B009E; Tue,  3 Mar 2026 04:05:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D806B00AF; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
+	id D1D836B00A0; Tue,  3 Mar 2026 04:05:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B77B56B00AC
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:04:33 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BC9ED6B009D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 04:05:52 -0500 (EST)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 782D1C1A81
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:04:33 +0000 (UTC)
-X-FDA: 84504166026.16.E820D31
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 95B511401E6
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:05:52 +0000 (UTC)
+X-FDA: 84504169344.16.4F96BC8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7A42F40013
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:04:31 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bwIg7by1;
+	by imf26.hostedemail.com (Postfix) with ESMTP id A8838140004
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:05:50 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=er7ANTkY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772528671;
+	s=arc-20220608; t=1772528750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SLx2Bl9bORAU4WVbUx4nwnnYBAKxsx/PfZU/j2qQwi4=;
-	b=ovbm23KHPfFe9yISObJOZezndfK+9rN3t4jwWd8RL1V/7I9HE/KfUSS2YiSV07GWfwT4ME
-	XHAIdDK0x8hutyJQT/xuKB5f3Pktx/E11kALq+DFuJci7yGXeOqn64FaRgfuaO4qsVV5/3
-	L3I6uZKVSuynX9JiXA3jbyGv6v5oBOo=
+	bh=rHE4zb1y6wYeLuDDGLEwsCN6nqvV3H49AeS+XuBQsHo=;
+	b=N/qVc68q8utRv+Hfldos1Vi/ImAeVXVofhAbrnUT/wNCMKoO7Ip8DReFWdwugT0xuAxFt3
+	/NjqKUBKTPr3oSwHx90kwSbI+v/hnRH4gBtabYalaIwi1wTEK788J8F08BKt2voWSVD7p2
+	GBMEUEVUpYBd2V3/6G03w2hpG3twCZE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bwIg7by1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=er7ANTkY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772528671; a=rsa-sha256;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772528750; a=rsa-sha256;
 	cv=none;
-	b=2aBtMgDTSkAxumMZwbwDRbGVeZ772fKrJ7wO3Kq+qfjduKgh2M6J1meOfHVecD25J7h2JH
-	xXbl0ySXQ11KHRtY8Nw5OdfbnobAWxG6VvKvOCkqfFQi0NlbKY+YC7iUnD6Hg4dd5/ZoXv
-	g3apZieBF+h0kXUuz1YOa1+qL78YIO8=
+	b=XVyMbvGxLIyH8QHXs/EJ65qfiAdnuNLCFTIL3XiMypGCRhwcRxu0sZGGIKDe7jD7nbD86o
+	YHj/PuhIz6hgDGvaTYzj2E84vgDkE/bWBV9o/XHTuAnZ1x9p4DhTpyPPuPE3WxQGhPX2iy
+	nGoKv4SzL5TRyFMs7xgSrFK2Pw5ocoA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6CE7942BAB;
-	Tue,  3 Mar 2026 09:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6CBC116C6;
-	Tue,  3 Mar 2026 09:04:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BF0743351;
+	Tue,  3 Mar 2026 09:05:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E17C116C6;
+	Tue,  3 Mar 2026 09:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772528670;
-	bh=pcRg7UWy0oARLBPCzhsxNcvTwx5WBbNiYe8TNPnBms8=;
+	s=k20201202; t=1772528749;
+	bh=nvRNMslbIsCzNW54O4+B9qj5CQx5O58p7vfrrnpDLcM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bwIg7by14/5Ml7GW5fG35Fybc0TWws4oWZAyqe1+hYdj4ZFel58Ezue5rsG8gjtAC
-	 Yg6gNAhYGp2wPP41LGs3qtEBF/Vk4AvoLjtLfxWmrE4gTF5kA9r/c6K3YxArzWAQrL
-	 BxxSdp9ycAwcg1Qu7kwPB0f9yLdLy4t8CnqCepfaHToGgZAD51vpW0ekyCw2QANT3+
-	 rybJCFWvfrIPw52F/oB1oSnhR+HsyAdjPe77nDzKwIkW9QkEn9IZH7eTaRf+WWxujU
-	 7x2pOm7B3QudTSqhVH5AB+Ed/bkj4rpTvlQ45FdazcS0AvKpf4q1pLg7AOdePTHnlA
-	 5CF0w2qRGr05Q==
-Message-ID: <f67087f4-d787-43b9-b3fe-7f0d5bb801c4@kernel.org>
-Date: Tue, 3 Mar 2026 10:04:26 +0100
+	b=er7ANTkYJBqwL1g+vXUe7IQfDHLUZ8ZzIlwYrjYgAJzWmuewZOuzijTOr1G9TmMhz
+	 6dRajFMtFCt3t4zfjwNJCLxT5yKzQAQduTUO6SuW+Kw+PSS+aFdCZqhfu+EeBWkv79
+	 uZ4PIlGzNug0PSAlDF/5q9oumhdg0L7oA9q8ExOWeKfJGKk21JNqa/Bkqa3y+tUVFS
+	 5CAbiJigJlbQMNxVqG/oKIx/6eKxED+6neoM8nrk13nDe6+PU+bxxf1C1VdGhtNcp4
+	 xgLiaom9MjCNLh4YKPQC+MiySDfugxh8l/B6gVQGetlHb2xJiMbzy3rS+GCTQBtwi4
+	 0GKDYT3CzR4YA==
+Message-ID: <dfd73ec7-21b5-464c-9a43-fe942b03dfc9@kernel.org>
+Date: Tue, 3 Mar 2026 10:05:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] mm/mempolicy: possible double-unlock in migrate_to_node()
- on 6.6
-To: Matthew Wilcox <willy@infradead.org>,
- "liying3@sungrowpower.com" <liying3@sungrowpower.com>
-Cc: akpm <akpm@linux-foundation.org>, linux-mm <linux-mm@kvack.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, victor7q <victor7q@163.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <2026030310525141773825@sungrowpower.com>
- <aaZgUNxAyKC2IwuG@casper.infradead.org>
+Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
+To: Andi Kleen <ak@linux.intel.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <20260225232708.87833-1-ak@linux.intel.com>
+ <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org> <aaR4y-lCl7YPEcnX@tassilo>
+ <af715d91-6d49-462f-9e9f-3a513ff2ef77@kernel.org> <aaX2B9Efh0dBed6c@tassilo>
+ <4a08a249-211b-40b9-b6bd-7c54af2b9d15@kernel.org> <aaYFpEmiH99dryA4@tassilo>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aaZgUNxAyKC2IwuG@casper.infradead.org>
+In-Reply-To: <aaYFpEmiH99dryA4@tassilo>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7A42F40013
-X-Stat-Signature: qguo13pomi4nyezn86ed8ozx81zh4h43
+X-Rspamd-Queue-Id: A8838140004
+X-Stat-Signature: m31pw78kbbjqooamcfwpyrxyk9ukiek9
 X-Rspam-User: 
-X-HE-Tag: 1772528671-753087
-X-HE-Meta: U2FsdGVkX18inBmEF4+v6QI5rOkGGsbwQuqeX/UD6MA7n7HVb8NyESJP/qQKp9+aasznFT3JBVswifWP34HvmplQ6CnjRzZwLkcIjR95NY5p21qh00Dfay6hM3eCshgVvEbsBMBJKo/Xa3bveBUP56VuFk3jecKO7z5spCbd+6YujoK45DeR1FptPNhSZMOaGKhSkaF2XmtR0MjE29805HMfmBBV4Xk5uNoNchWNKmFBPEfyMOjGz+qKAW8BYggC6/1GERmFgroSEE2X5uN71pEn3M7u/KS0mf518Y+B3l/o/rNEZpb/JcrWXj0wvQDO4cK2HLsFX3/tmRnZUlpJvA+G3bX/k8vDGOy9qb5axCEuTFVFA8q0XvGujlYdPwLQqgW1QqTAeoYbkDPYi84Va1DrFzfqfFo9YKU9yCXxw5pwlFGaNUweckwu0A08CK81iRiqb1bBqFABvN2m7Xd5vXKwgN/kBE+f40U94AmAXqHthaoblzRxwGKBvYA0Tw61nyBcBZjCm1XZd1f4jjdNjFGes+ZIxGPzyoR2uaYTTC5qjd0/tkoG7otWZ0jqbdoIXlRrEk17RfpZbodWFWUd3nOeXTIYPNGX65CV+PXbC0uQTIBJD6m+tq3qGrP4Z3x1eBrJkaDgwzDyDFw8QDKyci2ML85NZjCn3PgqM6aW2bTx//nb6CcxAP+zTWdmmwdqcW82gx+JxzEBtnDYu5EY/Fd0Z1gbiVxci/r6p1hnSql3j5uoVL4wifNkXehq7BZf4fxZmkMsn/UJedzgDiyfbKV8hhw/JLwhnRa9/5y9kgSAaEpFDF2JJTSheEHdAY2vuzu2wAU17DSPjvxr2Pg2WeR0+Z7b2wo52nZ+tXzmeAmVsSRQIggIb5V2OCawM3u9pX/1MjGe01qooFkdO654Oxm5cY5sZfVugmx3ssgGD7+7+H97V9KcXJUE33xHZjzL0O/w5s5G6OvBekhiRQv
- 3FrV8C3G
- w1l8KYbWyNlfAxwhmKf29u9JT56TI6JGuedDoZpfSYmBtDdaNUM5zP+M7WAviKN5C4FIzOV3cw6AuBmeK/NqVPJT8SDVJeuneyPHso8lukLcS8XO23nj4T7mcgvlNMHjmnVR/CMoeMhNBwHnNaVfVfVE985NQPQNqnOUCQRa9O/aM2rI76RK/TGFdzWJoEF/ao9QcP/eqfCFVw69KypsZT4akDbtmAlxkmOLViTZ1n5VeduMGqBUdLga8TTYlww8jyXyZU1bc0SKDZ0NskjuiBnD+8VYJPlo/9TFtvrh3c0fezHCVTGHrw2U2Ev5v+O10yS9UzCdDP86o8n0aha22tkArqNGIZM4fbhd/gNP+b8oFbO5yltLEe8ofBY0jhBZW5iL2nTlO7KUfADg=
+X-HE-Tag: 1772528750-227877
+X-HE-Meta: U2FsdGVkX1+ycQe+ZY7oURwjP4kFBMG7o9kQJy/6XDrLltiX8MgVfP0GRepkrRcEOQCBWqGiLHxWNr1n0eQDst6yyGCQPdCjVxQzqJC0MAieWP0bFykk+bnbbmDrAAh019fJ5nIz1dvIX19AkvQHsTPmfWlC8OudI0tRzk6Ad3AFYCAzCFVxAZCWP58kxOPeB8yINVPq5EgjyKc3yp4IS2Wt0Kt6L3/7bgm+25SwM9xUqNx9auOfZw8YwVIxig3nVJQEq8ztlOwxEwsPk1DXrTrpPcnCWJ4Z33ybIC0Wq1S2Bu47rZ01SiCjHN6rJbxW3dEQbPf/fclAAhkB3QZ2loDD5kbVqFgWr59lJl+r2JTrhcrld3KAxQ8yerru3YU50thSeU7ZS7QQOr8GEx6hJfHCkYqnE+uCn/n/Rk2+S60fS7wLIotos4XtDGEZGAC4eIsUWkXw8RUA/Br8y8008yS2d3MOrVyt8JVjGgv5Csn6YueTmbx+7/fDqwgc2m4VahGI244Tp5fzAypR6a0vxt6oA1QIeqkb1o+6L8k2hN/xaTik7oSZd2vwTJ7RmVQfuhr96V+tOCEflORltgGkr/NmFnHlcKjKDQOV6r2fpA3rUWSPEZLSP9hQCz4deFQvvOYXvFq9PS29LtR7Y+iPtSGbMBn0T5P9lDH+d5Mq1+dFsv+W0iY+VqLgZNLMOVR5OM97SkF4xqrd3HiONSRlvZ6wV6IRD+EK7/5q2AjKbi5vV5I5MbiDhhC7bHDUYjYqKrE6hIMX2VVPyB6LdsSQozl8uRRjyGX6A7QgsbaNYbjB0ReEckJvhWY0SgHmXm5DsKoyTzqldP6DPzTp6tsQj/3fIbu40RCExpD8Lop3n8F671iNSGUptBlq9ZXANyvrZLu598zh6e0cKiHk9cTbJ2Zs+kyj7LQ8y86gAdkno/0ypQ/7Vzts4pGB6Bd7A8h0473iF5vzBghw+71grxH
+ Tu46Sb4T
+ eAFjlzxp7Jux1yBFws1BxOJA/IgN86QK3y78SVoffOgzx2CYnbJSmiatblt2r8n5iiqM2P9EUHXKHb7mw41cVfY5hByFDynYzufi4cM7jpRsmy5KWhfzKnVqHaIWB2ClLpSGzpaTFpAtWgQACZ3UrNgJx0WfLVWkLNXieehz4W4fZwc/9Fi8pqy67wJV4ubGnCWE2ADhPoLY5dh+pLYYu+ewr9/9YdrJyFGeBsysSpHGdwxXai03zN2i/7pKj+PCVA4bE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,32 +140,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 05:15, Matthew Wilcox wrote:
-> On Tue, Mar 03, 2026 at 10:52:51AM +0800, liying3@sungrowpower.com wrote:
->> Hi Andrew,
->>
->> I found that a fix is required for this submission in branch 6.6.
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=a13b2b9b0b0b04612c7d81e3b3dfb485c5f7abc3 
+>> Ideally, that will tell you "how much" of a certain contiguous size is
+>> mapped, if that contiguous size benefits somehow from TLB optimizations,
+>> etc.
 > 
-> Agreed, although your email should more properly have been directed to
-> David and possibly Greg.  Are you going to submit a patch to fix this,
-> or do you prefer that somebody else does it?
-> 
->> Regarding the difference between branches 6.6 and 6.12, in branch 6.6, mmap_read_lock() and mmap_read_unlock() are called outside the migrate_to_node() function. 
->> Therefore, mmap_read_unlock(mm) should not be invoked inside migrate_to_node(); otherwise, it would result in a double unlock of the mm.
->> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
->> index 54f1b78d1b2c0f..94c74c594d102a 100644
->> --- a/mm/mempolicy.c
->> +++ b/mm/mempolicy.c
->> @@ -1071,6 +1071,10 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
->> VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
->> vma = find_vma(mm, 0);
->> + if (unlikely(!vma)) {
->> + mmap_read_unlock(mm); // this line should be deleted
->> + return 0;
->> + }
+> The key word is "somehow". It's better to work with real use cases
+> instead of such hypothetics.
 
-Right, that unlock must go. Let me know if I should prepare a fix.
+I don't have time to discuss this further, unfortunately, so NAK from my
+side.
 
 -- 
 Cheers,
