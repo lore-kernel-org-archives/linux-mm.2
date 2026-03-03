@@ -4,116 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A13BE67A96
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:28:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2DA9E67A96
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:28:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A11D6B0089; Tue,  3 Mar 2026 03:28:05 -0500 (EST)
+	id 675A76B0092; Tue,  3 Mar 2026 03:28:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34EE36B008A; Tue,  3 Mar 2026 03:28:05 -0500 (EST)
+	id 649D56B0093; Tue,  3 Mar 2026 03:28:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230C56B008C; Tue,  3 Mar 2026 03:28:05 -0500 (EST)
+	id 54C576B0095; Tue,  3 Mar 2026 03:28:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 11F216B0089
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:28:05 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F4F18B5BF
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:28:04 +0000 (UTC)
-X-FDA: 84504074088.12.B279FB2
-Received: from cu-gy11p00im-quki07202302.gy.silu.net (cu-gy11p00im-quki07202302.gy.silu.net [157.255.1.68])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C8E36180002
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:28:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=mAVYbdvl;
-	spf=pass (imf06.hostedemail.com: domain of bfguo@icloud.com designates 157.255.1.68 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 412EA6B0092
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:28:34 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CAAC8137F39
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:28:33 +0000 (UTC)
+X-FDA: 84504075306.22.8FD2152
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4A932C0011
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:28:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cXGVRPaB;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772526482;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772526511;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YCApGIaGSKZC8cCTCH+72YgshK9JNaLJszY1i6IDUso=;
-	b=oHvtsEA/XhIgW0HjQM/mJhgL0HC/0syTHDvhjjzjyOWZG7BpHQk8wFQzo+wls5CCN6C/7J
-	aHT8mqhTQfUugVNThC+/bxQSvWYWLHZ+3SHVipNFzQc+x16HMsMLT3S4CqtvOfQtyXWjVn
-	ZZzsY/ief3KxYciBfyPUyOKmqOVaj3I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772526482; a=rsa-sha256;
-	cv=none;
-	b=AuUyugfMtcqkIHhMslskZcSMlxu7LyEiTYcmtv01h3HIREdO6o7qBU7p5WBeh6913LhfbN
-	YkhtxSwKnBMR41mzGzf2B74m4Ln2Z5tSM7NdFciFYYKADUA36mVWMniTasQ4pAQrPHXG4J
-	qtSs1EdAtIDaMrlty6PUa7ULjtK2R0Q=
+	bh=tvQ9ogjqY7GpWZR0jhfLALG/vdl5wh/KcgbqbjmLgoM=;
+	b=uhxnLSP7zkSCiuEjDSelRbhyZ5fuSJfq3whBncasbZqExsmkHGyJlYJcbb3h3Qiy3F4hM8
+	rjm7yEL1wZO4FdXq9UcroR1YwtA+L71zttF4U/2PZqaIrxaJKB6EFBcZcVx1SweQKtNWbj
+	9HJ5bO6tIbhHp33G+iWh7W5LLpMKu3A=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=mAVYbdvl;
-	spf=pass (imf06.hostedemail.com: domain of bfguo@icloud.com designates 157.255.1.68 as permitted sender) smtp.mailfrom=bfguo@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-Received: from smtpclient.apple (gy11p00im-asmtpcmvip.gy.silu.net [112.19.199.76])
-	by gy11p00im-quki07202302.gy.silu.net (Postfix) with ESMTPSA id B6DB821400C0;
-	Tue,  3 Mar 2026 08:27:52 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1772526477; x=1775118477; bh=YCApGIaGSKZC8cCTCH+72YgshK9JNaLJszY1i6IDUso=; h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:x-icloud-hme; b=mAVYbdvlGt2XJPyv8WVaRi53G8y5sboyGK3o8S6ucnENvfVhhu6yRqgpADxL4rqsUZBhx8QPvKEKDubg/Vk7hl+UM2ITtfqFP2FdSTTFhSZ0loQWontGch39Rjp+7AKu1sHnszw4nDl6a6L61tPczwhLTUxH7kwxK7mpryN7RpyYcqGR0JgLYoF9eR65XYEPo0lvCEzYTl8VFSiBGZjZWzESr7WYBdGErDH6dG25lwiiB42Iydv58lyjBVW2IXK0+CjZ/77bY2Zt3f37wrbsguFzrPqdtGKEFVYRPMyoxcAVNw0MMn5RyxkE4vHMTdRCHRiIsbDNbqRDbcI1w3UnZw==
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-From: Bingfang Guo <bfguo@icloud.com>
-In-Reply-To: <CALOAHbC0XbvG4OCy94j+ZUyTZt65QB0Y=p1UwKvGcsgcWKy7mg@mail.gmail.com>
-Date: Tue, 3 Mar 2026 16:27:40 +0800
-Cc: Axel Rasmussen <axelrasmussen@google.com>,
- Barry Song <21cnbao@gmail.com>,
- Yuanchu Xie <yuanchu@google.com>,
- Kairui Song <ryncsn@gmail.com>,
- BINGFANG GUO <bingfangguo@tencent.com>,
- lenohou@gmail.com,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- weixugc@google.com,
- wjl.linux@gmail.com,
- yuzhao@google.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <71281163-F081-456F-AFB0-37DC0470850A@icloud.com>
-References: <20260228161008.707-1-lenohou@gmail.com>
- <20260228212837.59661-1-21cnbao@gmail.com>
- <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
- <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
- <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
- <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
- <CALOAHbCma=SW4nu_GPv_pbuuXv1V5JPB-9cA3z1TeemWqU68tg@mail.gmail.com>
- <CAGsJ_4yAkaqqzSu7SS=_fgZ_AQCqtbv8LmuPGCb7SiFpGk4csg@mail.gmail.com>
- <CAMgjq7AkvgzW96-JQzEg5c4oW0cMsjPHcCnukCUZXgSvXL4-DQ@mail.gmail.com>
- <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com>
- <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
- <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
- <CAJHvVci8nc-yTHkAbSEQQtqkRvgATJWcSTwBCY49A5W4AQcd7Q@mail.gmail.com>
- <CALOAHbC0XbvG4OCy94j+ZUyTZt65QB0Y=p1UwKvGcsgcWKy7mg@mail.gmail.com>
-To: Yafang Shao <laoar.shao@gmail.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA2MSBTYWx0ZWRfXwDAoalcqZKk8
- NLmHOXQJEf9qNZFhXgDZXh/S6cnvYNsETHQod2A3KNr4DIVcU+aC2i5K7/4xZGZM7DtnJGWgVWI
- Rkh9Zx0VKokLd6xehAcB1Iac/FvhnssFB84T17I91AKy8weJtYhWnF20i8xPvLsRpXYH31DuQ6I
- Xar3s/TxfLCFBRmS4F7Xt7sR8NTk3ZPaGU9ZIfcX31zDYVkRjXzDp7Lo8B4byZW7nlo/uIlDM2K
- WxDuSD0ChhQ8nHr9BVdUx9VdX9jDtGoNAMNiv1787aozu+/+gfq4+H7kk7FZkEncrOVxmy24Yvs
- cP/UBmjJCjYc4V0a/DbFxLwirhboJn1itj7VtGvjA==
-X-Proofpoint-GUID: -yPNnIHMyVVustWlfOAtOyxfNONiM7Za
-X-Proofpoint-ORIG-GUID: -yPNnIHMyVVustWlfOAtOyxfNONiM7Za
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 clxscore=-2147483648 bulkscore=0 spamscore=0 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2603030061
-X-Stat-Signature: 7icwxjsxutoo9m4x1escnrmu5hhtkktx
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cXGVRPaB;
+	spf=pass (imf10.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772526511; a=rsa-sha256;
+	cv=none;
+	b=2Zarkl3KEn5cixXyOzxf6gqXNYRRq3CS+Af+/MqE0lPWUmP3QU3uLn1ug7bPWjJkQGmKxv
+	G53+SuLMM0sSNB/qH1XdcIx2XC6IcmGptOVd4utA6bDliiTIdzNg64qxo3ztxyzDsX7dsU
+	QPjp7XvZAetjh162tkfTJtGXZak7sFs=
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b936331786dso581845666b.3
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 00:28:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772526510; x=1773131310; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tvQ9ogjqY7GpWZR0jhfLALG/vdl5wh/KcgbqbjmLgoM=;
+        b=cXGVRPaBjCAawnu03Xaj25L2BNhU5VM/qNYWTfWXe1d++BfGz1/AgQN02VmV+Tjb23
+         xZ70qlHIZA2s3Ci7s4OC+yDeqGO+1gV50R7LXE7s2wizwJmYYJDQMcZAsqOQJbKyqJiH
+         HR6BBlIuglIhQAPXA80eHKG6bykTQCGCwf00SYGbJqA7VAFxYuEJNoo2O5WJybMKg+qu
+         WUjkZj9c38cmbZeOyNYDJ+uJ9WYvsqByqjPA61mBIUpIpTHoSGyGycrers5MYfjky415
+         k8vdOZtQSxs5JKrxGsbOMXv7QPqtUp3XmmgWwmtXwLvEPRT5SaAYXEjrTocJk75+AGOp
+         GZ8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772526510; x=1773131310;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tvQ9ogjqY7GpWZR0jhfLALG/vdl5wh/KcgbqbjmLgoM=;
+        b=vkgPzbwLKv1OsfQmueCBxqI8ylW6lYa3EivxGlHz0N3+FAMOSWQ1unE/iBC7HXLGvP
+         DbfnU7vxgvBdozwUfvXsOLptIxctAhq8/ThAXZ05khEPfKpFi1jhxnfj0hDv247+ubwH
+         fei7yNPpXgOABTFnADuQmVc8YqeSKI9hxv3R1e1f/IIqNNC+51ookhHL93bjv0UiBPBH
+         wTRriTrpYaLHyEUmFBnyCOzWyBGxSqwc5Re9yrlRHa4c8k4tAbJ8jZO9JR9SH/woTaEl
+         ESJ5pVBhOcvR/ub7gvHpit4Kg2oLZOZGTHcv9ZUxXC0RSYZ6vFd5q6OJVWEDJG2eaa0A
+         c/lw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWAe3eKqPafNXn5slh0fLbQTrRO0XOIugK4vRM19TZ8a64HfiHKa5RWvDq32GHbavXpOBECaK1YQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxzsa/l4usQcG61Ns9fMAfixtr+/W2qjibeNUzOKcojazvgnewy
+	uU8IyD3xAOJPhKfzzJu5rH4NTphvdjJpW6iqEAZXgzEoVkolJ4iPrLfs
+X-Gm-Gg: ATEYQzxx5qCMyWydxZa3pyDKMdYocBIoWOyvWE1kdt30DaM07Ty8I+2VhE8NRBW5t2r
+	WLPpmp8ABKOVBtL69cIAKO8j/NS5hlpoeIR8uNX8/vUtEooOdSELhgX76WhOXBJYdf/nF8vciVC
+	lLCYgYKpy6UH9+e/jkTN9fBbqwuFkmaJQxkJ10jr2w+FAmflunniE1jrDqyCo/vj6eU2/vYi/pN
+	88ruwpOjumKHgI/DRmXe0I/ePDuN2K062v/MnT5I/8C5XRLLOnMtybXCVZnPAEHprMUp/lBQWVy
+	TAxMAy+2I0JT7XljAWVi4L3JVqZB8q5Zs6vcvuw19iYgTS9lHfMN5y21tDPKwG9dmf/msieOUW0
+	KvdIQ+B0qfT2xkusMyijUjGAZ32Kpidh3czNw+ypMNk5WIt63unRibKjBT/dsT1aGEfnfMPaLrB
+	XR7kUDUzNnwgE/yG6LUuHK9Q==
+X-Received: by 2002:a17:907:9492:b0:b93:94b9:26fe with SMTP id a640c23a62f3a-b9394b98ceamr771288166b.52.1772526509327;
+        Tue, 03 Mar 2026 00:28:29 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac70b01sm559271466b.23.2026.03.03.00.28.28
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 03 Mar 2026 00:28:28 -0800 (PST)
+Date: Tue, 3 Mar 2026 08:28:28 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
+	Andrew Battat <andrew.battat@dfinity.org>,
+	Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
+ with folio_try_get()
+Message-ID: <20260303082828.x2gypytceqn6pb6x@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260302203159.3208341-1-ziy@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C8E36180002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772526481-168374
-X-HE-Meta: U2FsdGVkX1/YdGmZrLfFgdkbv3q4wVSt/dsPy10XtvVXvzVFGf6e+hCr1u8yiGCbZdcu/3REUVhvve+IhPdiDoQkGZKRzx1Y3ROSh3hDXzq+nD1ZG+mw5V7B85gFdRfPIvR7gd6EVogvTGeE+4I7KMKhCyti+Na7b2K+LcC5D8j1VUEoZBfU+OZd7kZISrrKEKXfGtfVtIfMbTOiGc9blPnD4ZBUd9zWcmaEd8FGQVRrRFGUIfdJXiIA3DIvVPKjfFdMBvl3bglP7Aak+eEC4+wiqgXXNttwfyvo0pkgkY1K08dM95Ml9G4W65Czmo67HrIarY8SlcketoadAR4ucFWPaBWELLBhVNkCBZlM0FhD7nXFKDVXTseV4zj7fnL/b0mET2Ow55Hv+o4FfTLQfr5QzGuOeUzB/MOI5eS5rxVYtvmPb7vdZT38rknsKoWsSRE5l4siHkfMeSPYdoGxQRjV7HVUl93w5AcrkZsUEDOshfZDnHX97Mjdmc7UlRj3xP6568aJIieBjECvJig1IS+Kf0ALEPB3tKtt4f5NXHWOb9iej2a3qbeesVWzD7SD6f+KzSmNrCsp2LVPLC3WiKtaU+4aSUaZ5RKSc0wCRp3LnaFnN8UeEtA7I8vZHpL/HQxvhYHNZw73dQa7awzr1MsfiqfJC82Hi8hi3NpPpoU3MCFKvotGysmgmMpvtuqD29Ytwfy7A1PSZd+S6iqLmbYtGZfteTybZ0K4Nuc3j3dCpanbFrSBLaWwVC13ENSAZ7XcARS2xkspPhhjkCovT4Snfb7KY6bMzzBlnJaJEDpDeETVP+HN8BzX8oRuvkmfWoF6L/c92pv1V7d42qHMcduKstWC22J4r/ceU/kjq75D4f1N+Hv4kdTISk26xiMzo17JsTRBkhGefm/23hjmCinJiqas6NdDAs0tgeKWmqfNhibAQ50eF978ME1nYAR7TndR6VCgQY5IoCxIpww
- lI07s/Sf
- GxF7CcKIj+dEFZuZXziga66qsPEoSG8E8IyM+K1JeKoHQrB3hwqKo+OTQvGqizcaFAPFtfCrW4GAX0DKDhaSFYz798stCSSrLN5tAvY/lZt4aHEtbDLzsIE/XJp2R35PNqe5drJCRorBlH9Cc7KYcQDkmTSJQnrHIfplkgKIlCDbjGfI50Kv1En1UU2xE4doJTPOGhZeuGpjwvqeDd+xBl4P3PkiqUT2FNcVyYOdUpII1oNvqGQu3/lP/TkBosUMe1zA+BJBbdTArWpG3y27+RnSGw+z8k1Jx+EOA9DZrWv2ub9CGyiNY4ffF6G7raJ2W+QjgybVQCnNMoiC+9fyRCs7RHtWzpyjc4iznTbN2FFMuyzNvXr/sLVVWYzqX05I0GcVyFg07WGPqCQtxfUXOnmOOeW6o8sVumaM676spyyNiMEaFNbUQIQq5orpdzv4WRwoyaJbzvvthmrJbsfPyVoFKBw==
+X-Rspamd-Queue-Id: 4A932C0011
+X-Rspamd-Server: rspam08
+X-Stat-Signature: yn7iaxpt4d7ex8afa7tnqhetet6n4ch4
+X-HE-Tag: 1772526511-554092
+X-HE-Meta: U2FsdGVkX18Pzw8sN3Lde6T3uwKuvfftTWzcWaa1+zmdvLYQ5U5geTyuannBF/yg+YbQ3CgW7ZvzPFSybnkfAoJO3no4Mu1OJc0AUpURiG4fHPx4RqibIkKSZOr0JPQb0ryQlvGdHQGTHsmtGDle2QsT2rvrYgbSZEMvvmXDE3DuiH0vhoum0XVPLviPerkgO5fvXfvlMcjFj4o1FA5sKjBEhZxkl3eKtwwBcApT1sA3z4/JZSlMG6e6Tnce919RH4wcJiQu/CtGoFv0nGaGETOk+DgHY0/2OwHedX2+bHzQC2s5d3uzwt1bG/Z4K2JgwKH4QePPtI6Ey+dOtENDPOfgQ1f8v7IS4yLbckWtAnCAWbmd/BpceN88Lwt2lPEU/pX2olfJNlpea+BgqqavS3ZqXKnlhZSlS+SH9DAUvO6WozxRInC0yksiSli0fDt7orX7A2Wq+tJ6Jy8LhqFY/YmSVLdsTNh6W7/ECbMweap18r67/DsgGH0toYQj/yGv2TAqYcjdu+f8OsPgX+5SY1TPb0gALhvesOlswVWN7cBihMWSpLCG4+GiySEur+WswTBArRr9uHt/ROS4dOsuxYZChFaCMGCvatRfuNgM4dzKZsJak5pl5i3PVGvst01QgCWBmFMz1CHdd4IiDwKM1RMswyNE3orDIsSPRjPsP8FmVLsBqmPAtW4FRZ4M+876hz2LH2063GVhQ0aVBxP6geWG+g2m6TD9zwQtmerVVS/ZUeI7h2sYCnjmalmUz2KGW0Upd/M/mkn7xbZT5B3TihV4ZNpnjaZcobP5ouOqT9veEsuqRqpZbGmPV9cshs4sCZj+PmxArCzl7AsuxwtVNqGV4xS9A7WuprzRW4FnhuuNx4f7Y7AObwpFMuhEksJrkUP0z+6+tLj1yna37deiazSfdI4c+j5QgI8e5fGAMnM/J0F7i9UK1pR0Bffl/jm0RaEqPzb4t2h23kZ/8vn
+ y48hwVC+
+ 4IFj68tww1LEmD1GfwEHOc9X2NYW6X/nTWfqiVT+EdbFUIGmhTDFVpZHXMZ8KzKsKuKX1voWjjSyDWt2QG81flxWIFmMYHscGDh2Lc6ZO3gHtNt4uZGkuxpV/wSmpcm1IJyC50EarFRhXDB23yCnJNogksFIgzBkPn+ERBg3prI//MV0/nPq00FWWxBUVpF2Xpq4Fniul46aK8V7xsgcFpqlhbDT78S9s1lhtxqtLHFTWGKQhj5obM8ovpzMb7Olu5Z542es7m7+2Ie+1gsISocuuvvr/w0lb56uQJnm1zISavZsobJFG1oVDJMSwn7qmfYU85R1/+9TCMJq3IcUP0PZayXEuwcv1Fb6rL3Og6CiTTwvoZciRa3RzMxIFuPKBZKZcCq3E6xIu8Z5dvHFjBsecQ5g0FSiRVR25MAj4KXTIstRvl0xvgcLQHyAqgCD3aozhNi3M7P7x46lCVt760JYz+zUi694hiiqYciIDk62RUMiGDJuUZds7fP2F/qEJKHuBacWbDnXokAUR3/kmTtbh+px317hsrZvQ8mrxwNXLZ05nkB7CwGjJluTifqRfNeOybJoXdZ5XS6jJGV69c7quTJqTuxOUwZX6bwa3/d+m2L7cE6LxyrRpm2jPemxu1KsfK03UeWDtVxnnRyMBDTJNCEj/gVx5swz4/GPXwiFAvQ1XelAXx8T5INGKLhDkyNoPuO0Bthj4oAvYzQ9798i/ctkbhjviEpvWikMVTw1nxIIak/7TeMKH3rLew+59fqMQIDiurSL2mkxLwA4KJSQxKbRkEN9xW/nT0hM0NrGJfCE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,266 +133,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Resend due to missing In-Reply-To header.
-
-Hi all. Thanks for inviting me to the discussion. I'm glad to join you =
-and share
-my ideas and findings with you.
-
-On Mon, Mar 2, 2026 at 4:25=E2=80=AFPM Yafang Shao =
-<laoar.shao@gmail.com> wrote:
+On Mon, Mar 02, 2026 at 03:31:59PM -0500, Zi Yan wrote:
+>During a pagecache folio split, the values in the related xarray should not
+>be changed from the original folio at xarray split time until all
+>after-split folios are well formed and stored in the xarray. Current use
+>of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+>show up at wrong indices in the xarray. When these misplaced after-split
+>folios are unfrozen, before correct folios are stored via __xa_store(), and
+>grabbed by folio_try_get(), they are returned to userspace at wrong file
+>indices, causing data corruption. More detailed explanation is at the
+>bottom.
 >
-> On Mon, Mar 2, 2026 at 4:00=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> >
-> > On Mon, Mar 2, 2026 at 3:43=E2=80=AFPM Yafang Shao =
-<laoar.shao@gmail.com> wrote:
-> > >
-> > > On Mon, Mar 2, 2026 at 2:58=E2=80=AFPM Barry Song =
-<21cnbao@gmail.com> wrote:
-> > > >
-> > > > I assume latency is not a concern for a very rare
-> > > > MGLRU on/off case. Do you require the switch to happen
-> > > > with zero latency?
-> > > > My main concern is the correctness of the code.
-> > > >
-> > > > Now the proposed patch is:
-> > > >
-> > > > +       bool lrugen_enabled =3D =
-smp_load_acquire(&lruvec->lrugen.enabled);
-> > > > +       bool lru_draining =3D =
-smp_load_acquire(&lruvec->lrugen.draining);
-> > > >
-> > > > Then choose MGLRU or active/inactive LRU based on
-> > > > those values.
-> > > >
-> > > > However, nothing prevents those values from changing
-> > > > after they are read. Even within the shrink path,
-> > > > they can still change.
-> >
-> > Hi all,
-> >
-> > > If these values are changed during reclaim, the currently running
-> > > reclaimer will continue to operate with the old settings, while =
-any
-> > > new reclaimer processes will adopt the new values. This approach
-> > > should prevent any immediate issues, but the primary risk of this
-> > > lockless method is the potential for a user to rapidly toggle the
-> > > MGLRU feature, particularly during an intermediate state.
-> > >
-> > > >
-> > > > So I think we need an rwsem or something similar here =E2=80=94
-> > > > a read lock for shrink and a write lock for on/off. The
-> > > > write lock should happen very rarely.
-> > >
-> > > We can introduce a lock-based mechanism in v2.
-> >
-> > I hope we don't need a lock here. Currently there is only a static
-> > key, this patch is already adding more branches, a lock will make
-> > things more complex and the shrinking path is quite performance
-> > sensitive.
-> >
-> > > >
-> > > > To be honest, the on/off toggle is quite odd. If possible,
-> > > > I=E2=80=99d prefer not to switch MGLRU or active/inactive
-> > > > dynamically. Once it=E2=80=99s set up during system boot, it
-> > > > should remain unchanged.
-> > >
-> > > While it is well-suited for Android environments, it is not viable =
-for
-> > > Kubernetes production servers, where rebooting is highly =
-disruptive.
-> > > This limitation is precisely why we need to introduce dynamic =
-toggles.
-> >
-> > I agree with Barry, the switch isn't supposed to be a knob to be
-> > turned on/off frequently. And I think in the long term we should =
-just
-> > identify the workloads where MGLRU doesn't work well, and fix MGLRU.
+>The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+>It
+>1. creates a memfd,
+>2. forks,
+>3. in the child process, maps the file with large folios (via shmem code
+>   path) and reads the mapped file continuously with 16 threads,
+>4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+>   large folio.
 >
-> The challenge we're currently facing is that we don't yet know which
-> workloads would benefit from it ;)
-> We do want to enable mglru on our production servers, but first we
-> need to address the risk of OOM during the switch=E2=80=94that's =
-exactly why
-> we're proposing this patch.
+>Data corruption can be observed without the fix. Basically, data from a
+>wrong page->index is returned.
+>
+>Fix it by using the original folio in xas_try_split() calls, so that
+>folio_try_get() can get the right after-split folios after the original
+>folio is unfrozen.
+>
+>Uniform split, split_huge_page*(), is not affected, since it uses
+>xas_split_alloc() and xas_split() only once and stores the original folio
+>in the xarray. Change xas_split() used in uniform split branch to use
+>the original folio to avoid confusion.
+>
+>Fixes below points to the commit introduces the code, but folio_split() is
+>used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+>truncate operation").
+>
+>More details:
+>
+>For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+>below:
+>+----------------+---------+----+----+
+>|       f        |    f2   | f3 | f4 |
+>+----------------+---------+----+----+
+>but the xarray would look like below after __split_unmapped_folio() is
+>done:
+>+----------------+---------+----+----+
+>|       f        |    f2   | f3 | f3 |
+>+----------------+---------+----+----+
+>
 
-Yes. I believe our long term target is to integrate the two LRU =
-implementations.
-But for now, it's important to keep this dynamic toggling feature and =
-make it
-robust and work well. So if users are willing to try the new LRU =
-algorithm, they
-are free to enable it after system boots for testing, and disable it if =
-they run
-into some trouble without worrying about OOM and other problems. =
-Therefore, we
-can have more users and potentially expose more problems related to =
-MGLRU and
-fix them.
+Thanks for the detailed explanation, I finally realized it behaves like this.
 
+>After __split_unmapped_folio(), the code changes the xarray and unfreezes
+>after-split folios:
+>
+>1. unfreezes f2, __xa_store(f2)
+>2. unfreezes f3, __xa_store(f3)
+>3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+>4. unfreezes f.
+>
+>Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+>xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+>f3 is wrongly returned to user.
+>
+>After the fix, the xarray looks like below after __split_unmapped_folio():
+>+----------------+---------+----+----+
+>|       f        |    f    | f  | f  |
+>+----------------+---------+----+----+
+>so that the race window no longer exists.
 
-On Mon, Mar 3, 2026 at 1:34=E2=80=AFAM Barry Sone <21cnbao@gmail.com> =
-wrote:
-> 2. Ensure that shrinking and switching do not occur
-> simultaneously by using something like an rwsem =E2=80=94
-> shrinking can proceed in parallel under the read
-> lock, while the (rare) switching path takes the
-> write lock.
+Since we unfreeze f at last.
 
-In my opinion, completely banning others from reclaming seems to demand =
-more
-than needed. We have many huge servers with services running in =
-enourmous memcg.
-In such case, waiting for the draining to complete may take so long =
-(tens of
-seconds for example) that the service get many timeout failures. But =
-there's
-high chance that reclaimers can still reclaim enough even if the draning =
-is not
-completed. So maybe we can have concurrent reclaming and state switch =
-draining?
+>
+>Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+>Signed-off-by: Zi Yan <ziy@nvidia.com>
+>Reported-by: Bas van Dijk <bas@dfinity.org>
+>Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+>Tested-by: Lance Yang <lance.yang@linux.dev>
+>Cc: <stable@vger.kernel.org>
 
+So thanks for the fix.
 
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-Regarding the discussion, I would like to propose a slightly different =
-approach
-that is already in use in production. The proposal mainly focuses on two
-practical considerations:
-
-1. State switching is a rare operation. So we should not penalize the =
-normal
-reclaim path or introduce more locks for this rare case.
-2. We should avoid introducing long latency spikes during production =
-state
-transitions (e.g., switching on live machines).
-
-The downstream solution is very similar to a combination of all your =
-proposals,
-but with some radical attempts to try to avoid sleeping therefore reduce =
-lags
-from waiting as much as possible. At the same time, we keep a =
-last-chance wait
-to prevent early OOMs from happening.
-
-We use a static key to indicate that the state change is in progress. =
-All
-operations are encapsulated in that slow path so no extra overhead for =
-the
-normal path. If we are in the draining process, we first try reclaiming =
-from
-where lrugen->enabled says we are, if we still have a lot of retry times =
-left.
-With no retries left, simply wait until the we pass the race window.
-
---
-Thanks
-Bingfang
-
---
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 614ccf39fe3f..d7ff7a6ed088 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -2652,6 +2652,43 @@ static bool can_age_anon_pages(struct lruvec =
-*lruvec,
-=20
- #ifdef CONFIG_LRU_GEN
-=20
-+DEFINE_STATIC_KEY_FALSE(lru_gen_draining);
-+
-+static inline bool lru_gen_is_draining(void)
-+{
-+       return static_branch_unlikely(&lru_gen_draining);
-+}
-+
-+/*
-+ * Lazily wait for the draining thread to finish if it's running.
-+ *
-+ * Return: whether we'd like to reclaim from multi-gen LRU.
-+ */
-+static inline bool lru_gen_draining_wait(struct lruvec *lruvec, struct =
-scan_control *sc)
-+{
-+       bool global_enabled =3D lru_gen_enabled();
-+
-+       /* Try reclaiming from the current LRU first */
-+       if (sc->priority > DEF_PRIORITY / 2)
-+               return READ_ONCE(lruvec->lrugen.enabled);
-+
-+       /* Oops, try from the other side... */
-+       if (sc->priority > 1)
-+               return global_enabled;
-+
-+       /*
-+        * If we see lrugen.enabled is consistent here, when we get the =
-lru
-+        * spinlock, the migrating thread will have filled the lruvec =
-with some
-+        * pages, so we can continue without waiting.
-+        */
-+       while (global_enabled ^ READ_ONCE(lruvec->lrugen.enabled)) {
-+               /* Not switching this one yet. Wait for a while. */
-+               schedule_timeout_uninterruptible(1);
-+       }
-+
-+       return global_enabled;
-+}
-+
- #ifdef CONFIG_LRU_GEN_ENABLED
- DEFINE_STATIC_KEY_ARRAY_TRUE(lru_gen_caps, NR_LRU_GEN_CAPS);
- #define get_cap(cap)   static_branch_likely(&lru_gen_caps[cap])
-@@ -5171,6 +5208,8 @@ static void lru_gen_change_state(bool enabled)
-        if (enabled =3D=3D lru_gen_enabled())
-                goto unlock;
-=20
-+       static_branch_enable_cpuslocked(&lru_gen_draining);
-+
-        if (enabled)
-                =
-static_branch_enable_cpuslocked(&lru_gen_caps[LRU_GEN_CORE]);
-        else
-@@ -5201,6 +5240,9 @@ static void lru_gen_change_state(bool enabled)
-=20
-                cond_resched();
-        } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
-+
-+       static_branch_disable_cpuslocked(&lru_gen_draining);
-+
- unlock:
-        mutex_unlock(&state_mutex);
-        put_online_mems();
-@@ -5752,6 +5794,16 @@ late_initcall(init_lru_gen);
-=20
- #else /* !CONFIG_LRU_GEN */
-=20
-+static inline bool lru_gen_is_draining(void)
-+{
-+       return false;
-+}
-+
-+static inline bool shrink_lruvec_draining(struct lruvec *lruvec, struct =
-scan_control *sc)
-+{
-+       return false;
-+}
-+
- static void lru_gen_age_node(struct pglist_data *pgdat, struct =
-scan_control *sc)
- {
-        BUILD_BUG();
-@@ -5780,7 +5832,10 @@ static void shrink_lruvec(struct lruvec *lruvec, =
-struct scan_control *sc)
-        bool proportional_reclaim;
-        struct blk_plug plug;
-=20
--       if (lru_gen_enabled() && !root_reclaim(sc)) {
-+       if (lru_gen_is_draining() && lru_gen_draining_wait(lruvec, sc)) =
-{
-+               lru_gen_shrink_lruvec(lruvec, sc);
-+               return;
-+       } else if (lru_gen_enabled() && !root_reclaim(sc)) {
-                lru_gen_shrink_lruvec(lruvec, sc);
-                return;
-        }=
+-- 
+Wei Yang
+Help you, Help me
 
