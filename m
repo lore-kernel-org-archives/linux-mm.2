@@ -4,219 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A51E67A81
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD2FE67A85
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C91C56B0005; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
+	id C04926B0088; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C40436B0088; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
+	id BB2F86B0089; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACCAD6B0089; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
+	id A8A676B008A; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 98EC46B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FC9CC2457
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:12:37 +0000 (UTC)
-X-FDA: 84503883954.11.DBB0C70
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8FF80A0007
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:12:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FRAegzmh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=vrIT1mwW;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772521953;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AA4E6B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 32D241C8F7
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:14:55 +0000 (UTC)
+X-FDA: 84503889750.30.B76D437
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EC9B440010
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:14:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jJ2X0MwT;
+	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772522093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
-	b=y2N/OK1uBqhmnPV7jfjSFJpl+LQO5osvdZw6DfQdsQatGzsUQfFJu/NiLQA4MoHfh9NhNH
-	F+oohkqpx+Lw2CQI0tK/fuZtXLkfPXZ2f81dtAqIMUE8jQhF4hSzpSzRMdJss2YzgXhD9o
-	ywBRyymdho3SEBRizlb61oembU6+MTY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772521953; a=rsa-sha256;
-	cv=pass;
-	b=fUYnJcsyQZSbSmh6x3nj5RXsDsMTiq6twIRxPHtrGGnvQe9vEK9fNrWu6HITVgxhmEOx4J
-	kjSqldIF42Po21WfHu4Gzqxz/ATAkaoaUL9dE0n/Gmx0AsYO5SKA+o18nJPbzPQ3PW69/h
-	WEQNF+hoXOVYEBJXvwZ/nhPPxzNSqbo=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FRAegzmh;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=vrIT1mwW;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6236BSiM2883981;
-	Tue, 3 Mar 2026 07:12:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=C5oEw5XFIlwIPv65bL
-	Us8HHiqGZSxBE+3TCu9OxiTKE=; b=FRAegzmhkiHw5bx/7Ju+Z5NFAjCPmxUrSa
-	oCsNHGCtmH77vPZ4KcfkMmDFZX2B+fG8+ehBU1f5V408MP4PZuxupo71tbZX6fj9
-	KfjoQm2kr9XqajSSLPauR7EOUDZqOMKESMxQ9IviNkvNLkjAfKhlAq7mVmj3oNtk
-	69sQqz7SsyrGqw82NkoUaNEtR5vXTv7f9jIrDYCzFF3UTxCfma6UUFv1iQsOa7l8
-	CsOa2L/kMdxr3MAh2824ZRJREyulUuZUzid7zKHJEYZMYOMkhAL3jZd51WqoaVrU
-	ZUcLv6fINF6FYJJtfdsM8elt71UMyQteVf/cqntFNEypoy0eLFvg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cnt5fg1j8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 03 Mar 2026 07:12:18 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6234qGLr029882;
-	Tue, 3 Mar 2026 07:12:18 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012020.outbound.protection.outlook.com [40.93.195.20])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ckpt9yah6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 03 Mar 2026 07:12:18 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VJu70huUoR7mP2Eblvv2fJ3a/Bg6/ed6aVN2fTRfwVmmpPrrqWQM09Qj8D0pFNHhHpsTG5jaN+IBgCBkWFoswZuTZeBERjaZgWteAx+lIiVhoxgW1VvMkwsSzxXnWP6ZlS6ryya7Bs1m6uUk221GSxy2CwiSKOkqrszzT8fcvT/L/MdKqVCWsTdnDpMILkA2gQjemxNDXVkd5ShRlmUBMbGW+2/F9dZMQRLk/d6fm5z7tdedfWUpP4SJ2zHkN0DbXqOmAzWRxYH+VfuTaIzb82jmPpuKt/XK767yspdn0CM93IeJhhu3ZDbgxWvHqZXHT9dpPiASxlTYjMiJK2/L5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
- b=O/a5DE7mVlihJHKz2iehYX80CplW6p0sSMsRwLZqUzybNuCN8ioDkZ+SZHFl4SSagSnoKKR7KxU0iJu5pHvRmKtIvM+VnBuuIvLcC7jm90MAp1gUq7DDAnLEwcSeDOoRf1DBC4NJu+JjF0XTMli9+KOGDlcsAVFkeDD3jLuGlQoXzz9sQQVYUOkppv9rKbx9w1xTYyDwZxVWPRHq6CPzyklOCVlms923EjDwsPShX08GVS2pO00CPzY5ZU+j///Dqx54rkaSbCTu6YxUjotqQdVtadn6o4xWUj8K0NvrOZSi9Pot4jSCJ1iUuam23BFCJvCVcIos9+X/emX+D5YPew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
- b=vrIT1mwWnvffDq/r7jxq44K0jGcGhS1IhqRmlpYhGkSiNXSnwIBY7h0bm5kbxKvd0hwPCZTYgaCrqlhlDNVUuggm8T05GUF5wo7f9rjw9Zhsdev9p7C4E6kXGtieT+VV1NVFJvyVbdhG3yPwHBSgaJjrGzul9qll2rpM3WJscYc=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH2PR10MB4199.namprd10.prod.outlook.com (2603:10b6:610:7f::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 07:12:14 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9632.010; Tue, 3 Mar 2026
- 07:12:14 +0000
-Date: Tue, 3 Mar 2026 07:12:09 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Chris Down <chris@chrisdown.name>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v2 1/3] mm/huge_memory: Fix use of NULL folio in
- move_pages_huge_pmd()
-Message-ID: <5efb6235-e9f5-4e28-94fa-f95326ca7015@lucifer.local>
-References: <aaBVg6nPQz-WvyzT@chrisdown.name>
- <27c260d2-796f-48a6-8b1c-751ab172d480@lucifer.local>
- <89d988b7-846f-48aa-9b69-c316f2179d61@kernel.org>
- <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
- <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
-X-ClientProxiedBy: LO6P265CA0001.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:339::9) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=9B1vm61hQWMqh1uv5nPphqUFUMsCP3FqVuJ4rL+XdWY=;
+	b=Ef25dH4FDlZFahcflDkkT/TUlCRmMilbHEUzOLuJAL8t5qlkHd+Y7tOuFKBXsVV/OlWDHw
+	Hnyqv8kbI5U8sc4bHdG2Ic3WAE1CYB4SHV2Xugbyu6I/84ONiJOZ5q8EtH5R+4eolkDyYo
+	phzMgwDdu88zaImobzTMlfXQodswIHI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772522093; a=rsa-sha256;
+	cv=none;
+	b=0kL5REQgRDrHvfgQw+v64gTko45DiUWQilHO3Gz23sVPiYUFTF67GPHir6tgy7A8q9uEay
+	1t3N0m6dFeV+pPUADluqry8MOnQYuPybtXeReDfY4hi/G5oE82fIUkZ7ZPlUgdl7baIem1
+	tQ2qm/Xzy1WC+5JhPV7BNJJt0TUMuws=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jJ2X0MwT;
+	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772522092;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9B1vm61hQWMqh1uv5nPphqUFUMsCP3FqVuJ4rL+XdWY=;
+	b=jJ2X0MwT101PdOwCR141VtHFcO7tBxsJQYyWboizPXtINGWTYxdvEn+zFfT6iTLJrJj2CW
+	64Z1CYFfI2sYbV8hvUVUFAIp/GD6m1RJhdIWBYsloVZLyXeouAoyB1nxxxWfEbGHhw+W+u
+	D/sSNhrG4bqC2gOu+5YK3qcgx/rE9ss=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-spsLqiq6ONmkJVbZdMMAEA-1; Tue,
+ 03 Mar 2026 02:14:49 -0500
+X-MC-Unique: spsLqiq6ONmkJVbZdMMAEA-1
+X-Mimecast-MFC-AGG-ID: spsLqiq6ONmkJVbZdMMAEA_1772522087
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2F7001956096;
+	Tue,  3 Mar 2026 07:14:47 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.42])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A89FB19560A3;
+	Tue,  3 Mar 2026 07:14:44 +0000 (UTC)
+Date: Tue, 3 Mar 2026 15:14:28 +0800
+From: Baoquan He <bhe@redhat.com>
+To: YoungJun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org
+Subject: Re: [PATCH 2/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <aaaKVKltqhdoWreP@MiWiFi-R3L-srv>
+References: <20260302104016.163542-1-bhe@redhat.com>
+ <20260302104016.163542-3-bhe@redhat.com>
+ <aaWaM57jui+iuEj1@yjaykim-PowerEdge-T330>
+ <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH2PR10MB4199:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2539a953-ffff-4fdd-c602-08de78f43204
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	ruvwLk/HK+1GCPk33BsNxWtMTvuvLNzpmzqAx/faIq6GbMrca5czcUJZ1KNRKUg8C218gHZdNaGldOKR2ULJGhMG4tyW0yLqQE3va+nTnGZ8we4LR9xaLnuwgNWfXW2zLOCyo8+1T4ep0TVD8ydLgglG+eZ8NIltv1TRZi39uEsYWQtdDJR3aNWDOgi1xk09kUrb68RhwmNFnr+QAbSL4gVs35NT2nKP5rfk74EN6yGIuNsRN1OwLmXQY6mHuNhgwiLUorTQPK9SJQ2ouj4AfSV3djK1hHio+MMu3Ae5HAORKREVb3kypXMEzcFoBnHtpArrpYzHQzO6MiZ5FttXO/jWxg7NSugNq37fhe34y2aX+m/yBcmj6ROxM3Pd5elZt3VRwY46VqhM3QHUvtAIkqvQLA+RZRE52xRfSNQJnlpLNgJJt0QF3DbFEo/s6i6Erk0SH3DSv10KW6uEO3TxblmeqBjkQL3eHs/jTZ5GB4Jxbdqml89BdqDCEQBZU3okqgffuq9sBeQXOXd8vljQQCH8AGrEIwT2JR4SWM9yK71TKK53Q2WdTuj0yNzmgEE5b4CVWxkuQOX+Y28I+CaFzZM15T+Exd5XcaTo675iwP2bue8PNkNQgppOqYtjyzX2r0RQtre/9Vr9IojYwcDN+sPyC6ltpJdftd+X1mCXmHjXhGfn7Ly6IL1oJZJKXyce/HNaFNdg3ToJo81nWOtXhH1vjGrQ4JaJj1pSA5o9cxY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IHozwMB+YOddM3TNx0dRTmfJz3+odbzYL4gSCZEt2RmBMIUmQHL83G6oF6BV?=
- =?us-ascii?Q?KqTuEhBgP+jWj+69GSPtMiHQL1C3UUEDeEcr/mLnv2UDHBTLpEhfkFrSo8c3?=
- =?us-ascii?Q?0lgmVVoJPnVB83xvaq5wTecGZPu3fCdSCtGTWP1QYYpdxv/96O4r123HnBYf?=
- =?us-ascii?Q?D9+3Kjdaepc+LYclK6y+iyaDcnIdRpPPDxJjnooS6Ob91H7iH2+8CczKz9P2?=
- =?us-ascii?Q?Kr7Jyv5zRCief/7ioYZLT5NIkblfjvVFZUwRsic3jYV4CfxK5iTj99dGBBgi?=
- =?us-ascii?Q?nNtgLwdwEtgTXTyeinppFE6wHNdctUlGsMdslHoXfJHDVVqDyaSWS30rWOkT?=
- =?us-ascii?Q?lGpVn7QkT1A98cNWMcG0yojrsmV5xJqfxnOOLXhA8Kc2CuTx4sv8W2mFIr9o?=
- =?us-ascii?Q?g76QaVxyQJF8kBRfCxaRTYNUhO3DbRRBJnedYtoqGNn/UZpA1U/TaeihsANe?=
- =?us-ascii?Q?XHWVKeNVlRD5F/r9DcGbGNdi9mTOK25kvV6KcedaJEx2G63hn42I6mzwuxL0?=
- =?us-ascii?Q?uSLBPBtVzhxvUkORP85GFm4kMh3wmh8geq0LBzoMU7+7tBHzzCWUvGsKSPOh?=
- =?us-ascii?Q?EJa2dAHH3gW1fI81CsrnX8UbK1+OSQYy9weo9a2YBhz0Ooru/2DiHXB8vqk3?=
- =?us-ascii?Q?0wVehpFCGV7q6/6z0ahiY2oiUTSSDD4l6fqNQpLCUZnPjbzy0aaBlGIj5ZeZ?=
- =?us-ascii?Q?TQYcvqB2ZDuXEOrHSSyVh62ppWgFUXw4D1UUCflBGDnbOAVAkIU0aSyGRA30?=
- =?us-ascii?Q?/6op7GxkaJZg/roxkMyMKUh4FAOqE4Tqi8XQZ4SCBSRrz3z09RMe/9OdzHEW?=
- =?us-ascii?Q?kr/ozh2OkDTF4n2GM9dhOEHSu5BhsVzlNn/GqMp4/MsSm7Lb5FvXVEy+1lQG?=
- =?us-ascii?Q?IFxqBWFwEwzS6g6ds1QOxcbPjCS5ND5JCxSICvkveZxxBFbxnmtEpEABA14F?=
- =?us-ascii?Q?Okp+pl0lRwYm7eg2VFv9wSKMHsH3Wu0IktLCp5Zi5MOsC0SqewjuEDLcwW31?=
- =?us-ascii?Q?Drz10aUkmGRzZ9ygNXQKNISGYgYvXvC+/vW/5HBr/9eoW4vI5NsmmH4hhG/O?=
- =?us-ascii?Q?LHAZcq2M71FgzOcbaql/Zxn7U89Y2/r7u3WTSmgMrhWPlaiTv0IGsk4aYYrw?=
- =?us-ascii?Q?+bbLdr5lbJcBtlmQfxWa+4hTFmydUXy6AJbbMGT3KXDglZYA1KOlIPoMSHIu?=
- =?us-ascii?Q?hSHXZ57HPrq/l1DAz/N6NLxt1Q388yreMIEwZjR5YCXMz0QmRBlOthFE+0tU?=
- =?us-ascii?Q?5LPsbbK3anj25k/XGMUZA41yVO+m3U1zPsLVeJfMaoL7P+oHofdTOZsye5ta?=
- =?us-ascii?Q?zdCdezD4xbohy0C/7uYqbkj7gMEcI8dZ9WQNDMSgYCoKu0cN38OY9c/N5N6s?=
- =?us-ascii?Q?QkeVcnP+1QUnSXmHyr6MEOLqZwJ6wwwfNHCtFw4XbE6XLici0KYVnqfFfjOz?=
- =?us-ascii?Q?lI8+i4v2taxDpXuGtOT2egmN0lBmdZQjtIvM+8rW565jo4NsJHwbf7+GrwVR?=
- =?us-ascii?Q?zdDSPjY8ycwOkQ6Qf8dfKDc/tGO6X4uWj6rjN0VyGc5WwLt45btmiiLpyvyt?=
- =?us-ascii?Q?Tnpo7XraGi10s+II5j26KFnPZnOkieImiuR9EN3mYsPUepgqYDdvxCGv2Smd?=
- =?us-ascii?Q?LCOsBDfN7Qvkw++YnLLvj7bDQLBMj2KgAqgvgUKKcn/tybygbEsa4QIQZFsL?=
- =?us-ascii?Q?QijGXlcPXZz70a6Vu5nAq5iNV/6WclzouYAunHDpmLLyFJl2Hm7ip30mXyPq?=
- =?us-ascii?Q?ltXEAps1GuM7JUrYbvXmcvhWCnGU4RQ=3D?=
-X-Exchange-RoutingPolicyChecked:
-	IjjHAsIk5/0u07+9qXHEbE602CjxklIGc/33p+0I5Z2vC5RxynqDCGSq97JJdSrGe0EmBiNNK5mjoXBS89T/Jkx7/OGTcgHlAwP4lJLQRkJgpqRmyFJB9CK+b+iyflC936ZvDX+3xZXjj1ZQF325pLu8HoSvw/idt9dJfxecPc5pv0aroR/6gyoTNdtDgjVMBLdpj07XObrt6L0mBbFUEGlg+ijlDNCsAha3wW512G0zNRbs6xAQNY0PBy1pEaOy0WT8iIIxaxjAv14/freg2MihsrvWpVi+z2B7d4PFDgzBTD7ORC4e/fkRGVKLiujiB0DQPB+QdBH+P/xRNYAXsw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Ajw9n51CKb06ksptyyuix1na4TPpMzyDTGpPoyc2LTQDNvf1lD6xHxMnvWR2P78ZGns4sPDCTBBxk4HkhUYKtKGg3BDWG8pydMLJND+DV6ZNN/HlJ+CKlU6yHk11+KMk33Zj/5uafY4DQvavTQZFd85qFCvoNFoCAFwqEb67lw5Nd2Y+yju4ohEqoBZuUXkVbLxcRDNgDI1y2XOrp3i3Ndm/jA+KS+eDBpgAxpYDLz6Jl0GFRkAAoAJva/ALr/Fzpa9eLoCVM3D0g86+jgJaqjQhiCWNb7fW5OpyuvJ3QKWoM+h7bYx+r0geZx8Om1uNZlTumZCPPum6LHF6XBnvyxJybHOJ9w7AX0OSgWUIbXZXVRWybr/7euLx1UY0Aij6XGjaOqdERr5hBQh80oHv2AYgutL9iF0OWPtHsujm5SO4D46t4cKa62bb/SH9pP0ECONKf1O6PqU9ti7Q3tiUZh+i9fcA532N8m2A5hR82rPf8ULHBNGC1wYpaTqv+S5NQzp6FhCUsGMASsG3u2zU6fx3P8v5dOO+cDXe8knAAP1nRnq3ec8KFe/WpNFl8/t25u4t+OWOf3+CzOObD3Ufl62B/8bKY91005Gcg7jqXSI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2539a953-ffff-4fdd-c602-08de78f43204
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 07:12:14.1249
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EOW8Ns2Am8skm6JdQA6cqwDAl0DGcFw8xfgn/lfmeGpOeRKiTfP1pWHKqWQtXxdgAvU/VPviC8Ju9qb2BXtHIfAANAnoApVkRAiHCeV4E7k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4199
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 mlxscore=0 adultscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2602130000 definitions=main-2603030049
-X-Authority-Analysis: v=2.4 cv=QOBlhwLL c=1 sm=1 tr=0 ts=69a689d2 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
- a=4hWz-t2M-U9jOkj_3IwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: GSuwUTYr7rO2HJBjap5Cpv5dai4EQvJC
-X-Proofpoint-GUID: GSuwUTYr7rO2HJBjap5Cpv5dai4EQvJC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA0OSBTYWx0ZWRfXy7YbnSaHDc5e
- Ez0mX8/a4RXtT0Aqq0tVNOkk/cL1P1NIz7VIA4MrAlAl72zenZzi0ElKATAWGvP8NqRjiz0fZys
- wj1rjvPSJRhflc1F9x9ziSnShHt+CsIlbhz6XQQGmHnd6BIlwUiZi3dqBAiOnvLM89A8s63o3yj
- F/DSbWhQEciuRCjXi2BuNkSkveg8SaykeTNviYSvQXdIT71KkOSB/mcp5nfX2iwzzF3o4POsETQ
- t/hLAQQF7lPh4dKeKBnsi2cHbPBdYQdF9M+2IjfLRwRTa2Pzq53N7kxW/8T4geNBRAghI07cURu
- SD9YAh6a7Xr1ajEaRkjBcbTkHAnJ/AUqRN87SOARAPwsi2eUDVt5aWINnsC4aG79Vj3iyEStKFP
- 5F3oMLCxZMRaiDIGYTXARtmPBpTq4k+emUclE1i7e4M8onoZdNTcN2MkJq3VyjEstRgYF9VK2DC
- VVga/GLR96/q7ZikTeA==
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8FF80A0007
-X-Stat-Signature: x5zgyj5a759z5tg1dmaooxaa8bmggrox
+In-Reply-To: <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: hjyaYaQXNiByJ49J_BLCgKxf-CS8-aCWJndbmAIcOL0_1772522087
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1772521953-436684
-X-HE-Meta: U2FsdGVkX1/0yvsMaWT0gCGJ82TAOXyMcKlI5m1oouxvYBUoTp2+YYdPxoZ6hXZPo04F6gcgy1Ut/fHHvN5h7N+zxY7AiDd/HUElldJ+k9hr9FS9OJps5qTn2ynODbNQoHqHWYWVaUr2vI/gpVEjfFl80OdUL2+qvwH2VTdT9NF0s6xCMoOBeLyQgy3ythCyxpOTFlIGHmrqXEli5Y8aIFWNj3myH6eqD/aZ26uPSLzul0/ltPXPAHGLEfAPN6KS0shGzH5T1m3CpT09skXGehyzcyvV1ppAPHRJEOWuF+IZsc31RWrMPVhgBobrQK84SKfOKrryYxEp2hwS2W7c16PIDMpZ/MTZp9m5YgxTKUCUasZ3axGqbSZji9JV2POQNvtdsZetn5HbQmhtvNiY52zzMEt1dxdy2A0fJVOjtDkoKIUqH+6faFyWVbHS1g1wpZKCPY39mFtc6OySH8hZDUSdVMtrfByAlg7W1ze9x8lWJeb/yZ2SvLyNQpUlSYCZUH+obzEpLuuDP/j5TSn6ExrLS6nwXUBrZuwFd0ceJ1FXRY9mZe3ib7Y8bgvZKT2ZrOQnqku+/wjACXkRW4DV7IHn+IHvLdgbeFenWYG7bKU+vxaAqKkt7f8evCNDofpU8F+yTD5yWInNFmfSaMHyWfRKaN9KHdWHGibgO0WduFNBhMVOecWGNA8BKhUzFPgy5IEEZYxdF9bZy8b1iQ6Un07v+UfLv1BYlytUG7ZL/c5DFxldQ49bVSNhbaBoCmWZ3pGTnucObIplHbz52vehoZXJwRvCDlaWq+cmTTIeVF3SJQDhAXWc0kxVPxogMlN00ysa5y24j2j08+8SKDuA/OGzzVKVxHpyE8XkCwgnw4kAjkTkx1hGfLoQ/dPmDEn/+LCQrSQAu6YegfAkR1ue34jZ3nI84GlcHKu4q0RPtjfLH4JN4V3dv5tpN1WwZWAdctucdZakPHNsN6NhEbu
- N0FeFVon
- dHg8JXOx5NE0dQUXUoxAAji7Kkqvef6OwMb7lhcrMH4+A4y7OxfefYmUg6w39AvujCrldiRPUy0KqKWeC248H8kRrgSXlLphmBAwe/faPht6GZ4xElc++kIqlmTikH4g/qFqEbk+hue+oOEJctwA8jjkbIxX67b+J8y/UExr08C4Hzg+u4HEF1KESvu4L5O9fOhaTQgNfHI2UfMhFbaqo/t8VuEd7GAtWaIMn/0Szxatx97igGUYLBa8S4HDgtqMTQr0ayuTy+WhQZt/KKJv6Qt8ZAbsYfUzF63Hf/9K0xTVaJ0dPS/DD0B6vUyFxAU2xOnLMiE2B8BhLAVPUux06GXVc1PDL55cqpg/vIRZV5fTsUYg27N5xBOhPXt/7c4POc6uZlFgb7Wx7SjDZOS8/e0Zyztfx1xhw9dJjuyPT1F64UojBTd0w6Tur6cLP5it1E7v0jakK+COIoenrcUhu24QFD8zZxVQoNdVpOxBLiZUXDebEnrkBZ2ve/v859ZbANqdvKpxMxnLnTk3/Osd9RRzJI9jya0fpUaOizsw9X1C+0EovZ4FY+/bpdOTk7eiq6zpg5iKu3kGAWEb14sT8kgs7XwPuTvczDjw4ExB5K8mij7VoHg9+kSBGyl0T3BiQ8QgYQ9fG8enDiA+cGZ5kjgFKZg2+q3Oxarl/E0FZe9y6SVMxpBLOUMCTEosYe/EXbDNn
+X-Stat-Signature: wjeiaegjipijzbjzij3jnfjiayc5onm3
+X-Rspamd-Queue-Id: EC9B440010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772522092-860860
+X-HE-Meta: U2FsdGVkX1+CPPPa4odfn0VWM1AsKWnppAtMps1vKRltvlGkE23TmtKrXvkIkKvM76uJlge+NhV9Rz3mJs1K+G3ZDxwrrfcTvXXek5BqgLF1TiS30b+iI387nh37KwtwigjtGHe2stwfrDCC780OhKjOTjorRCCyjbZB4WoRb0+lABUMo0GmNxgIODZKWrCiHqE91GIthgRFKBy8ZUc6ZQXzP4XyQAZmRejYsNNaSUzICn2kuCKw7qUaROPp/EsjY+3Q5KeIUJXmsp2kUh5cFhr7kc86WHkqPLvYCyoXJOuHVZ5gAasscXzrozOJwE+tGSHi4u54T0Kbrdc+/Vg94BkWZuoc+kyUJMtZrObANKFPSHbWikU7M38pO0Y1t5+mnbJiwxpFtS0JYddfoZriNMV8Fb0G0ywwOkT6HrFJtC00ce84qJqnkSVgwPDDnTwwolmr1M0ytFR3wrApbwOSiSOwksA17E+eoIvoN54QTRs/zGugmOS4RWwAPjZmtzlkkFnQVElp2ihBHyppBlmrtIR8DcpATJnwBfOVQigmJ5brpIPTK97iksJPXtU4PLli3ykaFxnJpvvXkze2eqqb1DQw0MF/dgDuSYVums3J1DP9EUOI4qS/Yr/IY7ELm+M5O4YU4p8bqrmiguQy+rHsJrXNVDKU0GxsYO5bb74097y5czGzBeWwf3gqz1c4YHe3nKiGmfmT3Z23DNG0FymO9+sATPF/V0Wi9eVF5eFUkgyt1/0z8fs47LZEcySlh0o13wdqoMCMYOcQqU4NjOJmgbKoeRlGqM08hZdOVFguQKha3MyGxWhkmaSG6K2ICSRf9LJ7Cm4peTU5mS+JoNzfXvwapc3cs3UARUhaaie4nyLYL6qZ23IoGvMEPxIHigBFoD0Y9D/VVe3nA5+fBW+ge3jqZbSJ9EsnMk/0xYmA9Uj4nEwPlTQLHMfDgewQLBperJkiEzGTmcxOsC7Sptr
+ uFNFb2vD
+ TXTXu8xMxll/VjZJQPOlnqJa7evtjEXK+Xu51LhZlxbYe9nABR+Jf5MTAXAGRH64iYWsELmACl2bpD60GB1LOhrlyKllkGRdKh4IiweNlr9VUAbKcdqIvMvFmot99tiWxMxL8U0c7q4d5UtTr6Ity9Y4GZLcj4NvdZu++JiuQFK9wBH8kwboDzlHwkAZU92iIpxL4toVlzJWFlVvDWq/utKxM1icAJRJ0ePUm2QBES5jXJ9/ncHpFFa80uzJNe+G8JgysyK6G03POf4YVeiq9V191YDtDg2SaUZjxNjxLDkppWNsDa/icEF+ItIxAkz2TI98eq3M/TZpYBwQbTC6UXk+BMWo2pTN097n2tHGP/xqWknY7APmZA3G4rlJaMjmYe9zytyEWQwVmk0LceULYyuJ4KKQ3BzK3FTsSqtxLmaaA+jS4uYflmqF8RQMRx5Vu9akGmiCcVIgttpwqF32IP2YGB76vSbYXx4Ce0CiuRrHpuog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -224,64 +111,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 08:05:37PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/2/26 18:43, Lorenzo Stoakes wrote:
-> > On Mon, Mar 02, 2026 at 06:35:46PM +0100, David Hildenbrand (Arm) wrote:
-> >>
-> >>>
-> >>> I prefer my version at [0].
-> >>>
-> >>> Cleaner to actually pull out the zero_folio into a local variable, and also we
-> >>> should mark it special to be consistent with other codepaths.
-> >>
-> >> I argued in v1 that we should handle it similar to an ordinary move
-> >> during mremap()->move_huge_pmd() and not split it over two patches.
-> >>
-> >> It's still split over two patches, which doesn't make sense.
+On 03/02/26 at 11:35am, Chris Li wrote:
+> On Mon, Mar 2, 2026 at 6:10 AM YoungJun Park <youngjun.park@lge.com> wrote:
 > >
-> > Yes, let's not do that, I made the same comment.
+> > On Mon, Mar 02, 2026 at 06:40:15PM +0800, Baoquan He wrote:
+> > > This simplifies codes and makes logic clearer. And also makes later any
+> > > new swap device type being added easier to handle.
+> > >
+> > > Currently there are three types of swap devices: bdev_fs, bdev_sync
+> > > and bdev_async, and only operations read_folio and write_folio are
+> > > included. In the future, there could be more swap device types added
+> > > and more appropriate opeations adapted into swap_ops.
+> > >
+> > > Signed-off-by: Baoquan He <bhe@redhat.com>
+> > > ---
+> > >  include/linux/swap.h |  13 ++++++
+> > >  mm/swap.h            |   1 -
+> > >  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
+> > >  mm/swapfile.c        |   2 +
+> > >  mm/zswap.c           |   3 +-
+> > >  5 files changed, 76 insertions(+), 45 deletions(-)
+> > >
+> > > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > > index 0effe3cc50f5..448e5e66ec5c 100644
+> > > --- a/include/linux/swap.h
+> > > +++ b/include/linux/swap.h
+> > > @@ -19,6 +19,7 @@
+> > >  struct notifier_block;
+> > >
+> > >  struct bio;
+> > > +struct swap_iocb;
+> > >
+> > >  struct pagevec;
+> > >
+> > > @@ -222,6 +223,17 @@ enum {
+> > >  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
+> > >  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
+> > >
+> > > +struct swap_ops {
+> > > +     void (*read_folio)(struct swap_info_struct *sis,
+> > > +                        struct folio *folio,
+> > > +                        struct swap_iocb **plug);
+> > > +     void (*write_folio)(struct swap_info_struct *sis,
+> > > +                         struct folio *folio,
+> > > +                         struct swap_iocb **plug);
+> > > +};
 > >
-> >>
-> >> https://lore.kernel.org/linux-mm/0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org/
-> >>
-> >> I don't think there is no need to get the folio involved at all if we
-> >> know that we have a well-prepared PMD (zero folio, makred as special).
-> >>
-> >> The less code we have that has to deal with setting PMDs special (and
-> >> possible messing it up), the better.
+> > I think swap_iocb is only required for fs-swap
+> > (swap_folio_read_fs/swap_folio_write_fs).
 > >
-> > Yup I agree, I replied accordingly. That's a more elegant thing than duplicating
-> > huge zero installation code.
-> >
-> > I had just assumed that there was _some reason_ why we wouldn't want to do that
-> > given the original patch from Suren didn't just do that, and for the sakes of a
-> > backport no need to think too deep on it.
-> >
-> > But you're right I don't think there's any reason we need to diverge from what
-> > mremap() would do.
-> >
-> > That does have:
-> >
-> > 		if (vma_has_uffd_without_event_remap(vma))
-> > 			pmd = clear_uffd_wp_pmd(pmd);
-> >
-> > Though rather than unconditonally invoking clear_uffd_wp_pmd().
-> >
-> > Is that correct?
->
-> My conclusion was that UFFDIO_MOVE will never move uffd-wp information
-> (just like we currently don't do for any moved PTEs).
->
-> mremap() might sometimes. But it also effectively moves all (most) uffd
-> VMA properties, so it has slightly different semantics.
+> > If the goal is to support fs-swap through swap_ops, it might be worth
+> 
+> Consider this series as a starting point for discussion. Nothing is
+> set to stone.
+> 
+> > considering a more complete integration, including activate/deactivate
+> > and swap_rw from aops, rather than only adding read/write hooks.
+> 
+> Can be add as follow up patches to introduce active/deactive and
+> swap_rw from aops. In fact I want to see it as incremental patches
+> rather than add every possible swap_ops in one go. It is likely easier
+> to review as well.
 
-Ack thanks!
+Ack. And thanks for bring this up to Chris, I should add Chris's
+Suggested-by.
 
->
-> --
-> Cheers,
->
-> David
+> >
+> > So.. we could keep SWP_FS_OPS as-is for now and just split
+> > sync/async paths, and revisit a cleaner fs-swap integration later.
+> > (I mean removing fs ops, and call swap_read/write_folio_fs on sync/async ops.)
+> 
+> You can propose incremental patches to add your additional swap ops
+> and into the series as the later iteration.
+> The sync/async split is just a MVP to introduce the first step of the swap_ops.
 
-Cheers, Lorenzo
+Agree.
+
 
