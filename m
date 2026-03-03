@@ -4,142 +4,262 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 769CFEDA68D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 16:09:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B04BEDA698
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 16:12:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68066B0096; Tue,  3 Mar 2026 11:09:45 -0500 (EST)
+	id 83A8D6B0093; Tue,  3 Mar 2026 11:12:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3FD96B009B; Tue,  3 Mar 2026 11:09:45 -0500 (EST)
+	id 8123A6B00AE; Tue,  3 Mar 2026 11:12:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4C8A6B009F; Tue,  3 Mar 2026 11:09:45 -0500 (EST)
+	id 6C9366B00AF; Tue,  3 Mar 2026 11:12:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9367B6B0096
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:09:45 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C2E3C1097
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:09:45 +0000 (UTC)
-X-FDA: 84505237530.10.EF9B106
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 562206B0093
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:12:32 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E14C357B93
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:12:31 +0000 (UTC)
+X-FDA: 84505244502.06.2DCA9C4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 600D71A0012
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:09:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JJ0/DWLU";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id E7A5DC0009
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 16:12:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DAmilg92;
+	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772554183;
+	s=arc-20220608; t=1772554350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rmZ9hb/OI5m+YRFZ+phh4M809avB9EyD90j7d37zUuQ=;
-	b=pUu/F897TZqV6MKBshOjR9Z/MyyqH88M8vWX/0+yIUtt5Hd/XrnbgPu4dkAVwXma9AE5KL
-	HSs0zHEWhq8MWfU1v7TB3L7z2p4WBoqLM0xLExa4kMhr2cUw6TWuNQzIUhtihjq+QW6hgW
-	6RVIOAT7/mE+/TCkmsaVGYShnFKO5mc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772554183; a=rsa-sha256;
-	cv=none;
-	b=YA76z0qrOFM+MdMPGzdaVY1JO94INRMQZ1Co8ihXXShVJ2/SihP+3m+LGTVhzDh7aQFwGf
-	L0q5CU3RGTAr+pVI5UnKnbUzCnXq4/3X5LhQUtYMLJ4QDiIDmA8h2qjyVhPxzla3qdNzEx
-	zj/a6rSYpBmnge3nSH+DazWeOWTwP24=
+	bh=lJd9+th8f1Lqv15eEDK01l3sYU9guhQCrXIbv/gIiSo=;
+	b=qYpLm8WWeVnX7kiIVCRfay0TDGZ8R7wLTW/2Lsi/b17seKVjVDNIGnHW0+kO/rHSCtUaEc
+	O0+PalRCw1kTXIcqe1ZayIaOdQHCc6cnDykisTY1Bm6Nbu1UIOMU4NYRj+0QUZFK0HrULU
+	UvhTu5czHNqfCmXU7s7esKOALChzcks=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JJ0/DWLU";
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DAmilg92;
+	spf=pass (imf10.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772554350; a=rsa-sha256;
+	cv=none;
+	b=LfVIf84wwcMEiKaqarsheyB4st9Me8wCeHUwbLE/K1v4U/Yc26eF+aAIiPUt9dEfko8oc/
+	0o23qDkShagXbg1yZl5fH5P59KGQTRHCJPglrlq6Cg3Hymsty0siwx+KAR4Z8mCh/Y3EOu
+	gxao7ceQNeXD19HEL5LlJHlfvNMJp+Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 368264424F;
-	Tue,  3 Mar 2026 16:09:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79DDC116C6;
-	Tue,  3 Mar 2026 16:09:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B3C5643E45;
+	Tue,  3 Mar 2026 16:12:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C998C2BCAF;
+	Tue,  3 Mar 2026 16:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772554182;
-	bh=K1bc7mmdzM74OPN6+jxMyb/QOLgNNXn12JcN0jtJBaE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JJ0/DWLUwAEuOos3ZH/hdzAkaQwWjOkGNubivUSyO5qjtT3774n2rGmRXY+WHx0rU
-	 35jV1kH1ZhOMCajEhQXKlg4acmSsY/2z6iZlwY50/zsz7R3OhQG866taVG1vfLzGbe
-	 Exl6o9y6n0Aujr4B1X3GdBk6LQ0smpZh78w5zGbf/STTG2JuoaTa7WIZhkXOL3OZOT
-	 B1hAV5DsVSPohf5gGmiVUFfhMkpL4DnZlIAv/ONP6VizN5b7U6rf+MoC5XeSsU9Sws
-	 45Dt3q1gnwVv+VBA8bihoIX45UO8UJeTIrGbfj4tJB7vgEz94fUszlM/OivFehm2qe
-	 by3+easJVMVpg==
-Message-ID: <5d5c8927-95ad-47c4-ae8c-9b56f5534e27@kernel.org>
-Date: Tue, 3 Mar 2026 17:09:35 +0100
+	s=k20201202; t=1772554348;
+	bh=DHwb1w4rbyjffvv/2dbDWAHJ7e/mef+KxqtMj51rARA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=DAmilg92EMM5p+oBAiJod0pyfJNnnEgeo/FHI7Mt2tLqRb5btdUmLaBqveM9jVjLi
+	 Rs1bZ9VXqnLLBPtsKjZiGU65p9YwK2O90hnrBBB5IbBGxbV5fsqsFCL5BPjNoFktRM
+	 9pbG4QDyP022c1s8Z36onUYV0x0hfc5XlTzhqulI2XOKQGvhykIef5J78h7gEF8HAr
+	 vrL1Kdx04gNh7dqXDuFHHcf6i6Nln3Le9QC/xXvIfu2MMc08R/9VQf0UWHcDryW4zP
+	 wt4aUnI0TUpn7Jgy6RntsLOuNDb3tu0L/3jw/oOf46o04Iv9Xc1ksw8iqkEfgP4p7Y
+	 l/HlE10Zw24ow==
+Message-ID: <add39953250a4a1b2fe2b09deb3373c2a7482b88.camel@kernel.org>
+Subject: Re: [PATCH v2 003/110] audit: widen ino fields to u64
+From: Jeff Layton <jlayton@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Steven Rostedt	
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Dan Williams
+ <dan.j.williams@intel.com>, Matthew Wilcox	 <willy@infradead.org>, Eric
+ Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o"	 <tytso@mit.edu>, Muchun
+ Song <muchun.song@linux.dev>, Oscar Salvador	 <osalvador@suse.de>, David
+ Hildenbrand <david@kernel.org>, David Howells	 <dhowells@redhat.com>, Paulo
+ Alcantara <pc@manguebit.org>, Andreas Dilger	 <adilger.kernel@dilger.ca>,
+ Jan Kara <jack@suse.com>, Jaegeuk Kim	 <jaegeuk@kernel.org>, Chao Yu
+ <chao@kernel.org>, Trond Myklebust	 <trondmy@kernel.org>, Anna Schumaker
+ <anna@kernel.org>, Chuck Lever	 <chuck.lever@oracle.com>, NeilBrown
+ <neil@brown.name>, Olga Kornievskaia	 <okorniev@redhat.com>, Dai Ngo
+ <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,  Steve French
+ <sfrench@samba.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam
+ Prasad N	 <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>,
+ Alexander Aring	 <alex.aring@gmail.com>, Ryusuke Konishi
+ <konishi.ryusuke@gmail.com>,  Viacheslav Dubeyko	 <slava@dubeyko.com>, Eric
+ Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov	 <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
+ <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, Marc Dionne	
+ <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, Luis de
+ Bethencourt	 <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
+ "Tigran A. Aivazian"	 <aivazian.tigran@gmail.com>, Ilya Dryomov
+ <idryomov@gmail.com>, Alex Markuze	 <amarkuze@redhat.com>, Jan Harkes
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,  Nicolas Pitre <nico@fluxnic.net>,
+ Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
+ Christoph Hellwig	 <hch@infradead.org>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>,  Yangtao Li <frank.li@vivo.com>, Mikulas
+ Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse	
+ <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, Dave Kleikamp	
+ <shaggy@kernel.org>, Konstantin Komarov	
+ <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ Mike Marshall	 <hubcap@omnibond.com>, Martin Brandenburg
+ <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Anders Larsen
+ <al@alarsen.net>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Naohiro Aota	 <naohiro.aota@wdc.com>, Johannes
+ Thumshirn <jth@kernel.org>, John Johansen	 <john.johansen@canonical.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu	
+ <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+ Stephen Smalley	 <stephen.smalley.work@gmail.com>, Ondrej Mosnacek
+ <omosnace@redhat.com>,  Casey Schaufler <casey@schaufler-ca.com>, Alex
+ Deucher <alexander.deucher@amd.com>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
+	 <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet	
+ <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni	
+ <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, "David S.
+ Miller"	 <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon
+ Horman	 <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra
+	 <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho
+ de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Mark Rutland
+	 <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>,  Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, "Darrick J. Wong"
+ <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>,  Eric Paris
+ <eparis@redhat.com>, Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann
+ <marcel@holtmann.org>,  Johan Hedberg <johan.hedberg@gmail.com>, Luiz
+ Augusto von Dentz <luiz.dentz@gmail.com>, Oliver Hartkopp	
+ <socketcan@hartkopp.net>, Marc Kleine-Budde <mkl@pengutronix.de>, David
+ Ahern	 <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>, Steffen
+ Klassert	 <steffen.klassert@secunet.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>,  Remi Denis-Courmont	 <courmisch@gmail.com>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,  Xin Long
+ <lucien.xin@gmail.com>, Magnus Karlsson <magnus.karlsson@intel.com>, Maciej
+ Fijalkowski	 <maciej.fijalkowski@intel.com>, Stanislav Fomichev
+ <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jesper Dangaard Brouer	 <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, 	linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
+ nvdimm@lists.linux.dev, 	fsverity@lists.linux.dev, linux-mm@kvack.org,
+ netfs@lists.linux.dev, 	linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, 	linux-nfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, 	samba-technical@lists.samba.org,
+ linux-nilfs@vger.kernel.org, 	v9fs@lists.linux.dev,
+ linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+ ecryptfs@vger.kernel.org, 	linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, 	ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
+	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
+ linux-x25@vger.kernel.org, 	audit@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, 	linux-can@vger.kernel.org,
+ linux-sctp@vger.kernel.org, bpf@vger.kernel.org
+Date: Tue, 03 Mar 2026 11:12:12 -0500
+In-Reply-To: <CAHC9VhTyhnG7-ojnTnVdh_m1x=rKxw9YEH9g7Xp9m4F78aA5cA@mail.gmail.com>
+References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
+	 <20260302-iino-u64-v2-3-e5388800dae0@kernel.org>
+	 <CAHC9VhRnmBuXEKkUPQhJ_LDzcksjoAJL-ne6mFoJdR1hnDdzsg@mail.gmail.com>
+	 <7a0165fe39e82a1effd8cce5c2c4e82d6a42cb3a.camel@kernel.org>
+	 <CAHC9VhTyhnG7-ojnTnVdh_m1x=rKxw9YEH9g7Xp9m4F78aA5cA@mail.gmail.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/page_alloc: effectively disable pcp with
- CONFIG_SMP=n
-To: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>,
- Matthew Wilcox <willy@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-References: <20260227-b4-pcp-locking-cleanup-v1-0-f7e22e603447@kernel.org>
- <20260227-b4-pcp-locking-cleanup-v1-1-f7e22e603447@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260227-b4-pcp-locking-cleanup-v1-1-f7e22e603447@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 600D71A0012
-X-Stat-Signature: f93nfx3kcpz5efgo1t7ejs9pu4fzenzf
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E7A5DC0009
+X-Stat-Signature: r7q3j56w7a1qig995qzqhorfn8cssgqt
 X-Rspam-User: 
-X-HE-Tag: 1772554183-402936
-X-HE-Meta: U2FsdGVkX19tFXZZuieYeZuPnBdZ1V5XRXLIiB1bEFvlz+Henu3s51Z4O8oYpQHGQqIw1Iqt+zmDZcYFNPTM6DCYq/AUU7tddPj1O0Bdjt4LbDAqdm2/SFMIwj9yM8HwpPavz2rdUgosA6SV3L07mDmO71+nSt3rtINJpHpmSmuAiOtPTE6dTjWrHr0pmtOgFhZsZWbhSM9LgYt9Tu6uQ6qWLvvHucXTDgIrMKV4RgubwTuIFjgcTM/jvaYtztJvTjlj10TavAUHfARc5HiL8baCCKcKy2hQ1L9mY15H9Z8ErJCh6R7qzBjVTWuEFJ5LlXnn7WORhu3F0pWaF3ConCOs0NYQ7L4npY4Ue8a7xViPZPRzAQUWVpHfgAxzOLXuj7ATmF5i878JvneCiq7eq8Im/2lJKTGO1jazWyq06yUu/3oX5sDPmfa8fOHrW0+zFtEI1RMsT8XARz2GssUuQpST+vnTIQNOsDOYUSd+tArEYZvnnvt3ezxAEDb7DNbm8853+1Nz7SWXoTp7VSiYdUEvqTBmE0MqJiv6rgsb+6eibnRqmW6+rUwL/KEC6MGj15xeea/YI19I1+rneO3HBtpTUfv6uow32Vhifi9cwLfNFUH16BFwYnP1TYIJzIPTyRUHJvtsDPCJPjf9N/HcExX25YPaTO/hmzbwtnhBabp4vTtUa7ht7w5T21q4rJxNrEBRryR0ScObDEyq7Qtnfo9DVHJkX5gIcO8vwrosPv3KKsPaAqEXUqgZcnWAdjsS1s0Doc7UoxuQvkzcXNOYZ5gsrvyTZzrm2u5GZ6MtEkxghalDF6uKLd4FWfgJtxckw2xt2U5ADD4UAouL+wo/jSMEhyF9FRN0eUvCLlnHvky2iogA7/lwSzgdIWaGYwjEdoX4Ymqf+EUbm55UUaEs0jGrjV9jCtQHyxehrtt6S4/FpybwBUst8Xrnej2ha8qG5c41qi+BFpu82L9k81u
- PaZDWNlE
- vbf7ExmzPu6qD0NcMcA/nypD21QkS56ey7YVBL0EucC2kAsG7P73JEiQ/sarEL+YMgzBSZ4GN1TtQ+gGiosqK3AsU/ixqAEV6sUS5MhB8PtaG1liQwtrUTbSAtUh96nlv06aV4AuEmwY89RCS90doTrEG7dooeoDLGbM7ZS0amKHSieEPq32w2YmCVr5Zj6RRc9lcS8l2y5wPaSv6TvAVj0NOAxd7Jz6Cs2B/Si40LjEjZ/8L330TC66EijrmlShL6a76oXvn252Qqi3+O1EBn0wfCl8O9l9Ac75dZe8kX1WloSRfNPy95lwUXg==
+X-HE-Tag: 1772554349-365635
+X-HE-Meta: U2FsdGVkX18tvIEqUgVvoYF2bq16p2mDyMHeNGQaO+9eULn2sclKaqvlE98AJS5Rb/KUnJu/83/PpgpYMB1hO7Nt5A6VKkln1iR94g/jGtm6pBrJhqmby0ORLrDdQf75ABUO76yW6RWtgHfUw6a2zAw6fqWqIQKPIe4YtywjH19jIm4BOmp2I80TarVR/ouc4A3kCOoCc9hHT54Q2Yl8bN8W+Nz13r/N4IHrzWlcSYsqfTBwL05UCaMhO2HpptKs1+HpazbHDOnAhO0slq70m/bYtCnQL3aL63SVa0dzHuhIHTp51dD/S3a6BP5ez8egtxogJDfovkAxg1i1KV0gtTZQCg0gPvEo0W0qo0Mgx5E3JUtSDtFmQgEq2TzojBFJxIFEy37E8P/BUChWQh914r0Ipe5e5YftZQY4+6Im+ug1yxvWFkuxvp97XQN53pcgn5glDiraY3RrzJqySUvUg8Az5gwVR0ox2WJErAmZTldc6/rUSflGD0Kg/xWL6e9UcD6cMOrm6+Zw4v1jqqlW2900ZvkdGogTxbW9WuUcIBLKHgs/oD8oDhbvUeYDFu8Faam2CvBY5ZUkc/vgMCKcZJcGIMMhEE9xhBmoGrXs29ZMwm6B3PqWDl0DXOydDvscUYe6W6pPVRLNyX7Bun9HFHEvL2VXp61OXAqthgjAY0B7UA6J3CPtev44wwB02NlCidqHNuzl+tkvvZodrXfAzq2gxB81WbbqidpTaQku7E80T2ZayyPXqc0ZTJaeSmmvHKkpzoF9U9+H6E+vJj/NwfCS8BU/96toPDamcme5yQrK14xDbMZyAtxy6TtnIIlpcfWZ9oDrILstnBgQLJk+Hki8e/qOehcbiVqbLZ7UqDqppywcwPJ9fagUmvBrv/R3QAD94hPaRe8zydyIHAJI5Hua9Bj+Mp3uaEZkPQ8wjcn5ydf12H2z2QFWHi4cX8FHbkwVlfplN+zyxJ5X2In
+ s35Pl4iM
+ 2UQQcaLJl/Y3s/pMJZ8UIZp5A1R9nLE3PM19hpVspN8tEcju8MwkteaSmkXwPfWiuJzO59GvvtfE+x2pdXawMVrYFivTET31M6Qxe3KtyIw8xeQM0y+cklUtye7cV3DAHvSz0SB3qx/05EsZo+uA/o0TeJRLc3X2jSJLMS13Tlj5hlFGes5gQth4Ry+oEnDRRkQei+DXICckc9va0ADGdoClj3ONz0sjTNkfc48j4v7AslT3FRD9M2MQaEGs9WyawgFnpSBwFF1bG3redrrxx98gK08BOn3tjG+r+QiedC8qeF4JEQ4vPVwxvmL9Iv5hiLRGbjqngxKOCOKF/sQgaHJ0roRG7IzRfwxY5KsEO+tWHMSjs8nLlNsx+EL7y86lWYe9ADYRhy8EiVWbWkcShzB7qGM5doF1hAUTu8vBTFY+A5GXIxp2jnCvtwriTkZcH6nlRhefz+J3NxEhC2w4Gh0j7E78ocySc0dXsjLhmhqIAEgzD2+kCXca278wIwviLsnsp4pHXEdQZVcyhGtW+gcbdIj2Gm8YVQgyozh2LI74c0g4R4UYsXul2hUNxlfNtTSt+JxnOTkhl1KjC5vt6fApsKH5NrQGdB+SVd5JrqzqLQATTpXb7Cb+GNtFA/dwbuTNi81Qs0pWwx8ho3ATwWL+AsMGvB1+7kJJHTNszO1NSdlY2UyPmkYlatyM4ZiDaafvzs0UxPdJPVi8qk9dJwnfKtMVMw5WwmJN9nzmFRuWs4HqDim081/s4lyBk3qmyNQYgk9CY2J97A8sMYjC97mDkUkxYxdi4cKpnhohSRFRe/st0Kop/T3pBT0haFtj6MUlv2CbPIDQl37Aeszd7+cnQm3OsvGVroT7+hLFaj53kHVw3K1tS1m8BIfOAa+bheQgtnv4mPrWqM0dxLDgrvijofosUCiAjSG+z5B/4IYOnWsbiX8SVn/qo99Ms74laoB3QpdLJCYNrTht3qTXjS4nN2h5e
+ qhmJHe3s
+ 8vXtE6LCCgGvWJHhWTjuulPTIHghXeFVVjR7WM1NrJIwJFkgM3MNTl7r4lJTCaoEp7v/zGVqX4hQ+eX6TcpWYdhyjGxOUXVWPSuO95dh1huL9tYmKwlsP2FNHhK+kcZEnbpiSnnn9PIrRPBvmFcbxy303M9LrNnjeFYG4YV7kyB8/yEM52NUSUCZCbTxAP6Ndzm33b1n54dOzxnukOehnKc7T/XktM3fYNBn05Zov5eoh6e4Vql0mJ2Y7YI61cS3ku8z5ixYqLk4bH+mGDi48pFbdtE+cosJEDpUMyRVI9f2OPBPL5QREznjdh/DbIWivxqLxrq8tFLuhj+w/Xce1ZRgXoYjtDQ0ph3kUiaSznw5CSJDOXl8Txev2EcCiEEUgNSlTpvhZAu7oFlSxS7VL3O/0CpLz1d42+jnFyucZRNQp9rRO9YviCuKN08xswGxYUsPO2LyKr1BI2e/psl+6TN6ScCDjSumQEpaPoxT1GrTLcd3tmPvvohBzBvN2+RDS4FZvltprtbuqwrR7z3bLutE5iJFyZ8SLLTJAAaQPUdvu9c86kPDkcb+EmALadvSnhY1XwpaC7F3eqwDQCCIQR160+G+ppPNyOLz2S5LfQf95bO3+sMnTA8CbFR1APByTXm1OH/sK0SWVBCJqsTh8q63s4j+l9zCYcbjlwl3Fd/sOyOEY5E4bvCXCJNj75KM68AKRb7Lbdh+B2v20SrD9IoCFF92Z/3XE7P8BzXT8l5OwJBCKej8e8cfzwgJny1GM8APDo1q8EODScX2x/Fw9Gdn73WIBJzJJT9ZLNv1JCMVTpVve8atlTdGJ6w9+vU4lXmk10GGRW4q2C4SUZWtBCDcfxnRpV+H7h4mubHGJRz7ypY6w8KVZZMYwuDweLWJ1lA5gtl9Go+mgMlFhTkxg5norYQJLu4zjVAeXI58wzrJWOHA8/WyH7dPfSEgc86U8ZHsrXRmIOrNQcIlVfaYgZwSXSxNV
+ kDlafJU/
+ UpZxbv3CzeHWsqpSVfM0PIgp2wCX+7OXuB+N1BJrw+mDZ2pNWYfIw4XdOBu+9xITl+yibg/Bd65duOeeqlSidzJ4wvQLcQxvgmWb0nl1GJO+Fvkn+zt6TBJ91bsRfvPx/ZoPZ0updJRNvUISm2+RUTtrM8O7QUvX15MQLn2Yyr018GYMuzmnU3Q+uMRwhZWQpSq6kktZBdAVOoCqKKFlafLbUhPPLK/Ymza7PltiVYE4sc0OMKFJEedjGaJ8O7QuEcNqtsgwYe9ddUWtDwZIyLzWro3wIlwITc9LWSoRHrLCBwANk9zOuJGD8tljEKqbuA+NXDPG6cXmip2k4t24vvow79qjuOicaI0KxMeFoa0Q5VTKp6kcd30c22+fYfF9OH4pM6uEY3zLxhFrEoOxeo0sJz3kQyb2tCQppAPHufT9MQA8vkmUabRaEI97HMRWO1HEi1yoKGrAafUeZYhg0l14rMiFztihAFokyJQyI95iU+cKYj6BMrVaIBQ4foluRFEVDifcRUs03+R3Kx0AvgodvmeWDh7tRHJEZhtRAxn95oyKH+y2SVnpo4UGzxQK+1ZtJybzmI3V+R8VG3rV0SvIXDEKh3zOIfyZGujv6eAPi/rkUhE1P5bU3s24dzt9Ny6S8UEBjoif8P6qrwNxeg2yWRFt+B8xyZ6chQDYS8/4/DPUT2duPdswXKMm4Lirlsk0ggdHdMaeUd7k97Mu9t+s3iu8pgIIqMK6DV9VSmR6e1juhwHRNZZIltODB3MqqfgDHm7QuO5bOphvVVzgymGriz1+NBuL/haVh3kn+Ozp08fGQHXgHnqbCyfbTW6HgUCRlMVayfmPpgYjMdmrUa/hv0xEuSDsLi+g4JFjg3j0TfbnbeJZQdlSMPny4hkva8xSHyo4HXRFZqhM6PSvkgJzyv+kNRpYBRbHh2/MjYHxpy5+jvW7ZWkhW2LghfQarHKGFLIyK1KcA+y966YZpxN2xMn8F
+ gn+1P0IE
+ nSJoQ2L9t3XWTyemYAESpyuGC08qTPTANjdhCsXDX7nNNP19NsiGS/JkcLQX4a/GeMZyhJviCkq54jA24AefWszhywQpfDYPzQoENBsFM4WQlo0DAnpzMbPa9gxrgSpyptp7ARXnpKRrPWH3s+otT/lQ1pJT7x+HziDlhkBCC+4+zaRtF7faclXJBKWJc41SjbhfP+EPbe39ZiurP9gkoj+zRDcRhH4wG57P+VovB/7V7hkC1Je7MFxsCtu5MsdpTfmf8jwT3GQP0G3xf3Rdlg11oOJeuhVwf6JjQcdLhDnLFQRCKvtcvr/UIdN3ZQVz2DCda4DhqjM1YYQlydcpqhapJC4sj/JtL1hp1Prub3S4ZgdPRmZ9imiJGhGIfvyMM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,37 +267,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> - * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
-> - * a potentially remote cpu drain) and get interrupted by an operation that
-> - * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
-> - * spinlock assumptions making the trylock a no-op. So we have to turn that
-> - * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
-> - * remote cpu's so we can only be locking the only existing local one.
-> + * On CONFIG_SMP=n the UP implementation of spin_trylock() never fails and thus
-> + * is not compatible with our locking scheme. However we do not need pcp for
-> + * scalability in the first place, so just make all the trylocks fail and take
-> + * the slow path unconditionally.
->   */
-> +#else
-> +#define pcp_spin_trylock(ptr)		\
-> +		NULL
-> +
-> +#define pcp_spin_unlock(ptr)		\
-> +		BUG_ON(1)
+On Tue, 2026-03-03 at 11:03 -0500, Paul Moore wrote:
+> On Tue, Mar 3, 2026 at 6:05=E2=80=AFAM Jeff Layton <jlayton@kernel.org> w=
+rote:
+> > On Mon, 2026-03-02 at 18:44 -0500, Paul Moore wrote:
+> > > On Mon, Mar 2, 2026 at 3:25=E2=80=AFPM Jeff Layton <jlayton@kernel.or=
+g> wrote:
+> > > >=20
+> > > > inode->i_ino is being widened from unsigned long to u64. The audit
+> > > > subsystem uses unsigned long ino in struct fields, function paramet=
+ers,
+> > > > and local variables that store inode numbers from arbitrary filesys=
+tems.
+> > > > On 32-bit platforms this truncates inode numbers that exceed 32 bit=
+s,
+> > > > which will cause incorrect audit log entries and broken watch/mark
+> > > > comparisons.
+> > > >=20
+> > > > Widen all audit ino fields, parameters, and locals to u64, and upda=
+te
+> > > > the inode format string from %lu to %llu to match.
+> > > >=20
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > > ---
+> > > >  include/linux/audit.h   | 2 +-
+> > > >  kernel/audit.h          | 9 ++++-----
+> > > >  kernel/audit_fsnotify.c | 4 ++--
+> > > >  kernel/audit_watch.c    | 8 ++++----
+> > > >  kernel/auditsc.c        | 2 +-
+> > > >  5 files changed, 12 insertions(+), 13 deletions(-)
+> > >=20
+> > > We should also update audit_hash_ino() in kernel/audit.h.  It is a
+> > > *very* basic hash function, so I think leaving the function as-is and
+> > > just changing the inode parameter from u32 to u64 should be fine.
+>=20
+> ...
+>=20
+> > It doesn't look like changing the argument type will make any material
+> > difference. Given that it should still work without that change, can we
+> > leave this cleanup for you to do in a follow-on patchset?
+>=20
+> I would prefer if you made the change as part of the patch, mainly to
+> keep a patch record of this being related.
+>=20
 
-Did you try turning this into a BUILD_BUG() ?
-I'd assume that the compiler would optimize-out all dead code and
-consequently not trigger the BUILD_BUG.
+Ok, I'll see about factoring that in.
 
-if (pcp_spin_trylock()) {
-	/* dead code */
-	pcp_spin_unlock()
-}
+> Ideally I'd really like to see kino_t used in the audit code instead
+> of u64, but perhaps that is done in a later patch that I didn't see.
 
-IIUC, the trylock+unlock is not really split over multiple functions.
+I think I didn't make this clear enough in the cover letter, but kino_t
+is removed at the end of the series. It's just there to support the
+change during the interim.
 
--- 
-Cheers,
-
-David
+If HCH gets his way to do the changes as one big patch, it'll go away
+entirely.
+--=20
+Jeff Layton <jlayton@kernel.org>
 
