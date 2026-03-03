@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC5C3F513EB
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 01:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61B4CF513E9
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 01:48:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAC5A6B0005; Thu,  5 Mar 2026 20:48:11 -0500 (EST)
+	id 137B16B0089; Thu,  5 Mar 2026 20:48:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C5A9B6B0089; Thu,  5 Mar 2026 20:48:11 -0500 (EST)
+	id 0D4816B008A; Thu,  5 Mar 2026 20:48:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B58E86B008A; Thu,  5 Mar 2026 20:48:11 -0500 (EST)
+	id ED5086B008C; Thu,  5 Mar 2026 20:48:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A2C0F6B0005
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DCCE86B0089
 	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 20:48:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 461D0160348
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A760A1C32E
 	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:48:11 +0000 (UTC)
-X-FDA: 84513952782.14.7D8E2C4
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 142594000D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:48:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Rq1SChYI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com
+X-FDA: 84513952782.20.6D85DDD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A9E961C000F
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:48:09 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ikDIS8RE;
+	spf=pass (imf21.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772761689;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CDVZujMLsVOozdPPpdT3tG1kjQU04IXYyasKMiVvChM=;
-	b=iuiaahK05MZPgDClqBymaond9Ijc9+JGNBiTQJLmJaAQ+mwuPQqYmiNQNp98/q1Sv9x8YZ
-	HQuzm6wemmA1mdTZXsYWUSOZIhRqUiCjkRf8Gy+L3wohrcdKJ+j/Y5Wpztwg4TzE9qsWQv
-	rEMeJapyu88zT4DDxZ/YYgrBqn8HSyo=
+	bh=cxf7FMyoG874zmp11MoqUtyQvevQU1A2APIoEt2g/+M=;
+	b=utJ59kDYbmcBjtA5QxHrZvk7HBYZFwmfXszYHuvcxNGr1RvAxuMbIOU8xAYm/yEoVQ/yUs
+	jXSQR2ma50427Gt8Ere+I9d6jdYC4mfdrYj9a3S8912CLmbAklvoLlaFcdEEXIGsEFmnQb
+	T1L7/0i93jWgHNHN7j+1YwZmzHS0fFc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Rq1SChYI;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf12.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ikDIS8RE;
+	spf=pass (imf21.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772761689; a=rsa-sha256;
 	cv=none;
-	b=OIcZkpI1mHmobxmmvQmO1yUWYt7lelcwwYzuq8aDaO3p5gRPpbMk58C5qfzutIzRZne0DZ
-	25AA4kaRS1x+G2QVGdUw0dC5ZRg++Ivo6ZmG7/aGe1wsyhth72U8zPd/40es8byvStwq3I
-	rs1Vu4iGzn2kw+668vM3nuuFIN5LkTY=
+	b=Sj7y1rqbyyyRg99nzcKzKIj+U5iGGZ+vQPTm/76KGTCbxilrNtQGCJ+E2XoOicTEdg1E6y
+	CMKGKx3cJh1qMM+dwyJXz5MVpU3VjUzxfnqOwhQt6Hw7dtDVBqyZx0ibG94X9LTTPWt6d8
+	mCNHkWZ2H8CIRcPdfzLDYBL5KAw8dos=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772761688;
+	s=mimecast20190719; t=1772761689;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CDVZujMLsVOozdPPpdT3tG1kjQU04IXYyasKMiVvChM=;
-	b=Rq1SChYIM4BXoL2mFGkNh5cZ+sD61BiePnuY3+VYNWfAAoawG4K9zHGh0KlgaKknNYaDTV
-	kBbGbFFR2Rcybu2PfsQo3XOBxLq/TrLYrgoLTFTk5r6CmfwF+GXCYnozxOHKvWeoO8qafe
-	Z73bO869GyC4R/zJ/WOO/8nxbYxvBvw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=cxf7FMyoG874zmp11MoqUtyQvevQU1A2APIoEt2g/+M=;
+	b=ikDIS8RE0OAakSIg8SYaqO+EZeVh9Z2AovPPRjvH0Z1KRgXy1y0gKfzb5efDAjk5GQ1I/s
+	eEMfUUJGFHyFQ+gu7P3EY6YR7UQUgWdVm4iR1qbVDx3ak1mWzfHzBxkauldESWtxAVzvvd
+	NmmPkojF60Lusd13qrbHDWkadssf2fI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-169-vpDx7EICPB-rVh_Y90_q6Q-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-500-sDZu-UPOMQy4Rs3ZPQLmHg-1; Thu,
  05 Mar 2026 20:48:05 -0500
-X-MC-Unique: vpDx7EICPB-rVh_Y90_q6Q-1
-X-Mimecast-MFC-AGG-ID: vpDx7EICPB-rVh_Y90_q6Q_1772761683
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+X-MC-Unique: sDZu-UPOMQy4Rs3ZPQLmHg-1
+X-Mimecast-MFC-AGG-ID: sDZu-UPOMQy4Rs3ZPQLmHg_1772761683
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0A8671800345;
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2798219560A5;
 	Fri,  6 Mar 2026 01:48:02 +0000 (UTC)
 Received: from tpad.localdomain (unknown [10.96.133.4])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C5AA1958DC5;
-	Fri,  6 Mar 2026 01:47:59 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 645F33003E9F;
+	Fri,  6 Mar 2026 01:48:00 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 24D3E401CA849; Thu,  5 Mar 2026 22:47:00 -0300 (-03)
-Date: Thu, 5 Mar 2026 22:47:00 -0300
+	id 396B84018D584; Tue,  3 Mar 2026 13:02:13 -0300 (-03)
+Date: Tue, 3 Mar 2026 13:02:13 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Frederic Weisbecker <frederic@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -90,31 +88,32 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
 	David Rientjes <rientjes@google.com>,
 	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
 	Leonardo Bras <leobras.c@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
-Message-ID: <aaoyFClXLEYNzzBR@tpad>
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush
+ work
+Message-ID: <aacGBc9x+zn1tluU@tpad>
 References: <20260302154945.143996316@redhat.com>
- <aam1cHq3_fb-T1HH@localhost.localdomain>
+ <20260302155105.214878062@redhat.com>
+ <682380ba-c8f3-4023-928c-2152e934f8db@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aam1cHq3_fb-T1HH@localhost.localdomain>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: cSD5TtaaF9ydcC6sigFQaQFbqsj8phbUymSqdPzJjBI_1772761683
+In-Reply-To: <682380ba-c8f3-4023-928c-2152e934f8db@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: yNQ0IOPfbf7_CVlX_zzzXfbkV1FEugJmDfV5pKAr39g_1772761683
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 142594000D
-X-Stat-Signature: 8j4syz757fkthiibnwcc6bdmhzpexjry
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A9E961C000F
+X-Stat-Signature: 43xuuqqt1sa6fjnjbjn1f6z5p6qi87co
 X-Rspam-User: 
-X-HE-Tag: 1772761688-487244
-X-HE-Meta: U2FsdGVkX1+YP63iuAnfQnGV0XPos6R7qjU+gXOyo+qBc4ogekMl0JQXnnyWP2cOL/E8tS/nvQydmd6dmSVB5a5dYPq79KqyZSgL6HEGf6ff92eR2Xjca3o/uLctWjE6jXG6NAAc5EpjD9R5Jpn5qKYS2EPx/+HgY/gc4qliziKo6KQLxeSHVLr2HKFqdJJWuDGRjg6l+xpAbWZqEZa8gVHpe3twXVL1y3muP3I6tThLYK2JlOI+1MeYC+AU5mykgGBA2y/XhojP5u4oZS4hYMAA4yHPDsDxbQlXIh7hq+idjCmgTdjHWjhnRq8ghXF2EgZoP4WsmZQGbsyiP6HOUpT7hfSUGwi6bzrEfM8UioiEkgnGsSKrtMXx8HPiPq7R5iGgcKOPmsyiC+c94sAnRy+YGJoVKwZlYVkXc6kgtHOF2XLavnaGQRj/pO+pJSr2fWt0teRo5aXERVeWaGVMLkYmJmTn3YrHJC4aK10a+r64dfOP2wpOW7Bdr0iqY4eRnXnvvxCj/XnBVNWGH64ZcbImgXN/q4H3i+bI1KY7aqUDVY9myalpqDhzOzlSB7ho/1LebwVxHGdZt6xpEJ/2p2ohgjGnu2+Bx3+D3IyjnxEFK+Vbp4Dvdg0n8n3+lX43beOlOmp4fxJKPxVcv6E2uU8E9q8eKrxWBKssN0symQDHMjpspuAuniHSC2b7MitvVKhwf9+9dGce/auGtfZdgK+lkd/Ota+CfuSIaPCJVY7yRF9LEsXxMC4dhUe8rbsoZ0tn+8LLZIqW6xERDc8sXLWwAZVhViLXuwiRvTASJXvnaCHSgmR69exGsYkRF/vicUx1QHx0cVdAE258AI3KXA4MJuHgYqq1B6oUX64FLzlaNOj588SS33YP9sB4JdWE+4HPsv7Vq0E58ygaJ+yRMAWzlGiPhdu/sImMWG6f7PuvP6a6DT+Z24Ci6hIBPxViVPS5eX/tNbIMDt2ViHc
- FAT2WTIJ
- 61mXQ1NBGsUXKyQi6uIyYUjhsSDa89gZv8GejllhCb4eGKggd160Ek+z5nQ2SyhmEnTqtqbF/mvJLZoqUQIs70OhY1SAJZ5NoeL7ZsRItFLmZfk8xONZmhjWfthlYLv4Np1LqhrQ1PIVcOQ0ebSBpxMkGObP45cLnRe89U+sHom6T/nDa4zIt+etUowtU5+buCczvtQp5GqzvPdTLSrso5R6o7SOPIXalvgoNlOKSSYoxqXXKZxyVEq4FtokG2zjprtm77lPxuL6upZ1tu1eVzqRmSGkSzJSIG+LolSywJ2G9t4D31W2aMMRKy05aRQVpac/VWLVDCrx8QDmmZ7ifNFds/tdjrwkB4HUZyYAFTxIlYIpW64T/39dXSLylBqGvHIpBsKQuNcQWvs2p7lXHUifiqzWf6lwysV+o
+X-HE-Tag: 1772761689-461346
+X-HE-Meta: U2FsdGVkX18kkJhEgR/TzbCjpU4CZcyedN6CvyRzD1eA7tHZk+LfmU/VahoSG0Di/SscXm3BOapaDIRTRVwiiw58Gwu4QnIJlyng1N0KsKKk9+SCvckryPX/mGAYoD3tnGXUFyhtkt3ewzTPE0Chd6ONKBxpIUqpZJ4nrhsOCHIfm8bRvsz+ATT/ygiH5ezu4gGe5ocQhNnX0E6e3ZOAcab/buuFVBEJuPn18o5eN2ZB2h3kV/PMASFhg0M5/ypjv1sJpbutIT0RKvgdoepjhhbWRH/lkgGPd8n8vjvKOKc3tFxa8JcXTWDXlyXTCy975mi9RyxSOKCi0526Ct9RET8peYGC11pi6CDvs6PTCF/eJ2FmYpN4x1UIRljf1dJ/7iYxOd9ut9tefwwOhvrmC7E3B93LtKVm1vuOTLO1JomRK6GVY+p0sQ0sXlbDOyoMqL2zTnPgHvG+xfg3OzpauK444b+FZS+SuQ2pHg4cHckTJnWqyrXQgOIF99XIgBkcMAlihJxDIJ4kqDXZsbXxo9EugW3p+7tVxAOaxhGZiafHzP/2Em3cg3bu5+gxEqAbjH+I60r5DhVdyRsNuEnQynYAEWO2r5e5ECqjIGomJotJHVAUkwlw7DvKmM/ClBhsvgX5H7KLK4T5E06sMEA7jx/zm0O7i2JBinbI9QRt5JkG3zfkcNc2fXYQIPtTqsgwRVicHxRoHAS7vHvrrl9zC2+XJgGV2rjLMev30cX4rR5yNci5VQc3LFs9xsdCziG+bMTErEOqN03/AtO8YxSshzVwRCm4Jf2d2ES6LE7Sk6d30orPGbuaHtyc1PWvhG79gJpAIbkfyuHJhIVzgvn/pdYo8Sx0H3JI9XIirZDg59KRax0WgUtF+tjfIPePa6PZNWx2wW1SvEDuBvEF6IlO5tFQuh0S5uH+Q6d0zzUwc5ygxKPzEDLP7B40/AEuwAa7yI4lD9a7n+6jZHTH8lv
+ fgOX7RHb
+ kHLowRmu33gl4uwmzzF50ecqqZ2rGdfh4YmBcP03qYvHmpV7cShlztdQEFuTDkp7I7rcumA8nUwdEtqwwv+6sV8o2fai6XZWAoD4vRDjNPOgbh+bP9620NM+9f07+QRxHCBhnET9NgJivVyQj/C/QGpmhZn0QP1MhJgOYVdrtTPaHdzMmix8m0eDUwYsWNYUUaMQq3M3FJW5D0eFrXtOF68WmKQXCeE971AqB0ewhuvThgZCKtvpbzdfrOpz2d4qAV21nSP89Rf959oq70n13tMt8rARpK4KO3P0xvtw9n6CErd3mRTZb9cqsAAm1xMvqiXYCJ+rqTQMkgjkmQveSD5a0bXJv+M5v7ip7t4cHb1Limk5fqUsVXtBqB/OE7SGFYdg8Yb4dLqCZq1uQTkS4Y9w7pdnIRVE6D2GuZ20LeEoqtL62e6feH3uYGl7ciCh1+jVMXny8RnopvIHVcKlHmME+zA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,130 +121,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 05:55:12PM +0100, Frederic Weisbecker wrote:
-> Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
-> > The problem:
-> > Some places in the kernel implement a parallel programming strategy
-> > consisting on local_locks() for most of the work, and some rare remote
-> > operations are scheduled on target cpu. This keeps cache bouncing low since
-> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> > kernels, even though the very few remote operations will be expensive due
-> > to scheduling overhead.
-> > 
-> > On the other hand, for RT workloads this can represent a problem: getting
-> > an important workload scheduled out to deal with remote requests is
-> > sure to introduce unexpected deadline misses.
-> > 
-> > The idea:
-> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-> > In this case, instead of scheduling work on a remote cpu, it should
-> > be safe to grab that remote cpu's per-cpu spinlock and run the required
-> > work locally. That major cost, which is un/locking in every local function,
-> > already happens in PREEMPT_RT.
-> > 
-> > Also, there is no need to worry about extra cache bouncing:
-> > The cacheline invalidation already happens due to schedule_work_on().
-> > 
-> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
-> > RT workload.
-> > 
-> > Proposed solution:
-> > A new interface called Queue PerCPU Work (QPW), which should replace
-> > Work Queue in the above mentioned use case.
-> > 
-> > If CONFIG_QPW=n this interfaces just wraps the current
-> > local_locks + WorkQueue behavior, so no expected change in runtime.
-> > 
-> > If CONFIG_QPW=y, and qpw kernel boot option =1, 
-> > queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
-> > and perform work on it locally. This is possible because on 
-> > functions that can be used for performing remote work on remote 
-> > per-cpu structures, the local_lock (which is already
-> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
-> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
+On Tue, Mar 03, 2026 at 01:03:36PM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/2/26 16:49, Marcelo Tosatti wrote:
+> > +#define local_qpw_lock(lock)								\
+> > +	do {										\
+> > +		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
+> > +			migrate_disable();						\
 > 
-> So let me summarize what are the possible design solutions, on top of our discussions,
-> so we can compare:
+> Have you considered using migrate_disable() on PREEMPT_RT and
+> preempt_disable() on !PREEMPT_RT since it's cheaper? It's what the pcp
+> locking in mm/page_alloc.c does, for that reason. It should reduce the
+> overhead with qpw=1 on !PREEMPT_RT.
 
-I find this summary difficult to comprehend. The way i see it is:
+migrate_disable:
+Patched kernel, CONFIG_QPW=y, qpw=1:    192 cycles
 
-A certain class of data structures can be manipulated only by each individual CPU (the
-per-CPU caches), since they lack proper locks for such data to be
-manipulated by remote CPUs.
+preempt_disable:
+[   65.497223] kmalloc_bench: Avg cycles per kmalloc: 184 cycles
 
-There are certain operations which require such data to be manipulated,
-therefore work is queued to execute on the owner CPUs.
+I tried it before, but it was crashing for some reason which i didnt
+look into (perhaps PREEMPT_RT was enabled).
 
-> 
-> 1) Never queue remotely but always queue locally and execute on userspace
-
-When you say "queue locally", do you mean to queue the data structure 
-manipulation to happen on return to userspace of the owner CPU ?
-
-What if it does not return to userspace ? (or takes a long time to return 
-to userspace?).
-
->    return via task work.
-> 
->    Pros:
->          - Simple and easy to maintain.
-> 
->    Cons:
->          - Need a case by case handling.
-> 
-> 	 - Might be suitable for full userspace applications but not for
->            some HPC usecases. In the best world MPI is fully implemented in
->            userspace but that doesn't appear to be the case.
-> 
-> 2) Queue locally the workqueue right away or do it remotely (if it's
->    really necessary) if the isolated CPU is in userspace, otherwise queue
->    it for execution on return to kernel. The work will be handled by preemption
->    to a worker or by a workqueue flush on return to userspace.
-> 
->    Pros:
->         - The local queue handling is simple.
-> 
->    Cons:
->         - The remote queue must synchronize with return to userspace and
-> 	  eventually postpone to return to kernel if the target is in userspace.
-> 	  Also it may need to differentiate IRQs and syscalls.
-> 
->         - Therefore still involve some case by case handling eventually.
->    
->         - Flushing the global workqueues to avoid deadlocks is unadvised as shown
->           in the comment above flush_scheduled_work(). It even triggers a
->           warning. Significant efforts have been put to convert all the existing
-> 	  users. It's not impossible to sell in our case because we shouldn't
-> 	  hold a lock upon return to userspace. But that will restore a new
-> 	  dangerous API.
-> 
->         - Queueing the workqueue / flushing involves a context switch which
->           induce more noise (eg: tick restart)
-> 	  
->         - As above, probably not suitable for HPC.
-> 
-> 3) QPW: Handle the work remotely
-> 
->    Pros:
->         - Works on all cases, without any surprise.
-> 
->    Cons:
->         - Introduce new locking scheme to maintain and debug.
-> 
->         - Needs case by case handling.
-> 
-> Thoughts?
-> 
-> -- 
-> Frederic Weisbecker
-> SUSE Labs
-
-Its hard for me to parse your concise summary (perhaps it could be more
-verbose).
-
-Anyway, one thought is to use some sort of SRCU type protection on the 
-per-CPU caches.
-But that adds cost as well (compared to non-SRCU), which then seems to
-have cost similar to adding per-CPU spinlocks.
+Will change this for the next iteration, thanks.
 
 
