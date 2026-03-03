@@ -4,190 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E9B4EDEBFA
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 23:04:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461E1EDEBF5
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 23:35:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01BB76B0089; Tue,  3 Mar 2026 18:04:27 -0500 (EST)
+	id 761666B0088; Tue,  3 Mar 2026 18:35:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F31B36B008A; Tue,  3 Mar 2026 18:04:26 -0500 (EST)
+	id 72EC36B0089; Tue,  3 Mar 2026 18:35:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0A276B008C; Tue,  3 Mar 2026 18:04:26 -0500 (EST)
+	id 630DC6B008A; Tue,  3 Mar 2026 18:35:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCB906B0089
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:04:26 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 336C11B6A69
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 23:04:26 +0000 (UTC)
-X-FDA: 84506282532.09.0671DF9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8F1A314000A
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 23:04:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="LD/fvRzQ";
-	spf=pass (imf26.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772579062;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4981D6B0089
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:35:38 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EAEFD1A0185
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 23:35:37 +0000 (UTC)
+X-FDA: 84506361114.10.0C39F45
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 29CC7C0007
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 23:35:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of 3R3CnaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=3R3CnaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772580936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sho/S4s91NN85q7AoLqq5NDkYDVfRN4Spw/TQk5MdXk=;
-	b=kQUlnscmVwxZ7VKI6r3jMEg5nmqtqnDnLfrqyhNOWWVjy9u29FGhwbuIgnsisJeLwSB4Gz
-	QpEu6k+mpixbE7eLT5PZUp1z9HfAQ6SKmfz7p86p0xFWhLMcE4/W7aLSDUgIPGiX62C1vL
-	87u/K+ZT4xk0T7DFBUgsp3OMJVi9d2U=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772579062; a=rsa-sha256;
-	cv=fail;
-	b=Dfj1CC7V2H8I/daukwjiuIiO05bxjqsYj8oGpjPO/qXD8YF1Cj4EdekdzW5KvEg84lpS9E
-	7oeaP2VW0ytmINRYPFCjqcUVH+0i/tNRoKQeIYgMnUSFMqJ/ZBdfAPf+yhAN6qlwX6HgXy
-	y9ZbHAY5oG9thq44OrrpT1n4pRw0d84=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="LD/fvRzQ";
-	spf=pass (imf26.hostedemail.com: domain of matthew.brost@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772579058; x=1804115058;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=AtPEvmDgSBRmdq+PFHBKWJ9nzLOy4xn7/MVfJMwVqgg=;
-  b=LD/fvRzQdWRzXmZw/G2JO/70GqevfSZxabHRBw9xFmR+xB6deYCsV9I6
-   e/vbjdibygkPj2OczNH+oivEjbKPLXTsrZL2f7aICHIYZhr7y2MB1/ajE
-   2KvBxXkUy/KXc7/1P1iRgtOXLnl96NSZhnXDTgWZyBagt8B+nMDeNTLSw
-   JBcFmU8YXlXrt/NCBawAquIJ9fWnIqE6XezdYDKiHUWGu4KJwUuSTzacq
-   rrWUIHV99g0N2yuiUvi/UlCAc4mfwXX59jjEuyw7vSmb0/SCASBzslxf6
-   zjExxRwNsUgd0szDmOgEkY18n6sXc1bc5LUKZIOt0b/GhWhyRUjsIc+Rc
-   w==;
-X-CSE-ConnectionGUID: 2K4iVJA/QtK0QiWDsqVk9A==
-X-CSE-MsgGUID: j1znDLg1R16lj5RxSAEttQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73596403"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="73596403"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 15:04:15 -0800
-X-CSE-ConnectionGUID: SuV9v2EXSJ60RxQQCh9kLQ==
-X-CSE-MsgGUID: RraTQ4lLTy+S8R2Wu2PNlQ==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 15:04:14 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 15:04:14 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 3 Mar 2026 15:04:14 -0800
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.12) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 15:04:13 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WmdBHvASAy5MFDhq6TYZYKZU8dQfoZX4QK6HEeQ4I8MhkDnQMq2jYNiw831+RclWkxcvYL6lujA0ayLc0CB/ypWA+sVMNRGqy0tM/I5l3Frgb9wNN9EwKkhkTXVMTM44VkU5yw/AktRnHvJ1GnzQDvFigIK0XIeyFETbuYey/cBxJbF41HG1nb7Waq1e5xXimLWMqf0EDI+Wl8JMR/xiMZk4TpPbH4uTBU/83tqnzefuBXIrvP7dXJ00gk9ajQw37FFtbrj3LEfmezTUJhwaGo58ZvN7XvedGPbgx8QU9lnC8p7kM7Kk/drIo6BjQF8KIK3mpAawxSFzlvACEbwXxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YBkdVvq8ctvWBfdLR8zh8bqxdhnR4f79oMd4lmorL88=;
- b=MPl2jKmduUY4XIm7npuWe6I+lY9rBONcl6ccbO6BRsGcNvg4vcUvCP/JSnArkab5j2snBm9BzEnbH+ACtSx5CCiykMn1M7m4bnyzAabO+V84JhPgAEQBfxGje6Wzb3N+yF0Ko9tuz9SScZdpnKQ/ZIYhqm6ezG1Sqcpf/OfDGaiJDxtDgkhosaeCQleLh+kZKiH0jSmkICtDSqkns+nOpWNXv4s4K9auTZPsa6ip7HQlYsD6RIjJVK+GKhTnAUle4Tly2rSXkq9lZ/YvNOF9z6m+2UW/qy4mRv92oaBqfPEoGzHZz3caBQsExxq/3nDQ5LEUCC5KxQqkUxGRQGXihQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by SA1PR11MB8544.namprd11.prod.outlook.com (2603:10b6:806:3a3::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 23:04:09 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 23:04:09 +0000
-Date: Tue, 3 Mar 2026 15:04:07 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-CC: <intel-xe@lists.freedesktop.org>, Christian =?iso-8859-1?Q?K=F6nig?=
-	<christian.koenig@amd.com>, <dri-devel@lists.freedesktop.org>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, "Simona
- Vetter" <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>, "Alistair
- Popple" <apopple@nvidia.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] drm/xe/userptr: Defer Waiting for TLB
- invalidation to the second pass if possible
-Message-ID: <aado50/FJE+D0H51@lstrano-desk.jf.intel.com>
-References: <20260303133409.11609-1-thomas.hellstrom@linux.intel.com>
- <20260303133409.11609-5-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260303133409.11609-5-thomas.hellstrom@linux.intel.com>
-X-ClientProxiedBy: BY3PR04CA0013.namprd04.prod.outlook.com
- (2603:10b6:a03:217::18) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=Ge7xU02yubf1DGANi/nBCzXv9dbYn3ROxI+6J8VSmQU=;
+	b=cd6G9nHOzbjoy3jIytux4RxTL8OwMDrxI86zxCN6Wkky/5sbgOl8DuYI3Va9P9Q7fD7MEY
+	7tJ+xs2ROU86dNXZ9dTsOZyskeVB0GBFekH1fECv1vrjb4y9oyF00veXmxuS6crC/Zfjb4
+	OXWpgIf9a/dYKAnuHp+uCxi1FlcvP/w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772580936; a=rsa-sha256;
+	cv=none;
+	b=wyiOrVHIzrr2LkVX0PaXL1+ijuS1eKcL4Mqf+YheAfACcgB3Tz70JGp8Ji1h/owC0nQ6Cz
+	uCVOduxRJADD3BzqyS/0vdlrWU/VerHr4o+yC9s21LNZ67ZVGPDbveeZBEq/9dw4zJ3AkL
+	XtvFUQDWusgyEoROD1GXZQOjxysLuXQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of 3R3CnaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.70 as permitted sender) smtp.mailfrom=3R3CnaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-40a4d2264abso10412214fac.2
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 15:35:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772580935; x=1773185735;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ge7xU02yubf1DGANi/nBCzXv9dbYn3ROxI+6J8VSmQU=;
+        b=S52CzZyHZYPeOI2EWepu4kwB1CTf2btbLuWPJvhpOfR79tpw33GHcxlH8p9JcAN0iS
+         uJ6vGu0d+XkfIuu2vnv0i/KTVEidqjkmDD1huPilWLIUKk7LnwrFjGt1iq9mPZz3YTdL
+         ZzkIx4oCi7FB/eYHCY2EWz+7eOwZCs+tmIA3+DRfXXgMJkJpeRq8/rCqMzHLE3L4gOh3
+         nWrpCAySLyDW+jUYUWGRaDjfPTB9KHfVBqyq8I+ffZivPUJQHY3bytOgyOzaiagVw7u0
+         jU2ZIgwLp1xwwwA7hQizhWRgIGAJ3UxcH6fYsaYmNcjN7ANFc19tMR64sPiS5AS+tgjr
+         P0Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCVZAg5HrObF624a9LNVo2NEYZbqD9ytfogLRz4563CxfSNectLmjnVmv0HmRMzquXEzCHimVloaew==@kvack.org
+X-Gm-Message-State: AOJu0Yzh7x35m/UFyAyqc8SIlEyFdmBgn1HwQWKSFDk1HToXU/7VEDLB
+	gX1Z9nv71T7QQLknLr/AOBKbBuTpt63mgdujVPa8E5cECVuTs/eeMvVzAzo7o/CfsQkhwYxhcHV
+	btMnDWYeiakZYuqtZmRgDP6gdb1r0Sa0dUEhmvR+FAbPyGz5cPb9nhNNheOw=
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA1PR11MB8544:EE_
-X-MS-Office365-Filtering-Correlation-Id: 105ba5b0-cfdc-44b3-b175-08de79792d82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: NsHK8XQYzoY0P/XLZkXbBYxNSo0jLTL1nlGwpCsUHbeOeJrROITNs1/VnixnfF10od+NcbRt6hvZEZjrMf8WLWKzIvmaaf1oqaK/zNSywY5lN2mHSwwyrrdZenGSAKJo86RVt1CLw1YPmfUEbVtHCddo9QDSsefQmBsNL9UBC9u5yEYD4S5ngM8Opldt/e41OGmhroB6J9lukk2RAAwBGCa6Z39fJarvdLxlA5NW0NOA660THu9HyBq3DoiTL0t8LAIE3ylecFUPCXRfuRxnu9Q1sfNuUjSSzWZOglBCJulQSyACoGGGd9UVL7tpEK6+mdSQtpreJWnuOP5mszUlFNyddyc4fDNmvfC9ArZpgmaIKSYyysMjvkeTlkEsexyCYQhdJYnKkG7q4aXEz8W/y9kpigVlS1x6l6MXuthzrGk5QKW/knDvbV1/bbP9WPy6Xc2TQvXQhFUoaoD8RFVEt0kBAHmLMLN0o/gfAJ3/TMqDYaneV7/IaB5igyNFQSGzR/8XFO8VINSo9NaaXVsNpesL3Wzg5Gx4tDIlyWAwJJMhvegjRd9MaM064MI1mCwOwgVGCEswM6rOFWLkCZy+6vx4KIJVLxBa1L6sc3nWycQ/UfYnvDY58yYKx11OFKYnWjM0q9BR7DFgs1sBPfC2aDT+U46CpTsF0czW+87QhjpAS+qsVEcMzzuemwpgCfJLimphBVF3bHnNdHhFUtiUw0ORngseOHOP05PVQhZxizg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?VItHHU2eKlgP9EYCr7MDb4vl9ZSKjHzGVWVvHAM2vHYTjLNTSSlCgtCBge?=
- =?iso-8859-1?Q?qOCXXC5qi9SwrtpdOhlLQfglD/PK/ZKZWSG0rV6s5bYbS+6tMyN5lfkpx2?=
- =?iso-8859-1?Q?RmoJ1N8UjEerpehYmxKylU3FpPUEpSlPzXR4PLMgS+PueApd6DdA8mzkR3?=
- =?iso-8859-1?Q?4/OBBiZ4F2fyzGYfJge8TYQhh1z1DGLFqw4rMKHAwelqbc5al6S85Ce/Gs?=
- =?iso-8859-1?Q?29yIeUovW+5/JDiYA+r2cRQ/R+J4fp2OgS1BO/17pzI3ChNSr9Hy3L6+Pc?=
- =?iso-8859-1?Q?9eLrwGBjhog9RqK5ExPbNdR9pSyjk9IlwEZWNZBwX7NvuoERto+6yCcR2Q?=
- =?iso-8859-1?Q?1VBpyZN5Vl6MPs+HYoPvrZ7S3cM/JxYKBKKBRTjVQbNr2f6ztRQ97aPynS?=
- =?iso-8859-1?Q?z4Q5Tyd6q+cLBaFyTjHuLscXauzFBaFL9P7YBlAY3VIzgSFcJ9+KJAClQZ?=
- =?iso-8859-1?Q?rfAm+WtypoNw+8NsKiKKFNJOuvlvQWIKOuR12NXJwEakIW1vByv60pWcHq?=
- =?iso-8859-1?Q?dN0c17Sz8PFaGpqQ8NHNMhRhkEvgGtGCF1sz2PAFKwx5GnPWtKa4d5dHa1?=
- =?iso-8859-1?Q?LHgmIkYIcrZo1DOT/I8XCf7qpd584QQl12sQi8ilTwpl9GjHV9VyHBFVFc?=
- =?iso-8859-1?Q?/SHcsJZEWfiMtK6nDiPIuCxfFgi5oSbCvTZuQXLGArILkz76dcJW9960kf?=
- =?iso-8859-1?Q?aVlLQf+bH10BwP2wAFf/SllSPG6kjD/jgNT0Unq0jSqSZioz4XkOOxPHvR?=
- =?iso-8859-1?Q?hFIvvhv6pnWuuJmlkKESeaOAV7qtYrFK106vWYVxb4X8dEN/5/boOGBQSg?=
- =?iso-8859-1?Q?jfa1GiJmUPzrZteg5XCSVP0CdbZvP+E0AFMhKnSgOI9yWoRPDCY0uAezFA?=
- =?iso-8859-1?Q?LzWxlgHfFv9N0uOAFnKbQz+064FUan/xLkBmlhnzZE0RdciC85bbQd4cm3?=
- =?iso-8859-1?Q?OtQXduJUoTyhXF0TfKnkQlmHVB5IxLHW6mWJXW/8v1jlpKm/Hye+L3iX28?=
- =?iso-8859-1?Q?zM/vZ4xjjN+uwNWpRHSW8X4QyQsHxvYpfYBzEZM0Iq4B5S1GLLroU5513N?=
- =?iso-8859-1?Q?ESfK39ZUMx8WEPW3OEm3qMHtJL2TBbjogOP+MAuV9NbiesL039bcbH1hXw?=
- =?iso-8859-1?Q?elHp3iKm8tW8xXNOkBxJvIqwp6kpe7GmlJCospp6mfKejG8jQvEjiX2Zy8?=
- =?iso-8859-1?Q?TUy3xmd09zqg2gwS2f+bwUSn7+CVEnDq5YSlHdCzljfOgT4Wci1jRqchXe?=
- =?iso-8859-1?Q?f889eIoKKJuK8+qo5KdvV+FY0q9eHgJSqXRMfOV0bKHYZO3ewO8IiM4nvL?=
- =?iso-8859-1?Q?dMAjSJfDIKt5lNdBT/fjwBajCeOlhDtq18L5Nd/xTMrL0ltT9bHLzwt6tx?=
- =?iso-8859-1?Q?nW/fAJkwX37y07VGbNPFxnNqWblCMviCpmIAnDxUXyMjVzcTLOx9QWTJPe?=
- =?iso-8859-1?Q?VYUSsI0nt0r7i5jm8Ad8pKyy75cXe66cmcjn/heRvQx3osztn7mPJy/nxn?=
- =?iso-8859-1?Q?F9Ltzv7iERcW9GI+G3tTmspyo2wPd8TZ5aL4o12IhE3/MTIafCL+cBZkA+?=
- =?iso-8859-1?Q?1ShI8PcCWzYvN7F2niZT+1rUdDxEXA22+H2MjHP/OiGIj471S2tbpgNp3p?=
- =?iso-8859-1?Q?yMqKsatnFBZNTk6IPaZyS0ysstHc2BLq02s13nlfzqWpMQYHb1FJqOr6Hr?=
- =?iso-8859-1?Q?e+FjjeSlXwVp4oL7k+5kIy2am9AQV8G9Tkz6RGIB4TeDYHFrFsIvL3nxUu?=
- =?iso-8859-1?Q?ggvb86+GCXtITpH63gjbE/pwmdioNZvI4urA7OJuJmpIo4pJm42zz5xDQN?=
- =?iso-8859-1?Q?cM+gbE1zmniGHPimbhwnn+zaH73OvTA=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 105ba5b0-cfdc-44b3-b175-08de79792d82
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 23:04:09.6097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gCj6hH3Iqi+9nrBVkeoufYWULDyI/0Qh+ExiyR+gQ/+6eY2Sj5BQLf4I2yoxMkjGyY222auwAt6dDL50gAvfig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8544
-X-OriginatorOrg: intel.com
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8F1A314000A
-X-Stat-Signature: g645nsbp87eajd13bw4d16cqi1yggj6k
+X-Received: by 2002:a05:6820:1798:b0:679:a57c:c84e with SMTP id
+ 006d021491bc7-67b176e76bamr197868eaf.5.1772580935135; Tue, 03 Mar 2026
+ 15:35:35 -0800 (PST)
+Date: Tue, 03 Mar 2026 15:35:35 -0800
+In-Reply-To: <20260303101717.27224-1-jack@suse.cz>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a77047.050a0220.21ae90.0011.GAE@google.com>
+Subject: [syzbot ci] Re: fs: Move metadata bh tracking from address_space
+From: syzbot ci <syzbot+ciaf5532c890030251@syzkaller.appspotmail.com>
+To: agruenba@redhat.com, aivazian.tigran@gmail.com, 
+	almaz.alexandrovich@paragon-software.com, axboe@kernel.dk, bcrl@kvack.org, 
+	brauner@kernel.org, david@kernel.org, dsterba@suse.com, gfs2@lists.linux.dev, 
+	hirofumi@mail.parknet.co.jp, jack@suse.cz, jlbec@evilplan.org, 
+	joseph.qi@linux.alibaba.com, linux-aio@kvack.org, linux-block@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	muchun.song@linux.dev, ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	osalvador@suse.de, tytso@mit.edu, viro@zeniv.linux.org.uk
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 29CC7C0007
+X-Stat-Signature: b5pst3ataruyiabux69r6sysukddiy8q
 X-Rspam-User: 
-X-HE-Tag: 1772579057-318656
-X-HE-Meta: U2FsdGVkX19Yhg283xwdVdlrKw6cPSw4xBOZksS725QOQ7BU4BlGt6Bartrh7bnLp/PtrXe+cpcAmEJvrju37X+sCEzrJgiZiDnU3sCohq2Bkdhxso/d2TLounRUS66inzs7mybsoAK3wJVaruvsWpAM2SKYbMd2KLXYN5jELwbOh/dsYv7P+0dMDmipi8XgowzH9dC6nFm+RKyId17+MpOjgVLc3S5+iofFV33886dSL9Hgj4vdeA3a+rivGnDs3bROJWKjkmKJ2B2Lhps5+cpToJwBfsfNoaGRpw64Rdwo9YHh1wXlQ60aWY4h03tOsKVBBUSBC9mmSbtJoe1B1R+HsCGtPazP10ZZwxgNXtv/CKWbBYh/SBeA4bG9UwtScLo4Bq9ppHyyZSCxe0+tR0pITV9xB/kBYKgcpxFt+vuYObGgFb1SMqBMvUK7Ao533zLB3ocqtOeE3kDsllwgoPKRu1wiXi7gdrEOXPQ8xrmKhs5oPpSvIxgLDqLW7NTgJ+NbacE6T4LSBbaC5ed9wPNvFYAqrvFKL/0YZIQf0PpAvcQiKa8PsXxAXru+LSZX/o+msW+Ii1tuTaCdQ1RZKd0LBA3qrEq97yIozz2Pr+SQq7p7f/d6ruJSpA+kncDgk2h8yTfolz0jS56slr9Ohdc/dwo4HMg/6aBo63CfYZsJKoN00t/1sjG9hZ6SyyfBU+XdFzh7Vgq3jkhKco37pEvVPKOwmylvSzB0NpomdYMY5Ewwm/r7yh2hkH7RBcgmn1bC/bZHcqNQ3DO6YH/tPsulp/3qJZaSeeTa3jN2ly+KrrJQmhdz9JeZv8JEp2CEGILPaDl/0bSrF60ZDKPJUsK1o0ImLYVyJ10caB0DLaz4a1nExQO5r2oRcc33nnUO2D9k5Mw+lKDXYA1zvM9GhpGqSNyUw5ZKNKjmnGwLmkYoqUsJDrZuub2yXsWtYWgrGhxJvYawHOoPrnYliwv
- PJ1W8X23
- 0wTgfuZINn9UhSEf+HADk0jekFCZEZfE/PbnLEaeEtej34qMZAx1ZWZ3GUWh8ijAZeKw2fm45O8VKepsxatm4wnqo7BASk6GMYuaN6AkQci2DSkrkyMyYH2B81ghGXxINE5tbbcL589adZYVln1e4JzWaF/iPwrQ3u78DfS+O3rACER8ILhXEgo+mFp6EpHdWNJcoeQvZqWV3OZ60sGOXXNCVn/WSqhdb57ddJvC7h0QYbo5WTri+2OnUm6VCAuT9E9vt8Hj2tRnoa57pHcBOHr91KotXtqdsBwmmfTi+wX01KXkpYXIK20LXlCXH0+WMnX7Q6U+RPSFAJXsFpKcgCHDCrwgyi9lixBtqWTk6f4Q/npvZ1iKGVuYF2pW90vaE2pPW9WQL/mAHoZQh3f0INf5vPRSuuv1BFgvV72CWTDR/DKJpDXTHZ0npuSqbNtKd5N0NyEyhacYU06dN8wBdw4BVgxYfz2BNjBfLwy4wCm/1su8rbwwzms1BG4I+/7SRsfLt395GaOxKRfmJ51qL6oqr4g==
+X-HE-Tag: 1772580935-10202
+X-HE-Meta: U2FsdGVkX1+BP0ylCMwBvlvmyiqMtwppLcDGLmfVoB8AH0cX0ZeztoTqUgvl6Ue9KA3D+uNyZ5M0tE2Svog39/A7K52jbmXRZFmEWlL4hqRUbBK5oJpifX29K99BTQczt9dZqef2gHU93LL2hBcOE9Nq+7zhAaciSWWIvWe/Uye4PHpBAOAfxxvrCGPKWE5916MImOKvHsGGQfE5B54QyqYkDPLtB0Sv1EXt+A0/FXjWZB/Xm2PUoPf+hmjiZoNRRB5zhAqUi26Jh22xDV+mZmCUrgtJknA+4vR3WdhY/7D22MkeUZDA4eydpilKwFEG9XrwErtnwXL7+8YvCX8bks+ef2nccnQbDb1kaZjHQmSnZJFfhpIDUKYU31ibEyV1kJIsPWPLbWqCht+6gxM6IhcIYVhH4hR5TqZb11jHjwyLuhahxik+1bb9OXha8EzfuvPoIKWVzgCle99mCoFkGGf02wfF3IIr0PSGgZPjCimEpxqK9WhDJDyY8NwL3nj9cx79LPWgxsb8ERYMFuR4gloCQICx9n4lXbtJ0+RdqwLv7h6IVpIyGFSicMKBuggl+VS3ho5EuiWZoIvDhUxJCBN/u4srmEfRHl0URsWiGPla7am/Xb2eckg/cZxSw3wsTMZJ/SWw+b/7CVb044WZuIFRb8bQRWGUwsH+vNBifhxEzE1DJl5/zrR1M4Y8bNQelWYT9WqfcG5gTpFnQmzhsK0mHU56GsjVly8AmsCYW0hdxdOrReqFDKOzy2Qf6uJjNjEg/gTM2SELzJVKQ95Hy5rMiyUL1F9NDAz8P3JXA3EHAXX54PMlJHyiod/fMtzw4Cv5fnaZSM2R6bgXu22ptm+8Oawuo8agSiVxhL6nMEXo3r8IpjX7J+EN/RcmrQAwtnX1iG3fWETwyqgjbbQyJm3QBzbXyvl/V8Xi+DJU52s2baMC5656MY6FiAGwBfBydmD6QnGsKDG3hc2nVNz
+ bOkubXF9
+ RRyTAwXzzdgtN4RBd3LJH5+VTA+dup+7z7kKiMPuB+vcNge99zTvJ6o2hfXqN+W434Q7gwuDkU928TVLmb2JLIpJEuwwSUC8j0NcnYbFpoizP/TeDhWECYzXP296f9hiPAmwShZ5KVd9RfkMNtQk0o5Uv7f6ooRtj06svmZ7zCHETVEni3WMcYwHLr33LXmbkO98seIeVVba84akRFG55QSwxNOGXF2i5oRkRl6QySDjwfZTh0qtrCmQTNj6s8Te9Be5G54eH6leShBORHg1wWLDvN9yctqAZ8YbOHLFJa9Z4HAq08ZVuw98uG0TuZHN43oNG3CZhDS9eiTkuZl0PZIQu3sNWUpDkVdSuTjRfotTnCLDUhs88AIKXCdLb/ch9Ibp8cQnz1p9Xy3o1KmZAuTjx2PlX637oXq1ihdgfhzYmzGwWEAd5586IUmFM5BH5h10DKJ+Dt88jvjJ9YPx+e61glEgthI8OCYWd0SHTTetK69i8Q2g9zbb61FabYMcGZzzjsk8E7NagxwxZoCdJTVTCLKjNfY2OXyKKQBmqZ2J9U6jJ2QuZH/hqgaYOjSpCsiGclMhk3D16wArYVVyopoKzocPI3BWVE8V+O68X7MgUVlVbifBnQRf5sTQ3PPWPdwpkWyoK5Hg2LxTgKxb1xxSYYDcq8IRuO4wDvWQzyoE6JuCVzF9G0XL9y4Dkp7mc2lRMI07uroAFkPLfyfXPaZEprF76ix4DXr+l3jC66MbBPEkRO/9EO0Z4D+31pikq1hq79qLQfHs8VdCdJmpgfV5gKTtYWmvPaKlU87lbiHu0vE9a1V/xwcuEFQTWK4ysyC/nEWyyUKKic52xTZhE3MnUr3YorlYVJ7LC+pjgEkFMOOi/Le5GW0ppv3ynhkFzNEwddFCjSFVAGAh636dfDDK7Zvvne1MhEYRxFBge6eY/b+D83+ZWLxUHbTlchoiAtYmhxbhHk4wEJmW7aCbIMld/0pFJ
+ vjfr5xL3
+ 8UrlthyXN8gOnUFU60OSOoL5LFMakfC2LdebYDxbKeF/dGLEXSm7u6+Rsh0UAPLPEUE6KNqNYE3U/0itoJKuMC6eLefRZLlD+a991gYHQ2Rq6HOluLytOwvOgzMPQB1R
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,303 +103,532 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 02:34:09PM +0100, Thomas Hellström wrote:
-> Now that the two-pass notifier flow uses xe_vma_userptr_do_inval() for
-> the fence-wait + TLB-invalidate work, extend it to support a further
-> deferred TLB wait:
-> 
-> - xe_vma_userptr_do_inval(): when the embedded finish handle is free,
->   submit the TLB invalidation asynchronously (xe_vm_invalidate_vma_submit)
->   and return &userptr->finish so the mmu_notifier core schedules a third
->   pass.  When the handle is occupied by a concurrent invalidation, fall
->   back to the synchronous xe_vm_invalidate_vma() path.
-> 
-> - xe_vma_userptr_complete_tlb_inval(): new helper called from
->   invalidate_finish when tlb_inval_submitted is set.  Waits for the
->   previously submitted batch and unmaps the gpusvm pages.
-> 
-> xe_vma_userptr_invalidate_finish() dispatches between the two helpers
-> via tlb_inval_submitted, making the three possible flows explicit:
-> 
->   pass1 (fences pending)  -> invalidate_finish -> do_inval (sync TLB)
->   pass1 (fences done)     -> do_inval -> invalidate_finish
->                           -> complete_tlb_inval (deferred TLB)
->   pass1 (finish occupied) -> do_inval (sync TLB, inline)
-> 
-> In multi-GPU scenarios this allows TLB flushes to be submitted on all
-> GPUs in one pass before any of them are waited on.
-> 
-> Also adds xe_vm_invalidate_vma_submit() which submits the TLB range
-> invalidation without blocking, populating a xe_tlb_inval_batch that
-> the caller waits on separately.
-> 
-> v3:
-> - Add locking asserts and notifier state asserts (Matt Brost)
-> - Update the locking documentation of the notifier
->   state members (Matt Brost)
-> - Remove unrelated code formatting changes (Matt Brost)
-> 
-> Assisted-by: GitHub Copilot:claude-sonnet-4.6
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+syzbot ci has tested the following series
 
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+[v1] fs: Move metadata bh tracking from address_space
+https://lore.kernel.org/all/20260303101717.27224-1-jack@suse.cz
+* [PATCH 01/32] fat: Sync and invalidate metadata buffers from fat_evict_inode()
+* [PATCH 02/32] udf: Sync and invalidate metadata buffers from udf_evict_inode()
+* [PATCH 03/32] minix: Sync and invalidate metadata buffers from minix_evict_inode()
+* [PATCH 04/32] ext2: Sync and invalidate metadata buffers from ext2_evict_inode()
+* [PATCH 05/32] ext4: Sync and invalidate metadata buffers from ext4_evict_inode()
+* [PATCH 06/32] ext4: Use inode_has_buffers()
+* [PATCH 07/32] bfs: Sync and invalidate metadata buffers from bfs_evict_inode()
+* [PATCH 08/32] affs: Sync and invalidate metadata buffers from affs_evict_inode()
+* [PATCH 09/32] fs: Ignore inode metadata buffers in inode_lru_isolate()
+* [PATCH 10/32] fs: Stop using i_private_data for metadata bh tracking
+* [PATCH 11/32] gfs2: Don't zero i_private_data
+* [PATCH 12/32] hugetlbfs: Stop using i_private_data
+* [PATCH 13/32] aio: Stop using i_private_data and i_private_lock
+* [PATCH 14/32] fs: Remove i_private_data
+* [PATCH 15/32] fs: Drop osync_buffers_list()
+* [PATCH 16/32] fs: Fold fsync_buffers_list() into sync_mapping_buffers()
+* [PATCH 17/32] fs: Move metadata bhs tracking to a separate struct
+* [PATCH 18/32] fs: Provide operation for fetching mapping_metadata_bhs
+* [PATCH 19/32] ntfs3: Drop pointless sync_mapping_buffers() call
+* [PATCH 20/32] ocfs2: Drop pointless sync_mapping_buffers() calls
+* [PATCH 21/32] bdev: Drop pointless invalidate_mapping_buffers() call
+* [PATCH 22/32] fs: Switch inode_has_buffers() to take mapping_metadata_bhs
+* [PATCH 23/32] ext2: Track metadata bhs in fs-private inode part
+* [PATCH 24/32] affs: Track metadata bhs in fs-private inode part
+* [PATCH 25/32] bfs: Track metadata bhs in fs-private inode part
+* [PATCH 26/32] fat: Track metadata bhs in fs-private inode part
+* [PATCH 27/32] udf: Track metadata bhs in fs-private inode part
+* [PATCH 28/32] minix: Track metadata bhs in fs-private inode part
+* [PATCH 29/32] ext4: Track metadata bhs in fs-private inode part
+* [PATCH 30/32] vfs: Drop mapping_metadata_bhs from address space
+* [PATCH 31/32] kvm: Use private inode list instead of i_private_list
+* [PATCH 32/32] fs: Drop i_private_list from address_space
 
-> ---
->  drivers/gpu/drm/xe/xe_userptr.c | 63 ++++++++++++++++++++++++++++-----
->  drivers/gpu/drm/xe/xe_userptr.h | 17 +++++++++
->  drivers/gpu/drm/xe/xe_vm.c      | 38 +++++++++++++++-----
->  drivers/gpu/drm/xe/xe_vm.h      |  2 ++
->  4 files changed, 104 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
-> index 37032b8125a6..6761005c0b90 100644
-> --- a/drivers/gpu/drm/xe/xe_userptr.c
-> +++ b/drivers/gpu/drm/xe/xe_userptr.c
-> @@ -8,6 +8,7 @@
->  
->  #include <linux/mm.h>
->  
-> +#include "xe_tlb_inval.h"
->  #include "xe_trace_bo.h"
->  
->  static void xe_userptr_assert_in_notifier(struct xe_vm *vm)
-> @@ -81,8 +82,8 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
->  				    &ctx);
->  }
->  
-> -static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
-> -				    bool is_deferred)
-> +static struct mmu_interval_notifier_finish *
-> +xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma, bool is_deferred)
->  {
->  	struct xe_userptr *userptr = &uvma->userptr;
->  	struct xe_vma *vma = &uvma->vma;
-> @@ -93,6 +94,8 @@ static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvm
->  	long err;
->  
->  	xe_userptr_assert_in_notifier(vm);
-> +	if (is_deferred)
-> +		xe_assert(vm->xe, userptr->finish_inuse && !userptr->tlb_inval_submitted);
->  
->  	err = dma_resv_wait_timeout(xe_vm_resv(vm),
->  				    DMA_RESV_USAGE_BOOKKEEP,
-> @@ -100,6 +103,19 @@ static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvm
->  	XE_WARN_ON(err <= 0);
->  
->  	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
-> +		if (!userptr->finish_inuse) {
-> +			/*
-> +			 * Defer the TLB wait to an extra pass so the caller
-> +			 * can pipeline TLB flushes across GPUs before waiting
-> +			 * on any of them.
-> +			 */
-> +			xe_assert(vm->xe, !userptr->tlb_inval_submitted);
-> +			userptr->finish_inuse = true;
-> +			userptr->tlb_inval_submitted = true;
-> +			err = xe_vm_invalidate_vma_submit(vma, &userptr->inval_batch);
-> +			XE_WARN_ON(err);
-> +			return &userptr->finish;
-> +		}
->  		err = xe_vm_invalidate_vma(vma);
->  		XE_WARN_ON(err);
->  	}
-> @@ -108,6 +124,28 @@ static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvm
->  		userptr->finish_inuse = false;
->  	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
->  			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
-> +	return NULL;
-> +}
-> +
-> +static void
-> +xe_vma_userptr_complete_tlb_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma)
-> +{
-> +	struct xe_userptr *userptr = &uvma->userptr;
-> +	struct xe_vma *vma = &uvma->vma;
-> +	struct drm_gpusvm_ctx ctx = {
-> +		.in_notifier = true,
-> +		.read_only = xe_vma_read_only(vma),
-> +	};
-> +
-> +	xe_userptr_assert_in_notifier(vm);
-> +	xe_assert(vm->xe, userptr->finish_inuse);
-> +	xe_assert(vm->xe, userptr->tlb_inval_submitted);
-> +
-> +	xe_tlb_inval_batch_wait(&userptr->inval_batch);
-> +	userptr->tlb_inval_submitted = false;
-> +	userptr->finish_inuse = false;
-> +	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
-> +			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
->  }
->  
->  static struct mmu_interval_notifier_finish *
-> @@ -153,11 +191,10 @@ xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
->  	 * If it's already in use, or all fences are already signaled,
->  	 * proceed directly to invalidation without deferring.
->  	 */
-> -	if (signaled || userptr->finish_inuse) {
-> -		xe_vma_userptr_do_inval(vm, uvma, false);
-> -		return NULL;
-> -	}
-> +	if (signaled || userptr->finish_inuse)
-> +		return xe_vma_userptr_do_inval(vm, uvma, false);
->  
-> +	/* Defer: the notifier core will call invalidate_finish once done. */
->  	userptr->finish_inuse = true;
->  
->  	return &userptr->finish;
-> @@ -205,7 +242,15 @@ static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish
->  		xe_vma_start(vma), xe_vma_size(vma));
->  
->  	down_write(&vm->svm.gpusvm.notifier_lock);
-> -	xe_vma_userptr_do_inval(vm, uvma, true);
-> +	/*
-> +	 * If a TLB invalidation was previously submitted (deferred from the
-> +	 * synchronous pass1 fallback), wait for it and unmap pages.
-> +	 * Otherwise, fences have now completed: invalidate the TLB and unmap.
-> +	 */
-> +	if (uvma->userptr.tlb_inval_submitted)
-> +		xe_vma_userptr_complete_tlb_inval(vm, uvma);
-> +	else
-> +		xe_vma_userptr_do_inval(vm, uvma, true);
->  	up_write(&vm->svm.gpusvm.notifier_lock);
->  	trace_xe_vma_userptr_invalidate_complete(vma);
->  }
-> @@ -243,7 +288,9 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
->  
->  	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
->  	if (finish)
-> -		xe_vma_userptr_do_inval(vm, uvma, true);
-> +		finish = xe_vma_userptr_do_inval(vm, uvma, true);
-> +	if (finish)
-> +		xe_vma_userptr_complete_tlb_inval(vm, uvma);
->  }
->  #endif
->  
-> diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
-> index e1830c2f5fd2..2a3cd1b5efbb 100644
-> --- a/drivers/gpu/drm/xe/xe_userptr.h
-> +++ b/drivers/gpu/drm/xe/xe_userptr.h
-> @@ -14,6 +14,8 @@
->  
->  #include <drm/drm_gpusvm.h>
->  
-> +#include "xe_tlb_inval_types.h"
-> +
->  struct xe_vm;
->  struct xe_vma;
->  struct xe_userptr_vma;
-> @@ -63,12 +65,27 @@ struct xe_userptr {
->  	 * alternatively by the same lock in read mode *and* the vm resv held.
->  	 */
->  	struct mmu_interval_notifier_finish finish;
-> +	/**
-> +	 * @inval_batch: TLB invalidation batch for deferred completion.
-> +	 * Stores an in-flight TLB invalidation submitted during a two-pass
-> +	 * notifier so the wait can be deferred to a subsequent pass, allowing
-> +	 * multiple GPUs to be signalled before any of them are waited on.
-> +	 * Protected using the same locking as @finish.
-> +	 */
-> +	struct xe_tlb_inval_batch inval_batch;
->  	/**
->  	 * @finish_inuse: Whether @finish is currently in use by an in-progress
->  	 * two-pass invalidation.
->  	 * Protected using the same locking as @finish.
->  	 */
->  	bool finish_inuse;
-> +	/**
-> +	 * @tlb_inval_submitted: Whether a TLB invalidation has been submitted
-> +	 * via @inval_batch and is pending completion.  When set, the next pass
-> +	 * must call xe_tlb_inval_batch_wait() before reusing @inval_batch.
-> +	 * Protected using the same locking as @finish.
-> +	 */
-> +	bool tlb_inval_submitted;
->  	/**
->  	 * @initial_bind: user pointer has been bound at least once.
->  	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
-> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-> index a3c2e8cefec7..fdad9329dfb4 100644
-> --- a/drivers/gpu/drm/xe/xe_vm.c
-> +++ b/drivers/gpu/drm/xe/xe_vm.c
-> @@ -3967,20 +3967,23 @@ void xe_vm_unlock(struct xe_vm *vm)
->  }
->  
->  /**
-> - * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without a lock
-> + * xe_vm_invalidate_vma_submit - Submit a job to invalidate GPU mappings for
-> + * VMA.
->   * @vma: VMA to invalidate
-> + * @batch: TLB invalidation batch to populate; caller must later call
-> + *         xe_tlb_inval_batch_wait() on it to wait for completion
->   *
->   * Walks a list of page tables leaves which it memset the entries owned by this
-> - * VMA to zero, invalidates the TLBs, and block until TLBs invalidation is
-> - * complete.
-> + * VMA to zero, invalidates the TLBs, but doesn't block waiting for TLB flush
-> + * to complete, but instead populates @batch which can be waited on using
-> + * xe_tlb_inval_batch_wait().
->   *
->   * Returns 0 for success, negative error code otherwise.
->   */
-> -int xe_vm_invalidate_vma(struct xe_vma *vma)
-> +int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch)
->  {
->  	struct xe_device *xe = xe_vma_vm(vma)->xe;
->  	struct xe_vm *vm = xe_vma_vm(vma);
-> -	struct xe_tlb_inval_batch batch;
->  	struct xe_tile *tile;
->  	u8 tile_mask = 0;
->  	int ret = 0;
-> @@ -4023,14 +4026,33 @@ int xe_vm_invalidate_vma(struct xe_vma *vma)
->  
->  	ret = xe_tlb_inval_range_tilemask_submit(xe, xe_vma_vm(vma)->usm.asid,
->  						 xe_vma_start(vma), xe_vma_end(vma),
-> -						 tile_mask, &batch);
-> +						 tile_mask, batch);
->  
->  	/* WRITE_ONCE pairs with READ_ONCE in xe_vm_has_valid_gpu_mapping() */
->  	WRITE_ONCE(vma->tile_invalidated, vma->tile_mask);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * xe_vm_invalidate_vma - invalidate GPU mappings for VMA without a lock
-> + * @vma: VMA to invalidate
-> + *
-> + * Walks a list of page tables leaves which it memset the entries owned by this
-> + * VMA to zero, invalidates the TLBs, and block until TLBs invalidation is
-> + * complete.
-> + *
-> + * Returns 0 for success, negative error code otherwise.
-> + */
-> +int xe_vm_invalidate_vma(struct xe_vma *vma)
-> +{
-> +	struct xe_tlb_inval_batch batch;
-> +	int ret;
->  
-> -	if (!ret)
-> -		xe_tlb_inval_batch_wait(&batch);
-> +	ret = xe_vm_invalidate_vma_submit(vma, &batch);
-> +	if (ret)
-> +		return ret;
->  
-> +	xe_tlb_inval_batch_wait(&batch);
->  	return ret;
->  }
->  
-> diff --git a/drivers/gpu/drm/xe/xe_vm.h b/drivers/gpu/drm/xe/xe_vm.h
-> index 62f4b6fec0bc..0bc7ed23eeae 100644
-> --- a/drivers/gpu/drm/xe/xe_vm.h
-> +++ b/drivers/gpu/drm/xe/xe_vm.h
-> @@ -242,6 +242,8 @@ struct dma_fence *xe_vm_range_unbind(struct xe_vm *vm,
->  
->  int xe_vm_invalidate_vma(struct xe_vma *vma);
->  
-> +int xe_vm_invalidate_vma_submit(struct xe_vma *vma, struct xe_tlb_inval_batch *batch);
-> +
->  int xe_vm_validate_protected(struct xe_vm *vm);
->  
->  static inline void xe_vm_queue_rebind_worker(struct xe_vm *vm)
-> -- 
-> 2.53.0
-> 
+and found the following issues:
+* BUG: spinlock bad magic in region_del
+* KASAN: slab-use-after-free Read in region_del
+* general protection fault in mark_buffer_dirty_inode
+
+Full report is available here:
+https://ci.syzbot.org/series/3cf14b16-7f50-44ce-9f95-8ac4b86cf294
+
+***
+
+BUG: spinlock bad magic in region_del
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      f50c6ce7bf30099042dac755fbd1e97da456f5ec
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/e716ec88-6c00-48e7-868d-3f4cb3999d4b/config
+syz repro: https://ci.syzbot.org/findings/0d1bc933-ce69-432e-a2d5-b2411fe4cfec/syz_repro
+
+BUG: spinlock bad magic on CPU#0, syz.0.151/6273
+ lock: 0xffff8881165dc808, .magic: 00000000, .owner: <none>/-1, .owner_cpu: 0
+CPU: 0 UID: 0 PID: 6273 Comm: syz.0.151 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ spin_bug kernel/locking/spinlock_debug.c:78 [inline]
+ debug_spin_lock_before kernel/locking/spinlock_debug.c:86 [inline]
+ do_raw_spin_lock+0x1e5/0x2f0 kernel/locking/spinlock_debug.c:115
+ spin_lock include/linux/spinlock.h:341 [inline]
+ region_del+0xbe/0x950 mm/hugetlb.c:863
+ hugetlb_unreserve_pages+0xfa/0x230 mm/hugetlb.c:6757
+ remove_inode_hugepages+0x1036/0x11a0 fs/hugetlbfs/inode.c:613
+ hugetlbfs_evict_inode+0xaf/0x260 fs/hugetlbfs/inode.c:623
+ evict+0x61e/0xb10 fs/inode.c:841
+ __dentry_kill+0x1a2/0x5e0 fs/dcache.c:670
+ finish_dput+0xc9/0x480 fs/dcache.c:879
+ do_one_tree fs/dcache.c:1657 [inline]
+ shrink_dcache_for_umount+0xe1/0x1f0 fs/dcache.c:1671
+ generic_shutdown_super+0x6f/0x2d0 fs/super.c:624
+ kill_anon_super+0x3b/0x70 fs/super.c:1292
+ deactivate_locked_super+0xbc/0x130 fs/super.c:476
+ cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x69b/0x2320 kernel/exit.c:971
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1112
+ get_signal+0x1284/0x1330 kernel/signal.c:3034
+ arch_do_signal_or_restart+0xbc/0x830 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
+ exit_to_user_mode_loop+0x86/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6e0f19c799
+Code: Unable to access opcode bytes at 0x7f6e0f19c76f.
+RSP: 002b:00007f6e101360e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007f6e0f415fa8 RCX: 00007f6e0f19c799
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f6e0f415fa8
+RBP: 00007f6e0f415fa0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6e0f416038 R14: 00007fff1de1a520 R15: 00007fff1de1a608
+ </TASK>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 0 UID: 0 PID: 6273 Comm: syz.0.151 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:region_del+0x108/0x950 mm/hugetlb.c:864
+Code: 24 20 49 29 c4 4c 03 23 48 89 03 48 8b 5c 24 40 4c 39 eb 0f 84 64 05 00 00 e8 74 c0 9c ff 4c 89 64 24 10 49 89 df 49 c1 ef 03 <41> 80 3c 2f 00 74 08 48 89 df e8 b9 d8 06 00 48 8b 03 48 89 44 24
+RSP: 0018:ffffc90003b17330 EFLAGS: 00010246
+RAX: a69e65823ec40000 RBX: 0000000000000000 RCX: 0000000000000001
+RDX: 0000000000000001 RSI: 0000000000000004 RDI: ffffc90003b172a0
+RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff52000762e54 R12: 0000000000000000
+R13: ffff8881165dc848 R14: 1ffff11022cbb909 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88818de67000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc23744ea7c CR3: 000000000e54c000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ hugetlb_unreserve_pages+0xfa/0x230 mm/hugetlb.c:6757
+ remove_inode_hugepages+0x1036/0x11a0 fs/hugetlbfs/inode.c:613
+ hugetlbfs_evict_inode+0xaf/0x260 fs/hugetlbfs/inode.c:623
+ evict+0x61e/0xb10 fs/inode.c:841
+ __dentry_kill+0x1a2/0x5e0 fs/dcache.c:670
+ finish_dput+0xc9/0x480 fs/dcache.c:879
+ do_one_tree fs/dcache.c:1657 [inline]
+ shrink_dcache_for_umount+0xe1/0x1f0 fs/dcache.c:1671
+ generic_shutdown_super+0x6f/0x2d0 fs/super.c:624
+ kill_anon_super+0x3b/0x70 fs/super.c:1292
+ deactivate_locked_super+0xbc/0x130 fs/super.c:476
+ cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x69b/0x2320 kernel/exit.c:971
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1112
+ get_signal+0x1284/0x1330 kernel/signal.c:3034
+ arch_do_signal_or_restart+0xbc/0x830 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
+ exit_to_user_mode_loop+0x86/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6e0f19c799
+Code: Unable to access opcode bytes at 0x7f6e0f19c76f.
+RSP: 002b:00007f6e101360e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007f6e0f415fa8 RCX: 00007f6e0f19c799
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f6e0f415fa8
+RBP: 00007f6e0f415fa0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6e0f416038 R14: 00007fff1de1a520 R15: 00007fff1de1a608
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:region_del+0x108/0x950 mm/hugetlb.c:864
+Code: 24 20 49 29 c4 4c 03 23 48 89 03 48 8b 5c 24 40 4c 39 eb 0f 84 64 05 00 00 e8 74 c0 9c ff 4c 89 64 24 10 49 89 df 49 c1 ef 03 <41> 80 3c 2f 00 74 08 48 89 df e8 b9 d8 06 00 48 8b 03 48 89 44 24
+RSP: 0018:ffffc90003b17330 EFLAGS: 00010246
+RAX: a69e65823ec40000 RBX: 0000000000000000 RCX: 0000000000000001
+RDX: 0000000000000001 RSI: 0000000000000004 RDI: ffffc90003b172a0
+RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff52000762e54 R12: 0000000000000000
+R13: ffff8881165dc848 R14: 1ffff11022cbb909 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff88818de67000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fc23744ea7c CR3: 000000000e54c000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	24 20                	and    $0x20,%al
+   2:	49 29 c4             	sub    %rax,%r12
+   5:	4c 03 23             	add    (%rbx),%r12
+   8:	48 89 03             	mov    %rax,(%rbx)
+   b:	48 8b 5c 24 40       	mov    0x40(%rsp),%rbx
+  10:	4c 39 eb             	cmp    %r13,%rbx
+  13:	0f 84 64 05 00 00    	je     0x57d
+  19:	e8 74 c0 9c ff       	call   0xff9cc092
+  1e:	4c 89 64 24 10       	mov    %r12,0x10(%rsp)
+  23:	49 89 df             	mov    %rbx,%r15
+  26:	49 c1 ef 03          	shr    $0x3,%r15
+* 2a:	41 80 3c 2f 00       	cmpb   $0x0,(%r15,%rbp,1) <-- trapping instruction
+  2f:	74 08                	je     0x39
+  31:	48 89 df             	mov    %rbx,%rdi
+  34:	e8 b9 d8 06 00       	call   0x6d8f2
+  39:	48 8b 03             	mov    (%rbx),%rax
+  3c:	48                   	rex.W
+  3d:	89                   	.byte 0x89
+  3e:	44                   	rex.R
+  3f:	24                   	.byte 0x24
+
+
+***
+
+KASAN: slab-use-after-free Read in region_del
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      f50c6ce7bf30099042dac755fbd1e97da456f5ec
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/e716ec88-6c00-48e7-868d-3f4cb3999d4b/config
+syz repro: https://ci.syzbot.org/findings/df3f89db-a2df-4664-973c-472164179e0a/syz_repro
+
+==================================================================
+BUG: KASAN: slab-use-after-free in __raw_spin_lock include/linux/spinlock_api_smp.h:158 [inline]
+BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+Read of size 1 at addr ffff888114425020 by task syz.2.313/6592
+
+CPU: 0 UID: 0 PID: 6592 Comm: syz.2.313 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xba/0x230 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ __kasan_check_byte+0x2a/0x40 mm/kasan/common.c:574
+ kasan_check_byte include/linux/kasan.h:402 [inline]
+ lock_acquire+0x79/0x2e0 kernel/locking/lockdep.c:5842
+ __raw_spin_lock include/linux/spinlock_api_smp.h:158 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:341 [inline]
+ region_del+0xbe/0x950 mm/hugetlb.c:863
+ hugetlb_unreserve_pages+0xfa/0x230 mm/hugetlb.c:6757
+ remove_inode_hugepages+0x1036/0x11a0 fs/hugetlbfs/inode.c:613
+ hugetlbfs_evict_inode+0xaf/0x260 fs/hugetlbfs/inode.c:623
+ evict+0x61e/0xb10 fs/inode.c:841
+ __dentry_kill+0x1a2/0x5e0 fs/dcache.c:670
+ finish_dput+0xc9/0x480 fs/dcache.c:879
+ do_one_tree fs/dcache.c:1657 [inline]
+ shrink_dcache_for_umount+0xe1/0x1f0 fs/dcache.c:1671
+ generic_shutdown_super+0x6f/0x2d0 fs/super.c:624
+ kill_anon_super+0x3b/0x70 fs/super.c:1292
+ deactivate_locked_super+0xbc/0x130 fs/super.c:476
+ cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x69b/0x2320 kernel/exit.c:971
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1112
+ get_signal+0x1284/0x1330 kernel/signal.c:3034
+ arch_do_signal_or_restart+0xbc/0x830 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
+ exit_to_user_mode_loop+0x86/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6b41f9c799
+Code: Unable to access opcode bytes at 0x7f6b41f9c76f.
+RSP: 002b:00007f6b42db90e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007f6b42215fa8 RCX: 00007f6b41f9c799
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f6b42215fa8
+RBP: 00007f6b42215fa0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6b42216038 R14: 00007ffd7b00f490 R15: 00007ffd7b00f578
+ </TASK>
+
+Allocated by task 6005:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:415
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x31c/0x660 mm/slub.c:5339
+ kmalloc_noprof include/linux/slab.h:962 [inline]
+ resv_map_alloc+0x51/0x2c0 mm/hugetlb.c:1108
+ hugetlbfs_get_inode+0x5d/0x680 fs/hugetlbfs/inode.c:932
+ hugetlbfs_mknod fs/hugetlbfs/inode.c:987 [inline]
+ hugetlbfs_create+0x59/0xf0 fs/hugetlbfs/inode.c:1009
+ lookup_open fs/namei.c:4483 [inline]
+ open_last_lookups fs/namei.c:4583 [inline]
+ path_openat+0x1395/0x3860 fs/namei.c:4827
+ do_file_open+0x23e/0x4a0 fs/namei.c:4859
+ do_sys_openat2+0x113/0x200 fs/open.c:1366
+ do_sys_open fs/open.c:1372 [inline]
+ __do_sys_creat fs/open.c:1450 [inline]
+ __se_sys_creat fs/open.c:1444 [inline]
+ __x64_sys_creat+0x8f/0xc0 fs/open.c:1444
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 6005:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:253 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2687 [inline]
+ slab_free mm/slub.c:6124 [inline]
+ kfree+0x1c1/0x630 mm/slub.c:6442
+ hugetlbfs_evict_inode+0xe1/0x260 fs/hugetlbfs/inode.c:628
+ evict+0x61e/0xb10 fs/inode.c:841
+ __dentry_kill+0x1a2/0x5e0 fs/dcache.c:670
+ shrink_kill+0xa9/0x2c0 fs/dcache.c:1147
+ shrink_dentry_list+0x2e0/0x5e0 fs/dcache.c:1174
+ shrink_dcache_tree+0xcf/0x310 fs/dcache.c:-1
+ do_one_tree fs/dcache.c:1654 [inline]
+ shrink_dcache_for_umount+0xa8/0x1f0 fs/dcache.c:1671
+ generic_shutdown_super+0x6f/0x2d0 fs/super.c:624
+ kill_anon_super+0x3b/0x70 fs/super.c:1292
+ deactivate_locked_super+0xbc/0x130 fs/super.c:476
+ cleanup_mnt+0x437/0x4d0 fs/namespace.c:1312
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x69b/0x2320 kernel/exit.c:971
+ do_group_exit+0x21b/0x2d0 kernel/exit.c:1112
+ get_signal+0x1284/0x1330 kernel/signal.c:3034
+ arch_do_signal_or_restart+0xbc/0x830 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
+ exit_to_user_mode_loop+0x86/0x480 kernel/entry/common.c:98
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
+ do_syscall_64+0x32d/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff888114425000
+ which belongs to the cache kmalloc-512 of size 512
+The buggy address is located 32 bytes inside of
+ freed 512-byte region [ffff888114425000, ffff888114425200)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888114424000 pfn:0x114424
+head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0x17ff00000000240(workingset|head|node=0|zone=2|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 017ff00000000240 ffff888100041c80 ffffea00044b8a10 ffffea0004539010
+raw: ffff888114424000 0000000000100009 00000000f5000000 0000000000000000
+head: 017ff00000000240 ffff888100041c80 ffffea00044b8a10 ffffea0004539010
+head: ffff888114424000 0000000000100009 00000000f5000000 0000000000000000
+head: 017ff00000000002 ffffea0004510901 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 5267, tgid 5267 (udevd), ts 28927219244, free_ts 28922963584
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x231/0x280 mm/page_alloc.c:1889
+ prep_new_page mm/page_alloc.c:1897 [inline]
+ get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3962
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5250
+ alloc_slab_page mm/slub.c:3255 [inline]
+ allocate_slab+0x77/0x660 mm/slub.c:3444
+ new_slab mm/slub.c:3502 [inline]
+ refill_objects+0x331/0x3c0 mm/slub.c:7134
+ refill_sheaf mm/slub.c:2804 [inline]
+ __pcs_replace_empty_main+0x2b9/0x620 mm/slub.c:4578
+ alloc_from_pcs mm/slub.c:4681 [inline]
+ slab_alloc_node mm/slub.c:4815 [inline]
+ __kmalloc_cache_noprof+0x392/0x660 mm/slub.c:5334
+ kmalloc_noprof include/linux/slab.h:962 [inline]
+ kzalloc_noprof include/linux/slab.h:1200 [inline]
+ kernfs_fop_open+0x397/0xca0 fs/kernfs/file.c:641
+ do_dentry_open+0x785/0x14e0 fs/open.c:949
+ vfs_open+0x3b/0x340 fs/open.c:1081
+ do_open fs/namei.c:4671 [inline]
+ path_openat+0x2e08/0x3860 fs/namei.c:4830
+ do_file_open+0x23e/0x4a0 fs/namei.c:4859
+ do_sys_openat2+0x113/0x200 fs/open.c:1366
+ do_sys_open fs/open.c:1372 [inline]
+ __do_sys_openat fs/open.c:1388 [inline]
+ __se_sys_openat fs/open.c:1383 [inline]
+ __x64_sys_openat+0x138/0x170 fs/open.c:1383
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+page last free pid 5265 tgid 5265 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1433 [inline]
+ __free_frozen_pages+0xc2b/0xdb0 mm/page_alloc.c:2978
+ __slab_free+0x263/0x2b0 mm/slub.c:5532
+ qlink_free mm/kasan/quarantine.c:163 [inline]
+ qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
+ kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
+ __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:350
+ kasan_slab_alloc include/linux/kasan.h:253 [inline]
+ slab_post_alloc_hook mm/slub.c:4501 [inline]
+ slab_alloc_node mm/slub.c:4830 [inline]
+ kmem_cache_alloc_noprof+0x2bc/0x650 mm/slub.c:4837
+ lsm_inode_alloc security/security.c:228 [inline]
+ security_inode_alloc+0x39/0x310 security/security.c:1189
+ inode_init_always_gfp+0x9c8/0xda0 fs/inode.c:305
+ inode_init_always include/linux/fs.h:2925 [inline]
+ alloc_inode+0x82/0x1b0 fs/inode.c:352
+ iget_locked+0x131/0x6a0 fs/inode.c:1474
+ kernfs_get_inode+0x4f/0x780 fs/kernfs/inode.c:253
+ kernfs_iop_lookup+0x1fe/0x320 fs/kernfs/dir.c:1241
+ __lookup_slow+0x2b7/0x410 fs/namei.c:1916
+ lookup_slow+0x53/0x70 fs/namei.c:1933
+ walk_component fs/namei.c:2279 [inline]
+ lookup_last fs/namei.c:2780 [inline]
+ path_lookupat+0x3f5/0x8c0 fs/namei.c:2804
+ filename_lookup+0x256/0x5d0 fs/namei.c:2833
+
+Memory state around the buggy address:
+ ffff888114424f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888114424f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff888114425000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                               ^
+ ffff888114425080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888114425100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
+***
+
+general protection fault in mark_buffer_dirty_inode
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      f50c6ce7bf30099042dac755fbd1e97da456f5ec
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/e716ec88-6c00-48e7-868d-3f4cb3999d4b/config
+C repro:   https://ci.syzbot.org/findings/670a21ca-1447-4fda-909b-5098c9c0cdd9/c_repro
+syz repro: https://ci.syzbot.org/findings/670a21ca-1447-4fda-909b-5098c9c0cdd9/syz_repro
+
+EXT4-fs (loop0): mounted filesystem 76b65be2-f6da-4727-8c75-0525a5b65a09 r/w without journal. Quota mode: none.
+ext4 filesystem being mounted at /0/mnt supports timestamps until 2038-01-19 (0x7fffffff)
+fscrypt: AES-256-CBC-CTS using implementation "cts(cbc(ecb(aes-lib)))"
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 1 UID: 0 PID: 5946 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:kasan_byte_accessible+0x12/0x30 mm/kasan/generic.c:210
+Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 e9 40 6a 80 09 cc 66 66 66 66 66 66 2e
+RSP: 0018:ffffc90003c9f380 EFLAGS: 00010206
+RAX: dffffc0000000000 RBX: ffffffff8bafae9e RCX: 0000000080000002
+RDX: 0000000000000000 RSI: ffffffff8bafae9e RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: dffffc0000000000 R11: fffffbfff2023057 R12: 0000000000000000
+R13: 0000000000000018 R14: 0000000000000018 R15: 0000000000000001
+FS:  0000555590824500(0000) GS:ffff8882a9467000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2e763fff CR3: 000000016fa5e000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __kasan_check_byte+0x12/0x40 mm/kasan/common.c:573
+ kasan_check_byte include/linux/kasan.h:402 [inline]
+ lock_acquire+0x79/0x2e0 kernel/locking/lockdep.c:5842
+ __raw_spin_lock include/linux/spinlock_api_smp.h:158 [inline]
+ _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+ spin_lock include/linux/spinlock.h:341 [inline]
+ mark_buffer_dirty_inode+0xe3/0x2f0 fs/buffer.c:748
+ __ext4_handle_dirty_metadata+0x27a/0x810 fs/ext4/ext4_jbd2.c:393
+ ext4_xattr_block_set+0x24ff/0x2ad0 fs/ext4/xattr.c:2168
+ ext4_xattr_set_handle+0xe34/0x14c0 fs/ext4/xattr.c:2457
+ ext4_set_context+0x233/0x560 fs/ext4/crypto.c:166
+ fscrypt_set_context+0x397/0x460 fs/crypto/policy.c:791
+ __ext4_new_inode+0x3158/0x3d20 fs/ext4/ialloc.c:1314
+ ext4_symlink+0x3ac/0xb90 fs/ext4/namei.c:3386
+ vfs_symlink+0x195/0x340 fs/namei.c:5615
+ filename_symlinkat+0x1cd/0x410 fs/namei.c:5640
+ __do_sys_symlink fs/namei.c:5667 [inline]
+ __se_sys_symlink+0x4d/0x2b0 fs/namei.c:5663
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe222b9c799
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffdf34afb88 EFLAGS: 00000246 ORIG_RAX: 0000000000000058
+RAX: ffffffffffffffda RBX: 00007fe222e15fa0 RCX: 00007fe222b9c799
+RDX: 0000000000000000 RSI: 00002000000000c0 RDI: 0000200000000080
+RBP: 00007fe222c32bd9 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fe222e15fac R14: 00007fe222e15fa0 R15: 00007fe222e15fa0
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:kasan_byte_accessible+0x12/0x30 mm/kasan/generic.c:210
+Code: 79 ff ff ff 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 40 d6 48 c1 ef 03 48 b8 00 00 00 00 00 fc ff df <0f> b6 04 07 3c 08 0f 92 c0 e9 40 6a 80 09 cc 66 66 66 66 66 66 2e
+RSP: 0018:ffffc90003c9f380 EFLAGS: 00010206
+RAX: dffffc0000000000 RBX: ffffffff8bafae9e RCX: 0000000080000002
+RDX: 0000000000000000 RSI: ffffffff8bafae9e RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: dffffc0000000000 R11: fffffbfff2023057 R12: 0000000000000000
+R13: 0000000000000018 R14: 0000000000000018 R15: 0000000000000001
+FS:  0000555590824500(0000) GS:ffff8882a9467000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2e763fff CR3: 000000016fa5e000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess), 4 bytes skipped:
+   0:	0f 1f 40 00          	nopl   0x0(%rax)
+   4:	90                   	nop
+   5:	90                   	nop
+   6:	90                   	nop
+   7:	90                   	nop
+   8:	90                   	nop
+   9:	90                   	nop
+   a:	90                   	nop
+   b:	90                   	nop
+   c:	90                   	nop
+   d:	90                   	nop
+   e:	90                   	nop
+   f:	90                   	nop
+  10:	90                   	nop
+  11:	90                   	nop
+  12:	90                   	nop
+  13:	90                   	nop
+  14:	0f 1f 40 d6          	nopl   -0x2a(%rax)
+  18:	48 c1 ef 03          	shr    $0x3,%rdi
+  1c:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  23:	fc ff df
+* 26:	0f b6 04 07          	movzbl (%rdi,%rax,1),%eax <-- trapping instruction
+  2a:	3c 08                	cmp    $0x8,%al
+  2c:	0f 92 c0             	setb   %al
+  2f:	e9 40 6a 80 09       	jmp    0x9806a74
+  34:	cc                   	int3
+  35:	66                   	data16
+  36:	66                   	data16
+  37:	66                   	data16
+  38:	66                   	data16
+  39:	66                   	data16
+  3a:	66                   	data16
+  3b:	2e                   	cs
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
