@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9E54E67A6B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 05:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44B24E67A69
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 05:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04DB6B0005; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
+	id C80326B0005; Tue,  3 Mar 2026 00:32:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2426B0088; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
+	id C2D9C6B0088; Tue,  3 Mar 2026 00:32:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4536B0089; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
+	id B3A2E6B0089; Tue,  3 Mar 2026 00:32:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ABFCC6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:25:43 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 54E2C1C866
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:25:43 +0000 (UTC)
-X-FDA: 84503614566.13.5F09ABA
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8642F180009
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:25:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2ttx+WDT;
-	spf=pass (imf06.hostedemail.com: domain of 303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A363C6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:32:57 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43FC713B481
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:32:57 +0000 (UTC)
+X-FDA: 84503632794.27.0A3C25D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 36A1440007
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:32:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=B0NJYVfT;
+	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772515541;
+	s=arc-20220608; t=1772515975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
-	b=JHDRQI7SHUiOTbq3PhCEea7NbxX23Y1lSIvO8LTJVTPoq6vpQkqYTpAotjHMXNhFp1Q+Mv
-	ZvAiC8QhMgTUoZN4S2478XuaRJupfHFp0CH53Ep8cSE30T1o5TgphAYp2GMahdfdNrxfkT
-	os/ft5Z8kJs4cR4/61cGgSyE2hZ6NT0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772515541; a=rsa-sha256;
-	cv=none;
-	b=UP+eBcGEX8u7gkqdDrCUQtkpMz6nZ4wD3DH+eTDOylZ+Ic/n8SwTCKHuI17ugHC9Dl7jLj
-	VTgkRudBfWcrXcV17usaMC43npqg0FaVFaUDHTLwbnmslKWX+JShfULHps60iPGuTn8pC4
-	TbYHQG42KNX5jbtuW3YIlUS60KT7eFk=
+	bh=GPV+zg14s52g5SFoFfrYx5Ptt123SRCGdsVSmGW4Gcs=;
+	b=XIzcgN581YXE2QvMmoEzh/crB04HcviYYJvyM7sjNSMwqazd+QkEGhmt9xIn8PgT8WzUEC
+	ioRGWrn82fGiDcxM2dEH8IcR4MuWDzOjGmZs8CWejhD0c6/ultOOVtqf9J6dwoCpLwEqEk
+	0RNjaTlkZvt2PDUBTSjXKcBKVTf8YG0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=2ttx+WDT;
-	spf=pass (imf06.hostedemail.com: domain of 303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com designates 74.125.82.74 as permitted sender) smtp.mailfrom=303CmaQgKCKIDKPILKCQIQQING.EQONKPWZ-OOMXCEM.QTI@flex--bingjiao.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-1276e71652fso9378853c88.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 21:25:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772515540; x=1773120340; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
-        b=2ttx+WDTuel5JAOv+j1le8+maSJnPlncqWWGlPBgGosX0Hr8NBP6d269qcrNEOLldP
-         5497RShqBZwgvTI8kBjzzBJofVVSFwswVX8okX45KblclyWs9Hy9Lf2WUfvqUEnCnQJF
-         6KuZu1C9+AMr2heBp0HnmHihW5otRF/blgGGOvMapy2Tkto5c3/jsDztIXhazEzPnL+r
-         MjPernTnxqdTuRU2HmojoCQcVBoQ/GLWQtMwyZWIf2jPpQU5YUqc4tv1FFKMEaZoz6rL
-         9EJkEf2iB2yq60KFBTYSL25sgFbsM7n5ZgMr3zURQUjoTE+rmtGOx+8Xlh7Dm9tcO89w
-         sqLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772515540; x=1773120340;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k6P9Cvc5u0BaqZ0ifWcq/2P9uYbL+PXFQEz5HrmvWPE=;
-        b=P9Zw06raMSQRyqMB8HOw3Q53WWEkzzwFvg7GlefV9VfD6fMq9fNRRZ+AJ4o5PfEuBn
-         V5IjuOhmPzu19xjxP5tEj4BGrM/BtUMS9UAVjGQaLQvCT+bFF/w3G3wKr9rYGNM4aJph
-         wohDMm3hVYVhGbA5NKHh9KHQMNH2/G+ZUvu/NqJ8s+lBRPXGhVCl2RisypSOfTg/FZif
-         SRzAUD1BQ65Oy6+XWtuALILcxCHB4K8+fY9dazOOT22dFO1hzs8bIEgRXw7AZyWhDmy1
-         V2uktMQzT3O4n4YDkTIVJPcGxVZswquzztxTIycV/mo3uCy5ZamVVViG/eTeUrqdhCsU
-         mqlg==
-X-Forwarded-Encrypted: i=1; AJvYcCXE3BDrqzOI2jDWYMzgft+UO5+bqSj04CoLoj8Qkkz6BTRzGFsNtgO5qBAcSpvScqc5EQcDJlcbxQ==@kvack.org
-X-Gm-Message-State: AOJu0YyIbj+nerBf0vaeHumsqhhZWBujGrSSfmudLjb/44puS+z2eaiF
-	3uBYCxLf+Yu2jriZQyxKrJQvk9KeaDIm57ZBJkJOsxzUHg2gMBTL9tAlyHLnoTsa9g030DMO2/J
-	sd1hY6/9svLL8Mg==
-X-Received: from dlbpd8.prod.google.com ([2002:a05:7022:1408:b0:127:8d0d:ba17])
- (user=bingjiao job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:248a:b0:124:b11f:67ec with SMTP id a92af1059eb24-1278fc6f217mr5778394c88.39.1772515539799;
- Mon, 02 Mar 2026 21:25:39 -0800 (PST)
-Date: Tue,  3 Mar 2026 05:25:17 +0000
-In-Reply-To: <20260302070351.3465439-1-bingjiao@google.com>
-Mime-Version: 1.0
-References: <20260302070351.3465439-1-bingjiao@google.com>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260303052519.109244-1-bingjiao@google.com>
-Subject: [PATCH v2] mm/vmscan: fix unintended mtc->nmask mutation in alloc_demote_folio()
-From: Bing Jiao <bingjiao@google.com>
-To: bingjiao@google.com
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, david@kernel.org, 
-	hannes@cmpxchg.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	lorenzo.stoakes@oracle.com, mhocko@kernel.org, shakeel.butt@linux.dev, 
-	weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8642F180009
-X-Stat-Signature: w7zyhkqajxg3fa87pib3tpq1t5nmp8pw
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=B0NJYVfT;
+	spf=none (imf11.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772515975; a=rsa-sha256;
+	cv=none;
+	b=4TJiAtwazNyXdC+NFkTt9OIgaXL6fzACaNRrU4q5klmJ2WzJy48srH12h5sLH0UOpcChBM
+	DKQOY7T//0rGADpbH+x26Gr8u84oukUPWtKfuw3RAsO0xIAbJnyX1rb2+pzxddFsYKE2qv
+	t+sog0PmQxVboQAEUPIum8ks4dkPb0M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=GPV+zg14s52g5SFoFfrYx5Ptt123SRCGdsVSmGW4Gcs=; b=B0NJYVfTPQrwUmRyc/SBngXZNs
+	H5h1n+NJNoO4prO4VMLunBPH9juYPi88vUvHivlxvubTjNcXFWHTZJ7alrBh/ThhUwesqbtGr+YFT
+	9F20bfQfoObMbqrPd++hk84EjORkxhTqOmeGmHxqYQcxSGjMsXzrxVI7M5jHtDscb8mcg795WpK3u
+	Z3A3mgGSxeRc2vV48jIVZME4xa+Wsm1krQg5ZMM+iaeSHPh3/WhjSi6VUc3l4Ziu250/93g9VtgEg
+	iH03oAc6TZteIx/s6TaLgMlkp4FCgR00uNOKKlclZCetwu1lRff8nn1wvOT34T1na8siSvLEAz1lY
+	RYl8A5oQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxINH-0000000Av9d-1mHC;
+	Tue, 03 Mar 2026 05:32:51 +0000
+Date: Tue, 3 Mar 2026 05:32:51 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: hev <r@hev.cc>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] binfmt_elf: Align eligible read-only PT_LOAD
+ segments to PMD_SIZE for THP
+Message-ID: <aaZyg0GT4_f52UEr@casper.infradead.org>
+References: <20260302155046.286650-1-r@hev.cc>
+ <aaW-x-HVQpSuPRA1@casper.infradead.org>
+ <CAHirt9j-appZ+Mn=8AoG=SW3Lrqi2ajdZDGp8yYWiBWkzBbQ9g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHirt9j-appZ+Mn=8AoG=SW3Lrqi2ajdZDGp8yYWiBWkzBbQ9g@mail.gmail.com>
+X-Rspamd-Queue-Id: 36A1440007
+X-Stat-Signature: xhbhd5f3h4nwx3uara8ji1g7trfm1xib
 X-Rspam-User: 
-X-HE-Tag: 1772515541-911438
-X-HE-Meta: U2FsdGVkX1/m3ds1jN0HWRA0CwnWEF1yr6N5oOO0EmfDK85D/xc5JfCt0nWlNyVBtqDwv/4Phx3Qh0EG7NviDII3isjm4oCQqAn8YK9nt3/eUh8uwiz/tIxASm9XlAdEQOx1rN9TObTeot5VfbhdmdaARBuM8wH1Q24sZmzRDTR9lU4Uad9ydJlPMYk1p9SqzmvCa0TRUL7qaAfnWEoiIjuraLQexFKapmHr18O8yexE4fE5FndKJUZtgUk3Tk3py2gDnlDtrpR1gQvWrHKoPV/aWdHyNsFMY8bA88ew25ACbwxCAxLnKVV5qGB9D9YuPwH6uaAudv8oYcAzaoZjgFDptBLvCo8p+s7p+wIItnykn8YnPemb+70P4acoTI8eqrcH9z52huFFdC3OmTsqJX25EAJ3yQsJaGvrQzVS97VnACgznc7Ed/GNNDt3eWQzIYsulQA91isaRKmfdzvO61MBOO8W6+zTyqUw7X0thfM4Moui0/QSteGaq4YAJwfBOmGoh/uWLrBly35N8LIL14qhjA7/SK3LooaKeBgz5toNwxHb46pC+TbViCiAT7KagklqZVhcHJMXlx23bF03Vtz9C9y59cMpGN2BUMZvvhFvzp/xlpPDltDpUaLAfk2cBdgaXULxJB1nBszBRXX2mPICw39dGqILqtruRLWc0l4QX7u566tojJ3sjjBQlB1RcKzV7+oy6sontWLU7NuhPgS+squhgQrbiKIU5IEUEYarZOLNIme9F+cSI1gNUMhVvvi7gPhY465a9HvntH78l2bm+7rc/cf+sKUySYYU7zIaSUkRd1/Qr8gunGMonZQIqgR7pruSuqE6D0ofVD+gyLmi421b/SS3ywQBmyVLrVthC4RPtksDvHtrUMaWuvt8uHabHN1zvXosz/jWbiNzVpjAsdftzZped1TUJJPU6oDi7+M4IzgTSoSdsjtweEZTUG1tdulYybHyRwulTs0
- hBFrTyWQ
- st0WPYsBdXaM5ndgU1mqb0H+JfLMemoqVEb417cPQPn5lW6py5AgH9SFXKXj32Xt7JuAjtEvQm81igxx5J04u18r6rkQ++XAYqCaCk4G3g9/7tK1Xqzqk89fmw4fIvu2rfLsah34mu6ltBUW/nlGkcIIfM1nEKFXplVFOkQQTd6/bDxM6pUNLgAvdBpIP5Q48hhDtOY2QEPIOPCeprHtyRum2w9OhMM5L25QbUHDgXHJeVlVHK5LVHI08NEXkBajx2TTEpeAsET4sBIjTSmzy+Nd1sQg2Uz/jcYWvptucAgHenhh+Yj++kFh22iafySKwjyb0w5kvzeJe3sHqxzEEQ1eocDjgSf7Ml+yXbnA4z+LXyMUkyfOjy5CWoXQMvPO6vNiw3RpipJWiHVjiDh/7zk/2TEJXHS9M7nvmE3/QcdkffscPZRelCN4WiqrCrW4gn+65zc7fjhuTI4AxkCHpFDlQDshK9TZnPHlcUhU3hNzSaLUqmLMWRgm3QbCop2JWjYTqHTrZkS2ed3wIUsV7TPxzGApCVhV50RUQjqgXdjetDbwnQnS1vuesFo10A6smMGjzBH/A4tmwO3zV4wXm9TZFLVrrhNVqoLuJsm7iSgDIKw5/0QvyHrOc8ZstWr2kuUPT7vsglaGufVKnBVGTkLu4zA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772515974-340186
+X-HE-Meta: U2FsdGVkX198bIFP9AI6SKyA8HkerUIm0OWrb/37CyczQRMobaH10m0GAwjotIzryFChlnj0UM/gTuqoXQ1wGOYnnlz1/XKFheP5LzqvYB992sfepLPGQWLsJbBwozvzZA9Q0H8ILUsyjgwmVqhwpccd6Nq69ZPo9LG3rd8iWDzQrR10jtc7ZCo3znANPU/8s2MIvnNEx1pqX948JKt8xWxj29vlX9cuYnh1xApab4M4Uuu1XhpajHi44093WisE8mEBBX2jbLWL5Hipi3gnuxPOVkFYlbdlgTHMxXWVx9B0UPj8DjJgj46nDhw23ODJ9PMI2kY0AIGscJCREc8WeOFPNd6VZ06Ls8pr6mCcZwEsD/5YbytjEHfGeKJJ3S45mUOD7sXrn+FzJo7i7xq4TsaGBMMxpIfKFCcU/WR2pOQe8H7RKkUGZj5tQVb/zpYPkY6K7E4LBTgEmCndUSkADd/uYcMQZE79pIXGLDwByBVSLxYFJMjg87HqqO6AJQZqVAhc+ISNh2+A6zzTAQ67wg9AAA4IyeIG0GtxBSwtoVwGjyNmMgr0Kaq27/M8FC+Qd7OQqweIxvNjN9t90+5HxQNahYs59VsgzWw8EHqo1eBLfTRbgQU1tV6KrorjgwiiYyjmLiWD+ca/nlalYA55pph+kLM4cVndhv2SZIqLU9uoTIqg6BzAWn0+YIbl1yMJwDrF3u9oAv9PvuSlF0QDt5v0oZyoEUMIfjyjaUR1cMh2tef2a+ZMQVLvgyOTiV3YuJU0ncJQ0VJPWLjkgF48xKTCC1Sa7YTmVz4oVFtJZ2NyMFlar3tFTHT/XjyctHDqZ0jtkEi/FYS1AxRpXGNolAmZGEnsLEDtaK1xWL5mWXGLSIW5/xP2ZbAGjJh4tj+NZsAhTTCxyhSCCSIZ4hFQd9mlRJwAIJZhm+jOel5XFYewx3clpc2hkUlCPonciJifzwdPf/nPxcVSeIm7QL+
+ dQ0Wvzlt
+ 56NVvkF69/noAFu6DiMVQVX4NoVsF6+/F/796m1kHUP1fpUEFdIdyqG4VPdw6yLQITJZYSQ8vFkxOju4P5HNDgP7qhW796Agowlz3lyOEolaurRxNCuWoPnQ+2dhXsVOahv88+7eXg9MQVFhDlbT5tXEPUo3wKFCjpTHDJ+Gu+cLhwMMoSsEuGtR7I3SpAoIhx4CrYQAANfJtYHoDFGs5YLiLstA0eBcoZFZ9J3YbpOp+kiKvrPOQ86waH8Xd9CttHnlc2XVU5Wqnv9XqrjZOg19JKT3GSsX/hb8yS4IjBzV+vcLczyC15hIIfIPPX3PGBOh8Jq+bX+BS2WLe3na1xDsyac6f4tzeO1EkSwlT/GpoInwZD/HjoF98ydE1lSLVE8kD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,63 +95,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In alloc_demote_folio(), mtc->nmask is set to NULL for the first
-allocation. If that succeeds, it returns without restoring mtc->nmask
-to allowed_mask. For subsequent allocations from the migrate_pages()
-batch, mtc->nmask will be NULL. If the target node then becomes full,
-the fallback allocation will use nmask = NULL, allocating from any
-node allowed by the task cpuset, which for kswapd is all nodes.
+On Tue, Mar 03, 2026 at 12:31:59PM +0800, hev wrote:
+> On Tue, Mar 3, 2026 at 12:46 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Mon, Mar 02, 2026 at 11:50:46PM +0800, WANG Rui wrote:
+> > > +config ELF_RO_LOAD_THP_ALIGNMENT
+> > > +     bool "Align read-only ELF load segments for THP (EXPERIMENTAL)"
+> > > +     depends on READ_ONLY_THP_FOR_FS
+> >
+> > This doesn't deserve a config option.
+> 
+> This optimization is not entirely free. Increasing PT_LOAD alignment
+> can waste virtual address space, which is especially significant on
+> 32-bit systems, and it also reduces ASLR entropy by limiting the
+> number of possible load addresses.
+> 
+> In addition, coarser alignment may have secondary microarchitectural
+> effects (eg. on indirect branch prediction), depending on the
+> workload. Because this change affects address space layout and
+> security-related properties, providing users with a way to opt out is
+> reasonable, rather than making it completely unconditional. This
+> behavior fits naturally under READ_ONLY_THP_FOR_FS.
 
-To address this issue, use a local copy of the mtc structure with
-nmask = NULL for the first allocation attempt specifically, ensuring
-the original mtc remains unmodified.
+This isn't reasonable at all.  You're asking distro maintainers to make
+a decision they have insufficient information to make.  Almost none of
+our users compile their own kernels, and frankly those that do don't have
+enough information to make an informed decision about which way to choose.
 
-Fixes: 320080272892 ("mm/demotion: demote pages according to allocation fallback order")
-Signed-off-by: Bing Jiao <bingjiao@google.com>
----
- mm/vmscan.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index cbffc0a27824..c4e0ce737e03 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -966,13 +966,11 @@ static void folio_check_dirty_writeback(struct folio *folio,
- static struct folio *alloc_demote_folio(struct folio *src,
- 		unsigned long private)
- {
-+	struct migration_target_control *mtc, target_nid_mtc;
- 	struct folio *dst;
--	nodemask_t *allowed_mask;
--	struct migration_target_control *mtc;
-
- 	mtc = (struct migration_target_control *)private;
-
--	allowed_mask = mtc->nmask;
- 	/*
- 	 * make sure we allocate from the target node first also trying to
- 	 * demote or reclaim pages from the target node via kswapd if we are
-@@ -982,15 +980,13 @@ static struct folio *alloc_demote_folio(struct folio *src,
- 	 * a demotion of cold pages from the target memtier. This can result
- 	 * in the kernel placing hot pages in slower(lower) memory tiers.
- 	 */
--	mtc->nmask = NULL;
--	mtc->gfp_mask |= __GFP_THISNODE;
--	dst = alloc_migration_target(src, (unsigned long)mtc);
-+	target_nid_mtc = *mtc;
-+	target_nid_mtc.nmask = NULL;
-+	target_nid_mtc.gfp_mask |= __GFP_THISNODE;
-+	dst = alloc_migration_target(src, (unsigned long)&target_nid_mtc);
- 	if (dst)
- 		return dst;
-
--	mtc->gfp_mask &= ~__GFP_THISNODE;
--	mtc->nmask = allowed_mask;
--
- 	return alloc_migration_target(src, (unsigned long)mtc);
- }
-
---
-2.53.0.473.g4a7958ca14-goog
-
+So if we're going to have a way to opt in/out, it needs to be something
+different.  Maybe a heuristic based on size of text segment?  Maybe an
+ELF flag?  But then, if we're going to modify the binary, why not just
+set p_align and then we don't need this patch at all?
 
