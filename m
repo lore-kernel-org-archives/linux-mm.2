@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BB4EC0489
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A31F0EC0463
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:04:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27E476B00B5; Tue,  3 Mar 2026 05:04:24 -0500 (EST)
+	id 116F66B00B6; Tue,  3 Mar 2026 05:04:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 229166B00B6; Tue,  3 Mar 2026 05:04:24 -0500 (EST)
+	id 0EAFC6B00B9; Tue,  3 Mar 2026 05:04:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 118CB6B00B8; Tue,  3 Mar 2026 05:04:24 -0500 (EST)
+	id F2F896B00BA; Tue,  3 Mar 2026 05:04:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 00A336B00B5
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:04:23 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB92D1603F5
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:04:23 +0000 (UTC)
-X-FDA: 84504316806.11.6F22E15
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E0C826B00B6
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:04:41 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A4E6314024E
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:04:41 +0000 (UTC)
+X-FDA: 84504317562.16.F5335E4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 06E9B140006
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:04:21 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DXbN4s/A";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id C938F80009
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:04:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mx2DtyDJ;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772532262;
+	s=arc-20220608; t=1772532279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1XNPw/Qks4ufq3oTYZTZJttNg/tSnUZu2wg04c6XNpc=;
-	b=B2CnJKBaFCC+ekF6V62CderDV5LaePS6fxmVtB2sh4hHphxnYsJGAmJ+VJm0MY2pk3kQsG
-	sx4M3Y6aF16fRslMhqsPEHhnUFSkuKXTBWNLzpc2KDrs2S/c3xd/B/FzgCU5ia8JwIVOaB
-	pD/P2+NVr4pziw5lV2V/3DXZYHyukH4=
+	bh=6toeGU0nhKwnX4pwIVqNYv0tZDnPxk1H+3bmGB4yDbE=;
+	b=rs88h1e5uFM2RUxIFmA64Dw8AZz2rVnY+84Q88wsf1Yvk5kAaLks20iO1wsYTUt7Szj1eZ
+	H5uiry93uNGydRpXqUrRIPqyhLsCOLUvHbYQjkZeGkClQ/S3b8xWFOrQ5wYwYyy/rljZCc
+	JyKMcr2qabrMbziC570XWXilGfTzwhc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="DXbN4s/A";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mx2DtyDJ;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772532262; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772532280; a=rsa-sha256;
 	cv=none;
-	b=2MvnCW49XYjRypC79Xw6AEk3DXt1uF9l0cP2OEQPYOszKXZrZSBUiUW3nqR96K/O63104+
-	ydcFlzgLZzS/r+rbEvzvaCqvJ2vMrr+w/3cwbm6WSgJefYWd1O+LSb2KIFUq15FS3ZM3Iz
-	7Yhq0Jb8pPm95MLOReHGZNtQGTzZMBw=
+	b=flyIWbXjwgdRw5GzkRt3yCm095Bj2WDmu/zvyuzztQLFB3yhpesyGJVH/Nr7gyUxARWUz9
+	HOE4+rTEggM3UIRi71+etmrLI4XFviByZQfmtwTU0ljH5GrduFpynoe9EvcG6snjG07raw
+	Jn0RjQAvpv8oyTLvXrsO1jxczgLm7sU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD36A4424D;
-	Tue,  3 Mar 2026 10:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48089C2BCB2;
-	Tue,  3 Mar 2026 10:04:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E406D43D31;
+	Tue,  3 Mar 2026 10:04:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB44C2BC9E;
+	Tue,  3 Mar 2026 10:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772532260;
-	bh=LybxXzhrFhgaGAXY4fuW1jh4p0ek/7wtaX3PsXxtmhM=;
+	s=k20201202; t=1772532278;
+	bh=nBHk/k5yZiF4QDZtLRFyMKhnqvy9lUM7CbMD3M0dOaE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DXbN4s/A/bmKVh59PKyRzmKRa4GL5DqbyVMCByOsv5ya+SBVMcVBFf7iJYdu/rqTR
-	 WHZlwIbsdc1LEQ8ajTd0xOZdLIWyAkcvSoQk2M3Jb8TQQi0Y46LTv6oxHhNnoX5k5k
-	 jCTSX0GcBNVA2/6V8yLYN8vlczzHbm5vN3k3fYnh9mMHi2oIw1Hz5DFl+u0dXPxXkw
-	 fKVitj6D6sK+1XIrrKNbYqyy6qLfpmfjJggcziQM6O4fw5+cHPGDBV7qySv7wDL8UX
-	 jV/FOGsHzt+q+hoGubqdK/3m7iXm78GHbBvGIZ4zx5nBOzOp80I/vInVVyBDrbnPPA
-	 HXrkAGxyTbfIw==
-Message-ID: <1c6a148b-ca52-497c-9b7e-07a0aed186b3@kernel.org>
-Date: Tue, 3 Mar 2026 11:04:13 +0100
+	b=mx2DtyDJxOxcvJtkTJ14WZx+n43p0eMn2oSshRNuNg6xwLQVfmgPttBACZ9PwVrH0
+	 +0LeBAbi+mclNpvLi78y5IAI2qQ7SPxlrfe9YCx9K/SdDivgyIyZX7BoMfQzpZcjYl
+	 mAysBAWJUiT3Ecf4vSaLx2I04WFhFPLMT/akz67y5gXR7QFLPKSFXBIfzXBeJ47rUJ
+	 vfFiPqltsncVw0olAEdOkoQWp7CLijdZJ40iSlwTA5ON+P3VV0s/pJVsY1DCWgIMuE
+	 bo/MYkqphL7BjK2EMT5ojcNjMMZnmU5kKII1gwJMXmE3xqjvN+gddFEEjGbn9c+hHb
+	 bXVzVyHiDdM4w==
+Message-ID: <2d11be07-c142-4cc7-9fa9-f6f3243b5c72@kernel.org>
+Date: Tue, 3 Mar 2026 11:04:31 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] mm/page_reporting: add
- PAGE_REPORTING_ORDER_UNSPECIFIED
+Subject: Re: [PATCH v3 4/5] mm/page_reporting: change
+ PAGE_REPORTING_ORDER_UNSPECIFIED to -1
 To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>, mst@redhat.com
 Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
  decui@microsoft.com, longli@microsoft.com, jasowang@redhat.com,
@@ -80,7 +80,7 @@ Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
  linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
  linux-mm@kvack.org
 References: <20260303093341.2927482-1-yuvraj.sakshith@oss.qualcomm.com>
- <20260303093341.2927482-2-yuvraj.sakshith@oss.qualcomm.com>
+ <20260303093341.2927482-5-yuvraj.sakshith@oss.qualcomm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260303093341.2927482-2-yuvraj.sakshith@oss.qualcomm.com>
+In-Reply-To: <20260303093341.2927482-5-yuvraj.sakshith@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e5pia5bonue8bcbsx6u5cwwf3ebcmokj
+X-Stat-Signature: uj6qtyicm5xp7xje7topc4bpq1wecif3
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 06E9B140006
-X-HE-Tag: 1772532261-466098
-X-HE-Meta: U2FsdGVkX19cHP/aSbl/laIoctxaT94t3jWPlSI9mphgHAi8SoKkqIwNfsmx0TCGir1dmT/ivE/g/4/Q/pkFuWfwbT6hrG7jZ/dOw2RWbkmvqsgrKrvPWyl3FjJwucrOfcilJDT6UWJKTzBK+QTETHpvn4ZMtKNkLYfWYKMUIJej1tNcEo/NFNaGWnoxcMcYNcIdYWOnxW0mdt6jOZuFQ7aEex1pjD2T5vrMhpzqqZYIxXZ+IGe2i0yM9uW/ITd0wsxinK8XKF32UnhU6Z9Isxe2qvTN07Be6SRn/u7WwbCAxwleRxZJtmE9RlxSyjBq2vIZYAVj2JVAhJmeZRJo8rq7RlB2YnuhRUdqBtBcNfK24Bw7w2ui/G34S++kiixxY2RlcuMYBIxNZ5Hc+pSyisIskb4F4Zf8xdrYCaxmV1plfBeMEJ0gxGuRZsZP1OVF6HVkKOTYZcBLHeYLvAh+5ung4jAbvckFZqYuQlSfNyETPxCBSoMyOOIEJ8PICHvsBN3P42RNw3MQFIVL+A2ekRqBymPaA26atH7cNZxmKMriHIDqA6DwoiBLmJFJaN2LSzwA4vOUpTJ5Z7xzUoehoje9SNnKtBlyzLe/L7wv2XwWVnZLp1I1Vctyl9u4gQbMWz9QYRirqFW/4H7WC1EKM5vcMimG3JCfYh38dZQ6Qsb3d85P4roBpRKX1qJcBGjsxmyvpT5J2NCfJzzbRJTfb02WauCPrDGm1D0q7rfnQhiLW/vgtG3O0VveHGjp55gRPWnPNY93QT2v7rzhnbi4iwu+YyolcTHI13c+XRjdI2spxw+31VRRE0kUU2T26YtKdYIff1CCH33Jfdw70L71tAJ5vd3LpdAR8wJPd84FdtEllwI5fiK2W5lgw2+GL7+WTZF2qfpczqXU4WZlPQx6YOGV8fSzOMWhHm7MhgerS3gF9pLU8QLdu+tlp0pM4Tg7jEKzDznHgdbUdScCn9P
- bjLr9c0W
- HL08kKql3PxRtRj8=
+X-Rspamd-Queue-Id: C938F80009
+X-HE-Tag: 1772532279-741474
+X-HE-Meta: U2FsdGVkX190+jPBlHlGucFQ3azOyUKNylnz98xFHdc8HLrkRQZwjV+OyN9tS+bU+z/XtccBJv3yIywxAFVTWri69qQD2eK4klUZzJPsrGxgU5IYaHHuhSY8R+H7uz6uHMRDcGHoIyr2CJYY1SHz8zl8Vx3Bu5lj2HKiZ02KuGdywtbN2qPinevqVkMmrBwr+Em9Pfzhg6LcztT2DPBh5/3/hTg4qb/nRTtSYozU4b89J2KTLsJgH6djkA+sdaUUJv0NZUbUeX3vOGrza78VNemzmlKY/5QAg+Qv34YRISyKSWtyRdc93pkoBaGI/PUN59lwYFqBpZ8FBRgZ4/TPJhWnT0MnGypknRacQ2WV2hVUiZfUBj/RKT3mKURJ5eRPqoKEWX1OewY/5lT6Kq2gYNip9JHBo0yfQ2F820YggZoTddwiQ5l2TQ5OkVS6R0/f2lRHC4x//h1rcCjG99Vf0zIl7Kf+FGUN1oIzZg//dT1Tg8VF48RSPbFyU+9bpAF9d05q5cfODie5IHOT0pljtohgk4/qX9KN1dzi3lND1Q/mLMb5b4FgqrOqIsSrl4zNL62T25iwBWXcovurVWNwgI6yhOAiiKoOdOzOPQ1viZdFNBeNmSK970xoWkfphQT+kHDxKvGm8XOmReRjJ9UFDnTssXBkctEQH1xmm/tpk4UeQnNm3tpdzuH9pueYMf3p5i8jMQKLejATCOQc6regPbtefTMpuafR6VU4ZGN00HsQuCDF5ob1J1gFKEs0XD+ThFP5p8UBH9KG0fKBfNYj08APod5W+C14eVtTROQ0MwPtl/m55eQYfFn+5OmXBjQ2g9LYCNmIZ3Twr3RBADYf6XG7cT9F6c5UD8JoiFt/CYBgMIwojMlCArN26vPmMig66sCFvxUVfJD5roMXCTcSB1qBk0oOJRBG5TLNdt/ZTMkoVXbB4QX4PLi7V+sunK+8Ps2G+Fr+sKAEiFc6dXY
+ Z1g9ZyuK
+ xvUiZYkej3EQw9U7MXDZ7bR5eGCC9sFP/Uk270Hscioi/wzQJYp5GRZl2o2hGOHH6/I/ScRFb6OUuXK6g33C4AVo2JIkfwOpSrOkJ//gApqtBWz+ZSV3yK1lwTWtNr+tqxih4y9SFoWjPpxwOxueNYL/06497RgSzAkYXZ7BbZBNSXqbrUAtJclm/mKGygFjMEEfWnkRG2Opv6sgmORrej61L+ko/MAOgO/OaLQQ97uEGt9HtJWVoqNjIgZpsQ5zmS997SlQRzmKAYuF3VujUlzs88m6+VcAaMphs/74tkeaJxWeQdmR3ebBcLYhG3FeHq+2ZtcWaHkFcB83n9TgWuiZg1qhEPVpj+14F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,52 +146,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/3/26 10:33, Yuvraj Sakshith wrote:
-> Drivers can pass order of pages to be reported while
-> registering itself. Today, this is a magic number, 0.
+> PAGE_REPORTING_ORDER_UNSPECIFIED is now set to zero. This means,
+> pages of order zero cannot be reported to a client/driver -- as zero
+> is used to signal a fallback to MAX_PAGE_ORDER.
 > 
-> Label this with PAGE_REPORTING_ORDER_UNSPECIFIED and
-> check for it when the driver is being registered.
-> 
-> This macro will be used in relevant drivers next.
+> Change PAGE_REPORTING_ORDER_UNSPECIFIED to (-1),
+> so that zero can be used as a valid order with which pages can
+> be reported.
 > 
 > Signed-off-by: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
 > ---
->  include/linux/page_reporting.h | 1 +
->  mm/page_reporting.c            | 5 +++--
->  2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
-> index fe648dfa3..d1886c657 100644
-> --- a/include/linux/page_reporting.h
-> +++ b/include/linux/page_reporting.h
-> @@ -7,6 +7,7 @@
->  
->  /* This value should always be a power of 2, see page_reporting_cycle() */
->  #define PAGE_REPORTING_CAPACITY		32
-> +#define PAGE_REPORTING_ORDER_UNSPECIFIED	0
->  
->  struct page_reporting_dev_info {
->  	/* function that alters pages to make them "reported" */
-> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
-> index e4c428e61..40a756b60 100644
-> --- a/mm/page_reporting.c
-> +++ b/mm/page_reporting.c
-> @@ -369,8 +369,9 @@ int page_reporting_register(struct page_reporting_dev_info *prdev)
->  	 * pageblock_order.
->  	 */
->  
-> -	if (page_reporting_order == -1) {
-> -		if (prdev->order > 0 && prdev->order <= MAX_PAGE_ORDER)
-> +	if (page_reporting_order == PAGE_REPORTING_ORDER_UNSPECIFIED) {
 
-This change must also go to #5.
-
-> +		if (prdev->order != PAGE_REPORTING_ORDER_UNSPECIFIED &&
-> +			prdev->order <= MAX_PAGE_ORDER)
->  			page_reporting_order = prdev->order;
->  		else
->  			page_reporting_order = pageblock_order;
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
