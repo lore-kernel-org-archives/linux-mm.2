@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42010EC1428
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D38FEC1429
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:54:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A79586B015D; Tue,  3 Mar 2026 05:52:54 -0500 (EST)
+	id A7C776B0151; Tue,  3 Mar 2026 05:53:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A508C6B015E; Tue,  3 Mar 2026 05:52:54 -0500 (EST)
+	id A53DF6B0152; Tue,  3 Mar 2026 05:53:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DE436B0160; Tue,  3 Mar 2026 05:52:54 -0500 (EST)
+	id 8D3F86B015E; Tue,  3 Mar 2026 05:53:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 767756B015D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:52:54 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D190B1C49C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:52:53 +0000 (UTC)
-X-FDA: 84504439026.25.2A46B1B
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 78A9C6B0151
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:53:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2581F8B847
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:53:59 +0000 (UTC)
+X-FDA: 84504441798.30.7B21BBC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 03E881C0004
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:52:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkN0AhVq;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 49AC24000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:53:57 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hu4p2+8Z;
+	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772535172;
+	s=arc-20220608; t=1772535237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rfQ8VDnAybiRcImS3cweyWygHikCTVD+P+vDsw6SQVM=;
-	b=XPBRmFy/7LUh5RyXhFEAHxinkbOtTjdM/JiqlBVgqDHJmp3QUI4Z4Wmim0Dt0CRQWErrXW
-	OsFRI/97gOD1dNUCnK/+mSpwBq++T/CmEg5z6pQPl4z+PZQb9uTMYeK8x8J9dhfSKteuOX
-	vYcEKUZB+ijxBtlCwwrjX9VduM6eMzE=
+	bh=iiLQqE/gGoUhUB5FeK4ie7aVui9WPlvjPYhGWBUkR3M=;
+	b=olq3ZpuhxHTW3tj0wWCuxFJnPkx26tyHHagIaReyW0ayzKroNp6D0dmMKJzApZDJMyqu6+
+	f2mzLSdRkb7FQvewpv+vyK0c+xOuvXDjzYL9xDBGy8pKPP08RyqTVSVkhKZUQnHx+VdMad
+	7QvwXDn/Dn8v2IFS+ZvcUJxE+Oumr6o=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkN0AhVq;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hu4p2+8Z;
+	spf=pass (imf04.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772535172; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772535237; a=rsa-sha256;
 	cv=none;
-	b=j9NbqpPbW+3WapqJHdAzX6Mhk5lGQdjumQWkE6ZWlCGlT1doY9tQFQIbUXB4QFnWYgkWCm
-	rA4luFw+gjMaB+vMtXK9ulD8xk51TZp0cBDvG8Ox/AbdrG1LJGFHSmZUoT3HKteKtn1lyw
-	ZQftq32Q612r5jtGIdEwmfu06t7MFo8=
+	b=gXabcP2ImM25BlFffPX9RoWFYFGw2mkn6+uOtBQK1AEih2cvDSsmIjwyVNrYKyvGahXjSd
+	QVcuf/8jGQvF0NOR8YC4wM2sbkeHDbxSiDAZCxZVcfjp35tSjKq8YHxjphQFk/QdoRJwJr
+	QYRVJBpml/OFkZlNugvSvb/t9FTH1rE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C537643F70;
-	Tue,  3 Mar 2026 10:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3ACC116C6;
-	Tue,  3 Mar 2026 10:52:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 448DB43C5F;
+	Tue,  3 Mar 2026 10:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1144FC116C6;
+	Tue,  3 Mar 2026 10:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772535170;
-	bh=nGOhg9QKdd1xgegpWoMeks0A2moqyXq0ThAv01c57R4=;
+	s=k20201202; t=1772535236;
+	bh=p0kDOuUJp/6naEK1aTty8mE71Stjpf1QrLyVZVxDOA4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=gkN0AhVqRF3ETcr5Aa16oLSpRxTKSO8oK8Zkt4YIeJHbHxskYXh7p/NRdTlEhKfuk
-	 5u6De2MfLrgLdJd9tyTZRo7LDV22vXyQyYTcckKvQUYdAQ8zpOoy0eTtU+JOZnB5y9
-	 7HtQWcoG6jVo9I3FqyJXR0dqwKVEfQmYQm/2rR7T+oNP1TG+6qCTK/p9OfeczHTRAX
-	 elYlzyG/qc0W3KHKG0wi3CX/i+zNQYKjtu9ryT1UTo8sA4buRETJvIy99OBopiWFwg
-	 PUe7UTLZtbLzWiiCd44isyIAafgGod1JhN+nQmRiuJZa/Ij09Je4AeYD52HWMb9M/U
-	 hd1unNVYAIKyg==
-Message-ID: <2119a8418cab65eef5e0fb100e44224e39568e10.camel@kernel.org>
+	b=hu4p2+8ZvYZ2X7dr2Us7EaNOBBbABtx9XOvwdTWcuO5KthFigdlgY144/h9J6IGz8
+	 netz+U6Ku25iGs9UZXioxgbANgLrB+qEW0Wmd+TOu/q30RX4W3EuQYBx0VTeLZaiGb
+	 Vqm2xUv9Uja0SiQ8QtXFHgfhKRSqJWcM3qFgu0C6CC2hDwcc/9xzbvhf2162gW5xB9
+	 aWYwY4cO1lv9ftduSfik9ao2JxQA2RDxcHulEbJpmNjLgkTqUvOliNthS+oPycJZyR
+	 yMswS8wlIsEtazmn2Y7jqSdfyA1z43RD0Is3CDQwMxIeWhhsCPdkmIOZlt+j9upVUX
+	 zoCgXIiYdEMAw==
+Message-ID: <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
 Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
  format macro
 From: Jeff Layton <jlayton@kernel.org>
-To: Theodore Tso <tytso@mit.edu>
+To: "Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner	
  <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Steven Rostedt	
  <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
@@ -126,20 +126,20 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
  Namhyung Kim <namhyung@kernel.org>, Mark Rutland	 <mark.rutland@arm.com>,
  Alexander Shishkin <alexander.shishkin@linux.intel.com>,  Jiri Olsa
  <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
- <adrian.hunter@intel.com>,  James Clark <james.clark@linaro.org>, "Darrick
- J. Wong" <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>,  Eric Paris
- <eparis@redhat.com>, Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann
- <marcel@holtmann.org>,  Johan Hedberg <johan.hedberg@gmail.com>, Luiz
- Augusto von Dentz <luiz.dentz@gmail.com>, Oliver Hartkopp	
- <socketcan@hartkopp.net>, Marc Kleine-Budde <mkl@pengutronix.de>, David
- Ahern	 <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>, Steffen
- Klassert	 <steffen.klassert@secunet.com>, Herbert Xu
- <herbert@gondor.apana.org.au>,  Remi Denis-Courmont	 <courmisch@gmail.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,  Xin Long
- <lucien.xin@gmail.com>, Magnus Karlsson <magnus.karlsson@intel.com>, Maciej
- Fijalkowski	 <maciej.fijalkowski@intel.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Jesper Dangaard Brouer	 <hawk@kernel.org>, John
+ <adrian.hunter@intel.com>,  James Clark <james.clark@linaro.org>, Martin
+ Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,  Joerg Reuter
+ <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg	
+ <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, Marc Kleine-Budde
+ <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>,  Neal Cardwell
+ <ncardwell@google.com>, Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu	 <herbert@gondor.apana.org.au>, Remi Denis-Courmont
+ <courmisch@gmail.com>,  Marcelo Ricardo Leitner
+ <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Magnus
+ Karlsson <magnus.karlsson@intel.com>,  Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Alexei Starovoitov	 <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
  Fastabend <john.fastabend@gmail.com>, 	linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
  nvdimm@lists.linux.dev, 	fsverity@lists.linux.dev, linux-mm@kvack.org,
@@ -162,11 +162,12 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
  linux-x25@vger.kernel.org, 	audit@vger.kernel.org,
  linux-bluetooth@vger.kernel.org, 	linux-can@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Date: Tue, 03 Mar 2026 05:52:34 -0500
-In-Reply-To: <20260303012556.GA6520@macsyma-wired.lan>
+Date: Tue, 03 Mar 2026 05:53:39 -0500
+In-Reply-To: <20260303042546.GF13868@frogsfrogsfrogs>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
 	 <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
 	 <20260303012556.GA6520@macsyma-wired.lan>
+	 <20260303042546.GF13868@frogsfrogsfrogs>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
  n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
@@ -246,19 +247,19 @@ Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 03E881C0004
+X-Rspamd-Queue-Id: 49AC24000B
 X-Rspamd-Server: rspam08
-X-Stat-Signature: 3qikrmkcr4jpnr513j7wdsaocbpmzfz1
-X-HE-Tag: 1772535171-678002
-X-HE-Meta: U2FsdGVkX187IbpSq5HAMjOjp4GgOH0uEQ3JosVyEJlBFaQvsr3IRKIw9YZX9MFGHInkumfzvyjQvg0ggrWi8WRRv4V1n8wk3UO0VZtF0EuS4UhU9hJX8IuF9fUM3Dhi2ndLCo9mjEU/tM26ETf9aMvorDDvy0mo1n6I4WCfPSjmArSUGhKwNNCMUne0R2+v+uLx1qfJFFB2RAI2+YxH6sbwNzHWPx+Wddeina0TthBT6iyeYZdHO7kHTeb1UAY9lMO0YEKXKZjubHsR98Sj/EIcRASqs3fGgFvbZYWij3sNu4OwqWccVBSOFwlzOdkR+CWYVXC9ohcrShZzueMZIVn3uC+f+m7GEPEamvkR3xUYnzlhW6ssXkrCVDpWGYOwvnHi06V/dXQ3Zkwf+waxaquCV3e0vU2O1GkG5jgxyHqwPSVaVdsOT9Tdc1X2bw1Bgk2Cq/76Oqirw4OeYXYbXiG/kF7AYdWlsnT3Qzu9Cg4SmGo9RaOiyuxQzIuVsXffkf4VCqINr9LrgJbzSyX+ZSBdTOz1AdA43/6dC05MfvA3HIlelsGb1P0El43x0MfrjPdxXHviQHCcheZLk/+xFhzdunFU9e9RTWWyoLhGiSif5513g+XJnPcZ3+YwYZwefEpHOayxKTb7F3qhB5j03UoMZG8IxgGRfZXp9IUHWbfACmdLOckhBgL1hMGXSuTH0h5hettBx146/Htmgp6rTeLdCpXZzrhPF4B/QLFh4RH3hdde9lVla4ai3uR61Wd1V9TP282jxt0MBR0rircDvrP0jO8SLfpa9+3MTqUyB59VQXvKToDRlHOQdWe15dEiGxqxFGWS0LuuVf3ZkWaHuc7YrV05K2KnhN7B+rhRw27F9vICbdepvK+KPV4eIvKVIPBwLCE6N1JGCRX2vTTm0ATUhLBDJRYSy9a079xr+ZQ7lk1Ah6ekWn+oivXjwe216ZW0NsbB/HIH6HN6Rkl
- +9iba03Z
- /g9JJwNlJ6OyezV0YXXNIzmFp6NznPzrxQYTagSgVcehOJReyasvsip2av3cvbvspn3rmtDIZk6EZ0HJxWLdR6kpLkhB4f3zoYm26kvx10ZWOPvzpqSUY6K8rbXpn5eeEf0m0XxloB3YB9CqxDC1oJigCjnN1Ns4GXwVaQO4fmaKSBCzDS3U5hXuWPyhBaHmdQF7o9ctK8g1Zbby8Iov8FIO9YkAxOXyOtvntgLCLeHgZ56cy7RtdZm8mX8ZcuInYRMJt9xFrBXKMbzFJxjk7gh9HXLUTSAy7baTeHjxaY9ROB2QwEhsBihP86+XBrvdhwVBjgNRlaiwFegkINa1vlqQ0cYjH6tWxh32+abFmHHZ0FyM5/gFoQdDQ4vOQxir9mB7/plcVUU0iXp3jnHtpcyuJVu8ehA3FMY3fCPo008m81Gokw+NKmryCyfNp3gsmF8z8uafg92JXBCUyhSkfvXje/VUxCIJG5IPy7Z/qjmdBPbJoi1XwN60QK+jy4M+f7pqliRvvh9wKH0ZkMOKcuyVzMD4jO5Rh+a8ZI/VPLOlCkDG8pwzRlXq+7a/cZcKx1FOoLC2/JmpqgBqxiXwSxcj7Ip2J4eVHpTPe07MbUuGqnv3xP8zOTwwKO9JuQa4OIQK4v5NpVHql2FQFi92HIIKROvk7Y7jvYX2MaDuHUF50KsT85l5XmI5LofPwmS+w0hZJPy3BTiqIgiYLtsAVoJq6KqQhQUYDjav2TX5zvlTUhzMvUWsUzAhhj4GHg7TZBK0aYjGjDX03YmZAZVHqVgiiq6a6CzoYlcKmCqUgDF/lp565gHK0F8BR/nX6HO8cM2J/Msp5aVlKrMkP+Y4uQ35f37Z1ZXFq0ICKc6LhrmpWroJwNlTFYyj/q33ApdJd6YiI3IaAOrYIJ3KcEllEWrk60J4AtO5KfmgG8R84aGLPgBLe23VYWGwuatS9j2Nd23H6/g9L1i/X2CH0K/wHsKvnLyPA
- OZ+fksEJ
- tFpBlllLSiiUM9bB7o+h9GyCYYoeLGjDXKDnrieQYbcpZNer5LMcETgLiLgwlEVWu1vQTdNzgHNdgH1pIoRNRjNSzdaXmFXWqgs8lKY6eezMRz1EB7/IvjRsE+fziizkJDxnO38V5YqWcB2WsWhJQIAYcRdw4HM6vkQnQOYX2DGvNdXTPissiwUnp5Fj+7D2i9wmDlr1QY5SR9wmQmUuMvzIbiAYh/wKCfLfYug7/r5NR5/g5dMg0ieCS7IiyfKJVlbulYRiQRViFaQIVC6ytDySHgvnhZ9hy9seKTrxzr+PANsOzKPyftlehDrjd3uOpqi9zsACT8DTXTFWx8B9P4GAFeE9cl3cqU3tIBahvd2+oF+ooF4Cbos6cm2DOvtfdbeIJ0LHC01pPiKM4JeBAHWoWRfjU39OwYmHURwiQemwKYiZcfRzU9z0yR60SrnrD0ksre9dqLfyM9yoKv8D92EvN0EDSGLaGalC7o1BNHhZX6YBR5B341iflImHEwzSIrNqJgiBZwul3PQOoKE4LXxHhdL3ZpCUFCFu9zhvrzPInD8c/6DYdXlMd0K+4CKDfSxkjh0moXCB2ubhTOc7wz3a0bJ+8Ecq1N148ZUufiiFxzJ2YdC+LiBH/iFN42AGM2MDZALgQPPnppg9rYNQh14Isg/n0qLs4xvWU93sNAuu+leS0puynX3TWoo/oNpZ1jc6D4ihxT2sz6yA5PNWIfe0q6CYUNv0vo/eN+GtIjwj4ytKCmqXPObkESchTywWuyh81ZZ9mS1EZWWUKXNFGrcLukxgSYt5nvhvNPYkQljBkHWhfi2g3zykIrmjqVBg5SYZjW0UWEPf9kneOOEJBMdJpmukjL6adEReGrAVIicgT8x3ws+9e11sTVf8V3jFJWpkSNTNVKDnG418yVfPysAgedtyYkcLI1kmkxziuZcVjjYjQkL3Eh5YT0Om9JJnESMWO7nq/phAJ4jqJ/uW+/KM6GwCu
- g67EaaYK
- v6C4yQ8ZQQ8cS37xuXR1P/leL7nKRDciAbpR0Br5rZCls/syBeCjceVlVylGeyMUyNBtp30ubGFIAFiCO9XfDTUgwwXD8lsGluQ7DaYJi2f/n1zg0cls+UnAazghLa9D5sHYz+aTkMfn8GnwHygQvtKhOSyWWz/CD+KWNZbpmEkPyMjE/9stzppeQxSL3nb75MLzN84/3x1CUaQxaKT93A4yf5VRg/I1mL2BNv8G+buVd7syJKDmq7gX7jCZ2qrT1i49TErDl38X+Qxz+c6VmySxxocJMMB6MSfrR8u6nEQV6ye5fJwYlSLbZqmjihLSdlyXmHXmbTsDHnPyZPqTICN2KCDX1TCzb7Rz8UWlAToIK1wGT/6WBKm9KdOHit/Rh37dm5Gmn4rpqfV52GexF/5Tz754xeJ4np/7hu/kHCfLWgZyvDDYzFxP/xoe5SuOJ6eu4aE891eCoynPPnNKR5uZlBVPm1AnFNs++xuie0tAH/sBJJ53gxG0snT0naAOgFAspuTboBAEN4QEU9r9YN8jozly66cHOPg9DXBUjHyk8oY7plG028MyYIZgfqq8eB8ArH14LJ3qkl0Qu+9mHiw6YpSwcU0KtBHeiJgf6eGXpQaWDWADXx8PWNli5Am+3e2kxB8VUuGAPyRl9hmo5imjRLoI3WOaMhebupDCMrgr7MiCEkLrlQFVsOy9ZCNWKSDeYXasujtx8en6DYP8usP6LtUHTsMNl24J56dL+EQwd6u4UE5vNwflk88jSXea4qrgQTClLMjl5gHLF8makyzZIhXsFvgZtraj6306cbfADxfxAA2TQYs2/Z0Sw1dh6aNWP8jq5f8J7kN5grCcYCXXdWj5x52xZvM3go2M1QrMCGI1297UDx6QFtQCNIyP7Rv43U1ofPISs45qgiOb/+NM/1L9isf1cjRQpnCt+OiAzt073PyITjC9uHJbTTkG5jQWaFmKGKHd3SDXZMiY6XXY3IeEU
- z+8nGVsg
- lnBGwxqzt4vNRdgxh1xGrbH4geNcZn07SXUBCpEG08Re10WJseWZgySlneJZMCxpPnsnyShcvXGKVCgKSg/ZcyaZqcXsrZGLz6UMGS61X2rKd/QkKRnMOiNkhP/v804+5M2ag6peWRS5TS3JicdKVZfCymJGYYrOaDaRx558KOPS6KGCMjZcrHjzNC2nFrVoJWAQqx5IpKBJyktR1dJlVpe2/3vUsz8tJtEUAENm8avQvlCuUbiYRB9mN9S8VGThlfeEJefcB2vf4z5m+ZZ8pfoB2NfFvMBQ2zA6l5pe8LcG3K1DIzU/hzpTTwipwTlIp2Bvd2kPip1IOr3FhvtooKK/CQh6u/+TcLiRK7/iNoIqgztwIlRmaqlUSw88l2kAiKKkMQTPt1tg==
+X-Stat-Signature: mjsk5ib4zkysopa8jqpaekieog1k18y8
+X-HE-Tag: 1772535237-840769
+X-HE-Meta: U2FsdGVkX198iuUSnPToHC/vI3AEmq1Xvtu7Pi2I+iELsmUWM2RRNKlQd/oDEbHrJ5UX9AnDz8CQMnaTvWOMMuMzHvXLqSm/eY3zgk3k3FMlaCzJpluQpbOk5JWUU09Aj5w+RWffkT65krokNIqJhh7/FMpQD8XJ6L9peeucciJQv8Hv0Os4A+KpnXQsX1PJXuEzXFMW7nr2XlqAHxyJW1oYLR23OCr14tdfpVDLZzawx04fBzUTmjCl41scEYuocmavGCrdmWldda5v2r2Wa36gEHEFkcfwjXhkJ170FvFN4E6mY3UmCPWmPqLo79rnK02EYHPK0OjRUJ7D3ixN2DzwdYKziCX4Ouh+0bHk8kXi04aw8bHcIQYbhH0zi/EFBBiPGP+OCj52rZwV/I0+s44dsIadZId9N5kZuOj1IlFNxiLYaQDCQ+FdysANeVlb64VzRsZGEPTEAuRf1ktIm5j8jWr+8lb7IpMNQjGXCpU8pBNZBTFMVG2wF2RD5KaXXpe03DIveeqR57uJWiHtAQkOuhfSYKUY3ho52V4++xt1loCk4L6ZNn5YFeaxLH6XctpEo3C6q+mMleqKporlVekw6wCVZohUUExPHQ4UkkHpL08fvGUD73WZKMfBpGCUvEsvvJy4UsIpsNmx1Qm7dxcdoI3cdVofkg3JeLaDd+/bN05Uo1A23d2Nl2fj7u/megTCNT/4tPolIOoAiOx+xI6QAUggqdWpZpTc+kFBtuc0rGWGKR4bJ2cPjxogEjzPEB+z46YOOaSxMtwzM11ujL2hNDf2cUtnxcsfNRZtgW1ViHwuILfWAECTZ4PkE8yzwak+YaQRsThjmqNf8I54AgUsgFOhmWNo8RWmCl6MdFFy2HVl3iQtLb9kk3OsV7XUScTmWHqx8NkNEQNRwN0YAlb/c+oqjtsNYd2ACIpye4lzoOn4woIFaeYy990UROwkvY3IEwq3cs1NAKAGeFl
+ 5eSF9rMc
+ b0h5O/xMKDf8O0/P9q7mYuHX5LIfg/e+sMusYayzYw6k4M0FPEOagZ3oIJeGsek8OOmtu/xuaK9qNHU0Sd/8zUFT3VliB1WprHW6vAKdG/nFzXZT4NLh7JsxKCpTF68ibEdBhEDFg1+uSqwWdGhmoypuwM/VPS2g4dOEGygrJ8pipACQGu3M8jUbp2ktenEsEjWNFDIbsWWmPbqd6hGTHsiCBCbinQjxYC5DKErDbFEwMMHnjpc8i40UWQuBTPYjRyS+9mBPDiis7B2SDqj0qrMnHPlFB+SRfxQQdRnncylHQ35bOOUFD8HHyaYVkg/9wiPHHfCtSn2v/LuS8J4LUj9RQmVP9Poix8YEQQ32Ypihf7NZs5biBI/+75m2F8AbH5P1KhG5b7pC8k2oM1T9YotL0htl8q73bL//eppvmdvHj+NVNNpVKHfZfW0zbZssKLIDxHgzEwGwE+RovV94TeqkOCBDLJ1ffLlxWjBNtPOszImrn0vjs2nRNNXUOoS9ao5T1kzy3s6RpFsfqqpls9XJ2dfCh/BdLFb6/kjYb4VKjs3xOEUlMDBzQhd/WT08ktRgCex7zQwtwM91q4TyHQRJZDm9T5+1h/JPNGkSd0LAnqsSEpSQAqdpzGF+q98OR31WnV9eaHwku+rXNH2Rs4x4jBLHvgNg0Il47+Dl+Syljyf3cs1NjbCF/vZhYnIGdLatL54W9F2npBkNUuda0KwQiBS7H/GlLPeWhtUkTQDXOjqouZAeaZ3ceIwTT5GchSyN6mfxBlu73pNP8GPvJCBczrzakpqVSiaVA4Ke1TZndDez+5xw6p/JWoqp7Z+jiKwo+yBmj0sw+UQp0gL/l8BxViPiYbvOhgLW+/hTSYTe6mVL/J6yKYSeCNPTRhUNV0XgVKmJbCRrhkulImrlfQyib5kuvwB0RdzD6JCArAtB+JZ6V71HsfCzpSYFXwILOijddwz1JEEab9/27Eb0ebxdmD6M1
+ 1toWHX+z
+ Z46wqJBcYXtZdnyzGvtXyWSbUm/aKXv5sxaIjUKuRWqbrj8na3hVQDWI2n7sDLewb5ILwTmOgSsUDSIiTRcPme+vy0PPacLqDYaweKTrldtRwGkPfN07dQ3vundwq6+wUr+tlm0vFHc4fGqtPA3JUZA9oHqpHdjYOCxz6h7ynMbrueSenlG4uCKHiRVuKnUcchfb1Mgglocw8fH4El8g02QS2NiwIjp/GDafMCxqK6olbfrDm3pdIE/99VwvkhJ9aPTDSUq91TWH0K9A6MxeDft58gME2sW06w5IHU9rQPmReqGwO9UXv81RjeX97+41V3zQfcswqjEXMeTegziy6gphU5F/8VAVwrF1gF1Z34mMUCF289vOqS0ii9AnYmofLLWUzn97lqDeM66AOA6g8aVmLZZssg7el3HK9sy575U9xwLiTq3yhQHhuFRdu5XpQzn68IAlUAu46OULWSxUpiLzjPNRQu4bRhLpIuQ2Z3C/MfPHihG4ESXbwkqZoDGeckY4Nqe6ZRvRSuXjCaQbDT1l7ay5sLKkLfH3Vpg66Tg6XyxZW0Ca7TBIK66LLsAw5uCvmOYoSYqzbgWpMZgmwa8m7H0D+YspoiT2w9XVlcnE3AG6lqkKAHYW9mxTWh7psIOxuxEGhB1bkLhpzyn7GQp4JZSIpAnd8ZH+xTjNOJCX54XW20XU/sqe30buxVoBcr7vNRZybjADDkFbo/aVTz79+mA1QY/NWATiMKEcIlaxfDkFVza4RJjmoSsBcSiZRM3l0J2nBvYz4uM2duWhVAMtv9Ofm0rTawi6425NnJmiVomUCGdsa8rDjjmzmhKNtwLIfElcx+V6hd3gk6UHgxwFeFdZ3jng0TBOGJXsCw+loeMJrRIO6OmYqDeZjVQ0gJfWJUc7yi9E/d1fBDD5q4rbKhFuz4LNenDREaKWu/hVTnMybIhAUaUh+65o3B+QCR3hsd43vRO1mqP4S4WYQw6+Rs105
+ vS0E9BIC
+ oPvK2C+lO+p8AyGWEAQ+HpnSqwbmvJc89FPyEAAeBUPtGskQiUurwoLf1WPQUEb24TJu9TXm7fk5xoOubcjCyfWM21pYCOt1YtSXP6KMDoZgmdUILU9TCyOC9mbcmGWogFX0Kd9aW585281YA9EMN5NEdFvop0/egPUsQLrHskUN30baxIYY+svaxWYVZA8XXsjpo8BgFnK3J2xFPqBUE8/KSsjKcXSvHvYkQRQvb8uQSKhwjRNi74oem/NbYo035erSXLcOCqfEMAbolqoy/WRqrmrO3amBwTliqI4q9qT1xDMg2dcCwDqygGI0Qu0JdtHIrVRcerBisiUuxrmRYOLIwJoq/GsB6X8JM7ZgsGCu1BJaacWNumTR+ILwRQNm24ysoHAirqdIBLUFVuDFs2BHfh9kymyNV8oRJAW9Shw7BPYgE9LP6Ct0aql4gpLj9cjwdDE9ME0VrTtvg2k/aYLdyKPgm0PxX5qsOXreEhN3cfHi64SuAuqE0HKfefkKpqdLOJILoxwnAECesNmq653RY/G6/vMPbmJBpA08fJXz6nvw42eXJv8D0JUaoZIZR0WR3nbSeRxuXz/0mysktU2Vt80nV8RGtDFgKgTRP/TVHXgq5HRGPuLA+H63n7TS9vwoRotOQjsac9+KEK7vu9pptIfGOIpAttnucnDvhWTcr6Oluv6K6sGjF+Iskynw20xoCTchCZg5b8/OjHB4H9zeNyomjxgUb3bsQZaP0VamwidFfYCKUh/byI50qHdK4kxEcLSwqvXqzEXu7f21s70ItbRox3BvUeFORJrlETJnXLGvPzLFvboDCX22SSBR+5BFhk36Nv6TbPeQxZXsVbWR0P/wpzgpaoL49taM1mNcCBJXmHck/evWCnVwjGNtmeW+jtVkKUtLN2rlCam6dRuuGuxMjkQ8WQqvhi+ltfZbmH3SYw2u5WoeRL9MeabG3VN1bfQJrr/zyMh3kUGI1ivnS1Lq3
+ HMGUQU+n
+ im/DDAMYQPKYzoxCU0LjOGjV828ZByTWPavTD1Al8MGJfpehCLAfPeYhcQRzRa4mWMIjzyov1S+BazzoZwI80TfLhMQQ7lljrXVhGj8U4vBxsTNfpklD32/eWG6rHn6dci46JaHoEiNGJer1bwoUQBR3QoEclx3QAsmDGFdNTSC0/JMppVEwwP0AYqHcau0klCYRJe6/eVFmVzwv0UeiEI2gMt4h2yJ7EYooAhGSOYGdwmxZZfCqZDFQo7Zhl428vv4MCe/KpbmaMnGHXo9BkEI3lpb9urMDgaSH6+iTZk58Fg1x/2Y1HHYTjWsd3UYzx7Wh8Jc3BeJVyy19Z/m0AZt6aQ/BFQjwUqBEFaSGVHcuteybVlms9sM/N2Tqzn36DqVxwM0LOScw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -266,53 +267,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-03-02 at 20:25 -0500, Theodore Tso wrote:
-> On Mon, Mar 02, 2026 at 03:23:45PM -0500, Jeff Layton wrote:
-> > The PRIino macro is a length modifier, not a complete format specifier.
-> > It is used as: "%" PRIino "u" for decimal, "%" PRIino "x" for hex, etc.
-> > This follows the pattern used by userspace PRIu64/PRIx64 macros.
+On Mon, 2026-03-02 at 20:25 -0800, Darrick J. Wong wrote:
+> On Mon, Mar 02, 2026 at 08:25:56PM -0500, Theodore Tso wrote:
+> > On Mon, Mar 02, 2026 at 03:23:45PM -0500, Jeff Layton wrote:
+> > > The PRIino macro is a length modifier, not a complete format specifie=
+r.
+> > > It is used as: "%" PRIino "u" for decimal, "%" PRIino "x" for hex, et=
+c.
+> > > This follows the pattern used by userspace PRIu64/PRIx64 macros.
+> >=20
+> > For the record, I really hate the inttypes.h format specifiers, but I
+> > agree that we should forward the example of the C99 spec, for better
+> > or for worse.
+> >=20
+> > That being said, the userspace PRIu64, et. al macros are complete
+> > format specifiers, not just a length modifier.  And I think this
+> > results in less ugly format specifiers in our kernel code.
 >=20
-> For the record, I really hate the inttypes.h format specifiers, but I
-> agree that we should forward the example of the C99 spec, for better
-> or for worse.
->=20
-> That being said, the userspace PRIu64, et. al macros are complete
-> format specifiers, not just a length modifier.  And I think this
-> results in less ugly format specifiers in our kernel code.
->=20
-> ---- cut here ---
-> #!/bin/sh
-> cat <<EOF > /tmp/blah.c
-> #include <inttypes.h>
-> #include <stdio.h>
->=20
-> int main(int arg, char **argv)
-> {
->         printf("PRIu64 is %s\n", PRIu64);
->         printf("PRId64 is %s\n", PRId64);
->         printf("PRIx64 is %s\n", PRIx64);
->         return 0;
-> }
-> EOF
->=20
-> clang -m32 -o /tmp/blah /tmp/blah.c
-> /tmp/blah
-> ---- cut here ---
->=20
-> % /tmp/blah.sh
-> PRIu64 is llu
-> PRId64 is lld
-> PRIx64 is llx
+> Yeah, I don't like "ino=3D%" PRIino "u, lolz\n" either.  I'd rather have
+> the whole format in the PRIino definition -- it /is/ unsigned long
+> after all.
 >=20
 
-I originally had them that way, but ended up going with just a single
-"PRIino" macro since it was simpler.
-
-If we were going to keep these macros in perpetuity then I'd be
-inclined to follow your suggestion, but since they're just temporary
-scaffolding to make this change, maybe I can ask you to overlook this
-preference for now?
-
+Like I said to Ted, this is just temporary scaffolding for the change.
+The PRIino macro is removed in the end. Given that, perhaps you can
+overlook the bikeshed's color in this instance?
 --=20
 Jeff Layton <jlayton@kernel.org>
 
