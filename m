@@ -4,95 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E231BEC1458
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:09:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4BCEC1458
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:10:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CC226B00A3; Tue,  3 Mar 2026 09:09:11 -0500 (EST)
+	id D15816B00E4; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AC956B00B3; Tue,  3 Mar 2026 09:09:11 -0500 (EST)
+	id CC8626B00EC; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1367C6B00EC; Tue,  3 Mar 2026 09:09:11 -0500 (EST)
+	id BCA886B00EE; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EB3546B00A3
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:09:10 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C490AC0D4F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:09:10 +0000 (UTC)
-X-FDA: 84504933660.11.787FE56
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD79F6B00E4
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:10:27 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 680A31397E9
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:10:27 +0000 (UTC)
+X-FDA: 84504936894.21.EC0E075
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8C04014000C;
-	Tue,  3 Mar 2026 14:09:08 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KoDW+rSW;
-	spf=none (imf09.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id BEE96A000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:10:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Mzf8zM8b;
+	spf=none (imf25.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772546949;
+	s=arc-20220608; t=1772547025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=od45ue3vu32GoRqWe7Ux4lCSbKCltE1Eibw2V39jTeQ=;
-	b=RQ3kylfDsOyDsfCvQ5zF7E4aJxDjuNgKNzVixnD6JXmwboiVleJQ67YFJoqP9pihhNDMpN
-	1hsUbZUDtKPshYVzevQue6mfUpRy6UZl80TZUIK48o/ZIH5nMeZf9pMf8lpVu5TlENXjXF
-	KipKW92kcDf0/sRWY1iDnZ+yO+hAQqY=
+	bh=a9u56EZ3PSfIb2btDXq4/JS3z6i9/jf+AUwQRPvsces=;
+	b=48cK3XjBTdMlU8O7AsPKNlBp+OwMhML/WEJ7S0conEm5y+FIiPXq6TDs/9yL2nYhv5TWn7
+	N5lTBgfZuxCkCq/6diGTSlnqprD7KIhpxSVCCobgOAaAr3jH2kVMVPdlYGHv+0bxzMmlks
+	lMDATQNUdYd524R3QPsgM57/uzExU+o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=KoDW+rSW;
-	spf=none (imf09.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Mzf8zM8b;
+	spf=none (imf25.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772546949; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772547025; a=rsa-sha256;
 	cv=none;
-	b=LwL3QTFk/eIs/ka1XbjND8zF2u8Ozu+wogMkl1k2Hnp/PJjN0Ddk5nVVecsmgvYtX6dRoN
-	cbIgFEqqrwJnAdZ0yp4ue4fsqqsjYW7BBGOfch2AobnDuIDfTrFHjQ+iieDQce4VC/P/Ko
-	TLVpNSsQGUDlexmfm+Enx3AH6B4c5tA=
+	b=QLhIQZ9Y6Ep+cXPkeBsMZfx5Gc94FXfiX0xoNiio9IJR7RlPOgkXcUi85sAhnsEd92skJR
+	xzPNzfpJmYMNHKFxDUq+fiGh3dxNpM07E95wCYCVeT3GL1A5f3sosHWkQP1lijSm5LIdUK
+	wJRQp5gYVd0X86JBL63/Zbi1AFaSHoE=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=od45ue3vu32GoRqWe7Ux4lCSbKCltE1Eibw2V39jTeQ=; b=KoDW+rSWC0BRlHPnPMSudCi6a/
-	dNEomDDqiRYTFO3dxAk3ny0bQZVUxhDlUKrhWUvlVbrjoOswnfJBNwL40HQlczaKK3hRa4j0hpcWf
-	IUGK+dVJ3OJP1tflf7i5R1Dxt3oFTsAQI6fOWyEIQTafb0GwrFF/R3ZulxGZEngFJlviYzcpW0hjg
-	RS5kCwoRtBTwuTbJC5Aj5/5KDXU6V5UTiQeAyq8sVet0aH4U5SUyVRt1JgND0muS+hhMuD1r4Ecsb
-	BwbBwkt3qHgddXG0kDKJHw64DA4OXu/ocqMq7zSLmH9kOyOoFoSU2i80zkqjlXkLG1rWA0mpdQg5a
-	9RDSefnw==;
+	bh=a9u56EZ3PSfIb2btDXq4/JS3z6i9/jf+AUwQRPvsces=; b=Mzf8zM8b6LFOygmPYqODqdSM9e
+	Tp9BXCcIo947iDR4+2TmKKK3BbGix8IyIB277AjxFH1u8jUvwxi2SDp3iEjHXK2/0u2GNXRQrfXmV
+	lzkQ/lqP2x7DEcw4eigUo7yL6pyux0Bzy5ibhpKNxLVwtdUFuQk6bKwLAtfTAsLBw96AQ9iQuifl3
+	nTFmpV4yMywEPCs+BB4fbsm+1UM0zbdp4vCanMWq+Xx7QL2e9/b/CtdZjXxMqsOaA8Dj/v53MkgYD
+	U5dES+gMZeAXhWT7BcpfbVvpAmTOK/925okF+7ySgncqEqszHZbCKcU1GfMrwASKH+ljRvFlu5ffU
+	dyaoXHPA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxQQp-0000000FI17-0hgy;
-	Tue, 03 Mar 2026 14:09:03 +0000
-Date: Tue, 3 Mar 2026 06:09:03 -0800
+	id 1vxQRr-0000000FI4y-0fQd;
+	Tue, 03 Mar 2026 14:10:07 +0000
+Date: Tue, 3 Mar 2026 06:10:07 -0800
 From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>,
-	Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
-Subject: Re: [PATCH 21/32] bdev: Drop pointless invalidate_mapping_buffers()
- call
-Message-ID: <aabrf4YhPJ2X7n9q@infradead.org>
-References: <20260303101717.27224-1-jack@suse.cz>
- <20260303103406.4355-53-jack@suse.cz>
+To: Matt Fleming <matt@readmodwrite.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel-team@cloudflare.com,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: Re: [RFC PATCH 1/1] mm: Reduce direct reclaim stalls with RAM-backed
+ swap
+Message-ID: <aabrv_xrsKPx9jZf@infradead.org>
+References: <20260303115358.1323188-1-matt@readmodwrite.com>
+ <20260303115358.1323188-2-matt@readmodwrite.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303103406.4355-53-jack@suse.cz>
+In-Reply-To: <20260303115358.1323188-2-matt@readmodwrite.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: rddxesdadxn8mttxrpiz6iijprhws7pm
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BEE96A000B
+X-Stat-Signature: iorjerw1dxt8qufbpxtobmkw9nyk9gha
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8C04014000C
-X-HE-Tag: 1772546948-900177
-X-HE-Meta: U2FsdGVkX1+AkJ9tsPodcmZWntArmiOUnfoDun/rKP4tuB/A1K9lmujQ2nqCVMQNV0j6FvAp973L0MPu8r6iw6D2as+HPAAZ/sOciwSFnfQn9BabsQX7/eTaVbDdUW0gSwaeBUXJW7kyDKyQP6d9yZmQbnOHhIPtHBreALZiif7bNzGtloNFsDzwCOWnwAH2PAmTnr0SzN+m1/aoq6oZhuY12/BFjGojPw2RMdNM67vR8ke+5FhHMPbA+kfXri7dozO9/zpWFC93xAspXtkzJwXuEXY3kFWK/iUzzB6Sv2TaSi0bdj8xrgYVmf9OCZa59pacgfckKCKaaMwuyH1Gr8B5GsfQ3GXx0Bd5pC7mn33zNqNWoGdyoQR1nYaXXmygbeI4o2Q55NqepkxHhLGfu7T/3dax56xZxeaCrCsmvrKxlYo/71d8Y6QE0GkYfFl07laLGIK5R7gSoRaX4/+ywBW+ppNvdThITTwAHjspRYB+bf/TUQjgRxALtxVqo91qPsUfN4ghAKW0wuUFAgVddLj08xfKc/GNxJlFYEXO/K8dbMItT0iR2/rGRniITjdiMPYdyVMjX9HV6KhpCV0rBM6C/RTWT41mEirUILfo+5ALYIQyOMDwRlKu6nCFO00mXSmCY2v0/KyhoVAmzz2luYpXhGPQLunGYS4PCL/kLL6+TBEWypKCVcgmho1LrQX7/06Sx1nwK57xGceqEDWXG6Nonc6+mmlPT0xFOOvRaEcFI2vPeDQdHIs7jeGUEykk7vgtKKeIHUKRJaspgKIgq5BZNaYQCc0j14ZTd/izFrlh4AhctkZsBEBzlfL1MctWfUUtfOeH03skUGPSzlW90Rw1DvSBijlhfXaz8eK2SioliTEdnNGUzgoLmWMy44HHBTT334srqUfpO0mbIXsOWz8ZDr2x+lTqRo5oQqGTWhsdZxBsMb3HwW3z/Z10uYyBDaKJirGy3TGIMPFWtrd
- ygdEUf74
- +uKz41d8YvBPG0DQvgmgglR//X1XpjIeUYjqrmrLK1BoZzWo1jBe188bM6S/i2wrN7nXhV+tCgH1enXA3bybKIKH1lV+EKOJbAZKz73pAD/DxLajxDYds3zoSziDdbVuv7JWFEQ8HT1tP4pApYpDdVNtPGiP5lTduj5vxe9yKd3lKQwf/biasCjQBSrYkPeFaiu5iuV28zZF+60JwWdirJhJRCUH10OCjwyh8D11ilcuVZ+0w9tgR3poiL/JGFthcCbg1Zvn92I7MzKuR+fh4V4LFS0OFRudJKLZT4aiAZLm0icDHRe+RvtTCjukzktoMTmj+eCNQVLZswVWaGL5QI0sReUIu76oL0RsftmLi8VngHPNbpsHba7wBeMlr/y3jFpCKGHdOEY1EMX3skV+mDHlmR5ZM7zIdjQAGmGB2gynC4Z4aTh9vCrHelnafeDj1MYRgba4Z7KBv+5I2qPkTziB5bH7KkRxlJ4JK9TFtk/lcts9jEfSiQV4IOGSyf0YLVRsCtYCtuUW+bBZACfjps8uphZJMuOeBngTyKy3gUeCXUs4r0Y5HHKojRSRXckJcwkgI9/PfMhYrx1MG2HTWBtWDMGTzs6Ucz4Ju+ipv+ScYK5Eu6uKmZ2JNsA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772547025-3135
+X-HE-Meta: U2FsdGVkX191sV7G2aKPHwyjAngbOJtyAF+3dE/q+bXJHxR/cmOaAv2R37BzlF7b3huyisGxxwyuI5vnH+zfbdtMGZpvo6vRp0d3RBTaB6GLyQZ0ySHuGKq3cDQyUai+06WASYOtM1ALnQ+CAzhhaM4P/XfK0sITd8QB5RtpuhuedTGsLJES9F4oTzGgQJtO45Uobg049cBUnNM0hcsf4s0sO69UZvpla0vrqLEuuKbU1GD4cH6wyiopc7jYaQ/PEbZabBuWzFC1sy8xIYs57pVa64VkuTlvj4rB4IMYc73BLM7mreMxvSZDo5MSB9fXbxWIBTWxU6bdx7T6I4Y7cIx2Iq1ydIJy8y3mEMz7h7DXVQWv+efRPB6q5nKhmZwx3CR7zLJHuljFO/Viu6XVTr7uBEnBxxCsM/H5Q9ukm5qumPvrHN7fwE8XWfSohLasRc3Eh+rR3OvynNNAJeI3/C3VwiMmD/0hnf+HP8u5vlqV1t9fqb1CS2OI+0v233yoMtx0Ma/mZUNQLtwK8/0m+evCebo/sTzeKQKf06JHRJTUMItK48mEaKzbPpF72JdWHwAvthPIxi/xkX9Iqm/vZxsBKQLfn12MuO9cCGspkJqKmjQBLbd3dVzRyd9IQ8gNrv9RRzfDAxoOxmrKrrgOQQkF8WGLaqwVki+7r2/b/5rXoNWWZNWtm/1dUl4mPqYgcCndaxvVaoM1cGaIdVdXCi5wjFNyOU+CAXx0TGKBukVPAzBocP2dJaIzl//1lB6THyKz1vL6b3W/O1sTvEnBw6qILxxYGwGOwpWPCO104yTXjxYxpANbC8B7zzmotu0ALX7iFkX7kQ8375f2do10FLFzNLYxAbrYeEY99cVncaA8YlB/cQwZF7IED9jIUQkzutA4xy8aAVwWfZ1dsVm8CHlCUXbXgoypzwuUQTrju3oC0h2gECG/AApKFBlkbJ4UxRz2QHPrLkcJ7DHymK4
+ 6ScWSnaj
+ v7uCX1djFWgAljU8pTA4qXuQ8reyxPcqAy3TSUWNw7aq2s/8q2R3g7h7cw+uLaTjrJV1DH6MUocwtRQJSR+Z088yS2693JYLlETZEqScl7nDWe8wgJhJijU0UuF+8uu7L2/7MMb0u4gEH9TcfCI73nRl/NOmVSfnpC3AdC97vKla7TILVlQcomQrFs8hUe7v+14Tg/1g09tcbL7aYMOKj3aMaDCWpsOUb5xvDtVQZUK0jUZGqGMbzChALxB7S25QjtwtLvDRVTRrxkS8zH75g4aXijzuw/rB8NAWvK45I6iZfIiBLALknYRDDLiJ+B4ubpDA1lAhzOfIiwm3GTjhhlRu/huA7+g2phLuIcDoQclgftRCWWXlQ4x6yg0mRy6ek1Dl4JGruHlWA5g1JAGtWHMUsESnVCmS9iEgZOrmfl6G7YfSAdH0NN3lUKv1E3St5LBirq0jjrpVRaggRRmoiT8dOMqeR7bQIN5pxjdT0xpdxr1lyCADv6/fw8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,8 +103,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-FYI, linux-block only got this patch which is totally messed up.
-Please always send all patches to every list and person, otherwise
-you fill peoples inboxes with unreviewable junk.
+No way.  Stop adding hacks to the block layer just because you're
+abusing a block driver for compressed swap.  Please everyone direct
+their enegery to pluggable zwap backends and backing store less zswap
+now instead of making the zram mess even worse.
 
 
