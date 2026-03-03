@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F6BEC1449
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 13:38:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 929A4EC144C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 13:38:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C5976B01AB; Tue,  3 Mar 2026 08:38:08 -0500 (EST)
+	id EE6866B01AE; Tue,  3 Mar 2026 08:38:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5721A6B01AE; Tue,  3 Mar 2026 08:38:08 -0500 (EST)
+	id E50A76B01B3; Tue,  3 Mar 2026 08:38:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4208C6B01B1; Tue,  3 Mar 2026 08:38:08 -0500 (EST)
+	id CB5B86B01F0; Tue,  3 Mar 2026 08:38:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FE036B01AB
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:38:08 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EBFD7C08DF
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:38:07 +0000 (UTC)
-X-FDA: 84504855414.18.88DF970
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B084C6B01AE
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:38:09 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60C591401C6
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:38:09 +0000 (UTC)
+X-FDA: 84504855498.20.4885BDE
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 893A21C0008
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:38:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=C+NAzkUg;
-	spf=none (imf21.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id B6EA54000A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:38:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="kr8/nkhx";
+	spf=none (imf01.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772545086;
+	s=arc-20220608; t=1772545087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tk3uESbdvJBK0ZQDjaLs3gOQpD471/ds7fVyav3aEqM=;
-	b=rIdhqx7SdRshG6dwAB6Cn+Hw54wJ9hDJ0hFaOY0dahTEO4sCltACZBldbtfDP8c7Ue0Qns
-	jyAofz+vXaxFbg3CSF4udGHJoilG7KxqYDguV2zezP6eoJUd/vZrj6c8Jwfv/jJBZsxnaj
-	R82AFDUM1FibQP/is4syF8WLLemWFP4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=C+NAzkUg;
-	spf=none (imf21.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772545086; a=rsa-sha256;
+	bh=0i9fNykMCPIYLtg51f50XyVAFwwkJeuAbf20SWgL8IA=;
+	b=wYKkbdiy9KsbRSFdenlbs27KYjcBZKhbEdb9jE/Of/YSJBZ7197N9BZkVjuaaV5As6T9pq
+	qlgdBqYla93XKzusCnVZXM1EFffzV/F4aVxLzd7c7jEKq8sQxMCzax8JnV/gMJ5BH1TU7A
+	ORtkgG2jpn4uTT3YGKE7g0nzzPgstcM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772545087; a=rsa-sha256;
 	cv=none;
-	b=vlgbdMEINPTqQ6aegKKkDCbREJdbsgJ18tRC9xjz6ZY73jMBqFZJLUsA0ABPr4efeOHjZv
-	i4UebWznBoCgEEwNANAku2u0Yvv79igFC6MkgqnzsQ75N9sJw23EewIkV/2LeCPqke1T3i
-	pwCz7KoZUJWYlzNnghfN1G7/NRsn6Xk=
+	b=eiiJJodoroKKFp/rB80s79pw1J/mABsqNGZ9UVnYUX8ZrzBEf1hUKlMDQkE3ApypgDczgZ
+	WR0o0ISe5HJ3PcePPRdmYmP58G6Py7MnhFgCarCQldYvgUCDR3HLpgFi/MN/sJFiiYLxPD
+	YUk73YWJTpXBsH+1K4umV3/yShlkWyY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="kr8/nkhx";
+	spf=none (imf01.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
 	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Tk3uESbdvJBK0ZQDjaLs3gOQpD471/ds7fVyav3aEqM=; b=C+NAzkUgUxjxJBynLnQ11RqjfR
-	zbYsG/zy2ofectzScTg6NHncmcu0JStQWd88qwniMwEHPUDMrzeu5AbPFjRTOGOusjBgApX2iupEQ
-	4TSFZW7l8R1upfRlXqKLi4RgyAdnukQQvbYPR1dAqrxxpUxnOkbsrwTNYlBbOrqkyVi4QvfAA8Hbw
-	HJt/UXrH+SdGFi54kJW0+OTTU2dVCgOBYq2an1JkF/fBKXqVFdbNMcBaFcL7O/j1sFF7d0sWaEROA
-	h3pRPEd5DrrHSXCFjh0Qfque8DSpJNMUn053UKYZ0bE9iWOzQNS+w/08ekbSH5pMrlzHr3N0R0CUZ
-	4DO7FRhQ==;
+	bh=0i9fNykMCPIYLtg51f50XyVAFwwkJeuAbf20SWgL8IA=; b=kr8/nkhxdG+BacNcKTfIO4XZUB
+	i7xk70hVnj0kN38gmr0dlJaLre+m1Y8Keo9ymYXIoBcHww1Y+hPC00/UHvb56kw8vUZqxa+/jNahq
+	lo1JvQxucy9KP5YYl3BJvCvBlMRiI1+7TOS9UDCexOCQT4oO0dZF73KEk82auTfbqI7G3klcW7KCl
+	2+/df6PJTgQ4/8fk1VMkhG3bXi2ZmyKmmwEvzbL37VowoKQNKhueKgAd+dHU0zICZvWhtvA8HARA1
+	eICbHHpV2VmmTUNzGuvTIFriiMF2hmXCPYb4u7czBRvmuy0jRezd2uDvibuCdhD4GO+QcG9vVwW4n
+	DD/PLaWQ==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxPvS-0000000FEic-3CMP;
-	Tue, 03 Mar 2026 13:36:38 +0000
-Date: Tue, 3 Mar 2026 05:36:38 -0800
+	id 1vxPvy-0000000FEmU-04pf;
+	Tue, 03 Mar 2026 13:37:10 +0000
+Date: Tue, 3 Mar 2026 05:37:09 -0800
 From: Christoph Hellwig <hch@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Theodore Tso <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
+To: Jeff Layton <jlayton@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
 	Steven Rostedt <rostedt@goodmis.org>,
@@ -198,30 +198,31 @@ Cc: Theodore Tso <tytso@mit.edu>, Jeff Layton <jlayton@kernel.org>,
 	bpf@vger.kernel.org
 Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
  format macro
-Message-ID: <aabj5o1x4T-bRmro@infradead.org>
+Message-ID: <aabkBadGzo7IZpSU@infradead.org>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
  <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
  <20260303012556.GA6520@macsyma-wired.lan>
  <20260303042546.GF13868@frogsfrogsfrogs>
+ <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303042546.GF13868@frogsfrogsfrogs>
+In-Reply-To: <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: m7edd9ba6nwhzhw18ejwsqk76km68ja1
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B6EA54000A
+X-Stat-Signature: d56dptuaba1zd13z754dq45dfhis8quo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 893A21C0008
-X-HE-Tag: 1772545085-386636
-X-HE-Meta: U2FsdGVkX1/x7aKePl2zyCJrnpI/J+zElfjLl6IrF82eW9YbP+uPdaqL1E2ctKySEP3udNPJ9rMQtLgULl3FU0yNLu41D7OV7TBNde/7zkn1FHeCbO868ptHoe4kmFTMN9CcPI7q6EeTIAvRQcZk46CdfIxXViFS+uOpjaaLT/8eFEr/FbnFxMIUm06JeHsf2Rn/NMQtUtCnX1/Z69ClRQrz/Udwr4swmisVnooPKtRN8DM6js12dH1ad6VE4cWNmtD3eBcpRPlbEcO2z+DGReT9zDaGVS2S3TApFjXHjW/sco3plgfNS+Q6p084+s/4BoAZ8FlEmfRT7c0ri9Z37KguJNkdwEFG7V+f1R0KlBe3Fv8tWVR9i++8YoLhUJG7vYpXAG8qLjk9H9h+zuw2i2mHqB7j/0CkkodJs1EZmkOvuoEEtFYDbHBPX0/LKVZyvpHiIp/Ug16QlqlmSEgsNo3IxZDQuxzY+IXRtN8N0ql9AMUmWLMp71k6rWrO7GmZrUXRQg/QFTytvfkPbwAjg9UC+nMP2L5KwcUY0UokNeMA1cBZm1x2keQSEUxDotE1xzZSIIEbeCs/UCOPFVk7rt/FowbC9BQU4qY9jeHXZ0+YhkmthdfbdS+nrIypYvFp61qtvxzcLgL6dJHqUH24OavaAbUfKaHtSKVp3uMvg675UEQxQkX9bxLwYYgIsJr/BqLKu8sMk7rY10xz4cxBP6cQ/J7HAarLLb2kKfQqMt4YWFkF8fsFUAzV2AOGmsHpJYIiOMng4h33tgDt8BMjpNXsMoOXQsbP+ctf5NysPRXE/KZuP3EF6F+jFlTmLIeG6IzPWHzreZuwrKnU+Pdov4oLu/4OqarekyYzczI7OoLyqJJk970XCiQfAn+ICj74GzRTZ+JD4mw0tIbbX3tKThO9UTI7T5/64TwGqLUYusW/n5E4yWfbdAMD+VEUgEVINzY8FxnttDwOsPnIwgu
- z8jG8Fl1
- 7pEM8PRzIJhvw67EbnjcbyCbJG825iN7A0gcUlFu+/yftZy1CVedIazKdXyzroy58grE/5vjsNcLqx236lyZuU6k0gsHx3OXUGpqQ1CRKkSklfRz9nK7eaChImoiykMGuPDHkP/8px1JhyKZMExseszo1vUvGMu7/7FO96ZDSMnELYZ/zah4rItyU7BrcH09jp2363JlwWWX2wWG/qK3Ghj+J6qCrPDTjJJXIeeBzxtTo4FoH4/jMeY6b4gC87LIAu+NixRKyrsQKEvv+XgZH4z/4SZWtY6hOsHaRgY+51UDi0oI+jpJDWD5XpuBuCvFA6vw307NuRuX0Z/wKud57gC690ImNYAz7HBUt5qRUjZSQ0R1MtWu51o+40mdrYQ2uuQiWK3/gMSgRoXc76sEMuv+H+44S/Vlhzv9IUHnoWbN2yvJnEwincamNvsT1S4k3FllBO5Rc9wTxXU0gSG3+1YqbR8OdWh0s17rAW5/elz49ruOvbJcecKA952YhLipD6PS50Jor1f1LUjCV/757aipikw3OSPMtQ3lrUZJkTlP11l7NSZoQiSnSwBES8CCozKeSLIuBa4AukfdmdEP6HSlOgPQdmCzA7INKutEdCM04WJPmh63oP9y+BYdVx3GJIEiZAMBSTHZmR6U/b2L4pMrbHFy/z+K+4iFDrl4GX6sODZbfmB3pcmyzT6b2tdafZ+dgzaG4s42unsSd88yr7ufHPxxBhjkneysBn+s7N0oIf+fINHQdE1W0NVa6fg64mBggqSFtIeaJEVvmoTeQ1ff0PsXNvM8uIB3DPS0waCxKz1wd6h14XFmsyC1c3pYiLfa0p73WN0rChXAfh2VPOuhBStnyneG57N9pntPX1MkUhI2BEqP4ZneFKOcF9AqpXRE9u1mQqixfi9ci644rVGfYcR2oQOUbGmLAF/tDqmCQKVdgG1nyBmH6ffbL2JYNQkX6ViIMO31jvzkTopr5TRchSB/k
- DjKuODba
- 0jmXmj1wcbMBFlSwX09QM0wtj62vzDukEJK0bCP33JnDaqC8HPsuA+Mj50spbqwWkZ2yF/z4wY3GQ1wje6GNKlHGZQWQ/xxvGWfryyP/5r/eZ+c4l3xv4TNVa7or3+hqZU5A49daZktDmels/MdfensmyUFhlYZm0D+lUGtFuAdbMD/hMKyp4VmrCVrLIG9XrSOq0qXocgYy9gvoscDZVA/g7v+i/fbpA6Yd6PMPvrha/AAsSaBPLdWEL7/69w4ErcDGdL2q0z95Gfz9ixR6wQKHWlKyQB5x3qT2EvxaWl4iTAM0TIujaTzoGQXn7bo07pKehKqsOih15/8iulCRMCvuCx4iAxgilhV0CmfnjDF4ndiLvBPo5jnoOjB1zwNlm+lGlD0OHjhGdyoowvJmXZPC0gZ4MIhzmAJQyqBO4f9l/SwtZsBfJoniULOdL+k0INOAgqpKJbXOZFUILn8MjG10rDJ+leW/GBm87oQcwaFuNOYbwWF4dvCt8P/zZ7AHEQid/Y+fAF7RQL9VLeZFcSEY3JB4aNC3m9ratPVaZxF5EB8r1HX78pJStj2amq/Vfi/5ewTo3gUe/uqjnozCy8UcK72qXpQCFwTa/WhOg5QNmuuxXlkPWxzos3SY46azbHIYnauJyRMHqYeUdoDJlQZ903nXrLA12XXt6FscoMuSxsAJKgfOzdnnp2MMVj3huPoVlFTba/3r4NUZzgVZ2pANyBpLzqqejZUjCPUguB0LtAHiL4N8Y9GS7sjEdb+izuOlJu80NRo2/ALSykqMBMjT4dXCy//jYnt5YM3XDIB4LgN6fPgaY7Q2DRGSYVveek/vpOVx9xS4O71ltGZAov/izLgGA/+UPE/e4Iur1f0SfE0VU91t0TdBdnMhF95MGwHY7NipSKIqAIiUDlC8ZRBuJ8rnR+s8vX8CZFv7g9GOGn7XBB7VAhYgEIz9MFDT/L/UO0lhOU3sSxFknopZHJRVvidTQ
- NY41lzak
- ceZQix5Sl0YK3EBU11HKeQduoG1b0iJg/5Rlb0XdlM6RxQkb8a4r+Du4+7OKeimb/JBxntX9I7gMlYOSFjnmPGC4uS8G/cplcoSbDjkNX5TrMdRm/dnleCsXcpm2dK3/yax0wQKUq4C9zmq7QWX9GDy0ovDSZy38GU1P9SX7aIzZi9JGG06uPqI3lI3u+xjpr95fMJdq9StdI2eL8v3bfDIKR00/gHzpOOc0ASBghObhc3Nl6BEDdYhrNDi6im3wdF3DlaM2aEzAAydtDq5PmvLR25cEop+vTTR9spF2qXiZTebVrQxORxjuBFhbkhZEsFxNXDznomEX+x2T+fI0r1Otl7kN1qYeh/Q8YeI/iOykCzc4y/IpHF/Qxc+OLXpYivyGJjalWomIhU6wMkW8A0Gaoxkapxlg946dARCFBfCLLVvO9VCJnqfhs6P3aHexd7/rnxZ/jn9840H7WZELstc334e07gdDi1UlVjjneEzweTQWr02lKD6d9GXLes6G9AxmlyhJef7Gko0cEzb7oVCdP/hrZepDP2YtHhuWLjws9EputT4HyBbWxQJqA3n5r1ESOlBADt6akk+jjw9tQd/NAe5AsifwaaT++BSIHKOIHmkqa+3b83PsiSIWACCK0LaGet6s/F99iDjaInvD7m3m50akRdWWWwmQin3HiUTw4I+SV6PUM9AH2gUzPLPTdt6a7ob/Kg9qoUufSvp2A1rRoAryXXI9bx/NCi8IDy+xZJnKa4bsXlChsAuL9BZU88daNwyAGJPyz8TerK68mbM6yvSzzA1Hd6EOV1JTwMQnpKcAkhNQdhsoVzWsJDT2CeYFPUW4TtKVS0dcxfupBB6wB+xivoIya8yI5Ja7zr/woSAcSMn5hQ5zeNfeFnfgExvWcAuwskERi/s+BCmsY/u+qnIKLDw2kCUu+nflKFmGogInPytZ+GB7mMb7Pp0N56u76pYkJnqKyybUl2DGEXa8YhLii
- LsQ/2TmV
- NMN3AOWl/8suwC1o+LC4AMOhwWwdbnEZ+IlaMwdpSmopeY46Mlg5KZUmL4+BFUakWafLQLUNC/FUQ1AEt0604UCmDPPDkhikjHlsloyGBt3izE+7mPO3KfXZ5QNfg6QoGCdZL7zw5c4gKimBbWTWonoa5fyBLLJ0v0ud1XFLEmgziEdRK4dJrC0IiayNNpp9SgESCFrXBlB+AKDBu9E/rID79vFxYuOrGXvTGYAevPaPScHuSKTvO6xF8da0Qpkmy4LdX8pO666j2HUKutTVtQybaOzseRI8UXMf+D0ocHggrX8QE2kLs2cBbU0WD0Hz0RSAg56wC6w6xcNwxf3XkB7rzYWYC99oRRtE8Yn6sgqN2n+Q1MYGsHDqNWdKYl193ooDwbB0/uqWDlg4692EdrHQZjRD6q2ID9ZxrM9yL9nSfaoMJVsoxCvFcjmQJohtW6qhiIqg8ZHTnwxy8MXJ3lzaZt5o4ulGTqxFe+rmRdvMmQUr3zaA0uThTMDDE98iLErOv3b4S9nXkaAThzRn+VH0IcWpgcQ2AqVO5A6GiMOaoup1FqpEL1tSJHw37zstV3EntX2MG1FqyrZ/zpjX7EXbQ2DK3G9SoNNRUmVstB28hfGCUHwOYFqldJBFBu9F/rKGyQ+0pFew==
+X-HE-Tag: 1772545087-351830
+X-HE-Meta: U2FsdGVkX1+V978G14ZfmWjaCjZcm/45MarHj0ImipDtYiOovjjjPPZTV3hnmSoGPtnxm9EUOIyHAloihYoERZ3rWNsvMWekYs/RMooldvl1uK9x+rCrkxCXlXMbOjqCqR2vR/PmeQWu1hR1kvxANOI5aJwANL+uwdiXkXLNsiXDPGvsBDWWIaCmIggqVUuHSi9xMFvTa597d4WIMTQvjyveC7w3qQbkiqWjYkeMxH7pJbIDsxafjAuJFhTcLQD8gnCmU28nGc5z1KzYm2SNvXGbNiQmQHYOIck5xe5Y4lOknemTDlW5eQbUVWVOoWPUnDtb750gyWRc7oNaUdZnnxDM0LW17/JQgF7BEYtWECQo26oeLotigO7XTfm+CqG+C+n07S/2zoXJkh8CLS925qL5xXqBhGTbrCJ8xRshk4v70fYxstun5nFUs2aDbhmbLsargCgCeadSn0AnHiBUbZHg+GC0o7ZxcmQN2k+yzfQhv4JMPTOCd37L4SS/8A/8DuUP0HO09XB5/D3hNnyrbVVEzUxPPoxBR1NwXC+mGcjFbYs95M4CZd/488Kukmcr9PJU7GGGQCOmjRETN1SK+ydYDG0IcSYBv2Wimh3KNTA0AWU+Eg6UyOIJmyJ/FDjMFfwq7Z9HRX6PR/vOqT43hHKaKUp0pHU3GrRG9+m7g+KZJ3yucmDVmFCNh0ERCzO2SNxm2JkMHXxhHVKIIkZInp9EK2QmPtnezE3+Aa7T+PUtR42v0Zgn1D9+gDAvwCe5GLlzP/HWOAo6a+6Ei5oYIQpfNzmYtuq7P5tMYKRJIIkSTVmBoRoFg1tzeUnqJ89z3qJXHhGfspFp16mdEC5zoqougkjtxMOmspCQ4oX8K/uQc6aUA6uHzU3nQYm6MocQmkkrliQQnaikHCUpqGuXJxtk1jUc0Qjod9QGS3/uBEibAGv0teOY7zXmX38xJjaOr+FAYLmwCUALUWS9Hhp
+ PgoeUDQE
+ 2pQhkSBQAa6HmrYARQhPvpnh3od9/DkgKsbClyEHY7VvepEQC+3+eKrUdTEv5zIDUBXhSYq+YaSroJZ7qs/y8KG5rdSEpVeU7Hnv94RBXkc6LQLOa1+lnVTrBLSRcbowR7Sh7XkVLokN3CcLqo+ubcLWdaqvUZydE9LqGmfBfPl+ODsXMdWJz80vm453HJA1paTM8XmuHF2gjH2A3cDS4UIP6rfOxYvSmobWJB5Cs0bzO0twA1roYVn4as7KYqtkrncXLNAjOwbtE8U0nwttjntKLpdj+5/zRVzqZJAXoLZApX6MRtmSyyWfqIhIM0ZiI+3JYyChBb1jkNMDDWC3drQetMYbV1h4URpLYVN8zxAgvWyr7WRWdIpE28maloXLdw790xsUIBV4c0MHDevxknShhhz1QnBi9qJjTlMabzQlE/O/3gmzPemIGLLIkOxGH1RLAptVVXFbw+NzYjW8zBBqywpr/JUvt0Ls2MacxUhE5w1Nu53t/fLf7+iq5Cn3UI67AR2sMRxOhTFMHaFdH/BMPw/8d4B5WCb5suHZOGuTAf0XCbqN9YXM4aMaiGZ5VkScCq0Gr/jF6KYYKV0nislWSMOmMYBw8k8dAuQTqUa0gaCKYhHl3FcblYPlD8bLCCNpBM2I7xFG1/kIT2SgQlUZZ0sWYdVZYKCZMCPFXM6GQmqEQYjXdN86EuJOl169cmn1HphGor92VNy7Ug1s8TIup/nwtlL6Oej1K2SbW9FpPR8/NH1QYgdwHJZGECygQ6ENfggq+yD7d1rhV5V04CoR4leFinSfbBSBwB6MDB8H1sd5+JcKI/NU6YMhc1pp219LzdVq7FHkp24sIWhr+NYH4wgbquG/RSfVVV0VfeEk/2G8zCWf6eP9hybuU4mMv76SbhA0QuzclVoAeyqwSeeu138y7og2/XII7sicDghDPYzbCQyVxZKDNEoC4KlHKX5duw2/5oBT69XknEBMeBFZHgD3Q
+ xDjkwCJ6
+ vnxUyUHhgG02EDTq1alsd5pK7mJbGclFDiPxQyZVPlngH+nv8ukvr29Lqj8PW69h/xU1T7DGn77zbMwW6A6xFuR5SKtZi6CHfM4eiuRfByXSm4K9Tg/Von2OS4M2X3WHsGMJLLavID2avfgoYi/y/dJAaqyHWGkyNmkSR30WQkUnrAFRuHz7GuYM8abHyVu3zoniAqSNM+9pLinFatSXUgzpZGElLro2HGIUOrRSvZKH6a03+7CXWsHz6Y/2zJA8CCASSOKRGV7NvNYCE0ZABrOlNY/YJIz0ED3pEF2KfPgtd77o+EIUFQpOPktfC8lekG8RfPoLQgNFFXGRVGJZ+KYmuRseKWaM4NCvWHxBGJSFMGRrE7fzsPPN3/LOSs4HywHa4N9w3PGRYIX/AEr4xwFpo9L8KRfDKwdGI0AWtOV21RZ52jNWvY6WHcaUEkimPnv010x+MQUqcgpOGOE8qH8P1+YaNDmxVRT3985ZbOlofB/eWioZKyWhGRUxj7B9HGzk9vgjcbk2+5L5fM0bfdpHLz97qWs7ikqhreejjwVg1o5+aUW1YDagy3129HQkgXUjf1h5/z9EbPW6g9ry2ynldAXuUUNqXvRdGlKkJj7ZUXAMWmgvGoMhl2J++W5/T/kpoNJerZ7kL8GjLKKX70K9DWUx3aZAVzcodcLUpWEkD4RFoRvj6IOQ8zhPzPA0nK68LB3JTP337aIZAJD3iesaJ9RoWT0s74aXdBfHxEYsXVNnFvngp0mMh5X/nx65Fe4mR56O3ROioIywSs0rOYUalycI+ahFqXZ5GOfuaVUXGlTi/UlBm5Z4jGaoyya7iLp4MaxxApQ6DXiwpS9Waz2Ps66hgaNYJuGsYGlQ/vmQXfgMlHQtWJYXUAR1UlnEyW/7rnnaOsJE3I8pr1hWog9wwrGFyXJyowD9SexmDebyZ6FMakV4G/ZA9uSycTIuMuucsHBvYUrQ9RjfQct6gGgOzgxWh
+ cGnbAYR7
+ WMraH6CmZAxvLZpOozZo2XZ03GoXDiYdP1LsTtgRmWCz8JVwgr9WF1d0fkeC11xhcuxR1l5jukxWue8taSrghq/JNTXpvj0zwAw+rAQ4GvCzCK+ATdhaC11Nt3LFBweXnhzwQDF0hWadmLG2vNOJISXohDxdGwm2eC7KIPs8+mB8A6ozinYuy+WXyAjNpI9I5qv2e8LWW9gmTt8gDHb4TEkublbyRlVoTyW1Gqxf3EpCsjhfs/8XAmEitoZrpAjX5L5H66CG0QEe7uwnizCw/YqPrdLPXiA7n2HDuWNH4EbM+ZRdDRH0PHAvz3JPJkpzDNpKH45h7mdAUhWZ0yogT5mLUaRbyV4v5D6njcO9K1w7I4km2ykGbDDoOZ/ySjoeTubJLGgY6EL8LSkbo/aa6XQ48p1Qp0hhpj9SnwwddVe2SbGjQZINaqrkYNyk+uH8Xlv0idl5UXynY5TrK7rk98H2ypRYCkOp908V885uvAvbBIWlZOc+60zHtqInUVUX6AFqg1uIFWmHZTf6bObz9AXgivqe6j69JvJLkVv8YrrRJ20hm8fPAy94guBoBv4MLmdd0NC5/t9KjVKrPZm/01PkaDKA7h/tvfqMQoY8DCiNDYorhVAFv/55KCtS4BajHhiIb1YmMMF7VLc4O/E187cmdAmftVEBxg+LW8JGPOObTKZ1jLpIzdbKWIUbCix9nTSrga+Mmv2cZX+kYip1H8G8DeOJi7AFT9DhleMMjP3CI/aDM/69dqSlbNNS5ZkjCjVfxWanXqDFZh10jAb3/BJfIExpFwwtr9IrWJYLb7POqLKRJdkrLtdGXhhY0DAndlAhWISD167GLaGGuewyB6MEnxqdxwp4c7gWpih1jHf9pYr1j35U6Nvs8lJVoAytjo4ZV3Dfrex/iP+b20GJCmhmYLcj0HZMBYI5WNdTw0FYhOIiikh3U3wMPwLvSgQs8KrukEYmRBi+dK7WnK58vfs5WBiXp
+ FDHhrWUl
+ DeG7nJdC7ZMcAPf0x1FZ2MNi6H3hwC+OlaK0xh3mjDRoErn7nPSJZZKY2kI31MonKUAqhUT5HujoLx8yRTH/oUnCvbfEuTIi+Te0xlAxGyB73USo3xhGeh/yx8dJWyVnPF2RP80tZBjSrPM9InFBppEX5SaOE5Pr3Au61LC/Phd8yYziZnl6TZ0uViHmcYMJ6Y9qPgoIJbmlogngQlkIZ1OvuL5lxMjtfglxizMU66LJj4sZOeqq/jMlWBLp7YB44sAUwvE4v52ZrV9xhrw0jQ5MPb1O+c1tL7AKaIzOi6VybphoMOdEPKTiyGOYtF20MFH7P0BfocI20b5dQIq2xnV9nFY88FEobWet1j7rVgy//G60iTfYTUPRalqU5yvZgcR3yeUl6Jp1385v6GmfDVJFY1QFXptvKPIvh8feXMdUkglukepn8NkO6uTYOzowB6EXmDPdss2HMjEMr7m6VNxXCj2zvUY3VjjurwR/6U0yYBlq/z1pTArRaeY6J9XxNAvGNeUaCPrAA7BxxDdw2+tuQgEJOCZ5duAARfGBXoAtgzXIOxY3SzcwG1g/hUq+at0xLpCUWGXZkHo51uJE0UqH7CxMae1tqlQ7KTHfCaACsCRwPEgo7aTaL/btD7W4aQH/oMnE+wyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -229,17 +230,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 08:25:46PM -0800, Darrick J. Wong wrote:
-> > That being said, the userspace PRIu64, et. al macros are complete
-> > format specifiers, not just a length modifier.  And I think this
-> > results in less ugly format specifiers in our kernel code.
-> 
-> Yeah, I don't like "ino=%" PRIino "u, lolz\n" either.  I'd rather have
-> the whole format in the PRIino definition -- it /is/ unsigned long
-> after all.
+On Tue, Mar 03, 2026 at 05:53:39AM -0500, Jeff Layton wrote:
+> Like I said to Ted, this is just temporary scaffolding for the change.
+> The PRIino macro is removed in the end. Given that, perhaps you can
+> overlook the bikeshed's color in this instance?
 
-Just drop the bloody macro and the pointless micro-splitting of the
-change.  After this the inode is always 64-bit and we can just use
-normal ll specifiers without messing things up.
+So why add it in the first place?  
 
 
