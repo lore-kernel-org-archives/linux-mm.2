@@ -4,229 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B492EC145E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C57E67A62
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 14:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5AE6B00C9; Tue,  3 Mar 2026 09:31:38 -0500 (EST)
+	id 4FC056B00BE; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47D4B6B00DB; Tue,  3 Mar 2026 09:31:38 -0500 (EST)
+	id 4D4006B00BF; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 334896B00DC; Tue,  3 Mar 2026 09:31:38 -0500 (EST)
+	id 3FFB06B00E0; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1F36B00C9
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:31:38 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB7008937C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:31:37 +0000 (UTC)
-X-FDA: 84504990234.21.7CC9FD0
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A87C61C000D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:31:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Lcd6Fno+;
-	spf=none (imf20.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 309836B00BE
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 09:57:00 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C4A5C1C19C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:56:59 +0000 (UTC)
+X-FDA: 84505054158.16.B455CAE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1A432C0003
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:56:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J0KG0k1k;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772548296;
+	s=arc-20220608; t=1772549818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FVGHEap2/y4lqrOlTw4I1PUuJRk8gJ1LY6chx54er5w=;
-	b=SjyB2EZILCjlBS7LbCnKRWCj6O3mEzZFLDlDSnYrcLloZ3itjLh9kVzZVzy8JJ1L9wG7NY
-	NR+ER3ZADdMgrRgVCMa42Pd7lYqxPSH34UMTgPSwGMmR3DnBFeHfT1kyfXOBQZeBgX5Gsr
-	IKjp9ouoRlQS10sigHPT3WtQ9a/5d/U=
+	bh=n6WrENax+sUD4gQp+dJwQG59dAxFL4UYh9VdUk0MCKQ=;
+	b=KVAqvcWXzPVMXRfzoCS9TjMWy9PN6iadsxyr6WZo4kroHA8Fp6o3ClhPF3PNBXDspQTRc+
+	fV2zfeYx0vRtvZ7dl0gGm3IfJnThjQHhT7+qa5aG0O1stqr00Ag9cIcprGXyorwau8/bMq
+	RCIj9sUuvHmRH/0hAi64pldoTosaIN4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Lcd6Fno+;
-	spf=none (imf20.hostedemail.com: domain of BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+880759e8e7db559b7569+8227+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772548296; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J0KG0k1k;
+	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772549818; a=rsa-sha256;
 	cv=none;
-	b=dz8O2qYJxkESSRBQ3bRKyuM+HbWM58U8hpk3HL9XNcIb3Q9XBg0788MkCy0shJlSTMtAfe
-	VBkrp0Jl7xOLY/Z0y2YHAqzc5fH0WYE7M/Ojm2TSCniEouLsPUMVZE9wAlyKAm9eE5hRl0
-	RqFov0/BBmlBX0snTnZj40R3n9Dis8Q=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FVGHEap2/y4lqrOlTw4I1PUuJRk8gJ1LY6chx54er5w=; b=Lcd6Fno+d5UFOYRjzgSXS/STDW
-	OnOCNUozkxsQY4gAaLcG3UD8bgmPzX/hQhnp+XRh93wE//HqWrx6I2tY3mKjuf2IaREQRwDMg25PG
-	3rHjoEyH4eWTjWo2to2N4q8xFIulCCjw+wnruiylvrdWjofeIWtF3V0P9I2qdnWzQ6TL3ZQvvH61Z
-	rPO9WUDLhEIV5cHVRy7B8ebSHdIsWTUbMNRXqGGAPCL3AhrpvrHgan/jOnhq5S2sES5qYdDusKr5g
-	aSpySF1dCrXtiFPjIQCZRSsvuPR6BM2kGpXN99BQqvFof3+8ottSE9BRZ+7Avp/LETtYrw8IHT+HY
-	hmdbkK9g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxQlS-0000000FKdJ-46fW;
-	Tue, 03 Mar 2026 14:30:23 +0000
-Date: Tue, 3 Mar 2026 06:30:22 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Steve French <sfrench@samba.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-	autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	codalist@telemann.coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-	audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
- format macro
-Message-ID: <aabwflLfe2HcGv7X@infradead.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
- <20260303012556.GA6520@macsyma-wired.lan>
- <20260303042546.GF13868@frogsfrogsfrogs>
- <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
- <aabkBadGzo7IZpSU@infradead.org>
- <19e4e79a59dcfc4c61c8cf263af345d0d7026fc8.camel@kernel.org>
- <aabpPQxCTweoTp8Z@infradead.org>
- <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
+	b=2BOzqhs5PjjqpQ45oPlT4Yu+fF55AlxauXa6OFmXsq5DEhkzPKDaMjFfwNmcumo9OAS4xv
+	2JgkP1ZzBkcb35pLWAniPAbmomHvDMqHahLbnuGAxp7wZtm4AO6urQve/JwM4HyZwOROps
+	1+hziTrS6sEjXRlJOrM02wzDhedCE9g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1584043F22;
+	Tue,  3 Mar 2026 14:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CC0C116C6;
+	Tue,  3 Mar 2026 14:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772549816;
+	bh=YDDRbdkOmZu4woFY/biSTxPY9XVlmlte9LluXIX79po=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J0KG0k1kdbUbJLb4ilLyBDyMYnY2ac0zwF9AnGwtN08Mqs30xW8p6PTwiRV0xzCU1
+	 1WUmDa9S22Gx5SOYFBQJn1CfcX+Arl81UgBduK30jmWV/WjU+A9HnAAcZHuKEMAZrt
+	 NDm32zqff115xaiAPy83OAUrSXS1pTMn0kqTxJS3ulhjptOIuVQm4f6BlJZfIB7toZ
+	 +V2oljnwyK9K3blbhGzVTagIct4fGIiu81pzZHNcTJp2ERLL4aSfGfZg0SpQIIUo6p
+	 duFtMMOIxOrYJyAMZPR7CGFuOQEIXgHMdudxRzHDu6dQyXItPuQto2ZGpcRMR1GNH8
+	 mROATaBd/5T+Q==
+Date: Tue, 3 Mar 2026 14:56:54 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
+	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
+	lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v5 update 29/32] mm: memcontrol: prepare for reparenting
+ non-hierarchical stats
+Message-ID: <46bgg2vwqvmex7wtk2fkvf454tqgaychb7l4odnnrx7svci5ha@vy4b4ophm763>
+References: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
+ <20260228072556.31793-1-qi.zheng@linux.dev>
+ <CAO9r8zNYFvNnz_oTu10kPBYL6=1ZewKUMRYcMmcMdSqbro_miA@mail.gmail.com>
+ <de1476aa-20a3-420e-9cd7-9238efd3c85f@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: qo7ox8ee6gxf4rd887e9d6n5aiqgx3yh
-X-Rspamd-Server: rspam09
+In-Reply-To: <de1476aa-20a3-420e-9cd7-9238efd3c85f@linux.dev>
+X-Rspamd-Queue-Id: 1A432C0003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jo5ncn4xbnnhmkuuxewbareh6b8mc7h3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A87C61C000D
-X-HE-Tag: 1772548295-537445
-X-HE-Meta: U2FsdGVkX19VWKyY8gmRTypRCqmKHvidiMtyJMlGxsX6QkR+iLYJralfzGRD3HejEd+4HZVtCVymkCznWMvpnQDAhzg/I92fpMyT8aA1pMoe6VsB3DOECa3jMBmp3VT6Tni1Z3Udm0iJzdSpaPV/uz59gXAwVz3fyRjcEC/nVAyUrmfQIBBqc+FlpTsHyQYwwTQTUG2l8T6yk9HU4OHl5dzQrPD82t3CSy1ulHNdsCfUly7bRxxNJaEztMx7achUN7RAQ/hG/tKv9m7JLkul2f3MBoNqQlRDpa7BpU+FaHeEKJTN1Y5MXvNB4eAnFZpdsXRh3kpdUIsSPgJgewqBEeSbBVnX3BUr60+hFLVDnVVRpLTQT8/yX6VQ5VXdxJUEhqoQqdpAe9uWzCCjF6orJfoy9VA8ujIwF/uyfYON6NujUrJsiDWb1pxP7ajegTSS2heXpcyBVTJ7zv1dwT/sy1R9+9Ip2DmTgSeRGzJHhTvRUd3SpER/EQ2/S+o2lovgMrtEpLUyPRnzXpxqKuWpJ9QN4GMM0osJkJx640BZh/tH3Sj1JBdSgObBYzW76hMUbWKy7CAgPfiVg+mMFnUsTrw38t3mf/Wh35HvxKvqxdwQU/TQqznAAA5LR97jYDD83RRb5pAfmeYy0J4I4N+mFWa3NM6CKIJTksl1dHH/8bfLGRyQX0lgzp9jFbghoG4CPn4dE70l1a4JYQd9pS1f5fF0IY+tPASnoY9YY/zagWCeCIacK9EAwiKssic6pQCcmBBrutvgyAMASBS70X1IF606IDSRT1RYorr8ZrV+JHo9bAT1ZhqRQ2Sx6E4oAWchg+zxDmEV3QKwoE8vR47Sf/rc6GdjPkSEoqrgTJuR3IAGIHSpXrZPBfCdFj/EZpcnFcQfCA1vbZsjZ6gnxah4S6AJO88wRNb7QH+oOyCeGPdD76ACq/c8fcgaf845tECcjMTNbMV35mv7QtLAHpC
- 5P2LwPT8
- zVb/RNefHejX0ZHqNHmgjTr9sOdbJwxf5/VbXJ4mp2s8sa5mJRRvGF8oPwU+ZvC03UpvMqatbwXdWnVqbtH8BiHlClntd36yaByZKFG8OEneNMMt3rY+1Ncpk5ElyRSF0G0giwMZ2Q2OdLsoqhtye/5FKQU+svvIVPdgZXr40E/3HObYljh64G16JMVjpwXgfbb6Vnls8EmKzCPpHGlTR5HAWINbe4mnRyNxN0coBL/tTnpgrLr4QoBrsEAxzgGnYqzdToap/OMjDZSQkTAlQzslJ5QdawOnlExno2ciCrswxuKpkeS8l91WfEBMHQ8sjfwZq1orHqyt1GDNcJogvsGejKUQqZLat3paxNbNZ1nuhyGSRbt/dMc5kE2HpMWbVyfMsFrAg36GfQD0poHroMx1zmkIe7M7kzr9DlGYS2E3xsbhVF7gUCxXRatj0xv+zMDAaiyCixQikG+vxNv+Az3d8q53GH3WnGhdcQ/9mr/QQOyw8D2DeHUoIm0MrNdouE4PzB4EXQLuzSZlAAKpfujuXDLfvJFzxNNIjrfOX+A5QVnDUhkJxIBb/gMDZOl+i8QjmcX2rFiU9GkyaN3NolD0mt0kzYoXzzeH+APZKswDr67TdCaHx3SCaykNsbYRjrpPWSG/P8yZP24Lf65ip6yTKPANml7Hy1SOl9BBw5sKFgCiURrWXbT+WxUMIimmg/sierBZZAyvzCJZq7YHfrbm/27Mc8hRP19cDdYgPr4uaKExnqqTuGZIARoq3h5mnVWMTvSSpuFQRRRzPYwhHTALWR23ribkLPB5gW9jTF5OM80O0mV392O89whh02kfWV942QkJF6Dw1GAFvDMgoKv95LmmuqbKhR4SZjF1l5O84IB7kUFy9GyOYmUlFKg5hhdpvU0CymqWvNBrt57GnkfRFv5WJ0wc/hVgtwikSVkfPEjGcqueqN9DWEuRILNojQwkjimwlsg6OHJWTos89mvfBUfkG
- +t0o9VO2
- V1LTd3uJRwtCypmslBonicj3ronQCROPJH+FzzoVSu6TSoLnta68ruShuBpL1LdD0EhM4zr9U5gnmAGdKDj1/r8Gueksv7Rh6UAXNrZ9GVXfn+BysvQQNxtDyZVR30YXtA8wLkwi56cHmDdu5+y1s6HhaXNrceYEhzLQg1uthLtJFaBYzB/bMOBFHUZEVDdjwiK7D7INCI0N9Snf4axHIpj2dmG7NRyGawXQpk7BwYXUVyBXkgA56Rp+a9O6/yDqcKdUWxvkFffBK2jITjofLfHbSlRxm2wHIwCGUpIVryAjx7GSOtH+raA0DBOT2PcFHbeF4idgnV1uCwhY7fI7Wo+XBspUCIouU+877O3xgQXEpw8QlJsUJ6ir2/v1uY46rAub5hlYNGlMZkh6nGZD/uLG+KpqHn0mV3RXxd0fvlbRCZ9fEGPzdKTRup3XWnHcH6z0we22KdR4B5Xc2AnTeOm5fjvxMmM1MWJ1FDCAjdSL5F85Hhd/4iJP1EUs9Y2kXkvqFsIEFJmMWmFW/dcnhDza/HDYwCbitdH+2UlkRdW3lh2T5Ro0RwwODaIGyjFpEfPD6Hg71yMrbCFQNzbzRe0AGhxsZAzZm34x94FJ4LEE3IXAnyFYtf1sHLwNmmQ4U34ysk4JWTNpg82sU6cpgA7Xtxmu0cPiZ7A3n5HgXBLsr2MGMI82yVgwWXdVEcNZqa0cw5VbCE9q1/7V6fM6flDh4VOZivv2OXvZD0t94lJCAEFxUs4bMxzEq1/lnHL+0kEaNC24HGYZW9o15CA8JOHl7ZLWfF9Vfsmfa91KI5QS5qUHfnuF+cpoFZ1xA5Ls3rueFxmeGB+m2VfwDE5fkbmDDJEOeggQlm7TBWy+InaWj1CrQriPlspm1Cg/UYx+cxiVW2XTsfffUVdBfND243LgNDJRGdbKldBWJK3ZYzaKcXHLfY2jqPOf7XaG+SrJclyOFC6rruM56rsnDS8E2RFYnvzKj
- Dz50/jsZ
- zYh7QGWnoSnyyvLfxWZL7KTVeOMkFqQe2565uab5cSLjAf8Ck792jvl12GCXrni5UuOEDh8xkQ1UiJYpW3U0edqrH8sbYhGOVp8yixutMEkHdgbvcz0IcZnWbs75SEI7A6Aj/VCiR7/HKYEsuKkXFzq8yQTVktNSAecTXwWCrgczJZDCtNRAxJzr1git3OaBPCxbe0xdfUGkcJgWvOKpyVa0/2ruWGEWD7Leyup8jqhTbCj1mrp2yiblGCS+2a5GzZ5zUKVFZT1oQdbVMVWPrwClbmuFWZHBSn2n50CzZfBYZ2V0QjeFGQvoQlIf/pGoXPe0aSCiwF2c8f/epx7Fq5QtseMw+GGbw45xUS+v9yYeDo0x8HMSKFbzEb5jterrlvqAlqVofFt0XpRmFko5k7w+/gDdX1vWTXdNjA0newXgVqeNfsWU7lFsOwpAHYL34b29uvLJ5MYs7ABG8dXERBmp6v9Zw+DmdvJCCsmMqEmmMKbF4MuUfB5aaeU6Ksi3v7L5Yl8TAl/E801u92m62ZLWMTWaR/g+YayRpbC2XsDlIUVosiTxB/07WnpYRPVukSs6aXc/5TgD8f5/N24E/qrAf98zMAr9MEgSo6DtXvpvWPt96yoO6h4Q+nZlz35THL4iwx5ZQxjwICtoVu5RpFP3EigbYzyybByLUOuZpdYTQqtmbSkJspQ7gm69SAk4ER0OC6WAX+K1StVrFeDOSWTwl8MP4KZL011a00hh7gt9xshKyWhedHEkcDQdCyvWuhTYFOgJg9riDN5CE84xftbQj3yXlCm8XeTY07B2y+NC4wHyp+MqPu6WNmes0r2rgGClqVWUaX2vz4LDLwV0czK8e7Au3K/xZTGObIwQaXMJw2x8ZeuCysiXuvUylavKv7CAjTrQvABMZO7wLpCTpskynME57nh6RQwCZDUwlzB+zeO0VlZMPcTkQha3T++Fj9dvlpxzFieyaDMtMKS9uUmxDsTYY
- zkEPcZAS
- 5i9alxoMPpmY4OCP0W6WhvW9ojrrPJnjWcOuXR8Nh5aO/j0oQghn+Sn897Ne0QMyCQav8LO75zF+EYDFurhNlWmd418p7vSjI9jDH7a+sAdK1p5dXEhyWVDKXxMK0bwMafU5zaguF4sUw1oKWtCg4EFH2EP7blwXPeqYw8uMlly0YbhPQP/+xkGIQGET7u6hdE2c8DR+ENyhFJjwlMp1uwDDMeXN7sGwHFS548kBurZtPeMk6b1vGDKSMLswxr/cmjAmmO5gqwaNraMtYE6GAopDouMhJ4ASLae7PUQC1UIzO28MligjRFoexP9pVgiGaDZ4TMFjkXWFjSbH70mAL29rE+BhZUSuk=
+X-HE-Tag: 1772549817-298930
+X-HE-Meta: U2FsdGVkX1+EGWZ1+l4ugtBkP64ceZgWUPqSbYU9To3f1EF/d26104Md5Ja8iCeOxmQH7Xdgu/KHYd7UnhcZG4huo3S7APRIud7HOkyrkGmK+n/J8eDEaqVX0b155nVEOmr1V3A2xWJxY7wH/qICc43x4SRz62tLPqACeCOUIUOA62jqxOSq8T67iGcecwJpx7j0Aa92g/aW8LTOH0sTRxB3kZho/qJ1Lq+Wlre3YCspi40CHhv28BPLWACmnKOfS2lTGwPzWqQqBsGjnAusOSOc79fNtxkIdh2m1JvvHHAtCO+DgN4qGa5OF/y/mdWeaRGUN5z2wRPZBmRkQIp2aJbd/HCUOwyAr6zd2ex7ergSSr4xEwnVI1v5erlq6kJBxiSkx/K7k8NMc24PWtcqhfQQDgz3eot+uDLcOuaXurrR+nd5iWaK+J+hxgrOPDCESCZFVafk67/W3S6NDs09vQmHP3p/hXj66VDlh5ZzczBy+l1xpMGA1+UouHTAm7clqakT6unCoWBNpBxy5YLeAwx4EtvYMwzH/VCbvOtr97MuwCuNTxJZtIztNBGmMxuW/ZZMqFfpCoHsjJtowMtOArFwtYdOJ71MhNabyG0/GFE8SnhL3RHwTdaBxTRyt1Mw+e9cAZ3UcpUuP7vsAhKhkX1SjKFBhYgSrKDyAVbQrRbi0P00FIFfLkgz8uE8GKruuLFW6HZGCTsX1aSqGA19JqjjVJnRSxEq9bAfAlTX8wsak/MaIOHKbyZuzKk6DHAQvGpFJbXBOjqMrKbLfxhFK6bQFRA6F8XZfdDxFwrA4I0KNPyvHcp/LSVFZk1XSsF/mJkGetemQXuU3llFJo1SREFooO3NzSjMZMp13EV6r545/rNCWtmvPIf+d0XwBMzAjAIFm3hHumIob2KOU2TPmRyWCLIMCDJqHU1joVyr08XDXBDE43S+aAKMgn06UuyRHAv4v2CjnEvaOT4IV27
+ ne4Nkm97
+ CdcENI/AUepSnhUcj0boOA9cauEzcXI+XlayPBEDd+psLWyouSeKlwU3wQFW82n3Ph5ZV7szB4y3DY1cq5GxKVNq9v9DuwV08XgRdkbn7X/wOAYUQp5TkH/rYO1bwyeOzWmRdEDkywdx02/SfkaWgzQ4OxwyWOxFxCilnLuS3/eRobtXIqUTM3N8MMa67nojBHrOahroaxfq7JMDyjFqaeJB8N/VDOnx+sEmNE4tJ4qdA90KNfyyYA5e3PNK4h//7RXMQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -234,48 +100,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 09:19:42AM -0500, Jeff Layton wrote:
-> On Tue, 2026-03-03 at 05:59 -0800, Christoph Hellwig wrote:
-> > On Tue, Mar 03, 2026 at 08:43:15AM -0500, Jeff Layton wrote:
-> > > On Tue, 2026-03-03 at 05:37 -0800, Christoph Hellwig wrote:
-> > > > On Tue, Mar 03, 2026 at 05:53:39AM -0500, Jeff Layton wrote:
-> > > > > Like I said to Ted, this is just temporary scaffolding for the change.
-> > > > > The PRIino macro is removed in the end. Given that, perhaps you can
-> > > > > overlook the bikeshed's color in this instance?
-> > > > 
-> > > > So why add it in the first place?  
-> > > 
-> > > Bisectability. The first version I did of this would have broken the
-> > > ability to bisect properly across these changes. I don't love the
-> > > "churn" here either, but this should be cleanly bisectable.
+On Tue, Mar 03, 2026 at 11:08:56AM +0800, Qi Zheng wrote:
+> Hi Yosry,
+[..] 
 > > 
-> > What do you need to bisect in format string changes?  Splitting
-> > every variable type change outside of the main i_ino out - sure.
-> > But bisecting that "change to u64 in ext4" really broke ext4 and
-> > not "change to u64" is not very useful.  Commits should do one
-> > well defined thing.  Adding a weird transition layer for a format
-> > thing that just gets dropped is not one well defined thing.
+> > I don't think we should end up with two copies of
+> > __mod_memcg_state/mod_memcg_state() and
+> > __mod_memcg_lruvec_state/mod_memcg_lruvec_state(). I meant to refactor
+> > mod_memcg_state() to call __mod_memcg_state(), where the latter does
+> > not call get_non_dying_memcg_{start/end}(). Same for
+> > mod_memcg_lruvec_state().
 > 
-> In the middle stages of the series, you will get warnings or errors on
-> 32-bit hosts when i_ino's type doesn't match what the format string
-> expects.
-> 
-> There are really only three options here:
-> 
-> 1/ Do (almost) all of the changes in one giant patch
-> 
-> 2/ Accept that the build may break during the interim stages
-> 
-> 3/ This series: using a typedef and macro to work around the breakage
-> until the type can be changed, at the expense of some extra churn in
-> the codebase
-> 
-> 3 seems like the lesser evil.
+> Okay, like the following? But this would require modifications to
+> [PATCH v5 31/32]. If there are no problems, I will send the updated
+> patch to [PATCH v5 29/32] and [PATCH v5 31/32].
 
-No, 1 is by far the least evil.  Note that it's not really almost all,
-as all the local variables can easily and sanely be split out.  It's
-all of the format strings, and that makes sense.  The only "regressions"
-there are incorrect format strings which have good warnings and can
-be fixed easily.
+I cannot apply the diff, seems a bit corrupted.
 
+But ideally, instead of a @reparent argument, we just have
+__mod_memcg_lruvec_state() and __mod_memcg_state() do the work without
+getting parent of dead memcgs, and then mod_memcg_lruvec_state() and
+mod_memcg_state() just call them after get_non_dying_memcg_start().
+
+What about this (untested), it should apply on top of 'mm: memcontrol:
+eliminate the problem of dying memory cgroup for LRU folios' in mm-new,
+so maybe it needs to be broken down across different patches:
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 753d76e96cc67..f0d55e1f9c49a 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -527,7 +527,7 @@ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ }
+ 
+ #ifdef CONFIG_MEMCG_V1
+-static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
++static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 				     enum node_stat_item idx, int val);
+ 
+ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+@@ -536,16 +536,17 @@ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+ 	int i = memcg_stats_index(idx);
+ 	int nid;
+ 
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+-
+ 	for_each_node(nid) {
+ 		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+ 		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+ 		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
++		struct mem_cgroup_per_node *child_pn, *parent_pn;
+ 
+-		__mod_memcg_lruvec_state(child_lruvec, idx, -value);
+-		__mod_memcg_lruvec_state(parent_lruvec, idx, value);
++		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
++		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
++
++		__mod_memcg_lruvec_state(child_pn, idx, -value);
++		__mod_memcg_lruvec_state(parent_pn, idx, value);
+ 	}
+ }
+ #endif
+@@ -831,39 +832,42 @@ static inline void get_non_dying_memcg_end(void)
+ }
+ #endif
+ 
+-/**
+- * mod_memcg_state - update cgroup memory statistics
+- * @memcg: the memory cgroup
+- * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
+- * @val: delta to add to the counter, can be negative
+- */
+-void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
+-		       int val)
++static void __mod_memcg_state(struct mem_cgroup *memcg,
++			      enum memcg_stat_item idx, int val)
+ {
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
+ 
+-	if (mem_cgroup_disabled())
+-		return;
+-
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+ 		return;
+ 
+ 	cpu = get_cpu();
+ 
+-	memcg = get_non_dying_memcg_start(memcg);
+-
+ 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+ 	val = memcg_state_val_in_pages(idx, val);
+ 	memcg_rstat_updated(memcg, val, cpu);
+-
+-	get_non_dying_memcg_end();
+-
+ 	trace_mod_memcg_state(memcg, idx, val);
+ 
+ 	put_cpu();
+ }
+ 
++/**
++ * mod_memcg_state - update cgroup memory statistics
++ * @memcg: the memory cgroup
++ * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
++ * @val: delta to add to the counter, can be negative
++ */
++void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
++		     int val)
++{
++	if (mem_cgroup_disabled())
++		return;
++
++	memcg = get_non_dying_memcg_start(memcg);
++	__mod_memcg_state(memcg, idx, val);
++	get_non_dying_memcg_end();
++}
++
+ #ifdef CONFIG_MEMCG_V1
+ /* idx can be of type enum memcg_stat_item or node_stat_item. */
+ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+@@ -882,35 +886,26 @@ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+ 	return x;
+ }
+ 
+-static void __mod_memcg_state(struct mem_cgroup *memcg,
+-			      enum memcg_stat_item idx, int val)
++void reparent_memcg_state_local(struct mem_cgroup *memcg,
++				struct mem_cgroup *parent, int idx)
+ {
+ 	int i = memcg_stats_index(idx);
+-	int cpu;
+-
+-	if (mem_cgroup_disabled())
+-		return;
+-
+-	cpu = get_cpu();
+-
+-	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+-	val = memcg_state_val_in_pages(idx, val);
+-	memcg_rstat_updated(memcg, val, cpu);
+-	trace_mod_memcg_state(memcg, idx, val);
++	unsigned long value = memcg_page_state_local(memcg, idx);
+ 
+-	put_cpu();
++	__mod_memcg_state(memcg, idx, -value);
++	__mod_memcg_state(parent, idx, value);
+ }
++#endif
+ 
+-static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
++static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 				     enum node_stat_item idx, int val)
+ {
+-	struct mem_cgroup_per_node *pn;
+-	struct mem_cgroup *memcg;
++	struct mem_cgroup *memcg = pn->memcg;
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
+ 
+-	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	memcg = pn->memcg;
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return;
+ 
+ 	cpu = get_cpu();
+ 
+@@ -927,20 +922,6 @@ static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 	put_cpu();
+ }
+ 
+-void reparent_memcg_state_local(struct mem_cgroup *memcg,
+-				struct mem_cgroup *parent, int idx)
+-{
+-	int i = memcg_stats_index(idx);
+-	unsigned long value = memcg_page_state_local(memcg, idx);
+-
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+-
+-	__mod_memcg_state(memcg, idx, -value);
+-	__mod_memcg_state(parent, idx, value);
+-}
+-#endif
+-
+ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 				     enum node_stat_item idx,
+ 				     int val)
+@@ -948,32 +929,13 @@ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	struct mem_cgroup_per_node *pn;
+ 	struct mem_cgroup *memcg;
+-	int i = memcg_stats_index(idx);
+-	int cpu;
+-
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+ 
+ 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	memcg = pn->memcg;
+-
+-	cpu = get_cpu();
+-
+-	memcg = get_non_dying_memcg_start(memcg);
++	memcg = get_non_dying_memcg_start(pn->memcg);
+ 	pn = memcg->nodeinfo[pgdat->node_id];
+-
+-	/* Update memcg */
+-	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+-	/* Update lruvec */
+-	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
+-	val = memcg_state_val_in_pages(idx, val);
+-	memcg_rstat_updated(memcg, val, cpu);
+-
++	__mod_memcg_lruvec_state(pn, idx, val);
+ 	get_non_dying_memcg_end();
+ 
+-	trace_mod_memcg_lruvec_state(memcg, idx, val);
+-
+-	put_cpu();
+ }
+ 
+ /
 
