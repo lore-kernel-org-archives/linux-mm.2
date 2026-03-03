@@ -4,86 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 952BCEDEBEA
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 19:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE856EDEBEF
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 20:05:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F22766B00B1; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
+	id 2C3036B0005; Tue,  3 Mar 2026 15:05:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECB6E6B00B2; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
+	id 270376B008A; Tue,  3 Mar 2026 15:05:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCADD6B00B3; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
+	id 17BEC6B008C; Tue,  3 Mar 2026 15:05:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CAB6B6B00B1
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 953611B7513
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:50:37 +0000 (UTC)
-X-FDA: 84505794114.04.E5D8C08
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E6FD21C0002
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:50:35 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHOngpwl;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0795E6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:05:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 87C148B05C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:04:59 +0000 (UTC)
+X-FDA: 84505830318.20.3C30B56
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B258C14000C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:04:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ALQfzfsv;
+	spf=pass (imf09.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772567436;
+	s=arc-20220608; t=1772568297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ANPBgiBdp/ufFe/6nV0Mso+/P/6GKB28IBB2YrdPqJc=;
-	b=SAC4F0AGvntsEKPcZVlZt4l8YwPHWkMq9NYNbCdGcpRBHgRJDMaVYeokdNiGbfrRJywplv
-	tYELC55SXCG+ieum7kb6yGlyJl8XdagL1qHzutPfU0B3mCoX/YMDo4J0BWuiT7y0ZcFfLV
-	dvBzJpiw4OolY6a618l4v3WVfUjlrBk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772567436; a=rsa-sha256;
-	cv=none;
-	b=b9ejGhDr6Fu/SfNMr1JNNyNMbXjA6BNuB985kBfx/9pGxoZYBBdqRbNt6OHYaHu6yvnxOi
-	zgB0ClTYqwUZT0TmIqT4w0sdyWHEzvFqBdpfucN9yJNqxTXaUTqg1HgYJnHcuCJAtio5rT
-	pD9oR+7GtDmOLNXsrUkKdSJ0pxLVxy4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Fz+KY6uKkd+TFMj791GXA5EfreSXyJZk4nTlfifWkf8=;
+	b=DorQq2Lh01sg2cxXrCLtTuw1CcdXK1dEZUeAHFUzZIALjJat8Ko2I6lQhU4Xtxw3dNeZuF
+	fp9cada8rR1b5sey0o6gfK+HPy4t2stWncXe+vk48MgZ5L/hT9m7Lwyel9bQHfUXA33sbl
+	jc79Nl1LEww4MaYfokGvcCFpqWwhPZc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHOngpwl;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C902B40904;
-	Tue,  3 Mar 2026 19:50:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49640C116C6;
-	Tue,  3 Mar 2026 19:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772567434;
-	bh=XDC0haHYwaNKHX2Q2sFwYd1iadMZeI+Z0ehZ14CSn/M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jHOngpwlKulDRgYX88YQHyUwJADWAAuzA8SzIB/EpHRVMQ9aReAqgeM/pErhG8Puq
-	 pcLeUbI76+MQ1gRZp1p/7O8zNkAE0WbH8XK+3BG4Qnxh23/Y/+jsoMGRjy/lYi+DW8
-	 v9VHjKPHMqkBsugTvusfoO6m9dLfCxyQu8VoWv7Ss+1rAcn+cjDH/wJpniMOvJUPl3
-	 8Zu/ST63bqH0Mz+PRS3+LZleY42BPeQXqdmjI9KfOcs7whiacRjkwFd7K9aXVNaBTY
-	 IE4OamsjTl1QAlkCjYvhoZu0qwCl3amtaY0nH65Bh0U4Kz8+PLbxfnYYF7CipRNC8V
-	 zOUsrJmZH7SWw==
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] MAINTAINERS, mailmap: update email address for Lorenzo Stoakes
-Date: Tue,  3 Mar 2026 19:50:25 +0000
-Message-ID: <20260303195025.1170895-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ALQfzfsv;
+	spf=pass (imf09.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772568297; a=rsa-sha256;
+	cv=none;
+	b=tzhWxFB0i+UhAwgKZMaIQUrZLlIaz6/qA4AcWVPrzsprIkBogHA71o5xFJCXtdrfFHs9Ek
+	Euw3r0rnT5EWa1S/8AMb4cdYEz5j9CIay8g7Yawv+a71nxzo/HpxJZtiRACTVm0QXqszaJ
+	9YAiGZg0J6kRI1x+BwVeAAmPPS/3++A=
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1270adc5121so7657660c88.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 12:04:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772568296; x=1773173096; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fz+KY6uKkd+TFMj791GXA5EfreSXyJZk4nTlfifWkf8=;
+        b=ALQfzfsvqvPSErrq61EbuLCl9FZOAE/T+r3FqqocODPGpq6HrGjfHtbAJ+otHlS4SV
+         OuNtVelCVQOySdAM0f+pWkFJuW2TxizDgmBEKEyS7U/Bc3nq1J0N+gAwh2IwwiXItx/J
+         s8zUUXGyvGtF2epLk0Si504YDFUNk//IUtEQgMQEz6G70fvqLwYsDMiurGziCI2mbg3B
+         T6+7nRuiauwrNoIEdQuSko2dExkiRFks+FbsBPoRf5sjKpDiY+3mrXCQb8i+hc8fifGe
+         eVxhfKFuM+XzgdalVQ754L80aWzcor6ngqEh9F4e6ShUL9KfXIls5tNZ8K1uJ88O9Jp3
+         wlkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772568296; x=1773173096;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Fz+KY6uKkd+TFMj791GXA5EfreSXyJZk4nTlfifWkf8=;
+        b=FSJVKpOBUofJVNWrrKbNTenjgiWzrFAy3SK9a0fPuH0bzdTbQEolBpW+f/XxnwVmbr
+         GN6/8pDh6EhlRvKdr3iVN0J58OXf7h52O2NqQ2Fdg7fDn3dHr12NwDH3mflISn/CRiAN
+         luT2V48HU6qGq1upGGpj1oXRPzZ0T116Zn4f2u4w4lkQS/X3HfsOqx9COp7A/R3edCDv
+         H1GtEfeNx/LrnSqFUQ6KPo9GSy+wVpBUDBs34F1tQ2rE9UxGG4WU8YCgBnCEjPSeVoWs
+         fqLQv+XJYmnKDB9i5RO8BePV9Gz2Xa/c1ShcKJLGtM8c/mLNXM8EDPn49PCN+OOHZx04
+         /7TA==
+X-Gm-Message-State: AOJu0YyB0qWJLdxazkf0mmJlI29+reQf3nkNEWg5n/mYl1CqY1QwG78C
+	idfSiCt5W9EcE8W8nAPwXLAnko1rvwIzQqMQM8fATGs61bTAgSJNIKsz
+X-Gm-Gg: ATEYQzxQdXvbVoTmubK5RK/OHwyAWdC+mn0aT24vntqQbIfOR8eq7sG6gtweHIM6gSu
+	ywcR/9sD6e5cT/HcMH5rDhSUkz7PfBB/W37w3iOW9TRTP1qKPexRebrMpyTr8bum25M3I0eDSqc
+	W7eIJ08dqS/x8YxyLIXLrvT61dzGUYE1hUpMx94e7fdSDmSya3wP6el0imBF/1GxFLKL54eCVYi
+	/jQJb8jD5+QBf/XSGJgvIULKQ+FvRENO60G8CBtzbA1n0lQTnAB9eG2Fk4trWsiuJJryveqSfpJ
+	y12SX0ArYx6g1yKwW6ZmJVzIc6CfH0eOgSUknoQTtRc5N+73FqcAaYNoqR6TR880AP67aK6ZYtp
+	eTR9FsErVOt8AOr8OAZEVC9L34LDMIFAvx/E6Lf/rnK9F3lt2HRs+VQw0PRzC5e6LnkDbRcWx1y
+	BQRL/6m4W7+tu29rqxKE5LQ7NzDF7bKBcA7GClCaHDA4bmb15Tpk14Wc7je5Z7vzaI3Mxf/62tC
+	mpaMPpYfwJcI7I=
+X-Received: by 2002:a05:7022:4591:b0:123:2d9d:a90d with SMTP id a92af1059eb24-1278fc21264mr5538380c88.17.1772568296176;
+        Tue, 03 Mar 2026 12:04:56 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127899eab46sm17006945c88.8.2026.03.03.12.04.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 12:04:55 -0800 (PST)
+Date: Tue, 3 Mar 2026 12:04:53 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mikulas Patocka <mpatocka@redhat.com>, Baoquan He <bhe@redhat.com>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/vmalloc: Fix incorrect size reporting on allocation
+ failure
+Message-ID: <aac-5Y9hlRwygHUN@fedora>
+References: <20260302114740.2668450-1-urezki@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d47nm635ui8pmtnwd9skza4ja1ng9yy4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302114740.2668450-1-urezki@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B258C14000C
+X-Stat-Signature: odjsu4hcecje6613jqo5ugqfy56gp3du
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E6FD21C0002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772567435-935902
-X-HE-Meta: U2FsdGVkX1+VDEdbBXih7OB/CrKArNpAYvq4tZfL6PZ5Rh95voxSBMUiVinTdY0AjsWM81vIFcn0XyS3fq4rfvZpaAg9A7CSuGGLRKdoE331eAWXHW0hmFaWgE+11S+UxMb6kxZNLp76hJbPwx32jl7krPWxHy8kDkbzYhYoryP/pozoE6gic11qh7VqXdbHB1eh/ZQkJUv0AlNX3unF4bwpdbjCy0HJi5v3bSfH83f1N8bbsm90TU8Ww/tVJAeWTv746DBxLQKsTilPELh6ZzKuSu53wPANprA/WdeNXjTBTltgSy1aPuZkZdPChdmjI0MtcGmoiONoi3b+tOBSaJyuVvItN9d8DvAiDfeC22ZbSjYp06Svw5NHnYE5J7YE/2bvlEY9WnkFaO5RrLjm3p9giEbsKtLwS76HtZi935TZQ7JQVRbSWPoYDmALpeM6jrwEYTP22UGK8MQFb+z8YD58Qm+isS6JPr51ixaf9MC7tYlFnjM79cjsWWSKp7XSqBJpWvhVzJB2UgvxAxfFeUwlcwzX0RVIYXw+YQ30nR2Olvk6xGoYSZsHVXaDjaA+gpajVTrBnMk8XPwoojzpohS70vtfM6OpMiohiRWVnWH1tBKTvleiMAESmuzVlwxrpVPig35jIaHnhV/2eGW3wnVxm3FRNxsdRnqcTxALnJFF7/Jo25Hu3ZqbNv8sQBm8sfxh6QAVDopSArENQOU+ttruR+RFKTdiyqMWJt1mVm1W875ze4PL+Hsq1/Q0JR7b7Tku+tuwAJ4Wk3OONxHZvUPT7+G2Afzmr/3L0f0uEZpkTQC3Q7IIC1WDXZDJaT1aC/dhiPfCCssSxLfypun/zZMdDJYUZC5788o+UF3MqMPyMQmXWMyYe19zijKcaun9I97x/sJ/R6NpzNV1HAKfVWt4erfBx1I9GF0N+bjK9HZnvnKk9hCt42Rtm623hZOKJmLa/kPGx4ebXFzFaTh
- xQdPr0ox
- UXnLpZfKnaUn/DxDz8tgRSAB7tH8BmSHSSxaemQHx4zeW7SHQzbE6OeTT+sAyRrH3+kCHVcja0i9M3qHa5V+pg1+efUHkIQQSbDovus1hMHRGlyAWsN7JVLHWEBBs0wgLDE0iDEKOpQjpGlGir3amvDMkK0mvBOs+cVytDc8QS50MRrSfoH8guJAYoVYGpE1HnpyYQKjn3JoFCVUZSNPE+FltfLZmRd96fO7RsR55c02sthy57y8uh4joDazt173sTOnWM4UlrITl+fOJuBveVZ2xwC4tCKLXZ+3ABKZ7RWx41UTl2mYLy+TszOYsGzX4vt1KBfIHs/EgFjjkMx6RvZFnclM8rkQFzlv345BVO90AZgax/NAEgQ+OiHmk0oE5OaSJde1NUdqAuI9a7QpcQp7MQlZvMzYRpdh5DdzPxwzVRhZvvQXy6qqBIpQ+njCwmLy5KtFY+ExRfQQuM3PqgFzaF7Ads/bOU1pi0DdAW4Gzz56wHjbAcqizMyyejcRxIsFjc0qixcM+W5aQ4faEn3AFwjw6RYd4/0hkGpZ0QXHAOIZPiV5D6QS6Xrh4QRMhswWw7Hv67n8h13IjtLEqs/jNqhIvRLK7mIlLd8gvi1pfItj8nrfhEjDsAm1VV8BF20y+P7mXrJBBrW5T+HA/bl4rgr3jDGZSL5SXsidASvfpGLBGjXpbVSL505CKt6f7LgugSm/epbq9wRpGliPr34TlpdzOYGc06EdhER1Z9WwSHlBCe5B66BWC02r9YB/6+8Koft80Pvj/ndm0mJDktWHotBOuqjQNlKmZ3N3dTPHDQ0nSUk4Ww7NnQtc0wguGxe/3dgLIuVw9zKrTqCF757v5s3+0bKtTqKcCfcTg0DSzamxnglJi6FnZcooHBfRbUGz5L0jwsvRZcQaRx2AEQjqrgHebDoIfxW3C7AkEs4iEsiaZpisUOX39D7UHgiSLGrN9xNaiNLRUh8+vaMlHj0xcwIEj
- cNOL+Wef
- u31dT1xOavI3o81+IXE7xA8kpN/9kTE8xVVTqmud3iyH20k/OHwMXJtB/2odleo5BmdTkCkW1+TKGV+ySmf2WuqirCqPyFK0YmB/g0IYjkS/WORh4c6yPck6vzcoUHUX
+X-HE-Tag: 1772568297-435163
+X-HE-Meta: U2FsdGVkX1+ozQp7zmra5rGlXbv+Zu7jQabZvV/axISrccDcTX9XTYaAxKjpUWFlwHva/5S2ifSUfH6iQNJQQw5CjAnDkpzrcjmeVvQJOoWon6M1Wgdo4cmeYME9Q/ADDKeWXkpfEcj+NOMFDQ5EZbQAOsQsLIhxsv+njGswFZOu1bDu5UyFZgGKmk/oI3J4Xh0ybWvMGFNl7Oq3Pt1yLz6GVmkyTpSfRWBEtwPW36zbiaRnjnrezxZHS0VwHtAc/cMEDyOm7R5f47KTbqSjd5ft0T3OEoHfGDk+2URXUf6aYTqsKqIlPMk4V6W6aGYAbw26Nhp+SZQoKjlXt08CIvw4nFd0rpHtpxjmTpeGhoGRfETMj0KIqN5FUO3ik/FXnEbr9hvlve6VgGZnHjMQO6yysGzF1pmFUQ4kVFb3N9tQuOGExTOe7/fuXWehi9RVOMafVmQIxWRVb35vOSImBHactqyQqYJBJFnQ8m2RnWPdmMefSc7aY/fsz2/uChPvTi304DyF8fEHl7CV2607mMsiSKC77tbK19ivFGHR59Firos5GFPfBzUPpusEQ8+O5v+GlaErK/1Gxb0mniGuX9qCzVbS5ubo6twbbt64duxo1trfQ3n0gn0Pk9nLKqX6GyLWjAz8lQlZtZHjuE5QWr2tKzZRKrC0Ok2dZoxNNH5s1+0Na2SWeprSfGpBDJnfs6v9F8mqCpPH0Nhq8aBuw8NwENuHAWiY+u3G7AYoSKfzU6pB888LuIweKS/Q7bSWNqBV8whrkQ+v+ieAaL7QM671qyez2fqqZzaElppfjdClA7JD9KAI3mESH0m2U9ijYgWHO/A2fhKgpvyVfUoVOtAv2jIbpzSK82vF62KsO9CCPSvl1NSHXWlR988z7WwtfsWlKrognWEwFYSmRcYkoMIhIt5BuEQau42ELQ3uw+LHJQOuK4vvnk7IVTSK26bWCQJpbc1xuPymtRLyyNI
+ LnBgTfSr
+ fYqMiEsBxHSkqaZKpSIuKWptnJC9sWuyV+41U5c0b6plhqqBY8n6tqC8rQzzYfUHNj/burwzOT1/7eslBetRp6bFJJ/X/ocbtaorHo/FmSPMpa5ZPi4WAsW92AMpBtmDArXaqdanbIJa1/gSC9gml2GNNylESSgowJ37P3xQtuBCkQqwEUPWxFO5FnM4DmfWMERQ3eDRQBTWlYIxYy9k1HD7LDPI/RbCoq8e6RyNon5Ab06uloTEj9CsLeVz8y9ApC1aL0s6ROrKMU4DkvZrt0jJtsGppy73JE2f9dbYRFf7JFHKNObbB8wZqLj103EZeqTba7EZbaJu/NnIZ9SlsBeaaTeyN7/2ZbNXPIQEiIOJpWaBKBhOuaPXWeO94RrRRpFK5bmUJvDSKDM2u2xh1jC3nNdsYut31FSWZKucSPxTkKxnWsjTnihnlSdbwUJcJ2MHq/y3XujQ06u9wx+UWg7DBpJkeSqP/tJRbV7vAp40ZWyfp7O2ZrFzWiRoWcFtvtbuF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,124 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I want to experiment with a new email setup, and using the @kernel.org
-address is the easiest way to have flexibility on this.
+On Mon, Mar 02, 2026 at 12:47:39PM +0100, Uladzislau Rezki (Sony) wrote:
+> When __vmalloc_area_node() fails to allocate pages, the failure
+> message may report an incorrect allocation size, for example:
+> 
+>   vmalloc error: size 0, failed to allocate pages, ...
+> 
+> This happens because the warning prints area->nr_pages * PAGE_SIZE.
+> At this point, area->nr_pages may be zero or partly populated thus
+> it is not valid.
+> 
+> Report the originally requested allocation size instead by using
+> nr_small_pages * PAGE_SIZE, which reflects the actual number of
+> pages being requested by user.
+> 
+> Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
----
- .mailmap    |  3 ++-
- MAINTAINERS | 20 ++++++++++----------
- 2 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/.mailmap b/.mailmap
-index 7d5a6cc3909f..04318e1f2607 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -495,7 +495,8 @@ Lior David <quic_liord@quicinc.com> <liord@codeaurora.org>
- Loic Poulain <loic.poulain@oss.qualcomm.com> <loic.poulain@linaro.org>
- Loic Poulain <loic.poulain@oss.qualcomm.com> <loic.poulain@intel.com>
- Lorenzo Pieralisi <lpieralisi@kernel.org> <lorenzo.pieralisi@arm.com>
--Lorenzo Stoakes <lorenzo.stoakes@oracle.com> <lstoakes@gmail.com>
-+Lorenzo Stoakes <ljs@kernel.org> <lstoakes@gmail.com>
-+Lorenzo Stoakes <ljs@kernel.org> <lorenzo.stoakes@oracle.com>
- Luca Ceresoli <luca.ceresoli@bootlin.com> <luca@lucaceresoli.net>
- Luca Weiss <luca@lucaweiss.eu> <luca@z3ntu.xyz>
- Lucas De Marchi <demarchi@kernel.org> <lucas.demarchi@intel.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61bf550fd37c..3812b95a211d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16653,7 +16653,7 @@ F:	mm/balloon.c
- MEMORY MANAGEMENT - CORE
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@kernel.org>
--R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Mike Rapoport <rppt@kernel.org>
-@@ -16783,7 +16783,7 @@ F:	mm/workingset.c
- MEMORY MANAGEMENT - MISC
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@kernel.org>
--R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Mike Rapoport <rppt@kernel.org>
-@@ -16874,7 +16874,7 @@ R:	David Hildenbrand <david@kernel.org>
- R:	Michal Hocko <mhocko@kernel.org>
- R:	Qi Zheng <zhengqi.arch@bytedance.com>
- R:	Shakeel Butt <shakeel.butt@linux.dev>
--R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Lorenzo Stoakes <ljs@kernel.org>
- L:	linux-mm@kvack.org
- S:	Maintained
- F:	mm/vmscan.c
-@@ -16883,7 +16883,7 @@ F:	mm/workingset.c
- MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@kernel.org>
--M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+M:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Rik van Riel <riel@surriel.com>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- R:	Vlastimil Babka <vbabka@kernel.org>
-@@ -16928,7 +16928,7 @@ F:	mm/swapfile.c
- MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	David Hildenbrand <david@kernel.org>
--M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+M:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Zi Yan <ziy@nvidia.com>
- R:	Baolin Wang <baolin.wang@linux.alibaba.com>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-@@ -16968,7 +16968,7 @@ F:	tools/testing/selftests/mm/uffd-*.[ch]
- 
- MEMORY MANAGEMENT - RUST
- M:	Alice Ryhl <aliceryhl@google.com>
--R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- L:	linux-mm@kvack.org
- L:	rust-for-linux@vger.kernel.org
-@@ -16984,7 +16984,7 @@ F:	rust/kernel/page.rs
- MEMORY MAPPING
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	Liam R. Howlett <Liam.Howlett@oracle.com>
--M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+M:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Jann Horn <jannh@google.com>
- R:	Pedro Falcato <pfalcato@suse.de>
-@@ -17014,7 +17014,7 @@ MEMORY MAPPING - LOCKING
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	Suren Baghdasaryan <surenb@google.com>
- M:	Liam R. Howlett <Liam.Howlett@oracle.com>
--M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+M:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Shakeel Butt <shakeel.butt@linux.dev>
- L:	linux-mm@kvack.org
-@@ -17029,7 +17029,7 @@ F:	mm/mmap_lock.c
- MEMORY MAPPING - MADVISE (MEMORY ADVICE)
- M:	Andrew Morton <akpm@linux-foundation.org>
- M:	Liam R. Howlett <Liam.Howlett@oracle.com>
--M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+M:	Lorenzo Stoakes <ljs@kernel.org>
- M:	David Hildenbrand <david@kernel.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Jann Horn <jannh@google.com>
-@@ -23172,7 +23172,7 @@ K:	\b(?i:rust)\b
- 
- RUST [ALLOC]
- M:	Danilo Krummrich <dakr@kernel.org>
--R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-+R:	Lorenzo Stoakes <ljs@kernel.org>
- R:	Vlastimil Babka <vbabka@kernel.org>
- R:	Liam R. Howlett <Liam.Howlett@oracle.com>
- R:	Uladzislau Rezki <urezki@gmail.com>
--- 
-2.53.0
-
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
