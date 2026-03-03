@@ -4,227 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0992EDA6B2
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 17:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86E7FEB362F
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 17:43:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECAF16B00A1; Tue,  3 Mar 2026 12:19:58 -0500 (EST)
+	id 394C26B00A4; Tue,  3 Mar 2026 12:43:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4E0A6B00A3; Tue,  3 Mar 2026 12:19:58 -0500 (EST)
+	id 3429C6B00A5; Tue,  3 Mar 2026 12:43:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF89E6B00A4; Tue,  3 Mar 2026 12:19:58 -0500 (EST)
+	id 241996B00A7; Tue,  3 Mar 2026 12:43:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC8086B00A1
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:19:58 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48B511C1CD
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:19:58 +0000 (UTC)
-X-FDA: 84505414476.15.8BCCF23
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D94CF1C000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:19:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Dwtx7drr;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 133EC6B00A4
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:43:06 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7A481A02AC
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:43:05 +0000 (UTC)
+X-FDA: 84505472730.18.F994E0F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 669A840014
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 17:43:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AmmOc0AS;
+	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772558396;
+	s=arc-20220608; t=1772559783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tao3d1V6YUWjQGbciieZF7tZIWM4RPJQYZqAieQGxVw=;
-	b=7nnBfGKBdVU/1lZkIjtVxHImfpeAYCZIY0TxYpYwLF+0l9mfsaW6/CT+k7+6/NPRPMDWsD
-	xJgnmxQ3cGVUJCB/FDQw4IvvpOid4Rs728wblY5sA0ovItvRLvo/Ldq4u7PwJ4A9+H8EOp
-	GnMatWzMhHi3Y8RVBkFp0CZJDXiGvqg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772558396; a=rsa-sha256;
-	cv=none;
-	b=a4QuTfaqhLV3vFsNsbnNBn5ro18jlxC6EGGjR/8115sZcANJigSOVSuaCppLJy8gT4of8Z
-	y6nOTDpbmJ67SbmaJy9utV3vJSdobyHqt/ns1b72DjwtVefJoLEw/IIrUorhNNIRRbyrt/
-	J7t2k4iTIT//MK8U035OFzdYEYTXP/Y=
+	bh=DXyJq2jhL63XCeCGf/kk+0S1SsVNcL/cSZ0UgVWv13U=;
+	b=YAZUeOxf5QuMh2QXuvftZLcR5ApEppvCg3Vd2X2o8XO8+mz6RsWmD/EPZE9eDzk85HX9jd
+	4m7Ejz9lXo5rfkbV0tERjty7KYtrN7U0Y/mLqkyJoHxob4AcZ+rXFxYJnmc0NcwLT/jJ5G
+	q6UpBrrubB1QeY4Tj619f3s8B2+cVzc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Dwtx7drr;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Tao3d1V6YUWjQGbciieZF7tZIWM4RPJQYZqAieQGxVw=; b=Dwtx7drrLMoXnL7AZ4mDDb+Dr1
-	pHpHIG972dhLGyxzFcAQx+NudbFIcurMxKVq97sQTr1lhz5PGW3hew2GVT9QoeCbheZzl/O82STLK
-	vg8zfOueGsejINU32tZqwfKdGcdQbjZuH93Vwz2pTaPZIsUFcvRc5p4xprv+YZmZa41AUiirVclTo
-	qxIIHl6PoQ8QMH4z3vU3H3gUflIy+NEXbLJEmvYHKdxOjT+/NqRvilsvA6ZnM/G8lcC5UPT2gBhSW
-	z8jZyRc6CCB7fazc1OBmrw5oOtDAXe2WSm0mby/ncmsCi8bS24bckEVTfiMaEfIq2JCGnv34ZS2p+
-	wh5wZg3A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxTOA-0000000BrGK-29fG;
-	Tue, 03 Mar 2026 17:18:30 +0000
-Date: Tue, 3 Mar 2026 17:18:30 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Steve French <sfrench@samba.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
-	Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Johannes Thumshirn <jth@kernel.org>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
-	Joerg Reuter <jreuter@yaina.de>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	David Ahern <dsahern@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Remi Denis-Courmont <courmisch@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-	autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	codalist@telemann.coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-	audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
- format macro
-Message-ID: <aacX5metux-C_xBw@casper.infradead.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
- <20260303012556.GA6520@macsyma-wired.lan>
- <20260303042546.GF13868@frogsfrogsfrogs>
- <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
- <aabkBadGzo7IZpSU@infradead.org>
- <19e4e79a59dcfc4c61c8cf263af345d0d7026fc8.camel@kernel.org>
- <aabpPQxCTweoTp8Z@infradead.org>
- <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=AmmOc0AS;
+	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772559783; a=rsa-sha256;
+	cv=none;
+	b=e2fdGTfCAkT6KZ2qi1TZYWiaa37S+qhhpFYwKBMeP9gGRsPoALHvhcS4ryo7sac8PYykFj
+	afNb8qajhL2/mpccqExvQR/GVIjr7nTMme10NGgiEP6ZB44NM9IYDUpAgE5+y3iAK3Q5qn
+	fqaxyL+5rnJ0SIjvR5TfB8fHtPYMYL4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772559782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DXyJq2jhL63XCeCGf/kk+0S1SsVNcL/cSZ0UgVWv13U=;
+	b=AmmOc0ASHu3IL8AxnBmapiwFNGgP3QdktMUR/RMHNJHpX5UOnm5zqjdPXfgBqj9ygOnnGd
+	q96mk4cZrWQCvRB7jmpDrKKeJbvv1S7w9pmm5AtQarIOQ+MPCXE3Ys7sRlbENCxogqDH7E
+	ay2dJ/hz7+Ulxc68QqoWIeoLoKlO3mI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-576-5kH51iTuN8mTrUDwkyz27A-1; Tue, 03 Mar 2026 12:43:00 -0500
+X-MC-Unique: 5kH51iTuN8mTrUDwkyz27A-1
+X-Mimecast-MFC-AGG-ID: 5kH51iTuN8mTrUDwkyz27A_1772559779
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439ba9b08dcso1659104f8f.1
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 09:43:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772559779; x=1773164579;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DXyJq2jhL63XCeCGf/kk+0S1SsVNcL/cSZ0UgVWv13U=;
+        b=KM6Mj9gRaT5q9hPgGLsKeqK7r8ZK/spuCyrk6fsSEjDlOHIkf0GAtI8phZI0HdKw+b
+         of2SlGx1NfJU76PRXxB6IZBiGAW7kmBcgQcdODQMPsV1sXeQaiY23nNuBy6yEMZJ9sLi
+         AQMY1DX4D3kGsTOqzI8e2RgnuK3HlFakgyhKgRpk96jm9PtxQfa5yDg57ji/EJ6tDPVr
+         IAKerajOleKjPnJwY8fJGME3kT0/LLiW/8MVrOSTb0OOI5T8m3FyEBSDOXUxGxZ+Cki2
+         Ff5HxQ57E+qUqGa2eKCbcHogF+oHYfPxAW7tLwnJH4tTCjUqRCHV7hkXGLuFUuMyg+By
+         OWXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvdq4QVKh7dOPHnZVsvX6rL2WWeOIifh0rT05ppRPkwNOxJORCiU06+FQXy9vi9siO+OiI/EBW0A==@kvack.org
+X-Gm-Message-State: AOJu0YzCiKV5I00SctJtFRjUkZccsW4qegNxjBmKH3tKsp4TktgAOF0C
+	2Acqj4nix3hzRTxygRCKwp/SigtWu9Ah8/qlNwPSTYvA2uGUpif3IVEjPVE5A1khib6riuDniry
+	sbHeQHallv3zcYPEUk1/zhKG9FTEAqY6dCCNnDW98J9e5gZONAtXI
+X-Gm-Gg: ATEYQzx0fh5ZxA/coJ1p7X3iKEArUGajfm+fiPlPKtJfByS8lKdnN7F01VV9okCDHwD
+	hMZynYDX7F5tfArs2JQRWvRc38GUZFCBBYOI4R7ta7ptC1fiVOVr9Bo4khpPJqTmr58vLgW87Aa
+	Tp9zlUovXmO0CJSBJrGaEXnX6If4m+G6eATkkt6cxsscXvYDfnc0lTWAysovupeUN7lKSX1vTuO
+	P2q8o8ddQEpfobG6mp1NN1A1HV4vegyZvnn6PtzYXRZSw8sGMkvicKncNCwO5OUav2vtPScTRr8
+	70pwV1ImXckbue48TAZRLY2Mamb49YVafgmtRV3yRKacYlcHHH8M9YliCKBW5Y8WiCmEVr99pMv
+	RkODhkEUDNwzN6ohYonrJfN4cjGp5WziRFFeoUTwSNLVweQ==
+X-Received: by 2002:a05:6000:2902:b0:439:b265:6c61 with SMTP id ffacd0b85a97d-439b2656dd5mr17084994f8f.12.1772559779091;
+        Tue, 03 Mar 2026 09:42:59 -0800 (PST)
+X-Received: by 2002:a05:6000:2902:b0:439:b265:6c61 with SMTP id ffacd0b85a97d-439b2656dd5mr17084962f8f.12.1772559778587;
+        Tue, 03 Mar 2026 09:42:58 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-79-166.inter.net.il. [80.230.79.166])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ba2a5970sm13000276f8f.33.2026.03.03.09.42.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 09:42:58 -0800 (PST)
+Date: Tue, 3 Mar 2026 12:42:54 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Yuvraj Sakshith <yuvraj.sakshith@oss.qualcomm.com>
+Cc: david@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+	wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+	jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/5] Allow order zero pages in page reporting
+Message-ID: <20260303124236-mutt-send-email-mst@kernel.org>
+References: <20260303113032.3008371-1-yuvraj.sakshith@oss.qualcomm.com>
 MIME-Version: 1.0
+In-Reply-To: <20260303113032.3008371-1-yuvraj.sakshith@oss.qualcomm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Q5WYwVYpggaC8G1bRSa0I9uqTCrSuSOiWr5VM9qsV-Q_1772559779
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1310fc5c09cce52ec00344b936275fe584c88dea.camel@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D94CF1C000B
-X-Stat-Signature: koqknognh56hezkja1g5befaqtpajn1g
+X-Rspamd-Queue-Id: 669A840014
+X-Stat-Signature: dt9sdbnzuenab6euiyxr7a1u8cdnxwbd
 X-Rspam-User: 
-X-HE-Tag: 1772558395-774372
-X-HE-Meta: U2FsdGVkX18lg3IgjHFP/dTI0NkmWbnZLeFCGi6kB3FkDMBmfdsdEXWWk43lDIyV/+S/DD/FiCaNR/xqXx2DTluuTkD8HhIvMxjRj5DsQf9MM5XtduzZ/IH+ISvo9D1bfASEnDhSETwQMTArgBb7QBPQ0l7B3fxffu3EYGRpJDVwGfOWSlmNUJDDdPjRQ/xpMaTVHorf88qRGhqRkar8/xOgunnGVP6AiBz8Bd4yDmBwn3BNYL7SBAa0xZRKfj1yX2xFjaDcrGxp8OaZLRStYUpvkIgQWJoizdfwx9ky/OwYQyMFQyHLWe7rdyPDib6nRtJrYZ9pA5Ii7px9XVHIOpsJzeN+ZeL9QwiKIm5m8PGpA/Dk5uZ8yipDXcPfmObblVA6l8v3nak9bIKIkpyLoGtS3bhRN8C5rhbA9Lucg8lfiLooOx+mS6Nf0+c4HLjmacmZoZupxHUFOHS88vm/OGhl5RU60lDXlZ94Tq3DfWAZIbxKQI+mwMmrSg/XbYFeKPbI+dUi0CMQGMwMJIpOFhK+4z3kSQvkDOatFc0cvw3M6mDN7Q0DyrCXHBg109J9uQxkK5rIwEWKM3qP6o8P0GNTC1tPS5JnABkAXWd6U6ltBQSpda7pEsZ61Rw06//eUbIjqS40FTcBzVc/fdb72iy7loluw8oiTaqJEkxu1G0ODmcZ+AAGh7QH6hGGX1nz7GQbeROFbHGEVdfQzOx5wln86rn1uVilEgKlexpT+WsHGt7X5ki4/qJBeXK6jrlf/oQUP7mlWIGO5JnO/I/TUao6dURBYCDyPx0Q69FJZVz8Ad286ygq+nPa/jEHxOej8BPuVDnIvjYU4L2hoegsnJMY2f8J20V6PCMY4yONkuHLDSlutcMfsliWNTqC1LA8/actD6XolC77cc9fLRww8YJOdk/kFH0dO4Dn8FndUHdLijJRM3ZUablKG2+JNQ18q8JskeyZbFVsi553YFr
- DhejGV0S
- qQBOa+DKS4E0kmzBU+xxGSRyazp6ooFz3m4mjbBg+EzJaSfqV5eYKOkqznNR2itxB/fAjK43GE2PdMYXL/1y3t2gwkEkOQi9zcYR2V69Vgfe7nX+xNq3RBD6gdQ9GOZvsCL1XBTlTxhZcU498V10eb9qBT+7IA6HMG00YUihN8hRNX7bNLYeR+eOw9YQkXoldylCumTjTl5agZymGr9SbIHUqGtpP/cv7GY5YWA/Kf5wTQDVCyWTXGXnoaYkEc1WOqO2tjVmPJMmC8s+hgG4bXMOnbWuFc3LWcY4IdkARp303jhwZAntrHLP49C+PPUC3ComoGwc/TM7VtTZSDfPQa3JNdm1HG77xyQgT80KPnE0vMsWUZbYaHINRjeO2+3hwSjD8bQsz7yc7cQo9tMm8HHq51P7YgUwgwCVq1jvvqRyQ7U7xiMAPDaVPy4xhPRV7t07Wb4W4npzKi45q9EslsORsFVYG/zO1td3Uvll9HfJY+qEHvpbWdaflq2V9nWsE4ePuankoftAwzlZ8zo+/275Mm3N4gOmnKEURgy7vLgSn/VYUQDgi8jZ6JEsCcnd/aoyMcNi8e1Np2gFn0bfoRRqUXZhF1vEI818sVG8kHdjPnExmSO9r8Fm3rKh/lXopUB4nAk6GbrrjYshBVrE8VTtuoaOH16SL8I0LYqEi1nqz+wdE1Ph51KYxNbKsEXzG249OBgr7MdecND0DRwSTC6bzIyu9PtrJKPS5GRPfptl9YVinpRGvQ0SREJV6CIbnot+33qIvd/Ne04F2JZxm2K9iotk6MQyIpjmcnCU/VcsZqZh8fB91MLm3/HYo+KrcHXswXcQ/RDuX8rpSRsGLqAwPNWSXpJKakZ2qrFj3wdJ7zInLEzc+vAnIMMZAL5o6OFzRfkhz3TJEQb6ae3o6Atm2H+ZtjlW7QHzkSNwp5AmZpWdht6tZg7up6njpTWsMTJXDuvR/ULP+8eR6sNSFYyHnRt7K
- Z8MPSBx6
- SA/IxxbqoutAsVumVJIXpRFpdefC54EAH+AO0KBZ90BqMByxWp6TGu6Y2D6Gr8N/ZjxfKGBiIARGZf60S2VbUu8j2TcghmTvVPRtUkmSeap2APvyso3jxzyb1Y025Xql9PV+mGl0jJwz3llzhkPRYCqzfaYsAaiozs1ZcTd4Y0XhSAbpdbBNo9fExKmZALHJoAyaE66CaFDf6bVGtEhd5JpDWE9NCFLoxIrHjb4ce7QJ2O5dyKWhJJ7sH5aL3Q+3k5sxQNIkf8vfSewfXKBVDb1k3SA9qOlUc3GfVr0ONhV21drGeLiI8YgIxFMsl6ehFf7qOnf9WC7UNmciP64Xo2C2RX/4INELiOimEnzcyFcMwYUXLQ/jo0JgQPG9xdLoGZEtZHsq5yzynLkHVGdZDsQ+pNRun4QfPYjgO8wdWEz1/Sc0pa/rfO7C53AprCrirrI+n7nZC+SIgcQbNw/AKz1dZvWwFkvn8FyFryEHlse8Ag9XsOhpZZg2q8Bz9qXhGUo9lrX8Z20lIfOb4D45pZRs7DQhPph5JQzE9i9RMQdPh9rLHdrcXuIcamlx7ZlSDWO/IDghymc5/QEQaiEAmodWFjCcyFE006yFdDetyFAfCZDqzu/LJxOnD4/Wki8k6DfENE+VzQG2UMqie11YRJoFYXE5980DS5hvMH77JetJfdT7C3RQUarpz7u1UoDKSUGBoRCXtVWmsK7E4XN/MOfGTgjt3eAJef8mtaF7s+cBs9kPrD2ihbMGQh1yjt+8RhOtQLZRZyqxcArWjZmWdfxF9zptqDgv5yZgUDdoeFNPevUjMvOngdqUl8znIzC8KP2fpeAORrZ9TrlDyPz+73Qy6h04TJN7Q6bZMvaStYttRxg5nSVTQcB5WE2J2aP8AOJRyeMKI+L2BD6BB3YeLEyBMV/9Zvgaz5g9EcVvBcAI/LgS6Ec6Fk6jHwjYR3uInC2LOgAcB2a+qGbxsMQPZP8IXQFW7
- uDfo3TIu
- 6vvQFujU928ScqaH/FaxBpnUJZVt7desYrGI/ks7axRW0fvflqE7DnQBOtKlMUriFWO1j+S2bZYwGg7pN0lCf2jMU7NPObfdORXPuOMn20Ox+qw0OM0ynhMR0IVdBILcjKVfo7X/3rPrRwa0mCPZI93S9Gf53RSkOggtGLKewg/PNbPbWUGpT5+D4dbA2M/ay+jKlq5tgFdwPnwuqi8oqMO9ERv4tqcBVnXeQZl43zbivpekIvIA6Mxi83Sx6li2AXGOewXsMIiVI3JDB9RqaRankvoQqqepm0p5JHRtM6ux/uxJe62SHTa56b0Qt7lOgiaVYQYYN3k6CVl9mj0As6uY9gbVo5D4ABVZtIvJGbZKZluBeAuLYEh2YvWYFnFuee0fz6pFH0EXF3T1Hva4goEDvoKP9Sbaq14X/+/Z/kwlKvUUHwKso1saASUmQSnze2il4b0NB3WGGxFwvLUYVRBRu0aeFbOzTBGk39mLmWJWbT6kfI64JZaSpyRiW80TPuVpeFAGhzka/8Cp8w6BMXXTfNwAfKbOrK29EQ6K4zdokA5fQtg6A3477wdEYd2sVyCsKzX9bk2WNoasG69K6N1Di+uA9L+T/u6EJr9y65ijiL3LuKq1W1wdBzmfS6+ml5dv2XTntUP7FEASoxI9F0ZdZk+dj/tST/fKe11ByPnCQ0PHlOON6GWsd15wr6a44CzA+R/QOMcMAjL80ODYpM+FoK1AXOVgDnTk59dvwrS6qqczdMavUNx4RsojtpkaNkCMSuYeZHBgD0Hs50GKncjg7eb2yxTlZYd0h2dnWUgbEzmrY8aolHAktSfktYgQsqcNMLPDToDpJmsUaXiOYamEsb6dzXOnk47Meh6M+nlZMunc0y2FgrJbNN2z7Ywuqa7xTTCwMgttsFb//2RfDbSlafstGok0X22mZ7ZkIQewYiafk6pr5nw2cXU8iaHkkNsiUr6wEN1pPm+iDYbFKNhFOsrk+
- UARx/36E
- p9UWbROZBxpfGHQdYn086VzGp30veec35NBvPTp1w1a/vRlSZg87wH85REZxHJc2YqflR8svJTqcFhgaVSewpmUDSZtyFLFg0=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772559783-605236
+X-HE-Meta: U2FsdGVkX1/YAkQdVJUZnOJTTN9P4qsHsfi+wEXHIXJFlIdIa1Uqo4rgv9QZsHBco3f0sET3FSQXUJXbhHLduxka1ER7gw3z21Zna2wPZ745tF2zdcRP8cYQRblu7MEHiJ1cTIpdqPQx9B5hXuo8g2jLiHuA1ypWEuU9kUdksfCBSpJRDisY+wnNo0QtbypGMVVmAbW4eAjR5cABSNNPqjdi1YbdgsHqHLQ49YbRl/SBTI5lPio/GOMCVpNUBZYN56OPW0YPeRxY4/1YiRdjbJE0VzBtm/3xr0EUNZ5mWzW6qyg4HRR8DIkZaDk9qc+LZI1vOzrSlCQbSy+ZV0pFYFvv61dty91+YmdI8eRi0+B3zNE34gGtSMthjJjh9BLexNz7YKhm/l1ty687R9MYZFLzA3UicHku/0rDhMrWJaD7g1DhWTtm6RB20wpNcSvwaCql8SdzO3pwORGjg3gmEGK4OnbI4+51bSIAKnnALZ9RlR9k8Bzk7mIhjHuGNNeBwnGlgOR6zc4MSqpenRA9bMI0zirmXi1e5wJe9YXzrk5bFB/QvkOfIhqp+7VCUJqivxVPAKyEsF260mgq+GT2nQN5CjN5ytzvH5QvWE+oENZYWf2sVusO8r+bQKuE8OPGAGJX6Ly5lhxoeY1Q81z/FpZ26cjGsTWD8M0hD1mBWtVj9+8vrHeD1Z+mqxHhfqUbF09Q2Ijd0dSbmvPPwNMBS+c/858R9pa3BZdgiI2RiIXciQP/TCocAv31q1QR/ElugW5pXFUvhLKn3pDYUq76Patb1wmQO3FvNl9n/EiyPZH3ZXWajS0OKr+ZfMtiNT2oQD+oRFHLxWGWQhRUhCTEwwfltfSxdDDBhTc2taidXXBuwuRQvq2E+K44f8NBlYWZpWAwTud+l0M0Rq9AmjvF3IB2g3mobUzQWw+D6YfbDgGOYp8nGwVd2tpkPAmreD4mLMYwQGtGILlYCYpAPEg
+ YpbPXFRs
+ gPlFDMNNxzdZKs835ge8oNQAH3w038NJOehRAjc2JgluraaAQqBAjOSbxqIOApNnem/JtnNgc4UrjkqHQPoiP1JuImpLTNJmMfcyKa3kqVJ0/cf///530o7EdaL5VHxx6u5/Ei1H2U+68sDhh2Xa+2+RJk6/OZrXnqKDJX1SRCrKUEms7+/iMtO/C8mstjJO7lceysMUET0fK3Tqg1KXlweK15XRQMngcvvaNhiAWHIacozxUIMaZG572hyTI+ZibF+LAPWuKzSFlQZc6b0RtJldHsPZn3cEStmTgLJ/A1UQWiko5/EpSmcS5mv1VOfDQJpz6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -232,53 +132,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 09:19:42AM -0500, Jeff Layton wrote:
-> There are really only three options here:
+On Tue, Mar 03, 2026 at 03:30:27AM -0800, Yuvraj Sakshith wrote:
+> Today, page reporting sets page_reporting_order in two ways:
 > 
-> 1/ Do (almost) all of the changes in one giant patch
+> (1) page_reporting.page_reporting_order cmdline parameter
+> (2) Driver can pass order while registering itself.
 > 
-> 2/ Accept that the build may break during the interim stages
+> In both cases, order zero is ignored by free page reporting
+> because it is used to set page_reporting_order to a default
+> value, like MAX_PAGE_ORDER.
 > 
-> 3/ This series: using a typedef and macro to work around the breakage
-> until the type can be changed, at the expense of some extra churn in
-> the codebase
+> In some cases we might want page_reporting_order to be zero.
+> 
+> For instance, when virtio-balloon runs inside a guest with
+> tiny memory (say, 16MB), it might not be able to find a order 1 page
+> (or in the worst case order MAX_PAGE_ORDER page) after some uptime.
+> Page reporting should be able to return order zero pages back for
+> optimal memory relinquishment.
+> 
+> This patch changes the default fallback value from '0' to '-1' in
+> all possible clients of free page reporting (hv_balloon and
+> virtio-balloon) together with allowing '0' as a valid order in
+> page_reporting_register().
 
-4/ Don't do anything, drop the patch series (I'm not in favour of this,
-but it is an option)
+virtio change is a technicality, so
 
-5/ Do the conversion(s) _once_ per filesystem.  Here's one way to do
-it:
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
--	unsigned long           i_ino;
-+	union {
-+		u64 i_ino64;
-+		struct {
-+#if defined(CONFIG_64BIT)
-+			unsigned long i_ino;
-+#elif defined(CONFIG_CPU_BIG_ENDIAN)
-+			unsigned long i_ino;
-+			unsigned long i_ino_pad;
-+#else
-+			unsigned long i_ino_pad;
-+			unsigned long i_ino;
-+#endif
-+		};
-+	};
 
-[...]
-#define i_ino(inode)	(inode)->i_ino64
+> Changes in v1:
+> - Introduce PAGE_REPORTING_DEFAULT_ORDER macro (initially set to 0).
+> - Make use of new macro in drivers (hv_balloon and virtio-balloon)
+>         working with page reporting.
+> - Change PAGE_REPORTING_DEFAULT_ORDER to -1 as zero is a valid
+>         page order that can be requested.
+> 
+> Changes in v2:
+> - Better naming. Replace PAGE_REPORTING_DEFAULT_ORDER with
+>         PAGE_REPORTING_ORDER_UNSPECIFIED. This takes care of
+>         the situation where page reporting order is not specified
+>         in the commandline.
+> - Minor commit message changes.
+> 
+> Changes in v3:
+> - Setting page_reporting_order's initial value to
+> 	PAGE_REPORTING_ORDER_UNSPECIFIED moved to
+> 	PATCH #5.
+> 
+> Changes in v4:
+> - Move PAGE_REPORTING_ORDER_UNSPECIFIED's usage with
+> 	page_reporting_order to patch #5.
+> 
+> Yuvraj Sakshith (5):
+>   mm/page_reporting: add PAGE_REPORTING_ORDER_UNSPECIFIED
+>   virtio_balloon: set unspecified page reporting order
+>   hv_balloon: set unspecified page reporting order
+>   mm/page_reporting: change PAGE_REPORTING_ORDER_UNSPECIFIED to -1
+>   mm/page_reporting: change page_reporting_order to
+>     PAGE_REPORTING_ORDER_UNSPECIFIED
+> 
+>  drivers/hv/hv_balloon.c         | 2 +-
+>  drivers/virtio/virtio_balloon.c | 2 ++
+>  include/linux/page_reporting.h  | 1 +
+>  mm/page_reporting.c             | 7 ++++---
+>  4 files changed, 8 insertions(+), 4 deletions(-)
+> 
+> -- 
+> 2.34.1
 
-So that's patch one.  All plain references to i_ino access the lower
-bits of i_ino64, so everything will continue to work as it does today.
-
-Once you've got the VFS core in shape, you can convert filesystems one
-at a time to use i_ino(inode).  Once you're done you can delete the
-scaffolding from the core and go back to calling i_ino64 just i_ino.
-You could delete the i_ino() uses from filesystems at that point, but
-why bother?
-
-I'm sure there are other ways to do it, this is just the one I came up
-with.  But for the love of god stop spamming hundreds of people on the
-cc of this patchset.  In fact, take me off for next time -- I get each
-one of these fucking patches four times.
 
