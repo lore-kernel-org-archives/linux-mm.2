@@ -4,195 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C602FEC1436
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2EBEC1436
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEF0E6B0140; Tue,  3 Mar 2026 07:14:34 -0500 (EST)
+	id CFAFD6B019E; Tue,  3 Mar 2026 07:17:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9C2C6B01A2; Tue,  3 Mar 2026 07:14:34 -0500 (EST)
+	id CD2036B01A1; Tue,  3 Mar 2026 07:17:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 946356B01A4; Tue,  3 Mar 2026 07:14:34 -0500 (EST)
+	id BD4D86B01A3; Tue,  3 Mar 2026 07:17:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 82CAF6B0140
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:14:34 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30101138EEC
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:14:34 +0000 (UTC)
-X-FDA: 84504644868.30.B429E29
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 535F4100002
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:14:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=crudebyte.com header.s=kylie header.b=HqDnIkLb;
-	spf=pass (imf14.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
-	dmarc=pass (policy=quarantine) header.from=crudebyte.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2E56B019E
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:17:32 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 645B4565FF
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:17:32 +0000 (UTC)
+X-FDA: 84504652344.20.1C54498
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5E6FE80009
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:17:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q54U6EtS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772540072;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772540250;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6morsqL1rf2svzHpl7Mgcq7P7Za1rjxSr9X2GzDxJdQ=;
-	b=8qw5aDwGFAGptjRohTswJp1LqDFPMkpndJg+cfgVOpdqgeuAKBpZEosA70mArNBz4oMQ1G
-	55wzcINapMccC7PaNZNKK7hhXwgAfoRPHjyEGyDcr6VClZFkkkumt/YLjCDOA5+D9De8pL
-	ZChUR24CjxPLeRqoQxkoeMEco54LVR4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772540072; a=rsa-sha256;
-	cv=none;
-	b=4LJ656OzBl2abdakjKWNw4+qqu2hiTvXMpv9OBqrhvM3fJC2DPGvYNMBePsaN9NJlKIKte
-	t9KxSAOQ4RBVtIw/u0qylL2Aa/aTlyJ0AwZWVMoQoQ3eOKg6TKW6DLBVw3DZLzgcvS1TR5
-	z1Vt9tSXO9LBgUo4EVRn9IiJ2DVGl3M=
+	bh=gto/N++4SMjQV7/xwTCfye149xOkcfDi3+BPwgfpGt0=;
+	b=zl87Ba8/JfwjzknbmfQ8a6ftHZ/Mvb6oAXYB9e9jJoSC6ToVQPCDsTMon6PxdGsJDlZKef
+	vUv3FF/QSqI7zGUTh5kgWHzrDKGeOsw8RxXIklgCHLrWJPQ2oKktHizhHNVDg9/C47J6mc
+	g/5fxzGCF2kdzvY4EkfMG93JAbPItAg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=crudebyte.com header.s=kylie header.b=HqDnIkLb;
-	spf=pass (imf14.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
-	dmarc=pass (policy=quarantine) header.from=crudebyte.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=6morsqL1rf2svzHpl7Mgcq7P7Za1rjxSr9X2GzDxJdQ=; b=HqDnIkLb9g/Hsc8NjMh6Jj9WuM
-	MzJbEDxoSbJB6oNviZ4lhLElZSwdxUq+F82IhdhMr3/l3EIr7ekENzTfWw1alK0l7gFMBknTTbllK
-	rQiTpC5jrJRp5O9Y1BXau586rPz904ODCjVtDrL/S+fcUwcyE3KQHYPQE7yHCQgEDc8jdW2FFMvnt
-	8BFo41dQEnn19Baat6muvD8WHIuTeXI5DV3hJWIvjJJnnIbJ9NBNkEHuffv8Z0iXv2/2WH2/hxxuH
-	bQk7qyA82VKBDS4IWm4WLmrZDk/8F2VTqK9lWDvGIID23xeCtmOUbbOU5nkyVR/RcS3L+8d3GznDt
-	Co3UvqraJhe1cjvRT3F0oMQn4owK/B7J/FhwdoT/TARifEt06mcA+ESiihNW/SIasrPSJHOjZxjau
-	19CUACfNAgbx8938xysaW9hCoTK95R7R5EP2KKkB7w4xq+Xr5QZHTBanCME4DOR0egc7lmc8Iwow+
-	6QdiLyA9W5tnh0qszmpT1je2sF3FDWXPdKIW8B5OWRyh6mmktdJOqx2KnWKFBZUmJIRSr0SYCgoEj
-	OXekGpcPmr2OGrtA46WUBXf4g/mM8I/cnPWeWBCwtWVWaywFhrbuiZs4N+cAgdTRI0a7P2lT1kapU
-	+AuwoWhfJXGO+AHTpCpSIxdbyzli+byB6v/wTaiSQ=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>,
- Alexander Aring <alex.aring@gmail.com>,
- Ryusuke Konishi <konishi.ryusuke@gmail.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>, David Sterba <dsterba@suse.com>,
- Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
- Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Yangtao Li <frank.li@vivo.com>,
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
- Dave Kleikamp <shaggy@kernel.org>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>,
- Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>,
- Anders Larsen <al@alarsen.net>, Zhihao Cheng <chengzhihao1@huawei.com>,
- Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>,
- John Johansen <john.johansen@canonical.com>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>,
- Casey Schaufler <casey@schaufler-ca.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
- Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
- Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>,
- Neal Cardwell <ncardwell@google.com>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Remi Denis-Courmont <courmisch@gmail.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Jeff Layton <jlayton@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org,
- Jeff Layton <jlayton@kernel.org>
-Subject:
- Re: [PATCH v2 069/110] 9p: replace PRIino with %llu/%llx format strings
-Date: Tue, 03 Mar 2026 13:12:51 +0100
-Message-ID: <13960165.uLZWGnKmhe@weasel>
-In-Reply-To: <20260302-iino-u64-v2-69-e5388800dae0@kernel.org>
-References:
- <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-69-e5388800dae0@kernel.org>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Q54U6EtS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772540250; a=rsa-sha256;
+	cv=none;
+	b=I7XUoXDEPLyxVysq8lMhIb/ErQUeajCA+L/zWGsl3K0Vd2KKMI45vICQoTQYWlDGsbU+XY
+	CsTvEF4+vlJpnbmUvvqEq1LSofmdjkQeSU4fsCcSAMH+Z0lNPKKkSUQksMiwdyDSqNh03g
+	m94QdxN2cXDDqdZsR40+WXYPfCqD6Fk=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b8f92f3db6fso828019366b.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 04:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772540249; x=1773145049; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gto/N++4SMjQV7/xwTCfye149xOkcfDi3+BPwgfpGt0=;
+        b=Q54U6EtSVNKSpOf/hQkuy6pllnpLlClMiVepULB0GCZJyOtFmMfYGeyApf+cSnO6CA
+         vkOdlF59kXpxjop3PWSDokdwJ/kJi8Kr/F6Kd5ihPeCPYiwPwXwQB24qtWcNLhUbliMZ
+         OdRej1Ywv6adNJUfJkuccA6o6lv/ich69dypfdQJ0W35SgZGEVuco2B3CE2HTMgKjjTp
+         1jHw7GFl+JKyC01Kjvo2u+Jew1/6VASA3Tds6w+QmmMNTq6PyXY7Bswqa4OGcpG2Ysp/
+         yyM237BcuChHZcD3VUkU2G8z/x/1gW+6tRmiK1VIvQx5NQd50Jb53Ame7hnR2Khwc6OC
+         kiaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772540249; x=1773145049;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gto/N++4SMjQV7/xwTCfye149xOkcfDi3+BPwgfpGt0=;
+        b=QnEwJ2LqyV9H3jqDR2A1GNSTsSqtew/YlZ1HxuxjBFAiEcGrex1HlBUKIOlIyZHHU1
+         nr9Fhj2t6zdOW/rNxHdl0eKgw2EUmbSLURA8x3WgqU6tNup2cWaxZyX0grJFEsPGpn4w
+         s4A5DzW59dWuqNgiYlhkEzT3QQhpmkOxjq/phQiqqDYN6T2zIQg1IHAi8sWgFV2oUqIr
+         Xt5psaYamjLV98mZh+ZOr6Cl1V7RgF4gW+GLYlpaaW8KI8SrMdrmh0TtHnRTrB4H/X68
+         yh3poHvrZlG5gDOThYFozJ0Rer0qnbZ4wmoHFLwjJ3q2sbgLEWCs/f2192z9DwwxkzBI
+         XdXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXh9HhtrrA8XzuKP9dqn8ieLrrvC0qmPyuiMp2RrGzS1njbPs2cK+tCbTirFdzF4gZD4m6S6vqr0g==@kvack.org
+X-Gm-Message-State: AOJu0Yx9s6uUHLTZdEALtRHoUhMzJRmMwBQL1rDW4TaXCQyGbeb4aWUV
+	FUIy05YMs66XkgO6y1EB7u1I0feruj6TCOwBxbINqi2y1df3nlIAvlC9
+X-Gm-Gg: ATEYQzyH6tUEfIUD/0tjfkw6s803PnBTU0as4YDip+Rmojq2XRu34/WVOomewwgkfI2
+	qpuT9uH+hF44o8TFJ6U6BY5X6Wv8ubhPHlYjDRT7lUYolhIgv5pkuJE1/CjFeO3lSerAMRE/ScI
+	kHzaLhpUVkHEKRsL4rXYyPFac65LclKwMfRNB9V43SLuMleAislD2+mpy65NEPaxPZWY5Mbbsns
+	a7ZjlV+F3z/TrLCJmQNllqP/0ndml0+1Ua+2ynOdxT+3oYQ83YusADlJHtCGw6bfav1z0xYyWb6
+	Z6eOex19I1dQBc9MySQuURgK+BUde3WgXt83VWW9Ek4mmMiMx71tPSytaOml3ueametm+rMRrh0
+	f+ZhbtU5yObAbytNiRvEfgnCDFXyMlZOAzp4/jtY+dSvCuP8i9QIRicsJZssnaianpBbe1oPYRK
+	mFlghC4xb4XW2CSYJKIECcsQ==
+X-Received: by 2002:a17:906:f59a:b0:b87:6953:9d5e with SMTP id a640c23a62f3a-b93764f8694mr964218066b.33.1772540248466;
+        Tue, 03 Mar 2026 04:17:28 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ae8fee1sm590757366b.45.2026.03.03.04.17.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 03 Mar 2026 04:17:28 -0800 (PST)
+Date: Tue, 3 Mar 2026 12:17:27 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+	riel@surriel.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
+	harry.yoo@oracle.com, jannh@google.com, baohua@kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com, anshuman.khandual@arm.com,
+	stable <stable@kernel.org>
+Subject: Re: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree
+ folios
+Message-ID: <20260303121727.ss3d3gbzituygb6p@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260303061528.2429162-1-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: uaxoubok6y76yct7iairjwcxwfh37w5r
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303061528.2429162-1-dev.jain@arm.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5E6FE80009
+X-Stat-Signature: zh31uakiq6g56zk8udf19gnhj8p8y9hx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 535F4100002
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772540072-182273
-X-HE-Meta: U2FsdGVkX19IqgsohoK1Be4U5zjCmK3y2Q1H1JtbbYYMI72YuWYKYRKYfQWnaDvzaVE9gpLxAk1bHCkDxZvJaaX05VMxNJv2Tx4TxGENG6eM5qX88OzvyDxxNjLoPN7UMwnn7G6Ft8aLT/Vbua6EW8zYiaTAAP0xeJLGFXjYGFZ2IFFch2XkEckLFPZDJIxmN88ZqHrto+SyA1Pmv58SztJDJeyC50rJQkSWhnA6nUgiVKDIzpElxL9AxNnITPFc3fPV8AUM7kKEqIJt37z1XwvCyChvX0cLf/a5nVBbSSCnqjehyAn6xmZCSrxEIN7jSiilu202uDaY/trzY1V21Rtx1ZWbJhAdc2BvvmIKsVugQyyGAa4STO5zDcqD1RCIKkGS0GVbBE7gt9O3aop2bN273aKV+2pgeDVo18f1V2xfMCpF4iEsOvIn5/AWppuIVV+d2n3GHe/CafjIVg1j2muLpunMlgMpWHYr1YqOu6i0n3j3zq3Cf8EqFkXNca1l+LcQ5eH8dkmp+4fo/zZgoXvBPzI7amuoI54/allb6thXspMfs/SbTvUZfHyX4WqKcH3BXL6opxj/RDF8nrGcAW4epdP6Df6/WW0MGN/K4DJQObSpwvkXNolhYmxqxN2m6mFaLDKw+t62R59pFZKTg9uWMjLwm+KUZ03f+o/2Cdyq5lHt1r2ZJzaUQftvwVkQUdCdkeFipcfIIUtMlBMVYwBeiaok0G/5+kwL1GKCuEN5+Nd+D4CWn5F1kb9VQA4Si0kcdriSiA0be5GQJt9MwBMaPiKPCp+dO+28IPiKB/hJ2LtWw6YC5yQWnvYYYeYx7OR+MFgxqxwUjbRjJ5Ifz89iIbmQyIkND6smrXsNMsiBmJXDMHL7x+ATGf6zuwjoB0ycEX75Ormzu+GCA/OWHBzpxUhew4vSuZdE7Ot4LV5+B2V6HDWThV3kPnDuPJ5YtHvVly8t8WxVSa6oswu
- 7zDOzqC0
- 1cW8htL/NT3AGGlJS5pY9V53FOmwdfS9hFfIcLE3xQgEJTKoJl6DpuzpR0wuluRIHyoeTFmCzFW8W/0XCHJjqPvW6dgx0JDxktvc9+RvIZnMT98bIHVDzGJTzE8mcwj9Vu8cxuI5OfM4HD3Hw4nLQ+WrGOnimuozerUhM6UjWhVF5iTATs6zcLYPaVsQ1QCL3gB5cK5dDjx0oaMaX/SpOWtZMr0LivoqMaP57HMzt0HLFa++Bd5DgeEr93hZ6R3HfHM0i6Z4rbC8rdzMGdLDFQZ3Stl/t72MJWENbBer16yDFT9mwl2wYseMlhyHslDTicWQZOitBDaF4UEfXftzB2pN+AfHJ3O5ppzOvehaXMN9ZouxDsgnCr9B0E7jjYb5jyPRZ8iRCq7xBEhFZZzZLmd5MH29bQM7KPu/L4Ze183gZfDXd+XqesMjBuu+VejIpefoek3LkmEUapm/UwUURiJa+TLtL6ZE670WplQS3+8WDrwVsXr26DAQp/+VKhgXs1oRaXjNeOtMQJu2AVQ4BvIKBGrPrKgXuio144zGjwZf3pzOLOhh4Wfx8GndrumOj8XCv51TG4wCVInfmbi89bhDyCLV4u+5YufBQSiMBZPojl5BtPn8tKitO23Vd2jfeQi1kK8qyzMjeUE+GSeHbddSsiTDfiMMhnmVczBTyC52e2jn4yhuox9TzC3wKtGv+6+9RgUPf/DOXN5YQEKLa3c1uOOUxVnQQqShP0m63LPp+RRi93dUgofKXwJ/g//f3gBgFCTPkAFoSPmYWiZ+6sk/rryqTqW1ARSAaGFJV70A5I/QvOnIk7spndpXApwyviTup2k2wbeaqzfLuoKIS2VgQsPpcbDN71rMi0EyzKYDY092fVi28GQfJ3ckQAEvcmPtpwM+X4C7Ah+qTEU4uPFAHgJu6slTaEjFod/XlghBS40DsYMOAepqqqoA9Os9MHp7wjnOsld5Y9D9pb9HB3+RXiTSZ
- T8rU0wjC
- O3sPNHS0DLvDodN6zILvN1BGxFGNBqE+agwbAsSCU/J6jmQh4RwK0b2mVErdDSaEG/2YKVyOyXVvG27m3SDUbOxKaCpX2RN24RC631TR2QtxlsQT1hoW57V0kd8uLPFGPqlZX+8+0wgwt9/YxQn9NR7Moqhls45j1ow89aqhe+h1C+VWa0Ikwud7X1jLWd5vBuC+jF4ixQueiGf1LIAcqGVZvdq9rr578o8xmKLGFfr2LDbvRe+FDHrRffKh0mZJjEZ0zRhIB04tH8F83uYGY7DsEWBo4xzj3rhuqsBZXm5K3dmIgmxlubA+603Z7awZrbTXywUqmua1L27WPQxMTE5o2OXmJmISwxjXCL18vDtoBifs66Obw4+n4yCAdmgxL/JiQ3P2exLJuzgtjFJC4oFZIELi138mHfJ/8lEp/Pko63ZwoI5kvrXIESqRDzKD6rylAYdSf9jIELBVjk2Yr5ppkm7yY2S+Aa65DAsiJISvIAemIKctT+dTUg4JSaIId1pn602PN5OK2sasXn2BKB2kJEgHmi7wogmKMdfolnRbiS+fKXCznJK367Hh/MumJovbQSBprvvKWDjpThoYmrsIhrut6PUcunyyJfNZXqS1m/LwW7AtNB2JTWe+zvphz6s3CY5ZEX/n8dJiFABAGJTkkT+QfxOJ3rd8+6IlrRHvea4CmnkuqwZbK9Hjl1+0H6miemmwINAxzIM09XHsnEcC02nx0NP+pAv1wZAaJCNowd/AMNKfPKfKLPc3BuKAhh4P5E3cgC7Ph3xtoezBqVPfsCBUfCEE/2FVoJimIawCRAWi+jo3tmXthVc4XGX4SFto5UIzNNPaOvwEX0Jccu05id5OoRWzW5F1WXqRm1frwUoGpPfa7VAxLrg5lKjEXLNKQ+NBCVJ6YrOFvYonf8KUoAwm0tvSwSK3EFdOIaJgK9BVOMrtXNd7BrREaFDanyDhbXpbmfNt0DutBWrJGM/wvlNCC
- 2l/UDO7B
- 5PFIK6TAFOAZ2G9ZLBcP04v3bH3wryN7wJ84kXcEnFBWTJtTsiPINgPf4PhoQwDhL1UDK7zOC9asREb7NjB34G4q+qniskAq3jnjz7XfP69onVtC03M6DUfl4UB6H7s9pBohTkmSHdkmdDnR8haV3tlF4kTZX8w9YnGhDe6dKR/bodNcTmQl6ytRCJ8/b77gpQ9dwZKQs+hGvhNnf9/dldo1DPfAgjpHEW0Pkn5Lldc47axbVWRRVynEaWNlJhMVn6YIGNXhKYxVNkQXmJOL4MOCHonS9aEfgLPthqk7Ui6gelGEhiT3gLJZlrplsoBgl7w/DqES+rN8LVVhhZLDHU6DxLlVRhnMzyNy8Fxlm4B0uFGLosUzlv/tW7uDQptUQL5qi59r+zEQY+SESX8NSMXrw5zL2NrCp9699d91X/f1h76ZpC49KBSzTOLvBzZ0B9gdYWRUUjqDpesVHVoNlrsPtecNvLiSgsWTemOHlqMLNeNa4Mva3XSBILj4qy67pPbQRiUpgTpxBGx2RJULYCccfjOzuNmx72x/vnDXV84vctBno/wk1gIvPzNVTTWzAvQ1rAGkv4gDnVXoqoZgH+dCrkPXjLDw7EAYPEsMmkruxte1u7tKNBJnA5HgxGr/NQgu01l26h1Gj7X44NTgZjF81PD5kcWr/I9KlBpzrxZphHIhV8D7ZlaYe7VIT4jlxe0Pyj8l0uQLtvApVBiLqenhIjKJbRsFLBvEaQexCYipo6yhJ2N9J3jUXhbaLAJMyilyng0bE41DPMyjRRV/wV0osNDRzEyDGmoYXPXZ+r7SWHssMTYhQ4M69efBYTiOsw3jnTLUTS0IVJY6RsX6FPj9GT4ijDxk5Y56JThr97/G1bg6sZJP7tzBgP1IusLmkdd09l6WbouexNz7G/KeEYXvzTco5mF+mY3qnXXkuWcZCJrAaHs/jKkgYoqbSItqux/E7pzm8rR51OQWy/04cVuvH366K
- YXghCLmh
- jm5YYY3A0p+vEyJd+dhg9mLu9XbPHLqFGx9QC9w1M2/A8h3BMxuhgZoiHbYqwmwXmVVm/KpLCNA+Pc1Rx+86XvvUWAs/Edl4CmHF+1mY2v/mp6jh8FQPvnAoN68IEeQF8vETYIeKO51f93o+jFU4T1JtvWGdc8o1hz/0x3PwFMvI80xGBVM1VPBUPVP/32vCHPVJJ9ANVjGVgXcUGBj++Vnj24CfeRPy/aWIxl2kvSZq4MSkHXFc6glajQ+7tw6uTp5h1z33/TtHOcvWaVJ1ScVaS4FAStysThC8Y3GO+6ucKrwCXH53MLVG35WUmG6xlQMvsnb6JpJEeYid8JiH27m/ymO6xG4n+2Rx6+8rJXjrMDSwv8poAI1lWo0Ip6cD7A3fUWfbu7kp8la00AwQbZREESRYMVij0=
+X-HE-Tag: 1772540250-924207
+X-HE-Meta: U2FsdGVkX18ZWbhf8CcvuYqGUdkJUDBpgLweE19H5WLeM//npX3yekAxDcEjdZbqX8zOyq5Er+2INItqDYdyj0Ne9wJEd+B49/4oilf3Y9DmrD2EYhGHDp254GyGky6JIOFoi8uP2EBsUwxjbyEbgwFWFEIjG+U6F4nKQ+INreFgBTIbrxiN7u8mnwwJt/WUsxBXlyxo7OO+iqku4OLL3qYsBD+0vMbULKm/oixLT3/DX1zCepIxFI6F4hZaP1vWcHWeHAD6f+JziHZGvBwNRNZhlec2trLHV2p/wwLGqMUiXKQw6hCVjdAryOe06XUhGYdAaYi/v6iaS4NG5tCOcPzRfxszsxOr6AcZ/36H6b/iiA7szCEYwdq/+dMxRXnx75rDe14KjchvOM65v/P3g0NvjfmpiPt8R7bWMvlHokzHkpBPTo0+Svs6ct4kipHtxo08q5FNNehtERZwKCf0VYo+3pC3KzuvF1zqm/o23fhmmHKeJJe8rwaMVtSlBvNNdzq3Qi+WVT8t8Ap58OZRkXp9x/9B5h7+H0O0FL2I3SE98cJmnBGElk0tBMcf8xD+olY6pmZXmWTC4T+pESICJIaVeMWguo95s0cKoWdnoaXMEaTI6tZyIy6ARP37rQGvG4y1HbEsx+emcSr6Ltr4x3bUWUNkY5sUfQzgH41g2V6GraszSU1xsFNJf9LgHUaRcvLnXs5bqam0OlLS5oFnU06McgWp7T396GIJZr2Aj0vR20bi98ZsjdHNo+YcND9yagrlnlA1NKF+c8xZuxpPBQW7KODOpTIyB+vC2BL40N0Z0MLxAk9sovvkZNNaSGBus8rqI/t1L8WWCauUgI2Evrmn83CJWIhY35ztPmoAT5LtmaP0xxdNQmpFf6dYPeD8YyAuJfF2tiCaPRXoMV/8Htw/iewrbJKlpXv65QQQGqRxS557ZzOGt7KbxEcU7wIAzl8nWGXvTY6Frhnqovi
+ 6lQOQEFN
+ s7+1BV1cwRybPP6j7/m0RUKFwJViWSWg4yTNzEglPTkOgU91Pj+00XtJbUsETcxH4dqoCkuitIVwnUkPPN0qaGkfwv0Aprd8cx/6/2+EN44jwVQtpt9MU/gxV6NRo3o+VFGmCE22goJ/AWb389mnC+DB8Xemx59NMZ6NqRh0sAphAZ7Evzx6v0N7kKJnVA3VNjfNj07Dc+1CQaDbuYO5AxB8uTfctWWlfsv1Hs091lDOTS/u4NvUeCeetwFautxpbjI85ChMF9D60nZPVegg4vmQpdzwCJs6Yylgq8TWlmzpZFR+syvX0jHWkpcPZ7+M9O0d9+VlbW1yQxRvh6i0Iic9Hli758rSbNEpAKy++GdqxNwWRQ86bKaZn7Xz7N9HcC6Iz1pGSD819DqDnOnyVlujQw846mgEk10PLn7ETSyNw8yN/KFf2XhVqmXq/HoRZCMoh+YF0mVWlQSeHM0J7BTdwPF2Gw0FlMcio0z5pqy/q7xpR56mNb6IHPrPwxr0dKsr0V1Q3UtJHivn8z5jIYFixqbnum/JWNFGj16kbSIEG9p6kRsE10GAHe5Wnct+3lbZYqZO0gGfEBLgp6DKa4x7KOTYvvOQ89FTN7jPkPECqCCV9pVTNOw8vvSacjQ4FfqZUPF31SohxQ6v4sKCgi8fBiXUa3I9WRW8gB/4C76lJvR7aw55J0utGV7wfqREyKdEp3x5SZy1TQaIiXFMofqJehA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -200,37 +124,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Monday, 2 March 2026 21:24:53 CET Jeff Layton wrote:
-> Now that i_ino is u64 and the PRIino format macro has been removed,
-> replace all uses in 9p with the concrete format strings.
+On Tue, Mar 03, 2026 at 11:45:28AM +0530, Dev Jain wrote:
+>We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
+>If the batch has a mix of writable and non-writable bits, we may end up
+>setting the entire batch writable. Fix this by respecting writable bit
+>during batching.
+>Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+>lost, preserve it on pte restoration by respecting the bit during batching,
+>to make the fix consistent w.r.t both writable bit and soft-dirty bit.
+>
+>I was able to write the below reproducer and crash the kernel.
+>Explanation of reproducer (set 64K mTHP to always):
+>
+>Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
+>fork() - parent points to the folio with 8 writable ptes and 8 non-writable
+>ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
+>determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
+>the folio as lazyfree. Write to the memory to dirty the pte, eventually
+>rmap will dirty the folio. Then trigger reclaim, we will hit the pte
+>restoration path, and the kernel will crash with the following trace:
+>
+>[   21.134473] kernel BUG at mm/page_table_check.c:118!
+>[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+>[   21.135917] Modules linked in:
+>[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+>[   21.136858] Hardware name: linux,dummy-virt (DT)
+>[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+>[   21.137308] pc : page_table_check_set+0x28c/0x2a8
+>[   21.137607] lr : page_table_check_set+0x134/0x2a8
+>[   21.137885] sp : ffff80008a3b3340
+>[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+>[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+>[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+>[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+>[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+>[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+>[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+>[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+>[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+>[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+>[   21.141991] Call trace:
+>[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+>[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+>[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+>[   21.142766]  contpte_set_ptes+0xe8/0x140
+>[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+>[   21.143177]  rmap_walk_anon+0x100/0x250
+>[   21.143315]  try_to_unmap+0xa0/0xc8
+>[   21.143441]  shrink_folio_list+0x59c/0x18a8
+>[   21.143759]  shrink_lruvec+0x664/0xbf0
+>[   21.144043]  shrink_node+0x218/0x878
+>[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+>[   21.144763]  user_proactive_reclaim+0x2a4/0x340
+>[   21.145056]  reclaim_store+0x3c/0x60
+>[   21.145216]  dev_attr_store+0x20/0x40
+>[   21.145585]  sysfs_kf_write+0x84/0xa8
+>[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+>[   21.145994]  vfs_write+0x2b8/0x368
+>[   21.146119]  ksys_write+0x70/0x110
+>[   21.146240]  __arm64_sys_write+0x24/0x38
+>[   21.146380]  invoke_syscall+0x50/0x120
+>[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+>[   21.146679]  do_el0_svc+0x28/0x40
+>[   21.146798]  el0_svc+0x34/0x110
+>[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+>[   21.147074]  el0t_64_sync+0x198/0x1a0
+>[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+>[   21.147440] ---[ end trace 0000000000000000 ]---
+>
+>
+>#define _GNU_SOURCE
+>#include <stdio.h>
+>#include <unistd.h>
+>#include <stdlib.h>
+>#include <sys/mman.h>
+>#include <string.h>
+>#include <sys/wait.h>
+>#include <sched.h>
+>#include <fcntl.h>
+>
+>void write_to_reclaim() {
+>    const char *path = "/sys/devices/system/node/node0/reclaim";
+>    const char *value = "409600000000";
+>    int fd = open(path, O_WRONLY);
+>    if (fd == -1) {
+>        perror("open");
+>        exit(EXIT_FAILURE);
+>    }
+>
+>    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+>        perror("write");
+>        close(fd);
+>        exit(EXIT_FAILURE);
+>    }
+>
+>    printf("Successfully wrote %s to %s\n", value, path);
+>    close(fd);
+>}
+>
+>int main()
+>{
+>	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+>			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>	if ((unsigned long)ptr != (1UL << 30)) {
+>		perror("mmap");
+>		return 1;
+>	}
+>	
+>	/* a 64K folio gets faulted in */
+>	memset(ptr, 0, 1UL << 16);
+>
+>	/* 32K half will not be shared into child */
+>	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+>		perror("madvise madv dontfork");
+>		return 1;
+>	}
+>
+>	pid_t pid = fork();
+>
+>	if (pid < 0) {
+>		perror("fork");
+>		return 1;
+>	} else if (pid == 0) {
+>		sleep(15);
+>	} else {
+>		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+>		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+>			perror("madvise madv fork");
+>			return 1;
+>		}
+>		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+>			perror("madvise madv free");
+>			return 1;
+>		}
+>
+>		/* dirty the large folio */
+>		(*ptr) += 10;
+>
+>		write_to_reclaim();
+>		// sleep(10);
+>		waitpid(pid, NULL, 0);
+>
+>	}
+>}
+>
+>Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+>Cc: stable <stable@kernel.org>
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
+>---
+>Patch applies on mm-unstable (9af4957ef127).
+>
+>v2->v3:
+> - Don't special case for anon folios
+>
+>v1->v2:
+> - Just respect the writable bit instead of hacking in a pte_wrprotect() in
+>   failure path
+> - Also handle soft-dirty bit
+>
+> mm/rmap.c | 9 ++++++++-
+> 1 file changed, 8 insertions(+), 1 deletion(-)
+>
+>diff --git a/mm/rmap.c b/mm/rmap.c
+>index bff8f222004e4..5a3e408e3f179 100644
+>--- a/mm/rmap.c
+>+++ b/mm/rmap.c
+>@@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+> 	if (userfaultfd_wp(vma))
+> 		return 1;
 > 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  fs/9p/vfs_addr.c       | 4 ++--
->  fs/9p/vfs_inode.c      | 6 +++---
->  fs/9p/vfs_inode_dotl.c | 6 +++---
->  3 files changed, 8 insertions(+), 8 deletions(-)
+>-	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
+>+	/*
+>+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
+>+	 * upgrading write permissions for ptes that were not originally
+>+	 * writable, and to avoid losing the soft-dirty bit, use the
+>+	 * appropriate FPB flags.
+>+	 */
+>+	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
+>+				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+> }
+> 
 
-9p uses the following macro to convert the 9p network protocol's QID path from
-u64 (all platforms) to ino_t. The 32-bit path of this macro should be dropped
-after this change, as it would unnecessarily truncate the value to 32-bit now
-[fs/9p/v9fs_vfs.h]:
+Hi, Dev
 
-#if (BITS_PER_LONG == 32)
-#define QID2INO(q) ((ino_t) (((q)->path+2) ^ (((q)->path) >> 32)))
-#else
-#define QID2INO(q) ((ino_t) ((q)->path+2))
-#endif
+When reading the code, I got one confusion. Current call flow is like below:
 
-You are not breaking anything, if you happen to send a v3, that would be nice
-to be dropped, otherwise we'll handle that on our end later on:
+    try_to_unmap_one();
+        nr_pages = folio_unmap_pte_batch(folio, &pvmw, flags, pteval);
+	..
+	pteval = get_and_clear_ptes(mm, address, pvmw.pte, nr_pages);
+	..
+	set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+We get pteval by folio_unmap_pte_batch() but it is set again by
+get_and_clear_ptes(), which maybe a different value. Then we use this pteval
+to restore ptes.
 
-I wonder whether that exceeded Claude's context size, or if that's in line
-with the prompt specified by you.
+So even we fix folio_unmap_pte_batch(), how this impact on the final restored
+value?
 
-/Christian
+Hope I don't miss something.
 
+> /*
+>-- 
+>2.34.1
+>
 
+-- 
+Wei Yang
+Help you, Help me
 
