@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 515A9E67A69
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:09:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A44A2E67A6D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:15:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1566B0005; Tue,  3 Mar 2026 01:09:55 -0500 (EST)
+	id CD8EF6B0005; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74EA06B0088; Tue,  3 Mar 2026 01:09:55 -0500 (EST)
+	id CBA5F6B0088; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65A7C6B0089; Tue,  3 Mar 2026 01:09:55 -0500 (EST)
+	id BB8D36B0089; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 52B4E6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:09:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D74421A05FD
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:09:54 +0000 (UTC)
-X-FDA: 84503725908.09.6F8A4AE
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 818431A000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:09:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=leLPw+e5;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A8FE46B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5CCC4BA5AB
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:15:51 +0000 (UTC)
+X-FDA: 84503740902.05.495C96F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 7ECF140008
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:15:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772518192;
+	s=arc-20220608; t=1772518549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D0Oz/gBHMRnkmhHlWpJAtY0D0OpxHNbkfHskxgg3IuM=;
-	b=0Wir49PgwLUA9WINYWH+uTEamrVVEWtXCZ3b9d0yBJ7RkPP8BW9r248mr3at0Ix86eti3Q
-	g45YoQfhzlRcXQmJWJdXNuDp3L+mzQfw8e7X5gLrHpQsa4jCnT3jZ2J2MGO4NjGG1hDZg4
-	AJi1209IftdcQRuG9UqiRo1N61jzCrA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=leLPw+e5;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772518192; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=3XuGl8GW3WFyIr/j2P5+bdkyIZQh7sW+GwzUK8+8fgA=;
+	b=WQymm6dZ1oaRp8auv4bdvssddFhnMaIWHkncm3wIgLo+Q3zQXlet0S3VFgSQ9gnxjnMtyd
+	p3g+lYPHSU7Zdh+Fxuy8N1Fwr5tdfJb75D/ejQRb3PelIHmH0cJymEgVfXnlQTvPN/aa4f
+	MbkrKMB0WdXEq/nIeNvA369gFBz4wPM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772518550; a=rsa-sha256;
 	cv=none;
-	b=gWgy9dzVQLuBfOP+PJHlts87JQsa6uyMcbCoxWJqGdN+nL4Gd6ym4TL4h9ZQ0g80khdNjB
-	OUOk3JNuNCUkMR6mNQ5XOrpFxx8kGuenRzFm7IES+RIH+VZcmfKqtHzOwA+YMyR8u1rS8/
-	gLUPOjuQVlhu4MO59oUIBl9Hg9EBzMs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1772518186; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=D0Oz/gBHMRnkmhHlWpJAtY0D0OpxHNbkfHskxgg3IuM=;
-	b=leLPw+e5XBisWm+cKsVEnP/YlhHKtUhArd0erSjvaJZpATzqj7I8oMrw6F1A9+64zI4esoGzqPcZdIDenW9L4WOwQYLCnASJiV91neUOz9pwI7+LBgYZkLShDtZjrT0FY6brmA+ABJ2GLHj5sW6kO/sy5keIjzpry3Yubvay+Ys=
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-8iZBK_1772518175 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 03 Mar 2026 14:09:45 +0800
-Message-ID: <b075109d-1f7e-470a-a84b-26ce6edff3b8@linux.alibaba.com>
-Date: Tue, 3 Mar 2026 14:09:45 +0800
+	b=GBZGVNBAyXuWISpWqhjTUwsUYGdC8TTqgILpz2RbNECyLLPkt9+bcG/unLL+Hp6VHGNU9+
+	jhVuxwLBRPn1mXaJHACShH7iJZMzwLl/wcH+p9Thjp7myRFeOoc/CEL7SdU0/G9HV5Uj2A
+	ugfwszm3imNjbXACy641blBzKosQ/W0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FF73497;
+	Mon,  2 Mar 2026 22:15:42 -0800 (PST)
+Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0E8A13F7BD;
+	Mon,  2 Mar 2026 22:15:43 -0800 (PST)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com
+Cc: riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	baohua@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	Dev Jain <dev.jain@arm.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree folios
+Date: Tue,  3 Mar 2026 11:45:28 +0530
+Message-Id: <20260303061528.2429162-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
- with folio_try_get()
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Hugh Dickins
- <hughd@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Bas van Dijk <bas@dfinity.org>, Eero Kelly <eero.kelly@dfinity.org>,
- Andrew Battat <andrew.battat@dfinity.org>,
- Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260302203159.3208341-1-ziy@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 818431A000B
-X-Stat-Signature: 1tqr7wanywmca8ute4kxqqcowwakskwu
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772518191-726972
-X-HE-Meta: U2FsdGVkX1/6rVhN7kGMTBRh9zFxZhq57WLm/zbOGr+FnSvRIp/tp0CJ8Vth9jtBp/W6KEC4/mi6bpLc8s7QELSDQHQx8J1IG9d+uY3hn+Jq3Vetq0/1Us5eC8Yi8R0i5wRbtUQJ+SqOAhsu1fGYex/N6lSG5rcPF46xJrw8Y9EqoWIXChNzeCOXytgecIVcXix1UJoGQ230MxQdda58D+722DAR28N9FybgtNNiAs3KCJmXML/nv97046ydmlfrX7b5tYeKF6wAElYcjT2E6E2cDS9js/DskYW0vU1iMQNim62+O5iyOVMNG/kSn/G7+rwtOZ/OTZJQVWqqqD+bjNzt4belHFL0IiH+KMk2+f8iaeCMIiGXZU2l2czi8MZS4d0uFUjTiJlE72COhSANUTAyqvMwIgCQujb0kzCzPEKGGk5WKvnwD4C5jVawg8sQ9E3RrFVIH6qxOAjKYkgh4kFD/hqH9KU+2KQE6mKp8+oWkWUI4ETO27D2ojIW1GJAdo18xYzgJia+9U5+vOm8lJ1TcHPP4us7spD1/gocv0oVTEoByP2A00PgZwNhSCPV5mqYvVf097wXF4YtjypYDHkqIukbq6Qy6T95Cmfic6q9nU2fcvauGg/PW2b+JvLFVryNVXm/g6I0vwoVEw+lGUpWDcrvryoNvx55jhORJPc3K6S20jCNksbL3mdu8FzMQHVD/48VZL64Mg5ve03OFzx2VOa1Opg3JDbv68SSVwEUvpSESPiyMDhG1SbgTVZKDHgyX63Pq1rg8updIuP46r6AeviUiYFZC4V7RMBNIFkSch2ew9dEhVhhpUQJu1tqrHvt72c/Yj9PLOSK5wo9qrDVgHEngREitns0NbC4LaZ1zsSsz19KDPRUCkl1g1vBXVpnr/3B0AgaZpLvJvbZarHVLmZ5NqS1cUFRdt7UDf2CSXUd3bN+6hhqWZsQaGua0STU0ilBHkTfWlELK9v
- xrxUAhv0
- +qEflFv480V9N7d6frZVuE21QSoyBbAkOu7r+88fXwjmztP2PKlOfCVmBSh8cHJPxh2c0TYq8+XxFiNFu5I8HRr5aXdYzO7ZSg1Knln/CUlJWVyCPbt6t1va5ZOivektpI1pWA7ggSih8yQ0Wdi1qZkTAgbS6/5252JfpEPM+BuiZooiL/cbMSRmmyGFitAujVKHIf1+K9Oj1M8Dqv15amgZXI0FoStQQvxmxbRMAO1HKTDAvZ0k/rcDw7AcU+0n44r4WbXLQKTsqCsBkqxo5CsXorhsQB7W6JZwxypZ7U+X4LGTcL54Kh60krgH4aC+cw5cymUWOSJ8KJa3X+QgHlW6+Ar539frJMmI9bxP2ozbvOESVQpiTjAg+QqZl++OZHBWK+LkP4ec+cbNv2rpA0/E0NUwVDfHrHQh61rPTw2hMTtW01i0cNtpYeTO29p6ZSB/CZX74o/aW8cmbOtlAFu4ofhN2dhpH+P0NX9jKqgXzRgbbn1rDiy4UXQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7ECF140008
+X-Stat-Signature: 1phb6b6piffji4mmoguko1m17krycapw
+X-HE-Tag: 1772518549-175721
+X-HE-Meta: U2FsdGVkX1/l1jpuvapkF9lWhQ8nGKr8esQdLH9KDpP5tm57DIKh55CPgXN8AoO8flBKGihDvh9pbUHQ2mM7J8kWmMR0RB9EaBubJoukuKzSOWeLcNjapTblR9EV8W9nVo9+QHLJxVc2HdG+QEdGaNTcd1H+IYh0U3hrl5scIKOeSvTeEEmfjI7wU5wBgNA5hvoWfmjkQEPxFwUUwQUKkMZKagSpk2XfxpLRitBm++/z3D52Jz6QPmJgnUpgrP692KqtL2hRz0zBGBj8LMgjPP30vBEcnGzbRWT8WheHUccIWPGMmHyqV+Xcq8KOtecn+5L5aBIZqEYfQ+dm+t2ckG9HpYN2ubBXa1MMExbLMzwJHbmvQ2btd9tItmT8tBHy/aHXmQog8LAIvR+9DYydr4OQxneICWvV7L5pQfFxWAh+ldvkU463NOg77GcSuzkdW0cOhwDpzneR7On4ELlkotLqx02M30LH2bsCYBgYONp4IW3J7fJvzu9s2ftc3fXFH9QGVt7AutuHnWn75iWPZbzSq0AJo+uIJj+jFzdkuvsSgRBGT0xPAS2JBjm+7OR4XB3GGXpyCmvB2P0trWCMFg0bwQ3JWbK8Lv/yuVkGy7eErjKKuAyzZwhsS5OuYMuSubaWK6wk+f8qZCUo+ebvcbdNQ1LSVIEfxJCG/4bJn7oulgBsU/cLqcQE/L/C70tfhPdiZork82vJqQqOsUY4+ytupJ+HqSLy8zNFZ8Rgf3z5TyfrOVe1eaXKVrvlp9pwi8AnOufHK1Cb9pNetLKKGDtEC2a4HE0Sv/c1g22RLsGlwiGXgtNKtLzqYX7Y4l6qJkwEefX/4imEH1okev3P3EfD1Q2BclyNDHq28tG2/LpLbyHXpCaf70GiagcNM+NOXmwjJ+dIyX616x10wVI/3MhhdchVgVq+SuJIY+pjeaUdy4Fx1X8EsyWME/5hpjBqFvg6IjPZvGTpb28D4ss
+ ak459pFy
+ +XcULztB6fFL43iKHWyzf9mNw964ZCnthHVGnMUmzJJO+ug23oqQ8bFEKoIPhlMpSASyd3St1xg6SUsNljVp+beFJK6uAru9Z4X+GD4BG8bW3xBVtvOoDvD3w8eBPxeUZFBbcMfXmLCzqIrCwTX+FxtdOaSG246THm+htfDJ1lRD4xQQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,84 +90,187 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
+If the batch has a mix of writable and non-writable bits, we may end up
+setting the entire batch writable. Fix this by respecting writable bit
+during batching.
+Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+lost, preserve it on pte restoration by respecting the bit during batching,
+to make the fix consistent w.r.t both writable bit and soft-dirty bit.
+
+I was able to write the below reproducer and crash the kernel.
+Explanation of reproducer (set 64K mTHP to always):
+
+Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
+fork() - parent points to the folio with 8 writable ptes and 8 non-writable
+ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
+determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
+the folio as lazyfree. Write to the memory to dirty the pte, eventually
+rmap will dirty the folio. Then trigger reclaim, we will hit the pte
+restoration path, and the kernel will crash with the following trace:
+
+[   21.134473] kernel BUG at mm/page_table_check.c:118!
+[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   21.135917] Modules linked in:
+[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+[   21.136858] Hardware name: linux,dummy-virt (DT)
+[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   21.137308] pc : page_table_check_set+0x28c/0x2a8
+[   21.137607] lr : page_table_check_set+0x134/0x2a8
+[   21.137885] sp : ffff80008a3b3340
+[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+[   21.141991] Call trace:
+[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+[   21.142766]  contpte_set_ptes+0xe8/0x140
+[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+[   21.143177]  rmap_walk_anon+0x100/0x250
+[   21.143315]  try_to_unmap+0xa0/0xc8
+[   21.143441]  shrink_folio_list+0x59c/0x18a8
+[   21.143759]  shrink_lruvec+0x664/0xbf0
+[   21.144043]  shrink_node+0x218/0x878
+[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+[   21.144763]  user_proactive_reclaim+0x2a4/0x340
+[   21.145056]  reclaim_store+0x3c/0x60
+[   21.145216]  dev_attr_store+0x20/0x40
+[   21.145585]  sysfs_kf_write+0x84/0xa8
+[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+[   21.145994]  vfs_write+0x2b8/0x368
+[   21.146119]  ksys_write+0x70/0x110
+[   21.146240]  __arm64_sys_write+0x24/0x38
+[   21.146380]  invoke_syscall+0x50/0x120
+[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+[   21.146679]  do_el0_svc+0x28/0x40
+[   21.146798]  el0_svc+0x34/0x110
+[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+[   21.147074]  el0t_64_sync+0x198/0x1a0
+[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+[   21.147440] ---[ end trace 0000000000000000 ]---
 
 
-On 3/3/26 4:31 AM, Zi Yan wrote:
-> During a pagecache folio split, the values in the related xarray should not
-> be changed from the original folio at xarray split time until all
-> after-split folios are well formed and stored in the xarray. Current use
-> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
-> show up at wrong indices in the xarray. When these misplaced after-split
-> folios are unfrozen, before correct folios are stored via __xa_store(), and
-> grabbed by folio_try_get(), they are returned to userspace at wrong file
-> indices, causing data corruption. More detailed explanation is at the
-> bottom.
-> 
-> The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
-> It
-> 1. creates a memfd,
-> 2. forks,
-> 3. in the child process, maps the file with large folios (via shmem code
->     path) and reads the mapped file continuously with 16 threads,
-> 4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
->     large folio.
-> 
-> Data corruption can be observed without the fix. Basically, data from a
-> wrong page->index is returned.
-> 
-> Fix it by using the original folio in xas_try_split() calls, so that
-> folio_try_get() can get the right after-split folios after the original
-> folio is unfrozen.
-> 
-> Uniform split, split_huge_page*(), is not affected, since it uses
-> xas_split_alloc() and xas_split() only once and stores the original folio
-> in the xarray. Change xas_split() used in uniform split branch to use
-> the original folio to avoid confusion.
-> 
-> Fixes below points to the commit introduces the code, but folio_split() is
-> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
-> truncate operation").
-> 
-> More details:
-> 
-> For example, a folio f is split non-uniformly into f, f2, f3, f4 like
-> below:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f4 |
-> +----------------+---------+----+----+
-> but the xarray would look like below after __split_unmapped_folio() is
-> done:
-> +----------------+---------+----+----+
-> |       f        |    f2   | f3 | f3 |
-> +----------------+---------+----+----+
-> 
-> After __split_unmapped_folio(), the code changes the xarray and unfreezes
-> after-split folios:
-> 
-> 1. unfreezes f2, __xa_store(f2)
-> 2. unfreezes f3, __xa_store(f3)
-> 3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
-> 4. unfreezes f.
-> 
-> Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
-> xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
-> f3 is wrongly returned to user.
-> 
-> After the fix, the xarray looks like below after __split_unmapped_folio():
-> +----------------+---------+----+----+
-> |       f        |    f    | f  | f  |
-> +----------------+---------+----+----+
-> so that the race window no longer exists.
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sched.h>
+#include <fcntl.h>
 
-Thanks for the detailed explanation. Make sense to me.
+void write_to_reclaim() {
+    const char *path = "/sys/devices/system/node/node0/reclaim";
+    const char *value = "409600000000";
+    int fd = open(path, O_WRONLY);
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
 
-> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reported-by: Bas van Dijk <bas@dfinity.org>
-> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> ---
+    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+        perror("write");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+    printf("Successfully wrote %s to %s\n", value, path);
+    close(fd);
+}
+
+int main()
+{
+	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if ((unsigned long)ptr != (1UL << 30)) {
+		perror("mmap");
+		return 1;
+	}
+	
+	/* a 64K folio gets faulted in */
+	memset(ptr, 0, 1UL << 16);
+
+	/* 32K half will not be shared into child */
+	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+		perror("madvise madv dontfork");
+		return 1;
+	}
+
+	pid_t pid = fork();
+
+	if (pid < 0) {
+		perror("fork");
+		return 1;
+	} else if (pid == 0) {
+		sleep(15);
+	} else {
+		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+			perror("madvise madv fork");
+			return 1;
+		}
+		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+			perror("madvise madv free");
+			return 1;
+		}
+
+		/* dirty the large folio */
+		(*ptr) += 10;
+
+		write_to_reclaim();
+		// sleep(10);
+		waitpid(pid, NULL, 0);
+
+	}
+}
+
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Patch applies on mm-unstable (9af4957ef127).
+
+v2->v3:
+ - Don't special case for anon folios
+
+v1->v2:
+ - Just respect the writable bit instead of hacking in a pte_wrprotect() in
+   failure path
+ - Also handle soft-dirty bit
+
+ mm/rmap.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index bff8f222004e4..5a3e408e3f179 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+ 	if (userfaultfd_wp(vma))
+ 		return 1;
+ 
+-	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
++	/*
++	 * If unmap fails, we need to restore the ptes. To avoid accidentally
++	 * upgrading write permissions for ptes that were not originally
++	 * writable, and to avoid losing the soft-dirty bit, use the
++	 * appropriate FPB flags.
++	 */
++	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
++				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+ }
+ 
+ /*
+-- 
+2.34.1
+
 
