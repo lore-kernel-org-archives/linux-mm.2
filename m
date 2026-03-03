@@ -4,160 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE621E67A70
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:38:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F53AE67A6B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AC136B0088; Tue,  3 Mar 2026 01:38:46 -0500 (EST)
+	id 61E6A6B0005; Tue,  3 Mar 2026 01:47:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 057076B0089; Tue,  3 Mar 2026 01:38:46 -0500 (EST)
+	id 5CC116B0088; Tue,  3 Mar 2026 01:47:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E70B76B008A; Tue,  3 Mar 2026 01:38:45 -0500 (EST)
+	id 4CB326B0089; Tue,  3 Mar 2026 01:47:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D64566B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:38:45 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82AF5BA686
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:38:45 +0000 (UTC)
-X-FDA: 84503798610.27.FDBF171
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010011.outbound.protection.outlook.com [52.101.46.11])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B359F4000C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:38:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kAtipMwl;
-	spf=pass (imf01.hostedemail.com: domain of pjaroszynski@nvidia.com designates 52.101.46.11 as permitted sender) smtp.mailfrom=pjaroszynski@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772519922;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B1C6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:47:57 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7EB059E37
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:47:56 +0000 (UTC)
+X-FDA: 84503821752.10.B52FE0B
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AC66D80010
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:47:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="AXXg/CFs"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772520474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=YBPk6eDzTBhM7ulfxDVm3TcPKNGl/d88q6gYotxeH/U=;
-	b=v2YoZ+iA1A4uN7vb9UU2aCn8VtqumdMl+0kqW5YOkJMcUZzdj6JaNwfpfJIPnKiK6M96jZ
-	cLSSWjQxeAh+nmfKN6eWDfaKdNWkISPhaFLLgQiiqOJoeJD1kHQWKf1qsw70iLZDqjf+13
-	R7onwyfTPsRbHB2Jc0W/QnbkzvNFUOc=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kAtipMwl;
-	spf=pass (imf01.hostedemail.com: domain of pjaroszynski@nvidia.com designates 52.101.46.11 as permitted sender) smtp.mailfrom=pjaroszynski@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772519922; a=rsa-sha256;
-	cv=pass;
-	b=1rZiJZXYCoA2j+tAPq0Ca987wVGMG1TZeYLGGuQrQZdjsI0fHIOIwPOyvxY18Gi0/evdR3
-	uAw4PdfPOGCVE7IrdUwP42DWQT0ax9SoPSUw0gDaCK87SoyOugrE6HFLM0rOkLEgeoNtig
-	v/c3jyqGjfxphtW0yt+mhlFFRIZh+Jo=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XpMqAb8ZNCNdy2/HVmV3Ks5Kr1GDXiFgQaFd0RzcmFqvQAsMOqVenKxXBePPuM+gF0AUzg54UiDEuFj06U9Of6ry4wtfbSdKEGEtcDdhusyajlXlGBf4GEnPAyqHQnwV+EVYkCvRJjBtzRuhXwan5bQQq6liRQBiQlmXnz7up+beomZQiCJNR3aGal9xWnysAlHm0de5WjJax6BN87UNKAP9HC+WtpEIiSAoSy6xr0GFTNtWLCZ63VHmNaN5iSdE1rTirk7eyVsTRhJu1dVCd0bFhUKKx4BBaXHIu/xpzNaJszYq+l6TpXluV1rtPN/mRlkWlFVGn9lPUwsjkWnvrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YBPk6eDzTBhM7ulfxDVm3TcPKNGl/d88q6gYotxeH/U=;
- b=qZ6cbEmwtVM0XWcqzdOiM1ZCc28pJ1WwSm8mdpEDgSwg7kMduWn3FBAKf1XN7ssaVqzy2WoD1gVi/8tkn4vgAa0I69a3ye6Bz9PTXEZ8qcscjoZSVmpCCG68fACA97ZDUpVo2dHwIhq7H0IGNwYpUOJny0c8dNCPtzvMi0njRbrdiL8ZVR6Rv8usH6Vrfyk1LKmqXiAm55Xm/7NUGkaLTwpL8Vv0L3I0f6u5uGG+beBatF7rhIbyYIJkBMIrBsDMLY+VZwKhvq/bHIyjwBfyQUs87wo5JVOTw8TVwUwXd8V9yGmmEmDICndUJSwGUalkor9L+Cc6OETOp3zz50OM4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YBPk6eDzTBhM7ulfxDVm3TcPKNGl/d88q6gYotxeH/U=;
- b=kAtipMwlcF15tZ40Rx4sqvwusTNCyx/CTaPLu5ppviyd3PYFjJYh3HkU7S/9zg1BkU5pOHm0K4K4NXNUqu0WNzx1lhlkOQDQtZ00Odd8vLTFJfdtymn1pjC0njkr7KhjBHz34/5W7gTnp02p0DdZuHMKZQCEmF5el6oI8i2ry4f7Gfd4vDGSxHVubTJ0uud+vJu7VyY/lni+w+EgvPT81vAqEozNNLZ1EWcmIfYpY+IQEVUse6urzZc7jVFR+L60bzRfccQadzWPYUET08rC0lnZBBhMlcq4LMCYQECZV84lovJasj+AL+wler2AOAyR6UiZzYYQUxQogL+ioOYavw==
-Received: from DS0PR12MB6559.namprd12.prod.outlook.com (2603:10b6:8:d1::6) by
- IA1PR12MB8191.namprd12.prod.outlook.com (2603:10b6:208:3f3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 06:38:37 +0000
-Received: from DS0PR12MB6559.namprd12.prod.outlook.com
- ([fe80::3f99:f532:cf6b:ea46]) by DS0PR12MB6559.namprd12.prod.outlook.com
- ([fe80::3f99:f532:cf6b:ea46%4]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
- 06:38:37 +0000
-From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-To: Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org
-Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
-Date: Mon,  2 Mar 2026 22:37:51 -0800
-Message-Id: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
-X-Mailer: git-send-email 2.22.1.7.gac84d6e93c.dirty
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0264.namprd03.prod.outlook.com
- (2603:10b6:a03:3a0::29) To DS0PR12MB6559.namprd12.prod.outlook.com
- (2603:10b6:8:d1::6)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mRH/PWo0ni49zRq5vJ+tSuO3ez7RUwLeHV5wwaIGxBQ=;
+	b=f3Y63YOxoSrsWE22UOySzMIZq4brMxEX3+u8DIrQBaEQW4JdEmpHMbumnaYHbnviJG58I3
+	BbKeTaTDHi2SnQrOoWxEQuZO6Pu+LwMBtj02YrypWUM4BhjpmEdPMPofDKXQSOJ7I6VXkN
+	Z3AzQidhSwQ4vgG4EFuaUGE8n74LB9Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772520475; a=rsa-sha256;
+	cv=none;
+	b=3UxKQoakjZw7sQiOR6OuDjL25MiG4kDQsIW7hcVFw1Nk/otrS3bBl6Z2YL0DFkbDHi6z6O
+	Pl3OdqmYqf6KSJc8+5oTMm3gxGI5hKUUSE1VL0nrs2bkR5AD3geGFP8v0vU5yzVNe1kI6a
+	vXEPMiQhDuPeQ87Nzrln9GFoayN9GfQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="AXXg/CFs";
+	spf=none (imf02.hostedemail.com: domain of fthain@linux-m68k.org has no SPF policy when checking 202.12.124.144) smtp.mailfrom=fthain@linux-m68k.org;
+	dmarc=none
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 3D9DF1D0028F;
+	Tue,  3 Mar 2026 01:47:53 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 03 Mar 2026 01:47:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1772520473; x=1772606873; bh=mRH/PWo0ni49zRq5vJ+tSuO3ez7RUwLeHV5
+	wwaIGxBQ=; b=AXXg/CFseOA+QHxm0YznyljfnGwkZ8cxJVAsw7zMeVW11jTDhm7
+	OKN4x+dDzo31n435ccwiD9pTQGULQQW3cBYO/O0df4fhj0oVSpRo8wsa+xBxE9i7
+	8AObCXKtFEaiH1MR6nixnh552+n/oUcKS2RhWmPjwJCPgAJU4a9OSC66bJzhXGU8
+	Xd33sBtvtIgyqqqoQpAexyjiuna+WiVu4dTkUbORo2m3Z/lzzglTIJkE4cgTyboG
+	+53fP+DH/qgDKdYmeDETsg0z6NuvUI3rNmiVTP+Gp4TBs4tC03f6huszR8sGpDk5
+	eToTx19H1KcxID6eaz8HgeGOA5Er0eoS/ZA==
+X-ME-Sender: <xms:GISmaZKGxdk-a-WwsddyV5K3JBrjICStdOXstr4LfiFjU0uHjx36MA>
+    <xme:GISmaY9MTiItAsES7SKk3EF-mTPWwgsEBmwHJbTf2hg5TLQ4HKug6lRs0Xjp2y7fc
+    xdBKmvZZ6OL-nT3d0--z2I1rx92pudVrx1voJBWCqdC28ffHAmM0lc>
+X-ME-Received: <xmr:GISmaaxyQNzP40jBWDmq5GfzX_wubwG6xK31ZJ4SYaXWbjcL6Liaf398IWLiknvfOgfsegdl3cY2HUbsonsKNPucL5J-touMAR0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvheelkeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevufgjkfhfgggtsehttdertddttddvnecuhfhrohhmpefhihhnnhcuvfhh
+    rghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtth
+    gvrhhnpefhhfdtheejlefgieffhffhfeffgfejfeeluedufeeuhfevtdeiheehudfhgeeh
+    ueenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpddtuddrohhrghenucevlhhushhtvg
+    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhu
+    gidqmheikehkrdhorhhgpdhnsggprhgtphhtthhopeejpdhmohguvgepshhmthhpohhuth
+    dprhgtphhtthhopehnjhgrvhgrlhhisehmrghrvhgvlhhlrdgtohhmpdhrtghpthhtohep
+    rghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouh
+    hnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrd
+    horhhgpdhrtghpthhtohepohgvqdhksghuihhlugdqrghllheslhhishhtshdrlhhinhhu
+    gidruggvvhdprhgtphhtthhopehlkhhpsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:GISmad624QAVewqa1BIV_V1m4c4-t8NbnNXHHeI9jv-gllIFEcwO2w>
+    <xmx:GISmaZ9Ld9GSHujIWtJdck8oY1aFcmbqpeqSeMr5IYRw2TZ4nmCyAg>
+    <xmx:GISmaarK3Inh1YnmcSOPxAqcefVif_I42bhGfYlp5BAQdPQHt62P_Q>
+    <xmx:GISmaSokuMZAWcqddbzXQmW7EMQ3d6fKzB_mF7iGn_LrqG79FlaFbQ>
+    <xmx:GYSmaVZp4C4-Q6EE2Ddc3NsZ2zaaT36N7P3ooCTYSIq3bAfeuXjWuFoI>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Mar 2026 01:47:49 -0500 (EST)
+Date: Tue, 3 Mar 2026 17:48:48 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Nilesh Javali <njavali@marvell.com>
+cc: Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+    linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+    oe-kbuild-all@lists.linux.dev, lkp@intel.com
+Subject: Re: include/linux/compiler_types.h:631:38: error: call to
+ '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON
+ failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
+ sizeof(*u)
+In-Reply-To: <202603030747.VX0v4otS-lkp@intel.com>
+Message-ID: <6bc11e2f-393d-16a2-9664-a20e2f1d3767@linux-m68k.org>
+References: <202603030747.VX0v4otS-lkp@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6559:EE_|IA1PR12MB8191:EE_
-X-MS-Office365-Filtering-Correlation-Id: 341b95d6-72e7-4bcf-0e31-08de78ef7fe1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	hRnq2L3Zv/So91JCmazmCFOFMfuXkLY6GiVs5bdthmfTAl2VjHqe4EzsJtPEyDBIwJWUnsxF//SobzpxkK6TvgMQukPTGDX/bUMBeqRug6FR94GuFw862TfXQ5859tGR3ynTC2bRJGY7CZXZ1da3x189iugRPCcvXSEDq8ISkTnJHfXQMqR7ixIXtrQwSI+FtDFUV2KYezhDMxJB0qCt+TzTZMX02/9VbGgWtzJZgjIQ9zMoX/YzHq5efdXYSe/zcu0CU5RC8Wy2Mdbnm73vK1zbjqvwh01uF/152nWGc+KKH+q9n6rLI/S4huUwiM4oeehDHcm3EoKOaq/w1wqdLt5UTmvXYKfdK8Vdr1uf/Rj9pkUniOFwHJqyEBf7D80jXZVX9kwSrxlEXr5+ibDyoX2lSYNr1+ux/CuckColV87CyJKkawYfpVWw3FNT1MSLjfiUvz8kl62Y6PzUL9ejU3VRZki7ucHmHXwzzYgpuBASkXX4XobMILwCPiDtxd55SjRsrhWESNdgZPZYHsgWfFECxdS1PG9yYhgqbGfmuk+WF3xEicxjx6wOpCYcI1zweaYkabyBmanoVfPs4PNg9QX2zJBh/CyRKNf6Fs+u/CdwlwUUCX3Mclx3GHdJ/DNP2/mZUe1kxD9EoVNRdYXknFXcF5rV5KjajlYqgMync8DKqBPS0UwL2hdcQko0K1sNy5x7thSGrBd3houwQq/KtpT01cov0ON47wfcuOwxxPg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6559.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JKGwG7P5aEPT5uDBFEwiwUN8LFUklBQ7SgJodYIQ9tMMHTyldBPHIacreKAY?=
- =?us-ascii?Q?6BEM+oAxZGkRCPHrDQjtkOqZVOeQtSqDB19vDIvkcV8Ndc3TNYZffsJquI8X?=
- =?us-ascii?Q?uCznrLF74Uc2HeHlh6UNyfu0mmhnw6B5M58kojam3rs+DPygXpHQ90lQ90sm?=
- =?us-ascii?Q?YK0gkLEcobqTJhNA3VEzFS+GqJcMdD+cVGwr0MBNJwwsskFOamPNZvBcr95v?=
- =?us-ascii?Q?YDFFtwKc3adKTmrSyxJK816s/W3NyDjdGN/isyak0o0tLoLVCzuU7I16U6Uc?=
- =?us-ascii?Q?rG0pd8HeqfSXJKxRzb7zpOww4udwIVp0S4QHNZhZxhlOjY5xIX8ImnRu7Mja?=
- =?us-ascii?Q?6Ql+HSxLsIN0gBudEr3dZVFz5TCq9TQsVd+z9fQflfLc4UKnKxI6KCQcghTH?=
- =?us-ascii?Q?l4s112nHWP4UEpVZdwjcVRKM4x8ZSBSaMR3d2bMOqkL1GEUrH5K6lFYVr/Y+?=
- =?us-ascii?Q?DxOq8ljEeJwi6Yz0HDQ+WinvlsMz3Ww+gaYgU1ZC8AvR55cJ0VwTzurCEv3+?=
- =?us-ascii?Q?G5+dMr43n1Xnvq+MBhEXTE2yTuShcZ+zu1FsNCXwblYnVqhFqtoRYYsqBqRF?=
- =?us-ascii?Q?Iga3l2PBQPJIx5AzfEBlyJ8ImyWJavE8EIHRQpueMKQRm7wDwaLDxgi815XF?=
- =?us-ascii?Q?yyyucdoF64sypz3Ds9DLmQtAg0AJ97w8t3a0Gew3heqGex93TDkhw2CpMuJn?=
- =?us-ascii?Q?BwtL/eIEnDjmorfreZRKhC/qbMJzt+/XIZ0PO1NoizSz2a4JYAJNmzs2DUjP?=
- =?us-ascii?Q?RYd2jO3JI0WiEmJ4g68Q/GzdWqFCAyUOLSZGbffEjYzdJEUaqaQhmy/oHb9P?=
- =?us-ascii?Q?hECnnRgrwsVBuSoX1RvqhhyDu7gT+nPzxzEDxPtKx1Y1XD4ygwPbcWOvVbRq?=
- =?us-ascii?Q?jx/Q935W7nFHDM1cDPWHeYCP+MfNbKA+T2HvrUlX5mLCVz8SUyK6RSOTuQmn?=
- =?us-ascii?Q?zG78UBrR6OyW2qmaf3B/22Isg6iH+Zb2WZUhHBJvt7+dJeZMIobSgU254Fq4?=
- =?us-ascii?Q?B3knqrJCCPhmGaO/nYeJAvTxzI1NSgyteX5qWvm/GWlRtbQweAAsPlfAWtC1?=
- =?us-ascii?Q?Wolaqd5q0ESyiqFf+EnLW8/GXrIVpDPOqR+y9VlxhnfOvgJsgmEALfiuL5Y4?=
- =?us-ascii?Q?vjSTx594sSAsA4lcV+SrhwZ367VKZf77my6D9hiA/E2u7u6S7UusQBO1XLIN?=
- =?us-ascii?Q?KOB1WOJJCfjP+92GPVhVcfEwp7uCMlWyQxrzDjttK50hdXtAKx0Hd1Bd8JIs?=
- =?us-ascii?Q?aO00IZNDC0Y6ZVES2bC/6JO+W5t0F6hbj2gOXDtvy8B2BuDx4yHWd+yzlb7s?=
- =?us-ascii?Q?s3CkFGgrmFAe+Pi/YSxSblzpPjTYTVH8FRdhgfMm8hiFPHySSfzIfAcGz8YG?=
- =?us-ascii?Q?TV9YEMrA5ntMMsm1dHipJxxEnEskPMM31UYpNSbL4bMFHgAgnf93JV3UeMcL?=
- =?us-ascii?Q?oALzCoWIGg/HPJH6obrfetdYYodAE+WZyOhol90y3ywCa4JuHkT2QF3mCTL5?=
- =?us-ascii?Q?qsdTdUa0b5rv67C9FwRUEFH1W/qa4zJ0U33Ajzc5LQGzRWCCdXdrsIREvHz6?=
- =?us-ascii?Q?K2WpjgQ8ZxvUGhq4ppYiomb6uFxHhHhOFoA6bAHOaybKm/RlfbJw8TzW8z8/?=
- =?us-ascii?Q?R8BudKdYO/NCdUkvZeDHxGa1VhjXaFX0v29h3wUwWSOcZUzSoJ0oonosq+c1?=
- =?us-ascii?Q?sYQGiLy7Pk+8Zr+FEbnZMxlFxTLPl5QVSOmzn4LyNHzdLCHWBndY8IWItVn/?=
- =?us-ascii?Q?HfCBTni+fgfHuGjRKNsqdAQFGkl1ycg=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 341b95d6-72e7-4bcf-0e31-08de78ef7fe1
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6559.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 06:38:37.2411
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wxDf6Q3rKApRsRRzvHVVahIfF7iF6XoWfmW9SGVQIIGFAT2pjnR3tznXXoAqYz9JxwN5WbPryJgaUZwgrgEcUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8191
+Content-Type: text/plain; charset=us-ascii
+X-Stat-Signature: 5ox4x67zjq7wkp1gwxyqcnjzngg4tt7u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B359F4000C
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 98qdfo1dx3g6tkgftotpt1ca87rnnopo
-X-HE-Tag: 1772519922-947048
-X-HE-Meta: U2FsdGVkX18iBtYQkeuTu1g7I2mAwGEnhYLz+H7NN1MBPvVfCJBFs7VF4iKVE9E6g4PY6qNY4Bc+bE+vzC1sJF9E/qUmbZ34iELnbwl8ICcBSYdaD3N3Rube+d8RWJojux8C2dclLyV0gLyAwlg0vSvwaD9tdSKe6YEbHKcQ3GiXN07wZfI/6CFaNmpaQ6GMAu3U6tzH5l3T3JLl8ax3lsQD6+RgKOdar+qA5z0QFZ8f5Rhn8RhQ54fwk6S5KjCLlEkuMvz5eeZAMVQFj1+QJ4UuxapyOQqsvapxOGgkCoCY3WQaA42ffu89zuL7NT5iFWX8xj2yexkdj9/XONbLUFV7AeXJWTYSYfcqMHzeB/HeWQK7FK3ywgPPD/VMK51+9s8+ZBR+7M0cLi96Q5mHXZdqMx1rEhtJrt6k7o7G3Ptxj4qL+gErWSZaJX9wy7wVATlIpkQ/wkJoaY27RBpHLVRIWMwNhnETTD5J3s7dJwaaoSP8XQ3hrIK7p2AipD+b63X/xGItFssnJegNqLBqW2O/SwVy4AfKM/Vu7aG3eAiBhTNRd8Hp1EmT8LldVva2ncOnqpQzSmNNloc5VUPQMRk8xfos6q6el/wNMAb2l7ePQ8+UKvYM9X2fRJYgCA7HqRX2PFBi0L5BGL+JlVemtB1kb13C+C7iTpKVky0gf1ZgsSGeNdZt2cO+zjuc1Xpn7JhAMTvNnuyKI0DW3r0r7lo475fnRj3RirtzYgW0k+dS233B5VsDT+i13loqWy1vwAejokpY24RyO1456rMihdG7DFbwDHFNwAeMu8/eVp++JUcB57sUMsfwSnasSLdGJTui7hCcFfRpEW796ybGNlKL3o7GQHv6/Y82aQWxUS7eWJyGG6vSGdegVGGsKZ1AKS51K/Hvi/bf8tN+bJG5LzElsdB3wP6/vHdjQpJeJYDfp7vLYuMWC9gSCXOun6lCeVbUURoLDjfUiZpuG2d
- zkUvGwam
- wPWDMU/GSt04bIVy/8+Z74etFrkZSlgLKCbphLjwO6hQE2/922Ny6gsq4tnLsiHlRgo9lc8owXRfjwZjYUy3a43NgxlDh6cr1ZnDVrPwBvajAfmcmK2YWrcfxwJEGLa2VTw1kj6plv5RmmPYfH8eP254C15+nTflQn0FL5a3adJkUsnQIwkwDnLXnMQcCAwABuZ3H/zhtvEJm+Hk5NqTWxa8Db3DPuCLh2QT6hs8xW9YpwxKyLBbXQtlHgl7d8cOo6HqSHl808UjJhEyNU76MKHwehzWgA4dTOb8TqoCxSpb3bQzQ9l73QDKmHLVNZHFKV3uRWExjfgWUMcGVg3ZXlCSU6cPszfXM4U5IU8yAAlJVghakt4WL8RbzkbirVKiUKL+iywB9codKVBRCjy3TU9GWHmiyHvshw5PIUBAkEiGLwYXobH115+kaAFSX1s9cruFEZCGNA1Ju0YgluA8Zzeib9Ds4zMO9nd8A4ihAqpNHkpTOFNVYk6r+na2GrblTqkgq4HuTHD91l8Xy2K2FmLdQaR6wihB6iJ6I
+X-Rspamd-Queue-Id: AC66D80010
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772520474-241916
+X-HE-Meta: U2FsdGVkX18os/a7YoVJKlTQlStj4OtJKyEEKa9c73MHb3Vz1Q05VYWgzxJVhCBAQfuua+LTvYMJo2bBaLY1/EqquVlsTcxlPRyQrScZm0Pk2Gzcwr2DLt78KN4KLOZCeGnr/HvjwSA2G8kXCDHxpghSrH4XIc9d7ndRSqu03QR1XumxQQuEqbpPB8GIrNfYFKCtVAjsW59jfexrEA/kdmiRIoqKEqVHplSGpLtnXUvgq2RQqxlARjMnBGxYautIMdMZKI0hHUmlQx5BeEVRvqU51tcxYfa/+gFXwn5WQyEPYNprjPBs4Sli3J36fLXoxXTsCshDgeN6Wyf/oL0U1jmU8Vqrs3973oXniVmzJWaWMhqmrpm+lYHa1R7h/kXD7868ADPquzoVnJpFO3AbsTR6oAsPUQ4o/7R15WhYjwhI4VwqlBunE9ZWajgI3WrYvWwDwGyneartdfRZM94m1SR+pPXshKjn0OoBBR7Kpdm3DmDvXUGCehZSwyBFl1oarCscGM4qhGp8oTEp+lAfAjTCcU7YMSHPGy3hyRixZK/OlO31jXZnUfDBhvGo6JBeAPRRU//VPo1ZhHAKCdWlGuwvX6IqwWYvOIFzhzRQ6o11ptWae5P1SIO5ZSNvp5gcP46BQoRuuUeqnt4L1OHZLsKHICC16SMb0thWKc+Lxrl3qC+nmeIek1gASCPsN/kzQOfw5azB+hRizR4SMgSFN2y7jUkOrvRla61qBAIJnU3lBChfemrrMvzoEJrNLx6S9XE6eQUFCECCJnyupKLbg2MNDsbBnQWayt7LrB3zt/0Jgjct/Wc6uwV1kCWIca7hfeTtbYBOz5Zcd912Z9DOrxYA6TSjdjin20Y1ubaPuAt/vxDjG4W0V1OiZEexMo2rrwzthtGNUhSJuZ96V6L71hwgUjZZxWVdQKyrBrtizXqXcMrBJiaSI5JKVql3Nl9nXl/C0VZahr6dvNX0jvp
+ 4G5W5FGB
+ kkxP2iVu/O3UOwmOAoBb8LLwzXQicNE90TAPCvBhJ855EShZL/KfxWgSd0ebIQIQAA7GjUZsqD7EQfFXlYGtB4gd0ocLo7x4qDEgMQITXWvuZGgAa+WVVrtndlCUxG07AL6/8kWufmpYgcoWKCIXp2iAbwcfDeO7QTvyBDecI8G5eEYt6P9kR4nbl3JVPCD9tjjPQPixaD8gHkTZTrSd3G9YhxSwepV+6y9nlVK8+/tVxSjzDz9SIlvC+Fjz9RqNwQX/M1fyQHCQTB1R8+78FTX7r9A8FnKnUSSvxfM2d/upwlQAel5+3xwPTsaj/6/CHx4ENoAdoIw8R6axQgz4cWxxTVMRVw/cf7r7GZqhY9VEg4mKpwlVi3TcHycbMwwKTy5URcf6bUu7GlAVZYfr/AqR3pWujXman+CNpVWAgGI3EIc6t3Bw9c/zubQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,119 +120,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-contpte_ptep_set_access_flags() compared the gathered ptep_get() value
-against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
-from all sub-PTEs in the CONT block, so a dirty sibling can make the
-target appear already-dirty. When the gathered value matches entry, the
-function returns 0 even though the target sub-PTE still has PTE_RDONLY
-set in hardware.
 
-For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
-may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
-result as authoritative for the entire range. But an SMMU without HTTU
-(or with HA/HD disabled in CD.TCR) evaluates each descriptor
-individually and will keep raising F_PERMISSION on the unchanged target
-sub-PTE, causing an infinite fault loop.
+On Tue, 3 Mar 2026, kernel test robot wrote:
 
-Gathering can therefore cause false no-ops when only a sibling has been
-updated:
- - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
- - read faults:  target still lacks PTE_AF
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   af4e9ef3d78420feb8fe58cd9a1ab80c501b3c08
+> commit: e428b013d9dff30f7a65509e33047ba975cce8ba atomic: specify alignment for atomic_t and atomic64_t
+> date:   5 weeks ago
+> config: m68k-randconfig-r133-20260303 (https://download.01.org/0day-ci/archive/20260303/202603030747.VX0v4otS-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 8.5.0
+> sparse: v0.6.5-rc1
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260303/202603030747.VX0v4otS-lkp@intel.com/reproduce)
 
-Fix by checking all sub-PTEs' access flags individually (not via the
-gathered view) before returning no-op, and use the raw target PTE for
-the write-bit unfold decision. The access-flag mask matches the one
-used by __ptep_set_access_flags().
+This config is an unlikely one (fibre channel storage with a coldfire 
+processor) which is probably why 'make randconfig' was needed in order to 
+expose the problem. It's essentially a theoretical bug but I will try to 
+patch it anyway.
 
-Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CONT
-range may become the effective cached translation and software must
-maintain consistent attributes across the range.
+What's happening here is that the patch that naturally aligned atomic_t 
+caused some new padding to appear at the end of this struct:
 
-Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
 
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
----
- arch/arm64/mm/contpte.c | 47 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 43 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-index bcac4f55f9c1..9868bfe4607c 100644
---- a/arch/arm64/mm/contpte.c
-+++ b/arch/arm64/mm/contpte.c
-@@ -390,6 +390,23 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
- }
- EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+--- a/pahole.out
++++ b/pahole.out
+@@ -1,16 +1,18 @@
+ struct qla_tgt_sess_op {
+         struct scsi_qla_host *     vha;                  /*     0     4 */
+         uint32_t                   chip_reset;           /*     4     4 */
+-        struct work_struct         work;                 /*     8    16 */
++        struct work_struct         work __attribute__((__aligned__(4))); /*     8    16 */
+         struct list_head           cmd_list;             /*    24     8 */
+         bool                       aborted;              /*    32     1 */
  
-+static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
-+{
-+	pte_t *cont_ptep = contpte_align_down(ptep);
-+	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
-+	pteval_t entry_access = pte_val(entry) & access_mask;
-+	int i;
-+
-+	for (i = 0; i < CONT_PTES; i++) {
-+		pteval_t pte_access = pte_val(__ptep_get(cont_ptep + i)) & access_mask;
-+
-+		if (pte_access != entry_access)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 					unsigned long addr, pte_t *ptep,
- 					pte_t entry, int dirty)
-@@ -399,13 +416,35 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
- 	int i;
+         /* XXX 1 byte hole, try to pack */
  
- 	/*
--	 * Gather the access/dirty bits for the contiguous range. If nothing has
--	 * changed, its a noop.
-+	 * Check whether all sub-PTEs in the CONT block already have the
-+	 * requested access flags, using raw per-PTE values rather than the
-+	 * gathered ptep_get() view.
-+	 *
-+	 * ptep_get() gathers AF/dirty state across the whole CONT block,
-+	 * which is correct for CPU TLB semantics: with FEAT_HAFDBS the
-+	 * hardware may set AF/dirty on any sub-PTE and the CPU TLB treats
-+	 * the gathered result as authoritative for the entire range. But an
-+	 * SMMU without HTTU (or with HA/HD disabled in CD.TCR) evaluates
-+	 * each descriptor individually and will keep faulting on the target
-+	 * sub-PTE if its flags haven't actually been updated. Gathering can
-+	 * therefore cause false no-ops when only a sibling has been updated:
-+	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
-+	 *  - read faults:  target still lacks PTE_AF
-+	 *
-+	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
-+	 * become the effective cached translation, so all entries must have
-+	 * consistent attributes. Check the full CONT block before returning
-+	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
-+	 * range.
- 	 */
--	orig_pte = pte_mknoncont(ptep_get(ptep));
--	if (pte_val(orig_pte) == pte_val(entry))
-+	if (contpte_all_subptes_match_access_flags(ptep, entry))
- 		return 0;
+         struct rsp_que *           rsp;                  /*    34     4 */
+         struct atio_from_isp       atio;                 /*    38    64 */
  
-+	/*
-+	 * Use raw target pte (not gathered) for write-bit unfold decision.
-+	 */
-+	orig_pte = pte_mknoncont(__ptep_get(ptep));
-+
- 	/*
- 	 * We can fix up access/dirty bits without having to unfold the contig
- 	 * range. But if the write bit is changing, we must unfold.
--- 
-2.22.1.7.gac84d6e93c.dirty
+-        /* size: 102, cachelines: 2, members: 7 */
++        /* size: 104, cachelines: 2, members: 7 */
+         /* sum members: 101, holes: 1, sum holes: 1 */
+-        /* last cacheline: 38 bytes */
+-};
++        /* padding: 2 */
++        /* forced alignments: 1 */
++        /* last cacheline: 40 bytes */
++} __attribute__((__aligned__(4)));
 
+
+The BUILD_BUG_ON assertion checks the size of the struct, which doesn't 
+seem right, because any padding at the end of the struct does not 
+interfere with the subsequent kzalloc() and memcpy() in 
+qlt_queue_unknown_atio().
+
+I suppose the assertion could be motivated by some code elsewhere but I 
+haven't yet found it. So perhaps the assertion can simply be removed. An 
+alternative solution could be to increase the 1 byte hole to 3 bytes, and 
+prevent tail padding that way.
+
+But padding should be irrelevant to the real requirement --
+
+struct qla_tgt_sess_op {
+        struct scsi_qla_host *vha;
+        uint32_t chip_reset;
+        struct work_struct work;
+        struct list_head cmd_list;
+        bool aborted;
+        struct rsp_que *rsp;
+                            
+        struct atio_from_isp atio;
+        /* DO NOT ADD ANYTHING ELSE HERE - atio must be last member */
+};
+
+And yet, there's already a precedent in this driver for padding a struct 
+in order to satisfy a BUILD_BUG_ON --
+
+struct atio7_fcp_cmnd { 
+        uint64_t lun;   
+        uint8_t  cmnd_ref;
+        uint8_t  task_attr:3;
+        uint8_t  reserved:5;
+        uint8_t  task_mgmt_flags;
+#define FCP_CMND_TASK_MGMT_CLEAR_ACA            6
+#define FCP_CMND_TASK_MGMT_TARGET_RESET         5
+#define FCP_CMND_TASK_MGMT_LU_RESET             4
+#define FCP_CMND_TASK_MGMT_CLEAR_TASK_SET       2
+#define FCP_CMND_TASK_MGMT_ABORT_TASK_SET       1
+        uint8_t  wrdata:1;
+        uint8_t  rddata:1;
+        uint8_t  add_cdb_len:6;
+        uint8_t  cdb[16];
+        /*
+         * add_cdb is optional and can absent from struct atio7_fcp_cmnd. Size 4
+         * only to make sizeof(struct atio7_fcp_cmnd) be as expected by
+         * BUILD_BUG_ON in qlt_init().
+         */ 
+        uint8_t  add_cdb[4];
+        /* __le32       data_length; */
+} __packed;
+
+
+So I'm undecided. Any thoughts, Nilesh?
+
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202603030747.VX0v4otS-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    In file included from <command-line>:
+>    In function 'qlt_queue_unknown_atio',
+>        inlined from 'qlt_24xx_atio_pkt_all_vps' at drivers/scsi/qla2xxx/qla_target.c:331:4,
+>        inlined from 'qlt_24xx_process_atio_queue' at drivers/scsi/qla2xxx/qla_target.c:7903:4:
+> >> include/linux/compiler_types.h:631:38: error: call to '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u)
+>      _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                          ^
+>    include/linux/compiler_types.h:612:4: note: in definition of macro '__compiletime_assert'
+>        prefix ## suffix();    \
+>        ^~~~~~
+>    include/linux/compiler_types.h:631:2: note: in expansion of macro '_compiletime_assert'
+>      _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>      ^~~~~~~~~~~~~~~~~~~
+>    include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+>     #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>                                         ^~~~~~~~~~~~~~~~~~
+>    include/linux/build_bug.h:50:2: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+>      BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+>      ^~~~~~~~~~~~~~~~
+>    drivers/scsi/qla2xxx/qla_target.c:216:2: note: in expansion of macro 'BUILD_BUG_ON'
+>      BUILD_BUG_ON(offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) != sizeof(*u));
+>      ^~~~~~~~~~~~
+> 
 
