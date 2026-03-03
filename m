@@ -4,173 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A70FEC0489
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:05:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F98EEC048C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:08:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700BE6B00B9; Tue,  3 Mar 2026 05:05:09 -0500 (EST)
+	id 7BF676B00DB; Tue,  3 Mar 2026 05:08:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D5B66B00BB; Tue,  3 Mar 2026 05:05:09 -0500 (EST)
+	id 76D436B00DC; Tue,  3 Mar 2026 05:08:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AA996B00BC; Tue,  3 Mar 2026 05:05:09 -0500 (EST)
+	id 624ED6B00DD; Tue,  3 Mar 2026 05:08:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4811A6B00B9
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:05:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id ECC591A0412
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:05:08 +0000 (UTC)
-X-FDA: 84504318696.17.7814FE1
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E652CA000D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:05:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of mkl@pengutronix.de designates 185.203.201.7 as permitted sender) smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772532307;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4516B00DB
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:08:52 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F14EEB9710
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:08:51 +0000 (UTC)
+X-FDA: 84504328062.27.8C8B5FB
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8081B40003
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:08:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YumnPj7V;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="VLQN/h8X";
+	spf=pass (imf11.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772532528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yRx6xPOePAvBbAzff8LfCyVok2uTKGPe/FxLK3VY8Mo=;
-	b=4xiPrcLoteTeODPK9uBaOXYOR5wvTpoXR8Bi08SUQbe23FcKgpMwnSSzvc6yiTRoWeuxzL
-	RQ33bZET40ayJQRAXMaEJiwXBrKLgM1qrhxsuLMtuP3ZbcDCldkcPki/6VigCR2OAGOLqA
-	nIgNC5qEfG4CgfvdkYAHyXVoTqZQVro=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of mkl@pengutronix.de designates 185.203.201.7 as permitted sender) smtp.mailfrom=mkl@pengutronix.de;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772532307; a=rsa-sha256;
-	cv=none;
-	b=8lObsHbE14NT7DaR0nYRyQ4yZW+ZPhpU51jwaxKO+lFLI7wL728u6FQyUGG1CAkHEqKJYZ
-	lPl1GXpC2BrazH/Tcwhy8DF7yQuDkyCW0Omb0z8IUO7DU4Axg6xDNguELVpmiibWJ0Q4v4
-	Y4ehLkxJvp2vGhrICn5r0f8CXc4hTjc=
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vxMbX-0007dn-3h; Tue, 03 Mar 2026 11:03:51 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vxMbP-003Wd8-0B;
-	Tue, 03 Mar 2026 11:03:44 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 23B2F4F64B1;
-	Tue, 03 Mar 2026 10:03:43 +0000 (UTC)
-Date: Tue, 3 Mar 2026 11:03:42 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>, 
-	Eric Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, David Howells <dhowells@redhat.com>, 
-	Paulo Alcantara <pc@manguebit.org>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Jan Kara <jack@suse.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Steve French <sfrench@samba.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
-	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Alexander Aring <alex.aring@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
-	Christian Schoenebeck <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, 
-	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Ilya Dryomov <idryomov@gmail.com>, 
-	Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
-	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
-	Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, 
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse <dwmw2@infradead.org>, 
-	Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Anders Larsen <al@alarsen.net>, Zhihao Cheng <chengzhihao1@huawei.com>, 
-	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
-	Johannes Thumshirn <jth@kernel.org>, John Johansen <john.johansen@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, 
-	Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Oliver Hartkopp <socketcan@hartkopp.net>, David Ahern <dsahern@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Remi Denis-Courmont <courmisch@gmail.com>, 
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, fsverity@lists.linux.dev, 
-	linux-mm@kvack.org, netfs@lists.linux.dev, linux-ext4@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, v9fs@lists.linux.dev, 
-	linux-afs@lists.infradead.org, autofs@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
-	linux-x25@vger.kernel.org, audit@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 004/110] net: change sock.sk_ino and sock_i_ino() to
- u64
-Message-ID: <20260303-tall-fictional-tench-7c5f66-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-4-e5388800dae0@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w7xntzjnabubqe7a"
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NVV3YJ36nD2EeEicIibu+jU6nLuP5r7uEYGLlzvHA3I=;
+	b=Z5KYkEOsfsyAO7yaHRZmbXBU3qCK1r3R4xsZTxopMXe6VCSz/xDR1gtkFkSTWOpnyjLc6p
+	WOsTp3gvuvvJEHOmoZ6jn5G6OwCdylXpug2PvdaeTrAjbMCHl4St1lSeB+qKzTDRtdbQJL
+	mWfax2GXlPk1NXOH5R+rMU6bQS1eDAo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772532528; a=rsa-sha256;
+	cv=pass;
+	b=4CWd0rMMnRcL77C63TZR3TEeJtvz1JbsaK6DTsJA5YpVVEIGkOdaDHFI/8l386WJXkOg4D
+	juzh9iESot4ZodMSoif9buONSTazphSFkYzOaRQvmRVDAqCa5Kd6ZBiTAC5l9zQdr7eRnT
+	3CnY/dpW32uOdXnXajlz3/1fOZC1qVc=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=YumnPj7V;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="VLQN/h8X";
+	spf=pass (imf11.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6235WlR1924969;
+	Tue, 3 Mar 2026 10:08:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=NVV3YJ36nD2EeEicIi
+	bu+jU6nLuP5r7uEYGLlzvHA3I=; b=YumnPj7VgjgdOKAzkNAxbNfBxmLllGRhRP
+	x64Kdcdc42YSfd9792DXBd7dm4MVH0qA4nmzaME5+pJyjglW8S/QSlVLCDGluUNu
+	a/hon6cs11BBmssQEr/0rNzZbRMnEmbFHiALusGWSfNqHspRHt40SOb1D2v0ZZty
+	xT2YU55hDRuFOpTuy63TmlGoTKkZOMHcgtF1Hffnx+yZ+sDNeXlGY+Y28+N7xe1k
+	kW5UedjhmHFUytTRAmNtRnLGMCEFx3BxscqTZy9Hzriw96m3edLn1ClzCfqEs46o
+	bQim2etzpJkes5KVNggjld0l0Vnj3o/1kjgtMf0qteqmLYjDJyjg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cnky3rp27-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Mar 2026 10:08:39 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6238E0FP037783;
+	Tue, 3 Mar 2026 10:08:39 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013041.outbound.protection.outlook.com [40.107.201.41])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptedtaf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Mar 2026 10:08:39 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Zw5vQ1NM1ng0UKGfX/Y/gD3TIYjFQ8nBd/FIrLNXd78KKBb32hYcAeKJPzn1b+EK2TOMqEQKs2SMZGyJJ2pcNnk2tF28q9FkUa/feJhGd+QWwCImdiKeGPjQDzRuOaNILlEXte4ogQ4hjw6fAOaxzNvc6ZQ4+eAzBWUCEgpRs4xz88Ei8FZu4j7uIO9K463XnNkMSdx1tID3WYK592RYPiYqERi/Eee/1KrIOJShcFgnXFphAVM+dPx/j0Mmh1f5otEyxkodf4g6KgFyI9IpZiO6hqe7SsiuQoRXbc1hOaoBcxYa+q+c2nvAuWRnBGpyHX/gs20eXX1yNTZvpxL+hw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NVV3YJ36nD2EeEicIibu+jU6nLuP5r7uEYGLlzvHA3I=;
+ b=XRXdAQSWlAljsjT1wyy4to6AB8osf/Z2+IC5Ac7Yd0Odx3RcgpRZa6anPoQqM051h+oXWAuC+YclPVTwWp1Nak8MqRnUKDMUzJfEjdIPX/FSahQb2sVfDud/teMUqUfA7z/jeR5YeJsKBOImHc2ujVXmpgu8XunfaeB98qjwelUm7WEQn3YDnGx4e/70QrgUpD6RlwoRX33dND5Vvz0LAeHZ3kXjmfQLEjZMoNsyAmTEDDXXpyHy+1FPqkvysnG90Mvjq8bVIwCjDprIbON2E3/v5yugJbuhYJCIeA1RfE58/TmJ+2OmaWJOnswf1gGJQbaJslfO3pWm1dweUHM5TA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NVV3YJ36nD2EeEicIibu+jU6nLuP5r7uEYGLlzvHA3I=;
+ b=VLQN/h8XQeXSk5Wmi62eBGogYg2WpLvZx3cqudTBaKnuWDUHp7ImCqA4Lg3sayZmeimc967lNrDdrdWfOXB9UCyEgeKNrZXCcRv46ye17hgmH6xIe4XlkJ3N3UIoR6NC/328aTLhUX4ikGOUBz2Hvks2wkLFZb6deduNGWVpv/A=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by IA1PR10MB7200.namprd10.prod.outlook.com (2603:10b6:208:3f7::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.21; Tue, 3 Mar
+ 2026 10:08:29 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9632.010; Tue, 3 Mar 2026
+ 10:08:29 +0000
+Date: Tue, 3 Mar 2026 10:08:26 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+        jannh@google.com, gavinguo@igalia.com, baolin.wang@linux.alibaba.com,
+        ziy@nvidia.com, linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+        stable@vger.kernel.org
+Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+Message-ID: <9506fe41-6f71-4c7e-9aeb-9d18d72a9e75@lucifer.local>
+References: <20260205033113.30724-1-richard.weiyang@gmail.com>
+ <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+ <20260210032304.j4k5izweewouabqb@master>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260302-iino-u64-v2-4-e5388800dae0@kernel.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mm@kvack.org
+In-Reply-To: <20260210032304.j4k5izweewouabqb@master>
+X-ClientProxiedBy: LO2P265CA0123.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9f::15) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|IA1PR10MB7200:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9967c8c-6e47-4e98-b50d-08de790cd165
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	6URFDjKRFQEmWkOS5NpD/yjTyar4caOdSV6KHtO/JM/rXBmULoRZRVLRZSZ5QmswdzCv3Wa87eHWw7IcGD+9Jo++A5pL3BUxbwFx+ZVbyrt+/h5qS5efAAqUODGGXAoiWEZE5eVa44Od0DFtsW734TshzDe8ckjZoYHAXJ/FAQZ7gdNn73V8aSAAk7nB0zjd7uMSvBV6/UjVM8p/LywoG8Q6FgpRuK0rCScyTctFD0Inf1duxpSLdqmqH2iu5yk59OWUVPg+mZjeXrr6F3YS8KxGq3k9CnH/x2/OogTAhiyRTti3XH7j+3dkmGNSqTiKYEAtzbMEJikmix/NM6PvMA8ka0pSv1VpgSX+rN8xf/Cz43+aBf3pbojelkGcis5EA9kLrQ2etvhSduk6VsGbvHNXnqcZSIW6yaMGC1otUriBVb2A7rP7nc0ch5bdK1XBLino3RaxVpbCOGAtDxWRBNQt9ncCKyOtorz7EZ7wK/UygGviqp26kO2PDbZWugli2zfEupPuitZjgljXPv1dtzY0I4P+/FMelI2OZelaNEkzV0+oiyFyYQhPGNKK0i3NMGexo2jsPxN/ujUq8UoakoYlziQdnFKawsAqKp+NH8hAeMseKFsyzP2/9LdLgZESTkU7Hfw4Krs3IIhOsWqcgTc+eAxXScmhx9UtXNOVkzxQ9LjQbnxeL6K5qO58bQRwXUBCbzsG5ZKt8a/7D8C8bkViEigHesRfnMBX1i8XZwk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7oXBDLiw13eu4yXnShfNEB+oe3O9A0Nl3aCtH/dNUQXb82GZcsf83epQs2yG?=
+ =?us-ascii?Q?X9egx/EiDCThG5z1hMgfBJsLRvc8O46f1eoIsB9RoXXzmTMg/C50Kb4K3KQN?=
+ =?us-ascii?Q?JPLf08E3VJNLkyeFv8UA2MXoPWOBUNlFjZUuVZQ+/Q7t89OsKkiKcJM08THU?=
+ =?us-ascii?Q?MlIeJcCfWrNi1sY+Ds2CBEjt/nWbxsvmypTCegAI0O+KKNmFdxDdw/jqg2l9?=
+ =?us-ascii?Q?6ImR50zvtUOZD2fPHJL0xIojzs0DAFQCdlUZU4l6ny2oZ5Npx59FJq2flyPH?=
+ =?us-ascii?Q?Inr8bB0Jm3W6J/yVgonDks+QitwA9e7OZxglPsiWBJ4m/11qGwnTenrQUhSo?=
+ =?us-ascii?Q?MpfXfQflHcZwx4cmgF6A7+wBzHWCjvrkX7Lb/kVKiGOV0KlkiqbTJzRzF2P8?=
+ =?us-ascii?Q?RL99gqR5Hce/qg4CgfoWmexk2XIkY+NBpSike8Gn6qT9FBA4piWi805bnduK?=
+ =?us-ascii?Q?1+e5fl99Mk1HEszy47nvA7m2f/xKIXpYpNFi+HMCXIXwvy9NDkR1A4fLKwP/?=
+ =?us-ascii?Q?QJu8AhVf7myl79EyHnksDTMB6PZ2j+TT76mYVKZ+X8sATzSyoKyp5SFvnF+h?=
+ =?us-ascii?Q?YGUPZpjAqdeEhI35NyGX2vXzdv6fks4+hfI5pJqsFvF+iMATZpjbGk1KQMak?=
+ =?us-ascii?Q?THNqTL6KAY2TNdM22/gjHJJKl+/sn8Xnv9iM6SqBFSeueLxfhA4twCOPxR1h?=
+ =?us-ascii?Q?4e+DYQiOcCJ3iIQvHE/+mmo5MkZWZyOYL6s5VKDljj6o6NUFi3KmaWM9acue?=
+ =?us-ascii?Q?1EHUIxTZ55CJ6LcWCw0wcTr+YUERE9PPg5BXdtS0KIyxW9Y8LrC+lbLjiume?=
+ =?us-ascii?Q?6/zBQwMfiYq9W1BbwcejV4DHuZfjqpFj2KPEXDLZ3PHLQHTIUmxosJ2/azuS?=
+ =?us-ascii?Q?DsvgYKFZJHs2kl0umMbqt18QRg/vbcuEMJrLA9yQTW33UJE4JWVOi52txHYw?=
+ =?us-ascii?Q?k77/tIWBePBitQ8MP+MZk9S9qcz8cdwlGd/O1UdYiiOxsENqCAmb3dq24sYr?=
+ =?us-ascii?Q?EtWdr4Lf+Q03qelKMt8cXDav9v/pfpLqnBwQJINgxqIHYPG8C2kGadYdf+U0?=
+ =?us-ascii?Q?Q2hXGahtbcbBFlyilkbXUTL5MIy/YUpl2PSVFKr10ffbMTAU3cp9e5hJx5Et?=
+ =?us-ascii?Q?4EEOfhWvkdctp3X2okipyPVCsFsMuZLqeaO9fO4F/+aRi9YxJzi7HoQ4UoeA?=
+ =?us-ascii?Q?o99Wo8gSqCd3dn7BRY85g9aQvpyXC7Su6LkIXOJ7/j/htosDsBg47goc1hvC?=
+ =?us-ascii?Q?EWCYtuoph0Wm2W2UDdcVhFmtHElxLl9J8XZO8hwg9g010J7tY57gBoAqoT/5?=
+ =?us-ascii?Q?2WtPRliiTZVMs1ocDBclo/PZUZ9bAxnbg4AAjKCqMygY4xloENJ/M8xDXpuD?=
+ =?us-ascii?Q?gK4Ygx7g5xiSIdFfdU6luU95DrP2W+D+WIMn5OcMtdkSMfkh3wpY0sh1N04x?=
+ =?us-ascii?Q?CuQyK9jafnaBsx4ST6m9s5liItLEZNDGGJEa9gZd3pQSLCrjvREgIO1v67Tx?=
+ =?us-ascii?Q?NOCFGRTvMBxch127+XlghhHthVaonfdMTPxsub7caMqyQ6vLXnXErW7ovKOI?=
+ =?us-ascii?Q?C77W4OEbhxhJJfsCQsHqf/ewKqrG+PZ3fxejSFItFJXb4YVDCZvnHZa1xWcW?=
+ =?us-ascii?Q?iVhQXF97MKZnUjxKUlGk4EYICgAZJp5Jfui8bcWzN9gn3pE3/e+vDJNmZiw7?=
+ =?us-ascii?Q?9mPLOmTfoYxk6oWjY0zpQ+15K0cKQnuRZyBqgvwCM5cTxMcj6sLU9YOcII5y?=
+ =?us-ascii?Q?PElngykyu447belATFbz69W4tN+6EUs=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	dqANBiv7P3LV4L5peu6ASo+EiBmPhwHOm905wQkXEC4lyE+OOx/ICVnjDSD0DAmkX4QvNRSIPOH7nM/pyO1oaET9ZXhGAcLAzm0PizPnUsMdLMMZzJTQ9BN2urpo4L3qE+fdSaVScc7XERK/R3cOYtqxoIK2MxCaJzdSyUYILgcGJV6YnbP/LgSJHvK650NgjDMhEV/2kMsh0QL94fDbtasL0ZwYHXmJTMIGHA84E0foZHkGrCiT1/Z2/h0W2wqTx+eD/rL18ukcp4w7i7qBK0035S+z4xBby7mBACFF3G/YuX032JKHm3iuh9IraHfx7BF/Yxcf4D3TbrQ+mtUMAvKy3hXeLd2NdpjkGTzOyiKbxXLjUda/KW7dDgAhUUqHElGn4EunSzugaiE6I4HNaWx2Ut0WSoEeXJ4VPQRFZIpHcoYqcdyQqgcpTBYrpATmeXBQ2/QPZWX6pJDhFD4Q71++DqRNjIplh32q3VTYXGPZ2oud181e0/QwEkvtomKn5Xb3FPNkheKwFGJblIQdpI/nza4c3q9n32PLHsR+H4L1icGaVF4xEQz3T4LKZrtSq+5vm4Fk/Oc7zC3YapN+KJz/yyKl+J/3Q4J7Yrttag8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9967c8c-6e47-4e98-b50d-08de790cd165
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 10:08:29.4017
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Efni1gVUIGMYB+lSM1tXMJNKHScyIqT72ODGh2xvoOgxYVvstSu1DtsDqSi9d+KTazeJ6lqEDn27VazIvnzS95hDGkdnhdQlpSA8E6NpIbc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7200
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
+ spamscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2603030077
+X-Proofpoint-GUID: VtJImRHIRHf38_-s-M42buMnqV4IAIr-
+X-Proofpoint-ORIG-GUID: VtJImRHIRHf38_-s-M42buMnqV4IAIr-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA3NiBTYWx0ZWRfXx/az1ovsrkzY
+ N5b6k0yy5QE2ZUL6N4VUiC+vzaK8fIJ1OlajPU+LKdWNz0+hh9/eG9ej1yBgjhFCudRxzDtsVP/
+ SVBJON23jbC5/PLJcc4FgsdjRRX/Qay2tFP2oSGeNgpe8EDOHIZ6i1As9AO9yzr7J1/kXBknibL
+ C1a9BpW/+1SBOyLZ7GmANuup0ttvCJXqdlDBtXpEt6zkQ4DhRBrTPVhE6WohUKrlxRRBgqPikW4
+ VOW9kuyYW26QHOWyh8qODs9tID7y/Hp63MSN3XJcTjzvZ0SyOVOiVqt7iL61E/QQ3NnJBvwgPtT
+ amfVrUaMu2gXIRcv/3MW94Ns+OKMBzBEOnT1jMtN9oNktRSk0A1hzuNncIqynCm1/XZPPVhsm6Z
+ suDMAnlAOxXj+XuXQ8bkS1sUauwa1WbW7epEPNmCbucyfVg49dmchY94IoPC4aIFUGat2xGm4Ho
+ 6uEgUGtx7snz8lM5v5ShaeXpdXNPzQaX7KAFDBcM=
+X-Authority-Analysis: v=2.4 cv=EMELElZC c=1 sm=1 tr=0 ts=69a6b327 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=pGLkceISAAAA:8
+ a=SRrdq9N9AAAA:8 a=Ikd4Dj_1AAAA:8 a=V2sgnzSHAAAA:8 a=VwQbUJbxAAAA:8
+ a=IlLzSj6Ojp8Zwya97V0A:9 a=CjuIK1q_8ugA:10 a=Z31ocT7rh6aUJxSkT1EX:22 cc=ntf
+ awl=host:13810
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8081B40003
+X-Stat-Signature: tnu5meqq658pbir4pjsca8otfp8cjk8d
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E652CA000D
-X-Rspamd-Server: rspam08
-X-Stat-Signature: h1ycmn3gajxpuwpbi4c5nwh66zxy1gen
-X-HE-Tag: 1772532306-188549
-X-HE-Meta: U2FsdGVkX1/bGd7PWGez/i3XW43r51GQcbsa847zqKyl/C1W4FxTkRjbRQYCQWJi4mxKHeVa2ZL4+fx/cTP8OJ1Z8COqSK+6Gl6RUdMWX1d57aINYJjRuLD9c29GQLhMuvlv3xY5NZBtRkGKlVnL4Gt5/qgOaJKFMkEK04f/ct3k5Bmx++AT8YWQMk0u+W99fqrsValFy+l+HdVVhuwbAZY6rLWZVlsizrocJlxF0x7HlMSpcuzkWqNpW4KJ4sJF2RcIbqUysb+iVdkvsNcF8spEdLIZgtJVfCT58l6y7AW6tHAYiE5YCfrcmoVtHnIXotwsJ/PVkw8pww90+J4by1d4JBxdOisPWNd17KBykItGh7wuCUaMBdvlgm6+17NiM2hqkvz9cNdpy1mThcXFHAt0pcbIRzdIvg0eCDiGeWnRuJprr8CZMzFsxfRVm8By8baiEHS3NMS2p64QWOZu1pQoQOjnHhKs5EDfuUjHl2kTD0+Pg1B5ai/vxlTLkwpoFqN05qVFocfGp5rk0/lw7zFePGQDSsU//ZssX9vcLb6DwuYCERzmVDXhW5wlgGJgUs8t8xWx+1cNXCvu2aph64UCbM68+xha8vDCPcBGqFGoh6MKeEoTHHiL80LItPaOROm7o28mfh5naK0g/Tg6hg1Irg4kXbSyDaYuKiNtFOqs8Y+aj4z8g13hlejGJYRqw42T3d7ktr0OwQvKGF70T+eStLjnMcvxU1IWuGWlxTHKIaCQTQLN85OLkLnYjV40oFmRkHE0opMDyFHV7TdMDkbIT0Trc6XrkBzsrG+BICcuLKUywWFIYM/hKP+MJcGTO49lyXQJN/LqhR7ZSBMUtDqKXET8QfuExE04qYseAI9lktelWyXqpAdXmzbCZxq4JBpIZX5CWWaVFOWPTLRHVfbklcN3NPmz8sn0YB1pMhEbJa3h65HxCR/vHSa1HqwT/YqhhEONAjRdb1pGmb8
- jm23PIAw
- 3ShcY7b3bjuo/GLld3Y7oWGkwE9mknJnFVgOy0tsJukpmYtfd1M6MFounw0/PUoqP830bftNopK8Al8ylifxAtdPQ2puOsHEtd66X9QCZPa2I9T/dJcrpbXSRT/gkUYseoGjm6Zs8uSOcydT1M752lmmEeKWHzowRJcLFwJjTJQ+q1lKTiEyCep6l2RBKOM9qNKVLcOnds5yZjN/VfOfHcc9pITXZ2Bi1lg2NRsf5ucTwZ2Nenz05VKhbj2uyvLioVOHchKN6UYaziqx37tFJ9fsnZSe6v1ZoQ/Qof38Xft7tC1p95/Xf2FnLPRx6t6H5GWxsAfKKijyL5WiPdsn9+n9kNkkwUwViP24LmBYRWBtOpCHwnP5KAesjOsE8AdAeL5THpWAXH13YLZ8u0tSUD+eQw9GoU15uA82mC8BJn/bNMMVzfbbxvd72+aAOO8ZzdqzPMuODXa2GKPzW7lxlVIP6f+Kd5JtOJYpgH9IjEFGXjiJr3ubT+2BEZ5eeIzNQkKoZJ23ewghUmsARs2mw63dIb0sYu+FdP1c8lMIfR2aFdQZb47E6T8Eqj+SBylbAWTrUGg7LfefsGm7WUQFXIIPAwoEE/l+LFmP0M4whZRzI+1LsTwJ9zUpq5ayxNzC8YoP3MFfGFxV2GCDCncxiOUvIXyNdOMYsmN2X9QkwwBya3bA2Uy54Ob4kADmJ4ck8AoCp5xjhIuPqeSisVKZ1gA7CpPmgduGG72ltZXVUuHiVECeymRKFJhh6QeS4e2fDsStJS96iFhreqYcpecSUI7EEv+G3bSt6joHgwehyKiKG3UEX8tCzfdq8wHeNcDH8FTNeV9iqhcFUS+D82EF6mwO3jvfLazbAeJZYICsviZQDdKKDDz0PE7YjCqwqM0MiHkyGwHw4yLm/QWpbEIMv4YZ7dm4opXrhzWNjmuOUe1Ex/4bmQgnbl6UKbImhMCkghi89BCDJ7wyky/uMrBBUCh8cwZrj
- v4mC1D28
- LKWSFZCW5AnMwZfxPDDlTAE+CrIFpfMcMBKn0t7PPu9xV+9PdDeuYSyLF+kxOL5SJsPAQIf3DezWYJhOlEBg3PlvIkrKlesmA/PjcSC4dO/6o5VGiD9MROuF8fRi8BSnMMmzNDg2Um/CVN1Hs6wu+E3NFUABcDXPKgDCdeNnvUdBIHojhi0pF5BvXQj72bIELCi69w66qUQr67WIpcUKURlvMcwQSNrmJl4zzrZBtopqR5f4+9LDo9/JjIxcgfumOzxJfotJT/WzgmQNIQ+CCSfEl9bb5cwNJwuXzZ6jI8EYZpLM15m1f6asPv8bLXLTVmBF3WdxN5f/REqLGi9cfNJOGntQInn+3dTqpuNJx+iSWoOGBpvOKKI9NFDEh0IxFOuEJMJuOMdioB/xL//WgbsQYkvCZGD5gcS5GQKqYg9xRx/FqjrwbhQ45dH5/mKTMGB70dG5ohNZWtuf5Hs7e788Q1+SjCcTQHfQN3NNTJs3GMcfUls3IJkvJnNcd2DofgC0utmUMHzi5pTO9Bvf8ak41mDLCWc2/pN8qogTMRDl0ymNu4SDFOIcRo+7VXHEJTJ/vVXOd9+ufYgkE6//oRX5ZSkvJ9B8caf/8ItV6MdYgisRCbt+jfyM3qipRXQ6NqXdmyQZdu1gFr18kKAgfs6Sg4Qwp4WxV73OsvPxZCjxHtHZ3Si4C5rkQK7qXAURqLraZ1GJcd4srCpeCYpW9LV8RmPZb9/uIHlfFT1MlFhvWtScET/oUoMto5hWTe+3sR/r7nAKkXrJZQwC+08ktHyGeLzLirOHXi2vps32TfUwcmVWffVUAH9fg19Izkuj4lrMK9eiZBrnhY3MxJIBqhZ3NqbqmbuUs0OLRTARPSRYY8sFcQEAdV9G0BKxNkVMlX9DDeJtTUfuYg3kzK1mT8YTkBtFjDqLrrjY4IDaKJC6160o4oZlK7RdMrmQ5me3zMl7iblWtuyrthP3NCn0vlFOotLuQ
- r+7GTNsA
- KCtUUZRv8hjGaXwXPVMmzHA99qQgnpOJOFoxCduQLGS+HysuN44ldVkEOvQbHG7Cty1ZZLv5tBjTPUVAOntF+jjIkP+VdWAS23N0rmCYmXjaF7F43cCaB/g6ujUgTgmBu9Nho/89bP+27VfKvkQ7/4UxFo2YJ+FtN4sbCSN/Wx9VLh9bcB/LRr0D95QIsDv4gNJRY0tf6ErOck7N8ezH/RjOgei7AKCuqJaNGumG2/cW/YARi0w6gmdIxd4fh1eWmvF5N+u5G+GjF1LN0v0v5WO2AACm+AcpKDI6zsdV18C+YCRoWQ0bsMSoMCq/T2LwGrq3K7aO8cBjDTOs33N/xVbcjY8HzF7iK4N01NZXgI8E0FT4Bjyq2bhrHKR5VjiCQPbmmwHn0SYwc4OKQTJq6f36+nmrYXfUfU2mqujmZ7WSEHbHr756aaMxhP3B13CpbPV7Xj7Cvzgy96QhRkKXL6u55KGaCBYc1n+zUhMCqVXK85W0vOZ7B4+n4C6OcDC2uUqiA0cUx5TMOx3s3fFrBoudj/VdRwecytot5F7A+mRMz6f1pJpL+ORlJQLLV7LEkhUqukbNThZr2+F6fEeyakAIN+1s4IEGatrdWTs4jhImyVRm9QPMPb/OH+qFM/UQyNqkcqQSeDHpHZt4J6fK4YV5kDiflJbpUpQcDaZy5fbvDIVJkDy7zpwPJp3/yjLfF9mA5DCg0RI08EaMqtRh5hcTcfu3VNm6aTttGLtwh5xBXnRL+R09Q5JV7U+WuN74RoajeFVvo8PIqV58jnY2AlCaXC8o6VQjOIh4c2PYouFwzfdibvXNMFStheuZ1dfQ1FTf71VOhv8eU3/agzyUDrd/WDtC0KrXOqzNO9ZYNHnt2HD2rCMYHDe9cuGqe7//5nqlcb+JUtQkIGNMBLsaUdG7klKoBcXxcT+3UnQ7eaDGMc9CoQNe9UqTxTHNxD8j78mPUwgcLOU6uxxf4u15v9rSqFXva
- d4mPlV95
- zOh04JJvUaPy2zG/ogva/pBIHOpkE4w9G1Eh8Jo5lOisDbgNI13UNBVE0bmf4wQ6i3Cq7skcISso3ao6aFOeeUl2TdK+HZBtNX+ulnKobfyGsHTpmRGbJyEl0G/TG+eiPnQGeHvQ71uUSHXWKCrIl99fmlQpHPmKTQhMvHRlu9BarbBhIHxoEd+OFh4RF2zb/t9EVxvB9yuqHk6cOATbGj3kdbWi9KpaCBki51DQDRFaNhgCdziMqx+wE24ZTapE1riiygZlKyh8KGhO1OigZScwe0OZzuLVuRmHpYPh23Z2zZ3+F6Gk+BfhCScXeTJrq5nUoaYPsfCddO6X4a7nxO2GQqawCPbgl7BuYLxC3s1cxED7CtJn1rNbTB6L1lohFLXLeXzvvCFFvYoWz1Ks522zAf0RKchxRaJIMoRCPgjA==
+X-HE-Tag: 1772532528-63023
+X-HE-Meta: U2FsdGVkX1/gVrdqdn2uPRcM01OXVFsZtc9+Q7lgTdNO0NKEVv0TDx3RHl21fG1lwfnjtRZayb3vko8zUzFP6qHqqIi5VbGVs7BT7EeWw0Al5LTfkntbS09cVF+HkU4Li0Gnnvdnwc15N1fon1OyUmWnDfiQaODF1KLetV1SWb5OcYOHJu6TZxzrvlOhnkoBTb8axLgcAXQoifqcRRi15u2TtqRR0frB35KKyP/5HZ7DrozZKnZX+On2oNq6OfxMNLg8GUxVjDFerM//NLcPGacgaYD9/rZMI4RYegxhsMDbLQq/44WBQGOtF8j1scwzpAp/SkbdxMKmuxnTZBhIED46sgnsNXzJF+C+z7qhmSKsRP9jlEYYAI+U1FescAXqTMLdqzuQYdGpW0kRk3zL3+4Pj070EOLArtxEQabQ50WU6aHxwT11vRn+rRe9+/jidC8fvWsFrm0ALettKFlETAPwpM16WjaTRsMw+8ZXKqNofPznlUv3/5YICV4Fbl7QhN3bXYikVQnnUkEH/ndNGWQ0dpE2n01HK3tsBMwtycIkeJ5ZPDtgoNBWZxtDaOfPkOvYSeWPoXr9sPi6Pq8hE94QddFtstOzCcPUzbTwXmGrUEvYWiNkT0zAuuECUN1mOg4Y/zJKe7GvIwTz37dCExYi/bilVsjE8wEFGn85mN1lrTw6h/KyBKaC2cU9vQkMixA9z8y2BRwu/n7YP8Vd/je1wqUzrGd2qbXJ3hTkzEWuXlbt9FK0bfHVIIITP9npRDx9pxJOJiiaGLhgc7eB2jGCUzSdVciYejhhUmV1dHD6zqT9Kuxrsz4+NsXVZozTHLYTeWuFIl6A+JpeqKFJjztwdYyBNha2nEw6o6t0VsLgkUJKjkedSH8hO/oJ9wK2PIf+C6PzKKJNb58INOpfDvOGudI0lKoqmCaNkuVGo7Dft0RcLijBfKDI4FdD75phAAlMgjHjZROGWw4rbfU
+ fj45/eu+
+ chG11Ke11gSALeCL3S5fN/oZuZ3NQXorlYyp33G7bnh1ePVKVmJIpz0FUTkbpY1ptlPyAM8GOstYufTon6nIXQsNq4j6I9/YvQNeSr8oqo+2JD45azxpcRd+wBVe9QVvZ+GG8axc5EqAzNF1Dx6MhmAbEW154WRe0Nc0AqeYXn2ivvEaKbdNIaK1qntGNfI7djpoqzdJd6WsS85Rb8e4fpOK6nDdTjnAHfeGLnSeblHk12HrHZsbFdibpU3h4KPSjK0HAa2Q7RkLt4vgWC1WLgTv+xlYdnTeClSP5QGfUP+WBkQZhh8g1nB1eKVkDDo/qnETzGxK1CLLbRXe/VZyshskd0L0fLCCgZ6ISSY7jV4xB79kqLOVjZvUjhhi7oxZfxqmGi0a7hbpT8oBWTaCwVF1AH9H4k9cfIBHvydSVhAjxeNNRClkhev7DlGUqtc6ZIyB2Vru1KrepEdjRYHFbDu36V1dMUNfNgMl3YM7UvVQwWeAb6hpPDMF/7/oR8M7qX1TjAiA1XbPF+unp3FOlkHN9LF/t8FoImrV4kgL2tnhDwhhbJWPvvbOb9R7d0YeMawrsDAYm39pVSyRifRR6TgG/e/wylnIyQ1S3jYdzDSEORdgGIE+e+amuBhanzAgX653NEFNi5PcjcmWt8wG5udR5bF3QMLeuokQrUdcwPSdZsTTGU3Obb4bCVQ3zDVsvm1PXg5WvkjHFlNYHEaJCoiyUgjKYxeft55OluUGDLsQ5AosybpDLjHFvMuUJGk78PHtwGODWBhaqz6/q/nKtbmICAA06yKzEz2jStObUzEbE8KjlGRugYhl5nPS9l5TDRZqLw5wKwJe4FhzSwcFHWkS++FN9ubyd+PPqDV1+ol3QwkF3UoJioYunAe97F7SqNV4Kbb6YS6JfNyU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,56 +217,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
---w7xntzjnabubqe7a
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 004/110] net: change sock.sk_ino and sock_i_ino() to
- u64
-MIME-Version: 1.0
-
-On 02.03.2026 15:23:48, Jeff Layton wrote:
-> inode->i_ino is being converted to a u64. sock.sk_ino (which caches the
-> inode number) must also be widened to avoid truncation on 32-bit
-> architectures where unsigned long is only 32 bits.
+On Tue, Feb 10, 2026 at 03:23:04AM +0000, Wei Yang wrote:
+> On Mon, Feb 09, 2026 at 05:08:16PM +0000, Lorenzo Stoakes wrote:
+> >On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
+> >> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+> >> split_huge_pmd_locked()") return false unconditionally after
+> >> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+> >> shared thp. This will lead to unexpected folio split failure.
+> >
+> >I think this could be put more clearly. 'When splitting a PMD THP migration
+> >entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
 >
-> Change sk_ino from unsigned long to u64, and update the return type
-> of sock_i_ino() to match. Fix all format strings that print the
-> result of sock_i_ino() (%lu -> %llu), and widen the intermediate
-> variables and function parameters in the diag modules that were
-> using int to hold the inode number.
+> split_huge_pmd_locked() could split a PMD THP migration entry, but here we
+> expect a PMD THP normal entry.
 >
-> Note that the UAPI socket diag structures (inet_diag_msg.idiag_inode,
-> unix_diag_msg.udiag_ino, etc.) are all __u32 and cannot be changed
-> without breaking the ABI. The assignments to those fields will
-> silently truncate, which is the existing behavior.
+> >TTU_SPLIT_HUGE_PMD is specified.' or something like that.
+> >
+> >>
+> >> One way to reproduce:
+> >>
+> >>     Create an anonymous thp range and fork 512 children, so we have a
+> >>     thp shared mapped in 513 processes. Then trigger folio split with
+> >>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+> >>     order 0.
+> >
+> >I think you should explain the issue before the repro. This is just confusing
+> >things. Mention the repro _afterwards_.
+> >
 >
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  net/can/bcm.c                | 2 +-
+> OK, will move afterwards.
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
+Thanks.
 
-regards,
-Marc
+>
+> >>
+> >> Without the above commit, we can successfully split to order 0.
+> >> With the above commit, the folio is still a large folio.
+> >>
+> >> The reason is the above commit return false after split pmd
+> >
+> >This sentence doesn't really make sense. Returns false where? And under what
+> >circumstances?
+> >
+> >I'm having to look through 60fbb14396d5 to understand this which isn't a good
+> >sign.
+> >
+> >'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
+>
+> I am afraid the original intention of commit 60fbb14396d5 is not just for
+> migration entry.
+>
+> >entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
+> >unmap_folio()), exit the walk and return false unconditionally'.
+> >
+> >> unconditionally in the first process and break try_to_migrate().
+> >>
+> >> On memory pressure or failure, we would try to reclaim unused memory or
+> >> limit bad memory after folio split. If failed to split it, we will leave
+> >
+> >Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
+> >something like that.
+> >
+>
+> What I want to mean is in memory_failure() we use try_to_split_thp_page() and
+> the PG_has_hwpoisoned bit is only set in the after-split folio contains
+> @split_at.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+OK, if you expand it to say this that's fine.
 
---w7xntzjnabubqe7a
-Content-Type: application/pgp-signature; name="signature.asc"
+>
+> >> some more memory unusable than expected.
+> >
+> >'We will leave some more memory unusable than expected' is super unclear.
+> >
+> >You mean we will fail to migrate THP entries at the PTE level?
+> >
+>
+> No.
+>
+> Hmm... I would like to clarify before continue.
+>
+> This fix is not to fix migration case. This is to fix folio split for a shared
+> mapped PMD THP. Current folio split leverage migration entry during split
+> anonymous folio. So the action here is not to migrate it.
+>
+> I am a little lost here.
 
------BEGIN PGP SIGNATURE-----
+I mean this is the issue with the commit message, it's confusing :)
 
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaaax+QAKCRDMOmT6rpmt
-0hl7AQCzPgPTWe6ol8KwtKBDfHnqkx4Ku1cIiwlQY4Hnx5jz1wD5ASVd5abGOb50
-lF4hQNIazRvyjJwKRF+va5JwX/SN2go=
-=y8vr
------END PGP SIGNATURE-----
+You're changing code in try_to_migrate_one(), claerly this pertains to
+migration, as the code you're changing is literally only invoked on migration.
 
---w7xntzjnabubqe7a--
+So what you're saying, as explained better I think in the actual comment in the
+code, is that if the folio is split, you need to abort the attempted migration
+right?
+
+Or if it is that a migration entry is created that is not somehow used by
+migration then you need to make that clear.
+
+>
+> >Can we say this instead please?
+> >
+> >>
+> >> The tricky thing in above reproduce method is current debugfs interface
+> >> leverage function split_huge_pages_pid(), which will iterate the whole
+> >> pmd range and do folio split on each base page address. This means it
+> >> will try 512 times, and each time split one pmd from pmd mapped to pte
+> >> mapped thp. If there are less than 512 shared mapped process,
+> >> the folio is still split successfully at last. But in real world, we
+> >> usually try it for once.
+> >
+> >This whole sentence could be dropped I think I don't think it adds anything.
+> >
+> >And you're really confusing the issue by dwelling on this I think.
+> >
+> >You need to restart the walk in this case in order for the PTEs to be correctly
+> >handled right?
+> >
+> >Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
+> >the bit that did this change?
+> >
+> >Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
+> >that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
+> >mention the commit msg.
+> >
+> >
+> >>
+> >> This patch fixes this by restart page_vma_mapped_walk() after
+> >> split_huge_pmd_locked(). We cannot simply return "true" to fix the
+> >> problem, as that would affect another case:
+> >
+> >I mean how would it fix the problem to incorrectly have it return true when the
+> >walk had not in fact completed?
+> >
+> >I'm not sure why you're dwelling on this idea in the commit msg?
+> >
+> >> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
+> >> leave the folio mapped through PTEs; we would return "true" from
+> >> try_to_migrate_one() in that case as well. While that is mostly
+> >> harmless, we could end up walking the rmap, wasting some cycles.
+> >
+> >I mean I think we can just drop this whole paragraph no?
+> >
+> >You might think I'm being picky about the commit msg here, but as is I find it
+> >pretty much incomprehensible and that's not helpful if we have to go back and
+> >read this in future.
+> >
+>
+> Never mind.
+>
+> A clearer and comprehensive change log is helpful for all. And my English is
+> not native language, so your suggestion helps a lot.
+
+Sure and I'm sympathetic to that, but I felt this message was unclear enough to
+be actually difficult to know your intent with the change, so it's important to
+get as much clarity as possible.
+
+Thanks for your patience on this! Apologies again for delay in response.
+
+>
+> >>
+> >> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> >> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> >> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> >> Tested-by: Lance Yang <lance.yang@linux.dev>
+> >> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> >> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+> >> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> >> Cc: Gavin Guo <gavinguo@igalia.com>
+> >> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> >> Cc: Zi Yan <ziy@nvidia.com>
+> >> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >> Cc: Lance Yang <lance.yang@linux.dev>
+> >> Cc: <stable@vger.kernel.org>
+> >>
+> >> ---
+> >> v3:
+> >>   * gather RB
+> >>   * adjust the commit log and comment per David
+> >
+> >Clearly not enough :)
+> >
+> >>   * add userspace-visible runtime effect in change log
+> >
+> >Which one was that?
+> >
+> >> v2:
+> >>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> >> ---
+> >>  mm/rmap.c | 12 +++++++++---
+> >>  1 file changed, 9 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/mm/rmap.c b/mm/rmap.c
+> >> index 618df3385c8b..1041a64b8e6b 100644
+> >> --- a/mm/rmap.c
+> >> +++ b/mm/rmap.c
+> >> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+> >>  			__maybe_unused pmd_t pmdval;
+> >>
+> >>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+> >> +				/*
+> >> +				 * split_huge_pmd_locked() might leave the
+> >> +				 * folio mapped through PTEs. Retry the walk
+> >> +				 * so we can detect this scenario and properly
+> >> +				 * abort the walk.
+> >> +				 */
+> >
+> >This comment is a lot clearer than the commit msg :)
+> >
+> >>  				split_huge_pmd_locked(vma, pvmw.address,
+> >>  						      pvmw.pmd, true);
+> >> -				ret = false;
+> >> -				page_vma_mapped_walk_done(&pvmw);
+> >> -				break;
+> >> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> >> +				page_vma_mapped_walk_restart(&pvmw);
+> >> +				continue;
+> >
+> >This logic does lok reasonable.
+> >
+> >>  			}
+> >>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+> >>  			pmdval = pmdp_get(pvmw.pmd);
+> >> --
+> >> 2.34.1
+> >>
+> >
+> >Cheers, Lorenzo
+>
+> --
+> Wei Yang
+> Help you, Help me
+
+Cheers, Lorenzo
 
