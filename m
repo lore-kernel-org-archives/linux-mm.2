@@ -4,81 +4,219 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61ADAE67A85
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A51E67A81
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:12:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1826B0005; Tue,  3 Mar 2026 02:09:39 -0500 (EST)
+	id C91C56B0005; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95F5F6B0088; Tue,  3 Mar 2026 02:09:39 -0500 (EST)
+	id C40436B0088; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 840EE6B0089; Tue,  3 Mar 2026 02:09:39 -0500 (EST)
+	id ACCAD6B0089; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 73FEE6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:09:39 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 336A114063E
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:09:39 +0000 (UTC)
-X-FDA: 84503876478.01.D088313
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 58C85180003
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:09:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=blV+KjoE;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
-	spf=pass (imf24.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772521777;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 98EC46B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:12:37 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3FC9CC2457
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:12:37 +0000 (UTC)
+X-FDA: 84503883954.11.DBB0C70
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8FF80A0007
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:12:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FRAegzmh;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=vrIT1mwW;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772521953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3drZ6aKuDCE8Tg06tx3yu597BYxHvLnyKlxduif6fYU=;
-	b=6QcsJ8OMmBMEKA1a3FAmPS3/ll4HcJrrq//j5D770Tqn9GPjICuIFLSqorVHVA0wQMHSEa
-	+a3bNkH9yPPEoDW2SRscduLEooCuXMG9RtQaXNYQiXat0FRBC+9rft1ejNXVaXiurZvNal
-	yLnz1zmXqNhLRRTyy0FfkhC30Rbb//c=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=blV+KjoE;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
-	spf=pass (imf24.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772521777; a=rsa-sha256;
-	cv=none;
-	b=EjPbbVz7stuzPk2WI78I+Lfn3KiakVW1MSnzA/+UJ2M1zxVDNN2pIsouQMD16Fu47/eAfE
-	75RQLxHgPyCQBWP6ij4i+zKvkMgZWU8GGkH7j8+MyAKi+NneTfC4+rYAxdCx+RmXTnjc4c
-	VyiCDbBg6317meZJ9DaF7WTIx2rsJyQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1772521774;
-	bh=S2hyWDTjtOZ6PFcrmL53uq+Ut9lQFYrRfbPfG5BD0tQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=blV+KjoEK4/magl2I67qFyGBhkUPrpQ1V2CP+03cTLIzwvvSEKOBKBwhp92lHI4WQ
-	 3wzn3soX95MZMFtZ5UZTbqMIvRBNNlIckOppgdpRTnb5vCEbBXMY03cRdWmYzgtMce
-	 sRxm1O2lT9VgEGA4onE7yDBTRqqpOd8kXgeVbCw0=
-Date: Tue, 3 Mar 2026 08:09:33 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Jordan Richards <jordanrichards@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
-	Shuah Khan <shuah@kernel.org>, Willy Tarreau <w@1wt.eu>, Jason Miu <jasonmiu@google.com>, 
-	David Matlack <dmatlack@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] tools/nolibc: add ftruncate()
-Message-ID: <c65fdf06-2f69-4c81-be21-a14229eaf1b6@t-8ch.de>
-References: <20260303010039.2969125-1-jordanrichards@google.com>
- <20260303010039.2969125-2-jordanrichards@google.com>
-MIME-Version: 1.0
+	bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
+	b=y2N/OK1uBqhmnPV7jfjSFJpl+LQO5osvdZw6DfQdsQatGzsUQfFJu/NiLQA4MoHfh9NhNH
+	F+oohkqpx+Lw2CQI0tK/fuZtXLkfPXZ2f81dtAqIMUE8jQhF4hSzpSzRMdJss2YzgXhD9o
+	ywBRyymdho3SEBRizlb61oembU6+MTY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772521953; a=rsa-sha256;
+	cv=pass;
+	b=fUYnJcsyQZSbSmh6x3nj5RXsDsMTiq6twIRxPHtrGGnvQe9vEK9fNrWu6HITVgxhmEOx4J
+	kjSqldIF42Po21WfHu4Gzqxz/ATAkaoaUL9dE0n/Gmx0AsYO5SKA+o18nJPbzPQ3PW69/h
+	WEQNF+hoXOVYEBJXvwZ/nhPPxzNSqbo=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FRAegzmh;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=vrIT1mwW;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6236BSiM2883981;
+	Tue, 3 Mar 2026 07:12:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=C5oEw5XFIlwIPv65bL
+	Us8HHiqGZSxBE+3TCu9OxiTKE=; b=FRAegzmhkiHw5bx/7Ju+Z5NFAjCPmxUrSa
+	oCsNHGCtmH77vPZ4KcfkMmDFZX2B+fG8+ehBU1f5V408MP4PZuxupo71tbZX6fj9
+	KfjoQm2kr9XqajSSLPauR7EOUDZqOMKESMxQ9IviNkvNLkjAfKhlAq7mVmj3oNtk
+	69sQqz7SsyrGqw82NkoUaNEtR5vXTv7f9jIrDYCzFF3UTxCfma6UUFv1iQsOa7l8
+	CsOa2L/kMdxr3MAh2824ZRJREyulUuZUzid7zKHJEYZMYOMkhAL3jZd51WqoaVrU
+	ZUcLv6fINF6FYJJtfdsM8elt71UMyQteVf/cqntFNEypoy0eLFvg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cnt5fg1j8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Mar 2026 07:12:18 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6234qGLr029882;
+	Tue, 3 Mar 2026 07:12:18 GMT
+Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012020.outbound.protection.outlook.com [40.93.195.20])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ckpt9yah6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Mar 2026 07:12:18 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VJu70huUoR7mP2Eblvv2fJ3a/Bg6/ed6aVN2fTRfwVmmpPrrqWQM09Qj8D0pFNHhHpsTG5jaN+IBgCBkWFoswZuTZeBERjaZgWteAx+lIiVhoxgW1VvMkwsSzxXnWP6ZlS6ryya7Bs1m6uUk221GSxy2CwiSKOkqrszzT8fcvT/L/MdKqVCWsTdnDpMILkA2gQjemxNDXVkd5ShRlmUBMbGW+2/F9dZMQRLk/d6fm5z7tdedfWUpP4SJ2zHkN0DbXqOmAzWRxYH+VfuTaIzb82jmPpuKt/XK767yspdn0CM93IeJhhu3ZDbgxWvHqZXHT9dpPiASxlTYjMiJK2/L5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
+ b=O/a5DE7mVlihJHKz2iehYX80CplW6p0sSMsRwLZqUzybNuCN8ioDkZ+SZHFl4SSagSnoKKR7KxU0iJu5pHvRmKtIvM+VnBuuIvLcC7jm90MAp1gUq7DDAnLEwcSeDOoRf1DBC4NJu+JjF0XTMli9+KOGDlcsAVFkeDD3jLuGlQoXzz9sQQVYUOkppv9rKbx9w1xTYyDwZxVWPRHq6CPzyklOCVlms923EjDwsPShX08GVS2pO00CPzY5ZU+j///Dqx54rkaSbCTu6YxUjotqQdVtadn6o4xWUj8K0NvrOZSi9Pot4jSCJ1iUuam23BFCJvCVcIos9+X/emX+D5YPew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C5oEw5XFIlwIPv65bLUs8HHiqGZSxBE+3TCu9OxiTKE=;
+ b=vrIT1mwWnvffDq/r7jxq44K0jGcGhS1IhqRmlpYhGkSiNXSnwIBY7h0bm5kbxKvd0hwPCZTYgaCrqlhlDNVUuggm8T05GUF5wo7f9rjw9Zhsdev9p7C4E6kXGtieT+VV1NVFJvyVbdhG3yPwHBSgaJjrGzul9qll2rpM3WJscYc=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH2PR10MB4199.namprd10.prod.outlook.com (2603:10b6:610:7f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
+ 2026 07:12:14 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9632.010; Tue, 3 Mar 2026
+ 07:12:14 +0000
+Date: Tue, 3 Mar 2026 07:12:09 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Chris Down <chris@chrisdown.name>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 1/3] mm/huge_memory: Fix use of NULL folio in
+ move_pages_huge_pmd()
+Message-ID: <5efb6235-e9f5-4e28-94fa-f95326ca7015@lucifer.local>
+References: <aaBVg6nPQz-WvyzT@chrisdown.name>
+ <27c260d2-796f-48a6-8b1c-751ab172d480@lucifer.local>
+ <89d988b7-846f-48aa-9b69-c316f2179d61@kernel.org>
+ <479c691e-1330-462d-9d7d-25cfda1f190b@lucifer.local>
+ <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303010039.2969125-2-jordanrichards@google.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 58C85180003
-X-Stat-Signature: rwdjyz51shi8w656fe8mxkgj8p15st3t
+In-Reply-To: <99bb6e08-2c70-4b52-8fbc-1233173fc195@kernel.org>
+X-ClientProxiedBy: LO6P265CA0001.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:339::9) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH2PR10MB4199:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2539a953-ffff-4fdd-c602-08de78f43204
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	ruvwLk/HK+1GCPk33BsNxWtMTvuvLNzpmzqAx/faIq6GbMrca5czcUJZ1KNRKUg8C218gHZdNaGldOKR2ULJGhMG4tyW0yLqQE3va+nTnGZ8we4LR9xaLnuwgNWfXW2zLOCyo8+1T4ep0TVD8ydLgglG+eZ8NIltv1TRZi39uEsYWQtdDJR3aNWDOgi1xk09kUrb68RhwmNFnr+QAbSL4gVs35NT2nKP5rfk74EN6yGIuNsRN1OwLmXQY6mHuNhgwiLUorTQPK9SJQ2ouj4AfSV3djK1hHio+MMu3Ae5HAORKREVb3kypXMEzcFoBnHtpArrpYzHQzO6MiZ5FttXO/jWxg7NSugNq37fhe34y2aX+m/yBcmj6ROxM3Pd5elZt3VRwY46VqhM3QHUvtAIkqvQLA+RZRE52xRfSNQJnlpLNgJJt0QF3DbFEo/s6i6Erk0SH3DSv10KW6uEO3TxblmeqBjkQL3eHs/jTZ5GB4Jxbdqml89BdqDCEQBZU3okqgffuq9sBeQXOXd8vljQQCH8AGrEIwT2JR4SWM9yK71TKK53Q2WdTuj0yNzmgEE5b4CVWxkuQOX+Y28I+CaFzZM15T+Exd5XcaTo675iwP2bue8PNkNQgppOqYtjyzX2r0RQtre/9Vr9IojYwcDN+sPyC6ltpJdftd+X1mCXmHjXhGfn7Ly6IL1oJZJKXyce/HNaFNdg3ToJo81nWOtXhH1vjGrQ4JaJj1pSA5o9cxY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IHozwMB+YOddM3TNx0dRTmfJz3+odbzYL4gSCZEt2RmBMIUmQHL83G6oF6BV?=
+ =?us-ascii?Q?KqTuEhBgP+jWj+69GSPtMiHQL1C3UUEDeEcr/mLnv2UDHBTLpEhfkFrSo8c3?=
+ =?us-ascii?Q?0lgmVVoJPnVB83xvaq5wTecGZPu3fCdSCtGTWP1QYYpdxv/96O4r123HnBYf?=
+ =?us-ascii?Q?D9+3Kjdaepc+LYclK6y+iyaDcnIdRpPPDxJjnooS6Ob91H7iH2+8CczKz9P2?=
+ =?us-ascii?Q?Kr7Jyv5zRCief/7ioYZLT5NIkblfjvVFZUwRsic3jYV4CfxK5iTj99dGBBgi?=
+ =?us-ascii?Q?nNtgLwdwEtgTXTyeinppFE6wHNdctUlGsMdslHoXfJHDVVqDyaSWS30rWOkT?=
+ =?us-ascii?Q?lGpVn7QkT1A98cNWMcG0yojrsmV5xJqfxnOOLXhA8Kc2CuTx4sv8W2mFIr9o?=
+ =?us-ascii?Q?g76QaVxyQJF8kBRfCxaRTYNUhO3DbRRBJnedYtoqGNn/UZpA1U/TaeihsANe?=
+ =?us-ascii?Q?XHWVKeNVlRD5F/r9DcGbGNdi9mTOK25kvV6KcedaJEx2G63hn42I6mzwuxL0?=
+ =?us-ascii?Q?uSLBPBtVzhxvUkORP85GFm4kMh3wmh8geq0LBzoMU7+7tBHzzCWUvGsKSPOh?=
+ =?us-ascii?Q?EJa2dAHH3gW1fI81CsrnX8UbK1+OSQYy9weo9a2YBhz0Ooru/2DiHXB8vqk3?=
+ =?us-ascii?Q?0wVehpFCGV7q6/6z0ahiY2oiUTSSDD4l6fqNQpLCUZnPjbzy0aaBlGIj5ZeZ?=
+ =?us-ascii?Q?TQYcvqB2ZDuXEOrHSSyVh62ppWgFUXw4D1UUCflBGDnbOAVAkIU0aSyGRA30?=
+ =?us-ascii?Q?/6op7GxkaJZg/roxkMyMKUh4FAOqE4Tqi8XQZ4SCBSRrz3z09RMe/9OdzHEW?=
+ =?us-ascii?Q?kr/ozh2OkDTF4n2GM9dhOEHSu5BhsVzlNn/GqMp4/MsSm7Lb5FvXVEy+1lQG?=
+ =?us-ascii?Q?IFxqBWFwEwzS6g6ds1QOxcbPjCS5ND5JCxSICvkveZxxBFbxnmtEpEABA14F?=
+ =?us-ascii?Q?Okp+pl0lRwYm7eg2VFv9wSKMHsH3Wu0IktLCp5Zi5MOsC0SqewjuEDLcwW31?=
+ =?us-ascii?Q?Drz10aUkmGRzZ9ygNXQKNISGYgYvXvC+/vW/5HBr/9eoW4vI5NsmmH4hhG/O?=
+ =?us-ascii?Q?LHAZcq2M71FgzOcbaql/Zxn7U89Y2/r7u3WTSmgMrhWPlaiTv0IGsk4aYYrw?=
+ =?us-ascii?Q?+bbLdr5lbJcBtlmQfxWa+4hTFmydUXy6AJbbMGT3KXDglZYA1KOlIPoMSHIu?=
+ =?us-ascii?Q?hSHXZ57HPrq/l1DAz/N6NLxt1Q388yreMIEwZjR5YCXMz0QmRBlOthFE+0tU?=
+ =?us-ascii?Q?5LPsbbK3anj25k/XGMUZA41yVO+m3U1zPsLVeJfMaoL7P+oHofdTOZsye5ta?=
+ =?us-ascii?Q?zdCdezD4xbohy0C/7uYqbkj7gMEcI8dZ9WQNDMSgYCoKu0cN38OY9c/N5N6s?=
+ =?us-ascii?Q?QkeVcnP+1QUnSXmHyr6MEOLqZwJ6wwwfNHCtFw4XbE6XLici0KYVnqfFfjOz?=
+ =?us-ascii?Q?lI8+i4v2taxDpXuGtOT2egmN0lBmdZQjtIvM+8rW565jo4NsJHwbf7+GrwVR?=
+ =?us-ascii?Q?zdDSPjY8ycwOkQ6Qf8dfKDc/tGO6X4uWj6rjN0VyGc5WwLt45btmiiLpyvyt?=
+ =?us-ascii?Q?Tnpo7XraGi10s+II5j26KFnPZnOkieImiuR9EN3mYsPUepgqYDdvxCGv2Smd?=
+ =?us-ascii?Q?LCOsBDfN7Qvkw++YnLLvj7bDQLBMj2KgAqgvgUKKcn/tybygbEsa4QIQZFsL?=
+ =?us-ascii?Q?QijGXlcPXZz70a6Vu5nAq5iNV/6WclzouYAunHDpmLLyFJl2Hm7ip30mXyPq?=
+ =?us-ascii?Q?ltXEAps1GuM7JUrYbvXmcvhWCnGU4RQ=3D?=
+X-Exchange-RoutingPolicyChecked:
+	IjjHAsIk5/0u07+9qXHEbE602CjxklIGc/33p+0I5Z2vC5RxynqDCGSq97JJdSrGe0EmBiNNK5mjoXBS89T/Jkx7/OGTcgHlAwP4lJLQRkJgpqRmyFJB9CK+b+iyflC936ZvDX+3xZXjj1ZQF325pLu8HoSvw/idt9dJfxecPc5pv0aroR/6gyoTNdtDgjVMBLdpj07XObrt6L0mBbFUEGlg+ijlDNCsAha3wW512G0zNRbs6xAQNY0PBy1pEaOy0WT8iIIxaxjAv14/freg2MihsrvWpVi+z2B7d4PFDgzBTD7ORC4e/fkRGVKLiujiB0DQPB+QdBH+P/xRNYAXsw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Ajw9n51CKb06ksptyyuix1na4TPpMzyDTGpPoyc2LTQDNvf1lD6xHxMnvWR2P78ZGns4sPDCTBBxk4HkhUYKtKGg3BDWG8pydMLJND+DV6ZNN/HlJ+CKlU6yHk11+KMk33Zj/5uafY4DQvavTQZFd85qFCvoNFoCAFwqEb67lw5Nd2Y+yju4ohEqoBZuUXkVbLxcRDNgDI1y2XOrp3i3Ndm/jA+KS+eDBpgAxpYDLz6Jl0GFRkAAoAJva/ALr/Fzpa9eLoCVM3D0g86+jgJaqjQhiCWNb7fW5OpyuvJ3QKWoM+h7bYx+r0geZx8Om1uNZlTumZCPPum6LHF6XBnvyxJybHOJ9w7AX0OSgWUIbXZXVRWybr/7euLx1UY0Aij6XGjaOqdERr5hBQh80oHv2AYgutL9iF0OWPtHsujm5SO4D46t4cKa62bb/SH9pP0ECONKf1O6PqU9ti7Q3tiUZh+i9fcA532N8m2A5hR82rPf8ULHBNGC1wYpaTqv+S5NQzp6FhCUsGMASsG3u2zU6fx3P8v5dOO+cDXe8knAAP1nRnq3ec8KFe/WpNFl8/t25u4t+OWOf3+CzOObD3Ufl62B/8bKY91005Gcg7jqXSI=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2539a953-ffff-4fdd-c602-08de78f43204
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 07:12:14.1249
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EOW8Ns2Am8skm6JdQA6cqwDAl0DGcFw8xfgn/lfmeGpOeRKiTfP1pWHKqWQtXxdgAvU/VPviC8Ju9qb2BXtHIfAANAnoApVkRAiHCeV4E7k=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR10MB4199
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 mlxscore=0 adultscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2602130000 definitions=main-2603030049
+X-Authority-Analysis: v=2.4 cv=QOBlhwLL c=1 sm=1 tr=0 ts=69a689d2 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8
+ a=4hWz-t2M-U9jOkj_3IwA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: GSuwUTYr7rO2HJBjap5Cpv5dai4EQvJC
+X-Proofpoint-GUID: GSuwUTYr7rO2HJBjap5Cpv5dai4EQvJC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA0OSBTYWx0ZWRfXy7YbnSaHDc5e
+ Ez0mX8/a4RXtT0Aqq0tVNOkk/cL1P1NIz7VIA4MrAlAl72zenZzi0ElKATAWGvP8NqRjiz0fZys
+ wj1rjvPSJRhflc1F9x9ziSnShHt+CsIlbhz6XQQGmHnd6BIlwUiZi3dqBAiOnvLM89A8s63o3yj
+ F/DSbWhQEciuRCjXi2BuNkSkveg8SaykeTNviYSvQXdIT71KkOSB/mcp5nfX2iwzzF3o4POsETQ
+ t/hLAQQF7lPh4dKeKBnsi2cHbPBdYQdF9M+2IjfLRwRTa2Pzq53N7kxW/8T4geNBRAghI07cURu
+ SD9YAh6a7Xr1ajEaRkjBcbTkHAnJ/AUqRN87SOARAPwsi2eUDVt5aWINnsC4aG79Vj3iyEStKFP
+ 5F3oMLCxZMRaiDIGYTXARtmPBpTq4k+emUclE1i7e4M8onoZdNTcN2MkJq3VyjEstRgYF9VK2DC
+ VVga/GLR96/q7ZikTeA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8FF80A0007
+X-Stat-Signature: x5zgyj5a759z5tg1dmaooxaa8bmggrox
 X-Rspam-User: 
-X-HE-Tag: 1772521777-687561
-X-HE-Meta: U2FsdGVkX194GV5dwIYTzRGijVKg8hnqt5BL5YgcB0HlgIHDrKiQY3OcWIk7CpCHXfByPk8zQFEquBJxUIOX7qHZ+7i160Bf2cFZ//Qe9du3QPLKkUHuNma+46eikIvSiO9W01I3TVZWcSGsX9XxgtyBzZUGP9momsOrbtw83PeSFn5Y0TA4UW4ykYiUuPXUuROJNZ/bx5fC3ywwkX18rOAzNOD8eTntkH+9z2H28yg+9AW4RcDOFzh4rU5zKIIwcNXsFsXWgcPCFKNxLnu5ycawROd8jcnGiwc+OM61Iv5pMNid1J4/Vd9xWZyAGANsc4KE+dJ3FT0cGx5yweXKapOWpW2SvRk574Es0hwtDVQ9btIVMI3xuImqPAltybk8oYMA+47NkKsp9/rhWP+1TQhIKv4pYk5Pkh7CAsgWRIWFkVdrr05cUPhiJJmdmBoWYUpndoAAy7Yink22gpUtndbXW9f5kPi9LHhDZQXtfe5jNppCwQXdgZM2IYrQHu79t5wEszbjKYzkDQ2kV5r+ytxwq02Gn432DY32isOQbIg6au5fbsiaY3QQL/76ShC2yCrpt+THf54kDeu7YdmtIvyZpQNJpKfjGqAAp2IXhITxB0f4Zdd0LzC3AcQ0F7g6QT5UMtw4a3IVph/FX/K5Y56dTDjdguqq0RDgwvCg0jyqjGkuYnGLgjtbO5+9OscvMlnsIak+Kj6O7/gWXn4jEsMKwlpfJn4foVDFSZF2plzbCOBmRpfWTYX1L0DyeESArrlEKqwD1prPNIQ+5PkZZroLdW7pkWcHPQFbDwjPktNIutvtf9Xv1rpc3rvP3UuLdrpVWBRtfXzqYmjbsuPT6EwqLRTzJKMPwfhjWcz4iAG3OsMPC333ylBr7jJ8KB5yOvBGHmHeFFk+m3yALNcWGQzV2DoHT6dUAJ3e6ZM204wtuxXyvAW5KheB4DY6rOO9LSwP1+dLh63LSKBdTIn
- JDJScKO1
- Jai0Phj4v2fxkUciBm/zMwfQ0Rk6xABJrFjILCgi5YRJjLcgAQ+EGq+89eVUimNccVlHviAUk3Gdu+e3t3tEzW66LVJytvYo3k4JmDT+x+5CdbgRFZRnfUxLoq4JinVGOMN+Mxy2sVRj5G0pJOndlVOTQT0tJX7Uaa57T35UJyF/seMsXqkrb3vUq/A==
+X-HE-Tag: 1772521953-436684
+X-HE-Meta: U2FsdGVkX1/0yvsMaWT0gCGJ82TAOXyMcKlI5m1oouxvYBUoTp2+YYdPxoZ6hXZPo04F6gcgy1Ut/fHHvN5h7N+zxY7AiDd/HUElldJ+k9hr9FS9OJps5qTn2ynODbNQoHqHWYWVaUr2vI/gpVEjfFl80OdUL2+qvwH2VTdT9NF0s6xCMoOBeLyQgy3ythCyxpOTFlIGHmrqXEli5Y8aIFWNj3myH6eqD/aZ26uPSLzul0/ltPXPAHGLEfAPN6KS0shGzH5T1m3CpT09skXGehyzcyvV1ppAPHRJEOWuF+IZsc31RWrMPVhgBobrQK84SKfOKrryYxEp2hwS2W7c16PIDMpZ/MTZp9m5YgxTKUCUasZ3axGqbSZji9JV2POQNvtdsZetn5HbQmhtvNiY52zzMEt1dxdy2A0fJVOjtDkoKIUqH+6faFyWVbHS1g1wpZKCPY39mFtc6OySH8hZDUSdVMtrfByAlg7W1ze9x8lWJeb/yZ2SvLyNQpUlSYCZUH+obzEpLuuDP/j5TSn6ExrLS6nwXUBrZuwFd0ceJ1FXRY9mZe3ib7Y8bgvZKT2ZrOQnqku+/wjACXkRW4DV7IHn+IHvLdgbeFenWYG7bKU+vxaAqKkt7f8evCNDofpU8F+yTD5yWInNFmfSaMHyWfRKaN9KHdWHGibgO0WduFNBhMVOecWGNA8BKhUzFPgy5IEEZYxdF9bZy8b1iQ6Un07v+UfLv1BYlytUG7ZL/c5DFxldQ49bVSNhbaBoCmWZ3pGTnucObIplHbz52vehoZXJwRvCDlaWq+cmTTIeVF3SJQDhAXWc0kxVPxogMlN00ysa5y24j2j08+8SKDuA/OGzzVKVxHpyE8XkCwgnw4kAjkTkx1hGfLoQ/dPmDEn/+LCQrSQAu6YegfAkR1ue34jZ3nI84GlcHKu4q0RPtjfLH4JN4V3dv5tpN1WwZWAdctucdZakPHNsN6NhEbu
+ N0FeFVon
+ dHg8JXOx5NE0dQUXUoxAAji7Kkqvef6OwMb7lhcrMH4+A4y7OxfefYmUg6w39AvujCrldiRPUy0KqKWeC248H8kRrgSXlLphmBAwe/faPht6GZ4xElc++kIqlmTikH4g/qFqEbk+hue+oOEJctwA8jjkbIxX67b+J8y/UExr08C4Hzg+u4HEF1KESvu4L5O9fOhaTQgNfHI2UfMhFbaqo/t8VuEd7GAtWaIMn/0Szxatx97igGUYLBa8S4HDgtqMTQr0ayuTy+WhQZt/KKJv6Qt8ZAbsYfUzF63Hf/9K0xTVaJ0dPS/DD0B6vUyFxAU2xOnLMiE2B8BhLAVPUux06GXVc1PDL55cqpg/vIRZV5fTsUYg27N5xBOhPXt/7c4POc6uZlFgb7Wx7SjDZOS8/e0Zyztfx1xhw9dJjuyPT1F64UojBTd0w6Tur6cLP5it1E7v0jakK+COIoenrcUhu24QFD8zZxVQoNdVpOxBLiZUXDebEnrkBZ2ve/v859ZbANqdvKpxMxnLnTk3/Osd9RRzJI9jya0fpUaOizsw9X1C+0EovZ4FY+/bpdOTk7eiq6zpg5iKu3kGAWEb14sT8kgs7XwPuTvczDjw4ExB5K8mij7VoHg9+kSBGyl0T3BiQ8QgYQ9fG8enDiA+cGZ5kjgFKZg2+q3Oxarl/E0FZe9y6SVMxpBLOUMCTEosYe/EXbDNn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,272 +224,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jordan,
+On Mon, Mar 02, 2026 at 08:05:37PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/2/26 18:43, Lorenzo Stoakes wrote:
+> > On Mon, Mar 02, 2026 at 06:35:46PM +0100, David Hildenbrand (Arm) wrote:
+> >>
+> >>>
+> >>> I prefer my version at [0].
+> >>>
+> >>> Cleaner to actually pull out the zero_folio into a local variable, and also we
+> >>> should mark it special to be consistent with other codepaths.
+> >>
+> >> I argued in v1 that we should handle it similar to an ordinary move
+> >> during mremap()->move_huge_pmd() and not split it over two patches.
+> >>
+> >> It's still split over two patches, which doesn't make sense.
+> >
+> > Yes, let's not do that, I made the same comment.
+> >
+> >>
+> >> https://lore.kernel.org/linux-mm/0b653dcd-842b-4360-bc1c-8fe779efbc23@kernel.org/
+> >>
+> >> I don't think there is no need to get the folio involved at all if we
+> >> know that we have a well-prepared PMD (zero folio, makred as special).
+> >>
+> >> The less code we have that has to deal with setting PMDs special (and
+> >> possible messing it up), the better.
+> >
+> > Yup I agree, I replied accordingly. That's a more elegant thing than duplicating
+> > huge zero installation code.
+> >
+> > I had just assumed that there was _some reason_ why we wouldn't want to do that
+> > given the original patch from Suren didn't just do that, and for the sakes of a
+> > backport no need to think too deep on it.
+> >
+> > But you're right I don't think there's any reason we need to diverge from what
+> > mremap() would do.
+> >
+> > That does have:
+> >
+> > 		if (vma_has_uffd_without_event_remap(vma))
+> > 			pmd = clear_uffd_wp_pmd(pmd);
+> >
+> > Though rather than unconditonally invoking clear_uffd_wp_pmd().
+> >
+> > Is that correct?
+>
+> My conclusion was that UFFDIO_MOVE will never move uffd-wp information
+> (just like we currently don't do for any moved PTEs).
+>
+> mremap() might sometimes. But it also effectively moves all (most) uffd
+> VMA properties, so it has slightly different semantics.
 
-On 2026-03-03 01:00:38+0000, Jordan Richards wrote:
-> On architectures with 32-bit longs, call the compat syscall
-> __NR_ftruncate64. As off_t is 64-bit it must be split into 2 registers.
-> Unlike llseek() which passes the high and low parts in explicitly named
-> arguments, the order here is endian independent.
-> 
-> Some architectures (arm, mips, ppc) require this pair of registers to
-> be aligned to an even register, so add custom sys_ftruncate64 wrappers
-> for those.
-> 
-> A test case for ftruncate is added which validates negative length or
-> invalid fd return the appropriate error, and checks the length is
-> correct on success.
+Ack thanks!
 
-Thanks, this all looks good in general.
+>
+> --
+> Cheers,
+>
+> David
 
-In nolibc-next we renamed all the my_syscall*() functions to
-__nolibc_syscall*(), merging this patch through the liveupdate tree
-will lead to semantic conflicts.
-
-I see different ways to handle this:
-* An an immutable branch to merge into the liveupdate tree
-* Split up the series
-  * Use raw syscall(__NR_ftruncate) in the liveupdate
-    selftests, as it is sufficient for that.
-  * Merge the nolibc bits through the nolibc tree.
-  * Next cycle, switch to proper nolibc ftruncate().
-  * Let Linus handle the conflict when merging the tree.
-
-There are some nitpicks inline, but we can also fix those up when
-applying the patch.
-
-> Signed-off-by: Jordan Richards <jordanrichards@google.com>
-> ---
->  tools/include/nolibc/arch-arm.h              | 11 +++++
->  tools/include/nolibc/arch-mips.h             | 11 +++++
->  tools/include/nolibc/arch-powerpc.h          | 11 +++++
->  tools/include/nolibc/unistd.h                | 35 ++++++++++++++
->  tools/testing/selftests/nolibc/nolibc-test.c | 51 ++++++++++++++++++++
->  5 files changed, 119 insertions(+)
-> 
-> diff --git a/tools/include/nolibc/arch-arm.h b/tools/include/nolibc/arch-arm.h
-> index 251c42579028..ed65fb674e61 100644
-> --- a/tools/include/nolibc/arch-arm.h
-> +++ b/tools/include/nolibc/arch-arm.h
-> @@ -6,9 +6,11 @@
->  
->  #ifndef _NOLIBC_ARCH_ARM_H
->  #define _NOLIBC_ARCH_ARM_H
-
-Nit: keep an empty line after the include guards.
-
-> +#include <linux/unistd.h>
->  #include "compiler.h"
->  #include "crt.h"
-> +#include "std.h"
->  
->  /* Syscalls for ARM in ARM or Thumb modes :
->   *   - registers are 32-bit
-> @@ -196,4 +198,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
->  }
->  #endif /* NOLIBC_NO_RUNTIME */
->  
-> +#ifdef __NR_ftruncate64
-
-Should be unnecessary.
-
-> +static __attribute__((unused))
-> +int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
-> +{
-> +	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
-> +}
-> +#define sys_ftruncate64 sys_ftruncate64
-> +#endif
-> +
->  #endif /* _NOLIBC_ARCH_ARM_H */
-> diff --git a/tools/include/nolibc/arch-mips.h b/tools/include/nolibc/arch-mips.h
-> index a72506ceec6b..26d044004ec6 100644
-> --- a/tools/include/nolibc/arch-mips.h
-> +++ b/tools/include/nolibc/arch-mips.h
-> @@ -6,9 +6,11 @@
->  
->  #ifndef _NOLIBC_ARCH_MIPS_H
->  #define _NOLIBC_ARCH_MIPS_H
-
-Also an empty line.
-
-> +#include <linux/unistd.h>
->  #include "compiler.h"
->  #include "crt.h"
-> +#include "std.h"
->  
->  #if !defined(_ABIO32) && !defined(_ABIN32) && !defined(_ABI64)
->  #error Unsupported MIPS ABI
-> @@ -269,4 +271,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector __
->  }
->  #endif /* NOLIBC_NO_RUNTIME */
->  
-> +#ifdef __NR_ftruncate64
-> +static __attribute__((unused))
-> +int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
-> +{
-> +	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
-> +}
-> +#define sys_ftruncate64 sys_ftruncate64
-> +#endif
-> +
->  #endif /* _NOLIBC_ARCH_MIPS_H */
-> diff --git a/tools/include/nolibc/arch-powerpc.h b/tools/include/nolibc/arch-powerpc.h
-> index e0c7e0b81f7c..71829cb027e8 100644
-> --- a/tools/include/nolibc/arch-powerpc.h
-> +++ b/tools/include/nolibc/arch-powerpc.h
-> @@ -6,9 +6,11 @@
->  
->  #ifndef _NOLIBC_ARCH_POWERPC_H
->  #define _NOLIBC_ARCH_POWERPC_H
-> +#include <linux/unistd.h>
->  
->  #include "compiler.h"
->  #include "crt.h"
-> +#include "std.h"
->  
->  /* Syscalls for PowerPC :
->   *   - stack is 16-byte aligned
-> @@ -218,4 +220,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
->  }
->  #endif /* NOLIBC_NO_RUNTIME */
->  
-> +#ifdef __NR_ftruncate64
-> +static __attribute__((unused))
-> +int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
-> +{
-> +	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
-> +}
-> +#define sys_ftruncate64 sys_ftruncate64
-> +#endif
-> +
->  #endif /* _NOLIBC_ARCH_POWERPC_H */
-> diff --git a/tools/include/nolibc/unistd.h b/tools/include/nolibc/unistd.h
-> index bb5e80f3f05d..85ac253f9189 100644
-> --- a/tools/include/nolibc/unistd.h
-> +++ b/tools/include/nolibc/unistd.h
-> @@ -48,6 +48,41 @@ int access(const char *path, int amode)
->  	return faccessat(AT_FDCWD, path, amode, 0);
->  }
->  
-> +#if !defined(sys_ftruncate64) && defined(__NR_ftruncate64)
-> +static __attribute__((unused))
-> +int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
-> +{
-> +
-
-Nit: Spurious empty line.
-
-> +	return my_syscall3(__NR_ftruncate64, fd, length0, length1);
-> +}
-> +#define sys_ftruncate64 sys_ftruncate64
-> +#endif
-> +
-> +static __attribute__((unused))
-> +int sys_ftruncate(int fd, off_t length)
-> +{
-> +#ifdef sys_ftruncate64
-> +	union {
-> +		off_t length;
-> +		struct {
-> +			uint32_t length0;
-> +			uint32_t length1;
-> +		};
-> +	} arg;
-> +
-> +	arg.length = length;
-> +
-> +	return sys_ftruncate64(fd, arg.length0, arg.length1);
-> +#else
-> +	return my_syscall2(__NR_ftruncate, fd, length);
-> +#endif
-> +}
-> +
-> +static __attribute__((unused))
-> +int ftruncate(int fd, off_t length)
-> +{
-> +	return __sysret(sys_ftruncate(fd, length));
-> +}
->  
->  static __attribute__((unused))
->  int msleep(unsigned int msecs)
-> diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-> index 1b9d3b2e2491..6a84dfbb4b73 100644
-> --- a/tools/testing/selftests/nolibc/nolibc-test.c
-> +++ b/tools/testing/selftests/nolibc/nolibc-test.c
-> @@ -969,6 +969,56 @@ int test_fork(enum fork_type type)
->  	}
->  }
->  
-> +int test_ftruncate(void)
-> +{
-> +	int ret;
-> +	int fd;
-> +	struct stat stat_buf;
-> +	const char *filename = "/tmp/ftruncate_test";
-> +
-> +	ret = ftruncate(-1, 0);
-> +	if (ret != -1 || errno != EBADF) {
-> +		errno = EINVAL;
-> +		return __LINE__;
-> +	}
-> +
-> +	fd = open(filename, O_RDWR | O_CREAT);
-
-Missing the mode argument.
-O_TMPFILE would make things easier.
-
-> +	if (fd == -1)
-> +		return __LINE__;
-> +
-> +	ret = ftruncate(fd, -1);
-> +	if (ret != -1 || errno != EINVAL) {
-> +		if (ret == 0)
-> +			errno = EINVAL;
-> +		ret = __LINE__;
-> +		goto end;
-> +	}
-> +
-> +	ret = ftruncate(fd, 42);
-> +	if (ret != 0) {
-> +		ret = __LINE__;
-> +		goto end;
-> +	}
-> +
-> +	ret = fstat(fd, &stat_buf);
-> +	if (ret != 0) {
-> +		ret = __LINE__;
-> +		goto end;
-> +	}
-> +
-> +	if (stat_buf.st_size != 42) {
-> +		errno = EINVAL;
-> +		ret = stat_buf.st_size;
-> +		goto end;
-> +	}
-
-Could you also add a variant which tests that 64-bit values work correctly?
-
-> +
-> +end:
-> +	close(fd);
-> +	unlink(filename);
-> +
-> +	return ret;
-> +}
-> +
->  int test_stat_timestamps(void)
->  {
->  	struct stat st;
-> @@ -1406,6 +1456,7 @@ int run_syscall(int min, int max)
->  		CASE_TEST(file_stream);       EXPECT_SYSZR(1, test_file_stream()); break;
->  		CASE_TEST(file_stream_wsr);   EXPECT_SYSZR(1, test_file_stream_wsr()); break;
->  		CASE_TEST(fork);              EXPECT_SYSZR(1, test_fork(FORK_STANDARD)); break;
-> +		CASE_TEST(ftruncate);         EXPECT_SYSZR(1, test_ftruncate()); break;
->  		CASE_TEST(getdents64_root);   EXPECT_SYSNE(1, test_getdents64("/"), -1); break;
->  		CASE_TEST(getdents64_null);   EXPECT_SYSER(1, test_getdents64("/dev/null"), -1, ENOTDIR); break;
->  		CASE_TEST(directories);       EXPECT_SYSZR(proc, test_dirent()); break;
-> -- 
-> 2.53.0.473.g4a7958ca14-goog
-> 
+Cheers, Lorenzo
 
