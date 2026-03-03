@@ -4,82 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C90EEC1423
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:32:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2320CEC1423
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 10:34:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 381EB6B009F; Tue,  3 Mar 2026 05:32:19 -0500 (EST)
+	id 572246B00AC; Tue,  3 Mar 2026 05:34:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32FF56B00C7; Tue,  3 Mar 2026 05:32:19 -0500 (EST)
+	id 4FCE26B00EA; Tue,  3 Mar 2026 05:34:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25D186B00CC; Tue,  3 Mar 2026 05:32:19 -0500 (EST)
+	id 35FD36B00AC; Tue,  3 Mar 2026 05:34:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 11A8B6B009F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:32:19 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B96A18B7A9
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:32:18 +0000 (UTC)
-X-FDA: 84504387156.17.746C643
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D9C101A000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:32:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2B66B008A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:34:45 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DFE4813AB02
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:44 +0000 (UTC)
+X-FDA: 84504393288.16.ED1A79F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8CD5D1C0002
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lqMqPkPW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iVUDLfIF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lqMqPkPW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iVUDLfIF;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772533937;
+	s=arc-20220608; t=1772534082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ctRnACVBoLQpUKzEAzMqfy9YYlIogWllPoguMyiuHQk=;
-	b=4aZBCfp44hJ6aZIWeZ4ZpTcfzM+DSqQaea/hX5gVSQX0zvRwBjLA0mzG9tqkJ/8MRCHWW1
-	4qypGRFHS5e+rD4q6hO59RV5Z2mP0cIJ2eqKGAbQJPK+1woC12hnPKRz2wh2a/sNMfHf8C
-	oxEPM+ruBi3b3BcUQfVxPbQQkO4RQ0M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772533937; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9UrJPHNyhUknVE32ZDrA7g1au2Fhe6ZCvxRhGCGzA8o=;
+	b=ZwSUIYJQ+idSfgAo5k0l+5weGPG+YWmf76ajvTVRv/i4usKfCqQnfxztaqBlZ9iRPgVHXE
+	vEiTSs49GPCyqJDbUHHfHdIdOPWzYewiIW9jOKaIhF8ONvkThbqlesq5a4tL5rjHpPCcbA
+	Q4l5Y5UCH8KwXhROAFkw71X/idO3OwA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772534082; a=rsa-sha256;
 	cv=none;
-	b=yyoHKPkV2Fplz5dIfmIQhdfrPQB5VLKN5ejFoGgszlDrT1LlD8UDXYd3IQPo356q6DqGU6
-	27TmuG5Oyz+wR0NFawHtV8pO868PNUjACXhBO2xn8EXZ2jpJ4xi8eZ1B3xU1f7x48m0jPm
-	7Y7LosooHCSrVhsW1gbtSwCD4pRbluY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A34D7497;
-	Tue,  3 Mar 2026 02:32:09 -0800 (PST)
-Received: from [10.164.19.52] (unknown [10.164.19.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BB6553F7BD;
-	Tue,  3 Mar 2026 02:32:11 -0800 (PST)
-Message-ID: <56d607c0-dc72-431a-bc86-6dae100f1708@arm.com>
-Date: Tue, 3 Mar 2026 16:02:08 +0530
+	b=SbxrFUPFkZy0itd5uA0AlYnh0oTCxRzFDxtXItWjf1nvE5ipLrwUFXvkD+PX6jrD6ILdbv
+	wSlBS/uKvO3iEgse1UCqYPae2oDPuLZVaqyYY1oqHAPwMNr+o7PGcmVdjaBC7bzQBJr+16
+	ES7OIffLf6XYptteYkUWRYcnH2hGLxI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lqMqPkPW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iVUDLfIF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=lqMqPkPW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iVUDLfIF;
+	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B9D935BDEA;
+	Tue,  3 Mar 2026 10:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9UrJPHNyhUknVE32ZDrA7g1au2Fhe6ZCvxRhGCGzA8o=;
+	b=lqMqPkPWqfJeKYyNTobGfmlypOq9O0pVliQhFsr5dDXofPyv/b/GgGcU6Xi0yoTa2eyxwg
+	7MaLvhJ8Yz3kVLaz9QCxDzLS8AbI2txjhAjrVxIobHxkHpd82eTaYE4F9+fGGgb03IFa5R
+	JMNRKG4T5wTyKO+JbaEoKD/vks2FLzU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9UrJPHNyhUknVE32ZDrA7g1au2Fhe6ZCvxRhGCGzA8o=;
+	b=iVUDLfIF4U9dmHoWczbJvEmbfpoB2vpfnCz4s1BvYSrIsMQE5vGrpPfqhAW9yxewyjAsDQ
+	3SWPKaww46bSbjDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772534080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9UrJPHNyhUknVE32ZDrA7g1au2Fhe6ZCvxRhGCGzA8o=;
+	b=lqMqPkPWqfJeKYyNTobGfmlypOq9O0pVliQhFsr5dDXofPyv/b/GgGcU6Xi0yoTa2eyxwg
+	7MaLvhJ8Yz3kVLaz9QCxDzLS8AbI2txjhAjrVxIobHxkHpd82eTaYE4F9+fGGgb03IFa5R
+	JMNRKG4T5wTyKO+JbaEoKD/vks2FLzU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772534080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9UrJPHNyhUknVE32ZDrA7g1au2Fhe6ZCvxRhGCGzA8o=;
+	b=iVUDLfIF4U9dmHoWczbJvEmbfpoB2vpfnCz4s1BvYSrIsMQE5vGrpPfqhAW9yxewyjAsDQ
+	3SWPKaww46bSbjDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A51763EA6D;
+	Tue,  3 Mar 2026 10:34:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id iL1IKEC5pmnJFAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 10:34:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 4D160A0A1B; Tue,  3 Mar 2026 11:34:40 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	<linux-ext4@vger.kernel.org>,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	linux-aio@kvack.org,
+	Benjamin LaHaise <bcrl@kvack.org>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 0/32] fs: Move metadata bh tracking from address_space
+Date: Tue,  3 Mar 2026 11:33:49 +0100
+Message-ID: <20260303101717.27224-1-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree
- folios
-To: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com
-Cc: riel@surriel.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- harry.yoo@oracle.com, jannh@google.com, baohua@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable <stable@kernel.org>
-References: <20260303061528.2429162-1-dev.jain@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260303061528.2429162-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D9C101A000B
-X-Stat-Signature: p7zuc5d6buxaayhcx6xmdw657yrhkoy9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3005; i=jack@suse.cz; h=from:subject:message-id; bh=UbBPqAcv2kV/Q4CNByWNsI4Gp7M+jn4qLkYn8cP+R8A=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpprkMYYq5ex/qPGCddgeRA95TW6T29xG3oZcwa 9/pZCmZiICJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaaa5DAAKCRCcnaoHP2RA 2d1UB/9/qfK53DX5rvT8+evw97coaewuS0fQW9uwuwRy19Te5htSwgwrDlxVdnAjxdPTDY832Zf OpsNY30Z32u9RG0pWG51BpraVwhf+/2MszT//06tOH7Hwn8BbdDiizKz5vq/Q2XSNU2mG95VmNt CQtLCDqJ8Af26NQdlIs1lhYbyPmKAG65aNny4KIwgSAfTQ8Kwi6k8WWtkgj2nkGnsQ6jh78QNXw a4cbhTbKSK3lEX8jT4bxbop6rZsmvNhPrUdUwKzjVmEzkHMLi+ddsFc8vlQpsBECnSaj5DoiXe+ 0AEhtReRU7oy3u6KT/zgv73jh80SHUOG0h4nkP1HWJsmjlSz
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772533936-258760
-X-HE-Meta: U2FsdGVkX1/VgYqpJr6YqB7uTN5aXLyA/zZTR3wTJ9HE1qu2JH/u9uvr/OL/WC+Pppa7nf2oTC7Bp8tlDzLivDFOyBLIvnH0Nj56A2NEq1ERFgZ28pZDJ1r0GGyPd/uoIAMNsxBelzpZ/wW5CVyDEJDsS0v0gJNylzNJlgwopIivrdxEIYkhoRLzZ2xUUj7CBrrunh/GHVLXZh93SlIb1HTfvm0m8OPie8SW/ToUng/2WN0NcKotY3mUP7vpfXxiSa14+GGxdTZKuTMAYInGeSIlfsm5oc44n7ZfWsbxhBuGv6gLOkBB1RzS5qhJW32i1Fr2z9GZif3P1kFSxePTe3fGS/P44x08qKfPttoxxRX8UycV5EjkdtqdoJ5s2CPvfgh1v/wOAt2q2sQElEIg709huaDg3ijjUZjRVeN6Bk7nX1YhegGwTh/IEWgrZvJmr3w5J3YStNLPebwPp6KK7sOIPptrSbrPNv87Bvfi4Mk/UUuswcFJ318iAjLSlXwNCynfuncadik4UenfaGDnPY1xrtxrhDGf8nE0Cld+twTbMecdqa3htmUvGySiYMWzTm3KgJ9yB2fH1GEnCIl+Nw2qp+/97pclgtedpO1nUdHiTDpMA8HyYSQIb1tPL+67+ptEm+y6VBwRg6BeNTkTD4pYrbVqW+1z2wnZU9Bz0pxG+nQBhNa1aQ64f3CROi0FerkRzcDY8NdDSmgwNudH4FcVNAGIe8O14Z4ByGTctIvUzEIcQwX735NBSsjKdVpNlcbTn8b9qsAOztiz+YTi8UuGEFFCqDUfDIDj2GQp2ocsR9LFLioXb6l1ivilIRdLDtyLwTK3mieJj5hB7GdLit8LKcrWlfNt7jARAcLKrRX/n4Y0U1eVPjdxj8sXm4AOnzlASPYtyCG5occcMRi8ESan1u6j3KWXP/H/smz/Qvi9p1i3KhrQu02XgfXKCmXGfWceVAEoZhVz1nOh0qO
- ELbNyuJ6
- 4KldjTiF3AJ+Vjy9c7gpwzIDEyhrEl49d6FfqYkjkpAsuGs0P9FMSRIf1ktFWIoWZJndga+r40uq6kacbHoPSxMJm4RoBhs3Xd0ZqIUGmWWOt5fzZBN3nhNWCj1YpGrbVLucUKQGzJpei4DRpD8VkmiYa2zSOWbXADyGYobeHQdewq1TDhYLsHKlSq62kvemehJ97hAOqRH3R3FN6x8Hp0/f4r36CRGgsdI7A
+X-Stat-Signature: 84xrnbtfzmqd793ozekoe58gd56tw6oc
+X-Rspamd-Queue-Id: 8CD5D1C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772534082-985327
+X-HE-Meta: U2FsdGVkX1/+WMqSXkr86uvOQI4b9nr80b/IHe8wR7oDcUsSP2s/sQ1yls40SlEldKK0zrnYp2VxERlzrNCLGsEXUC+CfGLs9miAtAqkRZmemMwGxOeNDCpNq5GVapKSxWJP2vMQBJnxIOusx+aMkQQ1In6W5Cpwteh/7EqHiGOz74ndghEtXMq775UEmPDj44RC/KUUooKacQ6HsNk758jmD9uwS9zhssLC5HJhyIxFmrUdrhuxMMt78XQkyR66FTdqAIh9oSyvHOvWnzpzsIAEOUdlw8hVi+bNcgp7D1Bau/qaMhzQAtwaJwEBkB5/0uRjSooRvTxsYJTaQyrcCG/XbfgKeocZwC2jgkdy61/tr1fOsZf6Ogf2/T6HbprpI+PADz9Mn3oYpfrZkXBrvP15RCT7/bcj7VwBu1hfQKF7E1Y9c2vo5DmSHAgclSRL0qBsJNeGhM5/gX+A89yn3kAizms/svpGV8o9Alt2gFxVWG22P1OPF8MWtY1kXU1GRiy1d+OPbdH3Z6C7+RzJlkpjD7+qj2+ZOLeMFVLl2H0ZZSIws4PQiM+R4WoKMqpAtWEQaO6XSBIqBzWaCa1nmmNyeWKFyqFvDqugTzqLaPnzNVVZbLI+9GM6GlcEVNSUuLMcU7gDSgSnPkZsNuExEzC36koxTP+MBEFY/WKaDC5bcmbkKAh5N3/BATLUBSIMMe8BTO/SxmGLkfl7V05zpGeSmKUf6l3z1qJqtAjJ3jKM/H8TMHeSNoY0hipTAx7FNLF6cq70ujY4xeiSujixxI0ykDMesmMIy+UXnEPnCS+vAsjes5dY0py2qElb9rJ+JjOEotkM6jBcXY6lC3khG5d5B2nFU9ltf43I9i+OfFKtMsz+rPk5/7MIA5tD4xK+b7Tu4fp3QnTCRUHZbQR9EoNJG+EVvvo2bTeAteSs8JcnjFeIABJTtDpaSBHjMM5hW75vtXMvbvCkJ6KjZ0J
+ WzC/N25q
+ 6xbGSwrLny5ukJbBQcPbjr+YHJDTFPGY/OyzZqpEzrCBiJXBNQ1mErBlyPNTo4AlJsMCFj0Remc62adwW2MIR1DSbeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,203 +139,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
 
+this patch series cleans up the mess that has accumulated over the years in
+metadata buffer_head tracking for inodes, moves the tracking into dedicated
+structure in filesystem-private part of the inode (so that we don't use
+private_list, private_data, and private_lock in struct address_space), and also
+moves couple other users of private_data and private_list so these are removed
+from struct address_space saving 3 longs in struct inode for 99% of inodes.  I
+would like to get rid of private_lock in struct address_space as well however
+the locking changes for buffer_heads are non-trivial there and the patch series
+is long enough as is. So let's leave that for another time.
 
-On 03/03/26 11:45 am, Dev Jain wrote:
-> We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
-> If the batch has a mix of writable and non-writable bits, we may end up
-> setting the entire batch writable. Fix this by respecting writable bit
-> during batching.
-> Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
-> lost, preserve it on pte restoration by respecting the bit during batching,
-> to make the fix consistent w.r.t both writable bit and soft-dirty bit.
-> 
-> I was able to write the below reproducer and crash the kernel.
-> Explanation of reproducer (set 64K mTHP to always):
-> 
-> Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
-> fork() - parent points to the folio with 8 writable ptes and 8 non-writable
-> ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
-> determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
-> the folio as lazyfree. Write to the memory to dirty the pte, eventually
-> rmap will dirty the folio. Then trigger reclaim, we will hit the pte
-> restoration path, and the kernel will crash with the following trace:
+The patches have survived some testing with fstests and ltp however I didn't
+test AFFS, HUGETLBFS, and KVM guest_memfd changes so a help with testing
+those would be very welcome. Thanks.
 
-Andrew, could you convert the last line to the following:
+ block/bdev.c                |    1 
+ fs/affs/affs.h              |    2 
+ fs/affs/dir.c               |    1 
+ fs/affs/file.c              |    1 
+ fs/affs/inode.c             |    2 
+ fs/affs/super.c             |    6 
+ fs/affs/symlink.c           |    1 
+ fs/aio.c                    |   78 +++++++-
+ fs/bfs/bfs.h                |    2 
+ fs/bfs/dir.c                |    1 
+ fs/bfs/file.c               |    4 
+ fs/bfs/inode.c              |    9 +
+ fs/buffer.c                 |  387 +++++++++++++++++---------------------------
+ fs/ext2/ext2.h              |    2 
+ fs/ext2/file.c              |    1 
+ fs/ext2/inode.c             |    3 
+ fs/ext2/namei.c             |    2 
+ fs/ext2/super.c             |    6 
+ fs/ext2/symlink.c           |    2 
+ fs/ext4/ext4.h              |    4 
+ fs/ext4/file.c              |    1 
+ fs/ext4/inode.c             |    9 -
+ fs/ext4/namei.c             |    2 
+ fs/ext4/super.c             |    9 -
+ fs/ext4/symlink.c           |    3 
+ fs/fat/fat.h                |    2 
+ fs/fat/file.c               |    1 
+ fs/fat/inode.c              |   16 +
+ fs/fat/namei_msdos.c        |    1 
+ fs/fat/namei_vfat.c         |    1 
+ fs/gfs2/glock.c             |    1 
+ fs/hugetlbfs/inode.c        |   10 -
+ fs/inode.c                  |   24 +-
+ fs/minix/file.c             |    1 
+ fs/minix/inode.c            |   10 +
+ fs/minix/minix.h            |    2 
+ fs/minix/namei.c            |    1 
+ fs/ntfs3/file.c             |    3 
+ fs/ocfs2/dlmglue.c          |    1 
+ fs/ocfs2/namei.c            |    3 
+ fs/udf/file.c               |    1 
+ fs/udf/inode.c              |    2 
+ fs/udf/namei.c              |    1 
+ fs/udf/super.c              |    6 
+ fs/udf/symlink.c            |    1 
+ fs/udf/udf_i.h              |    1 
+ fs/udf/udfdecl.h            |    1 
+ include/linux/buffer_head.h |    6 
+ include/linux/fs.h          |   11 -
+ include/linux/hugetlb.h     |    1 
+ mm/hugetlb.c                |   10 -
+ virt/kvm/guest_memfd.c      |   12 -
+ 52 files changed, 360 insertions(+), 309 deletions(-)
 
-
-..restoration path, and the kernel will crash with the trace given
-below. The BUG happens at:
-
-BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
-
-The code path is asking for anonymous page to be mapped writable into
-the pagetable. The BUG_ON() firing implies that such a writable page has
-been mapped into the pagetables of more than one process, which breaks
-anonymous memory/CoW semantics.
-
-
-> 
-> [   21.134473] kernel BUG at mm/page_table_check.c:118!
-> [   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-> [   21.135917] Modules linked in:
-> [   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
-> [   21.136858] Hardware name: linux,dummy-virt (DT)
-> [   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-> [   21.137308] pc : page_table_check_set+0x28c/0x2a8
-> [   21.137607] lr : page_table_check_set+0x134/0x2a8
-> [   21.137885] sp : ffff80008a3b3340
-> [   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
-> [   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
-> [   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
-> [   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
-> [   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
-> [   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
-> [   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
-> [   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
-> [   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
-> [   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
-> [   21.141991] Call trace:
-> [   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
-> [   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
-> [   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
-> [   21.142766]  contpte_set_ptes+0xe8/0x140
-> [   21.142907]  try_to_unmap_one+0x10c4/0x10d0
-> [   21.143177]  rmap_walk_anon+0x100/0x250
-> [   21.143315]  try_to_unmap+0xa0/0xc8
-> [   21.143441]  shrink_folio_list+0x59c/0x18a8
-> [   21.143759]  shrink_lruvec+0x664/0xbf0
-> [   21.144043]  shrink_node+0x218/0x878
-> [   21.144285]  __node_reclaim.constprop.0+0x98/0x338
-> [   21.144763]  user_proactive_reclaim+0x2a4/0x340
-> [   21.145056]  reclaim_store+0x3c/0x60
-> [   21.145216]  dev_attr_store+0x20/0x40
-> [   21.145585]  sysfs_kf_write+0x84/0xa8
-> [   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
-> [   21.145994]  vfs_write+0x2b8/0x368
-> [   21.146119]  ksys_write+0x70/0x110
-> [   21.146240]  __arm64_sys_write+0x24/0x38
-> [   21.146380]  invoke_syscall+0x50/0x120
-> [   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
-> [   21.146679]  do_el0_svc+0x28/0x40
-> [   21.146798]  el0_svc+0x34/0x110
-> [   21.146926]  el0t_64_sync_handler+0xa0/0xe8
-> [   21.147074]  el0t_64_sync+0x198/0x1a0
-> [   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
-> [   21.147440] ---[ end trace 0000000000000000 ]---
-> 
-> 
-> #define _GNU_SOURCE
-> #include <stdio.h>
-> #include <unistd.h>
-> #include <stdlib.h>
-> #include <sys/mman.h>
-> #include <string.h>
-> #include <sys/wait.h>
-> #include <sched.h>
-> #include <fcntl.h>
-> 
-> void write_to_reclaim() {
->     const char *path = "/sys/devices/system/node/node0/reclaim";
->     const char *value = "409600000000";
->     int fd = open(path, O_WRONLY);
->     if (fd == -1) {
->         perror("open");
->         exit(EXIT_FAILURE);
->     }
-> 
->     if (write(fd, value, sizeof("409600000000") - 1) == -1) {
->         perror("write");
->         close(fd);
->         exit(EXIT_FAILURE);
->     }
-> 
->     printf("Successfully wrote %s to %s\n", value, path);
->     close(fd);
-> }
-> 
-> int main()
-> {
-> 	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
-> 			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> 	if ((unsigned long)ptr != (1UL << 30)) {
-> 		perror("mmap");
-> 		return 1;
-> 	}
-> 	
-> 	/* a 64K folio gets faulted in */
-> 	memset(ptr, 0, 1UL << 16);
-> 
-> 	/* 32K half will not be shared into child */
-> 	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
-> 		perror("madvise madv dontfork");
-> 		return 1;
-> 	}
-> 
-> 	pid_t pid = fork();
-> 
-> 	if (pid < 0) {
-> 		perror("fork");
-> 		return 1;
-> 	} else if (pid == 0) {
-> 		sleep(15);
-> 	} else {
-> 		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
-> 		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
-> 			perror("madvise madv fork");
-> 			return 1;
-> 		}
-> 		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
-> 			perror("madvise madv free");
-> 			return 1;
-> 		}
-> 
-> 		/* dirty the large folio */
-> 		(*ptr) += 10;
-> 
-> 		write_to_reclaim();
-> 		// sleep(10);
-> 		waitpid(pid, NULL, 0);
-> 
-> 	}
-> }
-> 
-> Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-> Cc: stable <stable@kernel.org>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
-> Patch applies on mm-unstable (9af4957ef127).
-> 
-> v2->v3:
->  - Don't special case for anon folios
-> 
-> v1->v2:
->  - Just respect the writable bit instead of hacking in a pte_wrprotect() in
->    failure path
->  - Also handle soft-dirty bit
-> 
->  mm/rmap.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index bff8f222004e4..5a3e408e3f179 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->  	if (userfaultfd_wp(vma))
->  		return 1;
->  
-> -	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-> +	/*
-> +	 * If unmap fails, we need to restore the ptes. To avoid accidentally
-> +	 * upgrading write permissions for ptes that were not originally
-> +	 * writable, and to avoid losing the soft-dirty bit, use the
-> +	 * appropriate FPB flags.
-> +	 */
-> +	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
-> +				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->  }
->  
->  /*
-
+								Honza
 
