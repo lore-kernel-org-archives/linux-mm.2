@@ -4,176 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE92E67A6B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 05:53:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 543F4E67A6B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC9176B0005; Tue,  3 Mar 2026 00:53:01 -0500 (EST)
+	id 7B0D66B0005; Tue,  3 Mar 2026 01:04:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4CA26B0088; Tue,  3 Mar 2026 00:53:01 -0500 (EST)
+	id 75EB56B0088; Tue,  3 Mar 2026 01:04:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903FE6B0089; Tue,  3 Mar 2026 00:53:01 -0500 (EST)
+	id 660E76B0089; Tue,  3 Mar 2026 01:04:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C98C6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 00:53:01 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6D6A13B4DA
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:53:00 +0000 (UTC)
-X-FDA: 84503683320.28.8D2A7DF
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011004.outbound.protection.outlook.com [40.93.194.4])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0B8721C0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 05:52:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FFGoXnAY;
-	spf=pass (imf21.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.194.4 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772517178;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 51E7F6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:04:05 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E557214064C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:04:04 +0000 (UTC)
+X-FDA: 84503711208.26.26D9D1C
+Received: from out199-9.us.a.mail.aliyun.com (out199-9.us.a.mail.aliyun.com [47.90.199.9])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 90BC514000A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:03:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IcApRh75;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.9 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772517843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IlPR2Y3LYT3gIVwOXi1Mmn2FE4cpLAI87aqBElzWKNo=;
-	b=e0GHAD0CTG8c/FpemkgB39Wb+jFgD2x8mgQ/tj7shIIrXC22qayOIwmpZ1biCqkDHt0Ugf
-	okEIgSH3ieSZV0ub61nP33e54NMs4F+fj12p92MrrED/N7d02GaC5Z+3cvSQrhbcV9xsPI
-	Kqyc5bIr731543Tvye8/i+bIKu+ERK4=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FFGoXnAY;
-	spf=pass (imf21.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.194.4 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772517178; a=rsa-sha256;
-	cv=pass;
-	b=WOZJhfzZvSYpq/DtxF4SIxizd9sSU7OVCVsl1QNhWm/3eEYoc1MPiHUjNC04lfflMgfF47
-	CD72KUWaIKFXVqRTrZaaZRnhSUaJvLj/ePQzj1G4fTbMwEa2iCWPNXXtbKwawmmLSrpxk8
-	Vhl2qPnn/UdTGw/nDrWEBQAtoQ7SxfM=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HGTPGdS+Jk9fHWvr4ri3J6qkmW6iLzLyX/Fb+uwnnCHc04fs2oowuFKBdgyZXnX+p3r0WbLfhzXPzwInYNowQvNRQxNMIww24495ojcHaeXV4QyQgbn6ZqeN1q/BImTdjAO2R+G1ohZGRXBzruGHxasD2TAxLPKdIrwE8HfIHsVvx9qKdc6BU7MbCCz0M+umChMwNNHZMbDLXKX6p0KtDWeeIPB4Q1ytn+viAxy4YBBjCOAJdmEb+wm0OtP5LDB+SVVt1fxMlcjSpfEXmjZZitK9qe80bEHMZtH2DMnXS1SNZWHfhbuWb3triFLfwfXFHFqdoR2P0815HFMG5mQqfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IlPR2Y3LYT3gIVwOXi1Mmn2FE4cpLAI87aqBElzWKNo=;
- b=cqJbnsNQrCeKjoV9RVGRpe5WGiI+Nk28hnEQPaEpndNs47QudZDUA461dPZSUSVvUkoYXqWkIM17W/dBPbve1OfuuNkD3AXzmDiEQTGKAgz6yChFUpLw4BbBct+RTYTtQCDlZG4nQ//Cxjkxbxooo3iLorMTu+prYalQxfuDAZTINCEqfa2WOlWOJWGsc/cKbkf/+H7hmoiSlcATvxknV8HCPnP89NtWIk4x0h3IOJr83CahPOB7RXCPiAULcmDQCtuWeDfLmQUHt7CwEq5TDgvICiI90bGf0cACdAZYPHythdz0muvgijutNINqA5eZJxrx/vOigRHVTndNpr5WCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IlPR2Y3LYT3gIVwOXi1Mmn2FE4cpLAI87aqBElzWKNo=;
- b=FFGoXnAY5qD0aH7hBcvxxqP6Z/IZ5myGQlI0rqvI6X0rSQAzDS/8B7x0j1Qo5AwGHq4QrH1g1w1kJW7Ub2wh6C/Oz80VwDwILd86N9HGk4gE+60Ut7Q7UgFLrE3f0BIyFahT06kObfsBwJyZaHT6cjjP4CtbogjFeB4Ex6sNP1IJYnGRAIayvo2y2tougSPgadu//otuUd6DqBmN73F7DS9ZFjP/md/OeYEXhO7QrU3h2UrGFRZu9m0xj7l9cWdpJqMAXQed33bwCMyzHw/i6mW0eTKvwoHq4naFkydY0Pi83tDetw3d/0aZgzutlFYRS2BFdLCtDL5M5HWgZ9/EKg==
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
- SA0PR12MB4495.namprd12.prod.outlook.com (2603:10b6:806:70::13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.14; Tue, 3 Mar 2026 05:52:54 +0000
-Received: from DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::32dc:be07:3859:b4e3]) by DM4PR12MB9072.namprd12.prod.outlook.com
- ([fe80::32dc:be07:3859:b4e3%6]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 05:52:54 +0000
-Message-ID: <faaa84fd-095e-440b-9922-b4037a67416d@nvidia.com>
-Date: Tue, 3 Mar 2026 16:52:44 +1100
+	bh=LY/fRLCch2WMY1U+LqLFNZMzn9HmzfAceCungi2ykLY=;
+	b=YFzZgcb98lzdx33J9wNBzQVJDdq8/kf3AAagH4KxNKANxRi8OBzyEY1AWRHn/4lp+BDSxV
+	koASxbdx3kiEjOdsgqi3MyX3sSE4Lc6Wv/jdcPQqyJQF+LVVi6VXqCVxEuEOSt9dre6hny
+	3RzmLrLPdFwdf9nhwxeiiAKsqO8WNM0=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IcApRh75;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.9 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772517843; a=rsa-sha256;
+	cv=none;
+	b=KJwvMjODeCB17hzLwXAb8NwwZ9Qu4AwnD0i6Yw83eN3KMOmMOI2uGgvX8E693wPmfrzHMh
+	91ueWOdp7WN9G/MfLsT3tatFF7r4jEul7oYao6bf0m2lQ0Z9cq33aMJyIXDUyUrTDZ6t7w
+	1lTwrCfJXY4Du5G2CKuXKsMRmU5oQxc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772517817; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=LY/fRLCch2WMY1U+LqLFNZMzn9HmzfAceCungi2ykLY=;
+	b=IcApRh75pmveT9hR3YtXgZH5noh1PCV3+X01sDgKaq1oUQQsQS5kNvQq8hf9yucKZ75UgTg2ayO7tvtTkAHBgJRFY6JHTni07zn02N3BW0Ix8t4Ofqpqpn5u+bQKfB5BuNk5yYWW03Cgvy2KFhghb5lwkBZRt6SXh+lluRh1WFM=
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-8iWyn_1772517815 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 03 Mar 2026 14:03:36 +0800
+Message-ID: <3701c315-b19c-4c87-aff3-cc76e1009a43@linux.alibaba.com>
+Date: Tue, 3 Mar 2026 14:03:35 +0800
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 01/13] mm/migrate_device: Introduce
- migrate_pfn_from_page() helper
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
- lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
- rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
- willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
- intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
- jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- ying.huang@linux.alibaba.com
-References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-2-jniethe@nvidia.com>
- <9ee22635-a219-47bb-a397-bc4e141b408d@kernel.org>
- <cf547dbb-af45-49d0-87a0-5267dedf0470@nvidia.com>
- <5182bb7d-f7cf-4b8e-8320-996c52fe24d8@kernel.org>
-Content-Language: en-US
-From: Jordan Niethe <jniethe@nvidia.com>
-In-Reply-To: <5182bb7d-f7cf-4b8e-8320-996c52fe24d8@kernel.org>
+Subject: Re: [PATCH v2 5/6] mm: support batched checking of the young flag for
+ MGLRU
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1772185080.git.baolin.wang@linux.alibaba.com>
+ <f84233f95f209d59c3bc9c72a757af09337f0d40.1772185080.git.baolin.wang@linux.alibaba.com>
+ <7f2973f0-0a34-4e4f-8ed6-13c531f77453@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <7f2973f0-0a34-4e4f-8ed6-13c531f77453@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR05CA0081.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::22) To DM4PR12MB9072.namprd12.prod.outlook.com
- (2603:10b6:8:be::6)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|SA0PR12MB4495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d540d63-c5ce-4957-6498-08de78e91ccd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	DMi8qZC6/X5uS+1pRH/Zkse+zGMbtE4k1fHRiZrz/rBbAZWoCzV6Gc4AlY2xI0wpaqFFJgE/hJOjKVSAQ4UrO9OS23Q7bxrj6xzrx1NaJqnCcscMbitSgJyU4IChMo5RLMZ2oHSNldmmlGnDlQo7eXEUWL5O2ms7O2w7KhqITJl+WqHov/m+yhRiSfZF9VNpSHkwGJX1HfPEVIIaGA2UkgS7Wm9fNeWJnXJoqk7DNzUFE3TiyxZR3QX1FDFfGXhnH+cnXfwu280bKYsc8zY/6qRkOBC4n2R53pa9nleWRl41j+HoQ48UMh6Ybm9L9GfHpalBPmD94vyVV/5y+mg40CHwOmkUUaEEm1czqobX6WzG5k2kTil7znQxe3decocjq8NlEeAh4vuPL6cVpC6/KHuASlVHFWZ0aCPhOfORmtlPI8PF90QWuVjyn4yDg3qFSJ9X96aGtNohqRKS4lr+q2QGoy/xonWHPriUzc57AAVx+AaCOUWW1g33/Xpub5FQ1DJFyokWQmyxSN1Ue1PCEYWYJ8O6+DmUJcd9ZBc5Ub8YbMcBCd3EcJOOvruLjqnh7HWYZLDNRKYNrI8monvyjJzD/LLs3Dwbb1EQXquEuAmShENnKP34Ua3z/nVq/0NB3XeaNJr0tHNXg6fzBxB3W6fW2+qgkebETR+8w6TfhpPUAXsxWabvrU439/Y3s1NI6HRjC4c5JdWsSvqekF/8aRYLhpHiypopmugAXAqrO/w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bXh2T3J6OER5dHNwcUU1V1p6WFNxQjBzUnQranc2UmY3dnVXMi9Ga2lqdzQy?=
- =?utf-8?B?aDNVSnYyV0Q2WEZ1U3crUmQwRklDVmZDWGN3Qnd5cXlOaXFPMXAxdmxpTWlY?=
- =?utf-8?B?VTJ6bGpxcnNXQW93aWl3YlczZDVtM0k5UktLSWtoN2pzb0pTQzQ3Nm5sRUNG?=
- =?utf-8?B?MEhmWnJRRTd0Y0liR0Z6UXdmZTU2c3hUdnlLV05SR0g2dWhkVUNyVEJsTTRH?=
- =?utf-8?B?ZTh1UGpVN0NMTW53L2t1YjNaaXhmUTNyVzF6L3lPRVBzYlYvd1N6dDJTK2p5?=
- =?utf-8?B?aTFlQmgyUHkyR3Eyb0NFRllzUTRUb0VQOWtaeUNsblNoMWNYL3hvMks2UG1O?=
- =?utf-8?B?MDdSSVdpRFBScW1oOTJkY2JDYnFuL3JlakxyYTVzZEJYdjNlM0JXaDJhTVBG?=
- =?utf-8?B?NVVFNWI5WVY5SnBSYzNUTzFheUlLOXJrMFhEalhUVHpwMkJlWVM3R1ZKL05G?=
- =?utf-8?B?MVlqeUxMTHIzR1pMVG5aZ0NPRDhKTjNQL1Y4Tm41WVdka2NmaE9IOEFGUW8v?=
- =?utf-8?B?UXJyajJpaklZalFWanZvMjhHU0lmZWxlUWdaTFVKT2xySkJTOUVIMFJBTVBv?=
- =?utf-8?B?Uy9MMjZ1ci9oa0JnYjR0bjVLK2pteUJLNXErQkpCMFhQY2tyWllIdk9Zb21l?=
- =?utf-8?B?amR4NHZCRFVUVUhNTUJ3RkFDSTJ2V3pmZnFMdUtPTTdlVVh3N1RNTytLVzFk?=
- =?utf-8?B?bXI3K3dSNEplNzdXZGFFS09LL3UzMHV5OFBBbG9sejJHNXdNbkt1Z1oxZW96?=
- =?utf-8?B?Y3Zrd0RoMW5pbVlGKzBvYXFjaUZ5S0JNRitjOUdSQzlVbUM1WnNJaExENmM1?=
- =?utf-8?B?RjZ0WFprd0FjRGkzWWRwZU9JZU90ZTVrMitKdUljU2xWTWtOaXdLV3YvSHVw?=
- =?utf-8?B?VGF1RzJKcUFkbEVRNzdkbzVZTWxnUXJmblZFWVdTYi95azRBRVpIbk5jV1hG?=
- =?utf-8?B?b2VJcFdHMDQxUnRSb0srRnE1Yk54MnRHOEh5aDFiNml6UXNQTEExWUdzU0dH?=
- =?utf-8?B?cVVyKzNuejRUOTJkelN4QWJCSkRtZzZSZmdySzJYSHhDZ2hkc1lLZXNsTkVu?=
- =?utf-8?B?NWN3TUQxY0VlM2k5TEJ4WGxzdHF0NTVaa0hqSzN3MCszZC9UTHlWdFpPTDh5?=
- =?utf-8?B?Q1B5dmxwOTg3djBvTFNGS3UyeCswQnBJNXMyYzlYTHFHMDVPdTduRTRkNUlr?=
- =?utf-8?B?VzBqWWlsWnpyOEVHVDdxbDNHcUZrdFNqdkQwZGF0ZGpoaHp5bVZYYkxUSVF2?=
- =?utf-8?B?ZXJJUmduNzRYeXJlZWhuTmpkYzRBWTcxVkZEOXdqR3VIeERwbXViekJmMGdD?=
- =?utf-8?B?cFFzc2tJYUM3bnhqakt2UkplWlBLMXBDa0ZGbUZQcklhQnl2NkgxblZKbE55?=
- =?utf-8?B?bnBuWFpoOUc4cDgxbDdZem8yTUNEdmZzeFlkRVRNcTVFRkVLUG9HVUZsVXEx?=
- =?utf-8?B?cVNtNnRVVmFEY05mRnpxVGZKTU5aMmJXSVlqWi9Md09HMlRIWmhsbFRnVEpi?=
- =?utf-8?B?ZGpzZ2U3enJWREhCK1V6dWt1QzJ5ckhudFRKS0w0Q05heGJZRGlmQ3FDdmp3?=
- =?utf-8?B?VjUrSEE1RzRXR0M3amJibGh3ZXNOS0FiOW05b25weWxhMEhoVkh1T21aenFr?=
- =?utf-8?B?a3huc1NVMVZkdFErTWdHbGJld2pRZmtna05vVm5hVEhXOGN5K25pVE9mL0Nn?=
- =?utf-8?B?L0lOLzdaTTh2aDNPZUtGYVozd1dEWGpORW9BcHBGdWlUcURYU0lNc0VEekNx?=
- =?utf-8?B?N3J2WisydDdaWS9xOVNJWUZMNUF0anlKWFFzNU8yWnNGR2FxcHBTRTF5WVdu?=
- =?utf-8?B?VndnY3lHZitibm1VVEpNOVpBalVOb2V5ZmFqNU51aWhzUjd6VmZZaXRHajVs?=
- =?utf-8?B?V2c1L3NtdlhFNFMwOHA5cXZFNzAwTzYvNVpiUEhvdWtEKzd2TVNjZ0oxVFlD?=
- =?utf-8?B?MXlCWUtOZ1pES2FFQnFxS1lmaXE5cG5ZWkJaWHpzbGNnMWlDN2pqYit2MmZR?=
- =?utf-8?B?UDhoS0VpWkpxR04zdmNva1pKLzNoa0JhOEZBRzJzc1pWMGJqUVQ3V3RROWRO?=
- =?utf-8?B?Y2IwaXo2dXBlWDlyS0NLcjVrd1FFODVHY3o0OFpiRzhBeUFpTjlxY2N6ekZS?=
- =?utf-8?B?clRnQlRrR2RLMktGNWx1U1dxZUJ5anpRSmJWYm90UlVoTVAvWEd6YkRoZWN0?=
- =?utf-8?B?d1BJZkkvVTRSSUp2RncrNmZZcmFOTzdteEtYWGx6bzkzRXV4WnpSMzZuNE81?=
- =?utf-8?B?R1pVbGptLzIvQ3pydXcyd3JZNDcwSUQ4bDBGdlBBWG8vcEJWZitucWdoOHFI?=
- =?utf-8?B?ZE5YREpiT3ViaWpWZHlpaEVyUy9TRWdFNHVCalN1VC9QN3BMZ0N3Zz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d540d63-c5ce-4957-6498-08de78e91ccd
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 05:52:54.0975
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f+qw/itqKyayInlKbDzIvFSr3qJADsJVPBZEcJEmWO4MoMaBgQMr+fJaNKQigNN4wHYZusq62nfjvre66GMWfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4495
+X-Rspamd-Queue-Id: 90BC514000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6k6qsorcufzpsaiufjuhybp5mjdq5t9m
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B8721C0005
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 4sgtwouw9ybxi6oh5pnxh9i34ndsiwjs
-X-HE-Tag: 1772517177-675646
-X-HE-Meta: U2FsdGVkX1+fS+hLtk9o5mUuSlQLMRfVdnc1rjRDV4C/n+ovXuZaEOY4GDNOph4j3zBZvvJNcxqYYcsZjSxLxB6kwD1NdaRLip8wFCA0/Bshq49NWG/7Q5jhb/pgtZEtghAToOSIUnMtvFsWAx2EgYrf+gI7a2Ot/4yzd+kLIXjIWT+c21CxeE6p4aF5V86UsZDcFjBMeVuoaqNo1RZrV6x2uggTuJmNBfd94E1LCPblpR7I1wbXRJj1+t9wnxe3mo4xfAn2PyEJpEjSLIk+cNd82eVWuyEP0wC+RKNYWrfQYx0x+ptehkt20Cx5nK+VicvLXpnl9PLaIGm5WgFuACLE4CHkfayz/irGZnpRcT6BdQMgSwogiWve2AVsm7EiZjmw06kR9C146Q9g10uQorMnhTPK27sax3yosw8ViHE0hYaIJVG1jvygrPoJG7B41DXeIAmWzJJSBl/vXcTbBAUEjgRMvDt8Wby6nqAlYCqU5z+DxxGrvFpL7zarZ+cIBaVQFSV4sj/OLTj1m+mHvAd2vCvvK1VD5/yHj/oMnYbNLBxHvStBZudig7fOFVNvgG4DBS1Bj1WmfN433+PxhhRip1AByyWj/QmdIqFZ8Tp/aK6BNFsHnJIma0JHVlX9tlqvzbm8C/wXKZSx6FXkeYm5E9qHh+jK1zF+QOoHv6ttQbvmVBO9UpdWGRY7BHp8PeENEs6iDvoSTzuVoo9RWhW0HPK85hRLYd35UVQwtPgNk/k6VCUxeocSRA+9mosGQvzF97Z4dosv0EwPNXh+oPvoaKl3edprRUJ5qDB4SkfdbJALlz6acwrNIuDi4Y/p+dYQqRYb81K+VJ3OyZZvAdInbQAldk+BMOyw/fs8pi1KwqGQN/RJRXXg+k6uc7mhLfFEa0i0hAaH2JEYtBQAlbzSbmjX+gWaCAHWF+PuSJNCQdNArIwU2rw0Hl7XM+4pdnt/fm6GdnKNJT0ds/6
- gg+NCpIV
- TyfYv5XqBBPBtvmchcPwPPbEhk01Y4InxstHIy9l23mH0UVjmk5dClJsszZ8oEvo1p36WDCj3Bqs+WWC1R0FEPbh6IiK8pD3FkcwPQyVojGczZmUjIl8BijWGBYz9h1xHIC3l4RBHe4YhwwgV0UjPVFVL1ZYY0Rkir2/Cw7YPfJthDIobpy3nNzOfXYDys33Gjh0KHBYFM5aTmfMm97hsazVIfdf6+wmbOCJSg7Of1lPg88qFuLVztwmh+ADEMDy4w6aCDsrYL5gaXbx1jI0Tlz+qLPLOLEgkQc3mKSDPzpSuVU8oOq50vDSC5cGlTZwfTHTFRxJLFhRiHvbuAMg0QuGDLz5GTQAJns6gvyhdUB8Un5mKXUMDg844aFK33ntCtcXX4F6//r+VVVQO3d2AOjnEYtlwG7r5mtq/oK6CG77Rs+ByKWd3Y/HokBJTaonQcgd0GI/KYSmngN+eVG/wwMxHt2ZVg3852fA0l4maNrG1Q3W42KyPrKNRIPk3Ir/0NeWcZKeRyHUOeQpJ6dDD89S4v4rd9HZ9IplWzbEgkn9hwzQ=
+X-HE-Tag: 1772517838-987364
+X-HE-Meta: U2FsdGVkX1/ObA6f8yhqpXxJrxyC7iscpxWFqRaEn57HoFazvWDMvMfVMReAlAZie5aiH2MQUQI1BBdFhdS8ICG54FX/vpnDLFPnJbGNaRoE58LdXhuPy+TakqepYRnW0T7DvK7iUp6EvyhQx74ytYG8xSg8yOLgYd9AmOvvEkp/LKechI7masuo6TyiwnElp7LPnq8r2NaoxmtwnHNMACaNXeskxFX8mFF2+lryltNoADgRBascj5A7wMBRxbQ1IGiRfguzwcyjzU1DkIQzbLHSA0qWNaS7zpHDUc7iZ2m0Gwrwk8WnjpPgiUBWhlcRALxSHVELdkJwbzoHwHMJF8qk83Kl3Qa8zpAoThuTE5vMu3GjVWXKBn51EqmLCujK2pWBKCNBELcO4dlDc2L5FRkwm1Kj5wHdAHvI+Idst9Cx6DBNE5/HwN5GMG7g4IJ8rJzVfZRoQr5G9lMIPuD5vgWTDDjAJexTSpIIntyHlSYlmN6BQgwUp0pKyLZLw2/q65rXgCBdCNQiBXb+e6IIvO2poFsYwKmAc6xTiOga2XqRuw1cI5uJ8lkcuTTGt6n5Ph0p9ZcEbQ3RJ6XrMBbKRHI5c3GjKpuBUAy2I6lCqe5gxil2kTPFih7+rvADyA0ZTRujiObrui+HFckC/ZOA4JKWGUxbkc5DSFgme2x4+Rtf++MkE7uRCXXak8k/rFYKhTnzzVHlj1iaFviwjQQETathcZ9Tf6ylbG/vNYJQxPVzCW/NNQ1o53jS6hXagv5TotntWHhEMvLksvg2Mb39ZPlqE4bhLgoXBRN3ockAnAh2FSTD1vQobXhhzdyX2OYTovnG1k1npf4KeVDKZlI4+f+1+MA3gUlgqLzO0N1zpO/ZQg6PAO6XfiCIs62mfLkQXsqyv4BTOxaEnkVVx6FBhYYEjcny3K3YR9s7HbabifpuLAn3uBGSHMPUnYW1YZiMXFwmRhXAtM9LhtZGWTe
+ W0vRebiH
+ Kdk5ruL8tbORXeQhnthxJvKuUgA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,75 +94,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
 
-On 2/3/26 20:22, David Hildenbrand (Arm) wrote:
-> On 3/2/26 00:38, Jordan Niethe wrote:
->> Hi,
+
+On 3/2/26 5:57 PM, David Hildenbrand (Arm) wrote:
+> On 2/27/26 10:44, Baolin Wang wrote:
+>> Use the batched helper test_and_clear_young_ptes_notify() to check and clear
+>> the young flag to improve the performance during large folio reclamation when
+>> MGLRU is enabled.
 >>
->> On 28/2/26 08:11, David Hildenbrand (Arm) wrote:
->>> On 2/2/26 12:36, Jordan Niethe wrote:
->>>> To create a migrate entry from a given struct page, that page is first
->>>> converted to its pfn, before passing the pfn to migrate_pfn().
->>>>
->>>> A future change will remove device private pages from the physical
->>>> address space. This will mean that device private pages no longer have a
->>>> pfn and must be handled separately.
->>>>
->>>> Prepare for this with a new helper:
->>>>
->>>>       - migrate_pfn_from_page()
->>>>
->>>> This helper takes a struct page as parameter instead of a pfn. This will
->>>> allow more flexibility for handling the mpfn differently for device
->>>> private pages.
->>>>
->>>> Reviewed-by: Balbir Singh <balbirs@nvidia.com>
->>>> Acked-by: Felix Kuehling <felix.kuehling@amd.com>
->>>> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
->>>> ---
->>>
->>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Meanwhile, we can also support batched checking the young and dirty flag
+>> when MGLRU walks the mm's pagetable to update the folios' generation
+>> counter. Since MGLRU also checks the PTE dirty bit, use folio_pte_batch_flags()
+>> with FPB_MERGE_YOUNG_DIRTY set to detect batches of PTEs for a large folio.
+>>
+>> Then we can remove the ptep_test_and_clear_young_notify() since it has
+>> no users now.
+>>
+>> Note that we also update the 'young' counter and 'mm_stats[MM_LEAF_YOUNG]' counter
+>> with the batched count in the lru_gen_look_around() and walk_pte_range(). However,
+>> the batched operations may inflate these two counters, because in a large folio not
+>> all PTEs may have been accessed. (Additionally, tracking how many PTEs have been
+>> accessed within a large folio is not very meaningful, since the mm core actually
+>> tracks access/dirty on a per-folio basis, not per page). The impact analysis is as
+>> follows:
+>>
+>> 1. The 'mm_stats[MM_LEAF_YOUNG]' counter has no functional impact and is mainly for
+>> debugging.
+>>
+>> 2. The 'young' counter is used to decide whether to place the current PMD entry into the
+>> bloom filters by suitable_to_scan() (so that next time we can check whether it has been
+>> accessed again), which may set the hash bit in the bloom filters for a PMD entry that
+>> hasn’t seen much access. However, bloom filters inherently allow some error, so this
+>> effect appears negligible.
 > 
-> I'll go through he remainder of the patchset this week.
-
-Much appreciated.
-
 > 
-> While skimming over patch #2, I was wondering whether
-> "page_to_migration_pfn()" would better fit "migration_pfn_to_page".
+> Doesn't checkpatch complain about long lines in the patch description?
 
-I guess you were thinking about migration_pfn_/from/_page() rather than
-"migration_pfn_to_page()"? Renaming it to page_to_migration_pfn() would be fine.
+Will update the commit message.
 
+>> Reviewed-by: Rik van Riel <riel@surriel.com>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
 > 
-> ... and I was wondering why that code deals with pages instead of folios.
-
+> ...
 > 
-> E.g.,
+>> index a5f0a264ad56..a1b3967afe41 100644
+>> --- a/mm/internal.h
+>> +++ b/mm/internal.h
+>> @@ -1843,10 +1843,4 @@ static inline int pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
+>>   
+>>   #endif /* CONFIG_MMU_NOTIFIER */
+>>   
+>> -static inline int ptep_test_and_clear_young_notify(struct vm_area_struct *vma,
+>> -		unsigned long addr, pte_t *ptep)
+>> -{
+>> -	return test_and_clear_young_ptes_notify(vma, addr, ptep, 1);
+>> -}
+>> -
+>>   #endif	/* __MM_INTERNAL_H */
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 11cc6171344f..beb423f3e8ec 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -958,25 +958,21 @@ static bool folio_referenced_one(struct folio *folio,
+>>   			return false;
+>>   		}
+>>   
+>> +		if (pvmw.pte && folio_test_large(folio)) {
+>> +			const unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+>> +			const unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
+>> +			pte_t pteval = ptep_get(pvmw.pte);
+>> +
+>> +			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
+>> +			ptes += nr;
 > 
-> 	page = folio_page(folio, 0);
-> 	mpfn[i] = migrate_pfn_from_page(page);
+> Could we move that "ptes += nr;" just before the "pra->mapcount -= nr;"?
 > 
-> Should just be
+> Would make the whole thing look less weird (only incrementing "ptes" with large folios).
+
+OK. Sounds reasonable.
+
+>> +		}
+>> +
+>>   		if (lru_gen_enabled() && pvmw.pte) {
+>> -			if (lru_gen_look_around(&pvmw))
+>> +			if (lru_gen_look_around(&pvmw, nr))
+>>   				referenced++;
+>>   		} else if (pvmw.pte) {
+>> -			if (folio_test_large(folio)) {
+>> -				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
+>> -				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
+>> -				pte_t pteval = ptep_get(pvmw.pte);
+>> -
+>> -				nr = folio_pte_batch(folio, pvmw.pte,
+>> -						     pteval, max_nr);
+>> -			}
+>> -
+>> -			ptes += nr;
+>>   			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
+>>   				referenced++;
+>> -			/* Skip the batched PTEs */
+>> -			pvmw.pte += nr - 1;
+>> -			pvmw.address += (nr - 1) * PAGE_SIZE;
+>>   		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>>   			if (pmdp_clear_flush_young_notify(vma, address,
+>>   						pvmw.pmd))
+>> @@ -995,6 +991,10 @@ static bool folio_referenced_one(struct folio *folio,
+>>   			page_vma_mapped_walk_done(&pvmw);
+>>   			break;
+>>   		}
+>> +
+>> +		/* Skip the batched PTEs */
+>> +		pvmw.pte += nr - 1;
+>> +		pvmw.address += (nr - 1) * PAGE_SIZE;
+>>   	}
+>>   
+>>   	if (referenced)
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 0a5622420987..7457b3c06fa3 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3474,6 +3474,7 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>>   	struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+>>   	DEFINE_MAX_SEQ(walk->lruvec);
+>>   	int gen = lru_gen_from_seq(max_seq);
+>> +	unsigned int nr;
+>>   	pmd_t pmdval;
+>>   
+>>   	pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
+>> @@ -3492,11 +3493,13 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>>   
+>>   	lazy_mmu_mode_enable();
+>>   restart:
+>> -	for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
+>> +	for (i = pte_index(start), addr = start; addr != end; i += nr, addr += nr * PAGE_SIZE) {
+>>   		unsigned long pfn;
+>>   		struct folio *folio;
+>> -		pte_t ptent = ptep_get(pte + i);
+>> +		pte_t *cur_pte = pte + i;
+>> +		pte_t ptent = ptep_get(cur_pte);
+>>   
+>> +		nr = 1;
 > 
-> 	mpfn[i] = folio_to_migration_pfn(folio);
 > 
-> Right?
-
-This patch is quite limited, essentially just converts usages of
-migrate_pfn(page_to_pfn()) to migration_pfn_from_page().  However, I
-agree, there could be scope for moving some of those usages to folios.
-
-Was that example from drm_pagemap_migrate_populate_ram_pfn()?  There
-'page' goes on to be used elsewhere in the function so we'd need some
-further refactoring to fully benefit.
-
-I see migrate_vma_collect_huge_pmd() as a candidate for a
-folio_to_migration_pfn() function too.
-
-Thanks,
-Jordan.
+> Looking at this again, we should get rid of "i" completely and instead
+> * rename pte to start_pte
+> * Add a new pte, which we increment in the loop
 > 
+> So we end up with something like
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 54cf4924d223..150cbb2253b9 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3486,9 +3486,8 @@ static void walk_update_folio(struct lru_gen_mm_walk *walk, struct folio *folio,
+>   static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>                             struct mm_walk *args)
+>   {
+> -       int i;
+>          bool dirty;
+> -       pte_t *pte;
+> +       pte_t *start_pte, pte;
+>          spinlock_t *ptl;
+>          unsigned long addr;
+>          int total = 0;
+> @@ -3499,29 +3498,31 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>          struct pglist_data *pgdat = lruvec_pgdat(walk->lruvec);
+>          DEFINE_MAX_SEQ(walk->lruvec);
+>          int gen = lru_gen_from_seq(max_seq);
+> +       unsigned int nr;
+>          pmd_t pmdval;
+>   
+> -       pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
+> -       if (!pte)
+> +       start_pte = pte_offset_map_rw_nolock(args->mm, pmd, start & PMD_MASK, &pmdval, &ptl);
+> +       if (!start_pte)
+>                  return false;
+>   
+>          if (!spin_trylock(ptl)) {
+> -               pte_unmap(pte);
+> +               pte_unmap(start_pte);
+>                  return true;
+>          }
+>   
+>          if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+> -               pte_unmap_unlock(pte, ptl);
+> +               pte_unmap_unlock(start_pte, ptl);
+>                  return false;
+>          }
+>   
+>          lazy_mmu_mode_enable();
+>   restart:
+> -       for (i = pte_index(start), addr = start; addr != end; i++, addr += PAGE_SIZE) {
+> +       for (addr = start, pte = start_pte; addr != end; addr += nr * PAGE_SIZE, pte += nr) {
+>                  unsigned long pfn;
+>                  struct folio *folio;
+> -               pte_t ptent = ptep_get(pte + i);
+> +               pte_t ptent = ptep_get(pte);
+>   
+> +               nr = 1;
+>                  total++;
+>                  walk->mm_stats[MM_LEAF_TOTAL]++;
+>   
+> @@ -3533,7 +3534,16 @@ static bool walk_pte_range(pmd_t *pmd, unsigned long start, unsigned long end,
+>                  if (!folio)
+>                          continue;
 
+Thanks for the code. I considered simplifying the logic this way, but 
+this logic would be incorrect. Because the 'start' can be updated by the 
+get_next_vma() below, when we goto restart, we will get a new 'i' value 
+by 'pte_index(start)', so I kept the 'i' variable.
+
+>>   	walk_update_folio(walk, last, gen, dirty);
+>> @@ -4166,7 +4178,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
+>>    * the PTE table to the Bloom filter. This forms a feedback loop between the
+>>    * eviction and the aging.
+>>    */
+>> -bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>> +bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw, unsigned int nr)
+>>   {
+>>   	int i;
+>>   	bool dirty;
+>> @@ -4184,12 +4196,13 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>   	struct lruvec *lruvec;
+>>   	struct lru_gen_mm_state *mm_state;
+>>   	unsigned long max_seq;
+>> +	pte_t *cur_pte;
+>>   	int gen;
+>>   
+>>   	lockdep_assert_held(pvmw->ptl);
+>>   	VM_WARN_ON_ONCE_FOLIO(folio_test_lru(folio), folio);
+>>   
+>> -	if (!ptep_test_and_clear_young_notify(vma, addr, pte))
+>> +	if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
+>>   		return false;
+>>   
+>>   	if (spin_is_contended(pvmw->ptl))
+>> @@ -4229,10 +4242,12 @@ bool lru_gen_look_around(struct page_vma_mapped_walk *pvmw)
+>>   
+>>   	pte -= (addr - start) / PAGE_SIZE;
+>>   
+>> -	for (i = 0, addr = start; addr != end; i++, addr += PAGE_SIZE) {
+>> +	for (i = 0, addr = start, cur_pte = pte; addr != end;
+>> +	     i += nr, cur_pte += nr, addr += nr * PAGE_SIZE) {
+>>   		unsigned long pfn;
+>> -		pte_t ptent = ptep_get(pte + i);
+>> +		pte_t ptent = ptep_get(cur_pte);
+>>   
+>> +		nr = 1;
+> 
+> Can't you just use pte and increment that, right?
+> 
+> "pte" is not used afterwards.
+
+Yes. Will do. Thanks for your comments.
 
