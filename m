@@ -4,83 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D82EC1438
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B22DAEC1447
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 13:35:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A33556B0181; Tue,  3 Mar 2026 07:57:50 -0500 (EST)
+	id A2DFD6B0194; Tue,  3 Mar 2026 08:35:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E0E36B0182; Tue,  3 Mar 2026 07:57:50 -0500 (EST)
+	id 9DB3E6B0195; Tue,  3 Mar 2026 08:35:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C2446B0183; Tue,  3 Mar 2026 07:57:50 -0500 (EST)
+	id 8DD916B0196; Tue,  3 Mar 2026 08:35:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 79AC26B0181
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:57:50 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 059A15685F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:57:50 +0000 (UTC)
-X-FDA: 84504753900.11.E285607
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2BF4F180002
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:57:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=rJYBl+yV;
-	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772542668;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kIb3XKow0Btqlt+PMaDiNSWvQvGqJs93pY6JvvoFo5g=;
-	b=LPJNHzylrJ/cfQV9KggLgh4+oqNqhPAnXkArJw350gvONwzyyh5KRfK9Bire0ZMDLdyLPV
-	382WLzPe0arqcGCC2YngwjRxOX3vCnFDcsAoSICwx4utxI4Um/eELpUNOew2d6YYQecYo4
-	wWcRAib4plekN0bHR4Q5r55zGPrpYB8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772542668; a=rsa-sha256;
-	cv=none;
-	b=ium9/bQRu9MZaGxZN74cs8/H+PuSLB65r9M3a2tLbgaRKhizwDwKHXfkJvNFKnypR5OmRv
-	AMg+nAGlzt/Kbi0zhDASDIELmCSCQRMEOSvBfrUVIFxGkwnmI8ga0vOCNF8GDzb5oR/n14
-	XdQveHMHMHhiHiwVyt0u3u43qOuD6g0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=rJYBl+yV;
-	spf=pass (imf06.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 725EFB30F5;
-	Tue, 03 Mar 2026 12:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772542666;
-	bh=kIb3XKow0Btqlt+PMaDiNSWvQvGqJs93pY6JvvoFo5g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=rJYBl+yVoN1GXIomdl1TvEw4wtVbdCklbsEo3ffV2l7V0/8vfIFuFTpUaDU5w/pZU
-	 IS+jW6l/fQDOm7o0wMBvqs7mzKfbXodWWSFfxm42ZCw5bMdmSgXuMqZ1LkhnN6j3JC
-	 WitFR8/yUIDe9bPUKkzFX+YdJbYXAqSAgcIjCcwo=
-Date: Tue, 3 Mar 2026 12:57:42 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Maninder Singh <maninder1.s@samsung.com>
-Cc: mhocko@suse.com, rientjes@google.com, shakeel.butt@linux.dev,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm/oom_kill.c: simpilfy rcu call with guard(rcu)
-Message-ID: <aabaxkb_xpUMab0a@shell.ilvokhin.com>
-References: <CGME20260303102608epcas5p159cd0ad7dfd939c4a67fab3c7ecd7bfd@epcas5p1.samsung.com>
- <20260303102600.105255-1-maninder1.s@samsung.com>
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 798176B0194
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:35:00 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8A7A1A0176
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:34:59 +0000 (UTC)
+X-FDA: 84504847518.18.946C82A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B640380013
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:34:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZP8bR6GR;
+	spf=pass (imf30.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772544890; x=1804080890;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1GaiZTuDfVhGhx6tbOxiTmG3pWXdz7+ENfgkY3MPElM=;
+  b=ZP8bR6GREUFfVsahNtJTy7EJ8s9gokYfCa2KQ+M9YYqw/WzQf+NF4jwp
+   lyrbqmj1sgmbtodAomJR8AEYLZF/TY1sFVwe5BnLY/hd8DXXF5g5/0Gec
+   N+h/txFBgt2wDKfpG9kqZzOkISo10A0tUN8EhGKjxsWzA3A3h2/LyjwXy
+   LgFCKoySJV92qrnj7xv4HK47QPkys3JAGugKJOcndo3se1iN4JN7RCBaC
+   SpMZsVmBAGeBcW8bLErshX0YoVmka7Vf++b6zm7ZCklomci+vbUoXvdEe
+   vRgEp2U4NOWPMaP03C9C5Lw3FjoQ+bfV8Qo/kDomHhZH5/LFnlwBhmuA7
+   A==;
+X-CSE-ConnectionGUID: ISEhj/PjTS2UqvKXGrIwuQ==
+X-CSE-MsgGUID: cBbhi3nOTb2JGYN2/M3omg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="76179715"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="76179715"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 05:34:43 -0800
+X-CSE-ConnectionGUID: HGe6hFJdSSOzeCRHBtNHNA==
+X-CSE-MsgGUID: PxND/fVURbyfhiOrm2gSog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="217947861"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.243])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 05:34:38 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Dave Airlie <airlied@gmail.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH v3 0/4] Two-pass MMU interval notifiers
+Date: Tue,  3 Mar 2026 14:34:05 +0100
+Message-ID: <20260303133409.11609-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303102600.105255-1-maninder1.s@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B640380013
+X-Stat-Signature: sxsy4n46trp63rdkkuespf1f147s11du
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2BF4F180002
-X-Stat-Signature: wmgkhrsmy1wkbxh6su5jgrfeid64gkha
-X-HE-Tag: 1772542667-529902
-X-HE-Meta: U2FsdGVkX19OX07CEqkIkwuNScPlhNPp6Af+jfaWispDf2fb2E1e6uZ2f2LcjEsiIWvQ97Ptx+XhH+jo/mm5Y8iO6Kh+nVWuQToAC+iQgqHqZVA36wWta53nnwjZHeOrcT13oeLvxkhhk1q1+WMKO1m3iDdd36cxNUqwXT9NEyygE9Ckpg2oEgXuu87oYpS6vSks69eXT9u9I3R6B1BdsZLnDpkRnHYod4Y5ancp+i9fXYiY+3CqWzVYgIdXDEDSRvKsLaBYfOCrwQspQHiXziTcxy62Ugye0kvNu9gKMjHBrqC94uaJ0VpcqMHaEnraLN9knP5nDOdgqYxVD6INCps3FgPmjiRQIhh8ICWHhwUfM1svCcwJ4agHB6XcR9XstuqTmggk6Hs55QuYjT2WoEZXOja/wPybLle+Yxl71GATz0BNUfQwqRLl7wLvUvaOWPdUVqb5a0KZAG+QiK5Jf7XZRUjqkOu/Y8Og68U1Gk7+2vF75RsARLc4vi3/CWDeNlxs+u4H7KP1bLZEyslyBtdNnpFAb0LU31nWc5pOEIhcTA2ao2+eNbCIdWWHjcUJ30z7iFSTZhIWcQjmvwwYW8ADGbCP28y6QoaUt8J4yLV0t+YYv8vUCvLRGXms2YNm5DTTbYTUAC+jsAWiKBemI+Vxk+wFTRoRlE3ml2woLtfMm/8+ZkBgzbeSbjk6t8gq0FQbqsMgmRbm9X5m7tLcyApwaaNpNiAj3MhVb6TnxPwM7/5CqrRAy6uN3OgNpESXyg/mjJYfcxnsKvSVFA7HsTfgsM5S5PFpDwSXOo6VMGZ00DM3yUm3qsvAYTzXZ6fvo3AduX/hseTLLrjQvXczLT73p6dSkBaxGz2fLhLZoDd21E6Tt5KE/CRDuIWt+idBz0K42xSZZa85X44fwaphsRhZxbJGfC+B8kKqBIoRT8Wa5J8t3kezWW16pfrLBypRJHYjfU4fh1i5ErK+bFu
- X1Al13Xc
- HBbapJeUUKwYC7pAXv2481vW+kCpLAzTN2fAAC0x63yfH6RLLHbuFdkuWypIWQrWUojODvd9nPJKT9kwsKs9fYgd5h16AT/7wJvS2Qvjl07QZdGPMqi1VQ12SBHhcUcQN6VMJezeHN6AuDkQ0jDoaR9QffeSNXuTNVliQCluy1k288mJg4xmI6XNHjq372dTYEbqYeT6fLnYAcYGV5sPjWLc+IbmFe0ySov7Pgs+8Uf5MowSUrrEfB+QGAr2mnNrd7T90gLDlogsl4Qv30yWbJzPiM4u/l/Tkpn5yvzcMFsp7Tj9Xg+OagyebLwTLvonhMF138x9MMULaTEwz4JQI3iqzf7k3koQpz6tOiXOD+rYKmRk=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772544889-63546
+X-HE-Meta: U2FsdGVkX1+Ogk7HvHh7YeIgJvJCXQUJaJSnrSYRRa0noFrucEvnamtNxOzCJhOvpOoBtvPRkUZ6IKUYFMgeGZwTOu05u6WOQKI85umarQgcM5unkSawFTAzaSHM0b94ogb4QsqQogLbMa9pxdvOcdD1Lj2/8ops9EqYUYVT62LpLlGgANPmyT7MzQpei4xe53ocC6RvHBPsQfYatBSww1kutCMpQ0e3o9hnayzBJvWp3H8DglOXqBTSgRMLSD1Ixwshzc6SczYoiiIXMG0UQeJnbqrBrXiSjFG7Y4t8B2NdbOKbGv6CMq6WfvBki2hCZWPb9VHE078fllqZrO4Sx5Gex9+gwpmjVlYOFjq4LvCCWhxgwx5lT2fHJa/yQIgWnYnbafBnpBmUN8cE/w2DNRxcKlPX8EuFa+LAfZqAdmkGG7CD9ZzFfFSsTFfjnCsG2IMBRGHo/hZqZoQZ5r6dnpMrMFYJ0IzL+xT7RBZjECoQ1082h/0tyB7FXIHT+boeI7B/aTGm/94SmhoyFweWFoRxahj6bW5BrFOI4h3FQlA4tp8E0l/Ru1OvfKGm9+HEt3sjV2gLtEw0tdETjE3NU9pLIMgUMJT9tUItrbJZXElvuaCBvLWahLtpNbuKeJcbLJZ6QwV1nvVJmTJRpvVBaqvGgnu8g2JyDzo/5d47yQKpdC0c8U/g2ZzGY2RqOvds5b69U45jun+ytA/gQaJptR7+V6IJiUqDaJZ1qggrxn3FamQ3Z1vLSvtYyBvbvRQYijt5SfW/TH4irLFtFSl5z0PUWwSn7k/sWkDMwxlPFWsgFSYRg5e+uyDOaY+aFysF45UgvEynXAtypdfw0WSuu36sBdETFdiM26PQfGy+VP2DEJvZJ1/U3xjfxNHpgDaO/63l+eFyW80Jb+dj6HxUq6iPiCYtLqqSy2O9R4gDntoBsOR2Bh6Y4z0OUzynivzfzWyn78MPFHLW3oiNpq5
+ miA2vyoZ
+ oM4AGYL+beDumCHC3F2eXdUBLtmyeMCusCDBuoujzutoTx/HxwZ09WOcBz/vo9LIPcWB2GYDntQpYTzVRZElTkM1+F98YwVX7+BUlpJaPG1xwaTCN7WvsfTOBncYZdbz3T50mkZiV6A3Qo0NtVUlx5ZhrtJsIIaUODoxQtwFkkEqFIjDJiaXvnn9+DUlkZ1bqdf6U6vdgFMHCiOPAaEAX07rt0pxcMz/QNT1mgu+DwNkFw0AQ7eVbtXal3wMK1Z6HDy/bYCIke3yA4FVU9Rryn7Dl2UaDKNKkKAJbN9jD3ctH5NzhganXWdo20dMteBFB69Qg+N6LETBTI1/RJaNl1HmPHK4MsX5KqTdhDIg0DOsb5Fd8rIDpBY7szUJMMO/s5bF/tFXkee8UZIQP7iQYys5uSuTkxOmiSsQkoH/gmvhwQGCpswIyuEr2SsbFtX8pvfAiOzReQQx1UpfEdqFqRWNvrseslguRpsOi/IuIwzTTbC7lMgE8oCLpBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,48 +90,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 03:56:00PM +0530, Maninder Singh wrote:
-> guard(rcu)() simplifies code readability and there is
-> no need of extra goto labels.
-> 
-> Thus replacing rcu_read_lock/unlock with guard(rcu)().
-> 
-> Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+GPU use-cases for mmu_interval_notifiers with hmm often involve
+starting a gpu operation and then waiting for it to complete.
+These operations are typically context preemption or TLB flushing.
+    
+With single-pass notifiers per GPU this doesn't scale in
+multi-gpu scenarios. In those scenarios we'd want to first start
+preemption- or TLB flushing on all GPUs and as a second pass wait
+for them to complete.
 
-Reviewed-by: Dmitry Ilvokhin <d@ilvokhin.com>
+This also applies in non-recoverable page-fault scenarios to
+starting a preemption requests on GPUs and waiting for the GPUs 
+to preempt so that system pages they access can be reclaimed.
+    
+One can do this on per-driver basis multiplexing per-driver
+notifiers but that would mean sharing the notifier "user" lock
+across all GPUs and that doesn't scale well either, so adding support
+for two-pass in the core appears like the right choice.
 
-> ---
->  mm/oom_kill.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 5c6c95c169ee..9e3e88c06ead 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -135,19 +135,16 @@ struct task_struct *find_lock_task_mm(struct task_struct *p)
->  {
->  	struct task_struct *t;
->  
-> -	rcu_read_lock();
-> +	guard(rcu)();
->  
->  	for_each_thread(p, t) {
->  		task_lock(t);
->  		if (likely(t->mm))
-> -			goto found;
-> +			return t;
->  		task_unlock(t);
->  	}
-> -	t = NULL;
-> -found:
-> -	rcu_read_unlock();
->  
-> -	return t;
-> +	return NULL;
->  }
->  
->  /*
-> -- 
-> 2.34.1
-> 
+So this series does that, with pach 1 implementing the core support
+and also describes the choices made.
+
+The rest of the patches implements a POC with xeKMD userptr
+invalidation and potential TLB-flushing. A follow-up series
+will extend to drm_gpusvm.
+
+v2 hightlights:
+- Refactor the core mm patch to use the struct
+  mmu_interval_notifier_ops for the invalidate_finish() callback.
+- Rebase on xe driver tlb invalidation changes.
+- Provide an initial implementation for userptr instead of drm_gpusvm.
+  The intent is to handle drm_gpusvm in a follow-up series.
+
+v3:
+- Address review comments from Matt Brost: Code formatting,
+  documentation, additional asserts and removal of
+  unnecessary waits, as specified in each patch.
+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: <dri-devel@lists.freedesktop.org>
+Cc: <linux-mm@kvack.org>
+Cc: <linux-kernel@vger.kernel.org>
+
+Thomas Hellström (4):
+  mm/mmu_notifier: Allow two-pass struct mmu_interval_notifiers
+  drm/xe/userptr: Convert invalidation to two-pass MMU notifier
+  drm/xe: Split TLB invalidation into submit and wait steps
+  drm/xe/userptr: Defer Waiting for TLB invalidation to the second pass
+    if possible
+
+ drivers/gpu/drm/xe/xe_svm.c             |   8 +-
+ drivers/gpu/drm/xe/xe_tlb_inval.c       |  84 +++++++++++++
+ drivers/gpu/drm/xe/xe_tlb_inval.h       |   6 +
+ drivers/gpu/drm/xe/xe_tlb_inval_types.h |  14 +++
+ drivers/gpu/drm/xe/xe_userptr.c         | 155 ++++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_userptr.h         |  31 ++++-
+ drivers/gpu/drm/xe/xe_vm.c              |  99 +++++----------
+ drivers/gpu/drm/xe/xe_vm.h              |   5 +-
+ drivers/gpu/drm/xe/xe_vm_madvise.c      |  10 +-
+ drivers/gpu/drm/xe/xe_vm_types.h        |   1 +
+ include/linux/mmu_notifier.h            |  38 ++++++
+ mm/mmu_notifier.c                       |  65 ++++++++--
+ 12 files changed, 412 insertions(+), 104 deletions(-)
+
+-- 
+2.53.0
+
 
