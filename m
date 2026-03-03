@@ -4,264 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2FDAEC1450
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 13:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95367EC1449
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 13:45:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 562C66B00B4; Tue,  3 Mar 2026 08:43:35 -0500 (EST)
+	id 095236B00A8; Tue,  3 Mar 2026 08:45:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 510C36B00FE; Tue,  3 Mar 2026 08:43:35 -0500 (EST)
+	id 018846B00F0; Tue,  3 Mar 2026 08:45:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 394666B00FF; Tue,  3 Mar 2026 08:43:35 -0500 (EST)
+	id E5D4B6B00F3; Tue,  3 Mar 2026 08:45:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 249F66B00B4
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:43:35 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C01901C120
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:43:34 +0000 (UTC)
-X-FDA: 84504869148.02.810FB36
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 02AF180002
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:43:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lPtWXQNt;
-	spf=pass (imf02.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D21376B00A8
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:45:25 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9127F1BFF6
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:45:25 +0000 (UTC)
+X-FDA: 84504873810.13.2A66C53
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A90A014000D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:45:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NO7o3ebi;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772545413;
+	s=arc-20220608; t=1772545524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TjmiuM+OEwlaZJFhFJESx27NKhtF5NKVQ1B/VbuqFXg=;
-	b=xhhEfqVJ5jaMwEh86DpgwRIWRM10zhNuWElNoEKcQ4aCVXJ1B7lc31ljEtXA0NI73a79KI
-	Hc8KuYNzvdoollL2k4nZG9cSfeV6VQjfu9/z7gPWOlrl3AONm9TVWqFatepIQNuFpnytf+
-	y7Aa2DJhfrAkZr5jh+GENjPHP4koehs=
+	bh=W3cDdicZmTJGsrJ93Z00IaY7+tBeVssbAV0nwfydT7Q=;
+	b=y4yk4svf1dSi4QjH/nmVW8V+rQXx3DQVUk9XWnKFUsIsrtMABsALlstQ65XRWT2qxfsYZp
+	AKJFPgoU0kaXOzK1pmnPmbmDIJZErboPycfCsaGVxMOPwfjlbupGIvrdD+UEmsWJ8shzJ6
+	ZhxHlfvKARf6Y3bPoAr+Mknw2hnaf5c=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lPtWXQNt;
-	spf=pass (imf02.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772545413; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NO7o3ebi;
+	spf=pass (imf26.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772545524; a=rsa-sha256;
 	cv=none;
-	b=6mQbECxjmuTKtBgOo9xawTVQhMkFQw+7qGSG52LhjWtp5uwwcci+VZ0wfZUctHpqCRZDgl
-	5uSir6DHyWs3XEoGHVY+Dbule16V6ED1hVzWYPau80d3velC7GYQQWyxuavLb2Nfq7YCyJ
-	CS8og+6/+5ldmROlvDGC1zJTgkdN+pc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E51A360127;
-	Tue,  3 Mar 2026 13:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E11BC116C6;
-	Tue,  3 Mar 2026 13:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772545411;
-	bh=TjmiuM+OEwlaZJFhFJESx27NKhtF5NKVQ1B/VbuqFXg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=lPtWXQNttIOex0BiPgyvU4GuNeeGsyj4j+7AWaYBWN3CCABxKy1hQAYgMSkJpwy5l
-	 KOJY156ACLADjQDWlItIDw/49RdCs18oTHXwiiVd1dwRmt4U+JUltG4yMQsZ+Yq7J2
-	 e7mX3xmrstuR28/iYagyTLQBnBnHGA0A/0nvfcTWrvcWSZJQ+TPl5feg0p5u96Mb88
-	 6JKIzukMTm7ucaoIQK6U0z5IYYMsLhd4n3Eh3CgrLG/pMDXafO9Vbw5HRY2Gk4GIpd
-	 1wGE5yBP27UyQKdEM9RU2hejqHxifQK5csKEfhDIWSGXdoi6xNmgMLHZp8uO6BvsLQ
-	 /fLz8gFa4zSSQ==
-Message-ID: <19e4e79a59dcfc4c61c8cf263af345d0d7026fc8.camel@kernel.org>
-Subject: Re: [PATCH v2 001/110] vfs: introduce kino_t typedef and PRIino
- format macro
-From: Jeff Layton <jlayton@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, Theodore Tso <tytso@mit.edu>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>,  Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers	 <mathieu.desnoyers@efficios.com>, Dan Williams
- <dan.j.williams@intel.com>,  Matthew Wilcox <willy@infradead.org>, Eric
- Biggers <ebiggers@kernel.org>, Muchun Song <muchun.song@linux.dev>,  Oscar
- Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, David
- Howells <dhowells@redhat.com>,  Paulo Alcantara	 <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara	 <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,  Trond
- Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Chuck
- Lever <chuck.lever@oracle.com>,  NeilBrown <neil@brown.name>, Olga
- Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,  Tom
- Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, Ronnie Sahlberg
- <ronniesahlberg@gmail.com>,  Shyam Prasad N <sprasad@microsoft.com>,
- Bharath SM <bharathsm@microsoft.com>, Alexander Aring	
- <alex.aring@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
- Viacheslav Dubeyko	 <slava@dubeyko.com>, Eric Van Hensbergen
- <ericvh@kernel.org>, Latchesar Ionkov	 <lucho@ionkov.net>, Dominique
- Martinet <asmadeus@codewreck.org>, Christian Schoenebeck
- <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, Marc Dionne	
- <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, Luis de
- Bethencourt	 <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian"	 <aivazian.tigran@gmail.com>, Ilya Dryomov
- <idryomov@gmail.com>, Alex Markuze	 <amarkuze@redhat.com>, Jan Harkes
- <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,  Nicolas Pitre <nico@fluxnic.net>,
- Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, John
- Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yangtao Li
- <frank.li@vivo.com>, Mikulas Patocka	 <mikulas@artax.karlin.mff.cuni.cz>,
- David Woodhouse <dwmw2@infradead.org>,  Richard Weinberger	
- <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, Konstantin Komarov	
- <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
- Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
- Mike Marshall	 <hubcap@omnibond.com>, Martin Brandenburg
- <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>, Anders Larsen
- <al@alarsen.net>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Damien Le Moal
- <dlemoal@kernel.org>, Naohiro Aota	 <naohiro.aota@wdc.com>, Johannes
- Thumshirn <jth@kernel.org>, John Johansen	 <john.johansen@canonical.com>,
- Paul Moore <paul@paul-moore.com>, James Morris	 <jmorris@namei.org>, "Serge
- E. Hallyn" <serge@hallyn.com>, Mimi Zohar	 <zohar@linux.ibm.com>, Roberto
- Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, Fan
- Wu	 <wufan@kernel.org>, Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>, Casey Schaufler
- <casey@schaufler-ca.com>, Alex Deucher	 <alexander.deucher@amd.com>,
- Christian =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>, David
- Airlie <airlied@gmail.com>, Simona Vetter	 <simona@ffwll.ch>, Sumit Semwal
- <sumit.semwal@linaro.org>, Eric Dumazet	 <edumazet@google.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, Paolo Abeni	 <pabeni@redhat.com>, Willem de
- Bruijn <willemb@google.com>, "David S. Miller"	 <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Simon Horman	 <horms@kernel.org>, Oleg
- Nesterov <oleg@redhat.com>, Peter Zijlstra	 <peterz@infradead.org>, Ingo
- Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland	 <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,  Jiri Olsa
- <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
- <adrian.hunter@intel.com>,  James Clark <james.clark@linaro.org>, Martin
- Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,  Joerg Reuter
- <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg	
- <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Oliver Hartkopp <socketcan@hartkopp.net>, Marc Kleine-Budde
- <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>,  Neal Cardwell
- <ncardwell@google.com>, Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu	 <herbert@gondor.apana.org.au>, Remi Denis-Courmont
- <courmisch@gmail.com>,  Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Magnus
- Karlsson <magnus.karlsson@intel.com>,  Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
- Alexei Starovoitov	 <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, 	linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, 	fsverity@lists.linux.dev, linux-mm@kvack.org,
- netfs@lists.linux.dev, 	linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, 	linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, 	samba-technical@lists.samba.org,
- linux-nilfs@vger.kernel.org, 	v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
-	ceph-devel@vger.kernel.org, codalist@telemann.coda.cs.cmu.edu, 
-	ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
-	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, 	audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, 	linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Date: Tue, 03 Mar 2026 08:43:15 -0500
-In-Reply-To: <aabkBadGzo7IZpSU@infradead.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-	 <20260302-iino-u64-v2-1-e5388800dae0@kernel.org>
-	 <20260303012556.GA6520@macsyma-wired.lan>
-	 <20260303042546.GF13868@frogsfrogsfrogs>
-	 <33228005140684201de2ca0c157441d3b6a06413.camel@kernel.org>
-	 <aabkBadGzo7IZpSU@infradead.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	b=2J8JubTL0H/YeUHeItgsaCtAVogAxD8Rs8AbC02Gvq4e0o3bEUIRy5L2RsZDHyl7HQfgCu
+	741PmxuFuC2+jfqpnIb++OOXB6FMIWLaLoNUn3ZtE+bSLd7Z/WGOzex90PNMFngO8M7ZMM
+	Vw5LgoNCVhrr3cfOrkxZE0qU+SnVCOw=
+Date: Tue, 3 Mar 2026 05:45:18 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772545522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W3cDdicZmTJGsrJ93Z00IaY7+tBeVssbAV0nwfydT7Q=;
+	b=NO7o3ebiu/lXOgRIsnDdillpTCZEhFFuus4HkPuivwr/d8AFliAgO9uFRLKy/Ax6XnLqPo
+	neebTbcVkrH3sFYTZL2TQ1fIsGMAS9rXI6UTgXRyqv9mCSJ3A2G/mW8yONl0k+mCsbLbXQ
+	EbM4iRry+BsD7AD634uk0eZrCy3aEAg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, 
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] mm: memcg: separate slab stat accounting from objcg
+ charge cache
+Message-ID: <aablae2eFl9ne5fW@linux.dev>
+References: <20260302195305.620713-1-hannes@cmpxchg.org>
+ <20260302195305.620713-6-hannes@cmpxchg.org>
+ <ji2jjt4vtmt2ox7wzytpivttc4z7j3u6cwmv23r6xit5322gns@te4t4djl5nlk>
+ <541a6661-7bfe-4517-a32c-5839002c61e5@kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 02AF180002
-X-Stat-Signature: kk6g9f6j9rtcxwzuoenb36u5oknaudgk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <541a6661-7bfe-4517-a32c-5839002c61e5@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A90A014000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hwmhiyyer5ufk8arn4fbde6bzs3hhtxw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772545412-860485
-X-HE-Meta: U2FsdGVkX1/JUuXzz5rah556zJZJN0UpvuOPzIWPvVDidLtORCfgXP64wltSnPmq4W9HHSLhKi8mWPIpW051x1/M9cmYZbXC49gB5CBVt8OCimZrnTE5l9j9t4Z9ixnCMwglVNFoYdpT8jAJPmiWMcRV9yudpuUvWtGgIF2EyxrcFYEwcsS++9ql/EGIhXCvnTSFNAgwKOpYZxweVz7cuBmp5V/xZDaMfbz/qyiNNvUK/igGfUcgsV7XqXZz7ttWK3+8WF6zNb6bwDgERBDRZlnodFizdahuUkLZ3uqd70h0BzUwZOKUuZfsEh2lv2z3jzXt99XWmACUrmZfb8mC9iQ4kdQ9jsmeAixZfAIDn79hKWJqyyNUolb/YAH7FIMfr7j0dFZU7pzlU8CrQ+y1OkMQGkDJtDm07htxJ4650yzdWdGwSkAwi7M0OwQbFHEa5CBc+ZtAwqO7X5cCiQcg8kBEEnwDTN+IXFF4qjyAvMohTIkhyMZkIFtgcoq7tIXPd2zw3I7rYi6kgeAjUE0CfrFrajfnwD6JAc7KT62aP7NHGYhHfD6LVtt9mWhq17Kmglvmhli0S7IFMju8lCK400o0/IHPy55SIL/myKimnwg3q1Ak7V7gIODgtAdoS2p0Kyyc/ngxAQFFBmxYE9ZoIoRrICemWOg9jePG8Q0ooBt2Hj2ZvliIJnI8TcAG7L80Jp+ZOjFa7smXH5hFODkQ6P76glZM3zXsHli9ihONQqBXKl9iGhiw3gZp43CxTyPKZ7sDpNLuymzWM/NLJWZ1twYEwgnlY/PL12J/OhUIVOBHFQhPeHtVTkRYzRLNfugFBdENERdJhKJhow61Gg1irMfeNqcVdP03AZHAA0xZXsgwebKQdjJK2hXzFgvPcPxrtCi3d17xjuxMfW2vNLdAvB7hEkCy7R+0uFwO+nDi9ygSP44uV3fBYx7H1MUe9WRERPeTHOQ/T8xN4OnHUBk
- guKGmIk8
- nC5PxZznwMIj+lP5WDNQcdsY5bi2c3u/OoB9SLFpLVCwSoxVoL4bn5EVW3d7bWgCYC2kAgyk6BZy0vWCKX7ID3pJehiC+QriyyRgYbcBwhkDo75s6SyuqF0NAQjPoZPgggY271HMvFiacht81urTBs9jrXfii15gg5UlgKBc89fdCVvxn1MkWmymaoPI9Htz9fFo6eq5zbGz9usRYxLLzZfxWw22yzevhRBZljUiFO6/0/itM1ba9th/kLpmiawhEQN7ug2uHiEcqTVrmY4nEr84wQqXIxKgDPbSxgryd3xJajOQlUVKIhyyzy3vgbeLA327GQLoIvkmF3y+9X4MexMIQZ9uCsCpMOvK20peghk7BtS4voAm3QNFqP+q3C3pLD7RF5tbYvkmFIyWeq0UE3CRVSBA9cya2zp8U2D0t/plJ7C/kpouGMECkYAjQtj5pVQUnUQd6ayUInFqVdy37UilChuWYqyAjMmnTEJCm8HbkwQGY4Z5HOvqhoVBp7okxN8b2iKC3nJGMjIzVW4fnPeSYoif3qTVQcI9p5AC3m8KyQ3bf6hobLTHd0AkBGXnse6oaP1T9SHc5bDzH2iKgKXnKf0fDEb4WB3bNj4e7wDbxu30rq+9clWaNQkSN/UYgIEO7hU5La/fMl5ul7NOW5l8zQg0/FC0P/kxprAsfZ6CwI47txrAoXYxCIiWmOKk+DLwwIJBX5NdH1VCpxRv1ebx1tQsYeTItIz+ykoRrjXq3lsrmlXPel78Lz8KOHSwBMCyMh2PK6ZnK3bMNAZULEMVNlMnd1MYV3iHDQ/wu0oF0osJNNmMHc1jjHW4sFchsW4z5xZ4+QmpdtMVoOS4IhSuYA7JIyhP5oI7QGsnGtxmx4vSAihZx6rheLkwEQu+LmXIG5vyYMkSHXNqPG+Ff2AlDvqtA6S849+AbjInvswR4Dlwxh9r/S1TFRCAilAeU5Nd9z46f327Rr/8Zw7vzJ5ifBzrJ
- TIjO/do6
- uXFUZxDsnlcZEpMMYetrtqq9cHlqw5/S2uvLE0dncrWTjsMoLj+rlfXyax9M1OO1dGMBSxU+6i8+Q3KN4hkBRIXoj9Mr4xmreqdmmoLaOPrqDTp5Sso+DC6SHmqzI7eotfQXYmtchWSqbxQllDaCEFSh1lifAwxf+Pf7rdHLyPpjz5Dwoul86gOrFj4j/xqsdB3OXLb8Uf3Rs1BcehtDTWGnhQzqnqmgPagjx+wkdqh4g97o2NXTgM3G5YE4JKY1Uizoch6GerFUg2jobOAg0ic0XzqKNpc+nSXOJw9FFLwix6YTcC5oTUBKTKMou71ahWqN7HsjyqQbdgZ1ot8MeZE+3QAAbF/ZhYaldywvUwhCJQfBs1HbhzMJ2UfGi43CwZo2NzHKkSbY21QUVPK21YKPEqqOVwt3uB7sw7eXvuo+BNFhXHO6TcMY/kcJ4T9vc73qwy+tnw48HeEqO4ZASkXNDRsBA14srvPN9OQN3ibcUGlVbj2CFYA55y5F4x0YAFVgRnSEqRd7nzCoylE4og+phksxo8P9tl9CfcK09Wwl+8FGlvp0BKK82q4VQNs5ZEzOsNEOPeUjISGvF7Upt1Di3UdCNhJ4TFeKzZS0xqfDWWyjRaND8+r/FkaejIOEsyghNxdZ1cjVprCF58BZZjc0CXwMIYLX//d06qbqh7K2IzYDK79PjYkTt3pqb+F9ZnP+g1bJS5zjmQvZbvFkuOB/6a/Y7F+u9yt5DqY8qmxz++5wZr8syg5VAGP7MxXWHC6I/TvimQQL41dOnr7rJVlRZ+u72pOXXEMntxX1CMogc5lRRU/j/F2p8NsI6U4VrXQVGJdcTt3oua9W/m9NiNkPDHwInlODUUoqBKamQspvloi2NGVvE/VCE8dmNbYuLrLWcMl+O6XWOVEuEn7GT37xwmX2L9cq3XQW1yRtBb7YpKL7A/R0z74xjBKfnyVvPPs/aomGB0I0O0jpSxvNQ+Jf4GHuB
- njQVoZ3T
- Qnht/kzhDfHl3+CHzkR5f3fF5r4ASRN6QIUWUSGTJmQf93UZSGHuH0NcMRovHS8RXnxL9bZbIbO5XAMNAne37RG0qy+YE6rh8QdkxQfE96s9vVsX18FSQtXcuwHGzi8kjlTqHOBedGKb19w/345C+jko09H9zm7SqNMiivb/FTvxwMDRLbmMrizxFNqOShmMlwpNDD1md/EfsNCpNPMQhTbF8zHC8o5Gq2yjY1oBQq5H0odoGQUoPBln9gun+uyHOKqMoPItlbezqztHFDCZqk7HGIOjnfLQaTmsD6CPsXgzsEIvD/QtEtk5VYvM3FLgxMYIBiqwkAwjtioTA3t3ejeecuUeDnyOwbF6KVLkM9dp34KSwaNCNdyHNmUzBhLxW4OICaQEp4y+B3X6Y6N90P1vcQJiq2arWlNBTfT3EmrGJEAKULn3p2Y507UhLP05LsgqH/CYTmknX9pqXy0a21OtWvW/dQq96hZUx6gxTQ8jM2w/4eoF0aKUF/OvbWsgcyvnfB7tdHlCGPVhe07QZy3MrgTv1OKCIks9fDdc10K8ycaJ4jqL8z7Biol7PhthDneXxOpwswjSR4NOs5DlfxCDM4tJetOfMMh03Ex46q24eggM7VYnrvqRSNGzBIxaNXE3y6pPyKsl4KqofA9MFSd76gAqtW4quy7s9VMmhCQ9lY1n0/SxkgQoNdvrEz5n7DrQL3+kEG1w2wxUhnVXunP1EYlNCLD+W9+UvLCRX3oD6JSa9qX02W2y/8pN73PJIjHiAgirQHXYhqMClqQ0HcOKY89k1U0l6GW6roeNz6O7kIdI93LrplwmbS+sxm55iZGWZjdrmSuA6XlzN58AyaCxPPcVbZwsXmWXTYdo9vqLcF/Eseztx7wObsp8iVetgbkRVGwxHwK/+If4M94YpFSilWAG66n4UA5v7xxpBOo2ZrDtLvnTyTGmvZmYxs5Ric4yDxH/gT0b5u4O5rvtZKnbolsG3
- z2luLbei
- cS6rQLpUoxbUCn+mpeGbiAeCNGoni1B4XIzDOIbCTOUPQXEwhiiuJr23hzMN9dwj27kMqYCUeFxP6+Qb67zbrrCm4gytyhejxequ58a6SBDOyICJEKlJMm+o1MP3G2i04TWom62bQpk+Ybh+5pd9mjAtpbeayFaabDG0CDAMuszGwsZ9ivvPZCBIf/79G9gDgw55y4K1Cftw1PLUeuvnFpxyetDyZzhIUcmn6CFfGWQvn3JPNJjiQYhJlazPG6ILtMR5eWHFITwsn858o2oai4g8Vs70l4h3MoBILatZnaa2sYflU6QEJq0huQcoUeiMEalqjl17Mk9GfQvJ2yohNmIztQcdw2OunPPfIslL0nvBsY1fkTRzU2391YdbA77mrm5NR3FmAjRg==
+X-HE-Tag: 1772545523-300045
+X-HE-Meta: U2FsdGVkX18k/izmWzCQe+nbIwECo9TA2yQBn/4HJa8YmGy5zbZOjA1CogdP0XbrvxjKp7cL6H8PFAPLWl2SZZcr97Pw0WBJxaYdSaWdYsJcWIq+RJt1g2OxAMUX+z5UPQtMQuXDTptESdMYWSODP1jSNES/c8Pal0w82oK+Gp8iuzA2tpITiJ22vw+D9yvIzi/GRVJJy2EaI6TVnW6L239fpmcq33ZuiHjzcNNmZu74KPSC2TBAwi3iaEPPSp0iTKAMAgstggbCGG7fSE8PXsO3SCvOc41G8Oe4CM/N2fNoxf6bl7Ki1YickqcTnW4WUIrGWmAD5Sl3vXK1ugXSy/B0DTi2Uyx+ZDnMV/O1F9cf25RrvU2AF5ouoiDkwTvohsK4UJoD4EfIviji7bSaCP6UCK7wjEOXMEbFTiwPVVyRy6x5mycbUX+UGj7Agb64n4LvLl1QTDUtHDYPAfHRUIrBh3HCloCEw8loKcDp+VCWLH1IGLcvJGH7KRxGwA6xvPjtpRdtZk7f3z4LtVmsyjZa2ZUtRGxyK6sTcUKmoUBKgrI3iqGlLAEKGLZe+DioCI7hLlKDlO3Djob8e0elhpjLGa0fn3v5bwoe/ur/ZAWo/sDgMJSXTgVi6kw0rghuRgdJ67P9ryPuroAPJrhbkYAl9jaMnDcwBMY7Z8KwjXbUFc5BxrtE9LuafQ3vHJT+ePkBVvaj0fdODTh9l6UtHWYrjOKakU29Utt0m0TmcnW2e5U0VtG0uNUq/YAv/48T5+UYDu5RCv9Y6VlCwnQ8uYNevWjMv2goLjJzMiNIfQDAFyGqvmVe3vazddaQvojIQC14yMVI9Qa/maiMFfBajl5tqHhjAI66R0wR2DL05fNaEIroFyOt3i1Xnw/sJJPSwD+ErXdympYIlCGy+lr+P9pzCQW2VhJCRAYN5bUZ4Mb+ih3AaNxz+Hty3jGhgER+2kXEagjYpF71f2thVyw
+ 3nfYxoTJ
+ j72VIcsM4LEvx2Cd33za5wNLHxzvFAzHvzMyuyrimzuLf+sjhXmKkgfwQwyXpAHVSw4JX278BVSC2otCyVDF+jnTpIFYqf94BKUzcZpY91dFqNCH7mspSG1v5gxs4XVGqN45WXqFv6h938BFmVdqR8U1s4+dHFrDLy5hZQ138FA+QfZc+ta88urXFTGJOqQGYCdtlre53Rcu0zeyIOFq9XOuPuOL+55uJ93D+rDf9e8LLgOhUNTyI2wDm4rCAkYATq9y1izxRTKdykR8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,17 +93,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-03-03 at 05:37 -0800, Christoph Hellwig wrote:
-> On Tue, Mar 03, 2026 at 05:53:39AM -0500, Jeff Layton wrote:
-> > Like I said to Ted, this is just temporary scaffolding for the change.
-> > The PRIino macro is removed in the end. Given that, perhaps you can
-> > overlook the bikeshed's color in this instance?
->=20
-> So why add it in the first place? =20
+On Tue, Mar 03, 2026 at 11:42:31AM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/3/26 09:54, Hao Li wrote:
+> > On Mon, Mar 02, 2026 at 02:50:18PM -0500, Johannes Weiner wrote:
+> >> Cgroup slab metrics are cached per-cpu the same way as the sub-page
+> >> charge cache. However, the intertwined code to manage those dependent
+> >> caches right now is quite difficult to follow.
+> >> 
+> >> Specifically, cached slab stat updates occur in consume() if there was
+> >> enough charge cache to satisfy the new object. If that fails, whole
+> >> pages are reserved, and slab stats are updated when the remainder of
+> >> those pages, after subtracting the size of the new slab object, are
+> >> put into the charge cache. This already juggles a delicate mix of the
+> >> object size, the page charge size, and the remainder to put into the
+> >> byte cache. Doing slab accounting in this path as well is fragile, and
+> >> has recently caused a bug where the input parameters between the two
+> >> caches were mixed up.
+> >> 
+> >> Refactor the consume() and refill() paths into unlocked and locked
+> >> variants that only do charge caching. Then let the slab path manage
+> >> its own lock section and open-code charging and accounting.
+> >> 
+> >> This makes the slab stat cache subordinate to the charge cache:
+> >> __refill_obj_stock() is called first to prepare it;
+> >> __account_obj_stock() follows to hitch a ride.
+> >> 
+> >> This results in a minor behavioral change: previously, a mismatching
+> >> percpu stock would always be drained for the purpose of setting up
+> >> slab account caching, even if there was no byte remainder to put into
+> >> the charge cache. Now, the stock is left alone, and slab accounting
+> >> takes the uncached path if there is a mismatch. This is exceedingly
+> >> rare, and it was probably never worth draining the whole stock just to
+> >> cache the slab stat update.
+> >> 
+> >> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> >> ---
+> >>  mm/memcontrol.c | 100 +++++++++++++++++++++++++++++-------------------
+> >>  1 file changed, 61 insertions(+), 39 deletions(-)
+> >> 
+> >> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> >> index 4f12b75743d4..9c6f9849b717 100644
+> >> --- a/mm/memcontrol.c
+> >> +++ b/mm/memcontrol.c
+> >> @@ -3218,16 +3218,18 @@ static struct obj_stock_pcp *trylock_stock(void)
+> >>  
+> > 
+> > [...]
+> > 
+> >> @@ -3376,17 +3383,14 @@ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+> >>  	return flush;
+> >>  }
+> >>  
+> >> -static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+> >> -		bool allow_uncharge, int nr_acct, struct pglist_data *pgdat,
+> >> -		enum node_stat_item idx)
+> >> +static void __refill_obj_stock(struct obj_cgroup *objcg,
+> >> +			       struct obj_stock_pcp *stock,
+> >> +			       unsigned int nr_bytes,
+> >> +			       bool allow_uncharge)
+> >>  {
+> >> -	struct obj_stock_pcp *stock;
+> >>  	unsigned int nr_pages = 0;
+> >>  
+> >> -	stock = trylock_stock();
+> >>  	if (!stock) {
+> >> -		if (pgdat)
+> >> -			__account_obj_stock(objcg, NULL, nr_acct, pgdat, idx);
+> >>  		nr_pages = nr_bytes >> PAGE_SHIFT;
+> >>  		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+> >>  		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
+> >> @@ -3404,20 +3408,25 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
+> >>  	}
+> >>  	stock->nr_bytes += nr_bytes;
+> >>  
+> >> -	if (pgdat)
+> >> -		__account_obj_stock(objcg, stock, nr_acct, pgdat, idx);
+> >> -
+> >>  	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
+> >>  		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
+> >>  		stock->nr_bytes &= (PAGE_SIZE - 1);
+> >>  	}
+> >>  
+> >> -	unlock_stock(stock);
+> >>  out:
+> >>  	if (nr_pages)
+> >>  		obj_cgroup_uncharge_pages(objcg, nr_pages);
+> >>  }
+> >>  
+> >> +static void refill_obj_stock(struct obj_cgroup *objcg,
+> >> +			     unsigned int nr_bytes,
+> >> +			     bool allow_uncharge)
+> >> +{
+> >> +	struct obj_stock_pcp *stock = trylock_stock();
+> >> +	__refill_obj_stock(objcg, stock, nr_bytes, allow_uncharge);
+> >> +	unlock_stock(stock);
+> > 
+> > Hi Johannes,
+> > 
+> > I noticed that after this patch, obj_cgroup_uncharge_pages() is now inside
+> > the obj_stock.lock critical section. Since obj_cgroup_uncharge_pages() calls
+> > refill_stock(), which seems non-trivial, this might increase the lock hold time.
+> > In particular, could that lead to more failed trylocks for IRQ handlers on
+> > non-RT kernel (or for tasks that preempt others on RT kernel)?
+> 
+> Yes, it also seems a bit self-defeating? (at least in theory)
+> 
+> refill_obj_stock()
+>   trylock_stock()
+>   __refill_obj_stock()
+>     obj_cgroup_uncharge_pages()
+>       refill_stock()
+>         local_trylock() -> nested, will fail
 
-Bisectability. The first version I did of this would have broken the
-ability to bisect properly across these changes. I don't love the
-"churn" here either, but this should be cleanly bisectable.
---=20
-Jeff Layton <jlayton@kernel.org>
+Not really as the local_locks are different i.e. memcg_stock.lock in
+refill_stock() and obj_stock.lock in refill_obj_stock(). However Hao's concern
+is valid and I think it can be easily fixed by moving obj_cgroup_uncharge_pages()
+out of obj_stock.lock.
 
