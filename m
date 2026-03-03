@@ -4,128 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82A34EDEBEA
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 19:48:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 952BCEDEBEA
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 19:50:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAB356B0099; Tue,  3 Mar 2026 14:48:54 -0500 (EST)
+	id F22766B00B1; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56D26B00A1; Tue,  3 Mar 2026 14:48:54 -0500 (EST)
+	id ECB6E6B00B2; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964716B0099; Tue,  3 Mar 2026 14:48:54 -0500 (EST)
+	id DCADD6B00B3; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 804E06B0099
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:48:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D90413A6FB
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:48:54 +0000 (UTC)
-X-FDA: 84505789788.15.1A4AEDE
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 5F1E0C0006
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:48:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G9FEWAMp;
-	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CAB6B6B00B1
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 14:50:37 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 953611B7513
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:50:37 +0000 (UTC)
+X-FDA: 84505794114.04.E5D8C08
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E6FD21C0002
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:50:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHOngpwl;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772567332;
+	s=arc-20220608; t=1772567436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dOCB92VFaJvp1/msg1aXr5lsyHqZuKZRc8ptpqCWqZQ=;
-	b=kJkyeLlr8ZC4RCeXsNSeVHP6iAEm5N/DpRsk6RE2HFsywkVdKAHxSd2gVHUTQcrmEoHAVi
-	YPUtzj1vuLry9ETPgNBDL/W3j5K2q/dcqBaEIWNipvCaUvy7vH5Bdxurl8zKcaCV3PTb0T
-	n/1yPlspCo9h/wYvCvJ9S2Dt+QBMGjk=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=G9FEWAMp;
-	spf=pass (imf28.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772567332; a=rsa-sha256;
+	 in-reply-to:references:dkim-signature;
+	bh=ANPBgiBdp/ufFe/6nV0Mso+/P/6GKB28IBB2YrdPqJc=;
+	b=SAC4F0AGvntsEKPcZVlZt4l8YwPHWkMq9NYNbCdGcpRBHgRJDMaVYeokdNiGbfrRJywplv
+	tYELC55SXCG+ieum7kb6yGlyJl8XdagL1qHzutPfU0B3mCoX/YMDo4J0BWuiT7y0ZcFfLV
+	dvBzJpiw4OolY6a618l4v3WVfUjlrBk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772567436; a=rsa-sha256;
 	cv=none;
-	b=aI56gPUUS1X/LH3nnTEvKQm/3iR7iKouF7NILTq1jup5oi+2VUdQTnBMl4vn2ar6Tk7hVX
-	VRKgz0z417IjHsYFGEOpZC5kAQhk4O3jhYeReeGlau1X0u4oqupqgCqrofDQsZ6ikjhhhv
-	3TCEMoCNZVvFC/XCBv8zydq4pzCdcRM=
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1277d379936so7271159c88.1
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 11:48:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772567331; x=1773172131; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dOCB92VFaJvp1/msg1aXr5lsyHqZuKZRc8ptpqCWqZQ=;
-        b=G9FEWAMpg1NvL5t25+iUUB14CEHirKclcU7MfmigyitYNcKM+1Goh2GJUFYumnQU20
-         WFCWetSFSqlHDDuNg4x1DTtqJPDq/T8txSbsZx/PC45wzDYfgsSmMP+mGs3E+NTnqb8S
-         1q89sgpONotMhZDrG/NTS9fUrjb0c/oj7pTPZ7S0fg4Hz8DqjS4TENms2br8XGTkOOut
-         s++tEnKGz/8NxDwqMJ5ZP4ryxZlswTBAOGqFKSRJobU6UJeSSWg0kzs5Wqx2eClCSSAw
-         frQNBeIFgx+6EivO9+0+oiC1ngumvdeWkt9YhaS+buBbVthhO8GOts1iyDh++ouc4L4K
-         c1PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772567331; x=1773172131;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dOCB92VFaJvp1/msg1aXr5lsyHqZuKZRc8ptpqCWqZQ=;
-        b=CHfTCnBA79/JDtdpObemmTLUaxp+etbLdsqhCKXoGP1y4TlvAxmZl4i6gIMjkdOqbX
-         FhCqLCkp0YiwyUWsTwmgdn7h9FA39rwfKWFxlCLkSaiZH8i7wc89GznIg1yp6Huo6UBO
-         2wjH3xILDwxXZzcf65kIIHsPSMPTjr9KS4YuHzuHMhS53FqWX2bd9ATlUITOqbaLk7Wu
-         n3iwrgFXCNTQiG3GJ8oEUcsTixJsxwYsgQLTAYnPPt0/oI2zywEx19M08KEEkyDFzuro
-         29s/P0AM45DCw6VAwSSJyDNw0IrI33EtJkRMd8sTpQndLAbkSrD0BaylZ6IS1p3Fs2n4
-         +FEA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/KPpP3D009fFzbDbnbTmGgBLzQVpWg5m01DOtkXJ4L40eZ/YleP46JAtlfiv4MBhXOi3LvXzpVg==@kvack.org
-X-Gm-Message-State: AOJu0YxoQ7AZGuhfKBew4qWuAwQMYpXD8HIsnADjmLu24x9JwPBIuYiw
-	LGq29pKlAI4pUOYZMnoX3PHj+4gXDDOTi7b1+pGkZFfagqlm9eNxDeXX
-X-Gm-Gg: ATEYQzyuJTT9qReJ2yZ+E85G0ETYe/Nk9pOBXWVCs2F/zzRxUbHFrvnUXHAWGsNFe3J
-	7cXr8lbBjzzC/S35541pPPAOb8ccQRv4LJD5EQA5H68NLN3n6HdPmW3i5LsRkHnvmKgeeX/yAPx
-	H3TTnNvSlywc0A+WEL6oaof1+br/i7A4XkhS9fwPtWve6GevT6jwq1I6TcToTWiQxQal+FCZnJN
-	HrMdiGz/j3/PR/tbLDUG6egkasrFQ7QrWgmhRxBEQ3vw/UD95nVbIlkY/zApvhvWqfYlDTBTknd
-	jMDfAIs3ZlnKoSo+aKPbcCi1MeG42x8+rO1gmbXd8ezJqgas+gbLuGm1imlS3XmZgHwnAq6g9eX
-	VVL2z1sXORMMBwzWrEBPNq3bufbqK1WojF+PHMqAsMka6+LHvuCEBCbYkfu3mENz1/HOOtLE8Z+
-	qUqEz7uqdJvSFuKq/Afpnrj4go+2+M/k+RBVldMAM+4IjyqusPr42BIAcMWlt2WxQoDnTXlLuPK
-	l8zIjwWEclPZ7s=
-X-Received: by 2002:a05:7022:48d:b0:119:e569:f61b with SMTP id a92af1059eb24-1278fb93eb2mr6842247c88.20.1772567331045;
-        Tue, 03 Mar 2026 11:48:51 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.googlemail.com with ESMTPSA id a92af1059eb24-1279e9950cesm9258748c88.7.2026.03.03.11.48.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 11:48:50 -0800 (PST)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Juergen Gross <jgross@suse.com>,
-	Yu-cheng Yu <yu-cheng.yu@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [RESEND PATCH v7 4/4] x86/mm/pat: Convert split_large_page() to use ptdescs
-Date: Tue,  3 Mar 2026 11:48:27 -0800
-Message-ID: <20260303194828.1406905-5-vishal.moola@gmail.com>
+	b=b9ejGhDr6Fu/SfNMr1JNNyNMbXjA6BNuB985kBfx/9pGxoZYBBdqRbNt6OHYaHu6yvnxOi
+	zgB0ClTYqwUZT0TmIqT4w0sdyWHEzvFqBdpfucN9yJNqxTXaUTqg1HgYJnHcuCJAtio5rT
+	pD9oR+7GtDmOLNXsrUkKdSJ0pxLVxy4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHOngpwl;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C902B40904;
+	Tue,  3 Mar 2026 19:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49640C116C6;
+	Tue,  3 Mar 2026 19:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772567434;
+	bh=XDC0haHYwaNKHX2Q2sFwYd1iadMZeI+Z0ehZ14CSn/M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jHOngpwlKulDRgYX88YQHyUwJADWAAuzA8SzIB/EpHRVMQ9aReAqgeM/pErhG8Puq
+	 pcLeUbI76+MQ1gRZp1p/7O8zNkAE0WbH8XK+3BG4Qnxh23/Y/+jsoMGRjy/lYi+DW8
+	 v9VHjKPHMqkBsugTvusfoO6m9dLfCxyQu8VoWv7Ss+1rAcn+cjDH/wJpniMOvJUPl3
+	 8Zu/ST63bqH0Mz+PRS3+LZleY42BPeQXqdmjI9KfOcs7whiacRjkwFd7K9aXVNaBTY
+	 IE4OamsjTl1QAlkCjYvhoZu0qwCl3amtaY0nH65Bh0U4Kz8+PLbxfnYYF7CipRNC8V
+	 zOUsrJmZH7SWw==
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] MAINTAINERS, mailmap: update email address for Lorenzo Stoakes
+Date: Tue,  3 Mar 2026 19:50:25 +0000
+Message-ID: <20260303195025.1170895-1-ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260303194828.1406905-1-vishal.moola@gmail.com>
-References: <20260303194828.1406905-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 944nqe31wnsdgtwo5w5phw3aia7w31a3
-X-Rspamd-Server: rspam09
+X-Stat-Signature: d47nm635ui8pmtnwd9skza4ja1ng9yy4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5F1E0C0006
-X-HE-Tag: 1772567332-364390
-X-HE-Meta: U2FsdGVkX1/pCRwlTZwOR6U7yXRKQEpaw8eeMI2TTHgYw9gpnIOvMQ2FOYQN34rf+ZvoA4R61blBaQoFJ1YJ/DDrMJviDc6Xd98mhIBtvbtQ7+IBrU8Vjpe8WfeiVyF0FXtVwi4APDc+9pJBbjeY4Ch2uMO2K1wK6T41eUHsntgx4pRA4Z1/HRY6U4HOQkS704IDF/1qkiFmJoEVHcLGMCuLHPul5HU0L+sRNjn8lxF6oGey34EHLzCHrdhTLFXv4YAEsiQTjysBRFxNra7JJQ9/GdECWiqIA1PN/ZdrSXbzqRHzwVgnY/Gg0XuF5lwzmWVlSR4ZkBVpugcLSb5tz2uewuLctD+qWIdZgS41aAFw5hB7wz3mIiQ1hzQtNEzReLuDFDiX3kFmY3f1l/YrzNfYAWdQOjBd0fN+j4NUzdXUnpkLKJJE61tT4YYyqMjnMNr9JJBPJA8y7wC32Sl9HBKtsyGy7IJXYecJ90xDJnBSKQrUlrgbMO0pnuKV3U4neTOgDNF9yIfuI0cIDduKikDqQStzSBkengsXIc3kzTJ10BQYWCkq1TNZSWSFiTRFHD7oYOpSCeYbniHs/cjiZLxlSityxpm6TbEbsjPrUp43ahS7Oj85EFONDg/PmhIIrDLb4qfo36i0QpXpMS3rkDoIuUKgrvNqfOkk2nHtEC3UCocB+hmfLzJbi1TQgBY0j5INiC6zDEHW++WHucloRmTK9C79PUw2W2NmPjMsTIYDr6284U/MUrpxmy7AuRNTT16YKG8/IBD0mIRq/VAJUJw86pbVRUXi4OnkIQZ2cf0UYAthimNguMT5CQYgZvysIFlzqtbxd+CRQin4IGqgPBtFhs7pxaw7CEOUelNoqNaLt1S2H+uoT+izN07QaKrYtrBezLjrqjmAzL8gdciTPvc0SYR+mxVsrKKhcy3pJx35sJhRqk2pOkSHKbKxr24sCL7dSBKogQZha8M3ZjV
- KEQ7Novm
- QO0S7Pb4t1kEIE8EubBphN0/GDLB9Mszm0b5cf6ujocDjz8HlfpFcUPKgKcM4qc6+b/wIumCd27MomPA4oKihe8Td9GYSIcjHy+Co8SLCiLHt2/9pmbYkF2kGmrTK33/WLgDCvxHjhktk8+Ieg1GRlMtYaEn67jA4GAGzzAS5J+DvN3DEJIWcq2ZInKzPgActjz5spCS7GFm9X7Tv8a75Fdf9BcFBsJM36AcHapCu3/IPqlxrrwZeHZ4BobEWM/USsz39ayLHI191AJBc8qVQ3Jm3w1BtfWvxV3G8iI/1DifNwP8Cfrw/eon3YI+tqWzddXU6Q+pJj3C0Cpv9f4U6YV79skLfQlJVh7hCaak4pQ+W2ibNlt8u7Y5/Cva7hOVW+nBbcrw8FhzLJhtBXKVea1Hmp+jB997X9G5LoUy1yGAaabuYbxL1Le3+S7EKe20t1NyWmPtdgJFkkavqVng0MKwMBVU1inmgmz01hyYoUbhXjJBd/UfBe79Qi+SWQsaHFQARDZ2eF1gIUZhY+DK3mfVtjcvCvJYgPSTU6161CiHz7wx9pBhljvyxpxxG0EdwhlGQ6mU395PdTPM=
+X-Rspamd-Queue-Id: E6FD21C0002
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772567435-935902
+X-HE-Meta: U2FsdGVkX1+VDEdbBXih7OB/CrKArNpAYvq4tZfL6PZ5Rh95voxSBMUiVinTdY0AjsWM81vIFcn0XyS3fq4rfvZpaAg9A7CSuGGLRKdoE331eAWXHW0hmFaWgE+11S+UxMb6kxZNLp76hJbPwx32jl7krPWxHy8kDkbzYhYoryP/pozoE6gic11qh7VqXdbHB1eh/ZQkJUv0AlNX3unF4bwpdbjCy0HJi5v3bSfH83f1N8bbsm90TU8Ww/tVJAeWTv746DBxLQKsTilPELh6ZzKuSu53wPANprA/WdeNXjTBTltgSy1aPuZkZdPChdmjI0MtcGmoiONoi3b+tOBSaJyuVvItN9d8DvAiDfeC22ZbSjYp06Svw5NHnYE5J7YE/2bvlEY9WnkFaO5RrLjm3p9giEbsKtLwS76HtZi935TZQ7JQVRbSWPoYDmALpeM6jrwEYTP22UGK8MQFb+z8YD58Qm+isS6JPr51ixaf9MC7tYlFnjM79cjsWWSKp7XSqBJpWvhVzJB2UgvxAxfFeUwlcwzX0RVIYXw+YQ30nR2Olvk6xGoYSZsHVXaDjaA+gpajVTrBnMk8XPwoojzpohS70vtfM6OpMiohiRWVnWH1tBKTvleiMAESmuzVlwxrpVPig35jIaHnhV/2eGW3wnVxm3FRNxsdRnqcTxALnJFF7/Jo25Hu3ZqbNv8sQBm8sfxh6QAVDopSArENQOU+ttruR+RFKTdiyqMWJt1mVm1W875ze4PL+Hsq1/Q0JR7b7Tku+tuwAJ4Wk3OONxHZvUPT7+G2Afzmr/3L0f0uEZpkTQC3Q7IIC1WDXZDJaT1aC/dhiPfCCssSxLfypun/zZMdDJYUZC5788o+UF3MqMPyMQmXWMyYe19zijKcaun9I97x/sJ/R6NpzNV1HAKfVWt4erfBx1I9GF0N+bjK9HZnvnKk9hCt42Rtm623hZOKJmLa/kPGx4ebXFzFaTh
+ xQdPr0ox
+ UXnLpZfKnaUn/DxDz8tgRSAB7tH8BmSHSSxaemQHx4zeW7SHQzbE6OeTT+sAyRrH3+kCHVcja0i9M3qHa5V+pg1+efUHkIQQSbDovus1hMHRGlyAWsN7JVLHWEBBs0wgLDE0iDEKOpQjpGlGir3amvDMkK0mvBOs+cVytDc8QS50MRrSfoH8guJAYoVYGpE1HnpyYQKjn3JoFCVUZSNPE+FltfLZmRd96fO7RsR55c02sthy57y8uh4joDazt173sTOnWM4UlrITl+fOJuBveVZ2xwC4tCKLXZ+3ABKZ7RWx41UTl2mYLy+TszOYsGzX4vt1KBfIHs/EgFjjkMx6RvZFnclM8rkQFzlv345BVO90AZgax/NAEgQ+OiHmk0oE5OaSJde1NUdqAuI9a7QpcQp7MQlZvMzYRpdh5DdzPxwzVRhZvvQXy6qqBIpQ+njCwmLy5KtFY+ExRfQQuM3PqgFzaF7Ads/bOU1pi0DdAW4Gzz56wHjbAcqizMyyejcRxIsFjc0qixcM+W5aQ4faEn3AFwjw6RYd4/0hkGpZ0QXHAOIZPiV5D6QS6Xrh4QRMhswWw7Hv67n8h13IjtLEqs/jNqhIvRLK7mIlLd8gvi1pfItj8nrfhEjDsAm1VV8BF20y+P7mXrJBBrW5T+HA/bl4rgr3jDGZSL5SXsidASvfpGLBGjXpbVSL505CKt6f7LgugSm/epbq9wRpGliPr34TlpdzOYGc06EdhER1Z9WwSHlBCe5B66BWC02r9YB/6+8Koft80Pvj/ndm0mJDktWHotBOuqjQNlKmZ3N3dTPHDQ0nSUk4Ww7NnQtc0wguGxe/3dgLIuVw9zKrTqCF757v5s3+0bKtTqKcCfcTg0DSzamxnglJi6FnZcooHBfRbUGz5L0jwsvRZcQaRx2AEQjqrgHebDoIfxW3C7AkEs4iEsiaZpisUOX39D7UHgiSLGrN9xNaiNLRUh8+vaMlHj0xcwIEj
+ cNOL+Wef
+ u31dT1xOavI3o81+IXE7xA8kpN/9kTE8xVVTqmud3iyH20k/OHwMXJtB/2odleo5BmdTkCkW1+TKGV+ySmf2WuqirCqPyFK0YmB/g0IYjkS/WORh4c6yPck6vzcoUHUX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,58 +91,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use the ptdesc APIs for all page table allocation and free sites to
-allow their separate allocation from struct page in the future.
+I want to experiment with a new email setup, and using the @kernel.org
+address is the easiest way to have flexibility on this.
 
-Update split_large_page() to allocate a ptdesc instead of allocating a
-page for use as a page table.
-
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ .mailmap    |  3 ++-
+ MAINTAINERS | 20 ++++++++++----------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 17c1c28e3491..cba907c39718 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -1119,9 +1119,10 @@ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
+diff --git a/.mailmap b/.mailmap
+index 7d5a6cc3909f..04318e1f2607 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -495,7 +495,8 @@ Lior David <quic_liord@quicinc.com> <liord@codeaurora.org>
+ Loic Poulain <loic.poulain@oss.qualcomm.com> <loic.poulain@linaro.org>
+ Loic Poulain <loic.poulain@oss.qualcomm.com> <loic.poulain@intel.com>
+ Lorenzo Pieralisi <lpieralisi@kernel.org> <lorenzo.pieralisi@arm.com>
+-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> <lstoakes@gmail.com>
++Lorenzo Stoakes <ljs@kernel.org> <lstoakes@gmail.com>
++Lorenzo Stoakes <ljs@kernel.org> <lorenzo.stoakes@oracle.com>
+ Luca Ceresoli <luca.ceresoli@bootlin.com> <luca@lucaceresoli.net>
+ Luca Weiss <luca@lucaweiss.eu> <luca@z3ntu.xyz>
+ Lucas De Marchi <demarchi@kernel.org> <lucas.demarchi@intel.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 61bf550fd37c..3812b95a211d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16653,7 +16653,7 @@ F:	mm/balloon.c
+ MEMORY MANAGEMENT - CORE
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@kernel.org>
+-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++R:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Mike Rapoport <rppt@kernel.org>
+@@ -16783,7 +16783,7 @@ F:	mm/workingset.c
+ MEMORY MANAGEMENT - MISC
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@kernel.org>
+-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++R:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Mike Rapoport <rppt@kernel.org>
+@@ -16874,7 +16874,7 @@ R:	David Hildenbrand <david@kernel.org>
+ R:	Michal Hocko <mhocko@kernel.org>
+ R:	Qi Zheng <zhengqi.arch@bytedance.com>
+ R:	Shakeel Butt <shakeel.butt@linux.dev>
+-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++R:	Lorenzo Stoakes <ljs@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	mm/vmscan.c
+@@ -16883,7 +16883,7 @@ F:	mm/workingset.c
+ MEMORY MANAGEMENT - RMAP (REVERSE MAPPING)
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@kernel.org>
+-M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++M:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Rik van Riel <riel@surriel.com>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+@@ -16928,7 +16928,7 @@ F:	mm/swapfile.c
+ MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	David Hildenbrand <david@kernel.org>
+-M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++M:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Zi Yan <ziy@nvidia.com>
+ R:	Baolin Wang <baolin.wang@linux.alibaba.com>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+@@ -16968,7 +16968,7 @@ F:	tools/testing/selftests/mm/uffd-*.[ch]
  
- static int
- __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   struct page *base)
-+		   struct ptdesc *ptdesc)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
-+	struct page *base = ptdesc_page(ptdesc);
- 	pte_t *pbase = (pte_t *)page_address(base);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
-@@ -1226,18 +1227,18 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 			    unsigned long address)
- {
--	struct page *base;
-+	struct ptdesc *ptdesc;
+ MEMORY MANAGEMENT - RUST
+ M:	Alice Ryhl <aliceryhl@google.com>
+-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++R:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ L:	linux-mm@kvack.org
+ L:	rust-for-linux@vger.kernel.org
+@@ -16984,7 +16984,7 @@ F:	rust/kernel/page.rs
+ MEMORY MAPPING
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+-M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++M:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Jann Horn <jannh@google.com>
+ R:	Pedro Falcato <pfalcato@suse.de>
+@@ -17014,7 +17014,7 @@ MEMORY MAPPING - LOCKING
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	Suren Baghdasaryan <surenb@google.com>
+ M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+-M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++M:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Shakeel Butt <shakeel.butt@linux.dev>
+ L:	linux-mm@kvack.org
+@@ -17029,7 +17029,7 @@ F:	mm/mmap_lock.c
+ MEMORY MAPPING - MADVISE (MEMORY ADVICE)
+ M:	Andrew Morton <akpm@linux-foundation.org>
+ M:	Liam R. Howlett <Liam.Howlett@oracle.com>
+-M:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++M:	Lorenzo Stoakes <ljs@kernel.org>
+ M:	David Hildenbrand <david@kernel.org>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Jann Horn <jannh@google.com>
+@@ -23172,7 +23172,7 @@ K:	\b(?i:rust)\b
  
- 	if (!debug_pagealloc_enabled())
- 		spin_unlock(&cpa_lock);
--	base = alloc_pages(GFP_KERNEL, 0);
-+	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
- 	if (!debug_pagealloc_enabled())
- 		spin_lock(&cpa_lock);
--	if (!base)
-+	if (!ptdesc)
- 		return -ENOMEM;
- 
--	if (__split_large_page(cpa, kpte, address, base))
--		__free_page(base);
-+	if (__split_large_page(cpa, kpte, address, ptdesc))
-+		pagetable_free(ptdesc);
- 
- 	return 0;
- }
+ RUST [ALLOC]
+ M:	Danilo Krummrich <dakr@kernel.org>
+-R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
++R:	Lorenzo Stoakes <ljs@kernel.org>
+ R:	Vlastimil Babka <vbabka@kernel.org>
+ R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+ R:	Uladzislau Rezki <urezki@gmail.com>
 -- 
 2.53.0
 
