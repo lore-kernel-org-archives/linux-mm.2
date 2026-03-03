@@ -4,85 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A44A2E67A6D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A46E67A69
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 06:22:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD8EF6B0005; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
+	id E05926B0005; Tue,  3 Mar 2026 01:22:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBA5F6B0088; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
+	id DB38A6B0088; Tue,  3 Mar 2026 01:22:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB8D36B0089; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
+	id C95026B0089; Tue,  3 Mar 2026 01:22:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A8FE46B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:15:51 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5CCC4BA5AB
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:15:51 +0000 (UTC)
-X-FDA: 84503740902.05.495C96F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 7ECF140008
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:15:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B9B2C6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:22:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A648B73B7
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:22:16 +0000 (UTC)
+X-FDA: 84503757072.18.88A3E44
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7BB951C0002
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:22:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hBFbBJNe;
+	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772518549;
+	s=arc-20220608; t=1772518934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=3XuGl8GW3WFyIr/j2P5+bdkyIZQh7sW+GwzUK8+8fgA=;
-	b=WQymm6dZ1oaRp8auv4bdvssddFhnMaIWHkncm3wIgLo+Q3zQXlet0S3VFgSQ9gnxjnMtyd
-	p3g+lYPHSU7Zdh+Fxuy8N1Fwr5tdfJb75D/ejQRb3PelIHmH0cJymEgVfXnlQTvPN/aa4f
-	MbkrKMB0WdXEq/nIeNvA369gFBz4wPM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772518550; a=rsa-sha256;
-	cv=none;
-	b=GBZGVNBAyXuWISpWqhjTUwsUYGdC8TTqgILpz2RbNECyLLPkt9+bcG/unLL+Hp6VHGNU9+
-	jhVuxwLBRPn1mXaJHACShH7iJZMzwLl/wcH+p9Thjp7myRFeOoc/CEL7SdU0/G9HV5Uj2A
-	ugfwszm3imNjbXACy641blBzKosQ/W0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TXvC0W9BK/qCDM2luuVOjFiw+pG7WQpudbkrpHQ06Bk=;
+	b=Hyq4tX9r8AxSSlghFKQ4QuJbRGcR7wZ5RYkHkpwc4LFRe1/uufc0k1Xixic+Rt8khZHf0Y
+	tXjiZsOpJVV1F3AuKWWZZ6yxtzbC6MPd3Dx4Hdp773x+f0cljAEWeG9NyeY52ulKE6Rg36
+	wdaC1flZ0AjmBcIU4HxJXFR0wq4Ct7w=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0FF73497;
-	Mon,  2 Mar 2026 22:15:42 -0800 (PST)
-Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0E8A13F7BD;
-	Mon,  2 Mar 2026 22:15:43 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com
-Cc: riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	baohua@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	Dev Jain <dev.jain@arm.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH v3] mm/rmap: fix incorrect pte restoration for lazyfree folios
-Date: Tue,  3 Mar 2026 11:45:28 +0530
-Message-Id: <20260303061528.2429162-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.34.1
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hBFbBJNe;
+	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772518934; a=rsa-sha256;
+	cv=none;
+	b=8EVTa6QiIrosC8sJpx8kAlHGLo6ahbNieBgolt+rFNEuhzcisGs73XsuKZGWV3TAq5iq/3
+	K/9CSok8Iir7jXXdlbcGr5HPOZrhtwf/ML4bVJpRdw6nLjy+DcQ2aiqE6aYtVjKfP5r3PV
+	CDbfXmt8hK4x1QxhFRC64aT2V1ITF1w=
+Message-ID: <63622051-f128-4450-8579-97f25305beb5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772518931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TXvC0W9BK/qCDM2luuVOjFiw+pG7WQpudbkrpHQ06Bk=;
+	b=hBFbBJNeRGCjHua0QjXLgz/eHaN8IFODEb3GXPUD8UbMcTeR5gfAlvWl0O3UihX48thOvt
+	iQ65ft3idSC9hFOIMyAXX0qKP2XgbVR99CJAnOOkPB00eEHxxmhlfz9pNXQ2DLDcq9edGY
+	7UJwXmxf3sVgeP7+cgWF1X5/kjOz/Tk=
+Date: Mon, 2 Mar 2026 22:21:55 -0800
 MIME-Version: 1.0
+Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
+ Update Orchestrator
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal
+ <ankita@nvidia.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>,
+ Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ kexec@lists.infradead.org, kvm@vger.kernel.org,
+ Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
+ =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>,
+ Yi Liu <yi.l.liu@intel.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-5-dmatlack@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260129212510.967611-5-dmatlack@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7ECF140008
-X-Stat-Signature: 1phb6b6piffji4mmoguko1m17krycapw
-X-HE-Tag: 1772518549-175721
-X-HE-Meta: U2FsdGVkX1/l1jpuvapkF9lWhQ8nGKr8esQdLH9KDpP5tm57DIKh55CPgXN8AoO8flBKGihDvh9pbUHQ2mM7J8kWmMR0RB9EaBubJoukuKzSOWeLcNjapTblR9EV8W9nVo9+QHLJxVc2HdG+QEdGaNTcd1H+IYh0U3hrl5scIKOeSvTeEEmfjI7wU5wBgNA5hvoWfmjkQEPxFwUUwQUKkMZKagSpk2XfxpLRitBm++/z3D52Jz6QPmJgnUpgrP692KqtL2hRz0zBGBj8LMgjPP30vBEcnGzbRWT8WheHUccIWPGMmHyqV+Xcq8KOtecn+5L5aBIZqEYfQ+dm+t2ckG9HpYN2ubBXa1MMExbLMzwJHbmvQ2btd9tItmT8tBHy/aHXmQog8LAIvR+9DYydr4OQxneICWvV7L5pQfFxWAh+ldvkU463NOg77GcSuzkdW0cOhwDpzneR7On4ELlkotLqx02M30LH2bsCYBgYONp4IW3J7fJvzu9s2ftc3fXFH9QGVt7AutuHnWn75iWPZbzSq0AJo+uIJj+jFzdkuvsSgRBGT0xPAS2JBjm+7OR4XB3GGXpyCmvB2P0trWCMFg0bwQ3JWbK8Lv/yuVkGy7eErjKKuAyzZwhsS5OuYMuSubaWK6wk+f8qZCUo+ebvcbdNQ1LSVIEfxJCG/4bJn7oulgBsU/cLqcQE/L/C70tfhPdiZork82vJqQqOsUY4+ytupJ+HqSLy8zNFZ8Rgf3z5TyfrOVe1eaXKVrvlp9pwi8AnOufHK1Cb9pNetLKKGDtEC2a4HE0Sv/c1g22RLsGlwiGXgtNKtLzqYX7Y4l6qJkwEefX/4imEH1okev3P3EfD1Q2BclyNDHq28tG2/LpLbyHXpCaf70GiagcNM+NOXmwjJ+dIyX616x10wVI/3MhhdchVgVq+SuJIY+pjeaUdy4Fx1X8EsyWME/5hpjBqFvg6IjPZvGTpb28D4ss
- ak459pFy
- +XcULztB6fFL43iKHWyzf9mNw964ZCnthHVGnMUmzJJO+ug23oqQ8bFEKoIPhlMpSASyd3St1xg6SUsNljVp+beFJK6uAru9Z4X+GD4BG8bW3xBVtvOoDvD3w8eBPxeUZFBbcMfXmLCzqIrCwTX+FxtdOaSG246THm+htfDJ1lRD4xQQ=
+X-Rspamd-Queue-Id: 7BB951C0002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: pb19bt1ynowrp7ogthqnxhty1f9tcuqr
+X-HE-Tag: 1772518934-766964
+X-HE-Meta: U2FsdGVkX19TVGBt04bE1GzSpzxhEFr3M3j1/FezUO24zv9HbILgfgF00F4dA9o18qvfYfUA6A1LxI/HP+0UgVLAILQBuJofIBUpWDaTmt3OLTHgyKLkz1Phf3fkGBx9SOa5SKVfmHLDgQDpdtTCTWZ0SEZFFE5FZXyVnkjo9wuI2l2fR1WKMZX8PKMMw07D9FQddTMSydph91PIRan4uqK1oe88IcE3Rgan4nTWIYPgAOB9Vf6PXviORqFtak6JH0+ns0R+BuY1Y76LGpAn3vyOpftJ+WmRGDXF+R7M7YCedQ7Lf3sNlBnjbcr+E5KsmzLAnfBSXeBpfdntQFIP785dbQTh+lRkC0zGhVaLpdl1G5r1YRPuyMd/zcVbxRth5UbWCa+ARb2ziookq0+ypae9K9EeewGrhkt9TzNSPiEg+tG1/7gp4XdJ0bYuvQN5gWHeOOHRiQ7+xo+KfgxwFqlI8PxV3keSmUAAqkhz/ZSM5S/UGW8Ym1gRN9r1wI4iYWNIpwIukM9ypb+b+kxUiwLJgKHQ9udufZsNp7y8m/yjXTutFhFyLSIUYMx/wix3+ieAWEpuSp/Zq5tvNChuGJnUJanOORiYwpOw0ZvJFXjqQEmEniXKdw9ZdrMt74CmxC+lg3WUDTQCwMoXhng+Kx0dCxyjlDnyA50paKAejgWp5fQa+WVAel3yvkaCz4V1SKsdBBd6JjIT39MQhBFr2ae1u2N/I7w3sAmSKxyaSOLhlG6547cQUog7ARmXpOIDu+bGFpUybuqpRY1so8O/Q6N2YvTuCaJeTEmuSGUiXVobbLlSXB1vuzpxLTxAaTFkhJfzbWErIBnM+czrneMKhzWk0rzSYd7zzOz7aGrxbodQqNpyx3Q42hq98Pkx7wPe1bp+ddUdhf7MiMktD7PTaR6h76kCoPqRtwhyj4c0yur9IfgyMa50FiEoB7100udXaYps/hNR3KEC4HFuRVo
+ RIszuMBG
+ o602xxPW5BQ3KqlAi5JVjgvbfxHIjJwvwiREe/208vn7BLgkg4wVsjP2qTc0j5JEnu4dkXmT/XZYV52t17OU3nVVfZstAXIdAlKoHeT0H6e2Pi84P3oBdjxlAe53jAl/KPZ/0sa2CJ9eBmEKNLSh71RzeDwQ8C0qCVqLzS7ylim0PzWlMuXdfqaBCMWp1A/DmJaZNqM1XTC3l5uFQDgNHEBP55G8P2o72E+TzBPwYJ+ORYiWj9Vf/VPuP5za5zbJhz/4e/bijoXThIJc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,187 +114,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.
-If the batch has a mix of writable and non-writable bits, we may end up
-setting the entire batch writable. Fix this by respecting writable bit
-during batching.
-Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
-lost, preserve it on pte restoration by respecting the bit during batching,
-to make the fix consistent w.r.t both writable bit and soft-dirty bit.
 
-I was able to write the below reproducer and crash the kernel.
-Explanation of reproducer (set 64K mTHP to always):
+在 2026/1/29 13:24, David Matlack 写道:
+> From: Vipin Sharma <vipinsh@google.com>
+>
+> Register a live update file handler for vfio-pci device files. Add stub
+> implementations of all required callbacks so that registration does not
+> fail (i.e. to avoid breaking git-bisect).
+>
+> This file handler will be extended in subsequent commits to enable a
+> device bound to vfio-pci to run without interruption while the host is
+> going through a kexec Live Update.
+>
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> Co-developed-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
+> ---
+>   MAINTAINERS                            |  1 +
+>   drivers/vfio/pci/Makefile              |  1 +
+>   drivers/vfio/pci/vfio_pci.c            |  9 +++-
+>   drivers/vfio/pci/vfio_pci_liveupdate.c | 69 ++++++++++++++++++++++++++
+>   drivers/vfio/pci/vfio_pci_priv.h       | 14 ++++++
+>   include/linux/kho/abi/vfio_pci.h       | 28 +++++++++++
+>   6 files changed, 121 insertions(+), 1 deletion(-)
+>   create mode 100644 drivers/vfio/pci/vfio_pci_liveupdate.c
+>   create mode 100644 include/linux/kho/abi/vfio_pci.h
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a671e3d4e8be..7d6cdecedb05 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -27520,6 +27520,7 @@ F:	Documentation/ABI/testing/debugfs-vfio
+>   F:	Documentation/ABI/testing/sysfs-devices-vfio-dev
+>   F:	Documentation/driver-api/vfio.rst
+>   F:	drivers/vfio/
+> +F:	include/linux/kho/abi/vfio_pci.h
+>   F:	include/linux/vfio.h
+>   F:	include/linux/vfio_pci_core.h
+>   F:	include/uapi/linux/vfio.h
+> diff --git a/drivers/vfio/pci/Makefile b/drivers/vfio/pci/Makefile
+> index e0a0757dd1d2..23305ebc418b 100644
+> --- a/drivers/vfio/pci/Makefile
+> +++ b/drivers/vfio/pci/Makefile
+> @@ -7,6 +7,7 @@ obj-$(CONFIG_VFIO_PCI_CORE) += vfio-pci-core.o
+>   
+>   vfio-pci-y := vfio_pci.o
+>   vfio-pci-$(CONFIG_VFIO_PCI_IGD) += vfio_pci_igd.o
+> +vfio-pci-$(CONFIG_LIVEUPDATE) += vfio_pci_liveupdate.o
+>   obj-$(CONFIG_VFIO_PCI) += vfio-pci.o
+>   
+>   obj-$(CONFIG_MLX5_VFIO_PCI)           += mlx5/
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 0c771064c0b8..19e88322af2c 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -258,6 +258,10 @@ static int __init vfio_pci_init(void)
+>   	int ret;
+>   	bool is_disable_vga = true;
+>   
+> +	ret = vfio_pci_liveupdate_init();
+> +	if (ret)
+> +		return ret;
+> +
+>   #ifdef CONFIG_VFIO_PCI_VGA
+>   	is_disable_vga = disable_vga;
+>   #endif
+> @@ -266,8 +270,10 @@ static int __init vfio_pci_init(void)
+>   
+>   	/* Register and scan for devices */
+>   	ret = pci_register_driver(&vfio_pci_driver);
+> -	if (ret)
+> +	if (ret) {
+> +		vfio_pci_liveupdate_cleanup();
+>   		return ret;
+> +	}
+>   
+>   	vfio_pci_fill_ids();
+>   
+> @@ -281,6 +287,7 @@ module_init(vfio_pci_init);
+>   static void __exit vfio_pci_cleanup(void)
+>   {
+>   	pci_unregister_driver(&vfio_pci_driver);
+> +	vfio_pci_liveupdate_cleanup();
+>   }
+>   module_exit(vfio_pci_cleanup);
+>   
+> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> new file mode 100644
+> index 000000000000..b84e63c0357b
+> --- /dev/null
+> +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
 
-Fault in a 64K large folio. Split the VMA at mid-point with MADV_DONTFORK.
-fork() - parent points to the folio with 8 writable ptes and 8 non-writable
-ptes. Merge the VMAs with MADV_DOFORK so that folio_unmap_pte_batch() can
-determine all the 16 ptes as a batch. Do MADV_FREE on the range to mark
-the folio as lazyfree. Write to the memory to dirty the pte, eventually
-rmap will dirty the folio. Then trigger reclaim, we will hit the pte
-restoration path, and the kernel will crash with the following trace:
+The live update support for vfio-pci was initiated in 2025, but 
+developments are into 2026. Update the copyright to 2026 or 2025 - 2026.
 
-[   21.134473] kernel BUG at mm/page_table_check.c:118!
-[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-[   21.135917] Modules linked in:
-[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
-[   21.136858] Hardware name: linux,dummy-virt (DT)
-[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   21.137308] pc : page_table_check_set+0x28c/0x2a8
-[   21.137607] lr : page_table_check_set+0x134/0x2a8
-[   21.137885] sp : ffff80008a3b3340
-[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
-[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
-[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
-[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
-[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
-[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
-[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
-[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
-[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
-[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
-[   21.141991] Call trace:
-[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
-[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
-[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
-[   21.142766]  contpte_set_ptes+0xe8/0x140
-[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
-[   21.143177]  rmap_walk_anon+0x100/0x250
-[   21.143315]  try_to_unmap+0xa0/0xc8
-[   21.143441]  shrink_folio_list+0x59c/0x18a8
-[   21.143759]  shrink_lruvec+0x664/0xbf0
-[   21.144043]  shrink_node+0x218/0x878
-[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
-[   21.144763]  user_proactive_reclaim+0x2a4/0x340
-[   21.145056]  reclaim_store+0x3c/0x60
-[   21.145216]  dev_attr_store+0x20/0x40
-[   21.145585]  sysfs_kf_write+0x84/0xa8
-[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
-[   21.145994]  vfs_write+0x2b8/0x368
-[   21.146119]  ksys_write+0x70/0x110
-[   21.146240]  __arm64_sys_write+0x24/0x38
-[   21.146380]  invoke_syscall+0x50/0x120
-[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
-[   21.146679]  do_el0_svc+0x28/0x40
-[   21.146798]  el0_svc+0x34/0x110
-[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
-[   21.147074]  el0t_64_sync+0x198/0x1a0
-[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
-[   21.147440] ---[ end trace 0000000000000000 ]---
+Zhu Yanjun
 
+> + * Vipin Sharma <vipinsh@google.com>
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <linux/kho/abi/vfio_pci.h>
+> +#include <linux/liveupdate.h>
+> +#include <linux/errno.h>
+> +
+> +#include "vfio_pci_priv.h"
+> +
+> +static bool vfio_pci_liveupdate_can_preserve(struct liveupdate_file_handler *handler,
+> +					     struct file *file)
+> +{
+> +	return false;
+> +}
+> +
+> +static int vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static void vfio_pci_liveupdate_unpreserve(struct liveupdate_file_op_args *args)
+> +{
+> +}
+> +
+> +static int vfio_pci_liveupdate_retrieve(struct liveupdate_file_op_args *args)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static void vfio_pci_liveupdate_finish(struct liveupdate_file_op_args *args)
+> +{
+> +}
+> +
+> +static const struct liveupdate_file_ops vfio_pci_liveupdate_file_ops = {
+> +	.can_preserve = vfio_pci_liveupdate_can_preserve,
+> +	.preserve = vfio_pci_liveupdate_preserve,
+> +	.unpreserve = vfio_pci_liveupdate_unpreserve,
+> +	.retrieve = vfio_pci_liveupdate_retrieve,
+> +	.finish = vfio_pci_liveupdate_finish,
+> +	.owner = THIS_MODULE,
+> +};
+> +
+> +static struct liveupdate_file_handler vfio_pci_liveupdate_fh = {
+> +	.ops = &vfio_pci_liveupdate_file_ops,
+> +	.compatible = VFIO_PCI_LUO_FH_COMPATIBLE,
+> +};
+> +
+> +int __init vfio_pci_liveupdate_init(void)
+> +{
+> +	if (!liveupdate_enabled())
+> +		return 0;
+> +
+> +	return liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
+> +}
+> +
+> +void vfio_pci_liveupdate_cleanup(void)
+> +{
+> +	if (!liveupdate_enabled())
+> +		return;
+> +
+> +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
+> +}
+> diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+> index 27ac280f00b9..68966ec64e51 100644
+> --- a/drivers/vfio/pci/vfio_pci_priv.h
+> +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> @@ -133,4 +133,18 @@ static inline void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev,
+>   }
+>   #endif
+>   
+> +#ifdef CONFIG_LIVEUPDATE
+> +int __init vfio_pci_liveupdate_init(void);
+> +void vfio_pci_liveupdate_cleanup(void);
+> +#else
+> +static inline int vfio_pci_liveupdate_init(void)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline void vfio_pci_liveupdate_cleanup(void)
+> +{
+> +}
+> +#endif /* CONFIG_LIVEUPDATE */
+> +
+>   #endif
+> diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+> new file mode 100644
+> index 000000000000..37a845eed972
+> --- /dev/null
+> +++ b/include/linux/kho/abi/vfio_pci.h
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +/*
+> + * Copyright (c) 2025, Google LLC.
+> + * Vipin Sharma <vipinsh@google.com>
+> + * David Matlack <dmatlack@google.com>
+> + */
+> +
+> +#ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+> +#define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+> +
+> +/**
+> + * DOC: VFIO PCI Live Update ABI
+> + *
+> + * This header defines the ABI for preserving the state of a VFIO PCI device
+> + * files across a kexec reboot using LUO.
+> + *
+> + * Device metadata is serialized into memory which is then handed to the next
+> + * kernel via KHO.
+> + *
+> + * This interface is a contract. Any modification to any of the serialization
+> + * structs defined here constitutes a breaking change. Such changes require
+> + * incrementing the version number in the VFIO_PCI_LUO_FH_COMPATIBLE string.
+> + */
+> +
+> +#define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
+> +
+> +#endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
 
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <sched.h>
-#include <fcntl.h>
-
-void write_to_reclaim() {
-    const char *path = "/sys/devices/system/node/node0/reclaim";
-    const char *value = "409600000000";
-    int fd = open(path, O_WRONLY);
-    if (fd == -1) {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
-
-    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
-        perror("write");
-        close(fd);
-        exit(EXIT_FAILURE);
-    }
-
-    printf("Successfully wrote %s to %s\n", value, path);
-    close(fd);
-}
-
-int main()
-{
-	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
-			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if ((unsigned long)ptr != (1UL << 30)) {
-		perror("mmap");
-		return 1;
-	}
-	
-	/* a 64K folio gets faulted in */
-	memset(ptr, 0, 1UL << 16);
-
-	/* 32K half will not be shared into child */
-	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
-		perror("madvise madv dontfork");
-		return 1;
-	}
-
-	pid_t pid = fork();
-
-	if (pid < 0) {
-		perror("fork");
-		return 1;
-	} else if (pid == 0) {
-		sleep(15);
-	} else {
-		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
-		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
-			perror("madvise madv fork");
-			return 1;
-		}
-		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
-			perror("madvise madv free");
-			return 1;
-		}
-
-		/* dirty the large folio */
-		(*ptr) += 10;
-
-		write_to_reclaim();
-		// sleep(10);
-		waitpid(pid, NULL, 0);
-
-	}
-}
-
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-Patch applies on mm-unstable (9af4957ef127).
-
-v2->v3:
- - Don't special case for anon folios
-
-v1->v2:
- - Just respect the writable bit instead of hacking in a pte_wrprotect() in
-   failure path
- - Also handle soft-dirty bit
-
- mm/rmap.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index bff8f222004e4..5a3e408e3f179 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1955,7 +1955,14 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
- 	if (userfaultfd_wp(vma))
- 		return 1;
- 
--	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
-+	/*
-+	 * If unmap fails, we need to restore the ptes. To avoid accidentally
-+	 * upgrading write permissions for ptes that were not originally
-+	 * writable, and to avoid losing the soft-dirty bit, use the
-+	 * appropriate FPB flags.
-+	 */
-+	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
-+				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
- }
- 
- /*
 -- 
-2.34.1
+Best Regards,
+Yanjun.Zhu
 
 
