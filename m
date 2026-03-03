@@ -4,135 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2B8EDA686
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC12EDA686
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF3346B00C3; Tue,  3 Mar 2026 10:30:38 -0500 (EST)
+	id 801336B00D8; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E136B00D8; Tue,  3 Mar 2026 10:30:38 -0500 (EST)
+	id 7D8DF6B00D9; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B686E6B00D9; Tue,  3 Mar 2026 10:30:38 -0500 (EST)
+	id 6E4F36B00DB; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E1506B00C3
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:30:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4D64D13A074
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:30:38 +0000 (UTC)
-X-FDA: 84505138956.27.CDBD3F5
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 39EB9100011
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:30:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=sNP1bgiN;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="f 7Zq6Le";
-	spf=pass (imf14.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EB656B00D8
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:34:51 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D83989C68
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:34:51 +0000 (UTC)
+X-FDA: 84505149582.25.1D4F241
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DBBF514000D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:34:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BNOnXQzD;
+	spf=temperror (imf23.hostedemail.com: error in processing during lookup of ak@linux.intel.com: DNS error) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772551836;
+	s=arc-20220608; t=1772552086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R550cmHtYFRQ08EMEWoEE+1PDxvJJAZqz1yBfyc1PVY=;
-	b=6PlEeUBnJn8IEfQEMwu4AJUpvc6Xmvl1gBv3hcTYFwJHKv1S0fP9a/QV3nMagwo0aksZrI
-	RtrX5l9jhVUAAHBnV4yUrkEvS3Mr+Iu25Kih4vh4jsNuoCu52BNZ6Wpm74f8Dtg9ExFJDO
-	CU16ri5eTLOcRLJMzzbfqbN+TX47TIk=
+	bh=iOzTlA9Q1Hh95wpgJXpxS8PX0KPJ9xZrKE9BFwAgi/g=;
+	b=B8kCwSpgJZRcagSBOPtwrV6GtwR4do54IdyGKXAiJpi6WGkevIjVvkNzTyKkwsdSm46u3g
+	oOIdQq/6iLr+R2z9/P6+z0FdklSUlUaGrKLsfujbOy85j9Sn1PcLmJzwTIxnC1mp5A6AuY
+	4WXK1P2VYsw6UnHojYKHr9ywCiHAuO4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arndb.de header.s=fm3 header.b=sNP1bgiN;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="f 7Zq6Le";
-	spf=pass (imf14.hostedemail.com: domain of arnd@arndb.de designates 103.168.172.144 as permitted sender) smtp.mailfrom=arnd@arndb.de;
-	dmarc=pass (policy=none) header.from=arndb.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772551836; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BNOnXQzD;
+	spf=temperror (imf23.hostedemail.com: error in processing during lookup of ak@linux.intel.com: DNS error) smtp.mailfrom=ak@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772552086; a=rsa-sha256;
 	cv=none;
-	b=zg1p2/Asyi3vIv7bOVM4cskv7AtOSFb5DtdVIelNYgQY5/hTxsmvulaWu7jH6jKIq7Hhl9
-	yb/jdpUJvjq3IawGwAgS1ZPlszxPN+WWYOuKMFwyUIndNZEfzNjUvJXamk7ji5Z9f6qclX
-	Fy1HcTKUfUjWERTr3r7trURMes55rvU=
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 82D4FEC05CB;
-	Tue,  3 Mar 2026 10:30:35 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Tue, 03 Mar 2026 10:30:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1772551835;
-	 x=1772638235; bh=R550cmHtYFRQ08EMEWoEE+1PDxvJJAZqz1yBfyc1PVY=; b=
-	sNP1bgiNQmps65bWuYOWiF32loNaTH4x5QUlVKd7hKBc9EHt7/ShYuWh9TIh4mrh
-	bPrijlR08SPhShASfREXhuAcJ5u8CvmUebDyES6All5a9iSLWvfCs6jUJKx7eNTJ
-	PZhiXrQeqeJ3IVmrEbTkQX9h1dP9OEWYakIzDTBeKqFd8QQTM0hH2FlKSb8+2t2V
-	ZSznP3DLQb+jba4be/l2dc+sMGrOaWSXVa2yC08Gx7tslbhRCwCzj9RgF2KAK/9P
-	xhZUq7TIXlvuvx+hES455BDnlkk5SrnFZpXJ2F/84mGIg+gxw/kEve+0FeVT/kTP
-	hGme+IJ1O2ytheyi7b6yIw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1772551835; x=
-	1772638235; bh=R550cmHtYFRQ08EMEWoEE+1PDxvJJAZqz1yBfyc1PVY=; b=f
-	7Zq6LefmWx51xzLScfVH+TFIkejorq3SLuDNqmnZEmU7xXyTOKKF1y3/Kfn1rMkg
-	OXBreYNTG7nq80U6VJvhUVt7tvjtHlE3IdU0WJEkYFhgDZhUbvnunojELXbu5o+b
-	eXre3pebqrHvF00uZeVLYiOhtxuHhQg081R+GL+gFXoAit5J2rGBzTa/pfnKwjsq
-	MWdFX8GKfXI1AQ+LxvfXj53tAsp+IaWsxED3Kng0liH/kNU6CY3435+9Nb2y3Dze
-	5CgYRXvRgsJgFoFn6Twn5hmbICB1aRMI8TTok3cEQxf7pgfAJ2s7Q0Z9TIe/h5Zl
-	dmfjgsXjL7GjF85ukeMHA==
-X-ME-Sender: <xms:mv6maYsmMCGoIgR1nZZzeJql9wR_9S0X2Uih1Bn_Ro4tdYxLwL1LkA>
-    <xme:mv6maQQf1FFpTsFLGLjfrt44oMymKjt-sd-T572XkA9a_6NEW-8_LDA7O4Ugw_QP8
-    KkjRGbEg9HMwW2UFzC_Ich8aSDHrJf_ie-OLuJZBHFSI9uxEw7egOg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedtleegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepjedpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheplhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqd
-    hmmheskhhvrggtkhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhn
-    uggrthhiohhnrdhorhhgpdhrtghpthhtohepfhhthhgrihhnsehlihhnuhigqdhmieekkh
-    drohhrghdprhgtphhtthhopehovgdqkhgsuhhilhguqdgrlhhlsehlihhsthhsrdhlihhn
-    uhigrdguvghvpdhrtghpthhtohepnhhjrghvrghlihesmhgrrhhvvghllhdrtghomhdprh
-    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:mv6maSUjV3Ns2HpFPqArxP7M0ig2UtnYMyoXY9PK1fX5ogQvJQgulw>
-    <xmx:mv6maYqUFjSHEG0Grsq4pVgW79mEQej3xeuMCF3l0pI1H6B8ndJcUQ>
-    <xmx:mv6maWSWI4a7rfktwhrVdHNrCOPjQbLWxoX5dv-hhC5yjDrcjBqosw>
-    <xmx:mv6maa3b3QAeO34GRqp91ELC7KoqSgXl_V9RiXQmNhBlyHimuF_Izw>
-    <xmx:m_6maSd3oTbjMNFKbeh7Oedi7xc-h0QseScNE1khKgKrlSMbUDpNPdlK>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 60825700065; Tue,  3 Mar 2026 10:30:34 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	b=bJ7PFT4rn9XNW8GzXY2qH3VZB6kHnouMCOmyoa6BQ+y6afC6Qchq5Gpd9HsNwPcJlJ+LK4
+	u6l/npyMiRkcbxXIBtWUk8D/Bf0yeZQuvLGHgqAoqusGDwbUiCFcBX2VFcB0oPLdMPrgYp
+	PyypJ7d5gu6hgxEQgMX/Th1Zdy6qB68=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772552081; x=1804088081;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SJ3H5MuWnPGJaNMwps3UfGolG6H6CdjpYf/y1cQ5PJ4=;
+  b=BNOnXQzD3jXXMZSNd0+9Bg6YFYaw8Gx7DhVBN+Ent8ZUYSDzAr690deu
+   AfAC4AtcHF/gEOS9TYlBMG4dwDB5pW6dXu5JJsexp1TCjTu8upkkh9cNq
+   WiqwXwcgV8vrlKWf07DXn4RJwW9uyiInHaMmTZ5JS3A/eJySiaYd+gdAA
+   48cwUl34pSfZhiH15HoNbg3gaPo151DL6QC5NefBkZC0rFlwD3AMrnctA
+   +tyh+WHRqQ73avzkMwKPblP4YIgfGS26ZApYzN2HRRyPS1P0/VgU+qlVT
+   I09i62pevzJpoqJk/wFFEdZKramuI5lD49aRnt2GeR7WwlOA0Ftw6Dc/K
+   A==;
+X-CSE-ConnectionGUID: Ws+B2C26QX2oyupagNFM4w==
+X-CSE-MsgGUID: UE/p/fyzRWybMjER6qe64A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="83931180"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="83931180"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:34:37 -0800
+X-CSE-ConnectionGUID: iVp9sCndTqK96kxZPvYD0A==
+X-CSE-MsgGUID: rsYFXQKeRx2/z7GYR6AU+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="218144917"
+Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:34:37 -0800
+Date: Tue, 3 Mar 2026 07:34:35 -0800
+From: Andi Kleen <ak@linux.intel.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Subject: Re: [PATCH v2] smaps: Report correct page sizes with THP
+Message-ID: <aab_izbib9GzSeRc@tassilo>
+References: <20260225232708.87833-1-ak@linux.intel.com>
+ <d2c37aa0-ec0a-457a-bbf8-4624cdb8074f@kernel.org>
+ <aaR4y-lCl7YPEcnX@tassilo>
+ <af715d91-6d49-462f-9e9f-3a513ff2ef77@kernel.org>
+ <aaX2B9Efh0dBed6c@tassilo>
+ <4a08a249-211b-40b9-b6bd-7c54af2b9d15@kernel.org>
+ <aaYFpEmiH99dryA4@tassilo>
+ <72667151-816f-49a7-90e7-c68db3ac3390@lucifer.local>
 MIME-Version: 1.0
-X-ThreadId: A8s3cHsN8Xz7
-Date: Tue, 03 Mar 2026 16:29:45 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Finn Thain" <fthain@linux-m68k.org>,
- "Nilesh Javali" <njavali@marvell.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, oe-kbuild-all@lists.linux.dev,
- "kernel test robot" <lkp@intel.com>
-Message-Id: <81916ff0-9296-4de2-bbf9-40ef0eb4c60f@app.fastmail.com>
-In-Reply-To: <6bc11e2f-393d-16a2-9664-a20e2f1d3767@linux-m68k.org>
-References: <202603030747.VX0v4otS-lkp@intel.com>
- <6bc11e2f-393d-16a2-9664-a20e2f1d3767@linux-m68k.org>
-Subject: Re: include/linux/compiler_types.h:631:38: error: call to
- '__compiletime_assert_431' declared with attribute error: BUILD_BUG_ON
- failed: offsetof(struct qla_tgt_sess_op, atio) + sizeof(u->atio) !=
- sizeof(*u)
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 39EB9100011
-X-Stat-Signature: ra9be718ckimogrn5naoq8n9tjutmxzz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72667151-816f-49a7-90e7-c68db3ac3390@lucifer.local>
+X-Rspamd-Queue-Id: DBBF514000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: yc7h3wuhqotr8e7z8woa7yhqgwyxzsft
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772551836-64342
-X-HE-Meta: U2FsdGVkX18ewNjssxmPFLrAEHQ8KdyAmp9MKGlCjLkMnU8RGJcruRlScIbOnQP5b7vApag9HmMx6SeOBxBPMOWjJcGp+xoO6hK5wQdbCW9Sh2vQ4EUYGLpz92FYwXeUn45njH365nb38VMVrKNslPUWdY3ddofe1ucISQF/nFKns6bH94pwJ1U3GUCCuTFh6iDk5GDgZYyzVG/lhT826xvoesesfWOJ/WoIls+A/wSeCsxFcp/HIgHNjTWZlOnqc0jxxDrPP3QMp6Kqa3iPHMU7usJiG531wJvn0NE0mcjdIBuCurK58vhKOIPsEPrcVqM/ee9bErvRIn2T7dnxf1WmPPj8B3gjWu3kRWA9vGGiYOpjMzxltMhRiCSJiYKNsocRYBVK8aqGzXC926nGzgJK2OQ5wWK7Sq4Q3+MP8XeoBkgrSsahz3zGabnpnBw7ZMvRj37M/rAKdOm81SO2nyb/8t7VTJWihbxia2S1RIAKCC3kXvr8phwLaIF8j+2md+V99mXsZCZJ9Oq7sDrhZIPVDCJk8MTdp0lEYvwDXKzixrwXUtROcwsArcsFQ0y0aPTISWYWg/x1ZH1Tn40AfcCXOSxgX4ajWjWMMt/a37ROtOcSKA9yDJhT9b214Jqx2DCiHp5sBNmSs8YHyQTOIPer/HYEfvIxhg8jveKNhAtQ5ChfvMXv5tUHAI7Jjgb1l52uFAQT3wA7bi7xSKv7l77NJhFFsd5tIGPp77XAj3v1AOq+nRLIFHgeSQ3FJR0IxSOW9CxuVual3US3h0lK7Z/KHrb98196TU/rCZ2z6DfEataZG27C9EKt4UbqBJZUwKnNsIqm5KUIADSoKKLVLG5M43QPlaGx11QDVzgb7LkMfEAnDFNwsl7JeMs0lUBaJIyuD0Y2WEH7R2GUGO6ySs3kLSNLw/0BYrQ8EN2wbn8iUW2aAmhJzZ3OV4h6tl63kELxu05d9LWqNGyhumm
- iEe8U1J7
- kKihqtIY1DqMEE1gQkELKiDE8zNeE3lVYmGk/Dm6bMuum+iASEP9rtXXLmo/ZDH6S+KDQAyjk7khgVnRGt1c3LQLMcj/OKFgw3XwCGpX54QvgNO+t3a2NUQst2soGoSpQrk3Cim5dN9B1ZdLmr6ovnb3wG5AmaJAR0lphwYNEd0Pmy/qCxVFyVXb3vC5JILbJBuIZh8+tOuGaynw9Peb1fipvMNwyKm3n6/uKtXHbrnpkMpdTxQHe8BFjyohf9qvST/x0AlqKtQtYLTF21zakkLphG38D6P6i+ES2AMwwlSS7CI0rCPxVfch/0hiFLcbvFQJdSzey2SRaIfdVCUdEqtg/aw==
+X-HE-Tag: 1772552080-169863
+X-HE-Meta: U2FsdGVkX193p2P+du8xh9Ici+HZYt9u6wNtP4T8bbdMIErFXh+u8bYALSNYhcpWBk1hXPoddyFDUzsE/t60ZExmOF4IqnC8fQfPwZ4Q/s6uwjhJfMypsPrn4Q+ilkDEIkkhH8wY1ZvtuB0uy/kO8RKWZwh1/LioxGB+Gz6qlFSD7UX8FEYlxfC5VIH5Hkmr8OVw0QAhkYRYsFUW5SIyYT7SzzsIgfovaH1IGrPJMNHQsrfy7kQXNME/5MLnQGnDjKFAPZNKFKnEakFHf7sTz/mORps4M9AbHYrd6pPHFHjplmAH7ahHx9foIzdZGwxXowyY09kpoqN5/PIm+QEHbf8jjxjxPwgyjNz5eRIC/WORFfGwKaw7CNlsKnewDgmX92wTG9RNDlSLeR7qQLRNvCzJZhbqXXn6q2ZrP5nJTkDh5Bt5WTvnIlHpBJL10lB8HJ/hk2AmMefYPpHmZUsTEf0ZFZl7Ujwv2921paX0L0miKj3yA/7x54aHkNANgkaeEeuo2uulJKITsxt9MJ1TD/GPfb2URAbIm47pypYGC3oI9WXeRa18HiByKjaeNXWo3mjZxm4cBjysoYmg1xCgfmV1diLzKm6EiIhYxytr+ryFL+ibJZSWNuhqOZIVyNadH73tyMUKSaoOiSipMXHcPllCeHjfu9nSTYztlzh3dxhANGGh8DIv6InGVZtLEJJIrMz/YsFXOyiv5GlM+iL0e4IXgdAgujCoo10Gk1rljOF/YIo7WDYVG6wLFDlJjRKHA1pClgejuVt+/K0/OmIdOCe3wKD8vXa+cm/AX7uoGmLEfLHQGeBONaIkm20tEfLibb9BPTh/uKUwBGSb1GnNcYyJ9y8/RbKCm+U1uV/V4pP8cp2ACLdcWNRryd2VY9XHEc1cNaWWrbmL6M53rhIW4/8oqiCXpuVkC5uMPeb9kohRmxlleg42p+YOcuIANqzm899L/sdBn7ENTqxfkre
+ JY/KpCXb
+ XfKwXnbJ3TB4t9SV7GPOpLD8qh2QBQV0NBTik1mlFGXsmT+t5qGorFgbSOJhKslTXcmRbYGegdTpQV7OkCsVXLSHqVM3zulKPIVo4ApJ0AdSKm4XnSiAZdCowSA+tPqV+mOQ/ND+49yQIisWI/nFPOhQU5sLT58pZwJ6mTVcAMm6hF5MfywAOazb4/oIdJJpIZiyRkJzIaUIvKcqQkEQ0uq3y9VURMUEaqu3M0b9X07CV28QAw6m6/xs3Pg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,80 +109,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026, at 07:48, Finn Thain wrote:
->
-> --- a/pahole.out
-> +++ b/pahole.out
-> @@ -1,16 +1,18 @@
->  struct qla_tgt_sess_op {
->          struct scsi_qla_host *     vha;                  /*     0     
-> 4 */
->          uint32_t                   chip_reset;           /*     4     
-> 4 */
-> -        struct work_struct         work;                 /*     8    
-> 16 */
-> +        struct work_struct         work 
-> __attribute__((__aligned__(4))); /*     8    16 */
->          struct list_head           cmd_list;             /*    24     
-> 8 */
->          bool                       aborted;              /*    32     
-> 1 */
+On Tue, Mar 03, 2026 at 09:39:14AM +0000, Lorenzo Stoakes wrote:
+> > > actually crosses two 4k pages. So it must be aware that mmap etc operate
+> > > in 64k, but the underlying emulation might be smaller.
+> >
+> > Sounds like a very contrived use case, which I'm not sure actually
+> > happens.  From my past experiences most software usually doesn't use
+> > complicated enumerations anyways but just hard codes something
+> > reasonable (like in your example just always assume 4K worst case).
+> > From their POV it makes sense, how would you test
+> > a complicated enumeration for cases that don't happen on your
+> > current system.
 > 
->          /* XXX 1 byte hole, try to pack */
+> I'm sorry but it's a legacy user-facing stat, we don't get to change it or add a
+
+I would rather call it a legacy user-facing lie at this point.
+
+Labelling something with 4K that is only 2MB is just wrong and
+incorrect. 
+
+> > > >> I'd expect other cases where an architecture might have to care about
+> > > >> the actual, smallest possible MMUPageSize it might be executed on while
+> > > >> running the program.
+> > > >
+> > > > That's fine, they can use the min, or just the first match
+> > > > (which is always the smallest)
+> > > >
+> > > >>
+> > > >> It's a shame we had to add MMUPageSize, but maybe it might resurface if
+> > > >> we ever support emulating 64K/16K user pagesizes on 4K MMUs.
+> > > >
+> > > > Okay, so if I follow that correctly you're suggesting
+> > > > to change KernelPageSize, not MMUPageSize. I can do that change.
+> > >
+> > > Not at all. I'm saying that we leave KernelPageSize and MMUPageSize
+> > > alone, just as they are today.
+> >
+> > That doesn't solve the problem that motivated my patch
+> > smaps is confusing today and would stay so.
 > 
->          struct rsp_que *           rsp;                  /*    34     4 */
->          struct atio_from_isp       atio;                 /*    38    64 */
+> Except as you've been told you can find this information out in different
+> ways.
+
+Yes I figured this out by myself, but only wasting a lot of time caused
+by the confusing and incorrect legacy interface. That's the problem
+I'm trying to address here.
+
+Thank you for rubbing salt into the wounds.
+
+The crazy thing about this is that hugetlbfs even does it correctly,
+it's only THP that is blatantly wrong.
+
 > 
-> -        /* size: 102, cachelines: 2, members: 7 */
-> +        /* size: 104, cachelines: 2, members: 7 */
->          /* sum members: 101, holes: 1, sum holes: 1 */
-> -        /* last cacheline: 38 bytes */
-> -};
-> +        /* padding: 2 */
-> +        /* forced alignments: 1 */
-> +        /* last cacheline: 40 bytes */
-> +} __attribute__((__aligned__(4)));
->
->
-> The BUILD_BUG_ON assertion checks the size of the struct, which doesn't 
-> seem right, because any padding at the end of the struct does not 
-> interfere with the subsequent kzalloc() and memcpy() in 
-> qlt_queue_unknown_atio().
+> >
+> > >
+> > > Instead, if we want better statistics (and I think we want) regarding
+> > > how things are mapped, we should look into a better interface.
+> >
+> > I don't see how a new interface helps really. Some of the problems
+> 
+> I mean, you want information X, we're suggesting the providing of an interface
+> to provide information X and... you don't see how that helps?
 
-As far as I can tell, the assertion is always true on all architectures
-other than m68k because "struct rsp_que *rsp" is word-aligned and
-"struct atio_from_isp atio" is either 64 bytes long. The intention
-of the assertion is to ensure that nothing got added after atio,
-though the way it is written does not take misaligned atio into
-account.
+My goal was to fix the old interface to not blatantly report wrong
+information. A new magical interface doesn't really help with that.
 
-> I suppose the assertion could be motivated by some code elsewhere but I 
-> haven't yet found it. So perhaps the assertion can simply be removed. An 
-> alternative solution could be to increase the 1 byte hole to 3 bytes, and 
-> prevent tail padding that way.
 
-The simplest way would be to force atio itself to be aligned
-regardless of the architecture, either by removing the __packed
-attribute on the struct nack_from_isp definition, or by
-adding alignment on the variable:
+> 
+> > you mentioned earlier could be either solved today with smaps
+> > (e.g. handling the case when a folio is mapped partially and just
+> > report the smaller page size), or are unsolveable in the general case
+> > (what the TLB actually handles)
+> 
+> We're not having multiple entries in smaps for every mapping size, it's broken
+> and ungreppable, and very liable to add additional confusion to users.
 
---- a/drivers/scsi/qla2xxx/qla_target.h
-+++ b/drivers/scsi/qla2xxx/qla_target.h
-@@ -844,7 +844,7 @@ struct qla_tgt_sess_op {
-        bool aborted;
-        struct rsp_que *rsp;
- 
--       struct atio_from_isp atio;
-+       struct atio_from_isp atio __aligned(8);
-        /* DO NOT ADD ANYTHING ELSE HERE - atio must be last member */
- };
+Okay, I guess one way to address your objections with "ungreppable" 
+would be to report the majority page size in MMUPageSize and call
+the minority page sizes something else that doesn't trigger on grep.
 
-In general, the use of __packed attributes in this file
-seems a bit inconsistent, with outer structures being packed
-but containing aligned inner structures like atio_from_isp
-and nack_to_isp. It may be best to review all of them and
-remove as much as possible, but that's not necessary as a bug
-fix here.
+(MMUSecondaryPS or something like that)
 
-      Arnd
+If you don't like numbers I guess we can spell it out.
+
+
+> A new interface gives us flexibility to do what we want, we aren't running out
+> of syscalls or places to put statistics.
+
+I don't see why a new interface is needed TBH. Can just add fields
+and fix the existing fields not to lie. Yes need to take care of 
+compatibility, I don't disagree on that. But just adding new interfaces
+for everything instead of maintaining the old stuff properly isn't
+the right answer.
+
+
+-Andi
 
