@@ -4,106 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD2FE67A85
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C103E67A8C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 07:20:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C04926B0088; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
+	id 93B956B0088; Tue,  3 Mar 2026 02:20:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB2F86B0089; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
+	id 8E99B6B008A; Tue,  3 Mar 2026 02:20:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8A676B008A; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
+	id 7CB996B008C; Tue,  3 Mar 2026 02:20:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AA4E6B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:14:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 32D241C8F7
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:14:55 +0000 (UTC)
-X-FDA: 84503889750.30.B76D437
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id EC9B440010
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:14:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jJ2X0MwT;
-	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772522093;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CF286B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 02:20:27 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17AB2C2506
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:20:27 +0000 (UTC)
+X-FDA: 84503903694.20.92D3340
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 10909100013
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:20:24 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=uL8bXKJK;
+	spf=pass (imf05.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772522425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9B1vm61hQWMqh1uv5nPphqUFUMsCP3FqVuJ4rL+XdWY=;
-	b=Ef25dH4FDlZFahcflDkkT/TUlCRmMilbHEUzOLuJAL8t5qlkHd+Y7tOuFKBXsVV/OlWDHw
-	Hnyqv8kbI5U8sc4bHdG2Ic3WAE1CYB4SHV2Xugbyu6I/84ONiJOZ5q8EtH5R+4eolkDyYo
-	phzMgwDdu88zaImobzTMlfXQodswIHI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772522093; a=rsa-sha256;
-	cv=none;
-	b=0kL5REQgRDrHvfgQw+v64gTko45DiUWQilHO3Gz23sVPiYUFTF67GPHir6tgy7A8q9uEay
-	1t3N0m6dFeV+pPUADluqry8MOnQYuPybtXeReDfY4hi/G5oE82fIUkZ7ZPlUgdl7baIem1
-	tQ2qm/Xzy1WC+5JhPV7BNJJt0TUMuws=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=jJ2X0MwT;
-	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772522092;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9B1vm61hQWMqh1uv5nPphqUFUMsCP3FqVuJ4rL+XdWY=;
-	b=jJ2X0MwT101PdOwCR141VtHFcO7tBxsJQYyWboizPXtINGWTYxdvEn+zFfT6iTLJrJj2CW
-	64Z1CYFfI2sYbV8hvUVUFAIp/GD6m1RJhdIWBYsloVZLyXeouAoyB1nxxxWfEbGHhw+W+u
-	D/sSNhrG4bqC2gOu+5YK3qcgx/rE9ss=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-spsLqiq6ONmkJVbZdMMAEA-1; Tue,
- 03 Mar 2026 02:14:49 -0500
-X-MC-Unique: spsLqiq6ONmkJVbZdMMAEA-1
-X-Mimecast-MFC-AGG-ID: spsLqiq6ONmkJVbZdMMAEA_1772522087
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2F7001956096;
-	Tue,  3 Mar 2026 07:14:47 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.42])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A89FB19560A3;
-	Tue,  3 Mar 2026 07:14:44 +0000 (UTC)
-Date: Tue, 3 Mar 2026 15:14:28 +0800
-From: Baoquan He <bhe@redhat.com>
-To: YoungJun Park <youngjun.park@lge.com>, Chris Li <chrisl@kernel.org>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org
-Subject: Re: [PATCH 2/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <aaaKVKltqhdoWreP@MiWiFi-R3L-srv>
-References: <20260302104016.163542-1-bhe@redhat.com>
- <20260302104016.163542-3-bhe@redhat.com>
- <aaWaM57jui+iuEj1@yjaykim-PowerEdge-T330>
- <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
+	bh=VVdYil7W0i9u77JXtm0StCzUZz4J3OdCK1AwKZIzaa4=;
+	b=oLQmxuosGvkibrXLhID+bJGhsT88a+1knmHVgqR4wcQT9vAuztFTiCTmCzTdBXPvwF/QeL
+	hNErKTUQsIJ5mB2P6fkXtNtU9Vkk1RtY++BVYLXT4qEbbo9vhXdC65YCMVJi2aIsuyFtNT
+	Vv1Y/USO+YXsTOg81op5X1tgstu2tuw=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=uL8bXKJK;
+	spf=pass (imf05.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772522425; a=rsa-sha256;
+	cv=pass;
+	b=vOjYOSiODiihTvjXIr9h+nJnI/AR9jHLU/KK2FqlVEAzyztXkG9ouI11l4jAD7DXnFC+Ec
+	a7DMTmpzJviVeHuGHqoMA91DCNRx5DRqokGgxSj16NpAytoP/gANtCcVVFPBnC5AgmEOwN
+	fD+fWLStYdlFJScwQlG2qbL4t0W3d90=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8f992167dcso541126166b.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 23:20:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772522423; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XYzANupqM/km24zuTXaynrrGbmLMDFOVlSRi9f2XZDgk6rKTN8wjaWXSITVNUcHXWZ
+         +ClH62gc0ZAKQtpxlijkHXVQamexJpnFfOftmcnIiS6jyG/RNLOBOXkehTwDwsgumiyn
+         vni6BJxkR40DjnD6jZra1nP1IXzRipS0F1ttImJqj5ONuiwYl2a1yoOAJ2XyATSETU4l
+         n8ziZxJJMOTrCzWhQo5PKDdUj4XMmlT9nLCXzGQg9TaBLYIqdfMmbDjUAeSz6W+CvWlF
+         tVuO/bM3vZlC2XYImp9r2qqGXQRe9Blm/I7poE1tNhuXMBB+yJ+KM/vh7lVxAd0zqoZb
+         h0Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VVdYil7W0i9u77JXtm0StCzUZz4J3OdCK1AwKZIzaa4=;
+        fh=wTZlei9+ZJyatiQHaMHK6sSn/lJFRSgAEfbc8HrkKdo=;
+        b=SSllWHAWW5a2vwCEneewuQPKw9NXtHVSQHScKmoSNNmVPvh4yE2hMPRcqzckwQvMbQ
+         Mgma4tc7LRWlX1dO+D42Ck/MYVKQgE6AUM/58I5qlvLgm83a/lJsXJAQtEw8EkOWKOue
+         j5ISjeqQi/QJlsA7EcGcGZnhMmjLyOYQgtHQR9bc3DnpT/duxqyosngpxvY6TQ1LrJ40
+         /0K91LSLGZsvtDpoWEWibE1QRsFVpKjj0XUCW6PC5aNT9voLkNH9xiw7da/bU1kWaPkF
+         aYiNtyemDKPtELSNf/X3C1rx0l7jIkk7hZ8HrfjhBiXRIiSeJPH88NVNF04vX7yVDjY1
+         sRGA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772522423; x=1773127223; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VVdYil7W0i9u77JXtm0StCzUZz4J3OdCK1AwKZIzaa4=;
+        b=uL8bXKJK8ad37loKNf9N8IOQ3ul6AoxH6Nh/6vconYfGkgPFwxRw3XaOZDN649eoEo
+         NpgLGjkAU304OvGwBsn0z6W22f9jPJRyz9c1rCFy0nmvvL42r31P4+jFje/phevS2Ddx
+         JsdP7Q94cHzliqT6cFJrjCy96xiHQ8iQFWNrr0/PaxfcTHaT9phlhvVere9g9vopWA1l
+         /1t52VlGVtWV1yzu3GAjTCkwbh/tajfNrKIyukypVoqxfFdcId3821jFhQUjgXZNAv28
+         knCduv+8NnVQaZjOCsxRq3hHWnrsb20hZsi+WDtnY5iiSleDVYipA5w0gS/ERKYpAxgy
+         l85Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772522423; x=1773127223;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VVdYil7W0i9u77JXtm0StCzUZz4J3OdCK1AwKZIzaa4=;
+        b=C1yQgtkztiCgyC4mEmmXLplS9jUCfqr0qWFEuTBzzscuKLfcUq4TVqGXzm4ow/iysm
+         U+uDzNpeI51oDbQhLS2nQDRHl2lHTkzkihnUMfg8KYM6crIG2LASGcGTbJ/Mw+jCJhJg
+         PcV0mFBc9G87CGNteBmVp6D+/8a7DA/ievHt7bAngIhthi/ecS/B1AO/kf5Jc3srs+N0
+         WLMoBOotVRxG6Ym02l/1XoDuGHHklE3oPOOk9w7ar0ye6hic49FLNJffW1xZOFLaT6gA
+         aHKsCKEBGDyV78YSQCeXTWsZy474Qk1oJa/dOS6qibDfzR+uWEIcDJGWIY+lWOnu3LVb
+         p+7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWTOeHBVAqld3thmSkQuFSIsDzJ492RwPJASWHcBe8gYUQAyuOsa7LN9bvSbbQHIQMP4xXy+5b0ig==@kvack.org
+X-Gm-Message-State: AOJu0YwKUPtCAKso9vtkNm80TyZMJk5wK8jT2K7x8ZhAeC9LT0DenGvv
+	hUjL8BScZhC8IXEg7DcUkQtrFJ3amulhjAW9MbjllePlnijAmDR24Ur/y37ZADXbA3H5owwPSRB
+	vXMr+i+LmG09UaEGPsk2gbMLVFn50LeY1+J1ZcE/W
+X-Gm-Gg: ATEYQzzPAsVv+JL28tX8f7jm31thYdyDrvbUg8aSorhyFenp1BTS3RMT1rXVm2XRy/q
+	eRjw6qRVVxlnYwYbpx7tKLRPzWd86uiuslbLpn1UbiV4JoNjs0G2fbb1UibuofhdSG2e/xpbSFA
+	dB5uq8RUETfeWfdAHDY7TrwpHcYz1zr2AqCOqq0RkwEB23faIPgNzDyQe2OVlBTc1Y1D5A5aNT1
+	H7cey55I5NhpoKopwDz46m+gMPFswIXz1YmibS3Ixag4JgZ2YC9YwQuM2WXlC60CajILdauEJmS
+	vgLyKKnzUFBSXSqInTzQ5NgXTc3Nrjo0IIMYZQXh
+X-Received: by 2002:a17:907:3d90:b0:b93:a3db:a6b9 with SMTP id
+ a640c23a62f3a-b93a3dbae19mr488908066b.53.1772522422966; Mon, 02 Mar 2026
+ 23:20:22 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CACePvbUr+xEs3zM_g6ZhwosF=Qt2=2W5fjYPs4gDL6MTo9rmrw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: hjyaYaQXNiByJ49J_BLCgKxf-CS8-aCWJndbmAIcOL0_1772522087
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+From: James Houghton <jthoughton@google.com>
+Date: Mon, 2 Mar 2026 23:19:46 -0800
+X-Gm-Features: AaiRm51Ep2_L29b_JroBYwNE4zf0aj9rqC2fV9F6QzDJPa3ta2uUEeGpii49xJM
+Message-ID: <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com>
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, Breno Leitao <leitao@debian.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 10909100013
+X-Stat-Signature: r1j1ejeizj78gwyb96kmt7sctbb4mmc7
 X-Rspam-User: 
-X-Stat-Signature: wjeiaegjipijzbjzij3jnfjiayc5onm3
-X-Rspamd-Queue-Id: EC9B440010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772522092-860860
-X-HE-Meta: U2FsdGVkX1+CPPPa4odfn0VWM1AsKWnppAtMps1vKRltvlGkE23TmtKrXvkIkKvM76uJlge+NhV9Rz3mJs1K+G3ZDxwrrfcTvXXek5BqgLF1TiS30b+iI387nh37KwtwigjtGHe2stwfrDCC780OhKjOTjorRCCyjbZB4WoRb0+lABUMo0GmNxgIODZKWrCiHqE91GIthgRFKBy8ZUc6ZQXzP4XyQAZmRejYsNNaSUzICn2kuCKw7qUaROPp/EsjY+3Q5KeIUJXmsp2kUh5cFhr7kc86WHkqPLvYCyoXJOuHVZ5gAasscXzrozOJwE+tGSHi4u54T0Kbrdc+/Vg94BkWZuoc+kyUJMtZrObANKFPSHbWikU7M38pO0Y1t5+mnbJiwxpFtS0JYddfoZriNMV8Fb0G0ywwOkT6HrFJtC00ce84qJqnkSVgwPDDnTwwolmr1M0ytFR3wrApbwOSiSOwksA17E+eoIvoN54QTRs/zGugmOS4RWwAPjZmtzlkkFnQVElp2ihBHyppBlmrtIR8DcpATJnwBfOVQigmJ5brpIPTK97iksJPXtU4PLli3ykaFxnJpvvXkze2eqqb1DQw0MF/dgDuSYVums3J1DP9EUOI4qS/Yr/IY7ELm+M5O4YU4p8bqrmiguQy+rHsJrXNVDKU0GxsYO5bb74097y5czGzBeWwf3gqz1c4YHe3nKiGmfmT3Z23DNG0FymO9+sATPF/V0Wi9eVF5eFUkgyt1/0z8fs47LZEcySlh0o13wdqoMCMYOcQqU4NjOJmgbKoeRlGqM08hZdOVFguQKha3MyGxWhkmaSG6K2ICSRf9LJ7Cm4peTU5mS+JoNzfXvwapc3cs3UARUhaaie4nyLYL6qZ23IoGvMEPxIHigBFoD0Y9D/VVe3nA5+fBW+ge3jqZbSJ9EsnMk/0xYmA9Uj4nEwPlTQLHMfDgewQLBperJkiEzGTmcxOsC7Sptr
- uFNFb2vD
- TXTXu8xMxll/VjZJQPOlnqJa7evtjEXK+Xu51LhZlxbYe9nABR+Jf5MTAXAGRH64iYWsELmACl2bpD60GB1LOhrlyKllkGRdKh4IiweNlr9VUAbKcdqIvMvFmot99tiWxMxL8U0c7q4d5UtTr6Ity9Y4GZLcj4NvdZu++JiuQFK9wBH8kwboDzlHwkAZU92iIpxL4toVlzJWFlVvDWq/utKxM1icAJRJ0ePUm2QBES5jXJ9/ncHpFFa80uzJNe+G8JgysyK6G03POf4YVeiq9V191YDtDg2SaUZjxNjxLDkppWNsDa/icEF+ItIxAkz2TI98eq3M/TZpYBwQbTC6UXk+BMWo2pTN097n2tHGP/xqWknY7APmZA3G4rlJaMjmYe9zytyEWQwVmk0LceULYyuJ4KKQ3BzK3FTsSqtxLmaaA+jS4uYflmqF8RQMRx5Vu9akGmiCcVIgttpwqF32IP2YGB76vSbYXx4Ce0CiuRrHpuog=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772522424-638204
+X-HE-Meta: U2FsdGVkX19r2/I5zjEGlIVsPn2HUicJHDKRZqfNyUATI/qLJ3ZLrhDSyMb6QJL8auyYyKFIXoC5xjpsR2tbBx9HjImYpcOy8CVoyzlmMxesP06POkYOL6QMAmZC/ZGG5eBQ6Hrn5Zk0rbbwZWWEXu5SSbzfqK4K/sjbIY+7c6IjAaBlYzwQyTcTan2mvDSIc9H+/FKt9qu5deApYzAgfcwlo2AGAcNyXVlsfzMoLPs0LT1AqPecXf1twtCDE/QsadtzgzvGOiRDPOccqRNGD1KbN7lHOrFalzqTHpbf+8X3IkzZrTAN0ag/VvUoD5p1ZPhUbhFIWwy/ex96rlYK5UpGFmJKvgiUNRXkeg6TU/1S7zkNuDAZgbcQY8ueEuLGQ9tqw3G/s5IMNZ8zEBPic0HpBhsymB4xQcsERCXnfauPpjxsAhpJo9FSjL7apQKnit2Ww7b30OiTcpx05irPuGQsDhD2JG7rmphiQ+4e5r+b8TheawMGIaOEPf/yM1ALOxO7WBZj/Y2O+2iMOREVaPqlICvJZEwBuzlvmUEEMW+G1sml53L88RIDd29ARCQ3jFra2F/o6gP5MHhAklsDAGwXBsjvllJxvMwWTmUtIT8W2R7eREKg7G3lyEy5pA3Yez9H3tU7ajBCEhDTPleZlVrt3qf6rNuR3ydtj9xbTwCDZhG78vi6x7pIJ9+IqdnXsDQinghn90XImYbG7BXBcgIIYXySwK0HXzpITQ8IZGmqxTky3mNoWSvyvKnh2WO84qLF9a8NwAslgtO6jE+V0WReEQB0a5LkHW9wzHzTL4CNBfmYRRhfPubXFBKQuRFjkP0jgI+LffeSRQVtR0kZvPFR0zrhEqGEguDJ3ADJfzZEXO1k62n29E64wvh/TaLNHg/eYJ6ewFcDOfDEAjzoViyEYCMIp28M3YiUyO/8V0MlywxHdxMCuDqsSBJGcjM856zOzneTPYD2EcmXvky
+ GyS0QyOl
+ ZWFmX4pX8qHfFHUxBzc/VAZQpDISOxtk60brlRnA8F3HwWRXIrvjhV2ZaMfeJa5YpNokBw0RDa90vfLjniKZ7dYNmlaQ3+bn9ZC+dA1S0vHbKahD83gX4d0G4A7gc7/Z1wVcHuoo48GucHOfEgBpGJbRU+yk3jckChYHLKfbA+HpIbX3CTlov5DMlAXNG+QOiGzaPLCIr7mY6O4/MvkE2bgJhkBi5Uulp7JD3Y1tM1ewl0DtAgNXu7xKm+XXaHDZbEdSh+TfuBn7iiP4tiWfbyeGmlUI2qI/d/h9GxqfZmG5jnPvTrEXdw7k5sKM89QhhtJo++8G7E+CYPMd3KzCvS/tW7wGVXZk+6GnK0ya436cG9rdx2FSZxnbUGQc83beic9Jb3GLIeDaOA9ok3OCki8BUvD830wXPw4hhskJVG2seYGxd21H/+YUCng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,80 +142,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/02/26 at 11:35am, Chris Li wrote:
-> On Mon, Mar 2, 2026 at 6:10 AM YoungJun Park <youngjun.park@lge.com> wrote:
-> >
-> > On Mon, Mar 02, 2026 at 06:40:15PM +0800, Baoquan He wrote:
-> > > This simplifies codes and makes logic clearer. And also makes later any
-> > > new swap device type being added easier to handle.
-> > >
-> > > Currently there are three types of swap devices: bdev_fs, bdev_sync
-> > > and bdev_async, and only operations read_folio and write_folio are
-> > > included. In the future, there could be more swap device types added
-> > > and more appropriate opeations adapted into swap_ops.
-> > >
-> > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > ---
-> > >  include/linux/swap.h |  13 ++++++
-> > >  mm/swap.h            |   1 -
-> > >  mm/swap_io.c         | 102 +++++++++++++++++++++++++------------------
-> > >  mm/swapfile.c        |   2 +
-> > >  mm/zswap.c           |   3 +-
-> > >  5 files changed, 76 insertions(+), 45 deletions(-)
-> > >
-> > > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > > index 0effe3cc50f5..448e5e66ec5c 100644
-> > > --- a/include/linux/swap.h
-> > > +++ b/include/linux/swap.h
-> > > @@ -19,6 +19,7 @@
-> > >  struct notifier_block;
-> > >
-> > >  struct bio;
-> > > +struct swap_iocb;
-> > >
-> > >  struct pagevec;
-> > >
-> > > @@ -222,6 +223,17 @@ enum {
-> > >  #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
-> > >  #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
-> > >
-> > > +struct swap_ops {
-> > > +     void (*read_folio)(struct swap_info_struct *sis,
-> > > +                        struct folio *folio,
-> > > +                        struct swap_iocb **plug);
-> > > +     void (*write_folio)(struct swap_info_struct *sis,
-> > > +                         struct folio *folio,
-> > > +                         struct swap_iocb **plug);
-> > > +};
-> >
-> > I think swap_iocb is only required for fs-swap
-> > (swap_folio_read_fs/swap_folio_write_fs).
-> >
-> > If the goal is to support fs-swap through swap_ops, it might be worth
-> 
-> Consider this series as a starting point for discussion. Nothing is
-> set to stone.
-> 
-> > considering a more complete integration, including activate/deactivate
-> > and swap_rw from aops, rather than only adding read/write hooks.
-> 
-> Can be add as follow up patches to introduce active/deactive and
-> swap_rw from aops. In fact I want to see it as incremental patches
-> rather than add every possible swap_ops in one go. It is likely easier
-> to review as well.
+On Mon, Mar 2, 2026 at 10:38=E2=80=AFPM Piotr Jaroszynski
+<pjaroszynski@nvidia.com> wrote:
+>
+> contpte_ptep_set_access_flags() compared the gathered ptep_get() value
+> against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
+> from all sub-PTEs in the CONT block, so a dirty sibling can make the
+> target appear already-dirty. When the gathered value matches entry, the
+> function returns 0 even though the target sub-PTE still has PTE_RDONLY
+> set in hardware.
+>
+> For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
+> may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
+> result as authoritative for the entire range. But an SMMU without HTTU
+> (or with HA/HD disabled in CD.TCR) evaluates each descriptor
+> individually and will keep raising F_PERMISSION on the unchanged target
+> sub-PTE, causing an infinite fault loop.
+>
+> Gathering can therefore cause false no-ops when only a sibling has been
+> updated:
+>  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+>  - read faults:  target still lacks PTE_AF
+>
+> Fix by checking all sub-PTEs' access flags individually (not via the
+> gathered view) before returning no-op, and use the raw target PTE for
+> the write-bit unfold decision. The access-flag mask matches the one
+> used by __ptep_set_access_flags().
+>
+> Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CO=
+NT
+> range may become the effective cached translation and software must
+> maintain consistent attributes across the range.
+>
+> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+>
+> Reviewed-by: Alistair Popple <apopple@nvidia.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Breno Leitao <leitao@debian.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
 
-Ack. And thanks for bring this up to Chris, I should add Chris's
-Suggested-by.
+Thanks for the fix!
 
-> >
-> > So.. we could keep SWP_FS_OPS as-is for now and just split
-> > sync/async paths, and revisit a cleaner fs-swap integration later.
-> > (I mean removing fs ops, and call swap_read/write_folio_fs on sync/async ops.)
-> 
-> You can propose incremental patches to add your additional swap ops
-> and into the series as the later iteration.
-> The sync/async split is just a MVP to introduce the first step of the swap_ops.
+This is similar (sort of) to a HugeTLB page fault loop I stumbled upon
+a while ago[1]. (I wonder if there have been more cases like this.)
 
-Agree.
+Feel free to add:
 
+Reviewed-by: James Houghton <jthoughton@google.com>
+
+[1] https://lore.kernel.org/all/20231204172646.2541916-1-jthoughton@google.=
+com
 
