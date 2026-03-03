@@ -4,166 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 600B7EC1438
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C853EC1421
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:45:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ED6F6B00A5; Tue,  3 Mar 2026 07:41:05 -0500 (EST)
+	id C30126B0092; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C4276B00A9; Tue,  3 Mar 2026 07:41:05 -0500 (EST)
+	id BDDFB6B00B1; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899196B00AB; Tue,  3 Mar 2026 07:41:05 -0500 (EST)
+	id AE1D86B00B4; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7704B6B00A5
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:41:05 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C878C07D1
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:41:05 +0000 (UTC)
-X-FDA: 84504711690.23.FC16F8C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5EFD040004
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:41:03 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zvz0oQM9;
-	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772541663;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3656B0092
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:45:43 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4D4A85641D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:45:43 +0000 (UTC)
+X-FDA: 84504723366.12.B272AD9
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013065.outbound.protection.outlook.com [40.93.196.65])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 802B8C0004
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:45:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Az/ekstt";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf10.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772541940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8dz1UqQWo35jSY2bBvEnEEfh/E4dbpsr+vpKWUaY3iw=;
-	b=U/4rgI52F5XCdcCOwzbPvkOSbP7OH7bpVEywq0bTdpG2gGJVpwOwEOdrHMuVvGz9QkQuwJ
-	1dQhDaZ5DOM3wnqKNb+W2+xaEmnlDwel1DmW1m9GsbKHCEX3jsUxr2c5VQjzdh9Jpl9VfN
-	Mk/ITpoy3SsIjdQQ2JSEel1cKyJ9RHE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Zvz0oQM9;
-	spf=pass (imf12.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772541663; a=rsa-sha256;
-	cv=none;
-	b=O9BrEitolbAv83shBfuml4YUJpcwcQncJplqGsqRWlMwemTJFmHNRQSzrvxqZFtZO1TTT0
-	ugVsOpawbEqPd5HYNzZ4rt0bEgMOTy+SNZWLcjI08LL6jix0omCN+54w9tbwxmPxH+yu32
-	diBknUh6oDmAy9ALZEyqneTUFDXJ2pc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A8376012B;
-	Tue,  3 Mar 2026 12:41:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A327C116C6;
-	Tue,  3 Mar 2026 12:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772541662;
-	bh=VP3JX/y7oHBrbuT3Z5WJTKU4TP0CvwWXeHSRvhRDUa4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=Zvz0oQM923J04EpBWJnh25hhi1uji/p9u147a6lunY/FvMUKCcB35+UyrQ0TMgEa5
-	 GdwqkMNsNHk7uOP5gamt+yaACOgsqZbyv8Q6aXl/q5ROkvBu87FNOVYXK8CpHIxmEm
-	 DiteLwJWuRDYIJ3IgaK/HoVWBG06sjQe0n34B1+PNE6XDMKpiXq5/bkfI3YvyOLjL5
-	 xu53HCqTB8sVkttFXX0uh9wl9fmZToNs05cXE4Ea9br9f+WmAEhi6+QXnESXgGFt0d
-	 9iDNZgv2JJ+8YSmo8OGVtxnPp0u/cZ+lalNTtSSkojp+G+/VCnuhFBbEDHV/dEz9rq
-	 DkEeRpA2ASGUQ==
-Message-ID: <1df344e68aca20c24d447318ff93db3f359043ee.camel@kernel.org>
-Subject: Re: [PATCH 00/14] xattr: rework simple xattrs and support user.*
- xattrs on sockets
-From: Jeff Layton <jlayton@kernel.org>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>,  Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun
- Heo	 <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski	
- <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Date: Tue, 03 Mar 2026 07:40:58 -0500
-In-Reply-To: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
+	b=KVFs9hsNKKwtvUJ6ssindfWmiBpscf9NhbcrsIwB91FtjQxzb+nxFYSDQp4t6rbsmWBKt0
+	myxuUhEviiK/9YkXQwz+c2egqoU5t7ubZmml2SL+qSP1BM458NgHB3G0OGi7t2i6a5+ZmD
+	ek+yx8BH9jxSGRmvUm1uvMlf7z7MqIo=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="Az/ekstt";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf10.hostedemail.com: domain of jgg@nvidia.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=jgg@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772541940; a=rsa-sha256;
+	cv=pass;
+	b=bbrg91mFgD7bo8CuXgj2Bpar35/6hGDfQR+qdP7UMrT4o7OSSt3NikfIzbWn01KdvJ/1V8
+	eCWJyXXo8qT3/X8vuyti6eqwnY1GYiuPsOiViGC2EXcc1TEHBzm4mspG/4KCHWvZx7wl/o
+	T8I0PcPJpt4FvUfAhgRNETO9JlPi+14=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=heqh0n7uV51CYE4xQwwKpAU252aNQcXrXulVsBCAyV1mA1Cw29XoDkyu8pVCKVRAFP8SOcVNvdEyrwxhRS/H5ReGQsj4CVlT4Z/Lk7cpN6WQRWdhy+BKiswGbe7n3yDPINji3IiXdlLkoMHbaNP+kX1xxE65quXzp/ofrZGl17t/ddnwGOoBNHR0huxIIeKyR7e95o8bHe5OC1CqFf1aYi+U8jLyA2I018N7kS8cZBstvR5edvQ6uYO99+nDpLKyjnkA+Gbmc4vcAFfB4HOGWmuQcTSN5tNhSfJ2q5CHbIPQkzqaaEuU9IBqVEgiId3b5At/a2Ar7f2ypmTcqZkJQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
+ b=TeUtbclmynPSF/aGOYPIVLEg0uNtK8D9iYr+A362wl0zwfakMdk8uWfNqTKCJ5U7GTHDfvclvINPDg0T837OH16KXpV+B7dch5zBCA26ZICWZ7VEN35VUbTlUmuzTFLyyt9dZcZbLoUPp7FvRC7J/F864KQrAZUsxbnrLcc2ZCF/xQI4sim8m18/HcWHdwK/RcPu4wgA+Wv7C/jTlPuZxxfglEpdxxdm+FAKyF7E8MEgNgmbqZpG2xl4SH2jmeZsoMNXFQtHyPPlO47EKh5AHPrKLeDNfwWGoKFNh3rTGSL/2oBFJRV0M/Vw9xYDqE466XgtC73huaDPuUzo1qqJig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b0+EyePJigODkQCX0fGeJySIjStyI5vrn7wuW0Uzxuk=;
+ b=Az/eksttVohjSIo5OA5EE6gGXDh0I0tpQxKJQMgTtlPrEO9UjdulY6DmB8pFbJ/fiOLPgYz5tqSmlnPMtcGHgtBcS/ze2mFHhh/OUHGuKx3F1rizqyrpoCBRwsfOZOFvst5By3ewGosLqzaA04+We15heAsNuaocbBYR3FAxB8lVEyy6ZubqewoywWd4+LpE0YowG0YtqdM0UgSI5SvoRepKuUJJDtWd7knkPFVGsYdqveZKVNNDK/CQOVy6FlMs29HEHXUq0eYQMdtJ6/ebBX0FBZp1r1ORMW42TjCkdHSVGvDOI/+0tPUkvWRvfCVY6ul1JfxZu4eW9cJ0oSMZsw==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SA1PR12MB7271.namprd12.prod.outlook.com (2603:10b6:806:2b8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Tue, 3 Mar
+ 2026 12:45:34 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
+ 12:45:34 +0000
+Date: Tue, 3 Mar 2026 08:45:33 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: James Houghton <jthoughton@google.com>
+Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Message-ID: <20260303124533.GA972761@nvidia.com>
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+ <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com>
+X-ClientProxiedBy: BL1P223CA0044.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b6::17) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 MIME-Version: 1.0
-X-Stat-Signature: tk513ntfcf54wtjau9rbkwf9bc5aq8uf
-X-Rspamd-Server: rspam09
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SA1PR12MB7271:EE_
+X-MS-Office365-Filtering-Correlation-Id: c543519c-bc9d-411a-aad8-08de7922c2f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	tRx0n676EuXLC/NbCyBMEKl51emlF1LR/AAwcGVLl0egtzwca/EbWq0LU89OmZGhWb9XjBTA0Zv/nuPDyzwAZCK9zPLRUxgt1kYXTXPO0wgFVS9zgcWpYwJbSuzzCcZjdbzYuTq66GVpqnIB6aVRYLgCrex9oHkpX5kUDvImwVqiNgKvCeVQ0GME4t1TnFBz5po+Skm+S4ZK0ujDHdoSap3o3eXJHhdTdih6unEaHUXQ+AY+IWoPLlALivOsWyIew2cvRKHv31kEkf75qfG+eJ+Ty93vxGs7zed5nQHtyoXVNsQlP4jrr602NFO/TV3pO8rB9RA1lBsjPuaTfRrkXb5Lj7HSTvlKLuOY13UI02E9FboSFIxwEKylYFkwhQjVQfNNH4siLc/eMv9D24nrgNZjxEcQYfWPnfhbYQs+nswtQjGnYpQqvSALNZLM5u/aUWYd8Q/3EFi7jEtz36eodf/AGi9cRtP2ZPQlAgp4iFiB2iNCOf0VWp447m4AehCghlhjDqD2DZEf0xdIsv6zsPKe19Oo/wo7EEHq+SP5F5z3N8RMzyyCIw5wxOIpg1xL2FSilbiI9igXqJ8aZYnwewMOkNHjuaadI18CGiYuL24EBhOId1a+yzj87p/zqNSw73ivKA3WxBVCo3NkPsOFGTnIbvy6FtlHKJKpsYSdeuKq8KGv8DWAuCQ9/vLkRWPMiBsXIhOXgHGAQFrpdGt/7ILWE7X6tmYOK5zoi1uJTWs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Zw906pUMEcMxm0DMnLPRCWicrl2r/TItvInbdoE8rlO+FAVIVa3axc0WYI/4?=
+ =?us-ascii?Q?tvNlIG9PuafM8Y+hIv7AW/x7vtVIeuS/WpyzCYqCvhRGjwl8u0NIcDwoGB26?=
+ =?us-ascii?Q?gH3tpmryLOiYZk+VBG0w2DzhHYP2TUNuMQK/NL6bE2Q4qLR1DTHuEl25QMm6?=
+ =?us-ascii?Q?W55KDv7LMTxPCINqHfH2j/f7nP8H4ZLSW6uatSM1d1hOi3HDE9XRBKYTg3ap?=
+ =?us-ascii?Q?mCGQqVPU+N19RJ5izbSHyaoE+9ioas9jKV4bDVyiilQ6R2+70Qnxz1CmBIan?=
+ =?us-ascii?Q?j4djIJFcmK1hirslSNy3e1MMIEuHjzmI26tL+cbuhIViBWtm1ZhL+QNybpwm?=
+ =?us-ascii?Q?XJVl6AV763LUHf9NyWHnFbz5bB9MN4g7T2jJf4S7zF5DgGeqW2c/3AL04JJT?=
+ =?us-ascii?Q?uC/oRPdEfEZ7EDPYWu2QZnLoLrqHTeovpWiB+GCbiQrYWRLYjWRkesKO4+fR?=
+ =?us-ascii?Q?3VAqGIiimltU/shwbz2HqdK/qGe5B9A0m7rqYLU8xefeMkvGUv4rh/h985b4?=
+ =?us-ascii?Q?frlSmKtTHDhMZUFkpxRjeFvkDov/+KeLYnhvutT0BeN1YFlBoXFMDHe6EclM?=
+ =?us-ascii?Q?OUv+L/aJJDBb6+hWOVzEp4oErRHSt4riRoV7HlFF8FS1Fb3buYaaYZdtqVoz?=
+ =?us-ascii?Q?OVEZDbmsi4vEzSLZCKhDqEHiOBHwcKaG3NscQHAHLYgQqkOFzSOjn6YiyzJw?=
+ =?us-ascii?Q?CozcwmAhLJNRixgTCAQAt0D9mVE2zJ8kYhJYMMv/9MJiDotCLikRlmkUD0sH?=
+ =?us-ascii?Q?TZip4/lafo09bdvN/ZGAmtQCSEc015oYMp9sLlCbfgtNJYW8lH58U/vrNcWu?=
+ =?us-ascii?Q?GoSl76CHcVePSQTSLJSPOwlkoo9XNNThL7kgFJjuJGNR2pnEsbaYav+WP5ld?=
+ =?us-ascii?Q?aJiV5S9tAUZ4Zmq7m0TCGqiscjvBD5+Rf7Q3WqRfvNtn5MiDQD3tkqJ3+T/q?=
+ =?us-ascii?Q?G41mxYgEDQQ0GRTjAq7FeDVmP0P746m+MNTzn6r/v0WA7zLg3r5N09QneMaZ?=
+ =?us-ascii?Q?XNvGlAVr3mOmMPSsmTuOhwptCaFd69rR96L7GQG1X5qkxqAzGv5Wwqb7z8TP?=
+ =?us-ascii?Q?ZbP0aCPoNuRK5o0jo6BywVfCoLCEPxkwee4fM62XUgOt3sXeeozj0Yv6qYKs?=
+ =?us-ascii?Q?LTHbQ3BVR55GiYdiEDAOaZCNVQRMq+okCuzctJJFuaP2IDPAQP3cZ96rQ4cj?=
+ =?us-ascii?Q?gvLKozcdCRIhsMNDth0CpnZJPnOPuYc3AxX1dla3/V39xXHFSYVLKxxx94ch?=
+ =?us-ascii?Q?yaf0IZtyX2ed+iIJLKZCjGppxWjY8S4gASnZOrmwNX8HSK27Uaux6hdUs/GZ?=
+ =?us-ascii?Q?8ZsgBxGUEKISBNr7uk83h5+NG+d7H9L20FItc+k1wJfcpr0plZe9Ge+DJOcH?=
+ =?us-ascii?Q?tBf7Zqw268KmixAcT6VZxB/x78hMwZR5JgW3y0g27aQtNUuFZVVn1gHUx0Gt?=
+ =?us-ascii?Q?XMy5ksYePbqofqEXFbVbGYBysf/B5HSO8zE6LKbVsJ59r9HmPHlJk/xHiTYZ?=
+ =?us-ascii?Q?YTxDnGucCoYO8Fmg8myvqludGsipsROLdRt/0a4rc9KooRF0PoC2NseS73LL?=
+ =?us-ascii?Q?NUdRC+nd9YjrMI+bTAVJqDz4TiER7I7yyuHRnbJr+Z48/AKe4p4IHJqEjCCf?=
+ =?us-ascii?Q?YrWrq4EuPZ3iganDgr27RY53al1641dTEYWbSZhb3DCmvyitGAfTruUx0/4g?=
+ =?us-ascii?Q?tWfXWvk3tkrLSRzQqRLEMWG8JlkWFWDfGzYtcxKN24u2McL6sBxZG5bh7kwP?=
+ =?us-ascii?Q?0Q/4XVVzwQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c543519c-bc9d-411a-aad8-08de7922c2f0
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 12:45:34.1200
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jkDQhm+eNDHeEoaBDNe26YFIr3SDrQZqRJP3E/T3vcWtelmz/VrGnAerPMRBMC3B
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7271
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 802B8C0004
+X-Stat-Signature: 9bmkyt3tznn834x53ufkut5gfg9d9n9s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5EFD040004
-X-HE-Tag: 1772541663-66377
-X-HE-Meta: U2FsdGVkX1+ua2/XHzv+cMHLOzHpzhAyiIK9xHzZxCmn+v9I8by3OYemeFpKtHjTMrJqOunF9rg9LjjzYXWvwf2Q2FZ9yA7DsHLJ762avXBgfzD2rg6EjgP8htIlS3UTMEjJnoherATnKXKH4l2Yz2ZxFmJ11i1Jz1iZjSjrJNopxroBLEPnzGcwpwDMkdkwswMNSqum109wKU5hmCbwnMYVGq2OAXeEFoPaA8tdwNu2zNgLO9adRMawxxApemhdWO/Hb+8oBXoFQpzkO0IJemngs4ldtb7eb6oeVck5dTnjrnWITHOjulTqM1g/3EA9eH3QyaQJPzeOaJOrXrW21cmLkMPkp7R+KpxUkmoh/6ourtnB5yLG2B6ZMN2sq4GJjh9CmNArjxoXalcfC5UTRzxuVogH7XKdBlRPLLdxVOVcohmlhfC2UEOwmO8Ueg0KNt01o6OKNakCahpFlBL+oBHuKs5ieN45QXRKRVLDLZAkFu9NSxI7NOpgqLVEeQ8hk/en8tKeNgWcWxOxHMtYznTHoTYP/FDumSu9+Fq3sj3MXcUsbk7rZwRljCp4MW0MgLUfIee52r8ctrh6w5VRiTnAOC8oQYeDi8bDzselcLdO65zLu3Z730AkP4MpsA6kPzoPMTxjC7f/maIbALidq9dVM69jR1em1ZwzJQX1tjtZW0WyzW/tVPGDHdb4+1HosVpCeGYZwSEZbMWF+jcA+EuvBKDPNHYlWaO6LaU7rqT61GVFfsUwcN20H/uWgVlEYHRvkLhu8hb01GFR1mwmTmPu5ebr5E1d+aX5dZ30TgdQc04L3vmeP38xQlgEt4BSVGnVPTGl0Iq7dL8SwfQC3IhGVunWnE6W+iI0zs+62t1bSLVBZJFAQdprTIqJKzMx6tfgsHcw8C2h/yoLEFcXKjc7MEzBj712LBtUDmFlojjPlj7+s1tjtPK22g4Tij729x/LInrrnCRiSqmuVZ3
- ER02oEnk
- UG2f+I+3cPk8Wf2bPf4gRWECyyWSXc1YmcSjcsSRGYTglKjrf2/+/wsUJanmIT4DR3X+G86N3t+z0OytLk8Gfu2rSJJuo8s1AfO5Yu6l2r0ummAgneaBeKfHVIX7own9ONEaN5T0/BMPtvv80uP71/MkbTXry0jQDqI7R4sGS7WlDYFYfVd32rwXc+8hwKfa31tPf0yxI8qOQjXpYnpaBK9vpLR2CBkG8lQxJUgMp5szuf0p25Wy8b90HlQ==
+X-HE-Tag: 1772541940-64373
+X-HE-Meta: U2FsdGVkX18iUCb/NEX49BD+/+vDUIg78Aj85F2FlJ1PcXROonZHQzDJGdzVxSoIdA1HbZVH+skRUxwrg7qpdFOIQXAgjsNLsFgjJyFGDWNCx7FpM6oias4zr/NacCJrQu3o518h+mXPqtyKqPw8ytAPqAq/SQHCIu6/QWQRPcolVEHjgqfI7ShiPSYQctcbaTPAmDwGTqC5YwN4iBKgfQT6xDu2/kjpwKZ2RlfpALW+UQGFZNzcJSYQ0VHEz8BJ9S2eklUP8BZH7OAdAsy+ha/c8sz4T6MK1haRhyG2Z4ocEuXpImKXfC8xMTf6Uoy+JQDZ7gB6ATbZfs160vLdKmsbJ7bGCDGCXaKQa5JHU0hzZ5UQYtU1b6i1yFtpfm8VDU5vK6W4OvrbgasefRTXbcM39pAr+OUwvonYsD2NdymqcovZfD1Km34wU3jnw9U/rwJg8folQzaXn5giyoLqPo5qf49j6Zom8xqw8m43UXmPJX495twsiFs/FTs6ZTaHHHf3n0ea2Ro9ZpncHEc/xUf77ybyRNbnc/tzkkMjoDlIKU9zC+wg0F0qCeMKMWz+Pgb1MISpd3iiO7aWgEkPc2A3qZJUQXcjlw3+U7AO7By45g69bOrbqrUB4V9htz1u1+rMv4Xo3VqjNaJrAM+rXrORtvTjTYgSDrjE3n2XhnGONE85HutJQNONi1Y7P66VQExW9k75ZtFGII7NViDgFOebhEBgwZ6I9yN+oKioHtksTXjJy6c+0vCEj//I6Dmi2vRB/vFYpaJ5zRPRAffG8d+aZ6AoobTNUxXEYxgh3fNEKkkZesIzQHUn729dpCtfJDxM0k35MH07HTVSaD4+rwqZ1wIw4T3t98rELF/XCSmYeC7H/9f0iUY9CbTSavNb43F1bJUGsnYlr8T2fd/OpliaUy9/Braco+RmdHESMXBw+UW5H7UjWPoeyMAdNL58LOFVmHr5a3b1R7ZvPK6
+ /XbuIR3J
+ PLm+3HFE3PdnvRqjg1wqyqV5h9tRU5OcvZpW9VDsXME0G/9gYC4CldTNaHkEw0YstV4tn/HpTvenms5QANeI4kEghti9tJxUOKJcMueJ5LQaGVW1BYZ4iYJUZyZ11MmVfPXGzJXbq3KNKx0SsX2aJzjBlWsSGBgBi6ez8RG6Cvo8JmBPdvhTYh/jvYG4XUI3yBjqDuTDtIOxswL/8RhUQDcxlRBtO00ww2dEreFxsnqM1sR3x9SL3ccn2Bw4SmQ5/FHt9ddvtmEfjQQkheARxleouXrMrTaqHG6Cz0eJXY951uKcrRuKOZepOZWnmdSGlPCxVbN7+7gWO8vMikVy3GWHQgXq6gD6t06KSiSGk8a7YjAWXoFB38BRgSWonDcZWAN60Mj2AE9gjY8v84MsjkG0Is4IkWFw2Sf99vyITXquGyMKqSWLIjzu6NxmghGa///j1/KvLbyMmxM0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,103 +164,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-02-16 at 14:31 +0100, Christian Brauner wrote:
-> Hey,
->=20
-> This reworks the simple_xattr infrastructure and adds support for
-> user.* extended attributes on sockets.
->=20
-> The simple_xattr subsystem currently uses an rbtree protected by a
-> reader-writer spinlock. This series replaces the rbtree with an
-> rhashtable giving O(1) average-case lookup with RCU-based lockless
-> reads. This sped up concurrent access patterns on tmpfs quite a bit and
-> it's an overall easy enough conversion to do and gets rid or rwlock_t.
->=20
-> The conversion is done incrementally: a new rhashtable path is added
-> alongside the existing rbtree, consumers are migrated one at a time
-> (shmem, kernfs, pidfs), and then the rbtree code is removed. All three
-> consumers switch from embedded structs to pointer-based lazy allocation
-> so the rhashtable overhead is only paid for inodes that actually use
-> xattrs.
->=20
-> With this infrastructure in place the series adds support for user.*
-> xattrs on sockets. Path-based AF_UNIX sockets inherit xattr support
-> from the underlying filesystem (e.g. tmpfs) but sockets in sockfs -
-> that is everything created via socket() including abstract namespace
-> AF_UNIX sockets - had no xattr support at all.
->=20
-> The xattr_permission() checks are reworked to allow user.* xattrs on
-> S_IFSOCK inodes. Sockfs sockets get per-inode limits of 128 xattrs and
-> 128KB total value size matching the limits already in use for kernfs.
->=20
-> The practical motivation comes from several directions. systemd and
-> GNOME are expanding their use of Varlink as an IPC mechanism. For D-Bus
-> there are tools like dbus-monitor that can observe IPC traffic across
-> the system but this only works because D-Bus has a central broker. For
-> Varlink there is no broker and there is currently no way to identify
-> which sockets speak Varlink. With user.* xattrs on sockets a service
-> can label its socket with the IPC protocol it speaks (e.g.,
-> user.varlink=3D1) and an eBPF program can then selectively capture
-> traffic on those sockets. Enumerating bound sockets via netlink combined
-> with these xattr labels gives a way to discover all Varlink IPC
-> entrypoints for debugging and introspection.
->=20
-> Similarly, systemd-journald wants to use xattrs on the /dev/log socket
-> for protocol negotiation to indicate whether RFC 5424 structured syslog
-> is supported or whether only the legacy RFC 3164 format should be used.
->=20
-> In containers these labels are particularly useful as high-privilege or
-> more complicated solutions for socket identification aren't available.
->=20
-> The series comes with comprehensive selftests covering path-based
-> AF_UNIX sockets, sockfs socket operations, per-inode limit enforcement,
-> and xattr operations across multiple address families (AF_INET,
-> AF_INET6, AF_NETLINK, AF_PACKET).
->=20
-> Christian
->=20
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> ---
-> Christian Brauner (14):
->       xattr: add rcu_head and rhash_head to struct simple_xattr
->       xattr: add rhashtable-based simple_xattr infrastructure
->       shmem: adapt to rhashtable-based simple_xattrs with lazy allocation
->       kernfs: adapt to rhashtable-based simple_xattrs with lazy allocatio=
-n
->       pidfs: adapt to rhashtable-based simple_xattrs
->       xattr: remove rbtree-based simple_xattr infrastructure
->       xattr: add xattr_permission_error()
->       xattr: switch xattr_permission() to switch statement
->       xattr: move user limits for xattrs to generic infra
->       xattr,net: support limited amount of extended attributes on sockfs =
-sockets
->       xattr: support extended attributes on sockets
->       selftests/xattr: path-based AF_UNIX socket xattr tests
->       selftests/xattr: sockfs socket xattr tests
->       selftests/xattr: test xattrs on various socket families
->=20
->  fs/kernfs/dir.c                                    |  15 +-
->  fs/kernfs/inode.c                                  |  99 +----
->  fs/kernfs/kernfs-internal.h                        |   5 +-
->  fs/pidfs.c                                         |  65 +--
->  fs/xattr.c                                         | 423 +++++++++++++--=
-----
->  include/linux/kernfs.h                             |   2 -
->  include/linux/shmem_fs.h                           |   2 +-
->  include/linux/xattr.h                              |  47 ++-
->  mm/shmem.c                                         |  46 +-
->  net/socket.c                                       | 119 ++++--
->  .../testing/selftests/filesystems/xattr/.gitignore |   3 +
->  tools/testing/selftests/filesystems/xattr/Makefile |   6 +
->  .../filesystems/xattr/xattr_socket_test.c          | 470 +++++++++++++++=
-++++++
->  .../filesystems/xattr/xattr_socket_types_test.c    | 177 ++++++++
->  .../filesystems/xattr/xattr_sockfs_test.c          | 363 +++++++++++++++=
-+
->  15 files changed, 1547 insertions(+), 295 deletions(-)
-> ---
-> base-commit: 72c395024dac5e215136cbff793455f065603b06
-> change-id: 20260211-work-xattr-socket-c85f4d3b8847
+On Mon, Mar 02, 2026 at 11:19:46PM -0800, James Houghton wrote:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> This is similar (sort of) to a HugeTLB page fault loop I stumbled upon
+> a while ago[1]. (I wonder if there have been more cases like this.)
+
+We spent some time here looking at what the ARM spec requires, and
+what kinds of HW implementations are possible..
+
+I think the consensus is that SW must never write individual CONT PTEs
+that are different from each other.
+
+For example, a possible HW implementation could fetch a cache line of
+PTEs, see the CONT bit at the VA's PTE, and then always select the
+first PTE in the cache line to load the TLB.
+
+Alternatively HW could just always load the PTE from the VA that is
+faulting.
+
+Since ARM ARM doesn't restrict this, SW must assume both possibilities
+and that means it must synchronize all PTEs since it cannot predict
+which PTE will be loaded by HW.
+
+DBM will only write to a single PTE, which means HW can create
+inconsistent PTEs. However if SW is fixing a fault, especially for
+different walker IP (SMMU vs CPU), then it must restore the
+synchronization since the PTE selection of one walker may not be
+compatible with the HW update of the other.
+
+Thus, I think any place where SW is creating inconsistent PTEs, or
+leaving PTEs inconsistent after a fault is a bug.. We found a Rule
+statement that seemed to require this as well.
+
+Jason
 
