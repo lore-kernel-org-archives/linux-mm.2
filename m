@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11543EB3649
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD10FEB3641
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:00:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D7846B00DF; Mon,  2 Mar 2026 20:00:44 -0500 (EST)
+	id 0F2D66B00E3; Mon,  2 Mar 2026 20:00:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582106B00E3; Mon,  2 Mar 2026 20:00:44 -0500 (EST)
+	id 0D5106B00E5; Mon,  2 Mar 2026 20:00:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 484656B00E4; Mon,  2 Mar 2026 20:00:44 -0500 (EST)
+	id F229A6B00E6; Mon,  2 Mar 2026 20:00:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35AFE6B00DF
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:00:44 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD0D01B7E51
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D97D36B00E3
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:00:45 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7860A140457
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:00:45 +0000 (UTC)
+X-FDA: 84502946850.03.9419475
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A1267120019
 	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:00:43 +0000 (UTC)
-X-FDA: 84502946766.02.052187B
-Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 30665A000C
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:00:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xiaUxl4N;
-	spf=pass (imf15.hostedemail.com: domain of 3uDKmaQ4KCAsuz2oly2tnsl2o3rzzrwp.nzxwty58-xxv6lnv.z2r@flex--jordanrichards.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3uDKmaQ4KCAsuz2oly2tnsl2o3rzzrwp.nzxwty58-xxv6lnv.z2r@flex--jordanrichards.bounces.google.com;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VBKoOsC7;
+	spf=pass (imf29.hostedemail.com: domain of 3ujKmaQ4KCA0w14qn04vpun4q5t11tyr.p1zyv07A-zzx8npx.14t@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3ujKmaQ4KCA0w14qn04vpun4q5t11tyr.p1zyv07A-zzx8npx.14t@flex--jordanrichards.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772499642;
+	s=arc-20220608; t=1772499643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zm1LTC1JWmja4CORTzDR8ARPE6yG1MLArG1qV/pvpmI=;
-	b=iHfIymplmSndF4D2Cz01q000FI0Q+QAezTO9bMBq4ybEetMjlVba4ZKY4Lqr4P1GM4xCBb
-	704FbtHwgR97vz638gwhOPZz+hnNRlrqZ2cdZM0vr3SekKZaCFeN28EDOfNGIfPvO0GyZw
-	chAI1hMOgXfQ+BGT/2ndM7DLHqGiisI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772499642; a=rsa-sha256;
-	cv=none;
-	b=04anMunyNuEv+z4CYYXuT2kRGkRnF2q9HGGCBGaTwZ29hFGnW6/Yv2RqsrtVoNqjizk48i
-	Fzhrswe1sGvYI41HQafLmYswkMYGK1lCgz/q8Kd2evmfMJk8He/1XSDmImokGsJFgrmuLr
-	Lvw47VratP8fOLYJvZBDnPx297K4ff0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6LBYWilsGadQ1Pufl4WrAtKAejCy/lhARa3nYcHQerM=;
+	b=qe92kJhiStVYJ/GwL2PmLsWz6A7+dtONY0mkvJ2kjOLErHLBe/deaCUo9wRy5UUPWZBV9l
+	uSfSv8yZSFsYmGfaeyBuEQ3E/GHxKWii4IEzAVhR08O/66bKXYCJRI7/F4hy4voLzL/Ne8
+	uBMJE3iya3jU1O83qtalHJb0rQHF4g0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xiaUxl4N;
-	spf=pass (imf15.hostedemail.com: domain of 3uDKmaQ4KCAsuz2oly2tnsl2o3rzzrwp.nzxwty58-xxv6lnv.z2r@flex--jordanrichards.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3uDKmaQ4KCAsuz2oly2tnsl2o3rzzrwp.nzxwty58-xxv6lnv.z2r@flex--jordanrichards.bounces.google.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VBKoOsC7;
+	spf=pass (imf29.hostedemail.com: domain of 3ujKmaQ4KCA0w14qn04vpun4q5t11tyr.p1zyv07A-zzx8npx.14t@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3ujKmaQ4KCA0w14qn04vpun4q5t11tyr.p1zyv07A-zzx8npx.14t@flex--jordanrichards.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2ba8013a9e3so5016852eec.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:00:41 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772499643; a=rsa-sha256;
+	cv=none;
+	b=QZ3Ua+7jBWAfgNsZYOFKLcpdRGU/CM5UtC5nb61oSrylJO2XYckfVHm3mJFPMctsy6w0Kt
+	8nBIkGBBkOjfvEQ/aWcf6eslGKV6yUmQjwr+fYu/cXUz7NggGRUy4tqHQ+f0kAYosqvULo
+	9FkZEgRZzpLG/C8zj/LHhb72kRFG10Q=
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2bdd4ce8dc3so10021074eec.0
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:00:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772499641; x=1773104441; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zm1LTC1JWmja4CORTzDR8ARPE6yG1MLArG1qV/pvpmI=;
-        b=xiaUxl4Nor2b959hmn6sV6afToGxVy3Mw9T6C8U+XIlrYhzofRtpOg+dKFbTHPx472
-         EDyAbhnl5m+/UCVk6OoyETZFEeUol4WTlIwf4pDLUlsmHweheJeMCF9p+XLdBESKzyoG
-         dDRVLZfaPnrAbElMmVKLjSf33Wvxh/ievwtRcjE9UHHxVZlZw/+WNY7Q2Yj5rwvC2wfW
-         TWojfXfchO6wKJZy4B/lbo7XTiIQhLkKRMqSWm6D18bSYcCd+2t0G9FtXnDXXGI8bf3q
-         AHgHEEQyvsG++/oj6SAI2JZM08QOW/CYvDLMFJ+uOmONe4vO68yDQ61WOE9Z+gak5G/N
-         04Zw==
+        d=google.com; s=20230601; t=1772499642; x=1773104442; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6LBYWilsGadQ1Pufl4WrAtKAejCy/lhARa3nYcHQerM=;
+        b=VBKoOsC78hDYgeLoqskl6arzGcV+kXYCMxb/xlZj4xAgVDV/6mISK1LlC5mEtyuebT
+         eHmUYboFUkv1INSRQd0vMAkZ/LyDQR33gCGP+8/3MrDoRGoaB4ZNsWqJ3eajcEIyPYDB
+         MBCeSQOQmD86CAQXKJ9qYaftmdzHr0/IG2ZVmAjs89PcAW3oSN+uh2NB6HZVx2bfd6JR
+         +TAWkgpvGfF2HWTydpaFlrsJlO/w5csS+5poIjSy2gp3qtU8venWJdlwuITREqXFQ0cg
+         nwjv/6lrS987poLB1YGdiKZgaVvHSAXJFJwTLXXo7bWrnB/zhgdLMlUiriXyOjfCIlNm
+         +sdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772499641; x=1773104441;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zm1LTC1JWmja4CORTzDR8ARPE6yG1MLArG1qV/pvpmI=;
-        b=VOoNbMitesWm1+XjUdF87wa66nWhq374/2FcThTEoFML2RieYSZG+bFAevH7zz0eQ2
-         Mwp7k1uUYgApjoIVMykxTIbmL4SOTnxjOgXD0Sty6Jes+AARo+N7UFDnWCH6IF8AyEvn
-         SUVl3PAvTpHpQd6B8lsHxgQSuvg7Kmrz2RZXoG7UAJwOzu7EYipcfILRUKOdnTqUsrvs
-         ZBtBBrLWLbADkogrTcLzDqU2vWzDWNrxLbNOKpcQTlgIpXu2lYRfsYi8m5kPXFH2DVa6
-         9biABcrxDrTI2cxHtoPgYi7N1eEs4hHeC/VC+BgNMAHPeMXsrF6j8N/3yjorT7TP/S0h
-         A7Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrGenMqM1C6MaayaWwzF15g51xOaHo0YytbY3LmkkEIzQOkCJXZ6h0cF3BI+vjzQvoU7R71BmxhQ==@kvack.org
-X-Gm-Message-State: AOJu0YwpxcuYY5sbuKyOaCsNc+YATwiMVLpKy6/eaJ8Vvi3AGg8VTE7g
-	HRCjA4eBTRD1JFia+tbjf5UL1UtxCWyUuT71an5w2dHgY4hKNXSGV+KL8P6y3MlbfM6hyM8sjPf
-	DVoPZyxw+Dh5sio4Ialp0i5a/yJsDLFx8AKkZxA==
-X-Received: from dlbqc5.prod.google.com ([2002:a05:7023:a85:b0:127:5503:dc9e])
+        d=1e100.net; s=20230601; t=1772499642; x=1773104442;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6LBYWilsGadQ1Pufl4WrAtKAejCy/lhARa3nYcHQerM=;
+        b=uOk3FHsrDnoAhFc6qZi2Fgps+oCktcb/YAO88p67Es03hRvXKkaOtyB3fHDjRBqq+y
+         z1SmBCt79tjQWvLwNIoANyRJukLRwraTmthKBDaIslcxJNCkc87bF4LtAoXv0saQ1nZq
+         eN4uYmtxl9B/zi5ID9OogFRv3qmTS5QkCRpECqNGpKhCZxBZM8Co2lS2GZcM/sHeoYRL
+         t4vRDVY1ZCYh+DVkSFuMi7cawbZw5iSZvHO3bZByo0CecxUi4m8zeddMQuJIk1FSVylN
+         1cm3NJY4F2JZvRKI8vFx1klwc95a9IrvBWQbvaUs+te/MsTAlwvgTGGGdNVzGVyJKI2U
+         2GKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0CTtd2KrtdKi/H/X90w7fhZ/Yu4rRZ0bGvh1sBeCXhwZatAXaz3+CyFBqaTikfSqy8VT4m5irFw==@kvack.org
+X-Gm-Message-State: AOJu0YxFMWkWHiT2jsg9njcXexDNpUkAPDCVfD68JDJSWxyhxYOh0T69
+	IR9pawPXfLoqZCF678178HspUes3ODuCFiGKHu7MObREwJeECwVx3qltnG2MZ2r2Pla5MmJ8Ah1
+	AD33+Yh+vnQ8jGtj07Quc9mvQte//+1tYw8SH1A==
+X-Received: from dybir8.prod.google.com ([2002:a05:7300:c8c8:b0:2be:1796:e189])
  (user=jordanrichards job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:418c:b0:124:9acd:3c4b with SMTP id a92af1059eb24-1278fd2ad4amr5435794c88.42.1772499640432;
- Mon, 02 Mar 2026 17:00:40 -0800 (PST)
-Date: Tue,  3 Mar 2026 01:00:37 +0000
+ 2002:a05:7300:a198:b0:2be:694:5713 with SMTP id 5a478bee46e88-2be069458e8mr3073775eec.36.1772499642072;
+ Mon, 02 Mar 2026 17:00:42 -0800 (PST)
+Date: Tue,  3 Mar 2026 01:00:38 +0000
+In-Reply-To: <20260303010039.2969125-1-jordanrichards@google.com>
 Mime-Version: 1.0
+References: <20260303010039.2969125-1-jordanrichards@google.com>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260303010039.2969125-1-jordanrichards@google.com>
-Subject: [PATCH v3 0/2] selftests/liveupdate: add end to end test
- infrastructure and scripts
+Message-ID: <20260303010039.2969125-2-jordanrichards@google.com>
+Subject: [PATCH v3 1/2] tools/nolibc: add ftruncate()
 From: Jordan Richards <jordanrichards@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
 	Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>, Willy Tarreau <w@1wt.eu>, 
@@ -93,14 +95,14 @@ Cc: Jason Miu <jasonmiu@google.com>, David Matlack <dmatlack@google.com>, linux-
 	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	Jordan Richards <jordanrichards@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 30665A000C
-X-Stat-Signature: xjz35fw9swazowisczxz77w9ec6kpjzx
+X-Rspamd-Queue-Id: A1267120019
+X-Stat-Signature: uj376z7hcdd3wqajpfzsbrwazbqme11c
 X-Rspam-User: 
-X-HE-Tag: 1772499641-899509
-X-HE-Meta: U2FsdGVkX18mq5EAmfuSm9RQ4Wrsgw0Ge+XuvFG99oYUyKqCoI8HvX9MTRJQRw2M12qbpIKcWZk7mRR5V34C/RARQWYTm4UmDkMgHlTcnEtS/kaqhWfypOcTvIQc7LbaGVqlBKWNLp3750W/RVo7Aq1LaiG0RLeXCLoDh9sEqameWZ6Q9Xa6DtnTxy7EbULxhaYPgjQCC0hSlZYd3XrYC6RAhrWNuWa5n3/zpeSI4muQSJaZ7YMlTUqg5jts2Un+/n4pNFIYdmca3k0gwdtz0zurwgWE4dzEviRFchHqt6eo+E4LTSphGidyLTvK45lLiB9NMVCLum/j48TiGoTJbzQVDEmlw0uCrSYKbSNKoD/QXX40ZYq5Sp8xrIdy8T9sZNaktPVvwTpARcewPLK5hDCtvImobLmH4jGlZ+GMt899nUNVjD26FeR8q+nFziEXt1LW35DfJ1NnlmRaoGn/BK1WFLCwvirMMUZwa0zCQUYMgHKVjkdrQXcJ6tGk5lc2QibaCfFn8qSNkwW0JYwqD1Gsi0OK4V+96Fkr3EieuSXY9vaN6x5l/3NdVsbJCb16FOLJ8EH8R/UAvGDCVjq6qQLCVicSk/bw21z1/LpDnkF0Jm3Mh2/a5kgWneV31KceKIIpJ9gMF841gtYoeiKikrjHug8n2BkE659Q/pWJ81fd8b/67ka/OJz++lisisk13SzDcJl4Q4E5uj7RWYIfVaNLWl/x3Hij5sIyIhs6fAMivhe+E98+55EMrT7yQohCMEYR1gFk9ZVQdXykyOmQTsR7AKoI83ZMU1VWR28Vv/oa1Gf6WZBt9S1Z4dN4eismLd0x+0jR6jiSUfpklDLu/EjNkKDysISAKiHADbT2W219WHSqvIkyiRcXEAzPrli0Dj7ESXpCiPWckCK4UgwVzHvZ66orEyhI+5t9EO/zmGyZzH+7tGMeLUHznfdi87Hzq14oqec3ODczx9UGm4x
- U/dpIvnZ
- 6ZHhFmUxqHIghQnis1tCNl4WnSTYn4pq7MirmE5JHhCFTv2/RaS/hlCNPkQHOAtoUyRdPe6TM+daPwc9hu4sfyRsmT+ACrw18Kb66qS5aLbxFyjmysN+VmVX4Q9i3aJRoh983TRKiFVZp0P39+ma3+598vOlioQZf9Suu1iaURDK4B8DzOPvsrAPqvfe6h/wRM7lk3oUlHDpcD4XyNbNx8sJEduly1btaPNkrv3nPUek8wGGbQWk/wb/OnJ9bvAIFdDHkRDZIjX4NH0719B9dhON9fxc046PNfmll/NrxU8UROvNXY3hQEA8+eI8e7YyLdKnYaSuOrtwSVqob0A8FeZcoir8T3MPoCMyoJdDSg/RMPKLN2n/MEhqihVm1WgLxj/SUnb62GgdKvxuLiixntHQuka0Idc+02Ge7L1IFHr60tpMXGglmdjNUKB//5jfZn1gl5jet87Buf+cMDTuOg2pua4JKNKq4ABCX8+FRbPmoDcVrLqq+Dbc7STw41T2HFaWkK/4eUyR+IsVwB4CZql5tE4dTDhpOkodaq3R8mwKzR4L6/8cZb7Udvz7y2zxtWbr9VWiM8cM0Sl1aSyInuLcFT+GSDI3QEl+3QMba1SRlHZeimKhpSEK5B3v9i741yTZ/xPoy5O1JrdXc7bAB9Jv7Y/wWcl0Y/L66t6pmqiqlUp6+edYUGDXrAn8al8Lf0vW2g68/iTYuhD880+GQUv1mcw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772499643-602046
+X-HE-Meta: U2FsdGVkX18IYo9FeilIc6vkTTEZp7JC3CfBStcVsIXfCuyQyoihda+3Jc8SbH3pgZKgevEPWSMYo83YaLEm/nsumnGUu+tHQc5c/aUPOaEVPkVxICNDFCbRu+0RJNv6h/DSZ3yyR95y7jUmyeVFuAG3AfH8ZDfBu80b4DPHrNBV2NkIxyqg6CU+pjXfAl2Dg5uAlaR0tdG3cltSrKF8DC048Zm4ufetBdKDkx5ZOANcoBTyumZor9TDtLmDihFID6PrjPACF2WlQWityMBmqxGjsERiUD+RWzxcrURjbcrmmRD6NYlV8rPe0KIw0NIrQPWhvZ7LO5y/zFl/65aoI4aCHnrAY01eK9sQUtpQSHWxKVVRiXYnFcfuHdJP5KL0cKpzaCpoNV6eVAOzw/8l8deX4n5H+NFv32ur6RxzR0HzOcHVf1GjTGieWWum1LEwmIm2HuWxCGUtxvnWO4JA5MUD36lgx3Dyf1uGICxz4/jp+ZPtvFQ5tuzX69ztvb9/P4l1d9HA+OKZrOv+xhpMWXqu8mKSwgDl0IjPDp1mEE0plCrT2r+BcZh3MgGak3DKEh6oTpum6iNFOaXA4J7TnQwdlAcJH+N6vKJ373mjRZg+xijLLFb3SSWxvgY69fg8L8iRe7N/z9bnioy6Ctw6eeOKMEs4lkqQwsP3dh/r+5LRX+mdpKCpsJHjf2zx4LFSeQMo9+MzD248lcWXjtuJH8bsdfQi3kcoIOHxgDPDGP6vKEY6l8Cbe4RgZichCHO21Bw5jWu7iWCMTVJz4AeHjcis2NNJ1A3GXVeo5XKoTZqav1QyOiO5jdCQO/Ieb7adhS3hYjCo9BPjQAaCGdjW0Rby3fVi5Bu4n+KKq83lgaSKXVEgpr3rajHWWaKjVqTD/NZ/kP/9pNPtXA5HiFf3weDnTpk5bU+9DXyoi6Xccmcc2Ls5uw75WcNxcs4VANZRKxYU6YaFo7lpyDSM/yl
+ MjDGX5UZ
+ VY6h9yo/R1QSv2t1kNhBcijAxU+n7dej+Dt/IoVcvIlUyw62jqoCAxcDHFvNuOsL6jZ53zt0vY2blyjvTIqh9k+xu586/XG8iSAV71i1U8127v7Q3ra7btWLKFB+H0DMS8TvL7SGI2Lzt+CM2XZ8o/GxmPUcXKPuOzaTrnT51RyXwg35nCeEISXFmYyvd6WNZjCbRYEifBUKzrGNURmWn9QqaoWt5EposfYc8wxpgDbN9ni/ZD7SzST+f7ANL+C+56+slYsmcvsEiV3C7YGDD3HM1zmYfurwXE4H9d+BRYpRkV9XOPh/o2RdCbKiFSYRiCy0LZQl5H7xDlkB3xFbZNmInosu/R8OtnhX6DsCPFchmYSiGq97XJ5lLZ7O8vvQ3bwORM8T3k8ZL0eBIxisv5lnlHf9oocXoQ6ORKs+t9aSPezypz5bp8N414qSdUpd8O25kEtgjfv5cbgvu2bhUu0fzQuFnZmlCfyaxvxKk/aWeIfO5xKf/VjgMmALT7IEOyk30YiMbPJH3sofQJxTQej4TOncRc+lDpxZ1VIaElMN7/9bIn6bGw5U+JPiw0VnU3U6vIscu5eWgAT4v1GNB5tKU3vQdbFim5HUpCeBx5G7N5XY5OtYO8J/1ej5RZmskG3MPoxX6uv7XEZkWkAoq151m36BdRVN7uxZ09GXLhjN7GI65OfQ6Dmde7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,48 +110,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch series adds end to end testing infrastructure required to
-verify the liveupdate feature, building and running the existing
-selftests on supported architectures.
+On architectures with 32-bit longs, call the compat syscall
+__NR_ftruncate64. As off_t is 64-bit it must be split into 2 registers.
+Unlike llseek() which passes the high and low parts in explicitly named
+arguments, the order here is endian independent.
 
-To support executing the selftests as part of an init process, this
-patch series also adds ftruncate() to nolibc.
+Some architectures (arm, mips, ppc) require this pair of registers to
+be aligned to an even register, so add custom sys_ftruncate64 wrappers
+for those.
 
-Changelog from v2 [1]:
-- Removed unncessary nolibc/sys.h include in luo_test_utils.c
-- In ftruncate(), use __NR_ftruncate64 when necessary
-- Add ftruncate() test case to selftests/nolibc
+A test case for ftruncate is added which validates negative length or
+invalid fd return the appropriate error, and checks the length is
+correct on success.
 
-[1] https://lore.kernel.org/linux-mm/20260205222329.2419035-1-jordanrichards@google.com/
+Signed-off-by: Jordan Richards <jordanrichards@google.com>
+---
+ tools/include/nolibc/arch-arm.h              | 11 +++++
+ tools/include/nolibc/arch-mips.h             | 11 +++++
+ tools/include/nolibc/arch-powerpc.h          | 11 +++++
+ tools/include/nolibc/unistd.h                | 35 ++++++++++++++
+ tools/testing/selftests/nolibc/nolibc-test.c | 51 ++++++++++++++++++++
+ 5 files changed, 119 insertions(+)
 
-Jordan Richards (1):
-  tools/nolibc: add ftruncate()
-
-Pasha Tatashin (1):
-  selftests/liveupdate: add end to end test infrastructure and scripts
-
- tools/include/nolibc/arch-arm.h               |  11 +
- tools/include/nolibc/arch-mips.h              |  11 +
- tools/include/nolibc/arch-powerpc.h           |  11 +
- tools/include/nolibc/unistd.h                 |  35 +++
- tools/testing/selftests/liveupdate/.gitignore |   1 +
- tools/testing/selftests/liveupdate/config     |   1 +
- .../selftests/liveupdate/config.aarch64       |   2 +
- .../selftests/liveupdate/config.x86_64        |   2 +
- tools/testing/selftests/liveupdate/init.c     | 179 ++++++++++++
- .../testing/selftests/liveupdate/luo_test.sh  | 276 ++++++++++++++++++
- .../selftests/liveupdate/luo_test_utils.c     |  23 +-
- tools/testing/selftests/liveupdate/run.sh     |  63 ++++
- tools/testing/selftests/nolibc/nolibc-test.c  |  51 ++++
- 13 files changed, 653 insertions(+), 13 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.aarch64
- create mode 100644 tools/testing/selftests/liveupdate/config.x86_64
- create mode 100644 tools/testing/selftests/liveupdate/init.c
- create mode 100755 tools/testing/selftests/liveupdate/luo_test.sh
- create mode 100755 tools/testing/selftests/liveupdate/run.sh
-
-
-base-commit: c95c8315909f078d16bffa2687346b4c63baf0a1
---
+diff --git a/tools/include/nolibc/arch-arm.h b/tools/include/nolibc/arch-arm.h
+index 251c42579028..ed65fb674e61 100644
+--- a/tools/include/nolibc/arch-arm.h
++++ b/tools/include/nolibc/arch-arm.h
+@@ -6,9 +6,11 @@
+ 
+ #ifndef _NOLIBC_ARCH_ARM_H
+ #define _NOLIBC_ARCH_ARM_H
++#include <linux/unistd.h>
+ 
+ #include "compiler.h"
+ #include "crt.h"
++#include "std.h"
+ 
+ /* Syscalls for ARM in ARM or Thumb modes :
+  *   - registers are 32-bit
+@@ -196,4 +198,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
+ }
+ #endif /* NOLIBC_NO_RUNTIME */
+ 
++#ifdef __NR_ftruncate64
++static __attribute__((unused))
++int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
++{
++	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
++}
++#define sys_ftruncate64 sys_ftruncate64
++#endif
++
+ #endif /* _NOLIBC_ARCH_ARM_H */
+diff --git a/tools/include/nolibc/arch-mips.h b/tools/include/nolibc/arch-mips.h
+index a72506ceec6b..26d044004ec6 100644
+--- a/tools/include/nolibc/arch-mips.h
++++ b/tools/include/nolibc/arch-mips.h
+@@ -6,9 +6,11 @@
+ 
+ #ifndef _NOLIBC_ARCH_MIPS_H
+ #define _NOLIBC_ARCH_MIPS_H
++#include <linux/unistd.h>
+ 
+ #include "compiler.h"
+ #include "crt.h"
++#include "std.h"
+ 
+ #if !defined(_ABIO32) && !defined(_ABIN32) && !defined(_ABI64)
+ #error Unsupported MIPS ABI
+@@ -269,4 +271,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector __
+ }
+ #endif /* NOLIBC_NO_RUNTIME */
+ 
++#ifdef __NR_ftruncate64
++static __attribute__((unused))
++int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
++{
++	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
++}
++#define sys_ftruncate64 sys_ftruncate64
++#endif
++
+ #endif /* _NOLIBC_ARCH_MIPS_H */
+diff --git a/tools/include/nolibc/arch-powerpc.h b/tools/include/nolibc/arch-powerpc.h
+index e0c7e0b81f7c..71829cb027e8 100644
+--- a/tools/include/nolibc/arch-powerpc.h
++++ b/tools/include/nolibc/arch-powerpc.h
+@@ -6,9 +6,11 @@
+ 
+ #ifndef _NOLIBC_ARCH_POWERPC_H
+ #define _NOLIBC_ARCH_POWERPC_H
++#include <linux/unistd.h>
+ 
+ #include "compiler.h"
+ #include "crt.h"
++#include "std.h"
+ 
+ /* Syscalls for PowerPC :
+  *   - stack is 16-byte aligned
+@@ -218,4 +220,13 @@ void __attribute__((weak, noreturn)) __nolibc_entrypoint __no_stack_protector _s
+ }
+ #endif /* NOLIBC_NO_RUNTIME */
+ 
++#ifdef __NR_ftruncate64
++static __attribute__((unused))
++int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
++{
++	return my_syscall4(__NR_ftruncate64, fd, 0, length0, length1);
++}
++#define sys_ftruncate64 sys_ftruncate64
++#endif
++
+ #endif /* _NOLIBC_ARCH_POWERPC_H */
+diff --git a/tools/include/nolibc/unistd.h b/tools/include/nolibc/unistd.h
+index bb5e80f3f05d..85ac253f9189 100644
+--- a/tools/include/nolibc/unistd.h
++++ b/tools/include/nolibc/unistd.h
+@@ -48,6 +48,41 @@ int access(const char *path, int amode)
+ 	return faccessat(AT_FDCWD, path, amode, 0);
+ }
+ 
++#if !defined(sys_ftruncate64) && defined(__NR_ftruncate64)
++static __attribute__((unused))
++int sys_ftruncate64(int fd, uint32_t length0, uint32_t length1)
++{
++
++	return my_syscall3(__NR_ftruncate64, fd, length0, length1);
++}
++#define sys_ftruncate64 sys_ftruncate64
++#endif
++
++static __attribute__((unused))
++int sys_ftruncate(int fd, off_t length)
++{
++#ifdef sys_ftruncate64
++	union {
++		off_t length;
++		struct {
++			uint32_t length0;
++			uint32_t length1;
++		};
++	} arg;
++
++	arg.length = length;
++
++	return sys_ftruncate64(fd, arg.length0, arg.length1);
++#else
++	return my_syscall2(__NR_ftruncate, fd, length);
++#endif
++}
++
++static __attribute__((unused))
++int ftruncate(int fd, off_t length)
++{
++	return __sysret(sys_ftruncate(fd, length));
++}
+ 
+ static __attribute__((unused))
+ int msleep(unsigned int msecs)
+diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+index 1b9d3b2e2491..6a84dfbb4b73 100644
+--- a/tools/testing/selftests/nolibc/nolibc-test.c
++++ b/tools/testing/selftests/nolibc/nolibc-test.c
+@@ -969,6 +969,56 @@ int test_fork(enum fork_type type)
+ 	}
+ }
+ 
++int test_ftruncate(void)
++{
++	int ret;
++	int fd;
++	struct stat stat_buf;
++	const char *filename = "/tmp/ftruncate_test";
++
++	ret = ftruncate(-1, 0);
++	if (ret != -1 || errno != EBADF) {
++		errno = EINVAL;
++		return __LINE__;
++	}
++
++	fd = open(filename, O_RDWR | O_CREAT);
++	if (fd == -1)
++		return __LINE__;
++
++	ret = ftruncate(fd, -1);
++	if (ret != -1 || errno != EINVAL) {
++		if (ret == 0)
++			errno = EINVAL;
++		ret = __LINE__;
++		goto end;
++	}
++
++	ret = ftruncate(fd, 42);
++	if (ret != 0) {
++		ret = __LINE__;
++		goto end;
++	}
++
++	ret = fstat(fd, &stat_buf);
++	if (ret != 0) {
++		ret = __LINE__;
++		goto end;
++	}
++
++	if (stat_buf.st_size != 42) {
++		errno = EINVAL;
++		ret = stat_buf.st_size;
++		goto end;
++	}
++
++end:
++	close(fd);
++	unlink(filename);
++
++	return ret;
++}
++
+ int test_stat_timestamps(void)
+ {
+ 	struct stat st;
+@@ -1406,6 +1456,7 @@ int run_syscall(int min, int max)
+ 		CASE_TEST(file_stream);       EXPECT_SYSZR(1, test_file_stream()); break;
+ 		CASE_TEST(file_stream_wsr);   EXPECT_SYSZR(1, test_file_stream_wsr()); break;
+ 		CASE_TEST(fork);              EXPECT_SYSZR(1, test_fork(FORK_STANDARD)); break;
++		CASE_TEST(ftruncate);         EXPECT_SYSZR(1, test_ftruncate()); break;
+ 		CASE_TEST(getdents64_root);   EXPECT_SYSNE(1, test_getdents64("/"), -1); break;
+ 		CASE_TEST(getdents64_null);   EXPECT_SYSER(1, test_getdents64("/dev/null"), -1, ENOTDIR); break;
+ 		CASE_TEST(directories);       EXPECT_SYSZR(proc, test_dirent()); break;
+-- 
 2.53.0.473.g4a7958ca14-goog
+
 
