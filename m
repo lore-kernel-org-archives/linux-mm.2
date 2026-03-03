@@ -4,222 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 648E3EDEBE1
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 18:06:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4496EDEBE3
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 18:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CA1606B0088; Tue,  3 Mar 2026 13:06:35 -0500 (EST)
+	id E12336B0089; Tue,  3 Mar 2026 13:11:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C79BA6B0089; Tue,  3 Mar 2026 13:06:35 -0500 (EST)
+	id DBF736B008A; Tue,  3 Mar 2026 13:11:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B447C6B008A; Tue,  3 Mar 2026 13:06:35 -0500 (EST)
+	id CC1466B008C; Tue,  3 Mar 2026 13:11:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A04146B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:06:35 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 482041B72AB
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:06:35 +0000 (UTC)
-X-FDA: 84505531950.19.CE46844
-Received: from sonic311-30.consmr.mail.ne1.yahoo.com (sonic311-30.consmr.mail.ne1.yahoo.com [66.163.188.211])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F171DC0008
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:06:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=dJygi75l
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772561193;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B85756B0089
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 13:11:00 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67B9E1A02C9
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:11:00 +0000 (UTC)
+X-FDA: 84505543080.13.BB38EE7
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AE6764000D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 18:10:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WlPOffb6;
+	spf=temperror (imf17.hostedemail.com: error in processing during lookup of matthew.brost@intel.com: DNS error) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772561457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KjlUdjsOzm6pJry5XKEK2Wx6SVd9EaVKNafYPkrR4Uc=;
-	b=Uiti3JjpE52aqI1RQXNybp7s5j503yBprlbWQ6f/DBtpPwhv7Ji7/JJ8qpf2Fn3jQ5stxG
-	Xy5nbQbAXXLpiW4FK87+test0DUyHT0v8ebIKYAtwuBuXgTSd4h4blwh7hKVTEYowXocDZ
-	j1VVmTopvDz4PFdkbNoKH3LkLpjsr80=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=yahoo.com header.s=s2048 header.b=dJygi75l;
-	spf=none (imf28.hostedemail.com: domain of casey@schaufler-ca.com has no SPF policy when checking 66.163.188.211) smtp.mailfrom=casey@schaufler-ca.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772561193; a=rsa-sha256;
-	cv=none;
-	b=sBBi18MQQ5rIxhfPMFG/GYdi0HJUOI6IXxZM75SVL2zP/3sGtRU4iQByrj+hFbpXqk1T6P
-	Ng71OZXVRa+sloaATjyHYDg+Mtg4l0mUjpsGO0W7XB91SruoNGfFWHK51LGHo13zCiRbcR
-	LZF1iqeL8h3cg/YSRQjczpNTLWFlPzc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772561191; bh=KjlUdjsOzm6pJry5XKEK2Wx6SVd9EaVKNafYPkrR4Uc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=dJygi75lVKA43mVnaQwlBdfPAVdSis4jB5h3GrfRWjcs/eV+bjGnEl73Q1CkoLMfSAxuUxYWAgMHD/+ZMhEF8C/DvNjwgvm+IYU3QS+8vsQGMOvByOqQP7MjwgXU9nHznZlARxHB6CWUkkDiTVAq6T0ThlEqpJGZwSgJa+9GQo48tNjzsUCT7hSn96E3O6ItiyT22PKmVkcFCjTP0t6pfAE65VAnUDtzubQ0UAqSwQ6gk353h/MTAU/J5NqOQCiBWAIVfKkaZNzyYor20+PsN0xDvEqLDrQ9ywG7X0zbI1ztYyl5GKSDHETWf2rcE9rUFeZvn56NFy0s1fVLbgQkvw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772561191; bh=uiQpYOQ/+Be/Kyo9JbtDjh7SRSLZbCKMFxcEEhPL+gi=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=rmImhLtSV9rlGseo/NbhlSTfiqxJpx4YkQXN/i+eSzm20eNReczfpaCwUQz7V4t386mMOu4OQeLSiXRvZiFw09ltUikZPDvvXvWkO+k2MMxREQzzk2+CWKN4qX2sndFqFXR+nG0cXUKMCm8b10yV0r2BPnBsXwlxMabcoBt7qjs5TpMBd0P/81eokKunTjlCxVrUhFh86xx0vosMy/2BCyeGxv00Rd+RsxYmjHwbbMrv8h0leiJ23ZOyRA1Kjn5a9GZ262ozKNmyJFrGNoVOl3XRezYLaJEvgkOq6e+NauKqsggJamHCc2At8O5VAFnIlAj2albbhQL8+v96tWUPlA==
-X-YMail-OSG: 6qEKZb4VM1mOPvHn7Uky8BLhsENz.Nyl5rO4hX07ZBdzkKNvAbN93r7SwnGv8zQ
- MOEAM1TyLxpPrC_1W4HY0I4nAGeFARjLGqVnBcy4RyeSkx3QXytRBKp5ZSBujFbe9ETIVatSforn
- FSxNg1Gg1MLkmXWZ3hqwCf7mi9wgiueuIdFsohTnJsnlQHFlfO91UgUYi0f0KIOTpzE_gyo34vOd
- TNFUNAVPak16uB8d0cDxn766g4TxsxPScRVT1LDVkTyXlC77dDNWN0NUAKMW7MA0IVIW30wXFKP1
- f1QNH44tCLkGF3DdNc9QA8Gus7CxRd5RCO.6Pi3bJZKJmqmKRRQDZgF4XgnIKiUlYcb8n5jorqjp
- w0LSJrTHs8Oe5.5.OlLBFGXheiICMdcMZQTKedlBkcui5awdhNPMQ7A8pUSBaJ352UyxgEeBRgct
- Yk.pha._3m6itzIc7m6kHXmEXA_KgV1ZVYlmqhtX1fAsxmz1iIwlHjtwcdcJDknWj2Qr4W1aGLEh
- 8fxu7gojbxyumw0KoUsciBvY1iRsKXAIIurtEWEYDWRokPlDxfq_aLegp7QjdsYaGbhuRi7IRGis
- wuG_4SAsiXFTAGQkDdFTeGhzXwqV7rVp0CBrHW0VOI3ethXL.io5aAswpW_pVVzRSXe5_LsOv9Pf
- vEru9Va5BfRMitItZnB0srVAMlfS9JT2jKZKnUukCSmvdMFqilxPCmJUV7Y70F67wvKIyHMch1n8
- PqEjv14nznBVJHd1bb0Sx9mcwuP.kLGam5Ee72aUeQu7eJs5Nna6PDxEf5UYlk4Q8T.ecj9BMq8V
- 3XMXfgIJxOWYkmRoO6LRk4TgVcidi8wU0ZBK.QI7G4YNdbvw3TMMefWpn.YSzt7Ijlu3Qie7N7lQ
- tKkUpdShYtVFRZFoX3rn26CMSagxvLx2JWHeHr_U4ixL_nb57HwHo4XtR2NF0SigqK.OltfPfdTs
- sno.Uuupgnzpd4rp4vPtei9eY4Sb4FwJdjaf_pFLg0iGkkYvhy9ou9dvIrgmwXYjG5l7E7DyPilp
- Dcv2ybUAEE0wIS8AnrNbHUDq9fk5ezK.XVwG0ETQIzhaHgZfobl6sdO3BkyFvjSAu7sB1JNWfOw7
- 9PsD4VmoQjqBNYo4S4IgvW6gTzvAOEFjY7mHdwYzSXuwbXJvv06SQ5GpUJ2fd98pbH6SiWrKcB.G
- aYuzrJCBEYWog5v5MTcwWQbao1ozyZ_4IKN7lfm.rsu_Uz8MYThse5FBbU0knS6_cAeXxT_6dDo1
- DhY8XarHMjenIoPp_EX5P259dokFnacHP3HSIGrj515pnUVXgzHa.8LTpNkqClAb9IU4SA1BIrSZ
- Z3XMlTolP6RaTAX26CKfe0S7pMfb80D29HSvdOQZr0GnGMXPDCXRs60i3sLK1eQt8SOWzOlRxKEt
- 8hrd8Wce7l.empNNiwxjvbKsGqNLjNyXHgqI8ZEcayTB34NRmyyGOykjIYDjDK_qcBWmxjyEpuqr
- A4J8uH20SOGXs.QDHuQxCHYs9Ue7xaIbrzisfGInee459BUMC5NlfxokkWnBRTBZPKKWumcL6Az5
- sRa60dpLeiEpzlapdK2_8lj6ZbTb_NCTVpN1dixQqAf4OZQp5yrcYCzlJxub6LZXox0eSHM1eLbG
- P061TdlGuOyRibM_5ujixXXOoZNLevVmB23mMrQxMD2ZYdPA70.5D_i512mvXrCBQOlPvlfH7H2W
- Z8YJd8.8eYBuVmFoQI9T91UwAGJYTKbruomiVZLqpPrPz34Fln8QHi2BnR3Hn8zWdTjthyhhwRGa
- hlI52i47RQ_IaYVv7sj_F20auQjcc_m.4tCDZRQXAuO_pSXv4nVLeM1ulnVtQmAtPefBfKZ7_MFd
- cRDdtvnXo3zt9E239CUTEl9169.cyiySvJPIPrM7emX0R7Aawd4OFz6TmDFfmcYFhwTazPpROqGQ
- W.2WeJFnKonnweBXpRvaTKIz3_CeXlAh_uhpqEqy_gDayR_EiGOnw0MhlbXVQgsNyqnP.ILnmwjY
- ke3pa6UhUF2FxSf6Nc3EhgR80iEPXCa7_uMXvZfSvtEBqWwlwegOWYveHcCtSNlvZ4XCMCntwO9E
- Qwsvn6jiRhov8dlg4SJvkMCgFnmerEqV2K.4CfBGDj.7IPSLD5DdkUsuOdsENKCfsevzsvewXUua
- ePjUyCJeo_GFXhVHx1Dmm02YkpV42riaWW7SrC8Khgjhx5h0.OMnxORbPpIy.KrI8pvK03iiOo65
- KP_7ijkM8ZjTa2GvxkG.Si2zL54Eo3_xFVPaebbNtapmaJJlb4iyygGkUYzNnGKym48ssi4xkcRu
- DFw--
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: b6543f29-25ec-4e47-a4ff-8569995f7946
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Tue, 3 Mar 2026 18:06:31 +0000
-Received: by hermes--production-gq1-6dfcf9f8b-82g65 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ec3c5f6ef2538eb0ae6f07d34b315ce9;
-          Tue, 03 Mar 2026 18:06:25 +0000 (UTC)
-Message-ID: <e2dd87f8-663a-4630-a678-9235233fb87f@schaufler-ca.com>
-Date: Tue, 3 Mar 2026 10:06:19 -0800
+	bh=XqSC+JX0p4GixmlNdCyzIbYuYE8y7haVlVr5yEgTQzQ=;
+	b=id1BGc8j7psQvfe9x1F8oWN4vcAE11zA6YHgBN1zOOanSIvXScOmMVDDv7I7119vyymhKH
+	XdmvBCytO0mGiixLaT/0TA2a+HAdhVKn5hkLI2Ha8YgI3YrWUrPYAhP91A1009dO6VQ1H0
+	Mv2OrCN1PuEHICK2aRTsbrZo6k0XUm8=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WlPOffb6;
+	spf=temperror (imf17.hostedemail.com: error in processing during lookup of matthew.brost@intel.com: DNS error) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772561457; a=rsa-sha256;
+	cv=fail;
+	b=kdwFZdzLXd+TT2eT+37uYQMRbWi7cj8pyd5lW/wVvxu2dG9B7DsFztTtGQDglnDH9kGAtr
+	u3mqjFBhDkwV2RcAL98zLMR9f06gmqRXjYCnXHm/zbAGBUnPF4XiQEdVgImDEH6O7/xooE
+	+SJ5bGoWL2Q+jsGr4o/bOdkw8A0LefA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772561452; x=1804097452;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=a5DaVx6KbW6/VtCHzamGHCLoEpBJTD/dr8qakjBSmSE=;
+  b=WlPOffb6aBwDGsAgYo5c/gJB6d+WUhQhQuALrCkJNJtiTS3qMNu6mC0V
+   BFtwJ8K28v/ywzCT/ieropgBHi4GxZA4o0DdWxS7KPPlrLkeCp6TQbdQd
+   dyO+gpUUWU+IvISvYMJpusy7NoqhB2yiuvdCqnNgyTq+E4tD7T9w5zgzr
+   8Z26IaJ0ay91IfqKD+hBR/2QGN+SAXtnYHcPbqZLzcNJipqATehv0mm9w
+   NP3WzXCpvX9K+nSNgmBH0uxoWJCQLcZmil9O4r4MMxeQzqGTL+bZ0plT3
+   5Rf9mc3dYF1mYOq3B7ohzYkrYAb2StD4dV1Tu1XfV85kyzpL2qx4dK4/Y
+   g==;
+X-CSE-ConnectionGUID: IH0fIojkROiJANvYLXGgsQ==
+X-CSE-MsgGUID: 7V4aAUjoS72Xu3r4FuhTJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="72637890"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="72637890"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 10:10:47 -0800
+X-CSE-ConnectionGUID: um57q27ZQASsjzOwOjk/0A==
+X-CSE-MsgGUID: 38uxAIfORneW/0RWWhPEVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="222230702"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 10:10:47 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 3 Mar 2026 10:10:46 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 3 Mar 2026 10:10:46 -0800
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.24) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 3 Mar 2026 10:10:46 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OX6doG+HbQY1etBFZoUjoWGw7RwfL3c+Y5xDB4nbMCnFVgPEgnnYjASLjqJqG/ebDE2OD84YnVhMmWrrSndXtWU4wc19cAaxzK2RBfTv5wnjKvIvxL0Qwcw8qrIkQwhrmFPCbe4r6XOYGGmI9xgfRz51pPSyAyf8Th8cO3wmYJ0lq4D5OaaavfXYr6E4GTivZ48E+mOTY8TaXt9PECF6Ss077C4yXmgS7Ap/ihOHMCVdvUa4XUAmjZH/MemAiESBs1AA6SJOtzoaCanZ3ep7Vqdo/HweWH2BLadEzdZGmeJL4cUusaO6cf2BoD9A2L5mPp6LZXHeY9M2WKIrTiFthw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5m1nhJkycM+WuldT3meehZVdSSa1Jeu1xM87hiTuFUo=;
+ b=tpZpIMe+UP6JA3BAs10QYape5/ep2MCMVBgqwFNpjc32e2SAEem2J+3lCNuVArdTvu2POzrxy/91kMtgn/WKuZwYHglqUie2V9IjnaZP3o7RyC+y+TGKcFOjNHq21xj/434nG3fIrKQLFK8gkOcPX0GOzeTLH7QtkEsyIKX7yxPA5wOFdsbOMIVwC3wHXO23hG5i/oMDRfG5qNY3AGSDSvDcoynSg05OyCkXaveJ+PtD+6cvOzm5/D/0lKm8i6UeYEshhWwAKtX6ABXB6tnxpNSJwN5p9EAHUxTW7K4D/5JlPyVelW4V37/L+5YmCL0PzasaC7UrcMLz+uuAN/q5yA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by SA2PR11MB4907.namprd11.prod.outlook.com (2603:10b6:806:111::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
+ 2026 18:10:44 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
+ 18:10:44 +0000
+Date: Tue, 3 Mar 2026 10:10:41 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Christian =?iso-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, <dri-devel@lists.freedesktop.org>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>, "Simona
+ Vetter" <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>, "Alistair
+ Popple" <apopple@nvidia.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/4] drm/xe/userptr: Convert invalidation to two-pass
+ MMU notifier
+Message-ID: <aackIUS2XnYOe2vy@lstrano-desk.jf.intel.com>
+References: <20260303133409.11609-1-thomas.hellstrom@linux.intel.com>
+ <20260303133409.11609-3-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260303133409.11609-3-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: SJ0PR03CA0388.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a1::33) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 105/110] security: replace PRIino with %llu/%llx format
- strings
-To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
- <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
- Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N <sprasad@microsoft.com>, Bharath SM
- <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>,
- Ryusuke Konishi <konishi.ryusuke@gmail.com>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
- Christian Schoenebeck <linux_oss@crudebyte.com>,
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>,
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>,
- Salah Triki <salah.triki@gmail.com>,
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Yangtao Li <frank.li@vivo.com>,
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
- Dave Kleikamp <shaggy@kernel.org>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
- <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
- Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>,
- Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- Ondrej Mosnacek <omosnace@redhat.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
- Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
- Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Oliver Hartkopp <socketcan@hartkopp.net>,
- Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>,
- Neal Cardwell <ncardwell@google.com>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Remi Denis-Courmont <courmisch@gmail.com>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, Magnus Karlsson
- <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-105-e5388800dae0@kernel.org>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <20260302-iino-u64-v2-105-e5388800dae0@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.25198 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Stat-Signature: tj6r1puknmw59no6htpjusgsm4f494rm
-X-Rspamd-Server: rspam09
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SA2PR11MB4907:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd4e8698-3858-4f05-de34-08de79502ff1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: /1L4C8QQxQAq1LDDUlqPCYrAj8i/KFv97/7r9U+2VO27VDWplXJl8NOM8SMi1SX0EZHKvZChAmbQEI1WsYVe+/zaKGla5zi4HVqNiM+CEUHpWvrlq5GPBbp0a8+ACxNtQt1eeqPiGiTbK9HEB7JaKV6zEOs0WrK7RyFi7Tw/mwZrNGp867sXrW9thAxKKa2OPFxD2uJSx26F0mghDIsOK+ki7OT714bPQRjD+cq0aXMNSwd+45cV3ZpiaqUdHofSh4OiAfnPwaaqHoCMZzczsdIDTPqxQotm4AMTjrSXAQQLlWyPmPv05X1SCh25e0Ju0u21+8a7q6PWdnupLji9KDJJc3iy9W+WTA4YSPLkskG3q9J+khwPKt5M2SqXXzypsLh++Utk8eaGk8XtJq2I60iJ9wq7wtItOKxY1mRpzhNSEOjL4lKuZVaPZNHaSViHBjsYRgGgLoNICpq6ON8C4/GNGR2IXaDeB+zu2clZ275FTNetol0cp7WhZxxqreDOWMUklGJObhKyrrNlAkrrk3KWmp71RIvubbkRzdfbdVm25630RQrj7+xCNGciT7pdNwbRkgSvqFy9S8K8jksEaD4Dz3BSZ4BSwWdYcptb/Azm95VbeXIJeA+nO9tM/XWHBL546AEQ6iy1lZ7SJQ/iIicdhkESBvacwfgfZZ+dO/JrDJckX+AtdE9SAlp5MMhihY5ZuT6PvVVitWujbUDJiIltKl8cZtZcHETvAHv70Vk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?+85HGaP3UZ7AhhcST49IgHfP588+jzjR5z5jfH5raG5iDkeZMr7QiDlTlN?=
+ =?iso-8859-1?Q?3VRIbkXIQ90UFHxkIPFs2VPvLq1PMGe8ePL9AjG8yJ3K4CapGvbEZxth5z?=
+ =?iso-8859-1?Q?L6fKspdQQNzcM0oOIxUHwQyZis5Ifm11MAYSQO1edSyQaMBArxUWDoznog?=
+ =?iso-8859-1?Q?5JSMAFgYCZsCdaWapDmunh+bKt6KQ00kT6dVzEU703VxXqgkAqh+0McNAz?=
+ =?iso-8859-1?Q?Ir0a6lqMDwF4Q2z/BacCKL5kJzRo718VN6hwmw9XH8dF0FKSw/w8alG8+6?=
+ =?iso-8859-1?Q?ktVjhyMzOGOX73/ZZpNRZFIFIwNVIJ1/5fTCeGS3Wqy/j4TQf43cLVXcHp?=
+ =?iso-8859-1?Q?3gLxtWyQKOC6GFUScKgh+h8e6Kie0hkuigNq3nZ+RCVb7EIyV9yyAHgv+O?=
+ =?iso-8859-1?Q?12V+mTeMT6+chMchrKBwpmrH1TIjl9UekxBUOq5Q8wU4BYW+1DbuT1B28x?=
+ =?iso-8859-1?Q?1rtgepqmlnQlRLB8pEc9YKrEQn6owsTugQGRUW7Z544foJ7fQRSzo2Ikju?=
+ =?iso-8859-1?Q?2vCHWnLCrqMnY/YEkP6w/8CUUi5VohNx88/dKF0lny/3zBRt91b0b47mL+?=
+ =?iso-8859-1?Q?Okuy83LkhCCWm7rGc+pkARUT/nywDhPzKC/UaEIJSnkA1yi2XwKN00J/eU?=
+ =?iso-8859-1?Q?IjFGfL9xlMxQyWo+q5TCZ88Lz9taxQApKBEetjOa2xzhn3n7JcDuYdt+oF?=
+ =?iso-8859-1?Q?QHPqIdkR6j1xCDMndA0ppqGuZMSil+AgPikz3Iwl5VEMmnfaPDeLJK08LK?=
+ =?iso-8859-1?Q?KitqvRxwtiMYTut9EJYbVK+gfdsLyOla4B9OMjzNZMCunDJo0xXCMiNhMv?=
+ =?iso-8859-1?Q?JynZCvFR7m0UofT255k1epuunikHeyM6vqeDzZNRBSzEAbjdwep85z1FNQ?=
+ =?iso-8859-1?Q?zU9yAZ1OPlBoV9a5cQh8zSow+2fbpJ/77peAX7C5oIwu5yt6AZiMQhZqYd?=
+ =?iso-8859-1?Q?q/k1bpU+XBSXcmrT97X46xIxLx/X/A1pkj/cG41yYIsmoz2/S4d2DNuB4s?=
+ =?iso-8859-1?Q?tq16OwUegwTzsrez+VpkK97PzYudTkQOiBWl8n3e8pTU+P+8de09a6AZAX?=
+ =?iso-8859-1?Q?nifShmY54bDAGjx5o2DyOLRcYY2xdsjcuGj7oVE3FDhkUq6B7J8VUknqgf?=
+ =?iso-8859-1?Q?nlkhbJoZFUqe3RwRjCbws6PtWD0zex4/8R+Vs1fa2o1tkHofy0pucU3uA4?=
+ =?iso-8859-1?Q?jLdHT85M0cBeD2h8XZpLysMEdLMHaWPG7PNbPvrP9MQdudzQJlf4KCeoR3?=
+ =?iso-8859-1?Q?8IMqRdUF0mxYwgumWPtId5lIXnLXnBfIwoFDGxuQXxY05wvWa7fY0HuPWd?=
+ =?iso-8859-1?Q?R00jBN30WmJER+gkEOeGStjwwK+6zSfth9ezAlu5HIGFwyDR5pdGOLbwL+?=
+ =?iso-8859-1?Q?W3Ptz2n/4wsILgUl/hJqn0ZX7kFkpKkfCHNtRs2Ts4wlBuzoWOyJQrdG0T?=
+ =?iso-8859-1?Q?5mDfTre8WjcOh1/OSJkPL1GsQ0yeKw6MSBVwkznrIjodc5yWsa3ETtV1F4?=
+ =?iso-8859-1?Q?1EZZkUFtHhzkVnwd0NLFynxRLfmgJIeYReQ0UFweQOc/EZW+5fVRtyJ4Co?=
+ =?iso-8859-1?Q?toG8R6hA0ifEe1JHtjwKe3gOH0neWbqB3J6tT43JBK15LXKti3oQcTFmru?=
+ =?iso-8859-1?Q?KL33bHwFvcuk29Esi+LwNTIYcqVgLFcUZXIUbPn/wpv50sbGBwL3hyaW80?=
+ =?iso-8859-1?Q?GM5I+y8l6kHW95eeb1iRX4GKjq9TGckJr2m1u4Qa8pKcVQc0C+xEvfCGz4?=
+ =?iso-8859-1?Q?bMKl8wVh1BmqYAtA6xLCd/JszUGS5/ZT0FpbSIBaqQHg5HKtrE3rVeOhfh?=
+ =?iso-8859-1?Q?FdxJPczCnetoAsFJDLC52pB/Kn4s0P8=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd4e8698-3858-4f05-de34-08de79502ff1
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 18:10:44.3925
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6TmJsB7Nn4zqMUp2/aVTkZo3Z1X6IyzgnF8TElWYNDD1Wg8jUrg4Y/hunYO/fQSHNWOLA5zwTb8ehnrWB3AQsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4907
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: AE6764000D
+X-Stat-Signature: kq6okkqahe8uq9aa5thyzu5b7hwj5o7e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F171DC0008
-X-HE-Tag: 1772561192-818537
-X-HE-Meta: U2FsdGVkX1/CQCTB47n5XBI/XKA7YqJfYZ/NRe7KXsWC7XognaoslWzIzUln5D5mfjyzoysYKY9XvTEN9M9rB5AGKzq49cwbNQEiSejStRy/+r13Eq3dTsq8njHojYCqCIWzNOXKjTQkfGrwMMCcxjWJUJgs5n+WY4GHqvhqx5hDXquwUUlgX9RqWS7hqoh7haP2YTqUV8vq1VPNOQEa3Vx23DkIgbWNDAN1RD1Lby6VvWTyHkZiT29wMQ7fIV8dXCSnNSb44SjsHb2J0YzatlA0I9AKgOKsdsXE0jIQjwGNHHWm90Iuo1kgS9e8kLULr14WFwtgBrITZ+pa6pnY11f4TwADOg6Vdzrt4S6kIKv+n+Jib+Pc82KpqYC3e3EI0hIvC1xIOhUleR82d/eSZlbTmekN64tGDZ/as+svFp3vkZ12iU2pIWzWRatLuvOmumg+QQwY1nL99UNMzEzfQtlQAgzoi85T091tsKJuUYLQMpU96XiqPkxurL5VfrPkPAp11ATt+IvbN5TU+U9Alq91l0DV8tqRIsKt4EhLW8LMoMm9DkSJ/oyxbA6OT1W3/Ftde+KKVQS61Au7+o2AzyPoJRqai0+6n3Vw556mbRnlubrqFyFtTkpUro5VjlmoeAv9VqVUvXoB9sHL96EP0yxFG21THxnGeyankfakBFpffAUD9326XhqajcI828Hq2ACD55SJdpE5NWxfXXkJhL7BJSvFZeE5KBTozVF6oo9Fd5oTAa1Lgw7DOrFu7kTyC+oMDTCSGPq0qY81VwwE6b2yNXdU+jDozcwcLBA8cjOxD1rnlDLHW4H3xPTVyLkT6rtBegOoYrdBWHmvTSyoTWCjpO/09ggwlmV7ucrqyvJKmIvKhBb5A9dlmPZY6dNrlBDyZ/e29VbJWSQgvuR2eu0FkOJLYVDmaQKGNQ8yHpj2EvxapNC++iIosJ/DPZ8NeYbJcm1A5uo/EarSE3G
- X971Hide
- gJVLWKMgmeamDUeS93gC4k5txmh0pmtEzFQe87zRAobS7wbUzgocnq6j+FaMi1ICztS9icaPULtAGQc52iiydO6iIli1dMBZAaCXFLXlZlaAQZifIC6v413P7ygZrox3DCESe4gjLLCKmVt8E7f8iPVyFw8IoohSpHNnl+XAN/ksBZ18UN1dJHTdyt7VAwXz2/JrhLBtA0tSBPI1dHUqD8UPiA/4SwOzBDaMg9Qg/clr05lN+ZEFvqAKa+pUdEVBLmsM3IWMbsnGwYqhzvanKHW/hl7dvAYU1TGdBnaTFI3OHKIJyh8KgeeiIKTEr/EHxqAnZ2i3Fe1i2i+WaZas5C2HlcPu2z9cWMbZYEEfh0ABW4HGy31Wsm5YrVneL9BD+HW48n40TTQ3NXNPSh9y6zYLmx4rBzG/voDQ/umBXehqA63YO0cIfpI1mNDTqbuk4WVvKkNkJf7mSTebytCqcnd+9LrpT+9s2ckpwCW/BV5zf/yb8L0Oo7+UOlqQEYOE1Vw9HnmH1dL9gjCdvZPfoObRecg4CmHmoD7nKeYU7c1O9Bo/VD9CPRDYVAyiyl651LYx06R7ioVh9h/Jfh4iuAO9eBiXjFxcOzQE1bCrcO3ZRb+8Yrf8VrMrdxicOVvMu8Ts6ut3HgE2W6y25YoVvM9/hGDpjKjuDalEDIKXytri2/ETr8L68eXZ4UVJ/hTvRIioRVLPmdJiUbP+HxUkLzyXWbKbk0ada4EgKPDdpt/bgsvSfr+JfqxgHWFqjwRCuuxB4cFpZjp1fEpagRz8KK8lFN3jTUYZYWkPURUm+YsftyUk6XRUyjkPe0iR6b2V8P78y1o3pfVxNvPkuQkGcF1lC7yaQ+LDK3BeCYXnMZuw8pY/IISRz5zDx3LsKAqa9qCveqqwDTt4HC/AKD8i9S2o40EcI9T1MHavK4XNZ/tYRHaau6/6rYT/hvxUnMiAEwZ+oy3mvz/7SqStcDJdTxHLc14A5
- hZa6TQpp
- ChLdum7e0A9LZgtIAszUSMZvNF724K533JO2GAVUfx/GLv06jARnhfODJqpG9WarDXWJeEYI18bVtWNaKJWYfbKCuOLJbcAwr1dd3qQVlMFCvH8wO+4tTC51hsivHVvfbZqgegEPBzga9q6N4WyJzHW3Uj7PjU6LXrGvY5+N3swyJpzgcg3UkTpKi/v6qeuuAFjx5ns20tyX93sAkxqrZHwgYIAIZre3PzV/jad8p+PRveDoyLwzxx8VbVoXRYkGQdJ86yGb44MRfN1VtfRKnq7ljiL2kQzrzIxctWRIdn9NeWGSK2j/lTs1lM9jeHBomzxHWvnYNrQZDyKHPrEtmy1lkQKTQ3xTxVbAVZ9BYQqNk0epbNox8dPnzTrbdhTKUV+lSrfSJvELgBH05H70l3uIPbnvvUTCtQ7HNQTUwGMVJuawqh9GSptu/kEwSIOOEYZySgd+B0nD1TMKmHFzu7gHJNtnawRD+5haxvd0Txl+7/aTesRmtaeIf6R7Aoi0GNbQAxTUxQeijvzqE5g7/poM8pXEVUDkLAWAF1MSRXugJOaIBUTwG4yEo6FuBRKU8iYNp1RGMBRop5CWIdXirBuGMmeKs+ChRoQPiNfS1zjEOsdMHrjJHqqKnfmVek/JHFSNBIlQJ2meZRSHr8Wpf8zGZqpAH1zQJ/Y+h+aJ9rkN3S62E5ykQiOzEOuwCHZbLa+Xek8Jo/nklWnT3nLDCwc1o0cTZPP7or/ilTrPJjx1ssk0Sfa5Xxrj/ZUa5Cuh8uRzj2bIiXLXk/5aYWfOTD5BYtA9cFs6Ln8lFeOrYdzePi7PLssP3ApRpSpoHIYdb5IXJEOsrTkXyFzE0iM/Okos0xICgSGS8YXQcialrH2WkBllQHSbLTMubE7+66wWvQ5iFN7AWYtxE1ahJtZme6fpCP3w7uP+bQKcCUBQnLbELER44ohCGi7HaywXf6wIxbtZ6LORaMA6p8dw/d5YpXPvs+qXh
- 6jWpNZjk
- kRI3yeleTXHCYRzhIv5Z7OMD3WjFgCoOrGA1Exr0IKjR+Y+8vNtKNGTkxdiroyrJbc/TfAh1Gmo+2FyNyCRvoD92A/PQH//oEmWT2h3agHM6PXncRXFW1mrQauwN1I9UeXdAc3WOj/P2h4eQIOWvdufhmdEjeXAedTq3rKS8/QLRhOFo29kOTfEEHnDB3kUOtol/DnenkK3EdGRqkwqmvb/1EEmts/dh3SoVaP/8F8EBcoaK+nJuGo0uRoGqs/LfDF8zR4BWon71yJUZcAGladfkrBk42IArZB2dYxwDYAtsvbuQ/OD0q8SH0ctBB+UNlV9OPeIR9MhGw9KNptD95C08tOM6oT/1o5OCS88XkOs0MDI1owE2cXKvHKOjonnDNkqTjCuNYOXIDTj8rsibaoRnxmN1yeHS6sgSzf2Yshk4qZmic4Y9aPmsojG9piCoDYMwyfEpnMCDywBLyKsTgV/MGEZwZ/gfdkq7DaoVrnNzM5GaU9XoDmhS9RX8hzFBoQ7+q6TaF+46qUD3EvBV6//44aIFN+KDGktlZS/72Neptln4IUB/JDfIeut5OIkyGAa04p0OoGKnMdXh/bLxuXuDIXrssYDaeA17x0NPA9aZC8/dIppXmY8ozOiMyuBWqvX+XpQjEtUXTm6/UTXdWydtu8+morpR3uAbGD+jaKj7Ng2dqvQkBeGk9Uv2QI8f/blq58woMr1ywtgMOTpfiR7ry7M39+tvg2PsFwWx65nm5fqh0JrwKmVbUQl37qqfMpgSwHSsm7eJw1wCSYSEPLs5Ge3uiTTTVFaVem5qil+SE/oNT5/Ycwob6ljwipJ6fEPMtmpDuCk1gvcFG0uXo5ysz5gJd5NGlXsaL5jBIWWOhY1XUz2GV1gCHxjB0lrqGu8CEMnqiaXOfcky6cBf41TV5q3qG+Jv2fNO2vpxwijOZOXI2klFJQagi4As4mu9R1wQ/VJKcr98BUYvTHC69i6eN+vkl
- 0NZyLG/0
- udCSVQc/4tcbCVWk2esRfTjPn7V2a2EJh9ffiCukXceoQX2h9p9++XKjFO8HenM/BwnqmOcIfJt5N0xX9ZXN+bddRN3Ln+tILzut9rtiO0KLnKCr7M7+cA53Hn+xk8F46ogpM5ndZa6C3AoR/a/dKtxJw5Yvd4ws0NfROz0FsDSf8xf1mRR0m3oyvpKzk0EZVgTxrtm0zr8Jehr587EuA4hUH6jlEBhItnNS9c4gc5svd7V/JH4sHV8AMhYftrHaij365smTEJi9y51X/fV+Dp6RSl1u/KpcOazLl9dVkdSQ==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772561451-461908
+X-HE-Meta: U2FsdGVkX1/vzfzPtlPJiMyT9qrDXz36CiCFaDIs1ShE5ITH1v3uqRMEVhHL3s454TXgd1tK+SmdKC2OlGnfgpqtoL+eDNjCAyifA2tEe/ljg4JrOvCAvlndxfIoH1W0sruP3ZJucd8SN1GRtQZPkmU6BvLM7QlnuqH0jtHBFrX2UjuvhYWW6pAXkrV0FCaNVFZG03XQjLpJI4l4xJ0CIE0A+BcBUCtwxWPs3HZh2TG3T0q63q7wTCaLrBSAAGJrSP+SwNZ6tpVtEvrXpLcakNYRsruEMj1oqZvG7CHyQyW64iN21+dmAYHcpn9BVgsQVXpXLPDiZr3Qj+oWJ6TfRvdLqx3cPzSdEBxpB1wtH3B+TA3AxEoWFA9U88FYPRCwERYL2QsV+42Yqb6C28tPOUmkGU2O+2xmYnLCN8/rRcdv8zxb0Uv20FyoHLHomcd022dNyOnW9UX7K2GoWR4I19w6eClptoNhRW0N0RxNNGtImIRah01HNUDuRGUlyY72E9xJ/yqz5esbLbMm2JezEgOc13r1e9IPqUasEAczEWwzSXkm1R//PB+gH/fzOWWsfWJ+B1apKR9OKZfZuQcCUopuC14TAcx6gYhMCdBW0ZAn/HDr6HqyZQZKAKhZWUGvst6WyB8AFSPk5DTGwRJX7bRAbik7P2CQvuuDwIGbACUDhBxWtRR5CJr7b97aDjMd7ptq0rEDRJ1NzyZ484PDvNDJUDtoAw6yQp1Ywuz2TCWHg1hSesWPxwLMljjfJ/na7oE+Wh19T3Pp/XjuNUcA8PrRbFYIy4X4s05ZL8r8sOh4KYcp1vhL8aQjSMI4mNFumG4Fugy8jLq0xGun3PskFTvn7pPtARnKql7X/XMZgrnhnoLlFqg3qkHvzMWLpdHGs7lACOXSWfemjnNv4EUtRTh+jUAATfZWnt9W3FJeHObR90ZSteAuAiyhxQC7hKbYTGu6AqhyZTzq+BtioEX
+ /+FvRjw5
+ 9PnDWfBqq3j4+Ci7vMsyLr/sA4NYuxWtLRWSRjdE+OgViZBwAzCIYVR315WpC2xmQGrXne0y0yW4mYynkiCoisA7JJk8/WDwapEM9B+QI8H60JythWVf65nhiuqVDWxzujYmIgoIEY9nweCN4ZZoP05iCSJwX8fZ04G3i8CuYSYEHmTb1Oy0x+6yXnJ2uW+YnTECkvhS/WszrU48ydLsUv9YOqnNZ+cl/f7Qp6anGDWP2quZIL/bYBZpzbW8L27wWnt8XbOO4RMf+0na1Djw1GplymDzVkbFpz+O/MZeRFnXKGwrmVhpn6fUf+DSIl6fgcolHHy3hRIOksnJRJmXvzN45HUocXWGpefdmRLIJU7FUvxqedOTB0zZwNKA6J6gG8dbfKpx4hCIOPppE+kN3ht9n+DHWSLWqiH26SDUX6UB0xNNq1KTls0p1c4kTe62NYwQxKb6iHBurL1tYQ4dAVq78LS6UJA6WopfnxPP1ae4z09KQqhF29/a/NooBN1JMPeYaT4D4elmDYX/kBrRKvzgaRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -227,218 +197,253 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/2/2026 12:25 PM, Jeff Layton wrote:
-> Now that i_ino is u64 and the PRIino format macro has been removed,
-> replace all uses in security with the concrete format strings.
->
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+On Tue, Mar 03, 2026 at 02:34:07PM +0100, Thomas Hellström wrote:
+> In multi-GPU scenarios, asynchronous GPU job latency is a bottleneck if
+> each notifier waits for its own GPU before returning. The two-pass
+> mmu_interval_notifier infrastructure allows deferring the wait to a
+> second pass, so all GPUs can be signalled in the first pass before
+> any of them are waited on.
+> 
+> Convert the userptr invalidation to use the two-pass model:
+> 
+> Use invalidate_start as the first pass to mark the VMA for repin and
+> enable software signalling on the VM reservation fences to start any
+> gpu work needed for signaling. Fall back to completing the work
+> synchronously if all fences are already signalled, or if a concurrent
+> invalidation is already using the embedded finish structure.
+> 
+> Use invalidate_finish as the second pass to wait for the reservation
+> fences to complete, invalidate the GPU TLB in fault mode, and unmap
+> the gpusvm pages.
+> 
+> Embed a struct mmu_interval_notifier_finish in struct xe_userptr to
+> avoid dynamic allocation in the notifier callback. Use a finish_inuse
+> flag to prevent two concurrent invalidations from using it
+> simultaneously; fall back to the synchronous path for the second caller.
+> 
+> v3:
+> - Add locking asserts in notifier components (Matt Brost)
+> - Clean up newlines (Matt Brost)
+> - Update the userptr notifier state member locking documentation
+>   (Matt Brost)
+> 
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-For the security/smack changes:
-
-Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
 > ---
->  security/apparmor/apparmorfs.c       |  4 ++--
->  security/integrity/integrity_audit.c |  2 +-
->  security/ipe/audit.c                 |  2 +-
->  security/lsm_audit.c                 | 10 +++++-----
->  security/selinux/hooks.c             | 10 +++++-----
->  security/smack/smack_lsm.c           | 12 ++++++------
->  6 files changed, 20 insertions(+), 20 deletions(-)
->
-> diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-> index be343479f80b71566be6fda90fc4e00912faad63..7b645f40e71c956f216fa6a7d69c3ecd4e2a5ff4 100644
-> --- a/security/apparmor/apparmorfs.c
-> +++ b/security/apparmor/apparmorfs.c
-> @@ -149,7 +149,7 @@ static int aafs_count;
+>  drivers/gpu/drm/xe/xe_userptr.c | 108 +++++++++++++++++++++++++-------
+>  drivers/gpu/drm/xe/xe_userptr.h |  14 ++++-
+>  2 files changed, 99 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_userptr.c b/drivers/gpu/drm/xe/xe_userptr.c
+> index e120323c43bc..37032b8125a6 100644
+> --- a/drivers/gpu/drm/xe/xe_userptr.c
+> +++ b/drivers/gpu/drm/xe/xe_userptr.c
+> @@ -10,6 +10,14 @@
 >  
->  static int aafs_show_path(struct seq_file *seq, struct dentry *dentry)
->  {
-> -	seq_printf(seq, "%s:[%" PRIino "u]", AAFS_NAME, d_inode(dentry)->i_ino);
-> +	seq_printf(seq, "%s:[%llu]", AAFS_NAME, d_inode(dentry)->i_ino);
->  	return 0;
+>  #include "xe_trace_bo.h"
+>  
+> +static void xe_userptr_assert_in_notifier(struct xe_vm *vm)
+> +{
+> +	lockdep_assert(lockdep_is_held_type(&vm->svm.gpusvm.notifier_lock, 0) ||
+> +		       (lockdep_is_held(&vm->lock) &&
+> +			lockdep_is_held_type(&vm->svm.gpusvm.notifier_lock, 1) &&
+> +			dma_resv_held(xe_vm_resv(vm))));
+> +}
+> +
+>  /**
+>   * xe_vma_userptr_check_repin() - Advisory check for repin needed
+>   * @uvma: The userptr vma
+> @@ -73,18 +81,46 @@ int xe_vma_userptr_pin_pages(struct xe_userptr_vma *uvma)
+>  				    &ctx);
 >  }
 >  
-> @@ -2644,7 +2644,7 @@ static int policy_readlink(struct dentry *dentry, char __user *buffer,
->  	char name[32];
->  	int res;
+> -static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+> +static void xe_vma_userptr_do_inval(struct xe_vm *vm, struct xe_userptr_vma *uvma,
+> +				    bool is_deferred)
+>  {
+>  	struct xe_userptr *userptr = &uvma->userptr;
+>  	struct xe_vma *vma = &uvma->vma;
+> -	struct dma_resv_iter cursor;
+> -	struct dma_fence *fence;
+>  	struct drm_gpusvm_ctx ctx = {
+>  		.in_notifier = true,
+>  		.read_only = xe_vma_read_only(vma),
+>  	};
+>  	long err;
 >  
-> -	res = snprintf(name, sizeof(name), "%s:[%" PRIino "u]", AAFS_NAME,
-> +	res = snprintf(name, sizeof(name), "%s:[%llu]", AAFS_NAME,
->  		       d_inode(dentry)->i_ino);
->  	if (res > 0 && res < sizeof(name))
->  		res = readlink_copy(buffer, buflen, name, strlen(name));
-> diff --git a/security/integrity/integrity_audit.c b/security/integrity/integrity_audit.c
-> index d28dac23a4e7cf651856b80ab7756d250187ccde..d8d9e5ff1cd22b091f462d1e83d28d2d6bd983e9 100644
-> --- a/security/integrity/integrity_audit.c
-> +++ b/security/integrity/integrity_audit.c
-> @@ -62,7 +62,7 @@ void integrity_audit_message(int audit_msgno, struct inode *inode,
->  	if (inode) {
->  		audit_log_format(ab, " dev=");
->  		audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -		audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +		audit_log_format(ab, " ino=%llu", inode->i_ino);
+> +	xe_userptr_assert_in_notifier(vm);
+> +
+> +	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+> +				    DMA_RESV_USAGE_BOOKKEEP,
+> +				    false, MAX_SCHEDULE_TIMEOUT);
+> +	XE_WARN_ON(err <= 0);
+> +
+> +	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+> +		err = xe_vm_invalidate_vma(vma);
+> +		XE_WARN_ON(err);
+> +	}
+> +
+> +	if (is_deferred)
+> +		userptr->finish_inuse = false;
+> +	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+> +			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
+> +}
+> +
+> +static struct mmu_interval_notifier_finish *
+> +xe_vma_userptr_invalidate_pass1(struct xe_vm *vm, struct xe_userptr_vma *uvma)
+> +{
+> +	struct xe_userptr *userptr = &uvma->userptr;
+> +	struct xe_vma *vma = &uvma->vma;
+> +	struct dma_resv_iter cursor;
+> +	struct dma_fence *fence;
+> +	bool signaled = true;
+> +
+> +	xe_userptr_assert_in_notifier(vm);
+> +
+>  	/*
+>  	 * Tell exec and rebind worker they need to repin and rebind this
+>  	 * userptr.
+> @@ -105,27 +141,32 @@ static void __vma_userptr_invalidate(struct xe_vm *vm, struct xe_userptr_vma *uv
+>  	 */
+>  	dma_resv_iter_begin(&cursor, xe_vm_resv(vm),
+>  			    DMA_RESV_USAGE_BOOKKEEP);
+> -	dma_resv_for_each_fence_unlocked(&cursor, fence)
+> +	dma_resv_for_each_fence_unlocked(&cursor, fence) {
+>  		dma_fence_enable_sw_signaling(fence);
+> +		if (signaled && !dma_fence_is_signaled(fence))
+> +			signaled = false;
+> +	}
+>  	dma_resv_iter_end(&cursor);
+>  
+> -	err = dma_resv_wait_timeout(xe_vm_resv(vm),
+> -				    DMA_RESV_USAGE_BOOKKEEP,
+> -				    false, MAX_SCHEDULE_TIMEOUT);
+> -	XE_WARN_ON(err <= 0);
+> -
+> -	if (xe_vm_in_fault_mode(vm) && userptr->initial_bind) {
+> -		err = xe_vm_invalidate_vma(vma);
+> -		XE_WARN_ON(err);
+> +	/*
+> +	 * Only one caller at a time can use the multi-pass state.
+> +	 * If it's already in use, or all fences are already signaled,
+> +	 * proceed directly to invalidation without deferring.
+> +	 */
+> +	if (signaled || userptr->finish_inuse) {
+> +		xe_vma_userptr_do_inval(vm, uvma, false);
+> +		return NULL;
 >  	}
->  	audit_log_format(ab, " res=%d errno=%d", !result, errno);
->  	audit_log_end(ab);
-> diff --git a/security/ipe/audit.c b/security/ipe/audit.c
-> index 0de95dd4fbea15d4d913fc42e197c3120a9d24a0..93fb59fbddd60b56c0b22be2a38b809ef9e18b76 100644
-> --- a/security/ipe/audit.c
-> +++ b/security/ipe/audit.c
-> @@ -153,7 +153,7 @@ void ipe_audit_match(const struct ipe_eval_ctx *const ctx,
->  		if (inode) {
->  			audit_log_format(ab, " dev=");
->  			audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -			audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +			audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		} else {
->  			audit_log_format(ab, " dev=? ino=?");
->  		}
-> diff --git a/security/lsm_audit.c b/security/lsm_audit.c
-> index 523f2ee116f0f928003aec30a105d6d4ecb49b0b..737f5a263a8f79416133315edf363ece3d79c722 100644
-> --- a/security/lsm_audit.c
-> +++ b/security/lsm_audit.c
-> @@ -202,7 +202,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
->  		if (inode) {
->  			audit_log_format(ab, " dev=");
->  			audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -			audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +			audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		}
->  		break;
->  	}
-> @@ -215,7 +215,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
->  		if (inode) {
->  			audit_log_format(ab, " dev=");
->  			audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -			audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +			audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		}
->  		break;
->  	}
-> @@ -228,7 +228,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
->  		if (inode) {
->  			audit_log_format(ab, " dev=");
->  			audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -			audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +			audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		}
 >  
->  		audit_log_format(ab, " ioctlcmd=0x%hx", a->u.op->cmd);
-> @@ -246,7 +246,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
->  		if (inode) {
->  			audit_log_format(ab, " dev=");
->  			audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -			audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +			audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		}
->  		break;
->  	}
-> @@ -265,7 +265,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
->  		}
->  		audit_log_format(ab, " dev=");
->  		audit_log_untrustedstring(ab, inode->i_sb->s_id);
-> -		audit_log_format(ab, " ino=%" PRIino "u", inode->i_ino);
-> +		audit_log_format(ab, " ino=%llu", inode->i_ino);
->  		rcu_read_unlock();
->  		break;
->  	}
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 9430f44c81447708c67ddc35c5b4254f16731b8f..8f38de4d223ea59cfea6bbe73747d7b228e0c33f 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -1400,7 +1400,7 @@ static int inode_doinit_use_xattr(struct inode *inode, struct dentry *dentry,
->  	if (rc < 0) {
->  		kfree(context);
->  		if (rc != -ENODATA) {
-> -			pr_warn("SELinux: %s:  getxattr returned %d for dev=%s ino=%" PRIino "u\n",
-> +			pr_warn("SELinux: %s:  getxattr returned %d for dev=%s ino=%llu\n",
->  				__func__, -rc, inode->i_sb->s_id, inode->i_ino);
->  			return rc;
->  		}
-> @@ -1412,13 +1412,13 @@ static int inode_doinit_use_xattr(struct inode *inode, struct dentry *dentry,
->  					     def_sid, GFP_NOFS);
->  	if (rc) {
->  		char *dev = inode->i_sb->s_id;
-> -		kino_t ino = inode->i_ino;
-> +		u64 ino = inode->i_ino;
+> -	drm_gpusvm_unmap_pages(&vm->svm.gpusvm, &uvma->userptr.pages,
+> -			       xe_vma_size(vma) >> PAGE_SHIFT, &ctx);
+> +	userptr->finish_inuse = true;
+> +
+> +	return &userptr->finish;
+>  }
 >  
->  		if (rc == -EINVAL) {
-> -			pr_notice_ratelimited("SELinux: inode=%" PRIino "u on dev=%s was found to have an invalid context=%s.  This indicates you may need to relabel the inode or the filesystem in question.\n",
-> +			pr_notice_ratelimited("SELinux: inode=%llu on dev=%s was found to have an invalid context=%s.  This indicates you may need to relabel the inode or the filesystem in question.\n",
->  					      ino, dev, context);
->  		} else {
-> -			pr_warn("SELinux: %s:  context_to_sid(%s) returned %d for dev=%s ino=%" PRIino "u\n",
-> +			pr_warn("SELinux: %s:  context_to_sid(%s) returned %d for dev=%s ino=%llu\n",
->  				__func__, context, -rc, dev, ino);
->  		}
->  	}
-> @@ -3477,7 +3477,7 @@ static void selinux_inode_post_setxattr(struct dentry *dentry, const char *name,
->  					   &newsid);
->  	if (rc) {
->  		pr_err("SELinux:  unable to map context to SID"
-> -		       "for (%s, %" PRIino "u), rc=%d\n",
-> +		       "for (%s, %llu), rc=%d\n",
->  		       inode->i_sb->s_id, inode->i_ino, -rc);
->  		return;
->  	}
-> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-> index 22b6bd322840c82697c38c07b19a4677e7da2598..2eb3368a3632b836df54ba8628c16f7215ddf3ea 100644
-> --- a/security/smack/smack_lsm.c
-> +++ b/security/smack/smack_lsm.c
-> @@ -182,7 +182,7 @@ static int smk_bu_inode(struct inode *inode, int mode, int rc)
->  	char acc[SMK_NUM_ACCESS_TYPE + 1];
+> -static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+> -				   const struct mmu_notifier_range *range,
+> -				   unsigned long cur_seq)
+> +static bool xe_vma_userptr_invalidate_start(struct mmu_interval_notifier *mni,
+> +					    const struct mmu_notifier_range *range,
+> +					    unsigned long cur_seq,
+> +					    struct mmu_interval_notifier_finish **p_finish)
+>  {
+>  	struct xe_userptr_vma *uvma = container_of(mni, typeof(*uvma), userptr.notifier);
+>  	struct xe_vma *vma = &uvma->vma;
+> @@ -138,21 +179,40 @@ static bool vma_userptr_invalidate(struct mmu_interval_notifier *mni,
+>  		return false;
 >  
->  	if (isp->smk_flags & SMK_INODE_IMPURE)
-> -		pr_info("Smack Unconfined Corruption: inode=(%s %" PRIino "u) %s\n",
-> +		pr_info("Smack Unconfined Corruption: inode=(%s %llu) %s\n",
->  			inode->i_sb->s_id, inode->i_ino, current->comm);
+>  	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+> -	       "NOTIFIER: addr=0x%016llx, range=0x%016llx",
+> +	       "NOTIFIER PASS1: addr=0x%016llx, range=0x%016llx",
+>  		xe_vma_start(vma), xe_vma_size(vma));
 >  
->  	if (rc <= 0)
-> @@ -195,7 +195,7 @@ static int smk_bu_inode(struct inode *inode, int mode, int rc)
+>  	down_write(&vm->svm.gpusvm.notifier_lock);
+>  	mmu_interval_set_seq(mni, cur_seq);
 >  
->  	smk_bu_mode(mode, acc);
+> -	__vma_userptr_invalidate(vm, uvma);
+> +	*p_finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
+> +
+>  	up_write(&vm->svm.gpusvm.notifier_lock);
+> -	trace_xe_vma_userptr_invalidate_complete(vma);
+> +	if (!*p_finish)
+> +		trace_xe_vma_userptr_invalidate_complete(vma);
 >  
-> -	pr_info("Smack %s: (%s %s %s) inode=(%s %" PRIino "u) %s\n", smk_bu_mess[rc],
-> +	pr_info("Smack %s: (%s %s %s) inode=(%s %llu) %s\n", smk_bu_mess[rc],
->  		tsp->smk_task->smk_known, isp->smk_inode->smk_known, acc,
->  		inode->i_sb->s_id, inode->i_ino, current->comm);
->  	return 0;
-> @@ -214,7 +214,7 @@ static int smk_bu_file(struct file *file, int mode, int rc)
->  	char acc[SMK_NUM_ACCESS_TYPE + 1];
+>  	return true;
+>  }
 >  
->  	if (isp->smk_flags & SMK_INODE_IMPURE)
-> -		pr_info("Smack Unconfined Corruption: inode=(%s %" PRIino "u) %s\n",
-> +		pr_info("Smack Unconfined Corruption: inode=(%s %llu) %s\n",
->  			inode->i_sb->s_id, inode->i_ino, current->comm);
+> +static void xe_vma_userptr_invalidate_finish(struct mmu_interval_notifier_finish *finish)
+> +{
+> +	struct xe_userptr_vma *uvma = container_of(finish, typeof(*uvma), userptr.finish);
+> +	struct xe_vma *vma = &uvma->vma;
+> +	struct xe_vm *vm = xe_vma_vm(vma);
+> +
+> +	vm_dbg(&xe_vma_vm(vma)->xe->drm,
+> +	       "NOTIFIER PASS2: addr=0x%016llx, range=0x%016llx",
+> +		xe_vma_start(vma), xe_vma_size(vma));
+> +
+> +	down_write(&vm->svm.gpusvm.notifier_lock);
+> +	xe_vma_userptr_do_inval(vm, uvma, true);
+> +	up_write(&vm->svm.gpusvm.notifier_lock);
+> +	trace_xe_vma_userptr_invalidate_complete(vma);
+> +}
+> +
+>  static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+> -	.invalidate = vma_userptr_invalidate,
+> +	.invalidate_start = xe_vma_userptr_invalidate_start,
+> +	.invalidate_finish = xe_vma_userptr_invalidate_finish,
+>  };
 >  
->  	if (rc <= 0)
-> @@ -223,7 +223,7 @@ static int smk_bu_file(struct file *file, int mode, int rc)
->  		rc = 0;
+>  #if IS_ENABLED(CONFIG_DRM_XE_USERPTR_INVAL_INJECT)
+> @@ -164,6 +224,7 @@ static const struct mmu_interval_notifier_ops vma_userptr_notifier_ops = {
+>   */
+>  void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+>  {
+> +	static struct mmu_interval_notifier_finish *finish;
+>  	struct xe_vm *vm = xe_vma_vm(&uvma->vma);
 >  
->  	smk_bu_mode(mode, acc);
-> -	pr_info("Smack %s: (%s %s %s) file=(%s %" PRIino "u %pD) %s\n", smk_bu_mess[rc],
-> +	pr_info("Smack %s: (%s %s %s) file=(%s %llu %pD) %s\n", smk_bu_mess[rc],
->  		sskp->smk_known, smk_of_inode(inode)->smk_known, acc,
->  		inode->i_sb->s_id, inode->i_ino, file,
->  		current->comm);
-> @@ -244,7 +244,7 @@ static int smk_bu_credfile(const struct cred *cred, struct file *file,
->  	char acc[SMK_NUM_ACCESS_TYPE + 1];
+>  	/* Protect against concurrent userptr pinning */
+> @@ -179,7 +240,10 @@ void xe_vma_userptr_force_invalidate(struct xe_userptr_vma *uvma)
+>  	if (!mmu_interval_read_retry(&uvma->userptr.notifier,
+>  				     uvma->userptr.pages.notifier_seq))
+>  		uvma->userptr.pages.notifier_seq -= 2;
+> -	__vma_userptr_invalidate(vm, uvma);
+> +
+> +	finish = xe_vma_userptr_invalidate_pass1(vm, uvma);
+> +	if (finish)
+> +		xe_vma_userptr_do_inval(vm, uvma, true);
+>  }
+>  #endif
 >  
->  	if (isp->smk_flags & SMK_INODE_IMPURE)
-> -		pr_info("Smack Unconfined Corruption: inode=(%s %" PRIino "u) %s\n",
-> +		pr_info("Smack Unconfined Corruption: inode=(%s %llu) %s\n",
->  			inode->i_sb->s_id, inode->i_ino, current->comm);
->  
->  	if (rc <= 0)
-> @@ -253,7 +253,7 @@ static int smk_bu_credfile(const struct cred *cred, struct file *file,
->  		rc = 0;
->  
->  	smk_bu_mode(mode, acc);
-> -	pr_info("Smack %s: (%s %s %s) file=(%s %" PRIino "u %pD) %s\n", smk_bu_mess[rc],
-> +	pr_info("Smack %s: (%s %s %s) file=(%s %llu %pD) %s\n", smk_bu_mess[rc],
->  		sskp->smk_known, smk_of_inode(inode)->smk_known, acc,
->  		inode->i_sb->s_id, inode->i_ino, file,
->  		current->comm);
->
+> diff --git a/drivers/gpu/drm/xe/xe_userptr.h b/drivers/gpu/drm/xe/xe_userptr.h
+> index ef801234991e..e1830c2f5fd2 100644
+> --- a/drivers/gpu/drm/xe/xe_userptr.h
+> +++ b/drivers/gpu/drm/xe/xe_userptr.h
+> @@ -56,7 +56,19 @@ struct xe_userptr {
+>  	 * @notifier: MMU notifier for user pointer (invalidation call back)
+>  	 */
+>  	struct mmu_interval_notifier notifier;
+> -
+> +	/**
+> +	 * @finish: MMU notifier finish structure for two-pass invalidation.
+> +	 * Embedded here to avoid allocation in the notifier callback.
+> +	 * Protected by struct xe_vm::svm.gpusvm.notifier_lock in write mode
+> +	 * alternatively by the same lock in read mode *and* the vm resv held.
+> +	 */
+> +	struct mmu_interval_notifier_finish finish;
+> +	/**
+> +	 * @finish_inuse: Whether @finish is currently in use by an in-progress
+> +	 * two-pass invalidation.
+> +	 * Protected using the same locking as @finish.
+> +	 */
+> +	bool finish_inuse;
+>  	/**
+>  	 * @initial_bind: user pointer has been bound at least once.
+>  	 * write: vm->svm.gpusvm.notifier_lock in read mode and vm->resv held.
+> -- 
+> 2.53.0
+> 
 
