@@ -4,91 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B471E67A95
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:41:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF4EE67A9C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 08:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B13C16B009F; Tue,  3 Mar 2026 03:41:30 -0500 (EST)
+	id 3AA456B0095; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABDBE6B00A0; Tue,  3 Mar 2026 03:41:30 -0500 (EST)
+	id 381916B0096; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EA706B00A1; Tue,  3 Mar 2026 03:41:30 -0500 (EST)
+	id 259246B0098; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 876A86B009F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:41:30 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25B99160360
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:41:30 +0000 (UTC)
-X-FDA: 84504107940.29.BCB41BA
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7BC6B180008
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:41:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of 3t56maQkbAOIWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3t56maQkbAOIWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 11F6D6B0095
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 03:48:30 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B52E31C2DD
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:48:29 +0000 (UTC)
+X-FDA: 84504125538.19.D907FE5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D841C14000C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 08:48:27 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQFhgWr1;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772527288;
+	s=arc-20220608; t=1772527708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=gVi4tpV4O9olpo0RRrzD1vhvqHxvubnsRs9fNmWiDMs=;
-	b=UFd39bXvkWuTO254FatHkp6DNriER1AttDb+QOj6pNu5WsVzB20upHPw9NWEywl5Kmm1Pa
-	nyF6n6vnB+BJsVxqVydCRddtP1IIr3rYqPIkcUD1EM32oWNagWdNnDRFUdmM7oud3QESlj
-	x4O4INBHF9P1bEK3y/qq4R+CJ1GlX1s=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OEcS0O25UdeCMwiY1wLq2u87+WK9pnAlpOZelh9i9R0=;
+	b=v4Vf8LUpFGY4xj0wXiqV+lVe+SDGpRIUSErYDVgzMCFG+0nBJKd9r38/8lHSI4lYMYtt/O
+	E2vOnFzhxlCNpiRj9qHDTlQZNjcqzGlvylIqhlEPKl016gZMZP0hVmFnXTEfaCHJqLzykU
+	LDe7O9lp3Grko3hXpSSDoolToDr1j3A=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of 3t56maQkbAOIWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3t56maQkbAOIWcdOEPPIVETTMH.KSSKPIYWIVGSRXIRX.GSQ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527288; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sQFhgWr1;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772527708; a=rsa-sha256;
 	cv=none;
-	b=sWm3NSuD0Z1QJajLdVBYEtkBmwZj3wp1SuQnsM/iff0uIWJnjFlSBscNf6pK1vj5Cu1bo9
-	DiCjxXA+j5CU3iQiseTumZi+8SPDdKWyib8NVpfNJs1jLgzpxWM2TwQS9q2v7nHFski5TM
-	NnqaUJaJGX8Antxhk/YFpaIFrDjCRc8=
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-45f0bfd68a3so27185107b6e.3
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 00:41:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772527287; x=1773132087;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gVi4tpV4O9olpo0RRrzD1vhvqHxvubnsRs9fNmWiDMs=;
-        b=ne9HNmGO/KMXLkVTn+nXU50wiQo70HxOy7to2MuVqGQ/0Uzsil8PNX+pwMHjVxd+K1
-         dYEL1IvUJL25kyuRwAAiM8pqxQF1FyFUwG8knqHncxEWXvBfhG+v/zpC+vhb9eY/WlP1
-         5cpVt92s1mZO47uLlY4/POKGzCHLbNFZWi//6EHD+SEJm/BOVlSRVAy3IHRSDgCCkVn2
-         bVgqoViTc42gcc/ad92u8v5K3uXfSACeJaO1Ek4QuvhJzMKH5La0xsEzkrxtKUrk+2wN
-         35a/TpiayjgUvCs05po/mwwhJGuD0Uzbp3ImGXX8pkku5OXcc1qA/p4safxRChZ0OTx+
-         2Kzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXvCh0z1Hj6IC97WLf/fsQ90HxqVbC0+LnikwAnfw+xdrHAk8UzZ8Rd2veVsc+/mT2S/k2GxBOaOA==@kvack.org
-X-Gm-Message-State: AOJu0Yxe0pg+ymHZNPuTe6Jg/MSV0kJYwvEHGv++HgSQIc2ub4jceklW
-	r9sF53jhBSqIU5+EKbtOB5Ropnzk3JkwNdT6Cnw8y3bAiKfpdRkVXPRNb1CaqyfC5vOQAFKkt+g
-	jVxbocgxBtHsNJdeXuRg0OXQwHEX0dJKZfZg/tzi6Cw/G+YBOQfz4ssJ/uDM=
+	b=dPtjGkXJduf/Lf2X2JxoiV/sqOmz7VVnWMDD18xZcKXVWB29FWnWrsCuVx1Fkb/0z/fmiV
+	t17ZTx2y7lSwiV3Bu2a5+Klst6aBENHznOox80QtdGlNVfXFygQkyoasWwI7vknqBaWLRk
+	NQpPrLR/I4FokGO0tovTb1q2LuuTR48=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BF0E242BB9;
+	Tue,  3 Mar 2026 08:48:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F9C116C6;
+	Tue,  3 Mar 2026 08:48:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772527706;
+	bh=epD00FefbJXRoRgkmbGok8xKZSTpyougdaUkz5Nbp/Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sQFhgWr1bBwgDvH5hRq8G47VTi6WQCJ47jZwoimCj2jKA7Enu2hks2eyJoG2hcuu9
+	 +T9aQKru/QcnhjqptMENpxixzOMs7BYgp1Ca4+8tHTygnwlYHehpvkmwb2pQrx7Id0
+	 1rpjAeAG2ZA5qwxzkzlpxPNxwKhlXEux0+4Y056pdU6ojid6y/I7WySaGK1iYBObpw
+	 9rzO6kLeeuQSv3dClKh6EI6i+efYyyiX2Pt3cOhHVAOOI0AfY3Qh1kpiBJloV1+FLF
+	 9g+dbil+xnT1DQ4OIKE3h5qWQSP4bHu8NbGxtESdCq0SCAJUCTIyEMpNnRyR992wNP
+	 foYgUBA1GAOYg==
+Message-ID: <56a23a23-cbed-4ace-acef-3ada41bc182d@kernel.org>
+Date: Tue, 3 Mar 2026 09:48:19 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1794:b0:679:a650:cc0b with SMTP id
- 006d021491bc7-679faf3393amr8894641eaf.51.1772527287534; Tue, 03 Mar 2026
- 00:41:27 -0800 (PST)
-Date: Tue, 03 Mar 2026 00:41:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a69eb7.a70a0220.135158.0008.GAE@google.com>
-Subject: [syzbot] [mm?] INFO: rcu detected stall in __dentry_kill
-From: syzbot <syzbot+f8ccdac0a7eede0e1ae5@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@kernel.org, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 7BC6B180008
-X-Stat-Signature: u5ywdbecftiqy8hai8cobhtqitq9fqum
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/huge_memory: fix a folio_split() race condition
+ with folio_try_get()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Matthew Wilcox <willy@infradead.org>, Bas van Dijk <bas@dfinity.org>,
+ Eero Kelly <eero.kelly@dfinity.org>,
+ Andrew Battat <andrew.battat@dfinity.org>,
+ Adam Bratschi-Kaye <adam.bratschikaye@dfinity.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260302203159.3208341-1-ziy@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260302203159.3208341-1-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: meesbe1esyccfogpfn5m14tk7qrjrsmq
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772527288-220831
-X-HE-Meta: U2FsdGVkX192w6MVXf1F2kGuNNxkEN6aV7og1GaUBww/M4C9VZ+j/IiH4KGqamKhUoAYJoOnGwJbP60pb/vAr5jLblfqflTyewW/BvCvG9P4y3DgT4BQm+7nSmLiAYZghYmdEmaplHbRGAhkvHpWPzypDCvZ/ZrTCu+U9qVf2sEdYQIf+cwXl7YXVhwvIEuIu+W+Df2JTEkYBD8soZoOkRTqd44lfqXoDJUTsuCF2zCUBxxW1SmU6oaXD9Vk5RjM4huPRMVT7bC0VWGYmcuwmVPZMRhbGWx2iFLyiKeUVtVyY40QQjoYQqkX/p86o5vN/OCpxRu5eZSrGAhQtS4oUhVotHPpgFREuEzAg/CD9mZFpOX63MFFsmCldc2qlsSk/pBbuMqdhf1IcLO2+cypoN07IC4XG5FVNftzqYJZn5FFFjcdO9kbrtrnwbdYtBFovSd+3m7E25RyMOvfGwD6ZN0dmvOrONIjThuD4bhIhvUdnZCWbUYx3MvOSNYK5MhgHW8crc3s0CB3xZIjjdOq1uOdBZDf4lGoj9qNk1RtvxBG/G3a2WsJrrhWab7ewJRiZtg9C7sVsAeqMqE3zj3lMWMCp/st7Tbva/Rk39Pintod7i/+rP5Ef7YefhkZSATru1rJ4gPyELoF4KH4KS47AzSMI1pt1N4AY8B2M74rARWbUeHLLEWULqDrgfslXsAVJ4txTV02f5fHRmRb642JpZkjOo5qc5718uqqVFMiq6GGQJHx5REu6YhUPG+O73gB9BDFr4hAw9HlyVh13D7esjZpfOIGU3h1fjliZKwkFhigZ7XQgf6vRGfl705Z8XG3iZ0iPSLzbluJQmPF1ch0gmSlZm5KQzjfOvHlbAOyQiIM96h4aDZV2i4yStCex/1TDPlzrLjZb4ZgiJGL/CdleH+0FNOxfb0ilaJTi0ASYVrarpCws/MoDVpQAgowhOfcNuLPwzXCxOyrOxUbpYr
- lLoTRsI4
- HbiDQOiiyT0wBURxsogx7FOYQrBVxYHr21Vw3jBQDZva7UId73GkRBS7gcoEVvxxnzXh5uIwPdOmrl1iedJjtyw8XxNA95+ghkGrx3uIpcFmjEq7+rCQB1yoy59PX2ewzVgoBO/H/UrA+6r4hvcF1/Bb7NDpUis+VflbyVxfZyNJiVmD427WIg1/klRWV2ksHsr48TVJS0Gk8GBktUwz8Gu7VpbzskQoVOVh1Bdj+XthU7ZPtTLsqeFDsSUlH+fCghYPa+IERmGYgzMGnJiEP1mDMlSRm8rtMLP+N0Y2qzf3kYh+ZFfNH7Df8IacC8Vijr7W3F1lFhTvCo9b9WWmejQTbfXAQgzttk8t26W99XG6umsspzH6EBSXmHc21s0zzrwnEyOjrFgJ5EfAQHyCFFJr+S01ks9cJ4VGhQRoUERdKH4YT7dYyExAA0vZYfkRLDJJu3AbP/W8yd/5sqLJxiE+clvIJOJRPkWslc8ul9s+AKUiQQMmrTd8xAzplRwD/Dzn2OiFak+E62aA+5zntUDAoFWkb9CxlWJwfyUGQccPYCJ/9iM685+YDFDjATDE9bBfgh0w5gVVPiAgFwp5pOD/WV7xBlUzSGiN8tFE6SaAar0LtPLzpLHVr1+LEaMUCFyDNyUHkkJjFzJ0BF/VX/AjYL7xl7u9ty7u3xxev95z6Azre2UbvZ3G6T+R7fxFCZZCBAFckyzU0+Bg6hjDJ4+PiTf3ayQBcXhWskdaAiMA/M5kkkPIa/NDlbK2WQDw7BPeATBVJt9pGI9GYkhRakemiVVM7sYEBalNnWKRALCaguLZOnFigVZewZuBqGsycyxPHesNPKfF+3vf5zwJG5eLHSRPflhFK3Do5Qd+dny5afWPBAdWRHduUTM5x8hzzSWva4AAFeDXLm52byGod3XuzSZeLTDHBtK1tXzwisgW4o7UL/uIsdR8wHxwDI6Tk5lYuohg3b4oQaf13i/C3Eh7LMG9Z
- LI4hsJ7H
- dHOo0lE/ovRloLQYAPF37eGxdnUOvENtbpFZ6kxsBQ6nWQz70QdG20FawVss7k6OJPUrJBZ80YkbtgvHj4VfMn1uALRB38nSCcchfL7pLMNzcw66j0hYpKCv7Nfu3jWAC10ousjMy3WJr/TFCrVDhX0TaY0e8+U71gKl6+KGr5wwa2mZ4IUMptLQzi/ly1sI2aIBpfVsdKq5hFP23/8EWY4uarUdOfNujeI9m2lcsnFgKGX1dBzBR6HiOwXl9No/hB7wY84UbVgdTGleWtyPznuSZb6eSb64XvcRCXScIiIZKJJhN4l4iGuE6W/tDoufpHu+ob6EintG2RYTyfjwixf4BYBNsQ6GSl2oo8IgJ//IyiQhe2Z3TTjG5jx8cWg2xB32fa3gFpAr3ISScNa9Og1z5EHSCzob82sf7AbJ2lDCcOaOb3iUQyhbYG+quyWvn0aNtd53WwYAOFQGRXlzofCNoEZ8aMaL
+X-Rspamd-Queue-Id: D841C14000C
+X-HE-Tag: 1772527707-7296
+X-HE-Meta: U2FsdGVkX1/RNfJj7JbDXknvPvP33XO5G6h/+nRc8MSPiNBRrD6S3JnyQcJfbiDxUntsSyTEwoXLgB64seRfj4ROkrzk6AWJxmx9GXTNPMAj8u7WpAo8rIU+b92TaYgwcU8alQKHhlxsX77+XN9uvL0Ya0F1XFUJNNunJ9/Y9IGtEfMujuWFhB3Y8Tgh/sOBme4BBJAe8Sg8u6aps2y5fYnuraDLGvr2Up5FQOtVKkYps5CRB79mLwVRvQmT37Ld476Cv8ejP9IKVJJqrxLt3rFRA0QmhgZ2PCOalBAGUe79uPBPofQXPfK+u+eubaUVj0yxUYq+W26xlZ7oX0x1MKAULyj12CdO8Q58Q87qdg/OEesc+6c+fMTKNj5dw/8cRWwe5PGCusvJF+5L0oboMtDB+NEMyOYZ+CTjKHXqqw4ERszxM/T8E90v6BXrFfJ76zB2h7s7Wc2KDEfd85ttKFJqSsYp3+nzDKJY6fdax46TgcLiRkgo1vZDW8UkmWrknDlEDxrv4pFLkVDmrRyxO/R6H5SY5VstOeyrAj3OFbg36YR0psnq8zwFnW6tc8536uaESm0qbXv+mnMTi9RpkdFBFyEaKG+BjTvISpfOUM7AqLLSJJT52ENyxfsscNZ/05oe0N6VawmnpM5tJU5yleumTmMOfZn8bFnp6JgPf52jfE4XqptIG22zeBMe8sosa6x4JNXQxlY8q9c2c0FvlxIc8mkplU3PuQwjXVHjLgt46FdW80hhN8yNyicwqRSfw9uo08ZJvu2RuIKLmhpE7IFX0Eg035WlwMl9g8nMEJ7YInPN5HUjMnESgYvMTwCqFYJfax5P7Oueq/YFzM+toGfWMPwIz9C454tX7n/DI0sWanj4Xfs04fftw+F/fPCu1aHzAjvWrzjs7eC4jjrU6d2lZJuoZYe/FghR/mfdZ8Zm4rgDKtAvQkejvUaL8noBOwZngWAL8qPtfmo0Vgw
+ Dv1wXkh0
+ jMHEcQoI6QUWQBY9rf7rAROxJFOIMjpjilnAKkKrS5ppcLdgRe0VqTBbCQLZWRkbjD6Z8V8FFViqrNj+NaqFsPm3XHxuJ4suNcPUNvDsl5GDrKj5wi1JT6wMzg7s/NWjSIxpxs9uQEutvl5BSzPx0JRY4F74mhy7KnmKQkfO/K8oQRUu6keKiPok/0iecltvIX6sa1hVYNPb+7WCnWt04ftfIO704IA6Iq57Wjl3X9WErVb9RUVkw7xW5zg0JEAMzujTbJ22LHE6AZM8Z0svtDrfd6Ud3Erf8+uV3vIA/XcLDdxSQgokh4rGnBfYKA0ngdl+VutjtP4WGctD3bDU8fd+QPVeFdUtu/uzeZZ3iwgz1n0XONqddJ4ln5/6piwjpoCOkTQm3Uf38qBcxZjyM0m/cgvhiQISHsBclc06hYGdemjafFADrVr1AeB6XLV0Hzxgf0QeJUCtI84o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,158 +148,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 3/2/26 21:31, Zi Yan wrote:
+> During a pagecache folio split, the values in the related xarray should not
+> be changed from the original folio at xarray split time until all
+> after-split folios are well formed and stored in the xarray. Current use
+> of xas_try_split() in __split_unmapped_folio() lets some after-split folios
+> show up at wrong indices in the xarray. When these misplaced after-split
+> folios are unfrozen, before correct folios are stored via __xa_store(), and
+> grabbed by folio_try_get(), they are returned to userspace at wrong file
+> indices, causing data corruption. More detailed explanation is at the
+> bottom.
+> 
+> The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+> It
+> 1. creates a memfd,
+> 2. forks,
+> 3. in the child process, maps the file with large folios (via shmem code
+>    path) and reads the mapped file continuously with 16 threads,
+> 4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+>    large folio.
+> 
+> Data corruption can be observed without the fix. Basically, data from a
+> wrong page->index is returned.
+> 
+> Fix it by using the original folio in xas_try_split() calls, so that
+> folio_try_get() can get the right after-split folios after the original
+> folio is unfrozen.
+> 
+> Uniform split, split_huge_page*(), is not affected, since it uses
+> xas_split_alloc() and xas_split() only once and stores the original folio
+> in the xarray. Change xas_split() used in uniform split branch to use
+> the original folio to avoid confusion.
+> 
+> Fixes below points to the commit introduces the code, but folio_split() is
+> used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+> truncate operation").
+> 
+> More details:
+> 
+> For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+> below:
+> +----------------+---------+----+----+
+> |       f        |    f2   | f3 | f4 |
+> +----------------+---------+----+----+
+> but the xarray would look like below after __split_unmapped_folio() is
+> done:
+> +----------------+---------+----+----+
+> |       f        |    f2   | f3 | f3 |
+> +----------------+---------+----+----+
+> 
+> After __split_unmapped_folio(), the code changes the xarray and unfreezes
+> after-split folios:
+> 
+> 1. unfreezes f2, __xa_store(f2)
+> 2. unfreezes f3, __xa_store(f3)
+> 3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+> 4. unfreezes f.
+> 
+> Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+> xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+> f3 is wrongly returned to user.
+> 
+> After the fix, the xarray looks like below after __split_unmapped_folio():
+> +----------------+---------+----+----+
+> |       f        |    f    | f  | f  |
+> +----------------+---------+----+----+
+> so that the race window no longer exists.
+> 
+> Fixes: 00527733d0dc8 ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reported-by: Bas van Dijk <bas@dfinity.org>
+> Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  mm/huge_memory.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 56db54fa48181..f0bdac3f270b5 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3647,6 +3647,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>  	const bool is_anon = folio_test_anon(folio);
+>  	int old_order = folio_order(folio);
+>  	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
+> +	struct folio *old_folio = folio;
+>  	int split_order;
+>  
+>  	/*
+> @@ -3668,11 +3669,17 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>  			 * irq is disabled to allocate enough memory, whereas
+>  			 * non-uniform split can handle ENOMEM.
+>  			 */
+> -			if (split_type == SPLIT_TYPE_UNIFORM)
+> -				xas_split(xas, folio, old_order);
+> -			else {
 
-syzbot found the following issue on:
+Just wondering whether we should no move the comment over here now, so
+it just covers both cases.
 
-HEAD commit:    2f9339c052bd Merge tag 'spi-fix-v7.0-rc1' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17ee2d5a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=af6ed0125ed44356
-dashboard link: https://syzkaller.appspot.com/bug?extid=f8ccdac0a7eede0e1ae5
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> +			if (split_type == SPLIT_TYPE_UNIFORM) {
+> +				xas_split(xas, old_folio, old_order);
+> +			} else {
+>  				xas_set_order(xas, folio->index, split_order);
+> -				xas_try_split(xas, folio, old_order);
+> +				/*
+> +				 * use the to-be-split folio, so that a parallel
+> +				 * folio_try_get() waits on it until xarray is
+> +				 * updated with after-split folios and
+> +				 * the original one is unfrozen.
+> +				 */
+> +				xas_try_split(xas, old_folio, old_order);
+>  				if (xas_error(xas))
+>  					return xas_error(xas);
+>  			}
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/80058c3aa6af/disk-2f9339c0.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/b80f7bb94c82/vmlinux-2f9339c0.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/2aca3560fd76/bzImage-2f9339c0.xz
+-- 
+Cheers,
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f8ccdac0a7eede0e1ae5@syzkaller.appspotmail.com
-
-bridge0: received packet on veth0_to_bridge with own address as source address (addr:8a:88:71:a0:4a:94, vlan:0)
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P10337/1:b..l P10386/1:b..l
-rcu: 	(detected by 1, t=10503 jiffies, g=42749, q=1178 ncpus=2)
-task:syz.1.1104      state:R  running task     stack:26792 pid:10386 tgid:10385 ppid:5832   task_flags:0x40054c flags:0x00080002
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5295 [inline]
- __schedule+0xfee/0x60e0 kernel/sched/core.c:6907
- preempt_schedule_common+0x42/0xc0 kernel/sched/core.c:7091
- preempt_schedule_thunk+0x16/0x30 arch/x86/entry/thunk.S:12
- __raw_spin_unlock include/linux/spinlock_api_smp.h:169 [inline]
- _raw_spin_unlock+0x3e/0x50 kernel/locking/spinlock.c:186
- spin_unlock include/linux/spinlock.h:389 [inline]
- zap_pte_range mm/memory.c:1959 [inline]
- zap_pmd_range mm/memory.c:2021 [inline]
- zap_pud_range mm/memory.c:2049 [inline]
- zap_p4d_range mm/memory.c:2070 [inline]
- unmap_page_range+0x152f/0x4840 mm/memory.c:2091
- unmap_single_vma+0x153/0x240 mm/memory.c:2133
- unmap_vmas+0x295/0x590 mm/memory.c:2171
- exit_mmap+0x1ef/0xa30 mm/mmap.c:1302
- __mmput+0x12a/0x410 kernel/fork.c:1174
- mmput+0x67/0x80 kernel/fork.c:1197
- exit_mm kernel/exit.c:581 [inline]
- do_exit+0x78a/0x2aa0 kernel/exit.c:959
- do_group_exit+0xd5/0x2a0 kernel/exit.c:1112
- get_signal+0x1ec7/0x21e0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x91/0x770 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
- exit_to_user_mode_loop+0x86/0x4a0 kernel/entry/common.c:98
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:325 [inline]
- do_syscall_64+0x668/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f663f59c799
-RSP: 002b:00007f6640521028 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: fffffffffffffffc RBX: 00007f663f815fa0 RCX: 00007f663f59c799
-RDX: 0000000000000017 RSI: ffffffffffff0005 RDI: 0000000000000000
-RBP: 00007f663f632bd9 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f663f816038 R14: 00007f663f815fa0 R15: 00007ffe16d21cd8
- </TASK>
-task:syz.3.1088      state:R  running task     stack:26216 pid:10337 tgid:10337 ppid:5827   task_flags:0x40064c flags:0x00080001
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5295 [inline]
- __schedule+0xfee/0x60e0 kernel/sched/core.c:6907
- preempt_schedule_irq+0x50/0x90 kernel/sched/core.c:7234
- irqentry_exit+0x17b/0x670 kernel/entry/common.c:239
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:__sanitizer_cov_trace_pc+0x3f/0x70 kernel/kcov.c:217
-Code: 05 12 a9 00 01 ff 00 74 1b f6 c4 01 74 07 a9 00 00 ff 00 74 05 e9 d1 30 88 09 8b 82 54 16 00 00 85 c0 74 f1 8b 82 30 16 00 00 <83> f8 02 75 e6 48 8b 8a 38 16 00 00 8b 92 34 16 00 00 48 8b 01 48
-RSP: 0000:ffffc90004ba7188 EFLAGS: 00000246
-RAX: 0000000000000000 RBX: ffffea0001354c80 RCX: ffffffff827e8e11
-RDX: ffff888020f90000 RSI: ffffffff827e8b0d RDI: ffff888020f90000
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000001
-R13: 0000000001640274 R14: 0000000000000000 R15: 0000000002b60289
- __update_page_owner_free_handle.isra.0+0x6d/0x4d0 mm/page_owner.c:284
- __reset_page_owner+0x93/0x190 mm/page_owner.c:321
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1433 [inline]
- free_unref_folios+0xaea/0x1790 mm/page_alloc.c:3040
- folios_put_refs+0x53c/0x840 mm/swap.c:1002
- folio_batch_release include/linux/pagevec.h:101 [inline]
- shmem_undo_range+0x5e5/0x1570 mm/shmem.c:1149
- shmem_truncate_range mm/shmem.c:1277 [inline]
- shmem_evict_inode+0x39e/0xbd0 mm/shmem.c:1407
- evict+0x3c2/0xad0 fs/inode.c:846
- iput_final fs/inode.c:1966 [inline]
- iput.part.0+0x605/0xf50 fs/inode.c:2015
- iput+0x35/0x40 fs/inode.c:1981
- dentry_unlink_inode+0x2a1/0x490 fs/dcache.c:467
- __dentry_kill+0x1d0/0x600 fs/dcache.c:670
- finish_dput+0x76/0x480 fs/dcache.c:879
- dput.part.0+0x456/0x570 fs/dcache.c:928
- dput+0x1f/0x30 fs/dcache.c:920
- __fput+0x519/0xb40 fs/file_table.c:477
- task_work_run+0x150/0x240 kernel/task_work.c:233
- exit_task_work include/linux/task_work.h:40 [inline]
- do_exit+0x829/0x2aa0 kernel/exit.c:971
- do_group_exit+0xd5/0x2a0 kernel/exit.c:1112
- get_signal+0x1ec7/0x21e0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x91/0x770 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:64 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:98 [inline]
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- irqentry_exit_to_user_mode_prepare include/linux/irq-entry-common.h:270 [inline]
- irqentry_exit_to_user_mode include/linux/irq-entry-common.h:339 [inline]
- irqentry_exit+0x1f8/0x670 kernel/entry/common.c:219
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
-RIP: 0033:0x4021000
-RSP: 002b:0000000000000009 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 00007f8bdda15fa0 RCX: 00007f8bdd79c799
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
-RBP: 00007f8bdd832bd9 R08: 0000000000000002 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f8bdda16038 R14: 00007f8bdda15fa0 R15: 00007ffe5ae86398
- </TASK>
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-bridge0: received packet on veth0_to_bridge with own address as source address (addr:8a:88:71:a0:4a:94, vlan:0)
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-bridge0: received packet on veth0_to_bridge with own address as source address (addr:8a:88:71:a0:4a:94, vlan:0)
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-bridge0: received packet on veth0_to_bridge with own address as source address (addr:8a:88:71:a0:4a:94, vlan:0)
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-bridge0: received packet on veth0_to_bridge with own address as source address (addr:8a:88:71:a0:4a:94, vlan:0)
-bridge0: received packet on bridge_slave_0 with own address as source address (addr:aa:aa:aa:aa:aa:1b, vlan:0)
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+David
 
