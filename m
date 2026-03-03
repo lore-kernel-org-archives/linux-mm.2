@@ -4,121 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927BFEDA68E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:43:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9483EDA692
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 15:51:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A34916B008A; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
+	id DDC616B009F; Tue,  3 Mar 2026 10:51:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E2A56B0092; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
+	id D5F686B00A0; Tue,  3 Mar 2026 10:51:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EE526B0096; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
+	id C37236B00A1; Tue,  3 Mar 2026 10:51:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DF626B008A
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:43:38 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29688C11F2
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:43:38 +0000 (UTC)
-X-FDA: 84505171716.18.FE18C5B
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E289514000B
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:43:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=U7PBQddm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772552616;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ACA3C6B009F
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 10:51:14 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57EA757825
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:51:14 +0000 (UTC)
+X-FDA: 84505190868.20.1A58080
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 596A240012
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 15:51:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Fn4biqiy;
+	spf=pass (imf07.hostedemail.com: domain of glider@google.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772553072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
-	b=Ogh3Tl0KJrS5dHKTxYEe9KHZ6ftE4jdEjCMmLvWIfTEgFCf+MJgknxAFozoe4SBhI5BoXN
-	shLDBMzIIUxjMyr0utZBEmD0cMYGNAaaUebVk24meCJ5N5MJCYLyDuam/JzSoqs1T2HwiE
-	iu2v1ZOAY7oEO6o8isx8zwsstjQaI2k=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=U7PBQddm;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772552616; a=rsa-sha256;
-	cv=none;
-	b=ehJW9MgND6piV0pnVH2fWgoaK9io3WL6o+fcPhFcipvB0M9whtyk9tIP87r74ixjoL2gNK
-	kZT0C8Bo9mepsyGqb3/sEY0K9b/m3RKs6Lb8IPpv3xEjJLJDjszp6v1wjc/r9oVKWyNnh1
-	5dNGtcWWP81rWOb6hMKZPxb2F8pAFb4=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c711959442so554695685a.0
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 07:43:35 -0800 (PST)
+	bh=XX2std0eOKpVnxlasP7zVX+3pxODM6r50zuPsQkksH0=;
+	b=CDke31XNP6XzM+uyEKESZCjbvjKFkr12Y4+DSzzV4tjhE0y7I2Mfias5Q6WWOPO5uXWnCH
+	eTqH7O1qY5u0wWn/2No8iXxgGF0Z2JhK8OtRTI6GHlAVWKiw0fzzzaSY9D7ptO/xlq1kU7
+	B6icRoyfdMDpc4B0IL0VPOfCokeCVC4=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Fn4biqiy;
+	spf=pass (imf07.hostedemail.com: domain of glider@google.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772553072; a=rsa-sha256;
+	cv=pass;
+	b=SE+PPPAN29Y/Qs2kZJxAVQniD4+pjvyJIVJf+YI9TIWnbveyeda6AN0YU6DaABGXXYZ801
+	M/i70iaP1J/c4ABI6mDRriWkiesTsbi6Vuy504lqITSSkNv9CCD78Yjs2bPsRgUAo/Vs7d
+	8pjlhEdVOM3Lf9iA2fnF7kgv+ezzDzA=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-899e85736e2so30647966d6.1
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 07:51:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772553071; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IJh1CgO5BmYil35LaeQdh6saJccOYTeawNZbtUtwEy2OydDRUXEtlYJde+YREOOpEz
+         8YlGgFVyBIFWMTjev36IPkVrRJWrysRfnIojRlM3yOgyCIHIuc0Hu0HwxNESEKn5yYfv
+         OrGBWRPt9uQeCtYt3oUZhh5/6tP5XrW352TkCkT5Iw16p0Dvewei3EgT61vtTETaRGSW
+         wD9DCWWVeGLg6T2iZ0n70TVXXzn8c9kXp0z7ZpSJK8yQMqZz7rEPLB0gypMcWu0/uL4L
+         wrml90LNBluC2vrHiBn7N70ZhokGS12CIKDPI5hA841geHrhFW2xlrNVR+uIDNWgpvLt
+         DcEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XX2std0eOKpVnxlasP7zVX+3pxODM6r50zuPsQkksH0=;
+        fh=8a/KEtL73bGHgKr5MXBU/c4PDKzt+uV7Ura8g5i9/gA=;
+        b=c/JyDYGBSav27xthQTLXhuCR6dQD+wYODNpNpPsfvI6N+f04+DQE7hP8Zo1eckSG9E
+         DoHvASkBsQq+OCEnPqevWull+XztOvNvvWgX8X5vH9eiSacXa3vxCpnnim+FhvjqtKzs
+         k16LQ8EBdBeA6InRPIPurW4KyUaE1m3akB1WhHRmgBSyiWm5q4u8aKeZa+6kqyu158bq
+         4T6ufNWv6rMKVRkYxqJhv7Qlr9jQfQ2yLo5pb09Q3OVUldV133A7rxX9yZq9qUNfdNM7
+         Ij6pNbFm8Ozlzu/B4TMxrb9XQcbfuI9gSsZ1Z7j/ECWd6c1/EMS77Oz/eYY37gH9Dfj9
+         u/rw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1772552615; x=1773157415; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
-        b=U7PBQddmyPZqPlhJdOamZvY6538vVXZ0OFHv46CFl7RKwDYcER6JI8IXDX1mKFU3eF
-         rtt1PHpXbfAdkMA2C15zFvL5jXtNW2GdohYZ2GY1g9ad/x6OrUvJlVG2EuyZi0LOy8hg
-         9XojcxfbqSRcxPbDWI3/xt8AEUH9vU9K86gSQfkAkDJqELqkVLLGzw/z0BBMXqBZKDts
-         hZpSz92sw1Lx2b9VWFLDkPP4wR4PWo6vadYLmyNeCmMA0NJxFI7VSl6VbTQVgnep0PJE
-         88OyS7+KHWNNim3idrmixCMac3eZMxrZjewORxXxgXOAaMGxMuYk3+OWglSa5feghx79
-         kVSQ==
+        d=google.com; s=20230601; t=1772553071; x=1773157871; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XX2std0eOKpVnxlasP7zVX+3pxODM6r50zuPsQkksH0=;
+        b=Fn4biqiyh5CP/LLVPIQs/jMlLSfSKbRfKDVQBaljVGAR/dk+yvnG7e4epagBAOnM85
+         8EOr2D3JPZcXKt2LpWjWoRoHP4qsBFiBAhS8ifMOADKol7yENa2A4EzJFqQi+YVAheLv
+         t/W4u6Og1lxdjk3z0PfK0Rad46X0VtHoOB9ZGq3l+51Ja+RtUhea0EWi73hNge6WYdJ6
+         OEkvtzFrMcgZlPyRK8Leez8cPLa6PLbdhZ0ZR+XcJ7gHm/7ymQX1iGkYnhC9WS4yap1H
+         kH+AZp0esjfvFlf4TvmTemROjKphdz7TreYvd07Rg9WVsU6NfY6ogjrFX43NyKeTODgK
+         zN6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772552615; x=1773157415;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5iJQaiUJrWfplRxtcMoHp1zPaYjGQn94g6/CCuRZvsM=;
-        b=aI+hLp5+8uS8EnDfE4dE8h0+Hnlxb1KM1mnV7GCX/rMdG6taz+bo15Fy7FgCjmu/Yl
-         LiJeXsbc0y9z7T4EeEmNKzn4Q/lNsKuDBv9VFcDfnis+dn6Da5Uknm7bd+dCwMH/0JEO
-         I9cPtUqjduynf/7cWupeuLx2zsgIeeMVcTPy2ndZTzZw2kqKS2nIYmbrZlYSV2ls5OIt
-         LK0tPit8o7XSIzlYpJSehaw5F4WQtYGYd6XFpyqezazvYUYdjxmXhFITQ1m89RX5No3i
-         SbvNlaUoyV40F0Liikty/Y++KsrsMC3JpAtmA8QfSyyxr5IroXDBh95Zxpuy0ORfH6iR
-         6Ggw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoRS0pJb7jmGG8QzCzvwkwHxJyMYO3LkQurv8RBv1zqExSpQ2VkrslZ4+VDcnLhiI06loFRab/Fg==@kvack.org
-X-Gm-Message-State: AOJu0Yx+aIZW/LqmMuE71wiMdCMhqj9kIBxs/nV8jylCj1ec+LYXsyBr
-	MFRe+Kbq8hIZPKKufIZih09GGs2wKUfuL2yLmS0LI4DYprnKMRTe8FEpQCSuzScGkN4=
-X-Gm-Gg: ATEYQzznyw8Yr6FPvJ11B8G/jh7szGncLIftl5IqRm6WsEHPlcLz0l/FyVeMTRqCupz
-	Tu2aSi6jZ3RvK/gyQFplIjpbGrLck3pMTFrrWwCZYou588MignBBjDyQw2hkXBmQ969cKkyYc3p
-	YwDACdXmzVVLrSSygcvDyesp3Gd+xB3+0LJ+1MpvJWcEhvVZfPsRneA9XOvQSt5r8NY6UqlyGQj
-	e054hrJNLApTuRKFXIC9/YUiky4Xi5FuSgn11ZAc4S56udGF5XJkMEmYJUSm/2PHWRXlV9z4Z3+
-	ieRCZXAUfgmekK6fCnC+OOVYdQh2dt1ZsFonWU3sgneHnhASce4wlGwRM2l//a1GBOQo8ekPMpS
-	hk/czkraEhhGAllj+JKd0uc9wCfvSwpTItgoBg43xMbwlW9wsD/1E218EGtsg0+KHNM/8xzWOiH
-	ubJ/B5Wh8HA5rqz5+/HDj3U206gaUEjbT6
-X-Received: by 2002:a05:6214:21c7:b0:899:f39f:b884 with SMTP id 6a1803df08f44-89a0a86c9d5mr33626696d6.9.1772552614690;
-        Tue, 03 Mar 2026 07:43:34 -0800 (PST)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-899c7374e07sm134729676d6.33.2026.03.03.07.43.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 07:43:33 -0800 (PST)
-Date: Tue, 3 Mar 2026 10:43:29 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] mm: memcg: separate slab stat accounting from objcg
- charge cache
-Message-ID: <aacBoazC21TAi-Q2@cmpxchg.org>
-References: <20260302195305.620713-1-hannes@cmpxchg.org>
- <20260302195305.620713-6-hannes@cmpxchg.org>
- <ji2jjt4vtmt2ox7wzytpivttc4z7j3u6cwmv23r6xit5322gns@te4t4djl5nlk>
- <541a6661-7bfe-4517-a32c-5839002c61e5@kernel.org>
- <aablae2eFl9ne5fW@linux.dev>
+        d=1e100.net; s=20230601; t=1772553071; x=1773157871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XX2std0eOKpVnxlasP7zVX+3pxODM6r50zuPsQkksH0=;
+        b=o9uBQ62iycDTnNhAvv8tlTTBM7mu7XeTyC4GM7EsakFlzDSPUZy6UrZE0VgUrICapU
+         xrRLVFO8OHm7CBez9zUqhSL+XHrPo1OhRLh8sZ9+Rc88HwBXYFeqttTWJQTtjsYgUF58
+         7FtiuTQ27xzmXbGm4AafxQfsY5aTSAlG275CWA1CEgtcQrnrCRbTvXXzUuG6aFn5X/5j
+         varu9J9hTYkfmVp2d0BsZxxo/gEK2+pxOsZVv2W4Da18VJND0qGO882hU+425DyOdznK
+         owawQ/p/kf6IvyyN40EEv8FThosjq6MKnm+Qcb/U5BpEkbL9CJHNzWbwNXENcxQo1ibC
+         2kLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVO/EZNQyDGWYCDnsTc/Furkp5vNvZTSlwN401pDQgywBQCsmE+Vm2CdHXzVrBAJs/b2jgNgGjMvQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz8bc7gikuLmuYCTLHE/PoIEuYPSC/F/cYgJnDRZ6Hj+Y0Y5EHK
+	HAnRJp7Tc0Bx6O7mlYddDH/fnTLZ+K6D7nMpvpAA9XssqvlpKJqOCwUY8J4HNNz6KWBdxoRcYr4
+	cwamd4MM7eHNPbWPhwQ5fCglDY5cZhzQhHF8l/yEg
+X-Gm-Gg: ATEYQzwbpJGd2ZWhcYbukRvecvGOGLuQnKdJqG55Kq3L9B7Por+ILas1GvwyqrZGXpM
+	Z1Kj37i8iICaxoIYonfe8EEphVckV2GmlydiU+yxTg3AcrX8YjbU++HFqoR6FRCxuktrvW2xPTR
+	pxQaXN3mTM/Cfslyr4pPHWE8LE7bceY0vSebRLCPRh3VGr8+KbfQ5kq28tccZnHEsVnj53Tjy4V
+	/io3bIpQpejicxLWEyE/Nyr+dXpgvhtiYiyB4tnp8mK9VYGqiWaewpP4w9J55kr/9AC/u9aEXzI
+	tBGDK7+p/5ZSPS3G02AP+oTsYtM/NP/wriWtWw==
+X-Received: by 2002:a0c:e083:0:20b0:899:a655:1e1c with SMTP id
+ 6a1803df08f44-89a0a89f981mr24703846d6.18.1772553070977; Tue, 03 Mar 2026
+ 07:51:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aablae2eFl9ne5fW@linux.dev>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E289514000B
-X-Stat-Signature: 4yeyzfwxjchgntfx3k5wgrbx73bbeqs1
+References: <20260225203639.3159463-1-elver@google.com> <CAG_fn=WAwHUpoay2kY6rkEZQGYxoDGVJYf5B59Y80ht7++Lmqw@mail.gmail.com>
+ <CANpmjNNfz9TQcnZWkTXEAzVNdUAAYfBv0-FB-e7oV5PCfsYR5Q@mail.gmail.com>
+In-Reply-To: <CANpmjNNfz9TQcnZWkTXEAzVNdUAAYfBv0-FB-e7oV5PCfsYR5Q@mail.gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 3 Mar 2026 16:50:33 +0100
+X-Gm-Features: AaiRm50oFjbSzRbajGzbxbdZNPrSH3B1_BNVoEG05ijQc5OU5p9gEg4qp---aio
+Message-ID: <CAG_fn=VczquLYh0zs-Rh51=B=J0k9EUtdoqrKncKy-n5jHxFEg@mail.gmail.com>
+Subject: Re: [PATCH] kfence: add kfence.fault parameter
+To: Marco Elver <elver@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Dmitry Vyukov <dvyukov@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	workflows@vger.kernel.org, linux-mm@kvack.org, 
+	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1772552615-405186
-X-HE-Meta: U2FsdGVkX1+iuVc7PFPIaF/pj2aO0xxqDzIKWvQESxkCvobWX1pZAin6kSDuw5FKr5y8W4LLGpZ2n2IadDb4hHZuuFHqIuQwXvYjpUhh1x7/cYE+bvO1CIW7kh0TZumat11z2hINqU2/pJJyfSRnzjvmZ1OzNwwEJaOQ6oekeyhPnIqpXzRStcVpTMIUXu0T8pgg21qDyLg/AIB5+xF0323VtoL7tAOx8V4z6mn44MMQWdxT0Xh+XmeZqKby9RghaUOFrOKmbYgQZGARNzhn83VsI485E5ox5rm6eCJMja+j7OhmE4Pe7jHrcN/+UL+A/97zTq9xygMr0b4dr0NgPpnZ7hV7Zoi72MmO+eNHbUI7v15zHYFenLYym/QndN+HicpgG2V1Np8iy6D6p6DMUy0zjLifn0opmouj9v3D4itJzyD/Jfl0K3ghTWQGVcvD/OslQuy0pbLimFrxr99LEARH4iqiAk372HrXLLGu9nPzXktSGaUBauyPJ/KwYzhOOlmJvHypwegLf0jrXudSGQIbxmMYhaDZ4c62YqRqXM2oZy1zCVtPBhL3DVyugIGK+GMP6D8xobdS7a8kkE0DV07wcdPrp+ueSIXf3g09nJKAmV1P4RUrIa6x3HB1Eam4hHLViekBTk/1kiX7UsCHwjwIE6uGUskLsSWfDIK2F0ROtn/UZ5FQjtlqLc40a19aHde/T1yYwrm8eedolTvgZasDBXFEEM8sFhTjSc1CuYV/ap+rdsGgiWOSbBXKYkUPfGE9rlgzQGhU0BuX9k6RjeJipPwPIEXV1SYdM+kosBJQYYNL1GwKae6ZeJqmASFb2l81HItz+a6GUIqSYEK2bXdEd1Soz71sMexzvx1VqVwWg0pcBUk39ETaqgXjcI7Jf9o1QDRBVZYGXI+3n8WSDn7q7fXGjWtSliwFjitFwzxNGYdPa2T8k5k0BB4E/N1sX19fWkHWH1U93vEKLfB
- BARX1fSN
- u8gPtAsqLyGNEYt/HnqzBiLQbI8xs/hGhCie1xXEH26r0UAWcv/Ml5EZpJbThRjPkveOwBlYy5E3oBwK/hpzcLZmIjiF2J7bnMI/7HOmLnPFOwYDJoYdd/UElqdIDKex0QT1IfGfMHypgrpcJBb+hEtYF9yM1LI4+rwWzAwwnqGFTumgeKiLFwlbxQhd+l7b+y7K84fL1RLsNUpqzvuSkCrqu0TQhBLbtH3dBER+WsLVyvR4/GF4KLpKT6l9xK8mhLG8haEQn6Y1UdMs/T82/o9SGbubj1WjKSCaDO/jULXcQyXBIe48bBJfbSQpY7oPIgxpRwsi9D9JO62AN+K7F5Yqif3igckRK3PF5fH7MOGf9ssmyOz3vK9zf14xAJlgkvEhvqp0WyKCeu1Z9TB+7vefoDJ2OE+emul6xzx59IkF7DLE=
+X-Rspamd-Queue-Id: 596A240012
+X-Rspamd-Server: rspam08
+X-Stat-Signature: j5w1extjzfmwtb6p6rbe84wbh85mei98
+X-HE-Tag: 1772553072-607595
+X-HE-Meta: U2FsdGVkX18yMpmDNkC2msvLXjF01nnL8eaxpSf5V7BWtxQhFQg2/z3Rc7cV0Fbmg/FNx5Mj+sE33SNKMCCD5gl5pFtJcZcgRpa0NlYplgr9asWpyjJbErkwqcBGknBj+an3BMEQBvZQSZ36rOTjvIQBYPRkG+2l8FuBPzWSkcqklBnuC9uNXvOlM9vWHbpA8bTJ+i7Hq8MY5EgGHYLJlYDdA0tmWudCZd6SiPhwJnKIh8zDuldn7Rl0fbP3o3FI8PKODkr6CqlM8FjwT0KvwDXQYKmh0oqOzU47S8K1N+Ii41BbtcFQiN7AyaI0mjxwMBUGsjY5/gbotjdrmnspXEvbMPqe19IAHWK3FhySIwqOA0t2hR07zfEa+H5Ql9G2rMml+vsQmF4nU+f8UzpH/husnKH5ILe5UfTzuDMvUSCTwDAEttWCPoViJIwkCbJUjrIjHt4RKBWKfTTwHgOGdOlxeEr8xbrODf/I3m+hfiYIJy4Om8I9yCs/o1Z80HuIk4Lqwdu21xB/GaHWtoq0S+XdDZ91isvjGWlxuqCnRuwHn5uv3eAj+pVm7tCxY+kbeXofkY2hat+4Fuvi9ikm068fwflpo5Zt18TL+ae/s+xvfXlApjPaauDEi20tiEYNoWjmhAl0erEDDm+vtfpoVgKc0zuR/LlTOEkYCtRknQ4pUN6lEFTQwRGXReZ6N4HbB4xmX8Fq029ZafJlFFlJ/Up1N8M8nDY1XmyZzFVQ7dTL5tvo9a43YsK/KZScQMo0jEBGn6TcDwDtaobgFFkNcxrxkS60jylWNpzUKuHYegMJJfy90RTRlmtQg0hd/S1M9QBBqtx9xbrB8pV+CueWOtfh/z1Rq3Wh/uuGb//6UsKioKU4ay7dV/+CdB2Bxcv/mOV6/q3sZf3wTeAx2REdCYmXKsH4gkEKfbjyzTV3Mqgz01RGnEZjTlXsILHT0PqMsAxBJVQxCwVmM8nZGKD
+ y/3GYK3M
+ pA1nWlIGX8ep3E7N3xAfY6Y+yZfv99BCvMVKZtv+KVhwgf7B/HmYEPZ3HgeU6g339AP+9eZad87DDzUNHGICTOAuNrmHV7gWyPlMwJL6d0b2O8mw2DKjWFY0yi0oBOJnWQi4Ai/RKGe8pg+7x4Ysil9m5HaImXKuhb2VS4TUtsOgIeqMeuGtZUx9VLKcPV6nhckBXJafR/eW3B7sK7XyZ2v9OYcxwOAImVe3xJ1ehEk16LWQ6EmNy9InhbY4zSKroNh3BcOnVcJtZJY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,147 +142,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 05:45:18AM -0800, Shakeel Butt wrote:
-> On Tue, Mar 03, 2026 at 11:42:31AM +0100, Vlastimil Babka (SUSE) wrote:
-> > On 3/3/26 09:54, Hao Li wrote:
-> > > On Mon, Mar 02, 2026 at 02:50:18PM -0500, Johannes Weiner wrote:
-> > >> Cgroup slab metrics are cached per-cpu the same way as the sub-page
-> > >> charge cache. However, the intertwined code to manage those dependent
-> > >> caches right now is quite difficult to follow.
-> > >> 
-> > >> Specifically, cached slab stat updates occur in consume() if there was
-> > >> enough charge cache to satisfy the new object. If that fails, whole
-> > >> pages are reserved, and slab stats are updated when the remainder of
-> > >> those pages, after subtracting the size of the new slab object, are
-> > >> put into the charge cache. This already juggles a delicate mix of the
-> > >> object size, the page charge size, and the remainder to put into the
-> > >> byte cache. Doing slab accounting in this path as well is fragile, and
-> > >> has recently caused a bug where the input parameters between the two
-> > >> caches were mixed up.
-> > >> 
-> > >> Refactor the consume() and refill() paths into unlocked and locked
-> > >> variants that only do charge caching. Then let the slab path manage
-> > >> its own lock section and open-code charging and accounting.
-> > >> 
-> > >> This makes the slab stat cache subordinate to the charge cache:
-> > >> __refill_obj_stock() is called first to prepare it;
-> > >> __account_obj_stock() follows to hitch a ride.
-> > >> 
-> > >> This results in a minor behavioral change: previously, a mismatching
-> > >> percpu stock would always be drained for the purpose of setting up
-> > >> slab account caching, even if there was no byte remainder to put into
-> > >> the charge cache. Now, the stock is left alone, and slab accounting
-> > >> takes the uncached path if there is a mismatch. This is exceedingly
-> > >> rare, and it was probably never worth draining the whole stock just to
-> > >> cache the slab stat update.
-> > >> 
-> > >> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > >> ---
-> > >>  mm/memcontrol.c | 100 +++++++++++++++++++++++++++++-------------------
-> > >>  1 file changed, 61 insertions(+), 39 deletions(-)
-> > >> 
-> > >> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > >> index 4f12b75743d4..9c6f9849b717 100644
-> > >> --- a/mm/memcontrol.c
-> > >> +++ b/mm/memcontrol.c
-> > >> @@ -3218,16 +3218,18 @@ static struct obj_stock_pcp *trylock_stock(void)
-> > >>  
-> > > 
-> > > [...]
-> > > 
-> > >> @@ -3376,17 +3383,14 @@ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
-> > >>  	return flush;
-> > >>  }
-> > >>  
-> > >> -static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
-> > >> -		bool allow_uncharge, int nr_acct, struct pglist_data *pgdat,
-> > >> -		enum node_stat_item idx)
-> > >> +static void __refill_obj_stock(struct obj_cgroup *objcg,
-> > >> +			       struct obj_stock_pcp *stock,
-> > >> +			       unsigned int nr_bytes,
-> > >> +			       bool allow_uncharge)
-> > >>  {
-> > >> -	struct obj_stock_pcp *stock;
-> > >>  	unsigned int nr_pages = 0;
-> > >>  
-> > >> -	stock = trylock_stock();
-> > >>  	if (!stock) {
-> > >> -		if (pgdat)
-> > >> -			__account_obj_stock(objcg, NULL, nr_acct, pgdat, idx);
-> > >>  		nr_pages = nr_bytes >> PAGE_SHIFT;
-> > >>  		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
-> > >>  		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
-> > >> @@ -3404,20 +3408,25 @@ static void refill_obj_stock(struct obj_cgroup *objcg, unsigned int nr_bytes,
-> > >>  	}
-> > >>  	stock->nr_bytes += nr_bytes;
-> > >>  
-> > >> -	if (pgdat)
-> > >> -		__account_obj_stock(objcg, stock, nr_acct, pgdat, idx);
-> > >> -
-> > >>  	if (allow_uncharge && (stock->nr_bytes > PAGE_SIZE)) {
-> > >>  		nr_pages = stock->nr_bytes >> PAGE_SHIFT;
-> > >>  		stock->nr_bytes &= (PAGE_SIZE - 1);
-> > >>  	}
-> > >>  
-> > >> -	unlock_stock(stock);
-> > >>  out:
-> > >>  	if (nr_pages)
-> > >>  		obj_cgroup_uncharge_pages(objcg, nr_pages);
-> > >>  }
-> > >>  
-> > >> +static void refill_obj_stock(struct obj_cgroup *objcg,
-> > >> +			     unsigned int nr_bytes,
-> > >> +			     bool allow_uncharge)
-> > >> +{
-> > >> +	struct obj_stock_pcp *stock = trylock_stock();
-> > >> +	__refill_obj_stock(objcg, stock, nr_bytes, allow_uncharge);
-> > >> +	unlock_stock(stock);
-> > > 
-> > > Hi Johannes,
-> > > 
-> > > I noticed that after this patch, obj_cgroup_uncharge_pages() is now inside
-> > > the obj_stock.lock critical section. Since obj_cgroup_uncharge_pages() calls
-> > > refill_stock(), which seems non-trivial, this might increase the lock hold time.
-> > > In particular, could that lead to more failed trylocks for IRQ handlers on
-> > > non-RT kernel (or for tasks that preempt others on RT kernel)?
+On Tue, Mar 3, 2026 at 4:23=E2=80=AFPM Marco Elver <elver@google.com> wrote=
+:
+>
+> On Tue, 3 Mar 2026 at 12:20, Alexander Potapenko <glider@google.com> wrot=
+e:
+> >
+> > > @@ -830,7 +835,8 @@ static void kfence_check_all_canary(void)
+> > >  static int kfence_check_canary_callback(struct notifier_block *nb,
+> > >                                         unsigned long reason, void *a=
+rg)
+> > >  {
+> > > -       kfence_check_all_canary();
+> > > +       if (READ_ONCE(kfence_enabled))
+> > > +               kfence_check_all_canary();
+> >
+> > By the way, should we also check for kfence_enabled when reporting erro=
+rs?
+>
+> Not sure, I think it might be redundant - I don't see a way we should
+> get to the reporting path if KFENCE is disabled. And if there
+> currently is a way to get there, we should check kfence_enabled before
+> (such as in this panic notifier now).
+>
+> > > @@ -1307,12 +1314,14 @@ bool kfence_handle_page_fault(unsigned long a=
+ddr, bool is_write, struct pt_regs
+> > >         if (to_report) {
+> > >                 raw_spin_lock_irqsave(&to_report->lock, flags);
+> > >                 to_report->unprotected_page =3D unprotected_page;
+> > > -               kfence_report_error(addr, is_write, regs, to_report, =
+error_type);
+> > > +               fault =3D kfence_report_error(addr, is_write, regs, t=
+o_report, error_type);
+> > >                 raw_spin_unlock_irqrestore(&to_report->lock, flags);
+> > >         } else {
+> > >                 /* This may be a UAF or OOB access, but we can't be s=
+ure. */
+> > > -               kfence_report_error(addr, is_write, regs, NULL, KFENC=
+E_ERROR_INVALID);
+> > > +               fault =3D kfence_report_error(addr, is_write, regs, N=
+ULL, KFENCE_ERROR_INVALID);
+> > >         }
+> > >
+> > > +       kfence_handle_fault(fault);
+> > > +
+> > >         return kfence_unprotect(addr); /* Unprotect and let access pr=
+oceed. */
+> >
+> > If kfence_handle_fault() oopses, kfence_unprotect() will never be
+> > called, is that the desired behavior?
+>
+> It is - consider multiple kernel threads running into the same OOB or
+> UAF. We should oops them all, otherwise this change is almost no
+> benefit.
+>
+> > >         /* Require non-NULL meta, except if KFENCE_ERROR_INVALID. */
+> > >         if (WARN_ON(type !=3D KFENCE_ERROR_INVALID && !meta))
+> > > -               return;
+> > > +               return KFENCE_FAULT_NONE;
+> >
+> > We explicitly don't panic here; guess it should be fine...
+>
+> Yes - it's a KFENCE bug if we get here, the WARN is fine.
 
-Good catch. I did ponder this, but forgot by the time I wrote the
-changelog.
-
-> > Yes, it also seems a bit self-defeating? (at least in theory)
-> > 
-> > refill_obj_stock()
-> >   trylock_stock()
-> >   __refill_obj_stock()
-> >     obj_cgroup_uncharge_pages()
-> >       refill_stock()
-> >         local_trylock() -> nested, will fail
-> 
-> Not really as the local_locks are different i.e. memcg_stock.lock in
-> refill_stock() and obj_stock.lock in refill_obj_stock().
-
-Right, refilling the *byte* stock could produce enough excess that we
-refill the *page* stock. Which in turn could produce enough excess
-that we drain that back to the page counters (shared atomics).
-
-> However Hao's concern is valid and I think it can be easily fixed by
-> moving obj_cgroup_uncharge_pages() out of obj_stock.lock.
-
-Note that we now have multiple callsites of __refill_obj_stock(). Do
-we care enough to move this to the caller?
-
-There are a few other places with a similar pattern:
-
-- drain_obj_stock(): calls memcg_uncharge() under the lock
-- drain_stock(): calls memcg_uncharge() under the lock
-- refill_stock(): still does full drain_stock()
-
-All of these could be more intentional about only updating the per-cpu
-data under the lock and the page counters outside of it.
-
-Given that IRQ allocations/frees are rare, nested ones even rarer, and
-the "slowpath" is a few extra atomics, I'm not sure it's worth the
-code complication. At least until proven otherwise.
-
-What do you think?
+Reviewed-by: Alexander Potapenko <glider@google.com>
 
