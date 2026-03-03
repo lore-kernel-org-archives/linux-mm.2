@@ -4,100 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F050DEC142E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44795EC142C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:20:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 633516B00ED; Tue,  3 Mar 2026 06:16:38 -0500 (EST)
+	id 6C8296B0113; Tue,  3 Mar 2026 06:20:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B64D6B00EE; Tue,  3 Mar 2026 06:16:38 -0500 (EST)
+	id 6A0076B0176; Tue,  3 Mar 2026 06:20:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E33F6B00F2; Tue,  3 Mar 2026 06:16:38 -0500 (EST)
+	id 59E8E6B0177; Tue,  3 Mar 2026 06:20:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4D26B00ED
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:16:38 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA58A4B579
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:16:37 +0000 (UTC)
-X-FDA: 84504498834.06.B7C4199
-Received: from sender-pp-o92.zoho.in (sender-pp-o92.zoho.in [103.117.158.92])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9178E40003
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:16:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=RJ8VRa00;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf27.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.92 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 46C2D6B0113
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:20:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ECEB616011E
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:20:30 +0000 (UTC)
+X-FDA: 84504508620.22.8033A44
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0C57E14000D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:20:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="r/p/r2kf";
+	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772536596;
+	s=arc-20220608; t=1772536829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EndSrgcBhRr8R7/KqjhtMiZuGQSe3hROtclvWoUJ0JE=;
-	b=p2QJIM68Tnyln6ico2BcXdf0+92ZLvRSZpp5eptu7TT1VXDJ79wT/FdxF7jMJvF++xkl42
-	QBbUPgl8F/x9Sc0GFCqXsOnn5OR9lWM4vlkexB1IC+1+0PDtNfWxr3kSHX+4GISEXKY4T3
-	S9fVUGFJnNtUyXU5GwLcy9H99EOpapQ=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=zohomail.in header.s=zoho header.b=RJ8VRa00;
-	arc=pass ("zohomail.in:s=zohoarc:i=1");
-	dmarc=pass (policy=reject) header.from=zohomail.in;
-	spf=pass (imf27.hostedemail.com: domain of shivamkalra98@zohomail.in designates 103.117.158.92 as permitted sender) smtp.mailfrom=shivamkalra98@zohomail.in
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772536596; a=rsa-sha256;
+	bh=fs5xy54dOwpapJM1ABjgdm4o/gqygsmCGVNWqgWoRQE=;
+	b=Dl/Gu29OXCzM83bGoTwy5YH6G/1ZhwKsljEwSE5a90zM5jPpM4BlEfqe7GRRpkh3k7mO4I
+	DJASFdu03zBuKLMCCEY3MFug1N8bveSfy2k1OhFcqRtjR+yR8jliQI/JgsuFA+osuBkHY9
+	4T/0/U8zvQZSOLgPLCtj6IU7eb8cA80=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772536829; a=rsa-sha256;
 	cv=pass;
-	b=yYwrh6yjfe7xqnv5zCGzgl43d+YHzfgoLu2Qltdm9l021xIc/QnEcKReUskOzEp//E96sR
-	8R88e6N3UCYG29pdulxwASiwWdHM9teXTjTVM7yEA/kyYhRrwpehnj84+K9RhRwiRs9/Ho
-	tf+SoPJJgo/MnyxDwXB+qSYPBItazUM=
-ARC-Seal: i=1; a=rsa-sha256; t=1772536583; cv=none; 
-	d=zohomail.in; s=zohoarc; 
-	b=c6uMVhD86CKmKHEBvBzbbEGUO545/NmTSkBXcfab2JufwYbclv1Bm68cyEodJ1K4HtbYd7sJDVtDYgZJZ2PqTZhu5l8a+fkuGeUE6wgf3V/yZ9VH7sCg6A7Sn5scPkXigkbuENkWS/XE8vrQtHbA53UitgAZqcLTU33ch9gDWw0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-	t=1772536583; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=EndSrgcBhRr8R7/KqjhtMiZuGQSe3hROtclvWoUJ0JE=; 
-	b=Phvn01ae83Ju5MY3qI2hbtlfxjP3eGRxQ927RNpjtpWtw+Od4Wxs6YUP4jYI8n/zmKcLosoSnoTxj5pCpKd6tAi2Alc4E2rRzPxYKE2xtDJ25Agg7dHHeMmAeq4T+Z8hbIWyXf3wJcyk1pOhGKaMdPdLXQDrFLN8Uy+XxR0Tb7M=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-	dkim=pass  header.i=zohomail.in;
-	spf=pass  smtp.mailfrom=shivamkalra98@zohomail.in;
-	dmarc=pass header.from=<shivamkalra98@zohomail.in>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772536583;
-	s=zoho; d=zohomail.in; i=shivamkalra98@zohomail.in;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:From:From:To:To:Cc:Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=EndSrgcBhRr8R7/KqjhtMiZuGQSe3hROtclvWoUJ0JE=;
-	b=RJ8VRa00D6MZi8a/Tc4vU3PE5/as1s11xtoKaaxw7bPUQe2nEB6fDgS7A1lhBhyL
-	SB3jT71LxG/dJ0VYNneCOWISGnOwTykQ5fV5UAu8Y8JWxPcmEfxADTBp5UPPJMFLHhn
-	BpouBOXHguRWruvGHEtdoP3uKvczjYKtV6OeXMXY=
-Received: by mx.zoho.in with SMTPS id 1772536582470518.9141615654373;
-	Tue, 3 Mar 2026 16:46:22 +0530 (IST)
-Message-ID: <c7984a95-5dd5-41a5-b59f-f993307b99b8@zohomail.in>
-Date: Tue, 3 Mar 2026 16:46:21 +0530
+	b=VD1DN++sq/QpyqszCnMjwhTH7DDqhUgQMkuE6x+yZcXyqCVNcyOnriJ/m2UynvVR3Eg91f
+	VIyiPX3YI9FqpK1PGIXmDskT309Pb+xEzoHB8HC9Uk/WgzQANyGAAzzX9vtfPQZlLuz7JY
+	oV1nUrpO5B5Xu9K61mXkBxt3GSySR6A=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="r/p/r2kf";
+	spf=pass (imf26.hostedemail.com: domain of glider@google.com designates 209.85.219.44 as permitted sender) smtp.mailfrom=glider@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899f5d337f7so23775536d6.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 03:20:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772536828; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YzjqrhLLwkV+tot2Fto8ret/BTevc98xuzeyWKvf5pUNm1SaHPB7csB37YaPPQLNBs
+         5MOviadMiuDmB1/nLAFePCM8spH+ZY9rWpEVxXSrfSxHhV5Jo/MsV08SDkq5PbvCFIA+
+         I7VkqVo7cj1pIosu9WumBQeFjcc3gEQ6JUEPLNZx+XFyp+LOCxT5D7ZdO2k7XGyoDVCj
+         Oqz8Ezyj1T5/dZZNsXXcfWLXcR2nWuXAtqLdYe6cYJseP1s7nmUPXMDTYxk1c10L1QQ4
+         v4p4cTkdwwtZgHWCOx1/hCE8JVPPQIvqksYye/2rwH/6sgNvzaxyMrzc27MxhExGGlWA
+         fSqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=fs5xy54dOwpapJM1ABjgdm4o/gqygsmCGVNWqgWoRQE=;
+        fh=JlIDJiLjfLmnRJrREiRbf7Xd3CgUlUUPSpAXj0vqutk=;
+        b=CVatezhxKZytso6MGwl1oCbXaArIt4pik1Ft7J10HIw7xt3JQCq0Ih5DdoCxioYz3X
+         RlAHfOox1DhPZkFG1p4cmLaouLKS4hIQLdrFkS2cL2/RT1dngGv/ra0i+NWllAwkU7A7
+         7c0bopJnluR42YpHiuMTxUaj/XnVeqhNoeNAcxU17l5SZBGygArvukeFr0uzvNHhJoWK
+         C8O2a+5OPGlarAlSJvAoYegWWU5JieL8ZcKe1qgXAaBaxjgqc7Fs1d/PdiFLK9DwkUFB
+         hQgY1hzBybqWijA6D9rsSGNj/+4ojCzYBH8lBy1VLBVtjvUZ/LQdv4ZpCpAGMWuuCFyB
+         YNfQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772536828; x=1773141628; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fs5xy54dOwpapJM1ABjgdm4o/gqygsmCGVNWqgWoRQE=;
+        b=r/p/r2kf+BIKcWdBrUF1WzWZ649o+AjsuCIObp77Bpwweuy2xSyOVzkAjVVHyIbo65
+         IFhGgcftPnolRxnEPQYhKFb3mRarEQ2xR91iz3RImRfX6XgpP1s/pugqF0i/q5So6ZFv
+         DOWD5sL7V4v4MLr52peD0+ciBJkTzZE9rTp8F28YLce0Mho9GOCgqcvG7I+AQfC4ndTM
+         R50r2bcD0Ke6tL3SeC8C92d4hZlb5P2rQ9Y65gwRPotiuw8bb95kTlpgQo9pSezbGVoA
+         bwhmClGU6Ql5bHbmym6Jghx8yJNQ+CeWZYUD8HUkodwbraPvsnksLwPBlEX4wiHg9Oeh
+         mRRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772536828; x=1773141628;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fs5xy54dOwpapJM1ABjgdm4o/gqygsmCGVNWqgWoRQE=;
+        b=vHkrbKoMpputh6Bp+EMUtfSDPH1cMFc+vyGf8aMs9VzbJ7PlWIT2YFYMBkjejOuyTJ
+         GYGvAaMiKanggTiQMQwkYVr8E4JeUnE6Af3zUZTl06LQjTRztIR/KSgdkIW5ajXQlzIo
+         JeLIP7ZVBBWjIT+kHuwrFMz2ytd/5FBlCz0QDK2WIiayXn9RBHTVyjtCoHnGdJKGbdBg
+         B6E9NHTLgo6VNUYBAh0pJYMcZG3VzHpUIN5u52kohM+IMQHDCNUgz1rrZ4RkiwYkVAGj
+         Kri6M/mO3fRw25f4o1Qli5lMa95eNZ1eLSBHikwfVIIYk8AmvSnyzyZthzhQi6SNwZE3
+         2ohQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW5eKhjJ2iW2YFClywTKwPDynNKlZVV6LZCxBJ6x431A+2ZNk8/dqxsnf5HplC1ubm1Lb8a8Fj89w==@kvack.org
+X-Gm-Message-State: AOJu0Yy/WLjnKYnTDWFlyaZRl6sWBo2fCq7V6KVsY8F2R+faxBWstvNy
+	oybT/8W1L5EQB9kE0dbFVqIkiL/quVtAwdjmzLvTp3GjJ2Yw96nfUliYwC/Tgq71gQ2Ntsmv2Gg
+	z+YUD7i8v0nA0LbquvW4IPpFQ046W+ynYDYxp1kdn
+X-Gm-Gg: ATEYQzww2o+Y3lX/vfOKlSLyJ5RB2DlQdJylRGFRJPt3kSgPnsnLgRigoMl0CHfw139
+	/xF1SPFWueB/BxzFvxOjoVkczvPowi/pghPe0bw5M0r69RY9+jgM7dCe9DLvTcPnZsVvRor2DbK
+	QquXOdVHnc2fF0jGYyksREiCFdapFzZaWwaEs7A650otODAfZ2FLiIa9D6aLNUBIE8M7CsI/82f
+	IKOT9F9TPV6JyeZHHlw7s3kKTsLjk9oOgaxUa6T25gSrkgOBvUvvWf+qD3mAGjqW5t0gNIZjvY6
+	5m7QgYtD0dxu8XYPScUg6uBf90FcPErPEIlybajK6162rGWk
+X-Received: by 2002:a05:6214:dac:b0:895:4d3f:b6c with SMTP id
+ 6a1803df08f44-89a0a89d396mr19056596d6.17.1772536827672; Tue, 03 Mar 2026
+ 03:20:27 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/vmalloc: free unused pages on vrealloc() shrink
-From: Shivam Kalra <shivamkalra98@zohomail.in>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260302-vmalloc-shrink-v1-0-46deff465b7e@zohomail.in>
- <20260302-vmalloc-shrink-v1-2-46deff465b7e@zohomail.in>
- <CAH5fLggLgRJL_5a2Ky-Ag7E6iRdY1wAVA=yx4wtz16-q+CMAGg@mail.gmail.com>
- <57b0ef75-59c2-44b4-90fc-d1b50cc1e9ed@zohomail.in>
-Content-Language: en-US
-In-Reply-To: <57b0ef75-59c2-44b4-90fc-d1b50cc1e9ed@zohomail.in>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9178E40003
-X-Stat-Signature: hsu5w33jxwndq5mr3q4cgrrwc5aqh8o3
+References: <20260225203639.3159463-1-elver@google.com>
+In-Reply-To: <20260225203639.3159463-1-elver@google.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 3 Mar 2026 12:19:51 +0100
+X-Gm-Features: AaiRm51ecwm2GzpvBNPquu22Ta0sfwGcKpcC_V0mxDSrZBLMaa5eBCNTn_slx0E
+Message-ID: <CAG_fn=WAwHUpoay2kY6rkEZQGYxoDGVJYf5B59Y80ht7++Lmqw@mail.gmail.com>
+Subject: Re: [PATCH] kfence: add kfence.fault parameter
+To: Marco Elver <elver@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Dmitry Vyukov <dvyukov@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	workflows@vger.kernel.org, linux-mm@kvack.org, 
+	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 1pek71x75on89frfzy1ph5aeobmyxtg4
 X-Rspam-User: 
-X-HE-Tag: 1772536595-768822
-X-HE-Meta: U2FsdGVkX19biMLYxO2CSkL61utMMpetFlJI01+x06Nne3dWDgcw/5CDGXy2Kur+u44Lu146aSszQVj9kNs4+LzqaeCnt3vzb3F6N+WnFCeP0864j7ZzngZ0LcXMOCn4pFpVYFg1KAYcUq307nDDRYrYHgwPalCaakiwn8JRtKUAh3dMjQnqzPsCVLqtj3skOvrjdXcjTLRiLICsULEsre/J5wmgjUSbSqSplI0gwfHnLl4uEsmAAclfZ+auEidtMngKvf1LFFdBa46XQTD/C01g+rvPrDyC9HnOm8d2SY7lL9bCG+4uD5Az/8Zy+w6mlJM83OxFYWlnvbMiOnmHZH6SyGEN4wDnWdwQEI2qHSAQ2flu2alYIN6pp+ATSbY0mR/NcCPharoLmlGKPRYFYx0lyPS4zbHIerwhtncTGZIspmlYrEGmdp/IEhHQc3GTqo5C3oOV+/5kVKbWx7mXIhiONodcIX7mlpQ2QhOyD1UwNQ4wOjjYbQAPatgvbpSiqkad6dE5Mws5MtSuXtShCM/YWtC/18Js23O35MiTvjk3qU+zsbMByQKGx8SJwgQADWqLzwTNLFbAC+AO3+Ua2NY9+cIxsP2hv+eOTzf3OFYP7yC05Dn0YOvEyqTDaUKmdUFcUCxXfBFt5KvcSDXuZk76bU3krBPaA+yHSFc/w4K1BMrpSD/Bk/+MdUxt4hh2sT7bjaR8Q/N4ZA7MC39tXqBxbZaTQ4yl00HFOTr/i4HMPB456HhhPY2VYRCTy/wTCUW5t+mQBh7x5ftZBzoEYbrQZ5nslgChYmH+4d2eAWtofqaBS2XAot9VMgq+FpjoWLgNhijxmZ3zDBridLHePKF8/O2i46L9i04/ahULAEc/YGKOHAarooKeDghI8qC9ZwmIBYhPuEQtrDShqzeCKbdHe9BjxYEM3j/lbvQ3k2m/6Ljm9gtCzfs9D7c+PyiHGz6xovx/NWMIri5Anig
- GLMMCK61
- /lQyFpYccxKwcXnxRjAKs+qjtdjtCqK9cxYPm8PoHIM/OJc/IyX1eIA4YKv9ik52VxvGyeBvoDoC3/z14uUBEyZLUWvCvhFQLzdGVFQf9BxTAwcpzQi8Ii2qlmGem6ud7+oJvg7Zs+QQe4olU51JFQAdCw0nRPa/ZWqmUZr367WgPzTcC6DFhhzrUio1zMXr/OrISnlANtkzK1Ap0zDzdgo4T6eTLjnUTsXzAjyDF7g+vPyhvofwWn6Mf1Bq00W9mxMyjLXjq5DgTBVevqhR4xzmf74QeJHUkqaquDP1ixCikb2jkghobDe46TjTzMwP4KbANteyebuLCo336jDW5Y3zzVd2Xf8YW64r/Zroaj0G75Ns+j6qo1kyj9Eu6rKPOv5JW3aUIsxX+l7nuWIXdl8SHlw==
+X-Rspamd-Queue-Id: 0C57E14000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772536828-228313
+X-HE-Meta: U2FsdGVkX1+7oDjMbW5j2kkRIir58bpxKfzgjgHEocGqO9sYT3db3Ut/Ex5n3ca59ElBdL/oE+rDXJSFl8meFLWwURukcTmgP4fD8yPSRrMhE2olaPDekXRk9XFGm5NDTF17cPuJWnhlksA01qGfAqcAfkarNuEvVZusNNAzXBtuvmjFFncWS36z2T6abf9BRvEEZvD5Y5kaMBSBfL9SwpghLz7KLQ8Pw0cuivva3sBnbxUw2CVlxnOlq3dO/Wb75u4z/a+FhwS3bXsgtnccn//AfqdcKoTiIEJAXd+eZCxP3QhCEM4g3alHw21O/FsGnQ2SosTOg1DRzSZlt2vc6CgPfL51Gq92lVumUeh78xBdkeoSspLEYt+QaHtL6FGdoVJqJUdiXJZ/5mvi+E3umijhLSuFkLpz9hpc7dM+SnBHL4jA+7ieDcZB9JX9+8+ihEVFowVnXDpJYDIOw87dRZKaFXRaxJldQfKuvZCfdevLiBMGJFI17eUBrypMyTFIZybNyOLg7Kh7zXbnv5fT/JTO2zVnCfObhkiOadFCMfLAb4b9sxS29mcPdZlCSMtlWDiqbyrxJjjeJy/tZq0s/VNNVq5ow8RS6QrH/slOof6co0eF4Tz9i+oII77qiaknCLUbwt4TTYu6FIKebDFZvEPxAjCzMGgw8gzVCkI+MQyIiSPSnlPIhFJXC53ZoJqU+LTeI2E6DYw6m6GrNFzqF6CCg5ApmJg96oeautgl5PmrClGRsRzVOeYy8yq6xg7ySm5DguP/iSiZUFAfFViNm7TCO2IvOdP+rvYPZ436G/gzQjlktXn6jTW2IoVHsjlFY1b7NtdGXMctsUNK2uoMfcl45WVLCO96QobZzufu3tFU4IQH6ghwzq2TQybhcyA+YdDMz5i8Candu9RzGmTmE2xANv4rPX4U91W3CW+zGAfDYieI5yvBoR76VH2FNuqOFfAUXUgMt/+B0ZWqqnq
+ KK1WVvwQ
+ OiWfActma1Pq4emIjgQsQDRcW4qRTR31Rv90U8Ez89wZnWu/OhlmV3KOsduvQaNomDa2/TKFQnecAGgkrEeKcYQE3IQRFgnmInK/XkbpKUPup54c5Sb0fzKNVUn/33X5ZnUxVhSbd+Bt09ZGUVWg/tNRmFvpl9JQOPxJ6nmuzZuE38Vm4u4RSio9Zijc/9GS5zr6pJ9RZoiixQ1xlm1agp5zyrE+WIejmBS8oJrTTVQVu3BQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,84 +138,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/03/26 16:42, Shivam Kalra wrote:
-> On 03/03/26 14:40, Alice Ryhl wrote:
->> On Mon, Mar 2, 2026 at 3:03 PM Shivam Kalra via B4 Relay
->> <devnull+shivamkalra98.zohomail.in@kernel.org> wrote:
->>>
->>> From: Shivam Kalra <shivamkalra98@zohomail.in>
->>>
->>> When vrealloc() shrinks an allocation and the new size crosses a page
->>> boundary, unmap and free the tail pages that are no longer needed. This
->>> reclaims physical memory that was previously wasted for the lifetime
->>> of the allocation.
->>>
->>> The heuristic is simple: always free when at least one full page becomes
->>> unused. Huge page allocations (page_order > 0) are skipped, as partial
->>> freeing would require splitting.
->>>
->>> The virtual address reservation (vm->size / vmap_area) is intentionally
->>> kept unchanged, preserving the address for potential future grow-in-place
->>> support.
->>>
->>> Fix the grow-in-place check to compare against vm->nr_pages rather than
->>> get_vm_area_size(), since the latter reflects the virtual reservation
->>> which does not shrink. Without this fix, a grow after shrink would
->>> access freed pages.
->>>
->>> Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
->>> ---
->>>  mm/vmalloc.c | 25 ++++++++++++++++++++-----
->>>  1 file changed, 20 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>> index 54e76a47e995..7a4c59422638 100644
->>> --- a/mm/vmalloc.c
->>> +++ b/mm/vmalloc.c
->>> @@ -4327,14 +4327,29 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
->>>                         goto need_realloc;
->>>         }
->>>
->>> -       /*
->>> -        * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
->>> -        * would be a good heuristic for when to shrink the vm_area?
->>> -        */
->>>         if (size <= old_size) {
->>> +               unsigned int new_nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
->>> +
->>>                 /* Zero out "freed" memory, potentially for future realloc. */
->>>                 if (want_init_on_free() || want_init_on_alloc(flags))
->>>                         memset((void *)p + size, 0, old_size - size);
->>> +
->>> +               /* Free tail pages when shrink crosses a page boundary. */
->>> +               if (new_nr_pages < vm->nr_pages &&
->>> +                   !vm_area_page_order(vm)) {
->>> +                       unsigned long addr = (unsigned long)p;
->>> +
->>> +                       vunmap_range(addr + (new_nr_pages << PAGE_SHIFT),
->>> +                                    addr + (vm->nr_pages << PAGE_SHIFT));
->>> +
->>> +                       kasan_poison_vmalloc(
->>> +                               (void *)(addr + (new_nr_pages << PAGE_SHIFT)),
->>> +                               (vm->nr_pages - new_nr_pages) << PAGE_SHIFT);
->>
->> There is a kasan_poison_vmalloc() call here.
->>
->>> +                       vmalloc_free_pages(vm, new_nr_pages, vm->nr_pages);
->>> +                       vm->nr_pages = new_nr_pages;
->>> +               }
->>> +
->>>                 vm->requested_size = size;
->>>                 kasan_poison_vmalloc(p + size, old_size - size);
->>
->> And there is a kasan_poison_vmalloc() call here.
->>
->> Furthermore, they seem to touch overlapping ranges. Perhaps the first
->> call can be dropped?
->>
->> Alice
-> Thanks for the feedback Alice. I will do two things for v2.
-> 1. Update the base-commit to the recent most commit on char-misc-next
-> 2. Keep only a single `kasan_vrealloc` call after the rebase.
-Correction: since this is mm, I will use the mm-new branch.
+> @@ -830,7 +835,8 @@ static void kfence_check_all_canary(void)
+>  static int kfence_check_canary_callback(struct notifier_block *nb,
+>                                         unsigned long reason, void *arg)
+>  {
+> -       kfence_check_all_canary();
+> +       if (READ_ONCE(kfence_enabled))
+> +               kfence_check_all_canary();
+
+By the way, should we also check for kfence_enabled when reporting errors?
+
+
+> @@ -1307,12 +1314,14 @@ bool kfence_handle_page_fault(unsigned long addr, bool is_write, struct pt_regs
+>         if (to_report) {
+>                 raw_spin_lock_irqsave(&to_report->lock, flags);
+>                 to_report->unprotected_page = unprotected_page;
+> -               kfence_report_error(addr, is_write, regs, to_report, error_type);
+> +               fault = kfence_report_error(addr, is_write, regs, to_report, error_type);
+>                 raw_spin_unlock_irqrestore(&to_report->lock, flags);
+>         } else {
+>                 /* This may be a UAF or OOB access, but we can't be sure. */
+> -               kfence_report_error(addr, is_write, regs, NULL, KFENCE_ERROR_INVALID);
+> +               fault = kfence_report_error(addr, is_write, regs, NULL, KFENCE_ERROR_INVALID);
+>         }
+>
+> +       kfence_handle_fault(fault);
+> +
+>         return kfence_unprotect(addr); /* Unprotect and let access proceed. */
+
+If kfence_handle_fault() oopses, kfence_unprotect() will never be
+called, is that the desired behavior?
+
+
+>         /* Require non-NULL meta, except if KFENCE_ERROR_INVALID. */
+>         if (WARN_ON(type != KFENCE_ERROR_INVALID && !meta))
+> -               return;
+> +               return KFENCE_FAULT_NONE;
+
+We explicitly don't panic here; guess it should be fine...
 
