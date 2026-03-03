@@ -4,112 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA9CEEB3649
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:34:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1269EB364A
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:40:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271136B00DD; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
+	id 026306B00D0; Mon,  2 Mar 2026 20:40:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 217C16B00E2; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
+	id F36666B00D1; Mon,  2 Mar 2026 20:40:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F9A06B00E3; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
+	id E15616B00D2; Mon,  2 Mar 2026 20:40:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F08546B00DD
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:22 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 985C91A04AD
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:34:22 +0000 (UTC)
-X-FDA: 84503031564.01.216C336
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ABC0912000D
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:34:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z9R/BExF";
-	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CFF526B00D0
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:40:50 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78947C1E7C
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:40:50 +0000 (UTC)
+X-FDA: 84503047860.06.898D16E
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 75D6B4000B
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:40:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="1iDJ/Pu4";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772501660;
+	s=arc-20220608; t=1772502048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
-	b=LMggClqWnSuoHuw+MVEhiAivcOLSNxnfn0OUp681QCQLhLDMdEOXiNGNrUuHEFJ8dOn1lI
-	6pQAkjPemphGZHjNHmgyXNoq066+XFQstx72EDi2/1DPFwgEsCCVBL2ifrme61pc8FpIbJ
-	kWrFMmNOSJDcWXgJeir49dP8F//zUKs=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z9R/BExF";
-	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772501660; a=rsa-sha256;
+	bh=RHtEYTysNPYagRCHLFbuCPDqzq95xfw2UNoQ2VwUxZ4=;
+	b=tx79BWQsGwiuCq6wb6JctykNjcPYyrD1jgP+oBilhHk3KGH1KQ10HsFlUCLkUJf3ZxwrPz
+	AeiEam95N2NZLhmWlx8Tu6rHlvpfjXOcDBAzpjiz52oTny/8tAcOwWFPGFf/zn7rLliMp/
+	iTmRCnnQz9lelyPJY8c6mma1TrVXVNE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772502048; a=rsa-sha256;
 	cv=pass;
-	b=DYQ7a5DdUmjK74tOkaZzFNBa2y9SpYxCGyWmneoMxtJN+/ekpgoX8g1vdC4k562dLw84t1
-	5B3CmFIHq7KE+y1O2JI1Njx4LjpICKLEiiv7clT2lo8XOFFmjsgufdS/odXCDLZJTLIEoq
-	/bIIKglWxWzoeFhFkKHdJDwmdNXHSBE=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb3fb47559so617775385a.1
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:34:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772501660; cv=none;
+	b=Q7zDDsXKdGOiwRfGNLf/GyBrEytnkaF3JLdInCPl8yiIrWm1GuzhH50IgTfuiamuFgPKK3
+	DKK7sG3OQzTZcLDzvm8usclN+fTkG+mZm96xKxMso07eWMV98U90UEfIJy/RBGD4YAWC9Z
+	Dxgl+z3HxlrFE5dG3onkYUoxXLljuJE=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="1iDJ/Pu4";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf07.hostedemail.com: domain of axelrasmussen@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=axelrasmussen@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-126ea4e9697so2547c88.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:40:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772502047; cv=none;
         d=google.com; s=arc-20240605;
-        b=DYgXoIsXI6qHhOjnjOY6SfwkGAlKxAY4xXnrxST5i904HI4iXBRI2EVSUEOlD8qyRE
-         Q2e8tvKzxfTXr9wp1HvT9+0zvfB8EdOXjt1PZR/hTGLohdrQsKzhQOJf4PGBiF/FxYe1
-         IpTMQX/AXrM4zO82116JiYse7cbz9n+et2SWoFxXifpL/4JzbX8QDNkzJ38U/ifjEfNv
-         OOpSxAucPdJnSfIqDE80bra2Iv4eYBGUh6e8CxMAE7+2AX7zw4nzTRD1JPRxwwfE/+r7
-         pNUyyQR+pP+0d5IM1RowlEavOMCTROEUYituexkx8MxZOJQI7rQxtHFtMu88mQjmlpTc
-         eTfA==
+        b=W9h2rzr6LofzD9PfLo1MheeNBBz5ASGZXNP0/V9hhYWh8y+m+bnLvpNz1JQqaudzgc
+         h83N1s5hsKzGkTPite5cliH7kGZq78CoX7br0Allrh+6FMJLQsqLzndRRiQznx6ARoEF
+         jwrXwgExEMTg3jzboTBR0lPSBEwtT6JfEQ9+5hW/wNsxYFibOBmgHcsl0Yw28Jja3y+0
+         7QJLY+F/Lh2L4tcipcTtsOaeBeYqAUVSom4PxRvyw9SvJEcKhtv3fSKd80bsKWENwvGs
+         QyikCcBnlQRs6x0pixfIy3oncheoFF0wqGr7Ry0rmkEn7IzFRWbk7xCQN6PCevDXS9WR
+         kCvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
-        fh=HcUTgejSIs4Qqa33Hgs0oEcLiqGThlKKxWSMizqFsEc=;
-        b=LYbsxnmD3V92gkbnHZ6bQLkpn2nZ8d/lXr62Dk/vzrllC9hYqr7VbgGUzldpTrMD3h
-         NMpQl0BdRqvWOHIeUXwhqmw0ifuC70igqct66DHUQ7gQ4LGMzpeAcfmYV09Df9X9jQqL
-         n4ZvoPLjjdyB+A1zGbwv2g9U6ti81euQFr5vTo+6aDm7ngGeMwik31ochbYRHeUKuANM
-         MIXoZ5b0GuPuVn2RDUs0dF97W2s86NuP5ONzR91zAVC+7l7tu7rxTQEOlV1RGksA0Zzn
-         VQeq2wdN7b6+qdOumibxsYy9OXJpefO1G+FSZ+hlPlptdnpta+/RJwiPikKSOuDscyFx
-         ENfA==;
+        bh=RHtEYTysNPYagRCHLFbuCPDqzq95xfw2UNoQ2VwUxZ4=;
+        fh=ri8r8UQOl/TPAAErefjJEFr0WkMSDOJeHz+3WAZSGdU=;
+        b=jPcTRRlGe+lN0HZWTzPBAslgQilsWpAE69vhlQKJl6GDAX3mrlXgbmwBsot4ZZa6Q6
+         xe4vjNpGB/yQkZ8Yri2EFsLPw8CB5dHEytHoInRbMw2m7OI1+lXopbUzAO5xum1myfrf
+         Af9DB39Xe5nY8zWPx9Yq+Ff95lLYFtVibtGif8mCK4+gmW5PnEwTIUE8lz8+HcDp1bfb
+         1GORXMee/+zTTOXqqfYIs0SSswPc9W1O8r520z4Sh/juXWExX6i2X0oaDD3C09slOtW6
+         7ZfwrNwplrxHHq1e3hPk0ha7kr7E43TAZjlX3kkweJ1YftaQTtpqXz5Ghuaqhtd7lJgr
+         wKug==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772501660; x=1773106460; darn=kvack.org;
+        d=google.com; s=20230601; t=1772502047; x=1773106847; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
-        b=Z9R/BExFSm9wRLxMp0tol+CTT+q+QiVK6BaFtOHUHTMhUZnTnVWTF1Qug3U8TtJtsk
-         URV4g6rUXMm7rlld0GOaV53fYuJlOurqKAHgj6RIuFa/mrE+pspWXLnnellL2rgP7eSf
-         SCuYqNe2He4VYRUtLa4pTCamhUTR/GEV2/DhQqrVjtEkYYgL6X/TglAccN7KuVk68JFq
-         pnUUEDKnHKbouG/vtKfmikk65z7/kQLm/M5SI6Siwi8rNP4ba61DdmaY1U3nU9D7wHdr
-         IL4QqfbQHUk36dcsUJpjDfBT/OQpMWsGN9KIRdPF8TsLhmaArgpzhLcpkpZi1/pAuel9
-         NG6w==
+        bh=RHtEYTysNPYagRCHLFbuCPDqzq95xfw2UNoQ2VwUxZ4=;
+        b=1iDJ/Pu4JnkhNpkttKt2I5mTQRU0U0tPKpaEDVfiFGU33udyGRX4i1ToWzN+foZwo5
+         pE53cbK55XekSNY5BAtRBfCIJQ8eOUoFk47AAeAyp+J+B+7MEjsM0yPuifK+WbHhOsor
+         mWCPA933iB6lANMUccyP+y2RKD8oO6EDMiTLtJ5yN27hJYWxj4EHWF3pLcUMmPPTl/o/
+         jQ6r/mEu7a0SeSBEVxpMs6cnS8VP4AkpVUqzrIAeiXMlv56oKGsCbGJqItWLnWy5o3Q0
+         ZMHnXUY8TMFLD8vnoI2mim2afkg/FBTUxqwceIxvFGvPi4LueUEcKfdmpYwDKMmSvlnd
+         fLig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772501660; x=1773106460;
+        d=1e100.net; s=20230601; t=1772502047; x=1773106847;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
-        b=dPG3UygJSWXuYy0rs6O5Fr2wKCrb+hG8pWE9ahRej6i6ikxppBnphs5nr+xnE7Bfyv
-         OyZV30Qkt8zwhQ7KBGZzQd2NJFd9mKiyKwFDROa65AksgSgDOftCWIGh/vwSEoE88AqD
-         I+vDWQWvabWVEFK6+q6ueX9PvFehM2vLRqG1nIAcVmbjkrP3xsIU80VMBO6W6J9M1Xf1
-         6xO2ceQZ6ML12THMSHCKCHCcmtPt4MwtpEak6Rs3Ppg/d4BP4d1TIxyh+Dygfio9Bm3+
-         YhbH84lzWLrsvdy0mkPHBUo+x1SYmXFkB+MIBa01xsExnRZNkkS84SgiU2lnKUO0mimR
-         I0Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ4TmwQwkn/UmqktafiyVzjOZQ2z16nR7GAib/5RlNLAcSj9hiRhze3tsqnuhWSCNduQ0VD/+OZA==@kvack.org
-X-Gm-Message-State: AOJu0Yx1kGMuSQme8aHGmDWxszsDl9u/LkrQiB8SJfHRCyVrqQmTlE6e
-	rhu/GK+M98ZejGYvE1PCAmr44rlsQFxNUdgt56zhJlZ2MR6fgWQohYTCQ2FOwYJ/37o6FuuDixv
-	FKqgdxdPEAuW1+Fd7apCHxsPufQ7nYB8=
-X-Gm-Gg: ATEYQzxC1Q/ZpxJJ0OYbQupYufXOViv/iGpi8UAlJTytq6KmfpTP7a9hAFvzS+1U9Du
-	KVao+3+2547ca5cD7lxahUZsx4sGMteB2VL6u1Yp4ZoNMb1fD0st4wwsmSrurn99qTfJgvxkdNo
-	Uvf8bE8Xn/4878SGcLrfClZgaqowjF5LdWON++ag/r+vfUyJ48dxmueM/sjm7UEFGg8V9KnSTOU
-	DqJT5CqL+GJ38LEwRgBT/57UJMmbZckBPPcn0fv+sZqUxMchKPpN+Vd6NlNfvRL7H1iW349CNHE
-	JY25Sg==
-X-Received: by 2002:a05:620a:489a:b0:8cb:3bca:bb3a with SMTP id
- af79cd13be357-8cbc8e0d7bemr1628233385a.67.1772501659462; Mon, 02 Mar 2026
- 17:34:19 -0800 (PST)
+        bh=RHtEYTysNPYagRCHLFbuCPDqzq95xfw2UNoQ2VwUxZ4=;
+        b=nFpthLLLIoH1LLORDpg9is5qbHBYjl9QIye5maDwMA8OltZbw9xycRp4zBsk4SHEce
+         /7foKG7Kh3mGlZSNjBoaaBcbIc+HDPOEtF65vnKTaWlyDlQIddKlFO9niuWm9triSf1x
+         njjCe6Lm0qqjypsHewrv0U619nkpbjmu4Jn+PwfAOHqhrrUjYL6xvTx4dgqHEAiEV7l2
+         ICDbkZbsQw2A7BWoNxEO67meKFU4Cn1+vWjJezigZyWRN9nLbmdqrUXxODCpOtLs4qs7
+         elytUo8KJcw0KdkKVtRqJXlb7u9hvVza5FqYEthPoRNVFP3tD2L4CHZYXGQiufVEkPGN
+         +gKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXHq5jD9Raa2ex3aQsO7Fvyq0mqNmNQT7LRTgPTwF6KHFzEoOV6JkhjrjO4sR1GyEQWmZaqu5FQg==@kvack.org
+X-Gm-Message-State: AOJu0Yzdd0sljmX4WK43rOh0Xvsa/HAP595w6rtLHz9bR8OyDH7ym/dP
+	9bkaQbMj/1qqIyAOViDKeWpugcggK9U0GjqrNkwK5gJDaO0yHEYTOBOqmmAOBjJwm0stGLNbFVR
+	o74eHGGOFLv/5CEoHFy/b12mwn8HPUZI6okPJuMAn1T7Tr0Sjh4X/Ag39
+X-Gm-Gg: ATEYQzy1/VqnK6CV/bzdU2SIJmAH1pvIAeyUNE3tdTfwNTSgNoymRo9hZdQ/9kF/Sf3
+	ce4BYATD9r8ko9y7kz1rM6uswP6XWdTiMNOGXJ8AToDyvjd0OfR2XsCsCLp31lD+leZLxA9RbFI
+	zjSCwmR3Jf64g2OVtClrR3ZAD3VIRwV8obvJ//FoCPCdgTPmVqsoNouglqfu3qjMgv68HES6oLy
+	3PcwDM+g8WrPxpMgFaqTxeKtq4i6b8DgirmLGFsH0+/cJGjq4zqrb9CMBCOKgvK7w5t0ggKKQ6i
+	6jbPQUTF
+X-Received: by 2002:a05:7022:4087:b0:11d:f440:2690 with SMTP id
+ a92af1059eb24-127961b4fa2mr253738c88.0.1772502046523; Mon, 02 Mar 2026
+ 17:40:46 -0800 (PST)
 MIME-Version: 1.0
 References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
  <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
@@ -119,28 +119,29 @@ References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21c
  <CALOAHbCma=SW4nu_GPv_pbuuXv1V5JPB-9cA3z1TeemWqU68tg@mail.gmail.com>
  <CAGsJ_4yAkaqqzSu7SS=_fgZ_AQCqtbv8LmuPGCb7SiFpGk4csg@mail.gmail.com>
  <CAMgjq7AkvgzW96-JQzEg5c4oW0cMsjPHcCnukCUZXgSvXL4-DQ@mail.gmail.com>
- <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com> <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
-In-Reply-To: <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 3 Mar 2026 09:34:08 +0800
-X-Gm-Features: AaiRm53w2EiKy9u9A2b-vDg7zdi9FSjLbvrfvWYH7Ixw4iVRWIqYoRI1uAOSfz8
-Message-ID: <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
+ <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com>
+ <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com> <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
+In-Reply-To: <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Mon, 2 Mar 2026 17:40:10 -0800
+X-Gm-Features: AaiRm511ojTjG7hKo8xpV0lcRPHhsif7Fad1_seCXYrxXbU-9Yk4OJwDsS251r0
+Message-ID: <CAJHvVci8nc-yTHkAbSEQQtqkRvgATJWcSTwBCY49A5W4AQcd7Q@mail.gmail.com>
 Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: Yuanchu Xie <yuanchu@google.com>
-Cc: Yafang Shao <laoar.shao@gmail.com>, Kairui Song <ryncsn@gmail.com>, bingfangguo@tencent.com, 
-	lenohou@gmail.com, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
-	wjl.linux@gmail.com, yuzhao@google.com
+To: Barry Song <21cnbao@gmail.com>
+Cc: Yuanchu Xie <yuanchu@google.com>, Yafang Shao <laoar.shao@gmail.com>, 
+	Kairui Song <ryncsn@gmail.com>, bingfangguo@tencent.com, lenohou@gmail.com, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	weixugc@google.com, wjl.linux@gmail.com, yuzhao@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: ABC0912000D
-X-Stat-Signature: r1qhrqqis9mn9t7c3f36eopiph1x9skt
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772501660-873211
-X-HE-Meta: U2FsdGVkX19zDhUYf1fyGHuC/xzDtfE9ULejVlU4MZn96ooYoBfp/+leCtVZbC/mgTt4e+utaArB898RWpaPoaI0OZ2Zno78exj+VN+MUBqcG/m8CdWqH9EXuiWZtT6B/6nCItIhi/tTXkWGmq1+9Y98U9wBj3wN/HhCODUvoxVN57v8fEKsT4d6DHTJX7R3yXeVSY0PZiyyzGvkjVxFwh7wVdFovpd3i8+ckOZv8ipAL0YbPp0UnPpmvVfRAhH6zYri1ME+v1R2O55m8KDsDMOVNreNmWsyr3BuW4f8BLSQDz26KjlVyLzgulfuMDyOViQdFk4v8wYK7ZVh9YcMa60x1Y0eS93wPXFGt6/8/PyftO9qgPk+aNlE6/RhSbvwVEZhCi8Xw0ByrSgKuXHrlrLkSpxn+QEH6N1h1Pn3/fNfG7QmZRwk57k+vWW+r2lDngiiKRwfhYWuuJUYrhehTHR9C+dXqtp/pBqlkeRjek3WXLcE069y1/GH3ixr76C2OumLVRY7sYDrx/SF9pMqLzCB4gHxG/vJTQg9f+C3fYxjrNiopOvzzCgWG+iG/qgg9IYV6tPagH6T6SdHctj7YTeKhEggL38Hxvv3YzzKUplLlWwfeoEkSwMLZoUQVR04ThZSMoeMiBT27zW9ZDIauClBG8GhBN04DokNhq8OZa/FmRDGDfgLK+VhePdQh6Fg58+3bxNR9kwaSplV+hLGhYOvm3p9NR7LgxBZb/0uu7wQ5EmtyM3t4ZrgvpsOZFzihdE7du2RypWlJQFAs0AfxNpFM+SwTS5DoiYReibFqlc1CsNcBKrXnxOguYBSscphWUVOa0y7oaeH4LzCPUrvUWDxGi9X4eAWqcg+cWuhT0aQXfefzp9g2NVenarS9SwciogsoaGPDfyeZWeV9LMdswe2FJUvL658ZXKVyjDtO2tMdzziM/xCmywxhfcQDwltjWLF2/pnIflb1np8FOa
- PuRaojve
- fLCgoQJ3QPBcBc8OR/OVcgmcbeQfJJpbcMuIUO8kNgsaq1W/DRxEcqwRI0nNLBPrUpUg1xYnXRSoFnlOsMrU05axyqiSiGmRytoP+5e2/wuuwJSsqO7fJp7Ot3pnSCrd8f3sW2AtsonyTgMUq1iJkxwjmX8U9DMBUp4tdkU3/vX+vRWXh4stvbuISHCFq55Lr/rRz87EB/KQkuYO499vkK4duRorr3PiOMZSo52CkCE3IsmUM3z6K6+HK2ZvvPVLM/JO/7pZp+CmlG8UVNCUu0At5Bu+7okgO899xwflbENl5QfSAQg1CUM6nFAX56iN6GsM1dxJLJyvUu9R83DkUShjzgfCa8e+vyPg0ZX8q/6tOiCbGsa7Qj+bp2tjXAdndrpwsHT4eUImxjvrN/dovUAC4RP2+Yc2v6uRqUK06isZqSTxRBWhiYvMLRBznWKvjb4tfdxR3yqWcAkgEbwyES1+rgxGBycpImoYYarc0buTX3LcvpQ111/H3HmQ8ITT5mPQjGZF4UI52Ka4=
+X-Stat-Signature: nri7nyd1ng4jjhpg4be649ugmt3eunxi
+X-Rspamd-Queue-Id: 75D6B4000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772502048-136336
+X-HE-Meta: U2FsdGVkX18r4TG8CGMAXpZ4USvvihpGPjfe3KBnWAywtQbOey8oHpzS0JvF4iwt1e6YxyMlYuihhknNYV295X8qmSxma8Icy18rH+kNPgZ2wm99Qj2Vr9R7CZ438nbteAFNohdtT6q73R/qW6o8H/gG2HDKBtPkpxeIEOUwkaL1XUPLv94gQvQKJj/fTLzh7fNnLxJlKO6hsmMGWCdoRuc5si/Dzslg5mW6OvAbda5d/JPJxFgzfCL3dVJ9Me8uCsEl+fhlO85LPn2II75LnOwonbj3tTxA3nh4iUKgZyUdTwjzgWBeEZXU5X2ti8BaJSlUsKtCAeCKEEUCYcVBdIXI2RTk0qtNYaD/+Wx7ZBvBam0Mwb7l1Nue7ZJQnKrxZhV6cgs/ioUiI6rWqXRp7mVnHsS/e9LBMnVakrRHe7uriMXkjc15RWHgFwVzMAwck9D5aUjXQlDiz4njp2X2igyI8sLfQpPwI+sTFAx22wvxvH74jIF9RBPuraMS4yyhMf9bdVToHdQVHxpu/U88hlb6wScy+XPKlwwIeM5Gk226fyBhq57ik9/4KOD+oo6BalERLyYZ3Q9e2X3mOXFXNFh2LbnH7tUlxgU+LYSRBVYvzwPJWaoxXksUTw858vDeMygusWkxt031l4ZN9tslaMHnLyeJrrXLWGh93xMlFnnDy+Cxr0hACmcbtxLcIviUAs8q9CFG1biDDOnvAmha2EDfI8ttp1QsVPvLbEUTxOcaaxXFBSqwUmfArsNgs8wlFwqnkA6TtafwlOK+csY83OKoMlKZnXUuaWZaTbinMb0Acm53GTjfyuQhqJLqBBd1aJLmLgaNOOavpDM7HI6ytZoUTgKVvTJSO4Ixb/N9pUQDjUZn+790PpT+PS9C/WjDeR37r/glkf2TRuef2VYmqPONB7GmneP7mT6Pc3oEQzcmwq8DtamW4zKBUgAfOwU5cco0IRDQkfdtx2FJeWY
+ jFxwI5vG
+ QQD8ETiawaHIgNMTX8tU3L3LZ1Wy1hjSPx9ltfeaHVvVdyZAy4n8nYZfkeAUc9G3VTyLs+JM8jEMfNzw0SbCT6L8eIBjQSB0xwYcWFxj4YULanM4nRjYJhiXlCjQ2obkecoTvGv20BHyy4+NAoU8Yg3IrSeFf1ASgAy9bgsk6fbq5KHCQYTmDdCF+ztDmaPHk3U1tBTjl0pWIFt3BXK83ApXFZ2YXh7bV/X4pyGDitpKVdzXyFuI4zFSv/iOea/eMtJFEq/ooSIkPUySrcnEl9kxXpe8JBDYX4RUCahFZncFTXtuYKy0gPbNkE4TuqovWPCqkKytuhjLUygHPEPK/sdg4X7Og3tvdJSDN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,87 +149,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026 at 1:52=E2=80=AFAM Yuanchu Xie <yuanchu@google.com> wro=
-te:
+On Mon, Mar 2, 2026 at 5:34=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrote=
+:
 >
-> Hi Yafang,
->
-> On Mon, Mar 2, 2026 at 8:36=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com>=
- wrote:
-> >
-> > On Mon, Mar 2, 2026 at 5:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
+> On Tue, Mar 3, 2026 at 1:52=E2=80=AFAM Yuanchu Xie <yuanchu@google.com> w=
 rote:
+> >
+> > Hi Yafang,
+> >
+> > On Mon, Mar 2, 2026 at 8:36=E2=80=AFAM Yafang Shao <laoar.shao@gmail.co=
+m> wrote:
 > > >
-> > > On Mon, Mar 2, 2026 at 5:20=E2=80=AFPM Barry Song <21cnbao@gmail.com>=
+> > > On Mon, Mar 2, 2026 at 5:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
  wrote:
 > > > >
-> > > > On Mon, Mar 2, 2026 at 4:25=E2=80=AFPM Yafang Shao <laoar.shao@gmai=
-l.com> wrote:
+> > > > On Mon, Mar 2, 2026 at 5:20=E2=80=AFPM Barry Song <21cnbao@gmail.co=
+m> wrote:
 > > > > >
-> > > > > The challenge we're currently facing is that we don't yet know wh=
-ich
-> > > > > workloads would benefit from it ;)
-> > > > > We do want to enable mglru on our production servers, but first w=
-e
-> > > > > need to address the risk of OOM during the switch=E2=80=94that's =
-exactly why
-> > > > > we're proposing this patch.
-> > > >
-> > > > Nobody objects to your intention to fix it. I=E2=80=99m curious: to=
- what
-> > > > extent do we want to fix it? Do we aim to merely reduce the probabi=
-lity
-> > > > of OOM and other mistakes, or do we want a complete fix that makes
-> > > > the dynamic on/off fully safe?
-> > >
-> > > Yeah, I'm glad that more people are trying MGLRU and improving it.
-> > >
-> > > We also have an downstream fix for the OOM on switch issue, but that'=
+> > > > > On Mon, Mar 2, 2026 at 4:25=E2=80=AFPM Yafang Shao <laoar.shao@gm=
+ail.com> wrote:
+> > > > > >
+> > > > > > The challenge we're currently facing is that we don't yet know =
+which
+> > > > > > workloads would benefit from it ;)
+> > > > > > We do want to enable mglru on our production servers, but first=
+ we
+> > > > > > need to address the risk of OOM during the switch=E2=80=94that'=
+s exactly why
+> > > > > > we're proposing this patch.
+> > > > >
+> > > > > Nobody objects to your intention to fix it. I=E2=80=99m curious: =
+to what
+> > > > > extent do we want to fix it? Do we aim to merely reduce the proba=
+bility
+> > > > > of OOM and other mistakes, or do we want a complete fix that make=
 s
-> > > mostly as a fallback in case MGLRU doesn't work well, our goal is
-> > > still try to enable MGLRU as much as possible,
+> > > > > the dynamic on/off fully safe?
+> > > >
+> > > > Yeah, I'm glad that more people are trying MGLRU and improving it.
+> > > >
+> > > > We also have an downstream fix for the OOM on switch issue, but tha=
+t's
+> > > > mostly as a fallback in case MGLRU doesn't work well, our goal is
+> > > > still try to enable MGLRU as much as possible,
+> > >
+> > > Our goals are aligned.
+> > > Before enabling mglru, we must first ensure it won't cause OOM errors
+> > > across multiple servers. We propose fixing this because, during our
+> > > previous mglru enablement, many instances of a single service OOM'd
+> > > simultaneously=E2=80=94potentially leading to data loss for that serv=
+ice.
 > >
-> > Our goals are aligned.
-> > Before enabling mglru, we must first ensure it won't cause OOM errors
-> > across multiple servers. We propose fixing this because, during our
-> > previous mglru enablement, many instances of a single service OOM'd
-> > simultaneously=E2=80=94potentially leading to data loss for that servic=
-e.
+> > Would it be possible to drain the jobs away from the machine before
+> > switching LRUs? The MGLRU kill-switch could be improved, but making
+> > the switch more or less "hitless" would require significant work. Is
+> > the use case a one-time switch from active/inactive to MGLRU?
 >
-> Would it be possible to drain the jobs away from the machine before
-> switching LRUs? The MGLRU kill-switch could be improved, but making
-> the switch more or less "hitless" would require significant work. Is
-> the use case a one-time switch from active/inactive to MGLRU?
+> I guess the point is that if upstream provides a sysctl to
+> toggle MGLRU on and off, then that sysctl should actually
+> work as intended. Otherwise, it would be better to remove
+> it.
 
-I guess the point is that if upstream provides a sysctl to
-toggle MGLRU on and off, then that sysctl should actually
-work as intended. Otherwise, it would be better to remove
-it.
+I think the problem is the requirements are not well specified. :)
 
-Based on the previous discussion, we have two options:
+Is it enough for the knob to function well on idle systems? Or does it
+need to function "ideally" under all conceivable workloads / stress?
+Also how do we define "ideally" - is a stray OOM kill acceptable or
+not? Is that preferable to waiting on the switch / drain to complete
+during reclaim or not? Reasonable users could disagree.
 
-1. Reduce the likelihood of OOM and other errors.
-This could be achieved either by applying Leno's patch,
-which suggests shrinking both MGLRU and active/inactive
-lists during switching, or by making shrink_lruvec wait
-until the switching is complete via schedule_timeout().
-
-Note that there is no guarantee the switching state
-won=E2=80=99t change during shrink_lruvec.
-
-2. Ensure that shrinking and switching do not occur
-simultaneously by using something like an rwsem =E2=80=94
-shrinking can proceed in parallel under the read
-lock, while the (rare) switching path takes the
-write lock.
-
-If we want to keep the toggle, we could at least make a
-small change to reduce the likelihood of mistakes?
-
-> I do want to note that OOMs causing data loss is not really the kernel's =
-fault.
 >
-
-Best Regards
-Barry
+> Based on the previous discussion, we have two options:
+>
+> 1. Reduce the likelihood of OOM and other errors.
+> This could be achieved either by applying Leno's patch,
+> which suggests shrinking both MGLRU and active/inactive
+> lists during switching, or by making shrink_lruvec wait
+> until the switching is complete via schedule_timeout().
+>
+> Note that there is no guarantee the switching state
+> won=E2=80=99t change during shrink_lruvec.
+>
+> 2. Ensure that shrinking and switching do not occur
+> simultaneously by using something like an rwsem =E2=80=94
+> shrinking can proceed in parallel under the read
+> lock, while the (rare) switching path takes the
+> write lock.
+>
+> If we want to keep the toggle, we could at least make a
+> small change to reduce the likelihood of mistakes?
+>
+> > I do want to note that OOMs causing data loss is not really the kernel'=
+s fault.
+> >
+>
+> Best Regards
+> Barry
 
