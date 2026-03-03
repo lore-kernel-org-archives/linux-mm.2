@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ED2CEC1430
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:03:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCA6AEC1436
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 12:07:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6256B01A0; Tue,  3 Mar 2026 07:03:45 -0500 (EST)
+	id D10E36B0144; Tue,  3 Mar 2026 07:07:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67E0A6B01A1; Tue,  3 Mar 2026 07:03:45 -0500 (EST)
+	id CE9356B019E; Tue,  3 Mar 2026 07:07:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 576386B01A2; Tue,  3 Mar 2026 07:03:45 -0500 (EST)
+	id BF4D96B01A1; Tue,  3 Mar 2026 07:07:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4668E6B01A0
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:03:45 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CEF761A0163
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:03:44 +0000 (UTC)
-X-FDA: 84504617568.04.5138E2D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AFAAC6B0144
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 07:07:24 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60B621BF64
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:07:24 +0000 (UTC)
+X-FDA: 84504626808.19.3590044
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0985416000F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:03:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MJ5h64pR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9765D40008
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 12:07:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=koXv92vt;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772539423;
+	s=arc-20220608; t=1772539642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vV8wWwcsFCFxvniDVMzrJQesED5ML4ir9gUwCi/ewBU=;
-	b=xow6ZWzTjxdz+duxPAP2LPKrehW8YDeWORvBq17OAhzkFxk12jd7a5d2arbR9guZchNJfo
-	nMbZHY5vZW9GpiBj3t31HE2tpADf2exv+iUP5kfrNPWejdF+3o0H8KABumrAjwMQNCteIv
-	Tb8ulwj10/00Nm29gP9V1NFUPB+MTYo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MJ5h64pR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772539423; a=rsa-sha256;
+	bh=5GEamnsKnviIdhVg/tXlg0bwb3/+Znta3MDE8yxHJSk=;
+	b=dtcjuw/JSN4nPOt2n/U3MLK8ube3dSrEJXP2v4uGSrrKi93KeLzT8zlBNzeljX1CgIsKHR
+	exPlN8iAKlwK/nAXx/UOZsuMISmBRtGwDcQ7S8Wc17PkFal61Cskg4b4XqQmttLBcc8DbB
+	fiK48zXBh+hYFrDPE+8/VbW47oAy+Os=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772539642; a=rsa-sha256;
 	cv=none;
-	b=ctjF4oraDFeBITKhaTMSytCWs1wUBwYozChU7yP/Z44+XE6JVB9R1QMjh2XVpmRxmy7KM4
-	ZR9E7MZQQRo4rVlL0HFX99Tti76Q3IWA+DDd/l42ykkv2MAH4e5PQQwRuC0y4WgxH5Jv5G
-	qfghAWZrOexRppUN6/NDhEGbJbqrCL0=
+	b=UjDdNo+h6CELVKdJXiFYJFJJZQrBEZmA74PausYhL281/r0drDDH/tVNHUTBRNHYtBXDPp
+	569SBRM4tBobfeUocdj56FRJczMzAegqyof3ECFs5ZblDtI/S4dM5LI7luNVJteoBAGTJ2
+	mwoiQzfTbbutdbUoZd9emlmB9V4+tzQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=koXv92vt;
+	spf=pass (imf04.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EFCD64363C;
-	Tue,  3 Mar 2026 12:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39160C116C6;
-	Tue,  3 Mar 2026 12:03:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 84D2643982;
+	Tue,  3 Mar 2026 12:07:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C156DC116C6;
+	Tue,  3 Mar 2026 12:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772539421;
-	bh=FKgZyK3BHK2b7TxMxYTjWoMZ/Anv+R+QUIFrSIZF0a4=;
+	s=k20201202; t=1772539641;
+	bh=OftZ/sLQ3XZObtm9KS4DhoduNw0kAtMoQOE5FA4IaC8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MJ5h64pRkNG7MTzmGfVUhEpIvCfLRPdDgZ+HBzr29YTlo8RuYyVEPMMwkfVPI7+tG
-	 DY1ce4MaKdmhWCcIeatCWo8nvAPDXexyLB/zjS+E+887Bp66ZOG4+I0bWDVY1EZCgO
-	 6r01gWnEeqNknfBJGzMn50z0Z+zcnOsY83IHmFxMNZIo2mrOd9wEL2j9z9YgoYSZQ3
-	 UAMDbSi+dLK/RX/lvyeXRmMo3+cobEko0BPtYh5rm1n/kGZDM2I2g9/KtJvovKaXPz
-	 Lce/xR+FgMd955QsHqTOEgDRroEfGcu5W7dZaVP4qGSpdn7vjiB+JFBo/So/MdMHDe
-	 Jf9wjqOSdajWw==
-Message-ID: <682380ba-c8f3-4023-928c-2152e934f8db@kernel.org>
-Date: Tue, 3 Mar 2026 13:03:36 +0100
+	b=koXv92vtg4amiUxo+E0FB6Q3wlqRd/moYmVlVgLGl7KJOBS0EykVY9kqZU7NFKqHr
+	 tRvIT9kMlNhDsdj3OMQC7HhyrjIpMSValH9x0h3dPWSV5xf34IRQX+SmlTTPwqtioR
+	 +06E3876eK5keDwI2Lb11i+IP1Ao24EDQ4CvjqsPG/u2Yx2NNakh9XU43tGQFmuXmI
+	 I5TTpYK8CKiWUTj1AwrzsGgpQkyRM+ExYcM9CxP/EKkZ3N467fynD2n/Gdo+efmAb+
+	 IrPocPEyo7xpm5hS1PZH5l0WqWOBRIHz31+W7HoiceCqxmODyVutSVGM1eOS1uZZuY
+	 mhDLmhe3bfgBw==
+Message-ID: <9c10f799-907e-47ce-8ffb-e196ab0bee7e@kernel.org>
+Date: Tue, 3 Mar 2026 13:07:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush
- work
+Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
 Content-Language: en-US
 To: Marcelo Tosatti <mtosatti@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
@@ -83,19 +82,18 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
  Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>,
  Frederic Weisbecker <frederic@kernel.org>
 References: <20260302154945.143996316@redhat.com>
- <20260302155105.214878062@redhat.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <20260302155105.214878062@redhat.com>
+In-Reply-To: <20260302154945.143996316@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0985416000F
-X-Stat-Signature: 8ykkpttp4bkfgs5m3k6hebfoxj8a3mt3
 X-Rspam-User: 
-X-HE-Tag: 1772539422-155983
-X-HE-Meta: U2FsdGVkX1/F/XSZSDvMC9qM4mSDzkVVKLYjbQV/mFgTy6h7KGedW3U2vOHBgVLHrb+hp0oRn2n4yzd/utjcVEqRF/GhkjDgwNN4N5fyEjLXxOnRCmTCRxj3SKZIAf7sf8MXONcwXUD1bo0G9v0LdN/N+Vz4GX/dxpzT77Zm48Q0sMShHlzDnviy+rxsqEnl6yrp0oNehPn0OXtHE/d+ifcBsvJ0QrXcJCLlny9pxmfhEFD1h2FIfKyHWiXHC8y/pyRzIBHPYjOCQ4PXvm4ICPK2iT8O85TtzBZXN2CnCmBpdcJtZj8OrV0dwJElmehfUZ4poH1K3Q5Rmd3DG0cDB6deuy8f5H3bciyzkwuj806VkuGLbue8lC1Aue/8su+NGwHvHSltZHj52nffcw7hBZNknBLFaDR9unW7715A6wk/e2GCI40IXpzX14GfpYPR31eN4xIUC01O6RkpRU3kj3FDoR5mKyKjI5t4h2KtyM0wbTQ1lnRd+3GDja+JYHr3jIUuKPkSSnUTAn7OkxINK05n4Se08mP4AvXjDMH9cCzSc4Hh7nrdTNIx9X6np82pgp242GO3tKIvpz7Ct5A4mcNHLs+E5cXMxx1V5+zQZXEQfOqPd1szJBKMM9hk/Bo1vuJQgjlaSsarpQOvH2DMbm9fEnEDu6uPVJOnwmwWfSb/pgEhcw7f2ld5l4DEWs/O/2ax9QRHrNI3s/FodxdLXf5+CSPE89D4xkREmyD/wbcy3zDpCJfKINfW9mm/Hf1yxiDwY1hTbYEfOj03XIjUojbXJL54ORhnnXnvygCoVuBZd6xe/3oQq3T2isKtDqSNBrDEkhyurevxX4926b7edsgKTgI9iYoAL7KjrhgnU97IU80DoFE1dL4uY0ZnFX5jk1BNADP9cH8YLzvfdgRM3XPaMBOT62diQCBrt6pe1bn9TwOV5ztGoWNffQbpt2ux5zUybnnxkyKLU2xtF/D
- 1DBWTicf
- xs13Q9c8hmHTVneTOMK+Wq1JdeaEJXg16PLGG5vb/89/89i1Bk8b8/ZPl1vb63gRCl8PnocXhUG0iRS2CveHOlhh6KopTz9n1fE1xNNDMCdLSgrWTLr0X4RaETS/bDA/V0ZZukg8maQcpE6+FLM2Nm8HlQ8ZLS67CLWnPPNMzYl3+jFkO68DdPogdm8qlpZh/t/yUMqtobKJx7p9Q61iXpliZb8vSNNxaGebnQZs177BdRIZB7JYhcpOqiowUXaaxuJwGA/BAuDd15KOKOElXaYAGYI/IDDt180gFtD1wEnzTDQcvyh8c4oQTBKxn+iVd5ZaFOyvx69AvuwvpI/cvQYPYj/vgRt1r2POwiY6waZqHer5UlSyPsjgCecKhJ3plIBbE
+X-Stat-Signature: 74tddiz33jqg7anouiwxoz71i4i1jagi
+X-Rspamd-Queue-Id: 9765D40008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772539642-457276
+X-HE-Meta: U2FsdGVkX1/KrB0x3T5GkmpQ3EZyIWTzJn7CLQB86HR4SFbq7NzZkyAiF6zlcsSBFkULDkFLZ0LUPxCShp089mFUF4HXuY8OcOiA/D9vrO9IIiN1BsQ76ZuGuJm+BxthfAhCDyTCnQ+tGYR3mk79Xo7g8w7oLVjLYlTsdY0bjC4adf7G/sH4AiuuJnDLzbwLz2CKBVj1eLcfOYIMVfM+I5S9CJXKJJPW4dT5cAEN5ynQ9S8DUJiNRXdaLkJ/+EnnM47rUXGsyb7XIxgwtsWKNTP3XOdpgtmHEN8wMd3FDUaIiAJYoPPU0xFR/9eML+w0DhxN6HVKfIuHftTf4T7PHIp2PU/3G8go9k4ucaRzJSabmMFKJZBZuK+o2ZsQAHt3qn06V2X7P4SekgOS7wOsaLpoVNIPtzf9MOlZXizd6xGKY2M+QVA98jTrgkhDztsyZqHmpd6im0StKUTJQpo4MDFQEb1DqB5JGFZpUp+QoXh6DdbJSA+G3wANrKro3R1qRmJRa4T4tlJ6CLTsPCIPj6+RELE6q7eihbGhHK7JDWU8VJbpDxu6XH8URpKmMrBmjn74y6MqkdjSA5NhefdqZNd0Gcj2KQwHe2UsJVYpej0auDIkCB6J0CAsPBBD7KV34Ylgger4XFGG5VUU8yxvORtWOB8fVk70C5AUrYbl928pMVMeH9BC/wxNLaQ8Vu2MkQqgqdWC0tEcsFi7eHDHxRDoZKoZ0i1XuKIAbB3uuGwzyv1iRQf0zuFvZTjvozTxbIWRBk6Z3lEqXA7z3+9KX1oNUIylzcAfJsx1j0sxXeDz7LKPeEMw/lyR9xRn1d5yEkQTfg4vuDqLSspUlbv+dXpM58cJ6k+I20rCTFUp83Oyj0JrmioNlHnOJWMc7uVze/wGHw1+D9h7lPwmrIyArMNaVhhiIpVXTDSHX+C+wTT9yhn1ZsvQ4+24XC0fPFW0oTzissOlwpUzege918J
+ uwmpusKE
+ mqmUmBgQGyt/OArmIW5GNaxt5X3w77r2HGR+oTTSE1bjXO2wHVf7fWx98xreIipNX5G0LxNj65wc1ggzK9N2M+Apwzo+YH8ev+s2zFkFR4NU+sZ05XV25WweW71HttU9iRblUP/CR/ct9wmULozdCantKEvPwaVoq+xBfUbXlkd+ETQlj8RJrA27NZJKsxi3uoY5xCMG3h3HvijEcoGg/bNiADTG+dTnH2rheePRkDkK5rcZaB6TmUtqyhCD2Hleh8JyfvSCnokzl1KcY6TbYxOtJyaTTek4JbAi/R6At3y6JeS0gz2WVqB8vjVbRKq3T4BvmMQ+XIWFIhqw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,19 +102,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/2/26 16:49, Marcelo Tosatti wrote:
-> +#define local_qpw_lock(lock)								\
-> +	do {										\
-> +		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-> +			migrate_disable();						\
-
-Have you considered using migrate_disable() on PREEMPT_RT and
-preempt_disable() on !PREEMPT_RT since it's cheaper? It's what the pcp
-locking in mm/page_alloc.c does, for that reason. It should reduce the
-overhead with qpw=1 on !PREEMPT_RT.
-
-> +			spin_lock(this_cpu_ptr(lock.sl));				\
-> +		} else									\
-> +			local_lock(lock.ll);						\
-> +	} while (0)
-> +
+> Proposed solution:
+> A new interface called Queue PerCPU Work (QPW), which should replace
+> Work Queue in the above mentioned use case.
+> 
+> If CONFIG_QPW=n this interfaces just wraps the current
+> local_locks + WorkQueue behavior, so no expected change in runtime.
+> 
+> If CONFIG_QPW=y, and qpw kernel boot option =1, 
+> queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+> and perform work on it locally. This is possible because on 
+> functions that can be used for performing remote work on remote 
+> per-cpu structures, the local_lock (which is already
+> a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> is able to get the pe
+A process thing: several patches have Leo's S-o-b: but not From:
+You probably need his From: and your Co-developed-by: or some other variant,
+see Documentation/process/submitting-patches.rst section "When to use
+Acked-by:, Cc:, and Co-developed-by:"
 
