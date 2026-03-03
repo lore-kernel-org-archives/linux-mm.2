@@ -4,136 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55CDEB3649
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA9CEEB3649
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 01:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 301E56B00DC; Mon,  2 Mar 2026 20:32:33 -0500 (EST)
+	id 271136B00DD; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C3686B00DD; Mon,  2 Mar 2026 20:32:33 -0500 (EST)
+	id 217C16B00E2; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CF906B00DE; Mon,  2 Mar 2026 20:32:33 -0500 (EST)
+	id 0F9A06B00E3; Mon,  2 Mar 2026 20:34:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4A06B00DC
-	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:32:33 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F08546B00DD
+	for <linux-mm@kvack.org>; Mon,  2 Mar 2026 20:34:22 -0500 (EST)
 Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8AD88BA5F
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:32:32 +0000 (UTC)
-X-FDA: 84503026944.01.C314EC2
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B2B0A120006
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:32:30 +0000 (UTC)
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 985C91A04AD
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:34:22 +0000 (UTC)
+X-FDA: 84503031564.01.216C336
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf29.hostedemail.com (Postfix) with ESMTP id ABC0912000D
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 01:34:20 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJLdVbZC;
-	spf=pass (imf29.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z9R/BExF";
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772501550;
+	s=arc-20220608; t=1772501660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eoakOWJKYn107a0kMsccm0Mx3Of/ckC1/GrgnYDxGKs=;
-	b=LuywSHBdpDCTPdsLnWxe27CqnRTrikeDFCHXdZRubC7Wzsw7mmsQXmNv9TfKAHxwg7NXQ5
-	hr3juzZR1PAptPtRuh842Sf4oT6g4ewK4VM1SwJ5NWSE5QjDgSE0oKR5EGebNWMLWWyCew
-	LdUrQirJFnXcMoz45i82pSX9a/UIgQc=
+	bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
+	b=LMggClqWnSuoHuw+MVEhiAivcOLSNxnfn0OUp681QCQLhLDMdEOXiNGNrUuHEFJ8dOn1lI
+	6pQAkjPemphGZHjNHmgyXNoq066+XFQstx72EDi2/1DPFwgEsCCVBL2ifrme61pc8FpIbJ
+	kWrFMmNOSJDcWXgJeir49dP8F//zUKs=
 ARC-Authentication-Results: i=2;
 	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJLdVbZC;
-	spf=pass (imf29.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="Z9R/BExF";
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.180 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772501550; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772501660; a=rsa-sha256;
 	cv=pass;
-	b=2gGhsgzbLUFi879FyjnMJT2QG8rYL+nROYiLJnqh5pDANGIoe6MArNSXFAeVJ8IH8r/6Ed
-	Wh3f+1pAGzcF9EJd9tgQOSXZiW3vaMGz09zYkcsZCoLSl9GidBlgmvhPGyro4sA56lOkzo
-	R+ugpRIJMH39Qekd+QffOkCMKQAt3T8=
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-389e2950f54so18772021fa.0
-        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:32:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772501549; cv=none;
+	b=DYQ7a5DdUmjK74tOkaZzFNBa2y9SpYxCGyWmneoMxtJN+/ekpgoX8g1vdC4k562dLw84t1
+	5B3CmFIHq7KE+y1O2JI1Njx4LjpICKLEiiv7clT2lo8XOFFmjsgufdS/odXCDLZJTLIEoq
+	/bIIKglWxWzoeFhFkKHdJDwmdNXHSBE=
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8cb3fb47559so617775385a.1
+        for <linux-mm@kvack.org>; Mon, 02 Mar 2026 17:34:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772501660; cv=none;
         d=google.com; s=arc-20240605;
-        b=LY3O5qxruA/D/Q+DwevqJax74cd7YZzT4jCX7jXnv5clkoJPMGjyaRaR5VhB4Ng6xW
-         g4oKPePrlzavO2zmvMpPZJua1FlOehnld4uAM2FqPs9eo4OCYi8BHqLjuOpNTWkNCVYI
-         Rw/AxzK287pvggCRBllqPQSyhK1ic+LEsOQxutEnid6TmAtYV3wUJJ3W3/55O5JrsF0H
-         1+eaHke2/WyMx9bENGZbtC07fvUIOEKVE2cRA/CDbGephQ+RVsnP65w0HheUn9mvNKF+
-         xm8Wdj+FWUlZAWklIey0bQBIiKs97BjooDAGh/0/wvYOYwHA89xDyGlT6sDL2hF7OgPD
-         25ng==
+        b=DYgXoIsXI6qHhOjnjOY6SfwkGAlKxAY4xXnrxST5i904HI4iXBRI2EVSUEOlD8qyRE
+         Q2e8tvKzxfTXr9wp1HvT9+0zvfB8EdOXjt1PZR/hTGLohdrQsKzhQOJf4PGBiF/FxYe1
+         IpTMQX/AXrM4zO82116JiYse7cbz9n+et2SWoFxXifpL/4JzbX8QDNkzJ38U/ifjEfNv
+         OOpSxAucPdJnSfIqDE80bra2Iv4eYBGUh6e8CxMAE7+2AX7zw4nzTRD1JPRxwwfE/+r7
+         pNUyyQR+pP+0d5IM1RowlEavOMCTROEUYituexkx8MxZOJQI7rQxtHFtMu88mQjmlpTc
+         eTfA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=eoakOWJKYn107a0kMsccm0Mx3Of/ckC1/GrgnYDxGKs=;
-        fh=EVpZb+tyczsn1A71+LO22pHLFUeq8uvPwxq0YvHUiB4=;
-        b=gruxyX3N8Eo5gDk1Z1Uw0/UZNk7FHhoxiQ/g1cmdVYHVjdEoCv8xGXRbfHOFMlE+te
-         XQO5hNp9zsZcCjVQM6MotYmFQywsrETyGStMpNSCZFws3hS8gxUL/Agv6xCCAFrIalDA
-         Qw5w1W8M7J4eMS8GXI6HSnRLKuONPLkhwD5xavB02XLRd469rbKcF6D3lZbLoEvBXr7P
-         WAg2iGcSLN93eMGRm4tYEQNkCCEwC6DPkBbxnX/IJSbnMC8zVNfBDElIg1C2y/l2vniE
-         J2kzOqnEQfJbxvKwPhNLBvddSnE4rtsHgEkDCAAxbYselq+7LfvYsdykxb1A7Pjg3Z8Z
-         TgWA==;
+        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
+        fh=HcUTgejSIs4Qqa33Hgs0oEcLiqGThlKKxWSMizqFsEc=;
+        b=LYbsxnmD3V92gkbnHZ6bQLkpn2nZ8d/lXr62Dk/vzrllC9hYqr7VbgGUzldpTrMD3h
+         NMpQl0BdRqvWOHIeUXwhqmw0ifuC70igqct66DHUQ7gQ4LGMzpeAcfmYV09Df9X9jQqL
+         n4ZvoPLjjdyB+A1zGbwv2g9U6ti81euQFr5vTo+6aDm7ngGeMwik31ochbYRHeUKuANM
+         MIXoZ5b0GuPuVn2RDUs0dF97W2s86NuP5ONzR91zAVC+7l7tu7rxTQEOlV1RGksA0Zzn
+         VQeq2wdN7b6+qdOumibxsYy9OXJpefO1G+FSZ+hlPlptdnpta+/RJwiPikKSOuDscyFx
+         ENfA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772501549; x=1773106349; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772501660; x=1773106460; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eoakOWJKYn107a0kMsccm0Mx3Of/ckC1/GrgnYDxGKs=;
-        b=gJLdVbZCADYakHzTO9bO/TPD99xQSTJGF8xVVCtG7kxSFqKKEMc3qThHspqOYTJWBZ
-         CDbGKc1gDrypskC1ph/tkjVKl6xaE1zXfO+8wTFYLDIFULK1nk3sH6Qiwyv58+yglmd6
-         e73LQtREa4gWQ/ysHmekLWVYcQOsU/qBfxoCqcKfKPCyzssVXJgHu2HA5alAFX9Y0FBd
-         ynJeIX0fP0z7XyNY9SbIpa0et3jxBqdWWD0PkrjTIl2tbO0Yeo2TmkzjFE3aHjyzR7iH
-         ec2562iZd1f8mBkddwGw4WGatCGjyxa8pgI3PdTi2Vg89nCcGJojvjVg+nK0pxobf/P4
-         ey5A==
+        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
+        b=Z9R/BExFSm9wRLxMp0tol+CTT+q+QiVK6BaFtOHUHTMhUZnTnVWTF1Qug3U8TtJtsk
+         URV4g6rUXMm7rlld0GOaV53fYuJlOurqKAHgj6RIuFa/mrE+pspWXLnnellL2rgP7eSf
+         SCuYqNe2He4VYRUtLa4pTCamhUTR/GEV2/DhQqrVjtEkYYgL6X/TglAccN7KuVk68JFq
+         pnUUEDKnHKbouG/vtKfmikk65z7/kQLm/M5SI6Siwi8rNP4ba61DdmaY1U3nU9D7wHdr
+         IL4QqfbQHUk36dcsUJpjDfBT/OQpMWsGN9KIRdPF8TsLhmaArgpzhLcpkpZi1/pAuel9
+         NG6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772501549; x=1773106349;
+        d=1e100.net; s=20230601; t=1772501660; x=1773106460;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=eoakOWJKYn107a0kMsccm0Mx3Of/ckC1/GrgnYDxGKs=;
-        b=o10SyxMd9DZwxkK9Xla2VfnRbYOyRycZrXx4Yod7b2Z4U0FcVy+H+7gDMl7+YxrXTn
-         ZMn641bbVwzUG++VDw72/+stRMKrA0XMGn4YQqOcOC8S5eiiullozTC0WB53DiAa8d9o
-         fgsmApLwsshWGJDJyA6uNZmH3qC8qdPvyReJ6Xa5yMEhgEBNY7TSL2udZI9ntrtgcFur
-         1rIpXrwpzD90oNPR/zfHZ+BbiMAVOpnpwD2Z4DUOGy5csTWzv84UqL90c0m/4+7hkJdy
-         Frvw/yXr0R6Capm6IeNRtcizjNqlVyYcyTVtKUOSKmMo4vSmxkc3CNijm8ZP7jS9YdLE
-         IX/A==
-X-Forwarded-Encrypted: i=1; AJvYcCWkJwQtpTyYjNI56Jh3g5dIyfGdtZgGcniwGcsAxZIJ8OYdWQz35vEAo4F6JZMcBu89Kgtwadt0tg==@kvack.org
-X-Gm-Message-State: AOJu0YxeNpSTOqS6DMI9fIOkfYwIBTLHoB3T17Hbc2j89i/4h/Lj4MhB
-	jt5cGyJXnGE2gHnQ4+FrWJ8OwM0sv/3NxUBuAeQ6FLPp67Iyjza/YvLjvsQIWgfjo6wIer7KbIg
-	YRyDlbHtG/WItKXJCb5Sh9EsZlVErB+M=
-X-Gm-Gg: ATEYQzyM79TGqrHy/i37WDxfKt/0mlbmicB5+lq9KgSgYlhntthaIU2ROEmJKL7O3M1
-	KrVWF59gKvlTLLQkfSzg3FpgwgmB0xVGgjXpw8cB0a5Ytm5oLAbnnnJ2YchqKBc++MqgsFXf2HX
-	jvcUVAoyBBEzu/jXKrbQ5Zi7m9ZBhTVnauNgpBs6yhl+gcxu4i6r9W5Oj8l1zsHWvRQETd8gYnx
-	SL6zVLbXjSKuZcn713uMLX6hj3k7wKrBnTXo17xDKoxQI+/m5JfdpnxMfDrBwofrvJow1kp5PkN
-	47DV
-X-Received: by 2002:a2e:3a07:0:b0:385:beb9:dbfa with SMTP id
- 38308e7fff4ca-38a1c432c1fmr1425651fa.22.1772501548568; Mon, 02 Mar 2026
- 17:32:28 -0800 (PST)
+        bh=vFFANA4NLA1lXyEbQZZZ7Ain6z2WPe+5QVqKB6Q26vw=;
+        b=dPG3UygJSWXuYy0rs6O5Fr2wKCrb+hG8pWE9ahRej6i6ikxppBnphs5nr+xnE7Bfyv
+         OyZV30Qkt8zwhQ7KBGZzQd2NJFd9mKiyKwFDROa65AksgSgDOftCWIGh/vwSEoE88AqD
+         I+vDWQWvabWVEFK6+q6ueX9PvFehM2vLRqG1nIAcVmbjkrP3xsIU80VMBO6W6J9M1Xf1
+         6xO2ceQZ6ML12THMSHCKCHCcmtPt4MwtpEak6Rs3Ppg/d4BP4d1TIxyh+Dygfio9Bm3+
+         YhbH84lzWLrsvdy0mkPHBUo+x1SYmXFkB+MIBa01xsExnRZNkkS84SgiU2lnKUO0mimR
+         I0Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ4TmwQwkn/UmqktafiyVzjOZQ2z16nR7GAib/5RlNLAcSj9hiRhze3tsqnuhWSCNduQ0VD/+OZA==@kvack.org
+X-Gm-Message-State: AOJu0Yx1kGMuSQme8aHGmDWxszsDl9u/LkrQiB8SJfHRCyVrqQmTlE6e
+	rhu/GK+M98ZejGYvE1PCAmr44rlsQFxNUdgt56zhJlZ2MR6fgWQohYTCQ2FOwYJ/37o6FuuDixv
+	FKqgdxdPEAuW1+Fd7apCHxsPufQ7nYB8=
+X-Gm-Gg: ATEYQzxC1Q/ZpxJJ0OYbQupYufXOViv/iGpi8UAlJTytq6KmfpTP7a9hAFvzS+1U9Du
+	KVao+3+2547ca5cD7lxahUZsx4sGMteB2VL6u1Yp4ZoNMb1fD0st4wwsmSrurn99qTfJgvxkdNo
+	Uvf8bE8Xn/4878SGcLrfClZgaqowjF5LdWON++ag/r+vfUyJ48dxmueM/sjm7UEFGg8V9KnSTOU
+	DqJT5CqL+GJ38LEwRgBT/57UJMmbZckBPPcn0fv+sZqUxMchKPpN+Vd6NlNfvRL7H1iW349CNHE
+	JY25Sg==
+X-Received: by 2002:a05:620a:489a:b0:8cb:3bca:bb3a with SMTP id
+ af79cd13be357-8cbc8e0d7bemr1628233385a.67.1772501659462; Mon, 02 Mar 2026
+ 17:34:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20260122114242.72139-1-wujianyue000@gmail.com>
- <20260123150108.43443-1-wujianyue000@gmail.com> <20260123150108.43443-2-wujianyue000@gmail.com>
- <aaXoT17JoTv87l40@cmpxchg.org>
-In-Reply-To: <aaXoT17JoTv87l40@cmpxchg.org>
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Tue, 3 Mar 2026 09:32:16 +0800
-X-Gm-Features: AaiRm51MvrbkG34tXAHZrRyVDvmG56_WfTWIft9w2fl79C3OS-RjjlQslYq1xHY
-Message-ID: <CAJxJ_jgQLjW_C0h9Lf1BHWbn50miXvJ+rCKurooNzHBDA18ojw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/1] mm: optimize stat output for 11% sys time reduce
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, inwardvessel@gmail.com
+References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
+ <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
+ <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
+ <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
+ <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
+ <CALOAHbCma=SW4nu_GPv_pbuuXv1V5JPB-9cA3z1TeemWqU68tg@mail.gmail.com>
+ <CAGsJ_4yAkaqqzSu7SS=_fgZ_AQCqtbv8LmuPGCb7SiFpGk4csg@mail.gmail.com>
+ <CAMgjq7AkvgzW96-JQzEg5c4oW0cMsjPHcCnukCUZXgSvXL4-DQ@mail.gmail.com>
+ <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com> <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
+In-Reply-To: <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 3 Mar 2026 09:34:08 +0800
+X-Gm-Features: AaiRm53w2EiKy9u9A2b-vDg7zdi9FSjLbvrfvWYH7Ixw4iVRWIqYoRI1uAOSfz8
+Message-ID: <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Yuanchu Xie <yuanchu@google.com>
+Cc: Yafang Shao <laoar.shao@gmail.com>, Kairui Song <ryncsn@gmail.com>, bingfangguo@tencent.com, 
+	lenohou@gmail.com, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
+	wjl.linux@gmail.com, yuzhao@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B2B0A120006
-X-Stat-Signature: ei6ngnx4t5uh6pshyu7rpfrkutg5fgpa
+X-Rspamd-Queue-Id: ABC0912000D
+X-Stat-Signature: r1qhrqqis9mn9t7c3f36eopiph1x9skt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772501550-548066
-X-HE-Meta: U2FsdGVkX19xHag++psdxFa1Ru4pnr3l3WDLQsVnUjZkBdscJFZiaCHr0OEE9qMA2gjIPUDkcnUYH/hrYy4yWsjVKWQVMQuvCZ89b25LXLuEiGMpkk9HqzBDKQtLPrysGDOzX5yWPK8ancI1XsavGFJd/04JAYxZmaSsAlWkmN/tzQwTvMgu8HvyReQ5fBJqfvLZCoOj7S66XM8CT6HB3TLOBAHQY6uewPRDmbS6ZyeDdWXEmTG4EYaqXZ+6chy96WYxGvQ1ZsAl/vVWPJGp9nZ4cWkR5vnXoBduUMWTZUBiw9UwNujfuTf8QWgyTfkLAvmx+j+IPxNjW55iDkKnUAMHGAMx6RSvYhNYobDdDE2+f2P0Tr+UVLOmf0KPUcHlIGl59Nk3myoLWxInm2IDEbUV8sVR1v0D6FNROrq+Iyjes1tYgsE3LpUci6WV73K2J3usCNHkSVD9duUe2FGloTsOaE3GKinyaKcTwoJlW2aRNt3HuG62PaGEnwSJBFuQjsxAziaY+7VMcB/pVP7BsNkEUJVOiZAoOhOVPsbu9kH1zs8Eao6H4/kCZJ/uqp5K+ZA7yCXTtg8JK/jcyRPYxOV3uVqpRgUldNupHzGaEdeDsyNPy28FVmsc4t9SrjkYwLeTEzGhJuWRSw5T+QmzOlavnKXD95C8hHPjA7gz3BhpOm/7vK1IykP/DU2+uCAvComXHDefIFfdRhFk/iEcvmNSP4e9u4YKkyLLn8hoRhFMIkwIC3SGh9n1G3cSpiurLkNMj2Df12hST6BdytQjjRbVXtTfJLK8D3bx4/KrXYk67wXRuKCPiwNPka6ilRn2UCXtHiykcaSi8Fk8tPAszJFJ9x6nmh8HjgOtlYflaS96bUENK8q7RMRIRmSPUN1waHXSJc/bAL3O3JW0uji9haQlo0txQBEhTK/E3rdvH06tIBkEi7CuH73xXHKaq8k4RiYsibDF8xwHFi+rGQ9
- hCpNCG9k
- P09vqJIaGI9AtYh5S67NREs0YBoVoSL+rkwJ57hWZ++l4wqWgMkF8YkiNtP2m3QigSUaKBeYttqS2SkZQMdN7jThCErz1+4Nd18cjogyPMJ4BGuFFnH/PZlXDUl79V+ZWkC//28TbVmhaoqRA4zX/74oLEyWuSn2DKIAptQEK3MZtBKaSIy93+IlbCwEYpgqw23fiSkRsLPFLcM0zbGyuP5zwyFIUbNi6od7ILMRo9x9nkmD6XU2SNNNN7qC8aeNqrnKwWR4Hp7HCuRJEkBY/EVCSIJQj1w68eUgDfMzAB9VjQRJ7JH2RZH07ak9zBDt8CXT4pufdRqR9BlKhMizTPaJFMfNcPhLp81maIEMtXsyjLtAS5r4PuHGhwAtOK4CnwKeeN6jkK90V9hp+qreIZqWfL7c36e2DSo8E63s3flQh4FLX5d0lFQac8miO8GDLp9fVBShrqgShXKAM3zqOnXAs7tW0Hybbs668UESpLGqsfNs=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772501660-873211
+X-HE-Meta: U2FsdGVkX19zDhUYf1fyGHuC/xzDtfE9ULejVlU4MZn96ooYoBfp/+leCtVZbC/mgTt4e+utaArB898RWpaPoaI0OZ2Zno78exj+VN+MUBqcG/m8CdWqH9EXuiWZtT6B/6nCItIhi/tTXkWGmq1+9Y98U9wBj3wN/HhCODUvoxVN57v8fEKsT4d6DHTJX7R3yXeVSY0PZiyyzGvkjVxFwh7wVdFovpd3i8+ckOZv8ipAL0YbPp0UnPpmvVfRAhH6zYri1ME+v1R2O55m8KDsDMOVNreNmWsyr3BuW4f8BLSQDz26KjlVyLzgulfuMDyOViQdFk4v8wYK7ZVh9YcMa60x1Y0eS93wPXFGt6/8/PyftO9qgPk+aNlE6/RhSbvwVEZhCi8Xw0ByrSgKuXHrlrLkSpxn+QEH6N1h1Pn3/fNfG7QmZRwk57k+vWW+r2lDngiiKRwfhYWuuJUYrhehTHR9C+dXqtp/pBqlkeRjek3WXLcE069y1/GH3ixr76C2OumLVRY7sYDrx/SF9pMqLzCB4gHxG/vJTQg9f+C3fYxjrNiopOvzzCgWG+iG/qgg9IYV6tPagH6T6SdHctj7YTeKhEggL38Hxvv3YzzKUplLlWwfeoEkSwMLZoUQVR04ThZSMoeMiBT27zW9ZDIauClBG8GhBN04DokNhq8OZa/FmRDGDfgLK+VhePdQh6Fg58+3bxNR9kwaSplV+hLGhYOvm3p9NR7LgxBZb/0uu7wQ5EmtyM3t4ZrgvpsOZFzihdE7du2RypWlJQFAs0AfxNpFM+SwTS5DoiYReibFqlc1CsNcBKrXnxOguYBSscphWUVOa0y7oaeH4LzCPUrvUWDxGi9X4eAWqcg+cWuhT0aQXfefzp9g2NVenarS9SwciogsoaGPDfyeZWeV9LMdswe2FJUvL658ZXKVyjDtO2tMdzziM/xCmywxhfcQDwltjWLF2/pnIflb1np8FOa
+ PuRaojve
+ fLCgoQJ3QPBcBc8OR/OVcgmcbeQfJJpbcMuIUO8kNgsaq1W/DRxEcqwRI0nNLBPrUpUg1xYnXRSoFnlOsMrU05axyqiSiGmRytoP+5e2/wuuwJSsqO7fJp7Ot3pnSCrd8f3sW2AtsonyTgMUq1iJkxwjmX8U9DMBUp4tdkU3/vX+vRWXh4stvbuISHCFq55Lr/rRz87EB/KQkuYO499vkK4duRorr3PiOMZSo52CkCE3IsmUM3z6K6+HK2ZvvPVLM/JO/7pZp+CmlG8UVNCUu0At5Bu+7okgO899xwflbENl5QfSAQg1CUM6nFAX56iN6GsM1dxJLJyvUu9R83DkUShjzgfCa8e+vyPg0ZX8q/6tOiCbGsa7Qj+bp2tjXAdndrpwsHT4eUImxjvrN/dovUAC4RP2+Yc2v6uRqUK06isZqSTxRBWhiYvMLRBznWKvjb4tfdxR3yqWcAkgEbwyES1+rgxGBycpImoYYarc0buTX3LcvpQ111/H3HmQ8ITT5mPQjGZF4UI52Ka4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,49 +148,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026 at 3:43=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org>=
+On Tue, Mar 3, 2026 at 1:52=E2=80=AFAM Yuanchu Xie <yuanchu@google.com> wro=
+te:
+>
+> Hi Yafang,
+>
+> On Mon, Mar 2, 2026 at 8:36=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com>=
  wrote:
+> >
+> > On Mon, Mar 2, 2026 at 5:48=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
+rote:
+> > >
+> > > On Mon, Mar 2, 2026 at 5:20=E2=80=AFPM Barry Song <21cnbao@gmail.com>=
+ wrote:
+> > > >
+> > > > On Mon, Mar 2, 2026 at 4:25=E2=80=AFPM Yafang Shao <laoar.shao@gmai=
+l.com> wrote:
+> > > > >
+> > > > > The challenge we're currently facing is that we don't yet know wh=
+ich
+> > > > > workloads would benefit from it ;)
+> > > > > We do want to enable mglru on our production servers, but first w=
+e
+> > > > > need to address the risk of OOM during the switch=E2=80=94that's =
+exactly why
+> > > > > we're proposing this patch.
+> > > >
+> > > > Nobody objects to your intention to fix it. I=E2=80=99m curious: to=
+ what
+> > > > extent do we want to fix it? Do we aim to merely reduce the probabi=
+lity
+> > > > of OOM and other mistakes, or do we want a complete fix that makes
+> > > > the dynamic on/off fully safe?
+> > >
+> > > Yeah, I'm glad that more people are trying MGLRU and improving it.
+> > >
+> > > We also have an downstream fix for the OOM on switch issue, but that'=
+s
+> > > mostly as a fallback in case MGLRU doesn't work well, our goal is
+> > > still try to enable MGLRU as much as possible,
+> >
+> > Our goals are aligned.
+> > Before enabling mglru, we must first ensure it won't cause OOM errors
+> > across multiple servers. We propose fixing this because, during our
+> > previous mglru enablement, many instances of a single service OOM'd
+> > simultaneously=E2=80=94potentially leading to data loss for that servic=
+e.
 >
-> On Fri, Jan 23, 2026 at 11:01:08PM +0800, Jianyue Wu wrote:
-> > +void memcg_seq_buf_print_stat(struct seq_buf *s, const char *prefix,
-> > +                           const char *name, char sep, u64 val)
-> > +{
-> > +     char num_buf[MEMCG_DEC_U64_MAX_LEN + 2];  /* +2 for separator and=
- newline */
-> > +     int num_len;
-> > +
-> > +     /* Embed separator at the beginning */
-> > +     num_buf[0] =3D sep;
-> > +
-> > +     /* Convert number starting at offset 1 */
-> > +     num_len =3D num_to_str(num_buf + 1, sizeof(num_buf) - 2, val, 0);
-> > +     if (num_len <=3D 0)
-> > +             return;
-> > +
-> > +     /* Embed newline at the end */
-> > +     num_buf[num_len + 1] =3D '\n';
-> > +
-> > +     if (prefix && *prefix && seq_buf_puts(s, prefix))
-> > +             return;
-> > +     if (seq_buf_puts(s, name))
-> > +             return;
-> > +     /* Output separator, value, and newline in one call */
-> > +     seq_buf_putmem(s, num_buf, num_len + 2);
->
-> You seem to be losing the \0 somewhere. I'm getting garbage at the end
-> of memory.stat on mm-new:
->
->   [...]
->   thp_swpout_fallback 1212
->   hp_swpout_fallback 1212
->   hp_swpout_fallback 1054
->   907
->   1278
->
-> Dropping this patch fixes the issue.
+> Would it be possible to drain the jobs away from the machine before
+> switching LRUs? The MGLRU kill-switch could be improved, but making
+> the switch more or less "hitless" would require significant work. Is
+> the use case a one-time switch from active/inactive to MGLRU?
 
-Sorry about that. I wasn't able to reproduce the issue on my side.
-On a closer look, the change seems overly complicated and may not be
-worth the risk.
-Let's drop this patch for now.
+I guess the point is that if upstream provides a sysctl to
+toggle MGLRU on and off, then that sysctl should actually
+work as intended. Otherwise, it would be better to remove
+it.
+
+Based on the previous discussion, we have two options:
+
+1. Reduce the likelihood of OOM and other errors.
+This could be achieved either by applying Leno's patch,
+which suggests shrinking both MGLRU and active/inactive
+lists during switching, or by making shrink_lruvec wait
+until the switching is complete via schedule_timeout().
+
+Note that there is no guarantee the switching state
+won=E2=80=99t change during shrink_lruvec.
+
+2. Ensure that shrinking and switching do not occur
+simultaneously by using something like an rwsem =E2=80=94
+shrinking can proceed in parallel under the read
+lock, while the (rare) switching path takes the
+write lock.
+
+If we want to keep the toggle, we could at least make a
+small change to reduce the likelihood of mistakes?
+
+> I do want to note that OOMs causing data loss is not really the kernel's =
+fault.
+>
+
+Best Regards
+Barry
 
