@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C9AFEC1431
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D1F7EC1433
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Mar 2026 11:26:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7E066B0180; Tue,  3 Mar 2026 06:25:06 -0500 (EST)
+	id 9A1AA6B0135; Tue,  3 Mar 2026 06:26:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48546B0181; Tue,  3 Mar 2026 06:25:06 -0500 (EST)
+	id 96C336B0136; Tue,  3 Mar 2026 06:26:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9A56B0182; Tue,  3 Mar 2026 06:25:06 -0500 (EST)
+	id 7FCE76B0139; Tue,  3 Mar 2026 06:26:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B97A16B0180
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:25:06 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D09E1A0108
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:25:06 +0000 (UTC)
-X-FDA: 84504520212.09.67E561E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0F0BB1C000A
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:25:03 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cp2wGG3b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FY1dH1mO;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cp2wGG3b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FY1dH1mO;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id 6A7D16B0135
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 06:26:19 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34E7D1BC00
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:26:19 +0000 (UTC)
+X-FDA: 84504523278.05.8977C98
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BDF7B40002
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 11:26:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nkwxPU6f;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=agjLNWMi;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nkwxPU6f;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=agjLNWMi;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772537104;
+	s=arc-20220608; t=1772537177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3YxnSO6wYqIgHlG99vcTIcGeXP4duMd7Ux36r4Q1ofk=;
-	b=CbsWQZFroQKXOF+JV+vRtxTlWQVYj4of/F/rXBJvg3vODMF7E6rpAPZY4VPoZelcCATLs/
-	ncRG8fi3N8OQFaLpJD16PPGRlyHDOFmvHTnQ4hyDZniD+36nCDzE2q27COKWascr7UgHhV
-	4YDArVuzPQyuYnpL4EwqWbQVGeim4Ms=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772537104; a=rsa-sha256;
-	cv=none;
-	b=C7uRL1KZS+BSn8pepe1tyu7ahDPnL3loZO5bW8cvk7R/gbGQmchH49PAXgLrJIK8LzLV3y
-	lo+uXxo74YKonJncBt2ziA7lr9GtuykU+RXQWKbUAdCd5vkaqJAVBOj6Fsvgwx0ML7zPFp
-	OOecsHprAYoTEcaYGKp6kxSX4gg0158=
+	bh=nPu8XPuDlU1g9pC+BD612SKMgab6QY4hhTylugDlyzw=;
+	b=YBmE4HhbYbRY4hqZamSlX8wbAtze3nlAm7f2sooZeS3BdHZ4IoCIJsarKOGT7LyIm6SDpf
+	p4ZgPwnBUZumYNcglaszfvcM8E8qVhnAdOUrBo1wC7unaA3NW23digFmpTi3Bal4mfPvVE
+	I+YWSWBNuHJ8kdOLE8WeIla7u44ErAw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cp2wGG3b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FY1dH1mO;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=cp2wGG3b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FY1dH1mO;
-	spf=pass (imf18.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nkwxPU6f;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=agjLNWMi;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nkwxPU6f;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=agjLNWMi;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772537177; a=rsa-sha256;
+	cv=none;
+	b=tcFIzvR0FufPT1t5aH5l9InZ6c4Uci66b5alm5sOpv3vVQvbxombmt+wo8dEuLuDKxX71Z
+	+wcCZmGVpE7SRO2kKDhMRP4fBPIB7/b+WxOZyH+ang5ZouUTJOU+CH6lBYBP3YutsCnU0e
+	JfLBdQapJPN7uYE+bPzetHWMMFjLe5U=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8B2E85BD15;
-	Tue,  3 Mar 2026 11:25:02 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4C4F13F875;
+	Tue,  3 Mar 2026 11:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772537102; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772537175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3YxnSO6wYqIgHlG99vcTIcGeXP4duMd7Ux36r4Q1ofk=;
-	b=cp2wGG3bRJKiUYN68nRpyBn77MC8reO7VI0NDbMUH6Gavvlj+c5tRTwOFIqiPnWjX0Qwjw
-	RW+zrIQPbA+KbSu++nhAT81fG5esOebAI7zXOMKcR/GP/zZkW7LEAhJ3bGMOz6iqfFeDkU
-	p6Dj8reQ+EQ+Mps44OzpOJ4Th4tYT6c=
+	bh=nPu8XPuDlU1g9pC+BD612SKMgab6QY4hhTylugDlyzw=;
+	b=nkwxPU6f/8r94zxGc4RXWbdDzA6AH42XX//Xsss6YCxStp0x2EcOr0GsBuSmRyKCliLMNC
+	33kSvTr/ut+H6ayhMqYeTdK3NFYWWb4fo7LpP8U5eO3+VvW3rrMLpyl6x9zanAM0NlTtEe
+	35vwx1OUEh1rL8GgkX/OzITY8DEMdwg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772537102;
+	s=susede2_ed25519; t=1772537175;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3YxnSO6wYqIgHlG99vcTIcGeXP4duMd7Ux36r4Q1ofk=;
-	b=FY1dH1mOn/Pqm+1fJQmhvM5A1inXBqPa+uljfNfdnSMdwhQWodNFFBHl9VOeyBBhRfZvet
-	42ntbDXFRTWgP0AA==
+	bh=nPu8XPuDlU1g9pC+BD612SKMgab6QY4hhTylugDlyzw=;
+	b=agjLNWMibMrxLGF3Fa07k6aUsfYIAWz4Au/CjhQcIFoZ6f1qcU8rerzkKEteqvTexnsZJk
+	/gGscWX4ng0HaUBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772537102; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772537175; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3YxnSO6wYqIgHlG99vcTIcGeXP4duMd7Ux36r4Q1ofk=;
-	b=cp2wGG3bRJKiUYN68nRpyBn77MC8reO7VI0NDbMUH6Gavvlj+c5tRTwOFIqiPnWjX0Qwjw
-	RW+zrIQPbA+KbSu++nhAT81fG5esOebAI7zXOMKcR/GP/zZkW7LEAhJ3bGMOz6iqfFeDkU
-	p6Dj8reQ+EQ+Mps44OzpOJ4Th4tYT6c=
+	bh=nPu8XPuDlU1g9pC+BD612SKMgab6QY4hhTylugDlyzw=;
+	b=nkwxPU6f/8r94zxGc4RXWbdDzA6AH42XX//Xsss6YCxStp0x2EcOr0GsBuSmRyKCliLMNC
+	33kSvTr/ut+H6ayhMqYeTdK3NFYWWb4fo7LpP8U5eO3+VvW3rrMLpyl6x9zanAM0NlTtEe
+	35vwx1OUEh1rL8GgkX/OzITY8DEMdwg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772537102;
+	s=susede2_ed25519; t=1772537175;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3YxnSO6wYqIgHlG99vcTIcGeXP4duMd7Ux36r4Q1ofk=;
-	b=FY1dH1mOn/Pqm+1fJQmhvM5A1inXBqPa+uljfNfdnSMdwhQWodNFFBHl9VOeyBBhRfZvet
-	42ntbDXFRTWgP0AA==
+	bh=nPu8XPuDlU1g9pC+BD612SKMgab6QY4hhTylugDlyzw=;
+	b=agjLNWMibMrxLGF3Fa07k6aUsfYIAWz4Au/CjhQcIFoZ6f1qcU8rerzkKEteqvTexnsZJk
+	/gGscWX4ng0HaUBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 774733EA69;
-	Tue,  3 Mar 2026 11:25:02 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 34F173EA6E;
+	Tue,  3 Mar 2026 11:26:15 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uhYOHQ7FpmkbSwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 11:25:02 +0000
+	id 5OvoDFfFpmkcTAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 03 Mar 2026 11:26:15 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3474FA0A1B; Tue,  3 Mar 2026 12:25:02 +0100 (CET)
-Date: Tue, 3 Mar 2026 12:25:02 +0100
+	id E0715A0A1B; Tue,  3 Mar 2026 12:26:14 +0100 (CET)
+Date: Tue, 3 Mar 2026 12:26:14 +0100
 From: Jan Kara <jack@suse.cz>
 To: Jeff Layton <jlayton@kernel.org>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -183,30 +183,28 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
 	linux-x25@vger.kernel.org, audit@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
 	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 037/110] minix: use PRIino format for i_ino
-Message-ID: <kywopfbqsllo7hy75okmrpljpjppknqbqk26hl4lp7vzspif6w@vs2n3nni4vda>
+Subject: Re: [PATCH v2 040/110] ocfs2: use PRIino format for i_ino
+Message-ID: <ssizzrk2zdfrfzppx75xewimgzg5rd3ofunrxa2vvrh5fmroul@rntxparm3irs>
 References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
- <20260302-iino-u64-v2-37-e5388800dae0@kernel.org>
+ <20260302-iino-u64-v2-40-e5388800dae0@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260302-iino-u64-v2-37-e5388800dae0@kernel.org>
-X-Spamd-Bar: /
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0F0BB1C000A
-X-Stat-Signature: m5te3x5zckcch46xnqmkso6qwq96ekfw
+In-Reply-To: <20260302-iino-u64-v2-40-e5388800dae0@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1772537103-743751
-X-HE-Meta: U2FsdGVkX1/pGssOupKGG1K6icwC5P8ERBFQkgAugsA3su3WnHG+qADgqrzIZ/llbTOMZwFuif0gojF+78FeW4b/O0QaTzb7ar+9PwTmVJlhnPW1GI1xMkQfHCwqIbSh03KKnQH0stotij7ldHR3B293+fb2McI6R3ldxw0RF/B4R2Nq5xyf7r1wMPAFVWT969SJf5OVguSZtQ6pKVAKyk6Nwzh5jZHglRZ0jZjrcrWsDdzzgpBFZIFXOkzTUL7gw8hPQ2yfkfwXUdZ5h+q2jbyrBqOLJyzQkxEvgyP56DEoO6F5c1MFGaDx/S355ktnHo/GNHe/bYByzbPctwow/anPl6kAUppDQbXCxSoOTKN1soH/RyrdcNz1d8F9jIcxPJ42GLC7aMftoB+bhUSnz6m4NS907GmljKKDmyuGYGqqVakcSfI1AdPcmmw1jbEx+V+Z/DEysr8L67LqUtymZuzC8Cm85L9+chdev5A/OB9hf+TYSM7IKLfruAY4fT9FFaUokS4cUDBU181P75KGzhWyk5j7UiUfyFkObbom/7IcKW8NkHXDKeDvOvH63c1QZ/5UEd737mhWchVUysMCYPe2H/QRHeVsJq4CCtCrgjAiIZvlhs1DwHEeizU9/AlZXtnZkFa8suRm+Xfx892SZLxyOX64pxzytW+t6ZSS8nXaMLe6/BwYBJV7Fa2U7Em6qqf7UtZ3dZmLqBfdgy85wgd+nNTBWw5K76rw+vZAy+q1nS3Wdxn9THBYM6VjelD3DpeTly0tnrMTcMK6RP4dyj+6W8mDTQVxfgIfJxPt2PNgxeg9zMgkEqMbvLa6kszACMxuj8HddVWJY53ospaab44Meint0kJPdF4HJ/2rwN28ZtddWdRc2nV+HLG1i8fv/aToU+TPZoNpqn2zzMgWpHatbR94F8Y9cmlwBgleFhCaKIqP1Kb6O0etkGh/zmldcdIa4pXlmJqk2W9DwhX
- qETcJMef
- 61fqwteUxjwOmXtz0fygXRtbWvRrNvkQ/siCXGvc0CNCQv0WDW/A2cXSH+YOe78JAe6scLShsqkhytg/W+8nbZGXXRDiBksWh1rNPCY7s1UOu7kPWSwHDbzoqslIVo/prr2s6Q/aHcPsitlj5U0lix5zmmSl6ASTQm6O+m5gF5BQy5EpPNSCp0LkAbSUXiJY5OwcY62USsxebPQj1Oc2t1mIdc4XSrYgEjbKzgHSjV5i7+/JyaO21By5pzl+unvqN7pljvRdFLdq8h33M6Ww6eC8W12R9mDNjE++e1mXp8sxkHvdENzN+J3iIIpu+myzVCJBQQ19pFEwjLPxD3YNTB4bQD53gZBMmpyxwnYlsDLKcK9Rk2Xwht82argdyW4bs/QCoZfR33BgAxcl5809F2ugZIL7aWPuw/LEndlRaEg+Pm43gDFlqGTTBOnriSduJPNKmtjW51Rge32jIdc3UaKgoPy0ak+bNP5KjIFzSekSLHdiA7yEFV1mPaqZ5+zOMZxiNA2C4ilMDAoYuNej7AGq+L03nR0GDT27Tzu/n238V+cji0PHAaQZmQZ3nCJM2qc2rYtjO3l5jJ0WTJZKm7GhH6tcG5ufCuRoJ44v0juJApNkzYGycqf8NJbr9ynpY7aC+yGwkTPtrqaC14nHMxBc5XASdX6d5SHR6BnJDkJoEROEp3mMEufDT18zKNgqauj8UPN5Rk5Z/zzOY2Ui7u9WZUudiD32h4s9A8Gg8HCjROpUkj4xNgNouys/WbeU0YL7ZxJ5bTaGAvewrcVi5if9Q90Pg0aNN58m+n8YAtQxc/+ItG9ultQWFkh545D/AotDep0C2Uf+gdctZBKRRRknVuD2hdGt/Ntu0qwSfLb674SWK4md1BgLQ3g77U0Zj716AK+gFV8uQ4Ne3sp/SdTnN+RsRR1Hhta0riJ4FRVYAuVyEOWhitFauG1cA0pHRWUUddjMRmvoJP1jAbOJ9z/rp8wdU
- k1E/4TWa
- EsHAJjCY9k10hiXhhyYdzYgwrPw0lcVpJ9BnWma5evr9MNbed5xEU+lB1RnsGlXxMzQzRRThLU1Ka8xlMBe8J8XHFz9fdMXC1mNymZXTMNHe9P6LBIq1buKro2juRObn1icRVVWUGUBadruVmNC8HOWHjnIzQwtrlI1RZ+45NnupccHm8u1pQVmuEungxrHluo1VDYQTBR7ZWTG3UrzXc1VrlnvY2dsw2kVk4me0Cjp3CVVDHJXYtyxFetMI+Cl/85mQDZensIw7ps64wN9ORU017QZDPZ5Qg27kbpqWBYWUOSkMsUM2WclKgEJo44RRV+ZfsPkqGQpEuWTcMvhKpvD/vq2f1wgXZ3Vr4i0FBzapUAaxEJScM4sssB9qO5n2CQoBGcVueG2e9LwfN+ZfJbKUZbPamduXL1UcGqQ5gZ+jOdh0jgxk55MpChmI5OMxD645SlRETyXAqPbsg7wr5KOxH3xH0k2btHuS30/mess/4CJ/+FRlrPPCvUaD51BqK+DzwvYrksIlQAs4QdFPfgFiAJphtGO67bfMw+pUx4W4rAvdXzhVTVVibUT9ta58FCbBpFE+1Q1cCS6ThuSycCAs7XdaPauVIFJZzMCM1TmTY4UZO/YVHfMnpn49t3yVLK9HS4++kygOwHTwDH1z09Ub0McRf5OdBsP3fOYUBqm9mjAsdBAgjswUQyqbRE2U6lrTbMexe7cFTqC1OQK1Pb1dzj8D2a7TO7cCMPfzpnKN7uq+f/1ZF5Jl4Z1vUra13mIenaXJaiSVamLzkLIeMeGr1fxlda4uSfuG+ugnLJ4qyU0TUwCenMr9cICNGOq3vj1UC6KWvozoK9/MwM7EQnk5ngWE077c3tqMPXMbUufFgLrtutOAaiYOsyKa9xCrkDnOVbTMaAc4giKDQauZgYV/FxT6qgh4zY8UOm2FIlUAcseMqBK0LEfjNpOSXejxtU7JnMt9hmrDx6T9L63PreHMAT8kU
- uBg9zwa0
- 9wTQ6HUzNXxjq3FsKCVv3xJDjyatUMPRcLPICjeQ/TnasmDl8RTJ7PX0sR9WOStZ2eUwb7jJEqIlf4AtJku48mtgaPwqLivyIFLGDKDmGIvKWujZHggeg7sG382Nws85sv+J8ZcFBjYK0rqSM17+gser+bFUH2bTu3ZJrJknrGlUG6wzCs9c/IWz7jq0oAShIsriON36+I0ilAwwJ8mfrc1xl5q/ewDfUIux/+FPxiPHLhKNBgqaPHTus8iR/+Mu8oCxPZ5T2tfbwVS9vVPdZHYikDLEflb4LaL6o+Oh/gTxKPw+1ijSxEB4V7pLxoBmv5WJnggZWlbHUT6vOtMVboQVj0rrg3mteE4vl7rpgEnCjxNgPjJK6hc7gfMYemRgYG7Kg2m93NEAXk6cOO4RXcYken+Gp+61YAQcZrU9FL07k103qHEVs2Toa3T69P89tClQOpmYusWHycBxbNT7wXqx0sbe+oZHAc5atoHf8ohM0y8VRmN2ckdnTTiAgaKb4tXD//OkuW7l/v9QPnNJjaQuH5nxNeBkMI8z4cEJdsaJzGnAs9NDm7y92LxlWRDaSIHSnwwU+TMK5kMhHBZKHk52jBCusasoDFSe6+ASQuiTaczbdPjwrnoRTl+GEJgiNpc6gAKL323eu4Hixtq22NnnnZdymax1bgvG8c4Wem3lGT6378Ohy+014zky9XjciB8YeMWCRkrfmMK3IAxGl9CRt0BAxRlw2W+gsvBzG/pLI4aq6g9H0PfN+kTGaDuMO00JZ4Xq/6pEkU/lwWxV1upi1JVWs7g7UVlJGAlyD1AFYu3YKJ7JwmHl/TDOfty/Ef70xZmEPOxGumD2GfYmGwy447nSGGAuAYyezeBmJX4P575FKl0JCDduBvrwr+fIRDKx7WgGC1IqI3XM/DYwC0EcCRYYdwVp20UQBkfux4BwC3QptBIG8ZFzcwLwfN7W/D/+ZSjH97PURTnbm35BuZnAvWQ7x
- L3nBTyCP
- 5+on2qU0Bot6O9SuHW0slosubttj4PqJshmPF0QyRx/B+Jbgq4Or8Y3oSj3uDWZ1/QSJQS/TRXBLuX1k55Ev8pJkHISZ4CvMnt+AA8LCdofV0f9XmVlIa54PjxMdPXBJO/+Hrou5JdAoddx4CG0vcs5M0WRpyXrHZGoDvZkS7QBOx4iM1VyQ00eAZxOkEM+t//GHnZ3X25zngs+YQKh0NEmwFD4qhmeXvbumpST6NR5rIQqtwItIEsA6iHzk9+j5zUvwMOmbEbXQYGTG1V9tWqeFzArzQqBGagOqBoqKyPQwMPFNwkEt+JYvtttCgOtI4vuknmB5Aya357yn8/F0Fgreg/bNXKgBngml1hnm25tVVUAW88DsTGin6DyEWzTNDM1ZyM5Flq4GZ49BzKK/6ileChIs7uTxT+Chbhn5kT+CwFoPOOjGdZvaUtjcMXDliHZYV8yb4qerIOt7ruObTX7j/jdMB4/O4=
+X-Rspamd-Queue-Id: BDF7B40002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: qznubik5k61puij37kfeubisx989ypd4
+X-HE-Tag: 1772537176-78441
+X-HE-Meta: U2FsdGVkX19jcVVuAJ30VFfupGZ8PMPBUrDMdRhwpx0CDEKZd1B0hdAvk4Ij0k5wGSY8GqJWWZeJcwIYRqBvcQFvOIHxbNEWjKmb+9+uSWGl1JRrgah5PESx+Psb9yhroGV1rF3Wx6UF7d7DyiG1zYGZK7QfIKxOPIYeF7icnwyivPO7AtrfC8WqJhAGCklYJ3q6uqqrmZChEkIr4G9WqjrIOD8Q2RIqiiFP36Pbx3t06rVFvjwr1/lhJdcZrJm9ci5pklhXvgVHIZoyrjJ9zBY0NYZ9kWcLB24/JzKjMXSAKo/WQp9Nu3cUtJEP8wf5FyxZaUH263Iex6gPoptqyOJdRGJ/zBxGH3ZSxu9eZMjFmImUlW5NOrI5DJ2x7cdHSIk1sft9zYX4rD698K4ehXZ+RsxFZsvXIT3wiyR0a1QslzCb1UsWJeuBwGmU9Me1Rl1y7khBiVoCFvs8UMmUAobAiKSwBRlhl0dRFF+9Fsyiv/BLmJZ63YHcbMPAYHNfMDTLdwlr/PzLArQS1DhxPm3VVNhEj57AeAu1CCoAOnin3R3lL0ySUPhlKJIkmNr5yxZQIevyAppuqPKpLfkCixsLE+rPwH84UHxsnfQzMfJzKes0zFMk1b2GavyJyk5IYmrdmNkr63D6MqzgqbhHGggUcBW1mGDENCAr34r0ub4P9MDHHoZSE3qcwhsAg3xnqqkF2uPACaAa8yBQtmZSDX2lX7olOULUqWYgIm6shDMvHgQrLfmHSIx5hDrEUsCI3gFuNwu8dWLQm1CQqCfgvo7iLKNk9fPVwcCvbJSB6ASlii7pX07mTLn/FjmFBY/rFLTlx4F4ChAOFQ8poQLJrqpj5XKB7v7ZMSA7EMLTgj1oGE5L+ilsW+p3yvrEDzianboJx0j+Y+1EWCKLO82TfJySBYBEmuCS9O61YXrWAZYdI+NDoo6k3pOY/cr4lkCk1yxTjZM07208BzkanP2
+ PbuuNpbc
+ bxDgpaDvT0o2EyilgtRftKz0YS3YSzNqZPLV1EDzc9XhwQ/ZvU3iU4QCWZvd/3rVU2Kv9y5llOJOF7GC3C5t4yXXJ+PB3R7ajg6Z1HHzbeZfCM0Rl/2FSCpvbbaSoVBvouGEHxLOpFbqb0yOYaA2b3a9360+1PN6EmQhqKdVh2qdFEqMQWfkIqo249C4KRaBHecSvbr6rdLDoq3ANaDBGmG5aABB3j7xrL8+TDRW6/hWz3G6wMKWfb60GpI4NL9nijzIfWSqAAxJBEsn0y6Z0XefElBxvDEV94S9WW9+ugrU3JWxouywz3OAvSAxnPg+X5amAHj0v0krNwjD/6S3JmzUJMHMYk0yP86gI/PykG4+QzJewcLMmHdN17WutO1VMWnY/hNVZeXbpWplBs2Y0H5Timq2ibQJhZyj8keBK8UmmslXVDJopRf4hHSwbQnSgDUhKb52CokxPPhmeLx184kJ9fmCgaYn9QNH3IY+esiF9heKnXxN6Tsj65O3LNTbLunQS0LpqpmaP3KlfKn8HV3EPU+Bg6NPWs8lbZIgzDdnUTxpjCelAoVtl7W0ufYQOeDdap4RfFOzNg3cQmcXNWdjRCOSHzZLQvow4S6Cu/ExvL1Oy715jYa5mwjXmQeJfTEDE7zOjyjhCzIDbia3C4UdKRHNnqYuoM/xkswzyLAwqaVR//ZOGMKbT1icIov410P4srmUH7uuJtZUBoO/yZ7121rS4KebFl9q7Xg4aDPpV22by1h6myz/efNebNpIOKy5kpcNvCpV8/jsI9GxyPfXisBQq/o/cV3btF+GA5ODWft70SPt+cVNVIv/kn0hE7UuDh2ksHJ0yuVSmJwPfguvglRAlGf9R4GVs8MtwFlbw7hOvbYvPYkuYqtN3IHjYBWJjmNE9+Wd815CYwnS0sfUgs9YsTSYyYhuQfYXI4rwT7LWs1gtfltrqNcYhtui7S/dBBpSWz6rEBETPMSD2I7NkGPy4
+ YdgyUZEF
+ MstA5bYFzzUT79oXZL07xAtDOBROONto+j6qz0uH7Ld2kRRsRwY4AbwQyYhgpkpP4JxbnKI2izXJ8LEd0J3Bqy+mrkZjZZBCfwnkAF83tWI0YYKf/6QvxF3ZnSJzWv5UDOQNjp4U0MMQDbtw5Q1VfVKzQwtN7FwWlpI51O6T1o1LJRCOGyqQ9Mpqs88hqyaBVu3YOsRprcTfCFLLuXBjsdzef4GxS4CWaJLsxAw4+V8Y/ekB8R8cVqLDrOloaZZ1jZYEPxO48LOFE19nGVDrG/Ff5mioF6ft5FyJ9mG5ZOX8il6UVNDwRyDQu64Dh2ImRVWN6aMP+o7WVLLgP0b/f8REC2NSEfwvMqKNvebGpSg5BqjrP88Y9e95v3Skm44pRFoNO7i9L7o5kkpq6DRWhgT8syEGTGRId7XgP1J4e4yl8saDoJ1XAhxumO1UmaIHlaj5aj1mYN7f3tYUkl7ngDBgsvLPKelh6tUkbjXu6begSoi0el81sOzAD01Z9oXEWfiMHLEuP3hsIthFt2Vui+iPOqiLjXaeVDgUrf6jS/foIEqKB0B8szRH5yKTucIBSHJHoTEJHey4hC8h6XStH5MP67mj0RT7v2z4GFas63pEeAcPkVBIrTjGqxhLHRAY/9FrxfxHNtjyIuIHZx4c9BtdUTST7Q/4vafA4MeoJL0YLiWQaopb0TFgdZu+tQHRAL+YOJnFcYSbwKecjxJgmhADbOMYrH3v3nVmRUqE2GEzwJbe2qZMIcxmOgo3aNA6sD1EYiWUOXfWUvPWXMYVSEykceM9G2wWTa5O/xKpwQ8f9T7G2iHT43VpcFJtVnzAKqi3/ExDxLcSFwUqFp18xRtbRnka8RgzRaNiXQt1JlykeEbxxf3QyB0JUnh1JAjwyRKznW8mvXEdh+6ywuo83PTicHjwtWnCFRNOpc2Hg8k2ZneDodaezWdX2eIGuU8SAHHOyRueuIRPb69iEKoBQ58AKS6M6
+ 2jN3ns/G
+ x0W4ES14YySbMvYy6snBnmAeLLa+M+94VQGsV15KcrS0+XkmGMhLWN1yrpVNz3jH0m3FBWyrbf1bBt58u1MV49XPukFsUD1vZcpugKPeVLJIgKCOIyseDXP/aHS69TL7T12SLqlR8Im4ahxaUckPoZ0GUwJi0wYpfLSfyyX8Ug2YYs4q2OkrSUSHAH4jlRfbGfCWSVFCuKea/fTewOSlsHq4Hmej16OKZRPRmnJjYJ0HgCJ7oOVVAG/4d+MdPZzLNSrPxv3ACBC7g8fqmKuhlieju7UhOyMlBbNqAZhjASo1Te3os8BLqr+rmBFgo3wNOUtd6bW+p69/o0JwTPVhGOk2bl05AFbng/ng2RmaZ1CcOSAxNaa/8sDHdKBwZo+vx3opTo9NQpOHVGQcUgPg9rTnZRnXP43qciMfcRuNTJS4dtcltccnDKcy2ODMpYb7JW6bSCAWZEcVr4n3kBTiBqmT34NAHebYnXy985NN0IvgzBcRZLNDciALvESN9xbRVQibKs9SPAEL6jj3pKtrCaYqzEE35K7y3Z9G0h1B+alqglDfKuuz3WEdcGuSoNmfzH9nbWb2vJUMjZuAuE9eGHrkYXidtHjVkuqoqapze78UB131DyicIzo/oy4hw4oRKUvBxonCvRbzaxvFRZM9q+j/LfHT47JEwt8HS54D5lMpecNArjvlaeSkPI8FRkv2AXIBccn27qwEXucKSBKdiUAHtW4HXjnN4+33U24nZm6G8dmraOWipwTA8nfv55jPBv9jmmN/z1Xn0zj+xkeFp0jQSdD+pgr9dPyX232Np6kfRApfMjFkqoNjltoLkipl5SW6ZY6M6VZeCgo+zcNYvJ9RrrBnK8Znp9DU4Su8N65ct1kWeCv2aaeBTtloZodM87/8bBXIRsUQXqQrtvFMz16Vy+Kxoz17+cmU+uKXLkjvhmdOQBKcCE4VeBb0d56EVtiACExS0SEVeDFDUvYk8aEt3XGtP
+ hQspYvKd
+ Wme32jSZRqTxDgyqCzoS4e2EHTHvjXq3Cqt0aQuCQr8JT3LmjourvNLpYynr2K0Qv/pRS7YDiWb+Zn9fTUZ2MiaUZtmTBG7V9BjibDyyzWmqT6Psb18kWfOl5WOwboCoLaGl9zqYmXobqACl6a3EU44KhlXX5encVbspm1LNU1r0R1FtBM1J7B6yxr5EjlQt4ukGqB/N6CN6SSsm7Ofy+LFaea6mFMwZM7eMzEF6Ky3JPluN+yC14flYByJil1amMG9ox6rsx16haNDfdqQ/VNGRoSdXaXbEyFVA14w1CTZcFErDeirFGR15omLTg3x2SZ0df6oNPM2PFi5C+ogLzQZujeJoT0rKG6djyXgNeVkF9CQ5tnl/nRxDYbJqT0tKFkx3hnchAjndXldlUjf3EDQfvFishyrgx262pP0dWBYH1Qmhzw0B4YIePfp+e9l7sEgwca7ex44qoYR28i+REUEeImm3NgbAw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -214,9 +212,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 02-03-26 15:24:21, Jeff Layton wrote:
-> Convert minix i_ino format strings to use the PRIino format
+On Mon 02-03-26 15:24:24, Jeff Layton wrote:
+> Convert ocfs2 i_ino format strings to use the PRIino format
 > macro in preparation for the widening of i_ino via kino_t.
+> 
+> Remove now-unnecessary (unsigned long) casts on i_ino.
 > 
 > Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
@@ -227,58 +227,296 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/minix/inode.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  fs/ocfs2/alloc.c        |  2 +-
+>  fs/ocfs2/aops.c         |  4 ++--
+>  fs/ocfs2/dir.c          |  8 ++++----
+>  fs/ocfs2/dlmfs/dlmfs.c  | 10 +++++-----
+>  fs/ocfs2/extent_map.c   | 12 ++++++------
+>  fs/ocfs2/inode.c        |  2 +-
+>  fs/ocfs2/quota_local.c  |  2 +-
+>  fs/ocfs2/refcounttree.c | 10 +++++-----
+>  fs/ocfs2/xattr.c        |  4 ++--
+>  9 files changed, 27 insertions(+), 27 deletions(-)
 > 
-> diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-> index 99541c6a5bbf13f3be27474a316b31d8db9fbce0..d92059227d273564c86f100dea3366be4509090b 100644
-> --- a/fs/minix/inode.c
-> +++ b/fs/minix/inode.c
-> @@ -36,7 +36,7 @@ void __minix_error_inode(struct inode *inode, const char *function,
->  	vaf.fmt = fmt;
->  	vaf.va = &args;
->  	printk(KERN_CRIT "minix-fs error (device %s): %s:%d: "
-> -	       "inode #%lu: comm %s: %pV\n",
-> +	       "inode #%" PRIino "u: comm %s: %pV\n",
->  	       inode->i_sb->s_id, function, line, inode->i_ino,
->  	       current->comm, &vaf);
->  	va_end(args);
-> @@ -520,7 +520,7 @@ void minix_set_inode(struct inode *inode, dev_t rdev)
->  		   S_ISFIFO(inode->i_mode) || S_ISSOCK(inode->i_mode)) {
->  		init_special_inode(inode, inode->i_mode, rdev);
->  	} else {
-> -		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %lu.\n",
-> +		printk(KERN_DEBUG "MINIX-fs: Invalid file type 0%04o for inode %" PRIino "u.\n",
->  		       inode->i_mode, inode->i_ino);
->  		make_bad_inode(inode);
+> diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+> index 344fd4d95fbc8bd7a749e9d51d31b5682ff030d0..d7703549645b548d9f5d77b2214a9a7c0af0ef6f 100644
+> --- a/fs/ocfs2/alloc.c
+> +++ b/fs/ocfs2/alloc.c
+> @@ -7318,7 +7318,7 @@ int ocfs2_commit_truncate(struct ocfs2_super *osb,
+>  		 * to check it up here before changing the tree.
+>  		*/
+>  		if (root_el->l_tree_depth && rec->e_int_clusters == 0) {
+> -			mlog(ML_ERROR, "Inode %lu has an empty "
+> +			mlog(ML_ERROR, "Inode %" PRIino "u has an empty "
+>  				    "extent record, depth %u\n", inode->i_ino,
+>  				    le16_to_cpu(root_el->l_tree_depth));
+>  			status = ocfs2_remove_rightmost_empty_extent(osb,
+> diff --git a/fs/ocfs2/aops.c b/fs/ocfs2/aops.c
+> index 17ba79f443ee736cb5225702c57d13f4019f3c52..aea35b1c9fa3ce7327672c1862d0d1201c895c40 100644
+> --- a/fs/ocfs2/aops.c
+> +++ b/fs/ocfs2/aops.c
+> @@ -137,7 +137,7 @@ int ocfs2_get_block(struct inode *inode, sector_t iblock,
+>  			      (unsigned long long)iblock, bh_result, create);
+>  
+>  	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE)
+> -		mlog(ML_NOTICE, "get_block on system inode 0x%p (%lu)\n",
+> +		mlog(ML_NOTICE, "get_block on system inode 0x%p (%" PRIino "u)\n",
+>  		     inode, inode->i_ino);
+>  
+>  	if (S_ISLNK(inode->i_mode)) {
+> @@ -2146,7 +2146,7 @@ static int ocfs2_dio_wr_get_block(struct inode *inode, sector_t iblock,
+>  	    ((iblock + ((len - 1) >> i_blkbits)) > endblk))
+>  		len = (endblk - iblock + 1) << i_blkbits;
+>  
+> -	mlog(0, "get block of %lu at %llu:%u req %u\n",
+> +	mlog(0, "get block of %" PRIino "u at %llu:%u req %u\n",
+>  			inode->i_ino, pos, len, total_len);
+>  
+>  	/*
+> diff --git a/fs/ocfs2/dir.c b/fs/ocfs2/dir.c
+> index 1c8abf2c592caacbe734d49254b04d507925c9d1..eecb2b1d2ec17fb4b3f09abb9e168d2f28f9b420 100644
+> --- a/fs/ocfs2/dir.c
+> +++ b/fs/ocfs2/dir.c
+> @@ -794,7 +794,7 @@ static int ocfs2_dx_dir_lookup_rec(struct inode *inode,
+>  	if (le16_to_cpu(el->l_count) !=
+>  	    ocfs2_extent_recs_per_dx_root(inode->i_sb)) {
+>  		ret = ocfs2_error(inode->i_sb,
+> -				  "Inode %lu has invalid extent list length %u\n",
+> +				  "Inode %" PRIino "u has invalid extent list length %u\n",
+>  				  inode->i_ino, le16_to_cpu(el->l_count));
+>  		goto out;
 >  	}
-> @@ -542,7 +542,7 @@ static struct inode *V1_minix_iget(struct inode *inode)
->  		return ERR_PTR(-EIO);
+> @@ -812,7 +812,7 @@ static int ocfs2_dx_dir_lookup_rec(struct inode *inode,
+>  
+>  		if (el->l_tree_depth) {
+>  			ret = ocfs2_error(inode->i_sb,
+> -					  "Inode %lu has non zero tree depth in btree tree block %llu\n",
+> +					  "Inode %" PRIino "u has non zero tree depth in btree tree block %llu\n",
+>  					  inode->i_ino,
+>  					  (unsigned long long)eb_bh->b_blocknr);
+>  			goto out;
+> @@ -821,7 +821,7 @@ static int ocfs2_dx_dir_lookup_rec(struct inode *inode,
+>  
+>  	if (le16_to_cpu(el->l_next_free_rec) == 0) {
+>  		ret = ocfs2_error(inode->i_sb,
+> -				  "Inode %lu has empty extent list at depth %u\n",
+> +				  "Inode %" PRIino "u has empty extent list at depth %u\n",
+>  				  inode->i_ino,
+>  				  le16_to_cpu(el->l_tree_depth));
+>  		goto out;
+> @@ -839,7 +839,7 @@ static int ocfs2_dx_dir_lookup_rec(struct inode *inode,
+>  
+>  	if (!found) {
+>  		ret = ocfs2_error(inode->i_sb,
+> -				  "Inode %lu has bad extent record (%u, %u, 0) in btree\n",
+> +				  "Inode %" PRIino "u has bad extent record (%u, %u, 0) in btree\n",
+>  				  inode->i_ino,
+>  				  le32_to_cpu(rec->e_cpos),
+>  				  ocfs2_rec_clusters(el, rec));
+> diff --git a/fs/ocfs2/dlmfs/dlmfs.c b/fs/ocfs2/dlmfs/dlmfs.c
+> index 45cce261da65cab7ef48b5b88c0de5d41fa57615..e96c1c574ff7dc3dffad58ce8536b7e337d3f6fa 100644
+> --- a/fs/ocfs2/dlmfs/dlmfs.c
+> +++ b/fs/ocfs2/dlmfs/dlmfs.c
+> @@ -123,7 +123,7 @@ static int dlmfs_file_open(struct inode *inode,
+>  	if (S_ISDIR(inode->i_mode))
+>  		BUG();
+>  
+> -	mlog(0, "open called on inode %lu, flags 0x%x\n", inode->i_ino,
+> +	mlog(0, "open called on inode %" PRIino "u, flags 0x%x\n", inode->i_ino,
+>  		file->f_flags);
+>  
+>  	status = dlmfs_decode_open_flags(file->f_flags, &level, &flags);
+> @@ -170,7 +170,7 @@ static int dlmfs_file_release(struct inode *inode,
+>  	if (S_ISDIR(inode->i_mode))
+>  		BUG();
+>  
+> -	mlog(0, "close called on inode %lu\n", inode->i_ino);
+> +	mlog(0, "close called on inode %" PRIino "u\n", inode->i_ino);
+>  
+>  	if (fp) {
+>  		level = fp->fp_lock_level;
+> @@ -242,7 +242,7 @@ static ssize_t dlmfs_file_write(struct file *filp,
+>  	int bytes_left;
+>  	struct inode *inode = file_inode(filp);
+>  
+> -	mlog(0, "inode %lu, count = %zu, *ppos = %llu\n",
+> +	mlog(0, "inode %" PRIino "u, count = %zu, *ppos = %llu\n",
+>  		inode->i_ino, count, *ppos);
+>  
+>  	if (*ppos >= DLM_LVB_LEN)
+> @@ -301,7 +301,7 @@ static void dlmfs_evict_inode(struct inode *inode)
+>  
+>  	clear_inode(inode);
+>  
+> -	mlog(0, "inode %lu\n", inode->i_ino);
+> +	mlog(0, "inode %" PRIino "u\n", inode->i_ino);
+>  
+>  	ip = DLMFS_I(inode);
+>  	lockres = &ip->ip_lockres;
+> @@ -490,7 +490,7 @@ static int dlmfs_unlink(struct inode *dir,
+>  	int status;
+>  	struct inode *inode = d_inode(dentry);
+>  
+> -	mlog(0, "unlink inode %lu\n", inode->i_ino);
+> +	mlog(0, "unlink inode %" PRIino "u\n", inode->i_ino);
+>  
+>  	/* if there are no current holders, or none that are waiting
+>  	 * to acquire a lock, this basically destroys our lockres. */
+> diff --git a/fs/ocfs2/extent_map.c b/fs/ocfs2/extent_map.c
+> index d68229422dda3423971d7ab0e9a4335acab8b344..3cf93a08f7a8946810ccd2de246be4d07a23b53b 100644
+> --- a/fs/ocfs2/extent_map.c
+> +++ b/fs/ocfs2/extent_map.c
+> @@ -291,7 +291,7 @@ static int ocfs2_last_eb_is_empty(struct inode *inode,
+>  
+>  	if (el->l_tree_depth) {
+>  		ocfs2_error(inode->i_sb,
+> -			    "Inode %lu has non zero tree depth in leaf block %llu\n",
+> +			    "Inode %" PRIino "u has non zero tree depth in leaf block %llu\n",
+>  			    inode->i_ino,
+>  			    (unsigned long long)eb_bh->b_blocknr);
+>  		ret = -EROFS;
+> @@ -427,7 +427,7 @@ static int ocfs2_get_clusters_nocache(struct inode *inode,
+>  
+>  		if (el->l_tree_depth) {
+>  			ocfs2_error(inode->i_sb,
+> -				    "Inode %lu has non zero tree depth in leaf block %llu\n",
+> +				    "Inode %" PRIino "u has non zero tree depth in leaf block %llu\n",
+>  				    inode->i_ino,
+>  				    (unsigned long long)eb_bh->b_blocknr);
+>  			ret = -EROFS;
+> @@ -437,7 +437,7 @@ static int ocfs2_get_clusters_nocache(struct inode *inode,
+>  
+>  	if (le16_to_cpu(el->l_next_free_rec) > le16_to_cpu(el->l_count)) {
+>  		ocfs2_error(inode->i_sb,
+> -			    "Inode %lu has an invalid extent (next_free_rec %u, count %u)\n",
+> +			    "Inode %" PRIino "u has an invalid extent (next_free_rec %u, count %u)\n",
+>  			    inode->i_ino,
+>  			    le16_to_cpu(el->l_next_free_rec),
+>  			    le16_to_cpu(el->l_count));
+> @@ -472,7 +472,7 @@ static int ocfs2_get_clusters_nocache(struct inode *inode,
+>  
+>  	if (!rec->e_blkno) {
+>  		ocfs2_error(inode->i_sb,
+> -			    "Inode %lu has bad extent record (%u, %u, 0)\n",
+> +			    "Inode %" PRIino "u has bad extent record (%u, %u, 0)\n",
+>  			    inode->i_ino,
+>  			    le32_to_cpu(rec->e_cpos),
+>  			    ocfs2_rec_clusters(el, rec));
+> @@ -561,7 +561,7 @@ int ocfs2_xattr_get_clusters(struct inode *inode, u32 v_cluster,
+>  
+>  		if (el->l_tree_depth) {
+>  			ocfs2_error(inode->i_sb,
+> -				    "Inode %lu has non zero tree depth in xattr leaf block %llu\n",
+> +				    "Inode %" PRIino "u has non zero tree depth in xattr leaf block %llu\n",
+>  				    inode->i_ino,
+>  				    (unsigned long long)eb_bh->b_blocknr);
+>  			ret = -EROFS;
+> @@ -580,7 +580,7 @@ int ocfs2_xattr_get_clusters(struct inode *inode, u32 v_cluster,
+>  
+>  		if (!rec->e_blkno) {
+>  			ocfs2_error(inode->i_sb,
+> -				    "Inode %lu has bad extent record (%u, %u, 0) in xattr\n",
+> +				    "Inode %" PRIino "u has bad extent record (%u, %u, 0) in xattr\n",
+>  				    inode->i_ino,
+>  				    le32_to_cpu(rec->e_cpos),
+>  				    ocfs2_rec_clusters(el, rec));
+> diff --git a/fs/ocfs2/inode.c b/fs/ocfs2/inode.c
+> index 03a51662ea8e79f7a64fcd320b974f954b2ea8bf..c3076b450de3599291c386ceeb8b2d26e8680904 100644
+> --- a/fs/ocfs2/inode.c
+> +++ b/fs/ocfs2/inode.c
+> @@ -1196,7 +1196,7 @@ static void ocfs2_clear_inode(struct inode *inode)
+>  				inode->i_nlink);
+>  
+>  	mlog_bug_on_msg(osb == NULL,
+> -			"Inode=%lu\n", inode->i_ino);
+> +			"Inode=%" PRIino "u\n", inode->i_ino);
+>  
+>  	dquot_drop(inode);
+>  
+> diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+> index c4e0117d8977807dd6f0f4df64e1ddf72a62ea09..269b0f27d5679aba317059b245ee4bf4f5580eca 100644
+> --- a/fs/ocfs2/quota_local.c
+> +++ b/fs/ocfs2/quota_local.c
+> @@ -471,7 +471,7 @@ static int ocfs2_recover_local_quota_file(struct inode *lqinode,
+>  	qsize_t spacechange, inodechange;
+>  	unsigned int memalloc;
+>  
+> -	trace_ocfs2_recover_local_quota_file((unsigned long)lqinode->i_ino, type);
+> +	trace_ocfs2_recover_local_quota_file(lqinode->i_ino, type);
+>  
+>  	list_for_each_entry_safe(rchunk, next, &(rec->r_list[type]), rc_list) {
+>  		chunk = rchunk->rc_chunk;
+> diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
+> index c1cdececdfa4ef51a1bd3a5addad734b324b92c0..1586c42fdabe70056bf7f103d583dd9000fe9510 100644
+> --- a/fs/ocfs2/refcounttree.c
+> +++ b/fs/ocfs2/refcounttree.c
+> @@ -2341,7 +2341,7 @@ static int ocfs2_mark_extent_refcounted(struct inode *inode,
+>  					   cpos, len, phys);
+>  
+>  	if (!ocfs2_refcount_tree(OCFS2_SB(inode->i_sb))) {
+> -		ret = ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+> +		ret = ocfs2_error(inode->i_sb, "Inode %" PRIino "u want to use refcount tree, but the feature bit is not set in the super block\n",
+>  				  inode->i_ino);
+>  		goto out;
 >  	}
->  	if (raw_inode->i_nlinks == 0) {
-> -		printk("MINIX-fs: deleted inode referenced: %lu\n",
-> +		printk("MINIX-fs: deleted inode referenced: %" PRIino "u\n",
->  		       inode->i_ino);
->  		brelse(bh);
->  		iget_failed(inode);
-> @@ -580,7 +580,7 @@ static struct inode *V2_minix_iget(struct inode *inode)
->  		return ERR_PTR(-EIO);
+> @@ -2524,7 +2524,7 @@ int ocfs2_prepare_refcount_change_for_del(struct inode *inode,
+>  	u64 start_cpos = ocfs2_blocks_to_clusters(inode->i_sb, phys_blkno);
+>  
+>  	if (!ocfs2_refcount_tree(OCFS2_SB(inode->i_sb))) {
+> -		ret = ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+> +		ret = ocfs2_error(inode->i_sb, "Inode %" PRIino "u want to use refcount tree, but the feature bit is not set in the super block\n",
+>  				  inode->i_ino);
+>  		goto out;
 >  	}
->  	if (raw_inode->i_nlinks == 0) {
-> -		printk("MINIX-fs: deleted inode referenced: %lu\n",
-> +		printk("MINIX-fs: deleted inode referenced: %" PRIino "u\n",
->  		       inode->i_ino);
->  		brelse(bh);
->  		iget_failed(inode);
-> @@ -692,7 +692,7 @@ static int minix_write_inode(struct inode *inode, struct writeback_control *wbc)
->  	if (wbc->sync_mode == WB_SYNC_ALL && buffer_dirty(bh)) {
->  		sync_dirty_buffer(bh);
->  		if (buffer_req(bh) && !buffer_uptodate(bh)) {
-> -			printk("IO error syncing minix inode [%s:%08lx]\n",
-> +			printk("IO error syncing minix inode [%s:%08" PRIino "x]\n",
->  				inode->i_sb->s_id, inode->i_ino);
->  			err = -EIO;
+> @@ -2650,7 +2650,7 @@ static int ocfs2_refcount_cal_cow_clusters(struct inode *inode,
+>  
+>  		if (el->l_tree_depth) {
+>  			ret = ocfs2_error(inode->i_sb,
+> -					  "Inode %lu has non zero tree depth in leaf block %llu\n",
+> +					  "Inode %" PRIino "u has non zero tree depth in leaf block %llu\n",
+>  					  inode->i_ino,
+>  					  (unsigned long long)eb_bh->b_blocknr);
+>  			goto out;
+> @@ -2662,7 +2662,7 @@ static int ocfs2_refcount_cal_cow_clusters(struct inode *inode,
+>  		rec = &el->l_recs[i];
+>  
+>  		if (ocfs2_is_empty_extent(rec)) {
+> -			mlog_bug_on_msg(i != 0, "Inode %lu has empty record in "
+> +			mlog_bug_on_msg(i != 0, "Inode %" PRIino "u has empty record in "
+>  					"index %d\n", inode->i_ino, i);
+>  			continue;
 >  		}
+> @@ -3325,7 +3325,7 @@ static int ocfs2_replace_cow(struct ocfs2_cow_context *context)
+>  	struct ocfs2_super *osb = OCFS2_SB(inode->i_sb);
+>  
+>  	if (!ocfs2_refcount_tree(osb)) {
+> -		return ocfs2_error(inode->i_sb, "Inode %lu want to use refcount tree, but the feature bit is not set in the super block\n",
+> +		return ocfs2_error(inode->i_sb, "Inode %" PRIino "u want to use refcount tree, but the feature bit is not set in the super block\n",
+>  				   inode->i_ino);
+>  	}
+>  
+> diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+> index 42ee5db362d3eb6df886d6721dd7398b8aca8cdb..74cd6dd57abf71a69adef18863d057e48496ccfe 100644
+> --- a/fs/ocfs2/xattr.c
+> +++ b/fs/ocfs2/xattr.c
+> @@ -3741,7 +3741,7 @@ static int ocfs2_xattr_get_rec(struct inode *inode,
+>  
+>  		if (el->l_tree_depth) {
+>  			ret = ocfs2_error(inode->i_sb,
+> -					  "Inode %lu has non zero tree depth in xattr tree block %llu\n",
+> +					  "Inode %" PRIino "u has non zero tree depth in xattr tree block %llu\n",
+>  					  inode->i_ino,
+>  					  (unsigned long long)eb_bh->b_blocknr);
+>  			goto out;
+> @@ -3758,7 +3758,7 @@ static int ocfs2_xattr_get_rec(struct inode *inode,
+>  	}
+>  
+>  	if (!e_blkno) {
+> -		ret = ocfs2_error(inode->i_sb, "Inode %lu has bad extent record (%u, %u, 0) in xattr\n",
+> +		ret = ocfs2_error(inode->i_sb, "Inode %" PRIino "u has bad extent record (%u, %u, 0) in xattr\n",
+>  				  inode->i_ino,
+>  				  le32_to_cpu(rec->e_cpos),
+>  				  ocfs2_rec_clusters(el, rec));
 > 
 > -- 
 > 2.53.0
