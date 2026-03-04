@@ -4,174 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7E81EFCE4B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D9EEFCE4D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:29:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F23DA6B0005; Wed,  4 Mar 2026 17:09:41 -0500 (EST)
+	id DF3546B0005; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED1D56B0088; Wed,  4 Mar 2026 17:09:41 -0500 (EST)
+	id DA0E76B0088; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7F446B0089; Wed,  4 Mar 2026 17:09:41 -0500 (EST)
+	id C760A6B0089; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C66D16B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:09:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 734CD13B88A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:09:41 +0000 (UTC)
-X-FDA: 84509773362.17.15DA807
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012040.outbound.protection.outlook.com [52.101.53.40])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 77FD04000A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:09:38 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=blMZhM3h;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf01.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.40 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772662178;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B6C6F6B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A73F1C994
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:29:51 +0000 (UTC)
+X-FDA: 84509824182.28.7E8D125
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9F5B42000D
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:29:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7E6g6Lm;
+	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772663389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ekf/TjwPl+jZYEK0lsM+N2qhKuMMmm8KbhgUriqG/9Y=;
-	b=Hc5tTx8DA1ZM7PCLgZuDq3QfXc+K6c3LRApCYR7QfbmaccJlYtsUFQXMncQbZphO7HgK6o
-	Fso3RnQook9/sXRUP3WDzzT33tWcyfHpYgfrztjSbQN11Plxf6aFm7tSNteBEJ642M8uca
-	u3XSjxtdxUlrQKQ0GqoLm1A4NxxnUdI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=blMZhM3h;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf01.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.40 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772662178; a=rsa-sha256;
-	cv=pass;
-	b=ehfakTN8k9NMxfSHzV6b4Re/3MyHCvna7cMcYcV6pJ5xe85HeXrq8b5WWc557/5f5Vk7lg
-	vPnOOlrFHvDw2CENXlDw/28Hx7OddpLzYfrBywkVl4IBLfuXyH/tfwW86zR3QFcYxnC1Mj
-	0RarkC5ElknirevPapKFKHGTuc3rIAQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cjvK946rNetPM9ey/NAvdD5D/LNKxBQmUCSNQuNTJiLj55OoRNGlozy0BxaMwNU8MfemPT5ZcVs+QCLzJC2Z/NyyG/kIbD4Farghv6Jd3RUMQSzAk0DhJm2Cfo6byblGILxoXxyfbA9Rnd9HmrUGlptIdyPvgcXNY2AQbZ96IX03NwcFEzoZ4H0ZHXF+sYYTbmuRM5hrbQHfsDCFe7JrmQS4El8AYR0jXVn3ZjhZFF1DycQZCcD5VQCfm858Kkk5Ha3hBM4cUEx3rTwUwDJBmYCCg57/uP/OkHdZberV2IQN6f6VJ5ybcWRvCbNbzxl6VWBF0e37qcOnKH8Bt3BBzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ekf/TjwPl+jZYEK0lsM+N2qhKuMMmm8KbhgUriqG/9Y=;
- b=CtXg9wX520SSF5qiqXqKjgqXljI+XiXQjoZOZo0b+feY60rtJ7iWbNafKhe8h1yfIJBgxP78ga1LnDCYHL6PlDhPRsI1bHv1JGUtDIP5yLTi2js+CmSDxyFtV+nj/68w3JvDaob7+Fwb5QMQR/EIXfIXKtYeSYDNcmDzlp7TtAxzLZi5w4g/nyASUe7EtlAskSHtIqVaI8KBnbfha0LfuW8hUXRptAFNctEihuiCfO2bwtRhtuBVfO0F/hZP1uRlkDTyYtltzeNP3GNtVuvBL0smHtSrI/5BUVuhf2xvomZfftGbF6DQbaKH0mLGezS1E4Q30Nyh43HJbTnme95qtA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ekf/TjwPl+jZYEK0lsM+N2qhKuMMmm8KbhgUriqG/9Y=;
- b=blMZhM3hRLJYC25X2+LhhJ4DNEC5S1fwZDSzsVvhyF/be87KDEDRpebED6diqumwAQFl4GHFJ9OGTvrdumFNxXrpAEHABF/jfOswxQ22SDLk3WKZsS9XoHLNB5ywFaD7npi+x/NEy2+hyZBqXat/fpwr2QIGQEllQi+fOsy0Y917pGU3HNW57Yc+3H2KgGq/YRTGST0M/BdHeqgc75vjuWqa6y+444PDrRfdR4UoKDW84hjpL2My/A/RwX6vxPyLBIDphpF7pyDZhoHEbTdPdDet2bFizedUrZritye8WRKiRWNuMa4503BAJ6gqeswpp6TujgIM5KwB7UL9rDpi6w==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by MW4PR12MB7482.namprd12.prod.outlook.com (2603:10b6:303:212::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
- 2026 22:09:33 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9654.022; Wed, 4 Mar 2026
- 22:09:33 +0000
-Message-ID: <5e59c077-9f06-4e45-86e1-ca696e6105b4@nvidia.com>
-Date: Thu, 5 Mar 2026 09:09:25 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix folio refcount leak on
- folio_split_unmapped failure
-To: Zi Yan <ziy@nvidia.com>
-Cc: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
- david@kernel.org, linux-mm@kvack.org, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, riel@surriel.com, shakeel.butt@linux.dev,
- kas@kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Usama Arif <usama.arif@linux.dev>
-References: <20260304120132.3973445-1-usamaarif642@gmail.com>
- <E4B81DFE-5D45-40F2-9C90-EF386D89B06F@nvidia.com>
- <fbae2102-3e62-4df6-96bd-e8600ef2f497@nvidia.com>
- <FA698C89-7287-4615-BDC7-5D1F6CFB770A@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <FA698C89-7287-4615-BDC7-5D1F6CFB770A@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:a03:40::24) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=y991QtG6j5sWEn7tCxDN9XrWk0OhMXb9gnZCLaNNkH4=;
+	b=bBbk53byzX/lFfM4Ubi8Gldjvcws8w69gUmvhQsIIHeJFS39JANfi434MbB1kDjAee/EBE
+	0QkKkkugsD0fp/RNIxBD2TaXTfWLj73Frehqc7xS/iVUAkOmkryGhLJ/0SmGUX0xWdQQCf
+	CXktkXWPDKVyme6e2mU2EetYkS0bPAg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7E6g6Lm;
+	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772663389; a=rsa-sha256;
+	cv=none;
+	b=M5BPD6iFGugoFv88s0tXl74klFr9g/WgLyGVPHhHoinkVMINyGrE7Wtu9kry03D6fg47hX
+	OI9IEfjx0Dg7dEjX/Cv6KCzsbvHNHlCb2piUWt0WFlsmdhvV9B49qv06SF39k/4//2PGKt
+	Fh4s7jfMZhGJKZ/OSCRYzwkPT1KNj2g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 526FB43E93;
+	Wed,  4 Mar 2026 22:29:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E566C4CEF7;
+	Wed,  4 Mar 2026 22:29:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772663388;
+	bh=4g9Hc6BCi1UzcQ6UmFUsAKXtEqFK6/wIIRnu62xorDM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H7E6g6Lm08bdby4/2tHEolh5uuAfzAVSsM3yLpncdqLzpMpx2R/jiaVVx3BrpUlHV
+	 zLgQZLl3q+J8YOTxOWa4cFn0qM9qtzHl3urpYxu/J8dk/Ng4eTR5ve5/MwMG2EM0x4
+	 13hRsUgqaHxQn1bDCNJafYTopHM59GSiSSfWDaMrsTRgNMP0a8wibVOr0aBrw1II97
+	 INDpQBDBhw/6g/ZfJeCr4GjGF8S8trfaYHGCsvv3rBpIoZHp4hfWrZiyJa1NX9T5Ya
+	 lxm3zNjb7ZsIhtDD0mqurpzxaf9es4FePOHSAnjX78l7+ajL920pZ2wjsA901PjGJl
+	 9YO9TEkdx8L9Q==
+Date: Wed, 4 Mar 2026 17:29:46 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>,
+	Salah Triki <salah.triki@gmail.com>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
+	Anders Larsen <al@alarsen.net>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
+	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Dave Kleikamp <shaggy@kernel.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <yuezhang.mo@sony.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Alexander Aring <alex.aring@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
+	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
+Message-ID: <aaiyWlJelhHju741@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+ <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
+ <aZ84VRrRVyGEzSJn@kernel.org>
+ <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|MW4PR12MB7482:EE_
-X-MS-Office365-Filtering-Correlation-Id: f81ec86d-504f-4239-10dd-08de7a3ab6ca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	HAjBij9DKWsfbYDEdaLH6OLdToeRWIl1O3SMbxwsA2dpeG7iGosJbJzx2r2ZaDqvGR21KCkSqJIk4APNikXsXmj8yYNHNsBREbqo8VyCsmnBVXSZlCZ5EOhdHbQWN8i3KBVxBhuVnJyo0DDOwDuHUES7YWlMAhvjEJlaFnlKj+ZLjocfTIsLNQrpLNQQFQOyqTqM6+m3O/0qk4ZjWMS5da+6af29UO344zCVqW+Q4I0qjOJVsPo4N7qCTv7T5DHjuTpFVrwcmTeLuPEB7pj2wYmxX4sK0dC0K1/T191fMVz53JsIY769JFEUPMjQAnXQmmr9pJccQ20Tze1NyEXIzsbUxMrmaEP/2VrwnO6U8vg8cwSoh7Uayh9y3qhnGpVzeLokk1XomGK4WkAVoIc+z5T8IRHJ1OUG70nBcv+lTkbKfZHNm2RrnSxF1TNANDVQy9sBrLCOkLGcOw1rmQVybi3jxPh6sJPcO12REYWFiZEu3iHRgv+DSKM4Oc+BkirDdIW/gMpRJ2UyZ37suF8yaOPYPbZGV0I5jABfuw0WIg+6e5hYwJy4Hax8EiijmiuqFZ2mKwlFu96ziwy9RG+6ebscSa3TFVqzGeBLYS6/P7H6n2mGsGTTvKv9ZpCtXfwaCtg0bxnYhT0Jdpw2pjEccho4jfA0F+f28f7joXUBKD+T9bqcmBySGoqM88RCaslEiUXqu9HlX4SPex6vWk+p3FfCpCFhm7cY5tNCIeG6C6U=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YU5mZDE4aFVDTkltV3lndWRQQU04TkNVMWtyRGkvT3hOVzYvMTJwaTAyUjkw?=
- =?utf-8?B?SEJZSzRBQXN2Mlh3c0lVemdlNFd6VTltU3Y1NFE5dG1LQjI0eEZranFnR0Rz?=
- =?utf-8?B?Ykk3QU1QTHlPc3paRE9nbElzT2QvZ1FzYXBnWjFJa2NzU3NleUtscms1UWJF?=
- =?utf-8?B?VkhSa0ZuOXVtYjBkQ0h1cmJ1YnRDYi9kVGx1ZVVucGt3cVI2V0dQUklCQUtP?=
- =?utf-8?B?TjlhVzR3emdlRjQwTk10Y1dzRTYrOWdtYTY3clNrRVlsZUtuRFVJSzlXUU9G?=
- =?utf-8?B?RDRMbEVmcXd2VVRsRzZCWlBtU2Jicm5IbE96c0NlaVRtWEd5WnhVMnhzQmJv?=
- =?utf-8?B?cnhXeklvNnhLVFRYQTRaY2l3eXhrcHZ2alMzZTZoZ3hrREtkV0lJM1lXZDVM?=
- =?utf-8?B?dnROODhHN0hDNDZnSHhFbjlEUU5tZTZxL1ZjeVFvTjFCT2t2MERYeUU4KzVw?=
- =?utf-8?B?eGxSRHE0T3lpeU45Vy9keUo5SG9JVXlmR2NlYzBpdDkxUHVyV2tvK0JMSGRC?=
- =?utf-8?B?dU9vNW5URWtsdDQzL2lXQ2luMjBsckg1cjRzRFVCVXF6M0E3aTJuNDl4c3lv?=
- =?utf-8?B?VG1BVFBDcUlGcUNCVGtkVzc1am5FRDIvWTdVUng3Uk4wK1RpdUpJN1gvQ21a?=
- =?utf-8?B?WVg1UXRDVWZiNkFQWWJZT2d4d3F2STNhb1lLQjQrcjgwbDM1dTBvbHFvczJE?=
- =?utf-8?B?ek8yOEdWV1FoSXBXQll6bU1GNmpuUTduK1I3N2tJRXJZWWZlSm5CdWI1ejhQ?=
- =?utf-8?B?dzBPZ3lkTnMxcWVXWXNsTkhFdHB0LzI2WHl4RzV2d0kwRnFlSTBWT0ZFSGkz?=
- =?utf-8?B?UmtESG43QjlhZDZ2NGlRR0UzQzIxOTEzc01wMmI2aXRtekJWcjdmRG5uQnln?=
- =?utf-8?B?QjlpTzF0Zmo1Um9nWG0wdjVlTU9RVEFnUFliR0VRbGdwZ0xreGVaYUo0QTdC?=
- =?utf-8?B?cTZmTlJ1clhZdlZrRG1qejd6TGlEb1BrOTlmWEh1Y05xYmd4L1hCT3dqS0Zo?=
- =?utf-8?B?Nm9qaGtlK0RZRlFJMWVUMWhscW9iajM4NS9reThDZXRNTG4vQkZlUzhJYXkr?=
- =?utf-8?B?Z3FWSmNQOVAxd3VXNVZZZFdwV29ST0l3TFQrUmdkdzU3T05kbkxXMi9uSWhh?=
- =?utf-8?B?SFA2YVBXRmNUZEFNS0djbFZhQUhBVGZCUnRJZ0FhdE15T05YMWpuYklXMEVn?=
- =?utf-8?B?U0Y0Sk1FR2VMdnQzb0dNaHloalVTSFVoMFJXQ05UUXBDVjMwQzF1UVdRL0lW?=
- =?utf-8?B?S3VMMDBUZElTa2N4T2p3djVGbVl1emxneGFHcmdJcmhBYnZiSHdGS0dvQUNh?=
- =?utf-8?B?Mm5ScVppYXJxbE9zUGpIR0xyNVhEMDRZdmtVMEZhYWNGVlZrbm5mRGoxa05h?=
- =?utf-8?B?Z29OWjhGMzdpWjdkWlBIaWtIeEpHMlRVZmltWmVWYUdWK2RLSDJYSmZQTjRX?=
- =?utf-8?B?eDVzaEYyc3MrMmZRbERHeGZycEt0MTRUM1VrcXoxMWZ3ZUlaaG43Y2kybDBJ?=
- =?utf-8?B?eGN1RjhkODFwckNsTzJjWXo2V1RrWGE4V0xIemtzc0VVQUxlV3ZUQ1JrM0lD?=
- =?utf-8?B?VU5kK203OFByVDVQWjNhREVjcDNoalgvRW9vN2F1dVl0eElOVlZLbzJtTndN?=
- =?utf-8?B?azQ2R25yQU1iRzdadG42M1BINEdKZE01U2dhWjNJTGFlOTFGbmJJbUhsZUdK?=
- =?utf-8?B?SlZSWDV4NVdNU21kWXZONTRCR3doOTJSanluaUZObWRRcmdKYWtKT3FKODFE?=
- =?utf-8?B?VUxYU25uM2pIa2QxOExVMEpabWpRT0FIWGVTTVM5SzM4YzEzSTRxOTNCNllw?=
- =?utf-8?B?RUF4VHpBRFNucnhJNVpLdDF0VlM3OFFUaHBRR3JwQ1lWQU0rMy9wNlg5Q1pQ?=
- =?utf-8?B?dHd6eERJZVNxY0w5RzlYaXJUQW81bEV6S3JQWTlLaWRLWmdzTVpWYzdLN2tk?=
- =?utf-8?B?RG9DUFJrRk5Xd1BPbTNsVGNkd053Z1RnWFNUWFNHRTZUck9OcUpVc0hpY1JC?=
- =?utf-8?B?QWppQmIrV2ZJMWVsYk5zT2UxZVRsdWhNUUJ6RkU3cFVseG5yYnZOdzc5ZWEx?=
- =?utf-8?B?dkFnVmlqUXIzc0QrQ1B5clFkaW1jd20zWnVtc2FubEtHSXd1R2NJemhKZUxZ?=
- =?utf-8?B?bENCbTVmcXlHTlhNU2wxZzNYY0t6cW5GdlNPTUlJT1U4OWs1aXVxYzFrZHg5?=
- =?utf-8?B?M2wvczFqaWN1Q2tBeERmWEhxZ0FHWWpvc3cvMzBqVFBBdGVWQ1YrL3VITGRB?=
- =?utf-8?B?aldQaVZxZG9vR0gzK3VrT2lRVFIxWFRDUkJhKzhJblFGeit0SWJ4Z2VOQldv?=
- =?utf-8?B?SzRHWHZ4dVJhcUtGZ1BmQXRqN2ZQUm1LSGQ1T2RhSG5DRWduQVRVQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f81ec86d-504f-4239-10dd-08de7a3ab6ca
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 22:09:32.9330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F0aNF+p3DJ18dGXFqeEwWLBm1raqCD1kHDfnOlqN8U4zU7KJ+YOIpQURdmZaHI98bHM5qoFLPfRj61XATljVMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7482
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 77FD04000A
-X-Stat-Signature: sgw85psjozqxzrxs613tomqsa746jb56
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
+X-Rspamd-Queue-Id: 9F5B42000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dukmc9niqso1dy3om6w6ae3ezobjbcfh
 X-Rspam-User: 
-X-HE-Tag: 1772662178-524251
-X-HE-Meta: U2FsdGVkX1+jSCWnp+VOnMRMPojkNZ4sw5wBVt5aQZdlQNfzJMS2FtF+kmivw+yP1v8BLSY9kl4meBOsATcX8/5auUsg9+sK+kUUK3UPR33tpC2zcoh6sXW+5QHvQsD5sShgrrvaPsOwWbPDCKYxAKioyVh1RxSb/jzVQqD6WsgtFuMffXD8340NhGRmQ1m6V6lfj0HdGKPc8ffmz0AF2K7M5fCC2dJFoSLeaJS2HR1TkE78EPx9Nhq+1qZtwdfPQqmaVoiPKWqHGgaCLL59HK4jtVxnYSQgZb8CjQ2UEBSF/r29oPXxNmNO84qVFWrqGsWFPRzKVc8xewK60PjXdBpqAPNOPcOGkAbGI+fZxMHLzCwlI1rp9h+lpMMMteV8xOh5CAFTB3dusnLl28HNUp6krHKOZ69QcsbVbm2vvrs6WB0aEKzE3TbrgsdSHUD5rCC1A8NOqG0brNhx7s22A86SpPoQF+3D5D94q+CsPMXn0ahxqW/1hWhRs/95xBLQVSmwbbM56EL3dOsg7pu1CpwOdvXywP48xdAQSB5IZNq1d8kBOyEY4NhRRQanedV9MmrvZ9EOtcQXMk2NIanylUi5hA/jPVDhu+ajLwkvA9N/V2ng+AagAVE8bWxuq5FgCwgnrWUTetWY73KwEhrqTzV7xQYmqhEsCwkUxWeOMeY4Y7mOLujP6fnM9e1PiZ0ZtIAxhE6kfbM5y0O0Q3h4DD6mSu/I3L0u7wt1NHskwYZVJSq6eyePHdRcYlLLUgU690m+p/HP6L2Rdihd8N2D036+RlIx3R0YVzh41d+KyKXOI99gxCf6A5LqU04EmJv4myKFn6IY1AeaMUICFGhPXyIR8KtF9iNlWq6+mI1Wi2DpakhxLEKR6q7bT8zkFayHbp41R/LIedT8RrK4RBy1cBqw3Sj6Vp/IUnqMVKju63hqDGxrqvhkFkOi39QIAkniJjhNz7zsREEnspyg9ZI
- JUa0oZeN
- yah3ztRqkkb+hsf8QBxTw/c1IpQdOef9eQnScsKTktVgLx/HNMuxxGLR5UWesXvpzwSVg+yeGm+8fFPsEI76JV0nAAeSP9zo4OxsgzsnUhHoJyV22C7Z1UnIpf8SYcKInlv32EZ68GySCqdLkoBFKKiAncey8vxDpN72E/rs3Ko4fm64pmTRBsoPBIWJHlCGbcLuWq8Jl2PcTj7iilMBSKR5umpQ1Ew6UjYOYpzWygpTj2+0/icSI8+n5kmASwaEDgAeHuG02hl+KxMsv6VWPowbz5JFdj1asIM/+7VPucbWywdAziWiojB01prMS4BDvYvOtklFXq/N6cUzRJN3m2w9EFe43JBotPWj4glTJhRPCnqXta5J3jnCssiMk3UTGa0InLsJPCPi7iHFsLeH944A4N4ds8yqkM0jrrxGZhEBw87qn1hQbVcQybYNcO1Z+TzvKCUZOwlTQOABPnw0Ma2j2onYNiPi/dqUXY+Su0Y3cxzMRwRi47OzM/IsQ/OqxUsuz5z33Q6rFd/xFeksejqGMbH+ufKcl0SVcKxdz1eDHxzeJsALe+C0Tafqi00oXZO9cDecg/6B/0w5VeWVqBDrklggzwNUVbwMypLrdHnTOdWsKo4EwLGm3WxnzOJZ++lMhSX/dx9dGzQI=
+X-HE-Tag: 1772663389-506330
+X-HE-Meta: U2FsdGVkX18dKaDX+F/sskBlBWQdZXunolaX0Fe5Dh3rypAB6M+cLhiqq0l7bWa6b/XJ33k362acLLTTkilN/0cug5LB0maL9hu40kkH+G6BJGO9GUaPXsdsVQGNku78FiI8dSb07Iik4oAqaMuvaQJyrMVOabi1AULfaNBUwq0Rsgtl8e5CVarSBonn3A6f6J2Dq6NNO9mL2c1qWnp5ibQWCC98NVxs3SuFch5+DaVtqBjtv8z///yoQBGwjxiGEcU0K4zpFCj80j3bKl2Js3mRbJpuqpASYQCnDg4abU7eXQ5IE0oQ+E1bU6owaXOz8TKJLRBEg2jedU/ls8+JBVyu0yKRDhZmYPNDBA3NIV6xpS9cJhSyrj/bkAY8NqPM49zzTnDXiKT18Dv6jLqCsBz9hR8eidApzKqfRGZ4GNB6i5tHnx+H2RGS7+z5vhwKpSZsRYglepSqOIRbyk7HlxX/IRHaa6W30Ot7xOahYTvAvwfaIknFgVEsdZ7nNjhIrRbG3vjEU1D+OsswReRBZswWYU/zJ825/o+hR3S0VVU6oha6wWP9OAqDhFqV+SfWwZSe/3OW8jvC2gNDtfkWQ7T8jSKMGiS5lsQDwNjehKbsFzdI27qEYAIopYmjS/9W7tradDXfWiu8HJVMhPm0xdZwEXI2Voe3B8d2F94vc4UlxZw41guw1ASJ5U4V0+57I0dH3P3s0cz71ucliGgVOncSs8g6T0Y05h4Eax5Gt2/526PWE8RMb1ElSLAI6V0W5w/odSEMiireMzFDM/7aDO4NJDy26jVx3yMNvDMKd/oJ4GNcI7/6ZTQZVyLT2oCBM+h+xZ+7TFFUJWPjUi3tJgT7LX99RdPvuP1W8sBshCGQqz0AbvHRdORn9BpwL0bwABxg4bg9C3f3tPLw5u7ZY+G2UWFn99atEDitnjVyGnwqMp9RyYbdsTDSaH9P6TWx5I7iNak4AJpqbmGhgsN
+ sMOqXNys
+ NmYAa3kOTOTLbd3BStSfkMqFmVyDfXwTsiHNUGa7k41gAAnhIK8Dtbozy9ns7rwdnPTao7EMYokekvzXzMv7CsasAjL+2r+hA8OF6Vyq0ExwN9KJk+c+j0WbppeOZ8w3Bljz5l1/jcUG1RNfqqMm7FrxeHYUNKTekHBpGw4gpbt/Iuof7lWoUXFUhjG2J3dDAP676CkxuVKLpFU0+//M+u0mO4y3jBDMyC1dtHMulsxKyPceNdOejPv83OJPdDeJSvQb4Rbgvj9/XoQeGKHX/eQWzOA/ND/Qat47tfeR5WRP3fH/mG8PeELI1bVvLp0Tco4myjcRhtoU4eIraJzsI/5d+Ky6KKu8d/Mft/Qga0f0b/+PWxA6SMOxECFCuu5NRAmYwClOJHizINB0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,80 +155,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 08:54, Zi Yan wrote:
-> On 4 Mar 2026, at 16:48, Balbir Singh wrote:
+On Wed, Mar 04, 2026 at 11:59:32AM -0500, Jeff Layton wrote:
+> On Wed, 2026-02-25 at 12:58 -0500, Mike Snitzer wrote:
+> > On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
+> > > Setting ->setlease() to a NULL pointer now has the same effect as
+> > > setting it to simple_nosetlease(). Remove all of the setlease
+> > > file_operations that are set to simple_nosetlease, and the function
+> > > itself.
+> > > 
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > ---
+> > >  fs/9p/vfs_dir.c        |  2 --
+> > >  fs/9p/vfs_file.c       |  2 --
+> > >  fs/ceph/dir.c          |  2 --
+> > >  fs/ceph/file.c         |  1 -
+> > >  fs/fuse/dir.c          |  1 -
+> > >  fs/gfs2/file.c         |  2 --
+> > >  fs/libfs.c             | 18 ------------------
+> > >  fs/nfs/dir.c           |  1 -
+> > >  fs/nfs/file.c          |  1 -
+> > >  fs/smb/client/cifsfs.c |  1 -
+> > >  fs/vboxsf/dir.c        |  1 -
+> > >  fs/vboxsf/file.c       |  1 -
+> > >  include/linux/fs.h     |  1 -
+> > >  13 files changed, 34 deletions(-)
+> > > 
+> > 
+> > <snip>
+> > 
+> > > diff --git a/fs/libfs.c b/fs/libfs.c
+> > > index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266beecf31e9d2667af7a9684 100644
+> > > --- a/fs/libfs.c
+> > > +++ b/fs/libfs.c
+> > > @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_block *s)
+> > >  }
+> > >  EXPORT_SYMBOL(alloc_anon_inode);
+> > >  
+> > > -/**
+> > > - * simple_nosetlease - generic helper for prohibiting leases
+> > > - * @filp: file pointer
+> > > - * @arg: type of lease to obtain
+> > > - * @flp: new lease supplied for insertion
+> > > - * @priv: private data for lm_setup operation
+> > > - *
+> > > - * Generic helper for filesystems that do not wish to allow leases to be set.
+> > > - * All arguments are ignored and it just returns -EINVAL.
+> > > - */
+> > > -int
+> > > -simple_nosetlease(struct file *filp, int arg, struct file_lease **flp,
+> > > -		  void **priv)
+> > > -{
+> > > -	return -EINVAL;
+> > > -}
+> > > -EXPORT_SYMBOL(simple_nosetlease);
+> > > -
+> > >  /**
+> > >   * simple_get_link - generic helper to get the target of "fast" symlinks
+> > >   * @dentry: not used here
+> > > diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> > > index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b76ddf28f4f59a1c8a015e2 100644
+> > > --- a/fs/nfs/dir.c
+> > > +++ b/fs/nfs/dir.c
+> > > @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations = {
+> > >  	.open		= nfs_opendir,
+> > >  	.release	= nfs_closedir,
+> > >  	.fsync		= nfs_fsync_dir,
+> > > -	.setlease	= simple_nosetlease,
+> > >  };
+> > >  
+> > >  const struct address_space_operations nfs_dir_aops = {
+> > > diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> > > index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f88529551b0f0287920960ac62 100644
+> > > --- a/fs/nfs/file.c
+> > > +++ b/fs/nfs/file.c
+> > > @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operations = {
+> > >  	.splice_read	= nfs_file_splice_read,
+> > >  	.splice_write	= iter_file_splice_write,
+> > >  	.check_flags	= nfs_check_flags,
+> > > -	.setlease	= simple_nosetlease,
+> > >  	.fop_flags	= FOP_DONTCACHE,
+> > >  };
+> > >  EXPORT_SYMBOL_GPL(nfs_file_operations);
+> > 
+> > Hey Jeff,
+> > 
+> > I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
+> > (similar but different due to your series that requires opt-in via
+> > .setlease).
+> > 
+> > Bisect first pointed out this commit:
+> > 10dcd5110678 nfs: properly disallow delegation requests on directories
+> > 
+> > And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
+> > so lstat() on parent dir (of file that I touch) gets -EINVAL.
+> > 
+> > So its a confluence of NFS's dir delegations and your setlease changes.
+> > 
+> > If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
+> > is seen by doing (lstat reproducer that gemini spit out for me is
+> > attached):
+> > 
+> > $ touch /mnt/share41/test
+> > $ strace ./lstat /mnt/share41
+> > ...
+> > lstat("/mnt/share41", 0x7ffec0d79920)   = -1 EINVAL (Invalid argument)
+> > 
+> > If I immediately re-run it works:
+> > ...
+> > lstat("/mnt/share41", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
+> > 
+> > I'm not sure what the proper fix is yet, but I feel like you've missed
+> > that NFS itself can be (re)exported?
+> > 
+> > 
 > 
->> On 3/5/26 02:17, Zi Yan wrote:
->>> On 4 Mar 2026, at 7:01, Usama Arif wrote:
->>>
->>>> From: Usama Arif <usama.arif@linux.dev>
->>>>
->>>> migrate_vma_split_unmapped_folio() takes an extra reference via
->>>> folio_get() before calling folio_split_unmapped().  On success, the
->>>> split consumes this reference: __folio_freeze_and_split_unmapped()
->>>> expects the +1 in its folio_ref_freeze() check, and distributes it
->>>> across the resulting sub-folios via folio_ref_unfreeze(...+1), which
->>>> are later balanced by folio_put() calls in __migrate_device_finalize().
->>>>
->>>> If folio_split_unmapped() fails (e.g., unexpected pinning returns
->>>> -EAGAIN), the function returns without calling folio_put().  The extra
->>>> reference is never released.
->>>>
->>>> Add the missing folio_put() on the error path.
->>>>
->>>> Fixes: 4265d67e405a4 ("mm/migrate_device: add THP splitting during migration")
->>>> Closes: https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
->>>> Reported-by: Nico Pache <npache@redhat.com>
->>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->>>> ---
->>>>  mm/migrate_device.c | 4 +++-
->>>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>>> index 0a8b31939640f..351ecd9065d13 100644
->>>> --- a/mm/migrate_device.c
->>>> +++ b/mm/migrate_device.c
->>>> @@ -917,8 +917,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>>>  	folio_get(folio);
->>>>  	split_huge_pmd_address(migrate->vma, addr, true);
->>>>  	ret = folio_split_unmapped(folio, 0);
->>>> -	if (ret)
->>>> +	if (ret) {
->>>> +		folio_put(folio);
->>>>  		return ret;
->>>> +	}
->>>>  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
->>>>  	flags = migrate->src[idx] & ((1UL << MIGRATE_PFN_SHIFT) - 1);
->>>>  	pfn = migrate->src[idx] >> MIGRATE_PFN_SHIFT;
->>>> -- 
->>>> 2.47.3
->>>
->>> Add Balbir, who wrote the code, to comment on this.
->>>
->>
->> Thanks Zi!
->>
->> Just wondering if there is a reproducer for the issue and how the fix was tested?
->> I expect migrate_vma_finalize() to be called for folios, even when split failed and
->> drop the lock.
+> My apologies. I missed seeing this last week.
 > 
-> Does migrate_vma_finalize() do folio_put() for failed-to-split folios?
-> If so, how does it distinguish between split folios and failed-to-split folios?
-> By comparing source and destination folio orders?
+> That's a very simple reproducer! That's very strange behavior,
+> especially since NFS4 does provide a setlease operation:
 > 
+> const struct file_operations nfs4_file_operations = {
+> 	[...]
+> 	.setlease       = nfs4_setlease,
+> 	[...]
+> };
 
-We reset the MIGRATE_PFN_MIGRATE flag for failing to migrate pfns.  We do a folio_put
-on the src in finalize, if it is split then on all the split folios as well.
+Huh, not sure how I missed nfs4_setlease...
 
-> What we see from migrate_vma_split_unmapped_folio() is that
-> it adds a refcount for all input folios, but only drops a refcount
-> for the split folio. Isn’t it cause failed-to-split folios to have
-> additional refcount?
+> I'm not sure why this would cause lstat() to return -EINVAL.
+
+Likewise, especially given nfs4_setlease
+
+> What's happening on the wire when this occurs?
 > 
+> I'll plan to take a look here soon either way.
 
-Thanks! Yes, the patch makes sense
+I'll have to revisit myself, been a bit.
 
-Acked-by: Balbir Singh <balbirs@nvidia.com>
+Will let you know.
 
-Balbir
+Thanks,
+Mike
 
