@@ -4,89 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DEE8EFCE21
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97E1EFCE21
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:25:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 663946B008C; Wed,  4 Mar 2026 12:18:52 -0500 (EST)
+	id EED896B0005; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6044C6B0092; Wed,  4 Mar 2026 12:18:52 -0500 (EST)
+	id E9BBF6B0088; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FD126B0093; Wed,  4 Mar 2026 12:18:52 -0500 (EST)
+	id DA7326B0089; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 42C1F6B008C
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:18:52 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD7B9160679
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:18:51 +0000 (UTC)
-X-FDA: 84509040462.21.53AA7C3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4A0D1C0013
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:18:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t3IYLbGw;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D186B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FB081C7A6
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:21 +0000 (UTC)
+X-FDA: 84509056842.08.CC3788B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7460C180011
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772644730;
+	s=arc-20220608; t=1772645119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SXIJo8Um9DJaOeJ8R0+KhL8pEOqnYZXLlZPtbE36k5k=;
-	b=X3iOxLay3ph8lGRcftMVNDNUgtOv4EmIE1JLvTNX56ILPmVgaP9RHPv5Rt05K6hwZXKvDM
-	6QWNDYR+Y2fOR0ZwMCuU6Ez+G05ddGwjRzms0w/ttO+VicRx7QAYHIv2KYWocQt5TgEj7c
-	npUaDieQShZP5Wlg8Wk4gEeA2DBtmqg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kx8vnEm28aGLiRE9vB2nHEueIYFDqBkfc/uJtYW6dw=;
+	b=Tz04Ej5yK3iNnQahtpgjlugeIRrrAxVxOZQJc21Gs9c1FxApHEY7UfGQG3VOHJWkVMlzAg
+	kBSG+zp4mnlgPsb0Qz5J2hirzNPEEhuiEPs+lGrszjd6gETDd02g2JBHjtl8qfAXr+z08P
+	qIKaZjL3+EQB18caMXx9Zl/mxteiBCM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t3IYLbGw;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772644730; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772645119; a=rsa-sha256;
 	cv=none;
-	b=RmLPCLESsVVg4nelaO0lafkX0WCc5sSAlrikImKz87BXDN10TFVjyFb9TVCSlHSLWjGDEb
-	nbjp/WsKeOY//+wXMoDZbGpGwsuPltNU6pNJ4y9O30RB1NdXOYRon4Zoegp8nsHAmQZ13a
-	prks2z9k1zBu72nso7BiMzD3jsFscAA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AD17D60053;
-	Wed,  4 Mar 2026 17:18:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C426EC4CEF7;
-	Wed,  4 Mar 2026 17:18:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772644729;
-	bh=g5C3FUKozX2fdPL8KVCmpJ8wDVxpEaVyXOt4AuGO1gM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t3IYLbGwsKlcQmUVfoA6netjuOU4UuyTI3zXwqZ+Il1a0tiZj59rdpuWvS549NQEn
-	 xi9gD7hutEciVgEiUnpiMRyhyNEHJfTpYp/1Bg2M+3K0h1+LEaDE2wLOjInmzhiRl+
-	 VvsUDDU8lzvjIH9zT7orSqbEiS5T/GUT+JAwI401V0OB4O/DFEWfNalGjdbHUvkumh
-	 AHrJzVN2bCc3BwfNCAIlsrU0R16gw++UAzzhJVB3HlG13iIYpxqFLsvPJyW39GakK7
-	 c0rlDPhd2VQOKcqp5U31eQRaz6CryYIwXiFb2jyulR2AxQMoTrEelWXXgbG31na3g+
-	 HGsne3JICGZTg==
-Date: Wed, 4 Mar 2026 17:18:46 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH mm-unstable 1/2] mm/mmap: fix Use-After-Free of
- vma_iterator in dup_mmap() error path
-Message-ID: <344d7d4e-6ecc-409b-874f-f44c89b1c0f5@lucifer.local>
-References: <cover.1772607155.git.zhuhui@kylinos.cn>
- <2360c415d4aba233d80666b8820ee31aa77c54d6.1772607155.git.zhuhui@kylinos.cn>
+	b=gDD08YbLpleNEVZmZInGPRRoOLandK99TW5+W8XP4I0u/WISuD1naHjzs+Je4R+T1096kg
+	8Beug2FK+ykeK9B5rU34/Ut6W6N8ehgufjORERnkmNU/HRTkV6mzqtPJH69FHulR7n7tto
+	aa2sFdBmjhuALxaXPDJbjhhsdWO2zI0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFBF339;
+	Wed,  4 Mar 2026 09:25:12 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A59AB3F73B;
+	Wed,  4 Mar 2026 09:25:16 -0800 (PST)
+Date: Wed, 4 Mar 2026 17:25:10 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Message-ID: <aahq9i7XNYOBG49y@arm.com>
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+ <aagUtDTca5d0le2Y@arm.com>
+ <20260304134313.GM972761@nvidia.com>
+ <aahJX0NwtYHy1ILe@arm.com>
+ <20260304153949.GP972761@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2360c415d4aba233d80666b8820ee31aa77c54d6.1772607155.git.zhuhui@kylinos.cn>
-X-Stat-Signature: msni95i6ojqk16jju6imf3u6mpfxkpya
-X-Rspamd-Server: rspam09
+In-Reply-To: <20260304153949.GP972761@nvidia.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7460C180011
+X-Stat-Signature: t8wq55ee8mrbgfabiajzujxx3d537afs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A0D1C0013
-X-HE-Tag: 1772644730-748576
-X-HE-Meta: U2FsdGVkX18Ijv6pIDMaCaAprskW3QK1OuVqSxoipSWlqVp4fgHEPB/aEVbvvTZRrehlrYT29h9sTS1eGIjNqBee77EzS6Uus6CbgSVf1uGlxiFypvywfrZPOPwRpct+pZSyWdIUUt047TJgwuWSQQGbEvBaBS7dhyAroqrNysd6ZzMQsR6/ZDhD5s0kW6xqA/nPIBcif6Co+v6HUGy/0JlNqa7+EqqpeqWV4fPXaJq3Z2SgB8U+U1nLRb6RWgHl5U513NXiwJHYrGvTWAVNUvFh7KXJWZ4NrEGar06Zrs0qE9kG6SfyvGj2SKCk5sZC8l2A0h3hjVXdSgCS5gycDtbT0knH4ewS7nnLdHEHZ2CJB6JVZSs5ogFv4dorpXAO4LFlyKFsxZLFPIz95Kn6a4rMYPMza0HyCCRVQRTgrfTSxGaiZn0Br+S2meVz9v3uVmWC+rCzdMD10gGvvOsrdALjHbySfTXh9F6VWQSHCkTHqas7DLR4dlLN5Pveocksilaci+lf4oWsI0bhk0/u71ldfSfgUijhd33lXEL2rl7FmuM9Q9dKGHV2GSLeGZXVcKk3WpqBHk+721YsJKUONF4E23sArnm++LrUzoEERa9QeBJJiv2n0o5I5U46lDwIMsLS/SLKldOpiSniFERhTF92bzDICjcZytnyoynzxGaZoQOKU1ILlGFPNMccWmjPrd/O0UWVZO7mK03D/6G+mOu8G2sjTnN7IAU3dYRWKdKh1b8HwEah/fwRYWKfyPRXRIcji105JMUtlVmdn16UW+GV1EBoRYQzMsPV2Xp1ztLD1L7l6y7pBkhLwk6voRFHIjqK79Wq0KX6erJ9X5ScnPNEk6Pc+PQ3E7BKred6OmYPtBuh0zBE792a0ulIroGrofP8wuBkxrbP9GRcl3LtQihdvCjUNvBB2oZv9klG4Jpiz3X25sqb65eMLRFblWREcl5aLJhuM4MJYzi2VRp
- yp7/8fFv
- DN5BUlQWvU+UDTA8SXrKe7zK8hYIsYMKsxEXCeS0LZ48ryoP2qgX6bDpaeOHzfLyn0KD8DXvH3QXMRbXaMzqVwhtAzNudlWobDYdwewzG+Cxgk0MEwBMd0JB8996E08IFiJMPfZfkfXFm4MfxPW9WQSA84nDUah5VltU2t2/y3KV0kQVlNfI3HkIuoLD9qo58dY+S0fcTRZSQOZAwIMZ/gWRRras6IwUkWExM8BeEJX1yqMrreSIQBv78tTqCQCFvH1fP
+X-HE-Tag: 1772645119-969454
+X-HE-Meta: U2FsdGVkX19NWcod4p2tdJszu7DiL6ICIjkeAnIsh2X+PLGpD0LEjWFpcgWbeueIIwVNTENBei/k9XYEr2/IeGhib0WFyJwr/044iHqL0yvWCxvCBLYKRiV0wp1Fyft8PYrF3ZzbUXetS9fEpX8uLWYoncQrMhV9eobFXjEbV28u2WNe++CAA5zVIYDVDE8aMgwOlwM7cLT5r4hkqs1zSw5BOCZecZztXIM7EKnc2IW7Zu/5cLPl2eaV35L0T1pNBfTf3JPWcFFhVbN0td3xAWIBz0NTLQ4oDWIktbotQtpUCXYHo9Ws1xh21DXw8VLxM+p4REN1xwrILiDYK8nldMctS4Ef6RmzNo47pbyOugZon4Qnbs7fMR+GfwDK8n8BP2Gfl0TSbFoRLf6A98ufCcCtjuWmbvslsAcmFdD7xMTcy6JXJCPb+pWYykF7F2oPjai3WreRhEY/qKZlWb8FYXPJVX/j1tX6aGkRWHOed+fNV9bFoyS/aWzA6JKyyRw/z/x/mwt9fDXk70URhWSm+lh/eXm7klHgp4jHr1KU9+GE2QGPhuGhuQER//Z2Ck+STzGjKo+sZu6/QFp4VL6W0R0grkPhzjw5HOMTS9NISMtP7mORPaOEUsM7qmk01YnAiEaivE+r9UtaCkpYJRnbRI0Pr6vIcvaesc85A4KLJ71+RBlQcZKX5pofiE6iYMyrOMookwCSXPc5iixOycT2mBoc/jp0RC3mmjyOwFaoBU7j7YZvtkDQMkvJuxq9LfC+p6aXy1RvrUNT0pp7yPpnG0h+tQST8ibvS0CKbMAOA2p8T3b0D7nfuMX7iXGbdNPSUzrFnL6d7ZIIwvFYY9RXWk8WYwoKo8s2XRioBqqoATgwgIePJ0na3JACOxI+WwTaKHHy4NL26WIi8XVv3fSTL1zzYpm0qqkfJj82aDX3jDlRl8jglewksMn7asI/qQgap9mZhACO1G/NeuL07Jg
+ Wz2r0h5q
+ GfKGIx/+RY7QL4ZbHi5ttU+n1gEgWqzmTYuyZqAVSVdT4Ly4gugKP0hAd4nofS834b+2Nh/UJfAAe3fZaju66hpyDcgX4gBeCHem3cSZJQbB23kCID4pY/uBjkS1C3832kj9LAcYrkV28/Au5eOZmntvy9uQdbe49vXVKMHuFKY4PSC77KpzTolUXBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,65 +90,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 03:00:56PM +0800, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> When dup_mmap() fails during the process of duplicating VMAs,
-> it jumps to the 'loop_out' label to clean up resources.
-> The current implementation calls vma_iter_free(&vmi) at the
-> beginning of this cleanup path.
->
-> The error handling logic still needs to use the 'vmi' to traverse
-> and tear down the partially initialized maple tree for the new mm.
-> Since vma_iter_free() calls mas_destroy(), this results in a
-> Use-After-Free (UAF).
+On Wed, Mar 04, 2026 at 11:39:49AM -0400, Jason Gunthorpe wrote:
+> On Wed, Mar 04, 2026 at 03:01:51PM +0000, Catalin Marinas wrote:
+> > Good point. For the AF bit, the hardware is not allowed to cache it in
+> > the TLB, so we can't get an AF fault for an unrelated VA nearby.
+> 
+> The way we have read the spec is there is no restriction on what PTE
+> the HW accesses when it encounters a CONT group.
 
-No it wouldn't be a UAF, vma_iter_free() calls mas_destroy() which simply
-frees any allocations associated with the iterator, so it's fine.
+Trying to find some rule in the Arm ARM, it only says that hardware
+AF/DBM only happens to a single entry but it is not specific about which
+in a contiguous range.
 
-The use of the VMA iterator in the else loop doesn't allocate anything as it's
-not setting anything so it's fine.
+So yeah, it's better not to assume anything. If it helps software, we
+could tighten the architecture but I think the benefit is marginal.
 
->
-> This patch fixes the UAF by moving the vma_iter_free() call to the
-> end of the cleanup block, ensuring the iterator remains valid
-> throughout the entire rollback process.
->
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-
-So yeah this patch isn't necessary and suggests a UAF that doesn't exist.
-
-Let's keep the code as it is.
-
-Thanks, Lorenzo
-
-> ---
->  mm/mmap.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 843160946aa5..498c88a54a36 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -1848,8 +1848,8 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
->  	/* a new mm has just been created */
->  	retval = arch_dup_mmap(oldmm, mm);
->  loop_out:
-> -	vma_iter_free(&vmi);
->  	if (!retval) {
-> +		vma_iter_free(&vmi);
->  		mt_set_in_rcu(vmi.mas.tree);
->  		ksm_fork(mm, oldmm);
->  		khugepaged_fork(mm, oldmm);
-> @@ -1893,6 +1893,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
->  			charge = tear_down_vmas(mm, &vmi, tmp, end);
->  			vm_unacct_memory(charge);
->  		}
-> +		vma_iter_free(&vmi);
->  		__mt_destroy(&mm->mm_mt);
->  		/*
->  		 * The mm_struct is going to exit, but the locks will be dropped
-> --
-> 2.43.0
->
+-- 
+Catalin
 
