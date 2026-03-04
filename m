@@ -4,93 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5B3EFCE4D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:55:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC93DEFCE53
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 23:28:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92A726B0005; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
+	id D76BD6B0005; Wed,  4 Mar 2026 18:28:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90BA26B0088; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
+	id D249E6B0088; Wed,  4 Mar 2026 18:28:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8430A6B0089; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
+	id C06036B0089; Wed,  4 Mar 2026 18:28:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 70F396B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FFE21A06B4
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:55:58 +0000 (UTC)
-X-FDA: 84509889996.26.4CD513A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 59FB71C000A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:55:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WWhjr6g0;
-	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B04446B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 18:28:54 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F0331606E5
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:28:54 +0000 (UTC)
+X-FDA: 84509972988.23.D7B1ECD
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 32730C000A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:28:51 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OBI9KBjL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772664956;
+	s=arc-20220608; t=1772666932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TISI90182QlKTb91GK/S5C9xZaCSe3G5cnFe8+3ZK+U=;
-	b=jaG2EscHbHiIOUXNk4NK/tbNiG9jelRIK7H0n41XB+iBoxHvsBpEIit1NlBSWYyUM9zOY8
-	49olZHLdpx+ubKzmWUsSsN34KIdlr/g/Qhyw//pqpoaGrlX2r/5oAGxzhzZ5NsEsEAMV8G
-	3kq2R0j7OtK4lz4a6uW7O+oVb6CR78I=
+	bh=DAFPQJJJhNNoX80Afk7miOJW6kwTQgtVOuUbkrrWT+s=;
+	b=SRidsQaYcaOCwyigFaO2vhj8u36qpGHzcYo4SKOe9U/x809Xkf9kSjH4LguA1kM8bgyjL/
+	3z0lHwa39TTIinJSnvSXwIFVAH2VuLvdMcIUGieulA6PYgE2x9tAVmYhteW4Vu5pyrCRDN
+	ORy5vpvQHoThlYhBP/QmuKj8Oj1SVKM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WWhjr6g0;
-	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772664956; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OBI9KBjL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772666932; a=rsa-sha256;
 	cv=none;
-	b=xzLnlv6XX+BYF/e8ihILt+E8y7Vty4C2+jV3YluGYYSY/3x9QU8jUk4uPNl7VCmCUJPrZi
-	lLdRp7ghFeuQAALzBLCgd9itmI3o4rlc7cKI1X8f4h4w1nwDvgAQ0DqT+t8DT1gXbuLGjF
-	ZZjh1zO/jYoFvf2fWWrf6E2gb1F2IwI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C98486014B;
-	Wed,  4 Mar 2026 22:55:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96504C4CEF7;
-	Wed,  4 Mar 2026 22:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772664955;
-	bh=Th0k5BwLXjcKqKxNPyWtlPrNyyCtPIZvtetPczGQdsQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WWhjr6g0YC/LGPHBiN1pOKYTPC9D7XGrawhQ9VLi6aULm0neouoE2TgJ2spzkdHk5
-	 DdX/AlePnhz7ZyyXe3lq3uO+KAyX4vJv5uF3SVt6AowTxQBphvW2PsWjh+GAJ8bR1o
-	 bGnHKj/e1Dqj1+DLjbnMlJK4n4UefH5hrkG8fIFFctIXAkmU6EBSZV9BXd85uHX3sm
-	 U4Qsoxlfpmbl13fvlzO6KECwLGyZZbFyX4W4MOSoJEs5HCN4AUgJ+A3Vo81unCgIAt
-	 IFSk8a+CiWezGNMSHNTtRuqHQ741kixcB5IFYeigIrYXVJwcYLjzILj/mIRs0MnFWJ
-	 98Lj/W3RqnJbw==
-Date: Thu, 5 Mar 2026 07:55:52 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@gentwo.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
- <longman@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH RFC 1/3] locking: Add contended_release tracepoint
-Message-Id: <20260305075552.0840e6b107dd9560e09e4f86@kernel.org>
-In-Reply-To: <f8605471fd84ebff963c011aa98f79ed17f493c7.1772642407.git.d@ilvokhin.com>
-References: <cover.1772642407.git.d@ilvokhin.com>
-	<f8605471fd84ebff963c011aa98f79ed17f493c7.1772642407.git.d@ilvokhin.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 59FB71C000A
-X-Stat-Signature: ix6f7q5woziq1ayatofjg5r1gibyfdhr
+	b=baRT4z7+G8+FoM9B9f0mxDqUMMvK9/AWECdeokG17ljr4TE0+KAhF1fnC810CzhBehexiI
+	qyJpAC/DSPO+POX7I+yTrUbUdWwf7IDJ0m0VmBS102VM7/huhjSajoaYYj/RAXyITfZxmD
+	uiRB+Y0mNNFGrZoaO9m1aFEDag1tbjM=
+Message-ID: <622eb392-8c04-473d-b42a-ecdc489799c4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772666929;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DAFPQJJJhNNoX80Afk7miOJW6kwTQgtVOuUbkrrWT+s=;
+	b=OBI9KBjLrmi5VYZfc3gzIGcvtNnNZJlbIuq6ALvB8cxIR4AuzraUE8t+prekSZFZGMLARc
+	P9oelZQAMs/gueKwMI/QQRS+n2VIZSlpnrb6/17T9L8+he0kY3pFG+AiGqTZ/+uJIzbKl9
+	NiGBOgYBeSgFmkd/BpdGhDX4+pdlVW8=
+Date: Thu, 5 Mar 2026 02:28:39 +0300
+MIME-Version: 1.0
+Subject: Re: [PATCH] mm/migrate_device: fix folio refcount leak on
+ folio_split_unmapped failure
+Content-Language: en-GB
+To: Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Kiryl Shutsemau <kas@kernel.org>, matthew.brost@intel.com,
+ npache@redhat.com, david@kernel.org
+Cc: Usama Arif <usamaarif642@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, riel@surriel.com, shakeel.butt@linux.dev,
+ kas@kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260304120132.3973445-1-usamaarif642@gmail.com>
+ <E4B81DFE-5D45-40F2-9C90-EF386D89B06F@nvidia.com>
+ <fbae2102-3e62-4df6-96bd-e8600ef2f497@nvidia.com>
+ <FA698C89-7287-4615-BDC7-5D1F6CFB770A@nvidia.com>
+ <5e59c077-9f06-4e45-86e1-ca696e6105b4@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <5e59c077-9f06-4e45-86e1-ca696e6105b4@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 32730C000A
+X-Stat-Signature: qba8n6gcz65rnms38yhanpkx6hin6ap3
 X-Rspam-User: 
-X-HE-Tag: 1772664956-362693
-X-HE-Meta: U2FsdGVkX19OASceVUllrSFqZQab/8XTd1LMbn6uzTjFplwwSYruIjk9Jg+h5QB7Hg79hsMn5JjBM41RlovW6wHYLUO0KAY97AQfymKy9es7PDuE/frDnpwpMybX+QvlDLhPVD6NZAmdGthEOH/qdlcsviRjjQpYKZJ6s5KXHjpaaSApcMKozQlYpc2iB+nBmsL9RniUOxdr5iEaDe09XlxkClbYcRGKshOHFCwqUDeTHwBk4delnEoRlBkjs/h96ifOd36PaUk85j9O66bqVVMzoUsOMr6iTvQPUqjECJJn9wsncOulvKpfGTqsUM20yNACrVMpjOfCzGWW8zrnnwtnWuglVrTSBmUmSZq7cPLyLCDpwRUVZgrZLUTOUCpnudN5hgMxVtaMg8zYBSGD2tZJKShP0J3eypdkaCYPXieVjpFwZ7H3CFwnhVL0oA9H8hQ652OPel1/njite2NblaaimBmi47C88ya0so7+fFehyAMQCYa7q9xX8vVpo9B08C7CAUgtLIPnZk4O6VnaldwgMOAqy/u8+39XxdBbtI2++9bDT/J508kQ1tpPUVadnLYRRfJ/yfi0+BCIi5852Q17H2FsM38QcVucMACPvXd+8ajlm3Ug4TyVQ2wwI4YGMo0P4ttQm+xkeTuf8Gn3spPckaBx7Rg7mHuKkdCmgE3p1p46a0j+uZKrX/5rlnsya9fKEUb5gzVEggcjZ1tJmrbmDPO2CEaunKKMJUvwkf30/TiTAnmnC1WmUxAMAmUw4bcfQrWpc091a0YDUcauc4JzMd7YbW706JP4ODBoNLg6/FO4A5tZTqIRxO/7ZnM2ALoqK+AtxKIF6zWO1jSuec43DoolrT8W8U/UGin+xYpThXuSeSyzepX/BJA5c6ia+iH4G9IQoSrpfQoFUqGkQjril7ur0d/8iTKuGpLIcDp/UiruFuZS64Invkou676ZKRrmfOG0S3HY2vxZIto
- LVnNvcEb
- DeWXMP6ZlS6hkyxAZdf5xwFSx17ubdUzEkaJUYppX8Zv+6l75Q4ZeDKLUGW5BI2P84c6N1KtngzBOI/vGHgmWfDY27yqB2kkoe0ecFjFdV7m4J87Oe1SEmgzV9fntixH4Wje1RTR3VHkoQknvdWU+Wm/s++OfK5HV2gMv8bCU5QqKrj7VjoSXMr14Xii1jdIWQ3SSNRA9lmjydKL7ywQNT9J2CeAlyGDyaYW+MLV3z7XnUlvIV+fMK/dkqZ+gBkrHuBc2Y65ckv4ngsWJA+c+5yqxlukkbObm9ThaWIOOIVf1uMyZf6v6liQiFjfwejyYF7zggiqnU5Do1pPXzC8a/xWodEOpeD6l1REk3jIFAZBjWRL7qIqfvxsfww==
+X-HE-Tag: 1772666931-176779
+X-HE-Meta: U2FsdGVkX1+01w0DB89rD3AWy+B9f7oU4aJqIUN4Eljw3XKIMDon9xlWovJ6fMTpnyBAZP3vanOvXPpR05PCHLH6qtdulFjAKPuFhl5NvBHwupeAzn8Noy0l6Vc52lHpD197kkkpHyeg/I6trCqMGxgsSYUdsj9gTGOTJNvFTSHqOyVj4DC1VhTMpYBxjC0YCxjwwRnOp881gTAI6qF0bdzCv2Y90ft8nw1+bMMeGeGf2oTbnkYWfqMmsZqwDyrt4zLpzpkeRXnA84cBK0sLyIxsP2ctwaZYc1CcUKKWdGxiceY2ONk8lUyM6yN7XE90ZGgRpr4vNIiBjobUdbfxZeI9/R55gdGwIUkVrXHuEgZZgmeQ6X99R3m/Bxgv9STMBlWEfMu4xdapPxQeJDV4F77uCLydDo9RGY+hP1tWw0xJuqypFpm+XqykosVgpc8vQXEX6EETwV4GL/MkzayR1vYOhO8turGWtdZtP8gV5Rxd1PehwTZoulLtg1hJsBReqriMZJNkcwbIfAlw0MTv13c24O38dKzW7mrw0rEJAXJ/8JEqlfmXgQGpLbl4i2hUC6mDoyX1OxDOeLlM1e8fFsuGnF7vS+xa3lodblqNhoxTL4dqNnEUNlP5AjzqN+hBriEUlCgXRxlOb3O08xAIlnDMZAW85gdv67BffdXuhwwvlmzrcmbWjh0YYpcOo3suA6hsaE3Bla3PVm9FkV6CDInNJdBkBYBLKbrVJibR7SGHL8Xe5qDleX+6jGp5gIotCLifSviaN6XxSUwX6BF0St5ivjXvJkqn22QGXmAku7Vabffy3A/zn/aI8wdnh12INvTtPcTveEA1wqjVrcNBC2+KPxEl/u8GjIzG7D8SgaEyflwg6GpOwvEApZcgWZIPzdbueN5Kyp4DDQkjWyqU9KZ6S17VCI1ydstA3bqTz4iYE2r/XtqVDazxh/LIUaUR1LBsGD9mE+bXk0RtlE6
+ X006PlYP
+ eRRzJEBbRVGDtG4UzX7LbkF/UaOzkBvGUyu2KWaB6se5etW43UZDrY9kBO4ZPF495SKkJ1cUtHhcglakefVVUfuN4u9l44+NuB6sQGqf0QfPvIXeLkwHa71q3gcBmmzQWYDMGCIACVmF3QCXMYYf1xvNchtaW2qzM30g2IToAF5n/kgDSBk5a/FKAj96kNkBCpjgVlvH21g+hsNArpZSnCrcRI5Ge6KoL4gy8b4SaCbpPtLEAwIDEsPtGHRLKq7qs/aKV4eNqS3Bb4RscccbtPYNsBrQTJ37KNu2NXn7IoYTvhFsxatJaYPOiwM9e2SGX5gl+OKtfmINM60ng+Chj23VxirHEkKkwTOyfxeFTWU0mbG9joSLhpbOpUmbUM1TXpnxO28cDeVe8odNaMzHyvMupDTbI2WScqRs/hZ9mvmJVantIlgGnxfjnO+7Bcxq9E3ZS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,64 +100,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  4 Mar 2026 16:56:15 +0000
-Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> Add the contended_release trace event. This tracepoint fires on the
-> holder side when a contended lock is released, complementing the
-> existing contention_begin/contention_end tracepoints which fire on the
-> waiter side.
+
+On 04/03/2026 22:09, Balbir Singh wrote:
+> On 3/5/26 08:54, Zi Yan wrote:
+>> On 4 Mar 2026, at 16:48, Balbir Singh wrote:
+>>
+>>> On 3/5/26 02:17, Zi Yan wrote:
+>>>> On 4 Mar 2026, at 7:01, Usama Arif wrote:
+>>>>
+>>>>> From: Usama Arif <usama.arif@linux.dev>
+>>>>>
+>>>>> migrate_vma_split_unmapped_folio() takes an extra reference via
+>>>>> folio_get() before calling folio_split_unmapped().  On success, the
+>>>>> split consumes this reference: __folio_freeze_and_split_unmapped()
+>>>>> expects the +1 in its folio_ref_freeze() check, and distributes it
+>>>>> across the resulting sub-folios via folio_ref_unfreeze(...+1), which
+>>>>> are later balanced by folio_put() calls in __migrate_device_finalize().
+>>>>>
+>>>>> If folio_split_unmapped() fails (e.g., unexpected pinning returns
+>>>>> -EAGAIN), the function returns without calling folio_put().  The extra
+>>>>> reference is never released.
+>>>>>
+>>>>> Add the missing folio_put() on the error path.
+>>>>>
+>>>>> Fixes: 4265d67e405a4 ("mm/migrate_device: add THP splitting during migration")
+>>>>> Closes: https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
+>>>>> Reported-by: Nico Pache <npache@redhat.com>
+>>>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>>>> ---
+>>>>>  mm/migrate_device.c | 4 +++-
+>>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>>>>> index 0a8b31939640f..351ecd9065d13 100644
+>>>>> --- a/mm/migrate_device.c
+>>>>> +++ b/mm/migrate_device.c
+>>>>> @@ -917,8 +917,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+>>>>>  	folio_get(folio);
+>>>>>  	split_huge_pmd_address(migrate->vma, addr, true);
+>>>>>  	ret = folio_split_unmapped(folio, 0);
+>>>>> -	if (ret)
+>>>>> +	if (ret) {
+>>>>> +		folio_put(folio);
+>>>>>  		return ret;
+>>>>> +	}
+>>>>>  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
+>>>>>  	flags = migrate->src[idx] & ((1UL << MIGRATE_PFN_SHIFT) - 1);
+>>>>>  	pfn = migrate->src[idx] >> MIGRATE_PFN_SHIFT;
+>>>>> -- 
+>>>>> 2.47.3
+>>>>
+>>>> Add Balbir, who wrote the code, to comment on this.
+>>>>
+>>>
+>>> Thanks Zi!
+>>>
+>>> Just wondering if there is a reproducer for the issue and how the fix was tested?
+>>> I expect migrate_vma_finalize() to be called for folios, even when split failed and
+>>> drop the lock.
+>>
+>> Does migrate_vma_finalize() do folio_put() for failed-to-split folios?
+>> If so, how does it distinguish between split folios and failed-to-split folios?
+>> By comparing source and destination folio orders?
+>>
 > 
-> This enables correlating lock hold time under contention with waiter
-> events by lock address. Subsequent patches wire this tracepoint into
-> the individual lock implementations.
+> We reset the MIGRATE_PFN_MIGRATE flag for failing to migrate pfns.  We do a folio_put
+> on the src in finalize, if it is split then on all the split folios as well.
 > 
+>> What we see from migrate_vma_split_unmapped_folio() is that
+>> it adds a refcount for all input folios, but only drops a refcount
+>> for the split folio. Isn’t it cause failed-to-split folios to have
+>> additional refcount?
+>>
 
-OK, but I don't recommend you to split the traceevent definition
-and its usage. Could you combine [1/3] and [3/3], so that we can
-understand why this event is introduced and where it is recorded
-by checking one commit?
+Hello!
 
-Thank you,
+Thanks for reviewing everyone. So its very difficult to create a reproducer I think
+the extra reference would need to appear after migrate_device_unmap() but before
+folio_split_unmapped() in migrate_vma_pages()? That's hard to trigger reliably from
+userspace.
 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> ---
->  include/trace/events/lock.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+The fix came about when Nico indicated there might be an issue if split_huge_pmd_address
+fails in my patch [1].
+
+Below is my understanding of how refcounting is working over here step by step. I
+might very well be wrong on this, and the refcounting is a bit all over the place
+and I might miss a reference change somewhere so would really appreciate if someone
+can confirm this!
+
+
+1. migrate_vma_collect_huge_pmd():
+  a) folio_get(folio) -> +1 (collect reference)
+2. migrate_device_unmap():
+  a) folio_isolate_lru() -> +1 (isolation reference)
+  b) folio_put() -> -1 (drops the collect reference)
+
+
+Without this patch fix:
+
+3. migrate_vma_split_unmapped_folio():
+  a) folio_get(folio) -> +1 (split reference)
+  b) folio_split_unmapped() -> fails
+  c) Returns error — without folio_put() which is the fix
+4. Caller in migrate_vma_pages(): clears MIGRATE_PFN_MIGRATE | MIGRATE_PFN_COMPOUND
+5. __migrate_device_finalize(): sees !(src_pfns[i] & MIGRATE_PFN_MIGRATE), restores the folio:
+  a) remove_migration_ptes(src, src) — re-establishes user PTEs
+  b) folio_unlock(src)
+  c) folio_put(src) -> -1 (drops the isolation reference)
+
+The split reference in 3.a is never released and the folio has a permanently elevated refcount.
+Unless I missed a folio_put somewhere for the refcount increase in folio_isolate_lru() (2.b)?
+
+Please let me know if this makes sense!
+
+[1] https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
+
 > 
-> diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
-> index 8e89baa3775f..4f28e41977ec 100644
-> --- a/include/trace/events/lock.h
-> +++ b/include/trace/events/lock.h
-> @@ -138,6 +138,23 @@ TRACE_EVENT(contention_end,
->  	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
->  );
->  
-> +TRACE_EVENT(contended_release,
-> +
-> +	TP_PROTO(void *lock),
-> +
-> +	TP_ARGS(lock),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(void *, lock_addr)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->lock_addr = lock;
-> +	),
-> +
-> +	TP_printk("%p", __entry->lock_addr)
-> +);
-> +
->  #endif /* _TRACE_LOCK_H */
->  
->  /* This part must be outside protection */
-> -- 
-> 2.47.3
+> Thanks! Yes, the patch makes sense
 > 
+> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> 
+> Balbir
 
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
