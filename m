@@ -4,152 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 492F4EB7ECF
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 12:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66705EB7ECF
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 12:49:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76D066B0088; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
+	id CC0CB6B008A; Wed,  4 Mar 2026 07:49:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71A846B0089; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
+	id C89446B0093; Wed,  4 Mar 2026 07:49:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 626CC6B008A; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
+	id B41226B008A; Wed,  4 Mar 2026 07:49:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F6106B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2A8C5949D
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:48:34 +0000 (UTC)
-X-FDA: 84508359348.14.A19E32C
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 382D34000F
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:48:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U5NhpZCn;
-	spf=none (imf01.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 954CB6B008C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:49:03 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43B0C8BFB2
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:49:03 +0000 (UTC)
+X-FDA: 84508360566.03.86936D2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E88D5120010;
+	Wed,  4 Mar 2026 12:49:00 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ICg+Flg0;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772628513;
+	s=arc-20220608; t=1772628541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YsXg2qDZ+ZjnQnj/eNfiIgU3SLUyimkRR7bx5y5oB4w=;
-	b=E0HiuQQsje5pR8XO/ntrMOcHtOqTW/yn7xI8i/9QA3spNfU0Vgk5wZiQgHq6kzJzP/qeli
-	rf5eznoDoS+OQ4unwNJm5GE2n9Dvpj2+/dfc+/VBu2uj+LL/uhIbvmsnYhwDasUJyh7Xo0
-	EqvX3QFG8UOCKAQDHJs5DqUIfdgC4eA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U5NhpZCn;
-	spf=none (imf01.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772628513; a=rsa-sha256;
+	bh=u0sl2xeZlds5Iy6bRSJyOtzmAWoNSGdfCC73OX1/eZw=;
+	b=2YzpIfQxHWk7dU9h58eDlBoVnChCrGeeTON8+soYrHVZtWeFwQ19E3dhs//ee7D341xQwJ
+	CVcN6nxKiVwsU0at5UV8oNmO9XSmy5Q/oYzJZILbagqZ9FnkRxTpN5DSkie2x48+KJ5ZsX
+	TYjLzJJAcF9JOyak/mZ3TNhu3Bob/Bg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772628541; a=rsa-sha256;
 	cv=none;
-	b=sELyvNUdDvb7J+oAtvyuX7e8TBvkxHARH4oEhzyJGTziH4uZGEkQEIIJyTQfqb1R+wm7bx
-	3ta1BYqjvtOkqbfx+iDJ6IQ/okuseCjOnPPNsa3mNxrmikxdzgFpVMZNz426icKay7Fc+w
-	j1d82dRUnHrKwr86o+QPFUX1F65cuFk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=YsXg2qDZ+ZjnQnj/eNfiIgU3SLUyimkRR7bx5y5oB4w=; b=U5NhpZCn934XojSyVFL1nj1S/W
-	2SwNvFKnKgDXQSzq6m51IMvSlZX+ne4bEh4E01vZtYgpLee5ixUDi8qEHb4R97fy2f4d2ReNAtXFl
-	2Myy/FM9yjpIi4F5MCjGcXNEoyN2WDgyc7039UPkredIXwYhk1etVNasHnwai+IB6c4ro8VQTd24m
-	dlAjACdWYLWNFfSy+VdBxKivYhNczBRSHxMPHao0CvqQusPNjCznq/i4rksmb+FqExqEhxu3s5ruZ
-	HIicL8wW2i2h8YBWX0vQS1a34HK9wPAQFs79TabY9VaeD6tSKbvzAdMAvOXPYXBWy7iVhi1jbb7PJ
-	KVa5pNSQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxle2-00000004Z42-2KL8;
-	Wed, 04 Mar 2026 12:48:06 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 07040300666; Wed, 04 Mar 2026 13:48:06 +0100 (CET)
-Date: Wed, 4 Mar 2026 13:48:05 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
-	Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Anna Schumaker <anna@kernel.org>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chao Yu <chao@kernel.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Linus Walleij <linusw@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 0/8] mm: globalize rest_of_page() macro
-Message-ID: <20260304124805.GB2277644@noisy.programming.kicks-ass.net>
-References: <20260304012717.201797-1-ynorov@nvidia.com>
- <20260303182845.250bb2de@kernel.org>
- <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
- <aaedwFwXh9QXS3Ju@google.com>
+	b=e0UYBsAd5sfA+tN1mqBlRg9jQhh3dzJ8euHM8g5aShaUAP5ZJE9ZkozawQlDmWSNKquUuq
+	cQM6aEQcmfrfHVEPbfubC+jjy5AxsUGlZuAD3ZNNqe0RqlGW8LypzL0NbT/DNoQSjZap0H
+	CrTm8+sBTTeG+f6U1jX+XfV3zmUOYns=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ICg+Flg0;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A154A43CFA;
+	Wed,  4 Mar 2026 12:48:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D61C19423;
+	Wed,  4 Mar 2026 12:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772628539;
+	bh=VZ1IQZ9wkbkriXYlTeVOKrSSDilZmIyjz5pgJIAWLf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ICg+Flg0GucrcK/Rp72ulJveVObDKbF74VwXPM1WlSI1LMqELjkUi6Z1yVFSvEdzx
+	 sg4f3jMhAsjPe5+eS4uJwrFgCLC2x634qa7461r+1moEHf8kfuFszeph0AdcKmsKt1
+	 YMDXm8+ua/G1ZldiSP/pvm7kJJ5+jdEmXmP4WjhB+BGHY1wWU2IemjZNp5ejFtDqX6
+	 s2Oj6yA0YXmbBsB/pxBp3PhBqI5lTneSZBpJ+rUdDB0eqzmP+2sLWm8Ifx5AUBKSWg
+	 VFnLzZ2Iex6vpQbWkYuo7BYDlnmJBzjw37/lgcK6OewxZWkKpJpOLSe+IP52ji6eXd
+	 MSUewpqUQg7zA==
+Date: Wed, 4 Mar 2026 13:48:53 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 18/32] fs: Provide operation for fetching
+ mapping_metadata_bhs
+Message-ID: <20260304-schalldicht-bushaltestelle-0ed92f03754a@brauner>
+References: <20260303101717.27224-1-jack@suse.cz>
+ <20260303103406.4355-50-jack@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aaedwFwXh9QXS3Ju@google.com>
+In-Reply-To: <20260303103406.4355-50-jack@suse.cz>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 382D34000F
-X-Rspamd-Server: rspam08
-X-Stat-Signature: dbk5stpzdbeeteapktxznkmoz6w6wozq
-X-HE-Tag: 1772628511-472846
-X-HE-Meta: U2FsdGVkX1/Q30KDCA1rYbx9TZjY2xqDK0OYYCqxB6/nPgZEP60uHzLRHSKMI4u9nE61ltLs6u+ywWWUY67b8Yg4MX2S7hdi51R8szxtj5d6eouIEIMndiHkgXqxjzSr9PYEH+NDeiOaoObqIqA1Eqj3nFS2lneQQeQ1fYe0rKTjQXQOCfrbUsts2JZN78LnfcVISZK2Cz2zVJjZNLaWMn6FJQ47k9+E+Cuxvni6pkGLtTgK8IF8iZu50GbDBEjFAS8Zmdv9BsZZyk2MxJmLmzjQD31Lt9JE7vZ/s3+v5AlBodAXoA95j3JA1jyqSiBXc8NyCoAEwUyjnjJod9zdMfdTx4rPuvXb0p3Gpw+b5CK6DVAEXy93pyICfncqPoHUbKY/GNk7RuapYVGzS4SW9k+1StFay8muIeL9nImNSed7YvGXsueLBX+7z/V81zxGGdB0RWoTq6Zx338aYbQ4XZ2MZNvjv2y9QUyGL/20OtLart0lyCaqT189pysiOvPTmdt2AiPqNBUjToddHggD1Vd1TuFdQZ8hFF/Igum4P59NZWZm2xkW+RxHabX+oRsx+qGlazV4WW/U1FHi/x1GVfjsktbj7dMSQ2xVwrZD6ZiXteAKsfCzPBgZ2hCj187Tr1CAzw97crPmSYFPxXudM68LQm4gnz9LQGAQ6K2tOl05nBeuiCLKUckyrJ54FLPNeVKPRJkZqQ8L5cQqfUrcXLCjhAwBp+7cUsfo/Op7JCOD1hdwVvshIjcMwf1V0SToXAmiYmISazyL5BXNbSPYNxxM0VA2SGmsNevUnQuJECyCufIWwn+vS79u5bxdFCpDONfm0H+fNp2jQ2bCFkYHeNjzTS1GRB0dUUeD8rMMRq+2nrFPZWBzwdDPFbwhBUZtSzX8/F6dF4oTAgLhqPmfyLsoS7dstRpD78rCUUwR94b35NjuAjybyyDawt9hfyyJ8DOq73RRpNAbzz3Qlx9
- 0Wmbrwfv
- Euza4sjxF9Ge9V1MSY2YzGEZciXUbvtBKZYz9iBj3RT5oz7DXHoL0SBUv4rM4K/ygC+4ut5H5ozPhyoQPiuxe3VlTZxJkH9kIrjYk7oaUT5iu/wCYNAjVPd5Vq10atm358A6G9cSyrXcg3BegP0doxT3cXwDJnbIaEJsZzsQFm3xeBPKcHdWnJ1lWqGQ67l3kgdIB1XH+yufyeq6TlAWlScbCjwdrRuy9EUK87RkWi1INNIAd7zGAKpFnzbXSG8tdBZhoUFxQ3xaKncF+wSogrqmx4KOvztqVsWVc1WnRn6HohVNXUSSI82zSyc/RPobXt0yuQwTlkLODulqBsaozmH3ail35pnFrm6Rb+Omz9l66dVmH2vHzI8eTl6sdgbpsiwRJ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E88D5120010
+X-Stat-Signature: 4y47no87ifky4rkmhuprtxe4gbbg3i4c
+X-HE-Tag: 1772628540-174503
+X-HE-Meta: U2FsdGVkX19ROylkmRWzkByC0T1YeZylQwOiM6TYqu178dVsrQsGlXdY7yr0cuC5RpOlyV4QWCrt4ALlFvX+ve1ywIryuV64l/wugTr84H6ihFPG97vonU7oES4ffNRTW7V17Jn38dXa9hMZBSc9ccOEMFGg1WVnM4vXxZKRL4gmOLOf9H/oK2bNf6GI9Ofhmutq6GRZDntep47FouBvn+dKlnNJYm7B4fq3AeMci3qgw4fA/rJQZBX1KJDBuT1Nb02Vq8dZSRXYLfVRTPZm18CbVyfUU62ShprSFrOzCOTpaT9AwV5vG/oVf3xDG9nypuq3GGc9xDOtWy+xxAGbB7f/dXBNMiCjT0uHB9efz3rBavE5nV2U9p2WGekrlCnGde/Yh0aO6PR5wNIBwQ1l2KjghHt52wEBv/VXl3uuinyCjie+1eTHtHb0HI1mri1dJCF3ZRQe9U7bk2H4Uz1QEE88vB7Nug/7EIblyvb8vUwlCaghw4/Of8NuEFkWXpjQSyv342aK6R1PbdQB+dYRlYNdNgNj5Fzs3H0jxV5GpfrvtQwuk173BRMhjvG7lFf/uFtvqIsdsceWGBWV1YmlVU3p5uvUXlwQxG7hZns0NwXeXbBSqsgpPdilv7vfJrjtkvAVXJ9TJUasw+cn1cOgGg1xGHarhJA4r+o1XlkJRdqQUOhUHeU/ff2UBh7pwtg02gbRRIUChc1aW4PkfCfnaMqD+UvGBbTLphPSDE3vQFpzYi7u2MiP8fMWzK5YRFxk4DtG50mk6B2/BGe+9BNXuucsnEOwK7lowKkq9+g1pDG1tvjbgfRVwlQK4yvtmNSMqeWaq9US3/s8xZtZE4SZO7WTQKYKavPsAGYdb+T3jNh1aPizSUBMJUmGWTzGphOYXlYaeHHRI+JChvUeiqTAnZgZsHemrS1m9DS1ct0Fyp3phS8qzzIPVN/bYfpzCRntnhXOgX1629BDq1zm+VB
+ frCPjzMx
+ L8btWYA/vqhGRwkmgpqHA/ii9rzw5jRz94p+cDcvsKIeOBZON+UMapRU5oyIQtzqdTTBOYrxRpeaQCHyCcoQiQbuRswPjvjmFLetLC7r3GUFffF1+J1YOFUpnyxrNVFYr4ChYn5XiN2SRDzWeA8J8o8NooROhFlVkvfbfcJZj5G+qMPYrAH3g6ZDnrN6+CWiASEDKZB0T9jK8v4MsMYs5Us4b9i/1FU50icYRbl5KVV5HnAvvRiWAInl1CImjk0oy8mn2mw5kFtKDL45yRZWVGjpejjJDDJYuRCU8NXzmChTMPl8jp+k5N++y3BbSfZ8xdU0YJLOmtEWXWoKS4LWjTJPR9k9Z8P94WH4mD/NP+3eKJLRz53IbCVRHCzTEpu0QfXNJVt7ITxgIpRXk5raysDElAzVy1k7qV/akF+BVIjOlMuM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,31 +96,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 06:49:36PM -0800, Sean Christopherson wrote:
-> On Tue, Mar 03, 2026, Jens Axboe wrote:
-> > On 3/3/26 7:28 PM, Jakub Kicinski wrote:
-> > > On Tue,  3 Mar 2026 20:27:08 -0500 Yury Norov wrote:
-> > >> The net/9p networking driver has a handy macro to calculate the
-> > >> amount of bytes from a given pointer to the end of page. Move it
-> > >> to core/mm, and apply tree-wide. No functional changes intended.
-> > >>
-> > >> This series was originally introduced as a single patch #07/12 in:
-> > >>
-> > >> https://lore.kernel.org/all/20260219181407.290201-1-ynorov@nvidia.com/
-> > >>
-> > >> Split it for better granularity and submit separately.
-> > > 
-> > > I don't get what the motivation is here. Another helper developers
-> > > and readers of the code will need to know about just to replace 
-> > > obvious and easy to comprehend math.
-> > 
-> > I fully agree, I had the same thought reading this.
+On Tue, Mar 03, 2026 at 11:34:07AM +0100, Jan Kara wrote:
+> When we move mapping_metadata_bhs to fs-private part of an inode the
+> generic code will need a way to get to this struct from general struct
+> inode. Add inode operation for this similarly to operation for grabbing
+> offset_ctx.
 > 
-> +1 from KVM-land.
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
 
-Right, this. I hate these pointless helpers that obscure perfectly
-sensible and obvious code -- and for me that includes things like
-rounddown() and DIV_ROUND_UP().
-
-It just makes the code harder to read.
+Yeah, it's a good enough trade-off, I think.
 
