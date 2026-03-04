@@ -4,96 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89881EF8FE1
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C2EEF8FE2
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:19:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A69456B0088; Wed,  4 Mar 2026 08:16:27 -0500 (EST)
+	id 01B406B0093; Wed,  4 Mar 2026 08:19:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17406B0089; Wed,  4 Mar 2026 08:16:27 -0500 (EST)
+	id EE9676B008C; Wed,  4 Mar 2026 08:19:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 923816B008A; Wed,  4 Mar 2026 08:16:27 -0500 (EST)
+	id DF1CC6B0093; Wed,  4 Mar 2026 08:19:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D73E6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:16:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B56E1B83F8
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:16:27 +0000 (UTC)
-X-FDA: 84508429614.29.E8F33B3
-Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A662F100007
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:16:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa1 header.b="J/f/fT/t";
-	dkim=pass header.d=konsulko.se header.s=ed1 header.b=sol1UIqd
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BD7746B008C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:19:25 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BAF11405C4
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:19:25 +0000 (UTC)
+X-FDA: 84508437090.27.8056054
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5719480012;
+	Wed,  4 Mar 2026 13:19:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fXnxO9o7;
+	spf=none (imf02.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772630185;
+	s=arc-20220608; t=1772630363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KC8d/KVeXoBSBl3S63Vm4xwhGedRXfLdMa2e9njpMV0=;
-	b=7BxAchqDDUITH3CPHcrrTYysb7g6EsD6hvyAyYrBfmy6Bl6b4iSVK4wNapjN9U3iO9Tvda
-	kien98l+g5I+wFP19dZRubxtBB8Po+9Y7y1VCq909nVKqjfeqZJuhk1LVfg7cY1FJMvuT2
-	fovCjD6eE8yDWIk8WdShTPAU4wEzUOs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TMZH0WK1C4n56ljgVGIRCSTXXXU1JGue2xDQdEq2XRs=;
+	b=qeh0acjokl+q3PWZhwwT0TlaIHlriBlKvNinNKbVY30SPcVergpBJOl9rUilBkNvj64j0F
+	O5e+Ineisr7i0F2Yv0eKK0KSTjEGpM8WqOPjgsEY4gakgpjobfT+cwv21GCPS/re9ESNKi
+	MCHrhRnXnzHx59cbrogZjSWzhOJOMAg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=konsulko.se header.s=rsa1 header.b="J/f/fT/t";
-	dkim=pass header.d=konsulko.se header.s=ed1 header.b=sol1UIqd;
-	spf=none (imf14.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772630185; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=fXnxO9o7;
+	spf=none (imf02.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772630363; a=rsa-sha256;
 	cv=none;
-	b=KD/AxSDwMWzdlb6ERBnCFVCGgp0mDVpv/68q3RIhG9sPwUqadUmhL+b9cvaKxPO7r4eUy8
-	xof28c+wGHDezHnjHU5e4Idhw/cqwoOcIWOERxW38TYCV97QQMfw7inZBQSsjmRBOh2Xuo
-	FH2fVQqdOIjaeVzmi+GQk96bB802GVE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1772630182; x=1773234982;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 from;
-	bh=KC8d/KVeXoBSBl3S63Vm4xwhGedRXfLdMa2e9njpMV0=;
-	b=J/f/fT/tf6M2igfKIYMLizQKXT5lTR+ss0dralnkARg5R10SWOKAJIRN6NQRxl7ZUswU3wjyhLdCZ
-	 wVAjrBFaZOXMSFzH7fTDXHjHLaKzWbQiE0raM7aQq+3jn2k6GaevuhQANE2Owo6F4F9jfF2Whxx4bT
-	 cp+49hZZhhVMMxwRxalh7UDaFQ2QTuK3ic2aOSWHXhX09uufva6aTzxCAwqe+OmbI1YHhz5ORr84OD
-	 F8VDswg3lzlviNKEBmze1QUlv4HcCA7QX6K5SyR5dJJw6cKmwnwFt3AAiNat8LzssD4qMvpRy5/5JU
-	 lDlOSaxMVJCksnwACgJgWL5t2aY4bKQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1772630182; x=1773234982;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
-	 from;
-	bh=KC8d/KVeXoBSBl3S63Vm4xwhGedRXfLdMa2e9njpMV0=;
-	b=sol1UIqdgIp854m0kJbW+mnD+2sUgveCQMM1vDr3I+fHblb6M7/2HBPwmoylLVxAsVfoGUGlLIYHk
-	 O+IY5AmBQ==
-X-HalOne-ID: 5639a062-17cc-11f1-959c-f3c0f7fef5ee
-Received: from localhost.localdomain (c188-151-133-237.bredband.tele2.se [188.151.133.237])
-	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 5639a062-17cc-11f1-959c-f3c0f7fef5ee;
-	Wed, 04 Mar 2026 13:16:21 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-mm@kvack.org,
-	Igor Belousov <igor.b@beldev.am>,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: [PATCH] mempool: fix the race condition in mempool_resize()
-Date: Wed,  4 Mar 2026 14:12:14 +0100
-Message-Id: <20260304131214.102588-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
+	b=kz7U74fd2JlOasL9f5w0K9lS6ppq92Cf3UKlzuN1+iFgEGvvQXnc8Ukl20ji/f/0QQG/md
+	H5KoZEXoihzPc0j9WiFxPCzrEF0tFcaSiSnM+GS1zKAB3tvzTeVX0gDzoKYUIoMtd4wMzz
+	KWll8lnPvEV0dYkUW0UIJcL5em8nTSE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TMZH0WK1C4n56ljgVGIRCSTXXXU1JGue2xDQdEq2XRs=; b=fXnxO9o7WLxug4TIjrZkzTMZ/7
+	kWI6q60pGsZahi56N7QcRB3pg9gAxK6wALzpGHemg4FYrGsHq62k5MoFGDhZEi4xgD6Kx7xSPLtoM
+	Glap+HyhSQ2J382UBlQA7YYTYGcDhYf3GiA7Y/uhRlIFNUpmgNmaq9l8Bl+aVyD/I2xf5PvPEgpaw
+	ECRXXVFOwQd6rD7mAyXQAqbU117UDT2fcOTutKd8u/3TVim1cLSWLNKOt6LJ+5BB9OEfh+DyCUX0n
+	I2PK3ww6WzbbfHyzzZeOjXAhHnKz/0aS6UebU2c0DVagKj5Bqrvh1cnBmZbkg3H2ekPUsC4dcFimK
+	4tdwNMgQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxm8B-0000000HEtk-3ses;
+	Wed, 04 Mar 2026 13:19:15 +0000
+Date: Wed, 4 Mar 2026 05:19:15 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
+	Ted Tso <tytso@mit.edu>,
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
+Subject: Re: [PATCH 18/32] fs: Provide operation for fetching
+ mapping_metadata_bhs
+Message-ID: <aagxU5f1AI3y0wrw@infradead.org>
+References: <20260303101717.27224-1-jack@suse.cz>
+ <20260303103406.4355-50-jack@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A662F100007
-X-Stat-Signature: eruhx7msqyhpo7xwyzo3bs1nrydzs76p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303103406.4355-50-jack@suse.cz>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: 5719480012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sa3r9nprrr3dfxzqnbst63b5b8k11frc
 X-Rspam-User: 
-X-HE-Tag: 1772630184-318270
-X-HE-Meta: U2FsdGVkX1/PxOK5eZ7wgUuLM/CJ4l3D8jEhsh5ohqPX/aiyxfHQx2gGwzGL8EzK2uOUcyoChYDdfnAtnU7skWrtECfYVI2TJ6y2pjqAm5g4/yxfiP9vU1mw13crWBvwbKEjXlUTUFLY57vfgtwBK4ydwMpK9Zql2aABWUCZdtGcthXJd/kZL0BxPpfxpllKWPjtyuZiJSwiJHRP3NvfamHd4CockrvY6dfWerdB2UGvZpBLjzwQWheckOcvDpJYiGMBAwISvL6Rm2AHqQoftprLSMhsT1s4h9r5hMCR+UresGRhOJ1SrMnXHTFjl6atWZKCEBBU82pgV/dTx7wtU7O7zRYbbW2e4uXeY4Adhso+v5EnAz/6csMG/7z9CQZiL7jrwbrQ+45hc8bqrqshTk0IhY+oQspsZ4vkFHwn9l/ZpYRVwhjY5mqePwcgdWmcJmRGUo2twHAFmgnjXXxasiYD+mcdEB1Jdd4vfxPHVPJpBugZY09295UbACmTJzwOpLhkDJQhZlDOZtPDJ7n3L0n1IVy21dfcdqidYIqXHNA7jrD/2UgYY4oQXr33SYCAGORS60l701ZjNF8Q04SCr4PHlqJlTfkOmTRQCH17OLv84TCkxGdMayV9oRbH1bThynh93Pbb4p35euROcDS7aNRouShqbVsPZ6ZjJ566uF3fbLavcO4qKiRds32ccqXwkVe//j0WFnQFD1WiWA035ONY7EHuDqz+MOa6sXq9zngPD0GmPWYefHPKa+q5MxUTMdTeHYzUdYec2OzezPaccQjItRFBkviR4de0kUJll6PwSccw3er/7OF84zQCWAL5Umv1APOHiwDmPyfowXvOLYX2+bRmH7VeBBZmbuMOBg4MM5AeFJMLzSm5kOv9hTqhe64MRN1c7LzSs9whyTvb0bR2UbLLgFXNeMYyCpvv920HAMNeAP/bTeda+uFLitW0SdCfubdC3fDz4lHe4vR
- YONNhnpa
- YlHAlMXFikc1O1gAH93fEKsPiItWE9WR6E0kd+sP0EK0WoDls8u3ala/xjGcB+7k1Yl5/fSBJBa7AUWkK9U89PEPXgw50G8OM1djsRiz4SV90TXP3K5mnMfh7sJk6RXfHvdqDc4FaWJr/7nb1ALFwxxkU9kmYt2gd5vqYr8Unt+K9l9qCP8+aFxbSKqRpluenoQqptGpI2iLo90k2gXyCM725pQ==
+X-HE-Tag: 1772630362-757465
+X-HE-Meta: U2FsdGVkX1/IP4CNGHIzu/pcI2p2k6/9PrIYsPV2UqeKc9NOQIccUxobRo52O6a3XaKzWZ+3R7EfjCOAURk1odMkz/H4YZONG5hMF+nNIDCgdhQfAUC99an4NjgjKKangcn2dHAt5gnDSHOh3RdaEf0GLhju17nk6nwaZlLVlIXwXq8ANuGR0XutgE+KLkEX1PHjDyY8FBcYMMOzmNzFG0xGzpRIs6P2G6kJOXl96CcwmkNRYym0oRta1XFaqRZbsP3Ooa0tEmpUTELJkxEzVP3rDF+7FqH2MzNRYB8zF8ESxFC58MrLmuHK7nTUbQ7J3jOlcK6Mi5b0j8ie6KUM04bzJ+R/7NDjUO7KSamssOYTf3DRiZ5YmKjvZmJxwdFRuI2CDm3l4qcN1gkk1wd2sdu6iEK5ENPipYmmF++MbMLq0uREhkJUrlvt7U/ELvS0ZhSdbVTecL205/9E5yX4JQwRuqhOrCB5FVSqWiQGvOzOc1jS8gvZ4Jz6tXYucR11phbeiW4TRUGHRQX96+AgcFA3Ssnl/6ibCjOBXUQx36lIrrjuklsOSVhSDGdNhMD70LmkXD9kA06WJWj7ZdvAGALo4DyDNZLr8wwoIhFLYyqiT2CenVQ4GfCq9HTIO4ICGNmyvbpFyQWZ4y+gquly49RfSYPJYBqUrSJPLbKVpXwi7MqPHSHmjevIjrYRm+ObBxepxMf/XUmBVVr1ZvjZke+soogteOUCRl+4DfEjBYQ+nVj2fTWh7JICbuGyiLhU5Vqczi7LiMA4QXni7WoTAaXChP4+VWZDW7OfT51B6NKPuhcp5f+e21LzxKRcUuU8KLCGZDqE35hy0Ou9aoBVTdqHIwV4BcSsc9k8TV2i2pE1+6/i08BNsj5R1SeLZE8Dx+N4KR1mca4SegCLrCe/b7rI/JQmkyNLBCTud/BlyUyhNvNQmzmxKec7Mr2Bxw/PQwhMZzMs+1yjbwm2ffX
+ HIFrB8q1
+ 4xzxcHOpxIoOaIA30148DDMvFcadLQPklaCfwiQrNZVa1iLtsXrq713Uy36tmA3A8WxMscxaSj+9wdkUyxBo58EA4SG5Ss9W+O+nyDEb0BEc+R/V+2dZRoW+f7T1GfsLcFBeUhQFPELobON9EA9BLUfIKwpK1FrkdpH0IcdG14YswHx3y+0ZfwWWdN7vaXLQT20WTLHsyT6KdGycVl44fgOyHs9PuvV93KNaZZjWPjsZbUvty3Ph5kwjltcn6/mTg5TrtUJW+ADzgKS0yoi5507jvny8L9ewpPdbBThXRhWSq1IvwRVeodSY4XbkQmnZYKIw2bPJv0FfGkZ3AG2jAHzyExcPlN4nUMzIr7BAdNymkOi2yLSKC36GrbX8o/Xs0ishP4TjkA7gl+mCWiK0DV+5SNL9TuSvAuCoeLKCqC+phwMyeIWk+hWMTVzIk/kX7+38YPAO5ObzR2AsUS+xwfHA6iVT6dF0ifwceL4BaW+YpKH4MkNRmNoHUirhV5GR6vQ3qWfA8ZS0dn4mSObCRTCa16/HWKJVpHt+8QUFWIFkwNy3vle9q0KwWTUbdWDLSiYhzFKP2YfFKsFAqA5IfnSLCyOCOG23o59eEn6C4QZFLL3zDVyfE74YNww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,42 +99,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Igor Belousov <igor.b@beldev.am>
+On Tue, Mar 03, 2026 at 11:34:07AM +0100, Jan Kara wrote:
+> When we move mapping_metadata_bhs to fs-private part of an inode the
+> generic code will need a way to get to this struct from general struct
+> inode. Add inode operation for this similarly to operation for grabbing
+> offset_ctx.
 
-mempool_resize() at some point has no valid elements array for a pool:
-...
-    kfree(pool->elements);
-    /* here pool->elements is not valid */
-    pool->elements = new_elements;
-...
-
-If e. g. mempool_alloc() tries to access pool->elements after kfree()
-but before the assignment that follows, we end up with an undefined
-behavior. Fix that by changing pool->elements to new_elements first
-and then freeing up the old array.
-
-Signed-off-by: Igor Belousov <igor.b@beldev.am>
-Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
----
- mm/mempool.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/mempool.c b/mm/mempool.c
-index db23e0eef652..302d83cbeac1 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -384,8 +384,8 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
- 	}
- 	memcpy(new_elements, pool->elements,
- 			pool->curr_nr * sizeof(*new_elements));
--	kfree(pool->elements);
--	pool->elements = new_elements;
-+	xchg(pool->elements, new_elements);
-+	kfree(new_elements);
- 	pool->min_nr = new_min_nr;
- 
- 	while (pool->curr_nr < pool->min_nr) {
--- 
-2.39.2
+Do we even need this?  With your previous cleanups almost all of the
+places that need the buffers list are called more or less directly
+from the file systems.  Can we take it all the way and just pass the
+mapping_metadata_bhs to those functions?
 
 
