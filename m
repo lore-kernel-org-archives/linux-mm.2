@@ -4,142 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD0D8EF9008
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC2AEF9008
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:51:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A73F6B0005; Wed,  4 Mar 2026 11:50:13 -0500 (EST)
+	id 8FFFB6B0089; Wed,  4 Mar 2026 11:51:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254B26B0088; Wed,  4 Mar 2026 11:50:13 -0500 (EST)
+	id 8837C6B008C; Wed,  4 Mar 2026 11:51:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 130376B008C; Wed,  4 Mar 2026 11:50:13 -0500 (EST)
+	id 765136B0092; Wed,  4 Mar 2026 11:51:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 009C16B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:50:12 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A10B51A0232
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:50:12 +0000 (UTC)
-X-FDA: 84508968264.23.AD71876
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A18E1120005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:50:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K4NmWOIa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772643010;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CD8B6B0089
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:51:56 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08E9A140116
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:51:56 +0000 (UTC)
+X-FDA: 84508972632.04.248A1B0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5432B1C0011
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:51:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+GMIDGF;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772643114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z1zD8QHceRSWIPCX+II2vnEJtglFCb1KDWPWlkJAE68=;
-	b=agCaQnfLXXLXI4am3WaC/otafh8SqAp8mKTdfbRa+5qWgu1KH/ak6tg55k1fv3iZ8EEbhv
-	CbStGX/Zk5ilQDZ+b1HCaRmlHq4RabpzypDClBcX/+LLYZYJXld2UAscinO2jy+kOmHA0Y
-	UJsFKnZh2oIL5VpSJNU6qyBqi0f82ug=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772643010; a=rsa-sha256;
-	cv=pass;
-	b=LuqH7051m5aMhkb+IIIrsu6Al/JekW3Bi9DKRhh98wM2PPMZMPmUO/LIi/DneEwo3jwjD/
-	c19LdONWGl17FbJ0rT0TQUQKVtFCcR+p38WbzL+6N61tHDDIvkEyoFgyL52S1UJwGBjiWS
-	/8ZxNitYukEWROtuemPPBKYsSDNDRjo=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K4NmWOIa;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-439af7d77f0so3645037f8f.0
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 08:50:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772643009; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EHi2Zi2Lyl6LIet58Yel5WW5OP9yr/3PJCmKy4ZSDmNeSrTXXaqV2sNMR5nrHy8VBf
-         609p0UvWDaXvcxj3k0cuxVX8TxErRvxO2Io2wY83zuyHWoki1OZBwKJ4cnnfpVxigQgV
-         jdjsVYUnVrF+VGezfHnLyyQCe0FbITVjfDJHXNKOuqByPi1VSf6k6WKOePJBjzfPOsXe
-         pfUe+Y4I3cE3BMWRyX3cXIf95cQcTciVmlCtxA20bWW4XjbEbtJzQGNeOMIhKYaUw1rx
-         zAMyYG/HPICVOdqYi8J+Nvp7hNvBJEdBKOhzcce6y7R8qDhzZDBFgFam/zZvWAUTAlsB
-         TWxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Z1zD8QHceRSWIPCX+II2vnEJtglFCb1KDWPWlkJAE68=;
-        fh=hUn/lemiiHr2Erdcxb9NXhE+a/J1yuHS5HJtTy1yH84=;
-        b=huVBIf/nK6+1/9gn37SmlrT0rEN9bVpHpnO7RRmjkAXsaUe3maePxGQawa3PnF1CR4
-         D7FYRm0PprE/a9T5gObOIPWx+K0IboDXqdjunPI+/A+HxqbqV2l2npRBTFnpFcCm7jLx
-         zhzF42HgiH1s0HhzGWJ3pRWZPq/BwNaMZqQ8F/jEF9V5Q0+PQr5/TKfmPO4YHtB9HxWu
-         hghJZBFZDiH0YvVR62cK2szhPlP3BeZjlYaqtZW32ICs7gFDdRpsXE5q921T+a4vmo+R
-         aVXqsu39Lc70C0quVJ7Eikn2SaE/PYtlP//SzhpX7ZHNAQeMMUefOhGgrfNZhePlmsqO
-         G2cw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772643009; x=1773247809; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z1zD8QHceRSWIPCX+II2vnEJtglFCb1KDWPWlkJAE68=;
-        b=K4NmWOIaOJpPcp/jRNRLQjsW7joXtpIFwR1bgbP+hGLs0Z9oizXl9l/sdrhl0/CXxR
-         G8H/mmHuNY/CmEhLrktpI84dfnLfBfw3N3BqXlrxFJHw60yui1AyFmIUSVlxP32x5Do6
-         lQ/O+PKJof3x+3Zb0bZjIjiAX/CfdLj4YBAdgM7HA6R7BU8/UeToyAPIe5zUkEaMnzF8
-         vvAdlIB0mVkDP/4/JfTUJYuRtGBMJqQ4Ta61ZBW8g93d+jqpsfijg1TXHrom76kUzNqm
-         xakRNVs1Qp7ktMyfMKHey1AawfeFZzrNRfELK5miIaUkECINQ9eUTFmOEXQRayTU2fS+
-         Cw8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772643009; x=1773247809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z1zD8QHceRSWIPCX+II2vnEJtglFCb1KDWPWlkJAE68=;
-        b=JnFpKeW1zzL0D42TOgxuPbzoA3nSpAH6H9XtZqJbH96RdCbN24slRQBbwP6Md3/0IY
-         DPe5CL78qK0FH8DKVIs94WzutlI47P3rCHn0r4oAVrQG2Kzv0G/guoVF0d+0XreoboIK
-         bbcJ9RHB4OLj69TMOw9/Vvu1ke61dz6NAAFt2HIQOe9EDQS0J01ALuEez64Raw0yD5yy
-         IP1id5/6aqe0n+06J46cGyzg0mbA7UAc0hrFMeAuNY6lVQk0K5tYP0xb19xqhQep/twn
-         kv5umtGumaFBEr8mYafT3LLt3ymkS54h3UOd0Ed5QaOeQQhDjzeCZDIMsDmCA/gDP/Tb
-         mb2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVDlikxId1C+si2zD4ukO4ydN7GDyfIEv1sLnMiJCDMZU7iL4pVlfjlomQRhZgy72c5kuMOatDOyg==@kvack.org
-X-Gm-Message-State: AOJu0YxA1AlR+XHwxmkES3WBnXtPjZnPBslkCywldkyHHj62s1+6ZXc+
-	PB1Xb6EW67RznogCY8A39DcSoGsEr8t0u8ENwwaZc+yt90YJuNZilBL+iDlavkEJ1dLPKSegsiz
-	P27raEBpRR4xZHKAA6sLJwcxdEe0WIYA=
-X-Gm-Gg: ATEYQzxl6UeaUCFcmj4J3TsXkanULaBThwC6eO0ENbZRamQBhdloq/4GyrJGi+8gAtp
-	UCOuHpAeDxP6Ft5gP70qKQzJ+gBDAAJ9HMr0LljCA/HtqNnLQQ1HhCEyEyoXDr7N6sLMW3SMSzf
-	xdLl1Gms5c0eLe0Q7/tHi13OqLWuNpBu59+8Jy6jcYxvfXqsmkwVMBg9Br29xzLgELnwsd/PbQu
-	uXWH2+a7D/4HDlNQQtt0CV8vw4F47RJlpr5EVdjvvQco7a4YPNJ2W2CpTlthYHD1VvIqXVTqsvF
-	lTgQFwbJvYMWPovgUQdPCxQGs3laYvvIlMgowLM=
-X-Received: by 2002:a05:6000:144f:b0:439:b564:7a6c with SMTP id
- ffacd0b85a97d-439c7f6a2c9mr4935603f8f.4.1772643008765; Wed, 04 Mar 2026
- 08:50:08 -0800 (PST)
+	bh=akQq+pQqJTxFAfRuJI3XwQn3yv009amkbEKCX96AYyg=;
+	b=vnb8/MaMK102E9NVDkXVY0hN64sNlE/qxQsRnRWDJZYeoIf0M22QmHDcv4n4HzDgkjHtj0
+	cit+G/F6CHQurVh796VU+4R5gjRjZaIL17TeuTZT1Z/V7I+iSu/dLVMvE7oH7iXMhLdyzN
+	l5eewxLDrTeh9/rX97Nd98vedYf7Zq8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V+GMIDGF;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772643114; a=rsa-sha256;
+	cv=none;
+	b=urypfqHQWh/VIpnXJZ43JMIrY1focxRYyX00YisjYgJMnUsiOLNIBukDmRwRBhFvccf7NG
+	F1sbCtoV1fUta2Ka0NAFogaFV7gphT08Yoq0vnsmXGWe6LQIWf4vGCHVaAt6rXopiOsAxm
+	nAWz7xgsBCNKiFVGjgWBiSy3dFkFZdE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 67D2860018;
+	Wed,  4 Mar 2026 16:51:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47629C4CEF7;
+	Wed,  4 Mar 2026 16:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772643113;
+	bh=ursMg6G23K3STjUq3+z/V1NN7ezRFAIkK7w5ZBPoihU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V+GMIDGFl0STObezr020FXhXtNnmnK0c18C8KX5kHjtvlH0y3dcwZwSxAw1Q/jdWu
+	 QcBV7MFDhoZFHvvcYnwlToRXd1cBfqgDjxWzRseiX7EjDzZrzPy2ZWtR5kKBLmn+yi
+	 J51TuuGdE4/z9q6CGu1Xl7pWJNHUiJXwknoRuJfMCa/DgfhXI4SgmSKR1tnbUxCpUh
+	 xE4LAnDbbgl3eifLHPy1OoPLXyDWHq9KC8y2NhSfkDhDuIaMEH2Gvm5FBnmHrVIqhg
+	 55VDYE2AOHQf0kN0SQsc/rhQxwzzOaw6Djy+Xt3L/1FnETcWtYTst56SAZsN2TAPcw
+	 LBapGd7hkfS0Q==
+Date: Wed, 4 Mar 2026 16:51:49 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
+	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
+	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-s390@vger.kernel.org, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with
+ vma_start_write_killable()
+Message-ID: <0433a4f0-d183-438f-8063-3e4425b14d77@lucifer.local>
+References: <20260226070609.3072570-1-surenb@google.com>
+ <20260226070609.3072570-3-surenb@google.com>
+ <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local>
+ <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAO9r8zOFS7zU-eGkErcjud=DW0t00_WqNqCzq_QDf061dOsYSQ@mail.gmail.com>
- <20260304151120.3512645-1-joshua.hahnjy@gmail.com> <CAO9r8zOJ5bkJzptM7+8V2G00dHuycAEAF4CDcaR1YMk0kWyktA@mail.gmail.com>
- <CAKEwX=ObFWm6cKbi4hL8JLDKui3MsRu-JpEFohBdkqHFY9tVfA@mail.gmail.com> <CAO9r8zMbU8ikA4jAUyOvvorsm3L4UD2X-KVcGyQaKwTZ0nV1Qw@mail.gmail.com>
-In-Reply-To: <CAO9r8zMbU8ikA4jAUyOvvorsm3L4UD2X-KVcGyQaKwTZ0nV1Qw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 4 Mar 2026 08:49:57 -0800
-X-Gm-Features: AaiRm51ko9kVS8IjAoCAT_NvsIsy1-qAXevpqNGzCEvGG_N_B6mgqJbBAi3r5s8
-Message-ID: <CAKEwX=OqW07O0nQqauTaJEwThVQxZJjbiLEpOuQtSp9+Dv6y1A@mail.gmail.com>
-Subject: Re: [PATCH 6/8] mm/zsmalloc, zswap: Handle objcg charging and
- lifetime in zsmalloc
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <hoangnhat.pham@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A18E1120005
-X-Stat-Signature: cqi3izoo3a7npk3xr9a5rx7muk8qep1d
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
+X-Rspamd-Queue-Id: 5432B1C0011
+X-Stat-Signature: ts7148bsg4fiyqqyz33t96x9jqq1der5
 X-Rspam-User: 
-X-HE-Tag: 1772643010-213202
-X-HE-Meta: U2FsdGVkX18fWevGuKDTCK/1uJ7IohuOMpcmqHZlmpUNzI7Qt1OadFBxfk5hS0UadDY8V+HcPsJJ3BvWznvL3FpNGuDtqkmfEFhn+uHTWnBpDDXdnCh62KdO1X67mDxpB4qMk8deeKONV+oNhu6x47v0up49oKBWHBxr6oX1HKALhyl43rVvClLhxJHWrcmUwWtNVwwxkPEtYQNQaunq9m/R9YZEQaC1YNtoVFYC9fOBZaunKGvij3TvQxzEaWIPabRmYvwQqUdoXcJ9wUBA9eYltI5f2kjbWDPMkRWQ6m8WhTZPF+IgLqGqJCSeICrLCxMMxLFYXEs8pHMOmuy5EHRl3JFrCCZch47uKPtTbi/7WwiOeo8kMd5SmEwp9tlJV5FmuT9OCcPzD95+CUuTykCOg6K8YmaFPvYlLS+/FVih/ncAbvJ3CqjSGVBEAiv2swmey9xcmm6TSoqPUl/6Zg/ONNtMq4Wt2t6Yza5YZAPdrDQyolahX2R5iGHSn5RtJtiUf+XWLskoi4PEBVCjfo65Vblz8jpxFWKQZMXBmoKtsdi1HdnzxfYKTxhqu53L6zYdGogPSl4Z38Q3UbzGRpKEIOPIdk9rHt+Ctj+UPaB3xFpx2+o1/rrN+buy8b2b1WU6u05ZpLa/1sRS3+Z4r24Nsmk7TLBqNGcwrx2AcjVjLARY43PlbgSWvVwm7LiRhn0IodkED2CJhzESEN32cUrrRH/2FPV2JnfD5MVLC/dJitfwKqnX11YVw+DiWbkfCfS7jG/Pl0Lx6IuCRfdnDkM0zzlTANRHNBbk8TWqpGg0HPSarU+0H+EAnGSU8+kO+NDSSCfkt48rQ2PxsThS5PJ830Sa943f/9/Pqf5e+KBKKhdB4RNSR5Na1+YDDJ86aqVzJlrfRFfbuhd/3/u2/ZROGUMyu44nUG2bZmMP7okaVb6eNXeFmAP/iSDcwOZT81A/yxwPsQfWUjkA8ho
- Jnx+gLoI
- 0WOxXPwl32TE2p7e64CA6bPjMSsP54MaCgK9hp1m7lCUrgN9H6z/J30DpSbAuk7S/M23XEVnJ9WsngGJDe4T4kndYVi94lpavDyogJEWNGaekzZANcV8v6pAnRb4DUNwnZZxE6At8fqjiDE25LTIfCJNNmA41zWnRPVaSap1rsoKH/y51G/jnmM8NeR3WDUxdb2yTzl3RGlqcbT5Q7dIW1sn65tfr4UjIYEre3RUv9I6LoBKwe+mT2FHt5XyLaYFGM3Jazj5H432YhbZZzuzJcqTQBTQjxPDMG747YR/uokAjtZc00Y9cDHDZVlmjjYJuQahEF/zcNYxe4tqF4clMNqo0UCZBKkaFijHxIiCWDbRootW/6n5NvnQlrWc+8lrCf1Ld5fobieKqRiiCWjo1Rd/0Y/ssQWV65DeF3V8Mnum2RfJ30JCCa4OTKdkEPiE4/2cKSf9afP4DRGVclO8rB24Pk9Kbg0IJFg4kWYGM5IE12rU9pgT4NGal4Q==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772643114-9149
+X-HE-Meta: U2FsdGVkX19d2mCLNDv7SSW3TWMbH/wIHv0+FvXGeTRUw5Evve5Bu0G7b/+qtM6kde5urmt44O+fXBdkFkqncLoxEYAz/nzMfYGCmnIg/vQQYGQ3oI19uAWheH9Ay6bwiilLmWVAqZ9THFH5x9FHpjXfyZZ4TfKqN6JAA8TkznpSdd1FW50dQh8icNqn5ctalNHpf4I5fZAyDJjuzFkvzPEu/XBDHOZADHEjm0BBZCQfQDLN+zxasHu/IgmMM99KM1nPnYQdZbcg/27knRKfMQ85T9jsJgYPanQIPSY9XGAl+X6NGo33jDJCGMOtvrsRZPHW17KGp3sIPWb1PRzWsEibQW/Gs24EguwaUGAIJ4rxQuwfLo7bC2uCCfEQf2NVoE52DV76shKCJc6LB0kPCIbbi1EhhQ/J4GLhjWQVh8QV3XFhIuxMiAy9tdJnzmqOTH3iydunY0pC2vhvsHms4QT/8IZvmSj/rtmtFYhBrppZaD74hfNoagDu//WJwXg4tV9DfN1yu/TISSyM3zr6NPjM7/IWfked/Y1b+xegu9cKAwa5RfmX4IrMH2nrrIfyXCr0o4EDpRdgaHpymX8vR8fnIH6SHupccE+Fb155ondgSIaIPsXrQcGW9MWEfbBN5OvDYgKReB6bnc0UZjBAPosPqicFL5BuaOa6T85ygdNH8HIo3ALqq7pM29w9cbWUFGqfx3dgOHv+lE2lHnyxsVe/UiS9sjSjSDc50PmhRz2uqly6qTW+yO9rJUY6yT/RbDz/Sj55Iakm6vLVxmwgPrmcvuWLr7NB1M5+B5xxpD0W5y8v7teTkcUtVClwMhL8r7g02iU8j66UWAIC8J34WhXpaiCPGpBCAlrS+cqYNvke3gw+0Cn7WgQFocJ7NAjiGOTXy5r5sJxtaUeYb3OC3aHTJnAF2l33NgkYgMRlVKjGMJeLDHhGNbBh+EUzvHK1QQ29D7V+BN7FX9l/l4w
+ L5YMRBYn
+ YpKgK5XKd/YoVrRqXpy1bK86zO0fYiFY1ei4w3weRm4NCeI37Ef1ZpFcmrEy7zazGKCT/jrkLhNDzt5aUQvzjsb5yFJ+krmprkyuejpYBmP2bD60+Zl+10hxeXsLwFSnapFf9VXrFF+IGtiGo5WFlQryb99XHxo7+Ex4F+2wWtCL1FuI6bTohPW0hsG5aProHvuVP/B5Ii7lMv+vhYY2hURfTOe2219ifwJIt9NfRN4EDVegKqGBHrVGUSa5IgPBKos+HHKMGOsGJjMsHWrn+oY11Sig1/P3A3uKGk0hxkHe1gXD4moHbsf1A2afH2JRCtqHvVx4jrMlSZqvHvyt6gsXaS84UmnrtmEic5VQMBwyIt1rrwqgzxa57h2nlLHaRRVWe4e9W5DP3HwL9gdIZPtWLNvAG7cdbQ7n47+svaeGu7KYnFzCZ2a8Lotv6US4ZYb0V2hme6PCWWIgBHppbac6mSgCJvkm5ZVns8yIIlrj5iaw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,35 +107,801 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 4, 2026 at 8:46=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrote=
-:
->
-> > > AFAICT the only zswap-specific part is the actual stat indexes, what
-> > > if these are parameterized at the zsmalloc pool level? AFAICT zswap
-> > > and zram will never share a pool.
+On Tue, Mar 03, 2026 at 02:11:31PM -0800, Suren Baghdasaryan wrote:
+> On Mon, Mar 2, 2026 at 6:53 AM Lorenzo Stoakes
+> <lorenzo.stoakes@oracle.com> wrote:
 > >
-> > TBH, if we were to start from scratch, these should be zsmalloc
-> > counters not zswap counters. Only zsmalloc knows about the memory
-> > placement and real memory consumption (i.e taking into account
-> > intra-slot wasted space) - this information is abstracted away from
-> > all of the callers.
+> > On Wed, Feb 25, 2026 at 11:06:08PM -0800, Suren Baghdasaryan wrote:
+> > > Now that we have vma_start_write_killable() we can replace most of the
+> > > vma_start_write() calls with it, improving reaction time to the kill
+> > > signal.
+> > >
+> > > There are several places which are left untouched by this patch:
+> > >
+> > > 1. free_pgtables() because function should free page tables even if a
+> > > fatal signal is pending.
+> > >
+> > > 2. process_vma_walk_lock(), which requires changes in its callers and
+> > > will be handled in the next patch.
+> > >
+> > > 3. userfaultd code, where some paths calling vma_start_write() can
+> > > handle EINTR and some can't without a deeper code refactoring.
+> >
+> > Surprise surprise :))
+> >
+> > >
+> > > 4. mpol_rebind_mm() which is used by cpusset controller for migrations
+> >
+> > Incredibly nitty but cpusset -> cpuset?
 >
-> I agree, but we cannot change the zswap stats now that we added them.
-> Keep in mind that when they were added zsmalloc was not the only
-> backend.
+> Ack.
 >
-> > And if/when zram supports cgroup tracking, memory
-> > used by zswap and memory used by zram is indistinguishable, no?
+> >
+> > > and operates on a remote mm. Incomplete operations here would result
+> > > in an inconsistent cgroup state.
+> > >
+> > > 5. vm_flags_{set|mod|clear} require refactoring that involves moving
+> > > vma_start_write() out of these functions and replacing it with
+> > > vma_assert_write_locked(), then callers of these functions should
+> > > lock the vma themselves using vma_start_write_killable() whenever
+> > > possible.
+> >
+> > This should be dealt with by my ongoing mmap_prepare, vma flags work.
 >
-> It is distinguishable as long as they use different zsmalloc pools, I
-> don't see why we'd need to share a pool.
->
-> > Anyway, Joshua, do you think this is doable? Seems promising to me,
-> > but idk if it will be clean to implement or not.
->
-> Not sure what you mean here? Changing the stats to be zsmalloc-based?
-> IIUC we can't do this without breaking userspace.
+> That would be great! It makes it much simpler once you are done with
+> that refactoring.
 
-No I meant your proposal haha. Sorry for being confusing - probably
-need more caffeine :)
+Yeah will be a big series ;) stats++;
+
+>
+> >
+> > >
+> > > Suggested-by: Matthew Wilcox <willy@infradead.org>
+> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
+> >
+> > Overall I'm a little concerned about whether callers can handle -EINTR in all
+> > cases, have you checked? Might we cause some weirdness in userspace if a syscall
+> > suddenly returns -EINTR when before it didn't?
+>
+> I did check the kernel users and put the patchset through AI reviews.
+> I haven't checked if any of the affected syscalls do not advertise
+> -EINTR as a possible error. Adding that to my todo list for the next
+> respin.
+
+Ah yeah as per Matthew's, fair enough. And yes it's only fatal signals.
+
+But then is there any point in doing special handling/not filtering? We may as
+well not :)
+
+I also don't want us to run into an issue where something other than a fatal
+error results in an -EINTR.
+
+>
+> >
+> > Also maybe we should update the manpages to reflect this, as semi-usless as the
+> > 'possible error codes' sections are...
+>
+> Ok, I'll check which syscalls need to be updated and will note that in
+> cover letter. Once the patchset is accepted I'll update the manpages
+> for them.
+
+Yeah obv nop as per Matthew.
+
+>
+> >
+> > > ---
+> > >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
+> > >  mm/khugepaged.c                    |  5 +-
+> > >  mm/madvise.c                       |  4 +-
+> > >  mm/memory.c                        |  2 +
+> > >  mm/mempolicy.c                     |  8 ++-
+> > >  mm/mlock.c                         | 21 +++++--
+> > >  mm/mprotect.c                      |  4 +-
+> > >  mm/mremap.c                        |  4 +-
+> > >  mm/vma.c                           | 93 +++++++++++++++++++++---------
+> > >  mm/vma_exec.c                      |  6 +-
+> > >  10 files changed, 109 insertions(+), 43 deletions(-)
+> > >
+> > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > index 5fbb95d90e99..0a28b48a46b8 100644
+> > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
+> > >                       ret = H_STATE;
+> > >                       break;
+> > >               }
+> > > -             vma_start_write(vma);
+> > > +             if (vma_start_write_killable(vma)) {
+> > > +                     ret = H_STATE;
+> > > +                     break;
+> > > +             }
+> > >               /* Copy vm_flags to avoid partial modifications in ksm_madvise */
+> > >               vm_flags = vma->vm_flags;
+> > >               ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > index 1dd3cfca610d..6c92e31ee5fb 100644
+> > > --- a/mm/khugepaged.c
+> > > +++ b/mm/khugepaged.c
+> > > @@ -1141,7 +1141,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+> > >       if (result != SCAN_SUCCEED)
+> > >               goto out_up_write;
+> > >       /* check if the pmd is still valid */
+> > > -     vma_start_write(vma);
+> > > +     if (vma_start_write_killable(vma)) {
+> > > +             result = SCAN_FAIL;
+> > > +             goto out_up_write;
+> > > +     }
+> > >       result = check_pmd_still_valid(mm, address, pmd);
+> > >       if (result != SCAN_SUCCEED)
+> > >               goto out_up_write;
+> > > diff --git a/mm/madvise.c b/mm/madvise.c
+> > > index c0370d9b4e23..ccdaea6b3b15 100644
+> > > --- a/mm/madvise.c
+> > > +++ b/mm/madvise.c
+> > > @@ -173,7 +173,9 @@ static int madvise_update_vma(vm_flags_t new_flags,
+> > >       madv_behavior->vma = vma;
+> > >
+> > >       /* vm_flags is protected by the mmap_lock held in write mode. */
+> > > -     vma_start_write(vma);
+> > > +     if (vma_start_write_killable(vma))
+> > > +             return -EINTR;
+> > > +
+> > >       vm_flags_reset(vma, new_flags);
+> > >       if (set_new_anon_name)
+> > >               return replace_anon_vma_name(vma, anon_name);
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 07778814b4a8..691062154cf5 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -379,6 +379,8 @@ void free_pgd_range(struct mmu_gather *tlb,
+> > >   * page tables that should be removed.  This can differ from the vma mappings on
+> > >   * some archs that may have mappings that need to be removed outside the vmas.
+> > >   * Note that the prev->vm_end and next->vm_start are often used.
+> > > + * We don't use vma_start_write_killable() because page tables should be freed
+> > > + * even if the task is being killed.
+> > >   *
+> > >   * The vma_end differs from the pg_end when a dup_mmap() failed and the tree has
+> > >   * unrelated data to the mm_struct being torn down.
+> > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > > index 0e5175f1c767..90939f5bde02 100644
+> > > --- a/mm/mempolicy.c
+> > > +++ b/mm/mempolicy.c
+> > > @@ -1784,7 +1784,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+> > >               return -EINVAL;
+> > >       if (end == start)
+> > >               return 0;
+> > > -     mmap_write_lock(mm);
+> > > +     if (mmap_write_lock_killable(mm))
+> > > +             return -EINTR;
+> >
+> > Hmm mmap write lock as well now :) I guess it makes sense here, esp given mmap
+> > write lock part of VMA write lock.
+>
+> Yeah, I thought while we are at it we can make this part a bit better too...
+
+Yup that's fair.
+
+>
+> >
+> >
+> > >       prev = vma_prev(&vmi);
+> > >       for_each_vma_range(vmi, vma, end) {
+> > >               /*
+> > > @@ -1801,13 +1802,16 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+> > >                       err = -EOPNOTSUPP;
+> > >                       break;
+> > >               }
+> > > +             if (vma_start_write_killable(vma)) {
+> > > +                     err = -EINTR;
+> > > +                     break;
+> > > +             }
+> > >               new = mpol_dup(old);
+> > >               if (IS_ERR(new)) {
+> > >                       err = PTR_ERR(new);
+> > >                       break;
+> > >               }
+> > >
+> > > -             vma_start_write(vma);
+> >
+> > Are we ok with moving this to before mpol_dup()? Does this matter? Confused as
+> > to why you moved this up?
+>
+> I thought if locking fails, it would be better to check that earlier
+> before allocating a new mempolicy. That seems to be safe, but thinking
+> about this now, if allocation goes into direct reclaim and causes the
+> lock to be held for longer then that might not be such a hot idea...
+
+Yeah :) it's stuff like this that makes me worry. But moreso some horrendous
+lock ordering issue...
+
+>
+> >
+> > >               new->home_node = home_node;
+> > >               err = mbind_range(&vmi, vma, &prev, start, end, new);
+> > >               mpol_put(new);
+> > > diff --git a/mm/mlock.c b/mm/mlock.c
+> > > index 2f699c3497a5..c562c77c3ee0 100644
+> > > --- a/mm/mlock.c
+> > > +++ b/mm/mlock.c
+> > > @@ -420,7 +420,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+> > >   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOCKED;
+> > >   * called for munlock() and munlockall(), to clear VM_LOCKED from @vma.
+> > >   */
+> >
+> > You should update the comment to reflect this possible return value.
+>
+> Ack.
+
+Thanks!
+
+>
+> >
+> > > -static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> > > +static int mlock_vma_pages_range(struct vm_area_struct *vma,
+> > >       unsigned long start, unsigned long end, vm_flags_t newflags)
+> > >  {
+> > >       static const struct mm_walk_ops mlock_walk_ops = {
+> > > @@ -441,7 +441,9 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> > >        */
+> > >       if (newflags & VM_LOCKED)
+> > >               newflags |= VM_IO;
+> > > -     vma_start_write(vma);
+> > > +     if (vma_start_write_killable(vma))
+> > > +             return -EINTR;
+> > > +
+> > >       vm_flags_reset_once(vma, newflags);
+> > >
+> > >       lru_add_drain();
+> > > @@ -452,6 +454,7 @@ static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> > >               newflags &= ~VM_IO;
+> > >               vm_flags_reset_once(vma, newflags);
+> > >       }
+> > > +     return 0;
+> > >  }
+> > >
+> > >  /*
+> > > @@ -501,10 +504,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >        */
+> > >       if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+> > >               /* No work to do, and mlocking twice would be wrong */
+> >
+> > I'd move this comment down to the vm_flags_reset() line as it's not applicable
+> > if we fail to get the lock.
+>
+> Ack.
+
+Thanks!
+
+>
+> >
+> >
+> > > -             vma_start_write(vma);
+> > > +             ret = vma_start_write_killable(vma);
+> > > +             if (ret)
+> > > +                     goto out;
+> > >               vm_flags_reset(vma, newflags);
+> > >       } else {
+> > > -             mlock_vma_pages_range(vma, start, end, newflags);
+> > > +             ret = mlock_vma_pages_range(vma, start, end, newflags);
+> > >       }
+> > >  out:
+> > >       *prev = vma;
+> > > @@ -733,9 +738,13 @@ static int apply_mlockall_flags(int flags)
+> > >
+> > >               error = mlock_fixup(&vmi, vma, &prev, vma->vm_start, vma->vm_end,
+> > >                                   newflags);
+> > > -             /* Ignore errors, but prev needs fixing up. */
+> > > -             if (error)
+> > > +             /* Ignore errors except EINTR, but prev needs fixing up. */
+> >
+> > Well, except you're not fixing it up on -EINTR? This comment should be redone.
+>
+> Hmm, should we fixup if the process is terminating? Does it matter at
+> this point?
+
+We may as well keep the comment accurate though? I mean this isn't a big deal :)
+
+>
+> >
+> > But I wonder if this is correct? We are ignoring all other errors that
+> > interrupted the operation, so why are we special casing -EINTR?
+>
+> Well, -EINTR means all the work you are doing here is useless because
+> the process is about to go away. So, in that respect I think it's
+> different from other errors.
+
+Well -EINTR doesn't _just_ mean fatal signal. We happen to know here that what
+we're calling will only return -EINTR in that case, but if somebody changes
+downstream code to return -EINTR for _another_ reason there's an issue.
+
+Can we just replace these horrid -EINTR checks with
+is_fatal_signal_pending(current)?
+
+>
+> >
+> > > +             if (error) {
+> > > +                     if (error == -EINTR)
+> > > +                             return error;
+> > > +
+> > >                       prev = vma;
+> > > +             }
+> > >               cond_resched();
+> > >       }
+> > >  out:
+> > > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > > index c0571445bef7..49dbb7156936 100644
+> > > --- a/mm/mprotect.c
+> > > +++ b/mm/mprotect.c
+> > > @@ -765,7 +765,9 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> > >        * vm_flags and vm_page_prot are protected by the mmap_lock
+> > >        * held in write mode.
+> > >        */
+> > > -     vma_start_write(vma);
+> > > +     error = vma_start_write_killable(vma);
+> > > +     if (error < 0)
+> >
+> > Weird inconstency here, this should be if (error).
+>
+> Ack.
+
+Thanks!
+
+>
+> >
+> > > +             goto fail;
+> > >       vm_flags_reset_once(vma, newflags);
+> > >       if (vma_wants_manual_pte_write_upgrade(vma))
+> > >               mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+> > > diff --git a/mm/mremap.c b/mm/mremap.c
+> > > index 2be876a70cc0..aef1e5f373c7 100644
+> > > --- a/mm/mremap.c
+> > > +++ b/mm/mremap.c
+> > > @@ -1286,7 +1286,9 @@ static unsigned long move_vma(struct vma_remap_struct *vrm)
+> > >               return -ENOMEM;
+> > >
+> > >       /* We don't want racing faults. */
+> > > -     vma_start_write(vrm->vma);
+> > > +     err = vma_start_write_killable(vrm->vma);
+> > > +     if (err)
+> > > +             return err;
+> > >
+> > >       /* Perform copy step. */
+> > >       err = copy_vma_and_data(vrm, &new_vma);
+> > > diff --git a/mm/vma.c b/mm/vma.c
+> > > index bb4d0326fecb..9f2664f1d078 100644
+> > > --- a/mm/vma.c
+> > > +++ b/mm/vma.c
+> > > @@ -530,6 +530,13 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >       if (err)
+> > >               goto out_free_vmi;
+> > >
+> > > +     err = vma_start_write_killable(vma);
+> > > +     if (err)
+> > > +             goto out_free_mpol;
+> > > +     err = vma_start_write_killable(new);
+> > > +     if (err)
+> > > +             goto out_free_mpol;
+> > > +
+> > >       err = anon_vma_clone(new, vma, VMA_OP_SPLIT);
+> > >       if (err)
+> > >               goto out_free_mpol;
+> > > @@ -540,9 +547,6 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >       if (new->vm_ops && new->vm_ops->open)
+> > >               new->vm_ops->open(new);
+> > >
+> > > -     vma_start_write(vma);
+> > > -     vma_start_write(new);
+> > > -
+> >
+> > Again you're changing ordering seemingly arbitrarily.
+>
+> I moved it up to avoid undoing all the work above (vm_ops->open,
+> vma_dup_policy, vma_iter_prealloc, vm_area_dup,..)
+>
+> > I think this is actually a
+> > more problematic case as you're now invoking vm_ops->open() with a VMA write
+> > lock held.
+>
+> Are you concerned about potential increased duration of the vma lock
+> being held or that open() might try to take that lock itself (which is
+> not a problem because vma write locks are reentrant)? Maybe some other
+> concern I'm missing?
+
+General concern about reordering, but fair point re: undoing.
+
+rmap.c says it's ok so we're good:
+
+ *           vma_start_write
+ *             mapping->i_mmap_rwsem
+ *               anon_vma->rwsem
+
+>
+> >
+> > So I think you should keep the existing position.
+>
+> If we do that then we would have to undo a bunch of operations. I'm
+> fine adding that if there are reasons to avoid this move.
+
+OK fair enough in this case.
+
+>
+> >
+> > >       init_vma_prep(&vp, vma);
+> > >       vp.insert = new;
+> > >       vma_prepare(&vp);
+> > > @@ -895,16 +899,22 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
+> > >       }
+> > >
+> > >       /* No matter what happens, we will be adjusting middle. */
+> > > -     vma_start_write(middle);
+> > > +     err = vma_start_write_killable(middle);
+> > > +     if (err)
+> > > +             goto abort;
+> > >
+> > >       if (merge_right) {
+> > > -             vma_start_write(next);
+> > > +             err = vma_start_write_killable(next);
+> > > +             if (err)
+> > > +                     goto abort;
+> > >               vmg->target = next;
+> > >               sticky_flags |= (next->vm_flags & VM_STICKY);
+> > >       }
+> > >
+> > >       if (merge_left) {
+> > > -             vma_start_write(prev);
+> > > +             err = vma_start_write_killable(prev);
+> > > +             if (err)
+> > > +                     goto abort;
+> > >               vmg->target = prev;
+> > >               sticky_flags |= (prev->vm_flags & VM_STICKY);
+> > >       }
+> > > @@ -1155,10 +1165,12 @@ int vma_expand(struct vma_merge_struct *vmg)
+> > >       struct vm_area_struct *next = vmg->next;
+> > >       bool remove_next = false;
+> > >       vm_flags_t sticky_flags;
+> > > -     int ret = 0;
+> > > +     int ret;
+> > >
+> > >       mmap_assert_write_locked(vmg->mm);
+> > > -     vma_start_write(target);
+> > > +     ret = vma_start_write_killable(target);
+> > > +     if (ret)
+> > > +             return ret;
+> > >
+> > >       if (next && target != next && vmg->end == next->vm_end)
+> > >               remove_next = true;
+> > > @@ -1187,6 +1199,9 @@ int vma_expand(struct vma_merge_struct *vmg)
+> > >        * we don't need to account for vmg->give_up_on_mm here.
+> > >        */
+> > >       if (remove_next) {
+> > > +             ret = vma_start_write_killable(next);
+> > > +             if (ret)
+> > > +                     return ret;
+> > >               ret = dup_anon_vma(target, next, &anon_dup);
+> > >               if (ret)
+> > >                       return ret;
+> > > @@ -1197,10 +1212,8 @@ int vma_expand(struct vma_merge_struct *vmg)
+> > >                       return ret;
+> > >       }
+> > >
+> > > -     if (remove_next) {
+> > > -             vma_start_write(next);
+> > > +     if (remove_next)
+> > >               vmg->__remove_next = true;
+> > > -     }
+> >
+> > Hmm you're moving the ordering of things around again :) You should have made
+> > this change as part of patch 1 anyway first so this patch wouldn't have a
+> > refactoring in it too.
+> >
+> > Top of rmap.c suggests you _can_ take the VMA write lock prior to trying the dup
+> > but I'm just not sure why you'd want to switch these around in this patch?
+> >
+> > Can we try to keep original ordering unless there's a really good reason not to?
+>
+> Again, I'm trying to avoid undoing things if locking fails but this
+> function already has rollback code, so I can reuse it. I'll keep the
+> old placement here.
+
+Ack yeah... :)
+
+We're safe with vma -> anon rmap lock anyway.
+
+>
+> >
+> > >       if (commit_merge(vmg))
+> > >               goto nomem;
+> > >
+> > > @@ -1233,6 +1246,7 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >              unsigned long start, unsigned long end, pgoff_t pgoff)
+> > >  {
+> > >       struct vma_prepare vp;
+> > > +     int err;
+> > >
+> > >       WARN_ON((vma->vm_start != start) && (vma->vm_end != end));
+> > >
+> > > @@ -1244,7 +1258,11 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >       if (vma_iter_prealloc(vmi, NULL))
+> > >               return -ENOMEM;
+> > >
+> > > -     vma_start_write(vma);
+> > > +     err = vma_start_write_killable(vma);
+> > > +     if (err) {
+> > > +             vma_iter_free(vmi);
+> > > +             return err;
+> > > +     }
+> > >
+> > >       init_vma_prep(&vp, vma);
+> > >       vma_prepare(&vp);
+> > > @@ -1434,7 +1452,9 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
+> > >                       if (error)
+> > >                               goto end_split_failed;
+> > >               }
+> > > -             vma_start_write(next);
+> > > +             error = vma_start_write_killable(next);
+> > > +             if (error)
+> > > +                     goto munmap_gather_failed;
+> > >               mas_set(mas_detach, vms->vma_count++);
+> > >               error = mas_store_gfp(mas_detach, next, GFP_KERNEL);
+> > >               if (error)
+> > > @@ -1828,12 +1848,17 @@ static void vma_link_file(struct vm_area_struct *vma, bool hold_rmap_lock)
+> > >  static int vma_link(struct mm_struct *mm, struct vm_area_struct *vma)
+> > >  {
+> > >       VMA_ITERATOR(vmi, mm, 0);
+> > > +     int err;
+> > >
+> > >       vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
+> > >       if (vma_iter_prealloc(&vmi, vma))
+> > >               return -ENOMEM;
+> > >
+> > > -     vma_start_write(vma);
+> > > +     err = vma_start_write_killable(vma);
+> > > +     if (err) {
+> > > +             vma_iter_free(&vmi);
+> > > +             return err;
+> > > +     }
+> > >       vma_iter_store_new(&vmi, vma);
+> > >       vma_link_file(vma, /* hold_rmap_lock= */false);
+> > >       mm->map_count++;
+> > > @@ -2215,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
+> > >        * is reached.
+> > >        */
+> > >       for_each_vma(vmi, vma) {
+> > > -             if (signal_pending(current))
+> > > +             if (signal_pending(current) || vma_start_write_killable(vma))
+> > >                       goto out_unlock;
+> > > -             vma_start_write(vma);
+> > >       }
+> > >
+> > >       vma_iter_init(&vmi, mm, 0);
+> > > @@ -2522,6 +2546,11 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+> > >       if (!vma)
+> > >               return -ENOMEM;
+> > >
+> > > +     /* Lock the VMA since it is modified after insertion into VMA tree */
+> > > +     error = vma_start_write_killable(vma);
+> > > +     if (error)
+> > > +             goto free_vma;
+> > > +
+> >
+> > You're doing it again :)
+> >
+> > Can we please keep the lock acquisition at the point it is in unless there's a
+> > really good reason not to.
+> >
+> > And if there is a good reason, please do it in another commit prior to the
+> > massive 'change everything' one so it's more easily reviewable :)
+>
+> The reason for this one is that I want to avoid undoing
+> __mmap_new_file_vma() if we fail to lock the VMA later. Undoing that
+> one would be messy, so I would prefer locking it earlier. These
+> operations are already performed under the mmap write lock. Is that
+> really a problem if we write-lock the VMA as well?
+
+This is a fair point, I obviously glanced over this without thinking about that
+:)
+
+I think you should include in the commit message why you're reordering though.
+
+>
+> >
+> > >       vma_iter_config(vmi, map->addr, map->end);
+> > >       vma_set_range(vma, map->addr, map->end, map->pgoff);
+> > >       vm_flags_init(vma, map->vm_flags);
+> > > @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *map, struct vm_area_struct **vmap)
+> > >       WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
+> > >  #endif
+> > >
+> > > -     /* Lock the VMA since it is modified after insertion into VMA tree */
+> > > -     vma_start_write(vma);
+> > >       vma_iter_store_new(vmi, vma);
+> > >       map->mm->map_count++;
+> > >       vma_link_file(vma, map->hold_file_rmap_lock);
+> > > @@ -2864,6 +2891,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >                unsigned long addr, unsigned long len, vm_flags_t vm_flags)
+> > >  {
+> > >       struct mm_struct *mm = current->mm;
+> > > +     int err = -ENOMEM;
+> >
+> > I hate this 'default error code' pattern, it's a code smell. Please update
+> > everything that jumps to the failure case to set err, and leave this
+> > uninitialised.
+> >
+> > We've had real bugs come out of this before!
+>
+> Ack.
+
+Thanks!
+
+>
+> >
+> > >
+> > >       /*
+> > >        * Check against address space limits by the changed size
+> > > @@ -2908,7 +2936,10 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >       vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
+> > >       vm_flags_init(vma, vm_flags);
+> > >       vma->vm_page_prot = vm_get_page_prot(vm_flags);
+> > > -     vma_start_write(vma);
+> > > +     if (vma_start_write_killable(vma)) {
+> > > +             err = -EINTR;
+> > > +             goto mas_store_fail;
+> > > +     }
+> > >       if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
+> > >               goto mas_store_fail;
+> > >
+> > > @@ -2928,7 +2959,7 @@ int do_brk_flags(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> > >       vm_area_free(vma);
+> > >  unacct_fail:
+> > >       vm_unacct_memory(len >> PAGE_SHIFT);
+> > > -     return -ENOMEM;
+> > > +     return err;
+> > >  }
+> > >
+> > >  /**
+> > > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+> > >       struct mm_struct *mm = vma->vm_mm;
+> > >       struct vm_area_struct *next;
+> > >       unsigned long gap_addr;
+> > > -     int error = 0;
+> > > +     int error;
+> > >       VMA_ITERATOR(vmi, mm, vma->vm_start);
+> > >
+> > >       if (!(vma->vm_flags & VM_GROWSUP))
+> > > @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+> > >
+> > >       /* We must make sure the anon_vma is allocated. */
+> > >       if (unlikely(anon_vma_prepare(vma))) {
+> > > -             vma_iter_free(&vmi);
+> > > -             return -ENOMEM;
+> > > +             error = -ENOMEM;
+> > > +             goto free;
+> > >       }
+> > >
+> > >       /* Lock the VMA before expanding to prevent concurrent page faults */
+> > > -     vma_start_write(vma);
+> > > +     error = vma_start_write_killable(vma);
+> > > +     if (error)
+> > > +             goto free;
+> > >       /* We update the anon VMA tree. */
+> > >       anon_vma_lock_write(vma->anon_vma);
+> > >
+> > > @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma, unsigned long address)
+> > >               }
+> > >       }
+> > >       anon_vma_unlock_write(vma->anon_vma);
+> > > +free:
+> >
+> > Nitty, but this kinda sucks as a label name, generally when the error label
+> > contains 'free' it is free_xxx where 'xxx' is some specific thing.
+> >
+> > So somethiing like 'fail' would be good.
+>
+> Ack. Will change to something more appropriate.
+
+Thanks!
+
+>
+> >
+> > >       vma_iter_free(&vmi);
+> > >       validate_mm(mm);
+> > >       return error;
+> > > @@ -3174,7 +3208,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+> > >  {
+> > >       struct mm_struct *mm = vma->vm_mm;
+> > >       struct vm_area_struct *prev;
+> > > -     int error = 0;
+> > > +     int error;
+> > >       VMA_ITERATOR(vmi, mm, vma->vm_start);
+> > >
+> > >       if (!(vma->vm_flags & VM_GROWSDOWN))
+> > > @@ -3205,12 +3239,14 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+> > >
+> > >       /* We must make sure the anon_vma is allocated. */
+> > >       if (unlikely(anon_vma_prepare(vma))) {
+> > > -             vma_iter_free(&vmi);
+> > > -             return -ENOMEM;
+> > > +             error = -ENOMEM;
+> > > +             goto free;
+> > >       }
+> > >
+> > >       /* Lock the VMA before expanding to prevent concurrent page faults */
+> > > -     vma_start_write(vma);
+> > > +     error = vma_start_write_killable(vma);
+> > > +     if (error)
+> > > +             goto free;
+> > >       /* We update the anon VMA tree. */
+> > >       anon_vma_lock_write(vma->anon_vma);
+> > >
+> > > @@ -3240,6 +3276,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
+> > >               }
+> > >       }
+> > >       anon_vma_unlock_write(vma->anon_vma);
+> > > +free:
+> >
+> > Obviously same comment her :)
+>
+> Ack.
+
+Thanks!
+
+>
+> >
+> > >       vma_iter_free(&vmi);
+> > >       validate_mm(mm);
+> > >       return error;
+> > > diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> > > index 8134e1afca68..a4addc2a8480 100644
+> > > --- a/mm/vma_exec.c
+> > > +++ b/mm/vma_exec.c
+> > > @@ -40,6 +40,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+> > >       struct vm_area_struct *next;
+> > >       struct mmu_gather tlb;
+> > >       PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+> > > +     int err;
+> > >
+> > >       BUG_ON(new_start > new_end);
+> > >
+> > > @@ -55,8 +56,9 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
+> > >        * cover the whole range: [new_start, old_end)
+> > >        */
+> > >       vmg.target = vma;
+> > > -     if (vma_expand(&vmg))
+> > > -             return -ENOMEM;
+> > > +     err = vma_expand(&vmg);
+> > > +     if (err)
+> > > +             return err;
+> >
+> > Hmm. But before we were filtering the errors and now we're not... I guess not an
+> > issue as before it could _only_ return -ENOMEM, but again, are we sure all
+> > callers are fine with -EINTR I guess :)
+>
+> This function is called only from setup_arg_pages() and all its
+> callers end up being linux_binfmt.load_binary handlers. The returned
+> error propagates all the way to execve() and its friends. And with my
+> extreme "luck" the execve syscall lists probably every single possible
+> error code except EINTR :) This is depressing...
+
+Well as per Matthew's point this is probably fine.
+
+>
+> Thanks for the detailed review, Lorenzo! I guess we need to discuss
+> these lock moves a bit more before I start on the new version.
+
+Nah I think we're good after this!
+
+>
+> >
+> > >
+> > >       /*
+> > >        * move the page tables downwards, on failure we rely on
+> > > --
+> > > 2.53.0.414.gf7e9f6c205-goog
+> > >
+> >
+> > Cheers, Lorenzo
+> >
+
+Cheers, Lorenzo
 
