@@ -4,138 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3887DEB7EAC
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 09:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0118EEB7EB5
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 09:38:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817A06B0092; Wed,  4 Mar 2026 04:30:40 -0500 (EST)
+	id 1DD436B0088; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C5BA6B0093; Wed,  4 Mar 2026 04:30:40 -0500 (EST)
+	id 18B396B0089; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A73C6B0095; Wed,  4 Mar 2026 04:30:40 -0500 (EST)
+	id 08DC76B008A; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 57FA96B0092
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 04:30:40 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D889FB97F8
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:30:39 +0000 (UTC)
-X-FDA: 84507860598.21.30EB026
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E52C34000B
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:30:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDaALdUp;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EAF5A6B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 04:38:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D7911B80D6
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:38:11 +0000 (UTC)
+X-FDA: 84507879582.30.589ECEE
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D40E1120010
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:38:09 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lKgxNBFi;
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772616638;
+	s=arc-20220608; t=1772617089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BUzQoESoh9/PqMSFbMpuw4Pmh5IPXiGP/qvOjxX4wwo=;
-	b=F7o2mTHfZmSJelvrIXunIvDerNm/TKOTQKDWEc01G2muDAVNzpRSCEkSj6eUQ88BZArlSn
-	Q47WScH3RuswPhsM7GdG3ayMcXHK7X4Hi620v6WsU44l4WM1B8kxzUyrCa1D6E7uApGeB8
-	08pjiOa/fe0HS9Hr7Gy0PqJmfqm/Syk=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CDaALdUp;
-	spf=pass (imf17.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772616638; a=rsa-sha256;
+	bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
+	b=yWoXpd1fl2p8tSZCcZi790UYl6mSc8ibNafx2inYBXFY9Z5QOV+Cu3ABznUmnkSMd2ZPGL
+	ZsHfMfISgAORljRpHq4gnrmfLZh4wVX2FFV/VJEGkBtKvpirPpJd81BoIk9pJ0k31dJ0HH
+	vIReGZNVIHCGUWHDJtmzZFVI15PKVUU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772617089; a=rsa-sha256;
 	cv=none;
-	b=s+VrJUk2/JyGHp6y/982wRMP20Lb8bp+eCAhZ6p8mLq7tZal9UbJu9hw5c2956z84oVi1y
-	WfiBOhGKlS2ddHjkhlkVU7JU0QMYfe//dJIK9hQGvpfKvPeKrZ+lrTyQod6QlJBK59ikXE
-	QNECLnd7vh9rTX/W47yXskh5EL40n90=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48371bb515eso99247645e9.1
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 01:30:37 -0800 (PST)
+	b=6KexHYgsAm6f9SneKlJAnhL5FIfGixoLVFXBqBVX6qhwXxXjguTV8ZkODm7Oau5VxDV7qu
+	fzZQnrjeBQorHuGrkknimWCuvF+qh+tlYRsnvCW5z0fverq5c3Tt7TzHDfE6mOByJ3C6ga
+	cVbHTjAJhME6U6oz21NfQQQDUjNPO6I=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lKgxNBFi;
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ad9a9be502so44878485ad.0
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 01:38:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772616636; x=1773221436; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUzQoESoh9/PqMSFbMpuw4Pmh5IPXiGP/qvOjxX4wwo=;
-        b=CDaALdUprZmgx9tWH+AgrjjXuxP/h4cdWjUyuXkwyFbIRWqGtZp4GCDqBvhkF8TZvD
-         rQvLeO/9gu3gSE9FEuX+qpPq/V+BysI0mkuY+94Au3Qa7Wq3bqdhG5w/yJGISLsqh3DG
-         y1tJ9Wv6V6jzKFFV0ZpN6/RGP3NzaFp0XtN2e93Lj+oMsZYsBKk61lddDKZBQt7rFVE0
-         33crKQ2HYUmC0c7kdDRN0FjsXKQ1XC60whCjA4HYyrKHr9UCUGKfK3qFGfA/l1pOH2FC
-         BV2cY2Y3HP35FM9UQfvnrAQ3/rlbU5CqeNDAm/aUFoeuYCM6aXx0/YMz3wxJGhmdhSCj
-         uacA==
+        d=gmail.com; s=20230601; t=1772617088; x=1773221888; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
+        b=lKgxNBFiaWpSzjkXepVQacb5RFKdU37WArzUAGne4rl2CvsuKhpIzqkvyzG29cWUdR
+         6ihu9CFgIMPcgawTleId3Zx5eqMUD8T+FzzvUvSaUhe8TW3qjP5b+kO0bLivjDosbzZr
+         4VJ4zGQntPpkyKV5ot5U72YlpDZDC9Zhxu1EjIv3wWXZiSrBittyvVCiTDGzb7HVnepa
+         URX5rKZUtTcphH516hkLV7s5W5F5xYDFUBujGUy0JrC3P2CQ7o75AIiWiqGfTKpeYBoS
+         mZWNfVLNFPHpFYrEFuxIFcRpMIM61ywOdOUnL8FVivvF0vNCXlvHiUPIV/Z6l/zEE6xZ
+         LQ3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772616636; x=1773221436;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BUzQoESoh9/PqMSFbMpuw4Pmh5IPXiGP/qvOjxX4wwo=;
-        b=ZCOoVpsoSuJr6t4TGcP3hkIPjuIq2TRuoHf3UO8EkL64YAPBCvi7PN13xNcrf0jJmC
-         6j8i2m2x6Abi7UuYiItw6XxNw00LVUhRJIg6Ia63/IFcyHI1gu1RDvwuY30a6ypxyupM
-         j/4TjQ8ildFGkZt8U5079Qay8RN6XY7XJxbep5C0jLhZ13JHVFNtt/cTMMiiVr7yhklL
-         PRyW+VDrnxlAYHLmqG0m89DgTfnPT4XscLpZCKf+YC+xuE1galvSdWpmPkrDeL3SbkXw
-         nQt4X1WHaXFka4dZ0FTCrSOD6tTQ+h7eBDyIXsib4+OW6qA6f22c07mUbOc7XpBkell6
-         22cw==
-X-Forwarded-Encrypted: i=1; AJvYcCUC9qq8DRWTaFPWE2W0J8h0VvpChIq7eucjGH3Qt/SafLRnTq3ZowhmCV+oRIbiQhID0coy4kCzeg==@kvack.org
-X-Gm-Message-State: AOJu0YxIlMINEdx6pTAThlC8D2o7lhdwZWPwZZngSTIQKAwnVsb3LdMc
-	glGjW6rb2VO/vvBSh0ihQAcVeJftQdoNGygKsvAKb6o43G0o5KG/O0SR
-X-Gm-Gg: ATEYQzyCw9mJoeyV/PrA7KBcBBrmzoTYtYaIbMOsgz+JadI1LvLLjNk90o4hOa/31bV
-	L6cVty70IrrYnj5N0+dVTCzd8M6K6E7I0uaLLUOQF4uZUdMOql4UuFkSAixiC+09I+M4IMSqk2A
-	L47Bu0QhI8qSSktmpN4mGaXSfoSG3AgIE0BNHkbLX0LQ/LcGaxYHWq9ikuwkYLW4t/D3funEz/C
-	XctfqAov9HgDDt4/fBwk+ErXruLy5PA20edQXvyrKe+b1GBXV9N1qtrGgpOdP917H/v8Mm++58N
-	IeB0iAWq41tuyYcHZ34ZbrCeKNXrV7SlopqHTmUk1eH/lDSuvWvMcT7ozIp8/hnj79yntTmJY8I
-	Gblt+FaVZWjAUyEghHXb3BzsYPy8cDRTEhqvvYHeuNyl8kaLwlJkIhRPYsuX/Pf0QIeHsJg8PBA
-	PK3Cx70qon+Ea1clo4B38+Nw6b9aj1ZKQMkocXYedDpYL22wornEdHin/o9sY9BZJj
-X-Received: by 2002:a05:600c:8b53:b0:483:498f:7963 with SMTP id 5b1f17b1804b1-4851989024emr19550785e9.26.1772616636117;
-        Wed, 04 Mar 2026 01:30:36 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851884225asm38972555e9.6.2026.03.04.01.30.35
+        d=1e100.net; s=20230601; t=1772617088; x=1773221888;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
+        b=u6U/UnuHUpQM7KLflWP2GImJ/O+1Rx5V5ScZ4oX/eJ6PdyB32TNICb2mavIaFf61p1
+         iazV+wsWgNXiBl/n1XK/vjgsNl5E07GPHXnAYPFGI0Pb4UnJ5+YIJaStaJzzqIOhNIw6
+         CyAZANXvEZPAfHfTsA2H3Mb4YuvdbTem4brgcRfQsVsnbFks0ZqlEfP0I7ceQq4GfkL+
+         vy9CBKBoG9NnxUn6cJMXMcpVD2EXactQ7NJB7s4IkqXzH2QGkZB3zF3MQ8Dxtbbq6sOC
+         MaFAd5tFWWYWSnkZLELDnamWEj3o5FFh1KqnT0ozc8MceIN4R11Gyy81RlhB7G7QPR+t
+         ak2w==
+X-Gm-Message-State: AOJu0YygAI9tlUNS1Val0XiMmn/IzR1RMkr6AmAzZxxoO64AEmv5zqFk
+	31H7PtKlKEifATV8we7O9bAg5hNyL+lABzWEtglFn+NIEk9AlC2DL/jg
+X-Gm-Gg: ATEYQzy2seEAFTMSM1eetlfZBKPhZoeFhYl0Zq2QNSPXhUUXXiOJwAWlbcPhygF/XVW
+	s0UZxn1deApR5R4J9qhoE4hn+4tFR20Q95wwEnuJNrC0GOKhdVpcaPaVE06q4Qm5wlmGg8pe9A8
+	XX15tQT6od4tkos8IkOUk9Vw7CtFqk4rG8KEKtqiPzEP/ezStTLh0qMVvadrNaslVXRa5lZh/Hq
+	uy8yOXzhIGn03I/7p/Mm/as/3M5ewRZbrHcvLr3S0Y8giFVhasi0Ijxc0b/8DkgS40AmFlK1SW3
+	6ZY5MRfFCC7XjD7OgvaZDmY6Ls9gaqvYMzXrBR3wS8QB4vTXL4H0y0xZ1DKJSGmcUwEX+5bfq8/
+	+SYrBm180EurRkEvgm4mz0/GL9jwIfAKOf2ay9fv7+k7Hr9LxbWarNXGbA/OyXwuq11GzZE2ten
+	xazqkAPJzbXTNrBltC
+X-Received: by 2002:a17:902:da4d:b0:2ae:593c:48fe with SMTP id d9443c01a7336-2ae6aa06a22mr11815955ad.13.1772617088564;
+        Wed, 04 Mar 2026 01:38:08 -0800 (PST)
+Received: from dw-tp ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69fa65sm190048445ad.58.2026.03.04.01.38.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 01:30:35 -0800 (PST)
-Date: Wed, 4 Mar 2026 09:30:33 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: NeilBrown <neilb@ownmail.net>
-Cc: "Jeff Layton" <jlayton@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- nvdimm@lists.linux.dev, fsverity@lists.linux.dev, linux-mm@kvack.org,
- netfs@lists.linux.dev, linux-ext4@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-nfs@vger.kernel.org,
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
- linux-nilfs@vger.kernel.org, v9fs@lists.linux.dev,
- linux-afs@lists.infradead.org, autofs@vger.kernel.org,
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
- linux-x25@vger.kernel.org, audit@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v2 000/110] vfs: change inode->i_ino from unsigned long
- to u64
-Message-ID: <20260304092559.554ac9a9@pumpkin>
-In-Reply-To: <177260561903.7472.14075475865748618717@noble.neil.brown.name>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-	<1787281.1772535332@warthog.procyon.org.uk>
-	<1c28e34c7167acf4e20c3e201476504135aa44e8.camel@kernel.org>
-	<177260561903.7472.14075475865748618717@noble.neil.brown.name>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Wed, 04 Mar 2026 01:38:07 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [RFC v1 10/10] powerpc: Add MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS
+In-Reply-To: <727cad61-9df9-473b-9a79-f70ad1cd4e3e@kernel.org>
+Date: Wed, 04 Mar 2026 14:53:49 +0530
+Message-ID: <87ikbcj6ca.ritesh.list@gmail.com>
+References: <cover.1772013273.git.ritesh.list@gmail.com> <c57b1c00145a2db1a1b4feec94cfc2917e4877af.1772013273.git.ritesh.list@gmail.com> <727cad61-9df9-473b-9a79-f70ad1cd4e3e@kernel.org>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D40E1120010
+X-Stat-Signature: abx7uhfjmnw9wso4sxumsrkhuznauheu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E52C34000B
-X-Rspamd-Server: rspam08
-X-Stat-Signature: znjgzzy43cabzh8dwyu7boct3fhgedg3
-X-HE-Tag: 1772616637-728132
-X-HE-Meta: U2FsdGVkX1+jUODk1qQx80ygh1lV9b8MYlcYIGIvtsD4UIkBR4jy1SMo3DjuoxyvKdcR/M2tBv1SxAWTSTmsmJQakM9hdciS4Ds1wqOrTTuEkB1UCj8JeCR3wdNF6g7SSlz+RrM8aAzFOMrvCh+kggBxyGzVx4CI0kDQJqhOz4Kmwg5jNSRVkQiEfs+u7guU4MbUnSqJEvQLURJtgqZhzOgerE/TrsgfuI7jS7yqy3POD0yh/qkB8B0dw4OpSWljQIaPU57cEKAqLqY9evqlMGsQO95aySztGgkiKX3Sq7bfWw0U7qDOtL2SC3E6totwRPTO+Op8J5eKfmlm7STVximPcTiEvi+T7vZEGewRsxLR66Gei19cT6PlLf/T/Gh8Y700kwDtG8yMQ825/fWHTO7/9G9kGRNk/LWeW6fQepKVpycNkyNk2gwQbDh6qTULp9E/byBoo1R7etpcWwettcfTekIhRPa73DU5tN55nUauGPkPi+krGrPkvcxynXMxl1acDN3GJZiKFsIWmGXyIiL9Yq0UGgu7Aw4IuaHm1TcKzQbpsPfsyjYs+WpmLyGcPS1bt9SwTvoCKkRFKKMmzeCRH34szer7fPisQBCUaytdcT4gC6F456YYLWur+xHxE5dSDqa9ZSoMCXdHyZE9VjbGhiAn+Gu/ZeaUws9bxHXrYOZNPswOiTSi6cxghHIbip7/dZvLB3g80rNYyyZKM1VLVssIhS7yP8mRki9TetmP+fgbxOBhen2XypcFVEbQmITtuJRpkfr5lGb1tNZYY3EyDZH/hPzE8tEejUZatmZfJ599OHOnKbbkwFl0dBE2jk+erA2sQFScUiYTbq2roogaU+ZywvlhT8DEt7WSCAcUi+QtANVJGzmKZwzVeyEg1sxg9jZOLwXL7e+i66s3zi4juiDQaVz6mxTW7F7R5MCTizo0PP0lYi5l5oGgwN8zB/v9NNNpbPpBLT2fgAO
- t2TgFZpd
- oAIdcmhhkytJJ8s4WNVUyv2VKqWw2EALJWaK41Btw46V40oNq7WtRzis6q3DtdNHbIgjWNJBM+tKiBLdald1mVNMtfcskG288hEGSzk7xAnfDd1NMNFQux34raCuFg+R2Eb+khc9Vajv8V1zyOKXiHGUY2+H4N4xfH4pdLemRgSf0qExGgWrW1L4x0xRrAiGFsrThKa5B+vUWhx32CHijQ9ukktANz5H6PUx2Bgrh+HiIb+14gLHQTyxroWjToOtL0N+lGLjjRV1FpzSuAM4nGCJgk5OvFsCBzd35ObiuLrk5vEtRJzfsMNI79CAb1Ns7GHeRTs9lYwtFgheqAqd1iY3NzAGcrXpLq+sQJacPrKRJ7O5a65SEU67cawjtUGJivAjnlcDV+lH6LJQ7Q0LiLh9CANcC8I6m6xYn8BgnDWgo8ua5avjC8xUgAayH6P9jMK/+1W3SNNS7i0tx7nQISfCSSFCeu9TBIMhnNQ9vxCQUoMhFt/It6jXuohK9Dcdzl+NLhGxVvG5EJYLS943Zs+I57Pzi8XOyiNJpsUmPwYS59pwrgk8BUznvLw==
+X-HE-Tag: 1772617089-822965
+X-HE-Meta: U2FsdGVkX19MMEpqQ83wOCz91osyx6K7RZVdPStifWH9FMEIyHHxt/uw1WmH7dG+tVbbTS5cb73MklsNqt7SBWY5asS7M3BzH3hLLYhXKGuUVoL6hnG4lBnYnC3vEu9xnjuSUB7qx8a1gMftQ665I/rPQgsejJtPUgTZCAp1u6TtpGTF4GXuNJRUknnGY9m2ODJtrHstb59l888EU36XXa3RX+DJdN+x+iVFbRQQgT8io81nAVtQq/KgHytMxVi6JtX6/uYgd3Xti1RwvbTvJoHUu/QppjWVQb4XkNB8dwrxfgIBzmAgrueYbWQgy0fLDo8a0jEfRQwlD/amGVNcYDyZ5hKNiKU/PnoLYHMXvZiQcMh2vAsJnelop60xgKBRLTZQpoVfRccrxz+riXDW6HCt1QTDK+uARKr98VaKSSrhto3FPQu4zn2UhRhKXXp9b4TO1lMYnI/oROK8c1pHDhJCrSNKBDt/US90SDXB7sIyI7qVKQ36uCXMdBxm1vfCTgQYwQO62pa+RGq/TR01ITvM9QL0/VCuTvWC4gSo0SRejl9QEa0PdA2kzTaIp/V3wzHIvdDqhjtQYF6Rav8jlKMscZ0KwJai5b1pH3xs974PzKscSfmsQv8aR0wfe65GYe4TBgJ3wiC64NpmcjYU4y0IkknXemOaqNzukeA/GFQMZLdrlQzCw5Or8zHrBg/jK6XRvI25cC41YaVr2SO3y20lU3X2FwQjpmxQYWUqK08w9pN6oqjkXgV0sZJT69rggozvzlovgDCeFRcTboM5xRqGvO4DFPdhfAm3Y8Jd6DWObwki8m8YdGe154JQGJs5CVc20F94NUINOa0V3AN4sDcpJNrtW2bSBdpGmsyXeFnjbBw87OXw44OiZ8qT2ySUeR8kvT/Jzwftq9+tD3ZYc0w0l6mIe7npzavbjtD/fSBa1dpqWoxICIQxr3/J67YmBLLreUYBTR4C4yhw0ib
+ 77aDIJuL
+ DqevSFlTe5m9RgnbS34fxYsgTWtotIOd4ZAWuQZL5B/JuICc+sBShx6t1F3HoxBfZfia5nQSK3cuXl7+aiz9ewGuLhokrfG1Ib0DuIoMy48kX85/WBXK2C4zXbey1GMucV6Tvr3YzoZh2wpvF77u07TdEbGIi/AWNkaW4F+5OEQ32kN3gMETGuwwY/vQv8cnHkJmvO07bNzbvqBd/hfNpCSvnkIgqMh9KBcWkvmeAGM4JUAKEflU3HnJB36s6mdQxaBvZtATYQ/9YKSuqJ2uZK4uoXgPmPX9pFwlHqHk1rEVyXh1KJQNIXHvU8IFMaDK/6YqsB2kSjNSecvgs6Lr9GHvL2xY2BCa4tJI0daq0NLi3CS8vlglyv8l/d1lQAKrfeOIEA5dD8JpTVFvrWzhBxr19onzYgefwkvqej3ae2krOZkGMXghfMkvB9OWUMWjya7ojKTi/10fBWQ5AhxUNpiTjkB7B964sLVaB9NTkZd5F+ZksPm59CrNmE8G8Rw0nYvSzTBMG5qEge9+6INrtWS8YRoQkgPvg+pmwASnLTnRrWBnpZxjQ6dKq8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,40 +116,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 04 Mar 2026 17:26:59 +1100
-NeilBrown <neilb@ownmail.net> wrote:
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
 
-> On Tue, 03 Mar 2026, Jeff Layton wrote:
-> > On Tue, 2026-03-03 at 10:55 +0000, David Howells wrote:  
-> > > Jeff Layton <jlayton@kernel.org> wrote:
-> > >   
-> > > > This version splits the change up to be more bisectable. It first adds a
-> > > > new kino_t typedef and a new "PRIino" macro to hold the width specifier
-> > > > for format strings. The conversion is done, and then everything is
-> > > > changed to remove the new macro and typedef.  
-> > > 
-> > > Why remove the typedef?  It might be better to keep it.
-> > >   
-> > 
-> > Why? After this change, internel kernel inodes will be u64's -- full
-> > stop. I don't see what the macro or typedef will buy us at that point.  
-> 
-> Implicit documentation?
-> ktime_t is (now) always s64, but we still keep the typedef;
-> 
-> It would be cool if we could teach vsprintf to understand some new
-> specifier to mean "kinode_t" or "ktime_t" etc.  But that would trigger
-> gcc warnings.
+> Le 25/02/2026 à 12:04, Ritesh Harjani (IBM) a écrit :
+>> Similar to CPU_FTRS_[POSSIBLE|ALWAYS], let's also print
+>> MMU_FTRS_[ALWAYS|ALWAYS]. This has some useful data to capture during
+>> bootup.
+>
+> The patch subject is misleading, should be something like:
+>
+> powerpc: Print MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS at startup
+>
 
-A more interesting one would be something that made gcc re-write the
-format with the correct 'length modifier' for the parameter.
+Sure make sense. I will update that in v2. 
 
-That would save a lot of effort!
+> With that fixed, Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-	David
+Thanks a lot Christophe, for reviewing the entire series. 
 
-> 
-> NeilBrown
-> 
+In v2, I am planning to fix 2 more kernel warnings, identified via
+selftests (currently working on them).
 
+-ritesh
 
