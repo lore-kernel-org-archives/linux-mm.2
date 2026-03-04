@@ -4,88 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A3EF8FF0
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 14:51:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67647EF8FEE
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 14:53:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 497C46B0088; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
+	id B3D136B0093; Wed,  4 Mar 2026 09:53:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4458C6B0089; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
+	id B0F956B008A; Wed,  4 Mar 2026 09:53:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 348006B008A; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
+	id 9C47C6B008A; Wed,  4 Mar 2026 09:53:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 203756B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD1171B8273
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:51:44 +0000 (UTC)
-X-FDA: 84508669728.26.463AF10
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF9D6B008A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:53:32 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2DF9F1A0385
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:53:32 +0000 (UTC)
+X-FDA: 84508674264.20.753532A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1F17E4000E
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:51:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AcvONXz6;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4A6504000E
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:53:30 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2f1NtDH;
+	spf=pass (imf04.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772635903;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772636010;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zFqXSL8SHgH0wb2/oRDk4ZVQzYDlT7YR1qGjR28RvJE=;
-	b=T0tkjnf1RH6PPAGfrMuRrnkN6coAPHUyDq7GSvhJJFZllw9epO3DHa1HC0jUuEr1u0Gk6c
-	quYgBTTlm32IhH6vuXBXWDs3d+OyMqgfbtqgLnV6emYfBtsDpjGeIOciYJVH2KJ3YqgChA
-	sY6CkhvsA9p1RyYFGNZ40OXIdX6/EiY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AcvONXz6;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772635903; a=rsa-sha256;
+	bh=geD5pFedE+XojrU9Qz+TnAtPxuCGSr7PiZpl+rc3xlE=;
+	b=ARR36KolgQiaJBtjbDVbbngS4vpOp+WDg7PP61r8Y9olG9Hsyko4Bc9yLFGZV6a5lYEJOX
+	ZusPki/nG2MhU8Gxp17OwzVYchShy7I4kgZW3XGEROVbevRey9uHIwzYvTRRLOS2dJ4H3S
+	QvaC5aflLQgtCvxEst1G9mPs7AeA6RY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772636010; a=rsa-sha256;
 	cv=none;
-	b=CJetxyhRiN5GUFBxBQWEuk1Tz0b76yLCYTnTrqkeeDaeT5slDRLLVdlheOsuCMnYu/W/od
-	cbpra1CSm57td6QcdEsGOoRr8lHO3oiVFtj/kVcnlDte7/COaTx9aHl9IGITiR/6j0P7lm
-	K4SKf/IU13QD4lB3K82YDjKPOh+b5oo=
+	b=IDvzHObwgjLiXV7TbNUL/ydLx9+O281v4cGHkEHe9ypziZz3ivyTQOucniplczdIabtRfc
+	ngJkmG84i4DbSZLbhk+I/ae/okM61oRRvEm0MKL19jt45X82fByEwG7byRmg5W0h4a0W1W
+	prQsWb1lTl8fn4Z2dMKYbh+js8uBfu0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2f1NtDH;
+	spf=pass (imf04.hostedemail.com: domain of devnull+shivamkalra98.zohomail.in@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+shivamkalra98.zohomail.in@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A067600AD;
-	Wed,  4 Mar 2026 14:51:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE61FC19423;
-	Wed,  4 Mar 2026 14:51:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B2B6F6013C;
+	Wed,  4 Mar 2026 14:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 62D1FC2BC87;
+	Wed,  4 Mar 2026 14:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772635902;
-	bh=AXcGOV3rxB0t3xLwBtUstDgx4cx8kG184IK+T6OhDic=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AcvONXz6T5whljb9Qjj+WgDoNq1cZjnLZS2qowLy0d71QtwIsMlIkiqZUzllY+Ql2
-	 e3/shG0jjz6LnHB1A4NskTc5n7opsjWQEi3x5U1LStETOPymKX4Mx+OzR9njBKuqPA
-	 cEQQkOtvo7YkFK8cIZdGN1wfWIOKVGSq8X5sgVLUqekkQHKLCiIQFg0yZEsOLYbekZ
-	 IiGVDf/lsTPCFKbWI+lFm6+Vw0YgkpBNuBlrOKEscdr6XHH9wqF9tNeEyGUYIPgBra
-	 Ow4r7YNnAewNV1aYTd7WBIthl0oRMjzsqPLNcPM8dPcaKiqSc+uIdHwxDyRDfMtuEu
-	 9RDdAGyWBBhHA==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 02/10] mm/damon/core: allow quota goals set zero effective size quota
-Date: Wed,  4 Mar 2026 06:51:39 -0800
-Message-ID: <20260304145140.172293-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <abdb1acc-5f88-483f-af49-45276ab66ff0@huawei-partners.com>
-References: 
+	s=k20201202; t=1772636009;
+	bh=Wa4JBE1IYU7JKwjDkn6HXyP6M9ZwBaG9oz9xsBPZiG8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=L2f1NtDHhUjG3fDL1nzaEkzX7Gn1pIidsT4YvlLNlDf/p/aVluQUS0kpY+okMw9ly
+	 1MBMyjbOyJU3JfYBa6AL+MPGXeZUbIc21Rbnfpr1MakG8uDszXERGm+vSSZdKeCVHK
+	 Q9Hjm+zHSuF11VmoAkQ/0Uw9sNhHHWpmBXTjJ8TW95clSv2gN+0r9XWsi74osJDkfX
+	 Yr/0W68yeey2k8O0koD4tCsu5w2HHa1ZX3o/55OqWlTulVJUsa9/lDeCxJm9jhkfu+
+	 dpQ0DhA8VrwISyKfuZCqUwU1QkBWy3aK4Lv4qgqQBVnGK0i7V8y8BnYYXCjaDG9puM
+	 aRAqI0agxs1SQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F25CEF8FEE;
+	Wed,  4 Mar 2026 14:53:29 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Date: Wed, 04 Mar 2026 20:23:15 +0530
+Subject: [PATCH v2 1/2] mm/vmalloc: extract vmalloc_free_pages() helper
+ from vfree()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1F17E4000E
-X-Stat-Signature: qytsgsb11nmwmaa6uza64stmx1pa43op
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260304-vmalloc-shrink-v2-1-28c291d60100@zohomail.in>
+References: <20260304-vmalloc-shrink-v2-0-28c291d60100@zohomail.in>
+In-Reply-To: <20260304-vmalloc-shrink-v2-0-28c291d60100@zohomail.in>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772636006; l=2379;
+ i=shivamkalra98@zohomail.in; s=20260212; h=from:subject:message-id;
+ bh=ylDdrWHdpgAIPnTMbUkuZf3YssBZgAmCXof5K8bWIJQ=;
+ b=Cc1LRtSDOXj7IWYWNC3yabvfhCMK2bqJRbdVi4kWl/10umyvVSpnr2BPzyCG79sYsIj4j9yzJ
+ cdwhX88SsHnDL55LPD8VYSLaL5a3QqWyOmKCG0ky4d8TOq5mXOyK8k6
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=9Q+S1LD/xjbjL7bEaLIlwRADBwU/6LJq7lYm8LFrkQE=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260212
+ with auth_id=633
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772635902-231840
-X-HE-Meta: U2FsdGVkX18Wwqvh9tpihUcCi/ZKRml6bptW+q617OkrRK7rfR+366tNpmqXJv1N8fSrKrsze6xxC0VgO0uDEEHWrLdRyN0N6FomAbFmxcIvb676Hjz9XhB8m1A6v4/mgb554zB3kbAXjRlQJLah+73XgDGdqfqrJhHgW+oNEJcpFZlJFfvBMBUNevAfXHR22dRJOW10sybSgtrS+ClCGzbD3oiXoKprH+Zrwvc4qx1XS8C+FEFMfv6Q8hkjx2zMD+Vk7ZeYVRXvL36jlWQP81yvfYcKJzAufewHSfGARnvpNb2Dkp8MqtCmeaIt9POfzmnzjP7qETf4MYUsdHdhMLcv17bcj7JeuDquTtvniKiWg4Zg1INU69NoprMrpVsHiCF1D8gUh5SjPTeLZisYC5BqEd4BahV2HJAOMCfruoNi+MWFMud958bJ1TMmjzAjTOvSK3T2JDxOXUbMKpK/TBNjzK9dlFovnGYcuTSgMeD6PcA9P59YU/2Tb8anWsOU5uRt1poFNQ6NYi7h4GqzKS+1xdSVWxEGgwOb47B73POR5btJ54X4PCL/RiVA2Wffut/FBEpl7zRgRnyd9eHW2fwuMZInu3CLTu7pOJHleY/SULAGva9sog8/DzloUjCTo3RBha3z61pqXDDC4lf3RiRjxuZCPZMaMI09EVxUAEoV3c9w7AnvRbOXKOmJuBLM2Cb/IOmA1+ImfIM4BPVEZz9Z2kd1TXzag46wB4CUZUIMSmC/c4FS2lF8usmPwlvv/n9i9spYHPgzQTMwoePa4UdmJ9Uyx5oMDRLF/8TPKe1+W7xVwsJZi8kjZAlambjAesVNf/UaV0oq7cj54x+EJO5FhwDfjPpbg6XHGz57+ISOIqgPjfF7KCiKDlnj0pMibakmt4OlGxG53D9n21DK+FrbXXxF/lU61bBKbqNkINMdRDQFDCEuKspWvNJG2fI0DPg9m4U5zpjoGNWyXel
- MumQs+it
- DdFbGnNtUlygkbrBu7VjpHcBIY7y73HWLA/4a9Vz7QLXekKR/T0DgB+0maJUQEoVC0du2GLSl+JMizZ0NlJUjhAIHeNeT9mnjUBd/2hIIAkYS+kTJpjP0I9hLOEZrtIzt4mAmMiN0ar/oEF45fxfGrLnPyV3yT7dhTjO340Ed+BoyVM8atsuSEi4DFHdc+Xky+Hm/yzDl2I7H93UWdMyqzJ/NzahGTHoIGAZa+YpK213QrVuJKgiHaZ2XdkMrjr7hgozae+UjWBgaIJuV/deTWcg3q3mBI0IuJbOm
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4A6504000E
+X-Stat-Signature: 34pp5c33e6rqnzjwsybah68pmo5ooqqq
+X-HE-Tag: 1772636010-685709
+X-HE-Meta: U2FsdGVkX1915aJ8IuCVVT/6NNwmHw714eTYa4pcn+Dcbyw4n5JeH/aFNt1MhOCZzDCl79aQrkqTEc5cZYHZxXivuw+atZPwCB0KzdszGWEhoxdN1Nipb/NYMHZbK1nAK5z1Y11a4n+RpU5oP3dqD+05W3g17LZXt5njPodOdVHyK2lfR7WPtkmd1m2+M+pBMKqxTsmrXIsUYGGldpby9aUA8xALqWVymNjoO2ehkimzp/jVo0WgKGCOIWjmukEF6RX3zmBVxX+V3no82JiBJC1D3y3KBfGsbArPUtsrj7PUzIwP7vj16uwwR+8ZH2gV1+Qv1FEQD1+a/YXxzo1i9KuR8MfGSPDfYmtrTheBQafmEqSRMVVrVMQW1Vda7xV8VH87HPtycHWnnte2jotC/xUWbxrkZPNFNjyPp5VjFWKQvE9bGNmsmQgNpiOh+98kSEg5pPKQbblCu1/SOu6a1S9KAc3KMXbiChToQRk0N0lrOL1cdFWuG8Fie34Kqtw7jkXvYdTn1cLLnKhee0+bPivvEWaXsICaiGqzrz/A5PxbsgZCcw/oo9184+WfNCrqnLE1zLoE8E6eSiAHz4xiOCzpoYX9rfYm8jRd1ObFuWR5JmFQaExIyAlVgJx76O+XLOy3RBhB5HVQEntT/aXr2LNCMuAGxetVGOinrkCOw43+X7mGrOhTL5XLIEC4dOjQZkMwZzWktRysawZzR5YCmAQz+3oE2ZTHnnkqVQV4uiGT5n715W7kIwMBHy2aiWWym2WCYQTBcPk7drXLNdNQUURIj9HRVIMo0d4mqEutNcW8+U4LZTAcDd/Ze/t2N+VpequYORDJWFp6oCHgiVXozuL1euPAv6FC8gFpAP1yfkTCf5e0lwkITW474Zzo6e1sNzeHHKRnc8kUFCtpjEH6DgfvCdkWXigJMoJoYDJoCP7WpVyzxwQou2fPMEck2lrsWou3RuwYb0ATsgwzHN5
+ xS/y0r1L
+ h8yIak1UjfIL4gK7TLeLKcpNJS8zZB+Mv57zPCc4i2g2AarifUvOjw4AtSVf1/zVkzCXAvVVa9oy/d9U8A51zKPiVG2gPi3Z+6UwPxaqAEpizfzzGGiewVS5mvh93xFuPPQidBCtKlQBw/p6ICQigVXBRw8CGoaCot5J3rn1lLvDbptzy1j4ByIxvQD6STf7uhrngyHW1cqWtTYbI10aOSGRzzFTzxsGdQtRpBVNs+jecO/Wfzdej6jfJ7V6FpZc3WBo/S25DUqztjJP2wFK877PDsCDEdqY1Op9Jpuf6X6svpNdcm1hrWvKGKqudFn+RSqZsoO9dfmPj6dqkyl0YfsPi7aGTOU/BCQHwgLePYjbwI4yjA4zSlw4j0PNidJSYhWJRvChynQ/6ozgMaP9lz2qS7OjjQUkbud38dHRcZT9XkKWh3TgK+YShHKqybLjIkiSJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,120 +109,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 4 Mar 2026 13:18:16 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+From: Shivam Kalra <shivamkalra98@zohomail.in>
 
-> 
-> 
-> On 3/4/2026 7:41 AM, SeongJae Park wrote:
-> 
-> I find the name of this function confusing. The function doesn't
-> actually set anything. Maybe better damos_quota_is_set()
-> > +/*
-> > + * damos_quota_set() - Return if the given quota is actually set.
-> > + * @quota:	The quota to check.
-> > + *
-> > + * Returns true if the quota is set, false otherwise.
-> > + */
-> > +static bool damos_quota_set(struct damos_quota *quota)
-> > +{
-> > +	return quota->esz || quota->sz || quota->ms ||
-> > +		!damos_quota_goals_empty(quota);
-> > +}
-> > +
+Extract the page-freeing loop and NR_VMALLOC stat accounting from
+vfree() into a reusable vmalloc_free_pages() helper. The helper operates
+on a range [start, end) of pages from a vm_struct, making it suitable
+for both full free (vfree) and partial free (upcoming vrealloc shrink).
 
-Thank you for the nice suggestion, I agree your points and like the suggested
-name!
+No functional change.
 
-Andrew, if you pick this patch to mm-new for more reviews, could you please add
-below attaching fixup together?
-
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From 9599524cc5e5bbe8263c847b6f20f0aa919b3853 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Wed, 4 Mar 2026 06:46:55 -0800
-Subject: [PATCH] mm/damon/core: rename damos_quota_set() to
- damos_quota_is_set()
-
-damos_quota_set() can be confused as a sort of setter function.  Rename.
-
-Suggested-by: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
 ---
- mm/damon/core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ mm/vmalloc.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index d657b87dd99e8..c58430a4cd6ef 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1788,12 +1788,12 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index c607307c657a..e2aef0a79f2e 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3416,6 +3416,32 @@ void vfree_atomic(const void *addr)
+ 		schedule_work(&p->wq);
  }
  
- /*
-- * damos_quota_set() - Return if the given quota is actually set.
-+ * damos_quota_is_set() - Return if the given quota is actually set.
-  * @quota:	The quota to check.
-  *
-  * Returns true if the quota is set, false otherwise.
-  */
--static bool damos_quota_set(struct damos_quota *quota)
-+static bool damos_quota_is_set(struct damos_quota *quota)
++/*
++ * vmalloc_free_pages - free a range of pages from a vmalloc allocation
++ * @vm: the vm_struct containing the pages
++ * @start: first page index to free (inclusive)
++ * @end: last page index to free (exclusive)
++ *
++ * Free pages [start, end) updating NR_VMALLOC stat accounting.
++ * Caller is responsible for unmapping (vunmap_range) and KASAN
++ * poisoning before calling this.
++ */
++static void vmalloc_free_pages(struct vm_struct *vm, unsigned int start,
++			       unsigned int end)
++{
++	unsigned int i;
++
++	for (i = start; i < end; i++) {
++		struct page *page = vm->pages[i];
++
++		BUG_ON(!page);
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_lruvec_page_state(page, NR_VMALLOC, -1);
++		__free_page(page);
++		cond_resched();
++	}
++}
++
+ /**
+  * vfree - Release memory allocated by vmalloc()
+  * @addr:  Memory base address
+@@ -3436,7 +3462,6 @@ void vfree_atomic(const void *addr)
+ void vfree(const void *addr)
  {
- 	return quota->esz || quota->sz || quota->ms ||
- 		!damos_quota_goals_empty(quota);
-@@ -1804,7 +1804,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
- {
- 	bool ret = __damos_valid_target(r, s);
+ 	struct vm_struct *vm;
+-	int i;
  
--	if (!ret || !damos_quota_set(&s->quota) || !c->ops.get_scheme_score)
-+	if (!ret || !damos_quota_is_set(&s->quota) || !c->ops.get_scheme_score)
- 		return ret;
+ 	if (unlikely(in_interrupt())) {
+ 		vfree_atomic(addr);
+@@ -3459,19 +3484,8 @@ void vfree(const void *addr)
  
- 	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
-@@ -2074,7 +2074,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 	}
- 
- 	if (c->ops.apply_scheme) {
--		if (damos_quota_set(quota) &&
-+		if (damos_quota_is_set(quota) &&
- 				quota->charged_sz + sz > quota->esz) {
- 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
- 					c->min_region_sz);
-@@ -2094,7 +2094,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 		quota->total_charged_ns += timespec64_to_ns(&end) -
- 			timespec64_to_ns(&begin);
- 		quota->charged_sz += sz;
--		if (damos_quota_set(quota) &&
-+		if (damos_quota_is_set(quota) &&
- 				quota->charged_sz >= quota->esz) {
- 			quota->charge_target_from = t;
- 			quota->charge_addr_from = r->ar.end + 1;
-@@ -2123,7 +2123,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 			continue;
- 
- 		/* Check the quota */
--		if (damos_quota_set(quota) && quota->charged_sz >= quota->esz)
-+		if (damos_quota_is_set(quota) &&
-+				quota->charged_sz >= quota->esz)
- 			continue;
- 
- 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
-@@ -2408,7 +2409,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 	/* New charge window starts */
- 	if (time_after_eq(jiffies, quota->charged_from +
- 				msecs_to_jiffies(quota->reset_interval))) {
--		if (damos_quota_set(quota) && quota->charged_sz >= quota->esz)
-+		if (damos_quota_is_set(quota) &&
-+				quota->charged_sz >= quota->esz)
- 			s->stat.qt_exceeds++;
- 		quota->total_charged_sz += quota->charged_sz;
- 		quota->charged_from = jiffies;
+ 	if (unlikely(vm->flags & VM_FLUSH_RESET_PERMS))
+ 		vm_reset_perms(vm);
+-	for (i = 0; i < vm->nr_pages; i++) {
+-		struct page *page = vm->pages[i];
+-
+-		BUG_ON(!page);
+-		/*
+-		 * High-order allocs for huge vmallocs are split, so
+-		 * can be freed as an array of order-0 allocations
+-		 */
+-		if (!(vm->flags & VM_MAP_PUT_PAGES))
+-			mod_lruvec_page_state(page, NR_VMALLOC, -1);
+-		__free_page(page);
+-		cond_resched();
+-	}
++	if (vm->nr_pages)
++		vmalloc_free_pages(vm, 0, vm->nr_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
+
 -- 
-2.47.3
+2.43.0
+
 
 
