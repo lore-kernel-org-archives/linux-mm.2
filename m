@@ -4,111 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0118EEB7EB5
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 09:38:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ECB7EB7EAC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 09:59:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DD436B0088; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
+	id 994376B0088; Wed,  4 Mar 2026 04:59:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18B396B0089; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
+	id 975986B0089; Wed,  4 Mar 2026 04:59:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08DC76B008A; Wed,  4 Mar 2026 04:38:12 -0500 (EST)
+	id 877C76B008A; Wed,  4 Mar 2026 04:59:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EAF5A6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 04:38:11 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D7911B80D6
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:38:11 +0000 (UTC)
-X-FDA: 84507879582.30.589ECEE
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D40E1120010
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:38:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lKgxNBFi;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 74F996B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 04:59:04 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2550C1A04D9
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:59:04 +0000 (UTC)
+X-FDA: 84507932208.07.B49B515
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id BB6168000D
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:59:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="u5m9iG/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YMMx98SB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K9xwdbCp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDBXZ1Ir;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772617089;
+	s=arc-20220608; t=1772618342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
-	b=yWoXpd1fl2p8tSZCcZi790UYl6mSc8ibNafx2inYBXFY9Z5QOV+Cu3ABznUmnkSMd2ZPGL
-	ZsHfMfISgAORljRpHq4gnrmfLZh4wVX2FFV/VJEGkBtKvpirPpJd81BoIk9pJ0k31dJ0HH
-	vIReGZNVIHCGUWHDJtmzZFVI15PKVUU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772617089; a=rsa-sha256;
+	bh=TW0tb752ym3mdQ8KAhXlAy2LYICbeb9RJEvsuJMVJXg=;
+	b=ujFy+xoocf5xj2lNzapdk+gHZZKDXVKm1dvTFa2SfN5SR+uTJBknh6b6TXWB0iE7VtWzIE
+	ueNe7OEsbZ9ZpNhPWyL/CdVXGeiLHXZzafF/MhOAqtezFP0WQ4t5JAIkmP4U0fMYCz4RpL
+	nahLGhBHl5vM50JDQ/eKJ10PcroAZ4A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772618342; a=rsa-sha256;
 	cv=none;
-	b=6KexHYgsAm6f9SneKlJAnhL5FIfGixoLVFXBqBVX6qhwXxXjguTV8ZkODm7Oau5VxDV7qu
-	fzZQnrjeBQorHuGrkknimWCuvF+qh+tlYRsnvCW5z0fverq5c3Tt7TzHDfE6mOByJ3C6ga
-	cVbHTjAJhME6U6oz21NfQQQDUjNPO6I=
+	b=yub8CWc8Bc/1yrp+ISWl2L20j8q9ofTjTIIoPyhuYl7bNCI/+LdofAL+jA/hbQlY4zsyfE
+	yceq+T1yim2dJRKAbvgLOY5rkboagjC6K1LWvPMIzAc32NZks/DbdkdYnrklz5t3H4e5/0
+	qy96pKyKpSmP6c2XI/scEMiPAObs/0c=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lKgxNBFi;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ad9a9be502so44878485ad.0
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 01:38:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772617088; x=1773221888; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
-        b=lKgxNBFiaWpSzjkXepVQacb5RFKdU37WArzUAGne4rl2CvsuKhpIzqkvyzG29cWUdR
-         6ihu9CFgIMPcgawTleId3Zx5eqMUD8T+FzzvUvSaUhe8TW3qjP5b+kO0bLivjDosbzZr
-         4VJ4zGQntPpkyKV5ot5U72YlpDZDC9Zhxu1EjIv3wWXZiSrBittyvVCiTDGzb7HVnepa
-         URX5rKZUtTcphH516hkLV7s5W5F5xYDFUBujGUy0JrC3P2CQ7o75AIiWiqGfTKpeYBoS
-         mZWNfVLNFPHpFYrEFuxIFcRpMIM61ywOdOUnL8FVivvF0vNCXlvHiUPIV/Z6l/zEE6xZ
-         LQ3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772617088; x=1773221888;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fiJO/9et5qVDOSGM+mBfYqTF5/rX7jCVRCuOvkdHbvU=;
-        b=u6U/UnuHUpQM7KLflWP2GImJ/O+1Rx5V5ScZ4oX/eJ6PdyB32TNICb2mavIaFf61p1
-         iazV+wsWgNXiBl/n1XK/vjgsNl5E07GPHXnAYPFGI0Pb4UnJ5+YIJaStaJzzqIOhNIw6
-         CyAZANXvEZPAfHfTsA2H3Mb4YuvdbTem4brgcRfQsVsnbFks0ZqlEfP0I7ceQq4GfkL+
-         vy9CBKBoG9NnxUn6cJMXMcpVD2EXactQ7NJB7s4IkqXzH2QGkZB3zF3MQ8Dxtbbq6sOC
-         MaFAd5tFWWYWSnkZLELDnamWEj3o5FFh1KqnT0ozc8MceIN4R11Gyy81RlhB7G7QPR+t
-         ak2w==
-X-Gm-Message-State: AOJu0YygAI9tlUNS1Val0XiMmn/IzR1RMkr6AmAzZxxoO64AEmv5zqFk
-	31H7PtKlKEifATV8we7O9bAg5hNyL+lABzWEtglFn+NIEk9AlC2DL/jg
-X-Gm-Gg: ATEYQzy2seEAFTMSM1eetlfZBKPhZoeFhYl0Zq2QNSPXhUUXXiOJwAWlbcPhygF/XVW
-	s0UZxn1deApR5R4J9qhoE4hn+4tFR20Q95wwEnuJNrC0GOKhdVpcaPaVE06q4Qm5wlmGg8pe9A8
-	XX15tQT6od4tkos8IkOUk9Vw7CtFqk4rG8KEKtqiPzEP/ezStTLh0qMVvadrNaslVXRa5lZh/Hq
-	uy8yOXzhIGn03I/7p/Mm/as/3M5ewRZbrHcvLr3S0Y8giFVhasi0Ijxc0b/8DkgS40AmFlK1SW3
-	6ZY5MRfFCC7XjD7OgvaZDmY6Ls9gaqvYMzXrBR3wS8QB4vTXL4H0y0xZ1DKJSGmcUwEX+5bfq8/
-	+SYrBm180EurRkEvgm4mz0/GL9jwIfAKOf2ay9fv7+k7Hr9LxbWarNXGbA/OyXwuq11GzZE2ten
-	xazqkAPJzbXTNrBltC
-X-Received: by 2002:a17:902:da4d:b0:2ae:593c:48fe with SMTP id d9443c01a7336-2ae6aa06a22mr11815955ad.13.1772617088564;
-        Wed, 04 Mar 2026 01:38:08 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69fa65sm190048445ad.58.2026.03.04.01.38.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 01:38:07 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [RFC v1 10/10] powerpc: Add MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS
-In-Reply-To: <727cad61-9df9-473b-9a79-f70ad1cd4e3e@kernel.org>
-Date: Wed, 04 Mar 2026 14:53:49 +0530
-Message-ID: <87ikbcj6ca.ritesh.list@gmail.com>
-References: <cover.1772013273.git.ritesh.list@gmail.com> <c57b1c00145a2db1a1b4feec94cfc2917e4877af.1772013273.git.ritesh.list@gmail.com> <727cad61-9df9-473b-9a79-f70ad1cd4e3e@kernel.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="u5m9iG/n";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YMMx98SB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=K9xwdbCp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDBXZ1Ir;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B0F463F8A9;
+	Wed,  4 Mar 2026 09:58:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772618340; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TW0tb752ym3mdQ8KAhXlAy2LYICbeb9RJEvsuJMVJXg=;
+	b=u5m9iG/nk2+pmRd+EhwGdJyXAxL2o9AV3NSerNoN3hWe7GdwhZx+64dTOXUOTcd6gmYJgN
+	vpG1lH2E7FhAR0qIvdV+XuoVOJU07Bt6svmozjTvUCI+8o+NOXUCNXad6vOI5svlBsbo+g
+	VzKPaDM0uWq4CEDU4x87uyJEJ0CuQGc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772618340;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TW0tb752ym3mdQ8KAhXlAy2LYICbeb9RJEvsuJMVJXg=;
+	b=YMMx98SBYtiE72CVRLbviY0ORLil7T6MYmZ8jq+vK06fjZWLcwz4YcMxc+djU2mSSBKfg9
+	8f0XpeWgWr2OF7Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772618339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TW0tb752ym3mdQ8KAhXlAy2LYICbeb9RJEvsuJMVJXg=;
+	b=K9xwdbCp5okzsB/pwNOIYoe1W7usKDLo7EJvLz/VIm50WbpohyL/yKzEWeJQpRU7pkc8am
+	f9C+zANE4DyoptzpAmBU4Jq1trRtZ0x9RY3yAOc6vU1JJXyTl/IbTG3bb9j/RzP428m+D5
+	VXw/jVasKfLKTSQnX3ylcHx52nfD2Wg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772618339;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TW0tb752ym3mdQ8KAhXlAy2LYICbeb9RJEvsuJMVJXg=;
+	b=mDBXZ1IrV2BfviAEbMO6POHM2o3iGeZPDFcpwb8p6XzUOU/wdrdoFMt/+KOD6vUchcytyH
+	C0bHtyKJq7swezBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D6633EA69;
+	Wed,  4 Mar 2026 09:58:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id g2OBFmMCqGlFbAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 04 Mar 2026 09:58:59 +0000
+Message-ID: <a7494308-cec6-43c7-aa17-a438747b50c3@suse.cz>
+Date: Wed, 4 Mar 2026 10:58:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next-fixes] mm/slab: allow sheaf refill if
+ blocking is not allowed
+To: Harry Yoo <harry.yoo@oracle.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@linux.com>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>
+References: <20260302095536.34062-2-vbabka@kernel.org>
+ <aaehb5EwDKygrXGW@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <aaehb5EwDKygrXGW@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D40E1120010
-X-Stat-Signature: abx7uhfjmnw9wso4sxumsrkhuznauheu
+X-Rspamd-Queue-Id: BB6168000D
+X-Stat-Signature: y7hg8onsj3r7drrhcdkqgffo7au6q6hy
 X-Rspam-User: 
-X-HE-Tag: 1772617089-822965
-X-HE-Meta: U2FsdGVkX19MMEpqQ83wOCz91osyx6K7RZVdPStifWH9FMEIyHHxt/uw1WmH7dG+tVbbTS5cb73MklsNqt7SBWY5asS7M3BzH3hLLYhXKGuUVoL6hnG4lBnYnC3vEu9xnjuSUB7qx8a1gMftQ665I/rPQgsejJtPUgTZCAp1u6TtpGTF4GXuNJRUknnGY9m2ODJtrHstb59l888EU36XXa3RX+DJdN+x+iVFbRQQgT8io81nAVtQq/KgHytMxVi6JtX6/uYgd3Xti1RwvbTvJoHUu/QppjWVQb4XkNB8dwrxfgIBzmAgrueYbWQgy0fLDo8a0jEfRQwlD/amGVNcYDyZ5hKNiKU/PnoLYHMXvZiQcMh2vAsJnelop60xgKBRLTZQpoVfRccrxz+riXDW6HCt1QTDK+uARKr98VaKSSrhto3FPQu4zn2UhRhKXXp9b4TO1lMYnI/oROK8c1pHDhJCrSNKBDt/US90SDXB7sIyI7qVKQ36uCXMdBxm1vfCTgQYwQO62pa+RGq/TR01ITvM9QL0/VCuTvWC4gSo0SRejl9QEa0PdA2kzTaIp/V3wzHIvdDqhjtQYF6Rav8jlKMscZ0KwJai5b1pH3xs974PzKscSfmsQv8aR0wfe65GYe4TBgJ3wiC64NpmcjYU4y0IkknXemOaqNzukeA/GFQMZLdrlQzCw5Or8zHrBg/jK6XRvI25cC41YaVr2SO3y20lU3X2FwQjpmxQYWUqK08w9pN6oqjkXgV0sZJT69rggozvzlovgDCeFRcTboM5xRqGvO4DFPdhfAm3Y8Jd6DWObwki8m8YdGe154JQGJs5CVc20F94NUINOa0V3AN4sDcpJNrtW2bSBdpGmsyXeFnjbBw87OXw44OiZ8qT2ySUeR8kvT/Jzwftq9+tD3ZYc0w0l6mIe7npzavbjtD/fSBa1dpqWoxICIQxr3/J67YmBLLreUYBTR4C4yhw0ib
- 77aDIJuL
- DqevSFlTe5m9RgnbS34fxYsgTWtotIOd4ZAWuQZL5B/JuICc+sBShx6t1F3HoxBfZfia5nQSK3cuXl7+aiz9ewGuLhokrfG1Ib0DuIoMy48kX85/WBXK2C4zXbey1GMucV6Tvr3YzoZh2wpvF77u07TdEbGIi/AWNkaW4F+5OEQ32kN3gMETGuwwY/vQv8cnHkJmvO07bNzbvqBd/hfNpCSvnkIgqMh9KBcWkvmeAGM4JUAKEflU3HnJB36s6mdQxaBvZtATYQ/9YKSuqJ2uZK4uoXgPmPX9pFwlHqHk1rEVyXh1KJQNIXHvU8IFMaDK/6YqsB2kSjNSecvgs6Lr9GHvL2xY2BCa4tJI0daq0NLi3CS8vlglyv8l/d1lQAKrfeOIEA5dD8JpTVFvrWzhBxr19onzYgefwkvqej3ae2krOZkGMXghfMkvB9OWUMWjya7ojKTi/10fBWQ5AhxUNpiTjkB7B964sLVaB9NTkZd5F+ZksPm59CrNmE8G8Rw0nYvSzTBMG5qEge9+6INrtWS8YRoQkgPvg+pmwASnLTnRrWBnpZxjQ6dKq8w==
+X-HE-Tag: 1772618341-704134
+X-HE-Meta: U2FsdGVkX1/QP+EbsxIqSi4xHF0PencxSciPmxrCFz1BKcS28N5NGpBSgDvet0vu+ihTwQ1K7Ot3Gu7SPJnrf+MGt1qv76KEu7cmD10mAunFEvGfdvbGwcd+Yv2UwfQAxA6Pa6+ElIUUrHPRahPbKuWAzHcUfHU0i07/DTRzzqtTC9FiHIDIp9dUouHmZyY7dibVDz1qcV0YedJ3tlEHNUUVoddWOVRpYBUpiSxMCdHmi0+9NehIIMD8WpBkitN2TFmdYiw2SVJ/hIL8fEltkQ2jDW8Fl3Sb1du93A1/NMRqssDiTx4axi/xocqKE4O76cBR+/NowLldDxVXZ8cbiKxtikMFkvCK+igFxyDrBg/RVW38IOgMLt6GmhAdsl+3yPeooTj1Mxfdn9aXpciqs3BEKqd4eI5O7DA6vlqXQuEnzss7vWFH2kmbg0ov95DjT68x9Qqs9P5eSP1QwulNahIQ0ebaccVXhCVYAJlNCms6O5QcT07+nbPkRrDkwZBiZDg5JuPy4kfIaK3o5SkwM+sU9Ci0kbUui4B4Jw6FAO5pR+Ly8XDYLuHa/B7Z14KU/mpnL/D8er36m/6Y44EfY/RFU/95JFmOo2jBqpsjG2oiKNwRfiw9xhvIoCwrlBKwY5rM8l7KSWO5fIGAip7ri/OagpNPweI+SmwASgYmvQ6aBOadNPIyL4sQBkGHIpE0ro6JhrE8t39fobiAYyUjQxISIWhpTG8oVUh0D9HSfWdZybrhoQvrSI6I7UxKdQ15MJxixdH22fGzdGhwUC31KG+mc3r5g7KSMuPtifz6w6CnngswqAQnwba3AvowGjdeH4vvccGsVzwI38tEZkMWwjLttJgdxzR51KRyy58fjWY05QyKV5/8o7ggfVgjrcldBbgvhm9Ai/DiVWP3d3poOeWvyw8OC3fTdIge6ITDvLU738kifDXpaRacx+XOdfzf89e/4Y0A9LFWvH5ZGin
+ bkLEwN6k
+ TmGDBqIIRZfYje3GzNhVb47HY0SNyVESX71IMMfHktx/p9CLdV+fsEd8MJe7mIN9oO4IkYtHXEdj8oNiJuIvN3go+6vYTw4PjLVkdCYpTPereZSHiwyIlBDEVRaytKetKcqKOIgUbC1fsgt2PutnyVnx3wDLuJ1+xWTI34MK5xXne5xOYB2RjuqFqClqJXSjSc/7Izlck4JJBVeQzUgWQ1+SItDtGwwemYlOprodcdaznb9YbX0cBS6clXfUuILFD4Q5Z8lZbz88kNaclJq7sA6RpmHzCcZbGHgDE6h/7d4E4CMHwEaZVFuxf2td8ceG4uIiceaYHG45Z2jw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,26 +141,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> writes:
+On 3/4/26 4:05 AM, Harry Yoo wrote:
+> On Mon, Mar 02, 2026 at 10:55:37AM +0100, Vlastimil Babka (SUSE) wrote:
+>> Ming Lei reported [1] a regression in the ublk null target benchmark due
+>> to sheaves. The profile shows that the alloc_from_pcs() fastpath fails
+>> and allocations fall back to ___slab_alloc(). It also shows the
+>> allocations happen through mempool_alloc().
+>>
+>> The strategy of mempool_alloc() is to call the underlying allocator
+>> (here slab) without __GFP_DIRECT_RECLAIM first. This does not play well
+>> with __pcs_replace_empty_main() checking for gfpflags_allow_blocking()
+>> to decide if it should refill an empty sheaf or fallback to the
+>> slowpath, so we end up falling back.
+>>
+>> We could change the mempool strategy but there might be other paths
+>> doing the same ting. So instead allow sheaf refill when blocking is not
+>> allowed, changing the condition to gfpflags_allow_spinning(). The
+>> original condition was unnecessarily restrictive.
+>>
+>> Note this doesn't fully resolve the regression [1] as another component
+>> of that are memoryless nodes, which is to be addressed separately.
+>>
+>> Reported-by: Ming Lei <ming.lei@redhat.com>
+>> Fixes: e47c897a2949 ("slab: add sheaves to most caches")
+>> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> ---
+>>  mm/slub.c | 21 +++++++++------------
+>>  1 file changed, 9 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index b1e9f16ba435..17b200695e9b 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -4632,11 +4631,8 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>>  	if (!full)
+>>  		return NULL;
+>>  
+>> -	/*
+>> -	 * we can reach here only when gfpflags_allow_blocking
+>> -	 * so this must not be an irq
+>> -	 */
+>> -	local_lock(&s->cpu_sheaves->lock);
+>> +	if (!local_trylock(&s->cpu_sheaves->lock))
+>> +		goto barn_put;
+> 
+> My AI buddy says (don't worry, I filtered it):
+> | When local_trylock() fails above, the function jumps to barn_put and returns
+> | pcs without holding the lock. This appears to violate the function's contract
+> | documented in the comment at the beginning of __pcs_replace_empty_main():
+> | 
+> |     "If not successful, returns NULL and the local lock unlocked."
+> | 
+> | The caller in alloc_from_pcs() checks for NULL to detect failure:
+> | 
+> |     if (unlikely(pcs->main->size == 0)) {
+> |         pcs = __pcs_replace_empty_main(s, pcs, gfp);
+> |         if (unlikely(!pcs))
+> |             return NULL;
+> |     }
+> | 
+> | If the trylock fails and pcs (non-NULL) is returned, the caller proceeds
+> | without realizing the lock was never re-acquired. This leads to accessing
+> | pcs->main without the lock and later trying to unlock a lock that isn't held.
+> 
+> And the analysis sounds correct to me.
+> 
+> perhaps it should be:
+> 
+> if (!local_trylock(&s->cpu_sheaves->lock)) {
+> 	pcs = NULL;
+> 	goto barn_put;
+> }
 
-> Le 25/02/2026 à 12:04, Ritesh Harjani (IBM) a écrit :
->> Similar to CPU_FTRS_[POSSIBLE|ALWAYS], let's also print
->> MMU_FTRS_[ALWAYS|ALWAYS]. This has some useful data to capture during
->> bootup.
->
-> The patch subject is misleading, should be something like:
->
-> powerpc: Print MMU_FTRS_POSSIBLE & MMU_FTRS_ALWAYS at startup
->
+Thanks a lot Harry. In fact I realized this mistake after initially
+sending the patch to Ming in a reply, and fixed it locally (same as you
+suggest).
+Or so I thought, because the fix got apparently lost.
+So I'll do that now in slab/for-next-fixes
 
-Sure make sense. I will update that in v2. 
+Or actually I think a more robust way is to set pcs = NULL after the
+unlock, unconditionally, so I'll do that.
 
-> With that fixed, Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+>>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>>  
+>>  	/*
+>> @@ -4667,6 +4663,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>>  		return pcs;
+>>  	}
+>>  
+>> +barn_put:
+>>  	barn_put_full_sheaf(barn, full);
+>>  	stat(s, BARN_PUT);
+> 
 
-Thanks a lot Christophe, for reviewing the entire series. 
-
-In v2, I am planning to fix 2 more kernel warnings, identified via
-selftests (currently working on them).
-
--ritesh
 
