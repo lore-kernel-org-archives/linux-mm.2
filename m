@@ -4,107 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A5DEF8FEA
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 14:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A3EF8FF0
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 14:51:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E92D6B00C5; Wed,  4 Mar 2026 09:24:10 -0500 (EST)
+	id 497C46B0088; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C1436B00C7; Wed,  4 Mar 2026 09:24:10 -0500 (EST)
+	id 4458C6B0089; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F70E6B00C8; Wed,  4 Mar 2026 09:24:10 -0500 (EST)
+	id 348006B008A; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F12896B00C5
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:24:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8ED0D8BF93
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:24:09 +0000 (UTC)
-X-FDA: 84508600218.06.AF6FB7D
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 50728C0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:24:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CLqTDTZq;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 203756B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 09:51:45 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD1171B8273
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:51:44 +0000 (UTC)
+X-FDA: 84508669728.26.463AF10
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1F17E4000E
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 14:51:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AcvONXz6;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772634247;
+	s=arc-20220608; t=1772635903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bufIZ0KxszJQ3L9rJ1V727Ee8v2Au2l4SBRQrB6L5Jw=;
-	b=XlV4OXQwyz4DNpnskuxyLPC0AOTmvV4AVzKAWA2eM7hSvd+rE1KdFMMmtdb0YaFzIG6KuG
-	3l4U62aOY4TLPOAubkZSfy8bMbgva/8wt/xEb2GrPOHr1FhWolfJ0XyFTuaclfOoTtizVm
-	I1jvQc8EBoZzfTErzj1b8C1zUDJkcDM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772634247; a=rsa-sha256;
-	cv=none;
-	b=KWz8b2m7wQ42ryA2iAKpWI4qo00gWznSRPieLizaEBqEfgCTRgM+ZoK90eh9JuJzcYN5hw
-	6+5ccskLJ/AKrkpMqH71BgFte3aQDX2ze4anTa3T+4/3VBNy1+lbPU0oFDO1WNhr1HJTx8
-	++TklDejwGcrNGmIzmMqjBPjXxcgDK0=
+	bh=zFqXSL8SHgH0wb2/oRDk4ZVQzYDlT7YR1qGjR28RvJE=;
+	b=T0tkjnf1RH6PPAGfrMuRrnkN6coAPHUyDq7GSvhJJFZllw9epO3DHa1HC0jUuEr1u0Gk6c
+	quYgBTTlm32IhH6vuXBXWDs3d+OyMqgfbtqgLnV6emYfBtsDpjGeIOciYJVH2KJ3YqgChA
+	sY6CkhvsA9p1RyYFGNZ40OXIdX6/EiY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CLqTDTZq;
-	spf=pass (imf28.hostedemail.com: domain of andriy.shevchenko@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=andriy.shevchenko@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772634248; x=1804170248;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tu9M8dAwlOQjnoY40nXiz6IClVdkQ07FefvPXNdEylE=;
-  b=CLqTDTZqvFzQMfbrZ+Rx38cbtDoDgj8A3kpwFIYak8t/FrisbwJMopC8
-   O6e05VsUuInTNL1vZt5KzqxSvYW346ANWF/ALupW0mJ2OhQfsvdAAvR/6
-   xOOFpmSEUeCGMii35wLDf+XTmj7ckJAQZUVM2geY60LZiklme6THPVYyI
-   k0Co3Jlbw3WiwLp8lFzGdaEtlYucDj+v2epIM3jtTmwK+CSvkBxr74J8a
-   BVfSjuhpEVnlsIrJ4w6YWpXbOSru6PtUcv/J3zN0sQ8STemtmifrTixoH
-   lJuTs3AEKt699OFpIlV2VZKVtuGmH6wgKr9bM+O+WkkFlU1bVDn/Wy71e
-   w==;
-X-CSE-ConnectionGUID: J6mkiiiFSiC2EmZZfcJobA==
-X-CSE-MsgGUID: huCB/X0eRPS1rhJOvgaiaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73660052"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="73660052"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 06:24:07 -0800
-X-CSE-ConnectionGUID: uzbeTbSRRRakzTp6nigDog==
-X-CSE-MsgGUID: 15Rp0FUNTGS/1QZm+UiaJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="223020477"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.127])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 06:24:03 -0800
-Date: Wed, 4 Mar 2026 16:24:00 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: kernel test robot <lkp@intel.com>, Kees Cook <kees@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>, oe-kbuild-all@lists.linux.dev,
-	David Hildenbrand <david@kernel.org>,
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AcvONXz6;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772635903; a=rsa-sha256;
+	cv=none;
+	b=CJetxyhRiN5GUFBxBQWEuk1Tz0b76yLCYTnTrqkeeDaeT5slDRLLVdlheOsuCMnYu/W/od
+	cbpra1CSm57td6QcdEsGOoRr8lHO3oiVFtj/kVcnlDte7/COaTx9aHl9IGITiR/6j0P7lm
+	K4SKf/IU13QD4lB3K82YDjKPOh+b5oo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A067600AD;
+	Wed,  4 Mar 2026 14:51:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE61FC19423;
+	Wed,  4 Mar 2026 14:51:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772635902;
+	bh=AXcGOV3rxB0t3xLwBtUstDgx4cx8kG184IK+T6OhDic=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=AcvONXz6T5whljb9Qjj+WgDoNq1cZjnLZS2qowLy0d71QtwIsMlIkiqZUzllY+Ql2
+	 e3/shG0jjz6LnHB1A4NskTc5n7opsjWQEi3x5U1LStETOPymKX4Mx+OzR9njBKuqPA
+	 cEQQkOtvo7YkFK8cIZdGN1wfWIOKVGSq8X5sgVLUqekkQHKLCiIQFg0yZEsOLYbekZ
+	 IiGVDf/lsTPCFKbWI+lFm6+Vw0YgkpBNuBlrOKEscdr6XHH9wqF9tNeEyGUYIPgBra
+	 Ow4r7YNnAewNV1aYTd7WBIthl0oRMjzsqPLNcPM8dPcaKiqSc+uIdHwxDyRDfMtuEu
+	 9RDdAGyWBBhHA==
+From: SeongJae Park <sj@kernel.org>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 49/110] __efistub_cmdline.c:undefined
- reference to `__efistub___lshrdi3'
-Message-ID: <aahAgJ0G1uYSCFnF@ashevche-desk.local>
-References: <202603041925.KLKqpK6N-lkp@intel.com>
- <aag95SSwClx4IzJU@ashevche-desk.local>
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v2 02/10] mm/damon/core: allow quota goals set zero effective size quota
+Date: Wed,  4 Mar 2026 06:51:39 -0800
+Message-ID: <20260304145140.172293-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <abdb1acc-5f88-483f-af49-45276ab66ff0@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aag95SSwClx4IzJU@ashevche-desk.local>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1F17E4000E
+X-Stat-Signature: qytsgsb11nmwmaa6uza64stmx1pa43op
 X-Rspam-User: 
-X-Stat-Signature: fyuqgknjmoqpnsq4fhzchntqyg3qfx3g
-X-Rspamd-Queue-Id: 50728C0005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772634247-406674
-X-HE-Meta: U2FsdGVkX1/wirGxZQwaaFzQ19WVZ5bA/0lDvr+NVukGbTNlycrvy3U8E7wlRaV7RfsWp/Vg8jyJmCGXNrqqZMbBtBexAUA8L/hv3YKAfQSXeBHDYDZeWbeSkvcfgJtyn6o1fsiElMP0zpZ9ePy+v5CJmvnt+AzIrnF7WPg+AYXSjlowkjLcIm/IirSAi0ilmTe4OJ1+gwZAF+UTjmiTA3PTMyZwkKFV+WXrk7g+Vb0NR0CHly+jbvLcFLEPVLQOggxBZTT/us8gERtb8SpQ3EztU1VZnXIo/3aOF2kVHy+VemX/L5ltOuP5xgLiG7xWBevl1APQe71OoYVd2goPtA4BbSrHXMuO1HxP2X8AfocjYxRIb7yw+bFyf+nsRh5MQ0d2R91brnbQh8IF4R1o2MqOA/F4Ivj8Ozhv/G0fy3CHKs/kProzzEtQ6CpREmvR9FR964vrS4RZprEEBUFOXEf0BL22Ldkyz6pPlvpj0Y9lp5CkXl8P4TPXQ2oKVHHL+X+X0uXVljpLJUKAF8TeJMtYlhl24mKNjBa7SoiyzoqwrHKSDa6Z69OmjCFs0nDF/pLQVwTkX63rs50AIYrUrLNbgD1xhoJdawRyiIxu4j8rQX2BYWB0th0NKhF4CuxxkV7ig9NGosRB+lClOTbxluYOPTo07oH83aMkqkRJjWnkRuW5cYuKlNEza/1pJFDoHu/MfhlGIidFWKX7lc/0v6DNwxVeCXoZ++WafCjRciEQDO9q4mHT9hMdgyCD+lAgTDOzKEwpO0tDe/xfWv05foR8kn0U5fw8a1jNSwHhyGt4Y+1afO7Z0I68l/wxj/F8E9MxMnfWUfX0x1wYqq30C96lHWhzfsrfrBr18yOMHzdDv7DNmmR3dvAaa1vlXjixb3tp4OxQTGCqMUqaAELAq8UI76Sxoq+TZzNXDc7Z34rJqOju4Ok7SOKxcYEl8YPvLgVVg7rX7hWGvCxWsKA
- sWweFlKI
- TbuZNnyJf+1B1LY0NtvdRayhDqS9AzgD/4D5l2ZWWbDzjz3AX7BGZmrAu/aPXTYaLPezxc/2faelZRgOypasiaFLfA0uZ0A255VB3G0sZiN0ZGUzlP2H9ueq2Q9HWQkXZGM8FBFQNupEyKF6I8Ti3mtciQlCn2Q1Oq3PQUC7kWzLuy6rmox9qO0KStjavNnlF0SbsmTxY9HsilTfp/4Jg7ZAD7objrWZRoXnieVNQGTFPqjTEkfFfLCf3okOpn35HhPSlqEvdWXuRiAfoNEdllaD/UGj9znAdmHlxtfJJHL3STKPTDZjesA8U6Ihth8j8B14Lb9u5r4u3/GTlEEDry09/tYIBxYyYgKxu6gseOQAGdMOvO4zoGRRnymVYIuYw3bU0hX7ZpD90NrrWe5pKNmGWN2BvdjsPbV6/yqzxzXb/A30=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772635902-231840
+X-HE-Meta: U2FsdGVkX18Wwqvh9tpihUcCi/ZKRml6bptW+q617OkrRK7rfR+366tNpmqXJv1N8fSrKrsze6xxC0VgO0uDEEHWrLdRyN0N6FomAbFmxcIvb676Hjz9XhB8m1A6v4/mgb554zB3kbAXjRlQJLah+73XgDGdqfqrJhHgW+oNEJcpFZlJFfvBMBUNevAfXHR22dRJOW10sybSgtrS+ClCGzbD3oiXoKprH+Zrwvc4qx1XS8C+FEFMfv6Q8hkjx2zMD+Vk7ZeYVRXvL36jlWQP81yvfYcKJzAufewHSfGARnvpNb2Dkp8MqtCmeaIt9POfzmnzjP7qETf4MYUsdHdhMLcv17bcj7JeuDquTtvniKiWg4Zg1INU69NoprMrpVsHiCF1D8gUh5SjPTeLZisYC5BqEd4BahV2HJAOMCfruoNi+MWFMud958bJ1TMmjzAjTOvSK3T2JDxOXUbMKpK/TBNjzK9dlFovnGYcuTSgMeD6PcA9P59YU/2Tb8anWsOU5uRt1poFNQ6NYi7h4GqzKS+1xdSVWxEGgwOb47B73POR5btJ54X4PCL/RiVA2Wffut/FBEpl7zRgRnyd9eHW2fwuMZInu3CLTu7pOJHleY/SULAGva9sog8/DzloUjCTo3RBha3z61pqXDDC4lf3RiRjxuZCPZMaMI09EVxUAEoV3c9w7AnvRbOXKOmJuBLM2Cb/IOmA1+ImfIM4BPVEZz9Z2kd1TXzag46wB4CUZUIMSmC/c4FS2lF8usmPwlvv/n9i9spYHPgzQTMwoePa4UdmJ9Uyx5oMDRLF/8TPKe1+W7xVwsJZi8kjZAlambjAesVNf/UaV0oq7cj54x+EJO5FhwDfjPpbg6XHGz57+ISOIqgPjfF7KCiKDlnj0pMibakmt4OlGxG53D9n21DK+FrbXXxF/lU61bBKbqNkINMdRDQFDCEuKspWvNJG2fI0DPg9m4U5zpjoGNWyXel
+ MumQs+it
+ DdFbGnNtUlygkbrBu7VjpHcBIY7y73HWLA/4a9Vz7QLXekKR/T0DgB+0maJUQEoVC0du2GLSl+JMizZ0NlJUjhAIHeNeT9mnjUBd/2hIIAkYS+kTJpjP0I9hLOEZrtIzt4mAmMiN0ar/oEF45fxfGrLnPyV3yT7dhTjO340Ed+BoyVM8atsuSEi4DFHdc+Xky+Hm/yzDl2I7H93UWdMyqzJ/NzahGTHoIGAZa+YpK213QrVuJKgiHaZ2XdkMrjr7hgozae+UjWBgaIJuV/deTWcg3q3mBI0IuJbOm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,36 +93,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-And since it's riscv, adding people from there.
+On Wed, 4 Mar 2026 13:18:16 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-It might be that they simply need to include the corresponding library to their
-architecture builds (we have lib/lshrdi3.c)
-
-On Wed, Mar 04, 2026 at 04:12:57PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 04, 2026 at 07:29:09PM +0800, kernel test robot wrote:
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> > head:   09c4ad73ba08ac959a6afb5e019826743837e0aa
-> > commit: 7c5bff091374a7980431237af80e6da21dce74fe [49/110] lib: fix memparse() to handle overflow
-> > config: riscv-randconfig-001-20260304 (https://download.01.org/0day-ci/archive/20260304/202603041925.KLKqpK6N-lkp@intel.com/config)
-> > compiler: riscv32-linux-gcc (GCC) 8.5.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260304/202603041925.KLKqpK6N-lkp@intel.com/reproduce)
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202603041925.KLKqpK6N-lkp@intel.com/
-> > 
-> > All errors (new ones prefixed by >>):
-> > 
-> >    riscv32-linux-ld: drivers/firmware/efi/libstub/lib-cmdline.stub.o: in function `__efistub_.L38':
-> > >> __efistub_cmdline.c:(.init.text+0x1d4): undefined reference to `__efistub___lshrdi3'
 > 
-> Wow! It seems compiler tries to use some intrinsics here?
-> Cc'ed to more people who may be stakeholders of the efistub and overflow.
+> 
+> On 3/4/2026 7:41 AM, SeongJae Park wrote:
+> 
+> I find the name of this function confusing. The function doesn't
+> actually set anything. Maybe better damos_quota_is_set()
+> > +/*
+> > + * damos_quota_set() - Return if the given quota is actually set.
+> > + * @quota:	The quota to check.
+> > + *
+> > + * Returns true if the quota is set, false otherwise.
+> > + */
+> > +static bool damos_quota_set(struct damos_quota *quota)
+> > +{
+> > +	return quota->esz || quota->sz || quota->ms ||
+> > +		!damos_quota_goals_empty(quota);
+> > +}
+> > +
 
+Thank you for the nice suggestion, I agree your points and like the suggested
+name!
+
+Andrew, if you pick this patch to mm-new for more reviews, could you please add
+below attaching fixup together?
+
+
+Thanks,
+SJ
+
+[...]
+=== >8 ===
+From 9599524cc5e5bbe8263c847b6f20f0aa919b3853 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Wed, 4 Mar 2026 06:46:55 -0800
+Subject: [PATCH] mm/damon/core: rename damos_quota_set() to
+ damos_quota_is_set()
+
+damos_quota_set() can be confused as a sort of setter function.  Rename.
+
+Suggested-by: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index d657b87dd99e8..c58430a4cd6ef 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1788,12 +1788,12 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+ }
+ 
+ /*
+- * damos_quota_set() - Return if the given quota is actually set.
++ * damos_quota_is_set() - Return if the given quota is actually set.
+  * @quota:	The quota to check.
+  *
+  * Returns true if the quota is set, false otherwise.
+  */
+-static bool damos_quota_set(struct damos_quota *quota)
++static bool damos_quota_is_set(struct damos_quota *quota)
+ {
+ 	return quota->esz || quota->sz || quota->ms ||
+ 		!damos_quota_goals_empty(quota);
+@@ -1804,7 +1804,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+ {
+ 	bool ret = __damos_valid_target(r, s);
+ 
+-	if (!ret || !damos_quota_set(&s->quota) || !c->ops.get_scheme_score)
++	if (!ret || !damos_quota_is_set(&s->quota) || !c->ops.get_scheme_score)
+ 		return ret;
+ 
+ 	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
+@@ -2074,7 +2074,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	}
+ 
+ 	if (c->ops.apply_scheme) {
+-		if (damos_quota_set(quota) &&
++		if (damos_quota_is_set(quota) &&
+ 				quota->charged_sz + sz > quota->esz) {
+ 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
+ 					c->min_region_sz);
+@@ -2094,7 +2094,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 		quota->total_charged_ns += timespec64_to_ns(&end) -
+ 			timespec64_to_ns(&begin);
+ 		quota->charged_sz += sz;
+-		if (damos_quota_set(quota) &&
++		if (damos_quota_is_set(quota) &&
+ 				quota->charged_sz >= quota->esz) {
+ 			quota->charge_target_from = t;
+ 			quota->charge_addr_from = r->ar.end + 1;
+@@ -2123,7 +2123,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 			continue;
+ 
+ 		/* Check the quota */
+-		if (damos_quota_set(quota) && quota->charged_sz >= quota->esz)
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz >= quota->esz)
+ 			continue;
+ 
+ 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+@@ -2408,7 +2409,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
+-		if (damos_quota_set(quota) && quota->charged_sz >= quota->esz)
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz >= quota->esz)
+ 			s->stat.qt_exceeds++;
+ 		quota->total_charged_sz += quota->charged_sz;
+ 		quota->charged_from = jiffies;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.3
 
 
