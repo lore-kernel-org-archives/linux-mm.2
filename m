@@ -4,150 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3D9EEFCE4D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B5B3EFCE4D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF3546B0005; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
+	id 92A726B0005; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA0E76B0088; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
+	id 90BA26B0088; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C760A6B0089; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
+	id 8430A6B0089; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B6C6F6B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:29:51 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A73F1C994
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:29:51 +0000 (UTC)
-X-FDA: 84509824182.28.7E8D125
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9F5B42000D
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:29:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7E6g6Lm;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70F396B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:55:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FFE21A06B4
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:55:58 +0000 (UTC)
+X-FDA: 84509889996.26.4CD513A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 59FB71C000A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:55:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WWhjr6g0;
+	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772663389;
+	s=arc-20220608; t=1772664956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y991QtG6j5sWEn7tCxDN9XrWk0OhMXb9gnZCLaNNkH4=;
-	b=bBbk53byzX/lFfM4Ubi8Gldjvcws8w69gUmvhQsIIHeJFS39JANfi434MbB1kDjAee/EBE
-	0QkKkkugsD0fp/RNIxBD2TaXTfWLj73Frehqc7xS/iVUAkOmkryGhLJ/0SmGUX0xWdQQCf
-	CXktkXWPDKVyme6e2mU2EetYkS0bPAg=
+	bh=TISI90182QlKTb91GK/S5C9xZaCSe3G5cnFe8+3ZK+U=;
+	b=jaG2EscHbHiIOUXNk4NK/tbNiG9jelRIK7H0n41XB+iBoxHvsBpEIit1NlBSWYyUM9zOY8
+	49olZHLdpx+ubKzmWUsSsN34KIdlr/g/Qhyw//pqpoaGrlX2r/5oAGxzhzZ5NsEsEAMV8G
+	3kq2R0j7OtK4lz4a6uW7O+oVb6CR78I=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H7E6g6Lm;
-	spf=pass (imf13.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WWhjr6g0;
+	spf=pass (imf20.hostedemail.com: domain of mhiramat@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mhiramat@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772663389; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772664956; a=rsa-sha256;
 	cv=none;
-	b=M5BPD6iFGugoFv88s0tXl74klFr9g/WgLyGVPHhHoinkVMINyGrE7Wtu9kry03D6fg47hX
-	OI9IEfjx0Dg7dEjX/Cv6KCzsbvHNHlCb2piUWt0WFlsmdhvV9B49qv06SF39k/4//2PGKt
-	Fh4s7jfMZhGJKZ/OSCRYzwkPT1KNj2g=
+	b=xzLnlv6XX+BYF/e8ihILt+E8y7Vty4C2+jV3YluGYYSY/3x9QU8jUk4uPNl7VCmCUJPrZi
+	lLdRp7ghFeuQAALzBLCgd9itmI3o4rlc7cKI1X8f4h4w1nwDvgAQ0DqT+t8DT1gXbuLGjF
+	ZZjh1zO/jYoFvf2fWWrf6E2gb1F2IwI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 526FB43E93;
-	Wed,  4 Mar 2026 22:29:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E566C4CEF7;
-	Wed,  4 Mar 2026 22:29:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C98486014B;
+	Wed,  4 Mar 2026 22:55:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96504C4CEF7;
+	Wed,  4 Mar 2026 22:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772663388;
-	bh=4g9Hc6BCi1UzcQ6UmFUsAKXtEqFK6/wIIRnu62xorDM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H7E6g6Lm08bdby4/2tHEolh5uuAfzAVSsM3yLpncdqLzpMpx2R/jiaVVx3BrpUlHV
-	 zLgQZLl3q+J8YOTxOWa4cFn0qM9qtzHl3urpYxu/J8dk/Ng4eTR5ve5/MwMG2EM0x4
-	 13hRsUgqaHxQn1bDCNJafYTopHM59GSiSSfWDaMrsTRgNMP0a8wibVOr0aBrw1II97
-	 INDpQBDBhw/6g/ZfJeCr4GjGF8S8trfaYHGCsvv3rBpIoZHp4hfWrZiyJa1NX9T5Ya
-	 lxm3zNjb7ZsIhtDD0mqurpzxaf9es4FePOHSAnjX78l7+ajL920pZ2wjsA901PjGJl
-	 9YO9TEkdx8L9Q==
-Date: Wed, 4 Mar 2026 17:29:46 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Luis de Bethencourt <luisbg@kernel.org>,
-	Salah Triki <salah.triki@gmail.com>,
-	Nicolas Pitre <nico@fluxnic.net>,
-	Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>,
-	Anders Larsen <al@alarsen.net>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
-	Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Chunhai Guo <guochunhai@vivo.com>, Jan Kara <jack@suse.com>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Carlos Maiolino <cem@kernel.org>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>, Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Hans de Goede <hansg@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org,
-	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org, gfs2@lists.linux.dev, linux-doc@vger.kernel.org,
-	v9fs@lists.linux.dev, ceph-devel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
-Message-ID: <aaiyWlJelhHju741@kernel.org>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
- <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
- <aZ84VRrRVyGEzSJn@kernel.org>
- <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
-X-Rspamd-Queue-Id: 9F5B42000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dukmc9niqso1dy3om6w6ae3ezobjbcfh
+	s=k20201202; t=1772664955;
+	bh=Th0k5BwLXjcKqKxNPyWtlPrNyyCtPIZvtetPczGQdsQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=WWhjr6g0YC/LGPHBiN1pOKYTPC9D7XGrawhQ9VLi6aULm0neouoE2TgJ2spzkdHk5
+	 DdX/AlePnhz7ZyyXe3lq3uO+KAyX4vJv5uF3SVt6AowTxQBphvW2PsWjh+GAJ8bR1o
+	 bGnHKj/e1Dqj1+DLjbnMlJK4n4UefH5hrkG8fIFFctIXAkmU6EBSZV9BXd85uHX3sm
+	 U4Qsoxlfpmbl13fvlzO6KECwLGyZZbFyX4W4MOSoJEs5HCN4AUgJ+A3Vo81unCgIAt
+	 IFSk8a+CiWezGNMSHNTtRuqHQ741kixcB5IFYeigIrYXVJwcYLjzILj/mIRs0MnFWJ
+	 98Lj/W3RqnJbw==
+Date: Thu, 5 Mar 2026 07:55:52 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
+ Lameter <cl@gentwo.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
+ <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH RFC 1/3] locking: Add contended_release tracepoint
+Message-Id: <20260305075552.0840e6b107dd9560e09e4f86@kernel.org>
+In-Reply-To: <f8605471fd84ebff963c011aa98f79ed17f493c7.1772642407.git.d@ilvokhin.com>
+References: <cover.1772642407.git.d@ilvokhin.com>
+	<f8605471fd84ebff963c011aa98f79ed17f493c7.1772642407.git.d@ilvokhin.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 59FB71C000A
+X-Stat-Signature: ix6f7q5woziq1ayatofjg5r1gibyfdhr
 X-Rspam-User: 
-X-HE-Tag: 1772663389-506330
-X-HE-Meta: U2FsdGVkX18dKaDX+F/sskBlBWQdZXunolaX0Fe5Dh3rypAB6M+cLhiqq0l7bWa6b/XJ33k362acLLTTkilN/0cug5LB0maL9hu40kkH+G6BJGO9GUaPXsdsVQGNku78FiI8dSb07Iik4oAqaMuvaQJyrMVOabi1AULfaNBUwq0Rsgtl8e5CVarSBonn3A6f6J2Dq6NNO9mL2c1qWnp5ibQWCC98NVxs3SuFch5+DaVtqBjtv8z///yoQBGwjxiGEcU0K4zpFCj80j3bKl2Js3mRbJpuqpASYQCnDg4abU7eXQ5IE0oQ+E1bU6owaXOz8TKJLRBEg2jedU/ls8+JBVyu0yKRDhZmYPNDBA3NIV6xpS9cJhSyrj/bkAY8NqPM49zzTnDXiKT18Dv6jLqCsBz9hR8eidApzKqfRGZ4GNB6i5tHnx+H2RGS7+z5vhwKpSZsRYglepSqOIRbyk7HlxX/IRHaa6W30Ot7xOahYTvAvwfaIknFgVEsdZ7nNjhIrRbG3vjEU1D+OsswReRBZswWYU/zJ825/o+hR3S0VVU6oha6wWP9OAqDhFqV+SfWwZSe/3OW8jvC2gNDtfkWQ7T8jSKMGiS5lsQDwNjehKbsFzdI27qEYAIopYmjS/9W7tradDXfWiu8HJVMhPm0xdZwEXI2Voe3B8d2F94vc4UlxZw41guw1ASJ5U4V0+57I0dH3P3s0cz71ucliGgVOncSs8g6T0Y05h4Eax5Gt2/526PWE8RMb1ElSLAI6V0W5w/odSEMiireMzFDM/7aDO4NJDy26jVx3yMNvDMKd/oJ4GNcI7/6ZTQZVyLT2oCBM+h+xZ+7TFFUJWPjUi3tJgT7LX99RdPvuP1W8sBshCGQqz0AbvHRdORn9BpwL0bwABxg4bg9C3f3tPLw5u7ZY+G2UWFn99atEDitnjVyGnwqMp9RyYbdsTDSaH9P6TWx5I7iNak4AJpqbmGhgsN
- sMOqXNys
- NmYAa3kOTOTLbd3BStSfkMqFmVyDfXwTsiHNUGa7k41gAAnhIK8Dtbozy9ns7rwdnPTao7EMYokekvzXzMv7CsasAjL+2r+hA8OF6Vyq0ExwN9KJk+c+j0WbppeOZ8w3Bljz5l1/jcUG1RNfqqMm7FrxeHYUNKTekHBpGw4gpbt/Iuof7lWoUXFUhjG2J3dDAP676CkxuVKLpFU0+//M+u0mO4y3jBDMyC1dtHMulsxKyPceNdOejPv83OJPdDeJSvQb4Rbgvj9/XoQeGKHX/eQWzOA/ND/Qat47tfeR5WRP3fH/mG8PeELI1bVvLp0Tco4myjcRhtoU4eIraJzsI/5d+Ky6KKu8d/Mft/Qga0f0b/+PWxA6SMOxECFCuu5NRAmYwClOJHizINB0=
+X-HE-Tag: 1772664956-362693
+X-HE-Meta: U2FsdGVkX19OASceVUllrSFqZQab/8XTd1LMbn6uzTjFplwwSYruIjk9Jg+h5QB7Hg79hsMn5JjBM41RlovW6wHYLUO0KAY97AQfymKy9es7PDuE/frDnpwpMybX+QvlDLhPVD6NZAmdGthEOH/qdlcsviRjjQpYKZJ6s5KXHjpaaSApcMKozQlYpc2iB+nBmsL9RniUOxdr5iEaDe09XlxkClbYcRGKshOHFCwqUDeTHwBk4delnEoRlBkjs/h96ifOd36PaUk85j9O66bqVVMzoUsOMr6iTvQPUqjECJJn9wsncOulvKpfGTqsUM20yNACrVMpjOfCzGWW8zrnnwtnWuglVrTSBmUmSZq7cPLyLCDpwRUVZgrZLUTOUCpnudN5hgMxVtaMg8zYBSGD2tZJKShP0J3eypdkaCYPXieVjpFwZ7H3CFwnhVL0oA9H8hQ652OPel1/njite2NblaaimBmi47C88ya0so7+fFehyAMQCYa7q9xX8vVpo9B08C7CAUgtLIPnZk4O6VnaldwgMOAqy/u8+39XxdBbtI2++9bDT/J508kQ1tpPUVadnLYRRfJ/yfi0+BCIi5852Q17H2FsM38QcVucMACPvXd+8ajlm3Ug4TyVQ2wwI4YGMo0P4ttQm+xkeTuf8Gn3spPckaBx7Rg7mHuKkdCmgE3p1p46a0j+uZKrX/5rlnsya9fKEUb5gzVEggcjZ1tJmrbmDPO2CEaunKKMJUvwkf30/TiTAnmnC1WmUxAMAmUw4bcfQrWpc091a0YDUcauc4JzMd7YbW706JP4ODBoNLg6/FO4A5tZTqIRxO/7ZnM2ALoqK+AtxKIF6zWO1jSuec43DoolrT8W8U/UGin+xYpThXuSeSyzepX/BJA5c6ia+iH4G9IQoSrpfQoFUqGkQjril7ur0d/8iTKuGpLIcDp/UiruFuZS64Invkou676ZKRrmfOG0S3HY2vxZIto
+ LVnNvcEb
+ DeWXMP6ZlS6hkyxAZdf5xwFSx17ubdUzEkaJUYppX8Zv+6l75Q4ZeDKLUGW5BI2P84c6N1KtngzBOI/vGHgmWfDY27yqB2kkoe0ecFjFdV7m4J87Oe1SEmgzV9fntixH4Wje1RTR3VHkoQknvdWU+Wm/s++OfK5HV2gMv8bCU5QqKrj7VjoSXMr14Xii1jdIWQ3SSNRA9lmjydKL7ywQNT9J2CeAlyGDyaYW+MLV3z7XnUlvIV+fMK/dkqZ+gBkrHuBc2Y65ckv4ngsWJA+c+5yqxlukkbObm9ThaWIOOIVf1uMyZf6v6liQiFjfwejyYF7zggiqnU5Do1pPXzC8a/xWodEOpeD6l1REk3jIFAZBjWRL7qIqfvxsfww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,145 +98,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 11:59:32AM -0500, Jeff Layton wrote:
-> On Wed, 2026-02-25 at 12:58 -0500, Mike Snitzer wrote:
-> > On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
-> > > Setting ->setlease() to a NULL pointer now has the same effect as
-> > > setting it to simple_nosetlease(). Remove all of the setlease
-> > > file_operations that are set to simple_nosetlease, and the function
-> > > itself.
-> > > 
-> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > > ---
-> > >  fs/9p/vfs_dir.c        |  2 --
-> > >  fs/9p/vfs_file.c       |  2 --
-> > >  fs/ceph/dir.c          |  2 --
-> > >  fs/ceph/file.c         |  1 -
-> > >  fs/fuse/dir.c          |  1 -
-> > >  fs/gfs2/file.c         |  2 --
-> > >  fs/libfs.c             | 18 ------------------
-> > >  fs/nfs/dir.c           |  1 -
-> > >  fs/nfs/file.c          |  1 -
-> > >  fs/smb/client/cifsfs.c |  1 -
-> > >  fs/vboxsf/dir.c        |  1 -
-> > >  fs/vboxsf/file.c       |  1 -
-> > >  include/linux/fs.h     |  1 -
-> > >  13 files changed, 34 deletions(-)
-> > > 
-> > 
-> > <snip>
-> > 
-> > > diff --git a/fs/libfs.c b/fs/libfs.c
-> > > index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266beecf31e9d2667af7a9684 100644
-> > > --- a/fs/libfs.c
-> > > +++ b/fs/libfs.c
-> > > @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_block *s)
-> > >  }
-> > >  EXPORT_SYMBOL(alloc_anon_inode);
-> > >  
-> > > -/**
-> > > - * simple_nosetlease - generic helper for prohibiting leases
-> > > - * @filp: file pointer
-> > > - * @arg: type of lease to obtain
-> > > - * @flp: new lease supplied for insertion
-> > > - * @priv: private data for lm_setup operation
-> > > - *
-> > > - * Generic helper for filesystems that do not wish to allow leases to be set.
-> > > - * All arguments are ignored and it just returns -EINVAL.
-> > > - */
-> > > -int
-> > > -simple_nosetlease(struct file *filp, int arg, struct file_lease **flp,
-> > > -		  void **priv)
-> > > -{
-> > > -	return -EINVAL;
-> > > -}
-> > > -EXPORT_SYMBOL(simple_nosetlease);
-> > > -
-> > >  /**
-> > >   * simple_get_link - generic helper to get the target of "fast" symlinks
-> > >   * @dentry: not used here
-> > > diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-> > > index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b76ddf28f4f59a1c8a015e2 100644
-> > > --- a/fs/nfs/dir.c
-> > > +++ b/fs/nfs/dir.c
-> > > @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations = {
-> > >  	.open		= nfs_opendir,
-> > >  	.release	= nfs_closedir,
-> > >  	.fsync		= nfs_fsync_dir,
-> > > -	.setlease	= simple_nosetlease,
-> > >  };
-> > >  
-> > >  const struct address_space_operations nfs_dir_aops = {
-> > > diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-> > > index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f88529551b0f0287920960ac62 100644
-> > > --- a/fs/nfs/file.c
-> > > +++ b/fs/nfs/file.c
-> > > @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operations = {
-> > >  	.splice_read	= nfs_file_splice_read,
-> > >  	.splice_write	= iter_file_splice_write,
-> > >  	.check_flags	= nfs_check_flags,
-> > > -	.setlease	= simple_nosetlease,
-> > >  	.fop_flags	= FOP_DONTCACHE,
-> > >  };
-> > >  EXPORT_SYMBOL_GPL(nfs_file_operations);
-> > 
-> > Hey Jeff,
-> > 
-> > I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
-> > (similar but different due to your series that requires opt-in via
-> > .setlease).
-> > 
-> > Bisect first pointed out this commit:
-> > 10dcd5110678 nfs: properly disallow delegation requests on directories
-> > 
-> > And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
-> > so lstat() on parent dir (of file that I touch) gets -EINVAL.
-> > 
-> > So its a confluence of NFS's dir delegations and your setlease changes.
-> > 
-> > If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
-> > is seen by doing (lstat reproducer that gemini spit out for me is
-> > attached):
-> > 
-> > $ touch /mnt/share41/test
-> > $ strace ./lstat /mnt/share41
-> > ...
-> > lstat("/mnt/share41", 0x7ffec0d79920)   = -1 EINVAL (Invalid argument)
-> > 
-> > If I immediately re-run it works:
-> > ...
-> > lstat("/mnt/share41", {st_mode=S_IFDIR|0777, st_size=4096, ...}) = 0
-> > 
-> > I'm not sure what the proper fix is yet, but I feel like you've missed
-> > that NFS itself can be (re)exported?
-> > 
-> > 
+On Wed,  4 Mar 2026 16:56:15 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+
+> Add the contended_release trace event. This tracepoint fires on the
+> holder side when a contended lock is released, complementing the
+> existing contention_begin/contention_end tracepoints which fire on the
+> waiter side.
 > 
-> My apologies. I missed seeing this last week.
+> This enables correlating lock hold time under contention with waiter
+> events by lock address. Subsequent patches wire this tracepoint into
+> the individual lock implementations.
 > 
-> That's a very simple reproducer! That's very strange behavior,
-> especially since NFS4 does provide a setlease operation:
+
+OK, but I don't recommend you to split the traceevent definition
+and its usage. Could you combine [1/3] and [3/3], so that we can
+understand why this event is introduced and where it is recorded
+by checking one commit?
+
+Thank you,
+
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> ---
+>  include/trace/events/lock.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
-> const struct file_operations nfs4_file_operations = {
-> 	[...]
-> 	.setlease       = nfs4_setlease,
-> 	[...]
-> };
-
-Huh, not sure how I missed nfs4_setlease...
-
-> I'm not sure why this would cause lstat() to return -EINVAL.
-
-Likewise, especially given nfs4_setlease
-
-> What's happening on the wire when this occurs?
+> diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
+> index 8e89baa3775f..4f28e41977ec 100644
+> --- a/include/trace/events/lock.h
+> +++ b/include/trace/events/lock.h
+> @@ -138,6 +138,23 @@ TRACE_EVENT(contention_end,
+>  	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
+>  );
+>  
+> +TRACE_EVENT(contended_release,
+> +
+> +	TP_PROTO(void *lock),
+> +
+> +	TP_ARGS(lock),
+> +
+> +	TP_STRUCT__entry(
+> +		__field(void *, lock_addr)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__entry->lock_addr = lock;
+> +	),
+> +
+> +	TP_printk("%p", __entry->lock_addr)
+> +);
+> +
+>  #endif /* _TRACE_LOCK_H */
+>  
+>  /* This part must be outside protection */
+> -- 
+> 2.47.3
 > 
-> I'll plan to take a look here soon either way.
 
-I'll have to revisit myself, been a bit.
 
-Will let you know.
-
-Thanks,
-Mike
+-- 
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
