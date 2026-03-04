@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03024EDEC16
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:01:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7FD1EDEC17
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:01:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 358646B0089; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
+	id C70256B008A; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3304C6B008A; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
+	id BE5EC6B008C; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 266B36B008C; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
+	id A0A066B0092; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 14D4D6B0089
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BB896B008A
 	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:01:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF938C1D01
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:01:24 +0000 (UTC)
-X-FDA: 84507484488.05.5A746A0
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 67BAD2000B
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41E3458DAA
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:01:25 +0000 (UTC)
+X-FDA: 84507484530.18.3770D70
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CD70214000E
 	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:01:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duemrzHH;
-	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FUB5Fd7h;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772607683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=vNYqlqI1PuxFEU+nd+vOm7pceggsvGmOnWy/Uj8/6+s=;
-	b=XVoE4iYEscZcvi1mtmC054prumGBpG5nO7UMJIMrzbdVgZLdkVuQJ/w7bqxHyCAGpmVQU9
-	yVteKOkCjFM3oPVgTXbE8uFKOqc2QqvqlONmrZbPGgBnYfNZkm7JOKjQqMbr7GWI1ZO7iK
-	ntVDUXWaUsPtkC7QUr8YVByZXoM1L88=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ujAxWBI/9YO9pDfOvAHGUhyTLccrKoAuXmKCcnkProM=;
+	b=O7OQSvrCw8oy5Jnj2xy8EqlC3hKoEgzJgsbpW8brpKTOL3GHb7kzLN5w/o2bzJN+ascido
+	cCIby8T4OKHFPsgS8/SpUGyLrLsrnonOB4WFODdk+FE9SezATyuvPfl/RHWAl8nEwZ3h4e
+	54sXe2FeyYDu8WlqOAw6uVWQakFYksE=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FUB5Fd7h;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772607683; a=rsa-sha256;
 	cv=none;
-	b=6a4M90QvKJL23zKeerdElkHvvQQDPBUdBsGq3Xma5Ld+RIYpPQdOdyiKNU4xdt6noR5cE8
-	Ny/fQ0ac2bn+3MZLC6vBO2+43HQowMPXmtu76Im5lMmuHdzknTvFLroYs/ZCunuH4SuZQv
-	fBUDuw6oRVq+ryy7pPB0JSJHAOjDH9k=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duemrzHH;
-	spf=pass (imf03.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	b=A5mAtibvWVQgeNFSS6V0pDGTaZz7gOD/EFMTc6B+TpdC0p8nLuJnC9w+4KZ2fVck64Qlu7
+	Y6u5yBpyaKfRY50kT4Wom1Oh6X0U93WleUbGEzzVaePIwkgcHBEaFJmXmHEkQMeiIxr2/K
+	h9SFCSj+LY/splqe5APSm1BN6PD6QKk=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772607677;
+	t=1772607680;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vNYqlqI1PuxFEU+nd+vOm7pceggsvGmOnWy/Uj8/6+s=;
-	b=duemrzHHbB836XiAnLu4M57k46k6UZehO61iTj1UWn+3M6gx6c+jVClvIRvisxJqsLSRq0
-	C5H2sPRiGnuBdxm2QpZZ6qwo3wWPRHMOwsoYiIjLZP0yH5XR6PQcn0r02zU8r3Ay/2ePB7
-	g0ZhOMv5f9XbFUDAWI3OPcbOP+WFWdA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ujAxWBI/9YO9pDfOvAHGUhyTLccrKoAuXmKCcnkProM=;
+	b=FUB5Fd7hKuAyUZrfs0QRjG5P0AU4qv+Kxtkp07ZzjrDUNabCsOusMyv9i1jU7FhQfTc1XO
+	46Y9Xm1PY6bh1j6o29bs6LvKCo8/GPVVSu03z6zJe3Acdu/E4nBacAFwrAubFTkI97GzUx
+	Ds8T5fuM5TlvYr0Jx77/juZZEfAluDE=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
@@ -68,20 +69,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH mm-unstable 0/2] mm/mmap: fix crashes in dup_mmap() error path
-Date: Wed,  4 Mar 2026 15:00:55 +0800
-Message-ID: <cover.1772607155.git.zhuhui@kylinos.cn>
+Subject: [PATCH mm-unstable 1/2] mm/mmap: fix Use-After-Free of vma_iterator in dup_mmap() error path
+Date: Wed,  4 Mar 2026 15:00:56 +0800
+Message-ID: <2360c415d4aba233d80666b8820ee31aa77c54d6.1772607155.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1772607155.git.zhuhui@kylinos.cn>
+References: <cover.1772607155.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CD70214000E
+X-Stat-Signature: cmo4d1taoep8a3iwi73aohq7735bsqme
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 67BAD2000B
-X-Stat-Signature: rnzckzbfhoezmi5pkrfaraafazi9h8rb
-X-HE-Tag: 1772607681-155118
-X-HE-Meta: U2FsdGVkX18AhbjnNJVH8t4CeEkuOl/+NgHOOMrk8fAbVO2qG/eiNU92pfgZYGUcUkyHqU8EOsyu1nvpEAsrlmnDXcVWfIGMquAyp/TdvdTiH61F6r2APNSFwh5gB/yaSodtmpdgR6/4pgHFtcSEojcTz/m3AujNXjGiuA1RV0UxgQAFI+NNQFDiC9MfMqFXy1oyGqsoCIXHCGPkyn3ZJQ21ayX+0qLL76F/MIFuzCQXpNXu5K2hOwWWTTWBnRaz6bOykb2NvXT+GiL0XFbsZqFFXBuUfV8/8IQ8HUSekkG6nDnFGpCr3v7EQYHiGFaMC/unfHzFtQJ2TvHbVvXSRNMJ++h0dFhdykl54GhVqs5gYfTprvVWZeBgFZ7WzGHTOJZyTMfw/xr0V9dc9UENm0UocPnDPAwBTw/OJzHyFBIWRVn8q8HEh532MB8ZTGylWjUEcftV/zCc4W5OWZpBsUbpZoVrG02d2LAKV6/BRGAJYnVUYLWnMqup6pHecqW6mdzDyvCqw37PT8FcY78TiNLZoCTYaOB04mAgEnZp5NOGr7G9nk/C3LlyA2UvDKzvcwGPcTd1RAwj7DIxW+4L6bP2+cEo2rCThpC5qfBTnlJEsa/V4mRaV4YA4RgFKfX+KdS/gbVn2pgK4m/qEMYg7nHGMvxyUNhDaahHbSw2Qk7Q7rbcCT0MckzLG76Je4HbwUPXeGweNqL1q+N05JDq//P5Bq+chHEn27lqI0LOZ1iVKPEjy0vp8yURGaFemQGK2O8Nu4GjBpj0tPpPnavTDQbLgIqBMLeUAA9IMvRdbPTZ4dKAIcNI9Rj4dqvTVGLlpPNZYverTH8Ps5ZGhSng6jkOQn7LjZnQQY9Hqiins4CrT/E37mI13+FK/BaSjJpBXTZ7UXCv9QMm/3het8SWQfee0Q75Nwfy1buDDCr+l0FYBflqrhisxdmgpsOplyWjykHFnpgw3t+oFeGcWJu
- HK6BNdMP
- vus9yb2N2AjqMfsJI0gJzUpRtjjRjnrgBXhjJ3qns285cXfmUsYppR68rnvhcXw7ByWKBwaTJvmGojnTuY9CPzhzuWI5yxsfmBmE2XKVIj7w/QULZdEqPwxL3AwrvDmbzyVGnZSR+hfuDmApIaOjnMeF/tQUppr+A1RXC6JXLH6TnFJ2r5wMgNCYEWz1HOq3n1S/arYYxeR3EncU=
+X-HE-Tag: 1772607681-564916
+X-HE-Meta: U2FsdGVkX18zYhUn7yw6KvUv2lEwMExO+acSOjfRlpoGUpFa5C5XgbipWu3qus61ZV8h+axdJUe05HY6LhpdbIflNPOWGD91eYyd+7eWdb7QGz0t6FZ88NlrbAPZC4IMQZAtUb8e0oVro/jSVHaGnjpu2cl0YdYv2b5I2gD671qxItAuUDkxiIZb3JRs5+C2WugSMvlMnF4UCtBYGvd6j1zH2DVRRXN27th9tNdifTcSFfoY2FAZcQ0rA5xxofuJqubnUHfU/pHLvhNLp7Wj+DUBbzRnuLj8wLupL3cTs2qKQ1gpDWwWQ8v21A0DxQMm7RJR02tlkBLyx7/5FjYWpnM0wT6XEtJGWSC2MZ51htOMajgWPJXdGQ5PXU208NDrumyK3BKmjAgXL3qP0yRNLEznrP6Fl44yfrLhIs6E+4dEVNEYGRch/8BOB8gqU3dqmLQyP0r/UEs8f9LkqjRycvga+HcsChpSvUMuq1IXMgOLt4IHBSPjPgs7D6xxXvF7LRgBO6jvHLauyUf7eR+jXRw9uVHnwRR7Jdn5O7bLqsS2fEnjWpRkAwVtPTUMgcL8lc+X5hp48Yn2nk7aiTN7mdJziaDskEBlYGmbgeU6Gb6Vq9IhA3v+zxa+gj/0k8tAPF6RpNCqPPj1khfLQlCK1BL9/6C8nhZXcgDaajHAiXjh673kqiGIYr029K2qbAnatmahx5bVj/05O8gUdirNSn3zi2zdsZDsZFLfCNcn2kwROIAPaf0qDH9FNRveVOhl4ZEj34WnBLTLrpYvH9uQM5V01h/bpNlx03qG5lndBGLDsOZzpw+CB4IqQ5qr8BUi9qI0cPG3MU1orIfr4Yff0ayY4Dpl7IC6vta7R2okL9E8t43G8m38qgNQsfY6xdPfe9YRF0xnA1wrsGU3awtAeBTcaHNgk1KzF1aQW6XImlzDQiOMFP+TiyNheUV1JBxKkjsrbLtrU1XnXIzV9hH
+ 45DeS/oD
+ KUDYT7i1wycmqiLynXSRw07VNyjBRD4WEH2MPdtgAmIjFj3xlnoKjVj1KXs/PE9icgaKz0EZrcKS2N5DVwzkQA1M7ELzGl5KFrbB4rZ41UWBdaaL+O/LQXJkFSg/q8SOkE1z5/vRlaN5CLqNRwVLIS6zc2sFkCuhA6tj9CTOGqTh0vEM2Ax/UPCLejer+jkZQF5wxeWo2anHZmHGLq9XgQkTHttpWo8NGfBwFVRYo57rnCsk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,20 +94,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-This series fixes two potential kernel panics in the dup_mmap() error
-path triggered during fork failures:
-Fix Use-After-Free: Moves vma_iter_free() to the end of the cleanup
-block to ensure the iterator remains valid during rollback.
-Fix NULL Dereference: Adds a check for vma_next() results to prevent
-crashing when the maple tree is empty.
+When dup_mmap() fails during the process of duplicating VMAs,
+it jumps to the 'loop_out' label to clean up resources.
+The current implementation calls vma_iter_free(&vmi) at the
+beginning of this cleanup path.
 
-Hui Zhu (2):
-  mm/mmap: fix Use-After-Free of vma_iterator in dup_mmap() error path
-  mm/mmap: fix NULL pointer dereference in dup_mmap() error handling
+The error handling logic still needs to use the 'vmi' to traverse
+and tear down the partially initialized maple tree for the new mm.
+Since vma_iter_free() calls mas_destroy(), this results in a
+Use-After-Free (UAF).
 
- mm/mmap.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+This patch fixes the UAF by moving the vma_iter_free() call to the
+end of the cleanup block, ensuring the iterator remains valid
+throughout the entire rollback process.
 
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/mmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 843160946aa5..498c88a54a36 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1848,8 +1848,8 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	/* a new mm has just been created */
+ 	retval = arch_dup_mmap(oldmm, mm);
+ loop_out:
+-	vma_iter_free(&vmi);
+ 	if (!retval) {
++		vma_iter_free(&vmi);
+ 		mt_set_in_rcu(vmi.mas.tree);
+ 		ksm_fork(mm, oldmm);
+ 		khugepaged_fork(mm, oldmm);
+@@ -1893,6 +1893,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+ 			charge = tear_down_vmas(mm, &vmi, tmp, end);
+ 			vm_unacct_memory(charge);
+ 		}
++		vma_iter_free(&vmi);
+ 		__mt_destroy(&mm->mm_mt);
+ 		/*
+ 		 * The mm_struct is going to exit, but the locks will be dropped
 -- 
 2.43.0
 
