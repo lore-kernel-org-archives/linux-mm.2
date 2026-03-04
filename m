@@ -4,87 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E13C8EFCE20
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D19DEFCE24
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:40:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B6B76B0005; Wed,  4 Mar 2026 12:37:44 -0500 (EST)
+	id C131E6B0088; Wed,  4 Mar 2026 12:40:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1640D6B0088; Wed,  4 Mar 2026 12:37:44 -0500 (EST)
+	id BC0396B0089; Wed,  4 Mar 2026 12:40:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09A296B0089; Wed,  4 Mar 2026 12:37:44 -0500 (EST)
+	id AC2C56B008C; Wed,  4 Mar 2026 12:40:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F12A96B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:37:43 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 867155790E
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:37:43 +0000 (UTC)
-X-FDA: 84509088006.05.A2963A1
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B8ED31A0014
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:37:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=caze7pYF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 989D56B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:40:28 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 45D1859609
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:40:28 +0000 (UTC)
+X-FDA: 84509094936.24.915072A
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 62DE120005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:40:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nNhTNFU0;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772645861;
+	s=arc-20220608; t=1772646026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uuyCsr5o+JidLSWRw/91AGUcrNTLFhdmWYvBwfnlct0=;
-	b=CjW7+oH8AKbpl+nC9ooW5LlS2ILJrEHml3SRMmgwi4sOu+yVmBFqRYfLqgmp/RW1Iy4OWp
-	tY6eIVInfEm85A4GHmoKm70vfBqpFCMJNntk42b2W3RzNUOybpI6edU28SXzghmjnPiE/b
-	b4RFJ3JHy2iePXvipvZhMUke5mrnAOc=
+	bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
+	b=Z2g2K4rBX6XA+bnMx4QUYw5t80ASNlv5VPA0e63oOHXvvlPvuE7AgMCGg4cQ0IpLBTJJ2u
+	agUE5niuZ7yNsSdT0t8TK6nwOK9kckaULEQyyXvRwDNjFxQUX9DgO8maPFgaKpjr83/b7b
+	GxHGMR6z8tJFWj+M0/31Xeo9WnaAK/0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=caze7pYF;
-	spf=none (imf19.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=nNhTNFU0;
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772645861; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772646026; a=rsa-sha256;
 	cv=none;
-	b=FKKyBujpxzloDcnnQC3pFKV/qupNfj4I306iRFYKNmGYkQiet35u/3DFoTP5v3/NRLOUWW
-	QISaOgYv9XX2BiGFugOb1wPV/ZnX/gzeiyqOnKMHh8QHDEzLrAE8n8VF7GovAV7mKm2Fh/
-	653caC5pxyuOmr0JSCKJ2w/u+Ie+5c0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uuyCsr5o+JidLSWRw/91AGUcrNTLFhdmWYvBwfnlct0=; b=caze7pYFvcyVMiEYXzYpXuTAXQ
-	tdP41ORKTes8QS0ud/mQoCbt/xBsvN79xXVvRHWv7XyfbPUVrV9zRVSNIZCJzkbnKdWbsgC/oyxK7
-	RSZ73r181y7XF1WFFjBfNnWtVli1OZ0Rkg8Lh6HH8IG3spYaENh+j2UCmHzm5iXRddOKKXLAR7bY2
-	0lDo3psav2Ty0zNVYaDnfjSgZdeQWxLjWDClJobF0JueVolpH48n2l1f460wqCYYK+riGdDVqlK2y
-	Axv2+7D3yHkzAMQ31ly7/393EV5Bnsh1tR4GolA0TsX6PFuWptCebIbnLuvG/3/PQKhR6OaWzPRLj
-	Cp7X3V2Q==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vxqA6-00G7Tn-Ka; Wed, 04 Mar 2026 17:37:30 +0000
-Date: Wed, 4 Mar 2026 09:37:25 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
-	Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aahtwTffVysT9IXP@gmail.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+	b=jqt1aXmuCzYw3cWr8OMPofQ8y8SDv+Z/qBZsWahnWyhIAYcx6y6x9BBqTRueyY4hTTChmt
+	I1VmOv0vo7DL/93UQ+jXiORaRsOoyAwuZ4AL7sSmQgdxLV8K2T3ivNdpZoDx242si0cUsx
+	T6VVus0qXihEJA7VsZstDCjcF2yMWsc=
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cb5138df1aso686092085a.3
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 09:40:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1772646025; x=1773250825; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
+        b=nNhTNFU0NVXeIImBDc6Silp39m4uJFbD7/j2sRv/01vvFAGnhTdHSh+VF/k98Aq9M4
+         0N7lf6nYwhBNbYGxsCF0A7lZ5/MtllJyGrTWr1FtUyv5fd45H/0FapNL2T23qtStLcet
+         Uuza0uFGOUaCsIWqL5POGgI+eF3bSZEdTGXA6Cq+vqVaaNrxSPjoDZihS9YRk1jdwP9y
+         YkzZVcywflilZfU40JobJ6CVsG3J30YhnH00CKXUIfTYlLjcs6VHS+a2Ha/rZWP1RfdD
+         pQsnRihQo0C2LMR2cob/fSvFAwjDiC0qOax+eYF0hsm6KWhIYmZE2Bw0FQ7lKjF33vzt
+         cWHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772646025; x=1773250825;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tgpC2SAOeCJOj5g+sj2OoOXZXcoH9wp6KBcGzu497t0=;
+        b=fb2Sv3Y7+M0oTJrN9TrR0sSyULEl52eNjwY50BG2mQaPYC3v+kzDDtIFV/UxYsNR1v
+         vkb3r8s/1MjkvlBdMlQHz+BFoQEn/nVSSlnJIY8Dr/zNYASwTcHOgQD2XI980usQ9CUH
+         Z0C+ueO4eP9uYvT6JgG7XgXBSgF6d7DFtf51hsqCQ7nZdepQCO5XG6zGuqII0CXhTGWl
+         8SLnGF4Za1VnHBx5JWHA8WFTcz7bPGM9shF7Uog1SA2G4dzG1VYubsxswhf+jPJnDJZ/
+         mNcpwWej+4pDzxV6CnxoEslK9Zi8kQVWGVXxeEt75J1VeM/Qpx1c9EP87acBhfiGxbDy
+         tk9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUiXuG3fA2AEOVxPWUQQ5qqroOOY6mGMPZc78YVZ0YcOmQnh84AEO1fAEuCd4Ax7J8G9dsda4GXNw==@kvack.org
+X-Gm-Message-State: AOJu0YxZbMZLdYjyEZBe4ZzArmelEHEBL7ot1zTJdvMlP9k2ovwSaf6/
+	eCbV6ipdqrvLcf0OF43YRomy2x6BCB89bziNqgSVTRgED5c2Ipkn3l5vRB1ey0qUYRQ=
+X-Gm-Gg: ATEYQzxPYpVi3+X++6bgqKyC8pmaqNK1a4pI/EvgI0wXdQxFGLXplNrFOhFJ4yO4RQA
+	577zUSMopLMhqHOPlcHOSowFK6qWiStLYywCfCUFDSkbprQQ1CKFbdpjfRuEkMTRLBDt19xQD13
+	IF4XgC6kPWu1H2eUNZThpSqAhFW3iVAUK/KcU7t8INsOmw1kKjAIQgwcKjnKCXbkxdm1PbH8GDJ
+	qcDh0yta75fg/W1Y134bLwhom7gZjaAWo7rhLeHoHJiYEy2XW1ieGk0wYzeJ4qiO1MCPY3+dCvi
+	061q+gWn7TTuRQAny/2bzKdYCXn+VFRcvCCQm9BH6VPGUYtCSwL7lV9+kkyyCFYdzHVNQWOj9yF
+	cRysqC+Xrfl2UbgipTddvSp9xp380kwaHTsA1bhezQy6C8SwdEsYAqXCq9qi3LrZvxIjRw1rZDy
+	l9aqMb0RxQYUT8DaD7nBschi6rY/vxYzlnB9AeDIGl1sp1nL2bOqK+9y9Ktz7ZKuYnniaRWVSBo
+	2MDLRy2bA==
+X-Received: by 2002:a05:620a:19a1:b0:8cb:2830:175b with SMTP id af79cd13be357-8cd5afaa850mr354601985a.65.1772646025360;
+        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f948dsm1668520385a.30.2026.03.04.09.40.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 09:40:25 -0800 (PST)
+Date: Wed, 4 Mar 2026 12:40:23 -0500
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: stable@vger.kernel.org, linux-mm <linux-mm@kvack.org>,
+	Li Ying <liying3@sungrowpower.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Lameter <cl@linux.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>
+Subject: Re: [PATCH 6.6.y] mm/mempolicy: fix wrong mmap_read_unlock() in
+ migrate_to_node()
+Message-ID: <aahuh6N6zfll5EPB@gourry-fedora-PF4VCD3F>
+References: <20260303101245.22290-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
-X-Debian-User: leitao
+In-Reply-To: <20260303101245.22290-1-david@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 62DE120005
+X-Stat-Signature: ekmwhqrrmzejzq8kpwmqxj6egzjecfi3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B8ED31A0014
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 5uduj4s94g9np35dqniarqq8zjan7s8h
-X-HE-Tag: 1772645861-997949
-X-HE-Meta: U2FsdGVkX1871SBsNjKyYy0R45Ge9cMnLi1f+szXqr1jxL0V7s4EU1gtcccNL7uF6HNvRjd9fnoE4cmNToR9TeCNZJD4o9SjI6Ak0l7dx2wCV+d7jX8DFsRHALhWdJ7/37lqKMbXBQGdFeEGPqpI6qbSZ7OkvwKecXkawryDMPXUqxiYL8yUMBu08lUxHPY9ZbKOSgTsfm9RMQPaYtTG8u/8AQ6P3YOk1KhIdoe8WrwXvmGkNS9sTKQCc3TW4Ey5nHxeUWc0ho4gsp6dvG5fHjVInRJSnUBmkNCI6mZSTLXkmsM6r6NeHfp7oyB37EauLP2XyHiLVo7wgyck2eh7hdiKCqn5Mj8lJ2YDpbJKAc2GWFzwQyJYt7AcLGJGbc94iuQHN/f/Gf/dDbo8HN6vt261t1buMRC1f8YXMmVcxHQHzJRwB50sU8LvPCgUws0KMOTarEBKKcPi52QG4K0o60hSP7GhgOnx8pvgbWiB2GRZDqxnXaVckBEUVz3xQpAnNGm479utyEXwMNEV9AkEW6yylzT54rbggDMRugiXV+SqBm4GMYM+e15GAFcbULuPbsCko8vyFBJbshdHTLjxXgKja+/7ZCOUeX3nY3Go1CGH48NddQvzBA7duSBQhYz6wH4so0yF9Yu/wWvRHYFyY2LM49eg3KgoqjtpVO2FAiWsKWsatT4Hv1u78Q6EHvUg179B6KWkPuPYAuvGn7qZnSgDnW8fthJPXCArabe6zDURa5Nmw+Yz/FagUic2fz+tFmSbhbIgasGSsq/tiYaMOMfUpTnhqVUwG72rmDG0CLwyOydbOnQZTVrWitObj91xSLnIhBn+1cXnFjOiCI64k4C9yLAdCXwvcAqOXCaatboi0MEmvI4QAZhJH+761taNSxBFAWmP21NeVFOgcLJLaiwcBpyo+eifJ0m3mNVNwLDAtB+6QCGy7CbLg65yWxWgEiUX7fif/d1bqYPZNjV
- XqQSukgH
- 08ogh2DjD+WR8lKFbxjFi7/76twdeHhWogaT0lq7XojKqaBDxEHDl/seaS5qxV0FhTqUBK0og+MRM38JarWyS+2s1vltMPjcA423pZTJJHjQYb+I/3ZlteoxzTNEcjgt77s9PiQLoNJOAmDgI2p+Cw3e/M1r7ve4/uucgjWjHaw5HOtx8MIbPTpnl2vDwA6LskzFvSIwDz8vdFfQK9yAUgYzzalOIIK/aKadLHZyA9spvxZZKVL3hNP4Q7QzCgoCCpCz5lncgZ73AHojnD5hgmCNyOWP5ZIXC6AZqP1hqImbClb6yGqcw+a2q5g==
+X-HE-Tag: 1772646026-622356
+X-HE-Meta: U2FsdGVkX18eCics3cg+eX/jsViBQ1Pd5AALl9zDSUnTJRKtum7C1plKslRR3k7TvVmUuDR7yUJKQia1LPqNhQSnYoimSJ/ngOWfHdHwCnGFG3qvnz7nAah52zd36neAwkP6Dlyqv4pwKhPKzFmrPoe6cAEqpUIk0x3jlKsKnvGWNI41s3XJIbOrz01L7igcbFmz71w4SXlav4GTdTiCnPLf+Z24baUUsX7Hk7IK6XqOrZ/1y/Cqs53lkfPoqmHHqniUiL1heGWrwl76gCPszY6f6YkBhBloNGkPcs9E1s3C/tmpXmazTgXCCbB5HF5r19O1QMzKz6UbYk3B1C5HxLrKwUXZTvsUPBDZt9SimeiyA0H3DkeS8gNVgRwUmujjOUAc+80TNHDeSJnH4eCxhcQtaqZUrOZoOfZSiR39JYUxc7k0z64EYVuu8sm8d3zcfwxVIbbZQ+uxllZFEbajmtANylTR/xfFG/fbrHIa3kt5bO8R6HSOYJ9Dmx3+a+U0WGRLlymtu+2C3UBdrBRrJqEADV9/ohy40bO9iSvwFdzfO1rHD08VNK0oN33vechtCqoXOP8UlG5SvY1Mo0c6jtwL7V2y5wFL4yG3ae3s/FEpJm1EEtEQOAYvkAqY7ZUgNz8NsFU3ekfrcnS7Jxq+AASuc21voN8AUAFj1MEZiuxFzzRlH9cFaIwu1gHEpjcDdP1imGoLWx1/I7hd535kl3y58YYWQQ3CSgZxJCOokFqL6V69kfsPwKYOzqNt7YSQTkkrADtn5qO3X92mmkp1UD9V4rqKvHSyrHEuxDG5U82Eh+f1x2EJ/kXLFIXaM3ji1nKimDAJIjRaSH2LvvlrLGpYBaaEeXovQlaATT3v5QwaZA7dTP8NQQ/XOM7DlPH1zivEuZ4nj1VvAS4xZwob89QvdQRpgKXr2sWMfj8RhUdWHhvnXX420zQ4CkyBn0mm2LLI+e5AgCVmzJB4mey
+ RsgMSs3V
+ 78bhdtKGBsGTdd5gtNF+TmTDcRBRsZCSyHSTjVb2Uwf03uANRRsfRA0gJNArP25JHho2kBUUvF4jaYkt6dtUI5/48QSFkN6uwn51j82aRixGpQeVeix7bYCFm6F+XrXmU7jz/58TUmqlE0gTBE69PrkVcvGgC/T8gMadfKMpfRKG7O25cNm1SN7lztNfx9Ej7QBSx7d+9zZuAb0xYPFCM/tJjPx0wb+GmPxn2l6zTDu3WVbk5zBCK4ploCJ5nyLnDUw0v2uY8KKCwDQK1W+3ZHLdpGTFCGWnJ9Xqx35rW5WwEhdXJUbQmvoZ89FNA8eK7JA+tw6YFPBiTiORXclHw8wfG4MBgTJcxeceAj5030jrOyQAMVZP4An7j2zVq0kOzHgeXMLh08G1VlGgtK9y5WaMbzeZVousgOIcYlupZwfms/UREL1Wf/bTw5mDknNRazChBVGjcquml6smNOGI4Ogv3xkXwGAITxzjKO823Ahrdk7gDbbVf0d4SKuk2RweqjE/DPJ6PeBxkOD3+rCupCWPcbnpJ3V1M0bh8eEJCn0t0GgqJp2NnJrQHQTIBG24WbrW+cQtLI5VlIqCAedWGYtmsnnYvLIUyc86/1UH1R1Z91Fcm8YkoM2cgvHof0llqEKPEqMNkjN1JJZwaQ30g9MTJ0icA4yl7lUF1lr0o7C08f54GNWipB5hu3XSyk33xOvPkxeDFYtB+UKDJrXMElVS0sbfeCPiDVfw/DRS1IxYq6irXGJZNEk0SjOX90p9EvdkXBIgEsdbsdtI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +123,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 10:37:51PM -0800, Piotr Jaroszynski wrote:
-> contpte_ptep_set_access_flags() compared the gathered ptep_get() value
-> against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
-> from all sub-PTEs in the CONT block, so a dirty sibling can make the
-> target appear already-dirty. When the gathered value matches entry, the
-> function returns 0 even though the target sub-PTE still has PTE_RDONLY
-> set in hardware.
+On Tue, Mar 03, 2026 at 11:12:45AM +0100, David Hildenbrand (Arm) wrote:
+> The backport of commit 091c1dd2d4df ("mm/mempolicy: fix migrate_to_node()
+> assuming there is at least one VMA in a MM") contains an error:
+> migrate_to_node() does not lock the mmap_lock itself, that is handled by
+> the caller instead.
 > 
-> For CPU page-table walks this is benign: with FEAT_HAFDBS the hardware
-> may set AF/dirty on any sub-PTE and the CPU TLB treats the gathered
-> result as authoritative for the entire range. But an SMMU without HTTU
-> (or with HA/HD disabled in CD.TCR) evaluates each descriptor
-> individually and will keep raising F_PERMISSION on the unchanged target
-> sub-PTE, causing an infinite fault loop.
+> So let's drop the wrong mmap_read_unlock(). Fortunately, this path is
+> very hard to hit in practice.
 > 
-> Gathering can therefore cause false no-ops when only a sibling has been
-> updated:
->  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
->  - read faults:  target still lacks PTE_AF
-> 
-> Fix by checking all sub-PTEs' access flags individually (not via the
-> gathered view) before returning no-op, and use the raw target PTE for
-> the write-bit unfold decision. The access-flag mask matches the one
-> used by __ptep_set_access_flags().
-> 
-> Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CONT
-> range may become the effective cached translation and software must
-> maintain consistent attributes across the range.
-> 
-> Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
-> 
-> Reviewed-by: Alistair Popple <apopple@nvidia.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+> Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
+> Reported-by: Li Ying <liying3@sungrowpower.com>
+> Closes: https://lore.kernel.org/r/aaZgUNxAyKC2IwuG@casper.infradead.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Christoph Lameter <cl@linux.com>
+> Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Tested-by: Breno Leitao <leitao@debian.org>
+straight forward, thanks for the quick fix
+
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
