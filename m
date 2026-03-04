@@ -4,95 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9865EDEBE7
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 01:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F11BEDEBE7
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 01:50:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F5C66B0088; Tue,  3 Mar 2026 20:42:32 -0500 (EST)
+	id 9CABD6B0088; Tue,  3 Mar 2026 20:50:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A3FA6B0089; Tue,  3 Mar 2026 20:42:32 -0500 (EST)
+	id 978556B0089; Tue,  3 Mar 2026 20:50:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0784A6B008A; Tue,  3 Mar 2026 20:42:32 -0500 (EST)
+	id 87AA26B008A; Tue,  3 Mar 2026 20:50:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E83676B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:42:31 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 889EF1403A2
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:42:31 +0000 (UTC)
-X-FDA: 84506680902.22.6C25410
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 794CD6B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 20:50:43 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CDDDB8920
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:50:43 +0000 (UTC)
+X-FDA: 84506701566.14.DEF6ABA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B08E340010
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:42:29 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sMxFd0PK;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id 72EC2180006
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:50:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMf6wHgU;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772588549;
+	s=arc-20220608; t=1772589041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o8YHsp9xdDp5gO2vmWp+Mj1tgnlCCmcMHvtoXIwTi74=;
-	b=AuufUeC2T1Drh5hqoslbuXAbfEDC9boO1ULRMEaN5AC/t1Q+JhTiQyeai+woJwk/UtNOEK
-	OHL3k7aoVfVNRSQ3VXrvkaNPJ6HaBy/y0I752u0VgBVBguE2Gjm4lQ7d7PdnX8g3w/kcsq
-	VYjVh0JkDxgMezzGSPoXvn+gxhU2JKY=
+	bh=xhZHsPPRl/Z+5UeOuM4lCJAFg/64NDuszGAU1B/T9fs=;
+	b=51Aj/gPy+X0Uatw9M/UOihuT4P3pLqAej3/PoUlg0P0a6Hf1UEo0WZizGXAR8yStoV2eZh
+	GnJH8+aqhjCHlSdlM47koHjwNOrXopmsxPKGig9QiIlIerO/u4SjFbmSBS0R2sDdgydbLN
+	vSGZ42PtI6QzLIpFHay9nW2qPSCIo4w=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=sMxFd0PK;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772588549; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NMf6wHgU;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772589041; a=rsa-sha256;
 	cv=none;
-	b=Rop0/2blEmq40M/MVFLMvSHmJpq5JTxS7wgqjprnV8ulNkv5CoPOPdEgHGoeieEc7DkGgf
-	LERghKM0BYPxfygHG0N9sI9lqD9FnRgHoyPN2oa2hMla2/P/5ax9m+e3bOnI5uEznIml+d
-	QtCjPhPlagyA6IdmKu25DkuA0vEZsiA=
+	b=DIzXyMAd0rfYk7vXSaj6uoPluDrHEKSp/YeGXQguMae4PmHgyMYa3yx3spv9bzZNI8EU6r
+	V7GPOa7bM4vqi6vKvSOBH03/0fEEXrWV8AYzJCWg3CKVtH2QrKBG1xCYJK7TYm6CeBR3Wn
+	QHQ8exqXsuADVt8mL9qDu6wabopACz8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D2CB64437C;
-	Wed,  4 Mar 2026 01:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F366C116C6;
-	Wed,  4 Mar 2026 01:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772588547;
-	bh=HtUcXngqU2WZtmvYiLqh/Lz8u8AzPsTyZFzC+kUR67c=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sMxFd0PKpApfPEmkkUs99569yVWTUbSLlU2F9oWXQ8jOwRn5sV/HCZ3itm5+hPiLS
-	 lCCrK9DTViXSrd+xCd4yHMLOHJiHAjvL5aR99MamoD4RVHKcEGcSc69VxSwxFtxTwa
-	 ccJzlyXgALGUYK0cAZ/YbmDvqavbwXErIhX1ROfw=
-Date: Tue, 3 Mar 2026 17:42:26 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Matthew Wilcox
- <willy@infradead.org>, Chris Down <chris@chrisdown.name>, Suren
- Baghdasaryan <surenb@google.com>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes] mm/huge_memory: fix memory corruption on
- huge zero page move
-Message-Id: <20260303174226.1b9079ccd60164fe0b28a3e1@linux-foundation.org>
-In-Reply-To: <a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
-References: <20260302170619.867056-1-lorenzo.stoakes@oracle.com>
-	<901fec30-c5c2-46c5-b48d-f9a8f5e5c928@kernel.org>
-	<f11357fa-29ac-436c-a9a9-8406f516ea30@lucifer.local>
-	<20260302125032.313797b0ec908cd133f3ed82@linux-foundation.org>
-	<a1e787dd-b911-474d-8570-f37685357d86@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B08E340010
-X-Stat-Signature: kue9fundowgmpcouk8y7jgyt4ia7arar
+	by sea.source.kernel.org (Postfix) with ESMTP id 7A55F43C31;
+	Wed,  4 Mar 2026 01:50:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0B3C116C6;
+	Wed,  4 Mar 2026 01:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772589040;
+	bh=O1q5xmxh+8ddRQkx9dw/RmwoUPF0G+lCo8Vxz/LWoc8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NMf6wHgUjBtsficAhTrZpbDymeP1qrJm9gVBDymeA284t3/4xD/IUN4lsK8wjWy+0
+	 bt6Y0geh7b6+ibfslggbZaS+3PjKY4n9O7gpimLq9/ZpKkd7YK3id1SyXOZg5ouJUt
+	 uCo3eHNYq8lUU8smojeLkxDQFMVVIdERceZ9EsdlPydbI7Q2l/lMKn1kZcAQzyoIqC
+	 8kACgcsK3/8fyojRSMUBnfjlAfY7nOBxBH6s2TEmHbq7UnjMV4sa0IGNnhhOzVEle5
+	 lbqA+w5yQeiS1As+ECWzKZrk9mNG9pC+HMt4/sVmhuZobunJ7mNsMpM5MZ/oCu3HN9
+	 3+17MGIcWJ4hA==
+From: SeongJae Park <sj@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Date: Tue,  3 Mar 2026 17:50:34 -0800
+Message-ID: <20260304015035.84839-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aabvc4Xhc9qBfaG7@shell.ilvokhin.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 72EC2180006
+X-Stat-Signature: 3z3eaagmkqshwi96rhcpcjbhy1pb3dfi
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772588549-624011
-X-HE-Meta: U2FsdGVkX183J0K8ex3orzeCtRN1eT7prj3gYrZYJA/n4XhE60J6zm4Sio34Vo7Mm+wjMfSADTDQHZdDq1nDp1qLVJA+zL/ICEpeJeQb3RQRleq7BHJvZ2wFu7Ic9q62pwjM+biT5EIXSp3NCDMfa021FwhBu1LRo/OBCJ/2sucHw4RKS6y5raDDsl276wOKPMlX1qKgN57udCkaiy5RVllHK/Z7GFYgPYXDPvGb6Vlpbch/S6nI2lGH6OsshOE0Sce1mDAB279T50XyrI88z1mw1swcdUTRCOKc2Qa4MZy5REtjuV+wUE/UMJ8z2ZAQfMZc1LCuJiC1cQVcZBNhWFedULrL+c280yDp9Nt4jXKqwHClIjw526ccj74pXuopi/2t6nXkF61p3fIz3PRfjPLlxiotPwmpziscz784H/AIS3WBsRzc5hKY19C87Xb/Nx9YPJMenKb4QffothWJ+0zyZ1ZnmphRmdjap8n1/7hYUxyr9ilED5xs9nBmADt/YvpqIroKTv3tgBLmZDPSlCmI1UPYShEuPnkYzye06bz3IV1Ks23GKax6UlRd9XpxgtZApr4bi6DoBMq2qw/0fXIUdfBrJamtBhgESipOX+X0EmH+8nnT026fLZ+yT2kQ3905ZV0VA/pK9oiKSp8lC9EzcEXMuPrYeVIcY1SR0E7N+zTd8eP54xJkHCmOG49zSMoRodXsnsUGbObV6uCihyV7rbRdGLohDuJn9U1mPhdKSGc+i/pvra0nDV1o6m6Pb7ckzYLnMIa4gp6QnoOkssjYPaMQ1PLB0uM9IkQer0v54lT5ZlVphG3wJpbgQQWNzdezsrG3QWhJH6LDwsquFNOGCDKI7jW655NA+zNJgy/4PWhdXxrSlKuC9hKs/8qjimGcA70ALFVrMahFuUxdkGFMmNYiHiv2SXCZLrjN8xZlILpFADWQfyB9TSpNXjHhj/8qTEP90uJD0SNmdYt
- PSovc01V
- Kbu9TchcHDYnqmIo5LaXv9aOYy2pDwhIBySCDx3M7KpcLl2S6AA8WP6ijrT+EuA533oZ1zLmEOzwl1C3ReBUenPGVSBtfr9rFfORvbhs4Y8OqHHJ+qF0NtHePKL515n+p9LZxN4bgb0W6M4EbyiOZXIKCvRKMGu0hLfIAU4sLL23gYSmWuN2AgztP+HH4yJc7FD1NC70U+BHmLjUhTOdEbYZOeOqCWIYkenNonU4B6hiG2hgzzOqc25WRhHbi4uT3kdvoRVuLSe4jz1Mh4B7Ho+gntV0A9Q5x7QRI90OziLZ/byGaXfajTTX4nj89bFQWm6u6hUF5FPYhHA/RTQ5LgY4mzA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772589041-313082
+X-HE-Meta: U2FsdGVkX18XqLXPdU9IkhR8VLbcMYIx9HcWEiReVd08+BIaQ7HzIi0aMesxYhYjaXl1uSfQhKNhpmixhBuFuisi3Mh7jEY8oNeG9bg8oZh/IxdKpBKGnDiLT0PBb8cqAA7jYETyZ4cP6sHzX1slU0I9HPugTWDV1vuTaggMQzw5TP59mjT2MkcztI9KTuJ7lXLvZTI3k7lI2qEXcCOuuzt2++ZdBM1qMfNPYv7YJQUjV8UHE/aHjRi7NFr6vL9WHY7XDPxti4l+J4wHcgZlreeq/bXTLeZvqE/PB+iWB0ydorp17h2hws5eeO0crf+ezAoNYHtzjv4DHHRY8X3wxySR7n0oO0NjBgZ3ykAC2Ch2PA+YvB3lfAgrzoLMwixRXD7ROz7lj9/qHzn8RkJS52q72qoCG+lss2KMSh0sz7C/Ff6th1LXBj/0f7pmtsiVkfQ9TPK6M3NAWMfElJTKSgwYB2BS0E0jWunA9bJwREQTDls2P94kZ1udgDQkG9Kj147E2uEMP9k9JWu4LxolTt4Cv05ApK/z0oWR/rcKKwQE/Dm0/Kpn/Ev1rKq49lb9zNCr1TurSkvqQ+2eTKBhyZWauR3nAXPc7+aLZQm3PYCAypzBOWkJVwqJOS2kyiSaRc0QUhFT/++Xe7kYFyn1gvUs7DhuD0srGu+F3J3xbNs0yV+1rzg06PrJyBrLNMT+KxqnLM+gM3vKwc+Og9cNBO5vQjwWk5w8GWqRvNyDiK3OnTdfzyOAfbCDf2/DMfHiqgRUemINwWEoPotHpsMOisQUyaUhqnYS0U91RUzXGfGhZ7CJBkNAHjcc07bISCDYcD0bu7IyOgct5x17IOgoFmrhPYL4x6GvhZtv+VPLqcubInKI2xJ27OZ0SbDnt6viXgLi5ZAZhuAOkdITxtM5w/RYVDSQObwQxyA6ZBhrSoF7yry4Cpr3YH4hrj2Q/V37gPxsMgXbUIG2KBEx2nu
+ B+hcQa4C
+ zxljYMRa/IFoixsgkDhgadfR11pwpeIOTQc+EextSA/6Glv/ldk0TD9xO52JVCGdpv9KZmVAQ1AvMExVvBYhP9G6tKz+9mNCPjB+MRq0JRgVyYPnsCs0P+43E8iQjv3FmZYvXC2VK4AsuRJFoCQ4WmSxTWwwvuW3Mzcn9tjs60eRYUwo++8xKLotNeRAUEGNNBlE8alb+K/7AMQZuLjzYc5QkG6x5fIyr+nLXSZHAnrulPKFT29nNxWoz95hTsaRS9Vo/B0Wy26tSmwg3mQOeiDP16FXhk4c3u2AAOZGOK+8vEQGwJcq5SfN4TI03e7cNWBbDZ36v1t9jA9u99PE3JD679wrqRVOzzcuI9MuU2LbVkXMP/+i55S05OxuwWCdDmugQz3DPo+W0ZVy+vDceIowjeQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,82 +116,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 3 Mar 2026 07:25:32 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> On Mon, Mar 02, 2026 at 12:50:32PM -0800, Andrew Morton wrote:
-> > On Mon, 2 Mar 2026 17:19:15 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > > On Mon, Mar 02, 2026 at 06:10:06PM +0100, David Hildenbrand (Arm) wrote:
-> > > > There are already patches in flight:
-> > > >
-> > > > https://lore.kernel.org/r/aaBVaHs8rIkNcwM0@chrisdown.name
-> > >
-> > > Yup, if people would actually cc the right people I'd not have wasted my
-> > > afternoon.
-> > >
-> > > Replying there.
-> > >
-> >
-> > I'm not sure where this is headed but I'll queue this patch for now, to
-> > get it some testing, to lessen duplicated bug reports and to generally track things.
+> On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
+> > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+> > 
+> > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> > > > This intentionally breaks direct users of zone->lock at compile time so
+> > > > all call sites are converted to the zone lock wrappers. Without the
+> > > > rename, present and future out-of-tree code could continue using
+> > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
+> > > > infrastructure.
+> > > > 
+> > > > No functional change intended.
+> > > > 
+> > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > Acked-by: SeongJae Park <sj@kernel.org>
+> > > 
+> > > I see some more instances of 'zone->lock' in comments in
+> > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
+> > > 
+> > 
+> > I fixed (most of) that in the previous version but my fix was lost.
 > 
-> Hi Andrew -
-
-Who is a confused person!
-
-> We should drop my patch and take Chris's.
-
-"my patch" being "mm/huge_memory: fix memory corruption on huge zero
-page move", I assume.
-
-> However, life isn't so simple :) as there's been some confusion with his series
-> since his email client seemed to mess up somehow and a couple patches need to be
-> squashed on one another.
+> Thanks for the fixups, Andrew.
 > 
-> So to make life easier, I enclose a squashed patch (combining the commit
-> message from both), with my R-b, T-b tags attached, please replace my patch
-> with this one.
-
-OK.  I added your signed-off-by also.
-
-> Also, could you make this into a 2 patch series with
-> https://lore.kernel.org/linux-mm/aaBWG4fajXXbjpVN@chrisdown.name/ _after_ this
-> one?
-
-Well, "mm/huge_memory: Fix use of NULL folio in move_pages_huge_pmd()"
-is a cc:stable mm-hotfix and I don't think "selftests/mm: Add UFFDIO_MOVE
-huge zeropage PMD regression test" is to be treated that way?
-
-If correct, I'd keep "selftests/mm: Add UFFDIO_MOVE huge zeropage PMD
-regression test" as a standalone singleton in mmm-unstable.
-
-> mm-unstable (I'm not sure why we're rushing changes there so quick...) had
-> _only_ this regression test patch in it, so we were left with a kernel that
-> splatted on running mm selftests, which is not what we want.
-
-But the regression fix "mm/huge_memory: fix memory corruption on huge
-zero page move" was in mm-hotfixes, cc:stable?
-
-> (It seems to me this is what mm-new is for, and it seems we have some holes in
-> our testing still since this got thorugh).
+> I still see a few 'zone->lock' references in Documentation remain on
+> mm-new. This patch cleans them up, as noted by Vlastimil.
 > 
-> Please drop the patch you have for this already in mm-unstable and make sure we
-> only have it _after_ the fix is applied :)
+> I'm happy to adjust this patch if anything else needs attention.
+> 
+> From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
+> From: Dmitry Ilvokhin <d@ilvokhin.com>
+> Date: Tue, 3 Mar 2026 06:13:13 -0800
+> Subject: [PATCH] mm: fix remaining zone->lock references
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> ---
+>  Documentation/mm/physical_memory.rst | 4 ++--
+>  Documentation/trace/events-kmem.rst  | 8 ++++----
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> index b76183545e5b..e344f93515b6 100644
+> --- a/Documentation/mm/physical_memory.rst
+> +++ b/Documentation/mm/physical_memory.rst
+> @@ -500,11 +500,11 @@ General
+>  ``nr_isolate_pageblock``
+>    Number of isolated pageblocks. It is used to solve incorrect freepage counting
+>    problem due to racy retrieving migratetype of pageblock. Protected by
+> -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+> +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
 
-I think you mean to drop "mm/huge_memory: fix memory corruption on huge
-zero page move" from mm-hotfixes.
+Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
+to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
+for the rest of this patch.
+
+I was initially thinking this is just a mistake, but I also found Andrew is
+doing same change [2], so I'm bit confused.  Is this an intentional change?
+
+[1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
+[2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
 
 
-So we now have
+Thanks,
+SJ
 
-"mm/huge_memory: fix use of NULL folio in move_pages_huge_pmd()" in
-mm-hotfixes, cc:stable
-
-"selftests/mm: add UFFDIO_MOVE huge zeropage PMD regression test" in
-mm-unstable, not cc:stable.
-
-btw, "selftests/mm: add UFFDIO_MOVE huge zeropage PMD regression test"
-still has a bunch of unaddressed review comments from David.
-
-
+[...]
 
