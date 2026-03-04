@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B997EF8FEA
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA17EF8FE7
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:40:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F9F56B00A0; Wed,  4 Mar 2026 08:40:40 -0500 (EST)
+	id 0F6536B009D; Wed,  4 Mar 2026 08:40:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 790066B009E; Wed,  4 Mar 2026 08:40:40 -0500 (EST)
+	id 08C366B009E; Wed,  4 Mar 2026 08:40:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 654F86B00A1; Wed,  4 Mar 2026 08:40:40 -0500 (EST)
+	id EA5E96B009D; Wed,  4 Mar 2026 08:40:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D6526B009D
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:40:40 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 224641B8328
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:40:40 +0000 (UTC)
-X-FDA: 84508490640.08.0E9634F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E510B40010;
-	Wed,  4 Mar 2026 13:40:37 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=teznPaF7;
-	spf=none (imf04.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id CAD806B009D
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:40:42 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 90CC4160544
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:40:42 +0000 (UTC)
+X-FDA: 84508490724.15.83688B5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 491E440011;
+	Wed,  4 Mar 2026 13:40:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pz9Q10ce;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772631638;
+	s=arc-20220608; t=1772631640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UpMjkqBNogxSPvE5B7hwtzwkc1kjwuxpixdO2LSAbyg=;
-	b=rdhO0N588pcbpjb9n4a4gUdWFu8CcBm7TzwKFSL+jWqH14dSX6wJrLBkUxI5VKPmD3gzJG
-	qAkiYqxQH5/z5i7EuxA/b9fBuHUvleQAv8GOZeHHHoIIRAax3oo2E9RRkLPdKTtcEweQkB
-	uezbQcY/Ha8nQnzNSPVk2FTZDaYQrus=
+	bh=AZ2kYLU6stWxYcU2tY+T7f2JcufY9N7kfOI0OosaoNo=;
+	b=C5hspDY+ofetR2hvKOfmZwwfoUyUez69YzP+ouhfufHmkFkKK957+vJAsKCARQrh5tRx6r
+	dF4iPeg8W73HIhEG4dM106tiDAZSsTTWp5tadJ1TbOT72n7Xprs+eWlYxEi/Ly3U0K1Ler
+	AhGSUWbw4IYOgJkazJ8+UkI/jgI5zJE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=teznPaF7;
-	spf=none (imf04.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772631638; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pz9Q10ce;
+	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772631640; a=rsa-sha256;
 	cv=none;
-	b=eoX5Xfydw/SWUZCDh1hWlIvtKrDloJHoBPVpdGnTpXsvcV/fFkAKsvfcrNopRPK1i3F6O6
-	fzinc/mssAxfigeI1wS0wWwptlWoMxPK4iB2b122mccnlKAhMUOMeuksiWwwi7HKIyEgxF
-	+72ldcKBRsQIyB1L2ASZtOGM8LtFnHw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UpMjkqBNogxSPvE5B7hwtzwkc1kjwuxpixdO2LSAbyg=; b=teznPaF7Zol9XUlVmtkbdixlbj
-	BGB56AhLKfWY9Cz+hlyK/SiVnKp62wmIciq1TfXQFK3eFHtabHDLKNQO0GqXac+YG8+R8BcmFAt8K
-	cYAuvLkI/h0RYFbvWB03S5niI7jr1jteo6dXkwPe/R14U9EuFH+GJa45KPaMASqgAe98EAq0VK8Xi
-	YyyYCH1nP6ks5seA8bZfAOTiODPxPZy/vA9q1sDq9Lr1OL9KaPoJwlI8OO9j9x33Z2lfM9YjsjoYr
-	QiFjKMIvshsyvhmFha2IBILD2rNKcADZJIHENkohEcDKP4kwAxyx23jS2oLVsblAfaNcvNhAOhztq
-	KNlz3OuQ==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxmSn-0000000HGUA-0qlh;
-	Wed, 04 Mar 2026 13:40:33 +0000
-Date: Wed, 4 Mar 2026 05:40:33 -0800
-From: Christoph Hellwig <hch@infradead.org>
+	b=kRNPBkeylD3nV65QDX1d7+5Gw51TSsIVaA/1se3zGr3pFvCs0Ddphpn+J4r69R9pYIqv3S
+	K3EgZALkZ6RpWQk5rGV5bZxNzsCR1aMsGylORAm6hxmz3rRYJ93lI5gNcd9WIpG02MZ7I5
+	VPHAdC3KyD8Nip2hVXrzeOnq+fVFI+o=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 72E8543AC9;
+	Wed,  4 Mar 2026 13:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17945C19423;
+	Wed,  4 Mar 2026 13:40:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772631639;
+	bh=saBpvESaGj5QiqSpFfWOGnf8j0MOslSLXlBi7/U5dHg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Pz9Q10cesxvicAfZAxJWsJipenbgc+L+GNBCNpgox/ApeDmUPPNe8bReiHFtdKJCo
+	 YDJrcx41hrcP49safkalWHRbQyMbDCsHrAYtLJLIZsdZrE0bJ6Utugirq3RpNrvbZO
+	 FHWGLQu8SALp+v14qeuSUvgpocfy3rK1dggz0b3mdpAENAGW19TwVxKlHXFttwaBBN
+	 9doonxpzjRixTTqINhTaW9bdDXsZKwniR6coFVIkE9yZoYJn9u4qPvJs7mZhBc07jy
+	 mvSFumdnatCpc4H+iN0pw8E1ysCu1zZ7LDRKoVLOgExDFMBxxcINf3rkkQfAzvtlq7
+	 VguxGnHd/toJA==
+Date: Wed, 4 Mar 2026 14:40:33 +0100
+From: Christian Brauner <brauner@kernel.org>
 To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+Cc: linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
+	linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
 	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 17/32] fs: Move metadata bhs tracking to a separate struct
-Message-ID: <aag2URb_D0h--RKX@infradead.org>
+Subject: Re: [PATCH 31/32] kvm: Use private inode list instead of
+ i_private_list
+Message-ID: <20260304-mahnung-ableisten-50d5c4e71013@brauner>
 References: <20260303101717.27224-1-jack@suse.cz>
- <20260303103406.4355-49-jack@suse.cz>
+ <20260303103406.4355-63-jack@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260303103406.4355-49-jack@suse.cz>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20260303103406.4355-63-jack@suse.cz>
+X-Rspamd-Queue-Id: 491E440011
+X-Stat-Signature: 3t53iwsuhggkcc8359ujp8cr1cj967w1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E510B40010
-X-Rspamd-Server: rspam08
-X-Stat-Signature: uoc5sgzgrtw7zsbfb85dhbudingbzb4b
-X-HE-Tag: 1772631637-624899
-X-HE-Meta: U2FsdGVkX1/QvSSLDUOC5aF7KZjnCvIBHq1ByStKxrbFmpmQ2x/wVdHO0foLmkoBr8Faq2zCmg9xMmxvLWO7jle/uk9hodyebLht6ITqhrecojxchqdxFF3HVp+fJRcaIEO+zb2wNojnR5KxojQ7LVxcu6QLPCYVLTtamrLqCBV6VgLONg+wvtgmZoQUzgp21SrnTywIxKLWYEL4FPeREfBa1zARaHMyIFqsFUjmX1kc0no+RJLt+RRNpYFQgNrMB9hCuUBngyUHyG3qzVdHoxVCzpzqTRIT67fFpqSsFzOVyRYG9eUib0KMq7e5G1j5U/akjfUIOfQdwDpapIFCQaOtA0KwQ7saXjc93+C03eVkr4krC9tYRY4vOrZiZhwUWb61v6vbXWM2N44o2uBgxw9GOUr0s9yND3TN0/iWk3p/PcCWGvvnHENjvEj9onCF3JjiTAfTjpg/S86lbSmJN7BGvtHRJJADoEW2by+0oXsjbHK+Yvzh9aD3B6aQ2L5Np4c3onYLGWkME1LaVwRIec29IY1d2vlIZU11+WfpFmthsK+zhTI08KAVlG95MN755JeMy7xjvNAgmEtZSppLLwbRT2XPy+9QO3HcBc9qKBLhOaKBtmYHBJyqtdMVPlagPk3KIm5w2pTRUwwiBao9YEFHKJoqHS2eE/fkpwiWFni4Q59CBeR2TOZVCMiPKyKu4DIWyTQ1/JAUZReqXABO1ts/NwA78YYtflbMBYPterk7b3moVQy2sM63GGq0UatMOtAjcNK1Sq9ea5UGtj372UWT+UmNtZlX8O7zf3u4KlJzvKvtayWwvj8MBBRcw+SMNHV6gPd8regX0qJKK8TV7EkteW43Ryk3eqacx8Xz5ianR3U/BUtKfjFGDpBIcjUUeNgqxTMczYK4psOAFzg2CrIRE6XcRujW9R39BSeFAFBHc/DGoMLOnpiN9V3z0kAL6Et2f7WTAF08RUgRnW3
- n2QPlls1
- 6R24KhlomvE9GQc88X2dbyGPkjSdqBbR1ucfgnm9T6FzOyUyWUdDI1kkDDTPsEpYpvwtn0X/gtpF73LiLtaiE+/Tqt4ImUq6gk8kxmapSCAjPnTXFaBDodJhpSVTCBzDNf6by5xM6Eg99qslEd3xiKHO3GtN1x8KOR7DEwmC0PASmkDQvjA8Lb6NEsjBl1ukpKwq7DoD/KsjFO8OK8g12jJvA2/69qdDCWBFQOTWoiukcK0y0f5ANlM1CjDsRV2JAUXwlNI4UJSA+RYpwBJ7FTzXCuZLwS89GqJjH9ndrlbgB6Ch8rr2Y5EMtnetC8HMRclV880rv2W/IOi3rmFgUecpf/nVKHvN1jOVKx/VyLrzW9e3yrHjB00HAVPg6WFACdAGaK8lPERWWzdiNLWOi1qUR7AgiQxD5XD3aanEVKpZ3rG+3/Wi0vaf5rlaLDGJBYtfnxUVb8HZGtLaIZHca5ENrnm0Mssoifrjij+Jz41Yd1iPWWIf78n3eJfELbjTmGLEo/K3RtwY1RadhKBiqN8hNjRzBuV8BnahaBarcoOiQthVZKGpYVW/iuHud6kFXWAfLBXqkGf9qGlfb4dhvGy7IWg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772631640-785201
+X-HE-Meta: U2FsdGVkX18sQF1d1mVBho5yP6QW/2EFSk9QikPL78sVqlhbG0kAkRwYr/YLK0bQqIa/f0Gq1ZJhAfUiR/JlT4CdIVZrkeT6gnBekHkhPr7j+bPW0YAIlRewoADMJNLRbtIJw0je4kFtRQX3+WZBRvKzVoQrWeXmSXz47YkwsWQElD5Cqi8bM5fu+SYcSFP91RlMT79tE+ySUfeOqNE/4muyCBcMr8pgqC+UXM/LjOwWshPr8doW3Hr48dyUP1fpjBqPQ/8G1sReXtGAQJlH8tPRd0nUAvGLAuP3BuMVo03+n117TS6589zCvZ8TbaDcRK9rH5D8G7malKXk+OlyEcCBP8nhFPlejM6qFhFOhd7X402pKSSySA/5RXn3PiMkYfsNOJt2ErmTMPMx3d9mfoC239iGWJAHHzsWdIfObEAd8HjRy/4LODKSkQC72JCUEbLrdB9KRr9Sq/jYYKmBsHI5wqQXZOUiip6RhYk6/DRcPy1983UIGy6l/Xnu371i+mmq4sMgzcc36+OUnCoUfnay+sig70K0TPiG6ul+biN62quwYoEJNYZhADc0RKna7frHrmDvZvS8zh7YL5GmPlEZSzpwQZWJNwizi8/CD6MNmEBuVTf69LNZ+3KEIgPbUSPwYLjAbfEORtxB2uUvV8IAhbR5TZMpXju9b5wqmDE+RUEnaPrxbyxuzZPp6RgsDyXKv6QPvv9U1zeF9IFJKxY9J3VUpiq8kvUVrRyfJFIUyJoH4ifwfM109Gv4dkT5n0i0VB3ZYIb4ARFwN8OSUZ3zJSd8nNrwCD49tsrEoWxHxdD8L7gAhTVDltfbL/opjlNP2HIFJGS3ugc9kf1vzn7XOnD/aqGfVA1Bz6n1hublZprpB3pfR2zvuLses0WRBdRhF3yC72SI+N94SxZ1DALi5sfGkVotiM7FxwWbr9YINl+zAGhSpsKlRbhcmWNV0DwUqGaLjP9xKTwZ7ee
+ GlDLheJq
+ q9olUVKoKh12CKlmDAN1JcIe0AgWYk5akLSC8fVw7MYsQbNYMYDdDNOl1jR/C99GE+v1yQWtQZFyKGfdR3nz9wAeWi1HzV2cjDXO3Ekmx9ZB4EcXMQw5h0IEQXGKTPrNiO/PeFd4m9oPYhFj64udAgQ/PchybbWbGt8I9o2Z82oGCyIBSpQg+DwfH5WLPPvwZEDDZxPb+a0f8At3J5gmIvNdsoK4vHSo/AF7nWfKi1ks2dZwoiqvEX55K8vCzNMzQJoMFHb0vXLeQDdO6aIHX6e3ogiooGE8FcHc2RyAGy4dDeA1996tsAQf3N4cbeMdKXRxvR55W9uqp9rq8viGjLKtlX1sBlgvvP0arlSeyAfOIcn+vDKMYwr16cdNDIIzfoOPbvC4+jOYo2SRdcgDfjJN5nVUizrdMIK7Go23Nm/1Jf3k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +96,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 11:34:06AM +0100, Jan Kara wrote:
-> +static void remove_assoc_queue(struct buffer_head *bh)
-> +{
-> +	struct address_space *mapping;
-> +	struct mapping_metadata_bhs *mmb;
-> +
-> +	/*
-> +	 * The locking dance is ugly here. We need to acquire lock
-> +	 * protecting metadata bh list while possibly racing with bh
-> +	 * being removed from the list or moved to a different one.  We
-> +	 * use RCU to pin mapping_metadata_bhs in memory to
-> +	 * opportunistically acquire the lock and then recheck the bh
-> +	 * didn't move under us.
-> +	 */
+On Tue, Mar 03, 2026 at 11:34:20AM +0100, Jan Kara wrote:
+> Instead of using mapping->i_private_list use a list in private part of
+> the inode.
+> 
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  virt/kvm/guest_memfd.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 017d84a7adf3..6d36a7827870 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -30,6 +30,7 @@ struct gmem_file {
+>  struct gmem_inode {
+>  	struct shared_policy policy;
+>  	struct inode vfs_inode;
+> +	struct list_head gem_file_list;
 
-Should the buffer_head simply have a pointer to the metadata bh list,
-as that would avoid all this and keep a lot of the references to the
-list self-contained?
-
+I think that needs to be gMem_file_list not, gem_file_list.
 
