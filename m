@@ -4,206 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 249ABEF9008
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2902FEF9008
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:02:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B0466B0088; Wed,  4 Mar 2026 11:59:45 -0500 (EST)
+	id 75A1C6B008C; Wed,  4 Mar 2026 12:02:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 887EB6B00A2; Wed,  4 Mar 2026 11:59:45 -0500 (EST)
+	id 732996B0093; Wed,  4 Mar 2026 12:02:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 731FF6B00A4; Wed,  4 Mar 2026 11:59:45 -0500 (EST)
+	id 614B46B0095; Wed,  4 Mar 2026 12:02:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 61BC96B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:59:45 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C879140628
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:59:45 +0000 (UTC)
-X-FDA: 84508992330.07.AC2B9CA
+	by kanga.kvack.org (Postfix) with ESMTP id 4C5226B008C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:02:38 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F07EF1403FD
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:02:37 +0000 (UTC)
+X-FDA: 84508999554.08.8FFC445
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 45EBA180008
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:59:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CXD9BpWg;
-	spf=pass (imf06.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1B1DD1A0002
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:02:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XR/Qffzq";
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772643583;
+	s=arc-20220608; t=1772643756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q+GmWFF9X6iFON5G0JRC/3H0DPIMN9hlD49IS6cP48U=;
-	b=oF5EBjp7keJxW3A5MsACBZUcHGKopW0hO7zZw8stj6W2GZdp9/r38w1lqTVytAjeUZhwH/
-	2ntkCdK4V6PyLp+MxhYG72oFdIoNntCdKOTAlFmznfba5GU/6g2BVz2qfUqkA3Z0MUYYif
-	AGIvf7effJrEG+udCDypMz3pCXWJ9Z8=
+	bh=Ta0CBo4iJBYO40FFYgP26GVcbBBIKRmW4rgVFJyftec=;
+	b=ufPCV9aPo1jZrP+NmeaGYU5u52CRKUK8L6xgb34UJTxG1RpVD7CbhB1sUo9KqLSLgYpno8
+	GgpgXLI5SeAhTE/8V/nPoVYRZtHShaUTW7UUG7pBtpgf2565k+zbgZu1cB3K2CxdBmvsSo
+	QOKjfwEXu1AvGudK/ixeMF1R3wKCi7o=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CXD9BpWg;
-	spf=pass (imf06.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="XR/Qffzq";
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772643583; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772643756; a=rsa-sha256;
 	cv=none;
-	b=xTeSWVxdgGnU+B7U2DcmzM+w+Q9+mTXBQvuwTInXBn61F+EmiGU4ClJ+TJVgHbRuDqcdf0
-	SoxWMklQsNxArUXHO+wWbb8lOBqfs7hkq0e+byL95Yk9UrIvzMrekmTzFJpyvA5SbYrnZ7
-	AxN3+vJg7Ff89Lz29ztqbdVCA0otEtM=
+	b=0YP9XLUtaE+qzIFZ46FJWzIF/KKxZ8Sa/H1NQoNkE974HzSoM0ljJUT1dcltJgZq3fqBEV
+	7BQvHcaTcuBcrMw9CXx6mKyOYFz3VuQfj2Q1b6/8I+NbbYMQUqoulMX/BioQvZsa6Ge9Vi
+	217LNJnjA0jBD1u8COVOpITvEHcd89g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3AF8E43FCD;
-	Wed,  4 Mar 2026 16:59:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FBAC2BCB0;
-	Wed,  4 Mar 2026 16:59:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A5654327F;
+	Wed,  4 Mar 2026 17:02:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787B2C4CEF7;
+	Wed,  4 Mar 2026 17:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772643582;
-	bh=Vco3uqMM+GGwamDaSgMVwORJh+OF+HTrP0JVrfOVsPw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=CXD9BpWgkkINK6gZqwyX5n7YT6eyFHASQ0Cf19QSMh58zX8rxOu5w8xcN+ALcpoiN
-	 zbse2DEyA7vWamOUkFLS5cEPnwTisG+hpK4j3y8lhaSnEuoTtnggjrzLnvkaqpuG4Q
-	 /pLrkelh2wFBDJe2W+0q8sB/i9CBZKq+1QKdbV2czTHnDvJNKeh8dlDWRQIN1f4Oly
-	 wkxfWt/ojpUzF7aYV96/GCDXWlUslEu8HeL4mAwxYbk0tPCb3+ItQ1ysWx6N4nShGq
-	 zvEPbwgzgHkxslhDUcJzRX0BNjNVvspwFLrzcRh1590XHX+B39SAGRYWotYwfZVTOL
-	 Sc+WO/HYq9qBg==
-Message-ID: <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
-Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
-From: Jeff Layton <jlayton@kernel.org>
-To: Mike Snitzer <snitzer@kernel.org>
-Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki
- <salah.triki@gmail.com>,  Nicolas Pitre <nico@fluxnic.net>, Christoph
- Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Anders Larsen	
- <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner	 <brauner@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason
- <clm@fb.com>,  Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue
- Hu <zbestahu@gmail.com>, Jeffle Xu	 <jefflexu@linux.alibaba.com>, Sandeep
- Dhavale <dhavale@google.com>, Hongbo Li	 <lihongbo22@huawei.com>, Chunhai
- Guo <guochunhai@vivo.com>, Jan Kara	 <jack@suse.com>, Theodore Ts'o
- <tytso@mit.edu>, Andreas Dilger	 <adilger.kernel@dilger.ca>, Jaegeuk Kim
- <jaegeuk@kernel.org>, OGAWA Hirofumi	 <hirofumi@mail.parknet.co.jp>, David
- Woodhouse <dwmw2@infradead.org>,  Richard Weinberger	 <richard@nod.at>,
- Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi	
- <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh
- <mark@fasheh.com>, Joel Becker	 <jlbec@evilplan.org>, Joseph Qi
- <joseph.qi@linux.alibaba.com>, Mike Marshall	 <hubcap@omnibond.com>, Martin
- Brandenburg <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>,
- Amir Goldstein <amir73il@gmail.com>, Phillip Lougher	
- <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, Hugh Dickins	
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew
- Morton	 <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>,
- Sungjong Seo	 <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>,
- Chuck Lever	 <chuck.lever@oracle.com>, Alexander Aring
- <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, Jonathan
- Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)"	 <willy@infradead.org>,
- Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
- <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, Christian
- Schoenebeck	 <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, Ilya
- Dryomov	 <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, Anna
- Schumaker	 <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo
- Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
- Shyam Prasad N	 <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
- Bharath SM	 <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
-	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
- ocfs2-devel@lists.linux.dev, 	devel@lists.orangefs.org,
- linux-unionfs@vger.kernel.org, 	linux-xfs@vger.kernel.org,
- linux-mm@kvack.org, gfs2@lists.linux.dev, 	linux-doc@vger.kernel.org,
- v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org
-Date: Wed, 04 Mar 2026 11:59:32 -0500
-In-Reply-To: <aZ84VRrRVyGEzSJn@kernel.org>
-References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
-	 <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
-	 <aZ84VRrRVyGEzSJn@kernel.org>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=k20201202; t=1772643754;
+	bh=m52ZlSB16l1sLAs0GvnmebShviEQjPH+XrVdZ+Tj2/o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XR/QffzqaNsadKYUM0M0H2KGBs+YLtG/NezPuj0ufogN8pVQPQkQXll4U28D/nkDl
+	 EsO/NnV6AN+favd5xS/cE6WiJgY0kXurlUmwXnUoiIfcgBhS6v/cIeFU7d9oe8QT+4
+	 d5sQjJ5wUuY+tW8Zwq7sLHeA+igaX8k2Vc/U6yV03rw2bk8ILWbYzgtmDf9hHfS9fp
+	 drLDFP0ejddUV6/mF/8xj4usnlUnuZ9mc1dkx8A3Nq0zHLL47i8Gwqyxxf2EdcS+sV
+	 wV1+n6Zk7PFrXNGdhOBqvms3PodOGnxPT2YWthXUX4QS7Ewf/SQBdMfs5i1znxAq2o
+	 Cc07RtBp7V2DQ==
+Date: Wed, 4 Mar 2026 17:02:31 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com, gavinguo@igalia.com, 
+	baolin.wang@linux.alibaba.com, ziy@nvidia.com, linux-mm@kvack.org, 
+	Lance Yang <lance.yang@linux.dev>, stable@vger.kernel.org
+Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+Message-ID: <96fb9100-8a19-4461-a14d-c7777b7d04ef@lucifer.local>
+References: <20260205033113.30724-1-richard.weiyang@gmail.com>
+ <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+ <20260210032304.j4k5izweewouabqb@master>
+ <20260213132027.wm75sh6trz7n24kd@master>
+ <c820d6a1-4283-46a5-a639-04f6849e4e73@lucifer.local>
+ <20260304010828.ulp5i3v2drwhzytc@master>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 45EBA180008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bpkkfqzismcpbdoi1d9t15xgzwfjk3zw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304010828.ulp5i3v2drwhzytc@master>
+X-Rspamd-Queue-Id: 1B1DD1A0002
+X-Stat-Signature: mqdt9b5jp3je5x38papojxjj97ptouak
 X-Rspam-User: 
-X-HE-Tag: 1772643583-229370
-X-HE-Meta: U2FsdGVkX18xHuQ1kTX/pBbYuMhUueM/JGHJFu8VrXL76foMVUQ28fvl6B6MoilbG1zlbodEm4g9P6gELrAhi43dGDoE862LFWn+bGs3OppFaxsJymaJDMx9CepcUGmf34YpGGs4KQqZWFEFEaqQDJ5rhNSa6JjYeRRD1KmZNrpplvPHzriozv0RtKJDs31mfg0Kvj5D/1v/R4sdqSsKKLBOykxx+DSgtMndg2zIuIid8HqET8AEUXW9fNA8fu0gHaSUIcwd6PBclpOahQ1XmWvDC84z/6MPTf0rT8Efr66Vw/9/esILaq+DryqDKPHW//Ua9gEDOsP+VwXz6LiRauLW4Mo9tWxKBmQ4m28a2b0urkrsZryYaxegkrMMHGSoVGlKZxf3BBeP9DvcqfXhkDnfG4UsB7w0/IA92mnVIawFVRtfCEjWiapXigvvdFwQhcyniw0PZTik3IxhmzdzQYom0VV5vqwx2FTolOb/MAHz5ABXBYNHDdJrveJSh/fIlAg1rYAaCYKuvJZui1Qg5JIgbXuU5AeRkguwhlnMiyrRH+cDanLck1w5UYmTBPRSxf325NC/ESUeALK6IQ2S/EnA58ab6SYRPWec8dXzgB1EAZuooUei6ieUA8Uthv4aCpXn7g775IWCUX3HCvi80SQbZRcz2Q/YLtNny2wwTGcGUFcJaPdPiZX4l6iRjzN5exsrVIvjZQuPH+J5M/0UehBD26bvGs1dhWsoWstu91eJATEhO20u7N4UyPesyRkGOeTQmYen/OGaserkDAG5PArfa+H7wxiSEWGzMXkVoDcCayyZ2749+f8C4oPX9DgGL7g1qLVN+RLc/1tZuj+HkqWeTM4w0WTsArLlM+CHW2AuHLLLoEL3RzCEJEzraXHmFgqn4MbJjKaKHqnB0c5H6uNpfvOhLp4Lyt1CSM0ejw1wPldNRXfhfUqPGE+c5aEhrjAXWFJ+Tvvfls03IEh
- 11cxxJLM
- f6SqNw40gK3zixE41Yn7GH0WyDUu2zTZlU4/vntvgjHiMKGxVE3FNH7npRq5a3/cs4GyAmDtx7V044dl87Rnn4VVzfCC1CmyL6iz3KkLiiYjqrFOxG13IfWKIQiCtlyoD2iJiUH6QT5LQi/9y8riJfGMZBGVs9TzY+jxxs1j2pKmk+zih/MeLjrxlMOMb6r+swLLQVuchSX9lesxYILFZRObCtpcvkNo8hzhnMItZIvLStZPwicHIFx254bz7cDqmCcjgE7rtt7cgcGKDHEI+A/ZI2UeuGRTtIhacC4+tpSLqW+2Yrk3Na8byHMRw+jgwzmtDvroYDk+MjXkniFV0plR7Rivh5dSnkQYd7nXemZW/5MQ=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772643755-391537
+X-HE-Meta: U2FsdGVkX18gtvXhoK53cFKMioLI6R2n7B1RNHbKSMD7JV3+89nCYCN8UGyPapcOYLvovS3GHZWUe/W7XyJTjaiW1IH4Fh/ztb0WZyMjyP7gOMjjTeQI+PDoFtCX/Rf4Tcg6x28mP4CpZVYUgLlrS6FNH2DddG4whksyU+BVCl/g+cZk4OUK1jGbhZF2CzJuHh/HGziO8oSY1xlwODDICsTdt0PxtOpxPIxfGyStr0z7kZs/Fy9WHqHtkMOcswi+pz0O923ei1Svwr70j8dtKrHstyuyEQuvSh0vlErbtk7yg4fxjZEEufcF6M1ZqCCyDtViCxA/L3Up2zTIt1vN8VPKPQRQnfCBIUTAyhviwenWZDSAhcoKVTLu+jbTglWZVIanJRUn7VVQvxytYgCrJGo+VmrCs7aG1s49f3s5ocbmtgLMODiDIks1FgzBkdmP9q0DJ0y1onFxfu0KTXFRWpNuB41bJZcE7TOxEflUV9kmENBj1BD9k02gle4X0XdaoR2xxCvEZGrbd01z29gtKMImx0bT4kvL8BEPAL1WIg7RBmolRdggPMFzMaLo9jvri1yUBM0mYbUniVnFuQR31Gf4bb4xaIkV2mPwpUEcciJXEnWpOUJaNWYi5eV+HF/xLD9D5KhmUZapbEosDNL7pP+OSSk17PvylRiSyjwqeTkC4HBA2kqFBHRvks4Ba6pqSZ390HDL2EAfT9wGJceGDAO0eMXw7l9G/wIYBuq6zTah19qBoIug4XnRJLBIspGzJbb62922YgBiuVsSbbTk5HVkP15GmpuxAIc4guc7aG14mnpU+8CMfvaBF0SiHw1mTjvuFIGDpanavJR447Xz+qxZMGkubo8LkoTk3Kut1igEKcV6RAyPUdnIQf5VIVhrD0tkhUka3ihER43JGRIXqLqekuIq4feJ1KH81iXZYNXTgxDA3RS31pfyrHISgyHFSipff/EyyIkfWuo3nev
+ qq/TtEdo
+ 2pmERE0fUdGNFk98lNDEeaoId9jJ6iqWilKDGXWItdi8qy9VDJk1GaG0JvEkELKR7Nfg8X66bQZuzZdmjjds+HLgdU6dXZ7rSFGTW9Dz1JBVRfMBjfub5qOHJRZDBLLb0QL195gXmsjq1+EGceOzIIWn3V58nJcri7hQyhrpRfmuQcxSr1Ity+QigtFsiLF+weotvZ1xqCCS0vrxE4KT/z05eKMdO/HA/B8yux8pzprxXTOmzQ8j5zqGnMf1zDIWV5sHs9RsbCRmXf1zhYO9AcPOOjd5S2R5x6XP6OMZc4qH9KJBIPCKJxwdqM5LVHERXDG//A9Y/YWzoH+Ew2/juFW7B6N9K6j170LIUDKYZY16pKIoyBtp9KGD/5shZ2ktDfHaKShKaKTzY9MSTiReOXaxz05//BUjmoXGZDooL3kBQo6FO/o6BBlMSMxMOHDJGJQaPiKHBi8asZcdSegL6tGipZXMtPqoFujGaFkbw8w7mBGw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -211,142 +99,342 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-02-25 at 12:58 -0500, Mike Snitzer wrote:
-> On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
-> > Setting ->setlease() to a NULL pointer now has the same effect as
-> > setting it to simple_nosetlease(). Remove all of the setlease
-> > file_operations that are set to simple_nosetlease, and the function
-> > itself.
-> >=20
-> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> > ---
-> >  fs/9p/vfs_dir.c        |  2 --
-> >  fs/9p/vfs_file.c       |  2 --
-> >  fs/ceph/dir.c          |  2 --
-> >  fs/ceph/file.c         |  1 -
-> >  fs/fuse/dir.c          |  1 -
-> >  fs/gfs2/file.c         |  2 --
-> >  fs/libfs.c             | 18 ------------------
-> >  fs/nfs/dir.c           |  1 -
-> >  fs/nfs/file.c          |  1 -
-> >  fs/smb/client/cifsfs.c |  1 -
-> >  fs/vboxsf/dir.c        |  1 -
-> >  fs/vboxsf/file.c       |  1 -
-> >  include/linux/fs.h     |  1 -
-> >  13 files changed, 34 deletions(-)
-> >=20
->=20
-> <snip>
->=20
-> > diff --git a/fs/libfs.c b/fs/libfs.c
-> > index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266beecf=
-31e9d2667af7a9684 100644
-> > --- a/fs/libfs.c
-> > +++ b/fs/libfs.c
-> > @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_bloc=
-k *s)
-> >  }
-> >  EXPORT_SYMBOL(alloc_anon_inode);
-> > =20
-> > -/**
-> > - * simple_nosetlease - generic helper for prohibiting leases
-> > - * @filp: file pointer
-> > - * @arg: type of lease to obtain
-> > - * @flp: new lease supplied for insertion
-> > - * @priv: private data for lm_setup operation
-> > - *
-> > - * Generic helper for filesystems that do not wish to allow leases to =
-be set.
-> > - * All arguments are ignored and it just returns -EINVAL.
-> > - */
-> > -int
-> > -simple_nosetlease(struct file *filp, int arg, struct file_lease **flp,
-> > -		  void **priv)
-> > -{
-> > -	return -EINVAL;
-> > -}
-> > -EXPORT_SYMBOL(simple_nosetlease);
-> > -
-> >  /**
-> >   * simple_get_link - generic helper to get the target of "fast" symlin=
-ks
-> >   * @dentry: not used here
-> > diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-> > index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b76ddf=
-28f4f59a1c8a015e2 100644
-> > --- a/fs/nfs/dir.c
-> > +++ b/fs/nfs/dir.c
-> > @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations =3D {
-> >  	.open		=3D nfs_opendir,
-> >  	.release	=3D nfs_closedir,
-> >  	.fsync		=3D nfs_fsync_dir,
-> > -	.setlease	=3D simple_nosetlease,
-> >  };
-> > =20
-> >  const struct address_space_operations nfs_dir_aops =3D {
-> > diff --git a/fs/nfs/file.c b/fs/nfs/file.c
-> > index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f88529551=
-b0f0287920960ac62 100644
-> > --- a/fs/nfs/file.c
-> > +++ b/fs/nfs/file.c
-> > @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operations =
-=3D {
-> >  	.splice_read	=3D nfs_file_splice_read,
-> >  	.splice_write	=3D iter_file_splice_write,
-> >  	.check_flags	=3D nfs_check_flags,
-> > -	.setlease	=3D simple_nosetlease,
-> >  	.fop_flags	=3D FOP_DONTCACHE,
-> >  };
-> >  EXPORT_SYMBOL_GPL(nfs_file_operations);
->=20
-> Hey Jeff,
->=20
-> I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
-> (similar but different due to your series that requires opt-in via
-> .setlease).
->=20
-> Bisect first pointed out this commit:
-> 10dcd5110678 nfs: properly disallow delegation requests on directories
->=20
-> And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
-> so lstat() on parent dir (of file that I touch) gets -EINVAL.
->=20
-> So its a confluence of NFS's dir delegations and your setlease changes.
->=20
-> If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
-> is seen by doing (lstat reproducer that gemini spit out for me is
-> attached):
->=20
-> $ touch /mnt/share41/test
-> $ strace ./lstat /mnt/share41
-> ...
-> lstat("/mnt/share41", 0x7ffec0d79920)   =3D -1 EINVAL (Invalid argument)
->=20
-> If I immediately re-run it works:
-> ...
-> lstat("/mnt/share41", {st_mode=3DS_IFDIR|0777, st_size=3D4096, ...}) =3D =
-0
->=20
-> I'm not sure what the proper fix is yet, but I feel like you've missed
-> that NFS itself can be (re)exported?
->=20
->=20
+On Wed, Mar 04, 2026 at 01:08:28AM +0000, Wei Yang wrote:
+> On Tue, Mar 03, 2026 at 10:12:35AM +0000, Lorenzo Stoakes wrote:
+> >On Fri, Feb 13, 2026 at 01:20:27PM +0000, Wei Yang wrote:
+> >> On Tue, Feb 10, 2026 at 03:23:04AM +0000, Wei Yang wrote:
+> >> >On Mon, Feb 09, 2026 at 05:08:16PM +0000, Lorenzo Stoakes wrote:
+> >> >>On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
+> >> >>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+> >> >>> split_huge_pmd_locked()") return false unconditionally after
+> >> >>> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+> >> >>> shared thp. This will lead to unexpected folio split failure.
+> >> >>
+> >> >>I think this could be put more clearly. 'When splitting a PMD THP migration
+> >> >>entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
+> >> >
+> >> >split_huge_pmd_locked() could split a PMD THP migration entry, but here we
+> >> >expect a PMD THP normal entry.
+> >> >
+> >> >>TTU_SPLIT_HUGE_PMD is specified.' or something like that.
+> >> >>
+> >> >>>
+> >> >>> One way to reproduce:
+> >> >>>
+> >> >>>     Create an anonymous thp range and fork 512 children, so we have a
+> >> >>>     thp shared mapped in 513 processes. Then trigger folio split with
+> >> >>>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+> >> >>>     order 0.
+> >> >>
+> >> >>I think you should explain the issue before the repro. This is just confusing
+> >> >>things. Mention the repro _afterwards_.
+> >> >>
+> >> >
+> >> >OK, will move afterwards.
+> >> >
+> >> >>>
+> >> >>> Without the above commit, we can successfully split to order 0.
+> >> >>> With the above commit, the folio is still a large folio.
+> >> >>>
+> >> >>> The reason is the above commit return false after split pmd
+> >> >>
+> >> >>This sentence doesn't really make sense. Returns false where? And under what
+> >> >>circumstances?
+> >> >>
+> >> >>I'm having to look through 60fbb14396d5 to understand this which isn't a good
+> >> >>sign.
+> >> >>
+> >> >>'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
+> >> >
+> >> >I am afraid the original intention of commit 60fbb14396d5 is not just for
+> >> >migration entry.
+> >> >
+> >> >>entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
+> >> >>unmap_folio()), exit the walk and return false unconditionally'.
+> >> >>
+> >> >>> unconditionally in the first process and break try_to_migrate().
+> >> >>>
+> >> >>> On memory pressure or failure, we would try to reclaim unused memory or
+> >> >>> limit bad memory after folio split. If failed to split it, we will leave
+> >> >>
+> >> >>Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
+> >> >>something like that.
+> >> >>
+> >> >
+> >> >What I want to mean is in memory_failure() we use try_to_split_thp_page() and
+> >> >the PG_has_hwpoisoned bit is only set in the after-split folio contains
+> >> >@split_at.
+> >
+> >I mean is this the case you're asserting in your repro or is it the only one in
+> >which the issue can arise?
+> >
+> >You should make this clear with reference to the actual functions where this
+> >happens in the commit msg.
+> >
+> >> >
+> >> >>> some more memory unusable than expected.
+> >> >>
+> >> >>'We will leave some more memory unusable than expected' is super unclear.
+> >> >>
+> >> >>You mean we will fail to migrate THP entries at the PTE level?
+> >> >>
+> >> >
+> >> >No.
+> >> >
+> >> >Hmm... I would like to clarify before continue.
+> >> >
+> >> >This fix is not to fix migration case. This is to fix folio split for a shared
+> >> >mapped PMD THP. Current folio split leverage migration entry during split
+> >> >anonymous folio. So the action here is not to migrate it.
+> >> >
+> >> >I am a little lost here.
+> >> >
+> >> >>Can we say this instead please?
+> >> >>
+> >>
+> >> Hi, Lorenzo
+> >>
+> >> I am not sure understand you correctly. If not, please let me know.
+> >>
+> >> >>>
+> >> >>> The tricky thing in above reproduce method is current debugfs interface
+> >> >>> leverage function split_huge_pages_pid(), which will iterate the whole
+> >> >>> pmd range and do folio split on each base page address. This means it
+> >> >>> will try 512 times, and each time split one pmd from pmd mapped to pte
+> >> >>> mapped thp. If there are less than 512 shared mapped process,
+> >> >>> the folio is still split successfully at last. But in real world, we
+> >> >>> usually try it for once.
+> >> >>
+> >> >>This whole sentence could be dropped I think I don't think it adds anything.
+> >> >>
+> >> >>And you're really confusing the issue by dwelling on this I think.
+> >> >>
+> >>
+> >> It is intended to explain why the reproduce method should fork 512 child. In
+> >> case it is not helpful, I will drop it.
+> >
+> >Yeah it's not too helpful I don't think. You could say 'forking many children'
+> >or something.
+> >
+> >>
+> >> >>You need to restart the walk in this case in order for the PTEs to be correctly
+> >> >>handled right?
+> >> >>
+> >> >>Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
+> >> >>the bit that did this change?
+> >>
+> >> Commit 60fbb14396d5 removed some duplicated check covered by
+> >> page_vma_mapped_walk(), so just reverting it may not good?
+> >>
+> >> You mean a sentence like above is preferred in commit msg?
+> >
+> >I mean you need to explain why you're not just reverting it, saying why in
+> >the commit msg would be helpful yes, thanks!
+> >
+> >>
+> >> >>
+> >> >>Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
+> >> >>that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
+> >> >>mention the commit msg.
+> >> >>
+> >>
+> >> Currently there are two core users of TTU_SPLIT_HUGE_PMD:
+> >>
+> >>   * try_to_unmap_one()
+> >>   * try_to_migrate_one()
+> >>
+> >> And another two indirect user by calling try_to_unmap():
+> >>
+> >>   * try_folio_split_or_unmap()
+> >>   * shrink_folio_list()
+> >>
+> >> try_to_unmap_one() doesn't fail early, so only try_to_migrate_one() is
+> >> affected.
+> >>
+> >> So you prefer some description like above to be added in commit msg?
+> >
+> >Yes please! Thanks.
+> >
+> >>
+> >> >>
+> >> >>>
+> >> >>> This patch fixes this by restart page_vma_mapped_walk() after
+> >> >>> split_huge_pmd_locked(). We cannot simply return "true" to fix the
+> >> >>> problem, as that would affect another case:
+> >> >>
+> >> >>I mean how would it fix the problem to incorrectly have it return true when the
+> >> >>walk had not in fact completed?
+> >> >>
+> >> >>I'm not sure why you're dwelling on this idea in the commit msg?
+> >> >>
+> >> >>> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
+> >> >>> leave the folio mapped through PTEs; we would return "true" from
+> >> >>> try_to_migrate_one() in that case as well. While that is mostly
+> >> >>> harmless, we could end up walking the rmap, wasting some cycles.
+> >> >>
+> >> >>I mean I think we can just drop this whole paragraph no?
+> >> >>
+> >>
+> >> I had an original explanation in [1], which is not clear.
+> >> Then David proposed this version in [2], which looks good to me. So I took it
+> >> in v3.
+> >>
+> >> If this is not necessary, I am ok to drop it.
+> >
+> >Hmm :P well I don't want to contradict David, his suggestions are usually
+> >excellent, but I think that paragraph needs rework at the very least. It's
+> >useful to mention functions explicitly, I think something like:
+> >
+> >'when invoking folio_try_share_anon_rmap_pmd() from split_huge_pmd_locked(), the
+> >latter can fail and leave a large folio mapped using PTEs, in which case we
+> >ought to return true from try_to_migrate_one(). This might result in unnecesary
+> >walking of the rmap but is relatively harmless'
+> >
+> >Might work better?
+> >
+>
+> Hi, Lorenzo
+>
+> Thanks for your reply.  Since there are several suggestions scattered in
+> several mails, I would like to consolidate all of them here.
+>
+> Below is the updated version of commit msg with change marked. If I miss or
+> misunderstand your point, please let me know.
+>
+>
+> Subject: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when split
+>  huge pmd for shared THP
+>
+> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and          <--- simplify a little and
+> split_huge_pmd_locked()") return false unconditionally after                        put reasoning in next paragraph
+> split_huge_pmd_locked(). This may fail try_to_migrate() early when
+> TTU_SPLIT_HUGE_PMD is specified.
+>
+> The reason is the above commit adjusted try_to_migrate_one() to, when a        <--- specify the function affected
+> PMD-mapped THP entry is found, and TTU_SPLIT_HUGE_PMD is specified (for             try explain reason clearly
+> example, via unmap_folio()), return false unconditionally. This breaks the
+> rmap walk and fail try_to_migrate() early, if this PMD-mapped THP is mapped in
+> multiple processes.
+>
+> The user sensible impact of this bug could be:                                 <--- more detail on the user sensible impact
+>
+>   * On memory pressure, shrink_folio_list() may split partially mapped folio
+>     with split_folio_to_list(). Then free unmapped pages without IO. If
+>     failed, it may not be reclaimed.
+>   * On memory failure, memory_failure() would call try_to_split_thp_page()
+>     to split folio contains the bad page. If succeed, the PG_has_hwpoisoned
+>     bit is only set in the after-split folio contains @split_at. By doing
+>     so, we limit bad memory. If failed to split, the whole folios is not
+>     usable.
+>
+> One way to reproduce:                                                          <--- move repo after reasoning
+>                                                                                     remove explanation on tricky number
+>
+>     Create an anonymous THP range and fork 512 children, so we have a
+>     THP shared mapped in 513 processes. Then trigger folio split with
+>     /sys/kernel/debug/split_huge_pages debugfs to split the THP folio to
+>     order 0.
+>
+> Without the above commit, we can successfully split to order 0.
+> With the above commit, the folio is still a large folio.
+>
+> And currently there are two core users of TTU_SPLIT_HUGE_PMD:                  <--- only try_to_migrate_one() affected
+>
+>   * try_to_unmap_one()
+>   * try_to_migrate_one()
+>
+> try_to_unmap_one() would restart the rmap walk, so only try_to_migrate_one()
+> is affected.
+>
+> We can't simply revert commit 60fbb14396d5 ("mm/huge_memory: adjust            <--- why not just revert it
+> try_to_migrate_one() and split_huge_pmd_locked()"), since it removed some
+> duplicated check covered by page_vma_mapped_walk().
+>
+> This patch fixes this by restart page_vma_mapped_walk() after
+> split_huge_pmd_locked(). Since we cannot simply return "true" to fix the
+> problem, as that would affect another case:
+>
+>     When invoking folio_try_share_anon_rmap_pmd() from                         <--- rephrase the explanation
+>     split_huge_pmd_locked(), the latter can fail and leave a large folio            on not return "true"
+>     mapped through PTEs, in which case we ought to return true from
+>     try_to_migrate_one(). This might result in unnecessary walking of the rmap
+>     but is relatively harmless.
 
-My apologies. I missed seeing this last week.
+OK LGTM, thanks!
 
-That's a very simple reproducer! That's very strange behavior,
-especially since NFS4 does provide a setlease operation:
+Feel free to add:
 
-const struct file_operations nfs4_file_operations =3D {
-	[...]
-	.setlease       =3D nfs4_setlease,
-	[...]
-};
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-I'm not sure why this would cause lstat() to return -EINVAL. What's
-happening on the wire when this occurs?
+Cheers, Lorenzo
 
-I'll plan to take a look here soon either way.
---=20
-Jeff Layton <jlayton@kernel.org>
+>
+> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> Cc: Gavin Guo <gavinguo@igalia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
+>
+> ---
+> v4:
+>   * only commit msg adjustment
+>     - rephrase the reason analysis
+>     - move reproduce method afterward
+>     - more explanation on user sensible effect of the bug, especially expand
+>       what "Limit bad page" means
+>     - remove the explanation on whey it need to fork 512 child for reproduce
+>     - explain why simply revert commit 60fbb14396d5 is not taken
+>     - mention TTU_SPLIT_HUGE_PMD users and confirm not affect others
+>     - rephrase the reason why can't simply return true
+> v3:
+>   * gather RB
+>   * adjust the commit log and comment per David
+>   * add userspace-visible runtime effect in change log
+> v2:
+>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> ---
+>  mm/rmap.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index beb423f3e8ec..e609dd5b382f 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2444,11 +2444,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>  			__maybe_unused pmd_t pmdval;
+>
+>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+> +				/*
+> +				 * split_huge_pmd_locked() might leave the
+> +				 * folio mapped through PTEs. Retry the walk
+> +				 * so we can detect this scenario and properly
+> +				 * abort the walk.
+> +				 */
+>  				split_huge_pmd_locked(vma, pvmw.address,
+>  						      pvmw.pmd, true);
+> -				ret = false;
+> -				page_vma_mapped_walk_done(&pvmw);
+> -				break;
+> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> +				page_vma_mapped_walk_restart(&pvmw);
+> +				continue;
+>  			}
+>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>  			pmdval = pmdp_get(pvmw.pmd);
+> --
+> 2.34.1
+>
+>
+> --
+> Wei Yang
+> Help you, Help me
 
