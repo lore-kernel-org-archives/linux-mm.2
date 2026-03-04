@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24661EDEC01
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:11:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2DFEDEC01
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:11:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E0A46B0088; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
+	id AE60A6B008A; Tue,  3 Mar 2026 21:11:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C1316B008A; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
+	id AC7326B008C; Tue,  3 Mar 2026 21:11:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6ED6B008C; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
+	id 9F0866B0092; Tue,  3 Mar 2026 21:11:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 721C46B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 088431C331
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:26 +0000 (UTC)
-X-FDA: 84506753772.23.854E667
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1D1AB14000A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fgUYM/d0";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9064B6B008A
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:11:35 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C4C01C344
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:35 +0000 (UTC)
+X-FDA: 84506754150.22.B8B9187
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 80BBF2000B
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VnOIi4NJ;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772590284;
+	s=arc-20220608; t=1772590293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vn2CrPvigyubKEvhLFY6y0EU5doWg0tOHWyGKpSN0ek=;
-	b=6G5ImXaO/SNvC/l4UWVhTpJm/puWGER1NxiyplovW3bsPH4MGfVXchPLz3fhK3F0e6a8VL
-	eB3xYdzaalkBJUq+dCpjJIMA3Z/+QGqUUqz7WyA1QSjCH/Pe7E72EOvPhwR+r3p+he2KTN
-	H7GiW8p92wWySi2Z1K1V3hhesLnLiKI=
+	bh=6zO2kH0svbHx3wC9dGJj7zDc7KLoM6zIa0KkqCo/aKA=;
+	b=hJ0EJxdLJDDsScDP4Z2N64vY3Tq+o0j9YOaN9lmlTwA3YzE7xf60c6qsxJH/+tgbIUaM1p
+	WJCtaQ06LiK5FCqFXArV59ulO88O3onuu1i0Q+2zcM4XWhSQn/AEhYwdm0s0Nf6dYrSGez
+	LULnz+36Njmp6Dl/onDpHz/aN78b618=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="fgUYM/d0";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772590284; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VnOIi4NJ;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772590293; a=rsa-sha256;
 	cv=none;
-	b=zLH3pPLxepOq8G4YFf/1FfazTlp3TCWN45emg9ZtNuOCBgXoYe9tTjQ17Y996aL8hDWi3d
-	QVSNDQosMjNfZyCNyd/dTtsRQqE94qpYIaCX3F8do0HjstHu1ttQIuls/u/yYhO8m12gIA
-	HAZ4op5zYFaQx+p4Fymy3d+W0k0LE8A=
+	b=q1sbaxEqFdLaTBKBsAc/z0QPs6o9ORwn3tgZzKMnkJTxKEsdGaaoI3oEYhT4ICzJXcIAUO
+	cr8PwNnjCpfRmUP1pdl59iIQWrpcVf/0m9qe8BjAjcaZCIUdlBjl8WwDes7y9Baw5+MAC4
+	srjpMtviH2LfuQ6xZSVC5TMId5i4nKw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772590282;
+	t=1772590291;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vn2CrPvigyubKEvhLFY6y0EU5doWg0tOHWyGKpSN0ek=;
-	b=fgUYM/d0P37bsHPqPX4Z+o0dKS/1BrCWa8RGt/Nvn9MWX5D3ln9TuZSj+0EjJMPcTmH2z3
-	8f8a6A1fjLymFVq3c9xMaOEMs86p40x2Nh0ih2lOE2Scf3uQ2nBKi5goxTitYTMxqeIKtO
-	KtwSs9uUVV8FHNDg8aeOFN25eSCnKN8=
+	bh=6zO2kH0svbHx3wC9dGJj7zDc7KLoM6zIa0KkqCo/aKA=;
+	b=VnOIi4NJ2EAfX/nJqT5BK5btiveTdW/sa7Ufo95ckq7KxfH+fb9DlRhbQLGWI10vo44wj6
+	THZ5iYwXvG+I5znKhcEaqG2aVir82NnjBTbMyM/LATr4O8EOzIcytdSBKzKgrrG9Igngfp
+	5zJ8ygBTJBc4R4ThrC5ulNktptEwybI=
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
 Cc: peterz@infradead.org,
@@ -98,22 +98,22 @@ Cc: peterz@infradead.org,
 	linux-kernel@vger.kernel.org,
 	ioworker0@gmail.com,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v6 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
-Date: Wed,  4 Mar 2026 10:10:43 +0800
-Message-ID: <20260304021046.18550-2-lance.yang@linux.dev>
+Subject: [PATCH v6 2/2] x86/tlb: skip redundant sync IPIs for native TLB flush
+Date: Wed,  4 Mar 2026 10:10:44 +0800
+Message-ID: <20260304021046.18550-3-lance.yang@linux.dev>
 In-Reply-To: <20260304021046.18550-1-lance.yang@linux.dev>
 References: <20260304021046.18550-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1D1AB14000A
-X-Stat-Signature: ryn4fdw35z6too4oxsjgiruoid85rfee
 X-Rspam-User: 
-X-HE-Tag: 1772590283-308177
-X-HE-Meta: U2FsdGVkX1+/zlwnk4sMrtWeWmJKNPUK6my5Xdtfgp/jCFfxsotBY/+0ZAOKgD3SnDuAMgsTSYAF5BLnU5dokvQi58Gq4TZQWwsmj7pQkHbKkSLC4bzSG5PMk4qa7e886YPylNKi4XZwxPIjFhE4d8T0RYXJPGqXhHuq5K3SAAVwxP7R9NVKyRygu/PQLbB3Birr3ni5UaNGBNx+nGjs8pP6eeNAbHHmbnD/YJVpYmWIy++hoU9cidrjYtzo+1MpOJr3Ez9FEtIW6TMSeY/QUUbYgEj7Ps/kdBQA6gZXtpNmLjTd3cXsjbGw8qwfdaqHWXOK/1rkdBzd3Eutp6+gBnUbBE4a1/cNa3whW8l7FDyOUzoAnuly4MPq3zTTE4bJRBrkedcGSfAMNPnD+05EfkmAY/DT+2bO74EHR1GPNUKj9Po3EOQRPQYbM93ZiyP4JoctghOC03pbAwWWHGRw0Fpg8oQG+DupcYh+ygRg3Kqe619IrYshGdCbpHyboWSbCjhKYQ8uOyWq7VFxNvlfnEMSfrzW97iTFElNgNGagwZvRQHMIp2ooBtgLJVvGu2GrWcxR9Wk/scyMWF21IZET5ZF3zkGnQbNriw0C4pfj9hBu56eSLO+gvi9ixUuB41RAc0Ov8XXt8+OaHJ5WhiEcMnTns+H9mN+oKNu3hnUqv1AoFTO9sHtyK5mhv3b3Fv/uZ/57oWcFbrAMmV9PLEURpIRU9uAlqJRE7lAvhA1DfU4JKn2lRFS4dObdg4PWYEKZoJLyWphqgtHzr6CoxTbhKNCcebpXebQmXsDVg3Fo5N/DD4g9HkfG1gw783ra4yqqLRNAlpFJXqssjITzCpInbXi6Pxj6QDnRRn0bMo0KIoove7zGqHP8Wtzks0pMheVN2Nxgrk0/MGi93HpHnfuWAY8+zJKLFBa8266yMsuhd0nIvDnG3L+8fQWK7J+Ga/5cFLoH5JS0oD9Rv8D0Tt
- J3iSldzi
- MVXZ42rmmkGyVrSxW/SjNI3qLO4Nuns8014oEi/F3xURqdpwlySXibzCPkCTQeSGow2T5MDZ+YlJElKIrkcQJ9ndnpHU3cfCZ2m8jPG8EfKErqUqJ1rUQ5lgPy6iFJFuYPtHG81G9FCD48oeReZN7RbHh0UJGu022xuX3uTTcgPWCgsSL411Q1+zITtHjfYx3llhXZGq1+01Es72QVuM9PJLug5hUcbvcAWrNVnIncHKDSvSTo7NjL3XV8CoTMuq9Lp/mJeMjABHf1Rb/JddyyokoGiByfbTKxv22cEKC3Ymes0w=
+X-Rspamd-Queue-Id: 80BBF2000B
+X-Rspamd-Server: rspam08
+X-Stat-Signature: omzwrhj1axxyo3fkifspyex4xzqh36pn
+X-HE-Tag: 1772590293-658656
+X-HE-Meta: U2FsdGVkX18SZjUzIs+PFR85+6XKHuq3KRIManCZttsEuv6tunp4vYX35V/2HARdY3JHnoh6ZBXKgWZj8TSECx1jvl6Zbcr7g0rl06zpPKjWmVJhgkVY9FVHuT0qm7ykYw4ODIWV69Q/tctSf6SFY2uQw8KeJ22C3B4H36EwqUn1hA0irUb+pkDIZ5vYy/nm/mILcgZKlR8F3mNvTAIMvFoydSoQdUOjnkKiCl7B7bhrsptfue+hhP8rR2HqWo0ZUavWLgJAPCzbeYNntJswqYkaWSVfklXneHWkmjTP3f/VEZmwqvfnG//HsTYTXP63rosMNgPxMTunGlgBMFI+PGTPPi/SgE0lSgmWQ9upUXUh/ZpS7/stWypS+ZfSvkidzAaQRtJ28ghhr5xk70DGrfYIGCeasEpvKsW9yuCsxNU6MO3YfIh/ViWEBbEcjjq4mJqySOZk8HeIMF/d82ciYu+U6iMatVwagDXrC6lzyE0j3yjq2YJTlnN9mD5xgSkvmi/L5c42S34DzQpUHBlj2vaiWoIOU8XoXk2C2cbT00UbdxQqGPLlBz6jUNcqaE74yZpOKdPC1MN3xvQeX5piU4UyzabL3gs38/1Ee6mKkY/DIElXpLNGUKtzWfmEMjPKp2HIDvEtjAsIGP66hgiUEwrwoIebSqCaJ0myeqE3VAvyofvVQ6qwuuGDMKl1snZU4iRDE5D6Af1Z7twGubKDP3J1LyLvaSZueS5i6uYbDXyqe+aRNm7EocB2DyZPBERrW0nnSI6gMrGcv86RiEqCxrv8hIPOTbmyiXFC+18KtNrqxag/Ht57fi3rPoaNtfMvqbeVdHVP9Tz1k27F1Yk9vL6OMtTQXsu7J5thLic+QkoTQKjwhf3hVu3WbizuSK//ZAQVs24BDGXZ9lfIJsCdVyhiq1K0j/ovH4mkh37FOQswu8E+0HeL5Q4Pb3J3OHDgIj63w2+X0SOYNd7G134
+ Qbq8yYyn
+ YuhYctRymVJOEQIbOR9jcWou+BVdO7t2KSciy+C5culBIFKzVhbTDhKn23vmKMR5D7BqGp14rmjrAfvBz5/hL1kS+s+8FL0PQZHXsbCpOSUk7Tp62VvfzLDo1IvA02Ah1Me2YmRV5adGXCrEfBgxZ9UhH0TJfabdUNMd7+EZonA54PGPH58jI5uO4D8SVVjNlOEfjPjZrrn1/Py6tyPtG/RFOKw23VsYM7a6r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,103 +123,210 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Lance Yang <lance.yang@linux.dev>
 
-When page table operations require synchronization with software/lockless
-walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
-TLB (tlb->freed_tables or tlb->unshared_tables).
+Enable the optimization introduced in the previous patch for x86.
 
-On architectures where the TLB flush already sends IPIs to all target CPUs,
-the subsequent sync IPI broadcast is redundant. This is not only costly on
-large systems where it disrupts all CPUs even for single-process page table
-operations, but has also been reported to hurt RT workloads[1].
+Add pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast to track whether
+flush_tlb_multi() sends real IPIs. Initialize it once in
+native_pv_tlb_init() during boot.
 
-Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
-flush already provided the necessary synchronization. When true, the sync
-calls can early-return.
+On CONFIG_PARAVIRT systems, tlb_table_flush_implies_ipi_broadcast() reads
+the pv_ops property. On non-PARAVIRT, it directly checks for INVLPGB.
 
-A few cases rely on this synchronization:
+PV backends (KVM, Xen, Hyper-V) typically have their own implementations
+and don't call native_flush_tlb_multi() directly, so they cannot be trusted
+to provide the IPI guarantees we need. They keep the property false.
 
-1) hugetlb PMD unshare[2]: The problem is not the freeing but the reuse
-   of the PMD table for other purposes in the last remaining user after
-   unsharing.
+Two-step plan as David suggested[1]:
 
-2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
-   and (possibly) freeing the page table / re-depositing it.
+Step 1 (this patch): Skip redundant sync when we're 100% certain the TLB
+flush sent IPIs. INVLPGB is excluded because when supported, we cannot
+guarantee IPIs were sent, keeping it clean and simple.
 
-Currently always returns false (no behavior change). The follow-up patch
-will enable the optimization for x86.
+Step 2 (future work): Send targeted IPIs only to CPUs actually doing
+software/lockless page table walks, benefiting all architectures.
 
-[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
-[2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
-[3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
+Regarding Step 2, it obviously only applies to setups where Step 1 does
+not apply: like x86 with INVLPGB or arm64.
+
+[1] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
 
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lance Yang <lance.yang@linux.dev>
 ---
- include/asm-generic/tlb.h | 17 +++++++++++++++++
- mm/mmu_gather.c           | 15 +++++++++++++++
- 2 files changed, 32 insertions(+)
+ arch/x86/include/asm/paravirt_types.h |  5 +++++
+ arch/x86/include/asm/smp.h            |  3 +++
+ arch/x86/include/asm/tlb.h            | 16 +++++++++++++++-
+ arch/x86/include/asm/tlbflush.h       |  3 +++
+ arch/x86/kernel/paravirt.c            | 20 ++++++++++++++++++++
+ arch/x86/kernel/smpboot.c             |  1 +
+ arch/x86/mm/tlb.c                     | 14 ++++++++++++++
+ 7 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index bdcc2778ac64..cb41cc6a0024 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -240,6 +240,23 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
- }
- #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
+index 9bcf6bce88f6..ec01268f2e3e 100644
+--- a/arch/x86/include/asm/paravirt_types.h
++++ b/arch/x86/include/asm/paravirt_types.h
+@@ -112,6 +112,11 @@ struct pv_mmu_ops {
+ 	void (*flush_tlb_multi)(const struct cpumask *cpus,
+ 				const struct flush_tlb_info *info);
  
-+/**
-+ * tlb_table_flush_implies_ipi_broadcast - does TLB flush imply IPI sync
-+ *
-+ * When page table operations require synchronization with software/lockless
-+ * walkers, they flush the TLB (tlb->freed_tables or tlb->unshared_tables)
-+ * then call tlb_remove_table_sync_{one,rcu}(). If the flush already sent
-+ * IPIs to all CPUs, the sync call is redundant.
-+ *
-+ * Returns false by default. Architectures can override by defining this.
-+ */
-+#ifndef tlb_table_flush_implies_ipi_broadcast
++	/*
++	 * True if flush_tlb_multi() sends real IPIs to all target CPUs.
++	 */
++	bool flush_tlb_multi_implies_ipi_broadcast;
++
+ 	/* Hook for intercepting the destruction of an mm_struct. */
+ 	void (*exit_mmap)(struct mm_struct *mm);
+ 	void (*notify_page_enc_status_changed)(unsigned long pfn, int npages, bool enc);
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 84951572ab81..ef1fe0cc4c73 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -105,6 +105,9 @@ void native_smp_prepare_boot_cpu(void);
+ void smp_prepare_cpus_common(void);
+ void native_smp_prepare_cpus(unsigned int max_cpus);
+ void native_smp_cpus_done(unsigned int max_cpus);
++
++void __init native_pv_tlb_init(void);
++
+ int common_cpu_up(unsigned int cpunum, struct task_struct *tidle);
+ int native_kick_ap(unsigned int cpu, struct task_struct *tidle);
+ int native_cpu_disable(void);
+diff --git a/arch/x86/include/asm/tlb.h b/arch/x86/include/asm/tlb.h
+index 866ea78ba156..532578c5a2e7 100644
+--- a/arch/x86/include/asm/tlb.h
++++ b/arch/x86/include/asm/tlb.h
+@@ -5,10 +5,19 @@
+ #define tlb_flush tlb_flush
+ static inline void tlb_flush(struct mmu_gather *tlb);
+ 
++#define tlb_table_flush_implies_ipi_broadcast tlb_table_flush_implies_ipi_broadcast
++static inline bool tlb_table_flush_implies_ipi_broadcast(void);
++
+ #include <asm-generic/tlb.h>
+ #include <linux/kernel.h>
+ #include <vdso/bits.h>
+ #include <vdso/page.h>
++#include <asm/paravirt.h>
++
 +static inline bool tlb_table_flush_implies_ipi_broadcast(void)
 +{
-+	return false;
++	return static_branch_likely(&tlb_ipi_broadcast_key);
++}
+ 
+ static inline void tlb_flush(struct mmu_gather *tlb)
+ {
+@@ -20,7 +29,12 @@ static inline void tlb_flush(struct mmu_gather *tlb)
+ 		end = tlb->end;
+ 	}
+ 
+-	flush_tlb_mm_range(tlb->mm, start, end, stride_shift, tlb->freed_tables);
++	/*
++	 * Pass both freed_tables and unshared_tables so that lazy-TLB CPUs
++	 * also receive IPIs during unsharing page tables.
++	 */
++	flush_tlb_mm_range(tlb->mm, start, end, stride_shift,
++			   tlb->freed_tables || tlb->unshared_tables);
+ }
+ 
+ static inline void invlpg(unsigned long addr)
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 5a3cdc439e38..a1b5efef3b90 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -5,6 +5,7 @@
+ #include <linux/mm_types.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/sched.h>
++#include <linux/jump_label.h>
+ 
+ #include <asm/barrier.h>
+ #include <asm/processor.h>
+@@ -18,6 +19,8 @@
+ 
+ DECLARE_PER_CPU(u64, tlbstate_untag_mask);
+ 
++DECLARE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
++
+ void __flush_tlb_all(void);
+ 
+ #define TLB_FLUSH_ALL	-1UL
+diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
+index a6ed52cae003..c8decadf16e0 100644
+--- a/arch/x86/kernel/paravirt.c
++++ b/arch/x86/kernel/paravirt.c
+@@ -154,6 +154,7 @@ struct paravirt_patch_template pv_ops = {
+ 	.mmu.flush_tlb_kernel	= native_flush_tlb_global,
+ 	.mmu.flush_tlb_one_user	= native_flush_tlb_one_user,
+ 	.mmu.flush_tlb_multi	= native_flush_tlb_multi,
++	.mmu.flush_tlb_multi_implies_ipi_broadcast = false,
+ 
+ 	.mmu.exit_mmap		= paravirt_nop,
+ 	.mmu.notify_page_enc_status_changed	= paravirt_nop,
+@@ -221,3 +222,22 @@ NOKPROBE_SYMBOL(native_load_idt);
+ 
+ EXPORT_SYMBOL(pv_ops);
+ EXPORT_SYMBOL_GPL(pv_info);
++
++void __init native_pv_tlb_init(void)
++{
++	/*
++	 * If PV backend already set the property, respect it.
++	 * Otherwise, check if native TLB flush sends real IPIs to all target
++	 * CPUs (i.e., not using INVLPGB broadcast invalidation).
++	 */
++	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast) {
++		static_branch_enable(&tlb_ipi_broadcast_key);
++		return;
++	}
++
++	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
++	    !cpu_feature_enabled(X86_FEATURE_INVLPGB)) {
++		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
++		static_branch_enable(&tlb_ipi_broadcast_key);
++	}
++}
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 5cd6950ab672..3cdb04162843 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1167,6 +1167,7 @@ void __init native_smp_prepare_boot_cpu(void)
+ 		switch_gdt_and_percpu_base(me);
+ 
+ 	native_pv_lock_init();
++	native_pv_tlb_init();
+ }
+ 
+ void __init native_smp_cpus_done(unsigned int max_cpus)
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 621e09d049cb..7b1acfb97782 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -26,6 +26,8 @@
+ 
+ #include "mm_internal.h"
+ 
++DEFINE_STATIC_KEY_FALSE(tlb_ipi_broadcast_key);
++
+ #ifdef CONFIG_PARAVIRT
+ # define STATIC_NOPV
+ #else
+@@ -1834,3 +1836,15 @@ static int __init create_tlb_single_page_flush_ceiling(void)
+ 	return 0;
+ }
+ late_initcall(create_tlb_single_page_flush_ceiling);
++
++#ifndef CONFIG_PARAVIRT
++void __init native_pv_tlb_init(void)
++{
++	/*
++	 * For non-PARAVIRT builds, check if native TLB flush sends real IPIs
++	 * (i.e., not using INVLPGB broadcast invalidation).
++	 */
++	if (!cpu_feature_enabled(X86_FEATURE_INVLPGB))
++		static_branch_enable(&tlb_ipi_broadcast_key);
 +}
 +#endif
-+
- #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
- /*
-  * This allows an architecture that does not use the linux page-tables for
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 3985d856de7f..37a6a711c37e 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -283,6 +283,14 @@ void tlb_remove_table_sync_one(void)
- 	 * It is however sufficient for software page-table walkers that rely on
- 	 * IRQ disabling.
- 	 */
-+
-+	/*
-+	 * Skip IPI if the preceding TLB flush already synchronized with
-+	 * all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
-+		return;
-+
- 	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
- }
- 
-@@ -312,6 +320,13 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
-  */
- void tlb_remove_table_sync_rcu(void)
- {
-+	/*
-+	 * Skip RCU wait if the preceding TLB flush already synchronized
-+	 * with all CPUs that could be doing software/lockless page table walks.
-+	 */
-+	if (tlb_table_flush_implies_ipi_broadcast())
-+		return;
-+
- 	synchronize_rcu();
- }
- 
 -- 
 2.49.0
 
