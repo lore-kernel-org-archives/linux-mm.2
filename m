@@ -4,149 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEA27EFCE25
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97397EFCE2A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:45:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 443276B0005; Wed,  4 Mar 2026 12:44:04 -0500 (EST)
+	id 0A36D6B0088; Wed,  4 Mar 2026 12:45:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3ED326B0089; Wed,  4 Mar 2026 12:44:04 -0500 (EST)
+	id 071F16B008C; Wed,  4 Mar 2026 12:45:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EFD46B008C; Wed,  4 Mar 2026 12:44:04 -0500 (EST)
+	id EB5EF6B0092; Wed,  4 Mar 2026 12:45:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 200AE6B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:44:04 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEA7FBA5DB
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:44:03 +0000 (UTC)
-X-FDA: 84509103966.18.9179892
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0580D120012
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:43:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TqkCLRCV;
-	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id DD1EA6B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:45:34 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF933BA613
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:45:34 +0000 (UTC)
+X-FDA: 84509107788.11.6B63A6F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5A0E11C0007
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:45:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHMcgw84;
+	spf=pass (imf20.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772646241;
+	s=arc-20220608; t=1772646332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GiZedPVK3eGxD5MvYK40/L36l5RRYfJLioHzBFqtY9c=;
-	b=qzvBsLYzgZQzOjof4bWGCkKbkh9WNQZPxWkdV4B7yFZLwgTkE2SyEYEo7RdZWwZLZa6vcI
-	+uEWDEoCNIT4WG6zmG/uZ5oQfEDBMdoIRPPadb8o9va+vPCH+l0KcV1y8KqI2Yi+B8FRR0
-	RpuNuXDCap+0q6AXzNzEus7MPIxSkCM=
+	bh=hNkWCLZVO/R/KkvpTujUJ3BKfdAzr6K2wWaVXdZpqM0=;
+	b=j6V/Rjh3NQyuWmcmI5YhGaAjeR5QhdqBfc4x1Oc6dEw7ZFUxC3oi5bDEkT4Mc7pxPgxc6X
+	aqPFkQ/V6uV/5JNrATEwq/Sh25pL/zgnVohQk3tthAfksCujQtuLA3v49csP3asfusQxX+
+	fbE617ntTB8Km/Fs0TpRfWAyCLSVCdw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=TqkCLRCV;
-	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772646241; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MHMcgw84;
+	spf=pass (imf20.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772646332; a=rsa-sha256;
 	cv=none;
-	b=8LVwhjnant5Jyps6WJsHPKHINW+JCw2Kgy7ScvRqYpzP3BZK+Y8Ico2xxutd2Y88tLLnUA
-	ezgSFIAiQNQL+AIvtN0dv8BtlCme6Pjm1FqV/6vQQ6bc+qohEAcg5oALfPvZxAjOqeHHz9
-	PuRTxU/dKUVWpmpVnUtpdVKKpqhcfaY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772646238; x=1804182238;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GiZedPVK3eGxD5MvYK40/L36l5RRYfJLioHzBFqtY9c=;
-  b=TqkCLRCV5gyBeukCG76ZI3SUr18FSHugu4q0LPCxD+NxZKsD63WUPXnN
-   zHsgQZ11DTM91PbGHeCJurNmIjptdn5WIT2fo4NG4u19XAEgqxOwQq2kb
-   uHZfVWZhYcmq3a7dT7F/H/hm50EQHDlFiH1lGKlbf6c3IOX8U88U+WJmm
-   KX3ThRsDrgbpZgWXMP7bCVGAaY1Aw9GKSFWqyAYs/ZqiarokrHkS4yw/A
-   qlrpONDvC7YRPzcGwSAqX82P1GhguWCToHkml3f2bpq+TgevVVsxgI2ve
-   jl8JDkCYo+VNlgcEpmJ/+963GK081xm4L9Wdlqu0CIb65bXxDbEjmVnCg
-   A==;
-X-CSE-ConnectionGUID: ib4TC/ZxRS6OL4KHoPm0ow==
-X-CSE-MsgGUID: E7683YLASq6FhBvhk+svSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="72742184"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="72742184"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:43:53 -0800
-X-CSE-ConnectionGUID: PbUYxrJgRkCDDGQntkmT0w==
-X-CSE-MsgGUID: zE2so6YXSyKOe4BfcJFUtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="248882799"
-Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:43:53 -0800
-Message-ID: <e3585441-f225-4a60-9c48-aac2753eef36@intel.com>
-Date: Wed, 4 Mar 2026 09:44:00 -0800
+	b=XH/RXcUidYfmRNgevrKEY6XXrCh9iflQnWtcBXDg3nSa7TCCzfwY+zhkL4l0f8jrCW0cUc
+	+PP8efS/FF9sr6dzX+y0nAedefb+w9J0xUo2LXZykNkZM8o0J31LHwbfk5cMLtsaVNWdDd
+	fePdZKKhyIE68qVEUUQTkdvW51Ws7wE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D6D543960;
+	Wed,  4 Mar 2026 17:45:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C91C4CEF7;
+	Wed,  4 Mar 2026 17:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772646331;
+	bh=hNkWCLZVO/R/KkvpTujUJ3BKfdAzr6K2wWaVXdZpqM0=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=MHMcgw84pNpi+4xbHZkfaKt79WhQqTHhmGYQpiQqGCXmz6eVI34ZBHrOTFKn8O9KG
+	 9SZw2Ks3OapLgEgEHbJ+kwgHVZ9RetmpfkWxEUAIbuBwvgUnr5vrZdajUtMg2OzbMv
+	 T5sX71Y0bRd/ZOaaoPlohRaYfm+eZvtod7Mf+yAknHDT7b2mWqQf/KBL0EpJ9/kI4i
+	 C1QsKOVgL5CX+nv2drefdCu73+ZE1TtVhsPYj8c7yIGxqiBLCykq7ERw4kXGaKKDg3
+	 qCQVSm74KqNEFxOp0yu8vCvFZjTKzUVPXOL/uABTB1Wj1szknofSzXeJPuV6IVccE9
+	 v9b5NPwb0nXnA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 95EFEF4006A;
+	Wed,  4 Mar 2026 12:45:29 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Wed, 04 Mar 2026 12:45:29 -0500
+X-ME-Sender: <xms:uW-oacZq077lgVTkMOUj-dUmbNfI0CFO3UK3vCOq9sewwCz6ZRLYkQ>
+    <xme:uW-oaSMuCTAcMPMdY2K9pOm6V0vrj_aGoWMA8lPfrYYvn17WTgehsgPqUOONxZ_9a
+    NnfXZcNOCkFlNv4Hx79VJC6C1yjdaxy44_GMdxhUt2dnGdJwez2lQY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieegudefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
+    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
+    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
+    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
+    gurdgtohhmpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepuggrvhgvrdhhrghnshgvnh
+    esihhnthgvlhdrtghomhdprhgtphhtthhopegsvghnhheskhgvrhhnvghlrdgtrhgrshhh
+    ihhnghdrohhrghdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeigkeeisehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtph
+    htthhopehilhhirghsrdgrphgrlhhoughimhgrsheslhhinhgrrhhordhorhhgpdhrtghp
+    thhtohepuggrvhgvrdhhrghnshgvnheslhhinhhugidrihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:uW-oaYUW-HFeBsSWBCuImA4czvoe58enckRE8o1gOQuit26bFJsvpw>
+    <xmx:uW-oacA44J5IPwPqowvfeqBBjt_qgVWNF3W49UwEcqqMtIN0JXLLlQ>
+    <xmx:uW-oadeun30kpt8nXeBr4Mbq_S3ZZK53JplF5gjKWptLAl-SUks2bw>
+    <xmx:uW-oaboO8ce97anv0TZImuVWjBeAPz1YbCFdeJAAKHtXlwTM903y1Q>
+    <xmx:uW-oaWTROfWloc601DO2gcNnQFVbnxDc9KpSdzrTQv1eNoW4K0nww2Yj>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 6AF94700069; Wed,  4 Mar 2026 12:45:29 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
-To: Mike Rapoport <rppt@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@kernel.org>,
+X-ThreadId: AusYBuezkfp3
+Date: Wed, 04 Mar 2026 18:45:08 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Dave Hansen" <dave.hansen@intel.com>, "Mike Rapoport" <rppt@kernel.org>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, "Ingo Molnar" <mingo@redhat.com>
+Cc: "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "H . Peter Anvin" <hpa@zytor.com>, "Thomas Gleixner" <tglx@kernel.org>,
  linux-efi@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <da9396fd-f321-45d0-8af4-566dec32707a@app.fastmail.com>
+In-Reply-To: <e3585441-f225-4a60-9c48-aac2753eef36@intel.com>
 References: <20260225065555.2471844-1-rppt@kernel.org>
  <aafqhcG67FoNrF41@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aafqhcG67FoNrF41@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+ <e3585441-f225-4a60-9c48-aac2753eef36@intel.com>
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0580D120012
-X-Stat-Signature: htgferc7idfba9tnr5q1ggsbsj4miwau
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772646237-239613
-X-HE-Meta: U2FsdGVkX19rp0cHATIxsEb1R4cYMbnT9efkCvq20Rjn32W5mpcyAIhUUgBzza7iHytilfbh4ZZskLVoGMgfM/5v+gm65lHxgKL6vYWY7CFCsUxg/HLn439AA/Iab5DbbGPIqhwULQv4SOrSYq0VIdUKYLeRudrIlzOZAxPictHu6+izkWpNJnFf6V/ZRSlfxu6Zuc+UUeni9Olj1yle/17YbiSs1OvqfGbtQkLiIbELUkIaoHe45kFJ8Qb3PDzs2+3Q5PhKhanGlXA4z1h+xA+gmOXjoRxeBEz4m/c4cAk8Sqj5omhFnOGfpxY+JaIy/KC8XThRe2y5uvaiSFXTn781i93zFHNbbtmJeq+hRettY0c5nZvpESWv5wQ5ljaCEG35Mc7UOPGeSPuKMvPgCdRPHjYK1I+nkMjvzyhQCyeNBvkPdUKnk9jBnnb1mK7hg2XALAwgyWFSoEGa4RTp5kps4OZ7LrL3ZSYNpeKMgfcSXv7LDcSNAuAFQeUC81XdphdWZNjpb/b5bWPMdeVJpDwf9354pyajJAxLb+nCuMscqpQCZJ799HIkWuSxmY/7UnR/DpdkJcFo0M9JvlN6zFDZUELnIi21efN4L/aYwfjoryuhFNIGLpo7VE1V79durWUY6Bh9zSHxefEhUoHNrqoSAqR6ALPPRFo2CeUasQvUkJ1P//NNfTyuVNnzOqTsjZslUaTvPHasrvHzxScMzxq0qckUISrj6qobPenVucGZxjyVoyXKFnUANPL6SFw9cW/+/ipx30UfBWN/RALplbvHE4hO7pGOqpQLaCK/kt0tokINrb4tUbzgUO+OLHPJ4TkOkDDR1Px5NyZKamDgrXms84pvPaVkpN0uO3mCD+yvcUrVZcFIgRLwXrNHVcnPPf+TmIZ8MgssAlDVKQP9E0fC+71SIVqSW47euihLlGcKGibINECUp57RznHW/o5VE1jckg/GkbvYqVC3La2
- dJIE7nPN
- 0l+7wAq/a+GkjHF5rnrnd0//VTqTWA515dcqstOpyz/kMxrdo1BA/FwteBsoTe11SxIt4NWdGCMhW83JusAmM9CBOFB5sjHDMiN7NLnhYBpIH8GEuTx3Jn7zBw+XsVMPxpvUhpntsCUipPoy5GknMVCT+uEgFwg1wzuNVQ+PqjeIOuL7xyBwSrV+pPzDGqKoX0Z9k5Yfyq7FzgmI=
+X-Rspamd-Queue-Id: 5A0E11C0007
+X-Rspamd-Server: rspam08
+X-Stat-Signature: c3qar579yqxce5gh1z5kqm7i5e3o9yz8
+X-HE-Tag: 1772646332-453677
+X-HE-Meta: U2FsdGVkX1+ylzyHG0zEBPcyChdJ9FUDm2dWu5yOBXtxw7iyOziPtBhlzg3QYwz9DwnLSn2ujCBsWBevE6bH+wuF3PlfwSHD8QHLx3eYgnhJ6ILk5sYAJZudlcVaY/slZ+PezcGtHsnNUviwWPDnNEa5zHy8NRI0PMpdev7AM/MOfjenR3j5Dj5+X9rj5xW00CEvN+ydh6TZrajY6tPN96kAuY59+0jfcPuI4VN4lzuvXAIBB+rhUX+Zfum9Cc2Dmr7D3pSmUg+xrYv+xP3186VsPfCziP4XZWLaRt2ARz2MGU9a94VSYMAxarTD40aqFRJTU+167fY3ymkKU5ZgXLnSbnivDep3tqkOfswnkFpgvq+Cck2xKbxfK9txvH4LIObN8G7ochyINFgyAK3dIQBwDzDoxaURP/yL5nKjojsj4neSkbw0xVmXwK63NuVkswxCSI1shEOcDvXdf2td02tFdDI99msIXw10Iw4+xZWVKa29JLZ3fXe/E/yzyicWnjp6q8isWRw+HUP+S5R8/pm4kpijnAi6hnqKhbreEE8CJWDxgyqkskglXgVMt97J/13A3hDBtXDqWyqOvR5AYVA0WiQ5EocIsQ39XXA9iG5UWFk57uzvj4ZwdV0cUnBIC+wfZrOq80btKWXF14e/bDHCzL7yY0R6xiSJoyE6JTMdVXfqOvEEaoM45gnIcPN4PdkehhYww6ziNVEZrp/8gpT/oyFDUZP5/JEwOn0D8zbohT3vL5m60Rr2gi0aJoRqSeWDBnPAdGI4Jw11AonPKyIXsc2nRmY3ritNPJ3kuP+L1owMFMmW5j7DYpkimSyIVTGXqj7KSViPt3CB3hKpcQPY3nxUmpACa0+mPQbcVkofyOptGGJdf4Mm8z4v2jatG0+6Kygdl+kxuMIwwod5MZSmHTE5D5Qv2/7peyQRs/C3uml2zS4xbBEC7Q9s5CpywBEwlVp0dtDs6rRuokg
+ 8nKXhoMV
+ 3gwIv7j+pqck6949O7zxZmC9/0sI7KNKLlJKVbcuxCqxiSeeaFD5GcJkiuXesTCCgzGvRL6rxf0hb3XKGrBfNTDtvLYKX8jxWB2ij5YWV/BzPFLHmdtKaUN28hH4XlO9eBkCA7l0Q45+IrDU2CkDcTxMvYyCUDx042uNeDXtJ09xgj4WV9APmsxgTy+0kQ+pRnlAj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,9 +133,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/4/26 00:17, Mike Rapoport wrote:
-> Gentle ping?
 
-Ard, I _think_ this is one of the efi things in arch/x86 that you
-normally wrangle. Are you planning to grab this?
+On Wed, 4 Mar 2026, at 18:44, Dave Hansen wrote:
+> On 3/4/26 00:17, Mike Rapoport wrote:
+>> Gentle ping?
+>
+> Ard, I _think_ this is one of the efi things in arch/x86 that you
+> normally wrangle. Are you planning to grab this?
+
+Yes, I will pick it up. I'm planning some cleanup on top, but those will not be fixes anyway so this should go in on its own merit.
+
 
