@@ -4,97 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA607EF8FE7
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA56EF8FEA
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 13:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EF646B00AC; Wed,  4 Mar 2026 08:44:19 -0500 (EST)
+	id 3DEC66B00AF; Wed,  4 Mar 2026 08:44:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 558246B00B0; Wed,  4 Mar 2026 08:44:19 -0500 (EST)
+	id 388796B00B0; Wed,  4 Mar 2026 08:44:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 426C06B00AC; Wed,  4 Mar 2026 08:44:19 -0500 (EST)
+	id 28B9E6B00B1; Wed,  4 Mar 2026 08:44:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 262316B00AC
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:44:19 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAB771A0531
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:44:18 +0000 (UTC)
-X-FDA: 84508499796.10.4093B2A
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 99A2A20003;
-	Wed,  4 Mar 2026 13:44:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 16E246B00AF
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:44:54 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BED3BBA018
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:44:53 +0000 (UTC)
+X-FDA: 84508501266.14.15334CB
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011020.outbound.protection.outlook.com [40.93.194.20])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 123D720003
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 13:44:50 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=e26RPWy+;
-	spf=none (imf13.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772631857;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R7nRy7id;
+	spf=pass (imf13.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.20 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772631891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xF3nW5vCC+iyBfuzvDC1ioxG3TRa3zdtOomhQDNrMX4=;
-	b=7sK0zQ1U3T+cBf69H1MsD2ij+GIMcJvcuFMPoEkabskfW0jQN4Ikasgj6s2zE6KqhtIFzj
-	QC32ZSuT2NzuH3EV9+S3xcg0mXDnTG8IdSoXIfJeaFyk/+ECqClr5qYneL9eECprJpw9xr
-	v+iOPnHLhm2NvqdH+qWhQLuv78LLsqo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772631857; a=rsa-sha256;
-	cv=none;
-	b=GjFYhpr801mrUqoEtG85VAS7c8mgVCN98Gb/+F0/1TUuFBSpfyTFVjX+OwuNnp6Yts5UHS
-	KRUDrHNh8NDViVzOJb9hyZoPt82ZjBw9oJJ1yk51Nic3ffGdtkdAsFOyxCwri7o3BolPDm
-	/4WCGqB/AeWQNqm44Eab/k5ZUdAWQMM=
-ARC-Authentication-Results: i=1;
+	bh=p9bn0G0BpHgJ2dsfxLIhslyVs7HFs3h12V45Adash94=;
+	b=emeWvUHC3ZFcZckFljKCVtU8NTwV4IGrZL221yUPsKYZr4F3lfuhL/22eOL080k386qF4C
+	npK+yfOIAy8xTsif0Qtvnxi4h+PIb+7HLAhNr8zbHIt3aqOyRVeETpt/USwJRKl1dbvyv1
+	9dfxOi1zdxu+dcjUYiaJa+0e15eUt2A=
+ARC-Authentication-Results: i=2;
 	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=e26RPWy+;
-	spf=none (imf13.hostedemail.com: domain of BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+31edd8e8777d9099d78b+8228+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=xF3nW5vCC+iyBfuzvDC1ioxG3TRa3zdtOomhQDNrMX4=; b=e26RPWy+p372QzL+jnAnKcXN/M
-	wiH2eMkftY9mJ4kH7/PqEDDLyQASUDxtKvKcZSJBsI9IapRavsleLku9Je4wUAoAl2On0zT2i710X
-	yk25Dcr19xceiZLdFy76P7cxS7b0/cDxSsP9p25uPvGLL2d5K0b1kiNnOVl0VRntIQViwwQ/B47hF
-	6Wzhu2fkE29yGMmhLkRrlOlptcw0CxSzXFA8lL7DderxkOUndrseIfKfSz1L5JPgHv6OgjklHpub+
-	C9ZsHmyOyq5U+NSxcm+c3OxzDSkcPcBzsLsrZjbkT+Pbx6Uz+vjuzBQz7PhggUbwxiRgViLK665HL
-	0tw8wkwA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxmWK-0000000HGqK-2Rgh;
-	Wed, 04 Mar 2026 13:44:12 +0000
-Date: Wed, 4 Mar 2026 05:44:12 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>, linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org,
-	Ted Tso <tytso@mit.edu>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 18/32] fs: Provide operation for fetching
- mapping_metadata_bhs
-Message-ID: <aag3LLGJPNAYNeCU@infradead.org>
-References: <20260303101717.27224-1-jack@suse.cz>
- <20260303103406.4355-50-jack@suse.cz>
- <aagxU5f1AI3y0wrw@infradead.org>
- <4ji4ihp7tzhxr35t2vgnswfskrjnsuo4eys4klblnor2b663pp@x3khuzh7cxhv>
-MIME-Version: 1.0
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=R7nRy7id;
+	spf=pass (imf13.hostedemail.com: domain of jgg@nvidia.com designates 40.93.194.20 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772631891; a=rsa-sha256;
+	cv=pass;
+	b=mCUy7VQN71Spld5fWTFBzKdCYhuCfWXLq1f7cwMjhvp0u/OWlbauEiXwMIjoefo81onoLt
+	hA8dgPppPA3bJ4SXHr8VintEOH2Z4oo17OjzYWk9YARjHlemAVdaySEbVaQeGFMdHCVPW7
+	l32cfq0XOl2ILBzEwcW7tMsWmzSKvTs=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dpf2kiVLfbu6/Hx0aNdgmUZ11v03QSIEp1ys6R9rbxIG6JdH5w6o+kYgycakIKkOiuBoVcIqD1Y5Y8XLtQ7qjDtVWR/wvnf2Jh3422gwIt+PNKHheY83Er8bG5nwWDSI1JXZMZ4IIPaDAe72sXY5sDZvXqr20dsqF5ZbciQco76gOpiGcXgutHxJvtt5td0EQovaoUENN3BhgV4C9cBbPuvOaJoZ9cBZZ4/a9QqIISg5ZFBJfInYdLmTuj6JHYfF5GZ0GAPVaiB0rvG6YftGZf8dTd7rjHPen5IPEf4r/huJRbEIxuS5e0i61tJpV532kyXVNvLHpOcyMxNM295hEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p9bn0G0BpHgJ2dsfxLIhslyVs7HFs3h12V45Adash94=;
+ b=bI6b7tTMYAzZkPsAbDvrOSjIRl2FKcIORdCyoqOZCg5QjVUoWxCLQEaxL/KbPmZHDDHph2mQ6LCwyF0LZdEfaTeD20+9mLBzBRASMpSb35fOUjCZI1UfnGHtYxN6lARaKU8GTjXzJYvWerVidsKonlYiF6qjFKgVeDTQvVxVIuamoMr9r8z06389gBg0OrtiHR5olpfocSWs+VG9a/z5q0H5J/Nh9IGsP74VIrfLmfin6OY7UqEdOVhgtyvvktwlpx6GLmpJhLRgoq+/PPBikcZaW5WKQM6PzxDJxvGJeiJbIwERGySeXk8X0rfPt2J+c23m2+tjsNhFk9EMwW7Z3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p9bn0G0BpHgJ2dsfxLIhslyVs7HFs3h12V45Adash94=;
+ b=R7nRy7id9kwRX6eaA8UpO2RF19qPof9RDjpRGy0sxh02vegBqX4dLHDyH092Pr1ip+H3+is0PvRT4KnjRoo8judMo8r/3JQGGvFF6WIIWnM2vNxTvxPt5dkACr0ODXteTkdb23lru0WC17AvikadXNqFZc6sfu7Uk/57hDRTwDCKpxpmxe/doQh42f7IUbftperC9CdfJbo1Oi7hy9QMbqOWtfvxwauJlVovfkxoTwJRbuc8lJIpKazlu3IlNvPW+L319IC+zI/Dsd0XlK/D9ezce6Ekr8wdbudKYy5RY3n6nnjU3aWDPkyc+fFkOytTHIbbXh/ZY5qXlsDEaTU8YQ==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH8PR12MB7422.namprd12.prod.outlook.com (2603:10b6:510:22a::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
+ 2026 13:44:47 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9654.022; Wed, 4 Mar 2026
+ 13:44:47 +0000
+Date: Wed, 4 Mar 2026 09:44:45 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Alistair Popple <apopple@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+Message-ID: <20260304134445.GN972761@nvidia.com>
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+ <0a10ea33-937a-4294-b9a1-9323c706434d@arm.com>
+ <aacohVRfAK46lOjo@box>
+ <20260303191217.GD972761@nvidia.com>
+ <1080db49-2f83-4fec-ba73-94c6b3a8f7fa@arm.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ji4ihp7tzhxr35t2vgnswfskrjnsuo4eys4klblnor2b663pp@x3khuzh7cxhv>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <1080db49-2f83-4fec-ba73-94c6b3a8f7fa@arm.com>
+X-ClientProxiedBy: MN0P222CA0030.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:208:531::32) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH8PR12MB7422:EE_
+X-MS-Office365-Filtering-Correlation-Id: a214ca69-7392-42d3-628c-08de79f432f7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	TyCjhN+021woCMUt/c/jkIYbKo2BrGV9rRKgRQd4DDvD6iGKOMvFhfjapjmCdA4Wtxqqducl3IxPKwZ33h97BrUIEIygI4qfeP66JSaWBFJ+rR3HT/0LEL1GFMV+yuVMZn5Aj5/3JOXdhVrV/BMM6Mf9HeJsS7DpuN+PLVgabm1zwUfsgJkoynfM2BSQGoiCcN5cLG7lxr9+X/+G/PDUGnE0m07UH6ilmIL6eNRlOlyvunhnQMEXmVGBzPkoLyqX3SmSGDkzxKMuzEZMZUu4ei62LV7+GGPsfUXPAUhESYfiQs2AuM2nuocAko5sSYE9HaLeS3Ddqa+T+n65CLNhSlW0CL1aBk7ZIuWJ9cBnP9Lxwhf+UfyH6Bd3BGu5v7jLGhEo9ZfVSnBDjTrhwb388myiSInfuR2Vw3xgt0BjEh6bgOV+tu59OHH3ntz3q1L1NrfgMY4TfW/nIYYCxnmJu+9mNq3Km2+GIbuqnGPLWkoCCRaJN4BYyduaGS1ZOoFP3SOb2vsaUNr+GFU0AmtpXs30g8PnIhrKFG6B6qZDkJiq/E1F8zUFevkY7VXePLyF3h+fYHAhXPrkuVSrOBjj5H0v6hpv84G8ZI62mLrjYb8MTCBaHUpN8MYODoh0hkGwqCXe2oWegCBwDyDvXJPge7H+WxmjqTmVvBUgollXAzEDtnPbxKktr9rzBTdoBQtEQhHWlNUfpEGaDadxzQ6UwMBdLB/Y97TDQvawp5Bbzj4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PHCtCp94ofkZUXd3gl/bv3Eb69WGkiB+SUqlKWgcmALf7NhVcL8tqtSousr6?=
+ =?us-ascii?Q?1kxlgnCYANR74JhELcSNlri+4g5KHY0B8L+Us2iT2lanRF+23EiJ1paTcFfL?=
+ =?us-ascii?Q?K6QkJ7keW4/lCoAdXkqcczp2pXqNVcKvPhJrGDMngMoomtUlA2udzbbSdfpX?=
+ =?us-ascii?Q?PholbQpgCoc+uCjEC9KUMnUadKk5NN9fqihlQ590FAiTJYQgpAilyCJqNqZK?=
+ =?us-ascii?Q?swBDg3Iza/nU3pZ3NmvVj5WXh3bU0IoZRaOyTgw5dWtVp1DeBJqfCbcJUW61?=
+ =?us-ascii?Q?qiSXc2R9FJub2zhr49X3hrSc/d7RkYpHd8nluONNpMbwDEGTIIgrOBshlHnR?=
+ =?us-ascii?Q?5dtRZ/WOktISs3NSKzt5nr704++PvVlQ5XrIfieTSWBFAvpTnbod5NTu9cEv?=
+ =?us-ascii?Q?uY8cg/sK7Lx46XWECw7V+swmquUj9nRdYJkmKwhmimCtGfDIkafAOFRqiH9Z?=
+ =?us-ascii?Q?8q3wTNtUr4JLv3nqvUwrYXHkK4wVXfs6MXjkGOitvTng7ovwua13eCnWSTcD?=
+ =?us-ascii?Q?Rc6aahuQIxEAcFst0uMgMGMxWJjCeqn4iAwWEeh/iQZoEhLLresT5LKaazVZ?=
+ =?us-ascii?Q?DtM2hI90uUWnI7QQPF1C4I+CENbfTOihOHW3njxz6gFVsBl+Kz5miVDknJII?=
+ =?us-ascii?Q?eTCraHMC2ROV7sn8SRLyn8vAthdRfHjXs1mlELR0Yiyuvpc1ohAdKAc24WvO?=
+ =?us-ascii?Q?ijd7zHDZE60gbFQhB4/N21sguP1nBO07szVnXrbunFJpgPDsWriCqgzieEcP?=
+ =?us-ascii?Q?QJju7h0vkAYpJdoAEobnHcl8TQ4/kf9gWcddzXkGzwHINQfQBV4e5xZsU4jJ?=
+ =?us-ascii?Q?G+nomHoHeDWk12dXH5fwWrFoXLqqBPn9KpqVtWTBraKE363aucNvSXk2XZU/?=
+ =?us-ascii?Q?0crsYfBnZbSyTy9MjQO3k7ahqEk1e2mNnFis57t89DJO7zx0mG6RxublLVEm?=
+ =?us-ascii?Q?tLo0E+WrwqkWEWYoPkQsZsSbqhqCpHAQCBPdF45mm23lS/u8bJv7BLZO1hWl?=
+ =?us-ascii?Q?Wvvtr4MrkykANx3oQYJaVptJV+k3bhppSXZNbDeKt1JVGeqNkD75ttVcjRKi?=
+ =?us-ascii?Q?E87Jr24YQA8BU9XxHxqJ9WKRAdYuSpgSZ/kSDI7A5pPfGj0WuCs8mbj1MkDu?=
+ =?us-ascii?Q?8Obnku+AnMN9OR+/oHuqbM0i/LCB0HjqpKjaMlzcjFYwCGhM8W1JbSXqux66?=
+ =?us-ascii?Q?G859OgsvG2mAHroNkYfdbFznxE25DuYQ5P1XescJokSUdH6buTo69KJf7I9z?=
+ =?us-ascii?Q?X82I6N0yppVa/X1ioz0ZuHcD8oUhOmeGM35kbnQVr7fI6TzPE0ZR0J8fQbjM?=
+ =?us-ascii?Q?ccMXmXKimydJOvDZfqMIPGS1KLxis6C9lk3c6kQDF8BXOAeGUdzFy0QU8SNr?=
+ =?us-ascii?Q?MRQiLrrbQQljTXEmWZZ8wYNhrTvdSorjGpm4rkedo2+V8JtijXHPooV5fmQc?=
+ =?us-ascii?Q?alh65ZJ6w/3qqlUkPED3EYhF4O6w6B3wQHu1wzdkFy9f7wkhg4T4rUe6A9c+?=
+ =?us-ascii?Q?2yzDHTvtSZALtt5ORZV8JUbYkKUfuQ4v8Q3t7RRLI/lofThvFWVKYuwlHkt0?=
+ =?us-ascii?Q?eZFBaC/ceX0c6m5FtTwYD2y/rp09TiGqOnNJvEBjOnSoDFhFEn90xy9i8Nq8?=
+ =?us-ascii?Q?Lz8ezf8meEUXrgBV6qAw9M9XJkm8lBkTnPtN0qaSTo7XiRrCKg4Orf9fXw0D?=
+ =?us-ascii?Q?FBYTi8otC5f1wIxTo/5LB0ZYhS/DTWZl6kuBkWG7QXsD0RZPCxKK/jbkzFm5?=
+ =?us-ascii?Q?fvv0G05Tqw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a214ca69-7392-42d3-628c-08de79f432f7
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 13:44:47.0202
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E2YObPPYNACpZ309HAzo+gmSjqojqSTqYye39klcov3nOFqhgsW+oMM97tmaCtL5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7422
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 123D720003
+X-Stat-Signature: zrmcofojgnnxf67piu77c7a38q13khck
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 99A2A20003
-X-Stat-Signature: s1h3wt3h5g6ggz1dsqezs1tayjq1436m
-X-HE-Tag: 1772631856-948255
-X-HE-Meta: U2FsdGVkX18+gksDCAfCLaRKzL6rxGXFXs6ZzQVUmdzCQ/a/ucw0kSHLLfIncWX7PB6ZfMw5WvJ9r50WfKyNYhcMHJOm9sELvwAZCJMCePb0EYvMQUniiDuuM1n7uxmZWCDCf0h07DXDLSHc7NA8aw7uvpLLePaiLNlVJljajnu2joiL8FtcVDmBxLcuEx6LkYu97HpXmtr1HSRZtyWBVv9UWf9EP6GrFSdI46BL+hmxNNNPButIC+plLgG5Yzty9UrvZlRmZ9aZ6rfdgjiYN/JyhDoe77ohLAgTp4jT2btI0Q62cjl3JseD8/BpQWOKvVwhLrr6kqum/L/9sWXh9kOMP4VNbVkBsowPWWU2KuXvNxoQsoIRQh0bwyeXJH/LwMrMgVatKCiQ1LfLQQPFN0kerLYAIc7IboNEGQZpbcdN21/a5vMaMT7wBB1iTo5FsBLqJyrDnRg3Vw9AKXCevEnKHdhOrN4yUQjBVgJuVapGLSOLdx5xpYbvsoCUqTagsq15ap5BpnjJLbV4okQaAng5GxIipcQ1+65TaQrQJjk1p7XV8mEQ8F6euat3gj2xyeixi8NSBDhr1TsnoxigWMPNJ50fPDlZOr7mrVbwIVVJmqEQq0uIzULPqkGd2qJPS8ViV/d/9Txe+h1A0ZrlWx4Y9qkGA08lfFyER/YPPSYyN6DI2VSE4bgaCmD9VYmsdXEhaXCKCmeKUusJHTzpVRxAwSxx7DnX3bKvFK+y/MWW+nmOKrN6h1lfpzdzPRcZiFt9SIIydB37hNmcNdlnPLGfgB2+gQzaVSLG58Pke5pC2qi6Y5boTpn2CKqyQwZTAldzw6F1MgapmoRkuMQZR24QS+AyABLexgrTLF6LYUYdftZLUPje6lPXSgN88bFUlWP3WHA9FSeByH1mdEFi5wdFfTL417pW5FRNNXfvwtxuSYqfhEoT6cFe9Tepp55dTyKaQJUDKb9A0uS4DES
- qIX9xK85
- Pry5giTPXud59DAH/650AEvJDS5TMDu2CCN4fYRXufE8PBQGFjnQT9iKApP27U3ntOBzpqgfBaxLeBe9Vhoh+phOTkPMuDfHnIIsUTGAaFskMkNvF74JPuRIlFBwq3ihPIGEsuxjGb0uHIR7HMgzEIwiAmsRNrAFU/peH1wWCyStg+6DgIMEksjMGCC3Z2e0eWHOpd60nDfnUOR433zfdieD33zHsZ76z8JLEvArk3YEhrPWQb8t1savvwseL5moeVtC2W2kmFEJ8m3YgrcBzFxWN5M6qCcQ/7OibASwiri24hdfREwNd3H9XMULOwhet3Nl8fs0PHjvorRRPJBvCDEnptY+U/cBP+maHph999PkpFxZobjiFMQCe2erLbhRyKJ31fuO2eaqK9xvg3+/fDPFj3Fgli7eo7wai4fHnXoZstE/WpGpZNpQpWpbLS0XsfDXQFWAmRja/oTvBnWTEcKKAHzLoB83TqRTh0Ejkl9s7QCMATvP9VtxD7uzBnqN1Zj9BEZFPZmeWa1EOk6DIDl8vcDGW9dvmpgzK3OviS/QkD/rgujBNYfHvIMx+qRt4jBZZntgV6OuTJmaPiRwxkdrP1HI0rZ8ah7X2coE3FxDZybrIZyVIkZapLQ==
+X-HE-Tag: 1772631890-967373
+X-HE-Meta: U2FsdGVkX192z/bNH/V9shBpCV2UrHaHe/w4KI/umlbcHKQFD1Y99A8/fUXcKnGaalH7J5N+uGnE+3wzc3tOqm28B1EYmx+52+UOQPzWfv0z9j+tKKdKnY9A6rtemVzbgxT0z1s3vQz/OlY75fKir3jGpq8tYDZObRNtnXcPRrZo2E8k29By0VDhUGMKwSrd68DMHZKHbB9eHPNObfJG4tEpgvdoj/+uMEVwjgBa8CG7reGnb1B9kvB3mPl0mp2GyqnMbAuPxZB6JdfICBRrsXFIHHTKtRKerv29F3afuL/BHrLYEMHmI4k9x9ZOt5TL67LkT2ON8qt2ed8b5LVzZIPSVaA9ywZNrZ5DhudCgb5JkP0bDevO7U32j3t6M/YsgUt9V3MC4ThC73leNy3NF2hpbIoOvEiy+HlusCmKJl3pYaxF3LJV9bAM9/r1LlkQ9anUv23ou8AsiJ0lCJ9y0ktBgkzt4iawxYJSPyQyU9Fpg9pQYaHAg3PA+2M3WYbW2lklbrZv7QmQo/Idz5/GAECKgFxU+/or5Bsmu7iQNYhZBqr5VJ5rSIgqmNlzPaIj+m/GbMQsubPlOuo7v6qAzDWzEnkUHJLBJetsTqzZ4zIwvww+Fh7lnvtBvnDYjb+p5ZdrP82yaaUJ6/qeuwNNkfKR80pBfUJY8XVgL9K3xQa29PXxN5hKiLPoUgBdZIL6ZSuFHUaJ7qcY6fQ6yxNW+jK72AkfigoyiYvbDtAMER1xk+xARaCXl4SePDaP/hwWWHtXB5YdSJsE6SY4YqYHBd0Cb1+4/KFgxmdmV5vP6/KuCKlHKv2Me4aO3q1A4X82Eau5B0OqU6DDnKVhugbT/JM4z1LfPRczZhpMgLZqB3OIw7NToOqDSh+vYC/HRv0T6J3UGbWcywuebTotKKF4i2K7t+hsRldyXEVpcj9NQXHA8UKCtkElJNNzpcfDi8fFskd7V0vglw0W/+abjQF
+ hqegZpt+
+ 7YaRjU9y7tOtOCLpTOmdXe76nKc5aSYODyZtb1qigW6wcnREJukWbWaA2JUk5b5dbfYiveH5/ERZLnkeJY8KVuTz/7P+PrA4wQkevp9JwcjgjcHDLPu+YhLjE5mFt9xCsXlJHUAjrq4j5NyQcqhxFy2BxkTTq1CTjkbGX/rZ/gzWlKdI0kq6npP9WWI+1kdN25ZMS5ud9In1bGE915gvclnLZ/U0sWVVPnEcGLAkGqP4RtVxJ3f9M4gIlxQUZTG0/FXBy1D84UrR6oTDRTN8UQaWD0hwXJs1tiFcyWlb6tHkL/DLSNr0HrnsyyXeckmYi3xH2umLumwVkR4hBHbGxtrEaRELbNzGHahN7dDdVCMDuzBLcU6gZDdjsRh5h+vmdhF8AdHD0bNBRBaehAM+CKJwOq2x1Df6/7B6DV4MJ/emFHx0vZmUXEOtdXzjD9L1XGIPHP9/gjddI3mE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,18 +167,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 02:38:41PM +0100, Jan Kara wrote:
-> I was looking into that. Passing these to sync_mapping_buffers(),
-> invalidate_inode_buffers() is easy. Passing to mark_buffer_dirty_inode() is
-> relatively tedious but doable. Where it gets difficult are calls like
-> bforget() and most importantly try_to_free_buffers() on bdev mapping where
-> you currently have no way to get to the mmb struct... We do have
-> b_assoc_map pointer in buffer_head which we could switch to point to mmb
-> instead but IO error handling on bhs needs to get to the mapping from bh so
-> we'd then have to add address_space pointer to mmb for these uses. All in
-> all it's doable but I've decided it isn't really worth it.
+On Wed, Mar 04, 2026 at 12:20:31PM +0000, Ryan Roberts wrote:
+> >  static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
+> >  {
+> > +	const pteval_t access_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
+> > +	pteval_t pte_access = pte_val(pte) & access_mask;
+> >  	int i;
+> >  
+> > -	if (pte_write(pte) != pte_write(__ptep_get(ptep)))
+> > -		return 1;
+> > -
+> >  	for (i = 0; i < ncontig; i++) {
+> > -		pte_t orig_pte = __ptep_get(ptep + i);
+> > -
+> > -		if (pte_dirty(pte) != pte_dirty(orig_pte))
+> > -			return 1;
+> > -
+> > -		if (pte_young(pte) != pte_young(orig_pte))
+> > +		if ((pte_val(__ptep_get(ptep + i)) & access_mask) != pte_access)
+> >  			return 1;
+> >  	}
+> 
+> I think, based on all the above, the current version is actually not buggy. But
+> I'm only willing to go to 95% confidence :)
 
-I guess a backpointer from the bh list to the mapping/inode would solve
-all this?  Or am I missing something?
+If I understand it right James already found and fixed a case that
+violated the invariant right? Maybe it is wise to be robust since
+things lock up if it goes wrong.
 
+Jason
 
