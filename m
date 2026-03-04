@@ -4,110 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F740EDEBF5
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 00:02:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D04EDEBFC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 00:03:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF1876B0088; Tue,  3 Mar 2026 19:02:23 -0500 (EST)
+	id D5F576B0088; Tue,  3 Mar 2026 19:03:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9F906B0089; Tue,  3 Mar 2026 19:02:23 -0500 (EST)
+	id CF34C6B0089; Tue,  3 Mar 2026 19:03:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA1796B008A; Tue,  3 Mar 2026 19:02:23 -0500 (EST)
+	id BF5C76B008A; Tue,  3 Mar 2026 19:03:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 984BB6B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:02:23 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 397321B470A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 00:02:23 +0000 (UTC)
-X-FDA: 84506428566.20.F24F235
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 132BA1C0013
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 00:02:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b=cXLkuepr;
-	spf=pass (imf21.hostedemail.com: domain of greearb@candelatech.com designates 148.163.129.49 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772582541;
+	by kanga.kvack.org (Postfix) with ESMTP id AA2F56B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 19:03:05 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76562B7A9B
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 00:03:05 +0000 (UTC)
+X-FDA: 84506430330.15.38070D6
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 80E2680011
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 00:03:03 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kb9kkqES;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772582583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MJkdj9bxnYe9umC6PVKWOYBRDAwhFFDq1KtRj4Qx5q4=;
-	b=ftbOWSdZpvZNJ+Ukp9jqykwBexUhOeJWRW2MS0IjXmeVU1TgLur/CUMPTJTo3rC26KrDWh
-	2tO2fsRtDqitbE8nyRzWe3xIQ72z6wIPozrIHaz7ICWKqyV5uvqupVyshY/pcmVlLIwREH
-	Xr1N7X9W1m9W0ZsNDAJ0RXa4+he4PbY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b=cXLkuepr;
-	spf=pass (imf21.hostedemail.com: domain of greearb@candelatech.com designates 148.163.129.49 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772582541; a=rsa-sha256;
-	cv=none;
-	b=8av0Y08VOtzRoZboneVZ3fFENSCVT+5N8Xidh9l24kL5nrTbINzT4IAQeuZE4CgDti9uiJ
-	2/swR6+B/IJRig98uLQksPwdpuYK9wJ31mV2h+aLu79U0eulBPoLSj1Q3OwCpVhzgqFbSe
-	jcgl8hrhXN5whbEOTKjLwUHx+tUlXyk=
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6128B1C0075;
-	Wed,  4 Mar 2026 00:02:17 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id BC95F13C2B1;
-	Tue,  3 Mar 2026 16:02:14 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BC95F13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1772582534;
-	bh=PMlmlJTmJH+EFUFF85hcCnD7ggv7F1pWyKFzmcYHZ4g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cXLkueprkVnUZX/SGnTCV9Wf7gb5GCyzvm/1X+aEgF1WLLXhPsfNwMH0MZYIfFQNj
-	 4dRvx91uoa9krngQm1Rwz+DSuKMunp0M9c6AKYNU3fjMnC8j6sA8TVosoAWVzwnSGR
-	 lIOk8EAHeibTXBlHl0oZQWmWtTUTwTQyPmUQ7t2o=
-Message-ID: <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
-Date: Tue, 3 Mar 2026 16:02:14 -0800
+	bh=SsGLIEWyUhkmkGScny7/X0CBVSAQV23MQbI8yP5TZUY=;
+	b=jhmkNsFA+1WphopoIQcDnA+7i7NnBHxYvcDmNcXEWfdQR2mFhfW2abux3QkQyYws4mqGoe
+	pb//UgwEKeiEYUrkYttWGpDdbUaH0qDM+DWIC/LOdcobWKMkWdeBbPFjvos8TtrmS/nrMc
+	gA1J7zPRaYXEabii0Kn9uiiV5dwphSE=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kb9kkqES;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772582583; a=rsa-sha256;
+	cv=pass;
+	b=c9aXVP7gwoQcmeLeLPa8emitRs3Bj4LDHNxez4gzANBROghPBJaB7wRVnl9RIMuQhuGm9Y
+	De5tRoI1O/Kv6dEDbyYfMEdDEFKZPMbDqg+1MqKvtvpKNGKnEw0GmiGC09f9LHnNkce0Pn
+	IwjoEjOx1df7D24vLJrvjR/vmjSFq/o=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-5033b64256dso743351cf.0
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 16:03:03 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772582583; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aOQxXrFP18WGhnlq4HQA3jWB0e/y3pKyqUqQrklnukK6jBsM8CjDDS4xtdAfUVTaQE
+         TkgmXSIIsyLDg4WhQGHBoOZYmhp8jLa/DXV1OroSPcFagOTmBmcL1O3b0ObROBoMCq/8
+         Mcalys4vl1PWq5XU/u6HzM+vL1qDfskREbeLS0zh8cOTj3y87DpwEcaJEIOeD92Aaz5Q
+         0Bz80uk1DRQYf6zOsyi2dsKH8WhEx2zO1jBz/E2OCHEfaKfSHabaw1Wr9UHRwnxrOaKQ
+         5VK8b838+H8Rg8fTfAuKgNeBaoRojK1nOqrFVt9aNUQUxo+2qKQgLEeVTe2EkEpNJjXQ
+         VyMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SsGLIEWyUhkmkGScny7/X0CBVSAQV23MQbI8yP5TZUY=;
+        fh=VizD88lmDsiueoMLHj6hbwJGoO55cpRQ8HB6bgwvO4E=;
+        b=fWRG1Df4cemwXo4mXwLIQmXro+e8c5cW2fyqjnQEZsvcsPmSTD7mfBxIHhJsLWX2TF
+         cdF61EY7IEPf1NfSQlOidW3MwlTeoWSdI5rs1eVkqWur6fcGyvgbxpIG4Ny+SQ4CrGyw
+         D5jxXe9UOe+ZZde7NBgtSYHfY5+TW2CuSd8QEuoNHpZo/WdA0z9i1ZXfjAyLk/5E7qKE
+         oskRiWTXcEVjq8lhjhhuzNt1hbIwKMypRwhnoVFg/hIPdQ/w3AMINsVIhCt1YsdfyNWw
+         iA3YbavIpYpwLUUeBkPXkpksi6Ik5z7ECispZLHzgMubsWaZA7vGw8L15HOQp3/ZAGe3
+         vpiw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772582583; x=1773187383; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SsGLIEWyUhkmkGScny7/X0CBVSAQV23MQbI8yP5TZUY=;
+        b=kb9kkqESfx09nnL86wbOYLBy2JcR5657Zn+LZSj2QfZANAuSaU3F1v1Y39AXi4ZuNs
+         cdzTrr92al1xGkxOGvOb4VhAH1KWm4o6S2Qbv6qOOGElMGx85HWxWqnRA5FEEuShu+p6
+         kcPhhqs+cyMszVKYsj6dlXDV0MpmT3N6jmiySoiW3TpIsPkxB0VDcmIMjNLdS2cqFkA3
+         T4KT3EUP03sJKsSYEi4oGmyN6YFLnOB/QQ80lha95ViE/A8ngMBzpZQLsiyDs0ZpU9yr
+         Y/pE0Ice5AOJaOecghFCTnPK8o0ktxfzZc4obeg7Ok8YPH3V3EIzOKryrN8Vrcf3CZX4
+         DD4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772582583; x=1773187383;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SsGLIEWyUhkmkGScny7/X0CBVSAQV23MQbI8yP5TZUY=;
+        b=l/4KyGZ3bAUfOXP5xS2TtDvqyudCEcMxj36XW6ncIH5EKq977j8X0SimZYoXgyenXI
+         9A9aYT5ufigR1p0ZIDkd7ehtH3hQvkT8/wpfpN4cApZ+zrEmF7sUhQwXfLq/umbvz83Q
+         4Am3rXi/ipiWUvimRIfg05hSBsLbTTebS97wA40u8Ph6jqBsjdOB6zIoYT0KaBJueSze
+         LEsQyyjMb8u2izT/eIOjlpTIgjF8g3OCRGUXN3586Ocl2T8kcLSOb7tHEckTuOm0JJob
+         p/GU93M8yXE4NaK1NhitIGnRly6hZaWy+2rwkOwes5POgYyLhESdK3ghmT9Bn58BYrdO
+         uESw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3pw9x7PHxLjIbDjk04vn2tgQTvHtdyVrDEkxtyz9hKolsGrweVlgbjFpSvl6vaPyYMP4ZgShqpw==@kvack.org
+X-Gm-Message-State: AOJu0YyhQojAMyq8GLcExPr50pZGWAJHqQZ/1XYWcqS3W+DP9/zjCEll
+	o5twFEkz1oN6fF5zapRqDNLKMTI6QL/pl1lqyyFS+VOr/aay8NwlKWfpnBUwPo+Xt6kMKFqmJ09
+	miZDCrkn5KmK0tlpz62EEtnFdJPkp7LQJ/ZFa51LM
+X-Gm-Gg: ATEYQzz/Jc1kHKXdMD1okEBpNPiHoEH8xm/Fxu4JjPtXMCH+ky3mV4A6pCVrXzwYL/K
+	wMIMpQUgujLDbUXHUYcrAEYJvWKhwtZp5rZMJZR73IEHevCH2/qc/KHT3aCpEBhoQqAtyBkcJWm
+	4xho5WV4T3AsJQMoW3WzzBOFxHJUjRcbdCGNi6/AmaY546qJnFRMgzpa4nMu/i/xR3dMdxaQJxg
+	2CiFLugJqEsIxnLcapAwyyzfY0klv1hnSknOTtLIPlJIEbDd6KgKcZlwiu2Gl5xH8xsx9R24ZQc
+	o3P1mdMk+lyVkZaEOzm88lKf9c6iHrkr5YMM2Hy6DWhauUY=
+X-Received: by 2002:a05:622a:1916:b0:4f1:9c6e:cf1c with SMTP id
+ d75a77b69052e-5076186da97mr2167841cf.17.1772582581904; Tue, 03 Mar 2026
+ 16:03:01 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
- active.
-Content-Language: en-US
-To: Tejun Heo <tj@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
- <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
- <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
- <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
- <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
- <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
- <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
- <aadKDCKGHk1Ua-7_@slm.duckdns.org>
- <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
- <35a7ebcf-862f-0b3a-a245-c32196a58692@candelatech.com>
- <aadYoaA_JYduCx_S@slm.duckdns.org>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <aadYoaA_JYduCx_S@slm.duckdns.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1772582538-tWDR7B38HNWO
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1772582538;tWDR7B38HNWO;<greearb@candelatech.com>;e39a4ef213bcaa75c219f509376588df
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Rspamd-Queue-Id: 132BA1C0013
+References: <20260226070609.3072570-1-surenb@google.com> <20260226070609.3072570-3-surenb@google.com>
+ <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local> <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
+ <aadeHiMqhHF0EQkt@casper.infradead.org>
+In-Reply-To: <aadeHiMqhHF0EQkt@casper.infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 3 Mar 2026 16:02:50 -0800
+X-Gm-Features: AaiRm525OgcepzAJNzfaRHa0oE6Zi6kSq3Az8BaDbo99H969zeTJWZ4WhKpE7cQ
+Message-ID: <CAJuCfpFB1ON8=rkqu3MkrbD2mVBeHLK4122nm9RH31fH3hT2Hw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with vma_start_write_killable()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 80E2680011
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 8gcooye9yfa3szhd7hpjhfzt4ar6m7z4
+X-Stat-Signature: qjxmrytadxwqcxp4eizi6m3diip31r36
 X-Rspam-User: 
-X-HE-Tag: 1772582540-764986
-X-HE-Meta: U2FsdGVkX1++9ItznKvy7efo98qytQrHNKgCjw4u7ee/hN0uguiWDwbsAJHBrqFQycoZU23NvsMqtwX7ZMftATAEw/QHZWDN4fsHBnPyAaoKzVVsI1SRvDUPPJWaVQUGJe9dnzF+OjfSoRJ7dilq6stEBj3RgEdFn7t90rrY0uybeDCmKH/XS2Eg32jc79ncJdWzjAPAQadw9/nVn9NSR0fbb03btrcE5iu2Ebr1Zpk+vXbL6K7YO056GwXK80bvud7PKQIB4MtkntYbtwrsLH/zpydzGPMjutTGtbVukVl0wSEO8wRnnXcoFjhp942dP2MijCmRGzmpuVxhHlaRB9lDgwMCWZB2akkL8KCWEsxDGZSB+Y7kyAO9QcvVxbXROLD2YLktRmx894Oxoz/n2FZltyeOJ4bhUxvAvMr8MmiZTVPtCun29mzNfvpHDUoNLrIwi9ufEPcxwAsAQXlLrbswWEenRPGHmAhfbGZ+BuyA9UlpIWi/4twjhzpNfpiybKo/gD3oUyGNexoa8U+4FH7Kq8JwWsU6cpC2MktVvokbaG+XgcLxinaxQ3XnBQcERBjnOmjsB8EjGx9C3VoWSODTYuEw8Xc1MrybJLKzupXYJk4u/Up5fohAPQT8RMNBAIJYphgP+r6UKnibYYK3cf9HTAi+EyDxPu8yGioCwxp3Hy4xEDJPVLTiquG3Aa1bc8TPwyPg7jwT69blezHLUA5Hqj+saz+Y1IZyD/gv1dBIgm74jvm/QEncoz7sAMEhRkn+eXLmdXuvSz/WR44m1ix+Pydt3gsz0vrzA1NeWbDBFxxJELDjlWUKNWrR9HEl5hWeawVDUTxjNrReoLvYU0vOzCVDx77UCTo9s6Y/kOttazm/a+W/GB1qcbYiF/TfnBHRNvagQnwKiQAEgqI0rv6HvxJIhIa2xea8f7EaM5VZ2lEQeNje0GpTkEgrvvGdqkK9K2l8zEjz02v6B9t
- WpoWhyGC
- 4KSM+AqcbtFLq8w9zNOKZ7Wv22SXim+05ygcPeSho0RkDfTCWOvnOFJp2xGzGHMIMqsSh87z7FmACkCRxUImDF373AB3t0EAXtP3l8mF0UuPeFmBqRNE9MIdE7wW2iE2dBHxoHiJJCsZ78kIjxY0G2DUxu04YogmYSgGdodddG8LCLCokeZGYuUkL+cZMIBjh2Fi/NbV+7YzK2N35Akb6ZuOnzqDOkbAEsW00CzZlZe3O73+iueDPJMXGG//du8+ehBsKJM3Qb2+KkbIdfmEA6+6DfdH2lnFlZiYBt1ZiKRT0tWUEuWWdQa7D8wqnHSbv9/8jpa/+oQrB6hE=
+X-HE-Tag: 1772582583-955907
+X-HE-Meta: U2FsdGVkX1/QLM0PRRGFq62xZ+P6s6UDZRZRCqo2f+cPusYElKYPX6jHmgv3xAUwfbL1Pw0UnZcMtLvC618mQz+LtyuVmOn0Rg03R6yvuc12LLeaFHVty3iG4cq0BqELpvSx6ug7bmhQjQ8JCALwlQbqtF99HT2Dqyj8SIUNz1ZEUeQqHAl+Y2TeV4/XhHDOhLtkamZm7opv9Ie6JSzeMPdsBYX+N7wDPUTRswQ+dcx72G93LuirQZjNNeoCQYcn/OnUjG03IvoG7KKyC1gbSiRXiD0wuDBE0p4BmgJf3p18u0Z1BfpheMvBTIIshPX6sIwyYhDoaMvGejOwLSw1f8WI+eaRfM7YRsKW3tPZ5TH06m0cFZ2xIOZkEaxCATaKfaEV6Wb2nF6e6NJby9hCIY7AgtYEETKMDpjTf0cWXoDXOkRHlaqb0///iREIHrsIpiCaAUM2FbyvjQTtHadNdq0OBS8puzN/bM7gqMTbo7XMIDBmKCaGPr5Uq6jVyL8TuliWMDBdThtv+5d8SZOtyZT8Z4mDYi97ep7nlOBtrt8dJhpFd6m6W3Fme732TkiT1YBkOhXHUZ44aQs2qZKlW5PunRaiCA5H7N/Av1GrFOupxiy6kTH7ko9svr15JdRtIjp3l/S7PWWfruhH9ZY4bA+++a2OOk49KrsOYOJllgNCSdJokCyQYuLzvAWjjr0ZKjV/5qPr4tQE13vs9tlmzb62aDYmsdVLOzUtavTFPtky+ZcMK1JRSidtXahesaoNCmG8ARdnYDFvzM1tkrQPn/etCdhAiH6dxlZXCAMkPk8HxTFB910082iVYEllng3ngJwLXyELs5Fczv6VCtbmfKiVyi+7lt223fJ7LC0iEuHYdjiCjAfhlcfyM0TOPpOVFlXEpmL9ikGfohc+caZSLIezCvvlE6OBVDTPCIuI5jBoDVz3Rtxrj+25+RhoQvQQtAXjLC5d/NN7qGJSsen
+ bZuWv9kk
+ B2J2obZkJdLjabcZIXQxfOC2h2YpNxcQ/T9IAsdZJPrYDGkfZ/m/bqeSaVW34nPgYbP8sjsRBwXSQJfl3r3/KJ8FkyvjFEYThgjYq+EY7I383ySuQb4hPxoUZFLVAxxjyvTSjKlhkiOVPv0oVWKsOkJ/IOQ+qRUom0s2Zj0tdWyihobxV9jjKwUfey974de5xlGbf25spqfpmQBO4uu8hWTiM4t3C4x1+K0GNfnpLIliGHuUH4eyX9WOm3GCIdePYs9jspDb8aeDBRKPF2RxBSrtLYLO09OPp1vl3uawlVwnsnycRoueEfSSVVIgm5M0wicZNbR8Dfup+em21R7021VoQ6C33yNRpNzN5v/sWylkIFRW/UH34cIKrSh8m/XJZWRbwA3afIpAhutgltHxZDnCx07kpmJ3QMaUZULGON247c1hlawqo8YRBFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,52 +153,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 13:54, Tejun Heo wrote:
-> Hello,
-> 
-> On Tue, Mar 03, 2026 at 01:40:54PM -0800, Ben Greear wrote:
->> If I use a kthread to do the blocking reg_todo work, then the problem
->> goes away, so it somehow does appear that the work flush logic down in swap.c
->> is somehow being blocked by the reg_todo work item, not just the swap.c
->> logic somehow blocking against itself.
->>
->> My kthread hack left the reg_todo work item logic in place, but instead of
->> the work item doing any blocking work, it instead just wakes the kthread
->> I added and has that kthread do the work under mutex.
->>
->> The second regulatory related work item in net/wireless/ causes the same
->> lockup, though it was harder to reproduce.  Putting that work in the kthread
->> also seems to have fixed it.
->>
->> I could only ever reproduce this with KASAN (and lockdep and other debugging options
->> enabled), my guess is that this is because then the system runs slower and/or there
->> is more memory pressure.
->>
->> I should still be able to reproduce this if I switch to upstream kernel, so
->> if there is any debugging code you'd like me to execute, I will attempt to
->> do so.
-> 
-> I think the main thing is findin out what state the work item is in. Is it
-> pending, running, or finished? You can enable wq tracepoints to figure that
-> out or if you can take a crashdump when it's stalled, nowadays it's really
-> easy to tell the state w/ something like claude code and drgn. Just tell
-> claude to use drgn to look at the crashdump and ask it to locate the work
-> item and what it's doing. It works surprisingly well.
+On Tue, Mar 3, 2026 at 2:18=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
+ wrote:
+>
+> On Tue, Mar 03, 2026 at 02:11:31PM -0800, Suren Baghdasaryan wrote:
+> > On Mon, Mar 2, 2026 at 6:53=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > > Overall I'm a little concerned about whether callers can handle -EINT=
+R in all
+> > > cases, have you checked? Might we cause some weirdness in userspace i=
+f a syscall
+> > > suddenly returns -EINTR when before it didn't?
+> >
+> > I did check the kernel users and put the patchset through AI reviews.
+> > I haven't checked if any of the affected syscalls do not advertise
+> > -EINTR as a possible error. Adding that to my todo list for the next
+> > respin.
+>
+> This only allows interruption by *fatal* signals.  ie there's no way
+> that userspace will see -EINTR because it's dead before the syscall
+> returns to userspace.  That was the whole point of killable instead of
+> interruptible.
 
-Could the logic that detects blocked work-queues instead be instrumented
-to print out more useful information so that just reproducing the problem
-and providing dmesg output will be sufficient?  Or does dmesg already provide
-enough that would give you a clue as to what is going on?
-
-If I were to attempt to use AI on the coredump, would echoing 'c' to /proc/sysrq-trigger
-with kdump enabled (when deadlock is happening) be the appropriate action to grab the core file?
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+Ah, I see. So, IIUC, that means any syscall can potentially fail with
+-EINTR and this failure code doesn't need to be documented. Is that
+right?
 
