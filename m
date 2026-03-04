@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DCD7EDEBFF
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24661EDEC01
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:11:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 522766B0005; Tue,  3 Mar 2026 21:11:15 -0500 (EST)
+	id 8E0A46B0088; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D9AD6B0088; Tue,  3 Mar 2026 21:11:15 -0500 (EST)
+	id 8C1316B008A; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 406086B008A; Tue,  3 Mar 2026 21:11:15 -0500 (EST)
+	id 7D6ED6B008C; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DCB76B0005
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:11:15 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7588B160132
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:14 +0000 (UTC)
-X-FDA: 84506753268.08.2A5022E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 721C46B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:11:26 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 088431C331
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:26 +0000 (UTC)
+X-FDA: 84506753772.23.854E667
 Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E4FB80004
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TfoAoGf+;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1D1AB14000A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:11:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="fgUYM/d0";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772590272;
+	s=arc-20220608; t=1772590284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7JM7KJg1oz9+GC4H9JC1/W5RywkkP5XIUmh+2MLnGSo=;
-	b=y7TGAuVYPAnoYdZi81OxasiOJNCW/oMpfQ8aHi0ZzzNjsY/qP0tiGoGducmnPlSFcRL7/H
-	vJ87E9ogTJWOEs8tsenX59oaLJsWKhJUhOCyZf74V2PPK/e3LWosos2d6M4PK9JhnQ9z6l
-	oJQfSs1pVKS2vFeeZSJ7PmbnB1rvCoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772590272; a=rsa-sha256;
-	cv=none;
-	b=mBaaTghJKWwCxKGP+MkERpIblskDZFQT7W2HP5j8Md80YnKhhzTUEMheshlA3IkL5pXTfm
-	sCR5zMgzurFpW0UMubFMJbjutJmwdPEq0yHJOcPjOoizKHsMJshOhwOsxMDKLSvNJIIRyM
-	7lOpVK2yi2396VagwjK/jKlQXNtyAYE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vn2CrPvigyubKEvhLFY6y0EU5doWg0tOHWyGKpSN0ek=;
+	b=6G5ImXaO/SNvC/l4UWVhTpJm/puWGER1NxiyplovW3bsPH4MGfVXchPLz3fhK3F0e6a8VL
+	eB3xYdzaalkBJUq+dCpjJIMA3Z/+QGqUUqz7WyA1QSjCH/Pe7E72EOvPhwR+r3p+he2KTN
+	H7GiW8p92wWySi2Z1K1V3hhesLnLiKI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TfoAoGf+;
-	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="fgUYM/d0";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772590284; a=rsa-sha256;
+	cv=none;
+	b=zLH3pPLxepOq8G4YFf/1FfazTlp3TCWN45emg9ZtNuOCBgXoYe9tTjQ17Y996aL8hDWi3d
+	QVSNDQosMjNfZyCNyd/dTtsRQqE94qpYIaCX3F8do0HjstHu1ttQIuls/u/yYhO8m12gIA
+	HAZ4op5zYFaQx+p4Fymy3d+W0k0LE8A=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772590269;
+	t=1772590282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7JM7KJg1oz9+GC4H9JC1/W5RywkkP5XIUmh+2MLnGSo=;
-	b=TfoAoGf+iMnRCMxJ8U+btPdh+IIPPGxbuJdCC7Bd8LNMgByq7FyGFJ8m239RpK7m8U7Er9
-	ze4BIS3oQfjHrS/KLKbCq2w6tPQJZEG8QeCJFAm2gU8TVjN1SsvRtH/Oi+tGbYzvdufzn6
-	WMUcrLp1nIb5jDKxp24nvmO9DVyhCd0=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vn2CrPvigyubKEvhLFY6y0EU5doWg0tOHWyGKpSN0ek=;
+	b=fgUYM/d0P37bsHPqPX4Z+o0dKS/1BrCWa8RGt/Nvn9MWX5D3ln9TuZSj+0EjJMPcTmH2z3
+	8f8a6A1fjLymFVq3c9xMaOEMs86p40x2Nh0ih2lOE2Scf3uQ2nBKi5goxTitYTMxqeIKtO
+	KtwSs9uUVV8FHNDg8aeOFN25eSCnKN8=
 From: Lance Yang <lance.yang@linux.dev>
 To: akpm@linux-foundation.org
 Cc: peterz@infradead.org,
@@ -95,22 +96,24 @@ Cc: peterz@infradead.org,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	ioworker0@gmail.com
-Subject: [PATCH v6 0/2] skip redundant sync IPIs when TLB flush sent them
-Date: Wed,  4 Mar 2026 10:10:42 +0800
-Message-ID: <20260304021046.18550-1-lance.yang@linux.dev>
+	ioworker0@gmail.com,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v6 1/2] mm/mmu_gather: prepare to skip redundant sync IPIs
+Date: Wed,  4 Mar 2026 10:10:43 +0800
+Message-ID: <20260304021046.18550-2-lance.yang@linux.dev>
+In-Reply-To: <20260304021046.18550-1-lance.yang@linux.dev>
+References: <20260304021046.18550-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kof5wuh7xbaoihgdi9cqmi18zcu6bspw
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1D1AB14000A
+X-Stat-Signature: ryn4fdw35z6too4oxsjgiruoid85rfee
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E4FB80004
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772590272-306574
-X-HE-Meta: U2FsdGVkX18mSYNQPCyDCxKv/PD4cieBZUCvR91Q+uGL98yuB8xg5KGQcWlFWo70mi90rajcMRXUS23iUUWLf8KBbwIjG7zz6vyY09E3Se333s3quYE3iQiw+1S77yGGPR49yW1NrKQENI4NSzQqXQs7142NAG0YuRIb0xUf3s3DqWxY1vEmQJRJJta2eRW7tDYzutVNItCPMJ+/9KUQ+71erSjV6XOd7JKQgDXDTEuK9h9Ma4mgJPSGDUfGCe4qYZhIH+Pd0nEJsss7RTMWQVwZybDswc/WJ94KQIhMNRkYNkvhZsyMcsJRB971zSmYYZhQp4EuSdX+jxUUmAqlApdncuFkvRm0kxNYb0jedtlEmr3lbI+vm7crgyDc+o9ao6SgJMWjpTlNQi0QsSXBWkTRWbELBm9GIE70DYdEVdWMdXlxnIixRFCcKt6I5w5+UuLbtoocp8bwklqps3m140/gA9jsi0/bWLraASgAl5h3hjfqCVb+dtkO3sxC91J5SUWw8T0fTjUqAynOoQdXv7XPO4EOzuVOPnAbkU/CrFCoGB0T20DyHSnGZbkGMub0oYRNU20uBHRvIx3Rm7VMcKyKlK30EKakZokJ7ETda+79mxkYsEaonJHbpYLGcpERc/fp1mfeC0utL8prn72gwy46rI1NRoDcjt+YK/7MEhC5TuywnF/tyiLMicRYU4wZbDvoh9GHQLoRfXg0LC5zWUUH8RwO1Jp5GziDXcmxlXF445vbtOs6VkDiypFfd4hxNR2I9ZQQrtlq0RytuOhH7PC3tA1vXhDq7/qmJS03w5IuYs6nDO/AeDYNXx/qRoPbNATRKxTBKAccWdnsn1ijBF8bTMO237V/UaxsRidaIkh5vSNIqoxW7AKVTN4fP2xSf4iRwlEmrw+0W+k21MZc6CcIqmtMpquKypW6b6zpsLJIYUijRBBBF9sZ5J4LMfbblc3wE8OYB12pOHXEILG
- Qed/Iudy
- 6qI1e7nCMxAaUKgMvINIgxT4w0zprFbAbOw+cuYXvYUzR5cHnnepZMHD4R+ytE64QfF38b6WdoQiovWw3YUgU0mxQohqEXwQlTZ3phqRSPICrmFZQ0sJsOn1N29CeZ4o1eH4gCZnkUUezEa7+MuaDvuYsDIrifXquRB5CNVcVd+r6IZ5vnbNy19XQcYb7a4agRiYpp+UBIKFcqD8k1xrYyMnMdOyq6h4FJEg/bAjc+GVFtgfxXyejirmcGOF1J3uJgv+JBFquOHV9fsFpnLLyhx6L17dLuqE8uC2E5UgdT9KibGPwBj+KuNOk5g==
+X-HE-Tag: 1772590283-308177
+X-HE-Meta: U2FsdGVkX1+/zlwnk4sMrtWeWmJKNPUK6my5Xdtfgp/jCFfxsotBY/+0ZAOKgD3SnDuAMgsTSYAF5BLnU5dokvQi58Gq4TZQWwsmj7pQkHbKkSLC4bzSG5PMk4qa7e886YPylNKi4XZwxPIjFhE4d8T0RYXJPGqXhHuq5K3SAAVwxP7R9NVKyRygu/PQLbB3Birr3ni5UaNGBNx+nGjs8pP6eeNAbHHmbnD/YJVpYmWIy++hoU9cidrjYtzo+1MpOJr3Ez9FEtIW6TMSeY/QUUbYgEj7Ps/kdBQA6gZXtpNmLjTd3cXsjbGw8qwfdaqHWXOK/1rkdBzd3Eutp6+gBnUbBE4a1/cNa3whW8l7FDyOUzoAnuly4MPq3zTTE4bJRBrkedcGSfAMNPnD+05EfkmAY/DT+2bO74EHR1GPNUKj9Po3EOQRPQYbM93ZiyP4JoctghOC03pbAwWWHGRw0Fpg8oQG+DupcYh+ygRg3Kqe619IrYshGdCbpHyboWSbCjhKYQ8uOyWq7VFxNvlfnEMSfrzW97iTFElNgNGagwZvRQHMIp2ooBtgLJVvGu2GrWcxR9Wk/scyMWF21IZET5ZF3zkGnQbNriw0C4pfj9hBu56eSLO+gvi9ixUuB41RAc0Ov8XXt8+OaHJ5WhiEcMnTns+H9mN+oKNu3hnUqv1AoFTO9sHtyK5mhv3b3Fv/uZ/57oWcFbrAMmV9PLEURpIRU9uAlqJRE7lAvhA1DfU4JKn2lRFS4dObdg4PWYEKZoJLyWphqgtHzr6CoxTbhKNCcebpXebQmXsDVg3Fo5N/DD4g9HkfG1gw783ra4yqqLRNAlpFJXqssjITzCpInbXi6Pxj6QDnRRn0bMo0KIoove7zGqHP8Wtzks0pMheVN2Nxgrk0/MGi93HpHnfuWAY8+zJKLFBa8266yMsuhd0nIvDnG3L+8fQWK7J+Ga/5cFLoH5JS0oD9Rv8D0Tt
+ J3iSldzi
+ MVXZ42rmmkGyVrSxW/SjNI3qLO4Nuns8014oEi/F3xURqdpwlySXibzCPkCTQeSGow2T5MDZ+YlJElKIrkcQJ9ndnpHU3cfCZ2m8jPG8EfKErqUqJ1rUQ5lgPy6iFJFuYPtHG81G9FCD48oeReZN7RbHh0UJGu022xuX3uTTcgPWCgsSL411Q1+zITtHjfYx3llhXZGq1+01Es72QVuM9PJLug5hUcbvcAWrNVnIncHKDSvSTo7NjL3XV8CoTMuq9Lp/mJeMjABHf1Rb/JddyyokoGiByfbTKxv22cEKC3Ymes0w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,7 +121,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+From: Lance Yang <lance.yang@linux.dev>
 
 When page table operations require synchronization with software/lockless
 walkers, they call tlb_remove_table_sync_{one,rcu}() after flushing the
@@ -129,9 +132,9 @@ the subsequent sync IPI broadcast is redundant. This is not only costly on
 large systems where it disrupts all CPUs even for single-process page table
 operations, but has also been reported to hurt RT workloads[1].
 
-This series introduces tlb_table_flush_implies_ipi_broadcast() to check if
-the prior TLB flush already provided the necessary synchronization. When
-true, the sync calls can early-return.
+Introduce tlb_table_flush_implies_ipi_broadcast() to check if the prior TLB
+flush already provided the necessary synchronization. When true, the sync
+calls can early-return.
 
 A few cases rely on this synchronization:
 
@@ -142,88 +145,81 @@ A few cases rely on this synchronization:
 2) khugepaged collapse[3]: Ensure no concurrent GUP-fast before collapsing
    and (possibly) freeing the page table / re-depositing it.
 
-Two-step plan as David suggested[4]:
-
-Step 1 (this series): Skip redundant sync when we're 100% certain the TLB
-flush sent IPIs. INVLPGB is excluded because when supported, we cannot
-guarantee IPIs were sent, keeping it clean and simple.
-
-Step 2 (future work): Send targeted IPIs only to CPUs actually doing
-software/lockless page table walks, benefiting all architectures.
-
-Regarding Step 2, it obviously only applies to setups where Step 1 does not
-apply: like x86 with INVLPGB or arm64. Step 2 work is ongoing; early
-attempts showed ~3% GUP-fast overhead. Reducing the overhead requires more
-work and tuning; it will be submitted separately once ready.
-
-David Hildenbrand did the initial implementation. I built on his work and
-relied on off-list discussions to push it further - thanks a lot David!
+Currently always returns false (no behavior change). The follow-up patch
+will enable the optimization for x86.
 
 [1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
 [2] https://lore.kernel.org/linux-mm/6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org/
 [3] https://lore.kernel.org/linux-mm/2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org/
-[4] https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
 
-v5 -> v6:
-- Use static_branch to eliminating the branch overhead (per Peter)
-- https://lore.kernel.org/linux-mm/20260302063048.9479-1-lance.yang@linux.dev/
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+ include/asm-generic/tlb.h | 17 +++++++++++++++++
+ mm/mmu_gather.c           | 15 +++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-v4 -> v5:
-- Drop per-CPU tracking (active_lockless_pt_walk_mm) from this series;
-  defer to Step 2 as it adds ~3% GUP-fast overhead
-- Keep pv_ops property false for PV backends like KVM: preempted vCPUs
-  cannot be assumed safe（per Sean)
-  https://lore.kernel.org/linux-mm/aaCP95l-m8ISXF78@google.com/
-- https://lore.kernel.org/linux-mm/20260202074557.16544-1-lance.yang@linux.dev/ 
-
-v3 -> v4:
-- Rework based on David's two-step direction and per-CPU idea:
-  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
-     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
-  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
-     flush_tlb_multi() already sends IPIs.
-  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
-- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
-
-v2 -> v3:
-- Complete rewrite: use dynamic IPI tracking instead of static checks
-  (per Dave Hansen, thanks!)
-- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
-  actually sending IPIs
-- Motivation for skipping redundant IPIs explained by David:
-  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
-- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
-
-v1 -> v2:
-- Fix cover letter encoding to resolve send-email issues. Apologies for
-  any email flood caused by the failed send attempts :(
-
-RFC -> v1:
-- Use a callback function in pv_mmu_ops instead of comparing function
-  pointers (per David)
-- Embed the check directly in tlb_remove_table_sync_one() instead of
-  requiring every caller to check explicitly (per David)
-- Move tlb_table_flush_implies_ipi_broadcast() outside of
-  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
-  that don't enable this config.
-  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
-- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
-
-Lance Yang (2):
-  mm/mmu_gather: prepare to skip redundant sync IPIs
-  x86/tlb: skip redundant sync IPIs for native TLB flush
-
- arch/x86/include/asm/paravirt_types.h |  5 +++++
- arch/x86/include/asm/smp.h            |  3 +++
- arch/x86/include/asm/tlb.h            | 16 +++++++++++++++-
- arch/x86/include/asm/tlbflush.h       |  3 +++
- arch/x86/kernel/paravirt.c            | 20 ++++++++++++++++++++
- arch/x86/kernel/smpboot.c             |  1 +
- arch/x86/mm/tlb.c                     | 14 ++++++++++++++
- include/asm-generic/tlb.h             | 17 +++++++++++++++++
- mm/mmu_gather.c                       | 15 +++++++++++++++
- 9 files changed, 93 insertions(+), 1 deletion(-)
-
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index bdcc2778ac64..cb41cc6a0024 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -240,6 +240,23 @@ static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+ }
+ #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+ 
++/**
++ * tlb_table_flush_implies_ipi_broadcast - does TLB flush imply IPI sync
++ *
++ * When page table operations require synchronization with software/lockless
++ * walkers, they flush the TLB (tlb->freed_tables or tlb->unshared_tables)
++ * then call tlb_remove_table_sync_{one,rcu}(). If the flush already sent
++ * IPIs to all CPUs, the sync call is redundant.
++ *
++ * Returns false by default. Architectures can override by defining this.
++ */
++#ifndef tlb_table_flush_implies_ipi_broadcast
++static inline bool tlb_table_flush_implies_ipi_broadcast(void)
++{
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+ /*
+  * This allows an architecture that does not use the linux page-tables for
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 3985d856de7f..37a6a711c37e 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -283,6 +283,14 @@ void tlb_remove_table_sync_one(void)
+ 	 * It is however sufficient for software page-table walkers that rely on
+ 	 * IRQ disabling.
+ 	 */
++
++	/*
++	 * Skip IPI if the preceding TLB flush already synchronized with
++	 * all CPUs that could be doing software/lockless page table walks.
++	 */
++	if (tlb_table_flush_implies_ipi_broadcast())
++		return;
++
+ 	smp_call_function(tlb_remove_table_smp_sync, NULL, 1);
+ }
+ 
+@@ -312,6 +320,13 @@ static void tlb_remove_table_free(struct mmu_table_batch *batch)
+  */
+ void tlb_remove_table_sync_rcu(void)
+ {
++	/*
++	 * Skip RCU wait if the preceding TLB flush already synchronized
++	 * with all CPUs that could be doing software/lockless page table walks.
++	 */
++	if (tlb_table_flush_implies_ipi_broadcast())
++		return;
++
+ 	synchronize_rcu();
+ }
+ 
 -- 
 2.49.0
 
