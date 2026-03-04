@@ -4,164 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 090CBEDEC04
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E96EDEC04
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 02:49:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099206B0088; Tue,  3 Mar 2026 21:42:51 -0500 (EST)
+	id 38F1B6B0088; Tue,  3 Mar 2026 21:49:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0472C6B0089; Tue,  3 Mar 2026 21:42:50 -0500 (EST)
+	id 33D4D6B0089; Tue,  3 Mar 2026 21:49:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95346B008A; Tue,  3 Mar 2026 21:42:50 -0500 (EST)
+	id 21EF16B008A; Tue,  3 Mar 2026 21:49:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D55176B0088
-	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:42:50 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 934C6C1911
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:42:50 +0000 (UTC)
-X-FDA: 84506832900.19.3006590
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5AF364000D
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:42:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="AQE/rAkw";
-	spf=pass (imf12.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DD9C6B0088
+	for <linux-mm@kvack.org>; Tue,  3 Mar 2026 21:49:42 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 905F8C1A85
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:49:41 +0000 (UTC)
+X-FDA: 84506850162.22.6F3E96A
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D3901C0007
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:49:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1pIU0LxF;
+	spf=pass (imf28.hostedemail.com: domain of 3wZ2naQYKCO4iUQdZSWeeWbU.SecbYdkn-ccalQSa.ehW@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3wZ2naQYKCO4iUQdZSWeeWbU.SecbYdkn-ccalQSa.ehW@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772592168;
+	s=arc-20220608; t=1772592579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7dycZCW1i0wVXbu5i6p68JSQ3h2ubeTDMrk86ISU5M=;
-	b=CYBh37WNHR/6zYksYGHLExYEelRgt24KVSVtHeSGcrStUza6vZmoYPxUUUhla4cYnG1Hwa
-	y2Zgy3Cd9AKrKevke5FoAGlMmeLS4q9k/wur3d85rp7tBu1a+OEgPAVmcid00Fbll4COOA
-	jDpmnyGVKtHF3C4UWXyYT82J9f5wC+U=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b="AQE/rAkw";
-	spf=pass (imf12.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.52 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772592168; a=rsa-sha256;
+	bh=wlfxAiLCYE9X+ss6Nds/jzCWOjzdQvgrRAY6r5Hx7j0=;
+	b=PV1y5QIlmDsWA7P20JnwR9IsuT0yqKcjXo83bskS/czFidnfFes1o23GU1+DEXAjvMm+DL
+	IJFk4NimxtRM5gWjHrgxP8Av9oQ+O8QEmeSX/F0pOnN0vf+Gvc7+Bhi/9jACYwFeAZvkpO
+	Vw7GKS5jxz4PuwN/8lU24V/sufeYBi4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772592579; a=rsa-sha256;
 	cv=none;
-	b=mLqY/PIwCq03cGPwbu9GqtjXYNrIuZG3NOsmPqvhzN4LVfzcv0pS2n0bCapKhpabu0UWGi
-	m6+FpVg9s9+Um/SgI8e6fFRcrK73KF0a+0XIuAWfT2CEmH1CmAi5VOz9bK2l0BjfuaCoz4
-	nbXbygfg86M1DjKmmIXwchIwlIFf7NE=
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7d596a5be31so5399302a34.3
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 18:42:47 -0800 (PST)
+	b=kPyTTHGuh1xaipFquALxvDhH3XAMnTBC4fsdT/Bt0lXEdyBSDjHOXdNT41hz/XWFK6MkxF
+	jIyzkoXlZiwbgXcNR1NbgH0Dx1Y2xXo92StbMl5Nhu3P/uP0/hDDWL4uM5TBiF+uOEto0l
+	uiRNpYJ7leh6nsVriD2Q7NnEYokpyhc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=1pIU0LxF;
+	spf=pass (imf28.hostedemail.com: domain of 3wZ2naQYKCO4iUQdZSWeeWbU.SecbYdkn-ccalQSa.ehW@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3wZ2naQYKCO4iUQdZSWeeWbU.SecbYdkn-ccalQSa.ehW@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae4a6bb316so32261825ad.1
+        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 18:49:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1772592167; x=1773196967; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W7dycZCW1i0wVXbu5i6p68JSQ3h2ubeTDMrk86ISU5M=;
-        b=AQE/rAkwOrPtCKNvBxzJ0KyTd39iA2Uqy3MjZkJwuS+FoxyFhdCq5Qhc0vke3kej4b
-         D2Xd3FS2H9pzmi/73v25iMz/2s5mNzlSFGPQFD2p++/A0DU75cyhLeBmI5NsP5ACmt36
-         Q3yu6hG9/GTjYhPAOt5LY5l14mKBxfvM4/GmAfJOFu2UrhmHfM2DOFr2qVEtkKUg7FyM
-         +UjqqHLlyKjp5HuqqtSjynU4Jm6UMoRSvPrrZ2yJfy2JGQpuBkt8sFJacpC7cLlUfRrz
-         +IeJe2X3no139hCSlxjNREwGMns+NXOH2j1AGg95ZVty7VuJovlM6xckYu2OKYJeuS2N
-         aW8g==
+        d=google.com; s=20230601; t=1772592579; x=1773197379; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wlfxAiLCYE9X+ss6Nds/jzCWOjzdQvgrRAY6r5Hx7j0=;
+        b=1pIU0LxFQl8cZtovs+q8N9d1gjT6qpzvzWMOpKlbpMPfrNah7wRF8s4MdWxndBFdzn
+         ur6qKGmkOh7jd1mRmf/TagdKNHsNG0r3ksc+F11C8jay2ggsGLnuahulpzuuXY8+r+X+
+         Xx5rKgy6zdeZkMKdjL1ibvgzq/FkLZgIguLLjbLwg8SS4WeD6uoTXBTzTuRRV/jNnZFq
+         IEOwxH+D/gf557qsScYhZy7M90i9JbElDmge/5UwL1Vl8wz5IsjTsK8Z4K+/sM9Sdnp9
+         zPiytRG9aDf1yzrUUKW2JszJB8aptQd4XSiqMhDiFaO/XB+3MhCuH5cTK/B3eWG20Tlz
+         t4fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772592167; x=1773196967;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W7dycZCW1i0wVXbu5i6p68JSQ3h2ubeTDMrk86ISU5M=;
-        b=bGv3BO1qe/6xpA1qvChFirLr0P0Z1HuqAytMQ0M48AsOwroStb+5iJIcnW7Fl5TMxS
-         PC8XRTH9U5+Ug79pzzNj7KzaCk8WKQLenaD7hVa0q9Z5uR2yEGnMgaSUkbWs2t9QrEBM
-         IWAADhb95/UIW0+vBc7dNenHMad0w/rTy1tUir6V+gOgdiKIUBvBjIJPmF54CW750LhJ
-         TBp1Kp2cGMnp6h1AtZ6XsG6jhR3FBWUCOZXM0pnqCelUqBRp5yRLe8bGZhLz7WWpa7zt
-         ersFqiPBEoC+V0xBE58tFR7qbHeWPqkxaCMCnt1vvUUmHfbTbx9j3DAYDx60Djmajr6v
-         W8QA==
-X-Forwarded-Encrypted: i=1; AJvYcCVxPjM3irTcNjuYGDqcRupMeWL+UqFqzhZNG7u/elpkM2SDOOJxRjqynW9vYoTBdT2USLrsVcBpcg==@kvack.org
-X-Gm-Message-State: AOJu0YxwKvW66WyymywkqWcKa7wX5Ade9CBKT9OmK3JJyKiFQqvRsMri
-	UZ3v3q97ZxsR7zf0Fj6l72hptx0Q4dm7kMJIydCntEwNddZNDXBW4aLe5ois1LuK0nw=
-X-Gm-Gg: ATEYQzyW+SeBdTNe18pYu/3r3nlSC3YhNnglKNwSzTDYxLTMnuWCekhIbhDDYjHv2gh
-	TVtpKAhaO5I214SR1jEoB6gjvvrRxiky14hQ5yg0x4SRI7EjjgJJDJpeU6RPLZz/fWa5Cig5aMF
-	Rcqm4yeaYJ8mCsANCePlxe5BXiWIxN+KnKhDVkOSouefUBmWBNhRBROzw8+HLTFam2Ukig3NEWp
-	ef8sKLfeX3tR08L6FAFc3FyNv1bLde4aoMYN4j9ZYZlwW8vhvVVLHA52F0R83ZhyrMEJctj5dQs
-	91VBMjI1iIPfXOwTUOxw9ZDXlAIQz5e0i2icqpP+ZtN2t/kMqDsqTLaflVGwbSXKCKuU7FxSzzQ
-	ncTWxe3NJMgAP121ntVQwaDFVR5RATwsgWNTfSiS0Vcb3mK3veexSrJQJCj2l2yjDwwSO+DNQt6
-	6Copk7RU+ahyWa8ZOdw2ZOy8hNcA9mTKY7t5BmRmE40dLZoYL2tgn1xmcNF2Hx1t8MM0P7ooiLu
-	+qypVTBGw==
-X-Received: by 2002:a05:6820:4a8e:b0:66a:1886:e4bf with SMTP id 006d021491bc7-67b17703546mr346906eaf.22.1772592166871;
-        Tue, 03 Mar 2026 18:42:46 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-679f2bfee3csm12574800eaf.7.2026.03.03.18.42.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Mar 2026 18:42:45 -0800 (PST)
-Message-ID: <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
-Date: Tue, 3 Mar 2026 19:42:40 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        d=1e100.net; s=20230601; t=1772592579; x=1773197379;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wlfxAiLCYE9X+ss6Nds/jzCWOjzdQvgrRAY6r5Hx7j0=;
+        b=pa7aDdjOPrvg+LkFoODJvLPPbzziU90VL2yPaiqLmLlgoTe3n1CfC6IeaAcMPThidh
+         aqN4oVWGrWwLXj0O71U08ge56Gnc5p9eF9gz61ranY/S8gqk4o3AYH94BsDYL6sBkiin
+         HGVXe1SDY27G0kuj+4UsZ890oyW6hfx3vFnJheKButCvOVMfDygozKQHvRL4SIn/Ha93
+         mspheFDmAjSSlLF7tr8yvvtDbnkxLtTvpDl9xXsa6RPM1U8+Qfli7VYnLkTrKSPFw5f+
+         zl7V7rAAc47naaCgpyncxYKITaAvQdEWOhH8YLnoT8GEekCe6T7Gv4qgR1/1LEa9DRlA
+         ZP3w==
+X-Forwarded-Encrypted: i=1; AJvYcCX7qS2/6/8p7z1k4m++ywxU3+1a/S2ZxlZw7dEnR1CjHNXM6j3eQdsvvdpCJPnpYQMoxJb5prOOmg==@kvack.org
+X-Gm-Message-State: AOJu0YyKxuGwv58nzZH+XJmkHxpOkUcruZkwBfBpLvXqBwEGHX8j8GVI
+	ODRfzndknbKKrQRnWymEEf9mYaeFFXM//xctEerSMHWwNBacVtG0QgF0KAeUEehMRK+glVFJ+Jz
+	Y5QjV0g==
+X-Received: from plzv9.prod.google.com ([2002:a17:902:b7c9:b0:2ae:6338:73ca])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2446:b0:2ae:483f:b239
+ with SMTP id d9443c01a7336-2ae6aaf9469mr6114485ad.30.1772592577810; Tue, 03
+ Mar 2026 18:49:37 -0800 (PST)
+Date: Tue, 3 Mar 2026 18:49:36 -0800
+In-Reply-To: <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
+Mime-Version: 1.0
+References: <20260304012717.201797-1-ynorov@nvidia.com> <20260303182845.250bb2de@kernel.org>
+ <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
+Message-ID: <aaedwFwXh9QXS3Ju@google.com>
 Subject: Re: [PATCH 0/8] mm: globalize rest_of_page() macro
-To: Jakub Kicinski <kuba@kernel.org>, Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- "David S. Miller" <davem@davemloft.net>, "Michael S. Tsirkin"
- <mst@redhat.com>, Theodore Ts'o <tytso@mit.edu>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexander Duyck <alexanderduyck@fb.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Alexandra Winter <wintera@linux.ibm.com>,
- Andreas Dilger <adilger.kernel@dilger.ca>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Anna Schumaker <anna@kernel.org>,
- Anton Yakovlev <anton.yakovlev@opensynergy.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Aswin Karuvally <aswin@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Carlos Maiolino <cem@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Chao Yu <chao@kernel.org>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Christian Brauner <brauner@kernel.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, David Airlie <airlied@gmail.com>,
- Dominique Martinet <asmadeus@codewreck.org>,
- Dongsheng Yang <dongsheng.yang@linux.dev>, Eric Dumazet
- <edumazet@google.com>, Eric Van Hensbergen <ericvh@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>,
- Janosch Frank <frankja@linux.ibm.com>, Jaroslav Kysela <perex@perex.cz>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Latchesar Ionkov <lucho@ionkov.net>, Linus Walleij <linusw@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Miklos Szeredi <miklos@szeredi.hu>,
- Namhyung Kim <namhyung@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paolo Abeni <pabeni@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Sean Christopherson <seanjc@google.com>, Simona Vetter <simona@ffwll.ch>,
- Takashi Iwai <tiwai@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Trond Myklebust <trondmy@kernel.org>, Tvrtko Ursulin <tursulin@ursulin.net>,
- Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
- Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
- linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- dm-devel@lists.linux.dev, netdev@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org, linux-mm@kvack.org,
- linux-perf-users@vger.kernel.org, v9fs@lists.linux.dev,
- virtualization@lists.linux.dev, linux-sound@vger.kernel.org
-References: <20260304012717.201797-1-ynorov@nvidia.com>
- <20260303182845.250bb2de@kernel.org>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260303182845.250bb2de@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5AF364000D
-X-Stat-Signature: d3d34jq6zc6fqjh3hxezwhxrmdmbjd7t
+From: Sean Christopherson <seanjc@google.com>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Jakub Kicinski <kuba@kernel.org>, Yury Norov <ynorov@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "David S. Miller" <davem@davemloft.net>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, "Theodore Ts'o" <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexander Duyck <alexanderduyck@fb.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Alexandra Winter <wintera@linux.ibm.com>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Anna Schumaker <anna@kernel.org>, Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Aswin Karuvally <aswin@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Carlos Maiolino <cem@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Chao Yu <chao@kernel.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Christian Brauner <brauner@kernel.org>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Airlie <airlied@gmail.com>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Dongsheng Yang <dongsheng.yang@linux.dev>, Eric Dumazet <edumazet@google.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Jaroslav Kysela <perex@perex.cz>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Linus Walleij <linusw@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mark Brown <broonie@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Namhyung Kim <namhyung@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+	Zheng Gu <cengku@gmail.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-block@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	dm-devel@lists.linux.dev, netdev@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org, linux-mm@kvack.org, 
+	linux-perf-users@vger.kernel.org, v9fs@lists.linux.dev, 
+	virtualization@lists.linux.dev, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: 3tadc88ifsa5wd63b7zxww4kxfpkqnhw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772592168-366436
-X-HE-Meta: U2FsdGVkX19qKK7gLqMEPVZFmAzd9hXBt0gB/v3kwh/AiqN6s3DN2n2CIpsvEH7xw62S9Ha1RWSzV3S93vQYMfqB7vT91FXoRJdu1aewwAiFo+DSyFVhbtggnZDMbR9lx6TIxZbbRWhtLXKgH/frhyu/92L3D3s/tb8W8eGTlZWkbvwiQNKiqPtzTJrfrLRdf7RgFJ05Wbk3RydNjkDHTMmhemGoD3hJot+iVRGZMhMmGR62ByYO+8A94whf8JkrWj+IFFKOSC2CmPvbM1vVYhDeZ7MwZ4z6p17APynbdGdL7rdptP1MB1s6PgvbXTAXhpLZesU7jzdZ59S0rdIMZiB72dhSOyX6VA32gF9L6fPzE8M6EfczKFJUdsVnMheIfrx2OszGskpUM4MSkjLah6o47FFopjWdrsi9KDR7uduaaRXcJe/5laP0Xr6KlPLSz/NCaczcj8Ccvxw0je8RlvBraTZfxfIqhTHRd6iH5EhnSJsgPZWUHY5RzUgBPKRe1UyLYkyMwhs1AdxJmSdTizrdQy9QuxBwWz82pkIEi5ug3qTPahjC6K0PD0Uh9ZAmn/xmWLRM8ACqXY8lO5zshM7XfsuftLmBhMtFHhd2ZmjEltmYAZqOcXVXvk2g9qUnhJse4dSRa7qEcp/eLlejRAqBgx+QzCZjkQIoX3Btpcdg8MqjGkgCwILakkAcgKc/ITpmCgVGeV86jr/kx/asa/rXzRNr509K+gpLL1HxMwB2rKa4coPwlcBHDsNpi+06IdXKvYoKAbgN4DRw4H9GRScruQD5UvZ/1niYStrUxFrcCfYxctH0lvTtQ9gHe3c9tCKhRUViOXpw4lQUeJ0FU9fljYIHFNe/Q7bZDMLjkdAp2Y+/Aq0zRb6seIPtWJw/bfGFckRWKnvKfS4+HmjnHCYe8yS4fxBLfIGUml8LyHJ1ix/XaaYiHvubXL3R7RKX04C7HvMAW7Dd9Z7N5jU
- HseJNeEk
- id+mPtZgl6d0kV6mmbTHC8yEeHMNJGJzafajUPUYeMBFP9qdGKVpUUQ8koQpCMiF/YDsW65DbO5wvmpuLV6dI/ik3tsDKZRDCPMksdShLUKvYufGhOjGTdN7Uv15Y+2ugh/HZ8fg2OFAokxI/y6mQQMwPGDrFP2cSEC9Ku18BOrEN1E4/P404MbQc/irwQEDGtM+xHMt/61APkzXD7E1pyeRaS+/+Ovkm8GZZzxrLysixJg8VUOlBZSFHyGvVRpQ8FzfSHvviObnXhprvlmwZEvaSRkxt77OargRcD/pmh62rCybkMia6OTjZf/jpjWMloPP2KOKIqaSPT/TN9wY4RzfyOg9QDjgcyF20ucdfG18GKNOVOlQfdSF9wRgMrjW3CYKN+ARXHsJlJ6h0ZNuIPvHZIZdm52BeOQdeljV12tTOyUwA3ZjDzknl/T9+KYu6MKgU7DpUKzSHhuWG7k4KpjbVUIFQqHazs0bLcXB/ysSIL5OvG/dMMPAQ3qILPv/7pMIUFilL2bKARozvAAKZe7IJ+377rT+I6srquh0515O1JJx4rLuZZrEdyg==
+X-Rspamd-Queue-Id: D3901C0007
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772592579-665960
+X-HE-Meta: U2FsdGVkX18NQJyZWS1vSePjUO2wGmQHrhPXpDEZd7HiobRliTt+Xsu2gFXQRspkLuGJGejGkcnR3MvKlxMW30XYICCQH2GquHSEK9ymstx7YACsh6EumCFJjzYeSHVv8JAmdscqBSmUzeVOBaMj6EdVGwHHPKQTXMuJ++kQSQObYpcFnOsngJTNMaUjvaco3PjCcrPc3M6GqRsv6CeWwvf4qG7RK7yAfBsmU9tGLQ+G7tcH47vnVb9SnWEaQRuuaxLGNKJfzTSNklGc6Y3ugR7zRcgqNc9hNXvG/xVO8TLXMJztXU65dyL9U9QjjcNN0KyeOfpA6kwJEF5fEoo46zC0Hlb695KAfZe2G/jdcij3AyEZuK4T3uvcP4Iv9gix0HMsTPkTExn5yxE58+0MjjCzbMgfWnOyDMyZH9pyj+6PqKP8uXlRQRe1WkvPclWF7pnUtZ0750ZR6sqnenHc/EGPqm7Omyy0j7IUhu/Pz7reAclbZhyhZ4+W08iqEgFCTvWgHzIxDzHLadF9TeBZwpYeLsBkKcHMtNdB6rQ9x92vPB6/HsSORzgjqIDHvFYuVzfoS5MFNn6AGIkRKR2twPwTJVQTXZZEkVxULfnKcWdrNwb8B9hjDnFfl5iABtuwWMmQwBWYwRSwT31+fpIwSINi7TCpEbS1zGXtXf2vcZz7zRgXfDCaa97YxmVv98RdpyCvs1T+diF6axKTnf6jTjzcNRFsvcZBU7e8UgpAGD7GYwBuQYfMWaHBrWicPHLKncJ/uPVDIoty0gr8+1ZCNGKqthwAaIDs1U9ls5jCH1M99GRE4MlM/Z2PxzBlthuku2+7W3hlztY/rzj5iTTTxmRVVkMifEGIOV8QhJdIJ+2Z1m5C1qR0olpTT1mqq9sf+VVfowg+Cu7poPsJ1PmKiVwIKTxf1UJcgL9RRbUiqxENl3YKK7E/+F5M8oiTgQmbjmshChVWZQLj4T2uSaQ
+ kI4JR9JB
+ lF+MwxVyW91Jisf/Dxq/rIuCWMU7qCpmObUXa4g5K6tbGzuOS7cj361mMV/PorakfM84n130hvff2yOHJO2lma81FszzVtLpSo9fUjE0w5aLs73hQYCdyM0XVJzQfLwdON5+ct5CAqk6cX+Y/6+df6kE7yU3s4skBV1N71onfGX/B69mwgm7ngR1Ia7usRedbw8hqGN3KsI1VIehwMbVbs0H88uFBSowhXAij3hN9esYsIzYmUSkm7oE5otlYs0+mQE/Meu7HXuE1jwDV1HLJHoPMtt62Ps1nReLCN8dSdhq7ec0/ZkSfkpv/K3Urnv7Da+CZlSnBNH31/BUyST9wic4d4ObqkyNoQCe7Upc+DyYpL3umTSIcr9XbO4DzP01zBbh7NDRjyubDbAo8FBbuL+3pj/X/VGW/0pWUVWRMDu/1SkgMUds5i0WvFF6NDjvJQ+D987YufpTcgv880v6/zhL+V3oLOyfTWj5lOdTtj237m5WMrb4Zm+GCV6hBJjeJnPbB3w5rcmGXx+mE786uQlwF1SwDOPJ9iJo5UZ2mho/jQotlNSAVbSV0nbdVQ/roJ0quMLDhacgBi/ZZ6HmMfCgBe5MSSRiiPMNPFnozZ5ml8cVw2sZsgCTCqJ2d8rKuLNZooSIpGOoT6o6ea547lIULhW0nJvzdLM0HV+S1rSTVBbCaFpq9+D1fHpd1OE9M84kg+BY68z2RSfjhSV78Mryc8EId8lSUQ3QlWrylgbjgm5xu10WQbn1qb62LuT/MnbnhJf3ACvYLNRlJifc7E6n7qKCmqBM5tRzwlBV8gta1oZV2cKPtHPr73LzMKFph7xZeuSHckTbHlk1ZdNEJtae1Og==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,24 +142,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/3/26 7:28 PM, Jakub Kicinski wrote:
-> On Tue,  3 Mar 2026 20:27:08 -0500 Yury Norov wrote:
->> The net/9p networking driver has a handy macro to calculate the
->> amount of bytes from a given pointer to the end of page. Move it
->> to core/mm, and apply tree-wide. No functional changes intended.
->>
->> This series was originally introduced as a single patch #07/12 in:
->>
->> https://lore.kernel.org/all/20260219181407.290201-1-ynorov@nvidia.com/
->>
->> Split it for better granularity and submit separately.
+On Tue, Mar 03, 2026, Jens Axboe wrote:
+> On 3/3/26 7:28 PM, Jakub Kicinski wrote:
+> > On Tue,  3 Mar 2026 20:27:08 -0500 Yury Norov wrote:
+> >> The net/9p networking driver has a handy macro to calculate the
+> >> amount of bytes from a given pointer to the end of page. Move it
+> >> to core/mm, and apply tree-wide. No functional changes intended.
+> >>
+> >> This series was originally introduced as a single patch #07/12 in:
+> >>
+> >> https://lore.kernel.org/all/20260219181407.290201-1-ynorov@nvidia.com/
+> >>
+> >> Split it for better granularity and submit separately.
+> > 
+> > I don't get what the motivation is here. Another helper developers
+> > and readers of the code will need to know about just to replace 
+> > obvious and easy to comprehend math.
 > 
-> I don't get what the motivation is here. Another helper developers
-> and readers of the code will need to know about just to replace 
-> obvious and easy to comprehend math.
+> I fully agree, I had the same thought reading this.
 
-I fully agree, I had the same thought reading this.
-
--- 
-Jens Axboe
++1 from KVM-land.
 
