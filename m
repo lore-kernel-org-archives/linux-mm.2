@@ -4,120 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B8FEFCE21
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:13:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F122FEFCE21
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:14:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C82326B0005; Wed,  4 Mar 2026 12:13:13 -0500 (EST)
+	id 609E16B0089; Wed,  4 Mar 2026 12:14:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2FB36B0088; Wed,  4 Mar 2026 12:13:13 -0500 (EST)
+	id 5CACC6B008C; Wed,  4 Mar 2026 12:14:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2E766B0089; Wed,  4 Mar 2026 12:13:13 -0500 (EST)
+	id 501236B0092; Wed,  4 Mar 2026 12:14:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A195B6B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:13:13 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C8EF8B672
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:13:13 +0000 (UTC)
-X-FDA: 84509026266.19.592FCC2
-Received: from fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.158.153.154])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A39EC80009
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:13:10 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pWyr33JI;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=516a86686=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=516a86686=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3D18F6B0089
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:14:48 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0AC728B540
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:14:48 +0000 (UTC)
+X-FDA: 84509030256.10.4F0CB90
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 471B8C0009
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:14:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjbnSbMA;
+	spf=pass (imf28.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772644391;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772644486;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GOyFbmGrjwCzzxO3kPvRp3gPk09ea9B/RkcYvfV3U7w=;
-	b=rDssSNbwYH51bGw3dmwj4gSYAEku5oomJ4fsIo41aZLcvydOA7kU58hJMODz7PAEaPtWYT
-	5nlrsqNBkMASoUH03MjmJtT5l3uPdxn2OfM4NfaeB/5xj2B5+u1Jdwn8InnyzShG8ICIuU
-	2pBhxNvTfDjRI0GyvwbgX1ec+E+GZCQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=pWyr33JI;
-	spf=pass (imf02.hostedemail.com: domain of "prvs=516a86686=kalyazin@amazon.co.uk" designates 18.158.153.154 as permitted sender) smtp.mailfrom="prvs=516a86686=kalyazin@amazon.co.uk";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772644391; a=rsa-sha256;
+	bh=qCh22I+eR+/QKF6eXYAvRtMfiyczHxENS6tjZBJbiR8=;
+	b=uNDJa5NO3fe4O/5//GlqNiTJfiBmTNi+QO26TgZ58t01KSzJAvFbKop19I4+E0CX+5Hu1u
+	OCWuR+lxUtdSgQtYJbks130wZxaNDp1eyJ+AE351PYfG7v7JtvsNK/B3jLTadJhE6zp/XF
+	VPRCmtb7V8+FCj0A7zAzanlx4C6ZzHU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772644486; a=rsa-sha256;
 	cv=none;
-	b=fuT5NdXN2EYlh4gJJwLMqE40PI0sXUCKxPYI5ExoB1F4aI8ZRnDKTvWVXk9nzLuhWc2vLJ
-	j3s9P03ncmF1GTSOuLuO7Y8xtx/BIxImEuAqj6cdMgExcB8p/N4EduNaUz8fLZXfW20bO6
-	VGiXvGA1dq+2BGOuA82gMCuKQeZ7/dc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1772644390; x=1804180390;
-  h=message-id:date:mime-version:reply-to:subject:to:cc:
-   references:from:in-reply-to:content-transfer-encoding;
-  bh=GOyFbmGrjwCzzxO3kPvRp3gPk09ea9B/RkcYvfV3U7w=;
-  b=pWyr33JIxKbbEHhVq8T/YTduH76L/Go+moWbxPNd5FLZ2pEVEcLn7QeL
-   e6xYQ0Ytvlz5C0RH8NwdunezEVSOhP4VxHjkOVjwDG85ZCfIeK+sRzH1Q
-   /RXFSXo/3OKMS+TesRwg0VhwNWStuLW22jFfjIKwjrk/IR0XT1HnIYaPn
-   DeW7tjBRkL1dn7mYewCbFB6NrZL872iyIV+dhDyTq5FXn8/vNGU2DHQmD
-   Y1ecctdWx+ROhKLl01/LjoAhpnGvCVpRvLudyRlwjqLwhU219TWsPXIEu
-   5gaPi3e4EVteHaVcNnzUG2z78oAFIAgRtDeKVHwz78CtGfyL/CypFDd5A
-   w==;
-X-CSE-ConnectionGUID: UYsfpQ/XTKGj1mLFxoxIhw==
-X-CSE-MsgGUID: vkl+gh6YQl+E7Yf9zukrFQ==
-X-IronPort-AV: E=Sophos;i="6.21,324,1763424000"; 
-   d="scan'208";a="10202501"
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-015.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:13:06 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:21320]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.16.189:2525] with esmtp (Farcaster)
- id 9f0d1b18-a341-4a05-a845-dd316410b6b5; Wed, 4 Mar 2026 17:13:06 +0000 (UTC)
-X-Farcaster-Flow-ID: 9f0d1b18-a341-4a05-a845-dd316410b6b5
-Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 4 Mar 2026 17:13:06 +0000
-Received: from [192.168.5.225] (10.106.83.18) by EX19D005EUB003.ant.amazon.com
- (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Wed, 4 Mar 2026
- 17:13:05 +0000
-Message-ID: <90cf68db-2e21-4153-8eb6-2c8ffb398d0d@amazon.com>
-Date: Wed, 4 Mar 2026 17:12:59 +0000
+	b=gF/4iJhamSQzgqjgoTuMjpISbuhNHs/dpUB5TpRLeiKWf2lyV+IwL6cpDn43wuhEymeS9d
+	xEvvCGmQXSgLc/6G+EDESuZCHr7wLz+KxPGXESoHRxE1VkXajQ7PLhL/VNcOUZLGk++4t5
+	5S3nxVadxVNfPH0entMmU/yy1boxEhY=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pjbnSbMA;
+	spf=pass (imf28.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 41150431FE;
+	Wed,  4 Mar 2026 17:14:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FF5C4CEF7;
+	Wed,  4 Mar 2026 17:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772644485;
+	bh=+oJjHKhWCbPsGXjJkJeOe7mOGQ8z0UHZlgUk21mKa4Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pjbnSbMAKSq7Q17bm6gxIzZUe7SLk8mJOqp24lZqrxoZOWP8muu+D8pvHgKzO/Hso
+	 zNHz2YA6A/DENMS7RuxzRXMgnfwDqDyUpfQezziy0Ap//qNMbmCNSV+2AFTBx2b/bF
+	 lZk3tFRWsnnoD/Y6DPYhMawbyVEPhTQDOytuTLcSbPSdOT0wrluWQScYcD3GTtRMQI
+	 beJeqHGOcMDADjjNiJd3unhPCIi9qsX3oV8mYULON20/Lt77KvXsRpnmESYUxw7w+f
+	 5qlnayHrNGao6tUV8YGfVEJkmy9Yy7AssjsivktmQADAJIEnUrM70R1Cr5hZccSwEI
+	 Lb6PfUTLYABZQ==
+Date: Wed, 04 Mar 2026 07:14:43 -1000
+Message-ID: <68c1ca1381d1871fff72b211890a64eb@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Ben Greear <greearb@candelatech.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless <linux-wireless@vger.kernel.org>, Korenblit@kvack.org,
+	Miriam Rachel <miriam.rachel.korenblit@intel.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item
+ is active.
+In-Reply-To: <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
+References: <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
+ <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
+ <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
+ <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
+ <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
+ <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
+ <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
+ <aadKDCKGHk1Ua-7_@slm.duckdns.org>
+ <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
+ <35a7ebcf-862f-0b3a-a245-c32196a58692@candelatech.com>
+ <aadYoaA_JYduCx_S@slm.duckdns.org>
+ <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: <kalyazin@amazon.com>
-Subject: Re: [PATCH RFC 15/17] KVM: guest_memfd: implement userfaultfd missing
- mode
-To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
-CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand
-	<david@redhat.com>, Hugh Dickins <hughd@google.com>, James Houghton
-	<jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	"Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, Michal Hocko
-	<mhocko@suse.com>, "Muchun Song" <muchun.song@linux.dev>, Oscar Salvador
-	<osalvador@suse.de>, "Paolo Bonzini" <pbonzini@redhat.com>, Peter Xu
-	<peterx@redhat.com>, "Sean Christopherson" <seanjc@google.com>, Shuah Khan
-	<shuah@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, Vlastimil Babka
-	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-References: <20260127192936.1250096-1-rppt@kernel.org>
- <20260127192936.1250096-16-rppt@kernel.org>
-Content-Language: en-US
-From: Nikita Kalyazin <kalyazin@amazon.com>
-In-Reply-To: <20260127192936.1250096-16-rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.106.83.18]
-X-ClientProxiedBy: EX19D011EUB003.ant.amazon.com (10.252.51.108) To
- EX19D005EUB003.ant.amazon.com (10.252.51.31)
-X-Rspamd-Queue-Id: A39EC80009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: czeab14qa5caheip3ojjnxn85jgqnt3q
+Content-Type: text/plain; charset=us-ascii
 X-Rspam-User: 
-X-HE-Tag: 1772644390-584386
-X-HE-Meta: U2FsdGVkX19xpcULeB0i2PJ1KmrEGIJzGTEA75ZtuuHoasayjdqZiJ+ZlIM7vIkn77DX7aSRDcocpu+xp74SLlAmfEz0c3n1NzjdNNzLAcXXiJ76dzoc6oVuSwDTlnwvaZ8aGcMeUa+L3MnZlsjDeWE9vd4rK6hlNMErhzhiTcosLhQ+ATc1x5SljrBJvijKG8+pwv06FR3QuolrLgHIhX7XfW9vhFtgyfzMJY+Kk1eyCKOV1hS4pZGRcJBG81WLrxtt8wGdHIik8KIUYtNHMMtexMXB3TOlwAbUtBQ1/Ge6ee5sx+lxed2a886B8/I8kg/paqa4UJ6qJAGu9Jehy/2ER67TfGWzQacTH8rhYpCgM6PqDRf9heIFcXpOVHADsQIKM8/VVC+qy2gtZSjF72PQ3yyR+sLxIgrxlobebt7Q1XjDB1N/T3+UKkEqX/+FoDptzRQ50CfBkXikvQ5YvbpmeRRKlEP0rz0cff0hHRfPeoSnMvIPzbBfPVyg9i1D5gKfoCpaaNVLC1ZuTUSpjbVgptzwlZfMc7GBun5yporLuBZ9sPEpVFORVMxNJNFD66t5QRnpNlCLm5uie9MrRfqzpfHG4TvDW84ZcDy74FhEYlDYsfQzAT2q8cm0Q0IdYmxV52p4zpY8xa3i7mBj+aF3aFxTc1NZ/yXrnQZU6YK2aKWCY8KkM5CCZTM/m/U1hO5nxVNgzRszHOQZ7kJUYjxZvj+IP3Zh4z/SiKpBGBh3Cr4Ib5+M6DP4nPBZDZfQWcGG4pydIa6BmgLHKuCWCQudN5NfdTEtKHi6aXuYeiUQcB0GfYQymRUJSPC7oEY7/slVDLUr/U3AsexfZ4i1a/pHKgenNqhVoxg+hm/r/qxnNF6UfGyOA1VjJqiIaZ4rfr2yuAQ8UvQpPD7x5UcEnmUZz7AwH6jD+r1eJ2vHBIZCn4iYYVPUQMHfAHCFBUUVkkjiVmHtzxwd9zDWPxp
- Dbz0xWoP
- xje/NQIISxIzsS9Xmr6tIB/X2Uros7JHRDuMrLlIzyh/QTX1MV5M+R28rgvYdLHrYzL4oqMcsP6edp3nP5fofGLN2p2pOANWIUcrFpxUcGQM0QoSKqlG6ahr7JIxbuMnVbTV+x6SA3u/HIeyp7bOMbeKpy+0sXJp3ybf83ZTXReQ6WYy0L2FUw+ZamBbyertbI0+ErDzcMEhpPfq/BrMLr4XGXpaJsF8SgjWEGiBV0mUQlSbh8HmjhUebf6J+In9qJjAMF2tq+xGCITh++Wngs9SLi4nILQSdfs3DQABdOh9XTleg1H6ijUQJcqEU6k04iCWpvdoyM9eGaabSUslFhGf8oJMU+q1dbOMSoszjPiqLc3VMw9I7OoHGLxQA2AY9Xkmdla+5qPbwtewn9UmlhF82R+bFhoLC8CCxD0MFy0IvKUcbRxnvFnurbdRAZxEiaqzkV+qzUR/j42lJh63hU8042zf+8Iqx0Ndh3pXiD/u2B9l5TwXnWOFAjS3kohD+YnDiGpwSt1yNC/kP6W3kUv5ZzhM3lbAfNp6wgmud9nKV/osbTqHezsMXLF7hrxhaRVUoaSzT1kMKHORIrU5OZ7XufW72WkqZyNMLWUEFzzdNxafNOvLbd98njOYBiHUFg88+G7A4Vz3gWyIszyqT40TfUHDzKEnNc7SX13RHFdaW6vbDNaD5cCtJzZdWoFp/Lc6ZH9gmHDlnlDUV7fp932DiB7Nz5Vg6srpaH2n3KCwsSHv35tukQJJA8ssRGfd2GGtNaOT1LTCC38Ad5In3Nrwm7IzfpTFZ/oufd2PYljX/4L/MTG8szhM4dz3C+sw9fUaPibka20EMwRhvLYbQ5utPQRij2FsNHDaLbPd/d7OYrOnSHX8bVzmSoQgwHnrTMh2iGWqkX37FzvvGTtLRtWzaoRQKrn19mjs1OPv5KY/9stFskN3VTvepTIMQltdavwL2iertJmoIqHE=
+X-Stat-Signature: aqoiopzr73pqhaytafatx9t6b88rd48z
+X-Rspamd-Queue-Id: 471B8C0009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772644486-825770
+X-HE-Meta: U2FsdGVkX19DCLGthHkjHZgt+tpe9LIoMisb7xGxlFl1W2LDsleQ9TCUfY9MSJA5uNBqwVzrA9H5RptC3PKc6RXxHbRn2V3QGk4tT8TmUW4JePYjmuixkp1MCuOLw7469zHfoCg99rjRt1sgrMNPkGS0Kx8LofThCMt8iijsFGxl9Ns+AUHxvufJMPa+00SHGW8KW3jRkUeF5Xl3Ek9ZQGrVgj8Oao5AD9FM4TwxOJCnwwhaJt5mOjL+bulVR7zxDaR+beLp8TKQkXXd+pxAZr0sPxSRyp0CmJ5ueMLviwhjFp8hQdiYP+iwN/BUAnl7xZjt//YF1fYhtPWnm8pt8uqIoS/dIH8LVjc3sgn4VzOi/n3/GTzEugvgbX6gZTR5Mhb5zpkQ0Zd4eDoGCiwE2ugaIUQBEU0i9Uar596ucDVSLyc3e9LHAAfqLSa3UPz9GDFj6jKRxDJK1JkBXUpCirTBergcwfTFOGdqfHLY39c7/15dvGHhqMw2Mvqn6PjxfUSgDf6T9ohzcEG9uGOvqlx4dUE7OZM/9zzhlDOmXq+hBBVsCBnF+S7tX0yT5oB1VvPWcvpuqGQtAOk0hnHPCRc6ND6/dtAy9r38LdfrBOoW8EgYghZfJKql6AWQJeWgoerAJOOYBJ78GyQU22MtBB5Eq47Z0lh+9uoMpvMZxeC/HD7v/IIMR6uTD4tgKNzMd2zXY0xNm5Cz/XtplxSiAm8Iz57g9MjaNNr2BI6Ouw8HUPIR03vJf/9wnWO1ZsSt3khOSutlCTnVWmrN/pCORWjkOQTAAw8iSZBj0kI1WRt9wK0AA8NjdE5Rxcg49ydOwwv8jT94ZvjczDzzYAtMfYiVm+tmnc4yVRJBMaUx1cQhKKqlaZxUdG/JnZPzOGMr764Z2RBzUaKK7ftISzYoH8Q7tA+34i2kSUQH738cV2RZKaX9M8ejLaZXDCcdzIpBjMR2YX5LZVxEhpdsPSb
+ W5k9+2Ss
+ 4YDuGx5dzM3N2rjksNNBgLmaxi6JS1Ycun7b6kpP4W2u9NUjYR0fZATMJplmFLzT2lcY/HKoOfrjn7BqSJxZePDZ+AdycdEgHxDNhoI6bK/fMi1qd4JXF65qdPjfBNgG9cq/2/fK5eoHK873yD9ET/8JfqLb7dgNJndelfi6Gl6mz2bHJ2vHvgZFlwuwV6xn+Xnz5QRziDEmndy34UvtgpreS43h6BrLm2h2zvH852wbNyn+ZHYkL+snm/rD0XU7MM2DAU8hicqLg+DNUDfdhdN7YWYieHZ6HvIOCJyS7+aFdSWk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,141 +103,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello,
 
+(Partially drafted with the help of Claude)
 
-On 27/01/2026 19:29, Mike Rapoport wrote:
-> From: Nikita Kalyazin <kalyazin@amazon.com>
-> 
-> userfaultfd missing mode allows populating guest memory with the content
-> supplied by userspace on demand.
-> 
-> Extend guest_memfd implementation of vm_uffd_ops to support MISSING
-> mode.
-> 
-> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   virt/kvm/guest_memfd.c | 60 +++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 59 insertions(+), 1 deletion(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 087e7632bf70..14cca057fc0e 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -431,6 +431,14 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->                          ret = VM_FAULT_UFFD_MINOR;
->                          goto out_folio;
->                  }
-> +
-> +               /*
-> +                * Check if userfaultfd is registered in missing mode. If so,
-> +                * check if a folio exists in the page cache. If not, return
-> +                * VM_FAULT_UFFD_MISSING to trigger the userfaultfd handler.
-> +                */
-> +               if (userfaultfd_missing(vmf->vma) && IS_ERR_OR_NULL(folio))
-> +                       return VM_FAULT_UFFD_MISSING;
->          }
-> 
->          /* folio not in the pagecache, try to allocate */
-> @@ -507,9 +515,59 @@ static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_fla
->          return true;
->   }
-> 
-> +static struct folio *kvm_gmem_folio_alloc(struct vm_area_struct *vma,
-> +                                         unsigned long addr)
-> +{
-> +       struct inode *inode = file_inode(vma->vm_file);
-> +       pgoff_t pgoff = linear_page_index(vma, addr);
-> +       struct mempolicy *mpol;
-> +       struct folio *folio;
-> +       gfp_t gfp;
-> +
-> +       if (unlikely(pgoff >= (i_size_read(inode) >> PAGE_SHIFT)))
-> +               return NULL;
-> +
-> +       gfp = mapping_gfp_mask(inode->i_mapping);
-> +       mpol = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
-> +       mpol = mpol ?: get_task_policy(current);
-> +       folio = folio_alloc_mpol(gfp, 0, mpol, pgoff, numa_node_id());
+On Tue, Mar 03, 2026 at 04:02:14PM -0800, Ben Greear wrote:
+> Could the logic that detects blocked work-queues instead be instrumented
+> to print out more useful information so that just reproducing the problem
+> and providing dmesg output will be sufficient?  Or does dmesg already provide
+> enough that would give you a clue as to what is going on?
 
-It looks like folio_alloc_mpol_noprof() and filemap_remove_folio() are 
-not actually exported to modules.  Would it be ok to export them similar 
-to how it was done in f634f10809ec ("mm/mempolicy: Export memory policy 
-symbols")?
+It may not be exactly the same issue, but Breno just posted a patch that
+might help. The current watchdog only prints backtraces for workers that
+are actively running on CPU, so sleeping culprits are invisible. His
+patch removes that filter so all in-flight workers get printed:
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 3e4579e4b8bb..041c7719e524 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -261,6 +261,7 @@ void filemap_remove_folio(struct folio *folio)
+  http://lkml.kernel.org/r/aag4tTyeiZyw0jID@gmail.com
 
-         filemap_free_folio(mapping, folio);
-  }
-+EXPORT_SYMBOL_FOR_MODULES(filemap_remove_folio, "kvm");
+Might be worth trying.
 
-  /*
-   * page_cache_delete_batch - delete several folios from page cache
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 3d797d47a040..1dbbbb28a36e 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -2442,6 +2442,7 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, 
-unsigned int order,
-         set_page_refcounted(page);
-         return page_rmappable_folio(page);
-  }
-+EXPORT_SYMBOL_FOR_MODULES(folio_alloc_mpol_noprof, "kvm");
+> If I were to attempt to use AI on the coredump, would echoing 'c' to
+> /proc/sysrq-trigger with kdump enabled (when deadlock is happening) be
+> the appropriate action to grab the core file?
 
-  /**
-   * vma_alloc_folio - Allocate a folio for a VMA.
+Yes, that's right, but you need to set up kdump first. The quickest way
+depends on your distro:
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f634f10809ec3d51d9529dfb0f99bc7cec1b5eff
+ - Fedora/RHEL: dnf install kexec-tools, then kdumpctl reset-crashkernel,
+   systemctl enable --now kdump
+ - Ubuntu/Debian: apt install kdump-tools (say Yes to enable), reboot
+ - Arch: Install kexec-tools, add crashkernel=512M to your kernel
+   cmdline, create a kdump.service that runs
+   kexec -p /boot/vmlinuz-linux --initrd=/boot/initramfs-linux.img \
+     --append="root=<your-root> irqpoll nr_cpus=1 reset_devices"
 
-> +       mpol_cond_put(mpol);
-> +
-> +       return folio;
-> +}
-> +
-> +static int kvm_gmem_filemap_add(struct folio *folio,
-> +                               struct vm_area_struct *vma,
-> +                               unsigned long addr)
-> +{
-> +       struct inode *inode = file_inode(vma->vm_file);
-> +       struct address_space *mapping = inode->i_mapping;
-> +       pgoff_t pgoff = linear_page_index(vma, addr);
-> +       int err;
-> +
-> +       __folio_set_locked(folio);
-> +       err = filemap_add_folio(mapping, folio, pgoff, GFP_KERNEL);
-> +       if (err) {
-> +               folio_unlock(folio);
-> +               return err;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static void kvm_gmem_filemap_remove(struct folio *folio,
-> +                                   struct vm_area_struct *vma)
-> +{
-> +       filemap_remove_folio(folio);
-> +       folio_unlock(folio);
-> +}
-> +
->   static const struct vm_uffd_ops kvm_gmem_uffd_ops = {
-> -       .can_userfault = kvm_gmem_can_userfault,
-> +       .can_userfault     = kvm_gmem_can_userfault,
->          .get_folio_noalloc = kvm_gmem_get_folio_noalloc,
-> +       .alloc_folio       = kvm_gmem_folio_alloc,
-> +       .filemap_add       = kvm_gmem_filemap_add,
-> +       .filemap_remove    = kvm_gmem_filemap_remove,
->   };
->   #endif /* CONFIG_USERFAULTFD */
-> 
-> --
-> 2.51.0
-> 
+After reboot, verify with: cat /sys/kernel/kexec_crash_size (should be
+non-zero). Then when the deadlock happens:
 
+  echo c > /proc/sysrq-trigger
+
+The system will panic and boot into the kdump kernel. Note that the
+kdump kernel runs with very limited memory, so you can't do much there
+directly. Use makedumpfile to save a compressed dump to disk:
+
+  makedumpfile -l -d 31 /proc/vmcore /var/crash/vmcore
+
+Most distros' kdump setups do this automatically. Once the dump is saved,
+the system reboots back to normal and you can analyze it at your leisure
+with drgn:
+
+  drgn -c /var/crash/vmcore
+
+Thanks.
+
+--
+tejun
 
