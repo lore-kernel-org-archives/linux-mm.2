@@ -4,113 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBD97EB7EA5
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 10:23:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC17EB7EBB
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 10:30:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 660276B008A; Wed,  4 Mar 2026 05:23:41 -0500 (EST)
+	id 2ADEA6B0096; Wed,  4 Mar 2026 05:30:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6016B6B008C; Wed,  4 Mar 2026 05:23:41 -0500 (EST)
+	id 22C866B0095; Wed,  4 Mar 2026 05:30:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EFE86B0092; Wed,  4 Mar 2026 05:23:41 -0500 (EST)
+	id 1009E6B0099; Wed,  4 Mar 2026 05:30:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 401326B008A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 05:23:41 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A2A118BD2E
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:23:40 +0000 (UTC)
-X-FDA: 84507994200.05.155021E
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C6B71C0003
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:23:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=OT+rf5ED
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EFB226B0098
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 05:30:24 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B8791B9CA7
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:30:24 +0000 (UTC)
+X-FDA: 84508011168.13.69B5C9A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 04C8440013
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:30:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=siZp4t3A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hRWnixAt;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sucmmmmn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yA1+3gNC;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772619818;
+	s=arc-20220608; t=1772620222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=62A7LeZ9IpCSBCgrNHLXMjzMVlSh0j3tAfN1CDmHNwU=;
-	b=ESFILq7mGZc0Bl0KufF/7aeKcNH3pncjqI3/HjpG1nz/v9sfnfbwNwz80uJMuVMgCILL7r
-	3fTZufdof9yvYYOc5ZXgrMzPZJwr5Ue0Of7XBb6+pDP1KxDTme8HWLqzm2NbnIb+4jgJ8w
-	J+5FvCKPVfYMFDYpF5Kj5r4w++kzQUw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=OT+rf5ED;
-	spf=none (imf10.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772619818; a=rsa-sha256;
+	bh=sA285zy6QvyW+5GYqPLWOMtmxarDFnIGsLox5OjCH6I=;
+	b=WRTkZeHt2obdB7ZrU9569kH7bd7FMNJShX3GuRSk7Z/rHhxAiZBJg2OqCut8MYPGewEDHg
+	GxGKfQJQPJDChyoUwXu0zSyA2aTRgjvdE3ko1GaIScgT4HqkrsLChw9MsWGPPF0SL9k5No
+	A/cMnyd/i0vDsJjUTiRC2UbqsJKJxT8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772620222; a=rsa-sha256;
 	cv=none;
-	b=0S3BztbeYqXhualwjsu+QTIP6rTffkKNunP+0ZAgIub3X5gi3z6oKO2C7+71bO4G6yninc
-	9L01otgMt8RygZsr4fHuQxoK2VpzKTdXdg1tVOW54mzCk6VlLaxQfdWSy6VuOeIquC8jYW
-	3a4/YTMhEyrMKTzjCMX0OZ7YMDc98zI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=62A7LeZ9IpCSBCgrNHLXMjzMVlSh0j3tAfN1CDmHNwU=; b=OT+rf5EDn/BQXidGHrc0PmRbCD
-	2HwOMfFsiuAMNqxNx+bfYsJcpenvNKh0//ey0EunlLAuswzUCHWFpPpC+WA4JBKosBmW4orTNb7mD
-	8ATDyZC1Q96BKDEEsPDayfF39P1CemzWEhZOtR+2ZRCTAMnpW2SzN3+25g6XABogxIfUPF6kDKJNd
-	WifGiCLgDllDGfpwHunvz9wE53AOhHS5WfrYqTicnmkjyktigxQvaU3wl7dS9lUQYew51oajFoN0C
-	RK9wzPtwoZerNmnbOKxrr8CWCoM2IuH4a0pwZtTz63dHlMJBCWcfRXKXC8Ap89pdmqIZxyoiXnFU+
-	PkoML/uA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vxjNv-00Ft4K-VI; Wed, 04 Mar 2026 10:23:20 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Wed, 04 Mar 2026 02:22:34 -0800
-Subject: [PATCH 2/2] mm: thp: avoid calling start_stop_khugepaged() in
- enabled_store()
+	b=gmOtikeFpQs2f6DTQbTJpF0yFEneDDrLhtcZDO/nDTCdNodxt2vAAGYucZf7IhZDrXIXyC
+	+Hew42j+viGlQVEoG+AurCxCBN2FBHadlRPeyov6Q+KDWMUrjQ9QFRSHl3qWIkpoQu7jZ9
+	70LgxmBM5iaVFED004OaFpw17zBmYmM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=siZp4t3A;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hRWnixAt;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sucmmmmn;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yA1+3gNC;
+	spf=pass (imf12.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B41D45BDE4;
+	Wed,  4 Mar 2026 10:30:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772620220; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sA285zy6QvyW+5GYqPLWOMtmxarDFnIGsLox5OjCH6I=;
+	b=siZp4t3A6Gf7DGpcxsRRqAstaAJIVoTJ994JqZJ/yzRrFrOsdoZfaoBS/Eyhe87hyvPA6V
+	ACbOl0dkkPmrlELO+M4o7JsWRHqGmA/3Et7bHuhWfPXJJNQc3bJda66Hz5nrMN3c07qkn8
+	brVXr3gB0cqoE93ekYMuAdwUe3mH1rU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772620220;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sA285zy6QvyW+5GYqPLWOMtmxarDFnIGsLox5OjCH6I=;
+	b=hRWnixAtmwxt16gQu446BAjJv3l0nr8nlvQ2Y2YP7RqDe3+cF9h8sOnCox5H4/p8I4ATlu
+	9KBD82KihbPdmGBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772620219; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sA285zy6QvyW+5GYqPLWOMtmxarDFnIGsLox5OjCH6I=;
+	b=sucmmmmnugeUmrf/mrx7P0vgvqWX5k1t//3lGg5lXWEFgGqkO7enjSQGkoD+bl+uIrL0A1
+	LzxnMykHZHeYYQ7dbmpG1Szz+IVO/cZq4nFgfrK3Kqd6rta6XPvnnxnBbXGYmTHT+XiXON
+	A6tZeLKBsCIWIy+dxSwdE3CXglxjUtk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772620219;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sA285zy6QvyW+5GYqPLWOMtmxarDFnIGsLox5OjCH6I=;
+	b=yA1+3gNCGVL6lZ/iRstT5HJ6afRStjV0CxO209O7gedN2drYGBQdK9Tc9YwtNB62iHONEH
+	X7suKX7Zsk9/HoBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A41743EA6C;
+	Wed,  4 Mar 2026 10:30:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IWsNKLsJqGmFDgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 04 Mar 2026 10:30:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 67F9AA0A1B; Wed,  4 Mar 2026 11:30:19 +0100 (CET)
+Date: Wed, 4 Mar 2026 11:30:19 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, 
+	Ted Tso <tytso@mit.edu>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+	David Sterba <dsterba@suse.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
+	Benjamin LaHaise <bcrl@kvack.org>, Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org
+Subject: Re: [PATCH 21/32] bdev: Drop pointless invalidate_mapping_buffers()
+ call
+Message-ID: <7irr5gqmatluutbkywhvom7ryzn6j7cl4sw7q2d7e5q3grd7u2@mk54kpnqbi52>
+References: <20260303101717.27224-1-jack@suse.cz>
+ <20260303103406.4355-53-jack@suse.cz>
+ <aabqTRvKIWo2mHz1@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-thp_logs-v1-2-59038218a253@debian.org>
-References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
-In-Reply-To: <20260304-thp_logs-v1-0-59038218a253@debian.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-f4305
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2206; i=leitao@debian.org;
- h=from:subject:message-id; bh=DYGJrnPPlP2gd8MfbcdjO+tkpdphLuDPYa9VQ0u4QcM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpqAgHXd3XgvmFZqVfvSfOACS/eEUJxgb7CLYR2
- N4lClDYjAOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaagIBwAKCRA1o5Of/Hh3
- bRbgD/4xe2mql9zlE3u+QPlwFTvwUhxUcVOHRkiTki6BrK1R2IPEBYgcPpzUMOny71xKwQht31C
- Jbyvch9ttzyssxsLF9+l/6lprsxFDu8WM8isJk11KhXoxBVNEDhB59zSTwdSecZP8s5hkwzMWFy
- A9fFRa4wYw+UCJAGQ3uwKCY3964CwnxM1kmBi584uwnxCv0HO8ERbBXUXwtGG5LRQHRT3C89ekJ
- O6SQL8Be/AbujIiuWkgYC2+t0jr9rKb6FbG15+paKfbMWkizUYdJTzv5PrDikolb7H+kqLpzgIp
- cEG3FSQWqt18S9/2oeHSG7AnP4BxZn5V0lE8d4ElJVIlOd8fMq5XnPxVHzCjX5R9oGJXejVqA+1
- bQT4tmJGU0/V1t7BXb+A/x06ZN5GbNQ82iSkzxBI8jPywvOhj3v1/21afnTLoRo/TnahNYv6ONk
- MlTbpA75G4GJdB7soF5c/sRLletU9fch4TOLrdBf9GuIwfxZnfhkOIt7eXG5vFYtSbnzt3vIRCJ
- UrPqgmTM2FyAU1RibHViK50b0BWVhpYO98xPwlpVUjTwQ/+mXR4Uq/pANxhVpehmyTcyCFocq9v
- crBagC7gzlJGOaTwonlZBMxNMw/iUtFuc/Y0ikvtOgVmtsYUJhpkPG+oID+KvFL9DS0phU4+hbs
- XkBQnefaXXpkIFQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: C6B71C0003
-X-Stat-Signature: 67gx3ahkenfhzjj39cxjqdnhwzibgibi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aabqTRvKIWo2mHz1@infradead.org>
+X-Stat-Signature: 6bj5syqo536i1uxmyodx7poqe8whep1y
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772619818-152257
-X-HE-Meta: U2FsdGVkX19GNP0AQ6Ch8E6eoqRk5FPPwVXAgogiOw2CV8f60u51RPzhVIwJqNrCL/w1w+6i71nZckAyCrMBkRDp3CyBQE+vi8yQ/aGjpfL4O0XEjiriBr8UgdL4aKG/9agSDJFZDQvPsvvKHEV7fxE8zRf2e3CbHnIs3GNftMhOjVA8PRuODcUMfq3puYPi3gCFhDfHx0E4rId8qhk0RnPKh0OoIitS54TNDVPih+bP0cPLXruhgK2LwzSBpggjnP2snMXfkGqftu1RMhTbh5rA8RNDD2NhGbH85L36UVtsMEW9qAa01KEkwB8+fWoRZniyVNJ1OuEqYBbKtrUVTw6JpMuhRUUwih5e3K56OljJDcVjFzhxOQtfUkAQ94w6ttvSYM1hlmYW4bvibJqfF2jD3mKGrZBl60CXTEME9vbDvUGjruXuZxbBm+1uQ8uZTHJfAy7VrIRukOLvcgtMlpdwq/HspfOEk7KxzLvEt+gjG2xPz6u8+O/T777k+zS5m81R1QOkUR9mkB89LVwKg1U992KmCBVD7bg3Zt7mn0rPzxvNgfJrAH/d+C6JGzHouvcSyD7B4GYCMC20tPHeV7PB36OeHHftRDTjmJ/0OfRf9LEcP6FLPQioRoYvs2J9gnyFUW+zjqrRBUWykEjLjVCM55kYbCC9dO9gJhH1dwSV2vRRlGRlTuExJBU/SsNd8w7WFnpIruwf/vt3ZpF14h5+gY9CMsvfK/0h47G/+WRTP2XLksNL2lgYcdSwLZjnVp+yxbvXWJ0L+FpxhDz+2lkpnVtmhxM0hm7zhuvSVph8Pbjvzdo9uckOmr5zbtOD+pEvW+0UJFG41KfhAeqT3QD/CaK3QCAclUBZwT7Kd92WuURHXuJk29/p/N1jStsD6OJxNBocUepvrwASZuQaiXvlHkxutdDJr4zh481CXmmggAeLRFs8M28t8LBK6N78AElj2KSEg8X8csnG++7
- kTT+2HHD
- ymy5q9HwMv0Oi1MucBxR3mecdQCrEDjEast65ouKuL4VDBXhNHmW3PpQXo5bZMTZrSIyHTAMjVUjBXl50Vr1Psy1dbL+zZdCGOjkXuiLI4O1cYvQpZPnZKRsLsWE4i2SMNAFUpKO7SOrjHW8EEeaX8lZESHZq6kH959bnBgDvaQUsa79/Fde0VYgEdHK6X5oKJPmCCm1HVPpB2QE=
+X-Rspamd-Queue-Id: 04C8440013
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772620221-683474
+X-HE-Meta: U2FsdGVkX1/88UVBPPLShZMLwteae4LXtrGrcQBDhGApnqB5bxBrkfrOXihudquZtVgzgEGIsY4oG7rniY55CjI9c0z+uobyRODQSjA+Yre0WPMb8a7k4dpJE7virY/AMu+nsmcg+VS9B2VGCRoZPWjxaoiuymGjW/+36HnDugSfY7kX7w15IiTjoj2KsE/7fCYTvwr2ILmWAUhApQtHYF2RWjw4Qm81Eocv3lMi95OOTZ+fiW2AFZ5itx1vol3SHyzGFE1BfMUwyuUN0nM5BEUdaPFB1z5PqzTODuuT8Reh2UrEUuaXMSyEyzD9FeXnhy3aIy8sSsQf0NlmGuJIAr7hmZDmV6KKixwFQy8bjo4FioaBF79zWirqKcIJmwkEmTteAIOJmeGD1EjAvm293FbIigWAV0VKZ1+H8ayqVCpEQ1xTAje8yF2AztJ9jcoQjEW/4dDkukUlciNqnD/Rxj9vFSeJSX5H0G4z67n2ZuQRlxIu85JZKyXXZWm5Kx+3966yZd30ma+fggxab34dOK2H1udcZXFmQQI935fs3Q62fOfYw7tS84FolIwxcOSSLaGjhnBAyAnzJBpksQ6+9UKF9dahKLX/SfRR6dsw1jGtoadRoVqn40iFEIeVY700ZoI8TXoLaf0qj/T2y5wxL8MsaScuH0jjtE9edp1gNkS098bBhNHiLRO0JOHjZmEW+4pkqMwiSVhStSMKmCKxVxcUhgI1ZjlRYT5wqiMNQF4UyanvcTs6q6UFfUe5EwgykSCvTQoiXeAWGZ8H6K33gWXehLCvGD01ReNBPgA7CaVvarYkJVdiGRI53HrH04pv5nRhCjgwba4Q1S1aLR+cBwlylnG1n3tfAF7+tesLvjy34yzlhsnlCzzb9VvJ3VhO1hUS3e4m+5PlxkN8xX9Sssam6Io3c13j6ZNaRRnS1i8WjS/3bnNlvd5AkhHcwSNFx4hug+6BuKeH7y3tkTQ
+ Xqdm02Nu
+ f+poEqWxuBgVzeAi2k86DC1hoz0mb/vJ3AmxRv6YiZDRJkPbTxnQP4bzmSo3L9jz5+tzQ0PKQiYY5JNSKo23++dFB9YgqcmzXfJYQ83a2krlKZ6VtnPJSaUFzhBPbiN9oJPuEdWI3LcURqbYQztdxu5VYH2eIPriY3e9rOLnFR8KN9YsyTbBq6bDO6EZ+l9Oo/LZqsOxbGIQcxz2akmXiwF0vl0QKCVdW5Y9aL9oQSA4eqTQoQwwp6lmRnLayk+Dtifpf6GDtHf2rGWvzQ0Snxw2bVrREM3KMozLDi96jMQrX7ny5L1QG4TxtGocu3hljS2paTYyvhYdoQdlC1ftTzVt5JU/j8I3ZjzFFQ69vbYxY5aoyNptGJv7bPrZtAZ+7oqa00SKGUrBYRf8YCuym4QI+b+/jUi9mhraf34FPrfPm/Dbsri5Xcrsziw1l0dickcfyeyYp5wHWdFA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,60 +139,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Avoid calling start_stop_khugepaged() at the top-level enabled_store()
-for /sys/kernel/mm/transparent_hugepage/enabled. Use test_and_set_bit()
-and test_and_clear_bit() to detect whether the configuration
-actually changed before calling start_stop_khugepaged().
+On Tue 03-03-26 06:03:57, Christoph Hellwig wrote:
+> > diff --git a/block/bdev.c b/block/bdev.c
+> > index ed022f8c48c7..ad1660b6b324 100644
+> > --- a/block/bdev.c
+> > +++ b/block/bdev.c
+> > @@ -420,7 +420,6 @@ static void init_once(void *data)
+> >  static void bdev_evict_inode(struct inode *inode)
+> >  {
+> >  	truncate_inode_pages_final(&inode->i_data);
+> > -	invalidate_inode_buffers(inode); /* is it needed here? */
+> >  	clear_inode(inode);
+> >  }
+> 
+> With this, bdev_evict_inode can go away as it is equivalent to the
+> default action when no ->evict_inode is provided.
 
-This avoid calling start_stop_khugepaged() unnecessary.
+Good point. I'll remove bdev_evict_inode(). Thanks!
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/huge_memory.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 9abfb115e9329..b6ed44b6e8c02 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -320,21 +320,28 @@ static ssize_t enabled_store(struct kobject *kobj,
- 			     struct kobj_attribute *attr,
- 			     const char *buf, size_t count)
- {
-+	bool changed = false;
- 	ssize_t ret = count;
- 
- 	if (sysfs_streq(buf, "always")) {
--		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
--		set_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
-+		changed = test_and_clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
-+					     &transparent_hugepage_flags);
-+		changed |= !test_and_set_bit(TRANSPARENT_HUGEPAGE_FLAG,
-+					     &transparent_hugepage_flags);
- 	} else if (sysfs_streq(buf, "madvise")) {
--		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
--		set_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
-+		changed = test_and_clear_bit(TRANSPARENT_HUGEPAGE_FLAG,
-+					     &transparent_hugepage_flags);
-+		changed |= !test_and_set_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
-+					     &transparent_hugepage_flags);
- 	} else if (sysfs_streq(buf, "never")) {
--		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
--		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
-+		changed = test_and_clear_bit(TRANSPARENT_HUGEPAGE_FLAG,
-+					     &transparent_hugepage_flags);
-+		changed |= test_and_clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
-+					     &transparent_hugepage_flags);
- 	} else
- 		ret = -EINVAL;
- 
--	if (ret > 0) {
-+	if (ret > 0 && changed) {
- 		int err = start_stop_khugepaged();
- 		if (err)
- 			ret = err;
-
+								Honza
 -- 
-2.47.3
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
