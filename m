@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3CD1EFCE4C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42A73EFCE4C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 22:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2235A6B008C; Wed,  4 Mar 2026 17:03:12 -0500 (EST)
+	id A328B6B0005; Wed,  4 Mar 2026 17:07:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CD586B0092; Wed,  4 Mar 2026 17:03:12 -0500 (EST)
+	id 9DFB56B0088; Wed,  4 Mar 2026 17:07:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CFD66B0093; Wed,  4 Mar 2026 17:03:12 -0500 (EST)
+	id 8EB6C6B0089; Wed,  4 Mar 2026 17:07:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F00ED6B008C
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:03:11 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BB7DE1B877E
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:03:11 +0000 (UTC)
-X-FDA: 84509756982.28.99358F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F3A1C14000D
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:03:09 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="rlpLqS/K";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CE696B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:07:01 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3DDDC1406A7
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:07:01 +0000 (UTC)
+X-FDA: 84509766642.21.71D648C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 90C82C000B
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:06:59 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z+5mes6F;
 	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772661790;
+	s=arc-20220608; t=1772662019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7q2ScTrTa7RWe6lsUG4IH7isB5eWpir4Z/DML/zFVSM=;
-	b=F+qdblaSV5VYsK7zLYGgCBHam91AX9wrZU39om6mFITEXi+m7xdfAkYzyhxfU8TUQ4yCKL
-	WkkpXEAuWV6ECXB7jkZePtKNJ4TbJ9OJTYZ9fWs+2GdHDJuku3D4PWeVVxcMOpROlVOq85
-	/tO5sR4uzVBHIhp4iwpqIB9V/O+WDE4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772661790; a=rsa-sha256;
-	cv=none;
-	b=HC2T7At+pcvwymeKIDrExqZwpRCnVZSHd9ESm0ewlb7OPKXmlnCsr4+dAK8o990UbTjyT0
-	vTKSku4WWdTRU8Jdbk9O8U7lIENUiZk1bOh87D0Mdy21IgyiwaNEE1boDhYdhDpgfZzgQk
-	w3jMOlkTcl3/89Mq5hkxQBF4S7K4U5Q=
+	bh=DFZcMxf240bThUw0U8FpeAM6uRw2SX21qR8oecXjMS4=;
+	b=G4qI+4DrOWMZI0NbvSAqhoSQuS9+OsHz3RaxfDSBm0Jhp1XkhrByPsfq9hfJE+V6pLN0SK
+	EZdQvwN0lHmYVZW2QxpSCi/hYs1o+CHJNxOo6yimcIQRe4bUsSrG+YYGz54/+adSBUFxRu
+	8ZpWqJEf64d5cHi5U9af7pyMs8EgK7Y=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="rlpLqS/K";
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z+5mes6F;
 	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772662019; a=rsa-sha256;
+	cv=none;
+	b=Gv3W+VLme45CWeVCXSvr96Q6e6HYGgRTEOh2JAXipGzoxz0qdsTiUsL0bnWvIMIGzTg1Qj
+	qGgo29uCtBL4ZmYmUpxnJk0/ji4idVSgvhFCuy8yYM2EaHcy2CVrwLAo7YAiqlgXE0YCEC
+	BvOlFj64sizUkCpthyd7ttdIBuAayps=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AA40F40914;
-	Wed,  4 Mar 2026 22:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A735FC19425;
-	Wed,  4 Mar 2026 22:03:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E0D19600AE;
+	Wed,  4 Mar 2026 22:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C7CC4CEF7;
+	Wed,  4 Mar 2026 22:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772661788;
-	bh=QcDeX+4A0lvHQQbRg9leLOGUG35mNFYWz5fL5TVLF1Q=;
+	s=korg; t=1772662018;
+	bh=8Xl8IT7hq0toAnUmrvgPTcJcEweAl8oRj1L2Yr23ZGI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rlpLqS/Kj6XuSnENrppvplSEKrxYqPvM+aALj0ec5JjEL9u5ixAsovpcNNV7ejj0S
-	 ljLr1AObex51OKKnoemq2v5AjE6O6xx8BW7Uq/Mxw9EQkmTCgKqYr0ac2XQl6ye+cM
-	 GGkekwE02kT/+Xw0PJzgRoeJlHS3jhSKzvw6sAt4=
-Date: Wed, 4 Mar 2026 14:03:07 -0800
+	b=z+5mes6FwNQGeJ64sQB9kTOAb1+U3o9CXqvn1QVnqtL3RkKbqtyrvwrfVJsQCoym2
+	 K9kpNjb1puSgMCJuWYIntDZ/rfgjjkKYkAr3WKadzl1LAj6Q1BSgZqyvQCYlJ6BGea
+	 QPWtnY0yAdaDZNMpYxglGqQe28i4oQ0QlBn4C/pQ=
+Date: Wed, 4 Mar 2026 14:06:56 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Yosry Ahmed <yosry@kernel.org>, hannes@cmpxchg.org, hughd@google.com,
  mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
  muchun.song@linux.dev, david@kernel.org, lorenzo.stoakes@oracle.com,
  ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev,
@@ -77,27 +77,26 @@ Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
  Qi Zheng <zhengqi.arch@bytedance.com>
 Subject: Re: [PATCH v5 update 29/32] mm: memcontrol: prepare for reparenting
  non-hierarchical stats
-Message-Id: <20260304140307.f51a33f77f6ddc1dfc0cf476@linux-foundation.org>
-In-Reply-To: <vfmyb3pp2gatdrqa2uimw44pxioreo7zc373zn7buvdfzhejew@ndhaa4yl3bvh>
+Message-Id: <20260304140656.10c524970519de373accca0b@linux-foundation.org>
+In-Reply-To: <22cca07c-49e0-42e8-b937-7b1c7c51e78d@linux.dev>
 References: <ef13e5974343b37ae2a0e28aff03ea2d033cb888.1772005110.git.zhengqi.arch@bytedance.com>
 	<20260228072556.31793-1-qi.zheng@linux.dev>
 	<CAO9r8zNYFvNnz_oTu10kPBYL6=1ZewKUMRYcMmcMdSqbro_miA@mail.gmail.com>
 	<de1476aa-20a3-420e-9cd7-9238efd3c85f@linux.dev>
 	<46bgg2vwqvmex7wtk2fkvf454tqgaychb7l4odnnrx7svci5ha@vy4b4ophm763>
 	<22cca07c-49e0-42e8-b937-7b1c7c51e78d@linux.dev>
-	<vfmyb3pp2gatdrqa2uimw44pxioreo7zc373zn7buvdfzhejew@ndhaa4yl3bvh>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F3A1C14000D
-X-Stat-Signature: dsf1fttr7xxnxtzi9tgcghugqwbakjdm
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 90C82C000B
+X-Stat-Signature: mrmowk799xbodni9h988z1uo71jraype
 X-Rspam-User: 
-X-HE-Tag: 1772661789-761338
-X-HE-Meta: U2FsdGVkX1+bvloQRbNBL5U2jRnSbUbg4tk3p1/4wmB7+vjdvsW7v768CKJTONSIiaYQA8z2QdeHtN7TFjZXyArpeYzHAaWaGk6YW8RW63lf5lHgPJWAdoOukOQLcxMTvtg6pXU4s2ei5BbOVyqYoD2B59UNAQvv/E7eyfmvSwhPcaKO/YTi8swqqwfOPSLZ/ank6KwoVgHS6rpUNCL1PFpDJ4RxnSP4x6vNFG6Js5wCOg14gxIkNEuUi+g9OLgbO4mwyr/iLiLmnJkODFhUKCx1NWMrhOAP1dH7+esIfxgMZvBJdem05e/COjECA+Vek9Zz0af8801d4a446op7VFxMyAJHCGBsgzWQO5vj/tBJO5YV1izX03EsSSdolingBCf2tbjrRqXHSELessqFAfcyLQIa898heClJZfiLr3MivVD1qC4nBVJMjTIAwso8GAjlKlzxG1QSPZV4v4XoCcko/89LfvGY9/7ckZGIxcOWXA+COgeveoX7Ojt66n6PoZI4lp8Deb4W364nFZdZ/Xl9uf7WO0iIYIM0DD/v+5ZAgEdUhzEfCxezjPJjjy9Q8lrZcxvN6GkjXYi5TypK7DTJMVqvSkwAe6uDjDyxpM2Xgoyz/bvf26+mElbzWRmPf2i/HYDikfiSrIKUQdXrM0VsvlZFcZvFZMNyWwEZBAyVVekqLy2McXLD8VN5KIY/vEkEju85iwRzg9ZDzXhDI6XDWuftjitwd0VqYJXipOGQ4DDxs67PJQeQLjjIeRBbhlJZFpUBN+MsuKv2bGxNOVMikILmCqMbL69yG1Z0y9rmJbp1/a5ad4NeH52fULGe5g+SSHMX4CQaBD1W/Rgwpfen2Q2GfsRo3ACUVv1icc8cSI8xyJ6NmiIhkZcX/UgXbc3RmhVZeKj2nNIs2CslZY4dUAc5IxKm1ZhPvy+TNXNxKdNIKap6+cIQwrEFS4wQA9F8/YLQGjMtLFCY6X+
- LyxOmVLV
- TgBNaWMNtyKCMBBOLSyWs+RbKGGKiY33SL8AoFecdbJa/FAzkA9QKsb6rvHbIzTLOoRbgcbtPzkWgWj2I4kntx1KyW6fSZ7opN16yfYPVDLdpmeYL237bc2qQf4kFwOi/Ngw58ZndWbSVrdKrKoFT7qeFbtqrjESnd3055h6I23DA0RMUO13t5KPWqlE+e3ZUulM2zz+Lgu4bd7/B+JLw8tqeFSB3YngLKynjKsFr3f6+Zjm5lVTa/l76n86Hv0dItQTntDS7OjwVkHPP0GaJ00esPQ==
+X-HE-Tag: 1772662019-951738
+X-HE-Meta: U2FsdGVkX18XpOpWGFwP5brGC25bggYjxc3Qp0AyZFkyp3H7dLAU32Cp3+TWukPITeXvBQbHotWy9OnqMjdw94zzYlrqeptcwgO5NrXhsNe984Yxtpi9MQZ1DjhMPekWNrF/eU61sMBYNABhDWfhJmp2eujQ8WxsCYArP7E9cyYlq5K3xL7k9WhGCG7lzy5Xh7YyGy9BR8NvvB1lVvyVHyx4tGW9hRERabgOzF2dZIpWnpdwm94avloRaRH5X1gpNTGldiTWUPvV2BDiBGlNQjI0JlTRcPuehDGQvXkIglir71lGInII3m2TeTccqFA96g60Ee/O6mUS5m/qflNWgzDiGNHDfOAR7VnGTbO0oBNSWr+UCRK1SXml0zKztOjVES5yQYFaSA7wPruw17T1nqq1T+KdplmVaf4ewwWWITALNQsQY12t4hMgExrjgQPFdo9rGX7miitVzVAdpAnQI8lbRWnlzs13Iq5R/AlYb774HyNfrKYTeJC1fjlq9WuwHzZYCr0AO33TEIBZxfrHOQjOYsNx/EIFNTO+288igw6BkF8cBn0ASReRPHk+fJBVTt7SleGHmfb11tny4W9Vrz/4zgWH7Lw1yXlekEeYYf6MfWNc591zmo5mjcNxGVG7ghM3EtMtjbNvsXp5LrI7ACnyMvhibHh+X8M/bau9Ym/tAWH+oWt33p0dd/4hY5tNqsxwGeWfLUq3XYUJfn7cunfdPO6yJWnspppDICELhb4ussdbt5iWtMCy1yMIuC0+NS0zu0L9JyG5qjtRofpCWZ39fHIMQf23x/04yNxAa7tGMNgRHhDCgOc1I4FvWZE6YxaYxxg68emXM2CbT34urG99neRH6WiAW4JEX64rZxvX2y6hfroUai6PCrchIUNuqVcxnmGzLL6uWGjFd/yuxwUsmx3YCTLeER+Cmzt3GTP9JE72YRoD08DZtLGcnd8anZw4Bv1/P5i67IJcBlF
+ CUY9MLiT
+ +3TPIbnzf8Ebqm3iMm3knKMGv7XJzMolVyeHbQQ5IIRXZfO5xo4dKYa5N+B+H1goySnrVFBAywXXKRTgaWtfxVvVjEZeo5aO2ODMQMCjUz6YD/fW3yl3M1pRkjNp3sQKuOWlHjOZpjTNtgxzhdtxaWyiE2b2meX7NG1MF6UvokInobEttYq+4y4xppxPd9k00L9mWpGHeQUcpZGNe1ijLQYAt02uZnFOxRPUHb0efh+SMvTqXVH0Te2iEwCx8xyBuLRnYg9kk3Jd8PFWPxuG0gHgsOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,35 +104,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 4 Mar 2026 13:57:41 +0000 Yosry Ahmed <yosry@kernel.org> wrote:
+On Wed, 4 Mar 2026 15:56:42 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-> > > What about this (untested), it should apply on top of 'mm: memcontrol:
-> > > eliminate the problem of dying memory cgroup for LRU folios' in mm-new,
-> > > so maybe it needs to be broken down across different patches:
-> > > 
-> > 
-> > I applied  and tested it, so the final updated patches is as follows,
-> > If there are no problems, I will send out the official patches.
-> 
-> If I am not mistaken, Andrew prefers fixups to what he already has in
-> mm-new (Andrew, please correct me if I am wrong).
+> --- a/kernel/cgroup/cgroup.c
+> +++ b/kernel/cgroup/cgroup.c
+> @@ -6044,8 +6044,8 @@ int cgroup_mkdir(struct kernfs_node *parent_kn, 
+> const char *name, umode_t mode)
+>    */
+>   static void css_killed_work_fn(struct work_struct *work)
+>   {
+> -       struct cgroup_subsys_state *css =
+> -               container_of(work, struct cgroup_subsys_state, 
+> destroy_work);
 
-Yes, if the changes are reasonably small and the code has already
-undergone significant review.
-
-Although the mm-new branch is quite speculative/early so I guess this
-is less important there.
-
-Adding a sprinkle of -fix patches can be a pain all round, so nowadays
-if someone sends a replacement series I'll generate and send a
-what-you-changed-since-last-time diff.  So
-
-- we can check that the diff matches the changelogged updates
-- reviewers don't have to re-review everything
-- the author can eyeball it and think "yup, I meant to change that".
-
-I believe this series is due for quite a few updates so a full v6
-resend series would be appropriate.  I'll generate the
-how-you-changed-mm.git email from that.
-
+Lots of wordwrapping in this patch.
 
