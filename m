@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA48EB7EB2
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 08:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B375EB7EAC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 08:54:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70CC46B0088; Wed,  4 Mar 2026 03:53:12 -0500 (EST)
+	id C2D0B6B008C; Wed,  4 Mar 2026 03:54:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BAD36B008C; Wed,  4 Mar 2026 03:53:12 -0500 (EST)
+	id C04466B0092; Wed,  4 Mar 2026 03:54:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B9336B0092; Wed,  4 Mar 2026 03:53:12 -0500 (EST)
+	id B242D6B0093; Wed,  4 Mar 2026 03:54:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 452936B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 03:53:12 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D20AE58F9C
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:53:11 +0000 (UTC)
-X-FDA: 84507766182.25.AD39F30
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A14536B008C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 03:54:40 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 38189140509
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:54:40 +0000 (UTC)
+X-FDA: 84507769920.06.6A7FA21
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 360471C0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:53:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+bToVKt;
-	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9A3B7120005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 08:54:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kN8+2zA1;
+	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772614390;
+	s=arc-20220608; t=1772614478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B+66wSXz/9KLmuQpespPML/K60CzBNJY07z8y0t/IFE=;
-	b=uR7C5eIOAfCgIFyTnhT7bBYRV2gHud0pMX9adMfAsT+L9tzg+1Q/dWU6yvpeyyV0+wrfpF
-	N5ouWXS8NowQheNgavfBth+mcoDSopUGg8stniD7ZqNpBq29t6Z4KB05llYl4LsIqsYT4D
-	TGsaq3xXD2nqAgdwoiLaN2/+r3swHWg=
+	bh=bARe5vahzlBecaWQ8CByabip2fvZsODg61fvn/CTpxY=;
+	b=B4Epak7ORcIw6CqqBrMmejDwWdENgNYMhRmO4042qsoK2JmIhm1dNJRciH2YakBqpeLpRk
+	Cg8U+Oi+fOsi+VWu6uX2H525xfTkbFM48tnhHQ8mzLvIVZz7rzaYxkldlXTkdULoh/1cPU
+	H2Mv7Qg03uKWciEoWxqAFIv0aNVbVRo=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q+bToVKt;
-	spf=pass (imf20.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kN8+2zA1;
+	spf=pass (imf29.hostedemail.com: domain of chleroy@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chleroy@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772614390; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772614478; a=rsa-sha256;
 	cv=none;
-	b=MIlQ3FUnAsxxSlMFNuTN10EjL+iKRc/f1ILaekMZjsj1VnXKjIUPwpAF/ACkQHXdcNCthl
-	ZHQ3W4sAMolsI4AXZXH6wpw4Sg3WkFhxsSsl6zrp3vDdCwGFPAOD9e74fzz9671G50PIig
-	GItx0grbKV7podo13F4sjW2lCCnYNuM=
+	b=VZM2Izf5htdsCpzeNnxppFiw1687Hsxo71qbB3V8n8oUOHvZX83h1eIzivU2jsSDCu5TjI
+	uLmSdTD2CQC9FptfRmJk3x3zhkeIkEhbLaSSh2P8o858dSn18QLqJe0by+FFaw+hEJKtOf
+	t7w6K1M31ecnSzC36+E8JgLcz0hBmNQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72C3060097;
-	Wed,  4 Mar 2026 08:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6172BC19423;
-	Wed,  4 Mar 2026 08:53:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B6F060097;
+	Wed,  4 Mar 2026 08:54:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B57C19423;
+	Wed,  4 Mar 2026 08:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772614389;
-	bh=StrbMlm959BwZ1b5TDceBEL1IlRGm/TfDepBkeRT8uw=;
+	s=k20201202; t=1772614477;
+	bh=0bD5+ytOm5kpMEcwWBYleyhFBrc8X6uiBo5uYxm/1EQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q+bToVKtQ2sUUyFzW+MxYpCg3+2ivPfzpfkh6tCpuQA+fUBho85lQp0PgSq+teUTe
-	 i6/A2APPoeK4WgG9y2lhic2AZf/QYU9E/fSvBfDYkJkupYpNAQ94SZaseL4R9ERdwR
-	 QWaS0H0aC2vCR3BZgQUr1CYr+YAS1AFuunQDCS2Fn+Q0xH2/aNXHPHNJe1KZC/+NPd
-	 SRhNFHFqR03qBPTUGX2WeGOEBvRcFYiPr5D5g0T8nyvuXHcS13XrdMcEfRludkG2/5
-	 K5QzQDQSzbRfjjZvn4dX9Syj8KgM0K8XoaBy5m8qI3pCG4ulaLW4+dSXxfQsh49VoT
-	 VNL8NpDdK7fug==
-Message-ID: <e10b3f59-603b-4d7f-a4bf-91f4e9f51ae7@kernel.org>
-Date: Wed, 4 Mar 2026 09:53:05 +0100
+	b=kN8+2zA1E6Ozz23iEINk4XkaIUU9MBTbgeDZPYooipd4PtNDfmE4BAF0rYq+/UfNY
+	 NGadN4jE3eKkfm5kKgUtX9qKP6006J987V5HFaW+PF224G+z6mCOvYmASJIz9bygCi
+	 7MkIO2hT8xBxlW0eD/MC8K0BSVwjhvNMpM8Z40SX2DYwRQNG/OxE9skSOBh7yWob7l
+	 j+DiwTsiD9NH0Mig2jhEwuuKuIK1m/SgTjDKvyxtNpD3pbpXMxjUmpzijsY0PiPPpw
+	 TWuz4+azrBUQEhzVAMbB8s3R2shHAxLHXLDieWd0gJBwgT4CqZr5ptXV7GvqzWmU51
+	 d4QvbgLXqubAA==
+Message-ID: <8112d5f0-8d4d-4c48-98f9-231c786e59d8@kernel.org>
+Date: Wed, 4 Mar 2026 09:54:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 01/10] powerpc/pgtable-frag: Fix bad page state in
- pte_frag_destroy
+Subject: Re: [RFC v1 02/10] powerpc: book3s64: Fix unmap race with PMD THP
+ migration entry
 To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
  linuxppc-dev@lists.ozlabs.org
 Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
@@ -77,22 +77,23 @@ Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
 References: <cover.1772013273.git.ritesh.list@gmail.com>
- <62dfff55a7f4f465ac1f8077cee93e6e87ebddd0.1772013273.git.ritesh.list@gmail.com>
+ <6a1d3d5992307e181082b35ba238d7e09acc77a6.1772013273.git.ritesh.list@gmail.com>
 Content-Language: fr-FR
 From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <62dfff55a7f4f465ac1f8077cee93e6e87ebddd0.1772013273.git.ritesh.list@gmail.com>
+In-Reply-To: <6a1d3d5992307e181082b35ba238d7e09acc77a6.1772013273.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 360471C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ihuat54y8y5k1teu3d4f7jbww19adpbu
+X-Stat-Signature: 4e1nhqra97r7k65hk4bn15nw9nerbtf8
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772614389-972807
-X-HE-Meta: U2FsdGVkX18+8fl/1GZi5UQFDcGoMDISfbKxSJOLJRekRu/5ZEdYMta7KiuJ/yHYwdnM9d/i4PlVcAgJfILZ1dUdMhLaFUKVgmQNLAs0e5dLSH9XbsTFC4JQga5MbtBDyhs+66N8EZsDf0Ch40WrT8hNkyow4ijwHOsJYblvEUFr3Vn4775/NeaTmFLAldnF+SkYLc+sgnJNaG0NCtyry3mxkIvTI6d2qcNM+iXsqCjj1FMUPfLL2IeSUK3KSgq53C/Xofhykk38FSoSwA8QvIlvWOgRtz+DBG1ochWqL2NcFtRRPptlcnYS2OE44IwSj4op/7kdtidaH/2/7/QAzSDe+Z5M5BfZyOQiuvU2F0kYn10ypzGhtI2yPTiYQEb9EMM850bTagodG/NoABnSzM1Lpq8eR9WoUNpcqMs9ZiyfFRoaQJYKFDL60qwpYmBaqqMWZt5Q47g13S3kV0EAiikgbCOCeB7S4H0te7TRzdDoaQticcls2ufbUQZaYDKIAkkrAO7C3b87dlR9JuVMMyM7fNU315QEGkT+IffZWoIj025Q8MFKyJ7N8FMXPmMZWWmSrAYTqNKG4tIF70KXlj89lGYOXs599TaK1/zXfOOjjULQAqA/OFkzwf+we6/QNGVtjLyHEx4x0edPeDheux8R/5g2mek1WI/slmW5v8/ZakXNMOEy5W2mbRpkyLM/o0fZbE30Bk1ceeEpgj4Huug24EbEpdxebAm31GyzjdCtb+57Y2CEpgbPYIgYB+kT2O01bcxtr4NGnWnu3zU44P0h9pF5VEw3Lxj4qPZXptIWTSqBHflNj16CHqTcLlemo0Ds5MSQfddtmwvIhselTCHq1JLQRs3nU6wRrHQLT4OE+XDb61+fYD/SvoyNfHzaolTYZodxhsMDxzujUcxe1Xr5Obj0M/YUvHN5/0dJwc636z0439n2GOhxb4+CeL+1/e1wyENKqW/K3tuTpg2
- vzKfneEf
- UVVzZDbZ/gJj5PFSnJqHIco5NqxiDUd/Rgozkzf2c0YtqVSx8I60RopMFDU0KFSlQ1716lYmA9lZBn12ZPIhRqkMdvtyZi5X8ts3ku6WapAA3rgie/qrel03uz6PrN5bopY3IG5hCHHAh6MLgxkzKWx1E6jBdOM6+5iX6Ltd1S4XA3bccuuqfKe8PHgT8Gd9THfoT3GA5gzSyZLJnvIyX99uq/H/Ds+0RAxzZUoEFM3n/JcP/50ZOgqVAkvjJI97lwslsmujOoL5CMobSHydI/aW9BO/HyKi6nHVyKijXnIXpLYkjaFxYcHFYsm03OGvOOh/PnN9nys08IF1T88n7D2jYwwILlxCgpAiOB7AzPfo9K1xv6PDwYZfqu/jjWtoZWLc6FdF1yClz5D4rgwmp8Xc4sBWSZCJaxFLoZ82vliS/xAeWrV8zjNlTRxr6wAU1l3yYQNNtCI88Hvuw8bFHMkiVwg==
+X-Rspamd-Queue-Id: 9A3B7120005
+X-HE-Tag: 1772614478-587678
+X-HE-Meta: U2FsdGVkX1/DAssjhucxZ2HXUotBK9N3kAMWeRawO3EUDh2Td01fy1NNUgWtAW/uX5dbDBrRkWBoceEJz3FFcXUoH/NcrFb/LqxNV9sFMorsQ5z4mebyQBBxBlQsmjeodFrMpNqjT+G8nwwONgi7FVclTOXcuZVoCH536NELEHGz5a+tYNRd3rgaUZx/HlPzk8jObwbAL+gGpkhasultDBPFDo/lA1/6U2OjPh+RU6yfho2aDnl+HWoDOO0GqzUZoCg0cBu9VF8x9KtyRqgCJUqmtWBNPvZWI1SWrafmETFaC7vVX5tpLiS01tKlecvntaH865tvL3AEr2YGAs4bqjh947rs3i/EyQm3oIFXqR9IcFiYUYTukUJXryzxZ2LVtenRxBMw7s5Vd/ky4kWv/EX/7RVg/LKazXgs4LYK5IfqiqjvPDExnLX1r2pTpi2E8Mpj/5bc79I6CsOnqZiMSStjf4r8XkmBoiXsvPh4pcmr3zLYVTQapYCzCljWlL1JOQXFG2GQ3pLNo8foAcMgM++/mmggfrR8G4nTeWe928RFIijlUORSgGJvI7GBmzcVKsa5HPqVcV4pGho9OTV+vAzux+xH/g0sqTG2SW105SKd6bYnnIHZQz8BxVpsQIv71sXvpx2YK1OzDAn/1F36n0R6161mOT7baKDjt1Io0J4WqHzv19n+SXlrDWa4hs5IDZl/EgsMWV3RBTxmBprCW1/6rqEAJzNnoxI1paOrj3J+fST8mO6Aid2KLnRNamKd4N/iNF3Xmo9RQWIE0JAuWgU8s0184P/iZrF5mdhs9jTe15bavQ7IwbgPMZkVr9fae88u6belB7OFk0zyw9ZxRoY9oU1JmXDQW9yT+XKHS07JHotkQcU7onCT6ykDk36MGWanVSFzQ3jYTxq5QsAd+U/JW+CZkEhhx1x2lkh4ciq9JY/dQ3zfslREnFWNtmNVlvdUyp34+vngERFcCNj
+ nIInTvI8
+ fZmma+yos4ep8tZle4xgsRoICVIV0rLWQkAN5XRB24R2FU1Lhda0sCL01m1Xqv/XEfvtnyTo/3uDB7HwMTO4Qb4R1eGjvZ529DIvGlqmjgwQHJNwJpCs6s+dOuP6adfGaJtm0bkkRGp8n+Jees5HSfmeIqjbMjnIY0e2dxC3ASA2zDYuGl+CYe1/nVvnXMD8sXRBW6sO1y/12irNCMmaNkysF3rITaBQRlbY4ZwyjNfo/bbrgeIwBxUzyZmb1JcNaJ3uflo33UABR0OnZIuyZG3gmNdJJQh4L3DLk9pAwWG8tFSrPrGuDBBFL25lIdqIVjEtg5+p8pdZkfmNJZ1N/cw2PfztGlrYbgCWB7dlBEZlj8SDj7tZY/FaKxYSmAn/uI2TYPE2qdZ/oi42S1ezI7JomUyJG+JM7JwpRrSvWx5lC+Xw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,80 +104,112 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 Le 25/02/2026 à 12:04, Ritesh Harjani (IBM) a écrit :
-> powerpc uses pt_frag_refcount as a reference counter for tracking it's
-> pte and pmd page table fragments. For PTE table, in case of Hash with
-> 64K pagesize, we have 16 fragments of 4K size in one 64K page.
+> The following race is possible with migration swap entries or
+> device-private THP entries. e.g. when move_pages is called on a PMD THP
+> page, then there maybe an intermediate state, where PMD entry acts as
+> a migration swap entry (pmd_present() is true). Then if an munmap
+> happens at the same time, then this VM_BUG_ON() can happen in
+> pmdp_huge_get_and_clear_full().
 > 
-> Patch series [1] "mm: free retracted page table by RCU"
-> added pte_free_defer() to defer the freeing of PTE tables when
-> retract_page_tables() is called for madvise MADV_COLLAPSE on shmem
-> range.
-> [1]: https://lore.kernel.org/all/7cd843a9-aa80-14f-5eb2-33427363c20@google.com/
+> This patch fixes that.
 > 
-> pte_free_defer() sets the active flag on the corresponding fragment's
-> folio & calls pte_fragment_free(), which reduces the pt_frag_refcount.
-> When pt_frag_refcount reaches 0 (no active fragment using the folio), it
-> checks if the folio active flag is set, if set, it calls call_rcu to
-> free the folio, it the active flag is unset then it calls pte_free_now().
+> Thread A: move_pages() syscall
+>    add_folio_for_migration()
+>      mmap_read_lock(mm)
+>      folio_isolate_lru(folio)
+>      mmap_read_unlock(mm)
 > 
-> Now, this can lead to following problem in a corner case...
+>    do_move_pages_to_node()
+>      migrate_pages()
+>        try_to_migrate_one()
+>          spin_lock(ptl)
+>          set_pmd_migration_entry()
+>            pmdp_invalidate()     # PMD: _PAGE_INVALID | _PAGE_PTE | pfn
+>            set_pmd_at()          # PMD: migration swap entry (pmd_present=0)
+>          spin_unlock(ptl)
+>          [page copy phase]       # <--- RACE WINDOW -->
 > 
-> [  265.351553][  T183] BUG: Bad page state in process a.out  pfn:20d62
-> [  265.353555][  T183] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x20d62
-> [  265.355457][  T183] flags: 0x3ffff800000100(active|node=0|zone=0|lastcpupid=0x7ffff)
-> [  265.358719][  T183] raw: 003ffff800000100 0000000000000000 5deadbeef0000122 0000000000000000
-> [  265.360177][  T183] raw: 0000000000000000 c0000000119caf58 00000000ffffffff 0000000000000000
-> [  265.361438][  T183] page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
-> [  265.362572][  T183] Modules linked in:
-> [  265.364622][  T183] CPU: 0 UID: 0 PID: 183 Comm: a.out Not tainted 6.18.0-rc3-00141-g1ddeaaace7ff-dirty #53 VOLUNTARY
-> [  265.364785][  T183] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
-> [  265.364908][  T183] Call Trace:
-> [  265.364955][  T183] [c000000011e6f7c0] [c000000001cfaa18] dump_stack_lvl+0x130/0x148 (unreliable)
-> [  265.365202][  T183] [c000000011e6f7f0] [c000000000794758] bad_page+0xb4/0x1c8
-> [  265.365384][  T183] [c000000011e6f890] [c00000000079c020] __free_frozen_pages+0x838/0xd08
-> [  265.365554][  T183] [c000000011e6f980] [c0000000000a70ac] pte_frag_destroy+0x298/0x310
-> [  265.365729][  T183] [c000000011e6fa30] [c0000000000aa764] arch_exit_mmap+0x34/0x218
-> [  265.365912][  T183] [c000000011e6fa80] [c000000000751698] exit_mmap+0xb8/0x820
-> [  265.366080][  T183] [c000000011e6fc30] [c0000000001b1258] __mmput+0x98/0x300
-> [  265.366244][  T183] [c000000011e6fc80] [c0000000001c81f8] do_exit+0x470/0x1508
-> [  265.366421][  T183] [c000000011e6fd70] [c0000000001c95e4] do_group_exit+0x88/0x148
-> [  265.366602][  T183] [c000000011e6fdc0] [c0000000001c96ec] pid_child_should_wake+0x0/0x178
-> [  265.366780][  T183] [c000000011e6fdf0] [c00000000003a270] system_call_exception+0x1b0/0x4e0
-> [  265.366958][  T183] [c000000011e6fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
+> Thread B: munmap()
+>    mmap_write_downgrade(mm)
+>    unmap_vmas() -> zap_pmd_range()
+>      zap_huge_pmd()
+>        __pmd_trans_huge_lock()
+>          pmd_is_huge():          # !pmd_present && !pmd_none -> TRUE (swap entry)
+>          pmd_lock() -> 		# spin_lock(ptl), waits for Thread A to release ptl
+>        pmdp_huge_get_and_clear_full()
+>          VM_BUG_ON(!pmd_present(*pmdp))  # HITS!
 > 
-> The bad page state error occurs when such a folio gets freed (with
-> active flag set), from do_exit() path in parallel.
+> [  287.738700][ T1867] ------------[ cut here ]------------
+> [  287.743843][ T1867] kernel BUG at arch/powerpc/mm/book3s64/pgtable.c:187!
+> cpu 0x0: Vector: 700 (Program Check) at [c00000044037f4f0]
+>      pc: c000000000094ca4: pmdp_huge_get_and_clear_full+0x6c/0x23c
+>      lr: c000000000645dec: zap_huge_pmd+0xb0/0x868
+>      sp: c00000044037f790
+>     msr: 800000000282b033
+>    current = 0xc0000004032c1a00
+>    paca    = 0xc000000004fe0000   irqmask: 0x03   irq_happened: 0x09
+>      pid   = 1867, comm = a.out
+> kernel BUG at :187!
+> Linux version 6.19.0-12136-g14360d4f917c-dirty (powerpc64le-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #27 SMP PREEMPT Sun Feb 22 10:38:56 IST 2026
+> enter ? for help
+> [link register   ] c000000000645dec zap_huge_pmd+0xb0/0x868
+> [c00000044037f790] c00000044037f7d0 (unreliable)
+> [c00000044037f7d0] c000000000645dcc zap_huge_pmd+0x90/0x868
+> [c00000044037f840] c0000000005724cc unmap_page_range+0x176c/0x1f40
+> [c00000044037fa00] c000000000572ea0 unmap_vmas+0xb0/0x1d8
+> [c00000044037fa90] c0000000005af254 unmap_region+0xb4/0x128
+> [c00000044037fb50] c0000000005af400 vms_complete_munmap_vmas+0x138/0x310
+> [c00000044037fbe0] c0000000005b0f1c do_vmi_align_munmap+0x1ec/0x238
+> [c00000044037fd30] c0000000005b3688 __vm_munmap+0x170/0x1f8
+> [c00000044037fdf0] c000000000587f74 sys_munmap+0x2c/0x40
+> [c00000044037fe10] c000000000032668 system_call_exception+0x128/0x350
+> [c00000044037fe50] c00000000000d05c system_call_vectored_common+0x15c/0x2ec
+> ---- Exception: 3000 (System Call Vectored) at 0000000010064a2c
+> SP (7fff9b1ee9c0) is in userspace
+> 0:mon> zh
 > 
-> ... this can happen when the pte fragment was allocated from this folio,
-> but when all the fragments get freed, the pte_frag_refcount still had some
-> unused fragments. Now, if this process exits, with such folio as it's cached
-> pte_frag in mm->context, then during pte_frag_destroy(), we simply call
-> pagetable_dtor() and pagetable_free(), meaning it doesn't clear the
-> active flag. This, can lead to the above bug. Since we are anyway in
-> do_exit() path, then if the refcount is 0, then I guess it should be
-> ok to simply clear the folio active flag before calling pagetable_dtor()
-> & pagetable_free().
-> 
-> Fixes: 32cc0b7c9d50 ("powerpc: add pte_free_defer() for pgtables sharing page")
+> Fixes: 75358ea359e7c ("powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race")
+> Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
 > Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
 > ---
->   arch/powerpc/mm/pgtable-frag.c | 1 +
->   1 file changed, 1 insertion(+)
+>   arch/powerpc/mm/book3s64/pgtable.c | 19 +++++++++++++++++--
+>   1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-> index 77e55eac16e4..ae742564a3d5 100644
-> --- a/arch/powerpc/mm/pgtable-frag.c
-> +++ b/arch/powerpc/mm/pgtable-frag.c
-> @@ -25,6 +25,7 @@ void pte_frag_destroy(void *pte_frag)
->   	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
->   	/* We allow PTE_FRAG_NR fragments from a PTE page */
->   	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
-> +		folio_clear_active(ptdesc_folio(ptdesc));
->   		pagetable_dtor(ptdesc);
->   		pagetable_free(ptdesc);
->   	}
+> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+> index 4b09c04654a8..359092001670 100644
+> --- a/arch/powerpc/mm/book3s64/pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/pgtable.c
+> @@ -210,8 +210,23 @@ pmd_t pmdp_huge_get_and_clear_full(struct vm_area_struct *vma,
+>   {
+>   	pmd_t pmd;
+>   	VM_BUG_ON(addr & ~HPAGE_PMD_MASK);
+> -	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)) ||
+> -		   !pmd_present(*pmdp));
+> +	VM_BUG_ON((pmd_present(*pmdp) && !pmd_trans_huge(*pmdp)));
+> +
+> +	if (!pmd_present(*pmdp)) {
+> +		/*
+> +		 * Non-present PMDs can be migration entries or device-private
+> +		 * THP entries. Since these are non-present, so there is no TLB
+> +		 * backing. This happens when the address space is being
+> +		 * unmapped zap_huge_pmd(), and we encounter non-present pmds.
+> +		 * So it is safe to just clear the PMDs here. zap_huge_pmd(),
+> +		 * will take care of withdraw of the deposited table.
+> +		 */
+> +		pmd = pmdp_get(pmdp);
+> +		pmd_clear(pmdp);
+> +		page_table_check_pmd_clear(vma->vm_mm, addr, pmd);
+> +		return pmd;
+> +	}
+> +
+>   	pmd = pmdp_huge_get_and_clear(vma->vm_mm, addr, pmdp);
+>   	/*
+>   	 * if it not a fullmm flush, then we can possibly end up converting
+> --
+> 2.53.0
+> 
 
 
