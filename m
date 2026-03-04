@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C97E1EFCE21
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:25:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FFEEFCE21
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:25:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EED896B0005; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
+	id 5FF476B0088; Wed,  4 Mar 2026 12:25:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9BBF6B0088; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
+	id 5E9656B0089; Wed,  4 Mar 2026 12:25:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA7326B0089; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
+	id 4F2676B008C; Wed,  4 Mar 2026 12:25:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7D186B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:25:21 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5FB081C7A6
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:21 +0000 (UTC)
-X-FDA: 84509056842.08.CC3788B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7460C180011
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:19 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E83D6B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:25:32 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDA11C1E15
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:31 +0000 (UTC)
+X-FDA: 84509057262.23.696B498
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4106940007
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:25:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HRlnvrM9;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772645119;
+	s=arc-20220608; t=1772645130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6kx8vnEm28aGLiRE9vB2nHEueIYFDqBkfc/uJtYW6dw=;
-	b=Tz04Ej5yK3iNnQahtpgjlugeIRrrAxVxOZQJc21Gs9c1FxApHEY7UfGQG3VOHJWkVMlzAg
-	kBSG+zp4mnlgPsb0Qz5J2hirzNPEEhuiEPs+lGrszjd6gETDd02g2JBHjtl8qfAXr+z08P
-	qIKaZjL3+EQB18caMXx9Zl/mxteiBCM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cpf0d47AIVxKforO4/RxQI4clEkoUCy43DhYTlMRIZ4=;
+	b=C05A63ASRFj/FGqB+Z+pKUtoIPks56ZN4KwpRVe/J19wK7AiPyb3eUEsA1JOEjG+7ZzW5+
+	8blM3Fmyvryf2v1Gc+ZQVJz5/qOyqpBP1f7arLBtwANt38Cme7cH8MM6uHsDAk16v1D8Z7
+	waoupm+svYVTeTZo5Hgp6dNccgVJtcY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772645119; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HRlnvrM9;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772645130; a=rsa-sha256;
 	cv=none;
-	b=gDD08YbLpleNEVZmZInGPRRoOLandK99TW5+W8XP4I0u/WISuD1naHjzs+Je4R+T1096kg
-	8Beug2FK+ykeK9B5rU34/Ut6W6N8ehgufjORERnkmNU/HRTkV6mzqtPJH69FHulR7n7tto
-	aa2sFdBmjhuALxaXPDJbjhhsdWO2zI0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1AFBF339;
-	Wed,  4 Mar 2026 09:25:12 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A59AB3F73B;
-	Wed,  4 Mar 2026 09:25:16 -0800 (PST)
-Date: Wed, 4 Mar 2026 17:25:10 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Piotr Jaroszynski <pjaroszynski@nvidia.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>,
-	Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aahq9i7XNYOBG49y@arm.com>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <aagUtDTca5d0le2Y@arm.com>
- <20260304134313.GM972761@nvidia.com>
- <aahJX0NwtYHy1ILe@arm.com>
- <20260304153949.GP972761@nvidia.com>
+	b=qmKznLuzXhc4T9QXLdTqoFLD27On7x3VNXFoChYbaHyShSJWWU850va9XNEdnQH0dshmTE
+	deGlV7i56OrvC0BuujXzOBjoeKu6CNVNS8VA59/wp3X1I/Dbsp6xCMvZW/4IY1H/ti9l6D
+	X18diLA/Xe81cPz6vk308zj9ZiTmVbE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 797E4600B0;
+	Wed,  4 Mar 2026 17:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF35C4CEF7;
+	Wed,  4 Mar 2026 17:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772645129;
+	bh=WOppeuleJuW3iXckdFInG5Ten0AsL0JScXhelOhuklM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HRlnvrM9rb9xng2RSidhax7C3dbOLj0hyVI5KgaRz0PcTDf2SJmaUH3y4BOvewGWp
+	 ktp3l1dfYk3TPZBdYpY/SO80mCpO22l67FEaDBqxLWGO2vnr+trnIFa1FpLvf3YcbM
+	 ZLKg37FTy8YP8PoPhT4XYu2aSFKbLSiZO7nCTTAZG4H7kQDplSxPkI7JmrSLkyHIis
+	 1nE8pgZK6+2SECNYzjgwl0chZqPZJOMvYgJ+2QGuHqoVdKP9QZE6rQu5vB5DPvauBE
+	 xx+UYJioqxPOzbJlHSRJyV6a51RM3hyyvpmFn2ogfN/PApb07Z9/OLVeFUhhaD7WWS
+	 BbLEz5FFvDwBw==
+Date: Wed, 4 Mar 2026 17:25:26 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH mm-unstable 2/2] mm/mmap: fix NULL pointer dereference in
+ dup_mmap() error handling
+Message-ID: <49b1baaa-3cdc-416f-991b-bf2bb013341b@lucifer.local>
+References: <cover.1772607155.git.zhuhui@kylinos.cn>
+ <6dc840b8dc7da9f56787e7a353c633b3c12eda6a.1772607155.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304153949.GP972761@nvidia.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7460C180011
-X-Stat-Signature: t8wq55ee8mrbgfabiajzujxx3d537afs
+In-Reply-To: <6dc840b8dc7da9f56787e7a353c633b3c12eda6a.1772607155.git.zhuhui@kylinos.cn>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4106940007
+X-Stat-Signature: hiqrsxquk8uppumfuj7jo9xmkhkxw8cd
 X-Rspam-User: 
-X-HE-Tag: 1772645119-969454
-X-HE-Meta: U2FsdGVkX19NWcod4p2tdJszu7DiL6ICIjkeAnIsh2X+PLGpD0LEjWFpcgWbeueIIwVNTENBei/k9XYEr2/IeGhib0WFyJwr/044iHqL0yvWCxvCBLYKRiV0wp1Fyft8PYrF3ZzbUXetS9fEpX8uLWYoncQrMhV9eobFXjEbV28u2WNe++CAA5zVIYDVDE8aMgwOlwM7cLT5r4hkqs1zSw5BOCZecZztXIM7EKnc2IW7Zu/5cLPl2eaV35L0T1pNBfTf3JPWcFFhVbN0td3xAWIBz0NTLQ4oDWIktbotQtpUCXYHo9Ws1xh21DXw8VLxM+p4REN1xwrILiDYK8nldMctS4Ef6RmzNo47pbyOugZon4Qnbs7fMR+GfwDK8n8BP2Gfl0TSbFoRLf6A98ufCcCtjuWmbvslsAcmFdD7xMTcy6JXJCPb+pWYykF7F2oPjai3WreRhEY/qKZlWb8FYXPJVX/j1tX6aGkRWHOed+fNV9bFoyS/aWzA6JKyyRw/z/x/mwt9fDXk70URhWSm+lh/eXm7klHgp4jHr1KU9+GE2QGPhuGhuQER//Z2Ck+STzGjKo+sZu6/QFp4VL6W0R0grkPhzjw5HOMTS9NISMtP7mORPaOEUsM7qmk01YnAiEaivE+r9UtaCkpYJRnbRI0Pr6vIcvaesc85A4KLJ71+RBlQcZKX5pofiE6iYMyrOMookwCSXPc5iixOycT2mBoc/jp0RC3mmjyOwFaoBU7j7YZvtkDQMkvJuxq9LfC+p6aXy1RvrUNT0pp7yPpnG0h+tQST8ibvS0CKbMAOA2p8T3b0D7nfuMX7iXGbdNPSUzrFnL6d7ZIIwvFYY9RXWk8WYwoKo8s2XRioBqqoATgwgIePJ0na3JACOxI+WwTaKHHy4NL26WIi8XVv3fSTL1zzYpm0qqkfJj82aDX3jDlRl8jglewksMn7asI/qQgap9mZhACO1G/NeuL07Jg
- Wz2r0h5q
- GfKGIx/+RY7QL4ZbHi5ttU+n1gEgWqzmTYuyZqAVSVdT4Ly4gugKP0hAd4nofS834b+2Nh/UJfAAe3fZaju66hpyDcgX4gBeCHem3cSZJQbB23kCID4pY/uBjkS1C3832kj9LAcYrkV28/Au5eOZmntvy9uQdbe49vXVKMHuFKY4PSC77KpzTolUXBA==
+X-HE-Tag: 1772645130-921876
+X-HE-Meta: U2FsdGVkX19FOy35tPCMdMs49fOeO9GFFLbHVo9thcOeSi/4s4Zu+25UPRt6RbwcbvQEMS81BkVasoGImcK/1JGw3HXAJ8XL0wrAlbdlz0lemuP94cR1hR7wwbmEylcqynlvWeTFucLrcSopoKB7Ln+IdT5SMMFYseX0UY7i2+IcbKEr1YYZDSbF6OJ2hYxxAGUTy07o0f4BoWsslzoTMHCh1IooozRuDFhrXJnFpKaugqKo+UEur8IQxntY4SvAOEBPM8tDc/stHJbNJp0NcygeARljbI0O3J4c79bqGEbVGYma+gIoi3S2lZVSRWmhIkox4uueZZn3t/+MBExFtrida5VT+oywdb+isz49Qu28uhFOdyS33yWcNtNEC2A+CTNgRVyReFb+1rZ3/iTg6/Q5RtI8kKJoJRcr8CTHMlyyInLbuIC7uUGhnDoxwockqiRtWlhH8lpSaayzSv7oJamOXermxStw6pKgF1uAgYi+5AeWIs+rvYWTVIAV4ppWpG3at6kpsC31tEo6y99bniHigoUPMaj9r6xLBVaJZqyQ7zhiM30Di/NVj8RVjGW7hbXCkfrcwuNKS66COuH+TTvuhQin8XjxkRGOn64Vf2kYdWJ9o4AYSj8sgbixVMmnIpfj3zIP9wtSWw6JDqL/tM3zPqNuWeLX+2MU4ExYtKuE7f0JEUT5r4ak4W2bmBNtNFo8aSpCQbozdH/2H78qA+45Y+ADfBTzO6HsF80Erig3iCx9rsr/tkxf+5IuAUTDf+J3mwr2zWA4D1JtsK/c1LAv7kDVBeqdTS27Yalo+gVsALi3TZB9wSUOGDZ+eHdhd30Z6AEcUHJGPmzmovIOdhWAK14p/e9WC/rELmRXKxFCntLCw4iSB7bRKGrV2lQ6F2D4xuBBqFgD/bw8n15M/mslROr7X5Ll5Nf6GkIy5OlTOSFUT2BNOSTCrTxv1qh61X5ZH6eNcvd+jGvWhL+
+ IcKV1ncn
+ XlQ1ZZQWpfOauBrCUf6BsUigHvrM+mQpS9gUUcjCVzt9fpbpn+VJbPdU+pEAyS9pXeAyeyrKI8X29B6UpdNlLsJgS8jYBbfm04TqJRvyKt+Vkf2qgnCBSnzc8tQM4FbOCvnQCsFdzLdKgYMkMxsRf2w8DR3FtYsu676tMHG9BLcaZPq1c1NVrlqMxVx2Uv07/igdx3KWYQG4IjqirjwNxS9Go40l4i4FfdUK7Ca/l/6APXLoEn/Hu6zvPKZqJGn3iPEhm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,21 +94,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 11:39:49AM -0400, Jason Gunthorpe wrote:
-> On Wed, Mar 04, 2026 at 03:01:51PM +0000, Catalin Marinas wrote:
-> > Good point. For the AF bit, the hardware is not allowed to cache it in
-> > the TLB, so we can't get an AF fault for an unrelated VA nearby.
-> 
-> The way we have read the spec is there is no restriction on what PTE
-> the HW accesses when it encounters a CONT group.
+On Wed, Mar 04, 2026 at 03:00:57PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> If dup_mmap() fails very early in its execution, it's possible that
+> no VMAs have been inserted into the new mm's maple tree. When
+> vma_next() is called in the cleanup block to retrieve the first
+> VMA ('tmp'), it may return NULL.
 
-Trying to find some rule in the Arm ARM, it only says that hardware
-AF/DBM only happens to a single entry but it is not specific about which
-in a contiguous range.
+Have you observed that or are you just guessing?
 
-So yeah, it's better not to assume anything. If it helps software, we
-could tighten the architecture but I think the benefit is marginal.
+I mean given the below, you are just guessing :)
 
--- 
-Catalin
+>
+> The UNMAP_STATE macro and the subsequent call to tear_down_vmas()
+> do not perform a NULL check on 'tmp' and directly attempt to
+> access its fields (such as tmp->vm_end). This results in a
+> NULL pointer dereference and a kernel panic.
+
+Please don't suggest that something might happen if you can't demonstrate that
+it might happen.
+
+So there's this code just above that logic:
+
+		/*
+		 * The entire maple tree has already been duplicated, but
+		 * replacing the vmas failed at mpnt (which could be NULL if
+		 * all were allocated but the last vma was not fully set up).
+		 * Use the start address of the failure point to clean up the
+		 * partially initialized tree.
+		 */
+		if (!mm->map_count) {
+			/* zero vmas were written to the new tree. */
+			end = 0;
+		} else if (mpnt) {
+			/* partial tree failure */
+			end = mpnt->vm_start;
+		} else {
+			/* All vmas were written to the new tree */
+			end = ULONG_MAX;
+		}
+
+mm->map_count == number of VMAs, so we explicit check for this and the if (end)
+{ ... } already covers this.
+
+>
+> This patch adds an explicit NULL check for 'tmp' before proceeding
+> with the unmap and tear down logic in the failure path of dup_mmap().
+>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+
+As a result of the above, this patch is completely unnecessary, so let's not
+please.
+
+Do try to prove to yourself that a suggested thing-that-might-happen might
+actually happen in practice :)
+
+The kernel does sometimes skip NULL checks when we set the code up such that a
+pointer cannot be NULL, and this is one of those cases.
+
+So it's important not to assume that a pointer _in theory_ being NULL means that
+we need a NULL check somewhere, first check to see if _in practice_ a pointer
+could be NULL first.
+
+Thanks, Lorenzo
+
+> ---
+>  mm/mmap.c | 31 ++++++++++++++++++-------------
+>  1 file changed, 18 insertions(+), 13 deletions(-)
+>
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 498c88a54a36..ca5645a2e456 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -1879,19 +1879,24 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
+>  		if (end) {
+>  			vma_iter_set(&vmi, 0);
+>  			tmp = vma_next(&vmi);
+> -			UNMAP_STATE(unmap, &vmi, /* first = */ tmp,
+> -				    /* vma_start = */ 0, /* vma_end = */ end,
+> -				    /* prev = */ NULL, /* next = */ NULL);
+> -
+> -			/*
+> -			 * Don't iterate over vmas beyond the failure point for
+> -			 * both unmap_vma() and free_pgtables().
+> -			 */
+> -			unmap.tree_end = end;
+> -			flush_cache_mm(mm);
+> -			unmap_region(&unmap);
+> -			charge = tear_down_vmas(mm, &vmi, tmp, end);
+> -			vm_unacct_memory(charge);
+> +			if (tmp) {
+
+This kind of hugely indented code is horrible. I know this function isn't great
+but let's not make it worse.
+
+> +				UNMAP_STATE(unmap, &vmi,
+> +					    /* first = */ tmp,
+> +					    /* vma_start = */ 0,
+> +					    /* vma_end = */ end,
+> +					    /* prev = */ NULL,
+> +					    /* next = */ NULL);
+> +
+> +				/*
+> +				 * Don't iterate over vmas beyond the failure point for
+> +				 * both unmap_vma() and free_pgtables().
+> +				 */
+> +				unmap.tree_end = end;
+> +				flush_cache_mm(mm);
+> +				unmap_region(&unmap);
+> +				charge = tear_down_vmas(mm, &vmi, tmp, end);
+> +				vm_unacct_memory(charge);
+> +			}
+>  		}
+>  		vma_iter_free(&vmi);
+>  		__mt_destroy(&mm->mm_mt);
+> --
+> 2.43.0
+>
 
