@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BA45EF8FF7
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:33:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C23FEF8FF8
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DC906B0089; Wed,  4 Mar 2026 10:33:45 -0500 (EST)
+	id 125286B0095; Wed,  4 Mar 2026 10:34:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09E026B0092; Wed,  4 Mar 2026 10:33:45 -0500 (EST)
+	id 0D9C56B0096; Wed,  4 Mar 2026 10:34:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8A3A6B0095; Wed,  4 Mar 2026 10:33:44 -0500 (EST)
+	id EC5E36B0098; Wed,  4 Mar 2026 10:33:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D4AFB6B0089
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:33:44 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 88D9A59807
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:33:44 +0000 (UTC)
-X-FDA: 84508775568.07.82B6A39
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D38176B0095
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:33:59 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 726925970C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:33:59 +0000 (UTC)
+X-FDA: 84508776198.20.D48AD17
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C482C100010
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:33:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kbxvm05x;
-	spf=pass (imf05.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id A3A412000B
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:33:57 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pc+rklIw;
+	spf=pass (imf13.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772638422;
+	s=arc-20220608; t=1772638437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xT2uLu3U2dPOQwoKuw/wYPCwRB2Co/aMQ5GXGcWGK2A=;
-	b=AQwN0P1Dz0yhc8oWI+otH2u9TphdbJGnkp/x/p+G8BG4EFB9uK5XMmNOw7i1rdrQ9lxxoc
-	whsmnoHzk5AcOO0RaqNnPRyTrMs7n03x9GXIDpAKO3lmLMPtHRuhpilUuHC6l83jpJkvJk
-	B6yVD0q/V1iDiplna2mjKtgduWIwEQc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772638422; a=rsa-sha256;
+	bh=CmCR+aTC+ApLtLTrGnL2o4W1Y70BRUbXY+2WYvZ8DTU=;
+	b=Ti2iMfY7sshX10lkZobxWJiQ5U2wmwgRvCrgUIoCGVBaC/F0U1d1iz2uDruW22bLlkQUIs
+	jemZlxd1KGEJzMqu1NGeQWpA2bGQj2xkj4OE6xubU/o9008tj+eB51JiZEtA2clJEa/oIv
+	iyAmJV1KVlM8CZ1ZftVk7ctpqL8t0wA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772638437; a=rsa-sha256;
 	cv=none;
-	b=JfGONqmSnlkmkyRWmisD0nGQhpD5kD9Y1n7tIlx/nfT3xrMmBBQpIRDoAYGTzqLsSGuIZH
-	OonZ4rk2HVWke2JTQqAWoUfNsuVFmvMJ3gTOPgr83VsNLS/HvalFEOO6fMUsEDVRd9tTCj
-	lCwEYeu3FH81R/fyDIsBl/Mvu8ZH9mY=
+	b=i4EhPpI+AbhQUzqPHwbaZ5NywOzINQrNr+Z/H0Ufp2mpv4gI68a9jFRycCtgSVdYfjm79c
+	WIGzATNaW8I1Uik04JBHi1qEY02CXMcNCRQe+v2emKoM8Ux5HaBaFpXhkL4FGU/Bs4f66r
+	I+rVK7CmMwB4g4OlLgu/QsvtprXNNQ8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kbxvm05x;
-	spf=pass (imf05.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pc+rklIw;
+	spf=pass (imf13.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 24AC060097;
-	Wed,  4 Mar 2026 15:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685C4C2BC9E;
-	Wed,  4 Mar 2026 15:33:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DF36761331;
+	Wed,  4 Mar 2026 15:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F12C4CEF7;
+	Wed,  4 Mar 2026 15:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772638421;
-	bh=ciNSSeLqRr2BU//qa+tQIIiBFv/zr4BgDhwVpMxT7rs=;
+	s=k20201202; t=1772638436;
+	bh=kEgu+NRsIvJuO6axeYg1fU8tfgBbCZAh29JefkiHmoY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kbxvm05xEkrnY8P/tRyCMTKI2dUt9lQTIT87tn/iqa5xj1Nf4RVNN4IeFKVK+/i/h
-	 cCuy6DwK5kf0eHpADxr0uui0yqClmO5RzkQiq+hiarKU0R9OfrTxCwrwsL2U5WPKb4
-	 x/cVNwHwTbJsERVnOUQYRWWB4zPSvs4XPwm7hmk8yYB5N0WOdQuw6QOCEo+Skehnll
-	 dfh6gHvSqguhj6ATJwi/mNVwCQQzvf72au7kSngXMugLBZnGpF8EOy2i2TV7CENRqy
-	 jz50pLi1cAo9FJqFzmNNlLuh7Pki4UWyeJO5/COBPnM7ZAH+6PYUsHHCQ7S8ZK9Gnl
-	 4asDv/cQsr6PQ==
+	b=Pc+rklIwBOY54SdWrXhtUjcM7M7AZU+bdLhSTv1gUxEmIbg3/45301R+FRl6XEHix
+	 wCp+UkLxAynzjLf8VtiKKeckW/d7q1gRFnOy1fx5S8bTNMChxNdoK8ohZknf8r0J5l
+	 p0RSPwiOp16mGHWYr/oPZE06PyQcjT1Qckw27VoJroxO4R6ggzr40PAz2bEuECnt75
+	 gxbj2RuOsu8yHWf62bkawC43GAc1V02QbFlxU6+nW/sdflyEXMPBPvHnxsl1ivRFF+
+	 uq44dtS3UWr7x32pVoktsKtmKSen+odmqCgDvr2ca6sAeioDjycW3IsUP3VdxhPST2
+	 tNYQAKrnvkriQ==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Wed, 04 Mar 2026 10:32:32 -0500
-Subject: [PATCH v3 02/12] audit: widen ino fields to u64
+Date: Wed, 04 Mar 2026 10:32:33 -0500
+Subject: [PATCH v3 03/12] net: change sock.sk_ino and sock_i_ino() to u64
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-iino-u64-v3-2-2257ad83d372@kernel.org>
+Message-Id: <20260304-iino-u64-v3-3-2257ad83d372@kernel.org>
 References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
 In-Reply-To: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -184,36 +184,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7545; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=ciNSSeLqRr2BU//qa+tQIIiBFv/zr4BgDhwVpMxT7rs=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCmqmFUMh1WlR9KQ8rb35f1AaC/6SMNRQit0
- fpl2asozXeJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQpgAKCRAADmhBGVaC
- FRYoD/wIBIrwGcTFOF41QzahbNDfzFpIV1/911ZWCrCmpN5O+1eeArtgs+fVyy3nEcn3GQZxSGj
- WDZ39Hlt2l5zY+WDTLYGDWamaLGGS+kuyYR2cMBfMiUZj3a/8p4EoRSUaTQuXMSWwk50Uov+AK1
- oLRlw6CiPmuPnGNbpn1YN4jSwDBtsw0Yqf1uDpc0fh579gtJlJyJWBsZYEZ1tgF4tpkEloDsqw1
- cAeE3PWIwMNKY3kM5Ly9ugLsJLpHD2UmlqV7zTLFfEHpXWsN/m4RmjNGfHS2ZMYZzoFtjVdEFG4
- yw4OnUx81ZlFYLw6Jlf7JX98hoPGdMu/l1Wz4dqebVX6JjJ8s07kW2ifdUdT4sOPRGR2BlAfgRG
- Hhys286dKG09WzHbXfCWTThcGfox2fXbblbyIsM6NprJfyLfJPmJbR/0cXvC0uMA94qtxWaJNA+
- AzqK8pog0HLa5WfBVdgYqC/PNUTGvfeqCK/DygdkbqgOP6URRThg9ui0oaDb8Xr98rM/pZGWots
- 1C/rGVrQkpTfQa1osFjKA6GjXKIP6yJ7prSYAZRi9hFHwHCg+OGxvu4xldqyQ5fDMHNgu1tcNuL
- OxqY317DSUySNeD/EGUxR/wbyIFVZFpxmB0oj2j6/GMVSnZ8WQxq8NBWlbXYlmwHQw92HJz4oSy
- nvMId++sLPZY57A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15151; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=kEgu+NRsIvJuO6axeYg1fU8tfgBbCZAh29JefkiHmoY=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCnZ23t0HTRpNQES9NjX+UuD9Obj468mqK2i
+ /Z4V3WfQSSJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQpwAKCRAADmhBGVaC
+ FWoMD/wM5CAcCBfCegteeyIHIH7BrJYebMQMazET6b11Ft3OvSdM6qDJdNWJqIelP7KXsKEpzc2
+ dRH6guGn7JLZZEo1hG93IAyqv1GmKcgdOS9S0Om9JJl+aOH/3xVRw+kfFTMXiOOHBw+z5GoAzdl
+ TMbOmu2xtw20kRyZujNrVWGVqagr2vKRr5PVfOw9PcSRXoZgP9lXq66LlLZI5kNbScMox1WlaMV
+ M8R39iigdvBQH6Qx8TdCqokUhHNOGsDSe4X/+DGWOK+IF0Bd8e/SbnYjWYpObd7qQvVcwLrTQI9
+ 9Cm+WpL+R6amYriATwAaTrTHm9QmcC2eZWJdiCEBH4IJ1BKgH/n2Vmr4n07ZPEoaitvL2XT2TPX
+ Vxgf0erGmTi6mYa5FL0b/891ce3/UE1CVjQL1RVxNYfQPjnLyhjFOug7b+bD1yqmlTlyLtiUPxl
+ m4/LfPZ5P68sNBJcMN+n8FacbaW1pEumpiHa3vtzVw9Aj25mpHlhsLmAV+ixpg8xeZgYLRYSkTy
+ eQHrbSdp3AZphaN2UPWadoIE95UvCs5qYuF0NifDn3wMGQPZm+hcGW4Wx+FCLr54+sBKvs95xYk
+ 4RjGxEdDECWqZAZUnJHbiVACglxtMovAS6TsTK3aogPS0QeMntof6SM94A8BoQ4PUmLB2BXxOFR
+ Ar+3MPW4sRbugqQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+X-Stat-Signature: rpisumx6edygs4hakwcom3ftdjh971xz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C482C100010
-X-Stat-Signature: zfasjh8acpmpfxh9msnccme8cg7xf4rf
-X-HE-Tag: 1772638422-651242
-X-HE-Meta: U2FsdGVkX1/tsaPM7Kn1kvSxPrkUlRJ6ylBRgzxuYr6h3qh4XgTIPn4E1qsrehEKzH+GEvs99sWI187tPbF7tFNQ2quaKDxYZIdrlno44JmtEmyRH8+UAw7RsFPyoxN13gL93YDrkew5l63xgDC/yXQbESgE2nlX+y2MRIto28nLoyE0I4GhBCeXXFfXrnbe02toIuRvLpfvM37CGdlbH/S4vXZhxsIyw0PvqaO1eK5Y3lxDEWuBdZVvomWezDXiJmfeuBHLxtvOtcCaaLCs5JyETB3GOA7BJKK2CHLkkQRHvqNNt51Q5mw2niiR15DwRysla+wXfyk8eanLOqRQkL/A5nFM29mlaCxLGDO62fabgEB7MGE2gq7/TloFCy8/M0mG0lEJnX3IgPugudnqT2sfwxa+KeLtdSFc/wXzzin2oa9KRVaaUbOpEWsbmMRHoAvdlE4zOcCZTR4gqLSzWySeDeqdw2S3MEXcMH3HgY9cJzuLuiUyffFwVP44FZekUHa8NZQEIHv7EBV0OvNiGlyVscdvZlSBHGj9WSg+NUItUspQ6ZqUyah+jahvhck35OXYzCMMetVUC64naseqo+DDsePvHY06Cc3MQDCmV8EtrHNL9a3tStyslrEiFYl5t10dysoGMrb7c39NOnCc+6ANDW4lnVU9My1b4Bmq2T5YPOhjTVQ5WG2Pd+Ohcj4hp+Z4KTS/m3eEjqh3I7hUxTeu1+Ry44knbWeIpzRflJvORRPqP0UMWuPQAP+c83ge9Tr3NqudiDeV1nTdIJiIDhNsqGwWofzpBxJkN/hXecaWukOna6WQ6XZWPVA7bSMtpvbFy0GsD+Rayy+U9qa8CqrbPcRfjJe6kwf5QdCWh9saBLB3wPBmrauhbOX3LRlQjhi6gn6EDIvNS5/j9uGjeh/+k+9w+EAqcbzcEwDYOtFSoIQYRMvdEWx+ssZElQQhPtUxvGdUSmrgGlgxHTQ
- dZK54wg1
- IEUVqCFTG93M9zofEz0a22906ADpPvFFUT6IQ6X4WREiEdR0hwUGKCHBw/IXPMCbQNaPzahFOLqz1Y6nfyAAJWVrQgG6ye5K1BPdloXtCOSi1cBtMAmyXGugGvY5i5ciJwgWGnD/MEI7zLC6I/8W6zd4b3uMmfb9uxD9D7kJ2nmC0jl0o52MyI1wtHcas0kWcdHbsRREPmWtTX9th3Go84Xyx9BencBhstNS5cvs85ty5MMMDjSrqjsKirH/ntoWOV8rMvzkQ5BAzTsMWUljtTyel78kfI74Pc16xNy8mwxqCXJg7eNUyDjkJvwI5OBV0xYMRGopq5Fnkuiz0gbHcoyGwDCBAkjBCDIS1/Cydj8sqvo/6IZGSaAlS5aXDEa5FJqkKeHbRirSCI1uYWv4tUraep72+8RacZtcxTCfVjIUU+SygVcPCGhaHYuUqJ7p3zWnsv6AniH1V8byHnwPOCzzmu24i+e3Q6asAIg2FCqP+ZS3HVLK9KXJQk0jgIejo7lvFBXSnN3xwer/k83PRZr7TVM2n1QshVhRmeoIeAcd52u/4HXivt/h0srk878wbvbR1tC5OUhMwQ1x5QfrJL8GnuixYaeua4RRX+MhB2NdNM+59/GoHQpz9mL6sI05RmnJ0/KLZ+BqN8C8K64BTN2TFfiUgGH7WgnMRM9C8AKFpsAd7db4SBwgWowJF8fpng4VE4ZCof6meIQ4JLv24J/SSuOZMBpqX548f+TAn4o2rNF5yLv7IjsmheKjkkuDgwggsoX6J5Mvmko7P7YaDDJKXIt+XV0BiqWuekm7aoKoezBmpuboA5QCIFzZBj4wKx98jiyWabSsHO5PQCqDzVRqQFw0e9mG/8pt1SPz0xFIJfHoARwYlb1HM9knWY0Gy0RY/jrxDZ5ZpCZYtkqNeneKASdw9Y4k3iR0m+XbeEeD2wUoSJhJPEY/xeTIZkKI6hKTFCoIQ1ot/4lga8sWiIVFbeRS5
- I3x8eH6M
- GdbnIXUsl4voj1K26SFLKxVPZWr5GBlNgXq90NSfkotnusY3omN9UYCywxnQ07IKY71y3uJHqwKSRDHnmN1niGVY6Igolmh5T9iOYzyvAw28AGpQgxwfOmPsbYas+g6w7915lXGCzA9eWSVux0NZSSMTvLZCjpCdQ06CP5I97r1p0N/XuIkJdJHSfCJV0zT22hQkuyBFeces+wDkMw7Ec9h5gNKuZja+DlXqoJf7cXgWnAifsulPNiQ1ei7XeQJjk4rfwuKnv1f17Rg4TZXqOQ4VyrqimNnR8HS4ujTcgcXDZUM3fUYv9CPva+/YZb2vrxs5+tPinxNRz09pIwzLWgUkEcWUuLvTfe0qrATLE8SDErBwPa59wGhXe4D66lRJ+rqVFStyxe4J+UlMArG52tLvX/7fiVQ07XO0RNQt2a4VCygcA2TpSFpiCSsyhEtLf8j8pD5WGBPvROJlOjuzoo+z8+pHfbwrfZxf6aNTyc5ZOjpgI/R8z2lhb/y/tS0c9tBbPWDNhNb//6kaSO62c9KnNicVTtO/96L09TbawbDHxUnTYOD51ZAa4OsNQ/XG/+0JPZHbWN+RltXHEQ4T20tznzdyegJIKrs8SWVXjn0YY3KXvWncNr2GjIOLAnRUwbhcNDE2PZZfhRMbeLlRbDMNln2dnSXTrkkgK02iMWQTfoyDFbqE63C725DMcz1FBhxZgNyNYQzBgG4u/rKwj3T0sXruJg3r5fpZx7dcVWuQO/Susa9NfKu+J8hGw7H0AilbL+0iQrFncZsEbRVDPoxO/216LJnehx88IdiMA4sF62hINEFW3ISxKQANRA3WHgBPrw4BZN2xddhhw/YETvmvIZlRY9CCe54TOY6958gpHeUWXrkGLufMTBmrKtYtz6lXpQcZ1AQPdx2Q28O3BDDztD/Lkhi2w4PS+qJBChUakHuLXQVO/GxLzaMLC39oKdLWbPtW6m7iPZnEbUe+8tWRRYpqT
- yY5PP7iI
- Gv73KoD85mmo4ZUiXtbe3df2cB25LP47302kiEreCbkWmJS/RQT3bQuX81Ijps/smN9jy/+DRvzXZGk1jVV3YWTn4duhTB1bNVntgLueAUKCFQ7Ou0EG6XYrEvo9eyiKL85l0Y2bushsY/uc2vGSQ31vuQuJhxX6VSkSFDY3kb4jLeBlIN1CC2y/cYfTqM/ZyEL1xtptysqh8/44XHeALM+RbdC5y23fWHoi4pUGzMO3cyHEyD8frmZQCrKXdilcjaj6kFqfC5I8ju2Om3ctAyH1WR7nm7XI8EwsmuIKn0+BW8NGOfeBKQSeau8PzAWLrJI1QSBPzoNUR/RsDvOtMMpYmFNNwBKJ/owbLGGxDsMqAeAO6tATH73IGeJZEwuwX8GT0DmKXfY+WX1nprcDH3AhhtCqclQrsXyn1yvEc0jmAo9MJM2v0dmMCXb+UmUKQpXBng0Nse2P+xSd4FnVTjMzRN17z21ZsZG59zeifDR7EDAHE8T2gMGkuI0YThf196PBypJrN7uwx2sg5qP4OlCNohJ3JPht19+B7AWvdlA1y/J/zoJlE5mnyuk+ProDNRGGsocbKHdpv4nwZ6c0ZUl6CAV7sgjNLTnAFUsSvqkCXFpwDxprPJHa+oSGrMK+JgHcZ5/PK7Yl7HcfbhAgl+HgWSbqEK3/CUpj5MiZL6JsEwAprdpdPsu2/UkjkIN0DZeWwLd438oPS8evcq6KBoLfJpsksxkXHyGwnfh/bibUT8dlytUNSF1cCCYHMXQ1MoHXcOLley5ZITNblgYAKWAF6+2T/gZL24Fbv5mWVAM0s8+WgZC/W79DUJTUW+s9pll07+GsqBOX1oxt9xClzU/BF+N50iTp4QdMp1pYyatR03BJNueN3sdvQ6fK32cnu5KyDnj3w9yMTyh/QCcioF9waIMGu1Gcs0KNgFHRH4+d1FEU2/kyDVlBs1UkitGyTALaTNHSqWfZyF4JG5hXFvVdS/rK9
- pnLZiuSv
- W8DRXZn2KbKJUKhR/hAOEpryVaolkY7ZaePJMsTblilEbGaJ+Q6FEiwqLJ22Rizt5MEbMTAGtm6QjRftj9yQTqEnZRnATHZNyRKDJX1IFBIjq9AmI3bmE9QeDbjsTcquwakIWXAcYpIhDsXS7zTwCs7FZAEnQ929gi5f2BO8hay+01/wRuX1kgYbkx3Nt/stfZwzNLJF2q8vJfC/YPW4AEjDmuxj2STiw+6gGBXvSz2WAGgfmThV1Fsbm+EGiSZJWttYFS76V71wjXVyYO3gbCTfEjGR3p7hITG/anCEO4hHy0ysZ86Jd54YzkuHentzZRhssg77SpoOxbgyAFr0rFpidZWA049U5SjdOBn88ktIr1ShFLnUxgC9BevRYQEd+0Rqm0HGMcJIU3uy/i5XBe
+X-Rspamd-Queue-Id: A3A412000B
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772638437-491626
+X-HE-Meta: U2FsdGVkX19hrqAZf+TrB2FgIxIiyZBrv3Sg5YQ5RLnVNtCAInYznHRnyg075ZDIiKjliJRjpVQJSKlIXjuofipu5LPV/nGYAfHyVXLOVIZKJ2Y0a5LnmBIwkNCFpZMBJHjiguWjNVQ0McBISrWJgDqnFqiEl6FY1P0v9o8vNtHehPJNz804xo+vgtBKOv05BvTrGkWVxcQppkJ3F4arGBVy+q9mRE581qrP8rGmA2Bevrx3jPAGK3zwcTwr3ZVQiac/lTWqVtexVRjaCx6NF1jues9hd+HMcYvMfIgPSyLZNpsYuHsGseT4caEG2GXomPnCJwKtIunVU8xWhw5pD9+H0wrgUXhpvBs14IqIOodbPoifvX+dg1V5MSdG4PhhoW03NvTlFMWz8Gwk4EQB24kgi9DVcq6/xloPIJnwDDjRR2cCRlDAnYhSEWlowJY73lv1h2GMP0ObVKWtxCvlMfqKMZyu5g492Q5Z0aLsM3fYf88cJgQnkKnwHiuHzCrxsrVilVsGmwVSo3YFIbQJXTWtgOn2Nv+bZ1mdEQcUPqd+wloUalLiHU49olQITEtl+3x1Ii0ctosXfEgr94MxZyhpKGAJ2PCg7I3W5wpX+mNBMkFjWz0SjJ5grAWWbMj23dq6MTgbZPWO0K6NOYIoMj1iqOoajziRzFIOW4cweb2IzwHghOL2/CEtQ0hDMGsIwt4Epa0PU7pZWp6Dd8nnHxrkyW0cczWPRwYycNTH0stOFrlG5f2Q7zJ01xKGjaJmth85axfwxC4HSoUARNpqQ4khV3iitnE8hNv+193JgwfmXpxfbSaFWbxDHDjoQUo7tj+M8kPZe7cY18RzPgNLhA7N3t7RgMtzJbtHnvm7Q23M4Q+4uivo+GrLjxhmslFu38+kLLiSJHmVshenC++mMaiOMybrYZyDu4t84QNcTXK9lWvYMS9+K5aorjNjCV8YSr/a9rzLVMfpx3tswsf
+ ABsiVedf
+ z7wUJAXNx/q8FsI1WgjnwG3/Zc7YfceeT5xpfr2dKv0LFxgk05japhIdSTaG20X98xJJf6HOLByQm5VoM5l8YRKBvr7w0rGZL29QKIrFyATvK1zaukWko/GrTksxmz7EQe2mq0Yb4+o0oFMWX9jvzAYwSXR27j+4U1l/r1UMfYSszFGvYQ6AxY8JwESbaNtOUBB/YJoKWDov91dYQ7ONK1VlBVhTuZAISeEiHa8weI5t3RTsWW1xre2/deEvJxFfRWa+NcoxOEjJf25+X14wGD57a0EK/w/KFXP4169BUQCnVKIqVvglCy+UMyzpq1jDtBJCeC9CH345aH4OOL9+tjs4qactmRIHpSB+SREnIDoCAW2KGt7i7SpGHrYnKB6JRcXfm+wSFKdMAR2EAXPnnTPd1ComBp/R2Pupb0IKKwpWNUmAW3WPy+TPs9dv4M2wTTAZtvkSITUtzzk0uavKpjq/k/IOgRwk4WJRlRJLHAxi+SGd2+MXZ9Ft9Li9BEyBeSlqhzsiK+h1+K9L8KMVwwVFaeY6142QKx/qhdz94SBqC4QjK9rJIreJG27lROHM0f6IojYjJWjKLcBwP7/A1wE6UagYnYndsDNZkLd2+xq8BnMD/K1JW+NEhN4j7xv4VkNcVlbL7IxdSr1q8pZPGgcP4iePkAelY5i10IufFb8Gt7ZbrDIk022GyZJVQqOLZJAClPKONn1lzDqsM2Ju+21p1Z0BN2Uv44CfaT/mSIPXnO0E8H4WcNR8LH1acGDQ/JU8eVckpgNZBnqy0txYDjgwOItR2HKsJ2iM6w70y2waM1lgNqBzUdhtu6Sqzpk8L0SGAYEh2Elt5+sCFnAZNRNvGP3UnEFM12nPRGnp4mq+cf7k4C/Xm32gCgECczaYEC+pn4WECFlvbx4bQjMSDBw1aAhS1s+oDYpEP5KLiZBo5uTIGEMUJUnP2ubfxKD2oKo9Z/Qe0xY4tRjxmYSuSK2pNGxs5
+ H94fhRXp
+ rnRQyGqviGSd5sm9sW2sdS5l2rMrcJksrpSMu+PwT1ii5u1rTYpIqCjnpiY2YrCXH6THslYCSKOV7h5VcIP2SsYnsy3K7zX9XSD6v6q3so9zB/FKLA4CC65RJ4JfdWMSLuYWI98+EFx9O9n6kXe6AEHlC02c3lTTe2auE7s+5WT9M+W7F/Ue0yNrP+xPjEsMmo5E9Lr/jt+Bp17ksRfPgDOkdtQR99lL9eL+0XN+s2kDAjAaFwrFjo9wC58kSDFGbSI2sswNqwWGgMmfpqHeAk4qmlvgv54qrwli3ddQ3ey0cIuTXoFBRp9JrIwyu/r3Ky9bwhgg3/sy6Ps8w3X78xDZL9iuKtY4xf24ZS7gTU6HGtIjEt/iFLrL6r02gobhNMBEdIa3VupGtfsxnSsugNRhqFtoRTE7Ka/kJVoSy/8Ku0F0NaFjoe9JZ+fkrDU9/p8lWz8Uy2lSiJfXLz80U4zRjcEhU06qYT0Isj6gyvbe0IEeW0iyx3YDzMozWudj/WWFD73jXN506YLZiUYCcuQSrgujPYGqdPqk3CXjfIZFz8Ie+v8kESitLjyywva0Hzwud814uso5/G8+dSg0mkUGDrGyL4fDyzayuPMyJSYbR/YvnthGgUS9/t0y2x5F10J5KZOJB6QKFYrAWPWN4aPtZsYYUupvqvrLVQQ5dVAs00oaFGTMsw+/+xI+Fnh2APDpgma41M1vVn0OKMQ06fL3VBowi7z8FebOi4YTwoM5KKLicuc+D0r3OOAfVnO2G8T24gh21lFHNBm1j9/47Wa5hcejvAqmKB+JeL0hDPSepWZlx/iSNIqWj3XphtbgFMNFYX/rukmEDqmsFB3P5EvhPkBWz1KIJWF0PSLQnZT4qg6P+7BFGiFCZWto4Ryx8iY1vKvCDuDsWCskAPJmyJpn7TqQymthq90yPr5wPkNwtZSMiktfM+O2vixyEBGTI7ypIgC9oc7u1fApcdJMXRoKh7HDV
+ i+qQ4bVh
+ 3YZXkO2lEMuytgYc0UmQ4elUKKR85F9wSfBXY/w81Gh2n5mSjFDh1dysHEUiHLImqyuMUSVwl5uvPEQQqjuEi8uGUksya8xIwKBOms8qQvTDiQrjUN2NTH72G7J1b8/oRgP4S0Uc+B++eWotnuseWLeX7xDEYUTDvB7M4I5itkO3qEO9RztxR5IEUUIZmlYxjkw71tJaEnOgv14cuBAy33gUnaiahfoe2mlJlGWnu8yG/IWDsmDw/smnqX3uwjcCGhQPOIaOdSSMxHQZyOJrDEUtD/YAM+hgV4HslKQ99Wj6kzBwkK6W/W5WVkHUNu4O+kFns6Ptn8JJbvX25LKBJQPOI0Ki1csngoypLS7c8iFiMFxUX7EorTmqOC9/XPUkqN0hZ0u9In8QGGugYpNmQansQ2fQ3e2zY3wi643kC/YIVWqrHykh1vSPA9jITnhhimPU8W3MYimmH3RGYsJBdD9aE9W0Ny+QdNkdA03myqt6DHhygR8s+U+aEts8EPen4mcZXJpL+cHG1rE9L638ee2hai94TgUCBUpmsg2gv7ioQ6Kimqhouj2oAmvbuxdjG8+r5VU2X06jg1abpHKDoOW7mjGLJMM/DV2XJBte9V/rM6zALJlM4YzT2dkjD/Gijbl81YTJ/ahEj80D3jLyn/0YkixAVrdgnZzF49Vynv6USXVEbrwDTUduebu2b6RMohcqmxKLqPljOwNrEPdnZm0EdwHnaT07WU+XBUscrpzfvRyI9HIlaRDqr9ZZwjV0pcF0I6eHlVo6pere6qmUqY2e95K1hnRnB+MDjWySzQFAA91I5nb7AKVyRNEHoUrO4QTwc0QvxM6OM3BiRx9l2vSYj2ciEQF8o67zHtbW5wdAdFeVy3yXQopmStuxwxbLmE73E3BxDKIKH0xm0G5bd2jB46m3fi9Tk+UMLy/sBohwGklDbuBgpzlMx8GQQvLwX0hCRkQ26e1PZI4VZdEgEn7UlPv2U
+ QNKD1dxb
+ hn1679oewRbeaDTh6WvG9PUmdqlCaJ56LkxAOEBgxNnIRjXAooTbLoAs2tCj/MyPfQ/ajvnECREmo4czQrDkXibq7WmJeWY35XhRXLa4k0TzLaEe7f1X7+l37sI+CRjxiCa+bhOjldByNZPOJI5LJzm44Ys4WvenFGgTo1JDsGANQIigS2iJWXXyVL4/bD5AWYmdPPbxgHTlwmu4/kYFz086ZSN+T9i3D6DhTYXgtRk3JwFVXuNy1fI+mWJAAFZoYVrluHDWQwq8O7E6JNHUMpcXrCxRNYKBqqFC8aS9L92cAwNIu/JyVkjo9nIMfzU1DqEeZYUOdwYguOYvD0yLE5j5Fk87/dghQjbA2Qfg6pQAZcHo0lFVFlI846IGM88yTDoJm+YMd9jrCf1Tm0xHtdG3UcdX38ULc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -221,185 +221,359 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-inode->i_ino is being widened from unsigned long to u64. The audit
-subsystem uses unsigned long ino in struct fields, function parameters,
-and local variables that store inode numbers from arbitrary filesystems.
-On 32-bit platforms this truncates inode numbers that exceed 32 bits,
-which will cause incorrect audit log entries and broken watch/mark
-comparisons.
+inode->i_ino is being converted to a u64. sock.sk_ino (which caches the
+inode number) must also be widened to avoid truncation on 32-bit
+architectures where unsigned long is only 32 bits.
 
-Widen all audit ino fields, parameters, and locals to u64, and update
-the inode format string from %lu to %llu to match.
+Change sk_ino from unsigned long to u64, and update the return type
+of sock_i_ino() to match. Fix all format strings that print the
+result of sock_i_ino() (%lu -> %llu), and widen the intermediate
+variables and function parameters in the diag modules that were
+using int to hold the inode number.
 
+Note that the UAPI socket diag structures (inet_diag_msg.idiag_inode,
+unix_diag_msg.udiag_ino, etc.) are all __u32 and cannot be changed
+without breaking the ABI. The assignments to those fields will
+silently truncate, which is the existing behavior.
+
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for net/can
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- include/linux/audit.h   |  2 +-
- kernel/audit.h          | 13 ++++++-------
- kernel/audit_fsnotify.c |  4 ++--
- kernel/audit_watch.c    | 12 ++++++------
- kernel/auditsc.c        |  4 ++--
- 5 files changed, 17 insertions(+), 18 deletions(-)
+ include/net/sock.h           | 4 ++--
+ net/ax25/af_ax25.c           | 2 +-
+ net/bluetooth/af_bluetooth.c | 4 ++--
+ net/can/bcm.c                | 2 +-
+ net/ipv4/ping.c              | 2 +-
+ net/ipv4/raw.c               | 2 +-
+ net/ipv4/tcp_ipv4.c          | 2 +-
+ net/ipv4/udp.c               | 2 +-
+ net/ipv6/datagram.c          | 2 +-
+ net/ipv6/tcp_ipv6.c          | 2 +-
+ net/key/af_key.c             | 2 +-
+ net/netlink/af_netlink.c     | 2 +-
+ net/netlink/diag.c           | 2 +-
+ net/packet/af_packet.c       | 2 +-
+ net/packet/diag.c            | 2 +-
+ net/phonet/socket.c          | 4 ++--
+ net/sctp/proc.c              | 4 ++--
+ net/unix/af_unix.c           | 2 +-
+ net/unix/diag.c              | 6 +++---
+ net/xdp/xsk_diag.c           | 2 +-
+ 20 files changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/include/linux/audit.h b/include/linux/audit.h
-index b642b5faca654c8465b6839c32b633426e1d3d9a..b915aaa7ed7399a6e453b1bb9bacbda686028638 100644
---- a/include/linux/audit.h
-+++ b/include/linux/audit.h
-@@ -15,7 +15,7 @@
- #include <uapi/linux/audit.h>
- #include <uapi/linux/fanotify.h>
- 
--#define AUDIT_INO_UNSET ((unsigned long)-1)
-+#define AUDIT_INO_UNSET ((u64)-1)
- #define AUDIT_DEV_UNSET ((dev_t)-1)
- 
- struct audit_sig_info {
-diff --git a/kernel/audit.h b/kernel/audit.h
-index 7c401729e21bbcb062e2d5f3059d4496ed83529b..ac81fa02bcd7501e31461a346c4e599841525001 100644
---- a/kernel/audit.h
-+++ b/kernel/audit.h
-@@ -76,7 +76,7 @@ struct audit_names {
- 	int			name_len;	/* number of chars to log */
- 	bool			hidden;		/* don't log this record */
- 
--	unsigned long		ino;
-+	u64			ino;
- 	dev_t			dev;
- 	umode_t			mode;
- 	kuid_t			uid;
-@@ -225,9 +225,9 @@ extern int auditd_test_task(struct task_struct *task);
- #define AUDIT_INODE_BUCKETS	32
- extern struct list_head audit_inode_hash[AUDIT_INODE_BUCKETS];
- 
--static inline int audit_hash_ino(u32 ino)
-+static inline int audit_hash_ino(u64 ino)
- {
--	return (ino & (AUDIT_INODE_BUCKETS-1));
-+	return ((u32)ino & (AUDIT_INODE_BUCKETS-1));
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 6c9a83016e9551ed2e2a0d7edf32300b8a4327e7..cfae4fefb8f55d8be6ff5ef401f7b9c601f67cc3 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -537,7 +537,7 @@ struct sock {
+ 	rwlock_t		sk_callback_lock;
+ 	u32			sk_ack_backlog;
+ 	u32			sk_max_ack_backlog;
+-	unsigned long		sk_ino;
++	u64			sk_ino;
+ 	spinlock_t		sk_peer_lock;
+ 	int			sk_bind_phc;
+ 	struct pid		*sk_peer_pid;
+@@ -2140,7 +2140,7 @@ static inline void sock_graft(struct sock *sk, struct socket *parent)
+ 	write_unlock_bh(&sk->sk_callback_lock);
  }
  
- /* Indicates that audit should log the full pathname. */
-@@ -277,16 +277,15 @@ extern int audit_to_watch(struct audit_krule *krule, char *path, int len,
- extern int audit_add_watch(struct audit_krule *krule, struct list_head **list);
- extern void audit_remove_watch_rule(struct audit_krule *krule);
- extern char *audit_watch_path(struct audit_watch *watch);
--extern int audit_watch_compare(struct audit_watch *watch, unsigned long ino,
--			       dev_t dev);
-+extern int audit_watch_compare(struct audit_watch *watch, u64 ino, dev_t dev);
- 
- extern struct audit_fsnotify_mark *audit_alloc_mark(struct audit_krule *krule,
- 						    char *pathname, int len);
- extern char *audit_mark_path(struct audit_fsnotify_mark *mark);
- extern void audit_remove_mark(struct audit_fsnotify_mark *audit_mark);
- extern void audit_remove_mark_rule(struct audit_krule *krule);
--extern int audit_mark_compare(struct audit_fsnotify_mark *mark,
--			      unsigned long ino, dev_t dev);
-+extern int audit_mark_compare(struct audit_fsnotify_mark *mark, u64 ino,
-+			      dev_t dev);
- extern int audit_dupe_exe(struct audit_krule *new, struct audit_krule *old);
- extern int audit_exe_compare(struct task_struct *tsk,
- 			     struct audit_fsnotify_mark *mark);
-diff --git a/kernel/audit_fsnotify.c b/kernel/audit_fsnotify.c
-index a4401f6510608119fd928944c36103326475e3b2..711454f9f7242847f78e7eeed92db7a66be265e6 100644
---- a/kernel/audit_fsnotify.c
-+++ b/kernel/audit_fsnotify.c
-@@ -25,7 +25,7 @@
-  */
- struct audit_fsnotify_mark {
- 	dev_t dev;		/* associated superblock device */
--	unsigned long ino;	/* associated inode number */
-+	u64 ino;		/* associated inode number */
- 	char *path;		/* insertion path */
- 	struct fsnotify_mark mark; /* fsnotify mark on the inode */
- 	struct audit_krule *rule;
-@@ -57,7 +57,7 @@ char *audit_mark_path(struct audit_fsnotify_mark *mark)
- 	return mark->path;
- }
- 
--int audit_mark_compare(struct audit_fsnotify_mark *mark, unsigned long ino, dev_t dev)
-+int audit_mark_compare(struct audit_fsnotify_mark *mark, u64 ino, dev_t dev)
+-static inline unsigned long sock_i_ino(const struct sock *sk)
++static inline u64 sock_i_ino(const struct sock *sk)
  {
- 	if (mark->ino == AUDIT_INO_UNSET)
- 		return 0;
-diff --git a/kernel/audit_watch.c b/kernel/audit_watch.c
-index 096faac2435ce2b3741fb1f623ea7fab65ae7a07..33577f0f54eff1eafe48a94dd2839b00fe7dffcc 100644
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -37,7 +37,7 @@ struct audit_watch {
- 	refcount_t		count;	/* reference count */
- 	dev_t			dev;	/* associated superblock device */
- 	char			*path;	/* insertion path */
--	unsigned long		ino;	/* associated inode number */
-+	u64			ino;	/* associated inode number */
- 	struct audit_parent	*parent; /* associated parent */
- 	struct list_head	wlist;	/* entry in parent->watches list */
- 	struct list_head	rules;	/* anchor for krule->rlist */
-@@ -125,7 +125,7 @@ char *audit_watch_path(struct audit_watch *watch)
- 	return watch->path;
- }
+ 	/* Paired with WRITE_ONCE() in sock_graft() and sock_orphan() */
+ 	return READ_ONCE(sk->sk_ino);
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index a76f4793aed27657dea22e9e28c1d3cd45087cb2..9d236e64f5f59abe2fd974ffd9d6ef1193db5b52 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -1986,7 +1986,7 @@ static int ax25_info_show(struct seq_file *seq, void *v)
+ 		   ax25->paclen);
  
--int audit_watch_compare(struct audit_watch *watch, unsigned long ino, dev_t dev)
-+int audit_watch_compare(struct audit_watch *watch, u64 ino, dev_t dev)
+ 	if (ax25->sk != NULL) {
+-		seq_printf(seq, " %d %d %lu\n",
++		seq_printf(seq, " %d %d %llu\n",
+ 			   sk_wmem_alloc_get(ax25->sk),
+ 			   sk_rmem_alloc_get(ax25->sk),
+ 			   sock_i_ino(ax25->sk));
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 2b94e20772038f1d90228d214f57ab334ca01a50..33d053d634072fee79bb62c003980c203fb30111 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -817,14 +817,14 @@ static int bt_seq_show(struct seq_file *seq, void *v)
+ 		struct bt_sock *bt = bt_sk(sk);
+ 
+ 		seq_printf(seq,
+-			   "%pK %-6d %-6u %-6u %-6u %-6lu %-6lu",
++			   "%pK %-6d %-6u %-6u %-6u %-6llu %-6llu",
+ 			   sk,
+ 			   refcount_read(&sk->sk_refcnt),
+ 			   sk_rmem_alloc_get(sk),
+ 			   sk_wmem_alloc_get(sk),
+ 			   from_kuid(seq_user_ns(seq), sk_uid(sk)),
+ 			   sock_i_ino(sk),
+-			   bt->parent ? sock_i_ino(bt->parent) : 0LU);
++			   bt->parent ? sock_i_ino(bt->parent) : 0ULL);
+ 
+ 		if (l->custom_seq_show) {
+ 			seq_putc(seq, ' ');
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index b7324e9c955b7f03a8f032676bbd89aa8e06bded..30aac2f903d57421d2761153939200813b99e0e9 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1712,7 +1712,7 @@ static int bcm_connect(struct socket *sock, struct sockaddr_unsized *uaddr, int
+ #if IS_ENABLED(CONFIG_PROC_FS)
+ 	if (net->can.bcmproc_dir) {
+ 		/* unique socket address as filename */
+-		sprintf(bo->procname, "%lu", sock_i_ino(sk));
++		sprintf(bo->procname, "%llu", sock_i_ino(sk));
+ 		bo->bcm_proc_read = proc_create_net_single(bo->procname, 0644,
+ 						     net->can.bcmproc_dir,
+ 						     bcm_proc_show, sk);
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index 71d5e17719debb14ca2400edcf5a2cc3153291c6..bc4b43e5230336521802403c5c74cfb5da8b05b1 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -1111,7 +1111,7 @@ static void ping_v4_format_sock(struct sock *sp, struct seq_file *f,
+ 	__u16 srcp = ntohs(inet->inet_sport);
+ 
+ 	seq_printf(f, "%5d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u",
+ 		bucket, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		sk_rmem_alloc_get(sp),
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index e20c41206e29d5655f5378f08fb283f2ecbd2097..bcc99ced1ade135701e2df0e32da0da0af2fc487 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -1041,7 +1041,7 @@ static void raw_sock_seq_show(struct seq_file *seq, struct sock *sp, int i)
+ 	      srcp  = inet->inet_num;
+ 
+ 	seq_printf(seq, "%4d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u\n",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u\n",
+ 		i, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		sk_rmem_alloc_get(sp),
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index d53d39be291a5750af3ab2a160b35f0f8a28ff9d..f2ef41583fc195e153ed848afaf3391080696f02 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -2889,7 +2889,7 @@ static void get_tcp4_sock(struct sock *sk, struct seq_file *f, int i)
+ 				      READ_ONCE(tp->copied_seq), 0);
+ 
+ 	seq_printf(f, "%4d: %08X:%04X %08X:%04X %02X %08X:%08X %02X:%08lX "
+-			"%08X %5u %8d %lu %d %pK %lu %lu %u %u %d",
++			"%08X %5u %8d %llu %d %pK %lu %lu %u %u %d",
+ 		i, src, srcp, dest, destp, state,
+ 		READ_ONCE(tp->write_seq) - tp->snd_una,
+ 		rx_queue,
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 6c6b68a66dcd3b3d8f1747fead868c195e04a0a9..db58bf786c4a8c73b5d42851bb68bbb22a5e85ab 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -3428,7 +3428,7 @@ static void udp4_format_sock(struct sock *sp, struct seq_file *f,
+ 	__u16 srcp	  = ntohs(inet->inet_sport);
+ 
+ 	seq_printf(f, "%5d: %08X:%04X %08X:%04X"
+-		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u",
++		" %02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u",
+ 		bucket, src, srcp, dest, destp, sp->sk_state,
+ 		sk_wmem_alloc_get(sp),
+ 		udp_rqueue_get(sp),
+diff --git a/net/ipv6/datagram.c b/net/ipv6/datagram.c
+index c564b68a056268c7cbc81b5f29f60289ea9e09eb..611fddb90c79e94cc7dfcf85b343bcbf630c39d4 100644
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -1055,7 +1055,7 @@ void __ip6_dgram_sock_seq_show(struct seq_file *seq, struct sock *sp,
+ 	src   = &sp->sk_v6_rcv_saddr;
+ 	seq_printf(seq,
+ 		   "%5d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %u\n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %u\n",
+ 		   bucket,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index e46a0efae01235ae7430ed268b92cb47309b8d28..379c0935f4030b9b3432e867c357883df3089f74 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -2175,7 +2175,7 @@ static void get_tcp6_sock(struct seq_file *seq, struct sock *sp, int i)
+ 
+ 	seq_printf(seq,
+ 		   "%4d: %08X%08X%08X%08X:%04X %08X%08X%08X%08X:%04X "
+-		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %lu %d %pK %lu %lu %u %u %d\n",
++		   "%02X %08X:%08X %02X:%08lX %08X %5u %8d %llu %d %pK %lu %lu %u %u %d\n",
+ 		   i,
+ 		   src->s6_addr32[0], src->s6_addr32[1],
+ 		   src->s6_addr32[2], src->s6_addr32[3], srcp,
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 0756bac62f7c042851636badf0a5e961c4e673c1..522308ec934ed055bdce4fa672b4e6a8bb67edc7 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3783,7 +3783,7 @@ static int pfkey_seq_show(struct seq_file *f, void *v)
+ 	if (v == SEQ_START_TOKEN)
+ 		seq_printf(f ,"sk       RefCnt Rmem   Wmem   User   Inode\n");
+ 	else
+-		seq_printf(f, "%pK %-6d %-6u %-6u %-6u %-6lu\n",
++		seq_printf(f, "%pK %-6d %-6u %-6u %-6u %-6llu\n",
+ 			       s,
+ 			       refcount_read(&s->sk_refcnt),
+ 			       sk_rmem_alloc_get(s),
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 4d609d5cf40653e04de60f2d28ee26b8bdcdc2ed..aba847902be5ace66e17abf0236a5eeebfee0739 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2700,7 +2700,7 @@ static int netlink_native_seq_show(struct seq_file *seq, void *v)
+ 		struct sock *s = v;
+ 		struct netlink_sock *nlk = nlk_sk(s);
+ 
+-		seq_printf(seq, "%pK %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8lu\n",
++		seq_printf(seq, "%pK %-3d %-10u %08x %-8d %-8d %-5d %-8d %-8u %-8llu\n",
+ 			   s,
+ 			   s->sk_protocol,
+ 			   nlk->portid,
+diff --git a/net/netlink/diag.c b/net/netlink/diag.c
+index 1dfc340736b832459388304003ff1f5e1e481d23..0b3e021bd0ed29edc094fad2c79c7c067edcdd50 100644
+--- a/net/netlink/diag.c
++++ b/net/netlink/diag.c
+@@ -43,7 +43,7 @@ static int sk_diag_put_flags(struct sock *sk, struct sk_buff *skb)
+ 
+ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
+ 			struct netlink_diag_req *req,
+-			u32 portid, u32 seq, u32 flags, int sk_ino)
++			u32 portid, u32 seq, u32 flags, u64 sk_ino)
  {
- 	return (watch->ino != AUDIT_INO_UNSET) &&
- 		(watch->ino == ino) &&
-@@ -244,7 +244,7 @@ static void audit_watch_log_rule_change(struct audit_krule *r, struct audit_watc
- /* Update inode info in audit rules based on filesystem event. */
- static void audit_update_watch(struct audit_parent *parent,
- 			       const struct qstr *dname, dev_t dev,
--			       unsigned long ino, unsigned invalidating)
-+			       u64 ino, unsigned invalidating)
+ 	struct nlmsghdr *nlh;
+ 	struct netlink_diag_msg *rep;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 72d0935139f0f5feb00c051143fb47f45fd1f94d..f2af2e0a8530a982d7b95b91ac0388f67b16d46f 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -4721,7 +4721,7 @@ static int packet_seq_show(struct seq_file *seq, void *v)
+ 		const struct packet_sock *po = pkt_sk(s);
+ 
+ 		seq_printf(seq,
+-			   "%pK %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6lu\n",
++			   "%pK %-6d %-4d %04x   %-5d %1d %-6u %-6u %-6llu\n",
+ 			   s,
+ 			   refcount_read(&s->sk_refcnt),
+ 			   s->sk_type,
+diff --git a/net/packet/diag.c b/net/packet/diag.c
+index c8f43e0c1925fab8ef6c39de3547dcd6f7389b81..cee773f46571ca51718544227f3425192bb77f24 100644
+--- a/net/packet/diag.c
++++ b/net/packet/diag.c
+@@ -130,7 +130,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
+ 			struct packet_diag_req *req,
+ 			bool may_report_filterinfo,
+ 			struct user_namespace *user_ns,
+-			u32 portid, u32 seq, u32 flags, int sk_ino)
++			u32 portid, u32 seq, u32 flags, u64 sk_ino)
  {
- 	struct audit_watch *owatch, *nwatch, *nextw;
- 	struct audit_krule *r, *nextr;
-@@ -285,7 +285,7 @@ static void audit_update_watch(struct audit_parent *parent,
- 				list_del(&oentry->rule.list);
- 				audit_panic("error updating watch, removing");
- 			} else {
--				int h = audit_hash_ino((u32)ino);
-+				int h = audit_hash_ino(ino);
+ 	struct nlmsghdr *nlh;
+ 	struct packet_diag_msg *rp;
+diff --git a/net/phonet/socket.c b/net/phonet/socket.c
+index 4423d483c630adc93af07e0c23a78800b696d4a4..c4af26357144ebb8016d001244c1fdaf925892fc 100644
+--- a/net/phonet/socket.c
++++ b/net/phonet/socket.c
+@@ -579,7 +579,7 @@ static int pn_sock_seq_show(struct seq_file *seq, void *v)
+ 		struct sock *sk = v;
+ 		struct pn_sock *pn = pn_sk(sk);
  
- 				/*
- 				 * nentry->rule.watch == oentry->rule.watch so
-@@ -439,7 +439,7 @@ int audit_add_watch(struct audit_krule *krule, struct list_head **list)
+-		seq_printf(seq, "%2d %04X:%04X:%02X %02X %08X:%08X %5d %lu "
++		seq_printf(seq, "%2d %04X:%04X:%02X %02X %08X:%08X %5d %llu "
+ 			"%d %pK %u",
+ 			sk->sk_protocol, pn->sobject, pn->dobject,
+ 			pn->resource, sk->sk_state,
+@@ -754,7 +754,7 @@ static int pn_res_seq_show(struct seq_file *seq, void *v)
+ 		struct sock *sk = rcu_dereference_protected(*psk,
+ 					lockdep_is_held(&resource_mutex));
  
- 	audit_add_to_parent(krule, parent);
+-		seq_printf(seq, "%02X %5u %lu",
++		seq_printf(seq, "%02X %5u %llu",
+ 			   (int) (psk - pnres.sk),
+ 			   from_kuid_munged(seq_user_ns(seq), sk_uid(sk)),
+ 			   sock_i_ino(sk));
+diff --git a/net/sctp/proc.c b/net/sctp/proc.c
+index 1ed281f3c355d559d82e4fa2be10c191f787c85e..43433d7e2acd706ede7b59a51ab6441d1ee1dd12 100644
+--- a/net/sctp/proc.c
++++ b/net/sctp/proc.c
+@@ -174,7 +174,7 @@ static int sctp_eps_seq_show(struct seq_file *seq, void *v)
+ 		sk = ep->base.sk;
+ 		if (!net_eq(sock_net(sk), seq_file_net(seq)))
+ 			continue;
+-		seq_printf(seq, "%8pK %8pK %-3d %-3d %-4d %-5d %5u %5lu ", ep, sk,
++		seq_printf(seq, "%8pK %8pK %-3d %-3d %-4d %-5d %5u %5llu ", ep, sk,
+ 			   sctp_sk(sk)->type, sk->sk_state, hash,
+ 			   ep->base.bind_addr.port,
+ 			   from_kuid_munged(seq_user_ns(seq), sk_uid(sk)),
+@@ -261,7 +261,7 @@ static int sctp_assocs_seq_show(struct seq_file *seq, void *v)
  
--	h = audit_hash_ino((u32)watch->ino);
-+	h = audit_hash_ino(watch->ino);
- 	*list = &audit_inode_hash[h];
- error:
- 	path_put(&parent_path);
-@@ -527,7 +527,7 @@ int audit_dupe_exe(struct audit_krule *new, struct audit_krule *old)
- int audit_exe_compare(struct task_struct *tsk, struct audit_fsnotify_mark *mark)
+ 	seq_printf(seq,
+ 		   "%8pK %8pK %-3d %-3d %-2d %-4d "
+-		   "%4d %8d %8d %7u %5lu %-5d %5d ",
++		   "%4d %8d %8d %7u %5llu %-5d %5d ",
+ 		   assoc, sk, sctp_sk(sk)->type, sk->sk_state,
+ 		   assoc->state, 0,
+ 		   assoc->assoc_id,
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 3756a93dc63aabc814f7edd31e8c0b6fafa02ce7..a6c5015f3f0a19a930da636ef37eb98b3c40663f 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3537,7 +3537,7 @@ static int unix_seq_show(struct seq_file *seq, void *v)
+ 		struct unix_sock *u = unix_sk(s);
+ 		unix_state_lock(s);
+ 
+-		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5lu",
++		seq_printf(seq, "%pK: %08X %08X %08X %04X %02X %5llu",
+ 			s,
+ 			refcount_read(&s->sk_refcnt),
+ 			0,
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index ca34730261510c2b34dc6661eadaa9d1651e59d2..410f6c8745b7a0e5287b9f7fbc0a71d15cffc850 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -45,7 +45,7 @@ static int sk_diag_dump_vfs(struct sock *sk, struct sk_buff *nlskb)
+ static int sk_diag_dump_peer(struct sock *sk, struct sk_buff *nlskb)
  {
- 	struct file *exe_file;
--	unsigned long ino;
+ 	struct sock *peer;
+-	int ino;
 +	u64 ino;
- 	dev_t dev;
  
- 	/* only do exe filtering if we are recording @current events/records */
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index f6af6a8f68c4f6d14d9a899934138df2036e1f9a..ab54fccba215ca61d56335d1a22a7f26297e28ee 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -886,7 +886,7 @@ static int audit_filter_inode_name(struct task_struct *tsk,
- 				   struct audit_names *n,
- 				   struct audit_context *ctx)
+ 	peer = unix_peer_get(sk);
+ 	if (peer) {
+@@ -112,7 +112,7 @@ static int sk_diag_dump_uid(struct sock *sk, struct sk_buff *nlskb,
+ 
+ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_req *req,
+ 			struct user_namespace *user_ns,
+-			u32 portid, u32 seq, u32 flags, int sk_ino)
++			u32 portid, u32 seq, u32 flags, u64 sk_ino)
  {
--	int h = audit_hash_ino((u32)n->ino);
-+	int h = audit_hash_ino(n->ino);
- 	struct list_head *list = &audit_inode_hash[h];
+ 	struct nlmsghdr *nlh;
+ 	struct unix_diag_msg *rep;
+@@ -186,7 +186,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		num = 0;
+ 		spin_lock(&net->unx.table.locks[slot]);
+ 		sk_for_each(sk, &net->unx.table.buckets[slot]) {
+-			int sk_ino;
++			u64 sk_ino;
  
- 	return __audit_filter_op(tsk, ctx, list, n, ctx->major);
-@@ -1534,7 +1534,7 @@ static void audit_log_name(struct audit_context *context, struct audit_names *n,
- 		audit_log_format(ab, " name=(null)");
- 
- 	if (n->ino != AUDIT_INO_UNSET)
--		audit_log_format(ab, " inode=%lu dev=%02x:%02x mode=%#ho ouid=%u ogid=%u rdev=%02x:%02x",
-+		audit_log_format(ab, " inode=%llu dev=%02x:%02x mode=%#ho ouid=%u ogid=%u rdev=%02x:%02x",
- 				 n->ino,
- 				 MAJOR(n->dev),
- 				 MINOR(n->dev),
+ 			if (num < s_num)
+ 				goto next;
+diff --git a/net/xdp/xsk_diag.c b/net/xdp/xsk_diag.c
+index 0e0bca031c0399901949982bf430ade6cde286d3..0170363eb542cc1874817f46fd3627857761ab77 100644
+--- a/net/xdp/xsk_diag.c
++++ b/net/xdp/xsk_diag.c
+@@ -92,7 +92,7 @@ static int xsk_diag_put_stats(const struct xdp_sock *xs, struct sk_buff *nlskb)
+ static int xsk_diag_fill(struct sock *sk, struct sk_buff *nlskb,
+ 			 struct xdp_diag_req *req,
+ 			 struct user_namespace *user_ns,
+-			 u32 portid, u32 seq, u32 flags, int sk_ino)
++			 u32 portid, u32 seq, u32 flags, u64 sk_ino)
+ {
+ 	struct xdp_sock *xs = xdp_sk(sk);
+ 	struct xdp_diag_msg *msg;
 
 -- 
 2.53.0
