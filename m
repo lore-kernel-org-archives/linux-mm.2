@@ -4,126 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83FEFEF8FF1
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:11:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA50EEF8FF3
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:13:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0C136B0089; Wed,  4 Mar 2026 10:11:25 -0500 (EST)
+	id 2E26E6B008A; Wed,  4 Mar 2026 10:13:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3C66B008A; Wed,  4 Mar 2026 10:11:25 -0500 (EST)
+	id 28FBA6B008C; Wed,  4 Mar 2026 10:13:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EF9F6B0092; Wed,  4 Mar 2026 10:11:25 -0500 (EST)
+	id 18E866B0092; Wed,  4 Mar 2026 10:13:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81B4C6B0089
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:11:25 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2AF861C7D8
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:11:25 +0000 (UTC)
-X-FDA: 84508719330.01.8174FC2
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 46168C0003
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:11:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TB3alOKW;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 078FB6B008A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:13:56 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A0761B8446
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:13:55 +0000 (UTC)
+X-FDA: 84508725630.15.4B59F9C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id EDEEAC0013
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:13:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vPvSHVMp;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772637083;
+	s=arc-20220608; t=1772637233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QoKsT5JRqIpY8UANHFptI+GVlx4Jt8dOkJklplEKYw4=;
-	b=KRRvT1Ye1gMDBEg9QnLk6TENMGtZvS933EbSZayjoWq1dE1T6lwAad4mbKGxz+9KpAsf9V
-	7tcujrYjP53iTap3t/mYXG+l7vQT589JHvTDjFVnrX0RcpJHPKqV7wtauFdtAoNzW9YcC5
-	FvAxf7EqANWGEid+dh2GRQtz7X3BCMg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772637083; a=rsa-sha256;
-	cv=none;
-	b=pfFyhqCZ5Xi6+fDQN+xhARh+lpQRu1LyJLOcjjP5cKvAtQmOw825efJtWU2DntY5+imO4f
-	NG/eVquiIyYxT4QL3ttbtLyVfvEBxMXOJPLAcZWYn9+4RCuCDhKIk08RecrRxs18PdgzaO
-	bCSikVw0uuu+n9ZvL4qj1dl2RVORTwc=
+	bh=vVzlVJCKPmMDMIWZO1x6Q+mabNba4yEUK35mv1gdRxw=;
+	b=sorb4vhZWsnaPg9oWwe5sG4cWFTp531cphjMfh0psxs6I4XrPPpfxfxXPGXTcVXwH1zZ5+
+	oNnAyoL1xi6kzbEQW8z0w3Koj6PGYlm//XHbyzlqcYspZfrQVg4VOyRx4P+E0rIoS3W56+
+	hCj5qS1KkBU+DsDzDcUEvR/k3Yeti6k=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=TB3alOKW;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d1959ba05cso3510876a34.2
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 07:11:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772637082; x=1773241882; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QoKsT5JRqIpY8UANHFptI+GVlx4Jt8dOkJklplEKYw4=;
-        b=TB3alOKW+u8fX4hz7j5j0wxOl5HqTE7KDBIdZIKrGDGekJYBjbQ4YovWvEVw5UHgzy
-         5FNAQGv6uByUS2uKvwqowc72XZVNWMy8nI1vQhjZIb049E4/uGdwzaFlIvqQ6c24bild
-         VIZO+Ux3WxSzDKQ5s3+SQysaf1LUPzBRhNQKQMO9v7bt8yAY4d6GsXs6eStTxXCW/kvz
-         IZ6uH6CsccxBPYGbS1lDxPhMC6x4sdBGIuf8YapY040abO7NNLHt8IowkKC/DMoJj8EM
-         J4DybpRxQQrq1ph/xYpRjBrFYzg0tT0IJEnKcsdqg+AwxuOc4pWfakP7dfB82ibmr7hj
-         vFXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772637082; x=1773241882;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QoKsT5JRqIpY8UANHFptI+GVlx4Jt8dOkJklplEKYw4=;
-        b=i917MD5W9srgExZk01im6v1yxChUC8B44mCUqKRvDjXyCOYkZOMPvApobmTJfZomsq
-         yyfrRTbs9i7RHzJW9sQUurtbuvhGBPPTw1ttwJhbb57ukR9NrsJ3Vk5bDxuaP3n9kjFh
-         MS89QuzRGoRFw81Fu0GeJOypUYx+jAukIx7a+tpF/s0Qosh433UW56gUudTNLtkMA3jy
-         i747P2dd5ZlVz/WxqDbieguOnRWVVd2+xud+CdoKLyFKDh1cva9D9ej7R2VmOIv5DfuA
-         iu2eGDHVbeTb2Gc76splVBviY/C89SxchylVmXT+kYLQrJY4yBJG1cfzg+mSMY23WOl6
-         +a4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVIHu8jgB2WewbqKVAvuPFJ8jHiMu96rW+muimBbTF3R6vTz4cHvSRLHbgQ9NixKKrLQWU5JCn2kA==@kvack.org
-X-Gm-Message-State: AOJu0YxqRi245gYvslWMM3dO+4y7dE+lcqEB1HsDbalPS0/ZbIKU9Vuh
-	Rb4Imyn9KtXyuhUkHquXYe9oGvKUQwxJSR1weR01rE52E3Y4oAqImDz/
-X-Gm-Gg: ATEYQzzMWk461IwvlfHLtzWiOhgXXPHSXKqkGUE94Wxfb2rf0uezc/85T7vIFtNDCYf
-	XzD9FLugmcTcjr1aSJLev9pE5LBnQiY03DCwDDWNTFgmCQeefiyjx6LaNF0s7du2JokCs/um8U/
-	FWfBKc/KGLMGkhX943yI4CSQwRIRPyEFHy2ceRfHHrVHod+0wCjAbkgElVjd9Q8yLAIrSz1ZJAf
-	TEMDHed5hzDlg/iXACDhGp1SWBA7O74mlMq3+iJaf8d8m2k2MgGT7uquUY6PoUTbMfolpXB+4Rt
-	qYaDR81iAurj6HXv1XcJ2Qj5bMjjazeuZnl6XICmdguVZKb2WqxSJyfhFsCeDtHyXxT4MYFKCJb
-	TnLCKQjFashar27NGnU+U2bXMGxL5B4syEZH9u9uGmV6JRjfRmtKFy0NP7PlS6StSGyndkpGwq7
-	DNtjbJw76fs1UQdVyzM/45Kg==
-X-Received: by 2002:a05:6830:388c:b0:7d1:90d6:1f5c with SMTP id 46e09a7af769-7d6c7f4bc25mr1088903a34.4.1772637082089;
-        Wed, 04 Mar 2026 07:11:22 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d5866701cdsm15564292a34.29.2026.03.04.07.11.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 07:11:21 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vPvSHVMp;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772637233; a=rsa-sha256;
+	cv=none;
+	b=2hor7+b3osaFUcrMIionA2zToPMZ1mTmZRXJSuREE9N/6e+dmEwRi68AVMp8IR1WvhFmAk
+	gYQquUAlqHir6hnPOC/tHtbQduRoq1bZTV8BhBMDIvMwzWE14og7a5OGyJHbBUKvVV6Fmh
+	SetZM7ln9AyetI1HEdAOYESBEw7x5u0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 500A960097;
+	Wed,  4 Mar 2026 15:13:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3CEC4CEF7;
+	Wed,  4 Mar 2026 15:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772637233;
+	bh=8QWqZ7YNDPVF6gZQ/i7c6RdhDtv9wD4t4d1tq0V22Gs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vPvSHVMpbDtgWdTEaP2C6BvxAyg9V9WE2471ZNAhaRLeQz/pv6ihmrNaoqAOmSBPf
+	 pVnNmTuJ7tWGqKJOQRMxgdvDSd1gsBypb43d5flxEX+PKJMg68CHlGuUIqLTiCFFuz
+	 rKc1J8WJC8Pzjhh2VbH7q/t8+THOPWP+XMsLDTbTJ56nsjnrtQHCWj3p6bIBLwDZUH
+	 dsnB+x2CRDMw3WeW5B2royvEVABcmYe086q2XeWwyM46Zbx4dnV3V7Lbti9KtpkpPj
+	 JUMdnVwEMKWupt4mteIGkGEu0zZYa8FXy9APLll3zPJtiAf8bRT1EMQssv7I9hkYG+
+	 tPEEdQ/fLqUqQ==
+From: SeongJae Park <sj@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 6/8] mm/zsmalloc, zswap: Handle objcg charging and lifetime in zsmalloc
-Date: Wed,  4 Mar 2026 07:11:19 -0800
-Message-ID: <20260304151120.3512645-1-joshua.hahnjy@gmail.com>
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Date: Wed,  4 Mar 2026 07:13:34 -0800
+Message-ID: <20260304151335.172572-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAO9r8zOFS7zU-eGkErcjud=DW0t00_WqNqCzq_QDf061dOsYSQ@mail.gmail.com>
+In-Reply-To: <aagtOctLQqpDcw_h@shell.ilvokhin.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rue71f9tukgto5x153bmob3637kzhuot
+X-Rspamd-Queue-Id: EDEEAC0013
+X-Stat-Signature: j76akxpbxodkwbnz5sy1c7idf7yqzewu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46168C0003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772637083-203214
-X-HE-Meta: U2FsdGVkX18BJHGWTdz7Nr2uiK2vhgYlbw625rjDw9oOXTZv4r10YgHMynml6+29lTiUElSNoU2+Io3iGazXzni1KDmCkDFea1v8FqhqqhJn51D4NkjpHiZ5/veSZvXAFGS6Lc21hxHzHoLw+OBp6Mg74h7fbM1ML13MhwQqEBWh0YeviFP4pC49IEuwW/CRt0+73FZRBezEH0GKkkYAN8Mqb8v+QVqs82g1wFAZh1OCE4S1J5SL265G9FgjRcDGL8gJ8/byWtrJ+I+LOXBrx/jNRma4B3II/o/7j5ppM/p/8tTmEVAWTNb4XNe+HCTtzthkJ3YOX1PIE0efYboZ1zPKyeEKHTqdZMIvCe/YakH+6XsdocrzddpLflVKhka2e5XF/XkBsUc5LsUj73I+3DeVmcxkDNcX85DULH78dKSsJTG7pKPLLY3YsUwSrK2/GgPgth2dHSZWZ5ASpzA4YYy14JaGpJ4YlRjhCGdEV3kKTtYE7OaZs2hK06kICPLls+5lZBXSAPqc/iOAx6M9cHzpCayvwpMfkO8dPjN7L/c5fIFORUIMQw2amUUWFYpnOWznGpD00x9TUGE4KIXLJkGl+vYZSSPolTqmIyR3Yo3koNbJb9r/KJYGoUiGZ3PZ5fj2FfIZXdzLMQPm4ATGAzPmdIX1XTWOIroUJPSj+RalH/pCAlSMMJpV/qFKueyaJgYJTSX9z2fQxdpiG1gaCUxAUCM7oxmbhjSb3E2M8dHuoomMiWxV6ozlYFTt2+eLadYy8vbSIXlQXKimisfUItEZp5WIOOpfzWaq3xcwnvQgpMiX1YjUi++q9n9iH5rPFQCVThu8JjMzGIT2pfLYZJroiVAnQ5PvBBYiYKPhTgr4pI1qhmJAzlxOFtIyl7WRv+P9WEWqOX7Cc7qt4XN+mPWZEztZU0Xe5cA3EgWRbEA9QOSq86c38DoeGIq1jGE0LWABuK9Vtn5bud3eEr4
- PABlvrZ7
- 39et+lB5IvKFTxGx7FfrBOUgOkSpiBgBGSSes6VH1LsbGJ4KwZFDPCDE0L2VMRkB6WPg9U/RLSa+2ogQtCMkolOb+I70lDpfBXbmwxe2GfGzehfKn0IWHKm5Y0PpmmlK17TCpoTUp0QSwnIx68/UUlpRAXkWU4EqlnT9C8gqRmXyRkZAFX6M5KPgYQgtV1xstQsqn99fzX+B+mprFKY09vV7BHwcIgyhtlPX7V1ZrmQAzRLqJIkl1zY/FGj3xWTUW3IcSserkjLei9t77oS82AIydzmFIz1NFO5Znay4zkHHmlFXtfkPqhFNAL1UgpM0c+1ew5fa7xaXkSsUl26NahUCS1Eau/Ni07gHRGJI6ok5JQBNNc5ViqytmJQpt393HBjiJJMoS9qaJPdB2pQlc7qCV0BQnfgeWSx92HrOrP/aMcGSbXpJQva6T0Ms2qrAux0uq1ixYYzIX9WSFTi8njU3wcZiZPtgxpWRWukDPMXwEJ2cLHKlO74oaz523lsV+E94PbhaXaaJZx+OPuZFg5dxqBiob9jQx9wxA
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772637233-793898
+X-HE-Meta: U2FsdGVkX1+FYxjdgUVCCUPhW2bw/MUeKi41m5RG35MziZHkCqR8y4qi2RZzCNksfOi47g9ylcNYnBMzGTuYMncwZQet/SocjmIfomUiGJYO4FV5Hk7OIEOmAZ9/GfwO9UBUhL/iDzK/+8AFhDmE8yZxB6JObEgSJbR0Ys2wboEx9GaHFPYJiypw87Od7YZR0QFjToi2uMUqL3KSxxbiEhGDPSPIhRvvRPVQm77v8x3q+sYmpOUQ8LizmL6euZpXN9LfmbM1cYE0MDDQy1LkXleuctXzNzP1pOVN36l+klLmG42mDwJr5852b+2wAJPQriedVUoB9YF59UeSPUNabD597DiP06Gwmg7sJiCetsq3ziVlxezVV5xiY4iiY1xyhjPHgKuPiFq1gB5IROpREOOl0fa+9hbXCce8kNi/zAIjF1r1mFWJf1tlZbnEv8wXXxMTSgz5fuJYw54W9l8AWnWbK/fzDGHSGkbO3ZalV8Wq/emka8/nk3BJSoD9W3f6zzfCWh9E8eIM5WKAlXB05VhCofUcxByD4o7JUL0LUU5/Yk0i378sehCp5Ic/LjxC2/j9CTItGqc+uTREh4vU9UWgY0IrVoDqdD+zIPext67avXWtpIL3pQMzwf7+w37PhzZpGiqIgmN4eXJr9nS0OK/bCtLfVij38BZHLRaG6+D2PjFRbUdqKjajDRrvGCRhhEv0eyZq2yiDQPuXCQNdkZkla6XCQVlJnWJZEsAp68QREcM5EPLAF6giSQe9Gx6aiKs5W6Snqae4lHLl9P1LSdGVrxQgshPdo9yprGydzBrmWjBzwG3YPAXi/BFJa/DyLcZ7dlE18ibfEIaoWrzA28TmtS2PVybA1CF93RAcWPyF24qrKtEWhMZrExbT4w90EYwu80XmmYXc8FDg9j+qZsedo8GrJZSVXKs6HcgDbpZ/EIleTxsWhSS1WBAMdfJyDvXTkl2ePklp9oo8B2i
+ ID7Fmr63
+ eZwerH02on+dkaOGtsNyTLhiLQ/58k/S2b1GB1MczsGbppKI6hyaenCN0L53CbYib7ewjqXeNVxZ+w0lPtXecU0mf8wVCqSTItyAzQRUDrNUwA4yxY4joxTsFF8xGAKbK/P0899H4JCrpLjEi+/AVkbPucVk7NaoVS/j0KLHHFBaVVPhUBvvhZyeN2Xl15xgPEVmdVAoWepAGkMqntAVaFiAHJud1sy6I6eX+cvJlp9lKRrlAqT8O9z2A0PVbxDfvW/l9RJrB3hRAA8PuSFx9PsiTE2pinblj/MVmEKbrlkngfI+WI+HLE/DJrX7udOxpSTIpxRU/ovDvqVa09kX2pLqPtxVzpLIlm3dRN+YjybcTbSSfKsm1v1dohRoeFa0tY9CYLezoJabknxU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,98 +116,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 3 Mar 2026 15:53:31 -0800 Yosry Ahmed <yosry@kernel.org> wrote:
+On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> > index 067215a6ddcc..88c7cd399261 100644
-> > --- a/mm/zsmalloc.c
-> > +++ b/mm/zsmalloc.c
-> > @@ -963,6 +963,44 @@ static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
-> >         return true;
-> >  }
-> >
-> > +static void zs_charge_objcg(struct zpdesc *zpdesc, struct obj_cgroup *objcg,
-> > +                           int size, unsigned long offset)
-> > +{
-> > +       struct mem_cgroup *memcg;
-> > +
-> > +       if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> > +               return;
-> > +
-> > +       VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
-> > +
-> > +       /* PF_MEMALLOC context, charging must succeed */
-> > +       if (obj_cgroup_charge(objcg, GFP_KERNEL, size))
-> > +               VM_WARN_ON_ONCE(1);
-> > +
-> > +       rcu_read_lock();
-> > +       memcg = obj_cgroup_memcg(objcg);
-> > +       mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
-> > +       mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
+> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> > 
+> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
+> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+> > > > 
+> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> > > > > > This intentionally breaks direct users of zone->lock at compile time so
+> > > > > > all call sites are converted to the zone lock wrappers. Without the
+> > > > > > rename, present and future out-of-tree code could continue using
+> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
+> > > > > > infrastructure.
+> > > > > > 
+> > > > > > No functional change intended.
+> > > > > > 
+> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
+> > > > > 
+> > > > > I see some more instances of 'zone->lock' in comments in
+> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
+> > > > > 
+> > > > 
+> > > > I fixed (most of) that in the previous version but my fix was lost.
+> > > 
+> > > Thanks for the fixups, Andrew.
+> > > 
+> > > I still see a few 'zone->lock' references in Documentation remain on
+> > > mm-new. This patch cleans them up, as noted by Vlastimil.
+> > > 
+> > > I'm happy to adjust this patch if anything else needs attention.
+> > > 
+> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
+> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
+> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
+> > > Subject: [PATCH] mm: fix remaining zone->lock references
+> > > 
+> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> > > ---
+> > >  Documentation/mm/physical_memory.rst | 4 ++--
+> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
+> > >  2 files changed, 6 insertions(+), 6 deletions(-)
+> > > 
+> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> > > index b76183545e5b..e344f93515b6 100644
+> > > --- a/Documentation/mm/physical_memory.rst
+> > > +++ b/Documentation/mm/physical_memory.rst
+> > > @@ -500,11 +500,11 @@ General
+> > >  ``nr_isolate_pageblock``
+> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
+> > >    problem due to racy retrieving migratetype of pageblock. Protected by
+> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+> > 
+> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
+> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
+> > for the rest of this patch.
+> > 
+> > I was initially thinking this is just a mistake, but I also found Andrew is
+> > doing same change [2], so I'm bit confused.  Is this an intentional change?
+> > 
+> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
+> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
+> > 
+> 
+> Good catch, thanks for pointing this out, SJ.
+> 
+> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
+> However, in Documentation I intentionally switched references to
+> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
+> internal implementation detail, and direct access is discouraged. The
+> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
+> so referencing zone_lock in documentation felt more appropriate than
+> mentioning the private struct field (zone->_lock).
 
-Hello Yosry, I hope you are doing well!
-Thank you for your feedback : -)
+Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
+zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
+better.
 
-> Zsmalloc should not be updating zswap stats (e.g. in case zram starts
-> supporting memcg charging).  How about moving the stat updates to
-> zswap?
+But, I'm concerned if people like me might not aware the intention under
+'zone_lock'.  If there is a well-known convention that allows people to know it
+is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
+humble opinion.  If there is such a convention but I'm just missing it, please
+ignore.  If I'm not, for eaxmaple,
 
-Yeah... I think this was also a big point of concern for me. While reading
-the code, I was really amazed by how clean the logical divide between
-zsmalloc and zswap / zram were, and I wanted to preserve it as much as
-possible.
+"protected by ``zone->lock``" could be re-wrote to
+"protected by ``zone_[un]lock_*()`` locking helpers" or,
+"protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
 
-There are a few problems, though. Probably the biggest is that migration
-of zpdescs and compressed objects within them are invisible to zswap.
-Of course, this is by design, but this leads to two problems.
+> 
+> That said, I agree this creates inconsistency with the mechanical
+> rename, and I'm happy to adjust either way: either consistently refer
+> to the wrapper API, or keep documentation aligned with zone->_lock.
+> 
+> I slightly prefer referring to the wrapper API, but don't have a strong
+> preference as long as we're consistent.
 
-zswap's ignorance of compressed objects' movements across physical nodes
-makes it impossible to accurately charge and uncharge from the correct
-memcg-lruvec.
+I also think both approaches are good.  But for the wrapper approach, I think
+giving more contexts rather than just ``zone_lock`` to readers would be nice.
 
-Conversely, zsmalloc's ignorance of memcg association makes it impossible
-to correctly restrict cpusets.mems during migration.
 
-So the clean logical divide makes a lot of sense for separating the
-high-level cgroup association, compression, etc. from the physical
-location of the memory and migration / zpdesc compaction, but it would
-appear that this comes at a cost of oversimplifying the logic and missing
-out on accurate memory charging and a unified source of truth for the
-counters.
+Thanks,
+SJ
 
-The last thing I wanted to note was that I agree that zsmalloc doing
-explicit zswap stat updates feels a bit awkward. The reason I chose to do
-this right now is because when enlightening zsmalloc about the compressed
-objs' objcgs, zswap is the only one that does this memory accounting.
-So having an objcg is a bit of a proxy to understand that the consumer
-is zswap (as opposed to zram). Of course, if zram starts to do memcg
-accounting as well, we'll have to start doing some other checks to
-see if the compresed object should be accounted as zram or zswap.
-
-OK. That's all the defense I have for my design : -) Now for thinking
-about other designs:
-
-I also explored whether it makes sense to make zsmalloc call a hook into
-zswap code during and after migrations. The problem is that there isn't
-a good way to do the compressed object --> zswap entry lookup, and this
-still doesn't solve the issue of zsmalloc migrating compressed objects
-without checking whether that object can live on another node.
-
-Maybe one possible approach is to turn the array of objcgs into an array
-of backpointers from compressed objects to their corresponding zswap_entries?
-One concern is that this does add 8 bytes of additional overhead per 
-zswap entry, and I'm not sure that this is acceptable. I'll keep thinking
-on whether there's a creative way to save some memory here, though...
-
-Of course the other concern is what this will look like for zram users.
-I guess it can be done similarly to what is done here, and only allocate
-the array of pointers when called in from zswap.
-
-Anyways, thank you for bringing this up. What do you think about the
-options we have here? I hope that I've motivated why we want
-per-memcg-lruvec accounting as well. Please let me know if there is anything
-I can provide additional context for : -)
-
-Have a great day!
-Joshua
+[...]
 
