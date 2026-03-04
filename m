@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B101E67A8A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:27:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A20EDEC1B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:28:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58AB16B0088; Wed,  4 Mar 2026 02:27:45 -0500 (EST)
+	id 5B2516B008A; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 538846B0089; Wed,  4 Mar 2026 02:27:45 -0500 (EST)
+	id 570E56B008C; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4373E6B008A; Wed,  4 Mar 2026 02:27:45 -0500 (EST)
+	id 4808F6B0092; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 31C866B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:27:45 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C3E36B992C
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:27:44 +0000 (UTC)
-X-FDA: 84507550848.07.61952C1
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 90B3D100007
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:27:41 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 388D56B008A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1E09B96E6
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:28:12 +0000 (UTC)
+X-FDA: 84507552024.17.92464AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3599CC0003
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:28:11 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mj4r4Azp;
+	spf=pass (imf28.hostedemail.com: domain of devnull+maximilianpezzullo.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+maximilianpezzullo.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772609263;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772609291;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KGFM5BTJCfl+Ul1B46GbGtvY8G2G06Il5cZxkkSIjrY=;
-	b=cHYe8wvhaSZdxAF0zUcMb+8PEmPZjjqtwBnRsRGM6UC/AxjJYWNhpxo36cayL3awHYQxmI
-	GwVsEGrVDzkEdWwK40yqpWKa8trOwEu25xVO7PifQIk+dDHbb2BR0dkhcrOKOdBemNp6X3
-	B9LKmWMT9f2kmV9/2q2ThYukNdwLtw4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772609263; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZiMkd8gAFAY6M23FWY4CNybQVyGBlD8lKKIn2h83Ou4=;
+	b=WrkjZhxNz6C6dFuMh7Zn9Uph6sOmawP87LPYW+/eY9wUnQZU6B9qAqE5toll17TCPC+AvU
+	BhdCWWInGoZL/TNFS4O18pdcBNtnLAc3pRQgSFVJvkOWRZeNJqbzrzEFY/jO3FsVRBahXd
+	coDKIdkcnLP1hJh0T0eehWVC6+SohNI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772609291; a=rsa-sha256;
 	cv=none;
-	b=bYJ7PXJMPRmlYWqCL2S2upwjoMTRiPXYZ+DV8RLOknl1s9ldk0OL50Z8AY9qpkn/jbs92V
-	Fpee/Tk31yuiemUQjWbeTNwzggA0P1Yc47groHAkReEmfTM2OMIpbpJ0n24i8ULFnvaINn
-	Dz4gb+c0sLYlaAMwqdFfmYM7YYIgM4Y=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 4 Mar 2026 16:27:37 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Wed, 4 Mar 2026 16:27:37 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com,
-	taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <aafe6VXoCLlajp8b@yjaykim-PowerEdge-T330>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
- <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
- <aZjxP2sTavBRGC1l@linux.dev>
- <CACePvbU=4f4gT5kHUBq0wD7COHN+quE5g4bPQqJYgJNx_9vuhg@mail.gmail.com>
- <20260221163043.GA35350@shakeel.butt@linux.dev>
- <aZpY1FIjYLtLdu5F@yjaykim-PowerEdge-T330>
- <aaXM58EsMtbGri2B@linux.dev>
+	b=OFNwO82v6bjSQ02IoCP2kmS/LrP1Uf4jSyjZFcCkJjK3Inxj3aCDatelbHOhukEPMEofpv
+	Y4tyKUug0a3lR60pkb6CRXwV5kKA3sP8AaHrn65QtC+NqG4zQdQUKYZQRN5eOkVQlnqmJ9
+	qDA0dyTNwlAghE4MQD7G4qX4qjdbmoQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mj4r4Azp;
+	spf=pass (imf28.hostedemail.com: domain of devnull+maximilianpezzullo.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+maximilianpezzullo.gmail.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 68DE460097;
+	Wed,  4 Mar 2026 07:28:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 09779C19423;
+	Wed,  4 Mar 2026 07:28:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772609290;
+	bh=X9lIunOrna/iIZwoPlS1GBm2SgOAKz0WSDrE8Dnqyms=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Mj4r4AzpuiAjxRfG5N+kpumkKOANltMWs9HMI6BRKe0v4zOi2Qyk00Z0jCi0HY0cV
+	 LAxnzJd1grHLHMS+sCBIx4S8QfJ5de7AQ7jBDqHkW7sLaw5Kv5oydFz5GkYjuftu1P
+	 vmhKROvK2RMN0rpSIpgskPlaD/uL5akQxJaYXWlp6oiNVGv5lalVHxNlKO1toHLDCJ
+	 oFDDadnrw2qIm49xSBxeYU4nYbUNaiYZ4/NK1Z6fVPbj4pupmWg0w4/CJAhSNgFw6K
+	 tKRrucFZnMgFKpBfVrSHtAoGHYcOSP6F/ZWKgt75GQngdaHwkGajwC28eNigeVslt+
+	 kb5yMsk5P1abQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB8F2EDEC1B;
+	Wed,  4 Mar 2026 07:28:09 +0000 (UTC)
+From: Maximilian Pezzullo via B4 Relay <devnull+maximilianpezzullo.gmail.com@kernel.org>
+Date: Wed, 04 Mar 2026 08:27:38 +0100
+Subject: [PATCH] mm/vmstat: reject zero vm.stat_interval to prevent
+ busy-loop
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaXM58EsMtbGri2B@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 90B3D100007
-X-Stat-Signature: 5qykstyxyt1eyeqi8kdzhjj8jqfcwqih
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-v1-1-c03c9555ff15@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QrCMAxFf2Xk2cCs3QR/RUSyGTWytqONRR37d
+ 6OP53C5Z4HCWbjAoVkgc5UiKRpsNw2Md4o3RrkYg2td3+5ajyFgDUVJMfODR8UP52QKf+4sUTl
+ XmlATzvbHUXF4ljdOKc04UOd9T53bE4EVbHGV179+PK3rF2FrJJaNAAAA
+X-Change-ID: 20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-ba5446a527aa
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Terry M <terrym3201@bugzilla.kernel.org>, 
+ Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772609289; l=1836;
+ i=maximilianpezzullo@gmail.com; s=20260303; h=from:subject:message-id;
+ bh=qPVkk+RjNot6d1aWiuzGeSKqQMeQqa4dNJWr0ISRIT8=;
+ b=8fIpGxrHPIjYGDUNowEueBvSdu3/qSDNnV63gL4/GDUISpQasaYU5bPCTo9KPkXdNirrDWSy9
+ 6SqTQxrYgilAzGICa/sFavlePMaT9YGB/y/IPJL6frSt1jLWjtDo1ar
+X-Developer-Key: i=maximilianpezzullo@gmail.com; a=ed25519;
+ pk=TRTR4c2Vb1IfluQvv5OUDPg7EE+pIzdPBND85UU559w=
+X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
+ with auth_id=658
+X-Original-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+Reply-To: maximilianpezzullo@gmail.com
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3599CC0003
+X-Stat-Signature: w6ndu8thc8z7z7axmjfb4ygpsg75o6zf
 X-Rspam-User: 
-X-HE-Tag: 1772609261-161345
-X-HE-Meta: U2FsdGVkX19PVFXzHpEGVyydYwzzoVq1cWXtFI+2KyX7JwDYlMvFsTa/VoTEcQt4aezMRUNhwo7NJxDAfIV1zqJAeXWNiZoDg4CPmSjdCPWiKxXvYwpoaD8kXPZJly3k7nqQKamasQ3NdaZ+/8MeF99/ovhzYCe6ihsh0LwWw0IfAB9qqkrRqqA8E+N2p86Aezbmh5xtztl+xz+GiizsRB8yTpw8na+bWMitwD9utR5nfrtTIZvWDEdZdeE5iOo0D1PCYu+ttRL/JatjWVwLVe0aW+hKvFhujgiuH2W17Izx/nfL1RAJ6VNNDm5ngEINww/a44Z6DUNefLgIRhUGXOr7arKmVScVT7bLYXZogL4iexRFcUw7a5Zdy4l6biKBNXO75WXHhZ5HHC9acDoeHN6VV4xx2AwQhqWE7HdppXEwQrYHKiBbnrI2KBumUl3mEJrFS5iTR67lCAhnxi/+kvqpbV7w3VEqLJlj0evmseE/odEHizTeXaFBjBEdo2aCyXNgVM169IvhX+CTUuTSAnHlebN550TL2chzcJYAtDUdDGmi60ZfVdxy7ucYPSUH51Fqyhdp2MV9Tli3gBK5MlCvELdt96wsWCtVfYK1N+gc77quHUUGMBOvQuFBghBHD/RW2FenlKxwGxK6MVlOVq/+6OR/On2IdMM94ub91AN1KnfvRaSdWa1wtSlBoYOdr+U5lKUYcLK8LhDmyeIdxRXpC/W0en1QzltZD7JVJDA6oTzfsE/9sMd0HkVjiFfWPCH1DGw+yJ3fS3hVKo4uqoyCvGmqRafVkPZHqwsWIi68F85EgxRnAFdd9E9/5Ey0u+S4DXxQWnhRwvqpCbbCY49s52Fn8FCWBaAAA0rHbgFTquByw/Q462L6AlGaiavX+b2gCsW9oTmmOkjnXaiNoG7CNPjsTIAGVfwsTScklSh69p3xlD+6dnTzVc4crNJ2P5gCW+2rfn/aZpM87RI
- c3cq9cHq
- khy4tIH6h8EvTYeYXqmcIQz+3VJudI5j4z4XIfE5Y0UMY6Z9QQ9lfikZLkCi0USUnTpvuJFYBxoSYk2CKyzyBf2BNg0p3Uohg+If6lY/r9AZKNzPc+nQiRmFzq/fRs5FwA5iADWjUeny6qjqOqHIgnTxmtZCXPOQTxIDP2WP8NO5R2fXlPhNLKdNUSJcF9BdSxuCwFyrQPgHbdpdJ/Z8vwUwNOrMegftJy8rvVnemd8rgCX0o8i3Tuk67/q0PeCqpgZCJ
+X-HE-Tag: 1772609291-357109
+X-HE-Meta: U2FsdGVkX18SAtJygLIHlFrvoE9OpgQGZOTtl1H50bLUQjisi/fdC1ydzbiQzImf1UvgtzhqN343EQVjFpaXNgRPc+8YkiOpKHCCmw4aiJdmfany80d2N1Ely/RXji3gwChTnAWl5PSBMhDcbZprpaGfUFvhb4HiAeIoVEd/nOe+fuqJA8x2g0hYhhGyyllnx8WoBlFDInpjXA4rDRkoavxKRGZjYcZGtJ4oakrKteNCx+F40x0kFj5Q6XD8CzxMeWvH7T3oObhmO8qho9ZQaz4lb+/nTNzvdX9I8da96SIQjaR21QQgVccpLTLyfWG09oZNHo16RooVmKLezw4AtQ1tEWC6fw/215e2IDAYkWRBt1W3mr0dg64Rx7Z3gPNysy1FvHRh6tLy5eooFJKS5gZ2Mtv7ItfoLTnHxtZqw0n4k9y2wcCrP+/+cx0Rg93dawIvp+D1PKnRh9VXa8sryvnFFKUmeawcYLe3Hy/Uiu0c5cRlDvV2wZgFqrAxwpMfeWZ+zGchkw/LWsM/bF0tHaFm84aRy0i1rFYyA3KWlYhDLHiqVQsYB09vrbic4w/tRb9+WsRrILXuyoY/OVgGDFgzwzBxaQu2xl7uA5W57HLsy+J9QWnQob8sUwo3qxBYekXGA57I0/qYra33VTX+ElBfQiNt+JuZA73jQs+oBVjGNmMZy8w0p0GxmzRoS2w79flWwewddHvMJPhO2lLAgqwF0BWte1jMCJEAnb4HCStlE/fUw9T1Pur6O4DP0BWAsPIS+rW9Y7dn+BYi4Ewq3nnK28kkb7gAY6zHXMkfc0zkVg3nZagvzBULF0g+kI6wiTMmrNUUayxX8ZIdnV3IFYvIhzTDK1/auBiE6Pe30N+L9XgwAOw3wJvwl6NquM4BMN0wmGhzPWvXVNUANWWpFbrWuK9hL3QlmcWuKEBc5b0mf7lZoXustXMwPMEruyjupSOFSq7vS+LrWujm3cP
+ qJnM2Yrr
+ 3rsk06/DVhoX8MvgIoyOC4Ef2bR/KrvbGYj5T5QG4W+jHXZik8Kr8CK8O6M6qakWfgJXItJorE2Y7gZqDp3lgekarvvqmPCGS9bUuBhPPFYrLNJ2TRqCOeYC7Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,139 +114,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 01:27:31PM -0800, Shakeel Butt wrote:
->
-> Hi YoungJun,
->
-> Sorry for the late response.
+From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 
-Hi Shakeel, No problem :)
+Setting vm.stat_interval to 0 causes excessive kworker CPU usage
+because vmstat_shepherd() and vmstat_update() reschedule themselves
+with round_jiffies_relative(0), which resolves to an immediate
+reschedule and creates a busy-loop.
 
-> On Sun, Feb 22, 2026 at 10:16:04AM +0900, YoungJun Park wrote:
-> [...]
->
-> Let me summarize our discussion first:
->
-> You have a use-case where they have systems running multiple workloads and
-> have multiple swap devices. Those swap devices have different performance
-> capabilities and they want to restrict/assign swap devices to the workloads. For
-> example assigning a low latency SSD swap device to latency sensitive workload
-> and slow disk swap to latency tolerant workload. (please correct me if
-> I misunderstood something).
+Add a custom sysctl handler that rejects 0 and restores the previous
+value, similar to how dirtytime_interval_handler() handles
+vm.dirtytime_expire_seconds.
 
-Thanks for the summary! Yes, that describes our use case accurately.
+Reported-by: Terry M <terrym3201@bugzilla.kernel.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220226
+Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+---
+ mm/vmstat.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-> The use-case seems reasonable to me but I have concerns related to adding an
-> interface to memory cgroups. Mainly I am not clear how hierarchical semantics on
-> such interface would look like. In addition, I think it would be too rigid and
-> will be very hard to evolve for future features. To me enabling this
-> functionality through BPF would give much more flexibility and will be more
-> future proof.
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 86b14b0f77b5..6eeb4341b215 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2114,6 +2114,18 @@ void vmstat_flush_workqueue(void)
+ 	flush_workqueue(mm_percpu_wq);
+ }
+ 
++static int vmstat_interval_handler(const struct ctl_table *table, int write,
++				    void *buffer, size_t *lenp, loff_t *ppos)
++{
++	int ret = proc_dointvec_jiffies(table, write, buffer, lenp, ppos);
++
++	if (ret == 0 && write && sysctl_stat_interval == 0) {
++		sysctl_stat_interval = HZ;
++		return -EINVAL;
++	}
++	return ret;
++}
++
+ static void vmstat_shepherd(struct work_struct *w)
+ {
+ 	int cpu;
+@@ -2236,7 +2248,7 @@ static const struct ctl_table vmstat_table[] = {
+ 		.data		= &sysctl_stat_interval,
+ 		.maxlen		= sizeof(sysctl_stat_interval),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_jiffies,
++		.proc_handler	= vmstat_interval_handler,
+ 	},
+ 	{
+ 		.procname	= "stat_refresh",
 
-> >
-> > After reading the reply and re-think more of it.
-> >
-> > I have a few questions regarding the BPF-first approach you
-> > suggested, if you don't mind. Some of them I am re-asking
-> > because I feel they have not been clearly addressed yet.
-> >
-> > - We are in an embedded environment where enabling additional
-> >   kernel compile options is costly. BPF is disabled by
-> >   default in some of our production configurations. From a
-> >   trade-off perspective, does it make sense to enable BPF
-> >   just for swap device control?
->
-> To me, it is reasonable to enable BPF for environment running multiple
-> workloads and having multiple swap devices.
-
-I agree with the value and flexibility of BPF, but there is still some debate
-on whether it should be the mandatory prerequisite for this feature.
-
-While I understand your point that BPF is reasonable for complex environments,
-requiring BPF solely for this feature in resource-constrained embedded systems
-(where it might be disabled by default) is a significant hurdle. This trade-off
-is a key reason why I am advocating for the memcg interface.
-
-> >
-> > - You suggest starting with BPF and discussing a stable
-> >   interface later. I am genuinely curious, are there actual
-> >   precedents where a BPF prototype graduated into a stable
-> >   kernel interface?
->
-> After giving some thought, I think once we have BPF working, adding another
-> interface for the same feature would not be an option. So, we have decide
-> upfront which route to take.
-
-Yes, effectively, if BPF is applied, it opens up the possibility to control
-swap logic at various levels (process unit, cgroup unit, etc.), so it would
-likely become a superset of other mechanisms.
-
-However, despite BPF's benefits, I would like to propose proceeding with a more
-restricted memcg approach, which I will detail below.
-
-> >
-> > - You raised that stable interfaces are hard to remove. Would
-> >   gating it behind a CONFIG option or marking it experimental
-> >   be an acceptable compromise?
-> I think hiding behind CONFIG options do not really protect against the usage and
-> the rule of no API breakage usually apply.
-
-Understood. My suggestion regarding the CONFIG option was to mark it as
-'experimental' to allow usage for specific cases like ours while reserving
-broader API stabilization for later, but I accept your point about API breakage
-rules.
-
-> > - You already acknowledged the use-case for assigning
-> >   different swap devices to different workloads. Your
-> >   objection is specifically about hierarchical parent-child
-> >   partitioning. If the interface enforced uniform policy
-> >   within a subtree, would that be acceptable?
->
-> Let's start with that or maybe comeup with concrete examples on how that would
-> look like.
-
-So, just to clarify, are you open to discussing this restricted direction?
-
-To reiterate, this would mean enforcing a uniform policy for all children
-within a memcg where the swap tier is configured.
-
-For our use case, this is currently sufficient.
-
-We deal with memcg's tree itself as one workload. 
-This workload can use its specific swap device selectively.
-This is my view.
-
-Chris, would you be okay with proceeding in this direction as a starting point?
-
-> Beside, give a bit more thought on potential future features e.g. demotion and
-> reason about how you would incorporate those features.
-
-Regarding demotion (assuming you refer to migration based on swap device
-tiers), I don't foresee issues if we apply tiered swap devices per memcg.
-
-In fact, the 'tier' concept was proposed specifically as an abstraction layer
-to structure hierarchical swap devices. Since the current direction treats it
-as a unified tier view configured by the parent memcg, features like demotion
-should fit naturally.
-
-Regarding future extensibility, I would like to add:
-
-1. From the memcg perspective:
-Applying memcg in this restricted manner minimizes complexity. While future
-expansions (such as complex tier inheritance rules or handling setting
-differences between parent and child) will require careful discussion, the
-restricted approach avoids immediate conflicts and side effects.
-
-2. The swap tier abstraction itself:
-The introduction of swap tiers primarily enables swap device assignment.
-However, this abstraction also opens the door for extended use cases such as
-inter-tier migration (demotion), round-robin policies between tiers, tier-based
-VMA swap, or even per-process swap controls in the future.
-
-I believe this patch set is acceptable as it introduces this foundational
-concept and applies a specific use case that does not contradict core memcg
-principles.
+---
+base-commit: af4e9ef3d78420feb8fe58cd9a1ab80c501b3c08
+change-id: 20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-ba5446a527aa
 
 Best regards,
-Youngjun Park
+-- 
+Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+
+
 
