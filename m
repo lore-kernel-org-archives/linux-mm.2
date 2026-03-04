@@ -4,129 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985F8EF8FF5
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F391EEF8FF4
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAF6D6B0088; Wed,  4 Mar 2026 10:25:52 -0500 (EST)
+	id 4D5466B008A; Wed,  4 Mar 2026 10:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5CA36B008C; Wed,  4 Mar 2026 10:25:52 -0500 (EST)
+	id 482876B008C; Wed,  4 Mar 2026 10:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C68866B0096; Wed,  4 Mar 2026 10:25:52 -0500 (EST)
+	id 385116B0096; Wed,  4 Mar 2026 10:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B28426B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:25:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D1DB1A05B1
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:25:52 +0000 (UTC)
-X-FDA: 84508755744.28.D7FE181
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6AA8440008
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:25:50 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DRhtYCgk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2560D6B008A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:26:59 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B7B2B1405E2
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:26:58 +0000 (UTC)
+X-FDA: 84508758516.23.0CABC7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0BC68120004
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:26:56 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JNr/i9Ed";
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772637950;
+	s=arc-20220608; t=1772638017;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0dHp9bCxpQGcBk9L8T5sP4H/+YcADHb57HQaohzDaCM=;
-	b=gGNaM/G6mAnRNYidSWbr59zk12LFSZANM9N9+kQ0VMPwv6OicwZ5Qn/mHwOLeJOiRmQxov
-	jsUlWF/OWKz6gxK+XJFzQoWZc8ViDBJuRd3GU0lkLX+hsOrv4S5XUPyCEOY260u48oN3+f
-	6GeT5EzZW/RHyI+8AC1GrGjUjq2BRuI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772637950; a=rsa-sha256;
+	bh=Ki4y4qN2AdkPyZ54v2+iGGCcyOmkpCXMP9Qdm6JNI98=;
+	b=y52jMCAfAAUTQ0tRsT3BG+0A+HSjK1yNenOZbozXrqjp2n4kWBcalPhoMxb2JGDiACO8I5
+	PCVpyAkfgzzaaJtzS4aeFkAEZ85BrwAsYIIS/SaA22Bxzq/2TzgHNe275mkBu4t9g5QTJo
+	c2EzmNPk1uNiCsUQowIpAuQZnT90tKM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772638017; a=rsa-sha256;
 	cv=none;
-	b=xER3kkHgkGQaHbFTsCSsIT3e76n3GYW9pGMqmRQvd9lVUzxjKKwEvASm/0C+mOY/bfCr71
-	C+ZHKdhigHoYhlq9qjXy5GJQji+LYgiiVcn0U0MaOpD8KULcVGrCZObotSQvqfU80HNrUZ
-	Yzek32aDHK9QxKCDmwAr4umHo+FVdk8=
+	b=gO5J0ZKUuSG2daa4ns9zzFJVS6N7ubKcpK65ApCMRWL1EQKXm5tWkesoMLnKuD6UvbY6Uu
+	fhIddZBtXRfva3vT4McghPS9ykF+NzBi+4xI02IrQW6eJFRz4u9dQNaukP3YcVU9h0ZJx/
+	Ahl2g3xq/WIAoF4HQnSOPpQIRYZi5Zo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DRhtYCgk;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4b9c839b1so3627724a34.1
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 07:25:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772637949; x=1773242749; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0dHp9bCxpQGcBk9L8T5sP4H/+YcADHb57HQaohzDaCM=;
-        b=DRhtYCgkZ6wlhZQGbSewRv5NlBDgw9D6oe01ucnLB6wi4ZKT1boqFJN0jsZcHX5Xp1
-         zIrB2uOHk7848BZzKplP/qOZbbtsJC//9UwDVMpZQqrLB+vbmwxD4xqiZA3KsgMn3nm3
-         ef5G2F1sHKaGdgRIVXXebkJJYloyi7/FHCWkwUdQjobF6NOIrv2Our+dlxIz2q809sli
-         zRxQ6ewFc76VIUFrGz4/ZS5Os5Ix/FsWx0lpRfRiwNz8kTwK9sdQz5Ghh+zvEiwEmtiQ
-         V9R7zRc92J8We/Bpo2mWcyxtJ3vRp7ah7p+/daXcEwJ4kWOB6zUUw/ZHZlmcnZIEZWz4
-         d2SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772637949; x=1773242749;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0dHp9bCxpQGcBk9L8T5sP4H/+YcADHb57HQaohzDaCM=;
-        b=tiE3cE93YHQ2tMVALnRUY7BsSBvH4Zl/SnUtPgze4xwr4tc5LrSib/gTeoq924HIAn
-         YnBhw1x2H6hqfHnxt2GLrq9WNEtx9wNzCzmgG/zGgAX8TW8vEWq5hwx/6RUS4o5gYXrg
-         gUItRzluYjyEiwT4VZbq16sPIV9n0USzjHnBwxribjHNQOrkyW0yfOGHwHtduNEadZwj
-         0iCTlkqasXN+6LyXJNnqxF+xC1MiaHA2JY55QBJTBUx0P0ezRyOCvZF7bJBQ3eTlVZsT
-         wZObJGOgtBibV49d7n86/CEiTIBiDZ7wcnjcbq3A2wR6I/5zIHw3onFx/SfitZWar9hG
-         zuIg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5epy4WUIkjD3RACOpmqMrIcIo7viinskOVc0n7P7aB0guiRdg1xCWXpWaIAFO5XZtByYqe2571Q==@kvack.org
-X-Gm-Message-State: AOJu0YzfvSzmbwS+pYrlrhVkqa9ScK88QyFNU8foIkNHZKd2M8YgesYn
-	WlqA1yFTVJpb85JY6Zkznlq0tAE/e9fLF8sG8c2Q7W99lIhDpeDnRCMv
-X-Gm-Gg: ATEYQzyWD2C6E0cqiaOo3LSWtL6VASWHmLuBIlK4QzkldpyblmwU9NDVYeThJ5Wfp9t
-	lNi0a0psdvfOnKSXVbzcVbVT3trZuCuYu6qLPddULRgtTtmrx0sg/4yhZSwLNkMgs65UVhYcD8P
-	2ZqpOUyipdp4DbKz7xXoPhnH44PCRQv2cjy6R6tygLVnsUmI0fL8DwYy0DhsZ04dfHvZJOufHOC
-	EjzwzLlr91HBjCfJMIM953Nhk8PORhdHKc/QzXW5vjHPlRqqKQt5McBAY2oMjQQYFPVPBLfgY1h
-	CCJ9Ue48oiZCx48bUPtObq/rVb7KrB4rkPyxkrYxjds+Ry+1F5kKGmQL1cDD+GfYhdw3sWcbPZP
-	aEU5WY6fkt+DbB6O1nywB0uH64RQ/D8LgBbiWSYDsFXndNWdLLCdIcGYujkF79Z/GDyYokLqca2
-	s6LQjSDn504hYxjeD15KDLBeqGRfjUQmc=
-X-Received: by 2002:a05:6830:d09:b0:7cf:d1b7:96ca with SMTP id 46e09a7af769-7d6c7f4b450mr1231038a34.6.1772637949342;
-        Wed, 04 Mar 2026 07:25:49 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:c::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d58644dd17sm15624459a34.5.2026.03.04.07.25.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 07:25:48 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Usama Arif <usamaarif642@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	npache@redhat.com,
-	david@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	hannes@cmpxchg.org,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	kas@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: Re: [PATCH] mm/migrate_device: fix folio refcount leak on folio_split_unmapped failure
-Date: Wed,  4 Mar 2026 07:25:46 -0800
-Message-ID: <20260304152546.3719551-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304120132.3973445-1-usamaarif642@gmail.com>
-References: 
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="JNr/i9Ed";
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E664E4326E;
+	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA02C4CEF7;
+	Wed,  4 Mar 2026 15:26:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772638015;
+	bh=NSxpkcBTxGbZfTOBI1Osn6FZchKIMqEBt4E59vgg9yo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JNr/i9Ed94o5FrVUAIdDA9j6qVGLnE5GzfbP/S1eQuij66w5wYafVkKmJfNrjW6BU
+	 A1qHbzpoX84W2Y3/DU8fCgtDh/bFbsR95IXw4bDa1YKfx2KDTn+9gvVk47D5GtsPhr
+	 S6XIEflAmCZI+kFJOhLUSAKMC159kKQKecuwzKR8DT3B4C+eY5YaSizaIDmG+RQ/bO
+	 OTFLtGzokmtE74YQuVHwoAjC3QCWckhfGWfFxU5RuztAn9pH5xH57mKx5+7NOyf21j
+	 vJcutnbWGpl00AJ4jYiuegaQaPdEVO7qzspdvmLlAaHDXjEVctpre1LGEdez5nx/iK
+	 AUByHkfctYKUQ==
+Date: Wed, 4 Mar 2026 17:26:52 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	David Rientjes <rientjes@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [PATCH v1 15/16] mm: rename zap_vma_ptes() to
+ zap_special_vma_range()
+Message-ID: <20260304152652.GF12611@unreal>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-16-david@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6AA8440008
-X-Stat-Signature: 189hrzftdx8bq64y5zggugot85ibxg8w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227200848.114019-16-david@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1772637950-644611
-X-HE-Meta: U2FsdGVkX181TW8lUNSTd9u+3GrZFoh8u7xJm3ycEzp+7fkW6qsostekZlbUQ0g4sJtUB56AW7H6H4f4X5PvQXdMayN53sL/MRoqudxjx/IkVnQLlwGtaaYGWy4rbjGS+h2aS4psWJZKre4r87qEYsrOzyvSBG6RNoYKrpaBC8K0JXXx5c89cDMJcp4cq0e8e+sT1oSe0STZsX/hLafkeZFUUuI88JcQGf02UzP0L6XizAAyp4KmNGWt76yQpcTOJMbw6+E3NPRvJqJwN0eNXGzU3t425jtKaiVWLzbhwMlT2F1dJBoPhgfI/mJLA0pdGTBenGdpWgYRcBuk3FTLrqXqWU0IMze0VsyrquC+Jun5MgDQjw4gyx7PaUX/oum68NBWj1ErbomI2z7gP9wmy8RlOqJqTiyXJfL3CwQ5exCqnKc0WeoPycyCGV8Eh6EHpDT954KA16hNZUg1+Xg5zrii/ZpKJyC7glEASXDivoQIr+I6wC7uY1+/h6oNXofOTP+VYxKepQfSs7VoLodMan9bPH4AG5c+HHQrp1hXCTBwnqAQ4i1W8ra8biGxvYvj7PZI+Y+1z361uPKNQrFhTAc90JALBfbUvxK7pWDVGJZsji3KWdk6nBvQTfQlhpTPUkujNjvak1CNQFnWLYB3HbXCTcH1OURbuvymZYQvFiDoqkRyfbJzqEjrF4+6dlaLD/41godFPsP5/sJuLbg5ZAeV2oGdwOhliB6koVUXY/dh4DWFK1nGjx5bJDDDDsP0StH5ZbL5jkZvgV44C9lSZNyVceHsyLL7A/q2i/QjLjeOXgUvrGbpkE3NJAPlU6l7P4FN7L9xXIERoLCeh4RzuxhtksaE6ReQ3JUzsrP8BG8Tu/k0Ebj9mov8PLgBT46F+Y+TaZ4RZCvxZEUVZ54/lhI2mLegINkak5mEJJ6s7X9ylt9If/3A0Racy7dkfpDxR0MbXcYEUhW/PA3hSL9
- WxQz1SV1
- 3KdpqxlH2cTtOyVPreJVbWumOTpwrgqT7hJUFZYzKxrGyBkMBOW7tTUbZsYQuQCtFegu/87APV0AVXZSOxm//2MyZkiMonD699enc5Bz8ntIK/AzXtjIbqVZNEAUp72ogQFdtvIRYTdTri2zNl3dR0gxB/8Orw1NMKL0oqC0sTsZql2p8T2gX4/TRiZO0jvRc+5jSi357aWT33I5XFPXVoeA43GTp6mAqHbtO1LDjIfPEeJ98tAdtzXn9I4pYvpq8waqcj5/sBX8Zs6KkW+qyIdiBSc5DpdHrPGcrW4cSnHrJXTdM21I3nQb8xuAWxc8TUJMTWS6ctDypeYeg5N7rpbSewUgRyruDBdKr+kIMNh2iy+AGZcCOGYNG7jT3S+Pg0Qq5igN92S3d84fxVAYXnDLXd7dkjRvE+mAhLU3L8riqTrknVgF1tbRw4ymHo/CpZ407ZM78owXk21QC65Ih8Yek5tPHscPUO/nq6qa9zwLNlT/Urafc10u7I2JGvxdpoQkhk+X0oRLzVgcCWAlzyJbAbqft5SlYZwQNt4o+hx4mX7ltpJbkF86o+Jx0+vLEox6a7sSx85jK7GBETrOCZS98eB/P4cLZFrbPStSMRem4gLrNj5109K9SyXN49FhtsoK8m9DGIrqSQkJj7mjFwr0HSvsdWd9DQuiw
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0BC68120004
+X-Stat-Signature: b4eu19qoxr5bx14nc1ydiinn8qkey8uz
+X-HE-Tag: 1772638016-851830
+X-HE-Meta: U2FsdGVkX18leBf66Rg1NnEVxpXQDnrL+ZdrvP+UwJPx5XyWcdrXILgKUWNMKTKbiMT3rokWjIovKRuCgu9xVpDJOuE9amaNZDlUfYO8LRZvZ6mGMukc4FXrCDm/EhAj3YNdslcX1/LwXJgpUZSwfEe0URrR0XI87lTrqNyE1+anz7tTZ9CG4zhLXfMZl4fOLrIG4goUQ7qKnVjmNxmgUu5VUkgcv/3Lo3k51N3RWPsbR3d+6vD/I6BiR1KNMB0DXGnkXUZ9MBASoAMxVNlFhPvjtTGJXBLlxJH4YnX2lg601WKUoJ2/n7SeoBfxHuQNfchS82eWN0Bx6COUVi+eGNnWbQAWF6p9rWTgVbJIjuUuxcaZKed2bE9tagbvWcQT8xmsuv4ato3L99ub8jDBcYNv5bI7ZpjKuK3+fPQRGTPa7ip+v7/prou6urAVGHDCxEcxzFgA1Q9xnXribkebbR+1AvEqxVdrvv0qZodyuH2vZczu4FI9XLDr0YlTFW9RKPkii03c8+LskEu3uFPZ3hKHB6ry6W2in8cajxeqm4pbJ454+O6tyvMSX0OMlcocOsfCI4fJwQvZFYr2yZxQLoJoqACn3k/SP0N3nlGzOPGfSqh7ZBXLv9z4cpVn0FHw1O3jXHy6eH7H6jSpKMuazXxYi33EiyqXBVQk18l5Fl6+ghfRIzq23N1z7pbCJzmWYIAPBr0bSFbc6AFJ/A7dTY2MTC4MxPIF2fC/jtb7cCdqSaSgv/O3A8U341F51JJ+htpMoL9uPgU1oYc0IAuc2DMp5tN6t53JW5StaxlaaEg6kFTQyen3Ps0qI7rs8HjkSgvB7KaqLz/KqXxMRP6c5fNjAZC+YK/Smc6m295DGrJW2Wan4JqO2DMpjD4VF+e7xBNO2c6bXGZw+eN89wU7yZz8MQLeZYlC+NPpnfgE9SjtFpcdEszBu/dIkaOZ+vO0sIWE95e2SAXffMvIN4y
+ y0jeoz+I
+ g2Gl4Wp9WSBj8hJe8p92y00Xq5ZmLruOqBzkEf3duPIhBBCLpNjq+tstRFIoO48rwqT//Fz/5gmISinE6/8lZl9Wkhzf4O7Y7hFxzCXdqSxc4MptjSa/eokXvVil4PGW641yLnCU05L1PhPwdcqMxqpLxUATXJYZOBfLbYolf6p3FnckDRfEUYO52uH5AYV8VpeGGqDp07K8fSym5p86WQUT1H7OWxWYGcxTXVbhsos3i45NXb+xuxd+qYWppE58vcNQPhOBH9PZmhLZ5w1OP2ZFgfc+MMD8RJEu4s1JbQra6m2BetoRMkELQlAsZ3HVgKkD7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,54 +149,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  4 Mar 2026 04:01:32 -0800 Usama Arif <usamaarif642@gmail.com> wrote:
-
-> From: Usama Arif <usama.arif@linux.dev>
+On Fri, Feb 27, 2026 at 09:08:46PM +0100, David Hildenbrand (Arm) wrote:
+> zap_vma_ptes() is the only zapping function we export to modules.
 > 
-> migrate_vma_split_unmapped_folio() takes an extra reference via
-> folio_get() before calling folio_split_unmapped().  On success, the
-> split consumes this reference: __folio_freeze_and_split_unmapped()
-> expects the +1 in its folio_ref_freeze() check, and distributes it
-> across the resulting sub-folios via folio_ref_unfreeze(...+1), which
-> are later balanced by folio_put() calls in __migrate_device_finalize().
+> It's essentially a wrapper around zap_vma_range(), however, with some
+> safety checks:
+> * That the passed range fits fully into the VMA
+> * That it's only used for VM_PFNMAP
 > 
-> If folio_split_unmapped() fails (e.g., unexpected pinning returns
-> -EAGAIN), the function returns without calling folio_put().  The extra
-> reference is never released.
+> We might want to support VM_MIXEDMAP soon as well, so use the
+> more-generic term "special vma", although "special" is a bit overloaded.
+> Maybe we'll later just support any VM_SPECIAL flag.
 > 
-> Add the missing folio_put() on the error path.
-
-Agreed with Kiryl that maybe there is an opportunity to do additional
-cleanup. But as a fix for the issue, I think that this patch looks good
-to me. We can send a follow-up patch in the future if we want to
-clean this area up : -)
-
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-
-> Fixes: 4265d67e405a4 ("mm/migrate_device: add THP splitting during migration")
-> Closes: https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
-> Reported-by: Nico Pache <npache@redhat.com>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> While at it, improve the kerneldoc.
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
->  mm/migrate_device.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 0a8b31939640f..351ecd9065d13 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -917,8 +917,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->  	folio_get(folio);
->  	split_huge_pmd_address(migrate->vma, addr, true);
->  	ret = folio_split_unmapped(folio, 0);
-> -	if (ret)
-> +	if (ret) {
-> +		folio_put(folio);
->  		return ret;
-> +	}
->  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
->  	flags = migrate->src[idx] & ((1UL << MIGRATE_PFN_SHIFT) - 1);
->  	pfn = migrate->src[idx] >> MIGRATE_PFN_SHIFT;
-> -- 
-> 2.47.3
+>  arch/x86/kernel/cpu/sgx/encl.c        |  2 +-
+>  drivers/comedi/comedi_fops.c          |  2 +-
+>  drivers/gpu/drm/i915/i915_mm.c        |  4 ++--
+>  drivers/infiniband/core/uverbs_main.c |  6 +++---
+>  drivers/misc/sgi-gru/grumain.c        |  2 +-
+>  include/linux/mm.h                    |  2 +-
+>  mm/memory.c                           | 16 +++++++---------
+>  7 files changed, 16 insertions(+), 18 deletions(-)
+
+Thanks,
+Acked-by: Leon Romanovsky <leon@kernel.org> # drivers/infiniband
 
