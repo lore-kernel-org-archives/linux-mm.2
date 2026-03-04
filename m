@@ -4,109 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A20EDEC1B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:28:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A38AEDEC1E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 07:44:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B2516B008A; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
+	id 2B1026B0088; Wed,  4 Mar 2026 02:44:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 570E56B008C; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
+	id 25EBF6B0089; Wed,  4 Mar 2026 02:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4808F6B0092; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
+	id 1613B6B008A; Wed,  4 Mar 2026 02:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 388D56B008A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:28:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1E09B96E6
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:28:12 +0000 (UTC)
-X-FDA: 84507552024.17.92464AF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3599CC0003
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:28:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mj4r4Azp;
-	spf=pass (imf28.hostedemail.com: domain of devnull+maximilianpezzullo.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+maximilianpezzullo.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 02FA26B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 02:44:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A02B41C5BE
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:44:32 +0000 (UTC)
+X-FDA: 84507593184.06.DD2CBD2
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ACA792000C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:44:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Prfd72pi;
+	spf=pass (imf03.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772609291;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772610270;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ZiMkd8gAFAY6M23FWY4CNybQVyGBlD8lKKIn2h83Ou4=;
-	b=WrkjZhxNz6C6dFuMh7Zn9Uph6sOmawP87LPYW+/eY9wUnQZU6B9qAqE5toll17TCPC+AvU
-	BhdCWWInGoZL/TNFS4O18pdcBNtnLAc3pRQgSFVJvkOWRZeNJqbzrzEFY/jO3FsVRBahXd
-	coDKIdkcnLP1hJh0T0eehWVC6+SohNI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772609291; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CmH0rlP2i1n3R5SgeOcFWSuLuOaLcRNhakwNeaELXS4=;
+	b=U5A8jmi1Evisg7Mi3gG3oun48Kbme8bWKp7Si8zT+7DiRxdlu8a6OtU7PihuivgNOjvIS5
+	I5NMnKlFTDjrNSH8QagbDFn3P6TFc5yBhZKafL9pj/74tqUgUfhKLAfhFjHPQpygY2BxD2
+	lQMuGYWIvfNH7zNyGykuWSQ462WOrlA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772610270; a=rsa-sha256;
 	cv=none;
-	b=OFNwO82v6bjSQ02IoCP2kmS/LrP1Uf4jSyjZFcCkJjK3Inxj3aCDatelbHOhukEPMEofpv
-	Y4tyKUug0a3lR60pkb6CRXwV5kKA3sP8AaHrn65QtC+NqG4zQdQUKYZQRN5eOkVQlnqmJ9
-	qDA0dyTNwlAghE4MQD7G4qX4qjdbmoQ=
+	b=Iux3CQUduiCFZ4d1z3W8TBG0YM1096YhInXPE0/MlVBVKA6PbQ5MarOrUSu+hsVyUDJ+ps
+	wCfagqxDe3CDQuWJTbDf7zhlCxpv89+2luWVIndTmvATlQFI2DCJs8dq1qUX2aI3xz7t1u
+	VXYEmzcqUpbXmlU8dE/Eq8ku47wnUFs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Mj4r4Azp;
-	spf=pass (imf28.hostedemail.com: domain of devnull+maximilianpezzullo.gmail.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+maximilianpezzullo.gmail.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68DE460097;
-	Wed,  4 Mar 2026 07:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 09779C19423;
-	Wed,  4 Mar 2026 07:28:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772609290;
-	bh=X9lIunOrna/iIZwoPlS1GBm2SgOAKz0WSDrE8Dnqyms=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Mj4r4AzpuiAjxRfG5N+kpumkKOANltMWs9HMI6BRKe0v4zOi2Qyk00Z0jCi0HY0cV
-	 LAxnzJd1grHLHMS+sCBIx4S8QfJ5de7AQ7jBDqHkW7sLaw5Kv5oydFz5GkYjuftu1P
-	 vmhKROvK2RMN0rpSIpgskPlaD/uL5akQxJaYXWlp6oiNVGv5lalVHxNlKO1toHLDCJ
-	 oFDDadnrw2qIm49xSBxeYU4nYbUNaiYZ4/NK1Z6fVPbj4pupmWg0w4/CJAhSNgFw6K
-	 tKRrucFZnMgFKpBfVrSHtAoGHYcOSP6F/ZWKgt75GQngdaHwkGajwC28eNigeVslt+
-	 kb5yMsk5P1abQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB8F2EDEC1B;
-	Wed,  4 Mar 2026 07:28:09 +0000 (UTC)
-From: Maximilian Pezzullo via B4 Relay <devnull+maximilianpezzullo.gmail.com@kernel.org>
-Date: Wed, 04 Mar 2026 08:27:38 +0100
-Subject: [PATCH] mm/vmstat: reject zero vm.stat_interval to prevent
- busy-loop
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Prfd72pi;
+	spf=pass (imf03.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 4 Mar 2026 15:44:18 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772610268;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CmH0rlP2i1n3R5SgeOcFWSuLuOaLcRNhakwNeaELXS4=;
+	b=Prfd72pilPuWrUX3RcEY81R9+5TXX1oI1vfgq0xeekNlyGvzvD0yvA3NguguClWETQcRrd
+	IOZKfFtYW8F5Dkgi4J93V4cIWSXfkUSluKtc6pgZfPG+/icJ2keF9E39UcGuegMilURoSZ
+	nw2zYUYeEKaLLfqQ3Zqb8LxgPsD3Wr8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry.yoo@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@linux.com>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH slab/for-next-fixes] mm/slab: allow sheaf refill if
+ blocking is not allowed
+Message-ID: <3at546the4zbun7g7aoeqrirh46iwsw3vj5ncc4fjhz26gfbb2@tsgplt5o2ybu>
+References: <20260302095536.34062-2-vbabka@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-v1-1-c03c9555ff15@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2N0QrCMAxFf2Xk2cCs3QR/RUSyGTWytqONRR37d
- 6OP53C5Z4HCWbjAoVkgc5UiKRpsNw2Md4o3RrkYg2td3+5ajyFgDUVJMfODR8UP52QKf+4sUTl
- XmlATzvbHUXF4ljdOKc04UOd9T53bE4EVbHGV179+PK3rF2FrJJaNAAAA
-X-Change-ID: 20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-ba5446a527aa
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Terry M <terrym3201@bugzilla.kernel.org>, 
- Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772609289; l=1836;
- i=maximilianpezzullo@gmail.com; s=20260303; h=from:subject:message-id;
- bh=qPVkk+RjNot6d1aWiuzGeSKqQMeQqa4dNJWr0ISRIT8=;
- b=8fIpGxrHPIjYGDUNowEueBvSdu3/qSDNnV63gL4/GDUISpQasaYU5bPCTo9KPkXdNirrDWSy9
- 6SqTQxrYgilAzGICa/sFavlePMaT9YGB/y/IPJL6frSt1jLWjtDo1ar
-X-Developer-Key: i=maximilianpezzullo@gmail.com; a=ed25519;
- pk=TRTR4c2Vb1IfluQvv5OUDPg7EE+pIzdPBND85UU559w=
-X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
- with auth_id=658
-X-Original-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-Reply-To: maximilianpezzullo@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302095536.34062-2-vbabka@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3599CC0003
-X-Stat-Signature: w6ndu8thc8z7z7axmjfb4ygpsg75o6zf
+X-Rspamd-Queue-Id: ACA792000C
+X-Stat-Signature: cq9yprcu8pjaufcss7sfsbkc7yriozrk
 X-Rspam-User: 
-X-HE-Tag: 1772609291-357109
-X-HE-Meta: U2FsdGVkX18SAtJygLIHlFrvoE9OpgQGZOTtl1H50bLUQjisi/fdC1ydzbiQzImf1UvgtzhqN343EQVjFpaXNgRPc+8YkiOpKHCCmw4aiJdmfany80d2N1Ely/RXji3gwChTnAWl5PSBMhDcbZprpaGfUFvhb4HiAeIoVEd/nOe+fuqJA8x2g0hYhhGyyllnx8WoBlFDInpjXA4rDRkoavxKRGZjYcZGtJ4oakrKteNCx+F40x0kFj5Q6XD8CzxMeWvH7T3oObhmO8qho9ZQaz4lb+/nTNzvdX9I8da96SIQjaR21QQgVccpLTLyfWG09oZNHo16RooVmKLezw4AtQ1tEWC6fw/215e2IDAYkWRBt1W3mr0dg64Rx7Z3gPNysy1FvHRh6tLy5eooFJKS5gZ2Mtv7ItfoLTnHxtZqw0n4k9y2wcCrP+/+cx0Rg93dawIvp+D1PKnRh9VXa8sryvnFFKUmeawcYLe3Hy/Uiu0c5cRlDvV2wZgFqrAxwpMfeWZ+zGchkw/LWsM/bF0tHaFm84aRy0i1rFYyA3KWlYhDLHiqVQsYB09vrbic4w/tRb9+WsRrILXuyoY/OVgGDFgzwzBxaQu2xl7uA5W57HLsy+J9QWnQob8sUwo3qxBYekXGA57I0/qYra33VTX+ElBfQiNt+JuZA73jQs+oBVjGNmMZy8w0p0GxmzRoS2w79flWwewddHvMJPhO2lLAgqwF0BWte1jMCJEAnb4HCStlE/fUw9T1Pur6O4DP0BWAsPIS+rW9Y7dn+BYi4Ewq3nnK28kkb7gAY6zHXMkfc0zkVg3nZagvzBULF0g+kI6wiTMmrNUUayxX8ZIdnV3IFYvIhzTDK1/auBiE6Pe30N+L9XgwAOw3wJvwl6NquM4BMN0wmGhzPWvXVNUANWWpFbrWuK9hL3QlmcWuKEBc5b0mf7lZoXustXMwPMEruyjupSOFSq7vS+LrWujm3cP
- qJnM2Yrr
- 3rsk06/DVhoX8MvgIoyOC4Ef2bR/KrvbGYj5T5QG4W+jHXZik8Kr8CK8O6M6qakWfgJXItJorE2Y7gZqDp3lgekarvvqmPCGS9bUuBhPPFYrLNJ2TRqCOeYC7Sw==
+X-HE-Tag: 1772610270-575752
+X-HE-Meta: U2FsdGVkX18yM4Odw6cdFLlFIiApM9fDwxhccekY56wtZK0gt2QjvQGT5W92yS67sl9UzKc1pa0gDeCPln0lLmbYuAburFfKJKdXH9DNMnR/d9NuZ+IB9biLM6CbkhirFjajHZVnE/8DzuuNAuTYZavxGQapM35odln90EDngXHsoOjy0BOS3jYw0jeF+OYvgjyI+aj1jLhlgrM+n3CgJjWmjX+H9UV+gOECHAkn9ULIQ4vDgN+Vv+b8KBb3DMkNyR/NYTioxNBi+aJWlC8mgku4t5QGnKKF48gPr2GDgc8Hg2XyUGfvj6h02B/L4FAG6yHvHkWBu4f68gkycMLeV6mbcBRKLyQkeNWR1zDn9WxXVpQGWdZ5+cxn2SgU5Nh+l1Au6NkXEBIbDYnWFlE/0dzi52hrvcHYn5B/YWeza1KBA9C9eHswbfthY9vA1Suzx8BaReis6iFhrZx+wi/8YaNl1bs+xy0/0HA7S+4epn1YI5OgNkLxJ9rXYSEvbuf6iWxdzYSnsD8b7L9ErklPHpOndWr08Qr0xfI4zFwY7dmTxBLMcbXSHGuHFeP0w1+RsYHLGs4FOmMf9EXipbQgLVvJvHw1FlkyGUixP41reewq6a3fvZCAQbFCxCm5YJB9z7vKtGkiLUdL1E5TagGyzjgXPE0I2gieY0kAv+8ZlKmJcEAJ4uIcxediKKvu7dbwyCYFqj/vIxMg82iQrD9/83ezZTWPRB82VjvZxXTxYXQooxxJq+g/A9/V51P8u0m8apq8lmnSlOBj8FGPqFsJ2lHPlSWII1aoIuY4djaXYXEYXJV7zThBXBGBZrYsRQ3zhF2hzhQJZTNrqoLb8SyIdh+iK5Ej+Yh3y0dwFY7+HqxNUX9bSIt2pR7EDwz6tdhYaMGqdWcVbrrpyHZfM0cs4wEvfkRRYzxpz6DnK76Bk4lrAql5TJqAg0ivH6cr+q32ecbg03b59SxaYz5rUJz
+ QvRE2Nyh
+ UdCM1StajnZKZOrtwvRLaxVcL9f4lVupdNSo5Ig2Qvtan7hJFg8cvd2/wjW2hMeu3ypl/AJrR8M85vMboHCD1JZ1ONMED9s2ZC5vc63rLdBDHH35wk2br83f2qjYk65hthBRgNGyvjG4vFwubk8+FRVV18dw3NVCRv+yF9wgtzdcVuVP95iNlQbMmKvRffrQPPazkFFMbNqZql5/oLgRkj5TAFPQSFTOXF04aPo4ZZmcSVRpsJKGU8FYoLA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,64 +89,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+On Mon, Mar 02, 2026 at 10:55:37AM +0100, Vlastimil Babka (SUSE) wrote:
+> Ming Lei reported [1] a regression in the ublk null target benchmark due
+> to sheaves. The profile shows that the alloc_from_pcs() fastpath fails
+> and allocations fall back to ___slab_alloc(). It also shows the
+> allocations happen through mempool_alloc().
+> 
+> The strategy of mempool_alloc() is to call the underlying allocator
+> (here slab) without __GFP_DIRECT_RECLAIM first. This does not play well
+> with __pcs_replace_empty_main() checking for gfpflags_allow_blocking()
+> to decide if it should refill an empty sheaf or fallback to the
+> slowpath, so we end up falling back.
+> 
+> We could change the mempool strategy but there might be other paths
+> doing the same ting. So instead allow sheaf refill when blocking is not
+> allowed, changing the condition to gfpflags_allow_spinning(). The
+> original condition was unnecessarily restrictive.
+> 
+> Note this doesn't fully resolve the regression [1] as another component
+> of that are memoryless nodes, which is to be addressed separately.
+> 
+> Reported-by: Ming Lei <ming.lei@redhat.com>
+> Fixes: e47c897a2949 ("slab: add sheaves to most caches")
+> Link: https://lore.kernel.org/all/aZ0SbIqaIkwoW2mB@fedora/ [1]
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
+>  mm/slub.c | 21 +++++++++------------
+>  1 file changed, 9 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index b1e9f16ba435..17b200695e9b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4567,7 +4567,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  	struct slab_sheaf *empty = NULL;
+>  	struct slab_sheaf *full;
+>  	struct node_barn *barn;
+> -	bool can_alloc;
+> +	bool allow_spin;
+>  
+>  	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+>  
+> @@ -4588,8 +4588,9 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  		return NULL;
+>  	}
+>  
+> -	full = barn_replace_empty_sheaf(barn, pcs->main,
+> -					gfpflags_allow_spinning(gfp));
+> +	allow_spin = gfpflags_allow_spinning(gfp);
+> +
+> +	full = barn_replace_empty_sheaf(barn, pcs->main, allow_spin);
+>  
+>  	if (full) {
+>  		stat(s, BARN_GET);
+> @@ -4599,9 +4600,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  
+>  	stat(s, BARN_GET_FAIL);
+>  
+> -	can_alloc = gfpflags_allow_blocking(gfp);
+> -
+> -	if (can_alloc) {
+> +	if (allow_spin) {
+>  		if (pcs->spare) {
+>  			empty = pcs->spare;
+>  			pcs->spare = NULL;
+> @@ -4612,7 +4611,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  
+>  	local_unlock(&s->cpu_sheaves->lock);
+>  
+> -	if (!can_alloc)
+> +	if (!allow_spin)
+>  		return NULL;
+>  
+>  	if (empty) {
+> @@ -4632,11 +4631,8 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>  	if (!full)
+>  		return NULL;
+>  
+> -	/*
+> -	 * we can reach here only when gfpflags_allow_blocking
+> -	 * so this must not be an irq
+> -	 */
+> -	local_lock(&s->cpu_sheaves->lock);
+> +	if (!local_trylock(&s->cpu_sheaves->lock))
+> +		goto barn_put;
 
-Setting vm.stat_interval to 0 causes excessive kworker CPU usage
-because vmstat_shepherd() and vmstat_update() reschedule themselves
-with round_jiffies_relative(0), which resolves to an immediate
-reschedule and creates a busy-loop.
+A quick question to make sure I understand this correctly.
 
-Add a custom sysctl handler that rejects 0 and restores the previous
-value, similar to how dirtytime_interval_handler() handles
-vm.dirtytime_expire_seconds.
+My understanding is that after this patch, there is now a new case where
+allocations with __GFP_KSWAPD_RECLAIM set (e.g GFP_ATOMIC) can also reach this
+lock-reacquire path.
 
-Reported-by: Terry M <terrym3201@bugzilla.kernel.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220226
-Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
----
- mm/vmstat.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+If we were to keep using local_lock here:
 
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 86b14b0f77b5..6eeb4341b215 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -2114,6 +2114,18 @@ void vmstat_flush_workqueue(void)
- 	flush_workqueue(mm_percpu_wq);
- }
- 
-+static int vmstat_interval_handler(const struct ctl_table *table, int write,
-+				    void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	int ret = proc_dointvec_jiffies(table, write, buffer, lenp, ppos);
-+
-+	if (ret == 0 && write && sysctl_stat_interval == 0) {
-+		sysctl_stat_interval = HZ;
-+		return -EINVAL;
-+	}
-+	return ret;
-+}
-+
- static void vmstat_shepherd(struct work_struct *w)
- {
- 	int cpu;
-@@ -2236,7 +2248,7 @@ static const struct ctl_table vmstat_table[] = {
- 		.data		= &sysctl_stat_interval,
- 		.maxlen		= sizeof(sysctl_stat_interval),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec_jiffies,
-+		.proc_handler	= vmstat_interval_handler,
- 	},
- 	{
- 		.procname	= "stat_refresh",
+1. On non-RT kernels it seems fine, since alloc_from_pcs() already does a
+   local_trylock(&s->cpu_sheaves->lock) check.
 
----
-base-commit: af4e9ef3d78420feb8fe58cd9a1ab80c501b3c08
-change-id: 20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-ba5446a527aa
+2. But on PREEMPT_RT, local_lock could potentially schedule away, which may add
+   latency. So the idea of using local_trylock here is to fail fast and return
+   without incurring that latency - is that the intent behind this change?
 
-Best regards,
 -- 
-Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-
-
+Thanks,
+Hao
 
