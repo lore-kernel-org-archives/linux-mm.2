@@ -4,102 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 263BBEF9014
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31D6EF9008
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C806B009F; Wed,  4 Mar 2026 11:58:34 -0500 (EST)
+	id 239686B00A0; Wed,  4 Mar 2026 11:59:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D96D6B00A0; Wed,  4 Mar 2026 11:58:34 -0500 (EST)
+	id 1E6676B00A2; Wed,  4 Mar 2026 11:59:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E5466B00A1; Wed,  4 Mar 2026 11:58:34 -0500 (EST)
+	id 0E6076B00A3; Wed,  4 Mar 2026 11:59:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D1D56B009F
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:58:34 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1CE1BA17E
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:58:33 +0000 (UTC)
-X-FDA: 84508989306.03.796F484
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EDDA86B00A0
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:59:02 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 867B91B8501
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:59:02 +0000 (UTC)
+X-FDA: 84508990524.26.A1C811C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 15D684000B
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:58:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LE39/pb7";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 75BBF1C0011
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:59:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AVJAwc3M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772643512;
+	s=arc-20220608; t=1772643540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTRiBmtioRmvl45WVMSHIEfgjr5Fv3KMawEauwx9ciI=;
-	b=gFBIr6D/M9iqr10WjeXAyKZWVOvHFh5Tf7lv1DBXgsCljgDmQZ96JVixmqnk8BCzAP/JHf
-	pChHEddM3psZIL1wT02u7fIQWUhNhEVs1W5nfhGnxr3R3iMbvc0PxJaw4bROrFWcJEQ5Ql
-	z/7AEry4ZAGN7BVx/SRcIhICRm/7mhk=
+	bh=F0T/Vf7qqsdjS6lTQKR5cGwPw0a6goqPPbVJRZsTK4M=;
+	b=TunuVLa3qLe6U5OURjkDicSIMM0OuEqxZrjuxw2JFgm+CqTMHtIVR8Kh6sWEwqj2V3GrX0
+	AdfVb2WLSM35jMBb53emV7K2qgrD+XDfq3sbZyVAWL63asvCfyIK9IlortSiQ13GymEIdF
+	rhuU/YQ5eF9BQGsK/hHMy8qM7Ar0z5k=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LE39/pb7";
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772643512; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AVJAwc3M;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772643540; a=rsa-sha256;
 	cv=none;
-	b=8QY4HZ5G4gFS5aJXlba13UQduhTbZCWgKu7CQyfNTn0GusPhLQHUBD0V1TCXa8uFMOpNkj
-	Vbd8YU03x3bqm/84lNqxfT0Jr8ym6cxCqS9waXuyzfbZX7Qx+KHwhcup2EEsql+Zd6GZuI
-	aX6g5rcTjhWCabNMiqicsnFjU9r/Lm4=
+	b=FB6tOkW4romfwO9nFqIX/UQ7GlrC+IWNuDPPEQVQO96AsdrXWb9aI6FF2+c//FD+VGU1DD
+	CElDVEhrAtqFYqJlxb12j9PzqE1DhN5Uh+WIZmGpVpEszKkySeBIHquLal80fi+MEjFXRU
+	VvD3BDXK4ybT7/62cNVSrRFLYjJpseI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 118D2444CB;
-	Wed,  4 Mar 2026 16:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506DAC2BC87;
-	Wed,  4 Mar 2026 16:58:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 833F04434E
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D576C2BCAF
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772643510;
-	bh=gt8PqqovFf1xLv4Q1zVMfYqYqUK+EQak4A80Hc02NSI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LE39/pb7RAXXwTk/mO6o0YD6l/cJEy06Z7h9wmDYPF0vzF96PCX1vxT/dVeD0yVen
-	 flpPxEgM8VbsEJseiAcr5h93ppXp+39Rm3wfGgoW96u812DuLAcCDud9UGBiKa9UGV
-	 GMKh+UPgO4HVRyZOefc10YdzRFG4R6yY/DtZdVbD2mffN0kB2flzFUfyFdGmG/dRcC
-	 YjRBJ2pD24GGvbkaGYriHDmS5BjdlgV51L3irEmEiLhB19/ssE6lg7LRIbF+QIPrru
-	 uzPgIRDr2PNuSWqrRpXSKUmqvPPeL0RBbYudyrtxV7IxIJjPex2gHSaJOGpEH527vv
-	 W+suMeggt8Bqw==
-Date: Wed, 4 Mar 2026 16:58:27 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
-	jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, 
-	kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
-	imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] mm: use vma_start_write_killable() in
- process_vma_walk_lock()
-Message-ID: <50987b7f-39ec-479d-9700-317cb0b95e6e@lucifer.local>
-References: <20260226070609.3072570-1-surenb@google.com>
- <20260226070609.3072570-4-surenb@google.com>
- <72ff2fc0-07fe-4964-9a1e-eccf8c7ed6a7@lucifer.local>
- <CAJuCfpG_bekxrHd49qyUBR2K7V8o7DrOvc-ZR7M8dAC-Hyp5ng@mail.gmail.com>
+	s=k20201202; t=1772643539;
+	bh=VDs9ICoc1Cbx3bRkHfGV2KZNv6Un/bJmhOUx1bAvdrc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AVJAwc3MJ2J6D6rWdo8AUGtzeFVTj6VC6Dlt7e8UuclWwDpK6f5GadTsTtUS3wpEd
+	 W6KC/FW09T/SeYpzo2CJUcF/yXcG1W56xFHo6VH016pdqLnjNvfBgsT+huDUJAugZm
+	 /GrS+1FNCQPiFNKqONU8JYZ3SQykhLiUVlQdhXP1xxlmHhhcv0DvHbetfVBPo7PFXE
+	 0CDgFj45doG37yzxOF6JW8Qjz9rzVSA/JjmY8hKutlxzPqKjFJMoZjcD1adrbuhMOf
+	 K5xHJGXlYmJi4lQh+gak1zJcZrHdWTDuUC9+5MRlMQqzTWuRgi11IRuUv99M4FEJ3N
+	 Sgkuq/4QO3x6w==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b935ff845c8so914756766b.2
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 08:58:59 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUuNbsyNKrslyMExzGWxWhp5dDWPv8aqz0WHl8pHUxqksKjXM5dzF2O3/Ub2+aVvwNSOVuQwogeWQ==@kvack.org
+X-Gm-Message-State: AOJu0YxwsMrPLH9cstOhmw7QqY7FFpoOWlUSZZdhV0ILPqtfVkEtucam
+	CwDVHH6R1UqZWGIqgOfARMEgrxOcPS/Dr8PhX7COnBfdjDk5ZSJTP77zE4vstiTVonhhn6wyb0v
+	7XYPMHMGwkhohM7OA97JFToOEGJ8n5pY=
+X-Received: by 2002:a17:907:7fa1:b0:b8f:e46f:8079 with SMTP id
+ a640c23a62f3a-b93f11a3c47mr151357566b.22.1772643537892; Wed, 04 Mar 2026
+ 08:58:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpG_bekxrHd49qyUBR2K7V8o7DrOvc-ZR7M8dAC-Hyp5ng@mail.gmail.com>
+References: <20260226192936.3190275-1-joshua.hahnjy@gmail.com> <20260226192936.3190275-4-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260226192936.3190275-4-joshua.hahnjy@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 4 Mar 2026 08:58:44 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zP56KdyaQjMp4PK_yS27x35s0p=aHYzT8Ey0f7bkbvNuA@mail.gmail.com>
+X-Gm-Features: AaiRm50T4h9I47c9D1mouoa_fkgZburaikg75Do9PmRofEtRFyBH2qk8gM1wq6M
+Message-ID: <CAO9r8zP56KdyaQjMp4PK_yS27x35s0p=aHYzT8Ey0f7bkbvNuA@mail.gmail.com>
+Subject: Re: [PATCH 3/8] mm/zsmalloc: Introduce objcgs pointer in struct zpdesc
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jens Axboe <axboe@kernel.dk>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <hoangnhat.pham@linux.dev>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 75BBF1C0011
+X-Stat-Signature: 9n1938ocbk8pktqbrkq53ms56ju8zzh1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15D684000B
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 35xm4pcunfq5r98j86wdpjj4ymc1kcm6
-X-HE-Tag: 1772643511-449194
-X-HE-Meta: U2FsdGVkX1/7L7iOOFwlDc8nF7E7CAbit6dJaW8xmBCua6Cvn9rVa7AjdSTQWyklwmTaOGrNahicMeihz301vczQPda4JcNWTxHXQpUfRvuxcg2zqaCgfrzCvt64G46mkZUCl1g859lI0LJ2ZyxOvEP4NTD23qHSPNY2+YT6aUh7L/g6N5yPKsXoOlJWWx7K+aGInqB7eBOjuch9Q6HqpVlMI4bcS8wqzeiPw7zh964ym68HDk8a9ABWDNsrNYrRRuQr1Iu2PESommABhr/H0eKP7MP9X8d5k0utrjsKSc7ASfVgV+LeYtIbEnyjo42VUKlxXDJcziePeaVlqyIOm0uCNCLvns9qzQy2jYlNSIVKHda4oCpBGHnpPHHuT6F3Q/POcjcunhl6NpfKRdGqglk2wsdZd7Bj49pFSNqkfZE9HJcBLLEzP/Lhq2RySYKXEhfGshC9VbIsU4z4HAuD6SWWHlvoc95K6C2/eZ5wwUEPLXFcjuyU3oAaN1zdS8qATmhPhPlvo5XsePFqFd8L3Gl+CAkXVjCegPOWLTd7jLPe9RTIMR2Nyd9foOn3jK3rLqMiYL2f5zjlJL8ZvywIcb5xCwLR2sG0Kk16YTpqmNrmXq8oLEJ+8HSvkq4lQnYGcQBF+yZy/VYtocioBLcwO1TXbeywzjiWbOBoR4kjE+XVwLihvB6Mr8I5346YLhD0s71frcVZNNnyeWqI2stjpESmiNAVebP1HDxIvEfgsJwABev3g68UI1zvw81tWXf4BMUSuhOgGyN+PiwFYtMmhaa9NDLKyR6NjGflDlxH0T/hUvoYb3nLLvOJpIY19JhCVjZLtx13fFIhn+rimzLkRdqPEJbKNzoLflvzgR3AphUTmVxJXO+kRA7sESzkwufog71jZcL1GowoVl3IVdr9ez7WZ12AJffFxjODgHBHiZw2lEaDBPHriTVx+jxpPQTxGpfAXzf0Y05Z3Gaw2SZ
- p8FwU0cB
- KWoLS3cg9I2H5yHSaVcJj4OaY/ZiLoeE1LyoeFAAZSo2ov2QA80VcAEMNIneiNta7ix9ejvYHRCWF10so70aSKBTDbmcNjiaqeFN0Al/5mg7dtFG1HzcGfWl+eUSQfCPJSwwYGNQ1hR0uiGh/ieFlHxylQTrzXZ4U/bYC6ibsTYiTmneTV8iGYXTt7BJawg9GSffWIQ0MVZfmdtyAiSQkt0uXFthcWWpJZoGbdmWeUgdr+CPaK3FlI46oGL6BI7yC0w57YOk4xJtsE/IhHebg1WgVBPHLy5gSWXbfE2nN72AvDuu83QBEYc9a915EmdXIPFVKAnXFAHsqHkFmLuyW7ZpVtUb1hyDluAJ6/xR5KONW1RH94HVb83fBmibT+qih44LB4u1R9mPEuL49hmmU9LoFOw==
+X-HE-Tag: 1772643540-408748
+X-HE-Meta: U2FsdGVkX1/wUufo6KacdZKxuEA93Or8SuvUNlixPuoLo993JbJFEL5v9BgGAFKHz4ME0BHAfR2s5688HMepY+q+ZFS6ivDdV9xdRpeHZChgFUDcQ8xsX+z0XuVZ6+7Jyk155HNCiJzM4Om0e1cpINhWhzY6XWr/8eqqT6tuTEmAn9sacaVL5CQcAWqSrjy/iaqaAKlgOjK/1keaxU1jDUfVoCQhFdCxTvmAaFZAHt/VlofC8lE/LwGMFjqYpiPqLiWAHZNG/oE1CWb2OGobmikYRjSYl7jU96IGUrk3awsv3sTQLXYR5fL/X5w3qxK599S+HtDvKJ2ECfFVcPasZwIpxp+3Czyd4O+CafctXSTLQ/mG4lyH99jbO3acCZgnuA2uSXLimmue0Jd5cX0acCiyexpVSc+U4l7C6ukJkafcK6VbnY4Qkm55n9NDTVY/MfY6gog+Ixs0GicRmQaBQp77qRxcuyFj0mENONqu4CiCSYM04uxQsMVNOw0SEoWoTdpjzIobKQkPQGTvC3hBE2RsrvhPNB2h0a8xpXlZ19ZOFRdy/mKSTekBn0eBa2C6dc73FHnW0CjGLelR0bWy1y3N5wLSQWOV+daUGll6P9aBa97GEwcDRW9l1XKQ017nFmwCtJrSl0n9OgnP+xNj6PMzN12QBRweiySBoS0FLrOWC7P48M2rldu7tD0Q0glqIe8bzPqve23omLMRB7ULBeLX5oDPsiKTQQHJ9eq8GPDki9CuQhT00SA0aQeZ+MSBkQJJav1nHi/eAxgI8624XhvmOMTLa06UaymYa6Rnvh9k6lwXIfVkOBRJrcRlgbT/WEo6mJATn+Ep/l30z5hnyG2PJPJEzAmHCcVTPtNMFy4qss07NPsFPBU1vG6aNOuSEARhSPH5oY7mogB5pQI9RJnmLo1TN3hg+5pPLP5OR93HjVCN+mjCVlmsvUQR3/JawPK4Ws9d4cGMB0bDEpJ
+ CH3hWmuM
+ /vthyLbrFjZ9Kto2bI9wsDSH5x95hjcK+HCBe5gxJp0RSRnB/E756LeXQIRdgKT/FSjYdz38wmCHO7dG0mPnR1w6btb300NKWLuldW5bDz9kNQwqFqT4jOQLkPQF0TKCr0xxHO54SXFLmJ1WaIcst065LkqFTxdvWg/FQr4xgqrYWQRkzoq5NOjCDvgcwcshQMpj5VP+WxOcUaHr5mzIbeOCZt4HT07kPVsfjBPg69TnGQuTv97UZDP/U5BcNOtY1UJ3yiA1PKDiRluLdD64Ugvtu5E4UBgp99XLsqAVAViaLbBGAMB3ucFWEdLOEgsPm9QdEQdNiy097ud4egjqFvUGCyIOYrv8/g2Pi3MnGHPF4ufMQmBZjVaBfe8AYQbL9E1cjaExhWiggAAClZGqcPAfc0SEHoXIQBP6+mzt1peHovhEA38HJZsskYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,422 +106,384 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 03:59:17PM -0800, Suren Baghdasaryan wrote:
-> On Mon, Mar 2, 2026 at 7:25 AM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > On Wed, Feb 25, 2026 at 11:06:09PM -0800, Suren Baghdasaryan wrote:
-> > > Replace vma_start_write() with vma_start_write_killable() when
-> > > process_vma_walk_lock() is used with PGWALK_WRLOCK option.
-> > > Adjust its direct and indirect users to check for a possible error
-> > > and handle it. Ensure users handle EINTR correctly and do not ignore
-> > > it.
-> > >
-> > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> >
-> > Have raised concerns below but also this feels like you're trying to do a bit
-> > too much in one patch here, probably worth splitting out based on the different
-> > parts you changed.
-> >
-> > > ---
-> > >  arch/s390/kvm/kvm-s390.c |  2 +-
-> > >  fs/proc/task_mmu.c       |  5 ++++-
-> > >  mm/mempolicy.c           | 14 +++++++++++---
-> > >  mm/pagewalk.c            | 20 ++++++++++++++------
-> > >  mm/vma.c                 | 22 ++++++++++++++--------
-> > >  mm/vma.h                 |  6 ++++++
-> > >  6 files changed, 50 insertions(+), 19 deletions(-)
-> > >
-> > > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> > > index 7a175d86cef0..337e4f7db63a 100644
-> > > --- a/arch/s390/kvm/kvm-s390.c
-> > > +++ b/arch/s390/kvm/kvm-s390.c
-> > > @@ -2948,7 +2948,7 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> > >               }
-> > >               /* must be called without kvm->lock */
-> > >               r = kvm_s390_handle_pv(kvm, &args);
-> > > -             if (copy_to_user(argp, &args, sizeof(args))) {
-> > > +             if (r != -EINTR && copy_to_user(argp, &args, sizeof(args))) {
-> >
-> > This is horribly ugly, and if we were already filtering any other instance of
-> > -EINTR (if they're even possible from copy_to_user()) why is -EINTR being
-> > treated in a special way?
-> >
-> > I honestly _hate_ this if (errcode != -EINTR) { ... } pattern in general, I'd
-> > really rather we didn't.
-> >
-> > It's going to bitrot and people are going to assume it's for some _very good
-> > reason_ and nobody will understand why it's getting special treatment...
-> >
-> > Surely a fatal signal would have previously resulted in -EFAULT before which is
-> > a similar situation so most consistent would be to keep filtering no?
->
-> Current code ignores any error coming from kvm_s390_handle_pv() and
-> proceeds with copy_to_user(), possibly overriding the former error. I
-> don't really know if this is an oversight or an intentional behavior,
-> so I wanted to minimize possible side effects. I guess I should try to
-> fix it properly (or learn why this was done this way). I'll post a
-> separate patch to error out immediately if kvm_s390_handle_pv() fails
-> and will ask s390 experts for review.
+>  static struct zspage *find_get_zspage(struct size_class *class)
+> @@ -1289,13 +1336,14 @@ static unsigned long obj_malloc(struct zs_pool *p=
+ool,
+>   * @size: size of block to allocate
+>   * @gfp: gfp flags when allocating object
+>   * @nid: The preferred node id to allocate new zspage (if needed)
+> + * @objcg: Whether the zspage should track per-object memory charging.
+>   *
+>   * On success, handle to the allocated object is returned,
+>   * otherwise an ERR_PTR().
+>   * Allocation requests with size > ZS_MAX_ALLOC_SIZE will fail.
+>   */
+>  unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
+> -                       const int nid)
+> +                       const int nid, bool objcg)
 
-Thanks!
+Instead of passing in a boolean here, what if we make it a pool
+parameter at creation time? I don't foresee I use case where some
+objects are charged and some aren't. This avoids needing to always
+pass objcg=3Dtrue (for zswap) or objcg=3Dfalse (for zram), and reduces
+churn. Also, it allows us to add assertions to zs_obj_write() (and
+elsewhere if needed) that an objcg is passed in when the pool should
+be charged.
 
->
-> >
-> > >                       r = -EFAULT;
-> > >                       break;
-> > >               }
-> > > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > > index e091931d7ca1..1238a2988eb6 100644
-> > > --- a/fs/proc/task_mmu.c
-> > > +++ b/fs/proc/task_mmu.c
-> > > @@ -1797,6 +1797,7 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
-> > >               struct clear_refs_private cp = {
-> > >                       .type = type,
-> > >               };
-> > > +             int err;
-> > >
-> > >               if (mmap_write_lock_killable(mm)) {
-> > >                       count = -EINTR;
-> > > @@ -1824,7 +1825,9 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
-> > >                                               0, mm, 0, -1UL);
-> > >                       mmu_notifier_invalidate_range_start(&range);
-> > >               }
-> > > -             walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-> > > +             err = walk_page_range(mm, 0, -1, &clear_refs_walk_ops, &cp);
-> > > +             if (err < 0)
-> >
-> > Again with this < 0 :) let's be consistent, if (err).
->
-> Ack.
-
-Thanks!
-
->
-> >
-> > > +                     count = err;
-> > >               if (type == CLEAR_REFS_SOFT_DIRTY) {
-> > >                       mmu_notifier_invalidate_range_end(&range);
-> > >                       flush_tlb_mm(mm);
-> > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > > index 90939f5bde02..3c8b3dfc9c56 100644
-> > > --- a/mm/mempolicy.c
-> > > +++ b/mm/mempolicy.c
-> > > @@ -988,6 +988,8 @@ queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
-> > >                       &queue_pages_lock_vma_walk_ops : &queue_pages_walk_ops;
-> >
-> > There's a comment above:
-> >
-> >  * queue_pages_range() may return:
-> >  * 0 - all pages already on the right node, or successfully queued for moving
-> >  *     (or neither strict checking nor moving requested: only range checking).
-> >  * >0 - this number of misplaced folios could not be queued for moving
-> >  *      (a hugetlbfs page or a transparent huge page being counted as 1).
-> >  * -EIO - a misplaced page found, when MPOL_MF_STRICT specified without MOVEs.
-> >  * -EFAULT - a hole in the memory range, when MPOL_MF_DISCONTIG_OK unspecified.
-> >  */
-> >
-> > You should add the -EINTR to it.
->
-> Ack.
-
-Thanks!
-
->
-> >
-> > >
-> > >       err = walk_page_range(mm, start, end, ops, &qp);
-> > > +     if (err == -EINTR)
-> > > +             return err;
-> >
-> > Again, you're special casing without really any justification here. Let's please
-> > not special case -EINTR unless you have a _really good_ reason to.
-> >
-> > And also - if we fail to walk the page range because we couldn't get a VMA write
-> > lock, that's ok. The walk failed. There's nothing to unlock, because we didn't
-> > even get the write lock in the first place, so there's no broken state, it's as
-> > if we failed at some other point right?
-> >
-> > So I don't see why we're special casing this _at all_.
->
-> I want to avoid possible -EINTR code override with -EFAULT in the code below.
-> walk_page_range() can return -EINVAL and any other error that
-> ops->pte_hole or ops->test_walk might return. We might be fine
-> treating all of them as -EFAULT but masking -EINTR seems wrong to me.
-> I don't really know a better way to deal with this but if you have a
-> good alternative I would really appreciate it.
-
-As per Matthew we needn't worry, and in any case if we want to check for fatal
-signal early exit we can do if (fatal_signal_pending(current)) {} I think?
-
->
-> >
-> > >
-> > >       if (!qp.first)
-> > >               /* whole range in hole */
-> > > @@ -1309,9 +1311,14 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
-> > >                                     flags | MPOL_MF_DISCONTIG_OK, &pagelist);
-> > >       mmap_read_unlock(mm);
-> >
-> >
-> > >
-> > > +     if (nr_failed == -EINTR)
-> > > +             err = nr_failed;
-> >
-> > Ugh please don't, that's REALLY horrible.
-> >
-> > Actually the only way you'd get a write lock happening in the walk_page_range()
-> > is if flags & MPOL_MF_WRLOCK, menaing queue_pages_lock_vma_walk_ops are used
-> > which specifies .walk_lock = PGWALK_WRLOCK.
-> >
-> > And this flag is only set in do_mbind(), not in migrate_to_node().
-> >
-> > So this check is actually totally unnecessary. You'll never get -EINTR here.
->
-> Ah, good point. I'll drop this part.
-
-Thanks!
-
->
-> >
-> > Maybe this code needs some refactoring though in general... yikes.
->
-> Right.
->
-> >
-> > > +
-> > >       if (!list_empty(&pagelist)) {
-> > > -             err = migrate_pages(&pagelist, alloc_migration_target, NULL,
-> > > -                     (unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL);
-> > > +             if (!err)
-> > > +                     err = migrate_pages(&pagelist, alloc_migration_target,
-> > > +                                         NULL, (unsigned long)&mtc,
-> > > +                                         MIGRATE_SYNC, MR_SYSCALL, NULL);
-> >
-> > Given the above, this is unnecessary too.
->
-> Ack. Will drop.
-
-Thanks!
-
->
-> >
-> > >               if (err)
-> > >                       putback_movable_pages(&pagelist);
-> > >       }
-> > > @@ -1611,7 +1618,8 @@ static long do_mbind(unsigned long start, unsigned long len,
-> > >                               MR_MEMPOLICY_MBIND, NULL);
-> > >       }
-> > >
-> > > -     if (nr_failed && (flags & MPOL_MF_STRICT))
-> > > +     /* Do not mask EINTR */
-> >
-> > Useless comment... You're not explaining why, and it's obvious what you're doing.
-> >
-> > > +     if ((err != -EINTR) && (nr_failed && (flags & MPOL_MF_STRICT)))
-> >
-> > Weird use of parens...
-> >
-> > And again why are we treating -EINTR in a special way?
->
-> Ah, actually I don't think I need this here. If queue_pages_range()
-> fails nr_failed gets reset to 0, so the original error won't be masked
-> as -EIO. I'll drop this part.
-
-Thanks!
-
->
-> >
-> > >               err = -EIO;
-> > >       if (!list_empty(&pagelist))
-> > >               putback_movable_pages(&pagelist);
-> > > diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> > > index a94c401ab2cf..dc9f7a7709c6 100644
-> > > --- a/mm/pagewalk.c
-> > > +++ b/mm/pagewalk.c
-> > > @@ -425,14 +425,13 @@ static inline void process_mm_walk_lock(struct mm_struct *mm,
-> > >               mmap_assert_write_locked(mm);
-> > >  }
-> > >
-> > > -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> > > +static inline int process_vma_walk_lock(struct vm_area_struct *vma,
-> > >                                        enum page_walk_lock walk_lock)
-> > >  {
-> > >  #ifdef CONFIG_PER_VMA_LOCK
-> > >       switch (walk_lock) {
-> > >       case PGWALK_WRLOCK:
-> > > -             vma_start_write(vma);
-> > > -             break;
-> > > +             return vma_start_write_killable(vma);
-> > >       case PGWALK_WRLOCK_VERIFY:
-> > >               vma_assert_write_locked(vma);
-> > >               break;
-> > > @@ -444,6 +443,7 @@ static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> > >               break;
-> > >       }
-> > >  #endif
-> > > +     return 0;
-> > >  }
-> > >
-> > >  /*
-> > > @@ -487,7 +487,9 @@ int walk_page_range_mm_unsafe(struct mm_struct *mm, unsigned long start,
-> > >                       if (ops->pte_hole)
-> > >                               err = ops->pte_hole(start, next, -1, &walk);
-> > >               } else { /* inside vma */
-> > > -                     process_vma_walk_lock(vma, ops->walk_lock);
-> > > +                     err = process_vma_walk_lock(vma, ops->walk_lock);
-> > > +                     if (err)
-> > > +                             break;
-> > >                       walk.vma = vma;
-> > >                       next = min(end, vma->vm_end);
-> > >                       vma = find_vma(mm, vma->vm_end);
-> > > @@ -704,6 +706,7 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
-> > >               .vma            = vma,
-> > >               .private        = private,
-> > >       };
-> > > +     int err;
-> > >
-> > >       if (start >= end || !walk.mm)
-> > >               return -EINVAL;
-> > > @@ -711,7 +714,9 @@ int walk_page_range_vma_unsafe(struct vm_area_struct *vma, unsigned long start,
-> > >               return -EINVAL;
-> > >
-> > >       process_mm_walk_lock(walk.mm, ops->walk_lock);
-> > > -     process_vma_walk_lock(vma, ops->walk_lock);
-> > > +     err = process_vma_walk_lock(vma, ops->walk_lock);
-> > > +     if (err)
-> > > +             return err;
-> > >       return __walk_page_range(start, end, &walk);
-> > >  }
-> > >
-> > > @@ -734,6 +739,7 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
-> > >               .vma            = vma,
-> > >               .private        = private,
-> > >       };
-> > > +     int err;
-> > >
-> > >       if (!walk.mm)
-> > >               return -EINVAL;
-> > > @@ -741,7 +747,9 @@ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
-> > >               return -EINVAL;
-> > >
-> > >       process_mm_walk_lock(walk.mm, ops->walk_lock);
-> > > -     process_vma_walk_lock(vma, ops->walk_lock);
-> > > +     err = process_vma_walk_lock(vma, ops->walk_lock);
-> > > +     if (err)
-> > > +             return err;
-> > >       return __walk_page_range(vma->vm_start, vma->vm_end, &walk);
-> > >  }
-> > >
-> > > diff --git a/mm/vma.c b/mm/vma.c
-> > > index 9f2664f1d078..46bbad6e64a4 100644
-> > > --- a/mm/vma.c
-> > > +++ b/mm/vma.c
-> > > @@ -998,14 +998,18 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
-> > >       if (anon_dup)
-> > >               unlink_anon_vmas(anon_dup);
-> > >
-> > > -     /*
-> > > -      * This means we have failed to clone anon_vma's correctly, but no
-> > > -      * actual changes to VMAs have occurred, so no harm no foul - if the
-> > > -      * user doesn't want this reported and instead just wants to give up on
-> > > -      * the merge, allow it.
-> > > -      */
-> > > -     if (!vmg->give_up_on_oom)
-> > > -             vmg->state = VMA_MERGE_ERROR_NOMEM;
-> > > +     if (err == -EINTR) {
-> > > +             vmg->state = VMA_MERGE_ERROR_INTR;
-> >
-> > Yeah this is incorrect. You seem adament in passing through -EINTR _no
-> > matter what_ :)
->
-> You got me figured out ;)
->
-> >
-> > There are callers that don't care at all if the merge failed, whether through
-> > oom or VMA write lock not being acquired.
->
-> Ah, I see. I was a bit puzzled by this vmg->give_up_on_oom flag. I
-> think what you are saying is that errors from
-> vma_merge_existing_range() are ignored unless this flag is set and
-> even then the only possible error is ENOMEM.
->
-> >
-> > There's really no benefit in exiting early here I don't think, the subsequent
-> > split will call vma_start_write_killable() anyway.
->
-> But are we always calling split after the merge?
-
-We wouldn't if start == vma->vm_start and end == vma->vm_end but that'd be a nop
-anyway :) [in vma_modify(), the only caller].
-
->
-> >
-> > So I think this adds a lot of complexity and mess for nothing.
-> >
-> > So can we drop all this change to the merge logic please?
->
-> Ok but is there a good reason for this unusual error handling logic in
-> vma_merge_existing_range()?
-
-It's specifically so we can indicate _why_ the merge didn't succeed, because the
-function returns NULL. Is checked in vma_modify().
-
-Better this way than an ERR_PTR().
+We can even add a zs_obj_write_objcg() variant that takes in an objcg,
+and keep the current one as-is. Both would internally call a helper
+that takes in an objcg, but that would further minimize churn to zram.
+Not sure if that's worth it though. Sergey, WDYT?
 
 
+On Thu, Feb 26, 2026 at 11:29=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gmail.c=
+om> wrote:
 >
-> >
-> > > +     } else {
-> > > +             /*
-> > > +              * This means we have failed to clone anon_vma's correctly,
-> > > +              * but no actual changes to VMAs have occurred, so no harm no
-> > > +              * foul - if the user doesn't want this reported and instead
-> > > +              * just wants to give up on the merge, allow it.
-> > > +              */
-> > > +             if (!vmg->give_up_on_oom)
-> > > +                     vmg->state = VMA_MERGE_ERROR_NOMEM;
-> > > +     }
-> > >       return NULL;
-> > >  }
-> > >
-> > > @@ -1681,6 +1685,8 @@ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
-> > >       merged = vma_merge_existing_range(vmg);
-> > >       if (merged)
-> > >               return merged;
-> > > +     if (vmg_intr(vmg))
-> > > +             return ERR_PTR(-EINTR);
-> > >       if (vmg_nomem(vmg))
-> > >               return ERR_PTR(-ENOMEM);
-> > >
-> > > diff --git a/mm/vma.h b/mm/vma.h
-> > > index eba388c61ef4..fe4560f81f4f 100644
-> > > --- a/mm/vma.h
-> > > +++ b/mm/vma.h
-> > > @@ -56,6 +56,7 @@ struct vma_munmap_struct {
-> > >  enum vma_merge_state {
-> > >       VMA_MERGE_START,
-> > >       VMA_MERGE_ERROR_NOMEM,
-> > > +     VMA_MERGE_ERROR_INTR,
-> > >       VMA_MERGE_NOMERGE,
-> > >       VMA_MERGE_SUCCESS,
-> > >  };
-> > > @@ -226,6 +227,11 @@ static inline bool vmg_nomem(struct vma_merge_struct *vmg)
-> > >       return vmg->state == VMA_MERGE_ERROR_NOMEM;
-> > >  }
-> > >
-> > > +static inline bool vmg_intr(struct vma_merge_struct *vmg)
-> > > +{
-> > > +     return vmg->state == VMA_MERGE_ERROR_INTR;
-> > > +}
-> > > +
-> > >  /* Assumes addr >= vma->vm_start. */
-> > >  static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
-> > >                                      unsigned long addr)
-> > > --
-> > > 2.53.0.414.gf7e9f6c205-goog
-> > >
-> >
-
-Cheers, Lorenzo
+> Introduce an array of struct obj_cgroup pointers to zpdesc to keep track
+> of compressed objects' memcg ownership.
+>
+> The 8 bytes required to add the array in struct zpdesc brings its size
+> up from 56 bytes to 64 bytes. However, in the current implementation,
+> struct zpdesc lays on top of struct page[1]. This allows the increased
+> size to remain invisible to the outside, since 64 bytes are used for
+> struct zpdesc anyways.
+>
+> The newly added obj_cgroup array pointer overlays page->memcg_data,
+> which causes problems for functions that try to perform page charging by
+> checking the zeroness of page->memcg_data. To make sure that the
+> backing zpdesc's obj_cgroup ** is not interpreted as a mem_cgroup *,
+> follow SLUB's lead and use the MEMCG_DATA_OBJEXTS bit to tag the pointer.
+>
+> Consumers of zsmalloc that do not perform memcg accounting (i.e. zram)
+> are completely unaffected by this patch, as the array to track the
+> obj_cgroup pointers are only allocated in the zswap path.
+>
+> This patch temporarily increases the memory used by zswap by 8 bytes
+> per zswap_entry, since the obj_cgroup pointer is duplicated in the
+> zpdesc and in zswap_entry. In the following patches, we will redirect
+> memory charging operations to use the zpdesc's obj_cgroup instead, and
+> remove the pointer from zswap_entry. This will leave no net memory usage
+> increase for both zram and zswap.
+>
+> In this patch, allocate / free the objcg pointer array for the zswap
+> path, and handle partial object migration and full zpdesc migration.
+>
+> [1] In the (near) future, struct zpdesc may no longer overlay struct
+> page as we shift towards using memdescs. When this happens, the size
+> increase of struct zpdesc will no longer free. With that said, the
+> difference can be kept minimal.
+>
+> All the changes that are being implemented are currently guarded under
+> CONFIG_MEMCG. We can optionally minimize the impact on zram users by
+> guarding these changes in CONFIG_MEMCG && CONFIG_ZSWAP as well.
+>
+> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  drivers/block/zram/zram_drv.c | 10 ++---
+>  include/linux/zsmalloc.h      |  2 +-
+>  mm/zpdesc.h                   | 25 +++++++++++-
+>  mm/zsmalloc.c                 | 74 +++++++++++++++++++++++++++++------
+>  mm/zswap.c                    |  2 +-
+>  5 files changed, 93 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 61d3e2c74901..60ee85679730 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -2220,8 +2220,8 @@ static int write_incompressible_page(struct zram *z=
+ram, struct page *page,
+>          * like we do for compressible pages.
+>          */
+>         handle =3D zs_malloc(zram->mem_pool, PAGE_SIZE,
+> -                          GFP_NOIO | __GFP_NOWARN |
+> -                          __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(pag=
+e));
+> +                          GFP_NOIO | __GFP_NOWARN | __GFP_HIGHMEM |
+> +                          __GFP_MOVABLE, page_to_nid(page), false);
+>         if (IS_ERR_VALUE(handle))
+>                 return PTR_ERR((void *)handle);
+>
+> @@ -2283,8 +2283,8 @@ static int zram_write_page(struct zram *zram, struc=
+t page *page, u32 index)
+>         }
+>
+>         handle =3D zs_malloc(zram->mem_pool, comp_len,
+> -                          GFP_NOIO | __GFP_NOWARN |
+> -                          __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(pag=
+e));
+> +                          GFP_NOIO | __GFP_NOWARN | __GFP_HIGHMEM |
+> +                          __GFP_MOVABLE, page_to_nid(page), false);
+>         if (IS_ERR_VALUE(handle)) {
+>                 zcomp_stream_put(zstrm);
+>                 return PTR_ERR((void *)handle);
+> @@ -2514,7 +2514,7 @@ static int recompress_slot(struct zram *zram, u32 i=
+ndex, struct page *page,
+>         handle_new =3D zs_malloc(zram->mem_pool, comp_len_new,
+>                                GFP_NOIO | __GFP_NOWARN |
+>                                __GFP_HIGHMEM | __GFP_MOVABLE,
+> -                              page_to_nid(page));
+> +                              page_to_nid(page), false);
+>         if (IS_ERR_VALUE(handle_new)) {
+>                 zcomp_stream_put(zstrm);
+>                 return PTR_ERR((void *)handle_new);
+> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+> index 478410c880b1..8ef28b964bb0 100644
+> --- a/include/linux/zsmalloc.h
+> +++ b/include/linux/zsmalloc.h
+> @@ -28,7 +28,7 @@ struct zs_pool *zs_create_pool(const char *name);
+>  void zs_destroy_pool(struct zs_pool *pool);
+>
+>  unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
+> -                       const int nid);
+> +                       const int nid, bool objcg);
+>  void zs_free(struct zs_pool *pool, unsigned long obj);
+>
+>  size_t zs_huge_class_size(struct zs_pool *pool);
+> diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+> index b8258dc78548..d10a73e4a90e 100644
+> --- a/mm/zpdesc.h
+> +++ b/mm/zpdesc.h
+> @@ -20,10 +20,12 @@
+>   * @zspage:            Points to the zspage this zpdesc is a part of.
+>   * @first_obj_offset:  First object offset in zsmalloc pool.
+>   * @_refcount:         The number of references to this zpdesc.
+> + * @objcgs:            Array of objcgs pointers that the stored objs
+> + *                     belong to. Overlayed on top of page->memcg_data, =
+and
+> + *                     will always have first bit set if it is a valid p=
+ointer.
+>   *
+>   * This struct overlays struct page for now. Do not modify without a goo=
+d
+> - * understanding of the issues. In particular, do not expand into the ov=
+erlap
+> - * with memcg_data.
+> + * understanding of the issues.
+>   *
+>   * Page flags used:
+>   * * PG_private identifies the first component page.
+> @@ -47,6 +49,9 @@ struct zpdesc {
+>          */
+>         unsigned int first_obj_offset;
+>         atomic_t _refcount;
+> +#ifdef CONFIG_MEMCG
+> +       unsigned long objcgs;
+> +#endif
+>  };
+>  #define ZPDESC_MATCH(pg, zp) \
+>         static_assert(offsetof(struct page, pg) =3D=3D offsetof(struct zp=
+desc, zp))
+> @@ -59,6 +64,9 @@ ZPDESC_MATCH(__folio_index, handle);
+>  ZPDESC_MATCH(private, zspage);
+>  ZPDESC_MATCH(page_type, first_obj_offset);
+>  ZPDESC_MATCH(_refcount, _refcount);
+> +#ifdef CONFIG_MEMCG
+> +ZPDESC_MATCH(memcg_data, objcgs);
+> +#endif
+>  #undef ZPDESC_MATCH
+>  static_assert(sizeof(struct zpdesc) <=3D sizeof(struct page));
+>
+> @@ -171,4 +179,17 @@ static inline bool zpdesc_is_locked(struct zpdesc *z=
+pdesc)
+>  {
+>         return folio_test_locked(zpdesc_folio(zpdesc));
+>  }
+> +
+> +#ifdef CONFIG_MEMCG
+> +static inline struct obj_cgroup **zpdesc_objcgs(struct zpdesc *zpdesc)
+> +{
+> +       return (struct obj_cgroup **)(zpdesc->objcgs & ~OBJEXTS_FLAGS_MAS=
+K);
+> +}
+> +
+> +static inline void zpdesc_set_objcgs(struct zpdesc *zpdesc,
+> +                                    struct obj_cgroup **objcgs)
+> +{
+> +       zpdesc->objcgs =3D (unsigned long)objcgs | MEMCG_DATA_OBJEXTS;
+> +}
+> +#endif
+>  #endif
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 7846f31bcc8b..7d56bb700e11 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -39,6 +39,7 @@
+>  #include <linux/zsmalloc.h>
+>  #include <linux/fs.h>
+>  #include <linux/workqueue.h>
+> +#include <linux/memcontrol.h>
+>  #include "zpdesc.h"
+>
+>  #define ZSPAGE_MAGIC   0x58
+> @@ -777,6 +778,10 @@ static void reset_zpdesc(struct zpdesc *zpdesc)
+>         ClearPagePrivate(page);
+>         zpdesc->zspage =3D NULL;
+>         zpdesc->next =3D NULL;
+> +#ifdef CONFIG_MEMCG
+> +       kfree(zpdesc_objcgs(zpdesc));
+> +       zpdesc->objcgs =3D 0;
+> +#endif
+>         /* PageZsmalloc is sticky until the page is freed to the buddy. *=
+/
+>  }
+>
+> @@ -893,6 +898,43 @@ static void init_zspage(struct size_class *class, st=
+ruct zspage *zspage)
+>         set_freeobj(zspage, 0);
+>  }
+>
+> +#ifdef CONFIG_MEMCG
+> +static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
+> +                               struct zpdesc *zpdescs[])
+> +{
+> +       /*
+> +        * Add 2 to objcgs_per_zpdesc to account for partial objs that ma=
+y be
+> +        * stored at the beginning or end of the zpdesc.
+> +        */
+> +       int objcgs_per_zpdesc =3D (PAGE_SIZE / class->size) + 2;
+> +       int i;
+> +       struct obj_cgroup **objcgs;
+> +
+> +       for (i =3D 0; i < class->pages_per_zspage; i++) {
+> +               objcgs =3D kcalloc(objcgs_per_zpdesc, sizeof(struct obj_c=
+group *),
+> +                                gfp & ~__GFP_HIGHMEM);
+> +               if (!objcgs) {
+> +                       while (--i >=3D 0) {
+> +                               kfree(zpdesc_objcgs(zpdescs[i]));
+> +                               zpdescs[i]->objcgs =3D 0;
+> +                       }
+> +
+> +                       return false;
+> +               }
+> +
+> +               zpdesc_set_objcgs(zpdescs[i], objcgs);
+> +       }
+> +
+> +       return true;
+> +}
+> +#else
+> +static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
+> +                               struct zpdesc *zpdescs[])
+> +{
+> +       return true;
+> +}
+> +#endif
+> +
+>  static void create_page_chain(struct size_class *class, struct zspage *z=
+spage,
+>                                 struct zpdesc *zpdescs[])
+>  {
+> @@ -931,7 +973,7 @@ static void create_page_chain(struct size_class *clas=
+s, struct zspage *zspage,
+>   */
+>  static struct zspage *alloc_zspage(struct zs_pool *pool,
+>                                    struct size_class *class,
+> -                                  gfp_t gfp, const int nid)
+> +                                  gfp_t gfp, const int nid, bool objcg)
+>  {
+>         int i;
+>         struct zpdesc *zpdescs[ZS_MAX_PAGES_PER_ZSPAGE];
+> @@ -952,24 +994,29 @@ static struct zspage *alloc_zspage(struct zs_pool *=
+pool,
+>                 struct zpdesc *zpdesc;
+>
+>                 zpdesc =3D alloc_zpdesc(gfp, nid);
+> -               if (!zpdesc) {
+> -                       while (--i >=3D 0) {
+> -                               zpdesc_dec_zone_page_state(zpdescs[i]);
+> -                               free_zpdesc(zpdescs[i]);
+> -                       }
+> -                       cache_free_zspage(zspage);
+> -                       return NULL;
+> -               }
+> +               if (!zpdesc)
+> +                       goto err;
+>                 __zpdesc_set_zsmalloc(zpdesc);
+>
+>                 zpdesc_inc_zone_page_state(zpdesc);
+>                 zpdescs[i] =3D zpdesc;
+>         }
+>
+> +       if (objcg && !alloc_zspage_objcgs(class, gfp, zpdescs))
+> +               goto err;
+> +
+>         create_page_chain(class, zspage, zpdescs);
+>         init_zspage(class, zspage);
+>
+>         return zspage;
+> +
+> +err:
+> +       while (--i >=3D 0) {
+> +               zpdesc_dec_zone_page_state(zpdescs[i]);
+> +               free_zpdesc(zpdescs[i]);
+> +       }
+> +       cache_free_zspage(zspage);
+> +       return NULL;
+>  }
+>
+>  static struct zspage *find_get_zspage(struct size_class *class)
+> @@ -1289,13 +1336,14 @@ static unsigned long obj_malloc(struct zs_pool *p=
+ool,
+>   * @size: size of block to allocate
+>   * @gfp: gfp flags when allocating object
+>   * @nid: The preferred node id to allocate new zspage (if needed)
+> + * @objcg: Whether the zspage should track per-object memory charging.
+>   *
+>   * On success, handle to the allocated object is returned,
+>   * otherwise an ERR_PTR().
+>   * Allocation requests with size > ZS_MAX_ALLOC_SIZE will fail.
+>   */
+>  unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t gfp,
+> -                       const int nid)
+> +                       const int nid, bool objcg)
+>  {
+>         unsigned long handle;
+>         struct size_class *class;
+> @@ -1330,7 +1378,7 @@ unsigned long zs_malloc(struct zs_pool *pool, size_=
+t size, gfp_t gfp,
+>
+>         spin_unlock(&class->lock);
+>
+> -       zspage =3D alloc_zspage(pool, class, gfp, nid);
+> +       zspage =3D alloc_zspage(pool, class, gfp, nid, objcg);
+>         if (!zspage) {
+>                 cache_free_handle(handle);
+>                 return (unsigned long)ERR_PTR(-ENOMEM);
+> @@ -1672,6 +1720,10 @@ static void replace_sub_page(struct size_class *cl=
+ass, struct zspage *zspage,
+>         if (unlikely(ZsHugePage(zspage)))
+>                 newzpdesc->handle =3D oldzpdesc->handle;
+>         __zpdesc_set_movable(newzpdesc);
+> +#ifdef CONFIG_MEMCG
+> +       zpdesc_set_objcgs(newzpdesc, zpdesc_objcgs(oldzpdesc));
+> +       oldzpdesc->objcgs =3D 0;
+> +#endif
+>  }
+>
+>  static bool zs_page_isolate(struct page *page, isolate_mode_t mode)
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index af3f0fbb0558..dd083110bfa0 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -905,7 +905,7 @@ static bool zswap_compress(struct page *page, struct =
+zswap_entry *entry,
+>         }
+>
+>         gfp =3D GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABL=
+E;
+> -       handle =3D zs_malloc(pool->zs_pool, dlen, gfp, page_to_nid(page))=
+;
+> +       handle =3D zs_malloc(pool->zs_pool, dlen, gfp, page_to_nid(page),=
+ true);
+>         if (IS_ERR_VALUE(handle)) {
+>                 alloc_ret =3D PTR_ERR((void *)handle);
+>                 goto unlock;
+> --
+> 2.47.3
+>
+>
 
