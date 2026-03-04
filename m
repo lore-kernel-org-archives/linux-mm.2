@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74570EF8FF8
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 210AEEF8FF8
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 15:34:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD8F66B0096; Wed,  4 Mar 2026 10:34:14 -0500 (EST)
+	id 859596B0093; Wed,  4 Mar 2026 10:34:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D862F6B0098; Wed,  4 Mar 2026 10:34:14 -0500 (EST)
+	id 822C96B0098; Wed,  4 Mar 2026 10:34:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C07A06B0099; Wed,  4 Mar 2026 10:34:14 -0500 (EST)
+	id 6A3D16B0099; Wed,  4 Mar 2026 10:34:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A5EF86B0096
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:34:14 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 736AE1405F8
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:34:14 +0000 (UTC)
-X-FDA: 84508776828.05.0988E2C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54F166B0093
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 10:34:29 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F416F13B506
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:34:28 +0000 (UTC)
+X-FDA: 84508777458.08.8A9EE43
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6E8D480002
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:34:12 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TvINoRh4;
-	spf=pass (imf02.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 15B55A0009
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:34:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFK2PcIe;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772638452;
+	s=arc-20220608; t=1772638467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wifBCn2CkfK9Ou1HnSvIa19rRgcpbTe5jKnHto7nYgQ=;
-	b=yUGwD5Lqg1NLD5/n8+H4xCo7PxfWNGAolZocVptwp4FsYfWn69doLQrXhY7NSVgdtSXYBP
-	FhUcg+lhgcyh9gCuARU4jaufbrXlKumJ2MzyK6BETS7+xVAsQc4VVOLib4xPBnclI6Q6DG
-	4VZgVSKhduUHNc5/S2wmVZC/mtGU1UE=
+	bh=Rlcm1Ck9JnINzPL8BWKWZYnbW8UUCCqVy2lM4Vz0tdc=;
+	b=bxd87C9qpp84cmdJ04I346/ZqApUsTNoQN3xxTWqjGTpPhdn98nMfR//arifp+t79oVSZ1
+	E4GAOiVUTw30I+Pikdb7bVew08jUXtN8RbNOMTMYCq1lWl19fZyf6sVctKXKc7ijPLKvIN
+	1EAG6hOa74ScivY0CwOydT6ujm13Eh8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TvINoRh4;
-	spf=pass (imf02.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jFK2PcIe;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772638452; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772638467; a=rsa-sha256;
 	cv=none;
-	b=56CBD9Yz/hYxpBdI5R2WmjjexGW1xw806VDfxbKf+Hu+Ki8ZhMNr0Bc254GOwW0CdnKh1+
-	In6DEHluw5cFoZR83ywRv+oZUzrIRSqTn4sOxuESpdeJDKOW0HFeUa9dr0pRQy1SizTZQa
-	1Y0bBGbtvmk7X31abWr2OakSyDEOlLU=
+	b=ypGsN7JFxhdGnd2ID6Ab2UmUB5g5C+P2GBuyiPtL43uv52jaRH578g+2Ae4+qUqDWYMa0R
+	cDp6caV0fo+jCGhV1DOCg5y5LqsEK/FPn+s3rdzPkx0xsWYb9QUZHq1ZECAZvZDDYz+HOE
+	XNtX1B8fPgveJi6OTMrPPGoI3p3ljXA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D761429E8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2247E43D3D;
+	Wed,  4 Mar 2026 15:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A489C4CEF7;
 	Wed,  4 Mar 2026 15:34:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE302C19423;
-	Wed,  4 Mar 2026 15:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772638451;
-	bh=kuxule36dKt1KqUq7jE+5A7s2WCMEVwsCn6UIkEJmSg=;
+	s=k20201202; t=1772638466;
+	bh=E8lUv5ZV2tqm8DGQreXuazegXs/r+kDs1hpPJsZQq40=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TvINoRh4MeDSMvPoNZEEdprtbP1yDkFKEyw2FuAwaDtsphv61AUKF1vJajLM8KsxR
-	 Z9OUx4G07KEOPYQv4bJGAgPeE28IJlyKrwPOrWjsbvhlHu7fOmaVXVL0TD2VckROtH
-	 LQgvu9yM9BYWkIn/7BGXMz+XQ4uPMHRsW2O1DPW/j98KVBC67o2E4psmWJnS6GnXVe
-	 Haq6gyt5sWkUvCBHCykXOdPpkruIAP33PJTAk71/WfFM87Tx1hACektGUb3Qym/LHJ
-	 XTBPqaTZ1Gg5dtx/y0A8HpfyVQB9Mc4lXpBnOLwlnDsGf8IGShLxje87JWvsTeQlIT
-	 iAOKcG0kJTeJw==
+	b=jFK2PcIetv8IU3o5qyCGZS8yfnEmKyxt05WjYIOxfomVoagmee2rH4HxfQD9wSM3R
+	 XDE47kliJh8fJ1GmIPCIf38EzINurHOm24dnur01wBv0CCr1MWzm3/UodlkvfTl+Yd
+	 JLMs271d68CxBnznBOsuLhuPOJwK9CijGynxxvMr1DzYo8xT5nP7xaQ2iLOo4WiuUG
+	 GEyM1CYIXrez1FqWZdIBGAw55waYwPTzAZuTjz6fFeNpFv2z57PKbJiWA5N664Iul3
+	 470sy//ovrFOSVbXWzgcyyueQFN/gRyPXwy3QnmUm0TS05tzEJt1sV/d2jk6nebaeT
+	 jGXW/jOg/+gkA==
 From: Jeff Layton <jlayton@kernel.org>
-Date: Wed, 04 Mar 2026 10:32:34 -0500
-Subject: [PATCH v3 04/12] vfs: widen trace event i_ino fields to u64
+Date: Wed, 04 Mar 2026 10:32:35 -0500
+Subject: [PATCH v3 05/12] cachefiles: widen trace event i_ino fields to u64
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-iino-u64-v3-4-2257ad83d372@kernel.org>
+Message-Id: <20260304-iino-u64-v3-5-2257ad83d372@kernel.org>
 References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
 In-Reply-To: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
 To: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -184,36 +184,36 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
  Jeff Layton <jlayton@kernel.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=39576; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=kuxule36dKt1KqUq7jE+5A7s2WCMEVwsCn6UIkEJmSg=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCnb4w7Ih+/pccHu1bxYOOHCEghiUyD9vJIQ
- PXljaVtfOGJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQpwAKCRAADmhBGVaC
- FQZfD/4wEuon1fwdvpdeUbJvQB9xFAdJt3Sj8myWqZjdinDNNL+jctWdoUykUfVwBddTGj/J6nT
- 5wEE60/ehXZOrdVOx09mVvmeo7/CDdFNb4pRzWF3cu+n9hAUO1WyxQeRyrear9gxP7+lquNKiEK
- 1m1JpBRpjNgABImmy4UBuOAnOZcRRqYq8biNmLkcVyaT97Mqgd3nQDHVELGzUC2YnPqjosTOack
- OMNuZT8EFO3clsF1cfddwmKAC42tX9yJBlhAMhHC2U61xNhnxT6dRI2VHKOoUrelLB0ZtnctFcY
- JEo0vemgXJB5W0p22oiotqBa3LtAr6U+oz0YTI6ZXGpvjqsauj9jfwomZJRYYefv7/GMhinfD+a
- pegANOCZGiyXMJxj2LQz7KYCXEFrBi2r5C3elF/Xnc4ZkpHyC0cCBNnhPmez+r9B38XFkhAmao0
- R1JJTSVUSy4kwZ1jUXm4SQVlJYbM8FUcyY62/tJzfeK8DtY4PpOWTSmnKrNUpW2iAfcwExsvbo+
- GcNwH6JCmfWn+LqOgGmI8Vvw2nsVWkD+Fxv24no2ovs3JXmm+ABhe+jdstaqkImmFgCOnApYuCJ
- YngfHKbvv3yl5atdrcZhAaKBGLbmouhJhskXLMi7QaFlRs8dEpumNrSRS6yWq4rqolKERi6CQCD
- 7DDyl9f20o8t7OA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2680; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=E8lUv5ZV2tqm8DGQreXuazegXs/r+kDs1hpPJsZQq40=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCnboYZuamhSjxxOsGNVe4KX4qKQ8jKhPQAS
+ et+MGnh3xKJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQpwAKCRAADmhBGVaC
+ FRS2EACPETzruvNWJd9CA77sY2+/NqsP8aQJDqjrVWDpD5gBPLEZMyv3hyr/iNfrnRD1YKrR1ve
+ 4Bp6qUnc70Gv3PJekeMaKteUwnvKLrYaFXHRfvMW2vQxG5a+VN/ZfQqOwIFb3IxqbdLtOpKMxZZ
+ /nnZ6Id/RD1dBISUcfqJTDZQwqvLPraPCMVjfhS5Z15yRDQTXFk0l2cyZa3kOeSxpU0Qt/Loa9e
+ fm21nW5KV0Z9vgm0xbit0/5OpEvQBfYL5yZOHWrsoUEPkXCJ3wu7N1wj1S44XYAoq5AeWVxS3xz
+ l7eoPz5B0Qp9t6jNKdY7aLDlC09gqABVVTWzUWlZUbEIWbovOTLNAUsKOccgpleXonxEw92EPbL
+ m2OfW8fnr646fipgkmuQ69xHnJ5wuhHORGrYgEZLI8A7qqUclHy9LW3JS97sBkHmyw9GhpV55y7
+ F5PviCDiQQW6zNjygQG9Izn8+BIBcU6M1XHl1CDUYf6IIYD4lNI3ufLroIBzwn35/AqoUL8y40k
+ khU0NCP3PKt0SD7h7daLvk8VNw0uV5si6Yr52CxWSyuNFYKUidRb1nAZ0fK4IbbrqSOYCWDg1vp
+ rT2AhnlH6FhofgKbRzcTMifS2MvB0zCxCHXSQnAz9y00Dt1w9OHgXTnfFmfC5KheLo20gBiPwab
+ 2AYYSsJVCX8y4jQ==
 X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
  fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6E8D480002
-X-Stat-Signature: o3qn4gko6dtwhaym645q7o9kkom4gpk9
+X-Stat-Signature: qdwbka9bz9cz656sz4p6hn4cudskd9m6
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772638452-29811
-X-HE-Meta: U2FsdGVkX18MASiygSlwHzCttNAAbmorxS8u3aWIfvTBEqIvsRKo1L4rN3+noqG2qdMF6xvyJiGXzelNFli373A5z27GTN6fdMO0QrG4c7wORWCnGBb/JLLyxLEd0Z0UVERgs/K84HDJLN4aonFiPD/PnSRHZI6lNSXq+ya4G/Cp4fCEcqs7EkTF7W/kaQ7/xjVLMEb76T8xWVEqwlc/o1YZYLMCtRyD8up7B1qi8mMeGh0NMtaRs1Jj2/DWyrMwm5c/JcCEsMyiTVZDxIpT3JZC7gWiNbiV2HXPiOGOcYE4tfWrHjX3sekJd1aT010wiTMD0kRHjqeSrOZ7MVO/fMyx3ZsoRhbugBRnTim5uRcmQpWWbIx0b1vQjlea4Xi02pH1uKFIIs/xbEFjz4SnP4DTsByq+eet8dJ1+EXfFlJLZVrQZOMT5sjwVebnJctUQlIGG8hZgndLWep4Xo3oRpX8mK7moSwuIMDETzqAbHxYeOueFFvB/tmPPfW7p8827V5ftr9sF8rKnBkUG/hAzVVXWiAiMY8luj+rcavYhd1Kgrel3SXjWYAPFfNq5AIAyB/v79JEdNt5VNdjPpffaXBib94cqcF/RvyG05PtTbQaKbLlCDYqZLjl3YL8fSub92vf0Fsbxsgp+xzf+0rVvZnEs3ByEZEvzHCImXzrRe+n+Ft9Rf6+K9ljj5mbIl+mabF77/IN70svPXmuMhF8P4LowqDVfe84DgGlQtg8+yztH0ps1hKGIbQYlGGy81LndvJ5g+8DYs4uClWrvbTJXZ3RyJqytQZ2c9c7OBWJPQen8KpYqCdCMfNT8cz7Yaki09qkmJ2WuWXNTFlb8yyn2uLf8KzyXcEFopn27u8ERb1ST+CKxVum6LDehKoSOmpXk7Rr2okBnWiqYN0xgkO7YxKG/kqeftxe7v3DeeWCs1kGhnwQ6LKJnIFO7F07yxR61oB2QYsEIBz9WX386nj
- Lrnl2kE4
- Wv/6IK+6MJVV7wXAgHA0OlykskvyRfyg8Rxl9X8m3PL6hb1xHmN6c9a8843rmv82k0YAfieDZXvw6ibIMYSvm5AJglUqy/kWyHPSK6xx2gEaNtkv2kZALGEZiHWuRvKKFs6QHXXMquWWM8gX4Gz9Y3UWiSNmmcTUMDxbsI4ryNTKN650r1MuPhmx/4m1FkxV2vtRWVgMc4QNFb2ogTUvoETqsiCxNd1E7NHrqg6R47HeKc5GqHS7snl3bkig5k3JTvx0/0dAClxLhkdQcCFF8l7p8iH4BswCLnq936gDvFG+1iKvViWk2MhVprTaEspwd/H2S7OfvcAfROCW/sxMV7+3DQXUAHjf+GWEo9BhxMSLZ5lx91cyOyLxDN+fIKkdTNG3U1jXAF3AJJUvLMt3C4OJRA6rlfXyM3RbxmOHGTK9DQMHVp3rUN4NiIv6WvKPG5NRyDMC/SpRyP50fmH0fceEgzUWhJJ2ju0enI6jK8yDE7/Fe2ocyV65dfJfUmkdtmahtACab+h+R/bLNjLVavLcx61pXDy5JlOoS15/NWHwP0OD7qxR8K0ykGMRXjtcNBRHSCKWqB8OEOFE9Wcuduwmf4TYUwsuhDkldG5uvnaaubk3PS72gclUmfsSoPWThZLLdN3zV6G+290Rt1BnP6IGVyZUgWSd/v/AlVD40evpbLM7yzudRz5pJJbiMV4IEp6xkaLFprpT1Nr83L5oxG5b7D29iQRqAGCjibNQ8XXDEaX6ZlvJlYZoiAJcqsxVDCORFWnAH/NSlU6t9T6wHvVmByscZkzAEjGJq4J3npqoF/jshw8qkOUmd+qgF2jYE5eN4a9UaufTgHMwPEM7CGamHdoGRxh8Z7yRx1VP5He/5Rek/+dofNf3/0IB9+896OJbj+vZ4DHHtC3lnMXToW0qeW8E0+KzdQtAZoEDZT811dFW9/FAun80OB8pO6qsvQX3RBVmuCwZWA5L21xfn6wrGyQwf
- 0LMHek2r
- q3jdupoyTeDhzKv+trhJv+Hr6SNwU/SmWSZzCjD0dMC2pXXi3JLlHsVNv+7i/H/fHOyyqErPmanMo0Z6mDob9UNnu2+H7x32mUM3WjKc8Mjohub0GU16twg2RUsOxUHVZum1qLHp6uDhON332HLnUbaUTDHNhBTen1unzzgli2tKX0IoH2CY1l1+d28GCWYDCx7HsTvd13GgrVlP6ZFgXGSizDzUCJaIw3eaMR1siTfkINdUdybgN07TAU9s5OVpMUT1tw4AbRStK3NPstpTAahmCo5bh1qc+ce0ATKRtj1yBuGUZ03q/mGVlwqtDtkYheJDWo5dKzGUbs1+UjfC8yAe/U4AoefKFKKKL3hZoJGnlUD751X5TdbfP+RQpZQ7fFpaXYflJR/BCkfa+8oHSuVLqBq2ceZ2UEv1uAim8RUkdyDMDqv2wt2We+KsQjr17cHALb0Oioq1rLkOZYSXlxNva3sYUkCzkhXjpcP07NqFGiaJkQisTrzXGkNl3QfKRErP2UeEYxL19S8z7zZCQwKlgXcfAxn8dRBUe1zvIJILWiho5znMeBexYmibArGCcOCndNRIEOq9Av8WTnzhOEY5uivhZJ8V4AoxkfOMtBrBOCqFuOCteeSsVGmcd3TCw6P4Lh6PkFyNnd6D4z8ENoX0VrbADYJq0eKenJGF2AXEyRooqDHg4/xVLqvQ39OpI85Pq/S7CaCWwqL/AX0eSGiIyWpXFtXa+oHGg10hCbBdrpxlAbm++b0Io3PCi1820vL6KNvWGwtIhhpZrJjzzzxU3XoF99bZ1xkTeW4XtuNFAbm+vIodWuNQ0DkoXzK40AgzKTRXAstx7J/tuYkZQ2UgKxz4x9GoBPD8xOYOLi82FFMNnO96Q0+RUJpupwW2Z8emcqdgNFU6ii72kd0FeyqHzUVuxW8o1HRZmSO/GFZHbP7nG27AYCMI8fiVR2M95hKjqGTQpSjb7dParvJ4LRsBKW/uc
- 7o/VEyiB
- c6mHK+i5CTksdb7uSF+X8EvOp+LjHw7sUNoGSoM8kh6JImGoK7THo+KKrLeLwfRSL4+YyMuiSz1Gh2ifdguqF4GcDcGPFGXaBuRzaF0ZFx/N1cfhhnBLRm6h4f6nQMJ4pZffdvn2kaFaA6BNoX4pGAVWuQyYTlTIQvlhkdMnCYeOaddD38VGTIn52auP53XQXY4e/fMWhcIftH9Hdky9n7Z6le3yahCMHAeIr6vddsq5XZ91h/wbyKxRU3dmDk7hDkd9YZ9IjXvaWWOjZgMvYK5DFCFYeJNTXhBuHuq1OnFiWCd4a/txl4RL/Xnsk4Fy1PbGXXOlXCGLJacSI4S9VNAOEuJEBovRxvLfsZL2Ny8Lkj9gCB+XZAeN+p+EOD+v0lntqwGKgeVl/R86jdYGcj9z0D1ZpjMF8uapDfvWwJvRAjPbhad5l6GIJDVuwa5yTHMDDqx834AKL6ZRwsBO0EU7GHqXYQ5UwQLwd8byozxWVGrWae/ChckIQAOL1xiUPRL/yNNOhpAP5GuV+alktkrTuLFYUepSaQc/gp2eLkGX3hmYlg+zM7irzKJsLUtB4243ebjwzfW/TwNr6F0hil95Ou4Lxs9p7aR7OsgiMqxo834hFd/vKB1Ov57AD3ofPTyknBVvMapXmttzwQOI7ELqn8hVnb3LyYCJ4tzVIvTEGDP6no0PVksxj/X48gY2AvkqftTJ8BxS+b0HhOxjRH8dK3auxikJVwivb6Hj0QuK8sSCfq4biC2CwDgfaAvNLL06/a9jm72hV5dvOL6Y+z7QnkTyjpldh8M+RWVuYsPoNl4BEOo/KwlnMoLJxQSTF6FlS11et+C71eR4uTk2yaokU/XhhPCocdtGzuU+mOuxDTID+FgmA6v9bgkbX+46/a7Idbr9f16GbORLmemfqUGqnexFV9BvVi2eGewX4CVIzReH3kDUrOKnF+Qyv8pwrHZLcpTn9U6FFqxEv2h/P4DUulduG
- apCdaFmf
- SByU6/rDz2k2NfB1OtborSWMWPMbPgMMiyF+bIdE//c2XWKJ3DQUNS9f5+aBh8OhVMOCefleTIU0ipVH/OJVyBAqnkjZ6ayEcCSPgxQXilRljmNwDsAT9q1VvNKKsz1UsX11LVtT5duh+7ov8NazO58dYUi1pSIMl4QEf67oNN5nDLLZ8EzHK+4lA0oFSDUr91CWxWRRkRu31Q0tfQyck+0GZ+5+rOqm6fRqMeMrVz138nMKA3mHlHMbD548EeZu/s4on4SDNzQYF1pk34bnoCbMrJPcZE0nrOQegQXCCOIbfgP5H5Yusk8da4XdK1/oA30oNRhemQ2ajgze4ghSJYD68XHiPLqTQN4tHTyyOn8x7ry+/gW147YVzg1n0fRqPDx4fG5DA8X2jV9UXXg7GpXrRr+gl1NSY=
+X-Rspamd-Queue-Id: 15B55A0009
+X-HE-Tag: 1772638466-153443
+X-HE-Meta: U2FsdGVkX19DnP6YX272TkBoCSv6Oh88Jdekc/jZNJrAP85GLZQTJn6uZmVJL8213v0a6gI2PboFlztGnHD9yfe+9AS3uj3Py2Ofz93hC12wxHtuLQ4ndz35hsJ/n9CBAq5kSZrNBayBcvdHTptyOb1r+xvmsE47AHyqvFnFimI3pxxIf7NZodNGTGcRCw/jZlvV4lDU0FOFxnU1dcqHALyrgc8uX+Qz/2QL7lp90+iW/IdioziLt41amHkrPOynzv8P/DB2upejwACIYgFXQFNXzS5vW8FXLP6U3GuNcSboPEwW8fezZ4FAC5rCLUEooTT839RZnQnLCUcmnQ+DIEo4Qh4G6QtzrLtSq1XHX+3j52bh4OT2dAKiS24eBO1UvttJB2lP3wZZYME2gcZh3PtirEQL7s0RNRBLQJ5IHaR6jUXBFL7+YC8h2WwIzpQF8kt8zhiDgProJZ0hdM6s1CM6iG32KM5+UkZw0lxhka2Te8l3r0kpwZpUrS2M9l1jFhB7SGx7SDakN291gru5kIuh1BL/UnCMPiVyAEMEp1myVvxJW+KxmVAVZyxu52kXeU1wIznSPTxyt1FsKof/OaPv18aH+LGp+eFp+/woJ97RMgD8AcFzUCGLBtkbONaLfdU1L5Am6rGnh0KfB0ljvOWuRrNGPXrJvBQm706HawosMzvwMpBggSfEA3pDGAHqoeK/Gnxa1YV6XG/HfEYjQkpSZYrdwK2k9HkHlnNGW72KoCMXWZqpk5XVxWfb4JFAutAdN2bCiTsUM6lNoTenlNYJs22LET4Z4zZ0Fxm7qp26/ZieMWHB1FfFHfHsenrbK6P+5ymifO1S3ZyISESxIWZYv8MmmOfRWjFQdNY5tSoMcQfRPl/ZiFLJDE40ZeamHQ7wpMJK06HYpD/TlUTHbrXCrof1WuwP2ViIzzWIN0/XaxFq0ahxeRuOfc/OzY+UZ/dSPNuljMjkZPeWxHA
+ 2R4lcrcs
+ tzlB9MBukJD+kaZGJR65tmyaUpSLZx1uyVvvl8Sj5zbT8TNrbloy33eL4E31EHoNTpdyyhsYmX4AOmY+E8eLA1vz4jc9F+kfCM94yBmY9UPqulleTzvXz2gi8A3EetmNW+IbTKY9TLx/J+xG/g912LwcUpanoR3EVPH6A8YOBN8gZQXyg0+yojYUy/O3jcGZuYhROxE9qVGIoMmIAB5P9yHx9P18kuOjaG+8QHOePAy6yhBLhLbfhYMibbADXC0VgslYbl39S8cxjmrRLCLeyp1hHIJDJWHYY7xi1zI4++7ffHAaiRYQQaKRUiR/muuUo6h526yEclEkn1Jdu2pcAapFPEvr9QfEXXNkV8Dty688CxpUTTT75yCzxW3/AClUy26iWE/z0/fdHe4oaeYUsaLylyHNWeDxZr+d3vawu1eiv/xWXoChRSnfuUv2gNzHtrBmGNVfBYpCxyDyNCKDdLPdAHu+suFf0n3mQQbViDyhboyalI0yrG9xO+jlwakZWrx1VMno9h7upi4sRyOuCNQYmzhwzFYndZDiXKv1doJD6HCAvnGe1TpqGZfbeVefYvh+/QPZHwQabvO6huETI5n9n1ZKMU3rMoXzUnodBU8ATDs0u0i5KXnBuz6tp1CXitw4s243K94eoUZbPWDjwc8TMty+r+tzOAoGMPLo4C2xhLuN1YD71duvzBgEYP5B2K3YyakhEqJD14D56ytooxVlWerqgjOLAJu9hBirkHRzkXb/uKiyzyA0+EsZ+DBo3hvtAhoike+9nq7Gc0/9L42N7mHgz2VdIGzianzZvX9et4DqTQx1MDqI88fxGNqKQ8riFFd0W4dpSoWaA+Rnuv3ZNDu+MyVa1HEq7eX7yFxrhjmesBxNuSi1zDz608hQ4MWC1x8Ta3xGqI14+2v6d9Ti9EoyKLqXiGafgQ1ebc2/XsE6rXWuhcy3NMt5TkJzD1MyPbO1IN0l3P1DttgugcOmD2MNL
+ h9BCky1E
+ zwd0BSsx/SOba98MbtRjOKdjPa24Ga47n9r+dL9NlbpABZjWWXgjd3ZcpKkzAfCOPdov5j6Pi7tSF1eMBSqgqNGAl+alqu4zbZTp3lkpB+2+T3C7E6Zb3ACiZGwzO8PADnHdDWlqCoZpIbXWlytU3V2q8rsrh5FHfrQboR8VWPEbU7+jwqq4A8f8OCu1oDekVy91U1uTMvAcz1W9CxueUMwBfGcO9+ZI2aqU6MwryPvY2UASpaSMRJBTaQxz73WLsFWCXxKMnlOUKv5bgfajrOtWMzKTVSAW0UNTHuY1viIJk/hDLZRk8CVnvBPq+AjhgYhySc1ZKEAxt5LRDD2Gv53DuVdubkpuI6iTOnm1MUNXySjTNgRlV8mUiKI5JDZMoEHOWjUgA3b3dlPnb8rAZE6jfVI8I8BOOMMtOLPxLEy3WUyIFXkE6ET8NNxMYkf4P4lgtPs1IQI5kqv2crNlN5aKYgxJSwgx2qSoZ4e7zldATGFIH5CVNIYim/0w4sX11DLimR+nSqyWF85jBcm9bEt/7W8O9rGYPMSmQYAT6AH7qULQ8ZeDfFp6s3+N7JRy7VU3Jp6cC5lYobn6qJC8BZgeDbRswNrCpkRNwJhM+cC6bSMC5hGskD7QIUqgoDxYGqbtMlyIJoX67z0BklujN/EjOTigBkBvPXrhPdD/22oKhdRSo09MH0ZelUhHYQxJIjTuDonNdbIMIbhCHheURS+LQW/K1IrBxGPAXydvfCI5h4b1Q/HXRhO7X7YBuDw5cC+LE5IxsVJlj1RdJXcI1Nnm6UbWOs30rZkrNe6MinB6RWn74lLz3RH+sU9/8djLpr+laKAqrUEXYHNaA93vhV9xvBMo3IP3IFWjeS5P23EOzal55N0Q6/WYW49Hxew1NShvOBJOdl6JK0C5n7HCEeQsLQ8CvDQwcRX/DRvQsyT0wFm1RoJbfTDrwFLjmV4/8PEZqjNvGEXDud+6a/0iOn/CARbw4
+ 1aIK5S3C
+ lTwf/0uh/buXKBIQ3IPcnOhxkgtIqH+t5Bmr1+WQYDigRvEj+6B8XBdcx/YHwf1w2uR7FZzAEJz0KOnFeZRJCkSHxvspFNkKWeKbSkCI59NvMW6Afm9LZpe4OBLWbiOJ+LG+R/xSwlx7VR8U8O5gnTbO0jWbr6kpsZFv9R+eORiVrUXRGScwic9ttLu7B8YBtvusmk0y33YEK8fxkvy5Atah+/FXJ4NzViRgqNyrFz7x2cLG4BknvfEYl/da8CtTlC3nbEDHKDdLv4KW7PnZUVGHJqMqPT4Y+6pT1mtPLdmbsU7on73usrE8PniUU/01YISxbRwUz2B06nhwkIbDfTUMnpK7qccJLXfrBJoBVNxIFrMnvVw4xsgqqHpQCjRq+xrLpV9pa+3msSiMi3Lg09vFHTzmjoQv5iRJJ0SO75lh5U/arKETdfO2HJsgmaEnvzxE8AvpiHW7WzFnW0VjjqKPGybw8f9aH5OXxDR1c4sL/Gmswsl2DuoGGzpeHNSFvAGy2BR77t+RrLFju1+5L+VYcof0aYNFucAYxhNRu97ipK4tK9B55fVhfWsMp4cwnXEuA4vwXdW7idgkgJ7gu99XKTdQKqVFFX7B/E8DsJ5eh60RDxVTeg5o47gmiH3hWgLJnJmTrK8MtcYPAwBLkdYAFBC+xf2zC0O97tOQVN6DkOb4uvmOENY0CR6ujmfrc/RRpMUatciBIEvVhkLJCYZ9W5NqbMpqY96ae9WOxiy2WUB6LYHxE+WAFySUsEfGevLukiyyZ+/xIU1c3ZDtS3jqovCWIt84wxYtGEsL0L4Q5hMsb29vAiE9QRK4Jlt5oaGGk/+ktZd0i2AKjniD8gtK7lo4IAowNCGevtSX8PMw6bm0L3HwTa1wbTw1vBs9RouWR7HCJl6Jtts+qPM6phXacxP1qH6j7lrEsJy689j6V+/uJpGFzWg6YFZUm541917ijJ1ShhP/ebExS7s9WxbPSJFDi
+ +sqONgO/
+ N5pI1RHSDS62gRIpHd0hAhaIckP+L8PPq5rLgQpNfg/OZA5UFiEGB09YRhs4aLiBEWzsopZ4SFxVW2/cx9I5pGAv4SDOPswS6Bn4MaLyYurkq3DPERIvxYMta8An+bYaDoDxT44W3PkRfq3HAwy/l8gUN2XQ5lT8AnrRC7XeVR1x/Z07z9dnrwlCZRNFt/qShTU0AN3tVuR1HW7NT/wvz8HRDm0oXHC2GAMIg1bQaqGNaoiK1wF8Y6FzTJVAahbFpPxWcNWnXUr42xQRillfKkK19klQptMpmVajreI6QMWfcGAqxx4/Wj1NRC4Q5fQhvKv4sw6NWfR4IMvqTmVZUC/lMC/UhEY3pL0LYFV6YoGlWV/NqDv/PY/gLpssnWTeW+X8BXR/k8NcNjOj/QEjmwwgU693/oWXU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -221,1169 +221,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update VFS-layer trace event definitions to use u64 instead of
-ino_t/unsigned long for inode number fields. Update TP_printk format
-strings to use %llu/%llx to match the widened field type. Remove
-now-unnecessary (unsigned long) casts since __entry->ino is already
-u64.
+Update cachefiles trace event definitions to use u64 instead of
+ino_t/unsigned long for inode number fields.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- fs/iomap/trace.h                 |   8 +-
- include/trace/events/filelock.h  |  34 ++++----
- include/trace/events/filemap.h   |  20 ++---
- include/trace/events/fs_dax.h    |  20 ++---
- include/trace/events/fsverity.h  |  30 ++++----
- include/trace/events/netfs.h     |   8 +-
- include/trace/events/readahead.h |  18 ++---
- include/trace/events/timestamp.h |  16 ++--
- include/trace/events/writeback.h | 162 +++++++++++++++++++--------------------
- 9 files changed, 158 insertions(+), 158 deletions(-)
+ include/trace/events/cachefiles.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/iomap/trace.h b/fs/iomap/trace.h
-index 532787277b168e881759d521cd3559ec65979152..097773c6db80e289bb488ef2af6e29f0d777b102 100644
---- a/fs/iomap/trace.h
-+++ b/fs/iomap/trace.h
-@@ -257,7 +257,7 @@ TRACE_EVENT(iomap_dio_rw_begin,
- 	TP_ARGS(iocb, iter, dio_flags, done_before),
- 	TP_STRUCT__entry(
- 		__field(dev_t,	dev)
--		__field(ino_t,	ino)
-+		__field(u64,	ino)
- 		__field(loff_t, isize)
- 		__field(loff_t, pos)
- 		__field(size_t,	count)
-@@ -277,7 +277,7 @@ TRACE_EVENT(iomap_dio_rw_begin,
- 		__entry->dio_flags = dio_flags;
- 		__entry->aio = !is_sync_kiocb(iocb);
- 	),
--	TP_printk("dev %d:%d ino 0x%lx size 0x%llx offset 0x%llx length 0x%zx done_before 0x%zx flags %s dio_flags %s aio %d",
-+	TP_printk("dev %d:%d ino 0x%llx size 0x%llx offset 0x%llx length 0x%zx done_before 0x%zx flags %s dio_flags %s aio %d",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->ino,
- 		  __entry->isize,
-@@ -294,7 +294,7 @@ TRACE_EVENT(iomap_dio_complete,
- 	TP_ARGS(iocb, error, ret),
- 	TP_STRUCT__entry(
- 		__field(dev_t,	dev)
--		__field(ino_t,	ino)
-+		__field(u64,	ino)
- 		__field(loff_t, isize)
- 		__field(loff_t, pos)
- 		__field(int,	ki_flags)
-@@ -312,7 +312,7 @@ TRACE_EVENT(iomap_dio_complete,
- 		__entry->error = error;
- 		__entry->ret = ret;
- 	),
--	TP_printk("dev %d:%d ino 0x%lx size 0x%llx offset 0x%llx flags %s aio %d error %d ret %zd",
-+	TP_printk("dev %d:%d ino 0x%llx size 0x%llx offset 0x%llx flags %s aio %d error %d ret %zd",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->ino,
- 		  __entry->isize,
-diff --git a/include/trace/events/filelock.h b/include/trace/events/filelock.h
-index 370016c38a5bbc07d5ba6c102030b49c9eb6424d..1167748862449ef6ff04c40b568ea8c3bbb08207 100644
---- a/include/trace/events/filelock.h
-+++ b/include/trace/events/filelock.h
-@@ -42,10 +42,10 @@ TRACE_EVENT(locks_get_lock_context,
- 	TP_ARGS(inode, type, ctx),
+diff --git a/include/trace/events/cachefiles.h b/include/trace/events/cachefiles.h
+index a743b2a35ea7001447b3e05d41539cb88013bc7f..6e3b1424eea4dc9e414dd9d1439339132d516339 100644
+--- a/include/trace/events/cachefiles.h
++++ b/include/trace/events/cachefiles.h
+@@ -249,10 +249,10 @@ TRACE_EVENT(cachefiles_lookup,
+ 	    TP_ARGS(obj, dir, de),
  
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
-+		__field(struct file_lock_context *, ctx)
- 		__field(dev_t, s_dev)
- 		__field(unsigned char, type)
--		__field(struct file_lock_context *, ctx)
- 	),
- 
- 	TP_fast_assign(
-@@ -55,7 +55,7 @@ TRACE_EVENT(locks_get_lock_context,
- 		__entry->ctx = ctx;
- 	),
- 
--	TP_printk("dev=0x%x:0x%x ino=0x%lx type=%s ctx=%p",
-+	TP_printk("dev=0x%x:0x%x ino=0x%llx type=%s ctx=%p",
- 		  MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 		  __entry->i_ino, show_fl_type(__entry->type), __entry->ctx)
- );
-@@ -66,16 +66,16 @@ DECLARE_EVENT_CLASS(filelock_lock,
- 	TP_ARGS(inode, fl, ret),
- 
- 	TP_STRUCT__entry(
-+		__field(u64, i_ino)
-+		__field(loff_t, fl_start)
-+		__field(loff_t, fl_end)
- 		__field(struct file_lock *, fl)
--		__field(unsigned long, i_ino)
--		__field(dev_t, s_dev)
- 		__field(struct file_lock_core *, blocker)
- 		__field(fl_owner_t, owner)
-+		__field(dev_t, s_dev)
- 		__field(unsigned int, pid)
- 		__field(unsigned int, flags)
- 		__field(unsigned char, type)
--		__field(loff_t, fl_start)
--		__field(loff_t, fl_end)
- 		__field(int, ret)
- 	),
- 
-@@ -93,7 +93,7 @@ DECLARE_EVENT_CLASS(filelock_lock,
- 		__entry->ret = ret;
- 	),
- 
--	TP_printk("fl=%p dev=0x%x:0x%x ino=0x%lx fl_blocker=%p fl_owner=%p fl_pid=%u fl_flags=%s fl_type=%s fl_start=%lld fl_end=%lld ret=%d",
-+	TP_printk("fl=%p dev=0x%x:0x%x ino=0x%llx fl_blocker=%p fl_owner=%p fl_pid=%u fl_flags=%s fl_type=%s fl_start=%lld fl_end=%lld ret=%d",
- 		__entry->fl, MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 		__entry->i_ino, __entry->blocker, __entry->owner,
- 		__entry->pid, show_fl_flags(__entry->flags),
-@@ -123,15 +123,15 @@ DECLARE_EVENT_CLASS(filelock_lease,
- 	TP_ARGS(inode, fl),
- 
- 	TP_STRUCT__entry(
-+		__field(u64, i_ino)
- 		__field(struct file_lease *, fl)
--		__field(unsigned long, i_ino)
--		__field(dev_t, s_dev)
- 		__field(struct file_lock_core *, blocker)
- 		__field(fl_owner_t, owner)
--		__field(unsigned int, flags)
--		__field(unsigned char, type)
- 		__field(unsigned long, break_time)
- 		__field(unsigned long, downgrade_time)
-+		__field(dev_t, s_dev)
-+		__field(unsigned int, flags)
-+		__field(unsigned char, type)
- 	),
- 
- 	TP_fast_assign(
-@@ -146,7 +146,7 @@ DECLARE_EVENT_CLASS(filelock_lease,
- 		__entry->downgrade_time = fl ? fl->fl_downgrade_time : 0;
- 	),
- 
--	TP_printk("fl=%p dev=0x%x:0x%x ino=0x%lx fl_blocker=%p fl_owner=%p fl_flags=%s fl_type=%s fl_break_time=%lu fl_downgrade_time=%lu",
-+	TP_printk("fl=%p dev=0x%x:0x%x ino=0x%llx fl_blocker=%p fl_owner=%p fl_flags=%s fl_type=%s fl_break_time=%lu fl_downgrade_time=%lu",
- 		__entry->fl, MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 		__entry->i_ino, __entry->blocker, __entry->owner,
- 		show_fl_flags(__entry->flags),
-@@ -175,12 +175,12 @@ TRACE_EVENT(generic_add_lease,
- 	TP_ARGS(inode, fl),
- 
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
-+		__field(fl_owner_t, owner)
-+		__field(dev_t, s_dev)
- 		__field(int, wcount)
- 		__field(int, rcount)
- 		__field(int, icount)
--		__field(dev_t, s_dev)
--		__field(fl_owner_t, owner)
- 		__field(unsigned int, flags)
- 		__field(unsigned char, type)
- 	),
-@@ -196,7 +196,7 @@ TRACE_EVENT(generic_add_lease,
- 		__entry->type = fl->c.flc_type;
- 	),
- 
--	TP_printk("dev=0x%x:0x%x ino=0x%lx wcount=%d rcount=%d icount=%d fl_owner=%p fl_flags=%s fl_type=%s",
-+	TP_printk("dev=0x%x:0x%x ino=0x%llx wcount=%d rcount=%d icount=%d fl_owner=%p fl_flags=%s fl_type=%s",
- 		MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 		__entry->i_ino, __entry->wcount, __entry->rcount,
- 		__entry->icount, __entry->owner,
-diff --git a/include/trace/events/filemap.h b/include/trace/events/filemap.h
-index f48fe637bfd25885dc6daaf09336ab60626b4944..4dcf8e9e2e0d8bde7c9df9856c059d2cdebff59f 100644
---- a/include/trace/events/filemap.h
-+++ b/include/trace/events/filemap.h
-@@ -20,8 +20,8 @@ DECLARE_EVENT_CLASS(mm_filemap_op_page_cache,
- 	TP_ARGS(folio),
- 
- 	TP_STRUCT__entry(
-+		__field(u64, i_ino)
- 		__field(unsigned long, pfn)
--		__field(unsigned long, i_ino)
- 		__field(unsigned long, index)
- 		__field(dev_t, s_dev)
- 		__field(unsigned char, order)
-@@ -38,7 +38,7 @@ DECLARE_EVENT_CLASS(mm_filemap_op_page_cache,
- 		__entry->order = folio_order(folio);
- 	),
- 
--	TP_printk("dev %d:%d ino %lx pfn=0x%lx ofs=%lu order=%u",
-+	TP_printk("dev %d:%d ino %llx pfn=0x%lx ofs=%lu order=%u",
- 		MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 		__entry->i_ino,
- 		__entry->pfn,
-@@ -67,7 +67,7 @@ DECLARE_EVENT_CLASS(mm_filemap_op_page_cache_range,
- 	TP_ARGS(mapping, index, last_index),
- 
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
- 		__field(dev_t, s_dev)
- 		__field(unsigned long, index)
- 		__field(unsigned long, last_index)
-@@ -85,7 +85,7 @@ DECLARE_EVENT_CLASS(mm_filemap_op_page_cache_range,
- 	),
- 
- 	TP_printk(
--		"dev=%d:%d ino=%lx ofs=%lld-%lld",
-+		"dev=%d:%d ino=%llx ofs=%lld-%lld",
- 		MAJOR(__entry->s_dev),
- 		MINOR(__entry->s_dev), __entry->i_ino,
- 		((loff_t)__entry->index) << PAGE_SHIFT,
-@@ -117,7 +117,7 @@ TRACE_EVENT(mm_filemap_fault,
- 	TP_ARGS(mapping, index),
- 
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
- 		__field(dev_t, s_dev)
- 		__field(unsigned long, index)
- 	),
-@@ -133,7 +133,7 @@ TRACE_EVENT(mm_filemap_fault,
- 	),
- 
- 	TP_printk(
--		"dev=%d:%d ino=%lx ofs=%lld",
-+		"dev=%d:%d ino=%llx ofs=%lld",
- 		MAJOR(__entry->s_dev),
- 		MINOR(__entry->s_dev), __entry->i_ino,
- 		((loff_t)__entry->index) << PAGE_SHIFT
-@@ -146,7 +146,7 @@ TRACE_EVENT(filemap_set_wb_err,
- 		TP_ARGS(mapping, eseq),
- 
- 		TP_STRUCT__entry(
--			__field(unsigned long, i_ino)
-+			__field(u64, i_ino)
- 			__field(dev_t, s_dev)
- 			__field(errseq_t, errseq)
- 		),
-@@ -160,7 +160,7 @@ TRACE_EVENT(filemap_set_wb_err,
- 				__entry->s_dev = mapping->host->i_rdev;
- 		),
- 
--		TP_printk("dev=%d:%d ino=0x%lx errseq=0x%x",
-+		TP_printk("dev=%d:%d ino=0x%llx errseq=0x%x",
- 			MAJOR(__entry->s_dev), MINOR(__entry->s_dev),
- 			__entry->i_ino, __entry->errseq)
- );
-@@ -171,8 +171,8 @@ TRACE_EVENT(file_check_and_advance_wb_err,
- 		TP_ARGS(file, old),
- 
- 		TP_STRUCT__entry(
-+			__field(u64, i_ino)
- 			__field(struct file *, file)
--			__field(unsigned long, i_ino)
- 			__field(dev_t, s_dev)
- 			__field(errseq_t, old)
- 			__field(errseq_t, new)
-@@ -191,7 +191,7 @@ TRACE_EVENT(file_check_and_advance_wb_err,
- 			__entry->new = file->f_wb_err;
- 		),
- 
--		TP_printk("file=%p dev=%d:%d ino=0x%lx old=0x%x new=0x%x",
-+		TP_printk("file=%p dev=%d:%d ino=0x%llx old=0x%x new=0x%x",
- 			__entry->file, MAJOR(__entry->s_dev),
- 			MINOR(__entry->s_dev), __entry->i_ino, __entry->old,
- 			__entry->new)
-diff --git a/include/trace/events/fs_dax.h b/include/trace/events/fs_dax.h
-index 50ebc1290ab062a9c30ab00049fb96691f9a0f23..11121baa8ece7928c653b4f874fb10ffbdd02fd0 100644
---- a/include/trace/events/fs_dax.h
-+++ b/include/trace/events/fs_dax.h
-@@ -12,7 +12,7 @@ DECLARE_EVENT_CLASS(dax_pmd_fault_class,
- 		pgoff_t max_pgoff, int result),
- 	TP_ARGS(inode, vmf, max_pgoff, result),
- 	TP_STRUCT__entry(
--		__field(unsigned long, ino)
-+		__field(u64, ino)
- 		__field(unsigned long, vm_start)
- 		__field(unsigned long, vm_end)
- 		__field(vm_flags_t, vm_flags)
-@@ -35,7 +35,7 @@ DECLARE_EVENT_CLASS(dax_pmd_fault_class,
- 		__entry->max_pgoff = max_pgoff;
- 		__entry->result = result;
- 	),
--	TP_printk("dev %d:%d ino %#lx %s %s address %#lx vm_start "
-+	TP_printk("dev %d:%d ino %#llx %s %s address %#lx vm_start "
- 			"%#lx vm_end %#lx pgoff %#lx max_pgoff %#lx %s",
- 		MAJOR(__entry->dev),
- 		MINOR(__entry->dev),
-@@ -66,7 +66,7 @@ DECLARE_EVENT_CLASS(dax_pmd_load_hole_class,
- 		void *radix_entry),
- 	TP_ARGS(inode, vmf, zero_folio, radix_entry),
- 	TP_STRUCT__entry(
--		__field(unsigned long, ino)
-+		__field(u64, ino)
- 		__field(vm_flags_t, vm_flags)
- 		__field(unsigned long, address)
- 		__field(struct folio *, zero_folio)
-@@ -81,7 +81,7 @@ DECLARE_EVENT_CLASS(dax_pmd_load_hole_class,
- 		__entry->zero_folio = zero_folio;
- 		__entry->radix_entry = radix_entry;
- 	),
--	TP_printk("dev %d:%d ino %#lx %s address %#lx zero_folio %p "
-+	TP_printk("dev %d:%d ino %#llx %s address %#lx zero_folio %p "
- 			"radix_entry %#lx",
- 		MAJOR(__entry->dev),
- 		MINOR(__entry->dev),
-@@ -106,7 +106,7 @@ DECLARE_EVENT_CLASS(dax_pte_fault_class,
- 	TP_PROTO(struct inode *inode, struct vm_fault *vmf, int result),
- 	TP_ARGS(inode, vmf, result),
- 	TP_STRUCT__entry(
--		__field(unsigned long, ino)
-+		__field(u64, ino)
- 		__field(vm_flags_t, vm_flags)
- 		__field(unsigned long, address)
- 		__field(pgoff_t, pgoff)
-@@ -123,7 +123,7 @@ DECLARE_EVENT_CLASS(dax_pte_fault_class,
- 		__entry->pgoff = vmf->pgoff;
- 		__entry->result = result;
- 	),
--	TP_printk("dev %d:%d ino %#lx %s %s address %#lx pgoff %#lx %s",
-+	TP_printk("dev %d:%d ino %#llx %s %s address %#lx pgoff %#lx %s",
- 		MAJOR(__entry->dev),
- 		MINOR(__entry->dev),
- 		__entry->ino,
-@@ -150,7 +150,7 @@ DECLARE_EVENT_CLASS(dax_writeback_range_class,
- 	TP_PROTO(struct inode *inode, pgoff_t start_index, pgoff_t end_index),
- 	TP_ARGS(inode, start_index, end_index),
- 	TP_STRUCT__entry(
--		__field(unsigned long, ino)
-+		__field(u64, ino)
- 		__field(pgoff_t, start_index)
- 		__field(pgoff_t, end_index)
- 		__field(dev_t, dev)
-@@ -161,7 +161,7 @@ DECLARE_EVENT_CLASS(dax_writeback_range_class,
- 		__entry->start_index = start_index;
- 		__entry->end_index = end_index;
- 	),
--	TP_printk("dev %d:%d ino %#lx pgoff %#lx-%#lx",
-+	TP_printk("dev %d:%d ino %#llx pgoff %#lx-%#lx",
- 		MAJOR(__entry->dev),
- 		MINOR(__entry->dev),
- 		__entry->ino,
-@@ -182,7 +182,7 @@ TRACE_EVENT(dax_writeback_one,
- 	TP_PROTO(struct inode *inode, pgoff_t pgoff, pgoff_t pglen),
- 	TP_ARGS(inode, pgoff, pglen),
- 	TP_STRUCT__entry(
--		__field(unsigned long, ino)
-+		__field(u64, ino)
- 		__field(pgoff_t, pgoff)
- 		__field(pgoff_t, pglen)
- 		__field(dev_t, dev)
-@@ -193,7 +193,7 @@ TRACE_EVENT(dax_writeback_one,
- 		__entry->pgoff = pgoff;
- 		__entry->pglen = pglen;
- 	),
--	TP_printk("dev %d:%d ino %#lx pgoff %#lx pglen %#lx",
-+	TP_printk("dev %d:%d ino %#llx pgoff %#lx pglen %#lx",
- 		MAJOR(__entry->dev),
- 		MINOR(__entry->dev),
- 		__entry->ino,
-diff --git a/include/trace/events/fsverity.h b/include/trace/events/fsverity.h
-index a8c52f21cbd5eb010c7e7b2fdb8f9de49c8ea326..4477c17e05748360965c4e1840590efe96d6335e 100644
---- a/include/trace/events/fsverity.h
-+++ b/include/trace/events/fsverity.h
-@@ -16,7 +16,7 @@ TRACE_EVENT(fsverity_enable,
- 		 const struct merkle_tree_params *params),
- 	TP_ARGS(inode, params),
- 	TP_STRUCT__entry(
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(u64, data_size)
- 		__field(u64, tree_size)
- 		__field(unsigned int, merkle_block)
-@@ -29,8 +29,8 @@ TRACE_EVENT(fsverity_enable,
- 		__entry->merkle_block = params->block_size;
- 		__entry->num_levels = params->num_levels;
- 	),
--	TP_printk("ino %lu data_size %llu tree_size %llu merkle_block %u levels %u",
--		(unsigned long) __entry->ino,
-+	TP_printk("ino %llu data_size %llu tree_size %llu merkle_block %u levels %u",
-+		__entry->ino,
- 		__entry->data_size,
- 		__entry->tree_size,
- 		__entry->merkle_block,
-@@ -42,7 +42,7 @@ TRACE_EVENT(fsverity_tree_done,
- 		 const struct merkle_tree_params *params),
- 	TP_ARGS(inode, vi, params),
- 	TP_STRUCT__entry(
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(u64, data_size)
- 		__field(u64, tree_size)
- 		__field(unsigned int, merkle_block)
-@@ -59,8 +59,8 @@ TRACE_EVENT(fsverity_tree_done,
- 		memcpy(__get_dynamic_array(root_hash), vi->root_hash, __get_dynamic_array_len(root_hash));
- 		memcpy(__get_dynamic_array(file_digest), vi->file_digest, __get_dynamic_array_len(file_digest));
- 	),
--	TP_printk("ino %lu data_size %llu tree_size %lld merkle_block %u levels %u root_hash %s digest %s",
--		(unsigned long) __entry->ino,
-+	TP_printk("ino %llu data_size %llu tree_size %lld merkle_block %u levels %u root_hash %s digest %s",
-+		__entry->ino,
- 		__entry->data_size,
- 		__entry->tree_size,
- 		__entry->merkle_block,
-@@ -75,7 +75,7 @@ TRACE_EVENT(fsverity_verify_data_block,
- 		 u64 data_pos),
- 	TP_ARGS(inode, params, data_pos),
- 	TP_STRUCT__entry(
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(u64, data_pos)
- 		__field(unsigned int, merkle_block)
- 	),
-@@ -84,8 +84,8 @@ TRACE_EVENT(fsverity_verify_data_block,
- 		__entry->data_pos = data_pos;
- 		__entry->merkle_block = params->block_size;
- 	),
--	TP_printk("ino %lu data_pos %llu merkle_block %u",
--		(unsigned long) __entry->ino,
-+	TP_printk("ino %llu data_pos %llu merkle_block %u",
-+		__entry->ino,
- 		__entry->data_pos,
- 		__entry->merkle_block)
- );
-@@ -96,7 +96,7 @@ TRACE_EVENT(fsverity_merkle_hit,
- 		 unsigned int hidx),
- 	TP_ARGS(inode, data_pos, hblock_idx, level, hidx),
- 	TP_STRUCT__entry(
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(u64, data_pos)
- 		__field(unsigned long, hblock_idx)
- 		__field(unsigned int, level)
-@@ -109,8 +109,8 @@ TRACE_EVENT(fsverity_merkle_hit,
- 		__entry->level = level;
- 		__entry->hidx = hidx;
- 	),
--	TP_printk("ino %lu data_pos %llu hblock_idx %lu level %u hidx %u",
--		(unsigned long) __entry->ino,
-+	TP_printk("ino %llu data_pos %llu hblock_idx %lu level %u hidx %u",
-+		__entry->ino,
- 		__entry->data_pos,
- 		__entry->hblock_idx,
- 		__entry->level,
-@@ -122,7 +122,7 @@ TRACE_EVENT(fsverity_verify_merkle_block,
- 		 unsigned int level, unsigned int hidx),
- 	TP_ARGS(inode, hblock_idx, level, hidx),
- 	TP_STRUCT__entry(
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(unsigned long, hblock_idx)
- 		__field(unsigned int, level)
- 		__field(unsigned int, hidx)
-@@ -133,8 +133,8 @@ TRACE_EVENT(fsverity_verify_merkle_block,
- 		__entry->level = level;
- 		__entry->hidx = hidx;
- 	),
--	TP_printk("ino %lu hblock_idx %lu level %u hidx %u",
--		(unsigned long) __entry->ino,
-+	TP_printk("ino %llu hblock_idx %lu level %u hidx %u",
-+		__entry->ino,
- 		__entry->hblock_idx,
- 		__entry->level,
- 		__entry->hidx)
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 2d366be46a1c30feba5ac2368492d7671687a229..8add6d35e648b789db3dce464faf7db1df151ad0 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -300,7 +300,7 @@ TRACE_EVENT(netfs_read,
- 		    __field(loff_t,			start)
- 		    __field(size_t,			len)
- 		    __field(enum netfs_read_trace,	what)
--		    __field(unsigned int,		netfs_inode)
-+		    __field(u64,			netfs_inode)
+ 	    TP_STRUCT__entry(
++		    __field(u64,			dino)
++		    __field(u64,			ino)
+ 		    __field(unsigned int,		obj)
+ 		    __field(short,			error)
+-		    __field(unsigned long,		dino)
+-		    __field(unsigned long,		ino)
  			     ),
  
  	    TP_fast_assign(
-@@ -313,7 +313,7 @@ TRACE_EVENT(netfs_read,
- 		    __entry->netfs_inode = rreq->inode->i_ino;
+@@ -263,7 +263,7 @@ TRACE_EVENT(cachefiles_lookup,
+ 		    __entry->error	= IS_ERR(de) ? PTR_ERR(de) : 0;
  			   ),
  
--	    TP_printk("R=%08x %s c=%08x ni=%x s=%llx l=%zx sz=%llx",
-+	    TP_printk("R=%08x %s c=%08x ni=%llx s=%llx l=%zx sz=%llx",
- 		      __entry->rreq,
- 		      __print_symbolic(__entry->what, netfs_read_traces),
- 		      __entry->cookie,
-@@ -486,7 +486,7 @@ TRACE_EVENT(netfs_folio,
- 	    TP_ARGS(folio, why),
- 
- 	    TP_STRUCT__entry(
--		    __field(ino_t,			ino)
-+		    __field(u64,			ino)
- 		    __field(pgoff_t,			index)
- 		    __field(unsigned int,		nr)
- 		    __field(enum netfs_folio_trace,	why)
-@@ -500,7 +500,7 @@ TRACE_EVENT(netfs_folio,
- 		    __entry->nr = folio_nr_pages(folio);
- 			   ),
- 
--	    TP_printk("i=%05lx ix=%05lx-%05lx %s",
-+	    TP_printk("i=%05llx ix=%05lx-%05lx %s",
- 		      __entry->ino, __entry->index, __entry->index + __entry->nr - 1,
- 		      __print_symbolic(__entry->why, netfs_folio_traces))
+-	    TP_printk("o=%08x dB=%lx B=%lx e=%d",
++	    TP_printk("o=%08x dB=%llx B=%llx e=%d",
+ 		      __entry->obj, __entry->dino, __entry->ino, __entry->error)
  	    );
-diff --git a/include/trace/events/readahead.h b/include/trace/events/readahead.h
-index 0997ac5eceab1ac2de3b84b9d9d59cc338b9dd2b..087f171e2b02d30f09179d5ed6c27a7e0224370b 100644
---- a/include/trace/events/readahead.h
-+++ b/include/trace/events/readahead.h
-@@ -18,7 +18,7 @@ TRACE_EVENT(page_cache_ra_unbounded,
- 	TP_ARGS(inode, index, nr_to_read, lookahead_size),
  
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
- 		__field(dev_t, s_dev)
- 		__field(pgoff_t, index)
- 		__field(unsigned long, nr_to_read)
-@@ -34,7 +34,7 @@ TRACE_EVENT(page_cache_ra_unbounded,
- 	),
+@@ -578,8 +578,8 @@ TRACE_EVENT(cachefiles_mark_active,
  
- 	TP_printk(
--		"dev=%d:%d ino=%lx index=%lu nr_to_read=%lu lookahead_size=%lu",
-+		"dev=%d:%d ino=%llx index=%lu nr_to_read=%lu lookahead_size=%lu",
- 		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
- 		__entry->index, __entry->nr_to_read, __entry->lookahead_size
- 	)
-@@ -46,7 +46,7 @@ TRACE_EVENT(page_cache_ra_order,
- 	TP_ARGS(inode, index, ra),
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
  
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
-+		__field(u64, i_ino)
- 		__field(dev_t, s_dev)
- 		__field(pgoff_t, index)
- 		__field(unsigned int, order)
-@@ -66,7 +66,7 @@ TRACE_EVENT(page_cache_ra_order,
- 	),
+ 	    TP_fast_assign(
+@@ -587,7 +587,7 @@ TRACE_EVENT(cachefiles_mark_active,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
  
- 	TP_printk(
--		"dev=%d:%d ino=%lx index=%lu order=%u size=%u async_size=%u ra_pages=%u",
-+		"dev=%d:%d ino=%llx index=%lu order=%u size=%u async_size=%u ra_pages=%u",
- 		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
- 		__entry->index, __entry->order, __entry->size,
- 		__entry->async_size, __entry->ra_pages
-@@ -80,16 +80,16 @@ DECLARE_EVENT_CLASS(page_cache_ra_op,
- 	TP_ARGS(inode, index, ra, req_count),
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
  
- 	TP_STRUCT__entry(
--		__field(unsigned long, i_ino)
--		__field(dev_t, s_dev)
-+		__field(u64, i_ino)
-+		__field(loff_t, prev_pos)
- 		__field(pgoff_t, index)
-+		__field(unsigned long, req_count)
-+		__field(dev_t, s_dev)
- 		__field(unsigned int, order)
- 		__field(unsigned int, size)
- 		__field(unsigned int, async_size)
- 		__field(unsigned int, ra_pages)
- 		__field(unsigned int, mmap_miss)
--		__field(loff_t, prev_pos)
--		__field(unsigned long, req_count)
- 	),
+@@ -599,8 +599,8 @@ TRACE_EVENT(cachefiles_mark_failed,
  
- 	TP_fast_assign(
-@@ -106,7 +106,7 @@ DECLARE_EVENT_CLASS(page_cache_ra_op,
- 	),
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
  
- 	TP_printk(
--		"dev=%d:%d ino=%lx index=%lu req_count=%lu order=%u size=%u async_size=%u ra_pages=%u mmap_miss=%u prev_pos=%lld",
-+		"dev=%d:%d ino=%llx index=%lu req_count=%lu order=%u size=%u async_size=%u ra_pages=%u mmap_miss=%u prev_pos=%lld",
- 		MAJOR(__entry->s_dev), MINOR(__entry->s_dev), __entry->i_ino,
- 		__entry->index, __entry->req_count, __entry->order,
- 		__entry->size, __entry->async_size, __entry->ra_pages,
-diff --git a/include/trace/events/timestamp.h b/include/trace/events/timestamp.h
-index c9e5ec930054887a6a7bae8e487611b5ded33d71..d6503612dddf9c6a2f785fad549fa04adddb06fe 100644
---- a/include/trace/events/timestamp.h
-+++ b/include/trace/events/timestamp.h
-@@ -18,9 +18,9 @@ DECLARE_EVENT_CLASS(ctime,
- 	TP_ARGS(inode, ctime),
+ 	    TP_fast_assign(
+@@ -608,7 +608,7 @@ TRACE_EVENT(cachefiles_mark_failed,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
  
- 	TP_STRUCT__entry(
--		__field(dev_t,		dev)
--		__field(ino_t,		ino)
-+		__field(u64,		ino)
- 		__field(time64_t,	ctime_s)
-+		__field(dev_t,		dev)
- 		__field(u32,		ctime_ns)
- 		__field(u32,		gen)
- 	),
-@@ -33,7 +33,7 @@ DECLARE_EVENT_CLASS(ctime,
- 		__entry->ctime_ns	= ctime->tv_nsec;
- 	),
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
  
--	TP_printk("ino=%d:%d:%ld:%u ctime=%lld.%u",
-+	TP_printk("ino=%d:%d:%llu:%u ctime=%lld.%u",
- 		MAJOR(__entry->dev), MINOR(__entry->dev), __entry->ino, __entry->gen,
- 		__entry->ctime_s, __entry->ctime_ns
- 	)
-@@ -58,8 +58,8 @@ TRACE_EVENT(ctime_ns_xchg,
- 	TP_ARGS(inode, old, new, cur),
+@@ -620,8 +620,8 @@ TRACE_EVENT(cachefiles_mark_inactive,
  
- 	TP_STRUCT__entry(
-+		__field(u64,		ino)
- 		__field(dev_t,		dev)
--		__field(ino_t,		ino)
- 		__field(u32,		gen)
- 		__field(u32,		old)
- 		__field(u32,		new)
-@@ -75,7 +75,7 @@ TRACE_EVENT(ctime_ns_xchg,
- 		__entry->cur		= cur;
- 	),
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
  
--	TP_printk("ino=%d:%d:%ld:%u old=%u:%s new=%u cur=%u:%s",
-+	TP_printk("ino=%d:%d:%llu:%u old=%u:%s new=%u cur=%u:%s",
- 		MAJOR(__entry->dev), MINOR(__entry->dev), __entry->ino, __entry->gen,
- 		__entry->old & ~I_CTIME_QUERIED,
- 		__print_flags(__entry->old & I_CTIME_QUERIED, "|", CTIME_QUERIED_FLAGS),
-@@ -93,10 +93,10 @@ TRACE_EVENT(fill_mg_cmtime,
- 	TP_ARGS(inode, ctime, mtime),
+ 	    TP_fast_assign(
+@@ -629,7 +629,7 @@ TRACE_EVENT(cachefiles_mark_inactive,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
  
- 	TP_STRUCT__entry(
--		__field(dev_t,		dev)
--		__field(ino_t,		ino)
-+		__field(u64,		ino)
- 		__field(time64_t,	ctime_s)
- 		__field(time64_t,	mtime_s)
-+		__field(dev_t,		dev)
- 		__field(u32,		ctime_ns)
- 		__field(u32,		mtime_ns)
- 		__field(u32,		gen)
-@@ -112,7 +112,7 @@ TRACE_EVENT(fill_mg_cmtime,
- 		__entry->mtime_ns	= mtime->tv_nsec;
- 	),
- 
--	TP_printk("ino=%d:%d:%ld:%u ctime=%lld.%u mtime=%lld.%u",
-+	TP_printk("ino=%d:%d:%llu:%u ctime=%lld.%u mtime=%lld.%u",
- 		MAJOR(__entry->dev), MINOR(__entry->dev), __entry->ino, __entry->gen,
- 		__entry->ctime_s, __entry->ctime_ns,
- 		__entry->mtime_s, __entry->mtime_ns
-diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index 4d3d8c8f3a1bc3e5ef10fc96e3c6dbbd0cf00c98..e5cd2b80fd29dba9177b8ea7c37d63e50e9f60e2 100644
---- a/include/trace/events/writeback.h
-+++ b/include/trace/events/writeback.h
-@@ -67,7 +67,7 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
- 
- 	TP_STRUCT__entry (
- 		__array(char, name, 32)
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(pgoff_t, index)
- 	),
- 
-@@ -79,9 +79,9 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
- 		__entry->index = folio->index;
- 	),
- 
--	TP_printk("bdi %s: ino=%lu index=%lu",
-+	TP_printk("bdi %s: ino=%llu index=%lu",
- 		__entry->name,
--		(unsigned long)__entry->ino,
-+		__entry->ino,
- 		__entry->index
- 	)
- );
-@@ -108,7 +108,7 @@ DECLARE_EVENT_CLASS(writeback_dirty_inode_template,
- 
- 	TP_STRUCT__entry (
- 		__array(char, name, 32)
--		__field(ino_t, ino)
-+		__field(u64, ino)
- 		__field(unsigned long, state)
- 		__field(unsigned long, flags)
- 	),
-@@ -123,9 +123,9 @@ DECLARE_EVENT_CLASS(writeback_dirty_inode_template,
- 		__entry->flags		= flags;
- 	),
- 
--	TP_printk("bdi %s: ino=%lu state=%s flags=%s",
-+	TP_printk("bdi %s: ino=%llu state=%s flags=%s",
- 		__entry->name,
--		(unsigned long)__entry->ino,
-+		__entry->ino,
- 		show_inode_state(__entry->state),
- 		show_inode_state(__entry->flags)
- 	)
-@@ -155,12 +155,12 @@ DEFINE_EVENT(writeback_dirty_inode_template, writeback_dirty_inode,
- #ifdef CREATE_TRACE_POINTS
- #ifdef CONFIG_CGROUP_WRITEBACK
- 
--static inline ino_t __trace_wb_assign_cgroup(struct bdi_writeback *wb)
-+static inline u64 __trace_wb_assign_cgroup(struct bdi_writeback *wb)
- {
- 	return cgroup_ino(wb->memcg_css->cgroup);
- }
- 
--static inline ino_t __trace_wbc_assign_cgroup(struct writeback_control *wbc)
-+static inline u64 __trace_wbc_assign_cgroup(struct writeback_control *wbc)
- {
- 	if (wbc->wb)
- 		return __trace_wb_assign_cgroup(wbc->wb);
-@@ -169,12 +169,12 @@ static inline ino_t __trace_wbc_assign_cgroup(struct writeback_control *wbc)
- }
- #else	/* CONFIG_CGROUP_WRITEBACK */
- 
--static inline ino_t __trace_wb_assign_cgroup(struct bdi_writeback *wb)
-+static inline u64 __trace_wb_assign_cgroup(struct bdi_writeback *wb)
- {
- 	return 1;
- }
- 
--static inline ino_t __trace_wbc_assign_cgroup(struct writeback_control *wbc)
-+static inline u64 __trace_wbc_assign_cgroup(struct writeback_control *wbc)
- {
- 	return 1;
- }
-@@ -192,8 +192,8 @@ TRACE_EVENT(inode_foreign_history,
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
--		__field(ino_t,		ino)
--		__field(ino_t,		cgroup_ino)
-+		__field(u64,		ino)
-+		__field(u64,		cgroup_ino)
- 		__field(unsigned int,	history)
- 	),
- 
-@@ -204,10 +204,10 @@ TRACE_EVENT(inode_foreign_history,
- 		__entry->history	= history;
- 	),
- 
--	TP_printk("bdi %s: ino=%lu cgroup_ino=%lu history=0x%x",
-+	TP_printk("bdi %s: ino=%llu cgroup_ino=%llu history=0x%x",
- 		__entry->name,
--		(unsigned long)__entry->ino,
--		(unsigned long)__entry->cgroup_ino,
-+		__entry->ino,
-+		__entry->cgroup_ino,
- 		__entry->history
- 	)
- );
-@@ -221,8 +221,8 @@ TRACE_EVENT(inode_switch_wbs_queue,
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
--		__field(ino_t,		old_cgroup_ino)
--		__field(ino_t,		new_cgroup_ino)
-+		__field(u64,		old_cgroup_ino)
-+		__field(u64,		new_cgroup_ino)
- 		__field(unsigned int,	count)
- 	),
- 
-@@ -233,10 +233,10 @@ TRACE_EVENT(inode_switch_wbs_queue,
- 		__entry->count		= count;
- 	),
- 
--	TP_printk("bdi %s: old_cgroup_ino=%lu new_cgroup_ino=%lu count=%u",
-+	TP_printk("bdi %s: old_cgroup_ino=%llu new_cgroup_ino=%llu count=%u",
- 		__entry->name,
--		(unsigned long)__entry->old_cgroup_ino,
--		(unsigned long)__entry->new_cgroup_ino,
-+		__entry->old_cgroup_ino,
-+		__entry->new_cgroup_ino,
- 		__entry->count
- 	)
- );
-@@ -250,9 +250,9 @@ TRACE_EVENT(inode_switch_wbs,
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
--		__field(ino_t,		ino)
--		__field(ino_t,		old_cgroup_ino)
--		__field(ino_t,		new_cgroup_ino)
-+		__field(u64,		ino)
-+		__field(u64,		old_cgroup_ino)
-+		__field(u64,		new_cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -262,11 +262,11 @@ TRACE_EVENT(inode_switch_wbs,
- 		__entry->new_cgroup_ino	= __trace_wb_assign_cgroup(new_wb);
- 	),
- 
--	TP_printk("bdi %s: ino=%lu old_cgroup_ino=%lu new_cgroup_ino=%lu",
-+	TP_printk("bdi %s: ino=%llu old_cgroup_ino=%llu new_cgroup_ino=%llu",
- 		__entry->name,
--		(unsigned long)__entry->ino,
--		(unsigned long)__entry->old_cgroup_ino,
--		(unsigned long)__entry->new_cgroup_ino
-+		__entry->ino,
-+		__entry->old_cgroup_ino,
-+		__entry->new_cgroup_ino
- 	)
- );
- 
-@@ -279,10 +279,10 @@ TRACE_EVENT(track_foreign_dirty,
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
- 		__field(u64,		bdi_id)
--		__field(ino_t,		ino)
-+		__field(u64,		ino)
-+		__field(u64,		cgroup_ino)
-+		__field(u64,		page_cgroup_ino)
- 		__field(unsigned int,	memcg_id)
--		__field(ino_t,		cgroup_ino)
--		__field(ino_t,		page_cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -297,13 +297,13 @@ TRACE_EVENT(track_foreign_dirty,
- 		__entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
- 	),
- 
--	TP_printk("bdi %s[%llu]: ino=%lu memcg_id=%u cgroup_ino=%lu page_cgroup_ino=%lu",
-+	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu",
- 		__entry->name,
- 		__entry->bdi_id,
--		(unsigned long)__entry->ino,
-+		__entry->ino,
- 		__entry->memcg_id,
--		(unsigned long)__entry->cgroup_ino,
--		(unsigned long)__entry->page_cgroup_ino
-+		__entry->cgroup_ino,
-+		__entry->page_cgroup_ino
- 	)
- );
- 
-@@ -316,7 +316,7 @@ TRACE_EVENT(flush_foreign,
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
--		__field(ino_t,		cgroup_ino)
-+		__field(u64,		cgroup_ino)
- 		__field(unsigned int,	frn_bdi_id)
- 		__field(unsigned int,	frn_memcg_id)
- 	),
-@@ -328,9 +328,9 @@ TRACE_EVENT(flush_foreign,
- 		__entry->frn_memcg_id	= frn_memcg_id;
- 	),
- 
--	TP_printk("bdi %s: cgroup_ino=%lu frn_bdi_id=%u frn_memcg_id=%u",
-+	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u",
- 		__entry->name,
--		(unsigned long)__entry->cgroup_ino,
-+		__entry->cgroup_ino,
- 		__entry->frn_bdi_id,
- 		__entry->frn_memcg_id
- 	)
-@@ -345,9 +345,9 @@ DECLARE_EVENT_CLASS(writeback_write_inode_template,
- 
- 	TP_STRUCT__entry (
- 		__array(char, name, 32)
--		__field(ino_t, ino)
-+		__field(u64, ino)
-+		__field(u64, cgroup_ino)
- 		__field(int, sync_mode)
--		__field(ino_t, cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -358,11 +358,11 @@ DECLARE_EVENT_CLASS(writeback_write_inode_template,
- 		__entry->cgroup_ino	= __trace_wbc_assign_cgroup(wbc);
- 	),
- 
--	TP_printk("bdi %s: ino=%lu sync_mode=%d cgroup_ino=%lu",
-+	TP_printk("bdi %s: ino=%llu sync_mode=%d cgroup_ino=%llu",
- 		__entry->name,
--		(unsigned long)__entry->ino,
-+		__entry->ino,
- 		__entry->sync_mode,
--		(unsigned long)__entry->cgroup_ino
-+		__entry->cgroup_ino
- 	)
- );
- 
-@@ -385,6 +385,7 @@ DECLARE_EVENT_CLASS(writeback_work_class,
- 	TP_ARGS(wb, work),
- 	TP_STRUCT__entry(
- 		__array(char, name, 32)
-+		__field(u64, cgroup_ino)
- 		__field(long, nr_pages)
- 		__field(dev_t, sb_dev)
- 		__field(int, sync_mode)
-@@ -392,7 +393,6 @@ DECLARE_EVENT_CLASS(writeback_work_class,
- 		__field(int, range_cyclic)
- 		__field(int, for_background)
- 		__field(int, reason)
--		__field(ino_t, cgroup_ino)
- 	),
- 	TP_fast_assign(
- 		strscpy_pad(__entry->name, bdi_dev_name(wb->bdi), 32);
-@@ -406,7 +406,7 @@ DECLARE_EVENT_CLASS(writeback_work_class,
- 		__entry->cgroup_ino = __trace_wb_assign_cgroup(wb);
- 	),
- 	TP_printk("bdi %s: sb_dev %d:%d nr_pages=%ld sync_mode=%d "
--		  "kupdate=%d range_cyclic=%d background=%d reason=%s cgroup_ino=%lu",
-+		  "kupdate=%d range_cyclic=%d background=%d reason=%s cgroup_ino=%llu",
- 		  __entry->name,
- 		  MAJOR(__entry->sb_dev), MINOR(__entry->sb_dev),
- 		  __entry->nr_pages,
-@@ -415,7 +415,7 @@ DECLARE_EVENT_CLASS(writeback_work_class,
- 		  __entry->range_cyclic,
- 		  __entry->for_background,
- 		  __print_symbolic(__entry->reason, WB_WORK_REASON),
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	)
- );
- #define DEFINE_WRITEBACK_WORK_EVENT(name) \
-@@ -445,15 +445,15 @@ DECLARE_EVENT_CLASS(writeback_class,
- 	TP_ARGS(wb),
- 	TP_STRUCT__entry(
- 		__array(char, name, 32)
--		__field(ino_t, cgroup_ino)
-+		__field(u64, cgroup_ino)
- 	),
- 	TP_fast_assign(
- 		strscpy_pad(__entry->name, bdi_dev_name(wb->bdi), 32);
- 		__entry->cgroup_ino = __trace_wb_assign_cgroup(wb);
- 	),
--	TP_printk("bdi %s: cgroup_ino=%lu",
-+	TP_printk("bdi %s: cgroup_ino=%llu",
- 		  __entry->name,
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	)
- );
- #define DEFINE_WRITEBACK_EVENT(name) \
-@@ -482,15 +482,15 @@ DECLARE_EVENT_CLASS(wbc_class,
- 	TP_ARGS(wbc, bdi),
- 	TP_STRUCT__entry(
- 		__array(char, name, 32)
-+		__field(u64, cgroup_ino)
- 		__field(long, nr_to_write)
- 		__field(long, pages_skipped)
-+		__field(long, range_start)
-+		__field(long, range_end)
- 		__field(int, sync_mode)
- 		__field(int, for_kupdate)
- 		__field(int, for_background)
- 		__field(int, range_cyclic)
--		__field(long, range_start)
--		__field(long, range_end)
--		__field(ino_t, cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -507,7 +507,7 @@ DECLARE_EVENT_CLASS(wbc_class,
- 	),
- 
- 	TP_printk("bdi %s: towrt=%ld skip=%ld mode=%d kupd=%d bgrd=%d "
--		"cyclic=%d start=0x%lx end=0x%lx cgroup_ino=%lu",
-+		"cyclic=%d start=0x%lx end=0x%lx cgroup_ino=%llu",
- 		__entry->name,
- 		__entry->nr_to_write,
- 		__entry->pages_skipped,
-@@ -517,7 +517,7 @@ DECLARE_EVENT_CLASS(wbc_class,
- 		__entry->range_cyclic,
- 		__entry->range_start,
- 		__entry->range_end,
--		(unsigned long)__entry->cgroup_ino
-+		__entry->cgroup_ino
- 	)
- )
- 
-@@ -535,11 +535,11 @@ TRACE_EVENT(writeback_queue_io,
- 	TP_ARGS(wb, work, dirtied_before, moved),
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
-+		__field(u64,		cgroup_ino)
- 		__field(unsigned long,	older)
- 		__field(long,		age)
- 		__field(int,		moved)
- 		__field(int,		reason)
--		__field(ino_t,		cgroup_ino)
- 	),
- 	TP_fast_assign(
- 		strscpy_pad(__entry->name, bdi_dev_name(wb->bdi), 32);
-@@ -549,13 +549,13 @@ TRACE_EVENT(writeback_queue_io,
- 		__entry->reason	= work->reason;
- 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
- 	),
--	TP_printk("bdi %s: older=%lu age=%ld enqueue=%d reason=%s cgroup_ino=%lu",
-+	TP_printk("bdi %s: older=%lu age=%ld enqueue=%d reason=%s cgroup_ino=%llu",
- 		__entry->name,
- 		__entry->older,	/* dirtied_before in jiffies */
- 		__entry->age,	/* dirtied_before in relative milliseconds */
- 		__entry->moved,
- 		__print_symbolic(__entry->reason, WB_WORK_REASON),
--		(unsigned long)__entry->cgroup_ino
-+		__entry->cgroup_ino
- 	)
- );
- 
-@@ -614,13 +614,13 @@ TRACE_EVENT(bdi_dirty_ratelimit,
- 
- 	TP_STRUCT__entry(
- 		__array(char,		bdi, 32)
-+		__field(u64,		cgroup_ino)
- 		__field(unsigned long,	write_bw)
- 		__field(unsigned long,	avg_write_bw)
- 		__field(unsigned long,	dirty_rate)
- 		__field(unsigned long,	dirty_ratelimit)
- 		__field(unsigned long,	task_ratelimit)
- 		__field(unsigned long,	balanced_dirty_ratelimit)
--		__field(ino_t,		cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -638,7 +638,7 @@ TRACE_EVENT(bdi_dirty_ratelimit,
- 	TP_printk("bdi %s: "
- 		  "write_bw=%lu awrite_bw=%lu dirty_rate=%lu "
- 		  "dirty_ratelimit=%lu task_ratelimit=%lu "
--		  "balanced_dirty_ratelimit=%lu cgroup_ino=%lu",
-+		  "balanced_dirty_ratelimit=%lu cgroup_ino=%llu",
- 		  __entry->bdi,
- 		  __entry->write_bw,		/* write bandwidth */
- 		  __entry->avg_write_bw,	/* avg write bandwidth */
-@@ -646,7 +646,7 @@ TRACE_EVENT(bdi_dirty_ratelimit,
- 		  __entry->dirty_ratelimit,	/* base ratelimit */
- 		  __entry->task_ratelimit, /* ratelimit with position control */
- 		  __entry->balanced_dirty_ratelimit, /* the balanced ratelimit */
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	)
- );
- 
-@@ -667,6 +667,7 @@ TRACE_EVENT(balance_dirty_pages,
- 
- 	TP_STRUCT__entry(
- 		__array(	 char,	bdi, 32)
-+		__field(u64,		cgroup_ino)
- 		__field(unsigned long,	limit)
- 		__field(unsigned long,	setpoint)
- 		__field(unsigned long,	dirty)
-@@ -674,13 +675,12 @@ TRACE_EVENT(balance_dirty_pages,
- 		__field(unsigned long,	wb_dirty)
- 		__field(unsigned long,	dirty_ratelimit)
- 		__field(unsigned long,	task_ratelimit)
--		__field(unsigned int,	dirtied)
--		__field(unsigned int,	dirtied_pause)
- 		__field(unsigned long,	paused)
- 		__field(	 long,	pause)
- 		__field(unsigned long,	period)
- 		__field(	 long,	think)
--		__field(ino_t,		cgroup_ino)
-+		__field(unsigned int,	dirtied)
-+		__field(unsigned int,	dirtied_pause)
- 	),
- 
- 	TP_fast_assign(
-@@ -711,7 +711,7 @@ TRACE_EVENT(balance_dirty_pages,
- 		  "wb_setpoint=%lu wb_dirty=%lu "
- 		  "dirty_ratelimit=%lu task_ratelimit=%lu "
- 		  "dirtied=%u dirtied_pause=%u "
--		  "paused=%lu pause=%ld period=%lu think=%ld cgroup_ino=%lu",
-+		  "paused=%lu pause=%ld period=%lu think=%ld cgroup_ino=%llu",
- 		  __entry->bdi,
- 		  __entry->limit,
- 		  __entry->setpoint,
-@@ -726,7 +726,7 @@ TRACE_EVENT(balance_dirty_pages,
- 		  __entry->pause,	/* ms */
- 		  __entry->period,	/* ms */
- 		  __entry->think,	/* ms */
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	  )
- );
- 
-@@ -737,10 +737,10 @@ TRACE_EVENT(writeback_sb_inodes_requeue,
- 
- 	TP_STRUCT__entry(
- 		__array(char, name, 32)
--		__field(ino_t, ino)
-+		__field(u64, ino)
-+		__field(u64, cgroup_ino)
- 		__field(unsigned long, state)
- 		__field(unsigned long, dirtied_when)
--		__field(ino_t, cgroup_ino)
- 	),
- 
- 	TP_fast_assign(
-@@ -752,13 +752,13 @@ TRACE_EVENT(writeback_sb_inodes_requeue,
- 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(inode_to_wb(inode));
- 	),
- 
--	TP_printk("bdi %s: ino=%lu state=%s dirtied_when=%lu age=%lu cgroup_ino=%lu",
-+	TP_printk("bdi %s: ino=%llu state=%s dirtied_when=%lu age=%lu cgroup_ino=%llu",
- 		  __entry->name,
--		  (unsigned long)__entry->ino,
-+		  __entry->ino,
- 		  show_inode_state(__entry->state),
- 		  __entry->dirtied_when,
- 		  (jiffies - __entry->dirtied_when) / HZ,
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	)
- );
- 
-@@ -773,13 +773,13 @@ DECLARE_EVENT_CLASS(writeback_single_inode_template,
- 
- 	TP_STRUCT__entry(
- 		__array(char, name, 32)
--		__field(ino_t, ino)
-+		__field(u64, ino)
-+		__field(u64, cgroup_ino)
- 		__field(unsigned long, state)
- 		__field(unsigned long, dirtied_when)
- 		__field(unsigned long, writeback_index)
--		__field(long, nr_to_write)
- 		__field(unsigned long, wrote)
--		__field(ino_t, cgroup_ino)
-+		__field(long, nr_to_write)
- 	),
- 
- 	TP_fast_assign(
-@@ -794,17 +794,17 @@ DECLARE_EVENT_CLASS(writeback_single_inode_template,
- 		__entry->cgroup_ino	= __trace_wbc_assign_cgroup(wbc);
- 	),
- 
--	TP_printk("bdi %s: ino=%lu state=%s dirtied_when=%lu age=%lu "
--		  "index=%lu to_write=%ld wrote=%lu cgroup_ino=%lu",
-+	TP_printk("bdi %s: ino=%llu state=%s dirtied_when=%lu age=%lu "
-+		  "index=%lu to_write=%ld wrote=%lu cgroup_ino=%llu",
- 		  __entry->name,
--		  (unsigned long)__entry->ino,
-+		  __entry->ino,
- 		  show_inode_state(__entry->state),
- 		  __entry->dirtied_when,
- 		  (jiffies - __entry->dirtied_when) / HZ,
- 		  __entry->writeback_index,
- 		  __entry->nr_to_write,
- 		  __entry->wrote,
--		  (unsigned long)__entry->cgroup_ino
-+		  __entry->cgroup_ino
- 	)
- );
- 
-@@ -828,11 +828,11 @@ DECLARE_EVENT_CLASS(writeback_inode_template,
- 	TP_ARGS(inode),
- 
- 	TP_STRUCT__entry(
--		__field(	dev_t,	dev			)
--		__field(	ino_t,	ino			)
-+		__field(	u64,	ino			)
- 		__field(unsigned long,	state			)
--		__field(	__u16, mode			)
- 		__field(unsigned long, dirtied_when		)
-+		__field(	dev_t,	dev			)
-+		__field(	__u16, mode			)
- 	),
- 
- 	TP_fast_assign(
-@@ -843,9 +843,9 @@ DECLARE_EVENT_CLASS(writeback_inode_template,
- 		__entry->dirtied_when = inode->dirtied_when;
- 	),
- 
--	TP_printk("dev %d,%d ino %lu dirtied %lu state %s mode 0%o",
-+	TP_printk("dev %d,%d ino %llu dirtied %lu state %s mode 0%o",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
--		  (unsigned long)__entry->ino, __entry->dirtied_when,
-+		  __entry->ino, __entry->dirtied_when,
- 		  show_inode_state(__entry->state), __entry->mode)
- );
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
  
 
 -- 
