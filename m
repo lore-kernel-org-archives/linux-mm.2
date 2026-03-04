@@ -4,131 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AC11EFCE2A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6F25EFCE33
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC7A56B0088; Wed,  4 Mar 2026 12:50:49 -0500 (EST)
+	id D4F266B0005; Wed,  4 Mar 2026 12:59:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA91B6B008C; Wed,  4 Mar 2026 12:50:49 -0500 (EST)
+	id D27EA6B0089; Wed,  4 Mar 2026 12:59:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA7FA6B0092; Wed,  4 Mar 2026 12:50:49 -0500 (EST)
+	id BFBDD6B008C; Wed,  4 Mar 2026 12:59:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A82B36B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:50:49 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 494CBC237F
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:50:49 +0000 (UTC)
-X-FDA: 84509121018.17.D8880AE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E630040007
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:50:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kcub9+zD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VWTbUvrP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kcub9+zD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VWTbUvrP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B1B876B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:59:11 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4C67B1B81DA
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:59:11 +0000 (UTC)
+X-FDA: 84509142102.13.7D03A59
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0179C1C000E
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:59:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AlDMCLmC;
+	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772646647;
+	s=arc-20220608; t=1772647149;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wkR4+3jIaCPY9qwtcDMw9i+8Ps1yeWwl3r5ZwOISZMQ=;
-	b=ki3Zh4vPAd8mbwH8i8mGYHwmjuetka7xcyYJTCKa2ddKCm+gj3YUwniv/LFZy0b2Vi3/7t
-	Wuz2dcI6CctghNxe8Ogj6oJL2Gz4LVsPg/L+MzCfDgWW6ebqZCniJDkKZGpnTqo7XvaoRS
-	bx+u9HmYmyi3kK1x4RCHZka7VscTlMA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772646647; a=rsa-sha256;
+	bh=mndxsLknrh8CEjoGWg13z+ehijVBFIyYI2Gh1KFe+s0=;
+	b=1jKQS7bX1gFzIA+qEkTwFr84tcQZQ3NbycINIhz7JJYGP3c3QAMxJo07nAdfy6Q8oHHyxn
+	AxL4TYuEMkEaTLBQV6iDrhZNHvC6RMGjesv47pHoOjy5K3a/fVfm+vyt4iO3KAz0pF3lHq
+	+WMpzJ53W6B6fwdsuBmuu5tXQA04T2o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772647149; a=rsa-sha256;
 	cv=none;
-	b=BaiHAJ4y3PNcriNE8gKtKE9AGyUPEg7I/tpnt2UDGlkY5RGxohMLa1LpPaY9R6q536Uswo
-	dPbQ3A1OSMzyygW1B8Fl9JVjeK1uDMJpQbAEx6MeZ3WAIPxbfdMCEYS6GcpfJPfH90kFoB
-	t4Mzv6VBdi4pzR3QUCk6mXszpk4c9ag=
+	b=DwWUjxgbQYqY3t6tSZzDxKrXRizE+sLn8Z+rPQ1rhjaVNJCeunWEXq8oSN3QHlIackI4Zk
+	ajNMMkOEp9lPhyp4jxy5xCFmOw3M+Olme0bGhwOT4CV4PbVUBiZqwPz97ea/0/CTpkMvWi
+	CPRK0jy1dJDqVLwNmIPBcXRXij/+qj0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kcub9+zD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VWTbUvrP;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kcub9+zD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VWTbUvrP;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 055DB5BDF5;
-	Wed,  4 Mar 2026 17:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772646645; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wkR4+3jIaCPY9qwtcDMw9i+8Ps1yeWwl3r5ZwOISZMQ=;
-	b=kcub9+zD1v15HNboklpu31z9XXXgn3Q8+gO+0yuuYJiT/47bH8fbYtFOgoO51qQcMJqwnY
-	w7qpkY8Dd5y03GMb1vfvFmWBjhQ8cXIBTTk8t1aOJMq7C9dFKBrU2Vvz6QF8NWlyvemBwp
-	7+t/k6BQ9fZJ/5xp8EXFaCl9xal7D3E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772646645;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wkR4+3jIaCPY9qwtcDMw9i+8Ps1yeWwl3r5ZwOISZMQ=;
-	b=VWTbUvrPOQwy7WasuotDZnTuXMxSH6uQGcmByvmOknSrl2UgREuHUjneYGRHn2ztxbx3nB
-	yba0JmhtbbUXTDAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772646645; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wkR4+3jIaCPY9qwtcDMw9i+8Ps1yeWwl3r5ZwOISZMQ=;
-	b=kcub9+zD1v15HNboklpu31z9XXXgn3Q8+gO+0yuuYJiT/47bH8fbYtFOgoO51qQcMJqwnY
-	w7qpkY8Dd5y03GMb1vfvFmWBjhQ8cXIBTTk8t1aOJMq7C9dFKBrU2Vvz6QF8NWlyvemBwp
-	7+t/k6BQ9fZJ/5xp8EXFaCl9xal7D3E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772646645;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wkR4+3jIaCPY9qwtcDMw9i+8Ps1yeWwl3r5ZwOISZMQ=;
-	b=VWTbUvrPOQwy7WasuotDZnTuXMxSH6uQGcmByvmOknSrl2UgREuHUjneYGRHn2ztxbx3nB
-	yba0JmhtbbUXTDAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B3A383EA69;
-	Wed,  4 Mar 2026 17:50:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id n++OH/RwqGk0bAAAD6G6ig
-	(envelope-from <krisman@suse.de>); Wed, 04 Mar 2026 17:50:44 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org,  lsf-pc@lists.linux-foundation.org,  Mateusz Guzik
- <mjguzik@gmail.com>,  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-  Tejun Heo <tj@kernel.org>,  Christoph Lameter <cl@gentwo.org>,  Dennis
- Zhou <dennis@kernel.org>,  Vlastimil Babka <vbabka@suse.cz>,  Hao Li
- <hao.li@linux.dev>,  Jan Kara <jack@suse.cz>
-Subject: Re: [LSF/MM/BPF TOPIC] Ways to mitigate limitations of percpu
- memory allocator
-In-Reply-To: <aaE8rkGzxlB6wCTt@hyeyoo> (Harry Yoo's message of "Fri, 27 Feb
-	2026 15:41:50 +0900")
-Organization: SUSE
-References: <aaE8rkGzxlB6wCTt@hyeyoo>
-Date: Wed, 04 Mar 2026 12:50:42 -0500
-Message-ID: <87ikbb1o25.fsf@mailhost.krisman.be>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=AlDMCLmC;
+	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772647148; x=1804183148;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/CV0BOByGYSuzWxUSGsbDoPh7GMERLO9A3GhGMQraAA=;
+  b=AlDMCLmCSRZCWW9UitxGhyy4llheFqqcN5dqJEe4gOBnxKCBY5lf+kDF
+   XDNOrl/djQK7M3teDxV9POFQ5u/kSWqmajH8Ag1l4txDON82XXP7NGw3x
+   golHBI+FNTZ0mcs4PZqY1Z3ZHIOMzDgn50He+jFH7gtzOB9cx5zCCklNX
+   lt0h7IBpx03x63c1rA/bRSQqO1Hwd+yoBmeeRfBwC4RTUiyUW3spafB0b
+   MQYubVMENFN+kpZfiyqn3DNx7YEcoaDWXOopkPcZ8KFP5Txd5LpksZ2FE
+   JQsafOzk5Ko1d1WPhFAKY/qrNdQcGKy7VMmZnP/yDdbP9n/qN7uYd5zFX
+   Q==;
+X-CSE-ConnectionGUID: CgLLv0SZTU6GpQvs2SgkWQ==
+X-CSE-MsgGUID: m24X//KVRyOuOCOrrTuRXA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73787446"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="73787446"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:59:07 -0800
+X-CSE-ConnectionGUID: 4TQsiUvKR6SROeOWGs/bKg==
+X-CSE-MsgGUID: m6KG54ICSbu6tHecqNx0sQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="214537504"
+Received: from aschende-mobl.amr.corp.intel.com (HELO [10.125.108.205]) ([10.125.108.205])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:59:05 -0800
+Message-ID: <7dc30fbf-17c0-47db-8457-24b531cd0071@intel.com>
+Date: Wed, 4 Mar 2026 09:59:11 -0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E630040007
-X-Stat-Signature: 4rry4c4n93ctbmit6rhts43n4ocyrzfk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] x86/tlb: skip redundant sync IPIs for native TLB
+ flush
+To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
+Cc: peterz@infradead.org, david@kernel.org, dave.hansen@linux.intel.com,
+ ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+ arnd@arndb.de, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
+ seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
+ virtualization@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ioworker0@gmail.com
+References: <20260304021046.18550-1-lance.yang@linux.dev>
+ <20260304021046.18550-3-lance.yang@linux.dev>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260304021046.18550-3-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1772646646-993232
-X-HE-Meta: U2FsdGVkX1+50n4uAkl660JaQPPLMgYPBrtMVBF304LSWxhJgi13Xw8HLheRsyEWvIOtZphqlm71oG8IC0vj7dpwdBnvadCeDjyd53qR+IlikpS8xSL904rdiwgmPJRO6LJQvYe5w/9ZuIb9BY6Ei6Pgt/k+KNjci5stdSsTLgX8OQHDLD4VzaWZjtff9wTZ40wZhAJ5m1mzzCbN5+8eJ0O3YBJYGD3XPSPtwawbMUGEwpmd9zVQp+Pe3+O7nf2o0oOne15nsQyJIG7/U+98X5APOzafPirrUwfiYuZuNfGMyQXQD4Fz7pG9OJZrsIfhmffUL+DTBpQGmYQO2kdU3GsZ8hvOBOc/vynzY/2L74aRycKXkXKHfv88K82TFIPm58NVYL+m8lz0SRJHEwZWtsQQWmdX6Ywx8Dyt3iGhSndmga1F6fjIiEad5sVv67bZ7J6QahpVH6P4cj/aVxhtDXHHKE/OHUauyHj3w0BM4o2JPwCjgLEdBWuxunTUX8n8YKj8tEr1MYIl+ZsiDFK18xYGKVEX7bm/TGstDPQuatC/VhTMUCEDkBR33eb7le2qieiH2T8hbJEC6vwJQtY9O8MiGx/bwa0v7/FprFc9cnvMqMtFscr/fk+FU6bmfP/X9A4f/IS0gqczjj5jxN1EFnzZeO4LROThrpB8GxuUMcKazEVi/HuQQ1NsofS6rjQmoc9hcwxASZeLrTk1dw3Dvw5+Y48uf3KEZRtWo4WS/f6xx0USpN/StdHRU9yHrlsp/gTf1axjPKqAva/DRtsKMdSjschWdKOIH+AVFkZXX/mRmnqnIhaZILsdj1eFulZ+EIcJdx8yMAVeQpJmG8PhzJFvJTLfsIfMJ2Hgu1KnLuumMPJWvPt5LeyXPPUnlUpJuXVj7zBjLejMas8GDbkIkc4qcRa0WHM7ZtOqfqUeCsR1u8MJ6RQC9COC6/OeiHHPb3g7HAEjtMIb4tXmOkU
- bBNYiwhc
- vMVYriYj9ljDocwKLhE3/WsGz+JgPT4vCC0VLbIuhNE4FjL7fzF3ZqhMNprXFQ1hO+WL/VSvGHgPTRghWmGuMvUizdYtCCvy+iNd2m6EH3Ga9PbhBPuy03yLX3CXVtWslknbuDa9XOGbFmNKfhR1/GzsQiwhnFztgtd4APY2A1/JeLNKBer1RiE/dt4uVB67YUtu/XXSTpgOJh7HEO5mP28LjeRJJ2C4TrM51AAm8PFlFPv8ehAB/XhNyy58MZ2K9QN4MV/eVEDgbhienrkHf8NSzmoFK6N3ZfKycgeeroLFym+kh/K7ogxtGCo9C170nvcSQA/U5YE1Or5W4XootDIWEiPQqQGxxXaWh
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0179C1C000E
+X-Stat-Signature: yc5yxndscmj6hznq6eb5wnmoyyg8hbmd
+X-HE-Tag: 1772647147-246292
+X-HE-Meta: U2FsdGVkX1+NVHCbRkLGOss/BWTOH63VvzWKeHFpYQe6n/qz4vEdc3KuJV4Loz2Y6pMJCnn04FULjs0uMxqeE0Mz1Hp9va5gR/3se8mER5lg7eL5yJOCXD9yU9AAYI6XQkwaGuK74joHbVbieQlbPdG1RmII5en9AFD/8gI4V0I0xpGjzqOXc7yURKFwcRcY8WWS4oUgAQ+IpACm3GBHwCqmyf8ARisBEOSFbDwRz+B/bD0J0D/kHywKJTwfYF8XhecWtjI9kaiAric8vXayjy786inw+zMp8heCIBuTN6Sj2SoP6TkDPBEg13bh67cXdy7uFFrOolywgSpzkSQfj03HvuZecD18L9gJ7vkvZ9oE1ze0igV6M0zmZRGaD6URw4QCjbPnBZ9xi8+PsNgijHWdtSBc1PU0SagHSwUTN4CDBZb9EhrHGcqThSI3zG9wWAYlR99fx+rncEZihLsT/Hm9/GwHo1W59IxGX/ETkVLgbYtHoW8U+327k4UmlrxEm+qvjWP+jHJmUEVizk+zK2WZWiH1l9AuN1GZWtsjIKmguuS69Ru74IVUiEIzKXnx97Ppp+vJ1++NFBMsFqZUcf7jMPfToBtIZlS6Z1TH1M8UQN7k3V0fR+GsuLuvQ0pkZ+ABTaqchl3M4M417nTYKyGv4wsmk1wiMgBV5gfc8LyU83mvXEHsJFd018OC5BZgC/nsAi16n0sluxj2NcUNuEY0OluVIu/ChT22lCOKAUG9/FU2/dBh9BBGuFT07LNBXqD5nCb+UQZlKdeAUxhcDOd8GOaTa2yAmzhOdS2LDHZ3BFnujakPdGLwtp0t4NlTa0ysWCLz9NxksoTyazNPjBgggIofjARpGox0+AEvcirjciWWqNZXW0iqNKqUlUFF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,80 +158,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Harry Yoo <harry.yoo@oracle.com> writes:
+On 3/3/26 18:10, Lance Yang wrote:
+...
+> +	if (pv_ops.mmu.flush_tlb_multi == native_flush_tlb_multi &&
+> +	    !cpu_feature_enabled(X86_FEATURE_INVLPGB)) {
+> +		pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
+> +		static_branch_enable(&tlb_ipi_broadcast_key);
+> +	}
+> +}
+...
+> +#ifndef CONFIG_PARAVIRT
+> +void __init native_pv_tlb_init(void)
+> +{
+> +	/*
+> +	 * For non-PARAVIRT builds, check if native TLB flush sends real IPIs
+> +	 * (i.e., not using INVLPGB broadcast invalidation).
+> +	 */
+> +	if (!cpu_feature_enabled(X86_FEATURE_INVLPGB))
+> +		static_branch_enable(&tlb_ipi_broadcast_key);
+> +}
+> +#endif
 
-> Hi folks, I'd like to discuss ways to mitigate limitations of
-> percpu memory allocator.
->
-> While the percpu memory allocator has served its role well,
-> it has a few problems: 1) its global lock contention, and
-> 2) lack of features to avoid high initialization cost of percpu
-> memory.
+I really despise duplicated logic. The X86_FEATURE_INVLPGB check is
+small, but it is duplicated. You're also setting the static branch in a
+*bunch* of different places.
 
-I won't be going to LSF this year.  But Jan was the proponent of my
-dual-mode pcpu initialization work and he'll be around. I'm not sure
-this requires a full session either, as it might not grasp broader
-interest.  Are Mathieu and Mateusz attending?
+Can this be arranged so that the PV code just tells the core code that
+it is compatible with flush_tlb_multi_implies_ipi_broadcast?
 
->
-> Global lock contention
-> =======================
->
-> Percpu allocator has a global lock when allocating or freeing memory.
-> Of course, caching percpu memory is not always worth it, because
-> it would meaningfully increase memory usage.
->
-> However, some users (e.g., fork+exec, tc filter) suffer from
-> the lock contention when many CPUs allocate / free percpu memory
-> concurrently.
->
-> That said, we need a way to cache percpu memory per cpu, in a selective
-> way. As an opt-in approach, Mateusz Guzik proposed [1] keeping percpu
-> memory in slab objects and letting slab cache them per cpu,
-> with slab ctor+dtor pair: allocate percpu memory and
-> associate it with slab object in constructor, and free it when
-> deallocating slabs (with resurrecting slab destructor feature).
->
-> This only works when percpu memory is associated with slab objects.
-> I would like to hear if anybody thinks it's still worth redesigning
-> percpu memory allocator for better scalability.
->
-> Initialization of percpu data has high overhead
-> ===============================================
->
-> Initializing percpu data has non-negligible overhead on systems with
-> many CPUs. There's been a few approaches proposed to mitigate this.
-> I'd like to discuss the status of ideas proposed, and potentially
-> whether there are other approaches worth exploring.
->
-> Slab constructor + destructor Pair
-> ----------------------------------
->
-> Percpu allocator doesn't distinguish types of objects
-> unlike slab and it doesn't support constructors that could avoid
-> re-initializing them on every allocation.
-> One solution to this is using slab ctor+dtor pair; as long as a certain
-> state is preserved on free (e.g. sum of percpu counter is zero),
-> initialization needs to be done only once on construction.
->
-> Dual-mode percpu counters
-> -------------------------
->
-> Gabriel Krisman Bertazi proposed [2] introducing dual-mode percpu
-> counters; single-threaded tasks use a simple counter, which is cheaper
-> to initialize. Later when a new task is spawned, upgrade it to a more
-> expensive, full-fledged counter.
->
-> On-demand initialization of mm_cid counters
-> -------------------------------------------
->
-> Mathieu Desnoyers proposed [3] initializing mm_cid counters on-demand
-> on clone instead of initializing for all CPUs on every allocation.
->
-> [1] https://lore.kernel.org/linux-mm/20250424080755.272925-1-harry.yoo@oracle.com
-> [2] https://lore.kernel.org/linux-mm/20251127233635.4170047-1-krisman@suse.de
-> [3] https://lore.kernel.org/linux-mm/355143c9-78c7-4da1-9033-5ae6fa50efad@efficios.com  
+void __init bool is_pv_ok(void)
+{
+	/* This check is super sketchy an unexplained: */
+	if (pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast)
+		return true;
 
--- 
-Gabriel Krisman Bertazi
+	if (pv_ops.mmu.flush_tlb_multi != native_flush_tlb_multi)
+		return false;
+
+	pv_ops.mmu.flush_tlb_multi_implies_ipi_broadcast = true;
+
+	return true;
+}
+
+void __init tlb_init(void)
+{
+	if (!is_pv_ok())
+		return;
+
+	if (cpu_feature_enabled(X86_FEATURE_INVLPGB))
+		return;
+		
+	static_branch_enable(&tlb_ipi_broadcast_key);
+}
+
+Isn't that like a billion times more readable? It has one
+X86_FEATURE_INVLPGB check and one static_branch_enable() point and no
+#ifdeffery other than defining a stub is_pv_ok().
+
+BTW, why is there even an early return for the case where
+flush_tlb_multi_implies_ipi_broadcast is already set? Isn't this
+decision made once on the boot CPU and then never touched again? Do any
+PV instances actually set the bit?
 
