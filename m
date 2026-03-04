@@ -4,108 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FCD8EFCE44
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 20:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7464EFCE42
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 20:34:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACF846B0005; Wed,  4 Mar 2026 15:23:00 -0500 (EST)
+	id D02056B0005; Wed,  4 Mar 2026 15:34:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA7BC6B0088; Wed,  4 Mar 2026 15:23:00 -0500 (EST)
+	id C85766B0088; Wed,  4 Mar 2026 15:34:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D5346B0089; Wed,  4 Mar 2026 15:23:00 -0500 (EST)
+	id B84946B0089; Wed,  4 Mar 2026 15:34:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B6116B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:23:00 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 390AA1C94A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:23:00 +0000 (UTC)
-X-FDA: 84509504520.03.5093F80
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6E71D40004
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:22:54 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A7B1E6B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 15:34:04 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 218121A0659
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:34:04 +0000 (UTC)
+X-FDA: 84509532408.09.4C62A9F
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1DCD14000A
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:34:01 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FTMkYtJ3;
-	spf=pass (imf17.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=HA6Gqfub;
+	spf=pass (imf17.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772655776;
+	s=arc-20220608; t=1772656442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jfZm5vSB1vPzvk7DU/3ZCqj4liPErRh64IDVyat3SkU=;
-	b=H/ik9HBw/WtBEGV6eVjGj/Ti1X0p+2abI1jBY+sWQqREg4m/hkilPK4g6annetgZ6Gp0Kh
-	aLzUA4kDPyCwG4jVqGwpONhWFmMl9VGV+iMI6DpEgrwPVarVoRHYZFdnUOTsERimdGr1I9
-	T3UdIbPxpzQC3Sx5NS05oSqK61eX9J0=
+	bh=EqT9WNYz3ZuMaGbrnnkO9KS8167OdxqpYCX1Aav7XuQ=;
+	b=Yx6GVahJ7zUuEATQKnb8UiTeTm7z1OQcze3FaituREG/BvzngGUQdBp1eUG9qnkHJUNfQy
+	mrZ/Adt+NFhCfW8+XH6QpUWY4bwuB2cvtGqFNMD7vKZxhFNgZEqtfCyt1ftYGBD+XOGYtD
+	8jqFzG3csrrVr3sBMa+7sRlQAOQsP7Q=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=FTMkYtJ3;
-	spf=pass (imf17.hostedemail.com: domain of ak@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=ak@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772655776; a=rsa-sha256;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=HA6Gqfub;
+	spf=pass (imf17.hostedemail.com: domain of gpiccoli@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gpiccoli@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772656442; a=rsa-sha256;
 	cv=none;
-	b=XkLz+jcq9yjjngabhttxU9+9/SpmuVJ8u7lAg6OeDp2Q9/b8VPHH06l8+yrmX+Jx+wOPwn
-	95plSBtO+fWH4yK1Awj2N6Z6CIKKojflOfWcFPAWhpeEAkQTNIRH0M8Z6k2N1CR2/VJ828
-	qT3vhxSI1RHmW9wZlGQHnrRGAXR9lLI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772655774; x=1804191774;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jfZm5vSB1vPzvk7DU/3ZCqj4liPErRh64IDVyat3SkU=;
-  b=FTMkYtJ3iz4jOdpBgc+RwyllSaBWMV9NBEue2mouBs3zzTmC3YUFHVlz
-   M5HDlhoGVNgeoZmkb4yMU4MOM3YkkqW85f1V8bIdzGAT6qcKVIJ8a3/H4
-   37r0bS3QKxYAE1F9B05FDch7jnvydLE0nqjQBB6bWIqE3C+DzOLppZxVf
-   +iV5aUD4PKH78aqPOEj1fMPFdgIOeEqI9HLfSGgxitZNlFuha6IIYUQiF
-   rz9F9/7VNLgqe0Dkt+VXuGagqxIdmzFZfWL/1HAnHmCJtqa/T7H+47RhL
-   LO1WwogecVoDKeMPEwUol0xs0zn6EhYeJp8Q2tPdc9rTem3fxAoSujvsO
-   w==;
-X-CSE-ConnectionGUID: AbqoP+d2QEqzFWIaRbk/Jg==
-X-CSE-MsgGUID: vej4zB5FQcKRP0wc+nCd7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85077238"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="85077238"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 12:22:52 -0800
-X-CSE-ConnectionGUID: OzPxF9lORb+fO3kerP7c3w==
-X-CSE-MsgGUID: BRuPXwfQRGms1xwwyAoOWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="217688413"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 12:22:52 -0800
-Date: Wed, 4 Mar 2026 12:22:51 -0800
-From: Andi Kleen <ak@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-mm@kvack.org,
+	b=FNRa5jwyxNbLSdVj3rfMmEZEVBZANh6zMS6PiNJmIhOWwzFCwNKffqBNjEtow6i2hxV+Xi
+	q6u41d3dZWZZFbeEzpAywajWt/wpi1p9xIvWO2eZj9kajRQkYZVaqJacEwwdDXboqekTfD
+	XwOkMi8BHwZvSMBZMWPutRiojvgzvkg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=EqT9WNYz3ZuMaGbrnnkO9KS8167OdxqpYCX1Aav7XuQ=; b=HA6GqfubG6VXpDBQk5CCcRzIMI
+	1fwLyYT43MrRyS85hVWtBrTc5jOMD4lxpRQSz0j7ofCuKNQxZ04ZrS6l2RJYFZTneKU+r03ZvkkOc
+	i/G5PuZDYrw04tOexmGdl+++rC7Msa6JLArWWSpqGwI9n2iYnAiSbQ6QT4lq5+ll4460beOfthRVn
+	NaDteLOEvz4vV7r7em0d4k0Ylyeimv+UVDMdh18guimyPtxVyy70R18oO53iLl0cNhPQ6icfPdwqV
+	8EOk8NHqjdgym/ofZR3OI09ktL/gEXBjFlFHofBWI8rM+RZl93RzsMoDpYhtcGykydGyyoiatWwaX
+	7DCxyIlQ==;
+Received: from [187.90.181.146] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vxsut-0095KJ-SD; Wed, 04 Mar 2026 21:34:00 +0100
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: linux-mm@kvack.org,
+	rppt@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-dev@igalia.com,
+	kernel@gpiccoli.net,
+	gpiccoli@igalia.com,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Usama Arif <usamaarif642@gmail.com>
-Subject: Re: [PATCH v1] docs: filesystems: clarify KernelPageSize vs.
- MMUPageSize in smaps
-Message-ID: <aaiUmx8yRsn2LBMW@tassilo>
-References: <20260304155636.77433-1-david@kernel.org>
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH V2 1/2] mm/memblock: Print out errors on reserve_mem parser
+Date: Wed,  4 Mar 2026 17:14:10 -0300
+Message-ID: <20260304203300.1414286-3-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260304203300.1414286-2-gpiccoli@igalia.com>
+References: <20260304203300.1414286-2-gpiccoli@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304155636.77433-1-david@kernel.org>
-X-Rspamd-Queue-Id: 6E71D40004
-X-Stat-Signature: ezysz7xpg1yp641z1sny47esx46juqfd
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1DCD14000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: j78x4btpd5y6pz944i98jngh5z866w3r
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772655774-664973
-X-HE-Meta: U2FsdGVkX19bY0lmIwaDMkPVaIIjGcABXsRdd1TgLP/xWKWy+Jy9FK2a2T4qsI4bonXxWVqdfsn86EjQDok1Fj88kYTgPbuYyfmAkCWnltDaavjAnOukmj63eTmzAubl5S6hbcp//2ZVHoqIFeB911HwocKpf6q+2iWmZYAY5gmX4ecOVTsTNss91CWtqomPymO1jzdFej0hctCnY2fQDw8ObPijk5xP/8SFnbVKnCGQqj5tSC1QYG80ZZjET0tVQP8w5VhWP4H1CqZvezvR3ADP20vM2RQyXS9b3jp5xQkpRyHBz4M7Rbt9qN5zMUgVz936rTkg1trsKDyOqyztdQ9FJWuky0hP338zB7Cuqo7hPMrGzCJm0ohj7i3eTVkPqQOAsW5YL03wSBKgHoHRIKCu8vKIXDe5QMnh7ulaD/rpPBFAyTfsW906plvOuICL5tnWYeEt8DZ67WZ16Jq+Qvl6hLJRNVN9vRC0MLbfXjzuExBDuIMxsuIzCChWBHLsyKtAKoAvHg/qi2RaNpl8NOeLcavwJc/ErgfApdNwSCzl7VXxWWSbvEjv+mPsn052Pt+an+PoOQrjodfTR/WhFa7TTuCursm/kxUENOhApdryJTfX/oaO0QvsR60jiH1jFvU6mggBAtPqx1AlQZ6YcikGCI+gkjUPcTfMQGBf4itBmxCdKEfkOePstHuHhR2HwFYw7HmHPr7iOrCaJhllCPFN8K9DYgOvVq4y+OcQ4lhg67FHr5zfCCu4fI4c40hqzRzhI8WwkpgQL7426PDhnJPGqvOGwXdbKef1WfEP1aZByUEqYTqy4Q6sR9AiQrRiuYL2uxoyMORV0lF+ilGTEsVijnYzevhGVLFkV6knlbiEwqd2BwBwAnih/XYkuM0seIfIQYGfHXgW88OivvYvcIrukuqk5WwGyA3xrYpMcCQpqh8Sxt+4yt3lS4ZfVFq0D9zeaR5DquyMJQSHQPT
- GV6BwDHc
- ruKDhadWNMChr3VlWRwON3pJsJx0qwi75sQCuFZkk8hnTBub8v4tkm37BIQ7At/+p4gBHXfcfN490ThytLHKMGl4Fygjvr8ydqDnmvvNN6H17B/7F5lVmxVwBw+nuExLlb7gQRU3ryY1hlDA012ZljHVCj9WQGlsyx3aHiJxIcDn/wxZ6jW92QK1/W2kGJs6HzDB1/Kc2GUITSoM=
+X-HE-Tag: 1772656441-385414
+X-HE-Meta: U2FsdGVkX19WE/qj7zoSQ+HgzS5/JS4RtjpE0ZeWxBnXh+uMeefBwJIyHfGm/Nx2gNK545ev8eqA5TiErBNjRdOAkLC8S5Ae31GVt0y4i6loTNaqNBQykfhZORBH2dAYTaYrrDHRPyPL2/shCP4f2LSQAJ5lNGbwtc7PgfO7g2eGEnjN+ALoaOdVGceXJ/aVBOU89myPg+loOwLJAPyowam+myna9cnlC8CSetN7QoXYftCjakwBXdZS3m/NL0sLkMbI81/NTnTaFjbrjzaqqD8wmpVfAkm4ayiTg1zxkgrmVLS04z+RrtemzGH4BheCuL3IWofrZ9LozxRBw9e8Q8utQx2MSTviX6jqg6XkhzcjHEi5lAjQ326cIr1peGzFwYPVLZfrx+MQ6eDbR8vF27svNJLXuea/Io6WUF07la2uCqgQeEuY8g/+RsVOs1gm43eXAmHfTv//cf2fVHMQlkcSx7c5sTEqQ7kfeGIxzFr8ro6F4hdM1Kqs2OwIOdvSmdnaEFnTTY9hmATFbgETWdzzYbc+oL7GcHqCoJIH8OBOC8qhsi5DalMI0EH8XmQOww2rVFa5Qq4XhrqNdHopdDGdiCb/AXuBOZIk7NmUzqP/V09DElwKTHecXnT4iQ6nxbW/U7RgN6tb9hbChcqvufGMQ+sq8JJBbw9G4LJASDGmIHBcYr1s9lXESqwwwveV34G7a3OF/lk3d+9N0QJIcnXsKbBOx5Bc61mh0DPRoJ8HtBrcaE1PHbWAZPo0bgTwYihE1JGzM4/eQQNS0jktndg8/0LPzvzq8e0M7Ml2RzkCtJ0B3hpSfZLPrxfOstBzApEnvLO0/TvFAjaX9kpSAHh/b5dy95Z4fYz/ghUTMfOEOu8SUCgBpA5XPg4ow7PFXK2KU43r4EP/blVRd7Vq0KLUyUjTDn2x7GPRU6E6JuL+TqUxexp9HKBe7XdWrKmBxl/f8agjqGddyE+LU2U
+ JkkT3oUR
+ KMs12djrxzh1nYFcW9n80jGHOmnIo3wBOI1m3RKgDKXIIFVSUxWtVgSgTn7zy0walBpfgdLzuhX2Yl+7fJmR9v67vSpnZ4Ymfm/FRIlC1MFla9iQdFWDxmMNUAksro4e+JmGmgKWDp17dWkyOPaftWw1Map16RQiB9stccc3tXn9wl7s09u6rgXQcBVzWrqVQztt4KlDVj6ma6oznAIT0Hd3RXHwipJrwyKTW3PhhpNRiXL2CyJQqxwgNhVHBLm/twnxet30Rnxx+8L0dajc4Kg6Y+BsCvcyQjj8Q+8HtHNk5ldQe+qKThT5Wmjb2tTBM5p1IlyOoZtSIvdwYCMNTRgj9StyMxd/5pPj0pU50CqVRf4SwXoQE8Jj7D/pQcQkO9XjC/8ebq/cT5G7HN0NRD2kXIoVemBL+SryIiSU9HcwA+oamskQ6mw/ABYe8LIploQnrYEsMdQvcFaY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,18 +96,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 04:56:36PM +0100, David Hildenbrand (Arm) wrote:
-> There was recently some confusion around THPs and the interaction with
-> KernelPageSize / MMUPageSize. Historically, these entries always
-> correspond to the smallest size we could encounter, not any current
-> usage of transparent huge pages or larger sizes used by the MMU.
+The parsing of kernel parameter "reserve_mem=" is subject to
+multiple failures, like duplicate naming, malformed expression
+or even lack of available memory. Right now, all of these fail
+silently. Let's add some messages so the kernel log can provide
+useful information in case of failures.
 
-It still seems like a bug to me, only documented now, but seems
-I'm in the minority on that.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
 
-But anyways if you change this file you should probably remove
-the duplicated KernelPageSize/MMUPageSize entries in the example
-too. That triped me up the last time.
 
--Andi
+V2: no changes.
+
+ mm/memblock.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
+
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index b3ddfdec7a80..2d2646f7a120 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2642,23 +2642,25 @@ static int __init reserve_mem(char *p)
+ 	int len;
+ 
+ 	if (!p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Check if there's room for more reserved memory */
+-	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
++	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES) {
++		pr_err("reserve_mem: no more room for reserved memory\n");
+ 		return -EBUSY;
++	}
+ 
+ 	oldp = p;
+ 	size = memparse(p, &p);
+ 	if (!size || p == oldp)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	align = memparse(p+1, &p);
+ 	if (*p != ':')
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/*
+ 	 * memblock_phys_alloc() doesn't like a zero size align,
+@@ -2672,7 +2674,7 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* name needs to have length but not too big */
+ 	if (!len || len >= RESERVE_MEM_NAME_SIZE)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure that name has text */
+ 	for (p = name; *p; p++) {
+@@ -2680,11 +2682,13 @@ static int __init reserve_mem(char *p)
+ 			break;
+ 	}
+ 	if (!*p)
+-		return -EINVAL;
++		goto err_param;
+ 
+ 	/* Make sure the name is not already used */
+-	if (reserve_mem_find_by_name(name, &start, &tmp))
++	if (reserve_mem_find_by_name(name, &start, &tmp)) {
++		pr_err("reserve_mem: name \"%s\" was already used\n", name);
+ 		return -EBUSY;
++	}
+ 
+ 	/* Pick previous allocations up from KHO if available */
+ 	if (reserve_mem_kho_revive(name, size, align))
+@@ -2692,12 +2696,18 @@ static int __init reserve_mem(char *p)
+ 
+ 	/* TODO: Allocation must be outside of scratch region */
+ 	start = memblock_phys_alloc(size, align);
+-	if (!start)
++	if (!start) {
++		pr_err("reserve_mem: memblock allocation failed\n");
+ 		return -ENOMEM;
++	}
+ 
+ 	reserved_mem_add(start, size, name);
+ 
+ 	return 1;
++err_param:
++	pr_err("reserve_mem: empty or malformed parameter\n");
++	return -EINVAL;
++
+ }
+ __setup("reserve_mem=", reserve_mem);
+ 
+-- 
+2.50.1
+
 
