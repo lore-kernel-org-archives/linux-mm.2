@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B9DEF8FFC
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56FF4EF8FFC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 16:25:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F02FC6B0005; Wed,  4 Mar 2026 11:18:01 -0500 (EST)
+	id A9F036B0005; Wed,  4 Mar 2026 11:25:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDAB06B0088; Wed,  4 Mar 2026 11:18:01 -0500 (EST)
+	id A76E16B0088; Wed,  4 Mar 2026 11:25:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E10A16B0089; Wed,  4 Mar 2026 11:18:01 -0500 (EST)
+	id 995BF6B0089; Wed,  4 Mar 2026 11:25:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CCD586B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:18:01 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5FD36C212C
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:18:01 +0000 (UTC)
-X-FDA: 84508887162.12.B3C370E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8831F6B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 11:25:00 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 325961B8469
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:25:00 +0000 (UTC)
+X-FDA: 84508904760.11.3E7A9A2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 76DEA180008
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:17:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJWg7Mfo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8CAC1100003
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 16:24:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XfKLtNiN;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772641079;
+	s=arc-20220608; t=1772641498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n9s3iJ7W1PvNcL3qq79JrCIO45K1pukAhTpjcpyAIi0=;
-	b=D4byN6TvvidW71qQ+Uc3L6OGeqDBwurVFtxjOeF9+pvqpQYbpofBro6wrGT7wce5ddsvU8
-	9YlngBcrdxNe/7YHJvEuZe9pEzpxxIrZASWjHDU0yt27Zm8WXhkAdTk1yTY8k8FVs99XC4
-	Pm2G9PDfG3wwz0RqFlJL6BnSqo98KsU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772641079; a=rsa-sha256;
+	bh=oZHJkvemcIEJMpi29eus3Zoc4lMuqhQkrJBuTyq6rO4=;
+	b=7JsIm0rqzT/HnbmNrCSW5SJUWn7Dn4fO2VCk4bP2CT2enOQ6UFIPg49TjdQaTtSLgGtIhJ
+	yketCbHZM5qgJMUs2vKQ6U2ElIMY7ufynh9XQZ5A7pcpHQVnKp2sze99B5sRjOCSy7bb3Y
+	2GGmDjnJAWSY+VhD8itfuuzyLaSBlUQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772641498; a=rsa-sha256;
 	cv=none;
-	b=gXPqcVxQBwih6Y+z9dZtQtEk9O/J3xkLhw0I+3yZJcdS1zo0NPZOg3Z18MX6+tajhIFfhn
-	NOqu+meamWPR0weOFRAEssIbRdAw1HmL6z9qIY5BEc8Duv/UYy1J0aCH6Pv/iJU3NTFkIU
-	fMNdAIbNelGS63nfC6yjtZ3z+5bmN9A=
+	b=F/KfF73yfrk0/13ErUTk061eOukrn6GRP0xEXMy7kDlPMw8R19EM008J36wcfneEn4eTQe
+	2fL1xx9eWCvm10twT2AQm5q6Ifk4GyDr5hvxDOPsPRJND6gvjq4uBVMIout6fV0Oy9zA85
+	h60uPBzRLLX6T4wD0J9AGKvZzlWDJMA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJWg7Mfo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XfKLtNiN;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA43360018;
-	Wed,  4 Mar 2026 16:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05BEC4CEF7;
-	Wed,  4 Mar 2026 16:17:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E2C34600AE;
+	Wed,  4 Mar 2026 16:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EBCC4CEF7;
+	Wed,  4 Mar 2026 16:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772641078;
-	bh=irP1zCajndUvqw8KEkFg9hIfdy4mdHxtl4bf03OkYZU=;
+	s=k20201202; t=1772641497;
+	bh=j4hbTQdifMqORZ0PrgMoZSeSr+3dRg5OwZLs7vTvKYA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gJWg7MfoeotR5EQAudycFraVug7RT+wdqRbOH8tUKtEobCUi412sDxOGKssN+m2PK
-	 M30U8uRRjPp731bon7gswjGoC58vFTew7eAHyVEmsbDmABKEWsgbBfXbFFHnHasjKX
-	 IbFHnPOK8t0gFANg8TNbT+QOjz7qeGNAnLhujRrVMkA9E7uGIjMTA1XnGYOiZbwE4w
-	 5BG+V+ppS50OAFk28XeWv2JKRE4nD/kxWuV8F3BwWzuMm7YWHY9Q/8PygXgosHbW9l
-	 mm71BHZcn5+/UKwHmtAeLqD8+lZyjg+rJl8PQWlbc0uKyiizOq1iFQ8lLi9hbTcxnW
-	 exAKGHyQ3lPnw==
-Date: Wed, 4 Mar 2026 16:17:55 +0000
+	b=XfKLtNiN+7cXhgOaY/4IIZr4wb0AwwH2qIi6du/TOf1O1/mrsfn3Q8GhUXRRWkm1t
+	 tHogCZXYYJ/R7nlsZ+0kAadJyuecltdOxTq5OK9lSwsY5MLUI/lSi7qc7Kxy+dhU6w
+	 SHx/+lncGEgD7T/UkYR9YLULkQAdShd5YWj12Gra4z8xi3AtsBm7ieFvHjvc/XHVuQ
+	 o859Yfo7gI0iBBQvPEklLQW1Txl1H6xIBfOOTAeMNsL3Lx5OXnfuStqvUDR2dIk24C
+	 pcu3FT5lI54AOKJ6p+aPdUCB+DvfpHDHW1GFE79MzkxNH1JJzEcIwr7slAddsYD4fC
+	 T9IB00is680tA==
+Date: Wed, 4 Mar 2026 16:24:54 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	usamaarif642@gmail.com, kernel-team@meta.com
 Subject: Re: [PATCH 0/2] mm: thp: reduce unnecessary start_stop_khugepaged()
  calls
-Message-ID: <f673ccc5-1121-457b-9b9a-f719584b4875@lucifer.local>
+Message-ID: <e46c8bd6-9f6b-4985-bec5-fef6c8f33dfe@lucifer.local>
 References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
+ <aagSrIwiFM7GaL1m@thinkstation>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304-thp_logs-v1-0-59038218a253@debian.org>
+In-Reply-To: <aagSrIwiFM7GaL1m@thinkstation>
 X-Rspam-User: 
-X-Stat-Signature: msir6y4dgkhmtbfuzmtu7j3kyxqzw5g9
-X-Rspamd-Queue-Id: 76DEA180008
+X-Stat-Signature: xfw8r7861gdfehycp5mkfnxt9j564z5c
+X-Rspamd-Queue-Id: 8CAC1100003
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1772641079-552019
-X-HE-Meta: U2FsdGVkX18A+isi6/481VpVLL2iFW2eE/5ew4+XRBm2kSIZgw+LoaCx5JnAfmDL5wVe3pDJA2rTlDl2lFgRJDMylNAIaF0uYIGklIhLCZ0s+ansshg5X1S8U6TOjdYdNycufveN1lUUGa5zehFsdfQOkqrW1jS/04McInNpzkOPgC/OlCALWi2T1RXf6XRp0KiiD8K8pHtTPknmmpA9WIJ4dONL6UKaFKuP3sBdmrK5k+bqF2wiYWx6eTAdJmfYQJmVNMT/GJ5JcEGRtGkt6SJbikSIhysz8mwQnrbyhw4d+r3tFNYG1EA+0dinWgd28onDQAm8He5w+KAFyMwrPtMf8dTzy93z53k6I2DmUtRKgSabSVdY7YUdxi0TrQwNqLuGMBFfQPFJSxJc1vah/etaq3Ho1YcAQqu/nNCwUxy2CgkoLMd6sMXk5jv9jwYiRvuqw5pvd5l8LpllqhaAY++bazI3m2bieoVoeemIWlP2Klu++PonOJxcOwlTrm3ANEqYRkyzigXEEFpeymZzsKPRsssN6I/cgVy5asWMnbS653Nx9S3D05F5TcPtiEGajK7iwEJuxaDdpMf/NOg7mB6TyOShduNV38XIx7+I3v0PT3d2DYDtlEoBrw0JUN8Mp99UMvWko2lWj1mvFmMa+K4GtJMLdcvgotVdOMeVwINQOXoMfU31sM4O1yf7KE3h/3ohFl8b+aBrO/1nMtEgAtRiSILVpaTT+1IilR8MxpOK9Xq0cp0tMEGfYsrCOrsJgNF7ouhZVo0ozFZ3vhvSL7P+TWRySEGiAUqetm4lreggKNb5OD2oILciyN82tqmpBMZUINP3Cv49nTUO/k1AoGn7/wu0cWC9DWJQrp6jsLQcwaKX/BQJezy4YGx7423Nfh+5bCfpuffyrg2Ykw5tSR/82lWuu5PnsAn7a8vg9edELgtnarL3HA==
+X-HE-Tag: 1772641498-615728
+X-HE-Meta: U2FsdGVkX18wu9BLunGufP4CZJppmqjlu1OxPYhXDwM1aP+XT8JsTWIYjhc3MYgKEHjiCADT3ssa+g2xdAFvELkcL+k+fZFzwZZjklU8T0ALhUUL4E368hrjotnCTV/k5JdtU/1QBUoWkSdNnir8gbV7gt8beJa449vLzjGDzojeg7nqEaRrLH0xv1zwcNMiVOqNyjFUsaCzGDjvqdAmBIWAnQbcyrAdWL+P2FAnAXzfAHm+FKdmDW69ba6OSirCq5vxV2pJQ/bTaqpqAwEkTpNEdzrnkdPd0t5unZoAcU2zi5/721MgaMt1iCFw34ZC/CW8KmTA13NrX1DhP9nGfbYHiwXBtxGZ54WbuRTCw94qRAvlDFFE8RaEqz97NsquCSQrctIon+8+bIML2Z7PeYN35RPULCCpnIuyOQ5eJPAhXCcivcxeKFNomgGLGsElE4IxlUCxRXguR3DWRSXjm7NHY7U8frG/0UQrzNbpcsNc7JjutGVQwcQtgw8zs0MsyUYIXycWggFsut6XYe8q+cK6UOI6dkvsvzdjukDs9ADD27SozVDatNg/gCYMbXx+dsCTQg5SCikyetjwlvsZ4gVmdrRAyJ7EdDGjrYtv9f4X3YjSmt8z9Uaubci0hQlRuMFFAvq2ez48/y1mThtfROTFitsfufe+UCNGsnEHWz+4SLYduHVBKUosbreiTQlYc5/mI9t85tXEYdwWJH/pZCidzDmmsJ/z3rhhhSVLmWa+jyfRRW3ngTJQ9xapgL4tOd4pZ0CXnxN786gh7Fo/AabJoUGTwTJixIumTa42Sp3jCPYxnyUTVx+JLnh2F8LIO6FqQQMp3XSM2Mk2R4YHz2vZnWizoPw2nCCU8UCBzIu+NjUCJqdtMFehtj7O7i42lyE03bu+8afGq5ksgqkffbDKdN1jQI5+Rm/8ROn/J+myNdYC5g6dNFnFc4qjcasEcF1rGK4e6ZPEQrVDiqx
+ T/+I2MJd
+ 7BgNUffj1z5hIa1Y0aK06ZN11sQoIyfo0JoBEBhdHoOm6vlt8oUh3dpqNJ1PDM0thf89jnISxwfL6VR96xBxIs5PFErVyYbQrcbDCUmXN8c9pug114oz6PoJ5HOEeZ6aoDVPQdKmkXTYXcsWE+9Tq2DXyrFDoY9Lmd51qNmsyrer7iHoISAtGccqvhgKW6UBXWcrMugMeh5mFljNDDXLRb1Kl3mYyQGw0oguFA5VeTwPu70mVEGJJy24no9OzU6Rm7X86
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,75 +100,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 02:22:32AM -0800, Breno Leitao wrote:
-> Writing to /sys/kernel/mm/transparent_hugepage/enabled causes
-> start_stop_khugepaged() called independent of any change.
-> start_stop_khugepaged() SPAMs  the printk ring buffer overflow with the
-> exact same message, even when nothing changes.
+On Wed, Mar 04, 2026 at 11:18:37AM +0000, Kiryl Shutsemau wrote:
+> On Wed, Mar 04, 2026 at 02:22:32AM -0800, Breno Leitao wrote:
+> > Breno Leitao (2):
+> >       mm: thp: avoid calling start_stop_khugepaged() in anon_enabled_store()
+> >       mm: thp: avoid calling start_stop_khugepaged() in enabled_store()
 >
-> For instance, if you have a custom vm.min_free_kbytes, just touching
-> /sys/kernel/mm/transparent_hugepage/enabled causes a printk message.
-> Example:
->
->       # sysctl -w vm.min_free_kbytes=112382
->       # for i in $(seq 100); do echo never > /sys/kernel/mm/transparent_hugepage/enabled ; done
->
-> and you have 100 WARN messages like the following, which is pretty dull:
->
->       khugepaged: min_free_kbytes is not updated to 112381 because user defined value 112382 is preferred
->
-> A similar message shows up when setting thp to "always":
->
->       # for i in $(seq 100); do
->       #       echo 1024 > /proc/sys/vm/min_free_kbytes
->       #       echo always > /sys/kernel/mm/transparent_hugepage/enabled
->       # done
->
-> And then, we have 100K messages like:
+> I think the same can be achieved cleaner from within start_stop_khugepaged().
 
-You mean 100? :)
-
-It's 100 locally here.
+I'm kind of with you in doing it here but...
 
 >
->       khugepaged: raising min_free_kbytes from 1024 to 67584 to help transparent hugepage allocations
+> Completely untested patch is below.
 >
-> This is more common when you have a configuration management system that
-> writes the THP configuration without an extra read, assuming that
-> nothing will happen if there is no change in the configuration, but it
-> prints these annoying messages.
-
-Right.
-
+> One noticeable difference that with the patch we don't kick
+> khugepaged_wait if khugepaged_thread is there. But I don't think it
+> should make a difference.
 >
-> For instance, at Meta's fleet, ~10K servers were producing 3.5M of
-> these messages per day.
-
-Yeah... that's not so fun :)
-
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 1dd3cfca610d..80f818d3a094 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -2683,18 +2683,18 @@ static void set_recommended_min_free_kbytes(void)
 >
-> Fix this by doing two things:
->  * Make the sysfs _store helpers a no-op if there is no state change
->  * Ratelimit these messages to avoid SPAM on config change
+>  int start_stop_khugepaged(void)
+>  {
+> -	int err = 0;
+> +	guard(mutex)(&khugepaged_mutex);
 
-Thanks for taking a look at this!
+This is nice :) we need more guard usage in mm.
 
+> +
+> +	/* Check if anything has to be done */
+> +	if (hugepage_pmd_enabled() == !!khugepaged_thread)
+
+This is horrible, better to break out the latter expression as a small static
+function like:
+
+static bool is_khugepaged_thread_running(void)
+{
+	if (khugepaged_thread)
+		return true;
+	return false;
+}
+
+> +		return 0;
 >
-> ---
-> Breno Leitao (2):
->       mm: thp: avoid calling start_stop_khugepaged() in anon_enabled_store()
->       mm: thp: avoid calling start_stop_khugepaged() in enabled_store()
+> -	mutex_lock(&khugepaged_mutex);
+>  	if (hugepage_pmd_enabled()) {
+
+Can we race on this function call, meaning check above might vary from one here?
+
+Better to have
+
+bool enabled = hugepage_pmd_enabled();
+
+etc. etc.
+
+> -		if (!khugepaged_thread)
+> -			khugepaged_thread = kthread_run(khugepaged, NULL,
+> -							"khugepaged");
+> +		khugepaged_thread = kthread_run(khugepaged, NULL, "khugepaged");
+>  		if (IS_ERR(khugepaged_thread)) {
+>  			pr_err("khugepaged: kthread_run(khugepaged) failed\n");
+> -			err = PTR_ERR(khugepaged_thread);
+>  			khugepaged_thread = NULL;
+> -			goto fail;
+> +			return PTR_ERR(khugepaged_thread);
+>  		}
 >
->  mm/huge_memory.c | 48 ++++++++++++++++++++++++++++--------------------
->  1 file changed, 28 insertions(+), 20 deletions(-)
-> ---
-> base-commit: 9dd5012f78d699f7a6051583dc53adeb401e28f0
-> change-id: 20260303-thp_logs-059d6b80f6d6
+>  		if (!list_empty(&khugepaged_scan.mm_head))
+> @@ -2703,10 +2703,9 @@ int start_stop_khugepaged(void)
+>  		kthread_stop(khugepaged_thread);
+>  		khugepaged_thread = NULL;
+>  	}
+> +
+>  	set_recommended_min_free_kbytes();
+
+We are setting recommended min free kbytes each time somebody touches these
+flags, maybe somebody somewhere relies on that and this change would break them?
+
+So maybe we just want to do this each time anyway, but repress/rate limit
+output?
+
+> -fail:
+> -	mutex_unlock(&khugepaged_mutex);
+> -	return err;
+> +	return 0;
+>  }
 >
-> Best regards,
+>  void khugepaged_min_free_kbytes_update(void)
 > --
-> Breno Leitao <leitao@debian.org>
->
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
-Cheers, Lorenzo
+Thanks, Lorenzo
 
