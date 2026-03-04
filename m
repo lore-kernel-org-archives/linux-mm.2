@@ -4,160 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93075EFCE21
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:17:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B179EFCE21
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 17:17:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 024C96B0005; Wed,  4 Mar 2026 12:17:07 -0500 (EST)
+	id 8A1C36B0089; Wed,  4 Mar 2026 12:17:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F07E86B0088; Wed,  4 Mar 2026 12:17:06 -0500 (EST)
+	id 86C8D6B008C; Wed,  4 Mar 2026 12:17:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE9696B0089; Wed,  4 Mar 2026 12:17:06 -0500 (EST)
+	id 778C26B0092; Wed,  4 Mar 2026 12:17:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD9D86B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:17:06 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6F7C48BEE0
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:17:06 +0000 (UTC)
-X-FDA: 84509036052.30.C664BC8
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011066.outbound.protection.outlook.com [52.101.62.66])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 97A9CC0007
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:17:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JSfHvCxC;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf22.hostedemail.com: domain of pjaroszynski@nvidia.com designates 52.101.62.66 as permitted sender) smtp.mailfrom=pjaroszynski@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772644623;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 62FAE6B0089
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:17:45 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14E6713ACF0
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:17:45 +0000 (UTC)
+X-FDA: 84509037690.05.393094C
+Received: from fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.72.182.33])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A7EF3A000E
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 17:17:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=J0WQJQPq;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=516a86686=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=516a86686=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772644662;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJH5HTTS8IXUeuygbajdkmLcYEnLHSboe7+1ynkudCU=;
-	b=TfxcG/3ZTjVMKhdsUHvmuVccmp2djHv//dtN9tUJDl3mZS0FW3Jec3SAQJD+mj73ksNQex
-	hr4/yA+65CHdoNxNVVbH9jalPZvEVIcM2d8oBQZvfIldDEHo+kgGZBZw064Oce0UWgtpNt
-	7RptA+WpL0PNkbooAOTS74GHmTQMxcc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772644623; a=rsa-sha256;
-	cv=pass;
-	b=UFDFhV2xKM89jsGRc382cxWN+gIoBzijtRwwqFCnpK6lk2d2HRoP27px/711bgwYaZDTMu
-	bA7xqRsTB3paugzqhgTBEszvXRGjIYlD2rWnxAL+pv7nZxosMmpHqDFRiKBM6Eq8PCgpz1
-	iQr6kkYkH6WiMMViXRLs4Jy+eKGE/c4=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=JSfHvCxC;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf22.hostedemail.com: domain of pjaroszynski@nvidia.com designates 52.101.62.66 as permitted sender) smtp.mailfrom=pjaroszynski@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YA78da0ePCTw5yUz3/HNCmtaw9OCnW4FBRMB1AQ6wnxNIvXj6FfcqwgjLeaQG3ksMLY/r9hN5As+XZtqdPEwtLb0ExZhi2Sii64EGZKX4CbJlXxgi5b7H5wYRuBkpMmI/IGX0URAp3oZVwzURo66JoJ/xTVdfUzQ9F27CnNe3ATuSYBVx7HBaobQ07aKveAMXx+ZJdShCFhtfVDPJ7UYkY5+U8G97Ne8gbF9sorVCaHoqyug1BkRKXmFeK62c38Mqog6EtptCf2KwFtBWVPZ55gKIhkJePsYf2Q13UAE0rGeoQUPFqewU+nGy1SBPQPscZcmuXgH8avJ4dgcyeo0xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cJH5HTTS8IXUeuygbajdkmLcYEnLHSboe7+1ynkudCU=;
- b=oNFHhwJ/PQrlfMgX5P+RF3R7/ojPLzzOgQdFhLYkkRkho+VW0SsLPNICaxCzejxxah26hLu/rnhTZhVBj4AqLjDREWRAG/esQSaS5AvVNTcXBEFnwPLB2nsV5FPtSzT9Pg3Yt8KaNeCYT12BaiTs6FOGiKLkUa8BMDz+rvLOYyst0zH1ggcUXq8ruzllD6Kp7e3vRzFuiy4+LJ/pUZdoM7BS3/fpGbYwSGSYGKLGlGNrsLgudwv1tBAvWhgNT3f8p+dUsOs3dNIDzuGA0qsDhpsvUNsyh5u/wXlpUFDVCaSSPBgcGNILvK2mBjBAK5eKchFqU38a4Z5BuDAZWplSLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cJH5HTTS8IXUeuygbajdkmLcYEnLHSboe7+1ynkudCU=;
- b=JSfHvCxCVG+k0WkDfd/CgAVjEeFgcEIzEN3y7msFQYycX5rAGOXFT2CHE3x+a5GtEc/ciwcvg6efbKclU1wln7BO5R3wWjYGXclcHnFz3UBZ6d41WMytlTuqQRZtTh3vakKq9gXmtzhXCdg5MNvQPqR36qaHTfU3sWe4V031v319zQ903e6AWynfxgsw7pnu6THFouaRQ9Gfz1DBaGUAWvQld462Vs+gi6pyIvk/vTwD1Tl/2QbA1HkfnXRMvvkbfFV8F1h943On1s4isspGqC9s/UaNQwRYvyLyfraHhNp5lmijIUzexUjCjMVNY3KELwO14NxnOZ5IVOP3h2P88w==
-Received: from DS0PR12MB6559.namprd12.prod.outlook.com (2603:10b6:8:d1::6) by
- MN2PR12MB4173.namprd12.prod.outlook.com (2603:10b6:208:1d8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 17:17:00 +0000
-Received: from DS0PR12MB6559.namprd12.prod.outlook.com
- ([fe80::3f99:f532:cf6b:ea46]) by DS0PR12MB6559.namprd12.prod.outlook.com
- ([fe80::3f99:f532:cf6b:ea46%4]) with mapi id 15.20.9654.022; Wed, 4 Mar 2026
- 17:16:59 +0000
-Date: Wed, 4 Mar 2026 09:16:58 -0800
-From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, Breno Leitao <leitao@debian.org>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-Message-ID: <aahnVXb1IF2yVV5x@box>
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <aagUtDTca5d0le2Y@arm.com>
- <20260304134313.GM972761@nvidia.com>
- <aahJX0NwtYHy1ILe@arm.com>
- <20260304153949.GP972761@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304153949.GP972761@nvidia.com>
-X-ClientProxiedBy: SJ0PR05CA0034.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::9) To DS0PR12MB6559.namprd12.prod.outlook.com
- (2603:10b6:8:d1::6)
+	bh=CPgNxadSzjpIoq3NwpOhLARCcrCv7zz8pTRRdyXfzUA=;
+	b=yocrQM+dGkirfGIFq+sI13FHykLzoUojPblIpNisTE1kpvZtVsmOGbxqMot/JzhMFpLrXG
+	UqlseNhDujDY2BUdVd3pXMeMTO5GU6TxxbCR9bCVkmqwRIee3SpqvY4mcGkSs7WLkERqaJ
+	TVWPWLGcCL+3woZheTx8Jxj58O/7F18=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772644663; a=rsa-sha256;
+	cv=none;
+	b=RESC+H2y+9WPKacNUeSV7p/jKy9rXnfgPhFCaWVGXnBWt1EAK18e7SXGFxiB0fM+WpWO7f
+	D5HYJzPHl3KtDyLP8O6FH5lC4UmJNfR3HyGNaHR85l586RKU2g+iYik14H2eh+QN35+xkU
+	QyQ/dFpIWagJMk9+d9vtxX/RtQWKV0Y=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=J0WQJQPq;
+	spf=pass (imf25.hostedemail.com: domain of "prvs=516a86686=kalyazin@amazon.co.uk" designates 3.72.182.33 as permitted sender) smtp.mailfrom="prvs=516a86686=kalyazin@amazon.co.uk";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1772644662; x=1804180662;
+  h=message-id:date:mime-version:reply-to:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=CPgNxadSzjpIoq3NwpOhLARCcrCv7zz8pTRRdyXfzUA=;
+  b=J0WQJQPqEl0uJjsubbOKOEHZ/x1kaN6Uq/wbj2RAGuAQifR6srWYEkvM
+   rWcKhZWdBJYIFFrZTxofYos0fqKR8sjUNCmN37Ca2m1ysijEku1RNniFf
+   Qwb2EprjDfiVHEAY64ez//hVNU1GiDlB8Tb+6HlaxAuON2+z7vCiDt8Y4
+   23CEpTa9Q99yImA768Ad5OpSWM3oksfKlnI1NhsaeNiR+kA8QDZs9TZ3j
+   aQUdnr6iRn17MvoK+khDgvkg3kHMjWgIAZQsBy+rt9zd8yoHm3iNMXnuk
+   kJldyXbK6w1t2KbsWo4Q/RVIvROorb0gIcxDFeT+tfibdHbsXFzlbblC7
+   g==;
+X-CSE-ConnectionGUID: kCX+YtFiRNyIDKqonzWj2Q==
+X-CSE-MsgGUID: rCpAbOjCT3KIJvBbO/BAqg==
+X-IronPort-AV: E=Sophos;i="6.21,324,1763424000"; 
+   d="scan'208";a="10324163"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-003.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 17:17:37 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.233:10769]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.50:2525] with esmtp (Farcaster)
+ id 5c685bb8-c81d-4b86-ac12-2b82286bbda5; Wed, 4 Mar 2026 17:17:36 +0000 (UTC)
+X-Farcaster-Flow-ID: 5c685bb8-c81d-4b86-ac12-2b82286bbda5
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Wed, 4 Mar 2026 17:17:30 +0000
+Received: from [192.168.5.225] (10.106.83.18) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Wed, 4 Mar 2026
+ 17:17:29 +0000
+Message-ID: <11b78807-00c3-4131-932c-7e32053f9531@amazon.com>
+Date: Wed, 4 Mar 2026 17:17:28 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6559:EE_|MN2PR12MB4173:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7ec62af-5168-43b8-676c-08de7a11d856
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	ZwnC6LGvMV+ssAGbfQXAgQ3D0j3UEWfRZMEtYHN88MfG8TXN39lOG7ZPljksoqpDkkQ2m0GPy8NPG+6TtMuYo47nsBGQZHnDw6Py4uruaEoPps63+4l+XOmH3POx6dwnxOpAP0uGT/jUZ4tmnBnjSLFnU2jLp2aBMjgKDPxoeKHJewrlKyVE5l0NKXlMXioSNrOl+NCwjSs6RcWfXEWGLgXpVL0daWxgK2V3ADpHw6TWhdzb6a45c6lyOLp2nL/Zumn1ovnVYLszEbKoxTz8f/OPjJArsttW7I++QvfVtIYz19LastVNlOTB0d2Jit7CfuB9ig6EBEaNUp3T6s3OAc2mt7SBo10YC8D8prxR9MiLRekrzuTUE+k0XZIbGWtdV6D1U5GKIb23HdGiownuufKuQRyr5h2aCv2y322VsBuF6Oe01VPI6fs4Bcj+NU0exgE+oW5LIsMvSKlfKTFCxewjAUKlPCvIvCufjE158w1lXiJHhjEtCj55ChIP+TNXZWk0+CAmk8lZMRJWNCmvHXsqNe+/Jg0jh4QXxK2aK//tL/MoMx2+XsfWvSLJZQsGoX7T+jiQmMaTkt0iUn8IkbWHjxctT5G7CSyJcGzcBGCfB05sIppt727/NQtlPCtGtOIdPtXFy1ooD7hjxJ4LyqEQ8oKKFXW3vosYgFowlFYJeLtNr2eOLUQo94jjosG3RtPLYFew+zF09+YliHEDuC6Pht2wEJtLPkRWi+eOet0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6559.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jEpGFrLTufV7GskmfwO2h4khYJCyhPYwwdqC6kZ/pfFxaPOkB6XquHsnkGts?=
- =?us-ascii?Q?L7xWWIq2depsH2XB8VCz//YubPKFsOpb+2iTKi3GrGpEQZxnSeR1TCmo3X1o?=
- =?us-ascii?Q?8tJlYlvgRdvKwY/VU5l93f2vhHMPBtVZ8m19ln58IARHL+lUeU5xNd8DQKAd?=
- =?us-ascii?Q?UKyiVB4xXWagwy968zKjMF2FGOCp2yDKY44XYx+a50RIWfDdHk87KDndjLww?=
- =?us-ascii?Q?tZkBMNtuIDpRlNbSw1AYHW/0ANjElg2cJM3USmSt5JRB3EKpAp967Xil/bvF?=
- =?us-ascii?Q?ED3PZ+1z8fGG36qmPwf2/A9ulaRbfve7SncuioLuIrdWIsVPhsZVGJg73EYd?=
- =?us-ascii?Q?pUIRWSZljRtVRE8zLbR3KLuFN0IeipFCebjAPRfNXCA2N2YS0eRHo8jRvEF3?=
- =?us-ascii?Q?RpOw4aA8nXT8H5qo3hHVSeqIR5KPEN1P4KMaoZiLx4NjQN2jxnmVW9jdimMb?=
- =?us-ascii?Q?XYWpCgu5WYMdvEDa8p6qpuHbgf/uQkmcQPrgaMWqgO6JPWtcO8tJ9aISUM7t?=
- =?us-ascii?Q?v2nTvXuDRjnPXUr/ZVdCBlhk5ngVLHzL4a6olmSlZnXhjba4D9wFnJaUuzrM?=
- =?us-ascii?Q?OiK9J5+cxys8C9QI4cvMboEh6HQW41RiknP9Yu7hq/E8Z8Sws0ipYDj5mLhh?=
- =?us-ascii?Q?KpgxHBeILirnfcCOPTFsAKjTkjd+hkwtFgNp1M6hsE/A861f2Gw0zyZrswes?=
- =?us-ascii?Q?bsc4fsSzTlDpEZi4PQQicT+2oUViGO08kzc/Pn1cifDG3Rdb3UBKCHScFPkA?=
- =?us-ascii?Q?X/TlEg+6x1DiCgI5oISABs+6N7PT2MJVa/2v52WcVIaPAqi3dPrsOOUHmAok?=
- =?us-ascii?Q?IreDWXGSoMIxR+MbNMS6U/pSmEaHNzLnKa78GQXxRMomBtjOLqAZyMhrulPr?=
- =?us-ascii?Q?klhSUiVSIlDS0a/BArK7Zo8EHRvbNvfI4wZ6QjxD581WfLuPtuOtjryf+MCa?=
- =?us-ascii?Q?apmoFkhErFP29+noxtjfxiMGs1RLIkNY5Z6e8S4O1qXXNPHQdpKeBhm1/jgx?=
- =?us-ascii?Q?zo4cWqpDRdG/9cve62caRthjJix2Msfh7cip39sF+enHfVntMLmg4dQvowrf?=
- =?us-ascii?Q?6FGNMqcSlwj4e6MvDNdvpCv7LzaNhZLuq3BhXPFOhCuhx/ay9pfpPve7tODQ?=
- =?us-ascii?Q?hq9P78p31g1bxi5Xruz4OIOGbuIE9kRxCiaQkTqxkgVBiBRPpyk9gKfcbjyw?=
- =?us-ascii?Q?Rh18pMTwkqQMuXHR5NulFOsss9c3r9JtWUuUrvDyvMkSRhZ2mzS2kkQ4lhF0?=
- =?us-ascii?Q?PQgtTFtvkl+MhzzNw7v1ZUvnJI5NOWIJz/U01Bwem4HlVTHlRRVjget1gzhJ?=
- =?us-ascii?Q?qq4eBjKY2rIUkEu+ERhJKadOyMmKS4xOblFJSpDBARoI889d6NAefhFKFbWp?=
- =?us-ascii?Q?mYGqMQntbkVdGX9jx72i6KUXeJ1QYWFKS5wbrD4Dq4i4GdsGDOPSY6LaskvE?=
- =?us-ascii?Q?aeYWSbjROipSuzIe77tmMPBhodTuQHeqw0rUTZYxwdizlkIcjYjM07gdm/ew?=
- =?us-ascii?Q?H+0EAz4IDZ0m0MxUbgtc0S591fopGA+DC3kX99Jq5KRXKJ2UWEVVrzTaf8Qt?=
- =?us-ascii?Q?lI2T8uL9VpBRaMohmX83bR0oI+0jHpklwQlBqgCy+AbmlYUwFRF4tYgWiZGp?=
- =?us-ascii?Q?7j0XIgajC2R0O67s8qS3SDNTdPhWF7M924GE+MVm1Nnh2RcVFoNINZ7wncVa?=
- =?us-ascii?Q?FzjrFdyAnX5XSemt//rJdFcuqLNjSI77Z67aRxu2iopa5iISrBf/zJ+cLGPu?=
- =?us-ascii?Q?/N85xnLrIaMIRKIXy4sido5F8mASGj8=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7ec62af-5168-43b8-676c-08de7a11d856
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6559.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 17:16:59.7592
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /84jZNxpukOyCeYJwTWmRJahPvCKNCsmdqWRWABgE2RHRCBSZr908tns1V+b2dckYCty7c9Jo+UFPtyg4ryGow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4173
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 97A9CC0007
-X-Stat-Signature: o3f5do5myps765kbimdq44e883dm6ojj
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH RFC 15/17] KVM: guest_memfd: implement userfaultfd missing
+ mode
+From: Nikita Kalyazin <kalyazin@amazon.com>
+To: Mike Rapoport <rppt@kernel.org>, <linux-mm@kvack.org>
+CC: Andrea Arcangeli <aarcange@redhat.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu
+	<peterx@redhat.com>, Sean Christopherson <seanjc@google.com>, Shuah Khan
+	<shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka
+	<vbabka@suse.cz>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, "david@kernel.org" <david@kernel.org>
+References: <20260127192936.1250096-1-rppt@kernel.org>
+ <20260127192936.1250096-16-rppt@kernel.org>
+ <90cf68db-2e21-4153-8eb6-2c8ffb398d0d@amazon.com>
+Content-Language: en-US
+In-Reply-To: <90cf68db-2e21-4153-8eb6-2c8ffb398d0d@amazon.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.106.83.18]
+X-ClientProxiedBy: EX19D013EUA004.ant.amazon.com (10.252.50.48) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
 X-Rspam-User: 
-X-HE-Tag: 1772644623-201376
-X-HE-Meta: U2FsdGVkX19/3UA2Fos8cudHjmIeczllPmLGorloOAsY3pKV/m3QMjKGAdlnTVpaD9a84FwenNXhBIDLVw5YQMlknzh/h4GoWUfZWE/NU2qhJ4bR3X2WVmyS3brmB1pYZeAivbjj2BCkMLctFNnEX5W4WF0IERTW7sHudQauzCUpUaiWdM8kLCFCB54o9Bs8wlSoq0edhshIpzsER8IQ1IHN/08xB2VRbQYDZclyTCMRtJ7uss8ZgK721iskn0994OdRbDJl7ljzqFcKNAL4OGtsJYvtq/fDBQLkmHSIxvO71wgqfSfDsyOlLaojpuMeTZRLJqfGQ7iQoRqdq7oV3c8SW7Q23Sy8u/I4azPzS6ZY1IomUk1IdmXlFrkqWOHOirK0tJkdULPEiAkw9z9DU5VM5y/4e35JvOAmcdW/RLhwwbP3EiAsGeKJJjCT2zmdN4Um5r/MCQeORbQ/Nh5zOsI1clK2+uHoXiUaxAlBI6D0tPz2Vgz1v7zYISbWeKotavFBlnOaovLRwHJuExYDzjCUJbwH7981BR6kkMcpNn/SCakOVuZON0Z12dEe6pjWqk/PavCFAH3oZdhQd25SjWClt4YxNMUNGSvlGKmJB9VHzZRVvwrhESw2QivMPhg2W+fEFnofe7A7k4BduiU5obZoobDvfS8mFoxn7kPBd2rg5dUUhZccyh3024MAE8AeMKJLndSRz1woXHRfPmye0LtXF5vDUZuaiBpu8LKk8a66bZdAkYzm9DcdNXqFxc6HTO0yJRFLdynv9T7ShkIj6c8dhZQrNU25//lEcoZPsxWhHm1mlMhWGMa9XJ9bN3wLfjff5sMY+3SxZ+TtJOKglmIW+IRmx/g8vltz7bERcO18qB7gd8OT3ovnaKztKdlRHIkTI7utFzz377TSUb3RtV7jQEB5a3OcbOe183v0ajAjknFRPRPnTDalewqmtnD9BeVnAHT2gBn6Ccd9g56
- 45271EXV
- yWYVvSjIeJE5taohB379vE6V1lOMeiaG7D+2F/mWdBnU1kNmnEx3RsFaoE8wfwEGSyS74kU/CLVIsWXmDAnnTIIA3Nom4EWDzwVeUSlUd1cglS18IQfRnCHMjGzgz6Sj74n1yndNb1wpX2KEEZOHVP9nPaLtXXZpG1krJGDZZL510EuqXjcHzTiNbNEZLPKv8A6WrBSR37QjHU7ZIc3z5I7SIw1vKCXrmf2aIHCX3j9lCp3DSRW8cwCmfU6lym/lEWxGWFHe0mVwZEysS+I+56iyFm9+eUIN9Re6ydFuicsSv0pvpiOsVE8sq8car3MjyePt4b39ArEf5OyeWkW1grPxsIcPBH6x9HpSIl8BcazvMnrqPEtGE35vrEtuIZbFG24b8XmgYHvkBHL8CMqT8ArdaCRlKesIWGK8YIgup5mxXQQmtOoXNtngZXPj/GH2N4LZ6c+RYDpBgkqQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A7EF3A000E
+X-Stat-Signature: pfx1seogynofhpg8turgt88c3yzhstqt
+X-HE-Tag: 1772644662-701790
+X-HE-Meta: U2FsdGVkX18dE2Unlm9/gKjn4ChtWNmbNzIEyzhCFSDmevl1O+mceWyDNDypfvI6IIqu5uwfXGcqPnQd4Eaq8GJ5cDooqWLVu3yGf8eEowRPYv5wggot0JR4O3c7RQ66Ts4yY76u2TAzM9yEy9nf/vYofHECCIm7QvRRHRExAOYhe6EYbrjGOv8YlXxjIytE+NvrR1slx7y0qvWq08QSDIJn7RuxmIAmPZ4TfvoD2pAN+e7c3SLInPnJ4mMpeRBYxSExugmbp2jk3u9txoG4LDjxKVA8UHadX2bHEfxU0iygoC9CrokaNN7SnCFger8YPDdp0VAL4zycxk6PHEMD79On8hS32hMChZNX8RU+riVsqB9O8icQkwYXKXSU1K8nVhTckBPlutovBdNteV/P+C4zOTfPNMMfTuJytwr7FxM1PerqkDtYXj0HibKE8lD3+wJimMcYwqbZPtdX5L8nmuEqJuE48eSl4ngOR1s883maO/9skV36JLxWV4W4B9TUWrEiPDk3yEomandul0vDk1tNIZDmFnFZba/XGnhSAs8NtlkfKtnnHBBoDMvRiETOTnx/embdggYcfihU7dsvjbxdpaH0N2R0srJ/+KQM00yGfyMdpk0GR3W4rz13/LlnCxnnfpdK/FrArjbaKhvB2r+NnO4QkVweex29Aj2SHbbDwxlaZ6gddsOKsuvuDnkSr/kmdYCS9UfBqDvTsdLmtcQsS5MoDXVg3QqLpHQsCJaKHRyhPpcnn5CreeQdQ7Rd3Unlp/3mKUP8on9CCixJpVCXXYGsXOeevkNzYUDCn0ricTKvvqRd5GEudeKpZSpSnYhs9pqdqdhxRibEf9t3anocKWyqP1zooGl1wSgqsGTQPYm44g/8yo6/Lau3qn30HLrCxStcRAv2WW5oU7f0HMOyfNoE95ypQx6Lrme5L1YQqirp1zJGHTuAedarkI+CZi0BO+gGfJzUaSO2ZUr
+ aJg6RLbE
+ nflajU1dFZrXUWY1R3Mzt7a6u7Vo1bmqtfEoltnns6AtvkPd3g/Re7FbbSv3cyOoYAMIrWAMupsSwN+sKgXO1lSArAFnbcNx8CV2pxxJYhn/+A2yLyz61jCbSap5RFiXK7vL5pcImISyOgvbxUmUu6ux33rnoEXlgz/4CMRW1hz/U3hAsw6PADEkxxmJQNnKI2EZ/UxV1grvN0ozx//rnJz3wGJxOWfz84IZIru/+cvA6JnABACf7Gy13pHiqHYhLvJPvxWFt9QiL2NEfZnN5ATD8CbU06E2KKL6aR0xhWw+zwMaxczG954gaKmJYIeapmnqbuKQCn9rZfeVyO5Q811zDqH7rsHJtmvFJ50U71JwuPqzhqA3326OIwFpV1LeC0hfGNGBt36ErCkuIzlGfHes1WIShmP0+M3Q/G0CjJhC15aVhcnumPjt0oey3s76wtEt/cpE8OeKTS/R04wzv6/c1GbeyqGmQfal0tBrJBsGx2srCIYWjIyhh0FiY10UBlepohLBdr+yle9aVUmnO9pH422jVBDtiY6naEjmuyB69ZXQnCjV31p1nVU2X0iVMLnT6qu80y4yIjKzAoqej2kb1KAbQpZ9WgghfaqVdrsaUGtiX69RHTbQx3FqmSh5LZWa4QgGtJpULf0BnG2eonDM37EavQBEgZ3DZFDsTGxhYjeaHF0zHPlb0IqSi63nq972nbe7NIHR1II+/k13VNFMJYbzX6dXZox5/dNO1GK3NpcUVAPLbv9VqXD3qhD+jx7ay+94vPMFYlvERyXT0ceKjSr7ezPZ9gqOO/iGkUrrj+5v4+AExxIDNfIl9TqZPIPHzV4e0Y8dwEhXKzRSHQj1du6RlVYaFT3KBsWc/h0168vCJebtBsMKKPN40enAAtzoGpMAYkThcGwTb/3bEyljjm80xOLWlD9aZHeGJulVa6yNDvAzP6JaLlBAKzYX7nVfJCFeuZ61wmBIMIFELeFg5PaCO
+ YNTr2mZ/
+ eoSFDGOFoTC6/7XsVQRgm7bSGjkgI5v5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,51 +127,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 11:39:49AM -0400, Jason Gunthorpe wrote:
-> On Wed, Mar 04, 2026 at 03:01:51PM +0000, Catalin Marinas wrote:
-> > Good point. For the AF bit, the hardware is not allowed to cache it in
-> > the TLB, so we can't get an AF fault for an unrelated VA nearby.
++ David's new email
+
+
+On 04/03/2026 17:12, Nikita Kalyazin wrote:
 > 
-> The way we have read the spec is there is no restriction on what PTE
-> the HW accesses when it encounters a CONT group.
 > 
-> To be concrete, the spec seems to say it is legal to make HW that
-> fetches the PTE at the VA, sees the CONT bit, and then always fetches
-> the 0th PTE from the group and only uses that for permission checks.
+> On 27/01/2026 19:29, Mike Rapoport wrote:
+>> From: Nikita Kalyazin <kalyazin@amazon.com>
+>>
+>> userfaultfd missing mode allows populating guest memory with the content
+>> supplied by userspace on demand.
+>>
+>> Extend guest_memfd implementation of vm_uffd_ops to support MISSING
+>> mode.
+>>
+>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+>> Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>>   virt/kvm/guest_memfd.c | 60 +++++++++++++++++++++++++++++++++++++++++-
+>>   1 file changed, 59 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index 087e7632bf70..14cca057fc0e 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -431,6 +431,14 @@ static vm_fault_t 
+>> kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>>                          ret = VM_FAULT_UFFD_MINOR;
+>>                          goto out_folio;
+>>                  }
+>> +
+>> +               /*
+>> +                * Check if userfaultfd is registered in missing mode. 
+>> If so,
+>> +                * check if a folio exists in the page cache. If not, 
+>> return
+>> +                * VM_FAULT_UFFD_MISSING to trigger the userfaultfd 
+>> handler.
+>> +                */
+>> +               if (userfaultfd_missing(vmf->vma) && 
+>> IS_ERR_OR_NULL(folio))
+>> +                       return VM_FAULT_UFFD_MISSING;
+>>          }
+>>
+>>          /* folio not in the pagecache, try to allocate */
+>> @@ -507,9 +515,59 @@ static bool kvm_gmem_can_userfault(struct 
+>> vm_area_struct *vma, vm_flags_t vm_fla
+>>          return true;
+>>   }
+>>
+>> +static struct folio *kvm_gmem_folio_alloc(struct vm_area_struct *vma,
+>> +                                         unsigned long addr)
+>> +{
+>> +       struct inode *inode = file_inode(vma->vm_file);
+>> +       pgoff_t pgoff = linear_page_index(vma, addr);
+>> +       struct mempolicy *mpol;
+>> +       struct folio *folio;
+>> +       gfp_t gfp;
+>> +
+>> +       if (unlikely(pgoff >= (i_size_read(inode) >> PAGE_SHIFT)))
+>> +               return NULL;
+>> +
+>> +       gfp = mapping_gfp_mask(inode->i_mapping);
+>> +       mpol = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, pgoff);
+>> +       mpol = mpol ?: get_task_policy(current);
+>> +       folio = folio_alloc_mpol(gfp, 0, mpol, pgoff, numa_node_id());
 > 
-> Therefore SW should never assume that HW will read any particular
-> sub-PTE under any scenario.
+> It looks like folio_alloc_mpol_noprof() and filemap_remove_folio() are 
+> not actually exported to modules.  Would it be ok to export them similar 
+> to how it was done in f634f10809ec ("mm/mempolicy: Export memory policy 
+> symbols")?
 > 
-> It seems current cores don't do this, and it is a bit silly to do, but
-> I can imagine an optimizion where the core does a cache line fetch to
-> read the PTE so it can freely snap to the PTE at the start of the
-> cache line for permission checks. Consolidating permission storage to
-> fewer PTEs would reduce atomic memory traffic if the TLB is thrashing.
-
-"The Contiguous bit" section I quoted in the change says this:
- The entry is permitted to be cached in a TLB as though it is one of a
- number of adjacent translation table entries that point to a contiguous
- OA range with consistent attributes and permissions.
-
- Software is required to ensure that all of the adjacent translation
- table entries for the contiguous region point to a contiguous OA range
- with consistent attributes and permissions.
-
-I think your example is valid as any of the sub-PTEs can be cached.
-Another valid example is that first you access addr A and PTE for A gets
-cached as the value for the whole 2MB region. Then you access a
-different address B within the region and fault based on the cached
-attributes. In this case the SMMU never had to read the PTE for B as it
-already cached it when accessing A. If the faulting code only read the
-PTE for B it can show that e.g. RDONLY was already cleared and hit the
-problem again.
-
-In summary, I don't see a way to skip reading and fixing all the
-sub-PTEs. And the previous code is already reading all of them so the
-fix is not adding any new overhead.
-
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 3e4579e4b8bb..041c7719e524 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -261,6 +261,7 @@ void filemap_remove_folio(struct folio *folio)
 > 
-> Jason
-
+>          filemap_free_folio(mapping, folio);
+>   }
+> +EXPORT_SYMBOL_FOR_MODULES(filemap_remove_folio, "kvm");
+> 
+>   /*
+>    * page_cache_delete_batch - delete several folios from page cache
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 3d797d47a040..1dbbbb28a36e 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -2442,6 +2442,7 @@ struct folio *folio_alloc_mpol_noprof(gfp_t gfp, 
+> unsigned int order,
+>          set_page_refcounted(page);
+>          return page_rmappable_folio(page);
+>   }
+> +EXPORT_SYMBOL_FOR_MODULES(folio_alloc_mpol_noprof, "kvm");
+> 
+>   /**
+>    * vma_alloc_folio - Allocate a folio for a VMA.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
+> commit/?id=f634f10809ec3d51d9529dfb0f99bc7cec1b5eff
+> 
+>> +       mpol_cond_put(mpol);
+>> +
+>> +       return folio;
+>> +}
+>> +
+>> +static int kvm_gmem_filemap_add(struct folio *folio,
+>> +                               struct vm_area_struct *vma,
+>> +                               unsigned long addr)
+>> +{
+>> +       struct inode *inode = file_inode(vma->vm_file);
+>> +       struct address_space *mapping = inode->i_mapping;
+>> +       pgoff_t pgoff = linear_page_index(vma, addr);
+>> +       int err;
+>> +
+>> +       __folio_set_locked(folio);
+>> +       err = filemap_add_folio(mapping, folio, pgoff, GFP_KERNEL);
+>> +       if (err) {
+>> +               folio_unlock(folio);
+>> +               return err;
+>> +       }
+>> +
+>> +       return 0;
+>> +}
+>> +
+>> +static void kvm_gmem_filemap_remove(struct folio *folio,
+>> +                                   struct vm_area_struct *vma)
+>> +{
+>> +       filemap_remove_folio(folio);
+>> +       folio_unlock(folio);
+>> +}
+>> +
+>>   static const struct vm_uffd_ops kvm_gmem_uffd_ops = {
+>> -       .can_userfault = kvm_gmem_can_userfault,
+>> +       .can_userfault     = kvm_gmem_can_userfault,
+>>          .get_folio_noalloc = kvm_gmem_get_folio_noalloc,
+>> +       .alloc_folio       = kvm_gmem_folio_alloc,
+>> +       .filemap_add       = kvm_gmem_filemap_add,
+>> +       .filemap_remove    = kvm_gmem_filemap_remove,
+>>   };
+>>   #endif /* CONFIG_USERFAULTFD */
+>>
+>> -- 
+>> 2.51.0
+>>
+> 
 
 
