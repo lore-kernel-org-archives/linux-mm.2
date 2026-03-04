@@ -4,95 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57F1FEB7EDF
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 12:38:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 492F4EB7ECF
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 12:48:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 850946B0088; Wed,  4 Mar 2026 07:38:34 -0500 (EST)
+	id 76D066B0088; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FE406B008C; Wed,  4 Mar 2026 07:38:34 -0500 (EST)
+	id 71A846B0089; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70A016B0092; Wed,  4 Mar 2026 07:38:34 -0500 (EST)
+	id 626CC6B008A; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D3336B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:38:34 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 060C81605BA
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:38:34 +0000 (UTC)
-X-FDA: 84508334148.12.5D847CE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 326E3180009
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:38:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TCSI/Duv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F6106B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 07:48:35 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2A8C5949D
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:48:34 +0000 (UTC)
+X-FDA: 84508359348.14.A19E32C
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 382D34000F
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 12:48:31 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U5NhpZCn;
+	spf=none (imf01.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772627912;
+	s=arc-20220608; t=1772628513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8GRxvhhcCtdggHpyOoDAHruVHFMYXRt1QecRyKM8RNk=;
-	b=aJE1rIJz58aMSQMMov1qEsR7Oqi4NjtOURFSsBiFmhTvziDcrlHb7OugItw3oV4eOuRFkQ
-	a6i5VKZJeslW7Di9wDKODw77u4QCOiO/7XoCFEoL1bJj+HLUSWwi3Y/L5YckAosm9BJoL4
-	lo/oesQEIgowNv9/eFxQR8FA/ODDH6M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772627912; a=rsa-sha256;
-	cv=none;
-	b=t6lZy+5VvtXe0yFDvlaPLwOgRGw96EW1EnWgzGoRfB0WFxcCwChudi17EblMrLLWCFQeuK
-	wt6xvVgiBvEdm7T1tTXxrz5sizAsJmK5k2zOTaDKJw9F5Bf53MpLIFTtDkFLe3Ly5RufDY
-	Ap0gWTnDTzl85f71RPJfoNm1ccKsYcw=
+	bh=YsXg2qDZ+ZjnQnj/eNfiIgU3SLUyimkRR7bx5y5oB4w=;
+	b=E0HiuQQsje5pR8XO/ntrMOcHtOqTW/yn7xI8i/9QA3spNfU0Vgk5wZiQgHq6kzJzP/qeli
+	rf5eznoDoS+OQ4unwNJm5GE2n9Dvpj2+/dfc+/VBu2uj+LL/uhIbvmsnYhwDasUJyh7Xo0
+	EqvX3QFG8UOCKAQDHJs5DqUIfdgC4eA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TCSI/Duv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 327D842D8E;
-	Wed,  4 Mar 2026 12:38:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3D6C19423;
-	Wed,  4 Mar 2026 12:38:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772627911;
-	bh=j4dICI8IopsxSKAMiVL12nDcoFM4FwiGToHiOpfGt9s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TCSI/DuvnUfvGpbtoRBBP8x/4H+2EL6WoZrurZ9E8NApYlUSfmW3x7TH7z6qsevfG
-	 h13K7NreUgrTW69D8fMHsj5lOoWfyMB6OQ/azSAbRRQNtxasO2FiotnNop8hR4k0yL
-	 6wak+WWaKF5kHoxj+npl83Fcbjq3qOl1jnOFT6pdfRZoAZZMR/mJRdfdyUwg3iPIhE
-	 qn+odKsKpWNyKMwdOCLnmteJj2NkoEfQ5Y2dSsIso36GBwY5H62+bgIxhBZsLXhTQN
-	 jGimJub/qF1WRtavwhhmtGsHadsL7JkCcncw2RugmtVWze9lKxqij8p/J3DuvFtHso
-	 Je3BUg4C8EiVA==
-Message-ID: <cdc6afcb-3948-4d83-82d0-297e8c04cec2@kernel.org>
-Date: Wed, 4 Mar 2026 13:38:27 +0100
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=U5NhpZCn;
+	spf=none (imf01.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772628513; a=rsa-sha256;
+	cv=none;
+	b=sELyvNUdDvb7J+oAtvyuX7e8TBvkxHARH4oEhzyJGTziH4uZGEkQEIIJyTQfqb1R+wm7bx
+	3ta1BYqjvtOkqbfx+iDJ6IQ/okuseCjOnPPNsa3mNxrmikxdzgFpVMZNz426icKay7Fc+w
+	j1d82dRUnHrKwr86o+QPFUX1F65cuFk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YsXg2qDZ+ZjnQnj/eNfiIgU3SLUyimkRR7bx5y5oB4w=; b=U5NhpZCn934XojSyVFL1nj1S/W
+	2SwNvFKnKgDXQSzq6m51IMvSlZX+ne4bEh4E01vZtYgpLee5ixUDi8qEHb4R97fy2f4d2ReNAtXFl
+	2Myy/FM9yjpIi4F5MCjGcXNEoyN2WDgyc7039UPkredIXwYhk1etVNasHnwai+IB6c4ro8VQTd24m
+	dlAjACdWYLWNFfSy+VdBxKivYhNczBRSHxMPHao0CvqQusPNjCznq/i4rksmb+FqExqEhxu3s5ruZ
+	HIicL8wW2i2h8YBWX0vQS1a34HK9wPAQFs79TabY9VaeD6tSKbvzAdMAvOXPYXBWy7iVhi1jbb7PJ
+	KVa5pNSQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxle2-00000004Z42-2KL8;
+	Wed, 04 Mar 2026 12:48:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 07040300666; Wed, 04 Mar 2026 13:48:06 +0100 (CET)
+Date: Wed, 4 Mar 2026 13:48:05 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna Schumaker <anna@kernel.org>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chao Yu <chao@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Linus Walleij <linusw@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 0/8] mm: globalize rest_of_page() macro
+Message-ID: <20260304124805.GB2277644@noisy.programming.kicks-ass.net>
+References: <20260304012717.201797-1-ynorov@nvidia.com>
+ <20260303182845.250bb2de@kernel.org>
+ <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
+ <aaedwFwXh9QXS3Ju@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmstat: reject zero vm.stat_interval to prevent
- busy-loop
-To: Michal Hocko <mhocko@suse.com>, maximilianpezzullo@gmail.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Terry M <terrym3201@bugzilla.kernel.org>
-References: <20260304-mm-vmstat-reject-zero-vm-stat_interval-to-prevent-busy-loop-v1-1-c03c9555ff15@gmail.com>
- <aaf65GSNmBs-01uf@tiehlicka>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aaf65GSNmBs-01uf@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 326E3180009
-X-Stat-Signature: 8na9cyh743nhf1bwoc1te8xji5jm93se
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaedwFwXh9QXS3Ju@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1772627912-383763
-X-HE-Meta: U2FsdGVkX19FQXt/oqWO8WK2NFOFrsry4w3ODXtHOf4Soilmdg8OU6UhKDKgSf5CwGrL4QFBIDDe044Q1sqxzo57+J/6CcfClb2LbOigRspi2ZZqZwY9Rn6RqWsBFfn1OPRlGWzq1kiwyYarVUyNbfd/Sm2pGWnYFXXGfdrG9+spKjxmgS/1msBL2JyQ6/BC+CQ4TEQJUmlZD8dpTmd5CEnL3HikbG/8VQQRhGyNwW+FpVGZ+kUjMw31Pa5WnIXKyp/ulP67xIR3aQAs8slD1XvOGL4Yf+mVY/3r8+ImwO9yQCL3PR4Tv7uQS9muDiLR9ZIb/KMfDqZT16VyTeCYiV2LIbL0C1tlsKLmVIbQ/Vq2ilIphcGwORMHctyb99YxXmRpU4Geizq9U1vcMqPSruXBXcVlqi2Vnho/KqZWUksu3yauqtFcCXriz6tIvx9v9klypIWFmgxjOIdWbRNOXq1VFrnvK6lklvFSbCPX0BA74pphTmmEP/kZLkXoUdufzPwOT7gJZrXAFPkKgrT0Yn2lEgJDgc7ejj5+c/oP1owYKLLjADQYUXFfTiA5jl7Bpvn0OL7S7kSo00PEZ/lzXZ1J0IvcN9ldTSEltat2stGHXOq9Z3HeW+ChIPOHgmqKG4odMyaJLD9DO1r90qAMq4fEzsnghwKI/3r6z/AF34ZnJS8Dd4yeKsgvdB9aE7wZyOPBJeUsDOgZRlLh1AYI8fEmR1GBeQpKbLT5Pnf+Sq1xtuY288joWpomRrEuxui7Jk1MbRuvBxFFNK0BbDXKsEk9VXVKyxVQf83FsgDVwLbPvRd0NunPaFwGYE+n/6nzGLzcp5CWHFgBm5WtLlrXEKSVvydt8yFhkNmLF6jdZr9vN/MFXGe2dFDDaWwRw/NPb4lujYP0PqEBn7ziIV9JuNmfBU66GncpKdhyZqYv0PlazZPOnnNHU6VGgxEtm0l8No0gt/DjzRNeUtjM93V
- hxGvXcoU
- 5E5nZ+akl58rlnc8EPKUGTbe6U3dg2sv5dh1w3eD5JwfrmtPwd2AjCgot27VJq3TM7QJORJonyki5af56R4orRkz2Zjtz3znl1vh14YLalXLNRy8/WLEH0SC4c5e6vD1dHa93Ni1JrI1l/DhMqpQYFHe1qu6ytzXvoBwVjup6QINjFZdsxQPM2QAuhO3UizZRtQhjzeG3j2zLMqvMCc6oAGq53TkDN8ECeQGZ/phNrrFvDd0hSKQzKTgpynlz7Eyp/+91ql2I4kO3K3hkYYHoXiXNv+TQaCXfcxOZh/aUYat8W2jXmFjKaCErzPuNu7tgv+1BI0D6ktODAztUdoHOK7FJhDVnAUezoll3
+X-Rspamd-Queue-Id: 382D34000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: dbk5stpzdbeeteapktxznkmoz6w6wozq
+X-HE-Tag: 1772628511-472846
+X-HE-Meta: U2FsdGVkX1/Q30KDCA1rYbx9TZjY2xqDK0OYYCqxB6/nPgZEP60uHzLRHSKMI4u9nE61ltLs6u+ywWWUY67b8Yg4MX2S7hdi51R8szxtj5d6eouIEIMndiHkgXqxjzSr9PYEH+NDeiOaoObqIqA1Eqj3nFS2lneQQeQ1fYe0rKTjQXQOCfrbUsts2JZN78LnfcVISZK2Cz2zVJjZNLaWMn6FJQ47k9+E+Cuxvni6pkGLtTgK8IF8iZu50GbDBEjFAS8Zmdv9BsZZyk2MxJmLmzjQD31Lt9JE7vZ/s3+v5AlBodAXoA95j3JA1jyqSiBXc8NyCoAEwUyjnjJod9zdMfdTx4rPuvXb0p3Gpw+b5CK6DVAEXy93pyICfncqPoHUbKY/GNk7RuapYVGzS4SW9k+1StFay8muIeL9nImNSed7YvGXsueLBX+7z/V81zxGGdB0RWoTq6Zx338aYbQ4XZ2MZNvjv2y9QUyGL/20OtLart0lyCaqT189pysiOvPTmdt2AiPqNBUjToddHggD1Vd1TuFdQZ8hFF/Igum4P59NZWZm2xkW+RxHabX+oRsx+qGlazV4WW/U1FHi/x1GVfjsktbj7dMSQ2xVwrZD6ZiXteAKsfCzPBgZ2hCj187Tr1CAzw97crPmSYFPxXudM68LQm4gnz9LQGAQ6K2tOl05nBeuiCLKUckyrJ54FLPNeVKPRJkZqQ8L5cQqfUrcXLCjhAwBp+7cUsfo/Op7JCOD1hdwVvshIjcMwf1V0SToXAmiYmISazyL5BXNbSPYNxxM0VA2SGmsNevUnQuJECyCufIWwn+vS79u5bxdFCpDONfm0H+fNp2jQ2bCFkYHeNjzTS1GRB0dUUeD8rMMRq+2nrFPZWBzwdDPFbwhBUZtSzX8/F6dF4oTAgLhqPmfyLsoS7dstRpD78rCUUwR94b35NjuAjybyyDawt9hfyyJ8DOq73RRpNAbzz3Qlx9
+ 0Wmbrwfv
+ Euza4sjxF9Ge9V1MSY2YzGEZciXUbvtBKZYz9iBj3RT5oz7DXHoL0SBUv4rM4K/ygC+4ut5H5ozPhyoQPiuxe3VlTZxJkH9kIrjYk7oaUT5iu/wCYNAjVPd5Vq10atm358A6G9cSyrXcg3BegP0doxT3cXwDJnbIaEJsZzsQFm3xeBPKcHdWnJ1lWqGQ67l3kgdIB1XH+yufyeq6TlAWlScbCjwdrRuy9EUK87RkWi1INNIAd7zGAKpFnzbXSG8tdBZhoUFxQ3xaKncF+wSogrqmx4KOvztqVsWVc1WnRn6HohVNXUSSI82zSyc/RPobXt0yuQwTlkLODulqBsaozmH3ail35pnFrm6Rb+Omz9l66dVmH2vHzI8eTl6sdgbpsiwRJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,60 +157,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/4/26 10:27 AM, Michal Hocko wrote:
-> On Wed 04-03-26 08:27:38, Maximilian Pezzullo via B4 Relay wrote:
->> From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
->>
->> Setting vm.stat_interval to 0 causes excessive kworker CPU usage
->> because vmstat_shepherd() and vmstat_update() reschedule themselves
->> with round_jiffies_relative(0), which resolves to an immediate
->> reschedule and creates a busy-loop.
->>
->> Add a custom sysctl handler that rejects 0 and restores the previous
->> value, similar to how dirtytime_interval_handler() handles
->> vm.dirtytime_expire_seconds.
->>
->> Reported-by: Terry M <terrym3201@bugzilla.kernel.org>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220226
->> Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
->> ---
->>  mm/vmstat.c | 14 +++++++++++++-
->>  1 file changed, 13 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/vmstat.c b/mm/vmstat.c
->> index 86b14b0f77b5..6eeb4341b215 100644
->> --- a/mm/vmstat.c
->> +++ b/mm/vmstat.c
->> @@ -2114,6 +2114,18 @@ void vmstat_flush_workqueue(void)
->>  	flush_workqueue(mm_percpu_wq);
->>  }
->>  
->> +static int vmstat_interval_handler(const struct ctl_table *table, int write,
->> +				    void *buffer, size_t *lenp, loff_t *ppos)
->> +{
->> +	int ret = proc_dointvec_jiffies(table, write, buffer, lenp, ppos);
->> +
->> +	if (ret == 0 && write && sysctl_stat_interval == 0) {
->> +		sysctl_stat_interval = HZ;
->> +		return -EINVAL;
+On Tue, Mar 03, 2026 at 06:49:36PM -0800, Sean Christopherson wrote:
+> On Tue, Mar 03, 2026, Jens Axboe wrote:
+> > On 3/3/26 7:28 PM, Jakub Kicinski wrote:
+> > > On Tue,  3 Mar 2026 20:27:08 -0500 Yury Norov wrote:
+> > >> The net/9p networking driver has a handy macro to calculate the
+> > >> amount of bytes from a given pointer to the end of page. Move it
+> > >> to core/mm, and apply tree-wide. No functional changes intended.
+> > >>
+> > >> This series was originally introduced as a single patch #07/12 in:
+> > >>
+> > >> https://lore.kernel.org/all/20260219181407.290201-1-ynorov@nvidia.com/
+> > >>
+> > >> Split it for better granularity and submit separately.
+> > > 
+> > > I don't get what the motivation is here. Another helper developers
+> > > and readers of the code will need to know about just to replace 
+> > > obvious and easy to comprehend math.
+> > 
+> > I fully agree, I had the same thought reading this.
 > 
-> So you update the value and report the failure. Nope, this is not
-> correct way to handle that. Either tou check the value and fail before
-> any side effects or you correct the value, report that to the log and
-> return success.
-> 
-> I would preffer to not do that at all. Setting any arbitrary small value
-> will have some side effects. This is admin only interface and we expect
-> those do know what they are doing.
+> +1 from KVM-land.
 
-I think it would make some sense to reject a value that leads to
-unrecoverable situation due to something in the kernel looping endlessly
-with no preemption, causing e.g. softlockups, and making it impossible
-to set a new sane value again. I don't know if that's the case here for
-value 0. If it only leads to 20-30% cpu utilization (per the bugzilla)
-and the admin can recover by setting a sane value again, we can indeed
-leave it that way.
+Right, this. I hate these pointless helpers that obscure perfectly
+sensible and obvious code -- and for me that includes things like
+rounddown() and DIV_ROUND_UP().
 
-> NAK to the patch
-
+It just makes the code harder to read.
 
