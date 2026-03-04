@@ -4,112 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD1BEDEC12
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 06:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04310EDEC16
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Mar 2026 06:57:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15AA06B0088; Wed,  4 Mar 2026 01:40:53 -0500 (EST)
+	id DCBB46B0088; Wed,  4 Mar 2026 01:57:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 108CC6B0089; Wed,  4 Mar 2026 01:40:53 -0500 (EST)
+	id D79856B0089; Wed,  4 Mar 2026 01:57:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31326B008A; Wed,  4 Mar 2026 01:40:52 -0500 (EST)
+	id C855E6B008A; Wed,  4 Mar 2026 01:57:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DFF676B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:40:52 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 69B001C588
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 06:40:52 +0000 (UTC)
-X-FDA: 84507432744.02.3E75DEB
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8ED221C000A
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 06:40:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eRfivMrY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B8C456B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 01:57:10 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30F7A13B01C
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 06:57:10 +0000 (UTC)
+X-FDA: 84507473820.10.FEBA10E
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7C6CD180005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 06:57:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=fxlbV3kq;
+	spf=pass (imf24.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772606450;
+	s=arc-20220608; t=1772607428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpLi3GcEzSqecE9d0AY1t/u5hfB+h6FhZBPxwT717vI=;
-	b=LFPgurlnFlCG52P6ifzGYKpUwlkwjDqffSvhSojMTj5oJclNc3ZPCJARt26ZltAmev64oM
-	VgXOawCgu0e4AR2Dbnv+fi8IuuNj8mXMIA1JdsTSnR5r3dubZVq+x9PnNBa+6/mKSA10k/
-	4houkmu/OAkRCajrL8o4JQK/Mh+N2t0=
+	bh=3+EnodLK0qo4vNFhzJGniE+KK/MTe7ewq/aS9nxSw7w=;
+	b=jQD7lRTe+jkh/ZRkzpYARHxp2iCxtYIbVDc5tAUGn56ScLqwH2bBkZ2THB/ayDyH+wpkyk
+	wr+H+PP7OfPPd4IiEMJQDsTxNhuQ1tLdoHa8sFhK26ijR3YIw8PxOpkzCqJI4bEUMuUJsI
+	XlpJuaKeR8k0YieYczjJ7G8pUnyGsOM=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=eRfivMrY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772606450; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=sipsolutions.net header.s=mail header.b=fxlbV3kq;
+	spf=pass (imf24.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
+	dmarc=pass (policy=none) header.from=sipsolutions.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772607428; a=rsa-sha256;
 	cv=none;
-	b=mJt+JTuVmDzQ/1SphXIFCGf2YSnmpMCO2MI27+JcybKlrrmIHtbANLNPHsZruzKznw/r3y
-	n2brvOxbSSCS8tp/I7qan4k3+FDdEHN8Hnhp+tuXSwNTVp6IFe6Hj3eLNngc/6/KRvtSmw
-	3LdqWvZUrY92uhcCW93mahkNKO5UWEg=
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-823c56765fdso3341319b3a.1
-        for <linux-mm@kvack.org>; Tue, 03 Mar 2026 22:40:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772606449; x=1773211249; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BpLi3GcEzSqecE9d0AY1t/u5hfB+h6FhZBPxwT717vI=;
-        b=eRfivMrY3xs7B0e8LxjOVxlk6SLfm8r15QpDv1qtmAPKHAvsRvRb2PVa8EEb89H0Ju
-         +cD/5tKvW7XI8ojVgdjiqCKIRM4liTqYpoUdykTDSQfDR17B2KPHm6pTo/CRIodEUGUw
-         +BEagr9KzlkwW0AUDzWnkX/Xw/jB9j93PE051iPk96xPVLMVDqT5k9iA9DWS6BPbmpBO
-         oFPm2Df6MJfU2ZdkcnDNONGtaxgz1dLSyKaNpL3lzi2uo7rnryKtYSkpCR0uofcLJGz+
-         34dmPE3yh58ghszishjRsJPKuyyjNHGhL044t0DVeNqLOIkQ3aJH7D6KbRxjw7Y2rSju
-         rBIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772606449; x=1773211249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BpLi3GcEzSqecE9d0AY1t/u5hfB+h6FhZBPxwT717vI=;
-        b=FFud6MuewHsOVAl6SJ6ve/t1MaH9D25qbbMpzz1Lv2F+KTIjMhOZK1+tJEpHDRPD1G
-         P2nOi/wervgbjoL1QEoxK5jnlcgJ5rjnPmQq4Pus8gtZw970f5fqMaQLwUupLorVDeCT
-         JHLeFPaaONQRkOJR7C9MpD7CcslQ+tz2Qv7goNhFiEefj0Mg8bhwsAzGXKYHctybrzNp
-         LMJUHIS8Bl8OgbOg7bS+RR5TkspEJMicDb9RxenpPHUYlMIdP6I70vFHHcbKWkaXTuW5
-         Cj0NhPMIlXROEkfvojbArPRa1RsABFk4cTuOWKBFVNfueqpBYhIOIuIQ3ifVbqmnKb1g
-         4iNg==
-X-Gm-Message-State: AOJu0YxIpWFU9IdyjuOpG4xXIr4STPgOS4EuFbmQuN50vtjZOojglXes
-	XMdHS2/Ha6egvgbuT/nWtbK6aN9QRIgBifnu2RemoWyzX/HPqRAlgEVZ
-X-Gm-Gg: ATEYQzxWlIQm5oFQo6OAQsG78u7pUrHJzZjUmU6UV39Chrfqyw3wxT8zXo1YwJtCmHz
-	q5+L6Yz0D/K2V3TmjR/+dV84C6dGB5yGdMKiYYyy1qvBxLxatlMb8NymQ3srFU/6xO22MF+bTOg
-	fEStJ5LfK+KD0KKZfUCyYAndnqE3VhAcGDHtHW17nl1P4BxVzR+yR0jwT8sFc/KToEaVy3pwp7Z
-	GLr6YnnBkvDoejtZAFsV07RVx0kHTRGISrmHZ26qelsGyDhpfu254FKle8sxeVz135bMdCQ5gP8
-	hD30SwNpT93scND9UdCgXTtvoyYUBLPdYFaoOZtUFXkSBWMGv3jqcaPMzETTAzFJFZ553D3hyu/
-	MlGKRawL3i8tBwRXzXa4KzTQsGT010USrXXIjHxWdDvnpH2tKOYNw0TI9A/1IYYER16YlRRr5fO
-	0lPROyK5hZbZ0T7+iBMGDABZdz3hqUxwnEDCgKYhgig4RLgOqBHv36YPcSAjw=
-X-Received: by 2002:a05:6a21:68f:b0:35d:6b4e:91f1 with SMTP id adf61e73a8af0-3982e1f4482mr1001076637.34.1772606449230;
-        Tue, 03 Mar 2026 22:40:49 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa5ef997sm15378153a12.2.2026.03.03.22.40.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 22:40:48 -0800 (PST)
-Date: Wed, 4 Mar 2026 14:40:44 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, baohua@kernel.org, 
-	youngjun.park@lge.com
-Subject: Re: [PATCH 1/3] mm/swap: rename mm/page_io.c to mm/swap_io.c
-Message-ID: <aafTW3PaNO3SPeyp@KASONG-MC4>
-References: <20260302104016.163542-1-bhe@redhat.com>
- <20260302104016.163542-2-bhe@redhat.com>
+	b=LQmAONYOS+lbr73Xgq7jZNFx6nk8MS3Uqj9GsByrgV3mpmnPoLco6Oe3JuE5gtzmhd+GZR
+	Ok3pPkZHb7RrykOIZAJ40DQ5wKijSxautK43N04+XjRlYpxkHymWRXCffT5gcqBN3C0Hvg
+	APN2SlayLAG+E+vsM9VN+JDQDDi7B3Q=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=3+EnodLK0qo4vNFhzJGniE+KK/MTe7ewq/aS9nxSw7w=;
+	t=1772607428; x=1773817028; b=fxlbV3kqulTibsTyIna5X/vnJYrZCdvAt7iIWfJF63v4Tfx
+	rN4q7Cl4PaFUs+5ptlbYBWNYQ27EdlJ5mzyEGCwlPOFxBBRYVjX3GkXwqFkR2zsBVZ8AZbXR11W6/
+	0uW7FSjg3y4k2m6THkTAAQjs1OvmuhjK+ZzJuMMN1bkdpyY3q5OUmYF8KiABUfS7EiKrPYXZxIAbQ
+	12Rs9ds4MBpmNKSJT1t0sHmgIIA0FX0VHIf+wu3SZKLJCaS0uk0Ucc5OS51Qea0lUQ6dj/H3/NRfB
+	KV9p1Oo4ksvnWM53waajRNyqBsCO+wHbqm5/RYET4B2hK2joiCUW8Cs1Sz+BxrcA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vxgAI-00000007vRb-0A7m;
+	Wed, 04 Mar 2026 07:57:02 +0100
+Message-ID: <4b5584f3277d667bead0b851c5bdc5cc07e80183.camel@sipsolutions.net>
+Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
+ active.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Hillf Danton <hdanton@sina.com>
+Cc: Ben Greear <greearb@candelatech.com>, linux-wireless	
+ <linux-wireless@vger.kernel.org>, "Korenblit, Miriam Rachel"	
+ <miriam.rachel.korenblit@intel.com>, linux-mm@kvack.org, Tejun Heo
+ <tj@kernel.org>, 	linux-kernel@vger.kernel.org
+Date: Wed, 04 Mar 2026 07:57:01 +0100
+In-Reply-To: <20260304030835.610-1-hdanton@sina.com>
+References: <fa4e82ee-eb14-3930-c76c-f3bd59c5f258@candelatech.com>
+	 <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
+	 <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
+	 <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
+	 <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
+	 <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
+	 <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
+	 <20260304030835.610-1-hdanton@sina.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302104016.163542-2-bhe@redhat.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8ED221C000A
-X-Stat-Signature: rj5cjknrzg4fq67k8x1cu9yk4hcdb7m5
+X-malware-bazaar: not-scanned
+X-Stat-Signature: 8erc71hckocthfcem8hw37biig35eunn
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772606450-245268
-X-HE-Meta: U2FsdGVkX1+rBQp2AbIprrue3qb5E+/CZ7zCvM7PRUDky1qk6iR3tvJc0r8TXK9++kzVR9rBi9Vn0k7UconXksquVAroZw0MYl/MVBp4SPdFYtBCCIV5mYi8NyCUkO8gvUka3zJpl1ZGvXbI63sk10kg2iFelxkkmiyRxTg7uTVD4LHb/M2ExyR90TjdrY7ZkrDhEjVX/YiEDUmg31kANd6azKqN+8wwneUPQWBlkTjMPNe5n2V/PIpscQyijJgxQ/SnD2KmFuV5s1XIW0Xywv/77Z+f1NxqtTK3w2C8GIrDiBg2LXy9z2ldNl7xI+5zJSsXIZKpp7dQf9v/zAnRtDikfoXbiaiFWxVAUYIIo+HwgiqnAyrnRhqgau74e98+jjLbxtMWrCWZdXVZooH85dvgy5hxEsYrEEOQG4DGn7TRw4nO5UYML3zDRSjEO8Fv+NjKc/7dKD5DDY6Or9fIBjeX7r9oxw44Sa1t+8QEpa8elPCWtv0UpRvLJMY8eZO/HW892rihzq64iEilP6ryAu85RDLc2Qzsgb1/AVXdUAsOkTahhpg907gnqIOcqqdiwOAQ9+SSXrSphCOseTRbCjVoeubBN10Nmnp70C07NK4zXG1gMku+sUQI6gcCYnF6d4sTWO8gG2uz/bH/cTlUJToS2G2bO5zkwnPziXhLfzoxqXtDPNx9n9ld8m/88i00zi2h2+ZZ2dqghMWF7B7bKGTyrsrj/NFumnth+7zX36ZTqATMltR7/gQedRbW9//aVw40oiZ58ZqDujTc7+YYrYZb+EsFMyu4pR3SrbFBcpDtZ/W/HKDd/3lECT2oVaKkPlKH2Z7KoFZYcLgyhKxbqwZYf16Mx1X5VitWoe1My+br9TveF/8jzoIJgwXGanhD8Ewqnzzt1wTUTjzJax8FDYToHqfI16z9fqL2VwuN68N6ZcaWmLmeW+1Bx5FDELWV8jf8PdSo85melAyeuPr
- U40d49pS
- UGpBXAqb3N9Vem42vTN6hhzfdDvlevnyEIH09ZGUISjdnhmenM19LbIADnNemxO0nByAgj02bfqyQyU1xJhXqJgDzbWmYcmlG1w6a0O8Q3/EtsWK4VPVj0oSaQ66Zji/DUMWHur/CDB0Ssj131ulBPNXKlOSSmUjkDIAPHxFByFSCQmKvCvTLXKOvtupEFEg2vJMDA0+Q7lnA/vfFhES4EUW9fThKVXxbcGGz16H38GIDbnZAqHpcFjLp9izoW32in5jx6YJ6tI58nOLgtcRedOZT06Jo60UUlIu/zrQBhsal+0v67bpqZM+G0SdMfrJHf0wCmJqMflhLcTFhIkHqD0s0xqkmr8HAK+nbaGxREgohSMAJ8hYI2hcmEZT4qKyrBeD/E/Jc6SzCgQrrdhakPOxzUz36ue7LuuwykPoGQ2VCoUprTlkk7Mzom8uisNHvlNoNO2eQqmkaT/LBnvLwdwoWeciLNdSGygtewpDBvjJDMBGPLsMOReByFhoFrCMEImtU2wNwGPHBAaMPIGkLMARHRXIK3FC/tQUA22XFVBiKZKU=
+X-Rspamd-Queue-Id: 7C6CD180005
+X-HE-Tag: 1772607428-83526
+X-HE-Meta: U2FsdGVkX1/By0rcj/F7ucniDvPyRXAHmmQdNMrx6dpXD9oOQp4K0bFVkzo3xa2vGYQlzV18jpkdwe+XgCIp9rd07MyvGSXYKv5gYN2AXNchmn5M2yilnPFlYGJdNyujAUCqTgPdiq5Ecm2kINUwxpAQCf6j0BKck6rRqnlzxWCHsyV2OmN/49mdQpaz/2r+DkjnS9gIOd5WOGl+TQUDeDbKooxsR1xSpV1nnThnY6H0UiwVRk3vgjP3u1Yee3zuzfNjD2DnbiNhHRGQ3FAYVv8WBuSwR9vbNVkMjkVvH/IRjd6kJqOnXTPcsbjfPwD1CAdPRwxFlc6+SG2RfWIzYxHsZmQ1njGjZ3BZRkTP2RjycO1Lm42S+D47wFSFeXO9sB+QsRJh2mb2RM6QcLtc2ezxkADhG1ppq04ec0SA6IgfHRSaU67k+PZLLpQDJWyWHw8SH6nYaFaBHaoYER2spLS1KXVqzOj/oHSwhw36bfFI4DDzYfD2OnAlhO8VkDxcfqwOsK++PPQYdAX08uw8SgnOhV3Jzuxn0ed0EvPR6uO++fLWiIXjynKN9pONYBx5ILVS0B9A83Si0OfTHFYWUxTNUiemkQEfDnY7BKEHAheKzu779zczmf9Fsa/UGCSY07K9wsN9Rwc4Zu4DPT+PzR3XQvCi9qXS9yzQxjfqcM8wDMkdTWwMobJWRVFZ7l82okrPmaXiCefBsYV5gqy4NkaQ8FjD3njRJbvynRq8kFd9HPgSLPhdjvwT6tAISjjyyuEDftOz+ANr+fThSnNNxYz6kN1ZmJHTqShyXW4NbFzrZ4sFepk7fTtOBUNxNOZ7TF53vR2bMIAHuzLSJ0WgXoqiZR2nEEhO1pWQCbwHapWTfKDTsjHSxS+u5WfqWRgQz6+9VRxkQcCm0Ddli/THaAEenaLy2Y8R3lX2sLdO9U5ugiVK45LpCbjQ6skWMdzXPjsges5UDybti/gmN8q
+ xd5I1plc
+ WvlTibZCFiP+0W2ol7Lxp62NDWYPeCnEjA3Z8Va/3+DegsrH8zTbE3gLCWRlyb7Hrrogz82UZXtEPNgVKQ9tfsGV7PPXUstAN4E1f6BvUMp3H1nwQ6oSH5tkzFC1p4i4QrDHyvA+2w7H0F23veoyEbJx/+UlGnnQOGM1cVcsB/31xtVYXaeVpM6CFEeX1YIVNJzaEUAQDlkeaXA6yE/PoZIZldfL7KCZVjFhfuL3sPkhVeR2r1SRFxlbtqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,13 +103,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 02, 2026 at 06:40:14PM +0800, Baoquan He wrote:
-> Codes in mm/page_io.c are only related to swap io, it has
-> nothing to do with other page io.
-> 
-> Rename it to avoid confusion.
+On Wed, 2026-03-04 at 11:08 +0800, Hillf Danton wrote:
+> >=20
+> > Fair. I don't know, I don't think there's anything that even shows that
+> > there's a dependency between the two workqueues and the
+> > "((wq_completion)events_unbound)" and "((wq_completion)events)", and
+> > there would have to be for it to deadlock this way because of that?
+> >=20
+> Given the locks held [1],
+>=20
+> 	kworker/1:0/39480	kworker/u32:11/34989
+> 	rtnl_mutex
+> 				&rdev->wiphy.mtx
+> 				__lru_add_drain_all
+> 				  flush_work(&per_cpu(lru_add_drain_work, cpu))
+> 	&rdev->wiphy.mtx
+>=20
+> __if__ there is one work item queued __before__ one of the flush targets =
+on
+> workqueue and it acquires the rtnl mutex, then no deadlock can rise,
+> because worker-xyz gets off CPU due to failing to take the rtnl lock then
+> worker-xyz+1 dequeus the flush target and completes it due to nothing
+> with rtnl. Same applies to the wiphy lock.
 
-Nice!
+Right.
 
-Acked-by: Kairui Song <kasong@tencent.com>
+> BTW any chance for queuing work that acquires rtnl lock on mm_percpu_wq?
+
+There really is only the work I was describing and vmstat_work (calling
+vmstat_update) on that workqueue, afaict.
+
+johannes
 
