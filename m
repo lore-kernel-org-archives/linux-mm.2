@@ -4,124 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76C3EEF331
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 09:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6E4EEF338
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 09:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F2B6B0089; Thu,  5 Mar 2026 04:03:17 -0500 (EST)
+	id 6ABC16B0088; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE3026B008C; Thu,  5 Mar 2026 04:03:17 -0500 (EST)
+	id 659796B0089; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEF196B0092; Thu,  5 Mar 2026 04:03:17 -0500 (EST)
+	id 565F06B008A; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AE1156B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:03:17 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E5051608A1
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:03:17 +0000 (UTC)
-X-FDA: 84511420434.04.B1DA80B
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 69D08120006
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:03:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bhIMCIDK;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 430E96B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E148DBB50F
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:06:04 +0000 (UTC)
+X-FDA: 84511427448.07.286E8FF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 378B9100007
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:06:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/k/B/Z";
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772701395;
+	s=arc-20220608; t=1772701563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=smWzxETQFde5edH1yawclh397DslBFPt7zhbpAy3Arg=;
-	b=Q95TQC33YRVRklcuy8WHeZUk2xWDPStys8TBrM+HsISnEid/UZcMsHVumFDPQZKr6SlEyh
-	m/U9jOjYqAo5VfdVG9FNNJMmc8KYdRW8IayG04VBo+HJtOgfmY8gmVEvCmLUISDxoPue4P
-	XRakHNYNGvFBhH7NiS7veJ9IvDLWgUY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772701395; a=rsa-sha256;
+	bh=qF3e1InnA9jjGTtBQ1m/ilqjtjb3Rq4QGSzvyIjwE9M=;
+	b=dS+gAdlVmNpcCvzCntHlyT6aBMUkqJ2Lgw7d0wbEFa+FNvldc23UGD0u9oKe7h4BkJVYGJ
+	dtbFmqweiUooTqYq+kuCIoToZiXIym1jfcQvE/KredKiXwrH9XjbEO2aTGW969w7oG1nih
+	E9C9NhsPndjQhX0SHCZelgB/RJElYV0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772701563; a=rsa-sha256;
 	cv=none;
-	b=2utKAggoimS6dj3gPi1/8PDZkGUJUgfikoNyDNhPcWgp+oENMShwCF1Vs0nSi5W4nPQigt
-	Bw1HV07fVNTI6QxOPBGJDPbYtdIhLaZdhhP/SUIvt7DuUHkWL6OsCqfbt6007qXXt/GzSY
-	9U+S+F1jL5F3mGRya1f4hi5qBJyGOj0=
+	b=to6PDyMEwkPKCPNls1AR2V8oVkcEQqU07JG9olRYMKxHdCZ7Rvvyoi9ZudCWgO3IHoJPGF
+	mto4Axlf5N5eZbzDxpfVB742Aw1afS5Vjtcg+a/qYA1diOcXFUOGQZr05gy0NXiaAuCHZq
+	vEVt5zlrm9zHzy7ovs9NH90BOMQIFwI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=bhIMCIDK;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=vbabka@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439b1cf1212so289029f8f.1
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 01:03:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772701394; x=1773306194; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=smWzxETQFde5edH1yawclh397DslBFPt7zhbpAy3Arg=;
-        b=bhIMCIDKUygkImOsl2AE6wlG3jKuSS6JQxQpQqGnWKC6b5wXASGQAygpSOtcMMB+uS
-         2FuRapL9ADE3inves7WPBfwLSC29XB5Na+DVE6sZttesG47JDOaNAzuAzR6OT7IR5NWQ
-         Iz1KeKC6bU5bnGMFJVRAB8wVynkeqTKXxU3EE3UaeEnjGo6JAXS9ZsPBjmIr+m2KS+gq
-         Qk/UB+Io+Cn7XNiwOuJA1ELpvUvkO5z7lsfZXWz9H96TzR1r9W13GoIRnVnr6hSI/ylY
-         gvELSJEusNVot7BJx4OEzMGPGvyVawvUngQ4LnCWDjkGU6woZjNOVn/9jtaEwsuo6bkU
-         eigA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772701394; x=1773306194;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=smWzxETQFde5edH1yawclh397DslBFPt7zhbpAy3Arg=;
-        b=RcUt2gmfL0/nTROdZOHeHzoev7jbnmgaCJHimL7gP4n4Fe/PnBw1bt9NvGMJQgJyNH
-         J6SvWObMrO4rFh5Xk/624cgSP9C2szTyHPp+GaAy7rXBlLXRKKnUtsmNcgknG92f6Yig
-         QQRulfsDi41tV/pgnFMoQTr4LzCrn5aZqdjCx6gh6dvGMoQzJQmEZBmF1b5brtai8EBg
-         Us8dOU0kcmzS15C7dTTHrS+7RpFRI8VBFMyzCzQVoJyF85763zY9/zdV7rdM3CO1BIC3
-         7VtW5hO0lOFxP4O3taP5mjRqm3dAvmquFYTfEf6E4rFuZnIBAsIhIUAlFr1qNjlGQnUw
-         s9LQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXAsVdVv64rMy6qPxVGfuql27A5RfQ1maGGlDsHQZbx+/EYyhrZQqCdHz0dXfp767MZs8UUgFmV0g==@kvack.org
-X-Gm-Message-State: AOJu0Yz5ZK47g7WBfkHS3tao0QsyI1N0thsJ0CImCPuFMKoiylDd/weh
-	N6xQ1Cup0yhRZvIQCN/pKKzWBcykDx46B10XDcMg9g1AM5+lzEY0BiHr8RDYkWdn9I0=
-X-Gm-Gg: ATEYQzztZB1SVEyK8tMAAYODY5KyhIzHX7/IJp6ZALhKRITQm69BWVbFcas0YMyvpvU
-	5PHcgkVdBILzkSjv0VY3+8S+Ff3+5Pwy/Ztch7b9KIp7FN/ErJBK+B2YDLqL+oUXKwQxqZ1Cz0n
-	E2A6hNdssjjh5lZu0Qa+i38FwfWWvzAkw69yK1nFoVcXqs73v5Q10gpPSJkdCk0dHyqfKBMqb+n
-	1x+pIw0WtxJNWrXOW7cvyLB1Ec8YWHkRqCbFB5oF/2IkbZyMrbFbN66f578U5EaHgq98tXcGXlo
-	dDtE+RASXiTqKb5y4I/lEMMu0xcmJOiLWhshMUKCvdR/2FXk8CcTbtQiS1IEyq1FJVpcrNObNbQ
-	wSw223ppDtkljzBPjv1Lvxp2uCanDSIb8hPE8mT7VV94dxnOqH58d9oCNypWIS6d1LXLm4aU+ZY
-	LCHC9Z5BDyn/P5t/maXO/8c08aSl9T+0sAoEpSegIDvDxeFzRHJDAVgMRkyw==
-X-Received: by 2002:a05:600c:1986:b0:477:9a4d:b92d with SMTP id 5b1f17b1804b1-48519897935mr42870965e9.5.1772701393663;
-        Thu, 05 Mar 2026 01:03:13 -0800 (PST)
-Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851fae4a68sm24849435e9.9.2026.03.05.01.03.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Mar 2026 01:03:13 -0800 (PST)
-Message-ID: <8011ab29-de9b-4a9e-b437-a514f6e462a0@suse.com>
-Date: Thu, 5 Mar 2026 10:03:11 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/k/B/Z";
+	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8009561339;
+	Thu,  5 Mar 2026 09:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4BBC19425;
+	Thu,  5 Mar 2026 09:05:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772701562;
+	bh=mmssFpHsTTTOrOd4y+zoY0xhIkR5xO0zlcS/SUuUFGk=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=J0/k/B/ZSPtOdp5SgcAwYMgs6ZHGAR7ZKKSC7akGX8lelqRptgjCjk35rnVHtV9vn
+	 OjqT58W+8i38KUlkTl+8QgpdL4fS5bWQ/77tChQAxbPHmyCIR2wJsPN6nurzvh5NkC
+	 bmCzPhNi6tiSzSGlIZ/91rk4UXr+XUgV4D/JfmSx/L5nG25VTEtqAJEsAknmxHJtqB
+	 bmhNQPj59f4VLdaWyJb6ZhMOVvti8qisA7fhRkABFxktOo7GqOA1+mdV5ecv4CuraM
+	 g4lSJYMxB1wT23qft7LhnNt+jaWIqvXYeYd1vFovUAOcQ4WPM9u8KQ+m2oXjfip32y
+	 YIaZg15SMyhhQ==
+Message-ID: <985005f4-fe5e-4ad0-83a8-14ce324db58a@kernel.org>
+Date: Thu, 5 Mar 2026 10:05:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] docs: filesystems: clarify KernelPageSize vs.
- MMUPageSize in smaps
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: rtmutex deadlock and memory corruption when running gcc testsuite
+ in next-20260303
 Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Usama Arif <usamaarif642@gmail.com>, Andi Kleen <ak@linux.intel.com>
-References: <20260304155636.77433-1-david@kernel.org>
-From: Vlastimil Babka <vbabka@suse.com>
-In-Reply-To: <20260304155636.77433-1-david@kernel.org>
+To: Bert Karwatzki <spasswolf@web.de>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev, Harry Yoo <harry.yoo@oracle.com>,
+ Hao Li <hao.li@linux.dev>
+References: <20260303222127.2992-1-spasswolf@web.de>
+ <f4591e7b-d07a-402a-a051-8ff12b0ccc09@kernel.org>
+ <9541893b588ef644a06cf01bb65005e9efcb3427.camel@web.de>
+In-Reply-To: <9541893b588ef644a06cf01bb65005e9efcb3427.camel@web.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 69D08120006
-X-Stat-Signature: dmaizte7wr57z7zxdkuf9s9wnthyrrnj
+X-Rspamd-Queue-Id: 378B9100007
+X-Stat-Signature: rcx67tucyz9tmrassj1i5hutopyn378z
 X-Rspam-User: 
-X-HE-Tag: 1772701395-686232
-X-HE-Meta: U2FsdGVkX1+YmI4othZ/PkLbWpinZPYvZU8q9CtENN0CHT+Gw5MiH10yI0smKTcCGRVbwm2usZ+bStyxE8b0VCGTr6s6r0CdgUzQsgLAtj6puOcVaJlZFydR7Yr+jxvPZcd+8MUANDCPc2CRLB34ey52UiBhOdaNUeFoNWqi2nxPIIJ0QkgBX2e40mo7fCzv++NsTt5v399c1pBUkl6EE/Nhj+OelLPSQXw8aD9Wrpjhf5OYbe2YmrgNgvos84hDJs7JXqxn/jMLhuKlApcynZNQw3dZ29vY40iydl6x9ENx3EwMGQrNRv2tE/5vWhfhpyakKmLbc80zZETCFj7TKfrVCcaJSX0Bjx8c5ag41vqZ/ZCmvmI3lSKU4CM6ZohCzxRPWVZZtaO/Lk6xWGesSvq8/YrlWc5t9X7Z5egGGUN1vr3jvya/kbX/WXNa/qUfYM14O5QAaDR17crfjVsv13/vdoEd3ZJ0++PQjQ36qn0PZIVn3VaobaroWI1soTt1VULlyFqjt5m/J/ar0/h7hbm4U27PoX9ve0KM7rQcV9IfJLb4k1UdZs6JgL1Q90X0iITa5JSL7cdLIR4oR/FQvMg4xmhtbHGjdKoEUZrh6UedlD9+TZ5bA9t0Lq/FStI1L8ghQDUqidsMqlYWb1FB3pt0kttypApCWXYWCmEHHwuqC00pDFVvPkyfWlRuRcoGUBy8o9wyK2E7Z6PdCbcF1VTEbnVy9q4+ctaMkLm3M5Ptrjn9aj2o3gYCB4Oc4u2Dn736/s79ND3TSSA19+smkjfU1bCiXyhhVhaZbt4bYpax/OB2vvvF3nBgfCfxGHIji4xTUW4G1CHz5lCAHD46vcDuhufaNnqbQ8O1wVPQRCWMHG2HRJZwjkw/aKBoRfg2XCaH0P9jLtiWWfwGTfKnkIc/+1s7nn7ssUgAZks6Rbo891OKnPUQBAasAKSN32vdFI5TFTXuiW99vbsmOzr
- HhyNvWto
- AOThC09ITSpzrk/pTIdyKEWekj90yzcpZGK9wn1DW4VpU0wgtk2hLkQ7VMWxK5IZr6HCZBLGw/RFMsN85OAcGpo9oK3APmWNOm1c88Yxmpmx6k+hDNVMq7AKmCN9DxS3RkW0mp6iGM0V5mOFyerXLyUQjdJIm6D+cDzweVJANxHKv2Ve9K5Wj/aguyMKJcOedUbR9EYvKx5JoE/up4oZwZGGn9JqijCO3X2zFW3/RGSVv/R1iyt7V4CyYVk4SflSJdg9JfiPa9gI9RZXMoEAfj3qent02BoyBoMhFamuf7r91RRnAv0TlY50bdZ/MUckn14m2qhLr+0zDK7X3p/rH7JpK1J3kMHTxP3cA4fhD1FAqSYWlniTVEFrfeCzFQMk+C9OJeZFNH8Ispr2j3ox0tP0M3Ee0kPHygXeomvhe5DDLL6MOoo/kTClSyAkyxAYSgrywR8yN0kfWhcXuXTUqcVkl5J8/RKJWkyG5QYWWn2a+vyR1ixEeKe6eWobKfBx/fdigR5ncJ1QIXE6HQYzwAYKi3uXls519LEzoRJKH/5I19QbY9WcLdy/D1gCnQda8jxsH8Jh/MNmvxUslCizrc91r2Vllbgyd2qL+eQQNzjvriUihdqeEoVgghVPHb1Q6joHEO72wD0M5a9xRm1tXEHA2IW7PY1IFxfbRv8C5gGqJLRNxpMN6IE98AAgDaWPuEEZsA4/t//RX6mRtE8Vt/CAJCF6CVP5hTt2OWzb8HNW1mJCkwWobAz+AOODQ+Ll45rXT
+X-HE-Tag: 1772701563-399976
+X-HE-Meta: U2FsdGVkX1+8fkCFBJLjazwwb3OcVen/d/83oGclP4vU4fiyqr/UvBBRrrmqfoBAqCqX0kWRNFH9RENM1Mmqh+CDK86q0Eyi4gF4fBvhRyRRM6IXOo/X1qWUhxsAPY3+iZGZPwzTV2VwlnoYTxyJ+DpJAqUhiJJc1ghp7ntZ6aEiUoszKKftdA+Gup9ow7oTKll8JUo6xMOI/YCHvGNvDdZh0UMUWRLgf++j0tcEIvbUnOUJByl5q45Cf0wnFwTMPC55+dQO8yFXd2tG+UWz9Gb0WIOyqoGOcNFBHu0gNRq+8zpAjeTySp3YCJNfwacAc/y4E7OPfL6cFcfthqSFYd6ARIXbbHX5ImB7uYSZMq8GHn1hWUSvQqED2NLghyyA3/kWMfkN+c4boHxA0Z5b0qPaRtR80JXoaVWAl2oVUPvwsOY9gXNZbnAhDLcFJNRzamQy/nb9kdlA4lAHebWWtSPnHyv4esyIY84OkN+6Oo4NeF0WJ91LIORKtqFiKfZAze/htHx5UzyM9RUEDXhVP+L9OcDtsLXT88i32MoJ4jxPaTHNYipgUs1GSHITj8W55161v4vUnm4AKSNReoPddDigd1z+l/bZbpV+07FbuQfkKNqO9GstSRbIf2CtyBUezYUSnkpQJ5E7Gp1tCw6ZjCIGV4PT9oiCM3c+HUgvtFd0Bdk+RNotsTJaGJ1WpSrtI5KBRD9fC7OlATTbUWmE8bYeT9g40NkN+h+cqiVwNNmRRZnj29WLWC62ctbAdWKZdcpqbO4/6dwG1GacRjnRzJqEZK02LwWpxc5/d2ewp5H1AaDGb2/YjO2lrDz15lLEELzH8SCYmk6v0OXa+wFr3zIUPbHs3u257zZ9HQNtAZQBiP+QN2nmZbDHKXYNaY4jzlV+h82Tf3JbCuJwUxPPOSJehB0srBZO6pzf8+DzvBvE1efhfRwnucEEr8AlQWI1pBzxuIhCUt1LAxmoWjd
+ EAGQJbu+
+ EJY6X7gxcqZbAZRh9/hm2ZDA1Ipc+RrR8THZNi36A8IqRtXq5r/XVgFfgubNt2rHk40kXTTwaTbTU4SuJJIJib7nsPMFN9SNNTGgAwT65NggSiLR1Cu55KyqhuTMZ126pdDf4BVkSOB6BjIYaJS4jLdDN3NmwgYGgfrw09/RQxZCwRZTgDyNlU9K2jKyAvfnUsRzV2YeGrP9Qb+ssBqeOq1Dcfn0GXrvMPsfm+OKqvWa0KeRqc+Fthu+zEvZwD5blC3BL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,49 +103,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/4/26 16:56, David Hildenbrand (Arm) wrote:
-> There was recently some confusion around THPs and the interaction with
-> KernelPageSize / MMUPageSize. Historically, these entries always
-> correspond to the smallest size we could encounter, not any current
-> usage of transparent huge pages or larger sizes used by the MMU.
+On 3/4/26 21:44, Bert Karwatzki wrote:
+> Am Mittwoch, dem 04.03.2026 um 15:15 +0100 schrieb Vlastimil Babka (SUSE):
+>> On 3/3/26 11:21 PM, Bert Karwatzki wrote:
+>> > I tried building gcc-14 from the debian repositories (fetched via apt-get 
+>> > source gcc-14) on my new and shiny zen5 machine (Cpu: "AMD Ryzen 9 9950X 
+>> > 16-Core Processor) running debian stable/trixie and linux-next-20260303 
+>> > (PREEMPT_RT=y) with the following command:
+>> 
+>> It's probably my fault, sorry about that.
+>> Specifically commit 666a739089c from slab/for-next-fixes.
+>> Does the following fix it? The fixed commit was meanwhile
+>> queued so hopefully will be in next-20260304
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index 740edbad0475..1871c5ef354a 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -4610,6 +4610,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+>>  	}
+>>  
+>>  	local_unlock(&s->cpu_sheaves->lock);
+>> +	pcs = NULL;
+>>  
+>>  	if (!allow_spin)
+>>  		return NULL;
+>> 
+>> 
 > 
-> Ever since we added THP support many, many years ago, these entries
-> would keep reporting the smallest (fallback) granularity in a VMA.
-> 
-> For this reason, they default to PAGE_SIZE for all VMAs except for
-> VMAs where we have the guarantee that the system and the MMU will
-> always use larger page sizes. hugetlb, for example, exposes a custom
-> vm_ops->pagesize callback to handle that. Similarly, dax/device
-> exposes a custom vm_ops->pagesize callback and provides similar
-> guarantees.
-> 
-> Let's clarify the historical meaning of KernelPageSize / MMUPageSize,
-> and point at "AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped"
-> regarding PMD entries.
-> 
-> While at it, document "FilePmdMapped", clarify what the "AnonHugePages"
-> and "ShmemPmdMapped" entries really mean, and make it clear that there
-> are no other entries for other THP/folio sizes or mappings.
-> 
-> Link: https://lore.kernel.org/all/20260225232708.87833-1-ak@linux.intel.com/
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: Usama Arif <usamaarif642@gmail.com>
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Yes, this seem to fix the issue (two testruns without errors). So the problem was __pcs_replace_empty_main()
+> returning a non-NULL pcs in the case where it can't take the lock (&s->cpu_sheaves->lock) and jumps to
+> barn_put:.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Thanks for confirming and sorry again!
 
-Thanks.
+> Bert Karwatzki
 
 
