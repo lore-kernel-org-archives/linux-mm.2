@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA825EEF313
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EDEEEF313
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF1756B0088; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
+	id EB0316B0089; Thu,  5 Mar 2026 02:30:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA90C6B0089; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
+	id E87E96B008A; Thu,  5 Mar 2026 02:30:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADF0D6B008A; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
+	id DB4AC6B008C; Thu,  5 Mar 2026 02:30:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AB206B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37B7B140814
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:26:59 +0000 (UTC)
-X-FDA: 84511177758.30.65DD8FF
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CCB326B0089
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:30:59 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7DDAA1A080A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:30:59 +0000 (UTC)
+X-FDA: 84511187838.10.CDCCE9D
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2F28A1A0003
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:26:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+	by imf22.hostedemail.com (Postfix) with ESMTP id BC970C0006
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:30:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	spf=pass (imf22.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772695617;
+	s=arc-20220608; t=1772695857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references; bh=qOWsCuHFCcn3b3neSBl9Kufkh3tqOq/hBEXTcCFQxsQ=;
-	b=vGXrgm4lbrLRGM5Q1lJ78J+tdCw/UGIz8B86abRhpwUT7/iAss7nEgtrulQXz7lu/Bw1N5
-	8WZztcACFP1Dzjwrtikxj0qYq/NFESOk5US8KgkoYp3Qz1hxJKlGmxZBp5cqPzr4NiBufE
-	89ZuKmQWzFWYA+NMwX37BkOMBiBuCU4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772695617; a=rsa-sha256;
+	b=RicotJfH4qC94j+gAysqZvfu48fq49FSVnCsKw9gtjSLeHycfsaVgvmszUX6jQe0afgZn/
+	0xSSaacraUBhzZBiTvKct93dzyDVIFuHGZefh96BFtCToJjxdkaGPIVCnY8CRddP9L6vz8
+	NFlnN3d0dr+yhsYLmdimve00LtdTFMI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772695857; a=rsa-sha256;
 	cv=none;
-	b=ZQpiFn4FSbCraD5Kh4nxhyrOuA8NRE7EsW3CeJmQ1x6G0WUq8lwiuJpahRHeHKbXR3NY31
-	9Wdcbhv+Il23s2l4XzczwfZeA7yAhtwRSS/TN7VNMYftipH8DK/QgMKeDZAvzYSKJ36Vug
-	tQVr0vWAX+mdHSu2tr/2FmdBjWLf/mI=
-X-UUID: a8220f20186411f1a21c59e7364eecb8-20260305
+	b=l8tOdbj3tMBQ08g1RS1faAA9kGi7eSed/QIeWlOcIG5WGQ4RJi5YaDpGpFLThWN2o7DCAR
+	HdpQvKs2YsMNHqPQdMEqRzn8W7ohrT8gNMdOtcHBi6a8ed0Rc5TLFwG2K3pPlSkojmVGAX
+	fSsedKGb/eJxTFPeM4CQLp7F+mSERe8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
+	dmarc=none
+X-UUID: 3ad8bc1a186511f1a21c59e7364eecb8-20260305
+X-CID-CACHE: Type:Local,Time:202603051526+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:3ad0e231-104a-4498-be29-821f3f3b453d,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:e0ff7001-2385-4aae-9ccb-3c63d89b13c0,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
 X-CID-META: VersionHash:89c9d04,CLOUDID:80015e11db1ce3bae87d07a51a425f03,BulkI
@@ -58,35 +59,32 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: a8220f20186411f1a21c59e7364eecb8-20260305
+X-UUID: 3ad8bc1a186511f1a21c59e7364eecb8-20260305
 X-User: zenghongling@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <zenghongling@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 826623739; Thu, 05 Mar 2026 15:26:42 +0800
+	with ESMTP id 1300980276; Thu, 05 Mar 2026 15:30:48 +0800
 From: zenghongling <zenghongling@kylinos.cn>
 To: dennis@kernel.org,
 	tj@kernel.org,
 	cl@gentwo.org,
 	akpm@linux-foundation.org
 Cc: linux-mm@kvack.org,
-	kernel@vger.kernel.org,
 	zhongling0719@126.com,
 	zenghongling <zenghongling@kylinos.cn>
 Subject: [PATCH] mm/percpu-internal.h: optimise pcpu_chunk_struct to save memory
-Date: Thu,  5 Mar 2026 15:26:36 +0800
-Message-Id: <20260305072636.570130-1-zenghongling@kylinos.cn>
+Date: Thu,  5 Mar 2026 15:30:43 +0800
+Message-Id: <20260305073043.571691-1-zenghongling@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dd9x96bkuewkqyj9c1tmxg47rxd136pj
-X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2F28A1A0003
-X-HE-Tag: 1772695615-138414
-X-HE-Meta: U2FsdGVkX1+7+ZG3XuRaaOXENAfuZHIC5t+O8R2z/ADmBtDUQ81l7160U+IZN7zXlmIkwuoPgecJTT95tWuU34ZNgR0JW2yvYCTQkdp4neTuHAXelbM80/+MBU5JuFsvxxv5Tcol7fxolwFvdGD62bfUma54R1uQ3+QnupSj1E8sW76jz1s2pguuSrw49JCR+xY1BduzUikFWcGLLHiDKLPdTE5fyI6JNiXsvmMQE/KLWSW9f9VbHb7tQvHo6nLkqN6d3/S/NWhezxaWHig5MW+ngsyYxI7o9wquSM0JCP8Pz32nlLXJfRg50rUmzwEpJoEFuX8mIcgzKIOfx2GYQd3Ckx4jTnaHWS09L5FCzukz8rJ9sEsQHfJjyqe4h+lcTOPO8K8rLrLMgT3R+RpJY+J0tQIgsUA8fb50vZcrXHOh7qlf2i1UlMt2EV1KB+OwyBudc3Rkf/ucPp/5bsbK6x3M3177bpcZsXIYXBe2/+a7nbiWlWXEJ6MpqzaqagKc+tviqyUYBK1R6M8yjH053z0v1dY5C84WX8ThQaQsRL49evCfaLBrvn3piLJWtr2CXya1hla0hzvK6+oiJKayfosTnKxl8+H89il7jce5ES/ILtizEhcm+fJwNKuGjTQF2jyjvLsPqYdO8OOxqVyAWvFHgwIRD3b2Dsah1y94DKpQUzWeEkQ/h2tIfR0v2DNBxAXY/pSffAwmpDcr5KcDGXAV2Y9N5HTHnBuI/1MP0zRO/zbotS3Q1TeBtPOcT1Jes9N9EFIe6+14Ip7ySGt+UjQMxjFsBCcBaqid8ScMJux8c2tnhZa5CePjh4jFoK0BQK7RvY7JYqlO64p/VGDTJRNvqGkJyqtojJlsTRx5qFUPuVoqXznKE0BljlsjP47+yTsvRzqTXFiO3SlPm26EplHdN0Xmjy6OQjmx2Iqau/WwJe57RHWGGLONPAX06a4rbGelegz3ECbvrBCz4Kx
- xBPCjUL3
- 6NwI+3o/o4Rd+b81qOvm3a8XoVZ3IpPW6RvqatF3hrhXChJM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BC970C0006
+X-Stat-Signature: dd9x96bkuewkqyj9c1tmxg47rxd136pj
+X-HE-Tag: 1772695856-80022
+X-HE-Meta: U2FsdGVkX193Zqy01UnXcClYm6aouI9NFzZKORm3Wqwi2COMEEc/MapYyKTtb1Y4Huha35iX8OQlV+P8t7RSRjN3gbAb2yQAZBq7ZDC8srKTT+hZKaD+Ey1N6jue05Of6bxKi/nkpxuGGalQVKOpMCCI6hHScsI0+rfhuEZgQjCC184mfteV8ub2nD+++ZPS0vR/hT8+bSll3SICwUiCQNSoejWgdk7n5PbfHXajsb9x9cP3qlGaqwSVqTMrwvRSujwX7ShLIcPMZj+DQrH5VJ8Eo5cPkCwOaTmYiMS5IcRedI67i/cWnp1+JuZIk0/ELSylzOUYIFU9apGdHSoAVcRBhf+OLYtbYRsa75iCMiabXXGYHZEysiG7K7+sR0uuPRlZzXKDCkHc0TxO2P6qmsduDFCCMefr6Ra8O19Dk8izwGj+plOAyu9rfBJRn6tdhl1t7l3xGL+3MeHkaUVxxohWt1MpJ4p8FphyLBZjmWJM1iVohiWuMteqr8ehoO0nUjH7a8fznLdvw1pH39DaQbKQTaYxAV1wDbDDYrCC8G6OTyZMl8odl6mObsiysYjrj0/BLLkIOk9rmrWm0amlumSZ1NrEC+QlrEpdOplKj+/WXdcqmJN8PBPYJ84QIMRMFmZJL8R8BW5OehwMh6VW7Rca+gTuzUYFg5AfKdMigAkEe9zmCjIYG2hc9kZKs80pzkOc+4ZfGj07uVHk63Y0NrOpS5A0GUIC+Jhca67FcFV/EhfcoBJAOPPe7lCwxwHUPIR9PDoxKwX3cZK7qmQFTOg3phK1zPZ3wJ3p2GJ7sdw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
