@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1656AEEF319
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 08:31:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE65EEF327
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 08:44:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817F66B0089; Thu,  5 Mar 2026 03:31:30 -0500 (EST)
+	id 612316B0088; Thu,  5 Mar 2026 03:44:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C2066B008A; Thu,  5 Mar 2026 03:31:30 -0500 (EST)
+	id 5C0086B0089; Thu,  5 Mar 2026 03:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DAE76B008C; Thu,  5 Mar 2026 03:31:30 -0500 (EST)
+	id 4CC186B008A; Thu,  5 Mar 2026 03:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E496B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:31:30 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A456B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:44:33 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E2B814068F
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:31:29 +0000 (UTC)
-X-FDA: 84511340298.27.0B16DB4
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B62195B33A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:44:32 +0000 (UTC)
+X-FDA: 84511373184.27.E0AEC07
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C35D5160003
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:31:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SJ/n9xhp";
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1BCA8100002
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:44:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QBHe1YUN;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772699487;
+	s=arc-20220608; t=1772700271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rg1thqHcTb/wkz3LGHwEivjhFrIIo1MhcsRlV3+q0QI=;
-	b=J0WaS06KgoYGFLOXzf9YZWy9SiKlhW7PxL6H81qG0X5oVt9IBCPrCl37bLFXm40ogokoRB
-	intMCKC3HQL4igz9xO3pKu/PgtLSU8tSTHomzZVDBhnvL1Jmng+Dms6SHhUvf/caetCH/K
-	xH/sGKcPwsF7ORoU1QECs1qOSLMszhc=
+	bh=+EtM+ApO4G1DwE1XOd18WTWGV7Pl7kLUvJleUT0HXbo=;
+	b=NMr82SrOX6rRbrW+B27H87IvUAr12JB2PdQHroqDVwJiz0CTg/Td6gHnnxU+UJdRzJEvA0
+	c8OB8QTmMEedAEW0GRCKlT23q8OhJ3pmCPVAjCU6LLKfDeGAK4MpZWzJWQ8kvZmVgJY8z+
+	HvS/bozGjQhwvXfi3XgVgtki+L6vroM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SJ/n9xhp";
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QBHe1YUN;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772699487; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772700271; a=rsa-sha256;
 	cv=none;
-	b=ScP1HPcA1p9/RKZlnSelPA37Egf1sJ8SbgU0ZeY9l1PSEJuTWpEQsQ+sI0ydHTbpRbYwzi
-	q1Tz8YSmmV/tF19w92Ca7uzlMbxNGXy8316YAXdM/P3k8L7F1XMumPISvTjhC5aBOD+6vX
-	r2Fx9Pf+LSoRprRxhbQw53wMJ4ohdWw=
+	b=gW5kIHCU2edP/CSL2PDSiRc6y+kQuFJ9Hq2rNOm+RfLRV8BPfA0dmjgmi5sjw9Ewb1sCvo
+	QIKG3oOVEk+bkweEZ2K3IUkVw/JX2jtJUyx9bQopXQQ95IEccTbfd8nLldIQ/eNGIAaVlY
+	lc2iTbTOHrreHKrGK4jc1Z62pG7CH4Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8BF9344483;
-	Thu,  5 Mar 2026 08:31:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B04EC116C6;
-	Thu,  5 Mar 2026 08:31:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1839F436E7;
+	Thu,  5 Mar 2026 08:44:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0E2C116C6;
+	Thu,  5 Mar 2026 08:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772699486;
-	bh=kvHVs4NskjZVXPDgFweRxutw5zxiegP9xPjKv71JlSs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SJ/n9xhpsuSF9gMIaGks6obwLslM79XBc3nZ6X6jbX5k3cm52Jx6hHyBTc1wc1bgL
-	 sj8JGcQMSVx1p4hozy/2ttQyjdubqX2YJ3HP75PdA/p6qnzXB5RGi+hMiw72pq7yEC
-	 gj0c4VrE5lR8V4KDbGcm61c5PCw0mKRYy97WKoJvBs4hwXkLC4eroWHULph1rXbOkZ
-	 N1Y67Du94msqmiKsFiOcPs0jJfLDPcBGFu4pmbXJuhqFhoJBx03ihqXUa0R/Wy8UST
-	 X/3uyxeeZ1yGmuxbgwL9RXRRIcXWtj2wWBTWE/AHjkhU4oSW0Z0fHHOXIpZ0Tof/Wq
-	 w/RMgwaOVR/0w==
-Date: Thu, 5 Mar 2026 10:31:19 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <ljs@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add mm-related procfs files to MM sections
-Message-ID: <aak_V32C4BnJ1i-b@kernel.org>
-References: <20260305-maintainers-proc-v1-1-d6d09b3db3b6@kernel.org>
+	s=k20201202; t=1772700269;
+	bh=bH9cDEIzoCAFMzWyAswOZriFHl7uowmtWVbYD6aUiPc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QBHe1YUNJiQ+6UejpGKx+tebrfGn9jf8j3uuRBXc4sWUkfNMp6Q30TP/qYJik3o2C
+	 mEZqPHcxH/xhXBIn9s1P0m1DvEf3k4NuqFGoHaxxW08bu82RbdznjqB3rcvDgpcW4n
+	 jDjUUA28aBgVuXGCBUl+kcQgBcXdmpH4k/+9797n97FU+adelLp8mXPsIBvF2Hyrn9
+	 IunwyChSXuK7NHkRD3TWzQrTJ7ZyAxBrNZTScxbJ2wksi7s5eWYd5xI/VeACBqXvej
+	 iIX+AEkkXe2lx4rGcvaOu6MpUd0MIsWfcXAl+2LAQxri0F6BiuJpT9UEKmPZ4boM5r
+	 Deh6yxR+68nuw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Andrew Morton <akpm@linux-foundation.org>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: memfd_luo: always dirty all folios
+In-Reply-To: <aZ65uvOrTDndpic6@kernel.org> (Mike Rapoport's message of "Wed,
+	25 Feb 2026 10:58:34 +0200")
+References: <20260223173931.2221759-1-pratyush@kernel.org>
+	<20260223173931.2221759-3-pratyush@kernel.org>
+	<aZ65uvOrTDndpic6@kernel.org>
+Date: Thu, 05 Mar 2026 09:44:27 +0100
+Message-ID: <2vxzv7fabr84.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305-maintainers-proc-v1-1-d6d09b3db3b6@kernel.org>
-X-Rspamd-Queue-Id: C35D5160003
-X-Stat-Signature: sitk98y5eord5bqezz5eyo49gum1bzea
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 1BCA8100002
+X-Stat-Signature: ezrhscby9t8uncqmqch3m9go3d1f53e9
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772699487-527521
-X-HE-Meta: U2FsdGVkX19TB90AwlwH5TD/zSlHGhJWqiVbCNxnn6KNTeeN5hSiVhS9E5gOS+rWXtIQiI3e4XrnmCB+KD16TVfhEyS66o8NjPFDPP2YWUPAAq6ij0oCHqSm96jmI2UTee0i8tQEjwnHL5wIY5a/PUhbkN1NQmUN1eHROhbG9IOY8tfIZxt3jUqt2gc0xraCu9unMxhXc/05MSu5ZTUdWiX3mGYTRpHY7iLlQTH/exjNXZ0e9Dq/tLdbKFmKuyu+QxTcYv21pTXZoM1j8w/z7UwnO4K0zeKkVSLesCH3ej3cAmRq8xvXF6CsFr3f6U9eALnY3WTZhyid3JyImkDhOBX8kFozluIAs5fNP7JUjyxLqREk9smo3iefrIPePzBGH7JTUbjzSAVP7yemPj6uP/IZu8I9w1v2WaJr+ySVB5YjNe9tVpebpgihqKvS+1MbBot8HkiwAllfrb/vaULVnOI4OuDqXwg40PpK5wZIrDUISdhlJNT3U4+/8E8catdqp3AsaaAMnxwFNCbeZ/MT7d+E6vJy1nj0vu29s5soIgbrQRqIzxF3929yv+WxfD+IpugK/BNdYhtVSrSADDKOPNYWEmhKkrhNNda9pwYfqSatu353aWUJUCg81yEcIY9pZeYG/EpkHOR2B9PvfytNrlX5xnyB2UglVGTvz6y2um40lNfQa6PVFrO06o1hgWZ59OdLfaegJgYAuWKq8wwAuhnNxotavVaI3aRDUdXFvZu84vGFujzTBUokSKAJ72ruzaNCLKutNRG5fZAY+OyuUJzr/KEPpgXRJNnsyHHwdpinjjrTYAdLfcvctS9nbUClCldaJOHQg2qNNuE4+lfrgn5ClBmZyWkU0WUmaLf1fp9R+5Q8uOAZSrZLYVx2JUqTx47Eef1g2SySgRykNpjh0saBYGziNHs9OlLOI82Ov9wjHnUn/QPf8gcjnyZ7TR5lKKjSeHwxtdtJ8hw2hBq
- lRPAxj8H
- 3pYTZ2BcHG1ygassF5ocU/CXoA6EiOq7vaMEFs8IJl5cC2o0lcTH4bP8NYi3/E9gpTLpzEiqSQTwjuyP6lI65caxNX0gMB4hV9X6l7oyaC5AuHfhfAtxwKvIb6IIWIZYMoro3MCoMtQtkK4FXA0AGOrOcPQArmVIwK0IJfOTeLL6MZeA/hSRbLRUMaY+9fwG7+SoDCqkVwCICr+UINUDsVatqFoCrhGmnL5kXy8Uxk8nl1QY+URSgTbg7M7eW5x48I5GMJziUTIjCwPuAWqRBAr0jMm3Oq6pBIzDU1z5bIgw3xkvYlvg1WQItB8RkNzSFRupPOpMS1f523XW2oJ4XFKvnaw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772700270-336097
+X-HE-Meta: U2FsdGVkX1835duBrRlrpZQ/qSYAIq+JCvBLfAMk+ljaSM60ztFYg88Bopyk6bR9Vzz61vQhaltSFN6HA1Mt4TgNc+tYQKalxJq+5IRRpi7QbMMpUe8k8pAHHqeFsmE8P0fXJZK3HYUzGaob1+zcDdQ75DvQQhyQ7Uo38nP4s2ZqQ8QFyi0XQXKXb3ukWskWNeUdIWo7M+zlifNMCtVKSyRJRtBZfwV650AB7lAGtbjS+s5/J61SmSKlSfYRfOinr2cny/Vf+ms3UK7mAQkubSN1JoAgeLRuJKgo25nqHcQkDVvg4IfoBHTK+JaNWbE/aaSPSSp1/HyvktYS0Sip2S83vu/WjocYoMr3Mp+ceonz99TsayamOPNWVQx54iwtQ5uqkV1lJYnHGaB6R/SCdmFpiEEwzy3FanUZgtw2mv1o0HmbYcuP9eQJtLJCKhrVlD/004SInI5eWU85R8pC2yDms38Z8P1PAfwo/sx14dTZJq110B4TdQpqNDkpdzAiAqI29HfgtlGEwSsj+3zfFuFbrcmgn2/l0QT+NfU8f8lpsJRdIYwSIz8fL8IL+6zZRNn1ov1aXTndceZ74rEIwutIP7WeRj+oytaz8498kQbUJWP8Cs3JIEHovc3WZFIKxiz9yBVvtJd/xe0qiOPZTEa8Vnv0JSlGPedi84dUPZw21QQzfZfYCjA0qAQVSouN5hdVBdyCXVzm+vRA5HIhTwxQmcny8hGAFDJsegnyPpR8enHvClaKoBBcUrW9nQfsAvUGnJ5BpZFkMnpseGiMIS+rxmqmPQOgH3KiWmQyDIgQK/bw+Bt+j8ndwmUGj+Tp8Zhq0Jp1t3ZIGuab1y6d5HSC9F0kCDMBXaF28WNHQenEH+raik3upKCIH4NiZ1OUuFIxajdEYfZKlb4KIqvoavhJSvU2FOXjFP++Zrq87X9NWM6RjxcJ+8L0Hx/scUoFf/Wb7NA8HbhZhcb50AO
+ r718qbaU
+ YYcDVjrF1Z/3fmTDkQQIP2jqXioBGix7RJm1yvDICwGZUG4odHn95N89AmaNVrgvWJnUusCEbw6/6YgJwuXGVyDrc2F+Ml22rjXWmHZVU9xM3+b64fxqJZ9ERr6YxaFHSjCFaYeBEYn0Id86DKYGVEHFuVSLKOP1qNKpK0P61gM/KvacfZwJS/zT6oVHDTL3y106MwYgRbl9SeOKpUAwl+kMSYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,54 +95,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 09:26:29AM +0100, Vlastimil Babka (SUSE) wrote:
-> Some procfs files are very much related to memory management so let's
-> have MAINTAINERS reflect that.
-> 
-> Add fs/proc/meminfo.c to MEMORY MANAGEMENT - CORE.
-> 
-> Add fs/proc/task_[no]mmu.c to MEMORY MAPPING.
-> 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Hi Mike,
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Wed, Feb 25 2026, Mike Rapoport wrote:
 
-> ---
->  MAINTAINERS | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3553554019e8..39987895bcfc 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16683,6 +16683,7 @@ F:	include/linux/ptdump.h
->  F:	include/linux/vmpressure.h
->  F:	include/linux/vmstat.h
->  F:	include/trace/events/zone_lock.h
-> +F:	fs/proc/meminfo.c
->  F:	kernel/fork.c
->  F:	mm/Kconfig
->  F:	mm/debug.c
-> @@ -16998,6 +16999,8 @@ S:	Maintained
->  W:	http://www.linux-mm.org
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->  F:	include/trace/events/mmap.h
-> +F:	fs/proc/task_mmu.c
-> +F:	fs/proc/task_nommu.c
->  F:	mm/interval_tree.c
->  F:	mm/mincore.c
->  F:	mm/mlock.c
-> 
-> ---
-> base-commit: 7fcd8889fbf318409163ff5033fe161dd2a73243
-> change-id: 20260305-maintainers-proc-30e45ca9e434
-> 
-> Best regards,
-> -- 
-> Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
+> On Mon, Feb 23, 2026 at 06:39:29PM +0100, Pratyush Yadav wrote:
+[...]
+>> -		if (folio_test_dirty(folio))
+>> -			flags |= MEMFD_LUO_FOLIO_DIRTY;
+>> +		/*
+>> +		 * A dirty folio is one which has been written to. A clean folio
+>> +		 * is its opposite. Since a clean folio does not carry user
+>> +		 * data, it can be freed by page reclaim under memory pressure.
+>> +		 *
+>> +		 * Saving the dirty flag at prepare() time doesn't work since it
+>> +		 * can change later. Saving it at freeze() also won't work
+>> +		 * because the dirty bit is normally synced at unmap and there
+>> +		 * might still be a mapping of the file at freeze().
+>> +		 *
+>> +		 * To see why this is a problem, say a folio is clean at
+>> +		 * preserve, but gets dirtied later. The pfolio flags will mark
+>> +		 * it as clean. After retrieve, the next kernel might try to
+>> +		 * reclaim this folio under memory pressure, losing user data.
+>> +		 *
+>> +		 * Unconditionally mark it dirty to avoid this problem. This
+>> +		 * comes at the cost of making clean folios un-reclaimable after
+>> +		 * live update.
+>> +		 */
+>
+> Can we make the comment here shorter to only contain the gist of the issue?
+
+Is this any better? Or should I try to make it shorter still?
+
+	/*
+	 * Tracking the dirty flag of the folio is difficult since it is
+	 * normally synced at unmap and there might still be mappings of
+	 * the file alive.
+	 *
+	 * Not tracking it correctly can cause a dirty folio to be
+	 * restored as clean after KHO. The next kernel might then try
+	 * to reclaim it, losing user data.
+	 *
+	 * Unconditionally mark the folio dirty to avoid this. This
+	 * comes at the cost of making clean folios un-reclaimable.
+	 */
+
+[...]
 
 -- 
-Sincerely yours,
-Mike.
+Regards,
+Pratyush Yadav
 
