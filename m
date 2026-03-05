@@ -4,138 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7D5EB7ED2
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9E1EDA69A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:45:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 446846B0089; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
+	id A7A2C6B0088; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F0BA6B008A; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
+	id A289E6B0089; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31D6A6B008C; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
+	id 8DF616B008A; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 20CCE6B0089
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6B751407B9
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:32:01 +0000 (UTC)
-X-FDA: 84510736842.10.4F1ED18
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BAE6840006
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=myUWpI7d;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F5FE6B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B03DBB4FF
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:45:58 +0000 (UTC)
+X-FDA: 84510771996.20.43349FE
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 1AC57160003
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:45:55 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=noa0goaa;
+	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772685119;
+	s=arc-20220608; t=1772685956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
-	b=b6GasyAyg26CCTzS1NjdgcaONUTUvB1tYhflMpn1FmKwhS/hLEBC+uxWCR5HnLaZPhUJw9
-	GIyYjpejdHtGIEfc12Ij0Ava9kKfORk+l8LUhNgrmwl0lIp3g5M7u/uUhmCzuBQW5zyAHR
-	zaOOqgiZaC+of2VVQiWMzFjVVGzZROg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772685119; a=rsa-sha256;
-	cv=pass;
-	b=7+0WcPKbVpusO1Mh8/IY81Ls1uwQpYOKFbf9/evYN/D7I7VmqU3s5ww6/sInjXflQREtQP
-	Vl8eigAYCEyqmdBYO+9hpDhtserx8kot1vRB712Wl/bs2Tt2eteCitfUurH8rh5F8oN3MN
-	Wu7r/ruD4dpkto6B8QoNNdPoW0myev0=
+	bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
+	b=gD2AC3GuNiq1s5DpUqqFKVgPKNYLneNYCS50mnFyDEtGBCXELEUJg1A6LAOppFdoS+tBue
+	qV3nz1cso2UJKzC4gGy+5RRZEu9B0jcK4Iwn52I89aJODMbTN9Xgh9PHdKFeMvnmWYheQ0
+	QOnm1nnAN83RwdBHMeO/0azIsSoy03E=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=myUWpI7d;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-660d2e4846cso2139049a12.2
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 20:31:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772685118; cv=none;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=noa0goaa;
+	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772685956; a=rsa-sha256;
+	cv=pass;
+	b=vRlYcnvI3GDfKbG1h3829w7oYp6gKqWU48akWKsXmu+j1hCu5+bJVWNnz1uq0FUVoMSa73
+	1FpT8HrLnHhmqxrreE7gScZGZ+amukzfYTrivs5O+dYWnUIl9Dy/vV1yuJibsEs7KsHOnk
+	Lq/tQsI7Rxq8SSqTl33Zeer3l0Gax7w=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-899ee87355dso57614726d6.1
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 20:45:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772685955; cv=none;
         d=google.com; s=arc-20240605;
-        b=ZGqiQByB8RoAnuJy30YFrgHogjAbbE7+mj/2BeAhcG/yX8TSlz7tdzZAXY9yHXmdN0
-         f4BZ/N4PsxGE6sTZ2gIse8lhKsGMmshoMKguI2Dz46hw7kQO5REWb4e5WuQ+kgWPS2gd
-         KY0/o4m5X2zfYP0vmha1JwCQtGtl8qUa9adwNeVTdimTvst37LViNJIfr5lWw29sOtjr
-         8cMgNie3hF9Vvjn91KFJQnVbX/yhugpDXnaay0kX6yXlM4A9yr3D4xVFIITz/0f0983F
-         wzTwkLq1eA/cS0rcH/LL8sJdJoplKE/OGhNFGdU30e6bF5QuRYe5SZ3XymY9uc0uWZ8S
-         dmCQ==
+        b=dG63nbevyZ8nD0uDzvw9HN1NTIrOlrPbWc0nfGx3HnnkncMRaMdk56zloXoMw5eP9J
+         oezLkpdHrneTA/DSBxGCdIVZJGoNflEbyXqoTB5bq1LlirhM6sUgCJ9fyhX88bwZeK8c
+         cKniEsByQKIHRF3oaM3igrUmSedSv08/bm4DHWA/0Q7YyiIn9y7xjw9Mm6BgayjEQ4BD
+         RKKfrBniQ2hE+AOhdB8ILY1QrErBRoFAvdgTg6QKq8UeTY8QZxTct3kS+55mGmIdLG0v
+         9miY1ZCku+CraBPSXPhTCseiaTusKu8KB6XZkddqOG8fONxMIMgROReK5/jlZQEqeK7D
+         d3oQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
-        fh=aHI3dzrzfKDTDZOZVVuhgGN4bcCx7ddy4my8XihT4s4=;
-        b=ZlvOOsHpp10N3Hjy59QbbwLTN2GBSGOW+4OM/qUK4as3vCI03P5YwarWFpG062f/O4
-         wylVxpZ6XHgIRri6rdR56kJVyqs0WE2G14D4DDAzN0izefoOry7Fu4dc0po7q2HIMFML
-         +AkgSi6RV5l6oFdZ/66YO7yBRUqY1CKgCcSUZbCmCHLQODJoNbkNlxl70U76IoSKfVuo
-         +3t+gZgQI0K9+ry3WwqtFzto/CdH9Y1ujgZZNw+w/fU8dyyRgd7C0aFOvUijPzN1Y/vF
-         LlrxJyUWGiWnLftP/xIvoCmu+js0rOrdAAMtB0kl9t+3g0AUijLbozF1v8BnLwHQCtGQ
-         DxZA==;
+        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
+        fh=o6ZI2nLWFkn/qpEbT9iGg3UoxcxQc1O4VQRquPtlLgI=;
+        b=kkJNnYLHzzM/Tht9GClp5tW9cP6jD+4GXHFvPF37mz7LJgacssrNypOhxoYh/5lzjX
+         3y7JkimXwPzYQh5Al3HNNYaaqQTY1yRmTvsfw4YW94KVo4vGN5gT41XrBKUA4MWkD27d
+         wQZQ74e8H/8BjkWQwkUOtaYMeFdkTJo2k3OrDMZA6rx3eNXDDdZppGKJvmxV37MTLT3G
+         /yFuL5C7md2/+8Oi6QXx3VIwqTYLSy58mOWwxAwdkxureMkwlluQXmaqzNQVjkHsdOdn
+         hzMnidriQY5LnfpM84TEoQx769t/uKqs4YEOUgBXdg0LWTNOZwfWTR2sZtmbsgzG2xD6
+         lX7w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772685118; x=1773289918; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772685955; x=1773290755; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
-        b=myUWpI7dQ5q/DR8o+vcD+InvmurGldIRkGVArkkRRWnGOouEbvlGt24y9QE0GGf46r
-         atI2J5ufJAGK5sSJ6HSp9zmo8VcwF3ozFcJ7+HalCL+/KMAkKaC5z9sKrDNJv3fWkuyJ
-         zRKOyD1/TlEXW+7EEivpsicJ+ihtOJ1KCyyZoLSWC/Ma/mtDvMz6GpELq8aJlxSYGS6I
-         gZiHViKr4NJyzvNSEXjbE7zhGr9/LkU8rOWLUU6BdxYdG3w4TqX9NuMa68Q305b6GkM0
-         Knv5PskCAb1tKn+yH/FV3XHxu+v8+2mrdz9m+gNuPn9hLq04P4uK0NPgg9YG2q/gtwN1
-         pvqA==
+        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
+        b=noa0goaaFeFN8i79vT0HCy0UQbhimTneU8eP3TkcaWCETr1JBrDxTI0H/pBTBAf5hK
+         pntNWH6bKA6AiO928MwhqBTlR1op0GTTfyRU2oZwWnjPj7HpQh485WhcB0YZwvJrdENO
+         YgO1swu6/SSoKLbZYzH0HcHWbM1SgAd+N3uLrPFMlRaR7y0kG+erF+YUxQBUwoI+vTjr
+         XX5d4DR1hF1NBernv6D5e4MFJtlTcCzqGy/0wzve/B6WF6EUalZgqCiGOd2qqGeyuCg3
+         Dqea+1fEYzapgzPk+333A8bmoAmSNq5X15XYNZv3ql2G/4rwc/teUd7cWMOFuRFxoeoF
+         pCiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772685118; x=1773289918;
+        d=1e100.net; s=20230601; t=1772685955; x=1773290755;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
-        b=jOZOtgSok3JCie1vDbeH5FnJafLwSshPBT3IGw4pEkvED6+6lbXYwAzUdhUCSYoypA
-         S9Pt+cvRrdTb/S8j8gv7Hvun5DW5m0OXIs4EWD/dcDJdGa/+7ZeaxQoGcoDKVkCPmpL6
-         6TyzFKHKGRF95sFEl75wApx/uYXltkwYX3oZQ2Rl+zvnFqEroHDjqaHOD9ZDPTL33qBb
-         Z6wxD0tQmlXh3m4E+3kpV/tv9WDWcWLWCZHPpPakXu+b8hvvegMWUT+wKEQNjax/A395
-         n9EZ3gzsvKLkuGVK6EydXeUrNp2hfcPAgWuL3XHVriqGNtZRKXmCTW2v/bR2aZCBo9wa
-         I4qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXy8DT1e4Mod07eHgYKQ5V2mr1HQCLnoRHiDGA7EPIcgiRDVkmoQdefmv9Yhg2NXGQ/mtGwipK6w==@kvack.org
-X-Gm-Message-State: AOJu0YzAzo8UDWRzNOE+oVTHxFDbMXKVjVeAzVLxnACij8WGIoMXynOx
-	9dcI6euX4IGa+7BE4U6xT23i3BUIpRDItnF+tE7oN+w8uxYuWYZ0DDrPfCquUMcGM2mMk6cLf9P
-	XWEfrk8pQUQJu0aVi+uBmUtCmIZYOX0I1ksEnoeY9
-X-Gm-Gg: ATEYQzxY0BY6nqW0nADk6OXfpoCnaPcvLe5Tg3ZLp8FnsJoj67B3LwWDs2GtARdFHa+
-	gqunMhiq5VBjxeWTvUOcIi8rfkRrvHvXenY9QgAShcPsEbR2Y5g21Xwmm6xx0aV5wDxAcH6Icgw
-	E7HTgNh97C6npNb5RwbxYbx7w5WN6tKzaT9lch4/2jUJU9gpfQKXmaS8s4JApTQJnBmnrn/cAql
-	Pb1gJrP+9vKf8k6wC0uutHDrNFdh/hTjy0aIU/oKsOjScLi33wkiLHBIHQDZ205bmmSQWrcHrAY
-	s/x6kUP9Y/O6VBINhtKfVeLgAiwcRUbGach7Gy0ijvMvwyPaxlpwr/fyWqt9qPvX/6N9xQ==
-X-Received: by 2002:a17:906:208f:b0:b94:898:7bd2 with SMTP id
- a640c23a62f3a-b940898a1f9mr26074666b.39.1772685117464; Wed, 04 Mar 2026
- 20:31:57 -0800 (PST)
+        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
+        b=ur2zTQMvSJuSeiWDmcvM9600GCZ11D2S9/l4/l783Oe/a076rr6B2WYYZ3Dh8F0+xZ
+         U8XTNzLBSPCq6vHuVfzi8cPaWyyXRcfS7fJWS9hXS47eyGGDU5eOpBGlohoTANGVO9j0
+         tK0ypRITdEe3EtwVMAA2MA1UjypNaJMNSjxtFGM+yv0qo4pUP9uq6kqFyWXAUmKp6Uc2
+         SLa5WOAUq4LuBhVDFFRWtOr1NswT6LiMuYp7ZkIhtcGfw9cibOMCoSiExtwzXpGszZwi
+         fY9HAh3gAg/0DnB4tWQtKvarBCiMf5hSarSgWjEl18B9bfLV5fTY9+bjA8BnnmTyMeFv
+         qQog==
+X-Forwarded-Encrypted: i=1; AJvYcCXbyXkDvpsdIPeRu6jZLY7ZkcC1KiYz7PULVQFMvN3NXW5rmxmOGMHTrSh+u54z43uexckFGP18wg==@kvack.org
+X-Gm-Message-State: AOJu0YwotLyCCrbQwHjqcmnsAcoUZdphaHpwYSSH2G9pQvMU77ofUxgv
+	us2qFaP0YI72wT4FJqBpKYmjU0Wy2CNbmcG3uNDqC3TvKQf/vthuISiVYBut3Ta1RFRQXyfRxLk
+	t73oZ62S8GdlYazyd9b6rNZDFyJs+T70=
+X-Gm-Gg: ATEYQzwNffYauxSpr+Wo8J5AdEubZFx2jR7mF79sOVKsUfYNo9Zvv4dJo6NIFgHGQJw
+	gitK+glok4J2o1QxTvX1qNSUdRO9B5WML2wWhtSferA/65654Y6bLLWnlDXWJ2bHQYD/1xtBN6c
+	ILQsqMAwvDqTZ4NEFtwaObBtIcI8HMruLR98kKxsSx9ihAvkhmcNc4I8eqsRyuav84Kxaocg4jv
+	v8A5tn1rAf7hD0jXP54OaCtVkz3Seo3claXyAL9qGLu+pRhbZjCCXf0NDZBsk7UJfSfn3IOHUEm
+	LLTwfRQUC3+Gaixu
+X-Received: by 2002:ad4:5ecd:0:b0:89a:3bb:3c45 with SMTP id
+ 6a1803df08f44-89a19aee48fmr72084406d6.33.1772685954912; Wed, 04 Mar 2026
+ 20:45:54 -0800 (PST)
 MIME-Version: 1.0
-References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
- <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com> <aadTuvCBxiVimDZA@box>
-In-Reply-To: <aadTuvCBxiVimDZA@box>
-From: James Houghton <jthoughton@google.com>
-Date: Wed, 4 Mar 2026 20:31:20 -0800
-X-Gm-Features: AaiRm53dJeRWd8Nji1GYa5e5Z900_RBsGxiHxN9h3vB4MZepaklzjxRsMiu3r_c
-Message-ID: <CADrL8HUHQDta2mv4TG=f3nYPx5-S5nrywGxQwx78KSe67yjYVw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
- SMMU/ATS faults
-To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, Breno Leitao <leitao@debian.org>, 
-	stable@vger.kernel.org
+References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
+ <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
+ <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
+ <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
+ <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
+ <CALOAHbCma=SW4nu_GPv_pbuuXv1V5JPB-9cA3z1TeemWqU68tg@mail.gmail.com>
+ <CAGsJ_4yAkaqqzSu7SS=_fgZ_AQCqtbv8LmuPGCb7SiFpGk4csg@mail.gmail.com>
+ <CAMgjq7AkvgzW96-JQzEg5c4oW0cMsjPHcCnukCUZXgSvXL4-DQ@mail.gmail.com>
+ <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com>
+ <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
+ <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
+ <CAJHvVci8nc-yTHkAbSEQQtqkRvgATJWcSTwBCY49A5W4AQcd7Q@mail.gmail.com>
+ <CALOAHbC0XbvG4OCy94j+ZUyTZt65QB0Y=p1UwKvGcsgcWKy7mg@mail.gmail.com> <71281163-F081-456F-AFB0-37DC0470850A@icloud.com>
+In-Reply-To: <71281163-F081-456F-AFB0-37DC0470850A@icloud.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 5 Mar 2026 12:45:43 +0800
+X-Gm-Features: AaiRm50jhwY8uCVcJhYNlLo-8R6Rm9EzauWp50Up2YRcFMIRedxN4_4Q_8ecdQM
+Message-ID: <CAGsJ_4zsM--Wzn6-EgRo23uCaii0bszFfRcuYrrKf=-cHgKmGA@mail.gmail.com>
+Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
+To: Bingfang Guo <bfguo@icloud.com>
+Cc: Yafang Shao <laoar.shao@gmail.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Kairui Song <ryncsn@gmail.com>, 
+	BINGFANG GUO <bingfangguo@tencent.com>, lenohou@gmail.com, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
+	wjl.linux@gmail.com, yuzhao@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: byamt6bjspocppxoz15srzha4yd1wxeu
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: 6t87sngzwtyq39ma8bj1319h7rttqr1r
-X-Rspamd-Queue-Id: BAE6840006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772685119-703878
-X-HE-Meta: U2FsdGVkX19bGhuZbhu+j03rqX09V++GSAMJ6fa8g1qNgCK7kHc3mGNJWAGXbh/ZKBwO7ITH9FzQ0+un0AOcQb/TWJ8/Mi3PsZl0PHvfYknhzA3REK0jzXwwojqP7XjOWZfDdOtI8XRsGK4oFOk7EHcPIV4jdnbkRXrMIYTja8X6XkVoyAmSuz4TD04Y3IBHNpgB4jCBuLLojcPqQMaxrcVAo8wBxgwPi1MISpZ9bthoRWPsMMNsTWvRx5ca67uNJxRelNkg/nYt9k/dWiMwDRTPUDd6lqmTsrkOmoXpij5C0/Xa8y0ePmf2Qr1VXUOf4r0IXxHSj5HkMN3D1O8zMvrTLgpZ34qSOil7PZjppGOj0fpIXJd/9BqryYbMJUoZb9o1IgdZKusC1x0E9s4fd10knqsuCbdf4jKch0lOXrheEy66b9CFvgITXUE4GquY6nvAq/JIBL2Tw8JwAAjElw7oxqycIceDh9QgEKSGj+KWNy/L726UEvuBNJHF27snZ/3CN8gv8hJLSjXbD2xNOorwPWcjByL8HhIkgcnlVWNAY80q8pNkNJTNcXJSxduUoHGt7U6dHDD49m3JlvV9IMyenR+RzGnGdNZZYhj77puNryGRe0L1WpIoaPR0tZ52Mrrn3ioFxRUrCXz5kXvM73AFP72P+Te4hVyIK7/O/qxo1/G0A7ymdWJPcE5U5OTbzpLUj/vhmVQMzlvXqzQCuYdcdTldKqI5MFbOU4IywyIj5P+JLcRIA6WM3/Rg0fherErLswhVlwvdBNiBmU+JV4jqF+UewlIWb47DDQ3nf/LRC5UZx5G7++/62ucaeYilRX2X3YCdHvIB9M8Y5XlFe0HpFfS1HnWV/21O953gOMicLvsPhq3Fzzao4wa4ALDA0PsGX1wUBiPm7kEptbdL1+1NuRD6QzwqSLJ0PNCKn86Jmc29kS1R3Tb/0tmKuK9mveqHLOuxOcYoj6BoHLT
- vahfVmLo
- PfEjz014s+frK34EpWFKEO7YEI9VzEReQ6Gvb3TUBKsgrr6miS3+8ylabVLL1dgm2k6yFLM+WH/2e0d2v9En6A4Vf+vB7MZxt5TJ7kbMFhfeurEWwtWMRlalMiHxHv290Sl+5diQGvcOAIXNkfjzZxNosFLiZBmAlFUIqEKIU7MWFJkI+0V5PRUsrkRc+H6S3NydWV6L9MZ1dwKtQkh7Vr9pFt/e5rhSuNGO9d5cJLdWiDm0ib9jMruSMx4wVnH8HD1S/yHVtbSiGbQLxIIRUdI/BzEvb33jxZ1suQXJau8LOZf/ptMoX4+IZngq0TCHIqkoiAjQ0dvfN8QHjfHWmgRPCAx6hAeEagsric52lG0yzztklD9oEKGOthAc9BVX3kuB38NDfI2d/M69qyEsT7+8Zu+Ky4kBbCZ0Zk8m3xiPfGMUD+0Q5Th2eQg==
+X-Rspamd-Queue-Id: 1AC57160003
+X-HE-Tag: 1772685955-510827
+X-HE-Meta: U2FsdGVkX18JvcV0IreP/ik+cnoSEQAPqrTgOJsl2c/i/gM64MMCVlKRZad+9BREVg7zoaQ3TzBXyClq+ECCHJFradNIdGUuzic4N/lzBG9kj5s0AcBNQ5rCNZBaijAWfE5nwO7Zmi+Bts8weMlKjMFNzPt+ltEEeTidjZhcMz3s1oomiK0fEoWAFyuIw0Evp2HuGBSVCp5+aSjyrXk2pYHMWeVE0623bYDfc94+sCfKOYsK8ZNTW781IHnqITcXYtvEQKA7E5Xp7H4VUJxP/aaMMQHJWNaPKuSpQiJjjePhYPRsbLzeYUOJ2YfbU1h7FIazC7rUNPwOqI45utYMfB5dhC51+6Vs3YKwTeT2S6yh6zPljvQwytB3BLQeuQsRQF8jz90sMyyhu/jrIFDx54e6mN+H0d8QGXhazWRm024DHnq4rgw3p6tAnHXjEvVPYcplEKDVHgU+9wvJ8jptpXwMnAB0W6iHtZ4Cpvnnwn0V32itK/XHxLpIT7WbElcEWURV7OuY4o84fsXwDzOg0cERum3j5T9ZUY+cjL2usfu2tdswOM/v0xT7MctVlJ1BFxgK6nfRhYyO7rq/OleAaoiGrJlU8VJS5E2c4gwMWM1KiVkGAEArsea/kZAa3C+gfhN1Bpyq8qqclkbhlq4wRI+FlJTfZfeluqyTHJCa85S4sbsHaco473/9atzH8V5+YomnYJOAgSC2u42RX1/Yib7eebGtgIxDFjPMdI7Ai1CotfxpBjc9ZIOaKidpv4vvS0bWTJicZunlBFE2SXTTolzqSptp7B72uTPwsRQPF4VZp+XYBI1I353f1hMYjunL+SIXcz6GAz1jhSyD3vJ4wXQ3pdN0TjVvNa9iMVV3gXTh3CF1nrXGRHNLXn4FOn/geDI0Vqwo8tnuX3da/8DVGXX1XSp24YRMfvpNVe/PNE1Hq9IH/OfKzPLTAdhFTI00CWulVL7Isvg6x+Ot0nw
+ zFKETtVG
+ 2EkVZHmXGWT4UT6y6ntw35nrisuZGjp9gbjDz73yaKrWXKXws+oIX8hH0xsSt7c+jxfIdrWyCy4MWPa2CFLaHYcfkd69Ma5TOS7M8VPE00EuvV1T7d5b/3vBzcOHk2DO/5tKkUGSI5lZeoqhJB9G0rsF7ahzCLFaFSBIaCgBTOP9KmZzwJh/Kx3EmLuVpideVZ36AKtbJ+BmNiLD9lZfhtWlQfn+tJUVCEomBOecxSo/lEpy1FySMK/hgNfDHLeAdw43mNnYQMETzj/uGqty593sHJHtsIToAC9Pdg3qSyLobgpHsu5MA9C9x1fUsPOZp326m0cZe4hY4QYb4V/T9ARs4uXuk1ZCbFRzvvOryaNc1+9RUJhPinS4eZmpjs+A5QTPT5hPPDRKcX0n6TSqzTC+OpClAk3Cr9LZRSwOm3fx7etc4bqBmLgRgg/TjkkyfRrs+zRj6eLKa1Z6tREJOBHCk0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +153,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 3, 2026 at 1:40=E2=80=AFPM Piotr Jaroszynski
-<pjaroszynski@nvidia.com> wrote:
+[...]
 >
-> On Mon, Mar 02, 2026 at 11:19:46PM -0800, James Houghton wrote:
-> > This is similar (sort of) to a HugeTLB page fault loop I stumbled upon
-> > a while ago[1]. (I wonder if there have been more cases like this.)
+> --
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 614ccf39fe3f..d7ff7a6ed088 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2652,6 +2652,43 @@ static bool can_age_anon_pages(struct lruvec *lruv=
+ec,
 >
-> I see that your commit 3c0696076aad ("arm64: mm: Always make sw-dirty
-> PTEs hw-dirty in pte_modify") from that discussion was picked up and
-> it's very relevant for the hugetlb exposure question. With your patch,
-> do we have a guarantee that sw-dirty implies hw-dirty in all cases? If
-> yes, then there should be no exposure for that path. But it still makes
-> sense to make it more explicit.
+>  #ifdef CONFIG_LRU_GEN
+>
+> +DEFINE_STATIC_KEY_FALSE(lru_gen_draining);
+> +
+> +static inline bool lru_gen_is_draining(void)
+> +{
+> +       return static_branch_unlikely(&lru_gen_draining);
+> +}
+> +
+> +/*
+> + * Lazily wait for the draining thread to finish if it's running.
+> + *
+> + * Return: whether we'd like to reclaim from multi-gen LRU.
+> + */
+> +static inline bool lru_gen_draining_wait(struct lruvec *lruvec, struct s=
+can_control *sc)
+> +{
+> +       bool global_enabled =3D lru_gen_enabled();
+> +
+> +       /* Try reclaiming from the current LRU first */
+> +       if (sc->priority > DEF_PRIORITY / 2)
+> +               return READ_ONCE(lruvec->lrugen.enabled);
+> +
+> +       /* Oops, try from the other side... */
+> +       if (sc->priority > 1)
+> +               return global_enabled;
+> +
+> +       /*
+> +        * If we see lrugen.enabled is consistent here, when we get the l=
+ru
+> +        * spinlock, the migrating thread will have filled the lruvec wit=
+h some
+> +        * pages, so we can continue without waiting.
+> +        */
+> +       while (global_enabled ^ READ_ONCE(lruvec->lrugen.enabled)) {
+> +               /* Not switching this one yet. Wait for a while. */
+> +               schedule_timeout_uninterruptible(1);
+> +       }
+> +
+> +       return global_enabled;
+> +}
 
-At the time, I was unsure that the patch made it *impossible* for
-Linux to ever write sw-dirty hw-clean PTEs, but, after that patch,
-such a write would have to somehow avoid pte_modify(). That seems
-unlikely; that was satisfactory for me at the time.
+Hi Bingfang,
 
-I thought (and still think) that explicitly fixing the HugeTLB path
-would be a good idea. I think that patch wasn't taken because it
-wasn't necessary to fix the bug I was staring at.
+Thanks very much for sharing. In my humble opinion, the code feels a
+bit hacky. If we need to do something to reduce the probability of OOM
+without fully fixing the issue, Leon=E2=80=99s approach=E2=80=94trying to r=
+eclaim from
+both MGLRU and the active/inactive LRU during the transition=E2=80=94seems
+less hacky, assuming they show the same likelihood of triggering OOM,
+while still leaving some race conditions there.
 
-So if you want to take the patch to the HugeTLB path[2] or improve it
-in a v2 here, please do!
+> +
+>  #ifdef CONFIG_LRU_GEN_ENABLED
+>  DEFINE_STATIC_KEY_ARRAY_TRUE(lru_gen_caps, NR_LRU_GEN_CAPS);
+>  #define get_cap(cap)   static_branch_likely(&lru_gen_caps[cap])
+> @@ -5171,6 +5208,8 @@ static void lru_gen_change_state(bool enabled)
+>         if (enabled =3D=3D lru_gen_enabled())
+>                 goto unlock;
+>
+> +       static_branch_enable_cpuslocked(&lru_gen_draining);
+> +
+>         if (enabled)
+>                 static_branch_enable_cpuslocked(&lru_gen_caps[LRU_GEN_COR=
+E]);
+>         else
+> @@ -5201,6 +5240,9 @@ static void lru_gen_change_state(bool enabled)
+>
+>                 cond_resched();
+>         } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
+> +
+> +       static_branch_disable_cpuslocked(&lru_gen_draining);
+> +
+>  unlock:
+>         mutex_unlock(&state_mutex);
+>         put_online_mems();
+> @@ -5752,6 +5794,16 @@ late_initcall(init_lru_gen);
+>
+>  #else /* !CONFIG_LRU_GEN */
+>
+> +static inline bool lru_gen_is_draining(void)
+> +{
+> +       return false;
+> +}
+> +
+> +static inline bool shrink_lruvec_draining(struct lruvec *lruvec, struct =
+scan_control *sc)
+> +{
+> +       return false;
+> +}
+> +
+>  static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_cont=
+rol *sc)
+>  {
+>         BUILD_BUG();
+> @@ -5780,7 +5832,10 @@ static void shrink_lruvec(struct lruvec *lruvec, s=
+truct scan_control *sc)
+>         bool proportional_reclaim;
+>         struct blk_plug plug;
+>
+> -       if (lru_gen_enabled() && !root_reclaim(sc)) {
+> +       if (lru_gen_is_draining() && lru_gen_draining_wait(lruvec, sc)) {
+> +               lru_gen_shrink_lruvec(lruvec, sc);
+> +               return;
+> +       } else if (lru_gen_enabled() && !root_reclaim(sc)) {
+>                 lru_gen_shrink_lruvec(lruvec, sc);
+>                 return;
+>         }
 
-Thanks!
-
-[2] https://lore.kernel.org/all/20231204172646.2541916-2-jthoughton@google.=
-com/
-
-> > [1] https://lore.kernel.org/all/20231204172646.2541916-1-jthoughton@goo=
-gle.com
+Thanks
+Barry
 
