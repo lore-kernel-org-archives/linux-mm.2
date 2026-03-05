@@ -4,103 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E265F47CB6
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F8AF47CB6
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 19:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C87E76B0089; Thu,  5 Mar 2026 13:59:48 -0500 (EST)
+	id A1B2D6B0005; Thu,  5 Mar 2026 14:05:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C49336B008A; Thu,  5 Mar 2026 13:59:48 -0500 (EST)
+	id 9C90E6B0089; Thu,  5 Mar 2026 14:05:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F026B008C; Thu,  5 Mar 2026 13:59:48 -0500 (EST)
+	id 89DA46B008A; Thu,  5 Mar 2026 14:05:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A3AD46B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:59:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 403E114025F
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:59:48 +0000 (UTC)
-X-FDA: 84512923656.18.6097DA2
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 379671C0010
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:59:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Yu9Wl8qU;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772737186;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A06B6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:05:52 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28FFA1A027E
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:05:52 +0000 (UTC)
+X-FDA: 84512938944.17.63498A5
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 115C740005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:05:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fuic1s1y;
+	spf=pass (imf12.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772737550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xIAr9uTlkQoiGY2a6nmMxMk0lhXg3OGIQh+EEVGCqF4=;
-	b=doyIrw70HrwG186c796PG9ZM9LFJDbsbmFje81u1xnKKAZZ/RkO0Ec/XmcAjaZ/mbQGUET
-	rBKen+sjPjkilUywOJXWh0fomeoSGX4RNgCVgOFjEz7RplJR4Capv4HfaafIGCqrRVSbQA
-	gIe829QtIMVxCVmLZGwJlxIZHLWIINM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772737186; a=rsa-sha256;
-	cv=none;
-	b=oExEzOkNcmalybRXSc3phV2B+FBknXr5CzDo4YRorghaKlqt3XvWGqiO5NIOmKwXRU8R4X
-	Y0uWex+92qPAzDgcT2yVC9Uyq/dVPlrnf0YpUpoV/+2JRwpqFOYaYoOod/fRns3aSoCZTx
-	CZcMsKspEe9L+8DH++CXGqtIsun3Zis=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=Yu9Wl8qU;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf21.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 64393B3385;
-	Thu, 05 Mar 2026 18:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772737184;
-	bh=xIAr9uTlkQoiGY2a6nmMxMk0lhXg3OGIQh+EEVGCqF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Yu9Wl8qUgY0NYNYCLaNF90IA2VZUwszxKLY9WUGmYRyRQhTHIHYTlLLlG0+XVxrWL
-	 rSmpq7m2UiDoXwbdQXlWk5RjV+G3XTm/FdOMIhrogkHuuxyBmsm/lAnM9lv15/pCXV
-	 4qf8YBlQ5sdheR8gzAfvo9MzQ9ZSxydSweDd/HoU=
-Date: Thu, 5 Mar 2026 18:59:43 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
-Message-ID: <aanSnywUXTVPaYUj@shell.ilvokhin.com>
-References: <20260304151335.172572-1-sj@kernel.org>
- <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
- <aanIdk2i-Eo9M967@shell.ilvokhin.com>
+	bh=DUfdbW7OxfhKiR73pKbZr0uWEl4+qEzhZGOpiUb5qj8=;
+	b=450GYkHiHfMtrY9Wg9xy2YOE6Ze16T0JopiVwMUsiv6mVhjg9sag4gjR0ES4wKrbwyvcfs
+	Bg3oF0a2g7l9vxbMICutKuJz+YM7DC5igC5FyDijs3CsnVbeS3W6fUb1lnWCF0ZKGN2eUY
+	KEJgCzwRjuMQO8D0Wa4e68do4m8rSFQ=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fuic1s1y;
+	spf=pass (imf12.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772737550; a=rsa-sha256;
+	cv=pass;
+	b=Io6JY0KNs+h0M3ahtx1j64xYtftqwC0PJdrCo8KNBPr6q8Bh4tGoAUNtKDdYpGc9aMqLBJ
+	CnCG2uXDyd6Jf/ZKRtf1EGk7bxCrdDUdjqdHKL3LIEyZY2dTjlh30q/bpC+N8WehPisWRb
+	TmE+SJmMug9U8gNTz5GubGG3LmzISeQ=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-797d6bde07fso5082107b3.2
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 11:05:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772737549; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ne/xLpGV1huKmwN2j6fc9cCSN/Ix0hLphuIM4eS8VaS7uCtZZHxCMtXmtQFTCwOQii
+         inf+ORJDlJS2RiJiZTjtgTp9aEAPLdmLbbroB6CV1lH80m15YkHId+uWP2BaxHN7q8L7
+         X4zmiYxY4zjlBw2D52pn7jQBbQj9MqezCkciwctg2vRnYazktdvqX49cuzCXeuTnc1TQ
+         53Um1+UA9/P4FmXu7mXcQHS1/2Q06gvv/NqfAur2kfKfXPcNSi7uepCJppza2ct0YvEO
+         rQeX4sOXkDyJRk73fmNK8FASz5EhV4WaZ2nFFmtUOtMUsR1Ifk319D+ZAoI9PCVUul0D
+         NOfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=DUfdbW7OxfhKiR73pKbZr0uWEl4+qEzhZGOpiUb5qj8=;
+        fh=kSLuP4BoKkwoQtAPzxZPFQV5CGO1uAgWswVKCCI4Ln0=;
+        b=kWtE7mfMKhknITyaioJ8B7pByq6EoASiQZOX4GPf4BGi9EiY57DDh6k1Z9/V7F0mKR
+         lrOa8yMeV67o6X7mcs0gtER++bLg5kCHVHSmdmpEA/qSvH5hHbV7qUVPKOoLkivCEH+p
+         vULKGN3J7wfImzQTEREvHDqU+dS2L2PV2MEUYLDwLW01MMXgPpFoaoMTObeTUgnwWWot
+         Xzg6Y6q4I5Ega6c/iYxHGpIOAxNkP8SGSUmbgaK/cLkLqUHJ6FwV9UaJnHFq4MUTB1a4
+         4oHD+mE1LXrLV+yVUOJTMYEicsJYFtijzaCSkz+zY110xdltNzoGaW0XIbTKyp05HRPz
+         3McA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772737549; x=1773342349; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DUfdbW7OxfhKiR73pKbZr0uWEl4+qEzhZGOpiUb5qj8=;
+        b=Fuic1s1yyfKtnajSky6761nIzxxVeCZjqvVZApcbDSSi5BugzVmISLdzhkUpkq+q7+
+         4NukEOhiWQQdHxiKZq2Oa+hdWrlC1C07sYH01ZWTRdLfPmRlk2GPoJgygPgmo+3BpmI4
+         bZDMF49LzQGR3xBEms1s1v1mY7qgaXJaMz7GIUOxnsiMrM4fVd2vc+qw1cz79Lh3/X27
+         jpgDkBzIFkQJAg9AbwVpAek3W9VC+PuRqFySbllseo+2j6Csj9tiP4MHUWTbCunZWmPN
+         Ii2XD5zyjre7tARudIAKfJpJ7YzbqN+BtdbKiFxfRMqUbSgDlW8HyMomQUYEQedU2L8M
+         5r5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772737549; x=1773342349;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DUfdbW7OxfhKiR73pKbZr0uWEl4+qEzhZGOpiUb5qj8=;
+        b=dLTkoMOriEUw015YiJ2iY97rnSIDifH6gB9C8jtRUjAVIvbNIFqlcPruqnbJq0Xqkv
+         WP/qoh/sjm8Lt4A8AvJsEmb1FOPeQbRszmrFKMgN6ujS6xhizHWKo1hte9p//y6vwFUY
+         LQ8JsXYB56zdYB8mEFe0hd+Mv0Fi4f2pyjnkOqGxGK2iafaCsYxTY7PJUHDbTZu3jqMx
+         piVvkS5tdaYk7rfOJN5XvGi+6rypftOC0eNEtq1pHro+b5R4KEdszkzvWfhbRjBAaSRB
+         tY5UaODNY6xtk42ksElIjIXRLxiqdASh6gqRlmHbfJExszkdKD6iSDBIXxd0DY8oK27J
+         4q8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUn+k2rai7TPcQQSk+wpQTS0gpYpiyx2bJQvuPuGsC3Qt3naB1YPuK7khSizWrd8dW0H1K0YR6yTA==@kvack.org
+X-Gm-Message-State: AOJu0YxlqwCrR4+fLnqTEJbD2NNlczii1aHFAHr2Bpk06Aj9RpmDi5kg
+	0jIfH0vQhe93GbVLeBqPUpbkLKZbe5qd9U8T7JuekRQ1L4BkJ0H+hCzGRBttebizDiiq+DyWHbG
+	lumIzDmI1FCQhX76Jq8AXEuYhvmWsngU=
+X-Gm-Gg: ATEYQzxH+h1n4jT4IRrbTl/jx+P9EpDfKy8+jJ3sqHsxkZTnemBvEImMQUcUnp3/lPM
+	reOkZPqMYcOP869vb7SJLMgOnktxpxdyceIFdi7RIOoD568gCYojlVtJQZ+GqDumOQA84FFJr8o
+	JU5D9Voj4EE9JgDcHjVm0KXvh2Qwh28z/2XI7Iqs/gaNd3py+ZZhv2iuwHEo8KZZdYmjK1t83rD
+	mtVTvhP9eI4pl8fZ8KxSsmp6qGbGeITkEGFSCfaf+J3JM99qXQ8qYsUlEk1wXxcU7SDA3ehWQUj
+	tgForA==
+X-Received: by 2002:a05:690c:e3ca:b0:798:1de:f894 with SMTP id
+ 00721157ae682-798c6c843e6mr49794737b3.4.1772737548885; Thu, 05 Mar 2026
+ 11:05:48 -0800 (PST)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Mar 2026 13:05:48 -0600
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Mar 2026 13:05:48 -0600
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <bd935d83b2fe3ddfedff052323a2b84e85061042.1770232424.git.m.wieczorretman@pm.me>
+References: <cover.1770232424.git.m.wieczorretman@pm.me> <bd935d83b2fe3ddfedff052323a2b84e85061042.1770232424.git.m.wieczorretman@pm.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aanIdk2i-Eo9M967@shell.ilvokhin.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 379671C0010
-X-Stat-Signature: woskasp9bbe1eiyn315euydtxqboqjz5
+Date: Thu, 5 Mar 2026 13:05:48 -0600
+X-Gm-Features: AaiRm51wLGHSZ9SaMaT4E-JYzg2vW23YHvcBblsyf-Lc9uQK9qhJFdTRUjtyx2g
+Message-ID: <CAPAsAGxpHBqzppoKCrqvH0mfhEn6p0aEHR30ZifB3uv81v68EA@mail.gmail.com>
+Subject: Re: [PATCH v10 01/13] kasan: sw_tags: Use arithmetic shift for shadow computation
+To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Kieran Bingham <kbingham@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>
+Cc: Samuel Holland <samuel.holland@sifive.com>, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, workflows@vger.kernel.org, linux-mm@kvack.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 115C740005
+X-Stat-Signature: myyh6tq3ro4dq6drzgt4689qu4n7qhts
 X-Rspam-User: 
-X-HE-Tag: 1772737185-862504
-X-HE-Meta: U2FsdGVkX1/VPDnv92TDQf3NfhItQHvFv2yNVKgEHKEKq0SYfHEyCBtuUYddFJx/itWt0QRW2+zN0X48YMEpeScUl4Yt3tTcQw0hq8DEyDVHUUwUIwCTHVXld8LedCR+w9nZJVvIBymc+5YA6vIL7AVkHgIw0kCgRRLl6M5QGxK154/YYOGnOYxQbFN/fkbp7xLUFMfGNXUa0sEs/1BDsshezj4qfAJMD6exA+a0krRtaK2o/a4QWOu36Lmumx7pi6fwy5zS2O4s2V7M30qPW3zt4yuOxLe5gSzaPTJwQhVaMFCtsmzJHiWZ7hm0cjoy0IWsNbhc9hMmatKb8n/H5uYG0YroOmJbmxAw9nXGTvrhBd44a0XWWAllI/NirV+o8PKuRcU1itrL3+brPRv56aNqhqxTkxhqcq4GdBnWhFaXBdofk2TbzZqSk/HOo8KsICm95vC2jMQIinoybB5GmjLDCOzIdBDQ+5ls8L+WjKxR8zmnpC4OgfQxgvaRqxBJytp6uW3zkUjzKmYYpHzvtve+eResUjAYZLR5y6E+zvdAD70MiUwJ9L18DRBbr7UVHgdguVIiHY8yhT8O08XM8GL9yrDHfftuBcdGx81BwwVRulMyXids2/0ysoJ13rg++sPji69BxwzerH2Y6hhVLDSVmAtMuWNpaH3tCf6+iWDqppJ1PuVIbxrTAXPT7RCkxpJq5tQHoAbSzvM67c6hDsV6JyHgS+FPFexqsNPCFdlN3/mu0BPHMKdmzQ+LAa1kVhGQcEFlDdntBpbRPYarU3umNlF3ihCoFtZLzbu8nSrf3wryjDpqci9xP7HsiwSeDRoO0il6CU4h7Ikxf2J066P8dB9O6AXFfKoVzOjgwK8Z0XGAiN8trnuzy9H1QI0seJSbEp2X5gbSZk+CW+1A91Rhtj8f/tglrN48s8x6iZJ4CMtwCK05QTTUzaaSrpLvhLg95N2aMsMVwIQ5aQU
- 2RUz6bAr
- A3Iq36OIjiD2Fdw/sEEFN1ycEsfALy9+F3eSoWK8YFKqqwQOE5bJ8LmmpBgAuYOe6L0azIg8ek5e7GmTGVk9B6nfP3oCP07pqi9q5JsHjkIaVUuYUAGtr8CXbuT9/X5Xh8jm/9VdW6npTBCM4BGdt7OBTay3G/4XSvFLOALpnWKAyzK37p0s4PEIpnNqm/tezXFN2YpHBbZt8c0goSDEQuNNsLmi1BkyxyIbOwXkTB8XwiYe503Vh30dXv34u3nkrtUBMny7zgyGcVq8AFlmNyUnp+6UX4V4AV2GlbzmeK+miyP9OKka9O8R2abXK0J3QK5TVbclw3UbtzgfCWFn+4TQHL2cR/w8qeOVW4ctrDc3rWav5X5rTLerhbEb6weCczZBR1/7zfWL4CNfMQaCDEKjABvI6bhRX5uiRzYHcehJkCyE=
+X-HE-Tag: 1772737549-794964
+X-HE-Meta: U2FsdGVkX1/gLOzQ/oeG1C11YYybBQqXwqlVJl+8AIhded+KluzWV2j7YiDjUCf5osifLnHweFYWng+QIs1z8wnYEXg2ZvqqKbZLl5sEyWJ7NdXW/1QGQ959KZoEQZUpq8fiVTaiphYiXctSHavHJ8kqcgI+wdTvskzuyj7XmSNMd7aqUc0LESZVtCe1N1bMEVSjqKndgMtX7+QVH8I1dORLv1vzbAXAuLK8q/HzNa5d1b+BDt2AZ/brZif2xrqsREVRDPbMRzHsAlYecMT0LVjwoNPvRJG50geGwBoqdM9Gd9GjsNzX2wJPdK6MiyMTMmTefpCeBHPYo9u3jroajcnbj89rjX+sUjAD30lQs3IUkYDqxCHw0ZDe364WmrTQXKaFD54SZWTXlLwMkEVWUSQXOR+dUn8jT7yYEQBYTufjjbb2lXyDSS+avuFjz0b9aNAsXKOk3aWnYApF5IFX5PRmRTn4bNeYl4Knw+WCM6LT93BJ3Pp54yHmgJI92eNZObcdrhO7Yzbxc0ynUJ4vNX76WkUcgJPYvSTbVaVVVBjdFKRXVzQ4XkkuRX9tkntXazCXOUeoqK2R/gc5SWmNmeDZ2otQZPs5KnK+Of9pFy0mJ7el5+gLtY0Kbbpr0lcsuAvmeNB6PUgAl6ya89UFdB/8L5fFtCaEV3OkpuVJ0HHNoLk1W95S1l5EfYbgoqqR1yI4/+zurUG94iR9RDZhTxkHzZLmowQF30r7bsXy7VzshuAyk7XMp/VXR/NyKVsmxanE7goNkteGi/HXPSniarr/Twj9QIlXytqrh59mhyYXNt7E+7HbOKCKj2CdLDqKJ8kBwH/CaIdj565zf9lMqy89PWNGZgvOAWQsaylh33JagFQvUIqFlL/DTxqGtWWp0p79aXljeWXyMoNJvrDbYDiAJvEfgQCrVNZNof1EdtAYTuXvO5M6ubVVVpQgwnijhOgaXvuHK+sFAlD87C0
+ nLH+vjMO
+ STevFIvclAh29jM3HYtfxLialDzB+gZHF4mQDqzd9so/TuLnghwbHzhZzeglqH2BisAt48cWz7znb32CPdVxIqBk0cI30+kYZ9z/PGY7GVlyVxFqDYKspjlcNokgAYbC6Z3O5uvID7nqJQEtFj0FhnvRYqwN+LGvhr9t83kNo6pDKTnw28FKpZb4zpkTlW9mCVIk3lZ54QVaBz3wcCSa3I6xCnauqR0pBQAjsnolycYF9mvFNJP+xf22W4jLJWCwFB4UlP7ZP07Ho8ym50CWI1S7sdIg1qw8Sipw3E3R9tg+2JqUqP7gGlNwhgTnt2sf86IU4Z6DIz6ftupZjoZ2iIqOI3cpvlvkPyqkNx2KAdZgBWiuo7FadDeiArlv5g/kQ82yML3HT2LMBAW5+JNEpyB3ryznyDCuV8sPE8AkgpKFjaZA0Pi2hNRCITapLVzRPTpf4dgvzb3vWM8w/AUiuV74jwt1i6Fm4QLOGVKW7uiqmoMMhezb418B1EBklb4k7/GLwSkmP8hO8bLQZrB5iTq0pc6cKOy0xwEDe6GPxYR0vhzTlBOsKbViXigqQQ9rYtII0SkLitbP43fmS0YuBWoiLqDCu8uKqLMjC7P23uF6rp9zSrYLEGfSts6KDDgPI9yOP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,327 +149,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 06:16:26PM +0000, Dmitry Ilvokhin wrote:
-> On Thu, Mar 05, 2026 at 10:27:07AM +0100, Vlastimil Babka (SUSE) wrote:
-> > On 3/4/26 16:13, SeongJae Park wrote:
-> > > On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> > > 
-> > >> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
-> > >> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> > >> > 
-> > >> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
-> > >> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-> > >> > > > 
-> > >> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> > >> > > > > > This intentionally breaks direct users of zone->lock at compile time so
-> > >> > > > > > all call sites are converted to the zone lock wrappers. Without the
-> > >> > > > > > rename, present and future out-of-tree code could continue using
-> > >> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
-> > >> > > > > > infrastructure.
-> > >> > > > > > 
-> > >> > > > > > No functional change intended.
-> > >> > > > > > 
-> > >> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> > >> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> > >> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > >> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
-> > >> > > > > 
-> > >> > > > > I see some more instances of 'zone->lock' in comments in
-> > >> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
-> > >> > > > > 
-> > >> > > > 
-> > >> > > > I fixed (most of) that in the previous version but my fix was lost.
-> > >> > > 
-> > >> > > Thanks for the fixups, Andrew.
-> > >> > > 
-> > >> > > I still see a few 'zone->lock' references in Documentation remain on
-> > >> > > mm-new. This patch cleans them up, as noted by Vlastimil.
-> > >> > > 
-> > >> > > I'm happy to adjust this patch if anything else needs attention.
-> > >> > > 
-> > >> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
-> > >> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
-> > >> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
-> > >> > > Subject: [PATCH] mm: fix remaining zone->lock references
-> > >> > > 
-> > >> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> > >> > > ---
-> > >> > >  Documentation/mm/physical_memory.rst | 4 ++--
-> > >> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
-> > >> > >  2 files changed, 6 insertions(+), 6 deletions(-)
-> > >> > > 
-> > >> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-> > >> > > index b76183545e5b..e344f93515b6 100644
-> > >> > > --- a/Documentation/mm/physical_memory.rst
-> > >> > > +++ b/Documentation/mm/physical_memory.rst
-> > >> > > @@ -500,11 +500,11 @@ General
-> > >> > >  ``nr_isolate_pageblock``
-> > >> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
-> > >> > >    problem due to racy retrieving migratetype of pageblock. Protected by
-> > >> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
-> > >> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
-> > >> > 
-> > >> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
-> > >> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
-> > >> > for the rest of this patch.
-> > >> > 
-> > >> > I was initially thinking this is just a mistake, but I also found Andrew is
-> > >> > doing same change [2], so I'm bit confused.  Is this an intentional change?
-> > >> > 
-> > >> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
-> > >> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
-> > >> > 
-> > >> 
-> > >> Good catch, thanks for pointing this out, SJ.
-> > >> 
-> > >> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
-> > >> However, in Documentation I intentionally switched references to
-> > >> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
-> > >> internal implementation detail, and direct access is discouraged. The
-> > >> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
-> > >> so referencing zone_lock in documentation felt more appropriate than
-> > >> mentioning the private struct field (zone->_lock).
-> > > 
-> > > Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
-> > > zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
-> > > better.
-> > > 
-> > > But, I'm concerned if people like me might not aware the intention under
-> > > 'zone_lock'.  If there is a well-known convention that allows people to know it
-> > > is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
-> > > humble opinion.  If there is such a convention but I'm just missing it, please
-> > > ignore.  If I'm not, for eaxmaple,
-> > > 
-> > > "protected by ``zone->lock``" could be re-wrote to
-> > > "protected by ``zone_[un]lock_*()`` locking helpers" or,
-> > > "protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
-> > > 
-> > >> 
-> > >> That said, I agree this creates inconsistency with the mechanical
-> > >> rename, and I'm happy to adjust either way: either consistently refer
-> > >> to the wrapper API, or keep documentation aligned with zone->_lock.
-> > >> 
-> > >> I slightly prefer referring to the wrapper API, but don't have a strong
-> > >> preference as long as we're consistent.
-> > > 
-> > > I also think both approaches are good.  But for the wrapper approach, I think
-> > > giving more contexts rather than just ``zone_lock`` to readers would be nice.
-> > 
-> > Grep tells me that we also have comments mentioning simply "zone lock", btw.
-> > And it's also a term used often in informal conversations. Maybe we could
-> > just standardize on that in comments/documentations as it's easier to read.
-> > Discovering that the field is called _lock and that wrappers should be used,
-> > is hopefully not that difficult.
-> 
-> Thanks for the suggestion, Vlastimil. That sounds reasonable to me as
-> well. I'll update the comments and documentation to consistently use
-> "zone lock".
+Maciej Wieczor-Retman <m.wieczorretman@pm.me> writes:
 
-Following the suggestion from SJ and Vlastimil, I prepared fixup to
-standardize documentation and comments on the term "zone lock".
+> --- a/mm/kasan/kasan.h
+> +++ b/mm/kasan/kasan.h
+> @@ -558,6 +558,13 @@ static inline bool kasan_arch_is_ready(void)	{ return true; }
+>  #error kasan_arch_is_ready only works in KASAN generic outline mode!
+>  #endif
+>
+> +#ifndef arch_kasan_non_canonical_hook
+> +static inline bool arch_kasan_non_canonical_hook(unsigned long addr)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  #if IS_ENABLED(CONFIG_KASAN_KUNIT_TEST)
+>
+>  void kasan_kunit_test_suite_start(void);
+> diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+> index 62c01b4527eb..53152d148deb 100644
+> --- a/mm/kasan/report.c
+> +++ b/mm/kasan/report.c
+> @@ -642,10 +642,19 @@ void kasan_non_canonical_hook(unsigned long addr)
+>  	const char *bug_type;
+>
+>  	/*
+> -	 * All addresses that came as a result of the memory-to-shadow mapping
+> -	 * (even for bogus pointers) must be >= KASAN_SHADOW_OFFSET.
+> +	 * For Generic KASAN, kasan_mem_to_shadow() uses the logical right shift
+> +	 * and never overflows with the chosen KASAN_SHADOW_OFFSET values. Thus,
+> +	 * the possible shadow addresses (even for bogus pointers) belong to a
+> +	 * single contiguous region that is the result of kasan_mem_to_shadow()
+> +	 * applied to the whole address space.
+>  	 */
+> -	if (addr < KASAN_SHADOW_OFFSET)
+> +	if (IS_ENABLED(CONFIG_KASAN_GENERIC)) {
+> +		if (addr < (unsigned long)kasan_mem_to_shadow((void *)(0ULL)) ||
+> +		    addr > (unsigned long)kasan_mem_to_shadow((void *)(~0ULL)))
+> +			return;
+> +	}
+> +
+> +	if (arch_kasan_non_canonical_hook(addr))
+>  		return;
+>
 
-The patch is based on top of the current mm-new.
+I've noticed that we currently classify bugs incorrectly in SW_TAGS
+mode. I've sent the fix for it [1] :
+ [1] https://lkml.kernel.org/r/20260305185659.20807-1-ryabinin.a.a@gmail.com
 
-Andrew, please let me know if you would prefer a respin of the series
-instead.
+While at it, I was thinking whether we can make the logic above more
+arch/mode agnotstic and without per-arch hooks, so I've ended up with
+the following patch (it is on top of [1] fix).
+I think it should work with any arch or mode and both with signed or
+unsigned shifting.
 
-From 267cda3e0e160f97b346009bc48819bfeed92e52 Mon Sep 17 00:00:00 2001
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-Date: Thu, 5 Mar 2026 10:36:17 -0800
-Subject: [PATCH] mm: documentation: standardize on "zone lock" terminology
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index e804b1e1f886..1e4521b5ef14 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -640,12 +640,20 @@ void kasan_non_canonical_hook(unsigned long addr)
+ {
+ 	unsigned long orig_addr, user_orig_addr;
+ 	const char *bug_type;
++	void *tagged_null = set_tag(NULL, KASAN_TAG_KERNEL);
++	void *tagged_addr = set_tag((void *)addr, KASAN_TAG_KERNEL);
 
-During review of the zone lock tracing series it was suggested to
-standardize documentation and comments on the term "zone lock"
-instead of using zone_lock or referring to the internal field
-zone->_lock.
-
-Update references accordingly.
-
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- Documentation/mm/physical_memory.rst |  4 ++--
- Documentation/trace/events-kmem.rst  |  8 ++++----
- mm/compaction.c                      |  2 +-
- mm/internal.h                        |  2 +-
- mm/page_alloc.c                      | 12 ++++++------
- mm/page_isolation.c                  |  4 ++--
- mm/page_owner.c                      |  2 +-
- 7 files changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-index e344f93515b6..2398d87ac156 100644
---- a/Documentation/mm/physical_memory.rst
-+++ b/Documentation/mm/physical_memory.rst
-@@ -500,11 +500,11 @@ General
- ``nr_isolate_pageblock``
-   Number of isolated pageblocks. It is used to solve incorrect freepage counting
-   problem due to racy retrieving migratetype of pageblock. Protected by
--  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
-+  zone lock. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
- 
- ``span_seqlock``
-   The seqlock to protect ``zone_start_pfn`` and ``spanned_pages``. It is a
--  seqlock because it has to be read outside of ``zone_lock``, and it is done in
-+  seqlock because it has to be read outside of zone lock, and it is done in
-   the main allocator path. However, the seqlock is written quite infrequently.
-   Defined only when ``CONFIG_MEMORY_HOTPLUG`` is enabled.
- 
-diff --git a/Documentation/trace/events-kmem.rst b/Documentation/trace/events-kmem.rst
-index 3c20a972de27..42f08f3b136c 100644
---- a/Documentation/trace/events-kmem.rst
-+++ b/Documentation/trace/events-kmem.rst
-@@ -57,7 +57,7 @@ the per-CPU allocator (high performance) or the buddy allocator.
- 
- If pages are allocated directly from the buddy allocator, the
- mm_page_alloc_zone_locked event is triggered. This event is important as high
--amounts of activity imply high activity on the zone_lock. Taking this lock
-+amounts of activity imply high activity on the zone lock. Taking this lock
- impairs performance by disabling interrupts, dirtying cache lines between
- CPUs and serialising many CPUs.
- 
-@@ -79,11 +79,11 @@ contention on the lruvec->lru_lock.
-   mm_page_pcpu_drain		page=%p pfn=%lu order=%d cpu=%d migratetype=%d
- 
- In front of the page allocator is a per-cpu page allocator. It exists only
--for order-0 pages, reduces contention on the zone_lock and reduces the
-+for order-0 pages, reduces contention on the zone lock and reduces the
- amount of writing on struct page.
- 
- When a per-CPU list is empty or pages of the wrong type are allocated,
--the zone_lock will be taken once and the per-CPU list refilled. The event
-+the zone lock will be taken once and the per-CPU list refilled. The event
- triggered is mm_page_alloc_zone_locked for each page allocated with the
- event indicating whether it is for a percpu_refill or not.
- 
-@@ -92,7 +92,7 @@ which triggers a mm_page_pcpu_drain event.
- 
- The individual nature of the events is so that pages can be tracked
- between allocation and freeing. A number of drain or refill pages that occur
--consecutively imply the zone_lock being taken once. Large amounts of per-CPU
-+consecutively imply the zone lock being taken once. Large amounts of per-CPU
- refills and drains could imply an imbalance between CPUs where too much work
- is being concentrated in one place. It could also indicate that the per-CPU
- lists should be a larger size. Finally, large amounts of refills on one CPU
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 143ead2cb10a..32623894a632 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1419,7 +1419,7 @@ static bool suitable_migration_target(struct compact_control *cc,
- 		int order = cc->order > 0 ? cc->order : pageblock_order;
- 
- 		/*
--		 * We are checking page_order without zone->_lock taken. But
-+		 * We are checking page_order without zone lock taken. But
- 		 * the only small danger is that we skip a potentially suitable
- 		 * pageblock, so it's not worth to check order for valid range.
- 		 */
-diff --git a/mm/internal.h b/mm/internal.h
-index f634ac469c87..95b583e7e4f7 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -727,7 +727,7 @@ static inline unsigned int buddy_order(struct page *page)
-  * (d) a page and its buddy are in the same zone.
-  *
-  * For recording whether a page is in the buddy system, we set PageBuddy.
-- * Setting, clearing, and testing PageBuddy is serialized by zone->_lock.
-+ * Setting, clearing, and testing PageBuddy is serialized by zone lock.
-  *
-  * For recording page's order, we use page_private(page).
-  */
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 4c95364b7063..75ee81445640 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2440,7 +2440,7 @@ enum rmqueue_mode {
- 
- /*
-  * Do the hard work of removing an element from the buddy allocator.
-- * Call me with the zone->_lock already held.
-+ * Call me with the zone lock already held.
-  */
- static __always_inline struct page *
- __rmqueue(struct zone *zone, unsigned int order, int migratetype,
-@@ -2468,7 +2468,7 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
- 	 * fallbacks modes with increasing levels of fragmentation risk.
- 	 *
- 	 * The fallback logic is expensive and rmqueue_bulk() calls in
--	 * a loop with the zone->_lock held, meaning the freelists are
-+	 * a loop with the zone lock held, meaning the freelists are
- 	 * not subject to any outside changes. Remember in *mode where
- 	 * we found pay dirt, to save us the search on the next call.
- 	 */
-@@ -7046,7 +7046,7 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
- 	 * pages.  Because of this, we reserve the bigger range and
- 	 * once this is done free the pages we are not interested in.
- 	 *
--	 * We don't have to hold zone->_lock here because the pages are
-+	 * We don't have to hold zone lock here because the pages are
- 	 * isolated thus they won't get removed from buddy.
- 	 */
- 	outer_start = find_large_buddy(start);
-@@ -7615,7 +7615,7 @@ void accept_page(struct page *page)
- 		return;
- 	}
- 
--	/* Unlocks zone->_lock */
-+	/* Unlocks zone lock */
- 	__accept_page(zone, &flags, page);
- }
- 
-@@ -7632,7 +7632,7 @@ static bool try_to_accept_memory_one(struct zone *zone)
- 		return false;
- 	}
- 
--	/* Unlocks zone->_lock */
-+	/* Unlocks zone lock */
- 	__accept_page(zone, &flags, page);
- 
- 	return true;
-@@ -7773,7 +7773,7 @@ struct page *alloc_frozen_pages_nolock_noprof(gfp_t gfp_flags, int nid, unsigned
- 
  	/*
- 	 * Best effort allocation from percpu free list.
--	 * If it's empty attempt to spin_trylock zone->_lock.
-+	 * If it's empty attempt to spin_trylock zone lock.
+-	 * All addresses that came as a result of the memory-to-shadow mapping
+-	 * (even for bogus pointers) must be >= KASAN_SHADOW_OFFSET.
++	 * Filter out addresses that cannot be shadow memory accesses generated
++	 * by the compiler.
++	 *
++	 * In SW_TAGS mode, when computing a shadow address, the compiler always
++	 * sets the kernel tag (some top bits) on the pointer *before* computing
++	 * the memory-to-shadow mapping. As a result, valid shadow addresses
++	 * are derived from tagged kernel pointers.
  	 */
- 	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
- 
-diff --git a/mm/page_isolation.c b/mm/page_isolation.c
-index cf731370e7a7..e8414e9a718a 100644
---- a/mm/page_isolation.c
-+++ b/mm/page_isolation.c
-@@ -212,7 +212,7 @@ static int set_migratetype_isolate(struct page *page, enum pb_isolate_mode mode,
- 	zone_unlock_irqrestore(zone, flags);
- 	if (mode == PB_ISOLATE_MODE_MEM_OFFLINE) {
- 		/*
--		 * printk() with zone->_lock held will likely trigger a
-+		 * printk() with zone lock held will likely trigger a
- 		 * lockdep splat, so defer it here.
- 		 */
- 		dump_page(unmovable, "unmovable page");
-@@ -553,7 +553,7 @@ void undo_isolate_page_range(unsigned long start_pfn, unsigned long end_pfn)
- /*
-  * Test all pages in the range is free(means isolated) or not.
-  * all pages in [start_pfn...end_pfn) must be in the same zone.
-- * zone->_lock must be held before call this.
-+ * zone lock must be held before call this.
-  *
-  * Returns the last tested pfn.
-  */
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 54a4ba63b14f..109f2f28f5b1 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -799,7 +799,7 @@ static void init_pages_in_zone(struct zone *zone)
- 				continue;
- 
- 			/*
--			 * To avoid having to grab zone->_lock, be a little
-+			 * To avoid having to grab zone lock, be a little
- 			 * careful when reading buddy page order. The only
- 			 * danger is that we skip too much and potentially miss
- 			 * some early allocated pages, which is better than
--- 
-2.47.3
+-	if (addr < KASAN_SHADOW_OFFSET)
++	if (tagged_addr < kasan_mem_to_shadow(tagged_null) ||
++	    tagged_addr > kasan_mem_to_shadow((void *)(~0ULL)))
+ 		return;
 
+ 	orig_addr = (unsigned long)kasan_shadow_to_mem((void *)addr);
+@@ -670,7 +678,7 @@ void kasan_non_canonical_hook(unsigned long addr)
+ 	} else if (user_orig_addr < TASK_SIZE) {
+ 		bug_type = "probably user-memory-access";
+ 		orig_addr = user_orig_addr;
+-	} else if (addr_in_shadow((void *)addr))
++	} else if (addr_in_shadow(tagged_addr))
+ 		bug_type = "probably wild-memory-access";
+ 	else
+ 		bug_type = "maybe wild-memory-access";
+-- 
+2.52.0
 
