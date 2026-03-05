@@ -4,112 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BC9F30937
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D720F30939
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:11:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD0836B0089; Thu,  5 Mar 2026 05:52:01 -0500 (EST)
+	id 5097B6B0088; Thu,  5 Mar 2026 06:11:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7AA96B00A0; Thu,  5 Mar 2026 05:52:01 -0500 (EST)
+	id 4EA1E6B0089; Thu,  5 Mar 2026 06:11:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8A256B00A1; Thu,  5 Mar 2026 05:52:01 -0500 (EST)
+	id 3E8D96B008A; Thu,  5 Mar 2026 06:11:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 998CC6B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:52:01 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C6DF16085C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:52:01 +0000 (UTC)
-X-FDA: 84511694442.16.3BF7873
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 80410A000D
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:51:59 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ACsRmmHR;
-	spf=pass (imf15.hostedemail.com: domain of 3TWCpaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3TWCpaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C4396B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:11:37 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8BE68BE87
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:11:36 +0000 (UTC)
+X-FDA: 84511743792.02.65779E3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C7AA3180003
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:11:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EvAgJJnr;
+	spf=pass (imf16.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772707919;
+	s=arc-20220608; t=1772709094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZqmM9VzOQ/O9cEt4xOeQgOy+8UiQys6mbbZHkCbCuo=;
-	b=kmZC8QnVILO0clUPF/hOpjANCZB4G1IG7YNjApprWpAnbOQm1kxGRBkeomQd4LaMM+cdX9
-	dClC9fL0k6p2SNHsdgFf4zT+45/pFNbKVbeghwa+xEPJEtK7wP2JD2JXxGFTOXs5t3p2JG
-	QlFmhmYNtETa9H+tiNa2knvtfhrh+mk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ACsRmmHR;
-	spf=pass (imf15.hostedemail.com: domain of 3TWCpaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3TWCpaQkKCAgitqkmz6ptowwotm.kwutqv25-uus3iks.wzo@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772707919; a=rsa-sha256;
+	bh=NICvv8J3MIUF9ByAPF1vMZRw9pZ9D4dvv1VCtt3dYU4=;
+	b=YA+sNV3kKupgVn/EC1Y0cd3cIj2Tq1ofLCxm2OZo3tHlywp7ChqydLh2PZ+956hMxcK+eW
+	lKijA79lVHtFD/QmQ38Fe9ytk5jpr5AR5gDfX+/DbnvRUifE65I9DulJzwFB1O9hjl5qZo
+	vOFT+7BFoS974anjTCwU+k896heASII=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772709094; a=rsa-sha256;
 	cv=none;
-	b=yPpDqP9mm8MojDxgn8naObti2dU0ch/Su1Pb/1YcVCMmDNIH1gnK4zzkmruFHa5/tUGOz5
-	gf0tSoRNYTb7kl3+L36j6rGPE4wGlkCMOYzDqHa9i6/hgzZSJGrPN2kI5s+P9icPDWEsNy
-	rGbFQWXIcwJZrFHOK0ExtHT1eF4vUKo=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836b7c302fso80530865e9.1
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 02:51:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772707918; x=1773312718; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZqmM9VzOQ/O9cEt4xOeQgOy+8UiQys6mbbZHkCbCuo=;
-        b=ACsRmmHRYHhhLHGR0Vr1VwbTPbG8APCzrKi21MKHC22XNhz9Fu2W0SbxmDlOlmYX4O
-         652kWOgVNR1wu/4NTJmax/rnOb73jMlJViyG+P9XA9F5CD6KO523trC0q4rWwJJgIwkM
-         gouu04/DOdIiurLlQxWy8avk+gDJTDiL9VOdKJcfcBQoNFVMHDmClvmdKIsLHr/ZKluS
-         uovAiiG6cLqXqNCmAtUScuAZaXdj6lY4madjdYJviJ+vCk3Lglqy5fQ+luv4aV3fzzpG
-         Taz9Uw8TLJj4bT5HiNDWekjGXcuuV7P6BcYPuURkUG8aYcmTmKNrS6CCvOTqGejICfog
-         o0uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772707918; x=1773312718;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZqmM9VzOQ/O9cEt4xOeQgOy+8UiQys6mbbZHkCbCuo=;
-        b=tAfVQb5cLR0RmdW+QjPh5z+dTsNzLftLe7C+O0GrEFIRnSfvhk/z2O9hoxl9ZgPDqV
-         UUmFENS5fcWgxXNqq+6XkeGJ5hw1j0OPvpo/bS2b31FChJ6UH6YvadL1hmFH1ePzrhkJ
-         5rat55Kue7/+9dPLrjhg4Zh+/6svyAxohQVdpHWc8Bp8KcGF8NDHagnQndgaUQ0FUjNl
-         SWkbrI2Nbb/uZ70Jil7TgeHM9eHMccIfsmp0Tk0+yaHlw4eHh7pb1guJ1jMOndmoBtgM
-         hxNIR5f97C+ywj0GM2Mv562yYw+jBqmEThnuEs6fqNT1PyIFEzldF4AcfWlHP7E8DAEp
-         WJkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6kq0ixgOt3b2Jmik8jSaTS/Q7XLornor1dOrgIIXFmzOcMRrVYyxYhqcTvkoJ+iKkvuYefC74Lg==@kvack.org
-X-Gm-Message-State: AOJu0Yzg11dJVWnz9B/8x33pfUSxhJvPdTdgk30LfrbrEFz/YxpyFk5D
-	5C6X69Z2BAKyYPPcSxp6UOR5gx9+HCvoZiOEkWOo1J77lXtJmu3T45yqXQ23LYu6ORbNM8wK5ng
-	Wfv6MHjhi2SC1cusIfw==
-X-Received: from wmpb29.prod.google.com ([2002:a05:600c:4a9d:b0:480:4be7:3f3a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c8a:b0:483:456a:5146 with SMTP id 5b1f17b1804b1-4851989fc75mr80019835e9.25.1772707917693;
- Thu, 05 Mar 2026 02:51:57 -0800 (PST)
-Date: Thu, 5 Mar 2026 10:51:33 +0000
-In-Reply-To: <177270557911.104478.12699746103670684667@derry.ads.avm.de>
-Mime-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-1-beb8547a03c9@google.com> <177270557911.104478.12699746103670684667@derry.ads.avm.de>
-Message-ID: <aalgNO1gRJdrWm4p@google.com>
-Subject: Re: [PATCH v2 1/3] kbuild: rust: add `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Nicolas Schier <nsc@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 80410A000D
-X-Stat-Signature: xtiqy9oyx7k4jswursf5n77kmnyhkkfx
+	b=4hV2s/BOhhCJI9Zpwj7gEtPzGL9umGXKprhoNPHLlUmOCHBixdnuC68nRqWRJBITX+5AaX
+	maGWReyBRAn4Nk5GtCLvB/1d9rssVASBr6/1Xa7g9fCQD/eJpQCs9yRSAG9i5jdYw8OXTh
+	8g56JYB1XeVgsAHfTYqk9zJsDPUOeMw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EvAgJJnr;
+	spf=pass (imf16.hostedemail.com: domain of ardb@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3666761340
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D890C116C6;
+	Thu,  5 Mar 2026 11:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772709093;
+	bh=NICvv8J3MIUF9ByAPF1vMZRw9pZ9D4dvv1VCtt3dYU4=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=EvAgJJnryaqujXE2dARD97LtcPKl7wltiLzQZqUQrrRC6hc34BjcLsUhSnKdoya5h
+	 z/c2Gd4E3Y1SWD5KR56lb4xkuXWZzyAdxbihaebpLg+ueePuXDl3Y5v3ftVHw/TTyT
+	 Dig5xVIU6X/L9x12WJRHV4/JNQkUFdbF3KN9DITZ9mp/HRBAcLGAbEgJzZa4OsFlnZ
+	 FGyz/oeLkdD6cvQNTMGXHMIItKPEKBTM1dfnhpsbU2sNj8a5cQGGJ/W8sF4wjsG6Q2
+	 EwlA2uiTrykPkZk+o/z4U+AYzXn7jzf0BlEIC4iG4rFCJOcjJTDLpPhQN6dC0WCC07
+	 BugRcJ85j8++Q==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8D7F2F40068;
+	Thu,  5 Mar 2026 06:11:32 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Thu, 05 Mar 2026 06:11:32 -0500
+X-ME-Sender: <xms:5GSpaSk5SyAKmyIflqUXYy9VMs699eQjD-Z-eC2fmpBlMXy7su9T6g>
+    <xme:5GSpaUoAvXC_OHFMrlo57ko8vFr2y3wZqm4mIokfdltCnsowdSEmrfFx6ADhbCZEl
+    cr3yEFsa_33kV10cqXgSEhfj151Ts978iTg1FPax8Pup8TmRCvk2mk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieeivdefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
+    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvueehiedtvedtleekuddutefgffdtleetfeetveejveejieehfefhjeei
+    jeefudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grrhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeel
+    qdeffedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrh
+    gurdgtohhmpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepsggvnhhhsehkvghrnhgvlh
+    drtghrrghshhhinhhgrdhorhhgpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehtghhlgieskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgiekie
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdho
+    rhhgpdhrtghpthhtohepihhlihgrshdrrghprghlohguihhmrghssehlihhnrghrohdroh
+    hrghdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgt
+    ohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:5GSpaSfxGytkM113DN7Mwym-LRxF2ufvjMsVoSKkjCAXKaZI4gbUHQ>
+    <xmx:5GSpabz2oDU9ZdPs8giRBhgh44XriiI_Yc0fFfDT1ZeIwhpHCuc6VA>
+    <xmx:5GSpaX2JAdOBMS_5wFuMYuM5_WtTbstyxDcl6obfNmF3MV6hALwATg>
+    <xmx:5GSpaSdYSp__UK0sQAJCt3_zJwpnhZwff_t24xTQZD3fI_aXLyEFcA>
+    <xmx:5GSpacUjivZtZ3ABUWxmfwUB-Y0cfnK8BHxZJYQt1ORxQxg_8z9jOSGu>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5F204700065; Thu,  5 Mar 2026 06:11:32 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+MIME-Version: 1.0
+X-ThreadId: AusYBuezkfp3
+Date: Thu, 05 Mar 2026 12:11:12 +0100
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Mike Rapoport" <rppt@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ "Thomas Gleixner" <tglx@kernel.org>, linux-efi@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Message-Id: <7e4f6a4b-fe41-482d-a4cd-5a059e1626e6@app.fastmail.com>
+In-Reply-To: <20260225065555.2471844-1-rppt@kernel.org>
+References: <20260225065555.2471844-1-rppt@kernel.org>
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: h4asf7krzbmo5ng1xo8mxf57sad7kr5i
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772707919-832687
-X-HE-Meta: U2FsdGVkX1/Tgxi+Mgj3+HnEsGGiHzKOP+FykqONAu7AeLEr9cv1sb6pdglYGLMqpJ9T7QHGH4cSw8hmNo4RmsWRnMErrojLFMhOExy8RTQaDD1BAAg5oxN9Fr583oGHCnAejgcQpdhIdxj444MIARnHX4bE0er/j3fdePAYoI9Pub2dpSAX+36yPEBqj4Aw6hLml86UVSFivzSIZ3igm9e+6ZQn2hRH3+TRPywf8RBiSVmNoEbmW5dCZtck9KRhTqt1ovkB/R+Zj+HPR5/bvW88SEwpd6kvoiAVwGR7SZH0KG7zYcGWTAZhXSDSuZFfJY7k0ZLVLFy2f/r+qZbWJm9+0HnWb5aAB8DQk1Yfkf3sjNoNc98JupJmLlM6g4kgDNNGuOdP4uALbSpTj4d/qLTsztW2qXLQ3xF9Vg2d1U2HVp1ppvizUXvnc2QAXaD3i7oJI9RPh3DrsUSUeVbwOn60e5aMpu5Yv26OMMdp1F7SwuW9maL/0weoQTbaIxMxqTwrmWTuu4/9b4Y9hjPJ5715AN8qQl6FIaY6sO7x0ynKJ8aJ3LiZw8rEaqFJJzWxXrJ0ijM0znTm87CZBSFFDxB7SCwhxoVsjPz4v3ysipkQ+foR5FjQrIPt+47HCHEGGMKgGgB9UEvEE5hdjnDuQ5RaFGOjkupT0bg1Wp4LeWfYsnDH2EglFHPBMGNB8Lmw1csAsp5cUDXEqRQGfvq/K+lEisAPPEPjYSL4esDVpTDmfSiif2iQjtv/gWLxOtmv67sRuPZ7i/D1hSsjFxHrgjoYfVc+JlNEChbDrYBm3VB6xT6AHBQV75xf/iqWhlLBqgWM9x9sQBOopukQSBJgeL7a1V5v7KOvDXnaHDD7a5j08+bWByOCHmCB0Olf+vYY6znzQ1RgG8t2YrBiEN+j8LCKDDrifX1uyghGD2PEIR8h+i1rfiqRVwm0Z39Wt0sbGQvjkwlcBzTIN4XYKbz
- TEnNPHjA
- x1N7RieEKhn5no89/94VckJ0EJxEdMM1r1CpCbhhmPR6sKDd7n66y8MPx/M3iBDbj4uEZRlBBG/cMpujzCnfT93ttnItQ8KMAJgKarYdBIX82goEughRMfWtI1ZkRjZN86dOgGal/KVCSxM2CKTCd59FXqEKsCMDyEaoKI52D7NmacLyiuAKDBLbxZeLhVptXZQWletY8uDsApqiWwJX7rGaWxkOaZAs23Z88TS9co1zY71J1f4Zb9nCd/Ncs9FRnxJel6ROmhfuUVtoKW/Z8hSVC1B+8YRWGzAapHXQj5mtqd7RJoVH6GaUuLQdg9FIpynqOFEgJBRu/lbF4OZ1OaVpjAAIeeB9ZAggI1QMUTA/kpVp5WEr3NkoHealek7cXnNVMF4rw2zMNTdv/QsKs9hruyxLsgUXeBtMMc8IfyYcgefWu2lPavyjZSFGr6F8NS3tUQtAxdBf74RY7C8PLyBn6uzw6JcIdfpqnGcv9F7L85kRvhsmYFJWNvZPmIm+jH9OQ+HnLTH7mrSPZbJCqO9T3voSJoqiAgJ5lyh7bqWiv8vMRFnNn2a8hKZqJLfGfI/c7eDiDV65oZNAQyTFuETCriaNyTUwsB2fLfGKx+AODog5JcXynACyq+c9RIblvWskoruFEE4pYauXXf3sW065Fps6GBisLziJtLVn/iPIXoohwNz4k8ExMuX5UG9tm7WbnWnZGf9nCNWxxd4fILZ3N0KJHfpEeqN0s06tGwbHwvNl9or6OKMFuu5yQEfyin1ahpqC01P3Yu9NxLTgCrcf8YQ==
+X-Rspamd-Queue-Id: C7AA3180003
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772709094-175969
+X-HE-Meta: U2FsdGVkX19/egqeH2esked8Am5CUNMcd3Ymu2rKFhRx7XdUzb/aiVNLPPYMxFPVnSjARBeqZBdFsBciqptFXkjwdoFeBSiYTOaO+pYLm58wLuj+WWVhdOZLIE9DHghKUiodbkyIbAmcopu+3jFlPdCealtg/kXmyS44qXm7joyViRdE3SuKEMvd11R6ORbDwc7OFBiY57oJKz7kulAtVM9XdBKw7zUhpwdSiDENSDEdEkeHAfuXQynxv2ChQjoqtWZ3by0zlSArMo3j8xJBhZnWUmtPXxfa8d8X3tq+7Kk4AR6sT84dPV6BtAc9IEhUEYizmy3WsIg4gUj6HRP4/mzu4ZFA8oLcNpLAluron4+T8AMCqC4nDOu1JRn095l3fo+mgKjWL3N3d6N0qrNyxbj7pOX30wT663DHHljTkyqeP/VEGZ4VItdVViO4VTQrjCERNcyp9L1x+bguwr8f1RYWv8RPw9NFZbaABhQAp2BCznV1nrX2YwjLrDn7I+XK/Sqk0eVDe8B12J2ei+RKPFAqUt2R9A3G1CedgIOeWsJ7dLhCDPFqzfquukrXCFrJbYdfpqivq5F2ELQAW90LPAQRPvOx3fmlobrhTugIuenZ6zN1JXHRLroSD4l3qUlBIGtHgkB6sEzaeQZARn+dJ83WdssduyCiu8EhZ8va5xdlgzXP/b2M7mVsPXwjlBn2qh+UlHX9hIDkH6qiUiR0b2HrOJGYqb/vNU5wGGTo1HzsAGSBvkEJcc438+bYLfnB7Rd5Zf4UJf0snpykVU+ALcz9hUIFRfZ6OXbvJHpcNWboP4apKfRpl4MA7EtNg/3VMJi9w8C1EwcRs/Go/1Z4YghwqZSdC79JVJ9+uH+NAJ6cOU5Vjrj3DgFl/Jy2sKG1hhRmXLK7ZNTWuFZtMbiwtyofMRQPp+VIvVBOd36xgwA7HGKTE3cZWwIcV9kfH6yC16qRGraw31nuTJ0tWTD
+ CivzZN2t
+ +Rb1n500BKjFtVnkUPum3z+zo59bkxHzdDk7pioGhWYiLTUaZYFvk2ScVaZ2KniEBBSoYI19LGlSKqhY2YhuUT6wMh8xHA/FBNtOdkp3LxkK6ZtL+PIdlhwI29PtuOXG19ZKD43fS9PA4LXVQIxv8hzMx9SCiIeI0IJ+wIddIejpqFSr4SfW34OlPtWKyzNZHlvJ7cohi/zlL8XF1Zmf5H1ReYH3UoZRSjBCOZFLGCJPYL6vQu6wuhS3ThRWzN8pbLT0cSpxz6HtEvF4IKs4MqkPpa5EMXuSwEMyG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,9 +132,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 11:12:59AM +0100, Nicolas Schier wrote:
-> Reviewed-by: Nicolas Schier <nsc@kernel.org>
-> Tested-by: Nicolas Schier <nsc@kernel.org>
 
-Thanks!
+On Wed, 25 Feb 2026, at 07:55, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+>
+> There are two issue with that: memblock_free_late() should be used for
+> memory allocated with memblock_alloc() while the memory reserved with
+> memblock_reserve() should be freed with free_reserved_area().
+>
+> More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> efi_free_boot_services() is called before deferred initialization of the
+> memory map is complete.
+>
+> Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+>
+
+Putting a fixes tag referencing a patch that dates back to 2011 doesn't seem that useful here. Is this really an issue that goes all the way back? Or did a later change trigger the actual leak?
 
