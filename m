@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCCACF33A61
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 13:50:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B1BF33A63
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 13:52:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1607F6B0093; Thu,  5 Mar 2026 08:50:00 -0500 (EST)
+	id 9834A6B0093; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10E0A6B0098; Thu,  5 Mar 2026 08:50:00 -0500 (EST)
+	id 95B886B0095; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A506B0099; Thu,  5 Mar 2026 08:49:59 -0500 (EST)
+	id 83D246B0098; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E66EF6B0093
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:49:59 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A5021B65B5
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:49:59 +0000 (UTC)
-X-FDA: 84512142918.20.1D609C7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E96C3A000A
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:49:57 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oH0UVxs4;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 73DB36B0093
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33EB286090
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:52:39 +0000 (UTC)
+X-FDA: 84512149638.16.8B7D77C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 45392100011
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:52:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIo7W+m2;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772718597;
+	s=arc-20220608; t=1772718757;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ij9ZQ1SicbX5YaYzcXcuC58JchX9aBxHBrBX4TI2QWA=;
-	b=iMMRdGBlegX7hgGfsGUoLb3X12cWMop3zhA/WNskGY47HJFxcCcW6oJvdG/amugWvgorhb
-	Iw+AtCI6/Qblgw3T5TuMRKmLXH+RfrlybPXvy6bdoEmoM2djzGolRrkFseIP9K+xRvT+9Q
-	N/Z+g4F+nvWpWHksFIyqGRyyA97Wb+A=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772718597; a=rsa-sha256;
-	cv=none;
-	b=8KaIuhSzwVfOblOzXX0UXqwQqwmEsPX5WyQ+1dkkReTs+N9JPVOB00Z2FhW9KQtoLAuL9U
-	xUnQEglktiFzk2wkU8K5z5H8Cr1Ng12NdBX/PX0AmtQ7Q8QcbsOozNEX8TX5X1QJBXK9zW
-	ZxQmN8CQhY6rV+zh0IjeurXsdnNv3/0=
+	bh=8qGY6vjbIJd6EKuaWbF09ZksWAGqo2RcvhJgoJvuuHc=;
+	b=v+bRseKjf5AmwNa2LJHuneoORU8X+C2yaIIaLAAInVPVVK7o5qS1iKxtBhQ8F2kcND05f9
+	XbSCaLd3/BujAguYHXmpDSgGl7UfyRertXNezHd0cKhU1CHDx7oJTrFmBQ/xFX/+C3I5Mn
+	K5RODLcPPXhUYQ1DeGYfeIJ5x0SirWM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oH0UVxs4;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIo7W+m2;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772718757; a=rsa-sha256;
+	cv=none;
+	b=7uh1AXiyCzOr2KmZSZNxFVietp89Aq2gNZvuN6MfT4YglTLKtIeXE4YPqo9+5HDJIh1Ep8
+	JfxuXqfMzBZkXAuJx/HE0qKhy8QTXrgeGktxmpzHoKUYkRBUQfQlx8ZHyQnl7i/wx33+oz
+	q75RY+tQ0HuqImLKgKDV2lCYWmjxsIE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48C3461340;
-	Thu,  5 Mar 2026 13:49:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB46C116C6;
-	Thu,  5 Mar 2026 13:49:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 55F5D41E4E;
+	Thu,  5 Mar 2026 13:52:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A352C116C6;
+	Thu,  5 Mar 2026 13:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772718597;
-	bh=THQH0jwrkcgEmFBbelIzbjWfTDAOwMdA3JscKunt13o=;
+	s=k20201202; t=1772718756;
+	bh=xiH0k3VnNllwhvF0paWR+j9imnqSqZXaJMfyHs6hjKM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oH0UVxs411+JrTgw2Aqfi06lX96UFFwLn8HhU2unuUYfaWESx4EaoAxv5a/aXFLQb
-	 js5x3SCula92ouhUp6X/iksTINxckX1ZCqev7Nb2yVID9SMl04LTTt1RI68vLRr4+j
-	 QINbAdIcWeFm5xaR/Hp9/JEwIumpvjdFd+ETtWWHLZEEVujDvFaD3YIYu+AoOHstU5
-	 PshSTkqRPdftjziV4KacfRrL+6/9cxQNRPAQKEN6Ayz0wG3/FhffbiHz8T2XWGyNUs
-	 dNHd/EeUFreF5Jj6WWHwo2miSP37hQ2RbJ+ogWcjcoH6Br8UTJ/rZtOL70HQoA/wh8
-	 3oIR98wTwy5/A==
-Message-ID: <f5ce8c6b-d8bc-414d-ac6b-167b59c1174f@kernel.org>
-Date: Thu, 5 Mar 2026 14:49:41 +0100
+	b=EIo7W+m2a6MwdU63DHKHmCU4WCG3j3Le9SNvYGeDQNElh0arR8m0fBDU7v+bT+p/q
+	 yqAP6G0WRAYmL3dXHDQQtNFLFJj8JSSRroSHRGmZWMsP7KKQfblh8Pumvo34yIogfh
+	 pGk1Zd/yVhILcMc1gIrdLloWJrr2cmioihCmW7IUiKWCQQX/CMsVv86ZB+Mr1UGy9B
+	 S7D0J31EC80E3MyhRlTC94FEBty1YKo4jRqjpXknMSvwlOQ7fvIOPCZ1krhJrXnXt1
+	 vU8btOW9WX3rCMO9VA0HyLjWvxJ61yrkg17/YuzqyBjy9gxtGBwttUjzSyRnx7DJNM
+	 VekRfeij1nOuQ==
+Message-ID: <f11ec383-d688-4512-a9ea-700cc2d42f3a@kernel.org>
+Date: Thu, 5 Mar 2026 14:52:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] mm: reintroduce vma_desc_test() as a singular flag
- test
+Subject: Re: [PATCH 6/6] tools/testing/vma: add test for vma_flags_test(),
+ vma_desc_test()
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -97,7 +97,7 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
  linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
  ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
 References: <cover.1772704455.git.ljs@kernel.org>
- <3a65ca23defb05060333f0586428fe279a484564.1772704455.git.ljs@kernel.org>
+ <376a39eb9e134d2c8ab10e32720dd292970b080a.1772704455.git.ljs@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +144,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3a65ca23defb05060333f0586428fe279a484564.1772704455.git.ljs@kernel.org>
+In-Reply-To: <376a39eb9e134d2c8ab10e32720dd292970b080a.1772704455.git.ljs@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 45392100011
+X-Stat-Signature: cjifxa1d511u4neyrpqcgzh356m78gmu
 X-Rspam-User: 
-X-Stat-Signature: 8gxiaj4116e5szoeqs13m1wjpu454coo
-X-Rspamd-Queue-Id: E96C3A000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772718597-19772
-X-HE-Meta: U2FsdGVkX18IzPHz08u3LXwQqYO+/5FNTJFr666uYQvlbLo1ZzazK6qy4faH3H2O+ej3msdTrqzuQ1ixmKQt8DyNcHSeElRZgMndabh6fjJgeado3bfunUjOntkVqZJdxXZE4u5wqQHda0tklDrTZSTJZ6BIRTO4bjIc2gW3ce4ekClhsdiX7T5CNv52V2p2Bbo73c9jvPaAgZM6/0p2KUF8LfYEXQ8swi55gTWCRQz+9xulBtlRO1yb48+Csbr8JqQXSTjG/zhWM/Q+H4ZZD/eInWwEC39p6WrO+SF5RhL1PbROvfMGg85d9L4qfkQSUz2xR/MOMnouYmzXxI6Bd4CTqLv+S0exoS76FcT2XQRmwwH+cO0BiScMPIVAvXNig9jqnz0PpIyqoPEPyc4AB311dQRizttw8QQ4/HV+HzdQzX+IynxXUm36z0gUpX8ODufHZA56Jw0W5L8DW+VAyI7jI4b3cb3+gPS7F8SRXcuk0Xp3TDenu8GWX8FJuWGB14t25OAjaq3S4+UaiZ3GlcA+Rf2ZY1eGN5QPXPnd3JJddNvT2wqcFwTzLz6NQqhcQl3Wad6goIdEQa832IzX83nmCx6o3WAKqAqRc9Wf67M8elRQvJjl6wNV5OxOeXmUoPMsDaCBZGXC33W67W1ZphZxC5WYdOBi1QwpffaZebCqnV+4kNO69GwG1eT3UCpxRqxoajQguetZshJwMaWmIDcUUBRzlcEOmwzWXwsy+HkCgelPAImpnW43kssXkcEpcQfUje1pI13jG3Gm8kuXmSKqoFJlXuw6PziVdtdX/0M7qbB4BlPLpCPqhqZqVEUNad2O5+/+ncHc5uuAgcKF/OxrWBBMC66m7MsWzKrmgBYAeiWt9oe71jWGWF8NfXVOdEK4gySjfss7gQWbKAqFZJTYp/EQ1irKs7l9r+Lewwb0py5w3Va6wUVkXmuq2jsunNJ6Rm710dGAK6TGD99
- mKWki1C1
- lVKUs5Nb0iK1VF5x7s1WjNgx0NuEckbCe5Z3ZWP7cppQVgfjMzxpbtS+wVd4MFdpHseIRk3uWgOtmKE5aTniP8AYD6y62sKZ/k03Y+SC3K6IT+V54Dh65x8USE69oCahRogFNyCono2Oeg8CNbMPZiQ10ltK5QQNNkshyThBE/UkwZUnIdm7gg5njTUm3T+E7QJMvOT6/7hqzmWBtZ7gTcOZGGqy5Sc9alEkaJJzzJhujoeNZFeOzvFdhef/5ORWIOJn52oJjgd4HLWu/YW5xGD4eEOFzQpAOUAP2bA+5XA2PmD9z+IFqlf8WOUbVrXwZUhJj3FlLhxJikYE=
+X-HE-Tag: 1772718757-671154
+X-HE-Meta: U2FsdGVkX196oAcazILaiH6TFf8edp61Bk6/swki1JJVR96hBgjJe9jGx67ayebdv/YsiFkFN0SQsqKVVFHF+BFJ/coC586PKWFVOgenXlXwBQ7n8y7p1FNe4/m9BvNRzEqMY/pQn98Sd9fhw8Kq8s0+7oBcLwkQqZqsiOEcZadzWP1t4gQnl/+4Av4q0xxQrmUMQOYjoMueMMvrzsD5KQqEo30uyrZTc+J6lXQqPfvVpG6WPvuvdqrhq5Wt+quCK7hl/Yy3sapdDDh2OmUl8E/IPsda1cuyGq9+XiDync0PduLdQOISO5pL7L2weUTfh8Nwb5z8NiVPiefRSZTccS8504pK1p4LTH+9Boymqbj1gsNvj3kGQpifQGzf29lbP60xwb/HA8IRyWzN0mWqdxFDjuAaKVecrJpEF0QhuZcRDStnZL2N3VkepFe0Hp2YY/TafCZ9zmMAf8ZgN4nxbTU1i7Ge7DZ5406vlMuXEZh3mkrTLPYe9fPDdZImq7Fg9rSjaSrJGN+nXtkVAPsQi+RpdMy5VWMNYo+17J/lA0eNeKt1iMP+x+cgEAlbhBqSyWs2PcSz6OFiG0Sk2XOCU4lpvI87Rwn6M7QMhZNKv1kyiEyX35NNxyGt3QHUIeJ//ZEvmfGfyjGkspUb95jOivjBmKpYao6l9zHu/kRY2TuqaPKQF5ZHaIKafBzX+UB6qDUoBvzQIXG6MMNoGp0ByROoymaFI1d2qq2aZclvV4y03oxr7Px76JrOC7SJO4C5J4gnMDdLCGZYPafKYVOrAFtGNeY1Klthg/tMBIu8lx65o0hKhlSwMTJLqCONChJZvKmP96UNewgYjd+QunvRgpDEbubzshaQlS6Qrt/t53bzKpXZj1ZCgCiLCzH2ThU6ODSdr9Al80cFW3Eoi02cEPW9kITZvxyL9bZQn2Yr6JRXWNMpdKPBs/9WHBtJm3y2TZ3llQyJp2OPkDKF+60
+ lQLmnHYw
+ ozKpsvpPQ9+4oeGhloCvHG6FynA/6TJQjUCKNDj/swwowMYQmkWu9udJk/8e6royXJxGYBlQ7ExtrHEZOYK5zNKoSoB5izCfODp+Sj7AZtMsI3r4SegcKZysM83Zy36RzKt1EDVm0juEfkyCyhqF8bK3om9N3Tk2yTC2+OAS7ujiKX+okiFJiERATiu21XRdipWUJyFLloBPP11TJbs5RjiQkSyyl7dzAbwF79bQCfXvXZAFT4pQoSMA4+80jGUAakoYDKyxegyt/c40uGiIC5Y8K0BOVPpqTjclt+H5qa8fYSvJR0IHWnHXTSAw5kPS/8khL8QKWZe8/g8U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,21 +163,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/5/26 11:50, Lorenzo Stoakes (Oracle) wrote:
-> Similar to vma_flags_test(), we have previously renamed vma_desc_test() to
-> vma_desc_test_any(). Now that is in place, we can reintroduce
-> vma_desc_test() to explicitly check for a single VMA flag.
+> Now we have helpers which test singular VMA flags - vma_flags_test() and
+> vma_desc_test() - add a test to explicitly assert that these behave as
+> expected.
 > 
-> As with vma_flags_test(), this is useful as often flag tests are against a
-> single flag, and vma_desc_test_any(flags, VMA_READ_BIT) reads oddly and
-> potentially causes confusion.
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>  tools/testing/vma/tests/vma.c | 36 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
-> As with vma_flags_test() a combination of sparse and vma_flags_t being a
-> struct means that users cannot misuse this function without it getting
-> flagged.
-> 
-> Also update the VMA tests to reflect this change.
+> diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+> index f031e6dfb474..1aa94dd7e74a 100644
+> --- a/tools/testing/vma/tests/vma.c
+> +++ b/tools/testing/vma/tests/vma.c
+> @@ -159,6 +159,41 @@ static bool test_vma_flags_word(void)
+>  	return true;
+>  }
+>  
+> +/* Ensure that vma_flags_test() and friends works correctly. */
+> +static bool test_vma_flags_test(void)
+> +{
+> +	const vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
+> +					       VMA_EXEC_BIT, 64, 65);
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+When already using numbers, I was wondering whether you'd want to stick
+to numbers only here.
+
+> +	struct vm_area_desc desc;
+
+
+struct vm_area_desc desc = {
+	.vma_flags = flags,
+};
+
+?
+
 
 -- 
 Cheers,
