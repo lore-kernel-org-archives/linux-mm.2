@@ -4,157 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEE2CF33A78
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 14:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C8AFF33A75
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 14:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD1A06B0005; Thu,  5 Mar 2026 09:48:20 -0500 (EST)
+	id E57B66B0088; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7E906B0088; Thu,  5 Mar 2026 09:48:20 -0500 (EST)
+	id DDB4A6B0089; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C80F06B0089; Thu,  5 Mar 2026 09:48:20 -0500 (EST)
+	id CD9A06B008C; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B88356B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:48:20 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F7141B6CF8
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:48:20 +0000 (UTC)
-X-FDA: 84512289960.03.CDF216B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B8AB31C000C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:48:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kShRucOc;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BDC376B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65F4616015C
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:51:22 +0000 (UTC)
+X-FDA: 84512297604.12.26985F6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 9299DC0002
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:51:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772722098;
+	s=arc-20220608; t=1772722280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s2FkFDLoJCQXpmv+E3QyTQUefEYgfsmGgRIT/zlJWqU=;
-	b=ChAqIdwoZ8K72pf80GajVNRaY7/Yqnt8UVMpUz1BhCp2adLW5um8YFG5+JBAaP2l1/brV/
-	YePfWYH0lHs9wJfSzfbQqUjQT9OG3PtRflFBLzSENPI3SkEsima8a80o27ehn/M/Z8BtT+
-	oq+pQmcYqaMH0ro3yLx/z1RrrxeZCWw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772722098; a=rsa-sha256;
-	cv=none;
-	b=XotbXmKfGnNBwwj03kpbswkRQW7LJt/iMIfzBlBSe9PnJiLXbjsKtUDbmpJZ2InhsOg8Af
-	CAi5EOqrPXDVokVYyOQBQD2oXAHGPRsk04nyzalccH2HzfGWGOPL7ItlpLTausPuKTLTiS
-	PJB1YdPofbR50gy2uacZar5GN4fUJEg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=/w8TcpKcTnsFexEJat+yvEFtYbwnKnSmrwKbNj1qvfE=;
+	b=1S0HpCw8GgDtH9nUZaSq8FEo5IwGhWs8k+3FUWxcp1APZsAZGXaIqwfUj/xcrptej4hDsi
+	1ju1sW7KgnESNUS/uhXP9/kuscO5EAb/rNIU/FF38cuBowlB3IcLKN18ENC57TVNVsN20Q
+	B9gmBDfmDttQTSAxXcpnwzveWLYHU8Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kShRucOc;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1239161340;
-	Thu,  5 Mar 2026 14:48:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191BC116C6;
-	Thu,  5 Mar 2026 14:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772722097;
-	bh=ocIpNA1/BmcP9pkqgaytGbj1feJWcfZjn6BqjzhMNjQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kShRucOcE7Y2SVaiNf2rZAnObI2IP10yizN9PZDGcbuHf5wIhM068D9RAn/oIu9hZ
-	 z8K1lWk03gKBs5o8Wn+03V7UncL7KBTnJrxy/TqTTijxMGQCukgBYAM7Ef/BABT9cE
-	 yaKghMmV0i91CyW6A0PgjdEzY8ELHUi0EmeL0EwEfNDLhgIH+uqeW4x0ARlsWmRgdn
-	 1U96FCKzP7j96xMSU8sxGYU7oTkz6whbm2vWwY2wvcKojV5k7eFFFVYqpvh0stvArq
-	 4UYpN/efKXx8LYbx8Sv4AD9HIOSrzlZJqaNEQ3jwmSqUQQAjYu8NCScNdhyv8SpkXV
-	 mBII1Lzi9JRlA==
-Message-ID: <9d1e1a6d-b05e-47ed-9947-89bd3007e93f@kernel.org>
-Date: Thu, 5 Mar 2026 15:48:01 +0100
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772722280; a=rsa-sha256;
+	cv=none;
+	b=tVKf2PPP060/RIWO+0P9n1G/D7ejpIjBSsxbpvCf5ijiK9s+kRlVj3YEjkWpymW7GFhkmo
+	1idGNM6bOdvQ6AulaByQLG6YfxohWcJ2wLFRTp0jjZm1odrUAptmR66EFSbsZ02+ectsBO
+	TluHybEnGPfYu86iTeGad5BAx9FsuEA=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C8BB339;
+	Thu,  5 Mar 2026 06:51:11 -0800 (PST)
+Received: from [10.43.18.28] (e126510-lin.lund.arm.com [10.43.18.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8559A3F694;
+	Thu,  5 Mar 2026 06:51:09 -0800 (PST)
+Message-ID: <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
+Date: Thu, 5 Mar 2026 15:51:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] mm: always inline __mk_vma_flags() and invoked
- functions
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
- Chunhai Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
- James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
- Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jan Kara <jack@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
- ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
-References: <cover.1772704455.git.ljs@kernel.org>
- <241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <241f49c52074d436edbb9c6a6662a8dc142a8f43.1772704455.git.ljs@kernel.org>
+Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5oxpccz7hdmxugjmzy7s1qxtpbfi63hp
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9299DC0002
+X-Stat-Signature: cwk7xa6unci47fehpk6h57wwhqs374ay
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B8AB31C000C
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772722098-425045
-X-HE-Meta: U2FsdGVkX191l1fkO/ELuCcJC03w6XrJl7j8gdydtbi+3PHA5lSiWywZgwatlBLRmUUMhh1euC0juQcG07Wre9I80IqAebXYZA+nQ4ODkSFG+2HHE8s1yQ4tag/29bgc/Bq90MQQWFdTe2why14PWYspDvtPNqZMHrQ//6h8X8P2lWpigrAmyRJDXH8ir9oZb6lTbI6KJRjwHyIAgGhSRt1/eKuVOu5tpbEtZa8cOuEYPhmd5A9Zg2KvVjG7sanXSsH+3lGj1YCRXUYM/JLiapChHKOvxzduZPnC8+2j2Ghs5wE2kkQi4I4KJY6Jee9s3hCx+x6EJ1rfqg7lO01aumu813/eomk483juLoAEaNAFkQkUXvzet04RhBlmY4mCjOsHnZYX2EKx7ROXW/IUQg12rBkIzxlPLwITfnUovUrCuIqh6NYe/zRJtJWtOSPpBFsVyFAqzs3amqChyD5sG8szh+hIdlZsULxiScrGp54GDLBFqJMypQp8vZrMirKyRbd/ECeX3p9kPQfQCS4QsW4131MiOjCYtACdlO33s70H1L2Nz1KXT7cCRvmCRfiG9x8DUCa7FSXJWvibQ1a+S9Z98uLg4YiRhyrBa+kVDC2hGgt57LG4L/8xsJ0iyUOl01Xp5ipNGONP+kWh5Cz/jdgjAXTpn2K4YeBMqBr5XcHIEwjSJ4XTYC3eIvkI/82l64n7XriW1L0c8NXC86uhef4MWAx3DK/9j48H5VvVn0mvDzd3BoduK5tN6zjTi+d00+JVl+/v5kQpAEtbdo9jfH0rC9OvXO//hj6FxhS3BYTHvWE3Zl8dE40uxVkyC8VroUGcmhZ+T71s4rfVaZEVJ//KyU6wRomZITvnKe8qHhSj5Yg1oHrKxdWniHj+amT2fdMUVtQS6vNZYUZXri1uQqxLncAH2d7qQ94Kl9laIAJS5cJLeCQ6sIQn395qql/llGv/GgcWLKfj0eEvCv7
- wIOgV1U6
- zAzoyF1bsHDNefa+pdqhlH+DWrTuvTKClmzOxGZMxlH3GCWuuSU8bQf1v6/7ZGXqXH9JZNOBp+LRhrfwomJxsLO6/Nik5Jvh3tYKhJOUyx9zrvK8Umr58abis/brMptcqDVEygR8e1YnnCpA1yQtUZcACwH9zrFASn6Rh7UckLN1dAel347IvdAIA2v81kEDpr3rPlzs8mVLj9EPIUT604SXgBb4HfkGTMhCPkUDGaPV6wPlSrX3OYP6si2Xo2b46oe0IdDwipZmjSbthQc1effCk4Ayr8B66EeNfcS6A+JstlY+N2+ZWGxQIiXtc7CAQP+mUaL11c9cAFm6Cj5NFFuCVFY4CFwKaPPYa
+X-HE-Tag: 1772722278-14582
+X-HE-Meta: U2FsdGVkX187pAtIvmeIAe3UAtZfO61IqRMNnp6lDutTh/K7X58pubduKJBeGaOE2A8O9muOpy47KN8fBkzTswUKvQLCuBr3Dcz+ql6qGH9LAwp+GH0Uyvgkm6mk7z3u+MuwkZpAWcPISH3ficoK00Gb4W9JmnbmeAWizagrb9LdjH64GT6LyxgIfcmB7MUyhGa/zXEPjVH7l9x3oC882Ap2J4+wJXgybZH/Ug5nciD9e59hQmlrMklYjpFgPMRfpGjamsee4lF4oLi6TRafThpy6tQ3nINa4gsnNaWLcQ6Jdp6OMyep5S89uIRi+Vbov/XN2JnDVWMhtJpDnIrdT2YhB8oZg8yTQzjuHkP9AVz3j5187GQF7eLnUNPJcwAzLSq/vnGP8uyHG4YqIfBTzk21ujWAEDwbu3NZ8NXHykBN48iieQyPoGunQs1tBoomzW8H7uRhO2sgj9zMZORpklsfBe7w5sTNwDCG+VRDNRhglkwqt1lnQlNWJHJAdTg0BlBoZxf5Fuh6TgW4qjpoENLox9QXEUQAejohxAeqVpJJXTimacz0BYs7iIwzJNQO3gVBXiqxoCLdrHNrn+r3BvoIBNeSS3OKzpE8CH8w/cmwNRUXsOEBd4i7Avuu8T4D1ObbCDgfRmgA5oUrXQsnyek6707xehuG/1AuTUVJHIJXcugaO2RBSToClE3cbKKAHt5iPZvGwLHhtA8Qy/pALEjZLuZH7imcfjMGRApGwN3YReJ6anvVBjC38lzFH3HANq1dd2cLlvNKahCoA0BX+5X1qsxNSUehO8NoZb2Ja+ruUoYsn9Br2HlX3CocotnTaZc5p5GcMv6T8kkoIz479OYki+Hi2D72RTFBHgF48qBYVJ8qX2qwEOQx1cPPyvpSdzQyB7dcTv5CbRpAqk/Zj39Npgr47c11P5Z3oy2m86Ps4De1gHiN2buEs9wlCbSsw+/Lo7sZdx2VkkLC5dr
+ Phm06kSU
+ JMdmCuF+zF9hUBsdlEgMc3ekt1EIWb54eP339+2qb/DyFr0/iODHZ5pH6LaKIyv0p15erPZtthXjReflVt0ItE8V0ZQw3klIkgaVcVFpu9MUtFuQOMoe29ufBoO4NRVfVoKcgc0gFQmrrT2DWdhA391O9747GsdovaabJNBlKkkxEVcIgXncUAResrKlAriLpdmFytLMe1KEmSZrD5QnvysuWVtXH1ei3Vm3gKFgc0ghHKbf/PNg046w3E6DTXvPu4tc+Ww9v9EoANgY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,30 +98,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 11:50, Lorenzo Stoakes (Oracle) wrote:
-> Be explicit about __mk_vma_flags() (which is used by the mk_vma_flags()
-> macro) always being inline, as we rely on the compiler converting this
-> function into meaningful.
-> 
-> Also update all of the functions __mk_vma_flags() ultimately invokes to be
-> always inline too.
-> 
-> Note that test_bitmap_const_eval() asserts that the relevant bitmap
-> functions result in build time constant values.
-> 
-> Additionally, vma_flag_set() operates on a vma_flags_t type, so it is
-> inconsistently named versus other VMA flags functions.
-> 
-> We only use vma_flag_set() in __mk_vma_flags() so we don't need to worry
-> about its new name being rather cumbersome, so rename it to
-> vma_flags_set_flag() to disambiguate it from vma_flags_set().
-> 
-> Also update the VMA test headers to reflect the changes.
+On 25/02/2026 17:34, Brendan Jackman wrote:
+> .:::: Design: Introducing "freetypes"
+>
+> The biggest challenge for efficiently getting stuff out of the direct
+> map is TLB flushing. Pushing this problem into the page allocator turns
+> out to enable amortising that flush cost into almost nothing. The core
+> idea is to have pools of already-unmapped pages. We'd like those pages
+> to be physically contiguous so they don't unduly fragment the pagetables
+> around them, and we'd like to be able to efficiently look up these
+> already-unmapped pages during allocation. The page allocator already has
+> deeply-ingrained functionality for physically grouping pages by a
+> certain attribute, and then indexing free pages by that attribute, this
+> mechanism is: migratetypes.
+>
+> So basically, this series extends the concepts of migratetypes in the
+> allocator so that as well as just representing mobility, they can
+> represent other properties of the page too. (Actually, migratetypes are
+> already sort of overloaded, but the main extension is to be able to
+> represent _orthogonal_ properties). In order to avoid further
+> overloading the concept of a migratetype, this extension is done by
+> adding a new concept on top of migratetype: the _freetype_. A freetype
+> is basically just a migratetype plus some flags, and it replaces
+> migratetypes wherever the latter is currently used as to index free
+> pages.
+>
+> The first freetype flag is then added, which marks the pages it indexes
+> as being absent from the direct map. This is then used to implement the
+> new __GFP_UNMAPPED flag, which allocates pages from pageblocks that have
+> the new flag, or unmaps pages if no existing ones are already available.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+This approach seems very interesting to me, and I wonder if it could be
+applied to another use-case.
 
--- 
-Cheers,
+I am working on a security feature to protect page table pages (PTPs)
+using pkeys [1]. This relies on all PTPs being mapped with a specific
+pkey (in the direct map). That requires changing a mapping attribute
+rather than making it invalid, but AFAICT this is essentially the same
+problem as the one you're trying to solve.
 
-David
+There are however extra challenges with mapping PTPs with special
+attributes. The main one, which you mention in patch 17, is that
+splitting the direct map may require allocating PTPs, which may lead to
+recursion.
+
+[1] introduces a dedicated page table allocator on top of the buddy
+allocator, which attempts to cache PMD-sized blocks if possible. It
+ensures that no recursion occurs by using a special flag when allocating
+PTPs while splitting the direct map, and keeping a reserve of pages
+specifically for that situation (patch 15 and 24). There is also special
+handling for early page tables (essentially keeping track of them and
+setting their pkey once we can split the direct map).
+
+Do you think that this freetype infrastructure could be used for that
+purpose, instead of introducing a layer on top of the buddy allocator? I
+expect that much of the special handling for allocating PTPs can be kept
+separate. Ensuring that protected pages are always available to split
+the direct map may be difficult though... This is deeply embedded in the
+allocator I proposed.
+
+- Kevin
+
+[1]
+https://lore.kernel.org/linux-hardening/20260227175518.3728055-1-kevin.brodsky@arm.com/
+
 
