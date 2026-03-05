@@ -4,133 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91692F3094B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:48:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E19F3094A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57DA6B008A; Thu,  5 Mar 2026 06:48:30 -0500 (EST)
+	id 4DDF66B0088; Thu,  5 Mar 2026 06:48:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05BE6B008C; Thu,  5 Mar 2026 06:48:30 -0500 (EST)
+	id 4BF9D6B008C; Thu,  5 Mar 2026 06:48:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C084A6B0093; Thu,  5 Mar 2026 06:48:30 -0500 (EST)
+	id 3F5696B0093; Thu,  5 Mar 2026 06:48:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B1A956B008A
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:48:30 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64ACEBB945
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:48:30 +0000 (UTC)
-X-FDA: 84511836780.08.7013FB4
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id DEDFF140012
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:48:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hjgFz7Hx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtS9b0ln;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hjgFz7Hx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtS9b0ln;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 324B76B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:48:44 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 070EEC1F38
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:48:44 +0000 (UTC)
+X-FDA: 84511837368.07.EE6E0F2
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4511680007
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:48:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Hq0rTFw2
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772711308;
+	s=arc-20220608; t=1772711322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZAmQS51SRv/YABdhcoSl0Rg6Xd7LyqWnZEWJM21wB9Y=;
-	b=rdth60oFNBAeD1w5rQIAYBj8SkyOVL4C0rPFEjGY5QM97LS5Mg1DUNA9OU2dWw3HoA4Upk
-	9ebL4bR7zzQA+ZcbdkqHJyshLhltUVs/PQHYPiW5nFk5sa29v80+96zGfO5vnpbhlqlCmt
-	jqA8OCFlKbvR20tD08Nco3uz3XBhLZI=
+	bh=zQkinhDuPvsI+Mc9zYJbcWtkNsBII7yHHxY2ORHu0zM=;
+	b=acg6zQUpR92zWvGM1CkpXh5V0XDOhxpA1tYM25aqj5pY8rjcOoEZL8ss63Ky/KTykXm8o7
+	HLekO7rNrXoKkqfpOpLVRutTChAKILWLetnRkR0pJaLI4Z6lX/0aaoXy60Oxp2boOBvUsX
+	U27FbhmXG20UiEWUBOOzwHbc5h9vWmw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hjgFz7Hx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtS9b0ln;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hjgFz7Hx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtS9b0ln;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Hq0rTFw2;
+	spf=none (imf30.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711308; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711322; a=rsa-sha256;
 	cv=none;
-	b=zpXAP9pbbeYothYcU7u5pjKl+LRKK1xc/qoCDObk3szwo7dYnf1zvdvVq3S4rCdKSB5Qa+
-	WDl5DaW1tDJtHn3EJ7N9ZQMrbq6U7xgFgvsWyBcJZ11th3cTm8L209GF46POMlrG+e5nIF
-	ekux089cU7q95IcekEWrgHzqb+lzxbU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C77B5BCD5;
-	Thu,  5 Mar 2026 11:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772711306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAmQS51SRv/YABdhcoSl0Rg6Xd7LyqWnZEWJM21wB9Y=;
-	b=hjgFz7Hxw7+7CG9mdNnW1Yrd1s89DNmeaO4AUTbscd5Qf0Vlcy5Ui19Jz05OnHrsY4w/wb
-	JpOdPQTSJKZEK0w9TIW9b+C7kbk+FZz4U4uhQQKTz+uFjl6xZN5FA5hV3nPRU2e3FD3yeU
-	uE4n9MwFexdo62/idfVcw6Lfg1+tEVg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772711306;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAmQS51SRv/YABdhcoSl0Rg6Xd7LyqWnZEWJM21wB9Y=;
-	b=AtS9b0lnK3ezXZiDDwleMjFII91JH2ADAxbSbbzw3lLnWs25tKxeLtXUucKZyk/pIvL2To
-	hkZQnAyShLl2uIBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772711306; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAmQS51SRv/YABdhcoSl0Rg6Xd7LyqWnZEWJM21wB9Y=;
-	b=hjgFz7Hxw7+7CG9mdNnW1Yrd1s89DNmeaO4AUTbscd5Qf0Vlcy5Ui19Jz05OnHrsY4w/wb
-	JpOdPQTSJKZEK0w9TIW9b+C7kbk+FZz4U4uhQQKTz+uFjl6xZN5FA5hV3nPRU2e3FD3yeU
-	uE4n9MwFexdo62/idfVcw6Lfg1+tEVg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772711306;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAmQS51SRv/YABdhcoSl0Rg6Xd7LyqWnZEWJM21wB9Y=;
-	b=AtS9b0lnK3ezXZiDDwleMjFII91JH2ADAxbSbbzw3lLnWs25tKxeLtXUucKZyk/pIvL2To
-	hkZQnAyShLl2uIBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20E5A3EA68;
-	Thu,  5 Mar 2026 11:48:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xsICCIptqWm7RQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Mar 2026 11:48:26 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C526DA0A8D; Thu,  5 Mar 2026 12:48:21 +0100 (CET)
-Date: Thu, 5 Mar 2026 12:48:21 +0100
-From: Jan Kara <jack@suse.cz>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
-	lsf-pc@lists.linux-foundation.org, Mateusz Guzik <mjguzik@gmail.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Gabriel Krisman Bertazi <krisman@suse.de>, 
-	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
-	Dennis Zhou <dennis@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Hao Li <hao.li@linux.dev>, 
-	Jan Kara <jack@suse.cz>
-Subject: Re: [LSF/MM/BPF TOPIC] Ways to mitigate limitations of percpu memory
- allocator
-Message-ID: <z7bjxfk7jah6zgyikhiz6eqxd3xwywxp745bykcr3sm3p525yi@4diwkjsoyckl>
-References: <aaE8rkGzxlB6wCTt@hyeyoo>
- <ji4ddtoo7mebygmytprcp5kpnu5y2ddthk5zhacshods37xij2@fs2sizuagdvz>
+	b=7W+mK5DiK7FbY5fqy56occnanxxFE2XAqUhX6XE2iuHwG+4KvJUxWZPWt5qShf1TheNGOl
+	ARtzmCpVtGKunUDSUnmmDssn6vzfyizVMxNvpDWcgGxQY2NKgpmAefcaXdzSRDIeAnDci3
+	IoDI8liNS1VHd+lAlPPvKN1xuKrvgu4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zQkinhDuPvsI+Mc9zYJbcWtkNsBII7yHHxY2ORHu0zM=; b=Hq0rTFw21/sh5uhsqYfzcxFS2d
+	iluItr+FEpx0MlWdcYcTIWwlo+DZWTLIamUpmati9WRVLwJvUhczqblmDxJ1fBjCOBgZ3K/+CGsfv
+	a1GDllI5Kl2ANRQ4puUiZgIActvll7SaQN1PxXT6YRz+8KyJXE9ko9N0q+4BEvIRFESF71bKZToT2
+	EuXKajdspI1cNFsEK//TQgDM+V2nj7TSw8dgDuAXQ3RzeeOG3d5PbBJVWlIVzefFWx+ag9OqDrL60
+	YsZkVo7KhoQwBSWuANsg/38M6R0ybAXU6rQ62E5xZM+GWQQSoJv1nws62XQ6sHpxuKFrfGD7BpAlm
+	+ViILwOA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vy7Be-00GhhC-DY; Thu, 05 Mar 2026 11:48:14 +0000
+Date: Thu, 5 Mar 2026 03:48:07 -0800
+From: Breno Leitao <leitao@debian.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm: thp: avoid calling start_stop_khugepaged() in
+ anon_enabled_store()
+Message-ID: <aalXA_nP2k2OrHhc@gmail.com>
+References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
+ <20260304-thp_logs-v1-1-59038218a253@debian.org>
+ <ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ji4ddtoo7mebygmytprcp5kpnu5y2ddthk5zhacshods37xij2@fs2sizuagdvz>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: DEDFF140012
-X-Stat-Signature: ktis5zri913wjc5fdrw3mwzzrpio7x5u
+In-Reply-To: <ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 4511680007
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ts3hs9ywjcmtn1oaoj5x7p9o1bq3rh1k
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772711307-713906
-X-HE-Meta: U2FsdGVkX1+vAc3UqWpYDtes2q9kVdEWAM1HbEJwXXnkbuxpgzQl8kgH9CSyOWg5GT5te39RHxFA3pxj+WWalmXoVfkiAImtVxUG/A8ix3QVYDnLvaI5U1R6k6a4E/ctC1y7Q1uD0p/6Xe4F8J3+N2JQbwC2qxz6ratEVg9IR3mo3Z4mqQtQYE4828rUfW99Q9tudgXW0i/0RmYh4rPVsTyouPjX/y3us26u84O5hHtVaj5RNCz6W9CDd5aCUqyC9yO+kIHw67AjqRK+Io9uZO1ZhroMF86PdJNJX6rqMt7s93/IFUOrh4nRROC17o2YEoQ3xSTLCp6IKxMK48vNi0LWCI3F8uLQZu1cUW/z2xCAD0psIn4vsNjNY/JeOPxHD+dI64uiNewcMA8ATkaj/1gSWTLr4wg5LdMO459+ijNP2pK2kZ1vSIbTruVjBMMq5pCJscyjVBesibfZl82s7NGP4vkArvnuzs9IKmTWNZzMBXKkmWrqUhx4vUGehi6Pkr0z8GaQcOEHu3Zd1Sdf/alTacEVj9wFTvrQaQzenFwQrUdnca6G0953IA+qMAGulU2sOA3MPz5G0RWwAO6LAyXqdjNxH+4bgbW2OSslOyGJXNw+FdG1xbsfbznLoeWDoeoKlOcf0cueBiEROAmLRjiy/tiW0pUJesrfxHGIu/4f/2Y1XLnu8zKyarZZ7IbN51fGNuC1G6fKlACPI2rs9G6ydbsO/xfaQdtwQnskkHZ9liv5lZ4HR18Hqe53wyjPRq7OhyEkjyqx5SgKPdzNSsDs7oJoOKZmCN9oSEA8ZVvzcb/F5jbL3QitD+uiuyaN1LEtFMc6C6X1O9mCIsgzAVGu7xtcW6ieVu3MVa8penEo7S8feeche/IlG+CizVlfbLvfwulWkF8oisgyjYsOCxGrxuYPvlbgU5hNeTHHJ5aJRrYeZAsOpaVOc0YIBf7NDG6Y1IZqypAZA0RYgTz
- SujDQ0Je
- WywqFUpK5O/BZ5OOBY4OKHEGef6+537UDXs2A3PQJXfVOSjpv2a2R/Nc8p1H+cSkpGt1mXZzTdxPSEUR8/NRLyp8MpnKUOf6GIhttBkvixoSjTz5LjFBngxvdoghh5K/ayK5d8rlvWBiTzs+N7u8sFg7BVDcsyXkyvLZvcahBMEy+An4unWPJ/cXX+h+gMSttGCDOPvqNVlR8gC64zU+AOxyqinfdFmOH5vALyzyrGjOXDyO/QzJD66cO1MjvI+zNvleJik6uDo9hlTP/FoCOngLH3+DIiMgutEPdbqBofufVsS3rRt+8U0Rjs9UAAYV3p6Wvnxbp5yKyD4DrSHLGD+2AQw==
+X-HE-Tag: 1772711322-816346
+X-HE-Meta: U2FsdGVkX1/1aTcgV9K4fiFjS4nPhWbwzhQaiw52abaH/mwYXi2Zs+TCWZP+JsbXCsFjUO9wo1NAa5rek844Pm5mjg+gj1Y2jWaIVbHVjSmuIciYTDSmnF/Vxiez7cBAByEDYB7H1JG1a2xSclhQ4JCdAkrJbyVBD52V8sKnS1ekDcAinIghfXIDjQJuCzZfraUL/eoBcH+ryA2yDRUXDZgKl4RPmaTIcFJNQWHxJhLq7SgAj4jO1Opb9HOwrSstDNnOAHDxAG6gxdQjvauzfml+/p0DE9AbzzoGxW2sgP7v/Cuw94UhCCfJLfnAKY3KN2k3CynBh65XvWML058L+cE23tp7x4GMFkuFdA1CKU2YIoJlmZ4DeyoE/b3n94w5MIXi/YmIaZvlZqALKM7uFd8XD397YZhiWar/fyFig6W5ShUgtbfYsFiJN6l9cUMXgAk5HUkmGk2Cf75anG+CBToqHjtViNznrUzqEMys/CJYl3CY8/JTx5LjfcvDfz8RA9fZX4oePj7XQa4qE71VVzrkDc3EWx1kC3fDUSH24o8zRaT6uDvjTiyEGK2dUlZ+6nkX3NWZ92uFo3m1GOiQiqjxB0bO1b7C7KyqQjO56WMgNBo9oB+HgRhNJLnzQOmAbz6nYGWyuv3uwYrFKEQO4AtwIfyvUKlaqY6aPCdT0eLa48iM2dnzfob53cyi33pZIoja4pxdcZiR6586688WSYxe4F+P/ked2f9K8MKU86r6f/fl+74ms9xfdqQat8RSGyvAzYSGHgmBwZmu5edIMVJExg140a00smM2UUtPVZ+o5wE7VPIP7OO68bg9+o1pHjJ59BcENEXtfLVGQsp6acD/DGPtx1Q/nP+DzRJiMO1lYMslXCHMmrq/SHQm1hWibiHoc9zQOBYiNqXlPml6pio0VFE67dRjLrmuzaZ5CIuKqFP6anIjXK7ym2DNRfNElBjbgU+fIgJ4OigJ6sB
+ IQObDq3t
+ nalYn1ued+yMOblZ5ppPz+OEKMbbLOEzPwRWEo5DfEA2/ocEcA2qm2NR3rmd58rzEXktwWKAoHp8N5SKeM38NtnxfNsJg4fp0fDQo+EyPf91ZiTFLyfr64nQENMoRx1/f7wGM3obPTlqGfIZdrSSDgODKVSO89nu6M+BEChPFm3wF9z3Ao8xG05bwxqrWq0wpvJ/1+xYLUEXYHGr0ffYrZjdID6VVbf6nuT77
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,69 +99,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 05-03-26 11:33:21, Pedro Falcato wrote:
-> On Fri, Feb 27, 2026 at 03:41:50PM +0900, Harry Yoo wrote:
-> > Hi folks, I'd like to discuss ways to mitigate limitations of
-> > percpu memory allocator. 
-> > 
-> > While the percpu memory allocator has served its role well,
-> > it has a few problems: 1) its global lock contention, and
-> > 2) lack of features to avoid high initialization cost of percpu memory.
-> > 
-> > Global lock contention
-> > =======================
-> > 
-> > Percpu allocator has a global lock when allocating or freeing memory.
-> > Of course, caching percpu memory is not always worth it, because
-> > it would meaningfully increase memory usage.
-> > 
-> > However, some users (e.g., fork+exec, tc filter) suffer from
-> > the lock contention when many CPUs allocate / free percpu memory
-> > concurrently.
-> > 
-> > That said, we need a way to cache percpu memory per cpu, in a selective
-> > way. As an opt-in approach, Mateusz Guzik proposed [1] keeping percpu
-> > memory in slab objects and letting slab cache them per cpu,
-> > with slab ctor+dtor pair: allocate percpu memory and
-> > associate it with slab object in constructor, and free it when
-> > deallocating slabs (with resurrecting slab destructor feature).
-> > 
-> > This only works when percpu memory is associated with slab objects.
-> > I would like to hear if anybody thinks it's still worth redesigning
-> > percpu memory allocator for better scalability.
+On Wed, Mar 04, 2026 at 04:40:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Wed, Mar 04, 2026 at 02:22:33AM -0800, Breno Leitao wrote:
+> > Writing "never" (or any other value) multiple times to
+> > /sys/kernel/mm/transparent_hugepage/hugepages-*/enabled calls
+> > start_stop_khugepaged() each time, even when nothing actually changed.
+> > This causes set_recommended_min_free_kbytes() to run unconditionally,
+> > which is unnecessary and floods the printk buffer with "raising
+> > min_free_kbytes" messages. Example:
+> >
+> >   # for i in $(seq 100); do
+> >   #       echo never > /sys/kernel/mm/transparent_hugepage/enabled
+> >   # done
+> >
+> >   # dmesg | grep "min_free_kbytes is not updated" | wc -l
+> >   100
+> >
+> > Use test_and_set_bit()/test_and_clear_bit() instead of the plain
+> > variants to detect whether any bit actually flipped, and skip the
+> > start_stop_khugepaged() call entirely when the configuration is
+> > unchanged.
+> >
+> > With this patch, redoing the same operation becomes a no-op.
+> >
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
 > 
-> I think this (make alloc_percpu actually scale) is the obvious suggestion.
-> Everything else is just papering over the cracks.
+> General concept is sensible, but let's improve this code please.
 
-I disagree. There are two separate (although related) issues that need
-solving. One issue is certainly scalability of the percpu allocator.
-Another issue (which is also visible in singlethreaded workloads) is that
-a percpu counter creation has a rather large cost even if the allocator is
-totally uncontended - this is because of the initialization (and final
-summarization) cost. And this is very visible e.g. in the fork() intensive
-loads such as shell scripts where we currently allocate several percpu
-arrays for each fork() and significant part of the fork() cost is currently
-the initialization of percpu arrays on larger machines. Reducing this
-overhead is a separate goal.
+Ack! Thanks for the suggestions.
 
-> > Slab constructor + destructor Pair
-> > ----------------------------------
-> > 
-> > Percpu allocator doesn't distinguish types of objects
-> > unlike slab and it doesn't support constructors that could avoid
-> > re-initializing them on every allocation.
-> > One solution to this is using slab ctor+dtor pair; as long as a certain
-> > state is preserved on free (e.g. sum of percpu counter is zero),
-> > initialization needs to be done only once on construction.
+> >  		spin_unlock(&huge_anon_orders_lock);
+> >  	} else
+> >  		ret = -EINVAL;
+> >
+> > -	if (ret > 0) {
+> > +	if (ret > 0 && changed) {
+> >  		int err;
+> >
+> >  		err = start_stop_khugepaged();
 > 
-> As I said way back when, making an object permanently accessible 
-> a-la TYPESAFE_BY_RCU) is screwey and messes with the object lifetime
-> too much. Not to mention the locking problems that we discussed back-and-forth.
+> There's a caveat here as mentioned in reply to Kiryl - I'm concerned users
+> might rely on the set recommended min kbytes even when things don't change.
+> 
+> Not sure how likely that is, but it's a user-visible change in how this behaves.
 
-Yeah, I was not enthusiastic about this solution either.
+Is there any motivation that users are retouching
+/sys/kernel/mm/transparent_hugepage just to trigger
+set_recommended_min_free_kbytes() ? That seems weird, but, I will keep it in
+the change.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> From cb2c4c8bf183ef0d10068cfd12c12d19cb17a241 Mon Sep 17 00:00:00 2001
+> From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+> Date: Wed, 4 Mar 2026 16:37:20 +0000
+> Subject: [PATCH] idea
+> 
+> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+Thanks for the idea. Let me hack on top of it, and propose a v2.
+
+> ---
+>  mm/huge_memory.c | 74 ++++++++++++++++++++++++++++++------------------
+>  1 file changed, 46 insertions(+), 28 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 0df1f4a17430..97dabbeb9112 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -515,46 +515,64 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
+>  	return sysfs_emit(buf, "%s\n", output);
+>  }
+> 
+> +enum huge_mode {
+> +	HUGE_ALWAYS,
+> +	HUGE_INHERIT,
+> +	HUGE_MADVISE,
+> +	HUGE_NUM_MODES,
+> +	HUGE_NEVER,
+> +};
+> +
+> +static bool change_anon_orders(int order, enum huge_mode mode)
+> +{
+> +	static unsigned long *orders[] = {
+> +		&huge_anon_orders_always,
+> +		&huge_anon_orders_inherit,
+> +		&huge_anon_orders_madvise,
+> +	};
+> +	bool changed = false;
+> +	int i;
+> +
+> +	spin_lock(&huge_anon_orders_lock);
+> +	for (i = 0; i < HUGE_NUM_MODES; i++) {
+
+> +		if (i == mode)
+> +			changed |= !test_and_set_bit(order, orders[mode]);
+> +		else
+> +			changed |= test_and_clear_bit(order, orders[mode]);
+
+I suppose we want s/mode/i in the test_and_{clear,set}_bit() here:
+
+		if (i == mode)
+			// set for mode
+			changed |= !test_and_set_bit(order, orders[i]);
+		else
+			// clear for !mode
+			changed |= test_and_clear_bit(order, orders[i]);
+
+For two reasons:
+	* you want to unset "i" when i != mode.
+	* you would have an OOB when accessing orders[HUGE_NEVER == 4]
+
+
+>  static ssize_t anon_enabled_store(struct kobject *kobj,
+>  				 struct kobj_attribute *attr,
+>  				 const char *buf, size_t count)
+>  {
+>  	int order = to_thpsize(kobj)->order;
+>  	ssize_t ret = count;
+> +	bool changed;
+> +
+> +	if (sysfs_streq(buf, "always"))
+> +		changed = change_anon_orders(order, HUGE_ALWAYS);
+> +	else if (sysfs_streq(buf, "inherit"))
+> +		changed = change_anon_orders(order, HUGE_INHERIT);
+> +	else if (sysfs_streq(buf, "madvise"))
+> +		changed = change_anon_orders(order, HUGE_MADVISE);
+> +	else if (sysfs_streq(buf, "never"))
+> +		changed = change_anon_orders(order, HUGE_NEVER);
+> +	else
+> +		return -EINVAL;
+
+I think we can simplify anon_enabled_store() even more, by leveraging sysfs_match_string().
+Something like:
+
+	static const char *const anon_mode_strings[] = {
+		[HUGE_ALWAYS]   = "always",
+		[HUGE_INHERIT]  = "inherit",
+		[HUGE_MADVISE]  = "madvise",
+		[HUGE_NEVER]    = "never",
+		NULL,
+	};
+
+and then
+
+	static ssize_t anon_enabled_store(struct kobject *kobj,
+					struct kobj_attribute *attr,
+					const char *buf, size_t count)
+	{
+		int order = to_thpsize(kobj)->order;
+		int mode;
+
+		mode = sysfs_match_string(enabled_mode_strings, buf);
+		if (mode < 0)
+			return mode;
+
+		if (change_anon_orders(order, mode)) {
+			int err = start_stop_khugepaged();
+
+			if (err)
+				return err;
+		} else {
+			/* Users expect this even if unchanged. TODO: Put in header... */
+			//set_recommended_min_free_kbytes();
+		}
+		return count;
+	}
+
+
+
+Anyway, I like this approach, thanks!. Let me hack a v2 based on it.
+
+--breno
 
