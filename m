@@ -4,133 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 515BFF3D332
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518F0F3D332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:49:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 721306B0088; Thu,  5 Mar 2026 11:42:30 -0500 (EST)
+	id 7E8DA6B0005; Thu,  5 Mar 2026 11:49:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A206B0092; Thu,  5 Mar 2026 11:42:30 -0500 (EST)
+	id 7C0596B0088; Thu,  5 Mar 2026 11:49:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 552B36B0093; Thu,  5 Mar 2026 11:42:30 -0500 (EST)
+	id 6F6F56B0089; Thu,  5 Mar 2026 11:49:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 46AAD6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:42:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 197EA1401D9
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:42:30 +0000 (UTC)
-X-FDA: 84512577660.10.629F745
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D8DD38000F
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:42:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jGUo2hFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BL+0lglh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jGUo2hFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BL+0lglh;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AB936B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:49:51 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F30C789BC1
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:49:50 +0000 (UTC)
+X-FDA: 84512596140.23.111CB00
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D703F10000F
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:49:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="NGZqjg/l";
+	spf=pass (imf14.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772728948;
+	s=arc-20220608; t=1772729389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YB9x8XN+Y+qd6tYArq0nO9pyPGgcxxO2MoQ2Szi1vEw=;
-	b=r5VQYXAWgB4NL2MHduLYKpE8GpcXNfIg4Z50K/vbsvvf7HyRMq/bXUxB990YKJgeuyS6RV
-	VaSAQaGwSYksfl3ACisJI5SOyN+tGWP7HeTsdo0451ohDS5F28j0h6A1biQfJ5+vecKyTy
-	REdcfIgwNSntRCGXiBDPITidRI+oamw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772728948; a=rsa-sha256;
+	bh=eNHfHsjGinUs8vAecQM39SD2K85CJrqw6vaptjuUYBM=;
+	b=KRdM/F5jjdGg5e4tjTS+OKNDCzadTnDw8MATnD7r9qMpcoTTWhJMpXmS2e/PxypzTUH7DZ
+	Rd0o7lpIyY0+BIr3VBtp4w41tiP/bN231waG+9+cLawxQ9LPev24OklAUZfBbIqooFKZx6
+	Ia48F0DhB3HKIxJ/oLRXr1icW5ABpNc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772729389; a=rsa-sha256;
 	cv=none;
-	b=33DakNolf+z7D1uClAsY+UEMUAPyCNKWm7PZpc5TymKczZxsexGciXNKsN60J53uu9Va3Y
-	MFp3QwnUfvIEFb0mX6xwIqxMieGPYJVJEY51H59jef10TAq6djPODe9HAcs2xVa2msdADS
-	gvyRl0eIitI5I7YCiQ4KraA+rafSxIo=
+	b=w38KReAnY7sTeMiPuORLdLk5Tbt1tnFqjModcV1YRcgr478FIibzbbMn3rlFhjvl6XKWYt
+	+Ey1qxkg88bxik4SmRIaFMo7rl+GREtOa6onVowfgryEI3aLziXb17pWN+Fy14DBQlqeug
+	1YcfQxpwVlzXmC0ZLAc9FmPD89KvUEc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jGUo2hFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BL+0lglh;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jGUo2hFU;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BL+0lglh;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="NGZqjg/l";
+	spf=pass (imf14.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 988553E700;
-	Thu,  5 Mar 2026 16:42:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772728946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB9x8XN+Y+qd6tYArq0nO9pyPGgcxxO2MoQ2Szi1vEw=;
-	b=jGUo2hFUI8OmozNrFFkgC3iFPeYfTnB7NnJosv2txPSzBCHDo7yShBYMkbyjjQKK65Lw8m
-	nWKUtgTqcLAYrBhBrU3N0y9qupZj79fK4f+a/jv4WzuLo9r++aVRQyoU2okvmCx+DT4i2n
-	gclejavcsWz4tQ2xMMidFy3fTUC0YWc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772728946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB9x8XN+Y+qd6tYArq0nO9pyPGgcxxO2MoQ2Szi1vEw=;
-	b=BL+0lglhRwEZwDaevlbFSFxI04tbXmtWnzkMwU3TKDoGGdpCdlBOEUKqxIAggT0ns2Z2mP
-	pLE3YJ5XCcQUGCDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772728946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB9x8XN+Y+qd6tYArq0nO9pyPGgcxxO2MoQ2Szi1vEw=;
-	b=jGUo2hFUI8OmozNrFFkgC3iFPeYfTnB7NnJosv2txPSzBCHDo7yShBYMkbyjjQKK65Lw8m
-	nWKUtgTqcLAYrBhBrU3N0y9qupZj79fK4f+a/jv4WzuLo9r++aVRQyoU2okvmCx+DT4i2n
-	gclejavcsWz4tQ2xMMidFy3fTUC0YWc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772728946;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB9x8XN+Y+qd6tYArq0nO9pyPGgcxxO2MoQ2Szi1vEw=;
-	b=BL+0lglhRwEZwDaevlbFSFxI04tbXmtWnzkMwU3TKDoGGdpCdlBOEUKqxIAggT0ns2Z2mP
-	pLE3YJ5XCcQUGCDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B5723EA68;
-	Thu,  5 Mar 2026 16:42:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oo3+IXKyqWm5AwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Mar 2026 16:42:26 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 426C5A0A8D; Thu,  5 Mar 2026 17:42:26 +0100 (CET)
-Date: Thu, 5 Mar 2026 17:42:26 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, 
-	Ted Tso <tytso@mit.edu>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
-	David Sterba <dsterba@suse.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
-	Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 17/32] fs: Move metadata bhs tracking to a separate struct
-Message-ID: <2humtq6dr6dsoovz63xqwql5wk7ntoz4xtwlyohavl3vym4xxs@l3rivwrbxmy7>
-References: <20260303101717.27224-1-jack@suse.cz>
- <20260303103406.4355-49-jack@suse.cz>
- <aag1vDoCVwAlIKPq@infradead.org>
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-660be63279bso4164287a12.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 08:49:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1772729387; x=1773334187; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eNHfHsjGinUs8vAecQM39SD2K85CJrqw6vaptjuUYBM=;
+        b=NGZqjg/l1DYFKkBeV0AAdNbZ39earngpm6CX8gKHSMBCiJQz2ZP4jJlmD/3xCo9/fP
+         rN88zIwo5epUUevnga7IWMlDROcK6M2+1lFdeqYdeCQOjN/cwxO/UNaVi0uCZsQJ4+Eo
+         anyFCQbXkTML3Hanjnv+hXwMstF3Z+PIaLmYQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772729387; x=1773334187;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eNHfHsjGinUs8vAecQM39SD2K85CJrqw6vaptjuUYBM=;
+        b=EWgxe0D2be/M/MxrBLSLfysb2l9ENZcU15VC5ONwfH+qE6g+BHKW16xBEB9MFvP13w
+         cWKkjnGRxfHZTUdxduGQIiCXeBBhX7gC35dMkt5RwtI74fcNNoEKylxpGhVtxCJI0LGf
+         dcUfRooBgYLd+ox7rScDd9xh/H/uvbXF0gfjIk1yU7BmJokab8Pc70Dcxok9D0nl6Ml4
+         XDY+oTc1FUdfeAxUx9ph757eac0AK/LbVnU+ueK6wBSTr96r/VgkWjeVB8964OGQ5gBz
+         kneYg6e+O6YIBzKoPW0QQna088uWAxq67WTyGLPkTp3gvScj1v8GyxfJ7assHPAq3ilY
+         hozg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9q32r69wzZoHg7fPEUv84xOo2UaKXuK1FTWUC4Y8t87EKkCy6LO1gfCpL1trfp0H/UQj+L0ggfA==@kvack.org
+X-Gm-Message-State: AOJu0Yw74dbmPeNsv77kdHAPOCIuWXLKGjdJtzUEUR+c71St8CuTgtlE
+	qvTUlgvdKnfUF/xbs3HZSYyxcfGO957SRl1Y/Il8saMmA3qsmBvZV0cn7r/PUXXZ7vAXrcKWozg
+	J0XeYSkM=
+X-Gm-Gg: ATEYQzwwGVuQXxwwHsRLipYvAZtanxteXLLwYzBP9jw5DLBIEJImXeoLxmAHIQ55LeG
+	ppCn3Ih7xNWKB9N+Fpx5NQqsXDJgS7UIhdLpPfSP3QFX05RwqYua1jpeROO6B4n3+qB7wzKEV7H
+	YUCNW7mru40++BiVbPO1R9efCta2QP/Am386LspmZCI0qpVtAs24M89MultW5YO9ZIX1QcUfVTF
+	fXz1WGys5vZdM18j2sXjasLcG2Y1idTzo1pDimbOQ97VcwUhRmRkaxpG7B1F2a41cP5LZ3Z/QH4
+	Ev4QY7owDOG/LvwX565cjHVzOAneT5jS1kuF+LemiXqezq6fYDS3MPZQ8KFE7tJyojzM7Ywq0tq
+	q2YkjB8UJqsLigvxRdkti+pu1HT0o/SWoRCn5uApJhmq/ZrVEC9qlZ6fP8T8hmMQS0cbD6HXY2u
+	63nkWTUU9NQYzbxbAUI6db1nK0uNI+PR3Xv4H7ll8X7bwNlBQ6BiJhDzIkr7ReZUwhV64D3imC
+X-Received: by 2002:a17:907:25c8:b0:b88:3877:d922 with SMTP id a640c23a62f3a-b940890d5famr198957366b.10.1772729386873;
+        Thu, 05 Mar 2026 08:49:46 -0800 (PST)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b935ac704b0sm925409866b.22.2026.03.05.08.49.46
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 08:49:46 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-660ea6ceb5aso3076899a12.0
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 08:49:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVhPFp8sKpycuToeapqwk6/sR4U6II3ZMLKgBKykGtFB2JswSz+4r1ubCkwzqxSgoKq4wrw4liDJw==@kvack.org
+X-Received: by 2002:a17:907:e10d:b0:b94:82e:55e7 with SMTP id
+ a640c23a62f3a-b9409e75c5dmr122626266b.25.1772729083811; Thu, 05 Mar 2026
+ 08:44:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aag1vDoCVwAlIKPq@infradead.org>
+References: <20260305103941.11f1b27d@gandalf.local.home>
+In-Reply-To: <20260305103941.11f1b27d@gandalf.local.home>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 5 Mar 2026 08:44:27 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
+X-Gm-Features: AaiRm537Jv2IcupKWNVngREUNm8d0KvSSjwd0obOsEpercpOSBsTAHZ8PEtbhj4
+Message-ID: <CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
+Subject: Re: [GIT PULL] tracing: Fixes for 7.0
+To: Steven Rostedt <rostedt@goodmis.org>, David Hildenbrand <david@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Huiwen He <hehuiwen@kylinos.cn>, Jerome Marchand <jmarchan@redhat.com>, 
+	Qing Wang <wangqing7171@gmail.com>, Shengming Hu <hu.shengming@zte.com.cn>, 
+	Linux-MM <linux-mm@kvack.org>, linux-rdma <linux-rdma@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: apg1ep7d58feeqwba9djudptx7optxwh
-X-Rspamd-Queue-Id: D8DD38000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772728947-814406
-X-HE-Meta: U2FsdGVkX1/wKkWH5ds241iOEng9yUkk3yoqHdZJk2/avwLI8lgvlxiNdPoKjoZDiM87mEBZ8F/N3dhLFVQT//kMw5ECBB6E4ThGT4NrJvF39+Th8AFlkV5mnzCKlynxeUwXTPW+9bjXoz13ZvyCRy00HbIfA5a2vWcEk3DYCJtaybUlBTSDmhBi5fTMob5TCxz/kIf1C0c9awnI9mpD1BKAUI/idr6CkYQMk7N+UNc50SiRmvohHvgynOntim7Dw2k6kMc94Gjw34Uyi3L/04X4ATuxI0PpxsQOvjr1YCvCR6pa4Mw/6EZyq3//P+hvccG6bI0nTqAomnqwAZ2ShwWhB7tzR874oHrvKEpXhkdJrjJtymf/9FV4X0Kl3UK5U6pz/ZuQIsNUdSZXmG+0pLRAz5IHVFwTWPbHf3jf5yVuvb0qG/LoK8ayWExYG/C67VbAUu5GcA2eUeRSACi5bBeP0hHK0PdK5HMtwxZclguCk0bsfytZtLlO+SM0nBtL6nibrILBXdc6HohH9M/XYAzKjLMZNwSVXF4riZJPiW1SUfpPFOxS1CXHkog+tXXphnUl6mrMYu8Cq72cYZmwlf+sVtkEeZnKP70bjRSzSJywPgVCxBSUvElX4mYJUgAp1obnyD6A6NJ/nsuATjSpliuhNdUoYFtm/uRZvpA3aeh4mYlb8SBXqd82mk6PI08Q+xC8wmWfCoRb8YNGkvBhW9paxOwLygM2Y6d9gcP0KACmoT27oQn8/w8YmCpsARFW9iA22dn1b1DEXKW/6mMr1cZDaC9S4OCXdSBbqZ5n6+sYX/kwkcFFFJyTBz/xcGzyYNmEhDUOe8FoQNc+Qb2MqTKd0kF7kDew+y8zhChY+cGImkmmsi4cIrbw8BAE2PwYhwXKcKitQyC83DZpqxFA3XCuNJ39a81kN0ENJMWxrETWzNHEBeio6WQNaT4eEE/qijqZR+0UDmrnBtLR4EH
- 9QNiXsBv
- tNLZ4Pf4Ewcodu78Aj4SRYvOJR1h7f0soeqsFtv5+Lrup3bNKoKylRHM0KntQQYHYmV9zBd2KQQA11UefO6BfUxyaqPvWQCBofi5qOWNrC5c+E1RYF/mzMEHh1RGMkZlmlWaG9j0jBvS3Oh3e2PlmDce70pkf8HvxSZaSESR8v149PMVVbZzBm/N2E+HgRsIW+z8OrerwEbpruSh213Lh3mx8RRH58TaO0/7bdDPlZXY5WdTJLURyCzoNbP2E2pQkXPFNodKTEbABtt+mDUmQHezejgXqqN7xLuVz/WS++z/KxL0dO5xogz9aPhgp62hRZa76DsTGuwWb7EUEpdBN9205kg0Y3iaE1xd/qY2FmCoeQofzMBmmDNrkKaXKEDApuY5ZzZmx9HYtmqd6HmvbUZtOo20/T79Z05xs
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D703F10000F
+X-Stat-Signature: a5hqdeqo4sywdmnxiejz51rrqez4h5xg
+X-HE-Tag: 1772729388-972458
+X-HE-Meta: U2FsdGVkX1/l9LX6KqKwkZaVRCuSzNQaFBlEEQuaw+EI4XQKiataV7TAuHRvtnpsIIZT7MNaoiM7t4KmU/jfj+Saw6NNXINy82pRgtxJ4KYqRkF4JlzyEbAnmUZTJs4vxOr/bsW3odVecLS8Xd5pqfhzYXmQkkD6YqzgZJgIawirdNWyC+c9QqHHoJlJ0w9HZecfhtK0DHFg0NcpVkHu8M56YpVFdSshg5m03vB3ZO+sCQ56s87wBRJEfPdXvvncTeba/y/9yJoC8gs6lpPPD/1vg1XCvmW2BmxjMtwJY7oEDiW/BthLz1EI7xuDo2dm071oxWscomsI+sYrbe+6GGFWF/0GQXlJEysBpxhSHIBYVS/bbHte9uj34R/x/O2aTVaMzGgRc2b44K4wGbkinoMDBzfaTe9fJ/hMbbhw8bfl+KXtPa7HrslLGSpfLbdYBfrvTSCfVzg4JWyLYOewkutJuEScLcOjzZsyhNLTfTOzuhl5sA4kFPMDMZJlmPtG0LGqYXRfE1WG7CzUyc4J+7Vn4Tdan0TR6QTrrmX/aG+X4OGZ8a086aKpJvXlxU7DOZiOuKcLa1Sn7E9aLKUVzUFMI17069wQheort9uovZKwnTNR4UpkMEAWnOIdSazU/hkmd8GxpQQjhAZ+/xeUHc4dj4s4JrCYZrprmaY+ae2j0+iApMWwfJcOjCRqdHwRYrx3eoA6O9+lxE3MKnOtfhddQFOT0hyOjhwzWokYsbYG3SIrtkPoH/RojRjnZlMcOhhb9ow+2Tok4Uf19uQzNsvjSNucrhMEqrWDBjAdDMeSNOEeQBuvF35Cx4HUEkJpMK5gZ7B4u5PNsiJMpRq+akm8C1ItQzc6R0NeZArvhqhjA+JfcsrBO8crH1TaV1DRW9xKD9XlZQmrUZCqIuA3+E4LxlzMsoGCPea68u806DSX9C/rvxsnjlzcLwUI61DJRH9W/uablzM+rzIF6Uz
+ JgM2hsXY
+ j9P98Nuf2CBZXQmZRaZYbCf6O7XJuERgsD88tedH/5c09jqAbeWvXYvnvcMbnTqVKRmxioxOLTt1cEhJMfZBt/dfgSMoTh0mCop7mLvljqprfHHjb96TU2BPnEkzjbvKHrZmMVWLJ2neM6FoYiB+V5Pwrm3uG1xiOISt7WqRt1H5b+LW1E0W9WipZD2Yb5tEUqPaVknmxkYQuzDOLKiO5uhaUSrNhDhi8pBYZBaqOyWn9DNQJUhaZ6Tyo250YUtG3INNMaMpRNUelVs/kHiPgxdjiSEKNTaKY4SysXrMr27KxBdUR8SyM4qZ7YijDrWnecaTR9Oyuo3aXSamRrfypDrWmHYOwFimz9rsHHQXBcmVn5FMvbkTV4g9C24aNw9UMY1Sgg2VV9VCnbzMXRPYijdOOO3YruOR2g5DxRGwHD/IioyrS5mwDCvZq2Tc8GS+saP17j2dzgkgkdKCO5uNp3K3n0XN0EUlLrE/SHcz5Dfn6q1vURaWlxCaDBDUO/Tewv/P9SsmqQ5E4ZfKZQ3hHEBKFrBxOlYtYJgIwI6CITRYq/CXMUPjgag4EZ+m4Y6HGZSaV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,18 +125,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 04-03-26 05:38:04, Christoph Hellwig wrote:
-> Maybe just call the structure buffer_head_list at it really just is a
-> totall generic list of buffer heads with a lock?
+[ Adding linux-mm and the rdma people ]
 
-Well, since we'll be adding pointer to address_space there and eventually I
-need to add a pointer to the buffer_head containing the inode to fix a bug
-that fsync(2) now doesn't properly persist the inode metadata for all these
-filesystems (but I didn't want to clutter this series with that fix), I
-think a special name is warranted.
+On Thu, 5 Mar 2026 at 07:39, Steven Rostedt <rostedt@goodmis.org> wrote:
+>
+> - Fix accounting of the memory mapped ring buffer on fork
+>
+>   Memory mapping the ftrace ring buffer sets the vm_flags to DONTCOPY. But
+>   this does not prevent the application from calling madvise(MADVISE_DOFORK).
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I wonder how many other things have this assumption.
+
+Now, many (most?) of the VM_DONTCOPY users set VM_IO too, because the
+most common reason they don't want to be copied is that it's a special
+mapping.
+
+And then madvise() does nothing.
+
+But I also get the feeling that the whole *reason* for MADV_DOFORK
+existing in the first place simply doesn't exist any more.
+
+It was added two decades ago when as a hack for the rdma people who
+wanted to mix fork (with COW) and concurrent DMA, which just didn't
+work reliably because the COW would break either way.
+
+See commit f822566165dd ("[PATCH] madvise MADV_DONTFORK/MADV_DOFORK").
+
+And that should just not be an issue any more thanks to how it's now
+done with page pinning rather than with the old GUP interfaces.
+
+So while I've pulled the tracing fix, I get the feeling that people
+should at least think about just making MADV_{DO,DONT}FORK go away.
+
+Now, Debian code search does show some users (libfabric, libibverbs),
+and maybe they actually want the forking behavior for other reasons
+too.
+
+But I get the feeling that maybe we should at least limit MADV_DOFORK
+only to the case where the *source* of the DONTFORK was the user, not
+some kernel mapping.
+
+                  Linus
 
