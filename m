@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95E87EFCE5A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 03:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83DF9EFCE5A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 03:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B54D26B0005; Wed,  4 Mar 2026 22:22:11 -0500 (EST)
+	id 8B19B6B0088; Wed,  4 Mar 2026 22:45:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7AE6B0088; Wed,  4 Mar 2026 22:22:11 -0500 (EST)
+	id 85F966B0089; Wed,  4 Mar 2026 22:45:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E3626B0089; Wed,  4 Mar 2026 22:22:11 -0500 (EST)
+	id 7340B6B008A; Wed,  4 Mar 2026 22:45:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AB176B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:22:11 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48DD51C30D
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:22:11 +0000 (UTC)
-X-FDA: 84510560862.28.0F3589F
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8C5631C0013
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:22:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQqMSLj1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 607516B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 22:45:39 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 114CB1C793
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:45:39 +0000 (UTC)
+X-FDA: 84510619998.23.8244D8C
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 42DC614000D
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:45:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Q+ey8CsJ;
+	spf=pass (imf26.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772680929;
+	s=arc-20220608; t=1772682337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gus2TbXg7gV4yotO25GDeDjmZGlpM2f+fKw3//D+yIA=;
-	b=r0WED2FSMncdJAamQTMCnEagYFB42LChLpJTCZRgOAFiCfcAmazDUoFvwaaOiUYUUcVUdz
-	kiFwlp07rrMpp1YhlIM/A3EOHvSB3ZU/hJ586ez7TcKDTWLthGgZvLmrxP/20dH5oqV8aL
-	J98SRgkzU2sv3DP5UdVlTBBPKTZ/VLo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772680929; a=rsa-sha256;
-	cv=none;
-	b=R+X0wlU7DB24OMZ5PxzVAGSDFQXM7QvziSKH+kQkNJz4OTwkEDD2DD67JeDiTWD47QQxET
-	nz3QS7yxlxhW0CQliegwytRH8qgfO4PTwfoBd0kwrt7ewOvDplmtjp6jU/79ncHqmrdlMW
-	YmYxFyu/JGOhl+uIxU/3uEwyPkni64I=
+	bh=FJhVUaJiR6Sf2FRKdFTkU/hDMrwnFyJdVNRrYnTxuA0=;
+	b=7z1Kn5C5wf0xKvikrJZ/3g9rmsyfjMW3JkT3N0RDSokrPP2QaU9Je5s1wCPPY2Kz2HVC6g
+	+xLg2zpD65Fv01t0dKJKSgEObMW/mK04LwsacC6U+/0tT3ih4q3g+dmu5gpGvkt/J9jxur
+	78ZNUplfsK+l/9aE12+nnet45EhZYkY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQqMSLj1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <7ef528c1-b09c-48ba-bd59-bcf13880e105@linux.dev>
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Q+ey8CsJ;
+	spf=pass (imf26.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772682337; a=rsa-sha256;
+	cv=none;
+	b=piPrF6I9O0vuERmveIC7uU3x0rD41+OiZpQndayj6iN7HrGVHu69v8Y7PU+GnCGVCMxdVi
+	E47C/zgZT691j4E00/i0GRvycprmqGWRFrM57NcnS87Ve70qV1/FJkE++zo5Da5hBsmeTe
+	w3Yiwxn+93D+7v9xeBtntcSGtHGNJtE=
+Message-ID: <18666c09-1052-4a2c-8807-8ac330b4d918@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772680923;
+	t=1772682335;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gus2TbXg7gV4yotO25GDeDjmZGlpM2f+fKw3//D+yIA=;
-	b=nQqMSLj1tjlyJYZMSeOMcrUjLwkiQXIkpZMDbTxUeW4EXdyaALv/totjOTniIeC6JO9Tb+
-	nN4dIP7ddh+mLx7p2xWqLpogvBGLmHMhocAyCiCv1LL/5YNEFVmKuNVnJMPakmyrjRGUCl
-	GUGWZtENkEFZJXNvmDPtIT8tN+UUHNk=
-Date: Thu, 5 Mar 2026 11:21:51 +0800
+	bh=FJhVUaJiR6Sf2FRKdFTkU/hDMrwnFyJdVNRrYnTxuA0=;
+	b=Q+ey8CsJGN1BYpIKPzSyNnFZgmkYbgiKmLpsvD4imYZtDjTGLdW5lO3hUxhfurVC7QdxaL
+	y9Et4pJA3qi5aqlECSkTEe9lULlzUYb7ogQ4QoN9vSE+XxOVwknj/F6A5sqeSm4kjT3k8Z
+	egRtLWGuMvfjafx++YxD4F3DdHmMIEQ=
+Date: Wed, 4 Mar 2026 19:45:25 -0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v1] docs: filesystems: clarify KernelPageSize vs.
- MMUPageSize in smaps
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-kernel@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>,
- Usama Arif <usamaarif642@gmail.com>, Andi Kleen <ak@linux.intel.com>
-References: <20260304155636.77433-1-david@kernel.org>
-Content-Language: en-US
+Subject: Re: [LSF/MM/BPF TOPIC] HugeTLB file preservation across live update
+To: Pratyush Yadav <pratyush@kernel.org>, linux-mm@kvack.org,
+ lsf-pc@lists.linux-foundation.org
+Cc: Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Rientjes <rientjes@google.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Alexander Graf <graf@amazon.com>,
+ David Matlack <dmatlack@google.com>
+References: <2vxz1pixvk4m.fsf@kernel.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260304155636.77433-1-david@kernel.org>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <2vxz1pixvk4m.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8C5631C0013
-X-Stat-Signature: 9996nmfet6hmwiwooy1x4tb87s69nomo
+X-Rspamd-Queue-Id: 42DC614000D
+X-Stat-Signature: z31x1x93fm6ca164qx7xc9c4hodx33uz
 X-Rspam-User: 
-X-HE-Tag: 1772680927-829833
-X-HE-Meta: U2FsdGVkX1+pRvodpAWCwGigH39JfVlF/tgsMsuv+yBWL5xzVNcz2eNPsFkx00S6lxdSwLJQa/EoqLumNE8PJALEvfAl74exuaboQfMM4s60LrgfVXyVbqYOQBdWI1WHPByLuHErKXdcgTl9ektw2tq+DW03VHsudei4fIRGUm7/aFf+9xF7Jat8p8dsxdmdfXbfp2Vf0R/sOGeRGQxvPe2EEaAXQxSaiaP9SMhAQLD0Zmps4xJ/Mm4gy68COO3u8ya1xzlYomx90KNit/miOHe2g784Y0c1sKa4l5l8BYWPr4uOBHgmBVDFD5RUjyooA08uUqHxxmlYb7E/9piDwRbFaTEi5SVgtJiO/tq6HhE8xT6HXDPLSDaHb3GxhHZpt8S90pH0c4yYFniI4jXdUOp795fhYZo5C99DW1MS3Ge8HypoMsG/OvibwuzqEzYhsjfQLlZhoV01sh+P2HQxtiZ7katQ5GI1L3H+EfFZeHAWpSoon2dtGK1bo6z0Lil2dic06f6HrBCYeQw2BIGP/0TPxVapxBMS4Ji1wiE0vtRJqc5m1g7WalRBIocCqDf2JMl3l61uuZAsANSw8L0xma1pA4KS/6GFisUVSNoVxsSFS3MNoO0i+MSz8HyncIj8jczwOhr1cy8eOPfRwQ6IBMIN4gIqK5E6lR2D6zV76rgXkjrqGa5v98/kHaIufecbf/GUYYhCjo2jwvNX36VtEfozXCCw1+6N0zw91XF3RX8YPy2PrP83WxUi4SoiY0odqt08t6Z5gx/lmb6GhpkKL6RH6lpFrZvhgoSXz0nO7sSKWKLTPFZf57hkzF3iXpZr529JuJevJJggj0mF5x0zjDFridUsjPDGAQ6s3G7gZN/BpwBgDXBHusMrZ8E3kE7/F53WdhN07dA+3UtRBhVklWtwUMjEwpE/LAMW6H6OxdAXVqAmaPPA+h00GLZCcYc5GIvGpNpgHaU7czMH1xf
- uV6fs0Yz
- awzWUh3Ektz/j9emNiLeSSUnkDedHV8Kfi3k+sfacw+qTTiE23PNW0KuE9DiAxJYz6l9sJ6NzbkbmhaxxiA2OwSY+F56T7i5YbxWd+6w2Oba2SO66uoIMJ2X6nC29OaThrDb8WiTZF6BHLGeykvU5N1shpR9jixdq9xVXho5mv9zF1xKdlgmOjUt5cJR2fxL3VW2bRegepSGq9Fr4VLteRW22ODxH7td8xUgYC73tanZzqIy9x9RrkcUcp/ZCUM2QAYLjJgSBU9qOJDw7JSaQ1n+675SzkkMor6cPShDZiXb/XuYhMjQXgfnqZqDJGNTC6N1Tyh0I1yKnlmZMJpUhz2dH+LRuynGvOv3dFawtbrLLYcv4i5/GbgNC6DSIHjp4E2CudiJcMBp+CjrF4P6KE6xVqBq36LCsT941heU6nViB3gOTptImnspPzL/wKghBbyu11WoZp7Ly69wvWmHVejg3D8FA8z5HEt24mfD9Tb6sePef+eJVSCp8q3ECeh3Of2egvqisuKput234+vMWjF6zl3Klggywrn/R8+1FbUDNv7Ykt/xE7J5sSgiNh0KHKwYQgRtxYOtl2JpgmUlD/Dy5Rjy4gDrfm1mX05pyBKFcH6Y=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772682337-301359
+X-HE-Meta: U2FsdGVkX18cR/0B5NtX71vRMxwb4M8MDyC8pdHcYgriPE8Q8Rwf/yym4tSuPV2Y8+gCqqqvjSxJdMBSKQkxlNwQMzmbSRey9M+iwFxI/pfdSMpsO4HsQ2FSNHk1fZcLb40LLHCLNn1VWqMm5EiEFMKAQz2nG0Qxyb2zlqBq79ippzE0MA7n34OAzICP8pjsLF8fAKyiPW+GNSqxLpDOidPmmG6/KpGFjgeyH1QaxX6TEHveeEbJ1t8sczKXdgt3/L+ydMXlgHAVVmEvTmNaij8DaCRIk6QT9FkGARDA7TBdt0CNI/HjitDEPyUMdFTETHUaFxEdG0+b2rztRSS1NqYElZ6Af4m8uyCrLI+Bm9tOsQdtGW3CijVSK/QEWj2Nt7j8E7w4xTYgV8CxndEX4pKjIljmkjSP6/m28Mw6kQT4C0eVzg8TCh9xV+3DkTwhaGr88tXnh5eBeTmTVdJZ9/LXTXYeC2yGFqf9oQQQgWf01p0GZfchLffIdJelbFgQ97eVz5hmkYRWvAIHx5Abb2kHmHiEC4gA5FmayALZJ8hs4//9XOr3tgqUle0/8bJyc2h1jPp7MFo4pbTZVdwAWx0XV7wfzQt9vYfnVlznGQ0hWqAx//J9PggyKsY7AstaWXGSw0sttQs4DVxpnt+DQ3Mlhy92/wiUU9vZkL1v3OIq+pzFw/bwsswR2G/EmWO+StxeXxy8fW+E+qKVgtylbXk99vSclajJy7/aV6ObxQbv2EhmuOQonCoHMasXuOP/q/4+OU/jeTkM1xxJE6guzLZQr5xc2naIGngVQAUYaJFqEmzgmAcSW0iDCNhxOkZQmTF8ixEV9exF4zvq0JqLdynyCve7u/CASIzH6c75R2dzr8yqs31+hBWfbpboDDXn2/N65PCOmZh18tQQqFO9/uXAjm79w/7XWCLy8TY2Owalb7j4Op9d06kqAMH0yL8AaOt7FkFySP6HnlA0Qn+
+ juSdQyiC
+ 8mTakYOrVnjpUQeFPEsMv7Yxqo7Jju/MUIAYcq92iBP+XxhghKUJoDhPYo/n3LgNFEhl0CPZIkeKN1BEE50ijrQzSV6OlfCvh48Y448P4q0uES1DZH8I+F3w2c3yo8SGgI9uiCBunH8d28QW+2Nj+dOmMoBW5IiS6CO6eGmVRrpUN8SMKo5pBRvEKeFk+A4HqqfWcNmaCv8gSmrv6ZonMcMMIJyyq+cdFcFRv4MT7Kiz2CCXql5era/K+uooV4g8EDp44z5gQh6hiM1Z0pY24nnUrRTVDU2XVoosozYLreEi435M67JtwlwiM3o9DmTpWdz28NJZYi7cZ3c55hd8fxcUBG9y7NfapqQWnzOQGIcP5d2VclSu7INYhe1HnNaUTvWGNhQQr9BVrCRj9M4asg1HNUjJFBWj/9Q5aw1N0JqK1x0Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,51 +93,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+在 2026/2/6 9:48, Pratyush Yadav 写道:
+> Hi all,
+> 
+> I would like to propose the topic of HugeTLB file preservation across
+> live update for discussion at the upcoming LSF/MM/BPF summit.
+> 
+> Background
+> ==========
+> 
+> Support for performing a live update was recently added to the kernel
+> via the Live Update Orchestrator (LUO) subsystem [0]. Live update allows
+> a full kernel update over kexec without terminating running workloads.
+> The main target is live updating the hypervisor without terminating VMs.
 
+Regarding KHO/LUO, while the main target is VMs, the materials above 
+focus on updating the hypervisor itself. For physical machines, 
+performing live updates is much more challenging due to the large number 
+of physical devices—it's not clear how this is achieved. I’m very 
+interested in this topic and would like to attend the conference to 
+learn more about it.
 
-On 2026/3/4 23:56, David Hildenbrand (Arm) wrote:
-> There was recently some confusion around THPs and the interaction with
-> KernelPageSize / MMUPageSize. Historically, these entries always
-> correspond to the smallest size we could encounter, not any current
-> usage of transparent huge pages or larger sizes used by the MMU.
-> 
-> Ever since we added THP support many, many years ago, these entries
-> would keep reporting the smallest (fallback) granularity in a VMA.
-> 
-> For this reason, they default to PAGE_SIZE for all VMAs except for
-> VMAs where we have the guarantee that the system and the MMU will
-> always use larger page sizes. hugetlb, for example, exposes a custom
-> vm_ops->pagesize callback to handle that. Similarly, dax/device
-> exposes a custom vm_ops->pagesize callback and provides similar
-> guarantees.
-> 
-> Let's clarify the historical meaning of KernelPageSize / MMUPageSize,
-> and point at "AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped"
-> regarding PMD entries.
-> 
-> While at it, document "FilePmdMapped", clarify what the "AnonHugePages"
-> and "ShmemPmdMapped" entries really mean, and make it clear that there
-> are no other entries for other THP/folio sizes or mappings.
-> 
-> Link: https://lore.kernel.org/all/20260225232708.87833-1-ak@linux.intel.com/
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: Usama Arif <usamaarif642@gmail.com>
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
+Zhu Yanjun
 
-Makes sense to me. Feel free to add:
+> 
+> For more information on live update and LUO, see its kernel
+> documentation [1], the LUO patchset [0], or this LPC 2025 presentation
+> [2].
+> 
+> MEMFD preservation
+> ==================
+> 
+> MEMFD is the first file type that added support for live update. This
+> support was merged with the LUO series. The memfd preservation code can
+> be found in mm/memfd_luo.c [3].
+> 
+> MEMFD can use pages backed by shmem or HugeTLB. The live update support
+> in mainline currently only works with shmem-backed MEMFDs.
+> 
+> HugeTLB preservation
+> ====================
+> 
+> While shmem support for live update is useful for many things, using it
+> for VM memory (and other memory-intensive workloads) is inefficient. The
+> next step for MEMFD support for live update is to allow preserving
+> HugeTLB-backed files.
+> 
+> Note that we do not attempt to preserve the whole HugeTLB file system.
+> We only preserve the memory pages for the files specified by userspace.
+> The HugeTLB file is re-created fresh on the next kernel and the pages
+> are inserted back in. This lets us keep the maintenance footprint
+> smaller.
+> 
+> Current status
+> --------------
+> 
+> This support was sent out on the list as an RFC [4] in December 2025,
+> and was also presented at LPC 2025 [5] in the Live Update
+> microconference.
+> 
+> While the patchset has got some initial reviews from live update
+> maintainers, it has not yet had any review from HugeTLB developers or
+> maintainers.
+> 
+> Goals of the discussion
+> -----------------------
+> 
+> This session will aim to present the topic, explain why it is needed,
+> show how the support works, and most importantly, collect feedback on
+> how to proceed with this work.
+> 
+> PS: if any HugeTLB developers or maintainers are reading this, it would
+> be great to have your initial thoughts on the RFC [4] so I can present a
+> more polished patchset at the conference and make the most of the
+> discussion.
+> 
+> Key attendees
+> =============
+> 
+> Live update:
+>    - Alexander Graf
+>    - David Matlack
+>    - Jason Gunthorpe
+>    - Mike Rapoport
+>    - Pasha Tatashin
+> 
+> HugeTLB:
+>    - David Hildenbrand
+>    - Muchun Song
+>    - Oscar Salvador
+> 
+> References
+> ==========
+> 
+> [0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatashin@soleen.com/T/#u
+> [1] https://docs.kernel.org/core-api/liveupdate.html
+> [2] https://lpc.events/event/19/contributions/2052/
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/memfd_luo.c
+> [4] https://lore.kernel.org/linux-mm/20251206230222.853493-1-pratyush@kernel.org/T/#u
+> [5] https://lpc.events/event/19/contributions/2044/
+> 
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
