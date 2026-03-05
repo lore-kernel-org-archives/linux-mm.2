@@ -4,108 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E59BCF3D311
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35689F3D31A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:55:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A5866B0005; Thu,  5 Mar 2026 10:48:27 -0500 (EST)
+	id 4E8E66B0005; Thu,  5 Mar 2026 10:55:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 229A36B0088; Thu,  5 Mar 2026 10:48:27 -0500 (EST)
+	id 496346B0088; Thu,  5 Mar 2026 10:55:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10B966B008C; Thu,  5 Mar 2026 10:48:27 -0500 (EST)
+	id 344696B0089; Thu,  5 Mar 2026 10:55:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC80B6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:48:26 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83D4D13938F
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:48:26 +0000 (UTC)
-X-FDA: 84512441412.14.AF83363
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6CAC41A0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:48:24 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TgtMFvu8;
-	spf=pass (imf19.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772725704;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C33A6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:55:09 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB0D1C08FB
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:55:08 +0000 (UTC)
+X-FDA: 84512458296.29.3EC494E
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AE3654000F
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:55:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4HEKooMl;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772726106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y9N++HEdnRTRosbNSI04R8cqI3DzzCmnUhA8yKf3s2Q=;
-	b=qXrcVUj+Blrr2toeiXF2E7KGcCqL6O7fz28WX8v+8KSaMc0Yzxo1+elc5FMZB6Xp8zMFC5
-	eiJ7hTBGI4kNiyOhdoGfbGY2E16sqCvh+WO5XBkPWmAAlllAKycot4sMfG9w1+smKvVGxz
-	mMwuh5RyXctcPHIzvvoVLeqVAF+zVAI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772725704; a=rsa-sha256;
-	cv=none;
-	b=oy9jVNzd5Rkj2mCnMjATk8r+e2fqRrnjUkwDOvnFKYhCvzaSZck27wgmmIdYHwv8aT0b2Q
-	tT/sxk50TangyA7BRyFELZPp9hEOO6b4wakNBJ+G7vNJM1XqzWkBUOeaEe7L7sx4KzAXud
-	YPs9rFn11Sa0vwmUrvHNxuviekBsNk8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TgtMFvu8;
-	spf=pass (imf19.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772725703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y9N++HEdnRTRosbNSI04R8cqI3DzzCmnUhA8yKf3s2Q=;
-	b=TgtMFvu8WprQd8hdBbQRGQF/Di9MumwDVl2aZtAgEwTjcsWZ+heoZvbIV/6g2lc3MiLiyX
-	XPi9Lll+3rCh0o3bPpr7bJHzRqbFdgAV0xrEs7dQbrYXBoNQD9/RTiQaaZgEEsHu/clveC
-	11tZvvRbelAAK1XBesdV4k43Y5oh9DI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-i2FRZpkmNOqpyTgbB_FfNw-1; Thu,
- 05 Mar 2026 10:48:22 -0500
-X-MC-Unique: i2FRZpkmNOqpyTgbB_FfNw-1
-X-Mimecast-MFC-AGG-ID: i2FRZpkmNOqpyTgbB_FfNw_1772725700
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 680071956053;
-	Thu,  5 Mar 2026 15:48:20 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.21])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 70B6D1956095;
-	Thu,  5 Mar 2026 15:48:14 +0000 (UTC)
-Date: Thu, 5 Mar 2026 23:48:09 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
- cross-CPU slab allocation
-Message-ID: <aamluV66pLIdo66g@fedora>
-References: <aZ0SbIqaIkwoW2mB@fedora>
- <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
- <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org>
- <aZ7BbosIr2FvZFAe@fedora>
- <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org>
- <aaFinIsCmitHSP_c@fedora>
- <08db9e93-3d29-42e0-ae57-79c295d75753@kernel.org>
+	bh=9rJMSnQTk934LiSmrfUCaBKYUciLa/bDO3L6bfIr3A4=;
+	b=w9Xpg9B/Ysb31QcNfc4lszScLQQe/V4180xy72wZG28wMVVIr7wuGoI2VODlkkYeJANJaW
+	KRKlSObVPDGvXPeK0souA1ZFW8DMuEUAR5Ou5xt7UGDt7iyPzA2vUylG/5S8eFZ37Mcvrc
+	YCrCt2tvrwbQWhUxR+PfjKvhi1ILXfI=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772726106; a=rsa-sha256;
+	cv=pass;
+	b=6ot4shYk4k8Oyy0FyRSl3pPZWxdfznsUIX3vprYMLxHWyeUxqITo4Wc7uHNEQLbAoJwCap
+	4j+0ZMhjdu+rnrm9GZF7/qPH2gFRTQOkXGkcWFlQKYOFV5QZpIKDhysNxIbU1a+LIku2kT
+	Qb2BsnmQFZKTVghR8jUNyKwbG7S+7Ug=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=4HEKooMl;
+	spf=pass (imf12.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5069a785ed2so502011cf.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 07:55:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772726106; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JG6z88ShxQi8M3rZqaypAK8ePIlNOFlG7aaRiWcHOOtba13FR5JJeU+CmfYs7uFJ2a
+         X6iRhgufZRa/FOGg1rkkgZSmOgETtWabTBbxQxGtC6hVKbJReRDJy2owHPMtj12q9HzV
+         86wsle4FCgSVN3VFxiA9AVWTCJhji46ewscz8fxYAxmY0bHQlIQQhbeP3N/TGFZe2x1N
+         ylHNHzDyDPDtj48nYkg+YwGAYz5kFb2PaJUsVXEdMaIfNwB/2jYco7RH0x2X6UU9phhX
+         4tw99qWR3MuopUyKNt40uxpJcKYiFAalRuOTlgktvd8QHYCZsXEDyucSn3GF3V7r1m5l
+         0ggw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9rJMSnQTk934LiSmrfUCaBKYUciLa/bDO3L6bfIr3A4=;
+        fh=YeZiD0RrhDmIlW4fYVtrtvALeIbYoEv9cRqCEH/kYtg=;
+        b=U3MpRGTvlx3CghzY1qEjmOTuJxb0mozRixPw+CHNCRF/MLICDCpxGFXiqC3SAD7ZH3
+         T/edvOQ5MMQDMt3UZUkNvnu0IWBdUnKbWYt8IyCBrTfJ32Vyx7jdQlCvjVG1UKDGryCW
+         98D3tZLJc0nf73R0Te3eEZG9TIQauEFMMfP04MIJLB/0m/V1JSDEcV4pJ0ioAf5zB75u
+         8hJ3itdqcr/bSPK/mrLOyS8+nNUAzNTutHBPbUEyHrhuVcbfKGUADi18Xg3x4tDc8n+z
+         PgvPZ8AGq3574u6o2pqbAFMxnRCraG3X+CgBxQjKmUpXXcBU2dpRDPR0ToQcIZ+crLru
+         34Ow==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772726106; x=1773330906; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9rJMSnQTk934LiSmrfUCaBKYUciLa/bDO3L6bfIr3A4=;
+        b=4HEKooMlMKyBcL8RYhBdKSNWXWKZBL8Q65BrHbaNLgO16O4aiprt6y9kfGGy46GRg/
+         KlPM20DbvqH6rx6Jbsx0YBrkbRsNAf9XboAfHM2zXVB4vCZMlpjedsFT6UNIGdtrHTBD
+         e3eWtOGQXxEAXI8D3nsgap4KympndB/8emaYDLsmhrTC1coopWNByazWoFxweywMTqwR
+         QT+sTBRasDGeZ/Xz5W1LFSpSlkWaoX1hjtNXvAjlipmZekr9Gh/WkSFGSJTQ1auA1z9V
+         5L8Np0eEMZUF2knHSmqjr2je2iY+Pj9xAByR12Sm2DjtV0gawloMGybdeHHnd/YMNURZ
+         zcKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772726106; x=1773330906;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9rJMSnQTk934LiSmrfUCaBKYUciLa/bDO3L6bfIr3A4=;
+        b=atUqdL2CgXlEGRlBbPcWGyMrS2LZ8LLhNEqRUesNfkPCI3yK9dnkBX/nMPxn4Z/Iy1
+         X8olOCeQDWjMfSBEwC2nNWoFDMnHQzfcbO1Qc1ACafo3lI7CqGh2gBf2ZAnCO+0VptBE
+         JMm3Pfr0A+xZiua+hfu5MwF2zk/v29GOsMCPtDez0Y72VEPsgbbDD1Z2kVspSO7UgKih
+         RDSCjiaAWrWxo8i1vN8Oh+Ud3EdHzp6qO6jtiiTb5WDGMPjtHpD5Wx5zuVS5hrbjJv2W
+         wrS4rIboLAMb+fXrrWXB9o/db0TZDSrrL5dv7168kZhwBY6IWqPNNK5q654nwryHKEnp
+         9W7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVkleGH8Ao6J30mnUmshxS8anL6FJPEv5dCC0AK8n+MvCCIvfLmAQJZkxQhj3algrcVCxkmxnRC3g==@kvack.org
+X-Gm-Message-State: AOJu0YwejpL9yXsmJASNSE/HnJS8hxp6o2QfUKs7MnZk9qPWolGvRWgM
+	8RPx4VpeCYNTuIFGpF/eM4K4NR046dab6ByoZQIDAEhf+FdDM+j3i6UtACn4h4j21Q46d7LXnrP
+	JgObMQJPsPK8NHJbTXPCRG0sNcDtaA0grsMxj4dCN
+X-Gm-Gg: ATEYQzzvdwvFdw8Ha+rx+n88ToRPFgrrdH2Gko3Z0XgPvvKp+JpqBeDfgtnzoiVzgKI
+	sh8O8Hz/9cRHNgmCMtIzpRlF3cNab62/okRQBRDa9XQuwFSn0NpR6uAiybqfXz/e7G5Y0KcSEce
+	oZ1t871JPl+JmhY4DlKV5tAbnq8uhwxe3qiqdz8NoDb44ijN2DjoQ2k146Xo1/ATGHuGa3GTizL
+	cvIA3AV41+KN32bnhS7wtcPvMO5fZaxxubedPBPGzl5Q37YapOppmKKIc0gD8l6vxES9TrJ4F3z
+	XiB9bR+7Z7CCV15V9wxhVakO1EYDFz02X3Oh4A==
+X-Received: by 2002:ac8:5846:0:b0:503:2e98:7842 with SMTP id
+ d75a77b69052e-508e5d3f631mr12974331cf.4.1772726104233; Thu, 05 Mar 2026
+ 07:55:04 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <08db9e93-3d29-42e0-ae57-79c295d75753@kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
-X-Mimecast-MFC-PROC-ID: PyJnfQOAZGKoJkgymun-lERkgxyBMUh0zBKO50xhMLA_1772725700
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260226070609.3072570-1-surenb@google.com> <20260226070609.3072570-3-surenb@google.com>
+ <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local> <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
+ <0433a4f0-d183-438f-8063-3e4425b14d77@lucifer.local>
+In-Reply-To: <0433a4f0-d183-438f-8063-3e4425b14d77@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 5 Mar 2026 07:54:53 -0800
+X-Gm-Features: AaiRm539YQ4AtocEzQy8VgXboiGeYaDtPB3q5vqburr8wvTjQyjuv86tApuw4po
+Message-ID: <CAJuCfpEZODp2KFAB90Jdn2NUxmTo0veMTWtDY7TsAdgPw+AxPA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with vma_start_write_killable()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, akpm@linux-foundation.org, 
+	willy@infradead.org, david@kernel.org, ziy@nvidia.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
+	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
+	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6CAC41A0005
-X-Stat-Signature: 4tkodyx4bssejcqsxpocstr56xqx3hqg
-X-HE-Tag: 1772725704-393606
-X-HE-Meta: U2FsdGVkX18FVDPOrmkiwBkxdoz/bZR8cgwA7Wo5YpYzb+88bazvpw39LjyBstj/kvVbYxivSMPyuz7a4bWG4QYZ/X5ISkDtkQgECqj4P59TioDX68DIwAt1xroT8UEXBLfUS8euVn+FF452QGEalMwWEHZuTk4HfI4SFFSglnDVd62IaTQ//Z4gE2YyUQe1BXj3Z2nZ501HQyPzSHKP2HW8ZDNuNicRAisIAfBVA4K3g6lbslkgcwPCRY0s4TbMjzPNTyP9LBguGMVhiVV6JRWHFsjqu5C/pqHboGZAWpnEpIN3CzyET0QcNsnLZBCtkq8HHUFWNlpXO1ipL2TDHsINZUUGSykEADMet5MXcjHW0FyMOzD9sIwdAnQYJBdVF8q3CJ4TDQdpRtvu2QDNg1RLSXEJhCH+4ttSPnnPuvpaivqIS7U34rTAqEufTOeD7Wx2OutATnIgHP0l7elL4hvHYOd/rdsXasWJx4juRLTk+jad0iHH4a2WrfavPCJfbrtvz3hL73izA7TNmQygThAU9ofMnyJPNj/+XjtWAVXuOOshFPGSwd3O4sgFV1cd1giick1QVzmr4QDComfy8+FmUDy5DT7iFmCpi0aoVE2LETmgWId63ERh32E7OV4e7WT/Z/k09/2nOwJQKwkPR8SLnRu83Nhsri/OuGX29mbnYJ01qRHqPtAvHcBGAx1JzaYUnIef99Ee8xBfiFZZTr9lW+QJb+jli/TCBGG9n2MNIAY6USKp4gR86akFnTC4jcQkAOIZekPKSemZCgIMVeqtYrHKvRTu1Wo8AazkRLjou8GsOx0t1QTTA9ms/UubDewvv33YyfjDdSyCxP6xHwfXbb4aZ6hgNTYwA+sxXyKCJHRfUy6kaD3XmOWKIK2VyxZJLJJM9ap/7g7PmZ1yk8ZPxMHVmM49dCw2vqecjPzz+Wmfe9/L+s+1t28hjOTiFe5+8jElChFPPQTUnm5
- N/QEq/bo
- ChK3Jfz/Q3+p3H+AX6hzeh3lCFKNzBwMa9fifOvsPWxRGDC/eLVl4xFtqcRI7tIXRmg7QZnR/AXeEyWMFx+j+wk3LanRZcHc2irp4aZfB5NUfNvQ4wnxSy6CCBNVMIUpXhpyrt1E+noSJ+PZlBMGxAZ7YFe0OvD4xjH7QvfNmiQwP0oN1/GK29uIVVUGXmMuWo4kUCqeeDClA0fJYI73GXim15SUyUJ2PPEQkpteD30RfMTzEGiN9x+PFI7icvxzeYY8Tl0dxnhx6u3hvEC5MmgM77e3Ak+3sg34sDAlWBNdThdKc1+lkVFmePVaE5TDihUTW
+X-Rspamd-Queue-Id: AE3654000F
+X-Stat-Signature: xnex1bwt31wa7mffe5jxtkzseh87kcys
+X-HE-Tag: 1772726106-603369
+X-HE-Meta: U2FsdGVkX19jyaZG/4qivN0O8oNRUUTIZbqo+vwi/F0e5zy8eaeTUznwbUM5mcMp0GK/KnzKfgDLsfsH4+FJoIeO6fFbPM+TrdZIuRexoGYVm9RmORDFS+3lQwfzgBGxfAYM5ZOcSNR4/OFTTRG7VVpwFrnxAQXVumYzh5oZJt03toysVNceXezYbsQIblFRnjRrA5i/d1+BnI+SUOF7jkIAaR8vf8IcflO9dDv3bByfWMqmWV75pG7f0FCse33Md+QpVPA7SYfxx6MaCF3dthZONdw1pn4Gg478SC+EIG1N9mq+yawxgw1m2s8e2anM6n1HLuMhB99yd2lNsdUc/+PTekqFslBgHsQOmOB61ioxL/XHV4gU3yNjk/pByooQY5nk92VbVlYEPRagILkE9fJPTy1qbY881dJqHaDHWdnMIQ0SN+N8/9H3SSCgM1YTPmewAxOI1Udlytw60vQKzVxsUWQ3BGNpCebQ/17g2XIiQRcqIQQZ54kBQOpkjb6HZNJTijDZxOaIab33jpbuN6W0P+gFDyKco2PoJOUiGDUZeSlwI6t7U9jofog9YWZ2INdYdp1eU+KFDuYBZubyx7tU/oImz0rlShlkNMgIlOQi2mDYGesoygCnFjYv0IKfLjgGVgaNfnUFhMD6OJgQfli9tN+rjseTl67U6Ih5E4aurfquEhqxh6V6lc2lOvjtmHGec6/cpeWzMNuDq49aZ4qz0irHRnRnG1jaOXzZ3WqvOhZQGVuoXRYM1lkwfCQmsbZzjtLVnUtG2QEhCdsgDaMTSgkxHRyJQJawc6a4ozmYqtZUMDO6mHzTGmqkcgv3S2A+Gado8b2QYtQUW5o5SB1yOMD0dMjJhb6PwziHZGYzaphuuM2zycIZhjTuy14MZ5lnI3plrGjjoiVlGQ8FZAF8/B3hYOpUC0wZOxXhGFYmEBiKYIHCtoAZifEgCgy2PIckMMqclkPYvjcLNQe
+ wjrq5wgh
+ YKnZE2dmJ/5aUKQrUS839oOoMH0yuj0P+L60/dhQYdWURAAnW0u/9gk5D91m4dhpguMhkrV6UysYn7e0jlgnwsVAzklhJRfrK0EgQFuYw77rLbv23jEEEIlkJro5p4LOtpf2bPPuCl8lNvP4SXeq6cfpaAPHSle1Xj9kLB4h3B2uhCJb4Nf5ztuAvHV4ae+9E4foskujq7eEyw2wA5ul9IeVxWYgsvwj66IZEbYWVVTROxRytIbHD5UMdxnWi1MWThsFosRGtEQGgyk7ZCzywWbG9NxPqq8WCwa7K8Z36NxcUItXxIADbqjr7QaPau7Y9nsVsJvv4JSkvXiBP/o2s5Rts9n4LE+xMkFCie0g17yCgJ9ivQk64bFzYVcwwdN5n6l9gc0VfthD+TLGwmm4jG6IsEUwna755WDtCoxl9wXMw+69jfqA8GI3cxE6zPkMQ1Q6NwQ0hG77GQTn7qMDfq2mUpYZGpI38WXC9atnlu/Npu1WarIlcRJXC60W/vkjbeCV1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,318 +153,936 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 02:05:20PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 2/27/26 10:23, Ming Lei wrote:
-> > On Thu, Feb 26, 2026 at 07:02:11PM +0100, Vlastimil Babka (SUSE) wrote:
-> >> On 2/25/26 10:31, Ming Lei wrote:
-> >> > Hi Vlastimil,
-> >> > 
-> >> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
-> >> >> On 2/24/26 21:27, Vlastimil Babka wrote:
-> >> >> > 
-> >> >> > It made sense to me not to refill sheaves when we can't reclaim, but I
-> >> >> > didn't anticipate this interaction with mempools. We could change them
-> >> >> > but there might be others using a similar pattern. Maybe it would be for
-> >> >> > the best to just drop that heuristic from __pcs_replace_empty_main()
-> >> >> > (but carefully as some deadlock avoidance depends on it, we might need
-> >> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
-> >> >> > tomorrow to test this theory, unless someone beats me to it (feel free to).
-> >> >> Could you try this then, please? Thanks!
-> >> > 
-> >> > Thanks for working on this issue!
-> >> > 
-> >> > Unfortunately the patch doesn't make a difference on IOPS in the perf test,
-> >> > follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
-> >> 
-> >> what about this patch in addition to the previous one? Thanks.
-> > 
-> > With the two patches, IOPS increases to 22M from 13M, but still much less than
-> > 36M which is obtained in v6.19-rc5, and slab-sheave PR follows v6.19-rc5.
-> 
-> OK thanks! Maybe now we're approching the original theories about effective
-> caching capacity etc...
-> 
-> > Also alloc_slowpath can't be observed any more.
-> > 
-> > Follows perf profile with the two patches:
-> 
-> What's the full perf profile of v6.19-rc5 and full profile of the patched
-> 7.0-rc2 then? Thanks.
-> 
-> Also contents of all the files under /sys/kernel/slab/$cache (forgot which
-> particular one it was) with CONFIG_SLUB_STATS=y would be great, thanks.
+On Wed, Mar 4, 2026 at 8:51=E2=80=AFAM Lorenzo Stoakes (Oracle) <ljs@kernel=
+.org> wrote:
+>
+> On Tue, Mar 03, 2026 at 02:11:31PM -0800, Suren Baghdasaryan wrote:
+> > On Mon, Mar 2, 2026 at 6:53=E2=80=AFAM Lorenzo Stoakes
+> > <lorenzo.stoakes@oracle.com> wrote:
+> > >
+> > > On Wed, Feb 25, 2026 at 11:06:08PM -0800, Suren Baghdasaryan wrote:
+> > > > Now that we have vma_start_write_killable() we can replace most of =
+the
+> > > > vma_start_write() calls with it, improving reaction time to the kil=
+l
+> > > > signal.
+> > > >
+> > > > There are several places which are left untouched by this patch:
+> > > >
+> > > > 1. free_pgtables() because function should free page tables even if=
+ a
+> > > > fatal signal is pending.
+> > > >
+> > > > 2. process_vma_walk_lock(), which requires changes in its callers a=
+nd
+> > > > will be handled in the next patch.
+> > > >
+> > > > 3. userfaultd code, where some paths calling vma_start_write() can
+> > > > handle EINTR and some can't without a deeper code refactoring.
+> > >
+> > > Surprise surprise :))
+> > >
+> > > >
+> > > > 4. mpol_rebind_mm() which is used by cpusset controller for migrati=
+ons
+> > >
+> > > Incredibly nitty but cpusset -> cpuset?
+> >
+> > Ack.
+> >
+> > >
+> > > > and operates on a remote mm. Incomplete operations here would resul=
+t
+> > > > in an inconsistent cgroup state.
+> > > >
+> > > > 5. vm_flags_{set|mod|clear} require refactoring that involves movin=
+g
+> > > > vma_start_write() out of these functions and replacing it with
+> > > > vma_assert_write_locked(), then callers of these functions should
+> > > > lock the vma themselves using vma_start_write_killable() whenever
+> > > > possible.
+> > >
+> > > This should be dealt with by my ongoing mmap_prepare, vma flags work.
+> >
+> > That would be great! It makes it much simpler once you are done with
+> > that refactoring.
+>
+> Yeah will be a big series ;) stats++;
+>
+> >
+> > >
+> > > >
+> > > > Suggested-by: Matthew Wilcox <willy@infradead.org>
+> > > > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > > > Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
+> > >
+> > > Overall I'm a little concerned about whether callers can handle -EINT=
+R in all
+> > > cases, have you checked? Might we cause some weirdness in userspace i=
+f a syscall
+> > > suddenly returns -EINTR when before it didn't?
+> >
+> > I did check the kernel users and put the patchset through AI reviews.
+> > I haven't checked if any of the affected syscalls do not advertise
+> > -EINTR as a possible error. Adding that to my todo list for the next
+> > respin.
+>
+> Ah yeah as per Matthew's, fair enough. And yes it's only fatal signals.
+>
+> But then is there any point in doing special handling/not filtering? We m=
+ay as
+> well not :)
+>
+> I also don't want us to run into an issue where something other than a fa=
+tal
+> error results in an -EINTR.
 
-Please see the following log, and let me know if any other info is needed.
+Ok, that's a good point. I'll reconsider the special handling of -EINTR.
 
-1) v6.19-rc5
+>
+> >
+> > >
+> > > Also maybe we should update the manpages to reflect this, as semi-usl=
+ess as the
+> > > 'possible error codes' sections are...
+> >
+> > Ok, I'll check which syscalls need to be updated and will note that in
+> > cover letter. Once the patchset is accepted I'll update the manpages
+> > for them.
+>
+> Yeah obv nop as per Matthew.
 
-- IOPS: 34M
+Ack.
 
-- perf profile
+>
+> >
+> > >
+> > > > ---
+> > > >  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
+> > > >  mm/khugepaged.c                    |  5 +-
+> > > >  mm/madvise.c                       |  4 +-
+> > > >  mm/memory.c                        |  2 +
+> > > >  mm/mempolicy.c                     |  8 ++-
+> > > >  mm/mlock.c                         | 21 +++++--
+> > > >  mm/mprotect.c                      |  4 +-
+> > > >  mm/mremap.c                        |  4 +-
+> > > >  mm/vma.c                           | 93 +++++++++++++++++++++-----=
+----
+> > > >  mm/vma_exec.c                      |  6 +-
+> > > >  10 files changed, 109 insertions(+), 43 deletions(-)
+> > > >
+> > > > diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/=
+book3s_hv_uvmem.c
+> > > > index 5fbb95d90e99..0a28b48a46b8 100644
+> > > > --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> > > > @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kv=
+m *kvm,
+> > > >                       ret =3D H_STATE;
+> > > >                       break;
+> > > >               }
+> > > > -             vma_start_write(vma);
+> > > > +             if (vma_start_write_killable(vma)) {
+> > > > +                     ret =3D H_STATE;
+> > > > +                     break;
+> > > > +             }
+> > > >               /* Copy vm_flags to avoid partial modifications in ks=
+m_madvise */
+> > > >               vm_flags =3D vma->vm_flags;
+> > > >               ret =3D ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> > > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > > index 1dd3cfca610d..6c92e31ee5fb 100644
+> > > > --- a/mm/khugepaged.c
+> > > > +++ b/mm/khugepaged.c
+> > > > @@ -1141,7 +1141,10 @@ static enum scan_result collapse_huge_page(s=
+truct mm_struct *mm, unsigned long a
+> > > >       if (result !=3D SCAN_SUCCEED)
+> > > >               goto out_up_write;
+> > > >       /* check if the pmd is still valid */
+> > > > -     vma_start_write(vma);
+> > > > +     if (vma_start_write_killable(vma)) {
+> > > > +             result =3D SCAN_FAIL;
+> > > > +             goto out_up_write;
+> > > > +     }
+> > > >       result =3D check_pmd_still_valid(mm, address, pmd);
+> > > >       if (result !=3D SCAN_SUCCEED)
+> > > >               goto out_up_write;
+> > > > diff --git a/mm/madvise.c b/mm/madvise.c
+> > > > index c0370d9b4e23..ccdaea6b3b15 100644
+> > > > --- a/mm/madvise.c
+> > > > +++ b/mm/madvise.c
+> > > > @@ -173,7 +173,9 @@ static int madvise_update_vma(vm_flags_t new_fl=
+ags,
+> > > >       madv_behavior->vma =3D vma;
+> > > >
+> > > >       /* vm_flags is protected by the mmap_lock held in write mode.=
+ */
+> > > > -     vma_start_write(vma);
+> > > > +     if (vma_start_write_killable(vma))
+> > > > +             return -EINTR;
+> > > > +
+> > > >       vm_flags_reset(vma, new_flags);
+> > > >       if (set_new_anon_name)
+> > > >               return replace_anon_vma_name(vma, anon_name);
+> > > > diff --git a/mm/memory.c b/mm/memory.c
+> > > > index 07778814b4a8..691062154cf5 100644
+> > > > --- a/mm/memory.c
+> > > > +++ b/mm/memory.c
+> > > > @@ -379,6 +379,8 @@ void free_pgd_range(struct mmu_gather *tlb,
+> > > >   * page tables that should be removed.  This can differ from the v=
+ma mappings on
+> > > >   * some archs that may have mappings that need to be removed outsi=
+de the vmas.
+> > > >   * Note that the prev->vm_end and next->vm_start are often used.
+> > > > + * We don't use vma_start_write_killable() because page tables sho=
+uld be freed
+> > > > + * even if the task is being killed.
+> > > >   *
+> > > >   * The vma_end differs from the pg_end when a dup_mmap() failed an=
+d the tree has
+> > > >   * unrelated data to the mm_struct being torn down.
+> > > > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> > > > index 0e5175f1c767..90939f5bde02 100644
+> > > > --- a/mm/mempolicy.c
+> > > > +++ b/mm/mempolicy.c
+> > > > @@ -1784,7 +1784,8 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsi=
+gned long, start, unsigned long, le
+> > > >               return -EINVAL;
+> > > >       if (end =3D=3D start)
+> > > >               return 0;
+> > > > -     mmap_write_lock(mm);
+> > > > +     if (mmap_write_lock_killable(mm))
+> > > > +             return -EINTR;
+> > >
+> > > Hmm mmap write lock as well now :) I guess it makes sense here, esp g=
+iven mmap
+> > > write lock part of VMA write lock.
+> >
+> > Yeah, I thought while we are at it we can make this part a bit better t=
+oo...
+>
+> Yup that's fair.
+>
+> >
+> > >
+> > >
+> > > >       prev =3D vma_prev(&vmi);
+> > > >       for_each_vma_range(vmi, vma, end) {
+> > > >               /*
+> > > > @@ -1801,13 +1802,16 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, un=
+signed long, start, unsigned long, le
+> > > >                       err =3D -EOPNOTSUPP;
+> > > >                       break;
+> > > >               }
+> > > > +             if (vma_start_write_killable(vma)) {
+> > > > +                     err =3D -EINTR;
+> > > > +                     break;
+> > > > +             }
+> > > >               new =3D mpol_dup(old);
+> > > >               if (IS_ERR(new)) {
+> > > >                       err =3D PTR_ERR(new);
+> > > >                       break;
+> > > >               }
+> > > >
+> > > > -             vma_start_write(vma);
+> > >
+> > > Are we ok with moving this to before mpol_dup()? Does this matter? Co=
+nfused as
+> > > to why you moved this up?
+> >
+> > I thought if locking fails, it would be better to check that earlier
+> > before allocating a new mempolicy. That seems to be safe, but thinking
+> > about this now, if allocation goes into direct reclaim and causes the
+> > lock to be held for longer then that might not be such a hot idea...
+>
+> Yeah :) it's stuff like this that makes me worry. But moreso some horrend=
+ous
+> lock ordering issue...
 
-+ perf report --vmlinux=/root/git/linux/vmlinux --kallsyms=/proc/kallsyms --stdio --max-stack 0
-# To display the perf.data header info, please use --header/--header-only options.
-#
-#
-# Total Lost Samples: 0
-#
-# Samples: 1M of event 'cycles:P'
-# Event count (approx.): 1045386603400
-#
-# Children      Self  Command          Shared Object             Symbol
-# ........  ........  ...............  ........................  ..............................................
-#
-    14.41%    14.41%  kublk            [kernel.kallsyms]         [k] _copy_from_iter
-    11.25%    11.25%  io_uring         [kernel.kallsyms]         [k] blk_mq_sched_bio_merge
-     3.73%     3.73%  kublk            [kernel.kallsyms]         [k] slab_update_freelist.isra.0
-     3.53%     3.53%  kublk            [kernel.kallsyms]         [k] ublk_dispatch_req
-     3.33%     3.33%  io_uring         [kernel.kallsyms]         [k] blk_mq_rq_ctx_init.isra.0
-     2.65%     2.65%  kublk            [kernel.kallsyms]         [k] blk_mq_free_request
-     2.01%     2.01%  io_uring         [kernel.kallsyms]         [k] blkdev_read_iter
-     1.92%     1.92%  io_uring         [kernel.kallsyms]         [k] __io_read
-     1.67%     1.67%  io_uring         [kernel.kallsyms]         [k] blk_mq_submit_bio
-     1.54%     1.54%  kublk            [kernel.kallsyms]         [k] ublk_ch_uring_cmd_local
-     1.36%     1.36%  io_uring         [kernel.kallsyms]         [k] __fsnotify_parent
-     1.30%     1.30%  io_uring         [kernel.kallsyms]         [k] clear_page_erms
-     1.19%     1.19%  io_uring         [kernel.kallsyms]         [k] llist_reverse_order
-     1.11%     1.11%  io_uring         [kernel.kallsyms]         [k] blk_cgroup_bio_start
-     0.98%     0.98%  kublk            [kernel.kallsyms]         [k] __check_object_size
-     0.98%     0.98%  kublk            kublk                     [.] ublk_queue_io_cmd
-     0.97%     0.97%  io_uring         [kernel.kallsyms]         [k] __submit_bio
-     0.97%     0.97%  kublk            [kernel.kallsyms]         [k] __slab_free
-     0.96%     0.96%  io_uring         [kernel.kallsyms]         [k] submit_bio_noacct_nocheck
-     0.92%     0.92%  kublk            [kernel.kallsyms]         [k] io_issue_sqe
-     0.91%     0.91%  io_uring         io_uring                  [.] submitter_uring_fn
-     0.88%     0.88%  io_uring         io_uring                  [.] get_offset.part.0
-     0.86%     0.86%  io_uring         [kernel.kallsyms]         [k] kmem_cache_alloc_noprof
-     0.85%     0.85%  kublk            [kernel.kallsyms]         [k] ublk_copy_user_pages.isra.0
-     0.77%     0.77%  io_uring         [kernel.kallsyms]         [k] blk_mq_start_request
-     0.74%     0.74%  kublk            kublk                     [.] ublk_null_queue_io
-     0.74%     0.74%  io_uring         [kernel.kallsyms]         [k] io_import_reg_buf
-     0.67%     0.67%  io_uring         [kernel.kallsyms]         [k] io_issue_sqe
-     0.66%     0.66%  io_uring         [kernel.kallsyms]         [k] bio_alloc_bioset
-     0.66%     0.66%  kublk            [kernel.kallsyms]         [k] kmem_cache_free
-     0.66%     0.66%  io_uring         [kernel.kallsyms]         [k] __blkdev_direct_IO_async
-     0.64%     0.64%  kublk            [kernel.kallsyms]         [k] __io_issue_sqe
-     0.61%     0.61%  io_uring         [kernel.kallsyms]         [k] submit_bio
-     0.59%     0.59%  kublk            [kernel.kallsyms]         [k] __io_uring_cmd_done
-     0.58%     0.58%  io_uring         [kernel.kallsyms]         [k] blk_rq_merge_ok
-     0.56%     0.56%  kublk            [kernel.kallsyms]         [k] __io_submit_flush_completions
-     0.54%     0.54%  kublk            kublk                     [.] __ublk_io_handler_fn.isra.0
-     0.53%     0.53%  kublk            [kernel.kallsyms]         [k] io_uring_cmd
-     0.52%     0.52%  io_uring         [kernel.kallsyms]         [k] __io_prep_rw
-     0.52%     0.52%  io_uring         [kernel.kallsyms]         [k] io_free_batch_list
-     0.50%     0.50%  kublk            [kernel.kallsyms]         [k] io_uring_cmd_prep
-     0.49%     0.49%  kublk            [kernel.kallsyms]         [k] blk_account_io_done.part.0
-     0.49%     0.49%  io_uring         [kernel.kallsyms]         [k] __io_submit_flush_completions
+I think we are good on lock ordering since we already hold the mmap
+write lock but I'll try to minimize the lock movements.
 
+>
+> >
+> > >
+> > > >               new->home_node =3D home_node;
+> > > >               err =3D mbind_range(&vmi, vma, &prev, start, end, new=
+);
+> > > >               mpol_put(new);
+> > > > diff --git a/mm/mlock.c b/mm/mlock.c
+> > > > index 2f699c3497a5..c562c77c3ee0 100644
+> > > > --- a/mm/mlock.c
+> > > > +++ b/mm/mlock.c
+> > > > @@ -420,7 +420,7 @@ static int mlock_pte_range(pmd_t *pmd, unsigned=
+ long addr,
+> > > >   * Called for mlock(), mlock2() and mlockall(), to set @vma VM_LOC=
+KED;
+> > > >   * called for munlock() and munlockall(), to clear VM_LOCKED from =
+@vma.
+> > > >   */
+> > >
+> > > You should update the comment to reflect this possible return value.
+> >
+> > Ack.
+>
+> Thanks!
+>
+> >
+> > >
+> > > > -static void mlock_vma_pages_range(struct vm_area_struct *vma,
+> > > > +static int mlock_vma_pages_range(struct vm_area_struct *vma,
+> > > >       unsigned long start, unsigned long end, vm_flags_t newflags)
+> > > >  {
+> > > >       static const struct mm_walk_ops mlock_walk_ops =3D {
+> > > > @@ -441,7 +441,9 @@ static void mlock_vma_pages_range(struct vm_are=
+a_struct *vma,
+> > > >        */
+> > > >       if (newflags & VM_LOCKED)
+> > > >               newflags |=3D VM_IO;
+> > > > -     vma_start_write(vma);
+> > > > +     if (vma_start_write_killable(vma))
+> > > > +             return -EINTR;
+> > > > +
+> > > >       vm_flags_reset_once(vma, newflags);
+> > > >
+> > > >       lru_add_drain();
+> > > > @@ -452,6 +454,7 @@ static void mlock_vma_pages_range(struct vm_are=
+a_struct *vma,
+> > > >               newflags &=3D ~VM_IO;
+> > > >               vm_flags_reset_once(vma, newflags);
+> > > >       }
+> > > > +     return 0;
+> > > >  }
+> > > >
+> > > >  /*
+> > > > @@ -501,10 +504,12 @@ static int mlock_fixup(struct vma_iterator *v=
+mi, struct vm_area_struct *vma,
+> > > >        */
+> > > >       if ((newflags & VM_LOCKED) && (oldflags & VM_LOCKED)) {
+> > > >               /* No work to do, and mlocking twice would be wrong *=
+/
+> > >
+> > > I'd move this comment down to the vm_flags_reset() line as it's not a=
+pplicable
+> > > if we fail to get the lock.
+> >
+> > Ack.
+>
+> Thanks!
+>
+> >
+> > >
+> > >
+> > > > -             vma_start_write(vma);
+> > > > +             ret =3D vma_start_write_killable(vma);
+> > > > +             if (ret)
+> > > > +                     goto out;
+> > > >               vm_flags_reset(vma, newflags);
+> > > >       } else {
+> > > > -             mlock_vma_pages_range(vma, start, end, newflags);
+> > > > +             ret =3D mlock_vma_pages_range(vma, start, end, newfla=
+gs);
+> > > >       }
+> > > >  out:
+> > > >       *prev =3D vma;
+> > > > @@ -733,9 +738,13 @@ static int apply_mlockall_flags(int flags)
+> > > >
+> > > >               error =3D mlock_fixup(&vmi, vma, &prev, vma->vm_start=
+, vma->vm_end,
+> > > >                                   newflags);
+> > > > -             /* Ignore errors, but prev needs fixing up. */
+> > > > -             if (error)
+> > > > +             /* Ignore errors except EINTR, but prev needs fixing =
+up. */
+> > >
+> > > Well, except you're not fixing it up on -EINTR? This comment should b=
+e redone.
+> >
+> > Hmm, should we fixup if the process is terminating? Does it matter at
+> > this point?
+>
+> We may as well keep the comment accurate though? I mean this isn't a big =
+deal :)
 
-- slab stat
+Ack.
 
-# (cd /sys/kernel/slab/bio-256/ && find . -type f -exec grep -aH . {} \;)
-./remote_node_defrag_ratio:100
-./free_frozen:203789653 C0=13137513 C2=16103904 C4=5312681 C6=9805649 C8=14262027 C10=13676236 C12=8700700 C14=13041782 C16=11558292 C18=13258018 C19=2 C20=2813290 C22=7752577 C24=19173693 C26=16631916 C28=21707419 C29=2 C30=16853951 C31=1
-./total_objects:6732 N1=3315 N5=3417
-./cpuslab_flush:0
-./alloc_fastpath:1284958471 C1=80252197 C3=80197810 C4=125 C5=82882536 C6=125 C7=83898247 C8=125 C9=81412735 C11=80400026 C12=125 C13=78664565 C14=44 C15=80954403 C17=80070327 C19=75310035 C20=125 C21=83788507 C22=81 C23=84943484 C25=78466239 C26=125 C27=78389061 C29=76890573 C31=78436849 C50=1 C60=1
-./cpu_partial_free:37988123 C0=2275928 C2=2190868 C4=2789178 C6=2685497 C8=2282195 C10=2266792 C12=2340158 C14=2302589 C16=2359282 C18=2154683 C20=3028332 C22=2921916 C24=2103757 C26=2157902 C28=1972836 C30=2156210
-./cpu_slabs:58 N1=28 N5=30
-./objects:6167 N1=3092 N5=3075
-./deactivate_full:0
-./sheaf_return_slow:0
-./objects_partial:608 N1=287 N5=321
-./sheaf_return_fast:0
-./cpu_partial:52
-./cmpxchg_double_cpu_fail:1 C7=1
-./free_slowpath:1361594822 C0=85109840 C2=85495921 C4=86775189 C6=88474098 C8=86495486 C10=85287670 C12=82701232 C14=85802194 C16=84711284 C18=79945983 C19=2 C20=87399505 C22=89361232 C24=84116440 C26=83560456 C28=82780090 C29=2 C30=83578197 C31=1
-./barn_get_fail:0
-./sheaf_prefill_oversize:0
-./deactivate_to_tail:0
-./skip_kfence:0
-./min_partial:5
-./order_fallback:0
-./sheaf_capacity:0
-./deactivate_empty:3616332 C0=269533 C2=262401 C4=116355 C6=112383 C8=271620 C10=266348 C12=278359 C14=271083 C16=264315 C18=242601 C20=170557 C22=159604 C24=231322 C26=240708 C28=220103 C30=239040
-./sheaf_flush:0
-./free_rcu_sheaf:0
-./alloc_from_partial:11612237 C1=660211 C3=634301 C5=949155 C6=1 C7=914355 C9=661811 C11=658753 C13=679880 C15=669226 C17=684745 C19=624788 C20=1 C21=1037955 C22=1 C23=1002678 C25=611243 C27=625403 C29=571631 C31=626099
-./sheaf_alloc:0
-./sheaf_free:0
-./sheaf_prefill_slow:0
-./sheaf_prefill_fast:0
-./poison:0
-./red_zone:0
-./free_cpu_sheaf:0
-./free_slab:3616434 C0=269535 C2=262407 C4=116368 C6=112391 C8=271622 C10=266351 C12=278359 C14=271084 C16=264354 C18=242601 C20=170559 C22=159611 C24=231322 C26=240711 C28=220114 C30=239045
-./slabs:132 N1=65 N5=67
-./barn_get:0
-./cpu_partial_node:22759400 C1=1312100 C3=1260562 C5=1821488 C6=2 C7=1752623 C9=1315094 C11=1309216 C13=1351244 C15=1329937 C17=1360857 C19=1241554 C20=2 C21=1968791 C22=2 C23=1898000 C25=1214784 C27=1242922 C29=1136091 C31=1244131
-./alloc_slowpath:76640471 C1=4857913 C3=5298367 C4=3 C5=3892806 C6=3 C7=4575965 C8=3 C9=5082878 C11=4887906 C12=3 C13=4036796 C14=1 C15=4848003 C17=4641269 C19=4636149 C20=3 C21=3611116 C22=2 C23=4417922 C25=5650460 C26=3 C27=5171520 C29=5889792 C31=5141585 C50=1 C60=1 C62=1
-./destroy_by_rcu:1
-./free_rcu_sheaf_fail:0
-./barn_put:0
-./usersize:0
-./sanity_checks:0
-./barn_put_fail:0
-./align:64
-./alloc_node_mismatch:0
-./deactivate_remote_frees:0
-./alloc_slab:3616566 C1=303677 C3=296031 C4=3 C5=18366 C7=18301 C8=3 C9=305344 C11=298932 C12=3 C13=309156 C14=1 C15=303522 C17=313382 C19=288344 C21=21685 C23=21353 C25=277789 C26=3 C27=289631 C29=265057 C31=285980 C50=1 C60=1 C62=1
-./free_remove_partial:102 C0=2 C2=6 C4=13 C6=8 C8=2 C10=3 C14=1 C16=39 C20=2 C22=7 C26=3 C28=11 C30=5
-./aliases:0
-./store_user:0
-./trace:0
-./reclaim_account:0
-./order:2
-./sheaf_refill:0
-./object_size:256
-./alloc_refill:38652283 C1=2581925 C3=3107474 C5=1103799 C7=1890686 C9=2800630 C11=2621006 C13=1696518 C15=2545318 C17=2282285 C19=2481464 C21=582686 C23=1495892 C25=3546646 C27=3013564 C29=3917013 C31=2985377
-./alloc_cpu_sheaf:0
-./cpu_partial_drain:12662698 C0=758642 C2=730289 C4=929725 C6=895165 C8=760731 C10=755597 C12=780052 C14=767529 C16=786427 C18=718227 C20=1009443 C22=973972 C24=701252 C26=719300 C28=657611 C30=718736
-./free_fastpath:4 C1=2 C11=2
-./hwcache_align:1
-./cpu_partial_alloc:22759385 C1=1312100 C3=1260561 C5=1821486 C6=2 C7=1752623 C9=1315093 C11=1309215 C13=1351242 C15=1329937 C17=1360857 C19=1241553 C20=2 C21=1968790 C22=1 C23=1897999 C25=1214782 C27=1242922 C29=1136091 C31=1244129
-./cmpxchg_double_fail:6247305 C0=396268 C1=16193 C2=484201 C3=11558 C4=198887 C5=7233 C6=336779 C7=7332 C8=444665 C9=11539 C10=403230 C11=10130 C12=258163 C13=6666 C14=389004 C15=9620 C16=357182 C17=9184 C18=378255 C19=9012 C20=103655 C21=2375 C22=260015 C23=6160 C24=552885 C25=22738 C26=464990 C27=11172 C28=592307 C29=23777 C30=451529 C31=10601
-./deactivate_bypass:37988161 C1=2275987 C3=2190892 C4=2 C5=2789006 C6=2 C7=2685278 C8=2 C9=2282247 C11=2266899 C12=2 C13=2340277 C15=2302684 C17=2358983 C19=2154684 C20=2 C21=3028429 C22=1 C23=2922029 C25=2103813 C26=2 C27=2157955 C29=1972778 C31=2156207
-./objs_per_slab:51
-./partial:23 N1=10 N5=13
-./slabs_cpu_partial:1122(44) C0=51(2) C2=25(1) C3=25(1) C4=76(3) C5=51(2) C6=51(2) C8=51(2) C9=25(1) C10=25(1) C11=25(1) C12=51(2) C13=51(2) C14=51(2) C16=25(1) C18=51(2) C19=25(1) C20=76(3) C21=25(1) C22=25(1) C23=25(1) C24=25(1) C25=51(2) C26=51(2) C28=76(3) C30=51(2) C31=51(2)
-./free_add_partial:34371762 C0=2006393 C2=1928466 C4=2672820 C6=2573112 C8=2010573 C10=2000443 C12=2061797 C14=2031504 C16=2094966 C18=1912080 C20=2857772 C22=2762312 C24=1872434 C26=1917192 C28=1752730 C30=1917168
-./slab_size:320
-./cache_dma:0
-./deactivate_to_head:0
+>
+> >
+> > >
+> > > But I wonder if this is correct? We are ignoring all other errors tha=
+t
+> > > interrupted the operation, so why are we special casing -EINTR?
+> >
+> > Well, -EINTR means all the work you are doing here is useless because
+> > the process is about to go away. So, in that respect I think it's
+> > different from other errors.
+>
+> Well -EINTR doesn't _just_ mean fatal signal. We happen to know here that=
+ what
+> we're calling will only return -EINTR in that case, but if somebody chang=
+es
+> downstream code to return -EINTR for _another_ reason there's an issue.
 
+Fair point.
 
+>
+> Can we just replace these horrid -EINTR checks with
+> is_fatal_signal_pending(current)?
 
-2) v7.0-rc2(commit c107785c7e8d) + two patches
+I think here that would be fine. I'll evaluate each individual case I
+check for EINTR.
 
+>
+> >
+> > >
+> > > > +             if (error) {
+> > > > +                     if (error =3D=3D -EINTR)
+> > > > +                             return error;
+> > > > +
+> > > >                       prev =3D vma;
+> > > > +             }
+> > > >               cond_resched();
+> > > >       }
+> > > >  out:
+> > > > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > > > index c0571445bef7..49dbb7156936 100644
+> > > > --- a/mm/mprotect.c
+> > > > +++ b/mm/mprotect.c
+> > > > @@ -765,7 +765,9 @@ mprotect_fixup(struct vma_iterator *vmi, struct=
+ mmu_gather *tlb,
+> > > >        * vm_flags and vm_page_prot are protected by the mmap_lock
+> > > >        * held in write mode.
+> > > >        */
+> > > > -     vma_start_write(vma);
+> > > > +     error =3D vma_start_write_killable(vma);
+> > > > +     if (error < 0)
+> > >
+> > > Weird inconstency here, this should be if (error).
+> >
+> > Ack.
+>
+> Thanks!
+>
+> >
+> > >
+> > > > +             goto fail;
+> > > >       vm_flags_reset_once(vma, newflags);
+> > > >       if (vma_wants_manual_pte_write_upgrade(vma))
+> > > >               mm_cp_flags |=3D MM_CP_TRY_CHANGE_WRITABLE;
+> > > > diff --git a/mm/mremap.c b/mm/mremap.c
+> > > > index 2be876a70cc0..aef1e5f373c7 100644
+> > > > --- a/mm/mremap.c
+> > > > +++ b/mm/mremap.c
+> > > > @@ -1286,7 +1286,9 @@ static unsigned long move_vma(struct vma_rema=
+p_struct *vrm)
+> > > >               return -ENOMEM;
+> > > >
+> > > >       /* We don't want racing faults. */
+> > > > -     vma_start_write(vrm->vma);
+> > > > +     err =3D vma_start_write_killable(vrm->vma);
+> > > > +     if (err)
+> > > > +             return err;
+> > > >
+> > > >       /* Perform copy step. */
+> > > >       err =3D copy_vma_and_data(vrm, &new_vma);
+> > > > diff --git a/mm/vma.c b/mm/vma.c
+> > > > index bb4d0326fecb..9f2664f1d078 100644
+> > > > --- a/mm/vma.c
+> > > > +++ b/mm/vma.c
+> > > > @@ -530,6 +530,13 @@ __split_vma(struct vma_iterator *vmi, struct v=
+m_area_struct *vma,
+> > > >       if (err)
+> > > >               goto out_free_vmi;
+> > > >
+> > > > +     err =3D vma_start_write_killable(vma);
+> > > > +     if (err)
+> > > > +             goto out_free_mpol;
+> > > > +     err =3D vma_start_write_killable(new);
+> > > > +     if (err)
+> > > > +             goto out_free_mpol;
+> > > > +
+> > > >       err =3D anon_vma_clone(new, vma, VMA_OP_SPLIT);
+> > > >       if (err)
+> > > >               goto out_free_mpol;
+> > > > @@ -540,9 +547,6 @@ __split_vma(struct vma_iterator *vmi, struct vm=
+_area_struct *vma,
+> > > >       if (new->vm_ops && new->vm_ops->open)
+> > > >               new->vm_ops->open(new);
+> > > >
+> > > > -     vma_start_write(vma);
+> > > > -     vma_start_write(new);
+> > > > -
+> > >
+> > > Again you're changing ordering seemingly arbitrarily.
+> >
+> > I moved it up to avoid undoing all the work above (vm_ops->open,
+> > vma_dup_policy, vma_iter_prealloc, vm_area_dup,..)
+> >
+> > > I think this is actually a
+> > > more problematic case as you're now invoking vm_ops->open() with a VM=
+A write
+> > > lock held.
+> >
+> > Are you concerned about potential increased duration of the vma lock
+> > being held or that open() might try to take that lock itself (which is
+> > not a problem because vma write locks are reentrant)? Maybe some other
+> > concern I'm missing?
+>
+> General concern about reordering, but fair point re: undoing.
+>
+> rmap.c says it's ok so we're good:
 
-- IOPS: 23M
+Ack.
 
-- perf profile
+>
+>  *           vma_start_write
+>  *             mapping->i_mmap_rwsem
+>  *               anon_vma->rwsem
+>
+> >
+> > >
+> > > So I think you should keep the existing position.
+> >
+> > If we do that then we would have to undo a bunch of operations. I'm
+> > fine adding that if there are reasons to avoid this move.
+>
+> OK fair enough in this case.
 
-+ perf report --vmlinux=/root/git/linux/vmlinux --kallsyms=/proc/kallsyms --stdio --max-stack 0
-# To display the perf.data header info, please use --header/--header-only options.
-#
-#
-# Total Lost Samples: 0
-#
-# Samples: 858K of event 'cycles:P'
-# Event count (approx.): 667558170118
-#
-# Children      Self  Command          Shared Object                       Symbol
-# ........  ........  ...............  ..................................  ..............................................
-#
-    10.81%    10.81%  kublk            [kernel.kallsyms]                   [k] _copy_from_iter
-     5.23%     5.23%  io_uring         [kernel.kallsyms]                   [k] blk_mq_submit_bio
-     3.97%     3.97%  io_uring         [kernel.kallsyms]                   [k] __refill_objects_node
-     2.69%     2.69%  io_uring         [kernel.kallsyms]                   [k] io_rw_init_file
-     2.61%     2.61%  io_uring         [kernel.kallsyms]                   [k] blk_cgroup_bio_start
-     2.55%     2.55%  io_uring         [kernel.kallsyms]                   [k] blk_mq_rq_ctx_init.isra.0
-     2.52%     2.52%  kublk            [kernel.kallsyms]                   [k] blk_mq_free_request
-     2.45%     2.45%  kublk            [kernel.kallsyms]                   [k] ublk_dispatch_req
-     2.18%     2.18%  io_uring         [kernel.kallsyms]                   [k] __fsnotify_parent
-     1.87%     1.87%  kublk            [kernel.kallsyms]                   [k] __slab_free
-     1.82%     1.82%  io_uring         [kernel.kallsyms]                   [k] __io_read
-     1.77%     1.77%  kublk            [kernel.kallsyms]                   [k] slab_update_freelist.isra.0
-     1.72%     1.72%  kublk            [kernel.kallsyms]                   [k] __io_uring_cmd_done
-     1.70%     1.70%  io_uring         [kernel.kallsyms]                   [k] security_file_permission
-     1.68%     1.68%  io_uring         [kernel.kallsyms]                   [k] io_req_task_complete
-     1.51%     1.51%  kublk            [kernel.kallsyms]                   [k] ublk_start_io
-     1.32%     1.32%  io_uring         [kernel.kallsyms]                   [k] llist_reverse_order
-     1.30%     1.30%  io_uring         [kernel.kallsyms]                   [k] submit_bio_noacct_nocheck
-     1.22%     1.22%  kublk            [kernel.kallsyms]                   [k] blk_account_io_done.part.0
-     1.15%     1.15%  io_uring         [kernel.kallsyms]                   [k] kernel_init_pages
-     1.11%     1.11%  kublk            [kernel.kallsyms]                   [k] __local_bh_enable_ip
-     1.03%     1.03%  io_uring         [kernel.kallsyms]                   [k] io_import_reg_buf
-     1.03%     1.03%  kublk            [kernel.kallsyms]                   [k] ublk_ch_uring_cmd_local
-     1.01%     1.01%  io_uring         [kernel.kallsyms]                   [k] wbt_issue
-     0.97%     0.97%  io_uring         [kernel.kallsyms]                   [k] __submit_bio
-     0.81%     0.81%  kublk            [kernel.kallsyms]                   [k] avc_has_perm
-     0.80%     0.80%  io_uring         [kernel.kallsyms]                   [k] __rq_qos_issue
-     0.76%     0.76%  kublk            [kernel.kallsyms]                   [k] __blk_mq_free_request
-     0.73%     0.73%  kublk            kublk                               [.] ublk_queue_io_cmd
-     0.73%     0.73%  io_uring         io_uring                            [.] submitter_uring_fn
-     0.67%     0.67%  io_uring         [kernel.kallsyms]                   [k] kmem_cache_alloc_noprof
-     0.65%     0.65%  kublk            [kernel.kallsyms]                   [k] __io_submit_flush_completions
-     0.62%     0.62%  kublk            [kernel.kallsyms]                   [k] blk_stat_add
-     0.62%     0.62%  kublk            [kernel.kallsyms]                   [k] __ublk_complete_rq
-     0.61%     0.61%  kublk            [kernel.kallsyms]                   [k] blk_update_request
-     0.60%     0.60%  kublk            [kernel.kallsyms]                   [k] __blk_mq_end_request
-     0.58%     0.58%  io_uring         [kernel.kallsyms]                   [k] bio_alloc_bioset
-     0.56%     0.56%  kublk            [kernel.kallsyms]                   [k] __rcu_read_lock
-     0.54%     0.54%  io_uring         [kernel.kallsyms]                   [k] io_req_rw_complete
-     0.54%     0.54%  io_uring         [kernel.kallsyms]                   [k] io_free_batch_list
-     0.53%     0.53%  io_uring         [kernel.kallsyms]                   [k] __io_submit_flush_completions
-     0.53%     0.53%  io_uring         [kernel.kallsyms]                   [k] io_init_req
-     0.53%     0.53%  io_uring         [kernel.kallsyms]                   [k] __blkdev_direct_IO_async
-     0.53%     0.53%  kublk            [kernel.kallsyms]                   [k] io_issue_sqe
-     0.51%     0.51%  io_uring         [kernel.kallsyms]                   [k] blk_mq_start_request
-     0.51%     0.51%  kublk            [kernel.kallsyms]                   [k] io_req_local_work_add
-     0.51%     0.51%  kublk            [kernel.kallsyms]                   [k] kmem_cache_free
-     0.49%     0.49%  io_uring         [kernel.kallsyms]                   [k] io_import_fixed
+Ack.
 
+>
+> >
+> > >
+> > > >       init_vma_prep(&vp, vma);
+> > > >       vp.insert =3D new;
+> > > >       vma_prepare(&vp);
+> > > > @@ -895,16 +899,22 @@ static __must_check struct vm_area_struct *vm=
+a_merge_existing_range(
+> > > >       }
+> > > >
+> > > >       /* No matter what happens, we will be adjusting middle. */
+> > > > -     vma_start_write(middle);
+> > > > +     err =3D vma_start_write_killable(middle);
+> > > > +     if (err)
+> > > > +             goto abort;
+> > > >
+> > > >       if (merge_right) {
+> > > > -             vma_start_write(next);
+> > > > +             err =3D vma_start_write_killable(next);
+> > > > +             if (err)
+> > > > +                     goto abort;
+> > > >               vmg->target =3D next;
+> > > >               sticky_flags |=3D (next->vm_flags & VM_STICKY);
+> > > >       }
+> > > >
+> > > >       if (merge_left) {
+> > > > -             vma_start_write(prev);
+> > > > +             err =3D vma_start_write_killable(prev);
+> > > > +             if (err)
+> > > > +                     goto abort;
+> > > >               vmg->target =3D prev;
+> > > >               sticky_flags |=3D (prev->vm_flags & VM_STICKY);
+> > > >       }
+> > > > @@ -1155,10 +1165,12 @@ int vma_expand(struct vma_merge_struct *vmg=
+)
+> > > >       struct vm_area_struct *next =3D vmg->next;
+> > > >       bool remove_next =3D false;
+> > > >       vm_flags_t sticky_flags;
+> > > > -     int ret =3D 0;
+> > > > +     int ret;
+> > > >
+> > > >       mmap_assert_write_locked(vmg->mm);
+> > > > -     vma_start_write(target);
+> > > > +     ret =3D vma_start_write_killable(target);
+> > > > +     if (ret)
+> > > > +             return ret;
+> > > >
+> > > >       if (next && target !=3D next && vmg->end =3D=3D next->vm_end)
+> > > >               remove_next =3D true;
+> > > > @@ -1187,6 +1199,9 @@ int vma_expand(struct vma_merge_struct *vmg)
+> > > >        * we don't need to account for vmg->give_up_on_mm here.
+> > > >        */
+> > > >       if (remove_next) {
+> > > > +             ret =3D vma_start_write_killable(next);
+> > > > +             if (ret)
+> > > > +                     return ret;
+> > > >               ret =3D dup_anon_vma(target, next, &anon_dup);
+> > > >               if (ret)
+> > > >                       return ret;
+> > > > @@ -1197,10 +1212,8 @@ int vma_expand(struct vma_merge_struct *vmg)
+> > > >                       return ret;
+> > > >       }
+> > > >
+> > > > -     if (remove_next) {
+> > > > -             vma_start_write(next);
+> > > > +     if (remove_next)
+> > > >               vmg->__remove_next =3D true;
+> > > > -     }
+> > >
+> > > Hmm you're moving the ordering of things around again :) You should h=
+ave made
+> > > this change as part of patch 1 anyway first so this patch wouldn't ha=
+ve a
+> > > refactoring in it too.
+> > >
+> > > Top of rmap.c suggests you _can_ take the VMA write lock prior to try=
+ing the dup
+> > > but I'm just not sure why you'd want to switch these around in this p=
+atch?
+> > >
+> > > Can we try to keep original ordering unless there's a really good rea=
+son not to?
+> >
+> > Again, I'm trying to avoid undoing things if locking fails but this
+> > function already has rollback code, so I can reuse it. I'll keep the
+> > old placement here.
+>
+> Ack yeah... :)
+>
+> We're safe with vma -> anon rmap lock anyway.
 
-- slab stat
+Ack.
 
-# (cd /sys/kernel/slab/bio-256/ && find . -type f -exec grep -aH . {} \;)
-./remote_node_defrag_ratio:100
-./total_objects:9078 N1=4233 N5=4845
-./alloc_fastpath:897715187 C1=45250242 C3=50602079 C5=89955493 C6=128 C7=81923744 C8=128 C9=46275792 C10=128 C11=46037573 C12=128 C13=53037806 C14=128 C15=49291969 C16=128 C17=49716073 C18=4 C19=45475417 C20=130 C21=75693223 C22=128 C23=69595236 C24=128 C25=52992066 C26=1 C27=51082176 C28=66 C29=44931239 C30=2 C31=45853827 C48=2 C59=2 C63=1
-./cpu_slabs:0
-./objects:5404 N1=2665 N5=2739
-./sheaf_return_slow:0
-./objects_partial:3772 N1=1849 N5=1923
-./sheaf_return_fast:0
-./cpu_partial:0
-./free_slowpath:580544104 C0=45249992 C2=50601817 C4=2 C6=2 C8=46275666 C10=46037443 C12=53037685 C14=49291858 C16=49715937 C18=45475167 C20=13 C22=21 C24=52991949 C26=51081920 C28=44931147 C30=45853478 C49=2 C59=2 C61=2 C63=1
-./barn_get_fail:20733914 C1=1616081 C3=1807218 C5=23 C6=1 C7=10 C8=5 C9=1652707 C10=5 C11=1644200 C12=5 C13=1894208 C14=5 C15=1760428 C16=5 C17=1775575 C18=1 C19=1624123 C20=4 C21=6 C22=5 C23=21 C24=5 C25=1892574 C26=1 C27=1824364 C28=3 C29=1604692 C31=1637636 C48=1 C59=1 C63=1
-./sheaf_prefill_oversize:0
-./skip_kfence:0
-./min_partial:5
-./order_fallback:0
-./sheaf_capacity:28
-./sheaf_flush:84 C4=28 C20=28 C22=28
-./free_rcu_sheaf:0
-./sheaf_alloc:120 C1=1 C3=1 C4=10 C5=1 C6=3 C8=1 C9=1 C10=1 C11=1 C12=1 C13=1 C14=1 C15=2 C16=1 C17=1 C18=65 C19=1 C20=6 C22=7 C23=1 C24=1 C25=1 C26=1 C27=2 C28=1 C29=3 C31=1 C48=1 C59=1 C63=1
-./sheaf_free:0
-./sheaf_prefill_slow:0
-./sheaf_prefill_fast:0
-./poison:0
-./red_zone:0
-./free_slab:2252626 C0=217768 C2=178064 C8=177352 C10=188763 C12=172593 C14=195156 C16=189975 C18=178757 C24=179036 C26=187498 C28=189290 C30=198374
-./slabs:178 N1=83 N5=95
-./barn_get:11327366 C5=3212674 C6=4 C7=2925838 C20=1 C21=2703324 C23=2485524 C31=1
-./alloc_slowpath:0
-./destroy_by_rcu:1
-./free_rcu_sheaf_fail:0
-./barn_put:11327384 C4=3212682 C6=2925843 C20=2703321 C22=2485537 C28=1
-./usersize:0
-./sanity_checks:0
-./barn_put_fail:3 C4=1 C20=1 C22=1
-./align:64
-./alloc_node_mismatch:0
-./alloc_slab:2252805 C1=175514 C3=194092 C5=9 C8=2 C9=178894 C10=1 C11=177472 C12=5 C13=202580 C14=1 C15=190184 C16=2 C17=194266 C18=1 C19=179219 C20=1 C24=1 C25=205268 C27=197542 C29=177638 C30=1 C31=180109 C48=1 C59=1 C63=1
-./free_remove_partial:2252626 C0=217768 C2=178064 C8=177352 C10=188763 C12=172593 C14=195156 C16=189975 C18=178757 C24=179036 C26=187498 C28=189290 C30=198374
-./aliases:0
-./store_user:0
-./trace:0
-./reclaim_account:0
-./order:2
-./sheaf_refill:580549592 C1=45250268 C3=50602104 C5=644 C6=28 C7=280 C8=140 C9=46275796 C10=140 C11=46037600 C12=140 C13=53037824 C14=140 C15=49291984 C16=140 C17=49716100 C18=28 C19=45475444 C20=112 C21=168 C22=140 C23=588 C24=140 C25=52992072 C26=28 C27=51082192 C28=140 C29=44931264 C30=56 C31=45853808 C48=28 C59=28 C63=28
-./object_size:256
-./free_fastpath:317166967 C4=89955177 C6=81923631 C20=75693051 C22=69595106 C53=2
-./hwcache_align:1
-./cmpxchg_double_fail:2518173 C0=176664 C1=2695 C2=217757 C3=3198 C5=1 C7=2 C8=201087 C9=2783 C10=199017 C11=2839 C12=222146 C13=3146 C14=215883 C15=3113 C16=208327 C17=3279 C18=199045 C19=3150 C21=1 C24=225357 C25=3445 C26=218118 C27=3183 C28=197089 C29=3083 C30=200710 C31=3055
-./objs_per_slab:51
-./partial:146 N1=67 N5=79
-./slabs_cpu_partial:0(0)
-./free_add_partial:29301755 C0=958223 C1=1323669 C2=1094832 C3=1480537 C4=1 C5=11 C7=7 C8=990458 C9=1354237 C10=983110 C11=1348401 C12=1142550 C13=1553516 C14=1063308 C15=1441153 C16=1029143 C17=1463851 C18=949985 C19=1335529 C20=7 C21=3 C22=7 C23=17 C24=1107242 C25=1562991 C26=1056543 C27=1505571 C28=939243 C29=1319586 C30=948581 C31=1349443
-./slab_size:320
+>
+> >
+> > >
+> > > >       if (commit_merge(vmg))
+> > > >               goto nomem;
+> > > >
+> > > > @@ -1233,6 +1246,7 @@ int vma_shrink(struct vma_iterator *vmi, stru=
+ct vm_area_struct *vma,
+> > > >              unsigned long start, unsigned long end, pgoff_t pgoff)
+> > > >  {
+> > > >       struct vma_prepare vp;
+> > > > +     int err;
+> > > >
+> > > >       WARN_ON((vma->vm_start !=3D start) && (vma->vm_end !=3D end))=
+;
+> > > >
+> > > > @@ -1244,7 +1258,11 @@ int vma_shrink(struct vma_iterator *vmi, str=
+uct vm_area_struct *vma,
+> > > >       if (vma_iter_prealloc(vmi, NULL))
+> > > >               return -ENOMEM;
+> > > >
+> > > > -     vma_start_write(vma);
+> > > > +     err =3D vma_start_write_killable(vma);
+> > > > +     if (err) {
+> > > > +             vma_iter_free(vmi);
+> > > > +             return err;
+> > > > +     }
+> > > >
+> > > >       init_vma_prep(&vp, vma);
+> > > >       vma_prepare(&vp);
+> > > > @@ -1434,7 +1452,9 @@ static int vms_gather_munmap_vmas(struct vma_=
+munmap_struct *vms,
+> > > >                       if (error)
+> > > >                               goto end_split_failed;
+> > > >               }
+> > > > -             vma_start_write(next);
+> > > > +             error =3D vma_start_write_killable(next);
+> > > > +             if (error)
+> > > > +                     goto munmap_gather_failed;
+> > > >               mas_set(mas_detach, vms->vma_count++);
+> > > >               error =3D mas_store_gfp(mas_detach, next, GFP_KERNEL)=
+;
+> > > >               if (error)
+> > > > @@ -1828,12 +1848,17 @@ static void vma_link_file(struct vm_area_st=
+ruct *vma, bool hold_rmap_lock)
+> > > >  static int vma_link(struct mm_struct *mm, struct vm_area_struct *v=
+ma)
+> > > >  {
+> > > >       VMA_ITERATOR(vmi, mm, 0);
+> > > > +     int err;
+> > > >
+> > > >       vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
+> > > >       if (vma_iter_prealloc(&vmi, vma))
+> > > >               return -ENOMEM;
+> > > >
+> > > > -     vma_start_write(vma);
+> > > > +     err =3D vma_start_write_killable(vma);
+> > > > +     if (err) {
+> > > > +             vma_iter_free(&vmi);
+> > > > +             return err;
+> > > > +     }
+> > > >       vma_iter_store_new(&vmi, vma);
+> > > >       vma_link_file(vma, /* hold_rmap_lock=3D */false);
+> > > >       mm->map_count++;
+> > > > @@ -2215,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
+> > > >        * is reached.
+> > > >        */
+> > > >       for_each_vma(vmi, vma) {
+> > > > -             if (signal_pending(current))
+> > > > +             if (signal_pending(current) || vma_start_write_killab=
+le(vma))
+> > > >                       goto out_unlock;
+> > > > -             vma_start_write(vma);
+> > > >       }
+> > > >
+> > > >       vma_iter_init(&vmi, mm, 0);
+> > > > @@ -2522,6 +2546,11 @@ static int __mmap_new_vma(struct mmap_state =
+*map, struct vm_area_struct **vmap)
+> > > >       if (!vma)
+> > > >               return -ENOMEM;
+> > > >
+> > > > +     /* Lock the VMA since it is modified after insertion into VMA=
+ tree */
+> > > > +     error =3D vma_start_write_killable(vma);
+> > > > +     if (error)
+> > > > +             goto free_vma;
+> > > > +
+> > >
+> > > You're doing it again :)
+> > >
+> > > Can we please keep the lock acquisition at the point it is in unless =
+there's a
+> > > really good reason not to.
+> > >
+> > > And if there is a good reason, please do it in another commit prior t=
+o the
+> > > massive 'change everything' one so it's more easily reviewable :)
+> >
+> > The reason for this one is that I want to avoid undoing
+> > __mmap_new_file_vma() if we fail to lock the VMA later. Undoing that
+> > one would be messy, so I would prefer locking it earlier. These
+> > operations are already performed under the mmap write lock. Is that
+> > really a problem if we write-lock the VMA as well?
+>
+> This is a fair point, I obviously glanced over this without thinking abou=
+t that
+> :)
+>
+> I think you should include in the commit message why you're reordering th=
+ough.
 
+Yeah, I should have explained more about the reasons. I will add a
+section in the comments about this.
 
+>
+> >
+> > >
+> > > >       vma_iter_config(vmi, map->addr, map->end);
+> > > >       vma_set_range(vma, map->addr, map->end, map->pgoff);
+> > > >       vm_flags_init(vma, map->vm_flags);
+> > > > @@ -2552,8 +2581,6 @@ static int __mmap_new_vma(struct mmap_state *=
+map, struct vm_area_struct **vmap)
+> > > >       WARN_ON_ONCE(!arch_validate_flags(map->vm_flags));
+> > > >  #endif
+> > > >
+> > > > -     /* Lock the VMA since it is modified after insertion into VMA=
+ tree */
+> > > > -     vma_start_write(vma);
+> > > >       vma_iter_store_new(vmi, vma);
+> > > >       map->mm->map_count++;
+> > > >       vma_link_file(vma, map->hold_file_rmap_lock);
+> > > > @@ -2864,6 +2891,7 @@ int do_brk_flags(struct vma_iterator *vmi, st=
+ruct vm_area_struct *vma,
+> > > >                unsigned long addr, unsigned long len, vm_flags_t vm=
+_flags)
+> > > >  {
+> > > >       struct mm_struct *mm =3D current->mm;
+> > > > +     int err =3D -ENOMEM;
+> > >
+> > > I hate this 'default error code' pattern, it's a code smell. Please u=
+pdate
+> > > everything that jumps to the failure case to set err, and leave this
+> > > uninitialised.
+> > >
+> > > We've had real bugs come out of this before!
+> >
+> > Ack.
+>
+> Thanks!
+>
+> >
+> > >
+> > > >
+> > > >       /*
+> > > >        * Check against address space limits by the changed size
+> > > > @@ -2908,7 +2936,10 @@ int do_brk_flags(struct vma_iterator *vmi, s=
+truct vm_area_struct *vma,
+> > > >       vma_set_range(vma, addr, addr + len, addr >> PAGE_SHIFT);
+> > > >       vm_flags_init(vma, vm_flags);
+> > > >       vma->vm_page_prot =3D vm_get_page_prot(vm_flags);
+> > > > -     vma_start_write(vma);
+> > > > +     if (vma_start_write_killable(vma)) {
+> > > > +             err =3D -EINTR;
+> > > > +             goto mas_store_fail;
+> > > > +     }
+> > > >       if (vma_iter_store_gfp(vmi, vma, GFP_KERNEL))
+> > > >               goto mas_store_fail;
+> > > >
+> > > > @@ -2928,7 +2959,7 @@ int do_brk_flags(struct vma_iterator *vmi, st=
+ruct vm_area_struct *vma,
+> > > >       vm_area_free(vma);
+> > > >  unacct_fail:
+> > > >       vm_unacct_memory(len >> PAGE_SHIFT);
+> > > > -     return -ENOMEM;
+> > > > +     return err;
+> > > >  }
+> > > >
+> > > >  /**
+> > > > @@ -3089,7 +3120,7 @@ int expand_upwards(struct vm_area_struct *vma=
+, unsigned long address)
+> > > >       struct mm_struct *mm =3D vma->vm_mm;
+> > > >       struct vm_area_struct *next;
+> > > >       unsigned long gap_addr;
+> > > > -     int error =3D 0;
+> > > > +     int error;
+> > > >       VMA_ITERATOR(vmi, mm, vma->vm_start);
+> > > >
+> > > >       if (!(vma->vm_flags & VM_GROWSUP))
+> > > > @@ -3126,12 +3157,14 @@ int expand_upwards(struct vm_area_struct *v=
+ma, unsigned long address)
+> > > >
+> > > >       /* We must make sure the anon_vma is allocated. */
+> > > >       if (unlikely(anon_vma_prepare(vma))) {
+> > > > -             vma_iter_free(&vmi);
+> > > > -             return -ENOMEM;
+> > > > +             error =3D -ENOMEM;
+> > > > +             goto free;
+> > > >       }
+> > > >
+> > > >       /* Lock the VMA before expanding to prevent concurrent page f=
+aults */
+> > > > -     vma_start_write(vma);
+> > > > +     error =3D vma_start_write_killable(vma);
+> > > > +     if (error)
+> > > > +             goto free;
+> > > >       /* We update the anon VMA tree. */
+> > > >       anon_vma_lock_write(vma->anon_vma);
+> > > >
+> > > > @@ -3160,6 +3193,7 @@ int expand_upwards(struct vm_area_struct *vma=
+, unsigned long address)
+> > > >               }
+> > > >       }
+> > > >       anon_vma_unlock_write(vma->anon_vma);
+> > > > +free:
+> > >
+> > > Nitty, but this kinda sucks as a label name, generally when the error=
+ label
+> > > contains 'free' it is free_xxx where 'xxx' is some specific thing.
+> > >
+> > > So somethiing like 'fail' would be good.
+> >
+> > Ack. Will change to something more appropriate.
+>
+> Thanks!
+>
+> >
+> > >
+> > > >       vma_iter_free(&vmi);
+> > > >       validate_mm(mm);
+> > > >       return error;
+> > > > @@ -3174,7 +3208,7 @@ int expand_downwards(struct vm_area_struct *v=
+ma, unsigned long address)
+> > > >  {
+> > > >       struct mm_struct *mm =3D vma->vm_mm;
+> > > >       struct vm_area_struct *prev;
+> > > > -     int error =3D 0;
+> > > > +     int error;
+> > > >       VMA_ITERATOR(vmi, mm, vma->vm_start);
+> > > >
+> > > >       if (!(vma->vm_flags & VM_GROWSDOWN))
+> > > > @@ -3205,12 +3239,14 @@ int expand_downwards(struct vm_area_struct =
+*vma, unsigned long address)
+> > > >
+> > > >       /* We must make sure the anon_vma is allocated. */
+> > > >       if (unlikely(anon_vma_prepare(vma))) {
+> > > > -             vma_iter_free(&vmi);
+> > > > -             return -ENOMEM;
+> > > > +             error =3D -ENOMEM;
+> > > > +             goto free;
+> > > >       }
+> > > >
+> > > >       /* Lock the VMA before expanding to prevent concurrent page f=
+aults */
+> > > > -     vma_start_write(vma);
+> > > > +     error =3D vma_start_write_killable(vma);
+> > > > +     if (error)
+> > > > +             goto free;
+> > > >       /* We update the anon VMA tree. */
+> > > >       anon_vma_lock_write(vma->anon_vma);
+> > > >
+> > > > @@ -3240,6 +3276,7 @@ int expand_downwards(struct vm_area_struct *v=
+ma, unsigned long address)
+> > > >               }
+> > > >       }
+> > > >       anon_vma_unlock_write(vma->anon_vma);
+> > > > +free:
+> > >
+> > > Obviously same comment her :)
+> >
+> > Ack.
+>
+> Thanks!
+>
+> >
+> > >
+> > > >       vma_iter_free(&vmi);
+> > > >       validate_mm(mm);
+> > > >       return error;
+> > > > diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> > > > index 8134e1afca68..a4addc2a8480 100644
+> > > > --- a/mm/vma_exec.c
+> > > > +++ b/mm/vma_exec.c
+> > > > @@ -40,6 +40,7 @@ int relocate_vma_down(struct vm_area_struct *vma,=
+ unsigned long shift)
+> > > >       struct vm_area_struct *next;
+> > > >       struct mmu_gather tlb;
+> > > >       PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
+> > > > +     int err;
+> > > >
+> > > >       BUG_ON(new_start > new_end);
+> > > >
+> > > > @@ -55,8 +56,9 @@ int relocate_vma_down(struct vm_area_struct *vma,=
+ unsigned long shift)
+> > > >        * cover the whole range: [new_start, old_end)
+> > > >        */
+> > > >       vmg.target =3D vma;
+> > > > -     if (vma_expand(&vmg))
+> > > > -             return -ENOMEM;
+> > > > +     err =3D vma_expand(&vmg);
+> > > > +     if (err)
+> > > > +             return err;
+> > >
+> > > Hmm. But before we were filtering the errors and now we're not... I g=
+uess not an
+> > > issue as before it could _only_ return -ENOMEM, but again, are we sur=
+e all
+> > > callers are fine with -EINTR I guess :)
+> >
+> > This function is called only from setup_arg_pages() and all its
+> > callers end up being linux_binfmt.load_binary handlers. The returned
+> > error propagates all the way to execve() and its friends. And with my
+> > extreme "luck" the execve syscall lists probably every single possible
+> > error code except EINTR :) This is depressing...
+>
+> Well as per Matthew's point this is probably fine.
 
-Thanks,
-Ming
+Yes, Matthew made my job much easier :)
 
+>
+> >
+> > Thanks for the detailed review, Lorenzo! I guess we need to discuss
+> > these lock moves a bit more before I start on the new version.
+>
+> Nah I think we're good after this!
+
+Ack. I'll make the changes we agreed on and will post v4 likely on Monday.
+Thanks!
+
+>
+> >
+> > >
+> > > >
+> > > >       /*
+> > > >        * move the page tables downwards, on failure we rely on
+> > > > --
+> > > > 2.53.0.414.gf7e9f6c205-goog
+> > > >
+> > >
+> > > Cheers, Lorenzo
+> > >
+>
+> Cheers, Lorenzo
 
