@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F4A5F30951
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B32AF30950
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 121C16B00C4; Thu,  5 Mar 2026 06:58:50 -0500 (EST)
+	id D5A4B6B00C5; Thu,  5 Mar 2026 06:59:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F6AC6B00C5; Thu,  5 Mar 2026 06:58:50 -0500 (EST)
+	id D04E36B00C7; Thu,  5 Mar 2026 06:59:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 001C76B00C6; Thu,  5 Mar 2026 06:58:49 -0500 (EST)
+	id BF3116B00C8; Thu,  5 Mar 2026 06:59:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E20176B00C4
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:58:49 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC1D85B7CC
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:58:49 +0000 (UTC)
-X-FDA: 84511862778.20.5C44B88
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EE870100002
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:58:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nK5cOxuP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2E26B00C5
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:59:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7447B13BE66
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:59:00 +0000 (UTC)
+X-FDA: 84511863240.07.02167E8
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C5AD240006
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:58:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BOcfMfGt;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772711928;
+	s=arc-20220608; t=1772711939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FNVJ4KS5apbdFZdhuZeNuYa2gU+wA/pVS6ou2uf08Uw=;
-	b=S53nD4yJ3llOpvJ3mXj+xSm/YYfVyA7hC33mCgXQeKhT6v6YzdwE4oNMFbcFC24egw31Rn
-	auSj0rCqAbdsnmbadEBmezUY6n5nMKgJhyOU69HgSmCX2tE888hpibSlGwEjqk7kGq7Cn+
-	VY1u5Rpr+OGh84cDy2tIv0SZyFSauqY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711928; a=rsa-sha256;
-	cv=none;
-	b=EaQNl7vyix5FPsOD9wcSBV4XhtyF3orzRe7YHmvJHJvjlM45GHSUS9hsF6byqPsYe6r8Dx
-	z6bdzfrZ771ZkhHR0S7OWjFgynkn/BoVOuoTAjAvE2GvuM0lDM3blSRQScDpQW2tYYkpwU
-	9uojFd6hWJKljQb0rPu2/8V8T0NncZ8=
+	bh=Ih1p6IEUWMwvOImSKCL1YcoSFVupYh3GoMOZwrQGBdQ=;
+	b=0vgmaylwjjlOP+smAIX3KuOi6AYmvhmq1QEh4tGqEuTOh11fwHvPWxQfZDkCgvWRBc2kUL
+	JsEQCW42vb5j9QRt6tL0JneL0hKCRUyaEeQlISVMDS5O7QlhYzVOV0/5fTpQ1Lb1QBUg6h
+	QQAj2szMLbVDFNgf86rN9TishAdOfJs=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nK5cOxuP;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BOcfMfGt;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711939; a=rsa-sha256;
+	cv=none;
+	b=Ejlye74y7Ep56Sm+h8iCnmxr36CcAkcXMBge6YhwcGc9OtaYVf/SVPuftfz4LRGxzXkLtC
+	IzJfxDdUs0P2G6RAVQLlMe2t3MNp3gpLE1FI0Affgk/VN+AJIE6/8brULTbGjDv/QUUIKw
+	uG3HNmYkmQYsDd1x0fvuQ10IPTm0BlM=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772711926;
+	t=1772711937;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FNVJ4KS5apbdFZdhuZeNuYa2gU+wA/pVS6ou2uf08Uw=;
-	b=nK5cOxuPDHk2gapaPO9PtGKvoNl0fuenWnofmUxxaf38ar1Zu9UNZ8LqU48OXeMt0hNxKD
-	PsrOAwAAgLYcbOoJ+XI4Tner1RfwB0CzmAJBb+sqixT/aqSmhxUgGhL2JWP/RgagZbvWuu
-	Duqvm7d7Sml9BxhyHLdDM2X3/tEZGOU=
+	bh=Ih1p6IEUWMwvOImSKCL1YcoSFVupYh3GoMOZwrQGBdQ=;
+	b=BOcfMfGtjpHcZp+xS/IpT3JULkLv02uZSYMCkCq8bDAyt4Jvy92uC0aTckuxqn3xx3Jxbb
+	q/M0pn2SWVc7gCp+kU8JZd+USDTs48XoIopK3xpPraNBcil60WNqxgue3ZE0S/NnoqLuR+
+	zXFJzorToXtaCX16OVcQD6Gtc39QfHA=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -88,22 +88,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v6 26/33] mm: vmscan: prepare for reparenting MGLRU folios
-Date: Thu,  5 Mar 2026 19:52:44 +0800
-Message-ID: <e75050354cdbc42221a04f7cf133292b61105548.1772711148.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v6 27/33] mm: memcontrol: refactor memcg_reparent_objcgs()
+Date: Thu,  5 Mar 2026 19:52:45 +0800
+Message-ID: <2e5696db1993e593a51004c1dacedbc261689629.1772711148.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE870100002
-X-Stat-Signature: zm79ycmbsfnhyxqo7ja9xpfgrrsezzzg
+X-Rspamd-Queue-Id: C5AD240006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: djhdfoi9e366zfisgx1neb5h49z4igop
 X-Rspam-User: 
-X-HE-Tag: 1772711927-965153
-X-HE-Meta: U2FsdGVkX18ls5Mw8O16w82Qll+zTJMWm8G+2dSEeTUDmOgvXwUsD0+s6QNEv5e5oiNVoqbYHPAZqBH++Y7qmU0PWPzU/HrM4xrzMpc6qpn/xurzdWcaQR/Zqq/YrS7ZwOxEZdclen0kVUxL0SN02kHeQdE+w08Zec5YympkT1tUhPyhgSwf0f8PK1wH/veugW0XuEGBax9GMGt1Kk+vnvhLkIkdi7m4+fqEdmSxnydZBAiDQx4XwZoB0XmLrVMx3dYgOAnSGM+0mt2UlqfSc5I9cuBJWt6ZdX7rxUTjOE2BB/QquAK3/KEsVbhKQHPzTJATowXrqtWqbbD9AkLLk+b+4GECVzfozqaBXY5i6fbgCtNyY7vKsSyjkHVFNwmBp62tbNHhL/UW0SkIFYk2zybppY9RyY34qirNHzSwJHe2eEVI5UD/zY8o7ojH17tfBRapIrwvSxg6l2oXMozxG3doSk/DdnP57I9infjfU6lZbb74lws5TZ85rVuNYJC4PWxuuwwZ3y4wrmc8FcAhOWgCZJDmI11rS0hsWjqqOnbk/H0/Lz7xSQdY1Eb8Iqs/86MUGQVUYueHar/UI+nxjncYvkfsva5ku4UbXZsb8NgkpCYN6aowUG9qXQNafoqmpClU2+UgzJA2yA4RYjAcD4ZWngkx2hPeJROtjnS/y1eFrM7nqfEUmHPQEBcJGYRgWFjCYoc+56gYNp4Rye2m54pJTpojzXeypC6Rvjp8pTjflnlsebCo7zL6TTd8NvZJyzct8GMEMB+5cNmNxgD79/W4JuYcBhdrI4GbrE5d/XNVPfh69Tz7OrhU7RFmSJmpBFcs3ghViHC5tfapSi4kB5BoFiGGlOe60S//gpHmVWFAED4Etcu5nrfpOZyx0v93AJCX8vy3en7MzFMxYrYMJumxdukvezwYFrf57LcUtFxmunFlyEXvQspYB34w8cLKUFsS0zOFZFZ0qx0WlhX
- 2PiDRqhW
- oA81zguSHsh4XwUrN7gKzrMbXdaRTMLUwWFO8EMLD0Tmr7qva9KHrgdHMWiOuvn1QrsMmtj3MKbNw/gReG1eGOSviB8LbjyHmsGlI2/xizfIJ8veyS/boCBo4ULTOzX4A57WJJOxSbP7X8iTHZ77rciVCMGH1ziCGs3/rP6TQbVivlFo=
+X-HE-Tag: 1772711938-323125
+X-HE-Meta: U2FsdGVkX1/mU8+U92PkMKwsNP6GoJftzX+JK/7dJ/yB37kEgxbLDBW6lP2GD+XrDI1puvQxpf87Vyn7DohSAcnFlDtVVO38vkladokt52nzioGIgWl/JgPQkQaIzyVVRQzXq8fo8nvhChwDIP8xG6J0pZ0BCCTprhvjuw1ckqcWKjCCcIw7lCIAFDAXMYfqTFE6OIk8E5OdMPwtC7EzvuWXYvWmebpveI9DD0MLcDhn7Bfz1ki1/DSQPEj95Qib57S8T7mBzfyVJPAFJ0KEuFgvCyMC1kYecoc0/sVsXn8xleiMio3BnSa7Jy7yjdyMJkyBs1tv/FqnmvdzNsxe4jLBFN7UEsV94twQih939gaS0IbhtgC9109BenckGx0lJ047UgK0lDzas/RyG5hZ6xs2Ppzxidiyr4Dm1mnNec0oSNv9XC3iC9k37ILgYsxNsrI39wiQfTpIWUl1OFRqnTP80Bs/jRZFOvt/qEalwfCAqGi9ffPsaLyBc8fPIddeonorqBhN/reItAiyLQHAtpNQk+7SvoSmAc6usCuT9Hg6GgFMK8WToSHhN1AzbegtGgXauFDgaE/JvKArb0fsvaheScNE8Jrnh/hDpNjjo3NC3bXIGt6bMz6qDHfeHn0KZkXIjdWwAn7Gm4Vj1V+4c71ms20OJsoDFbhSAUltTT9gANq4mdPxl1OwqDGgJN8Z6VOseKDjYZLf+4e4xzZ2wguh7ga0jCayBeL0YTWYlpIZMKdfKGs0DEvlA9coSqrXKBd6irIKbcQTQEgK52qG7JEczUzOnNVSMTzfalPj3pxhOKolZ+a8a/m1zw7R/EqkJE2x1KF/L9SZpk+aVwwN4a+iOTvO31uqyooVCg6zRusMB9BYb/bFyinN9WEkqObm/xkU1IyPyCBztkHNUmTDnjYkexJ07F0W4dS0x5nGZx9wJkNsroMAtl5J+IiDuxISt8PZnkZtZNwQl0z2pt7
+ QttrN5pQ
+ dfRFmSLUcqvxQekCU1SIZKRY6CE7Mudyi8ucUdAV2hd3gmSUw6ImomLE9c7q9NW1ahcJDaNVRPwPnFXKCgsS4Bu+GCBcmF3ljjiHDP2HdZdzN4HVM8o/tknA9WtY2Fhnj2ZU3QhjGcQzneu2seIHzeMdjH8zFHB1sUtPom7bCnklsp0gJGKiqu0bQBO56KumcIJOZhoLxIBGfS2RImyizTxjHyqjw65kG71SGG3fJaqUXFlLBLZgs4AZyEQ1kn3pEJELw4bJ97/KdsAu3sm+9ghUPEzZUBySk9hOJn6u/fNidJ87+Wjuz5C/oGJYMmTEMuwa0B/k/TF8hv8X26FsTGR64var6XokaZnwK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,241 +113,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Similar to traditional LRU folios, in order to solve the dying memcg
-problem, we also need to reparenting MGLRU folios to the parent memcg when
-memcg offline.
+Refactor the memcg_reparent_objcgs() to facilitate subsequent reparenting
+LRU folios here.
 
-However, there are the following challenges:
-
-1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
-   number of generations of the parent and child memcg may be different,
-   so we cannot simply transfer MGLRU folios in the child memcg to the
-   parent memcg as we did for traditional LRU folios.
-2. The generation information is stored in folio->flags, but we cannot
-   traverse these folios while holding the lru lock, otherwise it may
-   cause softlockup.
-3. In walk_update_folio(), the gen of folio and corresponding lru size
-   may be updated, but the folio is not immediately moved to the
-   corresponding lru list. Therefore, there may be folios of different
-   generations on an LRU list.
-4. In lru_gen_del_folio(), the generation to which the folio belongs is
-   found based on the generation information in folio->flags, and the
-   corresponding LRU size will be updated. Therefore, we need to update
-   the lru size correctly during reparenting, otherwise the lru size may
-   be updated incorrectly in lru_gen_del_folio().
-
-Finally, this patch chose a compromise method, which is to splice the lru
-list in the child memcg to the lru list of the same generation in the
-parent memcg during reparenting. And in order to ensure that the parent
-memcg has the same generation, we need to increase the generations in the
-parent memcg to the MAX_NR_GENS before reparenting.
-
-Of course, the same generation has different meanings in the parent and
-child memcg, this will cause confusion in the hot and cold information of
-folios. But other than that, this method is simple enough, the lru size
-is correct, and there is no need to consider some concurrency issues (such
-as lru_gen_del_folio()).
-
-To prepare for the above work, this commit implements the specific
-functions, which will be used during reparenting.
-
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Suggested-by: Imran Khan <imran.f.khan@oracle.com>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 ---
- include/linux/mmzone.h |  17 +++++
- mm/vmscan.c            | 142 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 159 insertions(+)
+ mm/memcontrol.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 546bca95ca40c..e7a8cd41619b2 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -637,6 +637,9 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg);
- void lru_gen_offline_memcg(struct mem_cgroup *memcg);
- void lru_gen_release_memcg(struct mem_cgroup *memcg);
- void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid);
-+void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid);
-+bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid);
-+void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 49a076b7c2e42..5929e397c3c31 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -209,15 +209,12 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
+ 	return objcg;
+ }
  
- #else /* !CONFIG_LRU_GEN */
- 
-@@ -677,6 +680,20 @@ static inline void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
+-static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
++static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memcg,
++							 struct mem_cgroup *parent)
  {
+ 	struct obj_cgroup *objcg, *iter;
+-	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+ 
+ 	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
+-
+-	spin_lock_irq(&objcg_lock);
+-
+ 	/* 1) Ready to reparent active objcg. */
+ 	list_add(&objcg->list, &memcg->objcg_list);
+ 	/* 2) Reparent active objcg and already reparented objcgs to parent. */
+@@ -226,7 +223,29 @@ static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
+ 	/* 3) Move already reparented objcgs to the parent's list */
+ 	list_splice(&memcg->objcg_list, &parent->objcg_list);
+ 
++	return objcg;
++}
++
++static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
++	spin_lock_irq(&objcg_lock);
++}
++
++static inline void reparent_unlocks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
++{
+ 	spin_unlock_irq(&objcg_lock);
++}
++
++static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
++{
++	struct obj_cgroup *objcg;
++	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
++
++	reparent_locks(memcg, parent);
++
++	objcg = __memcg_reparent_objcgs(memcg, parent);
++
++	reparent_unlocks(memcg, parent);
+ 
+ 	percpu_ref_kill(&objcg->refcnt);
  }
- 
-+static inline void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
-+{
-+}
-+
-+static inline bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid)
-+{
-+	return true;
-+}
-+
-+static inline
-+void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
-+{
-+}
-+
- #endif /* CONFIG_LRU_GEN */
- 
- struct lruvec {
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 606b4ecf77ef3..0fb81fb7985e2 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4408,6 +4408,148 @@ void lru_gen_soft_reclaim(struct mem_cgroup *memcg, int nid)
- 		lru_gen_rotate_memcg(lruvec, MEMCG_LRU_HEAD);
- }
- 
-+bool recheck_lru_gen_max_memcg(struct mem_cgroup *memcg, int nid)
-+{
-+	struct lruvec *lruvec = get_lruvec(memcg, nid);
-+	int type;
-+
-+	for (type = 0; type < ANON_AND_FILE; type++) {
-+		if (get_nr_gens(lruvec, type) != MAX_NR_GENS)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void try_to_inc_max_seq_nowalk(struct mem_cgroup *memcg,
-+				      struct lruvec *lruvec)
-+{
-+	struct lru_gen_mm_list *mm_list = get_mm_list(memcg);
-+	struct lru_gen_mm_state *mm_state = get_mm_state(lruvec);
-+	int swappiness = mem_cgroup_swappiness(memcg);
-+	DEFINE_MAX_SEQ(lruvec);
-+	bool success = false;
-+
-+	/*
-+	 * We are not iterating the mm_list here, updating mm_state->seq is just
-+	 * to make mm walkers work properly.
-+	 */
-+	if (mm_state) {
-+		spin_lock(&mm_list->lock);
-+		VM_WARN_ON_ONCE(mm_state->seq + 1 < max_seq);
-+		if (max_seq > mm_state->seq) {
-+			WRITE_ONCE(mm_state->seq, mm_state->seq + 1);
-+			success = true;
-+		}
-+		spin_unlock(&mm_list->lock);
-+	} else {
-+		success = true;
-+	}
-+
-+	if (success)
-+		inc_max_seq(lruvec, max_seq, swappiness);
-+}
-+
-+/*
-+ * We need to ensure that the folios of child memcg can be reparented to the
-+ * same gen of the parent memcg, so the gens of the parent memcg needed be
-+ * incremented to the MAX_NR_GENS before reparenting.
-+ */
-+void max_lru_gen_memcg(struct mem_cgroup *memcg, int nid)
-+{
-+	struct lruvec *lruvec = get_lruvec(memcg, nid);
-+	int type;
-+
-+	for (type = 0; type < ANON_AND_FILE; type++) {
-+		while (get_nr_gens(lruvec, type) < MAX_NR_GENS) {
-+			try_to_inc_max_seq_nowalk(memcg, lruvec);
-+			cond_resched();
-+		}
-+	}
-+}
-+
-+/*
-+ * Compared to traditional LRU, MGLRU faces the following challenges:
-+ *
-+ * 1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
-+ *    number of generations of the parent and child memcg may be different,
-+ *    so we cannot simply transfer MGLRU folios in the child memcg to the
-+ *    parent memcg as we did for traditional LRU folios.
-+ * 2. The generation information is stored in folio->flags, but we cannot
-+ *    traverse these folios while holding the lru lock, otherwise it may
-+ *    cause softlockup.
-+ * 3. In walk_update_folio(), the gen of folio and corresponding lru size
-+ *    may be updated, but the folio is not immediately moved to the
-+ *    corresponding lru list. Therefore, there may be folios of different
-+ *    generations on an LRU list.
-+ * 4. In lru_gen_del_folio(), the generation to which the folio belongs is
-+ *    found based on the generation information in folio->flags, and the
-+ *    corresponding LRU size will be updated. Therefore, we need to update
-+ *    the lru size correctly during reparenting, otherwise the lru size may
-+ *    be updated incorrectly in lru_gen_del_folio().
-+ *
-+ * Finally, we choose a compromise method, which is to splice the lru list in
-+ * the child memcg to the lru list of the same generation in the parent memcg
-+ * during reparenting.
-+ *
-+ * The same generation has different meanings in the parent and child memcg,
-+ * so this compromise method will cause the LRU inversion problem. But as the
-+ * system runs, this problem will be fixed automatically.
-+ */
-+static void __lru_gen_reparent_memcg(struct lruvec *child_lruvec, struct lruvec *parent_lruvec,
-+				     int zone, int type)
-+{
-+	struct lru_gen_folio *child_lrugen, *parent_lrugen;
-+	enum lru_list lru = type * LRU_INACTIVE_FILE;
-+	int i;
-+
-+	child_lrugen = &child_lruvec->lrugen;
-+	parent_lrugen = &parent_lruvec->lrugen;
-+
-+	for (i = 0; i < get_nr_gens(child_lruvec, type); i++) {
-+		int gen = lru_gen_from_seq(child_lrugen->max_seq - i);
-+		long nr_pages = child_lrugen->nr_pages[gen][type][zone];
-+		int child_lru_active = lru_gen_is_active(child_lruvec, gen) ? LRU_ACTIVE : 0;
-+		int parent_lru_active = lru_gen_is_active(parent_lruvec, gen) ? LRU_ACTIVE : 0;
-+
-+		/* Assuming that child pages are colder than parent pages */
-+		list_splice_init(&child_lrugen->folios[gen][type][zone],
-+				 &parent_lrugen->folios[gen][type][zone]);
-+
-+		WRITE_ONCE(child_lrugen->nr_pages[gen][type][zone], 0);
-+		WRITE_ONCE(parent_lrugen->nr_pages[gen][type][zone],
-+			   parent_lrugen->nr_pages[gen][type][zone] + nr_pages);
-+
-+		if (lru_gen_is_active(child_lruvec, gen) != lru_gen_is_active(parent_lruvec, gen)) {
-+			__update_lru_size(child_lruvec, lru + child_lru_active, zone, -nr_pages);
-+			__update_lru_size(parent_lruvec, lru + parent_lru_active, zone, nr_pages);
-+		}
-+	}
-+}
-+
-+void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent, int nid)
-+{
-+	struct lruvec *child_lruvec, *parent_lruvec;
-+	int type, zid;
-+	struct zone *zone;
-+	enum lru_list lru;
-+
-+	child_lruvec = get_lruvec(memcg, nid);
-+	parent_lruvec = get_lruvec(parent, nid);
-+
-+	for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1)
-+		for (type = 0; type < ANON_AND_FILE; type++)
-+			__lru_gen_reparent_memcg(child_lruvec, parent_lruvec, zid, type);
-+
-+	for_each_lru(lru) {
-+		for_each_managed_zone_pgdat(zone, NODE_DATA(nid), zid, MAX_NR_ZONES - 1) {
-+			unsigned long size = mem_cgroup_get_zone_lru_size(child_lruvec, lru, zid);
-+
-+			mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
-+		}
-+	}
-+}
-+
- #endif /* CONFIG_MEMCG */
- 
- /******************************************************************************
 -- 
 2.20.1
 
