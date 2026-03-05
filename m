@@ -4,102 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F689F47CAC
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:16:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B4A1F47CAC
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:31:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AE686B0005; Thu,  5 Mar 2026 13:16:31 -0500 (EST)
+	id 803DA6B0005; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48F236B0089; Thu,  5 Mar 2026 13:16:31 -0500 (EST)
+	id 7DB5B6B0089; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 391E86B008A; Thu,  5 Mar 2026 13:16:31 -0500 (EST)
+	id 6B0596B008A; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 26CA16B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:16:31 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 683E0C1371
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:16:30 +0000 (UTC)
-X-FDA: 84512814540.27.C6F988F
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 725171A0016
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:16:28 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ERHsymTj;
-	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772734588;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C1266B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DCFF5139E08
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:31:07 +0000 (UTC)
+X-FDA: 84512851374.17.1953A2F
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id D00B340019
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:31:05 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S2Bczv0V;
+	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772735465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RIxu2UmisZj1gBHdIkVdu8dfhc8pgW90ZwBwUMZ5Nt8=;
-	b=bAMHu1Dr7fdhFvgFr32K23Y+6DN74KSmwN3r5I9clEqc7gvoddD9LvYR/86m0cJBBllG1r
-	/tgIHo8wmtKGfHKp3yZWbo95tghnWvobRw0hryLQMFMKY/vMSkfvreswfcwC0jP4U/HxlT
-	2B0tZuADP4pxtzBk5IFo2nBdte+bciQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=ERHsymTj;
-	spf=pass (imf19.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772734588; a=rsa-sha256;
-	cv=none;
-	b=DunaIXodNB8th3/vfw+9v6PrtQaHa8DzhUDsNtMI5Wzz+Qp3ib64mPL7Im27WK9BrZtFr5
-	KhytxTzwpA8mFMzzHa9WWX55pJ0hzzBGDifz32XcNLbG6Sk9xE54VYbeH92a0N6nV0RfDx
-	s+VjHf7/mylWp3C3rBlkTGghJZAObnI=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 6B5C1B3372;
-	Thu, 05 Mar 2026 18:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772734586;
-	bh=RIxu2UmisZj1gBHdIkVdu8dfhc8pgW90ZwBwUMZ5Nt8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ERHsymTj9fD63/PVjhhmH9C1LwEd9+RUVtbRLwgIZpQxPyzqTf8Xu6psm6AfXHl8w
-	 /d5TZigph9IPleKxGJSRug/wlIRqY9Cg72ZdQkvR9hR24OhGq56INmDCERndOUVXxL
-	 wAIjy/hh/1LaLFYcySTpruGS/PgjuhwMUdO67AEI=
-Date: Thu, 5 Mar 2026 18:16:22 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
-Message-ID: <aanIdk2i-Eo9M967@shell.ilvokhin.com>
-References: <20260304151335.172572-1-sj@kernel.org>
- <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
+	bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
+	b=bUF3n47+fGDfVaDNkf1VAD1mrejzP46GG+Aq4pfxObrTTPAj6Q7c0qS5iQejq1VvUks1q/
+	BgU/sAAg1CLpNFGeYGZGN5EPEyfA/TM+FbDW1MsDeIx6uWGVBYrElA8bM/4wvANqN2L/vp
+	2dJB2xQUsl15ZjXHmK6EJeKB0rR6J4c=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772735465; a=rsa-sha256;
+	cv=pass;
+	b=Gs19tHJSaojqdvxcNS4P5eDLK5RdwpxWqTrLrf9ITMmNa6WQt6AefadPDAgK97jQQi93Xz
+	ey03YFfmKY4Ldh8UWrLThAwuAmvKck8ceh0ZQtg2ZOrpMKDZmOGnH9C5Glf4h3nrLwPmkC
+	Ks4zzxg3qle0OQXiVuGEi3BCB5Ro3Ug=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=S2Bczv0V;
+	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79852e01cd1so3750797b3.0
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 10:31:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772735465; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iQMnLsPpznpyOO75+4C+yRakNlsR1N/JnzWot+optn1kXmbu6UFhw6mB6a3SnPPLGU
+         xGaTvIB8VmWe4pmrEkJJyokE88um2KvBUs3g7fgo7rmU4ZPot1TTbfqY5iMahDlx6W8k
+         ietOqjcsC84l0jgbPsGPYmu1svYyrdm2y/a6OOo5jlQjyspfPfbskBsvmfzG/dDgykmI
+         E28kqI26dz6YtD1zpUqkTCLXxpm0m47iCFe5e/Dk4B1wr3zqy7b2tetd7E1mj+4Hqb6W
+         tZj45Nrhca5cAmEfSbGIGi1d8XYxnhCEPeu3m+bNbsJN+QcOV0tIkYZBD1vLH8fDEuUN
+         F63A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
+        fh=lqqgDE7kV2x60USvIgTQ3R0pu/HCfApDWbLa4zMVoMg=;
+        b=boTYRab+E1PxtmG9tHkRW66IEhLL0dhhH2CNN6JPOskw9c0bJqiAm7rz+jvcExnQ1n
+         GHYCRcOlYZJdTq6ypdOaYtbQl3UJFxB2YwZX+U0+ixQaDMf9grwJbglka+Zxn3mNTRUR
+         hYSZB2tB7geUNVDe6sw2mXOjScp3z7Asxb7xALMzBo9mTupJII7sJybVXDum3GN8wJa2
+         mbS5EbVqK+UxXs3A3ykxoXsiy6YshAp74CZcu2RF1pMcvbxzo/0nwwglax+/9QWkcDlr
+         LQqI1irAkTYNnlL7rtDxoXbruBSFVvGseemvQAmUneWYIlQ2u8oA9ASzgMr/aTv8Kpyr
+         woeg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772735465; x=1773340265; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
+        b=S2Bczv0V3PWBwkkyyKukMRvYanwsGnL2c/bhXGIO19F0nfK2ujyHU6yo3zKV6k65NQ
+         +xyccu92wH7Zf6VwlCcyr7NlY5qIIiBZyDckVyqkShglOYkkiBTZVlqus0JC5Mh84hPw
+         J6XVMnsmMGJMtEKHkFhk3JUD/Sjrqk1gTdajqdyXvPtYqycqR9jUEq1kxZb+DYjB17Sr
+         uaKMhK2EK5HDI+SHoYMN5N3/SYVazz/wPWwVsv7NmQ3fJN5hRVTAj84D975uSGBD1hZt
+         1YjfCyiOYmXjLMQc7aYtM7RYNaMqqATgeM90g+o8zhMMvi5klCfOPSnRqJBF2HzGgUI7
+         JaqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772735465; x=1773340265;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
+        b=KRjZ6BCeg4/uJa+XUuJtNLHD2ibXraZgo/m1BzG3hL3mD01amtoV9mcafmc/KGLF1x
+         M0zBVf5A/9leCXVALKlXHhoF9GkcrGKmLIcdF4uV5zt2YTQmiFuR6y83+FcT02atJ1+B
+         ADcukR0PNeVzsRWwK9mLlUzzprc2LQvqySSqOAShXcEbt612WWLPE32Ur2sFd/SAHFat
+         2ynBVUSUkR5oU0ScVdGJ8hjH2mkIXT7/4PrLe1jepK7wwXPXlVLJZFV6A4Mz8PBKGotk
+         IZm6cpxoIBZ6350Jhj61T1Lf8hakq2IG5c7C2H5iWhiQzZS/J2cDo4XXxX5JrYRZqzj5
+         ppcw==
+X-Gm-Message-State: AOJu0YwmGpMsd6qqXwE/lQZ78Hj0qwGnKamkA/wEH/9rXiMg/BSZEdRG
+	o90Qsw4g2BeEyUE9YPi+M8Dg42wXkXQVCRvHxuTJvs5dJAZQHSVgtOf51txuYAHEJUkcms73LGX
+	e//VJKy1F3tAPNuNI83oFBKJS3E79sFw=
+X-Gm-Gg: ATEYQzxq8CkydgdJdGSpfYktUzqg5/OwrtGM6OwXxQkolPlmqPw6MbYLiLPRiAh2hNn
+	boJuShgVApscQ8OOqAx8Hr7P+ukuJz7w3kr7nr14JIS8DvJ1YJtUmhQBfzfhzzLzlLAyUtIwocg
+	cjhXTRXobbahZPK9gnNr03yWSDZaI2yt+qRbYyiXfAnvFhzZdQi+0AfoQx7uF89c7epCtxQ49r5
+	ton2L1gecpOTea/1gEGq8fyEylNSbm+tO6DK2q4BHEZ1m0iUKcNYTOIfGc/tXhCW6b0NEVOoM7+
+	UmHOxg==
+X-Received: by 2002:a05:690c:113:b0:794:ce39:c63a with SMTP id
+ 00721157ae682-798c6b7f74bmr47076567b3.2.1772735464762; Thu, 05 Mar 2026
+ 10:31:04 -0800 (PST)
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Mar 2026 12:31:04 -0600
+Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 5 Mar 2026 12:31:03 -0600
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
+References: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 725171A0016
-X-Stat-Signature: cegxnezkjmetea8btg53hmu34bxqhn37
+Date: Thu, 5 Mar 2026 12:31:03 -0600
+X-Gm-Features: AaiRm52GZ13axMWytXPAWQiFZUnqLmaKbYqKRkeisNV1Nap28ZH-9coEHa7p224
+Message-ID: <CAPAsAGxB6RGSYzMq=tjQQmEDu3QP+v_AqmkbWTRyqkk+K35o-w@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/kasan: Fix double free for kasan pXds
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, kasan-dev@googlegroups.com
+Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, 
+	stable@vger.kernel.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: ifoogin4uc6acpuqg4tam4skoe46k1qz
 X-Rspam-User: 
-X-HE-Tag: 1772734588-988957
-X-HE-Meta: U2FsdGVkX1/ycdenISwCSaDmKzgFQKPqj1BGNZwPg/DizDRqHmSTqG6KIzTrryFbS4Df3ZFrz5dVRP4tdB5r2VDPugvlTeJoUUX9AVs8MXtO5L+Ubne7SVsaq7PF2uOr7EcNJXRcbliW6iwkGbAe3z4dhG/udHH+vg5bBqCCMvYfcu6wNKYh87vn4d2gpOGS8UVOJalfp/piDhn6jjDqMGUslN4sjhTfFqCqxbVo4WXBmzblAI95HmUJ1n/B/1gWS/BrEW+/1LWk+G3TCR7VU732JTEDwCgQlb9R6D3JBExmBEe0v6SWVlCNNZqHUUan/s8uSsvnJDhxNE+9UOJpRY6mHHBvj89DNiMf3+I+Enj9BsOGDTobqIgG7B9hBlyI6+Og48rcK5SAElkT+kXVBCV2MH5lMJFGWhBbndKjH0EmhKJNg0BGsU9bYYP/3fPc4J7B6OmJtp0fyNbV1qWx8Zb4ainbFU25xPXZVNAx1SC1MmDEyFxyTPbyZdLwlt094FbmLGrgDTKgbEj76ksF/dw1CZe8H4tTAcXq2CfGocssJ4ExjcBucOz23IshTySFiQsemgDVmdi/A1iXob1STdI6DDnsWOraK62YwTkuhwq7vP4Pc6YENMfvAG3pwv9+1Nmc9NCj2PwNqcvNVeS6NPaho4/jSfxFg8T13ie3dzQax75k10jH/hEAw23m2ht+LbbSGwJslMp7oCKXVOzYjfPeQbIKfGGcHjSMhw8pux+dI/ymrlwZK+9/2Px6JDeCj5kgCYm2yAaAJm4994EcITBvTgYvPPFxoohAKgqjyFSRVYmB7rrXqTQKd0dl6vMfUXjMtoP2KTsb8YhXqWCWUfNnJ+dr0sA7X/bcfQJ5HoQX/lUTvhf3HaK/lZNEtjD0njEi7KogaLXmVtHhxNPz4LXnFS1YbPIPWpPINGI/7QbzU0zCuycnI2lg2t26p1psyX8RVwLHiMkDkTl0BA9
- iwQlMFyk
- NgeC8oCMw79wXQ8cVj/e2/QEv+4OhCCpkRwIENLhdN3s/r53Wjeug2dXvxLzsqCfkttqzFu0IDneCtkARgtYO0s/7hwvec2t32Bo+qokb6drWRt/f83x4lt3u8ku4a04MRxhaAoSKZnCwJDG+ZkevgGTTBA1xiJdiULVgnmeqzCYedpMK7kUzVs4LBsZT5a8oCgVoOuEbaw5IEozyHGwrWbeYUQd8euQmX4ApalyOVRoHx3GnCL04gR5mxa16H5L6AErUZna3M2vTLe8qH+NGyhIutDrtD1DRfnw/9rzg2q99S/uQKhCiG1k3jlcUuxPY5ukKbJnlJiwoj1EdwkfGIOQvol1q4T4FJ7X6nWvucjeyH5jsfHVr3qbghklHo27yTUixhBN2ob8h6HwP3RmpkXADuWZKnsFVS/FtIBUsYOdivD8=
+X-Rspamd-Queue-Id: D00B340019
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772735465-609143
+X-HE-Meta: U2FsdGVkX19iQgUCIGCgg+SEJRvrN1SlNtK6tpbxc6MkD4a/6WEhzB57vLv4j83Vb+4ro1wwla22fS1d1nhFOmio7z1Kp26Q65t2e7seaEi3keLbRQ0a/Z9rnoL0oHg1mXnNjpAHxqTmCUDdXYfZQ8wYKUgsik3FIoJbtmN91TlQHFXRGUINMHYH7ODhIZwttUkuUEpMv/1qxxc67lPot8TzNILcNKcEr7w9Qi2FGLpyi8x1XvVJQUB3xUuCpcPzT7rztfEgL1PogxknJAjM3y2+Q9j+QKQKDgDjCfO5o+6OtzRtUY+cm1XV5nHSY0AnjneGMIfBhYHZ1TsRgXEFde2DRllLzUnao1BFPPkU+M0zsHQYJ8atkfFCseJo8o3s1/vbooW3ZZ16MgOchQvcaPpLYeo0WgNEKBSN/cX1jvTbrgFwj7bG3NXHdA0U2j/dL5pK4YAhZPYJIELRXsFrfRnUwlJUugrRJeJNlTyXT64t++zVTo66O4UE8/TJjy6ftBBedInHavKEQmOg9LXlm0Rx/TyRirUxnj93yWSndiI0CGyF8n6Yuc15nIYiV76Pf1WB4wR6catbt6HOfeMj3Q0aUWbCdC9n8M1Au8XA4lYJ58GWFN0vPgbbzyaxdcF7V+B8YsnL9edHQZ6MhSiwEvTxxxTGJQI7guQXCMYTIdBj2harUX+ShLD36mpBAW8MgPPbsOX4BS50uUwdPv2kYmJIgG/A/PtRrljJzHTfr7s7gVL8vsjVND1fpnNur3GwpvNgxhOLxCRolV+aDuGEacXxxCqoE4lzau27GSh3B+RY+dbeilupHjGPxjN3qfrHnr1+B93f6SFvkzlI+Z4CSW+SR1XY8lFHVSfdWFH8PrYJ4Ro0D86ouTVaHDYmDY89b6qy9wYjwKYEE7fdpBhzRZgaZUJzq30ZQU+ygFRNVOADHefw2iYecJHjNEJoy7DQ7BM/0uR6/Sfd6VURp+y
+ 78lulD/3
+ 1oUV7ZcZQ2cH+TXqWTfCVXPQLR0P+I+OvVQ3SYvxYqBILXVu6JyY1uM7Us1LGocE40m1212jMH+aFi9f4ho7mhRnA1CuqU+H47ZTtb2+ShZU5zSx12YAf6mRmT1ckL0pcCfmQpdMdg+C6C+HvQN9oMqK+0dMo2mcTzMTVBMI8iQo78AalpNk7Axed58yh8p8Qdbx5PT4FDh4RD6UnX3VMTnl6vTzHtpaHeJ5wj4XFEgP9blpFC4msFTO9v/yz5rQNYQHhMStUGCiwnzvZ11IZO94mK1Ra3tF6ab0qefcrLOr0CdsDaAu10AN3Cv1W0TmyW0DEZ4HLiQ8wtid07GMXEIAwf0p7XRNUS2UMMeZWFSO/OqYUpghUqm29amGaQAxGG4KVD2z91owCE4j6xt3ZpI9n4kAHJ3IQviuerzr4cfxaqTEeD2uJFoYjo9SyQZfc9L+OLc2vghSQKrWG2Z/a6XTIN2MykP8VYycR42y5fyu+64BMHyqEJVbZNasX4WgN9sIx6LFkKb7IzVgTGCe2WUDBpJ3JygeFlvwN0IQL3I6IxDJXS59j9r3nUXO7ib0YZWOEXBUfYSLweiH8eYu16BWkTZEOtXd84Rly
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,118 +140,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:27:07AM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/4/26 16:13, SeongJae Park wrote:
-> > On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> > 
-> >> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
-> >> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-> >> > 
-> >> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
-> >> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-> >> > > > 
-> >> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
-> >> > > > > > This intentionally breaks direct users of zone->lock at compile time so
-> >> > > > > > all call sites are converted to the zone lock wrappers. Without the
-> >> > > > > > rename, present and future out-of-tree code could continue using
-> >> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
-> >> > > > > > infrastructure.
-> >> > > > > > 
-> >> > > > > > No functional change intended.
-> >> > > > > > 
-> >> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> >> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> >> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> >> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
-> >> > > > > 
-> >> > > > > I see some more instances of 'zone->lock' in comments in
-> >> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
-> >> > > > > 
-> >> > > > 
-> >> > > > I fixed (most of) that in the previous version but my fix was lost.
-> >> > > 
-> >> > > Thanks for the fixups, Andrew.
-> >> > > 
-> >> > > I still see a few 'zone->lock' references in Documentation remain on
-> >> > > mm-new. This patch cleans them up, as noted by Vlastimil.
-> >> > > 
-> >> > > I'm happy to adjust this patch if anything else needs attention.
-> >> > > 
-> >> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
-> >> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
-> >> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
-> >> > > Subject: [PATCH] mm: fix remaining zone->lock references
-> >> > > 
-> >> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> >> > > ---
-> >> > >  Documentation/mm/physical_memory.rst | 4 ++--
-> >> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
-> >> > >  2 files changed, 6 insertions(+), 6 deletions(-)
-> >> > > 
-> >> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
-> >> > > index b76183545e5b..e344f93515b6 100644
-> >> > > --- a/Documentation/mm/physical_memory.rst
-> >> > > +++ b/Documentation/mm/physical_memory.rst
-> >> > > @@ -500,11 +500,11 @@ General
-> >> > >  ``nr_isolate_pageblock``
-> >> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
-> >> > >    problem due to racy retrieving migratetype of pageblock. Protected by
-> >> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
-> >> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
-> >> > 
-> >> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
-> >> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
-> >> > for the rest of this patch.
-> >> > 
-> >> > I was initially thinking this is just a mistake, but I also found Andrew is
-> >> > doing same change [2], so I'm bit confused.  Is this an intentional change?
-> >> > 
-> >> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
-> >> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
-> >> > 
-> >> 
-> >> Good catch, thanks for pointing this out, SJ.
-> >> 
-> >> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
-> >> However, in Documentation I intentionally switched references to
-> >> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
-> >> internal implementation detail, and direct access is discouraged. The
-> >> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
-> >> so referencing zone_lock in documentation felt more appropriate than
-> >> mentioning the private struct field (zone->_lock).
-> > 
-> > Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
-> > zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
-> > better.
-> > 
-> > But, I'm concerned if people like me might not aware the intention under
-> > 'zone_lock'.  If there is a well-known convention that allows people to know it
-> > is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
-> > humble opinion.  If there is such a convention but I'm just missing it, please
-> > ignore.  If I'm not, for eaxmaple,
-> > 
-> > "protected by ``zone->lock``" could be re-wrote to
-> > "protected by ``zone_[un]lock_*()`` locking helpers" or,
-> > "protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
-> > 
-> >> 
-> >> That said, I agree this creates inconsistency with the mechanical
-> >> rename, and I'm happy to adjust either way: either consistently refer
-> >> to the wrapper API, or keep documentation aligned with zone->_lock.
-> >> 
-> >> I slightly prefer referring to the wrapper API, but don't have a strong
-> >> preference as long as we're consistent.
-> > 
-> > I also think both approaches are good.  But for the wrapper approach, I think
-> > giving more contexts rather than just ``zone_lock`` to readers would be nice.
-> 
-> Grep tells me that we also have comments mentioning simply "zone lock", btw.
-> And it's also a term used often in informal conversations. Maybe we could
-> just standardize on that in comments/documentations as it's easier to read.
-> Discovering that the field is called _lock and that wrappers should be used,
-> is hopefully not that difficult.
+"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> writes:
 
-Thanks for the suggestion, Vlastimil. That sounds reasonable to me as
-well. I'll update the comments and documentation to consistently use
-"zone lock".
+> kasan_free_pxd() assumes the page table is always struct page aligned.
+> But that's not always the case for all architectures. E.g. In case of
+> powerpc with 64K pagesize, PUD table (of size 4096) comes from slab
+> cache named pgtable-2^9. Hence instead of page_to_virt(pxd_page()) let's
+> just directly pass the start of the pxd table which is passed as the 1st
+> argument.
+>
+> This fixes the below double free kasan issue seen with PMEM:
+>
+> radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
+> ==================================================================
+> BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
+...
+>
+> Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
+> Cc: stable@vger.kernel.org
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>
+
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 
