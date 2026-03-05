@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACAF5EFCE53
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 00:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D2AEFCE57
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 01:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E59DC6B0005; Wed,  4 Mar 2026 19:55:06 -0500 (EST)
+	id B84D06B0005; Wed,  4 Mar 2026 20:14:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDD786B0088; Wed,  4 Mar 2026 19:55:06 -0500 (EST)
+	id B32596B0088; Wed,  4 Mar 2026 20:14:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDFAF6B0089; Wed,  4 Mar 2026 19:55:06 -0500 (EST)
+	id A0A066B0089; Wed,  4 Mar 2026 20:14:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC2656B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 19:55:06 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FA085A782
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:55:06 +0000 (UTC)
-X-FDA: 84510190212.24.FFC42E9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D7576B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:14:40 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15BD4BB015
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:14:40 +0000 (UTC)
+X-FDA: 84510239520.27.1F93F81
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 57AB31A0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:55:04 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oIN/AhtU";
+	by imf01.hostedemail.com (Postfix) with ESMTP id 778224000A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:14:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Es9xueq1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772672104;
+	s=arc-20220608; t=1772673277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C9dld4P33j11Q39+FhGvjRASTVT/S76iHfy+Plj0Woo=;
-	b=7cBhhvwoN0FUHO2Uty7a+JaZOGHNRpf1dX8mzCSBy5BRNC/5q7AcKBgWmsxXU7rCpx0+P0
-	62997QUmJioVtTvsoik4gcUed5EgFzsFqWSgcJfmhmWtx/t9Ne8KpFX88EODj1FybU3KKT
-	mJlFROjoswYgPTDCvzRmYdpyJU4aExc=
+	bh=7qdVsEUgmQ1bDG46p5FShx6Zsp1iobdCOhVLyHFG+KQ=;
+	b=pYqZeSAxfiWoWS5im6nPsp3/LqiZDFc5dAsY2L/QFPLYQBkxcFAlos0T+1XSz5eFHM142u
+	/YFiXnh7zvyohMcUFBs30KwvMK5YfO6o1LFOXoaSBGSm0S3ZI0KcvlqFHLG/rFdukM1n2W
+	NlSQS1EDXq0rwVjDdc3i0122posFWYY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="oIN/AhtU";
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Es9xueq1;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772672104; a=rsa-sha256;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772673277; a=rsa-sha256;
 	cv=none;
-	b=8XpgqX6F+CTvUm7YVX7osN3/5xwIubeoHYECV6BO8YCNhesdJo+mVNvyxJ8oXGK0gir68L
-	M9I24PUAV9txJ2nchto7vIx6LZz9B8sho4Xy6xHL3/Mlaf+AWKFxFiUvjNSwjf8JjDfQ4J
-	vMPrwd2AVkg5b6u2xDHiQcyPgP7bbF0=
+	b=Eb58fp4sEsnzAZrcp9EdUAibYnh2PisnqAqTaUfwrTppns4rgiB8tdUgKvndTXbtr5QvaD
+	vx1QUneHUGQG6zEj6J/eAFQzPr2MB65zf5MdHbKpfAknUJSIHAk584tEDRPpq/9Drph7oq
+	QGVTrJ/NH/Y+DWekleQn8hjyO+ogf+0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A47D437AE;
-	Thu,  5 Mar 2026 00:55:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4379C4CEF7;
-	Thu,  5 Mar 2026 00:55:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 75ACC407F3;
+	Thu,  5 Mar 2026 01:14:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27269C4CEF7;
+	Thu,  5 Mar 2026 01:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772672103;
-	bh=uhkqqYzBgXQddoLBpJs6tjXLYsyzjESovm0d5V33olA=;
+	s=k20201202; t=1772673276;
+	bh=ifGKWyqRAde8fdU1WltSjsgB/wrz2JI2uPwQ/lNVQVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIN/AhtUYBiRZc8RztJGdli1WMuzIAe7Ns92DiKDrN7LBOqV90Pq6iL5qTvpyGjCA
-	 1ZiBhxjFKaarSNLWc5Se3ol6yUaeAkrjG+eusCOdPwyLBvOyMYfEgpaTvlXZUcBJCx
-	 cfsRpwEWbpKxYjEesifJGqJf63vhOZ744iR7AWlTHHT1Uov1u4aYQXHezPxi/S6R5J
-	 /GAQ7OT2OqqYLgxgtYCvULQBdwM0B7+/R8xUtnERyBXIDjXNZ3G0YKakH+ZR2pGKWY
-	 Ujsi1hpXPrLJiods5PWfqeOU3bmIElWEGoKQGkHhCu0Qjp9WAykHcXfUhyCR6wJ3ED
-	 q352Y6LvRvPkw==
+	b=Es9xueq1nfwJ5E7GkgCxwNgbH6cb6SYs8CbMAANep/JYBd78CADJifJx86inVc9O9
+	 G9xz3B6SCDJWVwn3NjaMLlfqKyNCqvJcs6SYJRh7XKv8ro0leRvJa1M820xIEC2ka8
+	 fgKEpky0ZLoFnhmWErnLmcu9MdAoweVVBT/Baxipg4SBujbBGsFW6wyL1ChJpAkcy9
+	 0tt2A33BhwPdDbX5jC+oGvMXgvi1RSEZYLFD/KaRTDXWoAT03P+RkgSZMeqZnnOyln
+	 saz5/yStNkv7uxyNDBY/l6ncWCn4vC1gJ8R2AkXDsPdFgu+93ItNODOB57/EkTq9oU
+	 E6dRFs1rqxvJA==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Gutierrez Asier <gutierrez.asier@huawei-partners.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	rppt@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 02/10] mm/damon/core: allow quota goals set zero effective size quota
-Date: Wed,  4 Mar 2026 16:54:57 -0800
-Message-ID: <20260305005458.26137-1-sj@kernel.org>
+	kernel-dev@igalia.com,
+	kernel@gpiccoli.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH V2 1/2] mm/memblock: Print out errors on reserve_mem parser
+Date: Wed,  4 Mar 2026 17:14:28 -0800
+Message-ID: <20260305011429.79193-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304145140.172293-1-sj@kernel.org>
+In-Reply-To: <20260304203300.1414286-3-gpiccoli@igalia.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 57AB31A0005
-X-Stat-Signature: m194d3oom3f5sar8pipnihajo7pfnynd
+X-Rspamd-Queue-Id: 778224000A
+X-Stat-Signature: mo71whmerbqf9mnp835h9tp5m4n5f776
 X-Rspam-User: 
-X-HE-Tag: 1772672104-464844
-X-HE-Meta: U2FsdGVkX1/CS94J3ILm6EDYJDUaQqhCFAoUiUVZ3xgSCWyWAZzyKxp7ESaK9MqZdXaSZqiafpWJ2XShdrc7D9oRP41QHeq5p2JeuMw31AgSJU42g5DXcC6b6SHgpFhNu7WL66+SzjzE4GcX+e06qAbX7tNQVhwfVEyeTA/UtSgEP/xMHEQXMQ3k194XzmFoFojKD3uMii1xaAcfqv3dY4MvAPCwkM+Tv22l0tjD+VyfUaq/iAZBCzJK6Jq1TZE2wGXt7y1Fo8ez0gg1j0k1bh5KWRmhEhr/gesYUN9I3rig4qtzi+viKuJHHXNWYJXVmEBLjAVaFTo3gP73Qdsnyifw5+jz5H8d6SZ20RfzcFZwOi9uSn8uFsZP42/HOHl6AlprEHr4b/DJvOI63o2z6mOxgZU+Wue1cpj5ru550KcWDBaLQReOaNY8KyqIyGA3FlsQlFKKyb8qwVJMReEpicJ7fO/d4uCCJ8t39AV2IrZ5XovadsFCDduw7wp3w6Sz+CxX56oZPvPgYP1G1B5nBw/7QYpJsVh0+e6cDuDWARgH1GsGQMLErfBVlm0AzjRl9ChspZA4XV4KxGqQCj+n1tQXks1qTsGyCWh0RRHPCGQNe3r20/3wMu58Q/raWY0mIfwrs5Embl4iOF3c8mQW9Dqglg4wdP1240QjFQwkHNkANbPKyJtCmBes7vEWQA0AvLBxkfuCMj4MVfkF7sPfD0ggnm74lXkycOOlgI62LS5IxVH8xXFWI6NceI+e36MvnZEhR3VVosn13uivKAVb4l7SglNJZF8TgZynr5aYb88n3BrGDcTW2q71L5h5zN5acKeLcyQBnsX2j+70uJPdZKJIxRA/9ia2qYNc3gUrKBDyw34dtbrhjwNYvSliCN9Hot6Df6eSH9Xj0wtb7mmyBsIWkkD8ynAsPemTfvdNPK+F4rXZKTWZURwL+kB8ZScobJiVzvNOj+Pd92ENhaI
- EpbYDM4V
- XnBzROnNPyppy0jC/ygsjpKT3Htz3GPew2ADHhDtcJ5TBHaXGkliWKbt3MVu15tMOyIfAua6B4v0le8f//N7KoBoU38BzRkJXYbab54iR0bl6EsotB74cFUa3bRRnXHJhTSzxEbO5dX+rS5NT6pKwYfjR+lZP/ioC4tBK6uySEqP0V5orYkmmuDr/eWjnoNqOzvv/0DpFydWTf5F0RS/obDdJfiOOnEv5HM29G/DzxewyhecmlHKjHkRvdEIXgIya3A6xLVazQg3Lx/mH5y+sOXO5qad6gtwVJZmw
+X-HE-Tag: 1772673277-86891
+X-HE-Meta: U2FsdGVkX1+VZ90tHtR35GK7yW87JBRkkRlZqYQBoeTWlrKgi6O/Z7oIhJPVdJvYjk5p3ESXJdgvBgJ0QpPduJ4ajrSDj3m8wKm3x2Qr+R5HIWGbP5WC4/8KfXgJzUWL5wYv7gijRlaRBGTz1gLuj2H6l2+XKwEJ9mus73mn8yikjEMCHJBf5FZk9DdA0ljv16sd/4/s22lbkjGLFtCtg3NqxM8TRac1+9KZrjyBN8YgDGLyqUmtpVNa6SzDYTW8Ff+RV+KVgQPa+5cP3SUBWeKTKPxc7ZBkW8G+KUN6jkhDMEAfDlJDe5lyTyQbzIm2cDhBh3a5YqwL4R+SjlHCKK0QiG90o+NDu948tRi619JGAx5815ZA6BmMctDXH/ceWcPS8x1+7waYGwTV2JbPgtqwsM92Fe3pWVhhzwjgRNvyRmfOQtI7Z9GqSKkaryqZqMm1HjH+jRHCFuJNehOXPjMb2kUIRLrzp8TqZLdqVBW6xYc7yE0PbJzD1FcYGcgWnApeTX+H1FBYLOFlq5IU2/Xs0jc0gdlgmNLXUmi/xtkIJhc1dF5HaOfrNiPqK9CQ1aAe2rKMN4OTBsniryqzNXqzVV/SY/om1TJluZ6hwIS0QgMSF3MH2jlEVJW3ioP+XVWFs7FB/Yz4C56CehFxmwb0I5oTHYRe6DUnjvVWZtclIFKcU/ByzvEUAO6QWvLQpPehc+A4mJDlKbT8u6OoBrjfl2hia/dI0MzjE6WJje+J9CoTiTFdxpwGPjVHfUli5JAEvZZth0RWxyQW+zr8eY1X7cKcleng4Qw0IpmXEVhUcjT7dOAjqixtDHaKnR03ycpKK8oGFTOXZ8q9hB1GQ6v4YrlmI2aJBtKahzRinP4DBU5MaHD1/L/jcxXe+DTKXPG4e6zX9tWjg0FCnR0Z74wmO4RdBuoLyMPRgF/w/8uvEzTPrnhl0SPac5axGprGA/X3XU5TEH+FVH+dXRX
+ aMeuzkF1
+ UOH1FuU6lpiFRtYLJjV4mVicCbmYYUpUtl6phUHmSAnjrqASFxhvHZtBJSHLkW+mEC3Uxtmq66F/R9bRXwSMmeOqjBgDePpUv/UJBatCsWBCpp0/scSU1OpnTxHVcJ2IRxih9chg6UehIv3QsXCVssLGyHAPiI31g7wukb8sppy8my4zgcV2+UuLYOndkJ+f6M/bHIikIfvAHgrmbX3cw6owT4Ni0DDnwdKObVCSs+1MB7fWxZTVlKr2WME12KHlKMu5IfESV3Y2VJTq94Xb/SOvweXgAcLLros3MWSFt96VDet0ZGjuL3bzHoXKRkVZsMSEDjBgkjWEry45YAaO8CwdqdbKEiApQbvPyv8cHaG4sS6kwn/mqnXp1+oLkn0DBHDN4unrIK0L+2gmAh1w6pQbzJDs7dwlS1XWBPriyHlsEXFA0XlDZR7V+9xRpxn5IvfapPP8gqWq/JeU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +96,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  4 Mar 2026 06:51:39 -0800 SeongJae Park <sj@kernel.org> wrote:
+On Wed,  4 Mar 2026 17:14:10 -0300 "Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 
-> On Wed, 4 Mar 2026 13:18:16 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> 
-> > 
-> > 
-> > On 3/4/2026 7:41 AM, SeongJae Park wrote:
-> > 
-> > I find the name of this function confusing. The function doesn't
-> > actually set anything. Maybe better damos_quota_is_set()
-> > > +/*
-> > > + * damos_quota_set() - Return if the given quota is actually set.
-> > > + * @quota:	The quota to check.
-> > > + *
-> > > + * Returns true if the quota is set, false otherwise.
-> > > + */
-> > > +static bool damos_quota_set(struct damos_quota *quota)
-> > > +{
-> > > +	return quota->esz || quota->sz || quota->ms ||
-> > > +		!damos_quota_goals_empty(quota);
-> > > +}
-> > > +
-> 
-> Thank you for the nice suggestion, I agree your points and like the suggested
-> name!
-> 
-> Andrew, if you pick this patch to mm-new for more reviews, could you please add
-> below attaching fixup together?
+> The parsing of kernel parameter "reserve_mem=" is subject to
+> multiple failures, like duplicate naming, malformed expression
+> or even lack of available memory. Right now, all of these fail
+> silently. Let's add some messages so the kernel log can provide
+> useful information in case of failures.
 
-Never mind.  This is an RFC, which is not aiming to be merged into mm-new.
-I'll squash the fixup to next spin of this patch.
+Makes sense to me.
+
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+> 
+> 
+> V2: no changes.
+> 
+>  mm/memblock.c | 28 +++++++++++++++++++---------
+>  1 file changed, 19 insertions(+), 9 deletions(-)
+> 
+> 
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index b3ddfdec7a80..2d2646f7a120 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -2642,23 +2642,25 @@ static int __init reserve_mem(char *p)
+>  	int len;
+>  
+>  	if (!p)
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	/* Check if there's room for more reserved memory */
+> -	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES)
+> +	if (reserved_mem_count >= RESERVE_MEM_MAX_ENTRIES) {
+> +		pr_err("reserve_mem: no more room for reserved memory\n");
+>  		return -EBUSY;
+> +	}
+>  
+>  	oldp = p;
+>  	size = memparse(p, &p);
+>  	if (!size || p == oldp)
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	if (*p != ':')
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	align = memparse(p+1, &p);
+>  	if (*p != ':')
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	/*
+>  	 * memblock_phys_alloc() doesn't like a zero size align,
+> @@ -2672,7 +2674,7 @@ static int __init reserve_mem(char *p)
+>  
+>  	/* name needs to have length but not too big */
+>  	if (!len || len >= RESERVE_MEM_NAME_SIZE)
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	/* Make sure that name has text */
+>  	for (p = name; *p; p++) {
+> @@ -2680,11 +2682,13 @@ static int __init reserve_mem(char *p)
+>  			break;
+>  	}
+>  	if (!*p)
+> -		return -EINVAL;
+> +		goto err_param;
+>  
+>  	/* Make sure the name is not already used */
+> -	if (reserve_mem_find_by_name(name, &start, &tmp))
+> +	if (reserve_mem_find_by_name(name, &start, &tmp)) {
+> +		pr_err("reserve_mem: name \"%s\" was already used\n", name);
+>  		return -EBUSY;
+> +	}
+>  
+>  	/* Pick previous allocations up from KHO if available */
+>  	if (reserve_mem_kho_revive(name, size, align))
+> @@ -2692,12 +2696,18 @@ static int __init reserve_mem(char *p)
+>  
+>  	/* TODO: Allocation must be outside of scratch region */
+>  	start = memblock_phys_alloc(size, align);
+> -	if (!start)
+> +	if (!start) {
+> +		pr_err("reserve_mem: memblock allocation failed\n");
+>  		return -ENOMEM;
+> +	}
+>  
+>  	reserved_mem_add(start, size, name);
+>  
+>  	return 1;
+> +err_param:
+> +	pr_err("reserve_mem: empty or malformed parameter\n");
+> +	return -EINVAL;
+> +
+
+Nit.  Above blank line seems not needed.
+
+>  }
+>  __setup("reserve_mem=", reserve_mem);
+>  
+> -- 
+> 2.50.1
 
 
 Thanks,
 SJ
-
-[...]
 
