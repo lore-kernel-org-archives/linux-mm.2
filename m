@@ -4,170 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C666EFCE5F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:24:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BB6EDA69A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:31:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392606B0088; Wed,  4 Mar 2026 23:24:46 -0500 (EST)
+	id 11A0D6B0088; Wed,  4 Mar 2026 23:31:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 336786B0089; Wed,  4 Mar 2026 23:24:46 -0500 (EST)
+	id 0C7D76B0089; Wed,  4 Mar 2026 23:31:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F7DF6B008A; Wed,  4 Mar 2026 23:24:46 -0500 (EST)
+	id EEB9A6B008A; Wed,  4 Mar 2026 23:31:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F60A6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:24:46 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 971BD1A07F1
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:24:45 +0000 (UTC)
-X-FDA: 84510718530.07.5B45245
-Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020112.outbound.protection.outlook.com [52.101.189.112])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BFFE140005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:24:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=Z4f92oRi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.112 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772684682;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DB6196B0088
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:31:16 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7515A13BB46
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:16 +0000 (UTC)
+X-FDA: 84510734952.18.66B9243
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 458FF1C0004
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=WLGgvEUt;
+	spf=pass (imf18.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772685074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+seJ95qpZWk8QmPRVUtwi0kFjb940k/5ybpYryRA6M=;
-	b=T/YkI1PGlziwcgpm7vN/7HLAT8LcJKs5ozfpGSATt3GL0urxgF3vCQpXYhJXKR/tCuWgn0
-	lwrz4JAJ7MVxO4QeHk857pclL/50psOwtxToYKtcoWEvrFVRdA05GstNMMpprZMnN24Wnv
-	+AQIV7aH0lgVAYuJYpsZY12t5IC35GA=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772684682; a=rsa-sha256;
-	cv=pass;
-	b=IkY25W1kpddvZkDccEH0nwNl1cv7fqRA/pvv1B7vTA3TQJME5LOEwm8edy96+EJ176My/8
-	QqF/BzdzWo+yVzClrORJoF64Ijq9bgUQd1YWTSuF8eeQ2jEVIRXthvT3ZcEEnxvFijLbD2
-	KuDy/EVQHiAQkRbTzucz4kzMMnBFAvI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=Z4f92oRi;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.112 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lzd611SQ+/6/QjxZxiJrMxkQLhmnLMegdcNVvK6y+xMMHdP2GnGENGgHgLMNZCuNz8oImvHAZvxtMtDzB/ne3+AUlIkWt9GieTmvhveQe+lArmese/o65va5sSCvdHgIl15ZpZ72cu6UXrYUixmGnYQW/PJpzyGjgaSOy5AFZrVPoGxX0IU1ItZkCK2rYZeVDdf3kQYJUXkFYKNn5KBPU3rnL1F9wUOTUd2RAvrie0KNiS1ESJnn9npL/sOHEfWMjs+ls8rTzW2QhTWGILQRJh4xsbSt9vt04sq0S0rad8SbUk8jmcXW+cnRZzfXMQXeZ/XZY4fYRFWvX/+tUumlmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q+seJ95qpZWk8QmPRVUtwi0kFjb940k/5ybpYryRA6M=;
- b=ynh4t6eJUsAIOwfwGedWM6bySIoo7I4ejvxj4/wlpmIDbTVmPxwOVZrWdUO4VrJM44f7UXok+LyAY+AIjKHooN667yGzZjucf0Tv2niVQnrx6YURVzdqcS6DN+JpFyWxy7aMP9RaGovusrlYPfeQM8ycZqidCmcWT86mDtd5gdhK2itkYJ3TbpZ6CPVl+k/lvfz8xm2DngSLYBqTmVeDnAM6K5yCfJYZifkOvKXnPcSOGHgA+7frdt5Hn6cdLEuDcNoMVOyoCtmnt2MRs2OZ2fvKdoF3WR4ngLlcZ4QSbwsFjdiODSHWxF/Ro5/y2a1iO/TgFFxOzOjj3LYVPeYN/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q+seJ95qpZWk8QmPRVUtwi0kFjb940k/5ybpYryRA6M=;
- b=Z4f92oRibpXGIub2i8oDDrkHnnqCO/M+bvy8dQEi5c33zXZASeSkUHrZ4qd/RtUtOC8KvC1Kd65jR92Nc/aOnPQc1QKwQmeS7IlXJ6keTHP8VlVVDsd1W2IAQzMJDIQyhVPsWlVg9ayjPrkG4h7v5BbXAXSAuJ6e2/jptlbD96Wq/A5sKZU2Liq/mOrXrcn+zLgIn4QjgxHJOpDKV1PQcDHk4jHCAj7W5YRKKfnkmnLdbH0K4VDdh3L0S7ol8qBkkQ9lkTK8jAFpeRaPeN8gRYEWBUghuXCj511UMJmhTGz1QahWJjaeoFYf1MXBk3Prz36CMEsmk8p0TnJf27bZrA==
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT1PPF7BABA26B5.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b08::554) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Thu, 5 Mar
- 2026 04:24:39 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6004:a862:d45d:90c1]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6004:a862:d45d:90c1%3]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 04:24:39 +0000
-Message-ID: <dfbc98bd-8f80-4f7b-8209-cd5cd82bd3f0@efficios.com>
-Date: Wed, 4 Mar 2026 23:24:37 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Ways to mitigate limitations of percpu memory
- allocator
-To: Gabriel Krisman Bertazi <krisman@suse.de>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org,
- Mateusz Guzik <mjguzik@gmail.com>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>, Hao Li <hao.li@linux.dev>,
- Jan Kara <jack@suse.cz>
-References: <aaE8rkGzxlB6wCTt@hyeyoo> <87ikbb1o25.fsf@mailhost.krisman.be>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <87ikbb1o25.fsf@mailhost.krisman.be>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQZPR01CA0124.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:87::14) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
+	bh=xWiReCix3ifNv9wEOKG0H4l/dBG6k1jJeJufKk5vE5g=;
+	b=5XccqsDVlcae4keWHPjupP5NsfSlIjd8iA2eXYDqk0TdGk5vbRmbA/+jQ8SmixWMK39X2N
+	eaUQJoJKLrVxQpDXrvCXum53p5DXEf6XwqLzhhS55RBQsMLL4tqFzmQxhG5+rJ38iRZxxf
+	73F1NkUaIWF61UqkR+WNRZJjKbGq6AU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=WLGgvEUt;
+	spf=pass (imf18.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772685074; a=rsa-sha256;
+	cv=none;
+	b=hM+GAkJ9jQpilLRGu+mTFlD7VJsPQI67aqDygBa3d+C7V0hv6SZniRVn/XnjJ6FGJeT2eb
+	/e5BSHNXDuh1r9a8Sw5tvmQMsqMxbPX+FhKq8kM/REtXA8Y3Idii72nbbv9U74Lp6yoUwq
+	XrIqpsgIu8c4K0QlVyiNnMR/2VGOQ3E=
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 3736126406;
+	Thu,  5 Mar 2026 05:31:12 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id XXPCjDwkRAKw; Thu,  5 Mar 2026 05:31:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1772685071; bh=A2XNTmUtPHFg3CLqJTv2JUzU9DkNwUrzNcQngT3Qnb0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=WLGgvEUtrYTQyuiep4fWcmUqEGI4IEruNz1bU/ehR2w6z3zbNlhdMOk6KaDCmkYLk
+	 7J4cZLk4hmwTmCISL7j5WjlfpWLDfw4VBQ717CIuo/DonY92qmUiikbU4KHBSx/0RM
+	 ZOR9RRpg07a/5K2ZqxDWn2DZqH6u4b3Cd0BF3Dd2lfTdYoD53lB3cEfN2EiiNjGeHw
+	 wGpRhCXWIurIVb4hiBtpIJwcPHFT5R0GNNpCfWpuBiGPX/ttgLWQolo8foUik8qQ5c
+	 gzgdqvB9C1Or0x/JVfITNhLmkf6MVULElembEHrCqRzbVpYVtsKMOh2qzlO8aHeu59
+	 lA5GvL6baljxw==
+From: Benjamin Lee McQueen <mcq@disroot.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Benjamin Lee McQueen <mcq@disroot.org>
+Subject: [RFC PATCH v3] mm/vmpressure: scale window size based on machine memory
+Date: Wed,  4 Mar 2026 22:30:38 -0600
+Message-ID: <20260305043038.2176-1-mcq@disroot.org>
+In-Reply-To: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
+References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT1PPF7BABA26B5:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd6ae61f-7c7d-45f6-b3d7-08de7a6f1dbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	nRv0/OIMMWTjG9qKaqZwYffRom8BJTvu29Rhk8KuunrhPB9Doyf4sQsDkEcRIuQ0G3TD0X06TScGGdTWwV1Qc7+HiBIweA0x9aU77313NVmxBRY46rCUDx+fa579BJl/nxoxIYE1UAX1r4mukr6cYm6nYhHJVc+sXlWLTMwdtkvvEK93NPqrU6gHP0EIGLUVFKHs9XGwnitxJQsqpD6j2uuFWffjfoxq6532vxtpXJLh3kYYyxn0U7+D16RUuvvGVEi4I1Ir1Jkm9h9aCAAGpPvgJwDJOcItuSTFCLtlFLIGLY2De2k7BN5ApojKabgPSFcF4KiyoBv90gjF2rEEGGXTrgxlr+ad/OroSWO3kE1pA/ohY6RVwjvTKHEzTnMcQSDIAZuK3cbD05eTK9jCqSWfyjmNnwaLx0797xgqs0Xk726RQOJRRtl3GD2tyxnIp6+zCpqz9LZvEEC5qoY3QkaqvrWBUtLcKmBPJErqsm5JT7N8cWO+FXulhXfvshh+P2FZBtBUHGXSx285zibsxWmg+8Odf6yQCSbO/p4IdKZ4dz3XzkaqV/OgvOoA6VmbTZKlmshWH8kdcpi430XMMZBhZ41gwdvT6v4hI20TUjGt6QPFzQUu0L62q+TYA0rtBlOItoNbMmJNR5r8y2m6lMK8f5+ylrPq7pyVpWw8pJk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MjdmSkZsUGcyRjR2a1RJSUV3Vk1DTHhGclU2N3d4Z3B5eGtlZVI0M0ZiMm05?=
- =?utf-8?B?TmJtN05aL1hHdFhGZUU2M0dFcFlJbmR4YUs5Q01OKzRHNXlSdVdTY3hkNXk2?=
- =?utf-8?B?VUFscGlCVkxUYVM2c1hoOUZSa2hVR0VDcTlWV3loY2ozVmhiZXlTMzJEUm43?=
- =?utf-8?B?YlptMG5OdldtRThXdWhUUTh1eDNUWGp1ZUpiNTlWYm93K29LeWxlRTVPWmZi?=
- =?utf-8?B?cEdQcnZWR3Z6NjV2ZEVHUVZVWVlDMXp6MjloRE9tT2NqaDk0MXZoaU5PNXMx?=
- =?utf-8?B?dkFkVVV4ZHllZVJNMDMxUWIwWWNYMFdjeGNyS0VQclArazZXVHhnTGlOMVpE?=
- =?utf-8?B?anVKa2RzNXA1U3NneFo3TTZIYU1Qa0ZoVHpOSXJScWxIV3A5eURoaDFjTkxX?=
- =?utf-8?B?ZTVBRm4ybTA2d0krSE14aWNOQ2VLNFpuZ3RGOFUreTl3TWtTc20zR3M1TVQ5?=
- =?utf-8?B?VzUybENSQ01WYnV6WUw3SHo3TmNyQUZIUmx3VnlqMXNxSlc1Qm5hOE01TDZR?=
- =?utf-8?B?SE1kUGdwU0MxYWRBY29OVzVBVjhHVVY4MUNKUTZwdFFaekh4ZFBvRElySG1F?=
- =?utf-8?B?NzY4c0EwWEtoc1dkYUUvbzBGcnRyangxTjRrV3ZwL04xOHhZNkFDZnpKSVBI?=
- =?utf-8?B?VGdmREg3bjBiOXc0VGI5UzdNUGE0bmpIZGZHT0pRTWxweWRvOFdyOEFGSEUr?=
- =?utf-8?B?T3J2R0QzcWhXTTJ3NnVMNmJ5ZXJuR01kQTNnbktWUU4rbEZHTGJjMDlZQ2s3?=
- =?utf-8?B?eFEyT2VRQTFEQy9EMElkSzRuV25tZ1hRcjl3aW0wVkYvWHQwaGVQdGZnZy9Z?=
- =?utf-8?B?cGorV1o1ZGorUitSNVFJU21HZk5aVVpRekxwaWRERXBjUHp5SlFBYktpZ0hC?=
- =?utf-8?B?VUZ3ZkZkWGNPVldCZENqNUl2RTBCTmRJUTQzNWJta2lGdXMrTUUrRzVVUmdr?=
- =?utf-8?B?MGdVRUYrK1JBUE9NMml5ZEJLZERiK1IzckxoVW1yeHBXRjJ1aHloVFVGckdQ?=
- =?utf-8?B?ZHhnYVo4dXN5eDJ4a0lnU3JoTE5qamVYSFlLRTIyZDRKV0xMUG0zWERKcHZi?=
- =?utf-8?B?NGNjeGpadHBLNUJ1YlBIeFJ1MjArTEtpS090M2RDUlQvR2RtQTVVUzdEeEpF?=
- =?utf-8?B?Vll6MjI3OFVWN1lOS3JYdFJqOThmYkxNY2lVOEZzMW9saDRHSW84TkNDT2lD?=
- =?utf-8?B?ZHM5eW0yazBwWGtmOFg3UUsyQ0cwbk5nZURCWUhObU9TWC9yV09xeXpEME40?=
- =?utf-8?B?TERMc2FFOGVTWjFTWjFKUG5VMmFVZXU0R25qbXQ4WTNEeGdPTWxOV2hrdTNG?=
- =?utf-8?B?a2ZYOWRBMFZFRmNvbVA5Y2JrRmMySE1EOE9MZ01MZ3JUY2kvdVZwQUs5Wk9p?=
- =?utf-8?B?RHVMSWViejZMRVUrZ2EvZW51clhyVG1Mc28rTU5LN1k3WHZEWjh2bHNmenFI?=
- =?utf-8?B?TEFVaWQxUXUzL2FPdTZtM2N3NlNhK2Jxa2NtTWxDdE1STm0zWkZCUGpxYTlz?=
- =?utf-8?B?bUdFeVdrUkNsZEk4cU5oT3ZvUGJSYUhTM0pxVzM3OE9aa0R0ZEFjaWpYdVVh?=
- =?utf-8?B?V0tWRjRYQk5XaWRhSW9zNHFWZFFNRUNVWHpYK0JOTVRVdjd6ZnMzNVlCMS9G?=
- =?utf-8?B?MkQrOGk0a2xxVHp1c2pWcjJYaTNtY1p5S29NQWFpdm1BeUlRbnJvMkZkQzdC?=
- =?utf-8?B?bEFuaHEwNEpsMXJVaHlQd1N5UnFkTEl2S2J0V0llTUU0aWxERXllWEtjaWpm?=
- =?utf-8?B?NlZkNXVBQTFxRTJSL0NVVXQwU3REWjdDc1IxQnkvTEN5TlJEREdmTE9xcDJ0?=
- =?utf-8?B?Nm84VHJnMTZGYTBSU1VFMVdPU3NxYmpjaVVVQXF1bFVuQnhFMmdNUlh3bFFF?=
- =?utf-8?B?alg3dTM4ejlCbmVhWUJFUGlrY0xSZi9iamFZVjdaQzN2VXJMVERIeUVlSmtp?=
- =?utf-8?B?TFBkbmlKV1EzWUdHSHdhckthc3BRYVpMZXNHSUF2czNhR1BDMjMyUXF1VC9O?=
- =?utf-8?B?eVJhY0hhS1ZYcS9pUi9UVnFFZ3J0RkNGQlJndURjM3EvNjEwY0U4TkxWbWxQ?=
- =?utf-8?B?MGpGTmhRL1I0MzVzR2RyYm5VbnlvU21sQ0dPZmd0T0NKd2NCSmFuNVBoL05j?=
- =?utf-8?B?KzJsYzE5WlBVblgxbEVnV3hQZmVHeEZnaXYxMTJUUHhKY0JFa0lBVmpLMG5y?=
- =?utf-8?B?RitXR3YxdUxsNEFCVlhXYm9FQUN5Q1ZscGRmS3pPamJoTG5YWFBUWisrbkVE?=
- =?utf-8?B?MkduOGVLZ2RWZ3pxN2ZRRTFHU3k2NVZHRFNPOXZxVlRzbXc5SHZGQWVXRGRW?=
- =?utf-8?B?RS9YVVZuUkpHeERSMTQ0Y2s3NkpXVks4eCtYWGtYUlJvUVM5dUVVd0N4akhu?=
- =?utf-8?Q?xJ9cKYfl/6WgI7Go=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd6ae61f-7c7d-45f6-b3d7-08de7a6f1dbe
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 04:24:39.4250
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K9GjKfggv+OGZdV1EJFq67d3O3INt0Mo8c8C7BEmXB8H7Oc+NiasH/E1/qJjRWMdXV8TcZH29uOXFl+CKyK4pAA5meI7lr1MLDI0KXsl2hQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT1PPF7BABA26B5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 458FF1C0004
+X-Stat-Signature: 5gid99k7aof6kfubqnq5ckeypd65iod6
 X-Rspam-User: 
-X-Stat-Signature: h46na351hkc8ruioe8gn5prcyhzbkhkq
-X-Rspamd-Queue-Id: BFFE140005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772684682-490434
-X-HE-Meta: U2FsdGVkX1/LNKYB3KIJm39+VLr/VqYSYPpxpq2Krsn2URGDNbiPEWsK8gMMeOH02X+6u4GbmPsqLxNkmW4gi0wNu75xt8o24hTOXbkcEv8SeUvddF+KXXt+Qnhav9OjkifFpeTeQwFMimVutDsLOvxYi/aBUO8sBS1BTAP3YTZEte/I1wusb7XOI8ej79pSAQdJfy0TWilIm43fBefWcYhl3HKTtfCYnVX/FcJjas5X6rEne29TTZ+q0BN8Oa5SvSPyDDO3zx0clWb7Nwb7GI8Gi7vq/XFpHlZmXw6FMQi4xG5vBgqWmwsfncI2SR3hch7OKRZH2mhHUP4VwcgWmAczS/OV/4El1jqrFRp8ywnWXjZ89GkiHHayA9TLNxyuUEY9fhVRAzEtYst8Cld4gETm4lmSBaxtacpl6Uhrqui+2hbilysMquE30jdR0rISCtq+4/gGfqyjsHCXY7dIdKHLYvpwIKOaZAYibG3H6JSbmkUiHuWfdctyiHJZhG99EPz1L7fYLMrrqxjzZLB9n16vVSFIOSz9VrY9LfYxLeIbc+y51MGxW8TMbv/8byr/uFSYv/+Obeu1tLtC2C3Rg/euWGwCIYXbt3uk1VGZ+AiNhVxO5/lORAY1Gp/5RawM2LnOVUUEnR610msJ6V86ntWgQnqjG68cpKDfntBtCeAj9CpwALWPD1s4rB1o4xFdRPNr2ZGhLIcAo7OjfrUzNOYDVe/VFSsxlpZUJXXzr2L95DfJoWCzbURHSt9Sug2O+6VSaOpdRVfFiORG36EEaOTP6Ldcl2xKv5a4IelW/YiMCicSfXpHUYzDDtOuzxSHZzDJnbfjkDEXkY/cGtPVVCWLC1HvclLyS7JL3Aiu1kkiHi1TOLkVdXwdNcZfIiIpzCadg0MZIvIQT1bfaWIJg+tXYTmkBjYwmhEweIMO8dW2mSCCSroLHIz7w3H+MLoCKf5mwHAv6FfPwvuW3Zf
- XUQRatfr
- guojUrPLTLaT/eywJO0qWPKIagBUYAml12bOyU4Z1DizkCMgvGGHTd+dmW3ePiDw4ywI9NO3b9m/cOAXX4VwKqEvELnB+pVFYnhGcKp3ADWfHCMKGJWbvGe9MjJVrIR2gYDJHJfJG8+RWJIu8VcXaGSOoI1A3To7DJCnLhXPG1tQS4xu64ZMsdgp5WgOaErz+wCDQtkczQqNI7jfloc5hHuXm/XDwdsu0+rxM2t7chWQEP0YYAHe/RIq2Rs83FtO59XjErtV+3C44sCqn4WV9hhVxx7X62jxLju6veDzPvLLPX0iaHURGGEfoMzZn72u2MCbzzvgy8F2EaKR7bOh4DvyjoDemEajzK7BeNDcGVqIX2oKTdJzQRLKGydRK6pYyOOToEGtvDjg4gakrCh8n0OrcEsrEpsVAhlZx2zk2nF6AOLFjHgdGamKJEEzVTPGE8zS7+atmDoAxs/pkA3jJXxAGyb+HSElM/pUYoY1fPg9Zxf8DRRlliXBWT5TzHUvf/20SLFJK8TRvMTzCCoibLm+S4g==
+X-HE-Tag: 1772685074-656734
+X-HE-Meta: U2FsdGVkX1/79SrRdCYgPAKvbkpXa+SxO2pAkI4vi5pSKaLPTLiWw1+tNNosmAAFqI2T+zSoQCF/hug/VVEPVN0Gll5KCxThHw31Sd9uNhROgbyz0CypBD2Uso3moknZFMzV90/VASd0qbNHIXwQ6nB+oR08osRo3GjNBgmjCaQQBinYcrhVN4TmwtwqIW39fodzXsl4/stns0HTG281ToKkuvMuBS7rYSTc/87VqqloUVu3pkaTMVcA6ZdtmtZvQ6FeBBTyjOHVktx6uHYXRGVAYL15XeWA0IfKh9177wu7WzsFCGXryImJlfgUXJcxGZnKGxWz6Co9k4lKXZP3tsRsq/knEM9ttI1ZhL+jqfwXXYrom3+5pzaRwIFQC95owQxS3DOkjDfVG1sH1dHSsQ4/D7xvf2ZT0JQEPywiy7CyNWaOkJT+/9I3lFtRpL1Kr7EyyJCO3332B71azdzfsP9C7RWGA1jO1Gn4SvbQqlwjOzfilHkofkqAuSwfeDATEkM9h1QUwXbuXDN25leO7Tn+2H846QBPdU2hguHlGrdtljANwD+PR+nvaTBaiYlovH2cL2/Afp2PhErbnA9eDz9f6SdqTA7uM4jcdd64rUVVaP6awEubAxAf/1jGW/AN9W0hkhYmEnu3rhvpiicXDlhDS41FIfGB6Mfc509uUDTeag8XFguIm4oIhatU+zE/dTlXYdPy/03PXRIW18m5IhCZVOGtwLxsDGKhTJ8mg7XHWgGADKFceigSwd/Jwr9z6cSk9y2iwe1C/LJuv2AgB6G0rBKrQ/1Y0uoP4n80P8fCYAgzsq7q8+SI3HlxFvHOrBlL3aa64zNqTGZuIcqnHHsw+STvg9aheu147jQjK33vQDcdsYdYHMVwTDCZxVjqQu6jR9Ae2DuvTwItnTJ0Ql4FYROJLlQIDfP2nzxKKgiRXgrBUkMJeqjh19NBi0rD/wETCmoX4NgtUnHWTCX
+ 9lsadiXX
+ ucQsPK5tTmgyMszyo98Pe518VEaUJSjrgYH0Xn43Iuimy2DJk4cVGRIAwy7pHVn1Xmc3/oZfu9tXgu9hcl2c2cNJOCPuMxN4IAvcT/Lhkf+TQSGibPuUx+XL5ZRsRB8P9MVLfCw13thuOxuB/p/EIinvV5vseJoXSwJ+LK4OBnZpMyjm3kiCyN7rABuXEp0ELSe1hcvdQsEc/sWtFEcyUS+HAVifibo95txbry9bC9F/mQTd24Y8jmsz923/GcmtgTOGV+Bdg5C9GirzPauuOuSOBcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -175,32 +98,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-04 12:50, Gabriel Krisman Bertazi wrote:
-> Harry Yoo <harry.yoo@oracle.com> writes:
-> 
->> Hi folks, I'd like to discuss ways to mitigate limitations of
->> percpu memory allocator.
->>
->> While the percpu memory allocator has served its role well,
->> it has a few problems: 1) its global lock contention, and
->> 2) lack of features to avoid high initialization cost of percpu
->> memory.
-> 
-> I won't be going to LSF this year.  But Jan was the proponent of my
-> dual-mode pcpu initialization work and he'll be around. I'm not sure
-> this requires a full session either, as it might not grasp broader
-> interest.  Are Mathieu and Mateusz attending?
-> 
+the vmpressure window size has been fixed at 512 pages
+(SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
+the file notes that the vmpressure window size should be scaled
+similarly to vmstat's scaling, via machine size.
 
-No sorry, I was not planning to attend in person this year.
-Is it possible to attend remotely ?
+the problem with fixed window size on large memory systems:
 
-Thanks,
+the window fills after 512 pages (SWAP_CLUSTER_MAX * 16) of scanned
+pages. on a 256GB system that is 0.00076% of total memory. the
+reclaimer works in chunks of 32 pages (SWAP_CLUSTER_MAX), so the
+window fills up after 16 reclaim cycles. here, a single (or more)
+bad reclaim cycle which reports false info has a considerable effect
+on the scanned/reclaim ratio, producing an incorrect reading.
 
-Mathieu
+a larger window however, is *potentially* prone to some additional
+notification latency, as more pages must be scanned before the ratio
+is calculated.
 
+this is what we consider a false positive; a notification that
+doesn't correctly represent the current sustained memory pressure.
+
+as for issues with why false positives are bad: applications or even
+maybe the system listening for these notifications are woken up
+unnecessarily and may perform actions that aren't supposed to happen,
+instead of being in coherence with the actual sustained memory
+pressure.
+
+i did some testing, as well.
+
+the testing was performed on ONLY a 9GB VM and nothing else.
+window sizes corresponding to larger machine memory were set manually
+via a debugfs knob, so my testing may have been corrupted as i only
+had 9GB on the VM, and this doesn't correctly test on larger systems,
+but it is the best i am able to do.
+
+vmpressure_calc_level() was instrumented with a tracepoint emitting
+the raw pressure value. a controlled workload (2200MB allocation into
+a 2000MB cgroup with 500MB swap cap) was run at each window size.
+1000 pressure samples were collected per run with 50 sample warmup
+discarded, repeated 5 times per window size.
+
+the key metrics are stddev and cv% (coefficient of variation; stddev
+divided by mean pressure, expressed as a percentage). cv% is
+load-independent so it is a better measurement than stddev alone. a
+high cv% means the pressure signal is noisy relative to its own
+average; essentially the readings are unpredictable and unreliable.
+a low cv% means the signal is stable and trustworthy.
+
+do take the data with a grain of salt, as i probably didn't test
+efficiently. this patch still needs to be tested on larger memory
+systems on real workloads. but if you think there is a better way
+for me or others to test this PLEASE REACH OUT!
+
+  Window  RAM Equiv  avg stddev  avg cv%
+  512     stock      45.86       91.24%
+  1024    4GB        34.62       69.28%
+  1792    8GB         4.03        7.97%
+  2304    32GB        9.90       18.53%
+  2560    64GB        9.95       18.59%
+  3072    256GB      11.49       20.99%
+
+the results show an improvement in quality as window size increases.
+stock at 512 pages shows a cv% of 91.24%, meaning the noise in the
+pressure signal is nearly as large as the signal itself; the readings
+are essentially unpredictable. at the 8GB equivalent window (1792
+pages) cv% drops to 7.97%, an 11x improvement in signal stability.
+
+the data is consistent across 25 independent runs per window size
+(5 sweeps of 5 runs each). stddev and cv% barely move between
+sweeps, which gives me confidence the measurement is real and not
+an artifact of system state.
+
+stddev increases slightly beyond the 8GB equivalent window, from
+3.82 at win=1792 up to 11.49 at win=3072. this is expected and
+may also be an artifact of testing on a 9GB machine rather than
+real large-memory hardware. even at the 256GB equivalent window
+cv% is 20.99%; still a 4x improvement over stock's 91.24%.
+
+since i only have a 9GB VM, i'm setting the window size manually
+to simulate larger machines, but the actual reclaim behavior of a
+9GB system doesn't match what a real 256GB machine would do. on a
+real large-memory machine the reclaimer has proportionally more
+work to do and the window would fill with more representative data.
+this is another reason why testing on real large-memory hardware
+is needed.
+
+the formula itself isn't like vmstat's threshold calculation, and
+uses total machine memory size (RAM), because reclaim costs grow
+with RAM, not CPU size or any other variables about the system.
+the formula's floor clause also ensures the existing 512 page
+window on smaller systems (512MB), and only affects larger systems.
+
+if there are any other questions, i can try to answer them.
+
+IF YOU CAN TEST OR COME UP WITH BETTER METHODS PLEASE REACH OUT!
+
+Signed-off-by: Benjamin Lee McQueen <mcq@disroot.org>
+---
+ mm/vmpressure.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index 3fbb86996c4d..0154df4d754e 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -10,6 +10,7 @@
+  */
+ 
+ #include <linux/cgroup.h>
++#include <linux/debugfs.h>
+ #include <linux/fs.h>
+ #include <linux/log2.h>
+ #include <linux/sched.h>
+@@ -29,14 +30,19 @@
+  * sizes can cause lot of false positives, but too big window size will
+  * delay the notifications.
+  *
+- * As the vmscan reclaimer logic works with chunks which are multiple of
+- * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
+- *
+- * TODO: Make the window size depend on machine size, as we do for vmstat
+- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
++ * As of now, we use a logarithmic scale to scale the window based on
++ * machine RAM size.
+  */
+-static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
++static unsigned long vmpressure_win;
++
++static int __init vmpressure_win_init(void)
++{
++	unsigned long mem = totalram_pages() >> (27 - PAGE_SHIFT);
+ 
++	vmpressure_win = SWAP_CLUSTER_MAX * max(16UL, (unsigned long)fls64(mem) * 8UL);
++	return 0;
++}
++core_initcall(vmpressure_win_init);
+ /*
+  * These thresholds are used when we account memory pressure through
+  * scanned/reclaimed ratio. The current values were chosen empirically. In
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+2.47.3
+
 
