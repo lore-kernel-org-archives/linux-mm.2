@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACEBF3094F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:54:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99BA7F3094F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1128F6B008C; Thu,  5 Mar 2026 06:54:14 -0500 (EST)
+	id 114526B0092; Thu,  5 Mar 2026 06:54:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DB2E6B0092; Thu,  5 Mar 2026 06:54:14 -0500 (EST)
+	id 0DED66B0093; Thu,  5 Mar 2026 06:54:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15A16B0093; Thu,  5 Mar 2026 06:54:13 -0500 (EST)
+	id F196F6B0095; Thu,  5 Mar 2026 06:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E1F076B008C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:54:13 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 937D18C665
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:54:13 +0000 (UTC)
-X-FDA: 84511851186.07.E5837AC
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E0B0E18000B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:54:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K94LyqzX;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1D896B0092
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:54:26 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98B31C27D0
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:54:26 +0000 (UTC)
+X-FDA: 84511851732.20.82AF832
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DC82E140018
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:54:24 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=igXWvWa2;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772711652;
+	s=arc-20220608; t=1772711665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slvzxnQOZnGyEx6uyl7ed+CIq1Y9lBOT7LEWCAJSIOk=;
-	b=z+WPL9kwYroTQ5Eem34z+ZcGTSApGRGWSWwpIHeB5ijnW+M8JU48QuNpY0lDIxidfg20GL
-	sekLse+QmgW8R4JOpSZQK0DFFvDA50mG/Xkc6xRGMB3S26Hm20jro+6RezfsXhXSl0UBKT
-	T5prqLrofv8bPz8IGX5vhP0Ho/gWXxE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K94LyqzX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711652; a=rsa-sha256;
+	bh=DH3ne046D93m9UmkRfI664mjum+ALgiIemSaapH9p/k=;
+	b=Gi6KW+8ezvFFUzEsshw+VQSqUjOhOKM7xwrsi3CXQrk5oJMOhuANMpmzA6mpiyo1+n7pvc
+	aCh8vfLOB2aRTbKDNuLQBxwrFB4lewGKPTbKMdR18c79x2TdLrH2AABNtde9DUbnpV/rA/
+	BkZdBaA2dNdai/XBnUcnmS9JT6sbTjc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711665; a=rsa-sha256;
 	cv=none;
-	b=RoVmQIQAseg9IlShde/HhLJlg886MIfjDus2nIer4eVgdbsDlSA09iD+ZmN1ZvU9UV8yBl
-	PO3HWMLsK/D2bobeJN/NyA5p5u37Z+j4KI0P7ZIL1L613irtxgP0h5CYuPLaU+7naSzPdR
-	aMligaA9jm7jEz6mJJJA4Gw3MrlfsZQ=
+	b=CCsZibJrCUVDvHOfuM5laZRY86iIfU/i3UwAPSxwfPsz46FR+ixdk5XwB414ZTFNPCJ9RN
+	NFDV7/wepWOMGjMqzQXWE1CtopHBqvNEUCEDmGU0RoQ2J4q/b2XlB0Fzcp7r6ZCvy9tS8Z
+	UIRMkA/krYEMXEbqI1moITnXVUKDsYM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=igXWvWa2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772711649;
+	t=1772711663;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=slvzxnQOZnGyEx6uyl7ed+CIq1Y9lBOT7LEWCAJSIOk=;
-	b=K94LyqzXS3gex8zFVnJgklSMCyl1mw39v9eFcSQDt3tLYoGbqG58fueQtSLfGedD0qbMWL
-	IaWKIO1I3HWL/QISzw6kxwulQCi7W7F0VQ7rswv9IR110N0ONu0cttNUvLRj5hIkQZFpLY
-	vQ7oRfBVai5yz3N4q7P3MJsT4Nr+388=
+	bh=DH3ne046D93m9UmkRfI664mjum+ALgiIemSaapH9p/k=;
+	b=igXWvWa2LejEgfiijOe0mqvJlDfl8MXK2pM3TUlHRBJw3DvKeE/vv3mPPPyqek07NhZImL
+	ZdDmJo/LRii7ka7WGoYFjnxLYzyHmtwDz5T9r1Yc6M2rTq0fiKOyx29t5ximLc6DqFYOVE
+	qQtgG4fOmPkoxrm5SIsaUumvw4C4V3w=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -88,24 +88,23 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH v6 01/33] mm: memcontrol: remove dead code of checking parent memory cgroup
-Date: Thu,  5 Mar 2026 19:52:19 +0800
-Message-ID: <f4481291bf8c6561dd8949045b5a1ed4008a6b63.1772711148.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v6 02/33] mm: workingset: use folio_lruvec() in workingset_refault()
+Date: Thu,  5 Mar 2026 19:52:20 +0800
+Message-ID: <11bd2fbbf082f4f7972a1113ca42a61fbe2876a9.1772711148.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E0B0E18000B
-X-Stat-Signature: bafpugm6owxsu4aqbd5eizc9pjie8o7j
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DC82E140018
+X-Stat-Signature: ykri1zfaptpwejzg766pxe31cioacd81
 X-Rspam-User: 
-X-HE-Tag: 1772711651-473497
-X-HE-Meta: U2FsdGVkX1+gFSWpIdfR52OVJ8kV5NWaJFKk+Dl5oYkaXmwcj5cB4ZqwxUjkx26Zvch4K/R+qc5esUWBQ2eHMJGAcxOCBzSZn/UheQapgPYZ6Hi9Euc2kn4plCRte6Zoi/0vo50YB2L0fU51sDFc6wD4uWL29oj7HuLBw/nOY/EKnPogpKzLLkAWkDlLvriWkJhHoz6TMVCdIYYzgbXhKtk+F6DaTFerUf9rrQK3szKC3pug5LXbhlirS2pRTOOwFCQXtW7w48OxEzjYxLsw2oeR8Ef+jQ5alGn18yDJx1gsEc0cugH0HQOUJUGwPvbUz3lIWOG7JcrBsXZ8LvwuWK/tf3COR5v9PwEbGVSJPMwuW5KeobovGGBnJB6Mpk3xOZsF0vODgmNMKKMHZ5Cifc8RE04e+zeJu3WlVAEhj9Ti15vfhcv4qH39lnvkGn55E2qm3nUEGaxbsRR/1taGrxsR2S+VOnaspWhXJC990S1PUYFEqJweMd2m++O2jOx8grWAynUmKtdCdWxYW/sNQrvay7+SPKXwpopnpMsYD2I6QlPYrGurB7NExh+NECSnr4OQZOOT7huCwgVZxeu+DyxmHyNoj3GlX/YXDE5LWmgO+CFA0stMg1nLiXxAah6E5knQIzc5nEaEIhZHwpMQEVikRu+774zz9tDyLajMv4yvfvQxzNJS0p+zS5lNj/1Rb6hScS/IqOuGvAaTHPvmIEjnWFhZmUzDfrhkIftDRiLZxIjqjen4+nQT6ZfI0fRnpWQene9j0t2WXF8Uafnx3czy/5SYwpz2E1v8Y/vsf8pkIM2CrLHRU6nlMiEowgF+u/2aKxUeqUpXYZAynx0hK0QGE6LF1jR1qNeFVevkTnOKGTcavt1HGv1DzbJN/UOferuBFagwY6LhCbudyQVU0NLdYXRZL3QOjtmuCR98bBA3gR8zvfylobb4i84w7ZMpsHbBAJYFoxT0nVIvynb
- WGLcpXIR
- 1TVSh2TjAnAjCG0FD4I0+zGBm8nT1JrQdpT+61RoDRCJXhqYBAkUHychiVgkh4s+htl4ydqnK+oHfK0vHBWe/5JvuXH0DLsUHS5GC+elk+M2bBc55f2HSYdBxOOS/W1Ow/Zwgf3/ZOhXYp06kfNofmHo7beb2y9R2llc7Coe16yrwuU/OSmhfCd6oQTYNYlCI7EbdKVHAVQBmXO//j+Xgv23ctZOEOJ/304gzzBaIuDVhtseAydmLAb5NXrQJ87StPWvqEy44tAIjl+Gab0jbRcEfCWLtYmy3rhCC
+X-HE-Tag: 1772711664-206739
+X-HE-Meta: U2FsdGVkX18qHj7ziDEulWfuIETHxcE9Whb4JmOktDlcQUTVwFQQTHeoUi2XHruPqrAmKlTAv6spyJ7oOGzjXUzbRf+DRzSOLLVsrRL8AZ3reA26y44930i3dr81VhjKdRggqfoPHZJupcU9KVdwzMAjS78LEp1rdwQs/pXBGnvtHgDDDWksYAZzlA6BdM4xXxf7G42bSf8n5FvuJqFo4QMpiq3IRV7qx36hyTwBexgzkKR4M0IZiH82TtlZG4o5E+DDOe8ZMz6BsTsE5s9sCJQMFw86lo29giayZZ9RsQQl/jO80qEKOxmHNoVlfg/3W3LQ9X/NzLiayXQKkFujyhBFyShLtVEuvRQI839+hIMCN58iBIn8eA0jkyk5dpTGcEWGOokTRO+SE7hwx9NdcS+7DLyZqvU8a51Im7txy4beW9tEDPQLx/vOwpkppkycXv+874nWGAI72BilyKEgenmcpn0Jr+7yqbqsN620RfHku7kqPribkvQLKJJ9bnwrdBJxecEOZBHASHjjGDZRA7JVL+2Af4EjCua1sxtRYwc9/cBqSRhkVB4iPJHqg7u350nj8DvZxSrIuTB0y0YhogUU5EYIHN4zLVC66/TspOHRzbJv0GWWZGJxNu/dDNI0MxmBSaXAY2VOWL0yGMSH8vHzP7PTgUNCWKNeySoZn9wSFUgwXWt8UCRJ4EqqTZFLKnLLEgwWL5vlsZ1Artl35/6Ol3BuMRVMlHhMXC7s7LqSCllf+AemrEIU5gPn8FJWBZryMoiKO/bbim3pW3AMPG+P7VP7o3CwO/PCPesE/z6c2khhOfxKHJDYWnXGLWNU9v3ntpEQ7Le6rxoov5b2T7ebA52SpA2dXj0+TUiMYCws9UXciOSUxm1ft7veCCarL8Yt68aHaK9/zXFvcrwkft2NKGuZ7/djXSM7fWsI8Y+9A5shBoG19sFmqGCRveUDYNDLo3rx01XaJ6n7PPV
+ UyBmjoMe
+ FOuSfjllE7IqL3yG4o1LkHBBY2vopgRMw+7EQel9b0FAifixTXwT1nRYGHE+1dGOWZ5aBhnh0x2xCpuNWPZ2tErQ3KbTaGonqa4rJABJIuTSDQ9/zDe+3WT9mrcuzl1Sm1315JNwme/Rhsi6etDIYGphaVUDsNhmd8JCzXz4mWqp90kzufGHiEq/jBzU1M3JsttzWzgywmMCnTwy94x7PxsdIYmO4Nwz7WWauG0QB1mmB+2oRSebrydNSZ2HyHqGhdLroTYztbUn2bSFnGo5KjavHhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,70 +114,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Muchun Song <songmuchun@bytedance.com>
 
-Since the no-hierarchy mode has been deprecated after the commit:
-
-  commit bef8620cd8e0 ("mm: memcg: deprecate the non-hierarchical mode").
-
-As a result, parent_mem_cgroup() will not return NULL except when passing
-the root memcg, and the root memcg cannot be offline. Hence, it's safe to
-remove the check on the returned value of parent_mem_cgroup(). Remove the
-corresponding dead code.
+Use folio_lruvec() to simplify the code.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/memcontrol.c | 5 -----
- mm/shrinker.c   | 6 +-----
- 2 files changed, 1 insertion(+), 10 deletions(-)
+ mm/workingset.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index db59fad3503f2..aab863e1822d4 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3424,9 +3424,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
- 		return;
- 
- 	parent = parent_mem_cgroup(memcg);
--	if (!parent)
--		parent = root_mem_cgroup;
--
- 	memcg_reparent_list_lrus(memcg, parent);
- 
- 	/*
-@@ -3706,8 +3703,6 @@ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg, un
- 			break;
- 		}
- 		memcg = parent_mem_cgroup(memcg);
--		if (!memcg)
--			memcg = root_mem_cgroup;
- 	}
- 	return memcg;
- }
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 94646ee0af63b..4cd33222256ef 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -286,14 +286,10 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 37a94979900f1..5e8b6e62a6175 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -541,8 +541,6 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ void workingset_refault(struct folio *folio, void *shadow)
  {
- 	int nid, index, offset;
+ 	bool file = folio_is_file_lru(folio);
+-	struct pglist_data *pgdat;
+-	struct mem_cgroup *memcg;
+ 	struct lruvec *lruvec;
+ 	bool workingset;
  	long nr;
--	struct mem_cgroup *parent;
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
- 	struct shrinker_info *child_info, *parent_info;
- 	struct shrinker_info_unit *child_unit, *parent_unit;
- 
--	parent = parent_mem_cgroup(memcg);
--	if (!parent)
--		parent = root_mem_cgroup;
+@@ -564,10 +562,7 @@ void workingset_refault(struct folio *folio, void *shadow)
+ 	 * locked to guarantee folio_memcg() stability throughout.
+ 	 */
+ 	nr = folio_nr_pages(folio);
+-	memcg = folio_memcg(folio);
+-	pgdat = folio_pgdat(folio);
+-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
 -
- 	/* Prevent from concurrent shrinker_info expand */
- 	mutex_lock(&shrinker_mutex);
- 	for_each_node(nid) {
++	lruvec = folio_lruvec(folio);
+ 	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
+ 
+ 	if (!workingset_test_recent(shadow, file, &workingset, true))
 -- 
 2.20.1
 
