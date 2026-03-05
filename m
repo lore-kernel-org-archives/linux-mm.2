@@ -4,114 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0318F47CA9
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B85C4F47CB6
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:57:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40E796B0005; Thu,  5 Mar 2026 13:35:05 -0500 (EST)
+	id A22456B0005; Thu,  5 Mar 2026 13:57:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F0406B0089; Thu,  5 Mar 2026 13:35:05 -0500 (EST)
+	id 9A6066B0089; Thu,  5 Mar 2026 13:57:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 319526B008A; Thu,  5 Mar 2026 13:35:05 -0500 (EST)
+	id 8876C6B008A; Thu,  5 Mar 2026 13:57:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 208A56B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:35:05 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C8FE28A655
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:35:04 +0000 (UTC)
-X-FDA: 84512861328.01.F849502
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com [209.85.167.196])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EDC69100016
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:35:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=NbaabLfr;
-	spf=pass (imf05.hostedemail.com: domain of carges@cloudflare.com designates 209.85.167.196 as permitted sender) smtp.mailfrom=carges@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 717A06B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:57:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1ADB5578EF
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:57:49 +0000 (UTC)
+X-FDA: 84512918658.08.976355B
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 49B7140006
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:57:47 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mq1ZDqU2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772735703;
+	s=arc-20220608; t=1772737067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=rFhcK9Uem/LtMASOKzs4MxD6L+NtroLNk0fzDq8XxNI=;
-	b=lZs8EjZlu9UyuqKzJf6Sb1Gvz01Dv/GLlgKjnJqNlNoZZoL0MXve7WwJgJ4J4wdX/tt6/V
-	tHghVknHQZI+XPD7YPZQ7f78ArCYBV0cf9tIQJTG7dofHO2O4MyEnPgOWff1FMbqNNW3Ek
-	b3a8dZzgby+5uaFUj9P3v2eBbaVY1dM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=NbaabLfr;
-	spf=pass (imf05.hostedemail.com: domain of carges@cloudflare.com designates 209.85.167.196 as permitted sender) smtp.mailfrom=carges@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772735703; a=rsa-sha256;
+	bh=M96FxMHGqXkOLvQsr+HkAU1hM7UNd5HvAR5XRWMmWUI=;
+	b=6wQHG2qfKfeXKdDYMJN4IY61gZYyL/rZFpwVefKNTJ4f2eZlZaDNFrz+TfRYs1bxrxSbLh
+	MwiXq/MG3PmGQjCW+rih1Ha9iyBVoFGhgwpVnOjPsFkerUyf0drHnqyT2F+6ICosp9gFng
+	KYDjLuOxdY95MBCUg7Y7hhhANYPcyW8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772737067; a=rsa-sha256;
 	cv=none;
-	b=zhApjeRcLjeli7i2bHiU4QYGEPuoB2TjHaEfwQ2UPeMF2SS2y+oXBsgzSczkU8o7FiZoeL
-	os6GPMeJ3vaWrrTQVPMbOIqpWX9+QBx/LBCQcqZSwPDzJG3WJgCSf08CXKWpb/B9Mc2aQd
-	c0Q871tTDkJuMCdE2hJg9DwE8QCkbTQ=
-Received: by mail-oi1-f196.google.com with SMTP id 5614622812f47-4648448e387so5562008b6e.1
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 10:35:02 -0800 (PST)
+	b=UxXe0mCXRRt+wJDR4OA0MBLJYg+DJux8j+yoGp4Kd6PHrau1cvinJo9OaxRsDXrdWproQy
+	pyMjT8CXirSmr8RVT0+OjEp741wOi2qyEEHVBPw/dZ0FtH+jKdrEMVkBIYqy5RdpimZw3S
+	B3b0lyZjGrdXHV93hQL9OUP5KGJl9Mc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=mq1ZDqU2;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59f7369392aso304175e87.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 10:57:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1772735702; x=1773340502; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772737065; x=1773341865; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rFhcK9Uem/LtMASOKzs4MxD6L+NtroLNk0fzDq8XxNI=;
-        b=NbaabLfrz3hqb/JTJV/QdRA/9frRIoGD3RIzjTef1P1zt4+y1tQsvFEkQxU8d3M4E2
-         hw04djkzxfZno0liKNMm5G+wWhe2xArSDXhs4nm320JXMUJys/vEc59smYwHknE1qV8s
-         XF3T0z7/TSOOfsWvN/Ax9Wqe6q3UxTiGorLKBWa0tq+WjpJHejF6xlWciPUoF2MoLc6E
-         DnkKIJ1SbiytoLJIPQagGXwzJ99UopEQj2TazqoM6nfr26+1fAUMhoo9qfcRSldPmIpL
-         4ccySqGyiYuTTu5lLvU9dtkjJbKEwAIm+S6byD/2jJUdI6Agc/LKOWpHKjxvHikhUw7m
-         G6mw==
+        bh=M96FxMHGqXkOLvQsr+HkAU1hM7UNd5HvAR5XRWMmWUI=;
+        b=mq1ZDqU2lKVyuZtBju+0VnW0IVN5TQSLd7Vd6mu31+gEclZqhuYpKBXLjZl7xhD5cH
+         PKgJlaFymgwL4os2UpoKQVhDjDAoV+lyGtDW31LZ3WvHhw/nte5V4HTXJ3uIGpejLx4a
+         eU6rG9b4ENvsqGsr1FUTtysXvPHujPTMmu5J8+rhTCOhI6Wv1SW5g10tlPBsHVduyPwX
+         N4wZT/Xq9jR4TLpiCr+gx/Zh6rFc+bzO0B0nHoztHioH1GMP7wEAODw3/SJUClaVzIbt
+         0UANhRD+zAF4eiJAQQsa3MMgxt2Srl4BDAzSx17cIH7a5cAGk1dExx3cic7FWTLRqtBX
+         jmZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772735702; x=1773340502;
+        d=1e100.net; s=20230601; t=1772737065; x=1773341865;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rFhcK9Uem/LtMASOKzs4MxD6L+NtroLNk0fzDq8XxNI=;
-        b=FT/ZXV01KAmotKVGjxYpBhMNWs5gEz8QlTMtEsVGhfeTioYfVqHiIU+n4IJGv1fDWa
-         eUc/w+1Zf4jEUuOaZKXP38opX9o6BZiCwPffaoKoYUPWzXvqgMJezjhSwElGHcw+d6/Q
-         kg1Bap/56JxooDIWOGJikaDMyD84jsONClE187B9e0v7f3+zWkqU9SjNaTtmZs6vddRI
-         7MZFvwh6YTzvU813WFn5PLF8ksU6jGfOcYimhoLZ51wPOxc1E5rqHJml5J4JAjE3noaU
-         LpYOS5iLL7L6TEZs55kniS7eIh+sJNxz4aZgKEeEtuDblMNePrQWjaiYmOGuKH0gLv0m
-         n3JA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWIgUkcd9ZSH0X7vvRK/4JFS9R1wvxW0x48WXABmYHxJQI6lIbeVKEE7RYtoWCL1mZkYtNSq5Tbg==@kvack.org
-X-Gm-Message-State: AOJu0YwKgZZ/nL4raaVdN4QmRyNilZAJCc0IlClQXtl8h1eYLBeyKSH/
-	xz0U+idrbb9UWyp5nn9H1iRx+YV08yuDIRFFO5l+jkRXBszU0EsH1493pN78M/J5hUU=
-X-Gm-Gg: ATEYQzxxMoRkh9yitRgd6VfHxjdQ6eJUx9qInDJwTdljHlgr6E6IaU69BZ5fY00GB2K
-	wjipNpCPpWbbY5IGj0s1FesRzEmXhDoSRSTJBkjwfo11P1BxjZXwvbcpZcFmuYvbsT8L85ZOfVF
-	/oYtSVmjRQ8AgKry1hp3S6nHzgTCUjoCtnXtn648YrQqzap48zu/Y5wmJuYyusn6I/ds4scUr1n
-	faPu6YoSuuOjVYxTik76VK80rha4AB2OnyTyetBq8j/B2QhXJR3xBVBI9w1psFh5y557gjbsjs6
-	njGu8y2gl7zr0inR4nMR9mGo9NMYRWbwuT8D4ENdsnySg2fFhhlxnqRpr3Kh8Xs1zSGpGAbkSdC
-	vsMRuAwcaRq3aAnVjEQcXT8DlmijSI0CLuQkKeCWTPfpRGvXv9dXotEdxjrLETYA/4IsxNIAZrQ
-	bZD+E3atB7
-X-Received: by 2002:a05:6808:30a9:b0:450:d693:4d1b with SMTP id 5614622812f47-4651abd6437mr3134495b6e.26.1772735701838;
-        Thu, 05 Mar 2026 10:35:01 -0800 (PST)
-Received: from 20HS2G4.. ([2a09:bac1:76c0:540::3ce:23])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb59b66fsm13913851b6e.10.2026.03.05.10.35.00
+        bh=M96FxMHGqXkOLvQsr+HkAU1hM7UNd5HvAR5XRWMmWUI=;
+        b=ubblMxvTeuIgHRYN8YK0E8TiU5uqtIH9RdWsx1QaYOcG+/OeRjRfOEWHG/grkckXPW
+         ci1C1ytbzp9NI3Giy0ZrJbVgdjmFmsinqi6d855YZ1UCiJ6qY0wFE8KirEjjCUb3OVqK
+         1J2HdQ3GpS72gdNTBRfywAlR8v2Ezyt7JEtymIW++uzfWxs7WQgbvKWzRIc08acuuHn4
+         E0k1oqN+WpoVJbxwZFCcF47IvZ4VP/ih1ZPHrEokIZGTbyU2K+HjsY5wy6YeYSkDEHyk
+         frSeh3H2XlnrndA2wT3h1i0Sq9t21mLFd+7BH1gdRx3acb985bNNa0l8McMhLXV9eyOX
+         j9Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCXZeMOwmjx9WC5s+krkYGznZVThPTqXM5Gpyq8zoL4vmF+OBdvJ3hccfXhAQG0YgKPxxhP9wCwEWw==@kvack.org
+X-Gm-Message-State: AOJu0Yyby+lysJsZR4XgB34IAnrnZuCpFJkt2NPLbPHWcFBR2WCBTSTB
+	t2crWQ8frPpzVNQy4AYd9f5R5tJFRvZQ7YdEfbO1Zu9rothItgQ1MJfn
+X-Gm-Gg: ATEYQzySfyUYt8hYOfdI9ZCP460c1iG0O0tywNakgCYlS/VfgCHSAGo5tVjrUf+ZIYf
+	bJSaQ26PjauOjBd4jwJE9XXDu9pPVSNX0ptSSyO2nxrNvP92TgSfgF3n1KZFNtB2gIOqs5nVEyX
+	soQDugwBC7fOUgs8X8S/Dnv7eXGePHuS1nc1YRB0r0OX2DI7UCBuuq2evqeooAZIiglYLhjkyw5
+	dTwD1Q9WfEZjDrPwjeVwrntUqCk+2gtq6FNMEE0VBkzXj5sqvQcvRdRI27FHTkPo0XpXLmiDffv
+	Irbsm4FivSOc/RTg+MfCJ334zeMKKblDdgXuKEgeSWg1Uv18bouVHNQuZTlvQcCyzgyoecPyoba
+	YqcIi9PxCQIRgY+b6ccKxnGfV4NfTTup/jc5WX7eyqCtq8FOMEDpXf3oaXt0TMKElNMGSiuRIR5
+	Ltw8jNSPg/uQoNdeivYf8TF3HS13S2FjJMVmYO3Bt30fNMHQ==
+X-Received: by 2002:a05:6512:2c0f:b0:5a1:23fe:b047 with SMTP id 2adb3069b0e04-5a12c23cd79mr598071e87.0.1772737065001;
+        Thu, 05 Mar 2026 10:57:45 -0800 (PST)
+Received: from dellarbn.yandex.net ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a12358ef25sm2163251e87.3.2026.03.05.10.57.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 10:35:01 -0800 (PST)
-From: Chris J Arges <carges@cloudflare.com>
-To: willy@infradead.org,
-	akpm@linux-foundation.org,
-	william.kucharski@oracle.com
-Cc: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
+        Thu, 05 Mar 2026 10:57:43 -0800 (PST)
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	kasan-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com,
-	Chris J Arges <carges@cloudflare.com>
-Subject: [PATCH RFC 0/1] fix for large folio split race in page cache
-Date: Thu,  5 Mar 2026 12:34:32 -0600
-Message-ID: <20260305183438.1062312-1-carges@cloudflare.com>
-X-Mailer: git-send-email 2.43.0
+	linux-mm@kvack.org,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Subject: [PATCH] kasan: fix bug type classification for SW_TAGS mode
+Date: Thu,  5 Mar 2026 19:56:59 +0100
+Message-ID: <20260305185659.20807-1-ryabinin.a.a@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 49B7140006
+X-Stat-Signature: yi3mrz3edjspy6hydekuh9z3og93qhpt
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EDC69100016
-X-Rspamd-Server: rspam08
-X-Stat-Signature: j69iohfwaq3rkaqxabuc1m4syqq7ftbr
-X-HE-Tag: 1772735702-895018
-X-HE-Meta: U2FsdGVkX1/hpaJs/5pSScvoNiIXqq0bN+HIURZhislldRqaFvsdANn0opKYxXPRCfNcUzPu9gQVGAaFiyygYAi3Pr/W4RYi73OMT+SHnVsWjvbAgzgofVqDjVbHk+PYsE4poBlIn4yQ+pJP4ubTXtr/+7aKftt5TlmHnnsFl+9AlTtw88ZYbERhABbd4mJEveIB5MbDRRNrdmH/Ce828n1MsLwDi9aXnBvzmpSb8Iew1yh8QpKzQBmnmrGNsI3eYqggdsQpKtZcFNB3MOXfopgEPxp1kp9C5w5euL62rb/sx6pRggn2FrqiemXyhCZyly3Z0FEqkNLz5EvP8zro+Jy5JeOrvrGlTDthlyq74mImyIzFZp3X5LXw/Z20CCIJEPHHUfpopgmnsfKRivbnitkGRaIkaq0TwrDJmPwrq1b+fLgkbNTobB+AaJofeXvRokL0SX42aPW4OWnz/4HiVcHS1E3Igbz5kQE15Xt2G/FGjoynD0nxczw9XgDivv+Gz13GVamcu/rhKGgxgXF6lNXfTwsVeIVrO/+fVtws06Xuf1gaI+mA4E4nvuM/MmuAXeHwX+AhUoXMdI8OK3VGDIzlUjznM/D0XL2M4mgAgC5n3UH9pue+lAEXsqgn/nfGKHX/9nN4K3Ezue0i4G/zl8q/L6FPrn2cYOB55qmMltx8ZrZs/NXS9AeCD2kvWrWdgrOfV7RZcf/Mmit0wUiToumxbFAvktY3fss6dBwml8avy1q6BEaQFJ0Ue6QV5GAog8gCMUd34L9CY0CLnIkqbad77nzFQKMADsDgcI/Z9VYG2G4oGjR3fvIAUNmLjhVS2dLuKVVkuhyOShtwTqKXGolf8AxHhfYfOxuTlMrc/KWGCN9iei1mnwMmmiiYMc42i7hgGopulIazuvdVU1H7TIBWVEAjg6q91uUPs8mYW7CvFZwLEZusRQg1yjXLaLr6EhY4rmYqHhIXYO1wBUq
- +dmT9mFg
- 0lo3l8IKHMarJ0jV8VjAfF1x3Zbg71XNJVD5sl8CGRsSOrl9gPZ2AFQJhYsYxhxQ06ap9wis5TfyFiQd3JivzwwPQMBpKx+yciy4SxrBCx3YEeD0swBsMqLONyOwh3zUwuaLQVidUt/ngAzJRumYyyUXAWOkVKBBungfbIiZB9AR5ipRglvjnbif1A8u6VfngEvrv+lPC8eK4kq75SgwHdETuP+DOeYHosXENFwGxy5Iv8zlIN6VqVyQsvUtLT+mfksVu5ix0F+iX3EFzTMOKrnzc9cEHz/502TWSUrpcGDsezXm8sGbW9PNe0JOhqJoEO1UltzkgmwcVog33QNslV6O3MDGEzAQWjLh/o8/sOPf1suYIpowOQOnJtRR84cp+TRo7RcEkqYnzwDQ/9aHCFXgXMOh7WnKsTQVMt+ZhJdrRxqRbhEUPmndtZG283FARzxyk
+X-HE-Tag: 1772737067-239368
+X-HE-Meta: U2FsdGVkX192Y2Q0nnnmanTIo5AbCYxWjFnTAqwVWHTkGvZNHeqkW5MwBo385WOMG/YmOUBHyOOp+UPMaNz/9gBp6fl/NY+5PjVA/w0HeqD8yJaJQKQIx3qhomk47LwX6RmmeHmrGb+uHBBg+5pDmPEl63NSGib69c1j2SXXCLA4TLKCUIVjVNxi0kEN5FwKwH96fjtCnh31qkGqCFTaiqwH1Ewa3cYRDQYrEHwF8fbt/+x/45xQw0Wo+GBa009HQZ9C2w6f/TQrzz1it7jbsn27xJl2gcK23SfW+vM7PU/za9T4mBQ/JWJWViqwtZvwQAxxqb58f73K9QiUiZS4NQfAkL1RkJfCQHLEVMoI1+67oIBMki3PFNglT8Rp4qPL/YQ3Xv27O7SmvSUnpalGu2n+ITV7wolmUc7GbNhYM7F04Bq/VFDOWchwAI16tw/MLySbqmogbbsQL6vJuPeQ07Qs1L37xsBqThpb42BarzFz9zkyA02dijV4h2bYgM/+XtLvvsqaLdfbkNELYDni3Vts4Z8gntcOSP8dPGnBTi2B2Ujb5SWIc5XrqO3akoBOtVdN918Xh6hBOn1eWSOH6Vur/q3YfeILWmhxBPviz2GWvpZG+/nUfEwoKcG0Ztz1yQ79c8EdDAx4Z9QZPcB/J1WKQHEz8Agfgpt8kELbRXKpwSjhWBxURKF4wXCyHduj+Dv/e09aihWkeMf6gp4FEDyE2yNixLqP/ZlObT7Sic9WQZFwuiVDZgP8PhDtdRHh/0YLmeAiSJiXeuhLZm0jXW+VBSmtDEXP+GXfXPrCq2+4aPgn9oknLgmbEpp4SeRmSCdxYRUSUtUuNWlWDfNWVo3VCb8Ke5875hqexuSovEAtZwGjyVRQH3tiTa//PIUFZzqSM3cPXQVA9HsZ6L5uEj4xm4csgMuAa36Oiihqy5T5yQyCiCyoHSZOikA8EeTxLp/r2IzVPzBxGOodzLG
+ 8kNb885U
+ k5iPsvl7vxZrxGhl2UUMiBIK/wa858GVVR83X+hHfodDlWAGHxxhPkY6KL2duGC7Kg2sTm9qQmuiwwdta2rxxRErBx66EidCidOoW2B5PTh+lTsXwO9/IzcI2S4oy4LJSM9vB3ULhdKfnjs5i/zRG5UapmJmidDcVKJHAGu1dTW6lznWkBgmKp24VSCOp9uEkqH0jRVgGex9bNBZlvfOw6XCfe3zHRQNuJgoBe5H0/S/agHsQDyoVypkcm96O/7Pfs8KQWvIM6sm1pRITdW1YZu7NDJhor8/LWBDf9bP+mZ9lCM+ZuShTTemBu+8gi5Mg/0fswxB+zV/iCwDNDEhBD9nngpVLSdlaQgNsshO14KKMv+SekOCEw6wLTMt98Xm/mFWprCtSex7/6xY+V9hXvQVJ8ZZ+4Q1DtpXmdORU63FUZ++EUmgz8Gat34Yq4c1LkUeDq772s+iDhtNmsleve4Rn6Nr1K5bqqLfZ0Zi9/uxBpjTXR/6of3mBWynXZ/zOGKdSGl/q/ymqJV7owHW9NDaVCzkazscVJNv6+rHwpgJxOk9/Z58H+K35gw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,79 +121,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In production we've seen crashes on 6.18.7+ with the following
-signature below. These machines have high memory pressure, were using
-xfs file-systems, and generally journalctl was the comm when we oops.
+kasan_non_canonical_hook() derives orig_addr from kasan_shadow_to_mem(),
+but the pointer tag may remain in the top byte. In SW_TAGS mode this
+tagged address is compared against PAGE_SIZE and TASK_SIZE, which leads
+to incorrect bug classification.
 
-After some crash-dump analysis we determined that this was a race
-condition. We tried to create a more self-contained reproducer for this
-issue, but unfortunately were unable to do so. This patch will be
-applied internally as a mitigation for the issue, but will take time
-to validate fully (ensuring we don't see crashes over a longer time). We
-are looking for feedback to see if this could be a valid fix or if there
-are other approaches that we should look into.
+As a result, NULL pointer dereferences may be reported as
+"wild-memory-access".
 
-An earlier email I posted with some analysis is here
-https://lore.kernel.org/lkml/aYN3JC_Kdgw5G2Ik@861G6M3/T/#u
+Strip the tag before performing these range checks and use the untagged
+value when reporting addresses in these ranges.
 
-Thanks,
---chris
+Before:
+  [ ] Unable to handle kernel paging request at virtual address ffef800000000000
+  [ ] KASAN: maybe wild-memory-access in range [0xff00000000000000-0xff0000000000000f]
 
-Call Trace:
-```
-aops:xfs_address_space_operations ino:5000126 dentry name(?):"system@d737aaecce5449038a638f9e18bbf5f5-0000000004e06fa7-00064"
-flags: 0xeffff8000001ad(locked|waiters|referenced|uptodate|lru|active|node=3|zone=2|lastcpupid=0x1ffff)
-raw: 00effff8000001ad ffaa3c6b85b73ec8 ffaa3c6b85b73e08 ff4e378b0e95dea8
-raw: 000000000000737a 0000000000000000 00000002ffffffff ff4e379527691b00
-page dumped because: VM_BUG_ON_FOLIO(!folio_contains(folio, index))
-------------[ cut here ]------------
-kernel BUG at mm/filemap.c:3519!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 0 UID: 0 PID: 49159 Comm: journalctl Kdump: loaded Tainted: G        W  O        6.18.7-cloudflare-2026.1.15 #1 PREEMPT(voluntary)
-Tainted: [W]=WARN, [O]=OOT_MODULE
-Hardware name: MiTAC TC55-B8051-G12/S8051GM, BIOS V1.08 09/16/2025
-RIP: 0010:filemap_fault+0xa61/0x1410
-Code: 48 8b 4c 24 10 4c 8b 44 24 08 48 85 c9 0f 84 82 fa ff ff 49 89 cd e9 bc f9 ff ff 48 c7 c6 20 44 d0 86 4c 89 c7 e8 3f 1c 04 00 <0f> 0b 48 8d 7b 18 4c 89 44 24 08 4c 89 1c 24 e8 0b 97 e3 ff 4c 8b
-RSP: 0000:ff6fd043bed0fcb0 EFLAGS: 00010246
-RAX: 0000000000000043 RBX: ff4e378b0e95dea8 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: ff4e375cef81c4c0
-RBP: 000000000000737b R08: 0000000000000000 R09: ff6fd043bed0fb48
-R10: ff4e37b4ecc3ffa8 R11: 0000000000000003 R12: 0000000000000000
-R13: ff4e375c4fa17680 R14: ff4e378b0e95dd38 R15: ff6fd043bed0fde8
-FS:  00007f6c5b8b4980(0000) GS:ff4e375d67864000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6c48b7b050 CR3: 0000005065d34006 CR4: 0000000000771ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? mod_memcg_state+0x80/0x1c0
- __do_fault+0x31/0xd0
- do_fault+0x2e6/0x710
- __handle_mm_fault+0x7b3/0xe50
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? anon_pipe_write+0x27e/0x670
- handle_mm_fault+0xaa/0x2a0
- do_user_addr_fault+0x208/0x660
- exc_page_fault+0x77/0x170
- asm_exc_page_fault+0x26/0x30
-RIP: 0033:0x7f6c5b67c3dc
-Code: e2 ff 66 66 2e 0f 1f 84 00 00 00 00 00 90 41 55 41 54 55 53 48 83 ec 18 48 85 ff 0f 84 bd 01 00 00 48 85 f6 0f 84 d4 01 00 00 <48> 8b 5e 08 48 89 cd 48 85 db 74 60 48 83 fb 0f 0f 86 86 00 00 00
-RSP: 002b:00007ffe78c072e0 EFLAGS: 00010206
-RAX: 0000000000000000 RBX: 000000000737b048 RCX: 000000000737b048
-RDX: 0000000000000003 RSI: 00007f6c48b7b048 RDI: 000055bc3b28dee0
-RBP: 000055bc3b28dee0 R08: 0000000000000010 R09: 000055bc3b28df18
-R10: 0000000000000001 R11: 00007f6c5b679fa0 R12: 0000000000000003
-R13: 00007ffe78c07450 R14: 00007ffe78c07450 R15: 00007f6c48b7b048
- </TASK>
-```
+After:
+  [ ] Unable to handle kernel paging request at virtual address ffef800000000000
+  [ ] KASAN: null-ptr-deref in range [0x0000000000000000-0x000000000000000f]
 
-Chris J Arges (1):
-  mm/filemap: handle large folio split race in page cache lookups
+Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+---
+ mm/kasan/report.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
- mm/filemap.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
-
---
-2.43.0
+diff --git a/mm/kasan/report.c b/mm/kasan/report.c
+index 27efb78eb32d..e804b1e1f886 100644
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -638,7 +638,7 @@ void kasan_report_async(void)
+  */
+ void kasan_non_canonical_hook(unsigned long addr)
+ {
+-	unsigned long orig_addr;
++	unsigned long orig_addr, user_orig_addr;
+ 	const char *bug_type;
+ 
+ 	/*
+@@ -650,6 +650,9 @@ void kasan_non_canonical_hook(unsigned long addr)
+ 
+ 	orig_addr = (unsigned long)kasan_shadow_to_mem((void *)addr);
+ 
++	/* Strip pointer tag before comparing against userspace ranges */
++	user_orig_addr = (unsigned long)set_tag((void *)orig_addr, 0);
++
+ 	/*
+ 	 * For faults near the shadow address for NULL, we can be fairly certain
+ 	 * that this is a KASAN shadow memory access.
+@@ -661,11 +664,13 @@ void kasan_non_canonical_hook(unsigned long addr)
+ 	 * address, but make it clear that this is not necessarily what's
+ 	 * actually going on.
+ 	 */
+-	if (orig_addr < PAGE_SIZE)
++	if (user_orig_addr < PAGE_SIZE) {
+ 		bug_type = "null-ptr-deref";
+-	else if (orig_addr < TASK_SIZE)
++		orig_addr = user_orig_addr;
++	} else if (user_orig_addr < TASK_SIZE) {
+ 		bug_type = "probably user-memory-access";
+-	else if (addr_in_shadow((void *)addr))
++		orig_addr = user_orig_addr;
++	} else if (addr_in_shadow((void *)addr))
+ 		bug_type = "probably wild-memory-access";
+ 	else
+ 		bug_type = "maybe wild-memory-access";
+-- 
+2.52.0
 
 
