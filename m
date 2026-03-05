@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A60DAF47CB7
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 19:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8EC4F47CB6
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 19:08:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1AC536B0089; Thu,  5 Mar 2026 14:07:57 -0500 (EST)
+	id 5F0386B008A; Thu,  5 Mar 2026 14:08:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0936A6B008A; Thu,  5 Mar 2026 14:07:56 -0500 (EST)
+	id 5A41E6B008C; Thu,  5 Mar 2026 14:08:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E30EE6B008C; Thu,  5 Mar 2026 14:07:56 -0500 (EST)
+	id 464D26B0092; Thu,  5 Mar 2026 14:08:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0B36B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:07:56 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8C926160232
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:07:56 +0000 (UTC)
-X-FDA: 84512944152.24.FC18A5B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35FAF6B008A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:08:40 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10F46B729B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:08:40 +0000 (UTC)
+X-FDA: 84512946000.05.82564C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A43A7140018
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:07:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dj+S9NqJ;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0DB0DA000C
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:08:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q3N/+4+0";
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772737673;
+	s=arc-20220608; t=1772737718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TPptAqQRbsvtF5CPju5gas6bGn5iTFeGYsXCc/CnCs4=;
-	b=gtwifuvu6Hjauxql+5Ho8YEYAOO8u0VpkhTuJ4AgiQVyXkqQC+Q+SHfPNuK4jJb3K1ae+8
-	87isYHlp1oKWwFKp2nKmk9XkCMqmbHsz8aRDQJRE5maQbG/3Dt3GSNKzmtw/CDqmmRqCt4
-	+fnMu4+wplOQl+XYS0uUftWxTbcp6RQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Dj+S9NqJ;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772737673; a=rsa-sha256;
+	bh=iL+j02dfu2vkhHqUKz7t4nj/yvF+PjpSZs1nDCJxAnQ=;
+	b=amPbv2JqrC5THHEQl3KDYfB8lUNWUQj8xJ42vrR32jd9spIfQ8wONQGNdzuCe59pouggy+
+	rzARSxSy1HBvC2k/yq9bjPJu7VQH3P6RmaYKmhGurHfRNmqh02nq9sKWImS1hYV4y30xvi
+	tKwN4fViU3DTGgQZCdeKpoXb+6W+jmk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772737718; a=rsa-sha256;
 	cv=none;
-	b=FLP/xKKTVZFngb3CsalTfwSfZeT/kZjSTpzEqCwDq2LENQ/VQY+Sx+zE/JL+Q7yEElLsy1
-	PUPtwXc7yPF+4mHsMSGb5MumoOCtoz7/ucNycgimZXJqRnJXKqfQpuKjLtFdBr3exUlNwK
-	U9KhOhalMiwCB7Dhe2aFPsG3it4U4gU=
+	b=5deYClGwudRJj2wfaSuwYx5WYllxf7hMW+z/OjHEC5zU9lO8YxVPcU3Io23fo22ckjQGPZ
+	oLyfkBl9hUhvYH8N/n3yTnbQxGUV4761s7cV66wEC6gQ6AwZEQjGstSVTOl0Rf3DrAMKyP
+	mINWgLKLPcSlTowpBjzkjhn6RZp5OQQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q3N/+4+0";
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D78D40713;
-	Thu,  5 Mar 2026 19:07:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEB6C116C6;
-	Thu,  5 Mar 2026 19:07:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 15DB743C8D;
+	Thu,  5 Mar 2026 19:08:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1400C116C6;
+	Thu,  5 Mar 2026 19:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772737672;
-	bh=5pMLMYsqUq30caMaqSsCRxg/LUKm2ZwH02Nogw/kZgk=;
+	s=k20201202; t=1772737716;
+	bh=rFxDMFnHn7NVWKzcWxLVfwwtfRfhIslRczAFZUg6KWY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Dj+S9NqJtdWz6RBKFzR5acMgUZFQJ3W9fnbktBvz0MaAXoouPnMmfQ67JZmI9sVaH
-	 XQQn6nGUQIhWbu93psky7lo+eqRxXjl34agykwtcFCvJvewXz2H9sBqggtK338M1DH
-	 xMqK0z98I7O58rU2ZExHxgDfn0muFBjv+va4ZBeTvQF1Iwu5bpIwVn7xVrLxpkhupp
-	 DOdrZ4sFZpJOpYA2rNekO31hBtA1G0t1/f5tBT933AusAvejWixb3X2YXLYp78nijl
-	 5WoPlj74YRUASEEXS5XuY65yzkQQnpYLuAnUfI3m9ww+joTZUYCqAu4oOizyBIoyL/
-	 rUJ6jp5aQodrA==
-Message-ID: <ebb4beec-13dc-4b94-a1f8-756e7a8ef5af@kernel.org>
-Date: Thu, 5 Mar 2026 20:07:19 +0100
+	b=Q3N/+4+0i0EO9IlQjPY866MKsnGCcaV8il9G9v8afE5GenLk7AYiRbB/Y1FP1o2rB
+	 /km7o1NSkyROG4dOhtAnOplRx3jIyWDOSjpHOoNgRz3S5vqarQqw4eOzeGOoAsKKRK
+	 pBNEo3zpnTLgSEbpBOWGlEAS+sRZSsaccxeDDZnXPvMZMuA3D1Qtdp8ACveWMwDxeW
+	 JxtgRKqR/YY7Tt16ltVGihj5vXooPa8s+gxnBT9XkFW1HzTkkqySR4HYdgnwY6Ne1V
+	 FQTtGMm2qyJITjlOcPA10iSdVy53WpsJzKFrW6b5tIpK9XJ24nycfGMMJZgWIPKIcm
+	 F2Y9yv/syW9kQ==
+Message-ID: <6603615d-109f-461b-9939-737c05923957@kernel.org>
+Date: Thu, 5 Mar 2026 20:08:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 04/15] mm/gup: drop local variable in
- gup_fast_folio_allowed
+Subject: Re: [PATCH v10 07/15] KVM: x86: define
+ kvm_arch_gmem_supports_no_direct_map()
 To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
@@ -161,7 +161,7 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20260126164445.11867-1-kalyazin@amazon.com>
- <20260126164445.11867-5-kalyazin@amazon.com>
+ <20260126164445.11867-8-kalyazin@amazon.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -208,17 +208,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260126164445.11867-5-kalyazin@amazon.com>
+In-Reply-To: <20260126164445.11867-8-kalyazin@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A43A7140018
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pywo4t7bc7z3jr3dna9fykffoesey814
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0DB0DA000C
+X-Stat-Signature: aufkr4aozwrpxn6569ia1juj8n3wx5xr
 X-Rspam-User: 
-X-HE-Tag: 1772737673-308560
-X-HE-Meta: U2FsdGVkX1+iKq4pwBNxB6GFJXhQOo3MFZeZ3R9kEw1HM0ixHoEW3sPIgUYIWt22icyZ2sktwablwwb1lLhvyEdb9ZjeuEI3LvO+1OWpAO+YW+G95kHHCgTHWVMUF+viEADwCpqkJPG6C20NbKqmovcgv1os6+09hw3xKO/gcxLdtaFG1NuiVcImNSrBOifjraS/JDI8e/0V4iDpppqXTW+Ln9vzBR9zf5b8AEIUICIEp6QIxKM2Zn3WNxTBc1qu7azwf/lscj2y/wRlmy8YJzCaDwTAsJbXCBaH2SzM3dTokAPJyEBDvIkEpCWOYlUHhae06mAqoHhBkY7oVqc5DnXheHjjv8tr3X3msulPD8190m782PoVSKFu1HlgG6s+JFxAMnAAYVVhemLF94qMNBSyYYl7VB0pk3g1cTs0+ICpc5QeaXUaUzLYq+DPye2dZv3ikPJpZJfBD2aKuEAu+L9qH1FuwtQ18B/rk2c03LUSet8iXOmIY3NEuKs5fr7BwfcKK/qssjIo+gWe5Z3e53MgyZ164wPYsulvyWexkMH6McLiGDRyk4oKlPlJprS1T1SEn6NQTGCIo3KXSRjK9SjJtIqEmHWRtELcij3UI7ziSZr4ghRo4va7r2vhxN608TG/tJSDO5asojAuqxREBge+E5te/N/2YYdwDmg9OPN8BBpJls/9Wyg/91Dg5vqqhhnvvoALTkhSNxfMiAiLIePei50u7JWkkw8zc56BR5KKAkZElWVxhb/gr1dupqLFVLWDZ52jk8qO7KOn1HxCZjPukcqvy+2B9PdMhEWsw+DcDMDxPyZbs54ZN8F+KVOl0JyIpA99P4S1BJMYHOp9lAmKnxsVr+k+V/si9+a6rjsnvLOQrHFtKKzqVKqHgDd4oXnPyI83d5jY1YTTbi98Nj2XhmVtD3z5xHwBewe8FpHjRkAHni2ftHzbTpVcRruEsmFBAZsN9ttQFqp8HkI
- xD4/qGRm
- XlfCFMHPknd84yuXQuXg2fSDB+DO+yTW2v9EaC/tDKH95e9Ey5CmpMDCX4mMSj380xmJT1ucP3Jwd2YQsw97hOPLbGCMu4qvFHOuVSaiNovYK+XIaw1KLub+QWJDUJtIxM3IYQLR34QfYFgSrHUHiFF5jyMUV/xJ+b336FDPY4WUVU/3y0jM9+ZBbVSIR8xz80UMG6lZDQnLj5g2kH23DVlR8C4Wv+iTBRi0VA7mXFaokv1enOy5I+NqkKNoX7dsQq21j0otxBmdq989UqorSZbWPqixoj6VM+cV0YmcfVxW94Z8P3KdHQ7eT3F5AF8UGnQ2552fFyNmmOp0Il60USH3cl42DqckkWcXsq6ZcGRuqhoU79IQdNVdSyMpm+scNdn+Ps1OjfcGy3cX456GzKrvmZwbhvEBpK7WsjbfnXKJ8n1208FXWtM3H7XmZvxyDKhVb
+X-HE-Tag: 1772737717-442041
+X-HE-Meta: U2FsdGVkX19Ycgo1BIuEjYc1rRf3pcFKSMbEaGZGOf9Na1QwQhHz6DvMw8M1RLd+A0zbMXofzc6WFMhs7an4h/q2Ui5x1oKQ86BuYCw66mMYsyXcdz57/o5N4fws/aanPNScpgZmnkE5w1aFu9u1fyODEjIMhKtm6NNMq0zctDQEn0DQrlY1XU7084KA4/R+ncqJZ+YjZZh+wjMDMa2aj++xSrRICYqQLTMM7nKxzQmW6YXgU+KyC1ZpBvEBTgA4tgMxRxj1aXPkL8LQBe5CH/LynmGD5JT8cSyuc6vpG/XGVo1CHeunRx/KKpw9WDD3cb11CcqlPwDS/97Lwd8FyfByI/wXmmvs4hIbw/Pm7aRYzwkQOUPgfMC0rwqIm9/M/b3jkorL5D49N3K7c6fw6qdwwAQfDVe9D+kzJaI5ruoB5jFkUpo5CeZ/mkJLkFIvACC3QFODZCKBYC9JjwjFk4eBpt5JXt/sf2/25U0QeqbJFvSpARqKQuu0FBbyDmhlRa+7TEoBiM/QoU+0TSxHFbC+tLRZij1nukxt+birVys/C5XDmvLplr90edSPxlb9ePgg4GagzfHcDba1aRmA2ysO76JG12haZ0FJE/oR/NRAWTzYM5W3QdVGseUJiQ3JSZ33R8RX9fGt/xbmc3vgEUmWvfUuAKYCai0kqUPj9nliJafbwuu4E4G0cApv7OQvnn1HsiWvMPTwozZ7aBEMfUeHjRfm68YRySMyz+uBe8VPF5gFUsLXDlnHDMhu1eiVCHVAKKp2Lc4PIKS7fhT3TohdoJAyDqdf6i+uDIMPxvtRzho2WNNQpoa1Oc3qMcqnIaMZr5OMaKdHc/lknHwmjmJoxKxopLHMjQg9ib6LEBDZY3kFUvrffnKGBIso8dwoLUT6z1WCL9A60F4ov7F1YZNOmFDf8ehln1XSXcGlqE+ShYbCStPLcmx1NJ7VxHNVJh4wfKoEeyVDQjeNNVs
+ N9MEB3n4
+ gdTxdi2Xu7eOE8pSfYXvvUR0gN3bUsVLoaQthj8XMDmkRUf2KJHqWXEl/ylNoXtbHZKrxTqpKD7f7ZyLJkN7WnBt8Efoj2X0BhW5VAxq162lTgQ02iUSFqATpxVIUf5xYlHu21fKZePfTrSbNEwS+XAXQMV9LoF1R9+99Q0GksGOefZZAax38IaUhheEP5qvglVG4SnUugB9jMRFnYI6+AKLgujoXrxqBwRaxjsgACsGejKovL7hhVGxlR7VDOoHBYucKSnewVi21RvQSKpvuUf2smYrmXij/ryutI44gO4WOYQfS2CP0LeLsIM8xFjZrVsTR5TS+3gcfEd16vW0l/zGStQLt9sQXLiCeZPyHrTJmOL2dyxIS5mZMtQ+YXa75dH4xPHIynSElnW4FWn1zyZ0DI6QLIUDRckMpfZLrwY0DUV7b0jId+ts0MJeHbFxDqDlLHwUczefUXt7zpYWqO8iSmKX0hPT1/UUCcrdxK3FAUy0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -226,72 +226,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/26/26 17:47, Kalyazin, Nikita wrote:
-> From: Nikita Kalyazin <kalyazin@amazon.com>
+On 1/26/26 17:50, Kalyazin, Nikita wrote:
+> From: Patrick Roy <patrick.roy@linux.dev>
 > 
-> Move the check for pinning closer to where the result is used.
-> No functional changes.
+> x86 supports GUEST_MEMFD_FLAG_NO_DIRECT_MAP whenever direct map
+> modifications are possible (which is always the case).
 > 
+> Signed-off-by: Patrick Roy <patrick.roy@linux.dev>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
 > ---
->  mm/gup.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
-> 
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 9cad53acbc99..e72dacce3e34 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2737,18 +2737,9 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
->   */
->  static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  {
-> -	bool reject_file_backed = false;
->  	struct address_space *mapping;
->  	unsigned long mapping_flags;
->  
-> -	/*
-> -	 * If we aren't pinning then no problematic write can occur. A long term
-> -	 * pin is the most egregious case so this is the one we disallow.
-> -	 */
-> -	if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) ==
-> -	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE))
-> -		reject_file_backed = true;
-> -
->  	/* We hold a folio reference, so we can safely access folio fields. */
->  	if (WARN_ON_ONCE(folio_test_slab(folio)))
->  		return false;
-> @@ -2793,8 +2784,14 @@ static bool gup_fast_folio_allowed(struct folio *folio, unsigned int flags)
->  	 */
->  	if (secretmem_mapping(mapping))
->  		return false;
-> -	/* The only remaining allowed file system is shmem. */
-> -	return !reject_file_backed || shmem_mapping(mapping);
-> +
-> +	/*
-> +	 * If we aren't pinning then no problematic write can occur. A long term
-> +	 * pin is the most egregious case so this is the one we disallow.
-> +	 * Also check the only remaining allowed file system - shmem.
-> +	 */
-> +	return (flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) !=
-> +	    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE) || shmem_mapping(mapping);
 
-Best to keep this split and a bit more readable.
-
-/*
- * If we aren't pinning then no problematic write can occur. A writable
- * long term pin is the most egregious case, so this is the one we
- * allow only for ...
- */
-if ((flags & (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)) !=
-    (FOLL_PIN | FOLL_LONGTERM | FOLL_WRITE)
-	return true;
-/* ... hugetlb (which we allowed above already) and shared memory. */
-return shmem_mapping(mapping);
-
->  }
->  
->  static void __maybe_unused gup_fast_undo_dev_pagemap(int *nr, int nr_start,
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
