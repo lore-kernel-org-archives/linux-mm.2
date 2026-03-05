@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C4BAF30950
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70401F30950
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:55:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 073986B009B; Thu,  5 Mar 2026 06:55:12 -0500 (EST)
+	id D7F046B009D; Thu,  5 Mar 2026 06:55:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03A6A6B009D; Thu,  5 Mar 2026 06:55:11 -0500 (EST)
+	id D46246B009E; Thu,  5 Mar 2026 06:55:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7F066B009E; Thu,  5 Mar 2026 06:55:11 -0500 (EST)
+	id C8A136B009F; Thu,  5 Mar 2026 06:55:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6F0F6B009B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:55:11 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 962E7BBC4D
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:55:11 +0000 (UTC)
-X-FDA: 84511853622.22.0DD97FC
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C701318000D
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:55:09 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EHiZT0m1;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B9FA86B009D
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:55:22 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6DB4413BAC8
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:55:22 +0000 (UTC)
+X-FDA: 84511854084.07.8AD10AA
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E4D63C0007
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:55:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G9yd0bJY;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772711710;
+	s=arc-20220608; t=1772711721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5rM3hQDqpUHUQyzUXFcLhuGKQoF0cAvo8SOoxm2ygg=;
-	b=t9z/xumfyjNqNCPuKbGME//Of1NPylInVC2zSMCLwluF1ikBPpY7r9DovGsjPJXNAqo7f/
-	7h3vHh7Td5N/GmPpGHwLIhrVFdFCKlDMcHb8INYXRTr7qWvzJT/e69KkpTRUD4JT7V9EiN
-	Ie/pxCcmi+6aMNhgq98tK9zfgNsE0zY=
+	bh=r3gH8AiiD/E862U1vIIy8+gSWs5lK6UcmktqNCNUwlo=;
+	b=BuyRGHDz8Ymi4EbytZOfBH4PRp3o4pnUT26ywP+vatpAXuKYSowrApWPjthGZGzjzN2hYX
+	w3ATTiIUnc/krTKahmxfuXMU3o0t+GT1HJQqdsJzDIGT6t5Jv6bVc+mZbIk0t8flMy+AhC
+	BrLlTLfb+c50UO0wRq69Dxd3SG+svt8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EHiZT0m1;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=G9yd0bJY;
+	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711710; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711721; a=rsa-sha256;
 	cv=none;
-	b=aKLvpQsYJc9YU9vlSOk/HG3Or3AwF1Nx8d/XwUKSNmT+iqrb3Gsnw+27YE0qEPxKbjc1MV
-	aL9IeuPgExWCuKym67VPUrWe7qYeRG0oogOWEgigHTtnR3QRv+7I9LiZgLQdas2eLBEWls
-	LPcfmNWVTF6Upf5TXbF1hA+QuDCxAos=
+	b=d6V7UhRgs9a/dePYlr0fkDx97ZtD+fYJYttzwfr1ACAHkuXd6Xy8ZfeG1+WnRCWHdRBCYl
+	p/3Q2k5dKZ+HRChrEgMqQyj+s0vJmOz5aYkwJEDtiaG0ksGxXO0oPYN4sK1qICWxe8IZ6p
+	3CvaCVzrOSuJj8fuUIPF2elRpkErXR4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772711707;
+	t=1772711719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n5rM3hQDqpUHUQyzUXFcLhuGKQoF0cAvo8SOoxm2ygg=;
-	b=EHiZT0m1ECW8ox899R8iliXjZOJ/dD5ofGIxpwnahXjLK7nGEq2KPAT8hIpVKLSkfd3XMV
-	1zfY7VUYw1qKkg0kJQFPnHTzUzwtkcCH4LtE1a1F0+ZdN4Jv+Hvi0SnTsHO7YhmUjT403a
-	0vA3DqXIPQvYqmbULJwouIywxjhB0IY=
+	bh=r3gH8AiiD/E862U1vIIy8+gSWs5lK6UcmktqNCNUwlo=;
+	b=G9yd0bJYkANT5mpRufTilwpomjklsp+K616yc33Ot9NCkpPjKnwko/VPQyc2OPUkwUySPv
+	e8C3Dx4abZrIyiaAP5f5yPyb1Ng0JG4ShmU2TDZ7W0/cycBFg8GDOFAn1NTWxuXarYubof
+	nk2CernPtz5XauqcvXxSuGVD+3B5xWo=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -88,24 +88,21 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Chen Ridong <chenridong@huawei.com>
-Subject: [PATCH v6 06/33] mm: memcontrol: allocate object cgroup for non-kmem case
-Date: Thu,  5 Mar 2026 19:52:24 +0800
-Message-ID: <b77274aa8e3f37c419bedf4782943fd5885dda82.1772711148.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v6 07/33] mm: memcontrol: return root object cgroup for root memory cgroup
+Date: Thu,  5 Mar 2026 19:52:25 +0800
+Message-ID: <e9c3f40ba7681d9753372d4ee2ac7a0216848b95.1772711148.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ziozck3huphi9mst7buiouapxznqjymf
+X-Stat-Signature: msmbpzbxdq475uxti3bjez51z9tjfdho
 X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C701318000D
-X-HE-Tag: 1772711709-342033
-X-HE-Meta: U2FsdGVkX18cnQNLzKfdAlc80B9GNKGkt5Ww7vdrJLF3QTAQR8Th+zW7tWKCziOjSl6V1RN7nrBlxknXNwRYpBxsuY9Ru3QK4/M4OozVa+c30RGJ7IconeaLjFS+0wBrqu5cM4GsevQc+0gkWbkf8DEyack1kkOtPBcXrCnRLSK/S8MLpswEkIG22gY/Hno0sqxMPK++bazppuN4uVphb9zdYjv+awlbXqQOYY+GkZ+D3uYT+lKJ+emRIlSuKki6uJWJYJwNL1o/3nG4gMi9UTRCbF8a3vwHgxFpYH1pUoXAloy2z2wfxk/xa2GMDTVo/8SuRtIao6rRXip1AhbJG3HXGJ8adBSNqX2TvN+uWice8KizMYWCYwYPB2iXYtIxxI7GEcLODhTeGOqgoojea/f3c+stlkWyS4oM1vo6YBj/n5MxK7tBf/rhZA6pXg4px3N5coH86tYZ21URKmfPXQY3X9et/23NX0cnBoTn5oSMooKIHFDeZ1lmJ++GIIox8JQsut8S1n8yBNw28mysDcsypwGyhZ+Rh6txlQ6APOiHRSx3e86bevY//ltV1JhVSEOWsF2erpvHCydMuz9p//jIJrAGWqgi71m6wXcH/9f8DdOY2Mct/UQeY+XFsw4QwEr2BDUhtn3gp8p3iVlzll/6HD5mllpuCNXY2GVF/h02Mfx/pZweZc1dUnKaMXNISMAYkAr+HiBgGl2WzJMknDHUQCds73Ye2P794gyoyH48fFhEz9pPU6t99gynOh/zvZg+iE8SUIUwPYIfpCrIsQ23jCK4Z7+ZPxUR/FROnDYjyKWqTXgYPA+G0iBwYuH+QAgFIXAl5o25hFZ9ig36RXW2O88Rmxzv1o9ZpaDqu2CRQIkxnVACWkq+57UG3ERR9TvQZkCncvmU0FlBq/iJ77N553mAvGaG7skHjEUQNidvdFOmr8isgGtDrZ/TgABw6g2iOn4aQSj074wZfA/
- yWT5ZgDw
- LNkwhWOnigKeGh+5SaezZlGC8+Wh1bF09jfg0mTxiSJcxZVch3zc8lZOv3UhfK3ii/BdQEPNSQf8XcdMNTBW9+4i7X5pQgik+tXxCSRHk1s88WE9q/6haTeUnJcmHmOyoyk730nZREAbKsxeGni8L8cIm6DWC4V6gdipneim2oOghVlmUtHEJ5w3z71CIh0X0E/hsn5KOk5G1iAykm70bbg+WOdOWEl66hs1wgrbBa1sBxl8K3qaOFoPcUm8GMAtxWTfspt++7HzefHFgmRTQ9LUqZVs04oc+yvbk
+X-Rspamd-Queue-Id: E4D63C0007
+X-HE-Tag: 1772711720-554846
+X-HE-Meta: U2FsdGVkX18DfcSwoXA+pM+6Cf2rdEMgtPnLzvp6INYuoBfbuFuqPNHuFvwy7YjMVBtIpIQCqHtcFfyN2FrgUlmnwmicpqvNbFHW4wOZ8HhDxvuEGPuHJnAYxeUZ9SJhqWlXM358o92O3RePQQZ4p+G/A/4rhQNuCusxVaCIN7KKQ+6Bca3pZAh6K/xU6uk+Q0wa06g0jlCSFkwuBKvEjpjaO4WnduDwt9nEkQaDH5nm74gLmUyN0DIvn5adun+R+ALJjNN/WoEbnVhY7OsZXPf2wbRdGn6hCUaNJrwBLK4/4U/gHWNyjJFgd38AiNoqia11tGxBzlXJv4v25DwUdQAntp/btfNn9b9oFZZd/8utxs6lRufgULgVjvHOnqz/TtupbiqigcOlNMiTNLjmlzegTqGDCLrJw/dewML2WdxkY8HrIsdEEZGDKc7Ulgm891lTzIkYFchtwysAddWXOBs8a5PLP4TocBAa40/NMLFr73capj64seOWIOeinMAlx03mRW4L0Csh9+Drg4oJQSp81RB+vX5HttkpDi1n50yS560e7a4IisigThYJcavQo9RfnwVf3zEEf15YfMa2S2c6nXqWT5rmUwOfQTMa7JwIXk7DFgp/naz+YV4hyPDPE5Id3+ZTAw+DrX2sgDPhC2RaEwyzdAqhjaAuzLkb/9UEEd+vPZvVFt6NAANXWQ9E5dtUYeFVYAcu5a+F/P2qXHoXqZKZ07uuBRF70RnrG8vRnrlbt3utAKGcIfQhKmuIm7EnQnY+c/OXqKQhYCf77C1OYP+J7de41Aa9ReLfi124UBcE60ykCNAHrKWjxQCE0A7xnen9J/4IZH687dsXBy98jVFx7dtNnCKpp53zv5XwF7uMaaQGUxjH8SA4JL67g24R9/6ILVObmyDitBFRcQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,144 +112,242 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Muchun Song <songmuchun@bytedance.com>
 
-To allow LRU page reparenting, the objcg infrastructure is no longer
-solely applicable to the kmem case. In this patch, we extend the scope of
-the objcg infrastructure beyond the kmem case, enabling LRU folios to
-reuse it for folio charging purposes.
+Memory cgroup functions such as get_mem_cgroup_from_folio() and
+get_mem_cgroup_from_mm() return a valid memory cgroup pointer,
+even for the root memory cgroup. In contrast, the situation for
+object cgroups has been different.
 
-It should be noted that LRU folios are not accounted for at the root
-level, yet the folio->memcg_data points to the root_mem_cgroup. Hence,
-the folio->memcg_data of LRU folios always points to a valid pointer.
-However, the root_mem_cgroup does not possess an object cgroup.
-Therefore, we also allocate an object cgroup for the root_mem_cgroup.
+Previously, the root object cgroup couldn't be returned because
+it didn't exist. Now that a valid root object cgroup exists, for
+the sake of consistency, it's necessary to align the behavior of
+object-cgroup-related operations with that of memory cgroup APIs.
 
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- mm/memcontrol.c | 51 +++++++++++++++++++++++--------------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ include/linux/memcontrol.h | 26 +++++++++++++++++-----
+ mm/memcontrol.c            | 45 ++++++++++++++++++++------------------
+ mm/percpu.c                |  2 +-
+ 3 files changed, 45 insertions(+), 28 deletions(-)
 
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 52b1d8f3942e1..f4b6158b77d8e 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -333,6 +333,7 @@ struct mem_cgroup {
+ #define MEMCG_CHARGE_BATCH 64U
+ 
+ extern struct mem_cgroup *root_mem_cgroup;
++extern struct obj_cgroup *root_obj_cgroup;
+ 
+ enum page_memcg_data_flags {
+ 	/* page->memcg_data is a pointer to an slabobj_ext vector */
+@@ -549,6 +550,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+ 	return (memcg == root_mem_cgroup);
+ }
+ 
++static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
++{
++	return objcg == root_obj_cgroup;
++}
++
+ static inline bool mem_cgroup_disabled(void)
+ {
+ 	return !cgroup_subsys_enabled(memory_cgrp_subsys);
+@@ -775,23 +781,26 @@ struct mem_cgroup *mem_cgroup_from_css(struct cgroup_subsys_state *css){
+ 
+ static inline bool obj_cgroup_tryget(struct obj_cgroup *objcg)
+ {
++	if (obj_cgroup_is_root(objcg))
++		return true;
+ 	return percpu_ref_tryget(&objcg->refcnt);
+ }
+ 
+-static inline void obj_cgroup_get(struct obj_cgroup *objcg)
++static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
++				       unsigned long nr)
+ {
+-	percpu_ref_get(&objcg->refcnt);
++	if (!obj_cgroup_is_root(objcg))
++		percpu_ref_get_many(&objcg->refcnt, nr);
+ }
+ 
+-static inline void obj_cgroup_get_many(struct obj_cgroup *objcg,
+-				       unsigned long nr)
++static inline void obj_cgroup_get(struct obj_cgroup *objcg)
+ {
+-	percpu_ref_get_many(&objcg->refcnt, nr);
++	obj_cgroup_get_many(objcg, 1);
+ }
+ 
+ static inline void obj_cgroup_put(struct obj_cgroup *objcg)
+ {
+-	if (objcg)
++	if (objcg && !obj_cgroup_is_root(objcg))
+ 		percpu_ref_put(&objcg->refcnt);
+ }
+ 
+@@ -1088,6 +1097,11 @@ static inline bool mem_cgroup_is_root(struct mem_cgroup *memcg)
+ 	return true;
+ }
+ 
++static inline bool obj_cgroup_is_root(const struct obj_cgroup *objcg)
++{
++	return true;
++}
++
+ static inline bool mem_cgroup_disabled(void)
+ {
+ 	return true;
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index aab863e1822d4..508ee182c032e 100644
+index 508ee182c032e..a60b692fb75a9 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -207,10 +207,10 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
+@@ -84,6 +84,8 @@ EXPORT_SYMBOL(memory_cgrp_subsys);
+ struct mem_cgroup *root_mem_cgroup __read_mostly;
+ EXPORT_SYMBOL(root_mem_cgroup);
+ 
++struct obj_cgroup *root_obj_cgroup __read_mostly;
++
+ /* Active memory cgroup to use from an interrupt context */
+ DEFINE_PER_CPU(struct mem_cgroup *, int_active_memcg);
+ EXPORT_PER_CPU_SYMBOL_GPL(int_active_memcg);
+@@ -2740,15 +2742,14 @@ struct mem_cgroup *mem_cgroup_from_virt(void *p)
+ 
+ static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+ {
+-	struct obj_cgroup *objcg = NULL;
++	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
++		struct obj_cgroup *objcg = rcu_dereference(memcg->objcg);
+ 
+-	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
+-		objcg = rcu_dereference(memcg->objcg);
+ 		if (likely(objcg && obj_cgroup_tryget(objcg)))
+-			break;
+-		objcg = NULL;
++			return objcg;
+ 	}
+-	return objcg;
++
++	return NULL;
+ }
+ 
+ static struct obj_cgroup *current_objcg_update(void)
+@@ -2822,18 +2823,17 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+ 		 * Objcg reference is kept by the task, so it's safe
+ 		 * to use the objcg by the current task.
+ 		 */
+-		return objcg;
++		return objcg ? : root_obj_cgroup;
+ 	}
+ 
+ 	memcg = this_cpu_read(int_active_memcg);
+ 	if (unlikely(memcg))
+ 		goto from_memcg;
+ 
+-	return NULL;
++	return root_obj_cgroup;
+ 
+ from_memcg:
+-	objcg = NULL;
+-	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
++	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+ 		/*
+ 		 * Memcg pointer is protected by scope (see set_active_memcg())
+ 		 * and is pinning the corresponding objcg, so objcg can't go
+@@ -2842,10 +2842,10 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+ 		 */
+ 		objcg = rcu_dereference_check(memcg->objcg, 1);
+ 		if (likely(objcg))
+-			break;
++			return objcg;
+ 	}
+ 
+-	return objcg;
++	return root_obj_cgroup;
+ }
+ 
+ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
+@@ -2859,14 +2859,8 @@ struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
+ 		objcg = __folio_objcg(folio);
+ 		obj_cgroup_get(objcg);
+ 	} else {
+-		struct mem_cgroup *memcg;
+-
+ 		rcu_read_lock();
+-		memcg = __folio_memcg(folio);
+-		if (memcg)
+-			objcg = __get_obj_cgroup_from_memcg(memcg);
+-		else
+-			objcg = NULL;
++		objcg = __get_obj_cgroup_from_memcg(__folio_memcg(folio));
+ 		rcu_read_unlock();
+ 	}
  	return objcg;
- }
+@@ -2969,7 +2963,7 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
+ 	int ret = 0;
  
--static void memcg_reparent_objcgs(struct mem_cgroup *memcg,
--				  struct mem_cgroup *parent)
-+static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
- {
- 	struct obj_cgroup *objcg, *iter;
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
- 
- 	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
- 
-@@ -3387,30 +3387,17 @@ void folio_split_memcg_refs(struct folio *folio, unsigned old_order,
- 	css_get_many(&__folio_memcg(folio)->css, new_refs);
- }
- 
--static int memcg_online_kmem(struct mem_cgroup *memcg)
-+static void memcg_online_kmem(struct mem_cgroup *memcg)
- {
--	struct obj_cgroup *objcg;
--
- 	if (mem_cgroup_kmem_disabled())
--		return 0;
-+		return;
- 
- 	if (unlikely(mem_cgroup_is_root(memcg)))
--		return 0;
--
--	objcg = obj_cgroup_alloc();
+ 	objcg = current_obj_cgroup();
+-	if (objcg) {
++	if (objcg && !obj_cgroup_is_root(objcg)) {
+ 		ret = obj_cgroup_charge_pages(objcg, gfp, 1 << order);
+ 		if (!ret) {
+ 			obj_cgroup_get(objcg);
+@@ -3270,7 +3264,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 	 * obj_cgroup_get() is used to get a permanent reference.
+ 	 */
+ 	objcg = current_obj_cgroup();
 -	if (!objcg)
--		return -ENOMEM;
--
--	objcg->memcg = memcg;
--	rcu_assign_pointer(memcg->objcg, objcg);
--	obj_cgroup_get(objcg);
--	memcg->orig_objcg = objcg;
-+		return;
- 
- 	static_branch_enable(&memcg_kmem_online_key);
- 
- 	memcg->kmemcg_id = memcg->id.id;
--
--	return 0;
- }
- 
- static void memcg_offline_kmem(struct mem_cgroup *memcg)
-@@ -3425,12 +3412,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
- 
- 	parent = parent_mem_cgroup(memcg);
- 	memcg_reparent_list_lrus(memcg, parent);
--
--	/*
--	 * Objcg's reparenting must be after list_lru's, make sure list_lru
--	 * helpers won't use parent's list_lru until child is drained.
--	 */
--	memcg_reparent_objcgs(memcg, parent);
- }
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
-@@ -3931,9 +3912,9 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- {
- 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
-+	struct obj_cgroup *objcg;
- 
--	if (memcg_online_kmem(memcg))
--		goto remove_id;
-+	memcg_online_kmem(memcg);
++	if (!objcg || obj_cgroup_is_root(objcg))
+ 		return true;
  
  	/*
- 	 * A memcg must be visible for expand_shrinker_info()
-@@ -3943,6 +3924,15 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	if (alloc_shrinker_info(memcg))
- 		goto offline_kmem;
+@@ -3928,6 +3922,9 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	if (!objcg)
+ 		goto free_shrinker;
  
-+	objcg = obj_cgroup_alloc();
-+	if (!objcg)
-+		goto free_shrinker;
++	if (unlikely(mem_cgroup_is_root(memcg)))
++		root_obj_cgroup = objcg;
 +
-+	objcg->memcg = memcg;
-+	rcu_assign_pointer(memcg->objcg, objcg);
-+	obj_cgroup_get(objcg);
-+	memcg->orig_objcg = objcg;
+ 	objcg->memcg = memcg;
+ 	rcu_assign_pointer(memcg->objcg, objcg);
+ 	obj_cgroup_get(objcg);
+@@ -5558,6 +5555,9 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return;
+ 
++	if (obj_cgroup_is_root(objcg))
++		return;
 +
- 	if (unlikely(mem_cgroup_is_root(memcg)) && !mem_cgroup_disabled())
- 		queue_delayed_work(system_dfl_wq, &stats_flush_dwork,
- 				   FLUSH_TIME);
-@@ -3965,9 +3955,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- 	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+ 	VM_WARN_ON_ONCE(!(current->flags & PF_MEMALLOC));
  
- 	return 0;
-+free_shrinker:
-+	free_shrinker_info(memcg);
- offline_kmem:
- 	memcg_offline_kmem(memcg);
--remove_id:
- 	mem_cgroup_private_id_remove(memcg);
- 	return -ENOMEM;
- }
-@@ -3985,6 +3976,12 @@ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ 	/* PF_MEMALLOC context, charging must succeed */
+@@ -5587,6 +5587,9 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+ 	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
+ 		return;
  
- 	memcg_offline_kmem(memcg);
- 	reparent_deferred_split_queue(memcg);
-+	/*
-+	 * The reparenting of objcg must be after the reparenting of the
-+	 * list_lru and deferred_split_queue above, which ensures that they will
-+	 * not mistakenly get the parent list_lru and deferred_split_queue.
-+	 */
-+	memcg_reparent_objcgs(memcg);
- 	reparent_shrinker_deferred(memcg);
- 	wb_memcg_offline(memcg);
- 	lru_gen_offline_memcg(memcg);
++	if (obj_cgroup_is_root(objcg))
++		return;
++
+ 	obj_cgroup_uncharge(objcg, size);
+ 
+ 	rcu_read_lock();
+diff --git a/mm/percpu.c b/mm/percpu.c
+index a2107bdebf0b5..b0676b8054ed0 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1622,7 +1622,7 @@ static bool pcpu_memcg_pre_alloc_hook(size_t size, gfp_t gfp,
+ 		return true;
+ 
+ 	objcg = current_obj_cgroup();
+-	if (!objcg)
++	if (!objcg || obj_cgroup_is_root(objcg))
+ 		return true;
+ 
+ 	if (obj_cgroup_charge(objcg, gfp, pcpu_obj_full_size(size)))
 -- 
 2.20.1
 
