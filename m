@@ -4,94 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30BC5F30946
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 12:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F940F30955
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 12:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51BA06B00AC; Thu,  5 Mar 2026 07:30:52 -0500 (EST)
+	id B73936B0088; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49F496B00AE; Thu,  5 Mar 2026 07:30:52 -0500 (EST)
+	id B20CD6B008A; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A1B56B00AF; Thu,  5 Mar 2026 07:30:52 -0500 (EST)
+	id A2D1D6B008C; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 283396B00AC
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:30:52 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C10D41A011A
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:30:51 +0000 (UTC)
-X-FDA: 84511943502.09.1307C5F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 5783D1C0004
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:30:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tmwqJizx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FFA96B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AFB1160133
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:41:46 +0000 (UTC)
+X-FDA: 84511971012.01.BA77018
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 70CD8100003
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:41:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBtTsoRZ;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772713850;
+	s=arc-20220608; t=1772714504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BgR2oNoL2KIF+7/QVFVoe0KjSJzKstUeaKxTsM4JfkU=;
-	b=CnAYgLlhXY7lKI+wy7kdvNGPugeAD0KdiwEAwkrmL+B3r6PvE6K06mV/6v46gUmKmbHOhH
-	RAdwn4G6Coly2ktwbvNl3R8JX24UU7eHEqKNTfi32ksQsVVbp5ZtdJKAFOEwJOkNVNrbPL
-	zx0GxS4W+hQVhFhP1EKg7qQJZ6rtiUE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772713850; a=rsa-sha256;
+	bh=r6kTVyaqj0G1O6nV4vmYiyM60P/DuKY289QlCUAIA4Q=;
+	b=wVRapblXYuWzzd0Lp2RI5fz0H7BRzQ80noXi1WDl3SP8A3u+0/4+gOo37kMlA+4kEncBAd
+	VUKIijt8ldueoaTaYAypoiNDJmmklOTthOd22AUOi9PKpDxYl8nv5qoxRHZFSULfZ64G3i
+	RjvGJr6k5DH/ui+vTjE4k0VxDst1xxg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772714504; a=rsa-sha256;
 	cv=none;
-	b=bq4/5UEgTbRpsdAVSoxAlL3zF18KBxf3MHEg5CkT2nMzTNCGfDw3gyDWSyy/hv1ln19H6R
-	DITUz5dAC35ya25rcigqwbQeAFYCSI2onDCtpW4OGQ7UGDlHDmWwfrU6hFI3dxVi2Iapnq
-	elYRC4nTTgngDtArHh/TSMzjt5XHPxQ=
+	b=KbixGm+zgXqTfplkTz9V4KReWTlBhhrDh71GOIkao/RdnfQFdhbBDy8SJG16aILcAwUk1V
+	26x/GSIWwpK2x79Tdkz1fJxO3/Kp0CVHp2/pdiR28hqpt47XvvQ1j3Pk2GlC4ZBGDRXcSu
+	MjxseVAag/H8Az2ZpJVhw/F1E8opCpc=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tmwqJizx;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBtTsoRZ;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D03861339;
-	Thu,  5 Mar 2026 12:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D708DC116C6;
-	Thu,  5 Mar 2026 12:30:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CC5CC43C65;
+	Thu,  5 Mar 2026 12:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E010C116C6;
+	Thu,  5 Mar 2026 12:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772713849;
-	bh=ou6P22AaUMwtzK/lZK4+cuILdeYptAQivhv6iGAoAfI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tmwqJizxPJNI+D0Sw/K02tGdZCnZDkDoG5eim6r8+3PRJSn0+EI2QzONUMRGd4IWX
-	 gQOtFqxdl4Kz9hWMoR0DCcegkXIjnMJJOsl8E5CAcfTi7cLTOFnoqc183Z4rzi4Y4q
-	 qB0wqhH4rD5Yc+YD9avyfRhhYGMV0fX4y4c1fso04d2AQ+naaGlJNBxUBSBiaOVSCD
-	 Skv68MX2O7k3kLPhe1KiHJV/7x9PfEMoqTta/KBp1TBp5nR/JbaZCCxoMGpSFd68Af
-	 PdS/M7ZD6xXioibwlbYdsb30XhzDxVeX6x8Nw1zi4GwHyjyQiI17gruAuKmC7yAqWn
-	 tLEPI+JKnzMRQ==
-Date: Thu, 5 Mar 2026 12:30:40 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 1/2] mm: thp: avoid calling start_stop_khugepaged() in
- anon_enabled_store()
-Message-ID: <6eaeeace-7b0e-4465-8bb0-88cce2b13bb9@lucifer.local>
-References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
- <20260304-thp_logs-v1-1-59038218a253@debian.org>
- <ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local>
- <aalXA_nP2k2OrHhc@gmail.com>
+	s=k20201202; t=1772714502;
+	bh=GSpJjDvuqvZZWtZxS0tUNmCUsD/z6lCfyZgI5ChtXhA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BBtTsoRZI1AAa5AhxDFLr6PHb6nNNCx2tgnSGXlFaEbr5z6NXjUVOL0BoVVAzaVwj
+	 HXtj5IPQpiNaVH3E7pCfEDNJVbO2lLqPCQv4R2X/U5zORVGFXOYKSYPOf3D9OQ/KTv
+	 ufBN0SLx6hP0VP29P8obMF0/amalcG6a+qDmRSEENU6p1O6CsBxX1GiomALgiBkgme
+	 MlcsMZILGWpC9c5Eqf2MjyXAiC5Pd0U+MB16izfXkWNk0W/Tk2PMy/lT/ABue7Xd7k
+	 wuxou9PUvzQABvILzfdbL5aXwXk27bByo6UOdCE3ETHCXXCXk3C+k4m/Hdu882EFFv
+	 CL41ohw9G5wjA==
+Message-ID: <ae48168f-c88c-4f74-8cf6-ab90f6c97c68@kernel.org>
+Date: Thu, 5 Mar 2026 13:41:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aalXA_nP2k2OrHhc@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm: thp: reduce unnecessary start_stop_khugepaged()
+ calls
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Kiryl Shutsemau <kas@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kernel-team@meta.com
+References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
+ <aagSrIwiFM7GaL1m@thinkstation>
+ <e46c8bd6-9f6b-4985-bec5-fef6c8f33dfe@lucifer.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <e46c8bd6-9f6b-4985-bec5-fef6c8f33dfe@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 86bdapc7uijy8cm6y1y998hme1hgk9e7
-X-Rspamd-Queue-Id: 5783D1C0004
+X-Stat-Signature: b4qjocmx8w3ptbz9woett9dnxpjdxrgc
+X-Rspamd-Queue-Id: 70CD8100003
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1772713850-312995
-X-HE-Meta: U2FsdGVkX1+FZxx9hbsegMSfHJqaAP+c1En9DjBEHzzXaTGWTwti+y8OU7l/OHB+KzpUZlf4tYtogG32a0xwye+ubmlPGObav7qhq6jBNhIzF6/FgPHKzWjvGd3qyRCUlWkxL9ANAlWE3L2t5ngZm/fju9dbnLw2eShcLTEXxgvXTvFGjm7puJrezPDuBG/KMvlJLvmnR4pwDRrZ1NBrbOlyHnfry7jmVUghsnUNb8B51n89n5k9LAu0NXLIjN4MAaRfhXwr4/A99jST3r3tIi6v21aq8+cX800MU0rUvOdeMiUe7CkYp/BGpNSsfXFrEQX/YJiKQGd9krJhz/V8AlqDYuvPydzQtEcFVSeGQVtDmRO1mSdU7KVHJWve53KMtW5WU/C4qDBGPedP4QrNJI8TOaTf9qU1DbbKx0JnYwl2iOXIK9A/2Sy1eVsUN/JBiS+pcUd2avNBpYqGTHEP2Gsmqjo6Zg586X/f6an6htPWzJgYN7+et0C2Ygqpz1T/iTYeJXLbawIsQhjJmiOAQoZIM80yM/xS2x4z6r6+3W2ro7rDt6AJi4GgAtVPckz6dbeVUdC6STI/MtcpkvDKH4wnCQmusWiUG6U0EZH8TMFRoE0qbJqpIpZgAzRO5RqTku2rWPoXUUxhJFRn+jDwM75ocWMCnS3WMjidPS2/oFGlbCMpQfD85W/udv1Cl9fuYboRP1Zvzxq+68HmCJvvKr0ToGlx5FNypzB0r8ETCnfkO/2pDDXpKAizbWi9qNswoPAgjsUyH6JPJmwVkdHXvrJQFUphLjx9rCV1Z2SChR842UlROTLNcOqfvkeQHRIeLi3JMnOjNoO2jFzyf3yFPrysCPhEhV0B78nsIcXlXu7NdqP3rlOco0cPNjbGf0OAFJRkmm/RlrYegxRLvInHKlXezRMGi1jgY/kDnQ2QIeumGgfpEbNTaw==
+X-HE-Tag: 1772714504-95702
+X-HE-Meta: U2FsdGVkX1+hHNNJ+Yu9rVeHN9b+oiKBIM8YBl/AN9G18ABzagpkrDdAWLSIiivHRW0uHZKQl4DHRSCwTB3LVJkxmJ9AQvp+N2GtyikY1Q3yJTAPHfnEsP4dv98OJJVufhUUxlsTOwzxQ9aiehF01DM0gK0GqEk8T0d8doYIm2GhCxXuuGysZrLusmZWHaNFrckYx/MLpdZ5OE/rcZG99UaqJG8HFI1es5DwEUqzd19G+CS7nbJ8LDTzWMGS/TYmz0vse3Otfgx2R7sEwkbcLjgBoMWbt6HPeX5FQCZ4FTqCpozyhJcdRr1Xn+yUHXsRVliKyVIUZQ8KoZsf1ryoM8zyEib6hGMtI9u9oWmVGoG53SPGRr8M0Ew1tgkZo1koqQz7E8Z5sp0fTz/3R07fO/1yEyBUC0SNCRj7MZuwVWztyzhRaQU3pWBFv238crqk/FHMm8+AQ/oz2IuQsOK9D2BGA9XppXnPJau0yoOD0pkBwenaGpTEcncXME5794O4RvXgFXtq3DHSXOiWoXJXuxT+5NcgoT9Y1T7X+F8PsTnvsvMIDyxx44j3GTjzcA0h/B4hfTmDQ8Vbekn1KBTcLZ9v9p1BmBtD7KkHV2CcI4mcMM9H2b7+MWAkF7nQvDd55+SuVyZ0JaTBNSeCwiTJVvElnVt13TWMcTxwHbZpyi+wpLIW9P0WtNvkxqIBW7UPwE2wqRMDRdln+/tRlUZg7/dhBV49ymcv+Dwrt3r76k8VQOv/8Pudc97jiEELDRzIB80eYEK0h5KJJrZh6sjPJtebKT6oT/8oMWaWMGsliGRQk8t9s09NmTF6U+nkxoxADCoyt0bh7b50YfLL5Y+23UEGtyOmDLrjv+VHKayGVt6DpFWWheSasetlZD754ffTNoaWWUSse5SYSVUceAmMqofykwbuwL8Me3lwj6oArgP4UG81SIURj9itnbDZQE7OL8MAtRcrhRdSlRvDcli
+ eiwbUG4S
+ BB7OqwJWnPJvcghg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,196 +150,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 03:48:07AM -0800, Breno Leitao wrote:
-> On Wed, Mar 04, 2026 at 04:40:22PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 04, 2026 at 02:22:33AM -0800, Breno Leitao wrote:
-> > > Writing "never" (or any other value) multiple times to
-> > > /sys/kernel/mm/transparent_hugepage/hugepages-*/enabled calls
-> > > start_stop_khugepaged() each time, even when nothing actually changed.
-> > > This causes set_recommended_min_free_kbytes() to run unconditionally,
-> > > which is unnecessary and floods the printk buffer with "raising
-> > > min_free_kbytes" messages. Example:
-> > >
-> > >   # for i in $(seq 100); do
-> > >   #       echo never > /sys/kernel/mm/transparent_hugepage/enabled
-> > >   # done
-> > >
-> > >   # dmesg | grep "min_free_kbytes is not updated" | wc -l
-> > >   100
-> > >
-> > > Use test_and_set_bit()/test_and_clear_bit() instead of the plain
-> > > variants to detect whether any bit actually flipped, and skip the
-> > > start_stop_khugepaged() call entirely when the configuration is
-> > > unchanged.
-> > >
-> > > With this patch, redoing the same operation becomes a no-op.
-> > >
-> > > Signed-off-by: Breno Leitao <leitao@debian.org>
-> >
-> > General concept is sensible, but let's improve this code please.
->
-> Ack! Thanks for the suggestions.
 
-No problem, thanks for the patch! :)
+>> +
+>> +	/* Check if anything has to be done */
+>> +	if (hugepage_pmd_enabled() == !!khugepaged_thread)
+> 
+> This is horrible, better to break out the latter expression as a small static
+> function like:
+> 
+> static bool is_khugepaged_thread_running(void)
+> {
+> 	if (khugepaged_thread)
+> 		return true;
+> 	return false;
 
->
-> > >  		spin_unlock(&huge_anon_orders_lock);
-> > >  	} else
-> > >  		ret = -EINVAL;
-> > >
-> > > -	if (ret > 0) {
-> > > +	if (ret > 0 && changed) {
-> > >  		int err;
-> > >
-> > >  		err = start_stop_khugepaged();
-> >
-> > There's a caveat here as mentioned in reply to Kiryl - I'm concerned users
-> > might rely on the set recommended min kbytes even when things don't change.
-> >
-> > Not sure how likely that is, but it's a user-visible change in how this behaves.
->
-> Is there any motivation that users are retouching
-> /sys/kernel/mm/transparent_hugepage just to trigger
-> set_recommended_min_free_kbytes() ? That seems weird, but, I will keep it in
-> the change.
+return khugepaged_thread;
 
-I mean I can't really think of any, but I don't want to risk breaking (weird)
-userspace.
+should do the trick, given taht the return type of the function is a bool :)
 
->
-> > From cb2c4c8bf183ef0d10068cfd12c12d19cb17a241 Mon Sep 17 00:00:00 2001
-> > From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-> > Date: Wed, 4 Mar 2026 16:37:20 +0000
-> > Subject: [PATCH] idea
-> >
-> > Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->
-> Thanks for the idea. Let me hack on top of it, and propose a v2.
+> }
 
-Thanks!
+-- 
+Cheers,
 
->
-> > ---
-> >  mm/huge_memory.c | 74 ++++++++++++++++++++++++++++++------------------
-> >  1 file changed, 46 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 0df1f4a17430..97dabbeb9112 100644
-> > --- a/mm/huge_memory.c
-> > +++ b/mm/huge_memory.c
-> > @@ -515,46 +515,64 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
-> >  	return sysfs_emit(buf, "%s\n", output);
-> >  }
-> >
-> > +enum huge_mode {
-> > +	HUGE_ALWAYS,
-> > +	HUGE_INHERIT,
-> > +	HUGE_MADVISE,
-> > +	HUGE_NUM_MODES,
-> > +	HUGE_NEVER,
-> > +};
-> > +
-> > +static bool change_anon_orders(int order, enum huge_mode mode)
-> > +{
-> > +	static unsigned long *orders[] = {
-> > +		&huge_anon_orders_always,
-> > +		&huge_anon_orders_inherit,
-> > +		&huge_anon_orders_madvise,
-> > +	};
-> > +	bool changed = false;
-> > +	int i;
-> > +
-> > +	spin_lock(&huge_anon_orders_lock);
-> > +	for (i = 0; i < HUGE_NUM_MODES; i++) {
->
-> > +		if (i == mode)
-> > +			changed |= !test_and_set_bit(order, orders[mode]);
-> > +		else
-> > +			changed |= test_and_clear_bit(order, orders[mode]);
->
-> I suppose we want s/mode/i in the test_and_{clear,set}_bit() here:
->
-> 		if (i == mode)
-> 			// set for mode
-> 			changed |= !test_and_set_bit(order, orders[i]);
-> 		else
-> 			// clear for !mode
-> 			changed |= test_and_clear_bit(order, orders[i]);
->
-> For two reasons:
-> 	* you want to unset "i" when i != mode.
-> 	* you would have an OOB when accessing orders[HUGE_NEVER == 4]
->
->
-> >  static ssize_t anon_enabled_store(struct kobject *kobj,
-> >  				 struct kobj_attribute *attr,
-> >  				 const char *buf, size_t count)
-> >  {
-> >  	int order = to_thpsize(kobj)->order;
-> >  	ssize_t ret = count;
-> > +	bool changed;
-> > +
-> > +	if (sysfs_streq(buf, "always"))
-> > +		changed = change_anon_orders(order, HUGE_ALWAYS);
-> > +	else if (sysfs_streq(buf, "inherit"))
-> > +		changed = change_anon_orders(order, HUGE_INHERIT);
-> > +	else if (sysfs_streq(buf, "madvise"))
-> > +		changed = change_anon_orders(order, HUGE_MADVISE);
-> > +	else if (sysfs_streq(buf, "never"))
-> > +		changed = change_anon_orders(order, HUGE_NEVER);
-> > +	else
-> > +		return -EINVAL;
->
-> I think we can simplify anon_enabled_store() even more, by leveraging sysfs_match_string().
-> Something like:
->
-> 	static const char *const anon_mode_strings[] = {
-> 		[HUGE_ALWAYS]   = "always",
-> 		[HUGE_INHERIT]  = "inherit",
-> 		[HUGE_MADVISE]  = "madvise",
-> 		[HUGE_NEVER]    = "never",
-> 		NULL,
-> 	};
->
-> and then
->
-> 	static ssize_t anon_enabled_store(struct kobject *kobj,
-> 					struct kobj_attribute *attr,
-> 					const char *buf, size_t count)
-> 	{
-> 		int order = to_thpsize(kobj)->order;
-> 		int mode;
->
-> 		mode = sysfs_match_string(enabled_mode_strings, buf);
-> 		if (mode < 0)
-> 			return mode;
-
-Nice!
-
->
-> 		if (change_anon_orders(order, mode)) {
-> 			int err = start_stop_khugepaged();
->
-> 			if (err)
-> 				return err;
-> 		} else {
-> 			/* Users expect this even if unchanged. TODO: Put in header... */
-> 			//set_recommended_min_free_kbytes();
-> 		}
-> 		return count;
-> 	}
->
->
->
-> Anyway, I like this approach, thanks!. Let me hack a v2 based on it.
-
-Great, thanks!
-
-Note that my code seemed to introduce a splat, so it's buggy, make sure to check
-it carefully (that 'untested' proviso was apposite, it turns out! :)
-
->
-> --breno
-
-Cheers, Lorenzo
+David
 
