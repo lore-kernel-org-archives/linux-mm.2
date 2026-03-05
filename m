@@ -4,81 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE74F3D331
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:52:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94D26F3D332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C976B0089; Thu,  5 Mar 2026 11:52:16 -0500 (EST)
+	id D79A86B008C; Thu,  5 Mar 2026 11:55:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9FEC6B008C; Thu,  5 Mar 2026 11:52:16 -0500 (EST)
+	id D27786B0093; Thu,  5 Mar 2026 11:55:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9E566B0092; Thu,  5 Mar 2026 11:52:16 -0500 (EST)
+	id C296A6B0095; Thu,  5 Mar 2026 11:55:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B90266B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:52:16 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 707201C19C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:52:16 +0000 (UTC)
-X-FDA: 84512602272.26.CB9F145
-Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C7BEB120013
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:52:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AFBCC6B008C
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:55:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F76F1A0236
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:55:18 +0000 (UTC)
+X-FDA: 84512609916.07.FAB5219
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C4C4A4000A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:55:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ez/f2DQi";
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772729534;
+	s=arc-20220608; t=1772729716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Elu10pjRX/n/ntoklfXyDLgSHc0UZUnQNgGQmmBty80=;
-	b=SzL6ja+MhSzKZqz+b/3R5AXB1i6xAAnJ8+TzJ5Dv7R5m1jXhvn1DQS+iEnbIfgL3k+pLEb
-	J3n7Ezpttec2taX/Kfzq80FN+WxYogPzRpA5zfqxXW4KEg295TVC/1qqArl6CXIVuqxvLv
-	Ee15E0egEtKDPBHguTuiKM25XOur87w=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772729534; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ZeNIFUaHKQVi9Uz/+VZZ68NPDm1Q3NASVwE2j/t8rOY=;
+	b=gF+fbYNyb5bTvDPyQpVVI0QM/6cIxVsykXGgGF9gc3QJ/z9CnEcCa+6PZll7d94NuEA8wj
+	v5Mn6DdiNPPygrbfldeW32vaAsm7p6/6KzSHkV2xI8YwSxrg/5+ek75suFZY46m7fruF6Y
+	uTQ+EbItuTe+9f8AiSZ7gIAgiXI5410=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772729716; a=rsa-sha256;
 	cv=none;
-	b=wopuVCE7J2+PYHzB3r6YbfbRnI8BM7dGp6TJUZoxdK2IH8Jj7Krn22WQ1+Aeq+EDEz5gRh
-	MyuMcHFc3m3sQ9VAAgei8psVWZPN4vexdh5iAu5jjrbrQjfKwhBttNtKKaK81OLROatYLB
-	fCk1k3Jjo30+L0cs0q6V50kB5aynlaQ=
-Received: from omf10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D199C0D6B;
-	Thu,  5 Mar 2026 16:52:13 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf10.hostedemail.com (Postfix) with ESMTPA id D550C2F;
-	Thu,  5 Mar 2026 16:52:09 +0000 (UTC)
-Date: Thu, 5 Mar 2026 11:52:48 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Huiwen He
- <hehuiwen@kylinos.cn>, Jerome Marchand <jmarchan@redhat.com>, Qing Wang
- <wangqing7171@gmail.com>, Shengming Hu <hu.shengming@zte.com.cn>, Linux-MM
- <linux-mm@kvack.org>, linux-rdma <linux-rdma@vger.kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [GIT PULL] tracing: Fixes for 7.0
-Message-ID: <20260305115248.4d972cc7@gandalf.local.home>
-In-Reply-To: <CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
-References: <20260305103941.11f1b27d@gandalf.local.home>
-	<CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=fBsDTiq5WQwhIYOpqiEIecmLeN9x+UizY3bfayO9wAyAO5BZqOU2cw6c1xJBjEHLVBGoYm
+	gpt/mgHKO+kNp26QjHZzEPfXtqSPv4y/DywermXuQfs9mztKqnDXPi8zAdk15cW1GwL4Fv
+	dx2hfqjHgKKAEyGZOnh6Emkf2HfGcwg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="ez/f2DQi";
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DAC1443745;
+	Thu,  5 Mar 2026 16:55:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AE0C116C6;
+	Thu,  5 Mar 2026 16:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772729715;
+	bh=O0f6fXd2XUupPHCTsZar0KKgsxOZECJdyOx56kFJbiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ez/f2DQipbyZ1PQOQDTcd8Mgz05PzGsyHW8mo6TULKHgFLKBQby4u61CZQizZWI37
+	 3pBghtB01Dv9K7eSfkPqlQ0pITX7u1KFmSupmH1/gpSA/eZNMvkez9n7Zj4Mwj9c00
+	 +Z8FarC0VucX7NRcFhyXfuI6zL8C8YYdNmfJmZnt1WCDdH7p/eK8gRClCtX6DVHKOR
+	 xK0IVXtVm68D+6AsolJmMJVJ+UHGXe6IlEONg+/5YnxvX7zgu5/1P80dscpfqd4zuU
+	 a0QpBgLV7rYIZOWLSUX4Ts8uHm4ylbRis+f9k4Jb79OxVZIIkhF3+Nm09tk9LM+9uR
+	 xG5rQL+MmeodA==
+Date: Thu, 5 Mar 2026 17:55:12 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras.c@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+Message-ID: <aam1cHq3_fb-T1HH@localhost.localdomain>
+References: <20260302154945.143996316@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19DxIVoLQN9GFaheguLVMQZrUVvPMJITzc=
-X-HE-Meta: U2FsdGVkX18MbU/JoVVgZNbLoBDmliBGM31YSsjELhjzdBmBN42BiwmaKnYsUaYYjXlryTqwysB16K2eNG0YW+TNHoJBc9Ie/8JCb48qtN69ykGy7jHH5/0pB+yAcEq3PAhQbiv1f2pmgoRFgq5c/6sn1DvNhWVdRTmIL2gd7BbzcVhRDgYjbIghpfKgXw1RqkrfZIfw2bbazYVIq1EI5+7CxgRobihk5en2I2Lp76u+FFVk5u1uR5AG/H2uochhxQ/yE5aPJodeGu6lfPM5DjmZ2qxZTdxHQvnYYGLE/FkuQmMPr6GwoertxbHDuJ5oCqpgQs4/FI5CnLqqZbZ6n5IATw5TBP7Pj0Y2GehtUO2+hcOZF/qIPVIhb7J+zOyvCWxyHfX8PIMssaocfTxepEAEZufPlF8UVe8AjDfg2ZSZcUuK+r0tRI5yczwDDtxLi+RmaXVXMx5s0//FHwjtQA==
-X-Rspamd-Queue-Id: C7BEB120013
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 916ur3gh9jpexos1z3hb4os1bqqobcq5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302154945.143996316@redhat.com>
 X-Rspam-User: 
-X-HE-Tag-Orig: 1772729529-584749
-X-HE-Tag: 1772729534-171373
-X-HE-Meta: U2FsdGVkX19L2cM+LFRS3W1Kfdg7eDtM2fCEYCR+8jx+yOaxBFaY3Nz2FeYHbWw1uNbipqevuIXjAk/Q47yc7qHCwbZh13mVNvaJ2+SapkcuWHMAw8fMt49LjocUkrmkDoDNyTiDFrfs1buZ3tiOUlUa9ynFHN5qbb9hBxtrvZGHo3b3otYPyZSa264S9YEb9J08u75MLbKuSCjF49LpolUwTbpZlMG8kkrtNO30/KFTaZNiNqAKsvqjdtwp7YJmtFiVdsZBj0hpp54tsfiV+8LvtFgS7F88meluD0a9ypv7fScEW/fg5LINuowovKKFitVuAthUhT8AVkKyPSD5Kg5srU4cvdl3N5KwBJoF2ewrBhUBwY2ll4BC9m/K8U4u9hFYz2I/4sSIN+hKOf/FRdaMOHFnecCijjeJRfpZSFhWhgT7jkDxEVxtdU97wcPG5DMRR83H4APkGFx7a7eboqbyRf4//gUd5Id77MzO6F7iDINs20QaTkCpQywZ/ws8lU4lHaWvYOGKXvuuLmeTHigDP9p/AL/GcU6mJNBzTs8g1pDDAC18eieXcaS+kuEm8r7w7NbkbYf1cnVeDmZMwmkWZ1Vi40VVsRdCeQ9X8kxZWGjr7Hex/4d1I1Chn//47D/4fU9/x92OQpdlq2w2IcQSbJC/02XnQlNCjib6Hdo=
+X-Stat-Signature: 9ofksqwh9rmeqzc7rhwayt6p1q5e5nyi
+X-Rspamd-Queue-Id: C4C4A4000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772729716-970005
+X-HE-Meta: U2FsdGVkX19jJBxk8vXemxolCkT/7Zaxpu4nq2AEvuVbgnTvjYfgnqzS/eeCbVDEu/RMyeDCv16iHNEGOv4Igv8I+YFj+TSzU90xiaazCes/FcHP/wsDhAkEPUGnmFQUb8Yq10VVreUFuBz94OBEORsJ6UD48bpJUec82Jh6hK9sfc608VT+fVENlgrWtVEpwYPH0gFtP3z1/lEhjJPBMMhMk4hdn/IJWUXh74pHWfx/6B7YzVFePTSwf4AJU0hc2zHrl8LRbd7qigZJUo58OBRd9Kpb3hqWd3D0mnSn59L5EgSzX75SfoTZJ1uUxZS8yAywJsVjvVhyunfgdpVS0V8qd2Oabyv0G0DVZA10X6iVX0/r7u9z91XfV1ZyFOopvHmwxSck9G0rOFDrlcAtDrT5ZzRanlelqFQMCDvKudci9yq5ianQsBjVH83jKZRKvPECswDs1eIu4gWPn8Ri76i+biETpsqZEs9IIOhFL1a/tK3X/ONDivG7v+DjZF0CopfhuevjgbUS2mtyizCjj87AN9HsjrbneFDO/wibzUD05jhnFSfNgrV8XY8UWMIVR611u92504FjGMkTEG4Uyl6AfpwPJeB0CLL8PpCnuT6TjjGhQyXh5HiAAzeAJqzQezEyCWqDEQszhyP6o3NX9p7oCW65DSyD/YrqCNVPr1TLtToQisaLPlgdzHkIor05wBB4EgtU0J0nPZQr6Sp+Tt1uL9f2yKD1XFbOpp2EneWWqE50mKIXsBNS/c3lhX84GgpjKOP7y2gFU0nBL4A+JKBWPncP3BB191MEngIv6zFr+XooAxiciRgvKYWtUpseEA2bHeF/2fv9NjT/tvAxkkxP3MTrzvehLOG2py890kwco29GWu35h5G5lqCPe8PdIyLXeL9LoDYUtlXfrSi307Ea+TDO5YzpN8Pu3dfPfa61SkjaxTcBP8awWrVNpJ4npQcpnizaA9cU0BuAdMO
+ RDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,54 +104,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 5 Mar 2026 08:44:27 -0800
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
+Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
+> The problem:
+> Some places in the kernel implement a parallel programming strategy
+> consisting on local_locks() for most of the work, and some rare remote
+> operations are scheduled on target cpu. This keeps cache bouncing low since
+> cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> kernels, even though the very few remote operations will be expensive due
+> to scheduling overhead.
+> 
+> On the other hand, for RT workloads this can represent a problem: getting
+> an important workload scheduled out to deal with remote requests is
+> sure to introduce unexpected deadline misses.
+> 
+> The idea:
+> Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> In this case, instead of scheduling work on a remote cpu, it should
+> be safe to grab that remote cpu's per-cpu spinlock and run the required
+> work locally. That major cost, which is un/locking in every local function,
+> already happens in PREEMPT_RT.
+> 
+> Also, there is no need to worry about extra cache bouncing:
+> The cacheline invalidation already happens due to schedule_work_on().
+> 
+> This will avoid schedule_work_on(), and thus avoid scheduling-out an
+> RT workload.
+> 
+> Proposed solution:
+> A new interface called Queue PerCPU Work (QPW), which should replace
+> Work Queue in the above mentioned use case.
+> 
+> If CONFIG_QPW=n this interfaces just wraps the current
+> local_locks + WorkQueue behavior, so no expected change in runtime.
+> 
+> If CONFIG_QPW=y, and qpw kernel boot option =1, 
+> queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+> and perform work on it locally. This is possible because on 
+> functions that can be used for performing remote work on remote 
+> per-cpu structures, the local_lock (which is already
+> a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> is able to get the per_cpu spinlock() for the cpu passed as parameter.
 
-> [ Adding linux-mm and the rdma people ]
-> 
-> On Thu, 5 Mar 2026 at 07:39, Steven Rostedt <rostedt@goodmis.org> wrote:
-> >
-> > - Fix accounting of the memory mapped ring buffer on fork
-> >
-> >   Memory mapping the ftrace ring buffer sets the vm_flags to DONTCOPY. But
-> >   this does not prevent the application from calling madvise(MADVISE_DOFORK).  
-> 
-> I wonder how many other things have this assumption.
-> 
-> Now, many (most?) of the VM_DONTCOPY users set VM_IO too, because the
-> most common reason they don't want to be copied is that it's a special
-> mapping.
-> 
-> And then madvise() does nothing.
-> 
-> But I also get the feeling that the whole *reason* for MADV_DOFORK
-> existing in the first place simply doesn't exist any more.
-> 
-> It was added two decades ago when as a hack for the rdma people who
-> wanted to mix fork (with COW) and concurrent DMA, which just didn't
-> work reliably because the COW would break either way.
-> 
-> See commit f822566165dd ("[PATCH] madvise MADV_DONTFORK/MADV_DOFORK").
-> 
-> And that should just not be an issue any more thanks to how it's now
-> done with page pinning rather than with the old GUP interfaces.
-> 
-> So while I've pulled the tracing fix, I get the feeling that people
-> should at least think about just making MADV_{DO,DONT}FORK go away.
-> 
-> Now, Debian code search does show some users (libfabric, libibverbs),
-> and maybe they actually want the forking behavior for other reasons
-> too.
-> 
-> But I get the feeling that maybe we should at least limit MADV_DOFORK
-> only to the case where the *source* of the DONTFORK was the user, not
-> some kernel mapping.
+So let me summarize what are the possible design solutions, on top of our discussions,
+so we can compare:
 
-Right, I was a bit confused when I saw this too. I asked the memory folks
-about adding the VM_IO, and Lorenzo suggested against it. You can read the
-discussion here:
+1) Never queue remotely but always queue locally and execute on userspace
+   return via task work.
 
-   https://lore.kernel.org/all/e4deff21-2fb5-4f37-a7d3-ede5f69a4489@lucifer.local/
+   Pros:
+         - Simple and easy to maintain.
 
--- Steve
+   Cons:
+         - Need a case by case handling.
+
+	 - Might be suitable for full userspace applications but not for
+           some HPC usecases. In the best world MPI is fully implemented in
+           userspace but that doesn't appear to be the case.
+
+2) Queue locally the workqueue right away or do it remotely (if it's
+   really necessary) if the isolated CPU is in userspace, otherwise queue
+   it for execution on return to kernel. The work will be handled by preemption
+   to a worker or by a workqueue flush on return to userspace.
+
+   Pros:
+        - The local queue handling is simple.
+
+   Cons:
+        - The remote queue must synchronize with return to userspace and
+	  eventually postpone to return to kernel if the target is in userspace.
+	  Also it may need to differentiate IRQs and syscalls.
+
+        - Therefore still involve some case by case handling eventually.
+   
+        - Flushing the global workqueues to avoid deadlocks is unadvised as shown
+          in the comment above flush_scheduled_work(). It even triggers a
+          warning. Significant efforts have been put to convert all the existing
+	  users. It's not impossible to sell in our case because we shouldn't
+	  hold a lock upon return to userspace. But that will restore a new
+	  dangerous API.
+
+        - Queueing the workqueue / flushing involves a context switch which
+          induce more noise (eg: tick restart)
+	  
+        - As above, probably not suitable for HPC.
+
+3) QPW: Handle the work remotely
+
+   Pros:
+        - Works on all cases, without any surprise.
+
+   Cons:
+        - Introduce new locking scheme to maintain and debug.
+
+        - Needs case by case handling.
+
+Thoughts?
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
