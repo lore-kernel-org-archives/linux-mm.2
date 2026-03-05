@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C8AFF33A75
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 14:51:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA234F33A7D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 14:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E57B66B0088; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
+	id 05BA16B0005; Thu,  5 Mar 2026 09:56:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDB4A6B0089; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
+	id 0339A6B0088; Thu,  5 Mar 2026 09:56:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9A06B008C; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
+	id E74B76B0089; Thu,  5 Mar 2026 09:56:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BDC376B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:51:22 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 65F4616015C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:51:22 +0000 (UTC)
-X-FDA: 84512297604.12.26985F6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9299DC0002
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:51:18 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D22866B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:56:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74038888BE
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:56:00 +0000 (UTC)
+X-FDA: 84512309280.07.0E85EA4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D350E100010
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:55:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kn5ytd+7;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772722280;
+	s=arc-20220608; t=1772722558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/w8TcpKcTnsFexEJat+yvEFtYbwnKnSmrwKbNj1qvfE=;
-	b=1S0HpCw8GgDtH9nUZaSq8FEo5IwGhWs8k+3FUWxcp1APZsAZGXaIqwfUj/xcrptej4hDsi
-	1ju1sW7KgnESNUS/uhXP9/kuscO5EAb/rNIU/FF38cuBowlB3IcLKN18ENC57TVNVsN20Q
-	B9gmBDfmDttQTSAxXcpnwzveWLYHU8Q=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bkPQ3sgkDOoPfp+AeBsnuKOEYfSCX6MisFQPtRAT9xY=;
+	b=Fn1uZMKyQXf5Zs2V3h75MqGUbA6RBdAp5ezpPzFj/Z3Fb4b8rIsKB98qjJNV2OSmfppf5M
+	dkm4zairbtdQIMxWl+miXb+f8yxaop1aTuG6/cmpAO0z2rWEfky0OOKoXhuM1nIdC8e2dp
+	NemwKLhUqFpW7p/4eM580hzQ+vEqLLQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772722280; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Kn5ytd+7;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772722558; a=rsa-sha256;
 	cv=none;
-	b=tVKf2PPP060/RIWO+0P9n1G/D7ejpIjBSsxbpvCf5ijiK9s+kRlVj3YEjkWpymW7GFhkmo
-	1idGNM6bOdvQ6AulaByQLG6YfxohWcJ2wLFRTp0jjZm1odrUAptmR66EFSbsZ02+ectsBO
-	TluHybEnGPfYu86iTeGad5BAx9FsuEA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C8BB339;
-	Thu,  5 Mar 2026 06:51:11 -0800 (PST)
-Received: from [10.43.18.28] (e126510-lin.lund.arm.com [10.43.18.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8559A3F694;
-	Thu,  5 Mar 2026 06:51:09 -0800 (PST)
-Message-ID: <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
-Date: Thu, 5 Mar 2026 15:51:05 +0100
+	b=Yq4JJaRzGMJ2SvXJDUKdkbV1b0s4ME8ZAL92u8CydT1mt1UeVrB0nH67lYO2t0agobi6uv
+	MApbT0rKQJTxOM8rcjKfFeaOIkdC+hL3Gj7hJxxk2/RVXo+AMbWRGH/J+HE9opU/WT5xAK
+	YzTp4GLR19Yz+gQCBslwLcZE0bodXH4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3986A61344;
+	Thu,  5 Mar 2026 14:55:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C8BC116C6;
+	Thu,  5 Mar 2026 14:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772722557;
+	bh=amy+SaJwg+WdNFtVzm4GtX3Td8Gs26jX8LxmkTno6mc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Kn5ytd+7nTBuHR5VYD0Y5pcHIekfqTi0HrmCH4uShdxcHMRM7QLt0UwhiTR0IAXYz
+	 8hyJKh3UnfDvpbf53kXXwIhziqGlXZfM6ZO4elMz/qwqRp8PvKa34BhMm3nGfQfsjy
+	 6mJb2bH+1wsynJJnIzCil2M1AxaznsFfQhSK4gzHpjTaB3mlb6qPmBxW/MqVTIvTw8
+	 xZp6Dq7zDPTxggBKUBqxELmoACZFjNpGe8DSbeET7G2D7F02Tvj+o7EWMf6DB8q4yX
+	 VIe5zQXI5oniyBBqu7mjnlt+h7uCI2+LLBUN8vpMlXFRZP3RRkekTtfllNd9L3uaBA
+	 Xm2NkkFxJkvsA==
+From: SeongJae Park <sj@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Date: Thu,  5 Mar 2026 06:55:54 -0800
+Message-ID: <20260305145555.86081-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
- derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9299DC0002
-X-Stat-Signature: cwk7xa6unci47fehpk6h57wwhqs374ay
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D350E100010
+X-Stat-Signature: fqn5oow7xewezm4irixfhbphhp8rh56n
 X-Rspam-User: 
-X-HE-Tag: 1772722278-14582
-X-HE-Meta: U2FsdGVkX187pAtIvmeIAe3UAtZfO61IqRMNnp6lDutTh/K7X58pubduKJBeGaOE2A8O9muOpy47KN8fBkzTswUKvQLCuBr3Dcz+ql6qGH9LAwp+GH0Uyvgkm6mk7z3u+MuwkZpAWcPISH3ficoK00Gb4W9JmnbmeAWizagrb9LdjH64GT6LyxgIfcmB7MUyhGa/zXEPjVH7l9x3oC882Ap2J4+wJXgybZH/Ug5nciD9e59hQmlrMklYjpFgPMRfpGjamsee4lF4oLi6TRafThpy6tQ3nINa4gsnNaWLcQ6Jdp6OMyep5S89uIRi+Vbov/XN2JnDVWMhtJpDnIrdT2YhB8oZg8yTQzjuHkP9AVz3j5187GQF7eLnUNPJcwAzLSq/vnGP8uyHG4YqIfBTzk21ujWAEDwbu3NZ8NXHykBN48iieQyPoGunQs1tBoomzW8H7uRhO2sgj9zMZORpklsfBe7w5sTNwDCG+VRDNRhglkwqt1lnQlNWJHJAdTg0BlBoZxf5Fuh6TgW4qjpoENLox9QXEUQAejohxAeqVpJJXTimacz0BYs7iIwzJNQO3gVBXiqxoCLdrHNrn+r3BvoIBNeSS3OKzpE8CH8w/cmwNRUXsOEBd4i7Avuu8T4D1ObbCDgfRmgA5oUrXQsnyek6707xehuG/1AuTUVJHIJXcugaO2RBSToClE3cbKKAHt5iPZvGwLHhtA8Qy/pALEjZLuZH7imcfjMGRApGwN3YReJ6anvVBjC38lzFH3HANq1dd2cLlvNKahCoA0BX+5X1qsxNSUehO8NoZb2Ja+ruUoYsn9Br2HlX3CocotnTaZc5p5GcMv6T8kkoIz479OYki+Hi2D72RTFBHgF48qBYVJ8qX2qwEOQx1cPPyvpSdzQyB7dcTv5CbRpAqk/Zj39Npgr47c11P5Z3oy2m86Ps4De1gHiN2buEs9wlCbSsw+/Lo7sZdx2VkkLC5dr
- Phm06kSU
- JMdmCuF+zF9hUBsdlEgMc3ekt1EIWb54eP339+2qb/DyFr0/iODHZ5pH6LaKIyv0p15erPZtthXjReflVt0ItE8V0ZQw3klIkgaVcVFpu9MUtFuQOMoe29ufBoO4NRVfVoKcgc0gFQmrrT2DWdhA391O9747GsdovaabJNBlKkkxEVcIgXncUAResrKlAriLpdmFytLMe1KEmSZrD5QnvysuWVtXH1ei3Vm3gKFgc0ghHKbf/PNg046w3E6DTXvPu4tc+Ww9v9EoANgY=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772722558-61539
+X-HE-Meta: U2FsdGVkX19Z9tKEL3Du2imROghOuL6u3dUa+E1iBH04V0olQ4WdYsL0Rr6e7fcH3VCgaqa6NS57cIUpaukQCqYeDQ69wZadOL5wOF+/BhDJwNXOgskZzZC05lu7GnFnQh8gImFcW18eh26tJCVskIu4Lb5cv7AR6Oxp3rtq9sYQanAHqMw+LXoN+pSQouvU/EFJw0WGFHxF0cJPrO5VhwcjaQFqJy3poL5KidK7bEHp+0x79d1+RYSawdD+rOv1VWJr+M/92r/sAeESFAnXQ7rEIYtas14c5p82NcP5VcxkqhQS/R/0IgQXrxHX8tvTpZmly/HM3tmhmVTTOq1OVylM9hGQyWF0Uua7Uz1G05X1Fck3RdY/tWwosaxvOmizDAskOpuT83aXEA7VoAUBPL8YUYAVwsim5mCJ5z2aSSPe/euRfECc0I20sWGdONAqvZJw2g6SLBpqzJuCIuzzcf2ZlZmhUMr+AB8VqSzEPXuTwRH8T/ZCEx/wR1XwKpjAffZokiQ8TcshASv17b7Amanh6qTXuFq/d2L38gzxN+SqERolMQF74Vcsihp9bUpPvpFpTw5KwLLvsKssnBA2u2wKeo9hZZKmAnj8rZCP5H4KjNTrgagnfbAe9dYJvXZvZBfdJJ/Y7G/2tikw+hHUB0bNUfaI92xG87w1SzY+4NoVML9Tvo7VTXvAPOO5SwHYFwHUXnvwphEy0Uq8mZIxax9S4EXhvB6WV23abccAvVWa/EjzphqxvHw7EuhsTI/cKbJxk9n0GtZOg+5h2gnh12GBZBLeXq46SaS58flfIJzhTiBI4wM7cXjbnA6kwZr0oIw+zVb1Suv3cMugLJffmVClhRz7bVYDykq2HQG421amSyzlccObRCxg2Krka/jYkxeAkQ4ySgQHk6oGpCCwidvBbVoTdOlshop7x/Jt5tpZy5dfISTpVQhPZARd1Y68+CVppneBNxrHMoubRDi
+ J9+F4xF6
+ oXZ53ugGFjLz/J7IhOosC9nzd0X6iwjmWaqKN3SuhxpQgkgNGozPy8o7E16tUigGw9RqvCGQBYs2v1DSKUjCPQn9YJXjyF3miiPfO1nJlEfXOtENvrTNC8x7tpRj4aougfiY8VvHYFJgU9E3BkvFX9pAL7zYjrKWL4a4V0/uimqFLIhoEFdTrgMm7D7eaIS+1LDCqzxdRbBq7pco6QYbogyz67W6oMW3X8EFR1NMWvsYvHHkkpTwCAsugSUAae3LR/d2HreBZzzxDDcgrMc3ULXMKe5XLYS8Xbr1ddUjxgB/paCega/W659qDh8YEaaB6tS/TZTi63NsMpX5ZL8BoZvPRmFwlD/6VH+o15ME1/aKPImtNj8iJghayVZCYfxl2+mdwgzYNkjfu8fA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,68 +117,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 25/02/2026 17:34, Brendan Jackman wrote:
-> .:::: Design: Introducing "freetypes"
->
-> The biggest challenge for efficiently getting stuff out of the direct
-> map is TLB flushing. Pushing this problem into the page allocator turns
-> out to enable amortising that flush cost into almost nothing. The core
-> idea is to have pools of already-unmapped pages. We'd like those pages
-> to be physically contiguous so they don't unduly fragment the pagetables
-> around them, and we'd like to be able to efficiently look up these
-> already-unmapped pages during allocation. The page allocator already has
-> deeply-ingrained functionality for physically grouping pages by a
-> certain attribute, and then indexing free pages by that attribute, this
-> mechanism is: migratetypes.
->
-> So basically, this series extends the concepts of migratetypes in the
-> allocator so that as well as just representing mobility, they can
-> represent other properties of the page too. (Actually, migratetypes are
-> already sort of overloaded, but the main extension is to be able to
-> represent _orthogonal_ properties). In order to avoid further
-> overloading the concept of a migratetype, this extension is done by
-> adding a new concept on top of migratetype: the _freetype_. A freetype
-> is basically just a migratetype plus some flags, and it replaces
-> migratetypes wherever the latter is currently used as to index free
-> pages.
->
-> The first freetype flag is then added, which marks the pages it indexes
-> as being absent from the direct map. This is then used to implement the
-> new __GFP_UNMAPPED flag, which allocates pages from pageblocks that have
-> the new flag, or unmaps pages if no existing ones are already available.
+On Thu, 5 Mar 2026 10:27:07 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 
-This approach seems very interesting to me, and I wonder if it could be
-applied to another use-case.
+> On 3/4/26 16:13, SeongJae Park wrote:
+> > On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> > 
+> >> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
+> >> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+> >> > 
+> >> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
+> >> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+> >> > > > 
+> >> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+> >> > > > > > This intentionally breaks direct users of zone->lock at compile time so
+> >> > > > > > all call sites are converted to the zone lock wrappers. Without the
+> >> > > > > > rename, present and future out-of-tree code could continue using
+> >> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
+> >> > > > > > infrastructure.
+> >> > > > > > 
+> >> > > > > > No functional change intended.
+> >> > > > > > 
+> >> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> >> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> >> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> >> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
+> >> > > > > 
+> >> > > > > I see some more instances of 'zone->lock' in comments in
+> >> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
+> >> > > > > 
+> >> > > > 
+> >> > > > I fixed (most of) that in the previous version but my fix was lost.
+> >> > > 
+> >> > > Thanks for the fixups, Andrew.
+> >> > > 
+> >> > > I still see a few 'zone->lock' references in Documentation remain on
+> >> > > mm-new. This patch cleans them up, as noted by Vlastimil.
+> >> > > 
+> >> > > I'm happy to adjust this patch if anything else needs attention.
+> >> > > 
+> >> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
+> >> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
+> >> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
+> >> > > Subject: [PATCH] mm: fix remaining zone->lock references
+> >> > > 
+> >> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> >> > > ---
+> >> > >  Documentation/mm/physical_memory.rst | 4 ++--
+> >> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
+> >> > >  2 files changed, 6 insertions(+), 6 deletions(-)
+> >> > > 
+> >> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+> >> > > index b76183545e5b..e344f93515b6 100644
+> >> > > --- a/Documentation/mm/physical_memory.rst
+> >> > > +++ b/Documentation/mm/physical_memory.rst
+> >> > > @@ -500,11 +500,11 @@ General
+> >> > >  ``nr_isolate_pageblock``
+> >> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
+> >> > >    problem due to racy retrieving migratetype of pageblock. Protected by
+> >> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+> >> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+> >> > 
+> >> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
+> >> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
+> >> > for the rest of this patch.
+> >> > 
+> >> > I was initially thinking this is just a mistake, but I also found Andrew is
+> >> > doing same change [2], so I'm bit confused.  Is this an intentional change?
+> >> > 
+> >> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
+> >> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
+> >> > 
+> >> 
+> >> Good catch, thanks for pointing this out, SJ.
+> >> 
+> >> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
+> >> However, in Documentation I intentionally switched references to
+> >> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
+> >> internal implementation detail, and direct access is discouraged. The
+> >> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
+> >> so referencing zone_lock in documentation felt more appropriate than
+> >> mentioning the private struct field (zone->_lock).
+> > 
+> > Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
+> > zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
+> > better.
+> > 
+> > But, I'm concerned if people like me might not aware the intention under
+> > 'zone_lock'.  If there is a well-known convention that allows people to know it
+> > is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
+> > humble opinion.  If there is such a convention but I'm just missing it, please
+> > ignore.  If I'm not, for eaxmaple,
+> > 
+> > "protected by ``zone->lock``" could be re-wrote to
+> > "protected by ``zone_[un]lock_*()`` locking helpers" or,
+> > "protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
+> > 
+> >> 
+> >> That said, I agree this creates inconsistency with the mechanical
+> >> rename, and I'm happy to adjust either way: either consistently refer
+> >> to the wrapper API, or keep documentation aligned with zone->_lock.
+> >> 
+> >> I slightly prefer referring to the wrapper API, but don't have a strong
+> >> preference as long as we're consistent.
+> > 
+> > I also think both approaches are good.  But for the wrapper approach, I think
+> > giving more contexts rather than just ``zone_lock`` to readers would be nice.
+> 
+> Grep tells me that we also have comments mentioning simply "zone lock", btw.
+> And it's also a term used often in informal conversations. Maybe we could
+> just standardize on that in comments/documentations as it's easier to read.
+> Discovering that the field is called _lock and that wrappers should be used,
+> is hopefully not that difficult.
 
-I am working on a security feature to protect page table pages (PTPs)
-using pkeys [1]. This relies on all PTPs being mapped with a specific
-pkey (in the direct map). That requires changing a mapping attribute
-rather than making it invalid, but AFAICT this is essentially the same
-problem as the one you're trying to solve.
+Sounds good, that also works for me.
 
-There are however extra challenges with mapping PTPs with special
-attributes. The main one, which you mention in patch 17, is that
-splitting the direct map may require allocating PTPs, which may lead to
-recursion.
 
-[1] introduces a dedicated page table allocator on top of the buddy
-allocator, which attempts to cache PMD-sized blocks if possible. It
-ensures that no recursion occurs by using a special flag when allocating
-PTPs while splitting the direct map, and keeping a reserve of pages
-specifically for that situation (patch 15 and 24). There is also special
-handling for early page tables (essentially keeping track of them and
-setting their pkey once we can split the direct map).
-
-Do you think that this freetype infrastructure could be used for that
-purpose, instead of introducing a layer on top of the buddy allocator? I
-expect that much of the special handling for allocating PTPs can be kept
-separate. Ensuring that protected pages are always available to split
-the direct map may be difficult though... This is deeply embedded in the
-allocator I proposed.
-
-- Kevin
-
-[1]
-https://lore.kernel.org/linux-hardening/20260227175518.3728055-1-kevin.brodsky@arm.com/
-
+Thanks,
+SJ
 
