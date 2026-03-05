@@ -4,150 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75CD1F3D319
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157E0F3D319
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:58:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98C2A6B0005; Thu,  5 Mar 2026 10:56:14 -0500 (EST)
+	id 45B816B0005; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 960BA6B0088; Thu,  5 Mar 2026 10:56:14 -0500 (EST)
+	id 4293B6B0088; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 863336B0089; Thu,  5 Mar 2026 10:56:14 -0500 (EST)
+	id 35C3C6B0089; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 73E0B6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:56:14 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E4E91B6E0B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:56:14 +0000 (UTC)
-X-FDA: 84512461068.24.DC8E842
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1622B180015
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:56:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=j804D6EF;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772726172;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 247916B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB8641601DB
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:41 +0000 (UTC)
+X-FDA: 84512467242.04.612B522
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0F09D10000D
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:39 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Rp0LBweu;
+	spf=pass (imf14.hostedemail.com: domain of 3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772726320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CL67FwLgJYo3bAjpZv3JUFOlo9GyDQqh66JIS6cOafI=;
-	b=2qRERy/NCagcmMR22dIDegkVk5WXtBp6hFNFNQs4PFxaqaVMN5skcN4bD898ahkrAzV5Ch
-	TyhoyqP4217Pw0kDMYDDIA8vooo4TFVVpTuZwX1IjcEiHLdNVCENNimtwjVuQ9Z450d1On
-	606xmAoBPE0Gr6fMq0lsMzvbtwxnUkA=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=j804D6EF;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772726172; a=rsa-sha256;
-	cv=pass;
-	b=o9RrklzpVjm2msmMwYWQYyWGzZSFAB/cosEdhI85vfBItlHPIj+0fkmZ1MCYXvMuhy6EPr
-	Vl0Sc5xivoAmheU6gVucv73Ht3Tz1/mk60tOUfsCAEJMPFQpdAxyYmpoG6KdAsD2/oaWiy
-	AZiGL1VQucbiyMCPU0voKFKCf/dO0sU=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5069a785ed2so503001cf.1
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 07:56:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772726171; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LbICzq7kqKS+36FCgkMYOmK8QhGI7VmrAv+nBwFQDEHZ6OFvzCkEkn8V0AYQPR4+FQ
-         tbwmUIr2oG1/LsHUIJi400u+KqsPJ0s6HtXX0TnpAAANVTaRqeVBQ3Zfm6wbYw05RJgB
-         9I20HI8uiiQrnHag1Hqbyr1ibRhJnkv8a0rqIw215qCJTpWbeJDyHG2TJORATHKT+mSZ
-         HAU9F8XBij926/MXpKgBHGSwIMuEYfw1cADsZ2jy0GLs5hYKYC1ASPAdjA1f9P+37dT1
-         rDZvLP0rG/1iqrnQ2MyOUVx/ezrxLx8NrhtpiwTKPTxsCrkcYvI+nk7xcbldKBdoCkC5
-         zZKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CL67FwLgJYo3bAjpZv3JUFOlo9GyDQqh66JIS6cOafI=;
-        fh=pmuJ/ZyxZ5uL8WBSKKVYwBOMp0bvAaUTmCo4ZNRMaUE=;
-        b=dAOPbLBW+I9ui0T4/MGoMf1/cvsXcqG/q97yfKasBjQclAWGTuUswoP4a80xWGb6jc
-         mw763ZDUVLGw5U96EccOHw30Iw5XmpvojBVRLSECEUMqcI8fkOOL8Iv78LPBJhqdB5j0
-         sxXS0oajiCjK0cLhZhJdoaU0yJ/hAQoyB7JkV+QMgKp9tL/jIhPQVtzOxugsXoDyYd4C
-         DPKwjg/W3ipZS3ZzCdQ64l3I6pd5+Nv+2OWtS11SCfl05yynAQ/pAnJtucSbLs4EYzcb
-         WkZ5TxNt1xtd6DoA0vPNoFwc1n+woN2Wrh0wc+q5xuEGGM++Pxq3+Cqr5mecchOvqEF3
-         fR0w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
+	b=DKEhAPS++cDfOOiy7ZWnOR7Hh/nXNWRlH1laLR4lQbTw6DJgPEINNrCnfhvCLB9EFOwR6/
+	zqH2v3w/kLAYzCfGO8KMzwZv2DVe/ZZvg5nvth6H9TV8SLCpcmibh7PjOLJtRSk60aBIc7
+	3MWVC9K9a+btk7jjzGAC6ulW1bWTZYQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772726320; a=rsa-sha256;
+	cv=none;
+	b=YVXf4C7WlZ5oHWAXh7oFEOBzwUPXcD1EcsOA4flz8AcpBwTExkattYiJqDFyf4rW1HgQi0
+	9uJLToRq7h+q0OwF5dU1rsYLcrnZQWSEnvjagpFTWuePbik4WphJN+JipBbIs0sJM2fY9X
+	fHyvY9CWro9ZyBCBjP5+LwJzEhzzTSs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Rp0LBweu;
+	spf=pass (imf14.hostedemail.com: domain of 3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-483a24db6ecso99219975e9.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 07:58:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772726171; x=1773330971; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CL67FwLgJYo3bAjpZv3JUFOlo9GyDQqh66JIS6cOafI=;
-        b=j804D6EF5uNydoo1zu44e7Z+2IHsgcWnrUFopZxU/nhbsDXdx0ZbW9ilLEvcfVsG+Z
-         uGvdJoMrqVjCOuW7df9m/0vcxDrHfPjLJkTquqxHbnf0JkMMsovB1VDet+CHZeb+Lk5B
-         AdjuR6QFqBzcYpTOHgQW+CFouGBd3GIigSjUj99KCnapXcWpaW5alMdv3JWaiXlc3Xjq
-         YWVJt9mHUxwB9l6fe+AZe/vGaJUZ5+H0Cf7/hrJxHsFWSXnbjWVYUELlAWeStabA3BNC
-         wvfCJ2n2TIm1CrsRThUHAC/XBmmnTUOzblGkxGhTGplC6liuzFKCErzZg5z1Z/3d3F9K
-         8wsA==
+        d=google.com; s=20230601; t=1772726318; x=1773331118; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
+        b=Rp0LBweukYWY2wPACYpXBAdJ8F/UQPdzxGo26DuNSkkSH9Ba7EkKIyidEf/yKw3CZ2
+         FjZ6cwxBcKLluFigZVD4WfduyY4x3woDmePQbd9g3EiGA42RANSZ1AwfxPb11aIGkNpA
+         i154pfwEjC+0gozqnjxjR1KncOaLb9QiZqn72FN5Ykj55M76vLmeJYZWGALUMGVxKmHO
+         zziwDbEYXsMaWZoufR3Pfob+WAvJi4QUgJ8oZ/g5+eVf0pQEDruNJuKkDB6hwyG/PsS4
+         SSkryEOok4Qes5v8IAKqudE96Z7aV8dhmcjedJQYQhHJ+9jByaZTT9DpJUcPnsprOgRr
+         /VEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772726171; x=1773330971;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CL67FwLgJYo3bAjpZv3JUFOlo9GyDQqh66JIS6cOafI=;
-        b=kRbdA5PKK0pElyoWwvg23w0a4Utq9VrQsuQLomKYb+OneQFS4iFzuPz7G+GXWLhTvV
-         aoYqtEiCKhngrjc9doCwu5guai2irx4omxyVNgcOPjEVzwd2Za4Y0vl91E7URWFwkW0v
-         Sujz70N8K8BA0WQuc1FghqVHlizxWVrKjgDglVGUoDpCiyr8ngltOVVsOMX8uD5KvLdc
-         cSatw+Nzlly7UlUd+Q0YJG+Pj/AyaBhjKQUCcEWjAZfs9s+a51NQlibSdRV+zDeRdx3m
-         h88feA3BFFRNALZMN656QEifNPrzUFppnyPDCzlLsaVjIaPvoFIewemlKxNgVsZMdihO
-         FFpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHnktnhmxWhOv+8hfwsNDKauKW942uOLKcgxInN1iRy+79RvVhOZvSZlwB6uXErHIXwBmSCWaSYA==@kvack.org
-X-Gm-Message-State: AOJu0YylaJbEWAYoZeq2RZX1Aholm51LywOlFmvhhHLipZkXT4e4xoPA
-	GldJvJ4PcG0xK81hjS9Fci21VcOqc23qSwCgWGj8+6C3pK4Jm+dIFOljbUtDkW3NTX5agAjAwFL
-	Zeto2slh0vRVNPNOR29y2u+vQs0iOQe750hdUTafm
-X-Gm-Gg: ATEYQzyWjZQ65jqqEWsANP3TG1w9mitOG41z7YcE5jMNUoKQncuvBaCr0V6tlbC1c0/
-	5xYT+n3g7qfzv9fOe87vfH7Azv+ESyyy3UpYjgbXgDUPqqAH9txZn2x1eqz6c61dVE46JBDH+RN
-	edBC585CN2xtJpxJyX3spVilzhHDNmzU8S+ysULSVa/CwpEPEILASRtrN8T5w+moQeWt01vMHUd
-	wJ/2hfLnZRvDb0645iAEdiCK3/5E4l/bYPNjbaxBU5MM4O35+JCYs3kCpI8Ap1JYEPEG5YZwzOI
-	iJrT1S83McRHSw6n7jfkl9mEP95W8Lac+35poA==
-X-Received: by 2002:a05:622a:508:b0:506:a1b1:422d with SMTP id
- d75a77b69052e-508e5e2b30dmr8659941cf.14.1772726170353; Thu, 05 Mar 2026
- 07:56:10 -0800 (PST)
-MIME-Version: 1.0
-References: <20260226070609.3072570-1-surenb@google.com> <20260226070609.3072570-3-surenb@google.com>
- <74bffc7a-2b8c-40ae-ab02-cd0ced082e18@lucifer.local> <CAJuCfpHBfhKFeWAtQo4r-ofVtO=5MvG+OToEgc2DEY+cuZDSGw@mail.gmail.com>
- <aadeHiMqhHF0EQkt@casper.infradead.org> <CAJuCfpFB1ON8=rkqu3MkrbD2mVBeHLK4122nm9RH31fH3hT2Hw@mail.gmail.com>
- <aael1XWaOJN134la@casper.infradead.org> <76aff8f9-1c08-449a-a034-f3b93440d1a8@lucifer.local>
- <aaiBX5Mm36Kg0wq1@casper.infradead.org>
-In-Reply-To: <aaiBX5Mm36Kg0wq1@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 5 Mar 2026 07:55:59 -0800
-X-Gm-Features: AaiRm53SpNsDBZ1BZJy_J-KSVGaLXeUaHRvKuxEZ4rqtXprCC3pHIR_HRRDvcVY
-Message-ID: <CAJuCfpF1=DP4Whe9YkuMcqkE7CXnDWMDbvBAg9pAsut0YSeKEA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mm: replace vma_start_write() with vma_start_write_killable()
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
-	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, 
-	mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, 
-	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	svens@linux.ibm.com, gerald.schaefer@linux.ibm.com, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+        d=1e100.net; s=20230601; t=1772726318; x=1773331118;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
+        b=Fr2sJo8RbEFdpqVXTHeC8F7jECv4jmu7V9nSp24jrOFKHykSOaWiD5tCLG6Ch3xs4y
+         EOMMoS1cdLU5aBQ6kYK/ho2b74c1vGh1XABNcBhwiSZiKY8yjazAl8so37pNVtg8i1D8
+         ts9ojQFOIoeu+14gVMahdG4BVNd9i072AIDnjhBa8X3JV+J/o3Bcnh7ru/T7+IYFqr9W
+         8zsz/E4oIlMIqtGr4Gt2TROkxQeVF1OOX9mUcz4kictCaA+9C/yzf8lOTxay7CoXsTJG
+         sCCWuL1/6iQzQcO3LvgCygFm0LIpZiuniQ8LnpeKulT0OSkkd0nyhTSHAWn8xnovONDQ
+         Yktw==
+X-Gm-Message-State: AOJu0Yyka8HpYtMWt4SNHKjDI6EsvAbo3RugXdGeHo8iRKIeGjiAa0D7
+	h5f4frnZhUWRSBEVHtBQFp/4YSrRTQ9TWoj9b2eKd8UF7NTwQXgGN3L7TKJqESwarZx4CxrMtYg
+	aRJYt7074BcJcmQ==
+X-Received: from wmbg9.prod.google.com ([2002:a05:600c:a409:b0:483:7827:ade4])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:34c6:b0:483:71f7:2782 with SMTP id 5b1f17b1804b1-48519855f27mr113892325e9.12.1772726318086;
+ Thu, 05 Mar 2026 07:58:38 -0800 (PST)
+Date: Thu, 05 Mar 2026 15:58:37 +0000
+In-Reply-To: <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
+Mime-Version: 1.0
+References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com> <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
+Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
+From: Brendan Jackman <jackmanb@google.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, Brendan Jackman <jackmanb@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
+	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
+	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
+	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
+	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1622B180015
-X-Stat-Signature: 66hmqzx33amseou48dbgmjerrijd59r3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0F09D10000D
+X-Stat-Signature: bfhom61nap4pynp4mijbd1ppt8ttynhw
 X-Rspam-User: 
-X-HE-Tag: 1772726171-739145
-X-HE-Meta: U2FsdGVkX1+AJKMmQ4HXnpPL35uRWDaYUT4Zi4zb4eJENOx9V5eX/PlLZ3s/R36XCv/EO5fy5wGqn59zXFIytd+5YxsxhMDocwIXgr9wwZaNeq0TtoQFOs8cUjgweMXXL/g2tuL04F/Wwe96iCWnhCSlWViJQp2o0BKtHJnPqQc6QAVsu/MbGPaogICIWHoOrZ6to6hPctoG5hNWRJ2j128h1wWzjNk+TSQK5GwciPSbjC2wQY3ms/wMMi36xZaKPQXfmtgwlnxsm4d3oYTWBnvLniW9w1nT4UKmMDajRx9KsvIM3PDoKVuE3mRsfu5oO9OUwgCbg+gGLB68GnQ6lbmH7Iiuf75/dRz0odtag0Aqe2NYiobLLa4X2wQAnEqqOureX47XDKqfhbcZ6WEl8N3uxqXIVmqWjBnRUkFEAw3gHB5U4f/vcQWFv9U9a2K9AIzeq7Zct1zWamNJV5KUHxYMTHDWu83HsEAk8csVCMp8AITCwmNUA4aEvMlCDpEjmZ6lhNiIOgBgi9C1AGkggXM6PeaIyA27PTNRcDKX+Y6OcP26VGgVd9bb9GWJM1JtkanQtj1aEDT/9Ej8RR1OJyMb0rA7otL8pbeUdqwucX7eatJIM3iOpabwC0VqcldXG/7PqtClMaYXQLnmF/8Pl7sDwlM3tFkw8fpEH7zVLZsmM1WPATFpUpIOR3HkgiX/ESs92VDL7zui0rq3pHIYX7iYdehMPsNL6BJU4Z0y3xjIBnuqd5AU+K93wgOYuw/4KCq/Uvs8NHl6r3h1NuAXW4ypDxINL/9tj70e+3V0IywIMbLT3QIEVVg1iYYpHQpDOhD+wTRwJbXObaDnbRgWj+JdxFyv++rWdSlQos7gVeuZj8rc/uzX/GLqDFeU1hcFuvZAut2dUjzTOobSsLzyhUZlGUPxT7lfJt9HLO5ZMYOwzuJiw9+lGyYts0PfJGN8kjHhScP5BHUaG9rUAEQ
- R4R3kViB
- +BWN5+F7YLpr3pcMziBmj8HtsCHQ9QTWYgz2T7R/06Mrwb4uCPrWNponJD5qUotrAwddXXf9sUCUtELwI2kiiSNwDmjknlKl1pSVH2boUjaWK/yWvlTAhqmDxbAfT+DnQPepD5PAKg8msFQCWHwUIWKfQUe0MTivl8z9fYqYEokv2KIaPvmwxX9quTQToXBaYDhTfvrNEegN0WTnKQhldu75PU8R5iKKE4vS1ZKRoDGIWq/pstaGKKEiW4CWHi8dDUwAq47+/vj6wbblKe4dZvvw9wPPgzKnMqgTIrfnJYE9z4wt/nTgmSNV4qUpb2HvJkh4drnnKp6COVlWncC7AJEVxvltSYZ8WsEZJtKZO9fDxVfz3LHTgGjHaXlEpp3mDtTtYspa9Il9AHB43pOXfs9ZUJSkDlPzYUn0Z
+X-HE-Tag: 1772726319-747141
+X-HE-Meta: U2FsdGVkX1/HK/ZAlU9sEpKLzleqnMLMLNXLAaHZRqst3Y7Vb9gSMwu+L+GvO+E+BOdK4RABPqV5EIOCsUCzlgApLRS/5qoFY304YpgzdBsbV72Cjhv2xSkwxs/w0A0elvN4Ty2Ll8vTzrWxejM76YWFIWooFJ1qlGIErMyfxFn+rWAKi3zW7mz8OFiBjdDp242iMClSFHC7cfRPAcxQfl11rzDYaV+NOUkfHJ9/aXRUBlDIneqKHKKcjWcr5qNrhmbvFLjbgrrlCGKEKgNcANGHCZLBIwjb5UweBse/ZAKJm6iTTenm9AUXhFJQmjTiaZ3HpPpzfMDNwd3AXJPVi+mb03nqwyvypnKiE3temi13PJ82/awneDBZ7+Fqi1IXdXG5sUPeeckOSpF+K/3yIDKbmp+w0Lnp2L4nYCS39MYUhmIafnR8Vv3hEx9pwpS9XWMd7W+YLZ9WB8zMG6ie6Ie3W3oYkrGMLKX5sDgKjBCsHUP0rUPzF5GtqWw4YnVEYpsLQujw0pT2yqg5jEIvKT8I6FU4h7z1P6naU8/QHBKPPmbkrEr2rgCV1b8WqobZvV7aC7j23TPCx7Z2Mu/slMKSK8G7J/JQ4iNCjZcRe80nXnSjNEaSbFZqjyBNbbN4dtyNOaWImknyoN7JKpuHevjKPQYUoCi0ul38U/yR7W4/W5qNKOQnLWSLlK5TYPSy2/tc5xyyInTbm3Qw2HH5KIZFXGbY3gShy0s/nfZpFlpTL83h7XOJL0+pGUq13AJyyctIZ8arl5VAdqxuDi5zs7GkoSqjQIJxYJ/XTuZzfuuL4GQKJkB2hnf/md1NjXj8tKuncmLf0+RHU6ewER5Y4RA0ci2xbfBCyEd7/qItGU2sXkUQE6WEt1nZNUPi1qRkoRJVfkW3zhGAuL/WhEmF/0jzIq0/pm0o9wuUVK2hRvR2gpJEm1ez700fvvftjNkVEPAgGUmw13G+2GhC+3x
+ faEw+wFJ
+ dDIA6ex2zcbcKfzcKYWSYFIpmXt9eghI2GRiO9EneI+FtXuUHzO1R+1BHZXnGpw8BeoDnGpKmay2xvTzh3/4fRYpH43slh4MTZxXRyiCK0FzjZ67bqQ0B1oQQtx/NvvJKsnl7oWR7KWfhKucLiQ6M9snhQ9gWNlhH1Ku/y7lHS927JFFqx/+mng7I3eG3XBFiOyk8Bj67tkLEs+zM//loK4FnSyrvwpRcwQN5ZUItXmb0++kTbK1LRpyZxaAuOXDa2Cr16PKFsCuG2xR7NNsvQjbsnrogckGIg7J+GpUEEr2xZ1zKDcFhfsAbomJ6JVxMLXVcZ08cQ3cyNI6rNlk95YW1r0HVNqBZMqRMg+fnWMTxzihX6uognYcc3CQTAT7DJxz6ejIGKmdI4At+afZf7O1uBdajjTqNegZL3iIrH8x3avHwzgFjIHMlHoXItNqa0Ixgwa6hH2vEYDJmrAiMFQPgI8GMbnwaJ9j1OtCsUU12Hxj5z0vgTKItgY0/GIWudnfJg/VJM3Mn9xksmvevtKX7w3lUO9pp+/g0CUImGMCHixDZ+rLdbJ5vCUR3tlUb9OLCVAi0J2jHzHbR0VcTzZmm96v5OqS/un1q2khtHcQWJHLNu198glFyRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,27 +117,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 4, 2026 at 11:00=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
+On Thu Mar 5, 2026 at 2:51 PM UTC, Kevin Brodsky wrote:
+> On 25/02/2026 17:34, Brendan Jackman wrote:
+>> .:::: Design: Introducing "freetypes"
+>>
+>> The biggest challenge for efficiently getting stuff out of the direct
+>> map is TLB flushing. Pushing this problem into the page allocator turns
+>> out to enable amortising that flush cost into almost nothing. The core
+>> idea is to have pools of already-unmapped pages. We'd like those pages
+>> to be physically contiguous so they don't unduly fragment the pagetables
+>> around them, and we'd like to be able to efficiently look up these
+>> already-unmapped pages during allocation. The page allocator already has
+>> deeply-ingrained functionality for physically grouping pages by a
+>> certain attribute, and then indexing free pages by that attribute, this
+>> mechanism is: migratetypes.
+>>
+>> So basically, this series extends the concepts of migratetypes in the
+>> allocator so that as well as just representing mobility, they can
+>> represent other properties of the page too. (Actually, migratetypes are
+>> already sort of overloaded, but the main extension is to be able to
+>> represent _orthogonal_ properties). In order to avoid further
+>> overloading the concept of a migratetype, this extension is done by
+>> adding a new concept on top of migratetype: the _freetype_. A freetype
+>> is basically just a migratetype plus some flags, and it replaces
+>> migratetypes wherever the latter is currently used as to index free
+>> pages.
+>>
+>> The first freetype flag is then added, which marks the pages it indexes
+>> as being absent from the direct map. This is then used to implement the
+>> new __GFP_UNMAPPED flag, which allocates pages from pageblocks that have
+>> the new flag, or unmaps pages if no existing ones are already available.
 >
-> On Wed, Mar 04, 2026 at 04:53:27PM +0000, Lorenzo Stoakes (Oracle) wrote:
-> > On Wed, Mar 04, 2026 at 03:24:05AM +0000, Matthew Wilcox wrote:
-> > > We could literally return any error code -- it never makes it to
-> > > userspace.  I forget where it is, but if you follow the syscall
-> > > return to user path, a dying task never makes it to running a single
-> > > instruction.
-> >
-> > Thanks for that Matthew, that makes life easier then.
-> >
-> > We can probably replace some of the more horrid if (err =3D=3D -EINTR) =
-stuff with
-> > fatal_signal_pending(current) to be clearer as a result.
+> This approach seems very interesting to me, and I wonder if it could be
+> applied to another use-case.
 >
-> Umm.  Be careful?  fatal_signal_pending() may become true at a later
-> point, so you may have acquired the lock _and_ fatal_signal_pending()
-> can be true.  I'd need to audit a patch to be sure that it's a
-> reasonable replacement.
+> I am working on a security feature to protect page table pages (PTPs)
+> using pkeys [1]. This relies on all PTPs being mapped with a specific
+> pkey (in the direct map). That requires changing a mapping attribute
+> rather than making it invalid, but AFAICT this is essentially the same
+> problem as the one you're trying to solve.
 
-Good point. I'll evaluate each case for this potential.
-Thanks!
+Yeah, I think so:
+
+1. The fragmentation issues seem exactly the same.
+
+2. The TLB flushing issues are probably also basically the same, I
+assume you need to flush the TLB when you convert a page to use for
+pagetables, and without allocator integration that can happen pretty
+often and in hot paths. Correct?
+
+> There are however extra challenges with mapping PTPs with special
+> attributes. The main one, which you mention in patch 17, is that
+> splitting the direct map may require allocating PTPs, which may lead to
+> recursion.
+>
+> [1] introduces a dedicated page table allocator on top of the buddy
+> allocator, which attempts to cache PMD-sized blocks if possible. It
+> ensures that no recursion occurs by using a special flag when allocating
+> PTPs while splitting the direct map, and keeping a reserve of pages
+> specifically for that situation (patch 15 and 24). 
+
+Right, and actually just today someone pointed out mm/execmem.c to me, I
+think execmem_cache_populate() is basically doing the same thing
+(although it's also creating a separate virtual mapping).
+
+> There is also special
+> handling for early page tables (essentially keeping track of them and
+> setting their pkey once we can split the direct map).
+>
+> Do you think that this freetype infrastructure could be used for that
+> purpose, instead of introducing a layer on top of the buddy allocator? 
+
+Yes!!! 100% definitely, my code certainly solves all your problems...
+
+> I
+> expect that much of the special handling for allocating PTPs can be kept
+> separate. Ensuring that protected pages are always available to split
+> the direct map may be difficult though... This is deeply embedded in the
+> allocator I proposed.
+
+...Oh, hm, well, um, good point. Thinking aloud a bit...
+
+The way this series dodges the question is (copying from the code
+comments in patch 17 for convenient reading):
+
+1) - The direct map starts out fully mapped at boot. (This is not really
+ *   an assumption" as its in direct control of page_alloc.c).
+ *
+2) - Once pages in the direct map are broken down, they are not
+ *   re-aggregated into larger pages again.
+ *
+3) - Pagetables are never allocated with __GFP_UNMAPPED.
+ *
+ * Under these assumptions, a pagetable might need to be allocated while
+ * _unmapping_ stuff from the direct map during a __GFP_UNMAPPED
+ * allocation. But, the allocation of that pagetable never requires
+ * allocating a further pagetable.
+
+In other words, we might need to allocate while we allocate (which is
+fine because I have to do locking shenanigans anyway due to x86 TLB
+shootdown requirements), but there's no further recursion after that.
+
+Can we come up with an analogue for protected PTPs? Point 3) is
+the inflexible one, and we obviously can't say "PTPs are never allocated
+as PTPs". But if we invert it and _also_ invert point 1) I think we get
+something that works in principle:
+
+1) The direct map starts out _fully protected_ (i.e. we treat everything
+   as if it's a pagetable at first).
+
+2) We assume the direct map doesn't get reaggregated once we've broken
+   things down to serve PTP allocations
+
+3) PTPs are always PTPs...
+
+But... this is a bit silly, since what it means is we'll then go through
+~all the pagetblocks in the system (except the ones that _are_ actually
+used for PTPs) and flip their pkey, breaking down the physmap to
+pageblock granularity as we go. And... if we're gonna do that, we might
+as well just say the physmap has to be at pageblock granularity to begin
+with.
+
+(Could we do that? Maybe - Mike Rapoport has previously argued that
+physmap fragmentation is not a very big deal, so I guess the question
+is whether we're ready to really lean into that analysis, it would be
+quite painful if it turned out to be wrong).
+
+Another potential "dodge": Is it really important that the PTPs are
+always protected from the very moment they are created?
+Coz this feature still seems pretty useful even if there's an awkward
+fallback case where, under specific memory pressure patterns, we
+temporarily use unprotected pagetables to set up protected pagetables.
+That still makes exploiting a pagetable overwrite an order of magnitude
+harder than before, right? Similar to how there's probably ways to
+exploit bugs if you can get them to race with the intended pagetable
+update paths that flip the pkey register, or if you can get a ROP chain
+to flip that register for you or whatever.
 
