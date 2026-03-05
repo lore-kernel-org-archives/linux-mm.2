@@ -4,105 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB083EFCE5F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 05:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15DA9EEF300
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 05:39:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC39B6B0088; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
+	id 37FE26B008C; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D71316B0089; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
+	id 326D16B008A; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7DF86B008A; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
+	id 229186B0093; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B42B06B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 548971403F6
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:18:44 +0000 (UTC)
-X-FDA: 84510854568.16.74C1BF9
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 24A0740005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:18:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VuPkcQoy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C6506B008A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8ACAE1B8A4A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:39:29 +0000 (UTC)
+X-FDA: 84510906858.18.601BBE8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0039B4000B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:39:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EV78gkF0;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772687922;
+	s=arc-20220608; t=1772689168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2eWaG4AAm/ZvG/U11Toj0Ut+QJaBBSiqacL51yLdDNY=;
-	b=I9FvyFETO5tqgepGh8WCVU2Vc4UOT+W5GTMaLad8czccjrL00H8mmgnUpyHKyvLC18Gx9d
-	kM8IYojSla0GaTB5JQHMNiYdRH1B/YUq2N885fSWv5CB1xbK7pw2CkKF/Z7xijZimd2D8j
-	jEIBxAyEJCqxtjCrHevxa+/ybMtXKcM=
+	bh=L4meiMGwYvCF+Q/G7tmBV4Lx1Nc/bHu8ccrUbbl0TcE=;
+	b=EZ18EebyyTogOfFwqVt8Efu19vHcvBd30r+mh13KIF2AHp7N/thsI27mNoCbreKMnSi95Z
+	Xt9Q8SFOuh7XonDfKMPsJFa60qnXSwkDdxqiaWYDb8MoLD5pSeDI8oJ12QOxVVPUcj5f/h
+	kFai21lf/hY28hjl62Jcj8qdE8QDId4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VuPkcQoy;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772687922; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EV78gkF0;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772689168; a=rsa-sha256;
 	cv=none;
-	b=Weul2UXZxDL6u3XBDicpbAkKvcBgsYYYSSsODTsLQ5uqoYfsRnc+eqzA6088x3bOoAuQYc
-	1EbGwfUohFIp2640oZ9lt783JT2gAhzsIOnqGAjvbtxd/DHOrooK7rkPm9mHwdgnCtTSWq
-	qalSZxWKoIvSF1PObRVCCNLqSZQ+x8o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772687921;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2eWaG4AAm/ZvG/U11Toj0Ut+QJaBBSiqacL51yLdDNY=;
-	b=VuPkcQoyiV0TvrTFX+x/DrjXtGzcG89EdveDrdrIfODZJVAEjo6uYAH2A0EqGExeQ34TeK
-	NXVPyAXFriTuF2tX/Y4KxsaKq4grbrMA3cE5V5OpQVJmcFeWpHWQteyg3fl11tTRSPWscS
-	4QyXAMjCC3mdJMs2RA0hll3rhDW4RHE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-iDQZbk7NObijYi5gBKIu4Q-1; Thu,
- 05 Mar 2026 00:18:37 -0500
-X-MC-Unique: iDQZbk7NObijYi5gBKIu4Q-1
-X-Mimecast-MFC-AGG-ID: iDQZbk7NObijYi5gBKIu4Q_1772687916
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C9B21800561;
-	Thu,  5 Mar 2026 05:18:35 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.118])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6FC6C1800576;
-	Thu,  5 Mar 2026 05:18:33 +0000 (UTC)
-Date: Thu, 5 Mar 2026 13:18:27 +0800
-From: Baoquan He <bhe@redhat.com>
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	baohua@kernel.org
-Subject: Re: [PATCH 0/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <aakSI_0O0G6arjZO@MiWiFi-R3L-srv>
-References: <20260302104016.163542-1-bhe@redhat.com>
- <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
+	b=nZJ5q8EKr9hJmT0dXx8bJwvCeMIP9Tnkf5+rcdSSrJm9TVRsZPC75pYH+l9+8tVOd/+g07
+	r31v3CdPcrOBg53IgZb6f3f0CUqKxhKC8RhdkTBEe89M7ko3kmyAznd95XMOr8T+evwJlL
+	GzdvoMv6rbG6lteLXn9B6t6rhOlIyUU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 31F3D61340;
+	Thu,  5 Mar 2026 05:39:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C138EC2BC9E;
+	Thu,  5 Mar 2026 05:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772689166;
+	bh=bVVliIOg8qhYd2P4htNiq3HDElr+pou2NiqB1WgEprY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EV78gkF0MgLzcm2fqzlweoxGrUfkuJ7etBaw1Dbu57ttNfmS/snYwef6oboti0hA+
+	 AXNRLPLVMVvtzKGAKsEdkV75nLk/WjIuLytyXM6916kykgeMk1xfZkPsDVcqlQYiUU
+	 +u+PlWwDwhVg+M+3yiPXFvxCi2P+IdUPotWzQFPoMPoa0tbPNjPZr0pmVy+uPuCfEQ
+	 efHhwVMBycjy7ltHgnnN0hJ5Q3Vk/GFqutOjI2GQU7eQCxnABFL6yyQRGKH5l81R8P
+	 RtQkCHc9KJj7NSfpy/wihuWBvjLJIR37f7U+o8Cj1oRiTT3i3Bn8TOykWC5HKeS3/1
+	 MvkZI423te5xA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 1/5] mm/damon/core: fix wrong end address assignment on walk_system_ram()
+Date: Wed,  4 Mar 2026 21:39:13 -0800
+Message-ID: <20260305053918.83786-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260305053918.83786-1-sj@kernel.org>
+References: <20260305053918.83786-1-sj@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SHSzm2k4pOLoXHqC5Gu-jJ_ZY1ZwGh5tMNk-s0ANopI_1772687916
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 24A0740005
-X-Stat-Signature: jxy3ghna8rdza7z53kidpf4z9hgm4wdr
+X-Rspamd-Queue-Id: 0039B4000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sm6w7ynqr3gw6t56zygywi7k41zkz4o1
 X-Rspam-User: 
-X-HE-Tag: 1772687921-225338
-X-HE-Meta: U2FsdGVkX18TKdm+/P0M1OFZOeP/KSelj1E1nm9bTnwSCXZIt31hUhRlG1hogF11/NBJfgkFaoamN+bn04+d12hm4hkGeF8dhL8+VK23Q3NBohdBOBcQSX86qERlofasEwP3X7N106X3drQY3vDuGla8Pv0X0jMReo0LgDA3XLXAaBMd51jQTQQvL3XKphI++dDeFpVidHqgF4MRBG1WWSdZUFhOJ/xbCrufnBzWKlqBjLvVYi63T76DIwsScjhuEIXWzlOnh+FUibjq7LjYVwz73Z+wPMKsiyxZULG7J1TifIM5e9MvlpZ2h4QfUvGaUjYWUJOs62sFCNRdnwwTw20n9qcv66l5tnTVeEWyiMyNYWa7IbJEN7nAgbq5RffoErbfGhXh7Esrk+jdfcX7FT30YGhn+Fpn4QuvMjaEQnkiALeaicJQyB8ElNcMb5RaMqrjhvlilatRK8JPafVO6utxLHb/ZZRHlmca2lklezfxxfGD4lCBrKc0ETHzk1hlh0CymIUJBVOz6YzJNolQ363JBtytnW9rikZZ7d1uziP4aXjaUfORelSreD2ct7BtM9zAYr1uedKVRJ5yj+CV2ivN4Ufk2KsRb8Hyqvkg9l+redR2i508KXmR93nff+J8/IIXYKcq+dvJlVnLnvxaFFX2c421KzOjXjbTZbaaz0TAydtkQ82rP0OukGtLcZEJh77sIykMyA3tJ7Xd9rFW4OHP7kbzp/RduXStJf/xPcTW4ZOQPheSpKvFPZve8P+AD6IEpg/Y29bD/jeLxLYpFxKA+QlQdQlPzFKKeOKy7ZIHC6/j0W6D4O75RrmTp2+t7wjPF2+BqUE2EFoTTdbWVdCh3RusldN3WcEcrk/zbyXKQee87P4KvvN2iyh402ohHcLJ1J7ku8rkvbeix554LdSUrXlVJDEKcC/qJKgm637tY6Lupp5KOg8gIyCzDJKaQ6zvCGJY+210Xut/KmS
- Ory6ViW9
- hFx74eq9EVlSmLtp7fP1ZFiI2igjxU0hQqiQ8GzS2p7qQ+mQpC3ya7bz3X2ZvnrdrZ34voSlDraJwvGHHNfPHPMYoqQ/mic0bNOhtIywmmIf8cM4qUYOGJV1gaz45zDFR0RGeWdFSLfP7J4fRfUyUGJvFYKYq3Q79oQEBaerLrjjd82w/POpY8YQaA0WS2DSfjTN8mVD9ViGQAqqahpq7gfA7RJl2umwpJp4+hqm5VIYKj1B2EVS0WWFj5c+lYDbiGTZH/Ce3GK7EL66rI9RXsr6uuoA7E4xU0Dhy2IDiCXJ6aaqA8TG5+rhQ9qoC3X9dHGNOHxt/dBHl1KN6xUavQabW15nR3CzkytnafNy9D1uDcCDY/3cZzRcmXcyPfsWrLH4M22WpmD8RnmZ6s/ZInTk8HrF1GbzctC5ARbQ+2Okbn5yaqv8N8glLPXVkt67Eazict/MJG+U1flMq4128TFGr4qXIMkdnLbcP
+X-HE-Tag: 1772689167-851338
+X-HE-Meta: U2FsdGVkX19pND+ayqHJQgezp682ZYf1kf1GcVipVniCMcplqGz3rZcdNSu4FfxGsEIBICMxHCJsjLy3z51mTM8a//xzfC8dGx6RGVH7fnQEyhuZ0qXnNmK+x7/ql3cKj96vgZkwfrll8GN7NpxL2101GJFrDwgI5CGn4U001xKgXBF4+CMp67L/wUfo9AMWEZTF9M/e2gZPnlKcBs51Fb/HCaZ5MTL1aDJj6AIzHYCt0rRYZldMh5ZtdeCfC51EZXI4wJqUHO20kpU0CkwxpEMRqRKmAD2Ew1DOFNt0RpPo/X5wUOVM1xkHyO15IaDmOhtGKSChbYN9T9Z6eWRBud2owWzm0m/i0HNedJKhgPw0cxpgOZGq0xh1CdLT4pjwz65rsfs5osry3DhNh2c7pchhR1pqEwTMv56wSkBF9CM+KaNSvV27gaJbow4tX+A3XW1JdOmOmPTslZzvO0QiY/ilTD4P0CLAJy08zbEHMSohUDFnSxMTcmEUxDQoxBOUsZzkIsoOgScxylWStMP97YZ9g9WgkyRQz0gjMaD9otxvMwGOupP3hmP0r6ddN31dsodd6W6SNxN8vDvTnfP6n7EEsVakD/pFQdOVW26j9eT6+wCap5Fi5gXtZRxZ95aQWGj4JHWT7ORWORSwpiCYgzWo5DaKWsVJrSJT6SSUhq6etS852iWnLl/MMtBRYmTJd5wir/8Xb2D4kG2Xax/1umm47vrlQnKiqg3X5nx72Nbz8BhPoj0QhIdah74IVdpxN3iubiFVLeNpZs+/PUUtSXooBcc6Pc51GaC/pz4F4bUDG445K3JS4UPpkk7CYdgyXeMa0NpB2XQ7IdzShYgvW9l2DoombQEQHOArmAfXqlrbXWOgmDUAjndRZOCmWB2Co2s8+FCZIcCg0Uyy61llxlV0qv8bwRhUe7fJYHWn+WkOW2oGqSPxEVuBrDiCZSgEbxhEA6AeooMRng3Mj1d
+ G/JakGWi
+ l0n2wVC5+0yEm2nunBHZl/PVp9Z0Nu+Pfx9SxpZFSa1gT/qeuxyqmae4ZG0EaHvPt3pfjSK33m0sHELHGS468L/VXTSnfCw4WcVEoVimTnrGDXHiZOkA7stbiqwpRGcAmG1EnjnF4CnEtK+z5sKcLPu3FufGLw+6QKpXp0H7ATJg4gsTV6TYH6uhm4JY09R5pV6g5VZmLkIW967N65u0IghYI4KRm+5uxjcHCIIH4CJ4JElSylRiohnuK20NT8m+ImaRsKXwSubpN1h8z9sbsBO1WTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,118 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/02/26 at 11:43pm, YoungJun Park wrote:
-> On Mon, Mar 02, 2026 at 06:40:13PM +0800, Baoquan He wrote:
-> > This can simplify the code logic and benefit any new type of swap device
-> > added later.
-> > 
-> > And also do renaming in this patchset:
-> > -------
-> >    file renaming:
-> >    ---
-> >    mm/page_io.c to mm/swap_io.c
-> > 
-> >    function renaming:
-> >    ---
-> >    swap_writepage_* to swap_write_folio_* in file mm/swap_io.c 
-> > 
-> > 
-> > Baoquan He (3):
-> >   mm/swap: rename mm/page_io.c to mm/swap_io.c
-> >   mm/swap: use swap_ops to register swap device's methods
-> >   mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
-> > 
-> >  MAINTAINERS                 |   2 +-
-> >  include/linux/swap.h        |  13 +++++
-> >  mm/Makefile                 |   2 +-
-> >  mm/swap.h                   |   3 +-
-> >  mm/{page_io.c => swap_io.c} | 104 +++++++++++++++++++++---------------
-> >  mm/swapfile.c               |   2 +
-> >  mm/zswap.c                  |   3 +-
-> >  7 files changed, 80 insertions(+), 49 deletions(-)
-> >  rename mm/{page_io.c => swap_io.c} (91%)
-> > 
-> > -- 
-> > 2.52.0
-> 
-> Hi Baoquan,
-> 
-> Thank you for the swap_ops infrastructure patch. This is very
-> relevant to our flash swap work, and I believe it could
-> significantly help with our future contributions if the framework
-> is extended further.
-> 
-> As I understand it, the current patch serves as a foundation for
-> future infrastructure. However, from our perspective, the swap ops
-> are currently configured statically, and we would need a way to
-> apply or register custom ops for our use case.
+'struct damon_addr_range' and 'struct resource' represent different
+types of address ranges.  'damon_addr_range' is for end-open ranges
+([start, end)).  'resource' is for fully-closed ranges ([start, end]).
+But walk_system_ram() is assigning resource->end to
+damon_addr_range->end without the inclusiveness adjustment.  As a
+result, the function returns an address range that is same as the
+expected one, but missing the last one byte.
 
-Thanks a lot for your input about the future potential use cases of
-swap_ops, they are very valuable.
+The function is being used to find and set the biggest system ram as the
+default monitoring target for DAMON_RECLAIM and DAMON_LRU_SORT.  Missing
+the last byte of the big range shouldn't be a real problem for the real
+use cases.  That said, the loss is definitely an unintended behavior.
+Do the correct adjustment.
 
-Yes, this patchset is posted as a infrastructure of swap_ops and a
-thread where we collect any potential extention or use case. The
-change is made based on the current kernel.
+Fixes: 43b0536cb471 ("mm/damon: introduce DAMON-based Reclamation (DAMON_RECLAIM)")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> I have a few suggestions (mixed with questions) regarding
-> extensibility.
-> 
-> 1) Could the ops be replaced at activation time, similar to how
->    SWP_FS_OPS works — i.e., giving block device drivers an
->    opportunity to override the ops when the swap device is
->    activated?
-> 
->    This would allow block devices to handle swap read/write
->    through swap_ops rather than doing it in submit_bio, which
->    feels more generalized and leaves room for future extension.
-> 
->    This direction would be the best fit for our use case.
->    However, considering ongoing swap work that may involve
->    managing multiple swap devices, I wonder whether binding ops
->    to a single block device would still be appropriate in that
->    scenario.
-
-I think it's doable and make swap_ops more flexible and versatile to
-support different swap back ends.
-
-As for binding ops to a swap devices conflicting with managing multiple
-swap devices, I may not get your point very clearly. Could you give a
-concrete use case to demonstrate?
-
-> 
-> 2) Would it be possible to defer swap device activation via a
->    lazy registration interface, so that the ops can be registered
->    before the device is fully activated?
-> 
->    This would open the door for entities other than block
->    devices — such as kernel modules or other forms — to act as
->    swap backends. (Of course, block devices could also benefit
->    from this path.)
-
-Yes, I think it's doable. I will make change and send a draft to you for 
-evaluation. By the way, do you have actual use case in which deferring
-swap activation is needed for justification?
-
-> 
-> 3) Alternatively, are there any plans for a static binding
->    mechanism, or any other extensibility approach you have in
->    mind?
-> 
-> As an additional thought, if this ops framework could eventually
-> be extended to cover cluster allocation as well, it might enable
-> a model where base swap functionality is provided by the core,
-> while each vendor can freely plug in their own additional use
-> cases on top — making the swap device truly extensible.
-
-Yes, this is planned task as I have mentioned in the LSF/MM topic mail.
-
-
-> 
-> Any thoughts on these would be greatly appreciated.
-> 
-> Best regards,
-> Youngjun Park 
-> 
-
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index de38f2356b72b..db388d05cac3f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3056,7 +3056,7 @@ static int walk_system_ram(struct resource *res, void *arg)
+ 
+ 	if (a->end - a->start < resource_size(res)) {
+ 		a->start = res->start;
+-		a->end = res->end;
++		a->end = res->end + 1;
+ 	}
+ 	return 0;
+ }
+-- 
+2.47.3
 
