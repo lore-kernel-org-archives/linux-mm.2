@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6E4EEF338
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 09:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88B7FEEF33C
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 09:10:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ABC16B0088; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
+	id B4A8B6B008A; Thu,  5 Mar 2026 04:10:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659796B0089; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
+	id AF8376B008C; Thu,  5 Mar 2026 04:10:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 565F06B008A; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
+	id 9CF976B0092; Thu,  5 Mar 2026 04:10:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 430E96B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:06:05 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E148DBB50F
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:06:04 +0000 (UTC)
-X-FDA: 84511427448.07.286E8FF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 378B9100007
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:06:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/k/B/Z";
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A8876B008A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:10:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F12EBB9DC
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:10:39 +0000 (UTC)
+X-FDA: 84511438998.13.279FF63
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 622BDC0008
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:10:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L7x4mezl;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772701563;
+	s=arc-20220608; t=1772701837;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qF3e1InnA9jjGTtBQ1m/ilqjtjb3Rq4QGSzvyIjwE9M=;
-	b=dS+gAdlVmNpcCvzCntHlyT6aBMUkqJ2Lgw7d0wbEFa+FNvldc23UGD0u9oKe7h4BkJVYGJ
-	dtbFmqweiUooTqYq+kuCIoToZiXIym1jfcQvE/KredKiXwrH9XjbEO2aTGW969w7oG1nih
-	E9C9NhsPndjQhX0SHCZelgB/RJElYV0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772701563; a=rsa-sha256;
-	cv=none;
-	b=to6PDyMEwkPKCPNls1AR2V8oVkcEQqU07JG9olRYMKxHdCZ7Rvvyoi9ZudCWgO3IHoJPGF
-	mto4Axlf5N5eZbzDxpfVB742Aw1afS5Vjtcg+a/qYA1diOcXFUOGQZr05gy0NXiaAuCHZq
-	vEVt5zlrm9zHzy7ovs9NH90BOMQIFwI=
+	bh=tr1o9KhyPyLCXwJBlDrE8nwwf9NNG4p8828XvNLTvd8=;
+	b=lJouG7MqdgtdsN9WhL6Lgf6WmYeq2TzlXBbna+MyXQvfKuhhVz1jh+82nZv4R+7WS5NxYW
+	BZ2XODYKeNfSz/lqi/wZ7Gsctr2hkskR62ix8s3Z89T7exzgoiGO3GTV2+IdHwHESUqlmA
+	IynseblX6G0otuEJn+bC00dgP1TjOv0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="J0/k/B/Z";
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8009561339;
-	Thu,  5 Mar 2026 09:06:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4BBC19425;
-	Thu,  5 Mar 2026 09:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772701562;
-	bh=mmssFpHsTTTOrOd4y+zoY0xhIkR5xO0zlcS/SUuUFGk=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=J0/k/B/ZSPtOdp5SgcAwYMgs6ZHGAR7ZKKSC7akGX8lelqRptgjCjk35rnVHtV9vn
-	 OjqT58W+8i38KUlkTl+8QgpdL4fS5bWQ/77tChQAxbPHmyCIR2wJsPN6nurzvh5NkC
-	 bmCzPhNi6tiSzSGlIZ/91rk4UXr+XUgV4D/JfmSx/L5nG25VTEtqAJEsAknmxHJtqB
-	 bmhNQPj59f4VLdaWyJb6ZhMOVvti8qisA7fhRkABFxktOo7GqOA1+mdV5ecv4CuraM
-	 g4lSJYMxB1wT23qft7LhnNt+jaWIqvXYeYd1vFovUAOcQ4WPM9u8KQ+m2oXjfip32y
-	 YIaZg15SMyhhQ==
-Message-ID: <985005f4-fe5e-4ad0-83a8-14ce324db58a@kernel.org>
-Date: Thu, 5 Mar 2026 10:05:57 +0100
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=L7x4mezl;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772701837; a=rsa-sha256;
+	cv=none;
+	b=yqeUReW++TlMb0SG4w0rvb7IFtK3zd9Qo9pQTfZXjKOFN8W0y2xfuiuQjAAyOXeMPVYkIo
+	1jZM2Z6JDfY28Oe0noMJfFMDnBr4ddGhbt9tScPx3J4WqQi00qU1as5iNyHfVX9usnLiRw
+	fQpV9S2RxiPqH1qSf9PIkTaVe4Os/lk=
+Message-ID: <d65039f7-eaa9-4fa5-b03d-e184f0eb59fc@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772701834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tr1o9KhyPyLCXwJBlDrE8nwwf9NNG4p8828XvNLTvd8=;
+	b=L7x4mezlG6AujZehqOM4oJ1mkz12yinb96zksZNN/IssZlPMeo22txA9u/1JGvJm0IQIZX
+	knTzFQOroszSlf2YtuFByiAoYTLA3ZgsDnHx7Xob8QK6lAjuJc0iRLD0Agun4RoT41YxJa
+	M/cyIE844GMBmEI/anCkSsaJEZq87i8=
+Date: Thu, 5 Mar 2026 17:10:12 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: rtmutex deadlock and memory corruption when running gcc testsuite
- in next-20260303
-Content-Language: en-US
-To: Bert Karwatzki <spasswolf@web.de>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-rt-devel@lists.linux.dev, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>
-References: <20260303222127.2992-1-spasswolf@web.de>
- <f4591e7b-d07a-402a-a051-8ff12b0ccc09@kernel.org>
- <9541893b588ef644a06cf01bb65005e9efcb3427.camel@web.de>
-In-Reply-To: <9541893b588ef644a06cf01bb65005e9efcb3427.camel@web.de>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 update 30/32] mm: memcontrol: convert objcg to be
+ per-memcg per-node type
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
+ lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
+ yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <0f915487ffc653cf6ea19335c21c01aa06004641.1772005110.git.zhengqi.arch@bytedance.com>
+ <20260225094456.74145-1-qi.zheng@linux.dev> <aZ-uNV1biPYLhJ48@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aZ-uNV1biPYLhJ48@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 378B9100007
-X-Stat-Signature: rcx67tucyz9tmrassj1i5hutopyn378z
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 622BDC0008
+X-Stat-Signature: kngtnr5m3c6adp935sxqfxt3b1r3uz7x
 X-Rspam-User: 
-X-HE-Tag: 1772701563-399976
-X-HE-Meta: U2FsdGVkX1+8fkCFBJLjazwwb3OcVen/d/83oGclP4vU4fiyqr/UvBBRrrmqfoBAqCqX0kWRNFH9RENM1Mmqh+CDK86q0Eyi4gF4fBvhRyRRM6IXOo/X1qWUhxsAPY3+iZGZPwzTV2VwlnoYTxyJ+DpJAqUhiJJc1ghp7ntZ6aEiUoszKKftdA+Gup9ow7oTKll8JUo6xMOI/YCHvGNvDdZh0UMUWRLgf++j0tcEIvbUnOUJByl5q45Cf0wnFwTMPC55+dQO8yFXd2tG+UWz9Gb0WIOyqoGOcNFBHu0gNRq+8zpAjeTySp3YCJNfwacAc/y4E7OPfL6cFcfthqSFYd6ARIXbbHX5ImB7uYSZMq8GHn1hWUSvQqED2NLghyyA3/kWMfkN+c4boHxA0Z5b0qPaRtR80JXoaVWAl2oVUPvwsOY9gXNZbnAhDLcFJNRzamQy/nb9kdlA4lAHebWWtSPnHyv4esyIY84OkN+6Oo4NeF0WJ91LIORKtqFiKfZAze/htHx5UzyM9RUEDXhVP+L9OcDtsLXT88i32MoJ4jxPaTHNYipgUs1GSHITj8W55161v4vUnm4AKSNReoPddDigd1z+l/bZbpV+07FbuQfkKNqO9GstSRbIf2CtyBUezYUSnkpQJ5E7Gp1tCw6ZjCIGV4PT9oiCM3c+HUgvtFd0Bdk+RNotsTJaGJ1WpSrtI5KBRD9fC7OlATTbUWmE8bYeT9g40NkN+h+cqiVwNNmRRZnj29WLWC62ctbAdWKZdcpqbO4/6dwG1GacRjnRzJqEZK02LwWpxc5/d2ewp5H1AaDGb2/YjO2lrDz15lLEELzH8SCYmk6v0OXa+wFr3zIUPbHs3u257zZ9HQNtAZQBiP+QN2nmZbDHKXYNaY4jzlV+h82Tf3JbCuJwUxPPOSJehB0srBZO6pzf8+DzvBvE1efhfRwnucEEr8AlQWI1pBzxuIhCUt1LAxmoWjd
- EAGQJbu+
- EJY6X7gxcqZbAZRh9/hm2ZDA1Ipc+RrR8THZNi36A8IqRtXq5r/XVgFfgubNt2rHk40kXTTwaTbTU4SuJJIJib7nsPMFN9SNNTGgAwT65NggSiLR1Cu55KyqhuTMZ126pdDf4BVkSOB6BjIYaJS4jLdDN3NmwgYGgfrw09/RQxZCwRZTgDyNlU9K2jKyAvfnUsRzV2YeGrP9Qb+ssBqeOq1Dcfn0GXrvMPsfm+OKqvWa0KeRqc+Fthu+zEvZwD5blC3BL
+X-HE-Tag: 1772701837-861889
+X-HE-Meta: U2FsdGVkX184Ag6xazWa/N7Q9DQ+ZLNURVZZ+TeafXDlKV50f7McdoG9iL6yeAVcYyY/jy1q07PRvpTCjzoG4E118cBC2qDKWcAoXx/TFeTyMK1gsGipaFPwN5qpAB+mJEZXs7Om9XvnvYlsb6BqPzQhj0gepkrAVhxVVhmA5zshLKVPkw3qMyYvw0Ddht5NFMgVUK7dMlEh5mVWBNlJ2p+2g5+CC2eBmgVhLhG8exfM6Dbx1k5t1D6MVRLUus3wWkpTK/D0BLRizwSK3O2afFUDb3q2/VYhdxM60NI7SXeKRmyi/Pqb8O6kJmh8OhOd9LhRyuEqRlEzUKwunwX/celAabo6pzD82hARvAxGeyWNXvAQpzCT00m0q+K2sBm45PWiDV7Ib0oJOtHp7VnwaYeI7KTmNSNwjNaSvgvMNwRss0mNrKdqLHGqsRm+tMQYcE+uFoMb9kLSyNKCEbIodUkUzzzc1xGPAiNMYB/zVk4HLDmvTyrDfyL9KxqF6VEuuhSH9IfqNPp8Wz/IMYsV6C+Bs9d3YP9co9Jn3aJEF1vsLmnOXfRwK+o4IAfY5BmdbjvVLnAqA4/kvs7B+nzkZqP4k5D/aygVqWkL7U6hfomcAoCFtDMZ/KRVZTGeNGQTebbg9ZMi8A6EeSVqGPWM57VtP3NHCB3K4D3Jzr4zj0qYNykGxJuoMOyZ1etqsjlGKJMKxcMkq08fetUiCGOD1HeuGyCISh8XUHGHAs719aQc1FejVx04XD5p/kTR9e4X6hdh5Dm74+I1nHM9Zt/9X5crrirQDrk8mCX4e/lgtXTeUNpdMu0Ui39qQ+fbntZOEOTu6DW4JmGdlkCSNSO8tBT03ZZLgeaSF2No90pX1iGqZ+G4mGy2mD79DjO+H3Bl363RuROuaWjR4LltTz7xOHrn7daTljGJZ5xR3g09edDQ48W8ltBJ3c1nXMOoGrtgcx+1yvFQKgl47mtCsKy
+ nYQVSLDh
+ iezfoXhvaRXIJ0wPE12/J050AOZJih+m2OX3Gz0cgguY19/3oygZyw23PwOuLk4DHgNy7dAiV4CKRC7IKy+oT2L6gbDrlOgl02FqXOXpFrPkKObAQTOwKPVNEepmER8xxnYjYn685dOlsigOsMwE7Hu4lnYu9kMZ02iVc4MckIIocJQeMFZEr7vYRoiQg2XqhnHAm3G+HlWdtrBdhUTDM6v/g9qwdoDy52T9VXstk+ZDmkjnAfx5CD9rXXXWD8aunl29AuNGLQylhKIcFjVOdWI/BRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +98,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/4/26 21:44, Bert Karwatzki wrote:
-> Am Mittwoch, dem 04.03.2026 um 15:15 +0100 schrieb Vlastimil Babka (SUSE):
->> On 3/3/26 11:21 PM, Bert Karwatzki wrote:
->> > I tried building gcc-14 from the debian repositories (fetched via apt-get 
->> > source gcc-14) on my new and shiny zen5 machine (Cpu: "AMD Ryzen 9 9950X 
->> > 16-Core Processor) running debian stable/trixie and linux-next-20260303 
->> > (PREEMPT_RT=y) with the following command:
->> 
->> It's probably my fault, sorry about that.
->> Specifically commit 666a739089c from slab/for-next-fixes.
->> Does the following fix it? The fixed commit was meanwhile
->> queued so hopefully will be in next-20260304
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 740edbad0475..1871c5ef354a 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -4610,6 +4610,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
->>  	}
->>  
->>  	local_unlock(&s->cpu_sheaves->lock);
->> +	pcs = NULL;
->>  
->>  	if (!allow_spin)
->>  		return NULL;
->> 
->> 
+Hi Shakeel,
+
+On 2/26/26 10:27 AM, Shakeel Butt wrote:
+> On Wed, Feb 25, 2026 at 05:44:56PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Convert objcg to be per-memcg per-node type, so that when reparent LRU
+>> folios later, we can hold the lru lock at the node level, thus avoiding
+>> holding too many lru locks at once.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>> changlog:
+>>   - fix a missing root_obj_cgroup conversion and completely delete
+>>     root_obj_cgroup.
+>>
+>>   include/linux/memcontrol.h | 23 +++++------
+>>   include/linux/sched.h      |  2 +-
+>>   mm/memcontrol.c            | 79 +++++++++++++++++++++++---------------
+>>   3 files changed, 62 insertions(+), 42 deletions(-)
+>>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 45d911dd903e7..6e11552a90618 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -116,6 +116,16 @@ struct mem_cgroup_per_node {
+>>   	unsigned long		lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
+>>   	struct mem_cgroup_reclaim_iter	iter;
+>>   
+>> +	/*
+>> +	 * objcg is wiped out as a part of the objcg repaprenting process.
+>> +	 * orig_objcg preserves a pointer (and a reference) to the original
+>> +	 * objcg until the end of live of memcg.
+>> +	 */
+>> +	struct obj_cgroup __rcu	*objcg;
+>> +	struct obj_cgroup	*orig_objcg;
 > 
-> Yes, this seem to fix the issue (two testruns without errors). So the problem was __pcs_replace_empty_main()
-> returning a non-NULL pcs in the case where it can't take the lock (&s->cpu_sheaves->lock) and jumps to
-> barn_put:.
+> The layout of struct mem_cgroup_per_node is very performance sensitive. Please
+> couple of performance benchmarks after rearranging the fields particularly the
 
-Thanks for confirming and sorry again!
+I ran a simple test using will-it-scale page_fault1, and the results are
+as follows:
 
-> Bert Karwatzki
+tasks    | baseline     | with-patch   | diff       | %
+-------------------------------------------------------------
+1        | 216394       | 217537       | +1143      | +0.53%
+2        | 419895       | 421510       | +1615      | +0.38%
+3        | 626275       | 629533       | +3258      | +0.52%
+4        | 833146       | 830481       | -2665      | -0.32%
+5        | 1037597      | 1034334      | -3263      | -0.31%
+6        | 1229398      | 1231656      | +2258      | +0.18%
+7        | 1425040      | 1424432      | -608       | -0.04%
+8        | 1603738      | 1626028      | +22290     | +1.39%
+9        | 1797881      | 1803901      | +6020      | +0.33%
+10       | 1976264      | 1966342      | -9922      | -0.50%
+11       | 2150073      | 2159328      | +9255      | +0.43%
+12       | 2304435      | 2321128      | +16693     | +0.72%
+13       | 2524668      | 2538582      | +13914     | +0.55%
+14       | 2763854      | 2743098      | -20756     | -0.75%
+15       | 2938939      | 2961671      | +22732     | +0.77%
+16       | 3152497      | 3181420      | +28923     | +0.92%
+17       | 3333936      | 3370667      | +36731     | +1.10%
+18       | 3531225      | 3552907      | +21682     | +0.61%
+19       | 3732347      | 3769889      | +37542     | +1.01%
+20       | 3917502      | 3951226      | +33724     | +0.86%
+21       | 4118040      | 4134952      | +16912     | +0.41%
+22       | 4268932      | 4312343      | +43411     | +1.02%
+23       | 4438411      | 4484408      | +45997     | +1.04%
+24       | 4618400      | 4683531      | +65131     | +1.41%
+
+No obvious degradation observed, so I'll keep this arrangement in v6.
+
+> above two pointers together at the start of the struct.
+> 
+> Otherwise:
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+Thanks! I'll add this tag in v6.
+
 
 
