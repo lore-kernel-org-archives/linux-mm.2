@@ -4,100 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B1BF33A63
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 13:52:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B0FF33A66
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 14:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9834A6B0093; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
+	id 54A356B0005; Thu,  5 Mar 2026 09:00:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95B886B0095; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
+	id 500CF6B008C; Thu,  5 Mar 2026 09:00:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83D246B0098; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
+	id 4033C6B0092; Thu,  5 Mar 2026 09:00:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73DB36B0093
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:52:39 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33EB286090
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:52:39 +0000 (UTC)
-X-FDA: 84512149638.16.8B7D77C
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DC0E6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 09:00:36 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE6E813902C
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:00:35 +0000 (UTC)
+X-FDA: 84512169630.19.5A8F170
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 45392100011
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:52:37 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIo7W+m2;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id BB170C0012
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:00:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLiPPMTz;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772718757;
+	s=arc-20220608; t=1772719233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8qGY6vjbIJd6EKuaWbF09ZksWAGqo2RcvhJgoJvuuHc=;
-	b=v+bRseKjf5AmwNa2LJHuneoORU8X+C2yaIIaLAAInVPVVK7o5qS1iKxtBhQ8F2kcND05f9
-	XbSCaLd3/BujAguYHXmpDSgGl7UfyRertXNezHd0cKhU1CHDx7oJTrFmBQ/xFX/+C3I5Mn
-	K5RODLcPPXhUYQ1DeGYfeIJ5x0SirWM=
+	bh=bLB7WOQa5oxTbNxwDfrrKUZKnAd4KHZV7UcRN3JkrTo=;
+	b=6mDM9Q+jLL6R64JTk9WQZSnP36SyuyRBUJ2AcVw2a6QmnvjYDrqZqC98uhViDiFR/LOmfQ
+	/p1UyT90eJ2GzuZYMM5WtTeCVGnyltJwKyQeVgWhoMU4EQJXOFtHDb4iOy5DOwebJ9aOGt
+	ciCoJ32hIxhZnxlpE3eklQ1CbSY0QFM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EIo7W+m2;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LLiPPMTz;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772718757; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772719233; a=rsa-sha256;
 	cv=none;
-	b=7uh1AXiyCzOr2KmZSZNxFVietp89Aq2gNZvuN6MfT4YglTLKtIeXE4YPqo9+5HDJIh1Ep8
-	JfxuXqfMzBZkXAuJx/HE0qKhy8QTXrgeGktxmpzHoKUYkRBUQfQlx8ZHyQnl7i/wx33+oz
-	q75RY+tQ0HuqImLKgKDV2lCYWmjxsIE=
+	b=O1cnQbXo3xe+hkFo87eOtbWPwqx8yV8QSfy5OkyxXqp3GRosUT7vDsViw90z+2atbvevW9
+	OL3OY+1VMwXYXoopbOl4kzWql2jSsDvcZoRW8sI7u2TZlJltonRPAkSaaSI+F9ghYF2RkO
+	tTHQMs7Mmwaqy4Sda8se63t7zUDXZs4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 55F5D41E4E;
-	Thu,  5 Mar 2026 13:52:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A352C116C6;
-	Thu,  5 Mar 2026 13:52:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AE18A43A5E;
+	Thu,  5 Mar 2026 14:00:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E58FC116C6;
+	Thu,  5 Mar 2026 14:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772718756;
-	bh=xiH0k3VnNllwhvF0paWR+j9imnqSqZXaJMfyHs6hjKM=;
+	s=k20201202; t=1772719232;
+	bh=393qDIgoHBbCQNpTIGP+WBiCqebYKIGYINOpS7EZdyA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EIo7W+m2a6MwdU63DHKHmCU4WCG3j3Le9SNvYGeDQNElh0arR8m0fBDU7v+bT+p/q
-	 yqAP6G0WRAYmL3dXHDQQtNFLFJj8JSSRroSHRGmZWMsP7KKQfblh8Pumvo34yIogfh
-	 pGk1Zd/yVhILcMc1gIrdLloWJrr2cmioihCmW7IUiKWCQQX/CMsVv86ZB+Mr1UGy9B
-	 S7D0J31EC80E3MyhRlTC94FEBty1YKo4jRqjpXknMSvwlOQ7fvIOPCZ1krhJrXnXt1
-	 vU8btOW9WX3rCMO9VA0HyLjWvxJ61yrkg17/YuzqyBjy9gxtGBwttUjzSyRnx7DJNM
-	 VekRfeij1nOuQ==
-Message-ID: <f11ec383-d688-4512-a9ea-700cc2d42f3a@kernel.org>
-Date: Thu, 5 Mar 2026 14:52:20 +0100
+	b=LLiPPMTzZg9/f80zQO9P/fDIaf7xVcapS/MbzaPpFA+pXw3fDPXDsl5FaO+E3F0+K
+	 e/AwWKAZC2U0+K3fQVhE48wi9M0L1hOg+hzT5GLlBoJvKlwPwy0nB/XNxCSlkA3oVi
+	 Zq5Tqg6m+9A8Um7hHXF9eEg/jNtA5iqOkWM15gP1eIg+7eezFv6GgM7tYhSpTb8EOR
+	 M+VIQjM3qFn1f+gBYvrACm1H5odHiuYaipKFvPxrAPdkk8xpNQan2YpBRq8AuPNm7l
+	 ARrox0w0CBjHRwemaDknNiPDqzDvILVTPu9EJd+tmQZOFlXsYnVgY6LfwgwCp+eVnE
+	 yuMhyx9j8yaQQ==
+Message-ID: <1efba81b-d4e9-405b-8ad5-0a170237902f@kernel.org>
+Date: Thu, 5 Mar 2026 15:00:23 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] tools/testing/vma: add test for vma_flags_test(),
- vma_desc_test()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>,
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>,
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>,
- Chunhai Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
- Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
- James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
- Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>,
- Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Jan Kara <jack@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+Subject: Re: [PATCH v4 1/4] mm/mmu_notifier: Allow two-pass struct
+ mmu_interval_notifiers
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Hugh Dickins <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-mm@kvack.org,
- ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
-References: <cover.1772704455.git.ljs@kernel.org>
- <376a39eb9e134d2c8ab10e32720dd292970b080a.1772704455.git.ljs@kernel.org>
+ Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
+ Alistair Popple <apopple@nvidia.com>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260305093909.43623-1-thomas.hellstrom@linux.intel.com>
+ <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <376a39eb9e134d2c8ab10e32720dd292970b080a.1772704455.git.ljs@kernel.org>
+In-Reply-To: <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 45392100011
-X-Stat-Signature: cjifxa1d511u4neyrpqcgzh356m78gmu
+X-Rspamd-Queue-Id: BB170C0012
+X-Stat-Signature: rht8p5o6gj853u5piwodtwzomqf9nsta
 X-Rspam-User: 
-X-HE-Tag: 1772718757-671154
-X-HE-Meta: U2FsdGVkX196oAcazILaiH6TFf8edp61Bk6/swki1JJVR96hBgjJe9jGx67ayebdv/YsiFkFN0SQsqKVVFHF+BFJ/coC586PKWFVOgenXlXwBQ7n8y7p1FNe4/m9BvNRzEqMY/pQn98Sd9fhw8Kq8s0+7oBcLwkQqZqsiOEcZadzWP1t4gQnl/+4Av4q0xxQrmUMQOYjoMueMMvrzsD5KQqEo30uyrZTc+J6lXQqPfvVpG6WPvuvdqrhq5Wt+quCK7hl/Yy3sapdDDh2OmUl8E/IPsda1cuyGq9+XiDync0PduLdQOISO5pL7L2weUTfh8Nwb5z8NiVPiefRSZTccS8504pK1p4LTH+9Boymqbj1gsNvj3kGQpifQGzf29lbP60xwb/HA8IRyWzN0mWqdxFDjuAaKVecrJpEF0QhuZcRDStnZL2N3VkepFe0Hp2YY/TafCZ9zmMAf8ZgN4nxbTU1i7Ge7DZ5406vlMuXEZh3mkrTLPYe9fPDdZImq7Fg9rSjaSrJGN+nXtkVAPsQi+RpdMy5VWMNYo+17J/lA0eNeKt1iMP+x+cgEAlbhBqSyWs2PcSz6OFiG0Sk2XOCU4lpvI87Rwn6M7QMhZNKv1kyiEyX35NNxyGt3QHUIeJ//ZEvmfGfyjGkspUb95jOivjBmKpYao6l9zHu/kRY2TuqaPKQF5ZHaIKafBzX+UB6qDUoBvzQIXG6MMNoGp0ByROoymaFI1d2qq2aZclvV4y03oxr7Px76JrOC7SJO4C5J4gnMDdLCGZYPafKYVOrAFtGNeY1Klthg/tMBIu8lx65o0hKhlSwMTJLqCONChJZvKmP96UNewgYjd+QunvRgpDEbubzshaQlS6Qrt/t53bzKpXZj1ZCgCiLCzH2ThU6ODSdr9Al80cFW3Eoi02cEPW9kITZvxyL9bZQn2Yr6JRXWNMpdKPBs/9WHBtJm3y2TZ3llQyJp2OPkDKF+60
- lQLmnHYw
- ozKpsvpPQ9+4oeGhloCvHG6FynA/6TJQjUCKNDj/swwowMYQmkWu9udJk/8e6royXJxGYBlQ7ExtrHEZOYK5zNKoSoB5izCfODp+Sj7AZtMsI3r4SegcKZysM83Zy36RzKt1EDVm0juEfkyCyhqF8bK3om9N3Tk2yTC2+OAS7ujiKX+okiFJiERATiu21XRdipWUJyFLloBPP11TJbs5RjiQkSyyl7dzAbwF79bQCfXvXZAFT4pQoSMA4+80jGUAakoYDKyxegyt/c40uGiIC5Y8K0BOVPpqTjclt+H5qa8fYSvJR0IHWnHXTSAw5kPS/8khL8QKWZe8/g8U=
+X-HE-Tag: 1772719233-703874
+X-HE-Meta: U2FsdGVkX19dBXtUNclMaZ4lrlF5mTcSCObEgrcxcA4JdX2NOpUmJi7xsNY8rU5Ma5CMKHSdf83vLG/fcq4IMmoHziSkjooLcGT0KwbJpXVaLpB25Z8wYEpwp29eQ5lq/b0tZ2+ofTk8q0DO5SxcEEa1gG6rebLgeUeb2VKkVHqkpd+7cp75J2Hk9gssETz+zSgte1qxUJqzfKbX6CJooFx5ZltjmuCb59it1BPFTcyPxIw+51W+8S+YEOxrU2UW8wy3/8DIXogf4TslUlt7IrMmcg4MvJw2I3GKsoYL/2br+6wp2rEOqot7a+CaHjAXF/UblCzOE/FB7GLzjyaAG0eX21HKbxWaG64dfHBywsZad2NgfvghkXsJamtPpyMPwD2NIGyycf8tqFjUdixMVQAD8npSdPirA700NwrWqk96QvVJydYb6EbjYoEs8Xfm+UqdHBW+Zp/wcJM7qBu7BlCD98obzioXtvcjMSi+HaGFfVAm9DKnO5JiIGkYn8auxBV1rizMKSF55yp5+pEq/y2EEYiaNXq1WJHeug+utDQ2feNfRddM7KHnTWVJYZE9m41JjNXG9KB8L7pJUmMtIUOHGiE0ZmB3aJqXe7V+Vvm7sryvpaoEU9UnGh55VnzhYPnktjXw/BuMiJDC1N50p1nfCq8PDbYBnwdIoUUUO5rHuVr1d63WgiiSCE0FHy80G+ZiySOddOOUugnTa9w/qKg5Ok0Q+LRENtEYKqPhxAiFbXhpJdqW4yem7+kfXORvptU2ym1/lHZgayOnoVmvQ2qCegWf8r1tkBtRmppbPAAwl9rfOVrUiSzex5aO11YH5r9lDh+eb+0wfTlzZtgxgxfPGlzJ6LLr74B+bZO5/hyR1HHxPEFy3HQAgsuiPD5qeKJiGwdpYbOPfqAelA2/Dv/yVasns5VhgGc3Pf+Ivj3DdR8fnuH3Jh2TS2ROzbpDmv00YpNyo2UdWVae0rj
+ jtSgARVv
+ iSigSH5qihIFQuDS6dDFZnmaFl9jn43P0/8IVQtF3S6AF47rysSZdiSTgx8/aSWGDsTNDV5xxZkHfKlin5hXms/lshXIMED1mDQXd7BGz5JNXh31ZbArTrx6AooscMQbl4VSEO6qKFh/x3L17V5acAr+qt2h3ONBwTISTP5DM4kHhFgk9a4UOvcMDTyvFBYa7Z0z+oC9wXQink1koa8OJWJ5yxpoK+iy6iKdOu7f0+8fcekgRjwH5x6ENdswL68wA+8zO0PTlxUXyKNdSpHeG7X6s39Tjx3mOrQnx7uQP0VK7CYJlaOK19iqGnE9RY5GjrlvdL8w8grzcRp6d3udnyLnkoBRZfVQztSDImxHT2NoYiPMC1JV9kx23jJ2QdcqU9khI2b3C0tX6Bzbd7EO9c2hXc0hC5e069aEakHfc8N2ic67gLUVqOBA55CD7Wa3ssIlnSD2r45uEpXy/XLF8WI4Wq8+XYGq209+V8Nz+6aMjAz+V4ZR5Bg72PrHIlLXHAeluNKjv6RFX5kIA76HfbTqAT/0gg2LOtdAXItw1GGj74dNAeSDOVWkIz1XurbjQhXnlisc4+8iRn+VV/sK9wjgJpmRcGKO/LxaC+nX1SARo9fWWQxrBfyThDxTiU4kr2lOPx7WJpv/Os8XeS3pxTrBKX0ur7MpB1fu3zS0kwFErY+gH8aMxw9xm5YM9Nm6zmOHlLv+qywpvKhQIu+mdxQqLJ8iPexNl/+mqVOppTTtbc3HTHbZBZAHBgASmF73pn+6Db+H8/HZsdwjn7DWooiN7gN/Yg6x5GKHO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,42 +148,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 11:50, Lorenzo Stoakes (Oracle) wrote:
-> Now we have helpers which test singular VMA flags - vma_flags_test() and
-> vma_desc_test() - add a test to explicitly assert that these behave as
-> expected.
+On 3/5/26 10:39, Thomas Hellström wrote:
+> GPU use-cases for mmu_interval_notifiers with hmm often involve
+> starting a gpu operation and then waiting for it to complete.
+> These operations are typically context preemption or TLB flushing.
 > 
-> Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> With single-pass notifiers per GPU this doesn't scale in
+> multi-gpu scenarios. In those scenarios we'd want to first start
+> preemption- or TLB flushing on all GPUs and as a second pass wait
+> for them to complete.
+> 
+> One can do this on per-driver basis multiplexing per-driver
+> notifiers but that would mean sharing the notifier "user" lock
+> across all GPUs and that doesn't scale well either, so adding support
+> for multi-pass in the core appears to be the right choice.
+> 
+> Implement two-pass capability in the mmu_interval_notifier. Use a
+> linked list for the final passes to minimize the impact for
+> use-cases that don't need the multi-pass functionality by avoiding
+> a second interval tree walk, and to be able to easily pass data
+> between the two passes.
+> 
+> v1:
+> - Restrict to two passes (Jason Gunthorpe)
+> - Improve on documentation (Jason Gunthorpe)
+> - Improve on function naming (Alistair Popple)
+> v2:
+> - Include the invalidate_finish() callback in the
+>   struct mmu_interval_notifier_ops.
+> - Update documentation (GitHub Copilot:claude-sonnet-4.6)
+> - Use lockless list for list management.
+> v3:
+> - Update kerneldoc for the struct mmu_interval_notifier_finish::list member
+>   (Matthew Brost)
+> - Add a WARN_ON_ONCE() checking for NULL invalidate_finish() op if
+>   if invalidate_start() is non-NULL. (Matthew Brost)
+> v4:
+> - Addressed documentation review comments by David Hildenbrand.
+> 
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Simona Vetter <simona.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@gmail.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: <linux-mm@kvack.org>
+> Cc: <linux-kernel@vger.kernel.org>
+> 
+> Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 > ---
->  tools/testing/vma/tests/vma.c | 36 +++++++++++++++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
-> index f031e6dfb474..1aa94dd7e74a 100644
-> --- a/tools/testing/vma/tests/vma.c
-> +++ b/tools/testing/vma/tests/vma.c
-> @@ -159,6 +159,41 @@ static bool test_vma_flags_word(void)
->  	return true;
->  }
->  
-> +/* Ensure that vma_flags_test() and friends works correctly. */
-> +static bool test_vma_flags_test(void)
-> +{
-> +	const vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-> +					       VMA_EXEC_BIT, 64, 65);
 
-When already using numbers, I was wondering whether you'd want to stick
-to numbers only here.
+LGTM, thanks!
 
-> +	struct vm_area_desc desc;
-
-
-struct vm_area_desc desc = {
-	.vma_flags = flags,
-};
-
-?
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
