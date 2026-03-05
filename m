@@ -4,135 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B4A1F47CAC
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE2ECF47CB1
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 18:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 803DA6B0005; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
+	id 3DB2E6B0089; Thu,  5 Mar 2026 13:35:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DB5B6B0089; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
+	id 3BC646B008A; Thu,  5 Mar 2026 13:35:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B0596B008A; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
+	id 2DF3A6B008C; Thu,  5 Mar 2026 13:35:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C1266B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:31:08 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DCFF5139E08
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:31:07 +0000 (UTC)
-X-FDA: 84512851374.17.1953A2F
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D00B340019
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:31:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S2Bczv0V;
-	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772735465;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F0E46B0089
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 13:35:09 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B47338A843
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:35:08 +0000 (UTC)
+X-FDA: 84512861496.12.77DC629
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CBB822000B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:35:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b="W3n/Pr9b";
+	spf=pass (imf13.hostedemail.com: domain of carges@cloudflare.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=carges@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772735706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-	b=bUF3n47+fGDfVaDNkf1VAD1mrejzP46GG+Aq4pfxObrTTPAj6Q7c0qS5iQejq1VvUks1q/
-	BgU/sAAg1CLpNFGeYGZGN5EPEyfA/TM+FbDW1MsDeIx6uWGVBYrElA8bM/4wvANqN2L/vp
-	2dJB2xQUsl15ZjXHmK6EJeKB0rR6J4c=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772735465; a=rsa-sha256;
-	cv=pass;
-	b=Gs19tHJSaojqdvxcNS4P5eDLK5RdwpxWqTrLrf9ITMmNa6WQt6AefadPDAgK97jQQi93Xz
-	ey03YFfmKY4Ldh8UWrLThAwuAmvKck8ceh0ZQtg2ZOrpMKDZmOGnH9C5Glf4h3nrLwPmkC
-	Ks4zzxg3qle0OQXiVuGEi3BCB5Ro3Ug=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=S2Bczv0V;
-	spf=pass (imf27.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79852e01cd1so3750797b3.0
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 10:31:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772735465; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iQMnLsPpznpyOO75+4C+yRakNlsR1N/JnzWot+optn1kXmbu6UFhw6mB6a3SnPPLGU
-         xGaTvIB8VmWe4pmrEkJJyokE88um2KvBUs3g7fgo7rmU4ZPot1TTbfqY5iMahDlx6W8k
-         ietOqjcsC84l0jgbPsGPYmu1svYyrdm2y/a6OOo5jlQjyspfPfbskBsvmfzG/dDgykmI
-         E28kqI26dz6YtD1zpUqkTCLXxpm0m47iCFe5e/Dk4B1wr3zqy7b2tetd7E1mj+4Hqb6W
-         tZj45Nrhca5cAmEfSbGIGi1d8XYxnhCEPeu3m+bNbsJN+QcOV0tIkYZBD1vLH8fDEuUN
-         F63A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        fh=lqqgDE7kV2x60USvIgTQ3R0pu/HCfApDWbLa4zMVoMg=;
-        b=boTYRab+E1PxtmG9tHkRW66IEhLL0dhhH2CNN6JPOskw9c0bJqiAm7rz+jvcExnQ1n
-         GHYCRcOlYZJdTq6ypdOaYtbQl3UJFxB2YwZX+U0+ixQaDMf9grwJbglka+Zxn3mNTRUR
-         hYSZB2tB7geUNVDe6sw2mXOjScp3z7Asxb7xALMzBo9mTupJII7sJybVXDum3GN8wJa2
-         mbS5EbVqK+UxXs3A3ykxoXsiy6YshAp74CZcu2RF1pMcvbxzo/0nwwglax+/9QWkcDlr
-         LQqI1irAkTYNnlL7rtDxoXbruBSFVvGseemvQAmUneWYIlQ2u8oA9ASzgMr/aTv8Kpyr
-         woeg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=vgAFxRCuIe2k8MVOR2tfsVRzGrubB49ONrVdiGmmwX0=;
+	b=yJ2oTzmbecfeSEMn+9s0EL2cbG6R1BoVePLdthPS53H9lVhwqEqeXRCebvdOSRi0HZ5F+n
+	CNcFJtI6e2hVPlTrHhgZEbERgXWplBSK8JSLZ0/op1fyABs+z4Ffp8KnSLe4kA8K++NerG
+	93farIqUGjXvpnuNuaYoOdr8C/MiWfU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b="W3n/Pr9b";
+	spf=pass (imf13.hostedemail.com: domain of carges@cloudflare.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=carges@cloudflare.com;
+	dmarc=pass (policy=reject) header.from=cloudflare.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772735706; a=rsa-sha256;
+	cv=none;
+	b=UhDB18kEOnAMQbIGalM/Ok0IkjdWJBwvopjBGp4WBtVMMCkhOlZ1ldlPcl67Ie5EvbqcHa
+	TQmk14SalvVOQJL2Lkj3X4EWVwIkqMgZ6fbTsaxNJnroqyhDsvenDm97s1ny13rmsqCG0o
+	EgEE6m9PbCknodKLSaP7KspdycFH7PQ=
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-463f00cda04so5333195b6e.2
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 10:35:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772735465; x=1773340265; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        b=S2Bczv0V3PWBwkkyyKukMRvYanwsGnL2c/bhXGIO19F0nfK2ujyHU6yo3zKV6k65NQ
-         +xyccu92wH7Zf6VwlCcyr7NlY5qIIiBZyDckVyqkShglOYkkiBTZVlqus0JC5Mh84hPw
-         J6XVMnsmMGJMtEKHkFhk3JUD/Sjrqk1gTdajqdyXvPtYqycqR9jUEq1kxZb+DYjB17Sr
-         uaKMhK2EK5HDI+SHoYMN5N3/SYVazz/wPWwVsv7NmQ3fJN5hRVTAj84D975uSGBD1hZt
-         1YjfCyiOYmXjLMQc7aYtM7RYNaMqqATgeM90g+o8zhMMvi5klCfOPSnRqJBF2HzGgUI7
-         JaqA==
+        d=cloudflare.com; s=google09082023; t=1772735706; x=1773340506; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vgAFxRCuIe2k8MVOR2tfsVRzGrubB49ONrVdiGmmwX0=;
+        b=W3n/Pr9bdtndINZ0NsBS1rKe5k7BYUzwFtO5k2QYhsVMWdKsah/lb6L2FN+EnWeUtX
+         XFnZ1713gmjf0V9jSLfR3M72Uw902y2//5mwFnP/VHYhlODLLvECZcpHduV3dJaCczFl
+         oUFFfcN5Kig7yQ7Z6FCa50TUas3YBf6CGZ3ADu52dIHZCylNIZtxzp9icLjPkFUvuqxX
+         d3WxynRfDLB53O5eU4CEmE1Q4Z9Nn7TneiOAzGZOXSx1c4purjUvbkdUjtjY0ciAdfgz
+         FO0UgC8LufO82dyobLHq3C0pQYIteeYuV0YCJBaogGWusaLarQqO4ZhDQnamEi/8cKaH
+         J+2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772735465; x=1773340265;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=louF0VYT3jVATcdfkHl6P9eqPKqMc0Xl0Ev8Gw/VyXM=;
-        b=KRjZ6BCeg4/uJa+XUuJtNLHD2ibXraZgo/m1BzG3hL3mD01amtoV9mcafmc/KGLF1x
-         M0zBVf5A/9leCXVALKlXHhoF9GkcrGKmLIcdF4uV5zt2YTQmiFuR6y83+FcT02atJ1+B
-         ADcukR0PNeVzsRWwK9mLlUzzprc2LQvqySSqOAShXcEbt612WWLPE32Ur2sFd/SAHFat
-         2ynBVUSUkR5oU0ScVdGJ8hjH2mkIXT7/4PrLe1jepK7wwXPXlVLJZFV6A4Mz8PBKGotk
-         IZm6cpxoIBZ6350Jhj61T1Lf8hakq2IG5c7C2H5iWhiQzZS/J2cDo4XXxX5JrYRZqzj5
-         ppcw==
-X-Gm-Message-State: AOJu0YwmGpMsd6qqXwE/lQZ78Hj0qwGnKamkA/wEH/9rXiMg/BSZEdRG
-	o90Qsw4g2BeEyUE9YPi+M8Dg42wXkXQVCRvHxuTJvs5dJAZQHSVgtOf51txuYAHEJUkcms73LGX
-	e//VJKy1F3tAPNuNI83oFBKJS3E79sFw=
-X-Gm-Gg: ATEYQzxq8CkydgdJdGSpfYktUzqg5/OwrtGM6OwXxQkolPlmqPw6MbYLiLPRiAh2hNn
-	boJuShgVApscQ8OOqAx8Hr7P+ukuJz7w3kr7nr14JIS8DvJ1YJtUmhQBfzfhzzLzlLAyUtIwocg
-	cjhXTRXobbahZPK9gnNr03yWSDZaI2yt+qRbYyiXfAnvFhzZdQi+0AfoQx7uF89c7epCtxQ49r5
-	ton2L1gecpOTea/1gEGq8fyEylNSbm+tO6DK2q4BHEZ1m0iUKcNYTOIfGc/tXhCW6b0NEVOoM7+
-	UmHOxg==
-X-Received: by 2002:a05:690c:113:b0:794:ce39:c63a with SMTP id
- 00721157ae682-798c6b7f74bmr47076567b3.2.1772735464762; Thu, 05 Mar 2026
- 10:31:04 -0800 (PST)
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Mar 2026 12:31:04 -0600
-Received: from 95991385052 named unknown by gmailapi.google.com with HTTPREST;
- Thu, 5 Mar 2026 12:31:03 -0600
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
-References: <2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com>
+        d=1e100.net; s=20230601; t=1772735706; x=1773340506;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vgAFxRCuIe2k8MVOR2tfsVRzGrubB49ONrVdiGmmwX0=;
+        b=adGNR071mE1ivP8fki8WU9I7HEyWAil36FzSMUF5e19l8IK9vktCzBkJ0YxJ1gU0fE
+         fNjAgm6KpiccS4zB6C5RAkfDXXmf8WgO52a8Llb04GZ4/DPZ73Uq8BjBB6qRCFBySMDY
+         t3PP6eC3XhKNH0cQ5mnIMcZOv+r+fVoAFuQ4FR8L8w0YyyERcnZO/JtKhYPw9aVzqacD
+         Bf5ej9fJ6GyxWlTSmmFVgg0XkjgByLk1oOB2ISJxhMxNfkeLQ1M34bQF8EQE+060z3Eq
+         rDLQVPWFoH8oJkqcQ17MHTcRS8pq7lYOnL2Pk+ZHjZw2AhaeqzWz15rVQ1tEF4f336bS
+         3wDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgVE4XIPssXf0+dg8Uq3emMlLbvsQjl3kcC9Zwu7xtbv/CrltUAm4bUsR5leyvOUD4bkPVJChWtA==@kvack.org
+X-Gm-Message-State: AOJu0Yxpb0WYGjAOzBaIas0LhNOBDJsOjpOcUPKbW/NrDU+KwGrnlMj9
+	KNqPUz37HvELU/YnMifGjnu0jcxBkZGnSfzkYdMyM8eIuKE+ZDPyZv6oWevE34kt+YA=
+X-Gm-Gg: ATEYQzzdK5ulR4BVuIJpnWhN8eYiA1qW1MdLwkdPxP1gHqbHViWRbtKsJ37UdJRHfnQ
+	MUA5yNdZVz/FaiQA/TYv9FyVtsH+DvwVZE6FN0pl0waeUUDqBXbGdawTQE6Pp2/PRKPDAI1XLDM
+	ulpghqdZNX1UZfv1M2PIpw2AsuGA2yVAo/lLoNXzEg2rZdRLfUK+r8Qwkf1yjE1tic33dVibGLX
+	3hlXFtIOOUa9gk3dQECYTFrID4mYUGvMhah8llQ4j85x9e2KWoWijbxpGvq65wU4WBXCDcDRVCl
+	JWbeChrBAAjLdJUNslofpPWVPlNGV6IEGSzQ6ngZmUe7y5knnw83JsdsNEDjostcYOcFbw69q9J
+	IiOqAFuzRSezogH9gOiq1Yyfej3utm6QYNuYDA2Y8D0z+ALmm7Yu97fYqSO+ty5qcfymsUEK5zO
+	yaLgHWUR1x
+X-Received: by 2002:a05:6808:1308:b0:462:d09a:cdca with SMTP id 5614622812f47-466d865e866mr326534b6e.32.1772735705745;
+        Thu, 05 Mar 2026 10:35:05 -0800 (PST)
+Received: from 20HS2G4.. ([2a09:bac1:76c0:540::3ce:23])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb59b66fsm13913851b6e.10.2026.03.05.10.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 10:35:05 -0800 (PST)
+From: Chris J Arges <carges@cloudflare.com>
+To: willy@infradead.org,
+	akpm@linux-foundation.org,
+	william.kucharski@oracle.com
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@cloudflare.com,
+	Chris J Arges <carges@cloudflare.com>
+Subject: [PATCH RFC 1/1] mm/filemap: handle large folio split race in page cache lookups
+Date: Thu,  5 Mar 2026 12:34:33 -0600
+Message-ID: <20260305183438.1062312-2-carges@cloudflare.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260305183438.1062312-1-carges@cloudflare.com>
+References: <20260305183438.1062312-1-carges@cloudflare.com>
 MIME-Version: 1.0
-Date: Thu, 5 Mar 2026 12:31:03 -0600
-X-Gm-Features: AaiRm52GZ13axMWytXPAWQiFZUnqLmaKbYqKRkeisNV1Nap28ZH-9coEHa7p224
-Message-ID: <CAPAsAGxB6RGSYzMq=tjQQmEDu3QP+v_AqmkbWTRyqkk+K35o-w@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/kasan: Fix double free for kasan pXds
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org, 
-	stable@vger.kernel.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ifoogin4uc6acpuqg4tam4skoe46k1qz
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CBB822000B
+X-Stat-Signature: y6aaawcomxnq57a6yz4sh7dctjjw8nbh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D00B340019
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772735465-609143
-X-HE-Meta: U2FsdGVkX19iQgUCIGCgg+SEJRvrN1SlNtK6tpbxc6MkD4a/6WEhzB57vLv4j83Vb+4ro1wwla22fS1d1nhFOmio7z1Kp26Q65t2e7seaEi3keLbRQ0a/Z9rnoL0oHg1mXnNjpAHxqTmCUDdXYfZQ8wYKUgsik3FIoJbtmN91TlQHFXRGUINMHYH7ODhIZwttUkuUEpMv/1qxxc67lPot8TzNILcNKcEr7w9Qi2FGLpyi8x1XvVJQUB3xUuCpcPzT7rztfEgL1PogxknJAjM3y2+Q9j+QKQKDgDjCfO5o+6OtzRtUY+cm1XV5nHSY0AnjneGMIfBhYHZ1TsRgXEFde2DRllLzUnao1BFPPkU+M0zsHQYJ8atkfFCseJo8o3s1/vbooW3ZZ16MgOchQvcaPpLYeo0WgNEKBSN/cX1jvTbrgFwj7bG3NXHdA0U2j/dL5pK4YAhZPYJIELRXsFrfRnUwlJUugrRJeJNlTyXT64t++zVTo66O4UE8/TJjy6ftBBedInHavKEQmOg9LXlm0Rx/TyRirUxnj93yWSndiI0CGyF8n6Yuc15nIYiV76Pf1WB4wR6catbt6HOfeMj3Q0aUWbCdC9n8M1Au8XA4lYJ58GWFN0vPgbbzyaxdcF7V+B8YsnL9edHQZ6MhSiwEvTxxxTGJQI7guQXCMYTIdBj2harUX+ShLD36mpBAW8MgPPbsOX4BS50uUwdPv2kYmJIgG/A/PtRrljJzHTfr7s7gVL8vsjVND1fpnNur3GwpvNgxhOLxCRolV+aDuGEacXxxCqoE4lzau27GSh3B+RY+dbeilupHjGPxjN3qfrHnr1+B93f6SFvkzlI+Z4CSW+SR1XY8lFHVSfdWFH8PrYJ4Ro0D86ouTVaHDYmDY89b6qy9wYjwKYEE7fdpBhzRZgaZUJzq30ZQU+ygFRNVOADHefw2iYecJHjNEJoy7DQ7BM/0uR6/Sfd6VURp+y
- 78lulD/3
- 1oUV7ZcZQ2cH+TXqWTfCVXPQLR0P+I+OvVQ3SYvxYqBILXVu6JyY1uM7Us1LGocE40m1212jMH+aFi9f4ho7mhRnA1CuqU+H47ZTtb2+ShZU5zSx12YAf6mRmT1ckL0pcCfmQpdMdg+C6C+HvQN9oMqK+0dMo2mcTzMTVBMI8iQo78AalpNk7Axed58yh8p8Qdbx5PT4FDh4RD6UnX3VMTnl6vTzHtpaHeJ5wj4XFEgP9blpFC4msFTO9v/yz5rQNYQHhMStUGCiwnzvZ11IZO94mK1Ra3tF6ab0qefcrLOr0CdsDaAu10AN3Cv1W0TmyW0DEZ4HLiQ8wtid07GMXEIAwf0p7XRNUS2UMMeZWFSO/OqYUpghUqm29amGaQAxGG4KVD2z91owCE4j6xt3ZpI9n4kAHJ3IQviuerzr4cfxaqTEeD2uJFoYjo9SyQZfc9L+OLc2vghSQKrWG2Z/a6XTIN2MykP8VYycR42y5fyu+64BMHyqEJVbZNasX4WgN9sIx6LFkKb7IzVgTGCe2WUDBpJ3JygeFlvwN0IQL3I6IxDJXS59j9r3nUXO7ib0YZWOEXBUfYSLweiH8eYu16BWkTZEOtXd84Rly
+X-HE-Tag: 1772735706-454237
+X-HE-Meta: U2FsdGVkX1+oiZy0kIcDBe+mVYDpzYs3Hdb8WklahL9aVHO+76pUzI/ShOZ2B7NF6BwcCSihGKRPBzDS5m+7NXPyabc4vmRHrDfvzRm6GCNq71ehMgUdyc39WZq+Q9DBbWKU605qszIh82H6oFd6UAKoe3ibk1UomqnU2sTOMLQwMZFa6kDqJu9TEnZOlLOnRJwN9e0zB9hZlheRiSTdQz8Tb2yosI2AmdLDlybL+mmvcl00lvTKBGUSPHZwMMdOMit0M4rIxQ80mukOL1X0qlvvT1Kv1IO+picnPxzMM1rwOgMJLa8NbiPBT3Lh7vrD+Ubeo62xYA2DY4F9UkaMeZ1U5rQ2s0YlLSEKcxs9wLJ6LkENeqjNrm7k+Uq7WBYxMnNsrfSrpVX6+RTi36PVEOMj8tIhG2lOVDkKFAzA9CjL9NiGNQpSLGnytbz8R5bAQbAO7hS4ZhLhXUIa/KfI9P/9cys0W0XPmd603m1EEH3pm4tXrjB9ColSnlP8U26HnIjibGMpcBirL/89oWuB24EYWr3kmv4aA8q7Q5LMZwb07OgIBz1CESmbn9fXdu7+Wk/Ub+43Aifnf4fg5mVculkk10tF7aw0oZWqfj9caR8veniAMWw2ZzMLCq1tYtGScjAR2Yc7+3Ci+K3GbxngqZ7zrPX/yYcz86i34ZWxj31VRHWh7xf+yLP6bk46Xy/Vxp16n6ivCWTdIRXcEihHguBnPa6O8oDDKwCBYDeHk3dZMS5FveeHIo7rr7/T4CTf/YUNa1BXUbrQlxa+vIxs/ZBf5xahGfOHtjv1Llz4LWgtTEC0egtu4RCJN3VxOZY7mISN9e1L7TRiEuMlCQjbU5PMYOtmGhQpyuCZBsKnIHJR27qN9NQEE48g2NlLGkrWuIqRaVydpXODDpiOb7SkbsYMvYiJ+CpJIEBZ0Lw+mBX8ySYfGT5hfUi/AsHeVBeXwh59eqxsOqDva9KmRFk
+ JhseieMj
+ KeGLv55JTr9bpIbIRlRIPoLsqroxsVOXwPsHN1NVg9MbcgI4mqeQ4mUY1FkrZ7RH8dpZDy0S5M84qTErOL+rZqSz+wMFQQY6GDwjvEseYHgs2ZiyE6+5xRhMuYjL146Ecuua/wkLcd3RBriasHYiKGflae+fB5wcNtJQbaYc4+eZw4+Mzk1NWeIBXG5gqHaygJXMtsZpxTbomJ4Dy3sVW3ALqETC3eu1W/qTFOqhGLnNcLqqZOytx9fJh/7uCLO0v4Kyj9acg8mUTDiVS/yM7Zd7V949Ty0L01D/2HJ0JlCSaPYO7pfeHU4PVc9sWSr8QpQy+0kcFHQfWQCA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,27 +122,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> writes:
+We have been hitting VM_BUG_ON_FOLIO(!folio_contains(folio, index)) in
+production environments. These machines are using XFS with large folio
+support enabled and are under high memory pressure.
 
-> kasan_free_pxd() assumes the page table is always struct page aligned.
-> But that's not always the case for all architectures. E.g. In case of
-> powerpc with 64K pagesize, PUD table (of size 4096) comes from slab
-> cache named pgtable-2^9. Hence instead of page_to_virt(pxd_page()) let's
-> just directly pass the start of the pxd table which is passed as the 1st
-> argument.
->
-> This fixes the below double free kasan issue seen with PMEM:
->
-> radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-> ==================================================================
-> BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-...
->
-> Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-> Cc: stable@vger.kernel.org
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->
+From reading the code it seems plausible that folio splits due to memory
+reclaim are racing with filemap_fault() serving mmap page faults.
 
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+The existing code checks for truncation (folio->mapping != mapping) and
+retries, but there does not appear to be equivalent handling for the
+split case. The result is:
+
+  kernel BUG at mm/filemap.c:3519!
+  VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio)
+
+This RFC patch extends the existing truncation retry checks to also
+cover the case where the folio no longer contains the target index.
+
+Fixes: e292e6d644ce ("filemap: Convert filemap_fault to folio")
+Signed-off-by: Chris J Arges <carges@cloudflare.com>
+---
+ mm/filemap.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6cd7974d4ada..334d3f700beb 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1954,13 +1954,13 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
+ 			folio_lock(folio);
+ 		}
+
+-		/* Has the page been truncated? */
+-		if (unlikely(folio->mapping != mapping)) {
++		/* Has the page been truncated or split? */
++		if (unlikely(folio->mapping != mapping) ||
++		    unlikely(!folio_contains(folio, index))) {
+ 			folio_unlock(folio);
+ 			folio_put(folio);
+ 			goto repeat;
+ 		}
+-		VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio);
+ 	}
+
+ 	if (fgp_flags & FGP_ACCESSED)
+@@ -2179,10 +2179,9 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
+ 			if (!folio_trylock(folio))
+ 				goto put;
+ 			if (folio->mapping != mapping ||
+-			    folio_test_writeback(folio))
++			    folio_test_writeback(folio) ||
++			    !folio_contains(folio, xas.xa_index))
+ 				goto unlock;
+-			VM_BUG_ON_FOLIO(!folio_contains(folio, xas.xa_index),
+-					folio);
+ 		} else {
+ 			nr = 1 << xas_get_order(&xas);
+ 			base = xas.xa_index & ~(nr - 1);
+@@ -3570,13 +3569,13 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
+ 		goto out_retry;
+
+-	/* Did it get truncated? */
+-	if (unlikely(folio->mapping != mapping)) {
++	/* Did it get truncated or split? */
++	if (unlikely(folio->mapping != mapping) ||
++	    unlikely(!folio_contains(folio, index))) {
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		goto retry_find;
+ 	}
+-	VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio);
+
+ 	/*
+ 	 * We have a locked folio in the page cache, now we need to check
+--
+2.43.0
+
 
