@@ -4,80 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6611FEEF317
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 08:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55964EEF317
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 08:10:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 846476B0088; Thu,  5 Mar 2026 03:09:29 -0500 (EST)
+	id AE6736B008A; Thu,  5 Mar 2026 03:10:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8172B6B0089; Thu,  5 Mar 2026 03:09:29 -0500 (EST)
+	id A911E6B008C; Thu,  5 Mar 2026 03:10:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723286B008A; Thu,  5 Mar 2026 03:09:29 -0500 (EST)
+	id 99A2B6B0092; Thu,  5 Mar 2026 03:10:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0046B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:09:29 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DFBEE5B796
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:09:28 +0000 (UTC)
-X-FDA: 84511284816.19.FB96DDC
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 791E74000B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:09:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8128E6B008A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 03:10:28 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1E086160917
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:10:28 +0000 (UTC)
+X-FDA: 84511287336.25.117DADA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 65E8A140010
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 08:10:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hf0GhcmC;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772698167;
+	s=arc-20220608; t=1772698226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QiPCcg9n/wfoC+TO7n1mXUctRMg1CgTepXBayIIfz8Y=;
-	b=E63VvHjmeV2/6L1XxnZsy4o0d+atGqNZlozinDQHvSOpLp/C7wyc2OIjxKRNtV8Q5P1qbG
-	uL5wJfaMkIy4XeWxF3tpd28h0HlmT2JAxCEL/nZGlYyABiNPex2vtxynPhtdzvkDyCk+Vi
-	9u+3Gmfe3/V8285EErP6y3ORvWl33O0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772698167; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=27xDI0OzOm+Uw2DiGLLj1itMk00kgtqkJJn67XrawGI=;
+	b=ynLuktPyEqq0WMW5CT0NqfPXVwKS9i7ipoXfUEZU4yRF6JOCmX4NBvuzVV5k2IgS8kvb+R
+	fkfqTKrIBlMkGZ6eb0wDPwjt1EwLatVoogOpy/TZXM9la0bbd4o0JHB3ffHZM0X9zlnI/R
+	CXHP9bw63bZLbKDQqx6CqG/DU3KaX+A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772698226; a=rsa-sha256;
 	cv=none;
-	b=tYYzWpmVoGRbfw7tYMBKXEUHdhsfQvs/rL6HGQcJsAqHq7Dn4M0DLiRk6F4kK6kBWMJi3/
-	xUwLjLfwQ4zldbDu4MraWiXgdi01xnZuGCPcvW1/odvaBnvn9vkiBaciJwOvRM7LF3bmH4
-	7RxrFtygXO+jx7DeQHwSWMK7se+ZAt4=
+	b=3JbZh8GbzGTnmvU9Pktjo4pR7l9r8iCQyDnVKxrcZpwi8Ayk/V5i7rqb0hnoxCZTVV28uo
+	1WPa3TQFl/KJbT1A6G4R79y23dwUbuc0OeRMzclQVDzR1e6rDQw36ZXo7sYLFHuvp/yuOH
+	phHXwAzRDK9HP8cgQ3cDMbOjyAtk8m0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf12.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 5 Mar 2026 17:09:23 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Thu, 5 Mar 2026 17:09:22 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	baohua@kernel.org
-Subject: Re: [PATCH 0/3] mm/swap: use swap_ops to register swap device's
- methods
-Message-ID: <aak6MhtSxqPaTBkr@yjaykim-PowerEdge-T330>
-References: <20260302104016.163542-1-bhe@redhat.com>
- <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
- <aakSI_0O0G6arjZO@MiWiFi-R3L-srv>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hf0GhcmC;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2855B4004F;
+	Thu,  5 Mar 2026 08:10:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561B2C116C6;
+	Thu,  5 Mar 2026 08:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772698225;
+	bh=RqjdiY48OUHOd2QwKYyszdRCseuTxRO96sKHH0tQrvo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=hf0GhcmC747zX8rypGDwwmmV03KZ+w/WGPy4I7T44VRtj/vV0kxZJ0YNbPPRDDwAT
+	 leXV8jZtbgkNAV4eGC+1GxE75neH2nCAHiZE6XSwbHV/SSD6i+pdpiqPWeV+NdX2gl
+	 xyd7zuSVrhoWIwMyioSWmpwI+lrq8SnLFAeGcAysa/6PF9XXJtZ5aW2grmd1fJlKNL
+	 r7arDjbG+9Qf8tLT3hBRdKVIBUfnzu+OjZ5zqtjRuH0ykcyM4ouNAeFbTusfKuNK0b
+	 JbxMTrK98eVNLEYBvpyzuDaxbHzMwW/pgMzhPH08NQ/oRn4rMyIJjQUmNSi1cqu2H6
+	 r/78r4JrLqjRA==
+Message-ID: <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
+Date: Thu, 5 Mar 2026 09:10:16 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aakSI_0O0G6arjZO@MiWiFi-R3L-srv>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 791E74000B
-X-Stat-Signature: kg7trgmxmdqkxw61s1npsua9q3joo8o8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Gorbunov Ivan <gorbunov.ivan@h-partners.com>,
+ Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Kiryl Shutsemau <kirill@shutemov.name>,
+ Linus Torvalds <torvalds@linuxfoundation.org>
+References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
+ <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
+ <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1772698166-101117
-X-HE-Meta: U2FsdGVkX1+dmTO9pVHNgu+PCfMa9NTPaiH9uUov13uMJ5IR1kuFx/PxuiqiN1kWdtqAEpzh4JqZwO9lVa/7RWvi0yhiwFr3R3lHldbVKxpVj4DzEA871uP008EIIk2MbdUWUjI/xasokbloK6nmZQd9WCLbMY2Z667PTT7dzYq9JA5IwSpnYZ6LOnGYUr2yKgZNmDHBl8bEVAW//7g3OiMaqI3jZ1UQZUwJuM8TquxHoRhCxM8Jbs9y0gDEqiMZ/j8bS6+opbPCywzlBjyeG2yNF8/b7LKQX/avmnn3upCT5L+q0ghe9mpw//A+yFYdPaCiFckyKlH4Sn2idlccTQddeHBK/ZuGC7S2jcSF3i7/sBE/Ud/ZdKD5nnu6wXDrYirr6ujc6IaNv4zRyrpN4CikMBp5v1NGrOhPmaJ6i7s2hkpcFI32Tghld8hed094OW0cqa6tyFm1k9VBwZr6r0EHohLZoMsuhdKiG3fv2Herz38yh518yzuYW/A/EONNxvi48ji/4rvThdHNqBWPJGA64D8F+qPNulQtpvSMvRHR9oz0U5mTKHEzc3T+oK4+azyHlaYNBGMcPEeDziJZWnugf5ddcwvgAuMHFTNcvOd5gaEhITSSk4Eye/aasOeQ1+B6FeTYMunKkl/1QOcmEbFzXTu82ll+357pAw/0bZscOZdf0LJBQ/9HQWzBLnroa2XVF/R3KEs1oXgm9ebJ/Sr43byX8hjQnoxHWTlsYb/zHepUvRFz1Kl8OH8XQLA203diwzDLMMDK6mXYLWti68hqxpJjTpOd/30wOVT7vw1/4u8cnwUbTYs9G2jpnyWEhHSmoPyjdEnUTXwrGeTRi2iGjnhW50NhDzI5teyVy0D1n64leW/NGm5odELeMBPlmOLNQn85UsEcZMXE54Uyo/SWSFvHqKvd+KnVgPRzhtoe/fVmjoOasoI9KOVRLI+8sKV+fSywPKMpbYVyri4
- 3iLHNzyF
- LWBFaYMfszk425wiOxPbIJsgP8URvwRSAdeKq2j4rq7mt6b/9y2m/Hr4I2F+LiAyFTZaxBMk/cMgtu9SQEQSZtCX4id69fjVGhAckZPxFwpVR3fNx3aWu0j3bg6+MXdmIXDPNU9D5cp6kdPmZPiVXUpu5/dZQdnZvkocKnlKwwOHQkSY7h7YdfNed3xkUC+uYD57y+Gxero+w/Jaj4ogARBz9eu9zkONhPM0X1VTfiuCXwxqIsrQhJecb3DTEpep25MXj9XReMh1pU9ECyNyY8y1Cka7FRiVO7Af2
+X-Stat-Signature: bsdj5d5rq84j41hdiu1expdyuhsipxx8
+X-Rspamd-Queue-Id: 65E8A140010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772698226-618008
+X-HE-Meta: U2FsdGVkX18zLzz/Gr9vptulOE1hlT0WLAbEKsqkpmwJZFmIm2xxxtqH2nTyTC2LJSaC6+0oWjwApm20PlOkHVd8D4tx7VO6W1OhYE3oE1pzkdL3TrxoeeAYhOPQ/nkA17kOQkK11m2fJN0DwLvCoH+CQe0sTD/J1xTyeB6SXLILY71ZbeVbW4K3jZGj12hn8DYeMhQ68nwWvz6+31pdlUaZ3w45IP6Urk3hhqZSr6hrD0tYy2jD+UUzkv2BFkEhRMdZOYIQsngZz33Avt2rAOqXeCeZb0dpgqZJwub+/M6WLEp1WSBycflirB4PdZi5wA7FzJmMMriowuoSaSo4NccdUrq9V0MV6KBLS9GFJh/SYokAuXkvWH0gScN+U2TERGuevdkEzm6MDwe1m/MW61C79Yk2X4k0XoXuauTpj1TfGmCrW02+SisM+7RiHZ0VYxXa90SXQ0bEixOTca5OPQCWBuxVdN1WTXIF7qTBqjoDDtFpplLANbwvIZsqCZ+ep7QZKz476wjp+v2bdXCiMAnDo7BlVelpfELSl1zLc6UKq/X2mskjAobK/RqGOSobekVUCm7qzX1bWyHkxd2JHSxSLaCdKA6Eqn+VrvGEvIJSXbHTi4iWYkB6FpSBwRpMhkmBut02qYXWGIhHi3hKk9uJRxXpPgPDBsfHl/lNKZ5iQVKQc8n+DsOF/prdX6dP7PgOcAc9utP72gBMSz2deesT+rP2gJWWhQaYLJjrN6ExV+VuqCaHf5pRS70Kx7hOR7lAfWrRI7i1qdKg5WeGOgw5e3tepbxf45iOD+X7ufBoLJcvW/dl22F57BkQgGHWb75nGwufQjzMdTUzEBxdyoy5yI0nR9lRotugEMNuc1xy697lRWQMtO22SHCq6YVPR7IfZQMkz6TFBU6ePP9WGzSrj07ho6X+/H3bnLRvCAVn//ZJv5S7kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,146 +148,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 01:18:27PM +0800, Baoquan He wrote:
-> On 03/02/26 at 11:43pm, YoungJun Park wrote:
-> > On Mon, Mar 02, 2026 at 06:40:13PM +0800, Baoquan He wrote:
-> > > This can simplify the code logic and benefit any new type of swap device
-> > > added later.
-> > > 
-> > > And also do renaming in this patchset:
-> > > -------
-> > >    file renaming:
-> > >    ---
-> > >    mm/page_io.c to mm/swap_io.c
-> > > 
-> > >    function renaming:
-> > >    ---
-> > >    swap_writepage_* to swap_write_folio_* in file mm/swap_io.c 
-> > > 
-> > > 
-> > > Baoquan He (3):
-> > >   mm/swap: rename mm/page_io.c to mm/swap_io.c
-> > >   mm/swap: use swap_ops to register swap device's methods
-> > >   mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
-> > > 
-> > >  MAINTAINERS                 |   2 +-
-> > >  include/linux/swap.h        |  13 +++++
-> > >  mm/Makefile                 |   2 +-
-> > >  mm/swap.h                   |   3 +-
-> > >  mm/{page_io.c => swap_io.c} | 104 +++++++++++++++++++++---------------
-> > >  mm/swapfile.c               |   2 +
-> > >  mm/zswap.c                  |   3 +-
-> > >  7 files changed, 80 insertions(+), 49 deletions(-)
-> > >  rename mm/{page_io.c => swap_io.c} (91%)
-> > > 
-> > > -- 
-> > > 2.52.0
-> > 
-> > Hi Baoquan,
-> > 
-> > Thank you for the swap_ops infrastructure patch. This is very
-> > relevant to our flash swap work, and I believe it could
-> > significantly help with our future contributions if the framework
-> > is extended further.
-> > 
-> > As I understand it, the current patch serves as a foundation for
-> > future infrastructure. However, from our perspective, the swap ops
-> > are currently configured statically, and we would need a way to
-> > apply or register custom ops for our use case.
-> 
-> Thanks a lot for your input about the future potential use cases of
-> swap_ops, they are very valuable.
-> Yes, this patchset is posted as a infrastructure of swap_ops and a
-> thread where we collect any potential extention or use case. The
-> change is made based on the current kernel.
+>>  	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+>>  		__page_ref_mod_and_test(page, -nr, ret);
+>>  	return ret;
+>> @@ -204,6 +212,9 @@ static inline int page_ref_dec_and_test(struct page *page)
+>>  {
+>>  	int ret = atomic_dec_and_test(&page->_refcount);
+>>  
+>> +	if (ret)
+>> +		ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_LOCKED_BIT);
+>> +
+>>  	if (page_ref_tracepoint_active(page_ref_mod_and_test))
+>>  		__page_ref_mod_and_test(page, -1, ret);
+>>  	return ret;
+>> @@ -228,14 +239,23 @@ static inline int folio_ref_dec_return(struct folio *folio)
+>>  	return page_ref_dec_return(&folio->page);
+>>  }
+>>  
+>> +#define _PAGEREF_LOCKED_LIMIT	((1 << 30) | PAGEREF_LOCKED_BIT)
+>> +
+>>  static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+>>  {
+>>  	bool ret = false;
+>> +	int val;
+>>  
+>>  	rcu_read_lock();
+>>  	/* avoid writing to the vmemmap area being remapped */
+>> -	if (page_count_writable(page))
+>> -		ret = atomic_add_unless(&page->_refcount, nr, 0);
+>> +	if (page_count_writable(page)) {
+>> +		val = atomic_add_return(nr, &page->_refcount);
+>> +		ret = !(val & PAGEREF_LOCKED_BIT);
+>> +
+>> +		/* Undo atomic_add() if counter is locked and scary big */
+>> +		while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
+>> +			val = atomic_cmpxchg_relaxed(&page->_refcount, val, PAGEREF_LOCKED_BIT);
+It's still early here, but I think there is a problem.
 
-I understand. I brought up suggestions 1 and 2 because they are necessary
-from the perspective of immediate application. :D
+Please bear with me :)
 
-> > 
-> > I have a few suggestions (mixed with questions) regarding
-> > extensibility.
-> > 
-> > 1) Could the ops be replaced at activation time, similar to how
-> >    SWP_FS_OPS works — i.e., giving block device drivers an
-> >    opportunity to override the ops when the swap device is
-> >    activated?
-> > 
-> >    This would allow block devices to handle swap read/write
-> >    through swap_ops rather than doing it in submit_bio, which
-> >    feels more generalized and leaves room for future extension.
-> > 
-> >    This direction would be the best fit for our use case.
-> >    However, considering ongoing swap work that may involve
-> >    managing multiple swap devices, I wonder whether binding ops
-> >    to a single block device would still be appropriate in that
-> >    scenario.
-> 
-> I think it's doable and make swap_ops more flexible and versatile to
-> support different swap back ends.
-> 
-> As for binding ops to a swap devices conflicting with managing multiple
-> swap devices, I may not get your point very clearly. Could you give a
-> concrete use case to demonstrate?
+	val = atomic_add_return(nr, &page->_refcount);
+	ret = !(val & PAGEREF_LOCKED_BIT);
 
-To clarify my point about binding ops: I was focusing on the initialization
-timing. Taking SWP_FS_OPS as an example, setup_swap_extents calls
-swap_activate and finally SWP_FS_OPS is set by filesystem.
+Implies that can grab a reference whenever the locked-bit is not set.
 
-Similarly, I am suggesting a mechanism that gives the block device (or
-another entity) an opportunity to register its specific swap_ops during the
-swapon phase by calling some kind of swap_active callback.
-(And it may be not the block device as well?)
+Including when the refcount is 0.
 
-> > 
-> > 2) Would it be possible to defer swap device activation via a
-> >    lazy registration interface, so that the ops can be registered
-> >    before the device is fully activated?
-> > 
-> >    This would open the door for entities other than block
-> >    devices — such as kernel modules or other forms — to act as
-> >    swap backends. (Of course, block devices could also benefit
-> >    from this path.)
-> 
-> Yes, I think it's doable. I will make change and send a draft to you for 
-> evaluation. By the way, do you have actual use case in which deferring
-> swap activation is needed for justification?
+Now, that works fine when racing with concurrent freeing, where we are
+just able to decrement the refcount, but yet have to set the
+PAGEREF_LOCKED_BIT bit.
 
-Regarding the use case for deferred activation: This becomes necessary if
-we don't use the activation-time binding mentioned in #1.
+But, what about any pages that don't have the PAGEREF_LOCKED_BIT set,
+but have the refcount at 0 permanently?
 
-If we rely on dynamic registration, there is a time window between swapon
-and the actual registration of the ops. During this window, the swap device
-should not perform I/O since the ops aren't set yet. A lazy registration or
-deferred activation mechanism would handle this safety gap.
+That's, for example, the case for any pages where we do an explicit
+set_page_count(page, 0);
 
-> > 
-> > 3) Alternatively, are there any plans for a static binding
-> >    mechanism, or any other extensibility approach you have in
-> >    mind?
+For example, all pages we add to the page allocator through
+__free_pages_core().
 
-> How the swap back end was chosen. We can make it a swap mount option.
-> We make the swapfile header look like a file system super block. The
-> different swapfile header contains different back end types and
-> options.
+That means, that someone could easily grab a reference to such pages,
+including tail pages of allocated compound pages where the refcount is
+still 0 -- or pages allocated with a frozen refcount where we don't ever
+do the set_page_refcount(1) in the buddy.
 
-I found your comment about ops binding on LSF/MM/BPF suggestion. sorry for missing.
-Okay, I see. While I personally prefer the direction similar to SWP_FS_OPS infrastructure(or #2), 
-the mount option or header approach is also a valid path!
+Bad things will happen when that wrongly page_ref_add_unless_zero()
+obtained reference is dropped again to free that page.
 
-> > As an additional thought, if this ops framework could eventually
-> > be extended to cover cluster allocation as well, it might enable
-> > a model where base swap functionality is provided by the core,
-> > while each vendor can freely plug in their own additional use
-> > cases on top — making the swap device truly extensible.
-> 
-> Yes, this is planned task as I have mentioned in the LSF/MM topic mail.
 
-It is great to hear that custom cluster allocation is planned. this would allow 
-vendors to implement optimizations specific to
-their swap I look forward to that and will provide comments if we have
-concrete use cases.
+You'd have to make sure that there is no way we can achieve refcount ==
+0 without going through page_ref_dec_and_test(), when actually freeing a
+page.
 
-Thanks a lot for your work
-Youngjun Park
+One piece of the puzzle is handling set_page_count(p, 0) I think. But I
+suspect that there might be other places where we don't even have the
+set_page_count().
+
+See vmemmap_get_tail() in
+https://lore.kernel.org/r/20260227194302.274384-13-kas@kernel.org for
+example, where we know the refcount is 0, because we allocated the page
+holding memmap with __GFP_ZERO.
+
+For example, I think you'd have to make sure that *any* pages in the
+buddy have their refcount set to PAGEREF_LOCKED_BIT, not 0.
+
+So unless I am missing soemthing, this is broken an requires a lot of
+care to make sure that refcount==0 is handled everywhere accordingly.
+
+-- 
+Cheers,
+
+David
 
