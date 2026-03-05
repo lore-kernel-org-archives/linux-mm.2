@@ -4,86 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDE4F3092A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A44DF30931
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:39:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7735F6B0088; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
+	id 73A406B0088; Thu,  5 Mar 2026 05:39:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 721526B0089; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
+	id 711EE6B0089; Thu,  5 Mar 2026 05:39:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 603026B008A; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
+	id 647F86B008A; Thu,  5 Mar 2026 05:39:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F11C6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E59E21B66C8
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:33:20 +0000 (UTC)
-X-FDA: 84511647360.10.A770465
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F8DD6B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:39:37 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A8335B943
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:39:36 +0000 (UTC)
+X-FDA: 84511663152.29.E1BC790
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8C589C000E
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:33:19 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PaIgBv+h;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id D35D5180002
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:39:34 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IQbCwe5N;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772706799;
+	s=arc-20220608; t=1772707174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y1Fj9M+9MCzVST4GZRGx2rYqUlSw5gaJKBoH4D41oZA=;
-	b=JM4CqggVqbyik/ynf1snHuS0/x/KTOT73DUFeJqntoycwODV8PmNk4j7OfS/2pfF7obQeG
-	L+2P1Oyq/5inXcx19edq8PEIapOO0rRNyETICqsSepqA7tRjgJOb3+AlA4Klw0LHvfZ4Lz
-	wuNE6nDt+gA/vxVOl2V86jU30jS/mHo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772706799; a=rsa-sha256;
+	bh=ogDjdSjIzNp47aAjqo3D1Xz4ErfomvJ5HkBg5dLXqFE=;
+	b=TVZ5sWYQxxV/cidFlD0odMDE38nZc8HBP2pf8X9+wXBZQLurEnl0bcl05eBBZlkhc/AeQU
+	gww0LfItwLbmEZWj5pwG+FWgL6qHfZQRnG4WzRcjsCqX6uR3Uh26SN0Y+NzgebgtYOCH6L
+	aVR9Qps0OBXa+2IBHDmrdRKkLIbO+Ho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772707174; a=rsa-sha256;
 	cv=none;
-	b=aEeBmAjBnZQ5irSvR82cAR4rBEubjDnfUtHidBzSEHI9nRpk3Q/h/1FsNSP2aNcpIr01ch
-	XyAdMilDgRe6GM3eKwmGMkaOLB0uRaGhm0Y2AF8T8jQkfNdKdg14F1p28FNfQQ5xr9Q+hw
-	2kHkQwGiWHO5btyHPDPU57HJtyWPygM=
+	b=DYWboALNic5yg+g8mVP9GYXwXsqlz4xlOVWabexMJ/uF0pRDEiwdjCYIFipNyPhSScjDx9
+	+sGeVJ4CxntRx4yl2+RKcR9JUnVZLeykOHjwvgSjB4Ge4HT9YKEJVC7u0S2LeYQqqf9sXu
+	qNzvFrPGDA01ggczJmm5TfTA9rMcqX8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PaIgBv+h;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IQbCwe5N;
+	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E5B7361344;
-	Thu,  5 Mar 2026 10:33:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A930C19422;
-	Thu,  5 Mar 2026 10:33:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 180F761344;
+	Thu,  5 Mar 2026 10:39:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AA6C116C6;
+	Thu,  5 Mar 2026 10:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772706798;
-	bh=y1Fj9M+9MCzVST4GZRGx2rYqUlSw5gaJKBoH4D41oZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PaIgBv+hQWhUXggbSdfC69LRkexxpDTAW8zNRAFmpbJSTPWfYyoJF+mI94j4W3OhQ
-	 Q5aErN0GD5DbklxZ+35eRpQo8Y5fxdlx0zhxvS2B0qCRJvIqEQ83MLaP6IUQGXgnzN
-	 rat0CwNQ9L0prCkEahZN5p1S6xUr1exBmNYg3L3PNgRK4m0ORBqJ+dLk9puAn4R1t0
-	 XTvv0BoG/ykfT7+zs4dlRXiICL3rujs31ekaeQw9Z49lLMfZKhNA+G2Y5U+Ppm/H63
-	 Jhj8uog8R8rVIaTflFA7hxePO4DGHq8HAD3s3GbQYVZwk2D1DzcY9KfPlhLr9NLKkG
-	 L1SioXISm0j+w==
-Date: Thu, 5 Mar 2026 10:33:15 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.com>, Andi Kleen <ak@linux.intel.com>, 
-	linux-mm@kvack.org, akpm@linux-foundation.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH v3] smaps: Report PMD page size for pure PMD mappings
-Message-ID: <f7ef9fed-d774-43b4-8ee1-20252096374e@lucifer.local>
-References: <20260303201556.107960-1-ak@linux.intel.com>
- <101ac423-252d-4ef8-a07c-34f5d59820f5@suse.com>
- <f03ac28b-a2f8-4182-9f11-bafd6309cee0@kernel.org>
+	s=k20201202; t=1772707173;
+	bh=yLfptqTDk4ppieFzMpM96UgVSqab44mE8I9wfLOH+bc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IQbCwe5Ngtpjc11y94f+iiN0bnx2c6hl5J9XXzGCcGX5Ek/NgjSyC6js5DKRzdIRW
+	 gfofayEar1e+FGrRJjJZ8J4hGI6Jc4d3HEysbPobJ6KbR9bepk8mYYNRsdMuNNfhER
+	 V8uO2ZExYPS3uS5ncQsdOW/mVOpIu+dxbq0zOm0fgkKf3Ue1nbrE1CxOkZqfNwFFzh
+	 JeUTDD9DDcdMJ2a2RqXgJKAKUAQNVaxDCeNSpcatjVu0b3R700v6+VuqYcy4EFKKg/
+	 3v5j0nmNtuk8N4pINihLyhRnfFdYYz0evRLP1BaSa0rFuzt6rFPh78W49y2/cZUfXo
+	 5bXuXtwxubnHg==
+Message-ID: <6b95ce49-383a-4a73-bdea-c3b8c36e9686@kernel.org>
+Date: Thu, 5 Mar 2026 11:39:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f03ac28b-a2f8-4182-9f11-bafd6309cee0@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8C589C000E
-X-Stat-Signature: 5ra4enpe6j7gy1gn48sp87adk6z1zq59
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv7 12/18] mm/hugetlb: Remove fake head pages
+Content-Language: en-US
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260227194302.274384-1-kas@kernel.org>
+ <20260227194302.274384-13-kas@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260227194302.274384-13-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1772706799-178594
-X-HE-Meta: U2FsdGVkX1+frhIRbRdU9SDfairn4HYel6KkoAR0dGbCrOxnldrEc8Ku0tRDCfAIaJCv+rS5MOB8EdkJuwuzoc9Fsecn4fENX+TdD0rZpC+L8K1rPSxYrOdhFB8Hmfzs7JPj3sd/MZNVdNNTrk8iR618q5xVgPdN09R5nFmql5weeLQzEKngqek+TCC7KxXMyglOhqLSu2KeZEeZEpN+79U2jT1K255LWdrdOStOHWbKzGsFe0OMiDyOxp8ts2LVIbR7TO/3tj9iPkBsIaxtjK8iFrueeOdE907/aJ8utwIKsseWCtb+LxisZj7Sfuf330DLzsEBk8Ujtc1xFJDMdvKN9Xxs1rk75JkOqvQWj7SfyXGCJc/FLOVAMtSqS0NO9u69nZa4UTuOJ8y49fkf6WIXCruTGRw54vgg87utUMZyWa3Fy70WO9wG7YoVS3ifaU1K7HNCPV0Z4BHmzdWfbSA+ZS3Dfhrvhz4n5fIekDuBpqWyXlXKks3gi7ZdJOYgwF1NdEAF301yWuGsCZmUvsbPpX4E01EWLWbIjV0WXSomBPnrIpMTdLTIP9aiGDiqk8nVVJ1gJSnEJylgN6algNihY/NhQ8+5z269D0PQ6Ogu+RKvK0Ah4dNSGuMXMDUdsYlNGbBY+I3X9iOrngFhL2+4pD4PcEl5z71qfgdWhzUcQWVqejFGn5RGxtAhyqLzflyFA71iy0mQhl3ROt3247PhgfbJpfrLadOLComVohlFMGaUMpw81awh/B1Ao2FLldYgwvcyKNx9lpD6u5rSZ+8ioYvOBefEEb5EQyfBkewH/w+VeWl1Md6FoBC8TwcxRnTVaTS9HbZ3S3pyKBwpKQL5r5xQnfx/S8VhSnasfHBJ9puZJDfU6RqGKinhDKAe
+X-Stat-Signature: 1f18psom3fqgb9r7wtwqsdsrj147u6qs
+X-Rspamd-Queue-Id: D35D5180002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772707174-690138
+X-HE-Meta: U2FsdGVkX1/hLE1rlsXqVYNzcYifZlSwXMPyng0jTFJ+XCeMWe3dt9N4ySXQU0NmR9KIQgS6HbpYyiD1JE8sXkvzlWtXnrRZnBTWlHknUInwSaaEquiCyRLFYVthyc8IWNBbwFLf5SjeZiFL6QNu5//rKeXn6hmNDVccOkznIdeMbHwyowLNV6z8yrVXVNvaP/1z95qh8TdQ6lRriC6KWwwJ8WuEgxfStD8sENXunui0OKlTjl35r8owxdxBupDNWNPDVCBy3K1fc5WVkrOQO/BuBvCQWU5rC7YATSHuWeVG9wlDCdBcA1tBQ4KAz2OJYgTLoN0kaTxGWsqp9El5nMT6xQmWBgldscdxk/MRKmipS9SA71EVboKtpf3b/dgOwMhbguQls/YsoQP4vUWoTrYwgkcOIKEZNVxsHDdKht3yCPd1+HhgB8iL9UoPCAe83s+Lrb664O8PINmHbpA4v1MhGqtnjILXyZT6FeuniC9j2ipuNCz/Cs5l/isK/hDxPT/AKgHS1qHHKBrhNtZoAbB6xDyiawVXylWwBAjppKrFJMoY099g/eTsPzM+QBmeRl9GlW5nG88R/oeqIBGyMqOVtoFqfVQeXU0DpReQ4atoXQ7CTmb2C603mrLvOnyLUwWSpXdEdHZbW5IxfscCRXH91+8vlejgt2FYw0v1rl93YCLQW3UEDoTt7f+HdoXkaF1RCdHojYKjG5Pe7kGUP/NeLKSlH2FeG1vQoXaTh7EBiAbttMXlc3w+jrtdYBkx+gqF6iQJ4eu7qIpaFku03/z4ELjqc283VSlSsNacJZfDBUsWnxM6y8mBvhY1aKQoFMk0t+33m5ycZQHkS/K/DNHdabaYshNZZrvinMfmyS4FTMuPC1JoPK44Ymx+XaIt9TSk5Cnio50eiGTuvH4bgGlCpGj2Dwyqu30BhE8G0kaVamUpshXDODJYboTurDUerNUi+xCMxQf1f52z5mD
+ e4yQ+PLk
+ Kl92kOPcQ1lcRVaGzUidWVk9tgfeidufz1G4SnoUi0Fn3r8+ah1nWSiQ2IP/Kd9GLykU3dJOemdwWbf2W+NtflBehqrMN+J8RMVVNb58qXWc9ii9igZYdzBIuPCNco8D9qBn/zVUAekwXDz4XjCWmzu7kIKfWWdX2I04TuLiL7daXW5a2e3cfGUhL81HUhPeLA2hT6tXJO0qF/frZAKnohSFIWw08xuSbV6aeEqdStfhbD1ggZVBICkBTtoEFWkGA0jwagTv7yDs3k+eTBxto7m83pg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,62 +106,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 08:20:38PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/4/26 18:29, Vlastimil Babka wrote:
-> > Why do you keep not CCing people from v1/v2 discussions? David said that
-> > already on v2. It seems rather rude to me.
-> >
-> > On 3/3/26 9:15 PM, Andi Kleen wrote:
-> >> When a smaps mapping is only PMD mappings report the
-> >> PMD page size for MMUPageSize instead of the base page size.
-> >>
-> >> This is a revised version of an earlier patch that tried
-> >> to report multiple page sizes, but there were many objections
-> >> mainly centered around compatibility for mixed page size
-> >> reporting. This patch side steps all of this by
-> >> only handling the non mixed case in the simplest possible way.
-> >> It also avoids a problem introduced with v2 that page sizes
-> >> for mappings with no pages were incorrectly reported.
-> >>
-> >> Signed-off-by: Andi Kleen <ak@linux.intel.com>
-> >
-> > Will this be useful in practice or just confusing? There can be e.g.
-> > misaligned mappings, or other reasons why there won't be 100% THP
-> > coverage. This all or nothing value (IIUC) seems inferior to the
-> > counters we have that say how much is pmd mapped, so I'm not really sure
-> > it's worth changing this.
->
-> My opinion on this remains unchanged.
+On 2/27/26 20:42, Kiryl Shutsemau (Meta) wrote:
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> HugeTLB Vmemmap Optimization (HVO) reduces memory usage by freeing most
+> vmemmap pages for huge pages and remapping the freed range to a single
+> page containing the struct page metadata.
+> 
+> With the new mask-based compound_info encoding (for power-of-2 struct
+> page sizes), all tail pages of the same order are now identical
+> regardless of which compound page they belong to. This means the tail
+> pages can be truly shared without fake heads.
+> 
+> Allocate a single page of initialized tail struct pages per zone
+> per order in the vmemmap_tails[] array in struct zone. All huge pages of
+> that order in the zone share this tail page, mapped read-only into their
+> vmemmap. The head page remains unique per huge page.
+> 
+> Redefine MAX_FOLIO_ORDER using ilog2(). The define has to produce a
+> compile-constant as it is used to specify vmemmap_tail array size.
+> For some reason, compiler is not able to solve get_order() at
+> compile-time, but ilog2() works.
+> 
+> Avoid PUD_ORDER to define MAX_FOLIO_ORDER as it adds dependency to
+> <linux/pgtable.h> which generates hard-to-break include loop.
+> 
+> This eliminates fake heads while maintaining the same memory savings,
+> and simplifies compound_head() by removing fake head detection.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 
-Mine also.
+LGTM, glad you found a way to do the per-zone tails and not pessimize
+page_zonenum().
 
->
-> Not CCing me once more is questionable and makes me want to recommend
-> Andi to work on different parts of the kernel.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Andi - I'm genuinely concerned that you're doing this on purpose here -
-especially since you ignored that part of Vlastimil's reply and ignored
-previous feedback about failing to cc- on more than one occasion.
-
-Responding to negative technical feedback by being rude and dismissive then
-(seemingly) intentionally trying to circumvent the review by failing to cc-
-those who commented is completely unacceptable.
-
-Sadly I have to join David in suggesting you find other parts of the kernel
-to work on.
-
->
-> I sent a doc update to clarify this. Won't make everybody happy, but we
-> can't turn back time.
-
-Thanks, will take a look!
-
->
-> --
-> Cheers,
->
-> David
->
-
-Cheers, Lorenzo
 
