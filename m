@@ -4,93 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BB6EDA69A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7D5EB7ED2
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:32:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11A0D6B0088; Wed,  4 Mar 2026 23:31:17 -0500 (EST)
+	id 446846B0089; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7D76B0089; Wed,  4 Mar 2026 23:31:17 -0500 (EST)
+	id 3F0BA6B008A; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB9A6B008A; Wed,  4 Mar 2026 23:31:16 -0500 (EST)
+	id 31D6A6B008C; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DB6196B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:31:16 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7515A13BB46
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:16 +0000 (UTC)
-X-FDA: 84510734952.18.66B9243
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 458FF1C0004
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=WLGgvEUt;
-	spf=pass (imf18.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
-	dmarc=pass (policy=reject) header.from=disroot.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772685074;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 20CCE6B0089
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:32:02 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C6B751407B9
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:32:01 +0000 (UTC)
+X-FDA: 84510736842.10.4F1ED18
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BAE6840006
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:31:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=myUWpI7d;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772685119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xWiReCix3ifNv9wEOKG0H4l/dBG6k1jJeJufKk5vE5g=;
-	b=5XccqsDVlcae4keWHPjupP5NsfSlIjd8iA2eXYDqk0TdGk5vbRmbA/+jQ8SmixWMK39X2N
-	eaUQJoJKLrVxQpDXrvCXum53p5DXEf6XwqLzhhS55RBQsMLL4tqFzmQxhG5+rJ38iRZxxf
-	73F1NkUaIWF61UqkR+WNRZJjKbGq6AU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=WLGgvEUt;
-	spf=pass (imf18.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
-	dmarc=pass (policy=reject) header.from=disroot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772685074; a=rsa-sha256;
-	cv=none;
-	b=hM+GAkJ9jQpilLRGu+mTFlD7VJsPQI67aqDygBa3d+C7V0hv6SZniRVn/XnjJ6FGJeT2eb
-	/e5BSHNXDuh1r9a8Sw5tvmQMsqMxbPX+FhKq8kM/REtXA8Y3Idii72nbbv9U74Lp6yoUwq
-	XrIqpsgIu8c4K0QlVyiNnMR/2VGOQ3E=
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 3736126406;
-	Thu,  5 Mar 2026 05:31:12 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id XXPCjDwkRAKw; Thu,  5 Mar 2026 05:31:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1772685071; bh=A2XNTmUtPHFg3CLqJTv2JUzU9DkNwUrzNcQngT3Qnb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WLGgvEUtrYTQyuiep4fWcmUqEGI4IEruNz1bU/ehR2w6z3zbNlhdMOk6KaDCmkYLk
-	 7J4cZLk4hmwTmCISL7j5WjlfpWLDfw4VBQ717CIuo/DonY92qmUiikbU4KHBSx/0RM
-	 ZOR9RRpg07a/5K2ZqxDWn2DZqH6u4b3Cd0BF3Dd2lfTdYoD53lB3cEfN2EiiNjGeHw
-	 wGpRhCXWIurIVb4hiBtpIJwcPHFT5R0GNNpCfWpuBiGPX/ttgLWQolo8foUik8qQ5c
-	 gzgdqvB9C1Or0x/JVfITNhLmkf6MVULElembEHrCqRzbVpYVtsKMOh2qzlO8aHeu59
-	 lA5GvL6baljxw==
-From: Benjamin Lee McQueen <mcq@disroot.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Benjamin Lee McQueen <mcq@disroot.org>
-Subject: [RFC PATCH v3] mm/vmpressure: scale window size based on machine memory
-Date: Wed,  4 Mar 2026 22:30:38 -0600
-Message-ID: <20260305043038.2176-1-mcq@disroot.org>
-In-Reply-To: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
-References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
+	bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
+	b=b6GasyAyg26CCTzS1NjdgcaONUTUvB1tYhflMpn1FmKwhS/hLEBC+uxWCR5HnLaZPhUJw9
+	GIyYjpejdHtGIEfc12Ij0Ava9kKfORk+l8LUhNgrmwl0lIp3g5M7u/uUhmCzuBQW5zyAHR
+	zaOOqgiZaC+of2VVQiWMzFjVVGzZROg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772685119; a=rsa-sha256;
+	cv=pass;
+	b=7+0WcPKbVpusO1Mh8/IY81Ls1uwQpYOKFbf9/evYN/D7I7VmqU3s5ww6/sInjXflQREtQP
+	Vl8eigAYCEyqmdBYO+9hpDhtserx8kot1vRB712Wl/bs2Tt2eteCitfUurH8rh5F8oN3MN
+	Wu7r/ruD4dpkto6B8QoNNdPoW0myev0=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=myUWpI7d;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf12.hostedemail.com: domain of jthoughton@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-660d2e4846cso2139049a12.2
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 20:31:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772685118; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZGqiQByB8RoAnuJy30YFrgHogjAbbE7+mj/2BeAhcG/yX8TSlz7tdzZAXY9yHXmdN0
+         f4BZ/N4PsxGE6sTZ2gIse8lhKsGMmshoMKguI2Dz46hw7kQO5REWb4e5WuQ+kgWPS2gd
+         KY0/o4m5X2zfYP0vmha1JwCQtGtl8qUa9adwNeVTdimTvst37LViNJIfr5lWw29sOtjr
+         8cMgNie3hF9Vvjn91KFJQnVbX/yhugpDXnaay0kX6yXlM4A9yr3D4xVFIITz/0f0983F
+         wzTwkLq1eA/cS0rcH/LL8sJdJoplKE/OGhNFGdU30e6bF5QuRYe5SZ3XymY9uc0uWZ8S
+         dmCQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
+        fh=aHI3dzrzfKDTDZOZVVuhgGN4bcCx7ddy4my8XihT4s4=;
+        b=ZlvOOsHpp10N3Hjy59QbbwLTN2GBSGOW+4OM/qUK4as3vCI03P5YwarWFpG062f/O4
+         wylVxpZ6XHgIRri6rdR56kJVyqs0WE2G14D4DDAzN0izefoOry7Fu4dc0po7q2HIMFML
+         +AkgSi6RV5l6oFdZ/66YO7yBRUqY1CKgCcSUZbCmCHLQODJoNbkNlxl70U76IoSKfVuo
+         +3t+gZgQI0K9+ry3WwqtFzto/CdH9Y1ujgZZNw+w/fU8dyyRgd7C0aFOvUijPzN1Y/vF
+         LlrxJyUWGiWnLftP/xIvoCmu+js0rOrdAAMtB0kl9t+3g0AUijLbozF1v8BnLwHQCtGQ
+         DxZA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772685118; x=1773289918; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
+        b=myUWpI7dQ5q/DR8o+vcD+InvmurGldIRkGVArkkRRWnGOouEbvlGt24y9QE0GGf46r
+         atI2J5ufJAGK5sSJ6HSp9zmo8VcwF3ozFcJ7+HalCL+/KMAkKaC5z9sKrDNJv3fWkuyJ
+         zRKOyD1/TlEXW+7EEivpsicJ+ihtOJ1KCyyZoLSWC/Ma/mtDvMz6GpELq8aJlxSYGS6I
+         gZiHViKr4NJyzvNSEXjbE7zhGr9/LkU8rOWLUU6BdxYdG3w4TqX9NuMa68Q305b6GkM0
+         Knv5PskCAb1tKn+yH/FV3XHxu+v8+2mrdz9m+gNuPn9hLq04P4uK0NPgg9YG2q/gtwN1
+         pvqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772685118; x=1773289918;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=07AH0O8rOQrtYR1vEgFaL79Z/GhmvxKal7S6yeZHNhg=;
+        b=jOZOtgSok3JCie1vDbeH5FnJafLwSshPBT3IGw4pEkvED6+6lbXYwAzUdhUCSYoypA
+         S9Pt+cvRrdTb/S8j8gv7Hvun5DW5m0OXIs4EWD/dcDJdGa/+7ZeaxQoGcoDKVkCPmpL6
+         6TyzFKHKGRF95sFEl75wApx/uYXltkwYX3oZQ2Rl+zvnFqEroHDjqaHOD9ZDPTL33qBb
+         Z6wxD0tQmlXh3m4E+3kpV/tv9WDWcWLWCZHPpPakXu+b8hvvegMWUT+wKEQNjax/A395
+         n9EZ3gzsvKLkuGVK6EydXeUrNp2hfcPAgWuL3XHVriqGNtZRKXmCTW2v/bR2aZCBo9wa
+         I4qg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXy8DT1e4Mod07eHgYKQ5V2mr1HQCLnoRHiDGA7EPIcgiRDVkmoQdefmv9Yhg2NXGQ/mtGwipK6w==@kvack.org
+X-Gm-Message-State: AOJu0YzAzo8UDWRzNOE+oVTHxFDbMXKVjVeAzVLxnACij8WGIoMXynOx
+	9dcI6euX4IGa+7BE4U6xT23i3BUIpRDItnF+tE7oN+w8uxYuWYZ0DDrPfCquUMcGM2mMk6cLf9P
+	XWEfrk8pQUQJu0aVi+uBmUtCmIZYOX0I1ksEnoeY9
+X-Gm-Gg: ATEYQzxY0BY6nqW0nADk6OXfpoCnaPcvLe5Tg3ZLp8FnsJoj67B3LwWDs2GtARdFHa+
+	gqunMhiq5VBjxeWTvUOcIi8rfkRrvHvXenY9QgAShcPsEbR2Y5g21Xwmm6xx0aV5wDxAcH6Icgw
+	E7HTgNh97C6npNb5RwbxYbx7w5WN6tKzaT9lch4/2jUJU9gpfQKXmaS8s4JApTQJnBmnrn/cAql
+	Pb1gJrP+9vKf8k6wC0uutHDrNFdh/hTjy0aIU/oKsOjScLi33wkiLHBIHQDZ205bmmSQWrcHrAY
+	s/x6kUP9Y/O6VBINhtKfVeLgAiwcRUbGach7Gy0ijvMvwyPaxlpwr/fyWqt9qPvX/6N9xQ==
+X-Received: by 2002:a17:906:208f:b0:b94:898:7bd2 with SMTP id
+ a640c23a62f3a-b940898a1f9mr26074666b.39.1772685117464; Wed, 04 Mar 2026
+ 20:31:57 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 458FF1C0004
-X-Stat-Signature: 5gid99k7aof6kfubqnq5ckeypd65iod6
+References: <20260303063751.2531716-1-pjaroszynski@nvidia.com>
+ <CADrL8HXaTz-TS9rYiQkZ6NoRWhHm0t4Tv0t=TtDXS4purLnDJg@mail.gmail.com> <aadTuvCBxiVimDZA@box>
+In-Reply-To: <aadTuvCBxiVimDZA@box>
+From: James Houghton <jthoughton@google.com>
+Date: Wed, 4 Mar 2026 20:31:20 -0800
+X-Gm-Features: AaiRm53dJeRWd8Nji1GYa5e5Z900_RBsGxiHxN9h3vB4MZepaklzjxRsMiu3r_c
+Message-ID: <CADrL8HUHQDta2mv4TG=f3nYPx5-S5nrywGxQwx78KSe67yjYVw@mail.gmail.com>
+Subject: Re: [PATCH] arm64: contpte: fix set_access_flags() no-op check for
+ SMMU/ATS faults
+To: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-mm@kvack.org, Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Zi Yan <ziy@nvidia.com>, Breno Leitao <leitao@debian.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1772685074-656734
-X-HE-Meta: U2FsdGVkX1/79SrRdCYgPAKvbkpXa+SxO2pAkI4vi5pSKaLPTLiWw1+tNNosmAAFqI2T+zSoQCF/hug/VVEPVN0Gll5KCxThHw31Sd9uNhROgbyz0CypBD2Uso3moknZFMzV90/VASd0qbNHIXwQ6nB+oR08osRo3GjNBgmjCaQQBinYcrhVN4TmwtwqIW39fodzXsl4/stns0HTG281ToKkuvMuBS7rYSTc/87VqqloUVu3pkaTMVcA6ZdtmtZvQ6FeBBTyjOHVktx6uHYXRGVAYL15XeWA0IfKh9177wu7WzsFCGXryImJlfgUXJcxGZnKGxWz6Co9k4lKXZP3tsRsq/knEM9ttI1ZhL+jqfwXXYrom3+5pzaRwIFQC95owQxS3DOkjDfVG1sH1dHSsQ4/D7xvf2ZT0JQEPywiy7CyNWaOkJT+/9I3lFtRpL1Kr7EyyJCO3332B71azdzfsP9C7RWGA1jO1Gn4SvbQqlwjOzfilHkofkqAuSwfeDATEkM9h1QUwXbuXDN25leO7Tn+2H846QBPdU2hguHlGrdtljANwD+PR+nvaTBaiYlovH2cL2/Afp2PhErbnA9eDz9f6SdqTA7uM4jcdd64rUVVaP6awEubAxAf/1jGW/AN9W0hkhYmEnu3rhvpiicXDlhDS41FIfGB6Mfc509uUDTeag8XFguIm4oIhatU+zE/dTlXYdPy/03PXRIW18m5IhCZVOGtwLxsDGKhTJ8mg7XHWgGADKFceigSwd/Jwr9z6cSk9y2iwe1C/LJuv2AgB6G0rBKrQ/1Y0uoP4n80P8fCYAgzsq7q8+SI3HlxFvHOrBlL3aa64zNqTGZuIcqnHHsw+STvg9aheu147jQjK33vQDcdsYdYHMVwTDCZxVjqQu6jR9Ae2DuvTwItnTJ0Ql4FYROJLlQIDfP2nzxKKgiRXgrBUkMJeqjh19NBi0rD/wETCmoX4NgtUnHWTCX
- 9lsadiXX
- ucQsPK5tTmgyMszyo98Pe518VEaUJSjrgYH0Xn43Iuimy2DJk4cVGRIAwy7pHVn1Xmc3/oZfu9tXgu9hcl2c2cNJOCPuMxN4IAvcT/Lhkf+TQSGibPuUx+XL5ZRsRB8P9MVLfCw13thuOxuB/p/EIinvV5vseJoXSwJ+LK4OBnZpMyjm3kiCyN7rABuXEp0ELSe1hcvdQsEc/sWtFEcyUS+HAVifibo95txbry9bC9F/mQTd24Y8jmsz923/GcmtgTOGV+Bdg5C9GirzPauuOuSOBcg==
+X-Stat-Signature: 6t87sngzwtyq39ma8bj1319h7rttqr1r
+X-Rspamd-Queue-Id: BAE6840006
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772685119-703878
+X-HE-Meta: U2FsdGVkX19bGhuZbhu+j03rqX09V++GSAMJ6fa8g1qNgCK7kHc3mGNJWAGXbh/ZKBwO7ITH9FzQ0+un0AOcQb/TWJ8/Mi3PsZl0PHvfYknhzA3REK0jzXwwojqP7XjOWZfDdOtI8XRsGK4oFOk7EHcPIV4jdnbkRXrMIYTja8X6XkVoyAmSuz4TD04Y3IBHNpgB4jCBuLLojcPqQMaxrcVAo8wBxgwPi1MISpZ9bthoRWPsMMNsTWvRx5ca67uNJxRelNkg/nYt9k/dWiMwDRTPUDd6lqmTsrkOmoXpij5C0/Xa8y0ePmf2Qr1VXUOf4r0IXxHSj5HkMN3D1O8zMvrTLgpZ34qSOil7PZjppGOj0fpIXJd/9BqryYbMJUoZb9o1IgdZKusC1x0E9s4fd10knqsuCbdf4jKch0lOXrheEy66b9CFvgITXUE4GquY6nvAq/JIBL2Tw8JwAAjElw7oxqycIceDh9QgEKSGj+KWNy/L726UEvuBNJHF27snZ/3CN8gv8hJLSjXbD2xNOorwPWcjByL8HhIkgcnlVWNAY80q8pNkNJTNcXJSxduUoHGt7U6dHDD49m3JlvV9IMyenR+RzGnGdNZZYhj77puNryGRe0L1WpIoaPR0tZ52Mrrn3ioFxRUrCXz5kXvM73AFP72P+Te4hVyIK7/O/qxo1/G0A7ymdWJPcE5U5OTbzpLUj/vhmVQMzlvXqzQCuYdcdTldKqI5MFbOU4IywyIj5P+JLcRIA6WM3/Rg0fherErLswhVlwvdBNiBmU+JV4jqF+UewlIWb47DDQ3nf/LRC5UZx5G7++/62ucaeYilRX2X3YCdHvIB9M8Y5XlFe0HpFfS1HnWV/21O953gOMicLvsPhq3Fzzao4wa4ALDA0PsGX1wUBiPm7kEptbdL1+1NuRD6QzwqSLJ0PNCKn86Jmc29kS1R3Tb/0tmKuK9mveqHLOuxOcYoj6BoHLT
+ vahfVmLo
+ PfEjz014s+frK34EpWFKEO7YEI9VzEReQ6Gvb3TUBKsgrr6miS3+8ylabVLL1dgm2k6yFLM+WH/2e0d2v9En6A4Vf+vB7MZxt5TJ7kbMFhfeurEWwtWMRlalMiHxHv290Sl+5diQGvcOAIXNkfjzZxNosFLiZBmAlFUIqEKIU7MWFJkI+0V5PRUsrkRc+H6S3NydWV6L9MZ1dwKtQkh7Vr9pFt/e5rhSuNGO9d5cJLdWiDm0ib9jMruSMx4wVnH8HD1S/yHVtbSiGbQLxIIRUdI/BzEvb33jxZ1suQXJau8LOZf/ptMoX4+IZngq0TCHIqkoiAjQ0dvfN8QHjfHWmgRPCAx6hAeEagsric52lG0yzztklD9oEKGOthAc9BVX3kuB38NDfI2d/M69qyEsT7+8Zu+Ky4kBbCZ0Zk8m3xiPfGMUD+0Q5Th2eQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,146 +143,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-the vmpressure window size has been fixed at 512 pages
-(SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
-the file notes that the vmpressure window size should be scaled
-similarly to vmstat's scaling, via machine size.
+On Tue, Mar 3, 2026 at 1:40=E2=80=AFPM Piotr Jaroszynski
+<pjaroszynski@nvidia.com> wrote:
+>
+> On Mon, Mar 02, 2026 at 11:19:46PM -0800, James Houghton wrote:
+> > This is similar (sort of) to a HugeTLB page fault loop I stumbled upon
+> > a while ago[1]. (I wonder if there have been more cases like this.)
+>
+> I see that your commit 3c0696076aad ("arm64: mm: Always make sw-dirty
+> PTEs hw-dirty in pte_modify") from that discussion was picked up and
+> it's very relevant for the hugetlb exposure question. With your patch,
+> do we have a guarantee that sw-dirty implies hw-dirty in all cases? If
+> yes, then there should be no exposure for that path. But it still makes
+> sense to make it more explicit.
 
-the problem with fixed window size on large memory systems:
+At the time, I was unsure that the patch made it *impossible* for
+Linux to ever write sw-dirty hw-clean PTEs, but, after that patch,
+such a write would have to somehow avoid pte_modify(). That seems
+unlikely; that was satisfactory for me at the time.
 
-the window fills after 512 pages (SWAP_CLUSTER_MAX * 16) of scanned
-pages. on a 256GB system that is 0.00076% of total memory. the
-reclaimer works in chunks of 32 pages (SWAP_CLUSTER_MAX), so the
-window fills up after 16 reclaim cycles. here, a single (or more)
-bad reclaim cycle which reports false info has a considerable effect
-on the scanned/reclaim ratio, producing an incorrect reading.
+I thought (and still think) that explicitly fixing the HugeTLB path
+would be a good idea. I think that patch wasn't taken because it
+wasn't necessary to fix the bug I was staring at.
 
-a larger window however, is *potentially* prone to some additional
-notification latency, as more pages must be scanned before the ratio
-is calculated.
+So if you want to take the patch to the HugeTLB path[2] or improve it
+in a v2 here, please do!
 
-this is what we consider a false positive; a notification that
-doesn't correctly represent the current sustained memory pressure.
+Thanks!
 
-as for issues with why false positives are bad: applications or even
-maybe the system listening for these notifications are woken up
-unnecessarily and may perform actions that aren't supposed to happen,
-instead of being in coherence with the actual sustained memory
-pressure.
+[2] https://lore.kernel.org/all/20231204172646.2541916-2-jthoughton@google.=
+com/
 
-i did some testing, as well.
-
-the testing was performed on ONLY a 9GB VM and nothing else.
-window sizes corresponding to larger machine memory were set manually
-via a debugfs knob, so my testing may have been corrupted as i only
-had 9GB on the VM, and this doesn't correctly test on larger systems,
-but it is the best i am able to do.
-
-vmpressure_calc_level() was instrumented with a tracepoint emitting
-the raw pressure value. a controlled workload (2200MB allocation into
-a 2000MB cgroup with 500MB swap cap) was run at each window size.
-1000 pressure samples were collected per run with 50 sample warmup
-discarded, repeated 5 times per window size.
-
-the key metrics are stddev and cv% (coefficient of variation; stddev
-divided by mean pressure, expressed as a percentage). cv% is
-load-independent so it is a better measurement than stddev alone. a
-high cv% means the pressure signal is noisy relative to its own
-average; essentially the readings are unpredictable and unreliable.
-a low cv% means the signal is stable and trustworthy.
-
-do take the data with a grain of salt, as i probably didn't test
-efficiently. this patch still needs to be tested on larger memory
-systems on real workloads. but if you think there is a better way
-for me or others to test this PLEASE REACH OUT!
-
-  Window  RAM Equiv  avg stddev  avg cv%
-  512     stock      45.86       91.24%
-  1024    4GB        34.62       69.28%
-  1792    8GB         4.03        7.97%
-  2304    32GB        9.90       18.53%
-  2560    64GB        9.95       18.59%
-  3072    256GB      11.49       20.99%
-
-the results show an improvement in quality as window size increases.
-stock at 512 pages shows a cv% of 91.24%, meaning the noise in the
-pressure signal is nearly as large as the signal itself; the readings
-are essentially unpredictable. at the 8GB equivalent window (1792
-pages) cv% drops to 7.97%, an 11x improvement in signal stability.
-
-the data is consistent across 25 independent runs per window size
-(5 sweeps of 5 runs each). stddev and cv% barely move between
-sweeps, which gives me confidence the measurement is real and not
-an artifact of system state.
-
-stddev increases slightly beyond the 8GB equivalent window, from
-3.82 at win=1792 up to 11.49 at win=3072. this is expected and
-may also be an artifact of testing on a 9GB machine rather than
-real large-memory hardware. even at the 256GB equivalent window
-cv% is 20.99%; still a 4x improvement over stock's 91.24%.
-
-since i only have a 9GB VM, i'm setting the window size manually
-to simulate larger machines, but the actual reclaim behavior of a
-9GB system doesn't match what a real 256GB machine would do. on a
-real large-memory machine the reclaimer has proportionally more
-work to do and the window would fill with more representative data.
-this is another reason why testing on real large-memory hardware
-is needed.
-
-the formula itself isn't like vmstat's threshold calculation, and
-uses total machine memory size (RAM), because reclaim costs grow
-with RAM, not CPU size or any other variables about the system.
-the formula's floor clause also ensures the existing 512 page
-window on smaller systems (512MB), and only affects larger systems.
-
-if there are any other questions, i can try to answer them.
-
-IF YOU CAN TEST OR COME UP WITH BETTER METHODS PLEASE REACH OUT!
-
-Signed-off-by: Benjamin Lee McQueen <mcq@disroot.org>
----
- mm/vmpressure.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index 3fbb86996c4d..0154df4d754e 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include <linux/cgroup.h>
-+#include <linux/debugfs.h>
- #include <linux/fs.h>
- #include <linux/log2.h>
- #include <linux/sched.h>
-@@ -29,14 +30,19 @@
-  * sizes can cause lot of false positives, but too big window size will
-  * delay the notifications.
-  *
-- * As the vmscan reclaimer logic works with chunks which are multiple of
-- * SWAP_CLUSTER_MAX, it makes sense to use it for the window size as well.
-- *
-- * TODO: Make the window size depend on machine size, as we do for vmstat
-- * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
-+ * As of now, we use a logarithmic scale to scale the window based on
-+ * machine RAM size.
-  */
--static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
-+static unsigned long vmpressure_win;
-+
-+static int __init vmpressure_win_init(void)
-+{
-+	unsigned long mem = totalram_pages() >> (27 - PAGE_SHIFT);
- 
-+	vmpressure_win = SWAP_CLUSTER_MAX * max(16UL, (unsigned long)fls64(mem) * 8UL);
-+	return 0;
-+}
-+core_initcall(vmpressure_win_init);
- /*
-  * These thresholds are used when we account memory pressure through
-  * scanned/reclaimed ratio. The current values were chosen empirically. In
--- 
-2.47.3
-
+> > [1] https://lore.kernel.org/all/20231204172646.2541916-1-jthoughton@goo=
+gle.com
 
