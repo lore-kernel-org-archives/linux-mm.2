@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F940F30955
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 12:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E69BF30955
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 12:44:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B73936B0088; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
+	id EC8B36B00A8; Thu,  5 Mar 2026 07:44:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B20CD6B008A; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
+	id E4C256B00AA; Thu,  5 Mar 2026 07:44:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2D1D6B008C; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
+	id D2D906B00AC; Thu,  5 Mar 2026 07:44:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FFA96B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:41:46 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AFB1160133
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:41:46 +0000 (UTC)
-X-FDA: 84511971012.01.BA77018
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C09B66B00A8
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:44:48 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 74E7FB52CB
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:44:48 +0000 (UTC)
+X-FDA: 84511978656.21.CD6CDB5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 70CD8100003
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:41:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBtTsoRZ;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 82A4D1A0011
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:44:46 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X0qwN/EC";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772714504;
+	s=arc-20220608; t=1772714686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r6kTVyaqj0G1O6nV4vmYiyM60P/DuKY289QlCUAIA4Q=;
-	b=wVRapblXYuWzzd0Lp2RI5fz0H7BRzQ80noXi1WDl3SP8A3u+0/4+gOo37kMlA+4kEncBAd
-	VUKIijt8ldueoaTaYAypoiNDJmmklOTthOd22AUOi9PKpDxYl8nv5qoxRHZFSULfZ64G3i
-	RjvGJr6k5DH/ui+vTjE4k0VxDst1xxg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772714504; a=rsa-sha256;
-	cv=none;
-	b=KbixGm+zgXqTfplkTz9V4KReWTlBhhrDh71GOIkao/RdnfQFdhbBDy8SJG16aILcAwUk1V
-	26x/GSIWwpK2x79Tdkz1fJxO3/Kp0CVHp2/pdiR28hqpt47XvvQ1j3Pk2GlC4ZBGDRXcSu
-	MjxseVAag/H8Az2ZpJVhw/F1E8opCpc=
+	bh=fBrVNr8U7+Q5wJBjA4RUl6ZU0wRV6cfO3qkElX8TTi4=;
+	b=8nOOJo4qXcpgU29bSlolUnsFaLunMu6VksqBRfxq23cPiRs5s3lMz6Kvd38JweTWcpht5X
+	iFqr6z5sPplRzQpLXBqKrEEEkzeeB0ExcT2cBnb0dynCaJKsGdH8KSCLMh52/adlmEKC3h
+	/KxIQGybPK7FPBCxNtuQwZR1Yvu0No0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BBtTsoRZ;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X0qwN/EC";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772714686; a=rsa-sha256;
+	cv=none;
+	b=lYctgp30ffYi41PP9rT18QN2+EF+leoY4IwjGzelNIk6Q9wuEwpjjzqP0cP7KXreafRKjL
+	QkJkWgRX8zJvvt7efMMlvEN2BpprgtKRQDaWXk7HkRmrk0SluQB3ez0CnBu4Hntiz2Pzzi
+	Cq/pDOk9+0CSZQ0BGhAmXTkx3C9zPhg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC5CC43C65;
-	Thu,  5 Mar 2026 12:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E010C116C6;
-	Thu,  5 Mar 2026 12:41:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 975F9416F4;
+	Thu,  5 Mar 2026 12:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A2CC116C6;
+	Thu,  5 Mar 2026 12:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772714502;
-	bh=GSpJjDvuqvZZWtZxS0tUNmCUsD/z6lCfyZgI5ChtXhA=;
+	s=k20201202; t=1772714685;
+	bh=LT5WDnF3AEBAwycCjCP/XOjYJhTLyjqHOFCpeuthPJQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BBtTsoRZI1AAa5AhxDFLr6PHb6nNNCx2tgnSGXlFaEbr5z6NXjUVOL0BoVVAzaVwj
-	 HXtj5IPQpiNaVH3E7pCfEDNJVbO2lLqPCQv4R2X/U5zORVGFXOYKSYPOf3D9OQ/KTv
-	 ufBN0SLx6hP0VP29P8obMF0/amalcG6a+qDmRSEENU6p1O6CsBxX1GiomALgiBkgme
-	 MlcsMZILGWpC9c5Eqf2MjyXAiC5Pd0U+MB16izfXkWNk0W/Tk2PMy/lT/ABue7Xd7k
-	 wuxou9PUvzQABvILzfdbL5aXwXk27bByo6UOdCE3ETHCXXCXk3C+k4m/Hdu882EFFv
-	 CL41ohw9G5wjA==
-Message-ID: <ae48168f-c88c-4f74-8cf6-ab90f6c97c68@kernel.org>
-Date: Thu, 5 Mar 2026 13:41:33 +0100
+	b=X0qwN/ECeir9rGC0LjCiZyn0JyZf+32HIuxJyiduMwF830I3SgYDqR491uDRXs1pr
+	 19cIJiAlcP79I8a80g6p/PB4DIFkancQ/RfXZsKWqtf+pAJrd0/gsDcU8ekXetzaIO
+	 W3DexH0mX6hPFYHsNIBrdt1yQDUXcyUT+jFvBIsmYFqGhTffEQhGnxH3uAA1YzsFwv
+	 r4255vQ7xPx1Are8JAGSDuW1TN4tRsAf8ZAXl7KkJvDzkEodONf+A8ifswhGbm/GaT
+	 +V+e0V+AjILSnqKCKwgkoSmz7f5ckdvJXlZL73e+MQAvout4vsJ/IqcaG2ApgTxqoN
+	 UWS/KvwAZ3KPw==
+Message-ID: <39bc40d6-197b-4dcd-9d1e-2758aed9495e@kernel.org>
+Date: Thu, 5 Mar 2026 13:44:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm: thp: reduce unnecessary start_stop_khugepaged()
- calls
+Subject: Re: [PATCH 1/2] mm: thp: avoid calling start_stop_khugepaged() in
+ anon_enabled_store()
 To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
- Kiryl Shutsemau <kas@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>,
- Andrew Morton <akpm@linux-foundation.org>,
+ Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
@@ -82,10 +81,11 @@ Cc: Breno Leitao <leitao@debian.org>,
  Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
  Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kernel-team@meta.com
+ linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org,
+ kernel-team@meta.com
 References: <20260304-thp_logs-v1-0-59038218a253@debian.org>
- <aagSrIwiFM7GaL1m@thinkstation>
- <e46c8bd6-9f6b-4985-bec5-fef6c8f33dfe@lucifer.local>
+ <20260304-thp_logs-v1-1-59038218a253@debian.org>
+ <ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e46c8bd6-9f6b-4985-bec5-fef6c8f33dfe@lucifer.local>
+In-Reply-To: <ec07d7f0-cad4-4d9b-8e40-d4ded8170340@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 82A4D1A0011
+X-Stat-Signature: u9rgd38toco4t5aahjdsfe4ffzrrxtnt
 X-Rspam-User: 
-X-Stat-Signature: b4qjocmx8w3ptbz9woett9dnxpjdxrgc
-X-Rspamd-Queue-Id: 70CD8100003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772714504-95702
-X-HE-Meta: U2FsdGVkX1+hHNNJ+Yu9rVeHN9b+oiKBIM8YBl/AN9G18ABzagpkrDdAWLSIiivHRW0uHZKQl4DHRSCwTB3LVJkxmJ9AQvp+N2GtyikY1Q3yJTAPHfnEsP4dv98OJJVufhUUxlsTOwzxQ9aiehF01DM0gK0GqEk8T0d8doYIm2GhCxXuuGysZrLusmZWHaNFrckYx/MLpdZ5OE/rcZG99UaqJG8HFI1es5DwEUqzd19G+CS7nbJ8LDTzWMGS/TYmz0vse3Otfgx2R7sEwkbcLjgBoMWbt6HPeX5FQCZ4FTqCpozyhJcdRr1Xn+yUHXsRVliKyVIUZQ8KoZsf1ryoM8zyEib6hGMtI9u9oWmVGoG53SPGRr8M0Ew1tgkZo1koqQz7E8Z5sp0fTz/3R07fO/1yEyBUC0SNCRj7MZuwVWztyzhRaQU3pWBFv238crqk/FHMm8+AQ/oz2IuQsOK9D2BGA9XppXnPJau0yoOD0pkBwenaGpTEcncXME5794O4RvXgFXtq3DHSXOiWoXJXuxT+5NcgoT9Y1T7X+F8PsTnvsvMIDyxx44j3GTjzcA0h/B4hfTmDQ8Vbekn1KBTcLZ9v9p1BmBtD7KkHV2CcI4mcMM9H2b7+MWAkF7nQvDd55+SuVyZ0JaTBNSeCwiTJVvElnVt13TWMcTxwHbZpyi+wpLIW9P0WtNvkxqIBW7UPwE2wqRMDRdln+/tRlUZg7/dhBV49ymcv+Dwrt3r76k8VQOv/8Pudc97jiEELDRzIB80eYEK0h5KJJrZh6sjPJtebKT6oT/8oMWaWMGsliGRQk8t9s09NmTF6U+nkxoxADCoyt0bh7b50YfLL5Y+23UEGtyOmDLrjv+VHKayGVt6DpFWWheSasetlZD754ffTNoaWWUSse5SYSVUceAmMqofykwbuwL8Me3lwj6oArgP4UG81SIURj9itnbDZQE7OL8MAtRcrhRdSlRvDcli
- eiwbUG4S
- BB7OqwJWnPJvcghg=
+X-HE-Tag: 1772714686-335064
+X-HE-Meta: U2FsdGVkX19Yn55ck5dcjEU92PwmY5gpT0XOsQ6M55ZRiGHQYDTfNS2AbMh+4sT3Stva/rkWQr8moPmsDog+2IW/ATI7/DmQZkmvM5vth3ZC/oKYFszV7amxVX1+HpDWXYR1tSbqZecSktkJ6z/w87+QqDe0YmuPVLKeKwVLj151c3R/20aSEOTq0nnXV3y0MIPpTb+zDm/PtGZg+MUqi40yOKYsNsMGfNbexvmCcLId7ZPL8NV/5Aw9EEhaKR5/KNOYuJ5sVnrMXilw8JBBRZp+QbyMHIIJ9VTS+2OQoXEdyDQcBP+ZJLmsxXgqLOhRF36xKW8pJdFZKPB1kQNVFluiRWM7Phe4pgX0TjjLmdrsSr35zuqnm0xiZtbh3PIYayQ5TNvrEyI78usxhYiTP4wkIlBiYbJU4wZdGXNCVgIHMuNMJJfWSWOmdC7pI9+mRg1lzJroUB9OKgR7ZM0gtnXySsDOGDCQtjcYWy37qiT2atqqsPNxWY+PM/TwAyOdSk+lZKueomuld0mlu9f6nGM3JadsS3FUqrPzAwDePd+YL/3UM9lwnPqQknrVMkaCVXHTkc+VI0tqqzhGeBL9YVxhKsCsEStbWMXo+m+ySxm8wSETF1vkImRt91byi4UIdVV8HV2c9WIALOXPzj1dIWsBYlmjqE6kxQgTuLZL9IBkq6IH5ZC15Li8+cNwL+C+yhR0gZ6s94PV+1tsIKpte4/iPoH9uHlOrBgJRY/R8whPO9ZhklmEEQ17xM2mHI204v1n4NjdrSraLhc2Cjl8SiPRwYRZGLjHCgkZsvDpxAbxouWkbXejkUpSTShoUR5eLCapWjHNJzenbx/XmO71gUBzCjf2gtVqeXpXnj4KcL34oHW0hSFm1abIOuOSrh1kWTabxBe+1RH6NRTiz7Y1dxfvsqH15AG3JUXMBIqlPySKx7Xg3Kiie1AquUmQ1YXhZV6c75g7riXKXHXXegt
+ vhlFaxjF
+ zPVibiip6FY3SNldNntr1SFpSkT27q+FFqO9hPhbggzvOjKAW3QWizntWd0Hi/L1uM7gqXxSvVTB1VDY+Lu8STXdkqe0q1saEkVd0c6+8crRsS1f5umJtbpsrbq/DbTw91ifKsvmg5k3LeE+MqrXZW0N/RJEpa8JKV74rRIdbtR50L0Sk/eNVZuKzpPBkf7e3Vj4V4bw3ecCgAeZCwBxSSoSoAqF45RoW/X9MtTeZhT7LUEJxtDAricBkiHdlHu3vlFLsVwyTo4F9kEnOOQwaSDSqt32NAu9WiblsEqnfbMlo3ExVILNLYeJb1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +151,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
->> +
->> +	/* Check if anything has to be done */
->> +	if (hugepage_pmd_enabled() == !!khugepaged_thread)
+> This is badly implemented already (sigh) so a little tricky as to how to
+> abstract.
 > 
-> This is horrible, better to break out the latter expression as a small static
-> function like:
+> Yes the existing logic duplicated, doesn't mean we have to keep doing so :)
 > 
-> static bool is_khugepaged_thread_running(void)
-> {
-> 	if (khugepaged_thread)
-> 		return true;
-> 	return false;
-
-return khugepaged_thread;
-
-should do the trick, given taht the return type of the function is a bool :)
-
-> }
+> To put money where my mouth is attached a (totally untested, in line with
+> Kiryl's :P) patch to give a sense of how one might achieve this.
+> 
+> As to this vs. Kiryl's... I mean it might be nice to fix this crap up here to be
+> honest.
+> 
+> Maybe David can have deciding vote ;)
+I guess there are plenty of cleanups to be had here. And yes, we can
+have multiple ones! :)
 
 -- 
 Cheers,
