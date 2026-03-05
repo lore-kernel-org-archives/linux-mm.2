@@ -4,84 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 167D6EFCE57
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 01:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B944EFCE57
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 01:39:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1235A6B0005; Wed,  4 Mar 2026 20:32:22 -0500 (EST)
+	id 650E16B0005; Wed,  4 Mar 2026 20:39:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D1B46B0088; Wed,  4 Mar 2026 20:32:22 -0500 (EST)
+	id 5FE666B0088; Wed,  4 Mar 2026 20:39:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1F386B0089; Wed,  4 Mar 2026 20:32:21 -0500 (EST)
+	id 50A856B0089; Wed,  4 Mar 2026 20:39:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DEE896B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:32:21 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6555DC2897
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:32:21 +0000 (UTC)
-X-FDA: 84510284082.14.FD1A81E
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 642FF40006
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:32:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qjicY03o;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41A456B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 20:39:41 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9CF7BAADA
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:39:40 +0000 (UTC)
+X-FDA: 84510302520.04.BFC1FC4
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 231964000D
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:39:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pB85H4Eq;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772674339;
+	s=arc-20220608; t=1772674779;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k2mG8exrUFH6rskHGTsRAo57iMTOJNkDkFHRY8FBRoA=;
-	b=GZt0DuEePHB98iN3dXceUbYPVnmkQjB2tPrRbWHE3u8N1KvvXgwtwS9b8BDOnxUWjcoAJS
-	jQmQElLHqxaexGrx8bOGy4dy/B0HisJbfJZ2QtZy+3CoSiRlllvYvAVl16zHsrraeK+bqu
-	oyBDTQUci8CJW6aUJRfrRfakeIpdfkU=
+	bh=uDoyp3hxHGk5GmnYLh2TQRpKoqZ2riLhM9IR9bsjBzA=;
+	b=u8F7cZnfv8rjCC2wTKgY2NoVe3fcEy/kaAqcziDLbmzLThl2JFWkI58Jg8OVoN+/Hadky0
+	mAssOK3Je1Pg1HjvaI+cyKBTqrVS7KkLokIcqVbcI/jKKUQgqz81pL8Y4dS2JCZ/RGAoh8
+	wkY2CDp02C5zOE3NH2+waqWqAAPgG2U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qjicY03o;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pB85H4Eq;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772674339; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772674779; a=rsa-sha256;
 	cv=none;
-	b=2SUfgAqShRZWxRNCF17XKJPX3htaQp1ht+71o7rRxw5Bls5D+JTwPNHka3ELSoS09GjDVu
-	9vXuKrE76byI7cK/bdb8SG0cDry8E0FoMDIQtspoGD1YOp+LsdOVKurvmmZH6kajQGrTlS
-	FCbX+azCeED7z/7KehUojR5cMHN9oso=
-Date: Thu, 5 Mar 2026 09:31:58 +0800
+	b=sOkamyRw7OTuCO3bc691OWRQK4O4N31iw+Sd+UHE9Qo9DZQHmrkA34CFd/8CL8B8ig9rQx
+	s5t33GmaregLl5P4rs/+Zo/rDtyDE+uO+m0dvZ5yexJ40WquEhrCSx0OHrETee6GJ4tE2h
+	FBKjsIydMkVaEfCPEoftP327dTLlAiE=
+Date: Thu, 5 Mar 2026 09:39:28 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772674334;
+	t=1772674777;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k2mG8exrUFH6rskHGTsRAo57iMTOJNkDkFHRY8FBRoA=;
-	b=qjicY03oeG8C7IpLHb/tkV/lxKamSOf/ik7NTrXRqimic1lLdqtbTWoSVWnVJBS5s0GXoY
-	tjy81k9g03kfULTYQBgRVX1sPyhMajMmEVSgFKsthpgsKg0lsuRhhJe+RYXsjoPXTqVbXb
-	3gz+jbMSHpJGbD4ZzsN++kpSErSKchc=
+	bh=uDoyp3hxHGk5GmnYLh2TQRpKoqZ2riLhM9IR9bsjBzA=;
+	b=pB85H4EqMTXOpPAWcPhlreTH79rHN+1Z19hKBN9h2ASGqqPTRfakDO/JcdZxM7x2Pcu9Sr
+	NWAqb6awheRe0Uh5miuCp+XZQhmIeBSyDhklB101UEGRLMxXV9TUR7kV5JmHtA8LRS0pUK
+	/I8mKCNpsHoMOSl1gjnxBHa+es3CSto=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cgroups@vger.kernel.org, 
-	cl@gentwo.org, hannes@cmpxchg.org, linux-mm@kvack.org, mhocko@kernel.org, 
-	muchun.song@linux.dev, rientjes@google.com, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, surenb@google.com, venkat88@linux.ibm.com, pfalcato@suse.de
-Subject: Re: [PATCH] mm/slab: change stride type from unsigned short to
- unsigned int
-Message-ID: <yf3ubjg4mummcct6z6djqnsfe45665d7ydwp7sxyd4komfuoiq@wlw5wclv7epn>
-References: <20260303135722.2680521-1-harry.yoo@oracle.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry.yoo@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@linux.com>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ming Lei <ming.lei@redhat.com>
+Subject: Re: [PATCH slab/for-next-fixes] mm/slab: allow sheaf refill if
+ blocking is not allowed
+Message-ID: <le2aabnh7doxt3zo3l2l35urng4kdxeacttv3qyefabzpv32pl@qs3e2yemq7sa>
+References: <20260302095536.34062-2-vbabka@kernel.org>
+ <3at546the4zbun7g7aoeqrirh46iwsw3vj5ncc4fjhz26gfbb2@tsgplt5o2ybu>
+ <3952b84e-9342-4628-9778-92ae155e9727@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303135722.2680521-1-harry.yoo@oracle.com>
+In-Reply-To: <3952b84e-9342-4628-9778-92ae155e9727@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 642FF40006
-X-Stat-Signature: n8czkgwiagzhq87iirnnz8pz7o34ih4a
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 231964000D
+X-Stat-Signature: t5j8g6dxtidxkgi16yxqfas1wtq747tx
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772674339-527536
-X-HE-Meta: U2FsdGVkX18ZHpTnJEwojsZWUcGYsXfj6fnR+jDmZUTPN4IdIb/jWYb9JtlTnHCVKKMVOoc7jgDvGE2bPRfC394U1MH77xrtt6tv1PPMTjhw9tvyb72KHQZbGqzz12abGDTxx+8OTDzOyMNZZ783cjfddbEz3E+Xtgnhg5qX7qMceu4RDSVgY7xpQQeJuFcjG44Qwb/bwpdT8DblVQPcWchTzJkwp2CVHdOXYw3FObiS0QSt/778znDNp6q3EFOTraoiGE/eDSKzNqMfDN75VgYuoBYfdHHPH6urncTCCotFE8IeIHCDplCvMepLLClrO0R/Dg4MNvXYnng4AnYOgEHrkRbqmLfgImRLUAStv0pIXQYxJzkAv+LhJeWEdVM+oZ6dJQF3RH3Drk5R3ByHqnJ7qw7QbgYWB5UKR92PzMz+xU1iMYlFJsxVprArgltCfLW7g/7zVn+PVwd5NN37wOQbDgf82rjND/Devhs7DxcmbC3C0jBQ0CnLaX26xrjxh3d4aillGXrllxT2XVbmjRORt7fFzeXEjKufXlrcOn1Lsvs1iuiO6NBe7XxHEu7fC681z2qhJWKtLWTs9n3my9Befph5cwnPrRYg/e+N1w+CU7VXmnHp4rdNLKGxnJaBLRMAjvGtDm5PyMEycEz0tSSeGWMoqVhdarGhSxhpRd5kwr+XcG2hjjwawpxfcCs2DmrRL/iWQQYNl4aCdg5PDMNk9UqhMohXVkU1TWx+deOgtubG7MF5ZRe0mJWKJEEMFihA93zAG5P3stZKHiZNyqqeRhDZfo6gFsGNJzyeTia8K8dBeiMLN//aYvgI1TSvzrBFyMnKxbgDq8xZhMNVF+FvGJN2KEDi3dggOdfJ/NoK2QrURDYZ5kZy2c6ILFKyezSH4CwlcrySGGX+qwTEkJSIUw0trTr/TE2qLOvKpHC5xBZG1F+OHDXUgOSA+y90K84THwWlDTUC+9q48k0
- zCSaC3fO
- KHuWelGnRq/IxNmfMdRYKtZ1GwXcDh1kIeqxN/L7OFHnmKbsfeOO71AfvBUUOyKxwypOkNr6HD6QnNXFdMn2TTyuk4r/XCAxy4gdHrjkZWh7Q/n+D7BkhmLegW1y2YOwvfQzUo0zrh+0aLeZdRh+UbVSCQsBmLeGVXMjrn/eFF/UeeIAQFYjDzfyt4x8T+EzOroKQa99JmJRbaAfUg0gD5Z49vNz1lgoiACalTFqfCgIcx5GFARHgLzl6c8SGXYFAh9mrg90cWCzBfZFguxlD295wHA==
+X-HE-Tag: 1772674778-64263
+X-HE-Meta: U2FsdGVkX18O0al5v9ddZs1/ivnYP1WD6pnPqj6JB/MyKRnPRo3FAlIniLLbqxzG60JsR/l/Q0G6Czo/YKdlfuMcAKWZ8b1uuNb4X+9x58FVxS4dNC8k50KD3ml6UylCqRsJksNOwIRzkVB9/FMNHFifPLOxquc13GhCtj2gUki0yop+7Z8T4iK5pxm5Cja7dXWX8PdN23apW6E0bA1nfJmQqA/wXagRtVvpRdSBIj9TohKaPgEJFbWSdHpBOWICZkfUPG/iBcjCSbjOqHWgjrUXMBkDH1YjLqrGwvMVzplDNflzdmePdzoSJvAhpLvXQY0wW7/ojlok8W55N3v2E+7M7rbq2p1tKyGCzOuWwfwaB8WJyMpJ0D04a2QS0zrRjNpRtjOSh2FzqDHBUBm4F9/8NxT5uYgz6ON6E3XaRzDFyPtMANTdn72hFovRGne9osXehqvcFtBwriq3PYLxZO+B2T8GijXSJgjnWUxxOSNeDhcwMOuKgZlmQL2E/EQJEjoY2TyQfy/Am1Z3MLBobS1VIjI+iheKoAAOruEFjkqurDVnYg+zUFhJrd/8CrDY+pddA2PHXAM55Dk0l0WosxDiufPVxLzrPmG1OGDp5pH/r6MHFnp4Zh7jhfYMM36qHY7XslMdwwYg/QGQ1gGvXAGI4yRZJ7fo3ZCu0tkfSK8jJjrWexMg1peYi15q8TQXJZrad87F8qRGaU8pu91M/OA7icNOCUfWu1rTKlilZOQ5HuKr1x1hVauCPrNeAydsoAb4iDmmV0F7eV3FgEhuRrbWZtopv5eR9NfbpYFnAzgeeN/WHbOZmWowrgLSd6RCmcTt00bYEscRaNVjypZ8QJXoVhJ8WCCl8bBvrq6gpCz1GYeEmY44SQd+cHxNf2XZzGppvg9i80hhy7JNXsbTQALfBvfdTapXdfwS/KcJD1cdfux+XWTutFKSJ1hlvp8HisnNwg/rmw/PWrsrOW8
+ FSKqZD8W
+ 65PvoaVy1Z2ouOtruVQUz06WJ2oqvR4/ru1QaYAblwMKG6hWGmJoEgvO6QuwJA1XPnKSMoDkjZBCNOwDLGlt6a/oDPYY6bLoIlxBYHkQBpQ/5WCV3Rm60tdndHpd2kNTdlkUIsmyxIIhCTQFwMt5Uv7rkxoponhVDhm80kAH6Do3FpISk0c9xlf3xsje5WfuAkdYOuc5YeljEukA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,127 +91,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 10:57:22PM +0900, Harry Yoo wrote:
-> Commit 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> defined the type of slab->stride as unsigned short, because the author
-> initially planned to store stride within the lower 16 bits of the
-> page_type field, but later stored it in unused bits in the counters
-> field instead.
+On Wed, Mar 04, 2026 at 11:14:51AM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/4/26 8:44 AM, Hao Li wrote:
+> > On Mon, Mar 02, 2026 at 10:55:37AM +0100, Vlastimil Babka (SUSE) wrote:
+> >> @@ -4632,11 +4631,8 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+> >>  	if (!full)
+> >>  		return NULL;
+> >>  
+> >> -	/*
+> >> -	 * we can reach here only when gfpflags_allow_blocking
+> >> -	 * so this must not be an irq
+> >> -	 */
+> >> -	local_lock(&s->cpu_sheaves->lock);
+> >> +	if (!local_trylock(&s->cpu_sheaves->lock))
+> >> +		goto barn_put;
+> > 
+> > A quick question to make sure I understand this correctly.
+> > 
+> > My understanding is that after this patch, there is now a new case where
+> > allocations with __GFP_KSWAPD_RECLAIM set (e.g GFP_ATOMIC) can also reach this
+> > lock-reacquire path.
+> > 
+> > If we were to keep using local_lock here:
+> > 
+> > 1. On non-RT kernels it seems fine, since alloc_from_pcs() already does a
+> >    local_trylock(&s->cpu_sheaves->lock) check.
+> > 
+> > 2. But on PREEMPT_RT, local_lock could potentially schedule away, which may add
+> >    latency. So the idea of using local_trylock here is to fail fast and return
+> >    without incurring that latency - is that the intent behind this change?
 > 
-> However, the idea of having only 2-byte stride turned out to be a
-> serious mistake. On systems with 64k pages, order-1 pages are 128k,
-> which is larger than USHRT_MAX. It triggers a debug warning because
-> s->size is 128k while stride, truncated to 2 bytes, becomes zero:
+> Great question, thanks!
+> 
+> So the main intent is that lockdep would complain if it saw this
+> local_lock() happening in e.g. an irq handler. It doesn't know that it's
+> safe from deadlocks because we already succeeded a trylock before and
+> thus the irq handler didn't interrupt anyone holding the lock.
+> 
+> Trying to teach lockdep such things leads to the complicated initial
+> design of kmalloc_nolock() before it could be simplified by sheaves.
 
-Wow, such a complex issue boiled down to something so straightforward.
-This kind of corner case can be really hard to debug. Thanks!
-
-Reviewed-by: Hao Li <hao.li@linux.dev>
+Oh, yes - I hadn't considered the impact of lockdep. This is a good point!
 
 > 
->   ------------[ cut here ]------------
->   Warning! stride (0) != s->size (131072)
->   WARNING: mm/slub.c:2231 at alloc_slab_obj_exts_early.constprop.0+0x524/0x534, CPU#6: systemd-sysctl/307
->   Modules linked in:
->   CPU: 6 UID: 0 PID: 307 Comm: systemd-sysctl Not tainted 7.0.0-rc1+ #6 PREEMPTLAZY
->   Hardware name: IBM,9009-22A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW950.E0 (VL950_179) hv:phyp pSeries
->   NIP:  c0000000008a9ac0 LR: c0000000008a9abc CTR: 0000000000000000
->   REGS: c0000000141f7390 TRAP: 0700   Not tainted  (7.0.0-rc1+)
->   MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28004400  XER: 00000005
->   CFAR: c000000000279318 IRQMASK: 0
->   GPR00: c0000000008a9abc c0000000141f7630 c00000000252a300 c00000001427b200
->   GPR04: 0000000000000004 0000000000000000 c000000000278fd0 0000000000000000
->   GPR08: fffffffffffe0000 0000000000000000 0000000000000000 0000000022004400
->   GPR12: c000000000f644b0 c000000017ff8f00 0000000000000000 0000000000000000
->   GPR16: 0000000000000000 c0000000141f7aa0 0000000000000000 c0000000141f7a88
->   GPR20: 0000000000000000 0000000000400cc0 ffffffffffffffff c00000001427b180
->   GPR24: 0000000000000004 00000000000c0cc0 c000000004e89a20 c00000005de90011
->   GPR28: 0000000000010010 c00000005df00000 c000000006017f80 c00c000000177a00
->   NIP [c0000000008a9ac0] alloc_slab_obj_exts_early.constprop.0+0x524/0x534
->   LR [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534
->   Call Trace:
->   [c0000000141f7630] [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534 (unreliable)
->   [c0000000141f76c0] [c0000000008aafbc] allocate_slab+0x154/0x94c
->   [c0000000141f7760] [c0000000008b41c0] refill_objects+0x124/0x16c
->   [c0000000141f77c0] [c0000000008b4be0] __pcs_replace_empty_main+0x2b0/0x444
->   [c0000000141f7810] [c0000000008b9600] __kvmalloc_node_noprof+0x840/0x914
->   [c0000000141f7900] [c000000000a3dd40] seq_read_iter+0x60c/0xb00
->   [c0000000141f7a10] [c000000000b36b24] proc_reg_read_iter+0x154/0x1fc
->   [c0000000141f7a50] [c0000000009cee7c] vfs_read+0x39c/0x4e4
->   [c0000000141f7b30] [c0000000009d0214] ksys_read+0x9c/0x180
->   [c0000000141f7b90] [c00000000003a8d0] system_call_exception+0x1e0/0x4b0
->   [c0000000141f7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-> 
-> This leads to slab_obj_ext() returning the first slabobj_ext or all
-> objects and confuses the reference counting of object cgroups [1] and
-> memory (un)charging for memory cgroups [2].
-> 
-> Fortunately, the counters field has 32 unused bits instead of 16
-> on 64-bit CPUs, which is wide enough to hold any value of s->size.
-> Change the type to unsigned int.
-> 
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com [1]
-> Closes: https://lore.kernel.org/all/ddff7c7d-c0c3-4780-808f-9a83268bbf0c@linux.ibm.com [2]
-> Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
-> 
-> Hi Venkat, could you please test this on top of 7.0-rc2 (instead of
-> 7.0-rc1) and see if the bugs [1] [2] are reproduced on your machine?
-> 
-> I reproduced a debug warning on a ppc machine and fixed it.
-> The bugs are expected to be resolved by this fix.
-> 
-> p.s. After more debugging, I saw stride appeared as 0 even on the CPU
-> that wrote it, which likely rules out a memory ordering issue...
-> and I discovered this while decoding ppc assembly suspecting memory
-> corruption or a compiler bug, which came down to:
->   
->     "Hmm... why is the size truncated to 2 bytes?... OH WAIT!"
-> 
->  mm/slab.h | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/slab.h b/mm/slab.h
-> index f6ef862b60ef..e9ab292acd22 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -59,7 +59,7 @@ struct freelist_counters {
->  					 * to save memory. In case ->stride field is not available,
->  					 * such optimizations are disabled.
->  					 */
-> -					unsigned short stride;
-> +					unsigned int stride;
->  #endif
->  				};
->  			};
-> @@ -559,20 +559,20 @@ static inline void put_slab_obj_exts(unsigned long obj_exts)
->  }
->  
->  #ifdef CONFIG_64BIT
-> -static inline void slab_set_stride(struct slab *slab, unsigned short stride)
-> +static inline void slab_set_stride(struct slab *slab, unsigned int stride)
->  {
->  	slab->stride = stride;
->  }
-> -static inline unsigned short slab_get_stride(struct slab *slab)
-> +static inline unsigned int slab_get_stride(struct slab *slab)
->  {
->  	return slab->stride;
->  }
->  #else
-> -static inline void slab_set_stride(struct slab *slab, unsigned short stride)
-> +static inline void slab_set_stride(struct slab *slab, unsigned int stride)
->  {
->  	VM_WARN_ON_ONCE(stride != sizeof(struct slabobj_ext));
->  }
-> -static inline unsigned short slab_get_stride(struct slab *slab)
-> +static inline unsigned int slab_get_stride(struct slab *slab)
->  {
->  	return sizeof(struct slabobj_ext);
->  }
-> -- 
-> 2.43.0
-> 
+> On !RT it makes no difference as the trylock will succeed always. On RT
+> it may not, but indeed they may prefer avoiding the latency as you say.
+
+Yes, make sense, thanks!
+
+-- 
+Thanks,
+Hao
 
