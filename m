@@ -4,112 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157E0F3D319
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 213B3F3D31A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 15:58:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45B816B0005; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
+	id 812A56B0095; Thu,  5 Mar 2026 10:58:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4293B6B0088; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
+	id 77B2B6B0093; Thu,  5 Mar 2026 10:58:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35C3C6B0089; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
+	id 67CCF6B0089; Thu,  5 Mar 2026 10:58:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 247916B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:58:42 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB8641601DB
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:41 +0000 (UTC)
-X-FDA: 84512467242.04.612B522
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0F09D10000D
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:39 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Rp0LBweu;
-	spf=pass (imf14.hostedemail.com: domain of 3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35ECB6B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:58:52 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2F57139322
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:51 +0000 (UTC)
+X-FDA: 84512467662.19.9AFA469
+Received: from relay.hostedemail.com (unirelay04 [10.200.18.67])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 259B3140012
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 15:58:50 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772726320;
+	s=arc-20220608; t=1772726330;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
-	b=DKEhAPS++cDfOOiy7ZWnOR7Hh/nXNWRlH1laLR4lQbTw6DJgPEINNrCnfhvCLB9EFOwR6/
-	zqH2v3w/kLAYzCfGO8KMzwZv2DVe/ZZvg5nvth6H9TV8SLCpcmibh7PjOLJtRSk60aBIc7
-	3MWVC9K9a+btk7jjzGAC6ulW1bWTZYQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772726320; a=rsa-sha256;
-	cv=none;
-	b=YVXf4C7WlZ5oHWAXh7oFEOBzwUPXcD1EcsOA4flz8AcpBwTExkattYiJqDFyf4rW1HgQi0
-	9uJLToRq7h+q0OwF5dU1rsYLcrnZQWSEnvjagpFTWuePbik4WphJN+JipBbIs0sJM2fY9X
-	fHyvY9CWro9ZyBCBjP5+LwJzEhzzTSs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=niym03ltfO1eafWxeMpRz9+rItnvYL5kgljS2262XRk=;
+	b=pAlz4xmuZUZas0tnkNFysO4RI2mbgV4qWIVGzY3+1YTZAvA6ZArZ1/khV+d6MhVu35ELhL
+	xeeK5cTEkejPBOR595ayrx4NES97GSLn+UzlNXBh3Biee/p0obMAiUlVOTrXKmBHGghPE3
+	e89mZe15vqxecZb0pVP3N9NakyK4TGU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Rp0LBweu;
-	spf=pass (imf14.hostedemail.com: domain of 3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3LqipaQgKCHkgXZhjXkYdlldib.Zljifkru-jjhsXZh.lod@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-483a24db6ecso99219975e9.1
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 07:58:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772726318; x=1773331118; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
-        b=Rp0LBweukYWY2wPACYpXBAdJ8F/UQPdzxGo26DuNSkkSH9Ba7EkKIyidEf/yKw3CZ2
-         FjZ6cwxBcKLluFigZVD4WfduyY4x3woDmePQbd9g3EiGA42RANSZ1AwfxPb11aIGkNpA
-         i154pfwEjC+0gozqnjxjR1KncOaLb9QiZqn72FN5Ykj55M76vLmeJYZWGALUMGVxKmHO
-         zziwDbEYXsMaWZoufR3Pfob+WAvJi4QUgJ8oZ/g5+eVf0pQEDruNJuKkDB6hwyG/PsS4
-         SSkryEOok4Qes5v8IAKqudE96Z7aV8dhmcjedJQYQhHJ+9jByaZTT9DpJUcPnsprOgRr
-         /VEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772726318; x=1773331118;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k3V7M4a9Y5QPWB0hu53eAcqPdtXJEAUrJLWxVZTKOBw=;
-        b=Fr2sJo8RbEFdpqVXTHeC8F7jECv4jmu7V9nSp24jrOFKHykSOaWiD5tCLG6Ch3xs4y
-         EOMMoS1cdLU5aBQ6kYK/ho2b74c1vGh1XABNcBhwiSZiKY8yjazAl8so37pNVtg8i1D8
-         ts9ojQFOIoeu+14gVMahdG4BVNd9i072AIDnjhBa8X3JV+J/o3Bcnh7ru/T7+IYFqr9W
-         8zsz/E4oIlMIqtGr4Gt2TROkxQeVF1OOX9mUcz4kictCaA+9C/yzf8lOTxay7CoXsTJG
-         sCCWuL1/6iQzQcO3LvgCygFm0LIpZiuniQ8LnpeKulT0OSkkd0nyhTSHAWn8xnovONDQ
-         Yktw==
-X-Gm-Message-State: AOJu0Yyka8HpYtMWt4SNHKjDI6EsvAbo3RugXdGeHo8iRKIeGjiAa0D7
-	h5f4frnZhUWRSBEVHtBQFp/4YSrRTQ9TWoj9b2eKd8UF7NTwQXgGN3L7TKJqESwarZx4CxrMtYg
-	aRJYt7074BcJcmQ==
-X-Received: from wmbg9.prod.google.com ([2002:a05:600c:a409:b0:483:7827:ade4])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:34c6:b0:483:71f7:2782 with SMTP id 5b1f17b1804b1-48519855f27mr113892325e9.12.1772726318086;
- Thu, 05 Mar 2026 07:58:38 -0800 (PST)
-Date: Thu, 05 Mar 2026 15:58:37 +0000
-In-Reply-To: <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
-Mime-Version: 1.0
-References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com> <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
-X-Mailer: aerc 0.21.0
-Message-ID: <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
-Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
-From: Brendan Jackman <jackmanb@google.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Brendan Jackman <jackmanb@google.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <x86@kernel.org>, 
-	<rppt@kernel.org>, Sumit Garg <sumit.garg@oss.qualcomm.com>, <derkling@google.com>, 
-	<reijiw@google.com>, Will Deacon <will@kernel.org>, <rientjes@google.com>, 
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, <patrick.roy@linux.dev>, 
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>, Andy Lutomirski <luto@kernel.org>, 
-	David Kaplan <david.kaplan@amd.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0F09D10000D
-X-Stat-Signature: bfhom61nap4pynp4mijbd1ppt8ttynhw
+	imf09.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772726330; a=rsa-sha256;
+	cv=none;
+	b=tdWifopaL4cfc1kqR2zQgklzLrEdWO+fDkS+OqP8LnZuZMeJUZT49X8jg23tKdWKjXh3Iq
+	uJHjAZrck6jw2M8pcfoIpdi58Uq7hsvOtF/9XQ6hjNwXqUX81K0lGkjnlSxkTJ8NuDRhkl
+	WpShHVC3YxYHGzyRgaAycHV/wCVQWdw=
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FEE21A01EE;
+	Thu,  5 Mar 2026 15:58:48 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 80C301A;
+	Thu,  5 Mar 2026 15:58:45 +0000 (UTC)
+Date: Thu, 5 Mar 2026 10:59:24 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
+ Lameter <cl@gentwo.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
+ <will@kernel.org>, Boqun Feng <boqun@kernel.org>, Waiman Long
+ <longman@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH RFC 3/3] locking: Wire up contended_release tracepoint
+Message-ID: <20260305105924.7069eb23@gandalf.local.home>
+In-Reply-To: <8298e098d3418cb446ef396f119edac58a3414e9.1772642407.git.d@ilvokhin.com>
+References: <cover.1772642407.git.d@ilvokhin.com>
+	<8298e098d3418cb446ef396f119edac58a3414e9.1772642407.git.d@ilvokhin.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18MWtLS1l3pUKaex0nFw2Vfl7EBIcRPyp4=
+X-HE-Meta: U2FsdGVkX1/IZPjkWRcCvIJ192zG9pkiKp9riLkJeEEB12m4PIrK+XsSVGFmyjEBtSKnYXGbmq4fmXU4d9HZMRfHJo+LIXYoI5bQpOxWtm5mYldXLedVkCnRMeKd2JKSibFruN/kJ11iQ0ereZziADPsiwEip059oSTmSJ2lIaiQiYQK6Zmq3gu23WJeiLOjE+ItRBr5udxCP7OYs7U9RIqDLuHIRwXi5niNS9dY8GbU41//fmJnT07YZBdy2hqEPhpIP9sDaPeSsUU9Ceuxkv5oxQ5BU4VS4Ml30I7B4YiOJD2HrZNdkgH7P7FQhLya7SPlJpGpELX/Kmp79ro1/l6DZwheeJOqGeuFzBG+i+cRqSQUA2V9IYK9m1k2MlzR
+X-Rspamd-Queue-Id: 259B3140012
+X-Stat-Signature: hfiedgw3dg1eqbike9zpzdm3kuksfs8i
+X-HE-Tag-Orig: 1772726325-806204
 X-Rspam-User: 
-X-HE-Tag: 1772726319-747141
-X-HE-Meta: U2FsdGVkX1/HK/ZAlU9sEpKLzleqnMLMLNXLAaHZRqst3Y7Vb9gSMwu+L+GvO+E+BOdK4RABPqV5EIOCsUCzlgApLRS/5qoFY304YpgzdBsbV72Cjhv2xSkwxs/w0A0elvN4Ty2Ll8vTzrWxejM76YWFIWooFJ1qlGIErMyfxFn+rWAKi3zW7mz8OFiBjdDp242iMClSFHC7cfRPAcxQfl11rzDYaV+NOUkfHJ9/aXRUBlDIneqKHKKcjWcr5qNrhmbvFLjbgrrlCGKEKgNcANGHCZLBIwjb5UweBse/ZAKJm6iTTenm9AUXhFJQmjTiaZ3HpPpzfMDNwd3AXJPVi+mb03nqwyvypnKiE3temi13PJ82/awneDBZ7+Fqi1IXdXG5sUPeeckOSpF+K/3yIDKbmp+w0Lnp2L4nYCS39MYUhmIafnR8Vv3hEx9pwpS9XWMd7W+YLZ9WB8zMG6ie6Ie3W3oYkrGMLKX5sDgKjBCsHUP0rUPzF5GtqWw4YnVEYpsLQujw0pT2yqg5jEIvKT8I6FU4h7z1P6naU8/QHBKPPmbkrEr2rgCV1b8WqobZvV7aC7j23TPCx7Z2Mu/slMKSK8G7J/JQ4iNCjZcRe80nXnSjNEaSbFZqjyBNbbN4dtyNOaWImknyoN7JKpuHevjKPQYUoCi0ul38U/yR7W4/W5qNKOQnLWSLlK5TYPSy2/tc5xyyInTbm3Qw2HH5KIZFXGbY3gShy0s/nfZpFlpTL83h7XOJL0+pGUq13AJyyctIZ8arl5VAdqxuDi5zs7GkoSqjQIJxYJ/XTuZzfuuL4GQKJkB2hnf/md1NjXj8tKuncmLf0+RHU6ewER5Y4RA0ci2xbfBCyEd7/qItGU2sXkUQE6WEt1nZNUPi1qRkoRJVfkW3zhGAuL/WhEmF/0jzIq0/pm0o9wuUVK2hRvR2gpJEm1ez700fvvftjNkVEPAgGUmw13G+2GhC+3x
- faEw+wFJ
- dDIA6ex2zcbcKfzcKYWSYFIpmXt9eghI2GRiO9EneI+FtXuUHzO1R+1BHZXnGpw8BeoDnGpKmay2xvTzh3/4fRYpH43slh4MTZxXRyiCK0FzjZ67bqQ0B1oQQtx/NvvJKsnl7oWR7KWfhKucLiQ6M9snhQ9gWNlhH1Ku/y7lHS927JFFqx/+mng7I3eG3XBFiOyk8Bj67tkLEs+zM//loK4FnSyrvwpRcwQN5ZUItXmb0++kTbK1LRpyZxaAuOXDa2Cr16PKFsCuG2xR7NNsvQjbsnrogckGIg7J+GpUEEr2xZ1zKDcFhfsAbomJ6JVxMLXVcZ08cQ3cyNI6rNlk95YW1r0HVNqBZMqRMg+fnWMTxzihX6uognYcc3CQTAT7DJxz6ejIGKmdI4At+afZf7O1uBdajjTqNegZL3iIrH8x3avHwzgFjIHMlHoXItNqa0Ixgwa6hH2vEYDJmrAiMFQPgI8GMbnwaJ9j1OtCsUU12Hxj5z0vgTKItgY0/GIWudnfJg/VJM3Mn9xksmvevtKX7w3lUO9pp+/g0CUImGMCHixDZ+rLdbJ5vCUR3tlUb9OLCVAi0J2jHzHbR0VcTzZmm96v5OqS/un1q2khtHcQWJHLNu198glFyRw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772726330-440604
+X-HE-Meta: U2FsdGVkX1+1TrVe7D+CIfwcByVcC5evFCS1XyHHDAti1NuKSNcie2yF/xP/JnasZO3pRR8bPrTO1uzn3+G9YqV/3AQVZJXlqtNosSCxf+3NaQMTJAgHuqK7RU0FVKjPEiiUQCDLVIAaeGzYITmhGK+7tlsDTCRTDLUNrQenlvchjKNfA2rMwQm6aqRaahOds6KtlUTVzsilk/z6ImhEMeP+9wiKENHVR8hQAozloaB1PO11UCxIZQo9rFJEZelcoH3HZCHpPcfS+KTeGIjcDwUeGLr4zwk65H4fYArYR2vPy4xw4X+pqlhbMSzLZ6EPOFw0I4ju0/L4JvLRPpuZ/EflT3mr8NZJdqm/44Ny3JWhBQ6tZ+XK3C3hL48ViPjr3ZJjB9EiBxuIskoIsTFMTEwToG2YsF8gQpb18ZVS5qvh5Uu97Ot8CaZbYO1hy/X6Ff9KWPagBlvu7W5OA2sQFgnMfnfCRiGLby1UqJx272YXGh8rmv7e+Dgyc8zPmhxQTZn6va+rxB4D+cAswpZxUXY6LJwPUafC8xAMO7IoiAy7pUuJ89fzEsMDh3XbA1c558zPSIbuafYwDuaCKOcFKax4MuRBh56IUcx855MpICh2559mTa1mcOIjbh9rsEB0IWkwl81rBOJt3pRKF7JEbtAVGSuyCj5pxKCw9ehtRYqShL/8ZjnNnswHT8M8OjMEeBbKtOg5V2jmSNJHmi5rNUdNoF8eNn2EBMZv2px8WflriZuGcX7G27vukqkCRnTBRuIXYBPj/qJrXjs/CPfsbdDIYH4VS3Y0Bq/J706oiHoxTMZRE5rRD7M4dLMaG9LDe3DCdWDVtWTBL2pRtVdZ/oUdUG2NXNsf2MyGpSgYS0frpF7w5baLQcXq+REd0n7/v9HfJYm8NT/tfCJike0UWnaYuBlxASTL1TylVzwqdxAYiyn3sYhpqCPALdeNM9VimqzYjJ9ZmS1nMpC7XNT
+ cjgGGIIv
+ ZxRB638RfJ9T7kT6EoEIusMNEOB8SpdG1af69O6cJngPgFlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,140 +88,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Mar 5, 2026 at 2:51 PM UTC, Kevin Brodsky wrote:
-> On 25/02/2026 17:34, Brendan Jackman wrote:
->> .:::: Design: Introducing "freetypes"
->>
->> The biggest challenge for efficiently getting stuff out of the direct
->> map is TLB flushing. Pushing this problem into the page allocator turns
->> out to enable amortising that flush cost into almost nothing. The core
->> idea is to have pools of already-unmapped pages. We'd like those pages
->> to be physically contiguous so they don't unduly fragment the pagetables
->> around them, and we'd like to be able to efficiently look up these
->> already-unmapped pages during allocation. The page allocator already has
->> deeply-ingrained functionality for physically grouping pages by a
->> certain attribute, and then indexing free pages by that attribute, this
->> mechanism is: migratetypes.
->>
->> So basically, this series extends the concepts of migratetypes in the
->> allocator so that as well as just representing mobility, they can
->> represent other properties of the page too. (Actually, migratetypes are
->> already sort of overloaded, but the main extension is to be able to
->> represent _orthogonal_ properties). In order to avoid further
->> overloading the concept of a migratetype, this extension is done by
->> adding a new concept on top of migratetype: the _freetype_. A freetype
->> is basically just a migratetype plus some flags, and it replaces
->> migratetypes wherever the latter is currently used as to index free
->> pages.
->>
->> The first freetype flag is then added, which marks the pages it indexes
->> as being absent from the direct map. This is then used to implement the
->> new __GFP_UNMAPPED flag, which allocates pages from pageblocks that have
->> the new flag, or unmaps pages if no existing ones are already available.
->
-> This approach seems very interesting to me, and I wonder if it could be
-> applied to another use-case.
->
-> I am working on a security feature to protect page table pages (PTPs)
-> using pkeys [1]. This relies on all PTPs being mapped with a specific
-> pkey (in the direct map). That requires changing a mapping attribute
-> rather than making it invalid, but AFAICT this is essentially the same
-> problem as the one you're trying to solve.
+On Wed,  4 Mar 2026 16:56:17 +0000
+Dmitry Ilvokhin <d@ilvokhin.com> wrote:
 
-Yeah, I think so:
+> @@ -204,6 +206,8 @@ static inline void rwbase_write_unlock(struct rwbase_rt *rwb)
+>  	unsigned long flags;
+>  
+>  	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+> +	if (rt_mutex_has_waiters(rtm))
+> +		trace_contended_release(rwb);
 
-1. The fragmentation issues seem exactly the same.
+Hmm, if statements should never be used just for tracepoints without a
+static branch. The above should be:
 
-2. The TLB flushing issues are probably also basically the same, I
-assume you need to flush the TLB when you convert a page to use for
-pagetables, and without allocator integration that can happen pretty
-often and in hot paths. Correct?
+	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
+		trace_contended_release(rwb);
 
-> There are however extra challenges with mapping PTPs with special
-> attributes. The main one, which you mention in patch 17, is that
-> splitting the direct map may require allocating PTPs, which may lead to
-> recursion.
->
-> [1] introduces a dedicated page table allocator on top of the buddy
-> allocator, which attempts to cache PMD-sized blocks if possible. It
-> ensures that no recursion occurs by using a special flag when allocating
-> PTPs while splitting the direct map, and keeping a reserve of pages
-> specifically for that situation (patch 15 and 24). 
+The above "trace_contened_release_enabled()" is a static_branch where it
+turns the if statement into a nop when the tracepoint is not enabled, and a
+jmp when it is.
 
-Right, and actually just today someone pointed out mm/execmem.c to me, I
-think execmem_cache_populate() is basically doing the same thing
-(although it's also creating a separate virtual mapping).
 
-> There is also special
-> handling for early page tables (essentially keeping track of them and
-> setting their pkey once we can split the direct map).
->
-> Do you think that this freetype infrastructure could be used for that
-> purpose, instead of introducing a layer on top of the buddy allocator? 
+>  	__rwbase_write_unlock(rwb, WRITER_BIAS, flags);
+>  }
+>  
+> @@ -213,6 +217,8 @@ static inline void rwbase_write_downgrade(struct rwbase_rt *rwb)
+>  	unsigned long flags;
+>  
+>  	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
+> +	if (rt_mutex_has_waiters(rtm))
+> +		trace_contended_release(rwb);
 
-Yes!!! 100% definitely, my code certainly solves all your problems...
+Same here.
 
-> I
-> expect that much of the special handling for allocating PTPs can be kept
-> separate. Ensuring that protected pages are always available to split
-> the direct map may be difficult though... This is deeply embedded in the
-> allocator I proposed.
+-- Steve
 
-...Oh, hm, well, um, good point. Thinking aloud a bit...
+>  	/* Release it and account current as reader */
+>  	__rwbase_write_unlock(rwb, WRITER_BIAS - 1, flags);
+>  }
+> diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+> index 24df4d98f7d2..4e61dc0bb045 100644
+> --- a/kernel/locking/rwsem.c
+> +++ b/kernel/locking/rwsem.c
+> @@ -1360,6 +1360,7 @@ static inline void __up_read(struct rw_semaphore *sem)
+>  	if (unlikely((tmp & (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==
+>  		      RWSEM_FLAG_WAITERS)) {
+>  		clear_nonspinnable(sem);
+> +		trace_contended_release(sem);
+>  		rwsem_wake(sem);
+>  	}
+>  	preempt_enable();
+> @@ -1383,8 +1384,10 @@ static inline void __up_write(struct rw_semaphore *sem)
+>  	preempt_disable();
+>  	rwsem_clear_owner(sem);
+>  	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
+> -	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
+> +	if (unlikely(tmp & RWSEM_FLAG_WAITERS)) {
+> +		trace_contended_release(sem);
+>  		rwsem_wake(sem);
+> +	}
+>  	preempt_enable();
+>  }
+>  
+> @@ -1407,8 +1410,10 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+>  	tmp = atomic_long_fetch_add_release(
+>  		-RWSEM_WRITER_LOCKED+RWSEM_READER_BIAS, &sem->count);
+>  	rwsem_set_reader_owned(sem);
+> -	if (tmp & RWSEM_FLAG_WAITERS)
+> +	if (tmp & RWSEM_FLAG_WAITERS) {
+> +		trace_contended_release(sem);
+>  		rwsem_downgrade_wake(sem);
+> +	}
+>  	preempt_enable();
+>  }
+>  
+> diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+> index 3ef032e22f7e..3cef5ba88f7e 100644
+> --- a/kernel/locking/semaphore.c
+> +++ b/kernel/locking/semaphore.c
+> @@ -231,8 +231,10 @@ void __sched up(struct semaphore *sem)
+>  	else
+>  		__up(sem, &wake_q);
+>  	raw_spin_unlock_irqrestore(&sem->lock, flags);
+> -	if (!wake_q_empty(&wake_q))
+> +	if (!wake_q_empty(&wake_q)) {
+> +		trace_contended_release(sem);
+>  		wake_up_q(&wake_q);
+> +	}
+>  }
+>  EXPORT_SYMBOL(up);
+>  
 
-The way this series dodges the question is (copying from the code
-comments in patch 17 for convenient reading):
-
-1) - The direct map starts out fully mapped at boot. (This is not really
- *   an assumption" as its in direct control of page_alloc.c).
- *
-2) - Once pages in the direct map are broken down, they are not
- *   re-aggregated into larger pages again.
- *
-3) - Pagetables are never allocated with __GFP_UNMAPPED.
- *
- * Under these assumptions, a pagetable might need to be allocated while
- * _unmapping_ stuff from the direct map during a __GFP_UNMAPPED
- * allocation. But, the allocation of that pagetable never requires
- * allocating a further pagetable.
-
-In other words, we might need to allocate while we allocate (which is
-fine because I have to do locking shenanigans anyway due to x86 TLB
-shootdown requirements), but there's no further recursion after that.
-
-Can we come up with an analogue for protected PTPs? Point 3) is
-the inflexible one, and we obviously can't say "PTPs are never allocated
-as PTPs". But if we invert it and _also_ invert point 1) I think we get
-something that works in principle:
-
-1) The direct map starts out _fully protected_ (i.e. we treat everything
-   as if it's a pagetable at first).
-
-2) We assume the direct map doesn't get reaggregated once we've broken
-   things down to serve PTP allocations
-
-3) PTPs are always PTPs...
-
-But... this is a bit silly, since what it means is we'll then go through
-~all the pagetblocks in the system (except the ones that _are_ actually
-used for PTPs) and flip their pkey, breaking down the physmap to
-pageblock granularity as we go. And... if we're gonna do that, we might
-as well just say the physmap has to be at pageblock granularity to begin
-with.
-
-(Could we do that? Maybe - Mike Rapoport has previously argued that
-physmap fragmentation is not a very big deal, so I guess the question
-is whether we're ready to really lean into that analysis, it would be
-quite painful if it turned out to be wrong).
-
-Another potential "dodge": Is it really important that the PTPs are
-always protected from the very moment they are created?
-Coz this feature still seems pretty useful even if there's an awkward
-fallback case where, under specific memory pressure patterns, we
-temporarily use unprotected pagetables to set up protected pagetables.
-That still makes exploiting a pagetable overwrite an order of magnitude
-harder than before, right? Similar to how there's probably ways to
-exploit bugs if you can get them to race with the intended pagetable
-update paths that flip the pkey register, or if you can get a ROP chain
-to flip that register for you or whatever.
 
