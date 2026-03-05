@@ -4,137 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B3DDEEF309
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 06:09:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA3BBEEF30B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 06:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09BBF6B0088; Thu,  5 Mar 2026 01:09:53 -0500 (EST)
+	id 011196B0088; Thu,  5 Mar 2026 01:27:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0494A6B0089; Thu,  5 Mar 2026 01:09:52 -0500 (EST)
+	id F01336B0089; Thu,  5 Mar 2026 01:27:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6D0D6B008A; Thu,  5 Mar 2026 01:09:52 -0500 (EST)
+	id DD6716B008A; Thu,  5 Mar 2026 01:27:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D24F26B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:09:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1AE491407F6
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:09:52 +0000 (UTC)
-X-FDA: 84510983424.23.2F35959
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A02B24000B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:09:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SkPu1FTQ;
-	spf=pass (imf11.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772690989;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CC1446B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 01:27:42 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7939C1A088A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:27:42 +0000 (UTC)
+X-FDA: 84511028364.19.CB6CB90
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6CDED40005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:27:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D1sV4JxI;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772692060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s6BMsx2GZfy+hVt/YEKaAJkyxWGIjBdZYaBNk1wKCu8=;
-	b=EKKnEvpAm8v0cV0av6Ein/XWCGN+9hu4/QbgqytjKaoyXld6w1MZWho/xvSm4ZuE3FvP3Q
-	hYCpaOm9lcvfeOL+tTTyoRmtReyLZpRFQXVschgnwVsQyZVWQExBUBSvZMmC9a9ZJpa3xZ
-	hzcg5syz+3WEyLR+wuyzsizxzrLYDPo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772690989; a=rsa-sha256;
-	cv=none;
-	b=ALCa97DH+TFPJiBytTnUyBbketAFhpUgTWowZQVqCPysPcipnOdpAG1ghgQbwoUVz0RU8Z
-	Im2IGjnIfkd2z3broPE4J1QWkktOgHdLockLUEExZOM3oDSUIoj7gTgzehY+h7aebkWQm1
-	vLJQVDwHflSWFvH9ENdBB1u3cC/vWbI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SkPu1FTQ;
-	spf=pass (imf11.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772690988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s6BMsx2GZfy+hVt/YEKaAJkyxWGIjBdZYaBNk1wKCu8=;
-	b=SkPu1FTQ/J9SSIAALFJ9X1lR5kQvdQcjvmfB9tSXzKOtDQ9fXUxvTIp/2uOcq6cgxctHkz
-	7YUmtAFY3xN2DYsqzl9nBSw5SKg/l4VgOLJii5WNBEnDlVcbEyG2nWr4HxPM9EPN2XrHaB
-	njI91O36n5SqRG9LercplzSamYEs944=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-277-nSXeJDpGNn6-lJNxpU293A-1; Thu, 05 Mar 2026 01:09:45 -0500
-X-MC-Unique: nSXeJDpGNn6-lJNxpU293A-1
-X-Mimecast-MFC-AGG-ID: nSXeJDpGNn6-lJNxpU293A_1772690984
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5a13072689fso181867e87.0
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 22:09:45 -0800 (PST)
+	bh=/G27dhY0y/DuDhe9wyzLhfNIJSU11XcFVQz1aHTUogw=;
+	b=XMqTURZlrFaZSM+iqx4EyDKw4cLRHfD/hEb9dhrl6ss98zIvaSN405aJ71D2Icq1SJa6VK
+	b6hBkMiwZeNa3b0lEStAt0sXn4wqTzsM6v9tZePRu1zX88xzsT9eTG2Hn2RI9gzSjscTSf
+	qMP/yfTUnHFS4vPjgpjfANJBEkk9H/0=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D1sV4JxI;
+	spf=pass (imf12.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772692060; a=rsa-sha256;
+	cv=pass;
+	b=JQ1EADxZrunzWVDyWID6ejaQ4pR59HgLJOARN1ftQb6Bo+7mhhFXzIrr3XEnOEL+/i1Qzp
+	Cy9t0azm2bIqfICkDPN3pSV1TuEjHKJNtSxVCE+NpMhKU1D3yY+JzGUDjfXY5Nyow4LIDF
+	mFTfBv/ySontR+CUw7yTChftm3tYL8Y=
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899a5db525cso70518476d6.3
+        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 22:27:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772692059; cv=none;
+        d=google.com; s=arc-20240605;
+        b=E6iIF2JdFxc1I6jbNr8h7JLF2bJeYa0e4ahKrBLMffJYPNmjJYMmF5FpzXSRqeLZsH
+         LrD3LQMXKTMJIHfoTv+4i6askxdo9P3nBlVpXFAw1B75jfmLAyKJYTCPEbEX01rEhIcv
+         0z/Q6lQnZzYB1xyTF/EcU5O78gDRT3mkERMNNNMHmaFeknmrp9H2MEx/oIkAVHxgTt0m
+         6FoBXRauEkiKECapHrLyd8z6fbUL41Mhgm4pk1wPRgqKfurffyPBuC+RsOZXQbbkkh/6
+         ktIkVtg6YQGN9TTgeUuAW9JJ2h2R0f1msLgWuAYgVIVzR8w84bbeYX9cIbUVDKZCXa9D
+         wjMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/G27dhY0y/DuDhe9wyzLhfNIJSU11XcFVQz1aHTUogw=;
+        fh=GKv9Kbvle7BU43y1VPronMZwHpcbzSUXgbiEF7SsTe0=;
+        b=lUEe74q6fB5GhZ4zOWVfc+C6Fe9XGzyfMe9SQPc2fJJAOD3VBfFt2PkwB1VIusr5RB
+         vhktvCx2NXzABENSdB/uXTrkzyP0WI+e4pqE1zZV+IXPYzovtlvJg/p9IE9dRmB0Ml2R
+         ACjmKplFDPuqWTaOy/F10fp4eQ5VeHYvVx/P3EehRrvhfNvzJacupcrH0Avp94RJxAiZ
+         +ncHZdbaa+4u0fc22oM0Jd3+cRCvvbh6CSi8y9tJ1VzOZC4LD7oGsn7+oBaLOgZz+2RZ
+         EhKiARhsJpBiBgBxkQVsD0iQVlu0/CVn/aa/NCb2NcWQB+2Mc1hHFZ4O723Miu5TLBcQ
+         5nyw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772692059; x=1773296859; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/G27dhY0y/DuDhe9wyzLhfNIJSU11XcFVQz1aHTUogw=;
+        b=D1sV4JxIOcKu3vawOpyU3rvN3lHl6xSwEFUM/vl4S/QUgUU1OttFJEr16h5yUluXqY
+         a5ELwsBJdGKfy8ej3L/KzVu3HHfhY5ljuZjeilvbJQ4wQ83FGZCECcSNNUNkrN6tODuq
+         lsInoQyPUmbT3o79AfOlHtK+Yaj6mCyrd7B6KM+/DhIy7VyN7fMbOP7l8u9x0f0rYZj+
+         pswMSIyV4W4ewdOMRSOLr3mbI1j50cdNxNmLChFfgHF48s6qIcYKG3NUXlnc+KaeeK5r
+         SyX3LmK28FJNUklMsXlX+M4KZ+5lhp/+jB5PDRccXdRWFXWZ86uxIgR8ugM+7dnwo+Ua
+         DwgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772690984; x=1773295784;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s6BMsx2GZfy+hVt/YEKaAJkyxWGIjBdZYaBNk1wKCu8=;
-        b=AWugtFR43n1XYHMX8m7iLJtSJWHiFiZpP7pZsSGXj9VZrEm0Z8d1D4dJUT+CGgDzYS
-         dBH7XbsmQqodLkp0vQ22+luF8ugLp/X/7bXeb23GU4YMSfhggoKlUYvad37b1Bn6qILu
-         D3gP/BZIZ+ffuLVDDgOXND95xbjau58rrBRv/sK+u6SFahQEKo6tegYkTdbDRqhYcvMV
-         G0KPPHxBqtoiRcVBPAsvfpJqg5VeojGP+HJTXTiW6Qfs6krN298InNlW40SIhs4p3xK/
-         Vvg9q8uXVT3Fwef3Jvh5OE0bF0tAYg+IDmtYSINDlJEmocwr403cRhnHWJV3ffGFdjS1
-         EamQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURAesGCYy5sbm5YbIA7jvY8XNaen6+Gyt0hUUo0jld5C3Eohlqm4ocScP+QJzYehXpflZbo2S6Yg==@kvack.org
-X-Gm-Message-State: AOJu0Ywfnkxg6TS4ZxUw6gY6atTQwGFuQMvw5KjEl6oTO8KhcZNWnNlD
-	9FLIz5meOa1EHEOG0xM3un06+e6mgmU5WirO/je5fBRGsRVbM+PQItDdACgmfELLExgeByOcz8J
-	fpr9+v8etn56S/M4+E1kYk3BZtFg2MCPEwdOrB2WGLISjn6RouEQ=
-X-Gm-Gg: ATEYQzxAck5sT7ERylqLf/3Q1Hu3eNZ8FBXR5kaie1UxDfxbe3d+UGGgb16rhes4eQW
-	Jm2QyXmbgqwwl8f7WRGjXOPvWu814QlbXQhMdLdyLuHnESOt2IgNLxnM/KtUo9A5ojPMo9WREkU
-	pbdib8Gh7mu428cy57VT26Nk1ARVdZQlxWyHsExjkTphxTL+R0fSy/H2hBTJQgMvSx4goWriSbH
-	nUjOIrJ7F8EjvfcVZ08Eg6JlnvHfZ0xd1qPysRuTwuhGJb8S739PUauLQRFDxsxhpCkw6rP7DBM
-	/EuqlQCaZ5R99jr1af36jbe9NFLdYjNDN+NFDR4s8/rJgpW4jtUHalea6XZHsFQya6PMiTskN79
-	Xds5V29LkKb+c9AuOjWTiyUZcId3m9eL3VDiKhGziBN1FIfk=
-X-Received: by 2002:a05:6512:2286:b0:59f:7318:c5e8 with SMTP id 2adb3069b0e04-5a12c2b21b4mr395508e87.39.1772690983873;
-        Wed, 04 Mar 2026 22:09:43 -0800 (PST)
-X-Received: by 2002:a05:6512:2286:b0:59f:7318:c5e8 with SMTP id 2adb3069b0e04-5a12c2b21b4mr395493e87.39.1772690983425;
-        Wed, 04 Mar 2026 22:09:43 -0800 (PST)
-Received: from [192.168.1.86] (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a1235822d0sm1762719e87.23.2026.03.04.22.09.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 22:09:42 -0800 (PST)
-Message-ID: <942f2df4-6fb5-415f-b7d4-87a83315890b@redhat.com>
-Date: Thu, 5 Mar 2026 08:09:41 +0200
+        d=1e100.net; s=20230601; t=1772692059; x=1773296859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/G27dhY0y/DuDhe9wyzLhfNIJSU11XcFVQz1aHTUogw=;
+        b=PUgoc24A4px7cZ3ksrI65AHZEWFN5pVw8dGToKUDZN2O5Kc6aqSbcWJJu+47EDYt3+
+         dw/Gscw/OW2JDTnPvjTeNwWBhIxfV5S8Di1zs08VfJQuG6TW3H62dXOXO4Zyt2aGBC7Y
+         un0uVmKwDlkDbI7hbDYzSW4CKMutDbD0tWkId01zAXEhk0a87gIC6dAS0WyOVeXzO3qM
+         oCROo3b8XoE5eRgeynmEYr8q09H0Z2ppI/aK73CES+bAbZTrwgMLReuyBh8UnlEH+Tys
+         RQ4ssOxzbQhmv6Wjrk9yaCTa/Xcp6iScpElCTA1bKpPM6068zMU8dYRtGvaSiJyfOmdp
+         PPsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFgZwFs+BEZ1CA0dTaWYoPAidqnpRwdy2QAEfe166tDmXiUvx95AdoAhjjCHhMpURyS4C57zf5IA==@kvack.org
+X-Gm-Message-State: AOJu0YzXkY6eizq5To1u9BFyMhxynXDMhnALI/FqnU7gWL2wL8rqnTGS
+	HgL79X9XVTvSGK7N++h1VSymHR/IIpoNMAygN8LraUFe+dJXb0K8UkFGw8xOsHjrXZsZvrJQ+4t
+	6wWlf3flJWNivYbIAWF3tjdmlJSJS+kk=
+X-Gm-Gg: ATEYQzymO91cg1LWnuF5Q1xleQeS50OKuLgjv/C9MIY4XCgKWwNWVJcemkvjHq4gcyM
+	55guBKaFGudPOMLSB0aTlUlQd7JFLrEM3T0no9Lf+zqcQEB+8D9WIdWOsAeDrtzjL+NgFLZm7aW
+	diKwGxTh0qb1Se726AumvsXsrWkie6go8NrvcDB6hHvaHgdJ+CElB5J9K7xVHrpJCQI8GRsWGec
+	ezQm1jLKfnRwH1MpX5DX+b57HE7BvjmEsfwvUHi8kwPZtjqaW4Y5GIG9rPPoHUNeyywUbDiWUJl
+	+TAU/Q==
+X-Received: by 2002:a05:6214:4109:b0:896:fa50:4c0c with SMTP id
+ 6a1803df08f44-89a19d08679mr60256596d6.53.1772692059102; Wed, 04 Mar 2026
+ 22:27:39 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: fix folio refcount leak on
- folio_split_unmapped failure
-To: Usama Arif <usama.arif@linux.dev>, Balbir Singh <balbirs@nvidia.com>,
- Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kas@kernel.org>,
- matthew.brost@intel.com, npache@redhat.com, david@kernel.org
-Cc: Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, riel@surriel.com, shakeel.butt@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260304120132.3973445-1-usamaarif642@gmail.com>
- <E4B81DFE-5D45-40F2-9C90-EF386D89B06F@nvidia.com>
- <fbae2102-3e62-4df6-96bd-e8600ef2f497@nvidia.com>
- <FA698C89-7287-4615-BDC7-5D1F6CFB770A@nvidia.com>
- <5e59c077-9f06-4e45-86e1-ca696e6105b4@nvidia.com>
- <622eb392-8c04-473d-b42a-ecdc489799c4@linux.dev>
-From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
-In-Reply-To: <622eb392-8c04-473d-b42a-ecdc489799c4@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: pxCqFqdOHzXx_QPAZPMRPko1F-dfkmB_9654kBJIK4s_1772690984
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <aaBsrrmV25FTIkVX@casper.infradead.org> <20260227043139.95115-1-21cnbao@gmail.com>
+ <aaXM7xNSJaJBsety@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aaXM7xNSJaJBsety@gourry-fedora-PF4VCD3F>
+From: Barry Song <21cnbao@gmail.com>
+Date: Thu, 5 Mar 2026 14:27:27 +0800
+X-Gm-Features: AaiRm53EHpExhPNp03SSjGivtO5ue6KD4LTlE8FVzEhkm5zC3byqYlPWUN6uhoY
+Message-ID: <CAGsJ_4xsN2Kfa_f_WaZ-h9Ex7dHk6okyZxnW6oEcXW=kLXwLXw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF] Improving MGLRU
+To: Gregory Price <gourry@gourry.net>
+Cc: willy@infradead.org, axelrasmussen@google.com, linux-mm@kvack.org, 
+	lsf-pc@lists.linux-foundation.org, ryncsn@gmail.com, weixugc@google.com, 
+	yuanchu@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6CDED40005
+X-Stat-Signature: znta74hjsg6ez8o9kimr7p9smgypo3ao
 X-Rspam-User: 
-X-Stat-Signature: goxkkpibz3qq3cui6mtmp41m33zny9ru
-X-Rspamd-Queue-Id: A02B24000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772690989-884902
-X-HE-Meta: U2FsdGVkX19YJjFrIirY/9NwxbWS1rMq5jnbTL4GSriMxN6rVSIU+yHaFSQEUPZ2A4TUWnzb1GfSCQWTmxif5o9FSSk9ISCU73X2epy3D/EWNy/jXCS2zfC68nla1gjziGT6rFYtwT6w24ikaI0ZO1zuFsWGLm34QSyBTmUOmkrlE3FGIcFvkyek8EQ6OebsWub2XkTzcaAn0bCrumOVFISEauT8yr544+wne54FAdZ2rcnEUZrgGbZU+NiRryGGPYh7a231fRZXr8OKQAUisIa/kIL16tbaepCXirI+zOJWuDakptIjdEiWWMHs5T3cGb26F24/Qd8hee1OZGjpZJfxNDVd72p8DyL8K9x6rx0QK//jLA9VajN/LIfEa+wu1vrvUgSwXOVwiHCIFDq0mMucRkMgVeWzwFxfYYSsqlc6Vjc/4uk6j223//LNmBfIcXOm+7FOxMMKMg60y3nQK1KcNny3UEOuzqVRVwZJssX+LKhWDx11DIqgP77lKx4PgBrMXdVZiZC4Ex7Poi5SX+F81zJ31aPuJKx+BB9Glkfed1wMe7IrzKTI+kt2AGcnli8NOF5hkqSkXj3NYKh/8wueF27Gj2Nd331Q4GOFHXuTtdUx44cten8rG5ksefwWd6GnFOHT7uFBwxQh2VQ3c/iDL0J625aAlZIGK5+nXxvgMAAYT9c3jbOMDt0kxGCcU76kLf/IIZRkjP+cDveXg2ziEnz1LUuaw+zfgoL6pWd9P8Ceyv9VP+eambneFkJw8ic7G+mNQ71kkNEY83X5a4rAO5Ww8mi/tlhgmWN22YOqjc3VewieKozV99WKn97gPtLqBaVK0ygxrXz6E6ScR4ZsiVOH203K/dUMSDW46ayODiFVG77ewc/g7mgHycSgEIn9DIkA8XCG1zUaJabqoGGvnnY1Q+4gTqpaPaEjYpZ6QLV7xBF2TfHz4L64WRgTSvYqth/dk7il/1LT+Gv
- WI3A/+rl
- 4ZDarFrOKJ8AeN9SOlWpzAKEkVj9epcSiU10lDu5cI7WKz0CN4OiB3EjAPIcQ1cNDAnbA2m1S5ibC6UxokG6hBZWt1ayZce2ezgH4GOeaWutlRtm/Vj3TqPsNGuxsLP5DviaLpM9OkNFD1oOGCXXULeux6t/i8DK4yTjvmRQl1hhMFM4eOwNIdUn8UJOX9QzmeLVYsn2dz3SUSOPDXZ//B3kww6uvUPbbNHhjrECJo7EExvVNLozBsos9ktxlo6MuoHQQR9itHyUeChyZL5lxni1NOjM+rfoYYfUuNpL23+fIWt2oLv/fZD0CpIlTLimzTRwUi+iWGLtFS6iPd/5xygyysikoRaldiid2MG4qna+U3Vnoy6Emxhmvu3mPI/uqUZR8yMcnTrl2y2AYr7lUOOLaJLUYJrocBxSo0Y/QMPd1TXZp8TRLw2/dSHwflUcryBI5YKQjIScbThDAFnQ1n/PpoBgYXFbMuWnrwoa0I8nK4GEFvNbu6hvd70eeE2BDksMvHl7oyVtxLkyRdYLwQOrm0AmYz/KMTlMwdG0s6itGJNmsIhOaHtQuA5r1o4q2fW8Da6GxLWtgcnvFoOhgQdNT0+GPpCga6muv
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772692060-944294
+X-HE-Meta: U2FsdGVkX1/IoR15BZVcdfVHrStqhu4qJGqmlnEjQk/wwAaeWGcYVczaOEggrLttY8Jll9tjWL9OTi3y5Ntw+6oYhfDR4vDb3o3uEtvyFKFPKyBFFBe9B9I0g4fYRr8oD7mkLWFFAcqzPrHTXq7KZ9E3DhZjBEOywwt5seatYCq1pK9/fkI9oiHuyUm9dAMFHwayD/EGJVs3zgosrXfChSt48mS8JdO/FjXuVurGg4e8h8WyoyvzscmIddf0WohmjDxJ7aP553II043WkAZu7Q+ZZVRkFrZ9+PzyZOjmpicmNqPFshaZ315/KBpUUcIXQ7zoWUcIbijvu562dAZKrMGgQcb19cpecv9eP1KXDenHQUmEeHJHY1uOTqrxUTS1ePiXcg5xHZhOn30jgp7YMDG4J8wveE4KkLrOYbwvKwIetydA+YdqyejG42jSce0qyYrbGlD61q/lJUWBvogPYYy6wlU1IiCaMBHyZfalmdHCyM9WOuTY6Z4ASGSFF2Wv5v7baMV7MrpTglr3IeWOYbhLbRnx0qmdwBYYM/I5TU+14tklJqL1UtDhWa37CPDQt2O+nGvC0s6MNFbFJ3c2cIYyYAzNvd8pX0jcdA5m3iYBISPYPXkwNHg3Fr0r3VytEtB2cMxP7aHNOI1R9F/RgRCzFf4YSs6eZObX01bnhSh/IYTpjbBY9QghI2GUvEngxJ7/EsF0kuCVhwhajwWK+BijQkmxSDr+RgtpdUY2Mjz6ouIOrbiVJCeCxnc09S6rbNzyljRCdc8rv7NeIZf47SKW46Ga/gaXJ01KMSeAROd0oglJpywE++zc8MIu+UWU2WVHEXs3J5jFV8ZdCQqqmR3nvSGKReNEXfEC85JX3Uq7ljpmLWud8d3HT8iwnLmhe7lon7py3O+i6p9SWvS65Y8UGrrDk+q5NsKCGy25FJKUYFnnApDWoOfcHEVAOYOWoXYbeD1VohjI2fwD+Pl
+ GVk1WOe+
+ pKAQQVc2XbczT6e19twsxbkuh2R0J7LjXc/UF+cxtzQq0EANcvOqtTPfWVLBzHlHstU45DT6R3V5HPLPJyjg9DTCqSPQlGKaxHBKBA/0nKmOFjTOjIrT1G4x4MPO3C/vmSL691c6HlePGsh6vNI9Za1z3W4rmD8h2nMEBxB9wEEdjeHrLWZS349pHb+V5svESoAb6rdsaLba/V6g+rlL7Kn9pSd8+LW+yhUoMX6K/eFdhbtUa6xSE2zz3eCNrEUr86bA+wPnKOFQ43hV8A8SKcq6SOU9zKO9eH7tznOulLq/lv5mcUzsGVElosUEMPkjrZJKq37VHXA7yqiYAFXCA4Tn9seU5e/H68/rVXJ2cEWMzg4sQ/JSQqrgb1m7b65BuRSLRkAk6CqQPmSnO9H8OoCxf2LSL7iNoIQpK2B02BOGG61PrgSTeIwMKkGPvUFow/NNIZ+QzAgWaz1HHdged5gzvkaMI0zk0pAfpS6teNTXfU/meRY2OqPdupq1Y6gqVM02x9cZVXpiafvggU81f5/zzwFxrmRzEw24kr1OQyMkiW+suerICszjArUDcS73QJRBdgPFBLRe0twzdv7Q9eNBNWPuTaOwGAAac9bOfP+yferA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,134 +140,227 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+On Tue, Mar 3, 2026 at 1:46=E2=80=AFAM Gregory Price <gourry@gourry.net> wr=
+ote:
+>
+> On Fri, Feb 27, 2026 at 12:31:39PM +0800, Barry Song wrote:
+> > >> MGLRU has been introduced in the mainline for years, but we still ha=
+ve two LRUs
+> > >> today. There are many reasons MGLRU is still not the only LRU implem=
+entation in
+> > >> the kernel.
+> >
+> > > To my mind, the biggest problem with MGLRU is that Google dumped it o=
+n us
+> > > and ran away.  Commit 44958000bada claimed that it was now maintained=
+ and
+> > > added three people as maintainers.  In the six months since that comm=
+it,
+> > > none of those three people have any commits in mm/!  This is a shamef=
+ul
+> > > state of affairs.
+> > >
+> > > I say rip it out.
+> >
+> > Hi Matthew,
+> > Can we keep it for now? Kairui, Zicheng, and I are working on it.
+> >
+> > From what I=E2=80=99ve seen, it performs much better than the active/in=
+active
+> > approach after applying a few vendor hooks on Android, such as forced
+> > aging and avoiding direct activation of read-ahead folios during page
+> > faults, among others. To be honest, performance was worse than
+> > active/inactive without those hooks, which are still not in mainline.
+> >
+> > It just needs more work. MGLRU has many strong design aspects, includin=
+g
+> > using more generations to differentiate cold from hot, the look-around
+> > mechanism to reduce scanning overhead by leveraging cache locality,
+> > and data structure designs that minimize lock holding.
+>
+> In presentations where the distribution of generations is shown for
+> different workloads, I've seen many bi-modal distributions for MGLRU
+> (where oldest and youngest contain the bulk of the folios).
+>
+> It makes the value of multiple generations questionable - especially at
+> the level MGLRU emulates it right now (multiple generations PLUS multiple
+> tiers within those generations).
+>
+> One of the issues with MGLRU is it's actually quite difficult to
+> determine which feature it introduces (there are 7 or 8 major features)
+> is responsible for producing any given effect on a workload.
 
-On 3/5/26 01:28, Usama Arif wrote:
+true. MGLRU has multiple features:
+
+1. lru_gen_look_around =E2=80=94 exploits spatial locality by scanning
+adjacent PTEs of a young PTE.
+
+This is also beneficial for active/inactive LRU, as it helps reduce
+rmap cost. The Android kernel once had a hook to enable it for the
+active/inactive LRU:
+
+https://android.googlesource.com/kernel/common.git/+/76541556a9a3540
+
+2. page table walks for aging =E2=80=94 further exploit spatial locality.
+The aging path prefers walking page tables to look for young PTEs
+and promote hot pages.
+
+I didn=E2=80=99t observe any improvement on ARM64 Android, but I did notice
+increased mmap_lock contention. Disabling it actually reduced CPU
+usage, rather than increasing it as the patch claimed. Perhaps this is
+because ARM64 lacks a non-leaf young bit, making the scanning cost
+quite high?
+
+3. fallback to the other type when one type has only two generations.
+
+isolate_folios():
+                scanned =3D scan_folios(nr_to_scan, lruvec, sc, type, tier,=
+ list);
+                if (scanned) // scanned will be set to 0 if the type
+has only two gens
+                        return scanned;
+
+                type =3D !type;
+
+This seems to be a major issue with MGLRU, making swappiness largely
+ineffective. People have been complaining about over-reclamation of
+file pages even when they set a high swappiness to prefer reclaiming
+anonymous pages.
+
+4. very aggressively promote mapped folios.
+
+Active/inactive LRU relies on scanning and detecting young PTEs to
+promote mapped folios from inactive to active, whereas MGLRU
+promotes mapped folios directly to the youngest generation.
+
+Active/inactive LRU should be able to retain read-ahead and
+map_around folios that haven=E2=80=99t actually been accessed in inactive, =
+but
+MGLRU promotes all of them indiscriminately.
+
+This can sometimes be appropriate, but it often overshoots:
+
+void folio_add_lru(struct folio *folio)
+{
+        VM_BUG_ON_FOLIO(folio_test_active(folio) &&
+                        folio_test_unevictable(folio), folio);
+        VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+
+        /* see the comment in lru_gen_folio_seq() */
+        if (lru_gen_enabled() && !folio_test_unevictable(folio) &&
+            lru_gen_in_fault() && !(current->flags & PF_MEMALLOC))
+                folio_set_active(folio);
+
+        folio_batch_add_and_move(folio, lru_add);
+}
+
+In particular, I observed that read-ahead folios triggered by faults were
+being promoted, which significantly degrades MGLRU performance on
+low-memory devices. I attempted to mitigate this by:
+
+https://lore.kernel.org/linux-mm/20260225223712.3685-1-21cnbao@gmail.com/
+
+5. min_ttl_ms - thrashing prevention
+
+This might be a good option, but I=E2=80=99ve noticed that people often don=
+=E2=80=99t
+know how to use it or how to integrate it with the Android OOM
+killer. As a result, I see users leaving it untouched. I=E2=80=99m not sure=
+ if
+any Android users are actually using it=E2=80=94if there are, please let me
+know.
+
+6. gen, tier, bloom filter
+
+This replaces active/inactive and compares file versus anon aging,
+handling scan balance between anon and file.
+I=E2=80=99m not sure they are definitely better, but they do seem much more
+complex than active/inactive.
+
+7. Missing shrink_active_list() =E2=80=94 the function to demote folios fro=
+m
+active to inactive.
+
+active/inactive perform rmap and scan PTEs to demote folios from active to
+inactive before reclamation. MGLRU, however, seems to always
+promote=E2=80=94finding young folios and moving them to the new
+generation, while older folios automatically move to the old
+generation.
+
+This seems to reduce reclamation cost significantly, as folio_referenced()
+would otherwise need to perform rmap and scan PTEs in each process
+to clear access bits in shrink_active_list().
+
+Points 1 and 7 might explain why we have observed MGLRU showing lower
+CPU usage than active/inactive.
+
+8. swappiness concept difference.
+
+In active/inactive LRU, even with swappiness set to 0, anonymous pages
+still have a chance to be reclaimed if file pages run out.
+
+In MGLRU, setting swappiness=3D0 effectively disables anon reclamation,
+which can lead to cold/hot inversion of anon pages:
+
+inc_min_seq():
+
+        /* For anon type, skip the check if swappiness is zero (file only) =
+*/
+        if (!type && !swappiness)
+                goto done;
+
+        /* prevent cold/hot inversion if the type is evictable */
+        for (zone =3D 0; zone < MAX_NR_ZONES; zone++) {
+                struct list_head *head =3D &lrugen->folios[old_gen][type][z=
+one];
+
+I wonder if setting swappiness=3D201 could also cause file cold/hot inversi=
+on?
+        /* For file type, skip the check if swappiness is anon only */
+        if (type && (swappiness =3D=3D SWAPPINESS_ANON_ONLY))
+                goto done;
+
+So, when people set swappiness=3D201 to force shrinking anonymous pages
+only, it might put file folios at risk?
+
+Together with point 3 - MGLRU=E2=80=99s swappiness has a much less clear ef=
+fect
+on reclaiming file versus anon pages compared to active/inactive,
+highlighting a significant difference between MGLRU and
+active/inactive behavior.
+
+Considering all of the above, I feel MGLRU is quite different from
+active/inactive. Trying to unify them seems like merging two
+completely different approaches. Still, active/inactive might have
+some useful lessons to learn from MGLRU, particularly on how to
+reduce reclamation cost.
 
 >
-> On 04/03/2026 22:09, Balbir Singh wrote:
->> On 3/5/26 08:54, Zi Yan wrote:
->>> On 4 Mar 2026, at 16:48, Balbir Singh wrote:
->>>
->>>> On 3/5/26 02:17, Zi Yan wrote:
->>>>> On 4 Mar 2026, at 7:01, Usama Arif wrote:
->>>>>
->>>>>> From: Usama Arif <usama.arif@linux.dev>
->>>>>>
->>>>>> migrate_vma_split_unmapped_folio() takes an extra reference via
->>>>>> folio_get() before calling folio_split_unmapped().  On success, the
->>>>>> split consumes this reference: __folio_freeze_and_split_unmapped()
->>>>>> expects the +1 in its folio_ref_freeze() check, and distributes it
->>>>>> across the resulting sub-folios via folio_ref_unfreeze(...+1), which
->>>>>> are later balanced by folio_put() calls in __migrate_device_finalize().
->>>>>>
->>>>>> If folio_split_unmapped() fails (e.g., unexpected pinning returns
->>>>>> -EAGAIN), the function returns without calling folio_put().  The extra
->>>>>> reference is never released.
->>>>>>
->>>>>> Add the missing folio_put() on the error path.
->>>>>>
->>>>>> Fixes: 4265d67e405a4 ("mm/migrate_device: add THP splitting during migration")
->>>>>> Closes: https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
->>>>>> Reported-by: Nico Pache <npache@redhat.com>
->>>>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->>>>>> ---
->>>>>>  mm/migrate_device.c | 4 +++-
->>>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>>>>> index 0a8b31939640f..351ecd9065d13 100644
->>>>>> --- a/mm/migrate_device.c
->>>>>> +++ b/mm/migrate_device.c
->>>>>> @@ -917,8 +917,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>>>>>  	folio_get(folio);
->>>>>>  	split_huge_pmd_address(migrate->vma, addr, true);
->>>>>>  	ret = folio_split_unmapped(folio, 0);
->>>>>> -	if (ret)
->>>>>> +	if (ret) {
->>>>>> +		folio_put(folio);
->>>>>>  		return ret;
->>>>>> +	}
->>>>>>  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
->>>>>>  	flags = migrate->src[idx] & ((1UL << MIGRATE_PFN_SHIFT) - 1);
->>>>>>  	pfn = migrate->src[idx] >> MIGRATE_PFN_SHIFT;
->>>>>> -- 
->>>>>> 2.47.3
->>>>> Add Balbir, who wrote the code, to comment on this.
->>>>>
->>>> Thanks Zi!
->>>>
->>>> Just wondering if there is a reproducer for the issue and how the fix was tested?
->>>> I expect migrate_vma_finalize() to be called for folios, even when split failed and
->>>> drop the lock.
->>> Does migrate_vma_finalize() do folio_put() for failed-to-split folios?
->>> If so, how does it distinguish between split folios and failed-to-split folios?
->>> By comparing source and destination folio orders?
->>>
->> We reset the MIGRATE_PFN_MIGRATE flag for failing to migrate pfns.  We do a folio_put
->> on the src in finalize, if it is split then on all the split folios as well.
->>
->>> What we see from migrate_vma_split_unmapped_folio() is that
->>> it adds a refcount for all input folios, but only drops a refcount
->>> for the split folio. Isn’t it cause failed-to-split folios to have
->>> additional refcount?
->>>
-> Hello!
->
-> Thanks for reviewing everyone. So its very difficult to create a reproducer I think
-> the extra reference would need to appear after migrate_device_unmap() but before
-> folio_split_unmapped() in migrate_vma_pages()? That's hard to trigger reliably from
-> userspace.
->
-> The fix came about when Nico indicated there might be an issue if split_huge_pmd_address
-> fails in my patch [1].
->
-> Below is my understanding of how refcounting is working over here step by step. I
-> might very well be wrong on this, and the refcounting is a bit all over the place
-> and I might miss a reference change somewhere so would really appreciate if someone
-> can confirm this!
->
->
-> 1. migrate_vma_collect_huge_pmd():
->   a) folio_get(folio) -> +1 (collect reference)
-> 2. migrate_device_unmap():
->   a) folio_isolate_lru() -> +1 (isolation reference)
->   b) folio_put() -> -1 (drops the collect reference)
->
->
-> Without this patch fix:
->
-> 3. migrate_vma_split_unmapped_folio():
->   a) folio_get(folio) -> +1 (split reference)
->   b) folio_split_unmapped() -> fails
->   c) Returns error — without folio_put() which is the fix
-> 4. Caller in migrate_vma_pages(): clears MIGRATE_PFN_MIGRATE | MIGRATE_PFN_COMPOUND
-> 5. __migrate_device_finalize(): sees !(src_pfns[i] & MIGRATE_PFN_MIGRATE), restores the folio:
->   a) remove_migration_ptes(src, src) — re-establishes user PTEs
->   b) folio_unlock(src)
->   c) folio_put(src) -> -1 (drops the isolation reference)
->
-> The split reference in 3.a is never released and the folio has a permanently elevated refcount.
-> Unless I missed a folio_put somewhere for the refcount increase in folio_isolate_lru() (2.b)?
->
-> Please let me know if this makes sense!
->
-> [1] https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
->
->> Thanks! Yes, the patch makes sense
->>
->> Acked-by: Balbir Singh <balbirs@nvidia.com>
->>
->> Balbir
+> In a random test over the weekend where I turned everything but
+> multiple generations off (no page table scan, no bloom filter, etc -
+> MGLRU just defaults to a multi-gen FIFO) I found that streaming
+> workloads did better this way.
 
-I remember stumbling on this while ago also. The folio_get() in migrate_vma_split_unmapped_folio()
-is balanced with put_page() in __split_huge_pmd_locked() (freeze = true), can't fail for device pages.
-Folios at this point are unmapped but have 1 refcount from "collecting". 
-After folio_split_unmapped() the refcount(s) is still 1.
+I understand your point, I'd say there will always be cases where LRU
+is not the most suitable algorithm.
 
-So it seems the code is good as is? A comment though would be good for the extra folio_get..
+Perhaps an eBPF-programmable LRU could also be a direction
+worth exploring. We could set different eBPF programs for
+different workloads? There is a project in this area:
 
-Thanks,
---Mika
+https://dl.acm.org/doi/pdf/10.1145/3731569.3764820
+https://github.com/cache-ext/cache_ext
 
+>
+> Makes sense, given that MGLRU is trying to protect working set,
+> but I didn't expect it to be that dramatic.
+>
+> It seems at best problematic to argue "We just need more heuristics!",
+> but clearly MGLRU "works, for some definition of the word works".
+
+The goal of the in-kernel LRU is probably suitable for most workloads,
+but not =E2=80=9Cgood=E2=80=9D enough for all workloads :-)
+
+Thanks
+Barry
 
