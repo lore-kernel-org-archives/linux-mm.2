@@ -4,86 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C271FF47CBA
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 19:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927C1F47CBA
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 19:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EA746B0005; Thu,  5 Mar 2026 14:24:45 -0500 (EST)
+	id 0BC526B0005; Thu,  5 Mar 2026 14:25:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06E2D6B0089; Thu,  5 Mar 2026 14:24:44 -0500 (EST)
+	id 0672C6B0089; Thu,  5 Mar 2026 14:25:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB3406B008A; Thu,  5 Mar 2026 14:24:44 -0500 (EST)
+	id E2C596B008A; Thu,  5 Mar 2026 14:25:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DC58D6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:24:44 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 99C251B70C6
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:24:44 +0000 (UTC)
-X-FDA: 84512986488.11.4FBF2FA
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DF8311C0011
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:24:41 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Wm66T+DE;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CF3986B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 14:25:56 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DAB81C20B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:25:56 +0000 (UTC)
+X-FDA: 84512989512.29.9B14EAF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C4B7B4000B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:25:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TGM2saNl;
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772738683;
+	s=arc-20220608; t=1772738753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ukeKHsAJYN16f/Xu0LO5gqLwIT6xwI1wOVLPLX/DdPw=;
-	b=M7lZY6OQVxHoM52JynlmQXv8bhYWJAMm+DMW++3MvXc+cboaeS25OtNrx0Ip7UofcwRZ0z
-	rlb/7aC2lMRsFd9q4PLOoh6BnyW652u8diN85fIiXtHyeDw64lSysVwJssSlFnw/wRWpCB
-	x9dxNiGMlQX+ickkniFNUB+8QFEedTY=
+	bh=+V8en3UWdG4zZc5X//7Rm6lxG1GBlKF9AKNCra+DKHM=;
+	b=DNR4xC+yoI5DW1Dsd8GhdNELE+42h+w1ruleoELaRAz69fcDQlR4vmNuy/P4bVSd68XZjH
+	aRyoB59NG41Int3obre+4j/PmxOIrjYB67JO5/LVVkWdYwcKps1o3H0LcXZPjvKUaBsslu
+	coZ0/DpVy8JzXXM3sCkvR3Jl8Hvn8AA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Wm66T+DE;
-	spf=none (imf21.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772738683; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TGM2saNl;
+	spf=pass (imf07.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772738753; a=rsa-sha256;
 	cv=none;
-	b=HD19X9J2UjWv8Dr2LHJaoscxfagfi8HVGGLglKNecYk9oaWJ0a0Kpi/2ZjLsEHDYcIm8sp
-	9+Cgy7iTROjFVVR1ZfO6GdR4wJYnBkPolQa/yZI22jhwWcl1Goj2EMWVonxVIfVTRzPCPh
-	ryAx0w4ZqIblUx7n0rlFP1CSsRXua0k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ukeKHsAJYN16f/Xu0LO5gqLwIT6xwI1wOVLPLX/DdPw=; b=Wm66T+DEZS/jmgLAh1khMDshCD
-	LTVFgMXFWTkJiQ8dy2V2YcnuU/pnomtNDnR9dvE6npT4TD0E3c2b2dhey0GkfpNIS/qgxprSXQwK2
-	I0LjaOuzgAn0cuhs8m/fUyNsgulq/roXtzjCLmql+dvViBi9q9HaCFhi/e0BvvrtzvlVVRs5bhWR/
-	PfzUvNM0X1nTTkox7poo6hboIpQkUxCZ3Or8P49NpeWxZo+hQgxEhV75pTAsPcDlFoF1S8v0KCphY
-	/ag1Dz21FJ3HV2gUJNcSpLAEJFexPp8MTTTwcMmsw+6iyp2jJr1BRBBjVm1xLORVhfTxGESfO/uEn
-	WvBqSbBA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vyEJK-0000000FW3u-1Z5T;
-	Thu, 05 Mar 2026 19:24:38 +0000
-Date: Thu, 5 Mar 2026 19:24:38 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Chris J Arges <carges@cloudflare.com>
-Cc: akpm@linux-foundation.org, william.kucharski@oracle.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
- page cache lookups
-Message-ID: <aanYdvdJVG6f5WL2@casper.infradead.org>
-References: <20260305183438.1062312-1-carges@cloudflare.com>
- <20260305183438.1062312-2-carges@cloudflare.com>
+	b=r93kbeWZQKFca2jdxNVyoi3mf4sd565ipL0BMiFlDM5+fXN5Cg93+IzJq/BheFME4u9616
+	O7rzNJVxeRqoRUllhCuTjSIrqjnEgNf89qYtILum926KUZN6wTDpriTIgxYioJ3OOmpDeD
+	n/fbHVTWDk+6PKhwnMIUSB3bx9PIFRg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C4A5E41724;
+	Thu,  5 Mar 2026 19:25:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D37C116C6;
+	Thu,  5 Mar 2026 19:25:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772738752;
+	bh=vmlzEK3fLdHi0cfmhsSQFqvNzFA4ibJrsdtaMQ6FsMM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=TGM2saNldwviAIDLOQ1P8x7SOFo+tMXmvPb99Ysn3VNHwOFLT0Dhkqu45iWUuL7z3
+	 LyYZ7qS4ipT3j1fgXJruoVMe0lYMx2J113EB9Q7XnMqjXPyaKkftQdmBZZDxeK/try
+	 VucQb2bczVK5Sy8w3LwHGwLHaz4q3c5zROVLu1JLYdaPjrfO6jLrmxU9WuGDL0e1LI
+	 sHnQE0ur6k+hc/akW5Ahil4lbe5t0rsnVRm5eLw8o0eC57sRaPKJgWj6ayg0q4hDq0
+	 UIBUEOcDE/heTYNO07ncOYaV2Qsqr/pzwPBkNzbenDaZRszh71tzddVIzBoAx0CRXU
+	 b/biJfAV4c7KQ==
+Message-ID: <c21702a39cd751eaf0463e8c20e8e0a4b6f4d3e5.camel@kernel.org>
+Subject: Re: [PATCH 24/24] fs: remove simple_nosetlease()
+From: Jeff Layton <jlayton@kernel.org>
+To: Mike Snitzer <snitzer@kernel.org>
+Cc: Luis de Bethencourt <luisbg@kernel.org>, Salah Triki
+ <salah.triki@gmail.com>,  Nicolas Pitre <nico@fluxnic.net>, Christoph
+ Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Anders Larsen	
+ <al@alarsen.net>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner	 <brauner@kernel.org>, David Sterba <dsterba@suse.com>, Chris Mason
+ <clm@fb.com>,  Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue
+ Hu <zbestahu@gmail.com>, Jeffle Xu	 <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li	 <lihongbo22@huawei.com>, Chunhai
+ Guo <guochunhai@vivo.com>, Jan Kara	 <jack@suse.com>, Theodore Ts'o
+ <tytso@mit.edu>, Andreas Dilger	 <adilger.kernel@dilger.ca>, Jaegeuk Kim
+ <jaegeuk@kernel.org>, OGAWA Hirofumi	 <hirofumi@mail.parknet.co.jp>, David
+ Woodhouse <dwmw2@infradead.org>,  Richard Weinberger	 <richard@nod.at>,
+ Dave Kleikamp <shaggy@kernel.org>, Ryusuke Konishi	
+ <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh
+ <mark@fasheh.com>, Joel Becker	 <jlbec@evilplan.org>, Joseph Qi
+ <joseph.qi@linux.alibaba.com>, Mike Marshall	 <hubcap@omnibond.com>, Martin
+ Brandenburg <martin@omnibond.com>, Miklos Szeredi	 <miklos@szeredi.hu>,
+ Amir Goldstein <amir73il@gmail.com>, Phillip Lougher	
+ <phillip@squashfs.org.uk>, Carlos Maiolino <cem@kernel.org>, Hugh Dickins	
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew
+ Morton	 <akpm@linux-foundation.org>, Namjae Jeon <linkinjeon@kernel.org>,
+ Sungjong Seo	 <sj1557.seo@samsung.com>, Yuezhang Mo <yuezhang.mo@sony.com>,
+ Chuck Lever	 <chuck.lever@oracle.com>, Alexander Aring
+ <alex.aring@gmail.com>, Andreas Gruenbacher <agruenba@redhat.com>, Jonathan
+ Corbet <corbet@lwn.net>, "Matthew Wilcox (Oracle)"	 <willy@infradead.org>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, Christian
+ Schoenebeck	 <linux_oss@crudebyte.com>, Xiubo Li <xiubli@redhat.com>, Ilya
+ Dryomov	 <idryomov@gmail.com>, Trond Myklebust <trondmy@kernel.org>, Anna
+ Schumaker	 <anna@kernel.org>, Steve French <sfrench@samba.org>, Paulo
+ Alcantara	 <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N	 <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
+ Bharath SM	 <bharathsm@microsoft.com>, Hans de Goede <hansg@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev, 	devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, 	linux-xfs@vger.kernel.org,
+ linux-mm@kvack.org, gfs2@lists.linux.dev, 	linux-doc@vger.kernel.org,
+ v9fs@lists.linux.dev, ceph-devel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org
+Date: Thu, 05 Mar 2026 14:25:42 -0500
+In-Reply-To: <aaiyWlJelhHju741@kernel.org>
+References: <20260108-setlease-6-20-v1-0-ea4dec9b67fa@kernel.org>
+	 <20260108-setlease-6-20-v1-24-ea4dec9b67fa@kernel.org>
+	 <aZ84VRrRVyGEzSJn@kernel.org>
+	 <e07e9b893ca04ce6ead4790e72c7f285a7159070.camel@kernel.org>
+	 <aaiyWlJelhHju741@kernel.org>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305183438.1062312-2-carges@cloudflare.com>
-X-Rspamd-Queue-Id: DF8311C0011
-X-Stat-Signature: kxtebxj4kgm5jn6uewchos5j3yxr37st
+X-Stat-Signature: c8zdmquq4yhssxafioubpxw8enstjind
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772738681-943477
-X-HE-Meta: U2FsdGVkX19HAt5VhdgRePqUbvnSX/pnstCz5giSZF5M5gFZjdaSu7AccDgL2nQXvRLrhcNR1aDfozZVvrDQ+NcNiLZGlblpt10VKuxl/c1IEmeblFof2aiaMEHHkx9rt8nlh82juSONzBAtSh1tgY8iN6ymVf0gBOPsG8YfucWkdkGNDQ8AELyh0/C8YwBMJOZhKbC1DD6MlwL8OT5T1iw3p3f0fspYpX7nGpeoFO/XFqsIDwNvDounRpA7GKZ3YsiWJ8z6g0P44d6zifeHGgFtsDeMWpOEN4i2f+pExvQTvjJpJS+RND1c7S6/xVaaI7GVvqJdY/WQIdXy8xLRiB6UJjO316AEAaMI+4INADXJ6XUWgdPxsk3TVp2QEVh6b5SWVrADWcRd4h4OXWaJMBiGCmf3oZp6SwHYAurhoQb64LJjJSUBawV+QIymGDzSwkHtymkam4OM2Sd+A3/6Mn22nyaF4yiFD3m9EQHN+E8dz95yL0WGo8PrB6fPlXpB79BOETR1NMLaUHvg3TwiEG3iU0iAfYWiq7IXmpkHLfHCCXidTGlTfNi5NC668XaDgrCnnVJky3OxqOtlrxXFrWhgCdqn++8LRzaegV4xM2/xMwZiTWafll3DXeC9RFRuumVhDNYrbL5j8WAV2nnb1h6LnPrtGLkaw4+2KXjqW6n2Up/wtvwZ0arlufRrfmc2WdlmBua2dHdKnNKdKNtReoJLMVDMx/3cd5gbYXycydnFAnTEOkZKpzN2K7wyKV6oxks9vAg1lgjKW37c+UgWEr5h8S8HUQjvHmVNI2nrmKPNA+zHGDbjdiO0dxH2sRcQMWQ7gB61o/H0pETY55ejZMVmBeO7il6xxwUc11N9Bn5WN4N1oKreuwDH9fK17Gag2oTH3tFzqBx78T314ZVrJRSV5z/JLqEhavnmLnnbA6hmOgkHifE00fpb05QcTD6WxbpIpzaU1ybAAQ022Df
- 6JCmjJQv
- bsh7kX6/owne1ZoV+bYQkSK8LEHXSuOEgfNzDwMyDiLhTo3/1b+U1G6wUo3lAHR6s0UKmhQrPZNjOkPTKkKy00fdZ4p+IXr4RuGgbdG1xMaCuRyU+Vri7z8S45kSNPWDDJopHDsu9KCR22TBFCOm1kzoJn4WJ/tz42wJu/Y38IeZ4l8FdPL87KCGse3NgJfa5YEZTPyMor3XipLNqBKlaQ7HlEnTu0KIlddYVvC9DPbWbC/hHW4kDd3g2NA==
+X-Rspamd-Queue-Id: C4B7B4000B
+X-HE-Tag: 1772738753-555075
+X-HE-Meta: U2FsdGVkX1+COshZ/Nh8CdbhSlQUVVuwe1xSB+OsoJi4PA5odQabemxwBJqBmGxJS7a1+Tf4eo/Fa+ySa99ix0M/wApoMqUge1ehSTAuAOfSejzwlWHprdZCIiU/fonQf03SYuHbxPaNGBvxztciWWVdTSFpbIJXhaXd7AwoiJ+7UwZd8WYO9G5PR5Em/66dWXzFBX2Eytg+j/R9khfaKUB9NUzCfjk8eNCmAV8FUJp6wkYGp/e4x9+dCpjFUzDWHDnmrbckYiL9Uw8t/8Hk2qBNsyhjzul0eDqA6R9+LS8PrYaxfLBvgZNftJhY7O9AeYEOByweSo5RfUQqFAFF1icy+221am+C7GakAbL/0zrTGvmETh1MS/5VVdcdlOJ/HfUI+kk/kSL/71gCxJ+8aJ59mnPxlyCVVN9/A9l6IA85ITWZETAQak6yFvN4EsTVvF4uytGLxfAkFhsIO5o+EOKwwuN0Q3AgQL86TfICPxU7YBrlGOAuiEnlJ7xgO5wI9FGdsqqYGBHA/nnqRI7cGS+vbjGiW+e0XD6n6T64L7+GGlwAzwSCZ2xgnlZQVhSB+o5ZLGZNGILoek0hbu1ctuCd8Miq+DZXeSVNCwJ1FpZhvdzy5EPZ2gyLjLgFPM0z1si9D0IipkpEatnQR+yQJbpYmbdsrfgBHljep50ovAq86PobOn0D0wpX77JTAZnEhMWbV6mszYKsfHG5D+TG2V0kTO95rsM40msCWc8UPAsnLGw529mRlAAO3ZRrnBaDEUQFCcgatNGJLoABG6z3N2kGrjwfxpmjbR31+3t1AVul+dhGCh/RGQA1Vg5P3tKcj1f1U7gM6ipNsDGXF+LsM66hMqPSdG6Z9pLTonueAYH7d+azhqMHjnhRGQcDlN7hiTED479jRIsFK+i3Xpbyxdhbsfun4LIucY7k08rsKDcpv/s34uEGQXlSrZMh5vDaHGjqXEzsBAwLcjye3NW
+ pWVJ5Xyv
+ /FbH1swNAH2Pm/pFUWla7tUYzOJXXIV2gXhEt8tojFLNhnIc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,37 +213,176 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 12:34:33PM -0600, Chris J Arges wrote:
-> We have been hitting VM_BUG_ON_FOLIO(!folio_contains(folio, index)) in
-> production environments. These machines are using XFS with large folio
-> support enabled and are under high memory pressure.
-> 
-> >From reading the code it seems plausible that folio splits due to memory
-> reclaim are racing with filemap_fault() serving mmap page faults.
-> 
-> The existing code checks for truncation (folio->mapping != mapping) and
-> retries, but there does not appear to be equivalent handling for the
-> split case. The result is:
-> 
->   kernel BUG at mm/filemap.c:3519!
->   VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio)
+On Wed, 2026-03-04 at 17:29 -0500, Mike Snitzer wrote:
+> On Wed, Mar 04, 2026 at 11:59:32AM -0500, Jeff Layton wrote:
+> > On Wed, 2026-02-25 at 12:58 -0500, Mike Snitzer wrote:
+> > > On Thu, Jan 08, 2026 at 12:13:19PM -0500, Jeff Layton wrote:
+> > > > Setting ->setlease() to a NULL pointer now has the same effect as
+> > > > setting it to simple_nosetlease(). Remove all of the setlease
+> > > > file_operations that are set to simple_nosetlease, and the function
+> > > > itself.
+> > > >=20
+> > > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > > ---
+> > > >  fs/9p/vfs_dir.c        |  2 --
+> > > >  fs/9p/vfs_file.c       |  2 --
+> > > >  fs/ceph/dir.c          |  2 --
+> > > >  fs/ceph/file.c         |  1 -
+> > > >  fs/fuse/dir.c          |  1 -
+> > > >  fs/gfs2/file.c         |  2 --
+> > > >  fs/libfs.c             | 18 ------------------
+> > > >  fs/nfs/dir.c           |  1 -
+> > > >  fs/nfs/file.c          |  1 -
+> > > >  fs/smb/client/cifsfs.c |  1 -
+> > > >  fs/vboxsf/dir.c        |  1 -
+> > > >  fs/vboxsf/file.c       |  1 -
+> > > >  include/linux/fs.h     |  1 -
+> > > >  13 files changed, 34 deletions(-)
+> > > >=20
+> > >=20
+> > > <snip>
+> > >=20
+> > > > diff --git a/fs/libfs.c b/fs/libfs.c
+> > > > index 697c6d5fc12786c036f0086886297fb5cd52ae00..f1860dff86f2703266b=
+eecf31e9d2667af7a9684 100644
+> > > > --- a/fs/libfs.c
+> > > > +++ b/fs/libfs.c
+> > > > @@ -1699,24 +1699,6 @@ struct inode *alloc_anon_inode(struct super_=
+block *s)
+> > > >  }
+> > > >  EXPORT_SYMBOL(alloc_anon_inode);
+> > > > =20
+> > > > -/**
+> > > > - * simple_nosetlease - generic helper for prohibiting leases
+> > > > - * @filp: file pointer
+> > > > - * @arg: type of lease to obtain
+> > > > - * @flp: new lease supplied for insertion
+> > > > - * @priv: private data for lm_setup operation
+> > > > - *
+> > > > - * Generic helper for filesystems that do not wish to allow leases=
+ to be set.
+> > > > - * All arguments are ignored and it just returns -EINVAL.
+> > > > - */
+> > > > -int
+> > > > -simple_nosetlease(struct file *filp, int arg, struct file_lease **=
+flp,
+> > > > -		  void **priv)
+> > > > -{
+> > > > -	return -EINVAL;
+> > > > -}
+> > > > -EXPORT_SYMBOL(simple_nosetlease);
+> > > > -
+> > > >  /**
+> > > >   * simple_get_link - generic helper to get the target of "fast" sy=
+mlinks
+> > > >   * @dentry: not used here
+> > > > diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> > > > index 71df279febf797880ded19e45528c3df4cea2dde..23a78a742b619dea8b7=
+6ddf28f4f59a1c8a015e2 100644
+> > > > --- a/fs/nfs/dir.c
+> > > > +++ b/fs/nfs/dir.c
+> > > > @@ -66,7 +66,6 @@ const struct file_operations nfs_dir_operations =
+=3D {
+> > > >  	.open		=3D nfs_opendir,
+> > > >  	.release	=3D nfs_closedir,
+> > > >  	.fsync		=3D nfs_fsync_dir,
+> > > > -	.setlease	=3D simple_nosetlease,
+> > > >  };
+> > > > =20
+> > > >  const struct address_space_operations nfs_dir_aops =3D {
+> > > > diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+> > > > index d020aab40c64ebda30d130b6acee1b9194621457..9d269561961825f8852=
+9551b0f0287920960ac62 100644
+> > > > --- a/fs/nfs/file.c
+> > > > +++ b/fs/nfs/file.c
+> > > > @@ -962,7 +962,6 @@ const struct file_operations nfs_file_operation=
+s =3D {
+> > > >  	.splice_read	=3D nfs_file_splice_read,
+> > > >  	.splice_write	=3D iter_file_splice_write,
+> > > >  	.check_flags	=3D nfs_check_flags,
+> > > > -	.setlease	=3D simple_nosetlease,
+> > > >  	.fop_flags	=3D FOP_DONTCACHE,
+> > > >  };
+> > > >  EXPORT_SYMBOL_GPL(nfs_file_operations);
+> > >=20
+> > > Hey Jeff,
+> > >=20
+> > > I've noticed an NFS reexport regression in v6.19 and now v7.0-rc1
+> > > (similar but different due to your series that requires opt-in via
+> > > .setlease).
+> > >=20
+> > > Bisect first pointed out this commit:
+> > > 10dcd5110678 nfs: properly disallow delegation requests on directorie=
+s
+> > >=20
+> > > And now with v7.0-rc1 its the fact that NFS doesn't provide .setlease
+> > > so lstat() on parent dir (of file that I touch) gets -EINVAL.
+> > >=20
+> > > So its a confluence of NFS's dir delegations and your setlease change=
+s.
+> > >=20
+> > > If I reexport NFSv4.2 filesystem in terms of NFSv4.1, the regression
+> > > is seen by doing (lstat reproducer that gemini spit out for me is
+> > > attached):
+> > >=20
+> > > $ touch /mnt/share41/test
+> > > $ strace ./lstat /mnt/share41
+> > > ...
+> > > lstat("/mnt/share41", 0x7ffec0d79920)   =3D -1 EINVAL (Invalid argume=
+nt)
+> > >=20
+> > > If I immediately re-run it works:
+> > > ...
+> > > lstat("/mnt/share41", {st_mode=3DS_IFDIR|0777, st_size=3D4096, ...}) =
+=3D 0
+> > >=20
+> > > I'm not sure what the proper fix is yet, but I feel like you've misse=
+d
+> > > that NFS itself can be (re)exported?
+> > >=20
+> > >=20
+> >=20
+> > My apologies. I missed seeing this last week.
+> >=20
+> > That's a very simple reproducer! That's very strange behavior,
+> > especially since NFS4 does provide a setlease operation:
+> >=20
+> > const struct file_operations nfs4_file_operations =3D {
+> > 	[...]
+> > 	.setlease       =3D nfs4_setlease,
+> > 	[...]
+> > };
+>=20
+> Huh, not sure how I missed nfs4_setlease...
+>=20
+> > I'm not sure why this would cause lstat() to return -EINVAL.
+>=20
+> Likewise, especially given nfs4_setlease
+>=20
+> > What's happening on the wire when this occurs?
+> >=20
+> > I'll plan to take a look here soon either way.
+>=20
+> I'll have to revisit myself, been a bit.
+>=20
+> Will let you know.
+>=20
 
-This didn't occur to me as a possibility because filemap_get_entry()
-is _supposed_ to take care of it.  But if this patch fixes it, then
-we need to understand why it works.
+Thanks. I just tested your reproducer. I have a nfsv4.2 mount on one
+host that is reexported, and mounted the reexport on a different host
+with "-o vers=3D4.1".
 
-folio_split() needs to be sure that it's the only one holding a reference
-to the folio.  To that end, it calculates the expected refcount of the
-folio, and freezes it (sets the refcount to 0 if the refcount is the
-expected value).  Once filemap_get_entry() has incremented the refcount,
-freezing will fail.
+It seems to work for me. It's possible I don't have something set up
+the same way though:
 
-But of course, we can race.  filemap_get_entry() can load a folio first,
-the entire folio_split can happen, then it calls folio_try_get() and
-succeeds, but it no longer covers the index we were looking for.  That's
-what the xas_reload() is trying to prevent -- if the index is for a
-folio which has changed, then the xas_reload() should come back with a
-different folio and we goto repeat.
+$ touch /mnt/scratch/test ; ./lstat /mnt/scratch/test
+Information for: /mnt/scratch/test
+---------------------------
+File Size:              0 bytes
+Number of Links:        1
+File inode:             272
+File Type:              Regular File
 
-So how did we get through this with a reference to the wrong folio?
+--=20
+Jeff Layton <jlayton@kernel.org>
 
