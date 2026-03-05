@@ -4,144 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F195F30947
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B689F30946
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C36C86B0088; Thu,  5 Mar 2026 06:38:20 -0500 (EST)
+	id 959DA6B008C; Thu,  5 Mar 2026 06:40:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE3936B008C; Thu,  5 Mar 2026 06:38:20 -0500 (EST)
+	id 907C66B0092; Thu,  5 Mar 2026 06:40:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A91296B0092; Thu,  5 Mar 2026 06:38:20 -0500 (EST)
+	id 7EA2B6B0093; Thu,  5 Mar 2026 06:40:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 974026B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:38:20 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61254160838
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:38:20 +0000 (UTC)
-X-FDA: 84511811160.29.6AD583E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7FE5180002
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:38:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blyCeddb;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772710698;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B3E96B008C
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:40:02 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 140C21408E1
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:40:02 +0000 (UTC)
+X-FDA: 84511815444.05.66F958C
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 12914C000D
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:39:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBzjnndT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772710800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jd+AEbDO/tNg1ocpHiO5FiIrmxv+G7tEXy86IvAlriU=;
-	b=nEvDp2DeQbCtiLG4GnjXh1dYu471rBbCTK1tFMGdJBIfDI8zSXXbgA4QC9f7PDUuDP+x/l
-	Qzk7CrWhD8EVeI3u9yEeus+3b8/uktC/l1bnGbEWXhMj7FAp6q+aTOCQ8Q2ETc8cDh3oX/
-	TnWgz0ew8E9WH2JcBMpTSUIGFBt/jxQ=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=blyCeddb;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772710698; a=rsa-sha256;
-	cv=none;
-	b=Es1gLeYRTKwNBoUBwGB7v11xgw5Gw8nSL54pY1AOoV3mTXEwVNX+LjG4PFVXazMkXqz/qU
-	5A03t+wkPD3l83B8Je+77t2JvNV7hJwGPOPpRBnK1UhjIRaxA0dbwxCYRQMgvANtrSOUPg
-	fuqMkj5fZ5mSd0NECwKXvhqwH7isE80=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78FA1419BA;
-	Thu,  5 Mar 2026 11:38:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87350C116C6;
-	Thu,  5 Mar 2026 11:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772710697;
-	bh=C20lIEwPoCerkwyMRarlqpSodbjC8Ej+W/hHRkHxDEQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=blyCeddbhXH09i9sDmRdbban0y+/dhur0vU3rcQjQgPZ1eg1/J82ULhk5U6PISSos
-	 GJAMAfiMiOnNsO8bpszR3tjaE8QS7JHv2OmaKeV6LRvNkWWbjw8HQFt4DKmugPwKHG
-	 5J72IdDlzfw+dbx+rWLDxz2tDH7Zh/R51II6rN8Kd9uUwk+tdp4nFXDUpheL8rqKiT
-	 Hpf3cPxFbSauzExBq3uNorsi6gPgPsisBYaPqCrWDSYN46ZlzcWuyV0tH6Ot8dDWDn
-	 OxKUsM0x8T3LazwLLHfPIttL5NVJU3h/DtXWIcaF7kwttN9FwM+DseimjULsTJYfyl
-	 ibm3lEvSiMZkQ==
-Message-ID: <05a26f9d-e7eb-4aa4-b5a3-d485945f81c6@kernel.org>
-Date: Thu, 5 Mar 2026 12:38:12 +0100
+	bh=trP2W0oN4p19Y5VrVJ4Gqg9OM1UXsvsrtCfj/w2m4qg=;
+	b=cuDOVRqpGWNsIVsSlmBwH2Cbo2qtqPMN8z9ZbuDXveMknwF9nqkZ0iZahB7szcfQ3nitf0
+	Xh4gXBEOQvtv34do3yEXauzceFGjYz3FoPrri5B+AEvOu/0xkb4RrrRGV6ddYV0e1W4FJW
+	yDMjghv93K9lpl5ZWrpZSQP5kEok3Vk=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772710800; a=rsa-sha256;
+	cv=pass;
+	b=NcsyjCV8xpFDr/rcXQzlWY7a601M6+7bzvl2SroplcMR+wIdE2FOEb3FvYUhFlLQdU8m21
+	RfBDzvywX8T1Wj1DjxFjOAFmmOG+sRnoR4gFKHIeDWhNwj/uyrR+zHlJ+ZF69R+TWYwa/K
+	96Skm0bgxrJFkjE4yKokEZ0g1SxJN4U=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kBzjnndT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf22.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3870df2331aso65980301fa.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 03:39:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772710798; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hGasJA9jmBIxAxbok3jGXLNRbRh6W/N+S0cvti33alWfjHKZMyU0JbkFkti1YtsYGG
+         K569aWrzZFSkrDLqGvD3V7UeHFC/H05bq/4MNdNKV4c+hz24k1Bfz8xRTM9CUhiWJqoe
+         26Uqz7T7Pp3cEwRfsEZKGwGSIBnduIuSvboYUsfEEDBlsZKO+O0w3w1wT5XLF9xE4kYk
+         5U0VNTn4LN6n6WpEDb/GM483ZzZjdWwNW+V17qvkagsn/0hrRUpBIfoQDirIE7UfHb0m
+         EUB01KdRpOg8QcQIo2+ajlzAtv/+zvCSd3HiBDmtlc0/aAuuUCfhJE8coLcyBod9CscX
+         PjMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=trP2W0oN4p19Y5VrVJ4Gqg9OM1UXsvsrtCfj/w2m4qg=;
+        fh=kyW0xutFlYxYFoDQVssd9/I5tYG5xp9dlVzXsPR5j6U=;
+        b=k3th8ro6InSSwiIlUm9ig2ZK07yImk65yfBe6+rAOBhrABK/SO4iwOfdZEYmBSBDiK
+         SxwzWhB4a2FqXhChc4p8asomE14wAoDAFRTFFpELjGJ9AVVHAdcsCwcFk5+vhKYwFUH2
+         jx6tPf+2fIEPFVBw4hhxtjnRS+fcBSz/kK4lW3ggvy6mbwMphSBfOiyqDhXje8lpl+br
+         MeytGRT3wFpzsujeBI5gjuBfYP15t6hBTr2yzeJ0N6JPazbWLx5jsBiBpkbg8+YnBKd4
+         OGA9/t/IzQ7eof8yYxdU89xxcRUfr2rcTizNq87o9XGzUmPIpB2/GX8m4FMYhtGG5HhI
+         9+Kg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772710798; x=1773315598; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=trP2W0oN4p19Y5VrVJ4Gqg9OM1UXsvsrtCfj/w2m4qg=;
+        b=kBzjnndTsiMfJWRpZIOzE6fkAXBIq+JXNaFDAb3yOsMYKhixPpP/aQJeCJ4zCMS+QL
+         6i0azJ8LjYyGlJcoB+bMX1RSRK5m7owyEqqLjjeMiRcMsokNfZ6fkkUy/GyoyoPBIiEx
+         DTjYps5BEF7OCI8KCBWrAyp/F1l5SL043UaujknV7zzVRlFDTpVxo4IHkH+lhc9lhVae
+         jmEpJa5XBQ+8IVF1SQJsMqupRr3lhmYJeiUW8eoiPkzjzOq8khTjeeWuQDPRI0eyisiR
+         NccvVepxO+0mMr31ydKR8Wkg5DnbR04imkal/tVwSdYqChhjAKouW4qMYWS/C40wDwEE
+         BVaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772710798; x=1773315598;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=trP2W0oN4p19Y5VrVJ4Gqg9OM1UXsvsrtCfj/w2m4qg=;
+        b=Tr+q+F8gTr+NaZjFWVJ28mghroSElsVRow4VyyofRXVT1gl/Ugk4254pS7P3FB8BtO
+         0vzmIUsd7sJFcZXiGT+IO5BpxMoNNlB08e6JDpEWCKTtPmSVdAJGqqpk2/r2YliigzgU
+         s+dOprZJFGo6lC7iY/hMt9whVYR3njXfXta3ok71fKGKySkWedn+mt5PVVBSYuGj+ifk
+         80zDwXK0gLwUYxMJldy3vJSBvGglFeSwwp2XWDZ02opbVnoPjxcu7Ezz0YxBLLj0xkkE
+         lqztQSylcH/dfAuruyr/uwrXzffMDR8070tucC6oD+Wk8iezXmpB1TptuWyamw+rrhs2
+         VkTQ==
+X-Gm-Message-State: AOJu0Yw/6smCTRi9xkvZcWBUoSqtb24vSRR5K4htIxIMXGRen66K74Nt
+	nuV7GU1V2DVnIIQ3sJirwMEc22WZ1WuIBW2BXBXFVDfmraRyINfr/cBb5GiKeVFeAQK2vQCaQ9n
+	dDzlE26jC07ebru/XIspWsKEcJnCGKEKaPv08
+X-Gm-Gg: ATEYQzz/jpJu8KZgSB7w/t5xButlS4iXBAZdwh9fLIhQ+k0SMFBuk1ofnmWLY6/Jwgu
+	DQ1J+fAlW5IkuOKJ4ekWiBqiBlz+TkXbrxVHXMZ/802Ur+9DRpyxyPlwtYew1EPhXmdsT9F8YON
+	rPW+hFDQys8DWFUlM7Ewmt9GCCEKLQcUbVYzefESF9wp/n6STcFGh5duEM2mZmv9ByndODPogv4
+	sJ3g33fxEhjbVpqSjZYWzVXfohi+6OY4GERvUTn+c1uu10RopW7suN06Wz5T8Fv6WTbOdk/B6fy
+	Ax8DAYAKTl3MQzILkfklsMYiBUiRqNphcU/ioG0ZcqFNu1UpYk2thRie9+UQsHxAq7PAEQKjFDx
+	/dekCoW5B6Fvifc47SqVCr5+o
+X-Received: by 2002:a05:6512:3c82:b0:5a1:188f:3038 with SMTP id
+ 2adb3069b0e04-5a131ee54afmr886069e87.3.1772710797972; Thu, 05 Mar 2026
+ 03:39:57 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: walk_pgd_range BUG: unable to handle page fault
-To: Tytus Rogalewski <tytanick@gmail.com>
-Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de,
- Jens Axboe <axboe@kernel.dk>
 References: <CANfXJzt4P+FCkdL_=FfmG80_bY8FkzSocJSPeksSQ_vXObRNOQ@mail.gmail.com>
- <5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org>
- <CANfXJzsWFyKXJKsESM+7JXoGkDSeQt+Qaimy3FV1-neyXiHZBg@mail.gmail.com>
+ <5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org> <CANfXJzsWFyKXJKsESM+7JXoGkDSeQt+Qaimy3FV1-neyXiHZBg@mail.gmail.com>
  <CANfXJztYakHdsY0757+ssQf0WYtnrWdGd8mFegp6PLKZ_SKnCg@mail.gmail.com>
- <e21e21c8-e28f-45b8-8ee8-7e74d6607b73@kernel.org>
- <CANfXJzto6Ewoj2qDQ5OJEMAuxVcfFcvuxbtKChentqvb2r+jGQ@mail.gmail.com>
- <e2ce4df6-ef2e-4a0c-aee4-86d9614017cc@kernel.org>
- <CANfXJzt7yGZZcuBjmazU9n7V8vupMSLNm+qCiZxcrmtUZicR1g@mail.gmail.com>
+ <e21e21c8-e28f-45b8-8ee8-7e74d6607b73@kernel.org> <CANfXJzto6Ewoj2qDQ5OJEMAuxVcfFcvuxbtKChentqvb2r+jGQ@mail.gmail.com>
+ <e2ce4df6-ef2e-4a0c-aee4-86d9614017cc@kernel.org> <CANfXJzt7yGZZcuBjmazU9n7V8vupMSLNm+qCiZxcrmtUZicR1g@mail.gmail.com>
  <CANfXJzthDnrQJoCQWrfZwK1Mrw4QZv92ZEzsOy6WGqq3zCYzHw@mail.gmail.com>
- <0dfd588c-3284-4310-b1cd-aab54567f0c0@kernel.org>
- <CANfXJzs29Zv7Qw7cAiEzDLdTJpQEbm6mPeLTpuZkErV5GsDKfQ@mail.gmail.com>
- <ed3eecfa-a8d7-46fc-bbcd-025fd73e5511@kernel.org>
- <CANfXJzsh9m1xHszB3vdSUxfOHpxV6zNDs_0DU=kjjFJ6szEpJg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CANfXJzsh9m1xHszB3vdSUxfOHpxV6zNDs_0DU=kjjFJ6szEpJg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <0dfd588c-3284-4310-b1cd-aab54567f0c0@kernel.org> <CANfXJzs29Zv7Qw7cAiEzDLdTJpQEbm6mPeLTpuZkErV5GsDKfQ@mail.gmail.com>
+ <ed3eecfa-a8d7-46fc-bbcd-025fd73e5511@kernel.org> <CANfXJzsh9m1xHszB3vdSUxfOHpxV6zNDs_0DU=kjjFJ6szEpJg@mail.gmail.com>
+ <05a26f9d-e7eb-4aa4-b5a3-d485945f81c6@kernel.org>
+In-Reply-To: <05a26f9d-e7eb-4aa4-b5a3-d485945f81c6@kernel.org>
+From: Tytus Rogalewski <tytanick@gmail.com>
+Date: Thu, 5 Mar 2026 12:39:46 +0100
+X-Gm-Features: AaiRm51pu9uAWt2bc51DiyJcFutnByg1_nmjLiXZaSNUwMuaNtKcbrvZ1QK1Wi4
+Message-ID: <CANfXJztyrv3Bc-YtTWX64+tEWNGQE3cOdjs6PkAvR-aGYta-ng@mail.gmail.com>
+Subject: Re: walk_pgd_range BUG: unable to handle page fault
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de, 
+	Jens Axboe <axboe@kernel.dk>
+Content-Type: multipart/alternative; boundary="000000000000671b0c064c456528"
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 12914C000D
+X-Stat-Signature: ymbeajwrkxbphn6tntg3kpwy4s93631p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7FE5180002
-X-Rspamd-Server: rspam08
-X-Stat-Signature: pxbi1m6wayg48rsr1zyg3sp653s41f6r
-X-HE-Tag: 1772710698-240132
-X-HE-Meta: U2FsdGVkX1/zYRGor5SJFX/a6YSLlEKSdiyXqSN9EURRh/jNatzumr9jgjk1c1cOT/5GATd3VX9DxYh3TwU2Nl99+DoDmDJSP1iP0mkTZtwbwtvUBmKOA4OWda3F4xAUOZiXNcxugUhkUAJihcZBQalWyfMEypZ22FP59MVR9PNOQoiK1vvN4SDQMtenK0H3ENbB8uwBOzqwLoBWk7x73nq4AgrIgIFgETXhVai4NAIadV54dAZBvC0/vXfxhtHpBokS/ELkxuCnO7sGFLausbobvsWgh2gUMp4BJ/DGM2OnDJWUBicbDZiaoyDjSKtNEvoTG8YCQ3hYg255YTEt577HTy5R8JgTOCoi+PhUEI4aFLQ7jYT5vbRTe0v2v/Pk8DQXXUkAq8R2AeLO9PWboE2GRAf3SggSZwuTWDRm+2QhEWpYmzQ3b9ohKCmV9ScQnfToOI7Si7qxeMHZlBMpOr1CBeBYO26EcY+IK36+uLc0/TRXsYIFByOtpdDMjUOqLv9XftIlTqvPQ6yq1yNUhnYz4QaoKChJv4uQJSUKgyGRSwonpNJ+LF5Ta6+4G0MaUYodqNRrjHVgq+jUKbnWTdXCYF2DYPETqfA5mfXJ8CbBkhM7VnQoSz0UAOhX1HwElI75zERAHB4RtDByokqL0xEqqPMVKMeXaKmnxIj1+gDarrTTDoV6rDI1j41B39zNxBxQS2r/tNQ+sgG4kOCRFpO3qJ1qcRaLSuE+Z7ScVU7lwBu8KYwQ6DfcRpu8Wj0Aq+XfWFuNWroVr/NF2SwMS9sLOylaKTh+SIJ9qD+2cfzEfFolwfHSYue89ylMRGCH+wrDjw2HEgqyOstblazuXznAS6i0829pM5HRT1a6WECSUUf1GYN3tgFIHhwsx97VRGU6KTGBBfphbG0IIObm8WbDXjsSj9OqFyrLeXq5S6E8PHlpHanQ8Uu2gpmXPWF9hfN7/RW9HYIiPElpNIT
- JDmJlG+c
- /YVdV0sa8zIfKhnHKk47vIshcKd0OOOciI6Uw+Gf6XhQ7hrSgD6A0zE55Viqvzt2dZjelq5jjHuq1t+9n5e0CecYFQ2Wi8W388CqmdqTzWlQZMh22Yas08m5ths9M4rPxjdMWp5BlM5u1QGM7SuAJdAteFZhEEkXqEEKBb0Sh5Rxb8x4RL6BSh/+PIJYCaScygollBciiMSRe4TiuBudtluZFG06av/gKkjdz8rFJ3nzr/e4x9AhZ9BSCCm+qE74/6N4sCBY2P0ItI5v87A7aFHpO6hKihxBHsaDBgznEFAK1yeU=
+X-HE-Tag: 1772710799-410082
+X-HE-Meta: U2FsdGVkX18NqmUMY88kGehk6wIPZ8ms30pA8jM6761Bcxc8aKlZEXWJFv+iyo5f7PzmsbK7Ive/qNJCnWl34glXsuTR6hfByYDUkeaNWDejqcGv1CTIc43EkxO9WNNOPQWqTnHDL+uyGfwfedzjzKPOB9hxMLNeH3WF7ZOuMf7IAppEuqVCR2R/Wl1yo/of+RFfy5Xqlj6ysjfO9uCTsCiS/T9UKiuAAOxF0zsNU7/U75g7N64TXxCfPQ9gBHt62tmUktn+87lVTc47xvFxuv601rM0HQ497pnG4/gsKWrBACxTdcon6quQtsOardIgsNHj+tzGGGLp1NuFfSEuAQ3WWQBHVnc9sbvgMlEUTOA4wp0ixB9gVJi4ngpoNNyM2GFpTTfcA3kBJTtdo2DUNKqIwvHAuA/BkWu8qWpqKPiQKokhTlgrf/eun5UX0SHFvbXyhO/YOIdfO7KpvNcAP2hfDYSWijBtJbp/jbR9RiPZYa/17hLrlibhmop6/Cn5RVU4c1Gm77qgl5z29vIKV2qNeVQeYfH8nGgUsxASlOHlFI/++uMBYYNi7CBcJLXpk+HKx2T8gtJrRmQgjeVxHzVG2NGAdsDXzDz+6hmHud3foLYAVwcE8jH81uCu983c1uOck55WcRSFRwT9VqvNT9yhkRZn+lCz3n40PMHqCtUIWqUPjN5W2F6JLghTodgxkLT1oV5m30vC+6X2OLUcZ9416zDi6BmpHCyVQv/DdoT3oxnjEnrgJOKv1mXgpz4AADDB2C85RUriTF5UMQFAwfQGn0Gb1pvg3X+JtfOILdfoO0oGvmebu7lCjqCUbpxhCuEsG+/+SUYaEUJSEoak1EXI8K81Gl9pFUG+J1n5SPE/D4cZZvPLO3jtoFH37z8rl9J/9D3h/sfylF++3keA+sQpSaOAgTdCATiCKrW7ypkYiINMHT8E+C6TSelXxa0dnXAqJr/Ro8Xl8KuGji0
+ XUt/7wbe
+ vnUVIfXfT/zYo0nUGZwpuvWk2goDc9u149PAZKY/UPcfP5+wc7jaUrOGH49/NYnUvKVpVf31Dt4/wYZEztwkluJoxZoYhuId7GsskY63ejzPNmcjfCpMqZEBTRzsjNb1nZEOdl+aAkktoISkUYeCawFRhHQnMKTmMjYkGkPxvqDobAcJ1rb894aaWMes6BH3dWXgndAczbJfNUKUezPwfgSWiWOcQkL3T2bLZ3W60UdTXq2+wrvGv1zajpl9XOYUcYAndrUmu7Z7DiwEZLdEE9XoD9f02WzBWUELvOio+Y6J7z2RvZlmZYxQL3vSjp8CKO5oknVjQGlpuI+c9DGGx4JKH514hwLZJRuV5rLN4z+8fHhY2jt+ARCsd1fB1N1HRtrxnztZ/ps7j7h1dr8NCNn6wwvi/EdiW/qGcXwC5NWpQKfLqEvNJrYVyjxEMmGLOxccPpNT26eIQCLs8AHeh0x/B1f/uOPOLR5pGcMDNJ6uTt4nzMvIcwbVJ6yH8WFEMYgsHalOSpnuKc5YniFlQLj1N3Vr8fdh3/3dFBj0M1pSE453w5ZHCRr9K9GvRscSr5gWyX9XAVNpVTuixm5gOBAuRbcxoY17dqmAYFljcz7wFDJFkn7mGPp694cM47OIJeRsZVoJ69agaO+Jf2/2moFdO8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,17 +143,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 12:34, Tytus Rogalewski wrote:
-> Well, i would better not as i would have to put this on production as i
-> have no idea how clients are triggering this in their VMs.
-> Cant trigger this myself.
+--000000000000671b0c064c456528
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm confused, during your first mail you wrote "It happens on multiple
-servers (less on 6.18.6, more on 6.19-rc4+)", implying that you did
-reproduce the problem on 6.19-rc4+?
+I had this problem on 6.19-rc4 yes. I saw it. But i cant reproduce it NOW -
+this is what i ment  :)
 
--- 
-Cheers,
+--
 
-David
+tel. 790 202 300
+
+*Tytus Rogalewski*
+
+Dolina Krzemowa 6A
+
+83-010 Jagatowo
+
+NIP: 9570976234
+
+
+czw., 5 mar 2026 o 12:38 David Hildenbrand (Arm) <david@kernel.org>
+napisa=C5=82(a):
+
+> On 3/5/26 12:34, Tytus Rogalewski wrote:
+> > Well, i would better not as i would have to put this on production as i
+> > have no idea how clients are triggering this in their VMs.
+> > Cant trigger this myself.
+>
+> I'm confused, during your first mail you wrote "It happens on multiple
+> servers (less on 6.18.6, more on 6.19-rc4+)", implying that you did
+> reproduce the problem on 6.19-rc4+?
+>
+> --
+> Cheers,
+>
+> David
+>
+
+--000000000000671b0c064c456528
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>I had this problem on 6.19-rc4 yes. I saw it. But i c=
+ant=C2=A0reproduce it NOW - this is what i ment=C2=A0 :)</div><div><br></di=
+v><div><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_s=
+ignature"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"lt=
+r">
+
+
+
+
+
+
+
+<p style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-fami=
+ly:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">--</font></p><p =
+style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-family:=
+&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">tel. 790 202 300</f=
+ont></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal;f=
+ont-family:&quot;Helvetica Neue&quot;;margin:0px"><b style=3D"color:rgb(68,=
+68,68);font-size:x-small">Tytus Rogalewski</b><br></p><p style=3D"font-stre=
+tch:normal;font-size:12px;line-height:normal;font-family:&quot;Helvetica Ne=
+ue&quot;;margin:0px"><font size=3D"1" color=3D"#999999">Dolina Krzemowa 6A<=
+/font></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal=
+;font-family:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1" color=
+=3D"#999999">83-010 Jagatowo</font></p><p style=3D"font-stretch:normal;font=
+-size:12px;line-height:normal;font-family:&quot;Helvetica Neue&quot;;margin=
+:0px"><font size=3D"1" color=3D"#999999">NIP: 9570976234</font></p></div></=
+div></div></div></div></div><br></div><br><div class=3D"gmail_quote gmail_q=
+uote_container"><div dir=3D"ltr" class=3D"gmail_attr">czw., 5 mar 2026 o 12=
+:38=C2=A0David Hildenbrand (Arm) &lt;<a href=3D"mailto:david@kernel.org">da=
+vid@kernel.org</a>&gt; napisa=C5=82(a):<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">On 3/5/26 12:34, Tytus Rogalewski wrote:<br>
+&gt; Well, i would better not as i would have to put this on production as =
+i<br>
+&gt; have no idea how clients are triggering this in their VMs.<br>
+&gt; Cant trigger this myself.<br>
+<br>
+I&#39;m confused, during your first mail you wrote &quot;It happens on mult=
+iple<br>
+servers (less on 6.18.6, more on 6.19-rc4+)&quot;, implying that you did<br=
+>
+reproduce the problem on 6.19-rc4+?<br>
+<br>
+-- <br>
+Cheers,<br>
+<br>
+David<br>
+</blockquote></div>
+
+--000000000000671b0c064c456528--
 
