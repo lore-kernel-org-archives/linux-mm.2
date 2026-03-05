@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1038F3092D
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDE4F3092A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:33:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10E106B0088; Thu,  5 Mar 2026 05:26:13 -0500 (EST)
+	id 7735F6B0088; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 091EB6B0089; Thu,  5 Mar 2026 05:26:13 -0500 (EST)
+	id 721526B0089; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB5966B008A; Thu,  5 Mar 2026 05:26:12 -0500 (EST)
+	id 603026B008A; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA64F6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:26:12 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49A4613BD98
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:26:12 +0000 (UTC)
-X-FDA: 84511629384.21.F6609C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4E1EA20005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:26:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GxKcrp1N;
-	spf=pass (imf13.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F11C6B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:33:21 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E59E21B66C8
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:33:20 +0000 (UTC)
+X-FDA: 84511647360.10.A770465
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8C589C000E
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:33:19 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PaIgBv+h;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772706370;
+	s=arc-20220608; t=1772706799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=59shWrvzCYPy216TExIvl9Ztd39FVTGLj/jal3ckZ/8=;
-	b=Pj/xeDSeuTJbI5RP1dv0yDYksr0MESjEFUOVAulSNr0WsvOg/zEpzsX/GealWCkKacXEUA
-	CLqS3K8RUG01JmcXpKe/wKKLRbbWRqVqaFRUq0JTDWWTJ2dAAu0BdG7R4YjdSJN7LoAP7+
-	TMLovUpA1r88qjPT4D96/IbdSUO2MCM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772706370; a=rsa-sha256;
+	bh=y1Fj9M+9MCzVST4GZRGx2rYqUlSw5gaJKBoH4D41oZA=;
+	b=JM4CqggVqbyik/ynf1snHuS0/x/KTOT73DUFeJqntoycwODV8PmNk4j7OfS/2pfF7obQeG
+	L+2P1Oyq/5inXcx19edq8PEIapOO0rRNyETICqsSepqA7tRjgJOb3+AlA4Klw0LHvfZ4Lz
+	wuNE6nDt+gA/vxVOl2V86jU30jS/mHo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772706799; a=rsa-sha256;
 	cv=none;
-	b=XArDjwdHgbxQGzQixD7YChpZfuMwAYvkej9Vhz4oEPyBvPlP+ni54oY0bm+GsBN+C8/vvx
-	P2KyyLykQcKhNWpmPhENF5FwV4OrWUxj9NVx4qstLfPuSuC8/0/ceSu5/GYS28RCczrduL
-	TJEMlcRHn/4GQWL449Brd9lYd4IPHH8=
+	b=aEeBmAjBnZQ5irSvR82cAR4rBEubjDnfUtHidBzSEHI9nRpk3Q/h/1FsNSP2aNcpIr01ch
+	XyAdMilDgRe6GM3eKwmGMkaOLB0uRaGhm0Y2AF8T8jQkfNdKdg14F1p28FNfQQ5xr9Q+hw
+	2kHkQwGiWHO5btyHPDPU57HJtyWPygM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GxKcrp1N;
-	spf=pass (imf13.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PaIgBv+h;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AF834429B;
-	Thu,  5 Mar 2026 10:26:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D2BC116C6;
-	Thu,  5 Mar 2026 10:26:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E5B7361344;
+	Thu,  5 Mar 2026 10:33:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A930C19422;
+	Thu,  5 Mar 2026 10:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772706368;
-	bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
-	b=GxKcrp1NjpcJWIlYGOBMnLhrtZ6KW4d3Q0AsVsyUvzolHHPP6pu6s51wSMSIwgRS8
-	 yRiD27V16apOqOOtv2fOISUXuKvkHACUrrPlr6xBqZFHu5ciJuhbc9UhQ9orhkEWDf
-	 II0Y3z566YoYLMtSeEE9GRld5OIGUZcnuIdMzeiLhGWiIXEfNzNmYiMrI0B0EAL1Xk
-	 iINr1gmDzlK2m7I7Eiqkt2q86r0lyXIrXhW6Vrmbz/UKLfzkURGwvNibTBARbSaz8d
-	 /j1S3OI9ZMKfFUyrzCZbD+54Rz097Q/i7rTizm7UWSUaKwbdTfdVatnF8a2lHxsm+T
-	 DqI3xJSMJJdfQ==
+	s=k20201202; t=1772706798;
+	bh=y1Fj9M+9MCzVST4GZRGx2rYqUlSw5gaJKBoH4D41oZA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PaIgBv+hQWhUXggbSdfC69LRkexxpDTAW8zNRAFmpbJSTPWfYyoJF+mI94j4W3OhQ
+	 Q5aErN0GD5DbklxZ+35eRpQo8Y5fxdlx0zhxvS2B0qCRJvIqEQ83MLaP6IUQGXgnzN
+	 rat0CwNQ9L0prCkEahZN5p1S6xUr1exBmNYg3L3PNgRK4m0ORBqJ+dLk9puAn4R1t0
+	 XTvv0BoG/ykfT7+zs4dlRXiICL3rujs31ekaeQw9Z49lLMfZKhNA+G2Y5U+Ppm/H63
+	 Jhj8uog8R8rVIaTflFA7hxePO4DGHq8HAD3s3GbQYVZwk2D1DzcY9KfPlhLr9NLKkG
+	 L1SioXISm0j+w==
+Date: Thu, 5 Mar 2026 10:33:15 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.com>, Andi Kleen <ak@linux.intel.com>, 
+	linux-mm@kvack.org, akpm@linux-foundation.org, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v3] smaps: Report PMD page size for pure PMD mappings
+Message-ID: <f7ef9fed-d774-43b4-8ee1-20252096374e@lucifer.local>
+References: <20260303201556.107960-1-ak@linux.intel.com>
+ <101ac423-252d-4ef8-a07c-34f5d59820f5@suse.com>
+ <f03ac28b-a2f8-4182-9f11-bafd6309cee0@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 1/3] kbuild: rust: add
- `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
-From: Nicolas Schier <nsc@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
- Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Nicolas Schier <nicolas.schier@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
- linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
- Matthew Maurer <mmaurer@google.com>
-In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
-Date: Thu, 05 Mar 2026 11:12:59 +0100
-Message-Id: <177270557911.104478.12699746103670684667@derry.ads.avm.de>
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1892; i=nsc@kernel.org;
- s=20250924; h=from:subject:message-id;
- bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
- b=owEBbQKS/ZANAwAKAQdSCnAWJhJpAcsmYgBpqVctnTqdxXgENccjqWqtvxCvG/SQspXXSTbSz
- a0dBSGX4x+JAjMEAAEKAB0WIQSHQTenhzckp4G+wsYHUgpwFiYSaQUCaalXLQAKCRAHUgpwFiYS
- aSYjEAC16lSRDiDLSgS1R1i3F1HH9EHYStgMq9R4oaJFqofyb5aAQRP8jrKAFe1mp6cWxOA0IeB
- mh5i++AsAHMpukhZv3VRXZLkHM0d2mDOuk+pbPy7aw0LoDEiyOlgbVVFsyj0kuKTBkuBIVKJTZK
- fGE5bfqFJBo+MVbilCgJly6KhHcNxCAZXSSeI1It6+/NGO6HNGXferB8ZrS+DAAeTenWZSaGVYU
- F3e905Fv3wZtrGgwiGOxvGrJcWVr0hLfCuKGbIcdDpcsN4OmSOdQwQHdE1b5PJgv2t9Q18rcpv+
- XMZi6XKwTbymtUtRPAERCs/Pd6gBQAcXkjidQJ4wq2fAAr7gei5qkkU+XwWI1Z/RjSzFx0NrTdo
- 7eFqBttsygDVM5ztwdUQZ/4bely1jDEISSokiyW+dNxfZnmtnxZhSWeObmg0/51QnFa5Kw7/gT2
- VKiZcDFuH+jJ/OHm2glGJYJzfybNdorAtzoxBxDkG6jchRm92ljqGoAlfVXq9PHE89oTkQKnhdh
- wOZDoD2nuxE+DkzXvIhyqA6FnrO40hUs2si+NP0diQ9AHyl9I7GuajKEqXyGv2JO7e7NDuBIuJ7
- f4AlvYDcrwpdvCyr+bk3qp+MH+w9ChuQ/AycvODpM7aWG+KMFujj2LOmi97wm0m523zi825m5LX
- jenBOCuvsxI9Oag==
-X-Developer-Key: i=nsc@kernel.org; a=openpgp;
- fpr=18ED52DBE34F860EE9FBC82B7D97093255A0CE7F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f03ac28b-a2f8-4182-9f11-bafd6309cee0@kernel.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8C589C000E
+X-Stat-Signature: 5ra4enpe6j7gy1gn48sp87adk6z1zq59
 X-Rspam-User: 
-X-Stat-Signature: qm8h4gek7e36534kz5h55nrpfobofgnh
-X-Rspamd-Queue-Id: 4E1EA20005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772706370-131747
-X-HE-Meta: U2FsdGVkX1848yXtg64xxSs3F4LqIy+H+IKalz1DqrF9S0059Rz3bu9atvhACEWqB2lmJc7dbPDVUIpf5m+4/46uGgbdiOdV0RESSdWIZBGKguL6A8fWZYSDlRi7bJowH5Yj28odOWHJdn1q0GyQJ44rA+BLehK6Rzbj1Nva7IZVkIn7ixQ9ibUOWjFelZnQFX7M+el+Rph4Oe8ctAMjLBjkCdDd7hmooJsONppZa0Jl6hUONFBkWotQf0JwlFJwH0LEHTZUsFnLzPyRzZbMyP/Jbp6Cp7fw3ZamFB8vuoSnXL0Nj9iovhPqL8kLTallVRb0eLhoSuAjRE6K09qKYTN6kl07sAPVvDlwip9GG0Ut0sk+YMtob/j1tNh72lkAq2VzBhRmByhQdZ1lO784dY00WBMp2lzm3C/NVsaEyArHgtSxo91IiZRrypI14SrhmrtTjlrkCudv/Ym4mgiCbjmY9rWQyYcfIcU+qx5NyIphdOsTm4jhCyjI3LsNoink7BDtDisqgE+kaXT2sfNZTqbKk0TcM8lYkj+hus1iGuUjwGJYFquCP8XihlYuKrlWxgp4tj03gzjw+jsqQRlOVTxpiiZ3M/+B5hZmm3Xx82cSYtn13v2H1oudKxjHkq/xFQvguemJfIS4hHQsLRwLS6Kg0fdw9UjWGPL7X1GCJEoL+AcuUbZoTm3Pd4Rs63O7qqr4aPHlbpwaJIXR8woZ/2hS4+lHvdnkhfg4cG2z5RuRynZ73iJF1/keq5oCWIHxbwXYWmN8W1f3z1I8kOe8Om7NLsFxeMOoCPJBNWjwgq30Oa1PeOE0feCoISgn/O7opJZC22cPsUjGGoW08+uDaP6l1pfOhFbYWKExxajjcYwxdlK0P/ApnlLYLlumDqk2kUnRBh7GW6NWF23VAvJzzG/CUmqu/X+apnPcIOwBsCPLqvMtOYuZ7IBfbD6GA/j6z4jnobSBdng+fmUNRt1
- S4JjBhuY
- /8zvmBtZtyOqzj8Uv48B1GjvCugtj/vyt0ajQonrkIOwkGSFWBbPdgkzUZRVtiC2evvza1TfWrEoNqDlj9dWmJN/h+WMmCghaasn3JQwkEPivTGF5wOQ3sby5AuAb+3dSa0XHjXRN/ngwpQ+YLAkSlmraOpJJgREUoN57kYXxldxSNR/Kd+IHKxvXi6pyDwFp1MaBxAoldXYHyDHzYnCIvheNpI+E02FoCoIXp7FPTJJ+7s9bk9khBFE7hALmzrZ3QP5tO9oDyprtBT5V85FBrXelOyN1Abd/chyEVV6+mwPtnxqpoFGxaBhxbj2VCHcGVDC5g7IaXeXGHUOzEJseLdfa4tOXueYJFpmgqYJsN+C8fSFqbsIoXjpyzoPk9SFcN+yocXQxvU5N/ee77OGO9EJXzZ7YWE5WcDfG6jpD84Icylve2onccEE+H1y099xZ9+HeRg/RlvYsmzbUb/+svweDE8GlRY0CxktPs3FbzklZpg5gzHYFflaEHg==
+X-HE-Tag: 1772706799-178594
+X-HE-Meta: U2FsdGVkX1+frhIRbRdU9SDfairn4HYel6KkoAR0dGbCrOxnldrEc8Ku0tRDCfAIaJCv+rS5MOB8EdkJuwuzoc9Fsecn4fENX+TdD0rZpC+L8K1rPSxYrOdhFB8Hmfzs7JPj3sd/MZNVdNNTrk8iR618q5xVgPdN09R5nFmql5weeLQzEKngqek+TCC7KxXMyglOhqLSu2KeZEeZEpN+79U2jT1K255LWdrdOStOHWbKzGsFe0OMiDyOxp8ts2LVIbR7TO/3tj9iPkBsIaxtjK8iFrueeOdE907/aJ8utwIKsseWCtb+LxisZj7Sfuf330DLzsEBk8Ujtc1xFJDMdvKN9Xxs1rk75JkOqvQWj7SfyXGCJc/FLOVAMtSqS0NO9u69nZa4UTuOJ8y49fkf6WIXCruTGRw54vgg87utUMZyWa3Fy70WO9wG7YoVS3ifaU1K7HNCPV0Z4BHmzdWfbSA+ZS3Dfhrvhz4n5fIekDuBpqWyXlXKks3gi7ZdJOYgwF1NdEAF301yWuGsCZmUvsbPpX4E01EWLWbIjV0WXSomBPnrIpMTdLTIP9aiGDiqk8nVVJ1gJSnEJylgN6algNihY/NhQ8+5z269D0PQ6Ogu+RKvK0Ah4dNSGuMXMDUdsYlNGbBY+I3X9iOrngFhL2+4pD4PcEl5z71qfgdWhzUcQWVqejFGn5RGxtAhyqLzflyFA71iy0mQhl3ROt3247PhgfbJpfrLadOLComVohlFMGaUMpw81awh/B1Ao2FLldYgwvcyKNx9lpD6u5rSZ+8ioYvOBefEEb5EQyfBkewH/w+VeWl1Md6FoBC8TwcxRnTVaTS9HbZ3S3pyKBwpKQL5r5xQnfx/S8VhSnasfHBJ9puZJDfU6RqGKinhDKAe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,57 +91,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 03 Feb 2026 11:34:08 +0000, Alice Ryhl <aliceryhl@google.com> wrote:
-> This config detects if Rust and Clang have matching LLVM major version.
-> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
-> matching, otherwise it may generate errors, or worse, miscompile
-> silently due to change of IR semantics.
-> 
-> It's usually suggested to use the exact same LLVM version, but this can
-> be difficult to guarantee. Rust's suggestion [1] is also major-version
-> only, so I think this check is sufficient for the kernel.
-> 
-> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> ---
->  init/Kconfig | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/init/Kconfig b/init/Kconfig
-> index fa79feb8fe57..06f6b23c9fde 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
->  	int
->  	default $(rustc-llvm-version)
->  
-> +config RUSTC_LLVM_MAJOR_VERSION
-> +	int
-> +	default $(shell,expr $(rustc-llvm-version) / 10000)
-> +
-> +config RUSTC_CLANG_LLVM_COMPATIBLE
-> +	bool
-> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
-> +	help
-> +	  This indicates whether Rust and Clang use LLVM of the same major
-> +	  version.
-> +
-> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
-> +	  LTO) requires the same LLVM major version to work properly. For best
-> +	  compatibility it is recommended that the exact same LLVM is used.
-> +
->  config ARCH_HAS_CC_CAN_LINK
->  	bool
+On Wed, Mar 04, 2026 at 08:20:38PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/4/26 18:29, Vlastimil Babka wrote:
+> > Why do you keep not CCing people from v1/v2 discussions? David said that
+> > already on v2. It seems rather rude to me.
+> >
+> > On 3/3/26 9:15 PM, Andi Kleen wrote:
+> >> When a smaps mapping is only PMD mappings report the
+> >> PMD page size for MMUPageSize instead of the base page size.
+> >>
+> >> This is a revised version of an earlier patch that tried
+> >> to report multiple page sizes, but there were many objections
+> >> mainly centered around compatibility for mixed page size
+> >> reporting. This patch side steps all of this by
+> >> only handling the non mixed case in the simplest possible way.
+> >> It also avoids a problem introduced with v2 that page sizes
+> >> for mappings with no pages were incorrectly reported.
+> >>
+> >> Signed-off-by: Andi Kleen <ak@linux.intel.com>
+> >
+> > Will this be useful in practice or just confusing? There can be e.g.
+> > misaligned mappings, or other reasons why there won't be 100% THP
+> > coverage. This all or nothing value (IIUC) seems inferior to the
+> > counters we have that say how much is pmd mapped, so I'm not really sure
+> > it's worth changing this.
+>
+> My opinion on this remains unchanged.
+
+Mine also.
+
+>
+> Not CCing me once more is questionable and makes me want to recommend
+> Andi to work on different parts of the kernel.
+
+Andi - I'm genuinely concerned that you're doing this on purpose here -
+especially since you ignored that part of Vlastimil's reply and ignored
+previous feedback about failing to cc- on more than one occasion.
+
+Responding to negative technical feedback by being rude and dismissive then
+(seemingly) intentionally trying to circumvent the review by failing to cc-
+those who commented is completely unacceptable.
+
+Sadly I have to join David in suggesting you find other parts of the kernel
+to work on.
+
+>
+> I sent a doc update to clarify this. Won't make everybody happy, but we
+> can't turn back time.
+
+Thanks, will take a look!
+
+>
+> --
+> Cheers,
+>
+> David
 >
 
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-
--- 
-Nicolas
-
+Cheers, Lorenzo
 
