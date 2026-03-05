@@ -4,134 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D043F30922
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:06:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1038F3092D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:26:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 650EF6B008C; Thu,  5 Mar 2026 05:06:01 -0500 (EST)
+	id 10E106B0088; Thu,  5 Mar 2026 05:26:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FB016B0092; Thu,  5 Mar 2026 05:06:01 -0500 (EST)
+	id 091EB6B0089; Thu,  5 Mar 2026 05:26:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EAA96B0095; Thu,  5 Mar 2026 05:06:01 -0500 (EST)
+	id EB5966B008A; Thu,  5 Mar 2026 05:26:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FCE66B008C
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:06:01 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2AF68C701
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:06:00 +0000 (UTC)
-X-FDA: 84511578480.23.239DBB0
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E3EA940003
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:05:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SBbQtZoZ;
-	spf=pass (imf04.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772705158;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DA64F6B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:26:12 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 49A4613BD98
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:26:12 +0000 (UTC)
+X-FDA: 84511629384.21.F6609C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4E1EA20005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:26:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GxKcrp1N;
+	spf=pass (imf13.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772706370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H+g41L0ssohQDj8n8fJ6tCf5S39BQY8N7v69ggSq4hs=;
-	b=8AdiTHrdhSC8NaZwN4DNOryo7+VK3u9dg0eCTJvIlstHxY5Hc7qzx+nRnV7uxdoQJJUi0z
-	C5wWWb1o09BoF7h0oGE6PCVm7rin6zvYk8qbkjycI86NDywTAU6Qo99Sd4/ocBQdWckUXQ
-	71K5BWvQFxwkdXPWVqV5itnwgDTLwkQ=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=SBbQtZoZ;
-	spf=pass (imf04.hostedemail.com: domain of bgeffon@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=bgeffon@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772705158; a=rsa-sha256;
-	cv=pass;
-	b=jkSLnkqLC7buwjqyqcGZ1e9ntQAqWE/AYnba91vKdh7qzBRE4FahYaN+zwNxavExJvLpoZ
-	7Rrjbqijw8nAfVxv4FaphhyFRYbF2SO8zquUbeTQv91qp7QoRsJ+1TlUR9PyuDTXDlZdA3
-	Dzbi7nuvDAwqWeiKfsk87sYML3D4EsY=
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5033b64256dso443461cf.0
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 02:05:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772705158; cv=none;
-        d=google.com; s=arc-20240605;
-        b=K5v95zvNrq8O5pjLC537nRiepIM4icQHiGccd6U7QJGB8S8+D2mrDzLhqDc4B7p0Rs
-         EuMciXMBbNE818kB2htrLCwmTwMqrnz8a5/sSWhYmDeaIloTEamD3JYrYej9qUx2MciH
-         f/sm0/3jw3YlhNsXvwGth1oDAZVnKaJuBZy/9zmhSxQ2YEYykApkeOXgca7q/YLen8Of
-         8yMSjzuKu1+0pOEIdPQGGs2MUanID2jcByuDcZ+2YIPQzZEB5GkNgdx9taAWj9SkeN/s
-         2bhuCVDmJfqAato/yESchw6BTCFfo8BWjgkm6A+MdrM0EB/ud4j6Bg3EJFXzhRDK+MHb
-         lbUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=H+g41L0ssohQDj8n8fJ6tCf5S39BQY8N7v69ggSq4hs=;
-        fh=Z2wvOux2vtGZLrqkGVzcZN3ctO8TOjEBEAGBE5QMyqU=;
-        b=Ela2H1mu7G46RGpk5T/QWhK9k2M2faspX6IMJHavtyIP33yHYYvi9KckMmpbwLmZKM
-         gbSDDsgZkZICBUjdPCJVuivnE01c45pR4MrCVqFl35NQV8eTboYxKE1479YfdOEvsj+u
-         qsHhwKUN+lgNu4sYSPYycLZBYw6vZo8Z0ldhN9ZNqnaCUBvXWAYN59abwKcRJPdTyQzL
-         GevlHnfNCXbxdkHlByZRZXIfQ35Pjv0VdPRUJoxQtCf3foMu3OB0H4w4zd/r5hfholsc
-         111zBL29aSFONcFIyize4yE323Aggm05zTrKvVI500DGvgqWJEXf6+9WUzPOfqkTQh9D
-         xaoQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772705158; x=1773309958; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H+g41L0ssohQDj8n8fJ6tCf5S39BQY8N7v69ggSq4hs=;
-        b=SBbQtZoZUbtdFpthUQvIQ8imk2EMMzbN7VeJaV9JU39b8BI0Nvr++OD6Da9GTt6wIz
-         4SufhaD0GuYL5GxVsZHNW1a8za2pHF/Yrk6PqRhHAJTZsD0JkoJhIc0rqV1pxrrAVAy2
-         pp+XJmw8rtpMQKcILLeZANxWtG36fRKSJpCNJ1VN5TBqo99vL3mdqkCANJUS0UuJze2t
-         YlVcuqTJXbBUv57zkUPeGpKLNE10Qmqg2Q5712Nqt7wIvXx2hgdG6qH1UUnVm4Ft7BNW
-         18ANQpIWd9FB5KbilXOmiIrlRyYLUw1BGE0Ti4888+bEr+WGmq1kNQBjvMl/jmzKnomP
-         RvPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772705158; x=1773309958;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H+g41L0ssohQDj8n8fJ6tCf5S39BQY8N7v69ggSq4hs=;
-        b=VtSBmOwFjDoUj+S47xPD46H4gWaVZ/HNcA1eKXBRSwreGqbvopaHpUGdKe/GzH42+6
-         k8/QW9SbwvMcZphzSDVPi4xe4XOdy90JJeSThqu/m2beoGhOYRyUTWBKEZAOjKvzB+cU
-         72/ow9pp/6eFHHFqqJu6zoHKtfAGDfhyJXEmtgelOSHsrSLduWY86veGrelYYPlpct8C
-         eoBggUAJiZTQhv/lvT5mktvlm3N2/6naeogFxQsytwNzZriMf8rDcxYUa9k/ELs11RuR
-         PIC+XqUbgTCU9z8ZChkkLG4Xtd4iXBPWjQq8UvKgtRRNfOSU4k6UR5gCmNPQECo3WZOF
-         XGbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp0glsL7+LpYoO3SNkG9oXZnoWr+sbsbMcCuDUe33P7oJgvOSH2xYK/T8cMSfTTkof+xFDayrGgg==@kvack.org
-X-Gm-Message-State: AOJu0YwMWyRPD4K/WhjkbFDubgU4H4GEWtmcwqLoJiMh9oDio0wcf9ut
-	vFtG1T/k6DwttHGoZKR9rPo+nIYyHLDi0ZAPxipE+Z7XGWoPVn9lmuKDEN9iVVOQ+teDTG9De2n
-	exrP5T8kp0ZM2l+Wc64c02kztIVJJqIxNqsuUG15xKLAYond4eTeYbLOrfQM=
-X-Gm-Gg: ATEYQzw/uIkmcWTsGss2JfOqZTbjk5JiQ07JgFd/51QbB/NOBN8AypxPkgkpKsgQokq
-	Qu8igXDAnBE04gall/CHpOLm5cHzRiGr4gU7zgE6Iq5L89fWNwTgkp4vLw44MThB5CivF4kQs/J
-	1VX2hJPS/jpjyzy8olyUyXw6O8LKsdEXdvAfkNkczqPcv7UG2pNO/aJTeMWUbxnfT8ucd6M869z
-	MW3j5DF/DX5+MYpYyswlN8F0rFYRlNHSFJHNHJP4la5yWsB4PZhmAndJyauMs2yM82fHqZuSVBa
-	G12vTg3XCGwTPmY6ehPbuEzT+2X76xgSBOd1JVxkWoz+aGMNlqPFir9ZaqjqpM2PFtTtl17p0RZ
-	i9ffJ4IG48Si3J/WP5bDs8Zwk3JeuqFf+QMRxhQpl0uNUrhXJ7Q6t76WZ9g==
-X-Received: by 2002:a05:622a:1991:b0:507:35b2:6b9 with SMTP id
- d75a77b69052e-508e789aec2mr6977561cf.7.1772705157664; Thu, 05 Mar 2026
- 02:05:57 -0800 (PST)
+	bh=59shWrvzCYPy216TExIvl9Ztd39FVTGLj/jal3ckZ/8=;
+	b=Pj/xeDSeuTJbI5RP1dv0yDYksr0MESjEFUOVAulSNr0WsvOg/zEpzsX/GealWCkKacXEUA
+	CLqS3K8RUG01JmcXpKe/wKKLRbbWRqVqaFRUq0JTDWWTJ2dAAu0BdG7R4YjdSJN7LoAP7+
+	TMLovUpA1r88qjPT4D96/IbdSUO2MCM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772706370; a=rsa-sha256;
+	cv=none;
+	b=XArDjwdHgbxQGzQixD7YChpZfuMwAYvkej9Vhz4oEPyBvPlP+ni54oY0bm+GsBN+C8/vvx
+	P2KyyLykQcKhNWpmPhENF5FwV4OrWUxj9NVx4qstLfPuSuC8/0/ceSu5/GYS28RCczrduL
+	TJEMlcRHn/4GQWL449Brd9lYd4IPHH8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GxKcrp1N;
+	spf=pass (imf13.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0AF834429B;
+	Thu,  5 Mar 2026 10:26:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D2BC116C6;
+	Thu,  5 Mar 2026 10:26:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772706368;
+	bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=GxKcrp1NjpcJWIlYGOBMnLhrtZ6KW4d3Q0AsVsyUvzolHHPP6pu6s51wSMSIwgRS8
+	 yRiD27V16apOqOOtv2fOISUXuKvkHACUrrPlr6xBqZFHu5ciJuhbc9UhQ9orhkEWDf
+	 II0Y3z566YoYLMtSeEE9GRld5OIGUZcnuIdMzeiLhGWiIXEfNzNmYiMrI0B0EAL1Xk
+	 iINr1gmDzlK2m7I7Eiqkt2q86r0lyXIrXhW6Vrmbz/UKLfzkURGwvNibTBARbSaz8d
+	 /j1S3OI9ZMKfFUyrzCZbD+54Rz097Q/i7rTizm7UWSUaKwbdTfdVatnF8a2lHxsm+T
+	 DqI3xJSMJJdfQ==
 MIME-Version: 1.0
-References: <20260305021619.617481-1-senozhatsky@chromium.org>
-In-Reply-To: <20260305021619.617481-1-senozhatsky@chromium.org>
-From: Brian Geffon <bgeffon@google.com>
-Date: Thu, 5 Mar 2026 02:05:19 -0800
-X-Gm-Features: AaiRm51mCLv4tspe-LWl4ePlymzT_ZYJEBCBG4LmtBoD7ujo4U4hnyv72lvhXA0
-Message-ID: <CADyq12y1r9G9WZd0ODY1OhhHMzjELQeqp5nORc2rVMsbKXfMBQ@mail.gmail.com>
-Subject: Re: [PATCH] zram: use GFP_KERNEL for post-processing slot allocation
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kxebww9gjg3awy1rqudfrgunzt4chfax
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 1/3] kbuild: rust: add
+ `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
+From: Nicolas Schier <nsc@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Nicolas Schier <nicolas.schier@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+ Matthew Maurer <mmaurer@google.com>
+In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
+References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
+ <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
+Date: Thu, 05 Mar 2026 11:12:59 +0100
+Message-Id: <177270557911.104478.12699746103670684667@derry.ads.avm.de>
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1892; i=nsc@kernel.org;
+ s=20250924; h=from:subject:message-id;
+ bh=mopNjxyGlc1UwRsEKNs25RNJFEbs0dSzzcVn/5Lrcpc=;
+ b=owEBbQKS/ZANAwAKAQdSCnAWJhJpAcsmYgBpqVctnTqdxXgENccjqWqtvxCvG/SQspXXSTbSz
+ a0dBSGX4x+JAjMEAAEKAB0WIQSHQTenhzckp4G+wsYHUgpwFiYSaQUCaalXLQAKCRAHUgpwFiYS
+ aSYjEAC16lSRDiDLSgS1R1i3F1HH9EHYStgMq9R4oaJFqofyb5aAQRP8jrKAFe1mp6cWxOA0IeB
+ mh5i++AsAHMpukhZv3VRXZLkHM0d2mDOuk+pbPy7aw0LoDEiyOlgbVVFsyj0kuKTBkuBIVKJTZK
+ fGE5bfqFJBo+MVbilCgJly6KhHcNxCAZXSSeI1It6+/NGO6HNGXferB8ZrS+DAAeTenWZSaGVYU
+ F3e905Fv3wZtrGgwiGOxvGrJcWVr0hLfCuKGbIcdDpcsN4OmSOdQwQHdE1b5PJgv2t9Q18rcpv+
+ XMZi6XKwTbymtUtRPAERCs/Pd6gBQAcXkjidQJ4wq2fAAr7gei5qkkU+XwWI1Z/RjSzFx0NrTdo
+ 7eFqBttsygDVM5ztwdUQZ/4bely1jDEISSokiyW+dNxfZnmtnxZhSWeObmg0/51QnFa5Kw7/gT2
+ VKiZcDFuH+jJ/OHm2glGJYJzfybNdorAtzoxBxDkG6jchRm92ljqGoAlfVXq9PHE89oTkQKnhdh
+ wOZDoD2nuxE+DkzXvIhyqA6FnrO40hUs2si+NP0diQ9AHyl9I7GuajKEqXyGv2JO7e7NDuBIuJ7
+ f4AlvYDcrwpdvCyr+bk3qp+MH+w9ChuQ/AycvODpM7aWG+KMFujj2LOmi97wm0m523zi825m5LX
+ jenBOCuvsxI9Oag==
+X-Developer-Key: i=nsc@kernel.org; a=openpgp;
+ fpr=18ED52DBE34F860EE9FBC82B7D97093255A0CE7F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E3EA940003
-X-HE-Tag: 1772705158-627321
-X-HE-Meta: U2FsdGVkX1+NeX7mzVZ2lDzTRfRAPvswAYe5WFx/yOpSwGmKU5VvZdZaj+w8Uue1SeH1lu95FDPWl1K/yYFYoLwfUr2c62CviQktUjPz8osmX8pI0Z3HwTMpmEj66lz0wGVPGI2+fH5kwBAu8KmpS6wjm+XXL9zZJ+T1hWv+WlhrEZ8LMF1eTmxjE9qw/M9JMp4JsrTQtdZekzf9+vr94T73f9r8njaJiKj0cb5C2jUmsmgz3IwJdrKK3waE6+0YnqCg+qcVvtDtpiQIu2FjDyiCpCAhmj/cxiFxUL7XqBe5m2rTdPoX0LPoGwv267UWJy8VdQeEDukBCQaAxdDSZvQ3qtk6R6GNvB83nBbI/B4cnUqFn1HM5ozMmAzd5d2HvqEcfnUBDGb6GeMCIb7UxnInB6wam2wYcDhJhZgLDLoxKEF1HgRRAj1qMKzw0dCP1AnWSz8mIi+9SxQqNzAgd6L0aSfE2VFBhhR5iTR8h8dy72SFaUOnJ6tkxMrqWMXduyXzkTNfU/TnqssC+Tcb6YwPlzwUJl0Ug8fleza83UIYLgsVeHEIQFxLu2yh9NQS/JNcby6UOwHNve+USQfQxE8obQ62xkur8YUYgP1maHukTDFcnCoP7eTAiSlPNA7FEtZu/H+JqwfRges/LaxbqwMtcm9hezfXHtvdIjKTMAdrVAe5wPH8hojiW4YkMxts6mLmixF9ebfQnIs0THzthn9nqJVgp4Bq7jDwEpQa3SLOmQDIlSvMRxoro6kXydaN2LWMwXhdW4i16q8Wq1E7XVbFx6P94BGxHdaxGMFXlRt0oAwf3f2WIVOYaML87qbGlqkjkkEMeX3PV+lt99T8BCptwc66DmE4puQOkO7xcfsRQIq89nbDn6Ndtet9qUCxYdKQOJZvH60cBSHsMuUIeEBiKdUb0ovTVFTzyvIqN5VuUALJguhxO4UaboqoAChAxDRPgxw4CEpIrZBG9Db
- 2lAazs1W
- uIfmdIsBZRRV6+1/K3X1LWd7KulA1OTQAWQfSZSBIqMAsZvVCyLDQm9Uyq+j3Kl+EQ5b3otQxGHjG/EUKg9dsbFozYJKsJgkEi0P8Xk8o/Mx8C1pgLviJPNz1jKh6+lwcU964GbV0wx9z4EHfWp7vAySABn19vouR+ukwY9lETnnPlM6F8aaIU2ubzeXjeQ0IXaL3ZuQqrSbHgDGzRML2t0s4LVENXeiZcZwJUjnzhTDsldB9j8EC3t2bA1GjvTmBPWQcfzFq6qBwfCD6twFk/RMHcgUw6Zdbafyb2GZZPiS61D1XbFvsef5KOa8Swt+SlPPuWGiDzVOYB/U=
+X-Stat-Signature: qm8h4gek7e36534kz5h55nrpfobofgnh
+X-Rspamd-Queue-Id: 4E1EA20005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772706370-131747
+X-HE-Meta: U2FsdGVkX1848yXtg64xxSs3F4LqIy+H+IKalz1DqrF9S0059Rz3bu9atvhACEWqB2lmJc7dbPDVUIpf5m+4/46uGgbdiOdV0RESSdWIZBGKguL6A8fWZYSDlRi7bJowH5Yj28odOWHJdn1q0GyQJ44rA+BLehK6Rzbj1Nva7IZVkIn7ixQ9ibUOWjFelZnQFX7M+el+Rph4Oe8ctAMjLBjkCdDd7hmooJsONppZa0Jl6hUONFBkWotQf0JwlFJwH0LEHTZUsFnLzPyRzZbMyP/Jbp6Cp7fw3ZamFB8vuoSnXL0Nj9iovhPqL8kLTallVRb0eLhoSuAjRE6K09qKYTN6kl07sAPVvDlwip9GG0Ut0sk+YMtob/j1tNh72lkAq2VzBhRmByhQdZ1lO784dY00WBMp2lzm3C/NVsaEyArHgtSxo91IiZRrypI14SrhmrtTjlrkCudv/Ym4mgiCbjmY9rWQyYcfIcU+qx5NyIphdOsTm4jhCyjI3LsNoink7BDtDisqgE+kaXT2sfNZTqbKk0TcM8lYkj+hus1iGuUjwGJYFquCP8XihlYuKrlWxgp4tj03gzjw+jsqQRlOVTxpiiZ3M/+B5hZmm3Xx82cSYtn13v2H1oudKxjHkq/xFQvguemJfIS4hHQsLRwLS6Kg0fdw9UjWGPL7X1GCJEoL+AcuUbZoTm3Pd4Rs63O7qqr4aPHlbpwaJIXR8woZ/2hS4+lHvdnkhfg4cG2z5RuRynZ73iJF1/keq5oCWIHxbwXYWmN8W1f3z1I8kOe8Om7NLsFxeMOoCPJBNWjwgq30Oa1PeOE0feCoISgn/O7opJZC22cPsUjGGoW08+uDaP6l1pfOhFbYWKExxajjcYwxdlK0P/ApnlLYLlumDqk2kUnRBh7GW6NWF23VAvJzzG/CUmqu/X+apnPcIOwBsCPLqvMtOYuZ7IBfbD6GA/j6z4jnobSBdng+fmUNRt1
+ S4JjBhuY
+ /8zvmBtZtyOqzj8Uv48B1GjvCugtj/vyt0ajQonrkIOwkGSFWBbPdgkzUZRVtiC2evvza1TfWrEoNqDlj9dWmJN/h+WMmCghaasn3JQwkEPivTGF5wOQ3sby5AuAb+3dSa0XHjXRN/ngwpQ+YLAkSlmraOpJJgREUoN57kYXxldxSNR/Kd+IHKxvXi6pyDwFp1MaBxAoldXYHyDHzYnCIvheNpI+E02FoCoIXp7FPTJJ+7s9bk9khBFE7hALmzrZ3QP5tO9oDyprtBT5V85FBrXelOyN1Abd/chyEVV6+mwPtnxqpoFGxaBhxbj2VCHcGVDC5g7IaXeXGHUOzEJseLdfa4tOXueYJFpmgqYJsN+C8fSFqbsIoXjpyzoPk9SFcN+yocXQxvU5N/ee77OGO9EJXzZ7YWE5WcDfG6jpD84Icylve2onccEE+H1y099xZ9+HeRg/RlvYsmzbUb/+svweDE8GlRY0CxktPs3FbzklZpg5gzHYFflaEHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,36 +125,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 4, 2026 at 6:16=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Post-processing slot allocation used to be performed under
-> slot bit-lock, so gfp was restricted, then we switched to
-> a sleepable slot lock but gpf still remained restricted.
-> Drop that restriction and use GFP_KERNEL instead.
->
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Brian Geffon <bgeffon@google.com>
+On Tue, 03 Feb 2026 11:34:08 +0000, Alice Ryhl <aliceryhl@google.com> wrote:
+> This config detects if Rust and Clang have matching LLVM major version.
+> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
+> matching, otherwise it may generate errors, or worse, miscompile
+> silently due to change of IR semantics.
+> 
+> It's usually suggested to use the exact same LLVM version, but this can
+> be difficult to guarantee. Rust's suggestion [1] is also major-version
+> only, so I think this check is sufficient for the kernel.
+> 
+> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
 > ---
->  drivers/block/zram/zram_drv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  init/Kconfig | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/init/Kconfig b/init/Kconfig
+> index fa79feb8fe57..06f6b23c9fde 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
+>  	int
+>  	default $(rustc-llvm-version)
+>  
+> +config RUSTC_LLVM_MAJOR_VERSION
+> +	int
+> +	default $(shell,expr $(rustc-llvm-version) / 10000)
+> +
+> +config RUSTC_CLANG_LLVM_COMPATIBLE
+> +	bool
+> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
+> +	help
+> +	  This indicates whether Rust and Clang use LLVM of the same major
+> +	  version.
+> +
+> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
+> +	  LTO) requires the same LLVM major version to work properly. For best
+> +	  compatibility it is recommended that the exact same LLVM is used.
+> +
+>  config ARCH_HAS_CC_CAN_LINK
+>  	bool
 >
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
-c
-> index fa38d26119ec..6a6fd08a5a15 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -297,7 +297,7 @@ static bool place_pp_slot(struct zram *zram, struct z=
-ram_pp_ctl *ctl,
->         struct zram_pp_slot *pps;
->         u32 bid;
->
-> -       pps =3D kmalloc_obj(*pps, GFP_NOIO | __GFP_NOWARN);
-> +       pps =3D kmalloc_obj(*pps, GFP_KERNEL | __GFP_NOWARN);
->         if (!pps)
->                 return false;
->
-> --
-> 2.53.0.473.g4a7958ca14-goog
->
+
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
+
+-- 
+Nicolas
+
 
