@@ -4,86 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96A83EEF314
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FDB8EEF312
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:47:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7A6A6B0088; Thu,  5 Mar 2026 02:47:31 -0500 (EST)
+	id B13A56B0089; Thu,  5 Mar 2026 02:47:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02936B0089; Thu,  5 Mar 2026 02:47:31 -0500 (EST)
+	id ABDBD6B008A; Thu,  5 Mar 2026 02:47:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C097D6B008A; Thu,  5 Mar 2026 02:47:31 -0500 (EST)
+	id 9EA766B008C; Thu,  5 Mar 2026 02:47:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AC61B6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:47:31 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 247E28C438
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:47:31 +0000 (UTC)
-X-FDA: 84511229502.21.0384A10
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 2984E100007
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:47:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HIUBD1Is;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ECD56B0089
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:47:49 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27193140822
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:47:49 +0000 (UTC)
+X-FDA: 84511230258.13.3562EA1
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5EF82A0011
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:47:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nagqFMze;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772696849;
+	s=arc-20220608; t=1772696867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKeJ7rMALYTbebsY+kRx+KAJHf7HkxWsA8p9wEo81Rc=;
-	b=T6Xoicap3V/qtTwD6twxa7O13zYKEmKfngmNgmSCXDFWRltv+f9PIVrI+Nr0w5NYhF9/RF
-	H8WW0d6ImR+JJRqaar1Wb3Tx4a3N0GaiPH8hNmQqKkENP6WTpeJL75ksbMDL0FL2nINcIT
-	271WFavjDOL88hrHnVnlUX4ainO8xyA=
+	bh=4zIs5B4IfIJkIrNAqEi1uOTqaoKwddZrm56ShDHbB2U=;
+	b=DYnaTwk1AHoKZn69iKwBoom4p2nA7MoHHEASxn3PV9d4XdrWYQJvpY1rzSqj4M3iH7AHuy
+	n/mTOremoSxfLd/gjIrcehY5RQ8+2dusw+5+zvJbJvYyltxCgwN9DlkeONV4gA/Nyd4yt9
+	JmHKbyk16KNd2fYfSvxpjhZKlzNqXHM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HIUBD1Is;
-	spf=pass (imf05.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772696849; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=nagqFMze;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf15.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772696867; a=rsa-sha256;
 	cv=none;
-	b=KGQqflTedsTYGfNCzpBg2uUeXhGzI74+29NxIgPVHVb3laL/i2I3FwhME/AGNrzIoA03wo
-	kcYmk/+ssFUDRB/ATpjnNQDn8CpXtfEP5kfInnbqNG3hrLMexB3o2aPD6BEdWUnBm4rDPZ
-	U6B8Hsvqj5hqUgIqiNF8fUsNIaXZDy4=
-Date: Thu, 5 Mar 2026 15:47:18 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772696846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tKeJ7rMALYTbebsY+kRx+KAJHf7HkxWsA8p9wEo81Rc=;
-	b=HIUBD1IsTFwPZ4qEjY/0K3tu4spsSjCBv9LEDoadmVWlxoimJNXZbtQnZuhYoozLN9lIh6
-	yX2QtLVwxcO6I5E87dHbUAbmbSGOloHzhyD7Qe1JWS/A4YNXr4vCjWgcoOnlyVX0c7p90u
-	0xThu9wpor+iBCIhzgduOWfywjKUr5Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>, vbabka@suse.cz, 
-	akpm@linux-foundation.org, cgroups@vger.kernel.org, cl@gentwo.org, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com, pfalcato@suse.de
-Subject: Re: [PATCH] mm/slab: change stride type from unsigned short to
- unsigned int
-Message-ID: <osbee2ajebflm2rlcyh6qe5yhra6zulmjyz5j775z4pcmsxrmy@qgs6pi4s4fpd>
-References: <20260303135722.2680521-1-harry.yoo@oracle.com>
- <41f1c856-2c41-4d11-96e6-079d95d8efbb@linux.ibm.com>
- <aakrMQ9fKG52WtxE@hyeyoo>
+	b=NVsp+jbRUqO1BI1IDWNZn46Ld+S/kkRKqlsni/WUokfQbwCxNlHeetJS35FK9huk57upYQ
+	zrVVvgk9gBzWY+lKQc5Hja9hIDY8yFL6JVZSbPdEK1niwck8z1KIN+UY3VuaxHXEuLcE94
+	4Nk+7agj0FJkd8VtjS0cieruVd5zKLE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=4zIs5B4IfIJkIrNAqEi1uOTqaoKwddZrm56ShDHbB2U=;
+	b=nagqFMzeoY61aSNrKECedwVcACRxQ7UjHd3MZ5oLoA1mO1RmeP0h0mSYpbPhH+Buf5U240qnZ
+	WUQ18nPJFgNkMfcP4bwvJTnBbI7+cjNiDcZ+1DC3msaFQ24Fbsy3PzfENX8EQAOyGEwhRTAeAtb
+	GfagO01cpRXiKDffZVTctSw=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4fRM2Y3nP8zKm7C;
+	Thu,  5 Mar 2026 15:42:45 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id C9099402AB;
+	Thu,  5 Mar 2026 15:47:37 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 5 Mar
+ 2026 15:47:36 +0800
+Message-ID: <cd4995fc-6eb9-49b9-8474-000704ee0cda@huawei.com>
+Date: Thu, 5 Mar 2026 15:47:35 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aakrMQ9fKG52WtxE@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix folio isn't locked in
+ softleaf_to_folio()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<fengwei.yin@intel.com>, <baohua@kernel.org>, <ryan.roberts@arm.com>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20260225081240.253057-1-tujinjiang@huawei.com>
+ <db51a324-ee8e-44fe-b7bc-6ca65a3c2a3d@kernel.org>
+ <2a46b99d-7f03-4e47-b0ec-da2475d49af8@huawei.com>
+ <917a2a5a-f499-4759-8160-c8e7d9c0ed65@kernel.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <917a2a5a-f499-4759-8160-c8e7d9c0ed65@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5EF82A0011
+X-Stat-Signature: rxtpspopezyru1k8snwkdb68phzcp6jg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2984E100007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: emzu5ufoh6gj4n3pp67sskkacbi7bb9m
-X-HE-Tag: 1772696848-650765
-X-HE-Meta: U2FsdGVkX185y8ZLS+PF14XgZ//v6sB47p39pA4i2N7+5wYKV9fQkF0hUG5qU6KXQlxFZf6/N10Eah+XxzWtKr4MDSBEwF/mI0iyOo+dyIOCgYhQsngorU5Ehi/oBF/ykle7j3R6zXhc2AuBpxSbKGAzBLgVZSxu4ny483pQSD/2TUHHPP6kfK10lSyi2DytAvKRp2I/jPR2KPQ3iPioRZbW+cBkasjUklB0bS+zlXSv59AoAyTjCVGliZ+NamQZMHIB2zPBlz5iYMEdPpAfzx8SfeIaNMcdAc0S3srbgOn9Lr9lauY0mCWuR75V0Zl7ZlYD4fV4YqgDcHupCMvmDbzQQqe82CqPl5vMBM1JJtj2v9wfpykAu/o6arfb9yMn4OxG7P0TDuCxwLxRSe4UfwcEvQESGIHbAigrka0hoMn+sC5ggNVKDAHrsTvPKXE7xq+6qvKXZ8Na1bImwaqa/HURvYH+3VzrV4n+t1saOqxy/EsZUtf54WJg9mI4lK+XWdCwo0z+dZa9qDuus32MQFYnLxHAv0W3HOSa3Tg0P9fO7w9DDgZJHTttfybIF+jt7ba3xWBBTOSaBIc9FF/R+3NHAKD5TpWiHHkGpOxIRfzQzYcScuMc7mdzQgcJtx6HcVtTP1fna1QbdoKzmvlkAwh/XM7oprKW0inWcVwtcrfz7C16opW18v8imDWTzYG90kOpyWoTS0oURZgM6FUYedGsW5q7k4XllfpJRZoovr9SAy/2/It07rTBFkHCUA07jF1s7GBM7F5P/TJWrUYBKXau848ZqMSlqf5vCsONdC0JgWm4qh0ZaVsfAgRQ8L9xkXwxDehu9oIIi40ntWhGZT5YcLxw/EcPgZBT28lJOmCIV3KVeJN/mtk+OMkx8T/T9tQw9zCOfJiwz0gIywXxjcWBedpyKWd3J5zie7n5L8Bi4was2tcoPhfw9jAFvJJCLy2jaqPeYB9+xDALBC2
- snNKJNpT
- s3d3sYLZiQ4itgvkug6kKLrnqtW79u7dWslqf4DHwTgm7bajpITKxuUj6Bf2pLmJauvPFVHYowPWEqRPM1sngKAKbOHXlb+2p8YT8ogTZfenkDvYIbKDcPVhFKkhEgckB8A/A8rCzscuxk2rSFyox5i3DAasKYdGj0A3VAPH0OgQxPncVI1RMHDWcMKLlaWskaxahQ7/suQx7o2SrWFJffUbK7KLYuqT7CUfj8sX+Ah9xCZAoEgXokoGBEdBDeBlExg6seCyI2i9t8XtdYWAXTZ42qg==
+X-HE-Tag: 1772696864-592409
+X-HE-Meta: U2FsdGVkX1+kRg+5FQIM3LCo3X/NneVfqjkd42OvqhMgFn9JPjCDthvskCY/1SU+k5FzTKtoE8Jq6GMYX++snLzefwBSbmCxBeEU03YDtt6ISsm8ldkyTU/BgnE6BQ8fXLqRPdhqWDe4HMjFFOxGIUiPxPQkl+eL48Ov0rhd29CaRpwuvbAtMW/cQ2uH6fIN4tRD1H1g9JA3391h8UU1cF9HjbIJcUbpxfxoFN4cpC+CDyCj8iK27PhPadxGmjhOO2fm1gZtmNK61pXFOaIsjXwsCrWfArQWzQDqVY3cUdnwm8g7Eync3xoJagoFQ9JPL6NkuVB0bsg0kA5GCJezzzv2pJDfFeGvwqsVkbWfNSEFs2OtG29ZgI5wup74nlQSjZ1E+kBn1wD7a/aJnFIYZO0dj8ltEOoWgaGHk6249oNQkeXvx95P0AVGudAHPmDNbmCPGvy5NTWVcNtIntHG7SAV8sWwRpH6a6Bo836vKanUXHGZiW4LmK26gVCXw9mniI0TbURsbbhQUxXf8KHxNNfTvpbrIuqimy9ijvKmf+yU6qDHsdKPZVU04xnP3uJ5W6n+5X9Y5EnhmciYzn9FIThdA50xrh+fU3OMgsJej0XjBOVegxYI63mgJddm2qRXgBkci4CLxYVacVwlYDUdLrTA3ncKDsdAJRZuRJhQqwzg5A/plWw5ZxH9GDKIaHUcCXjRN6PC+XAxKY1X35wg6bRqkSoscr0wviOYMV2OvpNYsTt97mnfg+FbSLYrzih+MQrMn2G7OIu6Op0zASG8kCBFGACT6yfOAsEd7/jSWAuKw6dRL7M7ZAXxz93zoICsVOiyp9QBS2I5GM2ZLfqkQd5MUJ3lNmHpjoAq7HqO1wnTdu8DzWZIiBDokwYH/0OYvKpzv/pTbVDC1ff8mC7wDydSaP5/W0/GsDuPoUv03WlzkLwcWgUEnYy1LOUKm3pR0Z8kyUJQ/wC0Uu8pE+Z
+ rB2vzuHU
+ SS9lUUnHudltoKeMjuoPbs9/MLBJU7kXiC6juYOV4LaDda5x92cSrgI/4BbQ2l4Zc0EyDZmmVgb6mBgSlvdFSAz79XzSa0ZpIi/jgKgna9kDmAO3Nhy6JogbJKL3r/CQT/v3+IawmKZRqYPdTfJHs9kkasMGCnc5HACjn/IkGSpV0s9tjKGfRSukPKNh4wm4Xb/Aeyw+JDjPxvACeliy/42qyqHaKuxZBo3Pkk7smHUSv9D1aQeJiUeqTlXZZ/cP3266znYETKHWN5c6x4gp4Okc8B7OmMBfJG8AKL3g8Zh5AkXWdX6eb5pTUYTzIYnFYNU0k0dCQtnpyCvwyVCfgXClMY5fnmZiZdxf2ACdqj8CdQnjYsC+sA3wzCGknr2X/pMv8s992zMV/8AG9HZ4UtWjUGVE43aqfqyO9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,93 +104,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 04:05:21PM +0900, Harry Yoo wrote:
-> On Thu, Mar 05, 2026 at 12:24:08PM +0530, Venkat Rao Bagalkote wrote:
-> > On 03/03/26 7:27 pm, Harry Yoo wrote:
-> > > Commit 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> > > defined the type of slab->stride as unsigned short, because the author
-> > > initially planned to store stride within the lower 16 bits of the
-> > > page_type field, but later stored it in unused bits in the counters
-> > > field instead.
-> > > 
-> > > However, the idea of having only 2-byte stride turned out to be a
-> > > serious mistake. On systems with 64k pages, order-1 pages are 128k,
-> > > which is larger than USHRT_MAX. It triggers a debug warning because
-> > > s->size is 128k while stride, truncated to 2 bytes, becomes zero:
-> > > 
-> > >    ------------[ cut here ]------------
-> > >    Warning! stride (0) != s->size (131072)
-> > >    WARNING: mm/slub.c:2231 at alloc_slab_obj_exts_early.constprop.0+0x524/0x534, CPU#6: systemd-sysctl/307
-> > >    Modules linked in:
-> > >    CPU: 6 UID: 0 PID: 307 Comm: systemd-sysctl Not tainted 7.0.0-rc1+ #6 PREEMPTLAZY
-> > >    Hardware name: IBM,9009-22A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW950.E0 (VL950_179) hv:phyp pSeries
-> > >    NIP:  c0000000008a9ac0 LR: c0000000008a9abc CTR: 0000000000000000
-> > >    REGS: c0000000141f7390 TRAP: 0700   Not tainted  (7.0.0-rc1+)
-> > >    MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28004400  XER: 00000005
-> > >    CFAR: c000000000279318 IRQMASK: 0
-> > >    GPR00: c0000000008a9abc c0000000141f7630 c00000000252a300 c00000001427b200
-> > >    GPR04: 0000000000000004 0000000000000000 c000000000278fd0 0000000000000000
-> > >    GPR08: fffffffffffe0000 0000000000000000 0000000000000000 0000000022004400
-> > >    GPR12: c000000000f644b0 c000000017ff8f00 0000000000000000 0000000000000000
-> > >    GPR16: 0000000000000000 c0000000141f7aa0 0000000000000000 c0000000141f7a88
-> > >    GPR20: 0000000000000000 0000000000400cc0 ffffffffffffffff c00000001427b180
-> > >    GPR24: 0000000000000004 00000000000c0cc0 c000000004e89a20 c00000005de90011
-> > >    GPR28: 0000000000010010 c00000005df00000 c000000006017f80 c00c000000177a00
-> > >    NIP [c0000000008a9ac0] alloc_slab_obj_exts_early.constprop.0+0x524/0x534
-> > >    LR [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534
-> > >    Call Trace:
-> > >    [c0000000141f7630] [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534 (unreliable)
-> > >    [c0000000141f76c0] [c0000000008aafbc] allocate_slab+0x154/0x94c
-> > >    [c0000000141f7760] [c0000000008b41c0] refill_objects+0x124/0x16c
-> > >    [c0000000141f77c0] [c0000000008b4be0] __pcs_replace_empty_main+0x2b0/0x444
-> > >    [c0000000141f7810] [c0000000008b9600] __kvmalloc_node_noprof+0x840/0x914
-> > >    [c0000000141f7900] [c000000000a3dd40] seq_read_iter+0x60c/0xb00
-> > >    [c0000000141f7a10] [c000000000b36b24] proc_reg_read_iter+0x154/0x1fc
-> > >    [c0000000141f7a50] [c0000000009cee7c] vfs_read+0x39c/0x4e4
-> > >    [c0000000141f7b30] [c0000000009d0214] ksys_read+0x9c/0x180
-> > >    [c0000000141f7b90] [c00000000003a8d0] system_call_exception+0x1e0/0x4b0
-> > >    [c0000000141f7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-> > > 
-> > > This leads to slab_obj_ext() returning the first slabobj_ext or all
-> > > objects and confuses the reference counting of object cgroups [1] and
-> > > memory (un)charging for memory cgroups [2].
-> > > 
-> > > Fortunately, the counters field has 32 unused bits instead of 16
-> > > on 64-bit CPUs, which is wide enough to hold any value of s->size.
-> > > Change the type to unsigned int.
-> > > 
-> > > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> > > Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com
-> > > Closes: https://lore.kernel.org/all/ddff7c7d-c0c3-4780-808f-9a83268bbf0c@linux.ibm.com
-> > > Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > > ---
-> > > 
-> > > Hi Venkat, could you please test this on top of 7.0-rc2 (instead of
-> > > 7.0-rc1) and see if the bugs [1] [2] are reproduced on your machine?
-> > 
-> > 
-> > Hello Harry,
-> > 
-> > Apologizes for delayed response,
-> 
-> No worries.
-> 
-> > I was out sick.
-> 
-> Ouch :( hope you feel better now.
-> 
-> > I have tested this patch on top of 7.0-rc2, and confirm, this patch fixes
-> > both the reported issue.
-> >
-> > Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> 
-> Thanks a lot for testing & confirming!
 
-Indeed!
-What a counterintuitive issue!
+在 2026/3/3 3:43, David Hildenbrand (Arm) 写道:
+> On 2/26/26 03:01, Jinjiang Tu wrote:
+>> 在 2026/2/25 17:15, David Hildenbrand (Arm) 写道:
+>>> On 2/25/26 09:12, Jinjiang Tu wrote:
+>>>> On arm64 server, we found folio that get from migration entry isn't
+>>>> locked
+>>>> in softleaf_to_folio(). This issue triggers when mTHP splitting and
+>>>> zap_nonpresent_ptes() races, and the root cause is lack of memory
+>>>> barrier
+>>>> in softleaf_to_folio(). The race is as follows:
+>>>>
+>>>>      CPU0                                             CPU1
+>>>>
+>>>> deferred_split_scan()                              zap_nonpresent_ptes()
+>>>>     lock folio
+>>>>     split_folio()
+>>>>       unmap_folio()
+>>>>         change ptes to migration entries
+>>>>       __split_folio_to_order()
+>>>> softleaf_to_folio()
+>>>>         set flags(including PG_locked) for tail pages    folio =
+>>>> pfn_folio(softleaf_to_pfn(entry))
+>>>>         smp_wmb()
+>>>> VM_WARN_ON_ONCE(!folio_test_locked(folio))
+>>>>         prep_compound_page() for tail pages
+>>>>
+>>> In general, relying on a "struct page" for a migration entry is shaky,
+>>> because it can change any time from being a large folio to being a small
+>>> folio.
+>>>
+>>> So we generally only check properties that would be true for either the
+>>> old (large) or the new (smaller) folio, like folio_test_ksm() or
+>>> folio_test_anon().
+>>>
+>>> It's important that these properties were written for the new folio
+>>> before a migration entry user might look at the page indeed.
+>>>
+>>> So it's not just about the locked state.
+>>>
+>>>> In __split_folio_to_order(), smp_wmb() guarantees page flags of tail
+>>>> pages
+>>>> are visible before the tail page becomes non-compound. smp_wmb() should
+>>>> be paired with smp_rmb() in softleaf_to_folio(), which is missed. As a
+>>>> result, if zap_nonpresent_ptes() accesses migration entry that stores
+>>>> tail pfn, softleaf_to_folio() may see the updated compound_head of tail
+>>>> page before page->flags.
+>>>>
+>>>> Although the code exists for long time, this issue should only exist
+>>>> after
+>>>> mTHP splitting is supported. For THP splitting, there is only a pmd
+>>>> migration entry
+>>> When splitting, we first install a PTE table, no?
+>>>
+>>> unmap_folio() passes TTU_SPLIT_HUGE_PMD.
+>>>
+>>> and it's impossible to access migration entry that stores
+>> Indeed, I misunderstood the code. So the fix tag is incorrect.
+>>
+>>>> tail page pfn.
+>>>>
+>>>> To fix it, add missing smp_rmb() if the softleaf entry is migration
+>>>> entry
+>>>> in softleaf_to_folio() and softleaf_to_page().
+>>>>
+>>>> Fixes: 7dc7c5ef6463 ("mm: allow deferred splitting of arbitrary anon
+>>>> large folios")
+>>>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>>>> ---
+>>>>    include/linux/leafops.h | 39 ++++++++++++++++++++++++++-------------
+>>>>    1 file changed, 26 insertions(+), 13 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+>>>> index a9ff94b744f2..f823f390ba6b 100644
+>>>> --- a/include/linux/leafops.h
+>>>> +++ b/include/linux/leafops.h
+>>>> @@ -371,14 +371,21 @@ static inline unsigned long
+>>>> softleaf_to_pfn(softleaf_t entry)
+>>>>     */
+>>>>    static inline struct page *softleaf_to_page(softleaf_t entry)
+>>>>    {
+>>>> -    struct page *page = pfn_to_page(softleaf_to_pfn(entry));
+>>>> +    struct page *page;
+>>>>          VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+>>>> -    /*
+>>>> -     * Any use of migration entries may only occur while the
+>>>> -     * corresponding page is locked
+>>>> -     */
+>>>> -    VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
+>>>> +
+>>>> +    page = pfn_to_page(softleaf_to_pfn(entry));
+>>>> +    if (softleaf_is_migration(entry)) {
+>>>> +        /* See __split_folio_to_order() comment */
+>>>> +        smp_rmb();
+>>>> +
+>>>> +        /*
+>>>> +         * Any use of migration entries may only occur while the
+>>>> +         * corresponding page is locked
+>>>> +         */
+>>>> +        VM_WARN_ON_ONCE(!PageLocked(page));
+>>>> +    }
+>>> Conceptually, wouldn't the smb_rmb() have to happen *after* the
+>>> page_folio(), like we have in softleaf_to_folio()?
+>> the comments of page_folio() says:
+>>   * Context: No reference, nor lock is required on @page.  If the caller
+>>   * does not hold a reference, this call may race with a folio split, so
+>>   * it should re-check the folio still contains this page after gaining
+>>   * a reference on the folio.
+>>   * Return: The folio which contains this page.
+>>
+>> The old large folio is locked and freezed during splitting, page_folio()
+>> couldn't be called with reference held, so the result is unstable, the
+>> caller should recheck after gaining a reference, at that time splitting
+>> finishes, and folio_get() contains memory barrier already, ensuring the
+>> folio flags is seen after compound_head.
+> Let me elaborate what I mean:
+>
+> __split_folio_to_order() does:
+>
+> 	/* setup flags and mappings etc. for the new folio */
+> 	new_folio->flags.f = ...
+> 	new_folio->mapping = ...
+>
+> 	smp_wmb();
+>
+> 	/* Now re-route page_folio(). */
+> 	clear_compound_head(new_head);
+> 	if (new_order) {
+> 		prep_compound_page(new_head, new_order);
+> 		folio_set_large_rmappable(new_folio);
+> 	}
+>
+>
+> So I would expect the opposite direction to do:
+>
+> 	/* Lookup either the old or the new folio. */
+> 	page = pfn_to_page(softleaf_to_pfn(entry));
+> 	folio = page_folio(page); /* looks up compound head etc. */
+>
+> 	/* Make sure we'll see proper flags, mappings of new folio. */
+> 	smp_rmb();
+>
+> 	/* Continue using new folio */
+> 	folio_test_locked() ... folio_test_anon() ...
 
--- 
-Thanks,
-Hao
+Yes, it's clearer, and consistent with softleaf_to_folio(). Thanks for explanation.
+
+Since softleaf_to_page() and softleaf_to_folio() have duplicated code, maybe we
+could extract a helper:
+
+
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index a9ff94b744f2..34d280af98a3 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -363,6 +363,22 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
+         return swp_offset(entry) & SWP_PFN_MASK;
+  }
+
++static inline void softleaf_migration_entry_check(softleaf_t entry,
++                       struct folio *folio)
++{
++       if (!softleaf_is_migration(entry))
++               return;
++
++       /* See __split_folio_to_order() comment */
++       smp_rmb();
++
++       /*
++        * Any use of migration entries may only occur while the
++        * corresponding page is locked
++        */
++       VM_WARN_ON_ONCE(!folio_test_locked(folio));
++}
++ /**
+   * softleaf_to_page() - Obtains struct page for PFN encoded within leaf entry.
+   * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
+@@ -374,11 +390,7 @@ static inline struct page *softleaf_to_page(softleaf_t entry)
+         struct page *page = pfn_to_page(softleaf_to_pfn(entry));
+  
+         VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-       /*
+-        * Any use of migration entries may only occur while the
+-        * corresponding page is locked
+-        */
+-       VM_WARN_ON_ONCE(softleaf_is_migration(entry) && !PageLocked(page));
++       softleaf_migration_entry_check(entry, page_folio(page));
+  
+         return page;
+  }
+@@ -394,12 +406,7 @@ static inline struct folio *softleaf_to_folio(softleaf_t entry)
+         struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
+  
+         VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+-       /*
+-        * Any use of migration entries may only occur while the
+-        * corresponding folio is locked.
+-        */
+-       VM_WARN_ON_ONCE(softleaf_is_migration(entry) &&
+-                       !folio_test_locked(folio));
++       softleaf_migration_entry_check(entry, folio);
+  
+         return folio;
+  }
+
+>
+>
+> Instead of
+>
+> 	page = pfn_to_page(softleaf_to_pfn(entry));
+> 	
+> 	smp_rmb();
+> 	
+> 	PageLocked(page) /* internally does page_folio() */
+> 	folio = page_folio(page);
+> 	
+>
+> Maybe that is fine, but it sure is harder to argue about correctness?
+>
 
