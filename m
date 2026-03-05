@@ -4,212 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C91A2EEF310
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA825EEF313
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 07:27:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194AF6B0088; Thu,  5 Mar 2026 02:06:03 -0500 (EST)
+	id BF1756B0088; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14B966B0089; Thu,  5 Mar 2026 02:06:03 -0500 (EST)
+	id BA90C6B0089; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04DF96B008A; Thu,  5 Mar 2026 02:06:03 -0500 (EST)
+	id ADF0D6B008A; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3DF36B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:06:02 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7716C2CA1
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:06:02 +0000 (UTC)
-X-FDA: 84511124964.14.F4F77D3
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 36CE320005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:05:59 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HMbBa0H7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GHKJ7m2+;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772694359;
+	by kanga.kvack.org (Postfix) with ESMTP id 9AB206B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:26:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37B7B140814
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:26:59 +0000 (UTC)
+X-FDA: 84511177758.30.65DD8FF
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2F28A1A0003
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 07:26:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772695617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lvCq9nHzoymVDDKHwG3DXUy4XCx8yYoPpxI8VqNBUaE=;
-	b=EmWUQRs5eeyhIGlXBx2W1Tf3vZO6v9KVaQJh5AM1f67IuYlDI1yYV3bIBjUfsDFL7tcncj
-	BZeZi5KXwEgJ4vOpgNuQyo1XTQINMS7whR6ebOw+U8Quo7Ov35A+23H3wmAQU6Fv3rpvRH
-	zjjWQVuoniJMRTGxGkjQqsva7YQM6L8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772694359; a=rsa-sha256;
-	cv=pass;
-	b=FCvF1dq1zpyduj0hrjqvVU3pqOn4FgwDQ2vExEpnpH1R1+5/ofT5bxkd4p1OMJSxwDvw/0
-	RmkR0coepcG19l1F/eDvuls9LuE5/SVhFQYrs6X976i78wwnsEBThk+20yLOZgCvSYIg2q
-	l5jsUop6s72k2SWsBBstUwFx9wEr6WY=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HMbBa0H7;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GHKJ7m2+;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6256aJ6F115755;
-	Thu, 5 Mar 2026 07:05:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=lvCq9nHzoymVDDKHwG
-	3DXUy4XCx8yYoPpxI8VqNBUaE=; b=HMbBa0H7fLj+eSFg4uJ8PH9Si6LB5PkhM1
-	jPRxtPSlRCRMVtjzWwqGbJMObvs8n8PEkGQVzGWmbCLB7qXelT9zmtQc87k0l/uf
-	8E9T1g1QhdoSjrXPjLKDxkciTFESc4zp91JNDlivzw9gXPQ6dVU8Oe6Id7t2Dvs+
-	I76XX4BIgtXHFyZTEYjWt6g7Tu0iL+TqVHmqxnMJ+4vVy/3lGPvYp3M7+X6rbEzO
-	NWqvRwQTjVeZdUYnY81JpKRlZQjB9VgYUL2FDNdrDnqNO7a+wSls22aGUnX683xv
-	GlR3PsrRlSj4rvk67NqvPBUlZnKzy56Y5hcOb1xMhz87mBYdcWyQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cq4q881fw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Mar 2026 07:05:53 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6255LAZJ034689;
-	Thu, 5 Mar 2026 07:05:53 GMT
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012003.outbound.protection.outlook.com [52.101.53.3])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptgw6sq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Mar 2026 07:05:53 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XU5vG1douPPsLdy2jnUphmOjlrCPdXRJbXf35MLgHqUcJS2CUaKfjW8sBxirmcNkaqCf7NZF1zH2NUTQtn0caczCZy5njG7Xid/NL4MC6e/0ff5S8WD7+wwntKq6rSb4mX++qcPjIUsZ5o1aMnBXgD2cU1crjNIRDlnRbIVMoIdD/Y9DYwQEX9VmH5p4WQj0kKsNch9VyxIT05JHOp9Vy2hO3UVy2CJaCI7nzpoj7PX5mlkimz5tZCrgBg+O/ypmQWpYk9sFJzCvck/aZ4uL3GhGfv+iQyftyPsr9wKYmQRdBgkDCbKn/0z2o1L2prhnqDM4U7tEmgmfzHQ3ywDjUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lvCq9nHzoymVDDKHwG3DXUy4XCx8yYoPpxI8VqNBUaE=;
- b=PPXImn16GoHBiKf0bfmgQSi2wLN24VZDIc+cqZXYkQa2GNfbOQH+u8hJYAeQFriV6TWZ4Fyycy58FlYROByyJ8EbB3kdRZ2LomPsuYxk6yTqhj7JfjV9hPswPIry8K//O+q+I8rGhJiWE7QMYUkSWvE2/MIzeCeyraIMTwP1SpX/dl0CDZ74pEKeJAXQku6tSlJ5R+/0RFmZxtCnIRPUqtXEKwgwAINZo+x7SVUlEnWKEtEDajX+PYqDfvvnJRYn+efKqLGrDEkgQnROYCtAtcMyi7ABjB58ceuLrdqkG3+gYirPturga/yScmKE5bac1ZXQhId6+dAlVJSN8WOX3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lvCq9nHzoymVDDKHwG3DXUy4XCx8yYoPpxI8VqNBUaE=;
- b=GHKJ7m2+v76gfmOd8du7zOvUA5ntXLOtMWAHXIS23C1ej2eSSOW/hjNzzMv+Gkqbu392omGBu3pD1GOfk4aYME2Jt+0gt1s7iN+BhqVBGHurzI1BD+uY9iFR09i1/OMQrQ2LL+JXo+H/AzhM9YIKzXPtsE9YxhKyIAqMdT4DXsg=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CH0PR10MB7411.namprd10.prod.outlook.com (2603:10b6:610:187::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
- 2026 07:05:28 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 07:05:28 +0000
-Date: Thu, 5 Mar 2026 16:05:21 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: vbabka@suse.cz, akpm@linux-foundation.org, cgroups@vger.kernel.org,
-        cl@gentwo.org, hannes@cmpxchg.org, hao.li@linux.dev,
-        linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
-        rientjes@google.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-        surenb@google.com, pfalcato@suse.de
-Subject: Re: [PATCH] mm/slab: change stride type from unsigned short to
- unsigned int
-Message-ID: <aakrMQ9fKG52WtxE@hyeyoo>
-References: <20260303135722.2680521-1-harry.yoo@oracle.com>
- <41f1c856-2c41-4d11-96e6-079d95d8efbb@linux.ibm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41f1c856-2c41-4d11-96e6-079d95d8efbb@linux.ibm.com>
-X-ClientProxiedBy: SE2P216CA0018.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:114::17) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=qOWsCuHFCcn3b3neSBl9Kufkh3tqOq/hBEXTcCFQxsQ=;
+	b=vGXrgm4lbrLRGM5Q1lJ78J+tdCw/UGIz8B86abRhpwUT7/iAss7nEgtrulQXz7lu/Bw1N5
+	8WZztcACFP1Dzjwrtikxj0qYq/NFESOk5US8KgkoYp3Qz1hxJKlGmxZBp5cqPzr4NiBufE
+	89ZuKmQWzFWYA+NMwX37BkOMBiBuCU4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of zenghongling@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zenghongling@kylinos.cn;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772695617; a=rsa-sha256;
+	cv=none;
+	b=ZQpiFn4FSbCraD5Kh4nxhyrOuA8NRE7EsW3CeJmQ1x6G0WUq8lwiuJpahRHeHKbXR3NY31
+	9Wdcbhv+Il23s2l4XzczwfZeA7yAhtwRSS/TN7VNMYftipH8DK/QgMKeDZAvzYSKJ36Vug
+	tQVr0vWAX+mdHSu2tr/2FmdBjWLf/mI=
+X-UUID: a8220f20186411f1a21c59e7364eecb8-20260305
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:3ad0e231-104a-4498-be29-821f3f3b453d,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:80015e11db1ce3bae87d07a51a425f03,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a8220f20186411f1a21c59e7364eecb8-20260305
+X-User: zenghongling@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zenghongling@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 826623739; Thu, 05 Mar 2026 15:26:42 +0800
+From: zenghongling <zenghongling@kylinos.cn>
+To: dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	kernel@vger.kernel.org,
+	zhongling0719@126.com,
+	zenghongling <zenghongling@kylinos.cn>
+Subject: [PATCH] mm/percpu-internal.h: optimise pcpu_chunk_struct to save memory
+Date: Thu,  5 Mar 2026 15:26:36 +0800
+Message-Id: <20260305072636.570130-1-zenghongling@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CH0PR10MB7411:EE_
-X-MS-Office365-Filtering-Correlation-Id: 120875e0-8867-46de-28c8-08de7a8594e7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	y86lMraDfFHN6ejl2gmOXPTKygtAcl6RQT0MEph5MK/ouSpLjyuROw5kfafLSB9BlO4njtky3xcvc1Wir/cNTK3rp/NNTYBNjpK63yHm3E2c6+hZpBSN5rWGczhj+cURAP44s5hm4UPo5jPf8KxA3h/E7h1k4SA/8keLT6H43kPptlwVJHZRjRMyPYERm0zjW84ENUIV0VCPFC4KNcvzoIGAXwY7P6Z3Qn6x/rHX/hHUJgM+kuQQq0HXZ+OUsZ5ji/9uapPQN3QXQCpljXtwRvsdfib+o6rPK4Aeks8GIOdHq43+de0yGw2grEAiCbl7kzq6RqM8gaBkVbSUfASHDSqCLj4faVDg1I5KXJj1Z2Rf0JwpSEaWdxymKFottzna6RhZOJwehNcCRmnDdocJ/TlpNuVSjrnimhwQP1b0GyFp/J4MYGMRfFzm4jxHZYistUKjuUHy+EevJcXT680Ak7KS8283VFz8SVx9/8peRVtOIpSUrBCbiDyBNC85ZrFeuCMGTMoTZH8FLTwsw+Z3J2gCLRZFX3V4C6If6ckDHuk2UpCoUlmwaG1fNYSHSLrCMU4kYZmJuVbM6rz/vtXlZhxTHS2Pgxe+JwjnbGdVV7XPKx0T6juzCHAbHkcC6cSsbgBh6DsH4dTxRnWVMRFGaBiI78g0LzSa4/NK40xR6QY6Cys0esG+legwUWIqAaPc+zBQSWvJH3b8nHYI7l2mTxs5odI0FnYuBSOpc55iOMX6ti+oZVqzGkSCIZixyub0
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3Gc0jKnsALw2aGax7+2XYxcJ9Tw17N0EawXYqLsxz0KQzLIaWbPIelovlOjn?=
- =?us-ascii?Q?kw4kun9J7LpWBmwfFRSxMKR5z5HpFyYb3gE5Zg4EMRAMaQDtGJmdGypbdkYH?=
- =?us-ascii?Q?FWn7j3lB5Eyb/CYkIXvo4VGduxrYoPvo5+EZwaqDuG48qXvbTQEo5r1qiq74?=
- =?us-ascii?Q?LKY6s/j6YiMSpK/p+x60cS8s9tapBYP+8IQMpWUTKFYoLKOX9S06d0e3fMFX?=
- =?us-ascii?Q?imGy+8TIS6ttw+T8LtGu5qJjJCTdl8HPgm8zhjOUDEunCobdi2CEnfLIwnRx?=
- =?us-ascii?Q?IqNfcBgkE7+UAUsFNwbz2pxCsyq34xkEHyKKK2BHePw4Osh693+z5YYpRGhZ?=
- =?us-ascii?Q?TivRAxqHw6QeKaEQjmZdeQqbQiCa2GKe/xvZiX7yMpu8p5gHMUHK0Z8++WWE?=
- =?us-ascii?Q?wYnHYA60+fMIrvKxVXk5/OyMpG1tbOrRcCu8eo+aG/mbJfxUyh9PvGojlavj?=
- =?us-ascii?Q?cctWGqu3+9c5U636g6CqN0nws1Rg6rrD07sqQjGilQDpCtZdWq+q+VG8c7jd?=
- =?us-ascii?Q?6klIPAiBJ9DNtl3WqVCmobk7qZKju16JQyPn2+V2JwAJIyytkfKYWirRK/g6?=
- =?us-ascii?Q?mA2IskXHoSUZd7WkVJkkjWdUZJJrKuyiklxObW+MmjaQ/DCGSOdzCrlZ63/e?=
- =?us-ascii?Q?H+cOmPeSmQupERPKf65Hqqcgg97j+Vb9qXT+MvGcCfncddwDWBFaRwaHp+V9?=
- =?us-ascii?Q?8/3L6c54JSqjTK7tstgTxe+85LjMHpClA0gAZ6lBnxab31Ynw/raYRRP5ZLg?=
- =?us-ascii?Q?K93r4FgOhbA2/p/Dy2B2nxPEB0QzobwQ26P/lkb6FlNGB3b27cLrdqGdl+9w?=
- =?us-ascii?Q?3ltgcrEGiyEt3I8Nbv1qktLZl7JH/WJbtmYe++i+VckXbfi0JCXnNpFHc9eE?=
- =?us-ascii?Q?hK8XUpQjzQwHfSBf3KNuTB1lEBZufitze6vOy4LTodgTDJbuUwdpoil9YAJm?=
- =?us-ascii?Q?ypTLOE4XcV29XmQxtDg8wmyoYozolG7o4PR9QE0OyS19TJ7pDBnAVX+SHO5j?=
- =?us-ascii?Q?EylZ6T8p1vR3yn2KpXXKfHiQfTnfWa2diPVn7uuqzTT37FT9Z2NGHhJ3xa9s?=
- =?us-ascii?Q?OvPa/K0zXecd/gGglU1t0vrjd2sa4AGwKRlF7GX7A0JODZGFLHDpu2caiZvc?=
- =?us-ascii?Q?iK73BCHjWugiW547qBfN0Nq0myoEbmZIj7Hp6/Dy1PdsJUaIyleVl6SbT+mM?=
- =?us-ascii?Q?iyRXRTXkVxRSdIi9aPzsNMb6WJHs7nI7fY/Eodkr52/qyR/Qx6cKOkDe5I4a?=
- =?us-ascii?Q?VmZ0SVjtC322ajPj+gHrdxUwyBr40ppEm/RSZADnae9yACXolCRyNBESdNcp?=
- =?us-ascii?Q?AbKGN/rCgmE3gUswFMihy2AKLeFuwdy+0JBIeZ86AlFepH93WnN8koL/Uw3l?=
- =?us-ascii?Q?pSEDN10Ooh3nXJHH8uN33uZlfQOMXZNlw0rW3sayPuP27CdD3zFoximKpaIf?=
- =?us-ascii?Q?eO9VfON10oglFsmi8ZcOVZyneRMpb6ke6MuBZN7er0Yf+UBiZ4/ieOX9YpHQ?=
- =?us-ascii?Q?xdIfSKT5iHxGe9WueEPYglyUnyGzaOng6l7TK00CtYPb1rKvZtKdSMIp4N4f?=
- =?us-ascii?Q?d6pw4bu6ZhTng5CkEmGN2VU/XE2/H0NmdSmciV20T5oFPO4gTHcLr1mlyoSB?=
- =?us-ascii?Q?2+/h5Ymq9UsUzRNuOCvl/DbCfH3IcH5WZxONoYvA0afeCpvfbXxSC7lkZEQ1?=
- =?us-ascii?Q?6gwAjJEThDIVGX1VUjkHh+J0fH4jhE99FWmJj+ycwWMvxiLseAC/12hc3Yei?=
- =?us-ascii?Q?/hde3/BiKA=3D=3D?=
-X-Exchange-RoutingPolicyChecked:
-	OfW60kS9CN8I0e2TxcVTgtP7s0hl1DQ/xJqnrI8HNzAF99vbBflKWXDl1qN447z+9FYtjUwrbHdoyLzyKL3o2/M+DeXWS20oeOJGbn2rbDzE2YpPgmV42yIhFIOEDTMr54r82DsmgBfAr+Ju8VWE0jtZH7mhvcSvWK/qy+HYx5eyLgu0jHQ2PSMEoH1abvdliFJunepCwCK47rNJxAfeIEwS6gUBBGBcgXR/pvFIRHEu5zkuQLsLwM2tS8e1K6rlDu4UAVoqJUw6HKiiMqnLgNHqfcFPGy/r/U24aaw0VCQuTL2dvq9LoAaSZU3cgXk3rAOaIq0hFXGA5FdKrNLZMg==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	AR+Opio3++HllQTi6wKNgy3YfX5bHMXWAl4DoS3olQJ2blEy90gYsXst7kY7U/+sQKUw1el3J89i+D8wEPXcsDVNweVbvdDWYAb8rGdqpRBAhjCajLwweR9k+Sg2BZTBqzw3GMXHh7IQzN+k0SNEh3kemuOy6OqEPeBjoQbbuPgnwN2YiD10ZeheSDffN/Wbf/s42B6/dq9minp1HrrrQN7kPFT8Ln+O9Xnenijc0eG+rajiTFbRnk/VyoP/qyVMlyQiYJwR/AzBpygnpVTeCA+xnhnIyVhE7MPo9Cq9AOLwImx66sw/Axt+HDn4jJLQO2aq9qqH/7qZcCEnhrMm0BUwazYD/AAZqZHqGnYWGVIYkp7FxTJO0opb5WW25jUCSEYQseq9riCnigRCiffCmKnIoL+IqmkqZvxsSXZQ1kE5kKqEzLhe5wnmGipOCaslolE6GFjWsFXhlwTW+Yvt3Ra0RZWibo+b93HlNaQUKbGTE6XjrYaptMWK3SDLXLngVxZe+/aYy/phtS+BJ6z1MTdHWkV+yKzIHYXfsdJe9KdaapQ6FBR6lZawETS4KdiGIs6QzOiS0HEvKu+ON74C7EAKdD391cNdk1XFZG95FLE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 120875e0-8867-46de-28c8-08de7a8594e7
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 07:05:28.1864
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ksf0h91LoomAEn1M+zDYu0f2fxmlM5OS00ccl1r/P5qSQkHh9L9WmMMuSUXsqkzhBEkSYfhuooDEcnI8p5Rpqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7411
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_01,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0
- malwarescore=0 mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2602130000 definitions=main-2603050054
-X-Proofpoint-ORIG-GUID: zuIU7yX2mw7BJ7xhHRXyuq0e3YvPZMQt
-X-Authority-Analysis: v=2.4 cv=cbjfb3DM c=1 sm=1 tr=0 ts=69a92b51 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=yPCof4ZbAAAA:8 a=-t2xFmcfunMQa4MTBqgA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12266
-X-Proofpoint-GUID: zuIU7yX2mw7BJ7xhHRXyuq0e3YvPZMQt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDA1NCBTYWx0ZWRfXy5NQpb4lYGAh
- S9Czrg8g3Xlx5T877NLm+gTD1SbAiDwetdnvAfuDAdLTmYZsJI+NDbeidP3t0GDTeWjEoNdtTFq
- OcdmDxxCr0KkqjW3MkaUuqc0Me3bQnJx4dlPSGe53mOZtU9fEQzUCV45X4dC0lwXDl8zvrg2w+m
- OqiiDYe4v5u71S6Dbjqz3ZY5vvpOyykTxbeszLDTrpCyTdZFYC6JE2xtimXA0u0P31glLdH/0Us
- ZbW8Y37ZTYHReKcf0neyQPrpyCLnCLX+tMQdVrZCOaZtkcO3522rZfWOCB1d+6I3jQXF0/SN4HJ
- iJ5YjgBxbnGAS2bY1YXNl8mvYXsys9ZI/JjBjxY1A82YmlN7QPB1bIj8/WwzmZhXiqfMcQ47inu
- ykh2Yl4N/szAzNXERBn1SixJ2KT7uS0p9ILIv/MU7DDTazfxcleGA3ds6OfunCeX7ZIaSK2npwP
- ihjqStxyh73MJEgGwaxeYuDE0nyWc4kIqlxaOzsI=
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dd9x96bkuewkqyj9c1tmxg47rxd136pj
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: t5xcxownrihh53wg51bpm4dkzu5sjb5h
-X-Rspamd-Queue-Id: 36CE320005
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772694359-977272
-X-HE-Meta: U2FsdGVkX18rXkx7zdMeWSeo6lBlvSPUzsNPZq/ErbnxGkZvCu5GzMMBZ8qKmNzfYWhKZ4irulel1DrezmQ7mBTfCErP9fVoAfJkWS/8/bx/3i7kHttNSuZaxy9A2aOjmZNMIvXhmog4uu+y/XJgcrlZhVVGQQgfp0LipADTUjbmCZIq9PsvVTjIl1IPpD4IMMNjyGnHBXUt5bYWPGu/se02h7LR907hthc++NFJlw7bCY4m9SsfYm3LAHGQSfWQ7129gqokTOYVgJdokuBY1kOz6vYccf0LevkgxtBnMNUOKoJOcOtK/s4WwcKCACJj0lO8Btw0nWHF6zzfGVEvyWvt+Cy5oLppgOazrKGRnx87sv+Bqf58UBlJrsdd2TGvXDJlNOZ+945qW11nId2EKs7RqvvDL9Pe3lDWETSbW/5WH8dPfgletUanLsHbQIZMLCz5tAqaq4di+t0T8LFmd1dBlBqlsH46mXu7VIcw9zNMJpLfZtQ9YguEXTAJ8BuagNP2DIo54Fk1ffgxpjohw7hBk5DyxYbiySeLFNzRPn4N2oAMWTl6i2PRxq+WarqMrY7QFVdmnBpMpBaooz9GudpRQVfByQ+pQY5eXbXxqscNMgrZw5WYkGzIvOs85b4uJ/7nUzKGZ/N6Ax3yhwuNucr5f2fgTx5J7a9OuH2BAif2/pPbSAV/7Xf3Ksw96geMXtL8JWOnl5y+5ohhtIUQ2ox2qwumus9CGfDlJ6tPss52QGdz690dfAXQKhwdBO2pR2r+MCPGm5lHptZ8WKtoaleglCHXVSSL6KccUbAETewjpGAfVmDmz91nIIjFMOF+Z7iA49nnvANJzI+DN56xrqmmgnahaAUCocIoJpt+ke4q3fv4ikkFXSDxijOJb+bd172FIAYvE0BD9rj9o5gzHtlk+iZW8yPP14GXHlf4rPEVau3SG3+NwnIjEVN6fZH+cZLrktvFUMZ8Ap2L0Vd
- IXFVNQmP
- XLdMiDuEJmJF5Q0eSkEO9BuZvlDXg+B1LT7qcZz6rnkfmrzoZwT7TUg5ywrWN1cBplbvnh5CbR7kpYfmbo2PGJhq55MFKDy2R4xcSqqU9rdwY0gsGG+FLz4AVh9niuOjmNTywgHV6mdlyI6qaJNmrwvvSWXx29kaMHCPlvD4N7Jn51P0tbdEObuYsn+nDXsjk96cvx0v5+MhzUQQt0A7oZdhBcFX17ariFD9j6Qj+tyYrLSbLEvAbDZEXPqg9+cbY6cIyAjQEggDf/40rzCL0cvm0dgjjxV6PDShAIOhg+wDVkB0p+6mBbWUau5SVW3DbxQCVOmhB9Pf7dAto1PArsA5qSUwvq+jZUa+h4FpA4P293mJeEb7YhbQxCp74jphNTWrF64OZzUv+5tZ0rYfWWmyjidrLK/RVRluLFiaozIyNf7wxztKUbYqo+oaBj33Z+QrzNvAyFS1fpi1I87GHwRQjaBPCdneYjiH4lWeAO7H/p2C4J7ziY/4JrHx6E/D8oMIK3/g6kacZStNFlmHVXvKvQ/ysy3kU74ieHPfalTT3QzvRpkG0r9bbxgFQn4q5oGxUnmaYnLWDxwlWTmiAVjIoZGBnOOQw+V/Ka++/WDycG9yb2ZB73xm0LipHjcgLLoQXPj1lWmXGjnjjUCCLUQ6GrzMNjpENl6lNWYWLDHfTIZOy6FqHbXRGEquvYAXmX+CwQY0p2HZ5eS4TCUdnu13KCS7xJIAAtQTI
+X-Rspamd-Queue-Id: 2F28A1A0003
+X-HE-Tag: 1772695615-138414
+X-HE-Meta: U2FsdGVkX1+7+ZG3XuRaaOXENAfuZHIC5t+O8R2z/ADmBtDUQ81l7160U+IZN7zXlmIkwuoPgecJTT95tWuU34ZNgR0JW2yvYCTQkdp4neTuHAXelbM80/+MBU5JuFsvxxv5Tcol7fxolwFvdGD62bfUma54R1uQ3+QnupSj1E8sW76jz1s2pguuSrw49JCR+xY1BduzUikFWcGLLHiDKLPdTE5fyI6JNiXsvmMQE/KLWSW9f9VbHb7tQvHo6nLkqN6d3/S/NWhezxaWHig5MW+ngsyYxI7o9wquSM0JCP8Pz32nlLXJfRg50rUmzwEpJoEFuX8mIcgzKIOfx2GYQd3Ckx4jTnaHWS09L5FCzukz8rJ9sEsQHfJjyqe4h+lcTOPO8K8rLrLMgT3R+RpJY+J0tQIgsUA8fb50vZcrXHOh7qlf2i1UlMt2EV1KB+OwyBudc3Rkf/ucPp/5bsbK6x3M3177bpcZsXIYXBe2/+a7nbiWlWXEJ6MpqzaqagKc+tviqyUYBK1R6M8yjH053z0v1dY5C84WX8ThQaQsRL49evCfaLBrvn3piLJWtr2CXya1hla0hzvK6+oiJKayfosTnKxl8+H89il7jce5ES/ILtizEhcm+fJwNKuGjTQF2jyjvLsPqYdO8OOxqVyAWvFHgwIRD3b2Dsah1y94DKpQUzWeEkQ/h2tIfR0v2DNBxAXY/pSffAwmpDcr5KcDGXAV2Y9N5HTHnBuI/1MP0zRO/zbotS3Q1TeBtPOcT1Jes9N9EFIe6+14Ip7ySGt+UjQMxjFsBCcBaqid8ScMJux8c2tnhZa5CePjh4jFoK0BQK7RvY7JYqlO64p/VGDTJRNvqGkJyqtojJlsTRx5qFUPuVoqXznKE0BljlsjP47+yTsvRzqTXFiO3SlPm26EplHdN0Xmjy6OQjmx2Iqau/WwJe57RHWGGLONPAX06a4rbGelegz3ECbvrBCz4Kx
+ xBPCjUL3
+ 6NwI+3o/o4Rd+b81qOvm3a8XoVZ3IpPW6RvqatF3hrhXChJM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -217,89 +94,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 12:24:08PM +0530, Venkat Rao Bagalkote wrote:
-> On 03/03/26 7:27 pm, Harry Yoo wrote:
-> > Commit 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> > defined the type of slab->stride as unsigned short, because the author
-> > initially planned to store stride within the lower 16 bits of the
-> > page_type field, but later stored it in unused bits in the counters
-> > field instead.
-> > 
-> > However, the idea of having only 2-byte stride turned out to be a
-> > serious mistake. On systems with 64k pages, order-1 pages are 128k,
-> > which is larger than USHRT_MAX. It triggers a debug warning because
-> > s->size is 128k while stride, truncated to 2 bytes, becomes zero:
-> > 
-> >    ------------[ cut here ]------------
-> >    Warning! stride (0) != s->size (131072)
-> >    WARNING: mm/slub.c:2231 at alloc_slab_obj_exts_early.constprop.0+0x524/0x534, CPU#6: systemd-sysctl/307
-> >    Modules linked in:
-> >    CPU: 6 UID: 0 PID: 307 Comm: systemd-sysctl Not tainted 7.0.0-rc1+ #6 PREEMPTLAZY
-> >    Hardware name: IBM,9009-22A POWER9 (architected) 0x4e0202 0xf000005 of:IBM,FW950.E0 (VL950_179) hv:phyp pSeries
-> >    NIP:  c0000000008a9ac0 LR: c0000000008a9abc CTR: 0000000000000000
-> >    REGS: c0000000141f7390 TRAP: 0700   Not tainted  (7.0.0-rc1+)
-> >    MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28004400  XER: 00000005
-> >    CFAR: c000000000279318 IRQMASK: 0
-> >    GPR00: c0000000008a9abc c0000000141f7630 c00000000252a300 c00000001427b200
-> >    GPR04: 0000000000000004 0000000000000000 c000000000278fd0 0000000000000000
-> >    GPR08: fffffffffffe0000 0000000000000000 0000000000000000 0000000022004400
-> >    GPR12: c000000000f644b0 c000000017ff8f00 0000000000000000 0000000000000000
-> >    GPR16: 0000000000000000 c0000000141f7aa0 0000000000000000 c0000000141f7a88
-> >    GPR20: 0000000000000000 0000000000400cc0 ffffffffffffffff c00000001427b180
-> >    GPR24: 0000000000000004 00000000000c0cc0 c000000004e89a20 c00000005de90011
-> >    GPR28: 0000000000010010 c00000005df00000 c000000006017f80 c00c000000177a00
-> >    NIP [c0000000008a9ac0] alloc_slab_obj_exts_early.constprop.0+0x524/0x534
-> >    LR [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534
-> >    Call Trace:
-> >    [c0000000141f7630] [c0000000008a9abc] alloc_slab_obj_exts_early.constprop.0+0x520/0x534 (unreliable)
-> >    [c0000000141f76c0] [c0000000008aafbc] allocate_slab+0x154/0x94c
-> >    [c0000000141f7760] [c0000000008b41c0] refill_objects+0x124/0x16c
-> >    [c0000000141f77c0] [c0000000008b4be0] __pcs_replace_empty_main+0x2b0/0x444
-> >    [c0000000141f7810] [c0000000008b9600] __kvmalloc_node_noprof+0x840/0x914
-> >    [c0000000141f7900] [c000000000a3dd40] seq_read_iter+0x60c/0xb00
-> >    [c0000000141f7a10] [c000000000b36b24] proc_reg_read_iter+0x154/0x1fc
-> >    [c0000000141f7a50] [c0000000009cee7c] vfs_read+0x39c/0x4e4
-> >    [c0000000141f7b30] [c0000000009d0214] ksys_read+0x9c/0x180
-> >    [c0000000141f7b90] [c00000000003a8d0] system_call_exception+0x1e0/0x4b0
-> >    [c0000000141f7e50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
-> > 
-> > This leads to slab_obj_ext() returning the first slabobj_ext or all
-> > objects and confuses the reference counting of object cgroups [1] and
-> > memory (un)charging for memory cgroups [2].
-> > 
-> > Fortunately, the counters field has 32 unused bits instead of 16
-> > on 64-bit CPUs, which is wide enough to hold any value of s->size.
-> > Change the type to unsigned int.
-> > 
-> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> > Closes: https://lore.kernel.org/lkml/ca241daa-e7e7-4604-a48d-de91ec9184a5@linux.ibm.com
-> > Closes: https://lore.kernel.org/all/ddff7c7d-c0c3-4780-808f-9a83268bbf0c@linux.ibm.com
-> > Fixes: 7a8e71bc619d ("mm/slab: use stride to access slabobj_ext")
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> > 
-> > Hi Venkat, could you please test this on top of 7.0-rc2 (instead of
-> > 7.0-rc1) and see if the bugs [1] [2] are reproduced on your machine?
-> 
-> 
-> Hello Harry,
-> 
-> Apologizes for delayed response,
+The pcpu_chunk_struct has a hole of 4 bytes and pushes the struct to three
+cachelines.  Relocating the three booleans upwards allows for the struct
+to only use two cachelines.
 
-No worries.
+Before:
+struct pcpu_chunk {
+        struct list_head           list;                 /*     0    16 */
+        int                        free_bytes;           /*    16     4 */
+        struct pcpu_block_md       chunk_md;             /*    20    32 */
 
-> I was out sick.
+        /* XXX 4 bytes hole, try to pack */
 
-Ouch :( hope you feel better now.
+        long unsigned int *        bound_map;            /*    56     8 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+        long unsigned int *        alloc_map;            /*    72     8 */
+        struct pcpu_block_md *     md_blocks;            /*    80     8 */
+        void *                     data;                 /*    88     8 */
+        bool                       immutable;            /*    96     1 */
+        bool                       isolated;             /*    97     1 */
 
-> I have tested this patch on top of 7.0-rc2, and confirm, this patch fixes
-> both the reported issue.
->
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+        /* XXX 2 bytes hole, try to pack */
 
-Thanks a lot for testing & confirming!
+        int                        start_offset;         /*   100     4 */
+        int                        end_offset;           /*   104     4 */
 
+        /* XXX 4 bytes hole, try to pack */
+
+        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
+        int                        nr_pages;             /*   120     4 */
+        int                        nr_populated;         /*   124     4 */
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        int                        nr_empty_pop_pages;   /*   128     4 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        long unsigned int          populated[];          /*   136     0 */
+
+        /* size: 192, cachelines: 3, members: 17 */
+        /* sum members: 122, holes: 4, sum holes: 14 */
+        /* padding: 56 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+After:
+struct pcpu_chunk {
+        struct list_head           list;                 /*     0    16 */
+        int                        free_bytes;           /*    16     4 */
+        struct pcpu_block_md       chunk_md;             /*    20    32 */
+
+        /* XXX 4 bytes hole, try to pack */
+
+        long unsigned int *        bound_map;            /*    56     8 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        void *                     base_addr __attribute__((__aligned__(64))); /*    64     8 */
+        long unsigned int *        alloc_map;            /*    72     8 */
+        struct pcpu_block_md *     md_blocks;            /*    80     8 */
+        void *                     data;                 /*    88     8 */
+        bool                       immutable;            /*    96     1 */
+        bool                       isolated;             /*    97     1 */
+
+        /* XXX 2 bytes hole, try to pack */
+
+        int                        start_offset;         /*   100     4 */
+        int                        end_offset;           /*   104     4 */
+        int                        nr_empty_pop_pages;   /*   108     4 */
+        struct obj_cgroup * *      obj_cgroups;          /*   112     8 */
+        int                        nr_pages;             /*   120     4 */
+        int                        nr_populated;         /*   124     4 */
+        /* --- cacheline 2 boundary (128 bytes) --- */
+        long unsigned int          populated[];          /*   128     0 */
+
+        /* size: 128, cachelines: 2, members: 17 */
+        /* sum members: 122, holes: 2, sum holes: 6 */
+        /* forced alignments: 1 */
+} __attribute__((__aligned__(64)));
+
+Signed-off-by: zenghongling <zenghongling@kylinos.cn>
+---
+ mm/percpu-internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
+index 4b3d6ec43703..26f3ac39f8c3 100644
+--- a/mm/percpu-internal.h
++++ b/mm/percpu-internal.h
+@@ -77,13 +77,13 @@ struct pcpu_chunk {
+ 	int			end_offset;	/* additional area required to
+ 						   have the region end page
+ 						   aligned */
++	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ #ifdef NEED_PCPUOBJ_EXT
+ 	struct pcpuobj_ext	*obj_exts;	/* vector of object cgroups */
+ #endif
+ 
+ 	int			nr_pages;	/* # of pages served by this chunk */
+ 	int			nr_populated;	/* # of populated pages */
+-	int                     nr_empty_pop_pages; /* # of empty populated pages */
+ 	unsigned long		populated[];	/* populated bitmap */
+ };
+ 
 -- 
-Cheers,
-Harry / Hyeonggon
+2.25.1
+
 
