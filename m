@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87FC3F30937
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:50:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4178F30930
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 10:50:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF4086B0089; Thu,  5 Mar 2026 05:50:33 -0500 (EST)
+	id 5A9496B008A; Thu,  5 Mar 2026 05:50:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA1E66B008A; Thu,  5 Mar 2026 05:50:33 -0500 (EST)
+	id 553186B008C; Thu,  5 Mar 2026 05:50:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAD636B008C; Thu,  5 Mar 2026 05:50:33 -0500 (EST)
+	id 3F6F06B0092; Thu,  5 Mar 2026 05:50:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C71E86B0089
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:50:33 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6FA81BBBD6
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:50:33 +0000 (UTC)
-X-FDA: 84511690746.02.9D1109D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 25D1D6B008A
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:50:37 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB8F4BBAFC
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:50:36 +0000 (UTC)
+X-FDA: 84511690872.29.EAA886E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EC65810000E
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:50:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks2WnXhB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4207C40007
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 10:50:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X++29/vP";
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772707831;
+	s=arc-20220608; t=1772707835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KhG9m/1nKVNbvlbE2x8YzN2aakDEcNzRzVMeo+ykMaU=;
-	b=csoBk36AAMEunVuacrJD6BlEkXRXWX5MUPauIyK+axx5Y8ViNAeyXl2eSoMtcVQ8Z3FKPC
-	hZ3uVV0nRpPnnwLpHafRNqTN85b4wAk7OyvFtKCShjMmfRXeY/MOLJDdD+pJKYeTpa/f7P
-	JA75ElX6/lz0ypVXSfRmvwF1ifZmFcg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772707831; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=kCyI4PA7JaoGOFzj2pucgmTqnPoftyhBnbTY3EPClrA=;
+	b=coTCU9cnM2XiqFfFFUQBR6ABaUgsTJ+UfcceRtbkjGBVBFD+TH9TOJFDtjMkvGr0RVJKJX
+	sXTQGW0FQxeUWynnkD+9a0EiufvEjeFtsY4gkBZbAX0vUUKwV45CxSxtyBY2lbwXadPtMS
+	wh4y3ZGl49eCSmUJXbDLSYAlAMmVKKs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772707835; a=rsa-sha256;
 	cv=none;
-	b=Q7TZ23dr3Wt936M31U0gYBKBpTm2B+Q7KIXcfB7O67401ckXdbG8nnG82hdyAgCVZVJlRL
-	qWYU+G+0oKLzoDuJVfEvhZJeFRwr6R4KWpzqxOxFdkyRVLbJLbF9T5L/+Xc3/oyqO2DwpG
-	xYpWFLpwFaBiTWBByH6Tn9QI8pdpKWY=
+	b=MiOp1UMWVGuRR4DYCKebuPsI3zz6k9g6iPShaW+rbCjP3YgvYZzGYDHeWm6DaPAYlhj+kV
+	uKs0vapEic1JqNZ0JnvQAGBthI4x9E3BnmeprPD/yE1CJFb4WdR7e/XXQ+zTkyFJ9Eq8vY
+	7Toip3+jwdH+dayo1zFLBFtJ0qF5Fqg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks2WnXhB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="X++29/vP";
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3146061339;
-	Thu,  5 Mar 2026 10:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD7BC116C6;
-	Thu,  5 Mar 2026 10:50:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 73AA161340;
+	Thu,  5 Mar 2026 10:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D95C116C6;
+	Thu,  5 Mar 2026 10:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772707830;
-	bh=0/QAvDFwZi+F+9QH+vbMTA5rIfdw8VEPToPzhoxxIs8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Ks2WnXhBZhJYCciDsJ/Fjo8g68UnOm1+2N5sQ4oKF/kGeATt0cOgG+p7IStQiz3z2
-	 EaiKLpNcYuvQR0g+WTb5buzNJSSfOvUyoPW9kVP1mxiGLOY0aaIL36Y8HeRxCRWjH0
-	 xPNNxHX1xyrDEsAcz9u21dlmMcxuEfinuXRzrRvtJ7zbfASMxifc8jFI1uuXm0VkKV
-	 vO8JJM2Fd72GNEUcYoWCy/ySVJ/YSjCa2F7WYjhFHDQGWKarW2sHEvezQchoGe9GZ5
-	 xra3AjQzJT0q+i6jzWOOPQIuXDSNX56qDPetnPGikvlCk8ESka3PTrdJXR50wB3Usv
-	 cHc1r7gvVBIug==
+	s=k20201202; t=1772707834;
+	bh=LZYuZlveZInJUx0Ltpa7Edi8PcbZMXZcw5f8+0KB4hg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=X++29/vP75Gp4H+cKqv0ViP85UAT9FzxFk1U7JW1/EJ57duWTMbyzNKWaMW87khNk
+	 OM3Aou/BSjR/C1yVXDox4eAFL5ICaUmKMTw+zaSdk+/HytgEsnigwmKnwXLZvq4Cei
+	 XKQ9KxLZC1kXiwSDN6KcPFG/SdP6JGQA0HcqVZ7I0rtbTD+LWoxL0iaKmb/L74EtF5
+	 mv3mQN2aEnvVI9RgwbHkc/3uy5YtlBnRt69eVqrYeZQgPVU+S8cLadWyrvOWtYQQxE
+	 kne6AhAZ57Zr7WHGG2CpImfpZaEPejJHHN1mnmBdo+1/qQtRhgCubRD6kbOJ+VH4sZ
+	 1p2zZLuIW3+JQ==
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -108,20 +108,22 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-mm@kvack.org,
 	ntfs3@lists.linux.dev,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 0/6] mm: vma flag tweaks
-Date: Thu,  5 Mar 2026 10:50:13 +0000
-Message-ID: <cover.1772704455.git.ljs@kernel.org>
+Subject: [PATCH 1/6] mm: rename VMA flag helpers to be more readable
+Date: Thu,  5 Mar 2026 10:50:14 +0000
+Message-ID: <0f9cb3c511c478344fac0b3b3b0300bb95be95e9.1772704455.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1772704455.git.ljs@kernel.org>
+References: <cover.1772704455.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EC65810000E
-X-Stat-Signature: yukaqfr61rhuiskuckhuj193mc4rx9mc
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4207C40007
+X-Stat-Signature: jh8y48475rhedey169h3z65a8bz43qrb
 X-Rspam-User: 
-X-HE-Tag: 1772707831-469846
-X-HE-Meta: U2FsdGVkX19aX0ayhujdc8MaOpttttMUFN/WS3clWzGXrFXHsepPl+oxRVTCNn/70bbrwKALAqTZkP0IplcR+x2lq9al1XpFLlUPZeDx2PhvPIkLCyQdlxoOxKuDia9UPZn8doGrpkP9SIZFCjqmR4PBWKocDpHVBtsWrVpUJ2lze7zvrbljkoNvrFnLb684WRSQm8RDgWzVmI1uCsBsNvbIIFkrZxMHkbBGt3eCfW3iQUrCkxQtNQ85Cj8BT3z6e6l7/gwgLGmOe09Jee5QLgbu005mH89oj1v7mbs+Ps0rf+U31BOUZjw9D3FdjRKlovxECblrVKar4aNkcsAwHMudZRTs2CkhlzaZO7cUXISIyU9w4SahZG135incrwAwBBFN0jLyQxhYPyxdUIrBncceWbhaT9l44pp5+HWDG+rLKg1ZPwGGDDo1ZWaDYMS1WKlQujiqCo0PPMlEuJlM7n5sp35gaXLU0AOTF/B8aPQ7C4XCON6k7BbdTMx1FOSsLeukdnD9FA0XL+iKRrgGEbUvWRIZsL1/EvCCOC+1Yl90EBuNBVY9G4jBNHdMt0BgmWqmsCJZan/Yl9apjTg1CFW9AyotSoJ9NeqojmrSHjwYWFd0QcJoORs81sYjccQ0M3giwXnLX/3xFiaChBg0FvRGFvFhvEc6mxqELY5I6Q47IHKB4IhbidYFUyq974lDM9qi1hNdf7pEzDHv1j3C+XghR+pez9d7Ll9T10bmfrmNY6roBAohx/R29xeTqFZaRGxQv75dO5YBBY+ZGnrP6RewsNmdLu+DOAShqcr7g+Hi3yVlZ7OVCUbboSqIoX+x0Tj7ynYBlFzzJfzMfpEhT5KFeySwAGLsfTqI/8Wd1D2UG5gDqz5I/QFfWZqpA7YltwnVSBZQfzGom24vmhzbJQzoEZ1KD2bVuLwF4ZUW9wB2CCjaLLq9wb4Cwfc8IjZa4LLvsoWroRT52ZdnKoM
- MsxxQ7i0
- Ysv02cXapeqLjttGx7EGETVYKGpl0tTGPwtZL6NN3g3dWjMff48kes5CsHYXRYJC7LanZHpx8u30u8W28SLawwU85Ft2b0fPmeUfKuQSDfZkCmXqrb28Pd5eHc5hkoL6UhV4gKRbhPNAIAIZzhhGo9gDaagen6S/OoUOenMkkOeyXi/o=
+X-HE-Tag: 1772707835-888485
+X-HE-Meta: U2FsdGVkX1+tHfG8ELm6N8zQNsCJKMqgmtC0SwQ+DhrvSNGNuhQ7b1YBW6v3BRRPiiVPPNClOKrvj6E8o3UfkbQ0XV0nQDyjDZ0gZE1ACinCGlbgcuY45bAwOV0a3s6exPM8aDFJSWWTy1dxrnEMu5+J/jU2FRGDUyfR4u5R1vyTYb+d9klnCHbZUhCFrrHDNWLKTNhGXtGMM1rv6O68AuDt4H9izwlzl3gUC1WWjNbgWLLCQyRtwYbWxgeyp2+008VimeMGbIu/hR9J2fKMVA4b4ECAKjwVBqvoa1fWAFVWF4WbzwfWHCknvToc4zbCxShDN58jbNqhyjPMO8P5ilbIC0P296A1zTwGjB2j0D/Y9Q/OoPVrWsr0U4pzuPKtYddzQ9W7m+Umorxi3ld1BHchsqUtNflrUEY2ZdJ4ZwYvrI7ywuthsd5QIna37PBt3uLHb0TpLnye9FAb4065oC0JM9pKDLTaAUwUrB+jiSU+/T/Z4h5SsKbmfmsohJe4BCAvYa9XbkUvlaF525P4oDg8L7FJ14hAscLDr6XrARIRKQXu5XqPGqOmmgqKyYZdipX2+t8DeTWuOrj5bR0oCGNrXunXgrH/J7qnSso0QHy98GBe7DNZUx+0F3tnAZIB0EErAY3Ow+eAkSqbjx+eLXKY5fQ4M9OmoHbffMv9IcgngXPfoB+cPqzHVcmcWgqfZv/c5L3H2Pl09KYymu59b/b1DVVLu8jfsbp/A35fdSKfUP+g4YVf68vmoiX8nrEB4Yv78dpil39voTpp/bf3RFmmk2KWZC3K5YwKxv2Z6p/TEq9Bo+HuTgODhUKFNVIs2UbnfFJnmCX5V+9xkyhsM8Xs3SGa6L5/+LYfLxbJARrSLWXpPRkUTQ5TaVvVf6VNRIAEbtSX8nAswZBB0AQnHe+x2HK3Yfd96RSgyrsP/cGPhT7cawZzrBOjFrhBH1IVhZpFO5qsKQ4Cc/Y1LsS
+ FUY2j6RC
+ 8jRtYG++3LRjtTYjedzA2qLBc4fXA0FQLoW1wkIlEBjIE3PbiPCVYw+zYZ4GOwmtGof8X7cEtDJpZa8EQDcpyAH0qdsQHNam2BHDqYbXteTxCoGu2NS+vEI/bgpOjP0g4ZSHSGVPpaHYWUUubS895mk3rEMxviTT0f7JMkp/HSAwOtlc+TPo/4VRuS8DIKz/mhyWFXabGT4DHboixS1nDUYwoHi4aXuRrSVtmOpV8i70tJqs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,85 +131,575 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The ongoing work around introducing non-system word VMA flags has
-introduced a number of helper functions and macros to make life easier when
-working with these flags and to make conversions from the legacy use of
-VM_xxx flags more straightforward.
+On reflection, it's confusing to have vma_flags_test() and
+vma_desc_test_flags() test whether any comma-separated VMA flag bit is set,
+while also having vma_flags_test_all() and vma_test_all_flags() separately
+test whether all flags are set.
 
-This series improves these to reduce confusion as to what they do and to
-improve consistency and readability.
+Firstly, rename vma_flags_test() to vma_flags_test_any() to eliminate this
+confusion.
 
-Firstly the series renames vma_flags_test() to vma_flags_test_any() to make
-it abundantly clear that this function tests whether any of the flags are
-set (as opposed to vma_flags_test_all()).
+Secondly, since the VMA descriptor flag functions are becoming rather
+cumbersome, prefer vma_desc_test*() to vma_desc_test_flags*(), and also
+rename vma_desc_test_flags() to vma_desc_test_any().
 
-It then renames vma_desc_test_flags() to vma_desc_test_any() for the same
-reason. Note that we drop the 'flags' suffix here, as
-vma_desc_test_any_flags() would be cumbersome and 'test' implies a flag
-test.
+Finally, rename vma_test_all_flags() to vma_test_all() to keep the
+VMA-specific helper consistent with the VMA descriptor naming convention
+and to help avoid confusion vs. vma_flags_test_all().
 
-Similarly, we rename vma_test_all_flags() to vma_test_all() for
-consistency.
+While we're here, also update whitespace to be consistent in helper
+functions.
 
-Next, we have a couple of instances (erofs, zonefs) where we are now
-testing for vma_desc_test_any(desc, VMA_SHARED_BIT) &&
-vma_desc_test_any(desc, VMA_MAYWRITE_BIT).
+Suggested-by: Pedro Falcato <pfalcato@suse.de>
+Signed-off-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+---
+ drivers/char/mem.c              |  2 +-
+ drivers/dax/device.c            |  2 +-
+ fs/erofs/data.c                 |  4 +--
+ fs/hugetlbfs/inode.c            |  2 +-
+ fs/ntfs3/file.c                 |  2 +-
+ fs/resctrl/pseudo_lock.c        |  2 +-
+ fs/zonefs/file.c                |  4 +--
+ include/linux/dax.h             |  4 +--
+ include/linux/hugetlb_inline.h  |  2 +-
+ include/linux/mm.h              | 48 +++++++++++++++++----------------
+ mm/hugetlb.c                    | 14 +++++-----
+ mm/memory.c                     |  2 +-
+ mm/secretmem.c                  |  2 +-
+ mm/shmem.c                      |  4 +--
+ tools/testing/vma/include/dup.h | 20 +++++++-------
+ tools/testing/vma/tests/vma.c   | 28 +++++++++----------
+ 16 files changed, 72 insertions(+), 70 deletions(-)
 
-This is silly, so this series introduces vma_desc_test_all() so these
-callers can instead invoke vma_desc_test_all(desc, VMA_SHARED_BIT,
-VMA_MAYWRITE_BIT).
-
-We then observe that quite a few instances of vma_flags_test_any() and
-vma_desc_test_any() are in fact only testing against a single flag.
-
-Using the _any() variant here is just confusing - 'any' of single item
-reads strangely and is liable to cause confusion.
-
-So in these instances the series reintroduces vma_flags_test() and
-vma_desc_test() as helpers which test against a single flag.
-
-The fact that vma_flags_t is a struct and that vma_flag_t utilises sparse
-to avoid confusion with vm_flags_t makes it impossible for a user to misuse
-these helpers without it getting flagged somewhere.
-
-The series also updates __mk_vma_flags() and functions invoked by it to
-explicitly mark them always inline to match expectation and to be
-consistent with other VMA flag helpers.
-
-It also renames vma_flag_set() to vma_flags_set_flag() (a function only
-used by __mk_vma_flags()) to be consistent with other VMA flag helpers.
-
-Finally it updates the VMA tests for each of these changes, and introduces
-explicit tests for vma_flags_test() and vma_desc_test() to assert that they
-behave as expected.
-
-Lorenzo Stoakes (Oracle) (6):
-  mm: rename VMA flag helpers to be more readable
-  mm: add vma_desc_test_all() and use it
-  mm: always inline __mk_vma_flags() and invoked functions
-  mm: reintroduce vma_flags_test() as a singular flag test
-  mm: reintroduce vma_desc_test() as a singular flag test
-  tools/testing/vma: add test for vma_flags_test(), vma_desc_test()
-
- drivers/char/mem.c                 |   2 +-
- drivers/dax/device.c               |   2 +-
- fs/erofs/data.c                    |   3 +-
- fs/hugetlbfs/inode.c               |   2 +-
- fs/ntfs3/file.c                    |   2 +-
- fs/resctrl/pseudo_lock.c           |   2 +-
- fs/zonefs/file.c                   |   3 +-
- include/linux/dax.h                |   4 +-
- include/linux/hugetlb_inline.h     |   2 +-
- include/linux/mm.h                 | 100 +++++++++++++++++++++--------
- include/linux/mm_types.h           |   2 +-
- mm/hugetlb.c                       |  12 ++--
- mm/memory.c                        |   2 +-
- mm/secretmem.c                     |   2 +-
- tools/testing/vma/include/custom.h |   5 +-
- tools/testing/vma/include/dup.h    |  48 ++++++++++----
- tools/testing/vma/tests/vma.c      |  58 +++++++++++++----
- 17 files changed, 177 insertions(+), 74 deletions(-)
-
---
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index cca4529431f8..5118787d0954 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -520,7 +520,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
+ #ifndef CONFIG_MMU
+ 	return -ENOSYS;
+ #endif
+-	if (vma_desc_test_flags(desc, VMA_SHARED_BIT))
++	if (vma_desc_test_any(desc, VMA_SHARED_BIT))
+ 		return shmem_zero_setup_desc(desc);
+ 
+ 	desc->action.success_hook = mmap_zero_private_success;
+diff --git a/drivers/dax/device.c b/drivers/dax/device.c
+index 528e81240c4d..381021c2e031 100644
+--- a/drivers/dax/device.c
++++ b/drivers/dax/device.c
+@@ -24,7 +24,7 @@ static int __check_vma(struct dev_dax *dev_dax, vma_flags_t flags,
+ 		return -ENXIO;
+ 
+ 	/* prevent private mappings from being established */
+-	if (!vma_flags_test(&flags, VMA_MAYSHARE_BIT)) {
++	if (!vma_flags_test_any(&flags, VMA_MAYSHARE_BIT)) {
+ 		dev_info_ratelimited(dev,
+ 				"%s: %s: fail, attempted private mapping\n",
+ 				current->comm, func);
+diff --git a/fs/erofs/data.c b/fs/erofs/data.c
+index f79ee80627d9..6774d9b5ee82 100644
+--- a/fs/erofs/data.c
++++ b/fs/erofs/data.c
+@@ -473,8 +473,8 @@ static int erofs_file_mmap_prepare(struct vm_area_desc *desc)
+ 	if (!IS_DAX(file_inode(desc->file)))
+ 		return generic_file_readonly_mmap_prepare(desc);
+ 
+-	if (vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
+-	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
++	if (vma_desc_test_any(desc, VMA_SHARED_BIT) &&
++	    vma_desc_test_any(desc, VMA_MAYWRITE_BIT))
+ 		return -EINVAL;
+ 
+ 	desc->vm_ops = &erofs_dax_vm_ops;
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 2ec3e4231252..079ffaaf1f6c 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -164,7 +164,7 @@ static int hugetlbfs_file_mmap_prepare(struct vm_area_desc *desc)
+ 		goto out;
+ 
+ 	ret = 0;
+-	if (vma_desc_test_flags(desc, VMA_WRITE_BIT) && inode->i_size < len)
++	if (vma_desc_test_any(desc, VMA_WRITE_BIT) && inode->i_size < len)
+ 		i_size_write(inode, len);
+ out:
+ 	inode_unlock(inode);
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 7eecf1e01f74..c5e2181f9f02 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -276,7 +276,7 @@ static int ntfs_file_mmap_prepare(struct vm_area_desc *desc)
+ 	struct file *file = desc->file;
+ 	struct inode *inode = file_inode(file);
+ 	struct ntfs_inode *ni = ntfs_i(inode);
+-	const bool rw = vma_desc_test_flags(desc, VMA_WRITE_BIT);
++	const bool rw = vma_desc_test_any(desc, VMA_WRITE_BIT);
+ 	int err;
+ 
+ 	/* Avoid any operation if inode is bad. */
+diff --git a/fs/resctrl/pseudo_lock.c b/fs/resctrl/pseudo_lock.c
+index fa3687d69ebd..79a006c6f26c 100644
+--- a/fs/resctrl/pseudo_lock.c
++++ b/fs/resctrl/pseudo_lock.c
+@@ -1044,7 +1044,7 @@ static int pseudo_lock_dev_mmap_prepare(struct vm_area_desc *desc)
+ 	 * Ensure changes are carried directly to the memory being mapped,
+ 	 * do not allow copy-on-write mapping.
+ 	 */
+-	if (!vma_desc_test_flags(desc, VMA_SHARED_BIT)) {
++	if (!vma_desc_test_any(desc, VMA_SHARED_BIT)) {
+ 		mutex_unlock(&rdtgroup_mutex);
+ 		return -EINVAL;
+ 	}
+diff --git a/fs/zonefs/file.c b/fs/zonefs/file.c
+index 8a7161fc49e5..9f9273ecf71a 100644
+--- a/fs/zonefs/file.c
++++ b/fs/zonefs/file.c
+@@ -333,8 +333,8 @@ static int zonefs_file_mmap_prepare(struct vm_area_desc *desc)
+ 	 * ordering between msync() and page cache writeback.
+ 	 */
+ 	if (zonefs_inode_is_seq(file_inode(file)) &&
+-	    vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
+-	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
++	    vma_desc_test_any(desc, VMA_SHARED_BIT) &&
++	    vma_desc_test_any(desc, VMA_MAYWRITE_BIT))
+ 		return -EINVAL;
+ 
+ 	file_accessed(file);
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index bf103f317cac..535019001577 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -69,7 +69,7 @@ static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
+ 					    const struct inode *inode,
+ 					    struct dax_device *dax_dev)
+ {
+-	if (!vma_desc_test_flags(desc, VMA_SYNC_BIT))
++	if (!vma_desc_test_any(desc, VMA_SYNC_BIT))
+ 		return true;
+ 	if (!IS_DAX(inode))
+ 		return false;
+@@ -115,7 +115,7 @@ static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
+ 					    const struct inode *inode,
+ 					    struct dax_device *dax_dev)
+ {
+-	return !vma_desc_test_flags(desc, VMA_SYNC_BIT);
++	return !vma_desc_test_any(desc, VMA_SYNC_BIT);
+ }
+ static inline size_t dax_recovery_write(struct dax_device *dax_dev,
+ 		pgoff_t pgoff, void *addr, size_t bytes, struct iov_iter *i)
+diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
+index 593f5d4e108b..84afc3c3e2e4 100644
+--- a/include/linux/hugetlb_inline.h
++++ b/include/linux/hugetlb_inline.h
+@@ -13,7 +13,7 @@ static inline bool is_vm_hugetlb_flags(vm_flags_t vm_flags)
+ 
+ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
+ {
+-	return vma_flags_test(flags, VMA_HUGETLB_BIT);
++	return vma_flags_test_any(flags, VMA_HUGETLB_BIT);
+ }
+ 
+ #else
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 1e2af6810f96..db738a567637 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1063,7 +1063,7 @@ static inline vma_flags_t __mk_vma_flags(size_t count, const vma_flag_t *bits)
+ 					 (const vma_flag_t []){__VA_ARGS__})
+ 
+ /*  Test each of to_test flags in flags, non-atomically. */
+-static __always_inline bool vma_flags_test_mask(const vma_flags_t *flags,
++static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
+ 		vma_flags_t to_test)
+ {
+ 	const unsigned long *bitmap = flags->__vma_flags;
+@@ -1075,10 +1075,10 @@ static __always_inline bool vma_flags_test_mask(const vma_flags_t *flags,
+ /*
+  * Test whether any specified VMA flag is set, e.g.:
+  *
+- * if (vma_flags_test(flags, VMA_READ_BIT, VMA_MAYREAD_BIT)) { ... }
++ * if (vma_flags_test_any(flags, VMA_READ_BIT, VMA_MAYREAD_BIT)) { ... }
+  */
+-#define vma_flags_test(flags, ...) \
+-	vma_flags_test_mask(flags, mk_vma_flags(__VA_ARGS__))
++#define vma_flags_test_any(flags, ...) \
++	vma_flags_test_any_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+ /* Test that ALL of the to_test flags are set, non-atomically. */
+ static __always_inline bool vma_flags_test_all_mask(const vma_flags_t *flags,
+@@ -1099,7 +1099,8 @@ static __always_inline bool vma_flags_test_all_mask(const vma_flags_t *flags,
+ 	vma_flags_test_all_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+ /* Set each of the to_set flags in flags, non-atomically. */
+-static __always_inline void vma_flags_set_mask(vma_flags_t *flags, vma_flags_t to_set)
++static __always_inline void vma_flags_set_mask(vma_flags_t *flags,
++		vma_flags_t to_set)
+ {
+ 	unsigned long *bitmap = flags->__vma_flags;
+ 	const unsigned long *bitmap_to_set = to_set.__vma_flags;
+@@ -1116,7 +1117,8 @@ static __always_inline void vma_flags_set_mask(vma_flags_t *flags, vma_flags_t t
+ 	vma_flags_set_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+ /* Clear all of the to-clear flags in flags, non-atomically. */
+-static __always_inline void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t to_clear)
++static __always_inline void vma_flags_clear_mask(vma_flags_t *flags,
++		vma_flags_t to_clear)
+ {
+ 	unsigned long *bitmap = flags->__vma_flags;
+ 	const unsigned long *bitmap_to_clear = to_clear.__vma_flags;
+@@ -1138,8 +1140,8 @@ static __always_inline void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t
+  * Note: appropriate locks must be held, this function does not acquire them for
+  * you.
+  */
+-static inline bool vma_test_all_flags_mask(const struct vm_area_struct *vma,
+-					   vma_flags_t flags)
++static inline bool vma_test_all_mask(const struct vm_area_struct *vma,
++		vma_flags_t flags)
+ {
+ 	return vma_flags_test_all_mask(&vma->flags, flags);
+ }
+@@ -1147,10 +1149,10 @@ static inline bool vma_test_all_flags_mask(const struct vm_area_struct *vma,
+ /*
+  * Helper macro for checking that ALL specified flags are set in a VMA, e.g.:
+  *
+- * if (vma_test_all_flags(vma, VMA_READ_BIT, VMA_MAYREAD_BIT) { ... }
++ * if (vma_test_all(vma, VMA_READ_BIT, VMA_MAYREAD_BIT) { ... }
+  */
+-#define vma_test_all_flags(vma, ...) \
+-	vma_test_all_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
++#define vma_test_all(vma, ...) \
++	vma_test_all_mask(vma, mk_vma_flags(__VA_ARGS__))
+ 
+ /*
+  * Helper to set all VMA flags in a VMA.
+@@ -1159,7 +1161,7 @@ static inline bool vma_test_all_flags_mask(const struct vm_area_struct *vma,
+  * you.
+  */
+ static inline void vma_set_flags_mask(struct vm_area_struct *vma,
+-				      vma_flags_t flags)
++		vma_flags_t flags)
+ {
+ 	vma_flags_set_mask(&vma->flags, flags);
+ }
+@@ -1177,25 +1179,25 @@ static inline void vma_set_flags_mask(struct vm_area_struct *vma,
+ 	vma_set_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
+ 
+ /* Helper to test all VMA flags in a VMA descriptor. */
+-static inline bool vma_desc_test_flags_mask(const struct vm_area_desc *desc,
+-					    vma_flags_t flags)
++static inline bool vma_desc_test_any_mask(const struct vm_area_desc *desc,
++		vma_flags_t flags)
+ {
+-	return vma_flags_test_mask(&desc->vma_flags, flags);
++	return vma_flags_test_any_mask(&desc->vma_flags, flags);
+ }
+ 
+ /*
+  * Helper macro for testing VMA flags for an input pointer to a struct
+  * vm_area_desc object describing a proposed VMA, e.g.:
+  *
+- * if (vma_desc_test_flags(desc, VMA_IO_BIT, VMA_PFNMAP_BIT,
++ * if (vma_desc_test_any(desc, VMA_IO_BIT, VMA_PFNMAP_BIT,
+  *		VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)) { ... }
+  */
+-#define vma_desc_test_flags(desc, ...) \
+-	vma_desc_test_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
++#define vma_desc_test_any(desc, ...) \
++	vma_desc_test_any_mask(desc, mk_vma_flags(__VA_ARGS__))
+ 
+ /* Helper to set all VMA flags in a VMA descriptor. */
+ static inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+-					   vma_flags_t flags)
++		vma_flags_t flags)
+ {
+ 	vma_flags_set_mask(&desc->vma_flags, flags);
+ }
+@@ -1212,7 +1214,7 @@ static inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+ 
+ /* Helper to clear all VMA flags in a VMA descriptor. */
+ static inline void vma_desc_clear_flags_mask(struct vm_area_desc *desc,
+-					     vma_flags_t flags)
++		vma_flags_t flags)
+ {
+ 	vma_flags_clear_mask(&desc->vma_flags, flags);
+ }
+@@ -1937,8 +1939,8 @@ static inline bool vma_desc_is_cow_mapping(struct vm_area_desc *desc)
+ {
+ 	const vma_flags_t *flags = &desc->vma_flags;
+ 
+-	return vma_flags_test(flags, VMA_MAYWRITE_BIT) &&
+-		!vma_flags_test(flags, VMA_SHARED_BIT);
++	return vma_flags_test_any(flags, VMA_MAYWRITE_BIT) &&
++		!vma_flags_test_any(flags, VMA_SHARED_BIT);
+ }
+ 
+ #ifndef CONFIG_MMU
+@@ -1957,7 +1959,7 @@ static inline bool is_nommu_shared_mapping(vm_flags_t flags)
+ 
+ static inline bool is_nommu_shared_vma_flags(const vma_flags_t *flags)
+ {
+-	return vma_flags_test(flags, VMA_MAYSHARE_BIT, VMA_MAYOVERLAY_BIT);
++	return vma_flags_test_any(flags, VMA_MAYSHARE_BIT, VMA_MAYOVERLAY_BIT);
+ }
+ #endif
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 327eaa4074d3..8286c5db2c12 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1194,7 +1194,7 @@ static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
+ static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *map)
+ {
+ 	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+-	VM_WARN_ON_ONCE(vma_desc_test_flags(desc, VMA_MAYSHARE_BIT));
++	VM_WARN_ON_ONCE(vma_desc_test_any(desc, VMA_MAYSHARE_BIT));
+ 
+ 	desc->private_data = map;
+ }
+@@ -1202,7 +1202,7 @@ static void set_vma_desc_resv_map(struct vm_area_desc *desc, struct resv_map *ma
+ static void set_vma_desc_resv_flags(struct vm_area_desc *desc, unsigned long flags)
+ {
+ 	VM_WARN_ON_ONCE(!is_vma_hugetlb_flags(&desc->vma_flags));
+-	VM_WARN_ON_ONCE(vma_desc_test_flags(desc, VMA_MAYSHARE_BIT));
++	VM_WARN_ON_ONCE(vma_desc_test_any(desc, VMA_MAYSHARE_BIT));
+ 
+ 	desc->private_data = (void *)((unsigned long)desc->private_data | flags);
+ }
+@@ -6591,7 +6591,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * attempt will be made for VM_NORESERVE to allocate a page
+ 	 * without using reserves
+ 	 */
+-	if (vma_flags_test(&vma_flags, VMA_NORESERVE_BIT))
++	if (vma_flags_test_any(&vma_flags, VMA_NORESERVE_BIT))
+ 		return 0;
+ 
+ 	/*
+@@ -6600,7 +6600,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * to reserve the full area even if read-only as mprotect() may be
+ 	 * called to make the mapping read-write. Assume !desc is a shm mapping
+ 	 */
+-	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT)) {
++	if (!desc || vma_desc_test_any(desc, VMA_MAYSHARE_BIT)) {
+ 		/*
+ 		 * resv_map can not be NULL as hugetlb_reserve_pages is only
+ 		 * called for inodes for which resv_maps were created (see
+@@ -6634,7 +6634,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	if (err < 0)
+ 		goto out_err;
+ 
+-	if (desc && !vma_desc_test_flags(desc, VMA_MAYSHARE_BIT) && h_cg) {
++	if (desc && !vma_desc_test_any(desc, VMA_MAYSHARE_BIT) && h_cg) {
+ 		/* For private mappings, the hugetlb_cgroup uncharge info hangs
+ 		 * of the resv_map.
+ 		 */
+@@ -6671,7 +6671,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	 * consumed reservations are stored in the map. Hence, nothing
+ 	 * else has to be done for private mappings here
+ 	 */
+-	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT)) {
++	if (!desc || vma_desc_test_any(desc, VMA_MAYSHARE_BIT)) {
+ 		add = region_add(resv_map, from, to, regions_needed, h, h_cg);
+ 
+ 		if (unlikely(add < 0)) {
+@@ -6735,7 +6735,7 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
+ out_err:
+-	if (!desc || vma_desc_test_flags(desc, VMA_MAYSHARE_BIT))
++	if (!desc || vma_desc_test_any(desc, VMA_MAYSHARE_BIT))
+ 		/* Only call region_abort if the region_chg succeeded but the
+ 		 * region_add failed or didn't run.
+ 		 */
+diff --git a/mm/memory.c b/mm/memory.c
+index 9385842c3503..1d321acb1e50 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2969,7 +2969,7 @@ static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long ad
+ 	if (WARN_ON_ONCE(!PAGE_ALIGNED(addr)))
+ 		return -EINVAL;
+ 
+-	VM_WARN_ON_ONCE(!vma_test_all_flags_mask(vma, VMA_REMAP_FLAGS));
++	VM_WARN_ON_ONCE(!vma_test_all_mask(vma, VMA_REMAP_FLAGS));
+ 
+ 	BUG_ON(addr >= end);
+ 	pfn -= addr >> PAGE_SHIFT;
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index 11a779c812a7..5f57ac4720d3 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -122,7 +122,7 @@ static int secretmem_mmap_prepare(struct vm_area_desc *desc)
+ {
+ 	const unsigned long len = vma_desc_size(desc);
+ 
+-	if (!vma_desc_test_flags(desc, VMA_SHARED_BIT, VMA_MAYSHARE_BIT))
++	if (!vma_desc_test_any(desc, VMA_SHARED_BIT, VMA_MAYSHARE_BIT))
+ 		return -EINVAL;
+ 
+ 	vma_desc_set_flags(desc, VMA_LOCKED_BIT, VMA_DONTDUMP_BIT);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 5e7dcf5bc5d3..965a8908200b 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3086,7 +3086,7 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+ 	spin_lock_init(&info->lock);
+ 	atomic_set(&info->stop_eviction, 0);
+ 	info->seals = F_SEAL_SEAL;
+-	info->flags = vma_flags_test(&flags, VMA_NORESERVE_BIT)
++	info->flags = vma_flags_test_any(&flags, VMA_NORESERVE_BIT)
+ 		? SHMEM_F_NORESERVE : 0;
+ 	info->i_crtime = inode_get_mtime(inode);
+ 	info->fsflags = (dir == NULL) ? 0 :
+@@ -5827,7 +5827,7 @@ static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
+ 				       unsigned int i_flags)
+ {
+ 	const unsigned long shmem_flags =
+-		vma_flags_test(&flags, VMA_NORESERVE_BIT) ? SHMEM_F_NORESERVE : 0;
++		vma_flags_test_any(&flags, VMA_NORESERVE_BIT) ? SHMEM_F_NORESERVE : 0;
+ 	struct inode *inode;
+ 	struct file *res;
+ 
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 3078ff1487d3..c46b523e428d 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -843,7 +843,7 @@ static inline vma_flags_t __mk_vma_flags(size_t count, const vma_flag_t *bits);
+ #define mk_vma_flags(...) __mk_vma_flags(COUNT_ARGS(__VA_ARGS__), \
+ 					 (const vma_flag_t []){__VA_ARGS__})
+ 
+-static __always_inline bool vma_flags_test_mask(const vma_flags_t *flags,
++static __always_inline bool vma_flags_test_any_mask(const vma_flags_t *flags,
+ 		vma_flags_t to_test)
+ {
+ 	const unsigned long *bitmap = flags->__vma_flags;
+@@ -852,8 +852,8 @@ static __always_inline bool vma_flags_test_mask(const vma_flags_t *flags,
+ 	return bitmap_intersects(bitmap_to_test, bitmap, NUM_VMA_FLAG_BITS);
+ }
+ 
+-#define vma_flags_test(flags, ...) \
+-	vma_flags_test_mask(flags, mk_vma_flags(__VA_ARGS__))
++#define vma_flags_test_any(flags, ...) \
++	vma_flags_test_any_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+ static __always_inline bool vma_flags_test_all_mask(const vma_flags_t *flags,
+ 		vma_flags_t to_test)
+@@ -889,14 +889,14 @@ static __always_inline void vma_flags_clear_mask(vma_flags_t *flags, vma_flags_t
+ #define vma_flags_clear(flags, ...) \
+ 	vma_flags_clear_mask(flags, mk_vma_flags(__VA_ARGS__))
+ 
+-static inline bool vma_test_all_flags_mask(const struct vm_area_struct *vma,
++static inline bool vma_test_all_mask(const struct vm_area_struct *vma,
+ 					   vma_flags_t flags)
+ {
+ 	return vma_flags_test_all_mask(&vma->flags, flags);
+ }
+ 
+-#define vma_test_all_flags(vma, ...) \
+-	vma_test_all_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
++#define vma_test_all(vma, ...) \
++	vma_test_all_mask(vma, mk_vma_flags(__VA_ARGS__))
+ 
+ static inline bool is_shared_maywrite_vm_flags(vm_flags_t vm_flags)
+ {
+@@ -913,14 +913,14 @@ static inline void vma_set_flags_mask(struct vm_area_struct *vma,
+ #define vma_set_flags(vma, ...) \
+ 	vma_set_flags_mask(vma, mk_vma_flags(__VA_ARGS__))
+ 
+-static inline bool vma_desc_test_flags_mask(const struct vm_area_desc *desc,
++static inline bool vma_desc_test_any_mask(const struct vm_area_desc *desc,
+ 					    vma_flags_t flags)
+ {
+-	return vma_flags_test_mask(&desc->vma_flags, flags);
++	return vma_flags_test_any_mask(&desc->vma_flags, flags);
+ }
+ 
+-#define vma_desc_test_flags(desc, ...) \
+-	vma_desc_test_flags_mask(desc, mk_vma_flags(__VA_ARGS__))
++#define vma_desc_test_any(desc, ...) \
++	vma_desc_test_any_mask(desc, mk_vma_flags(__VA_ARGS__))
+ 
+ static inline void vma_desc_set_flags_mask(struct vm_area_desc *desc,
+ 					   vma_flags_t flags)
+diff --git a/tools/testing/vma/tests/vma.c b/tools/testing/vma/tests/vma.c
+index c54ffc954f11..f031e6dfb474 100644
+--- a/tools/testing/vma/tests/vma.c
++++ b/tools/testing/vma/tests/vma.c
+@@ -159,8 +159,8 @@ static bool test_vma_flags_word(void)
+ 	return true;
+ }
+ 
+-/* Ensure that vma_flags_test() and friends works correctly. */
+-static bool test_vma_flags_test(void)
++/* Ensure that vma_flags_test_any() and friends works correctly. */
++static bool test_vma_flags_test_any(void)
+ {
+ 	const vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
+ 					       VMA_EXEC_BIT, 64, 65);
+@@ -171,16 +171,16 @@ static bool test_vma_flags_test(void)
+ 	desc.vma_flags = flags;
+ 
+ #define do_test(...)						\
+-	ASSERT_TRUE(vma_flags_test(&flags, __VA_ARGS__));	\
+-	ASSERT_TRUE(vma_desc_test_flags(&desc, __VA_ARGS__))
++	ASSERT_TRUE(vma_flags_test_any(&flags, __VA_ARGS__));	\
++	ASSERT_TRUE(vma_desc_test_any(&desc, __VA_ARGS__))
+ 
+ #define do_test_all_true(...)					\
+ 	ASSERT_TRUE(vma_flags_test_all(&flags, __VA_ARGS__));	\
+-	ASSERT_TRUE(vma_test_all_flags(&vma, __VA_ARGS__))
++	ASSERT_TRUE(vma_test_all(&vma, __VA_ARGS__))
+ 
+ #define do_test_all_false(...)					\
+ 	ASSERT_FALSE(vma_flags_test_all(&flags, __VA_ARGS__));	\
+-	ASSERT_FALSE(vma_test_all_flags(&vma, __VA_ARGS__))
++	ASSERT_FALSE(vma_test_all(&vma, __VA_ARGS__))
+ 
+ 	/*
+ 	 * Testing for some flags that are present, some that are not - should
+@@ -200,7 +200,7 @@ static bool test_vma_flags_test(void)
+ 	 * Check _mask variant. We don't need to test extensively as macro
+ 	 * helper is the equivalent.
+ 	 */
+-	ASSERT_TRUE(vma_flags_test_mask(&flags, flags));
++	ASSERT_TRUE(vma_flags_test_any_mask(&flags, flags));
+ 	ASSERT_TRUE(vma_flags_test_all_mask(&flags, flags));
+ 
+ 	/* Single bits. */
+@@ -268,9 +268,9 @@ static bool test_vma_flags_clear(void)
+ 	vma_flags_clear_mask(&flags, mask);
+ 	vma_flags_clear_mask(&vma.flags, mask);
+ 	vma_desc_clear_flags_mask(&desc, mask);
+-	ASSERT_FALSE(vma_flags_test(&flags, VMA_EXEC_BIT, 64));
+-	ASSERT_FALSE(vma_flags_test(&vma.flags, VMA_EXEC_BIT, 64));
+-	ASSERT_FALSE(vma_desc_test_flags(&desc, VMA_EXEC_BIT, 64));
++	ASSERT_FALSE(vma_flags_test_any(&flags, VMA_EXEC_BIT, 64));
++	ASSERT_FALSE(vma_flags_test_any(&vma.flags, VMA_EXEC_BIT, 64));
++	ASSERT_FALSE(vma_desc_test_any(&desc, VMA_EXEC_BIT, 64));
+ 	/* Reset. */
+ 	vma_flags_set(&flags, VMA_EXEC_BIT, 64);
+ 	vma_set_flags(&vma, VMA_EXEC_BIT, 64);
+@@ -284,9 +284,9 @@ static bool test_vma_flags_clear(void)
+ 	vma_flags_clear(&flags, __VA_ARGS__);			\
+ 	vma_flags_clear(&vma.flags, __VA_ARGS__);		\
+ 	vma_desc_clear_flags(&desc, __VA_ARGS__);		\
+-	ASSERT_FALSE(vma_flags_test(&flags, __VA_ARGS__));	\
+-	ASSERT_FALSE(vma_flags_test(&vma.flags, __VA_ARGS__));	\
+-	ASSERT_FALSE(vma_desc_test_flags(&desc, __VA_ARGS__));	\
++	ASSERT_FALSE(vma_flags_test_any(&flags, __VA_ARGS__));	\
++	ASSERT_FALSE(vma_flags_test_any(&vma.flags, __VA_ARGS__));	\
++	ASSERT_FALSE(vma_desc_test_any(&desc, __VA_ARGS__));	\
+ 	vma_flags_set(&flags, __VA_ARGS__);			\
+ 	vma_set_flags(&vma, __VA_ARGS__);			\
+ 	vma_desc_set_flags(&desc, __VA_ARGS__)
+@@ -334,6 +334,6 @@ static void run_vma_tests(int *num_tests, int *num_fail)
+ 	TEST(vma_flags_unchanged);
+ 	TEST(vma_flags_cleared);
+ 	TEST(vma_flags_word);
+-	TEST(vma_flags_test);
++	TEST(vma_flags_test_any);
+ 	TEST(vma_flags_clear);
+ }
+-- 
 2.53.0
+
 
