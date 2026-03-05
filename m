@@ -4,102 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CDE5F3D32A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 17:00:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC95F3D339
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 17:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A0096B0098; Thu,  5 Mar 2026 12:00:31 -0500 (EST)
+	id 1BF896B0088; Thu,  5 Mar 2026 12:13:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169F06B0099; Thu,  5 Mar 2026 12:00:31 -0500 (EST)
+	id 1430B6B0096; Thu,  5 Mar 2026 12:13:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055826B009B; Thu,  5 Mar 2026 12:00:31 -0500 (EST)
+	id 037CD6B0099; Thu,  5 Mar 2026 12:13:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA626B0098
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:00:30 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4D2E1B7028
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 17:00:30 +0000 (UTC)
-X-FDA: 84512623020.01.155116C
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6B51FA0018
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 17:00:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="tNa/+EfS";
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E82166B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 12:13:06 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 912681C179
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 17:13:06 +0000 (UTC)
+X-FDA: 84512654772.14.85CFD02
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C3E3540011
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 17:13:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=laLU1s9U;
+	spf=pass (imf07.hostedemail.com: domain of 3n7mpaQYKCA46so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3n7mpaQYKCA46so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772730029;
+	s=arc-20220608; t=1772730784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+W9kRz3m/SYSFHiK8S6yQTYXBwSgSb0N7m0LzsmYRVU=;
-	b=usaaFgTRIBT/SSdQlOq+wYOoKRnfVEGk5iJX73O1Idsbi55TzD6XIYIZDs4JixifSu3ztZ
-	jVOvGOy5p4t6iqM2Ro8UC2dLaeupZNrSythh7a6ryBghcS1tm+9vuXJMNFj10bPnsV1EXo
-	uMFIoc4H8ErRyTypsrFx4AYZE+u0Vag=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772730029; a=rsa-sha256;
-	cv=none;
-	b=UKL4lFpSf/iN7/0lprZpC1NiUI0HenkIvhWkH3wqOQjdPkr578VZpoXgfcd1MzH6ZKTbda
-	LCwD5qx0kQFf+a2BhrRAPxZPBgF9QJ/YHxVJXd0feiS5gGIQxt3HrZxctKnh1Yu4Y71gS6
-	mRucJmIiiWQTl1E2xLosV6eDMkKdW48=
+	bh=Tnolfb6uQBsYaAshkkXBLdzTSf21J1HsPObGa5E2rzU=;
+	b=eTGPfS2GisA47YyThsOM8M3RmsBhqusG0SOUhSzfSb37yzokmNOcXkEewsHTCJ7yI3jD3C
+	ccZv5gGW34DQJViu3yRA0gi/9rUbiK9o78KI4iXrhKl9KU9mZYdi7zhLC+OXvmEeQ3r0ry
+	nDuiGCvLg5O/BsD+I0xQowATChqCLWI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="tNa/+EfS";
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <7996d5c5-24db-4ef2-b88a-1b9d33f9e976@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772730026;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+W9kRz3m/SYSFHiK8S6yQTYXBwSgSb0N7m0LzsmYRVU=;
-	b=tNa/+EfSWp8BYC0NGdhpG90Sw0rCX1N5aQEj1hIjezt2RQrc1Cq3hup5nPJoamyFpaO6jz
-	2BqAmp7SAK6HnrI8qrAaWPNjY9fuwGGaKsKOTQAxvFY8nEx5xHoHvk9KZRRQmzkrwgkaEi
-	qqgr49KmTvG0qsLsBP5CKjb/L0MfwM0=
-Date: Thu, 5 Mar 2026 20:00:17 +0300
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/migrate_device: fix folio refcount leak on
- folio_split_unmapped failure
-Content-Language: en-GB
-To: Zi Yan <ziy@nvidia.com>
-Cc: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Balbir Singh <balbirs@nvidia.com>, Kiryl Shutsemau <kas@kernel.org>,
- matthew.brost@intel.com, npache@redhat.com, david@kernel.org,
- Usama Arif <usamaarif642@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, riel@surriel.com, shakeel.butt@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260304120132.3973445-1-usamaarif642@gmail.com>
- <E4B81DFE-5D45-40F2-9C90-EF386D89B06F@nvidia.com>
- <fbae2102-3e62-4df6-96bd-e8600ef2f497@nvidia.com>
- <FA698C89-7287-4615-BDC7-5D1F6CFB770A@nvidia.com>
- <5e59c077-9f06-4e45-86e1-ca696e6105b4@nvidia.com>
- <622eb392-8c04-473d-b42a-ecdc489799c4@linux.dev>
- <942f2df4-6fb5-415f-b7d4-87a83315890b@redhat.com>
- <f427c5f7-93d6-4eeb-bda6-5e40d42f2bba@linux.dev>
- <80683d6d-ea38-4326-af5e-e4c173bb1930@redhat.com>
- <332c9e16-46c3-4e1c-898e-2cb0a87ba1fc@linux.dev>
- <CDBCA254-3E40-4BFE-81DE-70DAC9D4222D@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CDBCA254-3E40-4BFE-81DE-70DAC9D4222D@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=laLU1s9U;
+	spf=pass (imf07.hostedemail.com: domain of 3n7mpaQYKCA46so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3n7mpaQYKCA46so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772730784; a=rsa-sha256;
+	cv=none;
+	b=2UkN7nCg2pxwxJB1DxP6AzwdhgERIYamOj6tOI4zCkWSdbmSJ1nUet+XDVxGoxv58CcQoX
+	DNlLuVwzbnNsYZWjelF3ceNaocc7Iq2eRvkllzggqQizX9AhXfwspUUsXLjU4qTproHC12
+	kDs1TggfKS5fkEsHC16ccMLIpwOrkyU=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c738f71723aso561223a12.2
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 09:13:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772730784; x=1773335584; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tnolfb6uQBsYaAshkkXBLdzTSf21J1HsPObGa5E2rzU=;
+        b=laLU1s9Uc9hZjn66/CmWYNzlz3ldZPfNUoJdU2tRqd0KJWm7CGJrF5hj+jswembenL
+         1kOGVbcebL0yv0k89H8v+cKlFoMAWsySLNG8ZAi6GBdXd2ZnDvc/uLXrAbGZURXHds5W
+         4KoY7looxUCKVcAuIC6iMn2v3ShLVQQcI9a6gIkD52juAU2yyBWJP0jKGY2eQx8Mfw66
+         piCO9zSunhEAMsqBeRRLQnRO6yr71x229D98vkOw51XX+SBDaWG6AC6COGGLh+h0xsU2
+         WjYztTD8nZo6e4AFihS/8yZPz3ApsZrp8v0xfeZ7tZ6ujSZa819T3UjnwABsqqPapHSd
+         owLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772730784; x=1773335584;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tnolfb6uQBsYaAshkkXBLdzTSf21J1HsPObGa5E2rzU=;
+        b=WIIc/l5xNuouxfPKxLheGMKqniGnVAwpOgzfkMaQcNPdbmkDYPw7yxNNXbG6LDg4A7
+         niLzv2jfndwrta52Yn+w2Sz/wE+GXO/1JJMBrOnFeP6WO1TaK4Bt5Ko/gbttkOB8j54N
+         zDzMpBD/thBxlcI7kuzYnE0VO9MPmu6SAORWLtq0xbYaHIdoCGrjNqr8XVhCI7GiR5ro
+         Hl3FWECWfHKm+ZVVTF/QjaLyoip0uP/pWvB4PHvCW1e0jVYHxl6Kloj6zwbY33ubhRdn
+         Ef0ORaGuObOEyiHX0Er57TnPrs8Gm7i9TAQtzdlcJj4lGQEpKBN3qs1R70iOdj3ca+AJ
+         lTFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWA7Z0ddIIaU2Rjnw30gYej5e9MbRFReugNNktBwoyVc7KpQp+cgj67rUBot8t2xLIBibN6Rbd+jw==@kvack.org
+X-Gm-Message-State: AOJu0YziFPU5kPJok4pvuom9gBMklJFlw9Emk4lEPd9QrFGLk5+y4ZNH
+	5a5LhO+aO2miuI5wtgbIEfiGpLHUYkm/HUKzKeL9ABV3X1dI8z9C/wT/4G9KjV3ETks02pcLYuh
+	5xJuHVQ==
+X-Received: from pgix2.prod.google.com ([2002:a63:db42:0:b0:c6d:cc16:8cee])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e8a:b0:38d:f2a1:a43f
+ with SMTP id adf61e73a8af0-39854a814d6mr239546637.42.1772730783352; Thu, 05
+ Mar 2026 09:13:03 -0800 (PST)
+Date: Thu,  5 Mar 2026 09:08:27 -0800
+In-Reply-To: <cover.1771630983.git.ackerleytng@google.com>
+Mime-Version: 1.0
+References: <cover.1771630983.git.ackerleytng@google.com>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <177272511649.1531226.15957182226632150956.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/2] Test MADV_COLLAPSE on guest_memfd
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, kartikey406@gmail.com, pbonzini@redhat.com, 
+	shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Ackerley Tng <ackerleytng@google.com>
+Cc: vannapurve@google.com, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, david@kernel.org, 
+	dev.jain@arm.com, i@maskray.me, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	npache@redhat.com, ryan.roberts@arm.com, shy828301@gmail.com, 
+	stable@vger.kernel.org, syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: C3E3540011
+X-Stat-Signature: 53zfrgjtix7x9ixsto4mscb8fcxeudgf
 X-Rspam-User: 
-X-Stat-Signature: rozbasrb3yzh11khehfhf6jznyqga5pm
-X-Rspamd-Queue-Id: 6B51FA0018
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772730028-52354
-X-HE-Meta: U2FsdGVkX19pl4yvAZtoaNJ+KRlkNRsR/Jfso+yY+mq57TXuWjcAwzAYwOy/s9CWbGYmvlcHCogXTockbDLaAHP7j4i0Z1XVlWVFRybcn9SEkgew8XGBvcWcrJuTg1z5DrBw5sl1IHFwOED4Bl/2t19TtLHqRNTzBYwkvZCz23Rzu6QxaxNMqS3KvVip6l9Y7YH6MmbOJj7z2FCywMTaA2NaLmxJw6XK4sIFGL5LmD6Qklav5AcdhW+Hxm87UB/JQb8nQ5lNkSP8tidPzO8F0VMjM/4lxQs9LMpVnilZTlJnETjfhvqIxShlaMs053yEP12BO+vfWCl0WqpBR5OYCKCTVD4VrPTEfu0Zy+zCzeEcZjhajJ5Ia+gNCPPTtmR4V5KRV2W7uQ5DwvtySWQNI1sj5J3DkRE0EMp0FQGMYYhk/XXmz6Lelo30snDEYDmed2aknqWvpGMiy6jBJQ9kdiD5i6DotzZzmwSnumnrYSHM6pVyt4V+qkKpcLsi7r70m9p+rpjU8P/0qL8qdNPfXwlxFd/9jnccJLdS3KraKc3T0tOn2HXvuw9Q84wEdZBR+0i2bX7TY6BCV/RBw3f/GwO6PtCd7mzRJnjxk69dd4SSOuFOBqPLsRA3yIczvJsXy9w7c1qf2YvPLxtYrdEScpAg02kORukXvfZRZzNzG2EsWzDtQT9nW6Z/bpov3PaORRbPuAdeI2QU+bvWfSCT/UxzB/LQj9udXPNQI9DrLxBhXyZWxqvzEYy+BbeUTXjy3ln9o8SImD0MXGn5UQSDtVVG+PLOY2yC4HqswvEdAYwpuxFSd4sHT9JBq4EkwCz7jdovj+hc35hjqeS2WIH7OvTLO53/fW4vGQml0MFlX6xTxlBzqvDqC1fVLPsojRkbJPRil24DM9JBIKfa76e/piIdkb60ic+iTT98Js5unmLvfbFzqWY+ATeGMDAx5mkBYyxgLXhMI9i1EEe6V+1
- c+NYfVEl
- FYUWA7UEEsIWZWu0=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772730784-15648
+X-HE-Meta: U2FsdGVkX1/onZDefyieucK6AUUJsl1/eHp3kNPlmST4+8t60T5Y3hhHyCviPDOaDy34/Yxxsq4mUDauyOHcEBPyOAFA4UvPtPwMdgYHhvTk4BuM7lGRD9YzLslE80QGND24ZzBlqG+VGFsfcR65Q8/DTz/1yU0Ae7ghe3Usx63eitPFTdV94Jj5F1ya+PYsJwLvh3JpqJLdmkCSU2IB73yb7yxiZaF97zw2M/hd/kznncnpy6l+ycn+vd3BT3GXqRjlKbu/m/5z8jb14fDTR9dzfD+xDrZbn1+eV1Bk17XEKMpLjDhbwrl4ErSvCocleTMf5/CRt7OFs9Sbnc4Po7dJ6H1kEPyTttg6IZzJgidzQCJ5BnZnd426Bvza+bMzuTPAIMS5FDVpa3mVr4hFkOnyoULCnkcoS/GdTRq9iLuFaf0lE21iknNFo+pUE0JhtJCQhAQDteEBPjj8JStSJvWuwegGHPPKow4a+Y9DKgXTutoL2980RH3ZGnqxz80yN0ZNNmpWsujxfm3g3K0IxRlyWA6djjS7R/q6YbYUNQ52oTny8+T/UjmOxuO+ii5KpzJw2jEPnPCtN1t6OkXXdIL8XSJWISG3ta6ds1vf1ZvcIGfyujNCD1zciIfVGaMPpaGhIqQY0O21L9/HSfMdINdjSdjWa2tS9U25BJ9Yd5itJM/olg+meKuullumeGmjcznk4MYvy0C0Jz073Pnb0cQmE/nSVGkTxkU5ZMn3krIMZ2La2rQZuUzWun+v+Uq+HtqvqZZT3sXv0exNEICL3qmDa4ilGjYfvaZ9KhoTPCQ7kT0bT6fvxavgNjUEXqtUVo0pcyzyQo1YeZmUHGkYd7ygw6GCtDbMwsBF71BOPMUYM6yaBD+dNpJGZFbAZTXWkgJB4WIYAqZutSxUJ2wvKkALeROG0r2daVuewJhA5fZktD3rgED8pKkDKPXcqaW0/xmlzSR0y4gIgAJ9nsB
+ iR+JJKEp
+ xFYgwXPK+xqPPKYQgzBYugIuMXc63o93ggGOClrecWrCzZ1MWAmTnl9R8W315yIWmRlJ0zWVvW47pHqj4zSeOApmL0W0O+VnIC0qItzMM+r9FrvkEBHrjErtCFO9ylivFbXx2ldEdJUFObj3g+YbMtHeB0arMKG0AikUDxYqbdILtBESnv7UqsHtRFfKGdSJYP1qktCBBBA5vPYSe8BVQIjh1hRh94BwKMjAyvdKbSZ0nTK+ZnhJNxkm9RrePFbvLR7O8BMF9/OpTrAwMROCmEFE3jNWIjoCzJFI2HGP0Wsp3rm/0btft5LwDnGVr03fKnDslebaZ79aTw8GZEm82pNbuOyLYfzkU1FKwq5lmnaECOuhwEfaTB/XoMtLSJiDjhPa4KCza9lKScZ1fO3w/NM4LhxLQ5Ln52BR+IZa0dMU2G4O+N9cznYo6No3tG1+Z3N6H4wNGlFQ15IcS0LrabLwTbQIlbubE1NjL9vmQkDUydVWdJUYGEHQGK1sg82JxnQhV7X/XuDjNXCbI2wIh4lj2JsoAkQ0w1DnYVQFu3zZjVjVlbE8RiceCZlwnsbT9x5SHxYX2L4XyNAaMIhwty9u0xWxWoLNU+Mge7ntVoKdT/DB3nYwilZKuhaS5pS/mLyQaV/CZ44YCok/mXEaFmjxZGiRd0ZXyJh9k7zFuMSS3o5hWRC+bMOBmF83DZQzeeswzFyGE0/Cb+4Paze+qUaswTrhYGaHDxYlhJkGL2S2fWG9II0TA2RRAZcbXgObecZGcp1uOLrcE5Suo9w7iC59bWn55Pu1O7G/g6svWW4ffNy+2+ZUSY3t3FQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,240 +114,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 05/03/2026 16:39, Zi Yan wrote:
-> On 5 Mar 2026, at 11:36, Usama Arif wrote:
+On Fri, 20 Feb 2026 23:54:34 +0000, Ackerley Tng wrote:
+> syzkaller identified that khugepaged, operating on guest_memfd memory,
+> could cause guest_memfd folios to get collapsed, leading to a WARNing
+> during fault [1].
 > 
->> On 05/03/2026 12:09, Mika Penttilä wrote:
->>> On 3/5/26 13:44, Usama Arif wrote:
->>>
->>>>
->>>> On 05/03/2026 06:09, Mika Penttilä wrote:
->>>>> Hi!
->>>>>
->>>>> On 3/5/26 01:28, Usama Arif wrote:
->>>>>
->>>>>> On 04/03/2026 22:09, Balbir Singh wrote:
->>>>>>> On 3/5/26 08:54, Zi Yan wrote:
->>>>>>>> On 4 Mar 2026, at 16:48, Balbir Singh wrote:
->>>>>>>>
->>>>>>>>> On 3/5/26 02:17, Zi Yan wrote:
->>>>>>>>>> On 4 Mar 2026, at 7:01, Usama Arif wrote:
->>>>>>>>>>
->>>>>>>>>>> From: Usama Arif <usama.arif@linux.dev>
->>>>>>>>>>>
->>>>>>>>>>> migrate_vma_split_unmapped_folio() takes an extra reference via
->>>>>>>>>>> folio_get() before calling folio_split_unmapped().  On success, the
->>>>>>>>>>> split consumes this reference: __folio_freeze_and_split_unmapped()
->>>>>>>>>>> expects the +1 in its folio_ref_freeze() check, and distributes it
->>>>>>>>>>> across the resulting sub-folios via folio_ref_unfreeze(...+1), which
->>>>>>>>>>> are later balanced by folio_put() calls in __migrate_device_finalize().
->>>>>>>>>>>
->>>>>>>>>>> If folio_split_unmapped() fails (e.g., unexpected pinning returns
->>>>>>>>>>> -EAGAIN), the function returns without calling folio_put().  The extra
->>>>>>>>>>> reference is never released.
->>>>>>>>>>>
->>>>>>>>>>> Add the missing folio_put() on the error path.
->>>>>>>>>>>
->>>>>>>>>>> Fixes: 4265d67e405a4 ("mm/migrate_device: add THP splitting during migration")
->>>>>>>>>>> Closes: https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
->>>>>>>>>>> Reported-by: Nico Pache <npache@redhat.com>
->>>>>>>>>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->>>>>>>>>>> ---
->>>>>>>>>>>  mm/migrate_device.c | 4 +++-
->>>>>>>>>>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>>>>>>>
->>>>>>>>>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>>>>>>>>>> index 0a8b31939640f..351ecd9065d13 100644
->>>>>>>>>>> --- a/mm/migrate_device.c
->>>>>>>>>>> +++ b/mm/migrate_device.c
->>>>>>>>>>> @@ -917,8 +917,10 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>>>>>>>>>>  	folio_get(folio);
->>>>>>>>>>>  	split_huge_pmd_address(migrate->vma, addr, true);
->>>>>>>>>>>  	ret = folio_split_unmapped(folio, 0);
->>>>>>>>>>> -	if (ret)
->>>>>>>>>>> +	if (ret) {
->>>>>>>>>>> +		folio_put(folio);
->>>>>>>>>>>  		return ret;
->>>>>>>>>>> +	}
->>>>>>>>>>>  	migrate->src[idx] &= ~MIGRATE_PFN_COMPOUND;
->>>>>>>>>>>  	flags = migrate->src[idx] & ((1UL << MIGRATE_PFN_SHIFT) - 1);
->>>>>>>>>>>  	pfn = migrate->src[idx] >> MIGRATE_PFN_SHIFT;
->>>>>>>>>>> -- 
->>>>>>>>>>> 2.47.3
->>>>>>>>>> Add Balbir, who wrote the code, to comment on this.
->>>>>>>>>>
->>>>>>>>> Thanks Zi!
->>>>>>>>>
->>>>>>>>> Just wondering if there is a reproducer for the issue and how the fix was tested?
->>>>>>>>> I expect migrate_vma_finalize() to be called for folios, even when split failed and
->>>>>>>>> drop the lock.
->>>>>>>> Does migrate_vma_finalize() do folio_put() for failed-to-split folios?
->>>>>>>> If so, how does it distinguish between split folios and failed-to-split folios?
->>>>>>>> By comparing source and destination folio orders?
->>>>>>>>
->>>>>>> We reset the MIGRATE_PFN_MIGRATE flag for failing to migrate pfns.  We do a folio_put
->>>>>>> on the src in finalize, if it is split then on all the split folios as well.
->>>>>>>
->>>>>>>> What we see from migrate_vma_split_unmapped_folio() is that
->>>>>>>> it adds a refcount for all input folios, but only drops a refcount
->>>>>>>> for the split folio. Isn’t it cause failed-to-split folios to have
->>>>>>>> additional refcount?
->>>>>>>>
->>>>>> Hello!
->>>>>>
->>>>>> Thanks for reviewing everyone. So its very difficult to create a reproducer I think
->>>>>> the extra reference would need to appear after migrate_device_unmap() but before
->>>>>> folio_split_unmapped() in migrate_vma_pages()? That's hard to trigger reliably from
->>>>>> userspace.
->>>>>>
->>>>>> The fix came about when Nico indicated there might be an issue if split_huge_pmd_address
->>>>>> fails in my patch [1].
->>>>>>
->>>>>> Below is my understanding of how refcounting is working over here step by step. I
->>>>>> might very well be wrong on this, and the refcounting is a bit all over the place
->>>>>> and I might miss a reference change somewhere so would really appreciate if someone
->>>>>> can confirm this!
->>>>>>
->>>>>>
->>>>>> 1. migrate_vma_collect_huge_pmd():
->>>>>>   a) folio_get(folio) -> +1 (collect reference)
->>>>>> 2. migrate_device_unmap():
->>>>>>   a) folio_isolate_lru() -> +1 (isolation reference)
->>>>>>   b) folio_put() -> -1 (drops the collect reference)
->>>>>>
->>>>>>
->>>>>> Without this patch fix:
->>>>>>
->>>>>> 3. migrate_vma_split_unmapped_folio():
->>>>>>   a) folio_get(folio) -> +1 (split reference)
->>>>>>   b) folio_split_unmapped() -> fails
->>>>>>   c) Returns error — without folio_put() which is the fix
->>>>>> 4. Caller in migrate_vma_pages(): clears MIGRATE_PFN_MIGRATE | MIGRATE_PFN_COMPOUND
->>>>>> 5. __migrate_device_finalize(): sees !(src_pfns[i] & MIGRATE_PFN_MIGRATE), restores the folio:
->>>>>>   a) remove_migration_ptes(src, src) — re-establishes user PTEs
->>>>>>   b) folio_unlock(src)
->>>>>>   c) folio_put(src) -> -1 (drops the isolation reference)
->>>>>>
->>>>>> The split reference in 3.a is never released and the folio has a permanently elevated refcount.
->>>>>> Unless I missed a folio_put somewhere for the refcount increase in folio_isolate_lru() (2.b)?
->>>>>>
->>>>>> Please let me know if this makes sense!
->>>>>>
->>>>>> [1] https://lore.kernel.org/all/CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com/
->>>>>>
->>>>>>> Thanks! Yes, the patch makes sense
->>>>>>>
->>>>>>> Acked-by: Balbir Singh <balbirs@nvidia.com>
->>>>>>>
->>>>>>> Balbir
->>>>> I remember stumbling on this while ago also. The folio_get() in migrate_vma_split_unmapped_folio()
->>>>> is balanced with put_page() in __split_huge_pmd_locked() (freeze = true), can't fail for device pages.
->>>>> Folios at this point are unmapped but have 1 refcount from "collecting".
->>>>> After folio_split_unmapped() the refcount(s) is still 1.
->>>>>
->>>>> So it seems the code is good as is? A comment though would be good for the extra folio_get..
->>>>>
->>>> hmm I dont think the put_page() in __split_huge_pmd_locked() is there to balance the folio_get() in
->>>> migrate_vma_split_unmapped_folio(). There are other points where split_huge_pmd_locked() is called
->>>> with freeze = true [1] and they don't get a reference before calling split_huge_pmd.
->>>>
->>>> I think the folio_put() in __split_huge_pmd_locked() freeze = true case is there as migration
->>>> entries are being installed?
->>>>
->>>> [1] https://elixir.bootlin.com/linux/v6.19.3/source/mm/rmap.c#L2334
->>>>
->>>>
->>> Yes normally you want to drop the reference when installing migration entries but in this context
->>> you have already done the collecting for the THP folio and you want to balance with the folio_get()
->>> the put_page() to keep the refs unchanged. Is that right Balbir?
->>>
->>> --Mika
->>>
->>
->> Hi Mika,
->>
->> You are right, This patch is wrong. I tried the below diff to force folio_split_unmapped to return
->> -EAGAIN. I ran tools/testing/selftests/mm/hmm-tests -r hmm.hmm_device_private.migrate_anon_huge_err
->> to trigger the path for folio_split_unmapped.
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 8e2746ea74adf..6df33b4990a13 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -4140,6 +4140,8 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
->>         if (folio_expected_ref_count(folio) != folio_ref_count(folio) - 1)
->>                 return -EAGAIN;
->>
->> +       return -EAGAIN;
->> +
->>         local_irq_disable();
->>         ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page, NULL,
->>                                                 NULL, false, NULL, SPLIT_TYPE_UNIFORM,
->>
->>
->>
->> I inserted a lot of traces to keep track of refcounts [1]. Without this patch, I get
->> ....
->>        hmm-tests-129     [000] .....     1.476233: __migrate_device_pages: SPLIT_UNMAPPED: folio=ffc536e2c4100000 refcount=0 AFTER error NO folio_put
->>        hmm-tests-129     [000] .....     1.476234: __migrate_device_pages: PAGES: split FAILED folio=ffc536e2c4100000 refcount=0
->>        hmm-tests-129     [000] .....     1.476236: __migrate_device_finalize: FINALIZE[0]: src=ffc536e2c4100000 dst=ffc536e2c4100000 src==dst=1 refcount_src=1 mapcount_src=0 order_src=0 migrate=0 BEFORE remove_migration_ptes
->>        hmm-tests-129     [000] .....     1.476237: __migrate_device_finalize: FINALIZE[0]: src=ffc536e2c4100000 refcount=1 mapcount=0 AFTER remove_migration_ptes
->>        hmm-tests-129     [000] .....     1.476237: __migrate_device_finalize: FINALIZE[0]: src=ffc536e2c4100000 refcount=0 AFTER folio_put(src)
->>
->> i.e. refcount = 512, which is correct as split_huge_pmd_address was successful. Full output is
->> at [2].
->>
->> With this patch, I get:
->>
->> BUG: Bad rss-counter state mm:00000000cfe88d5e type:MM_FILEPAGES val:-511 Comm:bash Pid:63
->> BUG: Bad rss-counter state mm:00000000cfe88d5e type:MM_ANONPAGES val:511 Comm:bash Pid:63
->> ...
->>        hmm-tests-129     [000] .....     1.468315: __migrate_device_pages: SPLIT_UNMAPPED: folio=ffed210c840f0000 refcount=1 AFTER error folio_put FIX PRESENT
->>        hmm-tests-129     [000] .....     1.468315: __migrate_device_pages: PAGES: split FAILED folio=ffed210c840f0000 refcount=1
->>        hmm-tests-129     [000] .....     1.468318: __migrate_device_finalize: FINALIZE[0]: src=ffed210c840f0000 dst=ffed210c840f0000 src==dst=1 refcount_src=1 mapcount_src=0 order_src=9 migrate=0 BEFORE remove_migration_ptes
->>        hmm-tests-129     [000] .....     1.468357: __migrate_device_finalize: FINALIZE[0]: src=ffed210c840f0000 refcount=513 mapcount=512 AFTER remove_migration_ptes
->>        hmm-tests-129     [000] .....     1.468357: __migrate_device_finalize: FINALIZE[0]: src=ffed210c840f0000 refcount=512 AFTER folio_put(src)
->>
->> refcount=0 means the folio would be freed which is not correct. The full output is at [3].
->>
->> Thank you for clearing this up!
+> Add selftest to guard against similar regressions.
 > 
-> Thank you for doing the investigation. Can you send a patch to add a comment
-> in migrate_vma_split_unmapped_folio() about this to avoid the confusion
-> in the future?
+> Changes in v2:
 > 
+> [...]
 
-Yeah this was really confusing.
+Applied to kvm-x86 selftests, thanks!
 
-Does something like below look good?
+[1/2] KVM: selftests: Wrap madvise() to assert success
+      https://github.com/kvm-x86/linux/commit/58f5d8eebd5c
+[2/2] KVM: selftests: Test MADV_COLLAPSE on guest_memfd
+      https://github.com/kvm-x86/linux/commit/9830209b4ae8
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 78c7acf024615..a302f9d3ce921 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -910,6 +910,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
- 
-        folio_get(folio);
-        split_huge_pmd_address(migrate->vma, addr, true);
-+       /*
-+        * split_huge_pmd_address consumes the folio_get reference above.
-+        * Therefore no folio_put is needed on the folio_split_unmapped
-+        * error path.
-+        */
-        ret = folio_split_unmapped(folio, 0);
-        if (ret)
-                return ret;
-
->>
->>
->> [1] https://gist.github.com/uarif1/65e1e816af7aa0ae38dd6ec64d62a993
->> [2] https://gist.github.com/uarif1/79ea9500667daa4e2ef09cb5d308f041
->> [3] https://gist.github.com/uarif1/8a35a6c65ba8b3a1c1dfe72dc30e821d
-> 
-> 
-> Best Regards,
-> Yan, Zi
-
+--
+https://github.com/kvm-x86/linux/tree/next
 
