@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A1BF30951
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93DE0F30950
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 11:56:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 807C06B00AF; Thu,  5 Mar 2026 06:56:47 -0500 (EST)
+	id 0B1C06B00B1; Thu,  5 Mar 2026 06:56:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8046B00B1; Thu,  5 Mar 2026 06:56:47 -0500 (EST)
+	id 07C436B00B3; Thu,  5 Mar 2026 06:56:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F5316B00B2; Thu,  5 Mar 2026 06:56:47 -0500 (EST)
+	id EBDB36B00B4; Thu,  5 Mar 2026 06:56:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0706B00AF
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:56:47 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2CEA05B7F4
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:56:47 +0000 (UTC)
-X-FDA: 84511857654.24.446B67E
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6B7D2180004
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:56:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rFyAWsFw;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBDC26B00B1
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 06:56:57 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B8EBB1A0795
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:56:57 +0000 (UTC)
+X-FDA: 84511858074.30.EE35145
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3227AA000B
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:56:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fe+nMrSJ;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772711805;
+	s=arc-20220608; t=1772711816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=evy5ffpxH1pOU6KU8S5DoExZmuc8IAjbV0oiS0M36hM=;
-	b=ZQ0XbmZI959WAXhw934TmG+wLXdgwxIuLypnkQOVO58R8FuO6aGi0pcJZ+lK41jkc8KMO7
-	iu9CN3i/7keqfl4KWk2Fr8ZHN63xvA4dK4SOdBwu9wGjGspINTD/D9fEK5Rl/IovQzQme2
-	Z7m4rUoZLbOlZLAcnxq8xPpshgXZEC4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rFyAWsFw;
-	spf=pass (imf16.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711805; a=rsa-sha256;
+	bh=ZbG23+zJ5fPDETZsA4JYiiScdZSpnAwzCU/omjW9+7Y=;
+	b=tP3wTarbeEmfTP4nE0VEbnUEjEbSB14aE+BKh9s6QdH0ZlzMQFLS2fHAV7xliPw0MnjZIZ
+	JOwps22d6NxlnGjc57Nr+4ceT3RClggLiDHbo/7dnwUETbgftu6C4J5PWeySyWYKLOJjGM
+	Jaqmi+0gj+MVX3mx6Pp5RlBO3ZoxpCg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772711816; a=rsa-sha256;
 	cv=none;
-	b=UBJLmoqythuR2+XcjNcPsGwpEOtKgbvMGvWaf0GpbOKfGoN+T1YoVtTFzM5tJfptJpvfA9
-	fGHZfTN6yXFrraZ7v2RaUxSOAyTik6LsX6Ts/AXrRi0RkThMdlYj8ddqKFg1vG3ycCfgL4
-	YEii0QgCfLlWftUtge9U6/fD9mRCs6U=
+	b=6AxJ7cxh6uBHvjfNN73GSC3Ixr40yCkn/Uuunzndd5n5pwDtbWG7kIt/9bCJ9iKse5C8NO
+	xDnLW5Ns3fNJ1K/OamhG5rSpzBeioeyMsJh0dwxfY3/XG9JX26YzSlP+nnIDrDZ+foiLdU
+	9cvSkCroApDl0jwkBp3A5pekT05U/7w=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fe+nMrSJ;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772711803;
+	t=1772711814;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=evy5ffpxH1pOU6KU8S5DoExZmuc8IAjbV0oiS0M36hM=;
-	b=rFyAWsFwp6ftMmtwWBjFPZuuy+ovo7+R0luaziVgpgjr5WTaq8+zWKMGUQzhQlZfUTq3Ek
-	gEz5fQWKGv5h+FfKYvTOMlmL4usXczqwQMgmQxXj1wwI9eoEvsMGqEZREUbRjLpCLamjX1
-	zhtW0Qi/5QgfqLC47w3RZu4F4drXcPI=
+	bh=ZbG23+zJ5fPDETZsA4JYiiScdZSpnAwzCU/omjW9+7Y=;
+	b=fe+nMrSJbiyNEjT8QnfP2jiU7zSCtJUFDhUkZ6xW8MCf6wGdRSGgSko4Kwhc4zPQBedWa5
+	DmrzF7ubIzkhASX91nLHrdY9b0eWVYN48Ccc0XZJ8LXDN4O7BgEnue4o3MoZ2JmNDreaDv
+	bQfDWzg57Ggq6hClfYxiaK4sGUfw26M=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -89,22 +89,20 @@ Cc: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v6 15/33] mm: memcontrol: prevent memory cgroup release in mem_cgroup_swap_full()
-Date: Thu,  5 Mar 2026 19:52:33 +0800
-Message-ID: <21d1abab7342615745ea4c18a88237335ab44d13.1772711148.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v6 16/33] mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+Date: Thu,  5 Mar 2026 19:52:34 +0800
+Message-ID: <f37e8ae2d84ddc690813d834cd75735d52d1bc78.1772711148.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: fro7usx64fpmn47trz9qefzdo914h4pq
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3227AA000B
+X-Stat-Signature: gighfhax4se6kma8pztrj9qu61w3ukn8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6B7D2180004
-X-HE-Tag: 1772711805-758576
-X-HE-Meta: U2FsdGVkX1/18KkqmKbmj4GdfUXzg/HXR1un5bU7vYg10MAWiBeZTHdFhgeXqmDslgrv855m8AW3ycMr0y89x059yYdsn2ACdoEQ4LLsoQm3sHO4sDWuz5503qglFD65s2fAUMKg1v/bdA4LibvO9pJh9RTxBIgeyQHpx1L4FUzjfjt8ZnwRMB6LKkpx6UF2NWF6tcTrhAc6TOkYSDKiyHyELTQVJxIB79pgME9LMLt1526gwDlLF0U/dA5H2GM+0MA1lBRlw01S+39aEZ8pjWafUK/KiXh6PlyvfvnTMZ1bNXh2iNMEJGlhcFW3hQxFNncrsaRv3s5E3uYV8ENgwSVnYT8tOT1r2QOxD0CN1HuG3fsZGxGYnPrAqc68Q/jZlPb/3O+1Wi1ovPfdrXXTBiWBuoDqYv2eYrxCzA3bDN8pIfMxjS5z/eg4A8zx/n1Mexu6sR9m0ci3a5PoDrdMS0Qh3Yz+/O6LytrWtp9JLudbW6yZWzqNv83V3Ak8w0jhucrpX5bD9B5wberVKJwAdi7Q2Ddtd5oOC79syzRPSpoThKoT0rR5aerQ60HaRWyeFHkK4cCRq7B+MQ0gPVsWzcgS3ZEAbfRLp6mHfIyCJUQHtiD/OsEUMmFe8OsBOihgjOp8baxMjQv/CodSlocltS0FCJp0owbgon/dMt/LLkBavROzy8w+BUTTWXlRf5QReDspYA8HaJh0gkXSdt6HoJxykc0nfW4MIQug5UP006jBEbCzer2ba825Rv8jKssC/U3CcpryWnxexgdYHm51S0teMG7vD58/HoGeLNashS6lCcdigVY5Zt7xuj2TR5anaVc2/P1TYBaUsHFBvm6yzN1dbUGcKOhWwgQtNoUzo9qVpVfoEd2/mGRLczUExpuQk5co8OkueJkP/Z2WJSf09YwiGKcnGKa6gtRfoa+DoOL99aFC3BVrGeBJAqvKSkYTpReH4BB/iNyBOwpG/no
- Ahy3GuTX
- kecW6UsonaisWhRfxJXSZLWSXob+j7dxRPRxbEocwm6Beo3bb9qkLNZ7VSSBLu5eqn062qdiitn383emCB1NwHI4Jomm2YaFxudGSP064Kp5ZDL3/xlhEXY2DurBrfb5JXlEM/GcTaSLXyuQ61e6EELciQzFEXWY7i4Jz6kGFadvPQ2TafinYReTek3Gg1EvuiZAslHgIejBfnrvyB3vFqlI5P79jHByQ3m1rC3xKgHeBGOa0mso/XuZwI9gsTNPi2Xh3sBr7Ingv8A8q8oNtQLRHFshuTGxJeeOdCDTxNllMJYY0VVRaip+usOdXIKQWxeXf
+X-HE-Tag: 1772711815-297178
+X-HE-Meta: U2FsdGVkX19I86lqxlC/AMbisGfH+I7xk6+L1JczOEf9yDBoLc19cqlp5lw7b0SgyLAJgAszyI2xokKs02K7KpfTuy+2aH4LkU1TYvsnh9+mOjGtIQuqxOHZtvkLino5yRtmorOT6wb9d9UOwU/AzuGsTNYtzAW8A8iLvyTV8SpPiOMtMsg+K0YE5kGZSIkqqoI9niNY1RhaKkdzsdQ4qcaQKeZr1MM4lTqw6KGtEJMLUuEOj+vWV8MALw7OejefcsC0TpPqw/Q+/AP3+CRfWBRlOaRWgnhv9E8FFsDh8I5yHWT/LZI3Vjlt0fNTNSZFs7mLwlm9EaDVN0MkMUiDb7TgD5ABYCVwYhrdFs1sTjrSE4lqhWETRP7wnq30NghdukY3fcfaEh7T6SL7i4ErcM2t5+LkFqRbLXXdIYz+XKIr4DK9TFMoETyK+ENJOEau3hj8F8hg4a5XI5Q+Wl9Eayzo/DYRgZ6erTexr/8bSFw7eWKt2Kj4KzL3XLyZ7OZPNX05uWECqDQstFOZ3v34YWJ92uJEBwrPx6m4OdcYM4J2M/OddUxPeZQSGpheVkjCvnRyXAKPsNsthoqe53spRBpq3kHmITxbxdBZkjtASO+l3jNcjnf3EF8QwWHgQlZ90+F35ysXDmn9SypT6oQIxoF55bvxPhVCY09+OPM2v0alLIi92Zx+LL8j4ClTZRd9dsQVB70MLQIxVJyH3ppHUYgMJ5bdMIf9Nvu+Jtn7mX8FX7C3d/BzX8WRHvGOER++WG+6obmDOCigcJotuwzQ2t4zngs79D8MwvJAPxzZ4Wy819ETCAU/G+00UXjIv45OLB/Mn3heD5kSl+b6gQL5JpDkaQNH5IfyOhqJNOmhy1JqSazeURDXoy1GIGbiJgjWejhvTJ5umCRw6UTQsBJHxd5T7vb5m5f9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,7 +118,7 @@ hold the rcu read lock or acquire a reference to the memory cgroup
 returned by folio_memcg(), thereby preventing it from being released.
 
 In the current patch, the rcu read lock is employed to safeguard
-against the release of the memory cgroup in mem_cgroup_swap_full().
+against the release of the memory cgroup in lru_gen_eviction().
 
 This serves as a preparatory measure for the reparenting of the
 LRU pages.
@@ -131,51 +129,42 @@ Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/memcontrol.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ mm/workingset.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a4bb8b8b2c457..063fdfdd58223 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5345,27 +5345,29 @@ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
- bool mem_cgroup_swap_full(struct folio *folio)
- {
- 	struct mem_cgroup *memcg;
-+	bool ret = false;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 5e8b6e62a6175..6971aa163e466 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -244,12 +244,15 @@ static void *lru_gen_eviction(struct folio *folio)
+ 	int refs = folio_lru_refs(folio);
+ 	bool workingset = folio_test_workingset(folio);
+ 	int tier = lru_tier_from_refs(refs, workingset);
+-	struct mem_cgroup *memcg = folio_memcg(folio);
++	struct mem_cgroup *memcg;
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
++	unsigned short memcg_id;
  
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 
- 	if (vm_swap_full())
- 		return true;
--	if (do_memsw_account())
--		return false;
-+	if (do_memsw_account() || !folio_memcg_charged(folio))
-+		return ret;
+ 	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
+ 		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
  
 +	rcu_read_lock();
- 	memcg = folio_memcg(folio);
--	if (!memcg)
--		return false;
--
- 	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
- 		unsigned long usage = page_counter_read(&memcg->swap);
++	memcg = folio_memcg(folio);
+ 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 	lrugen = &lruvec->lrugen;
+ 	min_seq = READ_ONCE(lrugen->min_seq[type]);
+@@ -257,8 +260,10 @@ static void *lru_gen_eviction(struct folio *folio)
  
- 		if (usage * 2 >= READ_ONCE(memcg->swap.high) ||
--		    usage * 2 >= READ_ONCE(memcg->swap.max))
--			return true;
-+		    usage * 2 >= READ_ONCE(memcg->swap.max)) {
-+			ret = true;
-+			break;
-+		}
- 	}
+ 	hist = lru_hist_from_seq(min_seq);
+ 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
++	memcg_id = mem_cgroup_private_id(memcg);
 +	rcu_read_unlock();
  
--	return false;
-+	return ret;
+-	return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, workingset, type);
++	return pack_shadow(memcg_id, pgdat, token, workingset, type);
  }
  
- static int __init setup_swap_account(char *s)
+ /*
 -- 
 2.20.1
 
