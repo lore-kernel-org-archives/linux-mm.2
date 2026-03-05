@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15DA9EEF300
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 05:39:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B16EEF303
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 05:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37FE26B008C; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
+	id 5211C6B0089; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 326D16B008A; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
+	id 4378A6B0093; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 229186B0093; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
+	id 2C49B6B0092; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C6506B008A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B99A6B0088
 	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:39:30 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8ACAE1B8A4A
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A22688BDC7
 	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:39:29 +0000 (UTC)
-X-FDA: 84510906858.18.601BBE8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0039B4000B
+X-FDA: 84510906858.14.18B657A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 12B31140004
 	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:39:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EV78gkF0;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Beu5N6qr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772689168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4meiMGwYvCF+Q/G7tmBV4Lx1Nc/bHu8ccrUbbl0TcE=;
-	b=EZ18EebyyTogOfFwqVt8Efu19vHcvBd30r+mh13KIF2AHp7N/thsI27mNoCbreKMnSi95Z
-	Xt9Q8SFOuh7XonDfKMPsJFa60qnXSwkDdxqiaWYDb8MoLD5pSeDI8oJ12QOxVVPUcj5f/h
-	kFai21lf/hY28hjl62Jcj8qdE8QDId4=
+	 in-reply-to:references:dkim-signature;
+	bh=Yinq9toHf81NNPBAgtt6YAeIAVkS0SFEIUN/sZrB1/I=;
+	b=toVbn1eWuv98jMe8nSi1NhKBO0+Da476KU7jbYI9u5vjNaBDQqQvAvgozbnLXZawUrN1Jf
+	WngWe/lWFRKf/weYggsosY6Ox5m2tptHQYAeisjHMiJB22tkw/O9qlECfdVjsFr6RRR4RE
+	jFAL9Hi0B7uI/TjQl72KPGDSoo4wjcs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EV78gkF0;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Beu5N6qr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772689168; a=rsa-sha256;
 	cv=none;
-	b=nZJ5q8EKr9hJmT0dXx8bJwvCeMIP9Tnkf5+rcdSSrJm9TVRsZPC75pYH+l9+8tVOd/+g07
-	r31v3CdPcrOBg53IgZb6f3f0CUqKxhKC8RhdkTBEe89M7ko3kmyAznd95XMOr8T+evwJlL
-	GzdvoMv6rbG6lteLXn9B6t6rhOlIyUU=
+	b=yBLGyQvhtckSM2mXQgP9Jd2NppG7kmZGtSK8A3mQX9XF3pHAuJk+rACzUPo1uIRl82/hEx
+	0v91CzUDqPyE5MxlCvxyql0Jcj3Ydu5YQ9UKU5WXiDB8DE9HKkkGeVzhHxYJjpRCOV6LAx
+	T5NXvtR3KZuZs99zhdSZP5RRpknxCIM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31F3D61340;
-	Thu,  5 Mar 2026 05:39:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C138EC2BC9E;
+	by sea.source.kernel.org (Postfix) with ESMTP id C3023429C4;
+	Thu,  5 Mar 2026 05:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85193C116C6;
 	Thu,  5 Mar 2026 05:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772689166;
-	bh=bVVliIOg8qhYd2P4htNiq3HDElr+pou2NiqB1WgEprY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV78gkF0MgLzcm2fqzlweoxGrUfkuJ7etBaw1Dbu57ttNfmS/snYwef6oboti0hA+
-	 AXNRLPLVMVvtzKGAKsEdkV75nLk/WjIuLytyXM6916kykgeMk1xfZkPsDVcqlQYiUU
-	 +u+PlWwDwhVg+M+3yiPXFvxCi2P+IdUPotWzQFPoMPoa0tbPNjPZr0pmVy+uPuCfEQ
-	 efHhwVMBycjy7ltHgnnN0hJ5Q3Vk/GFqutOjI2GQU7eQCxnABFL6yyQRGKH5l81R8P
-	 RtQkCHc9KJj7NSfpy/wihuWBvjLJIR37f7U+o8Cj1oRiTT3i3Bn8TOykWC5HKeS3/1
-	 MvkZI423te5xA==
+	bh=tjN9QTx9dJZVMftCXorjoS7yD/zBWFucwNvkhLpPRLc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Beu5N6qrZ/HlQz6IOULTQhSTu+OyQqv/v8WhrmTJ2DguF47FuJ1rA1KAUaYp9CCgK
+	 Q0iTjzHlqUsmoheGCZrWXw6ogYdoigRa4/Pxt8poc5oXnlyfGiNiesvmcnTrrtuFF9
+	 BDOdJcbVvnB9VSpn1esAmMdXB6Zl3veP+F0Rye0K3KZUBKdRHE4qenjSjjtv++Ec19
+	 lINYHFkCspg7N4u+0l1cyAXO+SPjiEYcaKa56RO1b2QSST6csSL6gKw3mLPdi7A/fM
+	 DdI4Yl5TWw7IIK9b5XUaGhNJ6x+ZwHRW1+/mZa7Gd7BviMSlYmdu3F/c9rBkQ5p+Lq
+	 Z+io7O1YINVhw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,20 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 1/5] mm/damon/core: fix wrong end address assignment on walk_system_ram()
-Date: Wed,  4 Mar 2026 21:39:13 -0800
-Message-ID: <20260305053918.83786-2-sj@kernel.org>
+Subject: [RFC PATCH 0/5] mm/damon: support addr_unit on default monitoring targets for modules
+Date: Wed,  4 Mar 2026 21:39:12 -0800
+Message-ID: <20260305053918.83786-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260305053918.83786-1-sj@kernel.org>
-References: <20260305053918.83786-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0039B4000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sm6w7ynqr3gw6t56zygywi7k41zkz4o1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 12B31140004
+X-Stat-Signature: 9k3oc3swwfs39op6z8qzg9grfwpz5y15
 X-Rspam-User: 
-X-HE-Tag: 1772689167-851338
-X-HE-Meta: U2FsdGVkX19pND+ayqHJQgezp682ZYf1kf1GcVipVniCMcplqGz3rZcdNSu4FfxGsEIBICMxHCJsjLy3z51mTM8a//xzfC8dGx6RGVH7fnQEyhuZ0qXnNmK+x7/ql3cKj96vgZkwfrll8GN7NpxL2101GJFrDwgI5CGn4U001xKgXBF4+CMp67L/wUfo9AMWEZTF9M/e2gZPnlKcBs51Fb/HCaZ5MTL1aDJj6AIzHYCt0rRYZldMh5ZtdeCfC51EZXI4wJqUHO20kpU0CkwxpEMRqRKmAD2Ew1DOFNt0RpPo/X5wUOVM1xkHyO15IaDmOhtGKSChbYN9T9Z6eWRBud2owWzm0m/i0HNedJKhgPw0cxpgOZGq0xh1CdLT4pjwz65rsfs5osry3DhNh2c7pchhR1pqEwTMv56wSkBF9CM+KaNSvV27gaJbow4tX+A3XW1JdOmOmPTslZzvO0QiY/ilTD4P0CLAJy08zbEHMSohUDFnSxMTcmEUxDQoxBOUsZzkIsoOgScxylWStMP97YZ9g9WgkyRQz0gjMaD9otxvMwGOupP3hmP0r6ddN31dsodd6W6SNxN8vDvTnfP6n7EEsVakD/pFQdOVW26j9eT6+wCap5Fi5gXtZRxZ95aQWGj4JHWT7ORWORSwpiCYgzWo5DaKWsVJrSJT6SSUhq6etS852iWnLl/MMtBRYmTJd5wir/8Xb2D4kG2Xax/1umm47vrlQnKiqg3X5nx72Nbz8BhPoj0QhIdah74IVdpxN3iubiFVLeNpZs+/PUUtSXooBcc6Pc51GaC/pz4F4bUDG445K3JS4UPpkk7CYdgyXeMa0NpB2XQ7IdzShYgvW9l2DoombQEQHOArmAfXqlrbXWOgmDUAjndRZOCmWB2Co2s8+FCZIcCg0Uyy61llxlV0qv8bwRhUe7fJYHWn+WkOW2oGqSPxEVuBrDiCZSgEbxhEA6AeooMRng3Mj1d
- G/JakGWi
- l0n2wVC5+0yEm2nunBHZl/PVp9Z0Nu+Pfx9SxpZFSa1gT/qeuxyqmae4ZG0EaHvPt3pfjSK33m0sHELHGS468L/VXTSnfCw4WcVEoVimTnrGDXHiZOkA7stbiqwpRGcAmG1EnjnF4CnEtK+z5sKcLPu3FufGLw+6QKpXp0H7ATJg4gsTV6TYH6uhm4JY09R5pV6g5VZmLkIW967N65u0IghYI4KRm+5uxjcHCIIH4CJ4JElSylRiohnuK20NT8m+ImaRsKXwSubpN1h8z9sbsBO1WTQ==
+X-HE-Tag: 1772689167-759939
+X-HE-Meta: U2FsdGVkX1+OUGQs1SfQ1PiCp6gSX1bOSkM9tpFCt9xDD0DvuYf443NBlEGwUqFGQ65d/4KKGxzFEoElKR9cDIBAa5QgIeTagqUUw5OoLk/IK1UrQMUhIWbhctBl0uPoCYGh0f2EeT8VIClCERRf0bBnDGCQv7+mF77kS7RcpscJqe1cTb6dQth9AuR7lqI1p6oy1Zlk/Oo6MAf0Qu5oRRFi/TfZWcRmNafnsH8xSGdUMT04IXBL+G4VZBB4OY9AKTj91fZfA+ThcxOMR6nd54XTXLaXoX1lMabpASpiF4aRHmzyjLm8UcGFW7GcK6Qv8QqrM3Oi+gx0OHEJBQ3Hu4PHv5cihkwyWCgLmJM05IvAv7FqzaHJjAc7x/i992efYyFhpb/IIn9T+aFSeKI46h/J3MGKTaBKRpUpwDgJCm+UTYnwt95wBhMXf6P+yEEfs7ARPPu83KQUAZtvGFmtvDwAjyRjDPhLknOlB9MYD30yqOONqhGBZ/MjJtZIbdYUUetzJwgfl8E3jx6ryaCDv085c6BUbs+rQRwErH9NuNMTw1JIpV+OQe0o+qzVtO7juFNY+KCjpQmOK0s0/7JJOklPWKhtK3Hf26ebtjkNw6NAq2BA4CHkW8p/kPEHTGlwm6DOxTuvj+J8WuzHDc7D6pMr7LK3JAPoTL+xrBj2n97JODGNSfbU0msjNcoUn9zK/5qe4SaJPKNgqXu+Vwv5DTdAtUFD/asIG9aRcqKR/OpgI3+hZmv4FLo4p8JAzK84TQCBXkHxh/jwaKYK02gzSuupCL7Lvr7AK9BUV6sztQVjYJu206CRC/8mhCB3wcRXxVixgtaxOQ9fAGLsqmKBYC3EeXSgALwgoMzET1aGE00cL25GD0UbB+Vo23uRO/tnjh3qlfTSsBTjM5N4PF2W+4xQbGs4H8eYNKv9wQIIHtAMIZjO4eWF04AJZYwjGMj1tnDmfQyIzqdyAQtzAbT
+ PecKzgLr
+ PGbST/Pedl60PLPCLT3fIuOeoW8cBHrQuZ/4+h/E12co09L2n7odG4y/KoJt1gBI29GzRM8J/Yre9EgqiZg/RVilhUOItP1UQywXhz+9/tAqrLHXgjFiVIh0S/H2CCaz46iz6VHcHAZKxnZiuWhCN0fq2Yd16KJoAz0pBexXAJLNF2+0yfKE9R21mVqWpkHzcA+tZcyp1Yh93OSPcZPsQ6m7uNpo3OkKndrnloo/lQB6trk2ZUb+iebsEKHCktqBMQ9pKU2YNgwQPs76Cyi2dUNHvtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,39 +92,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-'struct damon_addr_range' and 'struct resource' represent different
-types of address ranges.  'damon_addr_range' is for end-open ranges
-([start, end)).  'resource' is for fully-closed ranges ([start, end]).
-But walk_system_ram() is assigning resource->end to
-damon_addr_range->end without the inclusiveness adjustment.  As a
-result, the function returns an address range that is same as the
-expected one, but missing the last one byte.
+DAMON_RECLAIM and DAMON_LRU_SORT support 'addr_unit' parameters only
+when the monitoring target address range is explicitly set.  This was
+intentional for making the initial 'addr_unit' support change small.
+Now 'addr_unit' support is being quite stabilized.  Having the corner
+case of the support is only making the code inconsistent with implicit
+rules, that makes it easy to confuse [1] readers.  After all, there is
+no real reason to keep 'addr_unit' support incomplete.  Add the support
+for the case to improve the readability and more completely support
+'addr_unit'.
 
-The function is being used to find and set the biggest system ram as the
-default monitoring target for DAMON_RECLAIM and DAMON_LRU_SORT.  Missing
-the last byte of the big range shouldn't be a real problem for the real
-use cases.  That said, the loss is definitely an unintended behavior.
-Do the correct adjustment.
+This series is constructed with five patches.  The first one (patch 1)
+fixes a small bug that mistakenly assigns inclusive end address to open
+end address, which was found from this work.  The second and third ones
+(patches 2 and 3) extend the modules default monitoring target setting
+functions in the core layer one by one, to support the 'addr_unit' while
+making no visible changes.  The final two patches (patches 4 and 5)
+update DAMON_RECLAIM and DAMON_LRU_SORT to support 'addr_unit' for the
+default monitoring target address ranges, by passing the user input to
+the core functions.
 
-Fixes: 43b0536cb471 ("mm/damon: introduce DAMON-based Reclamation (DAMON_RECLAIM)")
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[1] https://lore.kernel.org/20260131015643.79158-1-sj@kernel.org
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index de38f2356b72b..db388d05cac3f 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3056,7 +3056,7 @@ static int walk_system_ram(struct resource *res, void *arg)
- 
- 	if (a->end - a->start < resource_size(res)) {
- 		a->start = res->start;
--		a->end = res->end;
-+		a->end = res->end + 1;
- 	}
- 	return 0;
- }
+SeongJae Park (5):
+  mm/damon/core: fix wrong end address assignment on walk_system_ram()
+  mm/damon/core: support addr_unit on damon_find_biggest_system_ram()
+  mm/damon/core: receive addr_unit on
+    damon_set_region_biggest_system_ram_default()
+  mm/damon/reclaim: respect addr_unit on default monitoring region setup
+  mm/damon/lru_sort: respect addr_unit on default monitoring region
+    setup
+
+ include/linux/damon.h |  1 +
+ mm/damon/core.c       | 36 +++++++++++++++++++++++++-----------
+ mm/damon/lru_sort.c   |  7 +------
+ mm/damon/reclaim.c    |  7 +------
+ mm/damon/stat.c       |  2 +-
+ 5 files changed, 29 insertions(+), 24 deletions(-)
+
+
+base-commit: c33b07ff858e4125f60a2b9e2a49f276b0d7e75a
 -- 
 2.47.3
 
