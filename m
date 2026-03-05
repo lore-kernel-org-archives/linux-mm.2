@@ -4,110 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DBBCEFCE56
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 02:16:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0ADEFCE53
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 02:38:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAB406B0005; Wed,  4 Mar 2026 21:16:33 -0500 (EST)
+	id 542C66B0005; Wed,  4 Mar 2026 21:38:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C57F56B0088; Wed,  4 Mar 2026 21:16:33 -0500 (EST)
+	id 4F07D6B0088; Wed,  4 Mar 2026 21:38:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B57196B0089; Wed,  4 Mar 2026 21:16:33 -0500 (EST)
+	id 3C8836B0089; Wed,  4 Mar 2026 21:38:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A3A9D6B0005
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 21:16:33 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 109C95A3E7
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:16:33 +0000 (UTC)
-X-FDA: 84510395466.13.FB44B3A
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3C9A74000B
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:16:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=QDbPAmcp;
-	spf=pass (imf17.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A9B56B0005
+	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 21:38:39 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B02B08C259
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:38:38 +0000 (UTC)
+X-FDA: 84510451116.01.12EAF86
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 04219100003
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 02:38:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=gSmQ8gEQ;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf14.hostedemail.com: domain of rob_garcia@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=rob_garcia@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772676991;
+	s=arc-20220608; t=1772678317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=esyn4MiJLCvi8Tm+OqaXpfyuFYdwvpybvevGJy0UR3M=;
-	b=ziwixgIrcsqOkLA7yYYGQMcE+w/UyzwHcR+OvlvdB9x4ASOPiXyJf3o2OG+sE9k04MGW1Z
-	caspZRae9/jegMGGsPD6aEUmrWEnrNAgnGoc4QPqXHafeshBX+pvPA9aC/0K8DS0XuqJiA
-	A6pNiv4o6xBt475E7ycOLKKgK4IPHAw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772676991; a=rsa-sha256;
+	bh=9RlnR5jm9PhBAUJXCN4QxuMr47fR0FrOXWZf5lEzkxk=;
+	b=X8aNapRWWyKYkC4tdEQ9yjkYytvVgBtL3uH90+VG8b1JH8ne6vwIMVAWr7iUhly6HXzVmP
+	dF1lVhz8mkh7sD5jgEYqfb9uYOdUHEP3XTRB5nuNH9gtz3TdVniqUU+1iarZlQoSoWDSxw
+	LW2av/DeAB7fJEf1PJr29tcP3du4H0g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772678317; a=rsa-sha256;
 	cv=none;
-	b=Q3vU6FXSSj0StPDfh0a0nG7T1PKgzFNZrS3lfD0sm+aWR+fWt/iHuLg7xN7TN940c1Gmor
-	zrey2xdIkeq7c8bATe19wDllVYXBWLr1+ZKIEKGC3drC0RCFkw5PTuwALT0Lj3/t6bTsSg
-	LFQhnIHWF3TBKyKcHzGwEbYRhui0FLQ=
+	b=CZmAhBEyIe1OiJRDKVKt33KNCGaYAStEIyac7UW0LFQS0ltlRxw9ohXg4V+zwrHqRlP/sV
+	o7QsMYLKSgL/uWoXp6NQXJMX2yeOjmYLbaKCtjKNT4HxeyQx84yslTWFwYAMwiRd3Zap/v
+	6mndk9+Q17+g3UQ8jLcQt6Wr8O2MFqg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=QDbPAmcp;
-	spf=pass (imf17.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.173 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-827336c0994so4347017b3a.0
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 18:16:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1772676990; x=1773281790; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=esyn4MiJLCvi8Tm+OqaXpfyuFYdwvpybvevGJy0UR3M=;
-        b=QDbPAmcpkA3UmZmsDtVBlpLZT4ZcyotvCr3UVRrWM+KGVe1orfrdB4hF5I9W9kk3/O
-         wp63h1sDoPHFCF+EL65xMKF/CURX/OWvmvdYx3yXRfzMmOVVMDmfmoQxH7yB0X28rj+3
-         1MgeaYqL5wuhf66JPzvu02Yp5TIoags0SDhmg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772676990; x=1773281790;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=esyn4MiJLCvi8Tm+OqaXpfyuFYdwvpybvevGJy0UR3M=;
-        b=di4IhrdEmPVBzZAE91Uxqb3sqgyIkyY5RD9HOgaZd2nefjr186CHIT6AcqsNbbWaWs
-         6W0DaZQUCxg0V2GjFDrwAuBGOCJP7WyZSJ+g6OM6egnHZxP3LXfgOOFR5p5OfEbG1eKZ
-         izOnc8W/y/q/gbRjFACftChLoD0xIk6iOZeOClYUJLFCDWWZbk1ja3U7FO7A8kHdngdP
-         FlDozLkckM3fdKAMkpB9v0NrpacK+oH9TyKc5lvpX1rBouG4uPYoejqOPRACF71M8UwL
-         CfbEyoHcm6SaAkIqa68KsjK0iC8LSPpu+NRa+k4EIOUBoG+Su/5xJOZYtWApDTnnCKCq
-         tNyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXWVEFcbMVqPgyWX8R81aWADadbsDSz7+Ur36PBB+ZLKkhKWpO600/+4utNxP/Jv4QbX60rwX6zCQ==@kvack.org
-X-Gm-Message-State: AOJu0YzNmG57yIgHa2ZOGC75OImbaQ0Ti0HPV/3vwxNB3FZRp81wJh4j
-	7yW/WnYM8zFKGSjrKuAC4aDyVpLq66HYBb56d0khHfgBf2YcZiUi7j2FojeRkODgPg==
-X-Gm-Gg: ATEYQzwN4iZVXX5EWMbVP1hNYEmF67FhmxESzlqCRds0Xa2fEQNYXnfhKKUI2fUu9hm
-	cTQ7+SzwarQo2uMEkS+p7iDNHVpOFN20sWGdsdFgqMWzeL3n2evly0eHVXGxE1hrWl7koFH6q33
-	Hbk+8A/fyxzAQkrxIODchvI9Xq/wz+W/tgTZyO092NU2HOxtaCSOWLu82pxzSFmIhPrkw6P0l7d
-	bdAHVkilljCt2v+fx/ANmal8tFVIVzW1zMZutEBvOCIQ+3mrmRdQiUG4NQDnNpxNdqH4tMZNgNF
-	iR22w/ju0qCC1MupmH0CSvpPGF2GwON4NzgkZGHJT6bwt9wq3BuR+f4k6yU4txdw/2G5cSvQokY
-	9HRBA5H+yyA+R5uqgSYMuYSyvOuMqCKzDNn8V1Xqka2fNbX6z3QmpX+Oc2H4+wrqTAafm/Yb6hR
-	IdGdmjZWvKcxHhr8gW0jdmsJUdUtpiWG6raNLAHaJPf1yL3akFaJ1oXgV2hH09QZbFXIMGb4lbf
-	bLX5GRBIhp8bEEQIQML6SrQ
-X-Received: by 2002:a05:6a21:6492:b0:394:5fdc:cd19 with SMTP id adf61e73a8af0-3984239bf6dmr701023637.10.1772676989980;
-        Wed, 04 Mar 2026 18:16:29 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:713c:a5b2:ae9d:686d])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c738d87b2c3sm418348a12.13.2026.03.04.18.16.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 18:16:29 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Brian Geffon <bgeffon@google.com>,
-	linux-block@vger.kernel.org,
+	imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=gSmQ8gEQ;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf14.hostedemail.com: domain of rob_garcia@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=rob_garcia@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9R
+	lnR5jm9PhBAUJXCN4QxuMr47fR0FrOXWZf5lEzkxk=; b=gSmQ8gEQ9WbdBwE8fA
+	yTjww1L29EOpFp06fbZel4LBArgsy2LE2GP5xVtIIhG4o8Vms+0T8ELDE8oOGJ1G
+	Wb7slHvsxDINA0KLN4R/KHgYutlR/8sjWyC6qifUXVtYYRFZVoQ81bG0LOdg7sjO
+	5cgks1ZWtI1ET8h/jFN6DTxz8=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBn393V66hpNnfqUA--.606S2;
+	Thu, 05 Mar 2026 10:35:02 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Robert Garcia <rob_garcia@163.com>,
+	Jan Kara <jack@suse.cz>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>,
+	Lior Ribak <liorribak@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH] zram: use GFP_KERNEL for post-processing slot allocation
-Date: Thu,  5 Mar 2026 11:16:03 +0900
-Message-ID: <20260305021619.617481-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.6.y] binfmt_misc: restore write access before closing files opened by open_exec()
+Date: Thu,  5 Mar 2026 10:35:01 +0800
+Message-Id: <20260305023501.4003943-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgBn393V66hpNnfqUA--.606S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw4fGF48tw1UurW8AF1DWrg_yoW8WF4Dpr
+	W5K34UKFZIqryj9a1kCas8XF15G3Z7Gr12vr4DWw1fXrn5Xrs0gFZ2g3yj93W0y397ArWF
+	vF4Fk3sYyryUAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UoCJQUUUUU=
+X-Originating-IP: [60.247.85.88]
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARa0IGmo69acswAA3Q
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 04219100003
+X-Stat-Signature: cezys3rxy9sddbnemkio4pjabbipscar
 X-Rspam-User: 
-X-Stat-Signature: 3qduhw48ojf3jej5mj69wy1bn75krd6b
-X-Rspamd-Queue-Id: 3C9A74000B
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772676991-487715
-X-HE-Meta: U2FsdGVkX19TM2CM5pYjf40FV83Nc1ej1cMgz+OzzfMH85Z0HtfCAPkaXKOG9yyzfctVvx4KVqGRuafavGqvh4rrfsdQxyjJyEWYEYOsPZIA/M4tGgPGM2ZdU5pcMLRxHC7oOhTXhFmCOh1QmRbOx2N/cLozpbjNkItJT2jedU+fM0RfcX9Bfv/l6jhe1U4xsqytN7vmtsYF5L5/an0UngYL6gOthwGOe8ASVwGxR/iaKNJ4ALrlQme2NWEXbI6GsAjOME8sZZAcVf2F7AYeTlfCHsyGFKwCg18J4tMCQ2uqTTmM2CIyReAeE4dxb/OO3FZIfW8u7iolwQ2jUi9f6dRUCCOnmZB+fVSNIKHSJQt9srfFrwkqypf8DjamV3A2YNGTyerz5F019e2aTzLpock9gZrU3DTc8iYEkJTD8ceFdJVrSHQJPmtBBj98ovqlGVi5LNw7LXEaDUALkl09DjBvWHxHzgbWwjgEaE0vgSq+eLF2wBLnQMmtcvJqCfdk5fFso2TzUfFM+xqSKW49KPvu1zBmsfMTfhCCKKctvVcGWBd/h+yy4/1bHSqEJoDs0HFjP5O/mgb9tXpO2XhUje5ElfsaxtTpfapFAaBI3xE/PEtks7Cp+ZV+Jb3ZvtQ7NNDzIP5uELUYkCeRlbqm/ZA02iD/kGuveD/NKQMv8CO8ym//r5AxL5k+MU0Yi4B6qe9be4J06p+SYxLDS4eFKqW1nuThDWqUHq++LoBVuc+KhYTbUd5SKgsvapDM/SeKxKCwNQ1cMgBEvIdlCsxZFitJHjTTWm+cZ9Ei4rG2WRJiCH9LsMyGa0hE0cEzmBPR4IIj/QYsib5K0wrg91Kw4V2+7i3Cx6C2eYqeZ/JyxgD9rWAFSqYSuAWjmtoxW1Gyju3Jmu/+p8L7pHDZZhBmIrGkrl+zVo9TTxQzi9bp2wXAQLCEy1uDifyJWd2/CC37+NDCP18b4y4hxEk+zkh
- Hdtgad0n
- qzGV8WGTICGKS2i7sKNLEBJCSeXgXC/ZZfq1gBD1u00/gpY6ThYqek6y1BcC/2xv5vCLBMJ5+eMmkOAZ5ObfPQMd5FJHBjgbEzExcrZmsDvQg65DqWPhXYUFlSqyHy3Ga+02ppj9BiYMzvbtI6VpQ8G7wAio04PgEo+tLlPE0V97+pwQGH+ygxZgQK2KuDOtswrQuj16Y7xrTu6lIsXpdGMcTuA2NkYWffsxZhjawvJb3iw1fWUBgFsqBQCTnstBQ0Dve2hBh7Cfa5azKL5iyeCqYZHRP/jovVsVjGJGwji41nBkbeph2czPqPU2VDLixhquTedvers5oEx5OOQiAWISTT1MJ3q3Bbnkilw4RoDN1ZGTN1vZDiGa/lnNqoM+APwMaoKTP38yq2VXk2wNaruhv0FjMEEEp4MwI2A1GoUc/e2Lma0xwhkur3ulVf/QPSNxrs9ImLWEQYheAPFhfk1eeSQ==
+X-HE-Tag: 1772678314-460887
+X-HE-Meta: U2FsdGVkX1+aKvQCj6SwPWE2wkSG+UuRLuAKqnroCSICXzyIh4bKpvuFW5AySblIG9Da/dt6cGsLLIWczH6aOri7LXGGqOrJneAlc5YWwhm/XQs+sitr3oioeQeo8I/ZtWCrBLSil4/zXdh2Ve2d3WnVUANtHwdgEiy0bc27pqydY96FlkOCXb0Ssbrk/KeJfukk2ptCjdZJ549S2a/EI5IfzmTmgKvMg/yy7aptE//YhEpGFQK6hsNTL8lGry1FJjThXpEKgNGp3smBIEYlmRUw5refnCSQgR8rKidBc8Wz7ofyEJwYXMVvJLynJnAAu0HoXZ+L/RikS5SCBz9MVHUkHGyCdY3pampY7sYxJD5CZdzeWd2K7N2oTar7PerMOguWNRWIS0ViSYy133i7Au2u3RnVi8dQqhjV9htHrgY6SyaKHhQhGXM5EgoSiHwwuzbfFQihkmMGKNzGH44EbY9U+dq67rdx9Th7ReN3y976fX5i7xzSYSCZdgYzXjV1PyAdKOLGGFhpbn9SKKCmLg5SVon+WCk9QEH8TC1UMdsJvWDTHhpHmM0ahXXlthonTOgzEbeftiOtIfIEtKV8vzo0RiOaiZKxs93CtGUiiC+R+p7bwTDsrtNbLvIBwviYu9vqCmXp+0iLcw/eNtg1t1alYRyp7xiwqxs0KbreLGJkV/9CLZBFtuIHxreaH5ND+d5TIyDB5ACinYvmYjis9kNy8sg3WvhFLmFUlfQW7qiAd8gArJXPDiRlEAUPxRZAJpXxB3BZVvzLCV80AIgTp7fZyz+VXicGz90yEKwKTRSBXDECXO5EPeqtpNvEMWB3eeVee+wn0cNkv+F+waOBfE3HD4wEDSw6oqxkyh8fjCA4LcB6PdUaTwh8WRoMrr615RIB4D3PRvk7yKcIyD4q1cSRllAwmHayn59/4rTOfoelUTu8dXK5blWBw/yPDePSaS08ECrVUqcnLRm5h4g
+ XaB09JoK
+ ktKOBC/OqvNYESI+/rwrvxdhM8I0hjF684s6sRGdHa7lDGGb3A7uTs/OUt/ngONccd544Mah8OTTsly1MjiIbGi8kxykm/8jhZGUMEs35sdqh8Bf2nZJJjsQop4Pl5bhHXxqKh2ZrJ+8qSzwJA9C/FhQMC8Vuwk+PHUg+g+JpFm0iTdP2kBuORtTV+Awj0A3clHvVqwntpmivtD0dzrMibUMmZhmY1izboPyInUVXn3is5m3DegWBkFSvjj6O18qEhbS/WEMhZDMnXcSXmQM9Xe32SEb4SWvkj+y0Zu0Xa8flcjqVJEvm0RYi3eb0uM94qapB3fkqoUbD8plYmYvd3JfcguhV19HiPeqxIMKp9a+mYy9UheL9OcQXvTUBKovCyJ5tsj1AvcZcHbIHVxCUImNZ3zbliLalw7qQbw0NWSrlmeheBh96i3KguIvQ93Z5KmUCpjLRbJHfVAwdKfxpFJvCta5nMdQc0nPU5NRvgMsQbhEwySCkKGbo3XmbgJ5MPhibgnC127WkrKWVKyIDAX1UATIkC+8KY4yt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,30 +100,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Post-processing slot allocation used to be performed under
-slot bit-lock, so gfp was restricted, then we switched to
-a sleepable slot lock but gpf still remained restricted.
-Drop that restriction and use GFP_KERNEL instead.
+From: Zilin Guan <zilin@seu.edu.cn>
 
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
+
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
+
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
+
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
+
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- drivers/block/zram/zram_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/binfmt_misc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index fa38d26119ec..6a6fd08a5a15 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -297,7 +297,7 @@ static bool place_pp_slot(struct zram *zram, struct zram_pp_ctl *ctl,
- 	struct zram_pp_slot *pps;
- 	u32 bid;
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index cf5ed5cd4102..a45b5ba12a9c 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -815,8 +815,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	inode_unlock(d_inode(root));
  
--	pps = kmalloc_obj(*pps, GFP_NOIO | __GFP_NOWARN);
-+	pps = kmalloc_obj(*pps, GFP_KERNEL | __GFP_NOWARN);
- 	if (!pps)
- 		return false;
- 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
+ 	}
 -- 
-2.53.0.473.g4a7958ca14-goog
+2.34.1
 
 
