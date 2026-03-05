@@ -4,148 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA9E1EDA69A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 04:45:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB083EFCE5F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 05:18:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7A2C6B0088; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
+	id DC39B6B0088; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A289E6B0089; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
+	id D71316B0089; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DF616B008A; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
+	id C7DF86B008A; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F5FE6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Mar 2026 23:45:58 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B03DBB4FF
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:45:58 +0000 (UTC)
-X-FDA: 84510771996.20.43349FE
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 1AC57160003
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 04:45:55 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=noa0goaa;
-	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772685956;
+	by kanga.kvack.org (Postfix) with ESMTP id B42B06B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 00:18:44 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 548971403F6
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:18:44 +0000 (UTC)
+X-FDA: 84510854568.16.74C1BF9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 24A0740005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 05:18:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VuPkcQoy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772687922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
-	b=gD2AC3GuNiq1s5DpUqqFKVgPKNYLneNYCS50mnFyDEtGBCXELEUJg1A6LAOppFdoS+tBue
-	qV3nz1cso2UJKzC4gGy+5RRZEu9B0jcK4Iwn52I89aJODMbTN9Xgh9PHdKFeMvnmWYheQ0
-	QOnm1nnAN83RwdBHMeO/0azIsSoy03E=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=noa0goaa;
-	spf=pass (imf08.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772685956; a=rsa-sha256;
-	cv=pass;
-	b=vRlYcnvI3GDfKbG1h3829w7oYp6gKqWU48akWKsXmu+j1hCu5+bJVWNnz1uq0FUVoMSa73
-	1FpT8HrLnHhmqxrreE7gScZGZ+amukzfYTrivs5O+dYWnUIl9Dy/vV1yuJibsEs7KsHOnk
-	Lq/tQsI7Rxq8SSqTl33Zeer3l0Gax7w=
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-899ee87355dso57614726d6.1
-        for <linux-mm@kvack.org>; Wed, 04 Mar 2026 20:45:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772685955; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dG63nbevyZ8nD0uDzvw9HN1NTIrOlrPbWc0nfGx3HnnkncMRaMdk56zloXoMw5eP9J
-         oezLkpdHrneTA/DSBxGCdIVZJGoNflEbyXqoTB5bq1LlirhM6sUgCJ9fyhX88bwZeK8c
-         cKniEsByQKIHRF3oaM3igrUmSedSv08/bm4DHWA/0Q7YyiIn9y7xjw9Mm6BgayjEQ4BD
-         RKKfrBniQ2hE+AOhdB8ILY1QrErBRoFAvdgTg6QKq8UeTY8QZxTct3kS+55mGmIdLG0v
-         9miY1ZCku+CraBPSXPhTCseiaTusKu8KB6XZkddqOG8fONxMIMgROReK5/jlZQEqeK7D
-         d3oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
-        fh=o6ZI2nLWFkn/qpEbT9iGg3UoxcxQc1O4VQRquPtlLgI=;
-        b=kkJNnYLHzzM/Tht9GClp5tW9cP6jD+4GXHFvPF37mz7LJgacssrNypOhxoYh/5lzjX
-         3y7JkimXwPzYQh5Al3HNNYaaqQTY1yRmTvsfw4YW94KVo4vGN5gT41XrBKUA4MWkD27d
-         wQZQ74e8H/8BjkWQwkUOtaYMeFdkTJo2k3OrDMZA6rx3eNXDDdZppGKJvmxV37MTLT3G
-         /yFuL5C7md2/+8Oi6QXx3VIwqTYLSy58mOWwxAwdkxureMkwlluQXmaqzNQVjkHsdOdn
-         hzMnidriQY5LnfpM84TEoQx769t/uKqs4YEOUgBXdg0LWTNOZwfWTR2sZtmbsgzG2xD6
-         lX7w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772685955; x=1773290755; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
-        b=noa0goaaFeFN8i79vT0HCy0UQbhimTneU8eP3TkcaWCETr1JBrDxTI0H/pBTBAf5hK
-         pntNWH6bKA6AiO928MwhqBTlR1op0GTTfyRU2oZwWnjPj7HpQh485WhcB0YZwvJrdENO
-         YgO1swu6/SSoKLbZYzH0HcHWbM1SgAd+N3uLrPFMlRaR7y0kG+erF+YUxQBUwoI+vTjr
-         XX5d4DR1hF1NBernv6D5e4MFJtlTcCzqGy/0wzve/B6WF6EUalZgqCiGOd2qqGeyuCg3
-         Dqea+1fEYzapgzPk+333A8bmoAmSNq5X15XYNZv3ql2G/4rwc/teUd7cWMOFuRFxoeoF
-         pCiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772685955; x=1773290755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vqjw/P8xBjvFVPu7VOJlzQ42BZVaj8vKem4uQsK6qDs=;
-        b=ur2zTQMvSJuSeiWDmcvM9600GCZ11D2S9/l4/l783Oe/a076rr6B2WYYZ3Dh8F0+xZ
-         U8XTNzLBSPCq6vHuVfzi8cPaWyyXRcfS7fJWS9hXS47eyGGDU5eOpBGlohoTANGVO9j0
-         tK0ypRITdEe3EtwVMAA2MA1UjypNaJMNSjxtFGM+yv0qo4pUP9uq6kqFyWXAUmKp6Uc2
-         SLa5WOAUq4LuBhVDFFRWtOr1NswT6LiMuYp7ZkIhtcGfw9cibOMCoSiExtwzXpGszZwi
-         fY9HAh3gAg/0DnB4tWQtKvarBCiMf5hSarSgWjEl18B9bfLV5fTY9+bjA8BnnmTyMeFv
-         qQog==
-X-Forwarded-Encrypted: i=1; AJvYcCXbyXkDvpsdIPeRu6jZLY7ZkcC1KiYz7PULVQFMvN3NXW5rmxmOGMHTrSh+u54z43uexckFGP18wg==@kvack.org
-X-Gm-Message-State: AOJu0YwotLyCCrbQwHjqcmnsAcoUZdphaHpwYSSH2G9pQvMU77ofUxgv
-	us2qFaP0YI72wT4FJqBpKYmjU0Wy2CNbmcG3uNDqC3TvKQf/vthuISiVYBut3Ta1RFRQXyfRxLk
-	t73oZ62S8GdlYazyd9b6rNZDFyJs+T70=
-X-Gm-Gg: ATEYQzwNffYauxSpr+Wo8J5AdEubZFx2jR7mF79sOVKsUfYNo9Zvv4dJo6NIFgHGQJw
-	gitK+glok4J2o1QxTvX1qNSUdRO9B5WML2wWhtSferA/65654Y6bLLWnlDXWJ2bHQYD/1xtBN6c
-	ILQsqMAwvDqTZ4NEFtwaObBtIcI8HMruLR98kKxsSx9ihAvkhmcNc4I8eqsRyuav84Kxaocg4jv
-	v8A5tn1rAf7hD0jXP54OaCtVkz3Seo3claXyAL9qGLu+pRhbZjCCXf0NDZBsk7UJfSfn3IOHUEm
-	LLTwfRQUC3+Gaixu
-X-Received: by 2002:ad4:5ecd:0:b0:89a:3bb:3c45 with SMTP id
- 6a1803df08f44-89a19aee48fmr72084406d6.33.1772685954912; Wed, 04 Mar 2026
- 20:45:54 -0800 (PST)
+	bh=2eWaG4AAm/ZvG/U11Toj0Ut+QJaBBSiqacL51yLdDNY=;
+	b=I9FvyFETO5tqgepGh8WCVU2Vc4UOT+W5GTMaLad8czccjrL00H8mmgnUpyHKyvLC18Gx9d
+	kM8IYojSla0GaTB5JQHMNiYdRH1B/YUq2N885fSWv5CB1xbK7pw2CkKF/Z7xijZimd2D8j
+	jEIBxAyEJCqxtjCrHevxa+/ybMtXKcM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VuPkcQoy;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf11.hostedemail.com: domain of bhe@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772687922; a=rsa-sha256;
+	cv=none;
+	b=Weul2UXZxDL6u3XBDicpbAkKvcBgsYYYSSsODTsLQ5uqoYfsRnc+eqzA6088x3bOoAuQYc
+	1EbGwfUohFIp2640oZ9lt783JT2gAhzsIOnqGAjvbtxd/DHOrooK7rkPm9mHwdgnCtTSWq
+	qalSZxWKoIvSF1PObRVCCNLqSZQ+x8o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772687921;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2eWaG4AAm/ZvG/U11Toj0Ut+QJaBBSiqacL51yLdDNY=;
+	b=VuPkcQoyiV0TvrTFX+x/DrjXtGzcG89EdveDrdrIfODZJVAEjo6uYAH2A0EqGExeQ34TeK
+	NXVPyAXFriTuF2tX/Y4KxsaKq4grbrMA3cE5V5OpQVJmcFeWpHWQteyg3fl11tTRSPWscS
+	4QyXAMjCC3mdJMs2RA0hll3rhDW4RHE=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-277-iDQZbk7NObijYi5gBKIu4Q-1; Thu,
+ 05 Mar 2026 00:18:37 -0500
+X-MC-Unique: iDQZbk7NObijYi5gBKIu4Q-1
+X-Mimecast-MFC-AGG-ID: iDQZbk7NObijYi5gBKIu4Q_1772687916
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C9B21800561;
+	Thu,  5 Mar 2026 05:18:35 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.118])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6FC6C1800576;
+	Thu,  5 Mar 2026 05:18:33 +0000 (UTC)
+Date: Thu, 5 Mar 2026 13:18:27 +0800
+From: Baoquan He <bhe@redhat.com>
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+	baohua@kernel.org
+Subject: Re: [PATCH 0/3] mm/swap: use swap_ops to register swap device's
+ methods
+Message-ID: <aakSI_0O0G6arjZO@MiWiFi-R3L-srv>
+References: <20260302104016.163542-1-bhe@redhat.com>
+ <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
 MIME-Version: 1.0
-References: <20260228161008.707-1-lenohou@gmail.com> <20260228212837.59661-1-21cnbao@gmail.com>
- <CALOAHbBKr5ni=Ap2ASq2hx041WAghd+CzqbXGBSFPExBMJzcUg@mail.gmail.com>
- <CAGsJ_4xA3tApXCs2S-sZh2qA9RK_1masQ7nb1NYyCHXwnP9FAQ@mail.gmail.com>
- <CALOAHbBRBot0EXmzPNb2zpgC2GV5NfnzAZuosTb-iygjaw3U=w@mail.gmail.com>
- <CAMgjq7Bqb0M4bjCeaxjAgaB-Kj_kWKVjMMNdG7528w+uTwGnjg@mail.gmail.com>
- <CALOAHbCma=SW4nu_GPv_pbuuXv1V5JPB-9cA3z1TeemWqU68tg@mail.gmail.com>
- <CAGsJ_4yAkaqqzSu7SS=_fgZ_AQCqtbv8LmuPGCb7SiFpGk4csg@mail.gmail.com>
- <CAMgjq7AkvgzW96-JQzEg5c4oW0cMsjPHcCnukCUZXgSvXL4-DQ@mail.gmail.com>
- <CALOAHbB3rQ2b7ABqFegt2afYRL7KjpWREucrhOYfTT=onV1+Gw@mail.gmail.com>
- <CAJj2-QEO=9Nt+HP6m=xtFD8qcXCdGCRmESmcs0haeiMdqqTA1Q@mail.gmail.com>
- <CAGsJ_4ynhyROTMsy1m3AZNsAzFsjZY3EYpSOSTLR0dQSxO+akw@mail.gmail.com>
- <CAJHvVci8nc-yTHkAbSEQQtqkRvgATJWcSTwBCY49A5W4AQcd7Q@mail.gmail.com>
- <CALOAHbC0XbvG4OCy94j+ZUyTZt65QB0Y=p1UwKvGcsgcWKy7mg@mail.gmail.com> <71281163-F081-456F-AFB0-37DC0470850A@icloud.com>
-In-Reply-To: <71281163-F081-456F-AFB0-37DC0470850A@icloud.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 5 Mar 2026 12:45:43 +0800
-X-Gm-Features: AaiRm50jhwY8uCVcJhYNlLo-8R6Rm9EzauWp50Up2YRcFMIRedxN4_4Q_8ecdQM
-Message-ID: <CAGsJ_4zsM--Wzn6-EgRo23uCaii0bszFfRcuYrrKf=-cHgKmGA@mail.gmail.com>
-Subject: Re: [PATCH] mm/mglru: fix cgroup OOM during MGLRU state switching
-To: Bingfang Guo <bfguo@icloud.com>
-Cc: Yafang Shao <laoar.shao@gmail.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Kairui Song <ryncsn@gmail.com>, 
-	BINGFANG GUO <bingfangguo@tencent.com>, lenohou@gmail.com, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, weixugc@google.com, 
-	wjl.linux@gmail.com, yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: byamt6bjspocppxoz15srzha4yd1wxeu
-X-Rspamd-Server: rspam09
+In-Reply-To: <aaWiBaeSCILBCzqd@yjaykim-PowerEdge-T330>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: SHSzm2k4pOLoXHqC5Gu-jJ_ZY1ZwGh5tMNk-s0ANopI_1772687916
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 24A0740005
+X-Stat-Signature: jxy3ghna8rdza7z53kidpf4z9hgm4wdr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1AC57160003
-X-HE-Tag: 1772685955-510827
-X-HE-Meta: U2FsdGVkX18JvcV0IreP/ik+cnoSEQAPqrTgOJsl2c/i/gM64MMCVlKRZad+9BREVg7zoaQ3TzBXyClq+ECCHJFradNIdGUuzic4N/lzBG9kj5s0AcBNQ5rCNZBaijAWfE5nwO7Zmi+Bts8weMlKjMFNzPt+ltEEeTidjZhcMz3s1oomiK0fEoWAFyuIw0Evp2HuGBSVCp5+aSjyrXk2pYHMWeVE0623bYDfc94+sCfKOYsK8ZNTW781IHnqITcXYtvEQKA7E5Xp7H4VUJxP/aaMMQHJWNaPKuSpQiJjjePhYPRsbLzeYUOJ2YfbU1h7FIazC7rUNPwOqI45utYMfB5dhC51+6Vs3YKwTeT2S6yh6zPljvQwytB3BLQeuQsRQF8jz90sMyyhu/jrIFDx54e6mN+H0d8QGXhazWRm024DHnq4rgw3p6tAnHXjEvVPYcplEKDVHgU+9wvJ8jptpXwMnAB0W6iHtZ4Cpvnnwn0V32itK/XHxLpIT7WbElcEWURV7OuY4o84fsXwDzOg0cERum3j5T9ZUY+cjL2usfu2tdswOM/v0xT7MctVlJ1BFxgK6nfRhYyO7rq/OleAaoiGrJlU8VJS5E2c4gwMWM1KiVkGAEArsea/kZAa3C+gfhN1Bpyq8qqclkbhlq4wRI+FlJTfZfeluqyTHJCa85S4sbsHaco473/9atzH8V5+YomnYJOAgSC2u42RX1/Yib7eebGtgIxDFjPMdI7Ai1CotfxpBjc9ZIOaKidpv4vvS0bWTJicZunlBFE2SXTTolzqSptp7B72uTPwsRQPF4VZp+XYBI1I353f1hMYjunL+SIXcz6GAz1jhSyD3vJ4wXQ3pdN0TjVvNa9iMVV3gXTh3CF1nrXGRHNLXn4FOn/geDI0Vqwo8tnuX3da/8DVGXX1XSp24YRMfvpNVe/PNE1Hq9IH/OfKzPLTAdhFTI00CWulVL7Isvg6x+Ot0nw
- zFKETtVG
- 2EkVZHmXGWT4UT6y6ntw35nrisuZGjp9gbjDz73yaKrWXKXws+oIX8hH0xsSt7c+jxfIdrWyCy4MWPa2CFLaHYcfkd69Ma5TOS7M8VPE00EuvV1T7d5b/3vBzcOHk2DO/5tKkUGSI5lZeoqhJB9G0rsF7ahzCLFaFSBIaCgBTOP9KmZzwJh/Kx3EmLuVpideVZ36AKtbJ+BmNiLD9lZfhtWlQfn+tJUVCEomBOecxSo/lEpy1FySMK/hgNfDHLeAdw43mNnYQMETzj/uGqty593sHJHtsIToAC9Pdg3qSyLobgpHsu5MA9C9x1fUsPOZp326m0cZe4hY4QYb4V/T9ARs4uXuk1ZCbFRzvvOryaNc1+9RUJhPinS4eZmpjs+A5QTPT5hPPDRKcX0n6TSqzTC+OpClAk3Cr9LZRSwOm3fx7etc4bqBmLgRgg/TjkkyfRrs+zRj6eLKa1Z6tREJOBHCk0Q==
+X-HE-Tag: 1772687921-225338
+X-HE-Meta: U2FsdGVkX18TKdm+/P0M1OFZOeP/KSelj1E1nm9bTnwSCXZIt31hUhRlG1hogF11/NBJfgkFaoamN+bn04+d12hm4hkGeF8dhL8+VK23Q3NBohdBOBcQSX86qERlofasEwP3X7N106X3drQY3vDuGla8Pv0X0jMReo0LgDA3XLXAaBMd51jQTQQvL3XKphI++dDeFpVidHqgF4MRBG1WWSdZUFhOJ/xbCrufnBzWKlqBjLvVYi63T76DIwsScjhuEIXWzlOnh+FUibjq7LjYVwz73Z+wPMKsiyxZULG7J1TifIM5e9MvlpZ2h4QfUvGaUjYWUJOs62sFCNRdnwwTw20n9qcv66l5tnTVeEWyiMyNYWa7IbJEN7nAgbq5RffoErbfGhXh7Esrk+jdfcX7FT30YGhn+Fpn4QuvMjaEQnkiALeaicJQyB8ElNcMb5RaMqrjhvlilatRK8JPafVO6utxLHb/ZZRHlmca2lklezfxxfGD4lCBrKc0ETHzk1hlh0CymIUJBVOz6YzJNolQ363JBtytnW9rikZZ7d1uziP4aXjaUfORelSreD2ct7BtM9zAYr1uedKVRJ5yj+CV2ivN4Ufk2KsRb8Hyqvkg9l+redR2i508KXmR93nff+J8/IIXYKcq+dvJlVnLnvxaFFX2c421KzOjXjbTZbaaz0TAydtkQ82rP0OukGtLcZEJh77sIykMyA3tJ7Xd9rFW4OHP7kbzp/RduXStJf/xPcTW4ZOQPheSpKvFPZve8P+AD6IEpg/Y29bD/jeLxLYpFxKA+QlQdQlPzFKKeOKy7ZIHC6/j0W6D4O75RrmTp2+t7wjPF2+BqUE2EFoTTdbWVdCh3RusldN3WcEcrk/zbyXKQee87P4KvvN2iyh402ohHcLJ1J7ku8rkvbeix554LdSUrXlVJDEKcC/qJKgm637tY6Lupp5KOg8gIyCzDJKaQ6zvCGJY+210Xut/KmS
+ Ory6ViW9
+ hFx74eq9EVlSmLtp7fP1ZFiI2igjxU0hQqiQ8GzS2p7qQ+mQpC3ya7bz3X2ZvnrdrZ34voSlDraJwvGHHNfPHPMYoqQ/mic0bNOhtIywmmIf8cM4qUYOGJV1gaz45zDFR0RGeWdFSLfP7J4fRfUyUGJvFYKYq3Q79oQEBaerLrjjd82w/POpY8YQaA0WS2DSfjTN8mVD9ViGQAqqahpq7gfA7RJl2umwpJp4+hqm5VIYKj1B2EVS0WWFj5c+lYDbiGTZH/Ce3GK7EL66rI9RXsr6uuoA7E4xU0Dhy2IDiCXJ6aaqA8TG5+rhQ9qoC3X9dHGNOHxt/dBHl1KN6xUavQabW15nR3CzkytnafNy9D1uDcCDY/3cZzRcmXcyPfsWrLH4M22WpmD8RnmZ6s/ZInTk8HrF1GbzctC5ARbQ+2Okbn5yaqv8N8glLPXVkt67Eazict/MJG+U1flMq4128TFGr4qXIMkdnLbcP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,125 +110,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
->
-> --
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 614ccf39fe3f..d7ff7a6ed088 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -2652,6 +2652,43 @@ static bool can_age_anon_pages(struct lruvec *lruv=
-ec,
->
->  #ifdef CONFIG_LRU_GEN
->
-> +DEFINE_STATIC_KEY_FALSE(lru_gen_draining);
-> +
-> +static inline bool lru_gen_is_draining(void)
-> +{
-> +       return static_branch_unlikely(&lru_gen_draining);
-> +}
-> +
-> +/*
-> + * Lazily wait for the draining thread to finish if it's running.
-> + *
-> + * Return: whether we'd like to reclaim from multi-gen LRU.
-> + */
-> +static inline bool lru_gen_draining_wait(struct lruvec *lruvec, struct s=
-can_control *sc)
-> +{
-> +       bool global_enabled =3D lru_gen_enabled();
-> +
-> +       /* Try reclaiming from the current LRU first */
-> +       if (sc->priority > DEF_PRIORITY / 2)
-> +               return READ_ONCE(lruvec->lrugen.enabled);
-> +
-> +       /* Oops, try from the other side... */
-> +       if (sc->priority > 1)
-> +               return global_enabled;
-> +
-> +       /*
-> +        * If we see lrugen.enabled is consistent here, when we get the l=
-ru
-> +        * spinlock, the migrating thread will have filled the lruvec wit=
-h some
-> +        * pages, so we can continue without waiting.
-> +        */
-> +       while (global_enabled ^ READ_ONCE(lruvec->lrugen.enabled)) {
-> +               /* Not switching this one yet. Wait for a while. */
-> +               schedule_timeout_uninterruptible(1);
-> +       }
-> +
-> +       return global_enabled;
-> +}
+On 03/02/26 at 11:43pm, YoungJun Park wrote:
+> On Mon, Mar 02, 2026 at 06:40:13PM +0800, Baoquan He wrote:
+> > This can simplify the code logic and benefit any new type of swap device
+> > added later.
+> > 
+> > And also do renaming in this patchset:
+> > -------
+> >    file renaming:
+> >    ---
+> >    mm/page_io.c to mm/swap_io.c
+> > 
+> >    function renaming:
+> >    ---
+> >    swap_writepage_* to swap_write_folio_* in file mm/swap_io.c 
+> > 
+> > 
+> > Baoquan He (3):
+> >   mm/swap: rename mm/page_io.c to mm/swap_io.c
+> >   mm/swap: use swap_ops to register swap device's methods
+> >   mm/swap_io.c: rename swap_writepage_* to swap_write_folio_*
+> > 
+> >  MAINTAINERS                 |   2 +-
+> >  include/linux/swap.h        |  13 +++++
+> >  mm/Makefile                 |   2 +-
+> >  mm/swap.h                   |   3 +-
+> >  mm/{page_io.c => swap_io.c} | 104 +++++++++++++++++++++---------------
+> >  mm/swapfile.c               |   2 +
+> >  mm/zswap.c                  |   3 +-
+> >  7 files changed, 80 insertions(+), 49 deletions(-)
+> >  rename mm/{page_io.c => swap_io.c} (91%)
+> > 
+> > -- 
+> > 2.52.0
+> 
+> Hi Baoquan,
+> 
+> Thank you for the swap_ops infrastructure patch. This is very
+> relevant to our flash swap work, and I believe it could
+> significantly help with our future contributions if the framework
+> is extended further.
+> 
+> As I understand it, the current patch serves as a foundation for
+> future infrastructure. However, from our perspective, the swap ops
+> are currently configured statically, and we would need a way to
+> apply or register custom ops for our use case.
 
-Hi Bingfang,
+Thanks a lot for your input about the future potential use cases of
+swap_ops, they are very valuable.
 
-Thanks very much for sharing. In my humble opinion, the code feels a
-bit hacky. If we need to do something to reduce the probability of OOM
-without fully fixing the issue, Leon=E2=80=99s approach=E2=80=94trying to r=
-eclaim from
-both MGLRU and the active/inactive LRU during the transition=E2=80=94seems
-less hacky, assuming they show the same likelihood of triggering OOM,
-while still leaving some race conditions there.
+Yes, this patchset is posted as a infrastructure of swap_ops and a
+thread where we collect any potential extention or use case. The
+change is made based on the current kernel.
 
-> +
->  #ifdef CONFIG_LRU_GEN_ENABLED
->  DEFINE_STATIC_KEY_ARRAY_TRUE(lru_gen_caps, NR_LRU_GEN_CAPS);
->  #define get_cap(cap)   static_branch_likely(&lru_gen_caps[cap])
-> @@ -5171,6 +5208,8 @@ static void lru_gen_change_state(bool enabled)
->         if (enabled =3D=3D lru_gen_enabled())
->                 goto unlock;
->
-> +       static_branch_enable_cpuslocked(&lru_gen_draining);
-> +
->         if (enabled)
->                 static_branch_enable_cpuslocked(&lru_gen_caps[LRU_GEN_COR=
-E]);
->         else
-> @@ -5201,6 +5240,9 @@ static void lru_gen_change_state(bool enabled)
->
->                 cond_resched();
->         } while ((memcg =3D mem_cgroup_iter(NULL, memcg, NULL)));
-> +
-> +       static_branch_disable_cpuslocked(&lru_gen_draining);
-> +
->  unlock:
->         mutex_unlock(&state_mutex);
->         put_online_mems();
-> @@ -5752,6 +5794,16 @@ late_initcall(init_lru_gen);
->
->  #else /* !CONFIG_LRU_GEN */
->
-> +static inline bool lru_gen_is_draining(void)
-> +{
-> +       return false;
-> +}
-> +
-> +static inline bool shrink_lruvec_draining(struct lruvec *lruvec, struct =
-scan_control *sc)
-> +{
-> +       return false;
-> +}
-> +
->  static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_cont=
-rol *sc)
->  {
->         BUILD_BUG();
-> @@ -5780,7 +5832,10 @@ static void shrink_lruvec(struct lruvec *lruvec, s=
-truct scan_control *sc)
->         bool proportional_reclaim;
->         struct blk_plug plug;
->
-> -       if (lru_gen_enabled() && !root_reclaim(sc)) {
-> +       if (lru_gen_is_draining() && lru_gen_draining_wait(lruvec, sc)) {
-> +               lru_gen_shrink_lruvec(lruvec, sc);
-> +               return;
-> +       } else if (lru_gen_enabled() && !root_reclaim(sc)) {
->                 lru_gen_shrink_lruvec(lruvec, sc);
->                 return;
->         }
+> 
+> I have a few suggestions (mixed with questions) regarding
+> extensibility.
+> 
+> 1) Could the ops be replaced at activation time, similar to how
+>    SWP_FS_OPS works — i.e., giving block device drivers an
+>    opportunity to override the ops when the swap device is
+>    activated?
+> 
+>    This would allow block devices to handle swap read/write
+>    through swap_ops rather than doing it in submit_bio, which
+>    feels more generalized and leaves room for future extension.
+> 
+>    This direction would be the best fit for our use case.
+>    However, considering ongoing swap work that may involve
+>    managing multiple swap devices, I wonder whether binding ops
+>    to a single block device would still be appropriate in that
+>    scenario.
 
-Thanks
-Barry
+I think it's doable and make swap_ops more flexible and versatile to
+support different swap back ends.
+
+As for binding ops to a swap devices conflicting with managing multiple
+swap devices, I may not get your point very clearly. Could you give a
+concrete use case to demonstrate?
+
+> 
+> 2) Would it be possible to defer swap device activation via a
+>    lazy registration interface, so that the ops can be registered
+>    before the device is fully activated?
+> 
+>    This would open the door for entities other than block
+>    devices — such as kernel modules or other forms — to act as
+>    swap backends. (Of course, block devices could also benefit
+>    from this path.)
+
+Yes, I think it's doable. I will make change and send a draft to you for 
+evaluation. By the way, do you have actual use case in which deferring
+swap activation is needed for justification?
+
+> 
+> 3) Alternatively, are there any plans for a static binding
+>    mechanism, or any other extensibility approach you have in
+>    mind?
+> 
+> As an additional thought, if this ops framework could eventually
+> be extended to cover cluster allocation as well, it might enable
+> a model where base swap functionality is provided by the core,
+> while each vendor can freely plug in their own additional use
+> cases on top — making the swap device truly extensible.
+
+Yes, this is planned task as I have mentioned in the LSF/MM topic mail.
+
+
+> 
+> Any thoughts on these would be greatly appreciated.
+> 
+> Best regards,
+> Youngjun Park 
+> 
+
 
