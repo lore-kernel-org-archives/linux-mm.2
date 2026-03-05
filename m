@@ -4,134 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE371F3D32B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB115F3D32D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 16:26:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D7316B008C; Thu,  5 Mar 2026 11:25:36 -0500 (EST)
+	id 2FA4B6B0088; Thu,  5 Mar 2026 11:26:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 300FB6B0095; Thu,  5 Mar 2026 11:25:36 -0500 (EST)
+	id 218A26B008C; Thu,  5 Mar 2026 11:26:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D2BA6B0092; Thu,  5 Mar 2026 11:25:36 -0500 (EST)
+	id 119D26B0088; Thu,  5 Mar 2026 11:26:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 06F9E6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:25:36 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D2B9388BD9
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:25:35 +0000 (UTC)
-X-FDA: 84512535030.02.A6B1F7F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 88BE980012
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:25:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SboluI84;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gy8yt13D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SboluI84;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gy8yt13D;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE0F96B0088
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 11:26:06 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B23C313965F
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:26:06 +0000 (UTC)
+X-FDA: 84512536332.12.97FE844
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 753C91C0008
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 16:26:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="O5N/ugDf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9pOq8IWi;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="O5N/ugDf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9pOq8IWi;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772727933;
+	s=arc-20220608; t=1772727964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bsjlUJ/oFS4TNjkXPGzAAnIHdkWC3Rf5TrIvhsGPzhY=;
-	b=jIM+4z37YkAngsNQ1xVZ7UZAYbTkB5lHHT1PWtnF6pXSPsgemRy5c6L69DwHjUrapVtvmI
-	VXgtfqGqgfbZ/uraQ7OAp5wPnuBsUDTsA9Y4+Rglz6wLzA92FcIFn+rNA9EtmB7h1OyGBC
-	ATzGJr0lk66OZlOHBNzb7DkXBjm1gO8=
+	bh=VGezUwpGLCZyfFsnbu7s9tP4TEmi7eYjBzsMCkw+Gog=;
+	b=tzwUiwCZHaQcU665KgAjtxyk2qaVRzsMVz5YZ2/WKWBQyc3QqyZ6BCRMdLTwhWBcCjmgU/
+	OqkOh8mWKgNewNgLVFf1R/ecKrmJiVakK+Z7CXcEA3I1UNLj0vyKClKm+wY34uVLawGyPp
+	zobwISRE8ptaJIhcIk3aT30ECrOlvIg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SboluI84;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gy8yt13D;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SboluI84;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gy8yt13D;
-	spf=pass (imf02.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="O5N/ugDf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9pOq8IWi;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="O5N/ugDf";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9pOq8IWi;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772727933; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772727964; a=rsa-sha256;
 	cv=none;
-	b=EIlNusY52BpndDopzseIPC6YeUoJCSIvy0YxIZaAa050fu2q6AZz/iThVlt5qWvoJ+mg7Q
-	8ylJDmsbTHzILRq7/M91VOa7JgbvJSDTFy4816ZbUwtRGXvkkuDMWV4QGSXpqkHB3DiR94
-	kOS4qNbbfwUyZKGlGviYzh3szBLSb5Q=
+	b=7CfYPtYNu4ftjR/z8irzwQtX32GO8lM0QKgKKVCJd+gash6xAWi7rJOScVnLq1ifnerQRD
+	wmRh6gdaz8+Ym14qmCqSXUIulAvTFWQ75nRB6I/mH1k6doM3CV1jgkjS6jE9bA4yZn18oB
+	6bMvQnIn6SvgJLGVBU6r0S9hOBXXsgM=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 112053E772;
-	Thu,  5 Mar 2026 16:25:32 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EFDEA5BD0A;
+	Thu,  5 Mar 2026 16:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772727932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772727963; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsjlUJ/oFS4TNjkXPGzAAnIHdkWC3Rf5TrIvhsGPzhY=;
-	b=SboluI84xt3BVro1Qrfv//gEBdxpuyvOrS5zv9/1UlMb4heq9BdlRXi75vYfAqxbPCcEt2
-	NMAuWyoFffEHapzyrh/Yy25gyoE4suu0d281hlJ3xNG0Tl9NhztMU0HhknRDHDlLDPeJXf
-	jSZim/T6jUhymxio+fYxWI+a2Lo+B5Q=
+	bh=VGezUwpGLCZyfFsnbu7s9tP4TEmi7eYjBzsMCkw+Gog=;
+	b=O5N/ugDfDf+EKx4H5We7WyyuAbOI6DVQZfA4VZS3BtBKV9d1WOUju5wFJxoyIpnRFW57/A
+	8DHxy1jWDRurrt2p1Iw6YjxrtDBiUwonQ9dpn/Zqg2tDTtnXwUzzVR2cpzF4r8wuQq/g37
+	OdpFB573MMG2TC7cykRZ5rKdf+Vb0hM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772727932;
+	s=susede2_ed25519; t=1772727963;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsjlUJ/oFS4TNjkXPGzAAnIHdkWC3Rf5TrIvhsGPzhY=;
-	b=Gy8yt13DSrWYD4RnUxIQRMPyTp6tOsVvzBR3E4qeCRMM7AA5rcdCgF+Wu65+nz8+sDyDyQ
-	RyKJR1V0wqlAW9Aw==
+	bh=VGezUwpGLCZyfFsnbu7s9tP4TEmi7eYjBzsMCkw+Gog=;
+	b=9pOq8IWi3c4YFHD/3lMN0Ti9PI1JTmjf0/uqQG1n/wuEQ3bTb05RZlf4KSgIxT9Z6i7CcR
+	6bNutGvPV6j0YVCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772727932; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772727963; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsjlUJ/oFS4TNjkXPGzAAnIHdkWC3Rf5TrIvhsGPzhY=;
-	b=SboluI84xt3BVro1Qrfv//gEBdxpuyvOrS5zv9/1UlMb4heq9BdlRXi75vYfAqxbPCcEt2
-	NMAuWyoFffEHapzyrh/Yy25gyoE4suu0d281hlJ3xNG0Tl9NhztMU0HhknRDHDlLDPeJXf
-	jSZim/T6jUhymxio+fYxWI+a2Lo+B5Q=
+	bh=VGezUwpGLCZyfFsnbu7s9tP4TEmi7eYjBzsMCkw+Gog=;
+	b=O5N/ugDfDf+EKx4H5We7WyyuAbOI6DVQZfA4VZS3BtBKV9d1WOUju5wFJxoyIpnRFW57/A
+	8DHxy1jWDRurrt2p1Iw6YjxrtDBiUwonQ9dpn/Zqg2tDTtnXwUzzVR2cpzF4r8wuQq/g37
+	OdpFB573MMG2TC7cykRZ5rKdf+Vb0hM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772727932;
+	s=susede2_ed25519; t=1772727963;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bsjlUJ/oFS4TNjkXPGzAAnIHdkWC3Rf5TrIvhsGPzhY=;
-	b=Gy8yt13DSrWYD4RnUxIQRMPyTp6tOsVvzBR3E4qeCRMM7AA5rcdCgF+Wu65+nz8+sDyDyQ
-	RyKJR1V0wqlAW9Aw==
+	bh=VGezUwpGLCZyfFsnbu7s9tP4TEmi7eYjBzsMCkw+Gog=;
+	b=9pOq8IWi3c4YFHD/3lMN0Ti9PI1JTmjf0/uqQG1n/wuEQ3bTb05RZlf4KSgIxT9Z6i7CcR
+	6bNutGvPV6j0YVCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 08B923EA68;
-	Thu,  5 Mar 2026 16:25:32 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E24023EA68;
+	Thu,  5 Mar 2026 16:26:02 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tksdAnyuqWmXcAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Mar 2026 16:25:32 +0000
+	id C6o0N5quqWlDcQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Mar 2026 16:26:02 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id CBAABA0A8D; Thu,  5 Mar 2026 17:25:31 +0100 (CET)
-Date: Thu, 5 Mar 2026 17:25:31 +0100
+	id D2CF4A0A8D; Thu,  5 Mar 2026 17:26:01 +0100 (CET)
+Date: Thu, 5 Mar 2026 17:26:01 +0100
 From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
 Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, Ted Tso <tytso@mit.edu>, 
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, David Sterba <dsterba@suse.com>, 
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
-	linux-aio@kvack.org, Benjamin LaHaise <bcrl@kvack.org>
-Subject: Re: [PATCH 31/32] kvm: Use private inode list instead of
- i_private_list
-Message-ID: <norxrkgyn2t4qzcplhh7y6iat5ljhaexc75biwyqshq362yuor@etddmzwqvtht>
+	Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, linux-ext4@vger.kernel.org, 
+	Ted Tso <tytso@mit.edu>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+	David Sterba <dsterba@suse.com>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, linux-aio@kvack.org, 
+	Benjamin LaHaise <bcrl@kvack.org>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	ntfs3@lists.linux.dev
+Subject: Re: [PATCH 19/32] ntfs3: Drop pointless sync_mapping_buffers() call
+Message-ID: <e6fzrub3lvas5uigxiwgw2qpukjlfj5ifikqvvrn5bttgigvoo@riarrr4smkgs>
 References: <20260303101717.27224-1-jack@suse.cz>
- <20260303103406.4355-63-jack@suse.cz>
- <20260304-mahnung-ableisten-50d5c4e71013@brauner>
+ <20260303103406.4355-51-jack@suse.cz>
+ <aag2nTROMNra7t6l@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304-mahnung-ableisten-50d5c4e71013@brauner>
+In-Reply-To: <aag2nTROMNra7t6l@infradead.org>
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 88BE980012
-X-Stat-Signature: ezcrwaxw5hk7i9ommwchntf7ixijm899
+X-Rspamd-Queue-Id: 753C91C0008
+X-Stat-Signature: 8j4qi9fot5643tqckr3s7khaf3ars7ij
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772727933-29308
-X-HE-Meta: U2FsdGVkX18YzBDtK0PKlxFvkd6MFzAoRxiISDC8pKSXRq86ey+8S83s2WeDSRAuxO1ZDhn7XWPAKrJV+7ykIVX0RSybOsZe5Fdj3zRYfAZd5UFIJwDurcY97I0OVfiF02jMVGf/ffF+5sTl7r84sIVruI8OROWx586eGKFLcEDMif8oiJQbHAsE4zsYGcDq/22kBLh/EVjnrD6B5PleJEr8XNAtwk+X3xGS1VidxMYaJcs6GeTyMRrFasjdUhlXypm9rocOxrjm1R8ixS/t1amQtd9pWuBHHeeUA2nIBv6ytb7VcBT5yb5vHw3rvf59uCXp+qS5koux8Gg8GlQIyngB9ZwCBj2+w8NZmKQc0ahQSh6zPtfBid7Mx7DaOYvE2RLwNywb746pLBMlRQ55iw0s87v2NqvHqL3vbnn9XQo9WzR/wHJNCwIDITFYpvrPeJ+FBKumTuNnmBzgC30B0sgkaRgjBbaVMjqxfooGRgFKIj08B+Us9xDmaQOb2H4NpR+oCwXbMg+kYPUVFeXg23HblZcXKIwrJwqW7GSm0JBonLHBFsDXzdJe+H1+U4NlQdY9iB8fLz6J1vrNO/lKXoYhtYOoh/whaa5SVofQCP1H2030u+HZUR2eC06S5GrgvCRi9YGzoKHfDYOS726wwaqrpIOOGU4T2Dg+J/hzZOap0RqSoAVDowNdHrMOzvQiiSZXdfKGiNnFGXtB4t2S9UlV42VxU2xEndITf4WczzKOHhBEN3Bhe6LjclFF2oI4gbQjJ7RkO7cCFQi3RoUg2NHUZ/Jp8lwl0/COr9yTPE16V7stzuroQX79Gt/mlbHCQoQsJPzLG89YfMt98/0xNB9abnMVw06LYSzeDNFdjAxP+kcSU+k3RaRCvkSb3LWwDlRaX8UDFPU0EogkuceRI2I3vd/DJKx52sNeEIUtgM0+74Or/WxEGue08OtSDqizcVH0xsA+9LvAsnAdy0u
- 8Y9nS5tr
- SeUNG8gZQDQq7CBKcOX8hEdWIyECdk2fsGlQS1Uj8VByrREO57hGy8tBaIAyjetPiRtpWK04oY2OJGXjkflw9c4V26j93iksfEjRqfWxvurZ96YojezNr7GMQR4epdd48JHsu8/IEm7VCj5c2Z9E9YXz05GDJHyRL98lzQye/NBTEMEQU/r7IhhU4/nMfix/fkOCIBQ7xwlSN6DahZahkvWvzEaBIWlMQx917U6jUUxPzj/VMTmPJNf8IwfN/4Sj2JBzjuRdN6XOLxUswi6bwGe1W9zkcBkPz6E6IfIKU9eCX0IafzHoQyQ4kOuCkQDtBV2oLolMdnxbL3dhOt+m+KT5lTxZkS5shgHJoLhwfVEue/aAgtUHHltJExHnVUWQodSeKSgTwoIUH1taj9ML/F4sFKAONFoqtL7Ewkz0YjWZXBzgebXhmzu7nWL8wK9DiDQk3TlK12L75NlQ=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772727964-928191
+X-HE-Meta: U2FsdGVkX18ZjlK5LrFYvcZc3gcpQJF0Vbz6L5q43Pu4G4MMuhYwMhGFjkvxO99fRiRUM8B7OONPagHuv/4vBYjevY4Bd21rtlGl24DUnT4KPofgOV1cfqCqzwfP2cyPbV7jBmS49R1rPCUfI4Kj0viZQDlBY7hHggB+Rp2zySoMpwE9tBq+0AEif8Y7Thdjw6a1OO06tWXD14CI4rU39IcKG8YtmomRWe0vKSWkELVjbpG25lWsYDEr3fMMmKKIL2S/4RL+uRT9cGv79w9PBMZrKyxsVSZH27jwovWf0Shku8j3TLgf7FyfhvuycjfOpKMWVCPo+1OogOurDfKn4zbdPoqTrmnKWja8f9I+DBMCR4dhMJnrdn8sHoPdK5ILs1rrgyfdmh3G5ZSpCPVYCNDIvD23Jzhxet0XeAeXEGJJD0EQdlRm+o/WZOsg+ubbj3f4yVLMebzdIzSAuvad4R1sV+wKhxHRgw0qlQeZSNs3duJs+aEJjv6nTRgk3szwWhiOBCfnEF/8Xf2sBt2u0osvaF13/CwhmyVp/06gW4Psr6VCyHigjLi32uR9YN+T96QWX6JtVg+JLMm5An3rlibUPLRM8pjrvDJgCfpjGPZBDI/Y4KY8pz1xBFg32ZFH8t2ABKbGciB+7TCy+UvDtpeQhI971mBvLP2SeoRNL1wA3KynCiSoDPZ8yrITSnMtYHSefH6uYlIa9zSjklP9sn6AqgNuQ/fWzxanPnRY20naD5U7ByzvySi35Y+8YQjSHtgj01w3TsKC908MZM3zZ+HpiT1Pdv+Tt+jiqtksdQFcuaO+K77gBOevSDvq2b2z7W6bD2U3p8LS1DfkGeUwNTTl7BBC5Z4BEPhVj7xUmANnabdJZkg5aE06WX6cbOtUynLf3yp8VWFE2d3ctTh+1ak5mJIY1S+s0tkOFlbGakw8wRdx4fzFYDRa/NGdgA62793ZhpOEPGEv3pdIjbj
+ YqTEEouz
+ YZZHCkrXl6IzUljk3587YdmoS2EhcAeK8D2xnh9/MOHPZLrU72lRSuOYdvMYF8pKVN28EhORMvfrSNyRIrJCKxGKR2DmW0zMhjaA27ca6+wNVinct3W5x1QIp2gF6Y3hiq9KRfwUTaKCeEk2QfM/LxOhqfiaJRVuBfssyQ1Gjq0/w6HRLk/zoraOutwdp/x/hrR/6q/s8MFjncOuaB80xkuKWJUyYah/YUV/OP9Q9aV37Jdj4/K9zvr6v9c2ITf0W+XTXsm81GBKFFou1oOkZ+IenrfNVcobG0rZjTpQG5I+8igpbOE5stT8crySKmn9QpOQtGmuXqRr3n6faVmVjxbye3y+eO0QxQ45Z2asps1PjYrj2eygUFHIoNqz03twOdk1BB8M/EUhDmmaXUIOGnz/0JVt2t+6MrqKYI6qTTrgbGAeYMPelJ+MuPUtYGWm3VzeOBEM9IHBZMak=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,32 +140,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 04-03-26 14:40:33, Christian Brauner wrote:
-> On Tue, Mar 03, 2026 at 11:34:20AM +0100, Jan Kara wrote:
-> > Instead of using mapping->i_private_list use a list in private part of
-> > the inode.
-> > 
-> > Signed-off-by: Jan Kara <jack@suse.cz>
-> > ---
-> >  virt/kvm/guest_memfd.c | 12 +++++++-----
-> >  1 file changed, 7 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 017d84a7adf3..6d36a7827870 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -30,6 +30,7 @@ struct gmem_file {
-> >  struct gmem_inode {
-> >  	struct shared_policy policy;
-> >  	struct inode vfs_inode;
-> > +	struct list_head gem_file_list;
+On Wed 04-03-26 05:41:49, Christoph Hellwig wrote:
 > 
-> I think that needs to be gMem_file_list not, gem_file_list.
+> Can you move the various cleanups that don't really depend on any of
+> the refactoring to the front of the list?  i.e., drop all the useless
+> code first before doing real changes?
 
-Right, fixed. Thanks!
+Yeah, good idea. Done.
 
 								Honza
-
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
