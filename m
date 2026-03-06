@@ -4,91 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BAEFF01804
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:04:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF4BF01804
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A23EE6B0093; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
+	id 961556B0095; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FBA56B0095; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
+	id 90EB26B0098; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 952C06B0096; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
+	id 83BE46B0099; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 86B456B0093
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24EFF1B7E8F
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:04:35 +0000 (UTC)
-X-FDA: 84514901310.04.A19153D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8979A40006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:04:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrMIMd16;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F4AD6B0095
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13A4A14043A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:06:05 +0000 (UTC)
+X-FDA: 84514905090.09.09D87F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5D675A0013
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:06:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e7IawFCH;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772784273;
+	s=arc-20220608; t=1772784363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bFCUZ1lmwtVWRvHzJoX1dmihqbD+RimJaNlXwIvtjxA=;
-	b=HbkBAOe0GXrUcn35w+gaBdN0Kxa8khzWzr+Y7NrZYVC+Qcrre8kOu40ptjiq0jK+/ZGFyB
-	0SFGlYyYoc6ucQVXmB9h0ZMGDE4DmETDanrzi1qaVJXwIwLZuc7x69dXVYwVThRwE4te8U
-	j2fSL0jE+q+jVA9FiEsj32rLhjj2GHc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772784273; a=rsa-sha256;
-	cv=none;
-	b=ICyUJujTDh++xhvHjZH4BkJlGQnFV+ePjwQqKhvq/c7YITO/61uULG2QuJ2jM2VQPfmgr5
-	VeLUo3ckrK4HUjBwDOIgzc7zNFS/k47QSWZrNk+BoaeLwWwE45oxUiFLeecVXHybjp3VKZ
-	TRSxiQUtGCvMygnLMs7vFUSuW/GDy0c=
+	bh=wThyn0miyrDFY74RpLM8dbe63bKotUruuQw/jFVwkhs=;
+	b=tKDWY0xwrFV5MlinEkfQaHYVmNP+o+Qx97BOu3UShSL6M57kSaS6kYjanLvzEpL/KDWu/W
+	m1v+7oxRoKvn2LHLyS7Hw/wpmw+FShQrxkqrurPTNmmv8paQ+XGv+TyzwxhlHQwEZSA3/F
+	vnXOkbowtV2TRGv0oecw8+nY2SI8p78=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrMIMd16;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e7IawFCH;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772784363; a=rsa-sha256;
+	cv=none;
+	b=Qd1mn/WnRT2NLVryvBLeOITqT8uIR9UiQ1yyU0RhaBqIGF+WzqSI0bJayJ87HAADKZoNcA
+	abqg6Kyxa39vDaryEiljnKT/PNlUMhlMXJtACx/3sIhX0H5XeAbO1ru/MbsiBz0Scx1Qhm
+	NeHHPF27lGXHIJbcgTl0vF3V82qJZHs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F30E443A4;
-	Fri,  6 Mar 2026 08:04:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF945C19422;
-	Fri,  6 Mar 2026 08:04:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 94C8B60126;
+	Fri,  6 Mar 2026 08:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07EEC4CEF7;
+	Fri,  6 Mar 2026 08:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772784272;
-	bh=4WYdU2QhyXqU+J/LQCVn7X+IxtDxdQ46YOVOYQ3wx4c=;
+	s=k20201202; t=1772784362;
+	bh=LBnLAIcGHsesTcn5+nCMswocvTfZ7iqXSC/2rWKf6mo=;
 	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=KrMIMd165ybmkiKdddDSfICK3ILtiUxMoX1pfdggCmYoIassRhyrunuu/9Kxr5eC9
-	 DTQ6fAvZtRQuT4vv5S+Zzkyw2EP9M29XZn3s2jrioa4jS+sXsUMDUp4Hq+GDGr/0g7
-	 riy6PbiV+94LnsJUo+dYQ2l3NUFH1lsLw/c+80XdH29p4QI+1zFFodusolI0ShyCmO
-	 IapfGSeeM+76Z1rst8ec2Ru7qL7DCBMq0i53dKLO1zRelCXYak3yNPWwfAc0j/u7UH
-	 pyuADR9r3H9ajmJS2+6j5dYwynnVgvJrFrv0VlhJRi6FPO3NKhxZaj/Af6gV2gnMcL
-	 6gpCIZtivuf0g==
-Message-ID: <dd9794d9-fa88-4020-95ad-bb8fefa4e2d1@kernel.org>
-Date: Fri, 6 Mar 2026 09:04:27 +0100
+	b=e7IawFCHAhTtgO2GugIeECwEAMAUwS7CAhKdLOxCNwho2wzUPrFmxuX0/LHIKh4Kw
+	 qraeumJ9ZyUL57jNsPz2RIDPJu/e0skvhJsg7SPOAgHZWcL4wA41gYL6zd+LS3tapH
+	 b4Pd4tRflwrRsgHHdIQkUGAAYYcHq41rSp3OsLdy8ARqGbWLeGLMs999tv6BBhu+cy
+	 10G0W/9KMXIiaWZrXgag1vJzwIY6HCA+8DjBbKyU5wuZhatlvNDmiV4zOTYa6PxYIJ
+	 Ex+l2q4U7fRWA3kjpxzxDE2jrt1NzEyabYTyDqMGKONV5Peg3xCTHd/3B6baFYUWXF
+	 W6t1hx5WKLGqQ==
+Message-ID: <3b0b7f7f-c1b0-4f1c-bece-ce0cae130cb5@kernel.org>
+Date: Fri, 6 Mar 2026 09:05:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: add mm-related procfs files to MM sections
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
- <ljs@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-References: <20260306013453.90906-1-sj@kernel.org>
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
 Content-Language: en-US
-In-Reply-To: <20260306013453.90906-1-sj@kernel.org>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
+References: <20260304151335.172572-1-sj@kernel.org>
+ <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
+ <aanIdk2i-Eo9M967@shell.ilvokhin.com> <aanSnywUXTVPaYUj@shell.ilvokhin.com>
+In-Reply-To: <aanSnywUXTVPaYUj@shell.ilvokhin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 5D675A0013
+X-Stat-Signature: 4damn69ed85u5btqrtc6pgi9yd59r1yk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8979A40006
-X-Stat-Signature: m436ufxht9aqhee1xehtxgxkkbf71qf5
-X-HE-Tag: 1772784273-675428
-X-HE-Meta: U2FsdGVkX1/YIEoREBwXW0DhTr4Ww3dEiIibU2FAFpr5yb4TA2mouZZ9k1FDLeK86P6fWUNzRyrbpFL0URAQ8E1lUKlA4awu37RHRyqQUUSYx1I4adrNj4JUDtUbo/Bdtzn7Wr21IrsTq48j1rNcrG12rPjcAr/l2imYyyCP5BkeHbFTzwPwn8y+I8suSe5b4NGLGMev6RArMp9D6nqbNo9Qka26DaQ0d15Q6hyFJEPPzLar8HwL/W/N2zv6W7KTpO3Gs1O/Cts50eN2aZtq3ypeHR/0+loLQ0qvIaUBP5yCRybNv/B0LF4XbXgCs5GQBRq9v9scsX++kKQyP4XAV2QFUZJ4W9wgzQ3wy2Tj92OWGf37LTjSwS5D1HwigRhsJq1z6Ja80p7ftZoBqjI6HBjw6FRQbGNYYP/VHTZQ1omBG8hcCZDK2jPNcajcgjmPPlOKYgWSg9ts/U3R4ctMPiO7dcVOue54rRiiOGJDq1FOldHWwKFPoF/Y8pEOksb9kMAdaWqI1vA6nGxcu5S4J/+EChZWB/1/lJKOQ9hxvG8xWF2fhzbuzHpnFmoISjS+L6Myjm+FcSV6X5X6eUNnJ+PWJaGpcvW1duYjRCho4SxbjPdaueR8l5FvQusI6YAsnkczxl0D98LckUP5xx8qvxEKg0i6R3AR0joxJX7ren0XVFHKNe7sGGC95OZnRhYu51uZ/BgR4x/NjwZGukPTGTGwOlv9ZJOoAd4YVjfR18Dgzlqf/DePj68T2yTuS0w3wfQVZhJieMqJPse/7bHN8uHAEbQ+Joj3OUPpLkbFU4wOObk7kd7QxebGnBeyeRvUB42XoW5o3Y4vbOnWVPM2tI0ymRJYMBnL2gHwaxNE7pVIboXrXmmt2l6AVxFRoWmVjw3t3lWk6xHvtXKp3arTvVI3hFu400/IuxAsOXZTNKAZh6nMzZuTBA==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772784363-748796
+X-HE-Meta: U2FsdGVkX18Ljph99c0j8geRSMbK8W+WY/jJTLHQeiwX/OjY3YvEwMrD2uobNFyB4kc5rM7umCiiiHiCVq/eNBBGHcz9Op/0Tx07D+Q+cTfNPtf/NRvr/QIbrYjSmolzoJvvEHTqzClr8WE/kYdEyeDWAwtaEj1KdgQeOBKffh0OkqwIYRj5aCG7GMzo8/3cY3qb/zbDTtqGstEt5LPE1ooKN38Bma6ptdqMiij/zzH170XRQIvnCDL+NwNOBiEQn/o2ieCSxRx4jmaXffoMPJpJ78IQ9Yt1oZSRvCbYLdexHnP82lMa82OGHFTFOrWk10X+jjmcaWjEyuO56h7oziqTnG4gG32RpPe4EkaHdoDZ02vvweXHruDZXnACB0yXzS6HRJ9gRda6n2DjsZcwnYmuXrgfTvhJFo0LU5RNPJDe70ZPWD2HtsAjDWpO6wLUe0ziexPTmovll5xuHzp5taPF+N9B6CBR1qSIfUAPk4S+PMM5f1Yxiu4gHaPElsESeqy4khevgz2L6fuEiW2Uma1mkABvNIToK+5DUHIYQHxwuNMjik6M/0iSMUaPd9Ou/ovOCqf9yfcZWFJg/NRpzuNn7gnhP0Jk1bXD2/iNPOooYkAdcATniZDNOlZTn/I+CWiI7Mczk29E9JmFtqwrK7tm5FBjnXfExgdIeTHglu7aW6NQjMwbofZV87lYZakdU22uNP4azc0GnEk13x9AihCAItJ2nFrbMudesubAvGHK81SUOZ6vXigBtdR7/Tdhd+MMY2JFr6fL2urGJ8VU1qH4fgdgPHh1fPaU8sdJqvCobBKFcZz9ai10kYyglxMR8i1cg5BiVoYflHpOJVkKhb7A2VUtn667kUM4nh28BoABfiJaR3vB8fGXBw6/uBGZc6wXYwt3g3VAGvCxZRmky0bIxiA7uGQcWNb0tyA/0kfPPDAdbCEhBM7KOKsHf0cp8EdHuicrIyiLtOpbxIc
+ o715xwSn
+ glw2Yo1+NR0EbIq/AecWoaDiY01M7g+PRWz3f/tQTnN0QMG6f+jgNJcUwVEdCIH2wKzQUjRn5DQu3s3WnyQgqJMLgCqbOFpOg5hL2AYMcbz0c7flA6FbevZYnhQBwo+BZWiSfHwMTx2QZvN5xDIbHtVpWcc0dxyV1IZjc62wAOsvR9IUdj6wvhfVs/HxPaol95vjyo5QS3bR6KfO/294LDP6xlKBOhXVbtMu49ExgkZJ6IuTxQMJpUdoqbWf+vCUArBCUnQIzJhDgpIKWEqIr7BsvSh9Zu09PuZ/G/0fpD5Ullsth/U4cY3tXPWKh5XAvDTSoB7uXwSby+2A4hb7yy7JFjzFBZZbMCdD8d/wXbu7UiQSXaSZPkkDl3OiUpbXcxazWaepoJXM0l06xsCsQWnYPwckOBqxYiovnoUkMeh+hMAwYXVCWzCiKFLgFBrfvJvXt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,64 +110,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 02:34, SeongJae Park wrote:
-> On Thu, 05 Mar 2026 09:26:29 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
-> 
->> Some procfs files are very much related to memory management so let's
->> have MAINTAINERS reflect that.
+On 3/5/26 19:59, Dmitry Ilvokhin wrote:
+> On Thu, Mar 05, 2026 at 06:16:26PM +0000, Dmitry Ilvokhin wrote:
+>> On Thu, Mar 05, 2026 at 10:27:07AM +0100, Vlastimil Babka (SUSE) wrote:
+>> > On 3/4/26 16:13, SeongJae Park wrote:
+>> > > On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+>> > > 
+>> > >> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
+>> > >> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
+>> > >> > 
+>> > >> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
+>> > >> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+>> > >> > > > 
+>> > >> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
+>> > >> > > > > > This intentionally breaks direct users of zone->lock at compile time so
+>> > >> > > > > > all call sites are converted to the zone lock wrappers. Without the
+>> > >> > > > > > rename, present and future out-of-tree code could continue using
+>> > >> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
+>> > >> > > > > > infrastructure.
+>> > >> > > > > > 
+>> > >> > > > > > No functional change intended.
+>> > >> > > > > > 
+>> > >> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+>> > >> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+>> > >> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> > >> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
+>> > >> > > > > 
+>> > >> > > > > I see some more instances of 'zone->lock' in comments in
+>> > >> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
+>> > >> > > > > 
+>> > >> > > > 
+>> > >> > > > I fixed (most of) that in the previous version but my fix was lost.
+>> > >> > > 
+>> > >> > > Thanks for the fixups, Andrew.
+>> > >> > > 
+>> > >> > > I still see a few 'zone->lock' references in Documentation remain on
+>> > >> > > mm-new. This patch cleans them up, as noted by Vlastimil.
+>> > >> > > 
+>> > >> > > I'm happy to adjust this patch if anything else needs attention.
+>> > >> > > 
+>> > >> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
+>> > >> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
+>> > >> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
+>> > >> > > Subject: [PATCH] mm: fix remaining zone->lock references
+>> > >> > > 
+>> > >> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+>> > >> > > ---
+>> > >> > >  Documentation/mm/physical_memory.rst | 4 ++--
+>> > >> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
+>> > >> > >  2 files changed, 6 insertions(+), 6 deletions(-)
+>> > >> > > 
+>> > >> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
+>> > >> > > index b76183545e5b..e344f93515b6 100644
+>> > >> > > --- a/Documentation/mm/physical_memory.rst
+>> > >> > > +++ b/Documentation/mm/physical_memory.rst
+>> > >> > > @@ -500,11 +500,11 @@ General
+>> > >> > >  ``nr_isolate_pageblock``
+>> > >> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
+>> > >> > >    problem due to racy retrieving migratetype of pageblock. Protected by
+>> > >> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+>> > >> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
+>> > >> > 
+>> > >> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
+>> > >> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
+>> > >> > for the rest of this patch.
+>> > >> > 
+>> > >> > I was initially thinking this is just a mistake, but I also found Andrew is
+>> > >> > doing same change [2], so I'm bit confused.  Is this an intentional change?
+>> > >> > 
+>> > >> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
+>> > >> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
+>> > >> > 
+>> > >> 
+>> > >> Good catch, thanks for pointing this out, SJ.
+>> > >> 
+>> > >> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
+>> > >> However, in Documentation I intentionally switched references to
+>> > >> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
+>> > >> internal implementation detail, and direct access is discouraged. The
+>> > >> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
+>> > >> so referencing zone_lock in documentation felt more appropriate than
+>> > >> mentioning the private struct field (zone->_lock).
+>> > > 
+>> > > Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
+>> > > zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
+>> > > better.
+>> > > 
+>> > > But, I'm concerned if people like me might not aware the intention under
+>> > > 'zone_lock'.  If there is a well-known convention that allows people to know it
+>> > > is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
+>> > > humble opinion.  If there is such a convention but I'm just missing it, please
+>> > > ignore.  If I'm not, for eaxmaple,
+>> > > 
+>> > > "protected by ``zone->lock``" could be re-wrote to
+>> > > "protected by ``zone_[un]lock_*()`` locking helpers" or,
+>> > > "protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
+>> > > 
+>> > >> 
+>> > >> That said, I agree this creates inconsistency with the mechanical
+>> > >> rename, and I'm happy to adjust either way: either consistently refer
+>> > >> to the wrapper API, or keep documentation aligned with zone->_lock.
+>> > >> 
+>> > >> I slightly prefer referring to the wrapper API, but don't have a strong
+>> > >> preference as long as we're consistent.
+>> > > 
+>> > > I also think both approaches are good.  But for the wrapper approach, I think
+>> > > giving more contexts rather than just ``zone_lock`` to readers would be nice.
+>> > 
+>> > Grep tells me that we also have comments mentioning simply "zone lock", btw.
+>> > And it's also a term used often in informal conversations. Maybe we could
+>> > just standardize on that in comments/documentations as it's easier to read.
+>> > Discovering that the field is called _lock and that wrappers should be used,
+>> > is hopefully not that difficult.
 >> 
->> Add fs/proc/meminfo.c to MEMORY MANAGEMENT - CORE.
->> 
->> Add fs/proc/task_[no]mmu.c to MEMORY MAPPING.
->> 
->> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>> Thanks for the suggestion, Vlastimil. That sounds reasonable to me as
+>> well. I'll update the comments and documentation to consistently use
+>> "zone lock".
 > 
-> I have a few trivial comments below.  Regardless of those,
+> Following the suggestion from SJ and Vlastimil, I prepared fixup to
+> standardize documentation and comments on the term "zone lock".
 > 
-> Acked-by: SeongJae Park <sj@kernel.org>
+> The patch is based on top of the current mm-new.
+> 
+> Andrew, please let me know if you would prefer a respin of the series
+> instead.
+> 
+> From 267cda3e0e160f97b346009bc48819bfeed92e52 Mon Sep 17 00:00:00 2001
+> From: Dmitry Ilvokhin <d@ilvokhin.com>
+> Date: Thu, 5 Mar 2026 10:36:17 -0800
+> Subject: [PATCH] mm: documentation: standardize on "zone lock" terminology
+> 
+> During review of the zone lock tracing series it was suggested to
+> standardize documentation and comments on the term "zone lock"
+> instead of using zone_lock or referring to the internal field
+> zone->_lock.
+> 
+> Update references accordingly.
+> 
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 Thanks!
-
->> ---
->>  MAINTAINERS | 3 +++
->>  1 file changed, 3 insertions(+)
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 3553554019e8..39987895bcfc 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -16683,6 +16683,7 @@ F:	include/linux/ptdump.h
->>  F:	include/linux/vmpressure.h
->>  F:	include/linux/vmstat.h
->>  F:	include/trace/events/zone_lock.h
->> +F:	fs/proc/meminfo.c
-> 
-> Should we sort files alphabetically, and hence put this before 'include/...' ?
-
-Hm I mentally sorted include/headers above all .c files :)
-
-> I see a few other MAINTAINERS sections including 'MEMORY MANGEMENT -
-> USERFAULTFD' are doing so.  I have no strong opinion, though.
-
-The get_maintainers.pl script doesn't care about that so I don't care much
-either. Unless someone does.
-
->>  F:	kernel/fork.c
->>  F:	mm/Kconfig
->>  F:	mm/debug.c
->> @@ -16998,6 +16999,8 @@ S:	Maintained
->>  W:	http://www.linux-mm.org
->>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->>  F:	include/trace/events/mmap.h
->> +F:	fs/proc/task_mmu.c
->> +F:	fs/proc/task_nommu.c
-> 
-> Ditto.
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
 
 
