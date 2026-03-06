@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 075AEFCB619
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:13:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31A24FCB61C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:15:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7092E6B0096; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
+	id 9A1C06B00A4; Fri,  6 Mar 2026 11:15:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F3386B009D; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
+	id 9619D6B00B0; Fri,  6 Mar 2026 11:15:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6200E6B00B0; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
+	id 89BC26B00B3; Fri,  6 Mar 2026 11:15:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F856B0096
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F33F61A064B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:13:33 +0000 (UTC)
-X-FDA: 84516133506.28.399E885
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4232D140010
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:13:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1bOrNU2c;
-	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 79AFC6B00A4
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:15:16 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 326C91C8C6
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:15:16 +0000 (UTC)
+X-FDA: 84516137832.07.7F01C4D
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 434332001D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:15:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ilyx6wsK;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772813612;
+	s=arc-20220608; t=1772813714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rAeOH5IgrtG9/UsY5VOxVdlGDjQqvvwATIuVyeglsuA=;
-	b=xiNULh39W2nULnfepPtXvrQ2UyApIG3Qa5dzZ0wZIiPnrksnEhfXlNsgyCoOBg44LibIQ1
-	Jd/NErqFDZMv/CLGXiAhcLBtvSYSC9B53oGH4wlmYX8GM6KxmGMzMkQlR5zV8tpW2NjcYI
-	uYz/UiOKnv/lmlYdD36dHXSrb87jzV4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813612; a=rsa-sha256;
-	cv=none;
-	b=LH2hHeVDkwWdmR2twRpwjCGqOc7lvtaWSoR1Uis3iDWYqlSKQX0lFHqKxfMjBlKgSxgvFh
-	Bp8IsLlDTfIoM7TEa7ZzPvGuhYTGjsPt4trAyI3YANcYL9fadS1kCeLhrBYRkPMqC2WIrX
-	Q0nG4FK3BRVC4yoFV7F7Auf2RXV5MHo=
+	bh=F46BSWUVzTSNMVtPbFqNmwug0wRx85MgEhXeZ2WefSg=;
+	b=hUbyFFigxwzooCtWqdo0IgI3pu+00yBioCoQi0ZMCpmYNuIBtvjtwAnTYnUmwkZ3KO7iCZ
+	K/e4Q+zdytqpBFEU7WjAlNtO9LdAPgJVW05toL1YIT3vgvYGHIcwuKynJ8SEA6Wg6HkX1z
+	H4kocqs+9Su/tP0yhzImQ7WOU4gOW1s=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1bOrNU2c;
-	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id CB1C5B344D;
-	Fri, 06 Mar 2026 16:06:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772813186;
-	bh=rAeOH5IgrtG9/UsY5VOxVdlGDjQqvvwATIuVyeglsuA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1bOrNU2cmJL/WDIqAPD076EgHgoW/TaOlwkwVczxFJVtGhtPFQ0pXmMCIj0naFCRt
-	 2zTpJP+5oBpkRdpb7ZhjuLAPiLnBv7XLrtohX+f86b3gi1eUzJ7VMQYv89YLomhWrN
-	 Xum4wt3f4RVV1F7EsmK+JdLH27ULXCzK1yoaC0ek=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6/8] mm: use zone lock guard in put_page_back_buddy()
-Date: Fri,  6 Mar 2026 16:05:40 +0000
-Message-ID: <bc97ca32adbeed22a046764424ad9fcbb7fe8524.1772811429.git.d@ilvokhin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772811429.git.d@ilvokhin.com>
-References: <cover.1772811429.git.d@ilvokhin.com>
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ilyx6wsK;
+	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813714; a=rsa-sha256;
+	cv=none;
+	b=azikJmSWSmueAKfCh+Nn0vPe1Nkmwpn+gH94CbpjduaNlEbi7QBj/tKzy3yp9kTtZ4GxSP
+	HKT1z3suWr2BPyZDn/8Lo3GrXbC0/Ul8GldcJO636JqEDlUFOm6WDdbvgB4VbOz2OLe8vz
+	IHWG1ynZNtOwtZdtgyHyQwExfZn2/i8=
+Message-ID: <28e48b47-f215-4e4a-b55a-01dbf293ff35@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772813711;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F46BSWUVzTSNMVtPbFqNmwug0wRx85MgEhXeZ2WefSg=;
+	b=ilyx6wsK0ezghYuXNj+LGWBzh5gjqHMVDVuo4AxTgmeFbqG88SfGgWNXWl8GSj02nrFkHD
+	/KanIQP0HSHOvrQZ6kfuzHwAXhRtPy7RUg/q+Z2U5jYPfaW2W0c1aCMX+3OU1I2k6eGseM
+	TPmwPA6wGXmBBvt+RIi1t9yozapqjyU=
+Date: Fri, 6 Mar 2026 19:15:07 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] mm: migrate: requeue destination folio on deferred split
+ queue
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+ linux-mm@kvack.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ hannes@cmpxchg.org, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260306133556.2051251-1-usama.arif@linux.dev>
+ <ab22e50d-3af0-4acd-9d7a-a0e86d0c4fbe@kernel.org>
+ <64051a59-680f-40ae-b291-b884aeb7c77b@linux.dev>
+ <993B37FF-29E1-41F5-A1E8-F38B9CD24478@nvidia.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <993B37FF-29E1-41F5-A1E8-F38B9CD24478@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 34apcmfhd4tkp4qfazejtij59xikgfor
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Stat-Signature: 4g9inqm9batg7rd5y4snos5j4hgd7j6o
-X-Rspamd-Queue-Id: 4232D140010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772813612-318723
-X-HE-Meta: U2FsdGVkX1+L7ehH5o6XfrURQVZSzeqnf+F2foW4PiGwZ6gIXDpHA4S/B32n8+CU5uXuZiZWbYQKWCdECrWfOd45YXP6ERExS49Fd3pOya5aPMNnSJcotIwaAuC3mf4SK2nZYOd7pNwu/1fbHk9F1Ps3nexsdTzLagPv3+wf4SmOS+eZhzOYtKPqkz3pQ8QrxDNjoyMhukMvya+/pwJ52lyy6UDpRmRhV0EFTI2ogw+ssa6BaBIfF3UNWJTNq6gXnigV/X08FTsW+MAk2ZuQUds7SoVuM1hU9RP96B1JK0nh+4ZQqh2OPR5J64D8X5c0jwr8SrF+fFgwSJ6T1OsQuCeYPkFk1gSPo0iPbnHYUFzDjXyoX/SwdQqlrk4DSlt4YSQyeBPPdDzMHrhMYW8SrsGSSs3GhiGAMPL0lAsmHhfpbJe3MpEZ7Mst5oL9zZk4nppUSIfomWgTu5QSt84NnTvdBCWeh7sawxjSd/u0FsblkN0GWsijTqbVsRF6AmGIbANS9Acq+Sr+emLQodjzSu8M4Hl87LvP3nPWA4GxRXC5oveIq66TkVUUZ9fYo1x29cvy5XDALEHd1SN6qr9+ghNGm8VRQ67z/V0Q0sUGikv4G1Fcmvg1PSkiHXgbQK8WIyzOfih4XX8Q+pXKmWz3yw222AuVqiqa985Dqq4IRBhwKqJraWTkMcuiGJ54O0P98S9KUAOms0pR3Y3hGK/IKcwilewtLgYckmRY1KvQMZhqFyuXXURJ8nepKPaMIGW4rS5GMkoU7nMx0yIV26/0r8wN2HombjwiZxdciKAmvyTfxwylcihKSYuFIZGpDQV+qY8gP9G/Lu4H4CiOgrSljVWCDd1vvLzP0Ecicvt7nwzXRWfmI5i4TYUpKxv6uTv378Uk6X/cvXG1Z+sRRxuU+iT8xA886eOL0HFMMeKAbTDZG6x+hPcJreUplnD4TnGYVyI+mvkoYnhcH8jkIph
- qgGFkavh
- yy8j50mjfMB/RvXiQRLTqCXFitEaxKcgVBvStDxOgcfG3yCF7PA1oTFKQR1gAN5jKhs515z2Ip19rbkDhM+8nuZ4HcVBUIv62xULzXeTPYm5vIWSUg5elxIRpxgzHOr/eL1BgxyTQ2O6kbk9nPoS/9r7UO7kBVDWF+dwXzjzUpxHJxJ6xqyz2nAK/wcsNPUVvCLlQbtqNJGa8MhanPMcXBWr5H1eiAcac+vqFACUkOgzRdQ6ST8PmdPGcOF6OjyCcwCPYrOtk3QoAat2uQwS4M/ORktPO5wTH4wupFi1OokN5D86u7/3FnsCQsS7pePKiN+lQzN6nQd5ukwzUTnJz9WZvb6BF+ruC5kHh
+X-Rspamd-Queue-Id: 434332001D
+X-HE-Tag: 1772813713-904482
+X-HE-Meta: U2FsdGVkX1/RPqi2pyisdTibd+tRU6gujP2882qJAFmPtAGBi6tB3ay4bo9hu7bhY6gYwOYNExZ3MlwGKRrmp++VUmO0r8yhyZ5mg7oY0DvAj1T1bIL18I762wMiJZselUBj5g6x1ZmxLGX7PjFL4ytj8Qyn5lEAYF8LgWCmYVqrdy5AfvywRkVi2j4kBTc+1tpd7z8QDFa/pz1eijLJ0CL6CvclkSV2U8dohN0UWhBJH5Ll6OQv8qndactGC5Hpa3oB7jgEQb+x4Wr64TG/dcWY8Wc29f1JT5kik70Cfv5rOoCow1+0uTjOLvY2RIobKUc2tjbg7brQXgvClpDznxcivjmHO2IktB8o83yWhO803aTOvut7xs+2wdcgpIoig+hkCyBW6mUFlJX5vYeWmhxxEgSDbCc1+cdKPx+3DMEVagxGjzrMRr/df4ecjV+cmbB2CRm45/uTt2C/sad8BqRpGrnpMxPDpUP/v8jX3u1cNzXApS3N/okm2lIdnmT64goJC0H/zAT3dIRX2faY5luIf0Dwhu08q3sjQpr5E4HsWJ21Zdcsl5k0MY6D7fcn3q4rM37xe+EN/b98kMbh1oY08PXXZOCDTuh7oyjclm2p487623tgtEkTD+FmhlE1HeW1gi/HMVRKpARoeNAj8/bUCEdB6v+fhV1zfLm2z8l6WV9WXo5dD+2o+5nIpofzLWXHVIfO+gsNfNmhEk6vg90yBfqchbYDITsdAq89sbkSgXKvaNRZ9mEJe48f0BLwWK+3pdL8sAfzFTQEwrVFEObRHrPHJNXYsRB/GhG7Zy2KHVR5lUeX4uWMjfMQQXdd0/Y+za2uJDFYUDIx8jwsCs6WKDERVasW/dRq4aiwl6n7u50WKg0GnQWWRe20wBncj8CN7fhaYYHg/cjnxQnjwU/zeUXGK5YVDI6zJF+Ou9ClLGXIAnDwGUGtg5c3J1CP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +95,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use zone_lock_irqsave lock guard in put_page_back_buddy() to replace the
-explicit lock/unlock pattern with automatic scope-based cleanup.
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- mm/page_alloc.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 92fa922911d5..28b06baa4075 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7524,23 +7524,19 @@ bool take_page_off_buddy(struct page *page)
- bool put_page_back_buddy(struct page *page)
- {
- 	struct zone *zone = page_zone(page);
--	unsigned long flags;
--	bool ret = false;
- 
--	zone_lock_irqsave(zone, flags);
-+	guard(zone_lock_irqsave)(zone);
- 	if (put_page_testzero(page)) {
- 		unsigned long pfn = page_to_pfn(page);
- 		int migratetype = get_pfnblock_migratetype(page, pfn);
- 
- 		ClearPageHWPoisonTakenOff(page);
- 		__free_one_page(page, pfn, zone, 0, migratetype, FPI_NONE);
--		if (TestClearPageHWPoison(page)) {
--			ret = true;
--		}
-+		if (TestClearPageHWPoison(page))
-+			return true;
- 	}
--	zone_unlock_irqrestore(zone, flags);
- 
--	return ret;
-+	return false;
- }
- #endif
- 
--- 
-2.47.3
+On 06/03/2026 14:46, Zi Yan wrote:
+> On 6 Mar 2026, at 9:12, Usama Arif wrote:
+> 
+>> On 06/03/2026 13:49, David Hildenbrand (Arm) wrote:
+>>> On 3/6/26 14:35, Usama Arif wrote:
+>>>> During folio migration, __folio_migrate_mapping() removes the source
+>>>> folio from the deferred split queue, but the destination folio is never
+>>>> re-queued.  This causes underutilized THPs to escape the shrinker after
+>>>> NUMA migration, since they silently drop off the deferred split list.
+>>>>
+>>>> Fix this by calling deferred_split_folio() on the destination folio
+>>>> after a successful migration, for large rmappable folios.
+>>>>
+>>>> Reported-by: Johannes Weiner <hannes@cmpxchg.org>
+>>>> Fixes: dafff3f4c850 ("mm: split underused THPs")
+>>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>>> ---
+>>>>  mm/migrate.c | 11 +++++++++++
+>>>>  1 file changed, 11 insertions(+)
+>>>>
+>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>> index ece77ccb2ec0..98d0a594f7b7 100644
+>>>> --- a/mm/migrate.c
+>>>> +++ b/mm/migrate.c
+>>>> @@ -1393,6 +1393,17 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+>>>>  	if (old_page_state & PAGE_WAS_MAPPED)
+>>>>  		remove_migration_ptes(src, dst, 0);
+>>>>
+>>>> +	/*
+>>>> +	 * Requeue the destination folio on the deferred split queue if
+>>>> +	 * the source was a large folio that was on the queue. Without
+>>>> +	 * this, NUMA migration causes underutilized THPs to escape
+>>>> +	 * the shrinker since the source is unqueued in
+>>>> +	 * __folio_migrate_mapping() and the destination is never
+>>>> +	 * re-queued.
+>>>> +	 */
+>>>> +	if (folio_test_large(dst) && folio_test_large_rmappable(dst))
+>>>> +		deferred_split_folio(dst, false);
+>>>
+>>> Doesn't that mean that you will readd any large folios, even if already
+>>> previously taken off the list after scanning?
+>>>
+>>> So I am not sure if your "if the source was a large folio that was on
+>>> the queue." comment is accurate?
+>>>
+>>
+>> Yes you are right. How about something like below? We also won't need to check
+>> for anon and non-device folios with this as we only set the the flag if it was
+>> already on deferred_split list.
+> 
+> BTW, migrate_pages() tries to split partially mapped folios before migration[1],
+> so what remains in the deferred_list would be:
+> 
+> 1. partially mapped but with a pin,
+> 2. fully mapped but potentially underused.
+> 
 
+Yes, thats right.
+
+> I wonder if you want to do an underused scan before migration and try to split
+> underused THPs.
+
+hmm, I think we should keep THPs as is if there is no memory pressure (proactive
+or otherwise). Scanning THPs for zeros has a cost and we would also lose the benefit
+of THPs when we dont need memory.
+
+> Or to avoid this additional scan, find a way of detecting
+> zero pages at page copy time and split it after migration.
+> 
+
+Yeah but I think we lose the benefits of THPs after migration when we dont need
+additional memory?
+
+> Anyway, it seems that all large folios are in this deferred_list. Maybe, like
+> David suggested in his LSFMM proposal, we should scan large folios on LRU lists
+> at reclaim time instead, since there is not much difference between deferred_list
+> and LRU lists right now.
+> 
+
+Yeah the THP shrinker is a very basic implementation and there are a lot of 
+
+> 
+> [1] https://elixir.bootlin.com/linux/v6.19.3/source/mm/migrate.c#L1840
+> 
+
+Also Johannes pointed out its not great storing this information in page flags,
+we can just keep it as local variable. This is what the patch would look like:
+
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index ece77ccb2ec0..48a972f158ab 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1360,6 +1360,7 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+        int rc;
+        int old_page_state = 0;
+        struct anon_vma *anon_vma = NULL;
++       bool src_deferred_split = false;
+        struct list_head *prev;
+ 
+        __migrate_folio_extract(dst, &old_page_state, &anon_vma);
+@@ -1373,6 +1374,10 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+                goto out_unlock_both;
+        }
+ 
++       if (folio_test_large(src) && folio_test_large_rmappable(src) &&
++           !data_race(list_empty(&src->_deferred_list)))
++               src_deferred_split = true;
++
+        rc = move_to_new_folio(dst, src, mode);
+        if (rc)
+                goto out;
+@@ -1393,6 +1398,15 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+        if (old_page_state & PAGE_WAS_MAPPED)
+                remove_migration_ptes(src, dst, 0);
+ 
++       /*
++        * Requeue the destination folio on the deferred split queue if
++        * the source was on the queue.  The source is unqueued in
++        * __folio_migrate_mapping(), so we recorded the state from
++        * before move_to_new_folio().
++        */
++       if (src_deferred_split)
++               deferred_split_folio(dst, false);
++
+ out_unlock_both:
+        folio_unlock(dst);
+        folio_set_owner_migrate_reason(dst, reason);
+ 
 
