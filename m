@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E52F0182B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2D1F0182A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B037F6B008A; Fri,  6 Mar 2026 06:42:25 -0500 (EST)
+	id CDAD66B008A; Fri,  6 Mar 2026 06:43:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADB2B6B008C; Fri,  6 Mar 2026 06:42:25 -0500 (EST)
+	id C9C1E6B008C; Fri,  6 Mar 2026 06:43:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AF3C6B0093; Fri,  6 Mar 2026 06:42:25 -0500 (EST)
+	id BA7D06B0093; Fri,  6 Mar 2026 06:43:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B2D66B008A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:42:25 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36C6E13B176
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:42:25 +0000 (UTC)
-X-FDA: 84515450250.19.67D5FAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A9305180007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:42:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VmPUWeBa;
+	by kanga.kvack.org (Postfix) with ESMTP id A8E896B008A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:43:38 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 784AD16054A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:43:38 +0000 (UTC)
+X-FDA: 84515453316.26.C220BF8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E5E491C000A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:43:36 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoTL4X7f;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772797343;
+	s=arc-20220608; t=1772797417;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kEmVEpgowf0W6Vgf1W3oJX/C7Qq6rm8l/j/OBFgCVyI=;
-	b=Vtz6bdq6bSJEvHJ1yORzFc4yp5SRNwrf2XU8PvMNGoS/9EPAFwy6i3fJx82IlsQdehtebv
-	mE/wZq8v+K855c67pKwYwOTzVNX1GobgZVQ9xWMyMjiFc4aohwaAtX1zGLFrx5+gFHvEw3
-	D6+7WaRgaWjpUf6Lpjxxb9BZJZud8WQ=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VmPUWeBa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797343; a=rsa-sha256;
+	bh=3xfiT735TcU8/K9g/c1W8MgWJHA/YY1WqLFZxp9RB/Q=;
+	b=geJIwkHWUVtYZIPwhVtBu+g8JX7E2p+GaUkXdYhmOmYIOu7z4iizYAUm7gkZsbXgiQohS3
+	idc5jy0Nwx/yItjkVhXUpuvtQ7R3bFbJO3su0jq7Fr14fUQFlvLAN77tS1K6IykNBGcKfP
+	Yjzd5F4dtqtzjZgfSeOL6tFoHEsCCI0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797417; a=rsa-sha256;
 	cv=none;
-	b=eZQqOec6JTl95bU82qGgqrGgG1QlGhqM83gc7FTo4yevu+GuV09phySofCd84TX4cjXjzh
-	ac0UctVUs1ge1QUXwhwVvdEn8gKP0fuAMljE9XEQyQJ2NkUSgPRd1twoT1wy/wFg34bp8W
-	ObmItQkfdxc0z767DhrEOFIw5YKGPhE=
+	b=SlrA4FQC2SBIq62ifraipEm4OOGKRQsLrjO5lbzMW6bOcNaf6Lho0rUSGz6dzUe578Qd/6
+	7I9KbitX2KvKO4Qc3TXDiiMK6yCz6SdUR+6ml4+zz/NtxXrwmAPrQqTEZzQYwsD0/fHk0K
+	p6cy0L80wVLG4JwkzC/kwauDMKQ+uKM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AoTL4X7f;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4B9A60127;
-	Fri,  6 Mar 2026 11:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4FAC4CEF7;
-	Fri,  6 Mar 2026 11:42:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id ACAE1437E7;
+	Fri,  6 Mar 2026 11:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB45CC4CEF7;
+	Fri,  6 Mar 2026 11:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772797342;
-	bh=CA2vkPrs+KBRPBb6HWrkcW5f3nw7u13fgvwPYP4Knsw=;
+	s=k20201202; t=1772797415;
+	bh=GowoyTsR4CI3ewxQ0f2lHFy7dHsKMkcXOPtOrZuLkR8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VmPUWeBaQkwHyNWrIgE+k6VTvF58sgBu9LcG+6SertLT2ce7KXBFZ0We86Id7A25U
-	 Q+HpvLqR5cHvWiwcCko03D2oM0ZKE14Cr+BxZZDDmzCKdHkCFk9RqTfMemJZDDnloC
-	 Ew767ufZJ7CKXy/CG6eJzT3vDrdM6zE9ZYv22SYiUP3CREBCfUFzOy3pucv0xCVXiW
-	 9MsH74masuCdJlZ8BntBknVUwyKbUCdud5oUJoRnrzrGTDqUqCnck040huUBGNP38a
-	 rVd+D+l7txMQlbfz48dBDZDt3rCVTj4/qKf0/Air3/s23aXm7SQiY2Tv5T9Owh5nxk
-	 DlcAdpF9cammw==
-Date: Fri, 6 Mar 2026 11:42:19 +0000
+	b=AoTL4X7fkCCo0RpTHoieQY0AotRrEjVyuQ02wvcgh1owSajcJbmcQEtWizAtCSsK/
+	 X+mc0JnVWTe165uGDV9E7WpAYYzGMULmVtno4EZukM7QoACh09oHoPUhdwygslZKvl
+	 UA8JGFtIK2G8zIIAmjqKqpT+tyil+49Wti7f3MPsrXYEUnfS45na2IEnXoSRELDO6M
+	 ZL6z80bBwk4W9VVHCHJBf7g9N26hSrTQ1VOPLG5slPyq9X33Zeti35mCcJQiMAS9Er
+	 ddlmGUcS+LRPdDZ43n2TXxhXjJ5UL+qfVn18k94Sk3SHS399+2vt6KziT54vb18xV4
+	 c6KUFHbeprQ4w==
+Date: Fri, 6 Mar 2026 11:43:32 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Tal Zussman <tz2294@columbia.edu>
 Cc: David Howells <dhowells@redhat.com>, 
@@ -106,22 +106,22 @@ Cc: David Howells <dhowells@redhat.com>,
 	samba-technical@lists.samba.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
 	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
 	linux-nilfs@vger.kernel.org, linux-xfs@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] mm: Remove stray references to struct pagevec
-Message-ID: <3f262490-ebed-49b5-99ff-7a8aaa12cada@lucifer.local>
+Subject: Re: [PATCH v2 2/4] fs: Remove unncessary pagevec.h includes
+Message-ID: <b5c861d6-6875-432a-8ae0-33030f4571ae@lucifer.local>
 References: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
- <20260225-pagevec_cleanup-v2-1-716868cc2d11@columbia.edu>
+ <20260225-pagevec_cleanup-v2-2-716868cc2d11@columbia.edu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260225-pagevec_cleanup-v2-1-716868cc2d11@columbia.edu>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A9305180007
-X-Stat-Signature: tjztsubeyid6tpofdwmphpm9j79ow8kn
+In-Reply-To: <20260225-pagevec_cleanup-v2-2-716868cc2d11@columbia.edu>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E5E491C000A
+X-Stat-Signature: kd8nk9rnd9cxy9d9aqyiwbp6zwozda7z
 X-Rspam-User: 
-X-HE-Tag: 1772797343-439503
-X-HE-Meta: U2FsdGVkX19BC2DYfwtYkuGhuslNUcYVdhw14NWO5eDsBre9feEEG7MUrO9Ps1oCAWTtZL4LHLVSiQpIjDPJHSD21tH8dLWPdPpGp+JqLEB2E4p7YL4FeIP3h45B94MFUvOnefYQgPikUQA+NpMudL9R4rVxwitJ5Di8D/USPhYlM8NFD5k+TqNjYY86kiOrDU6ndvoX+ahhJGfoWM/iz2CiCaLF7nA+kTBlZYeqiFzWVvYhsNermjnmH5Y/r2eXf/W8x+x7uJIa3SZ1ZX25LUK2MpHuGj8I+THO5u9+Rjpau8Poz43S+bIFzzoHLe/bDeqlWdNFDS7fByqajFK6tKG0Z3QuqCSUP1lfbUPx7EAtcyte0VZ22tOww6jj7tUvJUKhsx2nuBZUyUwD1xdiIw1zqof5psBexGnIWpdxwBhJbYGaUMUknbdP0/vPMUsbviWjUYpsp8IgxvijCvWVq4R2i8AFXhM39zVz2JMOpqfVXCNTTwskW+zSlXIiYlVYxs53zWa+E7gLHG0D/3+tJD2xl1MSbMWeCNCFosSLPAJlyZd5F6eYwYw4ZOfWG7Ds3WMGYhSuj25AmQmzM54/JhMqOy7neOYUD+CJ89BklUPkcEYD9rcOQErtD31X9KBOoWYzjWKhFKlcBOsOJqPQ5RKGGsgR3AV57W9gT/7cV6Sf0YK1fRucz8Bf+SD1bIEmfqS9zodp5YFspIW9gdoVhBIfmpM4YxJaZ9kpfLHTziElUH1UBvLLXl1meFxgGUMdgGLLHLM0mGlTeSQ/wBsxSsvS7czc2moOGgxbgqK9twCbSQ/P2sYJJKz1y1xhZinDDTOMFa+6SpSX9j+M8TZ/loinIDNQBg+2ioao4ykvDYR1f9TBlF69CIuOoHpXJ/5xcDkQNLFsUgMZjSCf5vgDRrMA/qzws6mWx5mL6Pqt6chsWOWq8tjTzLOykoUUXqk2LSJeZyI7c23bXxhrAgo
- E6iN1hrA
- xwXbC2+gaCcFlT0LY48uHW3nm0csu8zQUyzK6QkrGkchf+nPuM/E0PXf8JaHZNH+74RupMboHTuZqhJ35lJ0ia2JkFVY59J+hOpsq6r+KZ94PMtEQFBx1KmZ6M6L1EBvQLC/HqCc93r6sNol0hSi8BAJ3oq575XGtox7x4I5Mks0cpFdaeAtPK66d90bnUF2EtznAc9Icy4bLCn7Cn3JuoKdJNqNVxsXq4Bu13VW3TpH74fWM+13zVRh6HWQ+UrLd6r4zGUWZw1w/ahqjEEphLbnRT3Wk5lfZ39nuSpUBH+uhR9OojJ/gqpIzGXjr/VlFlioBSt+ZIxTEglEXfFJbKOtEhSzO1XhDSfVUBrE5oCQZFcHwPZqwBG9G08tF28JhRiZEZyIQbWJUA13OaCbGFQ+Mpg==
+X-HE-Tag: 1772797416-194405
+X-HE-Meta: U2FsdGVkX1+JH1vQeFvoTsRM0IIOGEDtWavW7FQ4tll16/nYd/ZTX8Z0rlidUn2HIi43biD9A5m0micCIUWxtu0O7GT4Pzkct7J7vNsiuCEviMyS905jaQF0Zy2rL3c5pNIHocMMUVsmHHpUj208di4roUbK/GzHZbZ6k5yYxy8BCWjTSdignmrim+sw0NHVKaJuz/TuwAV48hiAIDTzOgtTWJ+H7kjnWaElsLWRkNYhbdkJavWHvtL2ULMeDWptZLT7cXaUz9nFG16MUHUhbHe3d7K0VJcmvFuGjTdfsHwBKlzyvXXVergNZHLSXSgharEfSLEa9DRLLMgmdvSkaIGbpIFM1G7GDqSEN+5pXCBGMjQNvmyv7bhYnUm4R9DQqzzIQA0A1oynlXVfwDsk4OfWvVWrCBJ58R7s4wxzk6o5jN6Z8fiYSyzSD5IuecyKWbb7rlPReQXk1L/2i+mSoHx2Ft+QS+17hz0MdFIFnsrcILdVAOLl9Z6wG52e9jc1WGKB4Woe94C0i/b3bs2KBX2Wa+Nu50DfA/V/wbb6APsAad211J8A1g4UspH/R7G1kEpjvKpiawm+zt2cDeHGLoXUY+RIWlQYzCgj7qmerVzkkd7IO5GeEF8UXKBIhZ45s3UToSlm6Qzf8kdmKdGKM3obOcpI4ZFGH9ktd0sLQEQnfvpWfSsi4ycraO328i47XHi+/jNzn+FArJeUqRPnnQGh4MOOJV134vFlosK273X97TJPIZ0BuB4I/SXYeTpC1H5f+nutzFMryDCIyx27e3xq7HnJHeFfO+g402UmXwtEFzZOYewcSbCmGK9MkqXyEMaYDcLFAi5HvapZ5Fd2fSPq8cY+mxFpOQXCBDMNGwmOm5NTvSKY8UQBttBpjBHXUF+27T5Cnb4PQaQbiU8u/oiunZ6VCncyKrsoDjDPsHyFKi/ukiF53CzuMYEHjLOgXZL8T1ZoJu+x2KBzPBR
+ Is35YUaK
+ p8somn/b7u1h4b1a1VfW7cki+ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,78 +129,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 06:44:25PM -0500, Tal Zussman wrote:
-> struct pagevec was removed in commit 1e0877d58b1e ("mm: remove struct
-> pagevec"). Remove remaining forward declarations and change
-> __folio_batch_release()'s declaration to match its definition.
+On Wed, Feb 25, 2026 at 06:44:26PM -0500, Tal Zussman wrote:
+> Remove unused pagevec.h includes from .c files. These were found with
+> the following command:
 >
-> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Chris Li <chrisl@kernel.org>
+>   grep -rl '#include.*pagevec\.h' --include='*.c' | while read f; do
+>   	grep -qE 'PAGEVEC_SIZE|folio_batch' "$f" || echo "$f"
+>   done
+>
+> There are probably more removal candidates in .h files, but those are
+> more complex to analyze.
+>
 > Signed-off-by: Tal Zussman <tz2294@columbia.edu>
 
-LGTM, so:
+Nice, LGTM so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  fs/afs/internal.h       | 1 -
->  fs/f2fs/f2fs.h          | 2 --
->  include/linux/pagevec.h | 2 +-
->  include/linux/swap.h    | 2 --
->  4 files changed, 1 insertion(+), 6 deletions(-)
+>  fs/afs/write.c                   | 1 -
+>  fs/dax.c                         | 1 -
+>  fs/ext4/file.c                   | 1 -
+>  fs/ext4/page-io.c                | 1 -
+>  fs/ext4/readpage.c               | 1 -
+>  fs/f2fs/file.c                   | 1 -
+>  fs/mpage.c                       | 1 -
+>  fs/netfs/buffered_write.c        | 1 -
+>  fs/nfs/blocklayout/blocklayout.c | 1 -
+>  fs/nfs/dir.c                     | 1 -
+>  fs/ocfs2/refcounttree.c          | 1 -
+>  fs/smb/client/connect.c          | 1 -
+>  fs/smb/client/file.c             | 1 -
+>  13 files changed, 13 deletions(-)
 >
-> diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-> index 009064b8d661..599353c33337 100644
-> --- a/fs/afs/internal.h
-> +++ b/fs/afs/internal.h
+> diff --git a/fs/afs/write.c b/fs/afs/write.c
+> index 93ad86ff3345..fcfed9d24e0a 100644
+> --- a/fs/afs/write.c
+> +++ b/fs/afs/write.c
+> @@ -10,7 +10,6 @@
+>  #include <linux/fs.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/writeback.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/netfs.h>
+>  #include <trace/events/netfs.h>
+>  #include "internal.h"
+> diff --git a/fs/dax.c b/fs/dax.c
+> index b78cff9c91b3..a5237169b467 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -15,7 +15,6 @@
+>  #include <linux/memcontrol.h>
+>  #include <linux/mm.h>
+>  #include <linux/mutex.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/sched.h>
+>  #include <linux/sched/signal.h>
+>  #include <linux/uio.h>
+> diff --git a/fs/ext4/file.c b/fs/ext4/file.c
+> index f1dc5ce791a7..5e02f6cf653e 100644
+> --- a/fs/ext4/file.c
+> +++ b/fs/ext4/file.c
+> @@ -27,7 +27,6 @@
+>  #include <linux/dax.h>
+>  #include <linux/filelock.h>
+>  #include <linux/quotaops.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/uio.h>
+>  #include <linux/mman.h>
+>  #include <linux/backing-dev.h>
+> diff --git a/fs/ext4/page-io.c b/fs/ext4/page-io.c
+> index a8c95eee91b7..98da200d11c8 100644
+> --- a/fs/ext4/page-io.c
+> +++ b/fs/ext4/page-io.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/string.h>
+>  #include <linux/buffer_head.h>
+>  #include <linux/writeback.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/mpage.h>
+>  #include <linux/namei.h>
+>  #include <linux/uio.h>
+> diff --git a/fs/ext4/readpage.c b/fs/ext4/readpage.c
+> index 830f3b8a321f..3c7aabde719c 100644
+> --- a/fs/ext4/readpage.c
+> +++ b/fs/ext4/readpage.c
+> @@ -43,7 +43,6 @@
+>  #include <linux/mpage.h>
+>  #include <linux/writeback.h>
+>  #include <linux/backing-dev.h>
+> -#include <linux/pagevec.h>
+>
+>  #include "ext4.h"
+>  #include <trace/events/ext4.h>
+> diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+> index c8a2f17a8f11..c6b6a1465d08 100644
+> --- a/fs/f2fs/file.c
+> +++ b/fs/f2fs/file.c
+> @@ -17,7 +17,6 @@
+>  #include <linux/compat.h>
+>  #include <linux/uaccess.h>
+>  #include <linux/mount.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/uio.h>
+>  #include <linux/uuid.h>
+>  #include <linux/file.h>
+> diff --git a/fs/mpage.c b/fs/mpage.c
+> index 7dae5afc2b9e..e5285fbfcf09 100644
+> --- a/fs/mpage.c
+> +++ b/fs/mpage.c
+> @@ -28,7 +28,6 @@
+>  #include <linux/mm_inline.h>
+>  #include <linux/writeback.h>
+>  #include <linux/backing-dev.h>
+> -#include <linux/pagevec.h>
+>  #include "internal.h"
+>
+>  /*
+> diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
+> index 22a4d61631c9..05ea5b0cc0e8 100644
+> --- a/fs/netfs/buffered_write.c
+> +++ b/fs/netfs/buffered_write.c
+> @@ -10,7 +10,6 @@
+>  #include <linux/mm.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/slab.h>
+> -#include <linux/pagevec.h>
+>  #include "internal.h"
+>
+>  static void __netfs_set_group(struct folio *folio, struct netfs_group *netfs_group)
+> diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+> index cb0a645aeb50..11f9f69cde61 100644
+> --- a/fs/nfs/blocklayout/blocklayout.c
+> +++ b/fs/nfs/blocklayout/blocklayout.c
+> @@ -36,7 +36,6 @@
+>  #include <linux/namei.h>
+>  #include <linux/bio.h>		/* struct bio */
+>  #include <linux/prefetch.h>
+> -#include <linux/pagevec.h>
+>
+>  #include "../pnfs.h"
+>  #include "../nfs4session.h"
+> diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+> index 2402f57c8e7d..0d276441206b 100644
+> --- a/fs/nfs/dir.c
+> +++ b/fs/nfs/dir.c
+> @@ -32,7 +32,6 @@
+>  #include <linux/nfs_fs.h>
+>  #include <linux/nfs_mount.h>
+>  #include <linux/pagemap.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/namei.h>
+>  #include <linux/mount.h>
+>  #include <linux/swap.h>
+> diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
+> index c1cdececdfa4..b4acd081bbc4 100644
+> --- a/fs/ocfs2/refcounttree.c
+> +++ b/fs/ocfs2/refcounttree.c
 > @@ -31,7 +31,6 @@
->
->  #define AFS_CELL_MAX_ADDRS 15
->
-> -struct pagevec;
->  struct afs_call;
->  struct afs_vnode;
->  struct afs_server_probe;
-> diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-> index bb34e864d0ef..d9e8531a5301 100644
-> --- a/fs/f2fs/f2fs.h
-> +++ b/fs/f2fs/f2fs.h
-> @@ -28,8 +28,6 @@
->  #include <linux/fscrypt.h>
->  #include <linux/fsverity.h>
->
-> -struct pagevec;
-> -
->  #ifdef CONFIG_F2FS_CHECK_FS
->  #define f2fs_bug_on(sbi, condition)	BUG_ON(condition)
->  #else
-> diff --git a/include/linux/pagevec.h b/include/linux/pagevec.h
-> index 63be5a451627..007affabf335 100644
-> --- a/include/linux/pagevec.h
-> +++ b/include/linux/pagevec.h
-> @@ -93,7 +93,7 @@ static inline struct folio *folio_batch_next(struct folio_batch *fbatch)
->  	return fbatch->folios[fbatch->i++];
->  }
->
-> -void __folio_batch_release(struct folio_batch *pvec);
-> +void __folio_batch_release(struct folio_batch *fbatch);
->
->  static inline void folio_batch_release(struct folio_batch *fbatch)
->  {
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 0effe3cc50f5..4b1f13b5bbad 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -20,8 +20,6 @@ struct notifier_block;
->
->  struct bio;
->
-> -struct pagevec;
-> -
->  #define SWAP_FLAG_PREFER	0x8000	/* set if swap priority specified */
->  #define SWAP_FLAG_PRIO_MASK	0x7fff
->  #define SWAP_FLAG_DISCARD	0x10000 /* enable discard for swap */
+>  #include <linux/blkdev.h>
+>  #include <linux/slab.h>
+>  #include <linux/writeback.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/swap.h>
+>  #include <linux/security.h>
+>  #include <linux/string.h>
+> diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+> index 33dfe116ca52..9e57812b7b95 100644
+> --- a/fs/smb/client/connect.c
+> +++ b/fs/smb/client/connect.c
+> @@ -20,7 +20,6 @@
+>  #include <linux/delay.h>
+>  #include <linux/completion.h>
+>  #include <linux/kthread.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/freezer.h>
+>  #include <linux/namei.h>
+>  #include <linux/uuid.h>
+> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+> index 18f31d4eb98d..853ce1817810 100644
+> --- a/fs/smb/client/file.c
+> +++ b/fs/smb/client/file.c
+> @@ -15,7 +15,6 @@
+>  #include <linux/stat.h>
+>  #include <linux/fcntl.h>
+>  #include <linux/pagemap.h>
+> -#include <linux/pagevec.h>
+>  #include <linux/writeback.h>
+>  #include <linux/task_io_accounting_ops.h>
+>  #include <linux/delay.h>
 >
 > --
 > 2.39.5
