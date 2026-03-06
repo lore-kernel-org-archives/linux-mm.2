@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14087F01824
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24901F01823
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:16:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75AE86B008C; Fri,  6 Mar 2026 05:16:35 -0500 (EST)
+	id 896A96B0092; Fri,  6 Mar 2026 05:16:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68BAB6B0092; Fri,  6 Mar 2026 05:16:35 -0500 (EST)
+	id 7D7E96B0093; Fri,  6 Mar 2026 05:16:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5226B6B0093; Fri,  6 Mar 2026 05:16:35 -0500 (EST)
+	id 6E48C6B0095; Fri,  6 Mar 2026 05:16:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF2E6B008C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:16:35 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5B1EB9A5D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:34 +0000 (UTC)
-X-FDA: 84515233908.24.5EC69DF
+	by kanga.kvack.org (Postfix) with ESMTP id 56BF06B0092
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:16:37 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23CD9C1E5E
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:37 +0000 (UTC)
+X-FDA: 84515234034.07.E277D80
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 54D214000E
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UMh7g+zY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9245B18000D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sfMFKTIS;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772792193;
+	s=arc-20220608; t=1772792195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5/dkJdaAB+pKo1P+eI25ypsj40QWLqgHpKTD+Xjo1is=;
-	b=op2hoLuWq78Wo9fhg3JJQP4dyNeqM4OYQyKWmIX7r7791QV8Y1ePQ4X9rdnXksnQy1ogJw
-	LmHFduuSp2enMzmckidTUozqWYiAxSHY9M99DGLABb1D3MDd/EFmDCeUq/RBi0xcF8NQ91
-	DJO50i6TVet6Xp6I6bEahCpfZegNbnM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772792193; a=rsa-sha256;
-	cv=none;
-	b=NBeJIn4eh3mIrjNLuy3er30KLfQdUtPQvVlEvqlkfby+vnWoNJXBCYRA/ifwvmOE/iL5pC
-	OpO2sRFNNGpFEyS6snImZ1z7x+xgXQ/XHdtwySD5U+RlBFgEWH2mInHIY71C7pm9C1PMJX
-	50m67UWxdhTrHDUt7p8ZZqdTsgljD1Q=
+	bh=z4QAwrW2GLBTtbMQBlpjYhRh1mC/IWhMZm5cbOWtGeM=;
+	b=Qu7owRO/luqh6SCVAsRIngVr6vUMf4IbKYnmguoXteKPSCd6f33d0PB2oSqWhorpXoANUB
+	V/7tlDx+nAFQVCE3rqPf37IZcxvY+B6TCJvFARe3qEFbBQeD7QLSKuf6xlYjQ5GMEPJ+dM
+	CFsCIU+8KoDMh7ttRkJaFjoeX0mSEuY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UMh7g+zY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sfMFKTIS;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772792195; a=rsa-sha256;
+	cv=none;
+	b=ieB9th9Z/TwTIkfcgmPPJI3Xn7YDu9LuMeSYooCjDGbogwU6ZvlQv6fwwVdS10R35YkCHY
+	6G4sfqfcL6+nb7o8i7ik/QJcpSkadMePZJNZaOJZgY5mlJWLPDX1gfUBUrjp5As4lfNK/4
+	LmvhUp5yKj3jfjwZev931IAYSWxkG6w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D309F60131;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CEAB60130;
+	Fri,  6 Mar 2026 10:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D250C4CEF7;
 	Fri,  6 Mar 2026 10:16:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB1BC19422;
-	Fri,  6 Mar 2026 10:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772792192;
-	bh=k5FQ3POVWHUqSFCK1KHjIrKMQkLSCam/RT4g8330CaA=;
+	s=k20201202; t=1772792194;
+	bh=ltugaujY6fYQ/bBQe0co3tDjQ1T6cgZ91J0YQTonPoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMh7g+zYXegSicI9M1aLSZ+o/u9Faw6vtFXpS+dhIFChWaHhnesz2CqTrWf5lZ1YX
-	 PwR/89DOY0KxCfaDF+zvV/j0Ch3nBLN4zXZ99O5x+zsLJnKtg+Jp/8d0ZrzcYbo67E
-	 hJ4fiZkHg6cip8UbajFYj19bxe1E8BxOFId9YL/FGpdsypVTI0uZCX4EeT1GlBw/ab
-	 v6QBUypGeW3DremKETuRvO9dxgJz/QXm1sCkZZIosBs97NVkjiLD8T1uFOzHSu9wWz
-	 /ZloImQknfKb+rfKqLT+2ao8Mf7tlJQPkn+MKqx5VK5iK0Xrx6O7k0ZQZPwfkpqZws
-	 H8SRiS+Qx0qUg==
+	b=sfMFKTISWy6XmE2PIb9BpEGaudJtZSFT3m04+Td9Q5T7Gtl5odhVnpSKvAaWekMq5
+	 YHbT6av2ZV+y2SZEABL2S1pqe2js5staTWbWCHUQ4B7m9ij0IMohuU27s1qBBdgbPv
+	 /xvSBtXv6lHzyCRnpv+esgazI7+0+/ywXmzcHmgMjvA3sRdXUm2hLsggmuK9Ra3vRW
+	 01wq2YBeDQDBfoijNG5nKwFgIVYW1Tdu+trdWwEzNjdxxjyrd/WSFkp0EGvSNT+xvh
+	 NuY+Mjb/VVLtIe/Vr8TymfRbCZjTQbk4VUHJmhMxLi8b0TxsdAUHDe6yKXN4FWInAE
+	 fumJUEFoLAn4w==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
 	linuxppc-dev@lists.ozlabs.org,
 	kvm@vger.kernel.org,
 	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH v1 3/4] KVM: remove hugetlb.h inclusion
-Date: Fri,  6 Mar 2026 11:15:59 +0100
-Message-ID: <20260306101600.57355-4-david@kernel.org>
+Subject: [PATCH v1 4/4] KVM: PPC: remove hugetlb.h inclusion
+Date: Fri,  6 Mar 2026 11:16:00 +0100
+Message-ID: <20260306101600.57355-5-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260306101600.57355-1-david@kernel.org>
 References: <20260306101600.57355-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 54D214000E
-X-Stat-Signature: p999xqjjgrfkfhpax3ksrukyaaocrgxb
+X-Rspamd-Queue-Id: 9245B18000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cjasg4grn8b7yx413j3x4ycoorqsc16b
 X-Rspam-User: 
-X-HE-Tag: 1772792193-763136
-X-HE-Meta: U2FsdGVkX186CUKJpgk4FnFuBFkFYQP/1FrRNvRciSG/h+2AxvNiy7ICu+0ZLHkY26p8UfJEcAExyHoM2Yt2RM8NecRhvur0v3NU1L5UbKl3nnfNyFnpLP3vIEFS0cRmOoqPDBXMiR8qSkn4moBNzw2t4P6Zzb2/xlaE4opttqngYYhuKpPrXSE3dhH25GN0GnTVayrIwP/YPN86rsPSy6WbWjCSBdkuamJhnULc2vina1QGlTysZuxSj00muuWttXVHIbCT2D9gBLy31lNhjzfFLNs8rnQZalwlRh5Bp4Iurwi00xvya3/ZMPLW09qazjQGx+rNgXrey5DnSZ+TIxfMksyPwp5WOaYGF2AEJMLinoH/Tez7pCjR06DMbtpN95IZgJ3UQrn+RVuGbWxqKD7wVsrRtKWOfTJlDs1hEPomKWysrI8RfCJrey3xQvdaxM3IuvsrwQOambi0CvEiyTGKnbHkv7n29Xxh3HxI5cpvosh1FFIFnPGkOHfVPkKmSV3WmtszeliPdqjegFbkCKcxn2B1iBLOSRHpisAWf8wBRe5gIXEzEEVR7uqdyCj0mBXlQwReojloPxYB7XQ00tVxdyPge4et/lHL+ASwZ7D2HsBX+BCn0gf+hdAeY8pexubeVoQRvQrbjEcWSxUw/Bu/bsDkII/6yiyrEsaNIwFjm9te9pVUXuWaw3ia0Hk8H6tbh69MrVl/qo2/dTqo6LboPf79f9Dq7WqW1ujKg05fp9pQ1UPZYDLxJBL+hwIbQzC4qTq4iJdlrAM3TdpHxaNcGmMyTI1GjvgYTK3mvy2NBnuAUShV3GnryoLvcz/d7THyY7dEiEceXXrJL3vBXTfXwidNKvWGGfMrkiAJLd3DZmiF2QD2XiM02V8QxRbYICY10XYdcVNvog7/PFuLXBNXy0bFoNp1GYCEqZ9rRtLJavvLWtfSKuOAAu82HQF3Ud6bkUVsBHOUgnu4c6S
- UFg==
+X-HE-Tag: 1772792195-616864
+X-HE-Meta: U2FsdGVkX197cwhrugXIA8V/8t9ocX0s7vvjkS1REIgc73KjyvRaR1ZE+XasfODkWmROS9Zu+mNyiG8rOoPAj+slc0J62kkowFIiJR3gQaVC4tHDzmpB/41xRVlndwqPL60tL8vILzMCZISAf8jT41BSrK3lc8MXaWOLCsQa7LmTBMIYJoaU3A5Pyk5YUF9EYSkxAO4Hw2aX+UHQNy95TjPBMEiWjvTz9v6n+n/lJZYmn6K+vjHOnbRlr209eM2rV6g6NQkjQ2rKgahvjzvBzmriLurQbW9zlJQ47tZ1KV5QEK6KRxoNJGgoafC/fpwoZbZUPRg1alHw//nUUBXBKt9RHb976PhXSoTmcdG2Ts/CM/8MLyOjZ70Yd/kQ82JxkA+gGgAbK0wxuNRLcw664QC0TmEDiO8wwGTZKOW+O4TzZ5Xod/VSgmMoN7Xp4yMKXPN8Y4gLaexDX2vfGYcRN0tMOIqzFuoKpz2e8wpRD+KGM0zxgnqS0TFJYZtJxVvkg0f7awrhK/IBRHXN/wbdGrNW8Q6dZ+Hwak0DemrVwWSWFEZenw3YkePNOh7wuzQHdNHMAhjZn8lu1gYToR6p1khQ2AtZE4CpfldQywMYfKrsFe7c/fdSEgSu5opFPfXMYAX2l1CZjCmzoIkmjYxsZI1Fpaprj2fO4lhE7uauvl4JrQ3/PDb7nrjwBrWHs3iQTqWm7NbXyCAHKM2lUx02SqCrp7TIwxZYvghCbcsD76JwIH3Xab9YMfTW5oSBSkQvEzrMVXUBM4HUuAzikbONo6WYaqVXoYlo078e5xfMC4rqusS+1dKdzlNbRkJFBpz4BRZi98kQ2WoQzB+bozEEJjiOrsA+2hlWHPcf6VZnCRvMRZuLMFdnRyJ6bbV+6QOb/Wvv5cUY/sudUCAeFsr4eisHMF3eUllnt/piNHJeTWmgvPkENI/S2M+5qfMDx+RHYg+9qAEU3xCk0Jb646t
+ ON8WgQwk
+ UJdM9VzFqrT33vgNlJuH61XTYI178br7Po2T6MJEU2zoUOKJ+DhHY95LSvfGJNkV7Y9QbZitv0klmkP6Ent4r2I6mJPtx99aaWPyKNB108+TReK5TbzGDwgr+IvG5qfe9ybFQBj3ENPK6lr8Sqxy3TuhGZkwWU61gAS6tDTP3JSDy6tzr4blZHBAMG9D/t8QBtTk0MXiodLIIkhwmLvuUqrNF7RXmJKE2RNT/dDHgEZABZf1cNY1ld447b0L5P0g8r9Cj5zrgjhl/GjpsJ2ttwY5dhTuGqYezsz4HCVOV2sXh+r0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +97,21 @@ to mm.h.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- virt/kvm/kvm_main.c | 1 -
+ arch/powerpc/kvm/book3s_hv.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 22f8a672e1fd..58059648b881 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -41,7 +41,6 @@
- #include <linux/spinlock.h>
- #include <linux/compat.h>
- #include <linux/srcu.h>
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 08e5816fdd61..61dbeea317f3 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -36,7 +36,6 @@
+ #include <linux/gfp.h>
+ #include <linux/vmalloc.h>
+ #include <linux/highmem.h>
 -#include <linux/hugetlb.h>
- #include <linux/slab.h>
- #include <linux/sort.h>
- #include <linux/bsearch.h>
+ #include <linux/kvm_irqfd.h>
+ #include <linux/irqbypass.h>
+ #include <linux/module.h>
 -- 
 2.43.0
 
