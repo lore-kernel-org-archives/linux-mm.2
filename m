@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D890F01828
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D781F0182C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F101A6B0005; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
+	id 159786B0005; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E92E96B0089; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
+	id 137846B0089; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F196B008A; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
+	id 043A16B008A; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9F166B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6EAB45921D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:47:20 +0000 (UTC)
-X-FDA: 84515462640.01.02AF53C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D214640012
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:47:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtG5q1Km;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA8736B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:48:03 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9539E1A052B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:48:03 +0000 (UTC)
+X-FDA: 84515464446.11.1BAB4A2
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D46541C0008
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:48:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EoYBbDmK
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772797638;
+	s=arc-20220608; t=1772797682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vg3mWkOsCcwlQzS14ppgVVZ8A5ujChwfP+Nc14eW4E0=;
-	b=Tm291NLztXciedr2mUvDcMPH3ktkxmp+XQV7f3TuQ3qfVQA2+YrQpoFi5+xmuvgSSHZ550
-	CBdqtoBPKbtmPLXYUPZEQ+muMg/C95pbb6U+8n5yiqudUcvuQ5zX5Idn0UKikXitNMOMqd
-	0xXntkm4i5G1gKpn1IEhtg91Exb9i3I=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtG5q1Km;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797638; a=rsa-sha256;
+	bh=9Q1sENRTqUjIhGZLXP/WQo59Q+Ah+AXrTPRNuwNNsmU=;
+	b=oGpafD0NJ2NqzwyZihFZFdhgby0xqYfWpAO6aiNA4Xgp+z6QTotN5bqTAQstChstsMS0RM
+	2M6Lntl1nH+yiK+6E6LQuSYedPR1EnHC7OgqJ2DDQyOVnTFOJ4XoCrDhe5uZ34tih14FMi
+	995LpmnQ+6X2moXNKs1mpWkd33GTqkg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797682; a=rsa-sha256;
 	cv=none;
-	b=HZ4W6ucEtrvx0S88409+37t6KGMfe6OSNDjZtQv85vHS3zMdu4N7JhEHuECpiEwu/NvmHx
-	v8SlRV9t1zWcU+HyG0L9zga5FGIvpDNtiiY0n7OY6wZh9/CHW0FoJ55mpO9r0pPo0CIQKz
-	msIkEX2lyB3aZ+BR/H0rnOKskdZajNU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 62AFC60130;
-	Fri,  6 Mar 2026 11:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D7FC4CEF7;
-	Fri,  6 Mar 2026 11:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772797638;
-	bh=kbnOxVHTjFYd6MSQ8SErV2L7U0l7wedWRtqeP6pVGNM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jtG5q1Kmhn+PiJvu77IEI5k0ykpPF+SufD+T0RK3C7j6I7QQ17C2IGmuen1U8nYRm
-	 b3Lhk/JXIdAc3islBwH29Xocsb8+4tn+EgEzCkprsPUUeI3MhlnDRbPSlaFmukwOBt
-	 FZ+OHGYUaeW+7iZW9HG/+lHyzQAtXU3a2T+fnL6t3BDk0Bf6yEDJdpH0OacSpKnYFV
-	 t36vomE++uL7rxAt0adEDM7e8/jWJD1lahv/XAdrygKC0DVPPcaY2oCu9aWomez1kB
-	 eqtgTk93RVlAQZhy3V47DBGGtV3WtXS0aLYcKmRagjBld6svI18OkhcwPJSCIiUnbZ
-	 B0ddPMgsNh+Mw==
-Date: Fri, 6 Mar 2026 11:47:14 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Miquel =?utf-8?B?U2FiYXTDqSBTb2zDoA==?= <mssola@mssola.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: fix typo in the comment of mod_zone_state()
-Message-ID: <cfa8f6a0-bb8c-451e-87ac-7e37a277220c@lucifer.local>
-References: <20260219234407.3261196-1-mssola@mssola.com>
+	b=in8B9JuiPWpH5lN1WnvxrIRdsaSF31GMGPehPK6BW7x141UZnmvee5DBo6XgWV5mOeTJXX
+	Pu4yaUKLkvdhAAr4Xnoi13RM5t6lVzDsK6cKbdyWqyRPZOjfcmC+ElRokjs3TzMCMkdHHn
+	OjGR2vcmGTW3nU6Y6cwM4aO/gvDVOEI=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EoYBbDmK;
+	spf=none (imf21.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=9Q1sENRTqUjIhGZLXP/WQo59Q+Ah+AXrTPRNuwNNsmU=; b=EoYBbDmKpVh+CjgoUIt8Rpho2l
+	4sGdjLo/aGg1MHTH6/SmjJhxkRewYGq3Dl3/cXpGpkNZD1YxLOCaYEIxHahM1P9urnzKFJf+exqkr
+	bhBl2USUdXusi2Bd9XCwwskxouubnUxoNBPAJcsaNY9AEIXt4f5oYF83K0aSrabU5Yf1/7pP4wmCI
+	I9L8YyrdxfCpJny4znGpkhhJtkMdAiuSN9gCQ+djogo/jEEp64NXyL7fpVj4Qs1BzE8PyELP1tvBy
+	FDh3F6te+9zVOVPep/sP5jlrDusNYXT1U1PXh1nAuxVsktDssOLT0ZZw8kwhu7Uh+RWAZ+uWuQ0qX
+	wO2OkXDA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vyTen-00HTjc-2w; Fri, 06 Mar 2026 11:47:49 +0000
+Date: Fri, 6 Mar 2026 03:47:43 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
+	riel@surriel.com, SeongJae Park <sj@kernel.org>, kernel-team@meta.com
+Subject: Re: [PATCH v6 1/4] kho: add size parameter to kho_add_subtree()
+Message-ID: <aaq9J_rJXNiWzlXY@gmail.com>
+References: <20260127-kho-v6-0-56f9396681c2@debian.org>
+ <20260127-kho-v6-1-56f9396681c2@debian.org>
+ <2vxzjywszk9w.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260219234407.3261196-1-mssola@mssola.com>
-X-Stat-Signature: gumftqcijface7e9h7qytca7emd1e3xg
-X-Rspamd-Server: rspam09
+In-Reply-To: <2vxzjywszk9w.fsf@kernel.org>
+X-Debian-User: leitao
+X-Stat-Signature: 7qziu84gyiwrumnk4ysk3h5ay6341xk5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D214640012
-X-HE-Tag: 1772797638-963189
-X-HE-Meta: U2FsdGVkX1+7xosxTx9cG7OrgNGejMNJFXD16qR8JK3qwf8lI2tEzn6n1G/9N1mxUY8OnQcdIGxiP6UmJixKpw+zDF9rR2RpzJA7ueY0IHjSPkoygY5Pxnz71ctGYb7o5PcGpbzoBA7g+NbTE1oM0ClPLFp0v6KumehUuit6yWs9bS9Ia7wDnxKDB4bvv95Og2UNMUUR5bLU0yudo7KDZ8OQJIbpxELt1+YNIsyGIy+8tVPmbtUYwOMcfbsvqr3xpzs+67S9cGWB1TJvvnRVYmJeQH6FqfP8aT5u8TJ6P7pmhfLLkoOpshl5TGcwVbvARouFSh4BD/mJkCK9wWE12kbJPShzqAEw6xwxSRjQWsiiT+DtpqqwHzr0eMbNHDo2edgj/bmk/g9M+3NY5vcry8BLaNrt5AkKqU1RpPOvlRkh4KuWyWP2hqie/0BGw4XAl5Yzv33D2RmQgIs1WUy974oMHSTNgBh2/J4GMi5CiK4btVnn30PGDmeRk+5iTsa9mhp+5aImRye4mzTj/jc401t015a0/4J+oM/a3X1MAXB6Elq2PcF6vUrWABF2Jzo8r0Xn1hdlBRrCt7kizUDw9Q3eptblu16GZkMHCQroUfHmNcykbU2TGYfy7jRVxY+sYr4TwvnhqM3XamcWoYaGn/hrq+iX0AZp0QPHY8nmIsWvp6mYWSmcapQk9fIB8rg8ELajkkIfv79v7QjkKbTSOQbbb7jj1LuNJD2SfJglKd4/5SVV1H4jTyU/ZetJqxm+b0bA94dYw/DFcYabn7uBWRsKtKmSzd2Yn3m3QUHzL96Zt73Uz3kqiGfBkQdDm9kWK8Iup2p1cSUpc6LKtYTBS2pC2tZzZ3lHlsS8P0vcUQPUnYKQZ09BxZyjqQ2ttOg1a5aMAtwYCt+Jdbvcn0OXl3sP2J0e3ZRcwTyRZBd+Zv3f1JKsQlMOYfPZum9IVI7tNVJJcMZI/U7nTqyYpkA
- p933x4MN
- yL0Aj3GuT0pt/q2tUBPKS0f4LkkOaXYkKy2ZDLYsMdkLGLXfDOdqGrsuj7xqKZCuhsDY/WZHwEnd9yqTty6X9AgatD5MHoTvdWELteJK03SFe3Ki503JYDumWLp1Ma4UjiVGm8fbFsv5bIGvXOExuuAS7NAPgqeeU6zrBcIJGjE06MyWNwloEralVXpra6pp88FQZfGKI03yHO+UKp2yIOG6hvF2Ks8NVz20RrmtWS//ag3pLloSr/nZiB4DYeYOQcTHW4VRdm1frCFEBn24FXgU2hosV5WJXDypaPoCTBO2+RimfOR68AcdOsAYWvaT2G9v1jW26uQuXzEq7opblIbrO4scoISD6vZ487J8Z9hKF6oAmEwvwe+LSBw5tdGQMolwzHh6owIu6g1S25Nb9hWFUlg==
+X-Rspamd-Queue-Id: D46541C0008
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772797681-908261
+X-HE-Meta: U2FsdGVkX18uumdo5cXwkXxGKFEHPi5D5FSr1j3n4JNXPkXRbVsmjj+o/9hgmre+xAVCU7ozBtnYx97C9ZhroBKtTCHN05wNKbMvMxWgihrkEKfG3fOQsdEblCNg8OCcodNYrI+eUwxC7cp+c6oc1I5+BWPifnA5bHVHtEZZCgMfthZaniu4imigW5iA0CTD1X06O9nUZsvKUsztOrGE0DW/dRxAIJuTmThdnnHlWLw97yipd5Tq8LjYuX1k9FIRaXCDvSIKpbE5h+FwqXmHPl/rpH0KsaSeqZ9kkcf5XzFdlB/8JZ+c8b52Mz0OtRioBTOF4PwDbJ2F2YUOTGW8lug16qydHH11PnqMcyoC02p8tp/bOnBnpQck9D3kG1bSV7uYGzQxLzEMIK7WtppSMEzun6ceMbzD1MU3ir2rgvC/u/dsuGydPeGHZ/1hYVef16SqGR2Ck+IA8n5dRHmmI7rQyRFoRAiH8KsERXQuub9xxIP2N+bDPNWrVK7MLSnOq2rIBUsx2HXo5DKzGgDefu9uz7e1Rhj2U7IDxyxOleYgCDBZBfFjEbfDVEIX10gVsR7TSCC/+e0uTCSNoCj5iQsEUKXbjaWnacYc1UJLNmaKaEmyVTrlM/BYd58PRqZVixMVuhxGxONtW1c4yDANuUyu59V2sYz2FZb/taP2ZDz5NKEsAVMRaHAmgJAbHdEEYXrCied+ThzJ0fAm3zwJVZ8IQI2ugVPOLriehe/RIqDxBq8JTPdKoiZqjrbwEKjlqSHjraz4s66VKTUdWO5QcPvTZ5/UkFEUCcf8Sj8Anfx/HuG5XeIWcgRWbAum8Vi5Wh3uQioV6yr3sNkjO1DOnSUtrXI+imUk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,32 +93,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 20, 2026 at 12:44:07AM +0100, Miquel Sabaté Solà wrote:
-> Use the proper function name, followed by parenthesis as usual.
+Hello Pratyush,
+
+Apologies for the delayed response â€” I was on vacation and just got back.
+
+On Wed, Feb 04, 2026 at 02:54:35PM +0100, Pratyush Yadav wrote:
+> Hi Breno,
 >
-> Signed-off-by: Miquel Sabaté Solà <mssola@mssola.com>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  mm/vmstat.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On Tue, Jan 27 2026, Breno Leitao wrote:
 >
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 65de88cdf40e..f69225122768 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -547,7 +547,7 @@ EXPORT_SYMBOL(__dec_node_page_state);
->  #ifdef CONFIG_HAVE_CMPXCHG_LOCAL
->  /*
->   * If we have cmpxchg_local support then we do not need to incur the overhead
-> - * that comes with local_irq_save/restore if we use this_cpu_cmpxchg.
-> + * that comes with local_irq_save/restore if we use this_cpu_try_cmpxchg().
->   *
->   * mod_state() modifies the zone counter state through atomic per cpu
->   * operations.
-> --
-> 2.53.0
+> > kho_add_subtree() assumes the fdt argument is always an FDT and calls
+> > fdt_totalsize() on it in the debugfs code path. This assumption will
+> > break if a caller passes arbitrary data instead of an FDT.
+> >
+> > When CONFIG_KEXEC_HANDOVER_DEBUGFS is enabled, kho_debugfs_fdt_add()
+> > calls __kho_debugfs_fdt_add(), which executes:
+> >
+> >     f->wrapper.size = fdt_totalsize(fdt);
+> >
+> > Fix this by adding an explicit size parameter to kho_add_subtree() so
+> > callers specify the blob size. This allows subtrees to contain
+> > arbitrary data formats, not just FDTs. Update all callers:
+> >
+> >   - memblock.c: use fdt_totalsize(fdt)
+> >   - luo_core.c: use fdt_totalsize(fdt_out)
+> >   - test_kho.c: use fdt_totalsize()
+> >   - kexec_handover.c (root fdt): use fdt_totalsize(kho_out.fdt)
+> >
+> > Also update kho_in_debugfs_init() to compute sizes using fdt_totalsize()
+> > for the root and sub-FDTs it processes, since these are known to be
+> > actual FDT blobs.
+>
+> No, this doesn't seem right. The "fdt" field that kho_in_debugfs_init()
+> uses is the same "fdt" field where we put our non-FDT blobs. So I don't
+> see how these can be known to be actual FDTs. All this happened to work
+> because so far all users were FDT, but I bet it will break if you use
+> your blob here. Perhaps give it a try and see if I am understanding this
+> correctly?
+>
+> To be honest, I didn't think of this when I suggested you use the size
+> parameter. We have lost the size information, and it is hard for
+> kho_in_debugfs_init() to find out since it has no idea what the
+> underlying format is.
+>
+> One option is to have it in the KHO FDT, but I am not sure that is a
+> good idea. Adding to ABI for debug feature sounds odd (not that I am
+> completely against it, it just feels off).
+>
+> Another would be to give users a hook to populate the blobs when they
+> call kho_retrieve_subtree(), so they can figure out how large the blob
+> needs to be. This has another benefit: once we move away from FDT, it
+> makes little sense to dump the blob since userspace won't have a way to
+> parse it. Even with FDT, userspace still can't parse everything. For
+> example, say the FDT has a reference to a struct kho_vmalloc. You'd get
+> a pointer to the head of the list, but you would have no way of knowing
+> what is inside the vmalloc buffer. This has the downside of not being
+> able to show anything if the subsystem never calls
+> kho_retrieve_subtree().
+>
+> Unfortunately I don't have much time this week to dive deeper into this.
+> These are only things off the top of my head and I haven't thought too
+> deeply, so please don't take them as strong suggestions. It would be
+> great if you can think a bit more about the problem and come up with a
+> recommendation?
+>
+> I will try to get back to this series in the next 1-2 weeks and
+> hopefully find some way to make progress.
+>
+> I skimmed the rest of the patches and they all LGTM at a high level.
+
+I went with storing the size in the KHO FDT. The addition is small â€” a
+"blob-size" u64 property per subnode â€” and I think it's warranted: this is
+intrinsic metadata about the blob rather than a purely debug-specific artifact.
+
+It also rounds out the API nicely. I extended kho_retrieve_subtree() with an
+optional size_t *size output parameter so callers can retrieve the blob size
+without needing to understand the underlying format.
+
+I'll send a new version soon. That said, the patchset has been growing
+considerably, so if necessary I can defer reworking this infrastructure to
+follow-up patches and get the kexec-metadata patches later.
+
+Thanks for the review,
+--breno
 
