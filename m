@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1719FCB61C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7802FFCB622
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:44:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B57A6B0095; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
+	id 4DA746B0096; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6629B6B009D; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
+	id 488706B0098; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58FFA6B009E; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
+	id 3B4AF6B0099; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 47CE16B0095
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E0CC235A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:28:27 +0000 (UTC)
-X-FDA: 84516171054.23.C398E5D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0FB6212000C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:28:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CFJJubN2;
-	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 295C26B0096
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D35E51602BF
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:12 +0000 (UTC)
+X-FDA: 84516210744.13.ED5FBDD
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 05EEA4000F
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nbpPjw4u
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772814505;
+	s=arc-20220608; t=1772815451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IcWzAUhUQsNspCv6GqG4MtP9jZ6m38H8CKI6GAuV6PQ=;
-	b=G6Ea3YH4YwSsJ+9dz/vI19MQy0bPx5w/aqYHkOBz0hJJP9Frr5Rab/RZVb4Xxhz4j14+L2
-	XdC1ujxvxqp84hMQhQjfEL1xiJ5/XlJIT2ufmvg4JpkJpnl3431NQ/WIuryfKGJ+5NEtoP
-	yb24vtccZdmKtCvf1ghsDckNfpCgsoo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CFJJubN2;
-	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772814505; a=rsa-sha256;
+	bh=FQVieUAaotG/Vwy8hL1CcO19BxJghydmXC5ROajNp9s=;
+	b=oPMFftBfW/KvJsP7qPGxOAPQ9TaYIrN1X4RoondWnSq7gLQ5lMh5ia+J1xMMO4BeGobUXs
+	mYZY4JhBH8gXeixViscaMtb113d/DU3YWr5IzcUskJsDnm+TkZUr7x3fe9PnALaAgGh1gt
+	laBxZOiqsxEOOBLP6MQ2rfZBUY0AxL0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772815451; a=rsa-sha256;
 	cv=none;
-	b=oSG+LIr+JvN73yhiBwGDM3HJfuRUzeYkIVlmnYkSeHlU094bYlu0essWFRNgoJzkaIl4zr
-	v3amDjqj1mx6iKHftx79dSwycatvLCo+ncbFwcqVdTVEOcQU4s6yk6EJZUER9cjFw90Oxa
-	gPfIzHl99PJ36c3HuO2qOC4wpNtZaKI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IcWzAUhUQsNspCv6GqG4MtP9jZ6m38H8CKI6GAuV6PQ=; b=CFJJubN2q+3CnInjWYPhV8zU28
-	mPjm1wr/eqieb7/M3uozkIsZRuMXZJ9JNU78GCm5o6ssr/BFYYP1TW9LWNIO4wOiWbxQlEXwZ2n2t
-	WA6wGJ7RDsGhz8A36cS8svTVNiWOGMetYU/ZbSSOXMbr6b4AaaPp4phkxxn5PeHG4F61wI2znjgGU
-	r+l1fjV3WuBSfKJ/PexXiufIYHLJDXQjvs1j/yl1K3hugCpX5Kx2CZKONDqlUkKlXzwAHqJ4iM8EZ
-	H59qpDHTn2g46K5bxD9n/mbH/DvhOvsG7RHpNJhbrVfgRiZuaoqAfqY1S1CxIDvdqcx+LYNizGAlU
-	yDjezxzg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vyY2F-0000000GzX5-2dMe;
-	Fri, 06 Mar 2026 16:28:19 +0000
-Date: Fri, 6 Mar 2026 16:28:19 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Chris J Arges <carges@cloudflare.com>, akpm@linux-foundation.org,
-	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com
-Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
- page cache lookups
-Message-ID: <aasAo8qRCV9XSuax@casper.infradead.org>
-References: <20260305183438.1062312-1-carges@cloudflare.com>
- <20260305183438.1062312-2-carges@cloudflare.com>
- <aanYdvdJVG6f5WL2@casper.infradead.org>
- <aarVMrFptdXhHsX1@thinkstation>
+	b=1NPP2smu9r1sLWEgX++pHXZ6lID/BhY4WOgY+iMOyoEvqY046sTSMeDcIplyleMdqocnCX
+	t5H1ZczBxfx0FgF3P+kE5pAnYR+ThviLOlvRnxPMV6Keoqi6lMGjMT8ADaZb0qj75rKO7Q
+	iSN4FxoRrP/GoC3u5SH758eO/7kOTK4=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nbpPjw4u;
+	dmarc=none;
+	spf=none (imf12.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=FQVieUAaotG/Vwy8hL1CcO19BxJghydmXC5ROajNp9s=; b=nbpPjw4uWRr0rX+68AEmJTYihB
+	jDoXB56NrOxP3UyoKmBu/zDMDzPyaTY+x7vKVgOG03OS9fkIf5SJK+TTwQwfeEhTCbKUpwYfaSVcf
+	3LtmAytssBjwWp+LOvKM0ZykTb84ERKP1N4Zf5o1l2ygVUffEhIeX7iX+luS29s6d0YPLw0PbWbzN
+	PM8mCHVF/tnLIGkU09IHYqRkjHs96LLAJVhWzJvkxflKHIRasSDruhWNSUIx873U3NKZh8Z8UYmYh
+	7fxxk0Z3+a5FQNlPHNaqLaIeKhKUU5M+18O22YN07/1URQOS8Xixal2+6Zk3qM5S/aVQ/drBl9dJG
+	WkRhnjbQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vyYHI-0002ZQ-6T; Fri, 06 Mar 2026 16:43:52 +0000
+Date: Fri, 6 Mar 2026 08:43:45 -0800
+From: Breno Leitao <leitao@debian.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 2/3] mm: huge_memory: refactor anon_enabled_store()
+ with change_anon_orders()
+Message-ID: <aasAU-7yRunywKmt@gmail.com>
+References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
+ <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
+ <68156cf9-cf97-4435-b979-c2ab0d6a97b1@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aarVMrFptdXhHsX1@thinkstation>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0FB6212000C
-X-Stat-Signature: 5xgrtyxdn5tuikdu6gs8i61gcpg3ungc
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <68156cf9-cf97-4435-b979-c2ab0d6a97b1@lucifer.local>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 05EEA4000F
+X-Stat-Signature: zwcakujsyqb9oybmoaf8qzhxueh9aime
 X-Rspam-User: 
-X-HE-Tag: 1772814504-286137
-X-HE-Meta: U2FsdGVkX1/oyBJ/4+sLSFHbsu7v50X1XsvavXJA+Uldb64Tx2VAURUbVr0lyVAyA0Kuqt3YKWziGu90wcwCN4ndS2r5o/dtKuGQro61I9bmPg/fm6zhhDTflX/swcQeKhaucE4/I3BAIWdViWeUqMEqFZm8tQkv46GjdEiCsBRghVyROYPGIiLUkWS10DrDyRMxo3e54Gzuay3isuu5uuJQsFGEw4sU4wrHRTt13WzV2+g9ndWBiX4LCF/Sgt1kMS1gLjVACRcVpZC3q9BnC7T5O2wbr7A8Bz4826Qgk3OCiZDHPEn8EbAFVaUNJniN13kOROfnjgXnC8qQ8s4yqGDemTgOl/U5uhkApOqktKMSE+tYHTfXileChix5ZDGFVO3MhovaPgWiRyIu1VnketZyQijbl2Q9nrWEiOgbM2NYUx5s+MdS5v85CzwYuj7eyP5gTOETcm8BRDx4xTTIpOjO2+ocABkDsiNBQsfpAarSmcMlD6UfLtsBD+/V/oUYwJOqv83GrYrJinJbIfsySEjxtYz840pblw2ANLodZxwKgzxxhLsSfCzTRhV/ZXHBRd/gyk7RkN5v/fknExvpiLQn4eeYjcnLQhyO9FpDS/7enpqY5HIrRT+J/+OP+OI9N6An5EdRS8zlXpqnalpvfI+r4z/u43bwjlyXKiQrPIVwHyENSmy7OnwSeuToaoB0cKMz9BGRlbfTDroVxSF/9s6Zk7o+q/aYc8AgMOrPVTB/ubOeqzPFJBocozaeSQANjtPli+rHYPkY78KVdMA11aLKtryNPqPtq75Q6TJ8befhwwL6yBVZKKbWrykdgOaacNxE8+c9mB6L9fDR8GjmxodZaEeCbGADZQ5anp2+BWjmzXWqP3m5C9qWeKKHXmglYJALPLPuwyP8gJgsAOmr0ZGUZIdbZ7KAPPlQtwbBzFIoy8Javsl9Z5dnwUxw169FCcv2hk/hfwLTZ6wMLRU
- pzYYI1P2
- SKcKRAnvX8lqP8hHim1zdAKKgystHV7E0CR3Bvv9u3pSLyykH8zihtOsusc31zpa0rlAo2SJFPMQd02Ry6Ijfpjgc40TXg0CuulyiFny/bXnfwYVcgT1Hmcpv13267pBArhL82tXt3eNVP8T1mGNTNW3lZPQ3b9ra81JC2sZgUGwZvPz3fWMRHPT+r4AG+rPGIT4sf2I8+i+AylIcKXFW0wlj+1q8X5PCV2XVLPGXR0USwDo5clKxrE5hhA==
+X-HE-Tag: 1772815450-112314
+X-HE-Meta: U2FsdGVkX1+vA5hN1qSlHF4JTZJB4LxDTJ8Zsq1jR6Fljq+FMtTYSiToDoEYfrxHDLKWhhQ3LUKTperP9mK9L65hVjV0nz/U6D2bHKGw6O3wCJftWR/O9QpKftL8mU8+RfMtHDZuydcJZdf6YazEYUeB7kQl26pwfOmm0p91jm1ikxT/+lqXRp36AIytOO96Bb2jel8S7UIVK920BYiPkrAG+5gtLfIJ2dQq6772NVN18kWzLRmO4/1Sdcr+IZf1DHeQefs2ZbjptLvh/9rWj9jJ8hkfWa1uoRwQxRtTTf6NnXzOk6e1LZV7bPAByhejXRtIwTtBzqP3lsz6bT6WhC5FAtTcLpm9uAmhzgJy0eBduEVAzM1ftdEzcZscZEu1fNwCCS33zaNVN4bDbRlEZ/NnXgi+6YB3GrF7u0JYogWTwpaXEFxin+Z30ycciWd3kQc1TsI6SfmPbFXpZ6Yu6NXxU9oZN0UbZHoeDFlSf24sWEF705nSYuoieP0YgfGw4hIpdVRtpAvnayj3PsR5/LyOLWOhRohGj0lBXZPn2E6PDnUfHfVwKwXU5PxDnytXwjePL++oEbBSXNv42F3BuGBRvBnrzkC6xNy8fNEC/OunT4bW/sTL8mO6Xpa7JSylwcybWGrbcncCB+kddNxL8dQHVkuGoxRFbgV1C89bNoC3sNI75fuBio30fzrJ4BtHI9hXY7+Cbp/lkMFO30u957qefsfIfqFTB0hv7m6a5qRQ8h54ssHxCRvURWt43oABXpDSTvq2WvQBPQyQmaDuEwE2jSskRs+CzZrd8TLZ2I51EOWq55td1mW/amQiAaO79jx4gVr7JmY2mtciGat86PAq9ScaBzHZBmLineW3ic2pTweUYH1hCCNu8/HxojRDuevOfvhWCkML4dQmzShpH/Wgg8qHWlelwljhMVVfpccLZrcLsg22MzEQoxsJRwl9w7TYESeAfHJ2C6kIXBY
+ T8NIUzsh
+ 65Wv+0AgO2tg2rSU5D+U3NL5IaFQ0alPC+n2KiGQC+yoFJM8o8qMSap57eMxL9bJFT/sAupSkGW5ee1uR5DRpjRcoiXTF+sC0nySCPpYharOrWFxYFiA79EZ8fTir6M914PpjsFcjy9ASbj+fP/RwRO+asqwWLpVqpSzqlsl01Y9Jr7xliYLzKCGaS33iVIPZtjV7SgftnmZjyXgS2vsUCgomeI4/z04oeh4s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,70 +101,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 02:13:26PM +0000, Kiryl Shutsemau wrote:
-> On Thu, Mar 05, 2026 at 07:24:38PM +0000, Matthew Wilcox wrote:
-> > folio_split() needs to be sure that it's the only one holding a reference
-> > to the folio.  To that end, it calculates the expected refcount of the
-> > folio, and freezes it (sets the refcount to 0 if the refcount is the
-> > expected value).  Once filemap_get_entry() has incremented the refcount,
-> > freezing will fail.
-> > 
-> > But of course, we can race.  filemap_get_entry() can load a folio first,
-> > the entire folio_split can happen, then it calls folio_try_get() and
-> > succeeds, but it no longer covers the index we were looking for.  That's
-> > what the xas_reload() is trying to prevent -- if the index is for a
-> > folio which has changed, then the xas_reload() should come back with a
-> > different folio and we goto repeat.
-> > 
-> > So how did we get through this with a reference to the wrong folio?
-> 
-> What would xas_reload() return if we raced with split and index pointed
-> to a tail page before the split?
-> 
-> Wouldn't it return the folio that was a head and check will pass?
+On Fri, Mar 06, 2026 at 11:32:44AM +0000, Lorenzo Stoakes (Oracle) wrote:
+> On Thu, Mar 05, 2026 at 06:04:54AM -0800, Breno Leitao wrote:
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+>
+> This is nice, you've improved my idea :)
 
-It's not supposed to return the head in this case.  But, check the code:
+Thanks! Your idea was a good starting point, and digging deeper led me to
+sysfs_match_string(), which I wasn't familiar with before — it turned out to
+be exactly what we needed here.
 
-        if (!node)
-                return xa_head(xas->xa);
-        if (IS_ENABLED(CONFIG_XARRAY_MULTI)) {
-                offset = (xas->xa_index >> node->shift) & XA_CHUNK_MASK;
-                entry = xa_entry(xas->xa, node, offset);
-                if (!xa_is_sibling(entry))
-                        return entry;
-                offset = xa_to_sibling(entry);
-        }
-        return xa_entry(xas->xa, node, offset);
+Having the modes in anon_enabled_mode_strings[] also opens the door to further
+simplification. I haven't thought it through completely yet, but I suspect we
+could consolidate quite a few of the _store()/_show() helpers as a follow-up.
 
-(obviously CONFIG_XARRAY_MULTI is enabled)
+> I know you change another instance of this in 3/3, but I wonder if there are
+> other cases like this in the THP code we can fixup too?
 
-!node is almost certainly not true -- that's only the case if there's a
-single entry at offset 0, and we're talking about a situation where we
-have a large folio.
+Yes, there are several other candidates — defrag_store, the ones Baolin Wang
+reported, shmem_enabled_store(), and thpsize_shmem_enabled_store() among them.
 
-I think we have two cases to consider; one where we've allocated a new
-node because we split an entry from order >=6 to order <6, and one where
-we just split an entry that stays at the same level in the tree.
-
-So let's say we're looking up an entry at index 1499 and first we got
-a folio that is at index 1024 order 9.  So first, let's look at what
-happens if it's split into two order-8 folios.  We get a reference on the
-first one, then we calculate offset as ((1499 >> 6) & 63) which is 23.
-Unless folio splitting is buggy, the original folio is in slot 16 and
-has sibling entries in 17,18,19 and the new folio is in slot 20 and has
-sibling entries in 21,22,23.  So we should find a sibling entry in slot
-23 that points to 20, then return the new folio in slot 20 which would
-mismatch the old folio that we got a refcount on.
-
-Then let's consider what happens if we split the index at 1499 into an
-order-0 folio.  folio split allocated a new node and put it at offset 23
-(and populated the new node, but we don't need to be concerned with that
-here).  This time the lookup finds the new node and actually returns the
-node instead of a folio.  But that's OK, because we'ree just checking
-for pointer equality, and there's no way this node compares equal to
-any folio we found (not least because it has a low bit set to indicate
-this is a node and not a pointer).  So again the pointer equality check
-fails and we drop the speculative refcount we obtained and retry the loop.
-
-Have I missed something?  Maybe a memory ordering problem?
+I'd prefer to address those in a separate patch series once this one lands,
+if that works for everyone.
 
