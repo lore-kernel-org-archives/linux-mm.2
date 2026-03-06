@@ -4,96 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 276A0F01821
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1043F01825
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:30:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90E696B0005; Fri,  6 Mar 2026 05:30:45 -0500 (EST)
+	id 257AC6B0089; Fri,  6 Mar 2026 05:30:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B82F6B0089; Fri,  6 Mar 2026 05:30:45 -0500 (EST)
+	id 22F356B008C; Fri,  6 Mar 2026 05:30:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E5DC6B008C; Fri,  6 Mar 2026 05:30:45 -0500 (EST)
+	id 089586B0092; Fri,  6 Mar 2026 05:30:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 713B86B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:30:45 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 17860160475
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:30:45 +0000 (UTC)
-X-FDA: 84515269650.12.1D84C6E
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6289AA001B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:30:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ajbmjid4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EDCF86B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:30:46 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B259913ADAB
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:30:46 +0000 (UTC)
+X-FDA: 84515269692.08.1DF852F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6CFD54000E
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:30:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LftkTYlB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=632EUAM7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LftkTYlB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=632EUAM7;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772793043;
+	s=arc-20220608; t=1772793044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ypir9ACeo9fn0O3giSko3MK+rMH4jE3BtswSlrDHXBE=;
-	b=ZYg/NIxu+zNZCHaR+wHJCHgsq1XJS4RbgkTNt8udPjptuIy96X1eN0Sv0ngHWvxyiLDInH
-	dBw9MuZDZmNMPTYaAWDa12Cm/oGRnzWUtuOAUKMztHtNnJS1MO2NELWoAUPP5HrHmUPk6n
-	zqyd7QBGE0LrvaeilTOG20cVbKs0l24=
+	bh=vAQr6SkqV3zjssVR9rZd0gIGba+OVvVWyTtFYxHG1Tw=;
+	b=RWNA8Yc0G7fosFCQh2IZx26Y25vB5TjcsF7XkkLgfwGU4x4/F4Be6I7HnlTAhRj5IpbViK
+	KO6XcISJrS0FPCEMcBsug4iUAhMtJny1PjdWpp0xlKrhr86r8wVs1UpAbSlhjPytmQMnG8
+	dHRNJthflXTiSSOG2jkRjznaQbyEdg0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ajbmjid4;
-	spf=none (imf15.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772793043; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LftkTYlB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=632EUAM7;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LftkTYlB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=632EUAM7;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772793044; a=rsa-sha256;
 	cv=none;
-	b=Ihy4rDvP+TAhEz7sCAItqi2my6CO2Jvp6t91IIskDZzRwF6vT9iB9NCpVoUnqv0eY4Pu2k
-	nqn0xKgQ68xMdCvMGn7yk65Hps/9a/PjSKXwh7WovFrRHj6m0ngacy3z8h5Dod/wqsZvSB
-	uSCTOula3av73+O3ZfdbDxy3yDNzfHc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=ypir9ACeo9fn0O3giSko3MK+rMH4jE3BtswSlrDHXBE=; b=Ajbmjid4ZiOJjJUGjMlYBw310B
-	1GkbvHzGSBbVjnipO1Eg5hFp4eexPzSkC/zhnX4VqOWT6TkvVNscl7zvBZQP3z9U295jXQuzLonjp
-	WuEDDU+tR+TT0a1ozpA4MeEpZFLgvZo98PdW+oelam21K5+UYq4XiEYH9b2wEBsnLeR7RTdrKOqgB
-	Twoe5PnwQ+Gv3K5IZfadHefBWsDq0cS7t9xFj9XTDLYOB/W1Ts83nBkKd6n4I97dlSgwsmjYNWCgl
-	ktr7lnJgt9DadaOGOPwQfSg7FbCK4uqwR5qOKQH4ohXJnOH/O/AeBcnW85fVXOaWSF8IskVOZ1NFW
-	9aschnKw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vySRw-00HR95-Dq; Fri, 06 Mar 2026 10:30:28 +0000
-Date: Fri, 6 Mar 2026 02:30:22 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
+	b=zBlMHhGgYDyHKFcfujMZwT1GJD2ZvAmNXdxpTbjhbPmb15y2xCTZMFIVXKEbPTv9AQzgXp
+	dcM+AvASODEmNMTIVbFKf4oc1FsO09E0UI79kN2szIGc3qJNW6a7mOMe/XUoWiTkiN9W/Y
+	OgSpVJZeplEgwOUX+jN4+lIyXaUI8KE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 875923FA7A;
+	Fri,  6 Mar 2026 10:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772793042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vAQr6SkqV3zjssVR9rZd0gIGba+OVvVWyTtFYxHG1Tw=;
+	b=LftkTYlB+zrmExZCM0xNBcZqm2VBg2WGKqZdbGMSrzXN1qHzs8jIT7z9P1neGQNTtOxaS3
+	49tsqrFGpbUs1Bkcp3+4aYxaZ/oFlZbu8N5kZJVAVVOKRJIbNWHOmefLgDzGEG5KtChk+i
+	udYkR76rHLSYTOgXKupZhCjazdHoYc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772793042;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vAQr6SkqV3zjssVR9rZd0gIGba+OVvVWyTtFYxHG1Tw=;
+	b=632EUAM7/SbLKijbGlqOzTmYmkiz+gXT9KFcaSSq/c1yD7DQL4ilODdzxNyo+UYamNPbrK
+	aDxOVrBsk59Dp/Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772793042; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vAQr6SkqV3zjssVR9rZd0gIGba+OVvVWyTtFYxHG1Tw=;
+	b=LftkTYlB+zrmExZCM0xNBcZqm2VBg2WGKqZdbGMSrzXN1qHzs8jIT7z9P1neGQNTtOxaS3
+	49tsqrFGpbUs1Bkcp3+4aYxaZ/oFlZbu8N5kZJVAVVOKRJIbNWHOmefLgDzGEG5KtChk+i
+	udYkR76rHLSYTOgXKupZhCjazdHoYc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772793042;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vAQr6SkqV3zjssVR9rZd0gIGba+OVvVWyTtFYxHG1Tw=;
+	b=632EUAM7/SbLKijbGlqOzTmYmkiz+gXT9KFcaSSq/c1yD7DQL4ilODdzxNyo+UYamNPbrK
+	aDxOVrBsk59Dp/Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C4A063EA75;
+	Fri,  6 Mar 2026 10:30:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WNGxLNCsqmn+NQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 06 Mar 2026 10:30:40 +0000
+Date: Fri, 6 Mar 2026 10:30:39 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 2/3] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
-Message-ID: <aaqr6n3X-KRP_tTp@gmail.com>
-References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
- <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
- <8b238664-4375-413c-a8cc-105d98430362@linux.alibaba.com>
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
+Message-ID: <nn6xirm5sa3mf63gcq5mlthk3nrrdig6zpv2mj4vqnsl27nsxe@2si2t2l6pgex>
+References: <cover.1772206930.git.d@ilvokhin.com>
+ <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8b238664-4375-413c-a8cc-105d98430362@linux.alibaba.com>
-X-Debian-User: leitao
-X-Stat-Signature: wbbcftrayk6cg6nrajnma5ncd7wbncz4
-X-Rspamd-Server: rspam09
+In-Reply-To: <d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6CFD54000E
+X-Stat-Signature: tkp7ix1bq6me4ofwmba3crz98wg5tbrf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6289AA001B
-X-HE-Tag: 1772793043-64433
-X-HE-Meta: U2FsdGVkX1/Fs9nvEo7EWYZd+olywoa+THtooTYSgTnctkRBCA3EtGYl+nTlG+wXn93bthIVrPuULOudUs9bvvQRasucmuzWZl62DTDWXdPkKdqxL1bKhLYVhSn8N108a6lRxtFmRnpHW9sc/bNXtHG0S9xNiv5CMOaHBcn/hderJwDz4+lgEepzcDBSPm+dl1M7RSFJIZ1lYHpYlYMLJo5iRwCLRyLIWiZ/50Wi0ekPsUNBY9Rb2K5KGG+kUPw7ogOBomeDCBKv0K2KI/B4bN+DNA0elrN9mKUinBUv14LONUuTVOBP1OQ9jvX1WHREnPI/ruHThZGKhbU7vux1B0R3tMaspR0XCnJt6jfXN071x0yfgUGz+Pl4GKAvHl588nc1mV2pV0vKf1L3N0Jydtecjp3H5wCkeYyaOlTHA0/fT8p2GL1UvEJAiwflkTMSsM1nnjy0z9aJq6ACGTqQ/FG1GVGsf/LZhbEHn7lEGRCZTyCv30gm4i3+IBKzq4rOnykcVX2/vshrni2uzYzv6RNlFYz2PcVBKqi3FiTixedQGtks/Vd2SLjq1boIvmGOOJb5J1hmhuEow5QURjZ+KgRIWi4vZ92zNbIZX56GNIMTBJzBbbKgjiyj/wu5dARSTu0OipFlnBDtnpg66I5/9WYOpXndnxnCapJeXmWQMQ+2ZA+QjkPpkfmeBx3Aig/RyWrAMpFh5XO48YwWt9uHtiuKe+n31Yel4ZOp/MNqLWCdrEZuW5YwbUZNB+VpWMoXVu4tc0TVTM5TAF+sOizy8XVLK3zYI+H+nD9JV6hlbp3Fi07Yq3sNONt2khya/UcObEMvpWs7v8cJx8S5Cc+QAZ4gpr6qwGjOqBUU50QXpFiG6YOHIL0GyS6qn/JJO2gEvyflQ5GzOIO1Ci3QRx192QiHP7wIZZpRhUknEITf/d5w4k5SbVbuNpSYBbsDCrd8iumHXe7o30uE8+/NRCS
- vmmke0e0
- 7YvunoT8glFd51d+9SL/7/ibr2XIwo/yeF/UXsQkMaMOuk59uID0MT9wgc5peFBJCTuj1PpNMRajwRybw7ptiUo6KNFtR0vDuFRGyk5qa+9NQzTrcyVCUGYExE+5KzrPmFL9B8T+OyxjaswMuoFDtygFCTWuWoHJsFvBsKBRZbVT7LRi9p4Twcxj3ohzwjiN9P4hJNFEhNne/TsA=
+X-HE-Tag: 1772793044-536752
+X-HE-Meta: U2FsdGVkX1+WRTT3dbVo/N5CJKnQUGvJvwQgY0EbfelnuUhsIurpKSw1DOQIQ3EKwbCxZjHEGbKlhgyYU7NQKMN8EZNgtxosFQOfgjDLuIER9EtDmLK5ehhnZrp1VCkG6ZQLaSc65fVIByMpZ8EkOMMI9d6QFmrJzKOJl7Z4bP8crlype6tT5MV4WmLwKh6I246Z5e0UOnt6ICi97Gv+mNtbKMIRrf+WYOVvP6h5khaRe4wdpX7oQ6L4YLa1mnmQl/vEQDW0JDN+YiP9+qh0h4GBCIZs4rSFqd7vdGjI/+uUh0eQ7cpN9xHlLGZlutOuGIataeTa9PlmJPFl29LNhQl4IcPNEfQwhzxu4Cn4MvAkpkuRIX0YFrjkf3BfA8hJ1kKv2dBDwisUbGy+us3l3Pfzl/MwjkxqlNLpaurYTZ1juilQe9/A+fe6BsnY6WuZZ/YK/mbsfxoS8cC01CQU842LI7/SN5A7j0amAJ8DtxtW/f9E3fgFDEoeSwzB9hzicxdpnmw4kwd0kSESNGLSq9PYKXEe81bKPyVjscFvXjNHfG3lXUVdwnfVry4YuSPguNNwwRjOVQdBDWiiugKAucEAe2A3ZR8ttl7NFPgW1tE+3/CpN1HeObJ3zMBxdr0XRCP79oB011t5csvIwYe+8uNb0SRnJKlwwGIzgDVrNp71/ptZH6q/ra7TLMs/ZTsc/JETpTDdpo7WHmu7Gg4M8DREwRZCmU5AJBBBV4RWuaGDtD8OweRiKRmD+18BTRKfIh8ZHwuBn2BwZSqejEWeSnm82frjm5gyJbnERBr8ypyjZ5rLYZbqVnP4a5qVGdKcZOK+LiAkq60fXCbrjH0IS+gbmhDG1ab+FsMlnXKgUIwj+MSOeHwJ7OQLk/ECJACchbPUbjqNdIWAz6bWkHBTIb8kdtcfzjvx2uyZ4qMdcJIXYnPK9lfloI0R1l+rehLXL1FPl0xEqMU6nIdB+Pu
+ 1sDNSoaj
+ 1TV/if+7DMZ+NiLAJfQA1hMP93HOpqwSznnUQPvHsrDCLpLwr/38+v7JPhtZ9MshPqr8NBniADYwvlkwri6CBWKupvrr9hEXBFJowG52QHVUkdKLVxMix97iPHjaerpLRkXXIA3fAyZ2rsN9p/u++FzNTpX/TpjPk5gFBfd2dLWHEpt1/grRJJXitEvvsDZz98WFDdnfOPcezUUdCPbg1tZaO+R8XST64KxQHxZtx9V/i22Ub20DNZ91jILEysEoeJnimN4JU3DeF/kvzmaWvY71kLavIlPxYEsS5TUmHZyEduNaKfMCcKA+/y3v1tFKving42jGybqdr2m3E+76ETObV0241QGK1vXWojVhAeVrFWrmUI+W/Xbze1H0DHouJJvhHOUspcSh+lUTD4LGx3ZwksAAaBqZWPgGvAhza3gK1rHPmMD4K8ernPGnL16ZNyxU9ieIbxwuXmxGgVv2u8mNWK/zI0MpnWSh4OpMho1CrG9kfvJg0zc+HvcccdLHAxkC71KOMf5j4J64=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,43 +142,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 02:07:50PM +0800, Baolin Wang wrote:
-> > +	mode = sysfs_match_string(enabled_mode_strings, buf);
-> > +	if (mode < 0)
-> > +		return -EINVAL;
-> > -	if (ret > 0) {
-> > -		int err;
-> > +	if (change_anon_orders(order, mode)) {
-> > +		int err = start_stop_khugepaged();
->
-> Thanks for the cleanup, and the code looks better.
->
-> > -		err = start_stop_khugepaged();
-> >   		if (err)
-> > -			ret = err;
-> > +			return err;
-> > +	} else {
-> > +		/*
-> > +		 * Recalculate watermarks even when the mode didn't
-> > +		 * change, as the previous code always called
-> > +		 * start_stop_khugepaged() which does this internally.
-> > +		 */
-> > +		set_recommended_min_free_kbytes();
->
-> However, this won't fix your issue. You will still get lots of warning
-> messages even if no hugepage options are changed.
+On Fri, Feb 27, 2026 at 04:00:26PM +0000, Dmitry Ilvokhin wrote:
+> This intentionally breaks direct users of zone->lock at compile time so
+> all call sites are converted to the zone lock wrappers. Without the
+> rename, present and future out-of-tree code could continue using
+> spin_lock(&zone->lock) and bypass the wrappers and tracing
+> infrastructure.
+> 
+> No functional change intended.
+> 
+> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Acked-by: SeongJae Park <sj@kernel.org>
+> ---
+>  include/linux/mmzone.h      |  7 +++++--
+>  include/linux/mmzone_lock.h | 12 ++++++------
+>  mm/compaction.c             |  4 ++--
+>  mm/internal.h               |  2 +-
+>  mm/page_alloc.c             | 16 ++++++++--------
+>  mm/page_isolation.c         |  4 ++--
+>  mm/page_owner.c             |  2 +-
+>  7 files changed, 25 insertions(+), 22 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 3e51190a55e4..32bca655fce5 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1009,8 +1009,11 @@ struct zone {
+>  	/* zone flags, see below */
+>  	unsigned long		flags;
+>  
+> -	/* Primarily protects free_area */
+> -	spinlock_t		lock;
+> +	/*
+> +	 * Primarily protects free_area. Should be accessed via zone_lock_*
+> +	 * helpers.
+> +	 */
+> +	spinlock_t		_lock;
 
-Correct — this was part of the earlier discussion, where the suggestion
-was to retain the set_recommended_min_free_kbytes() call even when it
-is a no-op.
+I really don't like this uglification.
+Suggestion:
+	spinlock_t __private	lock;
 
-As for the warnings, I see a few possible approaches:
+>  
+>  	/* Pages to be freed when next trylock succeeds */
+>  	struct llist_head	trylock_free_pages;
+> diff --git a/include/linux/mmzone_lock.h b/include/linux/mmzone_lock.h
+> index a1cfba8408d6..62e34d500078 100644
+> --- a/include/linux/mmzone_lock.h
+> +++ b/include/linux/mmzone_lock.h
+> @@ -7,32 +7,32 @@
+>  
+>  static inline void zone_lock_init(struct zone *zone)
+>  {
+> -	spin_lock_init(&zone->lock);
 
- * Remove them entirely — are they providing any real value?
- * Apply rate limiting to reduce the noise
- * Something else?
+and then ACCESS_PRIVATE() all over these helpers. This will not make a
+difference to the compiler, but it will work with sparse.
 
-Thanks for bringing this up,
---breno
+It's not that I don't understand what you're doing, but we're going to need
+to look to this code and refer to this code 20 years from now, I would rather
+not refer to zone->_lock :)
 
+-- 
+Pedro
 
