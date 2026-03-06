@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7802FFCB622
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:44:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55826FCB621
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DA746B0096; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
+	id AAD656B0099; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 488706B0098; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
+	id A40E06B009D; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B4AF6B0099; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
+	id 85BC66B009E; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 295C26B0096
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:44:13 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F8386B0099
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
 Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D35E51602BF
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:12 +0000 (UTC)
-X-FDA: 84516210744.13.ED5FBDD
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 05EEA4000F
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nbpPjw4u
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08221BA376
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:14 +0000 (UTC)
+X-FDA: 84516210828.13.C41E9F3
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CD8F4180006
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=HJoc8+If;
+	spf=pass (imf24.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772815451;
+	s=arc-20220608; t=1772815452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQVieUAaotG/Vwy8hL1CcO19BxJghydmXC5ROajNp9s=;
-	b=oPMFftBfW/KvJsP7qPGxOAPQ9TaYIrN1X4RoondWnSq7gLQ5lMh5ia+J1xMMO4BeGobUXs
-	mYZY4JhBH8gXeixViscaMtb113d/DU3YWr5IzcUskJsDnm+TkZUr7x3fe9PnALaAgGh1gt
-	laBxZOiqsxEOOBLP6MQ2rfZBUY0AxL0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772815451; a=rsa-sha256;
-	cv=none;
-	b=1NPP2smu9r1sLWEgX++pHXZ6lID/BhY4WOgY+iMOyoEvqY046sTSMeDcIplyleMdqocnCX
-	t5H1ZczBxfx0FgF3P+kE5pAnYR+ThviLOlvRnxPMV6Keoqi6lMGjMT8ADaZb0qj75rKO7Q
-	iSN4FxoRrP/GoC3u5SH758eO/7kOTK4=
+	bh=CFRBb5lEm7w27aaK+Lcy6sw6cbfVPzK3mN+ShFsf6mI=;
+	b=sP+hY74D+Xws85XwJ8YQSJmKJbUa7XqAb8bp9J8H5EYb0F9OYYIDXLwSK33gzQsigviwFU
+	wxPqb3InWYiCo9PhLPJVAlBCwdMrABJMjtuuc9yDWvG21v/BWBZogAVfGd2yYYNbCIoc3L
+	moKMHupnCye4M0Fs2jRfAkIi5opHIJw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=nbpPjw4u;
-	dmarc=none;
-	spf=none (imf12.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=FQVieUAaotG/Vwy8hL1CcO19BxJghydmXC5ROajNp9s=; b=nbpPjw4uWRr0rX+68AEmJTYihB
-	jDoXB56NrOxP3UyoKmBu/zDMDzPyaTY+x7vKVgOG03OS9fkIf5SJK+TTwQwfeEhTCbKUpwYfaSVcf
-	3LtmAytssBjwWp+LOvKM0ZykTb84ERKP1N4Zf5o1l2ygVUffEhIeX7iX+luS29s6d0YPLw0PbWbzN
-	PM8mCHVF/tnLIGkU09IHYqRkjHs96LLAJVhWzJvkxflKHIRasSDruhWNSUIx873U3NKZh8Z8UYmYh
-	7fxxk0Z3+a5FQNlPHNaqLaIeKhKUU5M+18O22YN07/1URQOS8Xixal2+6Zk3qM5S/aVQ/drBl9dJG
-	WkRhnjbQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vyYHI-0002ZQ-6T; Fri, 06 Mar 2026 16:43:52 +0000
-Date: Fri, 6 Mar 2026 08:43:45 -0800
-From: Breno Leitao <leitao@debian.org>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 2/3] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
-Message-ID: <aasAU-7yRunywKmt@gmail.com>
-References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
- <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
- <68156cf9-cf97-4435-b979-c2ab0d6a97b1@lucifer.local>
+	imf24.hostedemail.com;
+	dkim=pass header.d=disroot.org header.s=mail header.b=HJoc8+If;
+	spf=pass (imf24.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
+	dmarc=pass (policy=reject) header.from=disroot.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772815452; a=rsa-sha256;
+	cv=none;
+	b=3/ffpI9nITpsPgOoiLktkf0FUxUXl4tQ1GqRw6HAcX8wmP0EL43QwgIlEZ+hSUfhffa66D
+	CoIGrspJYffTY6fMs4V47e4tn0PIB7Jih/5Ti3oJcKraiZhA84Y7zpTKmws+D+t87Oy8+b
+	+x4fuhHbzoqv1ldOm+TptI+nvWmhqPI=
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id C3DB126798;
+	Fri,  6 Mar 2026 17:44:09 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id svw19_WXS9CO; Fri,  6 Mar 2026 17:44:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1772815449; bh=aiJ6HXP5kCacUDRaAKpFlRAJSn1zFnxlnfcHt7afV9I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=HJoc8+IfvN0CgFey940Q7K9ddWRhGHjx/tu5AW/Q+UlbrF0GIGLOeLWEJwBlMEqf7
+	 SP4I8vLfpwRgmAVXtC8s/uDRmzsSk9Hemu3dHgF75CvvGeFBNcrcXnublJyvVuKxfo
+	 GrRGrQcFjQ+odUr5Rjkkg2GCojpMCGHhcJ+MWq6r10pW3QNwlQO8jix7lzRh5i0iHq
+	 TTHT/pvWfqvvGU2/dtkdzKK5JopVQouRjDhp0MVwtSPaCzJ9JFQfPs00MVWpNQhaDi
+	 FWPLrV6hudW1HpsaXd0NAIhkZrkZs9EsBtHgqit7AcZNNOIq/7oOkRvUljG33UB3ao
+	 hMfgY0ZP++gaQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <68156cf9-cf97-4435-b979-c2ab0d6a97b1@lucifer.local>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 05EEA4000F
-X-Stat-Signature: zwcakujsyqb9oybmoaf8qzhxueh9aime
+Date: Fri, 06 Mar 2026 17:44:08 +0100
+From: Benjamin Lee McQueen <mcq@disroot.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R .
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
+ memory
+In-Reply-To: <aar4T90zjolmTGFa@tiehlicka>
+References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
+ <20260305043038.2176-1-mcq@disroot.org> <aar4T90zjolmTGFa@tiehlicka>
+Message-ID: <31c4680848b833d53b1979b45d5a368d@disroot.org>
+X-Sender: mcq@disroot.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CD8F4180006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: eymxzbzns4nztan9gaz69wpjrmtwmoox
 X-Rspam-User: 
-X-HE-Tag: 1772815450-112314
-X-HE-Meta: U2FsdGVkX1+vA5hN1qSlHF4JTZJB4LxDTJ8Zsq1jR6Fljq+FMtTYSiToDoEYfrxHDLKWhhQ3LUKTperP9mK9L65hVjV0nz/U6D2bHKGw6O3wCJftWR/O9QpKftL8mU8+RfMtHDZuydcJZdf6YazEYUeB7kQl26pwfOmm0p91jm1ikxT/+lqXRp36AIytOO96Bb2jel8S7UIVK920BYiPkrAG+5gtLfIJ2dQq6772NVN18kWzLRmO4/1Sdcr+IZf1DHeQefs2ZbjptLvh/9rWj9jJ8hkfWa1uoRwQxRtTTf6NnXzOk6e1LZV7bPAByhejXRtIwTtBzqP3lsz6bT6WhC5FAtTcLpm9uAmhzgJy0eBduEVAzM1ftdEzcZscZEu1fNwCCS33zaNVN4bDbRlEZ/NnXgi+6YB3GrF7u0JYogWTwpaXEFxin+Z30ycciWd3kQc1TsI6SfmPbFXpZ6Yu6NXxU9oZN0UbZHoeDFlSf24sWEF705nSYuoieP0YgfGw4hIpdVRtpAvnayj3PsR5/LyOLWOhRohGj0lBXZPn2E6PDnUfHfVwKwXU5PxDnytXwjePL++oEbBSXNv42F3BuGBRvBnrzkC6xNy8fNEC/OunT4bW/sTL8mO6Xpa7JSylwcybWGrbcncCB+kddNxL8dQHVkuGoxRFbgV1C89bNoC3sNI75fuBio30fzrJ4BtHI9hXY7+Cbp/lkMFO30u957qefsfIfqFTB0hv7m6a5qRQ8h54ssHxCRvURWt43oABXpDSTvq2WvQBPQyQmaDuEwE2jSskRs+CzZrd8TLZ2I51EOWq55td1mW/amQiAaO79jx4gVr7JmY2mtciGat86PAq9ScaBzHZBmLineW3ic2pTweUYH1hCCNu8/HxojRDuevOfvhWCkML4dQmzShpH/Wgg8qHWlelwljhMVVfpccLZrcLsg22MzEQoxsJRwl9w7TYESeAfHJ2C6kIXBY
- T8NIUzsh
- 65Wv+0AgO2tg2rSU5D+U3NL5IaFQ0alPC+n2KiGQC+yoFJM8o8qMSap57eMxL9bJFT/sAupSkGW5ee1uR5DRpjRcoiXTF+sC0nySCPpYharOrWFxYFiA79EZ8fTir6M914PpjsFcjy9ASbj+fP/RwRO+asqwWLpVqpSzqlsl01Y9Jr7xliYLzKCGaS33iVIPZtjV7SgftnmZjyXgS2vsUCgomeI4/z04oeh4s
+X-HE-Tag: 1772815451-982510
+X-HE-Meta: U2FsdGVkX19hLQNtu07wqYzxWQesijb/tqTAeR7Rr+4a+ilWt3Xl0+aJA58LnjtKY/HeRI6HCoY+ZWeljg3fJvRHkyHSwykJNAR2FN+9pzsD0K9hrIpqy51zWnCRPrjuZ5WXsGC28JiL6Lq1Jtgqoncu1b5GNS51hrEwNUsgsmi+3ksPmQSMqpFZ5xHR/FnFP/fDUeYYWFzIVDtHZ/+uoy5O6TNz4i+xmoZCS/LcqmgxLkB0hdPkNIN91fOmRUv7aMS2YVvbfCTtKU808CCUL2JLrBfhYIcIuvXZqWFf7UpNHKQs6uvfDpDI8QtE66ajpZ47RBaR8kAM6uWyDDd6NzQiG1iIppjEYasbgOyxtKjyvD0fsm8tjQDnpgAtWf678GQT6vmydvg3YBfMffDwjZu48REBlCyVVN54ThzDhUujA6CmanDeJgOJHt0HSweV9jnGQkSlBan6PBi/bDOJUJlsKkRedg4/4yE522msebyHupd6zjwgc7MKzbAkCwrnF7fWCaRBA4gw0fzWvPG5+LICIDNBbFWf4XZx7eV0UfDE2TvNdnoAmij27LCMcojXpJJBfaEVbgZ5EbqGZwhkz1nB/muh5mT16+cBmlyoFeXlf3l6y1qKCOidg9lpfUYR+ualvkzbrQkTVg7SLR038ShBNQE/EqGIbHF0MWzlutzBSlhj0geyLqJ67syyzNkJs1oywdVMOPpHaoylN6i+RJ0PJuJET0BhnOH3FDFykioPyTguDQULU8yGGN8avQSK5Es0PHnuTvccI5czq4y1/fxWgILIuEtQOWqyrjd7D4xZ3bCKiwUfR+l+Lmb8dt9Xr1FuuzQet0mdppkrZtghO07w7n3MkboQ8hOQKpMG7BXGgA5ZNOOpqY4FTbtDTcExcV5ZVn3pLQNIgp2K9ufmQPicHJOWCEJTm7aFErckw0A+w9VZD/8kQv8s4/VR9O6cpHejL+StMF7utcmK3ug
+ s1Pfmn3+
+ gInKg3AYTi5nRRp+jhOmnJUQ5oonpYMwPpF8KQWiWZ+HAp5vkN7aUx8CIPXydx6JpUFxNpRhSOd2GbL4BmTRtktmiqo3Mbc6WDlmLVpWRIsW0QsPtFGRkMk1LWDv5DXqFp3GHlEgaR8SNpFDO1tcCUtFTj9VebX0wWPiOst3zhp/t3bEH2Loe7bQt1Zq0pEt5BouktQbeSfMcMEwPpVuA95hlaTjJohSwO//A9abEdqcuLsk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,26 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 11:32:44AM +0000, Lorenzo Stoakes (Oracle) wrote:
-> On Thu, Mar 05, 2026 at 06:04:54AM -0800, Breno Leitao wrote:
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
->
-> This is nice, you've improved my idea :)
+On 2026-03-06 16:52, Michal Hocko wrote:
+> On Wed 04-03-26 22:30:38, Benjamin Lee McQueen wrote:
+>> the vmpressure window size has been fixed at 512 pages
+>> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
+>> the file notes that the vmpressure window size should be scaled
+>> similarly to vmstat's scaling, via machine size.
+>> 
+>> the problem with fixed window size on large memory systems:
+> 
+> Thank you for this much more detail insight into your thinking. This is
+> a good start. I am still missing an overall motivation though. Are you
+> trying to address a theoretical concern (the said TODO) or do you have
+> any practical workload that generates bogus vmpressure events. 
 
-Thanks! Your idea was a good starting point, and digging deeper led me to
-sysfs_match_string(), which I wasn't familiar with before — it turned out to
-be exactly what we needed here.
+yes, as i don't personally have a workload that explicitly requires
+vmpresssure to not generate bogus events, it is still technically a "bug"
+that can still be improved.  i believe many legacy systems would benefit
+from this as they still use vmpressure notifications.
 
-Having the modes in anon_enabled_mode_strings[] also opens the door to further
-simplification. I haven't thought it through completely yet, but I suspect we
-could consolidate quite a few of the _store()/_show() helpers as a follow-up.
+i agree PSI is the preferred interface, but vmpressure is still used in
+other production environments, like Android's LMKD, right?
 
-> I know you change another instance of this in 3/3, but I wonder if there are
-> other cases like this in the THP code we can fixup too?
+-ben
 
-Yes, there are several other candidates — defrag_store, the ones Baolin Wang
-reported, shmem_enabled_store(), and thpsize_shmem_enabled_store() among them.
-
-I'd prefer to address those in a separate patch series once this one lands,
-if that works for everyone.
 
