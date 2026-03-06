@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 181E8F01825
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:39:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52701F01825
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:44:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 590066B0005; Fri,  6 Mar 2026 05:39:40 -0500 (EST)
+	id BB2E46B0089; Fri,  6 Mar 2026 05:44:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53E046B0089; Fri,  6 Mar 2026 05:39:40 -0500 (EST)
+	id B35DF6B008A; Fri,  6 Mar 2026 05:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 440816B008A; Fri,  6 Mar 2026 05:39:40 -0500 (EST)
+	id A42276B008C; Fri,  6 Mar 2026 05:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3216C6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:39:40 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDDE41604C1
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:39:39 +0000 (UTC)
-X-FDA: 84515292078.04.6A0ECFA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4A8571C0007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:39:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 929B06B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:44:33 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DD651B80A7
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:44:33 +0000 (UTC)
+X-FDA: 84515304426.06.F33A353
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 934681C0004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:44:29 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJbvRGyn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UJ2XDd;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772793578;
+	s=arc-20220608; t=1772793871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/SalwfpGQCltipIT4MiCUQUPdDyG+gQO0XadFgUZQ/Y=;
-	b=OTW2vEq9c0ezgXc8o14+v8YHRloeNCtrKbzzBL+DnA+Xth10ZpyoM777q55ucNo8BBBVri
-	+MCc0VR7Arl92rUZUMDwU4L3poHObzn1EjJs3oBLorwDSCkgFrpYKqeGNUvT1Hf3Q2ZxrS
-	MMLEVEtXNNwGoZcUf97HAVSmrvUf7fQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=OPkOlmZaIM4hn1GJiU7CIu0V9mRULm8+LVW3w/1ow4U=;
+	b=GMb6MjVPu8kX0olMn5v0DTujXc6HPTv5x+yvlmG5yOcLWo6GzmXa7URSmYSiKCszO5H3JV
+	yeroI0+iinMbomCFh7mI5UTqIOGY1OU3DkO8Cr1y6Za8h9F34h2TfSlg7wQtfDV/u3GGLq
+	gc8pm0hsaZbwXu5F4tPUkCow37Yr86w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772793871; a=rsa-sha256;
+	cv=none;
+	b=oFEBLcWpY69UXz/uFmFqp8qKpT+iQeBuHyrx88JVP6vUijvIf737OzmA/M+N+KTxPCnI5g
+	2MAvJUFjkI2WUGfoe6owGM8GEhNp3x4qoYtRgGCLyil0pKLvGatJr4fgmgqfhF2ekjc5t4
+	ctYtgnOb9gvRrjn9ZM0R1aAMC+UMNeY=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NJbvRGyn;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772793578; a=rsa-sha256;
-	cv=none;
-	b=kNUI/kb+PDJbLDuT/VSi3C3IqDtXnnBEHkWjIUKK88IPR2iGGrJresWWctUvmcmHRxjg8R
-	K9i/NuyvSDRGxJ2VeADL7MiuPIzVeEiOhQvAFgxfbMJ96sSCrVfn8pLMtT4/fZgieh+r0f
-	ALsSBhX45KNQRr7GUAWPPfz//JQJgJU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B152B6012B;
-	Fri,  6 Mar 2026 10:39:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A179C4CEF7;
-	Fri,  6 Mar 2026 10:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772793577;
-	bh=HWwbH/t+EtL/YKU6xmIeyjMDydOLWAaX0fFteuDV06s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NJbvRGynfZrP5aroIZ/D3g6XrllqG61UIy10x+vwEaV39i30AtfmvOcyfoi7v2mmW
-	 y1Xnm+jB8AVRruQHrKncfbXDv3cZCHtTsMg0V+5BJ7RcZkzKKtj1BtMp2DY9j/jgbE
-	 NK17i2s8TexnEXLGLKX9dIJP4F3t5Zr12krew+KlKhFjw3nuWhg4J5egqTMyU7ahis
-	 tmHibWMx54gZVJiQ2oP3a/DO2978orcPz/qhBfev0C1IqolbZFGTuObSQHf+NXqNq3
-	 ioidRrZCulU4LmNtsTf6SPvIbGaVav9Of0y+QC2a7CDCiiWDHZi6N7VuExHwhqa928
-	 6z9cpEMXTEWPQ==
-Date: Fri, 6 Mar 2026 10:39:34 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Usama Arif <usamaarif642@gmail.com>, Andi Kleen <ak@linux.intel.com>
-Subject: Re: [PATCH v2] docs: filesystems: clarify KernelPageSize vs.
- MMUPageSize in smaps
-Message-ID: <5d01642d-1b39-48fe-870f-a261930aa3f7@lucifer.local>
-References: <20260306081916.38872-1-david@kernel.org>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c+UJ2XDd;
+	spf=pass (imf18.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772793867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OPkOlmZaIM4hn1GJiU7CIu0V9mRULm8+LVW3w/1ow4U=;
+	b=c+UJ2XDdi4k+VS0R8giqACqN1oD/vn6D1u0lCqF7odDR/jh8q8v2m75CwemTGM4Uzqb7p9
+	n0kRFzf38ovvKPs3/XByos86icCRt1D5t4pumXN8u5r9A568CEEjXOYutLEDg//TsUH9dL
+	ntHmSX5D5o9PuLDqwUMFm4zuPvaDm6I=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	npache@redhat.com,
+	david@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	mpenttil@redhat.com,
+	balbirs@nvidia.com
+Cc: matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	hannes@cmpxchg.org,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kas@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH] mm/migrate_device: document folio_get requirement before frozen PMD split
+Date: Fri,  6 Mar 2026 02:44:09 -0800
+Message-ID: <20260306104409.3915811-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306081916.38872-1-david@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A8571C0007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ixjuxr4i66h5bpix6zjhzmxdiw8jhzh6
-X-HE-Tag: 1772793578-857224
-X-HE-Meta: U2FsdGVkX1+q6CDTmJtvquHc0eU+HXrufJBY2dql2bB70M7gBNefm3LKjCywnMFgFqswX1BwytoR+Feye9aoLzqaixBr/FrgRWxaxBIVNx4VJb2CHsnpk7a5xskEoxTEJAvj7fjWUlDgib2V3ChAJmxzkedhl8W79oS5IjvNAqbgyPJVkcuwJvu+KpWhlmhAf6I0dB8F6EwBCiXGLrcYxw3LVa2ILWcibfCcwiVBQUYuFsi/G+anfdJtFR1zLLXg3vwXQWNdznQbnxWb9dQQp/6UEJaOQY5lhh1PoX1vedD0s2qea2GiYj8lx64JD5BIbg2iXyKtMz0G+HM2lBhD9Dl+0fpamiWI6S8FLnb42bL/mznz8tbaHaFZpno/kjz31wiR3FGF0K3ovxTK0we+n9JMK8D2vt32joYSUEIaSJgA3Y1eNfQ7DjFNwIFrGJkSHwcBzeWgfoD9pl4QoJxo22P5pOgItQT5bOnmFSTvRg0PW3qSumvxmTVBbPScbtptJYzJSxD4EYEjDwhj1sKKhDo4gKvLagVnzWmAmRZqIskNSpfvxEzsQCYqy9p5W+8vgY06s9ZgANUR8II16aQx2XBa+EVbj0QUQTKGmSHnCLZGWekT2H7rCulu/ugPuZTn+U7QYkaZ3PBi7AZD3RQ9HSWyuqxqp7ba1//tZCb/lOA7lx/adBdqq2Qn8pUs/2lcawIYq2Ud3CWNqgy5c90dUC975nzohf+kTCBdag56+zPL+KNTyRuakMyhMr2FFI2vacj/geta7Gzx24su00Y3aJzngxPh5fs+7Z74p7YJTuw7x16mt1t+ncW6+786im/xHXfaZW+dDVPxN/r9OGehiDB9OCr24spwzgPNl1165Z5SjuNXTR6cFEYJBJAFoho+z1q7hv1preWR4SJ21xeC+wFvkRTfp5+NlsXtdKK0UT4mcRB2AtOcTVXfKQI5cNsO07+iYUC7XsHcFIsJeul
- rDCKU+BG
- tvNsY1A2gTEJKBNwc6dMP4FCS4Nxfxe+ngWThTCmPo4Jo8jxZklq+rMUj03Keh2kQrznBsXIgMUfvVxpaDD3eKf81346zxtMh379Kv6MHVlr+lMYfU9zfwsf9l/0qkNdfwFJf8YNCOTIbxVSPx2ytnzMGmsTYc3YS0RNxvkVw5LdnfmHudu5lVxIAyILnJxoPQf27RPjjkJgKLn2gz150pSZbP+Cx5hNmvMJHUln1kwJzpM00x0XdfYCCsKZluNzrQdnw/ne9ua8tDWQS3bSG/rSU9fLccMvbT4Y38GEVuoL582c+Ik7Wd/zxT6rQVgmVAAaXrfwgidxhwipYfDTmeqRm87jJSjMMBrS6kKw/xNlEFEpvGQH+bbh94EgPyN4Z67Go0YnBl9N/WiZpAExQOyoNo29JjVHPlwkKS3N5YZeMsfaupLmFSeReLGv4yTLpSLOFHJ8tCqWSZbU+l3aL9Mht56dcrmAXuHkcm+WihJ/DbNEojBfX8972Z0fTpsJ7zAHOSm1ENr49ska6wJ0s6nkkoWAjhvSQUbT+2j7Lk/poQ/5iSDWfA/e09hd+AjOjEUkD+jUWQH4r1bKVqsXKUzxY7r4dj4ieE1BgmBHWECgg+Bw=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 934681C0004
+X-Stat-Signature: j7176cru384jigxd3hsft6xfqcj53idh
+X-HE-Tag: 1772793869-249348
+X-HE-Meta: U2FsdGVkX19jkgxd2AVjb67Gt2m0pQWAHfiPvIKYos9QQ4vAhvi+kmrEZeYTm93h26jA9ren2eQyiT6AmyRa9bg2HSZXu/GvBSHAMDlegW6f+P3+XYJ37fLNkm3AsSUU54V3UP2E9K2l6Kra8K+eFb0RQYXmQVRtzTtqDy84w4d7IshIdeMTpKb/tR9bFQiaHOudUPChzi2b59VJmuzkohkA7OcCo756kV8eOGCsZEC/H79B5weavrH1j5PqOkeDvCnuAM8LvkYRFH7sWHrkPzIbBVyxBeVAeKeXwkNDk8yjMvISHi2PNS7QFyb/Hxm5DSN6JU6Waqgum66wj+DiHfi1+qO4ny+YmX6Ja73CIatmgjTiyr6Dar7QPiVuIbREAiDxoDIyc8rb4jWwOdb1HLMUOW34uDvKNsSdlMS2XwA74/6g3E6oThWV++JBSAPjxDr5dn6kFbDaX6vUMonHyo0h541BsGwenYP2gdRJ4dcJ3lx3/QTa1czT7ydNlC8q7RKgQCyS49Hpr59yykBOvhzhZEo89AQH+lWnIioMhKiVyNCNO3IlifoYEGJaugkhxobX4X4qO1mBtSE38bT61/aVVHbV2Xsiculn8SaBnHCPzdQ+z0VDn/Wd3pZvvPM4z4WXtc8pcUrwQOKxj+K4UzSd4BV3gltWystkH4GUGhs1Rzpvl26XQZjRn3M3OshzavF3kwmzo8UGuhaKPRVOeKawcWz1wgu1duy3SYEik+bF3aaO/4lUj48+QfDlnAZw9inqeKgdA/noyqvCLAqsP9+afN+msQ2w6w2Sjy0NjhWs0HINCvI/HptMrEqWZdMYOZQ5Mv7UU0VDoQYrhB/L9Z7WlcVwRWpBU3JTJgBZ/nD4whLXJCzCjIddrY8zl8RQlpy7DT65yBQepGQMwttDd8Z20YwCF4U1gUMN3Qm1t7fWeJd3wkg139yX/V7XkoupJZqJHIHqkx4F7e32YUU
+ UeVno6Qa
+ 1CxXWykjltZEhFYD7KQli11eV1IzSi6B6RCqjt4vBJimEYAxVKXGRpjcr6Noa1l31dEw2BoAbe6Ek7rAa2d8IWdm7sQbdhqRXY1ALiOSvHlsgx00ARs8qYpzzL0DRvG1eadJ3vBL3Y9erQSaXnctsvgTweWT1enaKUpu3cyEuHhLlrIAqetzDYaywrVVBEEZvSG/x+4tqoPGoeCjOEUUCqzlywpkiEjDr4qXFBvs+cqfoKyOkd7TuZQiAV0nwhtZsl7dCsuDYRt2IYnaqHAoqxf8ffKxqHuFAcDStc0i2NwASyXg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,138 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 09:19:16AM +0100, David Hildenbrand (Arm) wrote:
-> There was recently some confusion around THPs and the interaction with
-> KernelPageSize / MMUPageSize. Historically, these entries always
-> correspond to the smallest size we could encounter, not any current
-> usage of transparent huge pages or larger sizes used by the MMU.
->
-> Ever since we added THP support many, many years ago, these entries
-> would keep reporting the smallest (fallback) granularity in a VMA.
->
-> For this reason, they default to PAGE_SIZE for all VMAs except for
-> VMAs where we have the guarantee that the system and the MMU will
-> always use larger page sizes. hugetlb, for example, exposes a custom
-> vm_ops->pagesize callback to handle that. Similarly, dax/device
-> exposes a custom vm_ops->pagesize callback and provides similar
-> guarantees.
->
-> Let's clarify the historical meaning of KernelPageSize / MMUPageSize,
-> and point at "AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped"
-> regarding PMD entries.
->
-> While at it, document "FilePmdMapped", clarify what the "AnonHugePages"
-> and "ShmemPmdMapped" entries really mean, and make it clear that there
-> are no other entries for other THP/folio sizes or mappings.
->
-> Also drop the duplicate "KernelPageSize" and "MMUPageSize" entries in
-> the example.
->
-> Link: https://lore.kernel.org/all/20260225232708.87833-1-ak@linux.intel.com/
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Nico Pache <npache@redhat.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Barry Song <baohua@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Shuah Khan <skhan@linuxfoundation.org>
-> Cc: Usama Arif <usamaarif642@gmail.com>
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+split_huge_pmd_address() with freeze=true splits a PMD migration entry
+into PTE migration entries, consuming one folio reference in the
+process.  The folio_get() before it provides this reference.
 
-Reads great now, thanks very much! So:
+Add a comment explaining this relationship and a VM_WARN_ON_ONCE to
+catch an unexpected refcount != 1 entry state.
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Suggested-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ mm/migrate_device.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> ---
->
-> v1 -> v2:
-> * Some rewording and clarifications
-> * Drop duplicate entries in the example
->
-> ---
->  Documentation/filesystems/proc.rst | 40 +++++++++++++++++++++---------
->  1 file changed, 28 insertions(+), 12 deletions(-)
->
-> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-> index b0c0d1b45b99..e2d22a424dcd 100644
-> --- a/Documentation/filesystems/proc.rst
-> +++ b/Documentation/filesystems/proc.rst
-> @@ -464,26 +464,37 @@ Memory Area, or VMA) there is a series of lines such as the following::
->      KSM:                   0 kB
->      LazyFree:              0 kB
->      AnonHugePages:         0 kB
-> +    FilePmdMapped:         0 kB
->      ShmemPmdMapped:        0 kB
->      Shared_Hugetlb:        0 kB
->      Private_Hugetlb:       0 kB
->      Swap:                  0 kB
->      SwapPss:               0 kB
-> -    KernelPageSize:        4 kB
-> -    MMUPageSize:           4 kB
->      Locked:                0 kB
->      THPeligible:           0
->      VmFlags: rd ex mr mw me dw
->
->  The first of these lines shows the same information as is displayed for
->  the mapping in /proc/PID/maps.  Following lines show the size of the
-> -mapping (size); the size of each page allocated when backing a VMA
-> -(KernelPageSize), which is usually the same as the size in the page table
-> -entries; the page size used by the MMU when backing a VMA (in most cases,
-> -the same as KernelPageSize); the amount of the mapping that is currently
-> -resident in RAM (RSS); the process's proportional share of this mapping
-> -(PSS); and the number of clean and dirty shared and private pages in the
-> -mapping.
-> +mapping (size); the smallest possible page size allocated when backing a
-> +VMA (KernelPageSize), which is the granularity in which VMA modifications
-> +can be performed; the smallest possible page size that could be used by the
-> +MMU (MMUPageSize) when backing a VMA; the amount of the mapping that is
-> +currently resident in RAM (RSS); the process's proportional share of this
-> +mapping (PSS); and the number of clean and dirty shared and private pages
-> +in the mapping.
-> +
-> +"KernelPageSize" always corresponds to "MMUPageSize", except when a larger
-> +kernel page size is emulated on a system with a smaller page size used by the
-> +MMU, which is the case for some PPC64 setups with hugetlb.  Furthermore,
-> +"KernelPageSize" and "MMUPageSize" always correspond to the smallest
-> +possible granularity (fallback) that can be encountered in a VMA throughout
-> +its lifetime.  These values are not affected by Transparent Huge Pages
-> +being in effect, or any usage of larger MMU page sizes (either through
-> +architectural huge-page mappings or other explicit/implicit coalescing of
-> +virtual ranges performed by the MMU).  "AnonHugePages", "ShmemPmdMapped" and
-> +"FilePmdMapped" provide insight into the usage of PMD-level architectural
-> +huge-page mappings.
->
->  The "proportional set size" (PSS) of a process is the count of pages it has
->  in memory, where each page is divided by the number of processes sharing it.
-> @@ -528,10 +539,15 @@ pressure if the memory is clean. Please note that the printed value might
->  be lower than the real value due to optimizations used in the current
->  implementation. If this is not desirable please file a bug report.
->
-> -"AnonHugePages" shows the amount of memory backed by transparent hugepage.
-> +"AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped" show the amount of
-> +memory backed by Transparent Huge Pages that are currently mapped by
-> +architectural huge-page mappings at the PMD level. "AnonHugePages"
-> +corresponds to memory that does not belong to a file, "ShmemPmdMapped" to
-> +shared memory (shmem/tmpfs) and "FilePmdMapped" to file-backed memory
-> +(excluding shmem/tmpfs).
->
-> -"ShmemPmdMapped" shows the amount of shared (shmem/tmpfs) memory backed by
-> -huge pages.
-> +There are no dedicated entries for Transparent Huge Pages (or similar concepts)
-> +that are not mapped by architectural huge-page mappings at the PMD level.
->
->  "Shared_Hugetlb" and "Private_Hugetlb" show the amounts of memory backed by
->  hugetlbfs page which is *not* counted in "RSS" or "PSS" field for historical
-> --
-> 2.43.0
->
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 78c7acf024615..6fa2878848a7e 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -908,6 +908,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
++	VM_WARN_ON_ONCE(folio_ref_count(folio) != 1);
++	/*
++	 * take a reference, since split_huge_pmd_address() with freeze = true
++	 * drops a reference at the end.
++	 */
+ 	folio_get(folio);
+ 	split_huge_pmd_address(migrate->vma, addr, true);
+ 	ret = folio_split_unmapped(folio, 0);
+-- 
+2.47.3
+
 
