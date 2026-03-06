@@ -4,142 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14799FCB624
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D76FFCB624
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 17:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48A576B0005; Fri,  6 Mar 2026 11:59:09 -0500 (EST)
+	id BFFE96B00A6; Fri,  6 Mar 2026 12:18:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438806B00B0; Fri,  6 Mar 2026 11:59:09 -0500 (EST)
+	id BADF86B00A7; Fri,  6 Mar 2026 12:18:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31A0F6B00B1; Fri,  6 Mar 2026 11:59:09 -0500 (EST)
+	id A8FDA6B00A8; Fri,  6 Mar 2026 12:18:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FBD96B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:59:09 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE9C61B701D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:59:08 +0000 (UTC)
-X-FDA: 84516248376.13.BE0DA37
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 045A9C000B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:59:06 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNkIChOs;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 964F86B00A6
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:18:29 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 30DD916064F
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:18:29 +0000 (UTC)
+X-FDA: 84516297138.12.0A6050A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8F36340013
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:18:27 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iyJNlXWY;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772816347;
+	s=arc-20220608; t=1772817507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NUJ1zW1+7+CLqAx5+u6j41gfl9YtDPOi1lGGK8Hq9+0=;
-	b=xLOaE6sWnS1/hHsgABrtanc/50jMp6Eje/YM61vIGMJeu6UHTgkEcKE/NWYLArSkaZc0rd
-	LloVA7A4LpYr8Q+/Mxab0KOtdgUkMKbKfb1GJCkAohSklc7XpuGntLGfiAdYhIZ2nGLYhH
-	CRLPE/ranegxGxz36c6FeWJqrHmuInE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=5Vti6GP4y7G/1Zs4JyY3+86MGioRiEb2MHkTYb/M9+c=;
+	b=MBhjtPZmW8uaLFAeOjE8PO11erdrw9O8Z/JOs8EuQILT5XvHAZU/K1Z4Ni1pJ4h4VXE3fb
+	IQ4A8PFdYYH3tXqnX9gHGwyFlhahJF0Imay/t+i65zkYfzYRazww3s9Fg+YACACbJABHgh
+	yMg3oMCqBH5utnSf8W69SRRZP7mhKAk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cNkIChOs;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iyJNlXWY;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772816347; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772817507; a=rsa-sha256;
 	cv=none;
-	b=NGRaeS+BQaStyf/0RxfaJgQHnMSI9EMYhp+sE+D4Jlla5yyzkDNu7BUUuARbYk78uv+lp/
-	rVeMd0+rJ095Jexsyy2NM7N3PCRdR4PtwYDpUJaYX0UVOVNVJVIVKKL7WvyeBPWn5V/UhU
-	IizA8WEXBSIvmoiSZSN+/7sIMvovlnE=
+	b=mcQeP6NqQ9pFWsIOGAOYjeZzqHxmTAtsIeArcqY7FhR9a54OCHJJCOtsL3QTT2FSMimlVI
+	v5psTACPqAH0GcWSqSukNkSoSbBLkZeIXs5KJMi2czT+/t0jSeJmBIXHlkeh5Rf90ljslu
+	cPJbePNROxeGbKZNHGb0uIVfDyqk/Zo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 762D560127;
-	Fri,  6 Mar 2026 16:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A55EC4CEF7;
-	Fri,  6 Mar 2026 16:59:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5D28242AE7;
+	Fri,  6 Mar 2026 17:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA46C4CEF7;
+	Fri,  6 Mar 2026 17:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772816346;
-	bh=FAasDvbeeWqamChVKUg3/oZj45ivuaOcwqjtpPv393c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cNkIChOsBUMxKt5NTw/1MwJa0uKXPc+23GesU8RL8E85zmQLHhNSWXgxphuIKlGLQ
-	 GWzhxv+02WUXA2U7hAACjTHn5PQj3cgXPqjIFLcntYL8gmuXAbs9AM/LvEK5IaGYQl
-	 7KJOklZ0oG7rrxqT6RP/9Drvv3eO/qUFZCsOpAIXWOYHPVse8Qjs7ZeaZ/Vk+rUmQu
-	 S9+0p5VmugZU8LbEdvPV/0OBqJfgyguekT3bAlQkxG3bb1AmL4Vhfhv4O2qnWdkw3u
-	 PdLknczAb6W9gcGcTPE/7Md0iAzbnCO+e+t+b0OhL4tRKTqjWn9H2fBTFpfsh4hy3I
-	 UBw2mZo8iw1XQ==
-Message-ID: <a7586589-3ce7-4045-96c3-e74c3b03bb2d@kernel.org>
-Date: Fri, 6 Mar 2026 17:58:58 +0100
+	s=k20201202; t=1772817506;
+	bh=v65cD3N8Br5TyxfaG6Wxwe38me5rZ0c7uZMHqtZlcpM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iyJNlXWYG+bjR/gJhhrmzh9pBnw8sWL+QBOHdKQNMZ6rpLSb+yHZNoyQoTpLd08NP
+	 T714R3BgPR+lSW+R2gPVak0oKSXdaXOf+qvoLvUza23w6LW0j8/TRZAQM+LgY0oBQI
+	 Je+u50iWrjpTjKzBCHimbGNyMjofwuXW6pyc7U1w3tGzYba/F6eqwI6Q7r7F9sEEcR
+	 AR8U9wY6/xdShFjpFRBmdO5lBXMkhnLYIqyTtzARg+GqetrSO0RDItdFOXx/rS8SGu
+	 bxzY6rqPquiMavoVra2BfGwl9agSz1WpMuIr99Fz+d+HLby5uYJ80q59vUwA0FJCdK
+	 lKa031garTQdA==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrea Arcangeli <aarcange@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
+Date: Fri,  6 Mar 2026 19:18:00 +0200
+Message-ID: <20260306171815.3160826-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] tracing: Fixes for 7.0
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Huiwen He <hehuiwen@kylinos.cn>, Jerome Marchand <jmarchan@redhat.com>,
- Qing Wang <wangqing7171@gmail.com>, Shengming Hu <hu.shengming@zte.com.cn>,
- Linux-MM <linux-mm@kvack.org>, linux-rdma <linux-rdma@vger.kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <20260305103941.11f1b27d@gandalf.local.home>
- <CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
- <a8907468-d7e9-4727-af28-66d905093230@kernel.org>
- <CAHk-=whW890h4m8r0iYwXEJK=MUJx9nLxuOduttRJNCLrMdz7A@mail.gmail.com>
- <a21ea7c3-fbdb-4ac7-8be5-0173f54890c7@kernel.org>
- <CAHk-=wi4CA=yPP-rQON_2_swS5Jd0SS4UwWbct4LdfGFyzHFRg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAHk-=wi4CA=yPP-rQON_2_swS5Jd0SS4UwWbct4LdfGFyzHFRg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6f7bts6k9rne4q9ktftnw5nwqa913wmc
-X-Rspamd-Server: rspam09
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8F36340013
+X-Stat-Signature: 8tapdre7umsjepeshfjmgr1bn55smkec
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 045A9C000B
-X-HE-Tag: 1772816346-96079
-X-HE-Meta: U2FsdGVkX1+X3wuq9cHT7thnGyg7SokcUvzaHVMk2sqTLwJUq5U0/Iu2KIBr6Sk3TS8ymBYajWt5ht/TdwFNK4jsu41aQ/0yUTJJ+gbRdtO8zQY/gq10XI1r13UvVCSKvBLphzHFqb49DqkUDQgPHdwqMYdD3h7PvGU9e8Lni4/huL5FUqh5EsqUoisCxTzoahcohDsBTHC3sqxQdK+/+7KN1J8NPq3nClOlBnY39juYg5+xRVPXBosQY4BRMkXJSX0lroQgYAXbhyOueStkeRSYolYA1labP/5ZbLvSfGHZPEelPHsjq2iX+tVv/fEtq3E71kKN010V0LWSQDctyXaGuy4VDM3KAawBgT3LH6ZJU9Vb3o37GtvOZpGX4ryT7Y10Ne3RVhCNyLGmwvNxpvylbe/t6INgJzDgtnhwhIYGjIncffFphj7xcMXP8iYVICnn15FX7Vn4plCgkdvoCamoDRE1KV2P0tFjnyjI9xd/ID2J7oWTSP4xJwSocPWjch+Gc1XI5vDqMcQMD3dM/KCxmpsFOQWTQXHlD8RLmkwAjayQQKmMpjGk7eKPUiDu6FtUeDBOv4JkSk28jLtgomu11x173qjPrmuRlfgKOglQspXyBLnijU7WCCmxJ4k537f2qjVEJRwcEHHhGKS5czC2eSKeckz5BcjkW+beEWpHbiwtnunz7lkiq3KgDubOXp6CFG4S9o+73Q/Dmmjuscj76QIYgs7mX8zkty1NoUXoRS5HlXYT3v+a/MM8ft+aw0+f+x29I6zjEPYMtfYbUhGsPa8e1Ni6WHTiHT41LubyaEaluiI75DCscVCB7b4gbIXhXJD4Gc+MYFPaeM/zqYB9/taGNt0/gn/3g7FG97NE1XsvkFntSNCSHXc911dU+oiOk8qN97/6jbcvUIecqbJu2O9nh5a0S3WxXlxma06zwIEDcAHiL71OjNRP2RbFMwRLejm/e05omE+AUhJ
- DmVcPtw7
- f3HPT/Vg0+tMtMZLXz+yz0nmisq4/v4p3basUjeD3IyxTSDh9J7IRTQ3Xg/mhWTRI95GdfNy3Gql49u6WkYklsB4Q85TANOzew+mp6YPYu0IsZ6B9nPlGk5c1pgZewKG0s0Rupa9CgCTNV1/N0YLj4di0KhasBQCRwzO5wO4+sNKrKp9k8YgtpgAAGAJysqZz+hPcopthfTxfrW3LI4oTCMdPSgSCl5N0M04R+AXozGqzBHFzXGtP33s3YfHyWxxjkzdtiW3Ti44Z+WrMH+FlxzWPPA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772817507-21741
+X-HE-Meta: U2FsdGVkX18tb8FNgj6UMbuR50X0Mez/5Hyfu3njubsbZvidyKN7LvOTMvfQ47Eyj1nLpcqiuveILefrR9i/dTE2yfu6TD6vmilGcFP7YBYnZqKmAmi3zU8TaszR2+S6gOP0CfepDanubUfxZxpBmo8MYlTRJuTf4fL5HjuPHSppFjIIs7AA3QtmGMDBg1ruYN6RA/q7GIWeXvn5H5ipcJ5ZBrV3n+tRQ1wGc9y1Bl51OZ2Wez3ZrPwxhv2lhUcIRMkuQn/9ixGSkLOA2lWt6kRix9rpQsZT8Z6JX111L008g1onQkULlcn76K+GAT/yKq2b/1xQWbp5PslTCQxdWQCPP8hsuzAedcREl+o7bIdz0AAJmsf70DPKUGtxni1Jb5DJV/9JipB9xLBvNm7YCERmSpndoDwKuszxt94cUIRf75DxRnn91Q2dmPZY8LL03hneedHZLoL3eNrt+axlnngVGRhqip02R4EFDq8n84HP2SfBERmVmcKRH0HK2NRtVDLoK2bAcsgXT0oFLWNtcJB6OP3Nc6NOvV3ecDD91M6V4q836+ExzG6YTviSQzfSofDhQLmFXmuTE34A7wtLm73IPUVMfk3VAz31BqXMYNqRLayLvwHmU6pUvdLUR5GIa+yfBTaGC7vi1yKD4dNy/cebTRE7i5YoKSRD9hL3G3c4RXxLYXvIjArMM42VgKy2AvPbMwzXAK3rpBzgIihzyJCPWZ+seNFdBrwC8rJH/wCwLpLMz2cimZh1zH9YMOtcheVb3wkudzedc3gOeE8kaH3w31LI6hhF380spYWnxChs6w6EwNMlKhCVk8a53Z6CzHYkKWvqMl8V396sdmXDHHMSAFJLRriUGIxGJpQ4Ne51u9KsK1p/uS2ZKoEhBr7byOgRXv4TJF4fqVx7DD1Vm5VphUR2oxDC89GBuXWJdYWpyS/q/VBvYQwG8d+xsFAryzYjEGQUxSEn9GhIKop
+ 6gg+rQGO
+ O1E5/FZUTiLVF9UI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,29 +111,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 17:50, Linus Torvalds wrote:
-> On Thu, 5 Mar 2026 at 10:59, David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> Agreed. We could think about letting it sit a bit in -next before moving
->> it to mainline.
-> 
-> Honestly, I doubt it would get any testing in -next. Yes, -next gets
-> some boot testing and maybe on a good day somebody runs LTP or some
-> other test suite on it, but almost nobody actually *uses* it.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-It does get some testing, but yes, it's not the go-to mechanism to get
-some enterprise workload-level feedback :)
+Hi,
 
-> 
-> I think I'll just apply this now while it's early, and see if anybody
-> notices. Lorenzo will apparently be shitting in the woods if they do.
+These patches enable support for userfaultfd in guest_memfd.
 
-:D :D :D
+As the ground work I refactored userfaultfd handling of PTE-based memory types
+(anonymous and shmem) and converted them to use vm_uffd_ops for allocating a
+folio or getting an existing folio from the page cache. shmem also implements
+callbacks that add a folio to the page cache after the data passed in
+UFFDIO_COPY was copied and remove the folio from the page cache if page table
+update fails.
 
-Works for me!
+In order for guest_memfd to notify userspace about page faults, there are new
+VM_FAULT_UFFD_MINOR and VM_FAULT_UFFD_MISSING that a ->fault() handler can
+return to inform the page fault handler that it needs to call
+handle_userfault() to complete the fault.
 
--- 
-Cheers,
+Nikita helped to plumb these new goodies into guest_memfd and provided basic
+tests to verify that guest_memfd works with userfaultfd.
+The handling of UFFDIO_MISSING in guest_memfd requires ability to remove a
+folio from page cache, the best way I could find was exporting
+filemap_remove_folio() to KVM.
 
-David
+I deliberately left hugetlb out, at least for the most part.
+hugetlb handles acquisition of VMA and more importantly establishing of parent
+page table entry differently than PTE-based memory types. This is a different
+abstraction level than what vm_uffd_ops provides and people objected to
+exposing such low level APIs as a part of VMA operations.
+
+Also, to enable uffd in guest_memfd refactoring of hugetlb is not needed and I
+prefer to delay it until the dust settles after the changes in this set.
+
+v1 changes:
+* instead of returning uffd-specific values from ->fault() handlers add
+  __do_userfault() helper to resolve user faults in __do_fault()
+* address comments from Peter
+* rebased on v7.0-c1
+
+RFC: https://lore.kernel.org/all/20260127192936.1250096-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (11):
+  userfaultfd: introduce mfill_copy_folio_locked() helper
+  userfaultfd: introduce struct mfill_state
+  userfaultfd: introduce mfill_get_pmd() helper.
+  userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
+  userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
+  userfaultfd: move vma_can_userfault out of line
+  userfaultfd: introduce vm_uffd_ops
+  shmem, userfaultfd: use a VMA callback to handle UFFDIO_CONTINUE
+  userfaultfd: introduce vm_uffd_ops->alloc_folio()
+  shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
+  userfaultfd: mfill_atomic(): remove retry logic
+
+Nikita Kalyazin (3):
+  KVM: guest_memfd: implement userfaultfd operations
+  KVM: selftests: test userfaultfd minor for guest_memfd
+  KVM: selftests: test userfaultfd missing for guest_memfd
+
+Peter Xu (1):
+  mm: generalize handling of userfaults in __do_fault()
+
+ include/linux/mm.h                            |   5 +
+ include/linux/shmem_fs.h                      |  14 -
+ include/linux/userfaultfd_k.h                 |  73 +-
+ mm/filemap.c                                  |   1 +
+ mm/hugetlb.c                                  |  15 +
+ mm/memory.c                                   |  43 ++
+ mm/shmem.c                                    | 188 ++---
+ mm/userfaultfd.c                              | 692 ++++++++++--------
+ .../testing/selftests/kvm/guest_memfd_test.c  | 191 +++++
+ virt/kvm/guest_memfd.c                        |  84 ++-
+ 10 files changed, 858 insertions(+), 448 deletions(-)
+
+
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+--
+2.51.0
 
