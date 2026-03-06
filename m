@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 320ACF01829
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 613D3F0182A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:39:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AFDB6B0005; Fri,  6 Mar 2026 06:36:30 -0500 (EST)
+	id 8C5BE6B0092; Fri,  6 Mar 2026 06:39:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 980C86B0089; Fri,  6 Mar 2026 06:36:30 -0500 (EST)
+	id 8733C6B0093; Fri,  6 Mar 2026 06:39:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 897EF6B0092; Fri,  6 Mar 2026 06:36:30 -0500 (EST)
+	id 78D2A6B0095; Fri,  6 Mar 2026 06:39:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 75B1B6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:36:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3DD5313AEF3
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:36:30 +0000 (UTC)
-X-FDA: 84515435340.17.6AF6297
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9980B1C000A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:36:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QIOAzGT/";
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 641796B0092
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:39:34 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E2121C691
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:39:34 +0000 (UTC)
+X-FDA: 84515443068.01.102B1BB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 74AA0A000A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:39:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q6+5bJU5;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772796988;
+	s=arc-20220608; t=1772797172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zrOM11qq2Wt8EtwgyTrD9IqrmzGKUNxJ26C+4LP2SIo=;
-	b=sDQS1YrobsQNapqBffQArj7gJ+0dVnwAy/kWxtJoWJeU2BCH4zFxJzid22vw545iQy+Fod
-	cLuoi9suoTWXFEs0VxoVSUiWzE2djKw4Q22tBLMwohMVLDauL6luBRhogDhzi2HT35ysSO
-	sotnpvVAjeMKsU9kDGwC/fSNgcLiAAw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hhyVQ9JurrmIL2o2jUPmxaLoahROVNlgiaUJiIP+540=;
+	b=SMptLr1Q3Km8qsM9CYPcH4GbLv8vnQQZXkcUXbrnC843mrI4QyI/MuXupslNEcjLtFCh84
+	DUtV3xwBySChZB5EsBL0PSRveSARWpyslZGuYCn6xzMQlHOAPRCkbSgzqW3TMh9ki12nSv
+	6uXleSg8wMFVs9fNDMMGZbXgiyRs7ck=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QIOAzGT/";
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q6+5bJU5;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772796988; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797172; a=rsa-sha256;
 	cv=none;
-	b=cTJj6Ekqo2WA5YMtjLFYV550/3FoHH8jKSCNj/gHH0Kh1O9wD/UdC16eYrFwDxz0SBOxc5
-	9+YE1KCGJ62rtrsoVuAA+09AyF8M7YB1sCl+TabvkdcfSJex/D10K50S3uoPmNimlOoTLg
-	Q2GaGPGXaaV8nBddaONsfcu1Ec6Nd7s=
+	b=CQFXlmWS0Yn79+2dvExnytS9eVh94g/RfJ6Miie2oPuIRFBSoiDEznyGRdllC7T2YTCHmw
+	Fy/ZM+j0A6GBwTgR1h5D9MPeAziJUq1r6vpLnb375QuMBxvE+czqlxWwQWnNibnw+ZXY29
+	NbOaDSDUaINM7uzeF1czPHoHLFoAd5Y=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FBDD40416;
-	Fri,  6 Mar 2026 11:36:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74BBC4CEF7;
-	Fri,  6 Mar 2026 11:36:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C6A9C6012A;
+	Fri,  6 Mar 2026 11:39:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE6CC4CEF7;
+	Fri,  6 Mar 2026 11:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772796987;
-	bh=V5ObVZZfm5FLF637XiQISqfieEnIwze/yzCYCJIbxOk=;
-	h=Date:From:Subject:To:Cc:From;
-	b=QIOAzGT/ODy4fdRFKL3fluKHEE+/D0Fy7fyIAOYGOR4pz4St/173gNYhWXC4xK8mY
-	 OnfWquYiXtmkGUkbXXRYXMe14uCWCDJgvi7w5gZq9IgRVHMHVtwZQ/Q+aatYtJNscg
-	 vsGK1c/PKt/+Ifl77RDvC6NBtlt5gsQD9LBb+yO/wn2t944lzL5b6EUW41fOIDe0S5
-	 r4tW/mxgd7PvY8t+bWrmXoKB+srT37S7FLalf/LrQzWZbcKAYeDXnsT1EyuRXvECs2
-	 CST+x5MCaLT+1Z/BzMpI6fW+HKdFmK0GMKE1znf246vf95m52QCe14uU5LPP/Wzzfp
-	 1Vxv2IK8J7JzA==
-Message-ID: <086138f7-052e-402d-ab36-b40ca4428662@kernel.org>
-Date: Fri, 6 Mar 2026 12:36:23 +0100
+	s=k20201202; t=1772797171;
+	bh=0cs8qXX0w8L9WzG6FxiKkEtbMe4IWFPc1fUI16tb98U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q6+5bJU5Q4vnGYIOMHxtP/fwEKuDSK2hA5IhDe8+PkQeYooM2TIRjBnvmFVvCA3id
+	 zx+kdnfnhGj/Hc2J46iXwA7kz4D7aKyf8Ka9/QeE1ovFxzsN3ZjpEk/g/ZL9CHq9WO
+	 DL7EyjTCNT0rTq3V++Z1Z84TjsutySazmrFPxuph6Vni0biEndWsyaZL539j5TjDKp
+	 Gqs9RY0RSWWVsCxDv3rAkXkjlCRjN830b6gyc3TvnCgioA1C0CvyoEpheBCHuDkVyF
+	 RN08EbOx/XEUw9Xpfs5pPNDPGwK44ER8hK5YYUNd/Wdd6dIeNoGI0Oo1D9ycyuIAfB
+	 43L0aHB1cxH9Q==
+Date: Fri, 6 Mar 2026 11:39:28 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 3/3] mm: huge_memory: refactor enabled_store() with
+ change_enabled()
+Message-ID: <ce99b331-809e-48dd-ae8e-19eb6a44b5b4@lucifer.local>
+References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
+ <20260305-thp_logs-v2-3-96b3ad795894@debian.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: [GIT PULL] slab fixes for 7.0-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@gentwo.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, Hao Li <hao.li@linux.dev>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5wwkagraq88fx4ncjg1srntmb1bw91i3
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305-thp_logs-v2-3-96b3ad795894@debian.org>
+X-Rspamd-Queue-Id: 74AA0A000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: u6xajfqzyupm9j3dz9a7sqjxxpeb77b5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9980B1C000A
-X-HE-Tag: 1772796988-129517
-X-HE-Meta: U2FsdGVkX19QqIuJyCPnMQi66hKUK2gD/qR3IvenlUwL63GjhKkXni0VpsUqo2pSq1nFOaJLntgQ0a9VPzO0nTrQLjaLXJKPS2KeaMAjnvavP8EX/VTiFClvDGZIljHO+1i576tAcFzoqO8fQi4B9yCNRffHVdRP0/+vI829pPMJAEJOE7Leybf7Z8QUnTrS31ZmZdbPDJi6M6ofXD+B8jBZ6O1OjNJtqMYKccPb5wKHpt5bKY81BEEpwnm8gIW8C81IxrV5d0Ep7E3RXQW+vbiEJrSqn3Kv0zj310dS6APqPuLlzHfXVt4nZ9SSnwtt4jKdH+hOJZkSaDGOpwyC8k12rScODVPqu9qW4IMD9B4B/6ra6MIY3YTx5X+mGpzSymv22NZQ9B9uA/UENDDGIMspDWMq8whX0//nUNIAHNKZX8lFzkTW95eILx0N2WCaMf1JKOU5vBeVA3jMAeWr/wwbXX6CQ4yilN4/CFzx4O6u5hO1kYi1CuMaN5tB5f9NU7PZdiVR4SXRe/zXIljm+8WHnqECt4J2yXdNQcm0to6/VZ7XS8Ew5fzYZqLN55mBAqD4RwoEwywZX/bEPWJ2Qz+W5rt2tJOtDS7PXdxXMNfNbPeRxSzMd6BreaDvvwApiUCLLZWU0Mays2IzeGs5mw2mP+gQZnFbD7Uu7fCJWZnR3fvavvDW9y1dKv6edCoy/G+MscVtbMclvOcDriZ0qA/ty2OC+50J7EjhisnwQphsrpuYZq2Mr9HvjSwSojy0IcsRu0GB6Sdw5ilrxORfzFMdB6Shk7YS3E77Y4BPg4M9wrDRWZhwI8HiF/Ofm/bVsdWyFG7zG8d2gx4ljMgT0yl4ndF2ebJN/pO8N/vp6FhPqR2YJq5rnSuaA1XonIfPGPZntlxn4hTqNNsIl+L4HzoqdlBCIUZxjgHGWPRIs38pYHEWm87uSn/TOF4dgFoV4fXSzGRoASwIx1h72EV
- lXTeMDF7
- DQb2ULu4DICmc0ESKcHRnZw1WlhVWYRl+ah9SmePz8i7PTkB4v0Iol+9urM7jTPwYLcA6Wp5lhK7U7MkIalU8Nxm/J75913RjFknWTvIqKG+xExH4wgSQ7KXOn/be1DK0qWLkM6fz5q3lcMot3YzwV5k9jpeoJi2IaEIkEf6w9LzCRz2g9iWGMqq5KJjnI8LIY7JrkhkrBGN4wtpNCdpOr6D6dPu+Rsbdoy2UyZx08gRtTUZQabIJeJnpPaf2W5S4wVHvPSmceRLa5Qa1fmETIjeu9AQSUIiDwr4ugq5VQkVkmPSBqcxXD53TG0TyrximShyd
+X-HE-Tag: 1772797172-1939
+X-HE-Meta: U2FsdGVkX1+vE4+kJLSzQRvWMUhvPL/R9rb7MSqKGtl8zuEz4Rcf09kXUn8FsXEy6OadZ9DnXhuM/Gzy1ZUC7pn3Lurcot2XJg7JnJDuFWgUU+ZW44XY5Y/QvYvUy2e4Xn5OTQ3FT/2JmcYb1+8FdHsVszbqhOOm3NehcKmqSyPlMA5VBwe4p/ljwVTT1N92aT4xTgFv6G9IoBD+vYzmo3Sf1dQhcpdPa73kw6OKXm+k9yvbQcjDNpABeHK9RSKFZ4AhzK6/UticVZpqRV29pPU44XEslHQCuCIkFDSvRMsPUqCKFKOpqIcRvStRu/9Ob9LzEECHEQ0SWoEf2a1YfQ96rPhUWPTvEr9zJ3tY8e6zZkFzgoZbSCjkXmHiFi7D344KhJTAF5xrtg0fp3A3OdyGC53VFiijyvUAZjD/+wRLd86mJbzCgM9WJo4cRCPI+ZLuac2SEZGKYih4TuHDnti9BsVAp3yv8CavhRwfhVKkzMv/24lfduhFdEL9/lWLZ3dgaSM0k2oNKi+Sk18RoqxaZiUJXlTUibnoHIr74ftfGqVssS4jDnThMolJnvRy0D2mrVGdfvQzKGbZfERs9f3gB7F5gT4BMjjbo2B2XS1JYtZPJQq7IwqUcvp4+vQquyqhmPbT5nWkJ3vUEkyBHkPLIxfLqdeBLy9EjnhrIOFyX0NrAuH+G91Z7QFMjLJLem7zDGi1/j6Wi0CjNJoQ/3X8CtocjF8XEDm6ofJOyRYEPp5uvU9dGfHZ7EPGmyz34ZM0XNAQ+BdynGLhmkbQxUXdgZ4zJ0pPQxumXmHMtp71Ni+CnQjB0z7E5bXGM0bYq6XvtIP2S5B0JlPXlp/QDOdg6eBlmXWkJ+GYljEV+o4zmB7k3Ly4fYGqp8KhEbXsnp8Nl09ZWJbNZLgdck6ot7NGZXj6YXyVLmYF/5SOEvqf6VyZksbhdKMTmXcBFGT3e8HBsF4mxjY9/TeVz67
+ trMulgew
+ IOccxhD3G2r3promSyW/fCT3J8w0X1/d6K7QGZhZY1hlLkPL06wWkdkOLdH33AKXYlSMIqBsZjhbp7PnjQUgswUQltFWzZnYFOr3eg2DGaNKGZGVwB73a/tEObFPt8oe35CL7dLdTJTh3uJOVdk9EB4VzKxyNP1lB3KmFxgYrwC1gIQR5Ix7VxgqSprEn4WiXqDQOiJfKAmXeJYAF0+/8sIw2vVf2UQTBBifZgX7amBj/tiwJhWpCJax8+y1qtO33q5oA8aNPd1LJBk24yqJwnaOZ1X9XxKsZgg3H6BCJhznjQq2MjCrRnjWwMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,53 +99,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Thu, Mar 05, 2026 at 06:04:55AM -0800, Breno Leitao wrote:
+> Refactor enabled_store() to use a new change_enabled() helper that
+> reuses the shared enum enabled_mode and enabled_mode_strings[]
+> introduced in the previous commit.
+>
+> The helper uses the same loop pattern as change_anon_orders(),
+> iterating over an array of flag bit positions and using
+> test_and_set_bit()/test_and_clear_bit() to track whether the state
+> actually changed. ENABLED_INHERIT is rejected since it is not a
+> valid mode for the global THP setting.
+>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  mm/huge_memory.c | 51 ++++++++++++++++++++++++++++++++++++---------------
+>  1 file changed, 36 insertions(+), 15 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 19619213f54d1..dd5011cf36839 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -330,30 +330,51 @@ static const char * const enabled_mode_strings[] = {
+>  	[ENABLED_NEVER]		= "never",
+>  };
+>
+> +static bool change_enabled(enum enabled_mode mode)
+> +{
+> +	static const unsigned long thp_flags[] = {
+> +		TRANSPARENT_HUGEPAGE_FLAG,
+> +		TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
+> +	};
+> +	bool changed = false;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(thp_flags); i++) {
+> +		if (i == mode)
+> +			changed |= !test_and_set_bit(thp_flags[i],
+> +						     &transparent_hugepage_flags);
+> +		else
+> +			changed |= test_and_clear_bit(thp_flags[i],
+> +						      &transparent_hugepage_flags);
+> +	}
+> +
+> +	return changed;
+> +}
+> +
+>  static ssize_t enabled_store(struct kobject *kobj,
+>  			     struct kobj_attribute *attr,
+>  			     const char *buf, size_t count)
+>  {
+> -	ssize_t ret = count;
+> +	int mode;
+>
+> -	if (sysfs_streq(buf, "always")) {
+> -		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+> -		set_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+> -	} else if (sysfs_streq(buf, "madvise")) {
+> -		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+> -		set_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+> -	} else if (sysfs_streq(buf, "never")) {
+> -		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+> -		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+> -	} else
+> -		ret = -EINVAL;
+> +	mode = sysfs_match_string(enabled_mode_strings, buf);
+> +	if (mode < 0 || mode == ENABLED_INHERIT)
+> +		return -EINVAL;
 
-please pull the latest slab fixes from:
+The mode == ENABLED_INHERIT check is weird, it reads like 'oh a user CAN specify
+this, but if they do we error out', but in reality
+/sys/kernel/mm/transparent_hugepage/enabled explicitly outputs only always,
+inherit, maddvise.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc2
+So, even though it's duplicative, I think it's probably saner to have:
 
-Thanks,
-Vlastimil
+static const char * const anon_enabled_mode_strings[] = {
+	[ENABLED_ALWAYS]	= "always",
+	[ENABLED_MADVISE]	= "madvise",
+	[ENABLED_INHERIT]	= "inherit",
+	[ENABLED_NEVER]		= "never",
+};
 
-======================================
+static const char * const global_enabled_mode_strings[] = {
+	[ENABLED_ALWAYS]	= "always",
+	[ENABLED_MADVISE]	= "madvise",
+	[ENABLED_NEVER]		= "never",
+};
 
-- Fix for slab->stride truncation on 64k page systems due to short type.
-  It was not due to races and lack of barriers in the end. (Harry Yoo)
+Just to make it clear what you're doing.
 
-- Fix for severe performance regression due to unnecessary sheaf refill
-  restrictions exposed by mempool allocation strategy. (Vlastimil Babka)
+And if you add something for shmem add one for that too.
 
-- Stable fix for potential silent percpu sheaf flushing failures on
-  PREEMPT_RT. (Vlastimil Babka)
+With that fixed, feel free to add:
 
-----------------------------------------------------------------
-The following changes since commit e9217ca77dc35b4978db0fe901685ddb3f1e223a:
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-  mm/slab: initialize slab->stride early to avoid memory ordering issues (2026-02-27 16:22:57 +0100)
+>
+> -	if (ret > 0) {
+> +	if (change_enabled(mode)) {
+>  		int err = start_stop_khugepaged();
+> +
+>  		if (err)
+> -			ret = err;
+> +			return err;
+> +	} else {
+> +		/*
+> +		 * Recalculate watermarks even when the mode didn't
+> +		 * change, as the previous code always called
+> +		 * start_stop_khugepaged() which does this internally.
+> +		 */
+> +		set_recommended_min_free_kbytes();
+>  	}
+> -	return ret;
+> +	return count;
+>  }
+>
+>  static struct kobj_attribute enabled_attr = __ATTR_RW(enabled);
+>
+> --
+> 2.47.3
+>
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc2
-
-for you to fetch changes up to 6432f15c818cb30eec7c4ca378ecdebd9796f741:
-
-  mm/slab: change stride type from unsigned short to unsigned int (2026-03-04 11:05:57 +0100)
-
-----------------------------------------------------------------
-slab fixes for 7.0-rc2
-
-----------------------------------------------------------------
-Harry Yoo (1):
-      mm/slab: change stride type from unsigned short to unsigned int
-
-Vlastimil Babka (1):
-      slab: distinguish lock and trylock for sheaf_flush_main()
-
-Vlastimil Babka (SUSE) (1):
-      mm/slab: allow sheaf refill if blocking is not allowed
-
- mm/slab.h | 10 ++++-----
- mm/slub.c | 69 +++++++++++++++++++++++++++++++++++++++++++--------------------
- 2 files changed, 52 insertions(+), 27 deletions(-)
+Cheers, Lorenzo
 
