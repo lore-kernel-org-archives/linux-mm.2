@@ -4,92 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F46DF513ED
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 00:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF943F513E9
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 01:01:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 050396B0005; Thu,  5 Mar 2026 19:51:24 -0500 (EST)
+	id 1C4666B0005; Thu,  5 Mar 2026 20:01:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F40206B0089; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
+	id 1A5F56B0089; Thu,  5 Mar 2026 20:01:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E75F66B008A; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
+	id 0D2BD6B008A; Thu,  5 Mar 2026 20:01:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D5F4E6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 655A1C185C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:51:23 +0000 (UTC)
-X-FDA: 84513809646.11.D223C2A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 961BA40004
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:51:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xsQ3RRU9;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EC5576B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 20:01:52 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86792C18CE
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:01:52 +0000 (UTC)
+X-FDA: 84513836064.05.99EAE63
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4B2031A000B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:01:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ad8IwF1l;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772758281;
+	s=arc-20220608; t=1772758910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DOiMZwz1xnq0nx/TFLYOj8SvO7Te4pTWi/YlrxysVhs=;
-	b=ajW6et2zFav9aRdL5/In/2UqW91rS5eHaGoiBFEzCJgTnAm6yzexjTCPsb8MDdy7lGxxMX
-	gw0d48t9ZIwy5mQnRmrxwp39jmbyvH7FhUnsfevPSsGgB/wWWAfXaLUkCto95Tt087S6hY
-	AUJ/ot9tJh3zJP998Wi0YuCQ6+qFzQc=
+	bh=6thxFI/fSG2qeDiwTWVFl44gS4UIaIejQDB6ZYUqR8A=;
+	b=3zj7jFuH0pXi4SjISwH/9zuTCxSZT/4cbq3pZqCk+/AxS7eGCXiOGJRxC0KXW4dlrpD7jD
+	seabXG/75IcJlJABDRSXwUKERvoQ5QDKIgRI2GiR7sVca1+w8hq5OgfKIRhV0aQrSdeh+4
+	BaThMg5EOrVKNzHR7WJzGcSThnFHgnk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xsQ3RRU9;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772758281; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ad8IwF1l;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772758910; a=rsa-sha256;
 	cv=none;
-	b=Kq1Xf7SxxRiHVHjC9heIPZUUqCctBlRETgHplFKFL+J5mPq1AO85Vf49Nrser3/wKySEAT
-	chHASZC64p2pAGTrRw1GDAxTpNxTYip7DSEmRXYcJezUMOxaJx3KAnAhIZc8jSmgcF8d46
-	Gcj4AREMC/klK56tLjccg4skvllBrGA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52E73400A8;
-	Fri,  6 Mar 2026 00:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F46BC116C6;
-	Fri,  6 Mar 2026 00:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772758280;
-	bh=I/BWr/0mA1g8/sbDHYUZiwRMeSm+NWbDKYSZFZTO4DI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=xsQ3RRU9VHWVxisor/UYVoad0VPyF40BQePhkZZlongLargaRVbJpy4ll1hJcJpYG
-	 uUM3qylVY1DIxL/4r0sQ2KzwOo/C1AJZkWTzXswFmSgdAhKnPGTglRtFPdVoUdnm4r
-	 K6RyzCGxZH8G7WELzz98N2cfM488udhsxHIqEV/o=
-Date: Thu, 5 Mar 2026 16:51:18 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v6 00/33] Eliminate Dying Memory Cgroup
-Message-Id: <20260305165118.33c0af5b7742e18f18b7231a@linux-foundation.org>
-In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
-References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 961BA40004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9197ta4yn9nxao77c3dzb3u664z3i5x7
+	b=g0k9lxsDkbDRfVGhKccZkpEYn9Rd5h9zKh9Dyi5ffSkT9iZXLFt3oo1LHBs47A8664pNRG
+	KUU7k0C5+zuOpB/CJQDkRkwgI1FMfGV07YVok/ELiOJFZGiX1osa4VNcx74T/SodSWCIgR
+	LYZPSU+7Uq0Db6kPT6mrOPM+QUhfgVM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772758909;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6thxFI/fSG2qeDiwTWVFl44gS4UIaIejQDB6ZYUqR8A=;
+	b=Ad8IwF1leo7YS2LFeSkfza1nCik6n3pj12XAZAY34kshUVxsnrvSBT7t+9klNHlZ6nn6gY
+	P2eRJh3ZmErY6apGNhHqWYQdydNUYOwIwOyZ7gOSVJ7fOKflf4yWvD8+TeTEka4D9TXwhR
+	VU3t0iWW/SuhMqhzpd5QTg4u8+uuVIk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-11SKyYnuOPazhFBmemY6iA-1; Thu,
+ 05 Mar 2026 20:01:46 -0500
+X-MC-Unique: 11SKyYnuOPazhFBmemY6iA-1
+X-Mimecast-MFC-AGG-ID: 11SKyYnuOPazhFBmemY6iA_1772758904
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F1B76180035D;
+	Fri,  6 Mar 2026 01:01:43 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.21])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BFD2C1956095;
+	Fri,  6 Mar 2026 01:01:37 +0000 (UTC)
+Date: Fri, 6 Mar 2026 09:01:32 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>,
+	Christoph Hellwig <hch@infradead.org>
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <aaonbAbb6D6pirIP@fedora>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
+ <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org>
+ <aZ7BbosIr2FvZFAe@fedora>
+ <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org>
+ <aaFinIsCmitHSP_c@fedora>
+ <08db9e93-3d29-42e0-ae57-79c295d75753@kernel.org>
+ <aamluV66pLIdo66g@fedora>
+MIME-Version: 1.0
+In-Reply-To: <aamluV66pLIdo66g@fedora>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: sa8EZomsfu453D5iwHRvkWzX2hT21b6dwiirZttoTdI_1772758904
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4B2031A000B
+X-Stat-Signature: kp3euntn41a7wcndefnink5pqhrz93h5
 X-Rspam-User: 
-X-HE-Tag: 1772758281-696201
-X-HE-Meta: U2FsdGVkX1+o3b+CMUxIRdq0AKKB/KaTb59b+wwjQowOBCCA2peCULJJ7XICpzpPq/2yjpLIVArS87W5vfynnznYJvob+SGbpikVlfMg84reWJMP5Q+Hl+25kr9KmZN3ny1VO+J3Wi+eH2qxreVMw6j+brXXLqODe/0+VBnkZVge2fk6AXtbYUyRHBTVuyvrUF/Cdlt1U5/7GiL/AKoZ8UJ2KC7CMgdl98Y9QaHPVWlWp21wAOR1CW7IXK7RuOmV95SOfZB3NeovHob97mtgX16uZQeLcSz3OMAWu5U8w5WK8PY9jo17L5DiCfmdZJb9yJglKd+9pAv9rGa0pIHy3viGHmDWF7lflY6wLPSkgKsKBCSq2Mq0K9Xi2Yi1ZBtNqY/sVrywXH94AbI1MztTfCZwgGkkEM4mj6j+zzy5dRaNq9/rwsQwOXDAX4xU9VqcYzhbPjVcC4PoILwDTHndDOIhNByx1+lw1rTgpLn//WteFrIxUqaya3+Y4TsxXSdA2uSg7aOJvwL59K/t66J7vkhVSWjpTdO2HOH0/vPWdgu2XDzRr92PyUl8QHi67BnHtsdgiCbxP677Y88b74VIX8cZLbWFrTBgqjKd9BLL78IE9msrwxIU7O9b31hBUi0WDitNqaZ43jkryrcaJz+wAavRLxFWr27zDEeBJWaXUEySjyniKbdhG0Z2/XfDWvfAW4E3K7ll3DDDsaX3veikg+iQSoo7HuloDscv3NHjKzqaNTCxtYck87862qqQ8PwNrmnaUDqLaPS+QBcLhNp3PQqSup+BeUQgzJGsvSdJETTqpEF1HTrVnzwAAaX+BkhJN06/RG6O7j4vSebcq1jvNaNlgdURV7YhttkjT1Fls9w14SC87nzNAhp32cUB6Cx6yH7F/mFfGmcdnsi3h8nYEwPxpF5Wug6JS88l43HEPIsArb0iNQ80RBdW8tCkbxfefW+DBb4H5CoUs3rFYWU
- m8NbrzCM
- Au6WW/hON+oeDGCCUF5rO0tx02VK945bXAODUABVsgpQEwJ9zuX76jacnVg3gzLdbcLJYrZ4Y8yauJfK04Kok87XBAJJ/P3y4TOtBxAeWAAJVKLUj5Qf22MZhiKr0FjCYHW0PnWOAjCjTKgD15Mkc4u1lF4mFY28l/ORaPpsCK/5IZqWOYDS710jcJPd5sys3X/pR6RwZ/IiDSZK1oGjb3gZ80kiaXcXYggsm4w/r07W9Pz+0klBbJKTnUKaKWtOrQ0PC
+X-HE-Tag: 1772758910-575527
+X-HE-Meta: U2FsdGVkX19IJ0i9LdOjwj9FVKeanYmTaCGSv7TpjBKkQp+YS7qJYVWd1Rtz86im+X3poeVSF8anBwo7UlOyy6ZF3994hk3rhR0KOCsnPg1gEzPcpE7pAn51w2zqJDYtW101GRoygGmN/xvaZwBN33qQj45kS5fb49fb2TP9WJuAg1s/QYwromzehjzLN9uM+8owL+5r9RtrY8f7YMsz//jQR2ABjswTzJkygKtivA7HasNLZAZop/FYmMWR7TbK4stqPnu965nzmno+AleIjABee8JFpEjwdbWROA/4ighvmGjR+k9Ynmm9IhHYMuyhjkO/5lUkrTyAgzw87D3Vlm/RmXeRQmVzpHOGa8MtRiwyaipoNuPm6wA8f+dYCGlHvy8juWG1aHEp40chzu7txjqzrwwhj7XgRg/6To76uKCvAB54eB7xBQGMB/KdRr2BLZaEHkRfbqMB9/Vi6oDaYMxZ+m8h1VFSvbX+6uJXvtqHNu3/1/j96xKAoMxtErdGkTZI88eovm+frncFElIfYcwIynv60sn411njmLDh48QuO4RidN4b5SmZI+MLpeIq20KslC0wv3i1HvRhCvGHVoqK09LZ3JqPVxNei2j9wcOyGj2xOZ1V+IftIenE7e6l8Y+aYX9HRQdvbyybb288dKHTW+z1ey1yo+rThcB3AfbVcpFshVdrsbtbYs52HXLEh6piDjoATE6QdJRrxRlp+k7C4q5cEwxYKYe6y35v6qGQwDFAiGlwb8yFeMoRb6TJjtbNv0DtkIPmoGXotYysHUEJTfcFioJwXM3HDGdzo5wHzvrRXebv6LGZNndHQ31XfENhaTgF66ZbfNq9FThew8MS89nn9WpnKIdBFf8FygF9KCQ8Ut/yZcL7kNqAoJfH4WkH+vvyL+9EkHHWhUMO3948ZTlRBCWtGkRAHg8lZ7znSux+moAoeDj5ndstwdJILkzf88d2f+A2r2/aqrS
+ bUrSsE5v
+ u1g3xMxOSNqYD09yF/BP8QN9FgrUcYmtVBddX5l5/FZydq1l0Q4e1WHViQtjADQELm6AGdbv2sQuVtT2dEFMc1Or5wMwBtTnZSa3W8qAbvVQAg8lKFbQnKv4Vz5CQluQd0bUZK7Cmr0E/2PfjZw7myGkaKQeMNPIH8rPMcE6OiYsQ2fvrSD6tmWU5EErnsk8zJqmzguTbbA4eVYMxi6WaEhpgfCoSChsX1NPyTlBDv7zN/4WsmSHaEBXdferAGPPbUmN2oDdrFFM4TetTUwkkbr41A/1WHjRyA4QAWSlqXXGGILCYlhn1yayI1IlV+lCa2HYw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,233 +114,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  5 Mar 2026 19:52:18 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Thu, Mar 05, 2026 at 11:48:09PM +0800, Ming Lei wrote:
+> On Thu, Mar 05, 2026 at 02:05:20PM +0100, Vlastimil Babka (SUSE) wrote:
+> > On 2/27/26 10:23, Ming Lei wrote:
+> > > On Thu, Feb 26, 2026 at 07:02:11PM +0100, Vlastimil Babka (SUSE) wrote:
+> > >> On 2/25/26 10:31, Ming Lei wrote:
+> > >> > Hi Vlastimil,
+> > >> > 
+> > >> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
+> > >> >> On 2/24/26 21:27, Vlastimil Babka wrote:
+> > >> >> > 
+> > >> >> > It made sense to me not to refill sheaves when we can't reclaim, but I
+> > >> >> > didn't anticipate this interaction with mempools. We could change them
+> > >> >> > but there might be others using a similar pattern. Maybe it would be for
+> > >> >> > the best to just drop that heuristic from __pcs_replace_empty_main()
+> > >> >> > (but carefully as some deadlock avoidance depends on it, we might need
+> > >> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
+> > >> >> > tomorrow to test this theory, unless someone beats me to it (feel free to).
+> > >> >> Could you try this then, please? Thanks!
+> > >> > 
+> > >> > Thanks for working on this issue!
+> > >> > 
+> > >> > Unfortunately the patch doesn't make a difference on IOPS in the perf test,
+> > >> > follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
+> > >> 
+> > >> what about this patch in addition to the previous one? Thanks.
+> > > 
+> > > With the two patches, IOPS increases to 22M from 13M, but still much less than
+> > > 36M which is obtained in v6.19-rc5, and slab-sheave PR follows v6.19-rc5.
+> > 
+> > OK thanks! Maybe now we're approching the original theories about effective
+> > caching capacity etc...
+> > 
+> > > Also alloc_slowpath can't be observed any more.
+> > > 
+> > > Follows perf profile with the two patches:
+> > 
+> > What's the full perf profile of v6.19-rc5 and full profile of the patched
+> > 7.0-rc2 then? Thanks.
+> > 
+> > Also contents of all the files under /sys/kernel/slab/$cache (forgot which
+> > particular one it was) with CONFIG_SLUB_STATS=y would be great, thanks.
+> 
+> Please see the following log, and let me know if any other info is needed.
+> 
+> 1) v6.19-rc5
+> 
+> - IOPS: 34M
+> 
+> - perf profile
+> 
+> + perf report --vmlinux=/root/git/linux/vmlinux --kallsyms=/proc/kallsyms --stdio --max-stack 0
+> # To display the perf.data header info, please use --header/--header-only options.
+> #
+> #
+> # Total Lost Samples: 0
+> #
+> # Samples: 1M of event 'cycles:P'
+> # Event count (approx.): 1045386603400
+> #
+> # Children      Self  Command          Shared Object             Symbol
+> # ........  ........  ...............  ........................  ..............................................
+> #
+>     14.41%    14.41%  kublk            [kernel.kallsyms]         [k] _copy_from_iter
+>     11.25%    11.25%  io_uring         [kernel.kallsyms]         [k] blk_mq_sched_bio_merge
+>      3.73%     3.73%  kublk            [kernel.kallsyms]         [k] slab_update_freelist.isra.0
+>      3.53%     3.53%  kublk            [kernel.kallsyms]         [k] ublk_dispatch_req
+>      3.33%     3.33%  io_uring         [kernel.kallsyms]         [k] blk_mq_rq_ctx_init.isra.0
+>      2.65%     2.65%  kublk            [kernel.kallsyms]         [k] blk_mq_free_request
+>      2.01%     2.01%  io_uring         [kernel.kallsyms]         [k] blkdev_read_iter
+>      1.92%     1.92%  io_uring         [kernel.kallsyms]         [k] __io_read
+>      1.67%     1.67%  io_uring         [kernel.kallsyms]         [k] blk_mq_submit_bio
+>      1.54%     1.54%  kublk            [kernel.kallsyms]         [k] ublk_ch_uring_cmd_local
+>      1.36%     1.36%  io_uring         [kernel.kallsyms]         [k] __fsnotify_parent
+>      1.30%     1.30%  io_uring         [kernel.kallsyms]         [k] clear_page_erms
+>      1.19%     1.19%  io_uring         [kernel.kallsyms]         [k] llist_reverse_order
+>      1.11%     1.11%  io_uring         [kernel.kallsyms]         [k] blk_cgroup_bio_start
+>      0.98%     0.98%  kublk            [kernel.kallsyms]         [k] __check_object_size
+>      0.98%     0.98%  kublk            kublk                     [.] ublk_queue_io_cmd
+>      0.97%     0.97%  io_uring         [kernel.kallsyms]         [k] __submit_bio
+>      0.97%     0.97%  kublk            [kernel.kallsyms]         [k] __slab_free
+>      0.96%     0.96%  io_uring         [kernel.kallsyms]         [k] submit_bio_noacct_nocheck
+>      0.92%     0.92%  kublk            [kernel.kallsyms]         [k] io_issue_sqe
+>      0.91%     0.91%  io_uring         io_uring                  [.] submitter_uring_fn
+>      0.88%     0.88%  io_uring         io_uring                  [.] get_offset.part.0
+>      0.86%     0.86%  io_uring         [kernel.kallsyms]         [k] kmem_cache_alloc_noprof
+>      0.85%     0.85%  kublk            [kernel.kallsyms]         [k] ublk_copy_user_pages.isra.0
+>      0.77%     0.77%  io_uring         [kernel.kallsyms]         [k] blk_mq_start_request
+>      0.74%     0.74%  kublk            kublk                     [.] ublk_null_queue_io
+>      0.74%     0.74%  io_uring         [kernel.kallsyms]         [k] io_import_reg_buf
+>      0.67%     0.67%  io_uring         [kernel.kallsyms]         [k] io_issue_sqe
+>      0.66%     0.66%  io_uring         [kernel.kallsyms]         [k] bio_alloc_bioset
+>      0.66%     0.66%  kublk            [kernel.kallsyms]         [k] kmem_cache_free
+>      0.66%     0.66%  io_uring         [kernel.kallsyms]         [k] __blkdev_direct_IO_async
+>      0.64%     0.64%  kublk            [kernel.kallsyms]         [k] __io_issue_sqe
+>      0.61%     0.61%  io_uring         [kernel.kallsyms]         [k] submit_bio
+>      0.59%     0.59%  kublk            [kernel.kallsyms]         [k] __io_uring_cmd_done
+>      0.58%     0.58%  io_uring         [kernel.kallsyms]         [k] blk_rq_merge_ok
+>      0.56%     0.56%  kublk            [kernel.kallsyms]         [k] __io_submit_flush_completions
+>      0.54%     0.54%  kublk            kublk                     [.] __ublk_io_handler_fn.isra.0
+>      0.53%     0.53%  kublk            [kernel.kallsyms]         [k] io_uring_cmd
+>      0.52%     0.52%  io_uring         [kernel.kallsyms]         [k] __io_prep_rw
+>      0.52%     0.52%  io_uring         [kernel.kallsyms]         [k] io_free_batch_list
+>      0.50%     0.50%  kublk            [kernel.kallsyms]         [k] io_uring_cmd_prep
+>      0.49%     0.49%  kublk            [kernel.kallsyms]         [k] blk_account_io_done.part.0
+>      0.49%     0.49%  io_uring         [kernel.kallsyms]         [k] __io_submit_flush_completions
+> 
+> 
+> - slab stat
+> 
+> # (cd /sys/kernel/slab/bio-256/ && find . -type f -exec grep -aH . {} \;)
+> ./remote_node_defrag_ratio:100
+> ./free_frozen:203789653 C0=13137513 C2=16103904 C4=5312681 C6=9805649 C8=14262027 C10=13676236 C12=8700700 C14=13041782 C16=11558292 C18=13258018 C19=2 C20=2813290 C22=7752577 C24=19173693 C26=16631916 C28=21707419 C29=2 C30=16853951 C31=1
+> ./total_objects:6732 N1=3315 N5=3417
+> ./cpuslab_flush:0
+> ./alloc_fastpath:1284958471 C1=80252197 C3=80197810 C4=125 C5=82882536 C6=125 C7=83898247 C8=125 C9=81412735 C11=80400026 C12=125 C13=78664565 C14=44 C15=80954403 C17=80070327 C19=75310035 C20=125 C21=83788507 C22=81 C23=84943484 C25=78466239 C26=125 C27=78389061 C29=76890573 C31=78436849 C50=1 C60=1
+> ./cpu_partial_free:37988123 C0=2275928 C2=2190868 C4=2789178 C6=2685497 C8=2282195 C10=2266792 C12=2340158 C14=2302589 C16=2359282 C18=2154683 C20=3028332 C22=2921916 C24=2103757 C26=2157902 C28=1972836 C30=2156210
+> ./cpu_slabs:58 N1=28 N5=30
+> ./objects:6167 N1=3092 N5=3075
+> ./deactivate_full:0
+> ./sheaf_return_slow:0
+> ./objects_partial:608 N1=287 N5=321
+> ./sheaf_return_fast:0
+> ./cpu_partial:52
+> ./cmpxchg_double_cpu_fail:1 C7=1
+> ./free_slowpath:1361594822 C0=85109840 C2=85495921 C4=86775189 C6=88474098 C8=86495486 C10=85287670 C12=82701232 C14=85802194 C16=84711284 C18=79945983 C19=2 C20=87399505 C22=89361232 C24=84116440 C26=83560456 C28=82780090 C29=2 C30=83578197 C31=1
+> ./barn_get_fail:0
+> ./sheaf_prefill_oversize:0
+> ./deactivate_to_tail:0
+> ./skip_kfence:0
+> ./min_partial:5
+> ./order_fallback:0
+> ./sheaf_capacity:0
+> ./deactivate_empty:3616332 C0=269533 C2=262401 C4=116355 C6=112383 C8=271620 C10=266348 C12=278359 C14=271083 C16=264315 C18=242601 C20=170557 C22=159604 C24=231322 C26=240708 C28=220103 C30=239040
+> ./sheaf_flush:0
+> ./free_rcu_sheaf:0
+> ./alloc_from_partial:11612237 C1=660211 C3=634301 C5=949155 C6=1 C7=914355 C9=661811 C11=658753 C13=679880 C15=669226 C17=684745 C19=624788 C20=1 C21=1037955 C22=1 C23=1002678 C25=611243 C27=625403 C29=571631 C31=626099
+> ./sheaf_alloc:0
+> ./sheaf_free:0
+> ./sheaf_prefill_slow:0
+> ./sheaf_prefill_fast:0
+> ./poison:0
+> ./red_zone:0
+> ./free_cpu_sheaf:0
+> ./free_slab:3616434 C0=269535 C2=262407 C4=116368 C6=112391 C8=271622 C10=266351 C12=278359 C14=271084 C16=264354 C18=242601 C20=170559 C22=159611 C24=231322 C26=240711 C28=220114 C30=239045
+> ./slabs:132 N1=65 N5=67
+> ./barn_get:0
+> ./cpu_partial_node:22759400 C1=1312100 C3=1260562 C5=1821488 C6=2 C7=1752623 C9=1315094 C11=1309216 C13=1351244 C15=1329937 C17=1360857 C19=1241554 C20=2 C21=1968791 C22=2 C23=1898000 C25=1214784 C27=1242922 C29=1136091 C31=1244131
+> ./alloc_slowpath:76640471 C1=4857913 C3=5298367 C4=3 C5=3892806 C6=3 C7=4575965 C8=3 C9=5082878 C11=4887906 C12=3 C13=4036796 C14=1 C15=4848003 C17=4641269 C19=4636149 C20=3 C21=3611116 C22=2 C23=4417922 C25=5650460 C26=3 C27=5171520 C29=5889792 C31=5141585 C50=1 C60=1 C62=1
+> ./destroy_by_rcu:1
+> ./free_rcu_sheaf_fail:0
+> ./barn_put:0
+> ./usersize:0
+> ./sanity_checks:0
+> ./barn_put_fail:0
+> ./align:64
+> ./alloc_node_mismatch:0
+> ./deactivate_remote_frees:0
+> ./alloc_slab:3616566 C1=303677 C3=296031 C4=3 C5=18366 C7=18301 C8=3 C9=305344 C11=298932 C12=3 C13=309156 C14=1 C15=303522 C17=313382 C19=288344 C21=21685 C23=21353 C25=277789 C26=3 C27=289631 C29=265057 C31=285980 C50=1 C60=1 C62=1
+> ./free_remove_partial:102 C0=2 C2=6 C4=13 C6=8 C8=2 C10=3 C14=1 C16=39 C20=2 C22=7 C26=3 C28=11 C30=5
+> ./aliases:0
+> ./store_user:0
+> ./trace:0
+> ./reclaim_account:0
+> ./order:2
+> ./sheaf_refill:0
+> ./object_size:256
+> ./alloc_refill:38652283 C1=2581925 C3=3107474 C5=1103799 C7=1890686 C9=2800630 C11=2621006 C13=1696518 C15=2545318 C17=2282285 C19=2481464 C21=582686 C23=1495892 C25=3546646 C27=3013564 C29=3917013 C31=2985377
+> ./alloc_cpu_sheaf:0
+> ./cpu_partial_drain:12662698 C0=758642 C2=730289 C4=929725 C6=895165 C8=760731 C10=755597 C12=780052 C14=767529 C16=786427 C18=718227 C20=1009443 C22=973972 C24=701252 C26=719300 C28=657611 C30=718736
+> ./free_fastpath:4 C1=2 C11=2
+> ./hwcache_align:1
+> ./cpu_partial_alloc:22759385 C1=1312100 C3=1260561 C5=1821486 C6=2 C7=1752623 C9=1315093 C11=1309215 C13=1351242 C15=1329937 C17=1360857 C19=1241553 C20=2 C21=1968790 C22=1 C23=1897999 C25=1214782 C27=1242922 C29=1136091 C31=1244129
+> ./cmpxchg_double_fail:6247305 C0=396268 C1=16193 C2=484201 C3=11558 C4=198887 C5=7233 C6=336779 C7=7332 C8=444665 C9=11539 C10=403230 C11=10130 C12=258163 C13=6666 C14=389004 C15=9620 C16=357182 C17=9184 C18=378255 C19=9012 C20=103655 C21=2375 C22=260015 C23=6160 C24=552885 C25=22738 C26=464990 C27=11172 C28=592307 C29=23777 C30=451529 C31=10601
+> ./deactivate_bypass:37988161 C1=2275987 C3=2190892 C4=2 C5=2789006 C6=2 C7=2685278 C8=2 C9=2282247 C11=2266899 C12=2 C13=2340277 C15=2302684 C17=2358983 C19=2154684 C20=2 C21=3028429 C22=1 C23=2922029 C25=2103813 C26=2 C27=2157955 C29=1972778 C31=2156207
+> ./objs_per_slab:51
+> ./partial:23 N1=10 N5=13
+> ./slabs_cpu_partial:1122(44) C0=51(2) C2=25(1) C3=25(1) C4=76(3) C5=51(2) C6=51(2) C8=51(2) C9=25(1) C10=25(1) C11=25(1) C12=51(2) C13=51(2) C14=51(2) C16=25(1) C18=51(2) C19=25(1) C20=76(3) C21=25(1) C22=25(1) C23=25(1) C24=25(1) C25=51(2) C26=51(2) C28=76(3) C30=51(2) C31=51(2)
+> ./free_add_partial:34371762 C0=2006393 C2=1928466 C4=2672820 C6=2573112 C8=2010573 C10=2000443 C12=2061797 C14=2031504 C16=2094966 C18=1912080 C20=2857772 C22=2762312 C24=1872434 C26=1917192 C28=1752730 C30=1917168
+> ./slab_size:320
+> ./cache_dma:0
+> ./deactivate_to_head:0
+> 
+> 
+> 
+> 2) v7.0-rc2(commit c107785c7e8d) + two patches
+> 
+> 
+> - IOPS: 23M
 
->  - refactor mod_memcg_state() and mod_memcg_lruvec_state()
->    (suggested by Yosry Ahmed)
->  - use non-atomic method to reparent non-hierarchical stats
->    (suggested by Yosry Ahmed)
->  - remove the redundant declaration in  [PATCH v5 29/32]
->    (pointed by Shakeel Butt)
->  - collect Acked-bys
+BTW, the two patches can be applied against 815c8e35511d (
+"Merge branch 'slab/for-7.0/sheaves' into slab/for-next"), which is the 1st
+Merge Request following v6.19-rc5 exactly in linus/master.
 
-Updated, thanks.
+I have run test against 815c8e35511d ("Merge branch 'slab/for-7.0/sheaves' into slab/for-next")
+with the two fixes, same IOPS is observed, and similar perf profile. 
 
-Appended is how this update altered mm.git.
 
-Hopefully we'll be able to move this into mm-unstable (and hance
-linux-next) soon,
-
---- a/kernel/cgroup/cgroup.c~b
-+++ a/kernel/cgroup/cgroup.c
-@@ -6043,8 +6043,9 @@ out_unlock:
-  */
- static void css_killed_work_fn(struct work_struct *work)
- {
--	struct cgroup_subsys_state *css = container_of(to_rcu_work(work),
--				struct cgroup_subsys_state, destroy_rwork);
-+	struct cgroup_subsys_state *css;
-+
-+	css = container_of(to_rcu_work(work), struct cgroup_subsys_state, destroy_rwork);
- 
- 	cgroup_lock();
- 
---- a/mm/memcontrol.c~b
-+++ a/mm/memcontrol.c
-@@ -526,25 +526,25 @@ unsigned long lruvec_page_state_local(st
- }
- 
- #ifdef CONFIG_MEMCG_V1
--static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-+static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 				     enum node_stat_item idx, int val);
- 
- void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
- 				       struct mem_cgroup *parent, int idx)
- {
--	int i = memcg_stats_index(idx);
- 	int nid;
- 
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
--
- 	for_each_node(nid) {
- 		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
- 		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
- 		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
-+		struct mem_cgroup_per_node *child_pn, *parent_pn;
- 
--		__mod_memcg_lruvec_state(child_lruvec, idx, -value);
--		__mod_memcg_lruvec_state(parent_lruvec, idx, value);
-+		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
-+		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
-+
-+		__mod_memcg_lruvec_state(child_pn, idx, -value);
-+		__mod_memcg_lruvec_state(parent_pn, idx, value);
- 	}
- }
- #endif
-@@ -830,39 +830,43 @@ static inline void get_non_dying_memcg_e
- }
- #endif
- 
--/**
-- * mod_memcg_state - update cgroup memory statistics
-- * @memcg: the memory cgroup
-- * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
-- * @val: delta to add to the counter, can be negative
-- */
--void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
--		       int val)
-+static void __mod_memcg_state(struct mem_cgroup *memcg,
-+			      enum memcg_stat_item idx, int val)
- {
- 	int i = memcg_stats_index(idx);
- 	int cpu;
- 
--	if (mem_cgroup_disabled())
--		return;
--
- 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
- 		return;
- 
- 	cpu = get_cpu();
- 
--	memcg = get_non_dying_memcg_start(memcg);
--
- 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
- 	val = memcg_state_val_in_pages(idx, val);
- 	memcg_rstat_updated(memcg, val, cpu);
- 
--	get_non_dying_memcg_end();
--
- 	trace_mod_memcg_state(memcg, idx, val);
- 
- 	put_cpu();
- }
- 
-+/**
-+ * mod_memcg_state - update cgroup memory statistics
-+ * @memcg: the memory cgroup
-+ * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
-+ * @val: delta to add to the counter, can be negative
-+ */
-+void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
-+		       int val)
-+{
-+	if (mem_cgroup_disabled())
-+		return;
-+
-+	memcg = get_non_dying_memcg_start(memcg);
-+	__mod_memcg_state(memcg, idx, val);
-+	get_non_dying_memcg_end();
-+}
-+
- #ifdef CONFIG_MEMCG_V1
- /* idx can be of type enum memcg_stat_item or node_stat_item. */
- unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
-@@ -881,35 +885,25 @@ unsigned long memcg_page_state_local(str
- 	return x;
- }
- 
--static void __mod_memcg_state(struct mem_cgroup *memcg,
--			      enum memcg_stat_item idx, int val)
-+void reparent_memcg_state_local(struct mem_cgroup *memcg,
-+				struct mem_cgroup *parent, int idx)
- {
--	int i = memcg_stats_index(idx);
--	int cpu;
--
--	if (mem_cgroup_disabled())
--		return;
--
--	cpu = get_cpu();
--
--	this_cpu_add(memcg->vmstats_percpu->state[i], val);
--	val = memcg_state_val_in_pages(idx, val);
--	memcg_rstat_updated(memcg, val, cpu);
--	trace_mod_memcg_state(memcg, idx, val);
-+	unsigned long value = memcg_page_state_local(memcg, idx);
- 
--	put_cpu();
-+	__mod_memcg_state(memcg, idx, -value);
-+	__mod_memcg_state(parent, idx, value);
- }
-+#endif
- 
--static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
-+static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
- 				     enum node_stat_item idx, int val)
- {
--	struct mem_cgroup_per_node *pn;
--	struct mem_cgroup *memcg;
-+	struct mem_cgroup *memcg = pn->memcg;
- 	int i = memcg_stats_index(idx);
- 	int cpu;
- 
--	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	memcg = pn->memcg;
-+	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
-+		return;
- 
- 	cpu = get_cpu();
- 
-@@ -926,20 +920,6 @@ static void __mod_memcg_lruvec_state(str
- 	put_cpu();
- }
- 
--void reparent_memcg_state_local(struct mem_cgroup *memcg,
--				struct mem_cgroup *parent, int idx)
--{
--	int i = memcg_stats_index(idx);
--	unsigned long value = memcg_page_state_local(memcg, idx);
--
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
--
--	__mod_memcg_state(memcg, idx, -value);
--	__mod_memcg_state(parent, idx, value);
--}
--#endif
--
- static void mod_memcg_lruvec_state(struct lruvec *lruvec,
- 				     enum node_stat_item idx,
- 				     int val)
-@@ -947,32 +927,14 @@ static void mod_memcg_lruvec_state(struc
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 	struct mem_cgroup_per_node *pn;
- 	struct mem_cgroup *memcg;
--	int i = memcg_stats_index(idx);
--	int cpu;
--
--	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
--		return;
- 
- 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
--	memcg = pn->memcg;
--
--	cpu = get_cpu();
--
--	memcg = get_non_dying_memcg_start(memcg);
-+	memcg = get_non_dying_memcg_start(pn->memcg);
- 	pn = memcg->nodeinfo[pgdat->node_id];
- 
--	/* Update memcg */
--	this_cpu_add(memcg->vmstats_percpu->state[i], val);
--	/* Update lruvec */
--	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
--	val = memcg_state_val_in_pages(idx, val);
--	memcg_rstat_updated(memcg, val, cpu);
-+	__mod_memcg_lruvec_state(pn, idx, val);
- 
- 	get_non_dying_memcg_end();
--
--	trace_mod_memcg_lruvec_state(memcg, idx, val);
--
--	put_cpu();
- }
- 
- /**
-_
+Thanks,
+Ming
 
 
