@@ -4,79 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 551F9F01835
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 13:59:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F72CF0183A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:06:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 971EF6B0005; Fri,  6 Mar 2026 08:59:47 -0500 (EST)
+	id C65766B0005; Fri,  6 Mar 2026 09:06:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 920636B008A; Fri,  6 Mar 2026 08:59:47 -0500 (EST)
+	id C12DB6B0089; Fri,  6 Mar 2026 09:06:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8565D6B008C; Fri,  6 Mar 2026 08:59:47 -0500 (EST)
+	id AF50B6B008A; Fri,  6 Mar 2026 09:06:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 76A986B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:59:47 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 29D5C1A05BD
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:59:47 +0000 (UTC)
-X-FDA: 84515796414.22.F760791
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 86E9514000B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:59:43 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=H6P4ao8N;
-	spf=pass (imf26.hostedemail.com: domain of jianhuizz@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=jianhuizz@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FBA96B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:06:35 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4028613B2D6
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:06:35 +0000 (UTC)
+X-FDA: 84515813550.07.A98771D
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4FD86C0003
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:06:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JsnbHz2N;
+	spf=pass (imf22.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772805584;
+	s=arc-20220608; t=1772805993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=EO4E4RR2NMVQkuWMb7xivQNzUGAZ+NqsTaP5UMh4SU4=;
-	b=hgRTAAEt7UIBfh/11GmiUJdTyBuw8GiJB++m1vMRpMGfTqcy3F7UeogolNtw0Vokaqpf0I
-	SCTfQYf6AbxIJfxZduDR2ktqBUuBm5G4xumQHNGPyOmAR0HQ2n53rSx/7bwO6ynyy+Wki0
-	q5c/9tCxf7wFVJaULgi1OoxNvilDInw=
+	bh=W13+CBFURjvfUajrgf80QK1S6lJ7DWAdvvvI450YWW4=;
+	b=esgMyON1g7znNWooclEP3xj3lpP3fkrxpPgzmgd3M2oM8Ncdcebaic5F3BbA1GkorOdOeX
+	4PrhB0KhlYIiJv7gmvAI/bSjyN1l83du6sxGGt2TzQP3EuWqqLKKUEvzz9d+U8AmlRsW+g
+	tSqWPe0nwISa8WyfTQXl63Njl5Q0RZQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=H6P4ao8N;
-	spf=pass (imf26.hostedemail.com: domain of jianhuizz@qq.com designates 162.62.57.210 as permitted sender) smtp.mailfrom=jianhuizz@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772805584; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JsnbHz2N;
+	spf=pass (imf22.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772805993; a=rsa-sha256;
 	cv=none;
-	b=489skeWrvxqfklpQ7rlLj2o9Q9FyOE3ppASlGBpA2Ovj5sO8Ft+cE8XKMaa3jmPVdmMFbH
-	NqLJ5vHh+UNQjze9eLSgQca0oPHnH0RgaHqk4F6BZy34xolo7IXLXoaN3bdelUgfuwRA9M
-	eq5zodwGFViJnN4MgH0+JQr3hFTXeF8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1772805575; bh=EO4E4RR2NMVQkuWMb7xivQNzUGAZ+NqsTaP5UMh4SU4=;
-	h=From:To:Cc:Subject:Date;
-	b=H6P4ao8NfdT/AZyoYXiS2Fc0QrPpgTITtyu0tOwcc6hjcJnYfSB1zADWBfCj+KlVS
-	 ttPQxgwHKu5p+BNWXTse/6vFphtGXE3dAlpgkGL4coN2NDqZpMDMbbo6aWmT6pobuB
-	 DqeLLj6OTZLV/uXoWriZATn+3gnvyF4LJx/YHVDQ=
-Received: from zjh-os.zhaoxin.com ([2407:cdc0:d002::1061])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id EDCACC70; Fri, 06 Mar 2026 21:59:28 +0800
-X-QQ-mid: xmsmtpt1772805568tvj671ho7
-Message-ID: <tencent_F70AFD1D8067E3D2409764BC1A199DA6AF0A@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb56bAAPd7juxWrgPh++Gjl/gJCYRApNRUup2ECelGqd86l2Z+tAw
-	 TZoCbzo3M+9D6TOn7IHUbhmMD37MmH5s8nL5fRdGDbUd0B/cNfv9ZJEtPBIOqAyEwWlOD3BDjaW8
-	 SZtfTZviILef/JRGHoWRcJJhu3nuptb2cP0eCO0WjFzOjIJsw/fsozpP1GlOec5VdGFwgGEA1YYy
-	 cYl4f1pHa7RIFWIV7W0aYDtp8+gdaA3PynLrX1uNUDCPWZng9oqDNz+8/UA+eQXiUXRAe8/XMiyI
-	 mC3JyNWxeSGOLYTgBUXKxHojLiEder0y5fYnrRvgBbSb7Lqh1mZ6FZlm2s7QBIGJycyoWl81hCAy
-	 uEes/aCAMz6tZOdkUry9oZBQMADdRrRLITl5k94IxQmnSMHqp9o0IAa7JN4fVvXJaxmT1hoXcUgS
-	 o9mXq0kmAKNot2vXg0Qjjn8FjIl1ZJlQUl0k0V3VIgilx1mp7sxT1ImgJd7iqa5LhT2wIyiIb5I5
-	 bscaYR/JipocAH8ANcPVVvea51jzyvWq/aI1RoTPvW7pIW03ne3jKhASEbDdWVovu1Y/KsISVxx5
-	 8UairAnz8fv8KYr7W1zbpj73Oddy87EpLieQ2GjgnZGipnMIis7jCh6TcQLC0c8g8UKCLipQvLal
-	 vikHR2u5gT5Tn8oBSGZCM9R0NDql8tDaRrcUYGzfORj1xZVuPd19DHtwBZEQ99KCzQTIcxUh9uVq
-	 rQI1m4lg9s/Wdbl9B4BRXtLB2DTk5hKevSunsuKm48fqIMMNrQnQxs2r5KMR38UdihSq8mbIHzvs
-	 iiOENGd9yKbu6pavWV/fkUuYplQv6bnBdJsrEEDlsO1lerIgUytEszjvNoE0Aohg+sd2t6SCvp1E
-	 1UN3Ulj2+/tkVlFaThdn5yu9jcIZsqEIpjtkkD8XAKSj54Y1weAHE08wkGIpIx0v+15tj5B/WHvv
-	 B9TxhPvHVklU0h+vOOapetmh3RVKCzyZTUAnwU+DG+AWdiUaQtZ8kOF/SDY+7cQ09yGQ+cZW9LSf
-	 JmiYyMtXQX2m1pjjMV5esfxKBEQKSqsqNOBEXisg5SKDHdkuu5JcynTsjflAKKS4GR0y71F4KnbZ
-	 nPa4sLaY/VFs7j+4GpsS0WNLWwCnmdJvKirhBB
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: Jianhui Zhou <jianhuizz@qq.com>
+	b=A2E6roOwvrnPTF7SGlBMqk/lbOtt4pnwcfwbDCOvtJ0WzR9YPCuNhdpkHXxc3fD1IswF9G
+	N5zLG7PNzfeZOw0Rf3v8XGG4ge/tGMGecDu9QCUFnxRX/rySf5/E+CQnIT/40rlnNgc8rm
+	WDYZmo0zawqcFdomkU8D+ONrtiGK52Q=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c6e2355739dso3798706a12.2
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 06:06:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772805992; x=1773410792; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W13+CBFURjvfUajrgf80QK1S6lJ7DWAdvvvI450YWW4=;
+        b=JsnbHz2Nnn2imI4cwSs7mYM4vducG/+OBS7E3Z57pFWb6Ky8VW5ua0pnNq8bavK0C/
+         xTe6PycI/rxOAXVjNOQXehED1HQQdAkW5S31nQk+qRuT4ECxC3Gtm3uhWJvOu0ItVbjA
+         Zwg7T+txI7x86ppquRkrx7fSlA8RmbByMH3/EJkMD73IWP2a//uFqIxiWrzxd/PNd9Ju
+         V362bCwB5kGKvjfMDs7ZAQgUQY+LUpbSI7DH6smQNVrE6kEgL8x0ubEnV7jp1BsDe95E
+         BLxQODo6bsbrk9u5wTjU5Ws7bzty2P+pZNNlMFgUHz88xh5ftTsQhchumy2XZO6lRuzy
+         rYiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772805992; x=1773410792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W13+CBFURjvfUajrgf80QK1S6lJ7DWAdvvvI450YWW4=;
+        b=BU13IuIKQtXsCJDhPLKRwNBUkaBa7XBe/Yhn+BXSi84EppH8tUovA+eH34zNpnVdxv
+         UMkGA4y+gSzRqZ2tmX9uUGz/aHBD2HMN10pqmfGPflt047KwchPiZXRfmB4jo0uHKICM
+         kmdKfFiiyVmgWQ/jxayGjjJ8VmRDGqGL+tt6f2j7C55j+h8o2/BbjswC1ndYPwvbphOU
+         7ZJIGvxUWIs8yPCGS1uwMBjsbH2h3y8w+lZ1BBuCmNaHRe8CJ1dxrIjHqhk48TMBVYeX
+         iEmxXwVHMbU/28W8yyTmg5i+on7zAwGq4WcAl8q2Puhgujnepps8CAhonIXh60h33fGj
+         R0Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWg26zxmu+CJFFfuSpqWvhBpnwAUyzlzqHSX4Loe1+ajr4657W97H6enU8BaikD+SFiSBMqjysdFQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzp28l9cyOG9jguFQtHy+dTkDd71GFGvCi+QFmfWbR/BY5GnsVH
+	N5XvUpa9ODu1U6pFD+zEeHmHjN9WeVOFj0tgXY3lqlFnodQE1JH2RtAn
+X-Gm-Gg: ATEYQzzJaMHGBnpE5NwoBK8Uw1LBZh2kp6X8Hbw7qJQYn+UtdUMzMUGix57prQG9qyz
+	G1wD6h6dSMHpZiJMFVXXHB116ik8QzHlOV8HKuDdEg2WCUfOuo8sP2Wat0vQ7GC1dcPrfBaVvWy
+	od+HBsWPvN8DmES5IzvDav6Tlsf+lksEGtZWyrJhkzW65l2EuhhCDHya1rzmKoa1f2GP9QiD/Xb
+	4Of3XjzP+yiLx5c09WTPPdEZ82ZEuRXv3MaGFINz7GGuviOl9JGefKgMYme1AJTMSGuq/LcMyUz
+	ghRIkkLFKwd+8NCHvfbBBB93cEqzWqagdjPKvmg8P6czqlXRMlh9qlScCyfzD8xloW6at8Vhp6U
+	Js2RHWfi0J+Hpw7KRUfpxATDtQNsjrHmMhyqpKK8azGbIDyvr3y1X3DL58r118Kw6Hsadbig/Sy
+	6wNRD0aDRoR2+WJqXeuKLiKhvecpXmqfOFa+YZ8Zg=
+X-Received: by 2002:a05:6a21:514:b0:395:3677:2be4 with SMTP id adf61e73a8af0-39858e02140mr2687015637.0.1772805991793;
+        Fri, 06 Mar 2026 06:06:31 -0800 (PST)
+Received: from zjh-os.zhaoxin.com ([2404:7ac0:642d:3126:54a4:fbcc:e0a0:ce02])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e16cebbsm1786713a12.16.2026.03.06.06.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 06:06:31 -0800 (PST)
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
 To: Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -92,27 +105,25 @@ Cc: David Hildenbrand <david@kernel.org>,
 	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
 Subject: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Fri,  6 Mar 2026 21:59:26 +0800
-X-OQ-MSGID: <20260306135926.169662-1-jianhuizz@qq.com>
+Date: Fri,  6 Mar 2026 22:03:32 +0800
+Message-ID: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 86E9514000B
-X-Stat-Signature: cizzp4w4styy9xu6jw94wmhskwpukbgy
+X-Rspamd-Queue-Id: 4FD86C0003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: r35hgbmmspysz8rqqrzd8f6asrs931dt
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772805583-403171
-X-HE-Meta: U2FsdGVkX18BmtpfXabcbcIfvPFm6WqcssaN6RfBA0GuBdtuqEowCuggvQiRgsv5X7a4Rkwg5MCsOJ7bJE5sfjS25qegLWBuUgAgeUEbo9zEPefULvyC5bCROnhev1IVh/WPfnodKiTN4BrgC2lzaXKIOsuCN0MFI2Tz55D/4CMukJuHdqjQjRDEf957KYJr96iCiwl6MrrPe3ZT6eOHVGdca9Zy5o2AcOiNOIyacTwPGYHRSrsxtVQ4XMM/Dep5PQCDmFW3w1vywP5hiSGcLE5O+qC6oIe2uUMDUQ1jdSI0T8XKtx3MqLfJ4JPBCNz6Axoi+AE+1Wlf1XZXx2rL1TtUOXG46UNz/QGEoWPOFtZQZ+Jra/o1eXEeBe+OdfJpfu//VaiSZf15OblUTHdbCmHKyruWxnW9QpT5mP916jWWIqmcJ2OKmaM7qVaG3hYrvuO6mXXckjLetjOU5mKyx9QFJlHodFdtJZK2W+iRgCzrhA2UYFrK8qNt4+iRfkIdzYfiRmrGJpjXX0mI14zqGAwnL0RbeYs0RYnS15jyZ3QHsWE/mtbKI9NjLycMQy0OLfti9rwLzxnXd6V2QbVMkNw5J8y5M/7/CrdU5uDuKQ7AZAt0CGonWKSiKONG4/TNHw2LK1K4r9ti7Dejh1nMiuP68/Z0tWnN0AFPfHkEU+9UdIeEMRxFCE1VV5clbNJaURLgabVNS1Ps7zSdo7IzFcC0kk4nrAKf/YvwEzQZ0upYN+R2S3VcZT8ZUPLveJVqlbc/XDvLHsjEcVd5SHcp8ysA47VJ6bj+P4NvEINV7Jzzl5vakMs27349yn1k5dflN4RAB3ljzIXnZ0WEE24nlVroFZFgma0jI7UFZmKKYLOFkOzQ4g5SdZoncc9UcaDuw1uphIzIDGKEYd0hugjWMeNg80zpAjPWfZex2F4nO3zt+njwQV01R3XOVqQhTlBEeb56YskXN8L89JNEdJH
- 89G4+8mg
- 3M6NCH9vsIyDfuSTv6ABKshIACOQrv5oFBhBLy69Taqu5IB7aDbgG9W3h6gjxbT+ngNBUnhI7sBTaPrhOF0fy0Z1WYL4nXACYk6hZHJeVJf9tzD4smQ0vcGZn98o0DCA5bXOsneri96DMe/AJkmhHiGtaauyEtBYS01+uncaBnEWQN4nzRM74+4sVzBaWPF92hVzWVe/b43Zn6vae7JkjSdv8Hddb7Qt2hBbGa9AEs/lZ/VcekNhpEmdzldvezU4M0a+CzXkJ6zZbS0wdDffuiFt8qjXW/g1MC0Fac7U0xTn5ch3yUGvdBqOncdFyV+G4pCM+E/GxG6pqjBetQhNVXgseUCWbFhlINUIVtz2GDVuT8lQtZq4kyPXKpKZGpoqsR906Qr1CMsTjzoeUydOOnCj1GNNieibXwjZxVN/wTzjIXotLhTQRrLQ/Yf8xu08HFkt/ehBXqTBvQ8s6qxQo/VmkcWLlas+3bgIgbwJ3ev74sKnjmJldEw3mPTlWHiQfRUXtt2ih4Xz/99Y=
+X-HE-Tag: 1772805993-709406
+X-HE-Meta: U2FsdGVkX1/PQs04ZRA1CJnKKkMKRGDSqhZCcksB1v4wTbYy4kC6Wknbk1W5pzXffloRteqMVVpVSKbfxs0X5w1432oLE/0uutwEog5Kni4DK1SDJmzvghPPIr62LQ5AJ8Nr+y6FjMRQT1ui64eRyU0gi5gIeE7oOuXxtXOkIJa+J6Df+rzj09d9k9WOzJq0wVi6yveVErfrlPHj5x8TcbuWU/Ttk6lfU1zVI6kN33DB6TAkwhvD5mvC14VByM3uB3VzkHknUTFJNC4dP+Av5si7BW61/2baxZSzMZpWuv4Fyj9kL7IIrMVs0XJ2XubGK0XE/Z4LBxvCxInIrm6fx+WjKPWEvD4rhDFfnWlhmngRjYeAvsZ91uOAMg1bmG4r0xkA404yS3IjhVt+wUDyGD+yLWju1skI0OO2ECNSvIf/nJD0sXMgKw/iFtE/gVHKJ4dqbUMRaDAgrAl9DCZxQCm5MEzs4tQG7D0ww0kehzZRHBFM3tFgEpx5kVo1adWmeFMuvt8S6aAgiq4mpxeiExS5RccoPkt7jcdRkfcf2awKFdL+kyyoy1dPaOwkRm9mRaZ/seoVUpN60guNK1ryjZfQb/qZncfCbXIwvX1gQQjLuoEYDRItu9raylkf6Iq0qfgFsIWxtvA/IhvX819Bf9MnpIb4HfNnS9+1CbCf1Zu7EPr7tsUTRZnnAPxoy/ctI7LOUw3TPQZIJsKnoB2cdsfAJ4utPKN1FexF0YpKRX0E8bQQ4VN1apKvtjY9eJ3ia8Pj9WCKgGfPD9eBllvssRZ0OtXkyXGgrkpjTUUvz+WkWq6qST8rSam+Gl7VePrSMfXGIjbkIvqfrc1TfZ5hkeuEbLt9mHXDfJGu493BricV1PYh/I1U101ZXAH/jz8fvSn9rRddwss/4T0n09OeRs8P5Hgen72h+DTHDwzarLth2dvrxzILwI7kr0gJVDMuZALjlhfbMnW8rQu5fe1
+ oUF9nmIH
+ JrPUXpFNlbVyJMqpF0ai2fYVgoieHuTSwz4xF3+RDQYBP4g8cReeAtyaw++Jp8Qjah7Gm46PiKiTLBC95WV1y4h08P+n/Imb/eeHcSskqQmJSUC+iRRjg1YF9nlDLH3EkVWN32tL2sagF9Gj353gtLohdR/fVKqnFk4YGdi/3pVuZnqqL4TXWc5YlyHEFVaUiUJuH+LU/zoHaZNcWqAnobD4bl44ZDPXI/3puaiT7/7iIYIPwEkJjaguRvJQJNi18ydMjJwbpnUQFizhMpAJs+2jc/zghQ8MXGNkQLLOCAmHyqYcmvMAfPMuU8ZfqDdxtHhSupOpaoDx+Zyh+pkOSdZZc6504Ub6Nqz1w09fOwMnsr2JVqEF1ueyi7A8pJvcnt4c5HkXtPfhFK1R8ywxDlg4UhaXuAA/LHGx02XJAokisiAqn4MU3gP/4JlkfDSZL9QzGe0d28wVBglrg6dtSp47SCfHZlBRwFPXi0ZLbzKphTi2gPVlZrVRxLr9e7eU3s9tavm1yQ2j6iyPLRKRea/0tcTY5bUCUFCz1hBV4vo8a25XLymFAh02ajovLK5XQoQGI+eK3h3eHVwp9Nv1RfRgaEvTYfllbXhbMtVCITgwbgDsVIiCb/fWZa6q4YspZ0NXzN6gh9djVJarRFOpHw+b2CVzA58ZO39/bHqHbE8eoH77ZNySXq2R19GUkYU100ZAekGBHSgYQsSWo47bhQlLeag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
 List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
-
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
 
 In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
 page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
