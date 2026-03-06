@@ -4,108 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1662FCC048
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 17:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667D8FCC04D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 17:26:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68C4E6B00C3; Fri,  6 Mar 2026 12:20:02 -0500 (EST)
+	id AAFAB6B009D; Fri,  6 Mar 2026 12:26:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64D626B00C5; Fri,  6 Mar 2026 12:20:02 -0500 (EST)
+	id A5D1D6B00AA; Fri,  6 Mar 2026 12:26:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5459E6B00C6; Fri,  6 Mar 2026 12:20:02 -0500 (EST)
+	id 968D96B00AB; Fri,  6 Mar 2026 12:26:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4288D6B00C3
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:20:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 013CFBA5AD
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:20:01 +0000 (UTC)
-X-FDA: 84516301002.12.A10A851
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6D6481C0007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:20:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iZZ0Q6Nw;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772817600;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 836346B009D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:26:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2630F1B857D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:26:15 +0000 (UTC)
+X-FDA: 84516316710.01.D7CEB02
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2D23A20008
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:26:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hGltMrki;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772817973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=05NB81Meuh1dfNJFxaWgydluxjBcp09+AdpLalqQry8=;
-	b=FCqZ1CiDWmRAaDGq6FQPPpCh6Omnw9SeyDCX80euaqSUhe3xDyoOKvyar/dMSy80rm6Vbo
-	Drku3vmAZYZpkxMZ801iQjyy/j0WzMiKQu8/mWG7dw/Qw8hWmvBBnx+Foo6obg9Yz2mCfi
-	Wkj6jpJMt3baH1Ag53AVJQ33bSQI27I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772817600; a=rsa-sha256;
-	cv=none;
-	b=7zdUz5kribhtsH/pe0cSVvCo4xl8VW9CwvRvFBKsAvJKrPcavctdlrYYQemsKvrL7tS06p
-	Lj7HKqWHDLrS5GMq255Iywwk9L22KgUU7N0MeoBQ1Rq5fVjwqpopI3RlfJltkFPQvZqTDQ
-	WnolH5nW9+OG6NRzY10voBtzFuC+ZWg=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iZZ0Q6Nw;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B392A600C4;
-	Fri,  6 Mar 2026 17:19:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32FFC4CEF7;
-	Fri,  6 Mar 2026 17:19:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772817599;
-	bh=Z7I33Hc39huXt1KMAEv+ORYc+prBLTGLG9GW3dkBprM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZZ0Q6Nw7qv8CZFI8d6UDYrNmF2nArSoJtfi8sTKMVKcWDMEZ2CzlTcMMQotCE6b4
-	 MX6mwVM7CSMLPJCKNKdtoq0nkReIXP03U0fItKcDOTRPUeWebXfX+XB1QQEgDuzK04
-	 iYe5hcXhXLkQzsbUWB1NFnTIC/zhdAbJnwW1bmUVnpMm4R00qo1KqUk8M7TL2UFH4i
-	 CGoCw7ESWEQqmw3VAU2CDYMYkJ/YE1eAcF+AqRHOu/UhwmG+seBFyAise1vqWymY/d
-	 73xnZkSefWceJsy9JxFeppk9VUqWAAjQVDEM17tjasvdY1WljUaB5D328CFTNJCqog
-	 QXRtrM4L6gaBw==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 15/15] KVM: selftests: test userfaultfd missing for guest_memfd
-Date: Fri,  6 Mar 2026 19:18:15 +0200
-Message-ID: <20260306171815.3160826-16-rppt@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
+	bh=OXoAF9tL3+VPI6JSYFWUnj4K6k5UECUl0E2snUE63/0=;
+	b=bBPRdou/ZqvUuyJi4Fytp6IWDdjC2qCeU/dLDRDUHpyDHBpO15qpU+v2GxZr14R+CpIty2
+	I+bwsOxI6tSKuSAoe1V7iqZynxMvXS604T72JNX3DGjKRl5zZCicVcJ8BUgwiKVrovH5EK
+	gy9GR0ew8Hd/D4L3e7ukMCbIWBdYQ70=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hGltMrki;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772817973; a=rsa-sha256;
+	cv=pass;
+	b=ZIyshbEsvV+u0xag8F7vsoH81zbWEaRNFKpD9yTJsh2FtN7UnI50COjy7lDFDs9DGRJjNU
+	BFmXYUxELuxxnG8fDY8scjsEcBld2RhSgo0eL9iUnOacsF7E4vw0eE8g8eSpx2z8JVYuCk
+	2EMzCsFlTmZ3cZWY8MOcpyHsdRRQYcY=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4852a8482fcso4051905e9.3
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 09:26:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772817971; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ua9qQf1t75TwQJiusOfDnO3e1m4MxjJPSyxIyL+1JX8+1hLLbbqHOXVOvweEDMUO/T
+         POXnYYypcSebLlvNkIR48WW30Wp+RdmgMEZNGr82rCnM5eKFbWBU30AuMB6jGHgMkBKy
+         lH68oS6itdcHUl+Z65KBWzg3jgw5cS2IrgHmCpkqVO9vApikq8Y7xp51d4XEOB4koCjg
+         ncCKbUM/UI1jZnReTs14t4wixyJA5Y2CG82px9IVBjncIB4uq32bXQmMaVSDlRPFfoAR
+         2SXQBVFVgv+KVsCIe2O2y9fUBHfi0hi4jNZhwpr333WhOf1dMCtv5PQZjb7jlQd20woJ
+         yzLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=OXoAF9tL3+VPI6JSYFWUnj4K6k5UECUl0E2snUE63/0=;
+        fh=JHdlwSuW2icCzau4iRXAQEagH9WCrJj+K2oTVVW4nW0=;
+        b=MgMnqLVfBE9S6W+3gKLEtz0dWH+cANJ8d4DhUy8cpiJjaMhi8nYnmravGtaeXpqvdx
+         4+saT+Y8nm7347eVsOWZPJPM2Q6q/2Crsu87rWIuc9+vCw+FYlwwWSWS1AoGJpTBaeML
+         BXUv7MXR1zxYRgAf4MueGCFzWaeulhb8Ejjrplr2gVJcGicjIPeNOqk2F8A3mSzfs/9Y
+         LpqFoiP21eyLW9QmR5uD7LMAbOJetBpPB62mB3LPsD4Gz7SJFgPUmtf9Nmj22V+sqvFw
+         Hj2gKO9Wql8T40b3/oLwqDrNHbVkptJ6ytRmZSDIBG43b79lzvuzgAMkXd5W7P3344aV
+         PsDg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772817971; x=1773422771; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OXoAF9tL3+VPI6JSYFWUnj4K6k5UECUl0E2snUE63/0=;
+        b=hGltMrkiTNf2L6NTaCyfBVBXvod4W9GdsZyo5+SwFZKV+PQVHKVYkxFRymBm6y1lbY
+         6ZlbT5vFZmElRetAne2ot8G4lpLpuGv851OXBOLN6m2vLWCU9eXCYYdgxnVI4oWexQuk
+         iF+R16aYoEmR6w/ltpQprTPWQR31Dq4kgnOFpkerGxJzOI8ifmywmrzJlYQhWx4DGOab
+         MuLpGpnaiOgaMKJRdhSKOc7t+QYCJKaJqKHQbxqqj/ZBzCRljA/LDDiRSV0OLkJ7UE80
+         uceDm1IsOJmZmzOjVOUhy3U2A2dosV3h0niNcpFL2QbTQxEjwW13maxCFm6nhBAqHida
+         4/6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772817971; x=1773422771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OXoAF9tL3+VPI6JSYFWUnj4K6k5UECUl0E2snUE63/0=;
+        b=laNiBuCWAuezPpgbLepHrKZ32NB17C0TD6qqoOXRixgaeMQcg3G37CAOtBZdyX+aiF
+         z1xu8uCWhoVssbQ7IhPlnyg4rd4Rk+jIL/xwhy5HgnMBWoGg1dfaK4x5NAPZnBRPSC1D
+         /9WP1EBH/miG6O1mM+vV2vtO/AtyGjNCbE3pMPgPr8YaXhK7LfjJW8sBG01zvHaFLP0z
+         2JCku3Nfzc791v12z3koFLs5EcNm9bTjQVPKw6mE9PP+Cq1QcRd4YlmFsc01ttrf4v7p
+         SLh11ahtCgtXqsfYleahp0IC7XMov9/riSFbNsADK56KDnpjNls/4gNznYqJAZPkEnkn
+         3tyA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6YCwFUmSxwGxlF5ialaTeKUhj4gPOR2HaJhj9ZiBQZ076SEct6chQSOzD4NDrNq5oGZ13VON3IA==@kvack.org
+X-Gm-Message-State: AOJu0YytspkXjqIPZ4s6tv3IXgYSb6p7uSOhMYlusr3ouwnijnbbYUY7
+	srqYGOMI42+IBgBtvsG2MjdQKcSRx2fJy1UzOkjansNEbDIx7096siwzGTWNGx7hb1EbqlS1oB8
+	O8lN6Q34rW57QGenVau8uqKawJOFTQLo=
+X-Gm-Gg: ATEYQzyDu+VMLt79odrGlJ73BHeYYhKIDL7EYgRFyso+i5SWLrLoUyx/fr2VwluTQvT
+	Nk4gOuleNxBw6lzui5J7rOM4ahwsrJZdlfEaNEmXmqcgR45xwd7p7JdyeWwyr4mOSytSuoi/6Ef
+	KjTA8y5C0Q+dMCPUFsatOQ+nFLLNB/yLLwL8CCkITbr8Cm9CzzVOFhuvRpEYOx9rz2S6fyX93Sr
+	6Y4APDpOZX2erzrAfYuN8eZBkX6GbRLMzFFVbwrqbMnEPhn4U2PrvRiyTPuSpEovF0o03cMv34t
+	DH1C/WpU8Fa8XzfZYShP8SF+YW/PqvzwLOrDbIE=
+X-Received: by 2002:a05:600c:c10d:b0:485:2af3:3f8e with SMTP id
+ 5b1f17b1804b1-4852af340a8mr13583385e9.4.1772817971296; Fri, 06 Mar 2026
+ 09:26:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: x4z7mmnrkg9qc6fkkpan33f9wnh1jxbu
+References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
+ <aaBsrrmV25FTIkVX@casper.infradead.org> <aaHaSRXNLJNLwvKh@linux.dev> <CAJHvVcgU8ZgJAymFfxr1FC_bf6gB0mpr=VTbtSdFqY4iVB-WGg@mail.gmail.com>
+In-Reply-To: <CAJHvVcgU8ZgJAymFfxr1FC_bf6gB0mpr=VTbtSdFqY4iVB-WGg@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 6 Mar 2026 09:25:58 -0800
+X-Gm-Features: AaiRm51eCjedDtTz6YDXhmWxW7R-HQUcg1jCCrAnYkoBaA_IeWwuyEDe1W-AYNg
+Message-ID: <CAKEwX=NKLXmW7SkOs+gdbQuv+=hFLrBt-Xm2LS6sRT-2z0iAsA@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Improving MGLRU
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
+	Kairui Song <ryncsn@gmail.com>, lsf-pc@lists.linux-foundation.org, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 2D23A20008
+X-Stat-Signature: ue57g7pugrgqbzbk1hzic4okaxc7ao9g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6D6481C0007
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772817600-790158
-X-HE-Meta: U2FsdGVkX1+iK2joGiSx0cS47nTrBDkpm0r2hs3DTFHJ3MDikPJO9+2zRmweGFE180H0uZFFpm3Fl48qut7dquPX5RfT73W9fuXFwdfUaZ/Oei8rtQeioTZsrn6jEOVhk9zg5FyEW8+15VmMNIE6L8NKu4qYPFinqt7QyyRxHRpaBc/MQLut78Wd3zGxDy27zRuTDLQb0h2R6ooj+nQfHZPJeBq9zdk/3DvXhqZpWgf2kmbMlEggy4/3gfY4hwBohKce+Xr4sjkkrYZGvYaztL3Auz4G5tL8BOPIunxv0nbKVjlUQq2DWNARCrXnLnOA/FG2upPwDCcveCCn6auX0CsVpot74MHQwU0lduXvwhiUKwW/3CuF9UwPGRn3rW905csu0HmyNsOoNmDApQ91BKoWlgU9Q35vZ3URV7hkKYfe0zty2enYCYNC58T41diMef6J/m5lkrQFixrCARN9asMvtcEeJlzJVXVJZU/YBuD6YkL643qywDHqF+xoSfK7qCdRtfbviLvsziaAAEJeOHh2x5FK/trPMDuSH4BZOGDNnDnV9ajlBUXsltQt5k4lqT8BZ0gUXc2IgQGMDzVnkfmhQDrvvEzCb0YwlwQhmS4CfsJsMoSNk+g5McGKM2iaUrQ3oIkd/nV1LWSTIzvvqQn8fYjIkIkO1hnhfnXF9e3RhKGMpXj8q3upcIDxvahLmdsxvWaoVXe1kpCJntIQeJEVBZ6/pr7Q/2I1mIFwmen7mnVxaJHy/b3esuEmJ8SGzY057++yZq9RWwi6gdjkgxx001U+kEW7KFDWUQ2i5kWKhGZFoPoVRRkOGcsP/lgQ+A0p6US3+O8xakU0Ll93Rmr6N+0knL17dFOObhZTWLpi+vtmkCJx5Q3E2sG6H6lexf9dhmA3w35EEt1mbAjbojcm/pstRRUtQLJ9dSOrlP7z7022Hc0bnMD8YzA1lUwhRCEoKA8aDJSJfe/pM2R
- D2zeTwUz
- zroXQmOmLYVK41/M1K2uStLGkMR4eTsJD53JeCEgw6F0SYAySPWhyi5HpY6IUvjypkdTnVzVQpQw08OVBtd1I3MV5NTXGN6h3OpggKeDjqcSob2wrnCkOB5eHL+HVHBQ4c3eWj4JXZyEzmNu6KCDEC7dHQgUcw6f186j7E7juwsFVA5WSfs3oInK2HXVuK9g4vrGg6PPfWprA4TMTdg7xBFAj4/0AGxsm6A86dO35ZBRaYeBuPPiPww5rLGjerra7zqCsEa1vZBE1uyUzVghu7/DZi5TCcTvInFejtscwR7hhY53StwTI67NAtA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772817972-824737
+X-HE-Meta: U2FsdGVkX18Jx7uMsJCIM5HSDvbILGWE7p0XRewjn0N0cKuRTe1mDEqkOlJf4hwbcWytmfhHSemRupJwwezxxW4t7b76KEFrYokPw8U3URFMbIGIFCBZnqSsnEP2LiZm9MSpyn6BUDWLX6yXbuOW5xRoSZTTnywoNleyHyfT6fL53mry6FAt1w+2yJNWDyHHVs2tHYNzIHzDXIIMbBikghGZjGyrOLjpXSoXoXCR0iWZISc5a9Bk9DMV+BBM1aALpLSgf/vTAEYvNhtJ+SbbRqjkLM8ilVUF0Ur5HplFvnIJUkAJzcP0tYRlb3UimhsqyC30C/X6bmRp6QBgJSVlkAbK/c0LbeBn+Wa5ISwGuYDmzFf1TWaBu5G+Bfd71Bh2RRRgPepb7YzdRCV0zu09P3PmAvnKqgpLnD5Ht7x+jo5xsxaRbjbOpRByoyJkVEM9fYmOMTEGnT7+w4IokTKwzwxmoBNqRLwi4npYCC8UTthHDt9u/vy+eRdl4HU4gc/ynb92i6HnN/HLmxVUi75fvcN4q3CIU3Qd717NoViYVfotJynuboGn2KIKU+ovt17yUeYrSi8+DmeUCPB1lLyuWfbjheBGVvQIz+dPl1ClqXhpoly5dSO/0W2Suzuq3wDX+FUcZ3bK9oNZzpcBYV8uBh16jMANUvFqpxIb5kdMfUjYZDqUQ9+Nejx4rsnEaXo/15Rh4WdQztvNiPe7oXR5Jaw4jQepRbkCAYG3phgeV9o4uz0aN/jW9ZEP8DK1v1Yvtkyk4K/Hb7yhErNv+H6B02UJAyFUNEVCT3oYeOlbbhCu1F0+1loo4OOLTUEkvdCXosnoQuqgMHKB1k9Qkcs1mcuEoGoVAf4prud0gk8oa4NhtHAJNRuvmfb9aXDNUIuc4Uf38eb3P20ngqG4NwvdHIQ2Bi1o9WNpdhzveDDDqq0RPHE8vJua7IIXKAVA5dzKBEd77+Js3ZP/n0U/7Zp
+ qIZOYAbL
+ O5jRfSdvNX181HyB46iw7s0m76eDZZOfzVg+2Ouy+PzivrSDtxHDk9vz0vQZ351Nz7ZrN6DC6Nj5ed7xmkRLQSxehAh+QbKsuBBHH41c9mZIHwEXzgO1cuE0OBm+zpXWxcxG9mtUfVJeFCUok7uAune2tVZZ9yrPeOIEQ9+jPn1/BmbouGT8Hw7iAQu3bZ2hdOvjZOCQwMTw1GGh6tGUrZI5xEyZZbfcuATbTJ8Ec3duqsaBw7H9bwlQSArxWuPhoApIDCjGHMsTWwawCQzepAe7X3zfA+PeEkR7oMnPH8qoKvcw0MRr8EiExsP07s9SLrbeKKcXtWbF9stbCxYTg8+3+wO+p02BWgklij9/oHCWHws3UgPeQ3pzfWew2da5S6NItDpkNlOZyndE0LgfSZCXDJT47xcomvIlpwsH5CMMXF2jKd2HGw9opyAB8Vu5FcB+0KRPvyeCPYmwC56UA5/fAOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,117 +140,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Nikita Kalyazin <kalyazin@amazon.com>
+On Mon, Mar 2, 2026 at 5:32=E2=80=AFPM Axel Rasmussen <axelrasmussen@google=
+.com> wrote:
+>
+> On Fri, Feb 27, 2026 at 9:56=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.=
+dev> wrote:
+> >
+> > On Thu, Feb 26, 2026 at 03:54:22PM +0000, Matthew Wilcox wrote:
+> > > On Fri, Feb 20, 2026 at 01:25:33AM +0800, Kairui Song wrote:
+> > > > MGLRU has been introduced in the mainline for years, but we still h=
+ave two LRUs
+> > > > today. There are many reasons MGLRU is still not the only LRU imple=
+mentation in
+> > > > the kernel.
+> > >
+> > > To my mind, the biggest problem with MGLRU is that Google dumped it o=
+n us
+> > > and ran away.  Commit 44958000bada claimed that it was now maintained=
+ and
+> > > added three people as maintainers.  In the six months since that comm=
+it,
+> > > none of those three people have any commits in mm/!  This is a shamef=
+ul
+> > > state of affairs.
+> > >
+> > > I say rip it out.
+> >
+> > I have very similar concerns. Though rather than ripping it out, I woul=
+d like
+> > we put efforts in unifying the two reclaim mechanism (traditional & MGL=
+RU) over
+> > improving MGLRU.
+>
+> Shakeel, I think this is a great idea. If you have any ideas around
+> low hanging fruit here, please share. I'm planning to invest much more
+> time here going forward, so I'd be happy to turn some ideas into
+> patches. :)
 
-The test demonstrates that a missing userfaultfd event in guest_memfd
-can be resolved via a UFFDIO_COPY ioctl.
+Not Shakeel, but I did play a bit with MGLRU in experimentations :) We
+see some slight positive signals in certain cases, and instability in
+others.
 
-Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- .../testing/selftests/kvm/guest_memfd_test.c  | 80 ++++++++++++++++++-
- 1 file changed, 79 insertions(+), 1 deletion(-)
+Regarding unification - do you feel like active/inactive LRU can also
+benefit from MGLRU's aging mechanism? The page table walk, bloom
+filter, potentially the lookaround heuristics? That's one huge
+difference between these two algorithms, and tackling this difference
+can go a long way towards the unification effort.
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 7612819e340a..f77e70d22175 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -439,6 +439,82 @@ static void test_uffd_minor(int fd, size_t total_size)
- 	close(uffd);
- }
- 
-+static void test_uffd_missing(int fd, size_t total_size)
-+{
-+	struct uffdio_register uffd_reg;
-+	struct uffdio_copy uffd_copy;
-+	struct uffd_msg msg;
-+	struct fault_args args;
-+	pthread_t fault_thread;
-+	void *mem, *buf = NULL;
-+	int uffd, ret;
-+	off_t offset = page_size;
-+	void *fault_addr;
-+	const char test_val = 0xab;
-+
-+	ret = posix_memalign(&buf, page_size, total_size);
-+	TEST_ASSERT_EQ(ret, 0);
-+	memset(buf, test_val, total_size);
-+
-+	uffd = syscall(__NR_userfaultfd, O_CLOEXEC);
-+	TEST_ASSERT(uffd != -1, "userfaultfd creation should succeed");
-+
-+	struct uffdio_api uffdio_api = {
-+		.api = UFFD_API,
-+		.features = 0,
-+	};
-+	ret = ioctl(uffd, UFFDIO_API, &uffdio_api);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_API) should succeed");
-+
-+	mem = mmap(NULL, total_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+	TEST_ASSERT(mem != MAP_FAILED, "mmap should succeed");
-+
-+	uffd_reg.range.start = (unsigned long)mem;
-+	uffd_reg.range.len = total_size;
-+	uffd_reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ret = ioctl(uffd, UFFDIO_REGISTER, &uffd_reg);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_REGISTER) should succeed");
-+
-+	fault_addr = mem + offset;
-+	args.addr = fault_addr;
-+
-+	ret = pthread_create(&fault_thread, NULL, fault_thread_fn, &args);
-+	TEST_ASSERT(ret == 0, "pthread_create should succeed");
-+
-+	ret = read(uffd, &msg, sizeof(msg));
-+	TEST_ASSERT(ret != -1, "read from userfaultfd should succeed");
-+	TEST_ASSERT(msg.event == UFFD_EVENT_PAGEFAULT, "event type should be pagefault");
-+	TEST_ASSERT((void *)(msg.arg.pagefault.address & ~(page_size - 1)) == fault_addr,
-+		    "pagefault should occur at expected address");
-+	TEST_ASSERT(!(msg.arg.pagefault.flags & UFFD_PAGEFAULT_FLAG_WP),
-+		    "pagefault should not be write-protect");
-+
-+	uffd_copy.dst = (unsigned long)fault_addr;
-+	uffd_copy.src = (unsigned long)(buf + offset);
-+	uffd_copy.len = page_size;
-+	uffd_copy.mode = 0;
-+	ret = ioctl(uffd, UFFDIO_COPY, &uffd_copy);
-+	TEST_ASSERT(ret != -1, "ioctl(UFFDIO_COPY) should succeed");
-+
-+	/* Wait for the faulting thread to complete - this provides the memory barrier */
-+	ret = pthread_join(fault_thread, NULL);
-+	TEST_ASSERT(ret == 0, "pthread_join should succeed");
-+
-+	/*
-+	 * Now it's safe to check args.value - the thread has completed
-+	 * and memory is synchronized
-+	 */
-+	TEST_ASSERT(args.value == test_val,
-+		    "memory should contain the value that was copied");
-+	TEST_ASSERT(*(char *)(mem + offset) == test_val,
-+		    "no further fault is expected");
-+
-+	ret = munmap(mem, total_size);
-+	TEST_ASSERT(!ret, "munmap should succeed");
-+	free(buf);
-+	close(uffd);
-+}
-+
- static void test_guest_memfd_flags(struct kvm_vm *vm)
- {
- 	uint64_t valid_flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
-@@ -494,8 +570,10 @@ static void __test_guest_memfd(struct kvm_vm *vm, uint64_t flags)
- 	gmem_test(fallocate, vm, flags);
- 	gmem_test(invalid_punch_hole, vm, flags);
- 
--	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-+	if (flags & GUEST_MEMFD_FLAG_INIT_SHARED) {
- 		gmem_test(uffd_minor, vm, flags);
-+		gmem_test(uffd_missing, vm, flags);
-+	}
- }
- 
- static void test_guest_memfd(unsigned long vm_type)
--- 
-2.51.0
+Somewhat related to that, I think it would also be nice to have some
+counters to track how much work is spent on this page table walking
+step for MGLRU. Right now with active/inactive LRU, we can look at the
+various reclaim pg* stats (pgsteal, pgscan, etc.), both at the host
+and at the cgroup levels, to understand the reclaim dynamics of the
+current workload: where its spinning its wheel on, what is the reclaim
+efficiency (for e.g, pgscan rate / pgsteal rate is a nice proxy
+metric), etc. With MGLRU, the page table walk is a bit of a black box
+here to me. Can we have some measures of the effort spend here, for
+the sake of understanding and diagnostics when problems crop up?
+Otherwise, we can only study the overall CPU cycles/PSI, without
+knowing the exact source of the regression.
 
+Or maybe there is already such counter, and the documentation is just missi=
+ng:
+
+https://docs.kernel.org/admin-guide/mm/multigen_lru.html
 
