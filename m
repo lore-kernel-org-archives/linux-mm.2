@@ -4,225 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AC0FCB607
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB1A9FCB619
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE78D6B0089; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
+	id ECE096B0005; Fri,  6 Mar 2026 10:29:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAE856B008A; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
+	id E02DD6B008A; Fri,  6 Mar 2026 10:29:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48B66B008C; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
+	id CA9BA6B008A; Fri,  6 Mar 2026 10:29:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9305F6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29239C2292
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:17:59 +0000 (UTC)
-X-FDA: 84515993478.23.0CC7B11
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB44A6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:29:24 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60B7B8C034
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:29:24 +0000 (UTC)
+X-FDA: 84516022248.30.3FE59A2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 78F8B1C0004
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:17:57 +0000 (UTC)
+	by imf21.hostedemail.com (Postfix) with ESMTP id E965F1C0006
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:29:22 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meKsfZG7;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qgi/yg6Y";
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772810277;
+	s=arc-20220608; t=1772810962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dn8Y45d737MtRxkNOkZ0wEJF4NrAhdb/GlZxVuKhhT0=;
-	b=RYF0XLx0+NWK0eC0or5FyFKBqChnJIpSnmSnoGKsNo9i6wqkh7VJM/XzB8Gk183RbpfMfU
-	NS4T7Ga5G34EUq0jLukQteEsNA5qk/b1i1gxNgNC/bMLZjTsFd0e4r2s/m8cI4jNRaXgqu
-	kmm7y1mB0JKNHjxa0zlqH491nkc3/WA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZTLOQ5CpXqh03t93vNLLHcQOUrV9y1CLQ515bQpfNYU=;
+	b=vR7XnKIr3f4MVgsVD8ipYIQMw7AvbWAPrJcIo4QArJyl1+bOLpOjG15fpBz9AKRUoUIa0s
+	bD6c2DN0v+WGVgCcdUYva8pmfyryiAFCVBVeTYMcbHGXKbuo8nreUvz6sI/fxlBfdU2MYB
+	MdSPENzKjiE4X0VrfnzxSuFf34LN6Yk=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meKsfZG7;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Qgi/yg6Y";
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772810277; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772810962; a=rsa-sha256;
 	cv=none;
-	b=HcW1QrQYyVEDZVVUqUnkOXRCrcfrXUMJVBp6pfJVArIjtOpMWx1mlw2687OJQ6J9uKjLr4
-	h6R6RnpAOPug4ehS0CHb2gwhd6YXHesdJ6/KZvzStt5lLfoEDCkuq27rADSr9cGRP3uiRB
-	x0JrIqx1yEGG8nYrH0OWFF0u9yuQVTA=
+	b=LrwNPMzr18CCutih3nQtFj9FUHGy34aQQmFrPgy31Vfvb85IoQZxFzaNRg74DBBLbaRGwE
+	MdFqryR9VDZYlHpSnfceyBuZMBVdrg7FyN1nvH1CfrbqERcS1JKStlabQvr5kDUC7CCFwT
+	j/V8mJjSZE8/oUyMVXz6k32HiaCr68E=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 65CC660127;
-	Fri,  6 Mar 2026 15:17:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CD5C2BC87;
-	Fri,  6 Mar 2026 15:17:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5074B60131;
+	Fri,  6 Mar 2026 15:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4954C4CEF7;
+	Fri,  6 Mar 2026 15:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772810276;
-	bh=ahO2AWbp+Wup5w2IFEsZm9ygIb5iPaDoKCmt+8dJ1FI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=meKsfZG7Mz03e3WAkn/HPFLDZOmTDBOKCSQFOevvDp5edvLDhQ5ZaQhN18w6YvQF+
-	 bI32Gu8m6ecxnGvhRxpwRzPZWTvaaVVzIycqlEjadO0UbBx+XZYFIILDfRDueqoTog
-	 k2NgYqmYDC1lNbevKho3uOIbztKbXULKniiln52RmnIiXcqjXnG+5k/GdY2kZB9ILm
-	 cz+Nis4gfBaA9P8uAeQVKFWF2cIx27KqN2LOEooqj+EKwkMqGvcjSfWkxxn4R9zvTY
-	 H7WKDOR11p0ysMu3+uD4m8LpHBqBHzW3fjjYUSvDCcRfuo1DDrMiodMi70noRcLb0n
-	 0IkidHKKgSxUw==
-Message-ID: <efc1c39c-7eb5-488f-819c-0ca2149898c3@kernel.org>
-Date: Fri, 6 Mar 2026 16:17:29 +0100
+	s=k20201202; t=1772810962;
+	bh=E14iF6Uxk2Oavef0L2q6s8ESqXWplXDEpDkb4fZORcU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Qgi/yg6YyYTyLiY4iliYNCvbDyAsX7fmBjIJZtx3q6lXMGKGskn3AusoHZEoAo7Xq
+	 WVm6qfAtTEYZVoRsGKb3glk4HeyjbZeW7bf02n2Ffszbi6+LTEZ6Nu9cwn3YWgTxIj
+	 qFnNxsocQ+IamtHf0XxvtietST9EMuZZgelM3gEz+Wu1Ndh3xeLRa3WuhAaSBuGMBS
+	 aNtfTvEbkLyma6YdoX9qaxaWhMh4Iu23gu+P1VGJ4Dd9r9YeMJ8kmCVpLG1bVxYief
+	 BpioUcuHSy29+erlfpl5jSLLv56UPXQ12/NaPCBq3/Rb6wIjrPQeM/f/NvjUMC3hfw
+	 CCNXnK7ZiZuPQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 00/10] mm/damon: add optional debugging-purpose sanity checks
+Date: Fri,  6 Mar 2026 07:29:03 -0800
+Message-ID: <20260306152914.86303-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 02/15] set_memory: add folio_{zap, restore}_direct_map
- helpers
-To: kalyazin@amazon.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- "kernel@xen0n.name" <kernel@xen0n.name>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
-Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>,
- "oupton@kernel.org" <oupton@kernel.org>,
- "joey.gouly@arm.com" <joey.gouly@arm.com>,
- "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
- "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
- <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "willy@infradead.org" <willy@infradead.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>,
- "andrii@kernel.org" <andrii@kernel.org>,
- "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
- "kpsingh@kernel.org" <kpsingh@kernel.org>, "sdf@fomichev.me"
- <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
- <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
- "shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com"
- <riel@surriel.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "jgross@suse.com" <jgross@suse.com>,
- "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
- "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
- "kevin.brodsky@arm.com" <kevin.brodsky@arm.com>,
- "ackerleytng@google.com" <ackerleytng@google.com>,
- "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "prsampat@amd.com" <prsampat@amd.com>,
- "mlevitsk@redhat.com" <mlevitsk@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
- "alex@ghiti.fr" <alex@ghiti.fr>,
- "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
- "dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
- <gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
- "palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org"
- <pjw@kernel.org>,
- "shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
- "svens@linux.ibm.com" <svens@linux.ibm.com>,
- "thuth@redhat.com" <thuth@redhat.com>, "wyihan@google.com"
- <wyihan@google.com>,
- "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "urezki@gmail.com" <urezki@gmail.com>,
- "zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
- "gerald.schaefer@linux.ibm.com" <gerald.schaefer@linux.ibm.com>,
- "jiayuan.chen@shopee.com" <jiayuan.chen@shopee.com>,
- "lenb@kernel.org" <lenb@kernel.org>, "osalvador@suse.de"
- <osalvador@suse.de>, "pavel@kernel.org" <pavel@kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "vannapurve@google.com" <vannapurve@google.com>,
- "jackmanb@google.com" <jackmanb@google.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
- "Thomson, Jack" <jackabt@amazon.co.uk>,
- "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
- <xmarcalx@amazon.co.uk>
-References: <20260126164445.11867-1-kalyazin@amazon.com>
- <20260126164445.11867-3-kalyazin@amazon.com>
- <af2d4dcd-60a8-4a5a-b508-d9600b1f2275@kernel.org>
- <e2834fd9-e4ec-473c-90cd-6c3a5049747f@amazon.com>
- <40bd6f9b-d5c0-4844-81bc-d221cd9b058f@kernel.org>
- <38deb26a-918c-4743-b35f-92a1330dbf40@amazon.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <38deb26a-918c-4743-b35f-92a1330dbf40@amazon.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 78F8B1C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: pop9z73jb313d1ngtbz5fydspdrkwi7j
+X-Stat-Signature: kfwdsna6ojt8h8hu4wo938xn3iz891q5
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772810277-216342
-X-HE-Meta: U2FsdGVkX183wWcQH0mcSf3Kbx2muR4r4kDirJIvSoe4fm7ahCN1ZzXR+qseQWN30EXlX4n8QKI8sGdfW6KNWuk4rKrXcANeTrsLUDq9xdbkdm87HfjFTFdUID1P1BUwD5yP3UNwq6jhkPtxRyHAOJlMPaWZ4YsRGVr2mV+WArZbk9ucbrnB+a0f+csOh2v3OZLZj0hKpZotxPAArmcrofZzLGBOnjGsJOHyxtgFq75ekix9B1ewzV9YE/w6tApNyZOjeM/6KpHIxH9drCoIGAYuz5WhW837k/EWeMCkAw18LXyN7H4VvhqImqc2N4Fm4+tWAQf1mn259lJ2QPMdqmMiOywxuVpAmNYIlIlWxPcqu6G/14P2rmWMyg3iAKXjRNs/9Q8IwBQGidjBRo45JjKS0aaYkehdiLxkAWYHO7JAIHn8sejLLjSOijrxKkEnBo2UZSnkhkpxIlE3X/F2r3vjQt3OjsxHDSbzCl9sqJ5XQnqhNO05XgEZEOw7BPAmhhtD+K4IrVkMur+wC1v9tS/W+8xNlHJb8vBn1tHCN/yfkc28kK3qhxdWNRlfxU3Cbq7mAyHc0jwCB/ms5QwHQ+31mdiIDe50l7vs6V5sc8RH/R56usKnMQ8DkTPQKOLeaMGn39Fegr+RzTw5biWZEGavw/JvbXOjcKwI5ZK/Yumvg1sY7Usa/YhM53KoFscyTKqbOPukn578cITvwd1RtdvUYx2PQTLomnvGEojmpez+ECeNIGhABN0CXD1UhQEYR8jslz61QPHpwmwz9uOZ3p+WZpB4fwI+TncaWzRGiQ78mONHzQtuWMScgUertgTdQYJbRJM4zUJQ+pqkcE9QqkqBnyIvSbyHWPq2UiA23VAxFnIsMO34G6PnUO74WKW8iuVtXCgNNCmymS/vJx2VcYmtoriPkzzUF88aSXFvfP5E3PgMItxNObm3yPPf9nI23Bn/XoBR7EzG/1HC8oG
- 5ziFa71S
- UvtPMMalW4knA6/MfEbQ5li6hDtkbBI3tXEGYGQwH2r6RQFCvSmewtLDGDKWoWJ/RVsXp4k7a0/XJntww4gs4pQJl4UCl3/LrmvSF89XeKlG86IhgZTSdzHfvH1hW7ZNq0eWo6E2WnySTHCqpfsBQNI7nnfCpRAj38YOutxuIHiNj+KZUxj751YK41QLVl6XRVPb77/j+CAR5UEnyQjfgx7OHLPZWdimuzTPQvCyZcoXr8ImgBCLGYiau/TR7ylyggSHM1UZFxSFafpMvweeeY70N2QKJMrOe2apk/lY3QH/e/NSRQK+c7k3h9IECoxV/irvtjUcCLHJWtgtrk6XvyC0HdV7W8MZGvF8Kdg9pNUOkLxutaPLL1bCOrJuXs49JEqrbPbsqMM7OVPSxgx93RTjzYxhBy7wSjmAreiZ6QwbAGF8wRZeEATUwMxBbAX09h6Mv/I4tHHbtZYZv4sFGOQHhj79JgVZbw9JnNn4h595cve0=
+X-Rspamd-Queue-Id: E965F1C0006
+X-HE-Tag: 1772810962-915026
+X-HE-Meta: U2FsdGVkX18euD4NL5I00bFczjQffwkJV3aGFxeWGB57HaKT8yZF4I4Yr9Ie4s9bs0UeP/LwHvnc3ghjfrkMIGiLy2wV4G8GQLbNGYsVYLeWikIw21XTIaUy1jK4dhGVqoztAHVTYxNDNhGpzQ/t6h78kPUfXEXpp7+S7hffKo3dfixOfQRrYSDFWf3e1yPE/tMAULc0qXoxu2uEU40qxDO+wp19dR65IBN59qsH4nTXFuUdoyhXE2NTMfiQ/tSmDZCeHpCj2BSx0I/kDIz8dypWs8jMQ0EXkUpXNK/A+tcC6I8TuCddLH0OXl3/hR/JAMIEfoSK/lyFlnzkyVE51WMSCbJ1eLVoAC8u8RvC8JZgZtVmes6jlKzxTy2eveSS16ZbVeiw48X8SKXy9fYHrD1hC2AjqczX2M9lASNzbcFanHVsSergC1zivA0SFreH48atmTst7SIOrLm6xYX4HN4uYABc6xRBxWkfAGmNwBOL8kyIE6exRKKtFdCWpGGXPDAxOeA5FXNni06r5xi+dnAwAfAzNlHEHSfwVVaNh7x0q8MIoeYFbZAwhRGLRGdyVl6UKV9A9xdLcAxo3dG/pLmeCFvEE5J6j7WjNZYF8OckgzsZacdn3pDrq2ldZK0G/XzX6mXDrWCxGIBo82CC8q0KD9eD3Hsehg3szhSJq0Cv5JB2kxNAXNF3GsvvVQ5ez0jo52Phn1izi8Zre6995f6X/H3f4fKDP3w12Xe8g9Aaux64KU0BheSyC0l6SY0reBbvd7W+8xA0V1aas3BiYcClSAhWB491p8Xk80Djn1BFNCCAyCORbsgdc86kyLxSbIsBzTDhucTkA8erbEqDjK+7x0F1UST6j0K6sSNh4m3B3Lju1rXqlinceNlJPn4wpQKl8XklNCy0BPPHW8WirFFvD8UhqCCEXA8eGFH81/1qLAozbFFCiy3+d8Mev4EnP8QPhbcoks6WrpDaxCK
+ gtif7KNa
+ T15x7RCoXeObqBOm5mfdPJG5hi27LHZHLsVCVAvAHNsFJuSsgxfBoKa+8N+V0kPTFvur1gnFW/C4NsBe/dFA4iDgl4dtommn+HUBfHrd7RiiSAOb+s0C/e7KrmQaHJk1D3LMfE/ujTucULFvQalYsDqq0oOJb0X7UlavT4AHPkhdE/W3NPDy+M60peMfUngCpITVPCIJ3oIfQQcO8gthNVhz9DOYDjFDyflgFYLbj85Em4hwTWvIfW1zc9z9HbYwnfTwYGRGRhqh8eN8R8eb+E1mw4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -230,67 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 15:48, Nikita Kalyazin wrote:
-> 
-> 
-> On 06/03/2026 14:17, David Hildenbrand (Arm) wrote:
->> On 3/6/26 13:48, Nikita Kalyazin wrote:
->>>
->>>
->>>
->>> Will update, thanks.
->>>
->>>
->>> Absolutely!
->>>
->>>
->>> Yes, on x86 we need an explicit flush.  Other architectures deal with it
->>> internally.
->>
->> So, we call a _noflush function and it performs a ... flush. What.
-> 
-> Yeah, that's unfortunately the status quo as pointed by Aneesh [1]
-> 
-> [1] https://lore.kernel.org/kvm/yq5ajz07czvz.fsf@kernel.org/
-> 
->>
->> Take a look at secretmem_fault(), where we do an unconditional
->> flush_tlb_kernel_range().
->>
->> Do we end up double-flushing in that case?
-> 
-> Yes, looks like that.  I'll remove the explicit flush and rely on
-> folio_zap_direct_map().
-> 
->>
->>> Do you propose a bespoke implementation for x86 and a
->>> "generic" one for others?
->>
->> We have to find a way to have a single set of functions for all archs
->> that support directmap removal.
-> 
-> I believe Dave meant to address that with folio_{zap,restore}
-> _direct_map() [2].
-> 
-> [2] https://lore.kernel.org/kvm/9409531b-589b-4a54-
-> b122-06a3cf0846f3@intel.com/
-> 
->>
->> One option might be to have some indication from the architecture that
->> no flush_tlb_kernel_range() is required.
->>
->> Could be a config option or some simple helper function.
-> 
-> I'd be inclined to know what arch maintainers think because I don't have
-> a strong opinion on that.
+DAMON code has a few assumptions that can be critical if violated.
+Validating the assumptions in code can be useful at finding such
+critical bugs.  I was actually adding some such additional sanity checks
+in my personal tree, and those were useful at finding bugs that I made
+during the development of new patches.  We also found [1] sometimes the
+assumptions are misunderstood.  The validation can work as good
+documentation for such cases.
 
-You could also just perform a double flush, and let people that
-implemented a _noflush() to perform a flush optimize that later.
+Add some of such debugging purpose sanity checks.  Because those
+additional checks can impose more overhead, make those only optional via
+new config, CONFIG_DAMON_DEBUG_SANITY, that is recommended for only
+development and test setups.  And as recommended, enable it for DAMON
+kunit tests and selftests.
 
-I mean, that's what secretmem did :)
+Note that the verification only WARN_ON() for each of the insanity.  The
+developer or tester may better to set panic_on_oops together, like
+damon-tests/corr did [2].
 
+[1] https://lore.kernel.org/20251231070029.79682-1-sj@kernel.org
+[2] https://github.com/damonitor/damon-tests/commit/a80fbee55e272f151b4e5809ee85898aea33e6ff
+
+Changes from RFC v2
+(https://lore.kernel.org/20260301174327.76849-1-sj@kernel.org)
+- Rebase to latest mm-new
+
+Changes from RFC v1
+(https://lore.kernel.org/20260221193629.19332-1-sj@kernel.org)
+- Fix WARN_ON() failure on kunit UML build
+- Fix Wformat-zero-length issue
+  (https://lore.kernel.org/oe-kbuild-all/202602221352.odZW8x1R-lkp@intel.com/)
+- Rebase to latest mm-new
+- Make warning message less verbose
+- Use WARN_ONCE() condition
+- Do the verification asap
+- Minor cleanups
+
+SeongJae Park (10):
+  mm/damon: add CONFIG_DAMON_DEBUG_SANITY
+  mm/damon/core: add damon_new_region() debug_sanity check
+  mm/damon/core: add damon_del_region() debug_sanity check
+  mm/damon/core: add damon_nr_regions() debug_sanity check
+  mm/damon/core: add damon_merge_two_regions() debug_sanity check
+  mm/damon/core: add damon_merge_regions_of() debug_sanity check
+  mm/damon/core: add damon_split_region_at() debug_sanity check
+  mm/damon/core: add damon_reset_aggregated() debug_sanity check
+  mm/damon/tests/.kunitconifg: enable DAMON_DEBUG_SANITY
+  selftests/damon/config: enable DAMON_DEBUG_SANITY
+
+ mm/damon/Kconfig                     |  11 +++
+ mm/damon/core.c                      | 109 +++++++++++++++++++++++++++
+ mm/damon/tests/.kunitconfig          |   3 +
+ tools/testing/selftests/damon/config |   1 +
+ 4 files changed, 124 insertions(+)
+
+
+base-commit: b2de0f05a00142f219d8f6e96b22c8f19fe0446f
 -- 
-Cheers,
-
-David
+2.47.3
 
