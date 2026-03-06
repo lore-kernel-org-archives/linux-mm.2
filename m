@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5DECFCB60B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92AC0FCB607
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:18:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23B596B0005; Fri,  6 Mar 2026 10:16:53 -0500 (EST)
+	id BE78D6B0089; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BA466B0089; Fri,  6 Mar 2026 10:16:53 -0500 (EST)
+	id BAE856B008A; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033FF6B008A; Fri,  6 Mar 2026 10:16:52 -0500 (EST)
+	id A48B66B008C; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E471A6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:52 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CD5A1A056A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:16:52 +0000 (UTC)
-X-FDA: 84515990664.13.C16AF63
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id EFAAD1C0002
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:16:49 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZKwXk10t;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9305F6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:17:59 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 29239C2292
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:17:59 +0000 (UTC)
+X-FDA: 84515993478.23.0CC7B11
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 78F8B1C0004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:17:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meKsfZG7;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772810210;
+	s=arc-20220608; t=1772810277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6QM1vDEilvK7zUAKloFTwbRZugCnNRF1CRHNDtRbLbg=;
-	b=46H/5JmE0lD5sLKrXxgZNfOrw+YgBdR0mwfOdwwjwg+vmeSKFCwaixP/ESnBgdtModqlBc
-	LOscb5NqlSWZli0s4XaUcZi36psVRJPvgzuyUFZ4iBsmZwB5gYQ5cJslGSWMRnn4OFElOA
-	65qeEglyfQCMLRdMfH9NhTcvlKyyHyE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772810210; a=rsa-sha256;
-	cv=none;
-	b=u1ILN6a3yTx5xFgYfvlIClmqQKVnIuRwhBsKmzDDOgcwl4TSJ4qZfZT3xLWkP2XyQwz2C8
-	X4f2FG1Y1VLEhPmV5C1m0HwIlvzZT9bZW58IFOp8tlNBIPYGT4DWaenF+kAqkeqsnXFetI
-	6yuuvpHn5eWTTGOB4XpJ09hUSChQE1c=
+	bh=Dn8Y45d737MtRxkNOkZ0wEJF4NrAhdb/GlZxVuKhhT0=;
+	b=RYF0XLx0+NWK0eC0or5FyFKBqChnJIpSnmSnoGKsNo9i6wqkh7VJM/XzB8Gk183RbpfMfU
+	NS4T7Ga5G34EUq0jLukQteEsNA5qk/b1i1gxNgNC/bMLZjTsFd0e4r2s/m8cI4jNRaXgqu
+	kmm7y1mB0JKNHjxa0zlqH491nkc3/WA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZKwXk10t;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=meKsfZG7;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772810277; a=rsa-sha256;
+	cv=none;
+	b=HcW1QrQYyVEDZVVUqUnkOXRCrcfrXUMJVBp6pfJVArIjtOpMWx1mlw2687OJQ6J9uKjLr4
+	h6R6RnpAOPug4ehS0CHb2gwhd6YXHesdJ6/KZvzStt5lLfoEDCkuq27rADSr9cGRP3uiRB
+	x0JrIqx1yEGG8nYrH0OWFF0u9yuQVTA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7B1B43C5D;
-	Fri,  6 Mar 2026 15:16:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAC4C4CEF7;
-	Fri,  6 Mar 2026 15:16:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 65CC660127;
+	Fri,  6 Mar 2026 15:17:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CD5C2BC87;
+	Fri,  6 Mar 2026 15:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772810208;
-	bh=at+HTAAsuB1KLZbXFCgnkpzyMoXZFrE3H8GRM4s9e5k=;
+	s=k20201202; t=1772810276;
+	bh=ahO2AWbp+Wup5w2IFEsZm9ygIb5iPaDoKCmt+8dJ1FI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZKwXk10t3KvnpEDSJQebHfUK+3bQguAKrVSqADBK9iE76YbYNwZ3dt9/Z2YKsClBT
-	 pAcdPluWKqTcp3tgG9FsZRFIUIfinnubH9tqyFCvM6WMXXE/XPJyXpMMZrsaZblncq
-	 DmayVqJwfFbGpYEAfNUd7BZ4pOGD7v74lth2RwPcWKTxdmDjyXT8v/BYAFbfZ6CDH0
-	 sGihCC9IxBd22g5DMKnaqH34bYCNJXeShs4SP6TbHGZssSVQGZCPcMH1bLQDiPC+in
-	 TO1W6JUZb0PqCXP+Na94lG8jsCKyjjUHGr3NNxirNMWyzFWitM+jHdnBDxFh3GzmEb
-	 zH0SqpwRo19Pw==
-Message-ID: <9b4b9f48-595d-46c9-8f77-fc021ac2619c@kernel.org>
-Date: Fri, 6 Mar 2026 16:16:18 +0100
+	b=meKsfZG7Mz03e3WAkn/HPFLDZOmTDBOKCSQFOevvDp5edvLDhQ5ZaQhN18w6YvQF+
+	 bI32Gu8m6ecxnGvhRxpwRzPZWTvaaVVzIycqlEjadO0UbBx+XZYFIILDfRDueqoTog
+	 k2NgYqmYDC1lNbevKho3uOIbztKbXULKniiln52RmnIiXcqjXnG+5k/GdY2kZB9ILm
+	 cz+Nis4gfBaA9P8uAeQVKFWF2cIx27KqN2LOEooqj+EKwkMqGvcjSfWkxxn4R9zvTY
+	 H7WKDOR11p0ysMu3+uD4m8LpHBqBHzW3fjjYUSvDCcRfuo1DDrMiodMi70noRcLb0n
+	 0IkidHKKgSxUw==
+Message-ID: <efc1c39c-7eb5-488f-819c-0ca2149898c3@kernel.org>
+Date: Fri, 6 Mar 2026 16:17:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 09/15] KVM: guest_memfd: Add flag to remove from
- direct map
+Subject: Re: [PATCH v10 02/15] set_memory: add folio_{zap, restore}_direct_map
+ helpers
 To: kalyazin@amazon.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
@@ -161,11 +161,11 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20260126164445.11867-1-kalyazin@amazon.com>
- <20260126164445.11867-10-kalyazin@amazon.com>
- <13ed00e1-f0db-4326-a800-2ba306833921@kernel.org>
- <690c22f9-b71a-4f14-9857-008c7c858373@amazon.com>
- <0c0b911c-cda2-44a4-897e-361e02be7da5@kernel.org>
- <936fa782-d937-4b14-b92d-cc8707336e5e@amazon.com>
+ <20260126164445.11867-3-kalyazin@amazon.com>
+ <af2d4dcd-60a8-4a5a-b508-d9600b1f2275@kernel.org>
+ <e2834fd9-e4ec-473c-90cd-6c3a5049747f@amazon.com>
+ <40bd6f9b-d5c0-4844-81bc-d221cd9b058f@kernel.org>
+ <38deb26a-918c-4743-b35f-92a1330dbf40@amazon.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -212,17 +212,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <936fa782-d937-4b14-b92d-cc8707336e5e@amazon.com>
+In-Reply-To: <38deb26a-918c-4743-b35f-92a1330dbf40@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 78F8B1C0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: pop9z73jb313d1ngtbz5fydspdrkwi7j
 X-Rspam-User: 
-X-Stat-Signature: qsyd4m3s7hh64ferqpyupt6x16a4dppn
-X-Rspamd-Queue-Id: EFAAD1C0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772810209-305193
-X-HE-Meta: U2FsdGVkX18Zx0Jp4bkOWyJ3uv7IWs1p0mLYDYESiWG2SYwj6YaOWjpZSuVADG++QKXmTzDpvIpjbSTOOuMzva0ykwXQxm+0e2X8FLN54XAaMCkBnM6lVdlTeCMxLDP90d+wldHTOVZ3bq/oPQ2ZhbALzYlKN2A5cbs9BYEYLD4g7ghIdiw/iFoBkVkXGxftLFBieEjNExhDY+3utV9XVncGAGTjgMDcjkHnngigA+rBqbtcMA1DMlw7sqcKooC4aLTlO9oE1NgHY01o1RlkYALd0fUKvZps7yg2IAz7HUQcbW42HilgP27MQBGNHTQNEp0bJtu7yLOnKwwOHJlg3IvheENNhKmzixKP4aNPXHSXUmXZdpBQPFSYcNharccmCPZwdpNS+AjjcvnpOPFWbDNTWY4VpLyT7xip+DXpcxCNLWmLnI3rp24zzgQ3QCIRT1LpPanacshXDCfz7eRVHn26WnBigV7Qvqgmhnthos6pcpCI5fhWtl9tghbT1VDxZAeh4+ytFfQtb4Ti1iGNbkLqERzsBijChk+uraYwQv70RZkgRvw01BzlSgS6pstB7elrd5aVat0rBu17DFcLvTn1B5pXGN6gFRW2pYGA8FXsZpo8KMVrGOebK41ZBeIkfOPZ87JZnjybLZnpYKGkYQYfuG5mESnOFmcA9+wG8+wutWC6YXbMY8i2LQ4YMttU0HBF0N5rjRwgnsSbzk2tI0C7PugvPvIcC6IHlwmRyinnNZ38fHGi67os1Kntm9E2cNj5sUCowPdlQHFKNM4eBPIfAooPOEvDUwZypCFuRM+qPFjsZQhT7azkPN1aJAPUNwReP5IlR7Rr5UZJAoNRV8ImhrMUHOXooWTaW2XLvCqpsBFPkUE3WAHNTPA+74fcOA+nHO6ORWl3A1CnLfC8Qa87w4y4OgALudsVKNYwJQkK6CaEhqu+TWcbN/nFxaBQLby2b3HMW0RYdOd96KE
- 8D4FexOJ
- R6b4/rHTeqa5RFgwJd1RHU4ajgjMQIsRy8Mp7spsZGrVO3dZxtD9GuMbNlK9phSC0QIU7RaMrPo+JatsvUHd56H64m+8TVHrP8SZ1SZ/Gmv63oj64DPfPoYKcUDFnEa14IqvHpsTbYT/ItWQI4Gmijxt4zVx/qQethXtDb7gOnmMdYiKUtMqCBKHp2CN6m3mfqfDQanC+1eBc/yJavrrb5QEG0/Z1PbNeKMgBaItYNuQL+c2XC8Y5o/VniRnNRtdI/ui8sg0mwWW+B3PdlzRJbRzaOW5LnZbWTNpWlUHc/9pTvv3Hu8hgqgmR0rvdwqp2zmaD1JCZTFa2ONhfD8YBpukmvYPbqr5pFWuzJGUZrnYbWoRVuW32Cow+7cjfrxIMliF4tqy8y6ohPxO98ZXf6UhWMu3DSHm7fbpeU8IqyhQajvsMYmgPAcC8tDADuPpdcKYU
+X-HE-Tag: 1772810277-216342
+X-HE-Meta: U2FsdGVkX183wWcQH0mcSf3Kbx2muR4r4kDirJIvSoe4fm7ahCN1ZzXR+qseQWN30EXlX4n8QKI8sGdfW6KNWuk4rKrXcANeTrsLUDq9xdbkdm87HfjFTFdUID1P1BUwD5yP3UNwq6jhkPtxRyHAOJlMPaWZ4YsRGVr2mV+WArZbk9ucbrnB+a0f+csOh2v3OZLZj0hKpZotxPAArmcrofZzLGBOnjGsJOHyxtgFq75ekix9B1ewzV9YE/w6tApNyZOjeM/6KpHIxH9drCoIGAYuz5WhW837k/EWeMCkAw18LXyN7H4VvhqImqc2N4Fm4+tWAQf1mn259lJ2QPMdqmMiOywxuVpAmNYIlIlWxPcqu6G/14P2rmWMyg3iAKXjRNs/9Q8IwBQGidjBRo45JjKS0aaYkehdiLxkAWYHO7JAIHn8sejLLjSOijrxKkEnBo2UZSnkhkpxIlE3X/F2r3vjQt3OjsxHDSbzCl9sqJ5XQnqhNO05XgEZEOw7BPAmhhtD+K4IrVkMur+wC1v9tS/W+8xNlHJb8vBn1tHCN/yfkc28kK3qhxdWNRlfxU3Cbq7mAyHc0jwCB/ms5QwHQ+31mdiIDe50l7vs6V5sc8RH/R56usKnMQ8DkTPQKOLeaMGn39Fegr+RzTw5biWZEGavw/JvbXOjcKwI5ZK/Yumvg1sY7Usa/YhM53KoFscyTKqbOPukn578cITvwd1RtdvUYx2PQTLomnvGEojmpez+ECeNIGhABN0CXD1UhQEYR8jslz61QPHpwmwz9uOZ3p+WZpB4fwI+TncaWzRGiQ78mONHzQtuWMScgUertgTdQYJbRJM4zUJQ+pqkcE9QqkqBnyIvSbyHWPq2UiA23VAxFnIsMO34G6PnUO74WKW8iuVtXCgNNCmymS/vJx2VcYmtoriPkzzUF88aSXFvfP5E3PgMItxNObm3yPPf9nI23Bn/XoBR7EzG/1HC8oG
+ 5ziFa71S
+ UvtPMMalW4knA6/MfEbQ5li6hDtkbBI3tXEGYGQwH2r6RQFCvSmewtLDGDKWoWJ/RVsXp4k7a0/XJntww4gs4pQJl4UCl3/LrmvSF89XeKlG86IhgZTSdzHfvH1hW7ZNq0eWo6E2WnySTHCqpfsBQNI7nnfCpRAj38YOutxuIHiNj+KZUxj751YK41QLVl6XRVPb77/j+CAR5UEnyQjfgx7OHLPZWdimuzTPQvCyZcoXr8ImgBCLGYiau/TR7ylyggSHM1UZFxSFafpMvweeeY70N2QKJMrOe2apk/lY3QH/e/NSRQK+c7k3h9IECoxV/irvtjUcCLHJWtgtrk6XvyC0HdV7W8MZGvF8Kdg9pNUOkLxutaPLL1bCOrJuXs49JEqrbPbsqMM7OVPSxgx93RTjzYxhBy7wSjmAreiZ6QwbAGF8wRZeEATUwMxBbAX09h6Mv/I4tHHbtZYZv4sFGOQHhj79JgVZbw9JnNn4h595cve0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -230,49 +230,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 15:49, Nikita Kalyazin wrote:
+On 3/6/26 15:48, Nikita Kalyazin wrote:
 > 
 > 
-> On 06/03/2026 14:22, David Hildenbrand (Arm) wrote:
->> [...]
->>
+> On 06/03/2026 14:17, David Hildenbrand (Arm) wrote:
+>> On 3/6/26 13:48, Nikita Kalyazin wrote:
 >>>
->>> Dave pointed earlier that the failures were possible [1].  Do you think
->>> we can document it better?
+>>>
+>>>
+>>> Will update, thanks.
+>>>
+>>>
+>>> Absolutely!
+>>>
+>>>
+>>> Yes, on x86 we need an explicit flush.  Other architectures deal with it
+>>> internally.
 >>
->> I'm fine with checking that somewhere (to catch any future problems).
->>
->> Why not do the WARN_ON_ONCE() in folio_restore_direct_map()?
->>
->> Then, carefully document (in the new kerneldoc for
->> folio_restore_direct_map() etc) that folio_restore_direct_map() is only
->> allowed after a prior successful folio_zap_direct_map(), and add a
->> helpful comment above the WARN_ON_ONCE() in folio_restore_direct_map()
->> that we don't expect errors etc.
+>> So, we call a _noflush function and it performs a ... flush. What.
 > 
-> My only concern about that is the assumptions we make in KVM may not
-> apply to the general case and the WARN_ON_ONCE may become too
-> restrictive compared to proper error handling in some (rare) cases.  For
-> example, is it possible for the folio to migrate in between?
+> Yeah, that's unfortunately the status quo as pointed by Aneesh [1]
+> 
+> [1] https://lore.kernel.org/kvm/yq5ajz07czvz.fsf@kernel.org/
+> 
+>>
+>> Take a look at secretmem_fault(), where we do an unconditional
+>> flush_tlb_kernel_range().
+>>
+>> Do we end up double-flushing in that case?
+> 
+> Yes, looks like that.  I'll remove the explicit flush and rely on
+> folio_zap_direct_map().
+> 
+>>
+>>> Do you propose a bespoke implementation for x86 and a
+>>> "generic" one for others?
+>>
+>> We have to find a way to have a single set of functions for all archs
+>> that support directmap removal.
+> 
+> I believe Dave meant to address that with folio_{zap,restore}
+> _direct_map() [2].
+> 
+> [2] https://lore.kernel.org/kvm/9409531b-589b-4a54-
+> b122-06a3cf0846f3@intel.com/
+> 
+>>
+>> One option might be to have some indication from the architecture that
+>> no flush_tlb_kernel_range() is required.
+>>
+>> Could be a config option or some simple helper function.
+> 
+> I'd be inclined to know what arch maintainers think because I don't have
+> a strong opinion on that.
 
-Not without migration support. But then, migration would have to make
-sure that the destination folio has the direct map removed. So I
-wouldn't worry about that.
+You could also just perform a double flush, and let people that
+implemented a _noflush() to perform a flush optimize that later.
 
-Once you return an error from folio_restore_direct_map(), you better
-document when/why it happens and how the caller should handle it.
-
-There is nothing existing callers could really do, so it's an
-implementation detail of the
-folio_zap_direct_map()/folio_restore_direct_map() functions to make sure
-it keeps working.
-
-If it ever fails, we'll have to figure out how to keep the interface
-working.
-
-You can document any restrictions regarding when
-folio_zap_direct_map()/folio_restore_direct_map() is allowed to be used
-in the kerneldoc.
+I mean, that's what secretmem did :)
 
 -- 
 Cheers,
