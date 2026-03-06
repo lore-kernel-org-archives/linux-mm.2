@@ -4,143 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99844F01821
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97A88F01821
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD08B6B0005; Fri,  6 Mar 2026 06:04:17 -0500 (EST)
+	id 072ED6B0089; Fri,  6 Mar 2026 06:07:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7AC96B0089; Fri,  6 Mar 2026 06:04:17 -0500 (EST)
+	id F38276B008A; Fri,  6 Mar 2026 06:07:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B35766B008A; Fri,  6 Mar 2026 06:04:17 -0500 (EST)
+	id E448C6B008C; Fri,  6 Mar 2026 06:07:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A07476B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:04:17 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 200C8140535
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:04:17 +0000 (UTC)
-X-FDA: 84515354154.03.2CB0427
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 221514000D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:04:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ciWYckOi;
-	spf=pass (imf12.hostedemail.com: domain of jiakaipeanut@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=jiakaipeanut@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772795055;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D149A6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:07:44 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5740E8BE96
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:07:44 +0000 (UTC)
+X-FDA: 84515362848.30.A840B67
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E863816000E
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:07:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LfXrGnQj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772795262;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4FBAY7Ptj233wihUnQns1LO/raURJqSuY43ghIQW2sU=;
-	b=CVcIQKtqbdez77T9x4UG7hWESXKmA2NT/Xce+eqTaNyWGvg7yVhoGqrD7opKu67TQw32Mi
-	N1nNgtSm9Tud1/ezgbAy2MJwS6nsIuMYlrkPI2WFYo45FcYqkmqjgot0U8FqO9XIBTMle1
-	+uZ1lLz0Z4cWGe4KFfjVmLPGv+Mnhi4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772795055; a=rsa-sha256;
-	cv=pass;
-	b=rZgD5UqnrRZqRNweWrtca9V3OBzyxQZR/AYSo9GImpOuW13tBXoPqxr1i+66M8rumBtPtq
-	74T25u7kQWT2P1LNUAwWNHMw9RUCXEDeuWv1vgnzhEYj/hOnUieH5ahW6IvNFJ+CF2+8Gb
-	WmyhwxUImW1ZtjStGSU9YLQjEYDqkB0=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ciWYckOi;
-	spf=pass (imf12.hostedemail.com: domain of jiakaipeanut@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=jiakaipeanut@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-464ba2bb3aeso6711455b6e.1
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 03:04:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772795054; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aEqcjqj2vpEZEbdTHPb3tJh10btcJve0NM9pCzNCqrzYodtvATBPL6y8LbIs7fywm2
-         wSYridFQYfIa6fwGKFcpop66bb4ooli3Fn7C9sm2KfOgfyPfbtMvH5dW1CWLR4INH2il
-         XoRLCJI7Shg1zZa7R24p0S1Qy0sJM0FPMG2NfOiyjNacl6laEfDj7zsIcpcnimIFLmlM
-         CdtifXoMNECk5WSw7F3JbBJV981O94mHxbZawKtWX68MZOyunuqnJtLOXlfNidyGB7nA
-         VIslsMbLkUAA/0f77by1VHmqWR8Rx1oiPaNwHcvF9uFSlhjH/vE98fimugGCWQEu4Dwl
-         jZAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4FBAY7Ptj233wihUnQns1LO/raURJqSuY43ghIQW2sU=;
-        fh=zjDmdeXq4+v7p9Bs3SiXQ6FShqSDvpB/ngCMicMQYOo=;
-        b=KusTPgPfopm78LznJXd5Vjr1VGQQLGk8t0L7HlcG5ssvv/6CYomYgVwz+sdA76/6Ga
-         4jvfqiNxrgrAvcMBELkdWZnxCpa/PADoYPVWwHSpskrwvXP26hHhM2y86gRhd3Ib54tQ
-         kUGXRutezqy3TgIggHQ0TeJi7RAoRz5DVQF50cFaZaTIClDZOX5Ahiybhk3eCa7HW66K
-         8LmeWQwi/UG4bxWNqfS+fyoWZOmTdr/ncpnJok7o/HmvNbC2K4j5EzA0MlE114vUDvTk
-         e1dR3VR/jNwkd0sLzTvXAW5eZsjApkLzq5fJZVZl6N4B4MD/osJ+EbrO71CiN85wZ/dZ
-         rUKQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772795054; x=1773399854; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4FBAY7Ptj233wihUnQns1LO/raURJqSuY43ghIQW2sU=;
-        b=ciWYckOiVCk8LgDJUeOkSH3bzkwX/TtHeJI9Unukz1tDhhZ2Whh6Og+zVzz7kESMvt
-         MRLRb7WhVE2+ftopxT6GkFnE/eVpxjg1WPKaE9MPCgg6sjTYFnjJCrs/cIk05t939yqm
-         thgfbax6Mcuw2pITGqLxCuEBdI9T4k2wRLSqoSWAUhxM6oMYgYoFcwUe/zpg0rHjhl8X
-         hsTWiKPLNs/c8Crs891n1PlBP79gEWQgSGVOr5NtD6a1kW4wE+HeP7dyQzft9BveDa9k
-         nsBSWt1ybI+eo5p3QS7wgnNENBks6FymJTKAhlsHer5SMSfzORUYwp3x22Y86oxt8bRa
-         Fq/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772795054; x=1773399854;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4FBAY7Ptj233wihUnQns1LO/raURJqSuY43ghIQW2sU=;
-        b=X3PW+n4Nqd//OA9LO5UAD04sjHToUEowqmdk3MFG8XoHw1ZmaCv2e5zEc1UJfHAsOR
-         0p2p/8q2yzWNuK78jDC0BCuVSuZN4+CmRxS7S8REfGl9KQiSYOfp58hN92DXAZWmXNWY
-         012X6E5l1aWx6GapU5XKnjCchtUf7tkQTSOql71utmwtxqG9QdRc/fGxUZDREh3EcXoO
-         lZYWPuT5d756K2HSnBhd5Vp1a2FYvjYhSTeKjJETn20sPjhpbuN0tyrkupAX2OIHs5o+
-         2xQnjFoiX7jdIkg9KW8evPJq0QRBjUFvjrcOuvrLGWkyRg/AdN5tgHDPH/Pp13h/Ewi+
-         /8/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU57AaYjM01fmvSH0+RIWA3f93W57HV6vW5MoF7OYcNjySfOGFtvUg7k7JrTB7GOFWKjXSAAdoEGQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyji96UvDNlqFoKQF2+a8i6gZx6pzmV+kmmDQqM+FNTQl5yaHt7
-	bAnuKmXKLLsCmH4iiz1IjFrrr4P2D6CG6JiLqGw/hRaYlaY3P/A3xcRVRlHOm6iDdLfAB/c2fg5
-	O8RcWFXwyAxvBp+wM5Ha7Ju5DPwTXp5U=
-X-Gm-Gg: ATEYQzx4OyfoVjCvb7N6vkYx3Jr79lsJXfYSpPRaDg0e6tAvDSEezSgaQRUI9z/Z6N8
-	d71/5I+Io7UTFvEEcSA9ffQKRLKu25gEFNgHTL3hr/W7YobII/byrsSgKQKKT3uCKGnLJpohITm
-	8k03hKKaCuyQrnFtNb/CP1noI33q8KPrZ+nUafSAvbv/Zqnk0dDF0ZzoEqXyoRPOe2YcciojOcm
-	Hi9SI2Fsarg+3sRBFtZNhRhHhLkFD5E8AmDDOlJE8YWMPz+8xYjwI3LCj2KBLETRq9nsrbu8wGW
-	yy3Qnng8h3MW0sujvj+K5If1mk4iC28TttYdLFw=
-X-Received: by 2002:a05:6808:1522:b0:450:b87b:1ec4 with SMTP id
- 5614622812f47-466dd0f715bmr888114b6e.15.1772795053874; Fri, 06 Mar 2026
- 03:04:13 -0800 (PST)
+	bh=pNkRqhf2OEYfDr/sk/mw7yv47Dg5A+NNPlMn4giuCwU=;
+	b=MdeKVj2ApLwuDLJ2/r2CsfI66SRd3zMpq4GQJMeGGkYbmZ5v9EiRCHFiV+MimhtYgwVfI+
+	4o/jiey4Kvbl3Ux/2Hp4b1p2+eZIC+WYijhkdSYfas4KjYk9Y/IVZ0EbQwegq3mzi/8t5/
+	ixHJcyBz++dMbxhdR7RGU/NOSL36LEg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LfXrGnQj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772795262; a=rsa-sha256;
+	cv=none;
+	b=wkcuu/KH3Pd5vJaB779qBafUSR8zFUC11JxRNZ014hgJNwtnHzZjWUbpEiT2oYpe6Ojah8
+	S6Op0x8HadWKNez2ZRlLbQa/NuyX9AvO41Mc0HbKVO8MzASQDggoQtI5UzygY2dZSVnMqh
+	E7z7GASTLZaqkGANTn9z70MWtFce2/8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DB1E60130;
+	Fri,  6 Mar 2026 11:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD42C4CEF7;
+	Fri,  6 Mar 2026 11:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772795262;
+	bh=xHA3xv8H6bWtNG4YWuzx0gTRR1QZaKIgnv1aEOMe/sI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LfXrGnQjHWNBBCETU/U4oSl/XQLAxUW5IW4VzDgbJuqr8rMv2CC9tqLHt++rzGNHE
+	 t0r7h92NQurOz8dlsIXe9stMOQlmA9ZH6uLf2rKEazE2DmsuCUq0OtForVaXI/uXVW
+	 xtlO4A6wks/mXhKXFf8pRc21P5Mj4x0jcKTcGp5pDBK5Rz7C8/7ojyk95zx5cNCewp
+	 1u29pZldqh+4VOJ/ZgmA75LILHILbY+xmhXnvOKJTsfxC6LVYIr2RXdmffQ1gmyK+q
+	 OgN6lcJBXIMNxzWGvz7oM3X3rkkwdktXnGjssSHgVBLcvQYAK7mQTpIC3PR4xxKLyg
+	 qnM/YAedK++bQ==
+Date: Fri, 6 Mar 2026 11:07:38 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v1 1/4] mm: move vma_kernel_pagesize() from hugetlb to
+ mm.h
+Message-ID: <833950ef-e01d-4914-b5f9-bc1f6261b184@lucifer.local>
+References: <20260306101600.57355-1-david@kernel.org>
+ <20260306101600.57355-2-david@kernel.org>
 MIME-Version: 1.0
-References: <20260112192827.25989-4-ethan.w.s.graham@gmail.com>
- <20260306094459.973-1-jiakaiPeanut@gmail.com> <CANgxf6yMNZ3=xm9xVhPZDuxMc__7pQk=mti-CyD1QjUOgTJLEA@mail.gmail.com>
-In-Reply-To: <CANgxf6yMNZ3=xm9xVhPZDuxMc__7pQk=mti-CyD1QjUOgTJLEA@mail.gmail.com>
-From: Jiakai Xu <jiakaipeanut@gmail.com>
-Date: Fri, 6 Mar 2026 19:04:02 +0800
-X-Gm-Features: AaiRm50fj2zUudpYSke1Ww9X_50G4gGf4UxVg0WDage5_ANMvrcVMJxjNhrQX6Q
-Message-ID: <CAFb8wJvmnPv96o9Kr9VAh=cL9zMr8-5eCEmmkjtgX02_Ypa4nw@mail.gmail.com>
-Subject: Re: Question about "stateless or low-state functions" in KFuzzTest doc
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, andy.shevchenko@gmail.com, 
-	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com, 
-	dvyukov@google.com, ebiggers@kernel.org, elver@google.com, glider@google.com, 
-	gregkh@linuxfoundation.org, herbert@gondor.apana.org.au, ignat@cloudflare.com, 
-	jack@suse.cz, jannh@google.com, johannes@sipsolutions.net, 
-	kasan-dev@googlegroups.com, kees@kernel.org, kunit-dev@googlegroups.com, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lukas@wunner.de, mcgrof@kernel.org, rmoar@google.com, 
-	shuah@kernel.org, sj@kernel.org, skhan@linuxfoundation.org, 
-	tarasmadan@google.com, wentaoz5@illinois.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306101600.57355-2-david@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E863816000E
+X-Stat-Signature: y9rsozos9pdtmgjangazxtdt7z6ha4jt
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 221514000D
-X-Stat-Signature: kwxsqo9ou9fdprqqy99pe57akqdti1p3
-X-HE-Tag: 1772795054-428877
-X-HE-Meta: U2FsdGVkX18x453PxmwUIQS7s2vHzoJUYRM328Tt4gBAxLYFVcpNjvjbElTtKMaksWdveg+2qGclVqjZtkpOAMpUPc1MmKJq6b9Kg24Xvvtf3tEmuRvaiOH2HIsPUtkosmcZ9tB6FsfpKnJcRow33w8x/06cJtVptikj9L5kSD8hi2smI2t0QROBArF1zp4fx7ny9mNuMbJu2p7/3WCi6ioepB/IuPVE7lTOWJFw62g9PnOXXOo0VEXipHbLZ2rGpYOASxTzEkj4dEWu3N4ajX+4mU/BSVnJOAyRh60q7ZrKJn55DoHvUHrXpTgPBCTwA1Ne+4x0VjVrjO0nuOwOflpMNl/99w+c3d09Cdy4r4RBT/PDdslYg2jGvBsC2Nf75x9ZizOOLhvf7EsOyvdDRdz3MYfCHBIMoFCkWWeNwiiMnJB/TWl51Qrs7ZeLnwQIz/y62kEwGUJYWrmP7pdt0aZczmpIeoRigHqTHoF4nLyX9lWqmBuMm45VdMo2CY68VCo4PlN1bHWXNnXZ3Iy0MbEPYv8vnzPddfzke+u0BbQAjZPlhYwuBvzqd6yqPpNlIbs5vJjBu23Jy6iRMFdijk8eSEzl7sDMKzQ83ntfM3JALK4oDlKWqoD348G3P4feVRp3WE34WZFMZaKYCI93LkoeRFLCXSQPu4GzzXVXbOWgzrO68vyLjskDNV7TotNnjjWNCUVldSe1jjgcQiMwDtRq4a3icSxKX9KcPpVNS0PI4S6vcx6K0R+T+Uch/WvxDdb4WP9UMh180I9ABcKj4uDkxOFphLXYyve14+J7omJMJIH2TxFPcxpakHLuGdply06Nh/hySX0kXAD0pSWBEV9J6jWrRP7Aiph02Tb8OO37bQtICPGBfMoGwVyq4tCayRTCIf3FiH9AXhCl0aKhsKXlvaNxaJcZWB096wvSOKeXpGZKTGIARQMp73/gRYKlTbL58UuAezg+8z4qQot
- RQFIYiQ1
- i0t92OqzKiu13eBSrmnwj6V8oyCAsBBnAZMtuucxqp9nuPOQUmAAbR8MmINrfI8839N+8PTQoq/2LxsBDDu/XSTfIYKqNprm2SayvaA/rkLABucp7rT+JDKnlsy6uBKW019AxFkHFrNL1z82QYS4BCTjNYBuu1NAR6QSqkcm88iouSKffCVy2dhIUYjPQMfITkpAjyJ8FlAkandbyMO/y9q4dxa0wz2C/GV0jnOsj6YosQiUkITJvBUAkyrDNJCHBCpUOpOcIU8uFEQGK4Nvau3hemw0WRnu/TqGQnxLHo+aFejFDfxnB67fUb0cjrwsAwwExNp2PcDDUfKX6ThxXIUNwtlAGKCzwryKhRHvPH9nHtQQ01+bCHkKBRWEKd+2+Wt8MR9L8kJ9G9tGpmz2wcIFkyTgzJO7/41qGCqIZGjECtS1y/rDGX6DnGDBiTyihL8z9/G0ZlPA4iGqCoH4Xcn9tzUsG7mg40rt3JX06IvCgbMWVkSrp7RL2FZ7JCLg3QMn63F4jNpZya04=
+X-HE-Tag: 1772795262-755385
+X-HE-Meta: U2FsdGVkX1/PJsq7ItNciqy5Jm5KmiChr3+w7Dy6okZmPaZPwxI8lvEv1+k9b/G+2d3H99Auxhu30+tYFmPj7hGc1vO8zR8AdC+NNYJQdZFpHm50e8I4OLjh/TqQgcgnfSho552sIV05/e7b1J0J4/P72vU8wXXRuHJcqv4ift47aR4LywU6IbCcywXs6wJ5cnX9FQpy7uNWImsjXds+kFUlJKWMibrUliIb8j70+bxLxUPr0dQBpivRhJhMr3Hzazbu/RCYnwKTBvH+udvmP+4USuUTbBcivIErzf9rEH1y6kDlcWIvcSAVXWeM5Q0e1wONI3qbZeb2G4issEXPTlG8rcfZKrkXVEo789ZijGQTDxmNRh/S88mmeRjLFIBeVgAW3nHH9Ud1ZcyMFigyUWmEvDALLqz0hB3hQHphHEDC8e4pW+ROwu8227eVEOaR4BDWWt6jqUUpICUfmM1QrlKshFZ/j3SvyK+5QbL7cXPmSX7+LU+v+msY+H6n8H24bojWubrdgTXB0vveB5KyB2vdnRuXABgDHEDiIZqnIU7os6lP2my1HXFhqW4lkDwc7IpdzF/aCIVdhkE2J8K35pMrFW9p3q/1uyaZQx5dfNcM8G/gsAO2RayEwRzCViVyufXqm/F+AzlMBFxSf6uVW/mTxLoCSRHhga25UEY8yMW6uvc6bNVs1zeQSS6Ggz59uMjpVBm4dpf1FM93kVMhOQOlxE+4A3bAcZB0peQGYcl87q6L8lxss1y51YCPicQywYS9xhQte1nTnmOcq/zB0OFacfs8uw0psBI7+xTH+yQCkyqYLl4Mxkuhpf11wQyAFi3Jhj6e7mRSbYkjcetkjay9j2yiHW125JisO01Ytk4kmAhz8dHtDWXtI0KjdxAAxd7pXGH5k8SctCXx6nY46mmi7YPFrQV5jP8LRC6T/Oxp2wzymj20Hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,94 +90,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ethan,
+On Fri, Mar 06, 2026 at 11:15:57AM +0100, David Hildenbrand (Arm) wrote:
+> In the past, only hugetlb had special "vma_kernel_pagesize()"
+> requirements, so it provided its own implementation.
+>
+> In commit 05ea88608d4e ("mm, hugetlbfs: introduce ->pagesize() to
+> vm_operations_struct") we generalized that approach by providing a
+> vm_ops->pagesize() callback to be used by device-dax.
+>
+> Once device-dax started using that callback in commit c1d53b92b95c
+> ("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
+> it was missed that CONFIG_DEV_DAX does not depend on hugetlb support.
+>
+> So building a kernel with CONFIG_DEV_DAX but without CONFIG_HUGETLBFS
+> would not pick up that value.
+>
+> Fix it by moving vma_kernel_pagesize() to mm.h, providing only a single
+> implementation. While at it, improve the kerneldoc a bit.
+>
+> Ideally, we'd move vma_mmu_pagesize() as well to the header. However,
+> its __weak symbol might be overwritten by a PPC variant in hugetlb code.
+> So let's leave it in there for now, as it really only matters for some
+> hugetlb oddities.
+>
+> This was found by code inspection.
+>
+> Fixes: c1d53b92b95c ("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Thanks for the detailed explanation.
+LGTM, but you need to fix up VMA tests, I attach a patch below to do this. Will
+this resolved:
 
-Would it be fair to say that KFuzzTest is not well suited for testing
-kernel functions that are heavily influenced by or have a significant
-impact on kernel state?
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
-I agree with your point that "the goal of the framework is to fuzz real
-functions with realistic inputs." One thing I've been thinking about,
-though, is how we determine what counts as "realistic" input for a given
-function. If the generated inputs that a function would never actually
-receive in practice, we'd likely end up chasing false-positive crashes
-that don't represent real bugs.
+> ---
+>  include/linux/hugetlb.h |  7 -------
+>  include/linux/mm.h      | 20 ++++++++++++++++++++
+>  mm/hugetlb.c            | 17 -----------------
+>  3 files changed, 20 insertions(+), 24 deletions(-)
+>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 65910437be1c..44c1848a2c21 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -777,8 +777,6 @@ static inline unsigned long huge_page_size(const struct hstate *h)
+>  	return (unsigned long)PAGE_SIZE << h->order;
+>  }
+>
+> -extern unsigned long vma_kernel_pagesize(struct vm_area_struct *vma);
+> -
+>  extern unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
+>
+>  static inline unsigned long huge_page_mask(struct hstate *h)
+> @@ -1177,11 +1175,6 @@ static inline unsigned long huge_page_mask(struct hstate *h)
+>  	return PAGE_MASK;
+>  }
+>
+> -static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+> -{
+> -	return PAGE_SIZE;
+> -}
+> -
+>  static inline unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+>  {
+>  	return PAGE_SIZE;
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 44e04a42fe77..227809790f1a 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -1307,6 +1307,26 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
+>  	return is_shared_maywrite(&vma->flags);
+>  }
+>
+> +/**
+> + * vma_kernel_pagesize - Default page size granularity for this VMA.
+> + * @vma: The user mapping.
+> + *
+> + * The kernel page size specifies in which granularity VMA modifications
+> + * can be performed. Folios in this VMA will be aligned to, and at least
+> + * the size of the number of bytes returned by this function.
+> + *
+> + * The default kernel page size is not affected by Transparent Huge Pages
+> + * being in effect.
+> + *
+> + * Return: The default page size granularity for this VMA.
+> + */
+> +static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+> +{
+> +	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
+> +		return vma->vm_ops->pagesize(vma);
+> +	return PAGE_SIZE;
+> +}
+> +
+>  static inline
+>  struct vm_area_struct *vma_find(struct vma_iterator *vmi, unsigned long max)
+>  {
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 1d41fa3dd43e..66eadfa9e958 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1017,23 +1017,6 @@ static pgoff_t vma_hugecache_offset(struct hstate *h,
+>  			(vma->vm_pgoff >> huge_page_order(h));
+>  }
+>
+> -/**
+> - * vma_kernel_pagesize - Page size granularity for this VMA.
+> - * @vma: The user mapping.
+> - *
+> - * Folios in this VMA will be aligned to, and at least the size of the
+> - * number of bytes returned by this function.
+> - *
+> - * Return: The default size of the folios allocated when backing a VMA.
+> - */
+> -unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+> -{
+> -	if (vma->vm_ops && vma->vm_ops->pagesize)
+> -		return vma->vm_ops->pagesize(vma);
+> -	return PAGE_SIZE;
+> -}
+> -EXPORT_SYMBOL_GPL(vma_kernel_pagesize);
+> -
+>  /*
+>   * Return the page size being used by the MMU to back a VMA. In the majority
+>   * of cases, the page size used by the kernel matches the MMU size. On
+> --
+> 2.43.0
+>
 
-Thanks,
-Jiakai
+----8<----
+This breaks the VMA tests when patch 2/4 removes the references in other
+headers. So this patch should also update them, I enclose a simple fix for
+convenience:
 
+From bec84895cbdbe28e3495c4d90e097074598419e5 Mon Sep 17 00:00:00 2001
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Date: Fri, 6 Mar 2026 11:05:12 +0000
+Subject: [PATCH] fix
 
-On Fri, Mar 6, 2026 at 6:29=E2=80=AFPM Ethan Graham <ethan.w.s.graham@gmail=
-.com> wrote:
->
-> On Fri, Mar 6, 2026 at 10:45=E2=80=AFAM Jiakai Xu <jiakaipeanut@gmail.com=
-> wrote:
-> >
-> > Hi Ethan and all,
->
-> Hi Jiakai
->
-> > I've been reading the KFuzzTest documentation patch (v4 3/6) with great
-> > interest. I have some questions about the scope and applicability of th=
-is
-> > framework that I'd like to discuss with the community.
-> >
-> > The documentation states:
-> > > It is intended for testing stateless or low-state functions that are
-> > > difficult to reach from the system call interface, such as routines
-> > > involved in file format parsing or complex data transformations.
-> >
-> > I'm trying to better understand what qualifies as a "stateless or
-> > low-state function" in the kernel context. How do we define or identify
-> > whether a kernel function is stateless or low-state?
-> >
-> > Also, I'm curious - what proportion of kernel functions would we
-> > estimate falls into this category?
->
-> I would define it based on "practical heuristics". A function is probably=
- a
-> good candidate for KFuzzTest if it fits these loose criteria:
->
-> - Minimal setup: KFuzzTest currently supports blob-based fuzzing, so the
->   function should consume raw data (or a thin wrapper struct) and not
->   require a complex web of pre-initialized objects or deep call-chain
->   prerequisites.
-> - Manageable teardown: if the function allocates memory or creates
->   objects, the fuzzing harness must be able to cleanly free or revert
->   that state before the next iteration. An example of this can be found
->   in the pkcs7 example in patch 5/6 [1].
-> - Non-destructive global impact: it's okay if the function touches global
->   state in minor ways (e.g., writing to the OID registry logs as is done
->   by the crypto/ functions that are fuzzed by the harnesses in patch 5/6)=
-,
->   but what matters is that the kernel isn't left in a broken state before=
- the
->   next fuzzing iteration, meaning no leaked global locks, no corrupted
->   shared data structures, and no deadlocks.
->
-> These loose criteria are just suggestions, as you can technically fuzz
-> anything that you want to - KFuzzTest won't stop you. The danger is
-> that the kernel isn't designed to have raw userspace inputs shoved
-> into deep stateful functions out of nowhere. If a harness or function
-> relies on complex ad-hoc state management or strict preconditions,
-> fuzzing it out of context will likely just result in false positives, pan=
-ics,
-> and ultimately bogus harnesses.
->
-> The goal of the framework is to fuzz real functions with realistic inputs
-> without accidentally breaking other parts of the kernel that the function
-> wasn't meant to touch. Therefore ideal targets (like the PKCS7 example)
-> are ones with minimal setup (just passing a blob), have manageable
-> teardown (like freeing a returned object on success) and don't
-> destructively impact global state (even if they do minor things like
-> printing to logs).
->
-> That said, I'm curious to see what you come up with! I'm sure there are
-> other use cases that I haven't thought of.
->
-> [1] PKCS7 message parser fuzzing harness:
-> https://lore.kernel.org/all/20260112192827.25989-6-ethan.w.s.graham@gmail=
-.com/
+---
+ tools/testing/vma/include/dup.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 3078ff1487d3..65b1030a7fdf 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1318,3 +1318,10 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
+ 	swap(vma->vm_file, file);
+ 	fput(file);
+ }
++
++static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
++{
++	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
++		return vma->vm_ops->pagesize(vma);
++	return PAGE_SIZE;
++}
+--
+2.53.0
 
