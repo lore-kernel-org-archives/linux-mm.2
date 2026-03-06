@@ -4,123 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC7DFCB618
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:48:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41427FCB61B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:52:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50A146B008A; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
+	id A7CBC6B0098; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E1EB6B0096; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
+	id A5AF76B0099; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EE2E6B0098; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
+	id 9835E6B009B; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F78D6B008A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF538160607
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:48:11 +0000 (UTC)
-X-FDA: 84516069582.01.BF50D7F
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0126C40010
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:48:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDl0tLy0;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 87FA06B0098
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DD781C8C7
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:52:52 +0000 (UTC)
+X-FDA: 84516081384.15.7AD2A28
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 43A13140008
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:52:50 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OEWdCL99;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772812090;
+	s=arc-20220608; t=1772812370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
-	b=4n4tz+a+2B69luyTyO/4HduMDaYS3PLa8OQUHIt76Ghke0Z7pXknwDWp0UEBRAMoO3nFGJ
-	GbH8Z6Hv2a8R46pjOE2j7qJzM0I2kGqXXcwpkZol5vd8FbhzUPnnC3EWvcTc2wxPmC1bSB
-	ikb5ciy8LLqwl1nuuXTu2pyIhuFr1Zo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDl0tLy0;
-	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812090; a=rsa-sha256;
+	bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
+	b=4LAHJgpq1lIMmdhdZe5JkfLbqMswl2r8/H4QasicMp4CwLwhzxo0PLMVL85oJO5kcIHrdf
+	gqIX5DMIomVQCH7QHSlUK1c/oKfaqEsYpN4xuZ0QjQt7T3fgb5CPyUjGH3nzaHYoyAnRfQ
+	9mTuHR0SAzGd3cXU4rivOrAzHABy3kQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812370; a=rsa-sha256;
 	cv=none;
-	b=Q8fLSTLdzE6dLWMnG940S7LrihCliIIpL3hIW74mkFPk1gVwiZL9RSpGJRCyyOYyEXPCF5
-	g8i3bezLjBgJKtUaSCEKi8BFGyqZDZmFEZaXkd7SOOxi0XaGXcCrzhGKJLfBRwqu63Qabx
-	PAdfgjorF4SMtF9x9arL3BJCj08OEP0=
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-46398742245so3444075b6e.1
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 07:48:09 -0800 (PST)
+	b=slt6pZjbu4lHR+1ls2/Acm8XQgPS1XIxiQH/+UQtwHwk6ijZeKSwNM0XzimmB7x3rdWDRs
+	jYYZqKte+uVsu+qEs3IrRggaiCoVFC4AQ+ygzFMq4hOD4lzReM4l5cY91W4GuN5D8rjSGx
+	TSbqbhRwp2b07qd1zAbkNbtxeLLn+w4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OEWdCL99;
+	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-483703e4b08so91747995e9.1
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 07:52:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772812089; x=1773416889; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
-        b=JDl0tLy0cNIaqzKudkp2NcKUowo5rT8Cpo9bUml4vRJVWIuNPFN/nStFImUsr3ChK9
-         w8ktx64X+ejdIo+otuMIzvlYyeROlAzrvxZ4L0nXNQAmVCOR03hL0SCGoBnzUfye3I3V
-         VKPJcnqwYaexrn+YU6arKdOQjrMeTiXetTxqD/YKqC7wz6qBEUAb/gb75Cce9upDKmWg
-         JgX4T9bk9bn2ISLwlXLAuMDRk/gizIBXVrqcUeisXDXHX/AbAKKB+6HTrGRckqZwrryB
-         VisA6r4SoFfnEpURCSFL0Lxkbw7Mxet1S0aKqn1xKiWP0xQEB7oE2p7l1ZLrkzhABNQj
-         1c4w==
+        d=suse.com; s=google; t=1772812368; x=1773417168; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
+        b=OEWdCL99ECN/td6yQH48X0oeKJeX+W3SRCtsCjDHNeaShL/OK+4jZ/PgbKHTHjnqF8
+         6t6s9i4RtiEt3jab1BzHNAKsXld3OhQsUXHMXXHW8rVe15AYhauZIVkTNfo9ok18F7ZS
+         miYDoNIsoxhb20yvTaOIGtCIf70eOqyV0e1nxnhMbjR8aGq2K5Vo7z4IOgYvaFD771lK
+         DeAHKieKyQCVk9y7jILj7ZwaCXn7AJZAR67DBqfEsDHudbo+QURsKSM4cuAh9NU9L1fF
+         4ViT/5WcmnmbyEV0pK5wVc7N3QmJtn5QAPQG9tOQcJoBXniCD4sYNGarvGdIMQZ+kC/+
+         HWPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772812089; x=1773416889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
-        b=kgwSwWN8mh+RVTvYFb4A7Y4vv3TT5wR4j4y26ObgcdgCaAUz3d5NzGaFZTXCSzYEsj
-         1G1gzG4mM9lo9dePzmLtEJdthjy8o2B97FtxXo8jpFLl+DDSiC/tLWZqxeysWZ9kst+c
-         FQeBtc7CaKbhOVutMoQtAC7ucIz4lU6EreYHKEkB+dLAL/Z3tQZjCgm0qrHEP6BqV9sT
-         a+t3brfzR3XZKJMLZE6CToJMa4LaUw+fOibJivCNL8Yyt30TcdsE6gzG4D6IU6buSxu/
-         DIYfD8uTObd3FM33JN0Xqq+H1TBb2yNDR4BV/pUVv0CbVY6bQiouBDST80tKfq6/F9eH
-         6mog==
-X-Forwarded-Encrypted: i=1; AJvYcCUAfpwsBWi3XsmabuL9kKYpzt/dyhQ0fgtU0Y1IQT+auREgKvBD233JK6g3/ZovFEnhhD4xEl/Uxw==@kvack.org
-X-Gm-Message-State: AOJu0YwOZNzkJDcN2TFIzteSdd2cZtb1huSQwzqADEvrkvoD8UE+zA5m
-	/yCd5Rwjuz5aClnYCU+L+Fv4AGBlsOLm/vo1eZ/L/N2psCx/f+xwoTQM
-X-Gm-Gg: ATEYQzz5isZA/u4ky5xbJAZ+y3Le+JTUgPwsqty6Ng9rmdgAvTEdWYGjDf+4VpFzSpY
-	WzcMZlU1MKJANwFeX/Qbccpz6TP9YzX5VhxOjNc8QACaAQR8s14+XejlGW0tE9mBpJ5a4UbhOQw
-	Q3llwOowH2vqtL3MLgM8zAM2vA0UlMyiO0M0I9a+n5uQqrFeUoJNX785dUgAROby8YnZcUUnoTz
-	/ZAkdsQ5mUjEd4bkSfbDBTPGYeeu+NAuFWf3XGZCFa9TPFzwiZ3qVzeRzaxePa1IENbUE3go2UI
-	XYSxh8O6mRvHgxERRH4YdtKgC7S5nRuWp+nplgKq69iTOz72Yo2Uf9HPzJ3btKUf9Y0UytI1RLC
-	bZTpGBKWm4BM9NWiUc3NnsARGxMNjKc27LqSA+hgiFUqCBD9hbzMmVDOXaZeW7+SlJ7jsbakHYq
-	6k8Nxr055nrYHiUPMgsbT5Cw==
-X-Received: by 2002:a05:6808:4f08:b0:43f:5c61:448c with SMTP id 5614622812f47-466dcb0c3bemr1240922b6e.39.1772812088834;
-        Fri, 06 Mar 2026 07:48:08 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:52::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-416e68369bcsm1683173fac.15.2026.03.06.07.48.08
+        d=1e100.net; s=20230601; t=1772812368; x=1773417168;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
+        b=LTM+lfj5W8oN4uUN2VU0ZhFiJN60RvF29UpM+e6NDbjCcGvcyVBZQxxK40v9mjdafW
+         kdlPaBNa0Om8Z6B1oosLDFlNMMQGkjGkzJ/3w/RsuAfJS5yDpWRhDxfWcOiy2CiUztH6
+         u3I3zc9zkeo7w34MEhZdgXD+GzWDeq2uNrMxhwCjMesqQTQXlYs2v5Z64o0bm5udru3y
+         bU9Ij42vjrKgOrFRW3VJca/OJXrpFsRJVvbuel68kUKbmRqz4z6+Jqxe6W53oZrz8p3q
+         tN+OzwX1TwJq3fls71kxunY1ZcaBACUhtA5O996fP912272Oq+HNJ42rEneNFU4tfQgL
+         eQ8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWI7FcvrPj52NqQGPpmoUxT8GsiahOSY4SJPmwZvfS/oQY2nIxkEPgnVxQALOYvflgjE4rl5r0pNA==@kvack.org
+X-Gm-Message-State: AOJu0YwR1aUro1UnGVGm2IjJcaEWUuGQmxj6X0drxmz/2JQ6F0GQd1h3
+	za1IrRoQNKP4CQs2kR4h4syD8qRBdvZgv24f3zghVoFy+qxHBZlLaBp8RWUxsJPMMjA=
+X-Gm-Gg: ATEYQzz54samMF32VPBWZkgTz+zL9w39emCISBoC/2HQdAFJ1e2QtvoTYHt5+9MHQBE
+	Zaejr7uD57it5+SrSNB9H3cWqOIVO7V+hI+4ridVDt89bGblHu+Xayg+i+WnqY+6Wk/BxRm1g9N
+	RpHQXxRHW0g1cXMXZKx+0FTXT1Aktp9Vp4IDkbD2/haUZ5D7oEv8kXisanffKwC7xu7uv3GrjYt
+	ERLO/cfDwj2fcPFfpAcbJeWIK22VeIUCobtxcVY1GravOthuohSHkTn1ErqqmwD80DWEOvgumm0
+	BtimSnkxjzcGneJ9phK1DJWgB740KjusEmkQUILzW9k6DBCKdE0t5r+RCTBnfxXIPJG3pMULo+n
+	JHf+EER7rtwGNCouidHB1ArLsSh353uDn6HZThiKgSd/94kcdAyO0Wj2tukGVGBCroDwgQXKnlB
+	A7MopgLg2hqYmi9tcF/Bu+n1ZKkJo+i+lBDw==
+X-Received: by 2002:a05:600c:3e10:b0:480:4a90:1afd with SMTP id 5b1f17b1804b1-485264e7588mr42095305e9.0.1772812368602;
+        Fri, 06 Mar 2026 07:52:48 -0800 (PST)
+Received: from localhost (109-81-88-63.rct.o2.cz. [109.81.88.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae4b860sm5074257f8f.36.2026.03.06.07.52.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 07:48:08 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <hoangnhat.pham@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 3/8] mm/zsmalloc: Introduce objcgs pointer in struct zpdesc
-Date: Fri,  6 Mar 2026 07:48:06 -0800
-Message-ID: <20260306154806.187506-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aapO2Pd9d5B6MEtu@hyeyoo>
-References: 
+        Fri, 06 Mar 2026 07:52:48 -0800 (PST)
+Date: Fri, 6 Mar 2026 16:52:47 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Benjamin Lee McQueen <mcq@disroot.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
+ memory
+Message-ID: <aar4T90zjolmTGFa@tiehlicka>
+References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
+ <20260305043038.2176-1-mcq@disroot.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: iaa6wmfnusgtjbk1nd93me7u6ht3q8uq
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305043038.2176-1-mcq@disroot.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0126C40010
-X-HE-Tag: 1772812089-943809
-X-HE-Meta: U2FsdGVkX1/Opb7CqgDYtifl8StVm7+ewwy5ZzzdhExSH7G8Fqz9ffyTKij/hPWuDYeRh0OxQ93cMIpwyhx7SYhAg/Qo3M8+VgA82KgD0O1tA1tcVMg36EpW5EVZXLFkWdh8y+zSu+WUGJXNmxAf6icGPw6ARMIDCZRAQ8e1YbPRZromQnkQcs0voy390gz04t8GF/sBcpQjqTD31yvtXdGcvAf3ZfI6BczLIuIU9HcSLgVIsATacj/s6VonTQvnwVsmVbAoTsqwCepJwVtdMcuSpX3J7Ch5xUjumaAfPruLN8IpB/SXVEjbN0xyPP9g8gybL+ZX8Y/CKTJnNODuWv5Ln6aUwtJG98GJtDWqcXb1fIzLa3RYmwDFddAQKi+7/j6gvYD+fcfzvxrd8EYs/oKDuF/VrNmMt11GZJ8Ej3+8rL25ZK3pewwm6x1aPc1zDFLGMfEQFfvDl02qkhxsqBQ4pwCRBbaDUi0YwSzonmtYk8SxJEIAXs3L0dXkdfnm8wBmUa6e6mKyeKVSmlHNd68zP/2cmTuFZGGwOmbcu9tVS0x+vp94dze2Om5XNziAGLHilvbCbQ/5uZkLFz50j+m4gVktT4Qk5Eh+la6aGWHaEX8+f39xUsRay9ZHOIwhj3118Qgig/M8wosb1SAzGKZKlngdryGSHaN6QEy74JJEv5fnsxBuPcGf7eW6zX4tStgq1oIRypzQfni4kJ+4+MhyKg0r1nBkE2zPURryB4TYjaxSTPzzVIC2k0MAoTbqoI7nDPRII0b25FSSplX502lakdCDtdpvIdAgV80osz+JjRSlrGyXP0gN9X9xWl2hguk7nic93VZZCmE2t/WK4lt12R4hRc3Bcp2IzQGe9cifTW1Rm/V3C3CNjmp4v9id+su4AaIJg6oxsXbbYnu5bZ+rStGtNC18jd4YBEm+JNO+uiHpNJ9uv+xrhQ/sMDkbk8sRIzau2DTWbEzddk/
- tyfwuOv7
- OWTemKrx1KAUCvEwU3V0nt8XWPpW5/Pbm4DSNGQxtAu1kXOl4WAhQlT7sq8hygM95fVt1yoocoaoQk0TKEChQkpldHILvAKUC7wkKWSSMR6viZ6Pvo4cOd2qkx1sK8GCGrVxiovaqKUqUSgjhOpfymcddn+Ek5hdOc259dcp8MSJ48CfliBWOAa7zDuSqnCddLsAo5Q7RIcC9oTTUa1isnbKgK0QSoz2RlbjavXpxWl7RrPNfCnYSmPJFWha9vWLVfoHh33PCF41Y17jxEW/7WKI3HNoqgYTocGo9r6hxTy6zRqbStPXArW4ZFP4RfZ5Pj2BBwZN5XmZqpfk3uEFhMAJbu8lBPe940ZTP64d5qtVXSPEfZ+bJKi2RyapGl2R+MrTblTegAwwGLYQx39Vv9I0SoAMvFOlfdUtyFlMQK+bAGa551H1XLqY1NMCW80L+Z3jT7XPRoLF3a7JaF+g1p/BhprfEcxUYxS/3iuuyQdnhCNwCx2WQkVpxQAYvjTcGfjqDvlP7w+aO6UBR9nLU36dTto3X0ncWehz0Oxdj+uUXaobP3y3xhquNNdDd22wLLiw915pQDFjMgHk=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 43A13140008
+X-Stat-Signature: t3y1ue4tbjafexjt65pjykpoy4umubap
+X-HE-Tag: 1772812370-564544
+X-HE-Meta: U2FsdGVkX188/iCqBtEG5dehJioZnj25PPo58lKQW6bqeX4N4nT/h6elssMi6vh6oqUnHIg0MnEYnMFGWm9nGnCOJilDw+FunCSmlKYpwLqXpn4Qbs4ddjZnv3nbSnLF00ypOCLRf6TljCKEEmWmuiJuChKVds+FGnKNXpCJmhlvZzFD7ryaKYSgKUeHoqjA8ZRsrVbJHCIxyI0E5aH6zPjBotIwhPqa8YpPN+bMFzjvK4p8WKHLfCPLmLe+CTdRYfmNZB7YlbMx6XrwhOJI0JpElxKNo8Swo0WoqZJXlgObkysGAYLyQgoJ0zGRMpAXoi+dHpBWl2ChvFsv+2brkklU6cOTziCzlYSwhFVZkd2k9DCRmXFs0d8ic01M6GohmEtGSdvzPNPCqCJ6T+vZ8rulPVUurU+1EicARKH4ahYvNhVU4mkEdW+ToICeW2V9JtFAjE91JilSrygU9DKo+adkMPoPu7E0vbNoPDNrj9ENau0J2kbs7idXH4j6YSlYR4XalIW5F9z8E7d/xprSGb2fgF+jt2ayl/DjB2Jvdm7iWB3KFOn3UMggOuS3byWlPm4CjjURdQvhsPK5835Ss8XCgeBjbHAoqfhmYBflRrQcwivgB/MeoeYhaLz8dsXL0/3f0kAx7OIvKl3tlWpxO/aK72PQtDk8cIphcel1Kp2vnvAy2MKBSEW0fHfSjz1wqv3ajLLkFbQlUIOYGlhW+Evh5jvOvWq7MDjfxGq498rLKZd2nqqsd69W3Z37jIVFYr9pR+wQPNMTdRvIeWrXg77/R0pkQtK2UgUiPGDqIaV4Np+vWeQpdTgCVnb+L+TXrXW6sBLF/i6UN3X1H5dJNjT14G7X+ri3669ld4lGb6Dj5NUVsL5dvxFNOR6ari95S0tgM6evElJPuvJ+7f3sO42Om8CQB8w9s6rVGYaiEUc9hfqh3UX2eNcgvHjOPLU2T8gmbbThy9uWA/W8NKb
+ tpKh+Uxi
+ B9/gzB5toijDpBT2QywA60lQFdHzNVrJjpfO0K7ovmRLljXGgiMYxpZ/NuB/EKIAw233TTZPHPUBx4aY03wPQoAjXGedMTlAn6+ezsI0i7ulKP29ILyqzmuPl2FPMhEGvN9R/kk3Ij6TzDT5eobmrB/h32EdZ+nPXsLALWRQIKpvSPlD9oYuU0DL92trfW8mQdW3riwf5sUcJzF/7nOUsVDvi/oFrf1xeh+8EPvZ0HWDUb0hp8VtXVOCeSbbd2/FwcdAJv4irDze2BvBtjaqe05/3URLS4Iyh+wPYl9FuXPr+E3m/vyg78B77JKAwBoiLGuA5LsdH7sVKAkCWbxygMMH0AHWDYd2TnVPk8Mdh/EdxSuU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,97 +124,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 6 Mar 2026 12:49:44 +0900 Harry Yoo <harry.yoo@oracle.com> wrote:
-
-> On Thu, Feb 26, 2026 at 11:29:26AM -0800, Joshua Hahn wrote:
-> > Introduce an array of struct obj_cgroup pointers to zpdesc to keep track
-> > of compressed objects' memcg ownership.
-> > 
-> > The 8 bytes required to add the array in struct zpdesc brings its size
-> > up from 56 bytes to 64 bytes. However, in the current implementation,
-> > struct zpdesc lays on top of struct page[1]. This allows the increased
-> > size to remain invisible to the outside, since 64 bytes are used for
-> > struct zpdesc anyways.
-> > 
-> > The newly added obj_cgroup array pointer overlays page->memcg_data,
-> > which causes problems for functions that try to perform page charging by
-> > checking the zeroness of page->memcg_data. To make sure that the
-> > backing zpdesc's obj_cgroup ** is not interpreted as a mem_cgroup *,
-> > follow SLUB's lead and use the MEMCG_DATA_OBJEXTS bit to tag the pointer.
-> > 
-> > Consumers of zsmalloc that do not perform memcg accounting (i.e. zram)
-> > are completely unaffected by this patch, as the array to track the
-> > obj_cgroup pointers are only allocated in the zswap path.
-> > 
-> > This patch temporarily increases the memory used by zswap by 8 bytes
-> > per zswap_entry, since the obj_cgroup pointer is duplicated in the
-> > zpdesc and in zswap_entry. In the following patches, we will redirect
-> > memory charging operations to use the zpdesc's obj_cgroup instead, and
-> > remove the pointer from zswap_entry. This will leave no net memory usage
-> > increase for both zram and zswap.
-> > 
-> > In this patch, allocate / free the objcg pointer array for the zswap
-> > path, and handle partial object migration and full zpdesc migration.
-> > 
-> > [1] In the (near) future, struct zpdesc may no longer overlay struct
-> > page as we shift towards using memdescs. When this happens, the size
-> > increase of struct zpdesc will no longer free. With that said, the
-> > difference can be kept minimal.
-> > 
-> > All the changes that are being implemented are currently guarded under
-> > CONFIG_MEMCG. We can optionally minimize the impact on zram users by
-> > guarding these changes in CONFIG_MEMCG && CONFIG_ZSWAP as well.
-> > 
-> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> > ---
-> >  drivers/block/zram/zram_drv.c | 10 ++---
-> >  include/linux/zsmalloc.h      |  2 +-
-> >  mm/zpdesc.h                   | 25 +++++++++++-
-> >  mm/zsmalloc.c                 | 74 +++++++++++++++++++++++++++++------
-> >  mm/zswap.c                    |  2 +-
-> >  5 files changed, 93 insertions(+), 20 deletions(-)
-> > 
-> > @@ -893,6 +898,43 @@ static void init_zspage(struct size_class *class, struct zspage *zspage)
-> >  	set_freeobj(zspage, 0);
-> >  }
-> >  
-> > +#ifdef CONFIG_MEMCG
-> > +static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
-> > +				struct zpdesc *zpdescs[])
-> > +{
-> > +	/*
-> > +	 * Add 2 to objcgs_per_zpdesc to account for partial objs that may be
-> > +	 * stored at the beginning or end of the zpdesc.
-> > +	 */
-> > +	int objcgs_per_zpdesc = (PAGE_SIZE / class->size) + 2;
-> > +	int i;
-> > +	struct obj_cgroup **objcgs;
+On Wed 04-03-26 22:30:38, Benjamin Lee McQueen wrote:
+> the vmpressure window size has been fixed at 512 pages
+> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
+> the file notes that the vmpressure window size should be scaled
+> similarly to vmstat's scaling, via machine size.
 > 
-> Just wondering, perhaps it makes more sense to have an array of
-> objcg pointers for each zspage (of size objs_per_zspage)?
+> the problem with fixed window size on large memory systems:
 
-Hi Harry! I hope you are doing well, thanks for taking a look : -)
-
-Hmm, I think you might be right. For context, one of the first
-ideas I had for this patch was to have a per-zspage array, but store
-it in the first zpdesc. As you can imagine this was not a good idea...
-(head zpdesc page and tail zpdesc page? ;) )
-But! storing it in the zspage struct makes a lot more sense to me.
-And I think we can actually simplify the migration pathways as well.
-
-My immediate response to this was that "subzpdesc swap ins/outs would
-be difficult" since right now we can just move the pointer, but
-if we have a per-zspage array, we actually don't have to do any
-objcgs pointer migration at all.
-
-And I think the cross-boundary cases are handled a lot beter by having
-a per-zpdesc array too. We also don't have to convert the per-zspage
-obj_idx into a per-zpdesc obj_idx as well, I think if we do this...
-
-Let me mull on this for a bit : -) I'll give a shot at implementing
-it this way, I think it makes sense!
-
-Thanks again for taking a look, Harry. Have a great day!
-Joshua
+Thank you for this much more detail insight into your thinking. This is
+a good start. I am still missing an overall motivation though. Are you
+trying to address a theoretical concern (the said TODO) or do you have
+any practical workload that generates bogus vmpressure events. Also
+please note that vmpressure is a legacy notification interface only
+available in cgroup v1. PSI (via memory.pressure or global
+/proc/pressure/) is a new/preferred method to measure memory pressure.
+See more Documentation/accounting/psi.rst
+-- 
+Michal Hocko
+SUSE Labs
 
