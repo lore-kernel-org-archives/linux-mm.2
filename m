@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EDE4F0182E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C1EEF0182E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:41:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14D546B009B; Fri,  6 Mar 2026 07:40:15 -0500 (EST)
+	id 867EF6B0005; Fri,  6 Mar 2026 07:41:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E5346B009D; Fri,  6 Mar 2026 07:40:15 -0500 (EST)
+	id 829106B00A4; Fri,  6 Mar 2026 07:41:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 006CF6B009E; Fri,  6 Mar 2026 07:40:14 -0500 (EST)
+	id 721DB6B00A5; Fri,  6 Mar 2026 07:41:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E54CB6B009B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:40:14 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B22B61A0593
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:40:14 +0000 (UTC)
-X-FDA: 84515595948.09.27B14A2
+	by kanga.kvack.org (Postfix) with ESMTP id 6011B6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:41:17 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 237BD8BDD7
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:41:17 +0000 (UTC)
+X-FDA: 84515598594.24.6D71B72
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EAF46180007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:40:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=teU+WZvc;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5ED4F1C000A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:41:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PpKc6rDA;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772800812;
+	s=arc-20220608; t=1772800875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TpDZjWzos6QZl9FjPk//2imOO7vtv9Ovb5TykMgmnq4=;
-	b=toe3OMzO1bD4nS+12+xlWlCjyhk/jn5QK48PPD/kpIDHo+Hr7H++3icrOIrKvR9ORjNErY
-	casWVCeYLIwM6OnU0F54JzmlJww/63lZZ/efrnUlMHphnWwjiBmqkDXA1LDM0CpDgZ9pI+
-	JrDhbd7oZUY5HRGJv3yYPqEa0Z+2MBY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=teU+WZvc;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800812; a=rsa-sha256;
+	bh=UR8CfjV1tUrpLDvSF5b3+Dv//Kr4G++1kk561g+r+8A=;
+	b=SDrj8KjmSLp/LNY+1FBrkShN9Rj0RQ7lkrWXjWBXb40if61aiYA6e0O/bE5/xdATUE9ZaC
+	Wb/qMR1fLmlavBfCGocupPdkWdxLQaou/TXDQqlhLbISNI0xB7sItstUUzedLTWgDrUC66
+	T7ii0UjjVb12MkLyr1oVfVjeGdyAoXQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800875; a=rsa-sha256;
 	cv=none;
-	b=SC+m/3KGgjsCylNE0vRx5lVHWNw61JrsvwBxRYf/jbS2WINDY22m53u3gYZmlFx97jMmNF
-	vWFQNR70fire/eXxgTCd+U2zsj79gXKBpMVgWCyltXiEO8AtXg8r92WHsIzOP+Ae3nJHp1
-	HuiAw+CH0xwtXbAo/jExkbR3kT2sBW8=
+	b=n2y0YeIgK+3Y2C3WFapND2GehSRSiU43OJOiGVTnxnub9MJpeME+sFsvLyWAEuKJZkm42s
+	mSBxB5b2xYgRQWgyxRGKx6+7LZ+hQm5YL9353vmLqD0TMmPMSKhfXe5tKdyD7iqkzuxTsF
+	D6KJiwEEAyBljtOGubT3FKLbX8VzDuI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PpKc6rDA;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 466E2444A2;
-	Fri,  6 Mar 2026 12:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E997C4CEF7;
-	Fri,  6 Mar 2026 12:40:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D83B44204;
+	Fri,  6 Mar 2026 12:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964FFC4CEF7;
+	Fri,  6 Mar 2026 12:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772800810;
-	bh=momqQiCPeBiESmsNjbCQuXjIElnPD5t8ixlqkLdaUNY=;
+	s=k20201202; t=1772800874;
+	bh=lq+50juxWpZTD6H0V77Zyv6OGyq7pL6MoSFSgCZf0CQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=teU+WZvcr3Vfjfj4PS79KVLwqpyqTY1ONa1PtwIvjXtMon6hdWoFyi7tYSgQVQlA7
-	 7WqNZXjH072FsKlQxHwMb1xYD4ogJ/HhRqFMhvz7mUpomd6qDRF1LsEb2Nx0xCA20F
-	 Q306mWNpenrHSDponyi32Ye/+ALDPg+T87ZCaJf9rHbmPLs7TEcXwfiNFZJ08Qk58i
-	 YudRyMnPxWInwwAAt3CqHvwKRQrMAo7VQbC5DvtngGuMvZuxZUii1u78G4eRDQ1D/r
-	 cgHhuLioq6MaNE+pd+1wCN6iTybUQcrEBmRwhDJWiYLDD7kyNQioEEvs3ECG9KmNxt
-	 q/+pMMPgggcHw==
-Date: Fri, 6 Mar 2026 12:40:07 +0000
+	b=PpKc6rDA59KGYIRFwtyM9Sadr3C/wX3fkFV3gIPSOjYDFuYBwWa3LLeEUMWZvdUF/
+	 3G8BuvDsxyOn2WfkGJ83plefNiGw3aWzaX9FsviZQvjodMO4vhRQjPb/3a5QaHhww+
+	 S2tDdIhK/WCnvNQyRu8Yz57kR9mVFrOxIG8qMWl67LGh9WILqiJV1HThKPDwhyxgZD
+	 5N7vrK4zWbwHpmUbYWwGrY8KJ1KlCFzx5cMVqwe83rI13dEt/fd3J3VgWWNyc66R4Y
+	 YdYvrCSktLxQzE/goRvNKT5ONqH1zXpLdBdwAe1BCtmd1nNFbiMMpRVKGpP+LFmrGQ
+	 kQaNSV2mvY+qA==
+Date: Fri, 6 Mar 2026 12:41:11 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, 
@@ -100,23 +100,23 @@ Cc: linux-kernel@vger.kernel.org,
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
 	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 08/16] mm/memory: move adjusting of address range to
- unmap_vmas()
-Message-ID: <6858ccdd-5065-4396-81c9-489bf2d43c9e@lucifer.local>
+Subject: Re: [PATCH v1 15/16] mm: rename zap_vma_ptes() to
+ zap_special_vma_range()
+Message-ID: <c77c1bed-f04e-4f21-87d9-6c5da3f0ad69@lucifer.local>
 References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-9-david@kernel.org>
+ <20260227200848.114019-16-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-9-david@kernel.org>
-X-Rspamd-Queue-Id: EAF46180007
-X-Stat-Signature: dkzy1fdty744nk3goe64suzz8rk9ppwc
+In-Reply-To: <20260227200848.114019-16-david@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772800811-86436
-X-HE-Meta: U2FsdGVkX1+I22rwRsbRWOaiDmhzS8OfNx4SXJnRp8nqnbX3Xp7kQRzv/cfqi+hy/aNiuCja3aqOcLWAmCmS3M1m8cZbqoaLv/WWutGPDj0KrvmiI3+sUaa1w37Af0DyCEyJyazcm1VkBh59HE2VF62EPy0+LvA0s8X+BWeXddCKQN/1dnW8YLXb9ZY//VqZ1uYnLMRdsPO//mfIuqFgBTgztT3J6zAdEpJS4GfjKVY96Z6JXgQ5G1WTa7dkWsfEzFD6OidhnSkFYcD5mXlReL9N/Ts1JnSDIdcsuSobxZHQtrqCKt3L+/9/NHEYYT3ukzXArdXlWsn8zJJc1hEwKyIVgroePegGtc35x6DCP8R/W+TzsMM4nTloxwXOsBpR4zrCdKb0qRndoptGfIsC5KPRauM0XYVIWwDGMEpqbR4TXfxYtg6JpChuYyBut/bu1qHPyjA71jejCDGLAHPeqx477V9XoD3HeeLAR+Tkc/w1hniLqGZVqETfyvOySVKnP+3+4WA/WzxLNztfakJHgcokqcPeKGkDQitxzsM8iV6N4CvizwMtS0HS30iWkJRQE+rg5zbdUqGzsIhuiRTOa9r/C1Xj2E2Ccw+L/aju/CGJSYAhj2noLp7BqRJFneBEYarZ7XQMy1qQVyzSw1DGrdgaddW+fNArJNYiKIfqvGRlZYZbH8G77ryKSAcdaKwi32kT7lMPzkX92coKHhuzM16Ewd+xiFNJ5+du2PA7QFJaUft4vdQwb4Hmcf3zRRufHoMWa5dQtqbRyS7QpK5dna8WS4GAgZQQt7xGS/AzVI/viucNjwyF1rgBH5Nb80hD5oDyw1JnC/bVA5kxJlBDcWykWMe3mteQ0KYdtCV7QB16Q9aL2eUh17lxBpGYly82PRDJSV6IAKXl4RMGxCOeQ9lXZUce+AxGaPAgpH3ZOwUfg/9SpPbr5EXxMH73YfpZFElw7RMvTSJIQeZD9xk
- 77f8EJZi
- P6naY9sKhD3+FhrCdCM9c2sbOt4EnEp8PSNLhNp3AHI/vNdS5ftybdBnfH07uLuDBPxknYoDeqZrZtaY58X+7r/BZ3YFNB3Dq/JZfwHp2eUuomiDumLj+b7ZMojNtF9qgpqiAdYY1Js7A6DvNnYanFoA9df4tIqsnBP9fgPJKUzjbPjttFfhmFW86Yue2XFjfbv40K5nlMwh3q4J5Q9b9emqXK+BPUZPS0fFs6JuD7dfNsmpphF9b9FQqRGVc1WQS6O76okgOG/EeNrGI5JTOrBjiQ5ZY9IDXZbaq
+X-Stat-Signature: 3y8zuwsde9b8csdmpwq6kem8mt8s1s1w
+X-Rspamd-Queue-Id: 5ED4F1C000A
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772800875-860749
+X-HE-Meta: U2FsdGVkX19FqsV9wrixJVC/E8TDu97yNoHHrG+dyllD+f+ipIgQgUeeCUG1+VDqk6QMy9e1HvnJdqUuuzobn9f0eTq+qEqm98u6gSIhn8YQ6mapJF/Pgoi/C39bMdDEoTRNxy2zFnZXkb9ihMzH66c8eFTqryR8nJKl4KoNZUa7+cSI+sA8b8QjRaHPxGs6Ee+VI6wWtSDxIhxXcGU7ToT2Qx1dsr0Zz+94H71RaN1K0AUR7UYgwYJ6+0U8OCYsq6k5ZGiOT7P3ALFuEP2aSVCMf8RpoY6cRdOCWVpwIvZ1/KmDqzFVnPbdgaOqkuW0qYX1XKNWEWDHPJvyhoqwdsKTc6wAVpoqsWVhYSo65Fawxajmi2OhhpVZ/zfVq8utp7m8uq+KKPKNcYkq78Ueltu5iqWroUJFFF+y0BsH2AIkZh0oZ5k7n3IGxlkKJKQbVoe6K/+T+QSfA//+xVV/odbSyvofMj5OnzY/AiEjFH71nzkpos8hmBMg61gN40X4AkcPq1X8IPpJDC92axENUwh5QZ2nqT7HSKGoddgJQfwx+It+WxuFh6GuEXguZaEyVrsnCB4YCcb/vDEoPxlrgu4rXAjt5WdbldlQUboTUzTuu2ziKgJ0aIckTpbTrExfZ1UjkmQJHwf2trwfiUgtQbmefq4lEwchNtAXRF9yLjvisckcTdOUWEgDzc+47vMNlUfcmuFpsvasHmg+xR95vOytkqD+1SkARhTlzBsBLDPy0mTDErsPqA33eCvZA+Yco7+sdb4S0zN4jUIlB5H/vHTn5Wo/8OY2lZ73sR6LL+dLa4BvP2t1gq2dUNWjTCMjVChXsgJ8GmsCKJUwFCBlOPm6S+2t7lAesrbE/QqmBubI1xZBbY4X7fSrYrnuaNAnQZb6MHfE/IjE1Fj21teFow+0WBfz1W1Gu0QwYM76nLtzu9FHKwLQM+77v4RmJjVDQy71lPotthg4xTBmQES
+ +BcXOe09
+ P4FoGUJHWzTevUfJYYziTEfpq6u0/n12akVO44ZiYBJVVXpsAViDIf5X6Vbqtq7zF+wSroMEDtop2CkqCrLMmrTUlqObjaWSYpCiuNSYkMvH5ZHSKcFqnBWx6bxxpr6CNUGp4Op3G6yFfcF3pH0TT6cwDsb5B5HzJlwBqq5+ib492svFVItATII+rLwPggiJbvy4qZ24PreHL0jzUddtSr7vP1shLE1PDRvCu/AAuu0dIlszg8wtprV6/F7+iOPy422/mL5HYg8i80ZEgdBM4QJ3sFHS6Zg5Bu3Sy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,124 +124,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 09:08:39PM +0100, David Hildenbrand (Arm) wrote:
-> __zap_vma_range() has two callers, whereby
-> zap_page_range_single_batched() documents that the range must fit into
-> the VMA range.
+On Fri, Feb 27, 2026 at 09:08:46PM +0100, David Hildenbrand (Arm) wrote:
+> zap_vma_ptes() is the only zapping function we export to modules.
 >
-> So move adjusting the range to unmap_vmas() where it is actually
-> required and add a safety check in __zap_vma_range() instead. In
-> unmap_vmas(), we'd never expect to have empty ranges (otherwise, why
-> have the vma in there in the first place).
+> It's essentially a wrapper around zap_vma_range(), however, with some
+> safety checks:
+> * That the passed range fits fully into the VMA
+> * That it's only used for VM_PFNMAP
 >
-> __zap_vma_range() will no longer be called with start == end, so
-> cleanup the function a bit. While at it, simplify the overly long
-> comment to its core message.
+> We might want to support VM_MIXEDMAP soon as well, so use the
+
+I think you should say we _are_ going to since patch 16/16 does that :)
+
+> more-generic term "special vma", although "special" is a bit overloaded.
+> Maybe we'll later just support any VM_SPECIAL flag.
+
+Yeah I hate the name, but I guess it's probably the best we can manage
+because VM_SPECIAL and both VM_PFNMAP and VM_MIXEDMAP _are_ 'special' in
+this sense so meh I guess it's the best we can do.
+
 >
-> We will no longer call uprobe_munmap() for start == end, which actually
-> seems to be the right thing to do.
->
-> Note that hugetlb_zap_begin()->...->adjust_range_if_pmd_sharing_possible()
-> cannot result in the range exceeding the vma range.
+> While at it, improve the kerneldoc.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-LGTM, So:
+LGTM, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  mm/memory.c | 58 +++++++++++++++++++++--------------------------------
->  1 file changed, 23 insertions(+), 35 deletions(-)
+>  arch/x86/kernel/cpu/sgx/encl.c        |  2 +-
+>  drivers/comedi/comedi_fops.c          |  2 +-
+>  drivers/gpu/drm/i915/i915_mm.c        |  4 ++--
+>  drivers/infiniband/core/uverbs_main.c |  6 +++---
+>  drivers/misc/sgi-gru/grumain.c        |  2 +-
+>  include/linux/mm.h                    |  2 +-
+>  mm/memory.c                           | 16 +++++++---------
+>  7 files changed, 16 insertions(+), 18 deletions(-)
 >
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+> index ac60ebde5d9b..3f0222d10f6e 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -1220,7 +1220,7 @@ void sgx_zap_enclave_ptes(struct sgx_encl *encl, unsigned long addr)
+>
+>  			ret = sgx_encl_find(encl_mm->mm, addr, &vma);
+>  			if (!ret && encl == vma->vm_private_data)
+> -				zap_vma_ptes(vma, addr, PAGE_SIZE);
+> +				zap_special_vma_range(vma, addr, PAGE_SIZE);
+>
+>  			mmap_read_unlock(encl_mm->mm);
+>
+> diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
+> index 48a8a607a84c..b91e0b5ac394 100644
+> --- a/drivers/comedi/comedi_fops.c
+> +++ b/drivers/comedi/comedi_fops.c
+> @@ -2588,7 +2588,7 @@ static int comedi_mmap(struct file *file, struct vm_area_struct *vma)
+>  	 * remap_pfn_range() because we call remap_pfn_range() in a loop.
+>  	 */
+>  	if (retval)
+> -		zap_vma_ptes(vma, vma->vm_start, size);
+> +		zap_special_vma_range(vma, vma->vm_start, size);
+>  #endif
+>
+>  	if (retval == 0) {
+> diff --git a/drivers/gpu/drm/i915/i915_mm.c b/drivers/gpu/drm/i915/i915_mm.c
+> index c33bd3d83069..fd89e7c7d8d6 100644
+> --- a/drivers/gpu/drm/i915/i915_mm.c
+> +++ b/drivers/gpu/drm/i915/i915_mm.c
+> @@ -108,7 +108,7 @@ int remap_io_mapping(struct vm_area_struct *vma,
+>
+>  	err = apply_to_page_range(r.mm, addr, size, remap_pfn, &r);
+>  	if (unlikely(err)) {
+> -		zap_vma_ptes(vma, addr, (r.pfn - pfn) << PAGE_SHIFT);
+> +		zap_special_vma_range(vma, addr, (r.pfn - pfn) << PAGE_SHIFT);
+>  		return err;
+>  	}
+>
+> @@ -156,7 +156,7 @@ int remap_io_sg(struct vm_area_struct *vma,
+>
+>  	err = apply_to_page_range(r.mm, addr, size, remap_sg, &r);
+>  	if (unlikely(err)) {
+> -		zap_vma_ptes(vma, addr, r.pfn << PAGE_SHIFT);
+> +		zap_special_vma_range(vma, addr, r.pfn << PAGE_SHIFT);
+>  		return err;
+>  	}
+>
+> diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
+> index 7b68967a6301..f5837da47299 100644
+> --- a/drivers/infiniband/core/uverbs_main.c
+> +++ b/drivers/infiniband/core/uverbs_main.c
+> @@ -756,7 +756,7 @@ static void rdma_umap_open(struct vm_area_struct *vma)
+>  	 * point, so zap it.
+>  	 */
+>  	vma->vm_private_data = NULL;
+> -	zap_vma_ptes(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+> +	zap_special_vma_range(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+>  }
+>
+>  static void rdma_umap_close(struct vm_area_struct *vma)
+> @@ -782,7 +782,7 @@ static void rdma_umap_close(struct vm_area_struct *vma)
+>  }
+>
+>  /*
+> - * Once the zap_vma_ptes has been called touches to the VMA will come here and
+> + * Once the zap_special_vma_range has been called touches to the VMA will come here and
+>   * we return a dummy writable zero page for all the pfns.
+>   */
+>  static vm_fault_t rdma_umap_fault(struct vm_fault *vmf)
+> @@ -878,7 +878,7 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
+>  				continue;
+>  			list_del_init(&priv->list);
+>
+> -			zap_vma_ptes(vma, vma->vm_start,
+> +			zap_special_vma_range(vma, vma->vm_start,
+>  				     vma->vm_end - vma->vm_start);
+>
+>  			if (priv->entry) {
+> diff --git a/drivers/misc/sgi-gru/grumain.c b/drivers/misc/sgi-gru/grumain.c
+> index 8d749f345246..278b76cbd281 100644
+> --- a/drivers/misc/sgi-gru/grumain.c
+> +++ b/drivers/misc/sgi-gru/grumain.c
+> @@ -542,7 +542,7 @@ void gru_unload_context(struct gru_thread_state *gts, int savestate)
+>  	int ctxnum = gts->ts_ctxnum;
+>
+>  	if (!is_kernel_context(gts))
+> -		zap_vma_ptes(gts->ts_vma, UGRUADDR(gts), GRU_GSEG_PAGESIZE);
+> +		zap_special_vma_range(gts->ts_vma, UGRUADDR(gts), GRU_GSEG_PAGESIZE);
+>  	cch = get_cch(gru->gs_gru_base_vaddr, ctxnum);
+>
+>  	gru_dbg(grudev, "gts %p, cbrmap 0x%lx, dsrmap 0x%lx\n",
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 833bedd3f739..07f6819db02d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2833,7 +2833,7 @@ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>  		pud_t pud);
+>
+> -void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+> +void zap_special_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+>  void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  			   unsigned long size);
 > diff --git a/mm/memory.c b/mm/memory.c
-> index f0aaec57a66b..fdcd2abf29c2 100644
+> index dd737b6d28c0..f3b7b7e16138 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -2073,44 +2073,28 @@ static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  	tlb_end_vma(tlb, vma);
+> @@ -2233,17 +2233,15 @@ void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
 >  }
 >
-> -
-> -static void __zap_vma_range(struct mmu_gather *tlb,
-> -		struct vm_area_struct *vma, unsigned long start_addr,
-> -		unsigned long end_addr, struct zap_details *details)
-> +static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> +		unsigned long start, unsigned long end,
-> +		struct zap_details *details)
+>  /**
+> - * zap_vma_ptes - remove ptes mapping the vma
+> - * @vma: vm_area_struct holding ptes to be zapped
+> - * @address: starting address of pages to zap
+> + * zap_special_vma_range - zap all page table entries in a special vma range
+> + * @vma: the vma covering the range to zap
+> + * @address: starting address of the range to zap
+>   * @size: number of bytes to zap
+>   *
+> - * This function only unmaps ptes assigned to VM_PFNMAP vmas.
+> - *
+> - * The entire address range must be fully contained within the vma.
+> - *
+> + * This function does nothing when the provided address range is not fully
+> + * contained in @vma, or when the @vma is not VM_PFNMAP.
+>   */
+> -void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+> +void zap_special_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  		unsigned long size)
 >  {
-> -	unsigned long start = max(vma->vm_start, start_addr);
-> -	unsigned long end;
-> -
-> -	if (start >= vma->vm_end)
-> -		return;
-> -	end = min(vma->vm_end, end_addr);
-> -	if (end <= vma->vm_start)
-> -		return;
-> +	VM_WARN_ON_ONCE(start >= end || !range_in_vma(vma, start, end));
+>  	if (!range_in_vma(vma, address, address + size) ||
+> @@ -2252,7 +2250,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
 >
->  	if (vma->vm_file)
->  		uprobe_munmap(vma, start, end);
->
-> -	if (start != end) {
-> -		if (unlikely(is_vm_hugetlb_page(vma))) {
-> -			/*
-> -			 * It is undesirable to test vma->vm_file as it
-> -			 * should be non-null for valid hugetlb area.
-> -			 * However, vm_file will be NULL in the error
-> -			 * cleanup path of mmap_region. When
-> -			 * hugetlbfs ->mmap method fails,
-> -			 * mmap_region() nullifies vma->vm_file
-> -			 * before calling this function to clean up.
-> -			 * Since no pte has actually been setup, it is
-> -			 * safe to do nothing in this case.
-> -			 */
-> -			if (vma->vm_file) {
-> -				zap_flags_t zap_flags = details ?
-> -				    details->zap_flags : 0;
-> -				__unmap_hugepage_range(tlb, vma, start, end,
-> -							     NULL, zap_flags);
-> -			}
-> -		} else
-> -			unmap_page_range(tlb, vma, start, end, details);
-> +	if (unlikely(is_vm_hugetlb_page(vma))) {
-> +		zap_flags_t zap_flags = details ? details->zap_flags : 0;
-> +
-> +		/*
-> +		 * vm_file will be NULL when we fail early while instantiating
-> +		 * a new mapping. In this case, no pages were mapped yet and
-> +		 * there is nothing to do.
-> +		 */
-> +		if (!vma->vm_file)
-> +			return;
-> +		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
-> +	} else {
-> +		unmap_page_range(tlb, vma, start, end, details);
->  	}
+>  	zap_vma_range(vma, address, size);
 >  }
+> -EXPORT_SYMBOL_GPL(zap_vma_ptes);
+> +EXPORT_SYMBOL_GPL(zap_special_vma_range);
 >
-> @@ -2174,8 +2158,9 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
->  				unmap->vma_start, unmap->vma_end);
->  	mmu_notifier_invalidate_range_start(&range);
->  	do {
-> -		unsigned long start = unmap->vma_start;
-> -		unsigned long end = unmap->vma_end;
-> +		unsigned long start = max(vma->vm_start, unmap->vma_start);
-> +		unsigned long end = min(vma->vm_end, unmap->vma_end);
-> +
->  		hugetlb_zap_begin(vma, &start, &end);
->  		__zap_vma_range(tlb, vma, start, end, &details);
->  		hugetlb_zap_end(vma, &details);
-> @@ -2204,6 +2189,9 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
->
->  	VM_WARN_ON_ONCE(!tlb || tlb->mm != vma->vm_mm);
->
-> +	if (unlikely(!size))
-> +		return;
-> +
->  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
->  				address, end);
->  	hugetlb_zap_begin(vma, &range.start, &range.end);
+>  static pmd_t *walk_to_pmd(struct mm_struct *mm, unsigned long addr)
+>  {
 > --
 > 2.43.0
 >
