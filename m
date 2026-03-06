@@ -4,80 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD7B0F01804
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:02:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BAEFF01804
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:04:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 296476B0005; Fri,  6 Mar 2026 03:02:53 -0500 (EST)
+	id A23EE6B0093; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26DC16B0089; Fri,  6 Mar 2026 03:02:53 -0500 (EST)
+	id 9FBA56B0095; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16C826B0093; Fri,  6 Mar 2026 03:02:53 -0500 (EST)
+	id 952C06B0096; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0137D6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:02:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE20316040E
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:02:52 +0000 (UTC)
-X-FDA: 84514896984.06.817E385
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7BCEB40008
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:02:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 86B456B0093
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:04:35 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24EFF1B7E8F
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:04:35 +0000 (UTC)
+X-FDA: 84514901310.04.A19153D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8979A40006
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:04:33 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrMIMd16;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772784171;
+	s=arc-20220608; t=1772784273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DXqSDHmo/vMLBGuKS962CKs4sTDVWAYdQly4atF5V8Y=;
-	b=Bf4JjgE6aVIybXQgHwP42sVUWIhMUPWCHRfEWq2kgWEBPQ8Ws0Mdax34lF8NtBdhrWWEvK
-	rQgWKtfIeSEx6DxjYuUoGYKUclECOwv8lEli0wqQ5kVTy1AERKHvXSo6zKkKWlQXFcNyzP
-	SZYig9pLV6bohmfWNsVSvsSVQEevHpo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772784171; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bFCUZ1lmwtVWRvHzJoX1dmihqbD+RimJaNlXwIvtjxA=;
+	b=HbkBAOe0GXrUcn35w+gaBdN0Kxa8khzWzr+Y7NrZYVC+Qcrre8kOu40ptjiq0jK+/ZGFyB
+	0SFGlYyYoc6ucQVXmB9h0ZMGDE4DmETDanrzi1qaVJXwIwLZuc7x69dXVYwVThRwE4te8U
+	j2fSL0jE+q+jVA9FiEsj32rLhjj2GHc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772784273; a=rsa-sha256;
 	cv=none;
-	b=YY2SzG1V/RqiJfkt3gPgFkGDjploMUB2Qv6TtwKziL8/fgVnX2XF10yP/vVaAu6umrMsNh
-	Y/cEVXAHghSHt3b3g4aVm1NobGI9NH+V0T8XDvlv1YhMZYWBUSFH8idRdCjGW/VaAn8Q6Q
-	nV6sFcQ9+FBRUGKo/TBndWUOP35zv+8=
+	b=ICyUJujTDh++xhvHjZH4BkJlGQnFV+ePjwQqKhvq/c7YITO/61uULG2QuJ2jM2VQPfmgr5
+	VeLUo3ckrK4HUjBwDOIgzc7zNFS/k47QSWZrNk+BoaeLwWwE45oxUiFLeecVXHybjp3VKZ
+	TRSxiQUtGCvMygnLMs7vFUSuW/GDy0c=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 6 Mar 2026 17:02:45 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 6 Mar 2026 17:02:45 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, kasong@tencent.com,
-	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
-	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev,
-	linux-pm@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2] mm/swap, PM: hibernate: hold swap device
- reference across swap operation
-Message-ID: <aaqKJQeO8wLQL7Zn@yjaykim-PowerEdge-T330>
-References: <20260306024608.1720991-1-youngjun.park@lge.com>
- <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com>
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrMIMd16;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4F30E443A4;
+	Fri,  6 Mar 2026 08:04:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF945C19422;
+	Fri,  6 Mar 2026 08:04:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772784272;
+	bh=4WYdU2QhyXqU+J/LQCVn7X+IxtDxdQ46YOVOYQ3wx4c=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=KrMIMd165ybmkiKdddDSfICK3ILtiUxMoX1pfdggCmYoIassRhyrunuu/9Kxr5eC9
+	 DTQ6fAvZtRQuT4vv5S+Zzkyw2EP9M29XZn3s2jrioa4jS+sXsUMDUp4Hq+GDGr/0g7
+	 riy6PbiV+94LnsJUo+dYQ2l3NUFH1lsLw/c+80XdH29p4QI+1zFFodusolI0ShyCmO
+	 IapfGSeeM+76Z1rst8ec2Ru7qL7DCBMq0i53dKLO1zRelCXYak3yNPWwfAc0j/u7UH
+	 pyuADR9r3H9ajmJS2+6j5dYwynnVgvJrFrv0VlhJRi6FPO3NKhxZaj/Af6gV2gnMcL
+	 6gpCIZtivuf0g==
+Message-ID: <dd9794d9-fa88-4020-95ad-bb8fefa4e2d1@kernel.org>
+Date: Fri, 6 Mar 2026 09:04:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com>
-X-Stat-Signature: oci9f8pt5ajn5yudrg5y5wijsk7nkz5m
+User-Agent: Mozilla Thunderbird
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: add mm-related procfs files to MM sections
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+References: <20260306013453.90906-1-sj@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260306013453.90906-1-sj@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7BCEB40008
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772784169-950762
-X-HE-Meta: U2FsdGVkX1+CkdOLeb/f/r5bJlcSRMgFFQZqs2sQLRxWQXiZJ7yRMIsy/FdQmxd5lx509O3cZwJ5bz+RMS/choKOhH6rK6GxthE6jqvd/c3FVyH22/zXA76JVrYkQGGOXdUALq35kj6rOMxfHT2axt8eoSf/g4xMc/9gMRRYUyxrcL6ISYEAY0W5Sh2Whkwcv9rbJLTGRe9Y53tIp63ntMv90IVTi6t2CQHFu0hZ+2AcW7/x6NXvCIlAcw9bpSyhjMLa2r0BDTUDGC//CoKrfyciTq58Y+gDBRIty+lhORdxUnoczNkg5GIPmbvciEI8Ur7V8AZASDELVjResFDiyhXkwzQ40SIo5oqctYVaVqdinV/CY+fA3c5WY75eNfR0OvqXRqqGSbn/cS3LYVam26YIlMdMTEIvfjgXszY3KcFPeZhXwVB6PXClB3rf4kwI9pQqVi9reRJ+wHAHuhI1G44oRHl+70fRjaPTamc0r6nRCRcHNsSqWmTDyo5npfCkV7EBrZ8WnLkeq8pm+OuwWpC3EMUQ7YCReg4FlQBPGDf5T42ajE/ozxP6mJCxDBmt0sxr65HGsUKvY8qB3bXDg0waFTx5xC8eevoTQKbrTQP/Y0skDmSTMqWUjtjrTIhEiXf5bf7lWyT7S9NPcVvsG5DCFSIz8IrkCuhHzwVoRgwBiI1ucG07m0a2z9AUucijPeHuPjG3qBNlZGeG49mRMiXLj1hu/F8UVLucp472oGm1n5ToZbRw2TMd5NThn8p9EEKyUWZ6O/n2YBD8FxXfmWEekpw8262mKRxkVgo7PsI8n941k1O7UgWtXeg3d5QwnGG2k8jwEK65C19tcuroRu5l1h6l0c7Oeo+5yyHATnwxL0q/Kx7nUnsh2N1k+D28dMwN7qyZ5R64ujtIucfKs+wk/1lYWRtCddeWFoQMB1x+frIKPWWTDEhEJ24ZL1+oSUOI7wcS6VXFIoxbFU0
- TzHrADtj
- heDB33R9DH3jlPEJ+s6mOw0d34OBc73ZSF8aBXSgVPvthXUxRCBym5fV/hXBeBDXRHL1ef+m7ybvOHNOpUk6oIROU+UR06rQ8CPIhqm1U+cJKxTI9YtRB+p2oMWXXMtCmDvjLvzQjFLLv8ZLzqHcdVq1KF8LTrzIZ3JMg5DglddREMxuPkWu284J/cSi8F4L6LvMzqBba8Ykus9fydSbcgasVNBKcz8/J03ryTQk12uMxUMdmXN8S+uJfDNy8bGqboP7IDdhpnpfZOI8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8979A40006
+X-Stat-Signature: m436ufxht9aqhee1xehtxgxkkbf71qf5
+X-HE-Tag: 1772784273-675428
+X-HE-Meta: U2FsdGVkX1/YIEoREBwXW0DhTr4Ww3dEiIibU2FAFpr5yb4TA2mouZZ9k1FDLeK86P6fWUNzRyrbpFL0URAQ8E1lUKlA4awu37RHRyqQUUSYx1I4adrNj4JUDtUbo/Bdtzn7Wr21IrsTq48j1rNcrG12rPjcAr/l2imYyyCP5BkeHbFTzwPwn8y+I8suSe5b4NGLGMev6RArMp9D6nqbNo9Qka26DaQ0d15Q6hyFJEPPzLar8HwL/W/N2zv6W7KTpO3Gs1O/Cts50eN2aZtq3ypeHR/0+loLQ0qvIaUBP5yCRybNv/B0LF4XbXgCs5GQBRq9v9scsX++kKQyP4XAV2QFUZJ4W9wgzQ3wy2Tj92OWGf37LTjSwS5D1HwigRhsJq1z6Ja80p7ftZoBqjI6HBjw6FRQbGNYYP/VHTZQ1omBG8hcCZDK2jPNcajcgjmPPlOKYgWSg9ts/U3R4ctMPiO7dcVOue54rRiiOGJDq1FOldHWwKFPoF/Y8pEOksb9kMAdaWqI1vA6nGxcu5S4J/+EChZWB/1/lJKOQ9hxvG8xWF2fhzbuzHpnFmoISjS+L6Myjm+FcSV6X5X6eUNnJ+PWJaGpcvW1duYjRCho4SxbjPdaueR8l5FvQusI6YAsnkczxl0D98LckUP5xx8qvxEKg0i6R3AR0joxJX7ren0XVFHKNe7sGGC95OZnRhYu51uZ/BgR4x/NjwZGukPTGTGwOlv9ZJOoAd4YVjfR18Dgzlqf/DePj68T2yTuS0w3wfQVZhJieMqJPse/7bHN8uHAEbQ+Joj3OUPpLkbFU4wOObk7kd7QxebGnBeyeRvUB42XoW5o3Y4vbOnWVPM2tI0ymRJYMBnL2gHwaxNE7pVIboXrXmmt2l6AVxFRoWmVjw3t3lWk6xHvtXKp3arTvVI3hFu400/IuxAsOXZTNKAZh6nMzZuTBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,84 +96,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 05, 2026 at 10:55:15PM -0800, Chris Li wrote:
-> On Thu, Mar 5, 2026 at 6:46 PM Youngjun Park <youngjun.park@lge.com> wrote:
-> >
-> > Currently, in the uswsusp path, only the swap type value is retrieved at
-> > lookup time without holding a reference. If swapoff races after the type
-> > is acquired, subsequent slot allocations operate on a stale swap device.
+On 3/6/26 02:34, SeongJae Park wrote:
+> On Thu, 05 Mar 2026 09:26:29 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 > 
-> Just from you above description, I am not sure how the bug is actually
-> triggered yet. That sounds possible. I want more detail.
-
-To be honest, I am not deeply familiar with the snapshot code, which is why
-I submitted this as an RFC. However, I believe the race is theoretically
-possible and I was able to trigger it with a simple PoC user program.
-
-(not in-kernel swsusp as I think, cuz every user thread freezed
-before creating snapshot, only on uswsusp)
-
-The race occurs in `power/user.c`
-
-1. snapshot_open() calls swap_type_of() to find the swap device.
-2. We get the swap type, but hold no reference at this point.
-3. [Race Window]: Another thread triggers swapoff() and swapon()
-4. snapshot_ioctl(SNAPSHOT_ALLOC_SWAP_PAGE) is called.
-   -> The swap device is gone or the type ID is reused by another device or 
-      swap device is missing.
-
-> Can you show me which code path triggered this bug?
-> e.g. Thread A wants to suspend, with this back trace call graph.
-> Then in this function foo() A grabs the swap device without holding a reference.
-> Meanwhile, thread B is performing a swap off while A is at function foo().
+>> Some procfs files are very much related to memory management so let's
+>> have MAINTAINERS reflect that.
+>> 
+>> Add fs/proc/meminfo.c to MEMORY MANAGEMENT - CORE.
+>> 
+>> Add fs/proc/task_[no]mmu.c to MEMORY MAPPING.
+>> 
+>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > 
-> > Additionally, grabbing and releasing the swap device reference on every
-> > slot allocation is inefficient across the entire hibernation swap path.
+> I have a few trivial comments below.  Regardless of those,
 > 
-> If the swap entry is already allocated by the suspend code on that
-> swap device, the follow up allocation does not need to grab the
-> reference again because the swap device's swapped count will not drop
-> to zero until resume.
+> Acked-by: SeongJae Park <sj@kernel.org>
 
-You are right. Since the swap device is pinned once a swap entry is
-allocated, we could indeed rely on that pinning mechanism to ensure safety
-for subsequent allocations (instead of doing get/put every time).
+Thanks!
 
-However, relying on that pinning alone does not protect the window between
-the initial lookup (step 1) and the *first* allocation.
-
-My proposal is to grab the reference at the lookup point to close this
-initial race. If we do that, I believe we can remove the per-slot
-get/put calls entirely, as the initial reference is sufficient to keep the
-device alive until the operation completes.
-
-Regarding the reference release strategy in this patch:
-
-1. uswsusp: The reference is released when the snapshot device file
-   is closed(snapshot_release) and error paths.
-2. not uswsusp`: I only added reference release in the error paths.
-
-About 2.. I conclude that on a successful resume, the system state reverts to
-the snapshot point, making an explicit release unnecessary. However,
-I am not 100% certain if this holds true for the swap reference
-context.
-
-This part is the primary reason I submitted this as an RFC. I
-would appreciate it if you could review this part specifically to
-confirm whether my understanding is correct.
-
-> > Address these issues by holding the swap device reference from the point
-> > the swap device is looked up, and releasing it once at each exit path.
-> > This ensures the device remains valid throughout the operation and
-> > removes the overhead of per-slot reference counting.
+>> ---
+>>  MAINTAINERS | 3 +++
+>>  1 file changed, 3 insertions(+)
+>> 
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 3553554019e8..39987895bcfc 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -16683,6 +16683,7 @@ F:	include/linux/ptdump.h
+>>  F:	include/linux/vmpressure.h
+>>  F:	include/linux/vmstat.h
+>>  F:	include/trace/events/zone_lock.h
+>> +F:	fs/proc/meminfo.c
 > 
-> I want to understand how to trigger the buggy code path first. It
-> might be obvious to you. It is not obvious to me yet.
+> Should we sort files alphabetically, and hence put this before 'include/...' ?
 
-I hope the explanation above clarifies the trace. Please let me know if
-there are still parts that are not obvious, and I will explain further or
-investigate more.
+Hm I mentally sorted include/headers above all .c files :)
 
-Thank you for the review
-Youngjun Park
+> I see a few other MAINTAINERS sections including 'MEMORY MANGEMENT -
+> USERFAULTFD' are doing so.  I have no strong opinion, though.
+
+The get_maintainers.pl script doesn't care about that so I don't care much
+either. Unless someone does.
+
+>>  F:	kernel/fork.c
+>>  F:	mm/Kconfig
+>>  F:	mm/debug.c
+>> @@ -16998,6 +16999,8 @@ S:	Maintained
+>>  W:	http://www.linux-mm.org
+>>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>>  F:	include/trace/events/mmap.h
+>> +F:	fs/proc/task_mmu.c
+>> +F:	fs/proc/task_nommu.c
+> 
+> Ditto.
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+
 
