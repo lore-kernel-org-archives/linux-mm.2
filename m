@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 436AFFCB61E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:06:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4515FCB61D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A4B56B00A1; Fri,  6 Mar 2026 11:06:31 -0500 (EST)
+	id 25BE26B00AF; Fri,  6 Mar 2026 11:08:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A6196B00A6; Fri,  6 Mar 2026 11:06:31 -0500 (EST)
+	id 20F176B00B0; Fri,  6 Mar 2026 11:08:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E0D06B00A4; Fri,  6 Mar 2026 11:06:31 -0500 (EST)
+	id 13BF16B00B1; Fri,  6 Mar 2026 11:08:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D714C6B00A5
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:06:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5A861A061A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:06:30 +0000 (UTC)
-X-FDA: 84516115740.22.B0BBB76
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EDBB5100016
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:06:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vTrENs8w;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 001C26B00AF
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:08:17 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5A7159B51
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:08:17 +0000 (UTC)
+X-FDA: 84516120234.27.C5BB642
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 70881180014
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:08:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=v4nZCreM;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772813189;
+	s=arc-20220608; t=1772813296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDE9sNwpvCyHqDBgmu8oAPHRFTOTnIBx1S/VGmZEjBI=;
-	b=KJT+gbPhiCbbd+Omd4EKPqWUyirlxMNW1o49CmH9mLH8zpO81Tb84t1AfnDcDlrWRmYs5A
-	8ZkZm2JG8PPi9JvvW3PBLrITr//XdZgT5AqbmcmQQy/G8gyBXMSHYUCeTap3q1U8rQGH6o
-	DPFbDfEms6zw08QVmTEtMwkYRivy20g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813189; a=rsa-sha256;
-	cv=none;
-	b=qMcj4oaG9L9Cu7RigiCfAP0qoG9X+hQ9wTFSjb5VjjuvZgRkxMCqRgOKqGEJ2C9f4D+VYc
-	xAv5lEyxl2XXBp8i+m+cwZaNPiaRX26P7EPKQdjcqs3zSiIHFhZT9np94HnNH9BfQI7Mo/
-	AlmF0MFf3IvZphknUhhsfNL68lBjpjA=
+	bh=9FEKyNDmEGt3OP13htzSGm2IuEkl/IqkUvpE3rhlHoY=;
+	b=c56F6z4it3WMzSOD8oUJiLh9k+tJ89WfVvCzF+8G5c4r+8lQEOOSLqBIAF7foNmLSDa5vT
+	ptLLh1Nl9T86WJSq+VS8Z2aKRux6rOJe9SUuxipL20aU+Bo4pdn8tj/8VT5+7Ebvlxt4xt
+	cRxWiU1EW+/t5MfDEZupu5CK9QYDIuI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b=vTrENs8w;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com;
-	spf=pass (imf05.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
-Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 1BF0FB3450;
-	Fri, 06 Mar 2026 16:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772813186;
-	bh=LDE9sNwpvCyHqDBgmu8oAPHRFTOTnIBx1S/VGmZEjBI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vTrENs8w9kXRwhEVqSh1zTjuDl4Cj/Lj3M9bIixdpG6mDhxBorXg/9Q58IGyVlYsn
-	 kzlzgs21Ol9eIA3Tq+uXIOl2z/9uKHU3mm+8cSjAuU5utPa299/oRc1QxlpkG5SX5/
-	 rhuulyKbGbbS/UvCwwjBCvUzDC1mfcd0llmJ19Cc=
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 7/8] mm: use zone lock guard in free_pcppages_bulk()
-Date: Fri,  6 Mar 2026 16:05:41 +0000
-Message-ID: <15d66e640ad30edea62247e7bcd98ebde05be0ff.1772811429.git.d@ilvokhin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1772811429.git.d@ilvokhin.com>
-References: <cover.1772811429.git.d@ilvokhin.com>
+	imf16.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=v4nZCreM;
+	spf=none (imf16.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813296; a=rsa-sha256;
+	cv=none;
+	b=toMp2wEToXIRhklBGj+HsTK117+fUZ66mc1jG/mJ1JKxLE1QChnMzD+J5Wqx46rknxEnA5
+	3fvL43IgoEiUPzGyPiQN7Pr82Kw9SAHewmgDHQOxdEpabseEyWN6OuYOwkwoUjfQQN8R/5
+	PVciyXD7u5z4NuzBwp2EayA4VB8s/Gc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9FEKyNDmEGt3OP13htzSGm2IuEkl/IqkUvpE3rhlHoY=; b=v4nZCreMicroY6XbV83cl2mlbS
+	rLyy4FwfvrZ/WNNf2DqqXCBEIzz19hgJooqBXqAPMInVeeeMN6Xamqb2kuFMQRrqL1UH/8vhQD0zQ
+	ltl0eUgugkV7cBEeRtZLUj+sIQg+KglPaj3vyrfWvP8epnVXHMz5ELuR4g1kDA6gNG+4sjNA5Sxwx
+	7GEpArVAQKojBI6RiTvBkpW6gE2NTINNTNA+JeRxqTFIEB/PMAhewst2EYMxUrlIlWneMNGPghJ3a
+	nu6EgaCjWXBQ3/7vLTjy5WVh7hTiJAe2XTH8ZMkevtrwxfpJjj6U5cizu9tkluJ3L9RttAx59uHzO
+	5BL8gwOw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vyXid-0000000Gxx9-2zeM;
+	Fri, 06 Mar 2026 16:08:03 +0000
+Date: Fri, 6 Mar 2026 16:08:03 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+	ziy@nvidia.com, linux-mm@kvack.org, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+	apopple@nvidia.com, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH] mm: migrate: requeue destination folio on deferred split
+ queue
+Message-ID: <aar740E8K7SOy1qJ@casper.infradead.org>
+References: <20260306133556.2051251-1-usama.arif@linux.dev>
+ <ab22e50d-3af0-4acd-9d7a-a0e86d0c4fbe@kernel.org>
+ <64051a59-680f-40ae-b291-b884aeb7c77b@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EDBB5100016
-X-Stat-Signature: obbrytkmgheykmtmy14i7easbmam89di
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64051a59-680f-40ae-b291-b884aeb7c77b@linux.dev>
+X-Rspamd-Queue-Id: 70881180014
+X-Stat-Signature: 7w8tsk9gfcgcdtpyt17idfyxbb6dqarp
 X-Rspam-User: 
-X-HE-Tag: 1772813188-255304
-X-HE-Meta: U2FsdGVkX18W1F2ADqwz1d+cZAXYAzE4ufWOoNKNP7xvsKaUDteZhPQeb7i2so9ZglodrfeRWiYOOO65S/049ZnRno/Fj8FCB8j9oaE7wr97kbgqQ6UCjl7F74eBqGqW5f6XkBxFJxS1/wsAimV2mx3LTH8+a47o3p6ISKD6Axz8sxMqxxHgujf7a453hjjj3XvekpCTNbXfURMBfXwLtKG1kI9/CW4r9Pqw1YG07hhp8141nPQI6J5i/cQgWWuNTPtdVgtgdrL3L1RJ8Vm0fRyQaTXwMMy7BjUdcvNhkgFLhGzkuXjwZqA1zkEgsZCky1hf5bXtJ2wXvUPiofWqnwOkPk3UZenzjleYhE4loBVapr6AZ4v9ROXU9JT6cIdVmOS94lU6UOluegoqqfuvpbqLje7ZoXHTMhd6iD07WIaeKTmnFFoPQJjGnF5Kvwtgcv/r1A739sU0VQFIVCMvcf06JIS1D7D+Kv/OEKXRCAmJXosX9VGTETq1GftJT6YlNkftrvS8f5Y41lJXo41sN8dSnIgVmg7orNvaLjFyg7PLBJqVH+uftzoHkae7HoaUdth91gI69bKpF9mmFPZ1D8/7FVCNHl+y13yC9F1qGk5W3Y+nghlJNmtwBG4sQu66Mj5QdeVB9Rqb6Ezw+RZ3RQ9a0Icov3cwBe6ctCRn2VvMrCacb8EwCz0biyyKL/xkXnfy+zeMNp5fX47yKQl0N9Lr6K3+TITp0ReZbB9hV6Tn7TtX4YMUL4aUcVFR5qO/yl3ihZSg80uL1NXt6Aj3nAcnNXpchlzYq/WvWrtq2nIWcuGWuE6eN/lLppgFsFwwTH+mlah9rJfWWewQJQGKzEsxQ1YzK/1SWtUeB3dsqp3H18Vs0I6PtVsJGOyE8gXGBa2J5TyTUUorG2lWJhVBopJqKAWRgL8PcB83S2W8whEJs7ZC8QaRNATn8v4Y7lo0N+d7K7gGdZeLpPAGeq2
- cxoYof3f
- ezSIfg7h9dM14QpsigKaLwrNaQyXWE3cULmNpgFFnAWo7gvPkXYYBruqsysCzxah2K7VU0N89Qt6uS9BclINM2rE6ilIeRRWLioIjZKmyMQ/gWyQEZMe1BS0txANIHVdFXvrKWzv8oDCOs8AmCpSmMT50y37UU8GCtbC4UQvI/QUWF32PFt9eXxGmSwEzPVTnYFu1GS2FIOpEKsoNSg08Ski8dySCS0oiguHYPul17OQJ4aS7NeIQ8JnU/WR6qD5lvOd8sMQ+bgmJT3XMzRUe+snQHakUfEz0M+A134lal+yCWi7Mw5wMsyYaZ3rjfZH8NurIEHmCuMU9gTiKx5BJLK6zlYosCoJHVvbbdtKdSlhNrWvEEpY+ShLjMyLftXsnUVmA4tn8kZHRaAg=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772813295-134711
+X-HE-Meta: U2FsdGVkX18tN0zjpFqVxRjF7gry5nY7Ew2sY1HmChE5fPrMvtIdaevEjUBpbsLRwz/DF1+vLBmrhfNtCBQDzqKmyQBz3vBWXi1WgHaPX2618tAQrFkQaobNFUYLqj052UvxFvYFb11gzi/r87vpoDJ5QjUd73vZkhY6D49RHtWW/1nl5G1YJLzk0NpWnJkUM7RRDobigS78nEDMjqDAHHdM8gUu08Jlpf4q1XUQxQlj4x8iEqh2aCs2pUWmC6f+AS9sauZxMzoQh0lBGL/XRMH3QRzr9fnxeYmjZApTBRSVmAydhuLt+Z25bf95bwdXbN1iK3Vpoq2QP+4LCATsulXs91gn1WC7DGib2XxC4LZP3jGZEOdPxS0BUVRJriHmoVOHsUiYLCdZcaj4IQfzOVNMfLypP5JLsbWPoJLmhVb3Xnp9iBLxyrDxhv3Pjnp+fBtfPKe0XeBDahJNXjscuKpM/O4sIxzIbWnkZUEplDQc4rIHgSSHqD6/nlwia4lnmolmqlONn3esupo9R+XZgGuQmhA3PJ4YBl2L4pLzuqmPdCR+wTE7+82Z9CHehyJt15dpDWGfnwK8euAYN9VNcUWElMi0BlLgMb9x9BoYh98Ec4yreEYNydc1ARw5cSueGejATP0q9TBPjvDQhFrM73AmlVqjBxgCTH2pJhFJaygF5o/NBefKsmRyRLwjZStZ2fQP7311fTpBiFPsFXiNgcYkrqIL2p40IHW3/lPLQ1UDGm5jEJQOGkc6yK9Tq5l1Gwc70S0i9ChIX09h1KGULGy18j1t1WFbUFG/naEqPcejKUzVBkqF3BXaq72q6N1SQqC05qEY+TLB3nspp+l0Ku3jFeOkRwTyKFDXgQkBHHEHLVHlV/nscij7YmZWibDrLJ/CLRLuJ1OIHqsdzuJc7HFpJHY3jiyl52D31hGhgLKrY9t5CbzAw+FugkMUGLAsWJD29dtTDVGiqDdqIaP
+ QNH3+CBn
+ ln6wZ+CF2MKfZmpjMlWoBO9NTD8zN2OGlY4FnbUeFxDmVBAbN14KV2zBlk4IJwU3HvvL+fr9OC7mah/s1KMOgAy9oGyKNp+bQcf4SlnAcdBLnY4i/BtDQ6N0yU0tiY/xXjcpXFedzrewCvO+/ZIPUgBgMOCkGfcjdVbDhkIv/TdTVCZ+oihNu5dSSMMxA7a7xfm6yGMTGLKZnqwiHLrrzcWMEGLKgQxYzaLmkS04Qr38bEXbSF7FJwxx1sYeOj2AyuDcH3G8W6b54UjZ9MH9yp0JI2L3ZP8+vPd5FY+fmLFPsLDSbUNKqN/QtgSyVebR1pNlY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,46 +96,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use zone_lock_irqsave lock guard in free_pcppages_bulk() to replace the
-explicit lock/unlock pattern with automatic scope-based cleanup.
+On Fri, Mar 06, 2026 at 05:12:38PM +0300, Usama Arif wrote:
+> +       /*
+> +        * Record whether the source folio is on the deferred split queue
+> +        * before move_to_new_folio(), which unqueues it via
+> +        * __folio_migrate_mapping().
+> +        */
+> +       if (folio_test_large(src) && folio_test_large_rmappable(src) &&
+> +           !data_race(list_empty(&src->_deferred_list)))
 
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
----
- mm/page_alloc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Why do you need data_race() here?  list_empty() contains a READ_ONCE()
+so shouldn't be necessary?
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 28b06baa4075..2759e02340fa 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1455,7 +1455,6 @@ static void free_pcppages_bulk(struct zone *zone, int count,
- 					struct per_cpu_pages *pcp,
- 					int pindex)
- {
--	unsigned long flags;
- 	unsigned int order;
- 	struct page *page;
- 
-@@ -1468,7 +1467,7 @@ static void free_pcppages_bulk(struct zone *zone, int count,
- 	/* Ensure requested pindex is drained first. */
- 	pindex = pindex - 1;
- 
--	zone_lock_irqsave(zone, flags);
-+	guard(zone_lock_irqsave)(zone);
- 
- 	while (count > 0) {
- 		struct list_head *list;
-@@ -1500,8 +1499,6 @@ static void free_pcppages_bulk(struct zone *zone, int count,
- 			trace_mm_page_pcpu_drain(page, order, mt);
- 		} while (count > 0 && !list_empty(list));
- 	}
--
--	zone_unlock_irqrestore(zone, flags);
- }
- 
- /* Split a multi-block free page into its individual pageblocks. */
--- 
-2.47.3
+> +               old_page_state |= PAGE_WAS_ON_DEFERRED_SPLIT;
 
+You've done a great job of the naming.  So much so that the comment
+seems entirely unnecessary?
+
+> +       /*
+> +        * Requeue the destination folio on the deferred split queue if
+> +        * the source was on the queue.  The source is unqueued in
+> +        * __folio_migrate_mapping(), so we record and check the state
+> +        * from before move_to_new_folio().
+> +        */
+> +       if (old_page_state & PAGE_WAS_ON_DEFERRED_SPLIT)
+> +               deferred_split_folio(dst, false);
+
+Again, I'm not sure the comment says anything that the code doesn't?
 
