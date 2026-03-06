@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75F7F01832
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C593F513EF
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D80316B0089; Fri,  6 Mar 2026 09:17:41 -0500 (EST)
+	id 6FC046B0005; Fri,  6 Mar 2026 09:22:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2D716B008A; Fri,  6 Mar 2026 09:17:41 -0500 (EST)
+	id 6A97E6B0089; Fri,  6 Mar 2026 09:22:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBA586B0093; Fri,  6 Mar 2026 09:17:41 -0500 (EST)
+	id 536C96B008A; Fri,  6 Mar 2026 09:22:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A977A6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:17:41 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 482D61B8155
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:17:41 +0000 (UTC)
-X-FDA: 84515841522.22.C624D22
+	by kanga.kvack.org (Postfix) with ESMTP id 428E16B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:22:52 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D73DE59690
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:22:51 +0000 (UTC)
+X-FDA: 84515854542.02.4B862BC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5CFCD80007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:17:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QyTmHOD4;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf09.hostedemail.com (Postfix) with ESMTP id 042EE140006
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:22:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mXwWjpOK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772806659;
+	s=arc-20220608; t=1772806970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z84vza6vMP8hgfMAqZoUuoVfw6cre78S827cqnEnz+o=;
-	b=dYQVecT4+xhxVre26OUW9wVzMSag1wQoZ6qWhvkJ1MNxxS+TV9X95kjczWf/b2s4Ust8b2
-	8ZcWWaqiGLWMgJJGMyf524iWH8ekqUObMP/gHV6vFCosF2hpWEbaQYP6qbaaK84+q6fhyU
-	REWj5Et06TSCKsF/SL/KZZb6JbqyJpY=
+	bh=YBC7T8ZTnanJW7cdSWsqP/mKcIvf13O8uAHj/nZeGbA=;
+	b=DuKSYakZ1HnZNnNfgIVKjvt6IDGenGn9zAv85mkTgJq6otFiLDBtVdbj+bPNQq0QyS8lAR
+	kM6PVywkpXQA5lqwsv+bmpEEeCoNpBG8WQ6q4U7w57MRXfqyhqu3AcW0c4lq3V1oJLI+T3
+	kqhIXfz/5ZEauHIHo6bryOkYPIGQLGQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QyTmHOD4;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mXwWjpOK;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772806659; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772806970; a=rsa-sha256;
 	cv=none;
-	b=1uFJ8flEYwy8jRN72RwXtsDnTlvCKRCUYfRwwKu3KKtfoTbO+Kr9PD12yRExmNOIldbVqv
-	fg01324kTBEiLm8WLjv1gYY9l28LeZHBoeE3wXFkbXXXe8A47YFUdJSnENP5amfVVTFMoV
-	FGxd6eIRyoPO8WSQtnkAbaPM3e4PAm0=
+	b=HbHBxhCtimmATtGnv3+N2k/q/aCVQhM1oXWM7O/Pt9Oi1hPVAgIxKPBdKbtxBFa8JR1Vdi
+	rQEpqJA6hiYybBhjtng5tglcjBlpnzxTKUO+9rZ1GbBfyGIkX2WZz5eq0EZuCf/URKoKS1
+	xZEZQ5oBHTZHFhnXTKqhgon1DAKOM8c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1752D41AEC;
-	Fri,  6 Mar 2026 14:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC83C4CEF7;
-	Fri,  6 Mar 2026 14:17:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 08EE24186A;
+	Fri,  6 Mar 2026 14:22:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E36C2BC9E;
+	Fri,  6 Mar 2026 14:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772806657;
-	bh=kDJQMMVjroxoqrKJpgts6ufp43e8NaCEQtf/5Qs5cB4=;
+	s=k20201202; t=1772806968;
+	bh=gMNTcQY37ZjSxnVI6IjjmDNxOsyITh3kbGv8+l9VVe0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QyTmHOD4CzeDxFBjYfTfC6aL3PiHmprBUm5aDWYj20TxoXCHTJX8pGTIdNei8th5h
-	 tvRNSvoY2RpvRn1wE761+UsErbXxvMe0nwGgq4nu2Kwo3msE2iwC9NYuM+gMRydmfa
-	 Dy+ac+sBOxKQLGyi72NUoxWG2kAcat6b+aUTOB2pEBeuOstaacg4nHN8PPdxbAft+G
-	 eTaUxKsXNioJoJdnZRtzOookjps1JooJOaepfmNUXz08uHBqWqzXFLdzJXzhWRatcv
-	 VSEPqivLxU9hODu3+CF/kdtVEHRcgG2my++WMm71t7osmCoBM2JKJjTCv+UoMspcG0
-	 zy9nbkCf2BrCg==
-Message-ID: <40bd6f9b-d5c0-4844-81bc-d221cd9b058f@kernel.org>
-Date: Fri, 6 Mar 2026 15:17:03 +0100
+	b=mXwWjpOKxSAKz1T2nD/QvcSF/IG7b06S+UBwPPRdQJACSatNJTMLGg5HzkdFLHGSX
+	 DY1n5D1hIaia3+msWWDcPO3u1EpX5i0VmhzF4/w1jeQ9+TISmBhx+YRDVIF7xF3fSi
+	 m/lY8JUvsy49ZASPceDZVQZgFdptQMg/ivlGyj4hyvRLZJnw5iwvAqea4xBrVUgYwN
+	 SHnl5nOBdYteL668eMquMzfsSRzPPoDETBYuTmPr9SHSwD33ssw47rA3ZAaMpTK4YG
+	 ZeK+kr0Ji8srwKL8IVKdM+FFFytCVbWpBOR1beq/KRuFI/mF4rCVvAqouJDnyITPfp
+	 h6L7Pkhd32IDA==
+Message-ID: <0c0b911c-cda2-44a4-897e-361e02be7da5@kernel.org>
+Date: Fri, 6 Mar 2026 15:22:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 02/15] set_memory: add folio_{zap, restore}_direct_map
- helpers
+Subject: Re: [PATCH v10 09/15] KVM: guest_memfd: Add flag to remove from
+ direct map
 To: kalyazin@amazon.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
  "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
  "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
@@ -161,9 +161,9 @@ Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
  <xmarcalx@amazon.co.uk>
 References: <20260126164445.11867-1-kalyazin@amazon.com>
- <20260126164445.11867-3-kalyazin@amazon.com>
- <af2d4dcd-60a8-4a5a-b508-d9600b1f2275@kernel.org>
- <e2834fd9-e4ec-473c-90cd-6c3a5049747f@amazon.com>
+ <20260126164445.11867-10-kalyazin@amazon.com>
+ <13ed00e1-f0db-4326-a800-2ba306833921@kernel.org>
+ <690c22f9-b71a-4f14-9857-008c7c858373@amazon.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -210,17 +210,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <e2834fd9-e4ec-473c-90cd-6c3a5049747f@amazon.com>
+In-Reply-To: <690c22f9-b71a-4f14-9857-008c7c858373@amazon.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9ptfzbee55corqhprjggwyq6bewnfx7m
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 042EE140006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ooz7zaqkcrjq6rbi3j11j6pr51nokdfa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CFCD80007
-X-HE-Tag: 1772806659-552377
-X-HE-Meta: U2FsdGVkX19WDUaZQ1bfXuoZLfTG0TqEpjkJJRYB2nICS7uxqemMu02+IO1smOURFENSSTdw69LPEOBEgU6OoyvFlbDtjOfFy4VS6AXBs17lzyS9zSbIQPwYHzmhJXTolcoM+aVGizZn6GSRilBXWcWx8nn1kfea0LUixauj3DZi7VsuvllEoaSuofRTn694sHM2cvSKMNuNDPjI+9leCynLMoBzs0h0v06eReg3o9aRj4DdQFrhObQ5B9fc/tS1quTFbcxfcGUtdYG/jJXJnDnJnvn37Nbdb6+zW/okK3Arsdj5nsmQimBYs9Q2jlucq385I5NdRUgE+r4yZk5f/3NkhrnLb5cD4+K3Sw8S187PSJYOF7qD60q1iIa19juVcurO7/zyMCZ7munjYZUM2uUFz+EAVkOVhnhYfZNKGuNhCjQv7aDGlYawrgjaaVo44MBx/e/w82Mp1pq0pZsj7McQoN76tsxcjFaWNiT9N+pbcUIJs28BDWRsHcZaL/BQI971ic2XVx9US8EQuQZFDcR+tDedo4fbORsVX3j1YXrH3BHiVV3yPL9MRYCNP41SGDXOcFrCIXL1dO7xyxVnNtkpGjHWU1ieIJo7g7OrabcRA+poLBXaHg4r5l5XulvtLLmhfzdeGHtp+O5rlhmlhc8XIlwYwMUosXcz8/GaozROMtQWMuMAc7Mi49m7k+/tixzeOEwtYK78XCA6oHeBanZEmEyYDUVmLp4kvnKp9bO5CQzEGsmM8j51DK1n9Gbw8rzGeiMBk6CmJTMKaTVqprW/fSiD8ncmbJwxzvVdDxOzUMyc0urL9UfQMvVrh8hs3vXOqCHpOCpOJ+IVaeDDXz7hAsGhtzxtmeopyVVz5Ef9OvdR+y91GVQ/ga7Z+3XR23EnciQyxa2WcQs9AWI9ZZexMwhmRkPsEzwVAR9/ZiGS4XI0Ymy+IoYsZKuqAWrwBQPdP6vL5fIEI45Plnv
- ypenfGlq
- +Y3biu6PQzYWBIjiMmzns2TBJuUoZYA4kM4e9ZmQa6j05DJzwLoFf/8ZyZu1qCvrMn/wCof+LqKt+o3U4/iEIQKtjs76SHW6+oTWx5TZLc4UNeCa/TCwimdeL1nD5ZPjsFUr6jsLpczcqsWNblLtMM9zeiSYQ80D0IR+RriQgHLNXuyNr+4a/jpC9P3tO644zd2JA67WRQ0d5R+bDSOwH2RvTndsu8ZE2AXVLWC78a8hKVT17Itw8O77Q8El8XijMR9LMC8nOyIGgwtzW8Q6EfzNiEbtRvWFhTRvSmS2kkb0OARQjL7MtERJYqdUJ/e6AuvRNyEcWqUxoqODg47DRFeh4eC3G05o5msD8uJ0EvxlPbY4t5QLoetEgtr78vnfHhM2Vpfk06YZ0zaBOdYeFH6yqdvFX5aPyD9Gjx8vlxw5rFApiS8aMl3DONhhUpTiOJSXJQwExb5dEju7QwEf7DBgQDhDw4GHoMDgUmEFTkU7fTFA=
+X-HE-Tag: 1772806969-228453
+X-HE-Meta: U2FsdGVkX18kwgQ03d1UdCJT1R3mcmEdJJaDWyV0xwiWvEKpNK/RcGWd/Qa9J8Hy7V0KMl/g6o5XX8llJ0Oo5w+r+83EXPLNWnZYdSDlgFnwX0f7I282aSiBXipO3BnAZfIPmF7e0bLZMn4wd/xTJWkwc5odPAY9qPx5kJSMI0UZ3Rla1fzVDI9OTHV0YTlgRqua+oEPrekQ0G5ZdUotSGhARbs4eBykPMl+oUpgNL7sNDBKlykEyNIs9KwGyfOzJcRTWfJA0/vlCEyWV7p4q5LOHZX+W5BIDP4de/fq3nD5eOHlmzTV1syovugiQBQu5LlfiBEJsKMbWB2DzJGHFJiEPk527J1ENVah7sKU9a8beLFFB3jczmvUuS/zWgoLBHZF99xUy/YZ8dAVoPzeB5SPZ0h2QAQF0a+AN6GuX5cd88JMMNZqt3kuO7aZsXJeAYuTwg0aYqetEZcfNGVBV7pMEDYteH26vxxLDY4axx7s2PuT5P0iWYasAbE+7YM1PLH7Ov84tBOldcwAWT9jmbkCEkBEI2k0w4GHEwJpAsTEd2cV29nKwBkbok24G10q4oFziDMkhtGf0xwZ41gx5jPOx4CekLR3wei4qQC/MuPWj/9bNlVuMSp46Lp/VrCQJx414ITXOktFj1OKo65LVy9u9RssXHJWJ7SmTZDdjPgE+uTH31O3b//NbsfpsmRbAYqPGBF+yjUl2DvLV6qMf1cqefdYLw3rAkohdDTHLIXbrc4qTh7jUPNrdoofk0nEQ77WjJ7iAlrWc5zWm+I1crjKpjt82khSPywk3VufVJ1nmXKRvVJba9DzXNuR6IsKk53EAZTu4Y6HAcZfpcAT9/lHE1J6PrQ6aR9yky8tbUmQlb0QJAlt08YpSS7b9LVwjwsxY5qo5KcShRxCwdFNfQyS4kWz7wW+1kj6eL7jNIWoNc+qvVguj8irTd5I8w4h9DweOyXBgAgvSlGe/+d
+ J97dvJfW
+ PROV/dC6EvfLMb7jagTS6ZjtQG31VrBpuz0YEzjqT9qnSBJOW10ebhaTn8+2oolyFk2yRBYdUbqV8Xdud+ylFTMhhFErCNqa40sHFbGvMY0axHUjXIA/aZnWaKFgZ/Z60gn5KtEaphE4O9g+qxlHa70v9ywiS6eIARWTkh+C/W3G1r02nrLReJn4JFhLdJJCzZMjjSTfVkdIlgHZzzbcF21iREFxFE8TRFYuHXky34CtTc84yu5V96gOlfLHkXyf6MBr6mqhP8BSpifwIwiIMBTlG9hH06OzF6aeJT/CdWe8rBD5Xe3xvVuxDNceDmfa/zh9huGC5ceXse7EgAqat18TFMgIBgyQ8SvqBz1CDeRtPDe6MPZKr0ZM4nUzV3/QL9Rxs8T9NIjs9GrFajoJuXOJc82oVCuv2+27w8CIdhn7v6+kMNt+h4L4m26YstaJW35V/BNGVmiRlJEMzXYDUkwsLOQpOZeRKexgdNjY1zMtM57U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -228,131 +228,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 13:48, Nikita Kalyazin wrote:
+[...]
+
+>>> +     /*
+>>> +      * Direct map restoration cannot fail, as the only error condition
+>>> +      * for direct map manipulation is failure to allocate page tables
+>>> +      * when splitting huge pages, but this split would have already
+>>> +      * happened in folio_zap_direct_map() in
+>>> kvm_gmem_folio_zap_direct_map().
+>>> +      * Note that the splitting occurs always because guest_memfd
+>>> +      * currently supports only base pages.
+>>> +      * Thus folio_restore_direct_map() here only updates prot bits.
+>>> +      */
+>>> +     WARN_ON_ONCE(folio_restore_direct_map(folio));
+>>
+>> Which raised the question: why should this function then even return an
+>> error?
 > 
-> 
-> On 05/03/2026 17:34, David Hildenbrand (Arm) wrote:
->> On 1/26/26 17:47, Kalyazin, Nikita wrote:
->>> From: Nikita Kalyazin <kalyazin@amazon.com>
->>>
->>> These allow guest_memfd to remove its memory from the direct map.
->>> Only implement them for architectures that have direct map.
->>> In folio_zap_direct_map(), flush TLB on architectures where
->>> set_direct_map_valid_noflush() does not flush it internally.
->>
->> "Let's provide folio_{zap,restore}_direct_map helpers as preparation for
->> supporting removal of the direct map for guest_memfd folios. ...
-> 
-> Will update, thanks.
-> 
->>
->>>
->>> The new helpers need to be accessible to KVM on architectures that
->>> support guest_memfd (x86 and arm64).  Since arm64 does not support
->>> building KVM as a module, only export them on x86.
->>>
->>> Direct map removal gives guest_memfd the same protection that
->>> memfd_secret does, such as hardening against Spectre-like attacks
->>> through in-kernel gadgets.
->>
->> Would it be possible to convert mm/secretmem.c as well?
->>
->> There, we use
->>
->>          set_direct_map_invalid_noflush(folio_page(folio, 0));
->>
->> and
->>
->>          set_direct_map_default_noflush(folio_page(folio, 0));
->>
->> Which is a bit different to below code. At least looking at the x86
->> variants, I wonder why we don't simply use
->> set_direct_map_valid_noflush().
->>
->>
->> If so, can you add a patch to do the conversion, pleeeeassse ? :)
-> 
-> Absolutely!
-> 
->>
->>>
->>> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
->>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
->>> ---
->>>   arch/arm64/include/asm/set_memory.h     |  2 ++
->>>   arch/arm64/mm/pageattr.c                | 12 ++++++++++++
->>>   arch/loongarch/include/asm/set_memory.h |  2 ++
->>>   arch/loongarch/mm/pageattr.c            | 12 ++++++++++++
->>>   arch/riscv/include/asm/set_memory.h     |  2 ++
->>>   arch/riscv/mm/pageattr.c                | 12 ++++++++++++
->>>   arch/s390/include/asm/set_memory.h      |  2 ++
->>>   arch/s390/mm/pageattr.c                 | 12 ++++++++++++
->>>   arch/x86/include/asm/set_memory.h       |  2 ++
->>>   arch/x86/mm/pat/set_memory.c            | 20 ++++++++++++++++++++
->>>   include/linux/set_memory.h              | 10 ++++++++++
->>>   11 files changed, 88 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/
->>> include/asm/set_memory.h
->>> index c71a2a6812c4..49fd54f3c265 100644
->>> --- a/arch/arm64/include/asm/set_memory.h
->>> +++ b/arch/arm64/include/asm/set_memory.h
->>> @@ -15,6 +15,8 @@ int set_direct_map_invalid_noflush(const void *addr);
->>>   int set_direct_map_default_noflush(const void *addr);
->>>   int set_direct_map_valid_noflush(const void *addr, unsigned long
->>> numpages,
->>>                                 bool valid);
->>> +int folio_zap_direct_map(struct folio *folio);
->>> +int folio_restore_direct_map(struct folio *folio);
->>>   bool kernel_page_present(struct page *page);
->>>
->>>   int set_memory_encrypted(unsigned long addr, int numpages);
->>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->>> index e2bdc3c1f992..0b88b0344499 100644
->>> --- a/arch/arm64/mm/pageattr.c
->>> +++ b/arch/arm64/mm/pageattr.c
->>> @@ -356,6 +356,18 @@ int set_direct_map_valid_noflush(const void
->>> *addr, unsigned long numpages,
->>>        return set_memory_valid((unsigned long)addr, numpages, valid);
->>>   }
->>>
->>> +int folio_zap_direct_map(struct folio *folio)
->>> +{
->>> +     return set_direct_map_valid_noflush(folio_address(folio),
->>> +                                         folio_nr_pages(folio), false);
->>> +}
+> Dave pointed earlier that the failures were possible [1].  Do you think
+> we can document it better?
+
+I'm fine with checking that somewhere (to catch any future problems).
+
+Why not do the WARN_ON_ONCE() in folio_restore_direct_map()?
+
+Then, carefully document (in the new kerneldoc for
+folio_restore_direct_map() etc) that folio_restore_direct_map() is only
+allowed after a prior successful folio_zap_direct_map(), and add a
+helpful comment above the WARN_ON_ONCE() in folio_restore_direct_map()
+that we don't expect errors etc.
+
+[...]
+
+>>> -     if (!is_prepared)
+>>> +     if (!is_prepared) {
+>>>                r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>>> +             if (r)
+>>> +                     goto out_unlock;
+>>> +     }
 >>> +
->>> +int folio_restore_direct_map(struct folio *folio)
->>> +{
->>> +     return set_direct_map_valid_noflush(folio_address(folio),
->>> +                                         folio_nr_pages(folio), true);
->>> +}
+>>> +     if (kvm_gmem_no_direct_map(folio_inode(folio))) {
+>>> +             r = kvm_gmem_folio_zap_direct_map(folio);
+>>> +             if (r)
+>>> +                     goto out_unlock;
+>>> +     }
 >>
->> Is there a good reason why we cannot have two generic inline functions
->> that simply call set_direct_map_valid_noflush() ?
 >>
->> Is it because of some flushing behavior? (which we could figure out)
+>> It's a bit nasty that we have two different places where we have to call
+>> this. Smells error prone.
 > 
-> Yes, on x86 we need an explicit flush.  Other architectures deal with it
-> internally.  
+> We will actually have 2 more: for the write() syscall and UFFDIO_COPY,
+> and 0 once we have [2]
+> 
+> [2] https://lore.kernel.org/linux-mm/20260225-page_alloc-unmapped-v1-0-
+> e8808a03cd66@google.com/
+> 
+>>
+>> I was wondering why kvm_gmem_get_folio() cannot handle that?
+> 
+> Most of the call sites follow the pattern alloc -> write -> zap so
+> they'll need direct map for some time after the allocation.
+> 
 
-So, we call a _noflush function and it performs a ... flush. What.
-
-Take a look at secretmem_fault(), where we do an unconditional
-flush_tlb_kernel_range().
-
-Do we end up double-flushing in that case?
-
-> Do you propose a bespoke implementation for x86 and a
-> "generic" one for others?
-
-We have to find a way to have a single set of functions for all archs
-that support directmap removal.
-
-One option might be to have some indication from the architecture that
-no flush_tlb_kernel_range() is required.
-
-Could be a config option or some simple helper function.
+Okay. Nasty. :)
 
 -- 
 Cheers,
