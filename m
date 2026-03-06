@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BF4FCC076
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 22:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3672BF5141C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 23:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11E2B6B0005; Fri,  6 Mar 2026 17:54:39 -0500 (EST)
+	id 03B786B0005; Fri,  6 Mar 2026 18:20:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A19E6B0089; Fri,  6 Mar 2026 17:54:39 -0500 (EST)
+	id 013416B0089; Fri,  6 Mar 2026 18:20:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF4B6B008A; Fri,  6 Mar 2026 17:54:38 -0500 (EST)
+	id E82856B008A; Fri,  6 Mar 2026 18:20:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E104C6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:54:38 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 761DB140708
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:54:38 +0000 (UTC)
-X-FDA: 84517144236.13.55CF2A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AE7A3180005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:54:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THmqX8z0;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D84E86B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:20:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6DF8B1406FF
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 23:20:47 +0000 (UTC)
+X-FDA: 84517210134.26.BEDCB96
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D2B354000C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 23:20:45 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IgOnLcro;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772837676;
+	s=arc-20220608; t=1772839245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6O6R13x+JDBywDtrYjf+lvOJ36gh/XRQqgVF4nkWVTU=;
-	b=s5gCbd4b3OUwofJ4mC6VNIHLeIF9X53Oo/k8mJf0o9WVHMclGklmgQK6iECovjhRCtsO1+
-	HIfOpf9A0BHP8ki6c0wK/ouNox+mdfmlEjiHg/AmPgo4/DhKuaGTEIOK2G51YEYSbpIq+1
-	49ut+Ibq6Ram9WytOI5P3Ux5hbRvds8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772837676; a=rsa-sha256;
-	cv=none;
-	b=DOcoiySs8VLkLKQJYlFFMf/pWMozuE6mYEXy2WiKbd8DuixCgARftp3VsmA0vScva5c5va
-	Cbe3KrwePrEmIf/hQpuwPTkr9xtGQICnbJ43KLxVP0oGUt0fC4w/SLWfOlI1SzvQyWDRfc
-	8oC+dw3vKv2FJslJqZrCp2bFF5qqPXs=
+	bh=vdvaJB1LXFNDY6a15oc69M98GTl99EifvhmpoI/28Eg=;
+	b=NRQKdYXjjAHRokkEaNF/hXQGxMnnB1+6oxUydC9Ek8zQZmJhxmfP6HFK18jOYu0ecDuGuP
+	g8GqhUqwVlOAQjqUM4hN/b6/sL+sgLNmI9imFlznbT3qRAV4TvJObQECTa8toCZQSczAwg
+	nNtMswPda+/pGMFLIgclgJu/tdNxDLY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THmqX8z0;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=IgOnLcro;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772839245; a=rsa-sha256;
+	cv=none;
+	b=xpCBx9249ZtkFxtM9ajdaTacw4pnukEw7Gas9TIsVgjpKPl4rRHRI2kW0Dt2yCcBo/P1q1
+	WqxOGHrJScsHB+nIeGczg50RJ0+Qp+gSOeRTHJTGD/9yVCVvgwmTbCWkSoov+GgIHYW8l8
+	oXY9IBwmGGhY5uGqxYmu6SO5HJWGKLE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AE9A342ACB;
-	Fri,  6 Mar 2026 22:54:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC2AC4CEF7;
-	Fri,  6 Mar 2026 22:54:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D945560053;
+	Fri,  6 Mar 2026 23:20:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC82C4CEF7;
+	Fri,  6 Mar 2026 23:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772837675;
-	bh=Crwot/d7WDbdCGkIKt73y4giJNElc+vyWtGZgHDnlsk=;
+	s=korg; t=1772839244;
+	bh=ax1SAYo+iTD471lZ8SZC4G6BL2Js8nhv7iBqCbhvGm0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=THmqX8z0XY2vShT+oN+k58cZPc8qtCX0GKKF7CItaFCMczcEQnmyhAEyR63WWJa3Y
-	 0ccps40WBnBLmgZej9zfz4VT5bbR4DP9fVPegZKaSP/9JBi2m+gbkm86fDMiZXrnF3
-	 4J6/hsW8ztkD9j1w2rFlVglS8QyfK0ma6okLNDVQ=
-Date: Fri, 6 Mar 2026 14:54:34 -0800
+	b=IgOnLcroN+Cq4+uoc9rtF5U2JdkUFn/isXguriJYr4aQzvF25A5VeON8B+f31ceaY
+	 sxF4gZK9IF/xbEJi8UmLT5YkJqdECPNh7wKqzOYAy+udOV+IQEhKFAet4DKkkeRx9X
+	 X106S6MIa49lZe6PUl6PJ2LzW+cudcfxt3A1T4Xk=
+Date: Fri, 6 Mar 2026 15:20:42 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Josh Law <hlcj1234567@gmail.com>
-Cc: Liam.Howlett@oracle.com, aliceryhl@google.com,
- andrewjballance@gmail.com, maple-tree@lists.infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Josh Law
- <objecting@objecting.org>
-Subject: Re: [PATCH] lib/maple_tree: fix swapped arguments in
- mas_safe_pivot() call
-Message-Id: <20260306145434.c069313fe809d94e64a07109@linux-foundation.org>
-In-Reply-To: <b796ccaa-242d-4e4a-a9f5-b3a91f46f838@gmail.com>
-References: <20260306200820.2819999-1-objecting@objecting.org>
-	<20260306133321.4fa6c5a73067bd179a5e888e@linux-foundation.org>
-	<b796ccaa-242d-4e4a-a9f5-b3a91f46f838@gmail.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: david@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, baohua@kernel.org, dev.jain@arm.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ hannes@cmpxchg.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] support batched checking of the young flag for
+ MGLRU
+Message-Id: <20260306152042.8516ec644e95e9a23df30e5f@linux-foundation.org>
+In-Reply-To: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
+References: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AE7A3180005
-X-Stat-Signature: j85kk9m9yfhz34t1icu4zc7ncoe9dp4x
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1772837676-706443
-X-HE-Meta: U2FsdGVkX18lG1XEXeA57ZVH1K/zl+yQ7URYWNm55CaDNWKVPil920f4OJ4zYO/s7pSmGEAqZoJOHXu5zi6wsDdEWrfgOAhKaOj92KKxOoAintEVifMKCM1OIruhhZE3apqntnYwEogPpPE31A46ICaRmV2RDs9HvStZuhyX3D+DQKoGb97y8iA1EGuOspUKbkCG0xVHJLSXb0vudQtm5Qi5ch3RjaBrFWiqsZKegikIh/We4dpKSQoiY52Q8qOBNcetFCOEe93H5Hfn8twj1QF07YhEFwYY/9wVT9eS8yC692oza0KzshTDWePnS3ZopbbY0z9AORHo8Z0hLr7k++Sej3uWRnav3Wt17XWseKgsTQabxygQ34CGVNgMayUIa0Lu80ZQ5MRALAA/FDHwheTZkX4yXfS8mcXdWYkmE697nMLcWZoiJiFIEennOh+MfjMPeOX0p6pwa9j8IMPqHHYZbHXSlha8Uv3N+ca4vqhqeoh+XX7zH6x34wPfFinlwMwAETdVVnm+fijhilZVS6Aeos12RWufHsDZOHZ/Nf8r7XEO8W/+bw/pYTOWSquHcOabc5uN8n7izmxcDfhh7qDPOVspVM13/hJL+OQNVCMTQgPsb1tDSsW1RLO3rcs8sQmHK1JK05nkYD3uDo0jahGDxU5ISnL1giKijt2L4Y4J5bKEAiQnIKo/hS9ljfAuoVKbdVMKMd0TDJKL835hEK25wDgHvZXTZHqLUaoMaH1DCfimm0B/FoXAyWZs7PkESf7lZpL2VAFYiU/QkYma90VZkoWkupEVEavJxVk+7Quj3fIcZBmmZ0JslkgSrsPp5PWIDLt7vl9oiavbytU0quxVM8AuZ4iSD/74F/7/w17K3jJ0vj7i6eci0GYRXzoTFcekEsTzGLNIA4JQrujirhSR8dzH3yavsBOfRiZLg9o9SjslOJ47pYdETtEQooYdboshE9V3Cu5REtHM0lh
- 3MuRJ2dI
- Xqqa9UxGhOas6Bi5E9EDGiTtpwMfbxthEXCmaEl7n2hIUI0RstBynWcoZOeJKkkj9G67Ii/lpGmElCy5cp5l7Mj0wrRza639D3LJMKdprezBaSbfBcGt75AAygDBqtni/qQA08f6psdoLVS9JivQE+OVA+irdZ+POfhDXbCCzJVLteM/7MeORPm7qa1gbQBrxCV2wI96ZAo3d0+QNDZfwHDyXtmrlghSjWBguYAWJQ1AO3LiMUjviFMJBuDDdUe/Rk6JjziMhTSIYlq+Z99lHR27Ck1yiU6VGRheQj5tixjHyVCSDc3e5ntBN027PM7oTnMLgLAEZTVm0JfnNRHes6WeNeg==
+X-Rspamd-Queue-Id: D2B354000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 3k5g78f4z7agrr63j8wnpppti3hoa4re
+X-HE-Tag: 1772839245-386819
+X-HE-Meta: U2FsdGVkX18cUzLXeZejuJhohtvvywTHrS+MFUXEsxlTdq51ZT4wGIYby6ARecBq20GqBasqEmh52rJpy179iwnixbGmztG2UB9dkLjvj7YcfplUesEpwjgRuBTVSgBQqO+r172QQPH+064hQ7+0Lwk2Cz3vbry6/Z8LcArO2XNcXKX2mE86+4MZzOfzaEdMlSb8I19MPCg6PHggsJZwZHwC77XeEM4MlwdHf6u0ZwQ/z74ZozlMtwkcpHx82IwIwdOMeYC5o/EIIsWUQ5Y2saU9Hfcs3SzTAUGrRM1MSg5xoWGQYVvjjLu0WmTFDPeYfF9SpBH/DX/xpHi1Mp74vUTFM1CyfezwdjxX6VqILyOroABh/gg1gpIxJZgluZuaRxFUIfEe0JD5RsBOvgYk9S59zYmdmbqnMl4NwHlRh/wJrh8EYYnroau3xlpM6du6UZLSbi5aapplpyFnd361M3L4gJ+WJCYcM5PDdvggczBA7BXFyoDCMycD3AqzaXgMvGXhFHcgwFe6PI15CJgAg3VU82xcRoJ5NSmpVhVZek2+DQSyKzXaNNt+kmts9l0khMTdoGlxtrQCUHp5mzN5S4L7BiYwOdE2YYNZOfi8TuKfS0eWi3v/SFEHpiQ3YmLWK1qsZHihnXtJ8p3ghvnZq+KfG/4dCY5BaGDuq5f2FYRgRiBI2YyYg8/LFjB5shelpVjn9IPqckV6R86/DkZzIRESWZDY1JcU5a8Te1ZyHbU8fMr+4VXSwF37n1qOF8FMx7zj/T2xBlgNPkIg1GqtJuu3qGetd4+Xd9+b3OoEIdPUeBTEM0qWK7U/Kvsg0iTrtRRdapsUGcVRWeDui0JQFaJGSTd8atgL6RRSP2IXmVrSmyJe/OihUC01Czc2qZzka7S+6IXg5kJuSl8d1wF8+Ve0I/IjGV6AO6/wODoCFKy2rv0YEwhnKKFhx4tk6nH5lSklbDMJAGIrD9nDZzN
+ 6KL8IE3e
+ exC3lnjJVvIsx8j+ldrmGvAR35ZUZsV/6gDPMGYGpsDHdmPk0qzb3STbJAh40ZCkPwQmaygxMGiDizOPzKSYnMeKXRg7xuNSXyce9X/ue14P+wHcsQ6lCAPOC1ZPBrNrirVIFixSEaJTZdy/QK6zSbUxLHwK1DooSjnGdkmh3cjGFwA4yGk3X53pKugzixRI3DeKigpv+5O8SDXvrvawYWmPNMjuTz/pDsWReyZTiw1Vkog/45EeH5QeA0bcVyW57NY27u/sc8on/K4Ehz2c9qf6tyntGtNVGIGwXzbPe4ldXbpQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,39 +97,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 6 Mar 2026 22:11:54 +0000 Josh Law <hlcj1234567@gmail.com> wrote:
+On Fri,  6 Mar 2026 14:43:36 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-> >> --- a/lib/maple_tree.c
-> >> +++ b/lib/maple_tree.c
-> >> @@ -3279,7 +3279,7 @@ static inline void mas_extend_spanning_null(stru=
-ct ma_wr_state *l_wr_mas,
-> >> =A0=A0=A0=A0=A0=A0=A0 (r_mas->last < r_mas->max) &&
-> >> =A0=A0=A0=A0=A0=A0=A0 !mas_slot_locked(r_mas, r_wr_mas->slots, r_mas->=
-offset + 1)) {
-> >> =A0=A0=A0=A0=A0=A0=A0 r_mas->last =3D mas_safe_pivot(r_mas, r_wr_mas->=
-pivots,
-> >> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
- r_wr_mas->type, r_mas->offset + 1);
-> >> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
- r_mas->offset + 1, r_wr_mas->type);
-> >> =A0=A0=A0=A0=A0=A0=A0 r_mas->offset++;
-> >> =A0=A0=A0 }
-> >
-> > Whoops.=A0 How come nobody has noticed after 4+ years?
-> >
-> > I'll add
-> >
-> > =A0=A0=A0 Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-> >
-> > and maybe cc:stable if we have a reason to do so.
->=20
-> Hi Andrew, on thought, I'd like to add Cc: stable@vger.kernel.org to this.
-> Even though it's been 4 years, a swapped argument in a core data structur=
-e like Maple Tree is a silent bug that could cause rare corruption. Better =
-to defuse it in the LTS kernels.
+> This is a follow-up to the previous work [1], to support batched checking
+> of the young flag for MGLRU.
+> 
+> Similarly, batched checking of young flag for large folios can improve
+> performance during large-folio reclamation when MGLRU is enabled. I
+> observed noticeable performance improvements (see patch 5) on an Arm64
+> machine that supports contiguous PTEs. All mm-selftests are passed.
 
-Seems appropriate.  But not as a hotfix, given the 3+ year thing.
+Thanks, I updated mm-new with this.
 
-I was hoping to hear some thoughts on why this has proven to be so benign. =
-=20
+> Changes from v2:
+> v2: https://lore.kernel.org/all/cover.1772185080.git.baolin.wang@linux.alibaba.com/
+>  - Update the commit message of patch 5 (per David).
+>  - Fix some coding style issues (per David).
+>  - Remove 'cur_pte' variable in lru_gen_look_around() (per David).
+>  - Move 'ptes += nr;' to the suitable place in folio_referenced_one() (per David).
+>  - Add acked tag from David. Thanks.
+> 
+
+Here's how v3 altered mm.git:
+
+
+ include/linux/pgtable.h |    3 +--
+ mm/rmap.c               |    2 +-
+ mm/vmscan.c             |   11 +++++------
+ 3 files changed, 7 insertions(+), 9 deletions(-)
+
+--- a/include/linux/pgtable.h~b
++++ a/include/linux/pgtable.h
+@@ -1124,8 +1124,7 @@ static inline int clear_flush_young_ptes
+  * Returns: whether any PTE was young.
+  */
+ static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+-					    unsigned long addr, pte_t *ptep,
+-					    unsigned int nr)
++		unsigned long addr, pte_t *ptep, unsigned int nr)
+ {
+ 	int young = 0;
+ 
+--- a/mm/rmap.c~b
++++ a/mm/rmap.c
+@@ -964,7 +964,6 @@ static bool folio_referenced_one(struct
+ 			pte_t pteval = ptep_get(pvmw.pte);
+ 
+ 			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
+-			ptes += nr;
+ 		}
+ 
+ 		if (lru_gen_enabled() && pvmw.pte) {
+@@ -982,6 +981,7 @@ static bool folio_referenced_one(struct
+ 			WARN_ON_ONCE(1);
+ 		}
+ 
++		ptes += nr;
+ 		pra->mapcount -= nr;
+ 		/*
+ 		 * If we are sure that we batched the entire folio,
+--- a/mm/vmscan.c~b
++++ a/mm/vmscan.c
+@@ -4201,7 +4201,6 @@ bool lru_gen_look_around(struct page_vma
+ 	struct lruvec *lruvec;
+ 	struct lru_gen_mm_state *mm_state;
+ 	unsigned long max_seq;
+-	pte_t *cur_pte;
+ 	int gen;
+ 
+ 	lockdep_assert_held(pvmw->ptl);
+@@ -4247,10 +4246,10 @@ bool lru_gen_look_around(struct page_vma
+ 
+ 	pte -= (addr - start) / PAGE_SIZE;
+ 
+-	for (i = 0, addr = start, cur_pte = pte; addr != end;
+-	     i += nr, cur_pte += nr, addr += nr * PAGE_SIZE) {
++	for (i = 0, addr = start; addr != end;
++	     i += nr, pte += nr, addr += nr * PAGE_SIZE) {
+ 		unsigned long pfn;
+-		pte_t ptent = ptep_get(cur_pte);
++		pte_t ptent = ptep_get(pte);
+ 
+ 		nr = 1;
+ 		pfn = get_pte_pfn(ptent, vma, addr, pgdat);
+@@ -4264,11 +4263,11 @@ bool lru_gen_look_around(struct page_vma
+ 		if (folio_test_large(folio)) {
+ 			const unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
+ 
+-			nr = folio_pte_batch_flags(folio, NULL, cur_pte, &ptent,
++			nr = folio_pte_batch_flags(folio, NULL, pte, &ptent,
+ 						   max_nr, FPB_MERGE_YOUNG_DIRTY);
+ 		}
+ 
+-		if (!test_and_clear_young_ptes_notify(vma, addr, cur_pte, nr))
++		if (!test_and_clear_young_ptes_notify(vma, addr, pte, nr))
+ 			continue;
+ 
+ 		if (last != folio) {
+_
+
 
