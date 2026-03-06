@@ -4,88 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E18D9F0181C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:16:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80485F01823
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 10:16:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C82E6B0089; Fri,  6 Mar 2026 05:16:31 -0500 (EST)
+	id CF8C96B008A; Fri,  6 Mar 2026 05:16:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15E616B008A; Fri,  6 Mar 2026 05:16:31 -0500 (EST)
+	id C99086B008C; Fri,  6 Mar 2026 05:16:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04A206B008C; Fri,  6 Mar 2026 05:16:30 -0500 (EST)
+	id BC69F6B0092; Fri,  6 Mar 2026 05:16:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E5FB36B0089
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:16:30 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9AB401A04F7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADECD6B008A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 05:16:32 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 795EB1C5ED
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:32 +0000 (UTC)
+X-FDA: 84515233824.08.CCDA25C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D031B180006
 	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:30 +0000 (UTC)
-X-FDA: 84515233740.29.F9D5110
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CC3B118000E
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:16:28 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kU39nsPR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EYcnWM2P;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772792189;
+	s=arc-20220608; t=1772792190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CbrFa9bU212XLxnE6Ld1YOCTHoFWytuOTtuzGGl9GOs=;
-	b=FwlpN/3kk++p6lqbKQdz+NHa5tKfUfSyXrA5QHc4XUWBbV1h1ThEv8M8+vPGEa51QPemXE
-	LVIlIAwOe7M1iESn5LLAPuWJtuYkSDt7YGUmkezqeBi5pmvCPrSO19laybi/4qgYD6ZBcd
-	nuZoRZJID/jHyy3NjSlJAklVuGD2k2c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772792189; a=rsa-sha256;
-	cv=none;
-	b=OgfXW4pt6l5pRzCEm1lljov7kCpTHUd+7pcb8VADSpsTdNHAs9/BqEe9CI3PWpNt3o8vke
-	vv4pfBc6JaTkoFSHNujn846e+v3JoDb9Y04GmHi5+NBMjUb6ycWaBGK+vp16OSZimZKhXL
-	VQW9GhFWpkbcMOy2PHw091HWqKBOeSs=
+	bh=xSrxtXOfqFJ/zzJV7v+EYECVDPgUeHpXQ1grbZIaXow=;
+	b=UoW1bQ2FCEHEllQfMAWN45cH1akZwhmsjBIDYBM2avU7RY3XFgUgmoU1keO+ZpOmRqC1Z5
+	zsTcGj7sSeNaByTcm9mEQTIU4/H083RZWrIf519onGTUyzN+saTosL/Hlw/Z+Z2BGe7IcH
+	YSoZIEAAQVw07XpKQzDPO+Fhxw0fcoQ=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kU39nsPR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EYcnWM2P;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772792190; a=rsa-sha256;
+	cv=none;
+	b=EEfhgA8O64rWFrmMuBXIHgnxa+vRMR7TkvW+nTZj8d+ybTSOTBcvfKahXjWFgtDVtV6VuB
+	eq5dTf7miYmrN7c9sFBbp6bmS9Y+8c7T+hbgUD64jF/yPL9oiRmOS8wk4HYNU+/J6emiOb
+	4+IG8FjsE0UuPY64B2S+rR6G+fG92Ag=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A495A40940;
+	by tor.source.kernel.org (Postfix) with ESMTP id 659EA60132;
+	Fri,  6 Mar 2026 10:16:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC97C19422;
 	Fri,  6 Mar 2026 10:16:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365D2C19422;
-	Fri,  6 Mar 2026 10:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772792187;
-	bh=wXe+RSv0ZEZP5PzCGaEji2iLfOC9MuiizNczqfoD3ig=;
+	s=k20201202; t=1772792190;
+	bh=KFS0WOpkdK9snEXTKSGUmyIFzfkZVmc/zggsd23+mPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kU39nsPRVeuy80Xot7u6yG6vMyTyS6h997P73CrnD4Uyqpy624AKPN+ubADcvkfjP
-	 a9iQwyewJuuytTvKDcC/8rOKLTG+an15rRuwx+T+iSmhFomRVzbckAYuOcC2XpFSfW
-	 VJQPEroBKqE353sSdphB/CJ63WiHqv/e3xNlbCxcDuNrYeksB/HvFo1KsposSbh8Sl
-	 PI28L4pG8bvlXORzyDFf9BS12DIJAg4ARA2xLpvXN7ZI6dl/T25TwCjGcuIUXAqM0S
-	 xf0xFt+3UQAMKk0VL72N2I+xwG9I0cY3dWhbq9dS0zjPmHnC7FnkAFx/4kfoe9mtCY
-	 hIfrH0bn+WFaA==
+	b=EYcnWM2PgaWt6KxKlBcserIDb5ISS2Ic/hH+YyGWSC4Cqq2/USjVGANct3h7BfHt4
+	 iW6y0uLP8t4sYT4ySUgqzDyj4hDrff4hHN/PsXcs9QvO7K5FLNGeCyZ/3DVJylLgRe
+	 7U2K54YOXWxerIVfnPyqlMMrGP9bFizxosZUiJIyP2Uiw4DHt8jGnRqacwq3A12d7+
+	 Skem0a5LGx7Pbjrufkhom/w2uXLP+r0yyLjY7Y8IleoxyTanIrXRvDUGqL2b1vIMsE
+	 CWDPWCecGQaqHgSNqdgWeuVPq7Kx30S2PKeKYHQjxvifSKd140d8SVhWR94UrscsZF
+	 qLJZBmv+f7EjA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
 	linuxppc-dev@lists.ozlabs.org,
 	kvm@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH v1 1/4] mm: move vma_kernel_pagesize() from hugetlb to mm.h
-Date: Fri,  6 Mar 2026 11:15:57 +0100
-Message-ID: <20260306101600.57355-2-david@kernel.org>
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH v1 2/4] mm: move vma_mmu_pagesize() from hugetlb to vma.c
+Date: Fri,  6 Mar 2026 11:15:58 +0100
+Message-ID: <20260306101600.57355-3-david@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260306101600.57355-1-david@kernel.org>
 References: <20260306101600.57355-1-david@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CC3B118000E
-X-Stat-Signature: yt9zoicz74ka83fqo9yzj7hhgxph9scg
+X-Rspamd-Queue-Id: D031B180006
+X-Stat-Signature: k4d4ax5947ee7iyuxhf7bw6ejnzs6hd1
 X-Rspam-User: 
-X-HE-Tag: 1772792188-530463
-X-HE-Meta: U2FsdGVkX1+UVnBNL1O6LzwZ7SQSJ8k2zAuVfNc5aDkugruZwSK0a8+XovSeBbwU4OWKa21Jb2TLOy/N/VCogJcKU+qcBnmfLmPKvfCr3wz7EI/WfxC1rzWa91ym0k4gcClzc1QewptsXvkrA4NRCgTQJEga15nuZw8A85BE6fbFV8tsKEl+t8Um0dHlO4v8+iSl62qs1gyQgh/B8nAWgYK9W5kV4kHWvgW3ZM+MQISNnQOQ1m6dnoFt/9jKh7URjuiHYUIUbfjsQREm55oRx42Yd7YRXy2C9wrfcp0an2J9scEZ2RH2tG2dqeXHmtDDjNA57ejwF9LZFcL25jLIpwYd1iN1guJuliT7ecNmDFgtAapd6GXpx4SfT3yDkxzOj04WDq0TY1pIVE1jg7WKNVNaueU4k8dfp6u+faBDAdE2BSoBlRWTP6q1TKWi6WOoh9zloPnqmm/7pzTyAHCUu45aSuer9fVXCTj51mkaVnByrdfJ+2eEXiaj+uyRX96cwoilCBUJDMrnTLu7q5s6wV1lpHaed80vc/lDDScP5F8apZvGlxh5Ly+qyyVe/heLaKZhXDt+RD5NWFeK1U8BohcgSv//IgbAf+VRaOVaAnA97/ZMRE0iwN9+5BO/00K8xw0NX4OyeOvz9Eb1FYp6xeSthde9tA7NjvUjdOTbQyoXH1aelzRU257VbKB+geUDOg2B/ibg/bT8IVW+jje82cZYUs/yCBw/PTDTqjL4ylzEivQk1OezhC4IuOWPJBcgAYj61pHN5vuoQiynr0SQtvp4tc6ot0X5NW62NYtSVLEXKRu4YQ1lpfW/3qntDY8SZ0+6Hk/YWuOICrFU+4ENi5m2UeRrvtffvdTOYSqLEMv95ZJr8P7ad2nW/x/d1kwy0MJZZsqD5p87SBjtp/yVs5RH3Uq/jFpzwxoF7o2TQExFg571oPATXVTd9F3wpfM3RQ9mCOlUYOLxbdZhlhQ
- 2xjfBwVz
- CHA/lRCR2FlFW9Un0qzfSilBf2KdIyv8swQtznW0y5dTRKJw9tNXrj3w5Ld+PhA0Rqs/uLcoxKpcARUv9JGmm+mvu1M9ZiXVof3xTBZGBITiets4eErzMdGrSKGd7QqYL9TpAeYBJ4/Ve4C9BUS4DOl8d2U3aCiGXOVEo8+fDGj/Em+om4aRn78isH/KfDDrkcB4SsWswZ2galeauyWtRft0rmZMfFwr5caCNLrvMKdAC6nZKF9XSuZkSGzGU/ttyyoxotOSm8GDo4loco5Avt9TVX+CpXcDcBgccUtmtcg+zC18McXHvHW2+yj8Njf0k1SvOXsCYk+SKCB4=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772792190-732071
+X-HE-Meta: U2FsdGVkX18iKjKOrSqNzvi3rFEX0Lff5PZJldCe3OYpPp7zABGWY0kLL7ddHmmqoOWtPrM0hRM5JhkGwHExu9cKWG47x36bG4Oi80WoZhLZjNb661HlM2eCXhbHMgd9Pc8BX6xkIstL+IYJrs3aGBbvhavfNyz4hMW6jqTpfrtyRJpJAZXQymVP1RF/8Qkfnd9lcl8j4V8PnX92iIefi4xvFGS+2TaSopoFkifCTo3upTRTPP95plw0o106S6OpJGwzdcAAwnuElGIkOM2D5K3yvSd2lzVoE1pmD855jhldK99HwyDqY5yxKCGtuTuCgRLpkFMPJxCec6m6jCZPKNWrHdLLmYRCN/quPGglJbgI7rLPHRuy/sLpBrJT7TSOQqp7HQL4dwDY0jRLXrcXI4CKXFYyPHjgxeSjIjGObFtwmazbouAMSELRbKUwF4CVGMiKtFRfFbCYZ8jJ0P4Kn+5cR92Gj3DTZFvrpFYLC72X2Zmusv+JwqkrDb5DUCgchAzHq9YFRFA2l6kXE46MzwrkHaYOEfs4nwAZ6G1XVqjopg1xomTMUdE4WMSnguMqixWNPFgyq4YVgcdOVQWsNDTiKsPHJJKfDj5NtANQIp6+NwrkClipDsOaZDvN+/UsZwKtjkdqqvKVTDOlRkAAegctHbQftAutExG9x09ar3eAUkL9cnKybaTZkBDJ+hw3P+D2U+eeGyk3wBlhBgAil3esXG7/QVj5uWP4Wl6nVIS0IHrQLwiqVtlaiqmR/o+9wXbAe0KpzWRM1fbCzqRVWR60ZgPq3EW9cIhxAyOLgvvMSK1HafYBglPKdLkgE4iqXaFFvsxRaKITHx4VYj2uTVsKBLrs6udSD3rqTQf6N2b/KXrSEPlw2VeFMrDTh/YEWQFs/rYOgIZIMn/FLAcHBIteGZG7rbBQj8n+l9/Om5CtASSPabDNM5DN7E4Wit/HkOxcOy34+2TCkuCfL+K
+ yJB/GBIV
+ LdCDve6veBjdabe/mWnmOPb3yoI2HZiy5WJ4BBMN7/CJBENYe11d/6qOOPb7kf1pMu6HWrZAoVAT50RbqYnE4tWmr7MBhOJqZjLWkCTx+46Nu1Pz7UOQ8MRr8ItACqU3u7+tkosyIdjlsR3bLjRMT9g4+m/NU/3aaxukGoj1T7jCLikFNkxCsEgaoMNlFuWG+pRskCS5Cq/pfI/DR1AMc1mc45p+nhotjhvP1FhcXLFpF0urbXgOQeu+T6PsftJvjoivuKyQ34hC1W4olrr/6Bvdu8ourX15qtYKP/HJaP7W7fNT+webC50e/ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,123 +92,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the past, only hugetlb had special "vma_kernel_pagesize()"
-requirements, so it provided its own implementation.
+vma_mmu_pagesize() is also queried on non-hugetlb VMAs and does not
+really belong into hugetlb.c.
 
-In commit 05ea88608d4e ("mm, hugetlbfs: introduce ->pagesize() to
-vm_operations_struct") we generalized that approach by providing a
-vm_ops->pagesize() callback to be used by device-dax.
+PPC64 provides a custom overwrite with CONFIG_HUGETLB_PAGE, see
+arch/powerpc/mm/book3s64/slice.c, so we cannot easily make this a
+static inline function.
 
-Once device-dax started using that callback in commit c1d53b92b95c
-("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
-it was missed that CONFIG_DEV_DAX does not depend on hugetlb support.
+So let's move it to vma.c and add some proper kerneldoc.
 
-So building a kernel with CONFIG_DEV_DAX but without CONFIG_HUGETLBFS
-would not pick up that value.
-
-Fix it by moving vma_kernel_pagesize() to mm.h, providing only a single
-implementation. While at it, improve the kerneldoc a bit.
-
-Ideally, we'd move vma_mmu_pagesize() as well to the header. However,
-its __weak symbol might be overwritten by a PPC variant in hugetlb code.
-So let's leave it in there for now, as it really only matters for some
-hugetlb oddities.
-
-This was found by code inspection.
-
-Fixes: c1d53b92b95c ("device-dax: implement ->pagesize() for smaps to report MMUPageSize")
-Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
  include/linux/hugetlb.h |  7 -------
- include/linux/mm.h      | 20 ++++++++++++++++++++
- mm/hugetlb.c            | 17 -----------------
- 3 files changed, 20 insertions(+), 24 deletions(-)
+ include/linux/mm.h      |  2 ++
+ mm/hugetlb.c            | 11 -----------
+ mm/vma.c                | 21 +++++++++++++++++++++
+ 4 files changed, 23 insertions(+), 18 deletions(-)
 
 diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 65910437be1c..44c1848a2c21 100644
+index 44c1848a2c21..aaf3d472e6b5 100644
 --- a/include/linux/hugetlb.h
 +++ b/include/linux/hugetlb.h
 @@ -777,8 +777,6 @@ static inline unsigned long huge_page_size(const struct hstate *h)
  	return (unsigned long)PAGE_SIZE << h->order;
  }
  
--extern unsigned long vma_kernel_pagesize(struct vm_area_struct *vma);
+-extern unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
 -
- extern unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
- 
  static inline unsigned long huge_page_mask(struct hstate *h)
-@@ -1177,11 +1175,6 @@ static inline unsigned long huge_page_mask(struct hstate *h)
+ {
+ 	return h->mask;
+@@ -1175,11 +1173,6 @@ static inline unsigned long huge_page_mask(struct hstate *h)
  	return PAGE_MASK;
  }
  
--static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+-static inline unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
 -{
 -	return PAGE_SIZE;
 -}
 -
- static inline unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+ static inline unsigned int huge_page_order(struct hstate *h)
  {
- 	return PAGE_SIZE;
+ 	return 0;
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 44e04a42fe77..227809790f1a 100644
+index 227809790f1a..22d338933c84 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -1307,6 +1307,26 @@ static inline bool vma_is_shared_maywrite(const struct vm_area_struct *vma)
- 	return is_shared_maywrite(&vma->flags);
+@@ -1327,6 +1327,8 @@ static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+ 	return PAGE_SIZE;
  }
  
-+/**
-+ * vma_kernel_pagesize - Default page size granularity for this VMA.
-+ * @vma: The user mapping.
-+ *
-+ * The kernel page size specifies in which granularity VMA modifications
-+ * can be performed. Folios in this VMA will be aligned to, and at least
-+ * the size of the number of bytes returned by this function.
-+ *
-+ * The default kernel page size is not affected by Transparent Huge Pages
-+ * being in effect.
-+ *
-+ * Return: The default page size granularity for this VMA.
-+ */
-+static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
-+{
-+	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
-+		return vma->vm_ops->pagesize(vma);
-+	return PAGE_SIZE;
-+}
++unsigned long vma_mmu_pagesize(struct vm_area_struct *vma);
 +
  static inline
  struct vm_area_struct *vma_find(struct vma_iterator *vmi, unsigned long max)
  {
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 1d41fa3dd43e..66eadfa9e958 100644
+index 66eadfa9e958..f6ecca9aae01 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -1017,23 +1017,6 @@ static pgoff_t vma_hugecache_offset(struct hstate *h,
+@@ -1017,17 +1017,6 @@ static pgoff_t vma_hugecache_offset(struct hstate *h,
  			(vma->vm_pgoff >> huge_page_order(h));
  }
  
--/**
-- * vma_kernel_pagesize - Page size granularity for this VMA.
-- * @vma: The user mapping.
-- *
-- * Folios in this VMA will be aligned to, and at least the size of the
-- * number of bytes returned by this function.
-- *
-- * Return: The default size of the folios allocated when backing a VMA.
+-/*
+- * Return the page size being used by the MMU to back a VMA. In the majority
+- * of cases, the page size used by the kernel matches the MMU size. On
+- * architectures where it differs, an architecture-specific 'strong'
+- * version of this symbol is required.
 - */
--unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
+-__weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
 -{
--	if (vma->vm_ops && vma->vm_ops->pagesize)
--		return vma->vm_ops->pagesize(vma);
--	return PAGE_SIZE;
+-	return vma_kernel_pagesize(vma);
 -}
--EXPORT_SYMBOL_GPL(vma_kernel_pagesize);
 -
  /*
-  * Return the page size being used by the MMU to back a VMA. In the majority
-  * of cases, the page size used by the kernel matches the MMU size. On
+  * Flags for MAP_PRIVATE reservations.  These are stored in the bottom
+  * bits of the reservation map pointer, which are always clear due to
+diff --git a/mm/vma.c b/mm/vma.c
+index be64f781a3aa..e95fd5a5fe5c 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -3300,3 +3300,24 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
+ 
+ 	return 0;
+ }
++
++/**
++ * vma_mmu_pagesize - Default MMU page size granularity for this VMA.
++ * @vma: The user mapping.
++ *
++ * In the common case, the default page size used by the MMU matches the
++ * default page size used by the kernel (see vma_kernel_pagesize()). On
++ * architectures where it differs, an architecture-specific 'strong' version
++ * of this symbol is required.
++ *
++ * The default MMU page size is not affected by Transparent Huge Pages
++ * being in effect, or any usage of larger MMU page sizes (either through
++ * architectural huge-page mappings or other explicit/implicit coalescing of
++ * virtual ranges performed by the MMU).
++ *
++ * Return: The default MMU page size granularity for this VMA.
++ */
++__weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
++{
++	return vma_kernel_pagesize(vma);
++}
 -- 
 2.43.0
 
