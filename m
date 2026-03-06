@@ -4,136 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A7AF513E9
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Mar 2026 23:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C08F513E9
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 00:21:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6A596B0005; Thu,  5 Mar 2026 18:41:10 -0500 (EST)
+	id DC8F26B0005; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E55E76B0089; Thu,  5 Mar 2026 18:41:10 -0500 (EST)
+	id D76A46B0089; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D54F76B008A; Thu,  5 Mar 2026 18:41:10 -0500 (EST)
+	id C75AA6B008A; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C324D6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 18:41:10 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B0541A0127
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 23:41:10 +0000 (UTC)
-X-FDA: 84513632700.26.9218C9C
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 654D0140008
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 23:41:08 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cAKi9sWH;
-	spf=pass (imf23.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772754068;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B73AD6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2ED2D13A40D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:21:23 +0000 (UTC)
+X-FDA: 84513734046.23.84A3B45
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 47A7F40006
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:21:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=AXjAWSob;
+	spf=pass (imf07.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1772756481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FucvooDZob6nIl/WUFpumjAxFjMtQ0H17REn4ry2Ric=;
-	b=r2xXT0fd2j6bFeXxSrYQu+mbvpW3ltvFsm4xJl070FPg9OO3uZkUTJr/A4W0/9V1y2x6d1
-	W0JPVLggPLZ1PaBnXdrv/5xSYvmjZNp5JolwD8bmRAl9kG7LZWzxuqAE0efoHTp9zYghn7
-	czb8+PyHKoWTg/W2ADUJa731tjeTeGs=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cAKi9sWH;
-	spf=pass (imf23.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772754068; a=rsa-sha256;
-	cv=pass;
-	b=zLBsVXBeZ5Q8WD3KBh68j7JxoKnEFMO2Rp9U0Vz0WsN9zc/8FIuPKrfoOojc6+di3xAVDT
-	jyMO5FuPZXFslILowYBOJX0jZYPjN+EUuDPvNBXN6nZwlOeRe+lzJcOk2TttYNlyQJdFvy
-	tQoNOusMjZh0R6Xx/uHL8vrH7MyBjXE=
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5069df1de6fso72665441cf.3
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 15:41:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772754067; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Arlm7XtB+Lox1rInuEYvUUkGIcHKMHfXi1xGipVYWzYPWmUGnO3zOoXEn2rjd/t9ve
-         P8eW1UBHWAUof9VKFigN+Oj/oZ2xVIkLQhsxppH4o945VYIob27sj+aEfEoThrSVMux+
-         nMb2asx3mFFECYqx9WLMO3Z2nCcabvzu9VjQcy4rfZOpdfBghzCnt3jgfhVRUXeG5MSk
-         0bkA/k5oEEQu8a/cDQ7hcglNIQlhBpgp66RlkzS/lpjjRZ10eAD05OhxYWcK11hk+Sb+
-         4WTSYiVJvHs3J7JqWtz4UdQ8zEu53NE8YPr0LYK4lilUCOABeWsJPQisSLgcLRXHfdyv
-         McJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FucvooDZob6nIl/WUFpumjAxFjMtQ0H17REn4ry2Ric=;
-        fh=gnwq4ULUuJK9GMIHdhvkQUxuWx+hweVPVy44MHbPvek=;
-        b=i5tekhLSNJZ/3elmKgw5Lif2ivLZqwixqp6OshtWF0oOHrAX0P/HZsD+iOPsFKy5iF
-         wB9VEOC1EzKZMzsUCf+Oerp0pMJmdGvBddgdrfNXyXetkoIE8tggZXKKV02g3BUvORPq
-         RrGLInmTb4jHQpujFn/v2a03hbdcMG3Pe4rg3n1wf8aGDc3pFDku1S3B1frcMZpNgfgC
-         Phg/Su1mVoz68U12evF1T3uZ1w8NqHSUSXoB5NkAFyYtYYQr09KBsjh56EHgTfx9wTiY
-         LplybFsem8HuTcIRqzrxNEsOO3iCGsFv4BmYhqYLkAneCi+Gss/ArEqlbcbRHuBxiteR
-         2g4Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772754067; x=1773358867; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FucvooDZob6nIl/WUFpumjAxFjMtQ0H17REn4ry2Ric=;
-        b=cAKi9sWHWmLSa7jUmfmJZeDr06SUfZbc8WIICfPVWJDN07m0ZS7uxKDKTXvVEDGDbI
-         4w9llfhpTqorIMratyz7Tf1lUsX2CrkYgCI9Sqs2HjKPad2PXuvguOEonNDqdlbXLnD6
-         D8if6Te0Hv0Wq6CuB/PrDzp34ysuQqcPCrxjKZEk7jOpbLAPgSnMJ26QS8DFN33rF6Te
-         ozX5EvMPSn26q3QsRjhMOVUS9sxrj+tGg9JXmWmGowFPNVwD1Ph7wqlSCgKrQJep42qT
-         BGyaoQxPQIJuVVBwv3idK6ApYfwuWNYAJR1h1dMzpy1uNqdPAwQVFne/WBuEZrfCxU6F
-         w6vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772754067; x=1773358867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FucvooDZob6nIl/WUFpumjAxFjMtQ0H17REn4ry2Ric=;
-        b=GKZUOa6AExXKD+0Ks4G5OqneY6oDLpACmk+c5Xoy5TJ8dTyUFr41pnHKMcsef8ku3d
-         hrERZPsBsIsDjEEMqLfGiCBpLTfcqCxo91w1mrrmJ4f1cPhOZlIvN5DLI2gNIoTTpn83
-         mbhH8BOcxl0KP6w5Kgsj0aj/GFxHfCYz6JZTM/HZlVM9KG8kFxXcTbEwiRG8e9btk086
-         +AvX4jDD4CRwxFvkFia5t8lVnIU7zJK6a043ElpPBlsXX+9tktP6xwvJxQdxMFO1PhYr
-         tk4iPdCWfDGVWiRJgEkJEgSfd/OQn4/QChb3/vP4f5IqJEGyd1A+sqFMWyxXFDEi6UdT
-         YFnw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1BgcbVVZ+LS8uS/T7tBpxKIZwOhqnA6s3h8bJ7ElyojDYrCFaCobC49LcV+O6dQrqW2wWS4Xuyw==@kvack.org
-X-Gm-Message-State: AOJu0YxJYh1slfT6LwwL3EYPLiH1aar+5rb80K1CtkyD5d4MaPFhXEoz
-	VmXviAfRcnyuQVRqSNnOV40/3hrIN+xk4HPD2pVytFGR5b7xYcwCJHV+08W6JWCVOXkjBghzHbZ
-	KzNWNSlayZgDZzH0jsXnqlYnynRzyRfg=
-X-Gm-Gg: ATEYQzxS24iJl1ukp+1L6hkJC+qaXJXv22fzgex9Nma0bno4MhDTDYI8Wg73khBELz6
-	YaQ6Y/FQK0VdFoTndnmqL5Rh/GWvFbDzeAfrJ5aZDANV68w1PycMNLYUi/gxehKck063FBIDcGO
-	LMJX/nksOcQUYfwagLV8+CRFrJt+1R6Yqo7XTJA5bFN8u8omlAxYU4+410ttTcGvHGW4pGQHn7O
-	u2qkZe3cWI9InxWMKJUdxbLPvdGQwKzmSEP+9rt+3ifKg/uaD5H/b12FxgjF59sMoKTq39dL815
-	X3tPD6l6TrmrjWWA
-X-Received: by 2002:a05:622a:178c:b0:4ec:f628:ea6c with SMTP id
- d75a77b69052e-508f496f088mr3000431cf.48.1772754067180; Thu, 05 Mar 2026
- 15:41:07 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=j5sV4+wUvNOc3xS7CkrG8KEGHYOk7JpcEgiSOK3kguU=;
+	b=6+T7joZG5p4wXD00WQt5HGvoRPF1HI11dfg7nmouB2ifJS0TA3ItZSR9ip5OAVNVflXLsV
+	cmd4cWXTXfwH4C4GhRL7hfkNof8AaXEX+8ObFi6sYezrPydgJxyAkelYGBWrqcQp04HMjg
+	RClTaMlxbTeBI+G5C4GE2idlhwmP/E4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=AXjAWSob;
+	spf=pass (imf07.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772756481; a=rsa-sha256;
+	cv=none;
+	b=hoj70RHgnj7BQBA1sIqdlm0xNhcQn9R4tawyq0fC4krDPFso1zGr14dM2n9XjlE3QhAi3C
+	wl9vHwvMCvtje+yfW7xf9b/vRVw/015rREJrqNwzH2FM3U58iez4BUETCZu0BNY0w0s1fc
+	EIxI6ccVklHr0+z687Y8Kcm1F+F+4wc=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=j5sV4+wUvNOc3xS7CkrG8KEGHYOk7JpcEgiSOK3kguU=; b=AXjAWSobMRol
+	20h18D2GlepRE9enrygSuX0r1WN9naeYhUBjpfWPU5RO5akN8qpT3Y0p3+wKjRVrl1d/LISqtEy/O
+	7384bWx5AGh0MwexSpiRtM50XRNH8YIPWpT9fkjhgdoQOfN7dsIYhEQZDmve3pGtUZPAdElyr8jd9
+	VvtKsRvrSnv/BUZpCvygoIP+huEXXUu9p8eipR+SPHHzl9VrW4fhbLMbyZjcS/5sRiWGHLykE6AkH
+	DGPNFpqh2atETX9aFQAW99JVgREHT0nVJWdBM0SN1ABV7ALMqM9+g8yzSEIo5np4qYoDL+bc83ouH
+	ngm/AAd0YhrMFb6LXmRJRA==;
+Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
+	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aleksey.oladko@virtuozzo.com>)
+	id 1vyIuk-006nPE-06;
+	Fri, 06 Mar 2026 01:21:05 +0100
+Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
+	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 6260L6d0519684
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 6 Mar 2026 00:21:06 GMT
+Received: (from root@localhost)
+	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 6260L1JW519683;
+	Fri, 6 Mar 2026 00:21:01 GMT
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+To: Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Seth Forshee <sforshee@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+        Babu Moger <babu.moger@amd.com>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Abhinav Saxena <xandfury@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Subject: [PATCH] selftests: do not override CFLAGS set by the build environment
+Date: Fri,  6 Mar 2026 00:21:00 +0000
+Message-ID: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <CAMgjq7BoekNjg-Ra3C8M7=8=75su38w=HD782T5E_cxyeCeH_g@mail.gmail.com>
- <20260227033013.94901-1-21cnbao@gmail.com> <CAMgjq7CDgap5pe_xVemow+SbaRW+ERXZBZvkymhFWZQZdDM2Kw@mail.gmail.com>
- <CAGsJ_4ypfGxp5vbNaOt2i2qDmy9tCJuemDjMjwWr6hSv2RtYVA@mail.gmail.com> <aam5nOyXs1sNdjTe@google.com>
-In-Reply-To: <aam5nOyXs1sNdjTe@google.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 6 Mar 2026 07:40:56 +0800
-X-Gm-Features: AaiRm50sXjXFjJHFcMEgVSCfJsRQafHqBQpqJdmP8SK1_I1ajCtv-VmVXueptIA
-Message-ID: <CAGsJ_4zLippMEwD0q3YwDVsBV6_5dvX56mXRGa90ujzi5WQMbQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF] Improving MGLRU
-To: David Stevens <stevensd@google.com>
-Cc: Kairui Song <ryncsn@gmail.com>, David Rientjes <rientjes@google.com>, axelrasmussen@google.com, 
-	linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, weixugc@google.com, 
-	yuanchu@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: z6yjnpu1adhf6ctomnfn4x8e47dgk4fg
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 654D0140008
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ny3kjuhbksx7g9r9ezb1pzzrcwh6i8e7
-X-HE-Tag: 1772754068-91126
-X-HE-Meta: U2FsdGVkX1//C3HUzUOq60jSr7XWGdbmDe3lKzRay8kKg/25z88Gjmf5HGdy90+XJUfVnXrl6C6rHC7CSAIZnEuMm7683EwVNEHi8OppujUuDvgfEcDwJVnBf/mQqI7y3h0yhcYAMFCs/TJHHzf73Cdoi9MatlHEQFyKWXM0mX3jYKbaNswiJS92FmwtaluqWZT278al0UmAe4s8+U+yH8JEHdJ9GwN3ibN4FhJXY2VrY2V0xjmYU4udErxiNcRthGiPua5ON264PaUqNcbygvi37slpVioc2YCmCpb76TLmxek4WAJrEFS2oyg1MoSyd5RmujyGwq9/gZOhdFN+be+qkYWhYABxVqegDze1CB7TE80kAsdzPoxO9FEF2yjNoUOwfsC5HoNhc5bQNTLXP8apt2/Rl+kOse37r0aMg/0cTKjU2c03K045yc6h1Mu4tIQTNyApRuSm/Hok67nEwGknTrWoZjNDOoAnf8HDG/Xa8YQe+6Wyb6eGVaDuoe7m6RCBoT4jgwGffWv4EXps3Bu+6FBhNrTLqthHgwnVku7QMrYNTYygIk1je020MnOj6kB5uCDj4aGVcjunp4eFSw5eKsqqS4tazRMA7EM+uEvqkQOCBUpB6FkCw6+l9t+vWqfoWnpDb70WEyizldMBcAd8EYr/j+nwgNI2MWa+utiQbH7fDH0L1Kc/aEj8EOdE2YpdklXwuShsV/IHpw1hgIznJyzdWWzCBm0X2hiKW8O3F8h1bacwHm7oW3bgJQwI4OpGonvm9fOuUJU4jHG1i4FMHW7+PEmDbuRTMDameFOVUnjP+8n4cqdgzQpagUjkMmtMkulCU8c2Z6E0KZFp9Tcl1E6B9zW097pwmEkLujNHNqKTnZTCJBEEGE6nvgbrXghDrFYZmkA6U1Ll6M71yjzlfC4K6MYvwlCNadgNM/agxxjFqBzFhcrhJ4kBYwyOE8d6u7gmCYWKK+9HWkN
- GNgdOGLi
- Bx9FDUgmxrSbzimRCAvD3wlT/Py8bw4NSAXUsclvcxNyv1Vs99DNky5CjKoX9ztK3bBFz/HSya9CUghQHM25pa9ftxl5xRXtzvspKJNpT+CF4nE2PiP+J1J2BzT7HHebor0XGxdS92CLoiSfreipGURnvXl44/oZFsDlXaelf3/0d9GbJ6sdCUk/T38nd1Z0wPrVGwzpBX1LvzXhBNZEcJJTXNBcNOM8X7gGpSnf3L/8ZXANIcmYQO+GV2nq0krFon9MiO6dgAc1ZQtxBadTurGrI8BR00Od/PKEnvVA1qsRHAE1w9jwzZB1Ulryz6pLAGwm2wnFUtuRuPiKBN7X5KaKFb2GavJYW0tFHYtGpexV8nCxVSq8bDakA9GvOCRCOyv0XtFsNoMZ+svCxpA5fpnlRFRpamq0mH2VJaCsPvt7ge7ZXuN0YyMwrehbJMbBD5RcPEZ8koZgJZePNQv2pF+A+trw/WZYXTtvXbe9JyHMUfIAoAII/P4lsVg==
+X-Rspamd-Queue-Id: 47A7F40006
+X-HE-Tag: 1772756481-532724
+X-HE-Meta: U2FsdGVkX1/i+NK2sM+rIYEn3axjeukFZghYyRqW5RqFOME5S0Fkwmptud/lUyBz5lxsgvNTcNEF+zM01XfddzHCkybpNKNrVoYFgWR0A5j81mSEJh3rjWnjwhNsbbPJP+R++D7r3Ja37siWWfIjVYZOpNLjl5y00kfjXZI9/iq4mE//06MwjvGb6SDuxaKK0iozot4raIYmgUwYKRsYCiv0fJCmyvXK3hvFGW6jpL8vzPg/7R0Km3QLIud7rJ2kxmfUt2TK2lwWcRseoEZ8E2uG8921/csUcIMd1o4st80viEMUkyDt1c4Yc7OYex/Q2lgNoGCjAiYYG88Wp6BG0xKfLPWTh4XrVlgEEaIE7ADYrf0f0FaNOMYVogHRv8Gch/MwJdSiUVb17/nP3a1pXp9to7pE4hvdwcm7lK50UlC4bUTp574/3NAqMaXKbBlcYvrFz3ZVdapIjcmIRrFRMPivIsvc8+AFci347rE1tYg2Il+zpw5TkdbGQzWmoRTP3I3lcOOw99vIbytQ/qj2RUP5DOrR/0rnEunIa1XVxjEfYUX/aLUqAQtZzue/RpKEO7KtzN5Hd62cSiO938WnJwb3QAP+HHuqInnaxHtNGr+4s6VBIimpQ8ePt2jVdkRXZLzO4NAeZGmMMu7ylLdYtOvO6LLuE4owILz0SWRY95hbjsyihFpvjoa9Imc9doDMUUKkRGLQ8BuIKPc0lNPh73Zs406sBEg+EJH+l1BdCO+1AZsLgLZzxocTmcpCboF/EH8RFE2OSnCR1sW0e+TZaDPAuebR8QS1uyfzl0zu2XkeLCzu0Ei/MTvy4Byd3jfNoZSUvuVFSvcO5EKRfFA9OSmuwRicB/WQ3qVgdTeOpqLZA+8r5jYJ3LIaf4xhWEXsRk4tqWsV/ddQRN00mAVQJTQv6lo5b2QDu2Vee4KnO1n3kMlC3X0x2JAKTl5JJS18LeiGYpOlZl/lncC4y7d
+ bHoia5J7
+ nyD+LwkzV4b68OF4qO0vIjDdR08n1BSGA0YWuQoD7b48zn8F8lZT4nFv1LrTrxWd/1SQRpiD0IthdZvXSdp5YiWDFyh5KAIdic1sViKp2Ln5ndvw5MKuEy/atVYu2LKUilJ7Pe0gHGuce1IKLCUECG8GaVdrb7CwJPgVg8L2gsVuE3vKnYKd6kde0BJu/Z8c+4+VbPVjVFfNxlgaPw0U5Ohko+ikSSIF/9IySDlDVQrBOwuQEwoX6ML0ocQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,69 +106,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 6, 2026 at 1:13=E2=80=AFAM David Stevens <stevensd@google.com> =
-wrote:
->
-> On Tue, Mar 03, 2026 at 12:06:20PM +0800, Barry Song wrote:
-> > On Mon, Mar 2, 2026 at 7:10=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
-rote:
-> > > On Fri, Feb 27, 2026 at 11:30=E2=80=AFAM Barry Song <21cnbao@gmail.co=
-m> wrote:
-> > > We have an internal workaround for forces aging, and waits for sync
-> > > aging if one type of folios are not reclaimable (without the wait, we
-> > > still hit the MIN_NR_GEN protect again since aging is not finished).
-> > > And without the MIN_NR_GEN protection we might end up over reclaiming
-> > > without aging.
-> >
-> > I see your point=E2=80=94I did exactly the same thing in Android.
-> > However, there=E2=80=99s a significant problem. If anon has two
-> > generations and files have four, they end up sharing
-> > generations. To age anon, we would also need to move file
-> > folios between generations; otherwise, the hottest and
-> > oldest generations would overlap, causing cold/hot
-> > inversion. Furthermore, in inc_min_seq(), moving folios
-> > means the oldest generation gets pushed into the second-
-> > oldest generation:
-> >
-> > new_gen =3D folio_inc_gen(lruvec, folio, false);
-> > list_move_tail(&folio->lru, &lrugen->folios[new_gen][type][zone]);
-> >
-> > This is far from ideal, as it still mixes cold and hot pages
-> > to some extent. Could we keep anon and file generations
-> > separate instead? I feel this is a strong requirement and
-> > likely the first step toward making swappiness work properly.
->
-> I did some experiments with splitting anon and file generations on
-> ChromeOS a bit over a year ago and got fairly positive results. Although
-> shifting personal and team priorities unfortunately prevented me from
-> finishing the project. It didn't get to the point where I was confident
-> enough in it to send it upstream, but I think it's still worthwhile to
-> mention here.
->
-> For a bit of background, due to a combination of low-spec hardware and a
-> complicated file system structure, many Chromebooks have poor file I/O
-> performance. We found that a fairly significant contributor to jank was
-> important threads being blocked on .text faults. We tried adjusting
-> swappiness but found that MGLRU was unresponsive to such tuning.
-> Splitting anon and file into seperate generations and then setting a
-> fairly high swappiness value resulted in meaningful jank reductions,
-> especially under very high memory pressure. However, there were
-> regressions to some workloads that I did not get a chance to try to
-> address.
->
-> If anyone is interested in seeing the code, it is here [1] in ChromeOS's
-> 6.1 kernel. I also have a WIP series posted to Android's 6.12 GKI kernel
-> [2], but it hasn't been merged there. This version fixes some issues in
-> my original series that were exposed by runing on a very different
-> system, in particular around memcgs. However, it hasn't been tested as
-> extensively.
+Some kselftests Makefiles assign CFLAGS using 'CFLAGS=...'
+which overrides any CFLAGS provided by the build environment.
 
-Nice! Thanks! Do you still plan to continue working on this and
-submit it upstream?
+If the environment set flags, overriding CFLAGS may result in
+inconsistent compiler and linker options and cause build failures,
+for example when building PIE binaries:
 
->
-> [1] https://chromium.googlesource.com/chromiumos/third_party/kernel/+log/=
-929932351492d01f0aee37a0ac3be8c7bd88f80d
-> [2] https://android.googlesource.com/kernel/common/+log/49cd20cfb0da2361b=
-e064f7fd70b36867065277a
+  # export CFLAGS="-fPIE"
+  # export LDFLAGS="-pie"
+  # make -C tools/testing/selftests/ TARGETS=mount_setattr
+  make: Entering directory '/build/kernel/tools/testing/selftests'
+  make[1]: Entering directory '/build/kernel/tools/testing/selftests/mount_setattr'
+    CC       mount_setattr_test
+  /usr/bin/ld: warning: -z pack-relative-relocs ignored
+  /usr/bin/ld: /tmp/ccikConN.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
+  collect2: error: ld returned 1 exit status
+  make[1]: *** [../lib.mk:222: /build/kernel/tools/testing/selftests/mount_setattr/mount_setattr_test] Error 1
+
+Fix this by appending to CFLAGS using 'CFLAGS+=' instead of
+overriding them.
+
+The fix is not applied to the Makefiles in x86, riscv, mm, arm64
+and powerpc as they fully define their flags.
+
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+---
+ tools/testing/selftests/efivarfs/Makefile             | 2 +-
+ tools/testing/selftests/exec/Makefile                 | 2 +-
+ tools/testing/selftests/firmware/Makefile             | 4 ++--
+ tools/testing/selftests/ipc/Makefile                  | 4 ++--
+ tools/testing/selftests/mount/Makefile                | 4 ++--
+ tools/testing/selftests/mount_setattr/Makefile        | 2 +-
+ tools/testing/selftests/move_mount_set_group/Makefile | 2 +-
+ tools/testing/selftests/resctrl/Makefile              | 2 +-
+ tools/testing/selftests/safesetid/Makefile            | 2 +-
+ tools/testing/selftests/signal/Makefile               | 2 +-
+ tools/testing/selftests/timens/Makefile               | 2 +-
+ tools/testing/selftests/tty/Makefile                  | 2 +-
+ tools/testing/selftests/vDSO/Makefile                 | 2 +-
+ 13 files changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/tools/testing/selftests/efivarfs/Makefile b/tools/testing/selftests/efivarfs/Makefile
+index e3181338ba5e..f6c412059af3 100644
+--- a/tools/testing/selftests/efivarfs/Makefile
++++ b/tools/testing/selftests/efivarfs/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-CFLAGS = -Wall
++CFLAGS += -Wall
+ 
+ TEST_GEN_FILES := open-unlink create-read
+ TEST_PROGS := efivarfs.sh
+diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+index 45a3cfc435cf..54cdefb9ccb0 100644
+--- a/tools/testing/selftests/exec/Makefile
++++ b/tools/testing/selftests/exec/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
+-CFLAGS = -Wall
++CFLAGS += -Wall
+ CFLAGS += -Wno-nonnull
+ CFLAGS += $(KHDR_INCLUDES)
+ 
+diff --git a/tools/testing/selftests/firmware/Makefile b/tools/testing/selftests/firmware/Makefile
+index 7992969deaa2..dd9acf972cf5 100644
+--- a/tools/testing/selftests/firmware/Makefile
++++ b/tools/testing/selftests/firmware/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ # Makefile for firmware loading selftests
+-CFLAGS = -Wall \
+-         -O2
++CFLAGS += -Wall \
++          -O2
+ 
+ TEST_PROGS := fw_run_tests.sh
+ TEST_FILES := fw_fallback.sh fw_filesystem.sh fw_upload.sh fw_lib.sh
+diff --git a/tools/testing/selftests/ipc/Makefile b/tools/testing/selftests/ipc/Makefile
+index 50e9c299fc4a..5a5577767a35 100644
+--- a/tools/testing/selftests/ipc/Makefile
++++ b/tools/testing/selftests/ipc/Makefile
+@@ -3,11 +3,11 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
+ ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/i386/)
+ ifeq ($(ARCH),i386)
+         ARCH := x86
+-	CFLAGS := -DCONFIG_X86_32 -D__i386__
++	CFLAGS += -DCONFIG_X86_32 -D__i386__
+ endif
+ ifeq ($(ARCH),x86_64)
+ 	ARCH := x86
+-	CFLAGS := -DCONFIG_X86_64 -D__x86_64__
++	CFLAGS += -DCONFIG_X86_64 -D__x86_64__
+ endif
+ 
+ CFLAGS += $(KHDR_INCLUDES)
+diff --git a/tools/testing/selftests/mount/Makefile b/tools/testing/selftests/mount/Makefile
+index 2d9454841644..38361a896363 100644
+--- a/tools/testing/selftests/mount/Makefile
++++ b/tools/testing/selftests/mount/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Makefile for mount selftests.
+-CFLAGS = -Wall \
+-         -O2
++CFLAGS += -Wall \
++          -O2
+ 
+ TEST_PROGS := run_unprivileged_remount.sh run_nosymfollow.sh
+ TEST_GEN_FILES := unprivileged-remount-test nosymfollow-test
+diff --git a/tools/testing/selftests/mount_setattr/Makefile b/tools/testing/selftests/mount_setattr/Makefile
+index 4d4f810cdf2c..fbdb8f69b548 100644
+--- a/tools/testing/selftests/mount_setattr/Makefile
++++ b/tools/testing/selftests/mount_setattr/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Makefile for mount selftests.
+-CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2 -pthread
++CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+ 
+ LOCAL_HDRS += ../filesystems/wrappers.h
+ 
+diff --git a/tools/testing/selftests/move_mount_set_group/Makefile b/tools/testing/selftests/move_mount_set_group/Makefile
+index 94235846b6f9..8771a5491ea3 100644
+--- a/tools/testing/selftests/move_mount_set_group/Makefile
++++ b/tools/testing/selftests/move_mount_set_group/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Makefile for mount selftests.
+-CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2
++CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2
+ 
+ TEST_GEN_FILES += move_mount_set_group_test
+ 
+diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+index 984534cfbf1b..1d566a91faa7 100644
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
++CFLAGS += -g -Wall -O2 -D_FORTIFY_SOURCE=2
+ CFLAGS += $(KHDR_INCLUDES)
+ 
+ TEST_GEN_PROGS := resctrl_tests
+diff --git a/tools/testing/selftests/safesetid/Makefile b/tools/testing/selftests/safesetid/Makefile
+index e815bbf2d0f4..d3811515d8e3 100644
+--- a/tools/testing/selftests/safesetid/Makefile
++++ b/tools/testing/selftests/safesetid/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Makefile for SafeSetID selftest.
+-CFLAGS = -Wall -O2
++CFLAGS += -Wall -O2
+ LDLIBS = -lcap
+ 
+ TEST_PROGS := safesetid-test.sh
+diff --git a/tools/testing/selftests/signal/Makefile b/tools/testing/selftests/signal/Makefile
+index e0bf7058d19c..6c437f95132d 100644
+--- a/tools/testing/selftests/signal/Makefile
++++ b/tools/testing/selftests/signal/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-CFLAGS = -Wall
++CFLAGS += -Wall
+ TEST_GEN_PROGS = mangle_uc_sigmask
+ TEST_GEN_PROGS += sas
+ 
+diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
+index f0d51d4d2c87..357077792395 100644
+--- a/tools/testing/selftests/timens/Makefile
++++ b/tools/testing/selftests/timens/Makefile
+@@ -1,7 +1,7 @@
+ TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec futex vfork_exec
+ TEST_GEN_PROGS_EXTENDED := gettime_perf
+ 
+-CFLAGS := -Wall -Werror -pthread
++CFLAGS += -Wall -Werror -pthread
+ LDLIBS := -lrt -ldl
+ 
+ include ../lib.mk
+diff --git a/tools/testing/selftests/tty/Makefile b/tools/testing/selftests/tty/Makefile
+index 7f6fbe5a0cd5..e9c22dafe5e1 100644
+--- a/tools/testing/selftests/tty/Makefile
++++ b/tools/testing/selftests/tty/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
+-CFLAGS = -O2 -Wall
++CFLAGS += -O2 -Wall
+ TEST_GEN_PROGS := tty_tstamp_update tty_tiocsti_test
+ LDLIBS += -lcap
+ 
+diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
+index e361aca22a74..1f4628ceb975 100644
+--- a/tools/testing/selftests/vDSO/Makefile
++++ b/tools/testing/selftests/vDSO/Makefile
+@@ -11,7 +11,7 @@ TEST_GEN_PROGS += vdso_test_correctness
+ TEST_GEN_PROGS += vdso_test_getrandom
+ TEST_GEN_PROGS += vdso_test_chacha
+ 
+-CFLAGS := -std=gnu99 -O2 -Wall -Wstrict-prototypes
++CFLAGS += -std=gnu99 -O2 -Wall -Wstrict-prototypes
+ 
+ ifeq ($(CONFIG_X86_32),y)
+ LDLIBS += -lgcc_s
+-- 
+2.43.0
+
 
