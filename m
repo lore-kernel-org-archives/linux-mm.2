@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F102DF01835
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 13:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8623F01835
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 13:51:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20B276B0005; Fri,  6 Mar 2026 08:49:40 -0500 (EST)
+	id 3C9FA6B0089; Fri,  6 Mar 2026 08:51:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18E736B0089; Fri,  6 Mar 2026 08:49:40 -0500 (EST)
+	id 377A76B008A; Fri,  6 Mar 2026 08:51:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05CF56B008A; Fri,  6 Mar 2026 08:49:39 -0500 (EST)
+	id 259406B008C; Fri,  6 Mar 2026 08:51:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E455C6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:49:39 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4612459635
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:49:39 +0000 (UTC)
-X-FDA: 84515770878.27.4DA264C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15C8D6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:51:29 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A81A8C1D41
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:51:28 +0000 (UTC)
+X-FDA: 84515775456.18.7F64ED1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F13A440006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:49:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oxRUEyPD;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id CFFE240013
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:51:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=olDGrSHo;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772804977;
+	s=arc-20220608; t=1772805087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zi/nqIfVyXxnBQRM2TtiweIEfCQTzTkY3lXA/nq98hY=;
-	b=WS46FOtbzmmR5WrCzuNVgnB9KVVeuMFvGEvV50ZUy4nffAysOd2mPMN4xNAWW+UUi3I56r
-	C/ooAz5QJWn5reIpoMudHRE17oPTGJet7TdSyI20TawKmxOaPYpkS+IF1UNpA0HwGFbyNV
-	OEu28OoYVxi2rTnhAp74sIm2i0vpxnk=
+	bh=DAH6Upu8Ck9Fign/0PlxaF57ypAD/KU3urirCydaJMs=;
+	b=NgIwc/7OH8dlPvI1rMT2e6+NwsTg5vft1MJQ+V0PNtDLZ6vrHssFfc4p5aNFSebun3uP6s
+	MHIikGOtuX25uRS8zWjdsyJGfuwP4y3oKV60J1qx9F5649OIPjCpZBbxIHUgH5mL3PHZgH
+	63gf8NeHTA1nklTFAYsCAvmKnxmiHGI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oxRUEyPD;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=olDGrSHo;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772804977; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772805087; a=rsa-sha256;
 	cv=none;
-	b=QaC/L4yMHs78atF3wrOSvY0bNXsf+QARQIuRLQo5rpBNgnZxTD8d2r/gS8tzXQ2eeafBF1
-	xz2lTWEj/UN5Yu2SIBZudOvVcRXVZCLAeuUR29fzEJMSTIdWfzELHve8sSQji7OWHpRV37
-	F9TK4Q7HOO6RhU/1bj2fBVI9gSNiNa8=
+	b=rw2Jov7JOSIL0bcRWWuJOXXZVerOagwwxv5p0abshm3leNbeAH/+8iTgVDZtQjT4+Dsr/e
+	UQIDRxvm/4rtS+jYdx7oHAKuNkqrU1nckudPHNY6SlX/2aw4tYf1sbKFyV+ZpHPAqXNoSD
+	cDEGvwVJSYoY0XPqnNo7uJEP0NedE+0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C63F140234;
-	Fri,  6 Mar 2026 13:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B110C4CEF7;
-	Fri,  6 Mar 2026 13:49:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DCBC540234;
+	Fri,  6 Mar 2026 13:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D36EC4CEF7;
+	Fri,  6 Mar 2026 13:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772804975;
-	bh=irOuPnqtfg3b/SaxHjIDOK3emq7XQZuod4JIYQGwsI0=;
+	s=k20201202; t=1772805085;
+	bh=7RBqYcR2ikcPrdrJ3ktRl7uN+Go6X/fHUgtHA/HqlUo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oxRUEyPDum7HCDI0i9m+D1kN2UUcv7bGDNu06MEpelNeSK0caUq6J8rXGgksSmgj9
-	 QJfRAQ7UULSbl2fn/6qyoLO6VSkYg1jcOMl3oqLnLlFguufUHVdjaQxHByMwCDQaFp
-	 /OUWbTzGykXwFIZ5eH5t95j1oB+pMiEiCZcTS/o9hF2PhaXmZpSRP2ldfQVucIklG/
-	 o9U+SiDeEyD8vihv4rjvxPdvUpYrhnpER2Eu8UQ331kd/HUTYgrlsXNIeTmiWLvMQO
-	 Ro6cA1l3zdgawtAikWWHNqtBPPlYKTT/g5q53yFc6LO1xVvpO80OgxbgtqWKdf3BqX
-	 SDg6nKcbSa6pw==
-Message-ID: <ab22e50d-3af0-4acd-9d7a-a0e86d0c4fbe@kernel.org>
-Date: Fri, 6 Mar 2026 14:49:27 +0100
+	b=olDGrSHoZxTa/sqjxUa1qieNAdDrlVRkMgYXIuY7X/1O+Cik9Lje5jim/kM6bxyq8
+	 eXYV43EoaAI+x1hBvbNFSa1YIGEpd5/MhQw5v/BC63BQTgWyhfJH40L/HIpqdMYbI4
+	 dXWHw/OjaXloYQ9ARACOfN8hO+FTWX4StOcfNl7kduWUm4+kA2hPNXKW95sxUvJdIv
+	 jiwqEy/yNNgRJLQG5XRW8nRj/AFzf0h0w+jhMLaJ/skjuzjUDhtjz629jh/s+m6wuq
+	 mPlBtha9jfTpjS5/ezErsC176oDum/COOGaHtk1kg1PhfYLmbsIDD9pfZPqIEcwt5M
+	 iGhFzUeVMmmDA==
+Message-ID: <3ed67a98-42a6-40fa-a7d8-a1a264f6151d@kernel.org>
+Date: Fri, 6 Mar 2026 14:51:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: migrate: requeue destination folio on deferred split
@@ -127,14 +127,14 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <20260306133556.2051251-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F13A440006
-X-Stat-Signature: qxau7psdy3u5ccm3kthxz4a4yd1zzocf
+X-Stat-Signature: iab5s5uqsf38mqqrmt8iqmozmnk7xf45
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772804976-207260
-X-HE-Meta: U2FsdGVkX1/XLS81EhxhGOAUvxiw/KRXeSVlqWRHe20tSBWI4PlY3Kt/G4Nv5vQfwf9ylar92dr5y6XA0sbls8ZkjUp8YHUnrx5hxv5kvz45MBpvwhPIAr5m5cf5zP5oYsFlHCAR6Wtov4H27YfwK/NtP/hQfAyVKz2YRUPIStKYPchmVkGgdpcLbpd6fKw7MMi1lEgn3+khsaeSdqaDfKrX/U/6ubNo2PqNVUCBaDvUTTvQrGyd3Tqn9QM2eKgMnxIOqmyNmRw/yUvajZYunOaB56vBTM+/nepmmzNph7l1dyA+T6/dSLd09CDlo1A9N4HGrBAGCpMg1gbF4pnGFZ5Y+5GMC4QEH7Od54mLUmANdz6U9F++GEmrHWbBta8CjLb+Dr2mi9OR5c7Ii15GUjD+pwsq6kgpiL6vw1NJ7j3ogjgPAjS40ouprl2IYDTFzIKIirbqLI+Qa2xDTkEZtsq8ZIZZDR9j5tFBz1ivJuLMRBPkbZsGKT570gjmk9omSJVBlIifoTYJ99HjTFN2DNbdmP/SuJp3pwDvhQ7hsYlm8pZR2fpzCB7i0CNoWH7+PyDflG2i360yILatHSWkN2iHYQlvOa/uLLYbEOINXGrUZ+oNJ82RM5ivaQK6wmJYz29phINRQIf7CckciMwA5guEX8J4uE7LVlu/6pBNXlEKKOqZjAYXhEY2jMGXcbk0ANc1+rIbYt5rjPB3zmJbz+vgMNJZYDpJRMPWF1g9dImuByMetsJBO5vTndUFROUtVlwSbtbjVIdAnVhVCUKYUqBX/dFb7h3bAgra8y8SN+4C6cl8Kej7e0XYlwbDFBOSSTmc7K+CAle9YGKyny5FBjfKjqI8U9o7hM/TK2e1z50eIAJMB/GsntrIqVRcOpOiumHNwX4vwevGFAKa3BipsM7sER25R8bT/FznnUTKPO4gznsblxhEZmPGhKoTU4Oz4Tm3sAvRcb6YFld1IS5
- vejEGG5D
- LdcH2v4g0L3vdTUBTvM2Vbe8qJ1d7KYkF9h1UA+w6p8BWHH0mEMGUksc9Nl3WUkgh+MB8Se4MqhRYDY2bLtaBvQNqaqMNg2WrcWsCXcSxUg7FEM8ZfYCTNkKGeF0SIHuiLr2kRB4KDS0xcwsWfnRCvxmwzkLqcWkhW7uK6ZW+jYHwi49ZuRprKsjZJnUcQXoLhVqdgJEgTHEaqW2anmW5G59A3uc+HQ2PTGU/bf2Wiehd9VKavBI2tZO6KQrGoNy8DTxaNKTvwQ24NXxolU+q0iu7EuEHvKgGsnKYRcjKSwU+Bu1472tkNliHpxLibRZUH8mQB8540gMv9DRGbNwi5/MKPbJXJf9/5GHeXRhkXjDFjhc3c9LmD2EZ8l5+95GsJmx1hL/rfj78ZTc=
+X-Rspamd-Queue-Id: CFFE240013
+X-HE-Tag: 1772805086-201352
+X-HE-Meta: U2FsdGVkX1+RHVlY/D5vvTyfdAGtwfsp4zPk/Vtjw03Ckgim9eaH8SJpVdNLjnmQub8ndEYOeF+7CqB2jfAj+nbZwSUjKLYr0630FQ4A2Tm+pxPb4xCdEI0McgJeKusvyZWsTDs8/Ad29RuyP4SSCxR3FL9WBw0jMxDoRMLOofie3AMoX63p6P8JcMkbiyix7TySPftWlWkNMPyeyLR60F7WzwKcywduqw8UPJcaHFpPK3Ohe0/rDqLnJ3MNWjYA6H8UXk7zZq8n6EUCkclm01sWaXso4THl1dB7EqohJg195sBIUDcslqoy1lbCT3Yh3YhV/UHmLuS/vGDMFyfI6g3S45kcQlZthg0RrLfH410bUW4I8FMN4+2B1bYpn+ApuIVxNpDYexTKzbjltWe5PA7PuEg34m1MfW9YgZdM/PDdnt6O2vUAXLBj/9lJQDK3xwM1HX6c7OvXHFa+Lp/U9FsjYKJXnRPELSyhZy5C18RScYrAdtUKuQqbHIrLnth5hjsYZJOfrKBolpQg2UCUjIjMRs9KDH0+rMz6xm6ov6ef3mw4QR8yv/26GRvfnoEF/09/vBijINzJHiicKoMXQnw4jaV0l70rKTxyt7JZAaf4g0zIlg3eA+4zV4RxqpWbZssww0GTgEje9MCgZ5+7cgW5BHyBCy0EAajdN2i3gp3oMPLQUkqeob2Ip4lEXY2yLqCE2JdddJ2MQDQLf7uzumsEqeu8o1fW+1HIw6bI8IzWBoikQMT5ZpTHdQG2j+DPEW0aNE7E3fnddk3SJE0hP4GtDYMimus8wI+I73kfUCTmpiyQ+KkkQdClNWvZWHKNTCKPD+cssNtJE2fEuhy5Tedsg1NsOA/5aO6mODwZjn9EXmE4YTMBEAmRjYesS0EQRfdsl1WJxQp7GHm5tNH4HQ9EK78v3T+oXMlC++iUg9pCfxyzixnt49VFBIdWgngxWzv7+E28ihIe2WM55IO
+ 4an3Q9ZU
+ uxrO6O8VDX41JnD5NODuGjDxsREnML8eV+yLkeaR6wWBdkq9ytljoYkRV2fSyAVcm8DoGscvuJgv5CIvomfS2IU3OoiSrvG161wr8ZvVeFhQbW8WVW//n/lJ5S0tf3wUSElM7wWjCQCYiPgVHf5lvGbkvDPn4rVLCj3R/fJYhOKBTNC1xLiYex2lF939RrGjpJBBzeOXR9h65oDhf3eGBJRj8ulywvv+dgpIlgXRWHqnPS7J2yjm5Ms+xim1Ozjvf60fZCRW582sRLylHK3EzsB5Jywnlv/foccnMcIIC4kjuJtVOfC1U0009WT8NnNMcURrUsXR0vNZCIPgWyU6QFZxSCIgopnMsJsod7pDm2dBTWKfb3MAkBeYC2uSfyYZT/MqT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,11 +177,7 @@ On 3/6/26 14:35, Usama Arif wrote:
 > +	if (folio_test_large(dst) && folio_test_large_rmappable(dst))
 > +		deferred_split_folio(dst, false);
 
-Doesn't that mean that you will readd any large folios, even if already
-previously taken off the list after scanning?
-
-So I am not sure if your "if the source was a large folio that was on
-the queue." comment is accurate?
+Also, should you be checking for anon and non-device folios?
 
 -- 
 Cheers,
