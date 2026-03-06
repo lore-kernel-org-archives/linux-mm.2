@@ -4,87 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48231FCC062
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 19:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F269DFCC06B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:03:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67FA96B0005; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
+	id DB86B6B0005; Fri,  6 Mar 2026 15:03:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D126B0088; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
+	id D6FFD6B0088; Fri,  6 Mar 2026 15:03:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50E456B0089; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
+	id C99156B0089; Fri,  6 Mar 2026 15:03:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F32D6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF9771B86CF
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:35:10 +0000 (UTC)
-X-FDA: 84516641580.13.EFC5589
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A318140010
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:35:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B743F6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:03:23 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63AFE1A0717
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:03:23 +0000 (UTC)
+X-FDA: 84516712686.05.3B1EE6E
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8C831140018
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:03:21 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N84WBoCs;
+	spf=pass (imf09.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772825709;
+	s=arc-20220608; t=1772827401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GxypWmVpYpVuttdZa2oWZ3CvwQ9hX7LB7kQQ7oXcnvI=;
-	b=dgKKxiNH+inoe+u4m4McJsGwYHdobWKPenkdf8UALm4vcQBw0O3sCvgiXOsYnTWdqVe32s
-	W9oC35T8ZZzUvVllqxnBlBbOozRDBjni7MJsiUIeza8D0ImueNWRW0LpwkxGIqbl97G+Qd
-	H7+Yv7yVbZ7t6e6eMMXOxKoeIDIeOX4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772825709; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HPRNLOamDcFlQvC9N/qMCQZ3FcaEUEmoKUrW4q9GB28=;
+	b=4+m9xThV2kcVTUrJB4xpwzNZveVZGWcrFz3/ydG2zJR009HqkG3jJ5I7vqzdeo3P7sx59h
+	HeAkpLPzWX5WQQ+Jj6j7/tKmEY5rcfzP3A4lQzbbHi8r7KJOLFhojSXAL2Jf3DUrEwOAul
+	O+HlVZpkA+6c3q28lCYvsnMxQoSLVPo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772827401; a=rsa-sha256;
 	cv=none;
-	b=6iyTS3c7XJn5FZDFGaNA6/fr1B0Qp1mXxcGhIhyvHe5KHNaGRdnRl9dLU+oA0H6IVYrxED
-	/XKohq3wLS43GSgNCWeoX210J+pBl81zB0mvAtYHKZaQS4Z+a0AjFu702J63QS03+nTvAD
-	+hsYv+/y5ref40WVovjBqb40wbXDrfQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3658D497;
-	Fri,  6 Mar 2026 11:35:01 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F9B83F836;
-	Fri,  6 Mar 2026 11:35:04 -0800 (PST)
-Date: Fri, 6 Mar 2026 19:35:01 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Qing Wang <wangqing7171@gmail.com>,
-	syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com,
-	Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org,
-	jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, pfalcato@suse.de,
-	sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com,
-	vbabka@suse.cz, Hao Li <hao.li@linux.dev>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-Message-ID: <aassZV5PjgFx8dSI@arm.com>
-References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
- <20260302034102.3145719-1-wangqing7171@gmail.com>
- <20df8dd1-a32c-489d-8345-085d424a2f12@kernel.org>
- <aaeLT8mnMMj_kPJc@hyeyoo>
- <925a916a-6dfb-48c0-985c-0bdfb96ebd26@kernel.org>
+	b=jlQQxHGAb02h3TevTAXIVqUmFW1FzOjc4KkzmKPGK7eHCrvQTAt5wFe0OQzM2NnHdr+yMK
+	BLTkjwI+kWLD6kUrfzlGehscYehRNtSDrZ2YcqCXxQrAXJfeqJ9dKaiQIxD9BOMPjVFEaA
+	JAjIfyhXfldYBtz49eRHuhxYc3g+GnI=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=N84WBoCs;
+	spf=pass (imf09.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-899fc9853b7so81341176d6.2
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 12:03:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772827400; x=1773432200; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HPRNLOamDcFlQvC9N/qMCQZ3FcaEUEmoKUrW4q9GB28=;
+        b=N84WBoCsVpCndNJ4/yL42WTmCQ1dKJWWrEYVjXRCLldY56snVNSjRULJ3PUczRYBAl
+         ScoGVi2TZKUFDwvwllH+g3ugc6u+xTEXpPxa9KNgym0D3i8cCuSMZ8hKJS09DZNJ4fbZ
+         FALNErreHetL3wBalnSQagXBlP0fQl1Aj1RCpQpORlsEzdo4s760tBd858XfphV6n7E9
+         w2wV8r1SEJ6DDKGorVjhjWtm8JVXZeGOtkZqljcRXkEC0dQXLrVz9lRK2lv3pUIoQ0Cq
+         xtljs9ex/hvBmSdXrbWGYURdxJKiYA2ltTuA3eVY42a1qIp5kPFqL1Zv9htEfL9dsABD
+         Q4+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772827400; x=1773432200;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HPRNLOamDcFlQvC9N/qMCQZ3FcaEUEmoKUrW4q9GB28=;
+        b=XqYmt+wRG3mr5ui8Ryg+91NlClTvbCEMH5P0KJ0CtafXaWDrxZKBlSrazb0xrbOTOS
+         m8MR1e1DLhV68kp+0PTVYf5evVZw0fkpZTWbwTaIu05fRk6/K/5ruJ+hjfdq2bktBYxt
+         H5o+0xEgupg6v87kKaHnRdA9Y8f3bqkmsm0tsMnM7f7r+W2fGeo/tfZDLG9a0hs95+Oa
+         SCb97tbYr44Eg3CRtaxN104i41DTkr7tbwKzzBA+Jr6Frk0hl/ZhAbSlbFuJG6MS8ks0
+         x5UP8W8bVkZugjfmjOClskRyiKQq4Dw/i1Of0pFHxHbJ4VIXbjebTOule1p8iM9Lj9Kj
+         d39Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXJLvTqwVoNNkZRgw6X91gErl7XH9yjlQhImHq0nTVR1PJ8xw4s6lzL0O+7Hx6xZnucaR4Yrucg5A==@kvack.org
+X-Gm-Message-State: AOJu0Yz2vMMlQWPgmVbLtNxO37NYaGgRUeQloFjBjOnGVgq9D7KVMsxg
+	ZwrmoxsxeBduM2QUDXfCAK4lHyRpH9/YfB9NxFCH362MyOmx2GpNEBR8dGg13cfX
+X-Gm-Gg: ATEYQzxkcLda28+G00jkiUn0SSmADVGtwEyAXj+qN8m9wkenU671RO77b90DOZcIkhn
+	q69502sBTN9wb0tT/p4A9JjSTSNgVCjwgi01lU6DOntRw3WckxS6wjVuwH5MqpCUx+qVhBQiQ2g
+	y7qknNRqU4UBtBEQoVDNdlflWaaPsXlZwtxOSulSYlUQiSoT/7nOb0NCtLvARDldNaCek8sM5KT
+	w9P7n1EJbIHlXTyO7Pzh9qCKAC5DT9LoWUuRnCREtjvRNMjn4Y0BB0nRua1qCt2hRinQvsyYwyD
+	sWTIJ7XbaPZzY+pa5LQV6o2Lphj5JVeMIIzUco2a1RXeatiEX39ZhvnyACV1UBM0i2EU9hi1vly
+	tkmz2ezFjOz7cmUEinWBRq9Hzes7qpCOqSyyHY05jMWgAwQwP01rJSaS10W6eLu5v2LY1VNB/8K
+	FCAmsWaayy7NwyoC6RrU1GfrsldolP61gNgUhJmhtkDBHNXKMRf2e8z80HUzQN+Xebh9b+7RqUo
+	MwD
+X-Received: by 2002:a05:6214:e42:b0:899:f820:6414 with SMTP id 6a1803df08f44-89a30af509fmr43309316d6.48.1772827400370;
+        Fri, 06 Mar 2026 12:03:20 -0800 (PST)
+Received: from instance-20260207-1316.vcn12250046.oraclevcn.com ([150.136.248.187])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a3140da14sm23301266d6.9.2026.03.06.12.03.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 12:03:19 -0800 (PST)
+From: Josh Law <hlcj1234567@gmail.com>
+X-Google-Original-From: Josh Law <objecting@objecting.org>
+To: willy@infradead.org,
+	akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Josh Law <objecting@objecting.org>
+Subject: [PATCH] lib/idr: fix ida_find_first_range() missing IDs across chunk boundaries
+Date: Fri,  6 Mar 2026 20:03:19 +0000
+Message-ID: <20260306200319.2819286-1-objecting@objecting.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <925a916a-6dfb-48c0-985c-0bdfb96ebd26@kernel.org>
-X-Rspamd-Queue-Id: A318140010
-X-Stat-Signature: ttnpyub7o6kmaufjk8qqd991t8nbihcd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772825708-949670
-X-HE-Meta: U2FsdGVkX1/3EI85N/TNKsYiVIgpxnDaa3RtTI3GDni2LOW/j6UyK7qpbZ8wqy5USokIPg6Qd3od3gb2waUJTWmroJrtvYQniHeUtMCbp7X+b27j2+x56LP3NnOgSLaNO4amUnGnAXIAT+gKYc0ATXM7RGBtLoxE51aek6PxuB6Sd0ed+eX2VoWlnvI3lbRMMvCYOo71rcAFrwEEHJFlbx62g4KL2jsagzuLXaAfVTi2jZoLhm+8qJsvLzllQLRv71B2u8IP6Sda2cmvjpfb5pG1rWZcWisO04LCyTTmbOYnfDUyzeXknhsIedW9KPDDv7XyupfV7WF9HmGgc8nc/RwEk1qyzq18qwpe9AVdNI3PYtZuHSUoECF4hRYJvc4Jg6tVSEl30xndNrYIZmgLV1AxVtlO+Q709jU6NrCOTgZZ/pj+vWr1qApTUxKP4zVUlRWmpB3IqagJ204/K9ThSLhXKZ+E+4LLyalX2Bu8P699ZJZ+af1z9R75Hk4F4q7ndAHS/45t3WsW7t1wvHzYyLrSjCZzzMbByUVlz6Ovd+jewdXM78diinWjX0ghcEXD5gQG9gKS7flhdPBQbeVUmtItJz8XgHWKI/2YQ26jh5Pm5FQVFlUSZrnkqUX73nAigxiY/mLkfi4GJ0VvI7re/x7nQh7YgrhmG4zq7SWSSto0mVuB9a42hmmb5xBldDumFUE3vtkZXE6WlGthwhY7MUbJcN+OJhyA6KmqYfi9Eo+8pkp4bD7fNf9zpGYoUksmiF5LJX6qQ01z3YKrHmVV782t8bJyEHdyFYiGlDu+szQMjLN6U1usOmi4nFh3Ef90vkGU6QmAn3kTmAr6kOA5S2nqUKHyGTam5EjIeXYB/1m/CnsXKD5ZON6gS8BM+1G1SZWbCk4oFnjHJPkG7Z35CVM/p65vOzZj1Pag8JBh1PBgO+e8RyuymiuVjvUCbTCZmgWCUaH5VC2lcFQqmDA
- tpVv3Aam
- Ba5UfFk8+QpjZTrChnN9c38G1vPIRmJpAprc0LDVlINId1ct71baaOe6O7OLjYMb9cPcEEKLXskm9YzBKJ+haQ7zagUXBS25WRRt5CBeDf4jEtD4XEZyhJH9TCTEJYC+MdIhY+J7wjTvV09VE2OjL8VVN7idScmPCpakeM1yuru6mw09tF9oxe936WqSEjjMoIuATLWkgY3CLgcwuqkdaOarJOedDTaRiWQDcr+dZ7ZK4jN3YBWwcx0svVSpzxQ4YVWsy+a/Hzs3VAXrcS3Fh3QwZNB7MVT5eVJ2uCdFN7wkNinxxabxe7x4gbZz/RvE/mtAPUCdF/Hma5Og=
+X-Stat-Signature: 6ghi9mzqjqy9ygq3u57d7dz6t413quma
+X-Rspamd-Queue-Id: 8C831140018
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772827401-166988
+X-HE-Meta: U2FsdGVkX1/qwW+VrPeRVZZmI/RB9WS4Zc/6Xm6i07SVjzOBLjoPiawBdgOZOVWZrnZKajEhR3nmnn0gJszJEsvjA75Ot4zgFmyRaDxYfYuiba6EZGMJVloh+zPNIc1SVUXIw9/aRk5lqHbpo2B+9Y9g2Y8F/EH4Ycl7MP/y1cmmq4/dyuviWaojr1T8Vc1TCdAP4YL0oixqZUX1BqzOMoYEembD6oBUAa5x8+3QXCnrfDCpTpXp3rR9ypGkhlfLVenHXi8DNOR3HHbRQPQODj2wfPNo85L4uoD4xf4gg2AUX2UHwpxVccVFZ8jaUVAlqmcma5vrHaaTX3GMZddeXZUL7/bjopdzSXePmjKrg1K4WBwdD3XUcqBmGNkvBgReGZ8KdXhtpwQN9jDqK7F3xw/WFLxZVstzzdegt7uRcveyCHAySVhRmtlOpNJT+3NRi8NovdvVBElU1clB9PxexZu5GWYQ1AreLEmCAFhaJHayF9LjQAcp69zJXPjmSU/YjAV9ZuhRaECe4DcosLhC87ns0N9/g1RDa+6iUEUFXQfKCYfN9EOr30kuTysBDCXgiAIRRX9JtjluH3DpemQ3xsM/+TOp7f0SWXS9x3ufy8AJ6DgPTlWOZ28wB3NYUcqob5/5hswXT7fWBYJ81Dt+h4Mu/L2TuBmK8KWEP4S+Nt43uH04a04dPnU2nC7hsjYlLzJqtZjSKgfOH/tQXYhRre0LfS80ku3HM7GlwiVCxgnqHwLts60of/Zn2LrGTU8dhruvKe2qg5EEZrvL+0JFKGC9jTOi5edZpZjfc8/RKJJOYGmhCwEVUS5InzbuynLF8c7B8vJTyQyPSgkraYDxUPXtRe930FHqCmTmo0eFdAmovSifZOS2PEaDjoz8cg47HyD4is1IwhxuXI3hU2RweRLMEtpCE9bzHTPVqUdmeO177buxw/vpye5ynrAKgQwWfd1xHmwdyZlD6X9iquw
+ CLqgKUEU
+ +4e58lOOaNjZX9Ih0GunrXPksKSnTPccUrZQ4QmHz6l8z4Cq93E7PB9A7blVgNLaqnvVtc3C/WBeFYfKJXjFFvwSAA4MSkCt3Z5SvrqgEXyaWR1QXmUa8amHyEiLHinzmD92ZrTIZM+7+k1+CVKvQ+elRGrX93e3boWJf8zeDx7eQV91tjA+Oi0cmsi7N91fJxKPzPvvIOVY/QGDSbaNAp2nL4h80GgD0eKubSDaznzheurXf1wnZ7ChFccL3Y+iFdOJs6F2rWNDzttswhkClf3sa3DD8m44lxzHnudi1fqI3XHUn5YBwRhoK6CCUOyvmcXqFfnshcVbLqRUQPTmRTVPfxZvhlr9ExOIuVyEtbhsg1dCtHfaXVRFGj7YOTRB97CFeuqhLfE235Pp7/ZAhqNnHz18BOYm2i9Dd/J3B1tGp2sNGt2cCksdjVbqPngy+l0SwAdlRhUtxQ64=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,128 +119,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 04, 2026 at 02:39:47PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 3/4/26 2:30 AM, Harry Yoo wrote:
-> > [+Cc adding Catalin for kmemleak bits]
-> > On Mon, Mar 02, 2026 at 09:39:48AM +0100, Vlastimil Babka (SUSE) wrote:
-> >> On 3/2/26 04:41, Qing Wang wrote:
-> >>> #syz test
-> >>>
-> >>> diff --git a/mm/slub.c b/mm/slub.c
-> >>> index cdc1e652ec52..387979b89120 100644
-> >>> --- a/mm/slub.c
-> >>> +++ b/mm/slub.c
-> >>> @@ -6307,15 +6307,21 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
-> >>>  			goto fail;
-> >>>  
-> >>>  		if (!local_trylock(&s->cpu_sheaves->lock)) {
-> >>> -			barn_put_empty_sheaf(barn, empty);
-> >>> +			if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES)
-> >>> +				barn_put_empty_sheaf(barn, empty);
-> >>> +			else
-> >>> +				free_empty_sheaf(s, empty);
-> >>>  			goto fail;
-> >>>  		}
-> >>>  
-> >>>  		pcs = this_cpu_ptr(s->cpu_sheaves);
-> >>>  
-> >>> -		if (unlikely(pcs->rcu_free))
-> >>> -			barn_put_empty_sheaf(barn, empty);
-> >>> -		else
-> >>> +		if (unlikely(pcs->rcu_free)) {
-> >>> +			if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES)
-> >>> +				barn_put_empty_sheaf(barn, empty);
-> >>> +			else
-> >>> +				free_empty_sheaf(s, empty);
-> >>> +		} else
-> >>>  			pcs->rcu_free = empty;
-> >>>  	}
-> >>
-> >> I don't think this would fix any leak, and syzbot agrees. It would limit the
-> >> empty sheaves in barn more strictly, but they are not leaked.
-> >> Hm I don't see any leak in __kfree_rcu_sheaf() or rcu_free_sheaf(). Wonder
-> >> if kmemleak lacks visibility into barns or pcs's as roots for searching what
-> >> objects are considered referenced, or something?
-> > 
-> > Objects that are allocated from slab and percpu allocator should be
-> > properly tracked by kmemleak. But those allocated with
-> > gfpflags_allow_spinning() == false are not tracked by kmemleak.
-> > 
-> > When barns and sheaves are allocated early (!gfpflags_allow_spinning()
-> > due to gfp_allowed_mask) and it skips kmemleak_alloc_recursive(), 
-> > it could produce false positives because from kmemleak's point of view,
-> > the objects are not reachable from the root set (data section, stack,
-> > etc.).
-> 
-> Good point.
-> 
-> > To me it seems kmemleak should gain allow_spin == false support
-> > sooner or later.
-> 
-> Or we figure out how to deal with the false allow_spin == false during
-> boot. Here I'm a bit confused how exactly it happens because AFAICS in
-> slub we apply gfp_allowed_mask only when allocating a new slab, and in
-> slab_post_alloc_hook() we apply it to init_mask. That is indeed passed
-> to kmemleak_alloc_recursive() but not used for the
-> gfpflags_allow_spinning() decision. kmemleak_alloc_recursive() should
-> succeed because nobody should be holding any locks that would require
-> spinning.
+From: Josh Law <objecting@objecting.org>
 
-I don't fully understand what goes on. If kmemleak_alloc_recursive()
-failed to allocate for some reason (other than SLAB_NOLEAKTRACE), it
-would loudly disable kmemleak altogether and stop reporting leaks. Also
-kmemleak doesn't care about allow_spin, it's only the slub code which
-avoids calling kmemleak if spinning not allowed (as it takes some locks,
-may call back into the slab allocator).
+ida_find_first_range() only examines the first XArray entry returned by
+xa_find(). If that entry does not contain a set bit at or above the
+requested offset, the function returns -ENOENT without searching
+subsequent entries, even though later chunks may contain allocated IDs
+within the requested range.
 
-I wonder whether some early kmem_cache_node allocations like the ones in
-early_kmem_cache_node_alloc() are not tracked and then kmemleak cannot
-find n->barn. I got lost in the slub code, but something like this:
+For example, a DRM driver using IDA to manage connector IDs may allocate
+IDs across multiple 1024-bit IDA chunks. If early IDs are freed and the
+driver calls ida_find_first_range() with a min that falls into a
+sparsely populated first chunk, valid IDs in higher chunks are silently
+missed. This can cause the driver to incorrectly conclude no connectors
+exist in the queried range, leading to stale connector state or failed
+hotplug detection.
 
------------8<-----------------------------------
-diff --git a/mm/slub.c b/mm/slub.c
-index 0c906fefc31b..401557ff5487 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -7513,6 +7513,7 @@ static void early_kmem_cache_node_alloc(int node)
- 	slab->freelist = get_freepointer(kmem_cache_node, n);
- 	slab->inuse = 1;
- 	kmem_cache_node->node[node] = n;
-+	kmemleak_alloc(n, sizeof(*n), 1, GFP_NOWAIT);
- 	init_kmem_cache_node(n, NULL);
- 	inc_slabs_node(kmem_cache_node, node, slab->objects);
+Fix this by looping over xa_find()/xa_find_after() to continue searching
+subsequent entries when the current one has no matching bit.
+
+Signed-off-by: Josh Law <objecting@objecting.org>
+---
+ lib/idr.c | 55 ++++++++++++++++++++++++-------------------------------
+ 1 file changed, 24 insertions(+), 31 deletions(-)
+
+diff --git a/lib/idr.c b/lib/idr.c
+index 69bee5369670..1649f41016e7 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -495,10 +495,9 @@ int ida_find_first_range(struct ida *ida, unsigned int min, unsigned int max)
+ 	unsigned long index = min / IDA_BITMAP_BITS;
+ 	unsigned int offset = min % IDA_BITMAP_BITS;
+ 	unsigned long *addr, size, bit;
+-	unsigned long tmp = 0;
++	unsigned long tmp;
+ 	unsigned long flags;
+ 	void *entry;
+-	int ret;
  
--------------8<----------------------------------------
-
-Another thing I noticed, not sure it's related but we should probably
-ignore an object once it has been passed to kvfree_call_rcu(), similar
-to what we do on the main path in this function. Also see commit
-5f98fd034ca6 ("rcu: kmemleak: Ignore kmemleak false positives when
-RCU-freeing objects") when we added this kmemleak_ignore().
-
----------8<-----------------------------------
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index d5a70a831a2a..73f4668d870d 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1954,8 +1954,14 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
- 	if (!head)
- 		might_sleep();
+ 	if ((int)min < 0)
+ 		return -EINVAL;
+@@ -508,40 +507,34 @@ int ida_find_first_range(struct ida *ida, unsigned int min, unsigned int max)
+ 	xa_lock_irqsave(&ida->xa, flags);
  
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr)) {
-+		/*
-+		 * The object is now queued for deferred freeing via an RCU
-+		 * sheaf. Tell kmemleak to ignore it.
-+		 */
-+		kmemleak_ignore(ptr);
- 		return;
+ 	entry = xa_find(&ida->xa, &index, max / IDA_BITMAP_BITS, XA_PRESENT);
+-	if (!entry) {
+-		ret = -ENOENT;
+-		goto err_unlock;
+-	}
+-
+-	if (index > min / IDA_BITMAP_BITS)
+-		offset = 0;
+-	if (index * IDA_BITMAP_BITS + offset > max) {
+-		ret = -ENOENT;
+-		goto err_unlock;
+-	}
+-
+-	if (xa_is_value(entry)) {
+-		tmp = xa_to_value(entry);
+-		addr = &tmp;
+-		size = BITS_PER_XA_VALUE;
+-	} else {
+-		addr = ((struct ida_bitmap *)entry)->bitmap;
+-		size = IDA_BITMAP_BITS;
+-	}
+-
+-	bit = find_next_bit(addr, size, offset);
++	while (entry) {
++		if (index > min / IDA_BITMAP_BITS)
++			offset = 0;
++		if (index * IDA_BITMAP_BITS + offset > max)
++			break;
+ 
+-	xa_unlock_irqrestore(&ida->xa, flags);
++		if (xa_is_value(entry)) {
++			tmp = xa_to_value(entry);
++			addr = &tmp;
++			size = BITS_PER_XA_VALUE;
++		} else {
++			addr = ((struct ida_bitmap *)entry)->bitmap;
++			size = IDA_BITMAP_BITS;
++		}
+ 
+-	if (bit == size ||
+-	    index * IDA_BITMAP_BITS + bit > max)
+-		return -ENOENT;
++		bit = find_next_bit(addr, size, offset);
++		if (bit < size &&
++		    index * IDA_BITMAP_BITS + bit <= max) {
++			xa_unlock_irqrestore(&ida->xa, flags);
++			return index * IDA_BITMAP_BITS + bit;
++		}
+ 
+-	return index * IDA_BITMAP_BITS + bit;
++		entry = xa_find_after(&ida->xa, &index,
++				      max / IDA_BITMAP_BITS, XA_PRESENT);
 +	}
  
- 	// Queue the object but don't yet schedule the batch.
- 	if (debug_rcu_head_queue(ptr)) {
-----------------8<-----------------------------------
-
+-err_unlock:
+ 	xa_unlock_irqrestore(&ida->xa, flags);
+-	return ret;
++	return -ENOENT;
+ }
+ EXPORT_SYMBOL(ida_find_first_range);
+ 
 -- 
-Catalin
+2.43.0
+
 
