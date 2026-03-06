@@ -4,98 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E03EF0182C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:50:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D363F01828
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7F56B008A; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
+	id D34AC6B008C; Fri,  6 Mar 2026 06:51:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A85746B008C; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
+	id CF4426B0092; Fri,  6 Mar 2026 06:51:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9597E6B0092; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
+	id C353B6B0093; Fri,  6 Mar 2026 06:51:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 802816B008A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41D0F13AF99
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:50:21 +0000 (UTC)
-X-FDA: 84515470242.05.BBBF37E
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E9E4B2000B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:50:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id B5BCF6B008C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:51:09 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 872A5B9C82
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:51:09 +0000 (UTC)
+X-FDA: 84515472258.24.62C813D
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CECC41C0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:51:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772797819;
+	s=arc-20220608; t=1772797868;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0v7wLvCPtCaXzasahRaW4I1Fp9K+2KJtXojBU6P9yls=;
-	b=gppdsd8KkaLbRYvd5zmCZrC+9ScUmjSw01t1lNiBU1IiOX03AEAbfU5M8ARrU9JrbnOBmw
-	3Jifu+U2MCL927h//nNePzQ5fAh0KAwAwQEMpOi8jFDtAetjtduJcoIF32FmQgh8DFYjaO
-	3p6Gydj+LiIlqBh7cj0gkJmWEcB5H6w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797819; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=B5gMiIShQvkxNKZXto2z8CDnaz5k0eiYIC/cza0j0z0=;
+	b=vogkPuqNQ1aOnjz+dfKO1swoMibaRp1nQXsYsIhPq9W/EwacyIiRAI0w4bUkZZWgmvR4eI
+	z8W0ZTMX0hPeSPvUVZYxLhSun0NK2CVgql5u+RJ+o4yB9YQp/YdRTjl4DhRFUKJQX9JNFc
+	+vO/PJs1mnedXrCqn2kOfRZZkteLPZU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797868; a=rsa-sha256;
 	cv=none;
-	b=tRJFy3jd6CBq5htPsL3tWbwE5Zo37XPCxMyvdGAhjpBVRpXXG/fNaj/yX6THl4/p7tkTzL
-	a830veVfIUHxCbpczfsPI6ORKe8HMKXIamLLUS6Ht/mqfCf7WiAlwii/vrax15/3dbybRR
-	cwsYhAoQLcHlEocHTik241TudhMPK0E=
+	b=0hP2zqFTooqKBiqA1PRkHKnW2xaEL89prjd8ZcghlP7czLXj5xciDmSbQZUcIYlIE6boGy
+	SXt+3oTG7HoZDnxE0MudxnGCAk1BxIlBFljlSHLemIDo/FjmggQt6zbMj2meXwjn7/16IR
+	rOBGjFhC4ixJqQuSrbjvPf2x1WAT5kU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
+	imf20.hostedemail.com;
 	dkim=none;
-	spf=pass (imf13.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fS4Sv3hh8zJ46cM;
-	Fri,  6 Mar 2026 19:49:35 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6FEE94056E;
-	Fri,  6 Mar 2026 19:50:13 +0800 (CST)
-Received: from [10.123.123.67] (10.123.123.67) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Mar 2026 14:50:10 +0300
-Message-ID: <902d821b-e903-4bf5-89db-070851c95a1a@h-partners.com>
-Date: Fri, 6 Mar 2026 14:50:08 +0300
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH 0/2] mm/swap: fix missing locks in swap_reclaim_work()
+Date: Fri,  6 Mar 2026 19:50:35 +0800
+Message-ID: <cover.1772797581.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
-	<ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox
-	<willy@infradead.org>, Yu Zhao <yuzhao@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
-	Gorbunov Ivan <gorbunov.ivan@h-partners.com>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>, Linus
- Torvalds <torvalds@linuxfoundation.org>, <gladyshev.ilya1@h-partners.com>
-References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
- <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
- <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
- <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
-Content-Language: en-US
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-In-Reply-To: <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.123.123.67]
-X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: pj6sxuo3onct5j6j8q6u6t59j6o4h1qn
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CECC41C0005
+X-Stat-Signature: 794t4qw8r4xtqe9ammpzdfbmyuo8keth
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E9E4B2000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772797818-22698
-X-HE-Meta: U2FsdGVkX18jkY5O30V1wS3f6VtATT192JVEXpEobwhgWO2gYpSydo2/5KcUe+kBMp+uqxVUN786q0VQJXinaaml+S7mLay34AEHSh38L/Xwpd8WcP395dPe4Mype5XvhhgB24QbicZx1LmiTkchO728aYTUTd/QnefKvqTghI7SMAg2yYd2mlvYWbXju+lPkZYnXcB3e4X499K1AsKcMZd/REsP9zHgolPuDy0qz88Tjn0E3idVQjJIScsPp3QoVxRMnnZwWBjY2xMYNvRc0SMqfKQA+1IC/0blCjG1kiym3nNGVNjOIWRZZZB6DgCKa5nHbOQGoc8xHcOw82x+C8JGznJ3EOw3kiXFJdDNKk5U8mSMAJPOZ1QKbHaCSK2xnayDl0nJSyMi9GQ1zthX1J4H1uiZqdRVGy/LteFKSKIxy117MO8wxYU70EO9XwILek58CxVW0NZzf63aWISrgzyIKCp9IP1Y+zI2R+sT4GfgANlj5ay99IRuS0ghb9CVuYTeN+T399T5R+wJ8/FezOTBSGhfd/MXcarc9WMrnxyUrXhforlOnlp92Cs6450yn/PCtLgQt6o7PkfyQcBX3SrTOFeXyuNQ8STk7XFwXaLQp/zVrMJtmT7ZFjW5hEH9sZA23ofe4xalavHIMGdS/6DxkS2sVJ1lU561gBZqvccfJfHyxFOI4mb5xHpdAq2ifqlm0BW1dIH1KT5YGqVRaOGAluqUz5GC+x8vfyLeZS7YtZLTC3BVGvTIjUXw98Fvk3eGL8mGBYj2ux785JBOBa3Omq5rAGhQFLC1U1sx6fXE3dZVkQIW2vOC7y17ldhF54WVfzFAhVpneBfqiKC4mqmv0u/6D0J9iFd3/4mAbR5Y5VSxqq+UE8pKv2+gEXt8vnW6ynuOitEJWGZ2UsSpVtTDFTrPmGudd53+09FkIvOGdKQyjJBwbl564W8+49AdzFKM3JgHTbJL/dJv0jS
- sGX6PlP7
- 3m/w+lNhq+jc9SHwXvyCGFnI4PMau5ucR/MIIEEA+lCT5Zq20KMs/jLQiEMIZ7rzuGN3XKIyICgfnyfDrZYFy7+NpA8DMQfpuX9Tixq+UWByxhbmLbgabKq9juARTptLJbHsbQnJ7dR6pPYjX1Lk7cP8MOm4FVMZve/t5iC78hldFgGZ3sadQ2hu7D3F9RXjShpEYSzdAD/9SMDYX2nZW3XfIjLavP6JMBPR8DEvEuLRaNuXiWvVn2hMAh4OhO5wOT1nb5i1+hxK/uIs=
+X-HE-Tag: 1772797867-969595
+X-HE-Meta: U2FsdGVkX19mduTR6mD8GhrW/xG87u0kykEwtPHh6rT27G/6Xmap/aPBz4mU+ed5gdQVJneA09nxU20jqCsMDMCwKNSbu4ATCYFbEJ+Yi4R0kW7zhQ0oQHmWewS9EpzUYI0MYIje8200bYXBWLZVS/iT82jglVcwqKWfa5HgH53Y/zWwbOgod9OaCNiagR3DJGf5en5xtv9M1c3VdijugLYeDP3/sfICYHOHG4XH9ERF5q5/rgJ75PtJWcnf9yygZRkMKKTg4C6CyDu6X/5H5cRmKZLjlkjLnGlSJsmxGOu8omufQDaFllgKgozTGaX00rkz1LkDoiuM54978nkOxZVK3hOg9S7sEROPtodtUQY3YO+WO65q8ynPeLmXOIQ16wfbO2pVeEnOalp3sevkvcbHudwZxeQkWTAdjS5xcStcfd+CIYE68UuLGWX7qmqVeTU53L54vzp95jVbipniePT/YiC5+gXMG95yYqzNzONfRwPHlx1tiuRccA+FtRc9dtkTamFMDyMpudMGRpZvFLlYjiOt7p9HhA13E3BTqXos0A6hznW4GWl+vuKmyNtJZq/BSWMsBlI35K44L2HmtGXURQj2g++PQ0iBCq+/JYdK18I24piPGmoApBOBrD+8GUY4M7pgVXSw4HNOr03fDQ3bn08/x1B5eJ6R78z/9LLSmjkpD0V0hy2X46VKI7bUJI0665IZCi+YZdXVpUOnezNdxyj98gDIcWmonu0zBNkpqTIb7oPu/fM30K1GJNtsdpmUHCQQTCPosPC92UioprVWzZqaD13H3cpSUSgOxordNwlT3fepSmXj6y37wNuBnV4I+M4cch/17WpuRFDdztzGjDoMfbX6+8G6yji3t+vf9jpUkwasH/l2Q9n54FFGAgwm8B9T7iH45OMPE45JDmFeNwZv3fX368LUq37Ub4uVBcV+7EBKOpqS6H3flEp6/nRfTDx5DGn8FjCE6Bm
+ zjwIp44L
+ 19KlgRXxtgm5gLMvZ6xPHiwLvrTEaK0Dz4rDrB46/JphykdKYpr4BlUyRxYY6aIvgq7PQbLCOq6mUNyS1hL25v85NNpEmRqGryUaLcbfZg9qmsH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,206 +79,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is combined reply to both of your emails, hope you don't mind
+From: Hui Zhu <zhuhui@kylinos.cn>
 
- >
- > This all made mu brain hurt a little 🙂
- >
- >>
- >>   /**
- >> @@ -176,6 +181,9 @@ static inline int page_ref_sub_and_test(struct 
-page *page, int nr)
- >>   {
- >>       int ret = atomic_sub_and_test(nr, &page->_refcount);
- >>
- >> +    if (ret)
- >> +        ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, 
-PAGEREF_LOCKED_BIT);
- >> +
- >
- > It took me a while to figure out why this can't be just an atomic_or():
- > even though concurrent page_ref_add_unless_zero() would see a 0 after
- > incrementing it to 1 to back off, there could be yet another concurrent
- > page_ref_add_unless_zero() that would see the transition from 1 to 2 and
- > continue.
- >
- > What is the performance impact on doing the additional
- > atomic_cmpxchg_relaxed() whenever we free a page, in particular, for
- > anonymous memory where we mostly have just a single reference that we
- > drop during munmap() etc?
+swap_cluster_alloc_table() assumes that the caller holds the following
+locks:
+ci->lock
+percpu_swap_cluster.lock
+si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
 
-I'll try to measure some numbers. Theoretically speaking, in 
-low-contention scenario you will exclusively own cacheline after 
-atomic_sub, so relaxed CAS should be cheap.
+There are five call paths leading to swap_cluster_alloc_table():
+swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
 
- >>       if (page_ref_tracepoint_active(page_ref_mod_and_test))
- >>           __page_ref_mod_and_test(page, -nr, ret);
- >>       return ret;
- >> @@ -204,6 +212,9 @@ static inline int page_ref_dec_and_test(struct 
-page *page)
- >>   {
- >>       int ret = atomic_dec_and_test(&page->_refcount);
- >>
- >> +    if (ret)
- >> +        ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, 
-PAGEREF_LOCKED_BIT);
- >> +
- >>       if (page_ref_tracepoint_active(page_ref_mod_and_test))
- >>           __page_ref_mod_and_test(page, -1, ret);
- >>       return ret;
- >> @@ -228,14 +239,23 @@ static inline int folio_ref_dec_return(struct 
-folio *folio)
- >>       return page_ref_dec_return(&folio->page);
- >>   }
- >>
- >> +#define _PAGEREF_LOCKED_LIMIT    ((1 << 30) | PAGEREF_LOCKED_BIT)
- >> +
- >>   static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- >>   {
- >>       bool ret = false;
- >> +    int val;
- >>
- >>       rcu_read_lock();
- >>       /* avoid writing to the vmemmap area being remapped */
- >> -    if (page_count_writable(page))
- >> -        ret = atomic_add_unless(&page->_refcount, nr, 0);
- >> +    if (page_count_writable(page)) {
- >> +        val = atomic_add_return(nr, &page->_refcount);
- >> +        ret = !(val & PAGEREF_LOCKED_BIT);
- >> +
- >> +        /* Undo atomic_add() if counter is locked and scary big */
- >> +        while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
- >> +            val = atomic_cmpxchg_relaxed(&page->_refcount, val, 
-PAGEREF_LOCKED_BIT);
- >
- > I assume we can't do an atomic_dec(), because we might have concurrent
- > unfreezing (or similar things) happening that overwrote whatever was in
- > there.
+swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
+->isolate_lock_cluster->swap_cluster_alloc_table
 
-Not only that, but also you probably don't want to handle "atomic_dec() 
-returned 0" situations.
+swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+->swap_reclaim_full_clusters->isolate_lock_cluster
+->swap_cluster_alloc_table
 
- > Is it really correct to replace _PAGEREF_LOCKED_LIMIT by
- > PAGEREF_LOCKED_BIT, dropping some unrelated references? I assume the
- > reasoning is that we treat any references with PAGEREF_LOCKED_BIT set as
- > irrelevant and can get overwritten any time.
+swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
+->isolate_lock_cluster->swap_cluster_alloc_table
 
-Locked refcount doesn't contain any "references" except failed 
-optimistic increments, so you are right that they don't hold any 
-semantic meaning. The only reason to clear them is to prevent overflow, 
-so we are doing it only if it is absolutely required.
+swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
+->swap_cluster_alloc_table
 
- >
- > I was wondering is whether page_ref_freeze() could actually leave the
- > references set, and only set the PAGEREF_LOCKED_BIT bit, whereby
- > page_ref_unfreeze() would only clear the PAGEREF_LOCKED_BIT bit.
- >
- > Similarly, the set_page_refcounted() could add a reference and clear the
- > PAGEREF_LOCKED_BIT. That'd be more expensive on the allocation path ...
- > and not sure if that would really help to turn this
- > atomic_cmpxchg_relaxed() into an simpler atomic_dec() my brain could
- > more easily understand 🙂
+Other paths correctly acquire the necessary locks before calling
+swap_cluster_alloc_table().
+But the swap_reclaim_work() path fails to acquire
+percpu_swap_cluster.lock and, for non-SWP_SOLIDSTATE devices,
+si->global_cluster_lock.
 
-I believe resetting whole counter via single CAS (CPU-wise) is cheaper 
-than atomic_dec() for each individual attempt.
+The first patch ensures swap_reclaim_work() correctly acquires
+percpu_swap_cluster.lock and si->global_cluster_lock before calling
+swap_reclaim_full_clusters(). Without these locks, the preconditions
+for swap_cluster_alloc_table() are not met.
 
- >
- > I think this patch needs a lot more documentation around what the
- > PAGEREF_LOCKED_BIT means, and how this interacts with e.g., the
- > set_page_count() in set_page_refcounted().
+The second patch adds lockdep assertions in swap_cluster_alloc_table()
+to help catch such locking inconsistencies early.
 
-Yep, I'll fix this
+I tried to reproduce this naturally, but the swap_reclaim_work path
+rarely hits the !cluster_table_is_alloced(found) condition. To verify
+the fix, I used GDB to force found->table to NULL, which triggered
+the following warning due to the missing locks:
+[  554.388797] ------------[ cut here ]------------
+[  554.388932] WARNING: mm/swapfile.c:480 at isolate_lock_cluster+0x199/0x470, CPU#6: kworker/6:2/656
+[  554.388947] Modules linked in:
+[  554.388990] CPU: 6 UID: 0 PID: 656 Comm: kworker/6:2 Not tainted 7.0.0-rc2+ #28 PREEMPT(full)
+[  554.388995] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  554.389013] Workqueue: events swap_reclaim_work
+[  554.389020] RIP: 0010:isolate_lock_cluster+0x199/0x470
+[  554.389025] Code: 02 0f 0b 8b 35 dc 69 57 02 85 f6 74 b0 65 48 8b 05 f4 20 af 02 be ff ff ff ff 48 8d b8 60 98 31 84 e8 2b 0e f5 00 85 c0 75 93 <0f> 0b eb 8f 48 89 df e8 0b 78 f6 00 41 f6 45 10 10 0f 84 0b 01 00
+[  554.389028] RSP: 0018:ffffc9000183bd68 EFLAGS: 00010246
+[  554.389033] RAX: 0000000000000000 RBX: ffff88810a410060 RCX: 0000000000000000
+[  554.389037] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[  554.389046] RBP: ffffc9000183bd88 R08: 0000000000000000 R09: 0000000000000000
+[  554.389048] R10: 0000000000000000 R11: 0000000000000000 R12: ffff88811108e878
+[  554.389049] R13: ffff88811108e800 R14: ffff88811108ea90 R15: ffff888101e41e40
+[  554.389051] FS:  0000000000000000(0000) GS:ffff8881b7812000(0000) knlGS:0000000000000000
+[  554.389053] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  554.389054] CR2: 000000c000637f80 CR3: 000000010cfd5006 CR4: 0000000000770ef0
+[  554.389065] PKRU: 55555554
+[  554.389067] Call Trace:
+[  554.389068]  <TASK>
+[  554.389080]  swap_reclaim_full_clusters+0x6b/0x350
+[  554.389083]  ? __pfx_swap_reclaim_work+0x10/0x10
+[  554.389090]  ? swap_reclaim_full_clusters+0x52/0x350
+[  554.389094]  swap_reclaim_work+0x1a/0x30
+[  554.389097]  process_one_work+0x223/0x770
+[  554.389106]  worker_thread+0x1c6/0x3b0
+[  554.389110]  ? __pfx_worker_thread+0x10/0x10
+[  554.389113]  kthread+0xfe/0x140
+[  554.389117]  ? __pfx_kthread+0x10/0x10
+[  554.389121]  ret_from_fork+0x3d4/0x480
+[  554.389125]  ? __pfx_kthread+0x10/0x10
+[  554.389129]  ret_from_fork_asm+0x1a/0x30
+[  554.389141]  </TASK>
+[  554.389142] irq event stamp: 9775
+[  554.389144] hardirqs last  enabled at (9781): [<ffffffff8148ca99>] __up_console_sem+0x79/0xa0
+[  554.389150] hardirqs last disabled at (9786): [<ffffffff8148ca7e>] __up_console_sem+0x5e/0xa0
+[  554.389153] softirqs last  enabled at (8676): [<ffffffff813b3aff>] __irq_exit_rcu+0x13f/0x160
+[  554.389156] softirqs last disabled at (8615): [<ffffffff813b3aff>] __irq_exit_rcu+0x13f/0x160
+[  554.389159] ---[ end trace 0000000000000000 ]---
+[  554.477105] ------------[ cut here ]------------
+[  554.477253] WARNING: mm/swapfile.c:480 at isolate_lock_cluster+0x199/0x470, CPU#6: kworker/6:2/656
+[  554.477264] Modules linked in:
+[  554.477277] CPU: 6 UID: 0 PID: 656 Comm: kworker/6:2 Tainted: G        W           7.0.0-rc2+ #28 PREEMPT(full)
+[  554.477284] Tainted: [W]=WARN
+[  554.477288] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  554.477291] Workqueue: events swap_reclaim_work
+[  554.477294] RIP: 0010:isolate_lock_cluster+0x199/0x470
+[  554.477296] Code: 02 0f 0b 8b 35 dc 69 57 02 85 f6 74 b0 65 48 8b 05 f4 20 af 02 be ff ff ff ff 48 8d b8 60 98 31 84 e8 2b 0e f5 00 85 c0 75 93 <0f> 0b eb 8f 48 89 df e8 0b 78 f6 00 41 f6 45 10 10 0f
 
- > In general, I like this!
- >
+Hui Zhu (2):
+  mm/swap: fix missing locks in swap_reclaim_work()
+  mm/swap: add lockdep for si->global_cluster_lock in
+    swap_cluster_alloc_table()
 
- >>   static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- >>   {
- >>       bool ret = false;
- >> +    int val;
- >>         rcu_read_lock();
- >>       /* avoid writing to the vmemmap area being remapped */
- >> -    if (page_count_writable(page))
- >> -        ret = atomic_add_unless(&page->_refcount, nr, 0);
- >> +    if (page_count_writable(page)) {
- >> +        val = atomic_add_return(nr, &page->_refcount);
- >> +        ret = !(val & PAGEREF_LOCKED_BIT);
- >> +
- >> +        /* Undo atomic_add() if counter is locked and scary big */
- >> +        while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
- >> +            val = atomic_cmpxchg_relaxed(&page->_refcount, val, 
-PAGEREF_LOCKED_BIT);
- > It's still early here, but I think there is a problem.
- >
- > Please bear with me 🙂
- >
- >     val = atomic_add_return(nr, &page->_refcount);
- >     ret = !(val & PAGEREF_LOCKED_BIT);
- >
- > Implies that can grab a reference whenever the locked-bit is not set.
- >
- > Including when the refcount is 0.
- >
- > Now, that works fine when racing with concurrent freeing, where we are
- > just able to decrement the refcount, but yet have to set the
- > PAGEREF_LOCKED_BIT bit.
- >
- > But, what about any pages that don't have the PAGEREF_LOCKED_BIT set,
- > but have the refcount at 0 permanently?
- >
- > That's, for example, the case for any pages where we do an explicit
- > set_page_count(page, 0);
- >
- > For example, all pages we add to the page allocator through
- > __free_pages_core().
+ mm/swapfile.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-You are right that refcount = 0 is tricky. However, for a bad outcome 
-you will need:
-1. Some external reference to this page, through which you try to 
-increment the refcount;
-2. set_page_count(0) somewhere between freeing and "it is safe to alloc" 
-state.
+-- 
+2.43.0
 
-So adding new pages with zeroed refcount to allocator is safe, because 
-there are no external references. Zeroing tail page's refcount is safe, 
-unless someone actually tries to increment its refcount (and this is bug).
-
-Generally, the only unsafe set_page_count() (or any other zeroing) will 
-be in allocator itself between freeing and allocating. Or maybe I missed 
-something, and this approach is indeed incorrect
-
-Probably we can think of some debug checks to prevent bugs in "safe" 
-scenarious
-
- > That means, that someone could easily grab a reference to such pages,
- > including tail pages of allocated compound pages where the refcount is
- > still 0 -- or pages allocated with a frozen refcount where we don't ever
- > do the set_page_refcount(1) in the buddy.
- >
- > Bad things will happen when that wrongly page_ref_add_unless_zero()
- > obtained reference is dropped again to free that page.
- >
- >
- > You'd have to make sure that there is no way we can achieve refcount ==
- > 0 without going through page_ref_dec_and_test(), when actually freeing a
- > page.
- >
- > One piece of the puzzle is handling set_page_count(p, 0) I think. But I
- > suspect that there might be other places where we don't even have the
- > set_page_count().
- >
- > See vmemmap_get_tail() in
- > https://lore.kernel.org/r/20260227194302.274384-13-kas@kernel.org for
- > example, where we know the refcount is 0, because we allocated the page
- > holding memmap with __GFP_ZERO.
- >
- > For example, I think you'd have to make sure that *any* pages in the
- > buddy have their refcount set to PAGEREF_LOCKED_BIT, not 0.
- >
- > So unless I am missing soemthing, this is broken an requires a lot of
- > care to make sure that refcount==0 is handled everywhere accordingly.
- >
-
----
-Ilya
 
