@@ -4,119 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92FDDF0182E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A267F01832
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B3546B0095; Fri,  6 Mar 2026 07:31:25 -0500 (EST)
+	id C45CA6B0096; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04A336B0096; Fri,  6 Mar 2026 07:31:24 -0500 (EST)
+	id C23856B0098; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EABF76B0098; Fri,  6 Mar 2026 07:31:24 -0500 (EST)
+	id A90E06B0099; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAFB16B0095
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:31:24 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A68BF1B80BF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BC3A6B0096
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46F3F1A0583
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:31:26 +0000 (UTC)
+X-FDA: 84515573772.12.69A0F18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3676E1C0010
 	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:31:24 +0000 (UTC)
-X-FDA: 84515573688.07.1494800
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F1F6BC0010
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:31:22 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LvR/7HPf";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772800283;
+	s=arc-20220608; t=1772800284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BTF13s/d85AeKY0BUT+g0GhGGYmCw3CXQ9719Ls0ojY=;
-	b=f8m4+XAVzyCtYTkDifDRZBeUWrhb5RcgC1jGiuVznNKm9mfMA9NVCrK95gN6BF4r9tF2G7
-	l76xkCi8eGFUKNPpA1Wf0qNmuf9W5qYhbnC7CjUiWYGJvz4603toduC5a5Q7ma7Qojsd5t
-	tar50N7nwwbTV7mDVz7bfFY6CfvYte0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800283; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4NZoO0TaH3hdYVkJJEqp2KwRAzSltEsw1OyozGtr6DA=;
+	b=Io9XxlJhIYfuO7liD9mMlWovBOObA2CysUfKizGfb5xDHIUVAaVO9Wc4lAcOq6fWpjiVab
+	AeUXdNhuemiziG0JQEiTX48QcYq6zvSnC7T/F5neLLtXPgx66sCbKumYeOsUvN6z3gRElf
+	tqSostAlN9vA73pGJdzaQJnZGU3TphY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800284; a=rsa-sha256;
 	cv=none;
-	b=kxZ4LukB0GkBI4OYLRyvLvd39VTJBHYFU3HtkTrxiFPt45vUlAYlT012bwvTSt8VM9Fc/t
-	/cUQym6HMCSBFiB9+4fbdI99NJ3fc2CK9CL4dexoil9/36vterxQlU9pRHp9c10Z3BVueM
-	MDBLU6ig6DU/ffaw9gp9sHs27iJIvXA=
+	b=5RrwSuOJsHYhLHJL7SOMI5wOMgfCB6yyZHQJDkf/LiM6zLfvLc3Kni75prhxsFhG/hVB5v
+	R18A4VvzLTsrnq3+ECgbxCEbKNMbZK4oGeW3G0vba4CjaTCKgpfnkO3QzbJQRCX+aWLWNZ
+	HIOIei+VSTPDJx3oMed8mY4GUZx7loI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="LvR/7HPf";
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45BED60018;
-	Fri,  6 Mar 2026 12:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF81C2BC86;
-	Fri,  6 Mar 2026 12:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772800282;
-	bh=LAJ3eHMG09TcFhgWs2EdIeu79xlpIcUA+/nV0cLjx24=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LvR/7HPf6wcbcyYRLsw0NDSdEUL1xaUkAW3JmG67UyRk8nOpjrEr2b2NGZY1Rm0QK
-	 rmjZWXs/kgIZrKXYtCLoe2wOfAeqwFjFcPcvt+uoLGfKG/Qo+cZY/KlECky/nu7yfe
-	 VWWd7vd2jX7axW3zB4eXySNQkQ60kLA1VNARXlEtx0PgK1qc1mJkOGYLZPeIU1jkWi
-	 k2zaxtrQMGavqzpX3B010TqicSFWti+U38spA0MblbRmX/eAooWrBcs3e2lHItMiNa
-	 oY8qJI8Dwm7XxpAxiijBNODF9u6hWMWr4FWbAtfufjRBYMdKm2jnZp6E+SB/W5VYzM
-	 3FhaTnLG18eEQ==
-Date: Fri, 6 Mar 2026 12:31:18 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, 
-	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
-	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 13/16] mm: rename zap_page_range_single_batched() to
- zap_vma_range_batched()
-Message-ID: <c63bd1e9-52b0-42a3-a568-bfb0ac0afd5b@lucifer.local>
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-14-david@kernel.org>
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E396F497;
+	Fri,  6 Mar 2026 04:31:16 -0800 (PST)
+Received: from [10.57.57.141] (unknown [10.57.57.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 257313F694;
+	Fri,  6 Mar 2026 04:31:17 -0800 (PST)
+Message-ID: <d6db1cc9-6df5-43d7-92b3-bd60707d9538@arm.com>
+Date: Fri, 6 Mar 2026 13:31:15 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-14-david@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
+To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
+ rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+ patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+ Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
+ Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
+ <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
+ <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 3676E1C0010
+X-Stat-Signature: gu45h4rtra1tgcss77ocqr9xrpwcuga6
 X-Rspam-User: 
-X-Stat-Signature: u6fkd7rz4dtgbndnxn9i3cqw4pxyc5k6
-X-Rspamd-Queue-Id: F1F6BC0010
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772800282-801866
-X-HE-Meta: U2FsdGVkX19vi/WuMbVgqi1AmmQ2OiX+iBG3LtulGBv1QuN8aH3MvaAM5h76TWpfzcPS2XwJh05cuxIGC7PdollsNrGNaXPVp7JphWwMic1cAh336UrfU3DlmkVU3BsW9Md1ee4JpqE/6bCFwbQY/HuPKu1WKqHaxFYjXWecaGs4eXN1WtFg1p4mN9QwOsBLIBNkGw4juYM82dFxUlmGxxBUyF2X7/mYILDar2mNuo8Fh+7zmUgpO7Lt+wz/Xp4TyjZQ+6ltKTQsCTs0CaCLeEkto2udPsX2lRhJGpwYNerj+knJsWCUzU89Bas/bwQvhaLrGfsMAHloQj/oE7PTl35DCC+cBbTcN4SO7QJeUz9IKjvkuQRdY8QUZSrKi9Jr8yul38tRAn5yXjgER/Rm/UoGjqpmPZ5WPXTPtA6BOefgu/LI49jkcIufGVUy5XzX1wH1q2pczAvQbH4S4fKJk/DypHiS8aFWIThynoRphoOerEzVFgrZ07z0/l6iqG1MyYVHvZ3Wk2HWoB6lrfgUbn47Y+oDpCf37PZN0l8WHfi1t5AeiSZrYHawAtZgJuTgKL7l0Y5QL69IpNDni1hMYTxJstNa9RQBaRF68dVnlfIPM0R065nGOnvYk147yvZUiGlv+uKS33xFm6n4HFyYSGGEcIWqCO7DDU3YCefb1fys6azDRoxGHyEynTm6JL5HmPl9N9B2RKgIWxZFg6DoESfYz0GDC9Nydy5LkoP21mTR3W8dr5z90thLBnmIERindt0DUqsUbUZJX3asMWXaAhOf70aID35OoEe3hIu9F0RI3K6HmiDqO+L01+3kg5jnxm+cBKgNJwEG1eki3zpGPsmv/gI7Dtr89WqDg2laWSt6n3H7dOgi8o/t6FPegA2c3YsAvvHLVc/6OzJWBWWKomlS/EMF/OU9SahsSN36D8XcO64G5ON4zVKNaC9ycqqAA6H59N8auUVE0bxPU5z
- TBWtap2R
- 0L4DCUb2zbdPghfvI7wyGc9i/3wMFLADznOddxuqbu/4anZj4oZ0l0aJtRnIdDPg/sP4KMZKd1cSp/auQHPBzbdT/NvOiKdX+h+6lsLBLddsnTPcwbSKev90ZMsIFmCuCtbIZR1IaYNJu/n0OgCevXB8m3FvGNLQAaAcxG4/4Z/71d7lrT04CQjGPmgoT4c4rLrUzO3X04OpihVvFZgbsvPpttDaPg2DKjJB1NTo5zFwTNe+GCZYpi81y3n4jISAeys8SC7eX5L3rKmPah+a0gO6BLkldCjAh68PL
+X-HE-Tag: 1772800284-671482
+X-HE-Meta: U2FsdGVkX18BO4Nz+0G/gyIdocnXxHgrM5MBfbF6wW5ri6NviyJt8U/5yFeBfTXxipfsc5M8xi3U2MC7QAdfUZIxLfHo60mmlewH0B/MfcLUODRpCwY9kikJuMovmDIGaUnvlvivwwP2vBH6yP13/whmBgqSRDhNCdm/zdp/4flgZHych92lRDHiyB4mmpH9rmel0ABBiwIO8XyQjECCuxlAT6EhhoVYIu9SbpY1CBDeUS1cjjUXm+4kcsZdCjfRTOdvAIqBZE5mt41nJXmaLv2pLBMYTkoAOCCIio0cCuDZqRwfALIG2BWnubYG3JDXFMudLmxZN8X1OEO5A4tjI/RKULbmbJbOMwOaT8z7j9z6XMNkpVH6csx5XJytS8/rzUQfIM37yTpm4EWoGbYic9pZE9gShO33KgTjBFOTkehRKLjzHnzfu1IY6GoIfBqzxAQrm9p2hu8Pct5DUimenDAL3+SfddOYBOn8Mn+p7ZwxfrkhaeaScl2Wo3YtUIxoLgfP3zp9XC4f87bD8qgkGYERsnQHx4vcEpJVlPivzfiJfbVlRM6gimi5SNDvd3390RxPo/aZ00ze/2VrIuUXVPJkfhjAVYLBORW6yTLTrw+z32pyAj/Zf98qqCXXfpJAr7CONGSgTu2AL4SqQfwX22NLJxokMXo/cTz/ScvcegoxAGP50oWmt4noytx+1cuekx7zoVYWB/gvRIXWvQj494Kwto67Ua/Rt3CH6KOIKcoMhit3Nw6o3mq3V+Dzw/UHZ0+4NYnaKv5iunE4r7sTbnfo/03w5v14+YQgWRLkpUPyyjeGKBuwbb/4z6+0gFGrh1I484tBN4MpVT7lbb7zs2wBedPW3iTb5m1j4QU+UOG5+AbqCR51LbI0OefKAeXxl3TCgMhE5vbISHe+XsbsNH58tnVA6CMJhnAzmSKbMVZbyUnSuB3HCc8wXA/zgcEjAjxkYFW2IskQiWrMy2z
+ Q/FwYXzO
+ XH+H6ue33xv1qIYLquqU41gf24n7l+NYKqr35Qw0OJIcsVamawcH+/ndSwe1WfanDJ526A1Cqt+SVEIfPPkbg4DPjEOweXRIXQCMHIN56/aKPxfdBz/csV+r3P496IiF7eWn30S9z4PmzwHPdB/5Vbz9h4pfiY0F0JUDD2EKX7qB4JhRprbsYOjizuihZEsqL0vxXUA3YZBWX3poDC675bi+/mfCd501kj6AbNJkedp3Eh6VxrtVbOnkVgPlaWQVd1EbeuHINgAHIhluQBzXqEA6t3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,104 +100,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 09:08:44PM +0100, David Hildenbrand (Arm) wrote:
-> Let's make the naming more consistent with our new naming scheme.
+On 05/03/2026 16:58, Brendan Jackman wrote:
+> On Thu Mar 5, 2026 at 2:51 PM UTC, Kevin Brodsky wrote:
+>> [...]
+>> This approach seems very interesting to me, and I wonder if it could be
+>> applied to another use-case.
+>>
+>> I am working on a security feature to protect page table pages (PTPs)
+>> using pkeys [1]. This relies on all PTPs being mapped with a specific
+>> pkey (in the direct map). That requires changing a mapping attribute
+>> rather than making it invalid, but AFAICT this is essentially the same
+>> problem as the one you're trying to solve.
+> Yeah, I think so:
 >
-> While at it, polish the kerneldoc a bit.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> 1. The fragmentation issues seem exactly the same.
 
-LGTM, so:
+I believe so.
 
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> 2. The TLB flushing issues are probably also basically the same, I
+> assume you need to flush the TLB when you convert a page to use for
+> pagetables, and without allocator integration that can happen pretty
+> often and in hot paths. Correct?
 
-> ---
->  mm/internal.h |  2 +-
->  mm/madvise.c  |  5 ++---
->  mm/memory.c   | 23 +++++++++++++----------
->  3 files changed, 16 insertions(+), 14 deletions(-)
+Indeed. Up until v5 [2] no special allocator was used - the pkey was set
+at the page level every time a PTP was allocated or freed. Clearly
+suboptimal, and doesn't work at all if large mappings are used due to
+the risk of recursion.
+
+>> There are however extra challenges with mapping PTPs with special
+>> attributes. The main one, which you mention in patch 17, is that
+>> splitting the direct map may require allocating PTPs, which may lead to
+>> recursion.
+>>
+>> [1] introduces a dedicated page table allocator on top of the buddy
+>> allocator, which attempts to cache PMD-sized blocks if possible. It
+>> ensures that no recursion occurs by using a special flag when allocating
+>> PTPs while splitting the direct map, and keeping a reserve of pages
+>> specifically for that situation (patch 15 and 24). 
+> Right, and actually just today someone pointed out mm/execmem.c to me, I
+> think execmem_cache_populate() is basically doing the same thing
+> (although it's also creating a separate virtual mapping).
+
+Ah interesting I didn't know about that cache. It does have
+similarities, and the motivation seems similar too.
+
+>> There is also special
+>> handling for early page tables (essentially keeping track of them and
+>> setting their pkey once we can split the direct map).
+>>
+>> Do you think that this freetype infrastructure could be used for that
+>> purpose, instead of introducing a layer on top of the buddy allocator? 
+> Yes!!! 100% definitely, my code certainly solves all your problems...
+
+Almost ;)
+
+>> I
+>> expect that much of the special handling for allocating PTPs can be kept
+>> separate. Ensuring that protected pages are always available to split
+>> the direct map may be difficult though... This is deeply embedded in the
+>> allocator I proposed.
+> ...Oh, hm, well, um, good point. Thinking aloud a bit...
 >
-> diff --git a/mm/internal.h b/mm/internal.h
-> index df9190f7db0e..15a1b3f0a6d1 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -536,7 +536,7 @@ static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
->  }
+> The way this series dodges the question is (copying from the code
+> comments in patch 17 for convenient reading):
 >
->  struct zap_details;
-> -void zap_page_range_single_batched(struct mmu_gather *tlb,
-> +void zap_vma_range_batched(struct mmu_gather *tlb,
->  		struct vm_area_struct *vma, unsigned long addr,
->  		unsigned long size, struct zap_details *details);
->  int zap_vma_for_reaping(struct vm_area_struct *vma);
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index b51f216934f3..fb5fcdff2b66 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -855,9 +855,8 @@ static long madvise_dontneed_single_vma(struct madvise_behavior *madv_behavior)
->  		.reclaim_pt = true,
->  	};
+> 1) - The direct map starts out fully mapped at boot. (This is not really
+>  *   an assumption" as its in direct control of page_alloc.c).
+>  *
+> 2) - Once pages in the direct map are broken down, they are not
+>  *   re-aggregated into larger pages again.
+>  *
+> 3) - Pagetables are never allocated with __GFP_UNMAPPED.
+>  *
+>  * Under these assumptions, a pagetable might need to be allocated while
+>  * _unmapping_ stuff from the direct map during a __GFP_UNMAPPED
+>  * allocation. But, the allocation of that pagetable never requires
+>  * allocating a further pagetable.
 >
-> -	zap_page_range_single_batched(
-> -			madv_behavior->tlb, madv_behavior->vma, range->start,
-> -			range->end - range->start, &details);
-> +	zap_vma_range_batched(madv_behavior->tlb, madv_behavior->vma,
-> +			      range->start, range->end - range->start, &details);
->  	return 0;
->  }
+> In other words, we might need to allocate while we allocate (which is
+> fine because I have to do locking shenanigans anyway due to x86 TLB
+> shootdown requirements), but there's no further recursion after that.
 >
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 1c0bcdfc73b7..e611e9af4e85 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2167,17 +2167,20 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
->  }
+> Can we come up with an analogue for protected PTPs? Point 3) is
+> the inflexible one, and we obviously can't say "PTPs are never allocated
+> as PTPs". But if we invert it and _also_ invert point 1) I think we get
+> something that works in principle:
 >
->  /**
-> - * zap_page_range_single_batched - remove user pages in a given range
-> + * zap_vma_range_batched - zap page table entries in a vma range
->   * @tlb: pointer to the caller's struct mmu_gather
-> - * @vma: vm_area_struct holding the applicable pages
-> - * @address: starting address of pages to remove
-> - * @size: number of bytes to remove
-> - * @details: details of shared cache invalidation
-> + * @vma: the vma covering the range to zap
-> + * @address: starting address of the range to zap
-> + * @size: number of bytes to zap
-> + * @details: details specifying zapping behavior
-> + *
-> + * @tlb must not be NULL. The provided address range must be fully
-> + * contained within @vma. If @vma is for hugetlb, @tlb is flushed and
-> + * re-initialized by this function.
->   *
-> - * @tlb shouldn't be NULL.  The range must fit into one VMA.  If @vma is for
-> - * hugetlb, @tlb is flushed and re-initialized by this function.
-> + * If @details is NULL, this function will zap all page table entries.
->   */
-> -void zap_page_range_single_batched(struct mmu_gather *tlb,
-> +void zap_vma_range_batched(struct mmu_gather *tlb,
->  		struct vm_area_struct *vma, unsigned long address,
->  		unsigned long size, struct zap_details *details)
->  {
-> @@ -2225,7 +2228,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
->  	struct mmu_gather tlb;
+> 1) The direct map starts out _fully protected_ (i.e. we treat everything
+>    as if it's a pagetable at first).
 >
->  	tlb_gather_mmu(&tlb, vma->vm_mm);
-> -	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
-> +	zap_vma_range_batched(&tlb, vma, address, size, NULL);
->  	tlb_finish_mmu(&tlb);
->  }
+> 2) We assume the direct map doesn't get reaggregated once we've broken
+>    things down to serve PTP allocations
 >
-> @@ -4251,7 +4254,7 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
->  		size = (end_idx - start_idx) << PAGE_SHIFT;
+> 3) PTPs are always PTPs...
 >
->  		tlb_gather_mmu(&tlb, vma->vm_mm);
-> -		zap_page_range_single_batched(&tlb, vma, start, size, details);
-> +		zap_vma_range_batched(&tlb, vma, start, size, details);
->  		tlb_finish_mmu(&tlb);
->  	}
->  }
-> --
-> 2.43.0
+> But... this is a bit silly, since what it means is we'll then go through
+> ~all the pagetblocks in the system (except the ones that _are_ actually
+> used for PTPs) and flip their pkey, breaking down the physmap to
+> pageblock granularity as we go. And... if we're gonna do that, we might
+> as well just say the physmap has to be at pageblock granularity to begin
+> with.
+
+Having to change the pkey of every pageblock when allocating it for
+anything but page tables seems rather unreasonable... And in case of
+memory pressure, where fragmentation is high, we may not have any
+protected pageblock left. The allocator I proposed falls back to order-2
+allocations if necessary (which is sufficient to replenish the page
+reserve even if PMD+PTE pages are allocated for splitting).
+
+> (Could we do that? Maybe - Mike Rapoport has previously argued that
+> physmap fragmentation is not a very big deal, so I guess the question
+> is whether we're ready to really lean into that analysis, it would be
+> quite painful if it turned out to be wrong).
 >
+> Another potential "dodge": Is it really important that the PTPs are
+> always protected from the very moment they are created?
+> Coz this feature still seems pretty useful even if there's an awkward
+> fallback case where, under specific memory pressure patterns, we
+> temporarily use unprotected pagetables to set up protected pagetables.
+> That still makes exploiting a pagetable overwrite an order of magnitude
+> harder than before, right? Similar to how there's probably ways to
+> exploit bugs if you can get them to race with the intended pagetable
+> update paths that flip the pkey register, or if you can get a ROP chain
+> to flip that register for you or whatever.
+
+I considered this - I agree that having page tables unprotected inside a
+small window may be acceptable, considering that this is hardening and
+not bullet-proof isolation. That said, I'm not sure it helps all that
+much. You'd need a mechanism to defer setting the pkey for those PTPs.
+Once you decide to set the pkey, you may very well end up splitting the
+direct map again, deferring new PTPs... This could go on, and every time
+fragmentation increases. I think it is really desirable to have that
+reserve of pages so that splitting the direct map does not become
+recursive (whether deferred or not).
+
+- Kevin
+
+[2]
+https://lore.kernel.org/linux-hardening/20250815085512.2182322-1-kevin.brodsky@arm.com/
+
 
