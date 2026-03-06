@@ -4,93 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55826FCB621
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:44:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED1D9FCB625
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:50:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AAD656B0099; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
+	id 33B776B00AB; Fri,  6 Mar 2026 11:50:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A40E06B009D; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
+	id 2E8CA6B00AC; Fri,  6 Mar 2026 11:50:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85BC66B009E; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
+	id 1EAB96B00AD; Fri,  6 Mar 2026 11:50:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F8386B0099
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:44:14 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 08221BA376
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:14 +0000 (UTC)
-X-FDA: 84516210828.13.C41E9F3
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CD8F4180006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:44:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=HJoc8+If;
-	spf=pass (imf24.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
-	dmarc=pass (policy=reject) header.from=disroot.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1216B00AB
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:50:24 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AD051B8501
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:50:23 +0000 (UTC)
+X-FDA: 84516226326.21.854841B
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8056B40016
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:50:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="BH67xsa/";
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772815452;
+	s=arc-20220608; t=1772815821;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CFRBb5lEm7w27aaK+Lcy6sw6cbfVPzK3mN+ShFsf6mI=;
-	b=sP+hY74D+Xws85XwJ8YQSJmKJbUa7XqAb8bp9J8H5EYb0F9OYYIDXLwSK33gzQsigviwFU
-	wxPqb3InWYiCo9PhLPJVAlBCwdMrABJMjtuuc9yDWvG21v/BWBZogAVfGd2yYYNbCIoc3L
-	moKMHupnCye4M0Fs2jRfAkIi5opHIJw=
+	bh=/JdWkEYAoxELgAwR8n3saGF3HFaHOnFaPXfAPoD+V5c=;
+	b=516Kjwy9O+dtPcSlEdq6ga+IdKXMLkwuGXygiLTE7ozc2VNvBqRb2aLf7agC7+dm1S9aen
+	iuJoztq8ih6QC28GOi7fhpCRfsvTqEqbMFeBkIUhUI/1JsiP/+oT4aworq3PTyrCj642eU
+	tsaMk9eGnlt6goynSSq4l9vhtCcrWJk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=disroot.org header.s=mail header.b=HJoc8+If;
-	spf=pass (imf24.hostedemail.com: domain of mcq@disroot.org designates 178.21.23.139 as permitted sender) smtp.mailfrom=mcq@disroot.org;
-	dmarc=pass (policy=reject) header.from=disroot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772815452; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b="BH67xsa/";
+	spf=pass (imf11.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.208.49 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772815821; a=rsa-sha256;
 	cv=none;
-	b=3/ffpI9nITpsPgOoiLktkf0FUxUXl4tQ1GqRw6HAcX8wmP0EL43QwgIlEZ+hSUfhffa66D
-	CoIGrspJYffTY6fMs4V47e4tn0PIB7Jih/5Ti3oJcKraiZhA84Y7zpTKmws+D+t87Oy8+b
-	+x4fuhHbzoqv1ldOm+TptI+nvWmhqPI=
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id C3DB126798;
-	Fri,  6 Mar 2026 17:44:09 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id svw19_WXS9CO; Fri,  6 Mar 2026 17:44:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1772815449; bh=aiJ6HXP5kCacUDRaAKpFlRAJSn1zFnxlnfcHt7afV9I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=HJoc8+IfvN0CgFey940Q7K9ddWRhGHjx/tu5AW/Q+UlbrF0GIGLOeLWEJwBlMEqf7
-	 SP4I8vLfpwRgmAVXtC8s/uDRmzsSk9Hemu3dHgF75CvvGeFBNcrcXnublJyvVuKxfo
-	 GrRGrQcFjQ+odUr5Rjkkg2GCojpMCGHhcJ+MWq6r10pW3QNwlQO8jix7lzRh5i0iHq
-	 TTHT/pvWfqvvGU2/dtkdzKK5JopVQouRjDhp0MVwtSPaCzJ9JFQfPs00MVWpNQhaDi
-	 FWPLrV6hudW1HpsaXd0NAIhkZrkZs9EsBtHgqit7AcZNNOIq/7oOkRvUljG33UB3ao
-	 hMfgY0ZP++gaQ==
+	b=ZxqyorehFIWTWryKjAKya1KNAkTl9JOweb62uPBDRTeBU3jn+mEUUMdp7pId7MV5ziAPnf
+	JDxLIqYG8V/PDykGt0EtBhZDJkBmNdkvuZGCOCMr4HIZC4CDKPEN1PnMxKAaNyKtBIaQVX
+	+3AvczYd6iPcE4/eHWz3KRFsvdhones=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-660d2e48383so6583887a12.1
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 08:50:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1772815820; x=1773420620; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/JdWkEYAoxELgAwR8n3saGF3HFaHOnFaPXfAPoD+V5c=;
+        b=BH67xsa/yKmSsOkOfF/fTWB+KSEySMUv2K1scS5VIA3kbO9q0d8hhC39Xu/oCBm3A0
+         I2dPrDwZh04I1GfuzMNSjxtk1DQlBkYPAB7R7sIgqVgbk9WjwJPe0QtYVpE9V9JV09iD
+         CsJjv7J4GlW2qnkLf8c5rdpao2J8iJuD5Etxw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772815820; x=1773420620;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/JdWkEYAoxELgAwR8n3saGF3HFaHOnFaPXfAPoD+V5c=;
+        b=XDIECk6RYvmGoqQGQqAwg1EjpMfHrknl3yy6cpREUlVBtZx+gBGnY60yIOhRxy/4bV
+         DiyR+nDKjoH5aLNUeH/zWIZHMcpNHgzHlig3w1Vq9Kl2pfjVOmO4TBuO8okqxfmEJ5o9
+         cA+TdJ+skAUv6GfUQd53QMqoXkMrMhosZoDDrxtIF7063YtOY5UzKSU16PzjdrI8MSiq
+         d4W3BfT30+YWv9dtDGmv9WANmTidECE7db4pDikuwA0Hp90VvpAhEHs10N/igvDLppWV
+         byL5ToMku/NEEZ7Vq2Kmvvb2wCItsYOPDrL9+kU0PzvAcAMKKy3odO0TtCOiEPGT5YuI
+         0vqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWShh2zglSUcEjsEoacu/UZzILqB7HoanjBxdTPM5Rexk/F4MIsz788jT8t8PU0s6HvLK3aYWDkg==@kvack.org
+X-Gm-Message-State: AOJu0Ywdm4dbsAQAIT0dpdelaYp8SVeaX3D3syLrd1ZhJOBqY/FL71R8
+	hVEQC5OpROqoe7ySphaUexRPW4Umcgjuh+Vz+e+5SS2f4S2+CZIEJFhSQUq4cacTjuH06zuSS4F
+	Pwz/fOMo=
+X-Gm-Gg: ATEYQzzBDYuV9OHjilX16vcd9veJzUMc4JVBAGldkosqT9/Nq+9w0mmzgiZgRqXerMn
+	nvzk9Dk0WlLcQw+GWxOcjerOLiHj8iWiToGWWBw7cPnBIIG5FLXM3RM2Y2rT0Ze0LgKa5RXfAo8
+	1FM9Aq6LIButakV5VmoRem0EQzZ7HnnGy6GkMyaDJFmtP2HBY3fZPc2hdhc9yT96qZj15n9mOVJ
+	k4UMsiQOB5v1jopYffTXoL0wnsg1O1IjHu5qJJXgwRVxGIhEZ3DYL0LVOVEbm+JtQ/rRroi5gBA
+	Y6baWiIUUDgdY8HRoDmYH0aPAoMQILYtLmMA5SSrPGxPvEGlawUzcPbMbumAtc9fU7akW4Pbhhy
+	47ehfAwSsWRxStnxxUFjE+POa9FSn0jbx8kocCCi1A4Hk8ooQxuoo511jkdvOr/Q3I6LyV0n+rW
+	jqGc4FQy2dsM/zMlmkit840erIa0DqTIfW4lXdADLwnq/pl0aOrN+ldulOCrj0oGdUMGIkl6jjw
+	HbBz/reX10=
+X-Received: by 2002:a17:907:3da8:b0:b87:7485:b4a8 with SMTP id a640c23a62f3a-b942d58045emr150963366b.0.1772815819823;
+        Fri, 06 Mar 2026 08:50:19 -0800 (PST)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-661a4fd5e87sm642509a12.18.2026.03.06.08.50.19
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Mar 2026 08:50:19 -0800 (PST)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-66132b22182so3123324a12.2
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 08:50:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU8ek1SNKr9y9CfZj5ozWnDnCOCUdb7cFW2e38iirlSPjFY3kcpOV8QC2e1DyvCL8oxh7nTVbvFyQ==@kvack.org
+X-Received: by 2002:a17:907:960a:b0:b8e:a1ad:36d3 with SMTP id
+ a640c23a62f3a-b942df83300mr169072566b.46.1772815818781; Fri, 06 Mar 2026
+ 08:50:18 -0800 (PST)
 MIME-Version: 1.0
-Date: Fri, 06 Mar 2026 17:44:08 +0100
-From: Benjamin Lee McQueen <mcq@disroot.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R .
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
- memory
-In-Reply-To: <aar4T90zjolmTGFa@tiehlicka>
-References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
- <20260305043038.2176-1-mcq@disroot.org> <aar4T90zjolmTGFa@tiehlicka>
-Message-ID: <31c4680848b833d53b1979b45d5a368d@disroot.org>
-X-Sender: mcq@disroot.org
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: CD8F4180006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: eymxzbzns4nztan9gaz69wpjrmtwmoox
+References: <20260305103941.11f1b27d@gandalf.local.home> <CAHk-=wggaToeRYv6B5L9ob=wBdVW9_gFudYxH_WJDTuhyX_Ueg@mail.gmail.com>
+ <a8907468-d7e9-4727-af28-66d905093230@kernel.org> <CAHk-=whW890h4m8r0iYwXEJK=MUJx9nLxuOduttRJNCLrMdz7A@mail.gmail.com>
+ <a21ea7c3-fbdb-4ac7-8be5-0173f54890c7@kernel.org>
+In-Reply-To: <a21ea7c3-fbdb-4ac7-8be5-0173f54890c7@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 6 Mar 2026 08:50:01 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wi4CA=yPP-rQON_2_swS5Jd0SS4UwWbct4LdfGFyzHFRg@mail.gmail.com>
+X-Gm-Features: AaiRm53iDzSi0JGYZcfli_2X5ejbywSxs09OuffDjXkat3fpYe7Z3-u4fRncIZ0
+Message-ID: <CAHk-=wi4CA=yPP-rQON_2_swS5Jd0SS4UwWbct4LdfGFyzHFRg@mail.gmail.com>
+Subject: Re: [GIT PULL] tracing: Fixes for 7.0
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Huiwen He <hehuiwen@kylinos.cn>, Jerome Marchand <jmarchan@redhat.com>, 
+	Qing Wang <wangqing7171@gmail.com>, Shengming Hu <hu.shengming@zte.com.cn>, 
+	Linux-MM <linux-mm@kvack.org>, linux-rdma <linux-rdma@vger.kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 788rfstu3mazy8jnjqs1jsdjcuardh7x
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772815451-982510
-X-HE-Meta: U2FsdGVkX19hLQNtu07wqYzxWQesijb/tqTAeR7Rr+4a+ilWt3Xl0+aJA58LnjtKY/HeRI6HCoY+ZWeljg3fJvRHkyHSwykJNAR2FN+9pzsD0K9hrIpqy51zWnCRPrjuZ5WXsGC28JiL6Lq1Jtgqoncu1b5GNS51hrEwNUsgsmi+3ksPmQSMqpFZ5xHR/FnFP/fDUeYYWFzIVDtHZ/+uoy5O6TNz4i+xmoZCS/LcqmgxLkB0hdPkNIN91fOmRUv7aMS2YVvbfCTtKU808CCUL2JLrBfhYIcIuvXZqWFf7UpNHKQs6uvfDpDI8QtE66ajpZ47RBaR8kAM6uWyDDd6NzQiG1iIppjEYasbgOyxtKjyvD0fsm8tjQDnpgAtWf678GQT6vmydvg3YBfMffDwjZu48REBlCyVVN54ThzDhUujA6CmanDeJgOJHt0HSweV9jnGQkSlBan6PBi/bDOJUJlsKkRedg4/4yE522msebyHupd6zjwgc7MKzbAkCwrnF7fWCaRBA4gw0fzWvPG5+LICIDNBbFWf4XZx7eV0UfDE2TvNdnoAmij27LCMcojXpJJBfaEVbgZ5EbqGZwhkz1nB/muh5mT16+cBmlyoFeXlf3l6y1qKCOidg9lpfUYR+ualvkzbrQkTVg7SLR038ShBNQE/EqGIbHF0MWzlutzBSlhj0geyLqJ67syyzNkJs1oywdVMOPpHaoylN6i+RJ0PJuJET0BhnOH3FDFykioPyTguDQULU8yGGN8avQSK5Es0PHnuTvccI5czq4y1/fxWgILIuEtQOWqyrjd7D4xZ3bCKiwUfR+l+Lmb8dt9Xr1FuuzQet0mdppkrZtghO07w7n3MkboQ8hOQKpMG7BXGgA5ZNOOpqY4FTbtDTcExcV5ZVn3pLQNIgp2K9ufmQPicHJOWCEJTm7aFErckw0A+w9VZD/8kQv8s4/VR9O6cpHejL+StMF7utcmK3ug
- s1Pfmn3+
- gInKg3AYTi5nRRp+jhOmnJUQ5oonpYMwPpF8KQWiWZ+HAp5vkN7aUx8CIPXydx6JpUFxNpRhSOd2GbL4BmTRtktmiqo3Mbc6WDlmLVpWRIsW0QsPtFGRkMk1LWDv5DXqFp3GHlEgaR8SNpFDO1tcCUtFTj9VebX0wWPiOst3zhp/t3bEH2Loe7bQt1Zq0pEt5BouktQbeSfMcMEwPpVuA95hlaTjJohSwO//A9abEdqcuLsk=
+X-Rspamd-Queue-Id: 8056B40016
+X-HE-Tag: 1772815821-40735
+X-HE-Meta: U2FsdGVkX1++yG+ZUyUDibWtUDmj8jn17DEBXblT4QJTrGlc0/07pehJXxfNHY6t3s22qDbc5RK95rcPHjFOKrTLFzCtXe62prBpflrMIqHxKLxufT1iHkD5wIT+VjvBA0d/x/zzXM9gIhov5cWMwDNBh0D8HzEIFXp9G96NIXHKGQibOIfbqBDR+WDjd+N4OXuP70sDh0IZe3/xPJlns30l8AxpEQniYocR5bwxpjUMxIOkfxTO+PzeThj21jxtCbi4QMKmQOEvSgJd7SDET2yqv8NgAmviM9V9zeqtl1PdrHAWxTS+oGOdgBJATvmccikXp8ShxTd3XE4MA2Yl7PJGckuQkhPoZoOmz7ltLkOD2mMjpbLU5XHqaZE0H1Uwe1UGmWgkVIVwZ41o5qAPWV7I1mhvfnZ9vyxEeZ7EjAkmSymiV7QMRc6kd0HKfjp4ym8cQgAxVj1/oYxKRkmM1vVwmGGNlKKXxNSE9/UeFvs9yayePmQwFDYDNzZB1HWVqT3sHDTQ5hTg4O2VLF2QqqdKvzt3TNBY5MHb6MzEJNmgUoVsF1W+apsNvXewRfPqMU18IS4b1fC4JDz6Zb+tAnS8hVsbDpCaGWRM2tIBT/FWZHGmZt1Ez4bp/RrIsgalfb4VLY2K1UFZ7XJoZFOQWI3UwdxFA4Cg7georeTVqnJFgabYOBlViwrS7T1EOfqkn4pI8W42+7CvgTDP8xaLY6xoNddViNDoNMJ7shGW5so9c1i0bYfBVP06113AX2Ap6jAcOpkQZf2EfRzTme7Ad7b+nhvPCDPscHDTwLfjC5LTasUHFowUSnq5MjSlPHKnNnoMELBdpg0saE232EKeL0KkIQurkgX6wrNROoVRKmSHOCJVXOv8Feg0l1pLTAhigs2tTqVkIAB3mIvCGrbKcTO6InOT9FhZ58u9hKiSExem/QkBorMLdFQjfGjJv2p7+KPCi7RosUq1dXedCev
+ usVHdJ0G
+ +twBtRr12GzId6zl9lktYJIIEbuUiqHHZAS6QGz1Lbxnv/VIdJQ+js+BxDVmRhkbX5R4n+xufAq0pnpkj9BoQxwnOgm4C3OgaZBXXF2PHhuQHdR78vOQM2xlcaUjfn8TNd1a4Y6ogQ2DMB+mn58QAmyqN2aC/nn/zo/NJsSofgs6lFnlKBsw7o5b/m7XXcjb4Qqh07TO9HUBwsOGhk/xQmoT4ZUT/16W4Bq0Bk7B7MLppdrBox2FdLiTAUxnMKbuXqtMselPSfFEhHWZmEKEzdHwGCWucZhUMbfxHVwFYqbCBQ7T0vPLgvQlaLYIc0tBkCn3nmkL1ph2igbR05FH72lf2SuOFTR6eV36rDPgh/1Uktms6ixjAbFRpyL/R14syIB2Geau6dcmmcgnoQWXp66GK+Z2lEYLggO4WQKXndSc+lVdDXJisNyIJjl+bQFbbQIYOqvDpjhoimjROE72QH9dZvq2lJEKcQuscicaaWITfzRE1O9sW4926biVIdeVJLdDXjndY/CMOF4/FIsWEnzApschrUTlziFOR1saCrPwVXp9Dbo7fOP5y1B1RD2lnk1K+r9CnYFa+NZLr44MhzgA3LHNYZjbCSHSiI+bEaKeUWzk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +129,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-03-06 16:52, Michal Hocko wrote:
-> On Wed 04-03-26 22:30:38, Benjamin Lee McQueen wrote:
->> the vmpressure window size has been fixed at 512 pages
->> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
->> the file notes that the vmpressure window size should be scaled
->> similarly to vmstat's scaling, via machine size.
->> 
->> the problem with fixed window size on large memory systems:
-> 
-> Thank you for this much more detail insight into your thinking. This is
-> a good start. I am still missing an overall motivation though. Are you
-> trying to address a theoretical concern (the said TODO) or do you have
-> any practical workload that generates bogus vmpressure events. 
+On Thu, 5 Mar 2026 at 10:59, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>
+> Agreed. We could think about letting it sit a bit in -next before moving
+> it to mainline.
 
-yes, as i don't personally have a workload that explicitly requires
-vmpresssure to not generate bogus events, it is still technically a "bug"
-that can still be improved.  i believe many legacy systems would benefit
-from this as they still use vmpressure notifications.
+Honestly, I doubt it would get any testing in -next. Yes, -next gets
+some boot testing and maybe on a good day somebody runs LTP or some
+other test suite on it, but almost nobody actually *uses* it.
 
-i agree PSI is the preferred interface, but vmpressure is still used in
-other production environments, like Android's LMKD, right?
+I think I'll just apply this now while it's early, and see if anybody
+notices. Lorenzo will apparently be shitting in the woods if they do.
 
--ben
-
+             Linus
 
