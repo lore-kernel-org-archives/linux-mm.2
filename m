@@ -4,118 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD8BDFCC062
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BAB3FCC073
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:46:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 373AF6B0005; Fri,  6 Mar 2026 15:30:52 -0500 (EST)
+	id 57F206B0005; Fri,  6 Mar 2026 15:46:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 335456B008C; Fri,  6 Mar 2026 15:30:52 -0500 (EST)
+	id 560D36B0089; Fri,  6 Mar 2026 15:46:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 234FE6B0092; Fri,  6 Mar 2026 15:30:52 -0500 (EST)
+	id 4600A6B008A; Fri,  6 Mar 2026 15:46:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 08E636B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:30:52 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB74D1C665
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:30:51 +0000 (UTC)
-X-FDA: 84516781902.14.F330D34
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E919318000D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:30:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WRhSE2W5;
-	spf=pass (imf16.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 337F66B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:46:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6F7D13B5BC
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:46:00 +0000 (UTC)
+X-FDA: 84516820080.20.A05D5D9
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D1693C0004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:45:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=IZDBISFp;
+	spf=pass (imf10.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772829049;
+	s=arc-20220608; t=1772829958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=NAflFpld1ziWQP59fOhP77lxkMaSDWfKofqGmD46Gx4=;
-	b=kWxAuCO+PGXYnt0i8rfFBrJzeZ2kkeK2h5kgFzMgycNxOJyP5/WQjVtT/zLpc9umZCbS9U
-	ja6Jk7P3xwor6RtgPzFH9KEnKQV3MkRvZUh+rC+KeYOJv0tr4CLycDESHwO3dlBUslcSrt
-	PI3J8dh7VUFM0ClusNGXVMcv03DBxio=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772829049; a=rsa-sha256;
-	cv=none;
-	b=7C426JDUzFuTHrq7ska9sdl0lWXnZrRwulAbQnzapAYseTp6fFqgYkmZFikG5OkMxq/m1+
-	JO7wUC89kdCodBe9I4wsg7IsBZ5jfc8FZpC1KjuDUul5vNgsGT6De02EJvsQ7xkFTvtHZ5
-	lxfdDybbeKPXT65zXAtrEP2hijySuKI=
+	bh=n0ppwyNbw+EN2W8TjeTFyB8h2S47qibDmv1sVABh9ZE=;
+	b=ILJz0VU2NEfXkAV3l7sj0eq5stSfD07LFdmcMY/cynq/GG+S8CLq3yz/qcP1RnF8s2ViYx
+	l/diJgmQOfyoNq+MTnVdrILiHmxR+Y6zpvB3aLQ70hKOCxj+c8kMD8Ad8nB9bBl9oucAEn
+	3gRYY20Nfgx2nvULVxKSzIxfMwhV38Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WRhSE2W5;
-	spf=pass (imf16.hostedemail.com: domain of hlcj1234567@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=hlcj1234567@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8cb39f64348so954398985a.0
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 12:30:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772829049; x=1773433849; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NAflFpld1ziWQP59fOhP77lxkMaSDWfKofqGmD46Gx4=;
-        b=WRhSE2W5CfMRk9wxzuvQ12X/NbMVIO22SfAUKAbdjOGtVO/T0VAN4ysx4zN/r5S+x/
-         oVzhNZzKRP3L5nAF7MjXmuBQTS3ERn+TxgeluG0tfdgK8IkaRZm7MFC66YOoc47HOoee
-         LbqQCsdmVF1CY/HZOz8Ajh9mVyS84gq6gtYurU1VnDTkrUl2td+8ZyoF/0L/hxsdocC3
-         hFTFyFcHeLGGSOPUaMQP0hGoKoeLBBGMqcjXPUWct+N85Yu3HbremA3k19d5cLqQEPkm
-         cLHtT2AFroXXjrF1/Wd4CKfaOM+Oh2S1jhn5iWuRBhiwbkbXZ/S5py4OjYIKAFCgt5vc
-         pRTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772829049; x=1773433849;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NAflFpld1ziWQP59fOhP77lxkMaSDWfKofqGmD46Gx4=;
-        b=NopG28JZy5tbQTYDuWX4Ki63um8haEkaNJ0efUhtcHX2Q8za7T27m8340QN9piqHRS
-         2nm2zennNc6JylQockCmJfyWRECMR1ZBAb0ToSshGVFMAZW/4c37NRENGv5DWcwBTN/o
-         CQni0i51GBaXqVs9ia5kOr/C+JGdphK/ucYmmqYayMmKXwVUFCis9AqZBg2GC0g5213y
-         mZYKzTY2PJCtVkIlamKvs/b/kXkjp9q9B7WW/RhvYMdCuyAOaIej6M+gfcQwvK5JaGQy
-         K38W4Xy1KW32/Dht14xkLnZaOBs/pcSa++pLhNgehJxgFhv+qge4dNY4Tw8HdIJ/RQEa
-         oZLg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnTBUvh/+qsQwKiqTE7ULJRUzHnR2KoFH4rGrhGcBvPxeCbI2QQUtIgHmKRz3sO5vgFcx4TWh+Xg==@kvack.org
-X-Gm-Message-State: AOJu0YyazmsVfTSYbbl2RuOofIXYAWk9YdNLgAiQhzBBKPN6GPlOF8Uh
-	eWhgAU4/nP0ZIzlmf+Dc7TWDn3v6OY2gpWbES9d5edsVYuFfn8s52tmy/UoCyce7
-X-Gm-Gg: ATEYQzzRLVhpx6j49Zj0KXNuJN2orkYwg3VLE6gLwhm8ybeSE4j+IZ7Xz/Ci5oW3v1F
-	D6APotnFy7faR6zunba2ZCidTZzk6NmOlC7pbTTKP/IXbBcwqBrtxHW6+3PAlbU7WVe8ucAfpdg
-	6vmhJV57D1/+me6aY9YAZMIM0W8dflOJWROnuXWBLdi82QGwwI4b8BW+6Qb2vkpPxhvbpoga6Ex
-	1CL41gVLBsowkIJGijB1bBZFXxAEv+w77U+WPCxJSGKfDW1SF02F4nDQn5olaklYemlSfNRzZ+4
-	bNUf67Wa2Ibttbwr2VM4EL2NldaOv6B5178BpWi3oyDXI0VdJEg7KwJcsxH6ZqGWxkG4kDKYwoC
-	7NgMhdsATIeV+NGtPVU/2RWxs6Llq9VrYj7KVXOsPfwAjmf9GUPnPd9j8C6TPjnvpNrPsZM9d0f
-	h8BCAH0QyvNHz+z389xoFSfZRQJbJ1yWeKXSVvEJXrV85Fzig4Ge+9zTJzAH8IadphX2b4YGACy
-	HSb
-X-Received: by 2002:a05:620a:468a:b0:8ca:2baa:76e with SMTP id af79cd13be357-8cd6d35b59amr471988985a.19.1772829048832;
-        Fri, 06 Mar 2026 12:30:48 -0800 (PST)
-Received: from instance-20260207-1316.vcn12250046.oraclevcn.com ([150.136.248.187])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd6f53b83esm183253785a.29.2026.03.06.12.30.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 12:30:48 -0800 (PST)
-From: Josh Law <hlcj1234567@gmail.com>
-X-Google-Original-From: Josh Law <objecting@objecting.org>
-To: Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Josh Law <objecting@objecting.org>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v2] lib/idr: fix ida_find_first_range() missing IDs across chunk boundaries
-Date: Fri,  6 Mar 2026 20:30:47 +0000
-Message-ID: <20260306203047.2821852-1-objecting@objecting.org>
-X-Mailer: git-send-email 2.43.0
+	imf10.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=IZDBISFp;
+	spf=pass (imf10.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772829958; a=rsa-sha256;
+	cv=none;
+	b=QqkgKdkGIDerMFJp1+jhUpkFy77iaYGhbcBIvSYqECcEGGzaxxhNgy++pBAl/tDkaL9Apq
+	VwumrhLeiQH/0XQAj8xE8J1To7g70csgf71CJrmN3PyIrMLadCpgUEOE7gcyNbziY5l0m+
+	KW6ZOwqdxKhPez+77qi5maO64i885KI=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 626JPVMQ3781939;
+	Fri, 6 Mar 2026 20:45:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=n0ppwyNbw+EN2W8TjeTFyB8h2S47q
+	ibDmv1sVABh9ZE=; b=IZDBISFpl+2YZmjDE9sE/7TeDpIhDa6CNFMGEaRJLMceP
+	QONHNuJpWOKxqFg5BZnaxcALfhM9ITThVeRml689W17L54rYmeuJEXjx+n+aCo42
+	lzyIGHaCXJSlA6lWXwo7Phq8eJxOmgmeg4PxS73xGUer7pxCQ5/v3xZ4TBMsiK/a
+	jFl/9lo3fhqYlQq68jRULcKMKes9zxNyVT546AfrD6l3CbLeOlc96feVMLFimvqA
+	9uesaCpsxkhjKfOBNiI0i9RK4nXpPdD8XRm9VyCYcp4qPHXNtrSj5ePEsSHyIG3H
+	KmeNnd8hR9ztC1FAZ++3Dwu5edNSRFuXTWwWqTeIA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cr52t83rp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 06 Mar 2026 20:45:54 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 626J6Ecl023114;
+	Fri, 6 Mar 2026 20:45:53 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptkey23-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 06 Mar 2026 20:45:53 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 626Kjq8Z033939;
+	Fri, 6 Mar 2026 20:45:53 GMT
+Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4ckptkey1q-1;
+	Fri, 06 Mar 2026 20:45:52 +0000
+From: Anthony Yznaga <anthony.yznaga@oracle.com>
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
+        Jason@zx2c4.com
+Subject: [PATCH] mm: prevent droppable mappings from being locked
+Date: Fri,  6 Mar 2026 12:45:50 -0800
+Message-ID: <20260306204550.8405-1-anthony.yznaga@oracle.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: E919318000D
-X-Stat-Signature: sh8zsk3mrcthhrguh333dwnt8kxbj1po
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-06_05,2026-03-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
+ bulkscore=0 adultscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2603060196
+X-Proofpoint-GUID: dFzVRbpyflEp6yyhZLFUCeqYT-4ZbZDG
+X-Proofpoint-ORIG-GUID: dFzVRbpyflEp6yyhZLFUCeqYT-4ZbZDG
+X-Authority-Analysis: v=2.4 cv=PdfyRyhd c=1 sm=1 tr=0 ts=69ab3d02 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=o5oIOnhZENCTenyL_yNV:22 a=yPCof4ZbAAAA:8 a=QaRZ64KJlpYahcCkVoYA:9 cc=ntf
+ awl=host:12267
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA2MDE5NiBTYWx0ZWRfX1fDcSd6JBS0I
+ zXDdsdcxfXmgPvWqp3jDlLjntkUVBv/JbM/exqj9p09RA/yAshrfY0gyx8whUgBdLwMEWnh9788
+ 1hIYypClloc1WA4pYS1u88e+tNWJGgHpB73hpceah4QOprhfZk0oFxDLBYMKAsbgKmtySXXfs1C
+ cq2NbYOHMrHkmnBparPcHFJVcIve3hEOPTGEnbP21kAc1V3xK9RG9sJ2EUJJUYekw/QU4DBLfVN
+ ncD77ylrowp+/XKBXZyYJA7QCxbGXPt5WYyPKorz84WAS1Q3wNF5jX98sAf7jDDpWEIaxx1xbFI
+ DL/GBB2ySoENKH1K7xltjLtoJI0KnXk87O3DgXeeGUAEbn/ggCxR2A+8+MnpuysAKdq+HQ4QILg
+ Qbi+LIr0BSix8gAiK4IPkZ71lce7lIA/EYsXh82UFCuIqOU2lbvO/h43uuBMD/2N2OEMGeJ5n65
+ bkWTDdaCW0bcIqt6oAr7KlQKNbrZfsEvbhAht4lE=
 X-Rspam-User: 
-X-HE-Tag: 1772829049-866495
-X-HE-Meta: U2FsdGVkX1/PQfeSIlqcU3F6VMU4PRb6vFEDU1yglaYzkZ943oZI3f/TMYCOgHu+eyjRx0FJ7INxiSahUwdBUrH9KM8Dcv+YC8Qego8ED2NWkExEME6BzvBGU9eWCEdIdfdqBdM5mZ7hrTaRb3utpsh2nw55nLrEbKkRLMi6tftOlOOL2fS5MjVogmWCB9TCbiflOjk5l7Y0hrYj82aQQ5ldZxfZl0w7DzCwzx6mO+J49oWaB+cWqU9xXKpw31kNMksSNCB3sBbFMCEHVUMxEewd+5sk/Q1R7cmRWf+ZRoNrEUHQx92PwIOOdBUVig2M/Q1WXqjT3CGvjVJD5wWSllWoL2qyhOlZmai1CFGKNLnB5QvYN/0lb5lHOlay5VTiwgCsz0VQdbNjBTJt1QFwL2hmnEiOWn3TVY0fbaiZdMAfiX+7KCK5M7klZifZmXpR+kPEmPjWnEEAesUX9zls7VqllWrFxkcnLAZrSXwCghuxCBjiZG5rlPLkRspRpDiM6GYbwhKhIMluUoeBCkrpxcUVBqoHGIaAyWhRxGI6Zrd9os3u3Ix2eWuh8AGW+knSWF+cr+ndnCe3uoVxYwDw2YdJQbaaqQ92sULXLj9NxNWt5Bgw8ghUDfaP6OkcgeQbuiXec4PDVC2smgdz6CG8Wxm2RMbe7zK2V8vABfSaEwRSRO8oj3WY9znr28MjmKd//mXNab+K4iDBsLKN8EN0dfVUSp4h7HpnA7cOYHMmGEESQNujjlDoKymdKrkFGc4dVfhw4w1hmZysctSfP2zyohKLBlWIGLrcY1DI4ed91BLGBrjM0QyYsGgT57JML4K2ulMHRvaAaVjGRx2a1vHJggfDiX+xZR7UJev1y9d4/jZZKQ9ayyKcZlttrj6qYseodDNLz2uuaufDA5xtMAm4bpt3DvLm1zOPiVPf19B02kQzfwa5mC4bGWDHbuhH+kSX8EaIr6T6TH0sYhS3gMe
- e6PesIv9
- blyHxrpe3Thyg8dPep8XOYR5SHRVuNNm8XzugHnbxN+JNHJn78JsJ1zxw/QuDcj0o13iE1cRGX7xhBs9L3xotD+v6H4PSXxKrc6yWFitDL5IlRzWf8qEnACjK7fxe4KwTmRj+fQrUjmjjeJteeGvbOUQfe/OU7c81lByiPpN+a1tOrHkoI/eUG8ARs/KbVkSdFrp/j9eCktY2J+d55q1iT9P+zl5ZdKxY0Vc/zwMLOumncJdEr7+PYXO1bSsGKgn4U745eVd/Xn+BAUpUpIbymoCfjFLVv0e7D3Vo/gYnBLGbrmpZJNQr/2gKzqSY7fpxe8/LGSTD52IG3V6vdyx0xxuNXyyeKCVebeULj8Q3j3csDwGTvYHbdk1KZHBKZ6goB2w2J0PJCVDArLAZI2dvL3mX3d9oXKQnNkZDS64ie2K3WIl9e7t9Ecgfhec7a54wUepGNQiR1v+eLueuSQyNFEDie/Swo349XEht5WOVu8/BGUFFPt4HXvVrQ7KhknGQRN+SaxxN7cjSul+WHvfyAisCI234ut0wiKNAj0XIYrbp1C2gPprqL41gDw==
+X-Rspamd-Queue-Id: D1693C0004
+X-Rspamd-Server: rspam08
+X-Stat-Signature: oj7kgam668omb949hxang5cgn9ys41jx
+X-HE-Tag: 1772829958-608796
+X-HE-Meta: U2FsdGVkX1/OZCZqpy5LUyZTJ/iGw1E3vX3U0MVr57ziasI6UAEDXwsSYjuZMoAuOYkAQO1agPzIKU6FkNG6AWivuNBff3fz/baACa4+3Zszkfa7122Gl3LSvnCDfyVeWUYVSomrAT48pYIrQwcnnCEg7Uu1D7oCsUYxa6V7wl1xJ/UPZq+KpqwLtjPfyvUAASiknet2iZUwKT+78al11H9xXkNTDehk2fzfv6f558/cmUXAMxFJv5QNaK/qtDna2FvgAHEYUpVOb/Wh6dXLF6o8FIdo9+Ho6tIkWEhUL+FAIu1T8vZ4HKgI/Yfn2bjmayH40FHHsgast0Mw8DFJgMdff9u53A1uE8Lm9XbwLlbL5oiSSmGO9JdEgBgguClGUctbIdGlx0QW0yKIf2zSXEYXp/J6u5XtZ1b/x4UJRUJ9rWaioUAES/8ufc9e8Y76cKprECMgwC93sGImTmYuOROYDbMlEotu6lEk5RVc3G2uhIHwAEFz7wcOxM3vKtNq0s5EVeHmO2F8lrvKsFglHnCmBIwIwxScJkrVgQJWqrCQQY/xbt10f+ddhlM5neUV/wxATGfLmmNnxFkHGOt2A9Pg10g9w4/PdgV6zvgIasfeo+SQr8I/dppQzEyhLY3JnYDLiPFpR8x5zF4lNHQ4XrPYo6j2XoXsl/4AqNMnGQTARf5r+AcXHCwn7yLGNvEbSKfhho7nmKPB85ZFT0RbmKzqY+sxwPJeWmxDwY2Yf9xZmZWLX+G2AlkiWhscdRdYLFimTiNXqjBN4QV2i0xhBqERSCpVdjXHm0wN85YbTBMNrqmyQyorVECRcMZYrAdFoNKz3+3B8+QMuF5XtnLizXRz3QGu4K9oce0birOYI+SQk5l075TYf5KfVHswkvNYir3h0DolJeTBT+2ynH1VMe/2RFunZEcrcjjGzUztm2oJoCxaR86B62ATFCcqnFAKa3mWXkKr90Ca9aANrVn
+ JR+AXzM0
+ /E7yvPKMR53xbuGJk9Q/GDtl3uvVEaZMPlFfPvftHZ1tROW92jKJBsJ6J2iUsZbE/v/vvDdmbAaP30OsbcpJQ2YoaN564zghXrbj2gjQnk7LTT4d0Ej6BphJ9wMrrl+ZsfqshcRMmuUbc7TzC0q0tWgswvF9vmOaWJGxFF6zopGR/2iWxEccDQKll5OFCVg8HduKpvQDIqgBj1qGiokipMWwXn0N7CDwjjwzpLdn0wd7RrCgWoCTTts66qmGcR1No8LYGNQa8MpldUKgaCIUMfFI9nIsprWxG6Anvt9seIr6YEaVx2a2E2jWamQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,141 +126,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Law <objecting@objecting.org>
+Mappings created with MAP_DROPPABLE cannot be locked via mlock() due
+to the check in mlock_fixup(). However, they will be locked indirectly
+if they are created after mlockall(MCL_FUTURE).
 
-ida_find_first_range() only examines the first XArray entry returned by
-xa_find(). If that entry does not contain a set bit at or above the
-requested offset, the function returns -ENOENT without searching
-subsequent entries, even though later chunks may contain allocated IDs
-within the requested range.
-
-For example, a DRM driver using IDA to manage connector IDs may allocate
-IDs across multiple 1024-bit IDA chunks. If early IDs are freed and the
-driver calls ida_find_first_range() with a min that falls into a
-sparsely populated first chunk, valid IDs in higher chunks are silently
-missed. This can cause the driver to incorrectly conclude no connectors
-exist in the queried range, leading to stale connector state or failed
-hotplug detection.
-
-Fix this by looping over xa_find()/xa_find_after() to continue searching
-subsequent entries when the current one has no matching bit.
-
-Fixes: 7fe6b987166b ("ida: Add ida_find_first_range()")
-Cc: Yi Liu <yi.l.liu@intel.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Josh Law <objecting@objecting.org>
+Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 ---
- lib/idr.c      | 55 ++++++++++++++++++++++----------------------------
- lib/test_ida.c | 14 +++++++++++++
- 2 files changed, 38 insertions(+), 31 deletions(-)
+ include/linux/mm.h | 3 +++
+ mm/mlock.c         | 4 ++--
+ mm/vma.c           | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/lib/idr.c b/lib/idr.c
-index 69bee5369670..1649f41016e7 100644
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -495,10 +495,9 @@ int ida_find_first_range(struct ida *ida, unsigned int min, unsigned int max)
- 	unsigned long index = min / IDA_BITMAP_BITS;
- 	unsigned int offset = min % IDA_BITMAP_BITS;
- 	unsigned long *addr, size, bit;
--	unsigned long tmp = 0;
-+	unsigned long tmp;
- 	unsigned long flags;
- 	void *entry;
--	int ret;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5be3d8a8f806..bb830574d112 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -574,6 +574,9 @@ enum {
+ /* This mask represents all the VMA flag bits used by mlock */
+ #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
  
- 	if ((int)min < 0)
- 		return -EINVAL;
-@@ -508,40 +507,34 @@ int ida_find_first_range(struct ida *ida, unsigned int min, unsigned int max)
- 	xa_lock_irqsave(&ida->xa, flags);
- 
- 	entry = xa_find(&ida->xa, &index, max / IDA_BITMAP_BITS, XA_PRESENT);
--	if (!entry) {
--		ret = -ENOENT;
--		goto err_unlock;
--	}
--
--	if (index > min / IDA_BITMAP_BITS)
--		offset = 0;
--	if (index * IDA_BITMAP_BITS + offset > max) {
--		ret = -ENOENT;
--		goto err_unlock;
--	}
--
--	if (xa_is_value(entry)) {
--		tmp = xa_to_value(entry);
--		addr = &tmp;
--		size = BITS_PER_XA_VALUE;
--	} else {
--		addr = ((struct ida_bitmap *)entry)->bitmap;
--		size = IDA_BITMAP_BITS;
--	}
--
--	bit = find_next_bit(addr, size, offset);
-+	while (entry) {
-+		if (index > min / IDA_BITMAP_BITS)
-+			offset = 0;
-+		if (index * IDA_BITMAP_BITS + offset > max)
-+			break;
- 
--	xa_unlock_irqrestore(&ida->xa, flags);
-+		if (xa_is_value(entry)) {
-+			tmp = xa_to_value(entry);
-+			addr = &tmp;
-+			size = BITS_PER_XA_VALUE;
-+		} else {
-+			addr = ((struct ida_bitmap *)entry)->bitmap;
-+			size = IDA_BITMAP_BITS;
-+		}
- 
--	if (bit == size ||
--	    index * IDA_BITMAP_BITS + bit > max)
--		return -ENOENT;
-+		bit = find_next_bit(addr, size, offset);
-+		if (bit < size &&
-+		    index * IDA_BITMAP_BITS + bit <= max) {
-+			xa_unlock_irqrestore(&ida->xa, flags);
-+			return index * IDA_BITMAP_BITS + bit;
-+		}
- 
--	return index * IDA_BITMAP_BITS + bit;
-+		entry = xa_find_after(&ida->xa, &index,
-+				      max / IDA_BITMAP_BITS, XA_PRESENT);
-+	}
- 
--err_unlock:
- 	xa_unlock_irqrestore(&ida->xa, flags);
--	return ret;
-+	return -ENOENT;
- }
- EXPORT_SYMBOL(ida_find_first_range);
- 
-diff --git a/lib/test_ida.c b/lib/test_ida.c
-index 63078f8dc13f..d242549e16b6 100644
---- a/lib/test_ida.c
-+++ b/lib/test_ida.c
-@@ -256,6 +256,20 @@ static void ida_check_find_first(struct ida *ida)
- 	ida_free(ida, (1 << 20) - 1);
- 
- 	IDA_BUG_ON(ida, !ida_is_empty(ida));
++/* This mask prevents VMAs from being mlock'd */
++#define VM_NO_MLOCK_MASK	(VM_SPECIAL | VM_DROPPABLE)
 +
-+	/* 
-+	 * Test cross-chunk search.
-+	 * Allocate ID in chunk 0 and ID in chunk 1.
-+	 * Search for ID >= 1. min=1 maps to chunk 0. Chunk 0 has no IDs >= 1.
-+	 * It should continue to chunk 1 and return 1024.
-+	 */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 0, GFP_KERNEL) != 0);
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 1024, GFP_KERNEL) != 1024);
-+	IDA_BUG_ON(ida, ida_find_first_range(ida, 1, INT_MAX) != 1024);
-+	ida_free(ida, 0);
-+	ida_free(ida, 1024);
-+
-+	IDA_BUG_ON(ida, !ida_is_empty(ida));
- }
+ /* These flags can be updated atomically via VMA/mmap read lock. */
+ #define VM_ATOMIC_SET_ALLOWED VM_MAYBE_GUARD
  
- static DEFINE_IDA(ida);
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 2f699c3497a5..fd35c1e88c4c 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -472,9 +472,9 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	int ret = 0;
+ 	vm_flags_t oldflags = vma->vm_flags;
+ 
+-	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
++	if (newflags == oldflags || (oldflags & VM_NO_MLOCK_MASK) ||
+ 	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
+-	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
++	    vma_is_dax(vma) || vma_is_secretmem(vma))
+ 		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
+ 		goto out;
+ 
+diff --git a/mm/vma.c b/mm/vma.c
+index be64f781a3aa..1334622e4a03 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2589,7 +2589,7 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
+ 
+ 	vm_stat_account(mm, vma->vm_flags, map->pglen);
+ 	if (vm_flags & VM_LOCKED) {
+-		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
++		if ((vm_flags & VM_NO_MLOCK_MASK) || vma_is_dax(vma) ||
+ 					is_vm_hugetlb_page(vma) ||
+ 					vma == get_gate_vma(mm))
+ 			vm_flags_clear(vma, VM_LOCKED_MASK);
 -- 
-2.43.0
+2.47.3
 
 
