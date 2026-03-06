@@ -4,141 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE020FCB61F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:11:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 075AEFCB619
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 178116B009B; Fri,  6 Mar 2026 11:11:29 -0500 (EST)
+	id 7092E6B0096; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F8BC6B00B0; Fri,  6 Mar 2026 11:11:29 -0500 (EST)
+	id 6F3386B009D; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3C9C6B00B2; Fri,  6 Mar 2026 11:11:28 -0500 (EST)
+	id 6200E6B00B0; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E11386B009B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:11:28 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B839013B322
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:11:28 +0000 (UTC)
-X-FDA: 84516128256.12.768C3B5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB69F20014
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:11:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mTF0Gake;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 51F856B0096
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:13:34 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F33F61A064B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:13:33 +0000 (UTC)
+X-FDA: 84516133506.28.399E885
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4232D140010
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:13:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1bOrNU2c;
+	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772813487;
+	s=arc-20220608; t=1772813612;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OK4izAPsrMEs8JzC8oKsVnVMiFJsqp9sGWCgLoXqLco=;
-	b=ZVb5zkIIZaFxE34DSXxTwrLekgKb8tkUsFMimEEbYkP+uOdkiAtwoNd1zRYf34W6m5CVGx
-	7ecdgdv8EQp4v8vwGYEYGm416Qs81flIeDBf2Y/wV5ehshF794hEs4rNBymk0Gjsd2xBNe
-	m8K92xSHG/kSCjpEPb7LOA/Rq6iWkno=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mTF0Gake;
-	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813487; a=rsa-sha256;
+	bh=rAeOH5IgrtG9/UsY5VOxVdlGDjQqvvwATIuVyeglsuA=;
+	b=xiNULh39W2nULnfepPtXvrQ2UyApIG3Qa5dzZ0wZIiPnrksnEhfXlNsgyCoOBg44LibIQ1
+	Jd/NErqFDZMv/CLGXiAhcLBtvSYSC9B53oGH4wlmYX8GM6KxmGMzMkQlR5zV8tpW2NjcYI
+	uYz/UiOKnv/lmlYdD36dHXSrb87jzV4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772813612; a=rsa-sha256;
 	cv=none;
-	b=mtRKYkseq5f5kfoQLv3dzVb70owG8JpeuW4ayTXyeJSzqRzO51yggKij6pgGSj9U9A+cfN
-	tGKvSsCuZ/EOKMKLvoWqdWRbcovf3nc1pjMdIEpYM9QdXfaBCIx+u3hDzweGHrmtoDL7+j
-	xBcb4/nNmu9hvqvZzwN+W/CDYaBK444=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB78F401C6;
-	Fri,  6 Mar 2026 16:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133AAC4CEF7;
-	Fri,  6 Mar 2026 16:11:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772813485;
-	bh=giDNf5Uurfn7J3U1n15U/wA3Va2VYqmcI//1lmmKH8U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mTF0GakeaIpC4RT05s8KQlYVtcp9iPQeMAh7LhMmX6PqqJW5gvxQuVHNGKS/dwqAr
-	 lJuhmLkipTH46kV4owrtV6UV21IyyFx7KBJmmXFACQuSZAR9duYEBUlnhSWTaU+dN8
-	 AEvDj7a7bcwDMJ1zPU6USQfFKTpQM8goxhWuoeMOERgdPpyLAWzva4xGwnPmC+5rh7
-	 K1pcDuSLGQ0PvcZK9VXPdK9Wq1W2fuhXAH1q3F3jtQrQFW+mxolk2K8LC478yYCber
-	 61qM96UpnGv7AFe3yjcbie0qlBFgrdAvPadCTGeZkxkhF5akJGW8QJQkq2Met1A4k8
-	 kbDI855WQ0IzA==
-Message-ID: <cd9885ff-a48a-424f-b9ee-9bd7d1514b73@kernel.org>
-Date: Fri, 6 Mar 2026 17:11:13 +0100
+	b=LH2hHeVDkwWdmR2twRpwjCGqOc7lvtaWSoR1Uis3iDWYqlSKQX0lFHqKxfMjBlKgSxgvFh
+	Bp8IsLlDTfIoM7TEa7ZzPvGuhYTGjsPt4trAyI3YANcYL9fadS1kCeLhrBYRkPMqC2WIrX
+	Q0nG4FK3BRVC4yoFV7F7Auf2RXV5MHo=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=1bOrNU2c;
+	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id CB1C5B344D;
+	Fri, 06 Mar 2026 16:06:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1772813186;
+	bh=rAeOH5IgrtG9/UsY5VOxVdlGDjQqvvwATIuVyeglsuA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=1bOrNU2cmJL/WDIqAPD076EgHgoW/TaOlwkwVczxFJVtGhtPFQ0pXmMCIj0naFCRt
+	 2zTpJP+5oBpkRdpb7ZhjuLAPiLnBv7XLrtohX+f86b3gi1eUzJ7VMQYv89YLomhWrN
+	 Xum4wt3f4RVV1F7EsmK+JdLH27ULXCzK1yoaC0ek=
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Dmitry Ilvokhin <d@ilvokhin.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6/8] mm: use zone lock guard in put_page_back_buddy()
+Date: Fri,  6 Mar 2026 16:05:40 +0000
+Message-ID: <bc97ca32adbeed22a046764424ad9fcbb7fe8524.1772811429.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1772811429.git.d@ilvokhin.com>
+References: <cover.1772811429.git.d@ilvokhin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 13/13] mm: Remove device private pages from the
- physical address space
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
- lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
- rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
- willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
- intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
- jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- ying.huang@linux.alibaba.com
-References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-14-jniethe@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260202113642.59295-14-jniethe@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CB69F20014
-X-Stat-Signature: p56okdiq8std76kde65go8m5fnqass3h
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1772813486-366465
-X-HE-Meta: U2FsdGVkX1/LV1UysYuhxUatks3z49QWqefA4BRtOucbu0jepM5gPqmULhLAk8eHEgxD6ibRsgPCpZkK8PuZ3rvZibbJNqVauFzZSKyjX7P6sQIPd/64+qC0iEUdDlEwk4dWhsgtxWeiomKFCS9iRIdTloP67dIu648N6/hjuCwdVF5SjXkzLFDf0nc+hmnf1COstbLrt40nduE4RdxeYVhUDPQRt0XmXgPC1GCeoGEyTLleGUWFsUqxZTY3A3GUQxB/6Uu02oT4S4xc60RoKX7KRW4LzQYe5lI8rjh6GH3IT9jwwOwwJf12Iqjsg4M9aQ+sDnp+31UELqwbRmsENOAXZwQ44LwtyZ3+n+pOxYZ7GxXUaYKc89pyxfzJCJkxUHG3JW2xokqAEaoY0vG3RzW357Xt+IKXxszwIHmZVpZYXMVpb3lAyDcI1LSQcdzMJjhYGhEEd7L0Z47KaTkLYDKNfuKjKrASoSwymgYw1U29q4YVGfhzF3F7ZkPlnYJkI9rEwfaq3n3fcQVF9LfYneYu8g7ZxmMZ4HR/qFnuJRTyKPBEiMv159bW/F2nX6Ij2S7+hZJ+vR20nYMdIjF3fFEzOvT34gr9clEy2BiF0il6HClasijpn4lvr3OkIraeMwiQqRiA0Oz/KDzLaw1EcuqGBuYA93NYvFmXAOo2sDz6ffonr+V1Be91cpWeGQWyx6m++9hrJSC47yh6mDqWEy0hZ9dj/hG+Qg90KrK5dPDyBLBnwqMsQz4Kd1qRZM3B9AEXULDnk3sGWCP8433RA4S5qi4W7Y7qGzWPFFKuDDw0R2N7QxTAjaR9qnWdeP0dz9+tZ5le9/Hau6Arnnsc+aCYmEOvLBPGP/c2+ca00tBTRXSqyGkCAtGLyY7Ylboa0xhwryLGLWIZhF/FiLsybNNEfyfZ2Q+6mdDGN/QycR6b/XyouAEnE/X07I39lK7YloPMPLiZpjHWChQiSHw
- HcQcjjpv
- sxnqmcflBpQSZV3rG1qOQe9G9Qi2cwHFv9vO6fnp7YSH1bJdUANLFGvOI46cPhUKEg+CTHVhzjc3dT8Lco+dGTNeDfHeINZ53ujItpbt7xh5uvSUa7jdh4siL4MBmcPiv5yiRvVCPsxHSP6OnuskSASBr5bRy2BInV1K7VOehbsjED/lHZ043G3z6j91HulDKKA31cc4LOquyYk+NPvcjBncTaQe9ZgC1zgGLMhlavujwhlDzmeMXGB/PojQkLXz2KciZE6IcwL0DP6LOgFxy/B+52WESOGx2QkjplZIUMw0yOJ7/Mnm+BV8QrQ==
+X-Stat-Signature: 4g9inqm9batg7rd5y4snos5j4hgd7j6o
+X-Rspamd-Queue-Id: 4232D140010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772813612-318723
+X-HE-Meta: U2FsdGVkX1+L7ehH5o6XfrURQVZSzeqnf+F2foW4PiGwZ6gIXDpHA4S/B32n8+CU5uXuZiZWbYQKWCdECrWfOd45YXP6ERExS49Fd3pOya5aPMNnSJcotIwaAuC3mf4SK2nZYOd7pNwu/1fbHk9F1Ps3nexsdTzLagPv3+wf4SmOS+eZhzOYtKPqkz3pQ8QrxDNjoyMhukMvya+/pwJ52lyy6UDpRmRhV0EFTI2ogw+ssa6BaBIfF3UNWJTNq6gXnigV/X08FTsW+MAk2ZuQUds7SoVuM1hU9RP96B1JK0nh+4ZQqh2OPR5J64D8X5c0jwr8SrF+fFgwSJ6T1OsQuCeYPkFk1gSPo0iPbnHYUFzDjXyoX/SwdQqlrk4DSlt4YSQyeBPPdDzMHrhMYW8SrsGSSs3GhiGAMPL0lAsmHhfpbJe3MpEZ7Mst5oL9zZk4nppUSIfomWgTu5QSt84NnTvdBCWeh7sawxjSd/u0FsblkN0GWsijTqbVsRF6AmGIbANS9Acq+Sr+emLQodjzSu8M4Hl87LvP3nPWA4GxRXC5oveIq66TkVUUZ9fYo1x29cvy5XDALEHd1SN6qr9+ghNGm8VRQ67z/V0Q0sUGikv4G1Fcmvg1PSkiHXgbQK8WIyzOfih4XX8Q+pXKmWz3yw222AuVqiqa985Dqq4IRBhwKqJraWTkMcuiGJ54O0P98S9KUAOms0pR3Y3hGK/IKcwilewtLgYckmRY1KvQMZhqFyuXXURJ8nepKPaMIGW4rS5GMkoU7nMx0yIV26/0r8wN2HombjwiZxdciKAmvyTfxwylcihKSYuFIZGpDQV+qY8gP9G/Lu4H4CiOgrSljVWCDd1vvLzP0Ecicvt7nwzXRWfmI5i4TYUpKxv6uTv378Uk6X/cvXG1Z+sRRxuU+iT8xA886eOL0HFMMeKAbTDZG6x+hPcJreUplnD4TnGYVyI+mvkoYnhcH8jkIph
+ qgGFkavh
+ yy8j50mjfMB/RvXiQRLTqCXFitEaxKcgVBvStDxOgcfG3yCF7PA1oTFKQR1gAN5jKhs515z2Ip19rbkDhM+8nuZ4HcVBUIv62xULzXeTPYm5vIWSUg5elxIRpxgzHOr/eL1BgxyTQ2O6kbk9nPoS/9r7UO7kBVDWF+dwXzjzUpxHJxJ6xqyz2nAK/wcsNPUVvCLlQbtqNJGa8MhanPMcXBWr5H1eiAcac+vqFACUkOgzRdQ6ST8PmdPGcOF6OjyCcwCPYrOtk3QoAat2uQwS4M/ORktPO5wTH4wupFi1OokN5D86u7/3FnsCQsS7pePKiN+lQzN6nQd5ukwzUTnJz9WZvb6BF+ruC5kHh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,163 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 12:36, Jordan Niethe wrote:
-> The existing design of device private memory imposes limitations which
-> render it non functional for certain systems and configurations where
-> the physical address space is limited.
-> 
-> Device private memory is implemented by first reserving a region of the
-> physical address space. This is a problem. The physical address space is
-> not a resource that is directly under the kernel's control. Availability
-> of suitable physical address space is constrained by the underlying
-> hardware and firmware and may not always be available.
-> 
-> Device private memory assumes that it will be able to reserve a device
-> memory sized chunk of physical address space. However, there is nothing
-> guaranteeing that this will succeed, and there a number of factors that
-> increase the likelihood of failure. We need to consider what else may
-> exist in the physical address space. It is observed that certain VM
-> configurations place very large PCI windows immediately after RAM. Large
-> enough that there is no physical address space available at all for
-> device private memory. This is more likely to occur on 43 bit physical
-> width systems which have less physical address space.
-> 
-> Instead of using the physical address space, introduce a device private
-> address space and allocate devices regions from there to represent the
-> device private pages.
-> 
-> Introduce a new interface memremap_device_private_pagemap() that
-> allocates a requested amount of device private address space and creates
-> the necessary device private pages.
-> 
-> To support this new interface, struct dev_pagemap needs some changes:
-> 
->   - Add a new dev_pagemap::nr_pages field as an input parameter.
->   - Add a new dev_pagemap::pages array to store the device
->     private pages.
-> 
-> When using memremap_device_private_pagemap(), rather then passing in
-> dev_pagemap::ranges[dev_pagemap::nr_ranges] of physical address space to
-> be remapped, dev_pagemap::nr_ranges will always be 1, and the device
-> private range that is reserved is returned in dev_pagemap::range.
-> 
-> Forbid calling memremap_pages() with dev_pagemap::ranges::type =
-> MEMORY_DEVICE_PRIVATE.
-> 
-> Represent this device private address space using a new
-> device_private_pgmap_tree maple tree. This tree maps a given device
-> private address to a struct dev_pagemap, where a specific device private
-> page may then be looked up in that dev_pagemap::pages array.
-> 
-> Device private address space can be reclaimed and the assoicated device
-> private pages freed using the corresponding new
-> memunmap_device_private_pagemap() interface.
-> 
-> Because the device private pages now live outside the physical address
-> space, they no longer have a normal PFN. This means that page_to_pfn(),
-> et al. are no longer meaningful.
-> 
-> Introduce helpers:
-> 
->   - device_private_page_to_offset()
->   - device_private_folio_to_offset()
-> 
-> to take a given device private page / folio and return its offset within
-> the device private address space.
-> 
-> Update the places where we previously converted a device private page to
-> a PFN to use these new helpers. When we encounter a device private
-> offset, instead of looking up its page within the pagemap use
-> device_private_offset_to_page() instead.
-> 
-> Update the existing users:
-> 
->  - lib/test_hmm.c
->  - ppc ultravisor
->  - drm/amd/amdkfd
->  - gpu/drm/xe
->  - gpu/drm/nouveau
-> 
-> to use the new memremap_device_private_pagemap() interface.
-> 
-> Acked-by: Felix Kuehling <felix.kuehling@amd.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com> # for MM changes
-> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> 
-> ---
-> v1:
-> - Include NUMA node paramater for memremap_device_private_pagemap()
-> - Add devm_memremap_device_private_pagemap() and friends
-> - Update existing users of memremap_pages():
->     - ppc ultravisor
->     - drm/amd/amdkfd
->     - gpu/drm/xe
->     - gpu/drm/nouveau
-> - Update for HMM huge page support
-> - Guard device_private_offset_to_page and friends with CONFIG_ZONE_DEVICE
-> 
-> v2:
-> - Make sure last member of struct dev_pagemap remains DECLARE_FLEX_ARRAY(struct range, ranges);
-> 
-> v3:
-> - Use numa_mem_id() if memremap_device_private_pagemap is called with
->   NUMA_NO_NODE. This fixes a null pointer deref in
->   lruvec_stat_mod_folio().
-> - drm/xe: Remove call to devm_release_mem_region() in xe_pagemap_destroy_work()
-> - s/VM_BUG/VM_WARN/
-> 
-> v4:
-> - Use devm_memunmap_device_private_pagemap() in
->   xe_pagemap_destroy_work()
-> - Replace ^ with != for PVMW_DEVICE_PRIVATE comparisions
-> - Minor style changes
-> - remove discussion of aarch64 from commit message - not relevant post
->   eeb8fdfcf090 ("arm64: Expose the end of the linear map in PHYSMEM_END")
-> 
-> v6:
-> - Fix maybe unused in kgd2kfd_init_zone_device()
-> - Replace division by PAGE_SIZE with DIV_ROUND_UP() when setting
->   nr_pages. This mirrors the align up that previously happened in
->   get_free_mem_region()
-> ---
+Use zone_lock_irqsave lock guard in put_page_back_buddy() to replace the
+explicit lock/unlock pattern with automatic scope-based cleanup.
 
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ mm/page_alloc.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-There is just too much in this patch to review it reasonably.
-
-You should probably have a patch that just introduces the helpers and
-have them just do what we to today.
-
-E.g., device_private_page_to_offset() would just do a pfn_to_page().
-
-Then you can convert individual core-mm pieces that I people can review
-them making their brain hurt.
-
-Afterwards, you can have a patch that does the real "mm: Remove device
-private pages from the physical address space" and doesn't have to touch
-too many core-mm pieces.
-
-[...]
-
-> diff --git a/mm/util.c b/mm/util.c
-> index 65e3f1a97d76..8482ebc5c394 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1244,7 +1244,10 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->  	struct folio *foliop;
->  	int loops = 5;
->  
-> -	ps->pfn = page_to_pfn(page);
-> +	if (is_device_private_page(page))
-> +		ps->pfn = device_private_page_to_offset(page);
-> +	else
-> +		ps->pfn = page_to_pfn(page);
->  	ps->flags = PAGE_SNAPSHOT_FAITHFUL;
-
-Why is that not done by the caller?
-
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 92fa922911d5..28b06baa4075 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7524,23 +7524,19 @@ bool take_page_off_buddy(struct page *page)
+ bool put_page_back_buddy(struct page *page)
+ {
+ 	struct zone *zone = page_zone(page);
+-	unsigned long flags;
+-	bool ret = false;
+ 
+-	zone_lock_irqsave(zone, flags);
++	guard(zone_lock_irqsave)(zone);
+ 	if (put_page_testzero(page)) {
+ 		unsigned long pfn = page_to_pfn(page);
+ 		int migratetype = get_pfnblock_migratetype(page, pfn);
+ 
+ 		ClearPageHWPoisonTakenOff(page);
+ 		__free_one_page(page, pfn, zone, 0, migratetype, FPI_NONE);
+-		if (TestClearPageHWPoison(page)) {
+-			ret = true;
+-		}
++		if (TestClearPageHWPoison(page))
++			return true;
+ 	}
+-	zone_unlock_irqrestore(zone, flags);
+ 
+-	return ret;
++	return false;
+ }
+ #endif
+ 
 -- 
-Cheers,
+2.47.3
 
-David
 
