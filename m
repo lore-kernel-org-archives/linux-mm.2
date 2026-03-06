@@ -4,101 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C08F513E9
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 00:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F46DF513ED
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 00:51:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC8F26B0005; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
+	id 050396B0005; Thu,  5 Mar 2026 19:51:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D76A46B0089; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
+	id F40206B0089; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C75AA6B008A; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
+	id E75F66B008A; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B73AD6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:21:23 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2ED2D13A40D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:21:23 +0000 (UTC)
-X-FDA: 84513734046.23.84A3B45
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 47A7F40006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:21:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=AXjAWSob;
-	spf=pass (imf07.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D5F4E6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 19:51:23 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 655A1C185C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:51:23 +0000 (UTC)
+X-FDA: 84513809646.11.D223C2A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 961BA40004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 00:51:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xsQ3RRU9;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772756481;
+	s=arc-20220608; t=1772758281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=j5sV4+wUvNOc3xS7CkrG8KEGHYOk7JpcEgiSOK3kguU=;
-	b=6+T7joZG5p4wXD00WQt5HGvoRPF1HI11dfg7nmouB2ifJS0TA3ItZSR9ip5OAVNVflXLsV
-	cmd4cWXTXfwH4C4GhRL7hfkNof8AaXEX+8ObFi6sYezrPydgJxyAkelYGBWrqcQp04HMjg
-	RClTaMlxbTeBI+G5C4GE2idlhwmP/E4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DOiMZwz1xnq0nx/TFLYOj8SvO7Te4pTWi/YlrxysVhs=;
+	b=ajW6et2zFav9aRdL5/In/2UqW91rS5eHaGoiBFEzCJgTnAm6yzexjTCPsb8MDdy7lGxxMX
+	gw0d48t9ZIwy5mQnRmrxwp39jmbyvH7FhUnsfevPSsGgB/wWWAfXaLUkCto95Tt087S6hY
+	AUJ/ot9tJh3zJP998Wi0YuCQ6+qFzQc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=AXjAWSob;
-	spf=pass (imf07.hostedemail.com: domain of aleksey.oladko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=aleksey.oladko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772756481; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xsQ3RRU9;
+	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772758281; a=rsa-sha256;
 	cv=none;
-	b=hoj70RHgnj7BQBA1sIqdlm0xNhcQn9R4tawyq0fC4krDPFso1zGr14dM2n9XjlE3QhAi3C
-	wl9vHwvMCvtje+yfW7xf9b/vRVw/015rREJrqNwzH2FM3U58iez4BUETCZu0BNY0w0s1fc
-	EIxI6ccVklHr0+z687Y8Kcm1F+F+4wc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=j5sV4+wUvNOc3xS7CkrG8KEGHYOk7JpcEgiSOK3kguU=; b=AXjAWSobMRol
-	20h18D2GlepRE9enrygSuX0r1WN9naeYhUBjpfWPU5RO5akN8qpT3Y0p3+wKjRVrl1d/LISqtEy/O
-	7384bWx5AGh0MwexSpiRtM50XRNH8YIPWpT9fkjhgdoQOfN7dsIYhEQZDmve3pGtUZPAdElyr8jd9
-	VvtKsRvrSnv/BUZpCvygoIP+huEXXUu9p8eipR+SPHHzl9VrW4fhbLMbyZjcS/5sRiWGHLykE6AkH
-	DGPNFpqh2atETX9aFQAW99JVgREHT0nVJWdBM0SN1ABV7ALMqM9+g8yzSEIo5np4qYoDL+bc83ouH
-	ngm/AAd0YhrMFb6LXmRJRA==;
-Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
-	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <aleksey.oladko@virtuozzo.com>)
-	id 1vyIuk-006nPE-06;
-	Fri, 06 Mar 2026 01:21:05 +0100
-Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
-	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 6260L6d0519684
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 6 Mar 2026 00:21:06 GMT
-Received: (from root@localhost)
-	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 6260L1JW519683;
-	Fri, 6 Mar 2026 00:21:01 GMT
-From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-To: Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Seth Forshee <sforshee@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@kernel.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-        Abhinav Saxena <xandfury@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Subject: [PATCH] selftests: do not override CFLAGS set by the build environment
-Date: Fri,  6 Mar 2026 00:21:00 +0000
-Message-ID: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: z6yjnpu1adhf6ctomnfn4x8e47dgk4fg
-X-Rspamd-Server: rspam09
+	b=Kq1Xf7SxxRiHVHjC9heIPZUUqCctBlRETgHplFKFL+J5mPq1AO85Vf49Nrser3/wKySEAT
+	chHASZC64p2pAGTrRw1GDAxTpNxTYip7DSEmRXYcJezUMOxaJx3KAnAhIZc8jSmgcF8d46
+	Gcj4AREMC/klK56tLjccg4skvllBrGA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 52E73400A8;
+	Fri,  6 Mar 2026 00:51:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F46BC116C6;
+	Fri,  6 Mar 2026 00:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772758280;
+	bh=I/BWr/0mA1g8/sbDHYUZiwRMeSm+NWbDKYSZFZTO4DI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=xsQ3RRU9VHWVxisor/UYVoad0VPyF40BQePhkZZlongLargaRVbJpy4ll1hJcJpYG
+	 uUM3qylVY1DIxL/4r0sQ2KzwOo/C1AJZkWTzXswFmSgdAhKnPGTglRtFPdVoUdnm4r
+	 K6RyzCGxZH8G7WELzz98N2cfM488udhsxHIqEV/o=
+Date: Thu, 5 Mar 2026 16:51:18 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
+ lance.yang@linux.dev, bhe@redhat.com, usamaarif642@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v6 00/33] Eliminate Dying Memory Cgroup
+Message-Id: <20260305165118.33c0af5b7742e18f18b7231a@linux-foundation.org>
+In-Reply-To: <cover.1772711148.git.zhengqi.arch@bytedance.com>
+References: <cover.1772711148.git.zhengqi.arch@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 961BA40004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9197ta4yn9nxao77c3dzb3u664z3i5x7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47A7F40006
-X-HE-Tag: 1772756481-532724
-X-HE-Meta: U2FsdGVkX1/i+NK2sM+rIYEn3axjeukFZghYyRqW5RqFOME5S0Fkwmptud/lUyBz5lxsgvNTcNEF+zM01XfddzHCkybpNKNrVoYFgWR0A5j81mSEJh3rjWnjwhNsbbPJP+R++D7r3Ja37siWWfIjVYZOpNLjl5y00kfjXZI9/iq4mE//06MwjvGb6SDuxaKK0iozot4raIYmgUwYKRsYCiv0fJCmyvXK3hvFGW6jpL8vzPg/7R0Km3QLIud7rJ2kxmfUt2TK2lwWcRseoEZ8E2uG8921/csUcIMd1o4st80viEMUkyDt1c4Yc7OYex/Q2lgNoGCjAiYYG88Wp6BG0xKfLPWTh4XrVlgEEaIE7ADYrf0f0FaNOMYVogHRv8Gch/MwJdSiUVb17/nP3a1pXp9to7pE4hvdwcm7lK50UlC4bUTp574/3NAqMaXKbBlcYvrFz3ZVdapIjcmIRrFRMPivIsvc8+AFci347rE1tYg2Il+zpw5TkdbGQzWmoRTP3I3lcOOw99vIbytQ/qj2RUP5DOrR/0rnEunIa1XVxjEfYUX/aLUqAQtZzue/RpKEO7KtzN5Hd62cSiO938WnJwb3QAP+HHuqInnaxHtNGr+4s6VBIimpQ8ePt2jVdkRXZLzO4NAeZGmMMu7ylLdYtOvO6LLuE4owILz0SWRY95hbjsyihFpvjoa9Imc9doDMUUKkRGLQ8BuIKPc0lNPh73Zs406sBEg+EJH+l1BdCO+1AZsLgLZzxocTmcpCboF/EH8RFE2OSnCR1sW0e+TZaDPAuebR8QS1uyfzl0zu2XkeLCzu0Ei/MTvy4Byd3jfNoZSUvuVFSvcO5EKRfFA9OSmuwRicB/WQ3qVgdTeOpqLZA+8r5jYJ3LIaf4xhWEXsRk4tqWsV/ddQRN00mAVQJTQv6lo5b2QDu2Vee4KnO1n3kMlC3X0x2JAKTl5JJS18LeiGYpOlZl/lncC4y7d
- bHoia5J7
- nyD+LwkzV4b68OF4qO0vIjDdR08n1BSGA0YWuQoD7b48zn8F8lZT4nFv1LrTrxWd/1SQRpiD0IthdZvXSdp5YiWDFyh5KAIdic1sViKp2Ln5ndvw5MKuEy/atVYu2LKUilJ7Pe0gHGuce1IKLCUECG8GaVdrb7CwJPgVg8L2gsVuE3vKnYKd6kde0BJu/Z8c+4+VbPVjVFfNxlgaPw0U5Ohko+ikSSIF/9IySDlDVQrBOwuQEwoX6ML0ocQ==
+X-HE-Tag: 1772758281-696201
+X-HE-Meta: U2FsdGVkX1+o3b+CMUxIRdq0AKKB/KaTb59b+wwjQowOBCCA2peCULJJ7XICpzpPq/2yjpLIVArS87W5vfynnznYJvob+SGbpikVlfMg84reWJMP5Q+Hl+25kr9KmZN3ny1VO+J3Wi+eH2qxreVMw6j+brXXLqODe/0+VBnkZVge2fk6AXtbYUyRHBTVuyvrUF/Cdlt1U5/7GiL/AKoZ8UJ2KC7CMgdl98Y9QaHPVWlWp21wAOR1CW7IXK7RuOmV95SOfZB3NeovHob97mtgX16uZQeLcSz3OMAWu5U8w5WK8PY9jo17L5DiCfmdZJb9yJglKd+9pAv9rGa0pIHy3viGHmDWF7lflY6wLPSkgKsKBCSq2Mq0K9Xi2Yi1ZBtNqY/sVrywXH94AbI1MztTfCZwgGkkEM4mj6j+zzy5dRaNq9/rwsQwOXDAX4xU9VqcYzhbPjVcC4PoILwDTHndDOIhNByx1+lw1rTgpLn//WteFrIxUqaya3+Y4TsxXSdA2uSg7aOJvwL59K/t66J7vkhVSWjpTdO2HOH0/vPWdgu2XDzRr92PyUl8QHi67BnHtsdgiCbxP677Y88b74VIX8cZLbWFrTBgqjKd9BLL78IE9msrwxIU7O9b31hBUi0WDitNqaZ43jkryrcaJz+wAavRLxFWr27zDEeBJWaXUEySjyniKbdhG0Z2/XfDWvfAW4E3K7ll3DDDsaX3veikg+iQSoo7HuloDscv3NHjKzqaNTCxtYck87862qqQ8PwNrmnaUDqLaPS+QBcLhNp3PQqSup+BeUQgzJGsvSdJETTqpEF1HTrVnzwAAaX+BkhJN06/RG6O7j4vSebcq1jvNaNlgdURV7YhttkjT1Fls9w14SC87nzNAhp32cUB6Cx6yH7F/mFfGmcdnsi3h8nYEwPxpF5Wug6JS88l43HEPIsArb0iNQ80RBdW8tCkbxfefW+DBb4H5CoUs3rFYWU
+ m8NbrzCM
+ Au6WW/hON+oeDGCCUF5rO0tx02VK945bXAODUABVsgpQEwJ9zuX76jacnVg3gzLdbcLJYrZ4Y8yauJfK04Kok87XBAJJ/P3y4TOtBxAeWAAJVKLUj5Qf22MZhiKr0FjCYHW0PnWOAjCjTKgD15Mkc4u1lF4mFY28l/ORaPpsCK/5IZqWOYDS710jcJPd5sys3X/pR6RwZ/IiDSZK1oGjb3gZ80kiaXcXYggsm4w/r07W9Pz+0klBbJKTnUKaKWtOrQ0PC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,212 +97,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some kselftests Makefiles assign CFLAGS using 'CFLAGS=...'
-which overrides any CFLAGS provided by the build environment.
+On Thu,  5 Mar 2026 19:52:18 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-If the environment set flags, overriding CFLAGS may result in
-inconsistent compiler and linker options and cause build failures,
-for example when building PIE binaries:
+>  - refactor mod_memcg_state() and mod_memcg_lruvec_state()
+>    (suggested by Yosry Ahmed)
+>  - use non-atomic method to reparent non-hierarchical stats
+>    (suggested by Yosry Ahmed)
+>  - remove the redundant declaration in  [PATCH v5 29/32]
+>    (pointed by Shakeel Butt)
+>  - collect Acked-bys
 
-  # export CFLAGS="-fPIE"
-  # export LDFLAGS="-pie"
-  # make -C tools/testing/selftests/ TARGETS=mount_setattr
-  make: Entering directory '/build/kernel/tools/testing/selftests'
-  make[1]: Entering directory '/build/kernel/tools/testing/selftests/mount_setattr'
-    CC       mount_setattr_test
-  /usr/bin/ld: warning: -z pack-relative-relocs ignored
-  /usr/bin/ld: /tmp/ccikConN.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
-  collect2: error: ld returned 1 exit status
-  make[1]: *** [../lib.mk:222: /build/kernel/tools/testing/selftests/mount_setattr/mount_setattr_test] Error 1
+Updated, thanks.
 
-Fix this by appending to CFLAGS using 'CFLAGS+=' instead of
-overriding them.
+Appended is how this update altered mm.git.
 
-The fix is not applied to the Makefiles in x86, riscv, mm, arm64
-and powerpc as they fully define their flags.
+Hopefully we'll be able to move this into mm-unstable (and hance
+linux-next) soon,
 
-Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
----
- tools/testing/selftests/efivarfs/Makefile             | 2 +-
- tools/testing/selftests/exec/Makefile                 | 2 +-
- tools/testing/selftests/firmware/Makefile             | 4 ++--
- tools/testing/selftests/ipc/Makefile                  | 4 ++--
- tools/testing/selftests/mount/Makefile                | 4 ++--
- tools/testing/selftests/mount_setattr/Makefile        | 2 +-
- tools/testing/selftests/move_mount_set_group/Makefile | 2 +-
- tools/testing/selftests/resctrl/Makefile              | 2 +-
- tools/testing/selftests/safesetid/Makefile            | 2 +-
- tools/testing/selftests/signal/Makefile               | 2 +-
- tools/testing/selftests/timens/Makefile               | 2 +-
- tools/testing/selftests/tty/Makefile                  | 2 +-
- tools/testing/selftests/vDSO/Makefile                 | 2 +-
- 13 files changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/tools/testing/selftests/efivarfs/Makefile b/tools/testing/selftests/efivarfs/Makefile
-index e3181338ba5e..f6c412059af3 100644
---- a/tools/testing/selftests/efivarfs/Makefile
-+++ b/tools/testing/selftests/efivarfs/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
--CFLAGS = -Wall
-+CFLAGS += -Wall
+--- a/kernel/cgroup/cgroup.c~b
++++ a/kernel/cgroup/cgroup.c
+@@ -6043,8 +6043,9 @@ out_unlock:
+  */
+ static void css_killed_work_fn(struct work_struct *work)
+ {
+-	struct cgroup_subsys_state *css = container_of(to_rcu_work(work),
+-				struct cgroup_subsys_state, destroy_rwork);
++	struct cgroup_subsys_state *css;
++
++	css = container_of(to_rcu_work(work), struct cgroup_subsys_state, destroy_rwork);
  
- TEST_GEN_FILES := open-unlink create-read
- TEST_PROGS := efivarfs.sh
-diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-index 45a3cfc435cf..54cdefb9ccb0 100644
---- a/tools/testing/selftests/exec/Makefile
-+++ b/tools/testing/selftests/exec/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--CFLAGS = -Wall
-+CFLAGS += -Wall
- CFLAGS += -Wno-nonnull
- CFLAGS += $(KHDR_INCLUDES)
+ 	cgroup_lock();
  
-diff --git a/tools/testing/selftests/firmware/Makefile b/tools/testing/selftests/firmware/Makefile
-index 7992969deaa2..dd9acf972cf5 100644
---- a/tools/testing/selftests/firmware/Makefile
-+++ b/tools/testing/selftests/firmware/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- # Makefile for firmware loading selftests
--CFLAGS = -Wall \
--         -O2
-+CFLAGS += -Wall \
-+          -O2
+--- a/mm/memcontrol.c~b
++++ a/mm/memcontrol.c
+@@ -526,25 +526,25 @@ unsigned long lruvec_page_state_local(st
+ }
  
- TEST_PROGS := fw_run_tests.sh
- TEST_FILES := fw_fallback.sh fw_filesystem.sh fw_upload.sh fw_lib.sh
-diff --git a/tools/testing/selftests/ipc/Makefile b/tools/testing/selftests/ipc/Makefile
-index 50e9c299fc4a..5a5577767a35 100644
---- a/tools/testing/selftests/ipc/Makefile
-+++ b/tools/testing/selftests/ipc/Makefile
-@@ -3,11 +3,11 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
- ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/i386/)
- ifeq ($(ARCH),i386)
-         ARCH := x86
--	CFLAGS := -DCONFIG_X86_32 -D__i386__
-+	CFLAGS += -DCONFIG_X86_32 -D__i386__
- endif
- ifeq ($(ARCH),x86_64)
- 	ARCH := x86
--	CFLAGS := -DCONFIG_X86_64 -D__x86_64__
-+	CFLAGS += -DCONFIG_X86_64 -D__x86_64__
- endif
+ #ifdef CONFIG_MEMCG_V1
+-static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
++static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 				     enum node_stat_item idx, int val);
  
- CFLAGS += $(KHDR_INCLUDES)
-diff --git a/tools/testing/selftests/mount/Makefile b/tools/testing/selftests/mount/Makefile
-index 2d9454841644..38361a896363 100644
---- a/tools/testing/selftests/mount/Makefile
-+++ b/tools/testing/selftests/mount/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for mount selftests.
--CFLAGS = -Wall \
--         -O2
-+CFLAGS += -Wall \
-+          -O2
+ void reparent_memcg_lruvec_state_local(struct mem_cgroup *memcg,
+ 				       struct mem_cgroup *parent, int idx)
+ {
+-	int i = memcg_stats_index(idx);
+ 	int nid;
  
- TEST_PROGS := run_unprivileged_remount.sh run_nosymfollow.sh
- TEST_GEN_FILES := unprivileged-remount-test nosymfollow-test
-diff --git a/tools/testing/selftests/mount_setattr/Makefile b/tools/testing/selftests/mount_setattr/Makefile
-index 4d4f810cdf2c..fbdb8f69b548 100644
---- a/tools/testing/selftests/mount_setattr/Makefile
-+++ b/tools/testing/selftests/mount_setattr/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for mount selftests.
--CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2 -pthread
-+CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+-
+ 	for_each_node(nid) {
+ 		struct lruvec *child_lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(nid));
+ 		struct lruvec *parent_lruvec = mem_cgroup_lruvec(parent, NODE_DATA(nid));
+ 		unsigned long value = lruvec_page_state_local(child_lruvec, idx);
++		struct mem_cgroup_per_node *child_pn, *parent_pn;
  
- LOCAL_HDRS += ../filesystems/wrappers.h
+-		__mod_memcg_lruvec_state(child_lruvec, idx, -value);
+-		__mod_memcg_lruvec_state(parent_lruvec, idx, value);
++		child_pn = container_of(child_lruvec, struct mem_cgroup_per_node, lruvec);
++		parent_pn = container_of(parent_lruvec, struct mem_cgroup_per_node, lruvec);
++
++		__mod_memcg_lruvec_state(child_pn, idx, -value);
++		__mod_memcg_lruvec_state(parent_pn, idx, value);
+ 	}
+ }
+ #endif
+@@ -830,39 +830,43 @@ static inline void get_non_dying_memcg_e
+ }
+ #endif
  
-diff --git a/tools/testing/selftests/move_mount_set_group/Makefile b/tools/testing/selftests/move_mount_set_group/Makefile
-index 94235846b6f9..8771a5491ea3 100644
---- a/tools/testing/selftests/move_mount_set_group/Makefile
-+++ b/tools/testing/selftests/move_mount_set_group/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for mount selftests.
--CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2
-+CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2
+-/**
+- * mod_memcg_state - update cgroup memory statistics
+- * @memcg: the memory cgroup
+- * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
+- * @val: delta to add to the counter, can be negative
+- */
+-void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
+-		       int val)
++static void __mod_memcg_state(struct mem_cgroup *memcg,
++			      enum memcg_stat_item idx, int val)
+ {
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
  
- TEST_GEN_FILES += move_mount_set_group_test
+-	if (mem_cgroup_disabled())
+-		return;
+-
+ 	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+ 		return;
  
-diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-index 984534cfbf1b..1d566a91faa7 100644
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+ 	cpu = get_cpu();
  
--CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
-+CFLAGS += -g -Wall -O2 -D_FORTIFY_SOURCE=2
- CFLAGS += $(KHDR_INCLUDES)
+-	memcg = get_non_dying_memcg_start(memcg);
+-
+ 	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+ 	val = memcg_state_val_in_pages(idx, val);
+ 	memcg_rstat_updated(memcg, val, cpu);
  
- TEST_GEN_PROGS := resctrl_tests
-diff --git a/tools/testing/selftests/safesetid/Makefile b/tools/testing/selftests/safesetid/Makefile
-index e815bbf2d0f4..d3811515d8e3 100644
---- a/tools/testing/selftests/safesetid/Makefile
-+++ b/tools/testing/selftests/safesetid/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for SafeSetID selftest.
--CFLAGS = -Wall -O2
-+CFLAGS += -Wall -O2
- LDLIBS = -lcap
+-	get_non_dying_memcg_end();
+-
+ 	trace_mod_memcg_state(memcg, idx, val);
  
- TEST_PROGS := safesetid-test.sh
-diff --git a/tools/testing/selftests/signal/Makefile b/tools/testing/selftests/signal/Makefile
-index e0bf7058d19c..6c437f95132d 100644
---- a/tools/testing/selftests/signal/Makefile
-+++ b/tools/testing/selftests/signal/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
--CFLAGS = -Wall
-+CFLAGS += -Wall
- TEST_GEN_PROGS = mangle_uc_sigmask
- TEST_GEN_PROGS += sas
+ 	put_cpu();
+ }
  
-diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
-index f0d51d4d2c87..357077792395 100644
---- a/tools/testing/selftests/timens/Makefile
-+++ b/tools/testing/selftests/timens/Makefile
-@@ -1,7 +1,7 @@
- TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec futex vfork_exec
- TEST_GEN_PROGS_EXTENDED := gettime_perf
++/**
++ * mod_memcg_state - update cgroup memory statistics
++ * @memcg: the memory cgroup
++ * @idx: the stat item - can be enum memcg_stat_item or enum node_stat_item
++ * @val: delta to add to the counter, can be negative
++ */
++void mod_memcg_state(struct mem_cgroup *memcg, enum memcg_stat_item idx,
++		       int val)
++{
++	if (mem_cgroup_disabled())
++		return;
++
++	memcg = get_non_dying_memcg_start(memcg);
++	__mod_memcg_state(memcg, idx, val);
++	get_non_dying_memcg_end();
++}
++
+ #ifdef CONFIG_MEMCG_V1
+ /* idx can be of type enum memcg_stat_item or node_stat_item. */
+ unsigned long memcg_page_state_local(struct mem_cgroup *memcg, int idx)
+@@ -881,35 +885,25 @@ unsigned long memcg_page_state_local(str
+ 	return x;
+ }
  
--CFLAGS := -Wall -Werror -pthread
-+CFLAGS += -Wall -Werror -pthread
- LDLIBS := -lrt -ldl
+-static void __mod_memcg_state(struct mem_cgroup *memcg,
+-			      enum memcg_stat_item idx, int val)
++void reparent_memcg_state_local(struct mem_cgroup *memcg,
++				struct mem_cgroup *parent, int idx)
+ {
+-	int i = memcg_stats_index(idx);
+-	int cpu;
+-
+-	if (mem_cgroup_disabled())
+-		return;
+-
+-	cpu = get_cpu();
+-
+-	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+-	val = memcg_state_val_in_pages(idx, val);
+-	memcg_rstat_updated(memcg, val, cpu);
+-	trace_mod_memcg_state(memcg, idx, val);
++	unsigned long value = memcg_page_state_local(memcg, idx);
  
- include ../lib.mk
-diff --git a/tools/testing/selftests/tty/Makefile b/tools/testing/selftests/tty/Makefile
-index 7f6fbe5a0cd5..e9c22dafe5e1 100644
---- a/tools/testing/selftests/tty/Makefile
-+++ b/tools/testing/selftests/tty/Makefile
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--CFLAGS = -O2 -Wall
-+CFLAGS += -O2 -Wall
- TEST_GEN_PROGS := tty_tstamp_update tty_tiocsti_test
- LDLIBS += -lcap
+-	put_cpu();
++	__mod_memcg_state(memcg, idx, -value);
++	__mod_memcg_state(parent, idx, value);
+ }
++#endif
  
-diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
-index e361aca22a74..1f4628ceb975 100644
---- a/tools/testing/selftests/vDSO/Makefile
-+++ b/tools/testing/selftests/vDSO/Makefile
-@@ -11,7 +11,7 @@ TEST_GEN_PROGS += vdso_test_correctness
- TEST_GEN_PROGS += vdso_test_getrandom
- TEST_GEN_PROGS += vdso_test_chacha
+-static void __mod_memcg_lruvec_state(struct lruvec *lruvec,
++static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+ 				     enum node_stat_item idx, int val)
+ {
+-	struct mem_cgroup_per_node *pn;
+-	struct mem_cgroup *memcg;
++	struct mem_cgroup *memcg = pn->memcg;
+ 	int i = memcg_stats_index(idx);
+ 	int cpu;
  
--CFLAGS := -std=gnu99 -O2 -Wall -Wstrict-prototypes
-+CFLAGS += -std=gnu99 -O2 -Wall -Wstrict-prototypes
+-	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	memcg = pn->memcg;
++	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
++		return;
  
- ifeq ($(CONFIG_X86_32),y)
- LDLIBS += -lgcc_s
--- 
-2.43.0
+ 	cpu = get_cpu();
+ 
+@@ -926,20 +920,6 @@ static void __mod_memcg_lruvec_state(str
+ 	put_cpu();
+ }
+ 
+-void reparent_memcg_state_local(struct mem_cgroup *memcg,
+-				struct mem_cgroup *parent, int idx)
+-{
+-	int i = memcg_stats_index(idx);
+-	unsigned long value = memcg_page_state_local(memcg, idx);
+-
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+-
+-	__mod_memcg_state(memcg, idx, -value);
+-	__mod_memcg_state(parent, idx, value);
+-}
+-#endif
+-
+ static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+ 				     enum node_stat_item idx,
+ 				     int val)
+@@ -947,32 +927,14 @@ static void mod_memcg_lruvec_state(struc
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+ 	struct mem_cgroup_per_node *pn;
+ 	struct mem_cgroup *memcg;
+-	int i = memcg_stats_index(idx);
+-	int cpu;
+-
+-	if (WARN_ONCE(BAD_STAT_IDX(i), "%s: missing stat item %d\n", __func__, idx))
+-		return;
+ 
+ 	pn = container_of(lruvec, struct mem_cgroup_per_node, lruvec);
+-	memcg = pn->memcg;
+-
+-	cpu = get_cpu();
+-
+-	memcg = get_non_dying_memcg_start(memcg);
++	memcg = get_non_dying_memcg_start(pn->memcg);
+ 	pn = memcg->nodeinfo[pgdat->node_id];
+ 
+-	/* Update memcg */
+-	this_cpu_add(memcg->vmstats_percpu->state[i], val);
+-	/* Update lruvec */
+-	this_cpu_add(pn->lruvec_stats_percpu->state[i], val);
+-	val = memcg_state_val_in_pages(idx, val);
+-	memcg_rstat_updated(memcg, val, cpu);
++	__mod_memcg_lruvec_state(pn, idx, val);
+ 
+ 	get_non_dying_memcg_end();
+-
+-	trace_mod_memcg_lruvec_state(memcg, idx, val);
+-
+-	put_cpu();
+ }
+ 
+ /**
+_
 
 
