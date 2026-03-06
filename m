@@ -4,100 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E04F5140F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 06:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4070F01808
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 07:59:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5F586B0005; Fri,  6 Mar 2026 01:55:30 -0500 (EST)
+	id 735686B0005; Fri,  6 Mar 2026 02:59:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0D036B0089; Fri,  6 Mar 2026 01:55:30 -0500 (EST)
+	id 6E2FC6B0089; Fri,  6 Mar 2026 02:59:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEECD6B008A; Fri,  6 Mar 2026 01:55:30 -0500 (EST)
+	id 5E1836B008A; Fri,  6 Mar 2026 02:59:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BFCE16B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:55:30 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4EA751A042A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:55:30 +0000 (UTC)
-X-FDA: 84514727220.20.767D03E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6498540009
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:55:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q79/OmxY";
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BD816B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 02:59:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B35021C480
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:59:30 +0000 (UTC)
+X-FDA: 84514888500.03.3300D15
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E7117C0004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:59:28 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=H6TCQlHN;
+	spf=pass (imf10.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772780128;
+	s=arc-20220608; t=1772783969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=USHu/7CpH4LcZ2jIDqDRGYLvrfdbIQMZzBaM4cK+Q30=;
-	b=55mIu9+yXYcWsKvtOiz3dS9ut1H/v9YgxMfUUAk4xSCA+dDHPSI947CpH0LGaqgVqapMkt
-	bG57YoYbdks8hICYp+jzXlKk76KVSwo6IPYuIzM9vWdHyhDbrNkYjfRK0ktS8KEPOUK39G
-	URsE7tjmtCsJ3qCwV/8TK/aBzy+PmXg=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q79/OmxY";
-	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772780128; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=T1vgmYqExVu6291C5z/MhQ5jLLEBkwRqt9pjw3b4n94=;
+	b=HjK5GW5oPq2vKWER59mdB1eZd1In5E4NlrT7pUfRiSJiddIUimHbcdVe4c4tgzutRc5yNA
+	UCGrqwn9CbRTUWtjL9HgCzV1hdJmaKvKnsgaP0noeS7p6BOKTGHjdtHSVxp62c8c4RqqnM
+	bjY+E2F8kUYjk1GYp/1aFat5PvuEK9g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772783969; a=rsa-sha256;
 	cv=none;
-	b=bAW0HUrJxvAkPKEb8mlvDr7GyzcQZOmlRKPDqUEj2Qnj2mKp69dcpk+zlh1YiMdSkOFdKC
-	7HXZLAMcfbnPERPHGavNTLFGOsGF66m5dNMZGgPQcjEtAPU5em/bZVdyR4fEUMtzi638XH
-	dJNo9NVfuZGGr5W/d19kJfyPaViEgs4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C041A60127
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7378EC2BCB1
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772780127;
-	bh=yHP/NYIbCCLTWuIe4vFzOVhL0C1U0S/OpzVwTdv/CSc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Q79/OmxY6Eo1PNX+yKu1uI3WtN+QTyKGjOifmXhz/c1Dlwica4bw/DDJGqdvbDRGd
-	 MKWXIzGu5jn01darBCGMT7o9QwAG31wMqnzU//kn6lcUR1ik/+CD5VfUy5W5g0IgOU
-	 zRw1Jv+ohuq2g2yjWSDROGyRrhPo99BZIUF+zWGRd796N6p+8JHDAHt+X9KB0sQTkY
-	 Tx3EUzyCdIryBVYqKDSfkatFjaA2cqEYhULFr2Pltyz/MgYdxvuCTMOTp/yGsF41W8
-	 yHfM6iH0U0MRON9m+M213qRVUY/5vIzCuYYM0WRkoHtpq1DIOgqQ4JRGedcQ4/oe1n
-	 tYRE9EkhzfSLw==
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64c9a6d7f81so8052105d50.3
-        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 22:55:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV+GemXJFK20AWiUdbR4NmE2ZHYxA2MgHXSeeBKYh63bhi0tt0UqmjhUPI+5WvzvIzhBWHKw2/GCQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywpxt8J2IvYT9igdlEEwqzc3mLWD1c/d7Qg90GRAGMtuN6pnoQX
-	kSTPxfchwubHQvygXQZLL2CaiNb/lejc59i3IGD1R7PaGmTIrZjOrh1vC2nK5BmQJEuI6Jq3r9f
-	aIM+XUapaNtLTHQInOFTvGHKEI8RG09Hosmq5+GPC3Q==
-X-Received: by 2002:a53:ee57:0:b0:64c:f4fa:4030 with SMTP id
- 956f58d0204a3-64d14147f3emr933485d50.25.1772780126658; Thu, 05 Mar 2026
- 22:55:26 -0800 (PST)
+	b=kljWxjcwgIb8JNmMISVDV/9DsqHrq7A4UiYphGSkuujGv+RlBH73dAZ/NNXLcciS7iiNHL
+	uaZ0V90n33/TKZrkfvHJwHbUEYWx5+NCLnn2xrnJCSrP1X77Ry4ZkSpawmGzaAhGJlvL/z
+	mfSgNq+WJoP0SqMenA0+YF0anp7j14k=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=H6TCQlHN;
+	spf=pass (imf10.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	dmarc=pass (policy=reject) header.from=shopee.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3597b474cbdso3290575a91.1
+        for <linux-mm@kvack.org>; Thu, 05 Mar 2026 23:59:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1772783968; x=1773388768; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T1vgmYqExVu6291C5z/MhQ5jLLEBkwRqt9pjw3b4n94=;
+        b=H6TCQlHNAaSgowV8/6CFpvPkUP8EB6JD92s6p2k5Vba3t5QnKkzmSSbQW+a4K3dte8
+         pd/CZ9L90Sc7hEM1FWUijgfAPkPlApyo3JbnPwhTnkHpUB5SOdcZopToky3laASRKYyu
+         P+5Pd7+lbxXm5DhHE1N4h2NT4udv7OZh3QhtpSgonH1Yf9a5kBLFbiqss5NtqCv8My/P
+         DK6c+XG7jhd9PrirwnHpn/qQ5mKz6hD9eCWPQQMsTU1/JSzuNa2kcxXuyC3JxkzUUmrB
+         W1h0ua0MWT4COJdqzMdu/54kcYJQZ1chU0vpUpel43oYAiGIJBvwlAFMPnqVuQbJfItF
+         zPIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772783968; x=1773388768;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T1vgmYqExVu6291C5z/MhQ5jLLEBkwRqt9pjw3b4n94=;
+        b=iGH75A7NA+iFSmOOuep8mGcqObrZjxBEKQqv3Uk8VPxZs/G4z0yC9u0/+4Zs+cFAuk
+         xG0FivoID0AEv3BfmAKiWjRtOZFdLOBCKjytckjG1girrEkcNHLKZld/Rn+GwG3QFS3f
+         D4NB3CimUAQuwkVUC1RymjT7YSs7wnuPrgqfYHLpyyKF4UyPhb90CalWfp3kWKXX2V4p
+         Fi0qWhjt52g6+rgowdpWQ5HXHwowjeEYfIKRDOHGqlwbkzguMIgPNAmRFb33iJI/5QBj
+         rqft+6UJJZ7v+XDxGikBOEsr6xF6hguYGDh/Dw5Xub/Nz71Qjci762e825IydrUf/vXt
+         jXVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXAp/fuT99C17n1dZqTao+PdE7c5nDfK60CQ1D4ZftiyVgEJC1XGMcehxPGsOP3Qdf+hU2BguJufA==@kvack.org
+X-Gm-Message-State: AOJu0YzdJwfrITGHlhJj/qtH8Bh6v9MczwLAPm4kxI9Jpyz4RLcJc55/
+	zT+9tRhi2N1vg7ACZPnFZ2HHDz8a/XfbHVwmW+8QPcv2PZuzvo5/8EYOPI/kX69nQcw=
+X-Gm-Gg: ATEYQzx6Dj40a0Wcy3W4bPsRqWnbrSDxDyyCokteUMctYbUns/O5V8434kL5DNSY61H
+	uEXdZZIVCVbcYSTn80HP7QjBRQmWDDn77od/FqPBzWAwEMWMOI2zDaSKyYvMEV8pXEVW95KA2OU
+	td5aZT5aN4qHvlgmMBsYbTuhT3sAar9xhF2xUKy+IHff08DILNRtJCCO1q0lt3S/V/W5GSx/ZmE
+	H/2kogHOj1PHvr/E1o1cvEgxRdRoIY0KPLvRvi+ufkHxIDdTuRi5btyU2xxPFcJhNbg9z40oooK
+	nGqsZ4F1qvgyvirz9jLv1uiZQja+9Ct8yJdo7UsZVsuBNa/w7Ay5z6Wrmcl9pjSmPNW48PvHc7W
+	eaSndJbh4QuBA2O+o0NGWa3Yvy0sOPLbMppMHlSd87jll+ji1lX/oS9OIqB5m9ZTlpUFNqDSWa0
+	nyybf1yZJZrjnJPP8yhRo8nodDiXSzdCEBrJgM0Q==
+X-Received: by 2002:a17:90b:2b4e:b0:359:95c2:b3e with SMTP id 98e67ed59e1d1-359be390472mr1164522a91.30.1772783967678;
+        Thu, 05 Mar 2026 23:59:27 -0800 (PST)
+Received: from localhost.localdomain ([147.136.157.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359bbaa0d83sm804787a91.0.2026.03.05.23.59.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 23:59:27 -0800 (PST)
+From: Haifeng Xu <haifeng.xu@shopee.com>
+To: akpm@linux-foundation.org,
+	david@fromorbit.com,
+	roman.gushchin@linux.dev
+Cc: zhengqi.arch@bytedance.com,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Haifeng Xu <haifeng.xu@shopee.com>
+Subject: [PATCH 0/3] record non-slab shrinkers for non-root memcgs when kmem is disabled
+Date: Fri,  6 Mar 2026 15:57:53 +0800
+Message-ID: <20260306075757.198887-1-haifeng.xu@shopee.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260306024608.1720991-1-youngjun.park@lge.com>
-In-Reply-To: <20260306024608.1720991-1-youngjun.park@lge.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 5 Mar 2026 22:55:15 -0800
-X-Gmail-Original-Message-ID: <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com>
-X-Gm-Features: AaiRm52ieeZPwVrniCvpmKfN24wjM0j1i-6iz_fJBunHQl3H8TI9XOCSfg6Tl1U
-Message-ID: <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm/swap, PM: hibernate: hold swap device reference
- across swap operation
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev, 
-	linux-pm@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6498540009
-X-Stat-Signature: eipoj98m85hg9hbpgacqy9minnq9dwzr
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1772780128-731954
-X-HE-Meta: U2FsdGVkX19QvvP9D2BylkYzsePHszpOUuPp/FWiQNcKgOWkGY7nRqER8Q1FdeaujiSkRFpWMl2P2FisAVQwXQd8tYyXrRFMYvMLz86NBbWVZjmKr5E2yHMs4TCqGOpGZjZ//JvWbXfM2HDb0e+lAfXb+0xIjBxpRAOsc7oTcWjtYqmYtmibS6Ie00+qx/swsRtbn9d+Ry4Noi91WcsrDwMeHtJsOHFuXVtnrNn1Er1IwZJ0sA3aoMBfkdeb9Q4WnSwVlZfwKEvWdtTH5eEY0L7ueEjUQ/KCrTvl/kN8Q6q50pXWN9ZBb3MKeESIjZbmcxZM67P6iQxZue6zQk2IKlJPDq88K9/GODIBYXKJycOYRjKRaWSiMCjFDjzRhTgDoSysrVhC4VGOw/wfQHyYRkVIwgft9TuAyr2O7WvvDvETt3zS8HLfFDVOAYFF11BjMgwjEeAXDrO3SWiCDJ+BydlJzG1Lnk6TRmXSqcZO0EeNMC6zUoaShtCR5isa7voFFDE7l0BEXsTRcNYLhbdkoyBtnFbg2oEVywZ9pXZLC2YZX/wc3/bAuWavQyzG0LNyRuDQythv9sWhA55Xktp5RDBJE/2CqS9rMAZe+c7ms5SfOqGuT/JBk8aq1qZNcWHp2PHMx2iOFtvL5hDjE7jD3INSNbW4DTeXZEHcC71GrwOy+ae83S6kiCpmhz6t7pDeNM7n58T1KYv0xauTlhkPLCPz0ZG8XqqaNisCE/3Cult5PCb6tGWusq1ZhughXsSXQncIkY/VTZJUnaR2gpK6CoJmRnul/GwdnOQsIORebHa0e/9MZjl0/4aEPUh3cnRYVOMpowiwAoyh3gI25SFimkpCdJd2sVoxI+mUFJRR1rpO/0/Yr/QI1HbkivKlc0tcUcgkw1bfq5qjx0pIzjcgpKSo3K9DOqkecAIA1FlvdV8YfI6HUesQ6VZzB4AoS9NDQrk0+9lf6tskM9GCyft
- gB+Ig+Kw
- pOimoBWGr5Lin1icSEWCjNxF2MGUJHw+aaQpHovOUlJMY162h2s+bFUCOOHqvYZEdmKW0sfmMR6knameJRfU1Du1hpnKNgDQGl/nt1FnfEg5XD8Eb1H1c2Xt3BURnLWmzdfIfMaBsjqIO2CF/QF+LNFnwS16NGVaiUEs74kftQNZTq6TT0565S4bjjCfMv5dL10HfKtAOXMrOj2nxMmBsyMK7m6qmH9gFJ3VdGUnY+1xlkRuFYL2s3HHxT8TF/nUYnSa/mHwU7enJL7UG+0MG0RLncly+rVV/n2jNy6iNb9dhp3dBrvhFYYsA2Nrc7CXsEfLeIa0XL54YI54=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E7117C0004
+X-Stat-Signature: 6zcro14unhkqrbanj3jm99dz6qtdnkgh
+X-HE-Tag: 1772783968-667953
+X-HE-Meta: U2FsdGVkX18Q2WA/grr5NQGCllscZriHk56vzH47AP6R2PLNMoZ6qd/lQBGyGfs6xLMFw+aoTNSJhotHQYGsjUryXVmXLh2Qpo9dJ4NRfzCHH9U/q1be5SMq7hQQZzDy5HrBJ5dH+SByVy/BNDKt1VrkVrA2GxV7/fG5sUzoZPMhT5RpQVOU+Hr/VYFzhhcyCd/NzOHJGl3MP3sZI4hgY+/aNb0dZyxqC2PG4E5I/xcUwcBZCZMTlLxhRyLjMwDA8bByM2KB6JFPJyODKHZwDKq+Xhm+P18ElG6/NImg3ErxqnFuKWvwvrq37AU/flGuYrcImc3WrT9zyf46GPzrq1RF3FKFtmyPbga3aZTn9Mr+D83GZvCni72WSatrUs68ALjGVlah/9F/VSn6SBf2/Yh3vgCQ1HsbQAmTdHAzp9ajfQZ1o1SGRjDhqlMneWmGOE27agvfek8kBaFr7oyG0xl+2Rp7eMDLq0FpPVmNyqgOmjWCka1yYepL3mBevxgZtvi6gvL8vF0Qmc1KFYO+a/CqFqub9lQMv55wKYWPG8PzDaH9hS097V5OYbDZ0n9QIK58nd75s3eR5VoRu25VSriwsePdCe0ZiJ6P5bTBLZ+q6keru4CUzQgM1QURuqR70qj0nCmBKlNBKanKVJKIBoPNhab5WYKqjVYf3NjDGk2EJNObgBtahYsSZPIJ24z1Jdew74PMWVe2kipEgcGLBtptPfs0oOSZkbttIlSP41+82e1mKKAUQc9IkhqVjSzSuR8+aROy1Zi0QnhH1iAoQ4NniexyDAiR2FMC1jFaiYAbDbYxjWGasrDMCozOEEfRSYkueqMBdZsVxD9Xfb/V9p2zIdo0xSEm48RMoTmM9jV6gFGzjpCurL2OmJpctZD+KJ4lIireq2YsXQLSjvCTD9vswIFbW6GEF5bUL8oMUaWcXd4YMFra7LmQmHa9ZKpYzC8iZ3U2eX7aUHyaJP2
+ m6pA3X+L
+ FqYBM1RUOg75cglMVMCEdntwDbs0ZqIROLc+EpSC7q8geRntLE9R43vuCdAzzkfVBs3QawfT7INm5xUy+htM+ASCRDPY48Kg06k6WIsuvTylM8haghibvaosxaBiUzkP7bKmAF+gM8+Tu35QeZojLoKtdskC9Y0zQx730VV/s+/ZiiV4d/G3rfiDLjmxuEPJG4jrfbs9Hm0w+9wuaDEprgoWpOajvRv/V9DrlWEH0LdEWcfzeqDtONXCbvKfw1Ajn4CdcT9sJPjj3rPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,288 +119,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Mar 5, 2026 at 6:46=E2=80=AFPM Youngjun Park <youngjun.park@lge.com=
-> wrote:
->
-> Currently, in the uswsusp path, only the swap type value is retrieved at
-> lookup time without holding a reference. If swapoff races after the type
-> is acquired, subsequent slot allocations operate on a stale swap device.
+When registering new shrinkers, all memcgs need to expand shrinker info
+if new allocated id exceeds shrinker_nr_max. But if kmem is disabled,
+only non-slab shrinkers is useful in memcg slab shrink. So in this case,
+it is enough to allocate non-slab shrinker info for non-root memcg. This
+can save a bit of memory and reduce the holding time of shrinker lock.
 
-Just from you above description, I am not sure how the bug is actually
-triggered yet. That sounds possible. I want more detail.
+With this optimization, the finish time of pod creation in our internal
+test is reduced from 150 senconds to 69 senconds. We test it based on
+stable kernel 6.6.102.
 
-Can you show me which code path triggered this bug?
-e.g. Thread A wants to suspend, with this back trace call graph.
-Then in this function foo() A grabs the swap device without holding a refer=
-ence.
-Meanwhile, thread B is performing a swap off while A is at function foo().
+Haifeng Xu (3):
+  mm: shrinker: introduce new function get_shrinker_id()
+  mm: shrinker: optimize the allocation of shrinker_info when setting
+    cgroup_memory_nokmem
+  mm: shrinker: remove unnecessary check in shrink_slab_memcg()
 
-> Additionally, grabbing and releasing the swap device reference on every
-> slot allocation is inefficient across the entire hibernation swap path.
+ include/linux/shrinker.h |   3 +
+ mm/huge_memory.c         |  21 ++++--
+ mm/shrinker.c            | 155 +++++++++++++++++++++++++++++++++------
+ 3 files changed, 150 insertions(+), 29 deletions(-)
 
-If the swap entry is already allocated by the suspend code on that
-swap device, the follow up allocation does not need to grab the
-reference again because the swap device's swapped count will not drop
-to zero until resume.
+-- 
+2.43.0
 
-> Address these issues by holding the swap device reference from the point
-> the swap device is looked up, and releasing it once at each exit path.
-> This ensures the device remains valid throughout the operation and
-> removes the overhead of per-slot reference counting.
-
-I want to understand how to trigger the buggy code path first. It
-might be obvious to you. It is not obvious to me yet.
-
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> ---
-> Hi,
->
-> This is a simple RFC quality patch to verify if this approach is suitable=
-.
-> Per Usama Arif's feedback regarding git bisectability,
-> I have squashed the previous commits into this single patch.
->
-> base-commit: ec96cb7e4c12ff5b474cf9ab66f2e9767953e448 (mm-new)
->
-> RFC v1: https://lore.kernel.org/linux-mm/20260305202413.1888499-1-usama.a=
-rif@linux.dev/T/#m3693d45180f14f441b6951984f4b4bfd90ec0c9d
->
->  include/linux/swap.h |  1 +
->  kernel/power/swap.c  | 12 +++++++---
->  kernel/power/user.c  |  9 +++++++-
->  mm/swapfile.c        | 55 ++++++++++++++++++++++----------------------
->  4 files changed, 45 insertions(+), 32 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 7a09df6977a5..37bf7cf21594 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -442,6 +442,7 @@ extern bool swap_entry_swapped(struct swap_info_struc=
-t *si, swp_entry_t entry);
->  extern int swp_swapcount(swp_entry_t entry);
->  struct backing_dev_info;
->  extern struct swap_info_struct *get_swap_device(swp_entry_t entry);
-> +extern void put_swap_device_by_type(int type);
->  sector_t swap_folio_sector(struct folio *folio);
->
->  /*
-> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-> index 2e64869bb5a0..c230b0fa5a5f 100644
-> --- a/kernel/power/swap.c
-> +++ b/kernel/power/swap.c
-> @@ -350,9 +350,10 @@ static int swsusp_swap_check(void)
->
->         hib_resume_bdev_file =3D bdev_file_open_by_dev(swsusp_resume_devi=
-ce,
->                         BLK_OPEN_WRITE, NULL, NULL);
-> -       if (IS_ERR(hib_resume_bdev_file))
-> +       if (IS_ERR(hib_resume_bdev_file)) {
-> +               put_swap_device_by_type(root_swap);
->                 return PTR_ERR(hib_resume_bdev_file);
-> -
-> +       }
->         return 0;
->  }
->
-> @@ -418,6 +419,7 @@ static int get_swap_writer(struct swap_map_handle *ha=
-ndle)
->  err_rel:
->         release_swap_writer(handle);
->  err_close:
-> +       put_swap_device_by_type(root_swap);
->         swsusp_close();
->         return ret;
->  }
-> @@ -480,8 +482,11 @@ static int swap_writer_finish(struct swap_map_handle=
- *handle,
->                 flush_swap_writer(handle);
->         }
->
-> -       if (error)
-> +       if (error) {
->                 free_all_swap_pages(root_swap);
-> +               put_swap_device_by_type(root_swap);
-> +       }
-> +
->         release_swap_writer(handle);
->         swsusp_close();
->
-> @@ -1647,6 +1652,7 @@ int swsusp_unmark(void)
->          * We just returned from suspend, we don't need the image any mor=
-e.
->          */
->         free_all_swap_pages(root_swap);
-> +       put_swap_device_by_type(root_swap);
->
->         return error;
->  }
-> diff --git a/kernel/power/user.c b/kernel/power/user.c
-> index 4401cfe26e5c..9cb6c24d49ea 100644
-> --- a/kernel/power/user.c
-> +++ b/kernel/power/user.c
-> @@ -90,8 +90,11 @@ static int snapshot_open(struct inode *inode, struct f=
-ile *filp)
->                         data->free_bitmaps =3D !error;
->                 }
->         }
-> -       if (error)
-> +       if (error) {
->                 hibernate_release();
-> +               if (data->swap >=3D 0)
-> +                       put_swap_device_by_type(data->swap);
-> +       }
->
->         data->frozen =3D false;
->         data->ready =3D false;
-> @@ -115,6 +118,8 @@ static int snapshot_release(struct inode *inode, stru=
-ct file *filp)
->         data =3D filp->private_data;
->         data->dev =3D 0;
->         free_all_swap_pages(data->swap);
-> +       if (data->swap >=3D 0)
-> +               put_swap_device_by_type(data->swap);
->         if (data->frozen) {
->                 pm_restore_gfp_mask();
->                 free_basic_memory_bitmaps();
-> @@ -235,6 +240,8 @@ static int snapshot_set_swap_area(struct snapshot_dat=
-a *data,
->                 offset =3D swap_area.offset;
->         }
->
-> +       if (data->swap >=3D 0)
-> +               put_swap_device_by_type(data->swap);
->         /*
->          * User space encodes device types as two-byte values,
->          * so we need to recode them
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 915bc93964db..f505dd1f7571 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1860,6 +1860,10 @@ struct swap_info_struct *get_swap_device(swp_entry=
-_t entry)
->         return NULL;
->  }
->
-> +void put_swap_device_by_type(int type)
-> +{
-> +       percpu_ref_put(&swap_info[type]->users);
-> +}
->  /*
->   * Free a set of swap slots after their swap count dropped to zero, or w=
-ill be
->   * zero after putting the last ref (saves one __swap_cluster_put_entry c=
-all).
-> @@ -2085,30 +2089,28 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->                 goto fail;
->
->         /* This is called for allocating swap entry, not cache */
-> -       if (get_swap_device_info(si)) {
-> -               if (si->flags & SWP_WRITEOK) {
-> -                       /*
-> -                        * Try the local cluster first if it matches the =
-device. If
-> -                        * not, try grab a new cluster and override local=
- cluster.
-> -                        */
-> -                       local_lock(&percpu_swap_cluster.lock);
-> -                       pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0=
-]);
-> -                       pcp_offset =3D this_cpu_read(percpu_swap_cluster.=
-offset[0]);
-> -                       if (pcp_si =3D=3D si && pcp_offset) {
-> -                               ci =3D swap_cluster_lock(si, pcp_offset);
-> -                               if (cluster_is_usable(ci, 0))
-> -                                       offset =3D alloc_swap_scan_cluste=
-r(si, ci, NULL, pcp_offset);
-> -                               else
-> -                                       swap_cluster_unlock(ci);
-> -                       }
-> -                       if (!offset)
-> -                               offset =3D cluster_alloc_swap_entry(si, N=
-ULL);
-> -                       local_unlock(&percpu_swap_cluster.lock);
-> -                       if (offset)
-> -                               entry =3D swp_entry(si->type, offset);
-> +       if (si->flags & SWP_WRITEOK) {
-> +               /*
-> +                * Try the local cluster first if it matches the device. =
-If
-> +                * not, try grab a new cluster and override local cluster=
-.
-> +                */
-> +               local_lock(&percpu_swap_cluster.lock);
-> +               pcp_si =3D this_cpu_read(percpu_swap_cluster.si[0]);
-> +               pcp_offset =3D this_cpu_read(percpu_swap_cluster.offset[0=
-]);
-> +               if (pcp_si =3D=3D si && pcp_offset) {
-> +                       ci =3D swap_cluster_lock(si, pcp_offset);
-> +                       if (cluster_is_usable(ci, 0))
-> +                               offset =3D alloc_swap_scan_cluster(si, ci=
-, NULL, pcp_offset);
-> +                       else
-> +                               swap_cluster_unlock(ci);
->                 }
-> -               put_swap_device(si);
-> +               if (!offset)
-> +                       offset =3D cluster_alloc_swap_entry(si, NULL);
-> +               local_unlock(&percpu_swap_cluster.lock);
-> +               if (offset)
-> +                       entry =3D swp_entry(si->type, offset);
->         }
-> +
->  fail:
->         return entry;
->  }
-> @@ -2116,14 +2118,10 @@ swp_entry_t swap_alloc_hibernation_slot(int type)
->  /* Free a slot allocated by swap_alloc_hibernation_slot */
->  void swap_free_hibernation_slot(swp_entry_t entry)
->  {
-> -       struct swap_info_struct *si;
-> +       struct swap_info_struct *si =3D __swap_entry_to_info(entry);
->         struct swap_cluster_info *ci;
->         pgoff_t offset =3D swp_offset(entry);
->
-> -       si =3D get_swap_device(entry);
-> -       if (WARN_ON(!si))
-> -               return;
-> -
->         ci =3D swap_cluster_lock(si, offset);
->         __swap_cluster_put_entry(ci, offset % SWAPFILE_CLUSTER);
->         __swap_cluster_free_entries(si, ci, offset % SWAPFILE_CLUSTER, 1)=
-;
-> @@ -2131,7 +2129,6 @@ void swap_free_hibernation_slot(swp_entry_t entry)
->
->         /* In theory readahead might add it to the swap cache by accident=
- */
->         __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
-> -       put_swap_device(si);
->  }
->
->  /*
-> @@ -2160,6 +2157,7 @@ int swap_type_of(dev_t device, sector_t offset)
->                         struct swap_extent *se =3D first_se(sis);
->
->                         if (se->start_block =3D=3D offset) {
-> +                               get_swap_device_info(sis);
-
-The function name swap_type_of() does not suggest that the function
-should take a reference.  This is just about function naming. I am not
-commenting on the function logic yet.
-
->                                 spin_unlock(&swap_lock);
->                                 return type;
->                         }
-> @@ -2180,6 +2178,7 @@ int find_first_swap(dev_t *device)
->                 if (!(sis->flags & SWP_WRITEOK))
->                         continue;
->                 *device =3D sis->bdev->bd_dev;
-> +               get_swap_device_info(sis);
-You might consider moving this one line up.The typical usage pattern
-is get the reference then operate on the stuff protected by the
-reference count. Here the order does not really matter due to the
-swap_lock protection.
-
-Waiting for details on how to trigger the bug.
-
-Chris
 
