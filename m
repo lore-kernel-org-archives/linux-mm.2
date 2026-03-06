@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF828F01832
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D98AEF0182F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 228936B008A; Fri,  6 Mar 2026 07:29:34 -0500 (EST)
+	id 37FDD6B0092; Fri,  6 Mar 2026 07:30:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D2B16B008C; Fri,  6 Mar 2026 07:29:34 -0500 (EST)
+	id 32A416B0093; Fri,  6 Mar 2026 07:30:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AADF6B0092; Fri,  6 Mar 2026 07:29:34 -0500 (EST)
+	id 2368D6B0095; Fri,  6 Mar 2026 07:30:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDB336B008A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:29:33 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B790A5812E
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:29:33 +0000 (UTC)
-X-FDA: 84515569026.19.9FB2BDF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 27F4118000D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:29:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ2C8YdL;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FFF96B0092
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:30:16 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF6811A059D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:30:15 +0000 (UTC)
+X-FDA: 84515570790.25.877991E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5CBDA180015
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:30:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RrOKh0OA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772800172;
+	s=arc-20220608; t=1772800214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3+N+fmqbvm7Zv37fwU28NwjTpZFVQVbgvTQtiOFltLE=;
-	b=hLy959RaCzR7VaRFM9cLdx2d3WGIq4ZsgLMuA3w/R/oJuoQVAhktxAmbTbtFUHyxPZuj0t
-	MXlh5jefg07/hRfSFlS47Jt6CO/ZsVU8bbZCdE0UrIH2TwXsx6rSKSyhvjjK22Sv7DmglY
-	fGIWGJB+o1eRSokEkPap8o5zgMCloXA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LZ2C8YdL;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800172; a=rsa-sha256;
+	bh=x3u3PLujGP7HIMgiks7XBwFOh1HdWRmuG3DKugPgRFw=;
+	b=w7cZS4+eBHpKxNtCnRW1J/ImkQnTHiiwrOORCVl2dO5I0wx4sD24ybwi4oA0FnScNBRDbI
+	Lz7ehyxWjaJYh5Nfo3ECWDW+Ym4mI3/RWuCdiqAzM/nctc+G79tRpwF2Zx9jjqzD2ShuBs
+	s2g2ND71d4xLWxMv1+oJX3ofxPlHeuA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800214; a=rsa-sha256;
 	cv=none;
-	b=rVO5hZE7U3225pX8+4MbjUN5nJZT8H7T6KD/6bYDNDeQalKUcqW057T72PQv05ypOoFbH2
-	oGqUBKJoWLS3Z5F4mr4A3QYC/Q/M4uAnOsvghtqFe1VD6mlOWAGbc83pJZQwHLmQ9ITXsz
-	cT8brhisDFmMxbp0CTYHrk6oBgctd78=
+	b=UoPxuqzs5QQMCTQdLbltt3vhLpvS7Rk3Kvhzc0nUc/7QGuj6dls3FJyUwYTZH4FIQ4rtrr
+	pdk3b9RVmfWYHofVp6LVxKJUf0yibnUS2aZlevzPu9pV+8Uu3+TKlZbF3xVrM2ICfGE+xf
+	kERIjHSzYAHaSboIGpEn9AKkkojr4A8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RrOKh0OA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 519B160018;
-	Fri,  6 Mar 2026 12:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBA6C4CEF7;
-	Fri,  6 Mar 2026 12:29:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6AF21440A6;
+	Fri,  6 Mar 2026 12:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33C3C4CEF7;
+	Fri,  6 Mar 2026 12:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772800171;
-	bh=e/BhLuvVPXdAbTMBHCsfqneVZFKZ17hQIzvo4yPKeoQ=;
+	s=k20201202; t=1772800213;
+	bh=Kftdd8omZX7VELmkL5LGQUFF+sQIeOHfzVU13moKjvE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LZ2C8YdL87D8RpW/YcqxQXdubcwJYV1mXiNi+UoS9iMH/GZ6tewKR5nE3DeuewPAj
-	 FjUGDPllrcWVkaTdK+hHETp1VMwk8al+fULHWHc5ArhEgn636iBiIKwo+030oucnyt
-	 R5ip2+oEghEmWWtqUJEOEDUPUzE1JM264O2JI8HG3B2KdY6tnlp6cUREjXfuUUhJqK
-	 laEw0eVrwgbM9iqQmt/O5Pd7Dpk3bYJMdu8+pPEen9SGbx9GDjtpxN/Vm1R2vXpdx+
-	 TesD22LJCGx7pZOPjxKfoMlDF8xXvihsNP+Y8Jno2n0Svqw7inQAdc/rgB4H5jjlqp
-	 MaOZu6sgtomNA==
-Date: Fri, 6 Mar 2026 12:29:28 +0000
+	b=RrOKh0OAhxHMytB1jOn/jttu3GJlb3C3rXPB9TooAMKbyt3vUr89Pt0+i4u40IkqV
+	 RX2hBvNB6H5hwNgpkw2833/q+m2pIU+tXLy6aT2UqxNKjA9gRXZUoAjf58JN5/E+WU
+	 b+1XKEzPnARh8OeG9Vznq4eIhrMwfxCOh6yt4sHKclOXteR/4dXp5YR9O3YGnPPT2n
+	 aDJp5EcMC6pPhjaUS4A5KpHj2GJduynNISMtMzESwpD0c6OWnPmGQWuaLB8H96xPbV
+	 V8tWz99yS9NFw2rriHryb/Y2+I+FJmH4No3lieIJOsE5G/KrymQlZobYCswq94RN1W
+	 nF2PinBdqWDrw==
+Date: Fri, 6 Mar 2026 12:30:10 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: linux-kernel@vger.kernel.org, 
@@ -100,23 +100,20 @@ Cc: linux-kernel@vger.kernel.org,
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
 	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 11/16] mm/memory: inline unmap_page_range() into
- __zap_vma_range()
-Message-ID: <a5765cac-69d6-4314-82d5-80ee363906de@lucifer.local>
+Subject: Re: [PATCH v1 12/16] mm: rename zap_vma_pages() to zap_vma()
+Message-ID: <2f4ee3ee-549c-4c0f-980d-3853193776b6@lucifer.local>
 References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-12-david@kernel.org>
+ <20260227200848.114019-13-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260227200848.114019-12-david@kernel.org>
+In-Reply-To: <20260227200848.114019-13-david@kernel.org>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5CBDA180015
+X-Stat-Signature: 74jz36ck3ee5ar54c6m9pgx7fu6qaizk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 27F4118000D
-X-Rspamd-Server: rspam08
-X-Stat-Signature: es33g4ccpcafdqqj48hgb4y37on4ihnz
-X-HE-Tag: 1772800171-377350
-X-HE-Meta: U2FsdGVkX18c2tc7IbZK8o25+SJj/1oZ1A26EUfsj0x8OFHRUbBszigFQNAH0JaE8AJKJ1Ym+SwvqPi2Zm1Wfi7fYO9bipP3HGS+d3uou1zHn2zy1QkWC6Qzt/LJQ1e/snWc1iaviRui0j9Qnxh2cs6CITqLX11EXYy1w7Qjgo7EpRbg5wV/yk16XCyOiyZDmmYQWIAMsCaiAtA//SduuUYn2lYXQczIzSYWsH1LpMgO0byOcJetTMAi0Z7Hcqv4JjyTpu3WJPCxzj2/KHgejbtEu0ITSZhOhcfWZI0kJBH3f+JrndIPGubkyGE9W4hrSFiXScbM2AtQCoODAHfd3Ogb9oFNPD/DAIv/cWa3HQwmw4G8oKPmHfS9ycNQnOnIEHbFcQYZLI+j94SHn2fZy31BLfx8f2NvnFbSBNJWR7FCLC7KuTqh2Jv8M2OC/qiN4tABG+fDk7vEyfbhueVAgq4xNEjd22jWb728GEJdaEeVzDavQM7F9jvOHxf5Sw9Pxugw52ASm25G4ve+o46hAPJ0G8sdoagRrUjKE5LT+wBRXcw0rFFR7DxDb2BdMDkacne8DRqxAJN7ahCm5PnioDyyKS5Ls7YYfQOytt/EjRJYe2XityZoq5hCgQ/aF/xFvJ1M8FsBYodEWAOFUnPjCO5L73kIoxSAR8hZhEU63Qs+7V09HQaTBaIl0d9DrSobbECQZrwLuhtbfeSJAhYsnkWRMIItRkLCFLfwkp0WFMBcdM8RVdN6Z7123f4EgqfnW49nyrYKUiWZR7+sERpT3Ba1ZSwI+HA2/fOBCM33K0u3LgKffyJUktZ72SrKuIICO8y0JrEml+ugao9EUBjfy1S8kVkr1qfSoNOvZ4NwEtM2tw7SxsXecyb8m3lUWA7edfPlg3eLrB3vstcuNL1P0uGLdJPW9c4JqaTw73bR78vQItB5X6WZ/d+Bbq1z8Th75eL+n79k8flnI2o7Xst
- u6hbllTc
- oRvnHbSRkE0AqAt0/+dNlSi6DxLwOsMm2ZlaTz/UyNEqQnmpKbu8PMSgxkQ8mcuxHRuAX8hjGpn/v8RGYq+m8/Ie1H5yd3ovamU/ROE9WNOpsmNI9fpZA1RatGItQ3j84y0hH9REPeHpXPDUNBwivG5MF8koAynsruT3I+PtsN68f0Bb9pBxSaBQyRqLoJx+0yfGgccjmfIeg41b4H6veKSlRbfPXjzCVfSoh3g4Fi/vnG3jbenJExZsGY5ZXsu3gRw2WOxTdPP47lweoadQoESfq1LDq06g2Pd7fncwDkHNZO8SLUDxZJElg9C+gi5FfFUtg
+X-HE-Tag: 1772800214-390583
+X-HE-Meta: U2FsdGVkX1+Er4aLfzdeHFr2F86Bniew3+VMBsMgywVbn/kahWnPDUapvTyrO1nPzbm5MyPkT4pcYwZcHevRoE+UGTjQTUPmlR2vmSQP9Zxh9nRpEjHq4mwIyjIdY8W12gAq2zWAlA/bGsLJPE4BznMX3hGK4JbPvOmCf3FRnbeRcrVdo9X6XZf033hXvgI/64le+Cwo4BIN0qIlG6/W/ZVbArPR9Y5iRe7FHxh0JM3ZFySqStR0HPNhErqsNiaPMcsxM2db760Prz4GKp32lQmHQNebf4iJ197boFsR+j2lriRm8CVXXCYMYaxOmWDL8iwK+seGk86+QKDRtzDFW9cl54NK3B+kAWVJtq25oxKdIFZBGSFTL5V883jPrhxWRUNK4KNTsKr71mDc9ENcihUdFKIS4Cvl9yPo01r+9tbqzoCIoQ3n6zFfY9P3M+PU9C9EGpy9+xxp7zrW7Tbo4p2JzuxizL7u2R/QlohJ4PWgeDbM612qDWouShzsvfCXUmQrGyUrXN+spm4bXtbp+9l82aXDi6bknAE7fg3HtIEeLzVu+cwiKwh9WlwscCnLJC+AruHA6YD8wqekeUF4/gv2DP6EMI00xnYvfUi9ANo/6MIUCcsJcrwt2bnv+UBtJiN+nqekLz0mDtJhdVaokYsar1y8sIjnjdxOO4wkAGBmWKrLxNDui5XQf1J4jPpToHNXtjmGq3reJJ50C1EIS4UWGhOsIkcE/N7fPk+8JZWTuVYTBCrIcjw7R9gjppA41dtrKH6pqIYXTfwIVv02wlcm1ZZLPHx95PTls/UOEfS67c/VaWyShqjMg++pQ7m7Z4eYYWLRzGmGyMkiUDI74Yfk5YM55AghcxblYQia+zBDfDpTAPhaEg7zTt/hXrZf8m0L4yypRwCOrZKSGf2WxBOMSFxl0ba052kkQLDfLV8Kr1MJzZGvjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,77 +121,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 27, 2026 at 09:08:42PM +0100, David Hildenbrand (Arm) wrote:
-> Let's inline it into the single caller to reduce the number of confusing
-> unmap/zap helpers.
->
-> Get rid of the unnecessary BUG_ON().
+On Fri, Feb 27, 2026 at 09:08:43PM +0100, David Hildenbrand (Arm) wrote:
+> Let's rename it to an even simpler name. While at it, add some
+> simplistic kernel doc.
 >
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Small nits below, but overall LGTM so:
+LGTM, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  mm/memory.c | 32 ++++++++++++--------------------
->  1 file changed, 12 insertions(+), 20 deletions(-)
+>  arch/powerpc/platforms/book3s/vas-api.c | 2 +-
+>  arch/powerpc/platforms/pseries/vas.c    | 2 +-
+>  include/linux/mm.h                      | 6 +++++-
+>  lib/vdso/datastore.c                    | 2 +-
+>  mm/page-writeback.c                     | 2 +-
+>  5 files changed, 9 insertions(+), 5 deletions(-)
 >
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 394b2e931974..1c0bcdfc73b7 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2056,25 +2056,6 @@ static inline unsigned long zap_p4d_range(struct mmu_gather *tlb,
->  	return addr;
+> diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
+> index ea4ffa63f043..e96d79db69fe 100644
+> --- a/arch/powerpc/platforms/book3s/vas-api.c
+> +++ b/arch/powerpc/platforms/book3s/vas-api.c
+> @@ -414,7 +414,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
+>  	/*
+>  	 * When the LPAR lost credits due to core removal or during
+>  	 * migration, invalidate the existing mapping for the current
+> -	 * paste addresses and set windows in-active (zap_vma_pages in
+> +	 * paste addresses and set windows in-active (zap_vma() in
+>  	 * reconfig_close_windows()).
+>  	 * New mapping will be done later after migration or new credits
+>  	 * available. So continue to receive faults if the user space
+> diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+> index ceb0a8788c0a..fa05f04364fe 100644
+> --- a/arch/powerpc/platforms/pseries/vas.c
+> +++ b/arch/powerpc/platforms/pseries/vas.c
+> @@ -807,7 +807,7 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+>  		 * is done before the original mmap() and after the ioctl.
+>  		 */
+>  		if (vma)
+> -			zap_vma_pages(vma);
+> +			zap_vma(vma);
+>
+>  		mutex_unlock(&task_ref->mmap_mutex);
+>  		mmap_write_unlock(task_ref->mm);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 4710f7c7495a..4bd1500b9630 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2837,7 +2837,11 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+>  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+>  			   unsigned long size);
+> -static inline void zap_vma_pages(struct vm_area_struct *vma)
+> +/**
+> + * zap_vma - zap all page table entries in a vma
+> + * @vma: The vma to zap.
+> + */
+> +static inline void zap_vma(struct vm_area_struct *vma)
+>  {
+>  	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
 >  }
->
-> -static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long end,
-> -		struct zap_details *details)
-> -{
-> -	pgd_t *pgd;
-> -	unsigned long next;
-> -
-> -	BUG_ON(addr >= end);
-> -	tlb_start_vma(tlb, vma);
-> -	pgd = pgd_offset(vma->vm_mm, addr);
-> -	do {
-> -		next = pgd_addr_end(addr, end);
-> -		if (pgd_none_or_clear_bad(pgd))
-> -			continue;
-> -		next = zap_p4d_range(tlb, vma, pgd, addr, next, details);
-> -	} while (pgd++, addr = next, addr != end);
-> -	tlb_end_vma(tlb, vma);
-> -}
-> -
->  static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  		unsigned long start, unsigned long end,
->  		struct zap_details *details)
-> @@ -2100,7 +2081,18 @@ static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
->  			return;
->  		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
->  	} else {
-> -		unmap_page_range(tlb, vma, start, end, details);
-> +		unsigned long next, cur = start;
-
-VERY nitty, but generally current is abbreviated to curr not cur.
-
-It's not a big deal, but why not addr?
-
-> +		pgd_t *pgd;
-> +
-> +		tlb_start_vma(tlb, vma);
-> +		pgd = pgd_offset(vma->vm_mm, cur);
-> +		do {
-> +			next = pgd_addr_end(cur, end);
-> +			if (pgd_none_or_clear_bad(pgd))
-> +				continue;
-> +			next = zap_p4d_range(tlb, vma, pgd, cur, next, details);
-> +		} while (pgd++, cur = next, cur != end);
-> +		tlb_end_vma(tlb, vma);
+> diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
+> index a565c30c71a0..222c143aebf7 100644
+> --- a/lib/vdso/datastore.c
+> +++ b/lib/vdso/datastore.c
+> @@ -121,7 +121,7 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
+>  	mmap_read_lock(mm);
+>  	for_each_vma(vmi, vma) {
+>  		if (vma_is_special_mapping(vma, &vdso_vvar_mapping))
+> -			zap_vma_pages(vma);
+> +			zap_vma(vma);
 >  	}
->  }
+>  	mmap_read_unlock(mm);
 >
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index 601a5e048d12..29f7567e5a71 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -2645,7 +2645,7 @@ void folio_account_cleaned(struct folio *folio, struct bdi_writeback *wb)
+>   * while this function is in progress, although it may have been truncated
+>   * before this function is called.  Most callers have the folio locked.
+>   * A few have the folio blocked from truncation through other means (e.g.
+> - * zap_vma_pages() has it mapped and is holding the page table lock).
+> + * zap_vma() has it mapped and is holding the page table lock).
+>   * When called from mark_buffer_dirty(), the filesystem should hold a
+>   * reference to the buffer_head that is being marked dirty, which causes
+>   * try_to_free_buffers() to fail.
 > --
 > 2.43.0
 >
