@@ -4,125 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50D1CF01828
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D890F01828
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 970696B0005; Fri,  6 Mar 2026 06:45:31 -0500 (EST)
+	id F101A6B0005; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 931736B0089; Fri,  6 Mar 2026 06:45:31 -0500 (EST)
+	id E92E96B0089; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 831176B008A; Fri,  6 Mar 2026 06:45:31 -0500 (EST)
+	id D9F196B008A; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 738FA6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:45:31 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03562160528
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:45:30 +0000 (UTC)
-X-FDA: 84515458062.18.AA752D1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C9F166B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:47:20 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6EAB45921D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:47:20 +0000 (UTC)
+X-FDA: 84515462640.01.02AF53C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 69E5180011
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:45:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fSK/XAQL";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id D214640012
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:47:18 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtG5q1Km;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772797529;
+	s=arc-20220608; t=1772797638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XKGG0630aPxK92Bt5eiVwX3VxA8FpDHPW+jFpl95B+k=;
-	b=MUTZjOUT5NK1K41CVSVw7gkyto96G84I33djHY+fIvwrG5MVtLOzvIv6O0YGXHcL86lZU1
-	qBj6h0R2087I80KrQ3VNfaalzqMdHkkPVEi2MinHNK8DHYHa12gpRxoR0MwGnye1HLYMMy
-	BTylcEbJpjBWfh/0RXX61FwQe0WXkSc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797529; a=rsa-sha256;
-	cv=none;
-	b=sQKoJTw6Zt1zW6BKy/eflJXJVkQaQQQAW46rxQxJ4yaf4vd7oGq/wTSMtOhMvQFYP8YhkV
-	acnJltmnBoVz7D0vr5/fiRHIb0GGvZ8/k2xRud0FOVVB3+3l+uXx/qvbk7xVO2Gf4btgDS
-	Xwq5Rf+ilgDbn4Dp37ovy19UfhtpO1g=
+	bh=vg3mWkOsCcwlQzS14ppgVVZ8A5ujChwfP+Nc14eW4E0=;
+	b=Tm291NLztXciedr2mUvDcMPH3ktkxmp+XQV7f3TuQ3qfVQA2+YrQpoFi5+xmuvgSSHZ550
+	CBdqtoBPKbtmPLXYUPZEQ+muMg/C95pbb6U+8n5yiqudUcvuQ5zX5Idn0UKikXitNMOMqd
+	0xXntkm4i5G1gKpn1IEhtg91Exb9i3I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="fSK/XAQL";
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtG5q1Km;
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797638; a=rsa-sha256;
+	cv=none;
+	b=HZ4W6ucEtrvx0S88409+37t6KGMfe6OSNDjZtQv85vHS3zMdu4N7JhEHuECpiEwu/NvmHx
+	v8SlRV9t1zWcU+HyG0L9zga5FGIvpDNtiiY0n7OY6wZh9/CHW0FoJ55mpO9r0pPo0CIQKz
+	msIkEX2lyB3aZ+BR/H0rnOKskdZajNU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BCBCD60131;
-	Fri,  6 Mar 2026 11:45:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A66C4CEF7;
-	Fri,  6 Mar 2026 11:45:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 62AFC60130;
+	Fri,  6 Mar 2026 11:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D7FC4CEF7;
+	Fri,  6 Mar 2026 11:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772797528;
-	bh=R0Pw6Rvi1Mhd+owNp6fekaCHGfNY8HGW5Ezw3BximRg=;
+	s=k20201202; t=1772797638;
+	bh=kbnOxVHTjFYd6MSQ8SErV2L7U0l7wedWRtqeP6pVGNM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fSK/XAQLAWrXgjeiTk3XlTolP/BrZo51IJvpeJZGw2osWtvnYdKil+TQMDx8gWiRi
-	 WjuQV6ZeyS/m6ni5W9gNsA2w9RKNJwzanT8/GnfMrboUr9Gbo4aVh2Mn/o2+vlLsjv
-	 4PWo7PC7OublPZdNgrtwgO4Z2w9v6j7fcHKxDxv09GvTy61OlC8iHrQfKGPJGqGONd
-	 M0ALOZf6QGWhuKnQcihp+k2WJXsFw4+ryjYEvUIiElVerrlDn/O4aKeIuaVu+rMseL
-	 zWWevBBNjgHPZpEgylrlPgorL36cHHh2UT5GUH7Mk8QSGuUi3c21N1pC1/msfyBSRQ
-	 8CjN9YQXQSKGA==
-Date: Fri, 6 Mar 2026 11:45:24 +0000
+	b=jtG5q1Kmhn+PiJvu77IEI5k0ykpPF+SufD+T0RK3C7j6I7QQ17C2IGmuen1U8nYRm
+	 b3Lhk/JXIdAc3islBwH29Xocsb8+4tn+EgEzCkprsPUUeI3MhlnDRbPSlaFmukwOBt
+	 FZ+OHGYUaeW+7iZW9HG/+lHyzQAtXU3a2T+fnL6t3BDk0Bf6yEDJdpH0OacSpKnYFV
+	 t36vomE++uL7rxAt0adEDM7e8/jWJD1lahv/XAdrygKC0DVPPcaY2oCu9aWomez1kB
+	 eqtgTk93RVlAQZhy3V47DBGGtV3WtXS0aLYcKmRagjBld6svI18OkhcwPJSCIiUnbZ
+	 B0ddPMgsNh+Mw==
+Date: Fri, 6 Mar 2026 11:47:14 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: David Howells <dhowells@redhat.com>, 
-	Marc Dionne <marc.dionne@auristor.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Dan Williams <dan.j.williams@intel.com>, Jan Kara <jack@suse.cz>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, 
-	Paulo Alcantara <pc@manguebit.org>, Trond Myklebust <trondmy@kernel.org>, 
-	Anna Schumaker <anna@kernel.org>, Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
-	Joseph Qi <joseph.qi@linux.alibaba.com>, Steve French <sfrench@samba.org>, 
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
-	Tom Talpey <tom@talpey.com>, Bharath SM <bharathsm@microsoft.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
-	Viacheslav Dubeyko <slava@dubeyko.com>, Andreas Gruenbacher <agruenba@redhat.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-ext4@vger.kernel.org, netfs@lists.linux.dev, 
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org, 
-	samba-technical@lists.samba.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org, gfs2@lists.linux.dev, 
-	linux-nilfs@vger.kernel.org, linux-xfs@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] folio_batch: Rename PAGEVEC_SIZE to
- FOLIO_BATCH_SIZE
-Message-ID: <56265c07-962d-4bfc-b332-17f04c97429e@lucifer.local>
-References: <20260225-pagevec_cleanup-v2-0-716868cc2d11@columbia.edu>
- <20260225-pagevec_cleanup-v2-4-716868cc2d11@columbia.edu>
+To: Miquel =?utf-8?B?U2FiYXTDqSBTb2zDoA==?= <mssola@mssola.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: fix typo in the comment of mod_zone_state()
+Message-ID: <cfa8f6a0-bb8c-451e-87ac-7e37a277220c@lucifer.local>
+References: <20260219234407.3261196-1-mssola@mssola.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260225-pagevec_cleanup-v2-4-716868cc2d11@columbia.edu>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 69E5180011
-X-Stat-Signature: t5dgjha3nujwb47ykur5yiurzd5ps9jq
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260219234407.3261196-1-mssola@mssola.com>
+X-Stat-Signature: gumftqcijface7e9h7qytca7emd1e3xg
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772797529-290636
-X-HE-Meta: U2FsdGVkX1/5m3ROBqBXfJNFPZ0+jI7HqLJsRPMwQ21wyzwxuOE1FZeCHRVra2ZogIkjQ4Rdeen9ZEo7tnQn75eFIBUunLM5b5CPIx0IzaifcPVGvp1hjcz3haB/1rdJEKc4tjPEh/yOCBdaBllRM2YGE1iyethO6PkwL11eDNK3wnv9NmrFBHn++LBR6jzsgAJiy5EgrsCF+pHvsGnAgvQeXfMynYlHMQ2yk0B0kR3j6iRM1lsCmgxxX8hfmBrS5kFDhkynfXVTaY3NnicDoGPBnco9PexXMzaIerqlCXdwBLhF3ciVBGW5WRJPP1S8VS4OLqdXL1RxZ8cyn68HPEeq6xLuUnMLDKWrTrwY2OlieQHcIhm0hCjCNRvUsp8Dhdxbkf6R33OkgpEnkvrF3XK+DlpbzSQDwO0nQ99JqosEFJ/AYvnkego8HTAtTEsUbcJ8C8AQeC6VGZRwM9CZvDwNXFZYHwRhX1YRjXuk2MWKBlJURkAZnJb19IJYO9uXOPthtxnexzyPPFF5TciBac1dDLYC6+zH6sZJy9z/Yvx1E139UyZMO3dnMOMNTsLqY9AK/NnFhK7ODoKFluh0xEaplnGQdoh3kQo1xpN+htLDi1vp5CShEb/hkx91gDaQehKzuGSYMawI9xpaXTQ08dXWWNJZSmEDHYs6f0+7LfcmNNZT38936dT7o9SwY/98GJdIzaTEc7valfryqAN9Ud0Zg6Kg/I3938XAvTiDruZJgvUKHaLB734EOQSm3zqK0Xkljtdw7LAE6cQT2kmXFX1RXO9owl3svZsv96PFg9FCx01hdGNu7b6QqZlQtXTCAE5obt/oiFA9CLz93r9QAYEBi5n9M8XKSSZcCKyOsHT5kDrguvKVLCHWD/+5g28kYNa3r00yJgFMwiNcSwmxjGA23ShaP3oyp+ERCkOILB+ExDgN/mtzGwD91MuYTLBRDjxAb/tJLZcJM8FUedP
- qO1haZu9
- VXKUoLVCj4odgqmkX3R6OHNNIf4Mf8FJKXG6XQiBYWXhK51dhZqSL8tHZGIlj1jtp1UzCttXyA5L7gqvpfNtp5sdoXQWo0wywQg7TtOr5GAzgYaHdVdWH7LzsQ/XjCilEEgBAGvAGodox+Qv1Z9AiKn2V4jfLZl9WG6AqTF7yJtiWtCDZE/i7YxDFvNaB5GPfaMMfQGrqzuo76JgF4A+zWdw1BoWUh7WvGifglsrLKQW5k1M8MQehVMN8/WacirVEdr61VagNwJJEU9/7AzloYEg1kmrtiy/j6qP+wEaqv2jNQmGrN4PRjSt+Xg+Y42FelKUiN/S1H6DfVAvmFacTClQSPhVTieLfduLiYxyPrPsHvSvJwODkCjXNdE0c74xNxNNz
+X-Rspamd-Queue-Id: D214640012
+X-HE-Tag: 1772797638-963189
+X-HE-Meta: U2FsdGVkX1+7xosxTx9cG7OrgNGejMNJFXD16qR8JK3qwf8lI2tEzn6n1G/9N1mxUY8OnQcdIGxiP6UmJixKpw+zDF9rR2RpzJA7ueY0IHjSPkoygY5Pxnz71ctGYb7o5PcGpbzoBA7g+NbTE1oM0ClPLFp0v6KumehUuit6yWs9bS9Ia7wDnxKDB4bvv95Og2UNMUUR5bLU0yudo7KDZ8OQJIbpxELt1+YNIsyGIy+8tVPmbtUYwOMcfbsvqr3xpzs+67S9cGWB1TJvvnRVYmJeQH6FqfP8aT5u8TJ6P7pmhfLLkoOpshl5TGcwVbvARouFSh4BD/mJkCK9wWE12kbJPShzqAEw6xwxSRjQWsiiT+DtpqqwHzr0eMbNHDo2edgj/bmk/g9M+3NY5vcry8BLaNrt5AkKqU1RpPOvlRkh4KuWyWP2hqie/0BGw4XAl5Yzv33D2RmQgIs1WUy974oMHSTNgBh2/J4GMi5CiK4btVnn30PGDmeRk+5iTsa9mhp+5aImRye4mzTj/jc401t015a0/4J+oM/a3X1MAXB6Elq2PcF6vUrWABF2Jzo8r0Xn1hdlBRrCt7kizUDw9Q3eptblu16GZkMHCQroUfHmNcykbU2TGYfy7jRVxY+sYr4TwvnhqM3XamcWoYaGn/hrq+iX0AZp0QPHY8nmIsWvp6mYWSmcapQk9fIB8rg8ELajkkIfv79v7QjkKbTSOQbbb7jj1LuNJD2SfJglKd4/5SVV1H4jTyU/ZetJqxm+b0bA94dYw/DFcYabn7uBWRsKtKmSzd2Yn3m3QUHzL96Zt73Uz3kqiGfBkQdDm9kWK8Iup2p1cSUpc6LKtYTBS2pC2tZzZ3lHlsS8P0vcUQPUnYKQZ09BxZyjqQ2ttOg1a5aMAtwYCt+Jdbvcn0OXl3sP2J0e3ZRcwTyRZBd+Zv3f1JKsQlMOYfPZum9IVI7tNVJJcMZI/U7nTqyYpkA
+ p933x4MN
+ yL0Aj3GuT0pt/q2tUBPKS0f4LkkOaXYkKy2ZDLYsMdkLGLXfDOdqGrsuj7xqKZCuhsDY/WZHwEnd9yqTty6X9AgatD5MHoTvdWELteJK03SFe3Ki503JYDumWLp1Ma4UjiVGm8fbFsv5bIGvXOExuuAS7NAPgqeeU6zrBcIJGjE06MyWNwloEralVXpra6pp88FQZfGKI03yHO+UKp2yIOG6hvF2Ks8NVz20RrmtWS//ag3pLloSr/nZiB4DYeYOQcTHW4VRdm1frCFEBn24FXgU2hosV5WJXDypaPoCTBO2+RimfOR68AcdOsAYWvaT2G9v1jW26uQuXzEq7opblIbrO4scoISD6vZ487J8Z9hKF6oAmEwvwe+LSBw5tdGQMolwzHh6owIu6g1S25Nb9hWFUlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,185 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 25, 2026 at 06:44:28PM -0500, Tal Zussman wrote:
-> struct pagevec no longer exists. Rename the macro appropriately.
+On Fri, Feb 20, 2026 at 12:44:07AM +0100, Miquel Sabaté Solà wrote:
+> Use the proper function name, followed by parenthesis as usual.
 >
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+> Signed-off-by: Miquel Sabaté Solà <mssola@mssola.com>
 
-Nice thanks for this! LGTM, so:
+LGTM, so:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  fs/btrfs/extent_io.c        | 4 ++--
->  include/linux/folio_batch.h | 6 +++---
->  include/linux/folio_queue.h | 6 +++---
->  mm/shmem.c                  | 4 ++--
->  mm/swap.c                   | 2 +-
->  mm/swap_state.c             | 2 +-
->  mm/truncate.c               | 6 +++---
->  7 files changed, 15 insertions(+), 15 deletions(-)
+>  mm/vmstat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index c373d113f1e7..d82ca509503f 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -2095,13 +2095,13 @@ static void buffer_tree_tag_for_writeback(struct btrfs_fs_info *fs_info,
->  struct eb_batch {
->  	unsigned int nr;
->  	unsigned int cur;
-> -	struct extent_buffer *ebs[PAGEVEC_SIZE];
-> +	struct extent_buffer *ebs[FOLIO_BATCH_SIZE];
->  };
->
->  static inline bool eb_batch_add(struct eb_batch *batch, struct extent_buffer *eb)
->  {
->  	batch->ebs[batch->nr++] = eb;
-> -	return (batch->nr < PAGEVEC_SIZE);
-> +	return (batch->nr < FOLIO_BATCH_SIZE);
->  }
->
->  static inline void eb_batch_init(struct eb_batch *batch)
-> diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
-> index a2f3d3043f7e..b45946adc50b 100644
-> --- a/include/linux/folio_batch.h
-> +++ b/include/linux/folio_batch.h
-> @@ -12,7 +12,7 @@
->  #include <linux/types.h>
->
->  /* 31 pointers + header align the folio_batch structure to a power of two */
-> -#define PAGEVEC_SIZE	31
-> +#define FOLIO_BATCH_SIZE	31
->
->  struct folio;
->
-> @@ -29,7 +29,7 @@ struct folio_batch {
->  	unsigned char nr;
->  	unsigned char i;
->  	bool percpu_pvec_drained;
-> -	struct folio *folios[PAGEVEC_SIZE];
-> +	struct folio *folios[FOLIO_BATCH_SIZE];
->  };
->
->  /**
-> @@ -58,7 +58,7 @@ static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
->
->  static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
->  {
-> -	return PAGEVEC_SIZE - fbatch->nr;
-> +	return FOLIO_BATCH_SIZE - fbatch->nr;
->  }
->
->  /**
-> diff --git a/include/linux/folio_queue.h b/include/linux/folio_queue.h
-> index 0d3765fa9d1d..f6d5f1f127c9 100644
-> --- a/include/linux/folio_queue.h
-> +++ b/include/linux/folio_queue.h
-> @@ -29,12 +29,12 @@
->   */
->  struct folio_queue {
->  	struct folio_batch	vec;		/* Folios in the queue segment */
-> -	u8			orders[PAGEVEC_SIZE]; /* Order of each folio */
-> +	u8			orders[FOLIO_BATCH_SIZE]; /* Order of each folio */
->  	struct folio_queue	*next;		/* Next queue segment or NULL */
->  	struct folio_queue	*prev;		/* Previous queue segment of NULL */
->  	unsigned long		marks;		/* 1-bit mark per folio */
->  	unsigned long		marks2;		/* Second 1-bit mark per folio */
-> -#if PAGEVEC_SIZE > BITS_PER_LONG
-> +#if FOLIO_BATCH_SIZE > BITS_PER_LONG
->  #error marks is not big enough
->  #endif
->  	unsigned int		rreq_id;
-> @@ -70,7 +70,7 @@ static inline void folioq_init(struct folio_queue *folioq, unsigned int rreq_id)
->   */
->  static inline unsigned int folioq_nr_slots(const struct folio_queue *folioq)
->  {
-> -	return PAGEVEC_SIZE;
-> +	return FOLIO_BATCH_SIZE;
->  }
->
->  /**
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 149fdb051170..5e7dcf5bc5d3 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1113,7 +1113,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->  	pgoff_t start = (lstart + PAGE_SIZE - 1) >> PAGE_SHIFT;
->  	pgoff_t end = (lend + 1) >> PAGE_SHIFT;
->  	struct folio_batch fbatch;
-> -	pgoff_t indices[PAGEVEC_SIZE];
-> +	pgoff_t indices[FOLIO_BATCH_SIZE];
->  	struct folio *folio;
->  	bool same_folio;
->  	long nr_swaps_freed = 0;
-> @@ -1510,7 +1510,7 @@ static int shmem_unuse_inode(struct inode *inode, unsigned int type)
->  	struct address_space *mapping = inode->i_mapping;
->  	pgoff_t start = 0;
->  	struct folio_batch fbatch;
-> -	pgoff_t indices[PAGEVEC_SIZE];
-> +	pgoff_t indices[FOLIO_BATCH_SIZE];
->  	int ret = 0;
->
->  	do {
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 2e517ede6561..78b4aa811fc6 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -1018,7 +1018,7 @@ EXPORT_SYMBOL(folios_put_refs);
->  void release_pages(release_pages_arg arg, int nr)
->  {
->  	struct folio_batch fbatch;
-> -	int refs[PAGEVEC_SIZE];
-> +	int refs[FOLIO_BATCH_SIZE];
->  	struct encoded_page **encoded = arg.encoded_pages;
->  	int i;
->
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index a0c64db2b275..6313b59d7eab 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -385,7 +385,7 @@ void free_folio_and_swap_cache(struct folio *folio)
->  void free_pages_and_swap_cache(struct encoded_page **pages, int nr)
->  {
->  	struct folio_batch folios;
-> -	unsigned int refs[PAGEVEC_SIZE];
-> +	unsigned int refs[FOLIO_BATCH_SIZE];
->
->  	folio_batch_init(&folios);
->  	for (int i = 0; i < nr; i++) {
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index df0b7a7e6aff..2931d66c16d0 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -369,7 +369,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
->  	pgoff_t		start;		/* inclusive */
->  	pgoff_t		end;		/* exclusive */
->  	struct folio_batch fbatch;
-> -	pgoff_t		indices[PAGEVEC_SIZE];
-> +	pgoff_t		indices[FOLIO_BATCH_SIZE];
->  	pgoff_t		index;
->  	int		i;
->  	struct folio	*folio;
-> @@ -534,7 +534,7 @@ EXPORT_SYMBOL(truncate_inode_pages_final);
->  unsigned long mapping_try_invalidate(struct address_space *mapping,
->  		pgoff_t start, pgoff_t end, unsigned long *nr_failed)
->  {
-> -	pgoff_t indices[PAGEVEC_SIZE];
-> +	pgoff_t indices[FOLIO_BATCH_SIZE];
->  	struct folio_batch fbatch;
->  	pgoff_t index = start;
->  	unsigned long ret;
-> @@ -672,7 +672,7 @@ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
->  int invalidate_inode_pages2_range(struct address_space *mapping,
->  				  pgoff_t start, pgoff_t end)
->  {
-> -	pgoff_t indices[PAGEVEC_SIZE];
-> +	pgoff_t indices[FOLIO_BATCH_SIZE];
->  	struct folio_batch fbatch;
->  	pgoff_t index;
->  	int i;
->
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index 65de88cdf40e..f69225122768 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -547,7 +547,7 @@ EXPORT_SYMBOL(__dec_node_page_state);
+>  #ifdef CONFIG_HAVE_CMPXCHG_LOCAL
+>  /*
+>   * If we have cmpxchg_local support then we do not need to incur the overhead
+> - * that comes with local_irq_save/restore if we use this_cpu_cmpxchg.
+> + * that comes with local_irq_save/restore if we use this_cpu_try_cmpxchg().
+>   *
+>   * mod_state() modifies the zone counter state through atomic per cpu
+>   * operations.
 > --
-> 2.39.5
->
+> 2.53.0
 
