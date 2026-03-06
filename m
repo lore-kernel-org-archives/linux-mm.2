@@ -4,112 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E98FBFCC05D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 19:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48231FCC062
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 19:35:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEEC56B0005; Fri,  6 Mar 2026 14:01:13 -0500 (EST)
+	id 67FA96B0005; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA58B6B0088; Fri,  6 Mar 2026 14:01:13 -0500 (EST)
+	id 62D126B0088; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCEBB6B0089; Fri,  6 Mar 2026 14:01:13 -0500 (EST)
+	id 50E456B0089; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C65BD6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:01:13 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D8741A06F4
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:01:13 +0000 (UTC)
-X-FDA: 84516556026.20.F3AA0F4
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 573E8100027
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:01:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DSUPcnFK;
-	spf=pass (imf05.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F32D6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:35:11 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF9771B86CF
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:35:10 +0000 (UTC)
+X-FDA: 84516641580.13.EFC5589
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A318140010
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:35:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772823671;
+	s=arc-20220608; t=1772825709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=egP4uheYvC9sMPollgo9xc+pktivTQM4ujp0h14jJjQ=;
-	b=xB5Hxr3Ui3dvs1kPnMVtwP59sKwwu1uvv4yrNCrplAwdNUF8TULt4GVr4zKcLxdDaAqoea
-	jZTHUwyA9+GUqTsP/MAzPMeZv6FMnwTGPWEmSB9pixMt0r6vW74hV4/F4hr+OWwx2XRT50
-	Uh1G5k+BpdteE23KF1qKAyzQnkTZEC4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GxypWmVpYpVuttdZa2oWZ3CvwQ9hX7LB7kQQ7oXcnvI=;
+	b=dgKKxiNH+inoe+u4m4McJsGwYHdobWKPenkdf8UALm4vcQBw0O3sCvgiXOsYnTWdqVe32s
+	W9oC35T8ZZzUvVllqxnBlBbOozRDBjni7MJsiUIeza8D0ImueNWRW0LpwkxGIqbl97G+Qd
+	H7+Yv7yVbZ7t6e6eMMXOxKoeIDIeOX4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DSUPcnFK;
-	spf=pass (imf05.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772823671; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772825709; a=rsa-sha256;
 	cv=none;
-	b=QKfn/70zlntOU6pevB2YbVVPfSmLRbIBcXXa0TvIM5qMutp7elwP0+7Sc72UQDV1w0E7n8
-	rr35B5KovGQvnrbr3rLancNk3zbpE3HVwErq+YwGBiGvYg8P/W8EmROnW24S+4n6ntzsFa
-	tqRZXAEdMsR7Psk6o3BfIRkw5MHNHEc=
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48371bb515eso141758995e9.1
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 11:01:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772823670; x=1773428470; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=egP4uheYvC9sMPollgo9xc+pktivTQM4ujp0h14jJjQ=;
-        b=DSUPcnFKr22GuCxMjkfDrCQa4o3Nl8C5F8XpBdbuaH3uIHTCHfQvKwMCRgkgcLBFJ3
-         wJjsS9Ryf86ryNEWUoTUX+XVd+yVYScefdKoKhPSC5/rd/URC4CqhqzcKpayX3Nz1rkS
-         F9wKimds7IFu/z/zQ5pYzLUB+O/g+vLj/ZQezX7WlnqXkoiQXHip0UsmHffE0suTK+1g
-         NXfz9JNgr6kUtMxQb8VSHgppFZf0u2zGKvsdqAIE9KBtStm8o1rMSI3/nCHu3ZnU5B6+
-         DEfgBbA36mbkHzIXnGV+h9V4wiMYr95HcYhbbBcf7KxNAq6j62YxwLkj+R36GevdTVdN
-         bdZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772823670; x=1773428470;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=egP4uheYvC9sMPollgo9xc+pktivTQM4ujp0h14jJjQ=;
-        b=IkK/gTD42Pl17DS6SctVCxWcIkyhgWj8bYZXDj9BkurfVQyO8E+T1WHhP0VVE+onVq
-         X+Vqr76V2L4oEUX7ZZMhOeuK8YzqDAecUqkvyOJ2KwSZk2Bdv5aT5xDm+d+0lHTSVPae
-         uP/6i3h5mL4PAmP2ubxkRyE7VocN3hNxsiB8cAt2PDdTnViOopBWxNyGCarxUDY9VXym
-         ECDWFAaY6EerdVCo5s7jcQdKX8vzvRg5PEwUWa4uff+7xUMM8p20YwdFjTYySp78PZTg
-         vWZGAZRZWkwXX+6zF91MwGVbrtbzvGwRBx88x+9DKJaHH+vXNFNqobabYDS4na1g/ON3
-         WwiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFeitx+Ju/URv77MtZrfK89mQyVbNTat2ZoNhoFcjLU3NvW5quTxmBadCJpcAmyvq9UQlakwtdIw==@kvack.org
-X-Gm-Message-State: AOJu0YxppLIq+31/79LUOF6vlil0sV/cruvNG4RxvrX48QDpDWGssPjS
-	sWDrolLvYzOWieczBp3QYjdfIxvJ7d6/bh7KzqH9PoNxLSkFdSAdPMgZ
-X-Gm-Gg: ATEYQzxRvkRV+sjYIW6Uoyl2fBXJnKMDXsb/JnzpsdMN8vndkQvrf2gb8zJThB+QUUh
-	WcasynPx3a/6t/8jCqCs3SPYFxPTUQOT0gHtTIn2Emd81u3RFomVbvtIDo4Msdz8oO26bOkdk0A
-	M6FBpIMcmSmRGr+fhzvj49G6cMSC52T3S8VHdtutEjYwJwM9GBi90pT+P8fTQ3QXHvIpbR+8BxI
-	di3u+XqGnwc2SgQ6ZAt+2eFXBe+lyFyH7ReY8qMfwep7Y/K1C0ky2dVFAYvc32MpfIxv+HzuARL
-	GO/254NKJ0t7xyYKC0QY/p4Jg/H0wik1qJoi+rK7TbUFGXTzdehTu2y+8NeYNLE69YWLgDRM+Ay
-	tTCVbf6qUc3OsEKue8zVHjn1xfNj2fb5QipSJagy74HuCX8ge4zQg0NU8WVaF1yK2fz24kWEiwS
-	9meZRy0KacVVs/BjNzOX8wjjsqkWsoTYFgBil2XgjSnkFXatCrKWh5PgASv0irLseBPPgJFaw4Q
-	GYFEd54NIxV
-X-Received: by 2002:a05:600c:8714:b0:477:6374:6347 with SMTP id 5b1f17b1804b1-48526957d50mr47893785e9.22.1772823669332;
-        Fri, 06 Mar 2026 11:01:09 -0800 (PST)
-Received: from f.. (cst-prg-92-188.cust.vodafone.cz. [46.135.92.188])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4852767d8e4sm50717025e9.2.2026.03.06.11.01.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 11:01:08 -0800 (PST)
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: brauner@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	oleg@redhat.com,
-	Mateusz Guzik <mjguzik@gmail.com>
-Subject: [PATCH] pid: cosmetic changes to alloc_pid()
-Date: Fri,  6 Mar 2026 20:01:00 +0100
-Message-ID: <20260306190100.1900572-1-mjguzik@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=6iyTS3c7XJn5FZDFGaNA6/fr1B0Qp1mXxcGhIhyvHe5KHNaGRdnRl9dLU+oA0H6IVYrxED
+	/XKohq3wLS43GSgNCWeoX210J+pBl81zB0mvAtYHKZaQS4Z+a0AjFu702J63QS03+nTvAD
+	+hsYv+/y5ref40WVovjBqb40wbXDrfQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3658D497;
+	Fri,  6 Mar 2026 11:35:01 -0800 (PST)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6F9B83F836;
+	Fri,  6 Mar 2026 11:35:04 -0800 (PST)
+Date: Fri, 6 Mar 2026 19:35:01 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Qing Wang <wangqing7171@gmail.com>,
+	syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com,
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org,
+	jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, pfalcato@suse.de,
+	sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com,
+	vbabka@suse.cz, Hao Li <hao.li@linux.dev>
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+Message-ID: <aassZV5PjgFx8dSI@arm.com>
+References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+ <20260302034102.3145719-1-wangqing7171@gmail.com>
+ <20df8dd1-a32c-489d-8345-085d424a2f12@kernel.org>
+ <aaeLT8mnMMj_kPJc@hyeyoo>
+ <925a916a-6dfb-48c0-985c-0bdfb96ebd26@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 573E8100027
-X-Stat-Signature: bykx19ssns56hbkthscro6gbma6nxcn3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <925a916a-6dfb-48c0-985c-0bdfb96ebd26@kernel.org>
+X-Rspamd-Queue-Id: A318140010
+X-Stat-Signature: ttnpyub7o6kmaufjk8qqd991t8nbihcd
 X-Rspam-User: 
-X-HE-Tag: 1772823671-258261
-X-HE-Meta: U2FsdGVkX1+ydgwibzWm9o6v0q6BzAEVL4A3ikkjCLqZ0CCS8BJkm0GYA/gVCkejExpiU64uDCbeHp/cOM1465R7fdlx+ZnBru8ljjhZPXLxkvZVUV8dpb1CK9CG7npZcUe8bFuxxrzzj69wrbACWZox/K/g4LwZSWGQ239Nb7MzDJepyltrE9E9M+iT0mq/rLl06XScNc7JJD72ITG8kweNbHFn43kG4xhleYx2eJjYpCCJCgE9zKbVGqjqwbiKIUgapDPsdUUPZUIlg2MXamE66NQJcGy/ho8Cs9fE6iQ1HdKzctQTvXbe715jGd9/xxMKRI0Q2WRWufbI+rhNGiT4WBcIE5C31fy9IKWEKCcp9cmiGf+Nq4BHNohZY2ZzvPCYieryNOxtXkUe/TgH2h4JdZzcGDP/n6AMYWT+AOzTpwcXVtV+XKY4tlBhE9LY0KdDYdHeh+r0kq1ACtvOaisGsS7eoFB+axBm/h1OaFrj+f07Dg0QKXp/adf953hGzUs6GA/jsxS+ejOwfejKV0k4880JbmSvjo9Dra6ZDRxh+9f5+UMPi2qPZdN1KMBf+HwsPivuyrIv6HVfej60e1XAgn/dGbBGBJanlBK9M6l8AUXOvZj415jbwLLCv5QVyvwlF1VsfGKTy/Oklhx0Lzeb6GNEGHj2WQ5+6Hz2v1GgvdMzSEUQOiUgV89fyfJjtkVEl98f0INoTGihv2zsbcLqzE//Ei3StGo5XsiDG/cFxmPktnB0I9lgM8ZzuFVqWH+PFO/ggKhzyYfcL0pj+sWSXBrtypmRotKjNgC49rQeFkg2OOana3vbGFB8nxh7voMDhQM3EqEM3rOjDSyvJBODKYhu4wFAKExg9CnYi/FquUUJ/qF1IB7EgSwvvTNVJOJK4c5vyZ+YvfgdVSIIpaZuUnX8X+KBoLqyNY7nOgRQoUrfnqUE0z8IY/L32U5+5SYKoC7NUKgAQkazO+W
- mQUvrFX/
- k0cjwqcQfYSwpQRm+yv2QxPAGBcyedKJ0fAAHTFQwhdxTm9yugwzLrbEn/2sJYhWeVZ+LI5HPLATKPCgFHIyZQFe+yGFUvq9eY6DDhZFH6Tl1PmfvZzIiIyQtZt70VPjeZdxDDSryeB4gogcsBYS/x570kpO5uxuWRKC1RDdGF6A9H9MgXxpqyVtT2mgCezVhgME1XA5IyD/4pEVUeO1OnjlJwlJR/QN7DtikXdqOvSJTiUBhJHB86Yncm8eHnlIbgYWvLprJJkuGaFm5AB9uXa3lMlzSWT0Efy8Ju3vwZ6vbQK9Cx6ZuTVmwwwLInoJtaf8otCXVSbDbHCJuSeXMq8+L/k4WAEFpJNM7D0BjOJzV9dSAigFHPJKmyybB12RcCwLYXiLhGOFgxcNzGb6taH8hjOhuquVHsa3p+mUcLQ6u5K1Gcl9XOQ3Sg2bLs4LElwOXdK7KbNTPUQk=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1772825708-949670
+X-HE-Meta: U2FsdGVkX1/3EI85N/TNKsYiVIgpxnDaa3RtTI3GDni2LOW/j6UyK7qpbZ8wqy5USokIPg6Qd3od3gb2waUJTWmroJrtvYQniHeUtMCbp7X+b27j2+x56LP3NnOgSLaNO4amUnGnAXIAT+gKYc0ATXM7RGBtLoxE51aek6PxuB6Sd0ed+eX2VoWlnvI3lbRMMvCYOo71rcAFrwEEHJFlbx62g4KL2jsagzuLXaAfVTi2jZoLhm+8qJsvLzllQLRv71B2u8IP6Sda2cmvjpfb5pG1rWZcWisO04LCyTTmbOYnfDUyzeXknhsIedW9KPDDv7XyupfV7WF9HmGgc8nc/RwEk1qyzq18qwpe9AVdNI3PYtZuHSUoECF4hRYJvc4Jg6tVSEl30xndNrYIZmgLV1AxVtlO+Q709jU6NrCOTgZZ/pj+vWr1qApTUxKP4zVUlRWmpB3IqagJ204/K9ThSLhXKZ+E+4LLyalX2Bu8P699ZJZ+af1z9R75Hk4F4q7ndAHS/45t3WsW7t1wvHzYyLrSjCZzzMbByUVlz6Ovd+jewdXM78diinWjX0ghcEXD5gQG9gKS7flhdPBQbeVUmtItJz8XgHWKI/2YQ26jh5Pm5FQVFlUSZrnkqUX73nAigxiY/mLkfi4GJ0VvI7re/x7nQh7YgrhmG4zq7SWSSto0mVuB9a42hmmb5xBldDumFUE3vtkZXE6WlGthwhY7MUbJcN+OJhyA6KmqYfi9Eo+8pkp4bD7fNf9zpGYoUksmiF5LJX6qQ01z3YKrHmVV782t8bJyEHdyFYiGlDu+szQMjLN6U1usOmi4nFh3Ef90vkGU6QmAn3kTmAr6kOA5S2nqUKHyGTam5EjIeXYB/1m/CnsXKD5ZON6gS8BM+1G1SZWbCk4oFnjHJPkG7Z35CVM/p65vOzZj1Pag8JBh1PBgO+e8RyuymiuVjvUCbTCZmgWCUaH5VC2lcFQqmDA
+ tpVv3Aam
+ Ba5UfFk8+QpjZTrChnN9c38G1vPIRmJpAprc0LDVlINId1ct71baaOe6O7OLjYMb9cPcEEKLXskm9YzBKJ+haQ7zagUXBS25WRRt5CBeDf4jEtD4XEZyhJH9TCTEJYC+MdIhY+J7wjTvV09VE2OjL8VVN7idScmPCpakeM1yuru6mw09tF9oxe936WqSEjjMoIuATLWkgY3CLgcwuqkdaOarJOedDTaRiWQDcr+dZ7ZK4jN3YBWwcx0svVSpzxQ4YVWsy+a/Hzs3VAXrcS3Fh3QwZNB7MVT5eVJ2uCdFN7wkNinxxabxe7x4gbZz/RvE/mtAPUCdF/Hma5Og=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,85 +92,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 6d864a1b182532e7 ("pid: only take pidmap_lock once on alloc")
-landed v2 of the patch instead of v3. This patch remedies the problem.
+On Wed, Mar 04, 2026 at 02:39:47PM +0100, Vlastimil Babka (SUSE) wrote:
+> On 3/4/26 2:30 AM, Harry Yoo wrote:
+> > [+Cc adding Catalin for kmemleak bits]
+> > On Mon, Mar 02, 2026 at 09:39:48AM +0100, Vlastimil Babka (SUSE) wrote:
+> >> On 3/2/26 04:41, Qing Wang wrote:
+> >>> #syz test
+> >>>
+> >>> diff --git a/mm/slub.c b/mm/slub.c
+> >>> index cdc1e652ec52..387979b89120 100644
+> >>> --- a/mm/slub.c
+> >>> +++ b/mm/slub.c
+> >>> @@ -6307,15 +6307,21 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+> >>>  			goto fail;
+> >>>  
+> >>>  		if (!local_trylock(&s->cpu_sheaves->lock)) {
+> >>> -			barn_put_empty_sheaf(barn, empty);
+> >>> +			if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES)
+> >>> +				barn_put_empty_sheaf(barn, empty);
+> >>> +			else
+> >>> +				free_empty_sheaf(s, empty);
+> >>>  			goto fail;
+> >>>  		}
+> >>>  
+> >>>  		pcs = this_cpu_ptr(s->cpu_sheaves);
+> >>>  
+> >>> -		if (unlikely(pcs->rcu_free))
+> >>> -			barn_put_empty_sheaf(barn, empty);
+> >>> -		else
+> >>> +		if (unlikely(pcs->rcu_free)) {
+> >>> +			if (barn && data_race(barn->nr_empty) < MAX_EMPTY_SHEAVES)
+> >>> +				barn_put_empty_sheaf(barn, empty);
+> >>> +			else
+> >>> +				free_empty_sheaf(s, empty);
+> >>> +		} else
+> >>>  			pcs->rcu_free = empty;
+> >>>  	}
+> >>
+> >> I don't think this would fix any leak, and syzbot agrees. It would limit the
+> >> empty sheaves in barn more strictly, but they are not leaked.
+> >> Hm I don't see any leak in __kfree_rcu_sheaf() or rcu_free_sheaf(). Wonder
+> >> if kmemleak lacks visibility into barns or pcs's as roots for searching what
+> >> objects are considered referenced, or something?
+> > 
+> > Objects that are allocated from slab and percpu allocator should be
+> > properly tracked by kmemleak. But those allocated with
+> > gfpflags_allow_spinning() == false are not tracked by kmemleak.
+> > 
+> > When barns and sheaves are allocated early (!gfpflags_allow_spinning()
+> > due to gfp_allowed_mask) and it skips kmemleak_alloc_recursive(), 
+> > it could produce false positives because from kmemleak's point of view,
+> > the objects are not reachable from the root set (data section, stack,
+> > etc.).
+> 
+> Good point.
+> 
+> > To me it seems kmemleak should gain allow_spin == false support
+> > sooner or later.
+> 
+> Or we figure out how to deal with the false allow_spin == false during
+> boot. Here I'm a bit confused how exactly it happens because AFAICS in
+> slub we apply gfp_allowed_mask only when allocating a new slab, and in
+> slab_post_alloc_hook() we apply it to init_mask. That is indeed passed
+> to kmemleak_alloc_recursive() but not used for the
+> gfpflags_allow_spinning() decision. kmemleak_alloc_recursive() should
+> succeed because nobody should be holding any locks that would require
+> spinning.
 
-No functional changes.
+I don't fully understand what goes on. If kmemleak_alloc_recursive()
+failed to allocate for some reason (other than SLAB_NOLEAKTRACE), it
+would loudly disable kmemleak altogether and stop reporting leaks. Also
+kmemleak doesn't care about allow_spin, it's only the slub code which
+avoids calling kmemleak if spinning not allowed (as it takes some locks,
+may call back into the slab allocator).
 
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
----
- kernel/pid.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+I wonder whether some early kmem_cache_node allocations like the ones in
+early_kmem_cache_node_alloc() are not tracked and then kmemleak cannot
+find n->barn. I got lost in the slub code, but something like this:
 
-diff --git a/kernel/pid.c b/kernel/pid.c
-index 2f1dbcbc2349..dbe82062e683 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -177,7 +177,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 	 * for a process in all nested PID namespaces but arg_set_tid_size must
- 	 * never be greater than the current ns->level + 1.
- 	 */
--	if (arg_set_tid_size > ns->level + 1)
-+	if (unlikely(arg_set_tid_size > ns->level + 1))
- 		return ERR_PTR(-EINVAL);
+-----------8<-----------------------------------
+diff --git a/mm/slub.c b/mm/slub.c
+index 0c906fefc31b..401557ff5487 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -7513,6 +7513,7 @@ static void early_kmem_cache_node_alloc(int node)
+ 	slab->freelist = get_freepointer(kmem_cache_node, n);
+ 	slab->inuse = 1;
+ 	kmem_cache_node->node[node] = n;
++	kmemleak_alloc(n, sizeof(*n), 1, GFP_NOWAIT);
+ 	init_kmem_cache_node(n, NULL);
+ 	inc_slabs_node(kmem_cache_node, node, slab->objects);
  
- 	/*
-@@ -186,7 +186,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 	 * 1. allocate and fill in pid struct
- 	 */
- 	pid = kmem_cache_alloc(ns->pid_cachep, GFP_KERNEL);
--	if (!pid)
-+	if (unlikely(!pid))
- 		return ERR_PTR(retval);
+-------------8<----------------------------------------
+
+Another thing I noticed, not sure it's related but we should probably
+ignore an object once it has been passed to kvfree_call_rcu(), similar
+to what we do on the main path in this function. Also see commit
+5f98fd034ca6 ("rcu: kmemleak: Ignore kmemleak false positives when
+RCU-freeing objects") when we added this kmemleak_ignore().
+
+---------8<-----------------------------------
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index d5a70a831a2a..73f4668d870d 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -1954,8 +1954,14 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+ 	if (!head)
+ 		might_sleep();
  
- 	get_pid_ns(ns);
-@@ -205,7 +205,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 	 * This stores found pid_max to make sure the used value is the same should
- 	 * later code need it.
- 	 */
--	for (tmp = ns, i = ns->level; i >= 0; i--) {
-+	for (tmp = ns, i = ns->level; i >= 0;) {
- 		pid_max[ns->level - i] = READ_ONCE(tmp->pid_max);
+-	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr)) {
++		/*
++		 * The object is now queued for deferred freeing via an RCU
++		 * sheaf. Tell kmemleak to ignore it.
++		 */
++		kmemleak_ignore(ptr);
+ 		return;
++	}
  
- 		if (arg_set_tid_size) {
-@@ -227,6 +227,7 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 		}
- 
- 		tmp = tmp->parent;
-+		i--;
- 	}
- 
- 	/*
-@@ -247,10 +248,9 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 				       tid + 1, GFP_ATOMIC);
- 			/*
- 			 * If ENOSPC is returned it means that the PID is
--			 * alreay in use. Return EEXIST in that case.
-+			 * already in use. Return EEXIST in that case.
- 			 */
- 			if (nr == -ENOSPC)
--
- 				nr = -EEXIST;
- 		} else {
- 			int pid_min = 1;
-@@ -276,12 +276,11 @@ struct pid *alloc_pid(struct pid_namespace *ns, pid_t *arg_set_tid,
- 			 * Preload more memory if idr_alloc{,cyclic} failed with -ENOMEM.
- 			 *
- 			 * The IDR API only allows us to preload memory for one call, while we may end
--			 * up doing several under pidmap_lock with GFP_ATOMIC. The situation may be
--			 * salvageable with GFP_KERNEL. But make sure to not loop indefinitely if preload
--			 * did not help (the routine unfortunately returns void, so we have no idea
--			 * if it got anywhere).
-+			 * up doing several with GFP_ATOMIC. It may be the situation is salvageable with
-+			 * GFP_KERNEL. But make sure to not loop indefinitely if preload did not help
-+			 * (the routine unfortunately returns void, so we have no idea if it got anywhere).
- 			 *
--			 * The lock can be safely dropped and picked up as historically pid allocation
-+			 * The pidmap lock can be safely dropped and picked up as historically pid allocation
- 			 * for different namespaces was *not* atomic -- we try to hold on to it the
- 			 * entire time only for performance reasons.
- 			 */
+ 	// Queue the object but don't yet schedule the batch.
+ 	if (debug_rcu_head_queue(ptr)) {
+----------------8<-----------------------------------
+
 -- 
-2.48.1
-
+Catalin
 
