@@ -4,86 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E03C4FCC062
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFACEFCC074
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:20:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1507A6B0005; Fri,  6 Mar 2026 15:15:34 -0500 (EST)
+	id 43CA46B0005; Fri,  6 Mar 2026 15:20:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FF206B0089; Fri,  6 Mar 2026 15:15:34 -0500 (EST)
+	id 4065F6B0089; Fri,  6 Mar 2026 15:20:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 000966B008A; Fri,  6 Mar 2026 15:15:33 -0500 (EST)
+	id 316BA6B008A; Fri,  6 Mar 2026 15:20:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E07AC6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:15:33 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7BA3C13B6FD
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:15:33 +0000 (UTC)
-X-FDA: 84516743346.22.E4FD2DC
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 559C340011
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:15:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="sBhsbe/F";
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 223836B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:20:31 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CB36C13B72C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:20:30 +0000 (UTC)
+X-FDA: 84516755820.24.BF6F291
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CCF5710000D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:20:28 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g 9fC+Kz";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=umbMP8h1;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772828131;
+	s=arc-20220608; t=1772828428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kqDtRxUnfGVfrmPs+B6wD6LFhV7Vqmyopjf7Cm65ZXU=;
-	b=jNfC8zg1V0s+Lt/ATFZPEH7+1tJ3hptHVU+HiGbtJ6ZKnBDKWPhBy4OLWTFrSTfhEF8CRp
-	5Qi9BCAi/mEAarv1sFVvjIm0lkMouqerRj7fV8jjwMLyF1u2+v9Fk7HKypGsASlgvsG8If
-	ZUuH7InMQAU9YCHftllabmV3Ac7x7AU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="sBhsbe/F";
-	spf=none (imf01.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772828131; a=rsa-sha256;
+	bh=377Iiy/2vhfVMCk/VUi+y/E5TjBXp6Xa6UY+t1Y1TWM=;
+	b=1L1ikgnnQsLrM5/JRcMkpKXyBXSyQWAd/MVT3dqYNVHGjgBj9MZCDR2IM9yXGfiKHHXtaG
+	ZG1IKaQMEG3mCJd6ueViLLIZfnkkWqP+hiXG1Yzjy8qKe7064JfQ9wxnlHdWSa1ONOOjSp
+	/XFhAVha/aBblA8/NyX4xtHyobCo7pc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772828428; a=rsa-sha256;
 	cv=none;
-	b=qrpIsjXSsEsiLLDJhA/Vp1eJuxA+/EprEJISREjb7zDYVNcetDxHwMitVf3pCryP2KgZTu
-	5G/AcsiDk3iwTUUc1o4QlrzqZRZ1dzysRaSnijzPwoc2ifIYmziJNQ1EUETdYjPRhNqaPN
-	QV7gdXFL4mSkNOEtsz9iBGNzhjP4ETQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kqDtRxUnfGVfrmPs+B6wD6LFhV7Vqmyopjf7Cm65ZXU=; b=sBhsbe/FNOqE/9HPmw8kY8dloZ
-	D3l7DInSbFxSaRAGRZ5ESjNCK30kpnNJQmpNy3wd8uaJncNSI5SYn5GVyFQhbgef9IvfE+J7x8I8G
-	cuP+fHX7rowitDNg++hVYOrVbs14VVSv44OUNdEmldYhWz9/jwbLuy1n3bLwc8KQ0EoXK894aH0h8
-	zKF+b7TywvlXPi+nLe51Tyk9qcfLYN8wrn/c7B7tuazL+jq4bfFgo7TUmNSBNQCHwbA0XxC40V59t
-	rieSdE4cYACXiuUHwRIGtxm9sozlM2dgZRKVH7ySQjtMS6D2DiwVJOwDPoay2PKrl6rEr2TNPudxE
-	f5cE6rDg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vyba4-0000000HGPN-1QDp;
-	Fri, 06 Mar 2026 20:15:28 +0000
-Date: Fri, 6 Mar 2026 20:15:28 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Josh Law <hlcj1234567@gmail.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Josh Law <objecting@objecting.org>, Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH] lib/idr: fix ida_find_first_range() missing IDs across
- chunk boundaries
-Message-ID: <aas14HsY7dj6jTDZ@casper.infradead.org>
-References: <20260306200319.2819286-1-objecting@objecting.org>
+	b=nAgW9+7nYGhF+jPV7ZaNcmY1HAwKU6imZrzM0NBYk19gfMIuqk/lw2t0nV2jYwxSlEjsKV
+	TWsvbGPmAsEMY1oSEqtzt4g43KxPJYxBT3YHk8YT/2zWrCGM/ZNPakGlu8AM0w+nL6Rqmf
+	w3OHCZaJLGgAs5m+7J1PBzGAnE7Eads=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm2 header.b="g 9fC+Kz";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=umbMP8h1;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.151 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3ED80EC05A4;
+	Fri,  6 Mar 2026 15:20:28 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 06 Mar 2026 15:20:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1772828428; x=
+	1772914828; bh=377Iiy/2vhfVMCk/VUi+y/E5TjBXp6Xa6UY+t1Y1TWM=; b=g
+	9fC+KzRYeUJ0aQGPuz3NL9oCfZt8u35dONToxyZP6jnrCyaM/8eP54E/2ij2gMEm
+	Y+VIOLwaB9eZ6jwMMfZVStoBovK466Y5q0xmBo5ua9Vpjx2t6DfkqTMM8lEQEYDH
+	G3H2mAXT4C0b/bB7tkzMiWm0j3Yv3B1CEBsm/Roj5hO15gXuDHwGqIo53JDC1140
+	KfuTLbwO5jpQPrY4C1BAcHcGy4ExMrKGpBTKm397OurbtY89GOh4IsBtYlGDrv//
+	3UtNiqL49YvWJ/2qhAxiXsEyZeLzNQIYesAjwiLuugFPCMjbpdzjrb8xFJ6aF/js
+	mVAzyrmotIv90WfsEUZzA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1772828428; x=1772914828; bh=377Iiy/2vhfVMCk/VUi+y/E5TjBXp6Xa6UY
+	+t1Y1TWM=; b=umbMP8h1nm2bsyUUAIt0U8ykWvIY7Cxn0AOrdbf1l9auM32lcvj
+	aEuN6Q8YtO+qO6hui5fFDAsdmGXgvcvxUx/G3tDd8KErCkSDW87HiCxniMVoVm8W
+	4MtqlggHHl6z+ivhbmD4JXo2kccHbMwxIrPyK2oM04VyC+9iLqMA2EC65rSx4MKX
+	SOEr0j7hRKJIwolGzx8m/FmnoyKgQUagJcJN8PrLR/ylSUbmXOI0cfXJ7pesuec/
+	22AltRrxTU1eU0M9QSnODL3acmVsSzHNE1x3Hbo3KGSMrC2vMnFyIRZZdWPqat+Q
+	+kLTC3izGtHMYwBYXsC2uSwA+kivFksXNTg==
+X-ME-Sender: <xms:DDeraf-SWXyF3tgPQoVLqr4qkOSLuBh6Qo8v7JsO8-Dkeu6kZbuplg>
+    <xme:DDeraaPuzvAMMocPp33GVWdZfcyXM9bvJYya49Qrl-1wHSOUicp8klt4nypQDvwQM
+    lJvPI5FtXN1lG3eaVjgyqRk0LdgTCFIWc4_IEaZJ4yThZDmagWSn3gy>
+X-ME-Received: <xmr:DDeraT0pwkDnJEEMBBM3qiKFNkkH7HiXRp65IlGqOcFFlsIa_Uor4nYiYTkpIA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjedtvdefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
+    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvg
+    grugdrohhrghdprhgtphhtthhopegtrghrghgvshestghlohhuughflhgrrhgvrdgtohhm
+    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
+    gtphhtthhopeifihhllhhirghmrdhkuhgthhgrrhhskhhisehorhgrtghlvgdrtghomhdp
+    rhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epkhgvrhhnvghlqdhtvggrmhestghlohhuughflhgrrhgvrdgtohhm
+X-ME-Proxy: <xmx:DDerabeoWr8rr5r6z3i8Pri8oYx6fZC1nyfchwWaCrrHoFt6OO5lcA>
+    <xmx:DDeracZ94ff_KdNbwGjqh4C9Ui6tdaAwvvnGpxDL3bKzGemt8_bUpA>
+    <xmx:DDeraYXvwgRYGKcq4gcrdbHiTol7o-fLV7MQzpaBaDCrT207DAUg5g>
+    <xmx:DDeraXR_ei3OMJVubNO1jsLAb59RHO7rT28j0-zBHECUYLPYEeHzpw>
+    <xmx:DDeraRZDqOfWDBSHmud6kCPdlDueRwdxK1vc4ZJockTKSmlWT61aiw0y>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Mar 2026 15:20:26 -0500 (EST)
+Date: Fri, 6 Mar 2026 20:20:21 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Chris J Arges <carges@cloudflare.com>, akpm@linux-foundation.org, 
+	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
+ page cache lookups
+Message-ID: <aas2lmQtqW2tK2u3@thinkstation>
+References: <20260305183438.1062312-1-carges@cloudflare.com>
+ <20260305183438.1062312-2-carges@cloudflare.com>
+ <aanYdvdJVG6f5WL2@casper.infradead.org>
+ <aarVMrFptdXhHsX1@thinkstation>
+ <aasAo8qRCV9XSuax@casper.infradead.org>
+ <aasddOvIfcMYp3sk@thinkstation>
+ <aasfxLYRWzNodAYO@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306200319.2819286-1-objecting@objecting.org>
-X-Rspamd-Queue-Id: 559C340011
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5mu4sqaagfke1memfr5yr5gmyahrn9rk
+In-Reply-To: <aasfxLYRWzNodAYO@casper.infradead.org>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CCF5710000D
+X-Stat-Signature: oowbsztfy3xnuuuumiowa51xrf3rbnhh
 X-Rspam-User: 
-X-HE-Tag: 1772828131-730468
-X-HE-Meta: U2FsdGVkX18Kc3W5BSkZVO48uQQlHIsrmhZcAvgIOdPCngr5rJizCxeycwmmSzYM6D7crOiixjm1+D1k05NkoYTtclpQBlMiO2D7J8PgGA03k8lsmwkCCVlOPZVV8UoC53BXn5aSg7yxBTgeYZFm5ByyqO3GOtQnFiZcmciImta9gKMueIfpmEaFMqPYEGtw6+tFUY3zxREEfsUzC1dhV4ZCAMiHiTEBljS263j/diXSTNica8TDr0qIy6CgwSYoy39zPSkLvMR5fmln8QRHvCAsYgG/P9palILif9ILSSzcNe2A+2bXXOVx1uTc80xMKOt1siIkzTAVlnqioFaOg4h7q0isst1iSYz1eiMuh4tTCsJEHYU8W7a+hCPP/ldsbACYURgCankzABMMOzfBjWv3YIcCov+tVTalP/uzmlZWe+VWpbUNDLHnEA7xWcz3i9kTpw1l/enewYisnavmCB+V7GFCPnq+zxlpaYf/hsU+KXZUjeIu32WmY9lo4xLreD1BfcEfsXAZ3JAOdPB/TxeXNh+xKnzCbRMeuF3pfbhI712DtPU19+gJrmxs+JLXy1HsA2t7M0prnSZTvIDwNi3AfGddV5jhn9lltyjaPJFP9UcRmdEh2OJ1GpGPVozFNOI8Wx3VU97Re9NLlucukh3swEGx5t6c5YK2d7QLyNDvt0SN0xxZDJGyKvvaleNN5MAYoo5W5pV+fUxgdLU6ml0xP3FPMpmtAbIjuC3Myilv9FHQOvCYa6axYXp+9RlCKIFa9G8iRAQPU8fc7lGr/KAtRqx3CQCQZtTNGvriWaZRokcKB68fVTYmifuwmGQHaJvp21F8bLsgL8Gk/lUMzZ9XgJlWEevaASIbx+jkLGANQR6ESkyEd15Z7wC6WoPSPhPPUkCUQUSkA885FcuNwztiKWgUvX/Wv0gbFwD5r3eXDeraFqSrCVx8SlTy0gOWXdVGYkTfqY9xiU5xp6C
- lqnmq5WD
- 6TM6ByA3NS8Sf+RBZQJ9eVKKDsmDyXQKnkSCwha/5fXRWY5YXpz7bbBd0hjXjTv5m7WtxONpGeE4PygjHUOdEy+VUdAMoTx7PdEKsTB11kXiB6ZhAh0imo1cvoW6S59nI8Nap70MdxzPWLJ0kYyPKrBV2vF+PXWrWvZWQa/ih4+Zx/PnKKxvuOGXLbzzC0B0lGEwU/sUgn0g7aP6Igeud+lN5P5YAU6kxA06AyxDMkrS4sf+qk6RqpIIyMQm2HdFDq3PbUCHv5mNMvUWLA8pmz0ISmnvQmlcX7LtfAgPJa5iuvUO/J3cgcHAcietOZQOcGULN
+X-HE-Tag: 1772828428-685029
+X-HE-Meta: U2FsdGVkX1/IbMpRvYcjBmZDIBGTiE30D6SeSOjVk83CHBIl/81a6jiVeN8YmkEzLX4pTljcHS6DQFaoMF4gK66eHGsA33bWmo8/Z6f4VFHuVQl5w4PcvUpoBM8Y7XxqD1dpqT3b83C/n77UuGXrzvVUFmj61H0QUi/+hk2o0ANM5eQbcf79uCkZpIXzhWjNZetZGonw5iRRl5pFPFZgm1uCRAT7b9YZ2eBKwsLNSymkrgsm3IVc4al5rEuP1ics238Tyi4BeqVuFvYkiLL6zrCf3PRDwf9Io17f80J7cBX7fCdkaxrdQJuDah05oLZ1sNyzl4VGPMS8dvMdahP9qAA/UHKNBne5Wc7dmTrze6siuhBj4Z47k9fQjdZuTG7XZKEFQS3acVP+BYouEQXPskNn/NSqDAt8odZctsfHopxJNSTplHMOWwXp+2dydR+zHj8ITah+sBG7i2DZAsJ8GoQxkPg+rE3Sn7NEtPCy7gC2HmjLYlvxB6IAHVS2E3TuxzUoY0EXPYFLd1ayR/sjRsyeH7eLJKoVBo93pCyONAFoj733RENUh78ZM6vqDSoKj1z21ixftSY6ikcOTaOCBXRSFHyzmnAap/uWJKzYpa18Sg5s+GDjtFulmSpFa3sTDdn3P0Zi5kp+q3g7fMrtI1ObIkrZh7ukVGFMmeoaDSucl1WNYNpKTgvrrFbsjVCuyzQotVmUj+iZX1Fdz3yK/7GAWrd8JnPgak2nk985OQxX49GWobeYVHg/IRpr2kskWyucqdMXbjHem17qwS7zHVGv1iWUlGlyx6BKjSsc/shlFbU0C4hYjCpCP1J+X2oVD0wGfoPPcuU/OEgTBXveWBSmo+wZHvhJil7fVHuG5T6Z3sui3hCxhZ5V+wlzEAoWHr+xBJK7+gIEnSnOD3NzcoRIGxB7arCNMWSLCIYcV3jkDmOuHYpS+e0d0EOwRbOooR5stZp6ZAJCpuSDt0Z
+ K6C2ZC9Z
+ 4lkFdzZr0lTHbNzRmBG/RnrY/p7OXrG8B8bQwqZRBKTnwNpuXW2iHvJHvlRJkTc/BStxVUFjbGZkkqsARH8er1xs9zgODeRqds+i3f0Skoe/+K39W+BV0xreJmOYelkB/E11Vy7/QLqbbst0hqBy5dDgo2QehzB7kC/FR+q2zAGLxy5ikyN3JIKF7pK3iky5lrSvqptmCeAb6HZ8Yg99JygimikHF5XH948utBVdB2hOVpJiz1e3FWoqc0NQCyBMVxCgVfKFRML6QThn+U7t8hnwkuJkDXfEnK4xxivRV0TZ4Y3wWsVKwhu3INcv3cGEumvHTHTTwmM43BrxUFlhnk42BhA41uJ2qLCJ+g1n7ibzpOGNbD84gNB26BRLkniZuuRjOcCXSFnKzZ0hpbImUYJYKAgg1jfc7M1uk/gUXpBWLr8f/SH5NGjszCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,17 +141,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 08:03:19PM +0000, Josh Law wrote:
-> ida_find_first_range() only examines the first XArray entry returned by
-> xa_find(). If that entry does not contain a set bit at or above the
-> requested offset, the function returns -ENOENT without searching
-> subsequent entries, even though later chunks may contain allocated IDs
-> within the requested range.
+On Fri, Mar 06, 2026 at 06:41:08PM +0000, Matthew Wilcox wrote:
+> On Fri, Mar 06, 2026 at 06:36:30PM +0000, Kiryl Shutsemau wrote:
+> > The proposed change doesn't fix anything, but hides the problem.
+> > It would be better to downgrade the VM_BUG_ON_FOLIO() to a warning +
+> > retry.
+> 
+> The trouble is that a retry only happens to work in ... whatever scenario
+> this is.  If there's a persistent corruption of the radix tree, a retry
+> might be an infinite loop which isn't terribly helpful.
 
-Can I trouble you to add a test to lib/test_ida.c to demonstrate the
-problem (and that it's fixed, and that it doesn't come back)?
+Whether the problem is transient can be useful.
 
-Also this needs a Fixes: line.  I suggest 7fe6b987166b is the commit
-it's fixing.  Add Jason and Yi Liu as well as the author and committer
-of that patch.
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
