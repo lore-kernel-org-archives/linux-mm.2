@@ -4,94 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03F3BF0182B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B9FF0182E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:03:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E8D96B0092; Fri,  6 Mar 2026 07:00:24 -0500 (EST)
+	id 2E6466B0005; Fri,  6 Mar 2026 07:03:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2964C6B0095; Fri,  6 Mar 2026 07:00:24 -0500 (EST)
+	id 2A74A6B0089; Fri,  6 Mar 2026 07:03:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF9C6B0096; Fri,  6 Mar 2026 07:00:24 -0500 (EST)
+	id 1B73B6B008A; Fri,  6 Mar 2026 07:03:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AA036B0092
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:00:24 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEF4159449
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:00:23 +0000 (UTC)
-X-FDA: 84515495526.13.7EFEAC8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D1966B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:03:30 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A12C61A05A3
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:03:29 +0000 (UTC)
+X-FDA: 84515503338.09.4ADA48D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 276FD1A0012
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:00:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M1ANHXAr;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 09FA6A0011
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:03:27 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="h1hNNt/g";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772798422;
+	s=arc-20220608; t=1772798608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CnWOE+XZBpUSqf2xhU4RSOY7Gql70gbc8lLkBnZiWgg=;
-	b=6B1XalUBY3PTTfE7Dw+R3n3Mb3uyfwzrCmpfBVjlPAxZJV5u8fXpQeR9bEh7BTYHI7hiXY
-	0hew0kW+fZqqPNs6ywBzqznkvNAh7ZAvgm35FrNra4EBuKd8dVidZiaMbd5zifrABDHaNY
-	8jdzx/7eQLc6DRinJmS9f7pTCtE4ZWA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772798422; a=rsa-sha256;
-	cv=none;
-	b=rWtJcETic/H83n/CaAAzq3M2GUmuzBIDLIDWJP6MkgftaVpbQOQbefL38hMv07H3vezUML
-	twHckNzdDKMFFc9HHS/q4KS0E6XJ80pXndrRhIoYKaWxAFX6oxGkSwOBoLpzEBOF1054O/
-	KD4rKHpsUIscEd54ORWtJ8jSf5XgRA0=
+	bh=MaeKwxlFADDb0SCG7LFbZRQ+3aRrnHNNxNfktnf9Iog=;
+	b=PQLvljdGMO1/g/ZcLP03zogJU5XzyfqvnTBfzwBlar4nHCFLNAFbjJ9f5cUN/2f6f3z355
+	eZ6LoX83oMcKJnZmgynC11P/Emh+x2N9Rj6hXoH/xr2xMfForJB9m7wBeFU0ilOkrAUfdF
+	ueStQHrqzw6lrPsnYO/PT1+sknj06T8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M1ANHXAr;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="h1hNNt/g";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772798608; a=rsa-sha256;
+	cv=none;
+	b=Z/Lh+q7rNT6PoP/1PJ8ZMDn/y188mHeRQwjvEOC9jWRapvn9ykkTz2lPEMXemoShD5VyR7
+	o1HTQmZnAWAjexyWbLNvggf2ptUz6eaDnZF4Rc0rtPAU3vHsEzFdZV5D1I90A13IAEgwnR
+	ALabtrvo2qXL/PklW+55EPvhX6WY5pI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A073660130;
-	Fri,  6 Mar 2026 12:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275EC4CEF7;
-	Fri,  6 Mar 2026 12:00:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2C88E6013E;
+	Fri,  6 Mar 2026 12:03:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6488CC4CEF7;
+	Fri,  6 Mar 2026 12:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772798421;
-	bh=sZnQlxpGWa7kZTMgWVtzvZw/bOt/U7meNE4gmvLg9qg=;
+	s=k20201202; t=1772798607;
+	bh=8tIEjkmwTnv14wqiBx5utAVT1y4BywX848doWLEUMyQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M1ANHXArxO2sQq5tNNQ1rLi17V4s4Vnm+e+xwA3n0uiVKuz0nGt5FAxK+anO9p96L
-	 lk/4mH57iTuTPtNn/OEbxy2N0xTkXgGdHcgEAmasXaemklUHMdLuElF1SDklbyOFrA
-	 DJHA7MgtTv0qSXhQzIpcxINi18SjxddDoIimt1PgXWd66ZxAT5+qOu5PduyQapz7Pj
-	 Ty0B0UK7bIdxge6zeF+kna1/vc4uAHzWNu/VsdhhZqelnheUCEBI7+VE7l+9gffhML
-	 MaQr8kBTDaBE4wQAEFp4jUaVPip+NyEfOKi7dbskvb6l3Zao0ccIKBZJsWEzvZS0Fc
-	 lBJanlZagz4Og==
-Date: Fri, 6 Mar 2026 12:00:18 +0000
+	b=h1hNNt/ggkmOIg6nOIs6YVKXxpvjxXfuNC1/E243FERUMlrdAP/1JGuS8WftUsd7f
+	 sEmFfcrfCzizYh1WflGJxM+Mh8s8/NGzCybtmxDbPIa+RYlLhAC8M2mVomjBVzk4GJ
+	 ovvi/YoGsX9AnKFqWBjW+IpIUt/t0ThtH++DKgi9JosbOXhePSuaAgqwo9ysipyiZZ
+	 tJR6V8PVm0Q3rJsUQBZpi2/tPfiYYA+aTsakBMmVszHI4rXW/zZE1/jrzMC/3s/CgY
+	 3bcJ8hm+9ce3MEINimXRaNGIqZXC4Xd93/yIA5/AX590NC8dE2fbRiLTj205GiFNUz
+	 8UXcS4I1Opdeg==
+Date: Fri, 6 Mar 2026 12:03:24 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, Mateusz Guzik <mjguzik@gmail.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: Re: [PATCH] fork: zero vmap stack using clear_pages() instead of
- memset()
-Message-ID: <12c53268-b5a4-4725-b376-b7795bc4057c@lucifer.local>
-References: <20260224-mm-fork-clear-pages-v1-1-184c65a72d49@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 01/16] mm/madvise: drop range checks in
+ madvise_free_single_vma()
+Message-ID: <c5a89c14-0c6b-4c1e-a68c-0680c7d64f4c@lucifer.local>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-2-david@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260224-mm-fork-clear-pages-v1-1-184c65a72d49@kernel.org>
+In-Reply-To: <20260227200848.114019-2-david@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 276FD1A0012
-X-Stat-Signature: 3awqpd5yjatttw1fjemhtf53n6d9ixxg
-X-HE-Tag: 1772798422-529184
-X-HE-Meta: U2FsdGVkX1/OCLXWqYI2IB0rQ4TmzRsotOSD5knsjtjXGsEKHbw8817bwWVk08JK4XhAk5Lu/kmCgtEXU/YDo0xwIvjlf3ZXcw3QG2tYj2l1GPa1jroNOIRFixYhtAxgRGw+B8ij1MGp1Kx0J1GcnyUN/1LuHUJFLU2E8M+I95K8GZioSkqW16P9I0MEKPpbuAiyHQtlc+pOY/ywoHtWjwPNXVUAr9X0LW3is7E6QtgfuHkSdJezRHS6brTomVdn7KCBHBOK1lZlx1RFSExJvJiz+GqQUeb6ga9AgcvJXVy88LDHs2zv3+Fi0pM/lqCHpiys0WOZNZI1pRnQC1Z2bE8e6mKtCqX4Z2OSFamlZaNpKUQzqh2WnEXgU0wLGUlr7jKrKery9OymT+e6g/PEiBETPgTsHSD6kSYgt29Z9AFJHuojLCOGce4L2c9oMfEJJj+Emr4tFrdAjOMuaUM7iBAm86AFbNYMsYAdLui9L016qnhqn1KGbdMT12MUCVfflswyC7nYZ6xyI2dy6BCxdB3ZmYJjEgYrdOQbdxM3Eo7s1lKwQHIMlDg3uVsPgBJQLpFgYZzLLU4TBD0j93ee/p7oWdjQGiALSVRux6WM+KvIAX1LaDmbc0eQ5diPg/+1GBF4xw064B6VRyMRyp3XKM82NeBfLHK0RJRDX0LsHMZMOaJpQoCPjn7pGVH02ciszpzfsXhA+r/3Cd94vxfhYvvfrAbRmTia+3V2J9cDvI6X9lHO1thIbFrGCcHHViDujwHV06X2cnsLJ8xSixXR7B55VNL5QPviRVC5AtqozTtG5fvAOrUJbDjIY5kvh7QBYSjiGSFRxrih7HCryLTzzKaKvgY5s71MyQY/MJxAmJcrz62rclasY1gZEV2NPfCfhWE+pP3F5EaSURkpUID2elo3bCsrafOUpdp+vMYE2DMrGjasLsxMNchq2dVKMYYVJ+362YjFbAbfAwyTkzh
- WHPzb0QC
- T9X35nPupeWBTxFEqXSf/tK5g4S1ZB3GXY+FvFcDi1KNKQefQdyv3OTlCwkNZs7KW9CgfPZ6YSwLoOaCHbC6RCqWcUGFpttNW1E+7QepllvIoL57pBXTr4lwsopoDWkI3allUnn9zd2o4ZDTF05EWOXeMaiU1+YyZ2WqKUnguk8ybJ3NrdaYiZg2CpVpRXD+XBUPvte67brWO++EG9ZCR9pqQWcr8m9TNtvIhl/oBvYXkYVf8QAGJF2KsVNPjx9YjVPBJ61EgyBD+tDWc/S1S08faPeOZHjxZwUH55U2CEJ0xxN163pbiFm9DT5ZRVDgLKv6I/SgwvS0xnCGEYBUfDvd5eqng6zXeiDSwHP6y2W+b7VJ0BowgGbppfG12zLG3J1QRhAwgYYosvQGpgCPAUw+Azg==
+X-Rspamd-Queue-Id: 09FA6A0011
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 8rgwww66efqpsypuapboy8bhbtfrn5aq
+X-HE-Tag: 1772798607-946814
+X-HE-Meta: U2FsdGVkX19LTyTp1UrS+IJw/YynFCbH7jrp4Uout2VAjDDZ606bDpfHhfv5Leg13li9Jd0gKlSLSxdT+UhK64OEdeCf0Qgqjcs0PsHZI7/9FJdLD0r6ij5MmQMxT5N5b83Zay+W8Xk/Ol0vfpac1OkBhx7skHcToqF58h3zwWhXzwlR7tPF+w69ZpVaM6qzUm0V0lUIGnPQMtvMSUMHduqv/+mldPU2W2bhHgHMWKCM3CAijbLfxY1j6AxTZeVaSFANJtEf5J/EU2yRyEogh9F6CMPURs8H+ft+8VZwqIyXmBUW9ABa21x9cMhhbjqQP935brMGQiSaZYaFu1t6ZIHF83o0vIG0gtcY2n8lOPqbHXesK/MVFmgJF027dVoOBIiBtLL7cV+eD3dX2Cbd3TH+3Idn/arwlLup+zB/svEIXAHZXPvzxsUFILiNdu/3hZIQplmTsc8VCbEODLOg7w5qDmmvEaIQ7u/z+MHeVEO8A34UuHY+JxHGYwoBhlNU8OT7c3zDiWO90yfv0Gqh7JfIwqAKegNxyxMT6dx8K9dUggD1180pEWVgX2RZyvrwXPXOvin91sYfSgA300Z+C1zaydLg0rg8JFV7WFerXhzKGvB6BSjXeBDwxiQgq4ZpaMnQbS48Zihd9GQCgzVddLFIBGWibf0D/lciq2skc71CFp1wBKHqCg3XPtlOEUTP5JneiF9bMYbjYj4HjPPK0RR67sXdOfceuhaTzK1ThXNs9LtDtRchu0P79zemvf6wHzf2xGJzR9F6kLwTdpqfRq6WEl4b729TRk/463ZZ2KNSXgJmZve9Nxz2g3MYzTMZrMc8TzZHZ+inJXFdnpkmvy2RAQBRPfooX3Y/FaMKShJ2GrZHUf3fT4s5rhEM4hdQXSWk0sfHUI6UedBqqLJXoLwva6xNNptIJNf9paIehc4cR7Us7WadCkekP4/7+qQiDXelbfwoIqrPDWHXS+e
+ +cIsTCd6
+ 4Bng0D8a05z71WXjpo+BvN47csRplQ0xAB1M3hOq9IqGw2Q8/XbfCmIQxkEvRNN8XPa60PjQ2fwoIH4ReZZ5croV6qqz6OD2BRE4O+SZ1GoxdF1Z5v8Dpw4zCf1kWbT38eEKEw7x5S7w4N5j0FMfIU21GMKJKOug8QNs+OzoJ7RS0O1feq6ccLWzamczyKWrMvQE0YRfWJptRZb1ZGQRiawT9jVmnI1C25uKlKdvkR0SThkkxixrTQJqEzSSWP+8mBZjQw0ebeCx2kv9FoMz2NyeDcLiSivS3+D+o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,46 +124,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 24, 2026 at 11:26:32AM +0100, Linus Walleij wrote:
-> After the introduction of clear_pages() we exploit the
-> fact that the process vm_area is allocated in contiguous
-> pages to just clear them all in one swift operation.
+On Fri, Feb 27, 2026 at 09:08:32PM +0100, David Hildenbrand (Arm) wrote:
+> madvise_vma_behavior()-> madvise_dontneed_free()->madvise_free_single_vma()
+> is only called from madvise_walk_vmas()
 >
-> Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
-> Link: https://lore.kernel.org/linux-mm/dpnwsp7dl4535rd7qmszanw6u5an2p74uxfex4dh53frpb7pu3@2bnjjavjrepe/
-> Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Link: https://lore.kernel.org/20240311164638.2015063-7-pasha.tatashin@soleen.com
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
+> (a) After try_vma_read_lock() confirmed that the whole range falls into
+>     a single VMA (see is_vma_lock_sufficient()).
+>
+> (b) After adjusting the range to the VMA in the loop afterwards.
+>
+> madvise_dontneed_free() might drop the MM lock when handling
+> userfaultfd, but it properly looks up the VMA again to adjust the range.
+>
+> So in madvise_free_single_vma(), the given range should always fall into
+> a single VMA and should also span at least one page.
+>
+> Let's drop the error checks.
+>
+> The code now matches what we do in madvise_dontneed_single_vma(), where
+> we call zap_vma_range_batched() that documents: "The range must fit into
+> one VMA.". Although that function still adjusts that range, we'll change
+> that soon.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-LGTM, so:
+Yeah I did wonder about some of these checks, thanks for going through and
+confirming these are useless.
+
+Checked the madvise_dontneed_free() case to be sure and LGTM so overall:
 
 Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
 > ---
->  kernel/fork.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/madvise.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
 >
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index e832da9d15a4..88d78ccef245 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -345,7 +345,7 @@ static int alloc_thread_stack_node(struct task_struct *tsk, int node)
->  		stack = kasan_reset_tag(vm_area->addr);
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index c0370d9b4e23..efc04334a000 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -799,9 +799,10 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+>  {
+>  	struct mm_struct *mm = madv_behavior->mm;
+>  	struct vm_area_struct *vma = madv_behavior->vma;
+> -	unsigned long start_addr = madv_behavior->range.start;
+> -	unsigned long end_addr = madv_behavior->range.end;
+> -	struct mmu_notifier_range range;
+> +	struct mmu_notifier_range range = {
+> +		.start = madv_behavior->range.start,
+> +		.end = madv_behavior->range.end,
+> +	};
+>  	struct mmu_gather *tlb = madv_behavior->tlb;
+>  	struct mm_walk_ops walk_ops = {
+>  		.pmd_entry		= madvise_free_pte_range,
+> @@ -811,12 +812,6 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+>  	if (!vma_is_anonymous(vma))
+>  		return -EINVAL;
 >
->  		/* Clear stale pointers from reused stack. */
-> -		memset(stack, 0, THREAD_SIZE);
-> +		clear_pages(vm_area->addr, vm_area->nr_pages);
+> -	range.start = max(vma->vm_start, start_addr);
+> -	if (range.start >= vma->vm_end)
+> -		return -EINVAL;
+> -	range.end = min(vma->vm_end, end_addr);
+> -	if (range.end <= vma->vm_start)
+> -		return -EINVAL;
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+>  				range.start, range.end);
 >
->  		tsk->stack_vm_area = vm_area;
->  		tsk->stack = stack;
->
-> ---
-> base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
-> change-id: 20260224-mm-fork-clear-pages-ae7c52d12a93
->
-> Best regards,
 > --
-> Linus Walleij <linusw@kernel.org>
->
+> 2.43.0
 >
 
