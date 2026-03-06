@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D55FCC076
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 22:21:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3BF4FCC076
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 22:54:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5DA76B0005; Fri,  6 Mar 2026 17:21:53 -0500 (EST)
+	id 11E2B6B0005; Fri,  6 Mar 2026 17:54:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E361C6B0089; Fri,  6 Mar 2026 17:21:53 -0500 (EST)
+	id 0A19E6B0089; Fri,  6 Mar 2026 17:54:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6C286B008A; Fri,  6 Mar 2026 17:21:53 -0500 (EST)
+	id EEF4B6B008A; Fri,  6 Mar 2026 17:54:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C87E86B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:21:53 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A57B2140656
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:21:52 +0000 (UTC)
-X-FDA: 84517061664.08.3BB3231
+	by kanga.kvack.org (Postfix) with ESMTP id E104C6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 17:54:38 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 761DB140708
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:54:38 +0000 (UTC)
+X-FDA: 84517144236.13.55CF2A8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 196482000F
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:21:50 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ut5nk3Wa;
+	by imf06.hostedemail.com (Postfix) with ESMTP id AE7A3180005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:54:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THmqX8z0;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772835711;
+	s=arc-20220608; t=1772837676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZqI/tU66YMc/8NEBFtANC+E3ke0onX2t3xQN5vQMn/8=;
-	b=gQbBAQAom7VmS00lSy263McO/DrLodJMZrn7jWAaaVKaHaFF5dyDmneXPDQTBQ/OwdjvMu
-	UeLwNEaaekL007rJBKSpnbFpuza4wW4OtvJHYXp4GwB7dEmI1qEUhEi7XtppuevT2jUJwq
-	JFS1N136AR2C3DEK399sPwAchQouEIU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772835711; a=rsa-sha256;
+	bh=6O6R13x+JDBywDtrYjf+lvOJ36gh/XRQqgVF4nkWVTU=;
+	b=s5gCbd4b3OUwofJ4mC6VNIHLeIF9X53Oo/k8mJf0o9WVHMclGklmgQK6iECovjhRCtsO1+
+	HIfOpf9A0BHP8ki6c0wK/ouNox+mdfmlEjiHg/AmPgo4/DhKuaGTEIOK2G51YEYSbpIq+1
+	49ut+Ibq6Ram9WytOI5P3Ux5hbRvds8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772837676; a=rsa-sha256;
 	cv=none;
-	b=E9v4u+EutyukRUSyTi7Nn2Vl2lg7uJtI99FrvdP0UzJEu7QaDLchFiXTv09OG1XmNa8Azy
-	Zt/gmgl2fNSHfvSRXvLDqFFyy05Y+w6wTKBnxzInpi/x2MHj+7uF9Xk5DHvpzZHMDt7j4L
-	b/FLoh+5gKmTmaF0VF6AXJaEGMTKYS8=
+	b=DOcoiySs8VLkLKQJYlFFMf/pWMozuE6mYEXy2WiKbd8DuixCgARftp3VsmA0vScva5c5va
+	Cbe3KrwePrEmIf/hQpuwPTkr9xtGQICnbJ43KLxVP0oGUt0fC4w/SLWfOlI1SzvQyWDRfc
+	8oC+dw3vKv2FJslJqZrCp2bFF5qqPXs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Ut5nk3Wa;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=THmqX8z0;
 	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E72A64058F;
-	Fri,  6 Mar 2026 22:21:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A11C4CEF7;
-	Fri,  6 Mar 2026 22:21:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AE9A342ACB;
+	Fri,  6 Mar 2026 22:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC2AC4CEF7;
+	Fri,  6 Mar 2026 22:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772835709;
-	bh=bV1QSwGRDjvKEhTSPW1LplJ4jYX4s0PKhruk1J09GiE=;
+	s=korg; t=1772837675;
+	bh=Crwot/d7WDbdCGkIKt73y4giJNElc+vyWtGZgHDnlsk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ut5nk3WazFvH9wgHR2ZbxZZpTD0bTW2utubyiP5W6BRm8maFCmdz8FwTWhJ/rATNY
-	 Z6kUnDQY/To8UJeZImQ91rLJ0BkNu2UO3F9xdkFiAaZIb9gfEquiFNNJqCD6fbhF+T
-	 AP7+ChdVrn4jDW6aTIx8edVssGux8PtADmo8IEVY=
-Date: Fri, 6 Mar 2026 14:21:48 -0800
+	b=THmqX8z0XY2vShT+oN+k58cZPc8qtCX0GKKF7CItaFCMczcEQnmyhAEyR63WWJa3Y
+	 0ccps40WBnBLmgZej9zfz4VT5bbR4DP9fVPegZKaSP/9JBi2m+gbkm86fDMiZXrnF3
+	 4J6/hsW8ztkD9j1w2rFlVglS8QyfK0ma6okLNDVQ=
+Date: Fri, 6 Mar 2026 14:54:34 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrea Arcangeli <aarcange@redhat.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Hugh Dickins <hughd@google.com>,
- James Houghton <jthoughton@google.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin
- <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>, Paolo Bonzini
- <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/15]  mm, kvm: allow uffd support in guest_memfd
-Message-Id: <20260306142148.953267d97a085286d43e116d@linux-foundation.org>
-In-Reply-To: <20260306171815.3160826-1-rppt@kernel.org>
-References: <20260306171815.3160826-1-rppt@kernel.org>
+To: Josh Law <hlcj1234567@gmail.com>
+Cc: Liam.Howlett@oracle.com, aliceryhl@google.com,
+ andrewjballance@gmail.com, maple-tree@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Josh Law
+ <objecting@objecting.org>
+Subject: Re: [PATCH] lib/maple_tree: fix swapped arguments in
+ mas_safe_pivot() call
+Message-Id: <20260306145434.c069313fe809d94e64a07109@linux-foundation.org>
+In-Reply-To: <b796ccaa-242d-4e4a-a9f5-b3a91f46f838@gmail.com>
+References: <20260306200820.2819999-1-objecting@objecting.org>
+	<20260306133321.4fa6c5a73067bd179a5e888e@linux-foundation.org>
+	<b796ccaa-242d-4e4a-a9f5-b3a91f46f838@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 196482000F
-X-Stat-Signature: x55dqdouj1wecqqrzj835fpkff9hrf4w
+X-Rspamd-Queue-Id: AE7A3180005
+X-Stat-Signature: j85kk9m9yfhz34t1icu4zc7ncoe9dp4x
 X-Rspam-User: 
-X-HE-Tag: 1772835710-121014
-X-HE-Meta: U2FsdGVkX1+/rURuT61DpL0LsBExC/nRoRNc5oCsYyL/Drowwz5eAkMXkMHc66VnE44umom8gBEKsjEKvyoJkbTYpbKi9mP6YHCqR9vaD4DJo1xQzVw6SNCVu6QyyfjABa0YHIodDugDdwli+l73vrct7N4mJTLv8lgF/UFlteHvnss2XJVr+D3seOmAfC5nb+oTt5zmn3kmn1/1g70hXMVpw5FmmGIihGCYQPIdoB/Xh9b84xXr+MwF33louptCmthXyuDUJinI3IU670yrwX5Ot96/LEjWQN5HEIDS3scup1e7utS8GVmCM3coJOmd0jbZGo+jd6fWtiZ3KLeQDpYDjJjJ9pTnBtAq3/4yiGs6mVnLRNODGe5sWGcWvh+gGzUV/stbd9dtoFjPpCW4zykMXAXlpt6caEF4+OUtvDSnVZ+41eAgqAHgqjU50JCPdXYR04TriXFRyRG/AD8rv2yhzbcq2k+UmEFMEUvb2wOT1gi+1vZ7aOVRih946DjXHMUK/qz5YM9eWPHo226GPCIQH+1jcu+cXxrBOhLVpwmuXsd/T+unb80qZjWV0SVkSxKwHhDG/Yz0odOV2Um9JiFt8HGw6KvPo3Fsq3gRmjRIfSlvHRo3pT5UcuRfIT2wFoKtEGzVlRLLKV+zKbo5fPcQnSEuCYAUfnmy2RHhWHKsaY/UYgOWnLYdvPWgsZYqhwVeNuANSb6DWi0PjP9WOvJpALOxTy3lsdoAhYtwKdsIyfaBaA/p42kPbNTywkkRuJwOK6Dhzw+ibD2ffgZJv/q22s2A4xjj3aDFEcIBgohGHVujkB3x9bnwz7vXz/8Wo7kpgBL13xv1oPW7u5xtguFhgxccI+31LMlFd8sm3yOM65zYnAczjMBzJR49nsqgF/g4In4N7pIJnG7U6gErjOj1AhrNv+gm+kiQXAmMxJoQ3zJPyu7lsA==
+X-HE-Tag: 1772837676-706443
+X-HE-Meta: U2FsdGVkX18lG1XEXeA57ZVH1K/zl+yQ7URYWNm55CaDNWKVPil920f4OJ4zYO/s7pSmGEAqZoJOHXu5zi6wsDdEWrfgOAhKaOj92KKxOoAintEVifMKCM1OIruhhZE3apqntnYwEogPpPE31A46ICaRmV2RDs9HvStZuhyX3D+DQKoGb97y8iA1EGuOspUKbkCG0xVHJLSXb0vudQtm5Qi5ch3RjaBrFWiqsZKegikIh/We4dpKSQoiY52Q8qOBNcetFCOEe93H5Hfn8twj1QF07YhEFwYY/9wVT9eS8yC692oza0KzshTDWePnS3ZopbbY0z9AORHo8Z0hLr7k++Sej3uWRnav3Wt17XWseKgsTQabxygQ34CGVNgMayUIa0Lu80ZQ5MRALAA/FDHwheTZkX4yXfS8mcXdWYkmE697nMLcWZoiJiFIEennOh+MfjMPeOX0p6pwa9j8IMPqHHYZbHXSlha8Uv3N+ca4vqhqeoh+XX7zH6x34wPfFinlwMwAETdVVnm+fijhilZVS6Aeos12RWufHsDZOHZ/Nf8r7XEO8W/+bw/pYTOWSquHcOabc5uN8n7izmxcDfhh7qDPOVspVM13/hJL+OQNVCMTQgPsb1tDSsW1RLO3rcs8sQmHK1JK05nkYD3uDo0jahGDxU5ISnL1giKijt2L4Y4J5bKEAiQnIKo/hS9ljfAuoVKbdVMKMd0TDJKL835hEK25wDgHvZXTZHqLUaoMaH1DCfimm0B/FoXAyWZs7PkESf7lZpL2VAFYiU/QkYma90VZkoWkupEVEavJxVk+7Quj3fIcZBmmZ0JslkgSrsPp5PWIDLt7vl9oiavbytU0quxVM8AuZ4iSD/74F/7/w17K3jJ0vj7i6eci0GYRXzoTFcekEsTzGLNIA4JQrujirhSR8dzH3yavsBOfRiZLg9o9SjslOJ47pYdETtEQooYdboshE9V3Cu5REtHM0lh
+ 3MuRJ2dI
+ Xqqa9UxGhOas6Bi5E9EDGiTtpwMfbxthEXCmaEl7n2hIUI0RstBynWcoZOeJKkkj9G67Ii/lpGmElCy5cp5l7Mj0wrRza639D3LJMKdprezBaSbfBcGt75AAygDBqtni/qQA08f6psdoLVS9JivQE+OVA+irdZ+POfhDXbCCzJVLteM/7MeORPm7qa1gbQBrxCV2wI96ZAo3d0+QNDZfwHDyXtmrlghSjWBguYAWJQ1AO3LiMUjviFMJBuDDdUe/Rk6JjziMhTSIYlq+Z99lHR27Ck1yiU6VGRheQj5tixjHyVCSDc3e5ntBN027PM7oTnMLgLAEZTVm0JfnNRHes6WeNeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,12 +94,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  6 Mar 2026 19:18:00 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+On Fri, 6 Mar 2026 22:11:54 +0000 Josh Law <hlcj1234567@gmail.com> wrote:
 
-> These patches enable support for userfaultfd in guest_memfd.
+> >> --- a/lib/maple_tree.c
+> >> +++ b/lib/maple_tree.c
+> >> @@ -3279,7 +3279,7 @@ static inline void mas_extend_spanning_null(stru=
+ct ma_wr_state *l_wr_mas,
+> >> =A0=A0=A0=A0=A0=A0=A0 (r_mas->last < r_mas->max) &&
+> >> =A0=A0=A0=A0=A0=A0=A0 !mas_slot_locked(r_mas, r_wr_mas->slots, r_mas->=
+offset + 1)) {
+> >> =A0=A0=A0=A0=A0=A0=A0 r_mas->last =3D mas_safe_pivot(r_mas, r_wr_mas->=
+pivots,
+> >> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+ r_wr_mas->type, r_mas->offset + 1);
+> >> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+ r_mas->offset + 1, r_wr_mas->type);
+> >> =A0=A0=A0=A0=A0=A0=A0 r_mas->offset++;
+> >> =A0=A0=A0 }
+> >
+> > Whoops.=A0 How come nobody has noticed after 4+ years?
+> >
+> > I'll add
+> >
+> > =A0=A0=A0 Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> >
+> > and maybe cc:stable if we have a reason to do so.
+>=20
+> Hi Andrew, on thought, I'd like to add Cc: stable@vger.kernel.org to this.
+> Even though it's been 4 years, a swapped argument in a core data structur=
+e like Maple Tree is a silent bug that could cause rare corruption. Better =
+to defuse it in the LTS kernels.
 
-Thanks, Mike.  I'll get this into the pipeline for testing.
+Seems appropriate.  But not as a hotfix, given the 3+ year thing.
 
-Review is a little patchy at this time but hopefully that will improve
-over the next few weeks.
+I was hoping to hear some thoughts on why this has proven to be so benign. =
+=20
 
