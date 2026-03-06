@@ -4,141 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2862FFCB61B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC7DFCB618
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:48:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 933686B00A0; Fri,  6 Mar 2026 10:44:20 -0500 (EST)
+	id 50A146B008A; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90B0C6B00A2; Fri,  6 Mar 2026 10:44:20 -0500 (EST)
+	id 4E1EB6B0096; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A4B6B00A3; Fri,  6 Mar 2026 10:44:20 -0500 (EST)
+	id 3EE2E6B0098; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B45A6B00A0
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:44:20 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2413A140614
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:44:20 +0000 (UTC)
-X-FDA: 84516059880.25.F07E31B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 62B744000D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:44:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cPwvk7hY;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2F78D6B008A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:48:12 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CF538160607
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:48:11 +0000 (UTC)
+X-FDA: 84516069582.01.BF50D7F
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0126C40010
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:48:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDl0tLy0;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772811858;
+	s=arc-20220608; t=1772812090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WIwxDrFnlcYBpeh8ciPv7iyV+DIVmuhIWfboIKVpOiE=;
-	b=WNpb7vGt88Qds256DpSfJGGz733OlltOxELHnPc+DKrGaAzNEbHRA+X+1HzpI5x8gKQbe5
-	diQ7MfPLVdI2sG6CHEATtpJkCXZ0Irf5E7uuSmDYp3KshXc9OxghPy3UMrd6qDGCu4bqdJ
-	dzZahHqIRSVmi9BlELxIjE0IYrnjZHs=
+	bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
+	b=4n4tz+a+2B69luyTyO/4HduMDaYS3PLa8OQUHIt76Ghke0Z7pXknwDWp0UEBRAMoO3nFGJ
+	GbH8Z6Hv2a8R46pjOE2j7qJzM0I2kGqXXcwpkZol5vd8FbhzUPnnC3EWvcTc2wxPmC1bSB
+	ikb5ciy8LLqwl1nuuXTu2pyIhuFr1Zo=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cPwvk7hY;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772811858; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDl0tLy0;
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.174 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812090; a=rsa-sha256;
 	cv=none;
-	b=WMLtZOuyW/aAb2mj2Cckckna1UKoL+Hgq8a4y2dkE1I6qSsRDK7vPVyLUBC+vtOYW2Bb3m
-	yiCI6LPkudjykHS98IruPo+YXfkbAILEekZ3VVaBB3WH4sB13713OqYTgSqNg6NgOj4mxa
-	ktqEo9kwZL/Fjt5PsTU555shrX4+Lpw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D15A960127;
-	Fri,  6 Mar 2026 15:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042BFC2BC86;
-	Fri,  6 Mar 2026 15:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772811857;
-	bh=Irog342MSr8k0zPuW6pGzgfpJRPPfcyU46dDqhpUBU8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cPwvk7hYBURwasb7XgxxL1kr9EppTKvwp8HXAgsivHXKjqp75sTPHdGxFMqtH5GoC
-	 KWahvwUXupdk0vP9+GXBHipHQQaevBgrSxRfLxtzes8UcuTMob+APPrkVxnMkQ43H4
-	 pqYJhYjEEPC6KmAUY+xkMmbNui7Qj/X1BlHXLP7cxJoqraZdVLVMgU71DKUckL8hlD
-	 U99gWs8Qztv8u3kD1L8S1yKRUESqYW3qiE3m5QVefWfGRMXRXb2kxyi5TOLk2Jh50O
-	 s5ZJkDQL5uz7rygM1S6oeiYTyYKoEc7zKF2NvNddiKTezKxSMgVXGP1dArr2DxQVXv
-	 OaWe1NzgWP/6A==
-Message-ID: <81e7bd1c-54d5-4f88-969a-685177447c51@kernel.org>
-Date: Fri, 6 Mar 2026 16:44:06 +0100
+	b=Q8fLSTLdzE6dLWMnG940S7LrihCliIIpL3hIW74mkFPk1gVwiZL9RSpGJRCyyOYyEXPCF5
+	g8i3bezLjBgJKtUaSCEKi8BFGyqZDZmFEZaXkd7SOOxi0XaGXcCrzhGKJLfBRwqu63Qabx
+	PAdfgjorF4SMtF9x9arL3BJCj08OEP0=
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-46398742245so3444075b6e.1
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 07:48:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772812089; x=1773416889; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
+        b=JDl0tLy0cNIaqzKudkp2NcKUowo5rT8Cpo9bUml4vRJVWIuNPFN/nStFImUsr3ChK9
+         w8ktx64X+ejdIo+otuMIzvlYyeROlAzrvxZ4L0nXNQAmVCOR03hL0SCGoBnzUfye3I3V
+         VKPJcnqwYaexrn+YU6arKdOQjrMeTiXetTxqD/YKqC7wz6qBEUAb/gb75Cce9upDKmWg
+         JgX4T9bk9bn2ISLwlXLAuMDRk/gizIBXVrqcUeisXDXHX/AbAKKB+6HTrGRckqZwrryB
+         VisA6r4SoFfnEpURCSFL0Lxkbw7Mxet1S0aKqn1xKiWP0xQEB7oE2p7l1ZLrkzhABNQj
+         1c4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772812089; x=1773416889;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ltlmh5+xfasabBt3G7wfvJiHvUvttPKwWWOjoNqhRlQ=;
+        b=kgwSwWN8mh+RVTvYFb4A7Y4vv3TT5wR4j4y26ObgcdgCaAUz3d5NzGaFZTXCSzYEsj
+         1G1gzG4mM9lo9dePzmLtEJdthjy8o2B97FtxXo8jpFLl+DDSiC/tLWZqxeysWZ9kst+c
+         FQeBtc7CaKbhOVutMoQtAC7ucIz4lU6EreYHKEkB+dLAL/Z3tQZjCgm0qrHEP6BqV9sT
+         a+t3brfzR3XZKJMLZE6CToJMa4LaUw+fOibJivCNL8Yyt30TcdsE6gzG4D6IU6buSxu/
+         DIYfD8uTObd3FM33JN0Xqq+H1TBb2yNDR4BV/pUVv0CbVY6bQiouBDST80tKfq6/F9eH
+         6mog==
+X-Forwarded-Encrypted: i=1; AJvYcCUAfpwsBWi3XsmabuL9kKYpzt/dyhQ0fgtU0Y1IQT+auREgKvBD233JK6g3/ZovFEnhhD4xEl/Uxw==@kvack.org
+X-Gm-Message-State: AOJu0YwOZNzkJDcN2TFIzteSdd2cZtb1huSQwzqADEvrkvoD8UE+zA5m
+	/yCd5Rwjuz5aClnYCU+L+Fv4AGBlsOLm/vo1eZ/L/N2psCx/f+xwoTQM
+X-Gm-Gg: ATEYQzz5isZA/u4ky5xbJAZ+y3Le+JTUgPwsqty6Ng9rmdgAvTEdWYGjDf+4VpFzSpY
+	WzcMZlU1MKJANwFeX/Qbccpz6TP9YzX5VhxOjNc8QACaAQR8s14+XejlGW0tE9mBpJ5a4UbhOQw
+	Q3llwOowH2vqtL3MLgM8zAM2vA0UlMyiO0M0I9a+n5uQqrFeUoJNX785dUgAROby8YnZcUUnoTz
+	/ZAkdsQ5mUjEd4bkSfbDBTPGYeeu+NAuFWf3XGZCFa9TPFzwiZ3qVzeRzaxePa1IENbUE3go2UI
+	XYSxh8O6mRvHgxERRH4YdtKgC7S5nRuWp+nplgKq69iTOz72Yo2Uf9HPzJ3btKUf9Y0UytI1RLC
+	bZTpGBKWm4BM9NWiUc3NnsARGxMNjKc27LqSA+hgiFUqCBD9hbzMmVDOXaZeW7+SlJ7jsbakHYq
+	6k8Nxr055nrYHiUPMgsbT5Cw==
+X-Received: by 2002:a05:6808:4f08:b0:43f:5c61:448c with SMTP id 5614622812f47-466dcb0c3bemr1240922b6e.39.1772812088834;
+        Fri, 06 Mar 2026 07:48:08 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:52::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-416e68369bcsm1683173fac.15.2026.03.06.07.48.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 07:48:08 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH 3/8] mm/zsmalloc: Introduce objcgs pointer in struct zpdesc
+Date: Fri,  6 Mar 2026 07:48:06 -0800
+Message-ID: <20260306154806.187506-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aapO2Pd9d5B6MEtu@hyeyoo>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 05/13] mm/page_vma_mapped: Add flag to
- page_vma_mapped_walk::flags to track device private pages
-To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
-Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
- lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
- rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
- willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
- intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
- jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- ying.huang@linux.alibaba.com
-References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-6-jniethe@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260202113642.59295-6-jniethe@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 62B744000D
-X-Stat-Signature: e9rgow3b3coxt8stn9icutga7ko3sm9t
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: iaa6wmfnusgtjbk1nd93me7u6ht3q8uq
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772811858-196479
-X-HE-Meta: U2FsdGVkX1/tpTJ+wE3bVfvfDZWRJhqNlGpoGcQuKoOFGJ5sWmqg/RRb+4kVrYDN70BZFXbVleNbTChZ8M5dEaVfvhGMQotnVYeHNUD32D93sgmWqyjnvj4KpESZS9phS4XjlwzaB6GfiE99jseXZXRSOyGXbqNQ/57mV2hLMmQPk7jZ++VVjfnICu5gyj0/Tr6AKd8YEYEKmDzCt7+/SuJuvKlipwBbP9hcq9vYUIsM3xY/YaPIOAkq0UXFXxK2ba3JXwLIwzGatXv2AlWP6RBDBOXu2avaiyCSdKyz+8wJZO7tdFZgbRDEUjpDcCgvZWrb1GRQ6Yf3QAD50a9uuuVj3L3NDntAGRZL1bmmq+dn5nlbjTFR5SqiYtzN/eFDcaXy/tJ3HOuX4vkjpyyWJUUCtBnjHU0Hcga5vRPPVDsVsPY0ojy29ZSL0eQTVGDvoN9C0VBSbQlKaouWyIRpZJHbpVwczskxgGhex18puFdOnJ2EPtgzaNqCvfjCXO9N0wig3oRBndUwTSC6aS2KemW8hILWeBDNKObRqDDFyo/ZhJ0SuMwvV+dXvEq6vjOhYa4VktZI9X/uoR6gegBonHwVO3G7mJwWJRKFoXEYZNEjshPy/UI0AoLdWW84yNeUEr8DRtdSZMKDK1AE8Ep22zPkOmr+Jj7uC5zy6s0tDc468j0MV2+BO9yQwmvzbks1MkMOy+RgMC+/PAslIBErtRuxIAjEgxq434/thHXlLIP3jFBY6qu4Unks1oAnhxRf/YWFYTbBfyCJKWLEGEYE0HkPm1u3CSjSCPj45ykPTca243xkKTJZgOt5DRZ+0ab9ch+aDuEMTbEldsLllEdSovfVsCdtAFulJSUuFHQ/9RK/g++ZKTCKutcMv7hn9h3Ih5flQujsUUV+rOU1c6SI4NpWwgJE17e7alp4vjpqm9oxXoxX03cKH2zhMKHR65MsKe7Pf0bK230MuDo2MCN
- T8D7gXeu
- hVB5hDe+NQZcnZHsIsixxXKrEiqGviSC6PbS4AXouRimGfKuGdUD8WaQVUVbAjyw2fLM+Yy2l9tIwSy9UEIQVm8tQkWEsjDRYjL1Vq7f1jVkiZXjxu6bCLPDTFM7UzTRzwmr8xd/fUCfpxkEifbCn4kwa02Tos2HR4ttRyA2fu1cReFsHTilRH2U5osxc3T2Lmj/+6t2ZWjDWUuBi2u41As5oHxH/SKJaWelZi5AozrT8267hpX3E8uvz+4lIc/p/lAk3Z3O3JQa746nNyvwnJqqTUNHQeUlt1f3ZIY6vC9dcJ+xN4ZG7LghHlM1MWOVNUjbIo5LFxpkvBbc4o81iNSrTa3oUyrvPrXACsGXZO0RhB9s=
+X-Rspamd-Queue-Id: 0126C40010
+X-HE-Tag: 1772812089-943809
+X-HE-Meta: U2FsdGVkX1/Opb7CqgDYtifl8StVm7+ewwy5ZzzdhExSH7G8Fqz9ffyTKij/hPWuDYeRh0OxQ93cMIpwyhx7SYhAg/Qo3M8+VgA82KgD0O1tA1tcVMg36EpW5EVZXLFkWdh8y+zSu+WUGJXNmxAf6icGPw6ARMIDCZRAQ8e1YbPRZromQnkQcs0voy390gz04t8GF/sBcpQjqTD31yvtXdGcvAf3ZfI6BczLIuIU9HcSLgVIsATacj/s6VonTQvnwVsmVbAoTsqwCepJwVtdMcuSpX3J7Ch5xUjumaAfPruLN8IpB/SXVEjbN0xyPP9g8gybL+ZX8Y/CKTJnNODuWv5Ln6aUwtJG98GJtDWqcXb1fIzLa3RYmwDFddAQKi+7/j6gvYD+fcfzvxrd8EYs/oKDuF/VrNmMt11GZJ8Ej3+8rL25ZK3pewwm6x1aPc1zDFLGMfEQFfvDl02qkhxsqBQ4pwCRBbaDUi0YwSzonmtYk8SxJEIAXs3L0dXkdfnm8wBmUa6e6mKyeKVSmlHNd68zP/2cmTuFZGGwOmbcu9tVS0x+vp94dze2Om5XNziAGLHilvbCbQ/5uZkLFz50j+m4gVktT4Qk5Eh+la6aGWHaEX8+f39xUsRay9ZHOIwhj3118Qgig/M8wosb1SAzGKZKlngdryGSHaN6QEy74JJEv5fnsxBuPcGf7eW6zX4tStgq1oIRypzQfni4kJ+4+MhyKg0r1nBkE2zPURryB4TYjaxSTPzzVIC2k0MAoTbqoI7nDPRII0b25FSSplX502lakdCDtdpvIdAgV80osz+JjRSlrGyXP0gN9X9xWl2hguk7nic93VZZCmE2t/WK4lt12R4hRc3Bcp2IzQGe9cifTW1Rm/V3C3CNjmp4v9id+su4AaIJg6oxsXbbYnu5bZ+rStGtNC18jd4YBEm+JNO+uiHpNJ9uv+xrhQ/sMDkbk8sRIzau2DTWbEzddk/
+ tyfwuOv7
+ OWTemKrx1KAUCvEwU3V0nt8XWPpW5/Pbm4DSNGQxtAu1kXOl4WAhQlT7sq8hygM95fVt1yoocoaoQk0TKEChQkpldHILvAKUC7wkKWSSMR6viZ6Pvo4cOd2qkx1sK8GCGrVxiovaqKUqUSgjhOpfymcddn+Ek5hdOc259dcp8MSJ48CfliBWOAa7zDuSqnCddLsAo5Q7RIcC9oTTUa1isnbKgK0QSoz2RlbjavXpxWl7RrPNfCnYSmPJFWha9vWLVfoHh33PCF41Y17jxEW/7WKI3HNoqgYTocGo9r6hxTy6zRqbStPXArW4ZFP4RfZ5Pj2BBwZN5XmZqpfk3uEFhMAJbu8lBPe940ZTP64d5qtVXSPEfZ+bJKi2RyapGl2R+MrTblTegAwwGLYQx39Vv9I0SoAMvFOlfdUtyFlMQK+bAGa551H1XLqY1NMCW80L+Z3jT7XPRoLF3a7JaF+g1p/BhprfEcxUYxS/3iuuyQdnhCNwCx2WQkVpxQAYvjTcGfjqDvlP7w+aO6UBR9nLU36dTto3X0ncWehz0Oxdj+uUXaobP3y3xhquNNdDd22wLLiw915pQDFjMgHk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,119 +128,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 12:36, Jordan Niethe wrote:
-> A future change will remove device private pages from the physical
-> address space. This will mean that device private pages no longer have
-> normal PFN and must be handled separately.
+On Fri, 6 Mar 2026 12:49:44 +0900 Harry Yoo <harry.yoo@oracle.com> wrote:
+
+> On Thu, Feb 26, 2026 at 11:29:26AM -0800, Joshua Hahn wrote:
+> > Introduce an array of struct obj_cgroup pointers to zpdesc to keep track
+> > of compressed objects' memcg ownership.
+> > 
+> > The 8 bytes required to add the array in struct zpdesc brings its size
+> > up from 56 bytes to 64 bytes. However, in the current implementation,
+> > struct zpdesc lays on top of struct page[1]. This allows the increased
+> > size to remain invisible to the outside, since 64 bytes are used for
+> > struct zpdesc anyways.
+> > 
+> > The newly added obj_cgroup array pointer overlays page->memcg_data,
+> > which causes problems for functions that try to perform page charging by
+> > checking the zeroness of page->memcg_data. To make sure that the
+> > backing zpdesc's obj_cgroup ** is not interpreted as a mem_cgroup *,
+> > follow SLUB's lead and use the MEMCG_DATA_OBJEXTS bit to tag the pointer.
+> > 
+> > Consumers of zsmalloc that do not perform memcg accounting (i.e. zram)
+> > are completely unaffected by this patch, as the array to track the
+> > obj_cgroup pointers are only allocated in the zswap path.
+> > 
+> > This patch temporarily increases the memory used by zswap by 8 bytes
+> > per zswap_entry, since the obj_cgroup pointer is duplicated in the
+> > zpdesc and in zswap_entry. In the following patches, we will redirect
+> > memory charging operations to use the zpdesc's obj_cgroup instead, and
+> > remove the pointer from zswap_entry. This will leave no net memory usage
+> > increase for both zram and zswap.
+> > 
+> > In this patch, allocate / free the objcg pointer array for the zswap
+> > path, and handle partial object migration and full zpdesc migration.
+> > 
+> > [1] In the (near) future, struct zpdesc may no longer overlay struct
+> > page as we shift towards using memdescs. When this happens, the size
+> > increase of struct zpdesc will no longer free. With that said, the
+> > difference can be kept minimal.
+> > 
+> > All the changes that are being implemented are currently guarded under
+> > CONFIG_MEMCG. We can optionally minimize the impact on zram users by
+> > guarding these changes in CONFIG_MEMCG && CONFIG_ZSWAP as well.
+> > 
+> > Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > ---
+> >  drivers/block/zram/zram_drv.c | 10 ++---
+> >  include/linux/zsmalloc.h      |  2 +-
+> >  mm/zpdesc.h                   | 25 +++++++++++-
+> >  mm/zsmalloc.c                 | 74 +++++++++++++++++++++++++++++------
+> >  mm/zswap.c                    |  2 +-
+> >  5 files changed, 93 insertions(+), 20 deletions(-)
+> > 
+> > @@ -893,6 +898,43 @@ static void init_zspage(struct size_class *class, struct zspage *zspage)
+> >  	set_freeobj(zspage, 0);
+> >  }
+> >  
+> > +#ifdef CONFIG_MEMCG
+> > +static bool alloc_zspage_objcgs(struct size_class *class, gfp_t gfp,
+> > +				struct zpdesc *zpdescs[])
+> > +{
+> > +	/*
+> > +	 * Add 2 to objcgs_per_zpdesc to account for partial objs that may be
+> > +	 * stored at the beginning or end of the zpdesc.
+> > +	 */
+> > +	int objcgs_per_zpdesc = (PAGE_SIZE / class->size) + 2;
+> > +	int i;
+> > +	struct obj_cgroup **objcgs;
 > 
-> Prepare for this by adding a PVMW_DEVICE_PRIVATE flag to
-> page_vma_mapped_walk::flags. This indicates that
-> page_vma_mapped_walk::pfn contains a device private offset rather than a
-> normal pfn.
-> 
-> Once the device private pages are removed from the physical address
-> space this flag will be used to ensure a device private offset is
-> returned.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> ---
-> v1:
->   - Update for HMM huge page support
-> v2:
->   - Move adding device_private param to check_pmd() until final patch
-> v3:
->   - Track device private offset in pvmw::flags instead of pvmw::pfn
-> v4:
->   - No change
-> ---
->  include/linux/rmap.h | 24 ++++++++++++++++++++++--
->  mm/page_vma_mapped.c |  4 ++--
->  mm/rmap.c            |  4 ++--
->  mm/vmscan.c          |  2 +-
->  4 files changed, 27 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index daa92a58585d..1b03297f13dc 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -921,6 +921,8 @@ struct page *make_device_exclusive(struct mm_struct *mm, unsigned long addr,
->  #define PVMW_SYNC		(1 << 0)
->  /* Look for migration entries rather than present PTEs */
->  #define PVMW_MIGRATION		(1 << 1)
-> +/* pvmw::pfn is a device private offset */
-> +#define PVMW_DEVICE_PRIVATE	(1 << 2)
->  
->  /* Result flags */
->  
-> @@ -939,14 +941,32 @@ struct page_vma_mapped_walk {
->  	unsigned int flags;
->  };
->  
-> +static inline unsigned long page_vma_walk_flags(const struct folio *folio,
-> +						unsigned long flags)
-> +{
-> +	if (folio_is_device_private(folio))
-> +		return flags | PVMW_DEVICE_PRIVATE;
-> +	return flags;
-> +}
-> +
-> +static inline unsigned long folio_page_vma_walk_pfn(const struct folio *folio)
-> +{
-> +	return folio_pfn(folio);
-> +}
-> +
-> +static inline struct folio *page_vma_walk_pfn_to_folio(struct page_vma_mapped_walk *pvmw)
-> +{
-> +	return pfn_folio(pvmw->pfn);
-> +}
-> +
->  #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
->  	struct page_vma_mapped_walk name = {				\
-> -		.pfn = folio_pfn(_folio),				\
-> +		.pfn = folio_page_vma_walk_pfn(_folio),			\
->  		.nr_pages = folio_nr_pages(_folio),			\
->  		.pgoff = folio_pgoff(_folio),				\
->  		.vma = _vma,						\
->  		.address = _address,					\
-> -		.flags = _flags,					\
-> +		.flags = page_vma_walk_flags(_folio, _flags),		\
->  	}
+> Just wondering, perhaps it makes more sense to have an array of
+> objcg pointers for each zspage (of size objs_per_zspage)?
 
-That's all rather horrible ...
+Hi Harry! I hope you are doing well, thanks for taking a look : -)
 
+Hmm, I think you might be right. For context, one of the first
+ideas I had for this patch was to have a per-zspage array, but store
+it in the first zpdesc. As you can imagine this was not a good idea...
+(head zpdesc page and tail zpdesc page? ;) )
+But! storing it in the zspage struct makes a lot more sense to me.
+And I think we can actually simplify the migration pathways as well.
 
-I was asking myself recently, why something that is called
-"page_vma_mapped_walk" consume a pfn. It's just a horrible interface.
+My immediate response to this was that "subzpdesc swap ins/outs would
+be difficult" since right now we can just move the pointer, but
+if we have a per-zspage array, we actually don't have to do any
+objcgs pointer migration at all.
 
+And I think the cross-boundary cases are handled a lot beter by having
+a per-zpdesc array too. We also don't have to convert the per-zspage
+obj_idx into a per-zpdesc obj_idx as well, I think if we do this...
 
-* DEFINE_FOLIO_VMA_WALK() users obviously receive a folio.
-* mm/migrate_device.c just abuses page_vma_mapped_walk() to make
-  set_pmd_migration_entry() work. But we have a folio.
-* page_mapped_in_vma() has a page/folio.
+Let me mull on this for a bit : -) I'll give a shot at implementing
+it this way, I think it makes sense!
 
-mapping_wrprotect_range_one() and pfn_mkclean_range() are the real
-issues. They all end up calling page_vma_mkclean_one(), which does not
-operate on pages/folios.
-
-Ideally, the odd pfn case would use it's own simplified infrastructure.
-
-
-So, could we simply add a folio+page pointer in case we have one, and
-use that one if set, leaving leaving the pfn unset?
-
-Then, the pfn would only be set for the
-mapping_wrprotect_range_one/pfn_mkclean_range case. I don't think
-device-private folios would ever have to mess with that.
-
-
-Then, you just always have a folio+page and don't even have to worry
-about the pfn?
-
-
--- 
-Cheers,
-
-David
+Thanks again for taking a look, Harry. Have a great day!
+Joshua
 
