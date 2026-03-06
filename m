@@ -4,88 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D781F0182C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:48:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E03EF0182C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 11:50:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159786B0005; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
+	id AD7F56B008A; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 137846B0089; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
+	id A85746B008C; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 043A16B008A; Fri,  6 Mar 2026 06:48:04 -0500 (EST)
+	id 9597E6B0092; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8736B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:48:03 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9539E1A052B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:48:03 +0000 (UTC)
-X-FDA: 84515464446.11.1BAB4A2
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D46541C0008
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:48:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EoYBbDmK
+	by kanga.kvack.org (Postfix) with ESMTP id 802816B008A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:50:21 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41D0F13AF99
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:50:21 +0000 (UTC)
+X-FDA: 84515470242.05.BBBF37E
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E9E4B2000B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:50:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772797682;
+	s=arc-20220608; t=1772797819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Q1sENRTqUjIhGZLXP/WQo59Q+Ah+AXrTPRNuwNNsmU=;
-	b=oGpafD0NJ2NqzwyZihFZFdhgby0xqYfWpAO6aiNA4Xgp+z6QTotN5bqTAQstChstsMS0RM
-	2M6Lntl1nH+yiK+6E6LQuSYedPR1EnHC7OgqJ2DDQyOVnTFOJ4XoCrDhe5uZ34tih14FMi
-	995LpmnQ+6X2moXNKs1mpWkd33GTqkg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797682; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=0v7wLvCPtCaXzasahRaW4I1Fp9K+2KJtXojBU6P9yls=;
+	b=gppdsd8KkaLbRYvd5zmCZrC+9ScUmjSw01t1lNiBU1IiOX03AEAbfU5M8ARrU9JrbnOBmw
+	3Jifu+U2MCL927h//nNePzQ5fAh0KAwAwQEMpOi8jFDtAetjtduJcoIF32FmQgh8DFYjaO
+	3p6Gydj+LiIlqBh7cj0gkJmWEcB5H6w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772797819; a=rsa-sha256;
 	cv=none;
-	b=in8B9JuiPWpH5lN1WnvxrIRdsaSF31GMGPehPK6BW7x141UZnmvee5DBo6XgWV5mOeTJXX
-	Pu4yaUKLkvdhAAr4Xnoi13RM5t6lVzDsK6cKbdyWqyRPZOjfcmC+ElRokjs3TzMCMkdHHn
-	OjGR2vcmGTW3nU6Y6cwM4aO/gvDVOEI=
+	b=tRJFy3jd6CBq5htPsL3tWbwE5Zo37XPCxMyvdGAhjpBVRpXXG/fNaj/yX6THl4/p7tkTzL
+	a830veVfIUHxCbpczfsPI6ORKe8HMKXIamLLUS6Ht/mqfCf7WiAlwii/vrax15/3dbybRR
+	cwsYhAoQLcHlEocHTik241TudhMPK0E=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=EoYBbDmK;
-	spf=none (imf21.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=9Q1sENRTqUjIhGZLXP/WQo59Q+Ah+AXrTPRNuwNNsmU=; b=EoYBbDmKpVh+CjgoUIt8Rpho2l
-	4sGdjLo/aGg1MHTH6/SmjJhxkRewYGq3Dl3/cXpGpkNZD1YxLOCaYEIxHahM1P9urnzKFJf+exqkr
-	bhBl2USUdXusi2Bd9XCwwskxouubnUxoNBPAJcsaNY9AEIXt4f5oYF83K0aSrabU5Yf1/7pP4wmCI
-	I9L8YyrdxfCpJny4znGpkhhJtkMdAiuSN9gCQ+djogo/jEEp64NXyL7fpVj4Qs1BzE8PyELP1tvBy
-	FDh3F6te+9zVOVPep/sP5jlrDusNYXT1U1PXh1nAuxVsktDssOLT0ZZw8kwhu7Uh+RWAZ+uWuQ0qX
-	wO2OkXDA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vyTen-00HTjc-2w; Fri, 06 Mar 2026 11:47:49 +0000
-Date: Fri, 6 Mar 2026 03:47:43 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, usamaarif642@gmail.com, rmikey@meta.com, clm@fb.com, 
-	riel@surriel.com, SeongJae Park <sj@kernel.org>, kernel-team@meta.com
-Subject: Re: [PATCH v6 1/4] kho: add size parameter to kho_add_subtree()
-Message-ID: <aaq9J_rJXNiWzlXY@gmail.com>
-References: <20260127-kho-v6-0-56f9396681c2@debian.org>
- <20260127-kho-v6-1-56f9396681c2@debian.org>
- <2vxzjywszk9w.fsf@kernel.org>
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fS4Sv3hh8zJ46cM;
+	Fri,  6 Mar 2026 19:49:35 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6FEE94056E;
+	Fri,  6 Mar 2026 19:50:13 +0800 (CST)
+Received: from [10.123.123.67] (10.123.123.67) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Mar 2026 14:50:10 +0300
+Message-ID: <902d821b-e903-4bf5-89db-070851c95a1a@h-partners.com>
+Date: Fri, 6 Mar 2026 14:50:08 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
+	<ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox
+	<willy@infradead.org>, Yu Zhao <yuzhao@google.com>, Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+	Gorbunov Ivan <gorbunov.ivan@h-partners.com>, Muchun Song
+	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>, Linus
+ Torvalds <torvalds@linuxfoundation.org>, <gladyshev.ilya1@h-partners.com>
+References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
+ <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
+ <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
+ <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
+Content-Language: en-US
+From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+In-Reply-To: <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2vxzjywszk9w.fsf@kernel.org>
-X-Debian-User: leitao
-X-Stat-Signature: 7qziu84gyiwrumnk4ysk3h5ay6341xk5
+X-Originating-IP: [10.123.123.67]
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Stat-Signature: pj6sxuo3onct5j6j8q6u6t59j6o4h1qn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D46541C0008
+X-Rspamd-Queue-Id: E9E4B2000B
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1772797681-908261
-X-HE-Meta: U2FsdGVkX18uumdo5cXwkXxGKFEHPi5D5FSr1j3n4JNXPkXRbVsmjj+o/9hgmre+xAVCU7ozBtnYx97C9ZhroBKtTCHN05wNKbMvMxWgihrkEKfG3fOQsdEblCNg8OCcodNYrI+eUwxC7cp+c6oc1I5+BWPifnA5bHVHtEZZCgMfthZaniu4imigW5iA0CTD1X06O9nUZsvKUsztOrGE0DW/dRxAIJuTmThdnnHlWLw97yipd5Tq8LjYuX1k9FIRaXCDvSIKpbE5h+FwqXmHPl/rpH0KsaSeqZ9kkcf5XzFdlB/8JZ+c8b52Mz0OtRioBTOF4PwDbJ2F2YUOTGW8lug16qydHH11PnqMcyoC02p8tp/bOnBnpQck9D3kG1bSV7uYGzQxLzEMIK7WtppSMEzun6ceMbzD1MU3ir2rgvC/u/dsuGydPeGHZ/1hYVef16SqGR2Ck+IA8n5dRHmmI7rQyRFoRAiH8KsERXQuub9xxIP2N+bDPNWrVK7MLSnOq2rIBUsx2HXo5DKzGgDefu9uz7e1Rhj2U7IDxyxOleYgCDBZBfFjEbfDVEIX10gVsR7TSCC/+e0uTCSNoCj5iQsEUKXbjaWnacYc1UJLNmaKaEmyVTrlM/BYd58PRqZVixMVuhxGxONtW1c4yDANuUyu59V2sYz2FZb/taP2ZDz5NKEsAVMRaHAmgJAbHdEEYXrCied+ThzJ0fAm3zwJVZ8IQI2ugVPOLriehe/RIqDxBq8JTPdKoiZqjrbwEKjlqSHjraz4s66VKTUdWO5QcPvTZ5/UkFEUCcf8Sj8Anfx/HuG5XeIWcgRWbAum8Vi5Wh3uQioV6yr3sNkjO1DOnSUtrXI+imUk
+X-HE-Tag: 1772797818-22698
+X-HE-Meta: U2FsdGVkX18jkY5O30V1wS3f6VtATT192JVEXpEobwhgWO2gYpSydo2/5KcUe+kBMp+uqxVUN786q0VQJXinaaml+S7mLay34AEHSh38L/Xwpd8WcP395dPe4Mype5XvhhgB24QbicZx1LmiTkchO728aYTUTd/QnefKvqTghI7SMAg2yYd2mlvYWbXju+lPkZYnXcB3e4X499K1AsKcMZd/REsP9zHgolPuDy0qz88Tjn0E3idVQjJIScsPp3QoVxRMnnZwWBjY2xMYNvRc0SMqfKQA+1IC/0blCjG1kiym3nNGVNjOIWRZZZB6DgCKa5nHbOQGoc8xHcOw82x+C8JGznJ3EOw3kiXFJdDNKk5U8mSMAJPOZ1QKbHaCSK2xnayDl0nJSyMi9GQ1zthX1J4H1uiZqdRVGy/LteFKSKIxy117MO8wxYU70EO9XwILek58CxVW0NZzf63aWISrgzyIKCp9IP1Y+zI2R+sT4GfgANlj5ay99IRuS0ghb9CVuYTeN+T399T5R+wJ8/FezOTBSGhfd/MXcarc9WMrnxyUrXhforlOnlp92Cs6450yn/PCtLgQt6o7PkfyQcBX3SrTOFeXyuNQ8STk7XFwXaLQp/zVrMJtmT7ZFjW5hEH9sZA23ofe4xalavHIMGdS/6DxkS2sVJ1lU561gBZqvccfJfHyxFOI4mb5xHpdAq2ifqlm0BW1dIH1KT5YGqVRaOGAluqUz5GC+x8vfyLeZS7YtZLTC3BVGvTIjUXw98Fvk3eGL8mGBYj2ux785JBOBa3Omq5rAGhQFLC1U1sx6fXE3dZVkQIW2vOC7y17ldhF54WVfzFAhVpneBfqiKC4mqmv0u/6D0J9iFd3/4mAbR5Y5VSxqq+UE8pKv2+gEXt8vnW6ynuOitEJWGZ2UsSpVtTDFTrPmGudd53+09FkIvOGdKQyjJBwbl564W8+49AdzFKM3JgHTbJL/dJv0jS
+ sGX6PlP7
+ 3m/w+lNhq+jc9SHwXvyCGFnI4PMau5ucR/MIIEEA+lCT5Zq20KMs/jLQiEMIZ7rzuGN3XKIyICgfnyfDrZYFy7+NpA8DMQfpuX9Tixq+UWByxhbmLbgabKq9juARTptLJbHsbQnJ7dR6pPYjX1Lk7cP8MOm4FVMZve/t5iC78hldFgGZ3sadQ2hu7D3F9RXjShpEYSzdAD/9SMDYX2nZW3XfIjLavP6JMBPR8DEvEuLRaNuXiWvVn2hMAh4OhO5wOT1nb5i1+hxK/uIs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,87 +103,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Pratyush,
+This is combined reply to both of your emails, hope you don't mind
 
-Apologies for the delayed response — I was on vacation and just got back.
+ >
+ > This all made mu brain hurt a little 🙂
+ >
+ >>
+ >>   /**
+ >> @@ -176,6 +181,9 @@ static inline int page_ref_sub_and_test(struct 
+page *page, int nr)
+ >>   {
+ >>       int ret = atomic_sub_and_test(nr, &page->_refcount);
+ >>
+ >> +    if (ret)
+ >> +        ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, 
+PAGEREF_LOCKED_BIT);
+ >> +
+ >
+ > It took me a while to figure out why this can't be just an atomic_or():
+ > even though concurrent page_ref_add_unless_zero() would see a 0 after
+ > incrementing it to 1 to back off, there could be yet another concurrent
+ > page_ref_add_unless_zero() that would see the transition from 1 to 2 and
+ > continue.
+ >
+ > What is the performance impact on doing the additional
+ > atomic_cmpxchg_relaxed() whenever we free a page, in particular, for
+ > anonymous memory where we mostly have just a single reference that we
+ > drop during munmap() etc?
 
-On Wed, Feb 04, 2026 at 02:54:35PM +0100, Pratyush Yadav wrote:
-> Hi Breno,
->
-> On Tue, Jan 27 2026, Breno Leitao wrote:
->
-> > kho_add_subtree() assumes the fdt argument is always an FDT and calls
-> > fdt_totalsize() on it in the debugfs code path. This assumption will
-> > break if a caller passes arbitrary data instead of an FDT.
-> >
-> > When CONFIG_KEXEC_HANDOVER_DEBUGFS is enabled, kho_debugfs_fdt_add()
-> > calls __kho_debugfs_fdt_add(), which executes:
-> >
-> >     f->wrapper.size = fdt_totalsize(fdt);
-> >
-> > Fix this by adding an explicit size parameter to kho_add_subtree() so
-> > callers specify the blob size. This allows subtrees to contain
-> > arbitrary data formats, not just FDTs. Update all callers:
-> >
-> >   - memblock.c: use fdt_totalsize(fdt)
-> >   - luo_core.c: use fdt_totalsize(fdt_out)
-> >   - test_kho.c: use fdt_totalsize()
-> >   - kexec_handover.c (root fdt): use fdt_totalsize(kho_out.fdt)
-> >
-> > Also update kho_in_debugfs_init() to compute sizes using fdt_totalsize()
-> > for the root and sub-FDTs it processes, since these are known to be
-> > actual FDT blobs.
->
-> No, this doesn't seem right. The "fdt" field that kho_in_debugfs_init()
-> uses is the same "fdt" field where we put our non-FDT blobs. So I don't
-> see how these can be known to be actual FDTs. All this happened to work
-> because so far all users were FDT, but I bet it will break if you use
-> your blob here. Perhaps give it a try and see if I am understanding this
-> correctly?
->
-> To be honest, I didn't think of this when I suggested you use the size
-> parameter. We have lost the size information, and it is hard for
-> kho_in_debugfs_init() to find out since it has no idea what the
-> underlying format is.
->
-> One option is to have it in the KHO FDT, but I am not sure that is a
-> good idea. Adding to ABI for debug feature sounds odd (not that I am
-> completely against it, it just feels off).
->
-> Another would be to give users a hook to populate the blobs when they
-> call kho_retrieve_subtree(), so they can figure out how large the blob
-> needs to be. This has another benefit: once we move away from FDT, it
-> makes little sense to dump the blob since userspace won't have a way to
-> parse it. Even with FDT, userspace still can't parse everything. For
-> example, say the FDT has a reference to a struct kho_vmalloc. You'd get
-> a pointer to the head of the list, but you would have no way of knowing
-> what is inside the vmalloc buffer. This has the downside of not being
-> able to show anything if the subsystem never calls
-> kho_retrieve_subtree().
->
-> Unfortunately I don't have much time this week to dive deeper into this.
-> These are only things off the top of my head and I haven't thought too
-> deeply, so please don't take them as strong suggestions. It would be
-> great if you can think a bit more about the problem and come up with a
-> recommendation?
->
-> I will try to get back to this series in the next 1-2 weeks and
-> hopefully find some way to make progress.
->
-> I skimmed the rest of the patches and they all LGTM at a high level.
+I'll try to measure some numbers. Theoretically speaking, in 
+low-contention scenario you will exclusively own cacheline after 
+atomic_sub, so relaxed CAS should be cheap.
 
-I went with storing the size in the KHO FDT. The addition is small — a
-"blob-size" u64 property per subnode — and I think it's warranted: this is
-intrinsic metadata about the blob rather than a purely debug-specific artifact.
+ >>       if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ >>           __page_ref_mod_and_test(page, -nr, ret);
+ >>       return ret;
+ >> @@ -204,6 +212,9 @@ static inline int page_ref_dec_and_test(struct 
+page *page)
+ >>   {
+ >>       int ret = atomic_dec_and_test(&page->_refcount);
+ >>
+ >> +    if (ret)
+ >> +        ret = !atomic_cmpxchg_relaxed(&page->_refcount, 0, 
+PAGEREF_LOCKED_BIT);
+ >> +
+ >>       if (page_ref_tracepoint_active(page_ref_mod_and_test))
+ >>           __page_ref_mod_and_test(page, -1, ret);
+ >>       return ret;
+ >> @@ -228,14 +239,23 @@ static inline int folio_ref_dec_return(struct 
+folio *folio)
+ >>       return page_ref_dec_return(&folio->page);
+ >>   }
+ >>
+ >> +#define _PAGEREF_LOCKED_LIMIT    ((1 << 30) | PAGEREF_LOCKED_BIT)
+ >> +
+ >>   static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+ >>   {
+ >>       bool ret = false;
+ >> +    int val;
+ >>
+ >>       rcu_read_lock();
+ >>       /* avoid writing to the vmemmap area being remapped */
+ >> -    if (page_count_writable(page))
+ >> -        ret = atomic_add_unless(&page->_refcount, nr, 0);
+ >> +    if (page_count_writable(page)) {
+ >> +        val = atomic_add_return(nr, &page->_refcount);
+ >> +        ret = !(val & PAGEREF_LOCKED_BIT);
+ >> +
+ >> +        /* Undo atomic_add() if counter is locked and scary big */
+ >> +        while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
+ >> +            val = atomic_cmpxchg_relaxed(&page->_refcount, val, 
+PAGEREF_LOCKED_BIT);
+ >
+ > I assume we can't do an atomic_dec(), because we might have concurrent
+ > unfreezing (or similar things) happening that overwrote whatever was in
+ > there.
 
-It also rounds out the API nicely. I extended kho_retrieve_subtree() with an
-optional size_t *size output parameter so callers can retrieve the blob size
-without needing to understand the underlying format.
+Not only that, but also you probably don't want to handle "atomic_dec() 
+returned 0" situations.
 
-I'll send a new version soon. That said, the patchset has been growing
-considerably, so if necessary I can defer reworking this infrastructure to
-follow-up patches and get the kexec-metadata patches later.
+ > Is it really correct to replace _PAGEREF_LOCKED_LIMIT by
+ > PAGEREF_LOCKED_BIT, dropping some unrelated references? I assume the
+ > reasoning is that we treat any references with PAGEREF_LOCKED_BIT set as
+ > irrelevant and can get overwritten any time.
 
-Thanks for the review,
---breno
+Locked refcount doesn't contain any "references" except failed 
+optimistic increments, so you are right that they don't hold any 
+semantic meaning. The only reason to clear them is to prevent overflow, 
+so we are doing it only if it is absolutely required.
+
+ >
+ > I was wondering is whether page_ref_freeze() could actually leave the
+ > references set, and only set the PAGEREF_LOCKED_BIT bit, whereby
+ > page_ref_unfreeze() would only clear the PAGEREF_LOCKED_BIT bit.
+ >
+ > Similarly, the set_page_refcounted() could add a reference and clear the
+ > PAGEREF_LOCKED_BIT. That'd be more expensive on the allocation path ...
+ > and not sure if that would really help to turn this
+ > atomic_cmpxchg_relaxed() into an simpler atomic_dec() my brain could
+ > more easily understand 🙂
+
+I believe resetting whole counter via single CAS (CPU-wise) is cheaper 
+than atomic_dec() for each individual attempt.
+
+ >
+ > I think this patch needs a lot more documentation around what the
+ > PAGEREF_LOCKED_BIT means, and how this interacts with e.g., the
+ > set_page_count() in set_page_refcounted().
+
+Yep, I'll fix this
+
+ > In general, I like this!
+ >
+
+ >>   static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+ >>   {
+ >>       bool ret = false;
+ >> +    int val;
+ >>         rcu_read_lock();
+ >>       /* avoid writing to the vmemmap area being remapped */
+ >> -    if (page_count_writable(page))
+ >> -        ret = atomic_add_unless(&page->_refcount, nr, 0);
+ >> +    if (page_count_writable(page)) {
+ >> +        val = atomic_add_return(nr, &page->_refcount);
+ >> +        ret = !(val & PAGEREF_LOCKED_BIT);
+ >> +
+ >> +        /* Undo atomic_add() if counter is locked and scary big */
+ >> +        while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
+ >> +            val = atomic_cmpxchg_relaxed(&page->_refcount, val, 
+PAGEREF_LOCKED_BIT);
+ > It's still early here, but I think there is a problem.
+ >
+ > Please bear with me 🙂
+ >
+ >     val = atomic_add_return(nr, &page->_refcount);
+ >     ret = !(val & PAGEREF_LOCKED_BIT);
+ >
+ > Implies that can grab a reference whenever the locked-bit is not set.
+ >
+ > Including when the refcount is 0.
+ >
+ > Now, that works fine when racing with concurrent freeing, where we are
+ > just able to decrement the refcount, but yet have to set the
+ > PAGEREF_LOCKED_BIT bit.
+ >
+ > But, what about any pages that don't have the PAGEREF_LOCKED_BIT set,
+ > but have the refcount at 0 permanently?
+ >
+ > That's, for example, the case for any pages where we do an explicit
+ > set_page_count(page, 0);
+ >
+ > For example, all pages we add to the page allocator through
+ > __free_pages_core().
+
+You are right that refcount = 0 is tricky. However, for a bad outcome 
+you will need:
+1. Some external reference to this page, through which you try to 
+increment the refcount;
+2. set_page_count(0) somewhere between freeing and "it is safe to alloc" 
+state.
+
+So adding new pages with zeroed refcount to allocator is safe, because 
+there are no external references. Zeroing tail page's refcount is safe, 
+unless someone actually tries to increment its refcount (and this is bug).
+
+Generally, the only unsafe set_page_count() (or any other zeroing) will 
+be in allocator itself between freeing and allocating. Or maybe I missed 
+something, and this approach is indeed incorrect
+
+Probably we can think of some debug checks to prevent bugs in "safe" 
+scenarious
+
+ > That means, that someone could easily grab a reference to such pages,
+ > including tail pages of allocated compound pages where the refcount is
+ > still 0 -- or pages allocated with a frozen refcount where we don't ever
+ > do the set_page_refcount(1) in the buddy.
+ >
+ > Bad things will happen when that wrongly page_ref_add_unless_zero()
+ > obtained reference is dropped again to free that page.
+ >
+ >
+ > You'd have to make sure that there is no way we can achieve refcount ==
+ > 0 without going through page_ref_dec_and_test(), when actually freeing a
+ > page.
+ >
+ > One piece of the puzzle is handling set_page_count(p, 0) I think. But I
+ > suspect that there might be other places where we don't even have the
+ > set_page_count().
+ >
+ > See vmemmap_get_tail() in
+ > https://lore.kernel.org/r/20260227194302.274384-13-kas@kernel.org for
+ > example, where we know the refcount is 0, because we allocated the page
+ > holding memmap with __GFP_ZERO.
+ >
+ > For example, I think you'd have to make sure that *any* pages in the
+ > buddy have their refcount set to PAGEREF_LOCKED_BIT, not 0.
+ >
+ > So unless I am missing soemthing, this is broken an requires a lot of
+ > care to make sure that refcount==0 is handled everywhere accordingly.
+ >
+
+---
+Ilya
 
