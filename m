@@ -4,112 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC31F513ED
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 01:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79D89F513ED
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 01:28:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFECA6B0005; Thu,  5 Mar 2026 20:20:55 -0500 (EST)
+	id AF53E6B0089; Thu,  5 Mar 2026 20:28:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA2D36B0089; Thu,  5 Mar 2026 20:20:55 -0500 (EST)
+	id AA28E6B008A; Thu,  5 Mar 2026 20:28:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8666B008A; Thu,  5 Mar 2026 20:20:55 -0500 (EST)
+	id 984436B008C; Thu,  5 Mar 2026 20:28:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98F126B0005
-	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 20:20:55 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39803139E5C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:20:55 +0000 (UTC)
-X-FDA: 84513884070.19.4588054
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 89F1340008
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:20:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ToiP5bfC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8988C6B0089
+	for <linux-mm@kvack.org>; Thu,  5 Mar 2026 20:28:29 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 45F231A02F5
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:28:29 +0000 (UTC)
+X-FDA: 84513903138.23.3BF90CB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id AEE361A000D
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:28:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="GLd0s/ch";
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772760053;
+	s=arc-20220608; t=1772760507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6lttAcG2Oju2WPN708jOIRgsLnTmUS6wFt27GSE6G/A=;
-	b=ptmrgCTXQSm7K0eJ8iCwCl/y3OrbDXLIsHREYcmSNg4Vj2BnpHKYiWhQFVHOZQ8mL8F9jF
-	kdnxZyQK8lU8jUSNZGnMWPOts4bCEitXJv9ZUY4A94DIsaJYniNIKrEsTz1LeP47Xd7rcJ
-	sH1rS8Tf6kW/MWt1Uxl3nCqbgUVy7Ww=
+	bh=CaG7jr+VfjnCoSN4V62oLqn5tLh2gzx8QQSFMx4Q7MA=;
+	b=sQY+JAmv63pHxCy8thYC5LrCFPHIc8QFIYom2xKyJYWgRKVeAq6VoFg+UTvIEzCxoptPiI
+	pNe1Ygx1EsK+HGf5SqtLo0f9Mx0L2tSB/8roPKm9zmr71Dv9F9AdBoie38cMG0ULk//0Cv
+	1Mo1mnE120bmmGZsh68ymSnxRiRev+A=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ToiP5bfC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772760053; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="GLd0s/ch";
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772760507; a=rsa-sha256;
 	cv=none;
-	b=DEbmDjiyIj55VttWdL5xhv8Q9v4WygwaCRnW5fYKvPsu9lmCKFsKrQooLVraqXk5+lj0uf
-	TSlY5GB4BQ5AM7diZfxE1j8Te+kEDS0z8lZRxJ4u3UZ5l0Y7V+sVoZsyGe1PviRLa5SBt5
-	GYIhNBQHlXXdF1h5Wx4YyG1rE06aDII=
+	b=HqmRBlumDsxECltX92JqfCef+8/lEHwj3vZfbQ6wPY9OeoCfj3j7NVV4paMXTYXia2ki0j
+	B9ceZ7f+oY2vLkQz02j6ytgvvUnPMkQ+sLSzQt550G+EFFPFMmTgNm8UTiXY0T39OBz94d
+	a+Dm+6LDUcD6/A13kV/J9woMvEcwedg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C72046012B;
-	Fri,  6 Mar 2026 01:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F512C116C6;
-	Fri,  6 Mar 2026 01:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772760052;
-	bh=RQH4aynp6t0XOR5kWhYDbiHP8APh0RZqBBOKCMlxrrg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToiP5bfCUdGGuMpJmpHfySDRyKWwiPdbcfLQHICWLS5rdT0fMO962OGuF4rRL7jx8
-	 xN9TMqNmykeuvEKix5t8ErpDiqMzXV8CM3+PtkXGniU17OwfQbMmwbPcDqEKBEZ+Ud
-	 uzKB4x8jNtMvMrfzHos2KbQjw47nQkDnWFgFEfoM0iTf8Iy8pV0vfwHxnhX6CqrMD2
-	 fVqc6bAHXHPJ6jI6qBbKxUJOdURl4lo7s8/E4ty4G6pDYHHLHp9xANAgNodMDvwrZc
-	 voTSMzO2A+lZoNClFmI4Og92oweJlaYTevBxfXpQqkewyWLVs0xknPf3UyR8kTqsE8
-	 H/65P06zzGCPg==
-From: SeongJae Park <sj@kernel.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Pavel Machek <pavel@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
-Date: Thu,  5 Mar 2026 17:20:42 -0800
-Message-ID: <20260306012043.90694-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aanSnywUXTVPaYUj@shell.ilvokhin.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 89F1340008
-X-Stat-Signature: fyagchy437xqh5t6p6czawfoqe75c4pp
+	by sea.source.kernel.org (Postfix) with ESMTP id 6F214400A8;
+	Fri,  6 Mar 2026 01:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9ABBC116C6;
+	Fri,  6 Mar 2026 01:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1772760506;
+	bh=xoqtM6KgSSyBmEncwbFJBFIEM74nLDE4UHST+ZsEmS4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GLd0s/chsfmYvy+LIH62gG5cEGAEj5HMdsosVlCij4305RrtKNFRubz7oaemcCLGp
+	 cYE1e6xHiziyBEv2LfZDfBA0YvxGjkdcmwIMHkbsWGB3BeloGCws11aDALA3BnxMIh
+	 KTm0M6zqfZxOWL8K7hZizyGYcV4OsvQCT4Rk4jEc=
+Date: Thu, 5 Mar 2026 17:28:24 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, Chunhai
+ Guo <guochunhai@vivo.com>, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Tony Luck
+ <tony.luck@intel.com>, Reinette Chatre <reinette.chatre@intel.com>, Dave
+ Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>, Babu Moger
+ <babu.moger@amd.com>, Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota
+ <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-mm@kvack.org, ntfs3@lists.linux.dev, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/6] mm: vma flag tweaks
+Message-Id: <20260305172824.fd712ae310748dc6338d6d5b@linux-foundation.org>
+In-Reply-To: <cover.1772704455.git.ljs@kernel.org>
+References: <cover.1772704455.git.ljs@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AEE361A000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cndoeugjimcr4pm4sqqnoos5ud1kct43
 X-Rspam-User: 
-X-HE-Tag: 1772760053-410683
-X-HE-Meta: U2FsdGVkX18rh0bdejaqTXo22HCpJQIZ6rT8fJDB7EbIuSkYZvy0P7upbUDppK8EetN0LrIZD63HcLYx59tQgEr6sLz2dWi8GwJu8fwjJIkRIS84jpItj1lw2LjiCO+CT/Ts3wFPs9Dnx3UA3vHSns0pSr2p7BiAG8lsnHCgTzaeXkGYv+KkN66N38ML2rLXdHag6nVNAXMfDQriCqNXpYncmvJ5Z9pZSmIveCRWvrSL5WTQ4hienqFRk7hqO2LLlkrDGicZb2T3i/B9Nb6SalgR2RujzbU4fXSk2kx8skKU3iGApffdAm6wCjoMBZXOXRFkziHcr4jOsschcq6qGD9jgBh7mHhrkU1e1QWkbY09ZW2DwS8FCQPrNXiD6/kiGUTjwhcb7hLyCuCWNvTvBwn725mlth3R8beDgWDT4uAA3wipR8+DPSh97L+kiGdg38bu18I/UXUKesz2Ig6fiQHb+4/vF57h5365KYT3fIzuLTy8GHe7Sy2uUGpxUvStwBIDmvJBS0v/QbZBU/YRUrBiDIb80HWvGU7gAtHOn2Ih4415kHoV4ryRlGESUlUKfFI7h7KqtdwD4xp0R7dNzJ5iM3sq0CUDRxV77sB86vzmeCQJnQLQdgPj3FfV7/rzPWdhKhdZHz4Yh/oTyvNdarnSY46QJyweM3TwWtD/vpjiPS/uKHxOWpNtMuGvSOg9M962EEaw6BTdud+zSKZiXIQBmU013OKyPWni6yOgqQ0KAVz0e2rSFUBvhT8Lu1uPTiaevkJosx+2VZny8mXauagGku1Yhr+uY3aFBkiW30oInA2yQ86ReTA9Bnr6YWPug8w3EpWYxHvdRma+fOEIxI11hdaPwLp/cl1e2+/ApNHXxvuDir1W8SAHkC1CvQe+7cz1egRC1aLuZsjO41zac3o7xybEQp7AhoMpLOBd17EBXaIV0U9pZVATIg4FAtVC5AB0RGb84WGWh+rUuQy
- CV3dl82g
- wFLz/AdhXtQN8Iamb0Hy8ZAfIVghpSOEqyfzlBOPcSnpyw2CEe+odIBwGmkWAIT0L5eiTI5aTJZuihrf1SDkBl0rGnqT+T84syYa16RumjrmXUTsave2spP2f514q44/oMhl0ZqPn61Hj0rz8qaG3BcrnD0PjynicVr1z4v6zPKhrz3ACv48/P7S1wB+WPp0afq3BueDOQwTQFgvE91rgKrWXelEy4zKV63SYDk7Wn7Yue1XIxUE6Oj3N3qDxXrmzFyhHGtxlWMEisaEkYm4iZgTnVfGDqwl5ivzvnpDbvRtYLyEm1nDQE5m1uqIPxqXT+RQQNhCxnkWyPA+X0RZbAPj5yw==
+X-HE-Tag: 1772760507-654843
+X-HE-Meta: U2FsdGVkX1/0Z5lYASbLKxCbXCG1p5VN4/DVJCU+o1FMUvFk876IIwuxq4baQjS161sDwTlJWWR8PKf4wulk6pv0eNjLizADa3kbdvICt/i4w8XmR86okw33vIivHasXs93vdjDChxYyKT6WJ938ksMo6JzZN7ewCLdVm+wV9Dyy0dGHCTprx9IaoLFGB5HViRMM1CrGzfZuSC8UbvZTgV4CJuAs1ghD6oc1xwAZOhS181l/7FzZ1B/DEt8PUAKCgkkgaJ2KqbTDzrqkrxAsJzWWAmTJunCflex0itDavCVIWJD+4J2dxlFVbDzsYTKOc8Lh4gGM2/XBjYPA5CGlvau6X+Lqvs1JvzTVZE3n5yCC9U/XuLudqQyn20WNI2PiE4R7QDNX7QCPnBC24iqP8Y0FVIzzu9q/TsaXKdMjWQOS8dki7r3EMGIk1m+66MvxgZEYbVgTwIp/416V7oYOpD43vjeCUWzOCiczpvDzw/UQ4EivqqkSmZqi5913x31fbArUY4JquhK87gMureybWfmY9FWods4kBTUbtVhbZRJ8UuNfEo/DsvN2o8S1ZpRq5Pcz5Ae/KfA8tlE9oVQcwgRwFWkQCEUPjzYfqyA78iNxPFpU0BwL5Kbg6pazrxqum5FUa2GSnR1HbsOFgIFnxqFuocsA0q5b34kp21s2y5ttesXHIDZLgfhQ77UIT7ut+VBWCRCx3P8hMcp9PCRiGQRVRLQ9QNLNDAnQqIAomI8llkWSokUYWV1TplYO54OvAYv+fg29CHO8ZMKGhWn9xTN9wHPhjmzRryCiHj3zOHdj0TxRPeU4hAMeymq+lHWY+wcA7Pl6xxNhwCH6XlkJ0B+ptK/hXWK0Dnb+jwpUHSlvmvArR5YYwKNmlTWfjhD6zQWT1VE12Conc5NQEnW+GbNYI6I1UAyaFOW1bT4NtMw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,35 +107,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 5 Mar 2026 18:59:43 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
-[...]
-> Following the suggestion from SJ and Vlastimil, I prepared fixup to
-> standardize documentation and comments on the term "zone lock".
-> 
-> The patch is based on top of the current mm-new.
-> 
-> Andrew, please let me know if you would prefer a respin of the series
-> instead.
-> 
-> From 267cda3e0e160f97b346009bc48819bfeed92e52 Mon Sep 17 00:00:00 2001
-> From: Dmitry Ilvokhin <d@ilvokhin.com>
-> Date: Thu, 5 Mar 2026 10:36:17 -0800
-> Subject: [PATCH] mm: documentation: standardize on "zone lock" terminology
-> 
-> During review of the zone lock tracing series it was suggested to
-> standardize documentation and comments on the term "zone lock"
-> instead of using zone_lock or referring to the internal field
-> zone->_lock.
-> 
-> Update references accordingly.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+On Thu,  5 Mar 2026 10:50:13 +0000 "Lorenzo Stoakes (Oracle)" <ljs@kernel.org> wrote:
 
-Acked-by: SeongJae Park <sj@kernel.org>
+> The ongoing work around introducing non-system word VMA flags has
+> introduced a number of helper functions and macros to make life easier when
+> working with these flags and to make conversions from the legacy use of
+> VM_xxx flags more straightforward.
+> 
+> This series improves these to reduce confusion as to what they do and to
+> improve consistency and readability.
 
-
-THanks,
-SJ
-
-[...]
+Thanks, I quietly added this (and the -fix) to mm.git's mm-new branch.
 
