@@ -4,105 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CF4BF01804
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8EC3F01804
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 08:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 961556B0095; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
+	id AFCAC6B0005; Fri,  6 Mar 2026 03:19:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90EB26B0098; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
+	id A7FFB6B0089; Fri,  6 Mar 2026 03:19:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83BE46B0099; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
+	id 98BAC6B008A; Fri,  6 Mar 2026 03:19:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F4AD6B0095
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:06:05 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13A4A14043A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:06:05 +0000 (UTC)
-X-FDA: 84514905090.09.09D87F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5D675A0013
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:06:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e7IawFCH;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 878536B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 03:19:31 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C36891C51C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:19:30 +0000 (UTC)
+X-FDA: 84514938900.12.1439766
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 28379180011
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:19:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hHVNtRYW;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772784363;
+	s=arc-20220608; t=1772785169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wThyn0miyrDFY74RpLM8dbe63bKotUruuQw/jFVwkhs=;
-	b=tKDWY0xwrFV5MlinEkfQaHYVmNP+o+Qx97BOu3UShSL6M57kSaS6kYjanLvzEpL/KDWu/W
-	m1v+7oxRoKvn2LHLyS7Hw/wpmw+FShQrxkqrurPTNmmv8paQ+XGv+TyzwxhlHQwEZSA3/F
-	vnXOkbowtV2TRGv0oecw8+nY2SI8p78=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7FTQ9bLkL2DbvXMWxJ9Dl7btlecEv6iTwjahcnkyPis=;
+	b=Ifs+BgRCy7hsWje8MLW1Bv3hPemPjTEJQoMXsxFnV0lbFglgWlGjoiqrdZPqxjFSDRvHN1
+	LS6zRA1LC3g+80ZxMc2/mcyaat8px7mT6okx100IZTm3pi5yNB+wcbqhYHo+uTv1RX2Z3p
+	JnD615IKU/CE5YHNpjbtUypKDj1CM0M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e7IawFCH;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hHVNtRYW;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772784363; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772785169; a=rsa-sha256;
 	cv=none;
-	b=Qd1mn/WnRT2NLVryvBLeOITqT8uIR9UiQ1yyU0RhaBqIGF+WzqSI0bJayJ87HAADKZoNcA
-	abqg6Kyxa39vDaryEiljnKT/PNlUMhlMXJtACx/3sIhX0H5XeAbO1ru/MbsiBz0Scx1Qhm
-	NeHHPF27lGXHIJbcgTl0vF3V82qJZHs=
+	b=Idk620pPON15WNbxHl/VbK3UN7QkutdRdaPAaEs9lO23//jfmwDaaF2ur7Vjk1hPh9PfuP
+	lzmHlG31oH/gGO6Ue0WXYQhD0E4UDaEdyMQWNXmyNBzyXcG1Pe4EJsK3hJ9vnaQ+XvAy5M
+	OZX0mW/G8O9GxIk5aGQJRYLnfZJgjyk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94C8B60126;
-	Fri,  6 Mar 2026 08:06:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07EEC4CEF7;
-	Fri,  6 Mar 2026 08:05:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 034DD440E2;
+	Fri,  6 Mar 2026 08:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5247BC4CEF7;
+	Fri,  6 Mar 2026 08:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772784362;
-	bh=LBnLAIcGHsesTcn5+nCMswocvTfZ7iqXSC/2rWKf6mo=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=e7IawFCHAhTtgO2GugIeECwEAMAUwS7CAhKdLOxCNwho2wzUPrFmxuX0/LHIKh4Kw
-	 qraeumJ9ZyUL57jNsPz2RIDPJu/e0skvhJsg7SPOAgHZWcL4wA41gYL6zd+LS3tapH
-	 b4Pd4tRflwrRsgHHdIQkUGAAYYcHq41rSp3OsLdy8ARqGbWLeGLMs999tv6BBhu+cy
-	 10G0W/9KMXIiaWZrXgag1vJzwIY6HCA+8DjBbKyU5wuZhatlvNDmiV4zOTYa6PxYIJ
-	 Ex+l2q4U7fRWA3kjpxzxDE2jrt1NzEyabYTyDqMGKONV5Peg3xCTHd/3B6baFYUWXF
-	 W6t1hx5WKLGqQ==
-Message-ID: <3b0b7f7f-c1b0-4f1c-bece-ce0cae130cb5@kernel.org>
-Date: Fri, 6 Mar 2026 09:05:54 +0100
+	s=k20201202; t=1772785167;
+	bh=kMVOZgHqgskvS2CBGSkoHJyRYRfBjXLs2IdWaLMUf6Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hHVNtRYWV1oR9UnWiXdQaPaj+2AlH0+JXBxnCseutgpZQQw6APuxnIlJXVnLmkij8
+	 JdtHoRsDExTjVPf85DdHCvhAS81OtKDsWZHUJ2EFFxJBurMB7Oo1n/XkIRLijGXD9d
+	 ZlS28EmLCVwiW7xQo2DkeYNjsFBnxEuG/1qYMoJWZukSkAwtz1zZw7spDYym0fhYjd
+	 HvmscLDnnbYzXznX1tydTfBF+5G81l5k5dD+Dru5yO0MpR49lRRg9PqaeA7ajZ3/Sq
+	 7TuzaB6ySbOeum4ZQgSvh1Bqxz62xmI8jz5dOf/nrdmF+Fhnqx95hXMh8g8pXxHv7Y
+	 IoLZ7QL7yOQnQ==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	Andi Kleen <ak@linux.intel.com>
+Subject: [PATCH v2] docs: filesystems: clarify KernelPageSize vs. MMUPageSize in smaps
+Date: Fri,  6 Mar 2026 09:19:16 +0100
+Message-ID: <20260306081916.38872-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Subject: Re: [PATCH v4 4/5] mm: rename zone->lock to zone->_lock
-Content-Language: en-US
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
- Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20260304151335.172572-1-sj@kernel.org>
- <ebd994ca-eb04-4dff-a0a8-47aef0934c2c@kernel.org>
- <aanIdk2i-Eo9M967@shell.ilvokhin.com> <aanSnywUXTVPaYUj@shell.ilvokhin.com>
-In-Reply-To: <aanSnywUXTVPaYUj@shell.ilvokhin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5D675A0013
-X-Stat-Signature: 4damn69ed85u5btqrtc6pgi9yd59r1yk
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 28379180011
+X-Stat-Signature: oge4j7po74fy3nxjqtqa6n6njopsdb7k
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1772784363-748796
-X-HE-Meta: U2FsdGVkX18Ljph99c0j8geRSMbK8W+WY/jJTLHQeiwX/OjY3YvEwMrD2uobNFyB4kc5rM7umCiiiHiCVq/eNBBGHcz9Op/0Tx07D+Q+cTfNPtf/NRvr/QIbrYjSmolzoJvvEHTqzClr8WE/kYdEyeDWAwtaEj1KdgQeOBKffh0OkqwIYRj5aCG7GMzo8/3cY3qb/zbDTtqGstEt5LPE1ooKN38Bma6ptdqMiij/zzH170XRQIvnCDL+NwNOBiEQn/o2ieCSxRx4jmaXffoMPJpJ78IQ9Yt1oZSRvCbYLdexHnP82lMa82OGHFTFOrWk10X+jjmcaWjEyuO56h7oziqTnG4gG32RpPe4EkaHdoDZ02vvweXHruDZXnACB0yXzS6HRJ9gRda6n2DjsZcwnYmuXrgfTvhJFo0LU5RNPJDe70ZPWD2HtsAjDWpO6wLUe0ziexPTmovll5xuHzp5taPF+N9B6CBR1qSIfUAPk4S+PMM5f1Yxiu4gHaPElsESeqy4khevgz2L6fuEiW2Uma1mkABvNIToK+5DUHIYQHxwuNMjik6M/0iSMUaPd9Ou/ovOCqf9yfcZWFJg/NRpzuNn7gnhP0Jk1bXD2/iNPOooYkAdcATniZDNOlZTn/I+CWiI7Mczk29E9JmFtqwrK7tm5FBjnXfExgdIeTHglu7aW6NQjMwbofZV87lYZakdU22uNP4azc0GnEk13x9AihCAItJ2nFrbMudesubAvGHK81SUOZ6vXigBtdR7/Tdhd+MMY2JFr6fL2urGJ8VU1qH4fgdgPHh1fPaU8sdJqvCobBKFcZz9ai10kYyglxMR8i1cg5BiVoYflHpOJVkKhb7A2VUtn667kUM4nh28BoABfiJaR3vB8fGXBw6/uBGZc6wXYwt3g3VAGvCxZRmky0bIxiA7uGQcWNb0tyA/0kfPPDAdbCEhBM7KOKsHf0cp8EdHuicrIyiLtOpbxIc
- o715xwSn
- glw2Yo1+NR0EbIq/AecWoaDiY01M7g+PRWz3f/tQTnN0QMG6f+jgNJcUwVEdCIH2wKzQUjRn5DQu3s3WnyQgqJMLgCqbOFpOg5hL2AYMcbz0c7flA6FbevZYnhQBwo+BZWiSfHwMTx2QZvN5xDIbHtVpWcc0dxyV1IZjc62wAOsvR9IUdj6wvhfVs/HxPaol95vjyo5QS3bR6KfO/294LDP6xlKBOhXVbtMu49ExgkZJ6IuTxQMJpUdoqbWf+vCUArBCUnQIzJhDgpIKWEqIr7BsvSh9Zu09PuZ/G/0fpD5Ullsth/U4cY3tXPWKh5XAvDTSoB7uXwSby+2A4hb7yy7JFjzFBZZbMCdD8d/wXbu7UiQSXaSZPkkDl3OiUpbXcxazWaepoJXM0l06xsCsQWnYPwckOBqxYiovnoUkMeh+hMAwYXVCWzCiKFLgFBrfvJvXt
+X-HE-Tag: 1772785168-836721
+X-HE-Meta: U2FsdGVkX1+wyjLBSz/odSKrQ8Hx9TbRSpGpFItNI/wrKo3Wb3W0CAtQmitcZCaQgZbLi1dsMyhMqzQSvhCSOJusk57R4f5O9z1fErXb1XW/DqBTjw8qoxYrTSK52Ig+xaFXEKVykj59tmGSwmbat6x3vLGqDKfCqSZaZBFBfF2C7QWenalXd5Vq+WOVYmIeQMGZuNDDc8eelTtl2MmyIkTwQqDndtKLXn3Rg+cY7+fj8Sz2+jXLpyU6FlHQD7ekITn3lNbayKMT82X4MD/U7ES1oSf3yhDFW+bu2ry+ZV3/+c8GH6R4IihJGkIy6WBPRu22D8OC++0bTiknDRXcWI+/HOcvdUV3JtTIC0vLt7YrI58KxLMpedFDnF6RPwBxwHidnx7R9TWekfiGMaFojT1f1/eOFVAmGQvwxUookOIItcwyPrQwq4qRh4dteuh4j1ay+AZPXTY+tSabi/vF+pyPy9TBb77gjiHHTTn4NMwj0MZOI8qxcDEITrqHyXM1re0d/xKOg2NS4lLZxFxgXaxRUxukxiZoJuBYshA8lgJsLbygoMK54RcKcwd3i5emoCDsetTMa/otV22g0zLjCiyJeMYebo335EzTapC69kydLzRMmuGygiMHknxB3CMTlCjDe+xhZ3Hk2dsmyXI4bT9n64nNp1umZdOrYOVnN6GXj06OYIef2lQMF1KddGwzGLfEJYg8kddD6r+hfKRsY2EidN0/uJGn4v8G9GHWLLWcOzsEYORt7msclxu3WUtbyGjCM83b+22rW/534w3uqajqe9WhEj6wt8UY3DOrKyZMv0PpR1jd/6beqLTE19KtFR13XlZixCeP/6RDAt32ni0igu/ssDzW3RmxmGL0o17CQQIpq+qFhlDGBOJL3TBnKzkwBlJBwCpIs9dOlbUcgd6E0X+GTaRvC36j+67aA8OQ5kuZF5gBN92hYy01Ol2OdczVqsLr8rp3khSE+6f
+ OMUqI6r/
+ Hu8HztXpUP8/IIrxzuny6e35V4Uzwi+o1mD31N54nQ0MKZ07oNq/7da8YrPL+dDcuCOxieNK5yV4bOCTDdGs9EIrzfw23gR6zLzaOi/NBSNEbsD2RVJsQN2k40AXMNsvt6t5HGyG3mSjKdyH33GeyT6Qs/g83GWhVgZyfqJ7y/LNlkz+K2FVS2m3FzuFu4PdTehcxYF4LcOSqCNGlDdgi7XM8OUFn4KeAur2cK1CYii0pxaHx8S/5miDoIcqjpWal+/GwQPshwinFt0JLKt8GKnCCRIHmPwkoH5qaYURt5JXNPskZ1FpCzhqQNsxeQ5y/I8so8CnbWJdMoO/9rVKo+SaWwgoo2Finxw9naaUdi0xTKsZ25Y7lP/h/likyPH/rEbAMGJNxY+va++sbotNm2gPc4Vq5WLun/wFkdyvu6sTMEJGM4+9XjGo6l3FV5ClBaMo3Y/vd+T5gUuhmHjNpfbGHqR08QVrF48dwCUtNoiqyofSLAiuPzxnOgPsGBmcCYLLYI6vRIAe/7RKVhIblpgdmQu6eZkqRRjfNKoxBlPf2oWiD43aJCHcaHv3b3RLZUiuO9kRaZn6zdcf10CJzphj0u0WfTIoA1L7pT1Ac0nkaJpU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,147 +104,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 19:59, Dmitry Ilvokhin wrote:
-> On Thu, Mar 05, 2026 at 06:16:26PM +0000, Dmitry Ilvokhin wrote:
->> On Thu, Mar 05, 2026 at 10:27:07AM +0100, Vlastimil Babka (SUSE) wrote:
->> > On 3/4/26 16:13, SeongJae Park wrote:
->> > > On Wed, 4 Mar 2026 13:01:45 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
->> > > 
->> > >> On Tue, Mar 03, 2026 at 05:50:34PM -0800, SeongJae Park wrote:
->> > >> > On Tue, 3 Mar 2026 14:25:55 +0000 Dmitry Ilvokhin <d@ilvokhin.com> wrote:
->> > >> > 
->> > >> > > On Mon, Mar 02, 2026 at 02:37:43PM -0800, Andrew Morton wrote:
->> > >> > > > On Mon, 2 Mar 2026 15:10:03 +0100 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
->> > >> > > > 
->> > >> > > > > On 2/27/26 17:00, Dmitry Ilvokhin wrote:
->> > >> > > > > > This intentionally breaks direct users of zone->lock at compile time so
->> > >> > > > > > all call sites are converted to the zone lock wrappers. Without the
->> > >> > > > > > rename, present and future out-of-tree code could continue using
->> > >> > > > > > spin_lock(&zone->lock) and bypass the wrappers and tracing
->> > >> > > > > > infrastructure.
->> > >> > > > > > 
->> > >> > > > > > No functional change intended.
->> > >> > > > > > 
->> > >> > > > > > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
->> > >> > > > > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
->> > >> > > > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->> > >> > > > > > Acked-by: SeongJae Park <sj@kernel.org>
->> > >> > > > > 
->> > >> > > > > I see some more instances of 'zone->lock' in comments in
->> > >> > > > > include/linux/mmzone.h and under Documentation/ but otherwise LGTM.
->> > >> > > > > 
->> > >> > > > 
->> > >> > > > I fixed (most of) that in the previous version but my fix was lost.
->> > >> > > 
->> > >> > > Thanks for the fixups, Andrew.
->> > >> > > 
->> > >> > > I still see a few 'zone->lock' references in Documentation remain on
->> > >> > > mm-new. This patch cleans them up, as noted by Vlastimil.
->> > >> > > 
->> > >> > > I'm happy to adjust this patch if anything else needs attention.
->> > >> > > 
->> > >> > > From 9142d5a8b60038fa424a6033253960682e5a51f4 Mon Sep 17 00:00:00 2001
->> > >> > > From: Dmitry Ilvokhin <d@ilvokhin.com>
->> > >> > > Date: Tue, 3 Mar 2026 06:13:13 -0800
->> > >> > > Subject: [PATCH] mm: fix remaining zone->lock references
->> > >> > > 
->> > >> > > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
->> > >> > > ---
->> > >> > >  Documentation/mm/physical_memory.rst | 4 ++--
->> > >> > >  Documentation/trace/events-kmem.rst  | 8 ++++----
->> > >> > >  2 files changed, 6 insertions(+), 6 deletions(-)
->> > >> > > 
->> > >> > > diff --git a/Documentation/mm/physical_memory.rst b/Documentation/mm/physical_memory.rst
->> > >> > > index b76183545e5b..e344f93515b6 100644
->> > >> > > --- a/Documentation/mm/physical_memory.rst
->> > >> > > +++ b/Documentation/mm/physical_memory.rst
->> > >> > > @@ -500,11 +500,11 @@ General
->> > >> > >  ``nr_isolate_pageblock``
->> > >> > >    Number of isolated pageblocks. It is used to solve incorrect freepage counting
->> > >> > >    problem due to racy retrieving migratetype of pageblock. Protected by
->> > >> > > -  ``zone->lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
->> > >> > > +  ``zone_lock``. Defined only when ``CONFIG_MEMORY_ISOLATION`` is enabled.
->> > >> > 
->> > >> > Dmitry's original patch [1] was doing 's/zone->lock/zone->_lock/', which aligns
->> > >> > to my expectation.  But this patch is doing 's/zone->lock/zone_lock/'.  Same
->> > >> > for the rest of this patch.
->> > >> > 
->> > >> > I was initially thinking this is just a mistake, but I also found Andrew is
->> > >> > doing same change [2], so I'm bit confused.  Is this an intentional change?
->> > >> > 
->> > >> > [1] https://lore.kernel.org/d61500c5784c64e971f4d328c57639303c475f81.1772206930.git.d@ilvokhin.com
->> > >> > [2] https://lore.kernel.org/20260302143743.220eed4feb36d7572fe726cc@linux-foundation.org
->> > >> > 
->> > >> 
->> > >> Good catch, thanks for pointing this out, SJ.
->> > >> 
->> > >> Originally the mechanical rename was indeed zone->lock -> zone->_lock.
->> > >> However, in Documentation I intentionally switched references to
->> > >> zone_lock instead of zone->_lock. The reasoning is that _lock is now an
->> > >> internal implementation detail, and direct access is discouraged. The
->> > >> intended interface is via the zone_lock_*() / zone_unlock_*() wrappers,
->> > >> so referencing zone_lock in documentation felt more appropriate than
->> > >> mentioning the private struct field (zone->_lock).
->> > > 
->> > > Thank you for this nice and kind clarification, Dmitry!  I agree mentioning
->> > > zone_[un]lock_*() helpers instead of the hidden member (zone->_lock) can be
->> > > better.
->> > > 
->> > > But, I'm concerned if people like me might not aware the intention under
->> > > 'zone_lock'.  If there is a well-known convention that allows people to know it
->> > > is for 'zone_[un]lock_*()' helpers, making it more clear would be nice, in my
->> > > humble opinion.  If there is such a convention but I'm just missing it, please
->> > > ignore.  If I'm not, for eaxmaple,
->> > > 
->> > > "protected by ``zone->lock``" could be re-wrote to
->> > > "protected by ``zone_[un]lock_*()`` locking helpers" or,
->> > > "protected by zone lock helper functions (``zone_[un]lock_*()``)" ?
->> > > 
->> > >> 
->> > >> That said, I agree this creates inconsistency with the mechanical
->> > >> rename, and I'm happy to adjust either way: either consistently refer
->> > >> to the wrapper API, or keep documentation aligned with zone->_lock.
->> > >> 
->> > >> I slightly prefer referring to the wrapper API, but don't have a strong
->> > >> preference as long as we're consistent.
->> > > 
->> > > I also think both approaches are good.  But for the wrapper approach, I think
->> > > giving more contexts rather than just ``zone_lock`` to readers would be nice.
->> > 
->> > Grep tells me that we also have comments mentioning simply "zone lock", btw.
->> > And it's also a term used often in informal conversations. Maybe we could
->> > just standardize on that in comments/documentations as it's easier to read.
->> > Discovering that the field is called _lock and that wrappers should be used,
->> > is hopefully not that difficult.
->> 
->> Thanks for the suggestion, Vlastimil. That sounds reasonable to me as
->> well. I'll update the comments and documentation to consistently use
->> "zone lock".
-> 
-> Following the suggestion from SJ and Vlastimil, I prepared fixup to
-> standardize documentation and comments on the term "zone lock".
-> 
-> The patch is based on top of the current mm-new.
-> 
-> Andrew, please let me know if you would prefer a respin of the series
-> instead.
-> 
-> From 267cda3e0e160f97b346009bc48819bfeed92e52 Mon Sep 17 00:00:00 2001
-> From: Dmitry Ilvokhin <d@ilvokhin.com>
-> Date: Thu, 5 Mar 2026 10:36:17 -0800
-> Subject: [PATCH] mm: documentation: standardize on "zone lock" terminology
-> 
-> During review of the zone lock tracing series it was suggested to
-> standardize documentation and comments on the term "zone lock"
-> instead of using zone_lock or referring to the internal field
-> zone->_lock.
-> 
-> Update references accordingly.
-> 
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+There was recently some confusion around THPs and the interaction with
+KernelPageSize / MMUPageSize. Historically, these entries always
+correspond to the smallest size we could encounter, not any current
+usage of transparent huge pages or larger sizes used by the MMU.
 
+Ever since we added THP support many, many years ago, these entries
+would keep reporting the smallest (fallback) granularity in a VMA.
+
+For this reason, they default to PAGE_SIZE for all VMAs except for
+VMAs where we have the guarantee that the system and the MMU will
+always use larger page sizes. hugetlb, for example, exposes a custom
+vm_ops->pagesize callback to handle that. Similarly, dax/device
+exposes a custom vm_ops->pagesize callback and provides similar
+guarantees.
+
+Let's clarify the historical meaning of KernelPageSize / MMUPageSize,
+and point at "AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped"
+regarding PMD entries.
+
+While at it, document "FilePmdMapped", clarify what the "AnonHugePages"
+and "ShmemPmdMapped" entries really mean, and make it clear that there
+are no other entries for other THP/folio sizes or mappings.
+
+Also drop the duplicate "KernelPageSize" and "MMUPageSize" entries in
+the example.
+
+Link: https://lore.kernel.org/all/20260225232708.87833-1-ak@linux.intel.com/
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
 
-Thanks!
+v1 -> v2:
+* Some rewording and clarifications
+* Drop duplicate entries in the example
+
+---
+ Documentation/filesystems/proc.rst | 40 +++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
+
+diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+index b0c0d1b45b99..e2d22a424dcd 100644
+--- a/Documentation/filesystems/proc.rst
++++ b/Documentation/filesystems/proc.rst
+@@ -464,26 +464,37 @@ Memory Area, or VMA) there is a series of lines such as the following::
+     KSM:                   0 kB
+     LazyFree:              0 kB
+     AnonHugePages:         0 kB
++    FilePmdMapped:         0 kB
+     ShmemPmdMapped:        0 kB
+     Shared_Hugetlb:        0 kB
+     Private_Hugetlb:       0 kB
+     Swap:                  0 kB
+     SwapPss:               0 kB
+-    KernelPageSize:        4 kB
+-    MMUPageSize:           4 kB
+     Locked:                0 kB
+     THPeligible:           0
+     VmFlags: rd ex mr mw me dw
+ 
+ The first of these lines shows the same information as is displayed for
+ the mapping in /proc/PID/maps.  Following lines show the size of the
+-mapping (size); the size of each page allocated when backing a VMA
+-(KernelPageSize), which is usually the same as the size in the page table
+-entries; the page size used by the MMU when backing a VMA (in most cases,
+-the same as KernelPageSize); the amount of the mapping that is currently
+-resident in RAM (RSS); the process's proportional share of this mapping
+-(PSS); and the number of clean and dirty shared and private pages in the
+-mapping.
++mapping (size); the smallest possible page size allocated when backing a
++VMA (KernelPageSize), which is the granularity in which VMA modifications
++can be performed; the smallest possible page size that could be used by the
++MMU (MMUPageSize) when backing a VMA; the amount of the mapping that is
++currently resident in RAM (RSS); the process's proportional share of this
++mapping (PSS); and the number of clean and dirty shared and private pages
++in the mapping.
++
++"KernelPageSize" always corresponds to "MMUPageSize", except when a larger
++kernel page size is emulated on a system with a smaller page size used by the
++MMU, which is the case for some PPC64 setups with hugetlb.  Furthermore,
++"KernelPageSize" and "MMUPageSize" always correspond to the smallest
++possible granularity (fallback) that can be encountered in a VMA throughout
++its lifetime.  These values are not affected by Transparent Huge Pages
++being in effect, or any usage of larger MMU page sizes (either through
++architectural huge-page mappings or other explicit/implicit coalescing of
++virtual ranges performed by the MMU).  "AnonHugePages", "ShmemPmdMapped" and
++"FilePmdMapped" provide insight into the usage of PMD-level architectural
++huge-page mappings.
+ 
+ The "proportional set size" (PSS) of a process is the count of pages it has
+ in memory, where each page is divided by the number of processes sharing it.
+@@ -528,10 +539,15 @@ pressure if the memory is clean. Please note that the printed value might
+ be lower than the real value due to optimizations used in the current
+ implementation. If this is not desirable please file a bug report.
+ 
+-"AnonHugePages" shows the amount of memory backed by transparent hugepage.
++"AnonHugePages", "ShmemPmdMapped" and "FilePmdMapped" show the amount of
++memory backed by Transparent Huge Pages that are currently mapped by
++architectural huge-page mappings at the PMD level. "AnonHugePages"
++corresponds to memory that does not belong to a file, "ShmemPmdMapped" to
++shared memory (shmem/tmpfs) and "FilePmdMapped" to file-backed memory
++(excluding shmem/tmpfs).
+ 
+-"ShmemPmdMapped" shows the amount of shared (shmem/tmpfs) memory backed by
+-huge pages.
++There are no dedicated entries for Transparent Huge Pages (or similar concepts)
++that are not mapped by architectural huge-page mappings at the PMD level.
+ 
+ "Shared_Hugetlb" and "Private_Hugetlb" show the amounts of memory backed by
+ hugetlbfs page which is *not* counted in "RSS" or "PSS" field for historical
+-- 
+2.43.0
 
 
