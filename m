@@ -4,98 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB14F33A92
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A32FCB602
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:42:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 213966B0005; Fri,  6 Mar 2026 09:29:28 -0500 (EST)
+	id 36B8B6B0005; Fri,  6 Mar 2026 09:42:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F4466B0089; Fri,  6 Mar 2026 09:29:28 -0500 (EST)
+	id 2EEA16B0089; Fri,  6 Mar 2026 09:42:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 121A36B008A; Fri,  6 Mar 2026 09:29:28 -0500 (EST)
+	id 1FACB6B008A; Fri,  6 Mar 2026 09:42:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F38396B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:29:27 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A66131C460
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:29:27 +0000 (UTC)
-X-FDA: 84515871174.06.C5DC767
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BCCCF40006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:29:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0EC396B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:42:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1404597CC
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:42:10 +0000 (UTC)
+X-FDA: 84515903220.29.71F4E8B
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2DCAD1C0017
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:42:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="iPhnnC/A";
+	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772807365;
+	s=arc-20220608; t=1772808129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FIafwMg5yexn5QzVKW2ay6Ytq2x8bTi71eCcoEbYBMc=;
-	b=nWAoABo3tC1b8ZXfVlW846z8ylPE1tY+b6yyogCECEiCquuj9bws37jCzoHsGqzpbo8x7y
-	MJqacuirjmDwpC6v07jyijKR7y2pxyz+N8zG5G7PDU8FiWgy/M44itdfRdaMCfdfIgm33W
-	9wB0ae+7BaRHwvu9NEGiDxY6vo5fnFQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=emAb7Y3Xy3vZ9CUMK+IpAxICUzam8RYIdfg00ey1KxU=;
+	b=WTj/QobZJHnXOZm9XLTflSEcJndwlTLDucjBSSQb4tNcWRYW9m3Oiw9ktvlUuXZl4qXjiT
+	8p4LM/pDjp/3m1d9DMzpcIR8HoiZfYZ75k1RZpOuhGByDbt8+3jgrZCQE2bFlIrZ+LrQT2
+	eVddA5roQ/Qz82KfTvCHBOoaZNX+nBA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772807365; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="iPhnnC/A";
+	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772808129; a=rsa-sha256;
 	cv=none;
-	b=cHp4ATSwDiIqoOsEa4QMD95DLro2VHBvuvJhWNNzscctXQrYn5NfqKccCvRdWZQL0J1ZYQ
-	rjKfZ+01ZfK80k4n4AYrFW+nXU+ztpVTXvm2SRckDj0w7UQk6bp7vFwQKPAUqkQP9gpuUM
-	VJvCbdtAovnhY809c7h7ejcFnituwrM=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fS8060CqPzHnH5f;
-	Fri,  6 Mar 2026 22:28:22 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id CEF4740086;
-	Fri,  6 Mar 2026 22:29:21 +0800 (CST)
-Received: from [10.123.123.67] (10.123.123.67) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Mar 2026 17:29:18 +0300
-Message-ID: <75aa8f34-4d91-4758-847d-248a5be3db62@h-partners.com>
-Date: Fri, 6 Mar 2026 17:29:15 +0300
+	b=NOcquKZV0CBMQXYtRKV+HfkVB9AvylUL5usk2fas+M2+DFzVx2K7s1eMv4pgxmZNVB1iUR
+	+o13rfdq3xHLTz66lyvX1u1jLpILDRY2pr9hth0bUdjBP+auoRmM9IkSeoZS1Ob4/DljBK
+	Gwl7g1vRfuGnYDNMokMigOU24chE/5c=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1D0CB40E0169;
+	Fri,  6 Mar 2026 14:42:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GexwHBDjzfzW; Fri,  6 Mar 2026 14:42:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1772808120; bh=emAb7Y3Xy3vZ9CUMK+IpAxICUzam8RYIdfg00ey1KxU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iPhnnC/AJNtKdGPUOG709iZ+fDJD2cUvZK9ZQqrh9EbAiHzyHgUQ8q/awRtExmEkT
+	 i4pNnZFDJd9Taa9S3K2O7hMzO52n5FruntDH6rYXvsa07+ahRmTVSoi82ToquNO41I
+	 9H16wu6grg2cjxbg8kDXjM5cf/ctUIlhf+GuP/+I6yqgshen7nU5npeTENeLgvEAZL
+	 NHCZ8u38VwtY2ZPBm4dbKDPgfOaqZPMqQdY4ENevqTkTYnfc2b75Rvluchmo9PXYgi
+	 hStACr6y6Pc0VtI5eLDoNu83rsyS6TbeNGBZx21Cc1LpqH+8GD9k2CC5wj8swSUA0I
+	 BMGbXxW4YlDPWgkRMUzNg09+vYY3tJPbtcK7FDbQPFBq5zI/z9FpmSfefHeEdCpa7G
+	 T73Wax+MgYvRwsHJNCCyYfW8MBAuCv8CjA+laR84FGR92tsoynfAEKfl1ih8tKQiVG
+	 zHehI24FrSvkqseBTgJBl2hCqKN4JsfFnpFIjn1VK4eFjepK0kMMCd52tzhVomqmc7
+	 y5qz8JlHk/zJTlP1SHYqvnwsctkyEUzgam0lwS2yYVjJFJJ1KLrle/2IhluVoHQ0RG
+	 pBkywudupFdUchBasgL54K7aLPRMTLXNWpGF9qrsAkJS1wkkpXoLjFTFglpfNroWpx
+	 8abR3MDD67jxkCp6iHE00so8=
+Received: from zn.tnic (pd9530d5e.dip0.t-ipconnect.de [217.83.13.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 0716440E00DA;
+	Fri,  6 Mar 2026 14:41:34 +0000 (UTC)
+Date: Fri, 6 Mar 2026 15:41:25 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org, rppt@kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, derkling@google.com,
+	reijiw@google.com, Will Deacon <will@kernel.org>,
+	rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	Andy Lutomirski <luto@kernel.org>,
+	David Kaplan <david.kaplan@amd.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
+Message-ID: <20260306144125.GIaarnleCxQjM2Ocm6@fat_crate.local>
+References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
+ <6206d021-e6c2-4899-b426-cacd71ebd5ef@kernel.org>
+ <DGUT0WT67V0F.32RH4R5HZ91VP@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan
-	<ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>, Matthew Wilcox
-	<willy@infradead.org>, Yu Zhao <yuzhao@google.com>, Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
-	Gorbunov Ivan <gorbunov.ivan@h-partners.com>, Muchun Song
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Kiryl Shutsemau <kirill@shutemov.name>, Linus
- Torvalds <torvalds@linuxfoundation.org>
-References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
- <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
- <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
- <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
- <902d821b-e903-4bf5-89db-070851c95a1a@h-partners.com>
- <54cc6e6d-bda7-4c5b-a998-df854ead1985@kernel.org>
-Content-Language: en-US
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-In-Reply-To: <54cc6e6d-bda7-4c5b-a998-df854ead1985@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.67]
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: BCCCF40006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: sn7cednghm1uqw3b7mwsrmue8jor91pa
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DGUT0WT67V0F.32RH4R5HZ91VP@google.com>
+X-Stat-Signature: zzegjxwkrutaqb7dz5kfbt7hydwnbfbw
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772807364-446226
-X-HE-Meta: U2FsdGVkX1/f/VA0fBclhWy+UNCKBABRaWXpitmbMoUbWsWTF+J+MX9KQwP3wv87SAMKg0SZFtS2+HKRb3lih2pvk4fmc/ufzSonghaLXbmcBMBFqE4yo5BwZS+JqSJ72K0pzJUnDH9S/Cs0AKvmnj3PAiR+aaky+O57URPv66DApFZtmLCv+vF+vTvTJIz/e2nrWj8e08WZ6t+D3KZhwDelPL6QzeT60Esd2aFMPxFDJv/SGTWFmDZFJwTz/lUORHC8KFb9wJBKD34cFySwJUVIZu1U3pQshzdlBTz67YBCIxUJelbmZX/Wv2EqVku9FJo2ZI6rHFaEBQwDDGks4L4DrZXPfVZ9dkj5F+VQbgLfFDVAEJ0buZQo5dkv71wK952xBbkV99J44O4voBvZv9DfZxQWRutHOyYbLXF8CeJiqJaAfdnnMrzafScH8VfAYGKQqQcWoqNaj7w7708OixJyev4UbOecIyfNxCkZtmpaAZm96nuoDd6A01/QHcjhu375vtfKZbOgAFrnUu3l2JY4CFRxBW9nBBLmo9E0MQrI0e1Bm2ngDN63eyYg7cTZHgVIe+eAo8i0VC7Oh0/Tbq+aIGGSEf5w5TKg+vOtFZ0t0FHtFd3lXatIAmtUGVeq38cyAIGM5fKRMr3JPj0EoBUzW/aaC0UtagFfmaXhKhTuXaOCDv4tkUUQcK93MioJSmqTg0FYTlnxJQhjMe+CbdiG1rcEb29+LBRRFQdr/6EvbQJo3DHxvFKvqT+ssG+Lbtj4b4NHIsXKT1u1sGwr+uZkFxEdwKgm+hmeJXLmSkquZ/s2VoQY4QIAfCPFu64DuQnQT5SriV+1T1cnsflKu+fr4Ir+s8NRvXLHS1idwDru5zE7HsxlKL2gYsZEO3eWsxb5iB8GuJE=
+X-Rspamd-Queue-Id: 2DCAD1C0017
+X-HE-Tag: 1772808127-871919
+X-HE-Meta: U2FsdGVkX195vM4OASkGzksmDNlev4bIgQE5bDMi0IWbs0CDui2zC9ksHJAO8ekJASo84MPce5gGrK8VrL7RoZdVjsz/FgqZqVlzHSIeSRdLvXZ00E5Xahkz8nfWnHvFRJI7vts7vhAUGmQszP5kowPxwVxJwlQX9mhYrGngG5zLEIAi0lru17EmR/nhr6S8HYzpx9TCH37b7hz8b/MQNFaFyy686+zIWjMNlKsvmWfP1mm1TQE7iIwa1HW/74vt3S8GOzuyxy15UJQQ2m/QmN1j+gTm65airl7Hu2DZCDfnRG3CNpxnFNLs2HZShV+TtoeV7cZnwFjv2gXCdv7clQhOPWZkvaHeJAeQAkwK/uzJhGnZImyzP2gC26iP5lc0BaY9wg1A7T6e1qhdDJyqxoRn+7BmGl0Zz5Vz13U0snvkQlTe8tL8izUwaWjV3whLXmkVd1VAHDf1tr4Igo1qOimqJ+7/rJbxqf8xSjyJUtzxTxMgywFXWktRmlAJ4Cc4dGrEMawL4EbqNBfK++GP2hgKqAagHSf4wUaRoCpSW/0nSkyXrWwDb9xMQ+RaJIQSVjNS0RN7pGDnTh33y1CR31HoQByuV6Bs311U1m7YHBhpp7uOnXva9p+Gdi3n71eIlbJkvvELW/IZcpkiaPeX0t4QABV5NHR+YeHo7Jjl65XtEeQrrHf1JePX459myWK6dndFJIxN5IR3YLuTY9/XHw0nZ6GNw6b3jO4P3d8ADw808YjHEChXHdwxc9X0QKnetLoITMWHqzILorrM1iOEE5MykmDzSAzMUy7FxyXsbADHIMNBoBEj0W3yY6jJjYR+GVqxFkRiNrfeotFuQCbbepSq/jJJC+9CZL4rDE7/4moFvozgqGZMWPZxmGfziciidWdEvhI+eA/6iO/i8kZ83M6cw8uu1jP7N2n2I8of7ch2PipGr5OQoASb+1NRq0dCosAhvHD/09W1BcTFwq6
+ gQ4RCOD9
+ k8RmpTQwLuFr8UCReoQgjamRt/KHNCvOGXts6qrgL1khKUgsv5PlsxY8Jjdxr8/i6RU+QL9BSo2TiH0DNDhP4u5CsdgjACis5Q267l6JqhAe/Qwx0ViCU/V5yuxC5W7x3E8FDsTfxvqzArLdzK0FCGqBn41QWf/++Le1xKt0wouHG1c8xce0fysWM+rrBLscwifqbXq8POiYCzLi4OeiABCi38Elv5Ch6jFpYfFPxmyKBI771rPVjVByJIvwr32UTxXiOnNLlTk8htQDA/UTBi/G1nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,78 +119,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> For example, all pages we add to the page allocator through
->>> __free_pages_core().
->>
->> You are right that refcount = 0 is tricky. However, for a bad outcome
->> you will need:
->> 1. Some external reference to this page, through which you try to
->> increment the refcount;
->> 2. set_page_count(0) somewhere between freeing and "it is safe to alloc"
->> state.
-> 
-> That is way, way, way too dodgy.
-> 
-> What you should likely do is
-> 
-> (a) Make set_page_count(0) set it to PAGEREF_LOCKED_BIT
-> (b) Make any places that might skip set_page_count(0) to use it
-> (c) Document this all extremely thoroughly.
-Okay, I agree. My reasoning was more about "it's not _that_ bad if we 
-miss something outside the allocator" than "everything is fine as it 
-is", but maybe it is really that bad...
+On Thu, Mar 05, 2026 at 11:16:07AM +0000, Brendan Jackman wrote:
+> Ultimately the fact that we have KPTI for 32-bit makes it sound like we
+> would also want ASI for 32-bit, so I guess I would still want to add a
+> GFP flag to support that on 32-bit. But that's a pretty futuristic
+> problem, I would say we should focus on __GFP_UNMAPPED in isolation
+> right now.
 
-> Alternatively, disallow set_page_count(0) ccompletely and add something
-> like "initialize_page_as_frozen()" or sth. like that.
+I'd wait until someone really really presents a valid use case to not move to
+64-bit. And then justify the effort for adding and supporting ASI on 32-bit.
 
-(Below are my thoughts, not active proposal)
+-- 
+Regards/Gruss,
+    Boris.
 
-Actually, we can keep "zero is locked" property if we change scheme a 
-little:
-
-If we invert locked bit so that 0 means locked, then we don't care about 
-memset() / GFP_ZERO / set_page(0). But then there is extra bit on each 
-active refcount, and (un)masking will be required on each refcount 
-read/set/etc operation.
-
-We can place locked bit in the highest bit like now, or move it to the 
-lowest. This doesn't make any difference except for how masking is 
-performed (and or shift). I can't really tell which approach is faster 
-(and more optimizable after inline).
-
-This approach doesn't look appealing to me, mostly because of redundant 
-masking. So for now I will try to add proper initialization / 
-documentation in all risky places.
->> So adding new pages with zeroed refcount to allocator is safe, because
->> there are no external references. Zeroing tail page's refcount is safe,
->> unless someone actually tries to increment its refcount (and this is bug).
->>
->> Generally, the only unsafe set_page_count() (or any other zeroing) will
->> be in allocator itself between freeing and allocating. Or maybe I missed
->> something, and this approach is indeed incorrect
->>
->> Probably we can think of some debug checks to prevent bugs in "safe"
->> scenarious
-> 
-> Just take a look at do_migrate_range(), where we do a
-> 
-> page = pfn_to_page(pfn);
-> folio = page_folio(page);
-> 
-> if (!folio_try_get(folio))
-> 	continue;
-> 
-> If that is a page that was added to the buddy (set_page_count(0)) but
-> either (a) not allocated yet or (b) allocated as frozen that's a problem.
-> 
-> We really rely on
-> 
-> (1) Frozen pages
-> (2) Buddy pages
-> (3) Tail pages (compound or non-compoud)
- >
-> To have a refcount of 0 that *reliably* makes folio_try_get() etc. fail.
-> 
-> Anything else is just playing with fire.
->
+https://people.kernel.org/tglx/notes-about-netiquette
 
