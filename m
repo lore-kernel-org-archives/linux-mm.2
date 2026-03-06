@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA01DFCB61D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:00:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB04FCB61E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:03:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E69D86B0099; Fri,  6 Mar 2026 11:00:10 -0500 (EST)
+	id BEBC76B0095; Fri,  6 Mar 2026 11:03:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E16FC6B009D; Fri,  6 Mar 2026 11:00:10 -0500 (EST)
+	id B993B6B0096; Fri,  6 Mar 2026 11:03:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC1AC6B00A3; Fri,  6 Mar 2026 11:00:10 -0500 (EST)
+	id A7B106B0098; Fri,  6 Mar 2026 11:03:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B99EB6B0099
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:00:10 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D487C2457
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:00:10 +0000 (UTC)
-X-FDA: 84516099780.04.D6BDF20
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 937FB6B0095
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:03:03 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 351DB1B80F2
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:03:03 +0000 (UTC)
+X-FDA: 84516107046.30.0AF9B05
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 80A9616001B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:00:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j8WNbSnN;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 64ACA140010
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:03:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FC22dvTm;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772812808;
+	s=arc-20220608; t=1772812981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LhA+IXdOnWx0hCMkw/la6PJLWhXffuq9fpj/Z4yD+/c=;
-	b=klYM/q3W7A7p5MUqxWMDVqLquD52yvYEpCozg1SMX4gGFmf0GFuAxb/tnfdzH6PCJuGm6o
-	RkeDWuKgoVlS6IsL3EtVZS8AfZOUVwMXZlgI03kZKV4yjXifOFMRA1iMcNsOo2RrSX2W+U
-	a/UJm/gdmgs+Qf44Cv531XPTfM0g7no=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j8WNbSnN;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812808; a=rsa-sha256;
+	bh=FqEWLVTLGCemuDY2A4v9I3atmDnyeDlcblEgWkQMhyw=;
+	b=qwxolHeVKte2zve0yE8hvdO71cHmRlRaTFOcWAy8X1RSjudHK23RErqgQEzP8vPkLKAEXO
+	jsI+MiIziU0phx3vl8mzxVfuBo3meAz9qwWO+Cevd0S/sqve1dGizg3ALSQW5aJeeGUqko
+	eeUBXy5bBUKbxn40P0CaQzKjGyex63Y=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812981; a=rsa-sha256;
 	cv=none;
-	b=d2Nz+3bS83IoKYDKnLkRoSlgY966tfIGTprrl4ktZt+SkN8BqBWuovfShywR62h/tsn2pU
-	kA/1kTLO6qeaSU0CzUInjlnnGxIcEuctZx8yr8bvYnIh5jLiRszaKSwrpPwEkMz6q7Q7Vl
-	BhPVSes8hz2hPQINb+MzojFJK4FUNpA=
+	b=UEx6+p3gpJErow8q8XV9I3M2Tq0As6pIt6Z/PnZdgdhFrl/3oPePh6LnnXMDeOJ1z8M5CK
+	Ha0Fvs8m16dmd38QumQRGgrd+V7TzhjSXk6DSiSSy+ruRhcB9uDbmM8pZ79vC5gg2B6SSm
+	qLOLRuq2uNQCCZIlgQ62LsiSwMn59KY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FC22dvTm;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B511A60053;
-	Fri,  6 Mar 2026 16:00:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BB7C4CEF7;
-	Fri,  6 Mar 2026 16:00:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D6FDA6012A;
+	Fri,  6 Mar 2026 16:03:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AACEC2BC86;
+	Fri,  6 Mar 2026 16:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772812807;
-	bh=b454bzPbl55ULZOmmc23V4LQKs1U8z6A+oTB2cMxkSw=;
+	s=k20201202; t=1772812980;
+	bh=/Ys4d0/mU9CmjC7P2UTEA2TWEWGsOTVSEX2kYD8lsO4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j8WNbSnNmvDwOEQchSrC+awLU1F9TWqkmTuQb3KvRpAWzLZUou3D2zzmuiS70gZst
-	 Bwh7Rl9TvfXwyWnldJX5HHuaemXXQi7DRfRcLyJPjVFKnw1+1TlSa2TwmtDO4gC3qZ
-	 SsjHQhoYF375E35KJUUMbA3z9iVJvPN1gmhF5c+qtjvl8fDY/ZAsG4pCvqkzZOlwrZ
-	 96lpeY6THs1o2800tnctleliaxJ6DVjEL58BBvLikn6o6CIi0KBcSywr5bhQOmeG6k
-	 fANs39ciRtTxyGcNUR7fDgCyNsxmJGtaT5oJWRjq5/I1L9qFqOKV9/oNAUWE9k2uGs
-	 OxrKcLaTxIjkg==
-Message-ID: <546df3d8-2f63-4a83-be44-4cfe21ddb4c6@kernel.org>
-Date: Fri, 6 Mar 2026 16:59:56 +0100
+	b=FC22dvTmruFfxpWA6NszR02HUo2o/qCQ0KdUmuj7ED8Er/3uYpMui5k5QgE4IY6WQ
+	 EGmUsIR4S72LF/kMcaxN9t669WYnACus4K3IOV+2wXDFFwMsbdnn9j6NhWdl8oeNoK
+	 8oIq+df8Y7QHFsyOauk+pIwvlmjL4AhKZcMySpOJb7iiekjHby2I3ssMur6IDNk7wV
+	 Rol8lxycOQ6UIUSMtt8Qv17v36qJhsfb8lCXSxUgvksbk4XjOzIIQQYP6qdwT8wYAW
+	 ZnvRyA4BnwmIGdqnp0Zw9OPLq5fZgBsrlzuu/bRSrfi/5d/1Ne54tIyA3r715O/wvu
+	 kNrwR26Zee/zg==
+Message-ID: <e5374250-6fa6-4d39-8a0f-4b1804c35dbe@kernel.org>
+Date: Fri, 6 Mar 2026 17:02:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/13] mm: Add helpers to create migration entries from
- struct pages
+Subject: Re: [PATCH v6 11/13] mm/util: Add flag to track device private pages
+ in page snapshots
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
@@ -81,7 +81,7 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
  ying.huang@linux.alibaba.com
 References: <20260202113642.59295-1-jniethe@nvidia.com>
- <20260202113642.59295-7-jniethe@nvidia.com>
+ <20260202113642.59295-12-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202113642.59295-7-jniethe@nvidia.com>
+In-Reply-To: <20260202113642.59295-12-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 80A9616001B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: uor77karqu6xi76a6rkrycxegep3w9zp
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 64ACA140010
+X-Stat-Signature: ksuid6ggmbtjhfjrcwcftdokbzqy7pdz
 X-Rspam-User: 
-X-HE-Tag: 1772812808-710589
-X-HE-Meta: U2FsdGVkX18Z3MOa213yH5PTqNYcmSMDmm1rcFiUlYGZA9UR5Om8zSQo6O6CJaiqWpznQza9FxpL5G5zka7fEcu7CYWjBE3hsO4MU6FpED3LFEdpc3mQN7MyJQFXA9wQUFeJjAs42VmInLB9nWC/lWOdACF5PIu6NWm2/UebIO7XzYANTOJHQBjFRlCbP06J5dlpHnXSSN1orIMXV1By+mK/CA/hDqFnJBdw8kQZgKq8BZ8XHUFsiRuz6wW5OxINgQ70hUhnjWEruHcynYaD1ex84wxZrhQ+FxHgxvisEAF5VDkjEIY4ARRnDs1MaWzkfkcys+VTrxEJN3Cp5mIgLW/gV1+E0qU9H0Gq07pTRwpxY7NavIWlYk4jBSSePgaQorih3ikwjnYTWc7/qYbilwKq8BVwQK5kO2TH8b48FJhfvsmXRkQw53gvp+wwNREla3ipL9mvVaVphzMawhItEWr99Yw0v9tiFn586gOZ/ZDDsBokyNW5yNRaXpvE+VwBAdSblKF8XuPBPaA5BGoJsyT0W2xbKKm+9KqrXi9IvX8JXCUs6i34P1/6o2shyPQBDu3j5YiO/4FbwlST4UdNIwioP2TqDfa6mKwPkSdONbKNmRyC+Nj76R+CVCP+zycU6XCHOrh7IyV/lvDooGh0dgUBB90l24JTSSZG2vYI4JdkCVo6hvgNszWQZYoQDCeghd6yxyLPYwPH3Eh2q/qpZAo+UPgyO8qylazbZPWjh5HEPYlotqEYmnzr+ch7I/QrSLAOa3Un7V2NvrSxhBd/X9LyLtHbNleeIGWdPD5MC6zMFPCdCswpHGGIBVLYeqr2HMrYnZsaYsdTeSkCqT8Cfco+f0FGF39coFEgwYtGFYp3o+FK2bPu+vF5swXhEa9kAL5LDY7cOInK6fo5L0g4I5Nky5xaxcWTVjG4UrfGqSJKkz4KQXBs13lb+n08NzxIxXB9aV8HYMyjXOAEwZg
- eQDqMcO/
- ytDWkLl7qEZVa953KRQAadTlxNdJsXQK7t1tGGCcdyXKVJadVh7jFT6IIa2y846JGLyRKORCEEdpCR5Z7mOQwzX2Y7OoLkeYj3+6LffV9Uh06yay5wbvdbKGyaT0HeNWC+KOohiebMlYTyjQdf5Wnh0p2zAACL/A5nsKrohB077XpcObtlC1HDO5wv7bXWKqc0nKZbrEiOl/t7jpenRrQfRbqArrhTEmBm3DVCRV09J1R2TmvHyHhuqmdsvzlbMgGZDYXg/y161vjZxz/JPzaDLEmaQ==
+X-HE-Tag: 1772812981-586371
+X-HE-Meta: U2FsdGVkX1+UQGpumVd2nygBImxko/7cgzDNiwOSPmvw3kBguBRTK4z9LVYvI5LF0+n/4Q7FY6IwZVTi+bFL1vvmh8I0x5l3he6onZfLdOXQ3GDart6jEK3hZs5/dfSoN1qi/sdyuZPNT193YddOZeWgvH/9uWTO7VukWVNZsgy31py6BmUOfkyRgpMWB5fdB8UwcX5t03jqg1IC91MFn3uUPsexV9z7S3mz5nivBRAgzi4K+3EOY2p174E8AFeKxCmhU8hcEkJLLzAR8f2oO34HXg7ZdSErtI0Mbb0nwot9keLbVcchh8ShnYPyaXyP50N4uxtBhbpZhms8ttUp347TXTrdwHY/XUdYAzdB0B4GOzXm9xkHjUWU2SGXBzER+AYUuu9Qko6NsUvqDPWd4rxGGj0crrvlbyUibettm551FHFqDPiZQLQbzDZtUhtz+H4F8Kip4aXjzu0aFTDDkr2Yuan7TKzWdDpW8dikyCLX4ukeklpGtOYWo5TsIcHeIQQwEbBFcGhmpeAgBFU8okC/Xj6gtyihq51wGEE9DkZzYlfpmv1s6oy+GHTLn9KLHcjZGUE8Ptp9oFFlHzbmuuziz3gvKOOWHNvyKp+wQ7PfJAmvC+kjxTLzSp/ojLHPgWbr1y1VnpfpwWTVo8O3cTeM8MQUZQqScNtQvwNzU1LObbBkg2MnImp5JpgIb/XV0QYy9blom4fUznWTusWitaapr5BvqR96bExRFjY0pdPbbCyu0jVBpar3BI5PRdoObPYPIhMc7X7o505PCaL2IciHUillaYVvsz1LtJE3snGImy9vi/UqyhN5wHAoE0UxA70y0o2uuw4ZLrVf1MEm9JE3EbAfAD/PW/OKRegaE4iaIKGH3u5MuOZu23dfMrkJFG1qOVagi6ZTPsTrF7rb1GtUD4BWM99Mh8tlebGMkyi1zCTG//U58RZPICzQ5MsGcwsVUSpjSjodknpi6CZ
+ yZCllOd7
+ BGC4wN+oOEd4My6rgMaEojmzmPo5kZHezB1PQuEJCS83SuEXyWXUelCXR6fMxvkU67+x7oRHLBXd4HqCPTOqNMD2YOy51ft1wQWrr9YKqlDPjj8s8ZZfpOgmOJMRHEXoR/fDEieBu4kE/bhIbrhOqcOjj4+8KsDFZzM/Oqme+lWRdq88P5K/OBFGmA+/By2kSTp5OvQ50QFSF7BNwlpEeiDernGPClZ/OYIFGgXzZujtxOtuvE/VNfwWIDo5TEqhCeXFSkoX8Gs26TvwsYSmHJGKMJnXWQr0MxuNN+nJuJ85N16S0RM1uwJQszsFYpNpWIxiV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,88 +147,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/2/26 12:36, Jordan Niethe wrote:
-> To create a new migration entry for a given struct page, that page is
-> first converted to its pfn, before passing the pfn to
-> make_readable_migration_entry() (and friends).
-> 
 > A future change will remove device private pages from the physical
-> address space. This will mean that device private pages no longer have a
-> pfn and must be handled separately.
+> address space. This will mean that device private pages no longer have
+> normal pfns and must be handled separately.
 > 
-> Prepare for this with a new set of helpers:
-> 
->   - make_readable_migration_entry_from_page()
->   - make_readable_exclusive_migration_entry_from_page()
->   - make_writable_migration_entry_from_page()
-
-This is pretty horrible. And everything I see in successive patches
-around that is not any better.
-
-Seriously, look at how terrible
-make_readable_exclusive_migration_entry_from_page() is.
-make_readable_exclusive_migration_device_private_entry is not any
-better, but at least doesn't have this questionable flags parameter.
-
-Correct me if I am wrong: all we want is:
-
-make_readable_migration_entry() etc. to create something that
-softleaf_to_page() / softleaf_to_folio() can properly convert to a
-folio, right?
-
-So maybe we should convert make_readable_migration_entry() and friends
-to consume a page (not add new functions ...), and let it internally
-figure out how to communicate in the entry that what we are dealing with
-is not an ordinary pfn, but a special device-private entry.
-
-
+> Add a new flag PAGE_SNAPSHOT_DEVICE_PRIVATE to track when the pfn of a
+> page snapshot is a device private page.
 > 
 > Signed-off-by: Jordan Niethe <jniethe@nvidia.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 > ---
 > v1:
->   - New to series
+>   - No change
 > v2:
->   - Add flags param
+>   - No change
 > v3:
 >   - No change
 > v4:
->   - s/make_writeable_migration_entry_from_page/make_writable_migration_entry_from_page/
->     for the !CONFIG_MIGRATION case
+>   - Move logical continuation to previous line
 > ---
->  include/linux/leafops.h | 14 ++++++++++++++
->  include/linux/swapops.h | 34 ++++++++++++++++++++++++++++++++++
->  mm/huge_memory.c        | 29 +++++++++++++++++------------
->  mm/hugetlb.c            | 15 +++++++++------
->  mm/memory.c             |  5 +++--
->  mm/migrate_device.c     | 12 ++++++------
->  mm/mprotect.c           | 10 +++++++---
->  mm/rmap.c               | 12 ++++++------
->  8 files changed, 96 insertions(+), 35 deletions(-)
+>  fs/proc/page.c     | 6 ++++--
+>  include/linux/mm.h | 7 ++++---
+>  mm/util.c          | 3 +++
+>  3 files changed, 11 insertions(+), 5 deletions(-)
 > 
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> index a9ff94b744f2..52a1af3eb954 100644
-> --- a/include/linux/leafops.h
-> +++ b/include/linux/leafops.h
-> @@ -363,6 +363,20 @@ static inline unsigned long softleaf_to_pfn(softleaf_t entry)
->  	return swp_offset(entry) & SWP_PFN_MASK;
->  }
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index f9b2c2c906cd..bc14f7ebc369 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -191,10 +191,12 @@ u64 stable_page_flags(const struct page *page)
+>  	         folio_test_large_rmappable(folio)) {
+>  		/* Note: we indicate any THPs here, not just PMD-sized ones */
+>  		u |= 1 << KPF_THP;
+> -	} else if (is_huge_zero_pfn(ps.pfn)) {
+> +	} else if (!(ps.flags & PAGE_SNAPSHOT_DEVICE_PRIVATE) &&
+> +		   is_huge_zero_pfn(ps.pfn)) {
+>  		u |= 1 << KPF_ZERO_PAGE;
+>  		u |= 1 << KPF_THP;
+> -	} else if (is_zero_pfn(ps.pfn)) {
+> +	} else if (!(ps.flags & PAGE_SNAPSHOT_DEVICE_PRIVATE) &&
+> +		   is_zero_pfn(ps.pfn)) {
+>  		u |= 1 << KPF_ZERO_PAGE;
+>  	}
 >  
-> +/**
-> + * softleaf_to_flags() - Obtain flags encoded within leaf entry.
-> + * @entry: Leaf entry, softleaf_has_pfn(@entry) must return true.
-> + *
-> + * Returns: The flags associated with the leaf entry.
-> + */
-> +static inline unsigned long softleaf_to_flags(softleaf_t entry)
-> +{
-> +	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index f0d5be9dc736..a52979536a5e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4627,9 +4627,10 @@ static inline bool page_pool_page_is_pp(const struct page *page)
+>  }
+>  #endif
+>  
+> -#define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+> -#define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+> -#define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+> +#define PAGE_SNAPSHOT_FAITHFUL		(1 << 0)
+> +#define PAGE_SNAPSHOT_PG_BUDDY		(1 << 1)
+> +#define PAGE_SNAPSHOT_PG_IDLE		(1 << 2)
+> +#define PAGE_SNAPSHOT_DEVICE_PRIVATE	(1 << 3)
+>  
+>  struct page_snapshot {
+>  	struct folio folio_snapshot;
+> diff --git a/mm/util.c b/mm/util.c
+> index 97cae40c0209..65e3f1a97d76 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1218,6 +1218,9 @@ static void set_ps_flags(struct page_snapshot *ps, const struct folio *folio,
+>  
+>  	if (folio_test_idle(folio))
+>  		ps->flags |= PAGE_SNAPSHOT_PG_IDLE;
 > +
-> +	/* Temporary until swp_entry_t eliminated. */
-> +	return swp_offset(entry) & (SWP_MIG_YOUNG | SWP_MIG_DIRTY);
-> +}
+> +	if (is_device_private_page(page))
+> +		ps->flags |= PAGE_SNAPSHOT_DEVICE_PRIVATE;
 
-The whole flags stuff does not really belong in this patch. If there are
-cleanups to be had, perform them separately, please.
-
+stable_page_flags() has access to the page and can simply test that instead?
 
 -- 
 Cheers,
