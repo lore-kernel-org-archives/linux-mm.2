@@ -4,135 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18454FCB61E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1719FCB61C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 16:28:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 821E96B00B4; Fri,  6 Mar 2026 11:26:44 -0500 (EST)
+	id 6B57A6B0095; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F8E26B00BA; Fri,  6 Mar 2026 11:26:44 -0500 (EST)
+	id 6629B6B009D; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71BF56B00BC; Fri,  6 Mar 2026 11:26:44 -0500 (EST)
+	id 58FFA6B009E; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 60C3D6B00B4
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:26:44 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05BCE59CA9
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:26:44 +0000 (UTC)
-X-FDA: 84516166728.19.543AD98
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id AEF06180006
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:26:41 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C0lE9u11;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfBfVmuF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C0lE9u11;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfBfVmuF;
-	spf=pass (imf24.hostedemail.com: domain of krisman@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 47CE16B0095
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 11:28:27 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06E0CC235A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:28:27 +0000 (UTC)
+X-FDA: 84516171054.23.C398E5D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0FB6212000C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 16:28:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CFJJubN2;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772814402;
+	s=arc-20220608; t=1772814505;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QnB0cI/1Z9yFMXe1fwshp/hNLux77/ZYEtoheQAsyw8=;
-	b=Ux2v2LC/NyDsoAim84EHVPj1rDl0iNgdPQdJ+L2j/fLnLCHzxmdIo3hKEa5Xc59HIuNh0/
-	1kC/9k3B1aF8xdu7WPamJHwD5ORMbmyCClJZXAl6jv1VHCiJTDzxEcxBIu+JMaWJkW09ka
-	ERHIsYLmLm8YKfphTYkP4zaytq8SJKU=
+	bh=IcWzAUhUQsNspCv6GqG4MtP9jZ6m38H8CKI6GAuV6PQ=;
+	b=G6Ea3YH4YwSsJ+9dz/vI19MQy0bPx5w/aqYHkOBz0hJJP9Frr5Rab/RZVb4Xxhz4j14+L2
+	XdC1ujxvxqp84hMQhQjfEL1xiJ5/XlJIT2ufmvg4JpkJpnl3431NQ/WIuryfKGJ+5NEtoP
+	yb24vtccZdmKtCvf1ghsDckNfpCgsoo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C0lE9u11;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfBfVmuF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=C0lE9u11;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yfBfVmuF;
-	spf=pass (imf24.hostedemail.com: domain of krisman@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772814402; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CFJJubN2;
+	spf=none (imf29.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772814505; a=rsa-sha256;
 	cv=none;
-	b=PVNbyDCsP2r2VfTtoERHCjcQHCtbwB39BuFP+fALCmg7qBW3ie728cAZp2nblg7ZeRc4Oq
-	9B02oUCdp75qI2ZSaDo04qE28UZ4/vJ7jsEKN1+zXmdNFUWcOul8edIiip1uBsYM2R29mK
-	I/cCpioYtRi5hT2GXcXA+/i75yoQEOs=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 080823E7C1;
-	Fri,  6 Mar 2026 16:26:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772814400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QnB0cI/1Z9yFMXe1fwshp/hNLux77/ZYEtoheQAsyw8=;
-	b=C0lE9u11SBNDqYxDgb/EqKR7uwISO3ypiiKeAJxFN2i4UdAfpGE9C/jGsl0yhn06QG/x0D
-	ev/FWgDC+2Aq6sBjsP0t2vPgFeIQczWGxx3fJ+kiD66bTDWoE5JxAyCceC6K8ivLB24v9l
-	SZ/Fbjf1Kevg5PE5Wdh/gIxxAufx17Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772814400;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QnB0cI/1Z9yFMXe1fwshp/hNLux77/ZYEtoheQAsyw8=;
-	b=yfBfVmuFoScw2vvIggW9H1TkQ9xlggRJK+5m1zw9FygwxH7lW1litkNUI2Ax0UD62E6Pp2
-	gk1tnPdMEE5K45CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772814400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QnB0cI/1Z9yFMXe1fwshp/hNLux77/ZYEtoheQAsyw8=;
-	b=C0lE9u11SBNDqYxDgb/EqKR7uwISO3ypiiKeAJxFN2i4UdAfpGE9C/jGsl0yhn06QG/x0D
-	ev/FWgDC+2Aq6sBjsP0t2vPgFeIQczWGxx3fJ+kiD66bTDWoE5JxAyCceC6K8ivLB24v9l
-	SZ/Fbjf1Kevg5PE5Wdh/gIxxAufx17Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772814400;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QnB0cI/1Z9yFMXe1fwshp/hNLux77/ZYEtoheQAsyw8=;
-	b=yfBfVmuFoScw2vvIggW9H1TkQ9xlggRJK+5m1zw9FygwxH7lW1litkNUI2Ax0UD62E6Pp2
-	gk1tnPdMEE5K45CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A9ABF3EA75;
-	Fri,  6 Mar 2026 16:26:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RHGCHT8Aq2mjOwAAD6G6ig
-	(envelope-from <krisman@suse.de>); Fri, 06 Mar 2026 16:26:39 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Jan Kara <jack@suse.cz>,  Harry Yoo <harry.yoo@oracle.com>,
-  linux-mm@kvack.org,  lsf-pc@lists.linux-foundation.org,  Mateusz Guzik
- <mjguzik@gmail.com>,  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-  Tejun Heo <tj@kernel.org>,  Christoph Lameter <cl@gentwo.org>,  Dennis
- Zhou <dennis@kernel.org>,  Vlastimil Babka <vbabka@suse.cz>,  Hao Li
- <hao.li@linux.dev>
-Subject: Re: [LSF/MM/BPF TOPIC] Ways to mitigate limitations of percpu
- memory allocator
-In-Reply-To: <qz3f4p2ra6nq5cx3vlacmwif2ih5ojbf7s3ydzw6d7tgqn24lj@pnynq4l6oovc>
-	(Pedro Falcato's message of "Fri, 6 Mar 2026 15:35:36 +0000")
-Organization: SUSE
-References: <aaE8rkGzxlB6wCTt@hyeyoo>
-	<ji4ddtoo7mebygmytprcp5kpnu5y2ddthk5zhacshods37xij2@fs2sizuagdvz>
-	<z7bjxfk7jah6zgyikhiz6eqxd3xwywxp745bykcr3sm3p525yi@4diwkjsoyckl>
-	<qz3f4p2ra6nq5cx3vlacmwif2ih5ojbf7s3ydzw6d7tgqn24lj@pnynq4l6oovc>
-Date: Fri, 06 Mar 2026 11:26:22 -0500
-Message-ID: <87seaczzyp.fsf@mailhost.krisman.be>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=oSG+LIr+JvN73yhiBwGDM3HJfuRUzeYkIVlmnYkSeHlU094bYlu0essWFRNgoJzkaIl4zr
+	v3amDjqj1mx6iKHftx79dSwycatvLCo+ncbFwcqVdTVEOcQU4s6yk6EJZUER9cjFw90Oxa
+	gPfIzHl99PJ36c3HuO2qOC4wpNtZaKI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=IcWzAUhUQsNspCv6GqG4MtP9jZ6m38H8CKI6GAuV6PQ=; b=CFJJubN2q+3CnInjWYPhV8zU28
+	mPjm1wr/eqieb7/M3uozkIsZRuMXZJ9JNU78GCm5o6ssr/BFYYP1TW9LWNIO4wOiWbxQlEXwZ2n2t
+	WA6wGJ7RDsGhz8A36cS8svTVNiWOGMetYU/ZbSSOXMbr6b4AaaPp4phkxxn5PeHG4F61wI2znjgGU
+	r+l1fjV3WuBSfKJ/PexXiufIYHLJDXQjvs1j/yl1K3hugCpX5Kx2CZKONDqlUkKlXzwAHqJ4iM8EZ
+	H59qpDHTn2g46K5bxD9n/mbH/DvhOvsG7RHpNJhbrVfgRiZuaoqAfqY1S1CxIDvdqcx+LYNizGAlU
+	yDjezxzg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vyY2F-0000000GzX5-2dMe;
+	Fri, 06 Mar 2026 16:28:19 +0000
+Date: Fri, 6 Mar 2026 16:28:19 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Chris J Arges <carges@cloudflare.com>, akpm@linux-foundation.org,
+	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
+ page cache lookups
+Message-ID: <aasAo8qRCV9XSuax@casper.infradead.org>
+References: <20260305183438.1062312-1-carges@cloudflare.com>
+ <20260305183438.1062312-2-carges@cloudflare.com>
+ <aanYdvdJVG6f5WL2@casper.infradead.org>
+ <aarVMrFptdXhHsX1@thinkstation>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: AEF06180006
-X-Stat-Signature: udc5njsoa6dfebbux7p6n9qwqxsuupmy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aarVMrFptdXhHsX1@thinkstation>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0FB6212000C
+X-Stat-Signature: 5xgrtyxdn5tuikdu6gs8i61gcpg3ungc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772814401-994266
-X-HE-Meta: U2FsdGVkX195CfNJYHsDSC8EP04e+XeU/4PNCe5k9PQux0adlfrru0ROh01GCTsCn5XveoLy8kLJMnxPHiuouqTohKX/KRnOqEVbcosnwcpeypMQ3JM0sdaKOqCxFerla2xBXbcn0ImjdgIW9GwJesIHXLJCFwgOsNDx4QQcRVD41CcRABwZVVWNc04GO547rqeL0jC1pkPK7hVYo6lJ0qx6UgNCyMa1XJBrrQZk9g0eEuJ2mXR6erjIWgDrUm1NNUB22auph9mNsOQxjsNGMipbNaMS4EvlhajgwqUyrm/kVj8/hTwX/UyX+c5UO8/7JniLwKn7zhcpIMOl7IQJQL4WF647goUrRTbpDxK414nwVTvApQD7ozhROYac+TbqC5izh6rFNwI645C/KqEEtUZ/osK/oZUs33wLSBblY5RQ9aOGIXRhIa43jFu4d0IdmnUwdfEp2oevXJod0Z0+0HkzvaqNCC/prgy8Gio9vsnLLQMwUydq41CdqPBxHU14B3aKF2qMhDwRbkBZgxa8ESJ9MaMLQNEXhAH3MvmWZX3rmmo1SJ00Q11c6bvDkPStOV/lLWdU1uc43YgwB1L7+Gtjb/mjBicwggYCYNfjUTHVFOEhD4UUnmPojGJwmtPWLtQ7Z2+whLWVB0AUXv8ervhZpJdPz+zjSvydw3HDDhYbMjYw+ZmemdNtts0qQg7dBVcuz5jpROmnMm1nP2AhH+Vp+lnh7fXiNgeVSpfl89npZwOtSU7Nr3HJsc0iG9IVX9YWmlYLfojFqoWmFgfXlzAeyyMs9QSmlEnma85JT9hp+QTq9cAQw8iawJ1dpeezEQgWlqTf0vWhr+u7OsnJ/8Pqzr9A4nJ/aNn+YgAgGmYhbpr+nQjrTb3JAQ/4GVmePLqDl9u3Mav2WGYn5mshr0mWqcp6ix/QUnKD9B5DmQHZ26k6NdiOxrLGA2emePYO4F4xve8XPtRf0ryc7m6
- zOa3j14s
- eSm2/DpUCGinWbvZl6fH165L2Fx1AZrMSPXkpybvVAL7D+Z8Y0BzT5x5vagk0peruj//IKA9+xh01dZ9V/r8ElAYem7u6vGL2zh515NiGfs1frokOnxe9RbIIkldpqxWC96mZnSjEWfG3zRxFnWRgYsSgXpMq/ish+2f4MhSmsXDIO8JGysqwq1Al6LhSoaXO/m0wEY8ED5Ca88c/dzpO7/gMZDONhGTT5GTF5bNrVfSdFw7bEFDuBtidhvz4/ZBX9wwWrYVYPhtKJGmpNmDlsYriL5Q0o+wCgQ+rIH3LA6tBfDo=
+X-HE-Tag: 1772814504-286137
+X-HE-Meta: U2FsdGVkX1/oyBJ/4+sLSFHbsu7v50X1XsvavXJA+Uldb64Tx2VAURUbVr0lyVAyA0Kuqt3YKWziGu90wcwCN4ndS2r5o/dtKuGQro61I9bmPg/fm6zhhDTflX/swcQeKhaucE4/I3BAIWdViWeUqMEqFZm8tQkv46GjdEiCsBRghVyROYPGIiLUkWS10DrDyRMxo3e54Gzuay3isuu5uuJQsFGEw4sU4wrHRTt13WzV2+g9ndWBiX4LCF/Sgt1kMS1gLjVACRcVpZC3q9BnC7T5O2wbr7A8Bz4826Qgk3OCiZDHPEn8EbAFVaUNJniN13kOROfnjgXnC8qQ8s4yqGDemTgOl/U5uhkApOqktKMSE+tYHTfXileChix5ZDGFVO3MhovaPgWiRyIu1VnketZyQijbl2Q9nrWEiOgbM2NYUx5s+MdS5v85CzwYuj7eyP5gTOETcm8BRDx4xTTIpOjO2+ocABkDsiNBQsfpAarSmcMlD6UfLtsBD+/V/oUYwJOqv83GrYrJinJbIfsySEjxtYz840pblw2ANLodZxwKgzxxhLsSfCzTRhV/ZXHBRd/gyk7RkN5v/fknExvpiLQn4eeYjcnLQhyO9FpDS/7enpqY5HIrRT+J/+OP+OI9N6An5EdRS8zlXpqnalpvfI+r4z/u43bwjlyXKiQrPIVwHyENSmy7OnwSeuToaoB0cKMz9BGRlbfTDroVxSF/9s6Zk7o+q/aYc8AgMOrPVTB/ubOeqzPFJBocozaeSQANjtPli+rHYPkY78KVdMA11aLKtryNPqPtq75Q6TJ8befhwwL6yBVZKKbWrykdgOaacNxE8+c9mB6L9fDR8GjmxodZaEeCbGADZQ5anp2+BWjmzXWqP3m5C9qWeKKHXmglYJALPLPuwyP8gJgsAOmr0ZGUZIdbZ7KAPPlQtwbBzFIoy8Javsl9Z5dnwUxw169FCcv2hk/hfwLTZ6wMLRU
+ pzYYI1P2
+ SKcKRAnvX8lqP8hHim1zdAKKgystHV7E0CR3Bvv9u3pSLyykH8zihtOsusc31zpa0rlAo2SJFPMQd02Ry6Ijfpjgc40TXg0CuulyiFny/bXnfwYVcgT1Hmcpv13267pBArhL82tXt3eNVP8T1mGNTNW3lZPQ3b9ra81JC2sZgUGwZvPz3fWMRHPT+r4AG+rPGIT4sf2I8+i+AylIcKXFW0wlj+1q8X5PCV2XVLPGXR0USwDo5clKxrE5hhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,92 +94,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pedro Falcato <pfalcato@suse.de> writes:
+On Fri, Mar 06, 2026 at 02:13:26PM +0000, Kiryl Shutsemau wrote:
+> On Thu, Mar 05, 2026 at 07:24:38PM +0000, Matthew Wilcox wrote:
+> > folio_split() needs to be sure that it's the only one holding a reference
+> > to the folio.  To that end, it calculates the expected refcount of the
+> > folio, and freezes it (sets the refcount to 0 if the refcount is the
+> > expected value).  Once filemap_get_entry() has incremented the refcount,
+> > freezing will fail.
+> > 
+> > But of course, we can race.  filemap_get_entry() can load a folio first,
+> > the entire folio_split can happen, then it calls folio_try_get() and
+> > succeeds, but it no longer covers the index we were looking for.  That's
+> > what the xas_reload() is trying to prevent -- if the index is for a
+> > folio which has changed, then the xas_reload() should come back with a
+> > different folio and we goto repeat.
+> > 
+> > So how did we get through this with a reference to the wrong folio?
+> 
+> What would xas_reload() return if we raced with split and index pointed
+> to a tail page before the split?
+> 
+> Wouldn't it return the folio that was a head and check will pass?
 
-> On Thu, Mar 05, 2026 at 12:48:21PM +0100, Jan Kara wrote:
->
->> On Thu 05-03-26 11:33:21, Pedro Falcato wrote:
->> > On Fri, Feb 27, 2026 at 03:41:50PM +0900, Harry Yoo wrote:
->> > > Hi folks, I'd like to discuss ways to mitigate limitations of
->> > > percpu memory allocator. 
->> > > 
->> > > While the percpu memory allocator has served its role well,
->> > > it has a few problems: 1) its global lock contention, and
->> > > 2) lack of features to avoid high initialization cost of percpu memory.
->> > > 
->> > > Global lock contention
->> > > =======================
->> > > 
->> > > Percpu allocator has a global lock when allocating or freeing memory.
->> > > Of course, caching percpu memory is not always worth it, because
->> > > it would meaningfully increase memory usage.
->> > > 
->> > > However, some users (e.g., fork+exec, tc filter) suffer from
->> > > the lock contention when many CPUs allocate / free percpu memory
->> > > concurrently.
->> > > 
->> > > That said, we need a way to cache percpu memory per cpu, in a selective
->> > > way. As an opt-in approach, Mateusz Guzik proposed [1] keeping percpu
->> > > memory in slab objects and letting slab cache them per cpu,
->> > > with slab ctor+dtor pair: allocate percpu memory and
->> > > associate it with slab object in constructor, and free it when
->> > > deallocating slabs (with resurrecting slab destructor feature).
->> > > 
->> > > This only works when percpu memory is associated with slab objects.
->> > > I would like to hear if anybody thinks it's still worth redesigning
->> > > percpu memory allocator for better scalability.
->> > 
->> > I think this (make alloc_percpu actually scale) is the obvious suggestion.
->> > Everything else is just papering over the cracks.
->> 
->> I disagree. There are two separate (although related) issues that need
->> solving. One issue is certainly scalability of the percpu allocator.
->> Another issue (which is also visible in singlethreaded workloads) is that
->> a percpu counter creation has a rather large cost even if the allocator is
->> totally uncontended - this is because of the initialization (and final
->> summarization) cost. And this is very visible e.g. in the fork() intensive
->> loads such as shell scripts where we currently allocate several percpu
->> arrays for each fork() and significant part of the fork() cost is currently
->> the initialization of percpu arrays on larger machines. Reducing this
->> overhead is a separate goal.
->
-> I agree that it's a separate issue. But it's as much of an issue for
-> single-threaded processes as much as multi-threaded. Say you have a 64 core
-> CPU. Why should you pay for 64 separate cores when you only spawned 2 threads?
-> (and, yes, this is a not-so-rare situation, like lld which spawns up to 16
-> threads (https://reviews.llvm.org/D147493), even if you have hundreds
-> of CPUs)
+It's not supposed to return the head in this case.  But, check the code:
 
-True.  Still, being an up-front initialization cost, it is the most
-relevant the shortest the task lives.  I'd imagine that even for
-something as lld doing 16 clone syscalls, the overhead of a single
-percpu counter initialization is a very small blip in the profile, not
-worth special-casing for.  The single-threaded case is the obvious
-optimizable-case in this sense.
+        if (!node)
+                return xa_head(xas->xa);
+        if (IS_ENABLED(CONFIG_XARRAY_MULTI)) {
+                offset = (xas->xa_index >> node->shift) & XA_CHUNK_MASK;
+                entry = xa_entry(xas->xa, node, offset);
+                if (!xa_is_sibling(entry))
+                        return entry;
+                offset = xa_to_sibling(entry);
+        }
+        return xa_entry(xas->xa, node, offset);
 
-> So perhaps the best way to go about this problem would be to go back to
-> per-task RSS accounting. This one had problems with many-task RSS accuracy,
-> but the current one has problems for many-cpu RSS accuracy.
+(obviously CONFIG_XARRAY_MULTI is enabled)
 
-The current pcpu one has a much smaller accuracy error than per-task,
-which justified its inclusion in the first place, no?  IIRC, there was a
-real use case where the worse accuracy mattered for process selection
-during OOM.
+!node is almost certainly not true -- that's only the case if there's a
+single entry at offset 0, and we're talking about a situation where we
+have a large folio.
 
-> A single-threaded
-> optimization could patch over the problem for the vast majority of programs,
-> but exceptions exist.
+I think we have two cases to consider; one where we've allocated a new
+node because we split an entry from order >=6 to order <6, and one where
+we just split an entry that stays at the same level in the tree.
 
->
-> Or another possible idea: lazily initialize these cpu counters somehow,
-> on task switch.
+So let's say we're looking up an entry at index 1499 and first we got
+a folio that is at index 1024 order 9.  So first, let's look at what
+happens if it's split into two order-8 folios.  We get a reference on the
+first one, then we calculate offset as ((1499 >> 6) & 63) which is 23.
+Unless folio splitting is buggy, the original folio is in slot 16 and
+has sibling entries in 17,18,19 and the new folio is in slot 20 and has
+sibling entries in 21,22,23.  So we should find a sibling entry in slot
+23 that points to 20, then return the new folio in slot 20 which would
+mismatch the old folio that we got a refcount on.
 
->
-> I'm afraid that while the solution presented by Mathieu fixes a problem with
-> the current scheme (insane inaccuracy on large-cpu-count), it might also add
-> to the percpu allocation + init problem (this might not be true, I have not
-> paid too much attention).
+Then let's consider what happens if we split the index at 1499 into an
+order-0 folio.  folio split allocated a new node and put it at offset 23
+(and populated the new node, but we don't need to be concerned with that
+here).  This time the lookup finds the new node and actually returns the
+node instead of a folio.  But that's OK, because we'ree just checking
+for pointer equality, and there's no way this node compares equal to
+any folio we found (not least because it has a low bit set to indicate
+this is a node and not a pointer).  So again the pointer equality check
+fails and we drop the speculative refcount we obtained and retry the loop.
 
--- 
-Gabriel Krisman Bertazi
+Have I missed something?  Maybe a memory ordering problem?
 
