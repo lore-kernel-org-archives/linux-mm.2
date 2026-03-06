@@ -4,140 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39B4FCB601
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:47:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4024EFCB604
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 14:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35F066B0089; Fri,  6 Mar 2026 09:47:48 -0500 (EST)
+	id 895936B008C; Fri,  6 Mar 2026 09:49:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32F3E6B008A; Fri,  6 Mar 2026 09:47:48 -0500 (EST)
+	id 8666D6B0092; Fri,  6 Mar 2026 09:49:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 232B06B008C; Fri,  6 Mar 2026 09:47:48 -0500 (EST)
+	id 73E7C6B0093; Fri,  6 Mar 2026 09:49:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 109446B0089
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:47:48 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB12659304
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:47:47 +0000 (UTC)
-X-FDA: 84515917374.03.D2542AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3170BA000C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:47:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rt2zzKKv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 62DB86B008C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 09:49:11 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F16DEBA18B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:49:10 +0000 (UTC)
+X-FDA: 84515920860.29.33BE5B0
+Received: from fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.74.81.189])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 88C7E120004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 14:49:08 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=XTIQ460r;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=518a0fcdf=kalyazin@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=518a0fcdf=kalyazin@amazon.co.uk"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772808466;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1772808548;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ta3MggE09YbEyF7g4RimfGEhB0rCQXIJBNih2ThEo30=;
-	b=yc3nwKJZVKxA13s0ra/f+hks6jlGd+i+CF25RQuGfu1mf8ohspG+uGfqMnSilf2pWeKzEm
-	u9U8MeEsj1BaEeDNJOfAaNBO3Kxpc3KXW7e35Bog0hSBAMHuTx8sqPyWDxdLeinsZ9OjYG
-	FWQWw7jlmF0qnjDXswVLVACal8v8IWI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772808466; a=rsa-sha256;
-	cv=none;
-	b=ydaiz2cM2ljBTM3nMxO3wgOwQy5ZpWFMgXZ4js1DbNZpSgPjTak2mBJ4swpXIkgsuadDvf
-	VzK066X//50w6omb9vKMT6/DiPMcprMqiY1aK4wpOdXn9+gKMrNrIoqbrp5gu5cX0iXmDQ
-	OWLKZaltU+mNPmCxzlm9IRJ5ZOI0su0=
+	bh=Jal/VdxlygY/Jp/VACbX2II5K9b9pb+hAy31tgKOGlo=;
+	b=kPpoTmeEW8foStYFM2wbCw0Nt9d5A92Myhb9vlPfixz/bJFDBqzKerZrUmH1AY2JN738jc
+	IA4FJRhpANGuMpXUiucx5N05rHxykPJdyJ5z8VUKdyiZVJ0FvSJOlPVxkrgoAppYZQQFF3
+	qEcSag21ZacO0gqWBxom79sn7DBrUVM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rt2zzKKv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59E1060018;
-	Fri,  6 Mar 2026 14:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD48EC4CEF7;
-	Fri,  6 Mar 2026 14:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772808465;
-	bh=nEGfcHcUpVbkDCHnZEP98qdqW1VIi3Dz6vL20ShVqGA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rt2zzKKvlaFqYA8JPV2xqXEsBr54Bo4++L/xVH19cYqGVTItFEE0aVaSlbw3b21dR
-	 r2sGxgCFxYNvIm746EXbwl5pcLSAPRmYyMWSu9SsnNfA7jqZHZeHH4NxJZ0BIJrCoL
-	 qxbifJzo1/tXP4EdwwPmlhM1sdC990sSw0/asXJfqW5GlAYfYMNqmv3cBaW1d5a0LG
-	 RsLtHeS+snKmusuPnjjpAOEM6R1u18m5jDuYt3tH3ldjHY8G098wY1jCW8YhBtuwSH
-	 PgsueJiOD1d0k/TtS17AWBrta5G3iGwoPq5ObY9xIvaD/zOyO5nZlfpyrG/LAzh2eD
-	 tpwVYVgp928cw==
-Message-ID: <6305e05e-2911-42b0-b6f5-7fdde787b778@kernel.org>
-Date: Fri, 6 Mar 2026 15:47:35 +0100
+	imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=XTIQ460r;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=518a0fcdf=kalyazin@amazon.co.uk" designates 3.74.81.189 as permitted sender) smtp.mailfrom="prvs=518a0fcdf=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772808548; a=rsa-sha256;
+	cv=none;
+	b=ZbeBRvj5NXAabj/SC2UtHJ12LVBYJENEuGVzESFprAP/hicOvX3/FEcsnCDUe1JqA76F0X
+	See0vuUX/19+00BJfMk3H35pY3GUnNjore8p8Dme9F15vsMDHRR4apT9xEM+Lw7LGb3E6H
+	eNX2jNNQ/eu6BSVEWevEjbE6y0sNqgo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1772808548; x=1804344548;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=Jal/VdxlygY/Jp/VACbX2II5K9b9pb+hAy31tgKOGlo=;
+  b=XTIQ460roSQlZTj2aozy0zZ1kXR8KQm9T8tqEL1CT3SRCEArrz0i00md
+   TRrVKh7nG9F1ZRW8DpWERTbHG6M6yG4e/qRjthGY6RTEd05e8M8HzP2fG
+   s5INF0mqhmeM41mcmAoUfTO9amIrmb4QvkW5/gtqNrWNcHEZqW2Ne+hZq
+   BeXceX2Fix/3xjhGPLOGn4c83Pgk0azfAYLYX6thQ3Xe9LK0ZVql0xuTf
+   XE51dBeBW5hh5qhFdnBbuK045kLilo/8/I/ZeN0uyYrJzEKrplXTQU1hG
+   CERrN+28cAeozGY/ArY7oNTSReRM2HPNUWUT6FAr+dnZz/ST6U+cfHxIm
+   A==;
+X-CSE-ConnectionGUID: ljHSVQB7TzG5jw32RYNa5w==
+X-CSE-MsgGUID: OUQPopD9QXKeR6PpigJL3Q==
+X-IronPort-AV: E=Sophos;i="6.23,105,1770595200"; 
+   d="scan'208";a="10442482"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-004.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 14:49:04 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [54.240.197.234:10240]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.46.96:2525] with esmtp (Farcaster)
+ id 785449e4-4a3c-45cd-8b65-b1aa1ddf183f; Fri, 6 Mar 2026 14:49:04 +0000 (UTC)
+X-Farcaster-Flow-ID: 785449e4-4a3c-45cd-8b65-b1aa1ddf183f
+Received: from EX19D005EUB003.ant.amazon.com (10.252.51.31) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 6 Mar 2026 14:49:04 +0000
+Received: from [192.168.2.180] (10.106.83.26) by EX19D005EUB003.ant.amazon.com
+ (10.252.51.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Fri, 6 Mar 2026
+ 14:48:58 +0000
+Message-ID: <38deb26a-918c-4743-b35f-92a1330dbf40@amazon.com>
+Date: Fri, 6 Mar 2026 14:48:57 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] arm64: mm: implement the architecture-specific
- test_and_clear_young_ptes()
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
-Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
- ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
- baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
- zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
- <7f891d42a720cc2e57862f3b79e4f774404f313c.1772778858.git.baolin.wang@linux.alibaba.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v10 02/15] set_memory: add folio_{zap, restore}_direct_map
+ helpers
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Kalyazin, Nikita"
+	<kalyazin@amazon.co.uk>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+	<linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
+	<loongarch@lists.linux.dev>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oupton@kernel.org"
+	<oupton@kernel.org>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org"
+	<willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+	<andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+	<kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+	<jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+	<jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>,
+	"shuah@kernel.org" <shuah@kernel.org>, "riel@surriel.com" <riel@surriel.com>,
+	"ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
+	<jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+	"kevin.brodsky@arm.com" <kevin.brodsky@arm.com>, "ackerleytng@google.com"
+	<ackerleytng@google.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+	"prsampat@amd.com" <prsampat@amd.com>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "agordeev@linux.ibm.com"
+	<agordeev@linux.ibm.com>, "alex@ghiti.fr" <alex@ghiti.fr>,
+	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
+	<borntraeger@linux.ibm.com>, "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+	"dev.jain@arm.com" <dev.jain@arm.com>, "gor@linux.ibm.com"
+	<gor@linux.ibm.com>, "hca@linux.ibm.com" <hca@linux.ibm.com>,
+	"palmer@dabbelt.com" <palmer@dabbelt.com>, "pjw@kernel.org" <pjw@kernel.org>,
+	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
+	"svens@linux.ibm.com" <svens@linux.ibm.com>, "thuth@redhat.com"
+	<thuth@redhat.com>, "wyihan@google.com" <wyihan@google.com>,
+	"yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
+	"Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
+	<urezki@gmail.com>, "zhengqi.arch@bytedance.com"
+	<zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
+	<gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
+	<jiayuan.chen@shopee.com>, "lenb@kernel.org" <lenb@kernel.org>,
+	"osalvador@suse.de" <osalvador@suse.de>, "pavel@kernel.org"
+	<pavel@kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
+	"vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
+	<jackmanb@google.com>, "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
+	"patrick.roy@linux.dev" <patrick.roy@linux.dev>, "Thomson, Jack"
+	<jackabt@amazon.co.uk>, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
+	"Manwaring, Derek" <derekmn@amazon.com>, "Cali, Marco"
+	<xmarcalx@amazon.co.uk>
+References: <20260126164445.11867-1-kalyazin@amazon.com>
+ <20260126164445.11867-3-kalyazin@amazon.com>
+ <af2d4dcd-60a8-4a5a-b508-d9600b1f2275@kernel.org>
+ <e2834fd9-e4ec-473c-90cd-6c3a5049747f@amazon.com>
+ <40bd6f9b-d5c0-4844-81bc-d221cd9b058f@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <7f891d42a720cc2e57862f3b79e4f774404f313c.1772778858.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3170BA000C
-X-Stat-Signature: peaijntuzaauk5ckgy9a6xqnmr1zrg6q
+From: Nikita Kalyazin <kalyazin@amazon.com>
+In-Reply-To: <40bd6f9b-d5c0-4844-81bc-d221cd9b058f@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.106.83.26]
+X-ClientProxiedBy: EX19D005EUB004.ant.amazon.com (10.252.51.126) To
+ EX19D005EUB003.ant.amazon.com (10.252.51.31)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 88C7E120004
+X-Stat-Signature: e6bicqns99rh371gdc4in1xq5xccee38
 X-Rspam-User: 
-X-HE-Tag: 1772808465-747160
-X-HE-Meta: U2FsdGVkX18aKCTcwpR3DiFAbYpg8FN6PIxZ72/NKHPngMkfGrDmeak64Xfu9C9WnQ1EH1kK8t2om1TWJO+vY9wjg3pyXu50q8AZlOu856jj82RsTJ/tT1Z65GlQrteNwbr3+dxsvbCYkJZPKoyK+hYX34UQJ3mBTGBPyKK5efdUpk1wGAmVkXDLM+aLG27fcjHKp+nCiGmSOeyh8erVV5yaxgIfMvIwwFt80/L8CnYRfbHtvebzFzCrs0NyFLbYiFFLvNao/T7OdViabPnw50/AgXGzPY2hk/cWhSOr7YzdJLHN+AWdqQNUCBNkHxCmntVViZKLgdwkUfdi7w7UJwtDTAu3XoprIWmUXI+E7IoXGwjZ25OLicBWZsOtOshYs8VtK0+RhFH2OegFIIeUO87dJ3DxFVVVLaLehM4/3zCUMeJLZD1nW58CgNNHAY/JJzGEmW7hHrGZ7qTYIGTc+xA/b26qBO7RC8StTJscYN+doHGUejc7hlNOgo0Hk63T21LwKw5Z+3PT9NcGICe+peoSUB+rbCLoox/lFSMrENHe/1+JnbGVQTBi3tT7nxGO2roHjjokn8E0hP2fMMpsRE+78Zxi0C0gdQ4/10PejoBv+TNLqyFrD+8M8Rq8Xrxh1wrh5gl0AKy9Scs01MQrL0o3ucFBIPBwV5qeMJ0XYoMJhLKBbRTJGzKbczRJafO/thf5Ij3vWYd+NDkMtwODUTEXwqOftTcmzuUiEwC89xcZR/eqsUZHWWm4d9kJe5w7mQna5Z7Ve32DQgtWuLefIRAWjWlX05y3nHNrgKi7Ogqi3w0c0MLjDY/l7GlX6Qwenn7q/WmrcG7Bukss/L+I7mi6Xu45+ZmMLiidp5r7In7duEJVdsXrJ08+86hkpyh6KxpSpv0r+j8jQnemQRfEgp26W/eNMNgs0v3q5R+DFMJDO4y1puCDhx9OmpD9gX0CHjJXmADPitUf+6WyFc+
- gO++tWI/
- u6Jel8hWLeGFu4Oo2uYRSMW/bDC0e91y5EhVVtdJSnrJtdNbDsjJ4wu7ksm8C4tRfipy+82fWTIjgn3vYYbcUlfdddEEif7NkIaVtnYVYWDtnWvUkU4HkwdCrnWkHNwC7/7PV/hlSEmLIONGBnJbz7Tar4SIkILRaNgVMUkv70AUkZRrlE4owMbxeGyhKcjKk1xbBJt/B1qU/OIrfMUHgImNE0VcrY1+xGjEbnEM+NnpbF+7A5ZCctc47Uhxiq6s7btIjSyfu+D7Zlk6hy0/xIIrsmx0mNRbc3KM8DJfmosnIRSBnLEAm23Kv0Hf6pcv/tY0Ig8FPB5vTGoKUadVAxhsqgTY3Ty8kEN3Zmcr+MG6nVp+o2InQ+ECCfFFr3jRK3f7SJHODMj0vayU=
+X-HE-Tag: 1772808548-546252
+X-HE-Meta: U2FsdGVkX1+R1x+LfdnHbwRnaXPBylZz/HDGty2LA8g/gKZQlt2VfEhJgJzIXqmTHyb2l/MB/RIAWYW0F4VD8xpEItUUnxnSmy/HeBaHn+VecPtK186tf75MxQgTEl92D4Phkl7G7NJX6iopFRr/YQkYI7uJQ4Ri/YZQNRRzzRFQ83DROmWAzFcSDq5fSV/sPS5NdLKUAwck1QLvhb8qVKx8mWn7LjQMfvdgrxoj5oolHzYCNwfSdA01WMCVFeTwRYCAnoMVCW28b9qsXzSK0fVZSZb+5uy9esduC75mvNnafZd3hBBnxrWR7FiioWIDxQvZAacgHi4EPXMQlv0XK/g6zjM2t3tpGzILJKs7YiUBunNOt0lL+8UYxclYGF8If2EqcutJmfmdySj7MW5uGIubBJuEZG3hMqvq272S1+7p8NqQLrO+fElLdPE88WbDiAy6PVPPTfhOUrVPvsDVnXrnqQleABl/4jpcBs5miGg/uuznUYO4zp0OplqawH1j3u7KWt1BiRUSovf8wce5NGO79HRtvMTdwh/y1v0Ay0CTZIq4sAeertwSE0bceFOx82oJ71MLK9Apb0rS1/MpEbYH0Yc4x2Hj1k94cqWrUQwoMHSAlV8InJ7URFLxkzGcSLG/ruK3pAJgpQt96CK8E0wyC1CJTaKFJEiYvU3Bfu/hNEDbwbh4kXVYr+TohV909KRl2kS2+NKwtYvAU7cb/7gr+QuSMXaZ/J86m8fAwoO2i+z72OVVAJcb/ETRAoywEFCZzTKxnp2FWtwDRO6iB+seEfgu5ez/UmVko7ar7GLlASWXDx7X26x0V5Wb5cRGtvuq+WheyVrpI7DSwVzgbhVO1U26Zz5gRlptezFAw7RcjSsicZeGzFqxt7nFUQNKsn93G5qU74hqnMafTImRHQNQZdGlJhPe7lM45g5JotEFnGI9NrEtRrZwGYEWfdwOZuZLGiG5qKnPpJOT/QD
+ fJLJqZzn
+ 41BjrilB7Shh+NrxwZlvsB9wyuTAyRmYXMr1k2dyNwN+l1KG/AixTqVEwm2sNXjsU4OgwC+xX+H39BgwCAPy32rGTMiIP/Jl32hiq1Gg1TFFwAolw0TnFpEgXSJLwjQOx9leF2sSADLbswksnAbHWzoJQuqNdmjNaXunxMIGVWJ1q8lwM+b0oR9zhh+vqgT8iHNu+IL1OaW+iPcdldYQmdHxBJL/eSlXtTNo360C47/Hxgku+jzosb3iQarbIWJmHuEwbhAS2crUcQ8RYrhEdLM0Pwx8sAJ155/Uzko9P1n1RPf5AMuyPrQhwNUmfBUB4qNpDw8PQx+dtdWeL+khql6OlhCiJVTExmUrXW1D8SgLRiU6/aT8+AtTRS4nhm/9bmb0rUtPWg7EQhkwBY+8q4p+MCdUg6ZxvOpCqmQ+6QlqWcMYPLohBDVrXqD5fhedmaGt50P7A2Fk/rJsNZzEYUsafJJokRb6tQYYvlpTNi8+J5NNcqBPT/7XB4Jgv6bDidh53fzIgI2ceKLyYDI+zNntq+JSSpos3QSheleGYFkt6fhdjpFM40hjI6LxNUh2UPSKmKAlL7bcuXP/awDa2oCOpuE6R3+nuSVMrGpCzZ3UVN5W35b1NJ3gJc28LPmbXr/ndZwr3phnMVYqJk+EpNxzOo+GyO04CB2fCdOuw5cxeJ5gwWWFYjHeNTH3M+5bGPrM2B4BoMLfEfHyZIrusUH0rDxIyF4rzPwJEPU0lTFjyIvZ47g0QIrEzP31Hlz25qaj/xz7chT/ObudZZII5xOLPukZEyvyRzmsnC1jfOyzIUTbjzJMg8SHAzPtGhub/tikI6peHulmXTDUChM7USoZmby5ccQV4Lz5dOv1IkswbsE8teJB7I5CH2b4SdUiLTHCc7CALysgmQRbq4Avo7W9MduNTr2xdYBnRXslJ+CkwEi29/Rh6FY3qm4ZhfDwJ9stIKnFyYL5o/ASCz8tUireKcByq
+ 0zVXu89E
+ f0LhyaLB/vqMK55w8U+EcRjnl4OJsuFWX0QMXQjlPEExePXMoPOTMDSntrfgyK4E+CMk0Qe6gOvnC5x8/GTYUU+Yap6yKM6hOY57/cZphMkc/PeBavanjfcsI8qXZOCP2hDFDoxtXwJgHwLn6TCWjpeFXhxTfkvg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,65 +190,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/6/26 07:43, Baolin Wang wrote:
-> Implement the Arm64 architecture-specific test_and_clear_young_ptes() to enable
-> batched checking of young flags, improving performance during large folio
-> reclamation when MGLRU is enabled.
-> 
-> While we're at it, simplify ptep_test_and_clear_young() by calling
-> test_and_clear_young_ptes(). Since callers guarantee that PTEs are present
-> before calling these functions, we can use pte_cont() to check the CONT_PTE
-> flag instead of pte_valid_cont().
-> 
-> Performance testing:
-> Enable MGLRU, then allocate 10G clean file-backed folios by mmap() in a memory
-> cgroup, and try to reclaim 8G file-backed folios via the memory.reclaim interface.
-> I can observe 60%+ performance improvement on my Arm64 32-core server (and about
-> 15% improvement on my X86 machine).
-> 
-> W/o patchset:
-> real	0m0.470s
-> user	0m0.000s
-> sys	0m0.470s
-> 
-> W/ patchset:
-> real	0m0.180s
-> user	0m0.001s
-> sys	0m0.179s
-> 
-> Reviewed-by: Rik van Riel <riel@surriel.com>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  arch/arm64/include/asm/pgtable.h | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index aa4b13da6371..ab451d20e4c5 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1812,16 +1812,22 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
->  	return __ptep_get_and_clear(mm, addr, ptep);
->  }
->  
-> +#define test_and_clear_young_ptes test_and_clear_young_ptes
-> +static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
-> +					    unsigned long addr, pte_t *ptep,
-> +					    unsigned int nr)
-> +{
-> +	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
-> +		return __ptep_test_and_clear_young(vma, addr, ptep);
-> +
-> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
-> +}
 
-Thinking out loud, what would happen if
 
-(a) The range spans multiple possible cont ranges (like, 64 ptes).
+On 06/03/2026 14:17, David Hildenbrand (Arm) wrote:
+> On 3/6/26 13:48, Nikita Kalyazin wrote:
+>>
+>>
+>> On 05/03/2026 17:34, David Hildenbrand (Arm) wrote:
+>>> On 1/26/26 17:47, Kalyazin, Nikita wrote:
+>>>> From: Nikita Kalyazin <kalyazin@amazon.com>
+>>>>
+>>>> These allow guest_memfd to remove its memory from the direct map.
+>>>> Only implement them for architectures that have direct map.
+>>>> In folio_zap_direct_map(), flush TLB on architectures where
+>>>> set_direct_map_valid_noflush() does not flush it internally.
+>>>
+>>> "Let's provide folio_{zap,restore}_direct_map helpers as preparation for
+>>> supporting removal of the direct map for guest_memfd folios. ...
+>>
+>> Will update, thanks.
+>>
+>>>
+>>>>
+>>>> The new helpers need to be accessible to KVM on architectures that
+>>>> support guest_memfd (x86 and arm64).  Since arm64 does not support
+>>>> building KVM as a module, only export them on x86.
+>>>>
+>>>> Direct map removal gives guest_memfd the same protection that
+>>>> memfd_secret does, such as hardening against Spectre-like attacks
+>>>> through in-kernel gadgets.
+>>>
+>>> Would it be possible to convert mm/secretmem.c as well?
+>>>
+>>> There, we use
+>>>
+>>>           set_direct_map_invalid_noflush(folio_page(folio, 0));
+>>>
+>>> and
+>>>
+>>>           set_direct_map_default_noflush(folio_page(folio, 0));
+>>>
+>>> Which is a bit different to below code. At least looking at the x86
+>>> variants, I wonder why we don't simply use
+>>> set_direct_map_valid_noflush().
+>>>
+>>>
+>>> If so, can you add a patch to do the conversion, pleeeeassse ? :)
+>>
+>> Absolutely!
+>>
+>>>
+>>>>
+>>>> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+>>>> Signed-off-by: Nikita Kalyazin <kalyazin@amazon.com>
+>>>> ---
+>>>>    arch/arm64/include/asm/set_memory.h     |  2 ++
+>>>>    arch/arm64/mm/pageattr.c                | 12 ++++++++++++
+>>>>    arch/loongarch/include/asm/set_memory.h |  2 ++
+>>>>    arch/loongarch/mm/pageattr.c            | 12 ++++++++++++
+>>>>    arch/riscv/include/asm/set_memory.h     |  2 ++
+>>>>    arch/riscv/mm/pageattr.c                | 12 ++++++++++++
+>>>>    arch/s390/include/asm/set_memory.h      |  2 ++
+>>>>    arch/s390/mm/pageattr.c                 | 12 ++++++++++++
+>>>>    arch/x86/include/asm/set_memory.h       |  2 ++
+>>>>    arch/x86/mm/pat/set_memory.c            | 20 ++++++++++++++++++++
+>>>>    include/linux/set_memory.h              | 10 ++++++++++
+>>>>    11 files changed, 88 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/
+>>>> include/asm/set_memory.h
+>>>> index c71a2a6812c4..49fd54f3c265 100644
+>>>> --- a/arch/arm64/include/asm/set_memory.h
+>>>> +++ b/arch/arm64/include/asm/set_memory.h
+>>>> @@ -15,6 +15,8 @@ int set_direct_map_invalid_noflush(const void *addr);
+>>>>    int set_direct_map_default_noflush(const void *addr);
+>>>>    int set_direct_map_valid_noflush(const void *addr, unsigned long
+>>>> numpages,
+>>>>                                  bool valid);
+>>>> +int folio_zap_direct_map(struct folio *folio);
+>>>> +int folio_restore_direct_map(struct folio *folio);
+>>>>    bool kernel_page_present(struct page *page);
+>>>>
+>>>>    int set_memory_encrypted(unsigned long addr, int numpages);
+>>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>>>> index e2bdc3c1f992..0b88b0344499 100644
+>>>> --- a/arch/arm64/mm/pageattr.c
+>>>> +++ b/arch/arm64/mm/pageattr.c
+>>>> @@ -356,6 +356,18 @@ int set_direct_map_valid_noflush(const void
+>>>> *addr, unsigned long numpages,
+>>>>         return set_memory_valid((unsigned long)addr, numpages, valid);
+>>>>    }
+>>>>
+>>>> +int folio_zap_direct_map(struct folio *folio)
+>>>> +{
+>>>> +     return set_direct_map_valid_noflush(folio_address(folio),
+>>>> +                                         folio_nr_pages(folio), false);
+>>>> +}
+>>>> +
+>>>> +int folio_restore_direct_map(struct folio *folio)
+>>>> +{
+>>>> +     return set_direct_map_valid_noflush(folio_address(folio),
+>>>> +                                         folio_nr_pages(folio), true);
+>>>> +}
+>>>
+>>> Is there a good reason why we cannot have two generic inline functions
+>>> that simply call set_direct_map_valid_noflush() ?
+>>>
+>>> Is it because of some flushing behavior? (which we could figure out)
+>>
+>> Yes, on x86 we need an explicit flush.  Other architectures deal with it
+>> internally.
+> 
+> So, we call a _noflush function and it performs a ... flush. What.
 
-(b) The first pte is !pte_cont(), but some others in there are?
+Yeah, that's unfortunately the status quo as pointed by Aneesh [1]
 
--- 
-Cheers,
+[1] https://lore.kernel.org/kvm/yq5ajz07czvz.fsf@kernel.org/
 
-David
+> 
+> Take a look at secretmem_fault(), where we do an unconditional
+> flush_tlb_kernel_range().
+> 
+> Do we end up double-flushing in that case?
+
+Yes, looks like that.  I'll remove the explicit flush and rely on 
+folio_zap_direct_map().
+
+> 
+>> Do you propose a bespoke implementation for x86 and a
+>> "generic" one for others?
+> 
+> We have to find a way to have a single set of functions for all archs
+> that support directmap removal.
+
+I believe Dave meant to address that with 
+folio_{zap,restore}_direct_map() [2].
+
+[2] 
+https://lore.kernel.org/kvm/9409531b-589b-4a54-b122-06a3cf0846f3@intel.com/
+
+> 
+> One option might be to have some indication from the architecture that
+> no flush_tlb_kernel_range() is required.
+> 
+> Could be a config option or some simple helper function.
+
+I'd be inclined to know what arch maintainers think because I don't have 
+a strong opinion on that.
+
+> 
+> --
+> Cheers,
+> 
+> David
+
 
