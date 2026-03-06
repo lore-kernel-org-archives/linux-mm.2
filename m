@@ -4,106 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F80F0182F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:40:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EDE4F0182E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:40:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 945C06B0098; Fri,  6 Mar 2026 07:40:11 -0500 (EST)
+	id 14D546B009B; Fri,  6 Mar 2026 07:40:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9248B6B0099; Fri,  6 Mar 2026 07:40:11 -0500 (EST)
+	id 0E5346B009D; Fri,  6 Mar 2026 07:40:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8275E6B009B; Fri,  6 Mar 2026 07:40:11 -0500 (EST)
+	id 006CF6B009E; Fri,  6 Mar 2026 07:40:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 71C6C6B0098
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:40:11 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 102C21C390
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E54CB6B009B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:40:14 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B22B61A0593
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:40:14 +0000 (UTC)
+X-FDA: 84515595948.09.27B14A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EAF46180007
 	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:40:11 +0000 (UTC)
-X-FDA: 84515595822.06.909C1B5
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0BD0C100005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:40:08 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=n3mdsYCp
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=teU+WZvc;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772800809;
+	s=arc-20220608; t=1772800812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ov55JeCCcCTI9x6RF1+xOgMdlYSvCZuzinIPQ6ZR/W8=;
-	b=8Z9Nmke7T1J0PWmIi22dNJL4kaMvoP+3Rjo8MoDCP++2tUCumZjE3h60nRmbl+5u5GEhaT
-	I1kd752RUydLDoqKL4FRHltB8H/pWSpBFJ12MRExTQ9UmvxfpzbOE86s52G4JgkOIG8gDs
-	z+qmsg4uZ6Ng3QOzy7CJvVap6vSZLls=
+	bh=TpDZjWzos6QZl9FjPk//2imOO7vtv9Ovb5TykMgmnq4=;
+	b=toe3OMzO1bD4nS+12+xlWlCjyhk/jn5QK48PPD/kpIDHo+Hr7H++3icrOIrKvR9ORjNErY
+	casWVCeYLIwM6OnU0F54JzmlJww/63lZZ/efrnUlMHphnWwjiBmqkDXA1LDM0CpDgZ9pI+
+	JrDhbd7oZUY5HRGJv3yYPqEa0Z+2MBY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=n3mdsYCp;
-	spf=none (imf14.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800809; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=teU+WZvc;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800812; a=rsa-sha256;
 	cv=none;
-	b=gcHlfLuYhsyY8rIbt1jkN0aYxsHFDZtFkN/b3Wltxr8KoVV440HECZRJbWBj70PJD7B7hS
-	IPjEQNZyF6OmOWSiP+jOGiXkjJyHhd5S4wgMwAsqMJIskmGgnhVqze5hyidbs2YDBTwgdi
-	1npg2LKh9+I7rR925yA8ZzfnhJZJEsQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=ov55JeCCcCTI9x6RF1+xOgMdlYSvCZuzinIPQ6ZR/W8=; b=n3mdsYCpgoWo4ZadI4IRQMe2s3
-	2igiPsHr8bu/s0uHunrTT4u0v2shTOqTNeX7FmzAUeEviKXBwzaRRXkBjScjnFw/gQd93Xm5J1ybI
-	d5Q81YdkfiqgYdWDqW2dK+xwddNzEkoFxwlwgVbxZeYUsgZPJPdXwkS612XbG75kUC0WGGIlLwE+D
-	A/pmENobybKc/tO68hBIjUuOlHPlgsSqbxdepPtw7f6JT8mqYKKfmPrRYlWuysrogb7DV6jdAJQEZ
-	wHPrIZLLLqXYqZDxmzEzqll/Mj86ukQvvk7FtJ3rgNN0Ou3XqnRI64bpXTtnvm3d8VYXu7Akr8OCB
-	9p9ylgQw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vyUTM-00HVRn-C6; Fri, 06 Mar 2026 12:40:04 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 06 Mar 2026 04:39:25 -0800
-Subject: [PATCH v7 6/6] kho: document kexec-metadata tracking feature
+	b=SC+m/3KGgjsCylNE0vRx5lVHWNw61JrsvwBxRYf/jbS2WINDY22m53u3gYZmlFx97jMmNF
+	vWFQNR70fire/eXxgTCd+U2zsj79gXKBpMVgWCyltXiEO8AtXg8r92WHsIzOP+Ae3nJHp1
+	HuiAw+CH0xwtXbAo/jExkbR3kT2sBW8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 466E2444A2;
+	Fri,  6 Mar 2026 12:40:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E997C4CEF7;
+	Fri,  6 Mar 2026 12:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772800810;
+	bh=momqQiCPeBiESmsNjbCQuXjIElnPD5t8ixlqkLdaUNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=teU+WZvcr3Vfjfj4PS79KVLwqpyqTY1ONa1PtwIvjXtMon6hdWoFyi7tYSgQVQlA7
+	 7WqNZXjH072FsKlQxHwMb1xYD4ogJ/HhRqFMhvz7mUpomd6qDRF1LsEb2Nx0xCA20F
+	 Q306mWNpenrHSDponyi32Ye/+ALDPg+T87ZCaJf9rHbmPLs7TEcXwfiNFZJ08Qk58i
+	 YudRyMnPxWInwwAAt3CqHvwKRQrMAo7VQbC5DvtngGuMvZuxZUii1u78G4eRDQ1D/r
+	 cgHhuLioq6MaNE+pd+1wCN6iTybUQcrEBmRwhDJWiYLDD7kyNQioEEvs3ECG9KmNxt
+	 q/+pMMPgggcHw==
+Date: Fri, 6 Mar 2026 12:40:07 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 08/16] mm/memory: move adjusting of address range to
+ unmap_vmas()
+Message-ID: <6858ccdd-5065-4396-81c9-489bf2d43c9e@lucifer.local>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-9-david@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260306-kho-v7-6-404d14c188bb@debian.org>
-References: <20260306-kho-v7-0-404d14c188bb@debian.org>
-In-Reply-To: <20260306-kho-v7-0-404d14c188bb@debian.org>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-mm@kvack.org, usamaarif642@gmail.com, 
- Breno Leitao <leitao@debian.org>, SeongJae Park <sj@kernel.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2486; i=leitao@debian.org;
- h=from:subject:message-id; bh=QTYE0HCCPpFCLiFL5V/nZqYT03OWnMpDhIbyr7syUIs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpqssGqwKfHdo2QxZJ6I25DRn3JnCg9iml8RDR5
- KBHqXz3mHiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaarLBgAKCRA1o5Of/Hh3
- bWTgD/4jWQiT2UnkeKb9NEgYI+ILjpkrxclkPGXdbg4z8XrpmcS7fzoREezM0yFZd9evwYRH+7T
- kbtvWRxfUeDI4XmFGQ2Ovrai/v50qE5nEHl7L/mfolZM1J+kktRv/zpGBICBb4lcJOYRtdKZhMi
- RDC30ctSlkl3OJLuIbhbNl3MxywiWvMHBXWPX4SAxKSIxkTQCZCOzITHKJltf9jZYZ++2X4+hDO
- x6NYMp0nswM4Oij3+hMgVjvVQ0nygvIPrl1j66yGA47gKa7kOhPigXcScQiEBwv5Y5kNCLztk+v
- Ex3OJd8XGNoFsqDvIKSIWNc2ssVgx/3wwRzLNuFYExoG+8//L9FmhaZJhxE0GOkh1ZvTsBnXpnQ
- 44IZ+nnukzcjF4qfZ/LL8aXmGVsj2eYrHLGP6STMYu7yFlU6Nnh5R7d/8yFzqv8fMAaW7Z1fGgv
- xLcqCQNcOeL7YbxGf0g/sxdWGWJzmeP+RaQR1bNmuNFuzeqYqEc/2+J8Hp9doEP0HqY8wddKpkF
- uoiwhKDNMyb8tVIIu7q9LXULlz5kiqGvnokn+XBwEad9oeEVabEL9wiLz5do1tyOiQUzFYslwnf
- CyU7UUMJDyC63h0gbp4sPRARzaQlJMWiBfY1rJyoDPYKI9co06Bk7X2/h0G8o2ArlY6zwbuFt+x
- X+VwYWAubtbstLA==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 0BD0C100005
-X-Stat-Signature: zuxkreqdxg9aem8nh597mk7oh31zfhwg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227200848.114019-9-david@kernel.org>
+X-Rspamd-Queue-Id: EAF46180007
+X-Stat-Signature: dkzy1fdty744nk3goe64suzz8rk9ppwc
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1772800808-790914
-X-HE-Meta: U2FsdGVkX1/dZ01VqVtLUWCWIeQVkUv2jgUdVhuGlImFqmTUT76qBb+QEOIfcLLzTOP1dVm1IFSsTEsAZ8nB7NEQ8Qp0pbsGiJpdkPwPn6n0f9hF+xM4JBU1Qr2ZA0/WfujTSuq5zvzu4i48HXqefhNj7iVJMQgYefFr18nFIS53bFJd8lU2GZlHT1Sm5rnlTN3nPkubrmccF5RQ9enc0ROwodXdw1S2Tt3juMTkxu1ogTjEdBAiNj7na8VsBe5UhdkrpCCmCXeg/oOsiV3GZs71HKRsB32q6q53aJDXxzxwB7eaHdIHgBwY5Ng/ISmvh/+MQaDwuYINgPh7H4f+FmZoRERc1FxGlVTdFVsR7vNBLJztttFQu2/eo68gtAi6LwXTQPakePl+ujqLp75zBvucAdOCjZdN5ES+6n/VT41pHV2R+6TQ4EM/yXZC+gqGpZxxH0GEAIAIR4F66/TcFoXIjikNKAKqnT8E1XM84dwWH5MPf4s9C5+SB5ve2Gr8W/MoD9BiqxKkt9BkaYpEBdpomXOzfu6oEPZltIiPkST0J/JrD9Vw/FTUIK5yLHoZVwhIWgqvghtEVDrSYjLSyF8691+oj8lPHgVPf8r1DbUyJ7KnZHJYSqBtLAbEqhQseUPcVA0noH9qfn5rl3yJlfIEz1T8hFAcUWALKeBqXegqH0AoJxnPK2mlVf8J6/GFOHBiVjj47lcg+Tyd0DTC9zypj6qXdfrmROs4rYgt4FVSVnr7QoWgeQsscGYwnT+OqyM/SVdM4or4zCUM4PGvFx3Uq/RBJMN0HVwwnIhtmRKFlyA5YxuYuv1kmzR8DzcDZNE4warkmkjo1isSO41Eisz7qiEGUGMNB8S7zNzuYtfP08ykoAhLIICX+jQAGuXHlSfPawo0y3H7IGgcuhFMcOfLmGCxUsiDn6XbPCMxiDoDVVkkVUNxFZ+/+Tz2fRXVKoja46+ZtPyf31CAdfy
- AIJVpRbC
- P2BOPI6BHcdr0lDQNRct7G6CQv/Ri1602G4pOm2yB9JeZcw39GbIhLNuuF1zVA1Xf4aq7HnjbhJRVMwKsT5NRUnOcVfsnLfqu3mMPmDCFWCeI9IT2ZMh0Nd2k2QgjTrZqGdaV2IbuH6z6UUEqwm678wVYnchair48rOllEIVNluLNhyoR8w2Vylnchg==
+X-HE-Tag: 1772800811-86436
+X-HE-Meta: U2FsdGVkX1+I22rwRsbRWOaiDmhzS8OfNx4SXJnRp8nqnbX3Xp7kQRzv/cfqi+hy/aNiuCja3aqOcLWAmCmS3M1m8cZbqoaLv/WWutGPDj0KrvmiI3+sUaa1w37Af0DyCEyJyazcm1VkBh59HE2VF62EPy0+LvA0s8X+BWeXddCKQN/1dnW8YLXb9ZY//VqZ1uYnLMRdsPO//mfIuqFgBTgztT3J6zAdEpJS4GfjKVY96Z6JXgQ5G1WTa7dkWsfEzFD6OidhnSkFYcD5mXlReL9N/Ts1JnSDIdcsuSobxZHQtrqCKt3L+/9/NHEYYT3ukzXArdXlWsn8zJJc1hEwKyIVgroePegGtc35x6DCP8R/W+TzsMM4nTloxwXOsBpR4zrCdKb0qRndoptGfIsC5KPRauM0XYVIWwDGMEpqbR4TXfxYtg6JpChuYyBut/bu1qHPyjA71jejCDGLAHPeqx477V9XoD3HeeLAR+Tkc/w1hniLqGZVqETfyvOySVKnP+3+4WA/WzxLNztfakJHgcokqcPeKGkDQitxzsM8iV6N4CvizwMtS0HS30iWkJRQE+rg5zbdUqGzsIhuiRTOa9r/C1Xj2E2Ccw+L/aju/CGJSYAhj2noLp7BqRJFneBEYarZ7XQMy1qQVyzSw1DGrdgaddW+fNArJNYiKIfqvGRlZYZbH8G77ryKSAcdaKwi32kT7lMPzkX92coKHhuzM16Ewd+xiFNJ5+du2PA7QFJaUft4vdQwb4Hmcf3zRRufHoMWa5dQtqbRyS7QpK5dna8WS4GAgZQQt7xGS/AzVI/viucNjwyF1rgBH5Nb80hD5oDyw1JnC/bVA5kxJlBDcWykWMe3mteQ0KYdtCV7QB16Q9aL2eUh17lxBpGYly82PRDJSV6IAKXl4RMGxCOeQ9lXZUce+AxGaPAgpH3ZOwUfg/9SpPbr5EXxMH73YfpZFElw7RMvTSJIQeZD9xk
+ 77f8EJZi
+ P6naY9sKhD3+FhrCdCM9c2sbOt4EnEp8PSNLhNp3AHI/vNdS5ftybdBnfH07uLuDBPxknYoDeqZrZtaY58X+7r/BZ3YFNB3Dq/JZfwHp2eUuomiDumLj+b7ZMojNtF9qgpqiAdYY1Js7A6DvNnYanFoA9df4tIqsnBP9fgPJKUzjbPjttFfhmFW86Yue2XFjfbv40K5nlMwh3q4J5Q9b9emqXK+BPUZPS0fFs6JuD7dfNsmpphF9b9FQqRGVc1WQS6O76okgOG/EeNrGI5JTOrBjiQ5ZY9IDXZbaq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,70 +124,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the kexec-metadata feature that tracks the
-previous kernel version and kexec boot count across kexec reboots.
-This helps diagnose bugs that only reproduce when kexecing from
-specific kernel versions.
+On Fri, Feb 27, 2026 at 09:08:39PM +0100, David Hildenbrand (Arm) wrote:
+> __zap_vma_range() has two callers, whereby
+> zap_page_range_single_batched() documents that the range must fit into
+> the VMA range.
+>
+> So move adjusting the range to unmap_vmas() where it is actually
+> required and add a safety check in __zap_vma_range() instead. In
+> unmap_vmas(), we'd never expect to have empty ranges (otherwise, why
+> have the vma in there in the first place).
+>
+> __zap_vma_range() will no longer be called with start == end, so
+> cleanup the function a bit. While at it, simplify the overly long
+> comment to its core message.
+>
+> We will no longer call uprobe_munmap() for start == end, which actually
+> seems to be the right thing to do.
+>
+> Note that hugetlb_zap_begin()->...->adjust_range_if_pmd_sharing_possible()
+> cannot result in the range exceeding the vma range.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- Documentation/admin-guide/mm/kho.rst | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+LGTM, So:
 
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index cb9a20f649206..b439e4db152a4 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -42,6 +42,45 @@ For example, if you used ``reserve_mem`` command line parameter to create
- an early memory reservation, the new kernel will have that memory at the
- same physical address as the old kernel.
- 
-+Kexec Metadata
-+==============
-+
-+KHO automatically tracks metadata about the kexec chain, passing information
-+about the previous kernel to the next kernel. This feature helps diagnose
-+bugs that only reproduce when kexecing from specific kernel versions.
-+
-+On each KHO kexec, the kernel logs the previous kernel's version and the
-+number of kexec reboots since the last cold boot::
-+
-+    [    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107 (count 1)
-+
-+The metadata includes:
-+
-+``previous_release``
-+    The kernel version string (from ``uname -r``) of the kernel that
-+    initiated the kexec.
-+
-+``kexec_count``
-+    The number of kexec boots since the last cold boot. On cold boot,
-+    this counter starts at 0 and increments with each kexec. This helps
-+    identify issues that only manifest after multiple consecutive kexec
-+    reboots.
-+
-+Use Cases
-+---------
-+
-+This metadata is particularly useful for debugging kexec transition bugs,
-+where a buggy kernel kexecs into a new kernel and the bug manifests only
-+in the second kernel. Examples of such bugs include:
-+
-+- Memory corruption from the previous kernel affecting the new kernel
-+- Incorrect hardware state left by the previous kernel
-+- Firmware/ACPI state issues that only appear in kexec scenarios
-+
-+At scale, correlating crashes to the previous kernel version enables
-+faster root cause analysis when issues only occur in specific kernel
-+transition scenarios.
-+
- debugfs Interfaces
- ==================
- 
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 
--- 
-2.47.3
-
+> ---
+>  mm/memory.c | 58 +++++++++++++++++++++--------------------------------
+>  1 file changed, 23 insertions(+), 35 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index f0aaec57a66b..fdcd2abf29c2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2073,44 +2073,28 @@ static void unmap_page_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>  	tlb_end_vma(tlb, vma);
+>  }
+>
+> -
+> -static void __zap_vma_range(struct mmu_gather *tlb,
+> -		struct vm_area_struct *vma, unsigned long start_addr,
+> -		unsigned long end_addr, struct zap_details *details)
+> +static void __zap_vma_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> +		unsigned long start, unsigned long end,
+> +		struct zap_details *details)
+>  {
+> -	unsigned long start = max(vma->vm_start, start_addr);
+> -	unsigned long end;
+> -
+> -	if (start >= vma->vm_end)
+> -		return;
+> -	end = min(vma->vm_end, end_addr);
+> -	if (end <= vma->vm_start)
+> -		return;
+> +	VM_WARN_ON_ONCE(start >= end || !range_in_vma(vma, start, end));
+>
+>  	if (vma->vm_file)
+>  		uprobe_munmap(vma, start, end);
+>
+> -	if (start != end) {
+> -		if (unlikely(is_vm_hugetlb_page(vma))) {
+> -			/*
+> -			 * It is undesirable to test vma->vm_file as it
+> -			 * should be non-null for valid hugetlb area.
+> -			 * However, vm_file will be NULL in the error
+> -			 * cleanup path of mmap_region. When
+> -			 * hugetlbfs ->mmap method fails,
+> -			 * mmap_region() nullifies vma->vm_file
+> -			 * before calling this function to clean up.
+> -			 * Since no pte has actually been setup, it is
+> -			 * safe to do nothing in this case.
+> -			 */
+> -			if (vma->vm_file) {
+> -				zap_flags_t zap_flags = details ?
+> -				    details->zap_flags : 0;
+> -				__unmap_hugepage_range(tlb, vma, start, end,
+> -							     NULL, zap_flags);
+> -			}
+> -		} else
+> -			unmap_page_range(tlb, vma, start, end, details);
+> +	if (unlikely(is_vm_hugetlb_page(vma))) {
+> +		zap_flags_t zap_flags = details ? details->zap_flags : 0;
+> +
+> +		/*
+> +		 * vm_file will be NULL when we fail early while instantiating
+> +		 * a new mapping. In this case, no pages were mapped yet and
+> +		 * there is nothing to do.
+> +		 */
+> +		if (!vma->vm_file)
+> +			return;
+> +		__unmap_hugepage_range(tlb, vma, start, end, NULL, zap_flags);
+> +	} else {
+> +		unmap_page_range(tlb, vma, start, end, details);
+>  	}
+>  }
+>
+> @@ -2174,8 +2158,9 @@ void unmap_vmas(struct mmu_gather *tlb, struct unmap_desc *unmap)
+>  				unmap->vma_start, unmap->vma_end);
+>  	mmu_notifier_invalidate_range_start(&range);
+>  	do {
+> -		unsigned long start = unmap->vma_start;
+> -		unsigned long end = unmap->vma_end;
+> +		unsigned long start = max(vma->vm_start, unmap->vma_start);
+> +		unsigned long end = min(vma->vm_end, unmap->vma_end);
+> +
+>  		hugetlb_zap_begin(vma, &start, &end);
+>  		__zap_vma_range(tlb, vma, start, end, &details);
+>  		hugetlb_zap_end(vma, &details);
+> @@ -2204,6 +2189,9 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
+>
+>  	VM_WARN_ON_ONCE(!tlb || tlb->mm != vma->vm_mm);
+>
+> +	if (unlikely(!size))
+> +		return;
+> +
+>  	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+>  				address, end);
+>  	hugetlb_zap_begin(vma, &range.start, &range.end);
+> --
+> 2.43.0
+>
 
