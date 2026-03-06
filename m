@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0261AF513F4
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 06:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03270F51404
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 06:14:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9BEE6B0005; Fri,  6 Mar 2026 01:08:03 -0500 (EST)
+	id 2CF906B0005; Fri,  6 Mar 2026 01:14:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49926B0089; Fri,  6 Mar 2026 01:08:03 -0500 (EST)
+	id 286CF6B0089; Fri,  6 Mar 2026 01:14:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C55F76B008A; Fri,  6 Mar 2026 01:08:03 -0500 (EST)
+	id 185DD6B008A; Fri,  6 Mar 2026 01:14:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AF6F46B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:08:03 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D628958C02
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:08:02 +0000 (UTC)
-X-FDA: 84514607604.05.D6702FD
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 03BDF1A0002
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:07:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uA0yZc1M;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08CDB6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 01:14:41 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D25A1C461
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:14:40 +0000 (UTC)
+X-FDA: 84514624320.01.3B81778
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6F9232000B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 06:14:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QNFDz2Gh;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772777280;
+	s=arc-20220608; t=1772777678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QyUsGtGIS/Bny0j3Jrlu7OIiSZdRmYRZ1aQvboXUosI=;
-	b=fXKcm5xqJqZh0kWk29UTNnJ3K+bLnHMQqMcSJ5Wqb8BV+JoONmGHiShjokq9eQ3DQycoRm
-	IAIJYa6WkFBFuQcTkJxHhHFytOIYWevsGHX4lvzkyMEfYYp1AEhKsbqeLNmbzs9bXcQy9N
-	8N0Dx9M7rtZeKgOTt6iKr3lyIlF6RQ8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uA0yZc1M;
-	spf=pass (imf19.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772777280; a=rsa-sha256;
+	bh=zmRPAF62Mchrk/WjhbPTvXdOO9DYmUP5hbIL4elCOy8=;
+	b=Hu9ybs9mg1eZsyARhBe4x0NgKJBCebgjm918I0v7XASD5NQQFmtSElZtUydP8s/euV5ZQo
+	yGv3kGCTRwHP5rcmfJMnlrsJkDx69mvvPlisWNCK0L0VLGXcKOu2JduaUIAWNPc2kBeHsG
+	a9RZkmPRmrAD1k6JQXdy3eyvE83Dvc8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772777678; a=rsa-sha256;
 	cv=none;
-	b=pkT0XWITD9cQWiiKGiihLHsA2HRvgaYxOa6Anqz89SH59igcI5iLKn1LuSgvwIH0/SRPsS
-	mlVF6wx1w8J4bHiIW4anryOH+MH5rIsNG99qBpHya5bDwkb1Yt0GD5W0wXbtEpUtsDpjvr
-	gLo22Ke48bthJCv3ZgsrTp/oAE+CrX0=
+	b=qAFOWYlG6cMeTv/Sev0eyc6zOlVyJ6UIgKZE8Nk9fsoGGD3yeNjAfWwOjecdyiL4vn/SjT
+	EGHEG7H2GNoLO2XSSkOLQNIYS8V7mY5ByQBIg7V3f90X8Sdxt7I5Y8ieOO0lRhPOa+Bx6w
+	r6rSq/bkzduT1ogoTW2yK1+/FEFZbGQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QNFDz2Gh;
+	spf=pass (imf13.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1772777275; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=QyUsGtGIS/Bny0j3Jrlu7OIiSZdRmYRZ1aQvboXUosI=;
-	b=uA0yZc1Mw1yMg1SV2lXq1Rklp1adyJBiB9aa2OplyXDOaZZf1at2H0o39LdGt9ahHHl/MTxkRWn9i+uIAKNZViJ0ezUJg6rVeVOLJr68fLza9/do/ZTz8jOt5X/wwwSMFuFKbVkt5ksdJ13Xu9bxZwAiRY090/TbOGfcayEli1g=
-Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-MLDCR_1772777271 cluster:ay36)
+	t=1772777673; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=zmRPAF62Mchrk/WjhbPTvXdOO9DYmUP5hbIL4elCOy8=;
+	b=QNFDz2GhrUxr720v7DzkJd+r9w06ajnsDc81l48FvvSKxHUKehZY+SSmMraS8WxUiu1ad0MPx/xtZnbkJVih1c6Sd2fdENFMtCY9b9WZNveTR+eZmekNeCUKr7VD7dtzuq0Rs3V1tx8NKbkF5B54nbOQXNA/8P9Eq3v4xr7D+Qg=
+Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-MLeMQ_1772777671 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 06 Mar 2026 14:07:52 +0800
-Message-ID: <8b238664-4375-413c-a8cc-105d98430362@linux.alibaba.com>
-Date: Fri, 6 Mar 2026 14:07:50 +0800
+          Fri, 06 Mar 2026 14:14:32 +0800
+Message-ID: <3d3ee8ee-2aa1-4351-9965-c9ed5b858c96@linux.alibaba.com>
+Date: Fri, 6 Mar 2026 14:14:31 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
+Subject: Re: [PATCH v2 0/3] mm: thp: reduce unnecessary
+ start_stop_khugepaged() calls
 To: Breno Leitao <leitao@debian.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>,
@@ -74,21 +74,21 @@ To: Breno Leitao <leitao@debian.org>,
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
  Johannes Weiner <hannes@cmpxchg.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
- kas@kernel.org, kernel-team@meta.com
+ kas@kernel.org, kernel-team@meta.com,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
- <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
+In-Reply-To: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 03BDF1A0002
-X-Stat-Signature: 9gh3z68nee48n3ftkyp8bfiqp5d8h3zg
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1772777279-521617
-X-HE-Meta: U2FsdGVkX1+PjqIiKUgJB3yXdDWoLJEGPg+98T6wqjcem/pS7qBN8SjF/qZi1h9ILQUGiLKKD8gmKrrrLP6ZvG0ggkG5/RgLuvycL3SDZRSQhiwbTS7KOtaRz+QqUEzexANoNjy41ZAj/p3mQvzR3tlxRBsip2peIgsYb52GvZsaq3GNir9J+X9B2xLncsuTz3Co1kan2FKvHmUk4QZF3phItDOdrqw4LDrVkBANFsJYrNgai3pB3XJu+lbb9uZv0I3J3kVY2GzN5Lm2xF2TmK4s4VkGtlUsA8evXsA+esRvoflRf+eUBrC0nD52B9G8+B899NGWutYUg+lTm2qCWHVcBaV6xuREvy+viyM8cGNjguLh+PxOSDNL0WuyBroWmm4oCokC+09FIVnMsyZhwu+9XZgAccEz800Xqsc7joL9qZxqWEa8yEzf3CsPmlcA3yoijpM0MzI3ycnQ7gP8flvzAl8kEISgucHfOjUUA0C7dJt9ZIlyCyS64xGk0IitbQsZSGOwZJiAQmjt3qn3gz0H9XnOkAryZtWPmSwvl1/5woV4u1wS7MfeJKU5NiMBQcNwEwps7T0wb1zNU4+9k460F1t76sarI1/+uapj/bXmd75i4CPhW54Zdpw2A6PzzflvmdBInZOTWDIIR/2kDQtNyjg9J3eFmNbFhhnWE9qPFIOCwLgtvpimEMJTAe+2LMIVdT4z9YRId4e81kpF0AIHzVpX0mjdeu1Hkz17TBKZ36SMRlJY00TLrlhvoYyrpU8izAukd30YW/VPztfbTxojXOZZDLGbyAtbndWrxQGb4iVdm2JDGkP83EQgdL0x1kOSTvs7+5QphLLnw14+unCpsG2zUVG6diTAKhr1+iV3FwcytrLuMMw/q0HNQonPE64CVtfV7XeZzLN1y1bXrbwfP1xWLK+C1uoiFKBbW7WZluA/DcZY/Q6WzzomcMuZ6C1u6J5G/KvbRErfh3p
- 0jBs0/LG
- 97hBRz2G6hXA7QCmpNt7RgEjTkfQX0fBT6J6D4cRGTaua/BzQW6FquBU4pF6EEHzvreajrOfGfA5FeT6wu7upRsniwFb0omTRKVIHaqHtvauFysHcNFCwRnIhNsZBgdJjXkLPATP9Kcq7cn6gOYjyBzjH3SHrt1OjOmA4TagVy7dnsTGI5KlOFUQ0U1dhoclTF2vAmm96H7+/2EfxwNPWtiQP7Or/dJ60MIBazCZIYJtw9aOguOkLgnq/J1HaTPDIOzTea1TbXldnXIlYhas2ILOwWPiHVJ2w89aOtDwCopAKiMhqiWymK1ML8SibuCzrcbgBACsJYyBcj79K1kGhsDolti0qlbJLSbpM+uwrbNezWg98SvXBu8QcYN5xeXzl8yrZUkp2vFLZH9lfaoGZXSY15qKnbxbQVGU3
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6F9232000B
+X-Stat-Signature: wyiyk4fmdn9sjnbh8snhhqrzwby38yer
+X-HE-Tag: 1772777677-638468
+X-HE-Meta: U2FsdGVkX19lp77NYqxVI/bvqtGAW0u5HNtP32JYXHbKEUJxxkGCmRojvxgv/USFH7TAECFZcWm1Piq7T+GWlE2qC1QZXe9biEmCJAMqIO3Aj3CPHUuUJN0xQVwT1r87FaGO+5HJymwdiagno9URD1jR/wuZw8P86WWsWFm8FYw4Im+5D8Iu1FV8ZahlD4hgiL2jMaZZqgPLfkCsd6qRG2cGjiWu2u5KnhmvdNVhz5r5YPVdGT6t1c8R9YqoQgEUkbT9CMHLFrwj9GSN4nxZcpsUnvR2h7pO7u2wLty6KVAg8TthMCM59cXMIjdhzZDXOgq0He7OiC++3zyCjmeDwi16qGc/8F+E+FkSc7v6A+u4CHUNGr7oppjr1WRIaDIeFgX4y4X2XlgvPwIV8/UZoJ1PRm2KSisI9fMB1enMe42yYSpnCA88Lx8Vrf4Hto4FI+p7uYpKatKYLOzvpDnaQQFGyeid4xR81Sb2+vpbGkOh6aLlzW5m82NgCo0f1JBCED818jcDRYZf6ALDdW7TxhlwCC6/uLABwMScphbuM8WsbKtA9fZ+6JNoKoi4Hb+MiLnibblzPFrVN1IgplMMjSA7WEoUq/5oDqEqqnXbPVoNwBEno7IozlsB48qRwtFYmKoFrd6O74uz+FKO18nMN7uZ/Amw49R5Dx2elcJ0hqe/SFNOA7wlKk594KdzWO0Eq580GKcb+DuhBeVfTEHP/GxmZSpOpbQHe/SONMFO/Aw65cToLewvnIzzVhTzcQjtM+b6DnoANeid0Sp8/72o9wVPv+zcdpTYKlCxCMfnkj66aa0HTrqXhk/c5rvHrKnn5r/Lrnrr9ukBwGikXR7oNUzQwYiVBAyXk5vOEhuJ1/EtvxgyOHgJDkvPuA2rWdIDmy2RfenB5+UYZ5UvnkZA6BqvGG4PCI1emgMnNUAiYwCmnJAH7L2nAlqFvULe5kWrS0SFAzFwMO2OWN9qsj6
+ YsojhXVR
+ ARULenNPGkUFav1B88XTh3yk51ODQJYqDUorpcoRu2ZL4J9rhZmVOHASlbS6SySJVLBnahdJktA0W/aRc7fnlBowtO0n/DL/2VvcqjaFkN+RN7WpvztZ9o8PpLZVOWtQxkVpDnR69zH3VKq41xLN60B1gmfZstwjEZ6zfAGPqx8WtLQMYgL1UwmsaI0woS+/jvU7v4bckh+qOUNf/kabwNOG09n5KcyPTIBqVNDUX3sUmRHZItbdFjks4O/ogvfhyoQ/Pey0LGlB7E2Wa4kwii6V2CoB7z4laAnQCh5DylDXIBX3vpKyS0f1iUKLszDdF4haTRzEOcIqi9W0Ez+26OIw/5ZeZAEM0CbH6EQGRjlFN+oROlmFvADwTbHfBDh6e40RlaeY0y/LwJ712R4W+Ac3LsyulKfCTD/WBO831JUNvvbrmkcOXafz8nGJ+PuW9xSAA+N8Rrls5kvmxfWGDTwsTBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,137 +99,79 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 3/5/26 10:04 PM, Breno Leitao wrote:
-> Consolidate the repeated spin_lock/set_bit/clear_bit pattern in
-> anon_enabled_store() into a new change_anon_orders() helper that
-> loops over an orders[] array, setting the bit for the selected mode
-> and clearing the others.
+> Writing to /sys/kernel/mm/transparent_hugepage/enabled causes
+> start_stop_khugepaged() called independent of any change.
+> start_stop_khugepaged() SPAMs the printk ring buffer overflow with the
+> exact same message, even when nothing changes.
 > 
-> Introduce enum enabled_mode and enabled_mode_strings[] to be shared
-> with enabled_store() in a subsequent patch.
+> For instance, if you have a custom vm.min_free_kbytes, just touching
+> /sys/kernel/mm/transparent_hugepage/enabled causes a printk message.
+> Example:
 > 
-> Use sysfs_match_string() with the enabled_mode_strings[] table to
-> replace the if/else chain of sysfs_streq() calls.
+>        # sysctl -w vm.min_free_kbytes=112382
+>        # for i in $(seq 100); do echo never > /sys/kernel/mm/transparent_hugepage/enabled ; done
 > 
-> The helper uses test_and_set_bit()/test_and_clear_bit() to track
-> whether the state actually changed, so start_stop_khugepaged() is
-> only called when needed. When the mode is unchanged,
-> set_recommended_min_free_kbytes() is called directly to preserve
-> the watermark recalculation behavior of the original code.
+> and you have 100 WARN messages like the following, which is pretty dull:
 > 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+>        khugepaged: min_free_kbytes is not updated to 112381 because user defined value 112382 is preferred
+> 
+> A similar message shows up when setting thp to "always":
+> 
+>        # for i in $(seq 100); do
+>        #       echo 1024 > /proc/sys/vm/min_free_kbytes
+>        #       echo always > /sys/kernel/mm/transparent_hugepage/enabled
+>        # done
+> 
+> And then, we have 100 messages like:
+> 
+>        khugepaged: raising min_free_kbytes from 1024 to 67584 to help transparent hugepage allocations
+> 
+> This is more common when you have a configuration management system that
+> writes the THP configuration without an extra read, assuming that
+> nothing will happen if there is no change in the configuration, but it
+> prints these annoying messages.
+> 
+> For instance, at Meta's fleet, ~10K servers were producing 3.5M of
+> these messages per day.
+> 
+> Fix this by making the sysfs _store helpers a no-op if there is no state
+> change.
+> 
+> This version is heavily based on Lorezo's suggestion on V1.
+
+Thanks for doing this. And you should also consider the shmem parts: 
+shmem_enabled_store() and thpsize_shmem_enabled_store(), both of which 
+will also call start_stop_khugepaged().
+
+That means you can also generate lots of messages with the following script.
+
+# for i in $(seq 100); do
+#       echo 1024 > /proc/sys/vm/min_free_kbytes
+#       echo always > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+# done
+
+
 > ---
->   mm/huge_memory.c | 84 +++++++++++++++++++++++++++++++++++---------------------
->   1 file changed, 52 insertions(+), 32 deletions(-)
+> Changes in v2:
+> - V2 is heavily based on Lorenzo and Kiryl feedback on v1.
+> - Link to v1: https://patch.msgid.link/20260304-thp_logs-v1-0-59038218a253@debian.org
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8e2746ea74adf..19619213f54d1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -316,6 +316,20 @@ static ssize_t enabled_show(struct kobject *kobj,
->   	return sysfs_emit(buf, "%s\n", output);
->   }
->   
-> +enum enabled_mode {
-> +	ENABLED_ALWAYS,
-> +	ENABLED_MADVISE,
-> +	ENABLED_INHERIT,
-> +	ENABLED_NEVER,
-> +};
-> +
-> +static const char * const enabled_mode_strings[] = {
-> +	[ENABLED_ALWAYS]	= "always",
-> +	[ENABLED_MADVISE]	= "madvise",
-> +	[ENABLED_INHERIT]	= "inherit",
-> +	[ENABLED_NEVER]		= "never",
-> +};
-> +
->   static ssize_t enabled_store(struct kobject *kobj,
->   			     struct kobj_attribute *attr,
->   			     const char *buf, size_t count)
-> @@ -515,48 +529,54 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
->   	return sysfs_emit(buf, "%s\n", output);
->   }
->   
-> +static bool change_anon_orders(int order, enum enabled_mode mode)
-> +{
-> +	static unsigned long *orders[] = {
-> +		&huge_anon_orders_always,
-> +		&huge_anon_orders_madvise,
-> +		&huge_anon_orders_inherit,
-> +	};
-> +	bool changed = false;
-> +	int i;
-> +
-> +	spin_lock(&huge_anon_orders_lock);
-> +	for (i = 0; i < ARRAY_SIZE(orders); i++) {
-> +		if (i == mode)
-> +			changed |= !test_and_set_bit(order, orders[i]);
-> +		else
-> +			changed |= test_and_clear_bit(order, orders[i]);
-> +	}
-> +	spin_unlock(&huge_anon_orders_lock);
-> +
-> +	return changed;
-> +}
-> +
->   static ssize_t anon_enabled_store(struct kobject *kobj,
->   				  struct kobj_attribute *attr,
->   				  const char *buf, size_t count)
->   {
->   	int order = to_thpsize(kobj)->order;
-> -	ssize_t ret = count;
-> +	int mode;
->   
-> -	if (sysfs_streq(buf, "always")) {
-> -		spin_lock(&huge_anon_orders_lock);
-> -		clear_bit(order, &huge_anon_orders_inherit);
-> -		clear_bit(order, &huge_anon_orders_madvise);
-> -		set_bit(order, &huge_anon_orders_always);
-> -		spin_unlock(&huge_anon_orders_lock);
-> -	} else if (sysfs_streq(buf, "inherit")) {
-> -		spin_lock(&huge_anon_orders_lock);
-> -		clear_bit(order, &huge_anon_orders_always);
-> -		clear_bit(order, &huge_anon_orders_madvise);
-> -		set_bit(order, &huge_anon_orders_inherit);
-> -		spin_unlock(&huge_anon_orders_lock);
-> -	} else if (sysfs_streq(buf, "madvise")) {
-> -		spin_lock(&huge_anon_orders_lock);
-> -		clear_bit(order, &huge_anon_orders_always);
-> -		clear_bit(order, &huge_anon_orders_inherit);
-> -		set_bit(order, &huge_anon_orders_madvise);
-> -		spin_unlock(&huge_anon_orders_lock);
-> -	} else if (sysfs_streq(buf, "never")) {
-> -		spin_lock(&huge_anon_orders_lock);
-> -		clear_bit(order, &huge_anon_orders_always);
-> -		clear_bit(order, &huge_anon_orders_inherit);
-> -		clear_bit(order, &huge_anon_orders_madvise);
-> -		spin_unlock(&huge_anon_orders_lock);
-> -	} else
-> -		ret = -EINVAL;
-> +	mode = sysfs_match_string(enabled_mode_strings, buf);
-> +	if (mode < 0)
-> +		return -EINVAL;
->   
-> -	if (ret > 0) {
-> -		int err;
-> +	if (change_anon_orders(order, mode)) {
-> +		int err = start_stop_khugepaged();
+> ---
+> Breno Leitao (3):
+>        mm: khugepaged: export set_recommended_min_free_kbytes()
+>        mm: huge_memory: refactor anon_enabled_store() with change_anon_orders()
+>        mm: huge_memory: refactor enabled_store() with change_enabled()
+> 
+>   include/linux/khugepaged.h |   1 +
+>   mm/huge_memory.c           | 135 +++++++++++++++++++++++++++++----------------
+>   mm/khugepaged.c            |   2 +-
+>   3 files changed, 90 insertions(+), 48 deletions(-)
+> ---
+> base-commit: 9dd5012f78d699f7a6051583dc53adeb401e28f0
+> change-id: 20260303-thp_logs-059d6b80f6d6
+> 
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
 
-Thanks for the cleanup, and the code looks better.
-
->   
-> -		err = start_stop_khugepaged();
->   		if (err)
-> -			ret = err;
-> +			return err;
-> +	} else {
-> +		/*
-> +		 * Recalculate watermarks even when the mode didn't
-> +		 * change, as the previous code always called
-> +		 * start_stop_khugepaged() which does this internally.
-> +		 */
-> +		set_recommended_min_free_kbytes();
-
-However, this won’t fix your issue. You will still get lots of warning 
-messages even if no hugepage options are changed.
 
