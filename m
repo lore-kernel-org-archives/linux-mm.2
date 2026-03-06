@@ -4,95 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A267F01832
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:31:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A775F01832
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 12:32:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C45CA6B0096; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
+	id 506986B0005; Fri,  6 Mar 2026 07:32:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C23856B0098; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
+	id 4B9E06B0098; Fri,  6 Mar 2026 07:32:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A90E06B0099; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
+	id 3A54E6B0099; Fri,  6 Mar 2026 07:32:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BC3A6B0096
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:31:26 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 46F3F1A0583
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:31:26 +0000 (UTC)
-X-FDA: 84515573772.12.69A0F18
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3676E1C0010
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:31:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2440D6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 07:32:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1CD8C2074
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:32:46 +0000 (UTC)
+X-FDA: 84515577132.16.E8B1419
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DD9C980004
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 12:32:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T4qMHjOg;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772800284;
+	s=arc-20220608; t=1772800364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4NZoO0TaH3hdYVkJJEqp2KwRAzSltEsw1OyozGtr6DA=;
-	b=Io9XxlJhIYfuO7liD9mMlWovBOObA2CysUfKizGfb5xDHIUVAaVO9Wc4lAcOq6fWpjiVab
-	AeUXdNhuemiziG0JQEiTX48QcYq6zvSnC7T/F5neLLtXPgx66sCbKumYeOsUvN6z3gRElf
-	tqSostAlN9vA73pGJdzaQJnZGU3TphY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800284; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=02/fAKzxan/r3x+GQlI7FN7xlTftr/6C8o39530bgUs=;
+	b=ChE+OcZmjdfeOE1QUpF4ZYEsvrGbp7BzWBADdM+DRDx7nnNf1dCVudS4YV+f6XUm9ETCDY
+	TOx3QtmIZRCNVYccJsopWjuWvMRjV5LAha/0JBwJtedroWeHJuYThHo3yrL6bcif0M1RF/
+	9zPH8CzESfZA63Pf0BJHh5Zb65JS7x4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772800364; a=rsa-sha256;
 	cv=none;
-	b=5RrwSuOJsHYhLHJL7SOMI5wOMgfCB6yyZHQJDkf/LiM6zLfvLc3Kni75prhxsFhG/hVB5v
-	R18A4VvzLTsrnq3+ECgbxCEbKNMbZK4oGeW3G0vba4CjaTCKgpfnkO3QzbJQRCX+aWLWNZ
-	HIOIei+VSTPDJx3oMed8mY4GUZx7loI=
+	b=f0kZeZvzS1oLp5HR+3PJP4RmEVMF6XxM9Tq+3AkeW4HYOGlcVgbJgiLvhtSTbqkQzv5dGs
+	LmyTxStNI2GZ1GdTfeB0rpqVLNaRI6Scy3LukqLgUD7ZqOliHd3yaz/ARWa+mf5xgE0X0L
+	SImXhb0S7DC2/iSWiLjfNDSnouZvqTw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E396F497;
-	Fri,  6 Mar 2026 04:31:16 -0800 (PST)
-Received: from [10.57.57.141] (unknown [10.57.57.141])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 257313F694;
-	Fri,  6 Mar 2026 04:31:17 -0800 (PST)
-Message-ID: <d6db1cc9-6df5-43d7-92b3-bd60707d9538@arm.com>
-Date: Fri, 6 Mar 2026 13:31:15 +0100
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T4qMHjOg;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C6FD60018;
+	Fri,  6 Mar 2026 12:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77675C4CEF7;
+	Fri,  6 Mar 2026 12:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772800364;
+	bh=QVn8Y7AXnOu5aPCMlNbbvX0FUbONENXusGGY7trKhug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T4qMHjOgk3jgWcvjrkPPEKLsolahZSrljiWXH/PIK77OKljPOm5wuV74Xo62bGU2b
+	 W2MZJZyOEeSTvlWTQKvpw5ckVkmpOqUnkKU8hUrtVMu+d5hRTorZsy9a/BEQnu2MNk
+	 nkpwmlrF4FIcx3IYFoqiolIPYTFgWBFiAXMfD1sq6oLSmSACgNEMYXkg5K3N6Dj5og
+	 5jrJz2ywPJ9P8z00grks+YpbG2l3REUrSAfVA1y7lqHfuba58RIKaBs/unDG3xXkGc
+	 mn8Gi0kijcty5232VA10s00CPwrG4FcWsdUqqvgT+wM0NufnQahvqjPZh7U/cyIOmO
+	 l9QVmPUmpBsCw==
+Date: Fri, 6 Mar 2026 12:32:40 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	"linux-mm @ kvack . org" <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Dimitri Sivanich <dimitri.sivanich@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 14/16] mm: rename zap_page_range_single() to
+ zap_vma_range()
+Message-ID: <eb247018-b64b-4dba-97ca-9ce8c1b0186c@lucifer.local>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-15-david@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 00/19] mm: Add __GFP_UNMAPPED
-To: Brendan Jackman <jackmanb@google.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Wei Xu <weixugc@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- rppt@kernel.org, Sumit Garg <sumit.garg@oss.qualcomm.com>,
- derkling@google.com, reijiw@google.com, Will Deacon <will@kernel.org>,
- rientjes@google.com, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
- patrick.roy@linux.dev, "Itazuri, Takahiro" <itazur@amazon.co.uk>,
- Andy Lutomirski <luto@kernel.org>, David Kaplan <david.kaplan@amd.com>,
- Thomas Gleixner <tglx@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-References: <20260225-page_alloc-unmapped-v1-0-e8808a03cd66@google.com>
- <daac1fce-e3a1-4be3-a016-ca0fcfc5f851@arm.com>
- <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <DGUZ17MAFAMD.30IHZ1KYDRM5E@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3676E1C0010
-X-Stat-Signature: gu45h4rtra1tgcss77ocqr9xrpwcuga6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227200848.114019-15-david@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1772800284-671482
-X-HE-Meta: U2FsdGVkX18BO4Nz+0G/gyIdocnXxHgrM5MBfbF6wW5ri6NviyJt8U/5yFeBfTXxipfsc5M8xi3U2MC7QAdfUZIxLfHo60mmlewH0B/MfcLUODRpCwY9kikJuMovmDIGaUnvlvivwwP2vBH6yP13/whmBgqSRDhNCdm/zdp/4flgZHych92lRDHiyB4mmpH9rmel0ABBiwIO8XyQjECCuxlAT6EhhoVYIu9SbpY1CBDeUS1cjjUXm+4kcsZdCjfRTOdvAIqBZE5mt41nJXmaLv2pLBMYTkoAOCCIio0cCuDZqRwfALIG2BWnubYG3JDXFMudLmxZN8X1OEO5A4tjI/RKULbmbJbOMwOaT8z7j9z6XMNkpVH6csx5XJytS8/rzUQfIM37yTpm4EWoGbYic9pZE9gShO33KgTjBFOTkehRKLjzHnzfu1IY6GoIfBqzxAQrm9p2hu8Pct5DUimenDAL3+SfddOYBOn8Mn+p7ZwxfrkhaeaScl2Wo3YtUIxoLgfP3zp9XC4f87bD8qgkGYERsnQHx4vcEpJVlPivzfiJfbVlRM6gimi5SNDvd3390RxPo/aZ00ze/2VrIuUXVPJkfhjAVYLBORW6yTLTrw+z32pyAj/Zf98qqCXXfpJAr7CONGSgTu2AL4SqQfwX22NLJxokMXo/cTz/ScvcegoxAGP50oWmt4noytx+1cuekx7zoVYWB/gvRIXWvQj494Kwto67Ua/Rt3CH6KOIKcoMhit3Nw6o3mq3V+Dzw/UHZ0+4NYnaKv5iunE4r7sTbnfo/03w5v14+YQgWRLkpUPyyjeGKBuwbb/4z6+0gFGrh1I484tBN4MpVT7lbb7zs2wBedPW3iTb5m1j4QU+UOG5+AbqCR51LbI0OefKAeXxl3TCgMhE5vbISHe+XsbsNH58tnVA6CMJhnAzmSKbMVZbyUnSuB3HCc8wXA/zgcEjAjxkYFW2IskQiWrMy2z
- Q/FwYXzO
- XH+H6ue33xv1qIYLquqU41gf24n7l+NYKqr35Qw0OJIcsVamawcH+/ndSwe1WfanDJ526A1Cqt+SVEIfPPkbg4DPjEOweXRIXQCMHIN56/aKPxfdBz/csV+r3P496IiF7eWn30S9z4PmzwHPdB/5Vbz9h4pfiY0F0JUDD2EKX7qB4JhRprbsYOjizuihZEsqL0vxXUA3YZBWX3poDC675bi+/mfCd501kj6AbNJkedp3Eh6VxrtVbOnkVgPlaWQVd1EbeuHINgAHIhluQBzXqEA6t3g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DD9C980004
+X-Stat-Signature: d6xab7xf8cj3mgos6mxgamh64n66rz55
+X-HE-Tag: 1772800364-56353
+X-HE-Meta: U2FsdGVkX1/uJYE9INKpWiO+g3u0mZrV3nWyvv0gXGf4YRhwCJfs0eKmANKUBPSP+HD1wCnh1RNePRxYLF/eLdyBtxjtoObpOgY0cOwHfvqmM0vKu8cB51RHsUMqTBv/ip9M4Q1sxIeTRgSxgJ3QyBbD5OkRREkMrJSw8fCRBWkDInnA4wWl6rpYEmkv3VLfF5x8n9lknk20T20Ep34OGGehKCfo/PNMiDCY+nY4t3vEvO8J0E38ym09EN7ndCCHd7mitndb+uz0765l0GsrYtCiOyj1wvfYC3bBbRWifcW6UCa4J4EWab8sDJR01P/1M2IhyqBf2GKnGuDYex0TjcZhnvF/2GO1FRK6LBPg9orJJJTh+sqAp+42iVydGv8ClYL5EqnfQ+DG8gp6vOq2BogUCqWwp/lg5n9WZADV/Zq+24gVl32RN5o93RqEr+SRcczN+A65U6ksNjoDS4cQCJI2MQg/N5iNmfB3gOleL82J5t094V4o7z8quOzGupsbZr57MPrMNY256ncntfM75FFmRh5UgEIVbLFpJ/d5E4XKBcMAym5y47zeqnZjpGJ30mnDL6Q1I0ppwCJO89CIwW13RcHjgPoFrPlNBHDsHdYlI3pp8hwtmIFatJMBHKrsxWQLs3aXvLfOQZ8+wUav/VS3YusYkrXmA7n9OHjgBzGqdn+ChUOYOjmXhitXLAQM8b3SH0Mf+4wLd3+GaA6vWm6CqCjwOn0zeKwG0ssDqIXK5eE/m/uAjHE28dGJka54VlDUNXX048qdIo3jWEQLuFN6Sd+zWWyC46oIiJ5bkeV9E8Dd0mT1azppKqFpBt2GmHN/2E2hVB2BhRYW9OlByYYHR+QjpeehjDQPkvsD2xjdUDmMDse2JwLyjAPPhOmb7aqUAs8QGa4cZ6MEbIJDDm5LdCx2UBQPmZn/wAbQuOKQ97A933RJcep9N6xWmh5N8TYu27P8pkfgtr4dZXp
+ PqtnLdTA
+ MMO0j5sZ+WEAxjD5ga/gMFNhKIFK6I+hxTNuVq877ztkZJWZ2D7eI7KYs8O0bPipKA8TcLPNtQrp1CZ61y39RHqJpKe5l62zQXF9S4Vf/DZwNBZVxW9gsL7P3Xlnucn34jFiA965M2u04HHIfTus93mpzeXSSnlFOK9un87lKopDXTtN2l96fRsXPSotifAaQXAmxbalNs9VnqqdAVVdNr5Zwb4p89lmNwZLSH2Pz+PWPf9bkZ2R/YYXD4oe6V925Wyemeivz9tPgH0LifqW62So/xFXeGlJOX+bW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,143 +124,244 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/03/2026 16:58, Brendan Jackman wrote:
-> On Thu Mar 5, 2026 at 2:51 PM UTC, Kevin Brodsky wrote:
->> [...]
->> This approach seems very interesting to me, and I wonder if it could be
->> applied to another use-case.
->>
->> I am working on a security feature to protect page table pages (PTPs)
->> using pkeys [1]. This relies on all PTPs being mapped with a specific
->> pkey (in the direct map). That requires changing a mapping attribute
->> rather than making it invalid, but AFAICT this is essentially the same
->> problem as the one you're trying to solve.
-> Yeah, I think so:
+On Fri, Feb 27, 2026 at 09:08:45PM +0100, David Hildenbrand (Arm) wrote:
+> Let's rename it to make it better match our new naming scheme.
 >
-> 1. The fragmentation issues seem exactly the same.
-
-I believe so.
-
-> 2. The TLB flushing issues are probably also basically the same, I
-> assume you need to flush the TLB when you convert a page to use for
-> pagetables, and without allocator integration that can happen pretty
-> often and in hot paths. Correct?
-
-Indeed. Up until v5 [2] no special allocator was used - the pkey was set
-at the page level every time a PTP was allocated or freed. Clearly
-suboptimal, and doesn't work at all if large mappings are used due to
-the risk of recursion.
-
->> There are however extra challenges with mapping PTPs with special
->> attributes. The main one, which you mention in patch 17, is that
->> splitting the direct map may require allocating PTPs, which may lead to
->> recursion.
->>
->> [1] introduces a dedicated page table allocator on top of the buddy
->> allocator, which attempts to cache PMD-sized blocks if possible. It
->> ensures that no recursion occurs by using a special flag when allocating
->> PTPs while splitting the direct map, and keeping a reserve of pages
->> specifically for that situation (patch 15 and 24). 
-> Right, and actually just today someone pointed out mm/execmem.c to me, I
-> think execmem_cache_populate() is basically doing the same thing
-> (although it's also creating a separate virtual mapping).
-
-Ah interesting I didn't know about that cache. It does have
-similarities, and the motivation seems similar too.
-
->> There is also special
->> handling for early page tables (essentially keeping track of them and
->> setting their pkey once we can split the direct map).
->>
->> Do you think that this freetype infrastructure could be used for that
->> purpose, instead of introducing a layer on top of the buddy allocator? 
-> Yes!!! 100% definitely, my code certainly solves all your problems...
-
-Almost ;)
-
->> I
->> expect that much of the special handling for allocating PTPs can be kept
->> separate. Ensuring that protected pages are always available to split
->> the direct map may be difficult though... This is deeply embedded in the
->> allocator I proposed.
-> ...Oh, hm, well, um, good point. Thinking aloud a bit...
+> While at it, polish the kerneldoc.
 >
-> The way this series dodges the question is (copying from the code
-> comments in patch 17 for convenient reading):
->
-> 1) - The direct map starts out fully mapped at boot. (This is not really
->  *   an assumption" as its in direct control of page_alloc.c).
->  *
-> 2) - Once pages in the direct map are broken down, they are not
->  *   re-aggregated into larger pages again.
->  *
-> 3) - Pagetables are never allocated with __GFP_UNMAPPED.
->  *
->  * Under these assumptions, a pagetable might need to be allocated while
->  * _unmapping_ stuff from the direct map during a __GFP_UNMAPPED
->  * allocation. But, the allocation of that pagetable never requires
->  * allocating a further pagetable.
->
-> In other words, we might need to allocate while we allocate (which is
-> fine because I have to do locking shenanigans anyway due to x86 TLB
-> shootdown requirements), but there's no further recursion after that.
->
-> Can we come up with an analogue for protected PTPs? Point 3) is
-> the inflexible one, and we obviously can't say "PTPs are never allocated
-> as PTPs". But if we invert it and _also_ invert point 1) I think we get
-> something that works in principle:
->
-> 1) The direct map starts out _fully protected_ (i.e. we treat everything
->    as if it's a pagetable at first).
->
-> 2) We assume the direct map doesn't get reaggregated once we've broken
->    things down to serve PTP allocations
->
-> 3) PTPs are always PTPs...
->
-> But... this is a bit silly, since what it means is we'll then go through
-> ~all the pagetblocks in the system (except the ones that _are_ actually
-> used for PTPs) and flip their pkey, breaking down the physmap to
-> pageblock granularity as we go. And... if we're gonna do that, we might
-> as well just say the physmap has to be at pageblock granularity to begin
-> with.
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Having to change the pkey of every pageblock when allocating it for
-anything but page tables seems rather unreasonable... And in case of
-memory pressure, where fragmentation is high, we may not have any
-protected pageblock left. The allocator I proposed falls back to order-2
-allocations if necessary (which is sufficient to replenish the page
-reserve even if PMD+PTE pages are allocated for splitting).
+LGTM, again obviously assuming the rustfmt stuff is sorted :>), so:
 
-> (Could we do that? Maybe - Mike Rapoport has previously argued that
-> physmap fragmentation is not a very big deal, so I guess the question
-> is whether we're ready to really lean into that analysis, it would be
-> quite painful if it turned out to be wrong).
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+
+> ---
+>  arch/s390/mm/gmap_helpers.c          |  2 +-
+>  drivers/android/binder/page_range.rs |  4 ++--
+>  drivers/android/binder_alloc.c       |  2 +-
+>  include/linux/mm.h                   |  4 ++--
+>  kernel/bpf/arena.c                   |  2 +-
+>  kernel/events/core.c                 |  2 +-
+>  mm/madvise.c                         |  4 ++--
+>  mm/memory.c                          | 14 +++++++-------
+>  net/ipv4/tcp.c                       |  6 +++---
+>  rust/kernel/mm/virt.rs               |  4 ++--
+>  10 files changed, 22 insertions(+), 22 deletions(-)
 >
-> Another potential "dodge": Is it really important that the PTPs are
-> always protected from the very moment they are created?
-> Coz this feature still seems pretty useful even if there's an awkward
-> fallback case where, under specific memory pressure patterns, we
-> temporarily use unprotected pagetables to set up protected pagetables.
-> That still makes exploiting a pagetable overwrite an order of magnitude
-> harder than before, right? Similar to how there's probably ways to
-> exploit bugs if you can get them to race with the intended pagetable
-> update paths that flip the pkey register, or if you can get a ROP chain
-> to flip that register for you or whatever.
-
-I considered this - I agree that having page tables unprotected inside a
-small window may be acceptable, considering that this is hardening and
-not bullet-proof isolation. That said, I'm not sure it helps all that
-much. You'd need a mechanism to defer setting the pkey for those PTPs.
-Once you decide to set the pkey, you may very well end up splitting the
-direct map again, deferring new PTPs... This could go on, and every time
-fragmentation increases. I think it is really desirable to have that
-reserve of pages so that splitting the direct map does not become
-recursive (whether deferred or not).
-
-- Kevin
-
-[2]
-https://lore.kernel.org/linux-hardening/20250815085512.2182322-1-kevin.brodsky@arm.com/
-
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index ae2d59a19313..f8789ffcc05c 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -89,7 +89,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+>  		if (!vma)
+>  			return;
+>  		if (!is_vm_hugetlb_page(vma))
+> -			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+> +			zap_vma_range(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+>  		vmaddr = vma->vm_end;
+>  	}
+>  }
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+> index fdd97112ef5c..2fddd4ed8d4c 100644
+> --- a/drivers/android/binder/page_range.rs
+> +++ b/drivers/android/binder/page_range.rs
+> @@ -130,7 +130,7 @@ pub(crate) struct ShrinkablePageRange {
+>      pid: Pid,
+>      /// The mm for the relevant process.
+>      mm: ARef<Mm>,
+> -    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
+> +    /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
+>      #[pin]
+>      mm_lock: Mutex<()>,
+>      /// Spinlock protecting changes to pages.
+> @@ -719,7 +719,7 @@ fn drop(self: Pin<&mut Self>) {
+>
+>      if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+>          let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+> -        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
+> +        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+>      }
+>
+>      drop(mmap_read);
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index dd2046bd5cde..e4488ad86a65 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	if (vma) {
+>  		trace_binder_unmap_user_start(alloc, index);
+>
+> -		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+> +		zap_vma_range(vma, page_addr, PAGE_SIZE);
+>
+>  		trace_binder_unmap_user_end(alloc, index);
+>  	}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 4bd1500b9630..833bedd3f739 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2835,7 +2835,7 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>
+>  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+> -void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> +void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  			   unsigned long size);
+>  /**
+>   * zap_vma - zap all page table entries in a vma
+> @@ -2843,7 +2843,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+>   */
+>  static inline void zap_vma(struct vm_area_struct *vma)
+>  {
+> -	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+> +	zap_vma_range(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+>  }
+>  struct mmu_notifier_range;
+>
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index c34510d83b1f..37843c6a4764 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
+> @@ -656,7 +656,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+>  	guard(mutex)(&arena->lock);
+>  	/* iterate link list under lock */
+>  	list_for_each_entry(vml, &arena->vma_list, head)
+> -		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+> +		zap_vma_range(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+>  }
+>
+>  static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt, bool sleepable)
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index c94c56c94104..5ee02817c3bc 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -7215,7 +7215,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+>  #ifdef CONFIG_MMU
+>  	/* Clear any partial mappings on error. */
+>  	if (err)
+> -		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
+> +		zap_vma_range(vma, vma->vm_start, nr_pages * PAGE_SIZE);
+>  #endif
+>
+>  	return err;
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index fb5fcdff2b66..6e66f56ff1a6 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -832,7 +832,7 @@ static int madvise_free_single_vma(struct madvise_behavior *madv_behavior)
+>   * Application no longer needs these pages.  If the pages are dirty,
+>   * it's OK to just throw them away.  The app will be more careful about
+>   * data it wants to keep.  Be sure to free swap resources too.  The
+> - * zap_page_range_single call sets things up for shrink_active_list to actually
+> + * zap_vma_range call sets things up for shrink_active_list to actually
+>   * free these pages later if no one else has touched them in the meantime,
+>   * although we could add these pages to a global reuse list for
+>   * shrink_active_list to pick up before reclaiming other pages.
+> @@ -1191,7 +1191,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
+>  		 * OK some of the range have non-guard pages mapped, zap
+>  		 * them. This leaves existing guard pages in place.
+>  		 */
+> -		zap_page_range_single(vma, range->start, range->end - range->start);
+> +		zap_vma_range(vma, range->start, range->end - range->start);
+>  	}
+>
+>  	/*
+> diff --git a/mm/memory.c b/mm/memory.c
+> index e611e9af4e85..dd737b6d28c0 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2215,14 +2215,14 @@ void zap_vma_range_batched(struct mmu_gather *tlb,
+>  }
+>
+>  /**
+> - * zap_page_range_single - remove user pages in a given range
+> - * @vma: vm_area_struct holding the applicable pages
+> - * @address: starting address of pages to zap
+> + * zap_vma_range - zap all page table entries in a vma range
+> + * @vma: the vma covering the range to zap
+> + * @address: starting address of the range to zap
+>   * @size: number of bytes to zap
+>   *
+> - * The range must fit into one VMA.
+> + * The provided address range must be fully contained within @vma.
+>   */
+> -void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> +void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  		unsigned long size)
+>  {
+>  	struct mmu_gather tlb;
+> @@ -2250,7 +2250,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  	    		!(vma->vm_flags & VM_PFNMAP))
+>  		return;
+>
+> -	zap_page_range_single(vma, address, size);
+> +	zap_vma_range(vma, address, size);
+>  }
+>  EXPORT_SYMBOL_GPL(zap_vma_ptes);
+>
+> @@ -3018,7 +3018,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
+>  	 * maintain page reference counts, and callers may free
+>  	 * pages due to the error. So zap it early.
+>  	 */
+> -	zap_page_range_single(vma, addr, size);
+> +	zap_vma_range(vma, addr, size);
+>  	return error;
+>  }
+>
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index befcde27dee7..cb4477ef1529 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -2104,7 +2104,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+>  		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
+>  				*length + /* Mapped or pending */
+>  				(pages_remaining * PAGE_SIZE); /* Failed map. */
+> -		zap_page_range_single(vma, *address, maybe_zap_len);
+> +		zap_vma_range(vma, *address, maybe_zap_len);
+>  		err = 0;
+>  	}
+>
+> @@ -2112,7 +2112,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+>  		unsigned long leftover_pages = pages_remaining;
+>  		int bytes_mapped;
+>
+> -		/* We called zap_page_range_single, try to reinsert. */
+> +		/* We called zap_vma_range, try to reinsert. */
+>  		err = vm_insert_pages(vma, *address,
+>  				      pending_pages,
+>  				      &pages_remaining);
+> @@ -2269,7 +2269,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+>  	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
+>  	if (total_bytes_to_map) {
+>  		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
+> -			zap_page_range_single(vma, address, total_bytes_to_map);
+> +			zap_vma_range(vma, address, total_bytes_to_map);
+>  		zc->length = total_bytes_to_map;
+>  		zc->recv_skip_hint = 0;
+>  	} else {
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index b8e59e4420f3..04b3cc925d67 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -113,7 +113,7 @@ pub fn end(&self) -> usize {
+>      /// kernel goes further in freeing unused page tables, but for the purposes of this operation
+>      /// we must only assume that the leaf level is cleared.
+>      #[inline]
+> -    pub fn zap_page_range_single(&self, address: usize, size: usize) {
+> +    pub fn zap_vma_range(&self, address: usize, size: usize) {
+>          let (end, did_overflow) = address.overflowing_add(size);
+>          if did_overflow || address < self.start() || self.end() < end {
+>              // TODO: call WARN_ONCE once Rust version of it is added
+> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>          // sufficient for this method call. This method has no requirements on the vma flags. The
+>          // address range is checked to be within the vma.
+>          unsafe {
+> -            bindings::zap_page_range_single(self.as_ptr(), address, size)
+> +            bindings::zap_vma_range(self.as_ptr(), address, size)
+>          };
+>      }
+>
+> --
+> 2.43.0
+>
 
