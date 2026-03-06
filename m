@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C631EF01832
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 13:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A45F01832
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 13:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F40BF6B008C; Fri,  6 Mar 2026 08:10:17 -0500 (EST)
+	id CC9F16B0005; Fri,  6 Mar 2026 08:13:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEEBF6B0092; Fri,  6 Mar 2026 08:10:17 -0500 (EST)
+	id C77446B0089; Fri,  6 Mar 2026 08:13:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC3DC6B0093; Fri,  6 Mar 2026 08:10:17 -0500 (EST)
+	id B838C6B008A; Fri,  6 Mar 2026 08:13:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C7E2C6B008C
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:10:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6573D592C2
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:10:17 +0000 (UTC)
-X-FDA: 84515671674.02.8B56643
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A6CD06B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 08:13:03 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 54186B986A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:13:03 +0000 (UTC)
+X-FDA: 84515678646.18.4D7C0E8
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A82D34000B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:10:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPktBZVB;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8FA8E4001B
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:13:01 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nWpDUj1P;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772802615;
+	s=arc-20220608; t=1772802781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gp4QZ2wxY+gYbrvECxbnbJG/BDfCcjvw3OegdBalhRU=;
-	b=08UlFQ2HtWj+zu/VhNBswWMIcyRRqZ5ngbQVzVPIAFVDiMRqY339i6SJCNhetRLZYuWJpU
-	lDpGpzvg6+pqjOYOGF5U64Bid8fz5c17AZOI5RWZfvdmEc+XAUvWr6/KXKiU/UQiOE5GvK
-	t51E0apoS+mO5QYxCOWJVQPjD96/e9Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772802615; a=rsa-sha256;
+	bh=BWR4rhexMM4dZTHGgKsgheaMANnYbsrVr9EOC5as+xY=;
+	b=ZgUJkrWDGq94JYxmgNADAjbtQ/GBPNYe+R4B1e+Wumyd/ibJUyyxJKIAyEJz0ylG/lUQ+m
+	cu9El4sXe0leqNaf+fdrS25csVycaRHdYliIt3wh68mEaMwXb7AEbXzVzlZTf/DUN0vkJ0
+	PNpaFJ4E0WWiprRccMJTcjQ4yEYl2OE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772802781; a=rsa-sha256;
 	cv=none;
-	b=FIXrnDqfT8mFHmPL+RID+8Jgye7duWgZyu3wIH3vx0S7znj85wQMXlZMnFu7JORW7ZfrUD
-	ALpvp2FiBW/ExOpB4yyBPo28Peu3a4Uf9AWGNpkN2zh74xSpCI46Nsv62MufPeKIKC+CYs
-	MHHH8gBqDXxloDHWdf+cM553t4DzTXM=
+	b=PWQtIfG7hzeJ0+0+Ufy/QL9Jrc9wszK9+Xe5XPRt8vdvGcdFEb9gqa5+CUXWJ/sJQGldJm
+	G5LIUgNYAe5b8rofLS+pqCKcV6pa6BgJ2afrjWxxjCtvQjWiImPusP/ksy7nBEXTK6Agvi
+	pnNstheo83SiOsN1IAoyOa1ZEWhs1c4=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KPktBZVB;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nWpDUj1P;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B6F860127;
-	Fri,  6 Mar 2026 13:10:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B553AC4CEF7;
-	Fri,  6 Mar 2026 13:10:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E8E496012A;
+	Fri,  6 Mar 2026 13:13:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEDFC4CEF7;
+	Fri,  6 Mar 2026 13:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772802614;
-	bh=61lGynqWixTzQYwyPA6ZFruK9XjY6xGcpOGYFOEIcyc=;
+	s=k20201202; t=1772802780;
+	bh=izAH7dOf8eqdf91LErrTFaY5YvIH5GE/JtUI+1Y7mtA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KPktBZVBidCYe4HR1PJvnvJ4qUzMyGkpu6Be2Y9L7neKHTFr5deLppeg5Usp5CcFn
-	 G1xhlgut9NR5gDZEHJmBit5FVSjzf3X76Nb7LnQyN35Ft0gouVBdVEsyB36llo5Zzi
-	 9qk0B38nIVyK4fiAgXGOgD0NVao8jFSZubPSKnW1XSGviHuLx6FeBwUdiB6DRLffvy
-	 8xyKvkDNPjO2rI8g22Xd/Z3T2zjrluHSr/0LBJmdtmGggj66MJ/X4kS5+cxJOhYwwC
-	 c2E/+ZIWIkisnuUYp/eA0pvLh2R4I5c7K4Y2GfGXzB8rDTizwS4QV+IijlK79bhVfp
-	 40P+OQ6e7J5PQ==
-Message-ID: <54cc6e6d-bda7-4c5b-a998-df854ead1985@kernel.org>
-Date: Fri, 6 Mar 2026 14:10:04 +0100
+	b=nWpDUj1PH6Agz8kEDINJ/DTPJoUdefAnjHjlMfer1lZXMWDScb8iVkE9sC/l83qoR
+	 blwBJ/DMmmvEkHljMsbppZB9hnCdVdNm86pHe/hzz8Y/IiHed6dKlqWLJ3ggGz2K7f
+	 m6uYXBclsRpE2FgeB9AasWCp5WRKoQjVDhLo8y9oHsO+fI08bBLMpCbw0bEbk0KW61
+	 DvmdltJJHBSSmGuzS9QLD2zMYhkLC6kS5ZXtj0Dy/8W8O1RvO9STgGlTDxT1ka2oWy
+	 qy0DO4zM+bTNZzwL4zxZOJMiFqoERgA8VtbUho+fzCXlrS4+RsWEARvuPaM92yFS0x
+	 WQ81jcztD1kcg==
+Message-ID: <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
+Date: Fri, 6 Mar 2026 14:12:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] mm: implement page refcount locking via dedicated bit
-To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
+ hugetlb.c
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
- Matthew Wilcox <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Gorbunov Ivan <gorbunov.ivan@h-partners.com>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Kiryl Shutsemau <kirill@shutemov.name>,
- Linus Torvalds <torvalds@linuxfoundation.org>
-References: <cover.1772120327.git.gladyshev.ilya1@h-partners.com>
- <6bf6eba6e2e6a74e2045a3bd08d58fd91bece7be.1772120327.git.gladyshev.ilya1@h-partners.com>
- <f3c411e1-062e-4494-b7e9-8056f346effb@kernel.org>
- <a3361902-75bf-4e9e-a8c5-1959f9e72915@kernel.org>
- <902d821b-e903-4bf5-89db-070851c95a1a@h-partners.com>
+ Jann Horn <jannh@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20260306101600.57355-1-david@kernel.org>
+ <4rzf46kw6hq3b5ivv7cvgyza4yfrvk2shrncytobabxef644nm@wzu2bw63co37>
+ <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <902d821b-e903-4bf5-89db-070851c95a1a@h-partners.com>
+In-Reply-To: <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: irbbjzmnqow9dngqkqkp157jg4ixq7cn
-X-Rspamd-Queue-Id: A82D34000B
+X-Stat-Signature: ww8fa9bzooqwe7s3r3ykr5s4fjrf8trn
+X-Rspamd-Queue-Id: 8FA8E4001B
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1772802615-265131
-X-HE-Meta: U2FsdGVkX19mAejws3BPV2Nb7SGxM5kf4Ll6130EblO2QiKZTGxVov/qCOVqdy0pjs9y48SBemkUky7OazwjR4TeaSKm/FRlpovrPmaZ8n5Yu8ZJiZuBmK4e99g0ir0SQVzgk49eVe5ap7to7f9IyWd/IW7ypF6kYo/E2psArcxzUHC/6ZAI+pfOW5pWmV2CXNn1juIIJsL6IaGFzwipGqia3UuYK748NjbA7tI8TeQPwtzdS3CijqzgN2hB1Ba+WBG6Bx7kPDPEskHlvPnSXqjCKr/q2mkAXS2uheNhWtSW1dorOlURX7DE+aR2zZ0hW8S/5NQveMF6I0l+spQe5UzlZfdIl33MNw8cIa9SGc9VIml2f4dGNX3MK3hDRlDc73FjhIG50pFZS7Wj+akNT1M497ZXC0j+yLf9DUGXsLvRCElHqubN1dH8o5ne56BCa6C0pLRQJ1j9unpMDlBgVErGfn2QxWqSpf50Wh12j7+Texad9wOoeQhC4hBVtpsk3LctyrN6IOOG2MmtWll/E09faz7bWIm8/xMVPcTf/aDCYLgDo5b70B1a77pP8XL5GC0Wq6s9rm4X6fmOhtvkw6pdQ7UMUIWgHyBJa/xmk2RruHLHMzMjkhkiIf42LVRyr53IACvefPYBfm5gwRt1L7Je0VIy79G7ZvlySW296qfWJDhTPI2FDpfqmTHqgjhaF19VEuh4Ch+xh6QGMeKh+dJLXfElA0d/DdpLemXdLuuuvRohGPZh3G+iuy8SfQahN+MEuIW9iaRO+bsq13zgd3fq1XL+OQDvhDGXxkXPsfgnwbAsFgnkul3dXuzeoRmE31uOuTx6Uh3QYyZelIK4XgSknaz9wLI5RQOK6IdtrbGbFAl0e3V6mHVFy9qrduUOdWU/KceIEq3TYhLRXxFdC0xWf7fthxDv2TnfhUXdAyqK2o+1jpqPezl0fQ/pPCUf4AS9aG41GDjlpTIlSG3
- p7cRVNpX
- AmIpPorHhDVYzJCyUdOJY7vR/QfdzSzdsCmJ4VRjh5BP2A7HgCRwOjZLAEu3oMlJoo/b9+uI+gGmCxvoGTjI/gWDaw8wIv/mGwalxI2GU56TEHg2SC2k/puVDFO9cxEBHKDhCbfWcaGP26Pc9U9f8ZndfUGdb28MWpGMSqImSL+phuyMS1KcIuMwcEb84Nt6F576kICDduf0mt1yfYut/P2TdcbJVnSvDDAdJmuQqRrrEFbjsn/+Rl8mAr/SKGkWYmS/1xEzIZrd1MFZieRsAHBVEY3orXJYUQXT0
+X-HE-Tag: 1772802781-669749
+X-HE-Meta: U2FsdGVkX19A6ZHId7P03vcavh6Ll5cefORHdDQIsp/AJ94PTF5Pu933TqB/FKpUIobblD7YQalIZQY0JcHFPKB1+j7f/Z5nv1pFFjKuRzZt1cnR9utNoT8MDDbLhD7Gq83xdGWVo1PgIb8cIfuzEfsQR4rcOFWngUqePADJc1p158FN97T8hyC/Rmd7VZE5IBmVYxi1PLgA5eHJUYPsdXZCmVyFumgnFBbz2JAqQIJ4f2bQF//stSXn7PTrzTMR6xxDiiMiaaYxpmz9oOqKJ8wF+CPGt8Ftcr/JXfEPF3bJe/B7Xn5bSEtL7l7tH6Rt3GNbKXwDpb2GBimVj3QxKLWjAwcrvSJjwg8cObn9PaNVT9jPjyigzPFmOaSNP9LCbOvZ5f7pjeLE9HdG4tCSd6ef3xFYk+5no47UN7UyW/zg0uH+uoLF2/l+CtyLXXMPC8Di6hCi2bwvfjmqvOwBMx05M6pi46hpMgHsnDBJq+3F4q8y6/ha25v/MDlL4wEEcEjFjyrvA9F5QXbw1uAAAuet+XkdZ5zggdb7yMnE5liuO/YKzgLUC05uD4QGKhUi2GzNX/JrahFf4va6gDuha+dU5vNyowN4/fDgQflOysecPm6cl3q6BjquGOHXEon0A4kzbEHHIo0Nw2GUD1GNnYoJJdpWr6is5laLFepvowNaYvAtB9wjHoP4TduMxVJBCXwJro6PCHyHvIZPOLZJusNZsn2V+xTuu9K7mH1d/YyU6A1Rz8pWGwhQteQ93i2kJpBNFCClbEXy7VDnzHsDP1lRmqU55Cnf/dK4hvsF+l15Oxp37nbYaipvAJNAuOOcuTdaRN8mbH2l+rxbVcCTO8heSgjemP7PjhQFNzY+5gT3jNX2pHSO0d/N8b/fkrfQIOSwq2UnbCHcgQXceRC57vzw+pfgaBlQfwHI8roVecL4gmge5Y7h4rhiBiymBR7FgqX0PxfYask6Bnhy1v/
+ BsvL0vxE
+ xVvPw9zEnd4u+ueoi81mAniXu4GeG43StGe8VKd3Xn0XOI/sxaBgKz3yBioOYZEKtJzNJiUomw3da9xN/+B5RNYCZEZV0PC5t3SxZd2bkzsr3KQvpxO0BL4mtmc730JCJhGh2MipR7jyZT7KW12vLc3SIiFO6+gqqpliiEffZ2C9QqdaESCX/80inzsWTfKx8JGL7U4xjV7h1A1Qtd3mUDjjBLwlUxu31kVbemKf7R12gcIlQh1HtjEXiOQ7pJHGIOZIhhLLCtggJcXgsHlyGg81zJUoEpi0b0jQONi8nqTvGQ+K2Pb7Gy3p/A5iM9P0+DWkvG66QNcRnkGxxxjRwBxkZcdjKrTFAn0rhWsRw2TFCwE3l1fxDgjyvxNzyhh8CvjiIcdhwI+x5NoQ0bexuk9H9v1xRSD97mWuBeF0YgS3sAbVVuaHQZNVQZgXqBipb5uTJqYZbnMk407eOcpMIXXH/sNuBKksNFmOFUrIvuvdCTghoH33jilYdU8KBoF7VDMS9yoxLmtlgIKsjz4xZuTdoIeOACte1ONANL3GrxUKFFltIsgMOQ1KsaAzJ/YolZLF73j1powwLyMbZH4PQksbO2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,109 +151,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 3/6/26 12:19, Lorenzo Stoakes (Oracle) wrote:
+> On Fri, Mar 06, 2026 at 11:13:41AM +0000, Pedro Falcato wrote:
+>> On Fri, Mar 06, 2026 at 11:15:56AM +0100, David Hildenbrand (Arm) wrote:
+>>> Looking into vma_(kernel|mmu)_pagesize(), I realized that there is one
+>>> scenario where DAX would not do the right thing when the kernel is
+>>> not compiled with hugetlb support.
 >>>
->>>       rcu_read_lock();
->>>       /* avoid writing to the vmemmap area being remapped */
->>> -    if (page_count_writable(page))
->>> -        ret = atomic_add_unless(&page->_refcount, nr, 0);
->>> +    if (page_count_writable(page)) {
->>> +        val = atomic_add_return(nr, &page->_refcount);
->>> +        ret = !(val & PAGEREF_LOCKED_BIT);
->>> +
->>> +        /* Undo atomic_add() if counter is locked and scary big */
->>> +        while (unlikely((unsigned int)val >= _PAGEREF_LOCKED_LIMIT))
->>> +            val = atomic_cmpxchg_relaxed(&page->_refcount, val,
-> PAGEREF_LOCKED_BIT);
+>>> Without hugetlb support, vma_(kernel|mmu)_pagesize() will always return
+>>> PAGE_SIZE instead of using the ->pagesize() result provided by dax-device
+>>> code.
+>>>
+>>> Fix that by moving vma_kernel_pagesize() to core MM code, where it belongs.
+>>> I don't think this is stable material, but am not 100% sure.
+>>>
+>>> Also, move vma_mmu_pagesize() while at it. Remove the unnecessary hugetlb.h
+>>> inclusion from KVM code.
+>>>
+>>> Cross-compiled heavily.
+>>>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+>>> Cc: Muchun Song <muchun.song@linux.dev>
+>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>> Cc: Lorenzo Stoakes <ljs@kernel.org>
+>>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+>>> Cc: Vlastimil Babka <vbabka@kernel.org>
+>>> Cc: Mike Rapoport <rppt@kernel.org>
+>>> Cc: Suren Baghdasaryan <surenb@google.com>
+>>> Cc: Michal Hocko <mhocko@suse.com>
+>>> Cc: Jann Horn <jannh@google.com>
+>>> Cc: Pedro Falcato <pfalcato@suse.de>
+>>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>>> Cc: Dan Williams <dan.j.williams@intel.com>
 >>
->> I assume we can't do an atomic_dec(), because we might have concurrent
->> unfreezing (or similar things) happening that overwrote whatever was in
->> there.
-> 
-> Not only that, but also you probably don't want to handle "atomic_dec()
-> returned 0" situations.
-
-Right, and then we'd have to free the page here instead, which is rather
-awkward.
-
-
+>> Although we all love less mail, FYI it seems like this didn't work properly
+>> for the patches (no CC's on there).
 >>
->> I was wondering is whether page_ref_freeze() could actually leave the
->> references set, and only set the PAGEREF_LOCKED_BIT bit, whereby
->> page_ref_unfreeze() would only clear the PAGEREF_LOCKED_BIT bit.
->>
->> Similarly, the set_page_refcounted() could add a reference and clear the
->> PAGEREF_LOCKED_BIT. That'd be more expensive on the allocation path ...
->> and not sure if that would really help to turn this
->> atomic_cmpxchg_relaxed() into an simpler atomic_dec() my brain could
->> more easily understand 🙂
+>> Did you try git-email --cc-cover?
 > 
-> I believe resetting whole counter via single CAS (CPU-wise) is cheaper
-> than atomic_dec() for each individual attempt.
-> 
+> Yeah I noticed this also :>) Assumed it was a new way of doing things somehow?
+> :P
 
-Right, that's what I meant with "more expensive".
+"--cc-cover" is apparently not the git default on my new machine.
 
-[...]
-
->>
->> For example, all pages we add to the page allocator through
->> __free_pages_core().
-> 
-> You are right that refcount = 0 is tricky. However, for a bad outcome
-> you will need:
-> 1. Some external reference to this page, through which you try to
-> increment the refcount;
-> 2. set_page_count(0) somewhere between freeing and "it is safe to alloc"
-> state.
-
-That is way, way, way too dodgy.
-
-What you should likely do is
-
-(a) Make set_page_count(0) set it to PAGEREF_LOCKED_BIT
-(b) Make any places that might skip set_page_count(0) to use it
-(c) Document this all extremely thoroughly.
-
-Alternatively, disallow set_page_count(0) ccompletely and add something
-like "initialize_page_as_frozen()" or sth. like that.
-
-
-A refcount of 0 must really only be temporarily allowed in the system
-when transitioning from 0 to PAGEREF_LOCKED_BIT. Otherwise this just
-screams for trouble.
-
-> 
-> So adding new pages with zeroed refcount to allocator is safe, because
-> there are no external references. Zeroing tail page's refcount is safe,
-> unless someone actually tries to increment its refcount (and this is bug).
-> 
-> Generally, the only unsafe set_page_count() (or any other zeroing) will
-> be in allocator itself between freeing and allocating. Or maybe I missed
-> something, and this approach is indeed incorrect
-> 
-> Probably we can think of some debug checks to prevent bugs in "safe"
-> scenarious
-
-Just take a look at do_migrate_range(), where we do a
-
-page = pfn_to_page(pfn);
-folio = page_folio(page);
-
-if (!folio_try_get(folio))
-	continue;
-
-If that is a page that was added to the buddy (set_page_count(0)) but
-either (a) not allocated yet or (b) allocated as frozen that's a problem.
-
-We really rely on
-
-(1) Frozen pages
-(2) Buddy pages
-(3) Tail pages (compound or non-compoud)
-
-To have a refcount of 0 that *reliably* makes folio_try_get() etc. fail.
-
-Anything else is just playing with fire.
+"See, I CCed you, I totally did not try to sneak something in. Oh, I
+messed up my tooling, stupid me ...". :)
 
 -- 
 Cheers,
