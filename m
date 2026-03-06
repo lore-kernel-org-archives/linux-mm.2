@@ -4,90 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F6AFCC074
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 911AFFCC062
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 20:29:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DDC66B0005; Fri,  6 Mar 2026 15:29:30 -0500 (EST)
+	id EF0856B0089; Fri,  6 Mar 2026 15:29:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58BFD6B0089; Fri,  6 Mar 2026 15:29:30 -0500 (EST)
+	id EADDF6B008A; Fri,  6 Mar 2026 15:29:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4984C6B008A; Fri,  6 Mar 2026 15:29:30 -0500 (EST)
+	id D9C756B008C; Fri,  6 Mar 2026 15:29:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 39A0D6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:29:30 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE7F38C16B
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:29:29 +0000 (UTC)
-X-FDA: 84516778458.26.9A5EF79
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4646540003
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:29:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uIICaxX6;
-	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B1E6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:29:42 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79F17BA695
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:29:42 +0000 (UTC)
+X-FDA: 84516779004.24.1E7FC7F
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 99B594000A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:29:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iupAZja8;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772828968;
+	s=arc-20220608; t=1772828981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIn7ORTa5pQRsuZzbhbRJ8LKH8K+iKJyVv3+eYGhv2s=;
-	b=JVpNLB+HffJt5V9Dvpit2eer/TuU1NUDh5h3Dhrzj3rqs2aJcOFx2WWjuCztPJhcw7y3W9
-	nfqhLufRlqFLXmsr678Fm1wcYxVL0daAZ8vXqryMNpic7lc30rjptMICPJhizR+V+RO+a7
-	g3p2+68HqVQ3Ut8txlC5IWIgAlpv33E=
+	bh=xu4FOpsB3tis67Vr0ogStH5duKlNRv21WglBri7UTcs=;
+	b=VGCCifHp1wESB5pUlXMNpyeGeFT4rXwe7jMzu6Qw3RZxk6U3SI3Bsze00wRtMZX9xuSf9J
+	GcxSsudfFh/Pr2zToaJkmvyFMDFVj3Z5x3yF4yz/pJfGXE9O/AKTFv7ABI5KbmhnK0pmRe
+	uT6sD4e97mzlzh+VfnRYPD269aobLYI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uIICaxX6;
-	spf=none (imf07.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772828968; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iupAZja8;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772828981; a=rsa-sha256;
 	cv=none;
-	b=cM5xGBQuBwvDS9286UvqKxc2ZMc6yLb9iMkX3njpjGPPBwVbczM7JLOWphpsVS6i9cTQzt
-	Hv80e785wYdZFfhxntjlUNXyJgb3TYa6K5MC4b9Co33+Lu+20ZA/86maz0zJxrmUHu1aYo
-	OYuqs6UdXoxJomxacdru+c1R2NC/WNA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=uIn7ORTa5pQRsuZzbhbRJ8LKH8K+iKJyVv3+eYGhv2s=; b=uIICaxX6pWmkXckWCmtWXTnofe
-	Jki5RrRIWkmfndzM8xQvAFEXVPSPmxrQkGvGp+VgzmOxOTn95ZO7aZJx6F6tAX6h5YvyVSDKHerty
-	Mxl2Jqf9nn7S5Cl4aVr4t2wCYJflcBGcf/Ob13+xE5vQFAVz1A/0Wz/rxpZfvJl1JWk4Xo3abKDKE
-	sbL/G0hqUlOqVEbsQPHQfqPN2KR6+mL6aE/38yXuUhbsYI4hgG6BcFo6r44BOqiBPV/Yjoz9zi8Qi
-	zAeP8c/pGdTsnrrWsq3WYbMA7+LksBhAW2d5VDmur4Z2fkKzjeR3ZBA57vknbnQ7bzpkBhjl7t6tj
-	mSB8VU1A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vybnZ-0000000HHck-25WG;
-	Fri, 06 Mar 2026 20:29:25 +0000
-Date: Fri, 6 Mar 2026 20:29:25 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Josh Law <hlcj1234567@gmail.com>
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	Josh Law <objecting@objecting.org>, Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH] lib/idr: fix ida_find_first_range() missing IDs across
- chunk boundaries
-Message-ID: <aas5JbauFQdwWVv0@casper.infradead.org>
-References: <20260306200319.2819286-1-objecting@objecting.org>
- <aas14HsY7dj6jTDZ@casper.infradead.org>
- <64ea7b4d-1d55-4d9e-8fef-396613e8bc10@gmail.com>
+	b=NvTynLL+4hB/bmGuw63h4A2boDT1QVgpYpgLKpjE9F64aiWkaRvOsJjoKfW61DyOtCbzN8
+	ZOnH8JyDkTkyE2Rwla8Cz8LYBekkYN4aLCJudZDeZtFcO3j7SLoh8Ta397W+4FPxIWkRTB
+	v4EFV5E4h+T2ss5gZRMLP2c1dC7mpAk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772828978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xu4FOpsB3tis67Vr0ogStH5duKlNRv21WglBri7UTcs=;
+	b=iupAZja8wy6lFb/pwYfc8nhuO+aJSry5Kzt+7aHHLHQlaMXK2PAsZMFNNd66go/2W6Kkwe
+	vdSCNOLTyQowEMIgGXwIyWRJErAzaAgNXx4GOqe/oeRcXdJ66tdgH5XHnVRTlmSidJ3kyS
+	lzPKFMCdB6Vy+1HRz3vUG4R4h/6qZ20=
+From: Usama Arif <usama.arif@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com,
+	usamaarif642@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v6 31/33] mm: memcontrol: convert objcg to be per-memcg per-node type
+Date: Fri,  6 Mar 2026 12:29:28 -0800
+Message-ID: <20260306202931.3878822-1-usama.arif@linux.dev>
+In-Reply-To: <56c04b1c5d54f75ccdc12896df6c1ca35403ecc3.1772711148.git.zhengqi.arch@bytedance.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <64ea7b4d-1d55-4d9e-8fef-396613e8bc10@gmail.com>
-X-Rspamd-Queue-Id: 4646540003
-X-Stat-Signature: wbrp668s3mdr1anjsq8xc7dqp8tzs7kr
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 99B594000A
+X-Stat-Signature: g1bt1mq7ixfur3swn5ku4ojon7tasrkq
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1772828968-724307
-X-HE-Meta: U2FsdGVkX18Tf7ox/fgqQwlk6GH1kca+eSlfaJZW4JzyAqZViXsOSG0uBW/y3xP/DYSGQpHSYFQjk83Jg2dpujP3fAWyjKQpGMWfMJ17ywEbErG/eW78UY9N2kriXOKQqfXwRfvHexrnpiTa1cvUSLjA7p7e4zXZcXhDwb++iXAZia+WhFXDQGvHsr961PpGLZ9Y2swB+7yPZr565FT8tNFdUn0v6GPQBtnM1duYFhMB1W8XL9aRb9JmbG2XD7YJYTg0NWqv6y5wqtxD+Sli0oFzOQy4FfobH+84MRHHJaffFhwq9uilieQiJ/wptQEkIsmcFh4Wr6WCiqtng5PNlFfQOi2TRSSVZiekfzWomktZzYgBhcs0IVvOYwGgm1u/pe38wXo0Mr4W/AqPrJDIK4BeHFLSpYnGFQdDeeby7Tq8kbiJIjpzYrMQ3G4J3YsdEW9dGaw6ZG0tknhhg/6Ly/QcMlIty8NcQznGs41DCu7O9mahIneZRcM/RRdiicDYmAWvhOugtnjPSdgMfaWuiuNShulyWpzZ9QZFXSvoRZLbnVrB6k9LYMp1NYIG13H6O54swB9KuBWq9DW8ZmYs7vN51uVSfTHI7dP/nC9pwV0aKqpgkBdE9r/Ec08GOtWWBaEYLaNbW+tS5UoYmr6Kaklvv/hPvNRIYPaBevIUsn5duO8AyrCVwQSKNvGMLG/ePK+rHBfqBgmPrXmBNk9AFUJYZCxndhBW9Xt5+BtVPILZeIrg4uPwcQh46DwF+hGw76DIFWaMS8SitFtMnLH061J2MUV2Z/lEkwhgPFnPYt+1us0dTSmBSZPJdiCzL1eV47XQwITXMY5jJgTLwFAyAHesmPP1V3nOgXg2kgHx82S94w1yu830+njU29cViLAsrDf7R6K8HYyXaFm9JmAXnxXZN1khrPsZq+VQ9PIYMbuv8PwOYQx5FJtuqh2LlQ7C0nt7u6O8WlsKH0cyeQy
- XfYDo9Sv
- cJCSMEPdaSsNbp3yYLRq+pjbBcfhn3VFMtIsj7fOvKEm8QB8Y1EeoHkIFcxAbYel6TgJfjxqejeFIr6/0PAvt43P3+cAk9LV2dQ3VM+vo/gyPlFDzsI574yJDurp4TB2WeipgqEOxU3Ao04MLe4doTWu0ETEeqjKNiYaJ63KIDGBVjLd4/tm2GRDTdBg+LyOhXTWMkUcAitNTp6baoMXWcKhG3rWWuccgTyy0d1KRYqucb+BDKcuiuXB1s0Oa3hgTl/n13Wenk9ue+JutDK0PoNDAVLrbu46AFwl/s02QwALkJcYYzhjOEPAd1LH0kSR9G7zVtDzpK8qNmSgX7AHg27zSQg==
+X-HE-Tag: 1772828980-573121
+X-HE-Meta: U2FsdGVkX1+NNkyqYlWlF8uLpSufU7DivP6XAIDuzNGJY0zA8Ji6+2f91BGe2p4SjDm0N9nQyoWtCBoE/y9kcd4DdLLNnTVQib7F3ygNdAo1fbjR7qmfZig9X/26uatlcoRMID1FAe7JFiDlRm/qfW5Z4enmKCdEfsZqGG0ivpXscrcro1OyjOmnY9VDkWIQevplTs4ZtqeVlsSmazu8oQAaWrU2IiaagC4JKlhx/7g3dD+ZEW4YsW5+tX5I9Bnxz58OKdwXhEiiSygZWS0Bgs1XbqM3jizesnuvajQZdJmgQYo9i1vzmeCirvvzZB/2CdaHliCOSFRnUhmAjuWY2JAnL2EiioYx0Z3E0Hw8EpwA4OjjzXwXdlaaPqO4GJRA8VJVYKZshBmQHd3h66AEBU8NiIhA5njWe2jvlbsge/aLQnx6WUz9hLfA/MMNGfEGdRxjlkTgCqwnDRxJ5oPCf0k7/4yBtN5sAKO8+QOvFGe3S25FW2Jr330wUymdKyQV10O8py0PGxPkIjuDO9Y+k2CdvPYei6THBhF3Z3l49qoeJ5b4S+p1i+Aa6JgFwDIVxcw74jVj9uDr0mQy9y5gOM2VdzTFhJQUZbSgdQIAP/VRGdT1NqyOq619uz32jfaWguBLpyO7EE2r7oRm1E1Po3QQEamSt3/DE13BAa1eDobKQ7a2XfMx4XRRVf0HvLAbX24RrB/6dTKSynSHSm+3dqfzfO8Xo89JT0rFRGd7A4OCUt4YCzV44a1xCrECuR8CtjeaB4UP7FQLz6z4/sAV1RIHk/v3rpHwIr+43bsobikZx8cnb993ZxXHXP40vkZnuOMqMr5UzRbRwezELMYwzg+l011KplgAHcZBk8WF6zSPcgadQXgV2UxZspxt5+QfwtJx1R0g8Uf66wJYIktoXHIdBHq6CAF8YnB39e3T5VthgubR/8fuHzEhrq0E65QvEe0ZuoIJ3BMT3X28XGD
+ tY/1haFg
+ C+GvPqv5GPLFd/Np54oPW2az9xDc2LNbpdEOUdXRHAAYLsSxIVv5bMQQkn28NzvGtWBTZtfU4Ttq26pRrBnOB31crkVovFENUsJjvkr7O3kqfalvFJW4SKkmFXFdV3ynfOC2DDKDSfAGSGhkiMbFx6AO4U6QSmr8GEoZ+5lEBlhaIDFKUBRl6SJq+lIsxhNtZfxE8K3jf0mTIdBqohy3ogVI2WasCHc13kn06jNLaFHghWEWA6d4kz+PZ3DXIVvpnAWmk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,26 +113,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 08:25:42PM +0000, Josh Law wrote:
-> 6 Mar 2026 20:15:29 Matthew Wilcox <willy@infradead.org>:
-> 
-> > On Fri, Mar 06, 2026 at 08:03:19PM +0000, Josh Law wrote:
-> >> ida_find_first_range() only examines the first XArray entry returned by
-> >> xa_find(). If that entry does not contain a set bit at or above the
-> >> requested offset, the function returns -ENOENT without searching
-> >> subsequent entries, even though later chunks may contain allocated IDs
-> >> within the requested range.
-> >
-> > Can I trouble you to add a test to lib/test_ida.c to demonstrate the
-> > problem (and that it's fixed, and that it doesn't come back)?
-> >
-> > Also this needs a Fixes: line.  I suggest 7fe6b987166b is the commit
-> > it's fixing.  Add Jason and Yi Liu as well as the author and committer
-> > of that patch.
-> 
-> Okay, you mind if I put the modifications to test_ida.c on the same commit? Or would you like it on another commit
+On Thu,  5 Mar 2026 19:52:49 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
 
-I like it as part of the same commit (as 7fe6b987166b did), but honestly
-I'm just happy to get improvements to the test suite no matter how they
-come.
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> Convert objcg to be per-memcg per-node type, so that when reparent LRU
+> folios later, we can hold the lru lock at the node level, thus avoiding
+> holding too many lru locks at once.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>  include/linux/memcontrol.h | 23 +++++------
+>  include/linux/sched.h      |  2 +-
+>  mm/memcontrol.c            | 79 +++++++++++++++++++++++---------------
+>  3 files changed, 62 insertions(+), 42 deletions(-)
+> 
+
+[...]
+
+> @@ -4087,7 +4100,13 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+>  	xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+>  
+>  	return 0;
+> -free_shrinker:
+> +free_objcg:
+> +	for_each_node(nid) {
+> +		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+> +
+> +		if (pn && pn->orig_objcg)
+> +			obj_cgroup_put(pn->orig_objcg);
+
+Is it possible that you might call obj_cgroup_put twice on the same cgroup?
+
+If css_create fails, css_free_rwork_fn is queued, which ends up calling
+mem_cgroup_css_free which calls obj_cgroup_put again?
+
+Maybe adding pn->orig_objcg = NULL overhere after obj_cgroup_put
+is enough to prevent the double put from causing issues?
+
+> +	}
+>  	free_shrinker_info(memcg);
+>  offline_kmem:
+>  	memcg_offline_kmem(memcg);
+> -- 
+> 2.20.1
+> 
+> 
 
