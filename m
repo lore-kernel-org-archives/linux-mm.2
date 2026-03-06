@@ -4,101 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F6AFCB619
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:31:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B679AFCB619
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:35:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97DC16B00A7; Fri,  6 Mar 2026 10:31:00 -0500 (EST)
+	id D70056B0005; Fri,  6 Mar 2026 10:35:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95B4F6B00A8; Fri,  6 Mar 2026 10:31:00 -0500 (EST)
+	id D47066B008A; Fri,  6 Mar 2026 10:35:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86B406B00A9; Fri,  6 Mar 2026 10:31:00 -0500 (EST)
+	id C1BF36B009D; Fri,  6 Mar 2026 10:35:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 760A56B00A7
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:31:00 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 363051605D1
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:31:00 +0000 (UTC)
-X-FDA: 84516026280.19.65E69A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7BEC480007
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:30:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoF4well;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF1DB6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:35:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6770559A93
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:35:43 +0000 (UTC)
+X-FDA: 84516038166.29.F75564C
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0CE43180009
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:35:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Jix8/CU1";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zCRnEDyp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Jix8/CU1";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zCRnEDyp;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772811058;
+	s=arc-20220608; t=1772811341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vUfo6geUlLgmheYj0TiS5OJJ5PkiuTaIbtAjZT9aCig=;
-	b=zwE4rlANUda7Q9BlCN9vZnGYNSTUWZ/9WMOzLh97E21RKMGJTguHfdic2DIOUYS6mbItIT
-	kqjUHgZFZZlcnGEwNRZKlqjL7k1bmC/Y0AGE2thJRMNy4KzKA/p5+T1F3YGhLTH/RxzmCb
-	r+LJvBS/p4ezNxnzy2A+Wzr7BOqFFxU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772811058; a=rsa-sha256;
+	bh=/1H8eA+/Khh3IEN8ZUNAeQ7pBDdV5DwaIi9yEt/3FUA=;
+	b=liIESVJ9ooRE9HM/8JEYAQM6yy+YRoTsGfk5OvWd79J6YdM+fx2Jv8zeP6Z+8XJ91S2yv5
+	26YRM8lwKJIsMSDf0tks5xMX34BTtvNWfbzsze9Rq9Es5IvU2wXnylHk3+1RP8MpPS+6o8
+	4/3GUHq5elwXz8Lh+EB7TEssUgW57oU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772811341; a=rsa-sha256;
 	cv=none;
-	b=1YwShCwIHu6cNHqWp3PRs+sJwtXwNotx332JKo53FIu8Fw4cDajh3mihb2J6/1w0/n33Ti
-	gonGdP2gSrlLCBd8pEBEASfcOC9ekS5y3HuoaWc6pt2c075fY/SMpbE4trb53kiDwL5/bq
-	ufRoEa0KdFlMb/DulF5zgCAgORcqmsw=
+	b=WmjgOkOlyQNX8YIvB9XUHBx6qCOAVt0mBt9E7YYvF1prLChf8pf5FLHwXo6aXj+Miod8O2
+	cWc9G6f6dEW2FNBYNOeECuTHu0W14st6B1H2RRJoL55dgMJtMSlIpT2v6/vlYItnxhI9wu
+	HyFrGw4XGi+kJ8mRVe9EMakowgzanis=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NoF4well;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 63CBE44445;
-	Fri,  6 Mar 2026 15:30:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C18C4CEF7;
-	Fri,  6 Mar 2026 15:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772811057;
-	bh=FI8J0CjY0WXJD6/7B/GSNXzO95+rzP9IqNX3Ca1r71Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NoF4wellfs0vfiQzzobsNQGra3x4pLi0cJws1pr+x30i0RlpCqJKZZQVnD5XctHLE
-	 g4y/n6YSj8XujqnVBpKz31Y7JnvL7UdCI++Y0SE/oEzTSRkMPbe7ByH7OH4D3BASg+
-	 CBo1HJsAMYGWlG30XfhhShBCL7RW1zdWCcyOy3irWZwJ1a3rHtXW66CQ3+CBkdx13c
-	 bA2kvLRek/KpwCumfN4HNI3bTSoGzTxTXr9CpyY/7TbPZphiKH/pcruk7h3JU8hnnU
-	 eRuhStXyC+hP6o+ghWOC/UBwAHjRz2QPAFfMVpGkg1hsRmeOSLZmW9rqScbJlP7Ohl
-	 8c5r5taPhJVdA==
-Date: Fri, 6 Mar 2026 17:30:45 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
- hugetlb.c
-Message-ID: <aarzJeKhv9S9QOnW@kernel.org>
-References: <20260306101600.57355-1-david@kernel.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Jix8/CU1";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zCRnEDyp;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Jix8/CU1";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=zCRnEDyp;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 361905BD83;
+	Fri,  6 Mar 2026 15:35:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772811339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/1H8eA+/Khh3IEN8ZUNAeQ7pBDdV5DwaIi9yEt/3FUA=;
+	b=Jix8/CU1HkPlSuU4p3pB/WFzKsIDNA2b++7JMgoj8JW1IXjjH4EPlzTLpVE32k7nHwR7he
+	pg2XZDIYiw7kIKBLUqKp9OI/bsMTFKS8gHuRXLErcMluCQ1ztn2FZwDZlbkh2bvIxdqXO3
+	uYZaIjxL2oLIJYqlyUModKwIOfktujY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772811339;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/1H8eA+/Khh3IEN8ZUNAeQ7pBDdV5DwaIi9yEt/3FUA=;
+	b=zCRnEDypJpE14k4vi13pMFiU1XWtJ25LaE2IMVZSWUaZ+FqIfXU1ZmA5vJAJHwwu6bZQTY
+	mwnmrVy/fETQe3DA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772811339; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/1H8eA+/Khh3IEN8ZUNAeQ7pBDdV5DwaIi9yEt/3FUA=;
+	b=Jix8/CU1HkPlSuU4p3pB/WFzKsIDNA2b++7JMgoj8JW1IXjjH4EPlzTLpVE32k7nHwR7he
+	pg2XZDIYiw7kIKBLUqKp9OI/bsMTFKS8gHuRXLErcMluCQ1ztn2FZwDZlbkh2bvIxdqXO3
+	uYZaIjxL2oLIJYqlyUModKwIOfktujY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772811339;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/1H8eA+/Khh3IEN8ZUNAeQ7pBDdV5DwaIi9yEt/3FUA=;
+	b=zCRnEDypJpE14k4vi13pMFiU1XWtJ25LaE2IMVZSWUaZ+FqIfXU1ZmA5vJAJHwwu6bZQTY
+	mwnmrVy/fETQe3DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 611AA3EA75;
+	Fri,  6 Mar 2026 15:35:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Yak4E0r0qmkOBwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 06 Mar 2026 15:35:38 +0000
+Date: Fri, 6 Mar 2026 15:35:36 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Jan Kara <jack@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, 
+	lsf-pc@lists.linux-foundation.org, Mateusz Guzik <mjguzik@gmail.com>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Gabriel Krisman Bertazi <krisman@suse.de>, 
+	Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Dennis Zhou <dennis@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Hao Li <hao.li@linux.dev>
+Subject: Re: [LSF/MM/BPF TOPIC] Ways to mitigate limitations of percpu memory
+ allocator
+Message-ID: <qz3f4p2ra6nq5cx3vlacmwif2ih5ojbf7s3ydzw6d7tgqn24lj@pnynq4l6oovc>
+References: <aaE8rkGzxlB6wCTt@hyeyoo>
+ <ji4ddtoo7mebygmytprcp5kpnu5y2ddthk5zhacshods37xij2@fs2sizuagdvz>
+ <z7bjxfk7jah6zgyikhiz6eqxd3xwywxp745bykcr3sm3p525yi@4diwkjsoyckl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306101600.57355-1-david@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7BEC480007
-X-Stat-Signature: 6fz4e4c9e8wimtpt7qgizx9h7refpmox
+In-Reply-To: <z7bjxfk7jah6zgyikhiz6eqxd3xwywxp745bykcr3sm3p525yi@4diwkjsoyckl>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1772811058-119289
-X-HE-Meta: U2FsdGVkX18okpy3WLLGW7FrX6A3gYLCC0+u6fH4mGVDuM2agl3UaoAt3Lo4TuEVKgLPHZiMKcPRvgII3Fl7UrUypm+1KS2+gyKqB/0Hxndkua17m8ovkdTwn2amH9SCwo2nw00HY8LnRewEtLpAEPPCC7g2pt2O76rYE8DKxVfzaNTWZJKsOwVcsqhKasB3kMsVXQmK+uM9uSv+b08WNIy5HMxZhs4G7ppTjeRQYKji0BKzWTle5DZOf45HsyxRr/BPgXj2/+GSRX8AqJjS8uLsrCzj8chY9ce0kaeqR5RkT02m6BgukepTueyjs7wt2xhalJO2CfxmAeJsDK/xl3CLHwOcxaH8jjLX4DNqswwvRjb42Vn5xADrLxRaGomaKqRYsLMMsLtcN5VjbS7kTyDysXM211kMZRE7zNZcqL2r7sAg6ld4dangDzLu3yUpgX1/T+/2v+nmGOOu/d6UwMioan0KE4XvoEN69+mgo5jSVPCp95La5S6lJ/7ymv8IY3IK4MHfLzMLt2heltvYSqCsuPtYCdG3Ny9wRz9wQ2JaJ3wjJr6Kt2jC1sqaML/SIKLNNjvANPHmMWDD/nTRzgKHqmxt/k/zM8EwO77TRXR1x87zCJHtgiazMvfMPXYnbe0RrWcXvNnJC1DohoSxiawk4JT7IbZHQJUEh1ccgGCr9/3rrAjHRJZ+KK+GkcNno7CR/7NZ8l52hnhrPijry9dU/lo0UkKr2MQJXEcc8oatRmgFCfcHGdvts+YdRVxvKbNE+s/ZdWB8WExhw3N0O8QVjTLI5PNImqWYU97D7z+IcgYLpdLDujm6y80VUE4IJceJzNdg6d86mspNDQ5CYg8p5kofazRb/7WMVCgPRxq1iYtD/9tQ2z9/dhgXpxiH09SNVimjKC86eG/Q0TS6dvnqTP6Xwr+xsPOJMbCDaZehswAysAXpXYuEpJpqAxjdWq2r0w7GNXeDmS5gTUG
- auXALD+J
- auE/9jVHTxMqSvHquRLSol5BfcFL9sFVOThffOJ9ZgtEXfmsPSMHwKMhNM00LDcESd4jCE8EuS4II4LDslCqktN71cGDWwAtikb0vjvcE8B4tNtWSByCt2EIP/RBek0MaQctn4pAMgaUGK5RAa4NWQ4kVbsrEdP2jDtsddXH7EpNMx+YTlguzApHoq5SxRKr6M+zutl23MTfI1GscR5cPW/92jDx+E67lJL38KnEtPCkURD4HC7Rmabobxo4++rrElXrMiUShcz9UPd94XrgikE67N2mpBMra+Nb3ubwSOutV57ukgOX+s4FrZMVod3HoFH0gAON4vTq2LhlGl7uoTue1U+Htt5wCvWWh5pu9E8u3HZBHnoGDRtA1vGKJ4KyA9hvKJbrDKmwEEmoPh2mYOEbfclc9OJfo9u6ierSL3n150XMIWa2+3rLVEA6N4lGrYzFgjpDLzU60sOzsZn7+dpiJXJyMPOJoahDzmu8RLt59wAM0Ti3JAuJX7ZYuGGQviBKc0mQwn5W8cwajKh1OZICzN471MS7/bKsf+7Y6f7Ob2oFE3mMGFQpL5FlLMfu+ijBmccPh0My0PGk=
+X-Stat-Signature: rnfwattccxcint5wzndk8s6i9xwynjx1
+X-Rspamd-Queue-Id: 0CE43180009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772811340-811568
+X-HE-Meta: U2FsdGVkX19GZDMdbeuouUiJJccoHo3q9AJ1raKdV96FgfyXdlqp2rKvSVUnKpBEO8/CUlVZGMElgVxTTs+Jg0R91yqBXJAddk2VNqTYvfkeJRLYrgf0xaGmzMeagJgYBkyhzO2/ygPl8+AnGmpujUzxyBnAXRWJAS0suVaSFEw3PuLmD+je1gwk1okRHXOV4dpwLKJ855D4ltaVwFTSkSl9IlZqsRc2cZzyTHziJx9FL7DYJgcUcbOOWzA+z2mOXmAp3Hnc+peZ42HdJPMPruoC78K/blw/CKIRp0oXlNt1FuU1NDczY5UoGoITUT5TY0uGqd+9UdyH7uyfpxy885XFAewhaa+E/XVWO+PLavyqMNSj8v/ljL1RGnpcJTKyWbK8obQ0+Sef6ECfQ5P21UsyIT2M/F9vfUbA/ojoXQRaeW5INFGahBv0ccWN8ZGFk+Cqd6UshX4//hBnV1GMBsu161GPxbsrX8LiGTb7gnCciTxgB9nc1lEk6N+k52RpEb42TX0s0OgsJfSKp2IGeG2zqGNyuZujkS5EmaJt6141B5nCr11pbOh2Zth+YOAacF6uqT9iv/2SBpjOyJL7F9McOBrCEaidTzHlfkkcbuo2okKULKjE0tv3+sLbhOYBFcYgRCjsodE6sjBfLdcJoPVEaL/7JE1s/w7tULmnP1uVnuEjx4MYek3+NNHpP3VyLKHo/GNdYwn+VTPmQkYbY3+QNUOxaS9k3+B5e0zMOIn8qbM3Gyg0Fc+DzzcLFvSv73P4oxjFE3BqMB9V07UYziyv1NnGfHr7uUkUI0Ln7pP24ZqdRGV2jIrKLTkfIkGFI4HbKuSxqg7xYQnRFshKLvW84fcVaoAMiK1+MBcVpxSofDd2Ubyrjk2VOK3w8FnyG/QLZyf7HTnGHILPN1m12kOid7MX54WO5RjD/RukfxrLFNfxNXF7en6FuMFfEP+td6EKXQFCg/HYQkTJcxo
+ VKWeWjlM
+ ixr0N1SAAgTeY4L8o2EaQPTPN5A+9qg2ip/lGx/f29ATWDQ9LXv/+WUbenDBjLkS8ne4cndvbkpMtY96bLN1usCxkQkYsYBXqJhVpbpriCsf/JjLQ9oRcmKNgZbo/fykv8j135zLzSdwAKPS+Z03tvsoZ0QtDzoRd36qZE3/WonhbfrJDYmkQFEXpaT5deT/9Nld8tz/IZ4/IV0xPW7UaNTbEnHjQJW/6GwFnF7a5q7COx3bLcGPVWooCY/IOLMThYRsdtK+jooIdv3wb7rQZfziusJKABKffA/F6rtfcDOkNGKvxEPDIzcemlF4O1yr/8GTT3YfRi8HnFlABicnKyDUuGlQSOTk5tT2DnTQRxW9lJ2A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,65 +136,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 11:15:56AM +0100, David Hildenbrand (Arm) wrote:
-> Looking into vma_(kernel|mmu)_pagesize(), I realized that there is one
-> scenario where DAX would not do the right thing when the kernel is
-> not compiled with hugetlb support.
+On Thu, Mar 05, 2026 at 12:48:21PM +0100, Jan Kara wrote:
+> On Thu 05-03-26 11:33:21, Pedro Falcato wrote:
+> > On Fri, Feb 27, 2026 at 03:41:50PM +0900, Harry Yoo wrote:
+> > > Hi folks, I'd like to discuss ways to mitigate limitations of
+> > > percpu memory allocator. 
+> > > 
+> > > While the percpu memory allocator has served its role well,
+> > > it has a few problems: 1) its global lock contention, and
+> > > 2) lack of features to avoid high initialization cost of percpu memory.
+> > > 
+> > > Global lock contention
+> > > =======================
+> > > 
+> > > Percpu allocator has a global lock when allocating or freeing memory.
+> > > Of course, caching percpu memory is not always worth it, because
+> > > it would meaningfully increase memory usage.
+> > > 
+> > > However, some users (e.g., fork+exec, tc filter) suffer from
+> > > the lock contention when many CPUs allocate / free percpu memory
+> > > concurrently.
+> > > 
+> > > That said, we need a way to cache percpu memory per cpu, in a selective
+> > > way. As an opt-in approach, Mateusz Guzik proposed [1] keeping percpu
+> > > memory in slab objects and letting slab cache them per cpu,
+> > > with slab ctor+dtor pair: allocate percpu memory and
+> > > associate it with slab object in constructor, and free it when
+> > > deallocating slabs (with resurrecting slab destructor feature).
+> > > 
+> > > This only works when percpu memory is associated with slab objects.
+> > > I would like to hear if anybody thinks it's still worth redesigning
+> > > percpu memory allocator for better scalability.
+> > 
+> > I think this (make alloc_percpu actually scale) is the obvious suggestion.
+> > Everything else is just papering over the cracks.
 > 
-> Without hugetlb support, vma_(kernel|mmu)_pagesize() will always return
-> PAGE_SIZE instead of using the ->pagesize() result provided by dax-device
-> code.
-> 
-> Fix that by moving vma_kernel_pagesize() to core MM code, where it belongs.
-> I don't think this is stable material, but am not 100% sure.
-> 
-> Also, move vma_mmu_pagesize() while at it. Remove the unnecessary hugetlb.h
-> inclusion from KVM code.
-> 
-> Cross-compiled heavily.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Jann Horn <jannh@google.com>
-> Cc: Pedro Falcato <pfalcato@suse.de>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> 
-> David Hildenbrand (Arm) (4):
->   mm: move vma_kernel_pagesize() from hugetlb to mm.h
->   mm: move vma_mmu_pagesize() from hugetlb to vma.c
->   KVM: remove hugetlb.h inclusion
->   KVM: PPC: remove hugetlb.h inclusion
-> 
->  arch/powerpc/kvm/book3s_hv.c |  1 -
->  include/linux/hugetlb.h      | 14 --------------
->  include/linux/mm.h           | 22 ++++++++++++++++++++++
->  mm/hugetlb.c                 | 28 ----------------------------
->  mm/vma.c                     | 21 +++++++++++++++++++++
->  virt/kvm/kvm_main.c          |  1 -
->  6 files changed, 43 insertions(+), 44 deletions(-)
+> I disagree. There are two separate (although related) issues that need
+> solving. One issue is certainly scalability of the percpu allocator.
+> Another issue (which is also visible in singlethreaded workloads) is that
+> a percpu counter creation has a rather large cost even if the allocator is
+> totally uncontended - this is because of the initialization (and final
+> summarization) cost. And this is very visible e.g. in the fork() intensive
+> loads such as shell scripts where we currently allocate several percpu
+> arrays for each fork() and significant part of the fork() cost is currently
+> the initialization of percpu arrays on larger machines. Reducing this
+> overhead is a separate goal.
 
-For the series:
- 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I agree that it's a separate issue. But it's as much of an issue for
+single-threaded processes as much as multi-threaded. Say you have a 64 core
+CPU. Why should you pay for 64 separate cores when you only spawned 2 threads?
+(and, yes, this is a not-so-rare situation, like lld which spawns up to 16
+threads (https://reviews.llvm.org/D147493), even if you have hundreds of CPUs)
 
-> base-commit: f75825cdfc4c5477cffcfd2cafa4e5ce5aa67f13
-> -- 
-> 2.43.0
-> 
+So perhaps the best way to go about this problem would be to go back to
+per-task RSS accounting. This one had problems with many-task RSS accuracy,
+but the current one has problems for many-cpu RSS accuracy. A single-threaded
+optimization could patch over the problem for the vast majority of programs,
+but exceptions exist.
+
+Or another possible idea: lazily initialize these cpu counters somehow,
+on task switch.
+
+I'm afraid that while the solution presented by Mathieu fixes a problem with
+the current scheme (insane inaccuracy on large-cpu-count), it might also add
+to the percpu allocation + init problem (this might not be true, I have not
+paid too much attention).
 
 -- 
-Sincerely yours,
-Mike.
+Pedro
 
