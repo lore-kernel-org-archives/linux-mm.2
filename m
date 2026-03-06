@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15160FCC056
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 18:41:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 567E1FCC05E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 18:46:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4430A6B008A; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
+	id 8031E6B008C; Fri,  6 Mar 2026 13:46:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F1646B008C; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
+	id 7B0946B0092; Fri,  6 Mar 2026 13:46:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F3796B0092; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
+	id 6BD516B0095; Fri,  6 Mar 2026 13:46:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C5EF6B008A
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B068B59FFB
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:41:15 +0000 (UTC)
-X-FDA: 84516505710.17.0531B81
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 569A5C0002
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:41:13 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 58C476B008C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:46:56 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDE3A1C914
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:46:55 +0000 (UTC)
+X-FDA: 84516519990.15.20C61E7
+Received: from relay.hostedemail.com (unirelay05 [10.200.18.68])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 369DDC0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:46:54 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Wg/i8/QW";
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772822474;
+	s=arc-20220608; t=1772822814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VM5um0Un0dBqpJi9mEsTrBTXwrxc0DE4YjAakbTEyXQ=;
-	b=DyiXVTpj6ZM6Jz8coZEEkC7DWWvxK5eouvVJVon84YPLEzzVgKQhA9PrEJW59L6etWLjR3
-	g4kr42Xv4qHf9+ESX7M3B6mM/G+9F7m9ybbhhQvPbBFzEI4LmePqFOdt1pqd3zr+xk9U7g
-	3Wy0vDyFoztVNMUq+Bwdal1FYJETQRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772822474; a=rsa-sha256;
-	cv=none;
-	b=MSa8WXbguTjBl6q1wWLyfnSpc0XT/9J+XA+c8C7JOPoUWGg52+xV7NBgjKsk15k3Ytkcjj
-	VQ/PXT3cEvpKNf1WPq+MNq1nz8etIb75XAzxB6Xh1Mf7shFq66MRCUh3rFIoE/2pXPWBQJ
-	WelNPEHhqm7ha/5Ea54uPEuWnLoI9Sk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZB2TUjhQ89IgPB6kx5kyxnRYTXzc3TQMzBkHq1J3AE=;
+	b=rxLIo05LJoz5GYLwHA0TKj1SYaBsQuQ26a56Fwt02xTy4A0isBFCI96Wpz0ZOCh/uwjmbb
+	EnQp2f3lirNvii38eUQSQtBwMS8oX/Hv40xR3R20jVwvolkK+pwe6uH0Y+9IH4kWVHwV3N
+	naIAPpu5BFqLTIeUUalrevIPYZ1nmZ8=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Wg/i8/QW";
-	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VM5um0Un0dBqpJi9mEsTrBTXwrxc0DE4YjAakbTEyXQ=; b=Wg/i8/QWd4Ak3VOJCLKU4dOiuQ
-	xhhympkoBIIrndvU9oNWzizRvbkRQ3jezMSezju9eBLweSBuzsBZdBVnJOYqnOrHMvr5SmlnVP7Rg
-	Ng7hBgG47iGveYVWERXxjBdpvNRmq5AUyqBbP+7Nd6VQdOMNY/jUo+w/KgoQdH47g2HRf2TYFAWfw
-	CCM7PTZXAotdCUsSZQMpGSkloS/Q2nDnr0/Aq9/YgBeRNfhWNv8pPcEzDkNj6deFHagI4erqIHgJp
-	eteoq5s9zoTi8qpjjo0mqYvWpKAt2FdK+b+ImQ30AyTXD4aDaJV9zgu+yWXF0XFKvpq91UIqEg4U3
-	Eoj2sqbg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vya6m-0000000H9Eb-2cL2;
-	Fri, 06 Mar 2026 18:41:08 +0000
-Date: Fri, 6 Mar 2026 18:41:08 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Chris J Arges <carges@cloudflare.com>, akpm@linux-foundation.org,
-	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com
-Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
- page cache lookups
-Message-ID: <aasfxLYRWzNodAYO@casper.infradead.org>
-References: <20260305183438.1062312-1-carges@cloudflare.com>
- <20260305183438.1062312-2-carges@cloudflare.com>
- <aanYdvdJVG6f5WL2@casper.infradead.org>
- <aarVMrFptdXhHsX1@thinkstation>
- <aasAo8qRCV9XSuax@casper.infradead.org>
- <aasddOvIfcMYp3sk@thinkstation>
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772822814; a=rsa-sha256;
+	cv=none;
+	b=A8FLWsbUuD10KZkDRTkQXD+hXRhA8eT6Mxv9t/Izcfi4iJS2DV1ss4Oq0wgm8dc4/z5VC9
+	6kMnB/CfduqdYFG6SiPHdodUV+9YS/z3yTdKEkoxw5+8T2jE7w2f/GoHZHPrUb8Vj6aXc4
+	8l7aszLpU7leluXUjtugcxb+QgXlp6w=
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43F3359D81;
+	Fri,  6 Mar 2026 18:46:52 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id EBE142002D;
+	Fri,  6 Mar 2026 18:46:48 +0000 (UTC)
+Date: Fri, 6 Mar 2026 13:46:49 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Dmitry Ilvokhin <d@ilvokhin.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, Peter Zijlstra
+ <peterz@infradead.org>
+Subject: Re: [PATCH 1/8] mm: use zone lock guard in
+ reserve_highatomic_pageblock()
+Message-ID: <20260306134649.72d925ba@gandalf.local.home>
+In-Reply-To: <20260306103307.43d12be7d32b3f3b06f7bb55@linux-foundation.org>
+References: <cover.1772811429.git.d@ilvokhin.com>
+	<cf489e5e79f5e9ba450111ee655d9924fe7a1620.1772811429.git.d@ilvokhin.com>
+	<20260306095336.a79fcc869a7f6d2b2e97501b@linux-foundation.org>
+	<20260306130052.7da8eab3@gandalf.local.home>
+	<ce0e53e4-52e2-4e56-889b-adb01ede6fe7@kernel.org>
+	<20260306103307.43d12be7d32b3f3b06f7bb55@linux-foundation.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aasddOvIfcMYp3sk@thinkstation>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19XeTY18053BYONN5zueFhZ4yOewcE2IrU=
+X-HE-Meta: U2FsdGVkX19F2+vb9/CMCWyUkj2/n46eNB9KkKwTUxxNKrxjkKN+9hbD1BOaYNCKYUqF9+f1Rk6470+2wu9uLxjJFgkTIEXJQVvugL+8AM2yJ+xh3QPV5SavxmpJgjCp/juBIyXd/oIb+o9kTbatcpvLjX3k7vg4JHxbfZziUl2+CLIcKAyWcBwuZuVXrDY3oRkoHjkva91cDdanqN2F1uX4MX+BwzRNK6T4V5pmcNC3kLsiBWnTDziJSNv6AuUTYEXGZAJUEHpcRydHEEVYxts3Ki9S/43krrNE/yTN7vrDPsM158GG8TCpN+6rEu0XCGnc9d2kwJW0NUbDzSpfZfgAsepzag9HO/nOwv1ID71TDoHmrhLzrTPVUBKepUxx
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 369DDC0005
+X-Stat-Signature: m4h7sgi1ze7gsbg4pecuoqs1z71s4krd
 X-Rspam-User: 
-X-Stat-Signature: d6iw4t6ei1ratxokqychzw4kxf4afw1s
-X-Rspamd-Queue-Id: 569A5C0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772822473-662764
-X-HE-Meta: U2FsdGVkX1+GId4awX6+8LfyrPMGfCNYRWX0WAMHKuGpOVZQfZ+CW4qz7E4qSFEgvwrbi3xUQ2Pnf7B5RgLgnZCoMwcKimhw+4iha2IQ3ckpcndR4nFgGNHx7Ba9qrhHgbQ8mVBy5LohpQfMan0rJ9LWba+hRxNGi241EzBo538IKApRmmfsHAdrcdP5JS1sYS3yY+x+GDV3iONeyZMIvNMRrVXuPMCg5r+J3RKQ9z7joxDw1wdPwFWCWYn8dZmC1z+SqleycnNshl4KoQ66OP5fvQ0tLyCg9rhkeCbus2+zSRq5nBnUbIVLtBWg4XLPwphV27lcawfMZu4nGAt14x3n316skSw0PedtZQIWtj9s/euHcJuG0guRIgzRuttwj07NlACyd7zgHzkqUB/1EuxbSjO5WjVVZgJOw/bFmDljNHIv0L6KhMqaKwfJsZ7ZY/DR/cEd6kauP3j3HQGUfPFQONfSaoJ2o2/E0JHHy3mId26dqQShHVvrMU4DkNNH0dccP5vRQTu2oTUV09TdEIYkmT7oKtBPIHASayc33dP/drdfMLsCMzL58HP15/WNTN9wc78yztQHjFPo8i+YuhlP+irSBs4VJDuCFIk6p51rfQ101et1WLIupkh+uSg5uc8tw/tl+UM+YcUGdB1iIq8u6k5bqXWzrFsKmmZ+osVPOQRW7gBi2/YbkiGQNXvT6T2+OXmXx7WxcLkKciYF9XHMMaUCUq8XlFuHzcomhSLhtPXk6oUpScxZ0FNikowpWfJH8IhQOuuFF3uKKDZwrf3KM02ciGenlEjbA4jX7mf3xjGDd8Kdt/2q29Ra0y4lJZvE4BMltl7dOk6/Nkha8+uNXCqu6N8BNxZY64VDRx1xlz2icVmBdW9IVj9CoN0cjE+NkHEZBGuItwVv97q9/f+pwC3vfthF5vmrVWB4HaUZatmzQmprHMbhFMlAh8JGDP9M10WdfcbhQOuFTHa
- 2JSB9UtH
- Kea31Y6+xXxWc4HgYLZ/oAnT0BxwjJUFxZrz6OIHTv9dSvwYyYlHYzfRRwxeRcm4/eH0b1VhVVeYnZwSJP3FMhqPZPLXE4s8uZ9xcT09pjlMVfXV+8JSpPBECigSaMeB5uKViGoQlVn82xR1tbpyiLzjBhuD7E4mnBiZBN/PseEaXHM640AGrSB0v8hlYlQN3bG9lGcXOYXaP3Rm7kxVuiUR8RU1h8vLuo3QmVrMMJRu2spXznz9eiFiJeA==
+X-HE-Tag-Orig: 1772822808-477565
+X-HE-Tag: 1772822814-592849
+X-HE-Meta: U2FsdGVkX1/LYE0sTLldihGpa4WLMwwijf4VdP0dMd++MDCDFas60a4yDNwXgXM05IFxTO+H4CNVoeFwGyvwYzAflly7wJpDnFDQl0xSg6k/3+VUO8sTZw1IJgvbfZTQ9i2YIXiFWUklBui/+xvKklgSKfXJ4tsA/JHPis64aagNM7i3XWFkzVeSEVKPIPX/IJpvrQ6WuqCJqdgmt0aofmqUXJ8RqIVrQsVxVRHdvCjSmzR10LLmrWB3tpwqdtp7oxlyRITY2UYpMQ+qUTDTclwobdm/bwccVUDfjphk6r+E16Ju6YjDZBBGN6laNHMAKwRGj0ZoayHRIQzPa22hNoSENuip1Xk4rdZL1/79mlVNBj63PuKyqmQaiq8vcXedZXS7Y3fb/pehHYSAraoHv+BOt7xtz8QHCVG4D9OsCYyX/G6TRue2dOAXe+C/9m85tt6dGMC94TJkP8LKmtPjIoIdszwXLe3Onj5tZ8s/Yj/xTf00tFTsRohSPdD7+R8YwfznWJORnGavrMCNc3eQPCB8MGTAhB/rr9zOPbUFkm77ixqCCeJzIQyoKKHNoEEZ7JYrED++OIdDvGo3RPs51Sml3tIKlQNjudkeSiO0bg+L9f5j1gBjvlncgvEjSJ0Ixa/H5G6Nm8Xv7cBe8RwsFyZtrTdORoI8O7ZFLvCrIMpjhTJwAGTRXjkOBgllkVpZxalOu7U/5quchgB77XCl6Xq5oWGI9Ck2lk8Phpnmyrw/ryx4Cykp0XSPVtLrYL1vhjxBS5lPFg1j6Zj8uxNZIFEEzHbqj1qax1qvc0dWo36ITiD19yl5TcvTNgadsrAMBw030ebXXLx5PdvOx1yfb0s24BW+veg23D8T7xWESwyavBxL3ypJIuHL6gjkD1W/RRz+cFyWSPaa9gKwr1U/TwRZBBj18zdMAGrMvrcggCpVmhoi9PnVKbCakwn10lEDQns4WLc8osQ/5pMxo2X
+ Fc9w8nTl
+ BJsd05P6hGnWG8htk26WDiqD4/K/WFaYeA1gUbqj+ECSsKyI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,12 +94,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 06:36:30PM +0000, Kiryl Shutsemau wrote:
-> The proposed change doesn't fix anything, but hides the problem.
-> It would be better to downgrade the VM_BUG_ON_FOLIO() to a warning +
-> retry.
+On Fri, 6 Mar 2026 10:33:07 -0800
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-The trouble is that a retry only happens to work in ... whatever scenario
-this is.  If there's a persistent corruption of the radix tree, a retry
-might be an infinite loop which isn't terribly helpful.
+> I'm not enjoying the ides of penalizing billions of machines all of the
+> time in order to make life a little easier for the developers.  Seems
+> like a poor tradeoff.
+
+But if there's a bug due to not being as maintainable, that too will affect
+billions of machines! To me, that balances the tradeoff.
+
+-- Steve
 
