@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BD6FCC05A
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 18:38:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15160FCC056
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 18:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3685B6B0096; Fri,  6 Mar 2026 13:38:06 -0500 (EST)
+	id 4430A6B008A; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 312376B0099; Fri,  6 Mar 2026 13:38:06 -0500 (EST)
+	id 3F1646B008C; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 214B76B009B; Fri,  6 Mar 2026 13:38:06 -0500 (EST)
+	id 2F3796B0092; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E5836B0096
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:38:06 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C823A1C95D
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:38:05 +0000 (UTC)
-X-FDA: 84516497730.18.73E64EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 20EB540008
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:38:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U3qAZGJl;
-	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C5EF6B008A
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 13:41:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B068B59FFB
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:41:15 +0000 (UTC)
+X-FDA: 84516505710.17.0531B81
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 569A5C0002
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 18:41:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Wg/i8/QW";
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772822284;
+	s=arc-20220608; t=1772822474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=PEwYaGT7xG4tJOwU//WWVVB7YRRgc2eZlLIqK4yf5yw=;
-	b=Qnt6RRcnr2e8rvuTfNKTBkX9HwVdeIL3HuAyICYGCNWSL0U7C29e8EFamEpvf4RtpHzwQU
-	fG3jXcnwFP4al2OucioBa931JrbQv18T/N6hgqH4JRQ0OQQD3oiyKZGLeTdc4Ec0kJTU8p
-	jFa308u2i4MzQ5isOm9jvmGGuJTfcTU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772822284; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=VM5um0Un0dBqpJi9mEsTrBTXwrxc0DE4YjAakbTEyXQ=;
+	b=DyiXVTpj6ZM6Jz8coZEEkC7DWWvxK5eouvVJVon84YPLEzzVgKQhA9PrEJW59L6etWLjR3
+	g4kr42Xv4qHf9+ESX7M3B6mM/G+9F7m9ybbhhQvPbBFzEI4LmePqFOdt1pqd3zr+xk9U7g
+	3Wy0vDyFoztVNMUq+Bwdal1FYJETQRg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772822474; a=rsa-sha256;
 	cv=none;
-	b=OHIMFXV06ZAnnhx1MjYST6LsPEtxBgszF7H6FnHnNKTHqUzyOHK7oqWK9mDzmymp1wCUDR
-	S8mRjyS84u8uMQBu80kuInhqeVfaR49SzAKPsvw3uUDkoD7MXx00Qiw1GKa3zA7fzA16Mp
-	aILNTxVLU5wWcKH5jPImUdkpeilaI0E=
+	b=MSa8WXbguTjBl6q1wWLyfnSpc0XT/9J+XA+c8C7JOPoUWGg52+xV7NBgjKsk15k3Ytkcjj
+	VQ/PXT3cEvpKNf1WPq+MNq1nz8etIb75XAzxB6Xh1Mf7shFq66MRCUh3rFIoE/2pXPWBQJ
+	WelNPEHhqm7ha/5Ea54uPEuWnLoI9Sk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U3qAZGJl;
-	spf=pass (imf17.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8661560018;
-	Fri,  6 Mar 2026 18:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34EB8C4CEF7;
-	Fri,  6 Mar 2026 18:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772822283;
-	bh=RCtRnJ9Mf4+vaJ1DdaOWKCOk3Lwe6gkVAmGvVe3J2dY=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=U3qAZGJldTAtTrzuHxeJ6knqpFDmyKPrNU8tWBQynf+mpDGbSZAl2GaQDZkj/JONm
-	 lfR74NDf1s8RwvL/eOaURQwP2KfCA/2joa9j8h7eEX1jKUPFaH8a1DXkPrJgIobfYi
-	 YTLy7gz5ixmoHtcATYnbRsk0oNFufZiSRN2tEFhm8ijEDrltesdyURZ6fJ9/ZFYkbR
-	 P92ss1OV/TSG7XH2dqrhTOj+5yyqNaFKJnRJ7az4ltyD8vo/msKS6CPQMJekzgTjMC
-	 FItnr1WsydhUUaMvG6WjW8unNrxdcctEmG5GJJ89Jbtg06EIFVTBdLFpWYTaQPCOzp
-	 DArNvxuKPEu7g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA1263808200;
-	Fri,  6 Mar 2026 18:38:03 +0000 (UTC)
-Subject: Re: [GIT PULL] slab fixes for 7.0-rc2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <086138f7-052e-402d-ab36-b40ca4428662@kernel.org>
-References: <086138f7-052e-402d-ab36-b40ca4428662@kernel.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <086138f7-052e-402d-ab36-b40ca4428662@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc2
-X-PR-Tracked-Commit-Id: 6432f15c818cb30eec7c4ca378ecdebd9796f741
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9a881ea3da166b05ec0eb66df22a7228b90aa66c
-Message-Id: <177282228227.7628.4557674103225371572.pr-tracker-bot@kernel.org>
-Date: Fri, 06 Mar 2026 18:38:02 +0000
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Hao Li <hao.li@linux.dev>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 20EB540008
-X-Stat-Signature: hhk3sqirndj93redatf6uj1c3xkizcte
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="Wg/i8/QW";
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=VM5um0Un0dBqpJi9mEsTrBTXwrxc0DE4YjAakbTEyXQ=; b=Wg/i8/QWd4Ak3VOJCLKU4dOiuQ
+	xhhympkoBIIrndvU9oNWzizRvbkRQ3jezMSezju9eBLweSBuzsBZdBVnJOYqnOrHMvr5SmlnVP7Rg
+	Ng7hBgG47iGveYVWERXxjBdpvNRmq5AUyqBbP+7Nd6VQdOMNY/jUo+w/KgoQdH47g2HRf2TYFAWfw
+	CCM7PTZXAotdCUsSZQMpGSkloS/Q2nDnr0/Aq9/YgBeRNfhWNv8pPcEzDkNj6deFHagI4erqIHgJp
+	eteoq5s9zoTi8qpjjo0mqYvWpKAt2FdK+b+ImQ30AyTXD4aDaJV9zgu+yWXF0XFKvpq91UIqEg4U3
+	Eoj2sqbg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vya6m-0000000H9Eb-2cL2;
+	Fri, 06 Mar 2026 18:41:08 +0000
+Date: Fri, 6 Mar 2026 18:41:08 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Chris J Arges <carges@cloudflare.com>, akpm@linux-foundation.org,
+	william.kucharski@oracle.com, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH RFC 1/1] mm/filemap: handle large folio split race in
+ page cache lookups
+Message-ID: <aasfxLYRWzNodAYO@casper.infradead.org>
+References: <20260305183438.1062312-1-carges@cloudflare.com>
+ <20260305183438.1062312-2-carges@cloudflare.com>
+ <aanYdvdJVG6f5WL2@casper.infradead.org>
+ <aarVMrFptdXhHsX1@thinkstation>
+ <aasAo8qRCV9XSuax@casper.infradead.org>
+ <aasddOvIfcMYp3sk@thinkstation>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aasddOvIfcMYp3sk@thinkstation>
 X-Rspam-User: 
-X-HE-Tag: 1772822283-503039
-X-HE-Meta: U2FsdGVkX1/tnHZAlTRxG87yeApvFS8aN9CL2bAPUCrnimmmr7evqB8IptNQ3H6QuC/PwIMinCl0GI1YWuaqG8a9UMU40E527ahh1bUsd7bBjfwzTyg9RMRQtIpBcXUDHLD3YfYBzxCt09a6grwdGHZqOvCHE6uAFdx8Edq0MYoDYp3RUpkBezR0Xsq9XR7LBan8HV0mYSOlA1cyvPeMPzcdoZIhcBQx/c5fzczRG18BTsUbOFM66AzgXiPCTCfwZGOdjLRW+uZUKpW1VhwVpiFYc4NmCBjDsh0IId7U2bxNtJ+JerkM56RsKA9flt+wUJrzsnV+bgIGvNCcfOodTy3oHsP2ck1rgs9ZHSUy6pm5egrtNJQ9iZ04P1cTQPSgM2Ek1As9Gtdg2q43eSGTrV72amDS6Pe5z7mUpaZLLI2VrPZ1Uuaa1M3OiGUDb+NeTc8YFXFRtSEY3vH/ODJ7fNSQlZKCUAJgIy/I1yU9nR8yjs5BOBIZJ+/TFm38PbsLmsJPiWzagn45XWJq8rpu97+x06DgIkUPqjz/8BmjeNYPN22mDAToPt8vUuEqI9PRO3ukn0XdcgkTKmeE3/NxiZU1IWigrITnzmd/4om51yDAMjW2ug/faUXijgwQ3GGUG8sxTvKJpiZd07i6Ac2UWt/xZk43Oe116kGvJuEqQ/x3u5jVV/6gkoYJPxTVTz+qyfe5Y5qC7h0E/RdPoV5ORRjmCJ5UsnRsYx8uKT8WkvAxAKsYtfakFDy3t0sgTN+DFsUjYLBANfvSXCQ4A9ACQuZZuEpL8ki9TPlarJTyjOSJCwuWCFEs6zZN0mRObHc/sQeLqzX5GxlrsdduJTbqLKoafzfuyArYpfLeAuDPBpMGuyeTa3PgcTtVKeXzqADg8zR8/hmYGhHX70GQLB4ibbTxj9mnJf4l7k+f0JDfFrWP2Et2YADaoDisYNn5LJiEbtOmVfLsMmCSOtc2bLN
- ujg==
+X-Stat-Signature: d6iw4t6ei1ratxokqychzw4kxf4afw1s
+X-Rspamd-Queue-Id: 569A5C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772822473-662764
+X-HE-Meta: U2FsdGVkX1+GId4awX6+8LfyrPMGfCNYRWX0WAMHKuGpOVZQfZ+CW4qz7E4qSFEgvwrbi3xUQ2Pnf7B5RgLgnZCoMwcKimhw+4iha2IQ3ckpcndR4nFgGNHx7Ba9qrhHgbQ8mVBy5LohpQfMan0rJ9LWba+hRxNGi241EzBo538IKApRmmfsHAdrcdP5JS1sYS3yY+x+GDV3iONeyZMIvNMRrVXuPMCg5r+J3RKQ9z7joxDw1wdPwFWCWYn8dZmC1z+SqleycnNshl4KoQ66OP5fvQ0tLyCg9rhkeCbus2+zSRq5nBnUbIVLtBWg4XLPwphV27lcawfMZu4nGAt14x3n316skSw0PedtZQIWtj9s/euHcJuG0guRIgzRuttwj07NlACyd7zgHzkqUB/1EuxbSjO5WjVVZgJOw/bFmDljNHIv0L6KhMqaKwfJsZ7ZY/DR/cEd6kauP3j3HQGUfPFQONfSaoJ2o2/E0JHHy3mId26dqQShHVvrMU4DkNNH0dccP5vRQTu2oTUV09TdEIYkmT7oKtBPIHASayc33dP/drdfMLsCMzL58HP15/WNTN9wc78yztQHjFPo8i+YuhlP+irSBs4VJDuCFIk6p51rfQ101et1WLIupkh+uSg5uc8tw/tl+UM+YcUGdB1iIq8u6k5bqXWzrFsKmmZ+osVPOQRW7gBi2/YbkiGQNXvT6T2+OXmXx7WxcLkKciYF9XHMMaUCUq8XlFuHzcomhSLhtPXk6oUpScxZ0FNikowpWfJH8IhQOuuFF3uKKDZwrf3KM02ciGenlEjbA4jX7mf3xjGDd8Kdt/2q29Ra0y4lJZvE4BMltl7dOk6/Nkha8+uNXCqu6N8BNxZY64VDRx1xlz2icVmBdW9IVj9CoN0cjE+NkHEZBGuItwVv97q9/f+pwC3vfthF5vmrVWB4HaUZatmzQmprHMbhFMlAh8JGDP9M10WdfcbhQOuFTHa
+ 2JSB9UtH
+ Kea31Y6+xXxWc4HgYLZ/oAnT0BxwjJUFxZrz6OIHTv9dSvwYyYlHYzfRRwxeRcm4/eH0b1VhVVeYnZwSJP3FMhqPZPLXE4s8uZ9xcT09pjlMVfXV+8JSpPBECigSaMeB5uKViGoQlVn82xR1tbpyiLzjBhuD7E4mnBiZBN/PseEaXHM640AGrSB0v8hlYlQN3bG9lGcXOYXaP3Rm7kxVuiUR8RU1h8vLuo3QmVrMMJRu2spXznz9eiFiJeA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,16 +96,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Fri, 6 Mar 2026 12:36:23 +0100:
+On Fri, Mar 06, 2026 at 06:36:30PM +0000, Kiryl Shutsemau wrote:
+> The proposed change doesn't fix anything, but hides the problem.
+> It would be better to downgrade the VM_BUG_ON_FOLIO() to a warning +
+> retry.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-7.0-rc2
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9a881ea3da166b05ec0eb66df22a7228b90aa66c
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+The trouble is that a retry only happens to work in ... whatever scenario
+this is.  If there's a persistent corruption of the radix tree, a retry
+might be an infinite loop which isn't terribly helpful.
 
