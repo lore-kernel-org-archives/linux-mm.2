@@ -4,119 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41427FCB61B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B06D2FCB61A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Mar 2026 15:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7CBC6B0098; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
+	id ED40E6B0095; Fri,  6 Mar 2026 10:54:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5AF76B0099; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
+	id E876C6B0099; Fri,  6 Mar 2026 10:54:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9835E6B009B; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
+	id DDE6F6B009D; Fri,  6 Mar 2026 10:54:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 87FA06B0098
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:52:52 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3DD781C8C7
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:52:52 +0000 (UTC)
-X-FDA: 84516081384.15.7AD2A28
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 43A13140008
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:52:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OEWdCL99;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CDA1F6B0095
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 10:54:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7441FC235C
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:54:55 +0000 (UTC)
+X-FDA: 84516086550.19.5DDA45E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BC03640005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 15:54:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4jy2GCh;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772812370;
+	s=arc-20220608; t=1772812493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
-	b=4LAHJgpq1lIMmdhdZe5JkfLbqMswl2r8/H4QasicMp4CwLwhzxo0PLMVL85oJO5kcIHrdf
-	gqIX5DMIomVQCH7QHSlUK1c/oKfaqEsYpN4xuZ0QjQt7T3fgb5CPyUjGH3nzaHYoyAnRfQ
-	9mTuHR0SAzGd3cXU4rivOrAzHABy3kQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812370; a=rsa-sha256;
-	cv=none;
-	b=slt6pZjbu4lHR+1ls2/Acm8XQgPS1XIxiQH/+UQtwHwk6ijZeKSwNM0XzimmB7x3rdWDRs
-	jYYZqKte+uVsu+qEs3IrRggaiCoVFC4AQ+ygzFMq4hOD4lzReM4l5cY91W4GuN5D8rjSGx
-	TSbqbhRwp2b07qd1zAbkNbtxeLLn+w4=
+	bh=B9nEEQgEUGdTj2XGuUXl4Hb+oaDFPS6N71aTCmPeeJk=;
+	b=KDtvP5011lUEpAftU8sqeAXktapnweM9BBIyIbLdoVS5Lg6d7U0ucJkyAXO1zuH8gvPzW1
+	D2xT++v7LIxfAXEBzoP2kaxBA7kKcQWeCqxa35a/1vjdQWgssghRLfg+65AOiF3lBfI3fg
+	gfJuCK2Ti6sOCgarVw4RfGfxoPWJ/OI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=OEWdCL99;
-	spf=pass (imf23.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-483703e4b08so91747995e9.1
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 07:52:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772812368; x=1773417168; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
-        b=OEWdCL99ECN/td6yQH48X0oeKJeX+W3SRCtsCjDHNeaShL/OK+4jZ/PgbKHTHjnqF8
-         6t6s9i4RtiEt3jab1BzHNAKsXld3OhQsUXHMXXHW8rVe15AYhauZIVkTNfo9ok18F7ZS
-         miYDoNIsoxhb20yvTaOIGtCIf70eOqyV0e1nxnhMbjR8aGq2K5Vo7z4IOgYvaFD771lK
-         DeAHKieKyQCVk9y7jILj7ZwaCXn7AJZAR67DBqfEsDHudbo+QURsKSM4cuAh9NU9L1fF
-         4ViT/5WcmnmbyEV0pK5wVc7N3QmJtn5QAPQG9tOQcJoBXniCD4sYNGarvGdIMQZ+kC/+
-         HWPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772812368; x=1773417168;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gmR7x9X/+WhBljqVLIwDH2yaruypUaKc2mU2QgggGQw=;
-        b=LTM+lfj5W8oN4uUN2VU0ZhFiJN60RvF29UpM+e6NDbjCcGvcyVBZQxxK40v9mjdafW
-         kdlPaBNa0Om8Z6B1oosLDFlNMMQGkjGkzJ/3w/RsuAfJS5yDpWRhDxfWcOiy2CiUztH6
-         u3I3zc9zkeo7w34MEhZdgXD+GzWDeq2uNrMxhwCjMesqQTQXlYs2v5Z64o0bm5udru3y
-         bU9Ij42vjrKgOrFRW3VJca/OJXrpFsRJVvbuel68kUKbmRqz4z6+Jqxe6W53oZrz8p3q
-         tN+OzwX1TwJq3fls71kxunY1ZcaBACUhtA5O996fP912272Oq+HNJ42rEneNFU4tfQgL
-         eQ8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWI7FcvrPj52NqQGPpmoUxT8GsiahOSY4SJPmwZvfS/oQY2nIxkEPgnVxQALOYvflgjE4rl5r0pNA==@kvack.org
-X-Gm-Message-State: AOJu0YwR1aUro1UnGVGm2IjJcaEWUuGQmxj6X0drxmz/2JQ6F0GQd1h3
-	za1IrRoQNKP4CQs2kR4h4syD8qRBdvZgv24f3zghVoFy+qxHBZlLaBp8RWUxsJPMMjA=
-X-Gm-Gg: ATEYQzz54samMF32VPBWZkgTz+zL9w39emCISBoC/2HQdAFJ1e2QtvoTYHt5+9MHQBE
-	Zaejr7uD57it5+SrSNB9H3cWqOIVO7V+hI+4ridVDt89bGblHu+Xayg+i+WnqY+6Wk/BxRm1g9N
-	RpHQXxRHW0g1cXMXZKx+0FTXT1Aktp9Vp4IDkbD2/haUZ5D7oEv8kXisanffKwC7xu7uv3GrjYt
-	ERLO/cfDwj2fcPFfpAcbJeWIK22VeIUCobtxcVY1GravOthuohSHkTn1ErqqmwD80DWEOvgumm0
-	BtimSnkxjzcGneJ9phK1DJWgB740KjusEmkQUILzW9k6DBCKdE0t5r+RCTBnfxXIPJG3pMULo+n
-	JHf+EER7rtwGNCouidHB1ArLsSh353uDn6HZThiKgSd/94kcdAyO0Wj2tukGVGBCroDwgQXKnlB
-	A7MopgLg2hqYmi9tcF/Bu+n1ZKkJo+i+lBDw==
-X-Received: by 2002:a05:600c:3e10:b0:480:4a90:1afd with SMTP id 5b1f17b1804b1-485264e7588mr42095305e9.0.1772812368602;
-        Fri, 06 Mar 2026 07:52:48 -0800 (PST)
-Received: from localhost (109-81-88-63.rct.o2.cz. [109.81.88.63])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae4b860sm5074257f8f.36.2026.03.06.07.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 07:52:48 -0800 (PST)
-Date: Fri, 6 Mar 2026 16:52:47 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Benjamin Lee McQueen <mcq@disroot.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v3] mm/vmpressure: scale window size based on machine
- memory
-Message-ID: <aar4T90zjolmTGFa@tiehlicka>
-References: <beab70d3-470d-46ad-a890-76fabe49272e@lucifer.local>
- <20260305043038.2176-1-mcq@disroot.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p4jy2GCh;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772812493; a=rsa-sha256;
+	cv=none;
+	b=1d0O+jTObjl2oVMNzk8jtjIZNLu7B9Fvsyux2PbXsfx2Teqhrc1nBuK9t3GtdV9B7nOYy7
+	1O6kG/yyJ3F1ylRQN9uCti/ECnxo4Onm5bNjhDAp9z9+gWGfT8FTa3PRlltWndumeR/MZe
+	EhNmZWWoQCtR+s3ruhTFOqPsGpCvcZw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5F30340936;
+	Fri,  6 Mar 2026 15:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40A3C4CEF7;
+	Fri,  6 Mar 2026 15:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772812492;
+	bh=b6Q2vfwCcs0E5l+Cn9299eegQd0q/hpFvgEzI2+Enlc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p4jy2GChNGU3tNV8OYElXie3aNzB0SXD7lh9yXZvKz1zVKHOB/ZWGp67yIFiNq5mf
+	 Fhce69xc6aXopB0jXkIAQbwBRa6F49TXpg6qSElR3asH5LWu83AgIOZq/hvqaULwCj
+	 cZ+4oqg1GlBG/VhklOHArgoo+k0eGGzK8/Jl5b+s/ZbLNUDdXNCs4oFiUxekgTu9mS
+	 aGMwLC12+GsaxeKj6VbFiUsT5i5QQ7paFf32c2u2V8bWKhy5pxy1Mg82t6aW4jxZkO
+	 nF0jWTWWJiJ1H0ndGgHFrEcgvRhnpQ2v7XVCVLCVMZESVe5wkWQjaDZaDrFmHeiwTq
+	 riKeL5Mi5/Mng==
+Date: Fri, 6 Mar 2026 17:54:41 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>, "H . Peter Anvin" <hpa@zytor.com>,
+	Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
+	linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
+Message-ID: <aar4wRh3TRm1m0HJ@kernel.org>
+References: <20260225065555.2471844-1-rppt@kernel.org>
+ <7e4f6a4b-fe41-482d-a4cd-5a059e1626e6@app.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260305043038.2176-1-mcq@disroot.org>
+In-Reply-To: <7e4f6a4b-fe41-482d-a4cd-5a059e1626e6@app.fastmail.com>
+X-Stat-Signature: iriy8amg83r4c8wnit13shte67xksegj
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 43A13140008
-X-Stat-Signature: t3y1ue4tbjafexjt65pjykpoy4umubap
-X-HE-Tag: 1772812370-564544
-X-HE-Meta: U2FsdGVkX188/iCqBtEG5dehJioZnj25PPo58lKQW6bqeX4N4nT/h6elssMi6vh6oqUnHIg0MnEYnMFGWm9nGnCOJilDw+FunCSmlKYpwLqXpn4Qbs4ddjZnv3nbSnLF00ypOCLRf6TljCKEEmWmuiJuChKVds+FGnKNXpCJmhlvZzFD7ryaKYSgKUeHoqjA8ZRsrVbJHCIxyI0E5aH6zPjBotIwhPqa8YpPN+bMFzjvK4p8WKHLfCPLmLe+CTdRYfmNZB7YlbMx6XrwhOJI0JpElxKNo8Swo0WoqZJXlgObkysGAYLyQgoJ0zGRMpAXoi+dHpBWl2ChvFsv+2brkklU6cOTziCzlYSwhFVZkd2k9DCRmXFs0d8ic01M6GohmEtGSdvzPNPCqCJ6T+vZ8rulPVUurU+1EicARKH4ahYvNhVU4mkEdW+ToICeW2V9JtFAjE91JilSrygU9DKo+adkMPoPu7E0vbNoPDNrj9ENau0J2kbs7idXH4j6YSlYR4XalIW5F9z8E7d/xprSGb2fgF+jt2ayl/DjB2Jvdm7iWB3KFOn3UMggOuS3byWlPm4CjjURdQvhsPK5835Ss8XCgeBjbHAoqfhmYBflRrQcwivgB/MeoeYhaLz8dsXL0/3f0kAx7OIvKl3tlWpxO/aK72PQtDk8cIphcel1Kp2vnvAy2MKBSEW0fHfSjz1wqv3ajLLkFbQlUIOYGlhW+Evh5jvOvWq7MDjfxGq498rLKZd2nqqsd69W3Z37jIVFYr9pR+wQPNMTdRvIeWrXg77/R0pkQtK2UgUiPGDqIaV4Np+vWeQpdTgCVnb+L+TXrXW6sBLF/i6UN3X1H5dJNjT14G7X+ri3669ld4lGb6Dj5NUVsL5dvxFNOR6ari95S0tgM6evElJPuvJ+7f3sO42Om8CQB8w9s6rVGYaiEUc9hfqh3UX2eNcgvHjOPLU2T8gmbbThy9uWA/W8NKb
- tpKh+Uxi
- B9/gzB5toijDpBT2QywA60lQFdHzNVrJjpfO0K7ovmRLljXGgiMYxpZ/NuB/EKIAw233TTZPHPUBx4aY03wPQoAjXGedMTlAn6+ezsI0i7ulKP29ILyqzmuPl2FPMhEGvN9R/kk3Ij6TzDT5eobmrB/h32EdZ+nPXsLALWRQIKpvSPlD9oYuU0DL92trfW8mQdW3riwf5sUcJzF/7nOUsVDvi/oFrf1xeh+8EPvZ0HWDUb0hp8VtXVOCeSbbd2/FwcdAJv4irDze2BvBtjaqe05/3URLS4Iyh+wPYl9FuXPr+E3m/vyg78B77JKAwBoiLGuA5LsdH7sVKAkCWbxygMMH0AHWDYd2TnVPk8Mdh/EdxSuU=
+X-Rspamd-Queue-Id: BC03640005
+X-HE-Tag: 1772812493-761875
+X-HE-Meta: U2FsdGVkX1+LsQxXYuyCzewJbwGWqcxJ8x8rp0YXiggVRPzI/orZY4abJAsS3uuhzDAoMXkNaB1uiQXEOTmFWe9egmKC3SYJIPOiLdgGaUQWUwUWJTis2sMG+1H7l/NETJaljGnYXKZGVk87Sur6JgLJtAeTZ3k8SjAL6sMCHV2WiPRH2/HHaDR7lpwpTQxOphvAsqLxiDuV9TWlthNxQO6z+Y+pPgi8HLrVZQA1FDczcQAtRgzomFswuDlaQ08zJoCXg6pcaof0bqad6Pw4tIq3DlsOU+NGT9k0gcL2P/S99raT40by6XerxgSHmMsKnErlzBoy0V6QGAShtVTsA/rHvEN+vee0sJaCy51DraXjvSzFdazHxPJOx8ZmVhjseDjZkVQPJfNkgBk06GdWZC9NTiw0M+rmuPsRyvzXnHdnQ1/IyoaVT0ApXx5/xdlu6lQCxotk/bgyuUcFXVs287pwwAaLTUU4r2VlBzL2B74GeN5yqTu/xgJ6dYxlsq+EZO09mFtFm3Ft5TxdKU52XwMN1wH8H24l62Sf1hDivWDKO3ETfKWbDhwEng7byK9IE0YNF5vnAEL16DMjrmyR/1e7k1XXvGUUmMp92txmmTZ3S+oPs3ptZ+Q8KO0uv26dQZMJdTrqrgBU4eRBLkLBqwtVQ3CrQ7CfBHkLsSnugXLbaDbpdUsCKS0Dds127GzCBs5IsP+d5DyxX2zBYs0RvjAjdrnmq2lgMitczVII1S1BLAemM8LiXRFLukTmbcKm7lt5yXkwkthkHKQ529G16bNJf6ZtEyBFLYUQf+TqZ64J5j2dHASzPRZl5+Huy47tGOlvBu5bLMoSsEytqMRardDF7P7nyR9QQaWWptkRHVDrBkyvYDplLdx8oFnNnC0fJW2OwWDZ3hAiN0jlH5JPb4Ifyv4oJZesPM2ug+/qF4Rz98q7fGeUZu4EuRQJz/jQxtlZDYMQX1ke6o3Yx13
+ vb6eVaOA
+ BXXnA53a8v3iH/L4+lAq22cWxse2MnBweT7dCW4htfRoBkKzOy5k1TaNnmZH7TDm7RX05J/Bmy5Kgz25KO1xiHkVp3C/Z+jR3j+RUUPvslBs1SauwCUss7PHPQ2+ybz5kY6mmCGU/5+6z85SLlKSpcyNwuKBnJU8Puk7r3FMfZNA4IMxq+/K1428ndv3mqg9/f4oHpgJSKrUQue9CD0J6w4XnyHk1vpGoBriGQB2t6OyScwPDIXc+PX22FVPyfvWYl4koaDDen3kctDpmhjKEVBGLjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,23 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 04-03-26 22:30:38, Benjamin Lee McQueen wrote:
-> the vmpressure window size has been fixed at 512 pages
-> (SWAP_CLUSTER_MAX * 16), ever since the file's inception. a TODO in
-> the file notes that the vmpressure window size should be scaled
-> similarly to vmstat's scaling, via machine size.
+On Thu, Mar 05, 2026 at 12:11:12PM +0100, Ard Biesheuvel wrote:
 > 
-> the problem with fixed window size on large memory systems:
+> On Wed, 25 Feb 2026, at 07:55, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > efi_free_boot_services() frees memory occupied by EFI_BOOT_SERVICES_CODE
+> > and EFI_BOOT_SERVICES_DATA using memblock_free_late().
+> >
+> > There are two issue with that: memblock_free_late() should be used for
+> > memory allocated with memblock_alloc() while the memory reserved with
+> > memblock_reserve() should be freed with free_reserved_area().
+> >
+> > More acutely, with CONFIG_DEFERRED_STRUCT_PAGE_INIT=y
+> > efi_free_boot_services() is called before deferred initialization of the
+> > memory map is complete.
+> >
+> > Benjamin Herrenschmidt reports that this causes a leak of ~140MB of
+> > RAM on EC2 t3a.nano instances which only have 512MB or RAM.
+> >
+> 
+> Putting a fixes tag referencing a patch that dates back to 2011 doesn't
+> seem that useful here. Is this really an issue that goes all the way
+> back? Or did a later change trigger the actual leak?
 
-Thank you for this much more detail insight into your thinking. This is
-a good start. I am still missing an overall motivation though. Are you
-trying to address a theoretical concern (the said TODO) or do you have
-any practical workload that generates bogus vmpressure events. Also
-please note that vmpressure is a legacy notification interface only
-available in cgroup v1. PSI (via memory.pressure or global
-/proc/pressure/) is a new/preferred method to measure memory pressure.
-See more Documentation/accounting/psi.rst
+You are right, the leak was triggered later by addition of deferred
+initialization of struct pages which is about 4.2 time.
+
+So fixes tag is wrong indeed, but all the currently maintained stable
+versions are affected.
+
 -- 
-Michal Hocko
-SUSE Labs
+Sincerely yours,
+Mike.
 
