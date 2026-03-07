@@ -4,99 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 536E1F55105
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD98F55102
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:49:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B13B6B0088; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id 0252B6B008A; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7267E6B0093; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id F0B576B008C; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D63E6B008A; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id DE92C6B0093; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 26F666B008A
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8A2771B7D93
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:42:29 +0000 (UTC)
-X-FDA: 84520288818.21.27DFE6C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0130640003
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:42:27 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FTzb+iLN;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B976B008A
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 502E3140896
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:25 +0000 (UTC)
+X-FDA: 84520306290.15.F39F176
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D23EB140006
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJLaaKcq;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772912548;
+	s=arc-20220608; t=1772912963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=+oxeCGAykGpLOzKNtm0DlhsOLlwkJfxS/AcUN+UM5Ok=;
-	b=66tXuQSztATCn1j7xV5E8Qt3X8dyo/g0y/42UtCsooSJKe1mTL/zNzJ8ErjX9/ra5UX0Ym
-	lZ31d7TH9egA7c+DA+VyzGMjP68DKJvSH4R1VPYh7mOow+hac1AFGS4fNIopMxvSbJ3pgM
-	DK9Pp4Nd1Sno6jJTAB9TYpP8okFT488=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772912548; a=rsa-sha256;
-	cv=none;
-	b=RyNHypl6Wh+LBNEO6r8yblLZhwbFMmVGELaDqQwxUPVB2sjDjK23JNQV/A5+Qkl8ftytPi
-	RFhFy1rzuJzs3mseGSLcfd6RSAgDbPsoVsnvV0wan/ZcP9poODiTVf561n3tqISt3URSLp
-	yu+vXEgyR1VYBgRedqvZuOxhaiG+AGk=
+	bh=bDdJFCZt2qTSObJAWFEhJIzCM/QWDjRTUUuunzbv0FE=;
+	b=Jc7o9YGBM3jOl7De8kIVfjfNk6KDwwTgulL2W6dxSgyr9EYRL2ybVqcMFUNCACc6wtSb92
+	JzN6+xjEr2sN/RTLtxRsGy34FypaXOuoZEd4VLJDSjtwQn/eu5xbh0Qc0v9rIoDczCkQK1
+	vC47I5YJklNNzzi1B+WBUCEAw1ADkLU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FTzb+iLN;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJLaaKcq;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772912963; a=rsa-sha256;
+	cv=none;
+	b=MlZ56tcPDPxeCLORSItEkDNYA02i0lhaJSX4gH3Bk6+kdqdPo9l7JYHAXBsUVYjHfq564T
+	lHE/lMYFU8lDOFHxTJm2CypWlISdEhyEOkBw7lGxW8H49UPy++2R8rouKHxgYtYrVEZ9rB
+	uaj/sXqApAzB+jQi620Qr7aPO5NaRWI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBC6F42AF1;
-	Sat,  7 Mar 2026 19:42:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382E4C19422;
-	Sat,  7 Mar 2026 19:42:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5416F60051;
+	Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB6FC19422;
+	Sat,  7 Mar 2026 19:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772912546;
-	bh=XcYOzSBU2Ik0HwEKQuQLPbmzqjVamPRGuDKVpDrdtlQ=;
+	s=k20201202; t=1772912962;
+	bh=9pXTMLXjPeeFkiBWY7aejojzZtQ8QdVsGRxu/ihcY/A=;
 	h=From:To:Cc:Subject:Date:From;
-	b=FTzb+iLNu/uBbbSdvLtNPcvv40maRDEccaneyljx8hs90sXB3yQ6NIkDmcP1yiY2V
-	 l4oL3AfHGNf5pNtb5zde1mcXnIT8/nchwCm5tQgndCyA8BaCSxYlF5oc+oDAYUcXa3
-	 ZAI7EHpezLNrc/lXfXJ21FZWlJ+Y8GYEpyqjAgjcqLAw7y75iSm44rNKFQqpQbdJdh
-	 QN7uOCqQix1dem5EPQvQNMg3YJ0tNE+TJ0p2GPZ9qq1wmbRKG1Oy0ApUxmEygjUnDj
-	 kf/si1+GP5vCWQ0lu/n9ku4rzZjtxJ8Pc0TbgXNUFhRcf43zgFNtLVN9zOzAylqdBS
-	 HAI2NK96bH8mQ==
+	b=mJLaaKcqz3I+ylDK18HnDKnTzi8E8VRfiEqPevc//dx16NYIyrYSuLrpEknUCR97q
+	 /l1qu964FXZyddPds7Hio28N7Hrz2xf74z8hA6sQt9kpiQMuwz0cKPbpkZwgqf0r1k
+	 88Emmeal2z2CL+rosZ0+pn2kDbiee8xvmw9FBZWmTrv/1dASoTYz5MSmIpgpursKSN
+	 sX+/OZ67VXMh26RerPVQ6tlsCzRbAVr4BLAtMTAWNSZTGOyCC+owue+7VlCtTS2SIU
+	 G1SCP1FTBTwkCp2/7wjEGquAFT1aYRBZTt0I5z12TE3/BLj1vAGkqO0SFRMnzXnd4R
+	 543Ua6chf5stA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] mm/damon: test and document power-of-2 min_region_sz requirement
-Date: Sat,  7 Mar 2026 11:42:19 -0800
-Message-ID: <20260307194222.202075-1-sj@kernel.org>
+Subject: [PATCH 0/3] mm/damon/core: make passed_sample_intervals comparisons overflow-safe
+Date: Sat,  7 Mar 2026 11:49:11 -0800
+Message-ID: <20260307194915.203169-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yxp8z3megjxecxndh9kktunkojrzdsbc
+X-Stat-Signature: h8kbbn7uhq9nqfnn8tjzuzdsm39cw5ob
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0130640003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772912547-91885
-X-HE-Meta: U2FsdGVkX1+SRBGNi7vF++k9/Qbe2UfOQp5uMwFeT2vbHfw2wt3yHCkhqaUf6uXq3VARH5DDE0CMBPtzRcelGG6DB4bVnsb/iW+SmUwWPqu0yxrzOnCvjWCVFzId12WQBF7b7vcQwFKIOPdzp9GXflurFuwOVYafiFhnNobQceaGNedsk3MzifqnLlVu6xnERWIK4tTWywhKDU3B8oQHTxCHPhGaWKMoHlY4rNY8KHvGZkZi1FpKcU/BtxDZGZv9mHl3SVZfnmaccZDdDTbZWH8+AthlILYKzxTYEhEUo2aYh0w3iiqvoJlnBudJYwDAw5CzPteq3GjZM25KHl926HXKtalzGaBXK45O73prrmKqyYo7qTGgBlryBBWi3U3C8z8MN0SAHlG3Htb48l92a9DlE53fCb9l9fWIfn9cMR4uWQmQlTQt2gxwcg7yAWfb5T0m8yXqg6MthXYWFvJjbw8Giu+ll0ruDZs1sZgR/B1WwSM/lvZs7nNr5ph1Izw7pWimDCppqgancmA4BDDKr0PjHjCYZaB8XB7daWKsaEYASaYBySQE8StdaPMIqWds3km7oMwEB7xCUkdKZgXOL2HJenn9K88NYb34HEs38ZM0UWSJevifGgNsHRYpWoLvH3Dtc+LJSFKxiF09Lm9qrUtcGoa8cOoWBhQKjQ72sfons7wuoenirAEIZkNwu874k/5E7y514STjAfxBwnzAfD/cGqXEQwaX3LX4rJ8scH1PcpAYXlhd5o9HIqiLQI+WE/b4toBpZ5DU+u6cW4kyN5jBxOTbXaUZbpPvVMutsXVu3b5npdLOTXwg8HS+hsbFbmcdJwT8AroBCbTYJoYaxVk+LEJm7osC79I+hYBcnjCLIi3y0H4u2bN8yi0Bv69JgT8GODq2x4mKUmyBTaYqgsv1hADObdRzQp/VnhlQj1MncyFdgsUsvtnCNQy4LpQ9x1RCgXbiD1qiiIg7776
- xiRMTfXS
- 5fIUm6QPkzNnhPLMv3geZHxJgR8Mb7dZPqKJTka4bFZ1Th8bKkvxPquzEfcxKLY/h91EJydsf6hka0EQji9zzyLEjWddaU2gOg8eOiOyQ8wMjqOlH1c7+3puPDaUqR9Dt8sdVKwr/k+wdzADFDr5vdLVcCoOpevkfuAXfRp+k4dzhwKwJ4zBbl1+1C/tv1sfNBcYc2QOeWVfL2WUROwKXLAhX0N3mr3ojae4shGZonm/Za5Fa69BGJ/t/0qcpmJjLaKEst3N/qrLFr23PCobZNUZVaEwW+3+7JZFat3Qr/nNcbGF5lXcZzviCOw==
+X-Rspamd-Queue-Id: D23EB140006
+X-HE-Tag: 1772912963-536248
+X-HE-Meta: U2FsdGVkX19WWmBSqHWjOy31Eh8WwluhTj4M0UXGP6ICt9BvUG+xCGJmjuQENL0VnJCwIev49UUHoKcplWQnuDoBZYlIJ7wcVxBes0LvO2wz6bB2DxOM+j3LvWupLYyPhAKNURw/Y18yehub1EucPPhBuGwfRysdvgR8b1S0p7MHvjhwttyaitfTxoyYrPQnLCji+7v+wyOaFvFP4vd3hbdrOdCYryU9ke0Lme+NTJjkHr0p0QSRdDl7ETIGnLdoaWi5eSpADxLV6PQsAw894fMLCcF6pgEtiOF+Xlw26EJjMaN3fjXi/IubAJxxyt+rvhieO8iL+OnXZmqmsiN1OWy9tl5OUBBZbKbz/R9d8l2CGqvezc7OpPfBTzQlA4dUSPqIl2kXQ07z78D7kLSsEojH6Mi/CmAqXWEFg1964Kv1ymZhX8qfEBMVaFexu2nUlShcbqYTSKHlMv7GvohZFOyASAZGzcIUCEfN0H0IdpqRZthK8ti6wWlwvFwWVLa+3e2TzZ1CHvYvZ69MiTwWg6oGW+wAlIloMAj5GoZ8tIs1QY98OMpPq0jjmtkxdZ/wS3pQ/g5PNY1ANVYJcvCko+xVTuSax0jkU6v5J6pXLaqWkFZtEeC/FjZTnfsym80fZlha1NiwwxmQqJVQFyX32suUOcAscnpLVz0OiXitZaVGiIczen6Eo5ga3+lVq02oQbojEBoePg/RvOZptLhOkf8ItwijguV0xrRYezFnm84+OytAtjwylupmuL4tdu/2PXImMiAPk8unrcLV70hXrhPqilprkgZJkN+rvPIPfq7S4DGokdUb4SRyXHv3Fl/YMqJP/hjpNwex2UjlCGN83J44usScsmf2YncK8FcjbTVH43f3pDJLYKrwCbtyseMMTPU0kvOU8/ZRQEkJBGMgFVFJx1HKVvH+EfhlcFYGdwWNHnWu8HSJYJwn1XkZ0rRE9nDDa/GT7n3g8CIbwRy
+ suV0WImO
+ J+/+P0/lCAJ1nrrGTAAOUsPHtuMUkh6BsDlL9m7nmlv1vECrLDpPa9EnvOkTEwAFnJCn6p73eHdYq3RvIsgnI6hx0SFzr1MHFjPMY2N2tMCMWoumJ+C8qptvzJ5GxlnafmhDhmy3olNVco6guBe/5Ic18RJhmTNLB6kIXxWI5G14rOxkR93JLvGICFYaYKURDAUPjza+D5FgJ+zzme54wuBtTAkiBNxGeqSwrHTE0JJR7p5IMcVNu56YP9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,22 +90,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit c80f46ac228b ("mm/damon/core: disallow non-power of two
-min_region_sz"), min_region_sz is always restricted to be a power of
-two.  Add a kunit test to confirm the functionality.  Also, the change
-adds a restriction to addr_unit parameter.  Clarify it on the document.
+DAMON accounts time using its own jiffies-like time counter, namely
+damon_ctx->passed_sample_intervals.  The counter is incremented on each
+iteration of kdamond_fn() main loop, which sleeps at least one sample
+interval.  Hence the name is like that.
 
-SeongJae Park (2):
-  mm/damon/tests/core-kunit: add a test for damon_commit_ctx()
-  Docs/mm/damon/design: document the power-of-two limitation for
-    addr_unit
+DAMON has time-periodic operations including monitoring results
+aggregation and DAMOS action application.  DAMON sets the next time to
+do each of such operations in the passed_sample_intervals unit.  And it
+does the operation when the counter becomes the same to or larger than
+the pre-set values, and update the next time for the operation.  Note
+that the operation is done not only when the values exactly match but
+also when the time is passed, because the values can be updated for
+online-committed DAMON parameters.
 
- Documentation/mm/damon/design.rst |  2 ++
- mm/damon/tests/core-kunit.h       | 22 ++++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+The counter is 'unsigned long' type, and the comparison is done using
+normal comparison operators.  It is not safe from overflows.  This can
+cause rare and limited but odd situations.
+
+Let's suppose there is an operation that should be executed every 20
+sampling intervals, and the passed_sample_intervals value for next
+execution of the operation is ULONG_MAX - 3.  Once the
+passed_sample_intervals reaches ULONG_MAX - 3, the operation will be
+executed, and the next time value for doing the operation becomes 17
+(ULONG_MAX - 3 + 20), since overflow happens.  In the next iteration of
+the kdamond_fn() main loop, passed_sample_intervals is larger than the
+next operation time value, so the operation will be executed again.  It
+will continue executing the operation for each iteration, until the
+passed_sample_intervals also overflows.
+
+Note that this will not be common and problematic in the real world.
+The sampling interval, which takes for each passed_sample_intervals
+increment, is 5 ms by default.  And it is usually [auto-]tuned for
+hundreds of milliseconds.  That means it takes about 248 days or 4,971
+days to have the overflow on 32 bit machines when the sampling interval
+is 5 ms and 100 ms, respectively (1<<32 * sampling_interval_in_seconds /
+3600 / 24).  On 64 bit machines, the numbers become 2924712086.77536 and
+58494241735.5072 years.  So the real user impact is negligible.  But
+still this is better to be fixed as long as the fix is simple and
+efficient.
+
+Fix this by simply replacing the overflow-unsafe native comparison
+operators with the existing overflow-safe time comparison helpers.
+
+The first patch only cleans up the next DAMOS action application time
+setup for consistency and reduced code.  The second and the third
+patches update DAMOS action application time setup and rest,
+respectively.
+
+SeongJae Park (3):
+  mm/damon/core: remove damos_set_next_apply_sis() duplicates
+  mm/damon/core: use time_before() for next_apply_sis
+  mm/damon/core: use time_after_eq() in kdamond_fn()
+
+ mm/damon/core.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
 
-base-commit: 4380f0b6370ead5000b8d155b25a86cb59d68c06
+base-commit: 4ef41fd88e37fcdc1751edd9bc57403dba2742a3
 -- 
 2.47.3
 
