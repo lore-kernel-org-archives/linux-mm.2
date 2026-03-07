@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFB6F55102
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:54:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 498B3F55107
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE8CA6B0096; Sat,  7 Mar 2026 14:54:10 -0500 (EST)
+	id 2A1626B0095; Sat,  7 Mar 2026 14:54:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE8576B0099; Sat,  7 Mar 2026 14:54:10 -0500 (EST)
+	id 29A5B6B0098; Sat,  7 Mar 2026 14:54:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A952F6B0098; Sat,  7 Mar 2026 14:54:10 -0500 (EST)
+	id DDAC16B009D; Sat,  7 Mar 2026 14:54:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 877B76B0095
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AB7186B0095
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:54:10 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3CC6DB6B47
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6243D1BF7E
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:54:10 +0000 (UTC)
-X-FDA: 84520318260.02.BC94614
+X-FDA: 84520318260.21.BAEB1E1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8E892A000A
+	by imf21.hostedemail.com (Postfix) with ESMTP id C34BE1C0002
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:54:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RrDLMqsi;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OdleRt+2;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772913248;
@@ -34,61 +34,57 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PMpIcUPmgfnC/TM7LS/LXJ+r6A6RR2yXFY5S7SCh0uE=;
-	b=UNv50WlGDD89GfLONYdxkINdpVSVPxdcRXHTgYjncocuXbh4IVnYSdMm03w5OAOLjycOuC
-	lCxO6MwvZBuTeM1xn1aPbUFEsnaroDkym79m+P02G7cKaw9bzd0PFHLkx5OCqVmbxifLl1
-	RZ2XNLJZlmnXU4N8j/Wza/HY6VExiBo=
+	bh=pAG2IrI+jY23GwK72qKpuda0QOlgg+UNIbgIw1iT+2Q=;
+	b=VPnE729F78kveFve2Vhw2o6jR0JQFulfPRVggIxnUv2cXR2wAmsV+jeVrykZ9KWn7xyesM
+	MmaBbS/okrZcaxb47yMg6P2aaKfMNoE+yaeZV2ZoqBfseqJIUmCslt9Mivkn1yL9mW9QLH
+	j3/jaOQSGNLN+JOv700R4SNv9ZQ4Ha0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OdleRt+2;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772913248; a=rsa-sha256;
 	cv=none;
-	b=r5YPy2L1Wu1U7s+/mmcqFQpjc9A87HcbxJ2qy0vJja07Abk7o07L/9O1s+REwAL2eqFXOQ
-	A42diK0SnmuSbSC2TgonZD5neIswVX3eNcc66CTFUroqmcqZ5LSK+Um8OszhVSOnF5Cjvj
-	IIqI0q0ASyw4Ai2EkW08hTjuoZWvZwI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RrDLMqsi;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=B/T5L5QnlnSHq6E1/2N+ChsNO7YnwVqnqF7ChDs12t6WxgSOFs8CYOAtMVcKHHOrqtN6je
+	P7QN7VWziw7U3oAoy7KO4WicaaqcrU862czMAXOJavZV2I5u4iJcr2gZPvoirEq0d/kZeD
+	tnyp9FWLH3LkeDXpy/SKEdK87pvetdI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE3CB4406A;
-	Sat,  7 Mar 2026 19:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C34C2BCB5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 017C24402B;
+	Sat,  7 Mar 2026 19:54:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E28C19423;
 	Sat,  7 Mar 2026 19:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772913247;
-	bh=cHAWOwLABE0IuRjMJHLuZg8SBEg0KiVoUUFpxTrX+yc=;
+	bh=lhgKVHeTPuqy/SKtOJv2TodL0/GOZKE7UoJkbwMyV80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrDLMqsiYefqJ5d79fNnxVvcFSYtuDfZZZJ97LGdVq7EFv41zDhGggdm3+UyaSmxr
-	 PBOMZmxL2uVBPb9W16T3rkDri/sWtMjBRNITE3W2ZsiJpLLS3WMUrpNyhul7/r/AE5
-	 ay6amn/VCsmnX1P3MXuSqH5Rhx505HaS2zABmsFN5D/kI5qMV7eGaYykqHmMfDZXqJ
-	 QzvGJFIN8DPHltAzVH62R2ibPehalNvmhc0V1L0pMKoMp8545eqMXpi4tSfkUKKjom
-	 mYo3L9c9Cpa02jP3NA/ssCK+or5eNXff2jYOyqPJ1vSCywS81h2qvbpfjXt8i5xyl3
-	 5yE9/efUJBP1Q==
+	b=OdleRt+2SbvKj/v0G3elyQ10jHVItn2AczI/Bu7TjjQMtbuBMreodArxjoL/tC52l
+	 u31lNGbXHtoNLuMoeZAtrQ240j8obE4QTZmqokndT/qIr8LTjU1CLKq7idcKXt3QZ1
+	 LKDjImG4K8W2yxL5GElLV/FBdI4GM6aQY5cUtCFrgNjMIMlU1w/MKNLwq7rJoC1zrO
+	 B60M7MK1uy5OpA4DDGnNuvzm8Rp8KCfmWwLc62fcghBYaqPkEAfwAzquzOhNI/MIUn
+	 ffeackEVTkbp4zXkeXeOFDh7hI2xgpX0+GyJl9gISJ78uMcxMb95SXRlIdx95+/08Y
+	 f8YCJGAzvbHPQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/7] mm/damon/tests/core-kunit: add a test for damon_is_last_region()
-Date: Sat,  7 Mar 2026 11:53:50 -0800
-Message-ID: <20260307195356.203753-3-sj@kernel.org>
+Subject: [PATCH 3/7] mm/damon/core: clarify damon_set_attrs() usages
+Date: Sat,  7 Mar 2026 11:53:51 -0800
+Message-ID: <20260307195356.203753-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260307195356.203753-1-sj@kernel.org>
 References: <20260307195356.203753-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8E892A000A
-X-Stat-Signature: 5smarq84zgw5qneeg87edjruuox43nut
-X-HE-Tag: 1772913248-34600
-X-HE-Meta: U2FsdGVkX18vfaohGw2o/+T685F8n9DMiGnSCAhmnmSZDeXIiehPABDmQoqhlpn8P818OApAkpf7NtoOCLd6FmOwxuIFHj6c298I1nBAqfHsb8chpbG6xS2E4JUiOOOyvzhJk0O0v866P8i6ekpp3XXlxpTTCoD/QspEdevys/ngdsrVSmnuHlUKWAkDN0b55ig00GEHMwpbVAPvmAW8sg0yFY3TMG61ILMrcnj4X2nPlDUpbr1D0y/z7v9FUm+hg5P4V1ziypEGLirg/rq87AWJU+z+4tPHubTEGKugYnLQAbHS9b/uPPWzUshajuAa/BEtJmC2MB2Cc6V/gWrWm3MBYjox2S8kFCUCHZQeGITOVz/dUzn3d3orpCLIto68zjxAQMi2WaSi4XlHBEr+1tSIt2fFvjOriJT60ojJymp7l1gJCwDd3X82A4iVW1DTeNwEpZXLPYfmYQnCdl2QvLTtuRX8I3YZI3kswvdCcOigbzQtAmVw3vqzQh65P2YnuU3Bea6MC+9OouZ4XQOuxA+qu5SCMC+xPxQ/Upe4GZi0p8/UnVDSrHMMu6oPGil8ogAmXtvmFyQpWCuLEghExezwvT6iIp5bvOVr+zP8/5feC/5Empusr/1M4nxp3tdLWoqqpOvf6tXzlCMI3ZiXLcRHu3i0liVloeKjmZQ878CxaUPLmTmYjenLNAda8JlOzhqJwHx+rjFss6pn8QnsKdxWIKl1K++6uaNKgtyZfm5y2UXghFbIPD/Q6blcWBqDHnRQm2xTEX7k3iL7qTZvRdPpRJIJMArURx5q1ZXz3LD09KjWphDqN5r+Ff1rgkutNIHuy4NFxgUXlGJMyd5mLG70dS0L/lRQSeb9EuE9QsEKsxMUPYhfRlfSgU2PPP1lN/lt8kQEGVcgBBymX3iaCvV/kk5+G+rmEj9bH4kS2e7IckBlt/lr7Z53GT3YaeFadiurB1j2LJcmqcr2vAR
- mvbETV4Q
- y0w8mvHofgyO6WxnOpDryAawuRdp+pMdhDQkSMSKws8mZuovzi2Nam/6JEkaFVq7Ut4ilgkntGVWOMvD574I1fzFUANAIIXWYx1sXgqhYUn9AYh46Zhz/Nm9Aioz8Rw5rvUy55KtCkioyHDPBuFvl/PJydX6gZ6rQCP7BhPm00GzT+8LRnGkofATYwgYrfEPNGdQ34yJvfK/US2C0fbG8T/7nRigxv/NfoHorIJNUFyVARXXeo3U5AvQ0kPI2kfrm/gdP7NVNg+Ts/kTTeGHM3awCug==
+X-Rspamd-Queue-Id: C34BE1C0002
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 1f4mh7a3rwnd8tuf391sxxoc1zixst3x
+X-HE-Tag: 1772913248-23628
+X-HE-Meta: U2FsdGVkX193kU4fQUgMclK6Hw3zD+UiFmLDP3bNp2zRSHoGdMB/wfz2sWjIkxd99ZMDD1cIlNdp2+CklG5zRaqkuYarlJnB0JljfCkAgQ3TEy4hKJ3AaKj6kdajYkWtVrAvbh4rjFazRNSJZ3VMOS60cXZdy0Bv3Ymum0Y1Qevp7Rcs7tNLj2vE6p4V2i+fUWdWR/gAcuv9yyS2OuQGr8vrzhLl3r/IEjLMCW0L2rKgKG0pZFkFxqaN23garpktrhHixTkIBhbAba2BN7KB71+ftli/+z/ODH8rbt4xcng3QXzCsZhNdKl3hTM6QlCflQxvnvcB/X5zFKNZg3mzK0/Tul9Be5ZyoMay1NjUvw6sJ+en4kw0As26o6O6PmnyaWaD3KKvdlK48vlw8L6dKIXR89PCXDPmjhFn5wUnRDNyOSbOJX9gxbCZfUVh/NIYt9XZtBhmRr+CSgeZlG1+yixQw8/nED4sQTJGyKmIljfOf8xBpgQxo6ISJaXP64bkmp087VkpLwnshBxk8uA5LeCSZYtc1NejqKOjtZN7wZNxWZ0xOsg8mZj7fE9WE7Cnx75uHDbf+0voihzKdO4Rm6f9v+38Se7F6git033RGVxASaSdBlWY7sJ04mnTFRymTS5EKEK08M/y3l9vfbd6Q1MDzUVAMH6V02nQ6SBrbpo5m40T0/Hyg3grvv/x0iO2epVh3alprELmnHoX7E+CjShvlYtC9qKYApkVP+/Z0ZAeFL4YB9z4vclwRKLB6mCGB8msV1sV/cSGMy9OT2uiclvsWkrKwk5PJaXc6cOAYJSNyiXjfEBwVDAYuz+P3/FXryoTBRiEQ/kS5eOXkYWTTZ4jHbioVOZ7igdXntmOLy+gVvKAFZJNYpmp5/IVyGRoXarTLvjmV8spZOiulNVpvevGtVvKClu/F2OwW7hEHkoHdCN4IjPqt58UvGisOiHSaPWpwO8pS3yJBw2xfA7
+ V352fCel
+ L26PC0fbLAzphnzbmK/17h7q9QJotmd0QAj40WqW638M9gJkaz95SalriJkfHr/fV68UnHMByvn3qDVzN2fb2cL6ICswNGYpmG/Izz856+aDmN4NBYTxZsr3gvVLC9Aczg3UpU2Qeau9leI4xPuRhoBlNCpBXwWYTA/aK7oqO6Yul9c4Jv6wGggxglBacVI/GFNS/pxZcrDhHdRmgyNXcSoHBe4VNER6Q05Om4dZlJ/Bo5LuVGjcwB1rT445elNGbXHSeUp0cVai2M7TBWTbI082HSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,57 +92,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There was a bug [1] in damon_is_last_region().  Add a kunit test to not
-reintroduce the bug.
-
-[1] https://lore.kernel.org/20260114152049.99727-1-sj@kernel.org/
+damon_set_attrs() is called for multiple purposes from multiple places.
+Calling it in an unsafe context can make DAMON internal state polluted
+and results in unexpected behaviors.  Clarify when it is safe, and where
+it is being called.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ mm/damon/core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 2289f9e4610c0..e86d4f4fe261a 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1311,6 +1311,28 @@ static void damon_test_apply_min_nr_regions(struct kunit *test)
- 	damon_test_apply_min_nr_regions_for(test, 10, 2, 10, 2, 5);
- }
- 
-+static void damon_test_is_last_region(struct kunit *test)
-+{
-+	struct damon_region *r;
-+	struct damon_target *t;
-+	int i;
-+
-+	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail\n");
-+
-+	for (i = 0; i < 4; i++) {
-+		r = damon_new_region(i * 2, (i + 1) * 2);
-+		if (!r) {
-+			damon_free_target(t);
-+			kunit_skip(test, "region alloc %d fail\n", i);
-+		}
-+		damon_add_region(r, t);
-+		KUNIT_EXPECT_TRUE(test, damon_is_last_region(r, t));
-+	}
-+	damon_free_target(t);
-+}
-+
- static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_target),
- 	KUNIT_CASE(damon_test_regions),
-@@ -1339,6 +1361,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_feed_loop_next_input),
- 	KUNIT_CASE(damon_test_set_filters_default_reject),
- 	KUNIT_CASE(damon_test_apply_min_nr_regions),
-+	KUNIT_CASE(damon_test_is_last_region),
- 	{},
- };
- 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4e931f7380477..7f74982535aca 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -751,8 +751,16 @@ static bool damon_valid_intervals_goal(struct damon_attrs *attrs)
+  * @ctx:		monitoring context
+  * @attrs:		monitoring attributes
+  *
+- * This function should be called while the kdamond is not running, an access
+- * check results aggregation is not ongoing (e.g., from damon_call().
++ * This function updates monitoring results and next monitoring/damos operation
++ * schedules.  Because those are periodically updated by kdamond, this should
++ * be called from a safe contexts.  Such contexts include damon_ctx setup time
++ * while the kdamond is not yet started, and inside of kdamond_fn().
++ *
++ * In detail, all DAMON API callers directly call this function for initial
++ * setup of damon_ctx before calling damon_start().  Some of the API callers
++ * also indirectly call this function via damon_call() -> damon_commit() for
++ * online parameters updates.  Finally, kdamond_fn() itself use this for
++ * applying auto-tuned monitoring intervals.
+  *
+  * Every time interval is in micro-seconds.
+  *
 -- 
 2.47.3
 
