@@ -4,111 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 320F1FC9EFE
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 14:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 914F3FC9EFE
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 14:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 201206B0005; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
+	id D504C6B008A; Sat,  7 Mar 2026 09:36:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AEE86B0089; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
+	id D27606B008C; Sat,  7 Mar 2026 09:36:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 091056B008A; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
+	id C537E6B0092; Sat,  7 Mar 2026 09:36:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EB0046B0005
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 09:33:33 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8ECB51A026B
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:33:33 +0000 (UTC)
-X-FDA: 84519510306.03.4494186
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D5DF780009
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:33:29 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jwVbHPRL;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B466D6B008A
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 09:36:15 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42B571C395
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:36:15 +0000 (UTC)
+X-FDA: 84519517110.22.C14FF90
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7240E8000C
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:36:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QCHi+T6L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772894011;
+	s=arc-20220608; t=1772894173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wm9AUsieKINCDCA+yyB5GmYYUIOngh9Dp+zyEKNVaGc=;
-	b=yzBO9KHq9mLuWqUzlYODLZC2LXwlkXn/T9nGbU7Nx3ukjDv/Pj5EEzIHHoKoWWXhNOl0zh
-	bnT3vZtC+7r5+vS8GejbNe65lzUETmHnNfW5tug/JSU2EjgQBuEYSuQf0zE48dUiPHwYb8
-	ZpeoSUfx67ENKeLzRUUdF5Aj0bHo1og=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jwVbHPRL;
-	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772894011; a=rsa-sha256;
+	bh=FK4cahr2Z+5GEumxXm/3Zlvde4k/k71gu3JdZggtk9Q=;
+	b=ImnpWZJA1YeJCKa0KGWDTI0KL7LVuplAFlnKUHl+hSRWojzTPiRjU7IYm+x7Dm6h//6LNf
+	gCYOeuUIm5ALmejfgPBw2B5ZfiglRtZulf4B+TvgHLWmseoNKaWy3bwwd0EiYpyBIWAC3e
+	487h02MUWOB/oS8zXFh0EB6zxEWp7u0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772894173; a=rsa-sha256;
 	cv=none;
-	b=Eud6VlyhAnwNEOzaq5ckToQQQD4rOsAVs3eicrH+wuVx9P76oaibGV1/AL0hB1/ovMOHj7
-	2afj9okASKEFeATClul4LR03nO6dWQsaq4y7ufQf2A2mddcIbLsEvqf/7vmvxsLnnAtogV
-	JMPKMmYxiXiKyNKCTL5MGlIlcKkEvo0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772894010; x=1804430010;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MQ+yt5XOavwgGdppdINTOkJAiLO6+ABk5bgoDv4J9aI=;
-  b=jwVbHPRLmf3jbN0Kx1hu2Vrlv3tTF1HprGJy5IqF75uft5+G8CSmi/1l
-   XpP2DZuSTlEaxms+XEfKe104adWGJ25cqrCHpOOEQeysBcK54tpRBbtRK
-   v8PMkXR5R0VyPXfCT3DMR6o5dfPprFiCu+OxH4B4MGJuJEm3RZ7UXT5Xx
-   +u6sr7vnBb2A8nFyN6w1iV3dLx0Ah3Qa1C6Eyk1Gjac4CaSD4aQK4TlOY
-   g6VXapwdVyMIxTU61Ee9IQdBPLPkUfMYNkczqee70EnK611pJVxT9dkc7
-   eNB9PQKp3bU5wWfBbs82ZXVbwIZdfGlHiFALO4FVzYhJqj6Mff9z5Aq9T
-   g==;
-X-CSE-ConnectionGUID: N+qC0HgaRi29/0VjcfMi1w==
-X-CSE-MsgGUID: A4tXhziUQBSWczt+N1Z+vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11722"; a="74171590"
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="74171590"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 06:33:28 -0800
-X-CSE-ConnectionGUID: bfLuj/j3TcaKl8o5BKZvKg==
-X-CSE-MsgGUID: 5d60jMlaTaa8hpa25AhjXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="215902739"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 07 Mar 2026 06:33:21 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vysiT-0000000025R-3M8N;
-	Sat, 07 Mar 2026 14:33:17 +0000
-Date: Sat, 7 Mar 2026 22:32:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@suse.com, vbabka@suse.cz
-Cc: oe-kbuild-all@lists.linux.dev, apopple@nvidia.com,
-	axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
-	david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
-	jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
-	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
-	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
-	rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	surenb@google.com, virtualization@lists.linux.dev,
-	weixugc@google.com, xuanzhuo@linux.alibaba.com,
-	ying.huang@linux.alibaba.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-Message-ID: <202603072210.TSPUKsyq-lkp@intel.com>
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+	b=iYiaKZiAfVXEKB/ZnuhSU9tsLbxqEBAsuwFDWlKcWeQm6qy4WL8IR1uXJinphMyrifMYat
+	N7vI+c3bSSdAN6iCknuP/DUNBZkYHOAR63xM696xSVGQ/LDtUgwhmBAQYIsNFxzBUASfWR
+	tCU2hdEoFMcar3Y2rXGKxbKGc5dtLmI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=QCHi+T6L;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2be26842fd5so2223816eec.1
+        for <linux-mm@kvack.org>; Sat, 07 Mar 2026 06:36:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772894172; x=1773498972; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FK4cahr2Z+5GEumxXm/3Zlvde4k/k71gu3JdZggtk9Q=;
+        b=QCHi+T6LyvOaHasHRYqdytIKwlHald+s0qlKZxcMMk4h6ORXCZ9QlTva7kk/h1P+gE
+         D8w2GbgKGThy8ueNvS/c1P3k5P0SqLAAbfayfx+g5Bhu95xphak8Z/h3MfoPOgNr0PNR
+         0/jXNUY5ys+fzyAWTjp/P645PCgJfKxM7COnib/Yf8DiUp/GQFDlr0SOBmOzyr6SF0Gm
+         LDvKeOdNBJxjIY7rMEGG8dqj1A3Dnp/vHsLhnYjCIxua8Q6DYCMCL/6xX2MHPjkYosmN
+         Uw1Hg8yt7PTs3GuoEr3lM/G9Qba6Ru3RjTUNYnobZAjY68iQUYlG3bXS0J+DTFgh7QHc
+         yAMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772894172; x=1773498972;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FK4cahr2Z+5GEumxXm/3Zlvde4k/k71gu3JdZggtk9Q=;
+        b=sIeAsIgss7zvgZMaoUXpEHkC5WNYEUq0bKMpYhXd0/SIgu+jtFS8bjPque0O7PfLQe
+         H2PKRzJTupZqrqyCWYC1/BdFi5bPXz0NMTNnoucyTTrnukz6nlcsQ/0NF84aZ9FactfK
+         eQJoUdboo0oLnf0lx3uMyHvr32QLcBQDxEhE5D4HJbgea1ELCRJnaK7qOty9l46pfMQ/
+         ZwTr7+vZvES5MNvniTdgMBi5LNSYyx7tZ4KaCrTlP1qkk1wW2ahxICk0nMhgFVkGJYtI
+         EwtW7Xu9d+kCoxq7Phb5HtSqW3QU/vAwbmWc6pcBqs1SFrazpewTcOSf19tSpObhMF/t
+         r3Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvYUcoNYHRIRxHr8aBRtlp7ea8ASEyW3eKtIo23fulVeSeB9hJayfjzp3dfBDYmr/VDdJtTauBJA==@kvack.org
+X-Gm-Message-State: AOJu0YzcALKDaB0Aa8nEaoke894yMLhVaShxB9YOaHjKqaZAx8RkhhKR
+	7piGzGpSPlRrBVS0xcDSA7VnFCtsDMrznc1iWJMMziBbMQ3mkaEoP3ar
+X-Gm-Gg: ATEYQzw/tRTmTRBOxFo8ZdZCp8jftyQOtFTsiB+RjXYR1ky+B/wG+nBD7CfVXP4mKRH
+	yJYHv9n4uG5eM+YOKMabH86OUf72WdKCyxB+DE6+5ZHnqvgsYX9HQyi6IWh9dchfMX5hRLAB125
+	zgQ8EFjtzCqzufFY2K8NPpLAXHC2YIWQ3gwUEXylkbvoKGwMxPs75UwXxBg8somxmXObAnFojSY
+	NiCJiaRLkkwEUK4hJ5/QgAezgxHH4LhI+jTK/JPeghRUD4Z5DYkCHMQeTpuD6JxxUZr6g+CV91I
+	mIbJ5JQk2k993KV60Z9WVOtNixbXkPUiyHZIsos6n95J2fmOPCBXyI46+Yuiths99Z6bK8h/EcZ
+	b0yQwjjAIkpWIF1GzZ1YPVHirlNnYVeVRGI538oqulO5ArjFytZlj088xNktgDlyaHZT37wFyr/
+	wnD9+DiSYNJj+He9rsdg==
+X-Received: by 2002:a05:693c:60d3:b0:2ba:a7b8:3fe9 with SMTP id 5a478bee46e88-2be3e18f4e7mr2691990eec.3.1772894171949;
+        Sat, 07 Mar 2026 06:36:11 -0800 (PST)
+Received: from zjh-MS-7E01.. ([2602:fbf1:b002::1032])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f96f64dsm3481762eec.27.2026.03.07.06.36.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 06:36:11 -0800 (PST)
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+To: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	SeongJae Park <sj@kernel.org>,
+	Jonas Zhou <jonaszhou@zhaoxin.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
+	Jianhui Zhou <jianhuizzzzz@gmail.com>
+Subject: [PATCH v2] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Sat,  7 Mar 2026 22:35:39 +0800
+Message-ID: <20260307143542.179953-1-jianhuizzzzz@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260307045520.247998-1-jp.kobryn@linux.dev>
-X-Rspamd-Queue-Id: D5DF780009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wknm3igefa4o4ncfzh7y6er6ismt644q
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7240E8000C
+X-Stat-Signature: bwc15pczegikx3kujty86m88mmzto884
 X-Rspam-User: 
-X-HE-Tag: 1772894009-379914
-X-HE-Meta: U2FsdGVkX1+wwvYgryFyiiHx0C1FzEgHl7nYTAbNlFzQd8lzM/DnZJhWQZDW7SMn2LA+C5l8Keb1oX9fsrB4wbP4ICfSeolqXXwE1NoxCFOybub5ttaVZYcznFAqb+4WcuLUg+j6SgUdYXOr6MjWbODo/qHLzy1Wv2U/isBLWkcaSauifWI2U3HugUy8m1iws+E88vWG+/5f8Owpm3wm2E/I0lEcb/0yernNeaWcMHbTi7Q15kjokYW8YedGylBB86/mvrSc57Fr0ZnHWLKK+mwH0ghYoKUAancdAbwH0u3CCYzu3vjgelPV8081Rz+Qif7yVgbVIyL4cILm+KKpX5mioP04HzE+60YRDtE8nWO1T0H87ohhlJLFFX3Fo/oxQAarMOvTFm0XcebXlfFUGNzUv3qqbUTRrl1eKGFbwjODb0FQIUamE8O35QGBa+IBBq0mZRbCQ5BlQLZxqOmoOTJ4RhOj5IWuj6HDnQ9EYavwBAwYbzAvMJglYgW5d1xbpmZQixZSUjRP+p6E5m+adBc+b6kE7i41B+XGAU8EEJNysL/KQx3zak+ujAQmHKcGypgSet5RGEplbhNSxSwiQysM/CN06yqdoB6osyzVV/t5vUQr1uxZUVyZ0pQ8CMu0P1IzRv52O0rIqQmCUTLtsUjyaYjMBdGLB/OqoWf0amYMxYxhfAZudJXEfMmU/tlAKVEcWpitKmEwsVRPFAJhvQ5yErXtJ+6Hd5bQdMSWU0ZlQwTjPeDIAqWwMSbaKTNtN+MYOMTpo97a2HSsc3Q15ocLNH/aHgRrwzBHyBs1vW21FyRW8X9YnVxzFLLdZ+eTUfri6ZgwaEX1FmD9q1/rz091gd38XyikzpbXcsQ87KaJPiq6yFNWwYN47RhAJpZ/QzGJr+bskcxM04wIsXWOqjOtoOPr6iUl4o2RB99xSTjWIOFP3F9JPzX7JQ/Wh7CpamKeegnjjA4pBl9tPu6
- 65qZ5mxz
- atSaHVRVTHT2XYYY1MH17YsbIFcW1Y0BKozzopuLQkcqzbSdoe2LTXk5XrczII9twMiAan6x9j05TTA42aH7Tu3R5R2ZZ3/s0IX2YnyWJXUPQXuQbrAf8xCp1wLyr1wKuBzpO1lYGiaHikV7MhwYwoXbjr+zOl1E9QeGY1fgz9jXyfujezcc4VEbikFtBApqSgGcPdAOTuPxUIP5ILY9OoZKOk8tCktUawKupRfrf6Awn5DwGcQaFz5D4pqItSsGRRrCtXRG7P2QKgHX9YuFrCGhgCZys9DoIPnc54OI97B5kCTTCuvZ4oJUV6qtdUXVZN2v+Umm7IAHZf6YW54LGQSvXAOQjLtDc8Ua67a0CwUJosnEh5Hsn9lwHI4af/RrGoynm2+8TUYUTJosH+Vzu3dsCKg==
+X-HE-Tag: 1772894173-165719
+X-HE-Meta: U2FsdGVkX1+iEtY8THoZQsZ+929X5Q4qiN5C2Aq8VxdC8xxfcBN55s1hJqqOjBOxISL3sS3Jaoy+JeAlyKDRG5gE10u387yI8aXm+tOGN28V8aW6s0aT5MtS31JGoXntnwxVM9YrUGZFNCRBLJYu7aTi4cgj4sxm36l8F4Lq/8MIVMNr66QPaaz7oTzTbgJofXM885gPjz0yoqXPdcPT5lOXE79ExIIzrH3zsQyLg6KBKcy1d5dht2bssW4Hj8Nm5CcmAssPxGkGsyAWES/DSogZu6CpF6Id6rPicnAHivxzKmis3cDbkt0dGPks+jmhCx3gkTTqUwtk+P9WZQHCm6LGdJQGW8ofiJoMRM2crazWoVEhxBOK415UGot06rgyGwA+2XDNfhxIko8y0FD/lULgQEQfd/l2XJw6rqvWUp87C2F6a2VlT2xcjcJxT9sCMfXBS0WwTDtxFKO67HQDBG17rmqBC63qdF70kgkJK7F0TaXS9EAjpHOW+Gvzt/X1ZIYF/Fs60xG0Dc1R35xGcRLd6F54x7suWfhA/X6xwgff4Y41ysF1440vJ58RWw9DwvLKv49Qavn+i3fhAy5ab1DKyQWD4FJKEEyycXs1LqplrgwTiBgFt3ouZil9v+T+pBpP7o4yz/neriMdjZ5AhksqrT7/m4cqId48tHgX8rvtcAcflaC+t1kAjdVSYjvsOYziYPW/Ysy6UJM7gPZ7+1HJE+P0FeFBYMuDPolr34AN2/TKD/yWRfEus0Ztgb4FgyegesnNaN+Quk5hb9UVrdkolbH6jcr7T90YH9FSkc0chi2CRL/6ZdaN4kEDecA3mWck8a3pXtrkpP598YsPZLT2ozf9sMcsDvRdbd/2JevNhtME/70gmYiDyVXHpzlqyYSpSKgHcw7bToLT1TmZYB7HDAW08+5c5hb6z4I/yekIASWZrA7JSpCUX1iqrh2CqxKIgTcwaJdMDPlxP1u
+ zW37yL3t
+ 2iT9AobdSErsuJTZJBhnY0L95ZDsJvEMPzvRdwuGRp7KyHsRmdm6Mj4AHD+GNO5lHpbIWLXTZzOfD6vHZt38/vtAPTQ1baE7oCkMVLEadzbTWuSAuXZxz31a6mmCwNJrJcpvga+EqFRaFgDLLtC74kg4rCdblbVtRLzJCBUZ4rhqeMRRLaOlnB+PCDvQYOJ5zGxZBkP9XTdHqXoxkf1V9cDW7WEF5iBlZarry2jO9zHXrWCmfT6Q/m0OwHz2yYp8Bx2pe61558RY3EeG5zYkxl2wClgAUhlI195rYS/alujrJqV/3yCIy+xw+CvotY1+bC1pGUzat7X3UakdqAumZAwxCqwRGL4RplbkKU8nVvCFB50l7/1E8hFqQdQwbBqRkCcd1eR730X0cZPMJHVJO8yXT+2/y+BU/CTVw4fOu5wkXh1e4NDBTNcvTZ1EZv0VLQq/I7CxnfRgFvDc7l8ekI75Ysbn0A2EdYQf8Z4azALADSCSDKpb39DXT5SrZLH4FkqZNVXQAvR1TXgt/pkZ41G8z7nu6rkXFFj3sQ6Oim6mGigG5xf+p8UXu5lLqJUHHLf4Qo5loWcNkrlc5TPfA0KNejgpqy52y6dBmvSZhC91TnSU9p4QVhAbYuCaF9OcB6ASuBdQbe6mskm1S5cdi+a8ijLIfbjzTpusE2In9WR3MqIbcgkHYYJjpfm0K7aaa3V6MFGvOWMkUIZng00OpkNqo3l52/vdk1dW87cUjMnlg0NDpn/UUK/tlJDPTAhKfMV+6VvysmqvcV08=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,119 +129,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi JP,
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units (as calculated by
+vma_hugecache_offset()). This mismatch means that different addresses
+within the same huge page can produce different hash values, leading to
+the use of different mutexes for the same huge page. This can cause
+races between faulting threads, which can corrupt the reservation map
+and trigger the BUG_ON in resv_map_release().
 
-kernel test robot noticed the following build errors:
+Fix this by replacing linear_page_index() with vma_hugecache_offset()
+and applying huge_page_mask() to align the address properly. To make
+vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
+include/linux/hugetlb.h as a static inline function.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Cc: stable@vger.kernel.org
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+---
+v2:
+- Remove unnecessary !CONFIG_HUGETLB_PAGE stub for vma_hugecache_offset()
+  (Peter Xu, SeongJae Park)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/JP-Kobryn-Meta/mm-mempolicy-track-page-allocations-per-mempolicy/20260307-125642
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260307045520.247998-1-jp.kobryn%40linux.dev
-patch subject: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-config: x86_64-randconfig-074-20260307 (https://download.01.org/0day-ci/archive/20260307/202603072210.TSPUKsyq-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603072210.TSPUKsyq-lkp@intel.com/reproduce)
+ include/linux/hugetlb.h | 11 +++++++++++
+ mm/hugetlb.c            | 11 -----------
+ mm/userfaultfd.c        |  5 ++++-
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603072210.TSPUKsyq-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   mm/mempolicy.c: In function 'mpol_count_numa_alloc':
-   mm/mempolicy.c:2489:17: error: implicit declaration of function 'mem_cgroup_from_task'; did you mean 'mem_cgroup_from_css'? [-Wimplicit-function-declaration]
-    2489 |         memcg = mem_cgroup_from_task(current);
-         |                 ^~~~~~~~~~~~~~~~~~~~
-         |                 mem_cgroup_from_css
->> mm/mempolicy.c:2489:15: error: assignment to 'struct mem_cgroup *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-    2489 |         memcg = mem_cgroup_from_task(current);
-         |               ^
-
-
-vim +2489 mm/mempolicy.c
-
-  2429	
-  2430	/*
-  2431	 * Count a mempolicy allocation. Stats are tracked per-node and per-cgroup.
-  2432	 * The following numa_{hit/miss/foreign} pattern is used:
-  2433	 *
-  2434	 *   hit
-  2435	 *     - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
-  2436	 *     - for other policies, allocation succeeded on intended node
-  2437	 *     - counted on the node of the allocation
-  2438	 *   miss
-  2439	 *     - allocation intended for other node, but happened on this one
-  2440	 *     - counted on other node
-  2441	 *   foreign
-  2442	 *     - allocation intended on this node, but happened on other node
-  2443	 *     - counted on this node
-  2444	 */
-  2445	static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
-  2446					  struct page *page, unsigned int order)
-  2447	{
-  2448		int actual_nid = page_to_nid(page);
-  2449		long nr_pages = 1L << order;
-  2450		enum node_stat_item hit_idx;
-  2451		struct mem_cgroup *memcg;
-  2452		struct lruvec *lruvec;
-  2453		bool is_hit;
-  2454	
-  2455		if (!root_mem_cgroup || mem_cgroup_disabled())
-  2456			return;
-  2457	
-  2458		/*
-  2459		 * Start with hit then use +1 or +2 later on to change to miss or
-  2460		 * foreign respectively if needed.
-  2461		 */
-  2462		switch (pol->mode) {
-  2463		case MPOL_PREFERRED:
-  2464			hit_idx = NUMA_MPOL_PREFERRED_HIT;
-  2465			break;
-  2466		case MPOL_PREFERRED_MANY:
-  2467			hit_idx = NUMA_MPOL_PREFERRED_MANY_HIT;
-  2468			break;
-  2469		case MPOL_BIND:
-  2470			hit_idx = NUMA_MPOL_BIND_HIT;
-  2471			break;
-  2472		case MPOL_INTERLEAVE:
-  2473			hit_idx = NUMA_MPOL_INTERLEAVE_HIT;
-  2474			break;
-  2475		case MPOL_WEIGHTED_INTERLEAVE:
-  2476			hit_idx = NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT;
-  2477			break;
-  2478		default:
-  2479			hit_idx = NUMA_MPOL_LOCAL_HIT;
-  2480			break;
-  2481		}
-  2482	
-  2483		if (pol->mode == MPOL_BIND || pol->mode == MPOL_PREFERRED_MANY)
-  2484			is_hit = node_isset(actual_nid, pol->nodes);
-  2485		else
-  2486			is_hit = (actual_nid == intended_nid);
-  2487	
-  2488		rcu_read_lock();
-> 2489		memcg = mem_cgroup_from_task(current);
-  2490	
-  2491		if (is_hit) {
-  2492			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
-  2493			mod_lruvec_state(lruvec, hit_idx, nr_pages);
-  2494		} else {
-  2495			/* account for miss on the fallback node */
-  2496			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
-  2497			mod_lruvec_state(lruvec, hit_idx + 1, nr_pages);
-  2498	
-  2499			/* account for foreign on the intended node */
-  2500			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(intended_nid));
-  2501			mod_lruvec_state(lruvec, hit_idx + 2, nr_pages);
-  2502		}
-  2503	
-  2504		rcu_read_unlock();
-  2505	}
-  2506	
-
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 65910437be1c..f003afe0cc91 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(struct hstate *h)
+ 	return h->order + PAGE_SHIFT;
+ }
+ 
++/*
++ * Convert the address within this vma to the page offset within
++ * the mapping, huge page units here.
++ */
++static inline pgoff_t vma_hugecache_offset(struct hstate *h,
++		struct vm_area_struct *vma, unsigned long address)
++{
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
++}
++
+ static inline bool order_is_gigantic(unsigned int order)
+ {
+ 	return order > MAX_PAGE_ORDER;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 0beb6e22bc26..b87ed652c748 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1006,17 +1006,6 @@ static long region_count(struct resv_map *resv, long f, long t)
+ 	return chg;
+ }
+ 
+-/*
+- * Convert the address within this vma to the page offset within
+- * the mapping, huge page units here.
+- */
+-static pgoff_t vma_hugecache_offset(struct hstate *h,
+-			struct vm_area_struct *vma, unsigned long address)
+-{
+-	return ((address - vma->vm_start) >> huge_page_shift(h)) +
+-			(vma->vm_pgoff >> huge_page_order(h));
+-}
+-
+ /**
+  * vma_kernel_pagesize - Page size granularity for this VMA.
+  * @vma: The user mapping.
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 927086bb4a3c..8efebc47a410 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -507,6 +507,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 	pgoff_t idx;
+ 	u32 hash;
+ 	struct address_space *mapping;
++	struct hstate *h;
+ 
+ 	/*
+ 	 * There is no default zero huge page for all huge page sizes as
+@@ -564,6 +565,8 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 			goto out_unlock;
+ 	}
+ 
++	h = hstate_vma(dst_vma);
++
+ 	while (src_addr < src_start + len) {
+ 		VM_WARN_ON_ONCE(dst_addr >= dst_start + len);
+ 
+@@ -573,7 +576,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = vma_hugecache_offset(h, dst_vma, dst_addr & huge_page_mask(h));
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
