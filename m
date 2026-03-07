@@ -4,111 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC936F55104
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:58:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06BA2F55104
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 21:02:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B3D96B00A2; Sat,  7 Mar 2026 14:58:19 -0500 (EST)
+	id 886476B0088; Sat,  7 Mar 2026 16:02:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28BB66B00A3; Sat,  7 Mar 2026 14:58:19 -0500 (EST)
+	id 834626B0089; Sat,  7 Mar 2026 16:02:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 160FC6B00A4; Sat,  7 Mar 2026 14:58:19 -0500 (EST)
+	id 76AD86B008A; Sat,  7 Mar 2026 16:02:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F3E476B00A2
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:58:18 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2568B662E
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:58:18 +0000 (UTC)
-X-FDA: 84520328676.01.5B03183
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E4199160003
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:58:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PsZQ3g0W;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 63B126B0088
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 16:02:57 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B1999139A35
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 21:02:56 +0000 (UTC)
+X-FDA: 84520491552.19.1616097
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 57FF41C000A
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 21:02:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G346BLJB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772913496;
+	s=arc-20220608; t=1772917375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0frC3pflUkKX2BrGrk9TXUdtd3fwNbVNAduvnPqztVc=;
-	b=zvhzCsMC0SIqIEyBMWbf0HQkPMiBS7QIA+PnpkSpdbErOA8L6AGKfUEieWQkrG//RMSWGf
-	jNTqie9BZq+fZPHRWdRtkHoIggl11oX0+uzaWYz3pWNlETKKgx64a3N8fegTxfDe8SEidg
-	d4OspOoG1KZUmcBLpXt6nPqjZs5zaRA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ADZnWRLJX41HbimiAWc46WsaMJOcnmyZ3Uu/7VibJtQ=;
+	b=vfNN2mf7EGlLzxISdTN5FrEXYHy93snXgbjzY9kLo+U6UBBxXbWgiXTU8h0X9tJsmZyYcs
+	h5Y3oFU0+d8pUNpzGiBg+Bz4+4VN6DLITxYxMpTeD0aX4T4Lvw8iuHlwjV3Rq4N9SUCMpI
+	0O/ppMNdWI+W+nrG5TyMx6QSZJ8zFqI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PsZQ3g0W;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772913496; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G346BLJB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772917375; a=rsa-sha256;
 	cv=none;
-	b=S182NKIDKAW/fwp641YlWr5PqGKo8h4NmDrFHh71aD9t2aK/prxexsiND8gR8HCz2V6I47
-	O+jYpd1w8/l5O/V+z6aovkFPFZoOLjYqUVs2nBiZ0X9GhR9xScE6E8F8hl/emXapu9POS6
-	YVZZWrz433TYkj8lNNO/vBZfuj9nyDM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772913495; x=1804449495;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6EfkCLhJg+AlZw6TkaO6d/504vUAp5tN3HoH1lQUwjY=;
-  b=PsZQ3g0Ww+/LcdZffJdtXzZEhNRB2M3P6KwGOiM7XOSbrEffO4GyQdDK
-   DeyHrVNLGhTI//bQMfqzWsDDVr4o1VSx87+IArJJ9vCPRZjPJiBmyeSQ5
-   cNqju1LUhP+qJAZzjOzLDPDUa1qA94bqy2rR+drGetF+nPPEh6xjuTb/k
-   4YgLZLwPwM8NUQNyqTR3XeiqabipVmOwdogADUhY6HZ/2GbLePfk4EMiq
-   Q1itH2nGnTUi0KjmmjaphXZ7ubOo8iX6HUtLHS8FkZ57yWZtCz7nHQ7by
-   kN4X8eWvOIQkU0vAnTgz5iHHLSkC/35aQgd5fogwgRejzMi9XcWySwY8E
-   Q==;
-X-CSE-ConnectionGUID: xHiBlDIdSAGlP8vzXLBKtg==
-X-CSE-MsgGUID: 7+Yyh4xaS0CEGOHnLfJaiw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11722"; a="74038492"
-X-IronPort-AV: E=Sophos;i="6.23,107,1770624000"; 
-   d="scan'208";a="74038492"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 11:58:13 -0800
-X-CSE-ConnectionGUID: Wlk16Iu4Q/eU4k+9d912cQ==
-X-CSE-MsgGUID: /0+ldayrS5+1d6aZKJqv6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,107,1770624000"; 
-   d="scan'208";a="218552919"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 07 Mar 2026 11:58:05 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyxmj-000000002b5-2cTQ;
-	Sat, 07 Mar 2026 19:58:01 +0000
-Date: Sun, 8 Mar 2026 03:57:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@suse.com, vbabka@suse.cz
-Cc: oe-kbuild-all@lists.linux.dev, apopple@nvidia.com,
-	axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
-	david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
-	jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
-	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
-	lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
-	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
-	rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	surenb@google.com, virtualization@lists.linux.dev,
-	weixugc@google.com, xuanzhuo@linux.alibaba.com,
-	ying.huang@linux.alibaba.com
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-Message-ID: <202603080349.ya7tIjgk-lkp@intel.com>
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+	b=vYJ4Zx0KdmGxkA0J4ebQYxd16aX9D13yxEbCYLWNYYk+vU/OEcQUAi8/PaaUVK5szDa5kt
+	HdSxho9u0cmbI6+nS6VfZOl9zOd89HsWu3hfTrolJhUB/zJDeW2PiXJMMsXsoGu0dPR+fH
+	qPhWP7oRDOm+4CPFiYShiqWTYEkEyjo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B944A60051;
+	Sat,  7 Mar 2026 21:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B188C19422;
+	Sat,  7 Mar 2026 21:02:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772917374;
+	bh=U9kK/VbZNvIYMl23ToOaVPKCak2t7IyWptoDNzgEeDU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=G346BLJBP6m8uwFhjscFYwSKaSVOU/EWK/dMAADEQ+jCKjY8xm9RaxOLyIjh78noL
+	 JR25BgKuE5VnpxSTT4/ubb0psd0RB+1Xgl2Yos8AfIePNoZr8SvbSNP6RvixAsG0tL
+	 JFJNjiu1E94u5Dve9RfGz4taCwOnnasXXTDPj/LOTSv8cEILyBEYafKHk7+dCmNxSj
+	 tZJiBJdAvVWbjCnD5O5VvVypN6hIzlaY1uqw1BdGvfm34pVRmlxBwQKXIuI/PVLyc9
+	 uHiZlFAamtzeJyjpne4U0sBrOZSEcfrKM92ZU5F8qkNmUTMhE/Q53roMViId3I6z0U
+	 1A/IKnSnYkB/g==
+From: SeongJae Park <sj@kernel.org>
+To: lsf-pc@lists.linux-foundation.org
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [LSF/MM/BPF TOPIC] DAMON Updates: Tiering, Pagel Level Monitoring and DAMON-X
+Date: Sat,  7 Mar 2026 13:02:48 -0800
+Message-ID: <20260307210250.204245-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260307045520.247998-1-jp.kobryn@linux.dev>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4199160003
-X-Stat-Signature: 8dfjzz4u8pmizmcodywzq71tbx3n4khg
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 57FF41C000A
+X-Stat-Signature: warrbguyfj4fs1f9ne3ynrbk36uhr4xx
 X-Rspam-User: 
-X-HE-Tag: 1772913494-94631
-X-HE-Meta: U2FsdGVkX1+YBrhQaCwyDORPtzQH5ni4sO5VdDWordBZkEvzkodvjIOWcWiHAIKXH1NvlaWAueTn6wi9AM0+WeAps7CPNd8BQGah1lhTIxnnuWPviEswInMzoQfvnhtaQgnHWNNlI/JHjnsLhGaW4DPacTjXzjJRKTyY78KLtCp+CLkdG5kLCaxx15qpogU0S21VqENlGHnJ0QRpx9emQV+0Hb2veIo01HH0crZ5vVe5rdZnKUEA8aYcBsaZBKpOQUfCYXjRfI44q3N0XnYMVgpCN3o6HpxHyao06jV9dNpL8I1maHqwtJJAD9Ul7BqOAKaJZrAGKj9RbHRZCHgLAJ1HW6X8M6ypMRFXJd83XRWIIlVHnHkAsANfCaYXIr6V6UiGow2p+j7IvpSow4QFUCbvWAb3VDRh6AvdaGbbKXSG1VfDKFJdm2jEYGJQkNwcmNRbcRXg27e7OL0zV0QPrCwAYCcJ8ZZfdSsD6KXSk/itv8bzT1dlV3OGw8q2llkDrxDsPA7hGdw8cb/ei8OnG0wI/fVhxuJ3tBGjsKoYBZvE435Vd5DsuEgKaAoK+V4y8CoFr4q/azTt77hWiXta5qy1CDWq2x72cwllbicwHj/xNI+o+mGA7ENWEmTByDWKbN48eSg7jHK7ci+FVUYicnTLdbiQZ7LBBLvV3s+emsZbI/nMxpf9agRzseCUMna+Eug/r2l4ZmPexJlmpCrXuiaULZeUzUmwMF8S5bTkINHS9VT+8PFlTUUXG9cMBseAASC9zpjlSOMYoaE9AAHJv55psEXvAA18QnUTvBxOu3r4jj3Nmi3Itej4Ml3ApVwKlWt2i0Kgb9ohcgyz/3jYiS0qA12AcebctTCCCZyRX9ULqnDj88msNooPPu4Ah0YgrqjCB2+Vpepnjk3l+j3ljhczzlfPsNW9og0QYQ///OYP+lu3Evh5y10csq5ceSQwDBKuhhABGfnjKiUjmcI
- IjixYxDE
- iLd6YZx+OWY/PGzZKZGlLrqm+7fnvj903PFmJfw/vaf17GarOIL1kmTFJb0bKRHRP7ZwPX9BFbH0QPKY329/t47xrXzDi3FHeDTXp9YyBOJWk7Fuc7KSB4vhjyt6s8uc7fXfTxd+MLn81ckmn1C6t84l9qH2+3Mr5xt1LotKCcTlIoi3d11OcbnWkrzPyh19efQ5nKAfZeq+ZC+sVOAAplrTJ4gLZMn3VmO1rkcXp3snTrjlYs1G3YYRH0WD3oNJk3HzU+HLFs+V7vwK19K5Qy7VYKWZuvwrI5qRk/JgLVecraxXHDSNwQ0VRjgWMvdZ7gk2nnZPlWtg59z0wHhmxcUDieZqIP7lDfPGw7ecugWL4zLxNvaW37oPjh0Kr7xDRiBQEH+kmFDB2av3ISmVGbP9w9A==
+X-HE-Tag: 1772917375-94629
+X-HE-Meta: U2FsdGVkX1+OJW5tpbPDKNda2j4qMaP0K8LV9cE11C/raQ23T3uq6WRH39yLnVKGAb/aRelvN/IBeOptGJo/Z7g8c0HcWXd7RRrdmoZ5oDf+zqbngE8fuDk3wPXQBlZ4fW5punZIjJDilFTadDtNgE7WXOQwKgchEqIkrLWj6BEOhEkKp9ekveYYVdT5mzhDUjLMrLFxHuUXiR9Hl+Kkve+AXpPB0o46jgA+1+sKgsNVUdYKnpq2PY/jrIxaODyFzThjJzHQ7fYHqWKWaCtPYLGDzoZ2TZws6DiNKIyFpWCFj/Y2e3WqJwn7gbLK++QgBOjQfujP/AVcmJ33jOW+Owy7pOfkjnd/ra+/FQBi3FmY/rFVZl6uK7ESeINupmruLPDIERM+0UWbcZKYgisjYvFEZmltsv4OSYeVWFIUOW9cdxgQnmfv5M54dPa4KVMnD09wFCyRCSs7sweudsQjSWIp0ytzJHnZAkfn1qh9uSQjM28tRk615UmRFlPv+a2aZ/GBl+JZ3NjDmWSSEJHPV7jsgqBkA8UnPaSZ0VCjp+shGceg4gVghyqz6SYfCpCAshDYwnJYnQeek5nzt3/QaHrXl9XCib1MliQNTX6AnP30nYKOH9SLcIazgxPExukpLeeTBnjSboJwqzkDg+nDirAc+2MGqv6lvPDhEDUT/qeVUYISvilyU8fo9xLA4RqZ/ms62tkZA8BeB9TojINwJRh6tG/RXMiloENN48TZcyUMj4NefTsfSu1fA/+bmaLCV4PvS4HASnmTDv8H55ZjKHSLrzbqkE3+Kstzm3b8qRteGgo8IOEvBpYT7TEb/dRlMGBIKqaCLb0I51k6vf4oEGlJvkQIllLyQsWKRQrUfEFWdpEXgmk9hzKtKt1DG126WFz6HySGUSA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,120 +89,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi JP,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/JP-Kobryn-Meta/mm-mempolicy-track-page-allocations-per-mempolicy/20260307-125642
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260307045520.247998-1-jp.kobryn%40linux.dev
-patch subject: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-config: arm64-randconfig-001-20260307 (https://download.01.org/0day-ci/archive/20260308/202603080349.ya7tIjgk-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260308/202603080349.ya7tIjgk-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603080349.ya7tIjgk-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   mm/mempolicy.c: In function 'mpol_count_numa_alloc':
->> mm/mempolicy.c:2489:10: error: implicit declaration of function 'mem_cgroup_from_task'; did you mean 'perf_cgroup_from_task'? [-Werror=implicit-function-declaration]
-     memcg = mem_cgroup_from_task(current);
-             ^~~~~~~~~~~~~~~~~~~~
-             perf_cgroup_from_task
->> mm/mempolicy.c:2489:8: warning: assignment to 'struct mem_cgroup *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     memcg = mem_cgroup_from_task(current);
-           ^
-   cc1: some warnings being treated as errors
+Hello,
 
 
-vim +2489 mm/mempolicy.c
+In the last year LSF/MM/BPF, I shared [1] updates of the status and future
+plans on DAMON development.  Feedbacks were very helpful.  I'd like to share
+new updates and gather more feedback on LSF/MM/BPF 2026.
 
-  2429	
-  2430	/*
-  2431	 * Count a mempolicy allocation. Stats are tracked per-node and per-cgroup.
-  2432	 * The following numa_{hit/miss/foreign} pattern is used:
-  2433	 *
-  2434	 *   hit
-  2435	 *     - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
-  2436	 *     - for other policies, allocation succeeded on intended node
-  2437	 *     - counted on the node of the allocation
-  2438	 *   miss
-  2439	 *     - allocation intended for other node, but happened on this one
-  2440	 *     - counted on other node
-  2441	 *   foreign
-  2442	 *     - allocation intended on this node, but happened on other node
-  2443	 *     - counted on this node
-  2444	 */
-  2445	static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
-  2446					  struct page *page, unsigned int order)
-  2447	{
-  2448		int actual_nid = page_to_nid(page);
-  2449		long nr_pages = 1L << order;
-  2450		enum node_stat_item hit_idx;
-  2451		struct mem_cgroup *memcg;
-  2452		struct lruvec *lruvec;
-  2453		bool is_hit;
-  2454	
-  2455		if (!root_mem_cgroup || mem_cgroup_disabled())
-  2456			return;
-  2457	
-  2458		/*
-  2459		 * Start with hit then use +1 or +2 later on to change to miss or
-  2460		 * foreign respectively if needed.
-  2461		 */
-  2462		switch (pol->mode) {
-  2463		case MPOL_PREFERRED:
-  2464			hit_idx = NUMA_MPOL_PREFERRED_HIT;
-  2465			break;
-  2466		case MPOL_PREFERRED_MANY:
-  2467			hit_idx = NUMA_MPOL_PREFERRED_MANY_HIT;
-  2468			break;
-  2469		case MPOL_BIND:
-  2470			hit_idx = NUMA_MPOL_BIND_HIT;
-  2471			break;
-  2472		case MPOL_INTERLEAVE:
-  2473			hit_idx = NUMA_MPOL_INTERLEAVE_HIT;
-  2474			break;
-  2475		case MPOL_WEIGHTED_INTERLEAVE:
-  2476			hit_idx = NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT;
-  2477			break;
-  2478		default:
-  2479			hit_idx = NUMA_MPOL_LOCAL_HIT;
-  2480			break;
-  2481		}
-  2482	
-  2483		if (pol->mode == MPOL_BIND || pol->mode == MPOL_PREFERRED_MANY)
-  2484			is_hit = node_isset(actual_nid, pol->nodes);
-  2485		else
-  2486			is_hit = (actual_nid == intended_nid);
-  2487	
-  2488		rcu_read_lock();
-> 2489		memcg = mem_cgroup_from_task(current);
-  2490	
-  2491		if (is_hit) {
-  2492			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
-  2493			mod_lruvec_state(lruvec, hit_idx, nr_pages);
-  2494		} else {
-  2495			/* account for miss on the fallback node */
-  2496			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
-  2497			mod_lruvec_state(lruvec, hit_idx + 1, nr_pages);
-  2498	
-  2499			/* account for foreign on the intended node */
-  2500			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(intended_nid));
-  2501			mod_lruvec_state(lruvec, hit_idx + 2, nr_pages);
-  2502		}
-  2503	
-  2504		rcu_read_unlock();
-  2505	}
-  2506	
+Major topics to discuss in the session include but not limited to below three
+topics.  Of course, some changes could be made.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Followups on work items that we discussed on last LSF/MM/BPF
+------------------------------------------------------------
+
+DAMOS auto-tuning based memory tiering.  I worked on a more flexible evaluation
+setup for it.  I also upstreamed another DAMON extension that makes memory
+cgroup-aware memory tiering available.  An unnamed user confirmed positive test
+results of the auto-tuning based tiering.  Meanwhile other users including
+people from SK hynix and Micron are continuing development of their own memory
+tiering approaches and showing good achievements.  Because basic evaluation of
+my approach is done, I'm not actively working on this now, but working in a
+support mode for this.  I will share more details about this and discuss if
+something need to be revisited or if there are anything that DAMON can help for
+memory tiering.
+
+Page level monitoring.  The feature, which accounts the number of pages in each
+DAMON region of user-interested type (e.g., hugepage, LRU list-position,
+belonging cgroup) has successfully upstreamed after the LSF/MM/BPF 2025.
+Because it imposes high overhead on large systems, a lightweight version of it
+was shared as a future work.  Unfortunately not much visible progress for it
+has been made so far.  Some progress on the design is made, though.  Briefly
+speaking, the idea is sampling the types of pages in each DAMON region.
+Implementation wise, users will be able to set the types of their interests,
+and DAMON will provide the counts of the samples of the interested types, in
+addition to the access frequency counter (nr_accesses). I'd like to share the
+design and get feedback.  Hopefully RFC ideas or patch series will be shared
+before the conference to help discussions.
+
+FYI, in future, the counters of interests could be extended to do the DAMON
+region merge/split based on not only access frequency but one of the
+user-defined interests.  Then DAMON might pivot from Data Access MONitor to
+Data Associativity MONitor.  It’s just somewhat possible and sounds funny for
+now.  I find no real use case of that.
+
+New Project
+-----------
+
+DAMON-X.  In Crusoe, which is a neocloud company that I’m now working for, we
+want to utilize DAMON for both memory efficiency and observability.  More
+specifically, we want to show the memory idle time percentiles, and run memory
+PSI-driven proactive memory reclamation.  The straightforward way would be
+doing that via DAMON sysfs interface, or DAMON user-space tool.  It requires
+some user-space programming, though.  I want the kernel to just work.  A way
+for that would be running DAMON modules that were developed for the purposes,
+namely DAMON_STAT and DASMON_RECLAIM.  But DAMON modules run in an exclusive
+manner, so we cannot run those in parallel.  The exclusiveness is required to
+avoid interference between DAMON worker threads (kdamond) for different
+modules.
+
+I plan to let DAMON modules share kdamonds to let them run in parallel without
+interference.  The shared kdamond would be able to run on the system from the
+beginning or on demand, and directly attach/detach DAMON applications like
+DAMON_STAT, DAMON_RECLAIM, and future ones for NUMA-aware page migrations etc.
+It will work with a very minimum number of knobs in nearly automated way, but I
+plan to also extend the DAMON sysfs interface for more flexible and manual
+control of it for experiments and investigations.  With my humble naming sense,
+I’m currently calling it "DAMON Enabled Computer System", or DAMON-X in short.
+Actually this is a followup of what I shared in LPC 2024 kernel mm
+micro-conference, as a long-term DAMON project for the kernel that just works.
+I want to share Crusoe's desired use case, problems, and design of the
+currently planned solution during the session and get feedback.  Hopefully RFC
+ideas or patch series will be shared before the conference to help discussions.
+
+More Topics Out of This Session
+-------------------------------
+
+There are two more DAMON-related development works that are ongoing, that I
+want to discuss in LSF/MM/BPF.  Because I think those cannot be discussed in
+single session with the above three topics due to the limit of the time, I
+proposed separate sessions for them.  The two topics are "production level
+access-aware THP [3]" and "per-CPUs/threads/reads/writes data access monitoring
+[4]".
+
+
+
+[1] https://lore.kernel.org/all/20250102222317.48760-1-sj@kernel.org/
+[2] https://lpc.events/event/18/contributions/1768/
+[3] https://lore.kernel.org/20260211050729.69719-1-sj@kernel.org
+[4] https://lore.kernel.org/20260218054320.4570-1-sj@kernel.org
+
+
+Thanks,
+SJ
 
