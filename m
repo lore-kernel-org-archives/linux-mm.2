@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0361EF55102
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 16:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C801F55101
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 16:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D19F6B008A; Sat,  7 Mar 2026 11:09:04 -0500 (EST)
+	id 8B9D26B0092; Sat,  7 Mar 2026 11:24:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6930F6B008C; Sat,  7 Mar 2026 11:09:04 -0500 (EST)
+	id 867AB6B0093; Sat,  7 Mar 2026 11:24:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554296B0092; Sat,  7 Mar 2026 11:09:04 -0500 (EST)
+	id 7732A6B0096; Sat,  7 Mar 2026 11:24:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 47E876B008A
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 11:09:04 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 634BF6B0092
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 11:24:41 -0500 (EST)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5BB814086D
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 16:09:03 +0000 (UTC)
-X-FDA: 84519750966.12.3C6C98C
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02A391B8A8D
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 16:24:40 +0000 (UTC)
+X-FDA: 84519790362.12.AB5C13E
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0AFBF1C0011
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 16:09:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vLA57anC
+	by imf30.hostedemail.com (Postfix) with ESMTP id 30E8880003
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 16:24:38 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="EI/k/aux"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772899742;
+	s=arc-20220608; t=1772900679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wMsK7bM5B63ETngSFYeak+wzJyKrL8AAUXzgpqkd3S8=;
-	b=4kpjm5GizToCTg5wdv11luINamLMJ03hlhk4DwwCCcSyfBd/J38FPK6WwxX6OY/t9h9AZQ
-	a5YQ5xwEvzUcO8vlHdx5S8pYR3C1t58OmZHGz5l7zoSVnIq8YZauOJrfqfvuklIn55AFxK
-	7Yv/EgvDKOLBam9q41Di5n6KWnpCMoY=
+	bh=3BNLcjJkZMBW12wECnG4ZYadEB66BxAZDl3NHar6Yso=;
+	b=7hIHHqVhlKS3hAjEu8dIntGWWeyEsbOoS2G2lh+IYAf6S79gwKk809ESgId0F4ZYVIXPBm
+	23reiG7A0AmEImmPp6rUJi0urHwq06G3dN90dXJhFKRuFzLNAtnL9jYvKJGABkXxmIboO9
+	siiQSt5VDurfA1i6AJCCdm21tnbumpo=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=vLA57anC;
-	spf=none (imf18.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="EI/k/aux";
+	spf=none (imf30.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772899742; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772900679; a=rsa-sha256;
 	cv=none;
-	b=p36DASgDVW8XbeNYmdocmq6fS8J9w7jP9ejQt9zA146NW+LGeNY0IwWy78+p5/lWkiEmme
-	nv6mI80hP1ouhHpMgKXtsPqkXt36l8JlkmahwHvZYp/9qDySde1CQaDMd6005e8IeMvbik
-	Uznm4voEqXn22gLsb7nrewMzP9Wurns=
+	b=2DG7yD4JNuvgeTdF1mX4wqtIdd2bPrsB6EM6SS3YbxPxIkM2PR88n5g5fjk83GrwjW98zv
+	HQk5efUfxznJpw6jvrD10Jczsr0HxNcmZ1eKZ4B6SOpWc3xDXz0YOAVa3yfHrHTE1CbH0G
+	5a2K+S+HNI4ULf5QuAET2DRpCXTxc4U=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=wMsK7bM5B63ETngSFYeak+wzJyKrL8AAUXzgpqkd3S8=; b=vLA57anCPTfZr3sKp6F/baWHvv
-	UC8qxxbtwcpSbW2dIyqgABteJ42mbwZq20K7uOdmbaEsqEG0UPEdndunEGCAKfzzc/uuZn2xlPR/w
-	5FaCcRdUr+XmJF1YFsXfcfr7zOCzDiGEGkWn1vS+DgP5QqyWzujBNv8cZyY0BBdPvxDFS81Kd25fw
-	C3o12YPxGWW+we/xYV/8tD3hKR9uWaMSaE0/Aze6r+xZkXrcnvOKIEPg9Wb3cIfXQl50trHNpxiQh
-	Dj8No0gKpNLBCt2z9GyJxf7TDwa2oJ4jWP/uHC991mJGvi7EGsdSChDKQyWPtNMU/VVudBEPgXtSb
-	uruz+YDw==;
+	bh=3BNLcjJkZMBW12wECnG4ZYadEB66BxAZDl3NHar6Yso=; b=EI/k/auxY1T02XN/UP4PqDzHrL
+	slPATE+jk30i/S8biwszCh2iE4Zb9ARBGw3CwesLF2KbuWagwu2y6Ij5TVb5x+sF4ifvze9eXfOSV
+	iDc13K6BCgrHCxqorCEn1VptlJ636ttS64jUZi8c5JHGOryv/v/dVLra6H1eQkapFGWlgnWp3WS41
+	hzP8625taHtht+cUPTPSD4Z5vGBX3WdedzDYXjyDJhCxaIcQWx1iZWpW1WeED0/z8rsNsJNA0xvPz
+	K0JG9XlVQ5kpMWDv7vnUwCOego5wQasxcOv8tPAZB/AxTnOnvfPSgl5K14QG67sM5H+Niuu4xRHCs
+	Sq9yzDgw==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.94.2)
 	(envelope-from <leitao@debian.org>)
-	id 1vyuD1-000nKY-3F; Sat, 07 Mar 2026 16:08:55 +0000
+	id 1vyuCv-000nEt-Hx; Sat, 07 Mar 2026 16:08:49 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Sat, 07 Mar 2026 08:08:08 -0800
-Subject: [PATCH v3 4/4] mm: ratelimit min_free_kbytes adjustment messages
+Date: Sat, 07 Mar 2026 08:08:07 -0800
+Subject: [PATCH v3 3/4] mm: huge_memory: refactor enabled_store() with
+ change_enabled()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260307-thp_logs-v3-4-a45d2c8f3685@debian.org>
+Message-Id: <20260307-thp_logs-v3-3-a45d2c8f3685@debian.org>
 References: <20260307-thp_logs-v3-0-a45d2c8f3685@debian.org>
 In-Reply-To: <20260307-thp_logs-v3-0-a45d2c8f3685@debian.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -83,33 +84,34 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
- Breno Leitao <leitao@debian.org>
+ Breno Leitao <leitao@debian.org>, 
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1843; i=leitao@debian.org;
- h=from:subject:message-id; bh=gxJOAYW1B4QBpNiriL+Xya3ATpxserwPiuGqRjqavaM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprE146M/jYBIhqmoonwG80+PQZnFGxW0TpZfU5
- 7lPztdMst2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaaxNeAAKCRA1o5Of/Hh3
- bWFdD/4muGHfgN3wEPB53oBk6T1XmgcYkTs113p09NYp6EbEkvPg848y/LKpsID16FKtBpcN/yl
- yXRE+EAEkew22gpyYrrNTns/e97pk2IDSlwvxNfqspVAyjRumZTirq8VRY6Z1EDr9ESiiJ59OaS
- cNJjYp6vaoZ6Czi6t44GkZVXZVXYIbOa68SSVThtLQ/FHZB4rWdooHHiBw43GtI4jyQNMqUGmNU
- PWnlmBXy0yUPwTGxdQG6uN5i72AuKnUr3+MrWjYhfx8/ru9NRmma2Jz+5FuLIDvTTD06RUd/RvE
- BAqPsV2M7LtZKOlbUUM9a90zBhJhQgYBtbPiUxyU2hDjwGCZwDJTBaRDjq6QqMkcQiougXXHkmd
- 23hfObnpY68ckXphaNlzCEMTbd3GXNeQ1Jt5VmmeLCCHswD8KCj3Sun2iYHnGzTDl3KAD03tAH3
- etNUHV7aGSqmJxrcGn9nGM3132zJOECmXKH9GIxHeRTb2OjNW/VpiUC/ZivbsQ16zqQfw4RRdG+
- 6CdbnHFG4/+Zouyf1i4G4CJqvVSURmYk31tfpiN2xiva8GYBcprtUyUaifyHGN7hA+KyfURpWDk
- EH+DfWrjQ6OypnUnUnpK9C8Jj4cHUhNHt5EIPEY8NtzNawYNTCBknbxrQVc0fn6WGA5NclJK+QM
- JodNgpZytCZSvaQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3425; i=leitao@debian.org;
+ h=from:subject:message-id; bh=zlsaZ8kaCXcEEWIfMU8ynz2khbS/0r7SuYWkIjlj6TQ=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprE14/7kDvB5SOmDe7Zro8AP41H6s3+3zeHxI+
+ EMzX91akimJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaaxNeAAKCRA1o5Of/Hh3
+ bUytD/468PRW2gj7l60eHMlh0rUTgGs0T/PmzAmGB06mt60u9k2lCaZFJIkJb48s0st40J0Ayrk
+ sEOPprlA5VYar59IcpJdlYNtT9w3y5XRYKM4b+KDdtiUq5I2Q5sP66AXoaN+NJ7tbKU0Wzn4Kl3
+ pqtnSEzHF+Zt/AdlWunrLSj2MLYrGXl/9FWm2YJV4rWOD4MKQ+UYJ4UA9wFvdRO1h0JTjxQwwlS
+ zZeoKNAYP3JznzCuKAgWwKcO+YtGwwXq7PjzW7U3zmFOZueCAHhpkPQrKSkjcVusWszmquhbQa6
+ iAq90h29OzPM1mKC7pAgoMy65q82M3FLS9VtRdD2n/HS/eepPrVGioeD1fs1+RbBkESsRtL8jCB
+ liFSaAXvCcnTG5kwcRwXZ19LYlzB0IlllVLwX4pHOIrVtASck9UwexFkSowU01AT3jPd2Wugkk7
+ JT1TY1NUpFxPRRistC1Oz5oZEC2axEnRscDVkQGRrjAKVQ8o6CR6+VmbnfedB2SvZsZ/1ReP/bH
+ 7cQCszoDQXgkLAOftYf9PkK2YCrvUpIh3VOlosNdND1PbYpWFzGubSeDoBdfp4sbAPY/87GLdxi
+ NufArKiPTDzlbNpkbq/THj1QonDLcwrrCKYOgY3FO+2bMMALJqUbHJeuFOOX//K5qybGHQ/gpmc
+ 0chCT0kx5PyeUXw==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Stat-Signature: dgtix5g4pb98hehm38cdbyfg4xbm11qe
-X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 30E8880003
+X-Stat-Signature: n3p9w5sdm314hhtk1rijgs8585s7suyr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0AFBF1C0011
-X-HE-Tag: 1772899741-411455
-X-HE-Meta: U2FsdGVkX1/dfJ6T6zsGKqE2elN7u6SKpy/ypVTuHj5SZRZaD8NyQTNfP3D/BGdPVZbYQzlpBfxiLHRPvagRHfuCqGw7CGi6trzvg7sWdGNL6BaZZLnZ2fw6fQPZnPG4MfVPtS6ZB2yJlhf1SEvuTM3UYgM4G0+pLqDdGGKNFZcSdHaJ/d1ZZzhoVXw3LJxicCFqBxIHZQNh3H+joPtlGziPMaQMDBHqZzQuw9w1xc7hzPVIwt5VQO4OfuprHXXpT/D4cj8wUg5Itf7B9C0MxrWqKCa6QQ5z6wFsu6z1/M8Cv1voWsT4e7Mq97vqymOfvrzFJppxwVDajHwJtng4qEEvq9B2/yBu5PR92pLN8AvRjERqRDytxYV8VcyQSGrvBk+aHuqMoOw2ViezwCrnBfOv+KrPbadz5O+yuKnedvRml/QTkTPlEOI9h29QrYPx5TEfMe5dTKxuzgz5y3C86Ix7vpuTc4J0IVtM57u1bAMxS71LSqL+lbPGi2C+V93gN1qvkr/Rd7PObKEX9ChKLr+6zMolMBIfGAGcw1Im/LoxSh6xkB5AheGxRsQ9WbKgr/WJUrZd0F6kMMhmQ+QirelTVd13tQT9pbApcqKU+oNxb7WX6pYGEA7h7+5WBB+WICUI8+yoNTAgqka9oxcS28OBsqxWukZQ+ZZgxXh38ngTWKUhQVsuRQ+CG1lxS1AAQmfMA7BtyZ0hMSVyewofWQNKBEptFalW/9uTYyVuBqOdXyA24+oSO5wUpxS7z4yzL6KvwHAVzXG20Pq9RFHPUodHfSLHxvR46Ktdb4+tPTeQmPmBBBy7IqHAND6cDtXI2xCFTfMsUzqC/HbZlwrVRdLvaymvhUjCUGR3lsv0aWGKTXjNZsEY8lsot12f71WVd3gpdA5xGf3rSnIBLU39y4HLeqOdrfHUxKV1QMbpMu79K3jTLUbUFdRWS+51/c1s1Ee5bRz+/LnbPcIAOzI
- mshSGkcw
- CkWNdftJ0pBiSdCWHF09E2nvvo3Dwn1VpGQgYVnbqdUwgM4NBlMdfyLh5s8WYRcILjucOTzzI2qKuXvpNhYQ26fULWIfgXhFgMt8yGqMHGcHtsaW8aaauhXLbczGcy+/zfucZB/wcKEyfs2ZWKOoZrh+2FZFhoPkmAAtawWD5txG1UdULEeRVPVoz9RRCycj2vRrjVyJJSX1XdFc=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772900678-67245
+X-HE-Meta: U2FsdGVkX1+YBwflwFkehdIj3aWpZhMChqCPolo6t5j2d3ZkZEpoDQtpv4iLGRD1JbohR3hmvs4GdDFwI5sY6N1TkpwNxLS5DRMGnMju7SMDJtxe27DwMI0rLBpyx5fJUKPl/K0sYlAwC1JSDgj6vFtu9F2LI8BEL7zPdwPHM6DAkabF2B/OLm885e9dY856yfilRdscEu1s1Uig1flcAY6pgYTp55lYSU/cE0NLMtPhzEgIt8Ng+pdPXaarsUrsJH8DO99zyndB8+l2Dw9y0OvQwcA7SGONrQdUNma3PEL6K4a+K/fxzGPBZ57+57kI0UrNph0nhqNjaNo2qobXAK/WTRO2IV9UdYwCG55A3WWIgnuskZFdbRUMpS/jjucU2KcChyyCNRaDznTIjZSkzUl7KLCHUnUW8jkdGKIWWHssyzUl/AWefOYi85xWOoW+0TVv/q27x1oie6Kul3ELd+CtcAnpKds2E5Q1JIVkRMI9HXXmEdzlq9R0wTwnbPQCKmvgkGY0bWt3nvtDTlAAkXlsSnpbIHbwaTMU8LjDFh135Lr9tA8HmPH8tx4F8lj2qdbZ2h34+85dkgGijMB/VlFLqgSyaDskxd5WkKpfB2O55bl4emQU9/gW8dFXDPk61MgTyI1THDiTx6xJXbiurgbAJiQ9XcBpOt1YgHJ/m7dddFyqLq5gXKSIIzRGJdh0/rV7lN2TkPyY2eU0P+nIHDBove0Q3qhjjVBrHA3c9zIaOVFSo28nSNSKPParTHbwLS/9F5z5aqHexHhlVhBIxUuiPB8mREK8EzKbioFC0oAXhr/fD5RmzBJWErWteI1LgB8nM0qynLYjT2WTz2qdjmHu1kC7Z1mYLZdXaoK7rMnmbwMXcbmrbGEjZJI/tCzusb+vM3lgc/4HhC9aKATUxqFNhJillyN28BJvaVtmedh+CLLHrC2uwJeW3hjbQwVlfOgvVfTHpJ8L1ocZboE
+ s8D4DTD2
+ fzCwZTzJxh1LbHkU1USl27mK2UnbupeU8cs67idhR1b32ticiBvlfXDCRimQTLZeM2K43sVz3gRIIe/YW3eQSHvFT1xfeuRWDgNQAo+4pmnHQ+6Ja5KPlf2Jyot2qNCSeL/Y1GhLA7rPfwlj+WCQ4gG7Up9OFkAtkjCMCo6N8SV3yVWDRpbcLHptUecOp79tTzZsKOs085keulcVWWrVGCfq60OYZmq/Va7vP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,51 +119,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The "raising min_free_kbytes" pr_info message in
-set_recommended_min_free_kbytes() and the "min_free_kbytes is not
-updated to" pr_warn in calculate_min_free_kbytes() can spam the
-kernel log when called repeatedly.
+Refactor enabled_store() to use a new change_enabled() helper.
+Introduce a separate enum global_enabled_mode and
+global_enabled_mode_strings[], mirroring the anon_enabled_mode
+pattern from the previous commit.
 
-Switch the pr_info in set_recommended_min_free_kbytes() and the
-pr_warn in calculate_min_free_kbytes() to their _ratelimited variants
-to prevent the log spam for this message.
+A separate enum is necessary because the global THP setting does
+not support "inherit", only "always", "madvise", and "never".
+Reusing anon_enabled_mode would leave a NULL gap in the string
+array, causing sysfs_match_string() to stop early and fail to
+match entries after the gap.
+
+The helper uses the same loop pattern as change_anon_orders(),
+iterating over an array of flag bit positions and using
+test_and_set_bit()/test_and_clear_bit() to track whether the state
+actually changed.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/khugepaged.c | 4 ++--
- mm/page_alloc.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ mm/huge_memory.c | 63 ++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 48 insertions(+), 15 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 56a41c21b44c9..d44d463ccfd3e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2671,8 +2671,8 @@ void set_recommended_min_free_kbytes(void)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 17ce6a16702bf..c38c86e6d0c02 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -330,30 +330,63 @@ static const char * const anon_enabled_mode_strings[] = {
+ 	[ANON_ENABLED_NEVER]	= "never",
+ };
  
- 	if (recommended_min > min_free_kbytes) {
- 		if (user_min_free_kbytes >= 0)
--			pr_info("raising min_free_kbytes from %d to %lu to help transparent hugepage allocations\n",
--				min_free_kbytes, recommended_min);
-+			pr_info_ratelimited("raising min_free_kbytes from %d to %lu to help transparent hugepage allocations\n",
-+					    min_free_kbytes, recommended_min);
++enum global_enabled_mode {
++	GLOBAL_ENABLED_ALWAYS,
++	GLOBAL_ENABLED_MADVISE,
++	GLOBAL_ENABLED_NEVER,
++};
++
++static const char * const global_enabled_mode_strings[] = {
++	[GLOBAL_ENABLED_ALWAYS]		= "always",
++	[GLOBAL_ENABLED_MADVISE]	= "madvise",
++	[GLOBAL_ENABLED_NEVER]		= "never",
++};
++
++static bool change_enabled(enum global_enabled_mode mode)
++{
++	static const unsigned long thp_flags[] = {
++		TRANSPARENT_HUGEPAGE_FLAG,
++		TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG,
++	};
++	bool changed = false;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(thp_flags); i++) {
++		if (i == mode)
++			changed |= !test_and_set_bit(thp_flags[i],
++						     &transparent_hugepage_flags);
++		else
++			changed |= test_and_clear_bit(thp_flags[i],
++						      &transparent_hugepage_flags);
++	}
++
++	return changed;
++}
++
+ static ssize_t enabled_store(struct kobject *kobj,
+ 			     struct kobj_attribute *attr,
+ 			     const char *buf, size_t count)
+ {
+-	ssize_t ret = count;
++	int mode;
  
- 		min_free_kbytes = recommended_min;
+-	if (sysfs_streq(buf, "always")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "madvise")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+-		set_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-	} else if (sysfs_streq(buf, "never")) {
+-		clear_bit(TRANSPARENT_HUGEPAGE_FLAG, &transparent_hugepage_flags);
+-		clear_bit(TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG, &transparent_hugepage_flags);
+-	} else
+-		ret = -EINVAL;
++	mode = sysfs_match_string(global_enabled_mode_strings, buf);
++	if (mode < 0)
++		return -EINVAL;
+ 
+-	if (ret > 0) {
++	if (change_enabled(mode)) {
+ 		int err = start_stop_khugepaged();
++
+ 		if (err)
+-			ret = err;
++			return err;
++	} else {
++		/*
++		 * Recalculate watermarks even when the mode didn't
++		 * change, as the previous code always called
++		 * start_stop_khugepaged() which does this internally.
++		 */
++		set_recommended_min_free_kbytes();
  	}
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2d4b6f1a554ed..c840c886807bf 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6553,8 +6553,8 @@ void calculate_min_free_kbytes(void)
- 	if (new_min_free_kbytes > user_min_free_kbytes)
- 		min_free_kbytes = clamp(new_min_free_kbytes, 128, 262144);
- 	else
--		pr_warn("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
--				new_min_free_kbytes, user_min_free_kbytes);
-+		pr_warn_ratelimited("min_free_kbytes is not updated to %d because user defined value %d is preferred\n",
-+				    new_min_free_kbytes, user_min_free_kbytes);
- 
+-	return ret;
++	return count;
  }
  
+ static struct kobj_attribute enabled_attr = __ATTR_RW(enabled);
 
 -- 
 2.47.3
