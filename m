@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BCEAF55102
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:42:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87B16F5510A
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:42:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F5D86B0092; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id 666B66B0089; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48E646B0089; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id 5C0806B0088; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C5546B0092; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
+	id 4197E6B008C; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 268F76B0089
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 260F96B0088
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:42:30 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF55D568CE
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA367B66DB
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:42:29 +0000 (UTC)
-X-FDA: 84520288818.17.3475006
+X-FDA: 84520288818.13.B854B45
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 22E14100007
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:42:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hHL0zZ0T;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3EC2180007
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:42:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxcdUQH0;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772912548;
@@ -34,61 +34,67 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wyaHzr65VkD5inFq+kzdicf2QNBbeNOlfc/YYwP3k7M=;
-	b=Bo28FKvxuH/4FeSNekFSP6TK5v2kqzr/gI6DMSZ9Q65nk72giuxQ6NzfRnE4CvicdBjKxp
-	IB/TExJDgJE/WzitPTEBjeP7qvCeKy8Jf+LloD7m9V0g0OnBaBaFfwYxFCWwBhbYfDNOSS
-	+ocJ81U7r59luFjAysYF5HMAyft6dOg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hHL0zZ0T;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=C0oQDX9WQ1HvpGKzBbz5tod03Y13bj6rtS6Wm6811T0=;
+	b=sw1Mxuu8nwkxR/ZOr9HqdD4zVQBM/+gEnuPzfxamOGjzfsLlvC28cnL7YP3dWV00foEYoH
+	cM/17H4HIrJeWuOBXJ+JPHaZ64CeIrYFhDJAFvQ4NxOySy5Ha5OQlrh8fovUe/OzAUV5vH
+	oDUgpRWYPHw/5CIUKXmH9ecJoDT318Y=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772912548; a=rsa-sha256;
 	cv=none;
-	b=re9zhKbja3y3ZvDIrNmipVtYr1ztIPyEqqhUQYUSfSwY1xq/VkF1RPX4X9B4ow3GpaCH07
-	r6l/1GFtM0ppQhBD/4oq/s/Dl4Ll6yN1+ilXamRZNvEdSArSpeWv+R/ptFL8ZpNk031hNw
-	iTtrc2NuDr3dImzARCbmxjwWjyShuEQ=
+	b=QVs1EkgOha5di6mlzmyCsjtXmKO3DHwSc91HSewDXwlgiYkKAoVFdl12O5skmSeOenXciq
+	yBXrrFbiHnIUIs3INpazor6ju5SBp0HvZxzy9FZuXb13XLmtRU1O83G18eHdyJeMzEm6hE
+	3lJHKzq4d/Za14nOhgHlabjATQmPkAk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cxcdUQH0;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 679F8600AD;
+	by tor.source.kernel.org (Postfix) with ESMTP id A275B600AE;
 	Sat,  7 Mar 2026 19:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72E6C2BC87;
-	Sat,  7 Mar 2026 19:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115ABC19423;
+	Sat,  7 Mar 2026 19:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772912546;
-	bh=AJWquAe6BG8YHnrQ8aXuxdUfziQhpzCbJ1zdbrFuHTE=;
+	s=k20201202; t=1772912547;
+	bh=hW/2ycay+HzENCaHwC79wBirLF865EtYyfXIYZ2Fx5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHL0zZ0TvAHNnHQ7Cx8FggEW9UvgVWE6BVsBXZwT60K2Z8O1FwYY3Pym8SbI1gYtu
-	 xdvlKOSPZRT6iZZrqinbtJZlAhWko57Z1GwX/inx0BJxQqSupQ+3mP7OzkILA7tW5p
-	 U472oBC98UgOEoKmsg5vxmtr/JI610fktLoLqtScM8MIof5ghrMqHdDlamRm8wJtuW
-	 qWizXPYVxtmj2Pt7AXmB5SKdWV+qzCi/cjBkkk45HJLUBdAxI70UerT0oxZI2ec9Bp
-	 6CidYja03cW/p+ZsEsl4jWhFfkXg1bUexTzIXphxBZhgi7eFqfiWKLOkIiEsSt1XU9
-	 Sa6TLm0CSKJTg==
+	b=cxcdUQH0a72LRUKSuKr2PQIYUV7QCuuqMbyh0lvh+rbp4NC15TkcqN7yqbsEiNNdW
+	 UyC3v6strUjJ6vR7fJFz+JmYgiXuyJ859bS4erZvLJ1Bc9SHn9Az3SutHOxiyAUiO/
+	 53e5x7bHFeoPboFbdotMv3aKrkbVBl5Igi6hJSb5nLKbc24BohDnqK28AO3dm2ZLSI
+	 nzLAtE7QgfWRFdIlqYQneMIB7cUyB93R/V1oWqKdIg6D07IoHfqGpzCoYSRKnMGsKp
+	 cFWDG5glsciRKnAnPBe7ZZM5dnVlT9Fzk7Zq+5UVpUQ9+lEh5zcfeWL3M2eY2QYL3k
+	 SbZHA3hgnOFKA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] mm/damon/tests/core-kunit: add a test for damon_commit_ctx()
-Date: Sat,  7 Mar 2026 11:42:20 -0800
-Message-ID: <20260307194222.202075-2-sj@kernel.org>
+Subject: [PATCH 2/2] Docs/mm/damon/design: document the power-of-two limitation for addr_unit
+Date: Sat,  7 Mar 2026 11:42:21 -0800
+Message-ID: <20260307194222.202075-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260307194222.202075-1-sj@kernel.org>
 References: <20260307194222.202075-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22E14100007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: pn784dunyg1udnzfphh7697cu9zwftcx
-X-HE-Tag: 1772912547-479803
-X-HE-Meta: U2FsdGVkX1/XZRQhu/FYazu0q9AnCfKDj3JteoZZoxW1juZ4ARUGuDqAuEM7fpbjUDD4DwjnEK/ffimgmAwEqMzOMEbiBxYFCjVbJloZfV/G3OebOqU++c3+or0OjYA+Mv27kj9qaYwX7fYHGUaCmfM5CzdfOohE4qyarGhSYmhfzh6pAkyMIrkVj1+aPmdtq2eaukvFXzW3QRkYgz3g/1m8gIk6j/8GVK5dcrx0NHydr3C8u55dVKsEdkI49p6BlPIy+uNYYFrxg+ad09CvRQDnvLYB3GOl4xMyC5bwLyPWmosXrPILtPF4mgBaa1i5T1WO6wQwvLYtqQMLMC8SrisNOzq8OApP5vNptsQbNEnjHkCGoUq8GtkWNckMm4tXJSdawv1F1KfuaWeienuBnwXRpKYVhUhVxSBJ23cLhB65f6nCr9CrO02IxyyEDnZboHx+XOvByQX7soG+vTvcGkQ2Y07rEcaLf0pJT1uBdpnyJ8COTaLQGjYyPQ3jcVEuODBhLnn3pf5oPNiAl8u/F5uNdylFYP1cbfR3y8xD73c08Kr504VurOdo8qM2FFLNKkUNdDGuTOP//iFPnb9f5PSV5EXx1K+US2apfMlHy+kEYev6VbX/PQNSuj/FIdexZDVAIcQG/KSn+TGrtM9kXTJ+Vx/hQwcy+O7Ftyn0h/8bO0q6ntxRHXbXZkR+bonsA+aPCUty4y3+Fq/m9eHEDafTtan4gF5+kVkfoIHhaLMKfvoeAhSCmVwylHz6NdCPb8qNzF9cM0GQpoavFWObmd0uRNHrNK5e0JUjQceyNLSUt98+U1rEWGwXUvFMjeFEtI9jE/AIDndMi/SKCe2xz+mcV3MHamn7D4qLm6VNOK78+0n3x/PeAqweQhm673qNs4TLg78DVC/ccG6nX3O/+hNzj/10fjfeNbUqctEFWziMHgLQTaQqRQfmrQHxjbZajxbex6dDpVKL+QTXuS0
- kW3M6vpQ
- PjKIGMjQhSzU2nHRqeUYMUk8FQnNh+5/jwr9HC4MK1vZQQzUhNlg8jzRIFwY7oD2bqAHZmnOgqVEvOPGiByc3k0ryp5D+inoq5l/nEBbnQ/BHhlSw8F6FsHeLPgglLB9O79KtBZxD0NrIiMYvQPZIlQMfmcywz5A9T+MP0jhyFRIYDYE9H3uQnFxEBLFyov7af9Anh2G2pwVfjTM6MSZHXAKwHsGndYJum/UCUibYpoyMCiEroZmSEmByu0JRhb+iBq0DVbiL3WEOkjQittgDaYmzEQ==
+X-Stat-Signature: j7kcjjxkx1fi8sg68aujz3hxr65kmtis
+X-Rspamd-Queue-Id: 3EC2180007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772912548-360427
+X-HE-Meta: U2FsdGVkX18BEWpmATRPNuKJjRrh3icQiUMtx6hyDNKPaM7St3cdZXT7OFXoSRpY3qBWko20R1a9Eqp0cqUril4a9xe0dxKV9ofhD/F+fpxmoVFkOmaypZAmPYK461ARGI5ib2KypaJJmtYeE8OhqoDbsooEoUzlR853F6H9G1EBoLZyrFjDVRDsjiDt0tOHJakVIBHBmMXplGui9qhbyyYVUsOqZp8BnLONqxPS3K0qa5pObfipwraLbFElo+iBeA36c1WLayOx5VWdjd18psJBnfvfdlcvs8oXBnelOw/fcjzlJL/RElnfWxVvCYzMCR4MqCv8CloO/aPvghY7JGopWNPFJHZSeT0UpVS1FdnRgloSPS1G5kKkDBcQcEwDa95woE8AROxtp3AzRFxrimCxr6kJRrJFCEw4Kr7Bo0oMN53wpjuBBH5dU8uXOWHH8vV9KWBl6kfeMKCkx4e1cQHh3priWOVAllV5FyyAn10G7u8b4KeSZ3gFQhqePNL9O40ceq3pxnFBibezZLPSsFq2iXUZC3P8j6sw8QOUFq+lE8I1FAsYEWOu7/hg77Frwm23/ipxDn3wMFkm4bYJ4CtFFKKFUhqon8zRCl2YzdRlwXVUujUAjlDn6RsN2+/7BHFKbBcUvNKTHhS9JGPyRw7/ASa3kSj6UcZJ/n4RIkfPBtfzhxifM3uUiLcHz74MRD0zXj+crdzW5S/YtePESTmiC/z8aJUE3fh4LtZPWcLKG89zJHevQ7h3Ly0e/pMNUr9TYL3FdhzTnXAlhEMtzVtN3fGTLtD7Ne9DX0eXUbedzDZkKIlckXj7UhpR2ZUwAl40pxsAGf6NKWUVvgWPFs5Pk6/ziozaUsIdsGytZlEqC58re1Va3rUg2bGihSG27D1BlAQYs8p2Gcpn5iLhmqSgvKK4cNKIMYMI3X1VcfmEwacngcsr2uIxm419JPmeLwrxi6R7w2zvqyKuCsg
+ 8BjMYW7M
+ Ut5ZUp0j2UMdbn9XmOADYDO2twIWX00OIjKughY+fQ/z7NSs7Twt6+bn1rQM6arP9chVk+NFL98bw1QMNjRmFGZ5cUgRyv9d4Ywv1DeWuvdIDl8E9tT8OMX8vtQnJ3rrJepExyM5GT8ng5h/KzfRP/y6gioAkpkENVVGVEker+xeO7lz9a+4ACCMvZEMJizIu+VWyQTnGjweEj4nSVJMuOCBaUVDMt1csP7E6lUwyELa6md/5ATKMOSSU5UVYHupiQUEOgdOY4HchNtsjeqPW1E1www==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,55 +102,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kunit test for confirming the change that is made on commit
-c80f46ac228b ("mm/damon/core: disallow non-power of two min_region_sz")
-functions as expected.
+The min_region_sz is set as max(DAMON_MIN_REGION_SZ / addr_unit, 1).
+DAMON_MIN_REGION_SZ is the same to PAGE_SIZE, and addr_unit is what the
+user can arbitrarily set.  Commit c80f46ac228b ("mm/damon/core: disallow
+non-power of two min_region_sz") made min_region_sz to always be a power
+of two.  Hence, addr_unit should be a power of two when it is smaller
+than PAGE_SIZE.  While 'addr_unit' is a user-exposed parameter, the rule
+is not documented.  This can confuse users.  Specifically, if the user
+sets addr_unit as a value that is smaller than PAGE_SIZE and not a power
+of two, the setup will explicitly fail.
+
+Document the rule on the design document.  Usage documents reference the
+design document for detail, so updating only the design document should
+suffice.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ Documentation/mm/damon/design.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 44a983fca9501..65181c6dac1b4 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -1060,6 +1060,27 @@ static void damon_test_commit_target_regions(struct kunit *test)
- 			(unsigned long[][2]) {{3, 8}, {8, 10}}, 2);
- }
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 28d932ceaf7ed..29fff20b3c2a9 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -150,6 +150,8 @@ address on the given address space.  Support of ``address unit`` parameter is
+ up to each operations set implementation.  ``paddr`` is the only operations set
+ implementation that supports the parameter.
  
-+static void damon_test_commit_ctx(struct kunit *test)
-+{
-+	struct damon_ctx *src, *dst;
++If the value is smaller than ``PAGE_SIZE``, only a power of two should be used.
 +
-+	src = damon_new_ctx();
-+	if (!src)
-+		kunit_skip(test, "src alloc fail");
-+	dst = damon_new_ctx();
-+	if (!dst) {
-+		damon_destroy_ctx(src);
-+		kunit_skip(test, "dst alloc fail");
-+	}
-+	/* Only power of two min_region_sz is allowed. */
-+	src->min_region_sz = 4096;
-+	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), 0);
-+	src->min_region_sz = 4095;
-+	KUNIT_EXPECT_EQ(test, damon_commit_ctx(dst, src), -EINVAL);
-+	damon_destroy_ctx(src);
-+	damon_destroy_ctx(dst);
-+}
-+
- static void damos_test_filter_out(struct kunit *test)
- {
- 	struct damon_target *t;
-@@ -1316,6 +1337,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damos_test_commit_pageout),
- 	KUNIT_CASE(damos_test_commit_migrate_hot),
- 	KUNIT_CASE(damon_test_commit_target_regions),
-+	KUNIT_CASE(damon_test_commit_ctx),
- 	KUNIT_CASE(damos_test_filter_out),
- 	KUNIT_CASE(damon_test_feed_loop_next_input),
- 	KUNIT_CASE(damon_test_set_filters_default_reject),
+ .. _damon_core_logic:
+ 
+ Core Logics
 -- 
 2.47.3
 
