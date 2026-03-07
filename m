@@ -4,130 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBC35FC9ED1
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 06:42:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 376A4FC9ED9
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 06:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6458D6B0005; Sat,  7 Mar 2026 01:42:19 -0500 (EST)
+	id 31AFA6B0005; Sat,  7 Mar 2026 01:54:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F3526B0089; Sat,  7 Mar 2026 01:42:19 -0500 (EST)
+	id 2F3096B0089; Sat,  7 Mar 2026 01:54:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D4886B008A; Sat,  7 Mar 2026 01:42:19 -0500 (EST)
+	id 1C7926B008A; Sat,  7 Mar 2026 01:54:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D6396B0005
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 01:42:19 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9712A1B855A
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 06:42:18 +0000 (UTC)
-X-FDA: 84518322756.02.8FB0464
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D9317160002
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 06:42:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cBjKsg5G;
-	spf=pass (imf08.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E6C6F6B0005
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 01:54:25 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 217BB1B8A03
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 06:54:25 +0000 (UTC)
+X-FDA: 84518353290.17.8FBD75B
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6778EC000C
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 06:54:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k9F13kfK;
+	spf=pass (imf10.hostedemail.com: domain of qq570070308@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=qq570070308@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772865736;
+	s=arc-20220608; t=1772866463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=60kOj0Rx2KfuuAB5qkGX0OsAbGbuDnekxaZcro1gQO8=;
-	b=D+XkrX8f61kjM8gquHAfmJU4z8WbdiCfbQhAfoRlYoPlQHFgStuVkO4/xTpKXltVXEzqIU
-	SCZU58Rr9S7Zjffn5IFbovjaIWjr14v1WH4pV/DzTFB0fx52EKHz2RJ8U7ACz1w9GS+BHc
-	g8Yt7L79Njt7D5kliWTgkNEaBx9fJoA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cBjKsg5G;
-	spf=pass (imf08.hostedemail.com: domain of kartikey406@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772865736; a=rsa-sha256;
+	bh=CFh5xzf9mXTWKL8wgZ/1CT8NM6bT0JUa5sch2tV0MvY=;
+	b=6rccAlVAPQV8ghNeymFUyrmNyfZUuxxDApwTIV1gEC8MXGsYOZuWoBq0zv+3GNy4BPZvOP
+	YxfzLvd6DYRQcLaxaT1t+QtVsis5eZCMSyDrXq+NeqBtrckfKpiJvwKbPZ83fgEm+JVTEE
+	E7gQ1eiVHZcyWHSYqidX2p/Kw22Y6yw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772866463; a=rsa-sha256;
 	cv=none;
-	b=He86D8OUb8PqxzkdKOwKu2fvw3ULKwad0BA+Y8q5u7JfegGOzDhyenuTJ/lMnori8Y6HxX
-	rhvlVAkuYHEymoNZTjguN8DxuUSt0OFpaoFBWl9MpOOw1swaqaadIkdLDNZC4nuIKe+nCQ
-	WuRAYrNPcR+kJNs23i7P+2HR2vzKQ8A=
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-359a5d8b3f8so2447287a91.3
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 22:42:16 -0800 (PST)
+	b=0nFM8DuoPPUpKVoBVWGl0A0MGOb1OeLuMEMlR/nRo4C1EmI37CpRPKsuNQk37ZoKeBy8tu
+	MXcZgYL8mTCHxzLC9TNypiCeJWBwD+SUrF+l3lRIo4ZPjXU7iPHAtQ6TYIGHqF+3UJ0aMI
+	dt0mOIjRdeNEoyWMjhkd4M0YlHCeY3M=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=k9F13kfK;
+	spf=pass (imf10.hostedemail.com: domain of qq570070308@gmail.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=qq570070308@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a9296b3926so75393515ad.1
+        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 22:54:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772865736; x=1773470536; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772866462; x=1773471262; darn=kvack.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=60kOj0Rx2KfuuAB5qkGX0OsAbGbuDnekxaZcro1gQO8=;
-        b=cBjKsg5G+UJVfZCSl5g20bvqkBMMDmkjMTQ2Q7VfGmPJRhgmPGcDoRkcTJH2/vnAwJ
-         eSxKppzMTZu0VNv7phNOfVsAPOZ/q2m65NA9z3H12rc9gemMlmL9J5GP1dkq5J6xhpmK
-         uJpYIOmy0x3Z7wkmHuBze8ZvBhsIhUlEg+pII7oYol7qWbezPMd9+PjwWF9izQ3TZFaW
-         Vcy7RcZ0bKZbcxZMaK9PWZN8oR1RheS5oAD6GJsmhDD/7Ubfa7TWtnHHOHjwryeWnZws
-         Sk/9URLHXjQUyArKlpPSMX+uFOkUV8LY2iQyCibM7CV1mQJFPAB3YBHEkdtEA/0MWjGa
-         n1IA==
+        bh=CFh5xzf9mXTWKL8wgZ/1CT8NM6bT0JUa5sch2tV0MvY=;
+        b=k9F13kfKgFhBcFBdNekDiynhFaP/hfXnzo6QtAEnK5+wximjcNKn5Fs83spr22abZN
+         00g6N/+yPWjJ/6Jj0h5jr93q/9A0V8OB3RzPRy/wT73Y8MLiV3hjo92FY3gjJRPn0Kco
+         EnZOG9s3jhXq1oHNC4PQhzxeSFmk486nc22/j7+3MNu6boD7mOe0Yn5KPYYRn/8LLa7e
+         xM9v2VsKIJE5MFFuzRByrW0u12FBV7ebxDs6x37wwtYRQ6WDzQco35JVT4+q/D+lC4AQ
+         Vjhw/MqKwuaCdJkHyw8OXWWDqbb+OZ8QvOmOy3RkgIA5cwoaMG0sDScrBpDk+ivM7B6J
+         nygA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772865736; x=1773470536;
+        d=1e100.net; s=20230601; t=1772866462; x=1773471262;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=60kOj0Rx2KfuuAB5qkGX0OsAbGbuDnekxaZcro1gQO8=;
-        b=LL3XITxWlU9wGV/LaFyMGm4cVF4X52pAFSNAVQHPE3KcaJR4OtS1zqXOr/jWIDwviT
-         I5Gz9QV2pzRDkj6JjcAzmUpt+RC8542Uh3NNqbXCrUiBtjP/JnmIKHWt5xbv6rqMUlQY
-         YBMbceCh07J1H+rzIlE/naS1l5G6nOcdjFiPz/7K/U1OcXhKZaVBncDkN8afgeOY7/v8
-         sOdJnr5snQKyupph4YMU0FseNKnc4/7tPQUruyap0wmVIe7qjfwWZaME3my+W3qdM2eV
-         9jtUGC3g5U3V2gSnDGVezuIYGRWTIz2dub3qbrCQD9W0DJ2NXQzfTkT0eu/9+jO9S8Ry
-         IhdA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4aRL8IEVLzXfn3jhHXAwitmu3zzfRLJ1wSTHI0MbVDObXBfM0apNuJUrV7A84K0Zo8Y+1HIz6fw==@kvack.org
-X-Gm-Message-State: AOJu0Ywn6h/mGTvDR6Rq92eVIs14MesT+LU995UDtH8vus0h1g+GtwSF
-	JFE5fkwQogcizoUkny6okWkh1lYnykg5I7KyF65Nwyznk5FK5O7yF2SH
-X-Gm-Gg: ATEYQzwWQF97EN3UXX4jHB8NcoRSbyeMNIRWmBQCDdneeN8Gqk1jfnxTzONXzLRmcu6
-	N1J6/x9ZQClrN1+B639nqLht01rz7r/ApACI/dm+6sdwG6KSj7v/Wo7dX3NRv0con9aApmdvTwM
-	JIlW7V02O/uGvmEkxgj7TSmE/IIG8rWEfCCCdrrnDKYLKVq0+he5zefYLqXv6MDs0lCroHttpck
-	9aoYM1Qi58K62m7YDwJasAPMQnTV0LlAjE+1Mzhwmjd4QOp1pEO48XDwC+o5XEFWc2Gw+Wy+zpS
-	3NtLVP61wQhW5Z3eHDBxOIbFZkhMRDQdDz+afOdTXEBydfk8HBeAO9N2zs6g1BIiDwpHxqaBxMB
-	wNdwEeRP7aeYwHLETkcl8Q/r5S4TirCQZ2zMBueoCsK/Fv57vfMfl/3HBUZ40I5UOH8+Csn3PVR
-	mHEGo7rwEgQG5mIit7W+0Ib5W2D4x3wgeDktllF4ZjY8+MhgjPm+shOzwqxjAOowBq9ThHAXuHg
-	zBEtDE=
-X-Received: by 2002:a17:90b:4ecd:b0:349:9d63:8511 with SMTP id 98e67ed59e1d1-359be329dd6mr4323714a91.25.1772865735476;
-        Fri, 06 Mar 2026 22:42:15 -0800 (PST)
-Received: from deepanshu-kernel-hacker.. ([2405:201:682f:389d:4191:5f1c:7dc6:bad2])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739dfbf4fesm3507947a12.0.2026.03.06.22.42.06
+        bh=CFh5xzf9mXTWKL8wgZ/1CT8NM6bT0JUa5sch2tV0MvY=;
+        b=VK+P17KBF8+l6XViwBFBq2Yc4D9oDTjlopmY1qGi9hrvHg/SrQD1dU+V+NCTCvqq8i
+         iuID94207Z7mP7G009UFcZuuML19TvJMShOYUCss52zwwgD8qulUGWLh7jbOx4bPJhYG
+         J2GtPA5VHGhHwIsErno4CbLeSK5dUM+68Dv5Q/G0Pa2RdmvbcdG+y3KC+Kx6ai2TPRrF
+         j2yhH3gMB/+sSSqHKcs4HfoL7cBVktJ6k1N4ghoUUXF9BjFqIf51ypHWBxXdn91IonxV
+         NeAC3rbu23GudLtcq42WcnUriurHgRt1Ay+yeztnb/AmY1lMEf7zET61/rz74n5i7Hz4
+         4k5Q==
+X-Gm-Message-State: AOJu0YyKu4VKihOe6HaOJCRFq8S4YK6P0Z64bOX1rUDQo5NYgwVU080d
+	qg18yVwdG9zr8jry86ZJr4Yxvv10kv4uoRRsuHd7EMPCOyy9HFdJJMLe
+X-Gm-Gg: ATEYQzw2I4W0x1mVjLkR/tvZF2VW77mTkCi93EJPuuW1ciGqBsxn/yIkRWflKSR8cjz
+	o2A51sTkUa+VmPCwEDu02+IomHyYcARpLKcd/oHxke1Rm14dqPqzssU45gMVu/dfwzDWX8Dowbx
+	36tNHEW808SDsKFD4RW5O5YgI7XKK4j5BCesBwuhdyCcor25i+3aAkh2cAZB0JZ//4AhEpTkWd0
+	DajG7djNvGmFONM68G61ZsyVxx7tRYfiitxdJvEI7F/Rs4MRY6r8pbADLQ5Fx2hp8+48381bspv
+	l/k29OhNE41scbmpJdi4ljn60vcSGkv/pVTP3h0nFypMxFs2a+4VFyV1yihjSfwbc5zh/3kSoue
+	aTfYs+DFtJgUbqD8JdCRwpdZpbV6mpUfeJZI249FBKu562GKjBk9JeoqSKw6wrRwy/0InYd2Z3c
+	R3yXXRPI0DUYR0/QK+MLPfoi7I4buP1nA13jUYcocldLs=
+X-Received: by 2002:a17:903:120f:b0:2ae:670e:309f with SMTP id d9443c01a7336-2ae824f4d5fmr46909505ad.34.1772866462157;
+        Fri, 06 Mar 2026 22:54:22 -0800 (PST)
+Received: from DESKTOP-3LEPQG8.localdomain ([119.28.20.50])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e77197sm41388995ad.20.2026.03.06.22.54.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 22:42:14 -0800 (PST)
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-To: mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kees@kernel.org,
-	akpm@linux-foundation.org,
+        Fri, 06 Mar 2026 22:54:21 -0800 (PST)
+From: Xie Yuanbin <qq570070308@gmail.com>
+To: akpm@linux-foundation.org,
 	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
+	ljs@kernel.org,
 	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
 	rppt@kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
-	brauner@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <Kartikey406@gmail.com>
-Subject: [PATCH] kernel/fork: validate exit_signal in clone() syscall
-Date: Sat,  7 Mar 2026 12:12:02 +0530
-Message-ID: <20260307064202.353405-1-kartikey406@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Xie Yuanbin <qq570070308@gmail.com>
+Subject: [PATCH] mm: optimize once judgment with clang
+Date: Sat,  7 Mar 2026 14:54:04 +0800
+Message-ID: <20260307065405.37473-1-qq570070308@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D9317160002
-X-Stat-Signature: 8yxjsax7ycn9bqa9hzstadu9wn7dghtx
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6778EC000C
+X-Stat-Signature: yqynpywdwyfoxozrjptea9sdm8bmj1wu
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772865736-869026
-X-HE-Meta: U2FsdGVkX1+ar4cJe+zK5MzmZl+dOOuL3SwLizdaYOnAuX+l2g40v6+QspJYpRhaLDreM86M5hlA1HODS+3WlyMgPvQ/GZscq+BpE2egTw8vdgeUjmgAsahDwztwdXNbwIkvX53b982JVtn916i+mAM337Sy3B4FdSyONCBiM1XQiwo0fluX9G6CuwSXv/MVsmIoFJNrQB5OOgkWiA7TKQYMgP7gGjZixkzy+Vd0SWy0INCVvJriaSl3EYWp/JnsDaVQ8l0E/SwzL3g0RzG/nGjt9sYNqhb3kmkc3AvNVuo7+vitmcc75w09801OSvoR0zbMU6rw3JgR5DqzSuMr9UdbT0rI0FQC/GBjDvTPa26+WhWoaB6dRoTAeiU6Hy+a9W1igmdkDUipnjAcgF/Y5e6MDGeelICP2iJQQEAcc6Z8y5wmnO0duquw/9hjSL4u3qc0rVjfnMQnCFFNkysDZZ2gJbgbr7nUr32NsiShLi3zJRs+cHEKTVQAn29cL9VnW/o8Jpt4Jkv1hB6nR/Y1tnDQSkC46KfhGXC/kkBH5PrM/8oBEweBVVr1QE0mF4CNtQ3jM0axKZX3t3yqSyJMXH4QKaWMEReE09AijKuHDnp64xelGQO0+FcXrxFM7QBl9G1JhcUjsd+o3ek0CbL/LDswyRWGUjdN4pJ0YEe0Vc8vJkh5rEkN3woiCyBqvrSaPWBZAFQHbs8W/9MGz5K7tqaLsMmqqwxT1pQFpgsh0fHgyi+gL4alk99e6zzTsi3rsDVZCbMwJf6UNpRB7h3MUbFF27/p6O4vRsQ+R5K7fDYvcX8LPGiBpVNs3kT4b9bMDVcBLjlsRkxi5MR0vU7sl5RCRnqa8gsGr+rs3302pnQnvxWGqdq4ujwyuHIsKw+Rq/TcVkrUmtYII4j0BxtLj4ikzHfWlIN8fYECgYhs4MGl/8y6vhB2Lax8HHA9QAFQ+9vTbMQhPHgQqoJnQVf
- QYKqiJ1J
- H5hxkuVok7KsNJA18VXHBPFtYnSmCHOZ0RcZJ3HnXHWfuHnsDmQkjGvW9GuG8iKuF5NMJnC7CnQbq0cXRvd61ycVYeT3sH99KfND2vWBCNGzcMT4/fqgBo28aKvqFhDphu8YTfV/Pfm+a3gsEONGCApQYOQqTWHvlOCVr5Jf62k/FTSmMXsAHAxCLvckuJMCag1/wAOPp0G1Zpk1lqMc+Q1w6ODd4VGfTcwX1K3l4n890AkPIIZ6BL+6tYj+HNIClY9N3MTq4L46BDyU6j0kFMV9lMf77xfZcqJGFN+IdzxMVOcnnXQHB7nyxPaYLIn7Xp6kzNdKtUuXcqQb0asbldbC748ddQ5dgYjwDuJPscNGq7eTyoAS69TzRxWz758CyELVtGWomG7NtP3tv22VyMG3pb+yzjQLKJQsRwQp6cQ8h3DsOkKqicAPfQwNLlkf+H4vAdL/w9iU3LuWwTX26EDuiYYg9+fl/3RsBVNHucqwuXpCZRA9kupwpjSXt5CA6cJv8jTvnoB2mvK+k8GH7tGZX6D5/2gfMFoRfY9s59TpQn1sL71ntyzNMk/fNOli47e20m31B/FTj4hGGgjHK9i8pruC02zi3DAH5B6zdGiakYj9zw4mVrL5M7B61UeIOV0JUDU+DSHJmZJFeYnhxnABz+/qX3P/1XaLAQNVtObGC0C/uRfswlnu3kVFn3srJORyMbQVuk3P7XVWwBR26nwvetGGQeCbZOkIVgpajABhbibE=
+X-HE-Tag: 1772866463-311451
+X-HE-Meta: U2FsdGVkX19tdc+l7nwP/Yap0s9VlEca1oYjPcKhbFRKpxK+E1QKp4xoYeqb89VKHyC6CGGWCZ63N3ES4ljHibpZiiUVJ9JBFpQNgi3iQhjgGT0Qc21qkYzsqTNJTj8zU8udrq4s+CX4DYU6hEZRZSnyJGln+pnAEDx5DAUp3PGq4X7iLBZWGH6/34o82aDO4Vl1gpB1Pp8bnZTCFKE+wVTr1U9bGpiOmUNwurkEM1KwCabFpdZmPjVzuln7cMOMqPeFOmeCtQ/kRKQNqExFggYsfjQaWslI1N3ivMrhByGfo/JcTcgPhuvgv7sbktUV3ObWXpRbHz8ezY71bCInpzPPBUacXi8zCYqH55HZML5y59ZzlpEgg8Gemg5lxdz/4GBrwBbzddlpbd+Vzy522Z/7MtfXmaFvL1Aak/b9pau2ZNsHbSoNsduhyR4slf3x7IjVSyrq7idyXb4xmQAv6h16ST4YA7mC1ar3nCuNvkcm15bvt+JirdyBIW5f4NJ4ZbUpkR8/21zOFTXL4wcT9W/6xVF1GE7IGml8ibZztWeouWeuzvpKonKlWlAL2qNuyC/ClXe+XHA2cTEmzKKeM0LVbds37UVsP7WueXKAFt+mKewYK3uvGIdkKKeHWXIbDIcSC+rASM9fPq2uIsaV1z9c+uR/oJPctBC/eDw4RQ5YcMB54LkFtqdk0Tvc583mAiF/fZp0IlX+1QL9RNLdNCgGyjxGnWVwzIrcZ3Qw45ED6NcE27wGvw5sdt023znk5csIVSKfXWFBsx4p26JyzsEdVyjLWJaR2kk4Zyeem2JDXrqXA4D5wTfu7/1fF9rTEihWZGb3rQMKC1ROln3YqN3rlxRKqO4Ifn+4/ooZjvJWsRaQRQlC13ocjXNkS3Do8NeRzSDpP/zh54eMf+4Kx6bvks0sErYuGL1zLVTlAZaIwjOP5COGA85q7J9JX71y2bDj1+khlHjL1hKDua2
+ 8TWYTNhS
+ Gewvsv+g7IMIXWH8P/i7hWDAO21V+AFRBO+psDjMBG846TzlZs9vwJlbmv4URPmRyPS0+/cxkb87EhUXxvZrqSTyrzx+skkRkTmqxcSQcN0qw2Y92GSWxfHRY5uvH0ffDJUi0yoKa4R/Q6jlSpLzk/M2NhiZtXFMS3ddNzZNE3o4mhhyw/dVQflaKupNaEEUqKyZfAyvVT8nLV49ghjod/IMlLJReQvaW0kKqPbjvD90T5MjuptujUHX2Z457cIc5Okrh01VuEFpz0Mh2mhO0+g8YtQFEhQclWEe3CBB2+0ZBjAjicB/PU7cLmxpb/kyLyhyBINtiUdbZLMy1NH8UztoV3Q86OuCxobFDfe+ueB/CBs/KHHD7+/6jPbv6xOZ7xYLbiaY/lElYLYsKZR8fiOSVLx6S6eWYpBcB/9FEtzqJ46NdTMYAJSVsk2WThDQ0S46eHdXgN3XTugjtTXuWoDg7tFSWws3yPpfgdmOMJ8WSKau6r5r0XGipDNprkwUOlVC6x9cOL2YmkXFIFxqiJRnubONL1OxzKtxLrVwoTjS0Xhjuder73/BzD6cDwIr1plzzmka92eEKt1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,55 +126,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a child process exits, it sends exit_signal to its parent via
-do_notify_parent(). The clone() syscall constructs exit_signal as:
+commit 242b872239f6a7deacbc ("include/linux/once_lite.h: fix judgment in
+WARN_ONCE with clang") helps optimize performance and size under the
+clang compiler, but the modification is not complete.
 
-  (lower_32_bits(clone_flags) & CSIGNAL)
+Port the modification to WARN_ON_ONCE_GFP(), VM_WARN_ON_ONCE_PAGE(),
+VM_WARN_ON_ONCE_FOLIO(), VM_WARN_ON_ONCE_MM() and VM_WARN_ON_ONCE_VMA().
 
-CSIGNAL is 0xff, so values in the range 65-255 are possible. However,
-valid_signal() only accepts signals up to _NSIG (64 on x86_64), causing
-a WARN_ON in do_notify_parent() when the process exits:
-
-  WARNING: kernel/signal.c:2174 do_notify_parent+0xc7e/0xd70
-
-The syzkaller reproducer triggers this by calling clone() with
-flags=0x80, resulting in exit_signal = (0x80 & CSIGNAL) = 128, which
-exceeds _NSIG and is not a valid signal.
-
-The comment above kernel_clone() states that callers are expected to
-validate exit_signal. clone3() correctly does this:
-
-  if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
-               !valid_signal(args.exit_signal)))
-          return -EINVAL;
-
-The clone() syscall has no such check. Add the missing valid_signal()
-check to clone(), consistent with the existing validation in clone3().
-
-Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
-Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
-Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Xie Yuanbin <qq570070308@gmail.com>
 ---
- kernel/fork.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/mmdebug.h | 8 ++++----
+ mm/internal.h           | 3 ++-
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 947a8dbce06a..dbe26ac6ca10 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2845,7 +2845,8 @@ SYSCALL_DEFINE5(clone, unsigned long, clone_flags, unsigned long, newsp,
- 		.stack		= newsp,
- 		.tls		= tls,
- 	};
--
-+	if (!valid_signal(args.exit_signal))
-+		return -EINVAL;
- 	return kernel_clone(&args);
- }
- #endif
+diff --git a/include/linux/mmdebug.h b/include/linux/mmdebug.h
+index ab60ffba08f5..a167c5aa525e 100644
+--- a/include/linux/mmdebug.h
++++ b/include/linux/mmdebug.h
+@@ -60,7 +60,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+ 									\
+-	if (unlikely(__ret_warn_once && !__warned)) {			\
++	if (unlikely(__ret_warn_once) && unlikely(!__warned)) {		\
+ 		dump_page(page, "VM_WARN_ON_ONCE_PAGE(" __stringify(cond)")");\
+ 		__warned = true;					\
+ 		WARN_ON(1);						\
+@@ -80,7 +80,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+ 									\
+-	if (unlikely(__ret_warn_once && !__warned)) {			\
++	if (unlikely(__ret_warn_once) && unlikely(!__warned)) {		\
+ 		dump_page(&folio->page, "VM_WARN_ON_ONCE_FOLIO(" __stringify(cond)")");\
+ 		__warned = true;					\
+ 		WARN_ON(1);						\
+@@ -91,7 +91,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+ 									\
+-	if (unlikely(__ret_warn_once && !__warned)) {			\
++	if (unlikely(__ret_warn_once) && unlikely(!__warned)) {		\
+ 		dump_mm(mm);						\
+ 		__warned = true;					\
+ 		WARN_ON(1);						\
+@@ -102,7 +102,7 @@ void vma_iter_dump_tree(const struct vma_iterator *vmi);
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+ 									\
+-	if (unlikely(__ret_warn_once && !__warned)) {			\
++	if (unlikely(__ret_warn_once) && unlikely(!__warned)) {		\
+ 		dump_vma(vma);						\
+ 		__warned = true;					\
+ 		WARN_ON(1);						\
+diff --git a/mm/internal.h b/mm/internal.h
+index 6e1162e13289..52367f52d623 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -93,7 +93,8 @@ struct pagetable_move_control {
+ 	static bool __section(".data..once") __warned;			\
+ 	int __ret_warn_once = !!(cond);					\
+ 									\
+-	if (unlikely(!(gfp & __GFP_NOWARN) && __ret_warn_once && !__warned)) { \
++	if (unlikely(__ret_warn_once) && !(gfp & __GFP_NOWARN) &&	\
++	    unlikely(!__warned)) {					\
+ 		__warned = true;					\
+ 		WARN_ON(1);						\
+ 	}								\
 -- 
-2.43.0
+2.51.0
 
 
