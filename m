@@ -4,87 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D077FC9EC3
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 02:40:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89BF8FC9EC3
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 03:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E13F6B0005; Fri,  6 Mar 2026 21:40:43 -0500 (EST)
+	id ABF866B0005; Fri,  6 Mar 2026 22:28:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B9386B0089; Fri,  6 Mar 2026 21:40:43 -0500 (EST)
+	id A42E76B0089; Fri,  6 Mar 2026 22:28:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BB436B008A; Fri,  6 Mar 2026 21:40:43 -0500 (EST)
+	id 9450A6B008A; Fri,  6 Mar 2026 22:28:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 345AF6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 21:40:43 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7D67C281A
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:40:42 +0000 (UTC)
-X-FDA: 84517713924.19.5A9BD41
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2596340005
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:40:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ferhLrld;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8517E6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 22:28:04 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E842BC27C1
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 03:28:03 +0000 (UTC)
+X-FDA: 84517833246.01.DFBF4CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 578F44000C
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 03:28:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXvemofJ;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772851241;
+	s=arc-20220608; t=1772854082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P4ySrhmIAWVoueNJ0XFhaAcNVUvKWmQOTC3FXEXkHyY=;
-	b=QX1Qyb6idIroN9fxVdd3X0aFMX0LAjLew/JUQlVn/le8Wkjv0+Z5kSXN1lSHwv2pyhMEoJ
-	UOfISc7S2psuP56KTCT+ac4lxQjQdVPy34JO8flDdmPwX1Eg2fj02DVsY9EP7u0ltj/F+o
-	mbfOJ+ERVi0hv1ZRmUhXhikc8iofbcU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772851241; a=rsa-sha256;
-	cv=none;
-	b=hvxfmDBSNCaN/mfNZV4yGtW2hGM7mcJwQl2mbFe9chVdKIMZ/1Xm1h+MICwMZn2Jc8nGSl
-	B2RSjlj3YhY1rZgHXw9kuHVtxk234CcWVXja3zyP5HNsdF1mvFNs01jpRBT2eNdTnLmxKV
-	juX7USl9VVxoM4HdEOEdk0uMoBbwQK4=
+	bh=eC7TeH+JML5hvQRhRMoY6HZP0E0BrRXfDc84SWcCmvk=;
+	b=YV6KyqrNJo/MiygodwsTKix9tYqAUQNAWlNF7jCIQPj77Qke5cj5n/IBTAaRv6Csxdoy06
+	WEFHURUtP/Eee6DnRQNPRvYZUOgCBk/09lCwCFDOYtSERbRwJqirxelMwR9zr4qmaFppKV
+	1NMQcVahbOySgdbb15YW+5ha3HcORLA=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ferhLrld;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BXvemofJ;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772854082; a=rsa-sha256;
+	cv=none;
+	b=km3gFiW2nWj3096wFSa39hAYQkoB7MKdA5Mismddj/yfXPHLKtpekxrdvWTlfbNWyP3KxW
+	86cdhbs/eu3nlnfZ6LFju4kj/CcnxvZUq7mSDhsmmsjDaF6FYn5vgS2qRmuJxxRWLn4KC6
+	k3XiQ7vkYY8XJT96ZVaAIYJ5jliHJWA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EE6D240E24;
-	Sat,  7 Mar 2026 02:40:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70760C4CEF7;
-	Sat,  7 Mar 2026 02:40:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E1DF60018;
+	Sat,  7 Mar 2026 03:28:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7688C19422;
+	Sat,  7 Mar 2026 03:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772851239;
-	bh=VqI2kIRTJXcSdhafyI+w1IVbVYZZCzcxRnZsSstOUaU=;
+	s=k20201202; t=1772854081;
+	bh=XSY0RglEN64n9U43+fR8Oah0dHCIZP40nqmbgL8bEdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ferhLrld/gwQTRzDxSeIPiI1QMqpGlVrfPKpRtvO9Fz6qOa+gECS+KwgNbIeZZnbV
-	 AO/5+XWo+JNgl5udjLqov9bg4iLOfFDnnbrGKIi0IUUaSnm9pvJWLqKQCn4n4Hn+6j
-	 /+qh4e34uEzetoXDwT+clGAoobCzDga4Iynfj+GfREluKfs0Gm4tcllqmgYGuXSnOD
-	 6SVAyCv7X6J42O0zgXpMm74LSEDRFa6ZuYkW3z2eeY4rvoIPGZi4hDxDEu90LVBZE9
-	 6EKtFVjoUgRZdWA5DWu25knB+E54cs+ECjHckKgI3VLx3+8+3PQQSo2bddFh7523rL
-	 K7pQzSoBtOzSw==
+	b=BXvemofJV3TLQz/8HqUT4pHQ9j+A+om0GqwG8KoD8BAR9KEOOIyGHzQoD9I59E2+g
+	 DGSV485DaT66aPMYg8swPqZsVCFMYhLUgHn41efx6RkbWoZDtSQJon/e/+rZN0udwX
+	 Wfjl5c5L3gxNBXEhmrEj3FM0UlED/2BaTEFKWxM+lkGPWrk55jRtkAQ36UGzeFbzDA
+	 AmKq83K3dGMzPYWVJglGFQW2Jb+3ZTHdoV+FOVuJoV4dG7JjA9vfwU02YwGkeBCSSJ
+	 PjgRCYwtuTJUgmYh7FnynTNcDyyFVaF+ZDo84NPK38Qe5znSyTWUUZAbP+NFx6nPNl
+	 cYN+dN3v3qY7A==
 From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
+To: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 01/10] mm/damon/core: introduce damos_quota_goal_tuner
-Date: Fri,  6 Mar 2026 18:40:31 -0800
-Message-ID: <20260307024032.86777-1-sj@kernel.org>
+	Jonas Zhou <jonaszhou@zhaoxin.com>,
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Date: Fri,  6 Mar 2026 19:27:57 -0800
+Message-ID: <20260307032759.100915-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304044122.79394-2-sj@kernel.org>
+In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
 References: 
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7sqwr7cj7dik67h7np8hau6ez9yykia5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2596340005
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1772851240-203400
-X-HE-Meta: U2FsdGVkX1+y+h8QVRon52FfGIAtCv0XMztOtjNWRmNYBRoFBK0BcRJ4wdNJ3gT7UemN9aOZde9ofjxE0lnmtYIA3Twf5uvKLs0mi3mgw7KSSnVpxfp/x2vjSNMC9YlLAxYlqEy6LGdYH3+Sh1iznQEC5bjzWNVFB8iN5xEuT2hvGdXXfaj2v4sLucVgRZQTcF6aN3JlGfXFhjV9MFGF9lAJ551rdHOwnJ6lnJzQdn/+QNvN+BxEGxEmzLWgAqzkx6odYqmV/oMBTLOGCbMV8u+Odevt8gEIfpTxj7KEWwwvBpRmP9IPVvoAbhnFUPVhk/9j3d6490t2tcS1QN/0Iei2tRs12KK2hYKJjZEO4hf9HpodPHDPN0RIFwcEpdpNDm8zQtCmmTYw/8s7GWHP0aayVNqBZ+KhFlaZvXkkWRsrJ/CVQoZ5FeQYJXv289HVPz3YchLn1HtWRszSziCCIGhawof4U6zBKcmNheZz9BGLUhGef5Sb1Ia9mAQ6YiI69zsJ6ULT6gv5XEWWzI0lJj2fJ8EPTt9gcE/HtExpQY6nQ4YW5sn9rVOKBXkc3pw1pGasPZY862ficrqGtQ3rbo7+Rueh9d09m4kIpw6cYaJK+doUjPJLhekNAckrwPGIEhCq4q/jFDjNdVidWk/czWXj964IQi+hf17jHbpKV8K3G6pjlodsWU+bZNhaA6ZTDr9EytMDP79MdtMdczTEL9OjwpsRPscofO8l8GCSRgP3JPBzmGFO0MpXaSqPHMaouxnCDGYyyAOccGj5Fj+mfl9oDTwbX2u9ORy/G9tX+8To3YNarzVEHr4WfAqnZ8DJIJPpYRl1gmH/4tXvFhs78Jbd8yvMlr2dkbfoxZo6Z2UOIoHRFHcWvZUBzuQcAhEtVF3jIuzw023lVwCLFUO5HfQzc9QunqlT9vrcyfwDc6vy2fnFKwlkHfYoLHsIH7zuIkpLnCKL+fqufjanflx
- R5LWVZxc
- +vtHWZ71BHOuKhprp45x0m6hOuPwjAGYSGRCdpI4bD1wOhrVYAaSabyQ0Fw5ElWs2w8HDBen4+osPJEXVJfbTtTnd/mAOjZqnWDn0LfYy7QIkQxKX7h+N4zjsmYivhj6Wqh5hoA9UkD56Iyj1HZXnlg1mgEe6ImpqdT/lCbFhf/kMezwXVJH14RDpam/nF60RCNWVwYIxcLNMr8phbMJc3e4lQq1A80bhb0gqKk4sSB1H6CMNHgrVVZc3Zl75P/jcPf5Oy9DHMPETXSmYks2LWSl5niq7LspMZ8bxf7PWsEgvxKgjgTq8N1SEGerQcbH0HiEKhJt9bNZY7b0JskLhBOIKUpMQVy3MCDrArLMA1DNucx5HmTFWByn24yf+E3sdUNO0
+X-Rspamd-Queue-Id: 578F44000C
+X-Rspamd-Server: rspam08
+X-Stat-Signature: k3pcis4z7ejofkz1t1zio6ajj6yf4fnp
+X-HE-Tag: 1772854082-676105
+X-HE-Meta: U2FsdGVkX18KOKal1qCLBd+Vp8yv/moaOh9UDYFO2uH0Py9LZUHl/HYtYHauDvBUgpP5GB3EImdF2Yy6lQqOFcF/E2Xfp2jQBhDfpDTE3HHPDoHb6Oc3ZU/3GT/eZ2R6EKZaheeIMOqVVkQFJISv+B9C+EY8+cOkjIb9mzARmTQO5G2LSQd+vArFC8rjnZ17+VuWt03zKk6n5l1r6GW0gyKqcUNXIuBbFa6AsjodlzIKYt8NfEj0ilhDZvp6cCRrXiiqfjZeKFyUMaEfExBTxKTPa/0nCAy/HaGGmET21fZuYkvuXkueiROFfD/3+Q2cvIzM7kjgW0nUQM1fNWyA8GgVQoaL6zACaweoNsgupqFnWqBI2fb1GZCCa/MHuLKtTmRAEXRIng08YuWEwDVD1qGFRwmR0tgSQ6BzHlyiP+l+3CVFx17coT/lFU5gMRrow9I39V3kuh5Wf8pVOYgS5NtSLqNMDUbVpCHUmT4y+ItFr7mKDRHQbIZaCt9UeuTsJPh4WLHJ8yvHMdVhqSzzCPLC54pdX/wrNXNb1IqIlrOxhvGgSmPHP4aAoptqH5h643OcGO8ViI4S1/8crjmuKXg/gGQvVn28nPC8qH4sSPiOcynYV4ogUD5cbsBHMZ2j0aKtMBBrDiQLydlYmj7R3WkytyrpKHBMe7jL2sqRDoiSMzlJHA25rJIaLBFnBd0uBWWq4ZhV5X13kCpExPOhN7dDG/Pb/XDQ79OV+Ild8MfnvDvIcAYBSAWFsLcZtDkfEX+cpsQLqqKqCPkKQWUOzWXhk1akvGJfH3ZY6RIG5umpQwD+63wUxY/b6qu4++wYXkn8Yhp2ROw5z7nC3ZaAjfj1/FQzIqvTk3DLQEEGmarLFPsmJoyA+CZk2/RRxZYHkJiEeiA/ptGiTaPPBu+Hy1lu2MNY4UATP62GxywlrY8FfMXj51vr2AcESqXUYN/+tudou7xOoof2UNJ5U3g
+ riaeSTxD
+ /BlQcSYUcI2lOvNd4UxuqRnJFjXHM0RcqDR5cdOILaVZl1upT/2+iuzrSJR71Bhbta4lEeigaBBmoybdMZrvYUpHR5otvcAWSj3SSxl3IrZzz4yDYvaea/jJ25ZatSopW2DBf39Y9Fnnu48UHTrNQADm27npcy07liDTNONWyzo75LkUYy2TNXcISsgb3KUaSSr/UWLFBurluSx0AwF1o7EiOJGizoZ789hXOwjBOnRX7R9cMlxPHmKf2xtjgIWJO1TWWqJFt9gUUE14C1SIRDTuCKF++J5VOw0Mvqnz1UIeyRfBbfFA5kfnyOpGQ/a632suxQsQv2vCbttEJMPd7400y3p97nXum6AC0QU9zxAy7s/UJEytIak+D4WlzbaU2hZGmyJCdx6O9n+n1vyWy9xDTPOOAVbtmMQzeGnX9hXx2yBnlJ2EAfiH3kNQUurCdmpTOZwzq+ikB2jVqEutLkpyXsf+TOmM4MhjZsrziKJbx2xyJuAwN4RrbC/PVJ11rH8vxAuJGGD99jn9o9MMg/ooCBgwr9ofL4Nu3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,47 +104,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  3 Mar 2026 20:41:10 -0800 SeongJae Park <sj@kernel.org> wrote:
+Hello Jianhui,
 
-> Currently DAMOS quota goal feature utilizes a single feedback loop based
-> algorithm for automatic tuning of the effective quota.  It is useful in
-> dynamic environments that operate systems with only kernels in the long
-> term.  But, no one fits all.  It is not very easy to control in
-> environments having more controlled characteristics and user-space
-> control towers.  We actually got multiple reports [1,2] of use cases
-> that the algorithm is not optimal.
+On Fri,  6 Mar 2026 22:03:32 +0800 Jianhui Zhou <jianhuizzzzz@gmail.com> wrote:
+
+> In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+> page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
+> returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+> expects the index in huge page units (as calculated by
+> vma_hugecache_offset()). This mismatch means that different addresses
+> within the same huge page can produce different hash values, leading to
+> the use of different mutexes for the same huge page. This can cause
+> races between faulting threads, which can corrupt the reservation map
+> and trigger the BUG_ON in resv_map_release().
 > 
-> Introduce a new field of 'struct damos_quotas', namely 'goal_tuner'.  It
-> specifies what tuning algorithm the given scheme should use, and allows
-> DAMON API callers to set it as they want.  Nonetheless, this commit
-> introduces no new tuning algorithm but only the interface.  This commit
-> hence makes no behavioral change.  A new algorithm will be added by the
-> following commit.
+> Fix this by replacing linear_page_index() with vma_hugecache_offset()
+> and applying huge_page_mask() to align the address properly. To make
+> vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
+> include/linux/hugetlb.h as a static inline function.
 > 
-> [1] https://lore.kernel.org/CALa+Y17__d=ZsM1yX+MXx0ozVdsXnFqF4p0g+kATEitrWyZFfg@mail.gmail.com
-> [2] https://lore.kernel.org/20260204022537.814-1-yunjeong.mun@sk.com
-> 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+> Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
+> Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
 > ---
 [...]
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
 [...]
->  /**
->   * struct damos_quota - Controls the aggressiveness of the given scheme.
->   * @reset_interval:	Charge reset interval in milliseconds.
-> @@ -260,6 +268,7 @@ struct damos_quota {
->  	unsigned long ms;
->  	unsigned long sz;
->  	struct list_head goals;
-> +	enum damos_quota_goal_tuner goal_tuner;
+> +static inline pgoff_t vma_hugecache_offset(struct hstate *h,
+> +		struct vm_area_struct *vma, unsigned long address)
+> +{
+> +	return linear_page_index(vma, address);
+> +}
+> +
 
-And the above change is not updating the kernel-doc comment of this struct.
-I'll add that in the next spin.
+I just found this patch makes UML build fails as below.
+
+    $ make ARCH=um O=.kunit olddefconfig
+    Building with:
+    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+    ERROR:root:In file included from ../io_uring/rsrc.c:9:
+    ../include/linux/hugetlb.h: In function ‘vma_hugecache_offset’:
+    ../include/linux/hugetlb.h:1214:16: error: implicit declaration of function ‘linear_page_index’ [-Wimplicit-function-declaration]
+     1214 |         return linear_page_index(vma, address);
+          |                ^~~~~~~~~~~~~~~~~
+
+Maybe we need to include pagemap.h?  I confirmed below attaching patch fix the
+error on my setup.
 
 
 Thanks,
 SJ
 
 [...]
+=== >8 ===
+From f55581ba154d6c8aaaf1f1d33cc317b5bf463147 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Fri, 6 Mar 2026 19:23:28 -0800
+Subject: [PATCH] mm/hugetlb: include pagemap.h to fix build error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Without this, UML build fails as below:
+
+    $ make all compile_commands.json scripts_gdb ARCH=um O=.kunit --jobs=8
+    ERROR:root:In file included from ../io_uring/rsrc.c:9:
+    ../include/linux/hugetlb.h: In function ‘vma_hugecache_offset’:
+    ../include/linux/hugetlb.h:1214:16: error: implicit declaration of function ‘linear_page_index’ [-Wimplicit-function-declaration]
+     1214 |         return linear_page_index(vma, address);
+          |                ^~~~~~~~~~~~~~~~~
+
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/hugetlb.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 3f994f3e839cf..63426bd716839 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -15,6 +15,7 @@
+ #include <linux/gfp.h>
+ #include <linux/userfaultfd_k.h>
+ #include <linux/nodemask.h>
++#include <linux/pagemap.h>
+ 
+ struct mmu_gather;
+ struct node;
+-- 
+2.47.3
+
 
