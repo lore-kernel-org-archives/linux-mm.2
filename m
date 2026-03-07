@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE56F55104
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:49:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63BCBF55102
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:49:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 795E96B0093; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
+	id 992326B0092; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715CA6B0098; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
+	id 927C96B0096; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49E5F6B0096; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
+	id 793FF6B0092; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A8EE6B0092
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 45DC66B0093
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DC18F5690E
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F27331BFE4
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:25 +0000 (UTC)
-X-FDA: 84520306290.21.7C631E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5EE74C0007
+X-FDA: 84520306290.15.7D01567
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 53D66140005
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BEJvl+YA;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PskDigiN;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772912964;
@@ -34,57 +34,57 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h7fNYNdvNP2PcUOfrmeC8N1gWWQQifP877TzusDfXqE=;
-	b=WHLO16c2oQgR8g3uX21Ro106wUn+aye6AmvW31SubdI9dTmp4IGKVmkIyagcW5fo72QC4Z
-	CWBINQovH1nfi3fLCBvSKOOfE/frSwT4vzZN5UT2OvcYFUXJas5ROvDM/X+eJ01ZO1VuAw
-	l3crXvH1SR+9T6yIGZk2tlfvwKLgQAw=
+	bh=4NUx9QnPfu7A1XYFmKydGIKExw4Y1qUCjrYJ0Ko3Khg=;
+	b=3EH/BOteaTGHLoACyHdLDm5oyV3+d4+mUWjNMACzbQ3A7FmvxOypa8zEOm4ChDbawaHwAZ
+	T+m+FQihFWFTEyuytJ7jCeNV5+3dUJKFxW54akKHHhXyBJF6395yAR+tlKhXLfSVfdF5gr
+	NzxQIZjjdJbA7Y/YceMb51hiZyhYUTU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BEJvl+YA;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PskDigiN;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772912964; a=rsa-sha256;
 	cv=none;
-	b=AONcfQnGycBp3fjzeaGJtcuvLptQkU+ZIEbLthzRkJbDDpL8vzukoUNvmRXZO8IWrxNTH0
-	TyztWDkjA2abTG+rhXZh4gbd3dD8MTAmHxRb/sLuy5EmyZ5IUQ2tzbpTG0fmHL7eVmmB5s
-	k9odEaFI6onzDHlwlEcBBoCAYpYnXbs=
+	b=QfoBLx9d4oD/SQpgGIjOvqduvWRTt1mL9Bxj4xBPADZ/xU+OxNHgozlXwZsvjKnNwZwmuC
+	iL307LBheUenQLWdxCIcs5hAyaj7uY0jiEyBE5KComU+VHDIhgFLSHBYGMAzg0Gtt2tbdy
+	WUuVKl6aWogDUVXsR4FsdCheLgqK+3o=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8D13600B0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 79BB0438F0;
 	Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F0C2BCB1;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CDDC2BCAF;
 	Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772912963;
-	bh=Za6lpJwLEosOpDlDvwmJC/zKpW4MWLYWLFZqfZ7RdwM=;
+	bh=OtrKrhHbMS6GUq0Sgqh0AHIPZbCzyKkgoS3Ue4fyc6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEJvl+YAbT9PXtUETsi60jcymWiXmgJCPTrhnzWxWSUvDSfTBvVLKFqnSugR1lo0J
-	 rOenWaRUaGt7+2tbhuj0RZEyRWW07hUWI+5B9rvZIsh8BN5V8eWZ1mva31S2OEHyn6
-	 iQ27N+x8TbtOSdBuPOqhoktX6nl54MzND32DrQqht5jCunuAYhYHU0/EwvSO5MCYIY
-	 EMrb25eq3ER+ik+BHGSFW2J/gWAXu/lqPxiU82etKjjbMPNljoNqMwnJQHojEFByA7
-	 /znw6AgT8r5mAzZSDUFlNxfTK6M5a5reW1IHQVHd7LwvbO0oIzZ7B4KKlbSHGRpEsn
-	 AkGpuQo3l/FrQ==
+	b=PskDigiNybIdsVjKPIaaT46RjG8CG/QpBCHY83fnwV4RI2agMJJLQNVxw5B70ZI/p
+	 Hdgh90iIOArfgAFCwLU359T/DsTiFFZC52miEsz+JlE1RYpjtZA6guHv24fWB8B0Vd
+	 PlRln5R3CxwV99oGaI1VVJg6mLxgtsDg6nIdK9I3ATBivnKX/P6F3hJ0n9m1XAzdgW
+	 ByUAmaJ4/xKt3G1aivavVwZAZvol/JgwKP1qkphm0dQdxPJXVXrswYLHf8MS64OTZg
+	 NfDXIocfEBPXBwB9bgN35T0cYXlBBa4T4HItwC7q2KTlRoFfJj6F4NAjP8tfblxCBI
+	 oDqkN6aUhW72g==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/3] mm/damon/core: use time_after_eq() in kdamond_fn()
-Date: Sat,  7 Mar 2026 11:49:14 -0800
-Message-ID: <20260307194915.203169-4-sj@kernel.org>
+Subject: [PATCH 2/3] mm/damon/core: use time_before() for next_apply_sis
+Date: Sat,  7 Mar 2026 11:49:13 -0800
+Message-ID: <20260307194915.203169-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260307194915.203169-1-sj@kernel.org>
 References: <20260307194915.203169-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5EE74C0007
-X-Rspamd-Server: rspam07
-X-Stat-Signature: p9wp7uhc8dc8tjqbxow6hruoy46as1am
+X-Rspamd-Queue-Id: 53D66140005
+X-Stat-Signature: mu3qpp4xfaqa4xbqgrrfe5uq1b1csy3h
 X-Rspam-User: 
-X-HE-Tag: 1772912964-394674
-X-HE-Meta: U2FsdGVkX18p7AdhNUR203AKbCI9G9PQE6eIKbvTnufqVPUpYGgBjgcX+sEBJxk5sUH6kv0Be8qLrkLWPjLGf8QOIvAKsRdMUg+v7jSXQQsRWIF3ThQv8c6Ib9T2d9PvsRTeODr0G7cSG7UZLhxSt72C/B3P6P8lIhH5hxnU3vKcmRUUsQYmhdSjZTwuAcAZt+JjFuSxddQ3gbU0AuceHxMZXN1e2DNjDUMU1gs8p79G+xkSrX//I12B0nTXahNdS6eSWJuYDKSKn7EtXd8vtfMb/gXF4+BeITX/V7Ra6hwS2TfsqHALG5v0tmmaQXUmLMn1/x6BDryd4aoG3nkaK60qFGLDU8lLbHHIHWDYqKt55o0rZYOpdhcB467DYdJ09l1csYMrPq7YpoVoAW6J99w55uXFL6ESb0iOFnVYbc8LAjEosydqjGXjy31MJZHgKLrepa8sW2Cxv9QK2jDIoyB2sOMjk9aGCVxCKHA/CpcUyO8jt6H35+qOoOrSjmnTjShCtyfHHSy4W9VgcitDWYtSWQnnWXXeQoGzUbTfUp3gSe9FdI17OVkUpq4ePS+KlfYtvaYJnrvQDbimkwAcKvpbQmhswieq31MvSY2/CrcDYRH5zfaxJZ1gwIArTOutNNlAhdACaFz4gdtsoQFHp5vhQSV3cCIv4c9gPSdJlDoNJnZ24GCL3vmb1LCKf+yp2CqywMoV8D5jRREAogU6zHDjiNH6w/cyCKzW5IPSLl18XtUyyd5zF54w94ibUBJSK/lqIplrsdJ8/B8rUYff4foIBy4vBNXUg48P4fVYuZ2YzjEQlI7As5HzGsoGJU9sYifR2fw2gAbckJQqKj6tf00ClaNmkcqOIZwZ11hCaN+8cskFfuC8wXCJyZEBVvlsygL28bOiwBQFtny1XBP0+/huLHUrNCeTLViGt7QTT4eJH8xEJO0uR1CctVi7v3RBMya1kRzyr0Y4lkezBEk
- VuqDlfon
- 6e7t1Msraz3peC4ZjD8ad6LuZWwrD0LxGNhqPH+0rz1JZrBYX4vXBHphkrBW4XH+vfW6fRuQJwB4Kn3xRLB4kwLXdPly4tadp/gYBiOU7FQLTxaxTtMqM5dS8a0K7zJCK1Vd5Tumz6M8KHklu2QRFnjMIIqzHC1R85Kcqr58l/wNLaR1blrHYhOXtv62BdW+upFTyNKLCxWItkJjbQeOdoEJuwn/nD3wrqJIVlaQ8K7+YxSn7GhLRm/3S8jwQWB9dTq3mAhaLvf+h0KT65DLm6jT5xw==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1772912964-869672
+X-HE-Meta: U2FsdGVkX1/XSh/AlYGAaO2DAxdkGBlvedHabp451975EsviPXKbrGO8jguPlkyJzFq6Z5UjvYz3XeuI4ZAdzmTZFNB1KJQunYdPHUJrxYYH/F05VI2O5bXycSIei2O9+5SxDFnW4AVjVYeGIo46h0XbQlB2C4u83Q2QCCsvn2qiU5RGGUTAXBZLELy5+4up258CB/qA1ArikRdIiAWOjrEPl+/jTpjMawzmVqkIcaVCxlTVag8oXAZulv4Kk9/b9XPCTFTwZhhJIePmqD0akeHRpkHrt9t1zwbs1A/0qPMr2enS+45D798dEMpr2uyXCaA0nHBeVzius5R4/8kHXgjwBjLfsAtSVW2wG/La1eC0X7SwsdUm8TPTBa+dTA8iZpqPU8TCzRyEnSebaFxKzukYzJouvDHZdjG67Mzxpj7KQeWK2Wsn5We4W8YjYUseVYs0wHuXzJRnKD1cikE+gV8OAFreIpx5dOIoMTBF6mfwUqZWDGWLyeD/PYS/VxA6J3YkDI4ETP47POOSfSeDwezEq5DPajgnHl1SLeoD6+v7UnXivfVCN8/kU51UH0lhwnnLku0YaQYffl7aTpKZdat9f6i86lQBrPYj25ub9oe70cN067URwF9rFz53T+cdZChtPYhVbP0NsBEFRJMSb+IZoyUqQxnp3N0ZEY95kIpRmVkG1d7eBEOIoBpDQ2e4fMhNMpcF+GnZyg5NmM3NIJmFx1NXI5T+Nv34BOQZ7HktuOBxkDrOC127NzN6Qsfh6cKJzmJlvfgxMKX3FCTzQHcriBN+h3BdPso4KxC5ySHMFNhsFdpBK3YdGWeDvlzGxVrAv5U6IATevNdBcc1ssbzdRX2AdlTlD5+JRbhn7hI45D6N8KTIZzJQ1ewhQX20/ToCxjAmx2+bUudKdaxCz7USqPkCYVZD2r8P/fC3ECFRYzX0QUUKUT2Vz+8vVc8g7n5a1do2Voeyo/s/WDk
+ 6WSpS/Fp
+ upPTIbopmQ1cNfSxjkYiulk4ZAS4vSgIvfgLwhpKM2pTkirEe4CD46L0wcrtODS4cOxlI3jYkvKhptbHA7JwS4dgRKUCQSXf10tg2bVEkZPQXTzVee9N15SSA89NuvLcsKEMr1geE5C6mjY+dPkZ9gnoKwzpxYochZFMgBOXDZjCjnBWD0cD95EQMrbNaYeev0FbpzhvDBqfO7KY2t5uCIWWfHZptNNd9m70S8l4HCH8o2uV7aQkBjJz5j1MILfYCsS0ASEJs+pc0fbv9qTIginNpug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,56 +92,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_ctx->passed_sample_intervals and damon_ctx->next_*_sis are
-unsigned long.  Those are compared in kdamond_fn() using normal
-comparison operators.  It is unsafe from overflow.  Use time_after_eq(),
-which is safe from overflows when correctly used, instead.
+damon_ctx->passed_sample_intervals and damos->next_apply_sis are
+unsigned long, and compared via normal comparison operators.  It is
+unsafe from overflow.  Use time_before(), which is safe from overflow
+when correctly used, instead.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ mm/damon/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 4ede733a94cc0..cd2d7a8e3fe92 100644
+index c4c30824465ee..4ede733a94cc0 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -2915,7 +2915,8 @@ static int kdamond_fn(void *data)
- 		if (ctx->ops.check_accesses)
- 			max_nr_accesses = ctx->ops.check_accesses(ctx);
+@@ -2095,7 +2095,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 	damon_for_each_scheme(s, c) {
+ 		struct damos_quota *quota = &s->quota;
  
--		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
-+		if (time_after_eq(ctx->passed_sample_intervals,
-+					next_aggregation_sis)) {
- 			kdamond_merge_regions(ctx,
- 					max_nr_accesses / 10,
- 					sz_limit);
-@@ -2935,10 +2936,12 @@ static int kdamond_fn(void *data)
+-		if (c->passed_sample_intervals < s->next_apply_sis)
++		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
  
- 		sample_interval = ctx->attrs.sample_interval ?
- 			ctx->attrs.sample_interval : 1;
--		if (ctx->passed_sample_intervals >= next_aggregation_sis) {
-+		if (time_after_eq(ctx->passed_sample_intervals,
-+					next_aggregation_sis)) {
- 			if (ctx->attrs.intervals_goal.aggrs &&
--					ctx->passed_sample_intervals >=
--					ctx->next_intervals_tune_sis) {
-+					time_after_eq(
-+						ctx->passed_sample_intervals,
-+						ctx->next_intervals_tune_sis)) {
- 				/*
- 				 * ctx->next_aggregation_sis might be updated
- 				 * from kdamond_call().  In the case,
-@@ -2972,7 +2975,8 @@ static int kdamond_fn(void *data)
- 			kdamond_split_regions(ctx);
- 		}
+ 		if (!s->wmarks.activated)
+@@ -2453,7 +2453,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 	bool has_schemes_to_apply = false;
  
--		if (ctx->passed_sample_intervals >= next_ops_update_sis) {
-+		if (time_after_eq(ctx->passed_sample_intervals,
-+					next_ops_update_sis)) {
- 			ctx->next_ops_update_sis = next_ops_update_sis +
- 				ctx->attrs.ops_update_interval /
- 				sample_interval;
+ 	damon_for_each_scheme(s, c) {
+-		if (c->passed_sample_intervals < s->next_apply_sis)
++		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
+ 
+ 		if (!s->wmarks.activated)
+@@ -2477,7 +2477,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 	}
+ 
+ 	damon_for_each_scheme(s, c) {
+-		if (c->passed_sample_intervals < s->next_apply_sis)
++		if (time_before(c->passed_sample_intervals, s->next_apply_sis))
+ 			continue;
+ 		damos_walk_complete(c, s);
+ 		damos_set_next_apply_sis(s, c);
 -- 
 2.47.3
 
