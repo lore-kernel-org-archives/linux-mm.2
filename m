@@ -4,98 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29C74FC9EFF
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 14:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 320F1FC9EFE
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 14:33:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63B2F6B0005; Sat,  7 Mar 2026 09:10:04 -0500 (EST)
+	id 201206B0005; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8BD6B0089; Sat,  7 Mar 2026 09:10:04 -0500 (EST)
+	id 1AEE86B0089; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CA5A6B008A; Sat,  7 Mar 2026 09:10:04 -0500 (EST)
+	id 091056B008A; Sat,  7 Mar 2026 09:33:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CE4E6B0005
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 09:10:04 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E98198CEE3
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:10:03 +0000 (UTC)
-X-FDA: 84519451086.01.8E399D9
-Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1925C14000A
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:10:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b="ujxH/YQ0";
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB0046B0005
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 09:33:33 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8ECB51A026B
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:33:33 +0000 (UTC)
+X-FDA: 84519510306.03.4494186
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D5DF780009
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:33:29 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jwVbHPRL;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772892602;
+	s=arc-20220608; t=1772894011;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RM+Hz9YH+3ijyF4ASnaYHms+P4W04IcR81Vaa3/ZpsA=;
-	b=xih9saggH8QyMRSuLlv6GqyTMfBaiDYQt5A4gHGT3CPH8lQ06nZ6T0rn3nUiNJjom1CL06
-	o6Vvg+d09JrkN2LgfkTGO7TSsRbmQHZtjLx8GlxyvdVaBi35M4Jcgn/TpzP5DXxV0eanFU
-	epGgflWlBRVZ83FTb7G9kvN++7Mfs18=
+	bh=wm9AUsieKINCDCA+yyB5GmYYUIOngh9Dp+zyEKNVaGc=;
+	b=yzBO9KHq9mLuWqUzlYODLZC2LXwlkXn/T9nGbU7Nx3ukjDv/Pj5EEzIHHoKoWWXhNOl0zh
+	bnT3vZtC+7r5+vS8GejbNe65lzUETmHnNfW5tug/JSU2EjgQBuEYSuQf0zE48dUiPHwYb8
+	ZpeoSUfx67ENKeLzRUUdF5Aj0bHo1og=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ilvokhin.com header.s=mail header.b="ujxH/YQ0";
-	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
-	dmarc=pass (policy=reject) header.from=ilvokhin.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772892602; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jwVbHPRL;
+	spf=pass (imf30.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772894011; a=rsa-sha256;
 	cv=none;
-	b=XyAv9iVdNrEvLSp6eUVrkXXFDzC6uoShLuZ4sy+ux8SNqoi8yMDtwjhmibEDlsNIsSUbj5
-	D59JmASlPWE5td5iLCMY6kyy8RzgEgviW0+wJ00SvhisnuNaMGZ1rkYXRm54yr7dyxN84h
-	42a2MLqSQ9sa8jNFFPwZ1i4pcR/JaYI=
-Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
-	(Authenticated sender: d@ilvokhin.com)
-	by mail.ilvokhin.com (Postfix) with ESMTPSA id 47802B3509;
-	Sat, 07 Mar 2026 14:10:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
-	s=mail; t=1772892600;
-	bh=RM+Hz9YH+3ijyF4ASnaYHms+P4W04IcR81Vaa3/ZpsA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ujxH/YQ05q9ZFNSDyFCZ1YR46Y6t85rj5qkuY775bNT3qzXYk5c0/A8PIyWS5RL2Z
-	 o1zATF4Hj1rnDr/AN6RZFS1ROw6CX4gl2Mm5oNykswDaRbm98SHzc8j7DGVoc9wEqp
-	 j76QCbkivRDwyIQXJscX+ujcDy20UUBqhToZ7FG8=
-Date: Sat, 7 Mar 2026 14:09:41 +0000
-From: Dmitry Ilvokhin <d@ilvokhin.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 1/8] mm: use zone lock guard in
- reserve_highatomic_pageblock()
-Message-ID: <aawxpQDPpqX2k5z8@shell.ilvokhin.com>
-References: <cover.1772811429.git.d@ilvokhin.com>
- <cf489e5e79f5e9ba450111ee655d9924fe7a1620.1772811429.git.d@ilvokhin.com>
- <20260306095336.a79fcc869a7f6d2b2e97501b@linux-foundation.org>
- <20260306130052.7da8eab3@gandalf.local.home>
- <ce0e53e4-52e2-4e56-889b-adb01ede6fe7@kernel.org>
- <20260307131641.GX606826@noisy.programming.kicks-ass.net>
+	b=Eud6VlyhAnwNEOzaq5ckToQQQD4rOsAVs3eicrH+wuVx9P76oaibGV1/AL0hB1/ovMOHj7
+	2afj9okASKEFeATClul4LR03nO6dWQsaq4y7ufQf2A2mddcIbLsEvqf/7vmvxsLnnAtogV
+	JMPKMmYxiXiKyNKCTL5MGlIlcKkEvo0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772894010; x=1804430010;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MQ+yt5XOavwgGdppdINTOkJAiLO6+ABk5bgoDv4J9aI=;
+  b=jwVbHPRLmf3jbN0Kx1hu2Vrlv3tTF1HprGJy5IqF75uft5+G8CSmi/1l
+   XpP2DZuSTlEaxms+XEfKe104adWGJ25cqrCHpOOEQeysBcK54tpRBbtRK
+   v8PMkXR5R0VyPXfCT3DMR6o5dfPprFiCu+OxH4B4MGJuJEm3RZ7UXT5Xx
+   +u6sr7vnBb2A8nFyN6w1iV3dLx0Ah3Qa1C6Eyk1Gjac4CaSD4aQK4TlOY
+   g6VXapwdVyMIxTU61Ee9IQdBPLPkUfMYNkczqee70EnK611pJVxT9dkc7
+   eNB9PQKp3bU5wWfBbs82ZXVbwIZdfGlHiFALO4FVzYhJqj6Mff9z5Aq9T
+   g==;
+X-CSE-ConnectionGUID: N+qC0HgaRi29/0VjcfMi1w==
+X-CSE-MsgGUID: A4tXhziUQBSWczt+N1Z+vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11722"; a="74171590"
+X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
+   d="scan'208";a="74171590"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 06:33:28 -0800
+X-CSE-ConnectionGUID: bfLuj/j3TcaKl8o5BKZvKg==
+X-CSE-MsgGUID: 5d60jMlaTaa8hpa25AhjXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
+   d="scan'208";a="215902739"
+Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 07 Mar 2026 06:33:21 -0800
+Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vysiT-0000000025R-3M8N;
+	Sat, 07 Mar 2026 14:33:17 +0000
+Date: Sat, 7 Mar 2026 22:32:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, mhocko@suse.com, vbabka@suse.cz
+Cc: oe-kbuild-all@lists.linux.dev, apopple@nvidia.com,
+	axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
+	david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
+	jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
+	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
+	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
+	rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	surenb@google.com, virtualization@lists.linux.dev,
+	weixugc@google.com, xuanzhuo@linux.alibaba.com,
+	ying.huang@linux.alibaba.com
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+Message-ID: <202603072210.TSPUKsyq-lkp@intel.com>
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260307131641.GX606826@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260307045520.247998-1-jp.kobryn@linux.dev>
+X-Rspamd-Queue-Id: D5DF780009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: wknm3igefa4o4ncfzh7y6er6ismt644q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1925C14000A
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ucayw51njti8qwdbxnbkxjroyfeo83ho
-X-HE-Tag: 1772892601-504626
-X-HE-Meta: U2FsdGVkX18HCMn28K50VU9YroT/5JFcTMkIpgyYZp3bUUeRwhl5qElxock+I3IzDWTIrLiYynTAwoNrbrzRMKyBrXcUsLSCh0WS6/idXs5pzXxB/ei76bqXblQzF6TFWhUSmbS/MBJmsAe/nOslQXpA6GhQ39+Aq68nuNT0E/9B0lcM2DzMNBfKypurWKdVCXypK/ZCOZMcjkkBTCCBlYxwsgvhtojxWG12TJm4XmMEGdgaTd3ykFhlW9sTGBS1mijrQEjL30qty92/OfbelbWLsunVD79IwpOjcX6++JRr8WKmKPLB1iObhxqAMz8blVe2edET1pDkcROwGdfkmUrHlHHrjTEg946ZYv0zDFbsSo4/h93YkuybT9pS3PXFSWZocWNTJClSJGSgYNtrP0e2Ozxfe1QiX/spFvAFk6LdogpAw2UBfxry4Gs3HfO4RlDsU5/VErBAApCJVXXLSixTzslQ3oQY4ELTzni8rfbJoJVU5dyEAn00iQsWW32LnRQ935rSS/192QRPCf05sNLMe/RxlzP3DME7GSb6NkSfrYg3LYiqeL79gDE1lXJvuTqkkRHW6u4H7DQIIa68h+fQf/Yh5MH6sNNCCQujlrWxYB6fccP1wYqEdjlJtXFBPcCNq9FPMck/KPigCegHD072MpmN5CyXrW2AXnmdI91Yt2kSi9SzwdpIoFbhIdl1cbNSJg+4T38w6Ve+a36O0/sRhayD9/YM1KCUjMZpt8YnwJeCgT8235y34DhtoZVv4nb482+FRq/pSDTe4S4cTvwtnoMaESPKgasRcBVEIL4KReAzBw3bZkkmGX0KDBJ5CPrq5aWxmAcsTAUCJCyfe++7dgQuuoI75ysAYl93Bddm9u4QKrlq5xXdtxyxHLGcFGxnnQoZjzvJW9TwP1WiSRe2wrWuFsvWHDrPBrGnZkH5aMDo1a57ZR8/W3qR5Bkle9UGimg1KvdH6nzhA9Y
- +gZbn0Iv
- RzX5ygT1VhxWlbqbSNlfP4aVE4HEQ6ejVCEQN1Jw4ZKxMXWaXfX3DcjnbQhq/tLbpJBcqL+ugRbzPzjV3jmYI24DcQ181EMmmP522/3DbCND9NJCEETgjcmnme9SA7qJNSCan1m5U0Ly1qsBkSJICuVs3uM9zD+yZDRWlk2T/U3Gd894HcKzuWurQWHavl5kHEGt0K5LbGnJSDberqf2QohHLuH52thjME6b/NKeEGbaGl1Gnh95tXK947pfbfIHQAypkAOuzLFrkK64TvlEm136XNaGVnLGCd9etj8hjjNv/UbqQtjU/UbX4qxA5IF13gOeadRKyHKk4oSb6WQOOveibjvizCe8C/p98QLvjdoNq7s93ZpmEefvpt7k/4ZKvJFcEX98NQ5Xc559J1oLpqDUQMQ==
+X-HE-Tag: 1772894009-379914
+X-HE-Meta: U2FsdGVkX1+wwvYgryFyiiHx0C1FzEgHl7nYTAbNlFzQd8lzM/DnZJhWQZDW7SMn2LA+C5l8Keb1oX9fsrB4wbP4ICfSeolqXXwE1NoxCFOybub5ttaVZYcznFAqb+4WcuLUg+j6SgUdYXOr6MjWbODo/qHLzy1Wv2U/isBLWkcaSauifWI2U3HugUy8m1iws+E88vWG+/5f8Owpm3wm2E/I0lEcb/0yernNeaWcMHbTi7Q15kjokYW8YedGylBB86/mvrSc57Fr0ZnHWLKK+mwH0ghYoKUAancdAbwH0u3CCYzu3vjgelPV8081Rz+Qif7yVgbVIyL4cILm+KKpX5mioP04HzE+60YRDtE8nWO1T0H87ohhlJLFFX3Fo/oxQAarMOvTFm0XcebXlfFUGNzUv3qqbUTRrl1eKGFbwjODb0FQIUamE8O35QGBa+IBBq0mZRbCQ5BlQLZxqOmoOTJ4RhOj5IWuj6HDnQ9EYavwBAwYbzAvMJglYgW5d1xbpmZQixZSUjRP+p6E5m+adBc+b6kE7i41B+XGAU8EEJNysL/KQx3zak+ujAQmHKcGypgSet5RGEplbhNSxSwiQysM/CN06yqdoB6osyzVV/t5vUQr1uxZUVyZ0pQ8CMu0P1IzRv52O0rIqQmCUTLtsUjyaYjMBdGLB/OqoWf0amYMxYxhfAZudJXEfMmU/tlAKVEcWpitKmEwsVRPFAJhvQ5yErXtJ+6Hd5bQdMSWU0ZlQwTjPeDIAqWwMSbaKTNtN+MYOMTpo97a2HSsc3Q15ocLNH/aHgRrwzBHyBs1vW21FyRW8X9YnVxzFLLdZ+eTUfri6ZgwaEX1FmD9q1/rz091gd38XyikzpbXcsQ87KaJPiq6yFNWwYN47RhAJpZ/QzGJr+bskcxM04wIsXWOqjOtoOPr6iUl4o2RB99xSTjWIOFP3F9JPzX7JQ/Wh7CpamKeegnjjA4pBl9tPu6
+ 65qZ5mxz
+ atSaHVRVTHT2XYYY1MH17YsbIFcW1Y0BKozzopuLQkcqzbSdoe2LTXk5XrczII9twMiAan6x9j05TTA42aH7Tu3R5R2ZZ3/s0IX2YnyWJXUPQXuQbrAf8xCp1wLyr1wKuBzpO1lYGiaHikV7MhwYwoXbjr+zOl1E9QeGY1fgz9jXyfujezcc4VEbikFtBApqSgGcPdAOTuPxUIP5ILY9OoZKOk8tCktUawKupRfrf6Awn5DwGcQaFz5D4pqItSsGRRrCtXRG7P2QKgHX9YuFrCGhgCZys9DoIPnc54OI97B5kCTTCuvZ4oJUV6qtdUXVZN2v+Umm7IAHZf6YW54LGQSvXAOQjLtDc8Ua67a0CwUJosnEh5Hsn9lwHI4af/RrGoynm2+8TUYUTJosH+Vzu3dsCKg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,36 +116,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 07, 2026 at 02:16:41PM +0100, Peter Zijlstra wrote:
-> On Fri, Mar 06, 2026 at 07:24:56PM +0100, Vlastimil Babka wrote:
-> 
-> > Yeah I don't think the guard construct in this case should be doing anything
-> > here that wouldn't allow the compiler to compile to the exactly same result
-> > as before? Either there's some problem with the infra, or we're just victim
-> > of compiler heuristics. In both cases imho worth looking into rather than
-> > rejecting the construct.
-> 
-> I'd love to look into it, but I can't seem to apply these patches to
-> anything.
-> 
-> By virtue of not actually having the patches, I had to resort to b4, and
-> I think the incantation is something like:
-> 
->   b4 shazam cover.1772811429.git.d@ilvokhin.com
-> 
-> but it doesn't want to apply to anything I have at hand. Specifically, I
-> tried Linus' tree and tip, which is most of what I have at hand.
+Hi JP,
 
-Thanks for taking a look, Peter.
+kernel test robot noticed the following build errors:
 
-This series is based on mm-new and depends on my earlier patchset:
+[auto build test ERROR on akpm-mm/mm-everything]
 
-https://lore.kernel.org/all/cover.1772206930.git.d@ilvokhin.com/
+url:    https://github.com/intel-lab-lkp/linux/commits/JP-Kobryn-Meta/mm-mempolicy-track-page-allocations-per-mempolicy/20260307-125642
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260307045520.247998-1-jp.kobryn%40linux.dev
+patch subject: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+config: x86_64-randconfig-074-20260307 (https://download.01.org/0day-ci/archive/20260307/202603072210.TSPUKsyq-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603072210.TSPUKsyq-lkp@intel.com/reproduce)
 
-Those patches are currently only in Andrew's mm-new tree, so this series
-won't apply cleanly on Linus' tree or tip.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603072210.TSPUKsyq-lkp@intel.com/
 
-It should apply on top of mm-new from:
+All errors (new ones prefixed by >>):
 
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+   mm/mempolicy.c: In function 'mpol_count_numa_alloc':
+   mm/mempolicy.c:2489:17: error: implicit declaration of function 'mem_cgroup_from_task'; did you mean 'mem_cgroup_from_css'? [-Wimplicit-function-declaration]
+    2489 |         memcg = mem_cgroup_from_task(current);
+         |                 ^~~~~~~~~~~~~~~~~~~~
+         |                 mem_cgroup_from_css
+>> mm/mempolicy.c:2489:15: error: assignment to 'struct mem_cgroup *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+    2489 |         memcg = mem_cgroup_from_task(current);
+         |               ^
+
+
+vim +2489 mm/mempolicy.c
+
+  2429	
+  2430	/*
+  2431	 * Count a mempolicy allocation. Stats are tracked per-node and per-cgroup.
+  2432	 * The following numa_{hit/miss/foreign} pattern is used:
+  2433	 *
+  2434	 *   hit
+  2435	 *     - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+  2436	 *     - for other policies, allocation succeeded on intended node
+  2437	 *     - counted on the node of the allocation
+  2438	 *   miss
+  2439	 *     - allocation intended for other node, but happened on this one
+  2440	 *     - counted on other node
+  2441	 *   foreign
+  2442	 *     - allocation intended on this node, but happened on other node
+  2443	 *     - counted on this node
+  2444	 */
+  2445	static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
+  2446					  struct page *page, unsigned int order)
+  2447	{
+  2448		int actual_nid = page_to_nid(page);
+  2449		long nr_pages = 1L << order;
+  2450		enum node_stat_item hit_idx;
+  2451		struct mem_cgroup *memcg;
+  2452		struct lruvec *lruvec;
+  2453		bool is_hit;
+  2454	
+  2455		if (!root_mem_cgroup || mem_cgroup_disabled())
+  2456			return;
+  2457	
+  2458		/*
+  2459		 * Start with hit then use +1 or +2 later on to change to miss or
+  2460		 * foreign respectively if needed.
+  2461		 */
+  2462		switch (pol->mode) {
+  2463		case MPOL_PREFERRED:
+  2464			hit_idx = NUMA_MPOL_PREFERRED_HIT;
+  2465			break;
+  2466		case MPOL_PREFERRED_MANY:
+  2467			hit_idx = NUMA_MPOL_PREFERRED_MANY_HIT;
+  2468			break;
+  2469		case MPOL_BIND:
+  2470			hit_idx = NUMA_MPOL_BIND_HIT;
+  2471			break;
+  2472		case MPOL_INTERLEAVE:
+  2473			hit_idx = NUMA_MPOL_INTERLEAVE_HIT;
+  2474			break;
+  2475		case MPOL_WEIGHTED_INTERLEAVE:
+  2476			hit_idx = NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT;
+  2477			break;
+  2478		default:
+  2479			hit_idx = NUMA_MPOL_LOCAL_HIT;
+  2480			break;
+  2481		}
+  2482	
+  2483		if (pol->mode == MPOL_BIND || pol->mode == MPOL_PREFERRED_MANY)
+  2484			is_hit = node_isset(actual_nid, pol->nodes);
+  2485		else
+  2486			is_hit = (actual_nid == intended_nid);
+  2487	
+  2488		rcu_read_lock();
+> 2489		memcg = mem_cgroup_from_task(current);
+  2490	
+  2491		if (is_hit) {
+  2492			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
+  2493			mod_lruvec_state(lruvec, hit_idx, nr_pages);
+  2494		} else {
+  2495			/* account for miss on the fallback node */
+  2496			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
+  2497			mod_lruvec_state(lruvec, hit_idx + 1, nr_pages);
+  2498	
+  2499			/* account for foreign on the intended node */
+  2500			lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(intended_nid));
+  2501			mod_lruvec_state(lruvec, hit_idx + 2, nr_pages);
+  2502		}
+  2503	
+  2504		rcu_read_unlock();
+  2505	}
+  2506	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
