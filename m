@@ -4,99 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC54FC9ECB
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 04:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73FE6FC9ECA
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 04:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DE2C6B0089; Fri,  6 Mar 2026 23:05:52 -0500 (EST)
+	id 998A56B0005; Fri,  6 Mar 2026 23:55:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 094FC6B008A; Fri,  6 Mar 2026 23:05:51 -0500 (EST)
+	id 945F86B0089; Fri,  6 Mar 2026 23:55:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E78396B008C; Fri,  6 Mar 2026 23:05:51 -0500 (EST)
+	id 844EE6B008A; Fri,  6 Mar 2026 23:55:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CF0336B0089
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 23:05:51 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8673B1A04C7
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 04:05:51 +0000 (UTC)
-X-FDA: 84517928502.07.FE75A48
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8010614000B
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 04:05:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=N6rgNZaV;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 710716B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 23:55:45 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05E70BAFA5
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 04:55:45 +0000 (UTC)
+X-FDA: 84518054250.28.A0E5C8D
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 324B54000C
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 04:55:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AD62MGvs;
+	spf=pass (imf01.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772856349;
+	s=arc-20220608; t=1772859343;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=zHuXVPim+hIkFrbmdT/riYDZGjPHj34eitKY9y5WM7o=;
-	b=C2F/C4jAvAuwmcjUAJQ+0sYKy+KiHZ4K+BzBsO0uEXd8ua76b291k0SvQ67dpR6QgE5Un6
-	PqKSurJ/HOuxi9yJBBr33mSUZkLnUQ2FOE0UcFvB+paZaMok7fsSHWDCMhs3b6SRrE8Ako
-	RsEhgEQA0d9H2Xl8+bRfGx+PL4dZvUc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772856349; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qslBai9ysHE9ew/L17AVF59o+oz2ik2mT2v5csquk7k=;
+	b=nqhb0gZh/HgBHu8ToNSNyCZrGuWBEzAOtnntda7Dnn3cygM0RrezzFN0RmExLtCZmA7UGX
+	GRz7oRD5eJo1EAgKXf++SvX8Gv/IuTLjaf16d9fnJGorrn1we9fMDr1Wao/9VOgiaMN52S
+	fYY0UR+J5g5JqDqlQ8TOqJ/P1Tebxpg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772859343; a=rsa-sha256;
 	cv=none;
-	b=Mqpn3bT+tGH7V1jtuUijgwukUdulj49fKHzf16fpDQkkBuRja7VJlpXI48NuHEudBvHBAn
-	UPYU5CIfLrO9UX8pC9rpDGrKE1hSGN8ODlxvmqzNAsK/cO0BBlhMLcTlgM7Pl8UrYmWJvB
-	iJc6GPZkOmdLH7ZPh3+Sa55kOaWaNgM=
+	b=f6Mr6TeiBo8Q93n6FX9r8FuFhHNUiPP3KEXnkaNmqY9EU1PEfHNgYOboM4kSgSkFnl2FFp
+	KDUEz0WWcSECvZgGtZT0s71Pdu7NqVnXdwgTlbXTpdYcy62PBH8Q712x1tgyG6nxTIoi2C
+	qoH16sTK/SCG12qqqNMZaypXWwwvfv0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=N6rgNZaV;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772856350; x=1804392350;
-  h=date:from:to:cc:subject:message-id;
-  bh=dF5amXua2iK/Qs7c+TgqaoVGmwfmgrUCxP1NrcCKbCo=;
-  b=N6rgNZaVxSCIucFspygnXZfsuC6alq60FmHmfdNPNJE9UviEG6pvBwKx
-   yU/np8B3ckuPv2HsR17PVFxqmcIGAOjUpy1kn8sSnRx6owi1mXB/e5Y+r
-   OW+OH74anoq+TaQPuUwRwpOV0VljbRC0J/cVTKuDosv6O4NdIbn5RTbtG
-   Rd+v9ru0vwtssk1KQJcC6c6sQsSPZDY7Q7DqP3J0Fgl3myAFRgi2VLt3i
-   UAjS4AaXOvt0WJr5Gzm7CWve4dtN4RImtH5rBZ7/MRX0cDKWRNWkIC9bw
-   7j0BUY9wN+eQBhEz+b8JZKBIruA9yJzPG8Ar5yxg3YGmIBKWWI65IjSLg
-   A==;
-X-CSE-ConnectionGUID: 1jAwxxR0TAqkezkl4i58Cw==
-X-CSE-MsgGUID: M6Yq76GxSc2NUvx3a2bVWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="77814839"
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="77814839"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 20:05:47 -0800
-X-CSE-ConnectionGUID: YSYIdRfcT/yCBxERlj8N8Q==
-X-CSE-MsgGUID: 2SPV/+/qTJW3vATg0pffng==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,106,1770624000"; 
-   d="scan'208";a="224151077"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 06 Mar 2026 20:05:44 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vyiv3-000000001ff-0kbE;
-	Sat, 07 Mar 2026 04:05:37 +0000
-Date: Sat, 07 Mar 2026 12:04:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-unstable 34/207] include/linux/hugetlb.h:1214:9:
- error: call to undeclared function 'linear_page_index'; ISO C99 and later do
- not support implicit function declarations
-Message-ID: <202603071118.PmcGAhcg-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8010614000B
-X-Stat-Signature: 4b17j3ysjdgo15kn9zgao1z9qs7uujfu
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AD62MGvs;
+	spf=pass (imf01.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772859340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qslBai9ysHE9ew/L17AVF59o+oz2ik2mT2v5csquk7k=;
+	b=AD62MGvsgH5UsbaKcQmRpgY543m3jajlSbPMoIzoG1ox73ZbOLGlu5RHggz9CLInOOhWlh
+	K7PziIlMA4BR/cAYNrbQYv4+yPPWBBijyp9pYVeyGAuY3uYXXSIWgSSdeoStPKb9hJ6dNK
+	bPxwLiR1vUs8Ih4vjMA0pYjqY7x8evs=
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	vbabka@suse.cz
+Cc: apopple@nvidia.com,
+	axelrasmussen@google.com,
+	byungchul@sk.com,
+	cgroups@vger.kernel.org,
+	david@kernel.org,
+	eperezma@redhat.com,
+	gourry@gourry.net,
+	jasowang@redhat.com,
+	hannes@cmpxchg.org,
+	joshua.hahnjy@gmail.com,
+	Liam.Howlett@oracle.com,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	matthew.brost@intel.com,
+	mst@redhat.com,
+	rppt@kernel.org,
+	muchun.song@linux.dev,
+	zhengqi.arch@bytedance.com,
+	rakie.kim@sk.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	virtualization@lists.linux.dev,
+	weixugc@google.com,
+	xuanzhuo@linux.alibaba.com,
+	ying.huang@linux.alibaba.com,
+	yuanchu@google.com,
+	ziy@nvidia.com,
+	kernel-team@meta.com
+Subject: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+Date: Fri,  6 Mar 2026 20:55:20 -0800
+Message-ID: <20260307045520.247998-1-jp.kobryn@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: wgdqj6hjcsm74zx9km9igoys8nofy1w7
 X-Rspam-User: 
-X-HE-Tag: 1772856349-432535
-X-HE-Meta: U2FsdGVkX19wvYS6WpMnaHHyfQE1Sok9G+lCAn6gEDNDw95hp811/MuAgasJbKzlldfjVJOGxRg3hnn8bqIP/ShT5H6ENAqdYwvAxoiFY+gDJn+pRgpwBu2wXnJ5aRXndLOFHZpaxqzpZcQOkbl91wyq3NSEaVuVAuv265EE5TX8nKG13JCcxcN1K+b3t460QxwW3Hivg85CXwCG5UqH5u34fvxxir2BVcNZa2Uw1OJGUhe4sL3a/d7+P8wGpG94i0+a4NBlJ2uGdNs8QbwzPLPdQczPnpB7FKokb05gfGz/7uWfArcxQEpIhjynAZCesQeGpbY4306J1GHEVE4qxZ++N5vNXHyWpbP87OBN3f5EIH3EA40Akad9L9nC8WpmverokkLpJO1mnkSVWEjgaZq8Ivb2yiKQgadWMktOM8jS7uPK9XO7eGbawplaO8qRJ36i0qOqGR6yO+5HyLEvXec5UFewieexCInASvS0yu2g25Tijnb+cxP1dWoL0h3oVVpf23xvFk41/WJ3He810+in6ICxwclRZhTM+j+oGpL7FHY91P/7HT1HQLwXbO5GLt5nMT73jJFgKX53Fb3Q+aKRxpyhAg1TA9WeEooUB3s5mWc6G1gJB9yNGbVMxzsMGfnI+vCT7k5wZ6doM4JZKdlfueF5E5mjIq/NHm7ziMSB7YI8vMAKiE9ZKW0yDzwwa6tDkPtxuiIQYQ47jwwL3/+6zkfqHSqfgeuuQl0fCSEZv8+r/tFUG9XCYS7e+DFUHbmiIxXyK+cy+bEni5TubUVv7+mhkcFmRM+m1dHk3v3fgseCjvUV3V2BjMFm4nK8L0XMI/ldOHORMkuafPt5RnXgyCP0z0xqJLvrQ0ApsNyoJL2hbY+jqE7Ib2pL8xvcEJwm3USaoF2FZya8zqzweLxGwGfET1FEzM7D7XBdLBqbMq+zYHevuGQO2ANLTrd7O10GNnn16MWOLf6WjfW
- 2L+raeO6
- V2tA1IGLPMbsy6NXwzSTU23B3jTHuxmNsCVQfRS/K8QqT216VQOuFL9zula1sDv4FMZM2T6yPPtrIyIlx2Jf9zjzyzoNI/5J9Fck5x6+jEkBhMOHuNmCKxnhWsj7D9KuthdjHE202RDae6mDAJLAJtZNBwcN7GC+fBtnoWQWfV3Lje/FtTuxlW00NSae3um/PSHEFy3Jo6P7xo89oXILAuw+PHwG2uuZV0uYkuCsjIzzor0oF0dTq9m404QMwZbbkII0H2L20+jJuhyJDFN3fEE18Q19TOG344L4vj3M/OhgK+I+D9rgkIEIXJBNmZUblzXex
+X-Rspamd-Queue-Id: 324B54000C
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1772859342-157548
+X-HE-Meta: U2FsdGVkX19mNooxRgDeJ3cQYiPDAxg4qfELe6NohKXEZRHSVD5ySPaQLAX7/mWiU/4jbzR/hFZLpSUB5qmv1Rp24rPRmQ15o2y14PeJKHfeH8X7t2SpEQoAT98kTjCXGkOyhkfQYjnPQRLOVQGecscoBv1D7MGQ4W1a9VjM1aOuA4StMG97VPRJSpmiDU22qlKMzo2Z21Vl532b9GdOyMrdrt8NoswKzbXy4bwF9drjr6Fh56rq4CjGMyYfBoGH25wxnsIKtykh4rIUr+rcWZlcmxneS3ex3jdaU8vAXyqaj2qNC5VGIPQFhRwpvRGlo2KXXp+uukC4RQCdn4cqKRuEOjKtzL+N+qwpUXsrvfm7g+oFOqk9MfeD5LbI23MwXDR+H+7LBSKWjd/EYtiX+waBiJCVsPi8OpKE66NfdOK2emIlFAJfl9g3qrohZOqSNexbVo6/oQrhbLQJUqh9CMj1svv7007Oi2l2EjW7bDRFEp1fiIITY+wwWpsdmqY5e0BE1//IE2aq02zmkPgdrm5wMeH41uQD1zSCKrl9HNx2gr+C8w8OwsIY2Nxd/woxww8hQyu1HeKlYEIwCq/5NAlBXThqhLAXXScQhM/vrM2NzXsd0MVyZcOfwfwCYjqLjo02Hsq9ZPArzOP2y5OXU+9Zm5csogxthjBiD92505cQelptFiDVipOmTmGBfFzLuD8LezOwOrSWAHBGKKSa7bAerS4J+q7lUve78RTzm4sx1OOsgG+t+ffDSghkzdDOr1cLj/wTSIiiTf3SbheGU7zFksWC9wgOodCDxmFhpuWa79M03WwE1me3iK9DgkBQ+Ns/Z+a4Im6QIvHn5IqTm6Yo1tceZ9EoAyVzUY/YHrJw78SagNJLuX3/4LXsH24VdYYMgVJdRLXvFyzvWVD423+YpMzCq0ZF8ZOV/t1ZCHP+U4EVkzFzdxNvS1hnUkG1zPfD+j1zXMpjPthi4WG
+ YyuvtaBj
+ wjjo3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,91 +113,323 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-unstable
-head:   49cb736d092aaa856283e33b78ec3afb3964d82f
-commit: cd9119a9480d9d93fdf06792f8f9917cc4f9999c [34/207] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260307/202603071118.PmcGAhcg-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603071118.PmcGAhcg-lkp@intel.com/reproduce)
+When investigating pressure on a NUMA node, there is no straightforward way
+to determine which policies are driving allocations to it.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603071118.PmcGAhcg-lkp@intel.com/
+Add per-policy page allocation counters as new node stat items. These
+counters track allocations to nodes and also whether the allocations were
+intentional or fallbacks.
 
-All errors (new ones prefixed by >>):
+The new stats follow the existing numa hit/miss/foreign style and have the
+following meanings:
 
-   In file included from mm/show_mem.c:12:
->> include/linux/hugetlb.h:1214:9: error: call to undeclared function 'linear_page_index'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   In file included from mm/show_mem.c:15:
-   In file included from include/linux/swap.h:13:
->> include/linux/pagemap.h:1079:23: error: conflicting types for 'linear_page_index'
-    1079 | static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-         |                       ^
-   include/linux/hugetlb.h:1214:9: note: previous implicit declaration is here
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   2 errors generated.
---
-   In file included from mm/vma_init.c:8:
-   In file included from mm/vma_internal.h:20:
->> include/linux/hugetlb.h:1214:9: error: call to undeclared function 'linear_page_index'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   In file included from mm/vma_init.c:8:
-   In file included from mm/vma_internal.h:23:
-   In file included from include/linux/ksm.h:13:
->> include/linux/pagemap.h:1079:23: error: conflicting types for 'linear_page_index'
-    1079 | static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-         |                       ^
-   include/linux/hugetlb.h:1214:9: note: previous implicit declaration is here
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   In file included from mm/vma_init.c:8:
-   In file included from mm/vma_internal.h:31:
-   include/linux/mman.h:157:9: warning: division by zero is undefined [-Wdivision-by-zero]
-     157 |                _calc_vm_trans(flags, MAP_SYNC,       VM_SYNC      ) |
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/mman.h:135:21: note: expanded from macro '_calc_vm_trans'
-     135 |    : ((x) & (bit1)) / ((bit1) / (bit2))))
-         |                     ^ ~~~~~~~~~~~~~~~~~
-   1 warning and 2 errors generated.
---
-   In file included from mm/mprotect.c:13:
->> include/linux/hugetlb.h:1214:9: error: call to undeclared function 'linear_page_index'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   In file included from mm/mprotect.c:15:
-   include/linux/mman.h:157:9: warning: division by zero is undefined [-Wdivision-by-zero]
-     157 |                _calc_vm_trans(flags, MAP_SYNC,       VM_SYNC      ) |
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/mman.h:135:21: note: expanded from macro '_calc_vm_trans'
-     135 |    : ((x) & (bit1)) / ((bit1) / (bit2))))
-         |                     ^ ~~~~~~~~~~~~~~~~~
-   In file included from mm/mprotect.c:19:
-   In file included from include/linux/mempolicy.h:16:
->> include/linux/pagemap.h:1079:23: error: conflicting types for 'linear_page_index'
-    1079 | static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-         |                       ^
-   include/linux/hugetlb.h:1214:9: note: previous implicit declaration is here
-    1214 |         return linear_page_index(vma, address);
-         |                ^
-   1 warning and 2 errors generated.
+  hit
+    - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+    - for other policies, allocation succeeded on intended node
+    - counted on the node of the allocation
+  miss
+    - allocation intended for other node, but happened on this one
+    - counted on other node
+  foreign
+    - allocation intended on this node, but happened on other node
+    - counted on this node
 
+Counters are exposed per-memcg, per-node in memory.numa_stat and globally
+in /proc/vmstat.
 
-vim +/linear_page_index +1214 include/linux/hugetlb.h
+Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+---
+v2:
+  - Replaced single per-policy total counter (PGALLOC_MPOL_*) with
+    hit/miss/foreign triplet per policy
+  - Changed from global node stats to per-memcg per-node tracking
 
-  1210	
-  1211	static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-  1212			struct vm_area_struct *vma, unsigned long address)
-  1213	{
-> 1214		return linear_page_index(vma, address);
-  1215	}
-  1216	
+v1:
+https://lore.kernel.org/linux-mm/20260212045109.255391-2-inwardvessel@gmail.com/
 
+ include/linux/mmzone.h | 20 ++++++++++
+ mm/memcontrol.c        | 60 ++++++++++++++++++++++++++++
+ mm/mempolicy.c         | 90 ++++++++++++++++++++++++++++++++++++++++--
+ mm/vmstat.c            | 20 ++++++++++
+ 4 files changed, 187 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 7bd0134c241c..c0517cbcb0e2 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -323,6 +323,26 @@ enum node_stat_item {
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
+ 	PGREFILL,
++#ifdef CONFIG_NUMA
++	NUMA_MPOL_LOCAL_HIT,
++	NUMA_MPOL_LOCAL_MISS,
++	NUMA_MPOL_LOCAL_FOREIGN,
++	NUMA_MPOL_PREFERRED_HIT,
++	NUMA_MPOL_PREFERRED_MISS,
++	NUMA_MPOL_PREFERRED_FOREIGN,
++	NUMA_MPOL_PREFERRED_MANY_HIT,
++	NUMA_MPOL_PREFERRED_MANY_MISS,
++	NUMA_MPOL_PREFERRED_MANY_FOREIGN,
++	NUMA_MPOL_BIND_HIT,
++	NUMA_MPOL_BIND_MISS,
++	NUMA_MPOL_BIND_FOREIGN,
++	NUMA_MPOL_INTERLEAVE_HIT,
++	NUMA_MPOL_INTERLEAVE_MISS,
++	NUMA_MPOL_INTERLEAVE_FOREIGN,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN,
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 982231a078f2..4d29f723a2de 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -420,6 +420,26 @@ static const unsigned int memcg_node_stat_items[] = {
+ 	PGSCAN_ANON,
+ 	PGSCAN_FILE,
+ 	PGREFILL,
++#ifdef CONFIG_NUMA
++	NUMA_MPOL_LOCAL_HIT,
++	NUMA_MPOL_LOCAL_MISS,
++	NUMA_MPOL_LOCAL_FOREIGN,
++	NUMA_MPOL_PREFERRED_HIT,
++	NUMA_MPOL_PREFERRED_MISS,
++	NUMA_MPOL_PREFERRED_FOREIGN,
++	NUMA_MPOL_PREFERRED_MANY_HIT,
++	NUMA_MPOL_PREFERRED_MANY_MISS,
++	NUMA_MPOL_PREFERRED_MANY_FOREIGN,
++	NUMA_MPOL_BIND_HIT,
++	NUMA_MPOL_BIND_MISS,
++	NUMA_MPOL_BIND_FOREIGN,
++	NUMA_MPOL_INTERLEAVE_HIT,
++	NUMA_MPOL_INTERLEAVE_MISS,
++	NUMA_MPOL_INTERLEAVE_FOREIGN,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS,
++	NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN,
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	NR_HUGETLB,
+ #endif
+@@ -1591,6 +1611,26 @@ static const struct memory_stat memory_stats[] = {
+ #ifdef CONFIG_NUMA_BALANCING
+ 	{ "pgpromote_success",		PGPROMOTE_SUCCESS	},
+ #endif
++#ifdef CONFIG_NUMA
++	{ "numa_mpol_local_hit",		NUMA_MPOL_LOCAL_HIT		},
++	{ "numa_mpol_local_miss",		NUMA_MPOL_LOCAL_MISS		},
++	{ "numa_mpol_local_foreign",		NUMA_MPOL_LOCAL_FOREIGN		},
++	{ "numa_mpol_preferred_hit",		NUMA_MPOL_PREFERRED_HIT		},
++	{ "numa_mpol_preferred_miss",		NUMA_MPOL_PREFERRED_MISS	},
++	{ "numa_mpol_preferred_foreign",	NUMA_MPOL_PREFERRED_FOREIGN	},
++	{ "numa_mpol_preferred_many_hit",	NUMA_MPOL_PREFERRED_MANY_HIT	},
++	{ "numa_mpol_preferred_many_miss",	NUMA_MPOL_PREFERRED_MANY_MISS	},
++	{ "numa_mpol_preferred_many_foreign",	NUMA_MPOL_PREFERRED_MANY_FOREIGN },
++	{ "numa_mpol_bind_hit",			NUMA_MPOL_BIND_HIT		},
++	{ "numa_mpol_bind_miss",		NUMA_MPOL_BIND_MISS		},
++	{ "numa_mpol_bind_foreign",		NUMA_MPOL_BIND_FOREIGN		},
++	{ "numa_mpol_interleave_hit",		NUMA_MPOL_INTERLEAVE_HIT	},
++	{ "numa_mpol_interleave_miss",		NUMA_MPOL_INTERLEAVE_MISS	},
++	{ "numa_mpol_interleave_foreign",	NUMA_MPOL_INTERLEAVE_FOREIGN	},
++	{ "numa_mpol_weighted_interleave_hit",	NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT },
++	{ "numa_mpol_weighted_interleave_miss",	NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS },
++	{ "numa_mpol_weighted_interleave_foreign", NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN },
++#endif
+ };
+ 
+ /* The actual unit of the state item, not the same as the output unit */
+@@ -1642,6 +1682,26 @@ static int memcg_page_state_output_unit(int item)
+ 	case PGREFILL:
+ #ifdef CONFIG_NUMA_BALANCING
+ 	case PGPROMOTE_SUCCESS:
++#endif
++#ifdef CONFIG_NUMA
++	case NUMA_MPOL_LOCAL_HIT:
++	case NUMA_MPOL_LOCAL_MISS:
++	case NUMA_MPOL_LOCAL_FOREIGN:
++	case NUMA_MPOL_PREFERRED_HIT:
++	case NUMA_MPOL_PREFERRED_MISS:
++	case NUMA_MPOL_PREFERRED_FOREIGN:
++	case NUMA_MPOL_PREFERRED_MANY_HIT:
++	case NUMA_MPOL_PREFERRED_MANY_MISS:
++	case NUMA_MPOL_PREFERRED_MANY_FOREIGN:
++	case NUMA_MPOL_BIND_HIT:
++	case NUMA_MPOL_BIND_MISS:
++	case NUMA_MPOL_BIND_FOREIGN:
++	case NUMA_MPOL_INTERLEAVE_HIT:
++	case NUMA_MPOL_INTERLEAVE_MISS:
++	case NUMA_MPOL_INTERLEAVE_FOREIGN:
++	case NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT:
++	case NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS:
++	case NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN:
+ #endif
+ 		return 1;
+ 	default:
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 0e5175f1c767..2417de75098d 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -117,6 +117,7 @@
+ #include <asm/tlb.h>
+ #include <linux/uaccess.h>
+ #include <linux/memory.h>
++#include <linux/memcontrol.h>
+ 
+ #include "internal.h"
+ 
+@@ -2426,6 +2427,83 @@ static struct page *alloc_pages_preferred_many(gfp_t gfp, unsigned int order,
+ 	return page;
+ }
+ 
++/*
++ * Count a mempolicy allocation. Stats are tracked per-node and per-cgroup.
++ * The following numa_{hit/miss/foreign} pattern is used:
++ *
++ *   hit
++ *     - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
++ *     - for other policies, allocation succeeded on intended node
++ *     - counted on the node of the allocation
++ *   miss
++ *     - allocation intended for other node, but happened on this one
++ *     - counted on other node
++ *   foreign
++ *     - allocation intended on this node, but happened on other node
++ *     - counted on this node
++ */
++static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
++				  struct page *page, unsigned int order)
++{
++	int actual_nid = page_to_nid(page);
++	long nr_pages = 1L << order;
++	enum node_stat_item hit_idx;
++	struct mem_cgroup *memcg;
++	struct lruvec *lruvec;
++	bool is_hit;
++
++	if (!root_mem_cgroup || mem_cgroup_disabled())
++		return;
++
++	/*
++	 * Start with hit then use +1 or +2 later on to change to miss or
++	 * foreign respectively if needed.
++	 */
++	switch (pol->mode) {
++	case MPOL_PREFERRED:
++		hit_idx = NUMA_MPOL_PREFERRED_HIT;
++		break;
++	case MPOL_PREFERRED_MANY:
++		hit_idx = NUMA_MPOL_PREFERRED_MANY_HIT;
++		break;
++	case MPOL_BIND:
++		hit_idx = NUMA_MPOL_BIND_HIT;
++		break;
++	case MPOL_INTERLEAVE:
++		hit_idx = NUMA_MPOL_INTERLEAVE_HIT;
++		break;
++	case MPOL_WEIGHTED_INTERLEAVE:
++		hit_idx = NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT;
++		break;
++	default:
++		hit_idx = NUMA_MPOL_LOCAL_HIT;
++		break;
++	}
++
++	if (pol->mode == MPOL_BIND || pol->mode == MPOL_PREFERRED_MANY)
++		is_hit = node_isset(actual_nid, pol->nodes);
++	else
++		is_hit = (actual_nid == intended_nid);
++
++	rcu_read_lock();
++	memcg = mem_cgroup_from_task(current);
++
++	if (is_hit) {
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
++		mod_lruvec_state(lruvec, hit_idx, nr_pages);
++	} else {
++		/* account for miss on the fallback node */
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(actual_nid));
++		mod_lruvec_state(lruvec, hit_idx + 1, nr_pages);
++
++		/* account for foreign on the intended node */
++		lruvec = mem_cgroup_lruvec(memcg, NODE_DATA(intended_nid));
++		mod_lruvec_state(lruvec, hit_idx + 2, nr_pages);
++	}
++
++	rcu_read_unlock();
++}
++
+ /**
+  * alloc_pages_mpol - Allocate pages according to NUMA mempolicy.
+  * @gfp: GFP flags.
+@@ -2444,8 +2522,10 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 
+ 	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
+ 
+-	if (pol->mode == MPOL_PREFERRED_MANY)
+-		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
++	if (pol->mode == MPOL_PREFERRED_MANY) {
++		page = alloc_pages_preferred_many(gfp, order, nid, nodemask);
++		goto out;
++	}
+ 
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    /* filter "hugepage" allocation, unless from alloc_pages() */
+@@ -2471,7 +2551,7 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
+ 				nid, NULL);
+ 			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
+-				return page;
++				goto out;
+ 			/*
+ 			 * If hugepage allocations are configured to always
+ 			 * synchronous compact or the vma has been madvised
+@@ -2494,6 +2574,10 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
+ 		}
+ 	}
+ 
++out:
++	if (page)
++		mpol_count_numa_alloc(pol, nid, page, order);
++
+ 	return page;
+ }
+ 
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index b33097ab9bc8..d9f745831624 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1291,6 +1291,26 @@ const char * const vmstat_text[] = {
+ 	[I(PGSCAN_ANON)]			= "pgscan_anon",
+ 	[I(PGSCAN_FILE)]			= "pgscan_file",
+ 	[I(PGREFILL)]				= "pgrefill",
++#ifdef CONFIG_NUMA
++	[I(NUMA_MPOL_LOCAL_HIT)]		= "numa_mpol_local_hit",
++	[I(NUMA_MPOL_LOCAL_MISS)]		= "numa_mpol_local_miss",
++	[I(NUMA_MPOL_LOCAL_FOREIGN)]		= "numa_mpol_local_foreign",
++	[I(NUMA_MPOL_PREFERRED_HIT)]		= "numa_mpol_preferred_hit",
++	[I(NUMA_MPOL_PREFERRED_MISS)]		= "numa_mpol_preferred_miss",
++	[I(NUMA_MPOL_PREFERRED_FOREIGN)]	= "numa_mpol_preferred_foreign",
++	[I(NUMA_MPOL_PREFERRED_MANY_HIT)]	= "numa_mpol_preferred_many_hit",
++	[I(NUMA_MPOL_PREFERRED_MANY_MISS)]	= "numa_mpol_preferred_many_miss",
++	[I(NUMA_MPOL_PREFERRED_MANY_FOREIGN)]	= "numa_mpol_preferred_many_foreign",
++	[I(NUMA_MPOL_BIND_HIT)]			= "numa_mpol_bind_hit",
++	[I(NUMA_MPOL_BIND_MISS)]		= "numa_mpol_bind_miss",
++	[I(NUMA_MPOL_BIND_FOREIGN)]		= "numa_mpol_bind_foreign",
++	[I(NUMA_MPOL_INTERLEAVE_HIT)]		= "numa_mpol_interleave_hit",
++	[I(NUMA_MPOL_INTERLEAVE_MISS)]		= "numa_mpol_interleave_miss",
++	[I(NUMA_MPOL_INTERLEAVE_FOREIGN)]	= "numa_mpol_interleave_foreign",
++	[I(NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT)]	= "numa_mpol_weighted_interleave_hit",
++	[I(NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS)]	= "numa_mpol_weighted_interleave_miss",
++	[I(NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN)] = "numa_mpol_weighted_interleave_foreign",
++#endif
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	[I(NR_HUGETLB)]				= "nr_hugetlb",
+ #endif
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
 
