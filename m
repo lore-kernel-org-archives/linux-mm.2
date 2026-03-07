@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3847AFC9EC7
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 00:33:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC77FC9EC3
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 01:28:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9976B0088; Fri,  6 Mar 2026 19:33:43 -0500 (EST)
+	id 4CC5E6B0005; Fri,  6 Mar 2026 20:28:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 457256B0089; Fri,  6 Mar 2026 19:33:43 -0500 (EST)
+	id 479F06B0089; Fri,  6 Mar 2026 20:28:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 359996B008A; Fri,  6 Mar 2026 19:33:43 -0500 (EST)
+	id 352486B008A; Fri,  6 Mar 2026 20:28:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 22AA06B0088
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 19:33:43 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE2BD59F9C
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 00:33:42 +0000 (UTC)
-X-FDA: 84517393884.22.E84DE0D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EDCDE1A0002
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 00:33:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=atyXmy4N;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 236AA6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 20:28:39 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D48731B8901
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 01:28:38 +0000 (UTC)
+X-FDA: 84517532316.03.B0B0988
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 033DE14000D
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 01:28:35 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pyqDt5oW;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772843621;
+	s=arc-20220608; t=1772846917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PaZnQi+abzFrlbUguZCbt5fidufuwzxrlveg/MIiWpM=;
-	b=JfN44Vpfm8B53a/9Z9m8qvAnrGCfw5R9BxebTVsiuOtZwUi7bNcI8PQ9Zm9LK9BM+WOwq2
-	yzOkpd6HFVrLKW4PsUCyysc0CYaB73tco0B8jnpXx+LHRJ5OhhhRRrJIuEY866I7XSqlih
-	38jz3KE+pQyaXLzyH1+0yEJxpyAC2uM=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=atyXmy4N;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772843621; a=rsa-sha256;
+	bh=kzar5nNFlAv1Huoqo+I+k0T1XEOUIvMAuNiWgwlVg7Y=;
+	b=qs4nYvn09NxTuTfyLrGyTYK0pb/OYr/6z7DxX5C/AX2++E40k1Ebo+mqAj6vJJBACfwNAB
+	QluZEwYXOEkGkOkVqk+1RvJ2JowcOuU0JZtwpC5fm+ugT0iKOtsdfIJpMuSaXxThzQjRxo
+	Fv135gDlMfsFku7euW+Lw+dFy+sH3sA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772846917; a=rsa-sha256;
 	cv=none;
-	b=kQVHUlZlDTPNf54jVKWWYD8ArDSv0KK3+l5GQyeTxt44uwaOj+N7l9BGteGNeCNijkYJvR
-	IeYKp5jxtRygMnV4eYos+iUp9pjUdzOjsYW42y8xp0IecHlmZBcXkFoJ5i4IXIO8ZDeF/f
-	2BOtVU2UpGXybZZW3ly9eBcVus/FRGs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0640641879;
-	Sat,  7 Mar 2026 00:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6810C2BCAF;
-	Sat,  7 Mar 2026 00:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772843619;
-	bh=emm5hofz+4Swmt0IujrmOwV5BydfZR5A4wBWzsREwNI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atyXmy4N/F7bDXE1BJs9nOpPUHx+0VJvLqlE0iC00MsdHhG6oCx8pC2fmzP6ykVie
-	 3vjMuecaXqFp+iJh4o2hWaYmGOsyUT2MdEJcQ4nnq7dsFcsqbt9v+sbl6R1e5ajWrT
-	 d3NXF5yFDdsLUHAMb+oeq+8hS6Q3FubDmYxtdgwWhixTe/mfJTC4vrETEFRmLEHxTw
-	 L4IMNam3MBXp1YYx+yRAfTjRPiUajPcrwy2Pt2aaqll3w2KJ9HSidSrYJwUgPtQM0k
-	 +n58JrPxPXYWdxZ1liRwyft8KpXK0VLk7MPruZ0ljENifrHPNrtwrHO5M8KR/sH7Xf
-	 1Cl2f/YYPys2Q==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 00/10] mm/damon: support multiple goal-based quota tuning algorithms
-Date: Fri,  6 Mar 2026 16:33:20 -0800
-Message-ID: <20260307003321.109390-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304044122.79394-1-sj@kernel.org>
-References: 
+	b=unhRtUzxPj2Lu7CJj+1B8qMfY2M6RYRCKw+YCXvjHfZTE0Bjdtx75KAVpAyfIJESqLMWsy
+	sP/iCDBdSjl9/wlVPcSbAmLAlDSkpiMFlmTw7N+09nxo4CBM/SnyhmNZmIIqzBGlYQ4hQI
+	HGShRJRlyj46chIBKIlU8S/897fnfFY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pyqDt5oW;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772846911; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=kzar5nNFlAv1Huoqo+I+k0T1XEOUIvMAuNiWgwlVg7Y=;
+	b=pyqDt5oW4P5r1c0bh+xoR2cosDq2MOaQjvch4UvhyZYaI8MQvp1OBels4i/PrwnabRecULzXJ37jPlBlMLT5JHG1baW94mDs5oX2gpa1zDBJe9vw7K7Y3atTcGaGfWUl4Ts89ASTs5kbTQmVxsQXEaTcLyiBCVq4yELZ/Out04s=
+Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-OMjm5_1772846909 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 07 Mar 2026 09:28:30 +0800
+Message-ID: <c607b6fd-a682-4400-a7fd-abe83152db10@linux.alibaba.com>
+Date: Sat, 7 Mar 2026 09:28:29 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] arm64: mm: implement the architecture-specific
+ test_and_clear_young_ptes()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
+ <7f891d42a720cc2e57862f3b79e4f774404f313c.1772778858.git.baolin.wang@linux.alibaba.com>
+ <6305e05e-2911-42b0-b6f5-7fdde787b778@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <6305e05e-2911-42b0-b6f5-7fdde787b778@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EDCDE1A0002
-X-Stat-Signature: 4mw45kjnuuf6iwoa1598j8e5h9r9jfkt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 033DE14000D
+X-Stat-Signature: zxzpqc5bddppwdt3yuxcm3kuiedx6dim
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772843620-297199
-X-HE-Meta: U2FsdGVkX1/extvbYV275K+ZnHGI2qIh2JZSTf+EHs/Vn0HoN0CiFe/Kzt19UIWsAHG8FePIjSoFiETvnzBIBXDUUuyC7EvsncHIRWEjkRew04eCxonh3nDa64GD4ITrReXcWbGf3mSOiAZqMTIf8heJE4+I3BZMp/KFrC+e5VEAplcbceBpoXvnDRPF7wgTBMR6LOEcnaVy7OPhxYoYOTDH8ezAt5IX1TN7J6Ytr3FCUbSlSt+fSzb7AyH5Jng2PnvB7y50Z0qmJJzgPudDqC8zB6Iag0q1GzSSILw07Pde38SkTkHPXtpJOwOJLmMrtJcASFtdG/l9C51/Yhf6EZ421yZLeX/6cHhfqebGp48sI5cVLQoNNSiQCFHbcZm00XPYqd81omfi1IX3jCdrtFweDxJvk2wjc9TnIKA4dTFD0p8ofq6EDnJdfVZv9GyxJ7Jqumi+bcMGWqPfgKXxBWP1BkNuC42vimPNPZKFqPIQRg74Yi7a+E4dZCNI7M1mkr7PFiMBAhbCZJjIY8Znldip2Gvz2tZjqpLjBaFBLzIkQ1NegpCkrthII+XKDwWEBGOwB5jTayV+KOYZcpJsQ+2Rhxrckl6KH8IE0PSaKtlgAFDJCnZeX8iF3pSj2wjBiaqvG//lnEaV3dFqJqeguKeEKmKRS6pmpx29rvTJftaY+PrVIq8Fk6iG1OYlNpUoCEjwvU+W/WRbbZs4AfBEhlImb9gTmCRiYSXG4opLVi0qBMVfsYUzI6YXN7fbskdAWHvyBzFHgV6lFJfdXZa1Hnff+gDxtROJ/aKcimBMrF5DRX6q39tfvdfh7Pt2VbocTqs43cXTcPoJ0wnAeOWNSvrS6oJhEiRVeRPk9/0+vvZEzC+hYdz4LITJXdAMLHmSNgVb225NZT9Mjy6fMJYMffRgeAvKjFQnXOyh+AL2LNQq71ZAvfHQZ/Lvj3oCsqPt4iNTdjXilnDv5ogbrsm
- SBLP5+e2
- dmWm7Kyjmlp9izHEj0YLQmwMr6vKAt0YTAqrfy4P/NAV7I1a1GkRaRD8VDOPV335nI7q23GgvNruEVPt4uNuusYLdSAI+4qEAfjNC3TrxzxIQcK0ebTc7IbO8dFZK/Fo5/q3T16THmroUtuNOAUnZkQhiEJi8n2XckamKvlH1OowBEbHw+r1RjrtCIxkrCP1Pw2vaAcIcDZ5nDH/HIVlbOKk7vZYwL2mqjAj0jmVDitwkF2EpDlgs44RX/qFcFhF9f6+s3Pxl664AMosB3qhMcEut/7GWfUWyZgrrtqmkLUu0y+/tu6XJzjG+B74P8FiKyyHA
+X-HE-Tag: 1772846915-591902
+X-HE-Meta: U2FsdGVkX1+NdjOFGnW3qRYgS1kUdI7px0nLme+17Ka92oOWt9uaxhmmECFvFoJEHFfLZw8Rl6C8TFqerCo3/JbE8r5KRBtkc27fA07mGVSS9qlboYF8lSheYC1zoZlwTmkF5zrN/Nt0Fu20U1zuDAwYSBMsVo4mZGoU1/mex+kvvNkFzPfsui9+80fCryCn+yrOJ/zuP0iKzj3KPecVnWDMPwBG5f7t37uvOqU1k9dZLKLrJfiObu+d95GIRNDd9r2zEHDbgOxX1DnK5lczMXq0uJ+rh2KhuMkw96kM1sBgD6q9VzpskvjMrozALrxcbu/m04Disz9WpZxJHkjXK3A/RQULwHBtLLSArNWS3FlaTNBT2eQkM2cHDanZ1agsmBmw1gxTJMpioAtfDYxjwPYk3aHkgHbP8Z4cFTSSiSawPdg75MRMwzrHmBT1mwa8QZzFa4c78/EBdv94sxVXUhskgGLNHRUmQpycsCXb7t/FFgOCcNlFozEtqTb3ogaNp4Ic2HIPMVjopdfra7w1DxHJYfg2ouKOIWNkoy9aUt3nQ7j18ybf9F47yd4evpEzbyp75zYAqEauPQImt7PM4mpT9fET+n45OAkD1Vn62w2TgoCobqxgLBLIiGexjyLgz+Mn+pLxlBn/9Fsv0XmmfA05yRoC8jiS+IuG1MIy+WUdBHzob3B7+tEKaTizgDyVvwIVGkNmmVDHisyKk6491f/lUAJuolp+Tm/T5P9aCpd0H23AkqbIC93AuRdQ9rMz6IO2NnR77VP/JYiEjUe9xRRlNaPutnkSowppBsc+yK7Qn2nMgSLWMUnGRVEvFD6ydjluQ9OByRP5Jl0rCTF8YQxfFvUWAUniWYkCrJ8JiGM3pOUit0w1CjCvtV0gXI/a1UgX+wbA+xDO6SEYt9zL9YbieCFpkN7zfs8Gxot3o22UzKakY94zIAy5nxs/Z8Qfc9cpnJ/OQmCB25qOeU7
+ lQcoeRQB
+ dGsXlFdXZ+wwpd8s53PTAY8EaX7o0jYySz8frO4YAtpT9w3AL2ofUPBhyEWBRY48HTdKDrJALPf2wp51jQsuUXCsoPybsddtDwdd9OYR5gFgwM/DvoohoVcg/+GCo6OvTGwPl3sta2lhW5858nh6tsYWWJxsRAlNzvqbUOO+GCzh8GoNwFyK4cWghcPEJ8stE1fHE8N9Hzy5cYuI/jDQ+T1oTcr/RlqpkGP/poDg7qRlBtDg+Ij/g9TLZkQMzJbLBly4ZPCRWRF9zGD8kMzqUp/oYrab1idzgQW19oqLExSumotn8XXoxWWNX3s2SE1Rn9VeENOKBs95+JBUoLlR4vjmt9h9V87DHdls6sqziPVwji1VeplDGJ0vqQYTkfrXKW+gJwQv1JCuXYBgpy6WOjKGSc2nhOXpHnETg/YzUF7hWt70gQ+m/BhVs0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,147 +94,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue,  3 Mar 2026 20:41:09 -0800 SeongJae Park <sj@kernel.org> wrote:
-
-> Aim-oriented DAMOS quota auto-tuning uses a single tuning algorithm.
-> The algorithm is designed to find a quota value that should be
-> consistently kept for achieving the aimed goal for long term.  It is
-> useful and reliable at automatically operating systems that have dynamic
-> environments in the long term.
-> 
-> As always, however, no single algorithm fits all.  When the environment
-> has static characteristics or there are control towers in not only the
-> kernel space but also the user space, the algorithm shows some
-> limitations.  In such environments, users want kernel work in a more
-> short term deterministic way.  Actually there were at least two reports
-> [1,2] of such cases.
-> 
-> Extend DAMOS quotas goal to support multiple quota tuning algorithms
-> that users can select.  Keep the current algorithm as the default one,
-> to not break the old users.  Also give it a name, "consist", as it is
-> designed to "consistently" apply the DAMOS action.  And introduce a new
-> tuning algorithm, namely "temporal".  It is designed to apply the DAMOS
-> action only temporally, in a deterministic way.  In more detail, as long
-> as the goal is under-achieved, it uses the maximum quota available.
-> Once the goal is over-achieved, it sets the quota zero.
-> 
-> Tests
-> =====
-> 
-> I confirmed the feature is working as expected using the latest version
-> of DAMON user-space tool, like below.
-> 
->     $ # start DAMOS for reclaiming memory aiming 30% free memory
->     $ sudo ./damo/damo start --damos_action pageout \
->             --damos_quota_goal_tuner temporal \
->             --damos_quota_goal node_mem_free_bp 30% 0 \
->             --damos_quota_interval 1s \
->             --damos_quota_space 100M
-> 
-> Note that >=3.1.8 version of DAMON user-space tool supports this feature
-> (--damos_quota_goal_tuner).  As expected, DAMOS stops reclaiming memory
-> as soon as the goal amount of free memory is made.  When 'consist' tuner
-> is used, the reclamation was continued even after the goal amount of
-> free memory is made, resulting in more than goal amount of free memory,
-> as expected.
-> 
-> Patch Sequence
-> ==============
-> 
-> First four patches implement the features.  Patch 1 extends core API to
-> allow multiple tuners and make the current tuner as the default and only
-> available tuner, namely 'consist'.  Patch 2 allows future tuners setting
-> zero effective quota.  Patch 3 introduces the second tuner, namely
-> 'temporal'.  Patch 4 further extends DAMON sysfs API to let users use
-> that.
-> 
-> Three following patches (patches 5-7) update design, usage, and ABI
-> documents, respectively.
-> 
-> Final three patches (patches 8-10) are for adding selftests.  The eighth
-> and the ninth patches extend the testing-purpose DAMON sysfs control
-> helper and DAMON status dumping tool to support the newly added feature.
-> The tenth patch extends the existing online commit test to cover the new
-> feature.
-> 
-> References
-> ==========
-> 
-> [1] https://lore.kernel.org/CALa+Y17__d=ZsM1yX+MXx0ozVdsXnFqF4p0g+kATEitrWyZFfg@mail.gmail.com
-> [2] https://lore.kernel.org/20260204022537.814-1-yunjeong.mun@sk.com
-> 
-> Changelog
-> =========
-> 
-> Changes from RFC v1
-> (https://lore.kernel.org/20260212062314.69961-1-sj@kernel.org)
-> - Add selftest for goal_tuner commitment.
-> - Set goal tuner inside damon_new_scheme().
-> - Allow zero size effective size quota.
-> - Update the ABI document.
-> - Wordsmith change descriptions.
-> 
-> SeongJae Park (10):
->   mm/damon/core: introduce damos_quota_goal_tuner
->   mm/damon/core: allow quota goals set zero effective size quota
->   mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL
->   mm/damon/sysfs-schemes: implement quotas->goal_tuner file
->   Docs/mm/damon/design: document the goal-based quota tuner selections
->   Docs/admin-guide/mm/damon/usage: document goal_tuner sysfs file
->   Docs/ABI/damon: update for goal_tuner
->   selftests/damon/_damon_sysfs: support goal_tuner setup
->   selftests/damon/drgn_dump_damon_status: support quota goal_tuner
->     dumping
->   selftests/damon/sysfs.py: test goal_tuner commit
-
-Maybe it is better to add a kunit test for the goal_tuner online commit, like
-below.  I will add it to the next spin of this series.
 
 
-Thanks,
-SJ
+On 3/6/26 10:47 PM, David Hildenbrand (Arm) wrote:
+> On 3/6/26 07:43, Baolin Wang wrote:
+>> Implement the Arm64 architecture-specific test_and_clear_young_ptes() to enable
+>> batched checking of young flags, improving performance during large folio
+>> reclamation when MGLRU is enabled.
+>>
+>> While we're at it, simplify ptep_test_and_clear_young() by calling
+>> test_and_clear_young_ptes(). Since callers guarantee that PTEs are present
+>> before calling these functions, we can use pte_cont() to check the CONT_PTE
+>> flag instead of pte_valid_cont().
+>>
+>> Performance testing:
+>> Enable MGLRU, then allocate 10G clean file-backed folios by mmap() in a memory
+>> cgroup, and try to reclaim 8G file-backed folios via the memory.reclaim interface.
+>> I can observe 60%+ performance improvement on my Arm64 32-core server (and about
+>> 15% improvement on my X86 machine).
+>>
+>> W/o patchset:
+>> real	0m0.470s
+>> user	0m0.000s
+>> sys	0m0.470s
+>>
+>> W/ patchset:
+>> real	0m0.180s
+>> user	0m0.001s
+>> sys	0m0.179s
+>>
+>> Reviewed-by: Rik van Riel <riel@surriel.com>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   arch/arm64/include/asm/pgtable.h | 18 ++++++++++++------
+>>   1 file changed, 12 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index aa4b13da6371..ab451d20e4c5 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -1812,16 +1812,22 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+>>   	return __ptep_get_and_clear(mm, addr, ptep);
+>>   }
+>>   
+>> +#define test_and_clear_young_ptes test_and_clear_young_ptes
+>> +static inline int test_and_clear_young_ptes(struct vm_area_struct *vma,
+>> +					    unsigned long addr, pte_t *ptep,
+>> +					    unsigned int nr)
+>> +{
+>> +	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
+>> +		return __ptep_test_and_clear_young(vma, addr, ptep);
+>> +
+>> +	return contpte_test_and_clear_young_ptes(vma, addr, ptep, nr);
+>> +}
+> 
+> Thinking out loud, what would happen if
 
-[...]
-=== >8 ===
-From 15d87f41d0d960e3c337899629cf4e05d09dc042 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Fri, 6 Mar 2026 16:27:45 -0800
-Subject: [PATCH] mm/damon/tests/core-kunit: test goal_tuner commit
+Good questions, I think the contpte_test_and_clear_young_ptes() takes 
+that into account.
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 3 +++
- 1 file changed, 3 insertions(+)
+> (a) The range spans multiple possible cont ranges (like, 64 ptes).
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index d759314df00d8..28e5de749db04 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -791,6 +791,7 @@ static void damos_test_commit_quota(struct kunit *test)
- 		.reset_interval = 1,
- 		.ms = 2,
- 		.sz = 3,
-+		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_CONSIST,
- 		.weight_sz = 4,
- 		.weight_nr_accesses = 5,
- 		.weight_age = 6,
-@@ -799,6 +800,7 @@ static void damos_test_commit_quota(struct kunit *test)
- 		.reset_interval = 7,
- 		.ms = 8,
- 		.sz = 9,
-+		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL,
- 		.weight_sz = 10,
- 		.weight_nr_accesses = 11,
- 		.weight_age = 12,
-@@ -812,6 +814,7 @@ static void damos_test_commit_quota(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, dst.reset_interval, src.reset_interval);
- 	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
- 	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
-+	KUNIT_EXPECT_EQ(test, dst.goal_tuner, src.goal_tuner);
- 	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
- 	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
- 	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
--- 
-2.47.3
+The contpte_test_and_clear_young_ptes() will call 
+contpte_align_addr_ptep() to align the range to cont‑block boundary, 
+that means the range can span multiple cont blocks.
 
+int contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+					unsigned long addr, pte_t *ptep,
+					unsigned int nr)
+{
+	unsigned long end = addr + nr * PAGE_SIZE;
+	int young = 0;
+
+	ptep = contpte_align_addr_ptep(&addr, &end, ptep, nr);
+	for (; addr != end; ptep++, addr += PAGE_SIZE)
+		young |= __ptep_test_and_clear_young(vma, addr, ptep);
+
+	return young;
+}
+
+> 
+> (b) The first pte is !pte_cont(), but some others in there are?
+
+IMO they can’t be handled in a single batch. Since the folio_pte_batch() 
+will group consecutive !cont PTEs into one batch and consecutive cont 
+PTEs into another (assume all PTEs belong to a single large folio), 
+because their PTE entries have different CONT bits.
+
+Even if the callers do so, contpte_align_addr_ptep() will check the 
+pte_cont() of the start and end address to align the range appropriately.
 
