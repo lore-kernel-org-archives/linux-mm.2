@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D62F513ED
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 15:07:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56EE5F513F1
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 15:09:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ECE36B0098; Sat,  7 Mar 2026 10:07:31 -0500 (EST)
+	id A01E36B0092; Sat,  7 Mar 2026 10:09:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0916B0099; Sat,  7 Mar 2026 10:07:31 -0500 (EST)
+	id 9CC3A6B0099; Sat,  7 Mar 2026 10:09:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B01D6B009B; Sat,  7 Mar 2026 10:07:31 -0500 (EST)
+	id 8CE9C6B009B; Sat,  7 Mar 2026 10:09:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AAB86B0098
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 10:07:31 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 232631C1B4
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 15:07:31 +0000 (UTC)
-X-FDA: 84519595902.09.5C388A4
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 41A3B8000C
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 15:07:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=aqY8Mv90;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf02.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DC766B0092
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 10:09:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2217A8C775
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 15:09:07 +0000 (UTC)
+X-FDA: 84519599934.07.E98E3DE
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 42C8440010
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 15:09:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=nMv6OVDL;
+	spf=pass (imf12.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.52 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772896049;
+	s=arc-20220608; t=1772896145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZYBGv71PdycZq+aLFPH8zUzhJ8ZpxJ5TIDJbEFgp3fo=;
-	b=Zufa+g7F8RgcdcqltNz5PozJWxXJcAORK8KCdAQfjQ5b9WJv6h9t8sPc2lHs2Tb+nfXfbC
-	+pAHzU+DVhCAjxQywyl2/fod0+birORhUY2bfg4wAbFbFU6TViLnWyl3qgQBRivATU5b6n
-	qHQsX+NkTvOPg8fAVGhDmJKevpnrv8k=
+	bh=u7B+3R/eVcF0a4VFyKy9Mj+9RSgZdL4bns+9ocGpr2c=;
+	b=mT3V7jjxI3a9o/owi0LnM8QLUtjjvgoLghtD3ZrJQKxXGCS9ovgykNP/50DTmfb4W0B5h3
+	3vJ6Jnjiqg7lJnn+Af/1qi67EsE6pDw8aOdPaBbrAWvHH/5j1YYidwsTFdfd751hGIeN5T
+	+6IGSk3/EchYHnwB+ywl6dqVXpHsAoM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=chrisdown.name header.s=google header.b=aqY8Mv90;
-	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
-	spf=pass (imf02.hostedemail.com: domain of chris@chrisdown.name designates 209.85.215.174 as permitted sender) smtp.mailfrom=chris@chrisdown.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772896049; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=nMv6OVDL;
+	spf=pass (imf12.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.52 as permitted sender) smtp.mailfrom=chris@chrisdown.name;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772896145; a=rsa-sha256;
 	cv=none;
-	b=nH2YqMMqOOsw6sCRtkKtdj623uBZIpJMRVz5eIGCGEeqkM0KlF3z4J1a6EkrQ3wQdW/qvm
-	ANNoiCdb/Wee4DY2/gtUimNhUHbx1BMrZzDtUybwHYW5glsvSE/btBSLkhQpTBzGKoNlUG
-	uW3Hte80SJuo3E34mfJD1wJhJM8tmYg=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c7382731edfso2425710a12.1
-        for <linux-mm@kvack.org>; Sat, 07 Mar 2026 07:07:28 -0800 (PST)
+	b=uY7dQdy/YM9VoEKkXP56vllL1eqPMYrSnkwu5wPejRQukMTX7Cs6bSc6zrxZCWBILyrdR9
+	AmgqMxW9AqK5IbXqBR7AvMqzXQ6W3o7DycYRMsKv6YSTWJdGruqBz14YLehGiYXWaKgDLC
+	V7OSE6KJMNj+JxRk6ATe9MjbaqHUgo0=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-356337f058aso5523980a91.2
+        for <linux-mm@kvack.org>; Sat, 07 Mar 2026 07:09:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google; t=1772896048; x=1773500848; darn=kvack.org;
+        d=chrisdown.name; s=google; t=1772896144; x=1773500944; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZYBGv71PdycZq+aLFPH8zUzhJ8ZpxJ5TIDJbEFgp3fo=;
-        b=aqY8Mv90Hlhll2hhRGom1IE5mdZIBU/CiwMsDyN7fBZDDXzDO3IlGX7kR59/FLsTDd
-         E77fc5e0Z9ZwDof5ECJCR7TpPhON6WTUN7cRdABzUBBkKv1r4aMeb1kpZQUexIf62k7L
-         XD6x3wOffG5lurQfk2KrkY4Vm54sCbSaKHJ8k=
+        bh=u7B+3R/eVcF0a4VFyKy9Mj+9RSgZdL4bns+9ocGpr2c=;
+        b=nMv6OVDLvcN4MkiRmzriqhx9+bBsOF/KHvWwOEvRf5qXci71Awr1F4crTR6uiuRw3N
+         JO5b/DwuH2Alt5hqPhklvNN4R9hWMz+GkBe0ZNS+W9sjAgwXmQk2//zHQaoAt7l8xsh+
+         CEzFcnNst2MU2Jc0aLT4UHP5fae+WTMuhCluM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772896048; x=1773500848;
+        d=1e100.net; s=20230601; t=1772896144; x=1773500944;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZYBGv71PdycZq+aLFPH8zUzhJ8ZpxJ5TIDJbEFgp3fo=;
-        b=tUGHGqRDrQHlXX7LpHBn2t1EDw3dMCa/JfVCxcaPbE2NVmgL2aKiHO/BBJefN4Sf8s
-         RVZhoi5mf2HoXUiABWgZa8nax36SbexqD/ZQRGHBlhGdKmibzR4oS0rhgbap8EXhqY2/
-         WSTZ/lLoIR48SDQH5QHx/mnqCqW/c7gn8ONdha491TKoQmcQ4tjnsN2GZJwiaYe23XcF
-         uZN6gjaZh/iaZ2ReVnPjVWqg8NxD6yqk+ON37JiiwflYQH8Hc4oWLIZ+3ql3+LzdbUg4
-         7UWse03qruxSujiS/czsqQCSGdzVhCjGJcc5vbNqh5j25leaRKbxjA18qWau61sZKp/Z
-         V/kg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCCoOf1YCwQVD5JipCQ04H2HPmj+wJxhZnP2vBANbvRTwDFWt2X/1Ho2C/RxJ7R9VGaAOakqMAbw==@kvack.org
-X-Gm-Message-State: AOJu0Yx4/buWCCNtaVaO1j1hl9n8nTOgCHmI/lKbQONK5JnMz1ka8SCG
-	dOIAZfQgBWTggxDFUsLFG8weR4NWYL2JzuVYNRJmVm5R/uhwceoIPfEJzgqVynANwEM=
-X-Gm-Gg: ATEYQzzb+345B/K5k3jNwA25jG5Cbxb7/mw6PhVKO7l7NfGrjENkqV/5W9LcFuDnGhu
-	8y836j+YqBFSFsqozx5ItqzIgjYNq//9TdgEo0vFDE19cBmY4nCFwrlncpFoIw/Kdb3c0ohN9q3
-	WBTYUGWbDkLL6oVC/vacxROHku9eEp1l0P2lrh2ppe5MWMPlWKsWKp4beaxCH+gQzMRhaDZr/5F
-	pBhnmnD42hhwJsNxu/LrnyCBJ3Y6JKCiWsqhbtuW4fpjIzSf4X9UnATJ7ROLcKW76fHmKenbDd0
-	g99W13q2Qnfqk7/vvN3Rg93Ef6+ouX7wqtmo3NJtoD7O+2VRxNKOoECMl625H6pGejB0dyqNDj7
-	eXCb+IrRrQn3IGLD1Bk62fmbdJHmpuPZ+RKNv1UvQBSTRM0FF1eIZ/KnOJZCt8xni+XpRJMmNYd
-	xgyorSDTOOoZGuxstZdAM=
-X-Received: by 2002:a05:6a21:4d05:b0:394:f972:43ca with SMTP id adf61e73a8af0-398590b611emr5336431637.54.1772896047874;
-        Sat, 07 Mar 2026 07:07:27 -0800 (PST)
+        bh=u7B+3R/eVcF0a4VFyKy9Mj+9RSgZdL4bns+9ocGpr2c=;
+        b=lu0IPf41bOLjze1duCvwEHQxMwpcxohHvr2KSI9tv6w6OH6tx8zbKB2YOYrNmV81+t
+         mBkutaV1VxwINZ6dI5+NbpWjpeA5TUb9cri+CuPNK3+M5foGtxPGT0SxdSFG1D3/2ZAe
+         eg5IyjVwKZEXs2CPiy2sxc0NQHr8Dz/dwtnv/9ps2mNI8N7Dtd8Gvgaqia1Fn8xtfckw
+         z9CTInlW9BmS9snW903kNkHtwZ8SDhxNzAEtmsyMeDhvjRnE9H3kZCkQoRiumJn48XlF
+         2U4z99gtAykf9NbnVatukY4XXFuXJ0c1tqyKBw1IWYQQgC6PP2wRT9w/GzpOnttqxEO9
+         IsDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9SiOWPnddgc1BdLXjMnUSBtslEmWax3/2uJj4DBHAv1CaicSJo/2SPqvgAnItk4zIydL0veoPeA==@kvack.org
+X-Gm-Message-State: AOJu0YzqmPFPH2ph1bdv9WY4kvz7QZ6yyCQIsdCrI0rzDPLG7K5dYqzl
+	Le80UD8qMXLW0J4/hGFMfW2xFz7d2m9S/R7OYrFwvexbYDZnpxD7PETdLchlDHclr4s=
+X-Gm-Gg: ATEYQzwQfcxVKF6qmvmNdLuG3yocPg1SJY40r8TDLnZbir5hPYJUtyuKoSpizqqePr6
+	5R+/UGhl0i7qu7wrtCpTwAIRhdcrGV/yKkENsjeWxIc84D77RTw8Sym+Cl4oUQ7dUq3PLBQl3Vo
+	cc3RnnKzD/o4P6Uvjlpz0h++RRPcYkq8laZ98cgrNyDAGMuPLYS2kIwoaM6Rv1MnQ1ScxS6f/3a
+	O+xLm5rOcnL2eohWkKBpzqajRO9VoKxbAy23G9lGdJsIJc/cEDXPT5CbQ4oBOFDwtTi29Vb/EOC
+	1aJJxZoDscLfmyUeer4QuJgjQE9AsPfDGJByfh5m7FxpUjDiEowpJPOMa91gI6BaXBC6SPUyL3x
+	mRFVoltwcy/XgPMaR8qzE+i+hquCuQOHF7j9ExQK9jUZnRVokvo89i+bZ/b8Q5ymaKwBt9pME8t
+	Nl+QPuGSNJ+f6RykP8Ir0=
+X-Received: by 2002:a17:902:ef46:b0:2ae:3b36:23e7 with SMTP id d9443c01a7336-2ae82398d80mr56455605ad.16.1772896144073;
+        Sat, 07 Mar 2026 07:09:04 -0800 (PST)
 Received: from localhost ([149.28.151.93])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e183596sm4394555a12.27.2026.03.07.07.07.26
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f8baa3sm58418835ad.65.2026.03.07.07.09.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 07:07:27 -0800 (PST)
-Date: Sat, 7 Mar 2026 23:07:22 +0800
+        Sat, 07 Mar 2026 07:09:03 -0800 (PST)
+Date: Sat, 7 Mar 2026 23:08:57 +0800
 From: Chris Down <chris@chrisdown.name>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
 	Matthew Wilcox <willy@infradead.org>, kernel-team@fb.com,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH v2 2/3] mm/huge_memory: Prevent huge zeropage refcount
  corruption in PMD move
-Message-ID: <aaw_KkASxkpONUdU@chrisdown.name>
+Message-ID: <aaw_iU38qvIrNGAA@chrisdown.name>
 References: <aaBVz7eb6-VBCvaz@chrisdown.name>
- <842272d9-9e9c-498b-9b11-cbad25f526c9@lucifer.local>
- <1cece140-0602-4563-80b6-fc7ab608de2c@lucifer.local>
+ <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <1cece140-0602-4563-80b6-fc7ab608de2c@lucifer.local>
+In-Reply-To: <6147cf80-9d02-4c5c-ab81-8cb9b00044f0@kernel.org>
 User-Agent: Mutt/2.2.15 (2b349c5e) (2025-10-02)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 41A3B8000C
-X-Stat-Signature: 1k9646qhe6ouewpdq1xg8gjswafqdhiu
 X-Rspam-User: 
-X-HE-Tag: 1772896049-499837
-X-HE-Meta: U2FsdGVkX1/a75wIeux7NUpnjbup0twYS7TY/4BuoEfTnE88pQ2E4O/6CP0pz4JSdKvxBNnOI4SM33bcheFdIsmpwDJ/KJEs+8jDY8bhV68oFq+nN3qXNp6VGKvsGx2UH03o/cyTL2FrRVtjage2mhJMtiPb/E4O0cYz0tPND+4LahEkLuKpczq3fi/oMlSUD7dt72H9r0Hq9N9DVWb3WwkooY/egHpAjwCckeDY6hL/mGjwcHeorVQgkyQEmemtXzWvuqB35uNfHj1+WGGmZ3Akz+94HZwq7Y9bGMrrHURRbUZ4ri2hWmU8LaI5D78QKrOc6H6aOZeobNU2grq2EGKISvVkf/0fiEMcgU3OLVRnlp9367CK7rXEVkGM5UJuH19ku5geu7vT2h2iC9qK7p1LCl/Ha20//jU8PkJF6t2WmwmhfDqSeZNDnb0gibZBx4oWUNdBMpi/td4KFHdxCQe6yGyNjL2N7+94q+9PFyL/zqTuebCikBueSHbXPr8ncw8orTmxJqN4zkRsH7L8oOrXcRs51WHQqR+QcR+15uqiGI9C6z1wWeiH6uGWUalRjx9w8Tnp2PoeQMrss0KhevcxaTRFMYDhdKaeHq9bHdxZWaFjxYrsQZyyOorT2RmA0Zsy7HZPHzK5QAHP/05cKAV0H0l1Cx1XWA8CdJrDmZx5PwCcgQyfR5Pm5G445AL+LigdKtvjwRIrbVZ5geL1WpF+kNDd0KxqQ0P223V8ertABxUZwlhwJ0g457ruaquThm5XDJVJCtEFvfWC0fQd3sDD4mxRM6shhE1she7PXT7NeqGjbbpmBNuhO8opKCxVq7vpwdOhOpEHqKD+8JHw0ohdGoPFnH3s4gjbQ0eMWQ7u0Kxf+hXpD5isX/BODCT9IWRms2LCR3AmZHYo9IHFymzbefjD3hZN/L5r83LOlsyUIXACx72dFOJKpQcGxpAnZGSe19NxUUIaV/2EM01
- m78xdoq9
- AkWzDs4w4lV5HJVI2mOkngnW4X9eeq8UqdSAZSAukoNpNkNIQXGuwWag+SNjMG53lXpj+HI4bpAFs1SzaTSS02MhYK1dM26b9H6MrwkGY1ieeZkSTWD/Fi/s0L7lbzoC+iTImNgyM7ba8ETF2l6XwfeAwxD2oJzblCXFtqzgpULU2oMeaKeZf47mfOyx87mJNBJBEZtobtnOOdwNvRgOHOShWKlvk9pS2Gp8XcFEYSfN2eycOJQQ2upIrBJxlF4ttYnH9MmI2b3nJSqwqNVNTn7WE4k22httc44QgTbx5zZuRWgm5BrNvKXpe1V5G3QVzDAzHlrcbe/3NGbwhg7xfHLopztmirDaBldlEHUZh8MkKAo7/xoz/QbB4ASEX829MCO6Z9brPuXtbQ3np7dZfm6CsSotnNeu7o3V51fyHFlaBIQ/25z1F6/8GRLheDSaim8gMG6sc9EKGdnT+ReqhHKVkl7cz7QnJXaG4Ue2ADdYLKpUoHfUTbmk2fgXTW9ZHpnzt
+X-Rspamd-Queue-Id: 42C8440010
+X-Rspamd-Server: rspam08
+X-Stat-Signature: n7hf3ogbb7rngr8c1h63yrm7as3txz97
+X-HE-Tag: 1772896145-584683
+X-HE-Meta: U2FsdGVkX1/dQdRgs+NUlXY0z+N0j/RoBqpx2qlC3TEMlIxs0PfPseHUSxwE4kInFBbQcRcv30hHcED8FowMvnK7/FrXFNQxVvYPnaQ95XuvI7vuZqpTP7CzCD2ksbkGyTXE656bnCeYRR6IRG32ag7I6+cPGDV2RQqoExnZYzhmd9fO/tYpGItK7L/I/vWdXwIRSBe7/VNgwW2yM/5CF251j81YnWBGuZNrZztf0+Qh/Vr1Gebiks7TpTGXFPJcP8oLNnYFNFB9z6EvZs4COzmoR8NNDq6XogCUGg0cR39lhiqS9nrx21PGNXjp3VNlrS9GohIFQVrNdV80OESTb6q9cafj/gf2K0I/C02iz3v+OKENZZjizBphDhK75dzmffR97mu7UbluzQhzXwRDTRGbfoRWimW0JLobWPDXu+XlOYawDYzS7jXWMt7Ri4pTPGZmPPZM+cnllWyzUBb7QGycNqlsY4K7NlL+hQWrIy039QkDZYUjxqLizzSR7vJCYGsB08IhnSvM+0dEv391kdNqBZLSwsLPxdQhc5K06rkO9hAlMLmCTil9x+k49Ypzj4opKhlYVUm4P2+diZoJCBpe+9u3by6JmJ/qaAE9dsbMFT57k2SJk+eBXc0fw7jueXVxxh8OH2CR5BTZYLo5q1W2O9HvQrfk4glkTPpG+Z0lJfFCqyUv6aGNTt8fZuVbiw6poPZIHDSu0fUcEEsE4wcqA1Mi9PSw2Eub2GIyHL/F4Ao9nEPKBkpyShuk4N3mNgNZIpAT8hA/RpwcklBL+JiL7eMZfrhpJeO5VDZHDQru0xuqoGxOgYEmYXrcBTIwxy3gt50f6xZxns8XXRTsLq4Jgzz4Ftf1lRxwbuhTGGMZxSSRK4pe9WgH3Fyw+b/oni1KQlBjy/KxpPlHsVIgITnay1VCr/V9Fdurk2JAnY3gtdraPgc/yWYRSj/1jR+ccvLFV0WUuNrOPAid8Aj
+ Ly4QmHnA
+ ewAMtYOK8vhWrXnHUs8jhRPgyZjN+SDADOpQtxjvb2N2k/ho/gK3Y8t2fy1rPkOQZhG8cn2DrclWAW1IITI1mav8FELhH8TruH3kKgwQ0Dik9C2yJ+8O8NZGod5HGbLhKio8t/rg+B+HIraMscfJDbJxGHYeU+bcSHGamO6vo1YMsZMdGY5/VNB/1R0R36wNAw8BfWqmvKZmPbagwUBFrfIY1M6rdUqdB0k6xh7Abvv2Jr2FET51LLF9V3Ej8SxZRg50JEYVO9jRddJ3v6FDWYZ2Pf1YcrCgEtQdyLFKkDtLfikGmncXuNsnl+Dd5SnqayHmNgi1XJ17FtCZCDsEK4IuhBFbi2v9Cv4Ujsz/QyJDlHSnKu0+45zbZLgSq2DniWk5FPDl+AO5kXVY/2MRWiQSXplEKEsG0eVw361fDtg8/nqGClVXz9n2ufC9WEG/DiaYtug4bEEl7wb/f6IWU6w0CV44dV+3gmpOGCyrz6dg/p/7+q+o7CmSzihwFeTviBfAtokcmIPAoG4TfqtRk8JBRkE5yBQsBQmWsO/Yh6XTK6FU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,9 +119,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lorenzo Stoakes writes:
->TL;DR - To make life easier, I squashed the two patches and asked Andrew to take
->it with my R-b,T-b tags attached, hope that's ok with you Chris.
+David Hildenbrand (Arm) writes:
+>Please squash that patch directly in #1.
+>
+>It doesn't make sense to leave something partially fixed in #1. It's
+>been completely broken from the start. folio_mk_pmd() should never have
+>been used.
 
-That's fine, thanks again for sorting this out.
+The reason was to make sure that in theory the correct trees can be updated 
+based on Fixes: for each. But I agree that it probably doesn't really matter.
+
+>
+>Apart from that, the end results LGTM, thanks
 
