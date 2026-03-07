@@ -4,122 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0737BFC9ED3
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 07:42:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B31FC9ED3
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 08:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEC036B0005; Sat,  7 Mar 2026 02:41:59 -0500 (EST)
+	id 985F66B0005; Sat,  7 Mar 2026 03:03:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C99626B0089; Sat,  7 Mar 2026 02:41:59 -0500 (EST)
+	id 909AA6B0089; Sat,  7 Mar 2026 03:03:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7AE16B008A; Sat,  7 Mar 2026 02:41:59 -0500 (EST)
+	id 7E1D86B008A; Sat,  7 Mar 2026 03:03:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 97A0A6B0005
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:41:59 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 11315BB010
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 07:41:59 +0000 (UTC)
-X-FDA: 84518473158.30.4CC3252
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0E743140004
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 07:41:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="BIdVBw/+";
-	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E646B0005
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 03:03:02 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A723C1B8A5F
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 08:03:01 +0000 (UTC)
+X-FDA: 84518526162.21.763C21E
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B2C17C000E
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 08:02:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m0sz5oSv;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772869317;
+	s=arc-20220608; t=1772870579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tX+dqbFssi21Y335rPAh+90TuALSmaMUbgkgea4z6B4=;
-	b=bSmm+LMyKWrKUSkw9QYi27E8mBgSZAnRaIG7DZ3XMwoo1WVzbur59b4EcuKcc5FOf+DWwl
-	18GlICoOP7AfJgK3WNoj2oVhuJDZvpOy+C7Hw8KXI2ixcq5LcQih9o5HzyZi3ebg91Mq1E
-	8ksoh3Kesc9Kfdp0oqmyJUcBWsAyP5c=
+	bh=YtjhCeTQDdoAVsXN8dHO7TB8D+UZfktfl3sVcf19Ny0=;
+	b=4fPvnKqqtnm1wLi9xNRSrY+EocuHY3gYpxvj2kvcZuxhzLkyU55t5p1JRk7lFwbvs5ri84
+	rAkEceKZIx8HpWOMYfCdq0Qo0hGhc/dBOSRaS91IYPZ4aCfYndc1mvhFt8Xzoli8K5IdSq
+	xP9yVGACgWPWEAw9xiX7eFcdOD1FMpQ=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="BIdVBw/+";
-	spf=pass (imf26.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=m0sz5oSv;
+	spf=pass (imf22.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772869317; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1772870579; a=rsa-sha256;
 	cv=pass;
-	b=EOqPzHsd4Of9Lr32RzPLN7AE0gUJT+yABY598fYT8Dxcp08KTsr04PrgCOs/SohTgNGBJ3
-	j5cUE42g+vxjEOvA6SsQQ7++WRNa0G421gS66UjsAn6TXBveq8Leu7IktvCzOXqdvZuhq8
-	q+yd3YgElmDS0EBbl3MMaHTc6AUZRpA=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c70ab3b5fcso1368046985a.2
-        for <linux-mm@kvack.org>; Fri, 06 Mar 2026 23:41:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772869316; cv=none;
+	b=L/C+B9hTv7ElezKkmamLWZg08LtFkuRs9TOxUKr4Et4wjLi+EJO7/S5qsUoxpRDLdu4Hni
+	4loVLf4mKW171j7CXTnz0ftiOAe9TwdeN5BNAo7DUaxRXtRq3f2jGNKYq2waPmnkKudPnW
+	EobjYKapS+RBYJvvXfYB6oV1JCIjYFY=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5062fc5d86aso88136911cf.1
+        for <linux-mm@kvack.org>; Sat, 07 Mar 2026 00:02:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772870579; cv=none;
         d=google.com; s=arc-20240605;
-        b=jZBfrtaaJs1tIScHNBNITew9SySQ1Kh5Ri61A2Gzf4UkgsALeCxf+mkjTPfo5O7/Xf
-         Ijv1EHK8NvWy8ImRuqURtMM/FbsWmAobikloUUek2Vdeloi7BVfxcsRu0NhRDCKrmFBZ
-         B97NW5qlWV1pGSDQZtpisAVWZTQw9lpVxXjF9/q+QjR0JM28AfSRMVrE7CTchbIjcsOp
-         QYI3ixw7pg0BDuRyF+EO1EK3nyQ5CWcf8pgEmsefSsGhpg5KiDS98SuIVWm2UosZ+yVR
-         cOczrYwVMydvf8f8m08Vl1bKzGHcuUEBebiNLS7SEuStpnSvEQmNvrnexOXc79pjqHM6
-         e6+g==
+        b=RMlgkoQHp/uwrQW1yeeZdwg1bcgd+YP9qjIiJBeO2t5nMNw4lBvBlsU+cmACH9Hpr0
+         JGe7Hz3UpYigCmmmAFta+8t5HWJvN+kxyatXM/9MnU2mFwH9Vdr5yUITXpEVavpKYLdv
+         vdI0XgcEKLbCdLtMh1Wgnwv9+5QNoQKsrOcc/TDNFI1DgNDN14+XJeTPQRbggT24PcYI
+         hAzFvj8LvW3diXxY/qsaw5qG4zZZZL4ONoNMGgX4ZOFy6YNoNUxXDwy0vyNI83+guWen
+         /ik/IMEThoVOp9vsTaBVtU6wxFSJ5zB2pXMqeUPvMbp+bJS9ORToOAHwZjByqdtWOwDv
+         JR+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tX+dqbFssi21Y335rPAh+90TuALSmaMUbgkgea4z6B4=;
-        fh=PqRul9eXbnNWr7i37GhNt1+s5rbUrxwHSUJOgSnM//c=;
-        b=CQnr7yn/+hdkHd7CAKklYqKWCvgAHgGz2TgGUD5bqF0TRuzRpVSK240yzFRtwnCPAo
-         Lj95TEBJzieCow+72O9UBmjis9X+cxR0I9gLlvJ7BEVxBglZ4ql+gw5+yOkRHFSGR/vH
-         6H8IYQjedRgWF43wVQSCXPW26llD6axmdzZsPp41PL0jiJqBP/4oBHIOR2jmm3G+mA/0
-         sBc4d5JIStZXzGzMNayyzbVwq1TfogbyMeh+PscevunORLQgCwvA9l3hARXO7JBQj03k
-         UlW6fw8imb76XmRp9zjFFYhMRqNg2iT2qSTW+kDUA4PD80spfpWlAbVHlCpD62BLl2Gn
-         SsXg==;
+        bh=YtjhCeTQDdoAVsXN8dHO7TB8D+UZfktfl3sVcf19Ny0=;
+        fh=jWmTozxUfbtXK1aIT+2OwHUMtnqV4zwtbFeh/N/exbo=;
+        b=kqRTFZ/vFWxx/mseI83AE5CZZ02ZQAlPnsUERHqPI962QyGSq6lWMKya/TYXoCBlBq
+         CA3L3SmDf1QgXOAUaUw9/RjDza5aGDf16pRAJI/wPNR/g1qky0NLoT45cpDnznnJ1F4h
+         zTVugmIwjGBR48OO3JID7GYK0HqZmTRkd9SFC5EOjPEfYu/vH+DjzVIJOmdNE42S2DK2
+         0HrZ67NwAsaj4TiGfQmilSL5JLRco7Pe6HivKS60gTPui5vEY6uZVWDSEQvbJj0lA6lo
+         Z4Ygh4BenW5ZnlY+8P9BbwR71D4o70CKfeL06FHZsbUZx19zNJrD1NIvClcGWxYrqt4P
+         LZuA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772869316; x=1773474116; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772870579; x=1773475379; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tX+dqbFssi21Y335rPAh+90TuALSmaMUbgkgea4z6B4=;
-        b=BIdVBw/+EnpW8y20XN4gxveDCNnq9uZdZ2WZbdSlwIMEvVzALC9840TCVXG9EKH1hr
-         rlzvq62NCozhXaWQgNWO2adVJel+4AkaiHHZK+3KpJsx61yt2RDvYOhY8749cFrVl6hW
-         +qaBhS7CL15B04BeFZtmQCXYFt1DyFVFeA9BW1zqFywknOH3yGwEkcJHAAg+r+XF85E8
-         +27epxFnhihbjl81zwoAE+OlstVLtaB0ELG/IcfpCndosqplCNOCGYLqX1DPEREzc9My
-         7qyN46kcaqb9aa/5lwPfsj2+C5+DK1HC3uRkytKNmp8WeY/FQwyw1Nvwb8DZGjCVNwjR
-         LPXg==
+        bh=YtjhCeTQDdoAVsXN8dHO7TB8D+UZfktfl3sVcf19Ny0=;
+        b=m0sz5oSvsh5p3j+s48mxbqsHO0m7zA1IXK+knLAzhUXXZAX9K8JJaTCU6aIOkoC4gD
+         xYlfASaNyRSDnTmrMPuVROEISO/foZPONCCHC8YrtapleUmHmgrBNUw9oBor0PodrUn5
+         cl2qlK9AThep5/aATxjrC/j59uShSRc6wuyc9zXKcX6Ixml67g9e47ptpFLIjdEGovkF
+         iZIgb/Uh+OqD1ZMKsZmfUmmbHS0abEwFmLnNWxuW0CpSkDxbTJTzpF9tjFz3J/pwnXFl
+         TFZbNp6KKEXKyI1WkXh+M8iu2rVWVyC1oou65AlwHkFl5DySnq8+RAP2zsr4Fusq8vMW
+         QzqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772869316; x=1773474116;
+        d=1e100.net; s=20230601; t=1772870579; x=1773475379;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tX+dqbFssi21Y335rPAh+90TuALSmaMUbgkgea4z6B4=;
-        b=ETPNoo4XvjbJpByQC4amqzaQZsrNR5FVZaT00ERnLjDbFPfLctTCbLGNU8emwyiCOi
-         nVIT7ukoaPwJg+nQINJ9W34s44FxlR9N/8knN8k0Y+fqmpvOoTSpmZqdZch8QGSRx6Wp
-         t3iYtF+YKdOwfIfsr/9uHLzGzq/b46fLxxxFKr23JDcdsu2SdF6sRGRi5Q3wz0twDzXF
-         B2m4VbDfVOC/D1WLCT4pQoDgI0aDP422tX1hvBgNF1MhmpblG5PrRvq30oHalP3XKnxT
-         FhK10hUCkw7ubGjsBFIs29Gk623Sj1GZJAaOMPc5yhkJhi+5IK3WmwKH4fTFftME6twM
-         kwgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoUS9EloJnHwBFAFM2VIRBNzF+sQxsSKASF/fd+Z8okCwcl6057b8XBS4kJGQrUwmZwxKBgrCXYQ==@kvack.org
-X-Gm-Message-State: AOJu0YzTUxPd3myouNVmY8Ld7vLY78zsUrB/JEbf0YWDW6eHv7YknUz/
-	plheRRyLHt/crGcmHuf+vRYI8XfgRdAu5NIOk5KeQeC9bSdaTgwjM1TbgKyJVtfE43muoh/Vf87
-	hJYVn5qLG62U8XprS1nTyHE5WYYC/7QQ=
-X-Gm-Gg: ATEYQzwU0Oa/7vLGUNqdFboExHvckiBxMsvJc02pWpPZlNqlkI7T2gVQbQozdUdr3cb
-	ySB33har7H0i0uxLvofQhtYt80Q3VxuPzmm2N7399mKXVuFFWE0NEgaZUVyf/rt1Cr2KTPU31VU
-	q/mPAtqNHcVXXxSBNns4RuGkImhUqJd6Ny/DR65r3AsZxr17Vd5DD1g1KMKZLKRHw1rzoChhQeI
-	sq0c1W/QblGga1YJGlJPUXg0SZppEfhIQFID2dHIxjIAY2VOC1Rvn43ZixpmRrqfuk/Bz+WXQPg
-	Zapjvg==
-X-Received: by 2002:a05:620a:4623:b0:8ca:2cfa:822e with SMTP id
- af79cd13be357-8cd6d4f04c4mr588738585a.70.1772869315786; Fri, 06 Mar 2026
- 23:41:55 -0800 (PST)
+        bh=YtjhCeTQDdoAVsXN8dHO7TB8D+UZfktfl3sVcf19Ny0=;
+        b=FT1/6KGzRAOqyp14KxXz2i0vBsFJe4ouKylcChwTus1zVAbjhoUrP7oP5vynbiLKPZ
+         niztQQgHbAtFy9OAt1TAfW4N8qObs3Ht2K8bbHImIBYYMoxYXd7OiC+3PxiGpCdTqApa
+         YMT6UPvGLunkT+PDWdaBBWKoB9IrXrVCcjgmIZYvDd0luGHO4Gua5ys3mtBwTzhOIoDR
+         foqCnVUGXXSvApFbX1Jhv/ka4thLEDf9nxZr1Lstbn7W8z9hmU+kyJ457BGTx1aIdnFD
+         b5CLiGQxyqGIsqiLO2Mv32saC88OxYYmWQ+vOUoiMyh4HWBEqFoJYXkDmv2UmzDUJUgG
+         rSRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXE39Dv5gUmTwRs1loZWgVX61dgcovrcbJc6EqfbAcBh+5hiw4OQePgzfae5ImxRwjHo99VWwqDPw==@kvack.org
+X-Gm-Message-State: AOJu0Yw0PB11axi9sPZbzETXDIKsOU7FXgbLegmT414XDsOa6CPdDsmx
+	fnIfC8pj2J6irrPCrcxnL4r451/fTo1OT4+hYRAeifS3dKO3ogaDPuEXDU7/g+jYVD5aEnOh15D
+	vwAhDP3chUBYCddNenWLURiJVeeQI/Ts=
+X-Gm-Gg: ATEYQzxtmvxk48Yci945Zz2CdN+GGIFzXydrPNMjvdB9UTG5tGEX8bhdkYYo08QLHtJ
+	nkqDJEjLbENdh2avx4iB/MITXcUp+eK04VTuoMsILn1eZ0fjpSD4USTeNrKBWhriaraNDTfa7Vx
+	6M+xTQXDjz66DmddPM+F+Wh06KVtEYNX7ImJd/ZZHreVolR9qMSJHTl9CSqX9rGiy0WOQhop+/S
+	QRZUCQwL1c/yCY+F5Tg841c7U1dO+c6aMrmbUqUiWV4CzfHmItPj0zUN7Wps8Pl1VZ9pvLhqIi/
+	HEZRpg==
+X-Received: by 2002:a05:622a:34b:b0:4ed:65d9:162a with SMTP id
+ d75a77b69052e-508f491cfe5mr61359861cf.34.1772870578464; Sat, 07 Mar 2026
+ 00:02:58 -0800 (PST)
 MIME-Version: 1.0
 References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
- <ce749fbae3e900e733fa104a16fcb3ca9fe4f9bd.1770645603.git.baolin.wang@linux.alibaba.com>
- <CAGsJ_4wA-bpCaY8uLnwmzDT40s4RbsOXdRutvj5bZU+Em6cFeg@mail.gmail.com> <721abb6a-93a0-4db3-9e69-ef23b253e4f5@linux.alibaba.com>
-In-Reply-To: <721abb6a-93a0-4db3-9e69-ef23b253e4f5@linux.alibaba.com>
+ <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
+ <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com> <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
+In-Reply-To: <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
 From: Barry Song <21cnbao@gmail.com>
-Date: Sat, 7 Mar 2026 15:41:44 +0800
-X-Gm-Features: AaiRm51_Rahv1hV9qlyIIE65VmzabdoLUrAFZtPhvFkXuN5CigKtPXJw7G_VqPk
-Message-ID: <CAGsJ_4z5-haVRzeF253Adpugv09qu8xpGd0WVpU3OfegK7sxQw@mail.gmail.com>
-Subject: Re: [PATCH v6 4/5] arm64: mm: implement the architecture-specific clear_flush_young_ptes()
+Date: Sat, 7 Mar 2026 16:02:47 +0800
+X-Gm-Features: AaiRm51Igc6ecK3xB2tUcUl4HRL0_fGlACMYx6lVkSr1t0qRUoao4ymxCbT83sk
+Message-ID: <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
+ for large folios
 To: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com, 
 	will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, 
@@ -129,14 +130,14 @@ Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: a7tqmy1oosrdh8c8xqssf4duez96hene
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B2C17C000E
+X-Stat-Signature: w5hrb89fr9hd35jkegq14qyrw9u6o6ib
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0E743140004
-X-HE-Tag: 1772869316-83376
-X-HE-Meta: U2FsdGVkX1/XHetZHKIENGZ2/i2W+YClJuziIXoa2WBRq54DBRoPX6xbCGq4NagyhVf2EFF4zRMuR9kfw+Bfb4sh0JJHNieI4v8bQLgkcfoZRbhbJNCT3GFsOFCrYvH60/WCs5GBv06ncAWtgV+kWiPzGnP5xxB9v5y+pPvodAzMo5Pp1ZGnKul9Y7mgaq8tLZyjFAt4wFOdzD62SZWCFjoCuIwWCU0spBjgN12NGQo8kZZqY0BjYx6TcNyVI9Bffvk7B2qhOTca2Q5wKAlsXO9nDx6iNSvZOTch3nxmEw2gD0cUI3+Brhr5klG7gCm46LedHgZU/S0+Z+ab6PNf0ApNNa1KQYRvd8Vkn3RwV+gYrxZ+uhoV1l4Q8rP3DakoqX7e/tL44ZiiNXogVpLBvZc2dJzVZDiWCY0Y8OmpwssnmSeal2DIdzn+ksgf9wLWXNmFp+kkMwZ5TVD35jeVTy5RcY7obWILrPqoPChCftZqqX4N30VFT/32e7aok1Lzdygnf6ofZKE5z85IaAN34islbz0ghenev6jQTzoLFycpxZefiPNiGU6ReElbosBCWSAOFtbRPH8e1qfskvWBPhsJLFzP1qnudJ7QnCtdzKmNxCaapMbvHEVdsYAYAsWmwGUnpk3sjOoTMzaaJPBufHYck+1ziKUWbSMaOXCvu/ovZfMWY4UKM+0vLRMWe2vOvuFrlrrMXautWNFNbDZd1MNLR9OpacvaVHN05U7CRMbBiGrAh+VQQNlTZ5ltP/Pkx8xJaV5jflls36ko9Q8/l0hr/BLjYf3ytqsYagJhzfcdk56ZaMVezC1rRSa5H8NkTOhe+CCtf/wDCVUA3tLrBt5iploCWT98XsmiWzpL4N3gIWDxXuzCzBrgEH/r4mdueiBCWsKPQH4LC7ele84Vfy9zi+kQp4+u12VosuxTDe4OfzoaI1cXIxrHhINw+/JcjVe7w4hT7DshlfNcG8L
- EzxJrEJy
- K2yT+HNAoZ5hyx/Xbrd9tKwJCWFxgMA6vqYO3PnBc7RE8dbubPlQdZDTcTLAu8iw0fMaOKbuDAYOcJtPFoK5VygVPZD59TiBYG5lQU26QlDNhy4pWGRcLDiU/B2rFOuC9jA6cdktgmxUoUm+MAa0jK7fNFV7fGWVU2oTuaWhoPhRBgOybzO4o2NjOirrXXMkvX8RY35a4n/xc57v3fEeN6fXx+xf9tq7sahYlLcglyw+ObRSuHbBuf5V9spSY/eqhJGWoBYNxfO2rwzppKJmt27kp1AH9eq3O6Vw6vc8aHX3oV0wYuvatK+5AfSPWdFgzkuMueHZSwIEwjUrWAzXs2LAbgs1b2O5AYcxKj4i+3CrBvd+YcASAjYtHbLD8zPSLHRdjJwMhcqtpafKq3p38U0AYByUtSQZyEVpjZqdCHX9rYVzk1sE5xU9IcJuYedpM81RY00Yam/4dAow8MN4ZJulowuG9P38bc5hLy59HVdAFBzPXxMIrklpoPYUqgzKPsu4UlsSPRmLFvnk7XhFTUyzwBk5RsDnYNAw+It67HPS1O9A=
+X-HE-Tag: 1772870579-241688
+X-HE-Meta: U2FsdGVkX18Q4cDyvrRKTpH6HWhwctbn3ka5TOJ/OJgzqCekrlnArBQaoZwBK8Yzfa0dr2zvZ49z3h6iagA19w98uWoIXOqU2yBZaDhy+nsW2UznNZGCNW+BC4oZrWsG/udhOKJofDL9VNSy8hZoLD5c7ieDkIKDUMXz7Q8KuCFbkgy7pcC2ATm4oC+x8lgGj0JMsihCmzV7T8eMnpgXj5SgIpeDvEekO3NYzzhOAFuQjmGn20dLyPIcJtjlMQ1rDpnQZ4lKXQ+Rci4pToukHcC61Wa8FYY/UbX2Pz2RjL+L/gvtSV4ye62d/BG7h2EcpVSBEBiZ2QEsMaexyRxdwqHZje2rEDAO1VIy1PeAMqmfEo1jKKiSsUXYQ6r4Dj1vCuyNpb38V3KnFZt+xZZq8OJ0uLHUgCHuKutJ9OQsVlRPfEKL0ZAeTYP6FVhXAkjuv5aPwmlywjmN3PJmNHqtJBSa6+X22bRKoqJ+n7TU2L8a5cjjo3r0P/bRLuHWOIZXWpsQ1RvgO5BY77jip4chRSl3MWdLJPwiBwTupT6LEW7YbhftOCdvXpyNsUkFdWCNzeVlmYswS8hLbx2RSiTCn2YQnRMAhsC/+92wrJlxrgMGaFZFKA3+O25moPlS4Vi5TMN9UZXD+GIbcsehL/JIEAo4hAWTrwlKjlzhSrpImisq4lkBq+5c2SJmJFFuSUIzjiAsdrm34po2MjgSkyW6gZEqEXDfthJAk6q2ZedemPH3JpzQstQBq+BaufYz7H03gK/w/eRXJuxaUGjH4QXUM+slvRZj9nAmIBoky8tvbLY/j9M2RV9GRwDwYCLmDSGDUnDSt0ToOj2hfKpYBvTKLWvp3wxtOuukymmhDvPyMsashUWCSkg2ecyRqYgTw9S3Il8sYgajgWjwWCACshonFXxgTU2263y8EGEYAu+TYk9KzvZ/7gYrGTHh4l/ib1ygJytPX4v0Ag0Jgcf+XEJ
+ yig6YfC1
+ QafXVJTnosO0gfgFPX+5eirsZ6x1u51/P9ANLYMwoNl07sYDFMqLHhluNLHx2zBiexVN2Nweh34d8uSd/XM7sDIoJpLtVNUewIqByBpGxp/PugznFGYsWY4QhnfctUa/ZGIdfF4K+DSQWhc8puT7RjFFtGvo8xOVoKJCa7INxo4wvJ4KRAcR5w1JnLTLfb/iKs7zI1xKsE2TnnSKOTr2+1cb8ArvTlVHnA9JD7B7raLNdCjDtZVVUJpn6VlmhV2eFX6GWigRIMBcX5US9jgEK6VT0bl45Z8a/tepTINYLVxqN+8vfkeVfHlyQAAUKsPcVO8w/itfFzc7sszGWVGLYGaaDOimUCiGmS2q1kpFDu7gZ+TnN+aihJ1UCvtfEYQYlifIgzqqRgEEnkcqsot78Y5LRy/IlYS1hugiE0FPlvjhv6A+sh9JT74T80HNinquXvbqlIcViLC40K3yh6myrEdAALZhCtiFXNzowIDnKFhjh7HVe6nwYFU3Lwdj8pYwfpjutgYZruZO1gCvkiYclj+HBX06jlI9dcECrozmtXs1ZYifU3luQIzgB/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,105 +145,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 7, 2026 at 10:14=E2=80=AFAM Baolin Wang
+On Sat, Mar 7, 2026 at 10:22=E2=80=AFAM Baolin Wang
 <baolin.wang@linux.alibaba.com> wrote:
 >
 >
 >
-> On 3/7/26 5:20 AM, Barry Song wrote:
+> On 3/7/26 5:07 AM, Barry Song wrote:
 > > On Mon, Feb 9, 2026 at 10:07=E2=80=AFPM Baolin Wang
 > > <baolin.wang@linux.alibaba.com> wrote:
 > >>
-> >> Implement the Arm64 architecture-specific clear_flush_young_ptes() to =
-enable
-> >> batched checking of young flags and TLB flushing, improving performanc=
-e during
-> >> large folio reclamation.
+> >> Currently, folio_referenced_one() always checks the young flag for eac=
+h PTE
+> >> sequentially, which is inefficient for large folios. This inefficiency=
+ is
+> >> especially noticeable when reclaiming clean file-backed large folios, =
+where
+> >> folio_referenced() is observed as a significant performance hotspot.
 > >>
-> >> Performance testing:
-> >> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, an=
-d try to
-> >> reclaim 8G file-backed folios via the memory.reclaim interface. I can =
-observe
-> >> 33% performance improvement on my Arm64 32-core server (and 10%+ impro=
-vement
-> >> on my X86 machine). Meanwhile, the hotspot folio_check_references() dr=
-opped
-> >> from approximately 35% to around 5%.
+> >> Moreover, on Arm64 architecture, which supports contiguous PTEs, there=
+ is already
+> >> an optimization to clear the young flags for PTEs within a contiguous =
+range.
+> >> However, this is not sufficient. We can extend this to perform batched=
+ operations
+> >> for the entire large folio (which might exceed the contiguous range: C=
+ONT_PTE_SIZE).
 > >>
-> >> W/o patchset:
-> >> real    0m1.518s
-> >> user    0m0.000s
-> >> sys     0m1.518s
+> >> Introduce a new API: clear_flush_young_ptes() to facilitate batched ch=
+ecking
+> >> of the young flags and flushing TLB entries, thereby improving perform=
+ance
+> >> during large folio reclamation. And it will be overridden by the archi=
+tecture
+> >> that implements a more efficient batch operation in the following patc=
+hes.
 > >>
-> >> W/ patchset:
-> >> real    0m1.018s
-> >> user    0m0.000s
-> >> sys     0m1.018s
+> >> While we are at it, rename ptep_clear_flush_young_notify() to
+> >> clear_flush_young_ptes_notify() to indicate that this is a batch opera=
+tion.
 > >>
+> >> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 > >> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 > >> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > >
+> > LGTM,
+> >
 > > Reviewed-by: Barry Song <baohua@kernel.org>
 >
-> Thanks Barry. But this series has been upstreamed, I can not add your
-> reviewed tag.
+> Thanks.
 >
-> >
 > >> ---
-> >>   arch/arm64/include/asm/pgtable.h | 11 +++++++++++
-> >>   1 file changed, 11 insertions(+)
+> >>   include/linux/mmu_notifier.h |  9 +++++----
+> >>   include/linux/pgtable.h      | 35 ++++++++++++++++++++++++++++++++++=
++
+> >>   mm/rmap.c                    | 28 +++++++++++++++++++++++++---
+> >>   3 files changed, 65 insertions(+), 7 deletions(-)
 > >>
-> >> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm=
-/pgtable.h
-> >> index 3dabf5ea17fa..a17eb8a76788 100644
-> >> --- a/arch/arm64/include/asm/pgtable.h
-> >> +++ b/arch/arm64/include/asm/pgtable.h
-> >> @@ -1838,6 +1838,17 @@ static inline int ptep_clear_flush_young(struct=
- vm_area_struct *vma,
-> >>          return contpte_clear_flush_young_ptes(vma, addr, ptep, 1);
+> >> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier=
+.h
+> >> index d1094c2d5fb6..07a2bbaf86e9 100644
+> >> --- a/include/linux/mmu_notifier.h
+> >> +++ b/include/linux/mmu_notifier.h
+> >> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner=
+(
+> >>          range->owner =3D owner;
 > >>   }
 > >>
-> >> +#define clear_flush_young_ptes clear_flush_young_ptes
+> >> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)      =
+          \
+> >> +#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)=
+  \
+> >>   ({                                                                  =
+   \
+> >>          int __young;                                                 =
+   \
+> >>          struct vm_area_struct *___vma =3D __vma;                     =
+     \
+> >>          unsigned long ___address =3D __address;                      =
+     \
+> >> -       __young =3D ptep_clear_flush_young(___vma, ___address, __ptep)=
+;   \
+> >> +       unsigned int ___nr =3D __nr;                                  =
+    \
+> >> +       __young =3D clear_flush_young_ptes(___vma, ___address, __ptep,=
+ ___nr);    \
+> >>          __young |=3D mmu_notifier_clear_flush_young(___vma->vm_mm,   =
+     \
+> >>                                                    ___address,        =
+   \
+> >>                                                    ___address +       =
+   \
+> >> -                                                       PAGE_SIZE);   =
+  \
+> >> +                                                 ___nr * PAGE_SIZE); =
+  \
+> >>          __young;                                                     =
+   \
+> >>   })
+> >>
+> >> @@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_dest=
+roy(struct mm_struct *mm)
+> >>
+> >>   #define mmu_notifier_range_update_to_read_only(r) false
+> >>
+> >> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
+> >> +#define clear_flush_young_ptes_notify clear_flush_young_ptes
+> >>   #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
+> >>   #define ptep_clear_young_notify ptep_test_and_clear_young
+> >>   #define pmdp_clear_young_notify pmdp_test_and_clear_young
+> >> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> >> index 21b67d937555..a50df42a893f 100644
+> >> --- a/include/linux/pgtable.h
+> >> +++ b/include/linux/pgtable.h
+> >> @@ -1068,6 +1068,41 @@ static inline void wrprotect_ptes(struct mm_str=
+uct *mm, unsigned long addr,
+> >>   }
+> >>   #endif
+> >>
+> >> +#ifndef clear_flush_young_ptes
+> >> +/**
+> >> + * clear_flush_young_ptes - Mark PTEs that map consecutive pages of t=
+he same
+> >> + *                         folio as old and flush the TLB.
+> >> + * @vma: The virtual memory area the pages are mapped into.
+> >> + * @addr: Address the first page is mapped at.
+> >> + * @ptep: Page table pointer for the first entry.
+> >> + * @nr: Number of entries to clear access bit.
+> >> + *
+> >> + * May be overridden by the architecture; otherwise, implemented as a=
+ simple
+> >> + * loop over ptep_clear_flush_young().
+> >> + *
+> >> + * Note that PTE bits in the PTE range besides the PFN can differ. Fo=
+r example,
+> >> + * some PTEs might be write-protected.
+> >> + *
+> >> + * Context: The caller holds the page table lock.  The PTEs map conse=
+cutive
+> >> + * pages that belong to the same folio.  The PTEs are all in the same=
+ PMD.
+> >> + */
 > >> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> >> +                                        unsigned long addr, pte_t *pt=
-ep,
-> >> +                                        unsigned int nr)
+> >> +               unsigned long addr, pte_t *ptep, unsigned int nr)
 > >> +{
-> >> +       if (likely(nr =3D=3D 1 && !pte_cont(__ptep_get(ptep))))
-> >> +               return __ptep_clear_flush_young(vma, addr, ptep);
+> >> +       int young =3D 0;
 > >> +
-> >> +       return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
+> >> +       for (;;) {
+> >> +               young |=3D ptep_clear_flush_young(vma, addr, ptep);
+> >> +               if (--nr =3D=3D 0)
+> >> +                       break;
+> >> +               ptep++;
+> >> +               addr +=3D PAGE_SIZE;
+> >> +       }
+> >> +
+> >> +       return young;
 > >> +}
+> >> +#endif
 > >
-> > A similar question arises here:
-> >
-> > If nr =3D 4 for 16KB large folios and one of those entries is young,
-> > we end up flushing the TLB for all 4 PTEs.
-> >
-> > If all four entries are young, we win; if only one is young, it seems
-> > we flush 3 redundant pages. but arm64 has TLB coalescing, so
-> > maybe they are just one TLB?
+> > We might have an opportunity to batch the TLB synchronization,
+> > using flush_tlb_range() instead of calling flush_tlb_page()
+> > one by one. Not sure the benefit would be significant though,
+> > especially if only one entry among nr has the young bit set.
 >
-> We discussed a similar issue in the previous thread [1], and I quote
-> some comments from Ryan:
->
-> "
-> My concern was the opportunity cost of evicting the entries for all the
-> non-accessed parts of the folio from the TLB. But of course, I'm talking
-> nonsense because the architecture does not allow caching non-accessed
-> entries in the TLB.
-> "
+> Yes. In addition, this will involve many architectures=E2=80=99 implement=
+ations
+> and their differing TLB flush mechanisms, so it=E2=80=99s difficult to ma=
+ke a
+> reasonable per-architecture measurement. If any architecture has a more
+> efficient flush method, I=E2=80=99d prefer to implement an architecture=
+=E2=80=91specific
+> clear_flush_young_ptes().
 
-You and Ryan are clearly smarter than me :-) Thinking about it
-again, worrying about shooting down the TLBs of non-accessed
-PTEs seems to be nonsense.
+Right! Since TLBI is usually quite expensive, I wonder if a generic
+implementation for architectures lacking clear_flush_young_ptes()
+might benefit from something like the below (just a very rough idea):
 
->
-> [1]
-> https://lore.kernel.org/all/02239ca7-9701-4bfa-af0f-dcf0d05a3e89@linux.al=
-ibaba.com/
->
+int clear_flush_young_ptes(struct vm_area_struct *vma,
+                unsigned long addr, pte_t *ptep, unsigned int nr)
+{
+        unsigned long curr_addr =3D addr;
+        int young =3D 0;
+
+        while (nr--) {
+                young |=3D ptep_test_and_clear_young(vma, curr_addr, ptep);
+                ptep++;
+                curr_addr +=3D PAGE_SIZE;
+        }
+
+        if (young)
+                flush_tlb_range(vma, addr, curr_addr);
+        return young;
+}
 
 Thanks
 Barry
