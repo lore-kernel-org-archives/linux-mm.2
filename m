@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAD98F55102
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90416F55107
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 19:49:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0252B6B008A; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
+	id 11FB46B008C; Sat,  7 Mar 2026 14:49:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0B576B008C; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
+	id 048256B0095; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE92C6B0093; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
+	id E67CF6B0092; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C9B976B008A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CA5156B008C
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 14:49:25 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 502E3140896
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7859A1A00FB
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:25 +0000 (UTC)
-X-FDA: 84520306290.15.F39F176
+X-FDA: 84520306290.08.631E0FB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D23EB140006
+	by imf01.hostedemail.com (Postfix) with ESMTP id E722240004
 	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJLaaKcq;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=emdN8l1G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1772912963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=bDdJFCZt2qTSObJAWFEhJIzCM/QWDjRTUUuunzbv0FE=;
-	b=Jc7o9YGBM3jOl7De8kIVfjfNk6KDwwTgulL2W6dxSgyr9EYRL2ybVqcMFUNCACc6wtSb92
-	JzN6+xjEr2sN/RTLtxRsGy34FypaXOuoZEd4VLJDSjtwQn/eu5xbh0Qc0v9rIoDczCkQK1
-	vC47I5YJklNNzzi1B+WBUCEAw1ADkLU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mFXesOo/zbdxpEDx8ygpS2nuP3FKlH+FucyYhvhi8VM=;
+	b=z+Xuq7o+/4nXkax/pH6IJw7s2gP1A6m6qjXjoRO09LeyxdsqlnVsFpj7omXWlUej+Lzvkj
+	dPk2tueU+B7yU4yLcI/gVSIyk/LyM9lyIZYg+GoL1++DXfFHwwq1oOViFdUiENndtFI1Gs
+	vAJ6pzxxg0Pcmc3zvkj/n4F7NvCYEbc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mJLaaKcq;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=emdN8l1G;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772912963; a=rsa-sha256;
 	cv=none;
-	b=MlZ56tcPDPxeCLORSItEkDNYA02i0lhaJSX4gH3Bk6+kdqdPo9l7JYHAXBsUVYjHfq564T
-	lHE/lMYFU8lDOFHxTJm2CypWlISdEhyEOkBw7lGxW8H49UPy++2R8rouKHxgYtYrVEZ9rB
-	uaj/sXqApAzB+jQi620Qr7aPO5NaRWI=
+	b=Jd9U29H1cZk7rv28oy5hHGMBluR6+K7qRvtVLUQPUWEkE4ZVFoc923m1jiiLP5+RHSEIWz
+	Vs8BwM5cnh1i+CwN1nnTYm48E0jEJlbnKPCc+UPMN2yYiqGcazpXxkoq+mLnsocS/gXd+s
+	j2ObtSCNIn5WPD3+qVJou+zdODM0uA4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5416F60051;
+	by tor.source.kernel.org (Postfix) with ESMTP id 73D2D60053;
 	Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB6FC19422;
-	Sat,  7 Mar 2026 19:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4B9C19423;
+	Sat,  7 Mar 2026 19:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772912962;
-	bh=9pXTMLXjPeeFkiBWY7aejojzZtQ8QdVsGRxu/ihcY/A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mJLaaKcqz3I+ylDK18HnDKnTzi8E8VRfiEqPevc//dx16NYIyrYSuLrpEknUCR97q
-	 /l1qu964FXZyddPds7Hio28N7Hrz2xf74z8hA6sQt9kpiQMuwz0cKPbpkZwgqf0r1k
-	 88Emmeal2z2CL+rosZ0+pn2kDbiee8xvmw9FBZWmTrv/1dASoTYz5MSmIpgpursKSN
-	 sX+/OZ67VXMh26RerPVQ6tlsCzRbAVr4BLAtMTAWNSZTGOyCC+owue+7VlCtTS2SIU
-	 G1SCP1FTBTwkCp2/7wjEGquAFT1aYRBZTt0I5z12TE3/BLj1vAGkqO0SFRMnzXnd4R
-	 543Ua6chf5stA==
+	s=k20201202; t=1772912963;
+	bh=AJMBL1nNdjGC0+4eccv0L3v64yl/CaBJKvNB19kiMwM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=emdN8l1GafabJYJm9JIqEG+XGtuLJmZKKmtcfgcPtSLlJwl65IknEczw+BGHKkE/i
+	 gNKs0q8kTJbvvKKfgQ2VHnrurATgBPeQ9Ys//vKQ532fgcAcXBmdmxWLGmvcs5kJeN
+	 PTLCyp0A/gVhqjpQ/mPNgPzNM0PpGZm+cl5G+mPa/Kw29iM/nrB/xwYKjwZJNXG6Ns
+	 vfduOaGcQsNkVXYH9EHqDiRgoJHt5Tq05LJzhSv4X62Gv+65AdUKVwf1q78S1zhqTM
+	 fdUjhx+9llwZ3aBJshEaW0b/tlrixr77+w2e1Ais95/95ovQP6Zvq03tZV4n6FdBDT
+	 d/3lAanMSBL9Q==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/3] mm/damon/core: make passed_sample_intervals comparisons overflow-safe
-Date: Sat,  7 Mar 2026 11:49:11 -0800
-Message-ID: <20260307194915.203169-1-sj@kernel.org>
+Subject: [PATCH 1/3] mm/damon/core: remove damos_set_next_apply_sis() duplicates
+Date: Sat,  7 Mar 2026 11:49:12 -0800
+Message-ID: <20260307194915.203169-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260307194915.203169-1-sj@kernel.org>
+References: <20260307194915.203169-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: h8kbbn7uhq9nqfnn8tjzuzdsm39cw5ob
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E722240004
+X-Stat-Signature: io6to81ajrmma45jof8ao6ptt34yxwb1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D23EB140006
-X-HE-Tag: 1772912963-536248
-X-HE-Meta: U2FsdGVkX19WWmBSqHWjOy31Eh8WwluhTj4M0UXGP6ICt9BvUG+xCGJmjuQENL0VnJCwIev49UUHoKcplWQnuDoBZYlIJ7wcVxBes0LvO2wz6bB2DxOM+j3LvWupLYyPhAKNURw/Y18yehub1EucPPhBuGwfRysdvgR8b1S0p7MHvjhwttyaitfTxoyYrPQnLCji+7v+wyOaFvFP4vd3hbdrOdCYryU9ke0Lme+NTJjkHr0p0QSRdDl7ETIGnLdoaWi5eSpADxLV6PQsAw894fMLCcF6pgEtiOF+Xlw26EJjMaN3fjXi/IubAJxxyt+rvhieO8iL+OnXZmqmsiN1OWy9tl5OUBBZbKbz/R9d8l2CGqvezc7OpPfBTzQlA4dUSPqIl2kXQ07z78D7kLSsEojH6Mi/CmAqXWEFg1964Kv1ymZhX8qfEBMVaFexu2nUlShcbqYTSKHlMv7GvohZFOyASAZGzcIUCEfN0H0IdpqRZthK8ti6wWlwvFwWVLa+3e2TzZ1CHvYvZ69MiTwWg6oGW+wAlIloMAj5GoZ8tIs1QY98OMpPq0jjmtkxdZ/wS3pQ/g5PNY1ANVYJcvCko+xVTuSax0jkU6v5J6pXLaqWkFZtEeC/FjZTnfsym80fZlha1NiwwxmQqJVQFyX32suUOcAscnpLVz0OiXitZaVGiIczen6Eo5ga3+lVq02oQbojEBoePg/RvOZptLhOkf8ItwijguV0xrRYezFnm84+OytAtjwylupmuL4tdu/2PXImMiAPk8unrcLV70hXrhPqilprkgZJkN+rvPIPfq7S4DGokdUb4SRyXHv3Fl/YMqJP/hjpNwex2UjlCGN83J44usScsmf2YncK8FcjbTVH43f3pDJLYKrwCbtyseMMTPU0kvOU8/ZRQEkJBGMgFVFJx1HKVvH+EfhlcFYGdwWNHnWu8HSJYJwn1XkZ0rRE9nDDa/GT7n3g8CIbwRy
- suV0WImO
- J+/+P0/lCAJ1nrrGTAAOUsPHtuMUkh6BsDlL9m7nmlv1vECrLDpPa9EnvOkTEwAFnJCn6p73eHdYq3RvIsgnI6hx0SFzr1MHFjPMY2N2tMCMWoumJ+C8qptvzJ5GxlnafmhDhmy3olNVco6guBe/5Ic18RJhmTNLB6kIXxWI5G14rOxkR93JLvGICFYaYKURDAUPjza+D5FgJ+zzme54wuBtTAkiBNxGeqSwrHTE0JJR7p5IMcVNu56YP9Q==
+X-HE-Tag: 1772912963-74994
+X-HE-Meta: U2FsdGVkX1/lZvkrb/B1xNnBkQjA/Ru6PVNy/4WUlgPsFUrFEv0TyAMp5X11DJ6R3qlQoBv/TEW2gCy/U8yi4YwSgL6l5mwCmeNNEDbQBV3aHV1RuHdY7LBLlaQv/hkpHxG1ORLdpd+uE23WNDBJ3CiGBP64/KEqSBn5zL5ZPy8yb+IhOF6AxYH5H6Ysbqz08c/6SCUbMIaI5SwiW9KG8bUa9zQlvCmb7bplNkOJyZHzDVGGrCFfm7vzuUS2wqlFaMPXZ3NBm9qr8A+ZQWFlyb+pffPyTfELIfiCkceuv6vF2A79w7KwwJaO8ewNWA48MVrh5oBZvDhayLqWrGNhNVQGG0tMUiC9cyEB8tp/kD6w+RNW8CUed46mnrqWGiNxG+eT3T7AQTbjCutDIaoTFS8Crk5a+rXnYFrKFdaZWTMZZwHIaNFO6i3zu0Gad3BNMLVijPNrZiJ9fcmiKKYUVBfuv8zJ+ZLOkrFPTgh1ve7sHVu12zFXT8KYF38wARupiIqPIWsnkgICKA6d2CPGzSizz4tRXqHxuJ2/jItD4S9ugbu8ahEtrwKu+yxr0XuAl8zcEwQKo1uCGFMz60VTDJ2RVPtcL8sy7VuSzdyZ35bBCSBUgFLUv8kYDYbZhsQUgk7XqhG5p4MpofOjcOshKNuDSHY4scpPTkS1Iy5qoaqu5X2r5dmLDqqHomEHe3TeeBROmfJ0YTGxPobtBPLALKGEP20XBbdhb3NgYoWCEY2ac7p9d0w/a1g1a06VZRX0IbrE3fbk+1VvibYRZRyaqDF3QWUayH4i0NPK8WVA52mdwwPGxOeFO/rd29KHcI0VntR3QfFBk0+QikAE91ZonZ2W+Bp44FHowWXHuS1KowLCpplDwjeF+JIsX4uB0f+kY9qeJaY5qh8NSHdKY1BUYeEjOEIa3heiMty1ARUwLKwBWOYD5A2L9mw/gYcbQIzQNINBP6THQKyvAs5Yctk
+ HsabZtf4
+ jlEFYT6OCImkKu4A7ThEMdI754jpGaqn4l2DX3deZ4yBeOgcCG7VbIe1+Ms6PDh3y9ma40uk4tovVKlspdaN92YKo295t6Lt13alKRpFr4HFZNLv1TWTjqLvk4KEiGNWbWPlKXgvukorwrrDZoUhI4P59IAwzNF7EZN8JXRCWfpmb/kV69ayE0a2xQRhq5EZK8n82jPxmrWHcN2aTW5lrHUcA/AF1wKg12gwEX+9Q7XWPQLv7vLmFepfj7PP4BLQ4v0gjFSEqDWugtztA2gqLJ7CYjg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,64 +92,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON accounts time using its own jiffies-like time counter, namely
-damon_ctx->passed_sample_intervals.  The counter is incremented on each
-iteration of kdamond_fn() main loop, which sleeps at least one sample
-interval.  Hence the name is like that.
+There is a function for damos->next_apply_sis setup.  But some places
+are open-coding it.  Consistently use the helper.
 
-DAMON has time-periodic operations including monitoring results
-aggregation and DAMOS action application.  DAMON sets the next time to
-do each of such operations in the passed_sample_intervals unit.  And it
-does the operation when the counter becomes the same to or larger than
-the pre-set values, and update the next time for the operation.  Note
-that the operation is done not only when the values exactly match but
-also when the time is passed, because the values can be updated for
-online-committed DAMON parameters.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-The counter is 'unsigned long' type, and the comparison is done using
-normal comparison operators.  It is not safe from overflows.  This can
-cause rare and limited but odd situations.
-
-Let's suppose there is an operation that should be executed every 20
-sampling intervals, and the passed_sample_intervals value for next
-execution of the operation is ULONG_MAX - 3.  Once the
-passed_sample_intervals reaches ULONG_MAX - 3, the operation will be
-executed, and the next time value for doing the operation becomes 17
-(ULONG_MAX - 3 + 20), since overflow happens.  In the next iteration of
-the kdamond_fn() main loop, passed_sample_intervals is larger than the
-next operation time value, so the operation will be executed again.  It
-will continue executing the operation for each iteration, until the
-passed_sample_intervals also overflows.
-
-Note that this will not be common and problematic in the real world.
-The sampling interval, which takes for each passed_sample_intervals
-increment, is 5 ms by default.  And it is usually [auto-]tuned for
-hundreds of milliseconds.  That means it takes about 248 days or 4,971
-days to have the overflow on 32 bit machines when the sampling interval
-is 5 ms and 100 ms, respectively (1<<32 * sampling_interval_in_seconds /
-3600 / 24).  On 64 bit machines, the numbers become 2924712086.77536 and
-58494241735.5072 years.  So the real user impact is negligible.  But
-still this is better to be fixed as long as the fix is simple and
-efficient.
-
-Fix this by simply replacing the overflow-unsafe native comparison
-operators with the existing overflow-safe time comparison helpers.
-
-The first patch only cleans up the next DAMOS action application time
-setup for consistency and reduced code.  The second and the third
-patches update DAMOS action application time setup and rest,
-respectively.
-
-SeongJae Park (3):
-  mm/damon/core: remove damos_set_next_apply_sis() duplicates
-  mm/damon/core: use time_before() for next_apply_sis
-  mm/damon/core: use time_after_eq() in kdamond_fn()
-
- mm/damon/core.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
-
-
-base-commit: 4ef41fd88e37fcdc1751edd9bc57403dba2742a3
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index e8c44541754f7..c4c30824465ee 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2450,8 +2450,6 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+ 	struct damos *s;
+-	unsigned long sample_interval = c->attrs.sample_interval ?
+-		c->attrs.sample_interval : 1;
+ 	bool has_schemes_to_apply = false;
+ 
+ 	damon_for_each_scheme(s, c) {
+@@ -2482,9 +2480,7 @@ static void kdamond_apply_schemes(struct damon_ctx *c)
+ 		if (c->passed_sample_intervals < s->next_apply_sis)
+ 			continue;
+ 		damos_walk_complete(c, s);
+-		s->next_apply_sis = c->passed_sample_intervals +
+-			(s->apply_interval_us ? s->apply_interval_us :
+-			 c->attrs.aggr_interval) / sample_interval;
++		damos_set_next_apply_sis(s, c);
+ 		s->last_applied = NULL;
+ 		damos_trace_stat(c, s);
+ 	}
+@@ -2858,7 +2854,6 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
+ {
+ 	unsigned long sample_interval = ctx->attrs.sample_interval ?
+ 		ctx->attrs.sample_interval : 1;
+-	unsigned long apply_interval;
+ 	struct damos *scheme;
+ 
+ 	ctx->passed_sample_intervals = 0;
+@@ -2869,9 +2864,7 @@ static void kdamond_init_ctx(struct damon_ctx *ctx)
+ 		ctx->attrs.intervals_goal.aggrs;
+ 
+ 	damon_for_each_scheme(scheme, ctx) {
+-		apply_interval = scheme->apply_interval_us ?
+-			scheme->apply_interval_us : ctx->attrs.aggr_interval;
+-		scheme->next_apply_sis = apply_interval / sample_interval;
++		damos_set_next_apply_sis(scheme, ctx);
+ 		damos_set_filters_default_reject(scheme);
+ 	}
+ }
 -- 
 2.47.3
 
