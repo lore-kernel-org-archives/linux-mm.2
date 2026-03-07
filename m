@@ -4,87 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA77FC9EC3
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 02:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ABB1FC9EC0
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 02:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEC756B0005; Fri,  6 Mar 2026 21:14:49 -0500 (EST)
+	id B92DB6B0005; Fri,  6 Mar 2026 21:23:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9A2C6B0089; Fri,  6 Mar 2026 21:14:49 -0500 (EST)
+	id B404C6B0089; Fri,  6 Mar 2026 21:23:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7C4D6B008A; Fri,  6 Mar 2026 21:14:49 -0500 (EST)
+	id A42216B008A; Fri,  6 Mar 2026 21:23:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C69F46B0005
-	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 21:14:49 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51B0913B1C3
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:14:49 +0000 (UTC)
-X-FDA: 84517648698.22.88EC2D7
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 07F87100013
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:14:40 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=b5iI7z+7;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 928156B0005
+	for <linux-mm@kvack.org>; Fri,  6 Mar 2026 21:23:51 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0ADE71405F3
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:23:51 +0000 (UTC)
+X-FDA: 84517671462.01.58EAB59
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4D8641C0008
+	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 02:23:47 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x6FS0try;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772849684;
+	s=arc-20220608; t=1772850229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TUiYVvq51PhsvRNPGgaHEtOWm+s6zhtlXs4s+mHmblo=;
-	b=bnn3X4LHTwAaSpIAtDGZInhEB3E3G/Coy00sK6xFSHGuzAExYbFNJ0wXIzFyc2S2gLTS/g
-	0e0QTc/pPqGiV3sd74Eb+I+rEez61yLhnYfw/u+h7tY3Z6Seb277tP7tFMyH/bTgMqk/GR
-	XiVJWiceSkcqVuQwroZjazl/gjLQyy0=
+	bh=Lw0B4A0Tge8dNKKTRFvubRt7KamBtESq34Gr8317Kv4=;
+	b=xHqiyt37lL9TALHtb2yDLQybgaUbJmcZ5jWu7eDNwWLbfnKcR3zFSgdG4G1K4ZVWjhFbQM
+	fhqWkcCsZvEaSZRc5R6nyhnMAiECD8iFBWiknagCmzLCJLCdgfSLa2Jgvv3i8CKIa1ZIYP
+	g4zWKPCb7ulTFzVDjUsQ7bAz1AssV+M=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=b5iI7z+7;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=x6FS0try;
+	spf=pass (imf18.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772849684; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772850229; a=rsa-sha256;
 	cv=none;
-	b=tc9FX4cQDETBCnZ68d4SgWBwphfzuuEENFnc3JligU2lLme0KEGFt0yLDLjYpc1fYYIy4N
-	MsgoOrPIucHhrWop72Fcef8L0gPnk+2A+gEjbDQA/YFq0U/ShrEfNNSLB0GiuI0/p9ro7g
-	czFNonfyoHurIK9FotqOOX0DEywzboM=
+	b=7hcAT8czH9bf2wm3D38xcpPhH3v3MYgfHQhCf+INWwSckr3F3H4anHRcSatZNSQwpwuNGn
+	Mym+cKTwYrVlGBfvdXXQQ0cQinajqok1iHpjnS9WkDkyV+oxw9yQxDaRSFsFfso9D6nPBD
+	oh+9vW82N33gBi1AZ48sIPKwBRn+5kM=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1772849676; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=TUiYVvq51PhsvRNPGgaHEtOWm+s6zhtlXs4s+mHmblo=;
-	b=b5iI7z+7TMUzwsCsWnedhDFcmPs3CnrJzDjSeCin9BN1obx7hqyYCtk+0T1mHklsGHNSYTdJNTurY9exJNRpDhXzvqRvf07iLaPkUeys7m2rZXi7bcwuPThX8MMtXNPxG88lL13Xr2ikHxRhCZmng4u72EEWm/5cIMYq6uBoPV8=
-Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-Ob2yS_1772849674 cluster:ay36)
+	t=1772850223; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Lw0B4A0Tge8dNKKTRFvubRt7KamBtESq34Gr8317Kv4=;
+	b=x6FS0tryw8ZxkUeZMw5s5+tLmqJcSczLt4J6O/tFaERTvQefnB9qyXkDn5x2fQA1jmNnwSsWXr3zC3J+WrfPG4kfGqHnj29gd8OWmA7NrvlLcY7vEHy6xSdmu2V3D4BN3KQjll0De1I99FGaGiPypZ/ViQ6QGi/LArPQlu3+QPs=
+Received: from 30.42.98.36(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-Ob681_1772850220 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 07 Mar 2026 10:14:35 +0800
-Message-ID: <721abb6a-93a0-4db3-9e69-ef23b253e4f5@linux.alibaba.com>
-Date: Sat, 7 Mar 2026 10:14:34 +0800
+          Sat, 07 Mar 2026 10:23:41 +0800
+Message-ID: <41a26cd4-f11e-472c-89a4-3418f338f97e@linux.alibaba.com>
+Date: Sat, 7 Mar 2026 10:23:40 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] arm64: mm: implement the architecture-specific
- clear_flush_young_ptes()
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
- willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
- <ce749fbae3e900e733fa104a16fcb3ca9fe4f9bd.1770645603.git.baolin.wang@linux.alibaba.com>
- <CAGsJ_4wA-bpCaY8uLnwmzDT40s4RbsOXdRutvj5bZU+Em6cFeg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm: huge_memory: refactor anon_enabled_store()
+ with change_anon_orders()
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+ Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org,
+ kernel-team@meta.com
+References: <20260305-thp_logs-v2-0-96b3ad795894@debian.org>
+ <20260305-thp_logs-v2-2-96b3ad795894@debian.org>
+ <8b238664-4375-413c-a8cc-105d98430362@linux.alibaba.com>
+ <aaqr6n3X-KRP_tTp@gmail.com>
+ <789df8d5-7d03-4e3d-90b6-08f27af330b2@lucifer.local>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4wA-bpCaY8uLnwmzDT40s4RbsOXdRutvj5bZU+Em6cFeg@mail.gmail.com>
+In-Reply-To: <789df8d5-7d03-4e3d-90b6-08f27af330b2@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 07F87100013
-X-Stat-Signature: gwmcwgytbh586yei4zz1bo9fg74cdaeg
+X-Stat-Signature: eq4fmri6yb89fbpez4o5zoieqq5m5kkh
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1772849680-559557
-X-HE-Meta: U2FsdGVkX18/WC9fkhrRlgQDddBEL0Lzlqf84IYvJmxY1Gb+02NWxz1xHjv6O07ZP7i3qnB0gB1joz0UYQE9wHRXHywLsAaje1MgvpCyDgnP6XIQNp+SLlNsmLTE7R24YgFoIjvMiBr23WIuGe2ZyBtybEev70DX3s3GEKRuD97nzqigecVsu6RrnVmHRvEDoHFUu0jEkAH2Qy6b4nruUsFpvEw82Gzjqr+GLCqUH/i6af1d4Q+f9DfBkgRgKQhL7BpOVmFfftUKIhhAZFOFrdktjLZfLacLo44d6QasTTDAQZ2b6ZODXlAKEi4de4q2Qep0CA4RiVuX7300CT9maHkFbe5vPct+dZN/OWDi5WfSZR8v5pKI4dtBBEoPxprQL3JPmBRqFXXJNakoeDNGt+YaSg7k+YU2B384ekB6aRVVNl1XrKhy9FSwmw0APVkrbKIOkWVfwBbaUz62pVnCfnPx8caGSU81XOD/WDomaQra2ZXTDfVTb1tAHT16jX69x1AuwUxXNtkFsGvWI8KrSli4f+r+zOS/bmOk97BbaHlUPJHrXR96TlzjydhlICf2b9E0m0rwXIC5ITnEZ5M/cwGcp7rjjGBGP/QvYl+MTlkEYbL8z5fMmOiFqWaDSzn0LY7La4HXR8c1ecB+eE99i8B4R/wBKOfvyVI9GZq27sLzB1sYGHNAKqwO/ZcsLdZaF1PnKk/9axaElC8QWHUvCjRVqR93wV7vPTQG+KL/VYKPC6eQJCegfett0F6hHfhJ9+TWILzmcBHxeCw8OxTo4nsDseyBxipsVnLvZSaNBB+IQrgzmXvtNgiLSrLTbXhHtd1fy53NMAda825KDVirMhCsyxnJ+Hlv/gVCR4uDryEWG99lFA/iF4yDDmyR/e4V3ll0rEc4LCedeAdj63e90L1+BCePmqhk5qiTqTNvVPGyTdPTLzlCtTsC0HmFRiImjkDTWA88Ev7ITBwTBhF
- 7sSjrtWL
- RWtypqqOZadpVgeeXV7qqHh3+wAHR8l97SJYrKlB1LSEEamLwvUR3qrDO5/267CmpnLmYkHQKu9mHsBDrGL8qc1qO3kBcMg7+NmJIIz3dlsr1Tf24HXoDY2+7FRPy17abMzl+6jrgFE1dzKRCyn8rC2Cfx5tboWKCQ48ccMnSTYqUzvQcU6JUJKRHUCjf6U5ZA+ZpVJ7UXXt37rDbCERdBFScZEFKwzdAtFZld+RvTMNlLFNuOsJiQPanBlWvxGy/RYxvTVQqvuqnAS6bbCJncG5pE32t6J49tyrpybOaZ7cdIWKxq8g2iXZ2bBUIEulfxNoivUQpv/Qw2aDPEvhWb7NRSbUEl9VlrH9SJjC/3+sWR0YU3vRvmwwY6Yho+TOmO8FO7imlOwjL1dC04TqNwhvoVZa7SPav07gR91BEhBrd/pDNR4cZMOVBtlWxUeGuQDqBGos2L1yRq9M=
+X-Rspamd-Queue-Id: 4D8641C0008
+X-HE-Tag: 1772850227-186597
+X-HE-Meta: U2FsdGVkX1+a9Y9woU3vJ3QMVR2eNqJTKVDgE1vKd+c69OLZnEIGiMD1x3bIXD+IXrY6yCAfdKyrQDSyntwpyibmt2ESP5yKSPGv+Ds8GDpL5oRFFncacVN6zhnc6v8al+iMTtNouyhKUsoYpSBF402N6cLgiZXVqHyAaRrTVwJ2Wt6xSYo1dqMGnTtSxjjB0wjfi0JYp+gzQ3DQLfgLGdOmm1urwYa84SpCgpfTLOnArOQFbYG5ESOFbnJY+ovnajoRV2trpzkEFA22bT77MziNQwuydU6jS6R4KU4hnHLbPfHej5ilk4FqngiVnPhzeDIH716UnJtQRP61FTezMwK2QDc4Fa4HhBNFRt9Giwp2gOlCeRVMeigTigpr0oPClGzKFN/mAE0r4C0CqL2DtgjIPs12+V1B18ozVrC6RG038DayuxnipLjVwfabX7vmZZfyBjAsUcgbZV/Wu7pHFIZzqB2AI4nFVeJEAa1iC1ArA+0SOD4ZnbXPnNanL+ZISB5dRwxAUdtc91TIgDgBRyfRkxjlX8V+O1IMcG86fJnyGK/2lVb05KV/ZRLnqmPoq2iHSYFVRJYfactxoTUk0pycnkMSMr5H6gJOs7m2BGeFiaHFvybpIQpboxb+7DLanvkxftH2UT5CteVHSMA7P/cucSeZchtc6NFaVpwdbuwsSVtf+A/ltUZrTcLaeJrVyu7m66/c6Z1qoKwY9oNcYtXd03Ulj9m1CZgi2Gy/26K9xI++dZsUp7xZ37dzEMqpdrgZItmR4tfJRQ4PpDdqCPGCnvXsD8GD8+Hm8D4Bu5v9nvqmtMZ53/3SE3lH8xBfRs4br1B02/lhak9s09XzLvelnrFo/vn63r1eVkFbHwnwc2/y7LktJafAfnjxquA0FvNlDJ5w3j5hoV1XO3uMtDVMS1CH17JOvQEZ9R5sOaF3S0yhfjRfhN8rzlDwG+bBf4lcht6v5LGNYFcin+n
+ 92EzZZly
+ ad75iHcc0NQbLgxNDn018dyUW7TR0wVSAcZfIFY0qmSLbcpFOoaNIi0U8aCOzPEW6kEeAhvhqTTNdy+XIgG+uQXvnx5mABxDdqW1VS4ZtRWLP7SlzY9C7Lg70yiW402IYe+LRFFMG6jOfFXQc+p26D1tK2XvLzYUlLa8HRwVLMVMz6ZWIZgarGKPLKYqdmGjcDZIB2yGOE47sLgpSGoUR/Fkmm6eiGoscJphqd1G5IYsO8fxqdt+KhwmjA8kH5okSB2o2sJXG+un2ln3Y0X9Dhz3gg1nzKhWlf8vXg4sLKJsUFATxzTJnNmm+XWBkGCJGSjAvsyPLA3rxQl+vjBmNK4T+5NT3vMetYhIUE5q8veZNRSa2T4/NdU4yqnYqg2OkSdT6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,83 +102,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/7/26 5:20 AM, Barry Song wrote:
-> On Mon, Feb 9, 2026 at 10:07 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
+On 3/6/26 7:22 PM, Lorenzo Stoakes (Oracle) wrote:
+> On Fri, Mar 06, 2026 at 02:30:22AM -0800, Breno Leitao wrote:
+>> On Fri, Mar 06, 2026 at 02:07:50PM +0800, Baolin Wang wrote:
+>>>> +	mode = sysfs_match_string(enabled_mode_strings, buf);
+>>>> +	if (mode < 0)
+>>>> +		return -EINVAL;
+>>>> -	if (ret > 0) {
+>>>> -		int err;
+>>>> +	if (change_anon_orders(order, mode)) {
+>>>> +		int err = start_stop_khugepaged();
+>>>
+>>> Thanks for the cleanup, and the code looks better.
+>>>
+>>>> -		err = start_stop_khugepaged();
+>>>>    		if (err)
+>>>> -			ret = err;
+>>>> +			return err;
+>>>> +	} else {
+>>>> +		/*
+>>>> +		 * Recalculate watermarks even when the mode didn't
+>>>> +		 * change, as the previous code always called
+>>>> +		 * start_stop_khugepaged() which does this internally.
+>>>> +		 */
+>>>> +		set_recommended_min_free_kbytes();
+>>>
+>>> However, this won't fix your issue. You will still get lots of warning
+>>> messages even if no hugepage options are changed.
 >>
->> Implement the Arm64 architecture-specific clear_flush_young_ptes() to enable
->> batched checking of young flags and TLB flushing, improving performance during
->> large folio reclamation.
+>> Correct — this was part of the earlier discussion, where the suggestion
+>> was to retain the set_recommended_min_free_kbytes() call even when it
+>> is a no-op.
 >>
->> Performance testing:
->> Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
->> reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
->> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
->> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
->> from approximately 35% to around 5%.
+>> As for the warnings, I see a few possible approaches:
 >>
->> W/o patchset:
->> real    0m1.518s
->> user    0m0.000s
->> sys     0m1.518s
->>
->> W/ patchset:
->> real    0m1.018s
->> user    0m0.000s
->> sys     0m1.018s
->>
->> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>   * Remove them entirely — are they providing any real value?
+>>   * Apply rate limiting to reduce the noise
 > 
-> Reviewed-by: Barry Song <baohua@kernel.org>
+> I think rate limiting is the sensible approach.
 
-Thanks Barry. But this series has been upstreamed, I can not add your 
-reviewed tag.
-
-> 
->> ---
->>   arch/arm64/include/asm/pgtable.h | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->> index 3dabf5ea17fa..a17eb8a76788 100644
->> --- a/arch/arm64/include/asm/pgtable.h
->> +++ b/arch/arm64/include/asm/pgtable.h
->> @@ -1838,6 +1838,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->>          return contpte_clear_flush_young_ptes(vma, addr, ptep, 1);
->>   }
->>
->> +#define clear_flush_young_ptes clear_flush_young_ptes
->> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
->> +                                        unsigned long addr, pte_t *ptep,
->> +                                        unsigned int nr)
->> +{
->> +       if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
->> +               return __ptep_clear_flush_young(vma, addr, ptep);
->> +
->> +       return contpte_clear_flush_young_ptes(vma, addr, ptep, nr);
->> +}
-> 
-> A similar question arises here:
-> 
-> If nr = 4 for 16KB large folios and one of those entries is young,
-> we end up flushing the TLB for all 4 PTEs.
-> 
-> If all four entries are young, we win; if only one is young, it seems
-> we flush 3 redundant pages. but arm64 has TLB coalescing, so
-> maybe they are just one TLB?
-
-We discussed a similar issue in the previous thread [1], and I quote 
-some comments from Ryan:
-
-"
-My concern was the opportunity cost of evicting the entries for all the
-non-accessed parts of the folio from the TLB. But of course, I'm talking
-nonsense because the architecture does not allow caching non-accessed 
-entries in the TLB.
-"
-
-[1] 
-https://lore.kernel.org/all/02239ca7-9701-4bfa-af0f-dcf0d05a3e89@linux.alibaba.com/
-
++1. Make sense to me.
 
