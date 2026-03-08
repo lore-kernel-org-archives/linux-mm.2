@@ -4,132 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E77EA853C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Mar 2026 18:02:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF7EEA853C
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Mar 2026 18:03:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 17D616B0005; Sun,  8 Mar 2026 14:02:23 -0400 (EDT)
+	id 095966B0089; Sun,  8 Mar 2026 14:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 128216B0089; Sun,  8 Mar 2026 14:02:23 -0400 (EDT)
+	id 069856B008A; Sun,  8 Mar 2026 14:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02A2C6B008A; Sun,  8 Mar 2026 14:02:22 -0400 (EDT)
+	id EEC366B008C; Sun,  8 Mar 2026 14:03:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E570E6B0005
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 14:02:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C9A113B2AB
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:02:22 +0000 (UTC)
-X-FDA: 84523665324.15.FC8A18A
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C0E421C000C
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:02:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYmM5+o4;
-	spf=pass (imf20.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DDBD06B0089
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 14:03:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D9B51B8E31
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:03:19 +0000 (UTC)
+X-FDA: 84523667718.12.64DEF86
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id D697D4000C
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:03:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aH4mGr9U;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772992940;
+	s=arc-20220608; t=1772992998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
-	b=2JfXGoyznCHyx4VoHJXuCJaqv9pzi4s1QchYzNCby7vFD9SI7mbALsblnKdtsnRdUxpKaV
-	N/a1sz/k0q4PtiLUd+V+Hq9no3jjN5iRnX1lMpOCRP0vuP5R3a4De4Nw5keX7ymM6iN3fh
-	jq0uDieJeUhjCcQzPxm8z5Qn/+gBnbc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772992940; a=rsa-sha256;
+	bh=6AgNkwhYMIUW1FXNBAGnbRgsWIyXJgoZTSCJFudMehc=;
+	b=e0+VdlCGsZMvZYSK4srN4stHxe+9mzUxRIKXUU9TOxpH/MIph/VFfhqQ3DNceIQUO8l5oD
+	REWVw0shDEyrdNVwKXNjClenH8Qzh0R2pAxBvhCLFLRrXKGl+OF6wsKqky6l+EeYkhKBHE
+	9HeVzzbUMbWm+E3SSvUPg4j98l58Xww=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772992998; a=rsa-sha256;
 	cv=none;
-	b=J11TxLFaKBOWGnkYQd29k1zN3xy+36I7IC29Jv5oS6hxR9Ygk3ranFqjgp4nu9rZP0iw3U
-	wT+IDIe9SM6KmsNkhi3Ea2ECw6dmsEG3fUJFaA5GE8ELCqOAyPiqkuMxyt7eoEYsCBTTpP
-	UqdBjp8n7zazuxBoTKB397e1+LC8ovA=
+	b=P3IlBBAVuic6EiK0t2NmiyVI24W9mL+DaH8UUcn+S0+C+VC6KxlcbVucfL6EWSOoQJd1I/
+	kSq8PW5sODtyZA1+4fnYiNmFtyoSesvEs8t5NrQLyGaDVXLtxBVElqtuzq9Oep/YNvTigz
+	26wcQfYabNqqMIN8pNxmNnzkKn6JBiU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYmM5+o4;
-	spf=pass (imf20.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439cd6b0aedso3099887f8f.1
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 11:02:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772992939; x=1773597739; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
-        b=UYmM5+o45cW/q+pPm5yws6ZOIc85EjWSG6GinJcp0l7hg5oDFS9uNLM4+dE9SqDTrF
-         YkM0n2pJR5sdKKKkUxy5PN8+mJOuGM1pWHW4vPpeMeTXRRDbbevWh1vxeT62/+KCgm7I
-         IydIt/cUQHXhbalRckZSmKq9beC1NX6LEmeOqlT1E8OCno/8tJqNR+uyHQmnsplvXHKT
-         xSy+HNolsVSBkp1rXvMwiQb2F2Hlwa9khoechslUXf0KK6wP8vWRjoh5wqpuu1C5KSZh
-         KrsyOl4a/Osh7qqlDkHfzq2V/EYDmupIxfkPvCMNzKwGit+KOY0piCQJJvfbMEk5Bf6C
-         D/xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772992939; x=1773597739;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
-        b=QwZ74AJYt1+iMtNlQnmA3Dhf2/GVCVMahDzGAUJ2PkMICb2BT0+O4xJ+rYtYKAjGpX
-         u/n3gXIhbhzxUEzjnW3cS5FcIIF8f7KmaPz2dW+cCdAI6Dzt6Ku7AwfoP6yb9wK8gF+4
-         wXhP4gryQ745519MmuI/iluOfJgE+6rQmWK9yRiV9rZmsyzuj3epeLbTZ0td5TUarWU4
-         5gF5ruFxD9J1Q8rZNoiy9is5b31YO+XAxmKEux33duoJ3TtfNpgQTtlP8Y3uM21V80JH
-         I5EVFNw2FxS8kLarMI87fCoXo7ByOkILnRug9iA2pUTVrFkEqTceMbGtxeRBTZVK7KtS
-         Q1Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZTP/iNHv8WrBiUKlj46a+gzX9kkTOOqXTGkZpZUHJwj6eyl7/u1LtR5KaO5gmpQ+yAHGJGUZttQ==@kvack.org
-X-Gm-Message-State: AOJu0YywauQ1fcVqj495y9WbD8s0tLk80oMYe9as3QZPpgzh2XEklVuG
-	eCOT3uVHhG01jZyalTMvNoQk7u1Mg7QUycv1ET44mOc9aKIFZiEu1Gc0
-X-Gm-Gg: ATEYQzwiXi9LAfGtnRsAfLPlyl+hd2GL0xqOvtNKpkSfuP8qNILz87V8dUvoo5ZkOyP
-	obuIpSDEktZDOAJ3kmEj2ct657jQjl2P1byi+mwpFBypbLyLyHhrPbTJegHe1LdfwFOYWQ0O0my
-	HTUT9cOLHVlR8e+8/c060a7K0eS7rukVWKsSomyrZvYcGLmF1Mjcr40nIWgq0YklJ0FNZyvg3U1
-	/hsnCZlPYUf68JWWa7MajOSBuPEgYwCbLFKaxyxsfTsNoP3SS3PpUBuThoEjK2ACFvFFbaEC2tk
-	mkVITt2w25pIGLL/RMd8MrkmZagtBYSl9qh9Vc45ovnmKyVApAKYphn8LFuQfPeKYkTgyfLbFys
-	UihsU+BtGy9tnbc23A6SQPnPizWdSpx4vOzfvpfR/fryEuxihuz7AqAdXwEEnqfP06cf+X7oPgH
-	no7yC1OdeW0UHT1hdJbyUpIwpCLv2AKGfmOPU=
-X-Received: by 2002:a5d:588e:0:b0:439:ccd7:cde1 with SMTP id ffacd0b85a97d-439da65c413mr14710906f8f.14.1772992939024;
-        Sun, 08 Mar 2026 11:02:19 -0700 (PDT)
-Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad97abasm18039839f8f.10.2026.03.08.11.02.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2026 11:02:18 -0700 (PDT)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
-Date: Sun,  8 Mar 2026 15:02:17 -0300
-Message-ID: <aa25qVYi67f6IyjP@WindFlash>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aabC6ScPN2_PyPY_@pavilion.home>
-References: <20260302154945.143996316@redhat.com> <aabC6ScPN2_PyPY_@pavilion.home>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aH4mGr9U;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A60C443E0;
+	Sun,  8 Mar 2026 18:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EB4C116C6;
+	Sun,  8 Mar 2026 18:03:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772992996;
+	bh=rmJMdlEXDjwGvBgpvp1qb6ZGImcvRLTk9sD7zdDDS1Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aH4mGr9UYO5eiH6AIYXjfCmgDRp3A7ggtu+GzfHkqbKy+0vL0gxX2TlSiTUU68lSO
+	 mZwlZNtMkKgE7gZt2SaP+89cW14wfxz5VTb7zjO3U4Qc/MZDUTTQBF4rKQUNfW8Pzz
+	 vLgqbwOYuL5pL7ApHNUav/WPPEIhafkLtcKq52vRCG6/UUXjJs4DEVZPEDwZkiLhHO
+	 QnLEE3cbrLBK76mO0kYVn73zwcIvs4ZkXYBBvuljg5cqfZHlHXs4VGEcqlLzNnMQCG
+	 9QDmJGzlL2xsps7prrX2KVszEA31X9jT224ZwKGHyHVQMy/T94Bf9iriN3gqEz4pBA
+	 1qPa6++O6An9w==
+Date: Sun, 8 Mar 2026 20:03:07 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Xie Yuanbin <qq570070308@gmail.com>
+Cc: akpm@linux-foundation.org, Liam.Howlett@oracle.com, david@kernel.org,
+	justinstitt@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, ljs@kernel.org, llvm@lists.linux.dev,
+	mhocko@suse.com, morbo@google.com, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, surenb@google.com,
+	vbabka@kernel.org
+Subject: Re: [PATCH] mm: optimize once judgment with clang
+Message-ID: <aa2523KDNwWXHbDD@kernel.org>
+References: <aavd4hoAO1DFLuJP@kernel.org>
+ <20260307144135.380683-1-qq570070308@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260307144135.380683-1-qq570070308@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: mdksujqxnk9o6n6rzwrmfgg6tz5usokp
-X-Rspamd-Queue-Id: C0E421C000C
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1772992940-404144
-X-HE-Meta: U2FsdGVkX19W6pNoJa9JkGgZfuyjkVtr4yhFDrP4H3eePmyytEShmYmvxmmlck98Hwtx79N8Nd5Sw/uYnoDHfr7CMZcgEtW+U34MobnErM6oVPceyVXIDRiQ1adq9DDXwCnJUUCzxHNomXEcBeTU/3d1aFoxyLGZ+SjhgD1Ptm+MWV/Xdy20E9AOjg9ujMhOv7pds+aVDw26qQgcnynxK4rOZPSItIaykSGylQWvCjBgAVNbiDMgyTc1R0LymAidZTKECkAya0V27R9ZdkcgUFCy4ihOq9We78z4hdkqpdEXVtDEcf1OrXgX8tScW4MTIm25pT20dcMN/4/UZVF9jVbG1v9Au+JhHX/vvDlBcuhB6o8A8inJ5Lfcbb/I+jc9KtKrUckvyJK5efsuDyKA7BnJTu0isRW0Ex4mcaO6QfWWJRPTn3HmO29pRZlmQCVe/bgxdE1RAgHOcgdyc8gMUiu7upgrx40HqsqUH68nzOSXPJvlhX3qL2Natowou4+Z/9Zd5+rB4J3g+LY9GYTR9YiDg55nGaHTtJkI1kV/aUFd2exd9vRkFBYPfg8dOWifFKHawxMSdP0w37TJ9uIocVLV0vgMLjBtLPxjgVLgtvrPQIldrHojhphpjruLSbFlJ/DGHtMTEzZ3ts+qFztSjjwU+NFQnseNqtCmse3/0wpyx1G6ttJkkSrYcdhn+J20pHBrB++7Yq7Fbo11icp75nT4mIjYuC07NXKfy4W3J0qS5hrdMoEP/DtntFu+NcV74hzO3WuZJRWlICPdpnSvqCv+eYSnooyZeRY6rP79K65+YmFa0+8unf/ZWg1N1AsZOpfv3EhSJG6QPWb7Kz/akvxkgAv/gJc98CA4pTqqDhVy8rGFSP+Zo4B3Lv3pNE75WeYaUwo6tYQ/wUk3Uar21xhZ/FHxBlgkFrIVZJ7euGyLOQJr4tY9OO9F7rQ2L8xWUt5Ve0HmEzdJDX0EzcX
- w+g1Jvet
- cI4F4RZ84ogU6C2AA9fu+u0K8OARhuss3b8WVOZ3mhvNhW8IRP9ZhJi08fHuZPZFeXDDKB5+iM00QkrErYRKuQhWBmNfSk32kARBCZ8Fkshoz0VAqqxliTs12myVrTIXCtTAiS6vV3OPyGnIPMzi8kiZlZ31E37BHN2h6LN0FT+zut+tFc2YbD86ctORExEAbWBK1UKwUhYl3Qndes3N7TNyg0skmsv6nAWYblzh+PbTiETVQQyfFShg2eQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D697D4000C
+X-Stat-Signature: aep9xhueptecu6go6noa1qry6ieoef5w
+X-HE-Tag: 1772992997-340158
+X-HE-Meta: U2FsdGVkX1/RIOm3aIDni22EMGqb3teEzVjAkdIMZHa5/VQC/BHvx850gnhTl25uJ99Js5Qt0yM/EWOCjiemO2LOSRiFVJrKjZLxBrNwRiuoKH5uGiq3itJT/aJLTaCrTO7qf5OxXXI+Kwksk3P6RSa0geh8aoQwS6BMuU0umsCFkHwRn7auYow45qO4DcsNkJVSToig0cmCn4G61RC8ppuP7SVd76zh6PEjJwOHxGCvNfQfofqZlEPrSrlTWF5LkUqGX1TK9cxxsC65GpFX38dAVal54PhzD2P7VJ6OM9izOr8tguEmAq3+wN8dJ0/F4h1T8e1t/rJsgORCQw6ka3uM+EGpESrUpBSfV4IuwZwTocqRHctg/XWj3LDpmzMjg/KJAMWu1buULSOFnG3DzOBwPGLBY9jXq31NHCefzSgjjFPjbI/lNC2V5orox4GXfEmxTaW92ZuHkFSB3kY5Dgi8g51FL/lx7ne7RO0tddW9Q2NhbHsEVQCJVQipcRBFLAIqmUSI9Zp9PnSk8DnzE/jV3g1HvLpnvs6Ofe/fG+zY6NzUyTrEuCqtW5MBAuJKZ6deXGh/xdshPnXdEeiIqLX7QABkaxL7gpeMgzxR4ek1TDrdh0fBoyhnbUI6mS+BV2+5KRXDKk7BoOdyFdoZ8NPLYQ1xoZk9CfTFa94vtR/KBmW6dGA9gNYZdiMh2SZfnyRHU49QQe5t1f0RZVrarrDTMxyv+4F+RYC+ETT+D88BbRsJhLpa7kCEeJVzNZVUZQtS2tua9xjEOCKLgEmItMM0XsEKYd4XWU9/TkZmqqFDXaZMHyKKZjXfPKNLD7XUK2scz8TLj5PduetFzCR+oduQvEx8oIit5Mnbv8fMNIO8i03yg83jtG06fTpW62a461hyJEjDXc4rfWtmKC4u7kM1Ky0QqcrluMe9qGZpU5+3sBwcDsnviz9wp57HUZOjn+DwLM9+2QCd0QbZVTn
+ Ioa237+i
+ 0pae2QUjG1qVGa0e7QVRShAOjrtCMBzLQfAJY5kyiEiLZUXaHWhjyc7jlzBr5DD4VLwZBnSrqHXrkhR88ZUJRtRZdkqFsaUHPrbIQF91PuHznZD9EVVuBuzty+/E9Xwxg7Tet4c/EQbbZZkXGUSStTIUTmtK4V4tojCR5c7hr6TnqzFmYHCyMP/Kp2px6f9bpWZaSZWUkycAwnsp6IAuD1PKD/29lFX390gW4Ek4I9cc4mLo/L/iHck2SG7lR5UkH0CE5BJZ80PEjzda4F8lCTpm7/AtBawsQwWieHOEFhxwacZKIVxOU0I+4cMw8A8/QyUr9/4vBMc5NqiM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,62 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 12:15:53PM +0100, Frederic Weisbecker wrote:
-> Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
-> > The problem:
-> > Some places in the kernel implement a parallel programming strategy
-> > consisting on local_locks() for most of the work, and some rare remote
-> > operations are scheduled on target cpu. This keeps cache bouncing low since
-> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> > kernels, even though the very few remote operations will be expensive due
-> > to scheduling overhead.
-> > 
-> > On the other hand, for RT workloads this can represent a problem: getting
-> > an important workload scheduled out to deal with remote requests is
-> > sure to introduce unexpected deadline misses.
-> > 
-> > The idea:
-> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-> > In this case, instead of scheduling work on a remote cpu, it should
-> > be safe to grab that remote cpu's per-cpu spinlock and run the required
-> > work locally. That major cost, which is un/locking in every local function,
-> > already happens in PREEMPT_RT.
-> > 
-> > Also, there is no need to worry about extra cache bouncing:
-> > The cacheline invalidation already happens due to schedule_work_on().
-> > 
-> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
-> > RT workload.
-> > 
-> > Proposed solution:
-> > A new interface called Queue PerCPU Work (QPW), which should replace
-> > Work Queue in the above mentioned use case.
-> > 
-> > If CONFIG_QPW=n this interfaces just wraps the current
-> > local_locks + WorkQueue behavior, so no expected change in runtime.
-> > 
-> > If CONFIG_QPW=y, and qpw kernel boot option =1, 
-> > queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
-> > and perform work on it locally. This is possible because on 
-> > functions that can be used for performing remote work on remote 
-> > per-cpu structures, the local_lock (which is already
-> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
-> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
+On Sat, Mar 07, 2026 at 10:41:35PM +0800, Xie Yuanbin wrote:
+> On Sat, 7 Mar 2026 10:12:18 +0200, Mike Rapoport wrote:
+> > On Sat, Mar 07, 2026 at 02:54:04PM +0800, Xie Yuanbin wrote:
+> >> commit 242b872239f6a7deacbc ("include/linux/once_lite.h: fix judgment in
+> >> WARN_ONCE with clang") helps optimize performance and size under the
+> >> clang compiler, but the modification is not complete.
+> >
+> > How much does it actually optimize for size?
 > 
-> Ok I'm slowly considering this as a more comfortable solution than the
-> flush before userspace. Despite it being perhaps a bit more complicated,
-> remote handling of housekeeping work is more surprise-free against all
-> the possible nohz_full usecases that we are having a hard time to envision.
+> Basing on commit a0ae2a256046c0c5d377 ("Add linux-next specific
+> files for 20260306"), compiler "Debian clang version 21.1.8 (5)",
+> arm64 default defconfig, and setting CONFIG_CC_OPTIMIZE_FOR_SIZE=y,
+> the size result is:
+> |                                    | size     |
+> |                                   -|         -|
+> | Image.gz                           | 14256146 |
+> | size of ".text" section in vmlinex | 17035264 |
 > 
-> Reviewing this more in details now.
+> Basing on above, revert the commit 242b872239f6a7deacbc
+> ("include/linux/once_lite.h: fix judgment in WARN_ONCE with clang"),
+> and build again:
+> |                                    | size            |
+> |                                   -|	              -|
+> | Image.gz                           | 14258152(+2006) |
+> | size of ".text" section in vmlinex | 17039360(+4096) |
 
-Awesome! Thanks!
-Leo
+It would be nice to see where the difference is with scripts/bloat-o-meter.
 
+And while commit 242b872239f6a7deacbc is a oneliner that essentially
+updates most of the _ONCE constructs, I'm not convinced that the churn in
+the patch that updates include/linux/mmdebug.h worth it.
+Do you have the numbers for this patch as well?
+
+> > Note that performance is really not critical here because we are already
+> > dealing with slow path of debug code.
 > 
-> Thanks.
-> 
-> -- 
-> Frederic Weisbecker
-> SUSE Labs
+> It seems that WARN_ON_ONCE_GFP() is not affected by in CONFIG_DEBUG_VM,
+> and it is used in __alloc_frozen_pages_noprof(), which seems to be a hot
+> path.
+
+What might be useful there is to change the order of conditions so that
+__ret_warn_once will be evaluated first.
+
+-- 
+Sincerely yours,
+Mike.
 
