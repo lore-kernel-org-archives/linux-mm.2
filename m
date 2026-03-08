@@ -4,105 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 706F4F55121
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Mar 2026 22:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F61DF55138
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Mar 2026 09:19:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C61C6B0088; Sat,  7 Mar 2026 17:56:32 -0500 (EST)
+	id E13926B0005; Sun,  8 Mar 2026 05:19:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49DFD6B0089; Sat,  7 Mar 2026 17:56:32 -0500 (EST)
+	id D96C66B0089; Sun,  8 Mar 2026 05:19:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DD46B008A; Sat,  7 Mar 2026 17:56:32 -0500 (EST)
+	id C95D66B008A; Sun,  8 Mar 2026 05:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 24BE86B0088
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 17:56:32 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B335A1A0166
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 22:56:31 +0000 (UTC)
-X-FDA: 84520777782.08.5E402B7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9B65C140006
-	for <linux-mm@kvack.org>; Sat,  7 Mar 2026 22:56:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="AAJwKln/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id B890D6B0005
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 05:19:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27C5C13ABEF
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 09:19:33 +0000 (UTC)
+X-FDA: 84522347826.25.CB92B87
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5D18D180002
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 09:19:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eTFdUvKF;
+	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772924189;
+	s=arc-20220608; t=1772961571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5jZB8Ys1RtJ1sZgbEMJfjQU1SjUymJClpA9K2SQ4bUg=;
-	b=aBW9pFh7jRw69igIdaFZQ/HcNvT4DLqiz71Nt17x5M329Y5/bKtsQsoEkmEGbeCQH6FCT5
-	bans3t99g41XjjfdO1IJRkimNnqBgBud55bbz2sbzy2REHSJVVLFV4zE/ne54cMvaU3X54
-	G/N+5kmRAR/545AyLk7OEU/naLscB1s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772924189; a=rsa-sha256;
-	cv=none;
-	b=wr40a8R0OAyX3fNPaNfTOjbY7wjY3fKGU0Q2/+wXQFDuwl5CCUa3AkJU78PojYn1ZECHcX
-	MVJx5ORbK2oGNuPLjv2bS3AkZJ6LFej+Ax7ASjXU7ak23hL3eW6zqiWN0v9kDvbFVpnlcw
-	rH6LxRYXOqHt2hIsO9ll0j+Rgf3WwEI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qYzgh6uAd/1Nf5hmJK0kVF7yvFRbMy5kDQaFgFAuQVo=;
+	b=yJz7QDPZV7hWEOSqc41WmsyNZ7GWD1QZPSIAnTl3/6hCslG5zInaruwDFFh+raLr1nJmtZ
+	52zsJKS8ut6RWCBrNuVNU08Y2ZPqCVTs4gW6bPVXo1zEIEWi+43X+IYZZTBg6W/BK40sxP
+	+4LpXIkwDi6r3UbHDQln8nXu08bBJos=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="AAJwKln/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772924188; x=1804460188;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=S8KcR1LmjqTxj/mWoKrlCUsjydq8SPbkoQLE2AIRIaY=;
-  b=AAJwKln/kLqAi0NMPegU9dQZxj52OWH+FytEOaGv72Oz4WyqSGpQPril
-   qDNjHEpq7QpdXl02PffkJJ7ESgkR/HNzh5+sX2b/4IViF9D9sXwQpDM1C
-   zIsDXHofs/OnvHZGZHK5E24eVXCcvA/hxTl4Y5HkBUVbF0l1zykuprQy6
-   2THQpWFI0BvQ+BHTWjRhwpaNPB0SgLONZbz4BQX3SU54MiyGuIEUBOLsm
-   cbaBwyiXHmFz9ArwsTLk2+f/z7VaieS7axRrfO/yRZfNQnEfPrIuZ19M0
-   EWpw9crE5ugGvl94kLw7ZPYpiYDpI1LQoHLyVHQbRtiVFg3FyE6foTRTt
-   w==;
-X-CSE-ConnectionGUID: 5ilcsQ5uRf6vHBEojjjKug==
-X-CSE-MsgGUID: Sdorl+R2QEKgerhscR3O8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11722"; a="74043051"
-X-IronPort-AV: E=Sophos;i="6.23,107,1770624000"; 
-   d="scan'208";a="74043051"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2026 14:56:26 -0800
-X-CSE-ConnectionGUID: uCIvkWKkSZKiepC7ovznDw==
-X-CSE-MsgGUID: gyg//feTTbC9tPeuQ0GjLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,107,1770624000"; 
-   d="scan'208";a="218573738"
-Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 07 Mar 2026 14:56:21 -0800
-Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vz0ZF-000000002hR-42FW;
-	Sat, 07 Mar 2026 22:56:17 +0000
-Date: Sun, 8 Mar 2026 06:55:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haifeng Xu <haifeng.xu@shopee.com>, akpm@linux-foundation.org,
-	david@fromorbit.com, roman.gushchin@linux.dev
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	zhengqi.arch@bytedance.com, muchun.song@linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Haifeng Xu <haifeng.xu@shopee.com>
-Subject: Re: [PATCH 2/3] mm: shrinker: optimize the allocation of
- shrinker_info when setting cgroup_memory_nokmem
-Message-ID: <202603080606.UQEPDmnB-lkp@intel.com>
-References: <20260306075757.198887-3-haifeng.xu@shopee.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306075757.198887-3-haifeng.xu@shopee.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9B65C140006
-X-Stat-Signature: 8ztc6g4ezdu7qrpro437uztrgr5pqqoa
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eTFdUvKF;
+	spf=pass (imf24.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772961571; a=rsa-sha256;
+	cv=none;
+	b=I1lBHHVfuZM8mbOq8Z2U//1bvrQBpU94Z0S2+SlbjJ1TXvV0Up/47f8/ItPvtPfCfPg7in
+	cYFGwVoBaS4p6koBvKpxThtwzmutsAUG2skQQKfBtr4mK2PHrWu6nYyYSsXUGAxJGhfBCp
+	m3jQHP1D3bOerK1HjcoaWlKQwjdWtb4=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82984c077b2so1529238b3a.1
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 01:19:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772961570; x=1773566370; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:subject:cc:to:from
+         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qYzgh6uAd/1Nf5hmJK0kVF7yvFRbMy5kDQaFgFAuQVo=;
+        b=eTFdUvKFCVdOCmDQE0ZbFNioC91PD+mtp3ajFgEPJBAl6m2Gz3/sF6P49tgpcOg9xp
+         +P54hJ1VAsamlVehzwtC1dV5fHl7S2rOxGaZX+G89y5XHVpuGrBKmUIYQ09734tSJFMd
+         DyqEQzo7y/WPAUsesdm4ptMM785gFpQGiFaDrhPvXlKMRAsKA9RB7GSkFFszTVI+MIsj
+         i0aqnKpMjIPezB8sKG9xGT/LFcS1VHKvRZUfhWWNcSkgXgt4ByLSEx+9qe8OsHOnS69T
+         YaG5RSw8TD2yhdCZKibyEuuiZWRHmOwVV1qvbxegM4dlwLmk/gci3FjCdBoBuY+IEphw
+         vbJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772961570; x=1773566370;
+        h=content-transfer-encoding:mime-version:subject:cc:to:from
+         :message-id:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYzgh6uAd/1Nf5hmJK0kVF7yvFRbMy5kDQaFgFAuQVo=;
+        b=PbPMMQ9OuzCaeXwojAj3Kcs8cyUIRdmLWGuULShINgMh9pCvV3uK1Abzt41qyFiQJ6
+         4onhKl+laosFuXP91qs7H+76sk/07aS7mw3N//zxfQXRVyRr6MGlNyCKYtV3r77Z7w++
+         VRstcyOTSJ9+vVXf1bYBOPKUMGjyI1P7lj73Q3RijxWVX6SuBTZxMbglWLj0DL5W+DZc
+         GwGLCeF4q74FsWIBrrnm7LgdOuF68TOiSbSQ9kJfdob61Mq1kAhNMCVh3wWmG3JWCQvG
+         8GksJNC+c+jkLY97JGElI7jx3JHPvkeEpy7FRRlzTWPXYBykK2PE0VIfpez37i0LBS0z
+         0S0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWtt0o7TCZ4mjW/G7Qhp0iLQh4rs2tXqXLlWuGy/VrhiDEG/AlWlMvsSXrTnLTb693DMJN+sUY2Eg==@kvack.org
+X-Gm-Message-State: AOJu0YzsWicB+Jjav2TVCuk5SmVrwpRD+G8n0CY6fQyd0pQsZ8LqWCr/
+	08XWWZfMz3rJvoQfElTghr8zE4yR+D8xDKZneL/oLU8fxDV7oMBiEHde
+X-Gm-Gg: ATEYQzzLCQF78DUX+2IoP7kxBck1X+kdH56zK7mHclBPj8pwOjYlqd+I7AbZt2Tu32s
+	+GcHYucDPSETDvGBG25YXjbBE6wCli0pm6jCtMnO0IfFRkl58YCPoJMrZTafWK3PdWheP6hPKPe
+	yzYb9bL9/3oTSJQxYC2SPYtNfoMevBTl/GyFGO1sQkt1a+d7Bu8LYHqmKmJwcEvQFUBVa0SW2ko
+	Smauxc9jrAEZqN/z2McXYX9YplW9mLJ6muYE4MIhOmG9/jdH6aD16Lo9ps+16Qt39yrRrDWGZa9
+	w3Avs6KmTlyslty68ZFfG2btAmp+KtQzO7gMxqBCoihB/xRiKawbLowIQtm3FbGFealHfUZjDMb
+	58RxgaOFz7p2zcuUur8jipOJJSK04EKnE0ZBXnUmzlwuhOITBvgQ2AFpnm1sQE+xgYuZ850LWMt
+	/VVeD4d1sOsw12fXHlytrrHw==
+X-Received: by 2002:a05:6a00:983:b0:81e:7496:f826 with SMTP id d2e1a72fcca58-829a2f6d717mr7319185b3a.31.1772961570117;
+        Sun, 08 Mar 2026 01:19:30 -0800 (PST)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a46765a6sm6709106b3a.29.2026.03.08.01.19.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Mar 2026 01:19:29 -0800 (PST)
+Date: Sun, 08 Mar 2026 14:49:21 +0530
+Message-Id: <v7f6u19i.ritesh.list@gmail.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Andres Freund <andres@anarazel.de>, Amir Goldstein <amir73il@gmail.com>
+Cc: Christoph Hellwig <hch@lst.de>, Pankaj Raghav <pankaj.raghav@linux.dev>, linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, lsf-pc@lists.linux-foundation.org, djwong@kernel.org, john.g.garry@oracle.com, willy@infradead.org, jack@suse.cz, ojaswin@linux.ibm.com, Luis Chamberlain <mcgrof@kernel.org>, dchinner@redhat.com, Javier Gonzalez <javier.gonz@samsung.com>, gost.dev@samsung.com, tytso@mit.edu, p.raghav@samsung.com, vi.shah@samsung.com
+Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Buffered atomic writes
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d1imcwwxnmgyopr1pi5g46i5oackzb7c
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1772924187-665759
-X-HE-Meta: U2FsdGVkX1/3pYJELMOQmdJlczPljJT2d2m5vsPRwxxtZ0AEiFhMKtxejouSGIlhVd1yoZu50BUd7lc4z2LY0A0KCxLQYe5xubU8CP4UiH9y2/kvgWwZPiM1MHIKFnY8xEnfxQRbyIGS0kdv44QmGm+avtbaaBOcIAsDBEoGYHgmTRzUyEII/dPXqFJ7kG71BWyNyznHIlzWj8644NwyyM24OHkNO/ZiXbwGdzE4SMKBo/eOJyIDjW5ZwRAQCmbmXLFWK3Z9rGsrCYtjNOKiL0bmR2kpBYvF3mCWDAi69/JdpskL/HITgpNrtG5XhYvpS8VFyD4aZCsEy0TN+sdfVDLhYPgzTHzcTwFC8KNElvM2MDYVbRnsGgdbKNOfxetjPZH2n+Ro/rPMyLQ13EbVB+rCAH5CgIeAqP/c/KwhCtj5UVIofL4BQM+rTVOUZmhamex+FFnKRnDYOI2JuXPTnjX38VdUNsmt/HwN4SUtn3xhH7yLBGJDs01qhcjoUwBOMWWiZpj9DwEXLPiDDtW7UmD0xqboTTjj3upCMqy5po539hdJGyaeFe9ykY4P7UTEik2sv8muQ+nTpWMTaMEmfAsxTLMea9llf6LhpZJHhOLLu2EGPvbN9HgpVIcmPPW9TGLsViRnnU6sDePJKJlbidtR72OY4btJQMdHB+8jZ/PIhGCz3QJxaip/LwFtDbJHjjAZmWg/1xdOdg4S44ivnNNheelVXJb+1hyeaxG5WgiMQj2EW3c2qFhbb+FeVJMwQY+tur6OLB9JgBfM//PZm0xkrxMDqc8ILwEkdOOiVti8JLSg8X9gXEW6YjXltMiwWahPH7vtrqtJS86n6Swmo9uh2yFx9gdWWXG009KITd3WhOkXntLqM6ykTRuPR3bEail/zOfN5HEHsOCHJ/+e9jLVC4L9xhuJOHAUye6eJBZLpr6k+ANQ7WhUJn5K/dW0xs94eBEU3w3Arf5uUoN
- TKEfUhGX
- +LUjExvnW80LSEQYbkkBVHznoGvh1z7bpy2DZECxJqchnkJq7k82H36xc+eqK3/zy0RosTpAIufHPHBhuJ0nnhr5V9shXebOR5YVAFA1doVRqb7RDxRVUubLMaCYI3CmJvWYxGdusg/bSouMbBy0gFQ0c5h6IaSBHQw8mK/NhVAa8Al/fH5QiRHE7/TLDoHQk/qK3vrgKmHS76Ac8GZZ/dHaP93mSCUD7wbbACIWpfNSswubQh5POJo0NYlx48rSRRx3nm39jGxQuon7g4Xk1Cv0lokkoqiwpkQL+DNvHutejRQsY7AVFEXixNuaOjo/g002hAikdU/oonEX6fnuMqif1kORaf1OaXhcOqLhxoOuE1scBGjhklGaZiVtJMecSNMqD31/zjPAxFciqniZqD5RYhwqk5I+CrvjxYJ0XpwJaUvoEo3l3fFyG7EutlSiNEIAMbJxhmOGYpYA=
+X-Rspamd-Queue-Id: 5D18D180002
+X-HE-Tag: 1772961571-809923
+X-HE-Meta: U2FsdGVkX1+kdRjPA8gLDB0ZbXZPfqGZ4JAZUE80YeXFc2P4OUaVUYt2isFe232uU0UOJyJdcftCelIEBAlFVhapdmKX7HjA0GevcYrBUTN/NWugNp2N9o33iKmYufsj/logAX3+v7BjIx8wxLaeqjZYIZ8RSdFIVNlGuvJFTr2KeKUY/ECo5JYXM7bBy6JrgQjClHa9Zyoe0SkyvzQ93FPDijpfW7VxrqIh3LfXD+P4/pAFxrKs4bUdvRWv9gIyj8ilYpI6/91jx0JdgRItjCzmhmc2jrbaayJkZaayx5NnGATLmvCQPCDe7Sl/7lZ6Vq7ij6SNqN5kg9m7hvqZjNssRC5ht3gbF8B2ZYAPTeDKVv/w5dZG4addY1dz2jyVSKe3xAvzG1uTQZgaCxOLo3K5vKsGBbqF2GavTTrw9/CEU0cd4Gy7ayW7bsRB5rJsmcvwSrHfEco+Ks14hy4tgDPXYdlg/OR9OH0AXSAjOzDerbOlGdKT8ap36IoEzc/YhN0hX9Wo7FMsmpev1UfLf3RCN7p6yli8a6kr9NdJBjCq1S21qO5gnPdNTeP2vhM3UxXMKnDoxdAt2BBdDolJ00cWo9WPUquPBaqVN+MsahG56dzVxegxUp2zc9gi39RcY25Wq6D4LoukcADFKsRtkcrSlhDT0AHAJLCICahp9XFeOVn7ePxbo+Ogi63YVGIGrF9ajVEjreTHZr/enCEIplbA2tXf3Ch4Ik6wYPlVs2TBw4L4dGsrv1TF9oeNGv/uLsX4ylcf4pSDRtKOep+qAl5ARb59pn4Rx/bWkZAQ7cZ+FHuCyBonSi+R+cDlfd3V2jjkpvTE5MFNBIdNXVo/e2m7A0+dNZMrkCWf00/iucuSNAl0TzanwnFD2m7DUJgUxNiY571SKw2IWVYerUf/fTBwctdbsq0wHkz9yhdRgbs26IS5bfpKdVVQ5vOgCMc7kIb4id/BGA9XFYcbOqs
+ j56yPC6V
+ yThiQrJ2jbQ2kNvrj5iuQx7EHB7tlSA9qPEnlK6+8t9I78XZZ13yYKbzsGVCfNHdvSsLa9yC3TS48GGIZHz5H5yjGkz5PmuRrA1EEhZh3+J41UaRXixq3KWQvAgI1ilNsqPrbfCrziefVeoTnaWdBYKfq6LW7FVL2M0HtZKgddFcb4TpegFMuGbuQKhofZuFTADIO1+unMkAFxNmssI6kvI5zziaNM9gcURD6SnqYR7zDPQm7aGkTdNpPOXDksUD4kdDj4RUQCBQ7fMr2DVKRwzkUb8LTmw8LqM9kcreihlda97ylIMk9Cg3L3ptxsFE1BmSVtCLMODNt9FDmmy/RKTe2Eqj+UA06ji5Ct0D5kZnq2qeOs/1LMHZt4TSLmaS9+BT/fFy070XKOW2almzYLYg5C5EWoH8m6UWi7F1p/9bsrV3AhDH1JhbCdru0dmXmilR/jYELbQhTKDYJ1cohL3bRQmS2mdBN8zvyjHVCx3nyyEE6ai+YXP6pj+azs41Eqk6wrXZTs+Aia9c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,104 +113,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Haifeng,
+Andres Freund <andres@anarazel.de> writes:
 
-kernel test robot noticed the following build errors:
+Hi,
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v7.0-rc2 next-20260306]
-[cannot apply to akpm-mm/mm-everything]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Hi,
+>
+> On 2026-02-17 10:23:36 +0100, Amir Goldstein wrote:
+>> On Tue, Feb 17, 2026 at 8:00 AM Christoph Hellwig <hch@lst.de> wrote:
+>> >
+>> > I think a better session would be how we can help postgres to move
+>> > off buffered I/O instead of adding more special cases for them.
+>
+> FWIW, we are adding support for DIO (it's been added, but performance isn't
+> competitive for most workloads in the released versions yet, work to address
+> those issues is in progress).
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haifeng-Xu/mm-shrinker-introduce-new-function-get_shrinker_id/20260306-160247
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260306075757.198887-3-haifeng.xu%40shopee.com
-patch subject: [PATCH 2/3] mm: shrinker: optimize the allocation of shrinker_info when setting cgroup_memory_nokmem
-config: i386-randconfig-002-20260307 (https://download.01.org/0day-ci/archive/20260308/202603080606.UQEPDmnB-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260308/202603080606.UQEPDmnB-lkp@intel.com/reproduce)
+Is postgres also planning to evaluate the performance gains by using DIO
+atomic writes available in upstream linux kernel? What would be
+interesting to see is the relative %delta with DIO atomic-writes v/s
+DIO non atomic writes.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603080606.UQEPDmnB-lkp@intel.com/
+That being said, I understand the discussion in this wider thread is
+also around supporting write-through in linux and then adding support of
+atomic writes on top of that. We have an early prototype of that
+design ready and Ojaswin will be soon posting that out.
 
-All errors (new ones prefixed by >>):
-
->> mm/huge_memory.c:4355:38: error: no member named 'id' in 'struct shrinker'
-    4355 |                         int id = deferred_split_shrinker->id;
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~  ^
->> mm/huge_memory.c:4358:35: error: no member named 'nonslab_id' in 'struct shrinker'
-    4358 |                                 id = deferred_split_shrinker->nonslab_id;
-         |                                      ~~~~~~~~~~~~~~~~~~~~~~~  ^
-   2 errors generated.
-
-
-vim +4355 mm/huge_memory.c
-
-  4307	
-  4308	/* partially_mapped=false won't clear PG_partially_mapped folio flag */
-  4309	void deferred_split_folio(struct folio *folio, bool partially_mapped)
-  4310	{
-  4311		struct deferred_split *ds_queue;
-  4312		unsigned long flags;
-  4313	
-  4314		/*
-  4315		 * Order 1 folios have no space for a deferred list, but we also
-  4316		 * won't waste much memory by not adding them to the deferred list.
-  4317		 */
-  4318		if (folio_order(folio) <= 1)
-  4319			return;
-  4320	
-  4321		if (!partially_mapped && !split_underused_thp)
-  4322			return;
-  4323	
-  4324		/*
-  4325		 * Exclude swapcache: originally to avoid a corrupt deferred split
-  4326		 * queue. Nowadays that is fully prevented by memcg1_swapout();
-  4327		 * but if page reclaim is already handling the same folio, it is
-  4328		 * unnecessary to handle it again in the shrinker, so excluding
-  4329		 * swapcache here may still be a useful optimization.
-  4330		 */
-  4331		if (folio_test_swapcache(folio))
-  4332			return;
-  4333	
-  4334		ds_queue = folio_split_queue_lock_irqsave(folio, &flags);
-  4335		if (partially_mapped) {
-  4336			if (!folio_test_partially_mapped(folio)) {
-  4337				folio_set_partially_mapped(folio);
-  4338				if (folio_test_pmd_mappable(folio))
-  4339					count_vm_event(THP_DEFERRED_SPLIT_PAGE);
-  4340				count_mthp_stat(folio_order(folio), MTHP_STAT_SPLIT_DEFERRED);
-  4341				mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, 1);
-  4342	
-  4343			}
-  4344		} else {
-  4345			/* partially mapped folios cannot become non-partially mapped */
-  4346			VM_WARN_ON_FOLIO(folio_test_partially_mapped(folio), folio);
-  4347		}
-  4348		if (list_empty(&folio->_deferred_list)) {
-  4349			struct mem_cgroup *memcg;
-  4350	
-  4351			memcg = folio_split_queue_memcg(folio, ds_queue);
-  4352			list_add_tail(&folio->_deferred_list, &ds_queue->split_queue);
-  4353			ds_queue->split_queue_len++;
-  4354			if (memcg) {
-> 4355				int id = deferred_split_shrinker->id;
-  4356	
-  4357				if (!memcg_kmem_online() &&  memcg != root_mem_cgroup)
-> 4358					id = deferred_split_shrinker->nonslab_id;
-  4359	
-  4360				set_shrinker_bit(memcg, folio_nid(folio), id);
-  4361			}
-  4362		}
-  4363		split_queue_unlock_irqrestore(ds_queue, flags);
-  4364	}
-  4365	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-ritesh
 
