@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F2D1EA853C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Mar 2026 18:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E77EA853C
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Mar 2026 18:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F5876B0005; Sun,  8 Mar 2026 14:00:43 -0400 (EDT)
+	id 17D616B0005; Sun,  8 Mar 2026 14:02:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A34E6B0089; Sun,  8 Mar 2026 14:00:43 -0400 (EDT)
+	id 128216B0089; Sun,  8 Mar 2026 14:02:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684A46B008A; Sun,  8 Mar 2026 14:00:43 -0400 (EDT)
+	id 02A2C6B008A; Sun,  8 Mar 2026 14:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5942C6B0005
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 14:00:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F33BE13B2F1
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:00:42 +0000 (UTC)
-X-FDA: 84523661124.19.BCF0A01
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E827440003
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:00:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WNhndBv+;
-	spf=pass (imf04.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E570E6B0005
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 14:02:22 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C9A113B2AB
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:02:22 +0000 (UTC)
+X-FDA: 84523665324.15.FC8A18A
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C0E421C000C
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 18:02:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYmM5+o4;
+	spf=pass (imf20.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1772992841;
+	s=arc-20220608; t=1772992940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WigD4xTv35FpDIaB0ncQLYNkLlhATinqtn7c2ncFLjE=;
-	b=rULd6rEd2yX8NF/o6moDvrVrMHvvMDEhvgyorLNha0ol+p8ocJXa8abMVIAqwPSmmdNKWo
-	pYfgwr4woSoA3LdUnd+JrJzeNcrezjT0at1eggVS+xhzV4LgSOQq0/+BRu4G8ESKt6iZ3O
-	QJ6i2lU/kiphOY1nurqls19SPBNr0HI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WNhndBv+;
-	spf=pass (imf04.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772992841; a=rsa-sha256;
+	bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
+	b=2JfXGoyznCHyx4VoHJXuCJaqv9pzi4s1QchYzNCby7vFD9SI7mbALsblnKdtsnRdUxpKaV
+	N/a1sz/k0q4PtiLUd+V+Hq9no3jjN5iRnX1lMpOCRP0vuP5R3a4De4Nw5keX7ymM6iN3fh
+	jq0uDieJeUhjCcQzPxm8z5Qn/+gBnbc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1772992940; a=rsa-sha256;
 	cv=none;
-	b=WTVMo/xDM/U4y+YVBpbl9ML3fNmpKGJIsDzrZpekiv1nlCH7+17YJR2kltHDjole+XgQ8o
-	ZK77PyG6CAFh5gpR2rCwCV/yTbYZqTDW5L6yYg8yYHb4eySWwot2r/yZUWnnh1E/4Chb+L
-	0ohiOvlrWTDK0DqcPFMvmE5S0f7/Xq8=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4852ff06541so11777255e9.2
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 11:00:40 -0700 (PDT)
+	b=J11TxLFaKBOWGnkYQd29k1zN3xy+36I7IC29Jv5oS6hxR9Ygk3ranFqjgp4nu9rZP0iw3U
+	wT+IDIe9SM6KmsNkhi3Ea2ECw6dmsEG3fUJFaA5GE8ELCqOAyPiqkuMxyt7eoEYsCBTTpP
+	UqdBjp8n7zazuxBoTKB397e1+LC8ovA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UYmM5+o4;
+	spf=pass (imf20.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439cd6b0aedso3099887f8f.1
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 11:02:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772992839; x=1773597639; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1772992939; x=1773597739; darn=kvack.org;
         h=content-transfer-encoding:content-disposition:mime-version
          :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=WigD4xTv35FpDIaB0ncQLYNkLlhATinqtn7c2ncFLjE=;
-        b=WNhndBv+ROzC7lMUWv0c0qXqqrzs657aruYsFSn+k0TOK3US3XQt2OpD0pDdmg7Dih
-         ozBWI60KU3DW9ZJkdE3aDCYsmKYUKn9UGeoM8QhthO9ivwhqkqp1PWSakuUhiLVQxzA2
-         nTOKpyvFahwElHkDjzff3QlE1QIg5U8KD00yLreruO38xYb/0yB9zMAj+ePvk2xPTkfO
-         DeTejFIuLcsCOBEyiLE9zzQa6irCSRdHLO531URGGU+ju2V2tJutFNRxwtwWAw0djb1w
-         itnhC16MTNWCbQ5WnqqpsTWLdKC7nDYb12Frr7fNSS5BkHMZfiiA/rQLXBbLJwXIBKwM
-         DoTg==
+        bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
+        b=UYmM5+o45cW/q+pPm5yws6ZOIc85EjWSG6GinJcp0l7hg5oDFS9uNLM4+dE9SqDTrF
+         YkM0n2pJR5sdKKKkUxy5PN8+mJOuGM1pWHW4vPpeMeTXRRDbbevWh1vxeT62/+KCgm7I
+         IydIt/cUQHXhbalRckZSmKq9beC1NX6LEmeOqlT1E8OCno/8tJqNR+uyHQmnsplvXHKT
+         xSy+HNolsVSBkp1rXvMwiQb2F2Hlwa9khoechslUXf0KK6wP8vWRjoh5wqpuu1C5KSZh
+         KrsyOl4a/Osh7qqlDkHfzq2V/EYDmupIxfkPvCMNzKwGit+KOY0piCQJJvfbMEk5Bf6C
+         D/xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772992839; x=1773597639;
+        d=1e100.net; s=20230601; t=1772992939; x=1773597739;
         h=content-transfer-encoding:content-disposition:mime-version
          :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WigD4xTv35FpDIaB0ncQLYNkLlhATinqtn7c2ncFLjE=;
-        b=J4woKDKZkHdJU6DDMg5TEnP5TemdxmFx4bv4YunMwRVk5UuIlkxFBtMXq2bWDRdAZZ
-         zDm1Dm6N9a0MUw532nW+YJhVI0lwxirVPfcHskHE5qDYDLh5gLKyUKKWSxuHSO8JG0xj
-         uR69qNtVyv70mK1UuRkrQcNmm9KmQPPivrQNkrE9NKK6AH486jQVRVTumUwfmGjfIqhB
-         aPqJp6begphwNRUVEsSu4XdLWtJ2Rc5OzW+JpTZhAK3FG50cEhXNBkF4DUuCbwV9MWPJ
-         /wd3Rk8hiRgyYnrkKUgHJl/TsvD2mgIp1gQ+O0dJ8O+G3d7KYVD7w0ed7o+rop7BzkLt
-         fJ4A==
-X-Forwarded-Encrypted: i=1; AJvYcCU0zHEwJjUaGxmjo+xYlMJqKO1wRQsBCp0cgCq1DyyP6lak0Xa/cad85GOqloPFOyGrxnSQl+OzHA==@kvack.org
-X-Gm-Message-State: AOJu0YwysVPFIx9GZBryUTnqlOmhhY/XJ/7a6RkPWKpgDwcgbdZQDGIW
-	BT+wSpla+PhXvXpeMvW6y5RFy3u8HfMnUhcm0BW5i014630Hj/fxCbrqt1KGh5c/
-X-Gm-Gg: ATEYQzzCsInmDotj00E8kcGlK6jSeWLYPNhI77uVUZ0yINicGXqXmc0TKcTL5yovPfN
-	ZE1E/oK7Bz4Dr7/gupBxzVN680Cafoet1SmLlBqww8StEoL4vT0pxStQsCPfgx3OkpQid6SNpYe
-	MQSZOPLT4g8rzcXyOVB5wNnOaWr022GCIZJMrCMrWarLF9x44bXVHVmOWGPP2KQUWl1hZTuBRU5
-	3oPqSaUZIoi4lnXUqduTK0/h1noBd+3guBfAIyNCRZrG8Ddb/woHmHjJU03ufBDcuqbqa1BOD0M
-	fNZ/0GPPEhLEIznIDxPizKPRwruxJdnRetqJHFCeJzhKKO1lVnFF60GiVlyUsYZiZvyZrmYW/45
-	otIw2hpbOolJnSqvsvWHNEea6KlRLX1EF1kGu32BICjFZv8NdDH392XGpAAKz9uEoV+urHA3kCo
-	s8cuGoxiH1axtI/Pky2CihafJIuOG70KKr8tQ=
-X-Received: by 2002:a05:600c:450c:b0:485:358b:e802 with SMTP id 5b1f17b1804b1-485358beaebmr46396005e9.0.1772992838937;
-        Sun, 08 Mar 2026 11:00:38 -0700 (PDT)
+        bh=zKtcruYTzK14kYFJK3mP/hRfgZ/eHbQmYEP+7T1CmKo=;
+        b=QwZ74AJYt1+iMtNlQnmA3Dhf2/GVCVMahDzGAUJ2PkMICb2BT0+O4xJ+rYtYKAjGpX
+         u/n3gXIhbhzxUEzjnW3cS5FcIIF8f7KmaPz2dW+cCdAI6Dzt6Ku7AwfoP6yb9wK8gF+4
+         wXhP4gryQ745519MmuI/iluOfJgE+6rQmWK9yRiV9rZmsyzuj3epeLbTZ0td5TUarWU4
+         5gF5ruFxD9J1Q8rZNoiy9is5b31YO+XAxmKEux33duoJ3TtfNpgQTtlP8Y3uM21V80JH
+         I5EVFNw2FxS8kLarMI87fCoXo7ByOkILnRug9iA2pUTVrFkEqTceMbGtxeRBTZVK7KtS
+         Q1Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZTP/iNHv8WrBiUKlj46a+gzX9kkTOOqXTGkZpZUHJwj6eyl7/u1LtR5KaO5gmpQ+yAHGJGUZttQ==@kvack.org
+X-Gm-Message-State: AOJu0YywauQ1fcVqj495y9WbD8s0tLk80oMYe9as3QZPpgzh2XEklVuG
+	eCOT3uVHhG01jZyalTMvNoQk7u1Mg7QUycv1ET44mOc9aKIFZiEu1Gc0
+X-Gm-Gg: ATEYQzwiXi9LAfGtnRsAfLPlyl+hd2GL0xqOvtNKpkSfuP8qNILz87V8dUvoo5ZkOyP
+	obuIpSDEktZDOAJ3kmEj2ct657jQjl2P1byi+mwpFBypbLyLyHhrPbTJegHe1LdfwFOYWQ0O0my
+	HTUT9cOLHVlR8e+8/c060a7K0eS7rukVWKsSomyrZvYcGLmF1Mjcr40nIWgq0YklJ0FNZyvg3U1
+	/hsnCZlPYUf68JWWa7MajOSBuPEgYwCbLFKaxyxsfTsNoP3SS3PpUBuThoEjK2ACFvFFbaEC2tk
+	mkVITt2w25pIGLL/RMd8MrkmZagtBYSl9qh9Vc45ovnmKyVApAKYphn8LFuQfPeKYkTgyfLbFys
+	UihsU+BtGy9tnbc23A6SQPnPizWdSpx4vOzfvpfR/fryEuxihuz7AqAdXwEEnqfP06cf+X7oPgH
+	no7yC1OdeW0UHT1hdJbyUpIwpCLv2AKGfmOPU=
+X-Received: by 2002:a5d:588e:0:b0:439:ccd7:cde1 with SMTP id ffacd0b85a97d-439da65c413mr14710906f8f.14.1772992939024;
+        Sun, 08 Mar 2026 11:02:19 -0700 (PDT)
 Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4853438017bsm119290095e9.0.2026.03.08.11.00.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad97abasm18039839f8f.10.2026.03.08.11.02.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2026 11:00:38 -0700 (PDT)
+        Sun, 08 Mar 2026 11:02:18 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
-To: Marcelo Tosatti <mtosatti@redhat.com>
+To: Frederic Weisbecker <frederic@kernel.org>
 Cc: Leonardo Bras <leobras.c@gmail.com>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -107,29 +107,29 @@ Cc: Leonardo Bras <leobras.c@gmail.com>,
 	Pekka Enberg <penberg@kernel.org>,
 	David Rientjes <rientjes@google.com>,
 	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Waiman Long <longman@redhat.com>,
-	Boqun Feun <boqun.feng@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>
-Subject: Re: [PATCH v2 2/5] Introducing qpw_lock() and per-cpu queue & flush work
-Date: Sun,  8 Mar 2026 15:00:26 -0300
-Message-ID: <aa25OmY7HlbU5kDV@WindFlash>
+	Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+Date: Sun,  8 Mar 2026 15:02:17 -0300
+Message-ID: <aa25qVYi67f6IyjP@WindFlash>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aacGBc9x+zn1tluU@tpad>
-References: <20260302154945.143996316@redhat.com> <20260302155105.214878062@redhat.com> <682380ba-c8f3-4023-928c-2152e934f8db@kernel.org> <aacGBc9x+zn1tluU@tpad>
+In-Reply-To: <aabC6ScPN2_PyPY_@pavilion.home>
+References: <20260302154945.143996316@redhat.com> <aabC6ScPN2_PyPY_@pavilion.home>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E827440003
-X-Stat-Signature: hyqmuqfb4pcyxxza8q71amgzwqxuynmh
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1772992840-829626
-X-HE-Meta: U2FsdGVkX1/rburTIpANWwyQQteXzNaFiMOfqgsFk0iFgjmY7A7DRDfs6+GlSkHevJtO/J/IOo1NBKwIHDZA7vahNjgx3hSHgfI2qsNT3NmOceYL7qtvHyYPLPec1zLHyjW9FeHfcBHgjM27ckO+Bc5xVEN/F/Ntub0xnnQYWiLkncFboxuHoxZy6+9t89Lot8IjEpl2t83Y1sJ0C1V4jwSUpPaCFVTtPqvY0EO/2ybN84G0fahAYjvV8nT80ECI1mpLImroJbt7ooC3KduOu7MgtMDLn48ZkFpBJMbEPdUMIHXtzueE04fLuB177A2WIqlHTLu0FVBpfakFGR6sYnQItCjFSzkOeAUXBSncaYXtAPdF7rjkrXsogSH3IZqso6P/tJxllduIClbnLQR6m/VHIS5KToNqKiQeUbMdCHj3JdOaYTirE9SVcyHhAhxK5Be9qbPdgccguaFkEK0K0TL3/UgHCGCOg2wzfzlMa6vnoz3WTtDctpafZs9rITc3U8SDnu0sO4dMLNeUONRrLi5ZXUxeo6xRmQh0dxyyFEEAUkC0kaa+/zMXQTkx9brRbo1ifSWzbgqyYtuvzEEhjv5Apre2QJoVpNKAXyTJQTTNRhmrBIS6+7IaVjJTREGxQ53233klN9mEtWdP6Gr7RyZs4oMBeoiQjAimz5jlJdkIAc3XjVywLW3LP3Zu8zgPmI8E3QMug9erkUfxntn7YZYymLAr9LVlzATH4f4XyFKtGnHPChK7bDmbxMrbrx3mBsHWG5XICKGlBF5vFtqKE62PwSCCr/mjLQOsBpA0qc5yGdI6nrx35cO3ZSwT1w9aHm0fzijohdUrRUZ2nnPtFf9YXCUFMKEUX2n8jOOVcZP4TMiMc6+dfruqk1F+1zrBXmG9akxX91LJC26Tj8IE2N8q00cPp1ypC0NoiJ1Ug4IyzRTNzzsrbQ1YgrZ8LLthphcpgh/gTLZWRGVKIxX
- aX/zT5jh
- aRBCxYbwDU6PSEQQc4fKlbMutXX1zrXuWJAqJLrZzpZaX0E/AOE1RtUeC10tFNuw70YqBYyPqOyp9sSutZFdcYq0zPyN8cCtnAU8F7ufysAM/ScjTGoky5cNDcnxYqERY1/0xamC5oqjyqSCeAIAtmgiXnz3kqMwK+qxC4rmzpg08eU3j4RKOdtHgNYLZf07116P4cdMYYBv5bBY+qs13dwX2wVS90U0PNjCXbQ7Qw54+qXX368jS5Ji3q1dU5xDSS+2GhvuB6tQ6YHuBcVcEhOGnbBB8uqpNhIt8atxQ06Hns7HFrTd+Y35rJ2M6CCWwloJu44UbTMrKf7TyvMDKFAMi/wBq0NmghZhJYbIeDf5nxpnt97KfrpFnR5MszcVt5D/jHNf3DaNt7kw6A7lne7MeSxZe7SvhFnOaMX19vLhzWcseyJZnPopE3whyCVAiDDcW7gGXn5sMMQS/+WKI5uIDSBAeAeSrNWrhAhyf2rkqRZmKU8oLqt/Hz/SFFNp0a8fpaddjimSjQcsPAVSZXgZUxcJmj9cmS0P8CAvHQJDSfEFSREdN8vFMK43+LB05bwTl/L2UzmP5dbJxYygn0FnX8sI/oxJKqN5v1QuN3xDjIOAgLaYUkxc9aI18vj2KzxRosMOg9y05NYcOAec4Ix74zI8DIl4/1evPxGINyfkksRv0EI1TGoBBW6rDP1QJgxjwzGjmxk//n0EFy2K9it5qMQ==
+X-Stat-Signature: mdksujqxnk9o6n6rzwrmfgg6tz5usokp
+X-Rspamd-Queue-Id: C0E421C000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1772992940-404144
+X-HE-Meta: U2FsdGVkX19W6pNoJa9JkGgZfuyjkVtr4yhFDrP4H3eePmyytEShmYmvxmmlck98Hwtx79N8Nd5Sw/uYnoDHfr7CMZcgEtW+U34MobnErM6oVPceyVXIDRiQ1adq9DDXwCnJUUCzxHNomXEcBeTU/3d1aFoxyLGZ+SjhgD1Ptm+MWV/Xdy20E9AOjg9ujMhOv7pds+aVDw26qQgcnynxK4rOZPSItIaykSGylQWvCjBgAVNbiDMgyTc1R0LymAidZTKECkAya0V27R9ZdkcgUFCy4ihOq9We78z4hdkqpdEXVtDEcf1OrXgX8tScW4MTIm25pT20dcMN/4/UZVF9jVbG1v9Au+JhHX/vvDlBcuhB6o8A8inJ5Lfcbb/I+jc9KtKrUckvyJK5efsuDyKA7BnJTu0isRW0Ex4mcaO6QfWWJRPTn3HmO29pRZlmQCVe/bgxdE1RAgHOcgdyc8gMUiu7upgrx40HqsqUH68nzOSXPJvlhX3qL2Natowou4+Z/9Zd5+rB4J3g+LY9GYTR9YiDg55nGaHTtJkI1kV/aUFd2exd9vRkFBYPfg8dOWifFKHawxMSdP0w37TJ9uIocVLV0vgMLjBtLPxjgVLgtvrPQIldrHojhphpjruLSbFlJ/DGHtMTEzZ3ts+qFztSjjwU+NFQnseNqtCmse3/0wpyx1G6ttJkkSrYcdhn+J20pHBrB++7Yq7Fbo11icp75nT4mIjYuC07NXKfy4W3J0qS5hrdMoEP/DtntFu+NcV74hzO3WuZJRWlICPdpnSvqCv+eYSnooyZeRY6rP79K65+YmFa0+8unf/ZWg1N1AsZOpfv3EhSJG6QPWb7Kz/akvxkgAv/gJc98CA4pTqqDhVy8rGFSP+Zo4B3Lv3pNE75WeYaUwo6tYQ/wUk3Uar21xhZ/FHxBlgkFrIVZJ7euGyLOQJr4tY9OO9F7rQ2L8xWUt5Ve0HmEzdJDX0EzcX
+ w+g1Jvet
+ cI4F4RZ84ogU6C2AA9fu+u0K8OARhuss3b8WVOZ3mhvNhW8IRP9ZhJi08fHuZPZFeXDDKB5+iM00QkrErYRKuQhWBmNfSk32kARBCZ8Fkshoz0VAqqxliTs12myVrTIXCtTAiS6vV3OPyGnIPMzi8kiZlZ31E37BHN2h6LN0FT+zut+tFc2YbD86ctORExEAbWBK1UKwUhYl3Qndes3N7TNyg0skmsv6nAWYblzh+PbTiETVQQyfFShg2eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,45 +137,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 03, 2026 at 01:02:13PM -0300, Marcelo Tosatti wrote:
-> On Tue, Mar 03, 2026 at 01:03:36PM +0100, Vlastimil Babka (SUSE) wrote:
-> > On 3/2/26 16:49, Marcelo Tosatti wrote:
-> > > +#define local_qpw_lock(lock)								\
-> > > +	do {										\
-> > > +		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
-> > > +			migrate_disable();						\
+On Tue, Mar 03, 2026 at 12:15:53PM +0100, Frederic Weisbecker wrote:
+> Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
+> > The problem:
+> > Some places in the kernel implement a parallel programming strategy
+> > consisting on local_locks() for most of the work, and some rare remote
+> > operations are scheduled on target cpu. This keeps cache bouncing low since
+> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> > kernels, even though the very few remote operations will be expensive due
+> > to scheduling overhead.
 > > 
-> > Have you considered using migrate_disable() on PREEMPT_RT and
-> > preempt_disable() on !PREEMPT_RT since it's cheaper? It's what the pcp
-> > locking in mm/page_alloc.c does, for that reason. It should reduce the
-> > overhead with qpw=1 on !PREEMPT_RT.
+> > On the other hand, for RT workloads this can represent a problem: getting
+> > an important workload scheduled out to deal with remote requests is
+> > sure to introduce unexpected deadline misses.
+> > 
+> > The idea:
+> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> > In this case, instead of scheduling work on a remote cpu, it should
+> > be safe to grab that remote cpu's per-cpu spinlock and run the required
+> > work locally. That major cost, which is un/locking in every local function,
+> > already happens in PREEMPT_RT.
+> > 
+> > Also, there is no need to worry about extra cache bouncing:
+> > The cacheline invalidation already happens due to schedule_work_on().
+> > 
+> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
+> > RT workload.
+> > 
+> > Proposed solution:
+> > A new interface called Queue PerCPU Work (QPW), which should replace
+> > Work Queue in the above mentioned use case.
+> > 
+> > If CONFIG_QPW=n this interfaces just wraps the current
+> > local_locks + WorkQueue behavior, so no expected change in runtime.
+> > 
+> > If CONFIG_QPW=y, and qpw kernel boot option =1, 
+> > queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+> > and perform work on it locally. This is possible because on 
+> > functions that can be used for performing remote work on remote 
+> > per-cpu structures, the local_lock (which is already
+> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
 > 
-> migrate_disable:
-> Patched kernel, CONFIG_QPW=y, qpw=1:    192 cycles
+> Ok I'm slowly considering this as a more comfortable solution than the
+> flush before userspace. Despite it being perhaps a bit more complicated,
+> remote handling of housekeeping work is more surprise-free against all
+> the possible nohz_full usecases that we are having a hard time to envision.
 > 
-> preempt_disable:
-> [   65.497223] kmalloc_bench: Avg cycles per kmalloc: 184 cycles
-> 
-> I tried it before, but it was crashing for some reason which i didnt
-> look into (perhaps PREEMPT_RT was enabled).
-> 
-> Will change this for the next iteration, thanks.
-> 
+> Reviewing this more in details now.
 
-Hi all,
-
-That made me remember that rt spinlock already uses migrate_disable and 
-non-rt spinlocks already have preempt_disable()
-
-Maybe it's actually worth adding a local_spin_lock() in spinlock{,_rt}.c 
-whichy would get the per-cpu variable inside the preempt/migrate_disable 
-area, and making use of it in qpw code. That way we avoid nesting 
-migtrate_disable or preempt_disable, and further reducing impact.
-
-The alternative is to not have migrate/preempt disable here and actually 
-trust the ones inside the locking primitives. Is there a chance of 
-contention, but I don't remember being able to detect it.
-
-Thanks!
+Awesome! Thanks!
 Leo
+
+> 
+> Thanks.
+> 
+> -- 
+> Frederic Weisbecker
+> SUSE Labs
 
