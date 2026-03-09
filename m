@@ -4,140 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79880F3C24C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF932F3C254
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B92DC6B0088; Mon,  9 Mar 2026 09:20:10 -0400 (EDT)
+	id 222EF6B0089; Mon,  9 Mar 2026 09:23:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6A866B0089; Mon,  9 Mar 2026 09:20:10 -0400 (EDT)
+	id 1CFE46B008A; Mon,  9 Mar 2026 09:23:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76AC6B008A; Mon,  9 Mar 2026 09:20:10 -0400 (EDT)
+	id 0B0BE6B008C; Mon,  9 Mar 2026 09:23:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 977606B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:20:10 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4352F1A0165
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:20:10 +0000 (UTC)
-X-FDA: 84526582980.05.674CF02
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 29AEF40013
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:20:07 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ed1Vvsgb;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EADDC6B0089
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:23:51 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 74481140194
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:23:51 +0000 (UTC)
+X-FDA: 84526592262.26.CB1DFF8
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6D52140009
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:23:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FoefJVmS;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773062408;
+	s=arc-20220608; t=1773062629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ci1jZfU6aTkLeWV05/+SHmS749eIRj39gDJyYKzcDBY=;
-	b=pSUD8Lb6EdRPMVX7/WSpq0hFAQwmEJLaiG7tp5mHUMJCrpz0/aBh3DhsCAyfR+u82diB2r
-	uwXqXb418FWhfdxSbl8ImQ7z2ky0ZXThiQVQXCXr4XoAu9+rqhYfIQS6rRC2QSfSxI3+DH
-	j/HE5aoL5mayLN3M/X6Znrn3HtooyYk=
+	bh=BVfZ78yDnatNVZBoDLVVX+eWnnKKBNvw3ekxWv/ysDw=;
+	b=Jdgoqv9ElSU3wYCRjlhNTCWneKmAAiyaZF4h5BdgCJP5KjF/RLkss4trS3RvEM0sSV2qWl
+	azIg86OfkLfXErczVwJEZlNjsdGEiNHPSB1vFLh3vF9JLyQUmeu4JpPMByQm+jTJIRfJlA
+	XqPmF/PeTwDtwnrSrTIN07Cjrmhy0nY=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ed1Vvsgb;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FoefJVmS;
+	spf=pass (imf11.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773062408; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773062629; a=rsa-sha256;
 	cv=pass;
-	b=wNBb6ChMghPP8zsY5IoIbLno3F/QNhGZ5MFZkE8pLJcs9YBGl5uxCdecQ+BsKEM7ilAStq
-	fw06UR1y6pt+augBIbzOZlSntoVGc8EmwobBDhtSvD2R3kCQTWfoak1Tl10aWvG0Bt1cZo
-	J2tGPNPR+ZoiUV3iGsDYX83C25NyzAw=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-662abedbeb7so266547a12.3
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 06:20:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773062406; cv=none;
+	b=GkS8VuD2fut2L4rlXfUMvy3F0nZSGhOk05dFaVi05dSIh6pcFXtW532gKCoeK+K6vU5hiq
+	L2rj+CKx3e+sL58vmsHUGHqX9qEMkSmL3ecbC6+RC6wuyt+8pvhuuH+4OgMqZYagfAa3Jt
+	ZgsVdvwAcnqCRJja99ypWcW/GaBmoG0=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-660dcafc85aso9709226a12.0
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 06:23:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773062628; cv=none;
         d=google.com; s=arc-20240605;
-        b=BKXw5zTIZj/Fg9cmxTN8ZeFGwThgjCaG6moXcMsbIxSrlMP7XoFT8NAMlnj5vjrMfU
-         gfjOWJUYoYVYvQvsxRtOpn8NIWgCKYTwUFC2iWcAPcws7kfdsGqjpICtoKBhki7yj1LW
-         SpZGRjYr2WA0KhM3Rjmmih4odQ9qcfYsE5fMgbKIE+NMaGjQExnzqQ15xsK8uU7FIkzM
-         Ao9dyIGrhpyZ1n14AQTSHx/REf1Alrg7NSaUQojk38NvKo9IZErQ6ekB8sCdRl6Rge5+
-         0apl4S1uLoHCjqGxqOFFN+b8OJ6y0vrQVPJ44dqr0SyxoNQ8coS/kyvHY4MBXdMfLHgT
-         KSGA==
+        b=fkjHaiPhtDaE7gmOb5lw65XXoPQghj8UFhF5Gd67whZM7P1zdAft0ZXKdZvUOPRqFJ
+         RecORM6iOqXSHAmdmtmqUr6ihdsVfVksVl/hZdL/5Qn7MV07Ee/NIPHB77FBOnSpcsH4
+         G4xCe8qQY377kP1hggaY7akcDnfXp5cCPpoTSE87gUFaI+xVFDsiLqh2QGvOwJ2aN5qu
+         9Rq23SH/EWynBUgsG0+n2vh0+8tFar8rQdI0vvtZis1A1TE4BuNqFFUYkF5V8mMuSKa5
+         gB3u69ls9nnLmLPyQNqMmkEmmPEnC+vMwY3Th8FL82Rd21gEJ19jgK4LZAiVUGmKd+Qm
+         JxAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ci1jZfU6aTkLeWV05/+SHmS749eIRj39gDJyYKzcDBY=;
-        fh=clb6PayVMQ/UzAP2r09ibws9a2HDQVEwhsmDqjcps9U=;
-        b=bhZ0jn1tNmpdXCuZgKGBz1bKgk0ck7GyNy6DI1G5NLg7+YloAbypcXPcV6+iDkpaUO
-         yF5TwiyHMUldSSGf7z+BTyOT3DLKCKGCcMazI6qP40Tn7nMCq7GS1RJ7PEpFXcQof3Qf
-         IKieiHUZYr9+L8TCL5SyZwImRGikKsta3rWgB8HT34XzDDHE151d6fPH6dyqkEe52BpY
-         YcgpaaXk4zQT4RCG0zWrOAt314Vw/zwTd5am0c/EOpOPpVfJZbzj85opVeAQzR5i+PYc
-         42QFvDhyWVanQd3g1dTbgxY3FezIzbSk8MjPR0gy+fnT/TyvKxIrUxXC9Hdohh73Hf+g
-         u47Q==;
+        bh=BVfZ78yDnatNVZBoDLVVX+eWnnKKBNvw3ekxWv/ysDw=;
+        fh=ndVUT+8MUdebgJreP6H4oaU5MMlFF1LTeh6CrPGnzXM=;
+        b=gzwiuyF07FL7GLCyUq3ZjBvGSG2YrddPat6oCDILJKAqY8A5CA4ld+R17z2FW8wvIy
+         geW/RFuToGhHs6g42ISJXB9D4vV0h5yyDuun1xe8oZhkYzuRHwlluijZpQP0BxKkA2zK
+         3aIAPQV+oS1xJsHFKUZazB3UPbYbU5eD9jsnOwP76wtMPAEPVYXgSbWtP3YGz1aEsmwV
+         3B4fhNqbUn5fZggYTltTjGVJTf2bjWKYC7yIPzQUVSIucVfHrB3ykdZ/BXbygsbQd5fa
+         oPDQecs/E2DIDRD/uF1tHczQlyVCoUWdJrrwo0UBvdphTzRa3oRqi2i+u7n99pMsBUpl
+         NBZQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773062406; x=1773667206; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773062628; x=1773667428; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ci1jZfU6aTkLeWV05/+SHmS749eIRj39gDJyYKzcDBY=;
-        b=Ed1VvsgbLZhtJ1TEhKS8PcYrN+IuHXVU/mrmt4h6zv7Fph/arqg1Y5DNqroT2D/7Ig
-         o/aIMPKu/aObps+SMNaOxblW1nZ3xEscmOxAYOGFeGzBrB4sFjA5g8kQoabSklA/Dvof
-         gdxvINpxvBVQwDw/vi6psetj7mLNCtt9ErsKyQP5eLowTbF2wjFIVImEmPfbFeIWTeNj
-         S06jQSgZvQ22fNBoHBG47ecR2N167QZbi9Yp5Q/Iv8vwSTbPpwOGlE6zffGdZN5/a/4f
-         2+EwgCDqIWUbwk+rKmOeAVsI5l3s6D4egj4q2BiHmOh3Bikhe6jl90iv9El9lEg0Psz2
-         1zEA==
+        bh=BVfZ78yDnatNVZBoDLVVX+eWnnKKBNvw3ekxWv/ysDw=;
+        b=FoefJVmShSMdMGPq/PI3Yy9or04MNfx/x6xxCu3o3X2nKpQSuxkPKfCovyiSAekqBo
+         /9f8dHyXPA+yC23K6/AjiROwHAYs5QMnrxYd9KqIELsRcRlAkFu+bhhpMa/IO4JzFWOm
+         gHhq4e8hWEEfx/llH5ZsbU+7peTX0qat2856rUM8w1dE0yEcGjLaoY5amSKVGHkNMzXs
+         BCz+5dK+RbIzKoP5UTJUOB0ADDPUtt5C+5B0nbSI9ZZhisud0Lk7SfxPhWL/JM9xQ8Ac
+         Qxyn4rz9mo2p5IB5DKjc55hWjT7vVLNwjlgRRTU267/B7s5i/P/5evfMbxLmAtQAvSws
+         QCvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773062406; x=1773667206;
+        d=1e100.net; s=20230601; t=1773062628; x=1773667428;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ci1jZfU6aTkLeWV05/+SHmS749eIRj39gDJyYKzcDBY=;
-        b=hDcU2GTrg1yn4O+Qwk0O2xceRkroRijRyYFe9v35xF6ShxQa9kuvqZmdBs2wDod/h6
-         RpZ/gQqLpSPj2A06t7YEPti/lwq9/qGTnoGjHYzIV4QoDK4MINpU9g5wZQbR1eRNqbax
-         PCGAEzuQ/G3FKJSajRtM2j0p51LOQHSAauv6VOi7yeQxtnpm4/G3MzU7TZsNtJXTUtr7
-         LvP0WljcDBv5cI+yQhpsVKklDbN+3Oj30KERD0Ide2htwtnnUpBsCqI5y82HIBSSSnEt
-         sRgUTw1gkeMr/VrT76H91HqRS4SyEfM7cXpzXMRIzNBH1OroMsPcKHiWjmOw4k7MZvTn
-         Z0vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3am0dQF2CjLH0TTUUHQlqy+up85Ir6uqLEBjAFgr3MiFHD5Twc3CUl1cKqSiwe5t+83AgAypsfQ==@kvack.org
-X-Gm-Message-State: AOJu0YyD8heodTUWCZgoqgGOg7DAIXfzGAP2yb4zNuY5GwTH7iunB9gx
-	U9gVP0Sip5Ce3O8G/TyGoYkJ9JIcOkIp2lO/Y9i5tbD6hayRkYLSMfRUdNne95zUi5W50kB4qs7
-	mEj49qWHC+C8xGRM1u/jOHrRs/90nqjA=
-X-Gm-Gg: ATEYQzzO4qcNQAn9TFc0M0UadUT9/RYpzisyM7STL0ucNc4btAj6wlcXfr1DWPbOZG0
-	S9XKcCzITHP3BfhSVF5u3helIgrT/OdzFxmjCo6E5ORr1NBxoWLPgj6NY92GbD20C1csndOERMu
-	AH4i4YQdUt50DPSPqnrIa6oSXu8r8rjyLKQNYr0AvM1yscrXYxcWFR7IILUA8RnAlp/m+EbthEM
-	Nn+2GaIXgs4fyYVLK/z4LbsPdTUy69GQap4E5laWZ0N76Fh9avNicxQUniD9mExUDUtZMOccjtc
-	RgpCNFPNnphwtvWWGBxR4szTzetI9uzbAgoBFOj/
-X-Received: by 2002:a05:6402:5112:b0:660:39f:1cce with SMTP id
- 4fb4d7f45d1cf-6619d524ab1mr5318402a12.20.1773062406105; Mon, 09 Mar 2026
- 06:20:06 -0700 (PDT)
+        bh=BVfZ78yDnatNVZBoDLVVX+eWnnKKBNvw3ekxWv/ysDw=;
+        b=p3LFNqqrGVkEOFK4LphfQlv4jmckhzH6Hgkp9mR4kZ2BvZptyRMV5DinKxg5QXIplI
+         qzL5ZFlOAr/WInNzcNNVmw/MuUg8/ldgrs3xTnqIx74OyoaUrQTDx4IHUwBhOhV7YVBE
+         B5T/7evJgv3mkTaTuL6r9GJfFzStokFiHF/hGsKDUV1r05O97hHNq3ivI0PWhgps2IBv
+         UcKMAwlfKdugZahUQfedPlruLJKT/T7906YQ7Lr/k8wiKXqarsSTv5CoaGkdbq8aihFF
+         fzmP32i0nFJRY2bV+tV6A6JGuK123PtE5xqw/jXPhysd14t6JHFltirE+1v7BP8r5yMj
+         EsjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEgxVnPoABd08ed5aBz8FAfhwiRoh5jmzecMh7g3eNXjAyEeo3qYJHStCjoKK8DCYI/qHgonC4NA==@kvack.org
+X-Gm-Message-State: AOJu0Yx75QLcB87kg2fFTRYsPQcEvX8KQgIQZqbaGv8BveCHZEZesT7S
+	h3voAErlrECYxjp8LuDcbC3MhyGgGOjls2lmZPXFzkBXRXuqRlw+rCF4SLgpESD9alOyylzFLp4
+	owul/HKhKzuQ6KobO1hP9+ZFdB9YiWys=
+X-Gm-Gg: ATEYQzyqjcgd5Hl5OsbcuiS08vgWdQ6F54hRSAYlft/lOFjrjoVIfK/8HqtKI5vjxzf
+	9RfePNPJorE6FhT6nNXdhYirCxDuAWN+xX/H/Q/5zn9DCdyGg7pCnUcJLuWmBZzWMo1f8BC7Hvq
+	wzmca4VgBuDb7crBcIcFBNPyD3QVALcP7iNuC8LloGjH0iDJbLoxOIbZCUwjXeqUosOWuTlEW7N
+	kfTGUd2YFlDa6/3v1ZXfxGwu48WzQwt5Pw22KL/dIpuEhVeITmYOe5ZfDPSTNJ0YYYGPHMyd1yB
+	B6SaMjyYQ0woGlD/ZfwlXPD2R7Zicg2xv63gBHH7
+X-Received: by 2002:a17:906:2091:b0:b97:f43:2a84 with SMTP id
+ a640c23a62f3a-b970f432db8mr2809466b.19.1773062627568; Mon, 09 Mar 2026
+ 06:23:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260309-batch-tlb-flush-v1-2-eb8fed7d1a9e@icloud.com> <20260309122939.723610-1-usama.arif@linux.dev>
-In-Reply-To: <20260309122939.723610-1-usama.arif@linux.dev>
+References: <cover.1773040982.git.zhuhui@kylinos.cn> <25c1be6b4a54a69d4b57189fd84c7502c4412d7a.1773040982.git.zhuhui@kylinos.cn>
+In-Reply-To: <25c1be6b4a54a69d4b57189fd84c7502c4412d7a.1773040982.git.zhuhui@kylinos.cn>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 9 Mar 2026 21:19:29 +0800
-X-Gm-Features: AaiRm50W6OJ5k5KSjUf7eUvHNCMCxhRe6HX5ExR-RPxyQNwG5S7i_a_0u1OfGhg
-Message-ID: <CAMgjq7C-gisq454qu9Eo62baTpf+cLFcpMnEbv3Z6ZH9jH9kmw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm, vmscan: flush TLB for every 31 folios evictions
-To: Zhang Peng <bruzzhang@tencent.com>, Usama Arif <usama.arif@linux.dev>
-Cc: Zhang Peng via B4 Relay <devnull+zippermonkey.icloud.com@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Date: Mon, 9 Mar 2026 21:23:10 +0800
+X-Gm-Features: AaiRm53n_u7_yf77ezKmiOFHGhAYIMKmmLQGkpctkAxwDIibfYQxACor-ZenX8o
+Message-ID: <CAMgjq7Chn6B1bUiqoMiZLajqtuH9_7sQgxtdug4SQbcdwkxurw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] mm/swap: Add VM_WARN_ON to isolate_lock_cluster()
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6D52140009
+X-Stat-Signature: swcqh1ogceucybpz5h6swagzx7scxpbc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 29AEF40013
-X-Rspamd-Server: rspam08
-X-Stat-Signature: 7uokbb3duer63jswmtxpfwwm95anoi3e
-X-HE-Tag: 1773062407-432802
-X-HE-Meta: U2FsdGVkX19pwz1UNWSYn+xmzJzTfCeDxrcIQtrmXQfbgD3cKLqp62H6Y2PIsk1AkuXRmWJ48k4P4TKfLicodxo4QxVlxT6bcbx45Y9+bnS8mc8o+jgK2//aVCAA4OUtVMeobR009XuBrVptpUdq1mnKpKEXczmO8Hzv9qjV83PwZD0FfP9x66BEtbKErKjzRdpwIS7NpXE5olicG0xVLDbHjqdOk3NidA55FkSsd7+5l5jQC0hT4HWWJ/mPwpuLYWTDMQ4BBvl5XAwEgXgDDgUXHHDDku8x/nQ9zCmZzykYWsxGnYFPnoJ1ZykoNB0yHN8vBfdLdzaT6aHefHzblp6+llJyW89ItafAPE65xMLTnrIm+UWMYJ7JFY7j14mbo0SARnERkY1r7+BmS+HdZGC8zHvZMCw6OVOPRefuLvK3jQli2qzc9TYJSC8EV/zFAKbOBm0QXgOTFRTaPEQsdFI4PZ+KmOvfwxPqCNZnpg3M6lMNqRhjJ5wVEgK2jSFrMIlq3Rn1kqdF3VFj8e4DlLoT9zN7+W5FJ6J8b7EhPma9+o/RZIVbP0I0wL6FJxr5knEkYR3lt0Nm2Rpf6eaoinZJvk4fy3iUZRggaAFtX1I7vdw4S1Qz4+jQFTJI6odQstppJN2R/soUSGyRjrdXBnFZrs39vynsiT9FZvdFzDW4XPaDdlETwAmJwxA6sq/YBzCbX82eWT7KKjammULm4Xeg/P2kqgFo3Fpfztt1ZFKec8nr0iS65oHPJCXM091kfolTHFsWE/R9rUoKjZTvWG3tLTX4+Hynlp54YetTzPVfukZxQyEMe1S1Mh+tPrGMUXxtWX1CRGdbn06mwLkYk/pJPFGN5AQWWOyOGMvRBajqNbZD3gE0aHE+fBJreqNOVTw/g+409iWOic+8q218ypLz4o9F1BfSS7fbLSZaGHD7YUUGzqwVeVV3AIHixWRqJ8nOXS93qK/NQNyj0Ym
- vGSlSDrZ
- 8faAGxqhL+IQZc2GhEgGmxC1b3GSDopKMSMzAKxt0ZpPCiS9wwNBp/w/q22iMAK8om1KSSVlTgWC8gyMB4Bhx0+q54ylIiou5yotslhXprFF1z051zL96aglpBvWHRIo9Yb95r/YQjXA29NAr9SVshkBffezYdL4F2Z7o53X1LNx73OyBzMEfquWC+Vz0H7QnMHjacI919xnBWfFkRowChkNB+S3Pxby78Ew6X+tTVuIKXD/BnMWVWm8VJkT5Sj4MVzQgHVtTzZIhfGk335XcYwExPuFpmzKpKP+LmAc9NQOtpP6FOlFgcvVzVLz7MRFwIk2zH2dBRw3BIxMzi0SCgcMPbaBcMWNpMY58VJvNeEf139jaCVEFoNmVKdzN5mIKDBtTJRsDrCehyySoWW2oEMMlAYDXEbJkG5mZzgNfg2NThuTYIiu/p3Qld1qJ3plchQ2vaY/zxVPyJE7J6gAkavKMeY+5XS5PAslRrzXwZ8SOiD5DQKMELQvxZEBgRgte3aLnyCLR390AAtb993sb4Cx7GfiAGPpPMmjuHZ3is48p871JlkuRkOHyU3T4QW0T5EJXUVDH6rrm3+6hNUC531Hj6kzwOpa8/WYIMjq9bUgTB25aYDNKptji20ri7s4rAQll
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773062629-50078
+X-HE-Meta: U2FsdGVkX19b6uYOcZqbYkd3z07uM68ro83m2KW60ZKijdznVld3CglJP6uyNhbbyi0oLLHR/ZVZH4AWjVN2i0Tsq74a498SQRnlA2Pp7/juYn39AVj2Kvmwz7tB3eBEUI9PRziLdhItsh8ddceZt7dOWrY6zgu/JOM5lwHitpkx48+2mjCkIOTPZxhu8UFByeoePsT0EtXbJO7wiRH4XIzkapEjlVSuPjlmta4KQyT0IUgy7wdrbEnn3djMmqkC0dYlSX9x0GPUI2g3OrptbgcNC1JyE/d4MXHa1yH0lRD5XV7/xvApEguVwwYqyP8rc8Lv64qGq1KMrcHds56URgJeOLSnWAKe1jfwu8domBS/5DYm7PxOvOfQegT/ag2EbuN5BhN0YR0rfRkcH7FGcbnGnosVT6sXdmt/wQNtbofRSJmzGoTe+0PFBk/2SrgoGWaxGM/NFhN/vASAllgu+72d89CIJCpyAOZumt3hftUFM46jKOhU3i+8z1f/7HWzFkMrsl/tpWI1x/9BCpzYspiyzT5o9cTDO3RHKPvygB9Cis1Y4OetxRMpZImluI5gWC1wclocghI+i44rP3PpExFW2rIWCHBe6/q9P8pXyvItmsREzV97iC7UeXpnqA6rSB5+TIMy2hRTKe8x9zOyeFDURuTMtAB1DLGy3xZmrhxdxrRepwDZUpEyF1qnlY+VRAW8D1r2DI79OmoOl8VQ4Cd2xMHbyHKlhn7+AYRqMv4SG86GfXRBVH/ohoTP1rPqjub9JVEzfJF9HUtOrA6J0KdksZ8K8HYC+wFG7FujFmGKIIyN5FtIx39cEd2DHSU7CLbPvtAjk1zEGNYkwemSrsY6HT1lvpMkUiV1K2mjNt7chM1VmpMHVlwaYmnuHldHoO1q2Jdp/vpevwYAuOS9Do+j0yHOZysG0Tt+RkzhGLL7fS89a7kDngU8BoYQk56EfuNCEZRADcIKcSV0qIY
+ ZSGVIelZ
+ WczzBE20YtR2K8QarRtj7o9pwbAD0VZ9GA84wSv7HXSlfjm6Z4CBIcw7yB0DEz6mThOfSr6maTmA3SpW8KEydEv0T/QFXvBC2lUJqwFZ8aDFS0Lrz+lMcdJlujM5PHtNiv+GLcKS7NdHB4lFEuA9/bZD5S1bHQxQFnkb1tRn3cOomUR0/HISFLrdvg1PQtB1yYxC8pRl4NZn7Ffajke++wu6F1qPzlB4ublEulYNZG3lZ25eieXwlgevQP0NSjd6Wrdg8PP8EbxvoDygGB+JmtrcrMp+82y1aWKRWKTpnoD8KLCiwMcGwwxbLy1THtq4Jr4zyl8bKGTI5GcDO4dzQQkWiz9jUiME0oxFPOmcXXDQzldiK8guT9Wboi+o3VwhBTfvjc56HV+ATCN4Cl+Apw4q0/LDW8aHl3euB3NsEWvevq1xkGp+Q8grUHor1ZL6HreNm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,101 +141,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 9, 2026 at 8:42=E2=80=AFPM Usama Arif <usama.arif@linux.dev> wr=
-ote:
+On Mon, Mar 9, 2026 at 4:06=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
 >
-> On Mon, 09 Mar 2026 16:17:42 +0800 Zhang Peng via B4 Relay <devnull+zippe=
-rmonkey.icloud.com@kernel.org> wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
 >
-> > From: bruzzhang <bruzzhang@tencent.com>
-> >
-> > Currently we flush TLB for every dirty folio, which is a bottleneck for
-> > systems with many cores as this causes heavy IPI usage.
-> >
-> > So instead, batch the folios, and flush once for every 31 folios (one
-> > folio_batch). These folios will be held in a folio_batch releasing thei=
-r
-> > lock, then when folio_batch is full, do following steps:
-> >
-> > - For each folio: lock - check still evictable - unlock
-> >   - If no longer evictable, return the folio to the caller.
-> > - Flush TLB once for the batch
-> > - Pageout the folios (refcount freeze happens in the pageout path)
-> >
-> > Note we can't hold a frozen folio in folio_batch for long as it will
-> > cause filemap/swapcache lookup to livelock. Fortunately pageout usually
-> > won't take too long; sync IO is fast, and non-sync IO will be issued
-> > with the folio marked writeback.
-> >
-> > Suggested-by: Kairui Song <kasong@tencent.com>
-> > Signed-off-by: bruzzhang <bruzzhang@tencent.com>
-> > ---
-> >  mm/vmscan.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++=
-+-------
-> >  1 file changed, 61 insertions(+), 7 deletions(-)
-
-...
-
-> >       folio_batch_init(&free_folios);
-> > +     folio_batch_init(&flush_folios);
-> > +
-> >       memset(stat, 0, sizeof(*stat));
-> >       cond_resched();
-> >       do_demote_pass =3D can_demote(pgdat->node_id, sc, memcg);
-> > @@ -1578,15 +1624,19 @@ static void shrink_folio_list(struct list_head =
-*folio_list,
-> >                               goto keep_locked;
-> >                       if (!sc->may_writepage)
-> >                               goto keep_locked;
-> > -
-> >                       /*
-> > -                      * Folio is dirty. Flush the TLB if a writable en=
-try
-> > -                      * potentially exists to avoid CPU writes after I=
-/O
-> > -                      * starts and then write it out here.
-> > +                      * For anon, we should only see swap cache (anon)=
- and
-> > +                      * the list pinning the page. For file page, the =
-filemap
-> > +                      * and the list pins it. Combined with the page_r=
-ef_freeze
-> > +                      * in pageout_batch ensure nothing else touches t=
-he page
-> > +                      * during lock unlocked.
-> >                        */
+> swap_cluster_alloc_table() assumes that the caller holds the following
+> locks:
+> ci->lock
+> percpu_swap_cluster.lock
+> si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
 >
-> page_ref_freeze happens inside pageout_one() -> pageout() -> __remove_map=
-ping(),
-> which runs after the folio is re-locked and after the TLB flush.  During
-> the unlocked window, the refcount is not frozen. Right?
+> There are five call paths leading to swap_cluster_alloc_table():
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
 >
-> With this patch, the folio is unlocked before try_to_unmap_flush_dirty() =
-runs
-> in pageout_batch(). During this window, TLB entries on other CPUs could a=
-llow
-> writes to the folio after it has been selected for pageout. My understand=
-ing
-> is that the original code intentionally flushed TLB while the folio was l=
-ocked
-> to prevent this? Could there be data corruption can result if a write thr=
-ough
-> a stale TLB entry races with the pageout I/O?
+> swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+>
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+>
+> swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+>
+> swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+>
+> Other paths correctly acquire the necessary locks before calling
+> swap_cluster_alloc_table().
+> But swap_reclaim_work() doesn't need do that because
+> swap_reclaim_full_clusters() just isolate si->full_clusters that
+> the tables of it must be allocated.
+> Then isolate_lock_cluster() that is called by
+> swap_reclaim_full_clusters() will never call swap_cluster_alloc_table().
+>
+> This patch add a VM_WARN_ON to warning if a fill cluster will be handle
+> by swap_cluster_alloc_table()
+>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+>  mm/swapfile.c | 3 +++
+>  1 file changed, 3 insertions(+)
 
-Hi Usama,
+Hi Hui,
 
-Thanks for the review. Yeah the comment here seems wrong, I agree with you.
+Thanks for the quick update.
 
-Hi, Peng, I think you might have used some stall comment, at least
-page_ref_freeze doesn't exist here and that doesn't seem to be how
-this patch works currently. Can you help double check and update?
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 94af29d1de88..3fc2eb30c187 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -596,6 +596,9 @@ static struct swap_cluster_info *isolate_lock_cluster=
+(
+>         spin_unlock(&si->lock);
+>
+>         if (found && !cluster_table_is_alloced(found)) {
+> +               /* Table of full cluster must be allocated. */
+> +               VM_WARN_ON(ci->flags =3D=3D CLUSTER_FLAG_FULL);
+> +
+>                 /* Only an empty free cluster's swap table can be freed. =
+*/
+>                 VM_WARN_ON_ONCE(list !=3D &si->free_clusters);
+>                 VM_WARN_ON_ONCE(!cluster_is_empty(found));
 
-These folios are kept in the batch unlocked and unfreeze. Also,
-unmapped. They could get mapped again or touched, so the batch flush
-should relocks the folios and redo some routines before that unmap
-before, and if they are still in a ready to be freed status, then
-flush and do the IO, then free.
+Hmm, now as I see it, we actually already have the "list !=3D
+&si->free_clusters" and cluster_is_empty check, adding more debug
+checks seems not that necessary. Or it might be better if you check
+ci->flags !=3D CLUSTER_FLAG_FREE to be more strict? I saw YoungJun have
+the same idea here. Also you might want the _ONCE version.
 
-BTW some checks seem missing in the batch check? eg. folio_maybe_dma_pinned=
-.
+The later lockdep check could be helpful, but for chores like this I
+think having one patch is enough if there is no strong reason to split
+them. These two patches are all hardening the swap table allocation
+path with more sanity checks, right?
 
