@@ -4,147 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 602DBF41805
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 15:08:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0649F41807
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 15:08:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6168B6B0005; Mon,  9 Mar 2026 11:08:10 -0400 (EDT)
+	id 4EB316B0088; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D8276B0088; Mon,  9 Mar 2026 11:08:10 -0400 (EDT)
+	id 4B61E6B0089; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E2DE6B0089; Mon,  9 Mar 2026 11:08:10 -0400 (EDT)
+	id 3CCB16B008C; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7686B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:08:10 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCB0416024D
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:09 +0000 (UTC)
-X-FDA: 84526855098.13.D475B7B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1F272140009
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:07 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LaeYYRkY;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DE4A6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C18C75739A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:32 +0000 (UTC)
+X-FDA: 84526856064.24.50D152D
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7D5D54000A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=XscvnJC7;
+	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773068888;
+	s=arc-20220608; t=1773068910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HIyblTcTCK0uZPcwGzldd12E/Bsn5L9DN0VPrRm/rfg=;
-	b=IT8BFM4TsFqjBoJzn8sFpi6bVcPB5tRAqEx+KLhsTjzQAocUJplufhX9+guB+ZTtDYsVzw
-	dJJ33RjphWavtmZ3Y6XNh9q4+tum3t1e4on7fTXMy7ZYsdwDQsdDn8DNonro4ZhYFJj4v1
-	lnFMS2T/sFSHv+ZvNDO3u6VIgc+pEQ8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LaeYYRkY;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773068888; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
+	b=VwZmku477sxDZgCidWqfWUxNc7D/ApyR0Htqvb3LapA1BMZvbMb7TCduZCgxbNy44ERzzP
+	B5elZ+YQGkAEQ5rD7xi8BKq6wtEgWu9hUQtjGJXZxtceaqjbAJPfqHmaSWuedzkdhYIn9+
+	VMnvpUQozdwVITZhdQK8ghDz26m1vjo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773068910; a=rsa-sha256;
 	cv=none;
-	b=CdlS5UANPyl/lsQ0oCa3KQHgcraMlLMPcbtWIoUXPObT1jeUa8Sgf8pi4UZbITWOMWXUk0
-	oAteGg6DHhKclrgIbc6ny5xJwBK3s0G6ob2P8P0CIojWMb/P+F+Iwc6RAcVHfCBgOl4kUF
-	goaz1d2XGPAe8x3A8Zclrpq16UJri1E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8329760054;
-	Mon,  9 Mar 2026 15:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4762C2BC86;
-	Mon,  9 Mar 2026 15:08:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773068887;
-	bh=65GSxxooaBqszDjKBnb0vU9DG3G6+qZJ6mCafUsf7R0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LaeYYRkYa9q+TNllAPbXuuj70SMvm16G8E5XC/95eepCWcxJpjEDl5XBrbSBoyyoL
-	 zdy1G/VjWK/6nX8w+2+NDj5H5WwvQgRIscDUFcwpJjGtJyCpMq6jWIKoApr8+baIKu
-	 F9vv4/uGLj+VP8Fqkr6Y5HiH98/3QjvTK4qDjvinOLd/1nqKfDDDfD5vdeSVtUZxEL
-	 uApOQbCXNw2JLNJ5y6iY8lZQSN7q3Zhz2MJAaxINXWmNbbuYSFmlQIQ54HHOGkAAKS
-	 zFWyGb8U92HlS3dtFLkefFQzfl0XTf547taI9QWlX/hE4vdVNTTPzhK7Sixc7TE133
-	 3lcRlM17NcPSg==
-Message-ID: <19fdac31-0d2e-4662-b3a4-02555d8e4221@kernel.org>
-Date: Mon, 9 Mar 2026 16:07:58 +0100
+	b=phsDg/bZDrOXMq2Gii4F2PaQXe/+8MyOgCNSuZmdG/2dgO64kQB9CUqLvr9sEGAUvRsI/T
+	SqdLT2ya46l/mDzOb9tC6E45QeDsnL7ApzJWwME+29xeecnr1yTGnR+kI7A7LPwi/RHIuM
+	rYaMWWJH1U0dE4wM2LhlKzaHdvwoWLo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=XscvnJC7;
+	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48540355459so5340375e9.3
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 08:08:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1773068909; x=1773673709; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
+        b=XscvnJC7k9OnomiCvfD/aji3paKJTQ4DSYV0rkEvOXOzVausrAa55/ry0hJgvDPJpB
+         Mgq68ZnTOuoyiBlY/PIU2pPD9Vc9PiCzmnhGzJ3zNeGAJPeqjWkDckTLHwAJibXhI3QC
+         XwyzFM7aI/r6lpynT1gzdPcrLGw/m2fDOzOm5taWJA9sR3Em/uGh2WVJGugTtszLKq2P
+         ZLdAPtH2BJ9StvLZwA4jZJnkrh/7I6bm/uu4yo6DSQ5ln9hHsywbNBug3PrKE5CUjWSI
+         DB2U8BsxIDAHA2XXxcd4cxenDZDvGO5gXWFxqGFnUa3bhMMjFTdqM5oz+sJsyVn2Zdu3
+         To5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773068909; x=1773673709;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
+        b=RCR76kfMGe7XMPSjgwnIxCrVcbN7cPuMIsvn91VRqTS9+Fw5nxrkh9jTTvNQG0mswq
+         bX4/df1MFXcp/Gutw3R4mhmuKsFua8YStZI4sf57TXaIKmPodpESDjlaP4J9oP3/CKmu
+         YUvoj+C9lCO7V7CCBXyXtje8pJw5pg2V1TaNFmXbZKF63N7ANxZoqEp11948hn7roc8D
+         aiYf6P+JBh45WQeBQDfrbfHHmGhigRWDZnvebfDsajT6GAdWijGqng/rpMFcYbLaBqih
+         VzkfNGPCvuziFKKIIOoboQcrNA5lS/hs1rFlMmD8z73rlIhFLvnpbH9yOG9x0WlQZEJj
+         inLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjct2wRilyqg9eZ0vufBmlzggXiDJjiVGhWDcrJGY1BOmhobk9R5t+UJXGmAjefawIWMfLUTDY4g==@kvack.org
+X-Gm-Message-State: AOJu0Yy/Z0zZm6D78inShsg+i+s3IImlI7iotFno82G2mAdLlyVhWJaK
+	MyYccT2XlLUwWNYmT60bMGlITD1x99yzc8zuy5JBoCY0JMsZ/efLFtKP7ZBnUSpIPbwEsjmnugI
+	0krvO
+X-Gm-Gg: ATEYQzyUdFomYu0/vxxC+fmc9PlYoeX/mv4zItBC9y2lnPE+DMKLaZfc0gsofFQu/Xl
+	KxUoorj/8Kf3RxtC9uqu+uYVTa1QyfcQMuRi9s51fXy4hyeI6zVn3FdumMuCMiJdINCQRLJJUrr
+	aJvNrevy6+J4j7xoBP+8crvhKD+UfDL0QNevS4mRpK0yjf8cooXxw8btuu5P026doIg5Lm+DSJB
+	klyVXAqeeArGD2rJUG/ReM0E8iaT2vhXG8PTo7K4J71Vzl/m/WruO1U+6ZmQQ4ydMVQzR0mehLF
+	KLjftwVnjyr2JreeUUUAeh6naqnX+KSNiOqOQID7B8C6/hBaJqOutjxZQh6EoXJP1/AsLnF4D3O
+	wAJz2NYzPr3gtZ4efhCIgR5P9Xa7IAAeWqbFmijCztIJUSX44uCT2LMC2pI29JKR4VtWytzRVgk
+	gxG63kQbI2AH4gZzDw3mllyZ928KrOtnTnS1zEcDrNJ6c=
+X-Received: by 2002:a05:600c:6306:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-48540ed03fdmr14531205e9.17.1773068908685;
+        Mon, 09 Mar 2026 08:08:28 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad8da01sm28684927f8f.1.2026.03.09.08.08.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 08:08:28 -0700 (PDT)
+From: =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Date: Mon, 09 Mar 2026 16:08:08 +0100
+Subject: [PATCH v2] mm: Do not allocate shrinker info with
+ cgroup.memory=nokmem
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
- hugetlb.c
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260306101600.57355-1-david@kernel.org>
- <4rzf46kw6hq3b5ivv7cvgyza4yfrvk2shrncytobabxef644nm@wzu2bw63co37>
- <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
- <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
- <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1F272140009
-X-Stat-Signature: 6ex8nppriwp56prq3iqwx93kqe6qakxu
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260309-cgroup-ml-nokmem-shrinker-v2-1-3e7a7eefb6c9@suse.com>
+X-B4-Tracking: v=1; b=H4sIAFfirmkC/42NTQ6CMBBGr0Jm7RgYfwBX3sOwgHYKE2xLWiEaw
+ t2tnMDl+5LvvRUiB+EIt2yFwItE8S4BHTJQQ+t6RtGJgXK65kQXVH3w84T2ic6Pli3GIYgbOWC
+ p2zOZTpnKEKT/FNjIe3c/msSDxJcPnz21FL/1H+tSYIG6zE9VXXc6Je5xjnxU3kKzbdsXp5Wol
+ sEAAAA=
+X-Change-ID: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Muchun Song <muchun.song@linux.dev>
+Cc: Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2455; i=mkoutny@suse.com;
+ h=from:subject:message-id; bh=PF7PEPuBVFEev9rRlZplgRHqFt2dHhMGKiCN80nPSv0=;
+ b=owGbwMvMwCVWZ8v0fMrtHxyMp9WSGDLXPUo7IhO6X+rd1bAl3syOVw64fv6zKWBh/qo13sXl2
+ 6vcH/y075jIwiDGxWAppsjiJJzHOv+DjJvl6a4vMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
+ IZChY8TAxSkAU11jzvCH33/risv7sgOdm590TbQulDR4aWJVzntyxapwKVtTtrQ1jAxnmvhWXne
+ JPlO8YcG3+bcyo89Fl7ryq23ZtJlH+uLaR1XMAA==
+X-Developer-Key: i=mkoutny@suse.com; a=openpgp;
+ fpr=9F2AB6F1F2BBEE7621C1B620CFDED9A2FD1314F0
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773068887-404571
-X-HE-Meta: U2FsdGVkX1+uv+eG+3YSE3TMR/6s9r7PU6gBvWXzQvbmRBw3S9Uf+hiv5YlnEhEAlQYa6ZKb3VDafgZhYqsD/eSJnKrtRGPiIGulo4kn5ly1ClfwqXcqqSrJGi2n18SDu5A9oHNiMGAG/U26cAUu8XkDrC7eZR88u8PPRdFwf9u3xO9TqeM3HAYb23BKR90L5VIHU+8ir8BWaU4Bn+/z7FBZvMARrLWsQwTq6DWqGwk9laaUdfIROwPjdE2mLuwZWpu0LaE57btkpMqEUCHb93Z1bq0ulstkeOpEoMYbPQ0+f5VnEYehKIg5wAD6lNAvaYmTGiExBDO6nqxylS1PJH6I/jWDZ9fGdNeMH+h1WP6+wuMbPYkGS2vnvTBBbmeK33DW+m8SOeNvQ9sibV6rNfHeM7l0GxmUwxgqS8hHRLxRSNaYOYT8kp+bfXJeAK0FI2/cJXL7oeZV/ch0ZeMX8Wp63OWHAO5sj7Kmp0SxwHGWXlNgyA7HRQwWEEvtVouhOhbdkWI0c3ODzevmYWgXzWxek7Yc6LAFi33eZIN9XGTiJkVGy3OnNBfaCBJGnpBcykXv72kKqvg/3daaJWYgJ94UITIJEkvogNrEPqU+8pup63BrkmtDik6lQ3+j9N0MFUcUaA4BOLHH0rQzOzMbPgejJYHK/Q4r1Bj2Xzyr/9pwe9os61nwQx7nO9vsTd/MjrMz912TUZeiK7FpNqQ8z+TXahINfFPiEYO9+qzASkihiY40eWyIOztECrH0TbhFhGV7LGg7QjI4UtZ3omOVS6wU/CX+PjmmEKocnxqCRMzFTglu/0b61etgaR5HlIJAlTfEtcQogLCwq5PVFPL3UVxTVIax05ODSev2UJaeCcKSPBGhCHy1rIx+zKAoxLMc//JsdLZ76cPN3bGPlpL6zljynWeiTCFciMT4Yr0QA2/KmebyFJM3tgEdFdwu/ex2NXO8jJ5IQcas0FH0SnH
- fUvi4NTD
- 2UTQPfd4wva+ooGDqdsepBwyXxAS42oFwwQOxURaYr8sWVjLDyOCXeis6l6oS0Fr6CdomGZSW2NP2UxG+JZuGT5Ei3sJ6pzI9bMDBC9BX7V7jaLYMaUSjIXE22t/6RaD5FB2+DIO1qPSp6UsGRNldOOwHR69afjhBJn6aVCCHkXsnMUTrvcKCv1JcymVQ9eAwKyh1i2/I08XP41xhHCTKM3Bh5OBzwA8cx9Uc4EKWw5C7ghNY+DOYSWze6N2ZT1JrTBsyn/3sgz1aHBzQp7RaLfYBeq+hquysc7Na69/11PU3A1C2NKGjEPyR3g==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D5D54000A
+X-Stat-Signature: pnyzq9ahmykodg1oedc6q5n66amks7n4
+X-HE-Tag: 1773068910-905144
+X-HE-Meta: U2FsdGVkX1+qljSjQA5HfFwXPSBYTx3HBUg8CXpj/x1RCJSZCPAdcASdqc3zB6Mhk4B3NNTbt5DVLc96x334HiB6yM7R+xp3GUS8VjlD2F9rNRdlglbOkZarhFGcFQaPWBUTEveX9zWeNbsCMlj9x6/YqDc3uCvd1q2mWV9QOKWA6fsJ4mY49uJuZ6ScRkUrFq0YdW64sXdTAfLJoKYrYewhtztqDkAYMMjb2wwFVlDOS8KM1T2d9/XNdwhvr+2SkFMJ7XMJ1YlSQGDbQ5ST6LAnxq3NO6KssYliuAARKc6Aj2WLF6ym57U2Yl3bQJZgdXQUVj75IZkkOAZ/AGN1NqUAJKwFEyOF08VCncAuh2NgkKAny3HkN649GaskMmtMlBh8YBZTdFba3np7nZW54tBSgridg1OChXz0C6Ud9gQSjfX7d0H4IUB6CIfIVm47UcNxy8FqSyOLmp8S3bsT7d4xEPTzHi+oBMMM+0npawZAoy3C9e2D6Q4q4TWjz/9qGuQhfccOsl+082xb9uXugG+5Ptw0StXfl69pvBYfx/DUEuqHFeRWm2DNZBYvSguRARJ9GmcYHYUv4VPrQnerXOutuMRYS4IxRih/G2Rsd0gOjCb4m83QLSm7HiULWL0twICBUvZQCgK2wzJqFrJBB/n+GrVPI8RW/KVSxPFJfLQiw3h9gKi1VbzpKQ3Q8fP8IiwD9Pmkj3YGT0ZWhjvfmgKeHH1hFXDxQfWwNegYnAgnyb4ZYYNFzdSBbuqFW4bf7NiK9CpORm3ZMhKUzn2m7/CIIWVs2t6MXSd1wjGKNp0jQQMoAWjpTZhQc97XFiuyHaa/vdt4xAiuY5dAh4+SH+UT2sI+DMLQgyLSk66ciPw9ZApLCbsr5BbVKn7DsNlKSDPOYG3Fd8aUdbJ2IC4SZB8Aw82v0VerMkiYUttbLigPjBNUeyH0xl9x7RwHMLtoeHWkAV5oTVvxsKaVpqL
+ 1QHGJnCe
+ vYmEeBnCSNBg8G9YQiMHfWihL3KPFseKMcusPO1ifc/SJTUKfqlE2jmnG4rcF8XVPYB38jUHMZpiUAA0UtuOnq6KHoan7/TkoPhdFPWdzUmVjT6nmJYb3ulRxcGu+oi4uGVznAkYlHPTf34IfiYgNap/aHmKpdI0HuqxTdJVgbbwWuddDHHSg94rgim6eG4tg/o+6QSRmaNTAdvb9L5sr2deJ7ubju79XUL+9lDnMFLRq3MIdFU1/vfgn6DqnVwNd+OMsCi7RLCA5ahVpnWRd7SYIac6A/a/3dDBYTAS486B/7EJ3DbJDd7CMb4taMY/WfLSuQktySse4KsfRDX39zXHj3w36PtisDvF0zWV+knF+NcmK8/vwGjsS52Z2R1LMCTITNVTaYog2UPKpAnTdbPPBOwwE7qc4rHfj4O1cPhPAsnBDPf7c4rizvC65/T4f9I/MEjnoNJHQMkR/2Jaez2lgf00LAh95lAx4WosxmE4VXAwQYtVuvJZzk9xfB2klFjoeYuPBfkfrfGo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,30 +134,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/9/26 14:42, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 06, 2026 at 02:12:50PM +0100, David Hildenbrand (Arm) wrote:
->> On 3/6/26 12:19, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> Yeah I noticed this also :>) Assumed it was a new way of doing things somehow?
->>> :P
->>
->> "--cc-cover" is apparently not the git default on my new machine.
->>
->> "See, I CCed you, I totally did not try to sneak something in. Oh, I
->> messed up my tooling, stupid me ...". :)
-> 
-> ;)
-> 
-> Wasn't aware of that option actually, handy!
+There'd be no work for memcg-aware shrinkers when kernel memory is not
+accounted per cgroup, so we can skip allocating per memcg shrinker data.
+This saves some memory, avoids holding shrinker_mutex with O(nr_memcgs)
+and saves work in shrink_slab_memcg().
 
-On my old setup I had a script that would, in addition, also CC anybody
-CC'ed on individual patches on the cover letter. Was quite useful for
-larger series where you don't want to spam people with unrelated patches.
+Then there are SHRINKER_NONSLAB shrinkers which handle non-kernel memory
+so nokmem should not disable their per-memcg behavior. Such shrinkers
+(e.g.  deferred_split_shrinker) still need access to per-memcg data (see
+also commit 0a432dcbeb32e ("mm: shrinker: make shrinker not depend on
+memcg kmem")).
 
-Still have to set that back up.
+The savings with this patch come on container hosts that create many
+superblocks (each with own shrinker) but tracking and processing
+per-memcg data is pointless with nokmem (shrink_slab_memcg() is
+partially guarded with !memcg_kmem_online already).
 
+The patch uses "boottime" predicate mem_cgroup_kmem_disabled() (not
+memcg_kmem_online()) to avoid mistakenly un-MEMCG_AWARE-ing shrinkers
+registered before first non-root memcg is mkdir'd.
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+---
+Changes in v2:
+- update comment (Qi)
+- collect trailers
+- rebase on master
+- Link to v1: https://lore.kernel.org/r/20260225-cgroup-ml-nokmem-shrinker-v1-1-d703899bdda4@suse.com
+---
+ mm/shrinker.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7b61fc0ee78fb..167cd70ae4918 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -219,6 +219,8 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
+ 
+ 	if (mem_cgroup_disabled())
+ 		return -ENOSYS;
++	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
++		return -ENOSYS;
+ 
+ 	mutex_lock(&shrinker_mutex);
+ 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
+@@ -716,6 +718,7 @@ struct shrinker *shrinker_alloc(unsigned int flags, const char *fmt, ...)
+ 	 *  - non-memcg-aware shrinkers
+ 	 *  - !CONFIG_MEMCG
+ 	 *  - memcg is disabled by kernel command line
++	 *  - non-slab shrinkers: when memcg kmem is disabled
+ 	 */
+ 	size = sizeof(*shrinker->nr_deferred);
+ 	if (flags & SHRINKER_NUMA_AWARE)
+
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
+
+Best regards,
 -- 
-Cheers,
+Michal Koutný <mkoutny@suse.com>
 
-David
 
