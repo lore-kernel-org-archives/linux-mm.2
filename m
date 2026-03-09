@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF8AEA854C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 03:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89365EA8542
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 03:31:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FADC6B0088; Sun,  8 Mar 2026 23:26:58 -0400 (EDT)
+	id BE3C96B0089; Sun,  8 Mar 2026 23:31:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A87D6B0089; Sun,  8 Mar 2026 23:26:58 -0400 (EDT)
+	id BBC536B008A; Sun,  8 Mar 2026 23:31:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DF636B008A; Sun,  8 Mar 2026 23:26:58 -0400 (EDT)
+	id A9D566B008C; Sun,  8 Mar 2026 23:31:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F6436B0088
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 23:26:58 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BE100BA6FB
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:26:57 +0000 (UTC)
-X-FDA: 84525088074.14.0A0948D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9D970C0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:26:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C6B16B0089
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 23:31:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24AC0C3DBE
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:31:03 +0000 (UTC)
+X-FDA: 84525098406.08.F600AC9
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 041A640004
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:31:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1WPgWyD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773026816;
+	s=arc-20220608; t=1773027061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=10aowuS9PCUSrI1PqWmJffjcW8VnzKQxSShHlzQUGAA=;
-	b=emXtJBtnmUYWrs1tEM+5EoCE/frE365TGcPbW5M/8BkPIqRk9JeuSmuoDVPT5qJURkmZ32
-	jcM0vUpDFaPdpmoMx3EvcnaJYiTGqfqA3vbQToeM+9KQ1quSuS1pofdlrC4a0cjWTMBbQ5
-	a9orzEedJ2jyIvpiEDv0oFNEELwvBig=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MGRzB9NB7RnJy1AFfNjO4UdJlA1IIFldq9U5XbxXvLE=;
+	b=LOKaSbCVFy3WeDY6XjtwPr+eF1IGM8pASJ9LvssyHQ9bI7tv4E5pzxINYsbPCOpbYqnDL3
+	0mSJQyIz/S3ZkAVbqgqesTJKKTRAirdHBiv18hen8Jc3tdxgAXPiZA25phgcZtaIXxVO54
+	xASJUvpIoFNz/XdQDRBOWo6SigVM5NY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773026816; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I1WPgWyD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773027061; a=rsa-sha256;
 	cv=none;
-	b=sB143E/Se9vZFEluEDi01yRNY4lI00Bvde8SMg1eazmLT7BbOZ1o34tUbWaVw6j6JsZbLz
-	xvsRP4JtFprVfOrjvIvGSBP8ALEPgleDIViZMa1391ERpEIJ3mrOsvT5v3XtGnaIi5S6d5
-	2WKf5XKNjBB557JGmUjD3eWb1IMOIfc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6AC781D13;
-	Sun,  8 Mar 2026 20:26:48 -0700 (PDT)
-Received: from [10.164.18.47] (unknown [10.164.18.47])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F32E3F5CA;
-	Sun,  8 Mar 2026 20:26:51 -0700 (PDT)
-Message-ID: <54c48bb7-5991-4706-b562-4b52f88f2886@arm.com>
-Date: Mon, 9 Mar 2026 08:56:49 +0530
+	b=hxXmw1WOFJkz2nKNrjmAMgAem+12hNucIfUiMAKyH0pb8LB0SfmtNOlCZTBssYAxMqeV5P
+	gtlwe5k8nO+Mebo4fdMnmKEj/tt3fp5pXU3Mj880nRVagYWhqPctBQs1cy7BjJRlPhZbYx
+	R1nyyNKFykc3c3646Xy6LqnLLcVeiCw=
+Message-ID: <c64681a1-2069-421c-9e62-bb63e4ce261a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773027058;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MGRzB9NB7RnJy1AFfNjO4UdJlA1IIFldq9U5XbxXvLE=;
+	b=I1WPgWyDe1PpSkWi58Zt5V7YwT8hbeXPtsYCQU2giIVSqguWg0dr5EDnvQX68WY0JDajo9
+	tmo9uHiI36ZHcYV17iiu58tmXfGiZvnz/M6Mgeww97WrWDnV7hmN4VjOCNQ1+WVMItxj8U
+	hawDYa8Qn46vurq+8oinWUsny/0xQRQ=
+Date: Sun, 8 Mar 2026 20:30:47 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] perf/events: Replace READ_ONCE() with standard pgtable
- accessors
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, linux-perf-users@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260227062744.2215491-1-anshuman.khandual@arm.com>
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com,
+ vbabka@suse.cz, apopple@nvidia.com, axelrasmussen@google.com,
+ byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
+ eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
+ hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
+ virtualization@lists.linux.dev, weixugc@google.com,
+ xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
+ yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
+References: <20260308192438.1363382-1-usama.arif@linux.dev>
 Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20260227062744.2215491-1-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+In-Reply-To: <20260308192438.1363382-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9D970C0005
-X-Stat-Signature: dw6to7apsf3wzu5k6w5czp59c7smo8mr
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 041A640004
+X-Stat-Signature: ymrhtkkm9ajx9d79tg85gj39uzha5pik
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773026815-553222
-X-HE-Meta: U2FsdGVkX19WnyzYdlO8YGgAZs1TNSxe73B8BfUXhpwHltaStEYXC9NYE61xMGlBgQ/RjWIynvZfiZRZHnajEtA/uKVOrOKxyphVQrH3JsspLVezdlsJrfl8uPOVPH2daFWiWAvEa2y4Efl+3FLuxTQQB9tO901TcsLwqQrfMp2cQxBcwmf7JRFVp0FNMw3ZmHu1ZA9NbaSZiPNHHvZoPiNl++lT0sEQJG2x+RQl6A8o1/a0BmgF7hdpzS/ZLnhvK+8lKcLItvM3Fq0KcLxm/dFi2dFqBEGNyuIzcknpURelrcYCQk4VosuCTvPH01qes5Yjb19ewDUOtRHh26X/3EZz/AYRZr/z5ZnEOvCk4HxcAHEI/ZJ4UhjfpnDbeSTKjWKgalb94QRQH6Dz6rWgggrI20Ljy2G+gTO/GlsjlDgg+5uU3DNlUVKzn6RUNLAvi/8kRlFZInm6WCZHKpQrTljF2nM1NxHH5wf/7uvUSv3U3ZMzXc69gnwYYbibTfO5PugugQX7Iud/HPrfqXJ9khi4tL+09lVtR0RK8Syvs3uL7YcKW6lWf2V787gO17uvFDFdcJcWQ4cHhVFtDuq3X6JcG8hB6zMmBawCUGuy1x9A7Yhc0AsTdxU0Gyoamvhslhju4zy3wM4QA16+wij0jsg5wkfh4EMCvVJX5ZY4YSMToHfC6A2CxSlF10FWU1nTongnui4eZiIOOPeYvBzOZFm2GYn50fuHrb/+HQGGbXBjOilGkqYfqOZiD7+jKlElLQpWpAcwh9xTzLOvOOx28Dav4nViKjPzHMXIFW/pzBefUtfNNS09MCXmXSfzBkG85WOjm+WM5dkmx2ZXL6WN7t0NlKvldRQMZ+u1W8CPc8iApktW+lFPBWxNCBKMRDBBXFyIFTo+R1DfHEAsfA2AshVzr3XaNUjIiZiJchYUtXCScbxAvkFMledR6GGnzS3cUbg11SXqXsMsUnn4usP
- q1nxkGbg
- 1jCam5Vd0miXpyNoedkbNZNqPScvcAylVC4P469n8D5x777Y5+VVpD6qDSHtt8WnsB0z3noC5mjoYL1pJAa+uBF/p1fH2xVV2mv/jiMFnhaoxrIaXRlmYjTtCjQ6o4DOT+fzMFkz6dlFxuX/0YNi78JUgESskPELAxzWVfEXDWlOzw9EgWtFldQ8QRzKJQK+4Nw8SlOavYTO9aneOgXcIc5Tpc+OPrxgay/O6OR3JzeB4VPki+OdRsVS0weoFLS6eFHPUknNMiFIP59FFYkTtu4yn2Fc78s8YDHez9SDnFyPOfRG3TKsfJsaBxNL9IXCMhqtrthCAhfJMA6pWhYN1hI5SyignrWlnCuhikBQ3OPQKxRHT5qY1UAs1YNNM88yvEm6E0fJn9bU5TDvXJgh8ucv4osFqjYpswwATBV0EM1fbtdSXjSSaq0sKW0w5ZfGqWm6jhYUqENnjKzQbEvA++RpnukSzoYZSdI3q
+X-HE-Tag: 1773027060-975185
+X-HE-Meta: U2FsdGVkX19YBaAfW52XYAxxK8xuhmm+eCnEy05txr/O1qbae8qbnv6CvcJELpa5e+JuqUzjX96ii+azIfAtzc/b0+NksGSaeP5uBax9w7iU8kB2qBFIcsesW51vPnVZeY13sFZRvZto2eYvlm9QkGp5CL+SW+u7i16rndmGaVeZJZebnQ+Tr1pB0wM+rCWOl3IEFOOjS6BQyuwWGd7hrngbkz0Edi5K8cZxm4SgHfcECI2k72NRe6gUcpNYxEfPKZPNvKMusy5H3sgLuGLqEnxkA9n4DF5DRqLDi9qAx/WchRQeDMTE7KirfPE7n4UG+EalEUK/l8BoDuCVnh1v0G/pXoRqUlLH2BZofM1ENyOGbh4W6RIDHeOIVAtR4BBm2bPVg4NJwPa27XTRwlUjuXSCFXJpDsFPRJOxT6JIPrWKuoRbUP4zbZCkaTHek85njc6fMz1PJdeJccjpwnoTEIIEFoZdLkmDYchVUynYWlI30Njle4JMNNGce8egIbtf+Yg+aShLvCuN/PcAxe8hiPr/cq/D/W2XnLpWmsdRray/1OOAnzari17I0YFhCFOWGXl17qAgsYtlz2hJd0NnzHSR34riPHhGfxtZTyeZDKEYFg8cPt2vB1VYTyUrQ8cIpICJ11WZU395ESZdAznaIO5DKsFG2N0YKnTff+KyLqVSboTBe1NickV91excLwD9z6uV8Tijqwthxt3nbEjq/VTPt6D3LVHkP08oeIK4j7eQCp86CkcOtLRQKdIdkLyg+7UVCUBHhEnYOeX5cuQFAwOlYqFF8CSo2Az+pck8jnMhZmFuercOPdTtRm1cGtiGpkBN4PJyHZb5z7Ze9QDMzItotTcQkSRFW2YiH5hM+q+B9wST1vPHV43vLHmEWb2+2PYXeRJuLJmY28oDyIB1QW/jpX+yxs9jC7q9MGYilbep/N3Uc7I392b8Sm5tumnSTeu0T4NQV8KL+z5CBx4
+ j2kVIQ2u
+ 3sHe6NAAbk3tAyKgdhpq31khvRD2W7TqHFlIMejvFfi3mGN/sjqn0DlJlcCnTCRg7usTS3nOXV5gklJA++TCtbgcQAnVAZqioeQHTCDX4dV7RSDV69pSDyWbycPsKYm6NharZOt3xAfxra8JKxS+i8ls1b7aA6vMr0ZXeJKjfO4nJWBa8rUljQdhR99aGvsEbYed/SJm1W6VthqO5uaIDrDnQzAKFBswrWpbLsnKj1i7cu/tZBJSDri1c8Xmwz29UfIbLLMW5TGaJQqmF+JA+71iiqhuK0E/RPB8H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,72 +99,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/02/26 11:57 AM, Anshuman Khandual wrote:
-> Replace raw READ_ONCE() dereferences of pgtable entries with corresponding
-> standard page table accessors pxdp_get() in perf_get_pgtable_size(). These
-> accessors default to READ_ONCE() on platforms that don't override them. So
-> there is no functional change on such platforms.
+On 3/8/26 12:24 PM, Usama Arif wrote:
+> On Fri,  6 Mar 2026 20:55:20 -0800 "JP Kobryn (Meta)" <jp.kobryn@linux.dev> wrote:
+[...]
+>> +static void mpol_count_numa_alloc(struct mempolicy *pol, int intended_nid,
+>> +				  struct page *page, unsigned int order)
+>> +{
+>> +	int actual_nid = page_to_nid(page);
+>> +	long nr_pages = 1L << order;
+>> +	enum node_stat_item hit_idx;
+>> +	struct mem_cgroup *memcg;
+>> +	struct lruvec *lruvec;
+>> +	bool is_hit;
+>> +
+>> +	if (!root_mem_cgroup || mem_cgroup_disabled())
+>> +		return;
 > 
-> However arm64 platform is being extended to support 128 bit page tables via
-> a new architecture feature i.e FEAT_D128 in which case READ_ONCE() will not
-> provide required single copy atomic access for 128 bit page table entries.
-> Although pxdp_get() accessors can later be overridden on arm64 platform to
-> extend required single copy atomicity support on 128 bit entries.
+> Hello JP!
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-> Cc: Namhyung Kim <namhyung@kernel.org>
-> Cc: linux-perf-users@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This patch applies both on v7.0-rc1 and mm-unstable.
-> 
-> Part of the D128 series but independent. Hence could be considered on its own.
-> 
-> https://lore.kernel.org/all/20260224051153.3150613-5-anshuman.khandual@arm.com/
-> 
-> Collected Peter's tag from an off list conversation.
-> 
->  kernel/events/core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index ac70d68217b6..4ee151cd2c6d 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -8422,7 +8422,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  	pte_t *ptep, pte;
->  
->  	pgdp = pgd_offset(mm, addr);
-> -	pgd = READ_ONCE(*pgdp);
-> +	pgd = pgdp_get(pgdp);
->  	if (pgd_none(pgd))
->  		return 0;
->  
-> @@ -8430,7 +8430,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  		return pgd_leaf_size(pgd);
->  
->  	p4dp = p4d_offset_lockless(pgdp, pgd, addr);
-> -	p4d = READ_ONCE(*p4dp);
-> +	p4d = p4dp_get(p4dp);
->  	if (!p4d_present(p4d))
->  		return 0;
->  
-> @@ -8438,7 +8438,7 @@ static u64 perf_get_pgtable_size(struct mm_struct *mm, unsigned long addr)
->  		return p4d_leaf_size(p4d);
->  
->  	pudp = pud_offset_lockless(p4dp, p4d, addr);
-> -	pud = READ_ONCE(*pudp);
-> +	pud = pudp_get(pudp);
->  	if (!pud_present(pud))
->  		return 0;
-> 
+> The stats are exposed via /proc/vmstat and are guarded by CONFIG_NUMA, not
+> CONFIG_MEMCG. Early returning overhere would make it inaccuate. Does
+> it make sense to use mod_node_page_state if memcg is not available,
+> so that these global counters work regardless of cgroup configuration.
+>
 
-Don't see this patch in next-20260306. Is not this being picked for testing ?
+Good call. I can instead do:
+
+if (!mem_cgroup_disabled() && root_mem_cgroup) {
+	struct mem_cgroup *memcg;
+	struct lruvec *lruvec;
+	/* use lruvec for updating stats */
+} else {
+	/* use node for updating stats */
+}
+
+This should also take care of the bot warning on mem_cgroup_from_task()
+not being available.
 
