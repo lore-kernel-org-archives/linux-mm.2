@@ -4,96 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC1AFCA192
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 21:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 614E8FCA194
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 21:46:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE4A36B0088; Mon,  9 Mar 2026 17:35:05 -0400 (EDT)
+	id 8CE656B0088; Mon,  9 Mar 2026 17:46:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7BA36B0089; Mon,  9 Mar 2026 17:35:05 -0400 (EDT)
+	id 87B9C6B0089; Mon,  9 Mar 2026 17:46:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB57A6B008A; Mon,  9 Mar 2026 17:35:05 -0400 (EDT)
+	id 75D346B008A; Mon,  9 Mar 2026 17:46:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C798B6B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:35:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A79014039E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:35:05 +0000 (UTC)
-X-FDA: 84527830170.29.4E553F7
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 784D940006
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:35:03 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UfIiuqUj;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62F106B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:46:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5FC1C1988
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:46:41 +0000 (UTC)
+X-FDA: 84527859402.21.E5A437E
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C944312000D
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:46:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=ER0mN4Xi;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="h Nj5e+g";
+	spf=pass (imf29.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.155 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773092103;
+	s=arc-20220608; t=1773092800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Z89Z0CbGlfYyK9enL1aU6uEk1uYUJc2hi9of77FKCc=;
-	b=gQTnznchqw3fObDHuQuQxoJYhLvfgzhb8TdbJh4P5aonIAhqExOtxJfdo6bKRs3mG+erl7
-	xJ6E8DSriSd39a5ujObMt/Ib9Yve14eoMMDk06YkaxFkYLTNkKXa4vAxQec8LlucqHMWCS
-	HgSd5dWDbIwLck0TrnXUtbaGa2QawNQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773092103; a=rsa-sha256;
+	bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=;
+	b=6uzxFyrl+a4k/jQTx8g7bxO9iN+S5ke04nfnBdbmE9nmsg86nUJfhnf2OCyFsoLhNR4Feu
+	9lLlk6XRe3+sE8iePkmunKCUjNK61AAL+pQrn7FtpQ0qRJDb4+5gAlJ+BRrt3ej1ODq37A
+	Dt/XypZDCqWW4YjMdoJ1nr83qySTEww=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773092800; a=rsa-sha256;
 	cv=none;
-	b=TbqE8Ev/jJothAjTGq84BWmXCc5yQVskK8z8o5aBzL/FvtKgQ7/qqriXKR0elDSZZujJaG
-	ZSq4IGa02fWI3IZBMdKYRY+vKxpPZzrHBuqMuMJ9rLpejm+RqZ3FPP7yShzGhp98XY/foV
-	NZVqxBgsuxAXn4RcMNv5WZ2WBnhgIzE=
+	b=Jf0JqzII5yMU1xRNgTw1b0VbvkmMC0mdCL09PCN8YKRk1mD/xVkUPa/17HhYCQnTb8W9lj
+	HvYezvHNgcmxYVxaGMewHNXWACIIUCSlNzK2ig9ObHV98WCryj0aIA4zmGWiI4I/UHrKlc
+	mbcSNeS2QiFWYtE2EQDV1MBWkdEi2jw=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UfIiuqUj;
-	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <de0dc7ec-7a8d-4b1a-a419-1d97d2e4d510@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773092101;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Z89Z0CbGlfYyK9enL1aU6uEk1uYUJc2hi9of77FKCc=;
-	b=UfIiuqUj5RN4OnUp4DNTD94bNDfHXU/WZAsxKKJI+0HRS89NtQj96WZrCoQLc2+MRaJK9s
-	E3IB3pqneljaxU6hi6H97Os7emjBXks+52uiFFqGOY8CELSXzuwd1DUHfPtD1cG6LsElAj
-	bpL91EN1nFg/AuG8ETeRKDtWEndcmAs=
-Date: Tue, 10 Mar 2026 00:34:39 +0300
+	imf29.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm3 header.b=ER0mN4Xi;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="h Nj5e+g";
+	spf=pass (imf29.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.155 as permitted sender) smtp.mailfrom=alex@shazbot.org;
+	dmarc=pass (policy=none) header.from=shazbot.org
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 3C5B614001B2;
+	Mon,  9 Mar 2026 17:46:39 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 09 Mar 2026 17:46:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773092799;
+	 x=1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=
+	ER0mN4Xieq0aEpyr2Y4T9JPq/qIzSDzZDIkU+GqMSDjgULXK3ZojVWaFNMn9dmOc
+	Md7lKL96wp9Kg97nrLtmHsGi/KRHvH3/OjGufKJlyD6DdE00qVKKB9dpWr1VR6VT
+	T1/WHskbJ9qrLttbzqdJeMLX5uuPcKVA70/2K24ZaUDbSumnapUUPTcaB5Mrdig8
+	CsDYMouBWOad8x0jUp9MQzE66clVH2XaSgmqVv8RCOXQ+NqvByGaUc4zihslfyFv
+	nhFTOFD2C6Veyhor4rJ2zErXcMHC3FmbyngAH2h9BrvnwEyOP3MguHDosWKXQaIx
+	3Yq1UkuNNF+rlhBmWBUUBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773092799; x=
+	1773179199; bh=pNMQxrTvWN57AG9Ak2GM8Z+gnkCL4ATfy4hgapY0eDQ=; b=h
+	Nj5e+g5qC5e/J3L7YLCaO9TcsNLn1bi2aHDhDaPoZhCNJGZbP8gXZBlAhrCjTAg0
+	o+KI9YsoJ25u8kBNfm2uLByS5WFqaOMZUhfUeGbTqNxsyZDSfQEuamqUV0QyuxBS
+	dYlOAUsuQyWClnyKv4CgwPcZoKONMerSrxjISVXcUQ5qOcrGDLOwd+HID5F9MgEo
+	+ZgNq/NZ19hU1ozRn9CUtyMGjBTBrXK/RoqvLI0eIkpwS+RpQJvMG5CjPK452ALl
+	oZ58AXB6xf3poW4XTOTFlsmgo9znMz4B2TiXuE0j4EGyu8F9EJxnUxPbQsndak5t
+	vBylqm2jnbGv8MV6OSx4A==
+X-ME-Sender: <xms:vj-vaVrdRJpJGFxkQ8JrEYoQbTDle3FI-5BWPgerncvobysh9r5n0g>
+    <xme:vj-vaToZ4Ymee86AW9uRr4rzKi3GsJXkJCn4d-vfT39vM7hgBLkRoXPlByeXFzQfv
+    emHgWKtdDvOR9rC4hkgx-XKiJjdW9QmrbPNlEJByiOc_Ibehps7>
+X-ME-Received: <xmr:vj-vaUYqvQEI-cyHyAiS8Qn4MOMtlq8oNGDo8g7xydIO6NGN7JAYnpKYpyA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvjeelvdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeetuefgleefhfdvueegffdtffevhfffgfffiedutdetgffhheejtdekfeek
+    ieehgfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrih
+    htvghshhdrlhhishhtsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugihpphgt
+    qdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehmrgguugihse
+    hlihhnuhigrdhisghmrdgtohhmpdhrtghpthhtoheptghhlhgvrhhohieskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpth
+    htohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghr
+    giesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrdhorh
+    hg
+X-ME-Proxy: <xmx:vj-vaR_EwZAnrT2pYrOehA4E935LJ47UYXG7Jat2rB_06a7GwOH3Ng>
+    <xmx:vj-vaSkwZu6q2NK-gkaDkYoJypyKav0xrY4CW6KvvOgYLWMN9Ciy2Q>
+    <xmx:vj-vaewMIFI-8DzcnX86t6Z0KZNTDE_6G464zTpp5jf5OQDrAHrBHQ>
+    <xmx:vj-vaU64UdZ3Z9H6LG_PxcOjZb9fuSjrS1hq00T34k-9sMKHm2HFBQ>
+    <xmx:vz-vaRadkRTVmYW3fguCihEDIZVohjG_73koUf7cPmbSiaz3zhUzy02e>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Mar 2026 17:46:38 -0400 (EDT)
+Date: Mon, 9 Mar 2026 15:46:37 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Christophe Leroy <chleroy@kernel.org>,
+ linux-mm@kvack.org, kvm@vger.kernel.org, Peter Xu <peterx@redhat.com>,
+ alex@shazbot.org
+Subject: Re: [PATCH v2 1/2] drivers/vfio_pci_core: Change PXD_ORDER check
+ from switch case to if/else block
+Message-ID: <20260309154637.3abf76af@shazbot.org>
+In-Reply-To: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+References: <b155e19993ee1f5584c72050192eb468b31c5029.1773058761.git.ritesh.list@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Subject: Re: [RFC v2 12/21] mm: thp: handle split failure in device migration
-Content-Language: en-GB
-To: Nico Pache <npache@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- lorenzo.stoakes@oracle.com, willy@infradead.org, linux-mm@kvack.org,
- fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org
-References: <20260226113233.3987674-1-usama.arif@linux.dev>
- <20260226113233.3987674-13-usama.arif@linux.dev>
- <CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com>
- <6982e9fc-cc17-4d4f-b26e-83997c4bf070@linux.dev>
- <CAA1CXcCb6aZnjgtunEuwL380S-2re9N-AEjZUB+XO9G6gkrHQw@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <CAA1CXcCb6aZnjgtunEuwL380S-2re9N-AEjZUB+XO9G6gkrHQw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8t454a3dcg8c4eriw433yuwwycc9n5qq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 784D940006
-X-Stat-Signature: ze96k5yy7j7kn8sfic7gh797ptex8fd6
-X-HE-Tag: 1773092103-556291
-X-HE-Meta: U2FsdGVkX1/+Np2dvAturbGp2YNhLufgKUKcj4Vg7FZJfW/T3tbGo6nHVlb/jiDuys/KJoNkJj3FrtCD+DT2KKJVVL21uW5cCbB1z+VI2c3JzY9wgI1iDH86aVgvaq4mH+nfNXUOGPTLi3n7ufrufC8uAbseL5YxJQg4Bg1xCioNGVpvXsicdScosE5eLbghmUic4WVV2KXrskghevS08zN3L7PlHJEgfe+GrJBL/kjiSvHiP+nmBdVmvqHFtT0yldwSTROk3nFrWxq/pSl5pUrkDo+maSWz2ZonPcZRdyj2uHRRtZ0aiyJyB+ss7pZnETaRJKsZqLOB0j7j6Xe/TzN27Qswmzui8bkXRdC4G3H3KImSZBuivc0NjLKrhVvDVJh6GhwOkMHhFjFwdhBKqVfTXzVx/nJC7xxd48X+qFsLDG69j3GKpo3DVZrCtZDcvbiITlrqPAvTs6wHfp2rtBPWyDoRhj2ZS3VOe8lWbGYlE/mUuoZWxAvy2h6xdAgiP+fC5J7wZHyfck/ooZoJ44BHCY0wSX4/n2+W1Pc0r/HnWBvSEJZKRVAIYKJypr6ojZUTgXpad6imOr854s/hso51azXvrdkFCwgvT/FBRQTVPFr/V5Ity/KTUgUtD9EnzAFe/fkEVDi6PX5e44uEyBI90CwAQxOosXAY2fuTpFi44ZAoD2tnZFmuanc9/don+mWLxJzechkY/ED92tSKNzlFulXp2lkdexdUqm9dsfW/swAG3a0bTQIgGMr7WP/02EprSTwiLwll9eOhfsga/CwOAeixkNUfuB+Ek4Cd6RF166vvq1HHRqYCFpnuhKKlB/7XEnAkz/hjpAeyUCCv8TQ7EP664t27i3nh4Fe/aZj5z20RB6XIPZd1Dfw7qn49ll4gkiBxOFNs9+KgE63IFZyLijlZkAdfs6T//q9SHhPcetyi520f6ljeOlZ3/7p7DR86j4VjSAE+Mrnlhqj
- q1QQHbof
- dU9/PGZeHZPrNxcQ69iiGDCEU49pxESid2sYuHDZzalsR4mcn/z3gWoPZafpOdzas8Jx3gPL9k44iJmmHZKl5x2oJ+XPq6Xzid7j1vMIfCRAqinExYoDcQw9JLKCdsuM4vOxN9VcQWPzM7y2688h1nxCEpmIOO+gE7svHQwZnkThLR3pLKhXY8/POK9qg5Dr5Hf4CAHqp8hN+tpAUZtCpO62HTFKP30IaGBKnRfhbFrwUFz0=
+X-Rspamd-Queue-Id: C944312000D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773092799-869759
+X-HE-Meta: U2FsdGVkX180TJx8U/vcd7wUiDBrzPc9rSmhviTxqe3nxZVNAM2nHNpVQqHT7BSrd81aWcfS+MlivXF+fCvbrLVKJNc+GcBSbAKHoumhyqtkJPatNh2mTqSv3iwmlhSoi2uNX/0igF2v+Vuuz4jcce5Oj3JAoz5kWS753zveiNIcGul7a4ldWgXV3ldMGU1wuo3EIOZyAQvTzcKu8rqRHdKdIHldHISyESYBRERXmvQPPo9whnfqK8AiGJ7Pt5oAsLNLto2+4EzTX/IFXYDvUhvkLw0ELsEQ8IVYPtQ4zxKCqDO4dhFSY39jUmERxwRIaVorVz7DMtCSLzUAb3UNPC5igJvLWlatuNNrI206xYEdufXNASj0B8z8wCpOeiw6vRzyiy6UMHAVq1YjEVpYh98LjW8lfXeyGt0/ZU/e8mkTHlyQcFZKewB7eWDn0vRb0xUiu0ZH0SbwK388BHDqi5O9oa4UsoR9tRvjPWHjdVpIYmQJMG4H8FGFhsLNUtY4WpnZLkgA77hwfbwML4m0VRgWsVWLmIUKRJjCwKDuSdCFf1Hrv8lIrs7xPngx3KsmgIPILX4+CRBO5xQAya7doAVQRD689AUrMYkNxM0aHamC9TdpyZp/5eV9mEFTEK7PjsDCBTWEuqgpDZA+EhehRexmJF8pNX/v3ms+U/O6TPyI7UlAk1DWg0JVVSTQGb5nbLQl0txR23dEF8t3E5Kp9GL0meatUyC5XBtpiaXGR7aZaJ2QC3o95QJY7y2SwNkIVMET2B9PaDbZLu2lV6GtFZXq2SOEnAJY1JK0/zQtK5IgPEMKNk92kgmj4IaI2W35fVr4vxJDScYCQqYYwn5jU1idck7ByJrYSWWDqjezcU3G0A+rCP3KuiSc705vNNC83U4y55h4uGhdh2YlXtKIeRZGSnm04q6Yacud+Ry4EVhHRuROaVNK4cIgbQ9WgszCU3b1lEKAKeRTvPtgE8S
+ VRx0fbd5
+ QmqEnGwO4gZosfKLPNpKQaIKBmS8m1JUsfXrkL9v2Knbh0VQwioP9KFtry/UhuAki/inE8l3lMjLETh5k6EVPZ+iWOdldKK0l7PFXv9dY4pqmb8nKW6V46Rob7tZPA4A4XHK+CtD1uAxfZlAGMYyUUGZLasVc/uF7p73DWa74gL0jsSBqxotbPYIlQmITEOgtIstQFg7F/XG5NIWfkHQJnfrzonoKG5m2FgtJbF8VQt+jUzn0GnaeFT2tWFg2SR993m3By6ZvCgKrrFDH8ZxYf9PiLkDrcKVimInEyhvUApiYL5y4nfxXua8JJcUgGyDSoa2K6gzadtRFzd1AmRyA7NrhWD0E4OoYcc4hdax+ZyCiQZc/0GCQPwMrzd/OxaEdf7rZreCpjg0I8RZoqPjRK4oQtPVZBsCjvVsOI0Urx+bci8GxnONb+kryXT4dLU4rheyXI2Fo+OOOHz0PB7R8ani5G1qiTKx5xlD1ydKcKPePr4QRhWa2g954NTJq6+kBHeu6PPaAe/aL0KvMScJlrlFC5JPUhJC+qlInglgYPqZBcKA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,74 +140,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+Subject prefix should be "vfio/pci:".
 
-On 09/03/2026 18:09, Nico Pache wrote:
-> On Thu, Mar 5, 2026 at 9:55 AM Usama Arif <usama.arif@linux.dev> wrote:
->>
->>
->>
->> On 02/03/2026 21:20, Nico Pache wrote:
->>> On Thu, Feb 26, 2026 at 4:34 AM Usama Arif <usama.arif@linux.dev> wrote:
->>>>
->>>> Device memory migration has two call sites that split huge PMDs:
->>>>
->>>> migrate_vma_split_unmapped_folio():
->>>>   Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
->>>>   destination that doesn't support compound pages.  It splits the PMD
->>>>   then splits the folio via folio_split_unmapped().
->>>>
->>>>   If the PMD split fails, folio_split_unmapped() would operate on an
->>>>   unsplit folio with inconsistent page table state.  Propagate -ENOMEM
->>>>   to skip this page's migration. This is safe as folio_split_unmapped
->>>>   failure would be propagated in a similar way.
->>>>
->>>> migrate_vma_insert_page():
->>>>   Called from migrate_vma_pages() when inserting a page into a VMA
->>>>   during migration back from device memory.  If a huge zero PMD exists
->>>>   at the target address, it must be split before PTE insertion.
->>>>
->>>>   If the split fails, the subsequent pte_alloc() and set_pte_at() would
->>>>   operate on a PMD slot still occupied by the huge zero entry.  Use
->>>>   goto abort, consistent with other allocation failures in this function.
->>>>
->>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->>>> ---
->>>>  mm/migrate_device.c | 16 ++++++++++++++--
->>>>  1 file changed, 14 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>>> index 78c7acf024615..bc53e06fd9735 100644
->>>> --- a/mm/migrate_device.c
->>>> +++ b/mm/migrate_device.c
->>>> @@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>>>         int ret = 0;
->>>>
->>>>         folio_get(folio);
->>>
->>> Should we be concerned about this folio_get? Are we incrementing a
->>> reference that was already held if we back out of the split?
->>>
->>> -- Nico
->>
->>
->>
->> Hi Nico,
->>
->> Thanks for pointing this out. It spun out to an entire investigation for me [1].
-> 
-> Hey Usama,
-> 
-> I'm sorry my question lead you down a rabbit hole but I'm glad you did
-> the proper investigation and found the correct answer :) Thanks for
-> looking into it and for clearing that up via a comment!
-> 
-> Cheers,
-> -- Nico
->
+On Mon,  9 Mar 2026 18:08:37 +0530
+"Ritesh Harjani (IBM)" <ritesh.list@gmail.com> wrote:
 
-Thanks for the review! There is a need for folio_put in this patch
-specifically for split_huge_pmd_address which I wouldnt have figured out
-without your comment, so really appreciate it!
+> Architectures like PowerPC uses runtime defined values for
 
-Usama
+s/uses/use/
+
+> PMD_ORDER/PUD_ORDER. This is because it can use either RADIX or HASH MMU
+> at runtime using kernel cmdline. So the pXd_index_size is not known at
+> compile time. Without this fix, when we add huge pfn support on powerpc
+> in the next patch, vfio_pci_core driver compilation can fail with the
+> following errors.
+>=20
+>   CC [M]  drivers/vfio/vfio_main.o
+>   CC [M]  drivers/vfio/group.o
+>   CC [M]  drivers/vfio/container.o
+>   CC [M]  drivers/vfio/virqfd.o
+>   CC [M]  drivers/vfio/vfio_iommu_spapr_tce.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_core.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_intrs.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_rdwr.o
+>   CC [M]  drivers/vfio/pci/vfio_pci_config.o
+>   CC [M]  drivers/vfio/pci/vfio_pci.o
+>   AR      kernel/built-in.a
+> ../drivers/vfio/pci/vfio_pci_core.c: In function =E2=80=98vfio_pci_vmf_in=
+sert_pfn=E2=80=99:
+> ../drivers/vfio/pci/vfio_pci_core.c:1678:9: error: case label does not re=
+duce to an integer constant
+>  1678 |         case PMD_ORDER:
+>       |         ^~~~
+> ../drivers/vfio/pci/vfio_pci_core.c:1682:9: error: case label does not re=
+duce to an integer constant
+>  1682 |         case PUD_ORDER:
+>       |         ^~~~
+> make[6]: *** [../scripts/Makefile.build:289: drivers/vfio/pci/vfio_pci_co=
+re.o] Error 1
+> make[6]: *** Waiting for unfinished jobs....
+> make[5]: *** [../scripts/Makefile.build:546: drivers/vfio/pci] Error 2
+> make[5]: *** Waiting for unfinished jobs....
+> make[4]: *** [../scripts/Makefile.build:546: drivers/vfio] Error 2
+> make[3]: *** [../scripts/Makefile.build:546: drivers] Error 2
+>=20
+> Fixes: f9e54c3a2f5b7 ("vfio/pci: implement huge_fault support")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
+> v1 -> v2:
+> 1. addressed review comments from Christophe [1]
+> [1]: https://lore.kernel.org/linuxppc-dev/0b8fce7a61561640634317a5e287cdb=
+4794715fd.1772170860.git.ritesh.list@gmail.com/
+>=20
+>  drivers/vfio/pci/vfio_pci_core.c | 19 +++++++------------
+>  1 file changed, 7 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index d43745fe4c84..0967307235b8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -1670,21 +1670,16 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pc=
+i_core_device *vdev,
+>  	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+>  		return VM_FAULT_SIGBUS;
+>=20
+> -	switch (order) {
+> -	case 0:
+> +	if (!order)
+>  		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+> -#ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+> -	case PMD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_PFNMAP) && order =3D=3D PMD_ORD=
+ER)
+>  		return vmf_insert_pfn_pmd(vmf, pfn, false);
+> -#endif
+> -#ifdef CONFIG_ARCH_SUPPORTS_PUD_PFNMAP
+> -	case PUD_ORDER:
+> +
+> +	if (IS_ENABLED(CONFIG_ARCH_SUPPORTS_PUD_PFNMAP) && order =3D=3D PUD_ORD=
+ER)
+>  		return vmf_insert_pfn_pud(vmf, pfn, false);
+> -		break;
+> -#endif
+> -	default:
+> -		return VM_FAULT_FALLBACK;
+> -	}
+> +
+> +	return VM_FAULT_FALLBACK;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
+
+Otherwise LGTM.  This appears to be no change for current use cases, so
+I assume this will go in through ppc trees.
+
+Reviewed-by: Alex Williamson <alex@shazbot.org>
 
