@@ -4,129 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 574C4EA8542
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 02:28:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B9ACEA854C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 02:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 765FB6B0088; Sun,  8 Mar 2026 22:28:35 -0400 (EDT)
+	id 4E8F76B0088; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E92F6B0089; Sun,  8 Mar 2026 22:28:35 -0400 (EDT)
+	id 496F86B0089; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CBA06B008A; Sun,  8 Mar 2026 22:28:35 -0400 (EDT)
+	id 378A46B008A; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 490016B0088
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 22:28:35 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C69D98D0E6
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:28:34 +0000 (UTC)
-X-FDA: 84524940948.23.BEF6E21
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 029F414000A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:28:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GAlD3m7O;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 25BE26B0088
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6AF91C89E
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:34:49 +0000 (UTC)
+X-FDA: 84524956698.28.AEDB933
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EB24810000E
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:34:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUubOeJ5;
+	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773023313;
+	s=arc-20220608; t=1773023688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ps1Hfv9yWFYK/K2noVGj+dmwqc5tyuYyDUSGFJyxTPQ=;
-	b=WUMLfhLnQpFBL7CrdajybpzulVTU0D7iNqXQSQXgRfZpR8iXx7N2ul5BHnZ2MDS7sjpQ8L
-	JkUjP7nUH/rBsQr52dTgjB5vDieHw4NK+Px+1vRgAzmHyT/H5s36b8tBoX4ItVFZjgbHqV
-	cYbUxAyh0lh29vql8WooZMTSDpM0Sl4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773023313; a=rsa-sha256;
-	cv=none;
-	b=NNYcnBDw96pHsS5z7tzmMraqDcUe45xZ5sPMk3RqpKKfksL3uPGjA7M/wWev3w9dTIDDOF
-	V+Leuhm+SZmvbEkwngSp2kaD1hnPqShH8yG6gT8lnDCPeVGOJM7MXqT33era+sLgLUjivj
-	JgAP6BaNzAFV2naXb4wS2IQzQ7XSDik=
+	bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
+	b=brWP9j/b+wZgcVEVNSqrhpLdQOwCugraoVA7JpH0x8Ve3BLBpnX+S1GsgSgAI36e/EUztH
+	B89t+KUB670N6xSPNB1l0xLzWVrj8lV8EG+t/+YA8JptYMXQ3sZicbv2TVggj+ZuULU1ur
+	qpgsDjRsBsq1RiwqOw6J5pIGujSlmPc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=GAlD3m7O;
-	spf=pass (imf23.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUubOeJ5;
+	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1279eced0b9so10086923c88.0
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 19:28:32 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773023688; a=rsa-sha256;
+	cv=none;
+	b=3oP17amWVl8HXPwYl/djmkIh0w8WCVFVOYRR/ED3Qdn+IP6d/u8jaLVcUN/lBFCdpRXCOB
+	dtVfGmdGCWiYWseVPLh7znKAmEXtnrb/4VP3cDCyO9KRHAPiKPSkB7pVv98Bj5vEwSqPqH
+	gLWETGoFEGZlIa14Hx6Oj0yzZiTniuo=
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so6636604eec.1
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 19:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773023312; x=1773628112; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1773023687; x=1773628487; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ps1Hfv9yWFYK/K2noVGj+dmwqc5tyuYyDUSGFJyxTPQ=;
-        b=GAlD3m7ODtPnnFaioLXeoCEh4Lpy+loRWCNd63ETZyotFxopfuSqj2Mm6mQtxkK6zw
-         n+bLtRWNThEima89afwo7JHh/lJeyRJe1i8rdpH9GZhr2WUMEjADaRNqxsKjD9sQRSpF
-         5YGpcVYsq5pqnfnZ3s+6n+JuO/8Ivvrna7AOlj+BZcp6HH76zGVuuv1K1X2qce2B97kO
-         jfsf4Il6xMe6m+28GP19nwLkWunVuDeATDqw0OBxqHaz7Gh9WrBuG4rph1q9Ohh+RmX4
-         Y3ir7LnLvAV2v09GCl7gAMnqMCS/uXMPj4uPlbnM7237HR+6X4sv4jtykJrieDtMv8Pq
-         jiYA==
+        bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
+        b=nUubOeJ53tVNdL6Y+kfmh56kBV7Tonlp/c/9iFV7965k9VV/q9y2cVaRAA9h5mUth7
+         eenK2COGaffjH/i38nPFRLCp8NcnTSTnZqaDTLSOVNKQhZILaWFze9gKI58JDe0SQiNd
+         QMXV/jkzpfgQ2Ewr5LZ550XJ7T4GJO4TOkBMoEaLG2H6hz44h3gX76CMJnZYQoB+ZDuO
+         n/zCXnYQ5AQqG4tY0kIgCVwKg6KfRk3/82AY5sQEiCIdLvcbI9SzEMGoFyUEPV2SYIVA
+         yKKczISkM7jWWfLP65fwjt5picZFBv/iSY+LOqDqkk9HysXEG4lTwtRRonNRmieNWO+h
+         cpMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773023312; x=1773628112;
+        d=1e100.net; s=20230601; t=1773023687; x=1773628487;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Ps1Hfv9yWFYK/K2noVGj+dmwqc5tyuYyDUSGFJyxTPQ=;
-        b=iKo0TD7kO7jN9lqEKv48LLvoJ/3IdeBEDwXKw+3Tm+wFq4TkyAPfwDWUQ9MirRZv26
-         gfJDYvHmNnx2zGsF52mKsJNLddI0DHzf6NXrAXHa0LoCsTtc5TMo21I+L9ymlTGp7ftK
-         LbY34TSkgiE2vRdRylbHE1gjuc89eJLyEGk2KhK93ghLUhIWg4DXQwqzGJzVqLusserS
-         AX5zO2JatQsKCn+m3lbZ3fHoL2d9K8TZxEObos3kdeJRTItuWV0mhNL8+RcyQpYl4jmo
-         fin6MBgf1JIHCEE9OKQUUiDz0HuToyThQhcbtIJL3M+GnWZo1sdNbaMDrtP3n4imK2Gq
-         otNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwDeJQY8Nua28mjG/mP5TZqZ34C/dUfw0Ai4Tc/oDZV7zb9ThUcVls0cinv7yF8Px3YxpDUlR6AA==@kvack.org
-X-Gm-Message-State: AOJu0YwijWkFofkljCzGQpQd8n7pVFhQ183nC8OQj0bk/az908QXN1e3
-	VnwA+PSnA2tONInJ3juHkAqXKJFnkL0AV/iEVCWTxsvzvfGsXftNbJaD
-X-Gm-Gg: ATEYQzwkJd7Y1dLkBH+Z2FY16Xjw8R74CgJCyIuy1vDSfiagCS1fSc89qhbEodfPYJU
-	RR5QNAiABKSOGrrf8PrhunZKyuXTqmLNqUiQ+DykXCqo9Gy2Bhuu30sAYpXNYr0QX155ILIZ3Hn
-	jJqqpwl8/z8y3KBWZ686ud/ZFEmtHo4j1t5qCuMJCPkd4ZMO1ndbLLO/EiSb3idpZS4nyskaycv
-	AO3HODAWMfAJdSh2t6xTDAZfupVst0ctEY0iw01AxF9J2CSBmNbdBQautqVgYybrwCW/aNspD1S
-	K7CHuwN67DKvTPTdLB/cC1TKdHRxDm+hOfmfwlNoTaDjP/sYO7OVhO+ApkLzVQbr24KFKUghBlF
-	35Opor7LpgNtftvzawlQiJk5O/sVajMOnom4xcc1jJbGhFYDwxQWTcxkQr136VEZOopnWnk0Ik1
-	KPP9KOhQTTxh2aidbO/llNdvSedit/J0k/LR4=
-X-Received: by 2002:a05:7022:4186:b0:128:d5bd:3572 with SMTP id a92af1059eb24-128d5bd39b3mr713023c88.31.1773023311637;
-        Sun, 08 Mar 2026 19:28:31 -0700 (PDT)
+        bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
+        b=Wj2lZ9Bqvc5iOPeFnvWqY3E+LfHyBRksDQ64Bl/HllSEL3M65T0n1kqAIea3AYodei
+         dZT91hFEie6X5fq6WymkLOpHZm2j1I9z0Su57sWoC2IpU+Xo2jB7myiDACrlsFHn8A8l
+         WyhFYBw5tHKK0/RuZTHD1W85kbSwpbJxgpXZiIQwT4Di54JRCLZ7zD0dtOBSOtQHgPRq
+         rljSEFCf9V8sZRQPJquFzGrJGQ/UwQJzPekUD8FrIFRSzgPCiGU6ZsKcm1RSptjf9q42
+         qlGWHVTlHxFHahtNUFJMe0C2GWHw/dW0hkUcKs1ovm7sLhYnVZiSkhIAYJtANpgrIXXU
+         QP/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW7+KjhuC+FQNPk+hM83EUuS6IkdzrQr7YA9pJ6XQa1U20Zs3wecLO6OdEW0Hq/pjGGcS49Iwj59g==@kvack.org
+X-Gm-Message-State: AOJu0YwoMD2EZYqQ0xK5OaO5GXyRMUzz4GrZ8apcJKHcHN7lFTj/eV8T
+	IbwPkVrhWbT0ahyGEXCpsYiHwgVzT8ORebHXmDhhz912O+sllf0E653x
+X-Gm-Gg: ATEYQzxD6DhqEWN2FuWArPF2HS6Kfl101CaQWckqq58WOLjZ5DXBcK7dYq3TyONv7Es
+	FkEgCDwxxQ9wiA43FPXQiax84WqvCOG3vZct8u0JwqnhnfcYg4RAeRcrH0TYWwycZcLlw2nRv8G
+	HqhnVw8WN3Wuv0AbDXH+xEQqJdSZ0d/e3uQIwn5SySh1zfVI5e2mh9bVLcEGrjytErcf7TooNIS
+	QI1qnOiMZF5zXODLxrNdk86PLFLX0er2u2atfWbRXCQBb9MYgeovXSHY0ZOb3pNaMj44zFvKbHD
+	ydhHXyiMbk0F7cGG/RbtT8zsmyqMh3zO66cxJ/TluGotbdeYQPtfoqnD+IB59rPvE7dN79lzNWH
+	DA+3Ws15oz0kmuPp/EYuuw0XBpCDih1uPg3iWHaqOKhdN8Kzevup1Dq+pmh5zjIF6dmIILEo+wp
+	uCqDOHw2/aO5poGsi5j27AJsezaZfW+3JnZrs=
+X-Received: by 2002:a05:7301:3d1a:b0:2be:fe8:8aff with SMTP id 5a478bee46e88-2be4e03b3ebmr4076299eec.18.1773023686622;
+        Sun, 08 Mar 2026 19:34:46 -0700 (PDT)
 Received: from localhost.localdomain ([104.28.165.128])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128c3d5a85dsm6728418c88.3.2026.03.08.19.28.25
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f80cc1dsm7076193eec.3.2026.03.08.19.34.42
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 08 Mar 2026 19:28:31 -0700 (PDT)
+        Sun, 08 Mar 2026 19:34:46 -0700 (PDT)
 From: wang lian <lianux.mm@gmail.com>
 To: sj@kernel.org
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
+Cc: akpm@linux-foundation.org,
 	brendan.higgins@linux.dev,
-	corbet@lwn.net,
 	damon@lists.linux.dev,
-	david@kernel.org,
 	davidgow@google.com,
 	kunit-dev@googlegroups.com,
-	lianux.mm@gmail.com,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	skhan@linuxfoundation.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH 0/7] mm/damon: improve/fixup/update ratio calculation, test and documentation
-Date: Mon,  9 Mar 2026 10:27:59 +0800
-Message-ID: <20260309022759.9010-1-lianux.mm@gmail.com>
+	wang lian <lianux.mm@gmail.com>
+Subject: Re: [PATCH 2/7] mm/damon/tests/core-kunit: add a test for damon_is_last_region()
+Date: Mon,  9 Mar 2026 10:34:06 +0800
+Message-ID: <20260309023406.9784-1-lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260307195356.203753-1-sj@kernel.org>
-References: <20260307195356.203753-1-sj@kernel.org>
+In-Reply-To: <20260307195356.203753-3-sj@kernel.org>
+References: <20260307195356.203753-3-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EB24810000E
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hfcyue1mmemgygx4jbjm81y3rxkwpc1o
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 029F414000A
-X-Stat-Signature: 3o91iwaftodie1mgadpk5ph8atjfiq35
-X-HE-Tag: 1773023312-473473
-X-HE-Meta: U2FsdGVkX1/q/e7SJVN7pv7I/s4SNQVgdquoE02pP5hkBW4OFrpxv0nNtPUrLyHZ7+vfioG2PXU2Ky29MmX1CtVmfrcxTx4/79FWmz8ZMh7AnrU8CPKgaWRIl2nIFuwlIkAyTn1erOPvuJ7keyf7yIfpWVwcMLDzE8yogJHWAYVAkqYR2tJAPCEXXKzWzY5RGtiaCu7flaWUpkniHqxcCus4x+6XzoMpq3dXqJELlnwXMbEX/U0pZs3COtS1RHPX0gxA8r8iFb2ivRxRw1rpIMXPOhk+BNhjTO7PPdous1hDriV0a7YZ3mG8LxBBM5dBD+B96BIIv03F1vE6Ox5tPsQeVeJY0pFG+Ed//gZYqGp0m0ycubpKOVPt1kQUXJ/VQ7b56Z16nigM5BhoNkGsEN9C2yQGzZNNR+evEReDn8j4pBTJM3Zmu7ph4GkNvqVx77qJUMpYOrwWAmNZnBAvDaMRJh55F6niO+IpeLncV5xed9esYk6atJOOonjkIn1b33KDqlMiJb8WzEBei2zFvyNc6V/5bhgKYoRGacv7jbxrYLqV5ZL9DoAvOO/juLdjrIZOD/yzDMfdbSD3DbEVOkYmJv8K2XBBUtHTYGuej00RCF84xiZii43UPAEJNeYxlLhV54FtKrBg8L8jiF9Udz6VxRaIlfbRkFB5F4GlGz4EIjlsfi6CXgbHx0By89SNKjEO2KIJbewrd2PMTFVj7BufeJZz6XzDJosGfckbvjwWYq36BmPcfBMxzp0vxIzydpyw8cJ2R/o9GL56CgO8YZa61MhHoGbc470a/RB3lJ6kuQ/9rq4Y+pE4Ecl7kwfABg88+eYNGGzkfQLKdBeRDhCyBjbuztSNsKuLnhOqAKxo8OHChBJWNuXE8ckglJkCqW8Uw5TFjNJ7HmHmhE4NUOFij3tcnpFjbJba3vsunwKJ1l0ENCfrVmse8x+9Kxzqp2qdBJqqbF5B2fzZMRf
- RghFgUdS
- eYPLozp6iQ8+yVBl4mHsoghBD8IFItWQa4YzIVJSrm8+USAw31B0hdgSa26m+jtji9BGFudE4V2nr+aZD97QlaJiclK/Bx2YDe08AFggp7T6GONZiAg2IWGx+/FdPY4cOPO1gC8jMQWF199Wjn3Zm5AZ+5gbPrSCjSRH9C6bI5g/MHn4/5Bu4wHHk7PD7N4JPXqw6r7aYGKLZoxa/nemIWjm/shh5M0VSLO2l0TVsk4SUlM+XvVzWN7QMWTC16a+yxfdvB5fDzDk7odFcoK8Bdj+GKitGAlvtuMxLYz/cSkDVo3N/WzP7UkyW8bdayZudg1LJFOU7qiZg4n9Xbe5hwE3FSfZZP5oUejwJO9LvQUNZkjmy+yhs7S80FpwLXbhQnv5bgvDlEc17s6LOXiYv0560jo+bZwpOIRHIPfx51pC6zhEBfLIUXRyuLEO2AxXfXsGb/+L08KDTMt7ArT1Uzaw20wzfGW/DF5OuFo06pxOO4AvAHrIP4HFMQCgPCI63LMErQTzSuNFSCJTDPpFw/7vLhIO1vTrbXw/uGsvFqn2qkuAQSliuaJ8IPq57/b3OXz2qXVteUb/o+vxHkMQb/WBU+GDz9yV2p1+c
+X-HE-Tag: 1773023687-900019
+X-HE-Meta: U2FsdGVkX1+gMcTgl2H49XRGMI4kp5U9vQhBsHRgaHQGYR2IDbZAC3i5zLmHUMZBP1+bixOEZuBgyfITZFB60aQGuv0T1NEntRyXQzNsIwJljcKiazvmPm18g2A9zgkda9gDklK4HFZsi1bODjdNG/zJni84UcIcwToWuNsYCQAOeTQnt1c+6hNfa8eq4aKDu/d5W5eCb1wjYgYONa70cPhbfcM/wEUYUM+Tv1DD8it6ghjotXHJSF8ILkxuGbffmhmGno8BbhWy4AtdTEuAHAX/2w6duJrPXnsZmlZkT0IqhVTsdh39fxJlxiMRZnImO7PufvPC5Dg2rJk9YRn7lc5PcIRz0R204RV4ZnsplUM3JJM/Wdo9AJmipLWoxZHnZO9GhDJo8OdlbfAM2mZ9fs52qoUUt7KAGOq+BBNsl9uTkrgvBfvixvPVHGzuHl5S8pPZ8cCFokNiU0XMuNMPOvYgtA6aN26z1BvlwqwJHqI4W1bgtkbAGll6QJqkYaGy/RVWpONCAFtMSuGsevEdW1kgYu18sKax1a/HD22dNDWl8zX6g9W/9WyJAdGBRjh9qdGUeOKg8ShTzR8xOxindPym7NYqEUoGE2YG2jhCPilxb6m9EseE82S8acB6TEt6n09hrGCIunubk79tezwPFRd8cFkTc/lbl1IwJxqeeqZbLlegKxilUXQYVscNtNHqVJfbz0F26A06DCcmf7+psUXkaVbuw6G+jv2jmMxOPh0mS5BZRga2LHCskVy6LfYH5d6oFQswS37+SDmjbG+Z/pwHWLu7t2fwyTvstN6fZ6ZiQtq943JP1jmNvJZI/2WmMEP6zblQ+7SXaDwbU00FMhjsPnBqmhRnyzziKOD9RA1eIcZBPzXw3N9RqhPpO45JVuYCauDSIV7Mg567ZE2Viy6qs0L2EmXwgQvpQvgMiPSTLDuU1gCeazawCjGl9TaA/MuiCXXZL5dOK0sw7qK
+ uXwj+D3i
+ W2qenljLKClAGqpcymYQwIgBl0GIRA1uGt6P7X0swWljIoR5X+kvIxZpYm4h7fnL/7Ly1Bno/y0ELofJutgqy7q3fYNeYaGk391E5FCpbd0C4ePi383hkK98lzZcXtVc72npa8BxyVK0RsY++PWTwgYOpOsKfbc58Rn6EMNozx5mvUWY3E2mj2mVaHT3GQ9037Ac+7FRzTLrhtEoPelG+2Xl7XvJzP1T2DIXUzi3s6/W8oasH2SgY5ZUKL6msCmFxbHavnMX1aaxP0hu663c5ivSxdsqC6oA90MLJZ9jFMvJLqyUUQCAClAvOokEIjIY7jDpKwByPTiwd6kHoltWuSKQTdjfWN8JH8ILOQpbjYbEfbNNcHQi5tqbQdWgN+hg0HTOw6uF839EPCWfjRsH2E5ek2xGGwBQz7FVMOomdtFLU4qgrUHqy3hUWWOKg2JQNeRgbXkZLECOBTS80pxbuhAjBI9LIOnMle475yPYrltq6WhX+uBGbF9MMclY6FANKg2cTL71ABZcovRD/lBfqAD94cXznkSDISi+ZChLMeBteu3cKXNb/87FHTfBwUl89GIw5wP1LopR6DgQLMpMOIhHotfItC9OkXSKHRvi+HJAKlReykU4u8Ks0Z3F8sm6ROtMUuQF6Q4JYbLeh73FgYz5A6oola9M6EYK4DAhHZ47Tzg5hPoyLQ8FZskE16XL0UHisfrLx7UE5k5pcvYLNc/2JWchST5Emdd/1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,22 +124,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Yet another batch of misc/minor improvements and fixups.  Use
-> mult_frac() instead of the worse open-coding for rate calculations
-> (patch 1).  Add a test for a previously found and fixed bug (patch 2).
-> Improve and update comments and documentations for easier code review
-> and up-to-date information (patches 3-6).  Finally, fix an obvious typo
-> (patch 7).
+> There was a bug [1] in damon_is_last_region().  Add a kunit test to not
+> reintroduce the bug.
+
+> [1] https://lore.kernel.org/20260114152049.99727-1-sj@kernel.org/
+
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
 Hi SeongJae,
 
-Thanks for the patches and the CC!
+I've been following the previous discussion regarding the bug in
+damon_is_last_region() where the arguments of list_is_last() were
+accidentally swapped.
 
-I've reviewed the entire series and conducted functional testing on my arm64 environment (native VM). 
-All 28 KUnit tests passed successfully, including
-the newly added damon_test_is_last_region.
+I have verified this patch by running the KUnit tests on my arm64 native
+environment. The damon_test_is_last_region test case passed as expected,
+confirming that the fix is robust and the regression is effectively
+prevented.
 
-Acked-by: wang lian <lianux.mm@gmail.com>
+Tested-by: wang lian <lianux.mm@gmail.com>
+Reviewed-by: wang lian <lianux.mm@gmail.com>
 --
 Best Regards,
 wang lian
