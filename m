@@ -4,109 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C9CEF370C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 544A2EF3716
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48CBE6B0089; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
+	id BBD976B008A; Mon,  9 Mar 2026 04:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 479DB6B008A; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
+	id B6B966B008C; Mon,  9 Mar 2026 04:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A4C96B008C; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
+	id A6E0F6B0092; Mon,  9 Mar 2026 04:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B086B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1CC61607D9
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:18:00 +0000 (UTC)
-X-FDA: 84525821520.26.0CAD13B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D6D39100005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:17:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fEFsOthZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 930D96B008A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:23:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36E4FC4006
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:23:00 +0000 (UTC)
+X-FDA: 84525834120.24.0794EF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9FF2140008
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:22:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O3b92q7b;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773044279;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1773044578;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JcuT3VzEsFu9frAFSsd1UiMtGqA3cLyzc8t5FNxubjQ=;
-	b=0hW/zfHQnhf6Q2MuUUMf9P+zhMn4GxZ1uiPs8EGF6irETiakHbOYhFwiQG+B4sU8qEzR2d
-	0RCWyRtvS9oHqP1QddKy/HHfGT6Wqg55dTiLeUH6TfRGMeavnkJBXdiIMdZOroonDisHxy
-	w+CVpKjedCRExNwSJDt6XatFcI4SOtU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773044279; a=rsa-sha256;
-	cv=none;
-	b=PBYPPNkGd3JD7C6uVys8JFu3QKP/acDMzBJ2KCEn1S298FM9DckX2s9yUXZ0Zc+dSj4tjv
-	S+HkT5H+AZDpWGy4Maa6ueIxwlvzFviLZz92qa2ILKzf9AGiw8EvUejaB8bvnXzQ8o0L1b
-	Nq6eFRgXtR+isANgbnvYEQ/n/aMM1VU=
+	bh=P1lIZx7jxksyX/dRkyXna8WJ9zLTRrgGdsrdZAvKcRI=;
+	b=xPAcDl70UmSWClZ0WJo2cYbhw30hmN12QTzwjXWcTQ+7OUINbl71rZLDpT9k0JjbfUGVpp
+	yzFFbsqwPO+H+cEh2IicBo/KdOrI9l1sQwWNrrW0HB7GzSZ2n5YtojD7+FUIypOlbAH1qt
+	K+T1smrjLjbsfRIHjFIhIpU7Vzpd/nM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fEFsOthZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=O3b92q7b;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773044578; a=rsa-sha256;
+	cv=none;
+	b=FOrGDVqnP5m3K29lRkwBxp0AYN7uASUWDVxkXutEz3sjTZy8Ckw7uWhKmH6MEQ3bSRajz3
+	y4THpfSYxVA3WVACRL+DJYts8cmyzQ3Ld5XQ4oeztQFJIeGlxbiyJJse1HpNROyDX6skXH
+	dpJpweneGAlKKFb5T+xOCOKoPc4t9Dc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0CE643AD2;
-	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AF73EC2BCB0;
-	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 18637600CB;
+	Mon,  9 Mar 2026 08:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B623C4CEF7;
+	Mon,  9 Mar 2026 08:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773044277;
-	bh=e/JIvBv1sq81twuWbFDup0095/v1157Z2wL8P2ZuYk4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fEFsOthZygR0BWYTfCXCH2TGc208NbRZ5QSmSyVWpEhuYy6oGDg3sU9yNzMhwsDSX
-	 cb2NRnRxLHEiFLhXVPTKoS3dHlHkPx4tQPO4RCiVZaLvFZNgOX/pkE6op8T9fdSjYM
-	 eqJqpbS/keXc5Sa2RwbJbW3B7EUNl1KoOTvMIgBYZIAozKHrHlZVJDsTmK+VullhF6
-	 hrYpXiDBEfLXcTB50QN5SMBm9rBJSWqNZCmUqW/0WA8nVU+c5Ik2DyefYLK8DuZGG1
-	 LjPDjjIJAgkZkpoXCjK2myXOvBJSCF6/RX+uzzsqlf1shz4wQSYsQrDZLFk9weJzUc
-	 NHO1/cIZfKNPw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5F57EF3714;
-	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
-From: Zhang Peng via B4 Relay <devnull+zippermonkey.icloud.com@kernel.org>
-Date: Mon, 09 Mar 2026 16:17:42 +0800
-Subject: [PATCH 2/2] mm, vmscan: flush TLB for every 31 folios evictions
+	s=k20201202; t=1773044577;
+	bh=V/B5tPmLCgAxbN8UIEDAM4TeuWOKraxmkgH51tGu4uw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O3b92q7bgFaOMmV3eGLdzebrY0/Sr+0bh6qjjVKefF860DvD1c1diA+xcCEQSmiek
+	 bmvIjE53jg20sq2gBg+7p/LuokK09L0Giolq0uT/UOHHgc9MJtjIB3cMCqwPMGxlQ1
+	 kX5mGd8TNaqCBYpqvuDW+pBSdtOiCO3aIlJ3gRxeTVW4PIsDnAMKzsytp0APqz3sWu
+	 EKAYn6dGohnRiYx5K+hJUOYxUnxrL/rrDEhMnaLcIh50LQNGcc5aAZAKeUifPAWf5F
+	 3ShdhuDfGkK99AG/vwbd1ulwOU2eX/UHbTTTevAfbcR3baUHGm7hpB+EXgW4vYHawr
+	 pRWS78C/KKv8w==
+Date: Mon, 9 Mar 2026 10:22:50 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	usamaarif642@gmail.com, SeongJae Park <sj@kernel.org>,
+	kernel-team@meta.com
+Subject: Re: [PATCH v7 4/6] kho: fix kho_in_debugfs_init() to handle non-FDT
+ blobs
+Message-ID: <aa6DWto0xY5EPyxK@kernel.org>
+References: <20260306-kho-v7-0-404d14c188bb@debian.org>
+ <20260306-kho-v7-4-404d14c188bb@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-batch-tlb-flush-v1-2-eb8fed7d1a9e@icloud.com>
-References: <20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com>
-In-Reply-To: <20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Michal Hocko <mhocko@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773044270; l=4427;
- i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=VtbVoUdutucQYTv61lHy5DXkSCu6zJZpJudQ30ChVHA=;
- b=hb84Un+QVXegPOTad/271FdH2TnK0FCOWCwyQrjIcYqmfgBJ2uz0HVL0r8lRGfBXbWq4q5Q3B
- MJJHWQGILuwAzFjHJquHifaJ+c6i/rVn/faJo05uEQWnci0nAx0TqPg
-X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
- pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
-X-Endpoint-Received: by B4 Relay for zippermonkey@icloud.com/20260309 with
- auth_id=671
-X-Original-From: Zhang Peng <zippermonkey@icloud.com>
-Reply-To: zippermonkey@icloud.com
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D6D39100005
-X-Stat-Signature: p1bcqda13ysqwpjtmt8ggi31t663rgwq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306-kho-v7-4-404d14c188bb@debian.org>
+X-Rspamd-Queue-Id: 9FF2140008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6xn71rtbi9spbyr6q4wprcjreguyud57
 X-Rspam-User: 
-X-HE-Tag: 1773044278-966393
-X-HE-Meta: U2FsdGVkX19DWnpmHV85HWJt+7S/3NsdShFj4q4MGQjcPevsxp9lfGiEwtG0RbKi5ik8j4pMglIKanN0ZI6HrRAZoZupwzu32UXg5vL7yjSw7lG0lP2o4Abn0X58tlzrh9FVoai7gShPF6hg58YmcZp1n6wHB44LHE2v5y+Nw1C5x+b1v0FQ/tAn8QsIcL2dESEFV3hI5zxVyw5Y+EnXZ2ATtCOsPVUMkvaony/28rwdU6wvi7pKy5FGRjemM9ZxyVv7AD/Vou8aZv9eANaVXYbSafApYH+rOlMg+YCQC/Uvg/EOw7eYjOOg+07fs+aRosl/d0K3sq21CaYaAHdK4PF8lNLoBNQjOBQlSz84Iy4NyYRkYwDDQ7fjyG6xuUA/UEkmeXWgZeDY7mls0ueO3KmRFGB4B8l0mZ3YLv7WqOFXPK3fM8nOKN0f1n1Epd9fU+W2uDGVPOKGb4wvqAMxkn4Pktbm2guVS9fB/zkvggk8RCSdrp0StC6eMXUy/2ZlJsKaLrHizcAJz/UuyKIqTs620doZk6J9EpL864/CT1gZjNzlKa+9kJ1YRpbdGjwc0c+2ZR3EPADB2D9RSayTlEHlTHuJeEmeCPYCYWz4WY6Clgxgc9tOO3u3mUDpRt94etH0mBd3wSi3yxGl++g6jjDR3jCkulKsxkrCkP+DWYWr8SXS4g26nMuZPpOiZfMHAvYUk46l8p+U0lBCmh3uaySOIuLVNVdXv24blOSt1oQ3tir6Y6s4wKvHrlstMNcz7m9IoCr3A1p2Kn0ONNbuHKIGu3d2bee5XKkqxEYpJe3MDaMxAr1LRghygwz9XfWxd48Mvph5zS9A/mquz0WA9oqTYaUTEOcRUNVUJFuk2xeroG4APrtE+g/jgDe+aNSrZ1w8TJZB/fhq4Zo8ao792fbeTZd8X60CzMJ0ZNr/kz/PpriJBoIm7g2Q7ywwZQ5Zk4P9bs8nZCISutdbit5
- 0QmqhpwL
- 2xP6rUbxgWyoa1b+x9+NkCzr9YIvSUA6Zdfn7ja0OaU8tkMzLedmgJjgJXtex+3dushPPvJuR8pUcH3sLs4xXePX0/vEti5zCInMbzPIfWEoeuUdcbEPiSwR0d6Kf2omZZo818uBIr/7yzcCpU0brpQn9NUnZHMo5DjfIvWqUEh51LKBxkh/lJNpNYauXmevWg7wx0Nhk4qGFrUTwTgkB4LU5fNl989/5cDsr33gDwj5H993dDgbX16vzAhUIpLXylrXSzH6O76H5ezh2YT0mozEA6Rvp2G5+HC5AIYXcFEGmOWEKfaGV6ma+eybNmFWGB243V2vAYPXQ0DnIt+okfY0ONj0mwA7WlciO+HMKy8MyKRh68pBDIA769px/Wc90F864QHZuquxC3c4=
+X-HE-Tag: 1773044578-729080
+X-HE-Meta: U2FsdGVkX18gISRDY9rUfJROKrHcQ13EHYGVRUxqNeJYbr0R8LZy3LfyqTFlSf9FqUVfJ+wHUmpcwuOU1NqZoi9mVIgQLetfKOGWXjFO4SRH+RUqtBfYunOCNQ34humJKi3lG7xIK5lgT04pwSUK0MIBh89Y7ou0fkPy3P31V1TAUvk6PKppjq8UKQuBYFzRd6wLS0P8GxnaCPci2hZYUiaFC+KBlYyk1BepBsvIQ8Fmqp5/HUcyasyxBr2BphCjBGrE1n8WT7eww1Od8+8utDykL7tURAuKYK3pa0KBJWs0vOwnJW4CazxGJT6PFpZ/PJ9rZRflsKfvrBYZQwSVu5d4wDbmrriDT2thKFtHPwI8HQ2sgG9V7ZPGDwLzfLMRcvJmzuDpm8CZbC9UwKXQZvvxuaFjbWuNS3vSZbwIQqAzSCdrSD3bA3HOxdHJos2bZ7UAw4XXaU9gKTtv0nJ11e+u+zuOuMPZ1SOIXknLbhledmCtfYHkDDrAx001T8HBW6M+V/piSxoPpYIMovNAcP0+yv2O/BAwxCuIp2ySWCzCBw7YrKt6c9CFFDBU4x6vDSTmq+X2Q6LtPBZZhKmj1No/hRJKru+vLROjAeNP537MzYkw66m4fWB88sF8YK0hp5m4xe3yvLybsant9WdC1XhOdGIn1ZMsKUb2Pt+LeHvboWYRzV53gSP/EcU2uSuZyUplDkI44qa/+1s5OWrHaycXZTBot0DW7a3xVPaHHSBLtfQMkhnGv2gfRK2D33hy76iB3rzfwFbYDwmXxDcxQgpuiQnsZEaIfgrMCh5t3rI06h+iz2CZynRws+T7QU8BPbb97n60E1Lg1tC+wtnDEGki5NdKSyHg4ws6c4j50RfCAvYLQ4fZjeMWdt2ucig0tv8u7WAwqv7sVKENL1S2SnamUFDxA8kC551jyaQX5DQKSovwV7nB9CEbKanTfSEpxDKjJQ2If25Kvb4QaT4
+ wI4ApNkg
+ 9xlJC0wNxQKszoLt7OwRn6ZaI4ExM3+smWsUfCdQC88qoYH4fGkkawlFNzUXuMtzhm9kDVKiAukDFPOOQAxBNTi+u67hYK8pXdtH2h4TD7Bks41+4p+IIbKAEk738F6dZ6AYVIIs7w/jksy1ouY4kRw+UZRyLp7naGOOB/3zJAzda9rsfHuCRRqDgo6m9Y6n++O4mEcS5kmcsgGYU5jRP+oNiukF243rEA8YbmpctPsLSXPKvObKSZRnNRZwmsOR9/fQ/T9u05PvpEC2zx9dmBTxBl98O17vMVJ7Vt5SnExzOHhVQ3sVVFD94sJQ8DJyAPrIpS0ZeycFgG2EAok3PUUi4SYYTFL3MumvCPPilhCdU7nM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,143 +96,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: bruzzhang <bruzzhang@tencent.com>
+On Fri, Mar 06, 2026 at 04:39:23AM -0800, Breno Leitao wrote:
+> kho_in_debugfs_init() has two problems when displaying incoming
+> sub-blobs in debugfs:
+> 
+> 1. It uses the hardcoded property name "fdt" instead of
+>    KHO_FDT_SUB_TREE_PROP_NAME ("preserved-data"), so it never finds
+>    subtrees stored by the current kho_add_subtree().
+> 
+> 2. It calls fdt_totalsize() to determine blob sizes, which assumes
+>    all blobs are FDTs. This breaks for non-FDT blobs like struct
+>    kho_kexec_metadata.
+> 
+> Fix both issues by using KHO_FDT_SUB_TREE_PROP_NAME to find subtrees
+> and reading the "blob-size" property from the FDT (persisted by
+> kho_add_subtree()) instead of calling fdt_totalsize().
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  kernel/liveupdate/kexec_handover_debugfs.c | 38 ++++++++++++++++++++----------
+>  1 file changed, 26 insertions(+), 12 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
+> index 7a100f2bf3947..fc2baa8b104fd 100644
+> --- a/kernel/liveupdate/kexec_handover_debugfs.c
+> +++ b/kernel/liveupdate/kexec_handover_debugfs.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/io.h>
+>  #include <linux/libfdt.h>
+>  #include <linux/mm.h>
+> +#include <linux/kho/abi/kexec_handover.h>
+>  #include "kexec_handover_internal.h"
+>  
+>  static struct dentry *debugfs_root;
+> @@ -121,23 +122,36 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+>  	fdt_for_each_subnode(child, fdt, 0) {
+>  		int len = 0;
+>  		const char *name = fdt_get_name(fdt, child, NULL);
+> -		const u64 *fdt_phys;
+> -		void *sub_fdt;
+> -
+> -		fdt_phys = fdt_getprop(fdt, child, "fdt", &len);
+> -		if (!fdt_phys)
+> +		const u64 *blob_phys;
+> +		const u64 *blob_size;
+> +		void *blob;
+> +		size_t size;
 
-Currently we flush TLB for every dirty folio, which is a bottleneck for
-systems with many cores as this causes heavy IPI usage.
+Do we really need two size variables? Can't we just have u64 *size and pass
+*size to __kho_debugfs_blob_add()?
 
-So instead, batch the folios, and flush once for every 31 folios (one
-folio_batch). These folios will be held in a folio_batch releasing their
-lock, then when folio_batch is full, do following steps:
-
-- For each folio: lock - check still evictable - unlock
-  - If no longer evictable, return the folio to the caller.
-- Flush TLB once for the batch
-- Pageout the folios (refcount freeze happens in the pageout path)
-
-Note we can't hold a frozen folio in folio_batch for long as it will
-cause filemap/swapcache lookup to livelock. Fortunately pageout usually
-won't take too long; sync IO is fast, and non-sync IO will be issued
-with the folio marked writeback.
-
-Suggested-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: bruzzhang <bruzzhang@tencent.com>
----
- mm/vmscan.c | 68 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 61 insertions(+), 7 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index a336f7fc7dae..69cdd3252ff8 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1240,6 +1240,48 @@ static void pageout_one(struct folio *folio, struct list_head *ret_folios,
- 	VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
- 			folio_test_unevictable(folio), folio);
- }
-+
-+static void pageout_batch(struct folio_batch *fbatch,
-+			  struct list_head *ret_folios,
-+			  struct folio_batch *free_folios,
-+			  struct scan_control *sc, struct reclaim_stat *stat,
-+			  struct swap_iocb **plug, struct list_head *folio_list)
-+{
-+	int i = 0, count = folio_batch_count(fbatch);
-+	struct folio *folio;
-+
-+	folio_batch_reinit(fbatch);
-+	do {
-+		folio = fbatch->folios[i];
-+		if (!folio_trylock(folio)) {
-+			list_add(&folio->lru, ret_folios);
-+			continue;
-+		}
-+
-+		if (folio_test_writeback(folio) || folio_test_lru(folio) ||
-+		    folio_mapped(folio))
-+			goto next;
-+		folio_batch_add(fbatch, folio);
-+		continue;
-+next:
-+		folio_unlock(folio);
-+		list_add(&folio->lru, ret_folios);
-+	} while (++i != count);
-+
-+	i = 0;
-+	count = folio_batch_count(fbatch);
-+	if (!count)
-+		return;
-+	/* One TLB flush for the batch */
-+	try_to_unmap_flush_dirty();
-+	do {
-+		folio = fbatch->folios[i];
-+		pageout_one(folio, ret_folios, free_folios, sc, stat, plug,
-+			    folio_list);
-+	} while (++i != count);
-+	folio_batch_reinit(fbatch);
-+}
-+
- /*
-  * Reclaimed folios are counted in stat->nr_reclaimed.
-  */
-@@ -1249,6 +1291,8 @@ static void shrink_folio_list(struct list_head *folio_list,
- 		struct mem_cgroup *memcg)
- {
- 	struct folio_batch free_folios;
-+	struct folio_batch flush_folios;
-+
- 	LIST_HEAD(ret_folios);
- 	LIST_HEAD(demote_folios);
- 	unsigned int nr_demoted = 0;
-@@ -1257,6 +1301,8 @@ static void shrink_folio_list(struct list_head *folio_list,
- 	struct swap_iocb *plug = NULL;
- 
- 	folio_batch_init(&free_folios);
-+	folio_batch_init(&flush_folios);
-+
- 	memset(stat, 0, sizeof(*stat));
- 	cond_resched();
- 	do_demote_pass = can_demote(pgdat->node_id, sc, memcg);
-@@ -1578,15 +1624,19 @@ static void shrink_folio_list(struct list_head *folio_list,
- 				goto keep_locked;
- 			if (!sc->may_writepage)
- 				goto keep_locked;
--
- 			/*
--			 * Folio is dirty. Flush the TLB if a writable entry
--			 * potentially exists to avoid CPU writes after I/O
--			 * starts and then write it out here.
-+			 * For anon, we should only see swap cache (anon) and
-+			 * the list pinning the page. For file page, the filemap
-+			 * and the list pins it. Combined with the page_ref_freeze
-+			 * in pageout_batch ensure nothing else touches the page
-+			 * during lock unlocked.
- 			 */
--			try_to_unmap_flush_dirty();
--			pageout_one(folio, &ret_folios, &free_folios, sc, stat,
--				&plug, folio_list);
-+			folio_unlock(folio);
-+			if (!folio_batch_add(&flush_folios, folio))
-+				pageout_batch(&flush_folios,
-+							&ret_folios, &free_folios,
-+							sc, stat, &plug,
-+							folio_list);
- 			goto next;
- 		}
- 
-@@ -1614,6 +1664,10 @@ static void shrink_folio_list(struct list_head *folio_list,
- next:
- 		continue;
- 	}
-+	if (folio_batch_count(&flush_folios)) {
-+		pageout_batch(&flush_folios, &ret_folios, &free_folios, sc,
-+			      stat, &plug, folio_list);
-+	}
- 	/* 'folio_list' is always empty here */
- 
- 	/* Migrate folios selected for demotion */
+> +
+> +		blob_phys = fdt_getprop(fdt, child,
+> +					KHO_FDT_SUB_TREE_PROP_NAME, &len);
+> +		if (!blob_phys)
+>  			continue;
+> -		if (len != sizeof(*fdt_phys)) {
+> -			pr_warn("node %s prop fdt has invalid length: %d\n",
+> -				name, len);
+> +		if (len != sizeof(*blob_phys)) {
+> +			pr_warn("node %s prop %s has invalid length: %d\n",
+> +				name, KHO_FDT_SUB_TREE_PROP_NAME, len);
+>  			continue;
+>  		}
+> -		sub_fdt = phys_to_virt(*fdt_phys);
+> +
+> +		blob_size = fdt_getprop(fdt, child,
+> +					KHO_FDT_SUB_TREE_SIZE_PROP_NAME, &len);
+> +		if (!blob_size || len != sizeof(*blob_size)) {
+> +			pr_warn("node %s missing or invalid %s property\n",
+> +				name, KHO_FDT_SUB_TREE_SIZE_PROP_NAME);
+> +			continue;
+> +		}
+> +		size = (size_t)*blob_size;
+> +
+> +		blob = phys_to_virt(*blob_phys);
+>  		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
+> -					     sub_fdt, fdt_totalsize(sub_fdt));
+> +					     blob, size);
+>  		if (err) {
+> -			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
+> -				ERR_PTR(err));
+> +			pr_warn("failed to add blob %s to debugfs: %pe\n",
+> +				name, ERR_PTR(err));
+>  			continue;
+>  		}
+>  	}
+> 
+> -- 
+> 2.47.3
+> 
+> 
 
 -- 
-2.43.7
-
-
+Sincerely yours,
+Mike.
 
