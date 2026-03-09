@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A5AEF370C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA159EF3711
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F38CE6B0092; Mon,  9 Mar 2026 04:18:00 -0400 (EDT)
+	id 218E96B0088; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDF8C6B008C; Mon,  9 Mar 2026 04:18:00 -0400 (EDT)
+	id 1DD806B008A; Mon,  9 Mar 2026 04:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1D576B008A; Mon,  9 Mar 2026 04:18:00 -0400 (EDT)
+	id F36E46B0089; Mon,  9 Mar 2026 04:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BF3B46B0088
+	by kanga.kvack.org (Postfix) with ESMTP id D2CAB6B0088
 	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:18:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 694E3C20BC
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 920C61B941C
 	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:18:00 +0000 (UTC)
-X-FDA: 84525821520.26.42D515D
+X-FDA: 84525821520.14.EBACF5E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 805734000C
+	by imf23.hostedemail.com (Postfix) with ESMTP id AE67814000A
 	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:17:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AycKyglm;
-	spf=pass (imf04.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org;
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=to+JoEq0;
+	spf=pass (imf23.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773044278;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mltfqZmtiRtmBriCrDHkl5ak1WaVUs54Kxodq9Cyks0=;
-	b=0awMAu1XvJNPckqAfzZmMCF0VwtyAYDchTfaPX4pF6L3aOWDlrp1ejI1sFeNe5M0nMIKxV
-	wcqQBFxlNVmbLi7QBkUIC258SO2+2vjcg/GiQFOcDIo1DKHJTvMaDK5mhDEdWUlyECGdNi
-	VzpTHX4+ZiHM1CD9Nzk4ABrZgMKZAvo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mJX5gru+C8JccbwodX3heicCaeFlV7f3K3eEiwxxg5k=;
+	b=LQtRkOYauO34JKWEYccMAkypizYey6pzSGMta5GGcUTH4kDRFPaZHA8rAWGBVqO+czFK1t
+	9xj3oKr2BOhoZZ0+IltTj2TnXO5hGpagViXCQ/URUg/fsquECboOlfDyCx8MOK5l/mRsG4
+	PXSjoFN3vOD23yFtdylOaGcG73vQC5c=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=to+JoEq0;
+	spf=pass (imf23.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773044278; a=rsa-sha256;
 	cv=none;
-	b=mqGNqr3mkCnXbXQbDFjL1g9hOSzEtX56e2gs85CkGswkW8o7ZOxsR0j8PoJt+VvxvFp8y1
-	6JQmAj9Q84r5kEqWNiMdmV8UjDPXu7/hUoHv50D4l0+pIRQ4zisrcjqoiV/EzdNFywcDP7
-	0b985jMaKGFNwVFiHW4fx0dZfWqeIkM=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AycKyglm;
-	spf=pass (imf04.hostedemail.com: domain of devnull+zippermonkey.icloud.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+zippermonkey.icloud.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=LbmgUU3AD7/Z7C8mlAlirUpL4Nd8MzqMMQyU+3zR0Rgl3cS7KuDnFGManF2JkeXkiUUtws
+	NtOB/Ay5ZsqZdNNknHSZESc1dgmrF+5Y9IVrY5MOgu6faP+LdJ7l+6RMxDyZc2G+6giYe9
+	+dL9KD7mZUVoD75r3C60qoIiJxYAJ0g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFDFA600AE;
-	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9426EC2BC87;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0F16B60130;
+	Mon,  9 Mar 2026 08:17:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A313BC19423;
 	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773044277;
-	bh=Hxlyr94vhT6tceNWkfUX7FnAnLC5MO+FeAUWHj402F0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=AycKyglm0somIajLRn1PB2ivxqYlWEQNxYn5fFpwOAdqhapuUZjCcc7d/KBg22Moq
-	 o2C927nqYNReytwY+IvYZ2Xk5KIh1vcjFMVBYvurof/EVcn2099iWn5Kd3VY6VTnkG
-	 kQyQzHxXcSKqKn0urVRLzs3NyIcSTgTgTpFoNIG8cK08ldboviMr90OV0WTHJkgO/f
-	 spmU1CR3dD6U0xze3K5xkroZhaF2uJ82r5U0Fgnl0e1vieOa1XhAERPmxkYy+JSmkm
-	 4v2hYKyws0Q/CHskqm1EkFIrK894lrzczp7RFurpJ0+L78szuBTEyQ1Ppybm0SdS8v
-	 F0gdhxzC7T+sg==
+	bh=FT9VMk1KXYmFsJX8cVrdDaU8Ef7bUUwo2kla+ED6KKc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=to+JoEq06VZ2w/l7RiuUOWrInYOlHo/LJZlFNkjwcZJS6wwITSXonvp6yl5Q9eQSA
+	 ssTcoVslnJRG41lB7kODqdf3NZOaG4s7e+sNHuXmLvNZW5snZIyD3YcJ14Myd+84Jo
+	 vaH3Llg/ogB2sJwTmVzEjyyS4DP4MQOsDHghbIHAIQHC3HGzH8z9sUOQlmHk/bFd7B
+	 RlocF8rVpAesSLcvUOGhXgzLeTvObiVWwT3wo8yOARvOBI3hs+j40uqw8tNSBtu777
+	 wAktG6BvOiaqEM+dlWA0LLO7HAQQjN2cf8rNzmDoaUeIaq7y3B3EMp7A8I8s1ag+c8
+	 JlffVfa9W2I7Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A109EF370C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99012EF3711;
 	Mon,  9 Mar 2026 08:17:57 +0000 (UTC)
 From: Zhang Peng via B4 Relay <devnull+zippermonkey.icloud.com@kernel.org>
-Subject: [PATCH 0/2] mm: batch TLB flushing for dirty folios in vmscan
-Date: Mon, 09 Mar 2026 16:17:40 +0800
-Message-Id: <20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com>
+Date: Mon, 09 Mar 2026 16:17:41 +0800
+Subject: [PATCH 1/2] mm/vmscan: refactor shrink_folio_list for readability
+ and maintainability
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACSCrmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYwNL3aTEkuQM3ZKcJN20nNLiDF0LS+M0g1RTsyQTSzMloK6CotS0zAq
- widGxtbUADrHzlGEAAAA=
-X-Change-ID: 20260309-batch-tlb-flush-893f0e56b496
+Message-Id: <20260309-batch-tlb-flush-v1-1-eb8fed7d1a9e@icloud.com>
+References: <20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com>
+In-Reply-To: <20260309-batch-tlb-flush-v1-0-eb8fed7d1a9e@icloud.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -89,11 +89,11 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Kairui Song <kasong@tencent.com>, Zhang Peng <bruzzhang@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773044270; l=3059;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773044270; l=15615;
  i=zippermonkey@icloud.com; s=20260309; h=from:subject:message-id;
- bh=Hxlyr94vhT6tceNWkfUX7FnAnLC5MO+FeAUWHj402F0=;
- b=sxFReAs8wK3VKflfARWnWgk7f6wn4fNFW99rIJrAv5x9OfnVaMTXYyL4a3bY+wRiQydi+yVgG
- mEgfk97EZfFAx4YusLrPnkMyYxiSThIU+eO6DqO9mz6vCP33ltXCVv6
+ bh=hrfPhSLZZ+Rs47sneAPE3A+aMP6Jn54Z4Elam2hH+qQ=;
+ b=fUmw9fFg8kt3KWtm2+E4vru0K1g6gu3U9xmpxMOL/reogAbxVlV3fpbzzCERza86X04XKFhtC
+ VEZIwe1KMrjCfyLtZNomyGBfvdZ/yLy9FI8h+mzUEkEHPYh1tkSv0+I
 X-Developer-Key: i=zippermonkey@icloud.com; a=ed25519;
  pk=tPCLpFnBfIyHsp0k7eaUTUREEa36bQNW/69X+NS8wBU=
 X-Endpoint-Received: by B4 Relay for zippermonkey@icloud.com/20260309 with
@@ -101,13 +101,13 @@ X-Endpoint-Received: by B4 Relay for zippermonkey@icloud.com/20260309 with
 X-Original-From: Zhang Peng <zippermonkey@icloud.com>
 Reply-To: zippermonkey@icloud.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 805734000C
-X-Stat-Signature: us1nibs8atby5zexnuyon5tu765rh6g8
-X-HE-Tag: 1773044278-539462
-X-HE-Meta: U2FsdGVkX19QE+94aIJzhyPybFzjYAX7AVYKkfg3ZABo0NoGLdwC3MN4Dm5O+oLBcqdvnFfBQOpfFuZBF6pJm+bhk60otOW1ckJ3ZY1UN4Rbb8LCJTgemMyRBlUbbwdYc+pynBinQnhlpxutdjoGD1y1tk0f3F9NX6gyY1C+3mv2nN3zCZ9UzxErPoWJFUlf80ntDF0TlIP2SXj+eCgtnA/zXXSAyGOmaKOFBpsEPmvqwLob1zOcsmkPXpOwk8Zy0EkPRr3R1MCw8axSx1Jd39U6NSr3xu4vV5jsY/8hy4rjhw/kdUO2XubjGoSlhmjFmP7kZWdRJMwXvoRCnLOEdf/4bTPh4y3kbsdrJftSDfvZTw8suo7m88JJOB4v5KvGkD3TRHR124h4vMuMErQJx2vHrVvSVXKifB6jRwmHr4s04swDlKX/qOFnQ4dckivLmLlQnCnLcRIDjAxLV2HSw3RFoBkUjgjkiubEhArSyyym+053vdruHxNu6+dEw5D+b6XdoBmdrnzb43ti/LaS1vfwNENLo6vOkqrPzWCVD27Dl/q71OOPbIpztXgW44r1BbfqOODjj94WkddmzwBCXzuRJDCv/zotvgUxmF/38inDFOktMTj0gMniSKRm8d31zQz5ax/+25JVS8H0JmPX/nxX1ZU6yoI4NvfoLf+hLu5KDi067ROw7G13H42bLCvZlGmMVKYcL8WWIdBh45nypuFunCfiAdNFdoqr1bVSaseizHsPOZWZ9rXWC6uo6UfwRLPO+mvKo6xaifA8oJRxDwwpJsHXkZAOCSP2YTYFZ2lH8zuwpOfEQT4/GVaeYV77qogmP6XqM/rKxFff9KQG8PG8nCf6Ovg6TXjWeraWUE2tub+jB00TZegmxH9BQ5BAWBSTsiDomNdP287zasVRkyFB6teAWzBISE4/3NwXoVkx84UTYZKKCXw2zcie8R5nxqj9vB7A76Y69MZ9LsD
- fuqUd8Aw
- UeQmp/SB9b2VIxqEktjASJuWhsCw3OXYoLrUqtff3+5LLTDrPstO+VI3W6m07SNaRS1nk0RhgkZjbmreg2TbRSS1cqI0eF8bLs8+2Vbgg9/1/4RjGpa2nlcrCNVUR/jxid8wc7kSkRoJ8umPZ02oYgxjiyIwAMXmliHy5anJv2f4UCMtfPFqlgy/2/xwfQi1C8aOf0/htVU7wzcRU1wW5T91w6VO403P8ZDXTyzwkycEySRu7RBv0jXMcmwguNoEy6tNmVa6ikqUoWTRAsacj03pOVxMcxMpnJf62EzMyPPmUUAKH/ucNdsEq27LQxaC8yLzKXZrcLnkG2VRKmVVAPYl6Zqwoh4qLsYhRTRBlue5mNMKktc66FasIl1Beh0lMJDKjwD0pGd8ICbmLOa6wQegACm0T3iothyyZ+nRL76u9EsIoiINdleCIVU0IoWOPVCZF53fKNMYGmg4=
+X-Rspamd-Queue-Id: AE67814000A
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 9y1eij4ft3wnejp4mw3dem31paaot1qz
+X-HE-Tag: 1773044278-146337
+X-HE-Meta: U2FsdGVkX19gN4eJq0cQbJv0QFaxgF+G3IcWa/u/gPr3hFpvM7rGLG3rrGJbUobBjBuh4agW7lgC8t4Yk37N9jFGl4lIhZwdJG/BtIqXxCTca4iGn+jpUpO41S/MdP6x5mynYb0Y7JKD7Xw3PcOuoYaC0Bd7pO0I+9jj1xMuFi1ik7Hl9wG4Du5xfOC/XwvjKFTLtTDq4QCIdiY/rxNDkF9fbv/hbDli34A6puv1rJh0ReYMdl4L29HCQ3khEGMMQwW9AuZKTcQuc0JJxwBA5ffzpi1CbBzJmiAuqHDexTjvmNeyTGX4LKh/m8pStctLxhy/dAb1NzZAzONI3PN/+LBLaDefoueZewz8XYIGLaQvh/00ndFSfhY+1weho9IdjM9A+4Ho9TsTF0zbsFOsQ/8LgrRXh0rRcObx9SHFYnIXTd2jytYQM9yXSO3I6mytjKq1w1XXIXwxFDFwDyoEg5pZzQoqHRZte+fz44FKiMTQUGLldWB9fIUbbIETkO51ZW6AhnDDSuP73j2Sf6qLFQS+qmY3SHDf5r10f54zv210J7D4W7TX+NoL64GAWS6R3CWCepWssDeHCdNXB4fNH/feRIM4BgdGmMlGuaZkglEhvgRCG6trJRn9RyoU3qPw3VbGCwepFTq1XbRP+mMVrYQ0Vwuc9Gk0pobL86TxTGXnwLp/91txnixQduyD1Fu58z26izFRdy1ONaEqC0FxD7FgWGp8A5pDAqv+ESBbPfdv2ByGjXXbbCcJGgJTOWt2OFixBh2q3REU+8MPanlvdb/IMu1SXKFLgUFMUsJXZU7mWPvcX8aQjGpsPozyukFhF5BbS3gnCXiKHozWAd+BpkFsX5yM0b4CHbov2GogHVMEXjJt1D6NTgJadqqWbU2HTgHyXmPP3Lt+8ASC0A8LqJRjJUwvBvZUePdIJo+YSjsu2OBH3N/jkc0DmSN3dFlHUfnSdOvFdkHNre16yLW
+ HfCNGp57
+ dzDIEoqEyh9rRR6GF6gFYYSCH+vtQxS/aB4l/AEZ4bLUsdsayQ6xaDDJ4yiGw6NyN7aoGjHzscN+Pa9Zgr684yTsp55tmfhvq6aIiLbWSXrZ4Vn51QxwCER+R5hey43WRSrTgbGOsHZvAmgsiQuNWcicbr+/zaztoYxhUIpIH25xQslUibNto6DF4krWs8HDDGKeeYkHSqsoOdYlPR4YcVPw5glXQlrx91KNK947etHIAfWAOVF1L/qgp9tzIpQ6oLGOMvtapZSM5Fkb8rpxUTRsHpE5jhQcbpni7m4nCPwOWzPHJ26A7LPI3Hfd7YNBQFY8Zouc18d9C2cF4JWEZh8R/PJzeBsmTqJ1onhj7hYRlADprxzBbEbnsCs/wodXv1mXBEHaPEfwMkb3DFJSlTOWPFkmTE5VXm0kqI3bGCHmHTJnh2qnv6RdYIfWfoytdfbiePBsIhiAx78JimXXoL6TDspgSb8MU+W1D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,73 +115,458 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series introduces batch TLB flushing optimization for dirty folios
-during memory reclaim, aiming to reduce IPI overhead on multi-core systems.
+From: bruzzhang <bruzzhang@tencent.com>
 
-Background
-----------
-Currently, when performing pageout in memory reclaim, try_to_unmap_flush_dirty()
-is called for each dirty folio individually. On multi-core systems, this causes
-frequent IPIs which can significantly impact performance.
+Refactor shrink_folio_list() by extracting three helper functions to
+improve code organization and readability:
 
-Approach
---------
-This patch series accumulates dirty folios into batches and performs a single
-TLB flush for the entire batch, rather than flushing for each individual folio.
+- folio_active_bounce(): Handle folio activation logic when pages need to
+  be bounced back to the head of the LRU list
+- folio_free(): Handle folio freeing logic, including buffer release,
+  mapping removal, and batch management
+- pageout_one(): Handle single folio pageout logic with proper state
+  transition handling
 
-Changes
--------
-Patch 1: Refactor shrink_folio_list() to improve code readability and
-         maintainability by extracting common logic into helper functions:
-         - folio_active_bounce(): Handle folio activation logic
-         - folio_free(): Handle folio freeing logic
-         - pageout_one(): Handle single folio pageout logic
+Change shrink_folio_list() return type from unsigned int to void and track
+reclaimed pages through stat->nr_reclaimed instead of a local variable.
+Add nr_reclaimed field to struct reclaim_stat to support this change.
 
-Patch 2: Implement batch TLB flushing logic. Dirty folios are accumulated
-         in batches and a single TLB flush is performed for each batch
-         before calling pageout.
+This refactoring maintains the same functionality while making the code
+more modular and easier to understand. The extracted functions encapsulate
+specific logical operations, making the main function flow clearer and
+reducing code duplication.
 
-Testing
--------
-The benchmark script uses stress-ng to compare TLB shootdown behavior before and
-after this patch. It constrains a stress-ng workload via memcg to force reclaim
-through shrink_folio_list(), reporting TLB shootdowns and IPIs.
-
-Core benchmark command: stress-ng --vm 16 --vm-bytes 2G --vm-keep --timeout 60
-
-==========================================================================
-                 batch_dirty_tlb_flush Benchmark Results
-==========================================================================
-  Kernel: 7.0.0-rc1+   CPUs: 16
-  MemTotal: 31834M   SwapTotal: 8191M
-  memcg limit: 512M   alloc: 2G   workers: 16   duration: 60s
---------------------------------------------------------------------------
-Metric                 Before        After             Delta (abs / %)
---------------------------------------------------------------------------
-bogo ops/s             28238.63      35833.97          +7595.34 (+26.9%)
-TLB shootdowns         55428953      17621697          -37807256 (-68.2%)
-Function call IPIs     34073695      14498768          -19574927 (-57.4%)
-pgscan_anon (pages)    52856224      60252894          7396670 (+14.0%)
-pgsteal_anon (pages)   29004962      34054753          5049791 (+17.4%)
---------------------------------------------------------------------------
+No functional change.
 
 Suggested-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Zhang Peng <bruzzhang@tencent.com>
+Signed-off-by: bruzzhang <bruzzhang@tencent.com>
 ---
-bruzzhang (2):
-      mm/vmscan: refactor shrink_folio_list for readability and maintainability
-      mm, vmscan: flush TLB for every 31 folios evictions
-
  include/linux/vmstat.h |   1 +
- mm/vmscan.c            | 387 +++++++++++++++++++++++++++++++------------------
- 2 files changed, 245 insertions(+), 143 deletions(-)
----
-base-commit: 49cb736d092aaa856283e33b78ec3afb3964d82f
-change-id: 20260309-batch-tlb-flush-893f0e56b496
+ mm/vmscan.c            | 323 ++++++++++++++++++++++++++++---------------------
+ 2 files changed, 186 insertions(+), 138 deletions(-)
 
-Best regards,
+diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
+index 3c9c266cf782..f088c5641d99 100644
+--- a/include/linux/vmstat.h
++++ b/include/linux/vmstat.h
+@@ -26,6 +26,7 @@ struct reclaim_stat {
+ 	unsigned nr_unmap_fail;
+ 	unsigned nr_lazyfree_fail;
+ 	unsigned nr_demoted;
++	unsigned nr_reclaimed;
+ };
+ 
+ /* Stat data for system wide items */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 3f64a09f415c..a336f7fc7dae 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -1076,10 +1076,174 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+ 	return !data_race(folio_swap_flags(folio) & SWP_FS_OPS);
+ }
+ 
++/* Mark folio as active and prepare to bounce back to head of LRU */
++static void folio_active_bounce(struct folio *folio, struct reclaim_stat *stat,
++		unsigned int nr_pages)
++{
++	/* Not a candidate for swapping, so reclaim swap space. */
++	if (folio_test_swapcache(folio) &&
++		(mem_cgroup_swap_full(folio) || folio_test_mlocked(folio)))
++		folio_free_swap(folio);
++	VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
++	if (!folio_test_mlocked(folio)) {
++		int type = folio_is_file_lru(folio);
++
++		folio_set_active(folio);
++		stat->nr_activate[type] += nr_pages;
++		count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
++	}
++}
++
++static bool folio_free(struct folio *folio, struct folio_batch *free_folios,
++		struct scan_control *sc, struct reclaim_stat *stat)
++{
++	unsigned int nr_pages = folio_nr_pages(folio);
++	struct address_space *mapping = folio_mapping(folio);
++
++	/*
++	 * If the folio has buffers, try to free the buffer
++	 * mappings associated with this folio. If we succeed
++	 * we try to free the folio as well.
++	 *
++	 * We do this even if the folio is dirty.
++	 * filemap_release_folio() does not perform I/O, but it
++	 * is possible for a folio to have the dirty flag set,
++	 * but it is actually clean (all its buffers are clean).
++	 * This happens if the buffers were written out directly,
++	 * with submit_bh(). ext3 will do this, as well as
++	 * the blockdev mapping.  filemap_release_folio() will
++	 * discover that cleanness and will drop the buffers
++	 * and mark the folio clean - it can be freed.
++	 *
++	 * Rarely, folios can have buffers and no ->mapping.
++	 * These are the folios which were not successfully
++	 * invalidated in truncate_cleanup_folio().  We try to
++	 * drop those buffers here and if that worked, and the
++	 * folio is no longer mapped into process address space
++	 * (refcount == 1) it can be freed.  Otherwise, leave
++	 * the folio on the LRU so it is swappable.
++	 */
++	if (folio_needs_release(folio)) {
++		if (!filemap_release_folio(folio, sc->gfp_mask)) {
++			folio_active_bounce(folio, stat, nr_pages);
++			return false;
++		}
++
++		if (!mapping && folio_ref_count(folio) == 1) {
++			folio_unlock(folio);
++			if (folio_put_testzero(folio))
++				goto free_it;
++			else {
++				/*
++				 * rare race with speculative reference.
++				 * the speculative reference will free
++				 * this folio shortly, so we may
++				 * increment nr_reclaimed here (and
++				 * leave it off the LRU).
++				 */
++				stat->nr_reclaimed += nr_pages;
++				return true;
++			}
++		}
++	}
++
++	if (folio_test_lazyfree(folio)) {
++		/* follow __remove_mapping for reference */
++		if (!folio_ref_freeze(folio, 1))
++			return false;
++		/*
++		 * The folio has only one reference left, which is
++		 * from the isolation. After the caller puts the
++		 * folio back on the lru and drops the reference, the
++		 * folio will be freed anyway. It doesn't matter
++		 * which lru it goes on. So we don't bother checking
++		 * the dirty flag here.
++		 */
++		count_vm_events(PGLAZYFREED, nr_pages);
++		count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
++	} else if (!mapping || !__remove_mapping(mapping, folio, true,
++							sc->target_mem_cgroup))
++		return false;
++
++	folio_unlock(folio);
++free_it:
++	/*
++	 * Folio may get swapped out as a whole, need to account
++	 * all pages in it.
++	 */
++	stat->nr_reclaimed += nr_pages;
++
++	folio_unqueue_deferred_split(folio);
++	if (folio_batch_add(free_folios, folio) == 0) {
++		mem_cgroup_uncharge_folios(free_folios);
++		try_to_unmap_flush();
++		free_unref_folios(free_folios);
++	}
++	return true;
++}
++
++static void pageout_one(struct folio *folio, struct list_head *ret_folios,
++			struct folio_batch *free_folios,
++			struct scan_control *sc, struct reclaim_stat *stat,
++			struct swap_iocb **plug, struct list_head *folio_list)
++{
++	struct address_space *mapping = folio_mapping(folio);
++	unsigned int nr_pages = folio_nr_pages(folio);
++
++	switch (pageout(folio, mapping, plug, folio_list)) {
++	case PAGE_ACTIVATE:
++		/*
++		 * If shmem folio is split when writeback to swap,
++		 * the tail pages will make their own pass through
++		 * this function and be accounted then.
++		 */
++		if (nr_pages > 1 && !folio_test_large(folio)) {
++			sc->nr_scanned -= (nr_pages - 1);
++			nr_pages = 1;
++		}
++		folio_active_bounce(folio, stat, nr_pages);
++		fallthrough;
++	case PAGE_KEEP:
++		goto locked_keepit;
++	case PAGE_SUCCESS:
++		if (nr_pages > 1 && !folio_test_large(folio)) {
++			sc->nr_scanned -= (nr_pages - 1);
++			nr_pages = 1;
++		}
++		stat->nr_pageout += nr_pages;
++
++		if (folio_test_writeback(folio))
++			goto keepit;
++		if (folio_test_dirty(folio))
++			goto keepit;
++
++		/*
++		 * A synchronous write - probably a ramdisk.  Go
++		 * ahead and try to reclaim the folio.
++		 */
++		if (!folio_trylock(folio))
++			goto keepit;
++		if (folio_test_dirty(folio) ||
++			folio_test_writeback(folio))
++			goto locked_keepit;
++		mapping = folio_mapping(folio);
++		fallthrough;
++	case PAGE_CLEAN:
++		; /* try to free the folio below */
++	}
++	if (folio_free(folio, free_folios, sc, stat))
++		return;
++locked_keepit:
++	folio_unlock(folio);
++keepit:
++	list_add(&folio->lru, ret_folios);
++	VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
++			folio_test_unevictable(folio), folio);
++}
+ /*
+- * shrink_folio_list() returns the number of reclaimed pages
++ * Reclaimed folios are counted in stat->nr_reclaimed.
+  */
+-static unsigned int shrink_folio_list(struct list_head *folio_list,
++static void shrink_folio_list(struct list_head *folio_list,
+ 		struct pglist_data *pgdat, struct scan_control *sc,
+ 		struct reclaim_stat *stat, bool ignore_references,
+ 		struct mem_cgroup *memcg)
+@@ -1087,7 +1251,7 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 	struct folio_batch free_folios;
+ 	LIST_HEAD(ret_folios);
+ 	LIST_HEAD(demote_folios);
+-	unsigned int nr_reclaimed = 0, nr_demoted = 0;
++	unsigned int nr_demoted = 0;
+ 	unsigned int pgactivate = 0;
+ 	bool do_demote_pass;
+ 	struct swap_iocb *plug = NULL;
+@@ -1421,126 +1585,15 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 			 * starts and then write it out here.
+ 			 */
+ 			try_to_unmap_flush_dirty();
+-			switch (pageout(folio, mapping, &plug, folio_list)) {
+-			case PAGE_KEEP:
+-				goto keep_locked;
+-			case PAGE_ACTIVATE:
+-				/*
+-				 * If shmem folio is split when writeback to swap,
+-				 * the tail pages will make their own pass through
+-				 * this function and be accounted then.
+-				 */
+-				if (nr_pages > 1 && !folio_test_large(folio)) {
+-					sc->nr_scanned -= (nr_pages - 1);
+-					nr_pages = 1;
+-				}
+-				goto activate_locked;
+-			case PAGE_SUCCESS:
+-				if (nr_pages > 1 && !folio_test_large(folio)) {
+-					sc->nr_scanned -= (nr_pages - 1);
+-					nr_pages = 1;
+-				}
+-				stat->nr_pageout += nr_pages;
+-
+-				if (folio_test_writeback(folio))
+-					goto keep;
+-				if (folio_test_dirty(folio))
+-					goto keep;
+-
+-				/*
+-				 * A synchronous write - probably a ramdisk.  Go
+-				 * ahead and try to reclaim the folio.
+-				 */
+-				if (!folio_trylock(folio))
+-					goto keep;
+-				if (folio_test_dirty(folio) ||
+-				    folio_test_writeback(folio))
+-					goto keep_locked;
+-				mapping = folio_mapping(folio);
+-				fallthrough;
+-			case PAGE_CLEAN:
+-				; /* try to free the folio below */
+-			}
+-		}
+-
+-		/*
+-		 * If the folio has buffers, try to free the buffer
+-		 * mappings associated with this folio. If we succeed
+-		 * we try to free the folio as well.
+-		 *
+-		 * We do this even if the folio is dirty.
+-		 * filemap_release_folio() does not perform I/O, but it
+-		 * is possible for a folio to have the dirty flag set,
+-		 * but it is actually clean (all its buffers are clean).
+-		 * This happens if the buffers were written out directly,
+-		 * with submit_bh(). ext3 will do this, as well as
+-		 * the blockdev mapping.  filemap_release_folio() will
+-		 * discover that cleanness and will drop the buffers
+-		 * and mark the folio clean - it can be freed.
+-		 *
+-		 * Rarely, folios can have buffers and no ->mapping.
+-		 * These are the folios which were not successfully
+-		 * invalidated in truncate_cleanup_folio().  We try to
+-		 * drop those buffers here and if that worked, and the
+-		 * folio is no longer mapped into process address space
+-		 * (refcount == 1) it can be freed.  Otherwise, leave
+-		 * the folio on the LRU so it is swappable.
+-		 */
+-		if (folio_needs_release(folio)) {
+-			if (!filemap_release_folio(folio, sc->gfp_mask))
+-				goto activate_locked;
+-			if (!mapping && folio_ref_count(folio) == 1) {
+-				folio_unlock(folio);
+-				if (folio_put_testzero(folio))
+-					goto free_it;
+-				else {
+-					/*
+-					 * rare race with speculative reference.
+-					 * the speculative reference will free
+-					 * this folio shortly, so we may
+-					 * increment nr_reclaimed here (and
+-					 * leave it off the LRU).
+-					 */
+-					nr_reclaimed += nr_pages;
+-					continue;
+-				}
+-			}
++			pageout_one(folio, &ret_folios, &free_folios, sc, stat,
++				&plug, folio_list);
++			goto next;
+ 		}
+ 
+-		if (folio_test_lazyfree(folio)) {
+-			/* follow __remove_mapping for reference */
+-			if (!folio_ref_freeze(folio, 1))
+-				goto keep_locked;
+-			/*
+-			 * The folio has only one reference left, which is
+-			 * from the isolation. After the caller puts the
+-			 * folio back on the lru and drops the reference, the
+-			 * folio will be freed anyway. It doesn't matter
+-			 * which lru it goes on. So we don't bother checking
+-			 * the dirty flag here.
+-			 */
+-			count_vm_events(PGLAZYFREED, nr_pages);
+-			count_memcg_folio_events(folio, PGLAZYFREED, nr_pages);
+-		} else if (!mapping || !__remove_mapping(mapping, folio, true,
+-							 sc->target_mem_cgroup))
++		if (!folio_free(folio, &free_folios, sc, stat))
+ 			goto keep_locked;
+-
+-		folio_unlock(folio);
+-free_it:
+-		/*
+-		 * Folio may get swapped out as a whole, need to account
+-		 * all pages in it.
+-		 */
+-		nr_reclaimed += nr_pages;
+-
+-		folio_unqueue_deferred_split(folio);
+-		if (folio_batch_add(&free_folios, folio) == 0) {
+-			mem_cgroup_uncharge_folios(&free_folios);
+-			try_to_unmap_flush();
+-			free_unref_folios(&free_folios);
+-		}
+-		continue;
+-
++		else
++			continue;
+ activate_locked_split:
+ 		/*
+ 		 * The tail pages that are failed to add into swap cache
+@@ -1551,29 +1604,21 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 			nr_pages = 1;
+ 		}
+ activate_locked:
+-		/* Not a candidate for swapping, so reclaim swap space. */
+-		if (folio_test_swapcache(folio) &&
+-		    (mem_cgroup_swap_full(folio) || folio_test_mlocked(folio)))
+-			folio_free_swap(folio);
+-		VM_BUG_ON_FOLIO(folio_test_active(folio), folio);
+-		if (!folio_test_mlocked(folio)) {
+-			int type = folio_is_file_lru(folio);
+-			folio_set_active(folio);
+-			stat->nr_activate[type] += nr_pages;
+-			count_memcg_folio_events(folio, PGACTIVATE, nr_pages);
+-		}
++		folio_active_bounce(folio, stat, nr_pages);
+ keep_locked:
+ 		folio_unlock(folio);
+ keep:
+ 		list_add(&folio->lru, &ret_folios);
+ 		VM_BUG_ON_FOLIO(folio_test_lru(folio) ||
+ 				folio_test_unevictable(folio), folio);
++next:
++		continue;
+ 	}
+ 	/* 'folio_list' is always empty here */
+ 
+ 	/* Migrate folios selected for demotion */
+ 	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+-	nr_reclaimed += nr_demoted;
++	stat->nr_reclaimed += nr_demoted;
+ 	stat->nr_demoted += nr_demoted;
+ 	/* Folios that could not be demoted are still in @demote_folios */
+ 	if (!list_empty(&demote_folios)) {
+@@ -1613,7 +1658,6 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 
+ 	if (plug)
+ 		swap_write_unplug(plug);
+-	return nr_reclaimed;
+ }
+ 
+ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+@@ -1647,8 +1691,9 @@ unsigned int reclaim_clean_pages_from_list(struct zone *zone,
+ 	 * change in the future.
+ 	 */
+ 	noreclaim_flag = memalloc_noreclaim_save();
+-	nr_reclaimed = shrink_folio_list(&clean_folios, zone->zone_pgdat, &sc,
++	shrink_folio_list(&clean_folios, zone->zone_pgdat, &sc,
+ 					&stat, true, NULL);
++	nr_reclaimed = stat.nr_reclaimed;
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 
+ 	list_splice(&clean_folios, folio_list);
+@@ -2017,8 +2062,8 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+ 	if (nr_taken == 0)
+ 		return 0;
+ 
+-	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
+-					 lruvec_memcg(lruvec));
++	shrink_folio_list(&folio_list, pgdat, sc, &stat, false, lruvec_memcg(lruvec));
++	nr_reclaimed = stat.nr_reclaimed;
+ 
+ 	spin_lock_irq(&lruvec->lru_lock);
+ 	move_folios_to_lru(lruvec, &folio_list);
+@@ -2195,7 +2240,8 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
+ 		.no_demotion = 1,
+ 	};
+ 
+-	nr_reclaimed = shrink_folio_list(folio_list, pgdat, &sc, &stat, true, NULL);
++	shrink_folio_list(folio_list, pgdat, &sc, &stat, true, NULL);
++	nr_reclaimed = stat.nr_reclaimed;
+ 	while (!list_empty(folio_list)) {
+ 		folio = lru_to_folio(folio_list);
+ 		list_del(&folio->lru);
+@@ -4703,7 +4749,8 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	if (list_empty(&list))
+ 		return scanned;
+ retry:
+-	reclaimed = shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
++	shrink_folio_list(&list, pgdat, sc, &stat, false, memcg);
++	reclaimed = stat.nr_reclaimed;
+ 	sc->nr.unqueued_dirty += stat.nr_unqueued_dirty;
+ 	sc->nr_reclaimed += reclaimed;
+ 	trace_mm_vmscan_lru_shrink_inactive(pgdat->node_id,
+
 -- 
-Zhang Peng <zippermonkey@icloud.com>
+2.43.7
 
 
 
