@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 174D1F3C24E
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96524F3C263
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:42:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E6016B0092; Mon,  9 Mar 2026 09:42:34 -0400 (EDT)
+	id 0A6906B0088; Mon,  9 Mar 2026 09:42:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A3176B0093; Mon,  9 Mar 2026 09:42:34 -0400 (EDT)
+	id 07EC06B0093; Mon,  9 Mar 2026 09:42:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AF826B0095; Mon,  9 Mar 2026 09:42:34 -0400 (EDT)
+	id EEA106B0096; Mon,  9 Mar 2026 09:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B8BA6B0092
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:42:34 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 17913887E5
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:34 +0000 (UTC)
-X-FDA: 84526639428.29.F40F4AD
+	by kanga.kvack.org (Postfix) with ESMTP id D9F996B0093
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:42:38 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A4BE1401C7
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:38 +0000 (UTC)
+X-FDA: 84526639596.15.9D005BA
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2093D1C0003
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ispJttgT
+	by imf04.hostedemail.com (Postfix) with ESMTP id B637140003
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ce0ODBoe
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773063752;
+	s=arc-20220608; t=1773063756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9d/snK4xVbWikBAE/m/zmi9nqno2C5hPckyJRYlDt8s=;
-	b=RTHCtYrHjLfuSYVL+kIgvXnFmaWWYyUaeNR20FnPQOHzp2JfzzNesplLhtiR51kNnvhB5N
-	JQx9vDsm83wKb0pOf8TXrD5go9r4BTKaolMo7PMOBIaEtqQoQSk93biD7lxcV37+7qpoMJ
-	TDdlDUAg7WYRlqmyIdmtQuOGO79Dta8=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ispJttgT;
-	spf=none (imf18.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063752; a=rsa-sha256;
+	bh=EKYiyJc2pJTId+ldlpo0ZDLrgplXezO3UOz8MUOHHDk=;
+	b=iUD7pADKAEDNUj+QctYY1XTSoK8U6WKsvI2SVe2LUejUjc097a0tla+Yn4HbRVDPP0X4Rn
+	jqqB+nHYHhs9YaLq6FLAGWLqTV0NrKXMJX2rVnq1xbHPJyRbiBZlFP5AQTpQtklvMqqRhK
+	mYSlpakS+X5YG7UNxbJBlmK6UxKEbsk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063757; a=rsa-sha256;
 	cv=none;
-	b=TU/gqF7/c3kYlSkXwrZ9ximghS6DTmDltWJVEDcM0uaXdaQAGgSaarwB2ydyJk7LcPhzDR
-	y/pVWYilVrmvM5lIf85A3P/Ia96LACj+bzfpJYO49LHCEXdYStkaz/QqztinWABeP4n5QP
-	gZlNaazTLLGAq4KwtJJv9rhyiSSceuI=
+	b=DIQEJCYVokjv6ZsVgj+ZxjuLeed67bJ/ukLoQrUS/dFuiW8Aecj+6BDur48yQcBZTHBIZI
+	XalOWURnBgnXaOCjM0Ipbdl5U9+c8XnL0kTLtjgyE+fGkvi2BQOXIbJ3KLZAqymF6rZvQx
+	NoLh8qfSy90mjhmPCGfUrTlnUZ+oBVU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ce0ODBoe;
+	dmarc=none;
+	spf=none (imf04.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=9d/snK4xVbWikBAE/m/zmi9nqno2C5hPckyJRYlDt8s=; b=ispJttgTKZuUuNl9uz2O19j/TS
-	XTDKJszUFwGRh0B1vgPte46/UyHled4rILSSd/STz5zcA0WBBFHGZL9kp3OHfmAtTAz7DqQaIxYFE
-	Bs75b6PDZtfQUZYo9/OyeCI3z7MXff718ybN+jlU7LLL7m1omfhGMYYifOetji2dsKSpRXGNynUsA
-	OwkDErIFg2f9IZoEoSJehfO8quZ3NMLP8mD/ZZ9X69XrNch9GP9GUk+pTitWNQP+Sp4nTarCM/Ej2
-	V0au41yJ6dLn0kpdt/Soc0DRDqRJG261yaly5Uror+hj3JAY/U8BooxLq4vHLAOLMLsDuJ9nEI7M4
-	kI9FezuA==;
+	bh=EKYiyJc2pJTId+ldlpo0ZDLrgplXezO3UOz8MUOHHDk=; b=Ce0ODBoeTLUkw2GDjIX+TE/apq
+	hs9NMI8U3pQ/r9k91L9p4putmJhOMMfUP1HBCk5r1y0RQx8LBLuDhSdYUb61jxDDJTfzj4AOynmOh
+	3CiepRCrLuw3koKtlqaH9vGpWrtANO8oUhwb1OVTM8Tyy3KmDwCalGTC2j2pbdAJc3djfE3tRMfv/
+	1NwJI3ULOWhACH6H452hBTsXh/6vh5bozKxRkWMsTe72HiLv+eE8MTCJOc+Qf2fk4waV4l93evGVS
+	2nTBMISlCbv+IrpLxENh0o97GMbC+gOW68aa/OJonjF0nUk8+pm1OiB/uejXh0moteYPaOeHBhrCi
+	CN76lGdw==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.94.2)
 	(envelope-from <leitao@debian.org>)
-	id 1vzasK-002G3Q-9T; Mon, 09 Mar 2026 13:42:24 +0000
+	id 1vzasO-002G3d-CS; Mon, 09 Mar 2026 13:42:28 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Mar 2026 06:41:45 -0700
-Subject: [PATCH v8 2/6] kho: rename fdt parameter to blob in
- kho_add/remove_subtree()
+Date: Mon, 09 Mar 2026 06:41:46 -0700
+Subject: [PATCH v8 3/6] kho: persist blob size in KHO FDT
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-kho-v8-2-c3abcf4ac750@debian.org>
+Message-Id: <20260309-kho-v8-3-c3abcf4ac750@debian.org>
 References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
 In-Reply-To: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
 To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
@@ -80,31 +79,31 @@ Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
  Breno Leitao <leitao@debian.org>, SeongJae Park <sj@kernel.org>, 
  kernel-team@meta.com
 X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10553; i=leitao@debian.org;
- h=from:subject:message-id; bh=YDthdgiQbZvgrpt+Me0u+UlmR+Dfg+aF1caFkoII/jo=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprs4yIwriGYppcItJb79pnuFcumHUllGkpjheZ
- 4ZCM2nxaTGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa7OMgAKCRA1o5Of/Hh3
- bf9iD/48CLBfW2ZKolE5ndIKiButWnvgudDa1uIOBW2MDCb2rmPNP6u0Jbo0F1rBoQAVMFcN8fE
- bxAtp9xo9qham8OqEDDVKJCd9trNznYhMDYZiaDooMBMlNw1o7BBTCMfmTweLJyaYTNCH0i9j65
- ivQRWZA3oh+uwBcoVv8syD+vILmZbpNCEBXcftwwmQwKdTpdb1wN2hAqepbGYpkQIZL1UPHUsVr
- KXENuncC2DJ7Xk7aFPtOZb1tw2Tw+nUJn9fKuT+l4afWBlu+8E6O7jxgdFmeXCrkkRkHNFipFeu
- ZQ0IzoJS9sHDpxQLk46wFwFatFCmUONn2nFNUqmjVExW5BzUJgZY+Z+WBN22dT13BVd4E+LiP84
- S+VBCnspJneZuts5sbnkWHLW9g+XSfhk0FSOLjxhN3B9+MLVraWLnzjjlIBpoEU5Dt0hmkpMvTF
- xmIsvVwMoue0J7qMkUHV+Zj2+Teq+ovRu612Kx2t1O0/9/Yu2wyIpzWK1pO3pXJYHPfvaBqZogZ
- 7YmtL3VrFP/AclZio/11pYSqpW/ziJEaRlYBuJXm0evj68cEN2mnT66m1EBLSlVpbc6X1lQMvSZ
- 8cb70FMSvdmbHaz7RFau2OJdf/wCMb+YfIyHdSKo6D2kEUzWAfelAw4X+55LwVe+jPQGmaE/4Ef
- 5zPtZP+celYcjaw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8235; i=leitao@debian.org;
+ h=from:subject:message-id; bh=u26q8+424ryPZEmQMXhYg2CGtc4uVC9Yg6zN9YqpvT4=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprs4yZ+R2PEvk3C6myQX9u+605PCBk1NmnfWrT
+ 1G6bFo2c++JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa7OMgAKCRA1o5Of/Hh3
+ bfSWEACl5uvGO0nE7tsUZ2bnuyNeoKjAT2ZPG9CarGKMFgDS4OnBKRyrlvqrFS6ZDYajMmI3gNO
+ i5rOD3G/nuNifuByKm9SDuyhElTgIYjKOBg/CrwhWBdLdcTu9IsNvrlvE3aNUKQhAivEWEuPqMb
+ wzPFhvTAfwg7wZ+/E8QhvJbZEyleiy7yW/7XMNyXZI34hkCm1Fg1QvYfGSmERMXaig+NSxWgPTl
+ W+aJqQlQT8usiwCHNLA2QarHv3W7c5NJBf/8mJzIIZMUILv3mzi2vm8fFk8M0xbhDlMR/x+zr0M
+ fwmMEwEs8+2cnZ+YpXgh6Dl6yyKpy8elEctki7rrVm9/KyLAofm+wty5LsBGiWSQzAfyHh9pLoe
+ jh/+l96OsmXF3hIRJt1oAWshd3gyQBbksI9bC5eethWgb+dgzaYwYbOsnXbS2Zlm4dOXmyJT9DR
+ xdlYexLV9zQCKkt2nEpp2+kE23pdP2kbCXO+sFwpebSDOdcSYlBBiklk8YJHGKnSCdz5QTrtDyB
+ nZqcTGE2ajVvYRG2y0Dd77JPXseCSbG70m0FULyLXOUPaUoXNjcjjbP5HQ2l/K850F6Ae69A0kS
+ mbcoBKVyE+6H9rugxWZBp2EQB27wL5E7FZMdv2ZmjO2ZjlU8RmjPIqhEW88sc7SSxWgAr02N40y
+ VZRtuqutpp5721g==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Queue-Id: 2093D1C0003
-X-Stat-Signature: hm3jrzfsup1opzkdcnjthkojoi8t3qii
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B637140003
+X-Stat-Signature: 1o3sc6grq1zd4nxrpnmba58jr976oa48
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773063751-447436
-X-HE-Meta: U2FsdGVkX19JdaYpbFmYGh1THtirrjszSL3fuglLDncUGH9D0pTrlfeqHFDj7xhcKwJA5S/6NCAHkFA5oE7nCBLIIwBdg+oVKFtAwSlK4e5iw8lyW/U4btqPMXRQYwjESYjx93D6v9DunlAT0jCwAO9l+pYPOD+iXkUKSPeCcSQ5tJghNf8O0u5Bi/S8uXGDxuU7msUZ8q7tR4Zn8mV7sO042njNVaH2KYsC1bQV0edZoGkTHQdow7mbw24EzGrPsDvOF6QgY6u6Kxf2zIX5Gnq6Prkkaw8r/cCMQBtHXzfzAizXyYn6TmnqAh0cyoNDssUQhvQpNw9ez4QHvj7LQqaSuPlxC/t31SI7OwHUzwDUTFUB930kDksbb2J0wMIfCm5TxSB/5tgTqzNOLz7ZDO/2PMAbe3JaOI/GHROFI268brv6ym6oyCuMRqvzARn9Q/ZTdfJicwTvF6v7XjlJ+BhiEPhY1HpjZy5kqpyxPOCNfQH87f3ujDFgzzjG6+HXoaXc8SAH1blJYwpSLMQGIlXOikNOlBVY6mlJsowHulrWd+DeUXB1xABpwAET/t8MWpGCf50dm5lT1TFRsGW0N5l8wJ+A2Rd7ZjvxKbc9SobsWQ9NaB3wYaRAB/u2sKLecUFsxj/sVJ/Y4AJo30I/ykFGNQyeLQVPgMWvi0Q0u0oBNlR1z9wa1N/bda0en1dwhu2dhzi1a8TiAWbvhMuNu81QmQV5EnZt96AYQkF7QMcm7Ulv+nIM/Mn1CgxyLUIF5QuGaHXdIPsWAvrct/3GqjMMwa9+Y83ue1pF3umT3e/QxhSmfn2H9A5xWV6ugY7kzutFIaLHsEEfPHm6Ck0F6uWgx45ldtwGKQ7isq2j+mhRg6S+z3EVPQMyfJxctl4zNgPABz6rwgOu6NFvccb4+9Ck4raixZ485tdT8RgppRmTbr1ElgkhxA5T38k7IRQzpx/8arJt1JF8LH7UnqT
- woDnrXUp
- PxhqZ8c1+XrlePgtv0DK6rh6NCC1+t3I4BvveCLzM8Q5c4vOP9Zu23ZTVC3CYVv5f98vlmmCHvjyinflz8D7ju64/vcU9jiVgCuXTzxwaKQ1CaYYZJQO20NEx0/rtqM3QcUH6RSt9LC336gsJBWAMESjgJRr73zZST7P/3YvGgeAtrDSIa+rGP9rVYfnhgCOe2SmBA2B2okTQAhORMSTS9QjXE9QKcJ/UjZ9PhX7hhyTjNHIz0N0sjmJZth4JToDseMyO
+X-HE-Tag: 1773063756-236415
+X-HE-Meta: U2FsdGVkX1+ZPIxdM5tUbEp2s4Otv7ZZnjnebGJP3PTeZv5UZblY33tTQcRKwCRl7bUxvxyvRrRVe/wW0V5ZzOD/wStxHht3m8dn0m/rwXSrzn73S5LKO/dcY4fb+KiEyWxX7FrEGI/uSrUdwlRRZNkCaRFPGR/cCGI47DQk4MfClNimAouv4plrPUFiEwch6F3BkOTgv6dp1oACS5IsArVb8aRNXDTFNSkeONVSFvnsQp24jQIzsjTDfKVyHrVlCjleR41LUg4ey/LIBdTadOnWb8WLS7ONfL6B8bjNVZPp7Hv+aovmdnRyfyta8j6af/OUnlg3l7Q/WB89xZimfjroiO97VTnAxyUJa0PjP7jrrwQMoZRLgiwqG1tmggWR0ysQTz7FH0YqVJSiJXKBW3xJn6y1mfHYSJwjiE04nb4Zoqesr76pDkemmkS1Xu3ZQ+HzNTHt3+Wjd7kpkVLfveWmlJfk5PXYxgZAFqMjS+QpK5EJJWsItgPkdc9oKkh4jbPolORFAKUUxhyEJxAm/1MTLl8ySlo4O6SC+OUa5tcGVhdA2JSwhTKq64KspAfouSuMpotFjZDqSPZfLgJPdLGwx2VMtXahUbGcLYZHoes6Y5khjQ5LrSQx/XkLhqf1mIY3xD0NHsua6nXO1JAnG4/6rEMp6qTkYnIv5jOOE4b9/6HZ8oBeDrP5ONiZahmYBSeblcCsPurVXByUF3UuuV8AUiLe96Y0Vcw1+9gS+FcyIniE3ucrqPWkepJp6p+GEj303M0JtzXch4/GSQB2fisPQ0bV/T4qJBxsqOJKiFrDYOFpP7z6KAYm7Z+SUkLXiuy0+aP8g4XVMdA+iHoKMW2reRLRJJjlliO4Vm9D38TJ63K3EqnzkSo7FDm1+vHH9cyef1rlj1dnZP2hyFQaoOCa5yhfmKPN6Tjj/ZcTce9CM7odzBJo//zfx4wCUKkcPpzLEgSOey/147B4prk
+ uVUi77zW
+ ARuIrakyvB0ICz/yHeq81ZCO8Hw+Ei7y6NeGn75RvDvgTgRFOu09r5keHEE9VZX21Xny7qA3PShUJG1rd5A443Ay1KJDP0GS74poisnKh5cCwVHe8vnxkUx1Swco829dFadRtUnaHS/KnNAGmG5bSrRS5IjYiF+eMSNva
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,268 +111,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since kho_add_subtree() now accepts arbitrary data blobs (not just
-FDTs), rename the parameter from 'fdt' to 'blob' to better reflect
-its purpose. Apply the same rename to kho_remove_subtree() for
-consistency.
+kho_add_subtree() accepts a size parameter but only forwards it to
+debugfs. The size is not persisted in the KHO FDT, so it is lost across
+kexec. This makes it impossible for the incoming kernel to determine the
+blob size without understanding the blob format.
 
-Also rename kho_debugfs_fdt_add() and kho_debugfs_fdt_remove() to
-kho_debugfs_blob_add() and kho_debugfs_blob_remove() respectively,
-with the same parameter rename from 'fdt' to 'blob'.
+Store the blob size as a "blob-size" property in the KHO FDT alongside
+the "preserved-data" physical address. This allows the receiving kernel
+to recover the size for any blob regardless of format.
+
+Also extend kho_retrieve_subtree() with an optional size output
+parameter so callers can learn the blob size without needing to
+understand the blob format. Update all callers to pass NULL for the
+new parameter.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- Documentation/admin-guide/mm/kho.rst        |  2 +-
- include/linux/kexec_handover.h              |  8 +++----
- kernel/liveupdate/kexec_handover.c          | 33 +++++++++++++++--------------
- kernel/liveupdate/kexec_handover_debugfs.c  | 25 +++++++++++-----------
- kernel/liveupdate/kexec_handover_internal.h | 16 +++++++-------
- 5 files changed, 43 insertions(+), 41 deletions(-)
+ include/linux/kexec_handover.h         |  5 +++--
+ include/linux/kho/abi/kexec_handover.h | 20 ++++++++++++++++----
+ kernel/liveupdate/kexec_handover.c     | 26 +++++++++++++++++++++-----
+ kernel/liveupdate/luo_core.c           |  2 +-
+ lib/test_kho.c                         |  2 +-
+ mm/memblock.c                          |  2 +-
+ 6 files changed, 43 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index cb9a20f649206..6a4ddf3440465 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -80,5 +80,5 @@ stabilized.
-     it finished to interpret their metadata.
- 
- ``/sys/kernel/debug/kho/in/sub_fdts/``
--    Similar to ``kho/out/sub_fdts/``, but contains sub FDT blobs
-+    Similar to ``kho/out/sub_fdts/``, but contains sub blobs
-     of KHO producers passed from the old kernel.
 diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index abb1d324f42d0..0666cf298c7f4 100644
+index 0666cf298c7f4..8968c56d2d73e 100644
 --- a/include/linux/kexec_handover.h
 +++ b/include/linux/kexec_handover.h
-@@ -32,8 +32,8 @@ void kho_restore_free(void *mem);
- struct folio *kho_restore_folio(phys_addr_t phys);
- struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
+@@ -34,7 +34,7 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
--int kho_add_subtree(const char *name, void *fdt, size_t size);
--void kho_remove_subtree(void *fdt);
-+int kho_add_subtree(const char *name, void *blob, size_t size);
-+void kho_remove_subtree(void *blob);
- int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
+ int kho_add_subtree(const char *name, void *blob, size_t size);
+ void kho_remove_subtree(void *blob);
+-int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
++int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size);
  
  void kho_memory_init(void);
-@@ -97,12 +97,12 @@ static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
- 	return NULL;
- }
  
--static inline int kho_add_subtree(const char *name, void *fdt, size_t size)
-+static inline int kho_add_subtree(const char *name, void *blob, size_t size)
+@@ -104,7 +104,8 @@ static inline int kho_add_subtree(const char *name, void *blob, size_t size)
+ 
+ static inline void kho_remove_subtree(void *blob) { }
+ 
+-static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
++static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys,
++				       size_t *size)
  {
  	return -EOPNOTSUPP;
  }
+diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+index 6b7d8ef550f98..7e847a2339b09 100644
+--- a/include/linux/kho/abi/kexec_handover.h
++++ b/include/linux/kho/abi/kexec_handover.h
+@@ -41,25 +41,28 @@
+  *   restore the preserved data.::
+  *
+  *     / {
+- *         compatible = "kho-v2";
++ *         compatible = "kho-v3";
+  *
+  *         preserved-memory-map = <0x...>;
+  *
+  *         <subnode-name-1> {
+  *             preserved-data = <0x...>;
++ *             blob-size = <0x...>;
+  *         };
+  *
+  *         <subnode-name-2> {
+  *             preserved-data = <0x...>;
++ *             blob-size = <0x...>;
+  *         };
+  *               ... ...
+  *         <subnode-name-N> {
+  *             preserved-data = <0x...>;
++ *             blob-size = <0x...>;
+  *         };
+  *     };
+  *
+  *   Root KHO Node (/):
+- *     - compatible: "kho-v2"
++ *     - compatible: "kho-v3"
+  *
+  *       Indentifies the overall KHO ABI version.
+  *
+@@ -78,16 +81,25 @@
+  *
+  *       Physical address pointing to a subnode data blob that is also
+  *       being preserved.
++ *
++ *     - blob-size: u64
++ *
++ *       Size in bytes of the preserved data blob. This is needed because
++ *       blobs may use arbitrary formats (not just FDT), so the size
++ *       cannot be determined from the blob content alone.
+  */
  
--static inline void kho_remove_subtree(void *fdt) { }
-+static inline void kho_remove_subtree(void *blob) { }
+ /* The compatible string for the KHO FDT root node. */
+-#define KHO_FDT_COMPATIBLE "kho-v2"
++#define KHO_FDT_COMPATIBLE "kho-v3"
  
- static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
- {
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 55bdc5d2d1929..54fe59fe43acd 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -749,13 +749,13 @@ static void __init kho_reserve_scratch(void)
- }
+ /* The FDT property for the preserved memory map. */
+ #define KHO_FDT_MEMORY_MAP_PROP_NAME "preserved-memory-map"
+ 
+ /* The FDT property for preserved data blobs. */
+-#define KHO_FDT_SUB_TREE_PROP_NAME "preserved-data"
++#define KHO_SUB_TREE_PROP_NAME "preserved-data"
++
++/* The FDT property for the size of preserved data blobs. */
++#define KHO_SUB_TREE_SIZE_PROP_NAME "blob-size"
  
  /**
-- * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
-+ * kho_add_subtree - record the physical address of a sub blob in KHO root tree.
-  * @name: name of the sub tree.
-- * @fdt: the sub tree blob.
-+ * @blob: the sub tree blob.
-  * @size: size of the blob in bytes.
-  *
-  * Creates a new child node named @name in KHO root FDT and records
-- * the physical address of @fdt. The pages of @fdt must also be preserved
-+ * the physical address of @blob. The pages of @blob must also be preserved
-  * by KHO for the new kernel to retrieve it after kexec.
-  *
-  * A debugfs blob entry is also created at
-@@ -764,9 +764,9 @@ static void __init kho_reserve_scratch(void)
-  *
-  * Return: 0 on success, error code on failure
-  */
--int kho_add_subtree(const char *name, void *fdt, size_t size)
-+int kho_add_subtree(const char *name, void *blob, size_t size)
+  * DOC: Kexec Handover ABI for vmalloc Preservation
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 54fe59fe43acd..1f22705d5d246 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -768,6 +768,7 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
  {
--	phys_addr_t phys = virt_to_phys(fdt);
-+	phys_addr_t phys = virt_to_phys(blob);
+ 	phys_addr_t phys = virt_to_phys(blob);
  	void *root_fdt = kho_out.fdt;
++	u64 size_u64 = size;
  	int err = -ENOMEM;
  	int off, fdt_err;
-@@ -789,7 +789,8 @@ int kho_add_subtree(const char *name, void *fdt, size_t size)
+ 
+@@ -784,11 +785,16 @@ int kho_add_subtree(const char *name, void *blob, size_t size)
+ 		goto out_pack;
+ 	}
+ 
+-	err = fdt_setprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME,
++	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
+ 			  &phys, sizeof(phys));
  	if (err < 0)
  		goto out_pack;
  
--	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, size, false));
-+	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
-+					  size, false));
++	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
++			  &size_u64, sizeof(size_u64));
++	if (err < 0)
++		goto out_pack;
++
+ 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
+ 					  size, false));
  
- out_pack:
- 	fdt_pack(root_fdt);
-@@ -798,9 +799,9 @@ int kho_add_subtree(const char *name, void *fdt, size_t size)
- }
- EXPORT_SYMBOL_GPL(kho_add_subtree);
+@@ -817,7 +823,7 @@ void kho_remove_subtree(void *blob)
+ 		const u64 *val;
+ 		int len;
  
--void kho_remove_subtree(void *fdt)
-+void kho_remove_subtree(void *blob)
- {
--	phys_addr_t target_phys = virt_to_phys(fdt);
-+	phys_addr_t target_phys = virt_to_phys(blob);
- 	void *root_fdt = kho_out.fdt;
- 	int off;
- 	int err;
-@@ -822,7 +823,7 @@ void kho_remove_subtree(void *fdt)
+-		val = fdt_getprop(root_fdt, off, KHO_FDT_SUB_TREE_PROP_NAME, &len);
++		val = fdt_getprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME, &len);
+ 		if (!val || len != sizeof(phys_addr_t))
+ 			continue;
  
- 		if ((phys_addr_t)*val == target_phys) {
- 			fdt_del_node(root_fdt, off);
--			kho_debugfs_fdt_remove(&kho_out.dbg, fdt);
-+			kho_debugfs_blob_remove(&kho_out.dbg, blob);
- 			break;
- 		}
- 	}
-@@ -1310,11 +1311,11 @@ bool is_kho_boot(void)
- EXPORT_SYMBOL_GPL(is_kho_boot);
- 
- /**
-- * kho_retrieve_subtree - retrieve a preserved sub FDT by its name.
-- * @name: the name of the sub FDT passed to kho_add_subtree().
-- * @phys: if found, the physical address of the sub FDT is stored in @phys.
-+ * kho_retrieve_subtree - retrieve a preserved sub blob by its name.
-+ * @name: the name of the sub blob passed to kho_add_subtree().
-+ * @phys: if found, the physical address of the sub blob is stored in @phys.
+@@ -1314,13 +1320,14 @@ EXPORT_SYMBOL_GPL(is_kho_boot);
+  * kho_retrieve_subtree - retrieve a preserved sub blob by its name.
+  * @name: the name of the sub blob passed to kho_add_subtree().
+  * @phys: if found, the physical address of the sub blob is stored in @phys.
++ * @size: if not NULL and found, the size of the sub blob is stored in @size.
   *
-- * Retrieve a preserved sub FDT named @name and store its physical
-+ * Retrieve a preserved sub blob named @name and store its physical
-  * address in @phys.
+  * Retrieve a preserved sub blob named @name and store its physical
+- * address in @phys.
++ * address in @phys and optionally its size in @size.
   *
   * Return: 0 on success, error code on failure
-@@ -1452,9 +1453,9 @@ static __init int kho_init(void)
+  */
+-int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
++int kho_retrieve_subtree(const char *name, phys_addr_t *phys, size_t *size)
+ {
+ 	const void *fdt = kho_get_fdt();
+ 	const u64 *val;
+@@ -1336,12 +1343,21 @@ int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
+ 	if (offset < 0)
+ 		return -ENOENT;
+ 
+-	val = fdt_getprop(fdt, offset, KHO_FDT_SUB_TREE_PROP_NAME, &len);
++	val = fdt_getprop(fdt, offset, KHO_SUB_TREE_PROP_NAME, &len);
+ 	if (!val || len != sizeof(*val))
+ 		return -EINVAL;
+ 
+ 	*phys = (phys_addr_t)*val;
+ 
++	if (size) {
++		val = fdt_getprop(fdt, offset, KHO_SUB_TREE_SIZE_PROP_NAME,
++				  &len);
++		if (val && len == sizeof(*val))
++			*size = (size_t)*val;
++		else
++			*size = 0;
++	}
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(kho_retrieve_subtree);
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index 04d06a0906c0e..48b25c9abeda3 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -88,7 +88,7 @@ static int __init luo_early_startup(void)
+ 	}
+ 
+ 	/* Retrieve LUO subtree, and verify its format. */
+-	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys);
++	err = kho_retrieve_subtree(LUO_FDT_KHO_ENTRY_NAME, &fdt_phys, NULL);
+ 	if (err) {
+ 		if (err != -ENOENT) {
+ 			pr_err("failed to retrieve FDT '%s' from KHO: %pe\n",
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index 2631824373152..aa6a0956bb8b7 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -319,7 +319,7 @@ static int __init kho_test_init(void)
+ 	if (!kho_is_enabled())
  		return 0;
- 	}
  
--	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
--					 kho_out.fdt,
--					 fdt_totalsize(kho_out.fdt), true));
-+	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, "fdt",
-+					  kho_out.fdt,
-+					  fdt_totalsize(kho_out.fdt), true));
+-	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
++	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys, NULL);
+ 	if (!err) {
+ 		err = kho_test_restore(fdt_phys);
+ 		if (err)
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 29e12ea2a854c..4f4bf1a9d7900 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2533,7 +2533,7 @@ static void *__init reserve_mem_kho_retrieve_fdt(void)
+ 	if (fdt)
+ 		return fdt;
  
- 	return 0;
- 
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index b5a1e09ca8f14..7a100f2bf3947 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -23,8 +23,9 @@ struct fdt_debugfs {
- 	struct dentry *file;
- };
- 
--static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
--				 const char *name, const void *fdt, size_t size)
-+static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
-+				  const char *name, const void *blob,
-+				  size_t size)
- {
- 	struct fdt_debugfs *f;
- 	struct dentry *file;
-@@ -33,7 +34,7 @@ static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
- 	if (!f)
- 		return -ENOMEM;
- 
--	f->wrapper.data = (void *)fdt;
-+	f->wrapper.data = (void *)blob;
- 	f->wrapper.size = size;
- 
- 	file = debugfs_create_blob(name, 0400, dir, &f->wrapper);
-@@ -48,8 +49,8 @@ static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
- 	return 0;
- }
- 
--int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
--			const void *fdt, size_t size, bool root)
-+int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
-+			 const void *blob, size_t size, bool root)
- {
- 	struct dentry *dir;
- 
-@@ -58,15 +59,15 @@ int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
- 	else
- 		dir = dbg->sub_fdt_dir;
- 
--	return __kho_debugfs_fdt_add(&dbg->fdt_list, dir, name, fdt, size);
-+	return __kho_debugfs_blob_add(&dbg->fdt_list, dir, name, blob, size);
- }
- 
--void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
-+void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob)
- {
- 	struct fdt_debugfs *ff;
- 
- 	list_for_each_entry(ff, &dbg->fdt_list, list) {
--		if (ff->wrapper.data == fdt) {
-+		if (ff->wrapper.data == blob) {
- 			debugfs_remove(ff->file);
- 			list_del(&ff->list);
- 			kfree(ff);
-@@ -112,8 +113,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 		goto err_rmdir;
- 	}
- 
--	err = __kho_debugfs_fdt_add(&dbg->fdt_list, dir, "fdt", fdt,
--				    fdt_totalsize(fdt));
-+	err = __kho_debugfs_blob_add(&dbg->fdt_list, dir, "fdt", fdt,
-+				     fdt_totalsize(fdt));
- 	if (err)
- 		goto err_rmdir;
- 
-@@ -132,8 +133,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 			continue;
- 		}
- 		sub_fdt = phys_to_virt(*fdt_phys);
--		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
--					    sub_fdt, fdt_totalsize(sub_fdt));
-+		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
-+					     sub_fdt, fdt_totalsize(sub_fdt));
- 		if (err) {
- 			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
- 				ERR_PTR(err));
-diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-index 2a28cb8db9b0a..0399ff1077750 100644
---- a/kernel/liveupdate/kexec_handover_internal.h
-+++ b/kernel/liveupdate/kexec_handover_internal.h
-@@ -26,19 +26,19 @@ extern unsigned int kho_scratch_cnt;
- int kho_debugfs_init(void);
- void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
- int kho_out_debugfs_init(struct kho_debugfs *dbg);
--int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
--			const void *fdt, size_t size, bool root);
--void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt);
-+int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
-+			 const void *blob, size_t size, bool root);
-+void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob);
- #else
- static inline int kho_debugfs_init(void) { return 0; }
- static inline void kho_in_debugfs_init(struct kho_debugfs *dbg,
- 				       const void *fdt) { }
- static inline int kho_out_debugfs_init(struct kho_debugfs *dbg) { return 0; }
--static inline int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
--				      const void *fdt, size_t size,
--				      bool root) { return 0; }
--static inline void kho_debugfs_fdt_remove(struct kho_debugfs *dbg,
--					  void *fdt) { }
-+static inline int kho_debugfs_blob_add(struct kho_debugfs *dbg,
-+				       const char *name, const void *blob,
-+				       size_t size, bool root) { return 0; }
-+static inline void kho_debugfs_blob_remove(struct kho_debugfs *dbg,
-+					   void *blob) { }
- #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
- 
- #ifdef CONFIG_KEXEC_HANDOVER_DEBUG
+-	err = kho_retrieve_subtree(MEMBLOCK_KHO_FDT, &fdt_phys);
++	err = kho_retrieve_subtree(MEMBLOCK_KHO_FDT, &fdt_phys, NULL);
+ 	if (err) {
+ 		if (err != -ENOENT)
+ 			pr_warn("failed to retrieve FDT '%s' from KHO: %d\n",
 
 -- 
 2.47.3
