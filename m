@@ -4,127 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4FB2F41807
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 15:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F38EF41808
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 16:00:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F1046B0005; Mon,  9 Mar 2026 11:59:51 -0400 (EDT)
+	id A06436B0089; Mon,  9 Mar 2026 12:00:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F866B0089; Mon,  9 Mar 2026 11:59:51 -0400 (EDT)
+	id 992FB6B008A; Mon,  9 Mar 2026 12:00:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC30C6B008A; Mon,  9 Mar 2026 11:59:50 -0400 (EDT)
+	id 8DCD46B008C; Mon,  9 Mar 2026 12:00:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DB8B26B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:59:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D4368A5E0
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:59:50 +0000 (UTC)
-X-FDA: 84526985340.24.4D8CE76
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C6DAB8001E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:59:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FKN5In6y;
-	spf=pass (imf30.hostedemail.com: domain of qq570070308@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=qq570070308@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BDE06B0089
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:00:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A37C1A025F
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:00:01 +0000 (UTC)
+X-FDA: 84526985802.07.7DA4E8C
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 63A3DC0017
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:59:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tx5jv2N3;
+	spf=pass (imf10.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773071988;
+	s=arc-20220608; t=1773071999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lxBJyqGJiol9HEpza28/mPltLmrDdSsX1VZdrScZvFw=;
-	b=eTPkcP3IbzbZb2WYeh19HgDzmz6etGoXPE+WDlygUnfkq3SvDzTKYeQbIXel1b7Cm6cesu
-	fTQl+IWgSqSky11OoN6cRMRzVT7tNMJYToINApb9X+gZY+Bduck07Bfrnb76lIWtsw9d5D
-	AC4ipCCJRb1ZeMCRcc9ad7PzFPjUx6w=
+	bh=TdgCe2J3lvudY3Ri4RUwnY+/LSuwRgctaurAZvpEmI4=;
+	b=uyKnHvOTTMNWOF1aL99ozD3Ucp4s/ChssZfg9TiojJ7k28E+0ElDMtSTDI1bp40Xl5vm9D
+	GFV0dDok0iPbd3HZfkxVhdYA+w0unBKWLoxW/bSq1J7S0mZOz0eqSLXMsHYvJaTL5ofjv3
+	MhrAHEWIfueZFkR3Rm+ampV/vbTZvy8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FKN5In6y;
-	spf=pass (imf30.hostedemail.com: domain of qq570070308@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=qq570070308@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773071988; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tx5jv2N3;
+	spf=pass (imf10.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773071999; a=rsa-sha256;
 	cv=none;
-	b=3IN3NcI90hWyEROsl2Ra1pVNFJ0syOLiG6xfEIC5QvOK/Za8TVtzwRUTSyhW0OTqpR2NKA
-	tfsUbzjf6p2u9tGZvRzTAZC8UY8/c6QjxOJE+MZDMPv1A4LmUBRXxBSloQX79lGL2FfaF9
-	k+pOi8wUcNSWxRvNzohUHw27AepHxBU=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ae46b9c70dso34014225ad.1
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 08:59:48 -0700 (PDT)
+	b=WgSQ89xMdMEcruHWYnDJ22BM47BzP1ZnBFnu0DqJGS05fXsemJvVrKVAryw2Jj9m+RvKqD
+	241WRnfesviNCTelJb4bRaeMT5IJcF7nK7qIkH6kt6Y7WFmIilv5prbwVqinrqvRtxYaK3
+	PRoC8AfhRV58ChObIoF96W96bRA102c=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ae49120e97so157115ad.0
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 08:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773071988; x=1773676788; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lxBJyqGJiol9HEpza28/mPltLmrDdSsX1VZdrScZvFw=;
-        b=FKN5In6yeUGaL9X/F6FZ4ck801Bs2ZZeMUOl8t+F+Mssv1CNjxcuUO7SP3kpTzQCQr
-         9OYWloa+stPufqcWHeEYxX5daq8K/jGQj/sjQ7BBQfu7ns3bwsDx6S17ljAgrthnYRsR
-         496TcTlzxxxmXWdwxQDjGzW5YXYc/20AHgQWEIYfeQGm9bRtJmwRr6ejCeTITqiOb4jo
-         lJosX0q6Lx7HAqReTlZ/5cc4RxDmZIDJuRBt6VENTDh1715qRNRCnEXqza8zxAYfTGnH
-         FFyqAkQqDoBPAHKsRYq0UbUl+BokMZzNNYv0zG9KDHpZmcD9xneBfuZoRFOELUl2o+2r
-         /XSQ==
+        d=google.com; s=20230601; t=1773071998; x=1773676798; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TdgCe2J3lvudY3Ri4RUwnY+/LSuwRgctaurAZvpEmI4=;
+        b=tx5jv2N3MeaXGD4NShLPTEHtc+jfCDzeWENQD9FUgUz7NDWEEgJba/1uOnA0KxDxVs
+         6KM6pMKSq9YE08T2iIYEU4a5Heh26gH7GWnSzxdN5GGGS6fxeqmD78s0TI5mYzHM1rLF
+         Cd3mvP0VotlVdORGrjzh/Lr0Yyf8ZKOigUjoOG8huMEByw8VzDWsMieHDXa2/mGk4OWR
+         xzSm/qeMZI3kyqm0dy/hAk2ci9ix7RZXMWZLwHS3zBa83DHgfrVmvv4ZrjIoj8X0qPXh
+         n5Fse11zHceun0Ei3/MfDko/XIqycb2rAWVOjpCXQry7o5DI20l3ZIb7sVwI4/M5rZC2
+         t+JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773071988; x=1773676788;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lxBJyqGJiol9HEpza28/mPltLmrDdSsX1VZdrScZvFw=;
-        b=LnKQ2BBKxBOv69cPM4sR9EoM2Ll/mWTUK0p9iJx+lzPOZlMJTkR1P4xP9eBFQK8M5F
-         2hroNEkMdZR8QnYsUVnTUAgswV/LHzPNvt8r3yzPdparS5EabfxPwzcLJ9TJvOrwTMjh
-         557FOpAJ88aRVJ4So7K5kqTOdhmz6+fLoUL8lty5cQuCEE7kG3cOGAAYTVSx7d64c4qi
-         wL7/Og2v/vw2NkVsUVd+ILVa8XEpv6mTRJRj5fRn8vXczmKEkwWYoDKjnnfhYE3RFabb
-         unYDH8UcP587Sc7M+mxmpmDUwbeNvn67q7t6ogMwhHxIaSvEiB1pQt7KbF1W404hQY8n
-         bB4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVq4cYUYyTAOfe8cxNRxukZQL3CHI80tNT5JGv3RaRmXlS3gOg+Wde8zEWd01vWjUCEF5ql8irheg==@kvack.org
-X-Gm-Message-State: AOJu0Yx2XH3KqTolwxro/IJ7pJTBrDsTP4z+vzftXum5z/6VXUN/H8J7
-	yIoo7Jiw1pR7o2a2z5NGOca9iE4zHiIuzz30cBbQ+yVHR2douExBpQAW
-X-Gm-Gg: ATEYQzxVOXBt86+SNIn80Sq7lYB/wKmT3q7prWhyt8KFGUmDpDxYUJyqkbGJdVy9dgk
-	tBPIwG/2Q5As84mFGWaV4t73a1rKtk3Cw382558j1kQAZ3X4MDzhsfTS4p+8KMsFctvgGN3tPxt
-	/KOP3tHXo0wWQ5w3vCtzKmaulvapVi8iDjnUwESBriNE4gsuYOnfZ764H/8x3RKb48AkTgp1xu5
-	TYHfvY1JFML5k7A8DjIxqb5nKlTMPRtvM/loYNwZGn7EnP8QxkhXn0x4p1TemefvmVJONwIBTsw
-	jdKXDZHw2/wjVtZ1m+HB/5hA3JkXuBDpsoh/+5zrfaJ1VgMnwVZperEFK852NL4MQUThFgAoHl5
-	VlKRRSu7xh2+L20Cj3vBJTADKJg5p1/EwIUc1WiEGfWlYGswRm3zJmD1DYlcI6pXjG/1sw8aaZQ
-	UhfH3CQxBRh2kB3qhVs208NzQoS3cfe19N8x3VejLqZLg=
-X-Received: by 2002:a17:902:e892:b0:2ae:4da9:afce with SMTP id d9443c01a7336-2aea1e1b6bemr505155ad.23.1773071987450;
-        Mon, 09 Mar 2026 08:59:47 -0700 (PDT)
-Received: from DESKTOP-3LEPQG8.localdomain ([119.28.20.50])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f8a629sm144852655ad.62.2026.03.09.08.59.39
+        d=1e100.net; s=20230601; t=1773071998; x=1773676798;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TdgCe2J3lvudY3Ri4RUwnY+/LSuwRgctaurAZvpEmI4=;
+        b=iePpJiu2ZOXnA/El3qWPoQfntAjj3IMRF11LKT1jVfZorIFRBuyRu+u6aOQhwvMnED
+         n0/cJe/Qxu3f8NYMfiXRcfz5h4KuxqOP4Zb4rmWBnDCL6+Zm1RcqqHTz8b/KDgUL/da9
+         Hf8fwXEzbYtzTQP/KNlaxS+RLVxz3wEs2fd+WEN4eA7LIccf73yzTGBoo2c+hJCvEJu9
+         1KZZdtTSMGQeCsWZ6oDsebJbRL7ITqIhvoL6xYve8xHtkudBZ7pDe3E93L1+ERtm9FUf
+         ZSDsxueu2msPm0aWzmKtR5Ba7rMxvkGZ5MgQZYwmweKleJhUnSVo7FpT+v4jkLwSu7dT
+         g3sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAuO93UBLs7gnitSU5yo8HoLtEHvNKuTO/KeeLY4kaK5tzVVhFiqahlNq0NyJL4Fzxem+THG9IxA==@kvack.org
+X-Gm-Message-State: AOJu0Yz3SrUJnqin7YmlZz0zI6rVYM0oL5YshaoLz2nDh9aJukNO2iH7
+	zuoQbb9LF6mbggyYb210LyfcI4Zh9RqsULbpXcRjJjQulzHsgTiRYrCicJaEnC8aCRI0LB8VsFZ
+	gvucGMQ==
+X-Gm-Gg: ATEYQzwc9Gj/AUOG4E9BK6D5cZO/klOgdKbcRXcIVp2u2EUD5YIpgoqaS0rqSs1BNva
+	HgGWN9S/q7aqU0jA7KlSw8K/Wj2WCtDT/ExE3tim6HczQ0o7sfFm5Q5lBKpC5IGG6Ru1Qk+yc2m
+	6V/44XX5v4HNsFYVDAj8+em2mt9vR37U2198cl/axlbWtxd04YMpUL4yvwgdg4rzmdCQ6sZkI9/
+	at/TNeFkkGOPltK6cNMPiVD+9zHbsxVy2jfgURH81wx3DvLAokMYCra5AAWyjudjJmLFbDfBvv5
+	jNm+QzD8dT5J/HDqLFftffg0v6MZ55zEt2hIAm2hY0SX217Je+TG+f5b0vs6/H6hjKhW2ekdRXp
+	wDBMlSXDeC6nid8rg+HF+wI/hmKu3eZFHRXKJDzwFaExDqsf3D0xJXa1CGiyrcebybdn8OeZZrq
+	fBFuHJiaHO9B2eSzrP677SFeDS3c6iG7ISHw6ZP7HmO6IH82cUssLhGAk6d3uKMA==
+X-Received: by 2002:a17:903:98c:b0:2ae:6432:8f77 with SMTP id d9443c01a7336-2ae8ba59672mr3148705ad.17.1773071997647;
+        Mon, 09 Mar 2026 08:59:57 -0700 (PDT)
+Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae840ad894sm162231525ad.80.2026.03.09.08.59.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 08:59:47 -0700 (PDT)
-From: Xie Yuanbin <qq570070308@gmail.com>
-To: willy@infradead.org
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	david.laight.linux@gmail.com,
-	david@kernel.org,
-	justinstitt@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	llvm@lists.linux.dev,
-	mhocko@suse.com,
-	morbo@google.com,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	qq570070308@gmail.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org
-Subject: Re: [PATCH] mm: optimize the implementation of WARN_ON_ONCE_GFP()
-Date: Mon,  9 Mar 2026 23:59:33 +0800
-Message-ID: <20260309155933.41179-1-qq570070308@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aa7p3eQfEuh2wObQ@casper.infradead.org>
-References: <aa7p3eQfEuh2wObQ@casper.infradead.org>
+        Mon, 09 Mar 2026 08:59:56 -0700 (PDT)
+Date: Mon, 9 Mar 2026 15:59:52 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] kho: make sure preservations do not span multiple
+ NUMA nodes
+Message-ID: <aa7uXzkRCHuY2jA6@google.com>
+References: <20260309123410.382308-1-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C6DAB8001E
-X-Stat-Signature: j3g89qkntarzjzycw34g6nkx66ofbeau
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260309123410.382308-1-pratyush@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773071988-780633
-X-HE-Meta: U2FsdGVkX19A/wHIKDaq5PL631tOsD6Vfydkd1yDEdiEYM5o0CiHQMHC5feq7MB9c2AH5BsSc17GabBzRmZ/VWd2Jp+pfq1HJEjoCaUZ3v73FHXrBtj8V0VrKrOL5CS0hBfZTq4mpLDxsRZV+t6RBmBZxD2+3xGbUCl3BZl2RNm+3A51gGTsEbtco5skk/sV4pZNsO2uKk4R6wrE8fMHNN4VnSFplikhTRYHfc3P6P/VsbHG/5pmq5EwwEb2U7Idmmtqis9BBgwFtMVJ9FrwVzY2EX3uXKHyLflMITrZwuA+ASSf9yICHy++7H90rrfezGeDDgM9gSGqF+V+mJbz+xjMNhQQlW3HTLs4xsMdKKMtEO2qGtkz6zhQ0HOt5T4ic5dcHEt5+5UYO9ewz9C7CVh77DhykRyVx9vHMCf4A6h8TTY8bFCVXyDqGkh6ZwIBopPuPVJON6J0zisTPyHwrowyetwtlaQZFg4/p1rHVWcWhmcmujs9fRyzxB7JvomAfXM0maUwBrD4yMSTa73JrXei4DYK9ZB82ltbZ4wIBO+JKvNkgb3wtU9CPLlMwsWIC9gj3f+uHXIp9QzzZbdTcWoD/S337ZeH/QK2B02f6OgnS38Ir3nYtEe9ttQ6bmMQcK1FapwncwlmYa7BxRtnGvpUX+cIDSunb2CHszYPhJ1YT7mKDZVpGnHKwpdwv1U3n5TiISZr5bK4QqPMaAf9TUrMmpDKOLc5pmnv4yNHYtRoCt8rrAJRoNXgUlo1sXklnl+EXqBklzzll76PYltzlyz/8Kw0MzKsjZRUnO6QjlTcnNJfi6KEeJuPd3t6/PzmRmXKN9XHHy5Sm53KtFTnJNRNzriZ/Ui9AeSD5ErZEVy+03PL8IlNaV+OTiA3ptO1n3ABDdZD3Zidv8LuqWqUlOA9KG/fJ9Oam2qlhZgcc0QLOxJuGlH1NJIElCWHu4K3lg6Kdv/o2XsraST+DK2
- itN8/61N
- JIpCJBV0qUC1sR+u8PvMu975IgUmfAO1vyjbs6IU+Xrx6kXtn3xncgSpawCKa62TXZUPXtzhuCRZDAb4CrnkZFjnk8195lfDv25AH4M1udH2CbmnHT89IbrdzZ8V1gfrujkWNw1KtwQyhoWg=
+X-Rspamd-Queue-Id: 63A3DC0017
+X-Rspamd-Server: rspam08
+X-Stat-Signature: dbrek98e3srcdmy7eox8grmzpy37pqk3
+X-HE-Tag: 1773071999-255037
+X-HE-Meta: U2FsdGVkX18ImfsGg4ULAWqxl4nCuS2WVYFZdpDZk+xrjOkvGCCV/5WDp5i0ezDT0jvYq3MOiAH7K9tFEJMfjczzIOJFdiiQyVyhPxCOBSvmVVaz4bd+rgyd67yqzKuRNuaCUbn+u41pVHTNW+oo2upd9F/j6vtUAQ6FmvjU+0HRpm/KmNKrIifdUTOe6Q2tLm0bqUkb7fZ48r+GxjTCIK/gR1+6h+9ynanPrJhdHecLR6d5RStpFeanmMqgYS3qP9UVNWFXf2YKOSO4cZyo/e/kvxyuETrnbr7/lY2ZRjxXH2iBlZFHO2DYpUEt0zwsLUW6xgIjPuAcASOLsWxWR06iHyNeSym+4DIW0ZD2wpJBAzNyYqaUiUwvZoQEfxU9R4qN5dXu58WXFEAkIVIRMlnR0EHzG/9dU5XnEWJ40zIVLDThZY75KZ3jh2LL4oxmlJ+2JOppW5AkiWVK6pEU4P/oS02K2X6uIOa8/8gpAC4S8XvByGwGG16mfUkD3eju5F3hnFMxSai8vtUZ3zasCDZ7D3npdzSReu6cA7QmzaMzh5uDUF6x+HZVve96WITJRVjDYlV6AoQxIFkrNlcsD+0Ulio4mJQKtshYWv8fCHavvwIZsm6YZ/gMCowp37P2emKv9t/o2goCeerHL5Z4okC5M7Gl/92vs8QYflTNTPdUxshPNs1X5/wcYS27a3/LNg5gp9tu2GcDyyEO+upBmEBxeAHhaMOzmwH9yx264FCsEnhbb6lRIhfD3pd4JImLRX7TF1ZQClcc/F8Mwbo7Cu593R+2KoewWmdQAVCnun8EutCxvS7jV8YtQl1lZWT+u2JObQTTP6uaiVJE/KSBZ6re3Jnlph84mlbPIwNLX7vz+WvVtzzkdqZD4/qFyOUptHwSdG4pra6gkNyzSA61mwxWXfN36ClxX8VPzPU2DvqakK/T2OPz2NhN9kog3GHDGKbqsGFOwfZLNxhAMuW
+ TqKaUQPt
+ CnlEMhFDZNenDFP9xV9Iw6JNj544uOGsF6FJsAauIkcr7Cnik8EyhTt15+BK+tvqMQmorXggFolH3D7Tne5KGaXC71wEsn03QoOXooD0yR5BUGFdZjTWLja+hvPc8fApwN8Umnvs0MAD+M+9RPVkcD/Q8vPJps3b8U94Y+fS2PDC9c6AG5jl/MB7mcvipBaf2R9U1mINIQpVhwQMCW5t0jndbvhGqyuNEh9nANfexO6ELsqWI/v5Jb1HupHHPGytzSAWf9p5JCj7GiLECGzEmkj9NSG8Rz6uM0MJpd1tYxPHAAFcwt+/Tr33MWdpBtr6GKe0B4GAiqDyzjHPFhymKYhGuBrECgs1P2HY5FM9VUu0LcYh2EVngadapCgqEWw/5gvu0r7d+OmXgggqbS59XE8/x0pIs80f2NaREeVihDzqAhjzgLe1Cv2eMEDTnQusK/PegcMA9NZzJqgI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,21 +119,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 9 Mar 2026 15:40:13 +0000, Matthew Wilcox wrote:
->On Mon, Mar 09, 2026 at 11:38:11PM +0800, Xie Yuanbin wrote:
->> As shown in the commit message of commit 242b872239f6a7deacbc
->> ("include/linux/once_lite.h: fix judgment in WARN_ONCE with clang"),
->> the code "unlikely(a && b)" may generate poor assembly code if it is
->> actually "unlikely(a) && unlikely(b)" or "unlikely(a) && b".
+On Mon, Mar 09, 2026 at 12:34:06PM +0000, Pratyush Yadav wrote:
+>From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 >
-> Why fix this in multiple places in the kernel instead of once in clang?
+>The KHO restoration machinery is not capable of dealing with
+>preservations that span multiple NUMA nodes. kho_preserve_folio()
+>guarantees the preservation will only span one NUMA node since folios
+>can't span multiple nodes.
+>
+>This leaves kho_preserve_pages(). While semantically
+>kho_preserve_pages() only deals with 0-order pages, so all preservations
+>should be single page only, in practice it combines preservations to
+>higher orders for efficiency. This can result in a preservation spanning
+>multiple nodes. Break up the preservations into a smaller order if that
+>happens.
+>
+>Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>---
+>
+>Notes:
+>    Ref: https://lore.kernel.org/linux-mm/CA+CK2bDvaGmfkCPCMWM6gPcd4FfUyD6e5yWE+kNcma1vT3Jw3g@mail.gmail.com/
+>
+> kernel/liveupdate/kexec_handover.c | 10 +++++++++-
+> 1 file changed, 9 insertions(+), 1 deletion(-)
+>
+>diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>index cc68a3692905..bc9bd18294ee 100644
+>--- a/kernel/liveupdate/kexec_handover.c
+>+++ b/kernel/liveupdate/kexec_handover.c
+>@@ -869,9 +869,17 @@ int kho_preserve_pages(struct page *page, unsigned long nr_pages)
+> 	}
+>
+> 	while (pfn < end_pfn) {
+>-		const unsigned int order =
+>+		unsigned int order =
+> 			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+>
+>+		/*
+>+		 * Make sure all the pages in a single preservation are in the
+>+		 * same NUMA node. The restore machinery can not cope with a
+>+		 * preservation spanning multiple NUMA nodes.
+>+		 */
+>+		while (pfn_to_nid(pfn) != pfn_to_nid(pfn + (1UL << order) - 1))
+>+			order--;
+>+
+> 		err = __kho_preserve_order(track, pfn, order);
+> 		if (err) {
+> 			failed_pfn = pfn;
+>-- 
+>2.53.0.473.g4a7958ca14-goog
+>
+>
 
-If a and b is both unlikely, then "unlikely(a) && unlikely(b)" will
-generate better code than "unlikely(a && b)". This is also true for gcc.
-
-As for the issue of clang judging twice, I have already submitted it to
-clang:
-Link: https://github.com/llvm/llvm-project/issues/167117
-However, even if clang fixes it, this optimization will not be merged
-back to the old version of clang.
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 
