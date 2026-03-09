@@ -4,139 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD193F4180E
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 16:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45604F4181C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 17:33:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F416B0089; Mon,  9 Mar 2026 12:47:38 -0400 (EDT)
+	id 1E36C6B0088; Mon,  9 Mar 2026 13:32:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329C96B008A; Mon,  9 Mar 2026 12:47:38 -0400 (EDT)
+	id 191926B0089; Mon,  9 Mar 2026 13:32:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22C3C6B008C; Mon,  9 Mar 2026 12:47:38 -0400 (EDT)
+	id 069726B008A; Mon,  9 Mar 2026 13:32:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E69E6B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:47:38 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CCBAC139FE4
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:47:37 +0000 (UTC)
-X-FDA: 84527105754.14.88882FE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1B95A40008
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:47:35 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bd5kx7Iv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773074856;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E624A6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:32:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A45657FCA
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:32:58 +0000 (UTC)
+X-FDA: 84527220036.17.40EFA04
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5B0E1100016
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:32:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=W5Yk1vh2;
+	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773077576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cGJPCyJcaDVpAKGOBr5M86HiZ7UCQEGUjpLMIpJgzp8=;
-	b=6ID9KmuqXElcXxULdGqGiRS2tUb1Iix+xxB1JqkZZ5g97e6rubsp7lQ19+Q7CExRWHxvUi
-	+A5W2jOg6TFbtcSzmmU5OYRM3hU80W4hYZlBBzTxXKJnJ2W+mmbFGEsQ7lFz+/yjcPlu3y
-	3UKW8BSS/YzyxqRPQcRF0Ea9JxXpp0U=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bd5kx7Iv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773074856; a=rsa-sha256;
-	cv=none;
-	b=btbtgJ7xhxEcv6v10MyxNuesBaZyeHQAWIlZdKJqoXo8sESp1WmsQmC/dk9TMvLM0g4trs
-	LzSqmBi/T3SQEgSTRVGsBhCxi9SGApj9D5Htuva1OGbfbbIbURjdybmTzu4d7nv3+J6sBB
-	8q0VFVhg5CwDMOm2gwKu0PDDdkw7xOY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64C4B60054;
-	Mon,  9 Mar 2026 16:47:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C74C4CEF7;
-	Mon,  9 Mar 2026 16:47:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773074855;
-	bh=w0oBKdjbNxuaeDRrRHZ7GwNRlXTe6xkr+Bdf92ElWpM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bd5kx7IvEw+rWYIKHq3E7XvsvgDedOF54tSeaPF602OgNkrcRDTPwIvNzJQmYbDUx
-	 mjfdD/dVFrI7IbeF+JtzM2opsHQI/I9hlKyO2rY1Cv7DtMJZvTaFGmCIZsddzEXx1+
-	 If0adF4oyckIsmOU+HU/DjYWIDTbUR5RQQnQ8Nki5s0R4WWvf31AgP2vZlulGZAuUg
-	 k4cxHmvBzTJ1lKhizo3sdWE1d/rbvLwwoBHP2OSETJQH0rWxkAP6SGGe+UqIg2zIEr
-	 rhTvyc6kIDl/m1f+F2nqKsKoOuuCs9+pmONLeHAmOt79HVik66rLseCxRrFd9NP0L8
-	 LAcX9dweDr9Sw==
-Message-ID: <ae1bd46a-c5b6-4b74-b861-eefca84979ce@kernel.org>
-Date: Mon, 9 Mar 2026 17:47:26 +0100
+	bh=mL+d40KjyhuL+4bMpXUsYaQzeUUDZaEOQ6AdzLVzNPg=;
+	b=fr3QguQvodpHS5+n52xi31BLS16ndEfBqglGgPnGfZcEROB7RZACx9vEjgCA+qxiLEKH4z
+	ckzAKwBzF0ebCOAb6v9uFVJs1/C3Ps/hAA4Su9hhNxzyJ1ShNvIpyuDPb7dk9SGMYT0s7z
+	Up3JNFRkA2WqdTPwbv/aa4d/wv/dFr8=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=W5Yk1vh2;
+	spf=pass (imf05.hostedemail.com: domain of dmatlack@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773077576; a=rsa-sha256;
+	cv=pass;
+	b=iQzbmz3BosPf6jjAg0pzA6ZKJcXFI38Evx4PGOyDQnb2gu6lnUaWFVncNV1/ALKPHOWR6S
+	rwNuphRAQRykdDJofY6BZPlfHRlZbIDkqHHHnkP3mhi4GxRSqm02UCWyK8PvF8HrJxm/Fa
+	6Fl1RTajGBBjJmz+d3e5DQssqgGQL74=
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a1362c9a3cso4119811e87.2
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 10:32:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773077574; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fqoaA7cu/wZtanPOuycTvR8cTT9sYnAYxHeZ1kiEn9WP6NyroiFBIbmXesMK+Ms3Kv
+         URkyJyNNIL3iIEszy0eH8KFqCfi1YHy5mICxKzpd+zUpHmkLtIh8KAIG6R0OIkcWz9z9
+         IlbDrVtR/VZu44jCBovdNi0b/YrRYT7HkA3/D/8HTYxmbXyL51JOUHW+pnp7E67NZ5fC
+         p4aEL7le9E3hou8s33uO2KTjf7fj6wd1ynKywAweIg5ibowgGJIkEyipHBZwUzjCsqJc
+         bCU077dHe+V7wS4OXIsNeq6GkhCyAEu94nfWzm+CytlQTnJ8ZJKPuBkn/K2LwE7joeBj
+         TCAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mL+d40KjyhuL+4bMpXUsYaQzeUUDZaEOQ6AdzLVzNPg=;
+        fh=g2I+FOUwL3B9dHMvih+K/MpoNXMR+D0t3ZOn3+kVcCg=;
+        b=hkV2WnafVRrl6iu4FEjaIBgkmsg4DdNbHcBJyNagWSeDUmxx04j2aQpe4nYB4gA4mm
+         xeZHBPfcChw/iLTJZltL2CPrJrFkTmmAv3KC9IZM5R/61qxG22aDSG66BYu0FIx7lTC8
+         eehtwfCff4TkBgmHKO5VVP3FJTR3NB0SB4i7oNhoxQz54UmvhphoMMp6A2ZNrqad7HEZ
+         ZVz0ZCSoeP03Fya2CA034jhjSWeLx8avRFh+yLAx5q/ZrKfkw0ELEWPDMWkE782ruTMi
+         i3i9wdGFkPTHdYE1Do2rk6DI35Xx0+2cTFTdUZ2DglgdY4nSzyIW6oVS704twWAsT/E0
+         o7XA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773077574; x=1773682374; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mL+d40KjyhuL+4bMpXUsYaQzeUUDZaEOQ6AdzLVzNPg=;
+        b=W5Yk1vh2siJJfJZhs8yk0wTX6xKSb6VWODiRUHsNurlXAbVSuB/ogZWfRcfDaOzrxx
+         Ana4xVIhEYtjgMEivuBQvrfwDubdrbpnN778GEkHvQEisxbvq0qaJKXob/RuUmbx1lAM
+         Akfg4VJJ7QnnuVf49lMLjcCDN72fNiSRCi6Q1P+a7rsWoqjnmR9U3Kuzq6XSuV2d3O5W
+         IsCw1PitlCrTA9a0pmqdSOuZrt5H+1JTeQH5pE7mYNC/dziazGXqHyV7/P0YPRf3ukZL
+         2OE8ShyqpMHOMltjrUbNvdLW5ZCUSh/1LpOgQ+Pewqh9fz8lnNUcoT02JvYubXYVntsk
+         jx/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773077574; x=1773682374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mL+d40KjyhuL+4bMpXUsYaQzeUUDZaEOQ6AdzLVzNPg=;
+        b=oeDKzv4/2F+efH2BZ+P1R3v8c40EnSpsaE8ZpkrH+2WBy9nyRf5HOfLhWErpMBqa1K
+         9Q/BKiLt9A+W+zI0JsE330g4ls8VIhb57CZvvZaJFFsZI0LVk+m3CUTUeicT5zLN9Upj
+         xzV+oQ0NnfS8XsWFiQhw51HVAHuFiXaF90wF54wTkhzBV9D65OpQvhNJQM6rx4LMwSUp
+         iqWhPbSZPRq7jMDQM8sgcsRwBmYUn815EguLUNbZ3WrYRXTAh5Fs3zeWkR4fIC/qmwWC
+         zFd/T5zOsnGnq3hVADgSG+RjE9/1m2BzVrmRnnHIzkBW5M+UozTMQq94kM4iRJXPDApk
+         AxLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQWHxthSutxmmhrtrCZWTTW/GdAYW/T9CAFgpNBFfV69H4BnUc+LpLKiHPfSMizW0zg76AMrIiOw==@kvack.org
+X-Gm-Message-State: AOJu0YxOdm53IvnIjNV9xB/3uATlj74oMRcr05lvudYt8vI4EudLAlGP
+	E5Re+za3zoz18jfZMhUmtM7DeAXMNthg7liVyKWkKfDOT4gU60n0FzZFfBbASCsU9XkNLPvia8l
+	paYvzMK03/TiH6pOVS4j271pNvVm+lI2lPWdQO9HL
+X-Gm-Gg: ATEYQzzMvRECd9kJmHsnPZXntbutN5CVtsDxOJPzfMotdDJTULh56KYd8EeMzAWxEtY
+	BbXJmtQRyElyGo2k8lYxiAekM6Kyk6h2VcgeKu1OBD4DDScHu4JR42NxMh/IsRu1IpXj9/BvMvs
+	XQedLYIgA3lczVaQI27HvzaLZCF6S7dbrKEMYyT9IfM3ikMZbg50w/nWX1FL0PQxnkEKdlJ3spu
+	G/q3Cx/tdogSiXUfvFofvHSioHkXkS2VBiDA6P0gC8466lJymt5DVxqdndXqk8ej5dzT6ysCplR
+	0B9D9Xkc
+X-Received: by 2002:a2e:9e89:0:b0:389:fc6b:943f with SMTP id
+ 38308e7fff4ca-38a40b72dbbmr31791631fa.11.1773077573745; Mon, 09 Mar 2026
+ 10:32:53 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/userfaultfd: fix hugetlb fault mutex hash
- calculation
-To: Jianhui Zhou <jianhuizzzzz@gmail.com>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>,
- Mike Kravetz <mike.kravetz@oracle.com>, SeongJae Park <sj@kernel.org>,
- Jonas Zhou <jonaszhou@zhaoxin.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
- <20260307143542.179953-1-jianhuizzzzz@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260307143542.179953-1-jianhuizzzzz@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1B95A40008
-X-Stat-Signature: 3u4rib8swx3wqyuhp4zwmo7s7sn14onf
+References: <20260129212510.967611-1-dmatlack@google.com> <20260129212510.967611-11-dmatlack@google.com>
+ <20260226170030.5a938c74@shazbot.org> <aaDqhjdLyf1qSTSh@google.com>
+ <20260227084658.3767d801@shazbot.org> <CALzav=fHy23RAzhgkdaL+JA5T2tL9FT6aPgRfXUh7i9zvYCGPA@mail.gmail.com>
+ <20260227105720.522ca97f@shazbot.org>
+In-Reply-To: <20260227105720.522ca97f@shazbot.org>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 9 Mar 2026 10:32:25 -0700
+X-Gm-Features: AaiRm51UQkPGi_THgF8Q61sl9tHSSk61beTImuWL9a-lckj5dJAcnYvj7LG9bmc
+Message-ID: <CALzav=fjRPa_ZbXu7iFXyemcf_8Kq_dZTWT6c-A0bc6czF_Rdw@mail.gmail.com>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+To: Alex Williamson <alex@shazbot.org>
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Tomita Moeko <tomitamoeko@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, 
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 5B0E1100016
+X-Stat-Signature: x7stetn34cre33rcatr8n44bggqtiznz
 X-Rspam-User: 
-X-HE-Tag: 1773074855-66708
-X-HE-Meta: U2FsdGVkX1+80pcuRLmgU5wOJNv9pvLm5Sa1X6Th2ujEZs4sJLWoKeh11IXKl2EYuDDtlnBIwksj5j/gIrFen2vxzh5E26XLSv1/BnDiEQUv+4r1BTJMIKi3m8dyljIHv+k9dIqJwCpgWUauEo6ka+3KOeQ2xFDPNQrL5h+NISSfM3Sh0PQBIljW2yuNYAlxjQdrQwp8Pvd4Ftj4zZDwyTj32CbBlN6eA9ou2WHdtCZbOoYCqVb/h7CASevir6Ucwbi+cB3qRU0km86pVh2ysJg5Ea6T/EiezqxSDW2o82agjw9O4CIGScoyiufKs5vS4eqbmKvajN2MDR1Z6Q49mSoFKaMQ1uyXi5cPbT9/xmkCN5SqTzA5x0kjUDE5rrGQVedaS/Mj4DngvV0JqkYc210s1gfl4/rbiR1yZ75LFGahgSLSww6+Jv6lkiBVEkpAH/N77Gsn+LoC82gqRsu+vq+x0T6CSsRYEqz+YV2HhP6nKdEeADgrUz3iVR87UFU0yri0nJc3T8ANpeMIg9gGLpNPVSLGrt1LNH7eYGJQTNgUfJsRwfQ1+M9imN3Z6Cgm+9hHukGERT+YvFTnmclq0Ws5o/PqIYYGZqezMm6uVWmbqTlGeUy4JrTAaKhA+EZ85kXTV+k0laAqPkRQO0s/xwZmuVZt1IKOp6M6crJhgNlwYtvaxFsDQvMOND2RAEcVw63bVCOrG27fhm37EsUapKI6lNkhNzZZnAvncEcFQkW6wzCpUsUNEuFxLetrPamgJdlYx37MdkHRMwZJFCZ3/n5qePbVWSXtlHO7Bj6MOrM58uxxVv4zLColLVrS2CIJB5YNuSodSJsskJ9iHImJk+nHvNbIwn+1ZEl9XhuHqyY8SKO+9UssVZ/PktA5IC4G0SHuyNGgWT9hNBNnly6nP9+MB8HlLMR2UoIBEev+zZilEoEHWuIji+vKlH3m+VQlut4DIwdUI9fdjPGH8lO
- fOsysOSu
- kdw4ucSqPJm7d2PjhM/o2e0Om2NnM7QmMLe2zr+pWJTYRsngETyLjOtZ1JWbtdyHMWaN37xG/W+Bh9IENVYdLvTPLs66Xra95YadJTDtc0Oot5g3h6uOZU2kOJdpGxykTOu5xppViWpppsMdpc+tQzzOesKT4Mz0NN1kwufqcCPtAokdsIvoiqqVq9mEu3cH17FZqsJeN67SEpDcydw5h1tJsStVtz7zNPGa2kJo5IgUhRdy3uPIerv7Jq8fQJ6Y39Ib97yWTGCg9hmdWdozWZ+bWnfyc6LoVKN7ERIbLEWenu0gQYZbp+nwfBMGWpu8UIlAzNAgX/cU0IccQK72zSHhYQuODhE5H57E+nNleDRSDkkMkd2LhDicuZ8HzNabewztagovckNUyec/5i1RoRC0KdvxY/66Qt7O1nndtggNyGuhWwqFlEUoemN2iI5ruchFBlkgzIIAWaBxxrf8vCxaTbrjoTVT/HGPPviJDKT9tfxpqY0rI7BLTi+Z5WH6WkgSMnNhn0Yel/670PTce0FVvJEV36ergFR8iQcF/vZd5gvY=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773077576-955494
+X-HE-Meta: U2FsdGVkX199wm6cHssptYla59a1ufC7FbNEAqoExhjuNmyPpycYkG43mD7ouMskaHcKp+eiJEHi6GES6GZArRPWXE5M+LEe466/9F/3j/oFJEs9/AyxtzG3i3gmza0ZqwyTuA82lcnP1CVDMSWL+u7egg8sSsgYedufUxtjBP/rBwkgSAMk9+2KQCjDWj9BIIqZe8id48b50qvrYaKiHATf7lmSSjKp87EokqORJ/oRzBXEQ0CG7qfe3Uo9Utfrz7KSDJbANFLG5l0UcoBB+iaqnarOclxxg4ft7hBBc7nrx0nLl7aq2A0E7co8NhiGEcS/lj+/T3LU6VgJNP7rRul4LbQ08om3sDwO+FXyL9vHxIdAzXU/1u62zq998244iX8/YhDLenCp5I46dXK2G8OINldqk1sGWFF6/3ndOLiwSVqnDB8ppb6q2QMRwySC8dQPQ0F1/AvOfWRGhxAqLdQ52WKab7SOT4ExWTQw2Wi73aVlyuWVkowCYuSc8x7b2MmGZB0et8coqFCD/CWBQf1H12rf6RChFYqStC/Kxhrhc3uHLrsB6JWs9DjbKOQFAYs9QDtgbrKHCvMdfJ0VbSb3dJqH4NVtgk6Ha7PkXUYi3Yr6nTdQNgmDlp+kW5x5jtZquplKHLVfidG16rgNUujTFgvnlBfc1ygyhQrD3fUjk8woyQ1FVaTM3DhSlRyVtAg4q4mw8zxC2oVNwAPZfjV2Da/ZtA1GlmbbblOnhgK3S7QrYPaEeZzsIMY9RxRtI3eaFH0+pcKRCLV6U2s5BavHKThB4RMBR4a0cBRscxDmotsHycP+TD+AoX7qahdrm5B8gADyqzAAxoUXFSrFsf+9WaTJSdEW2TiDyFpF3Ff6pHE2HpTyS4rakUhaKCjI9W97u/tGNq2abwhDW4zWCgaH7C3H2T0668OCnCkoqQONPFKwuGvaYJQ/VoKAQ6shWgY/EZK6l6iVAJU+CAX
+ W0Y8dUoB
+ 3jl1gNPAnlZIbEFnXolLI1KKdeqSzgHHBQDIaAnCzclDchHFtBTXUCngFpfJcW8wA7UPD6ilFyy2xK/7CztTuIPjB7qFSde6G4ElBh5yedZ/UAWsi9fgSeFLQMCqp6wghsoLv0NhTr858IItQn2vTEZYWL4HX8nIrGzxE41H3BFZstIR/vjoIrM3mF2xJZ6aQpubPlMq7rmxg7Xf2B/NwpCOBDGCFecEFrpbbggf6Z5knNu/qskJdGWNIbwtI2KZLxu+XE4Q04ZZtSjGL/IEyd6OfWddjwFtwDoiWl9lywoI8c14daVih61OBd52pqtK7FxIj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,85 +161,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/7/26 15:35, Jianhui Zhou wrote:
-> In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-> page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-> returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-> expects the index in huge page units (as calculated by
-> vma_hugecache_offset()). This mismatch means that different addresses
-> within the same huge page can produce different hash values, leading to
-> the use of different mutexes for the same huge page. This can cause
-> races between faulting threads, which can corrupt the reservation map
-> and trigger the BUG_ON in resv_map_release().
-> 
-> Fix this by replacing linear_page_index() with vma_hugecache_offset()
-> and applying huge_page_mask() to align the address properly. To make
-> vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
-> include/linux/hugetlb.h as a static inline function.
-> 
-> Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetlb for huge page UFFDIO_COPY")
-> Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-> ---
-> v2:
-> - Remove unnecessary !CONFIG_HUGETLB_PAGE stub for vma_hugecache_offset()
->   (Peter Xu, SeongJae Park)
-> 
->  include/linux/hugetlb.h | 11 +++++++++++
->  mm/hugetlb.c            | 11 -----------
->  mm/userfaultfd.c        |  5 ++++-
->  3 files changed, 15 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 65910437be1c..f003afe0cc91 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -796,6 +796,17 @@ static inline unsigned huge_page_shift(struct hstate *h)
->  	return h->order + PAGE_SHIFT;
->  }
->  
-> +/*
-> + * Convert the address within this vma to the page offset within
-> + * the mapping, huge page units here.
-> + */
-> +static inline pgoff_t vma_hugecache_offset(struct hstate *h,
-> +		struct vm_area_struct *vma, unsigned long address)
-> +{
-> +	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> +		(vma->vm_pgoff >> huge_page_order(h));
-> +}
+On Fri, Feb 27, 2026 at 9:57=E2=80=AFAM Alex Williamson <alex@shazbot.org> =
+wrote:
+>
+> On Fri, 27 Feb 2026 09:07:48 -0800
+> David Matlack <dmatlack@google.com> wrote:
+>
+> > On Fri, Feb 27, 2026 at 7:47=E2=80=AFAM Alex Williamson <alex@shazbot.o=
+rg> wrote:
+> > >
+> > > On Fri, 27 Feb 2026 00:51:18 +0000
+> > > David Matlack <dmatlack@google.com> wrote:
+> > >
+> > > > On 2026-02-26 05:00 PM, Alex Williamson wrote:
+> > > > > On Thu, 29 Jan 2026 21:24:57 +0000
+> > > > > David Matlack <dmatlack@google.com> wrote:
+> > > > > >
+> > > > > > - vdev->reset_works =3D !ret;
+> > > > > >   pci_save_state(pdev);
+> > > > > >   vdev->pci_saved_state =3D pci_store_saved_state(pdev);
+> > > > >
+> > > > > Isn't this a problem too?  In the first kernel we store the initi=
+al,
+> > > > > post reset state of the device, now we're storing some arbitrary =
+state.
+> > > > > This is the state we're restore when the device is closed.
+> > > >
+> > > > The previous kernel resets the device and restores it back to its
+> > > > post reset state in vfio_pci_liveupdate_freeze() before handing off
+> > > > control to the next kernel. So my intention here is that VFIO will
+> > > > receive the device in that state, allowing it to call
+> > > > pci_store_saved_state() here to capture the post reset state of the
+> > > > device again.
+> > > >
+> > > > Eventually we want to drop the reset in vfio_pci_liveupdate_freeze(=
+) and
+> > > > preserve vdev->pci_saved_state across the Live Update. But I was ho=
+ping
+> > > > to add that in a follow up series to avoid this one getting too lon=
+g.
+> > >
+> > > I appreciate reviewing this in smaller chunks, but how does userspace
+> > > know whether the kernel contains a stub implementation of liveupdate =
+or
+> > > behaves according to the end goal?
+> >
+> > Would a new VFIO_DEVICE_INFO_CAP be a good way to communicate this
+> > information to userspace?
+>
+> Sorry if I don't have the whole model in my head yet, but is exposing
+> the restriction to the vfio user of the device sufficient to manage the
+> liveupdate orchestration?  For example, a VFIO_DEVICE_INFO_CAP pushes
+> the knowledge to QEMU... what does QEMU do with that knowledge?  Who
+> imposes the policy decision to decide what support is sufficient?
 
-It's hard to put my disgust about the terminology "hugecache" into
-words. Not your fault, but we should do better :)
+Hm.. good questions. I don't think we want userspace inspecting bits
+exposed by the kernel and trying to infer exactly what's being
+preserved and whether it's "good enough" to use. And such a UAPI would
+become tech debt once we finish development, I suspect.
 
-If you're starting to use that from other MM code then hugetlb.c, please
-find a better name.
+A better approach would be to hide this support from userspace until
+we decide it is ready for production use-cases.
 
-Further, I wonder whether we can avoid passing in "struct hstate *h" and
-simply call hstate_vma() internally.
+To enable development and testing, we can add an opt-in mechanism,
+such as CONFIG_EXPERIMENTAL or a kernel parameter. For example, adding
+something like this to vfio_pci_liveupdate_preserve():
 
-Something like the following to mimic linear_page_index() ?
-
-/**
- * hugetlb_linear_page_index - linear_page_index() but in hugetlb page
- *			       size granularity
- * @vma: ...
- * @address: ...
- *
- * Returns: ...
- */
-static inline void hugetlb_linear_page_index(struct vm_area_struct *vma,
-		unsigned long address)
-{
-	struct hstate *h = hstate_vma(vma);
-
-	...
+if (!IS_ENABLED(CONFIG_EXPERIMENTAL)) {
+        pr_warn("vfio-pci file preservation requires
+CONFIG_EXPERIMENTAL to enable!\n");
+        return -EOPNOTSUPP;
 }
 
--- 
-Cheers,
-
-David
+Once we feel the support is ready, we can just submit a patch to
+delete those lines, and there will be no left-over UAPI.
 
