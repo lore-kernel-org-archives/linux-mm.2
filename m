@@ -4,147 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5024CFCA187
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 20:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47980FCA17B
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 20:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C0C16B0005; Mon,  9 Mar 2026 16:27:42 -0400 (EDT)
+	id A3F156B0005; Mon,  9 Mar 2026 16:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AC456B0089; Mon,  9 Mar 2026 16:27:42 -0400 (EDT)
+	id 9FF7F6B0089; Mon,  9 Mar 2026 16:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AE806B008A; Mon,  9 Mar 2026 16:27:42 -0400 (EDT)
+	id 8EBE06B008A; Mon,  9 Mar 2026 16:31:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6A54B6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:27:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 154F4B83AE
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:27:42 +0000 (UTC)
-X-FDA: 84527660364.17.3A72FDC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 37EC2A0007
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:27:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e69Uc8Lt;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C4586B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:31:12 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0644957266
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:31:12 +0000 (UTC)
+X-FDA: 84527669184.06.9A1F93B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EB8C64000D
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:31:09 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773088060;
+	s=arc-20220608; t=1773088270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ko96DnQ1pbkd7jrn1VyUcO5wife9ITpdPGTRbZgdm94=;
-	b=dZ6xeA0olqda2ZSk9N0mPPbVfx97PIjuN5tGS93+RFFgC742EXD4LZM+oxU0jbqITtBPmX
-	fUTqNMHfXYVkSumEoGBudAyUkh12Dr/LGM4ewNooV8TSMdYI8MZCp1+X62KI5KCCro1uFe
-	BOcMpn6x01G/SvRb+75jNYZ0UfRKQvI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UpMe9qAQLVZX21QZGzY8yvBvKTcFga0dy76omWmS/LE=;
+	b=Pe4iNnAN5ilK5IwhO7aADrwJ9X2KP553tqyJcGuWlnNX9ezRhfhLw7iqL1LAoQiTllcdyw
+	Pj+I1qO7R6icknwbFniwScZr8RlV3/BuXUDSwLtdt3BRJNprYuUfC/TvX/PqZ7aoXnhv5H
+	JO8nbsnufqasccuokpipBRAYv6VXQvc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e69Uc8Lt;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773088060; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	spf=pass (imf04.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773088270; a=rsa-sha256;
 	cv=none;
-	b=Itn6DZFx2yAkl/Hce7JyWWjRUCSat716TuXM5fCluWFTK0XPNAndDb8cIHa/HehM2NpdWh
-	/lXz643jG4l10LgjV28qW2GHob8Cngk1w8vHQirnqEGC4KjlrabbyYUMXJrXTnubHTMvPJ
-	HCkl8aCQ3XVdgmAR/JmJkgq36PAd0hY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37D214084C;
-	Mon,  9 Mar 2026 20:27:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94AAEC4CEF7;
-	Mon,  9 Mar 2026 20:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773088059;
-	bh=wZTyk3WEyk+xoMV2pTpUEy6GGip5sP188BxpWK+zdOE=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=e69Uc8LtxjwQYibBSKGbRDqg22pA8VRpPKRdSpllo7DCPCp2NC11L4F9JzCRV/VEp
-	 flmB2rsG10Wxr5GQ8MnHfa8KXEJMV3NLq2c7RhRDu/wf6LAVUV5zojkBPgzaTq5+rW
-	 JNUfMrQ8rTmBW55yCQc4MPHKOI6GP+1H6/aYMrLiG4i1NUSpdBTQWmOB4RBzBy+UoX
-	 V1uaMNsCDwTru5ie0KajSCVg887xrHTo+jFtgpNGhVFQn+NG+q8tj9r9XwL6CtvKyn
-	 LI3kGflbKQKKP8c0leL863s9nx1BF+fEdcLMBJIjlV+ECaoRtrWRMlpN5n9jqDRUWy
-	 Sf78eeCyzvWxQ==
-Message-ID: <ca6248a2-c442-4fe1-bf4d-9b9f6ba2de85@kernel.org>
-Date: Mon, 9 Mar 2026 21:27:32 +0100
+	b=zXV7CzORV4dQCT7id4uJczpCR6HFYFGTytXwfWNkxi+4ID0Ga+k8utjODvARZwXOgqNZFK
+	+mU0Rk9jzqKVk2wQ/7gMk64CLL52g1lzIMYZV5ZftDV6j9i3HK0vXmfjlMfShKfhN0Wg+y
+	moHKpHwpiACWuDvI60vbVVP0aa+c5WE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 992821516;
+	Mon,  9 Mar 2026 13:31:02 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C777A3F7BD;
+	Mon,  9 Mar 2026 13:31:05 -0700 (PDT)
+Date: Mon, 9 Mar 2026 20:31:03 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Qing Wang <wangqing7171@gmail.com>,
+	syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com,
+	Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org,
+	jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, pfalcato@suse.de,
+	sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com,
+	vbabka@suse.cz, Hao Li <hao.li@linux.dev>
+Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+Message-ID: <aa8uByvL9GwsGfnO@arm.com>
+References: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+ <20260302034102.3145719-1-wangqing7171@gmail.com>
+ <20df8dd1-a32c-489d-8345-085d424a2f12@kernel.org>
+ <aaeLT8mnMMj_kPJc@hyeyoo>
+ <925a916a-6dfb-48c0-985c-0bdfb96ebd26@kernel.org>
+ <aassZV5PjgFx8dSI@arm.com>
+ <aa66XJDX4QfmEbNA@hyeyoo>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: walk_pgd_range BUG: unable to handle page fault
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Tytus Rogalewski <tytanick@gmail.com>
-Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de,
- Jens Axboe <axboe@kernel.dk>
-References: <CANfXJzt4P+FCkdL_=FfmG80_bY8FkzSocJSPeksSQ_vXObRNOQ@mail.gmail.com>
- <5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org>
- <CANfXJzsWFyKXJKsESM+7JXoGkDSeQt+Qaimy3FV1-neyXiHZBg@mail.gmail.com>
- <CANfXJztYakHdsY0757+ssQf0WYtnrWdGd8mFegp6PLKZ_SKnCg@mail.gmail.com>
- <e21e21c8-e28f-45b8-8ee8-7e74d6607b73@kernel.org>
- <CANfXJzto6Ewoj2qDQ5OJEMAuxVcfFcvuxbtKChentqvb2r+jGQ@mail.gmail.com>
- <e2ce4df6-ef2e-4a0c-aee4-86d9614017cc@kernel.org>
- <CANfXJzt7yGZZcuBjmazU9n7V8vupMSLNm+qCiZxcrmtUZicR1g@mail.gmail.com>
- <CANfXJzthDnrQJoCQWrfZwK1Mrw4QZv92ZEzsOy6WGqq3zCYzHw@mail.gmail.com>
- <0dfd588c-3284-4310-b1cd-aab54567f0c0@kernel.org>
- <CANfXJzs29Zv7Qw7cAiEzDLdTJpQEbm6mPeLTpuZkErV5GsDKfQ@mail.gmail.com>
- <ed3eecfa-a8d7-46fc-bbcd-025fd73e5511@kernel.org>
- <CANfXJzsh9m1xHszB3vdSUxfOHpxV6zNDs_0DU=kjjFJ6szEpJg@mail.gmail.com>
- <05a26f9d-e7eb-4aa4-b5a3-d485945f81c6@kernel.org>
- <CANfXJztyrv3Bc-YtTWX64+tEWNGQE3cOdjs6PkAvR-aGYta-ng@mail.gmail.com>
- <5f4d8780-55f1-4b60-840a-056da7401848@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <5f4d8780-55f1-4b60-840a-056da7401848@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa66XJDX4QfmEbNA@hyeyoo>
+X-Stat-Signature: ffpzih5cwu9xs7x4bhghofya7brjdk7h
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 37EC2A0007
-X-Rspamd-Server: rspam08
-X-Stat-Signature: aimindusgy363m1fda8dwcb99kbcbuau
-X-HE-Tag: 1773088059-263937
-X-HE-Meta: U2FsdGVkX18hw0jPnIqCZVNZ1kZ6IaN7F29XpjiBk3Cwyn8/HD/IvhJYSTmEdcFhQzIKX8rPSkBTl/LVPFAn4ZpK+59T88ADbhEBAE3vka4cI3qD6VukHCxYg+t9BrFAXxZ6RPL1nhWJ2XYIxTlSAjDfUptaVdUTEbKpro5bdmgUWVHBMpANeKM5wY2nhsMM86IO86DrGpUwjZZxkfmOQfZvRA8ew7AD/J1NGPkWlNdx82nL3eLQSRgwyviL5Suai0sd3Ib4tfE7BoeRK4QKHvO7oerYujCmcf9/Dzq7Ow79/bC1f9RA9Gf8OoRbPaVIfqd7Sikyd4gd9uSXnwpLyTix/F2KlZG9r/ztx9sqVdjpku326MYLm/Zhg2jFVKym9wTnfUoEiwIWw+LkpU7KJnV5NjIbq7zXFLIKn9EifdLzUHEt1rZ3rfsyVi05znxf5NrOFEhrXF8Io0jMa0yUTeD7ga/gdZu22PPLmc26lx0QW5aIn6rpbqTmKnG958ZCBbLEV+J8Uvc3uz6B/vJrckxwH2RZ3LBP6SxQFJVGGocNlzOEJWIrZqqR1lsrqGjTPWfwURdtRlKiGX8TYN3xNi3HEIdiNe8oN9wFgXGwSTIWlX8xRdJ2UZvLB3b7eGARXpF2177ly6OQRyj+JfdoMePKG6P5hUlkxIkqfZE+C36UHN25WAqRPEg9Ig0ap1Xw96mFg4GP2rZMJEvaVkMonEe1oieGo1jiIn7GTegOq214P5MTxyPC8DNSuTvlDBki7+Zmd+JkTeXJrcgHKwli5s3zwinBf1vwzyEOvrCaoXE/1JSZE19kJgjzeZ27OO9+g/XjxQpXdYURvek5i0vihfwUcnwWVTu+AIkgmHepqcNy5Q7HiqLvkN9r2iJBkOZLOZ+Lgq2MmJ99miJh45rVEr0LZ3zsRNFomMkO5py5Jb1/5IThizpBIyXu15KLnCErV2FpS6wB8Ht5XgaRqdE
- m74PM9QX
- 8iEayx16m04a2eGNftrxoQdZMHEOuNo9Y8t7+jPsgxsz05cnnzstQGP4Kaj7O52Nc++9Ar1cYVW5zkw+B7RkoJs4VOiUTW80WQbIPUfmZ/9eRikU3PdBD8bwz6oG9PVpg/PDS4un9B1BhAJlJYouBZuhPEE2mK0wsh+udaXhmfOVAs2DcT8nGEazoMdCP1slrHZYvwVW0yu4LZWc4cDcV7UsuspDE3+N+h3UKq0CQlFt0t/QeP8IdwGHLhRIgMtiNjZ9t86V2sa+hPYbzxu2fooDOkWXvdtOyUwwq8dJWcBCYrKACvqu17gWkZjx2mM9tA1NlzMPuBf3BGJGV3/p4/NMiHUdhBtwY1GZFuPLj47pobYLxIjdew64kUA==
+X-Rspamd-Queue-Id: EB8C64000D
+X-HE-Tag: 1773088269-161752
+X-HE-Meta: U2FsdGVkX18Woi47P0WALzv5kC0i0LA+UiVlGbl1dFG1QLkIZeogC8E0vSNU3jwwgVJS1TqZ/QUkK5X4eib9taxIZcWNO5V/jdcnJaVJ1AyCysTWimGnS2To7rbgcKCSQivHtYhBycN7pHKlhr0NVJfr/uFSlsZU6MJWeVIzX5ovNdtY71K2n3FoxCfKCz8eKVI8wKw6b0iv31rY1zP/YdIiWBMUMahfyEKVDvLK+daZrs4CjsS2uXE3+8PrmLrnGh9iiE5yoxtbG1LaBqV+Mo6OsUjwQJf/JKddtfj78AjtSUBOD1EU39ov8PZCe6O0o3YpWiY1sq/y96HwcTQInL968YRwLb3/COnX9Gjw4hJZp8IjDDWr0B8kjlxp7g4JwItIKOX8NDzcfVicL3FM5WRuRZewA/eo+4NxHCW4wjnDJxe8L4hNFhI+71BiFoMpPacoC4M30/BafiObwpcR1LiTfIP0pw8YM0yYM1g9//J+OhvGToBzMo2w1jWP57ISJomGTfKVIkUItb37qBsF5BeY2opLBcxse2BbpGkLilir2p9EjSCcFnFVk1CJvZnJWemcZq2JaXRTMlVVWnvSKCgTIlRdjqaJE51p+uXya54yPvozUTQAl8KcIpLAmMW0yV0ez79/320T9syfduAhu4SU2oX9ftu2KB83+MosNDvVkR30M3FMvgayCSO4kXCl0Q3hiZIXbs89SmB0sNzMNm/ZQ34r2amMTVLEEq+loOIKE8EfGq+t/S9iKFkKz3HzdCpGiY/ghNKVgckomkl6hazcIFJvo2KGZSYALvhrziS8EMy2rutah8vZNQNVaUDRbXXfekP5jN3JCjb5BxK4Z8Cna8Gu4NnktUKOconjlSlt56B79qJkpdeclmCpNYB/HzzGRAfZwB5O10A5hBz+7Mt1nurdlPW+qesmVd4X0h1yuvXBDcwZYNK+NoJkeWGjMBCe++VS8FnJIdseTmC
+ 5/WHppty
+ IQJZIjKy9og9T477IlIW3qtHv/PQb4Njn+MQDW7tyufLr5+XnhGCoejsZ4m+GRK4f1ezKadaXTaX8Ry9i+ycKpLK85RD44ymo6IGs5Zm8HMHtAhWpXosoC5tfT8OOQiMuxq+axN1OQcpwLt8xRJJoKZZFaZiLDa9Eg4QV20PxBKZ9rFpx8OF+xUsVBLrGIyX8pGPrCsAeLjepP5nj1TCyY9tTannN436xJTVbBgb4GAsjdqxyOP8ZHCvGomrQ+A7RcqOhwdmGmr+p9ZEgFJdcC0PZzDUgYBjuMmWMQCoRrRHxDJBIcCYvwkeMPZ5BiEOn/hdCfAjv4dH3FngfXJW0SjiI5n+FccHTL6M/Tg2VhkzrRyA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,30 +95,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/5/26 12:40, David Hildenbrand (Arm) wrote:
-> On 3/5/26 12:39, Tytus Rogalewski wrote:
->> I had this problem on 6.19-rc4 yes. I saw it. But i cant reproduce it
->> NOW - this is what i ment  :)
+On Mon, Mar 09, 2026 at 09:17:32PM +0900, Harry Yoo wrote:
+> On Fri, Mar 06, 2026 at 07:35:01PM +0000, Catalin Marinas wrote:
 > 
-> Ah, thanks for clarifying, makes sense!
+> [...snip...]
 > 
+> > I wonder whether some early kmem_cache_node allocations like the ones in
+> > early_kmem_cache_node_alloc() are not tracked and then kmemleak cannot
+> > find n->barn. I got lost in the slub code, but something like this:
+> 
+> This sounds plausible. Before sheaves, kmem_cache_node just maintained
+> a list of slabs. Because struct page (and struct slab overlaying on it)
+> is not tracked by kmemleak (as Vlastimil pointed out off-list),
+> not calling kmemleak_alloc() for kmem_cache_node was not a problem.
+> 
+> But now it maintains barns and sheaves,
+> and they are tracked by kmemleak...
 
-The following issue might explain the problem:
+We could simply add kmemleak_ignore(), especially as we don't need the
+data in these structures to be scanned. We can assume the slab allocator
+doesn't leak it's own data structures. But I couldn't figure out why
+kmemleak couldn't track down the pointer in the first place and any
+random kmemleak_alloc() I added did not solve it.
 
-https://lore.kernel.org/r/20260309174949.2514565-1-mboone@akamai.com
+> > -----------8<-----------------------------------
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 0c906fefc31b..401557ff5487 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -7513,6 +7513,7 @@ static void early_kmem_cache_node_alloc(int node)
+> >  	slab->freelist = get_freepointer(kmem_cache_node, n);
+> >  	slab->inuse = 1;
+> >  	kmem_cache_node->node[node] = n;
+> > +	kmemleak_alloc(n, sizeof(*n), 1, GFP_NOWAIT);
+> >  	init_kmem_cache_node(n, NULL);
+> >  	inc_slabs_node(kmem_cache_node, node, slab->objects);
+> 
+> But this function is called for kmem_cache_node cache
+> (in kmem_cache_init()), even before kmemleak_init()?
 
-It would be related to what I recently said: "vfio recently gained
-support for installing huge mappings into user page tables."
+That's fine, kmemleak starts as enabled by default and tracks early
+allocations in a local mem_pool[] array. kmemleak_init() just
+initialises its kmem_caches for the long run.
 
-smaps_walk_ops() does not have a pud_entry() callback, so we'd try to
-split (unmap). If that happens concurrently with a refault, we might be
-able to trigger a BUG.
+> kmem_cache and kmalloc caches should call kmemleak_alloc() when
+> allocating kmem_cache_node structures, but as they are also created
+> before kmemleak_init(), I doubt that's actually doing its job...
 
+It does. I just added a kmemleak_alloc() in create_kmalloc_cache() and
+kmemleak complained that the object from the kmem_cache_zalloc() is
+already registered. Of course, no stack trace saved for these early
+allocations but it does track them.
 
-But it wouldn't explain any memory leak.
+> > -------------8<----------------------------------------
+> > 
+> > Another thing I noticed, not sure it's related but we should probably
+> > ignore an object once it has been passed to kvfree_call_rcu(), similar
+> > to what we do on the main path in this function. Also see commit
+> > 5f98fd034ca6 ("rcu: kmemleak: Ignore kmemleak false positives when
+> > RCU-freeing objects") when we added this kmemleak_ignore().
+> > 
+> > ---------8<-----------------------------------
+> > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > index d5a70a831a2a..73f4668d870d 100644
+> > --- a/mm/slab_common.c
+> > +++ b/mm/slab_common.c
+> > @@ -1954,8 +1954,14 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+> >  	if (!head)
+> >  		might_sleep();
+> >  
+> > -	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr))
+> > +	if (!IS_ENABLED(CONFIG_PREEMPT_RT) && kfree_rcu_sheaf(ptr)) {
+> > +		/*
+> > +		 * The object is now queued for deferred freeing via an RCU
+> > +		 * sheaf. Tell kmemleak to ignore it.
+> > +		 */
+> > +		kmemleak_ignore(ptr);
+> 
+> As Vlastimil pointed out off-list, we need to let kmemleak ignore
+> sheaves when they are submitted to call_rcu() and ideally undo
+> kmemleak_ignore() in __kfree_rcu_sheaf() when they are going to be reused.
+> 
+> But looking at mm/kmemleak.c, undoing kmemleak_ignore() doesn't seem to
+> be a thing.
+
+If that's needed, something like below:
+
+----------------------8<---------------------------------
+diff --git a/Documentation/dev-tools/kmemleak.rst b/Documentation/dev-tools/kmemleak.rst
+index 7d784e03f3f9..da2c849d4735 100644
+--- a/Documentation/dev-tools/kmemleak.rst
++++ b/Documentation/dev-tools/kmemleak.rst
+@@ -163,6 +163,7 @@ See the include/linux/kmemleak.h header for the functions prototype.
+ - ``kmemleak_not_leak``	 - mark an object as not a leak
+ - ``kmemleak_transient_leak``	 - mark an object as a transient leak
+ - ``kmemleak_ignore``		 - do not scan or report an object as leak
++- ``kmemleak_unignore``		 - undo a previous kmemleak_ignore()
+ - ``kmemleak_scan_area``	 - add scan areas inside a memory block
+ - ``kmemleak_no_scan``	 - do not scan a memory block
+ - ``kmemleak_erase``		 - erase an old value in a pointer variable
+diff --git a/include/linux/kmemleak.h b/include/linux/kmemleak.h
+index fbd424b2abb1..4eec0560be09 100644
+--- a/include/linux/kmemleak.h
++++ b/include/linux/kmemleak.h
+@@ -28,6 +28,7 @@ extern void kmemleak_update_trace(const void *ptr) __ref;
+ extern void kmemleak_not_leak(const void *ptr) __ref;
+ extern void kmemleak_transient_leak(const void *ptr) __ref;
+ extern void kmemleak_ignore(const void *ptr) __ref;
++extern void kmemleak_unignore(const void *ptr, int min_count) __ref;
+ extern void kmemleak_ignore_percpu(const void __percpu *ptr) __ref;
+ extern void kmemleak_scan_area(const void *ptr, size_t size, gfp_t gfp) __ref;
+ extern void kmemleak_no_scan(const void *ptr) __ref;
+@@ -104,6 +105,10 @@ static inline void kmemleak_ignore_percpu(const void __percpu *ptr)
+ static inline void kmemleak_ignore(const void *ptr)
+ {
+ }
++
++static inline void kmemleak_unignore(const void *ptr, int min_count)
++{
++}
+ static inline void kmemleak_scan_area(const void *ptr, size_t size, gfp_t gfp)
+ {
+ }
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index d79acf5c5100..99b7ebd03737 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1292,6 +1292,24 @@ void __ref kmemleak_ignore(const void *ptr)
+ }
+ EXPORT_SYMBOL(kmemleak_ignore);
+ 
++/**
++ * kmemleak_unignore - undo a previous kmemleak_ignore() on an object
++ * @ptr:	pointer to beginning of the object
++ * @min_count:	minimum number of references the object must have to be
++ *		considered a non-leak (see kmemleak_alloc() for details)
++ *
++ * Calling this function undoes a prior kmemleak_ignore() by restoring the
++ * given min_count, making the object visible to kmemleak again.
++ */
++void __ref kmemleak_unignore(const void *ptr, int min_count)
++{
++	pr_debug("%s(0x%px)\n", __func__, ptr);
++
++	if (kmemleak_enabled && ptr && !IS_ERR(ptr))
++		paint_ptr((unsigned long)ptr, min_count, 0);
++}
++EXPORT_SYMBOL(kmemleak_unignore);
++
+ /**
+  * kmemleak_scan_area - limit the range to be scanned in an allocated object
+  * @ptr:	pointer to beginning or inside the object. This also
+----------------------8<---------------------------------
 
 -- 
-Cheers,
-
-David
+Catalin
 
