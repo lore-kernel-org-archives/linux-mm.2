@@ -4,104 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7BB3F41807
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 16:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E5F1F4180E
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 16:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 424146B0005; Mon,  9 Mar 2026 12:45:28 -0400 (EDT)
+	id 5C9D16B0089; Mon,  9 Mar 2026 12:46:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DB3D6B0089; Mon,  9 Mar 2026 12:45:28 -0400 (EDT)
+	id 5813A6B008A; Mon,  9 Mar 2026 12:46:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FB576B008A; Mon,  9 Mar 2026 12:45:28 -0400 (EDT)
+	id 46C8E6B008C; Mon,  9 Mar 2026 12:46:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9576B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:45:28 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7FF8C142D
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:45:27 +0000 (UTC)
-X-FDA: 84527100294.29.58F2697
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5B29A40016
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:45:25 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m1KXYnaD;
-	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 335D26B0089
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:46:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BF6BB579F4
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:46:16 +0000 (UTC)
+X-FDA: 84527102352.30.137D0D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1BA8480017
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:46:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzK0cQVs;
+	spf=pass (imf30.hostedemail.com: domain of puranjay@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=puranjay@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773074726;
+	s=arc-20220608; t=1773074775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HGBF7wFouxKA/d6vbapd75R2GfrIL9xJFz5HzcQWUt0=;
-	b=LVKR8e5frgLg3DDzLP8co1OxqsNSf6yu8N582N+0v3ogqFHkCMhQ4SMo4gSxyEFa7qJk9g
-	5yfBV0XxajibeMkI145nKkrmSM2GRN7RobuewqCfxclF+965ma7GOMNNefdJ3SALLiU2X6
-	3s6lUsRtebAmKe2FQkCU3N1+5VL6J2c=
+	bh=HHpTgBH/1pdlBt7gfG4W877BfmosGBp7vW+6BcH8ozk=;
+	b=scKJ++yyK+RoSovx3VFCw5RAZZnBnrQnlPnTekKIks2daXv49uu5ZTvyftbfbldzEojT83
+	WF/coSyixKUuRVXXUEvTE5mtNxxmxamKptJlKeaS1sIY4+cnzXU9+FiTuLX3oi+gmR5qFX
+	/jIXE9BEWSx1YVve2meqCwj/n44cEh0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m1KXYnaD;
-	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773074726; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzK0cQVs;
+	spf=pass (imf30.hostedemail.com: domain of puranjay@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=puranjay@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773074775; a=rsa-sha256;
 	cv=none;
-	b=6NLi/W9hrqNXDuKgkhDbaiMRLK5ftkXps9gmPQplxIBbp9epHFOKfDl36EdquIvWhMBUXk
-	Pyk8MHBz7UC9Hqw9C80W+PLq5yiwxDdjZvFPsCHzyNfizdC38ZXnoRnbU2SrQ8hE0pFiQI
-	5Mu29burRu3cJ93bSD3JJrQTm9OrQBc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HGBF7wFouxKA/d6vbapd75R2GfrIL9xJFz5HzcQWUt0=; b=m1KXYnaDk34n2jyYu4ojmJsL5+
-	BFHYp5hjMExE6XjdYxqLoHMgkI5Mx/cR/A0K9CPQPBAK0JUKM9MrgqNvcUw/MV9L9YYMU4iUpYbLa
-	kBns7OVUbr7jlEonYRJi8RLwq2pJm/uN0iZcALaVtOeLB7nAhYRFozekvokxhAOuNJ2XEtrIQDxeM
-	fCaL87SoLqjsCGGgrGPitsOyzN3zN3I6IVP77yk1Dxf53B3uzO7ftd3b85iagn0p++6s2gjg/ntNv
-	uel4avF2HFox1BFFwXUVIn0+CfAgTHo5mKivkzTl5/pLFXjzd8ZcvnoJQcAO2TlhGROX3F8gbupzX
-	oscl07Tw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzdjK-00000006FgQ-1LlN;
-	Mon, 09 Mar 2026 16:45:18 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8F770300385; Mon, 09 Mar 2026 17:45:16 +0100 (CET)
-Date: Mon, 9 Mar 2026 17:45:16 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>, dan.j.williams@intel.com
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 1/8] mm: use zone lock guard in
- reserve_highatomic_pageblock()
-Message-ID: <20260309164516.GE606826@noisy.programming.kicks-ass.net>
-References: <cover.1772811429.git.d@ilvokhin.com>
- <cf489e5e79f5e9ba450111ee655d9924fe7a1620.1772811429.git.d@ilvokhin.com>
- <20260306095336.a79fcc869a7f6d2b2e97501b@linux-foundation.org>
- <20260306130052.7da8eab3@gandalf.local.home>
- <ce0e53e4-52e2-4e56-889b-adb01ede6fe7@kernel.org>
- <20260307131641.GX606826@noisy.programming.kicks-ass.net>
- <aawxpQDPpqX2k5z8@shell.ilvokhin.com>
+	b=wEFZMU/zePvOpSWns7N+cjLvnaxht3hVDtqOBbrBh619wZ5AtdyOrk7WclAk+unGClTclI
+	SfsgIEMjg3o5fq8HSEoZWcXzstNS1Nkg06zY5B4j9blLYI1JL84Qg4JAj1fpaoDFCikyWN
+	c/biqoSul1YIzlyalQ25xh9otWB3/2c=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09D5440E3A;
+	Mon,  9 Mar 2026 16:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49200C2BC86;
+	Mon,  9 Mar 2026 16:46:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773074773;
+	bh=Tqx7dK7zOG7rDfy0y5qpLKhV/OEzGrhs5r7m6DAJi38=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=LzK0cQVs8ML2i3sxYVbeGEnQp3w8SiK+QCVVNiljg5JvL/h1NF64fnF/LeKgIGdiK
+	 FOGHzG/pM6V0WQ0+b8SQ0t/UMvJOUMcusbuLVmT/L9OqD1faOj86rMgMiOHjdxvqGI
+	 yIQ/9OIKCWBpkH4MHWrgENng96n48RfZlIt9izmWjO4cti60m/ZwnFqRYcL5mCDTwP
+	 DfuORlXZKGVaEPeUO4naijPeyrfCDna/PZ7pWLYmdFjFehFa05pbi7AVJIw8tnnEyc
+	 ZTPJPpl/MNPND8YXYuNEC+NesxXKrtqgA8aH5SvyaoIRcGYq2BHQTMuqf6hml1zBOr
+	 7JQtnjx5KlFCw==
+From: Puranjay Mohan <puranjay@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, linux-kernel@vger.kernel.org
+Cc: "linux-mm @ kvack . org" <linux-mm@kvack.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, David Rientjes <rientjes@google.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer
+ <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=
+ <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Carlos Llamas
+ <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, H Hartley Sweeten
+ <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Dimitri
+ Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Eric Dumazet
+ <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, "David S.
+ Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda
+ <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v1 14/16] mm: rename zap_page_range_single() to
+ zap_vma_range()
+In-Reply-To: <20260227200848.114019-15-david@kernel.org>
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-15-david@kernel.org>
+Date: Mon, 09 Mar 2026 16:46:09 +0000
+Message-ID: <m2y0k1vtm6.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aawxpQDPpqX2k5z8@shell.ilvokhin.com>
-X-Rspamd-Queue-Id: 5B29A40016
-X-Stat-Signature: wfg7g557eq11mrspsytixpnx9qefqa83
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 1BA8480017
+X-Stat-Signature: zz5iypec7swzhmm7ktiadi96c16rkgkz
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773074725-865642
-X-HE-Meta: U2FsdGVkX19gQZvn3TIWXpDzkRM3fHCNAFJ3H6StgVL7UiEJr/aU3lR5myqHhEeFAM5ecHOHn+T90cUacK+4YsmmmxECYhsUM4qgek4hG66SX+yPNUhW74/lIoS1XG638EQ7jOsPZ4EG70aoViipWI7TVBEYLi0H+EvJ+vyOjyZ+5oivaTLpQg3sC7jE0mbzHz7eWmd8Jksm6C3nXYRGj4frQuHjybarzMhwcIcZMutu6PuPPx/Dtnihee+3G0ih0y5Ev6FHSzI8ayeVvBk2uSC4TiMTaCkiytpdQCCHfBMnwKLgiIxgAsgCTOY4i5CdH4Z80lvI5yJLpx7y/jyiG9/UadtFX9AcfnXZBVe0moBGEGdasucniHkOV3Gs/gil4z4uCJsMBClcBIe+Mx+bYk7AIBGUdxBTJ1LfKogSb25oSEbCeB/MBt58Ob3wHS8nDKb4gqc7LIS94mT9bL3f3KdcAva+xzRngxyR3ys9Lo1EFzrnIf6RQ9H1aDs2dogG+bfI8ahjjuVoetJxcYGNVcOZrT6Ek3WXvpIbGslRdnPWGA3nPexisQhhHgcz+QZa6nsxCGjTKDhn28VGZibwojblAntquV2S9hdozrpEILtMy45UKc5gpAfK3ZY8qcxVdkYfvnZSXgm7+CH5QTzQXCaoRMpPKtqS68UNPm52zWSXgd9pV8sdd9OGy7MlY8Sn7bnuTR8NVf0AIn1HWCGV9OOlz4oDukkcFY9Eq3/07kYgPswq7HG9bJMEPIYA8MpK6umJTDDhhk4L+qQ3MQsyXTnJLpj2yzkBlCNVJAmoIopZb742YIKXOapJk5xuyEm8NXB5jNS3UiCR2UJa9SN3U3MiPwHyCSGPnUCYM6fO8MBU/V78YWmvH2daCUxCDv0meTWiaLektQJvM3Exaws+Nd4HCyB9ApdUQrXOpOiQVS0EYHjovdTOIGsB6a8U8qHfxblvhi4dkA/Hdl9ph6T
- ATJGjQlf
- s1bIYq5cJIEZ0SZI6P8KHqlWFsn1ICq7tiFbIklZUNIsp3yZ1spgBvUONATaDFi7qFOKslQ8TOu4vQRHpMOEZta8+EwAJYH8sGZpXYTdcb3IFepVVeXuWjCGBfEckh4aQpVCIRsoUNBZhgA66FfTcCGSZwgO4cPM3RznXotzRjBlWHy9xWoQr1TK4zsMTQ7rV9tuA1bDURgm+rtraON6FUoqV6Y7JcF+nyV/GPlXMqaYZFSdhO0JwtyN9yxpAaI7MLt3+IAznURRVE81W+or4fyqDj6SOXokvgxlCFdcP3TtwZMZzKaCTveNH9i3HFhpk/kuJnN1pKNEAedSB4QOV15gKeHFAzCWx230NROwrYF3SjVjvdnuMJNJcbyIRYf2TiZuAL2whUALerEbizC0S8nZLoDq0t1k12SS0gOKsqp79h33D5hVr4N63Hw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773074774-559959
+X-HE-Meta: U2FsdGVkX1/FnLoSPmdoWDZ48LDRTMcdpzkV5nFeTpWXTShm7E3EEBhsyRvXzPin7UrB4AQltFst+uD11QYB11R1fc3vssctVzJ/G9xjXWXTQ15keyIRFsEyDNV3JyN2idatOgiiI/YflmeaF9NXb6TdoONjWW8OSYp+8WKuSy64pSR4A8X/VxIuleQZvtADh+3hZCX3rFfpnmcm+vazoiGlLm1ZIuNnBN3/xqX+aiv8InuX4/zmuwA1uhLdUxEUI3qLZrx+g5N16vJwQV1hqJemkQuo+b3FIlq+iSPmvXVeylkqVhv2k9fkUPi8VuWQAv3yvnAOww3oUzPcwUMxdM6jJmsFDtNTshBtDVgqmaTSAoDoJFtvqos1dQ4cE/sH1gZT+uilqtphBTdWiTuPQT3sWRWhnLiW841RhBGEVn3msCShLwWYI6AsnMaLm/uWwQe4alCuMA6Wdbpj9pskrk5xIvCaS0FEvMzNtZYTLeXj8khpStz852JuK1b58mjcJQhLsA5/o/sx0CQQwn6EB8ARY8kK3zFfME7QbxIc9V5L3yke+dQ9zJ1oW8ZsiZXNz+5LG9RZdzULpKwDX2jG6/ZcLtfibAFBRB8ZTpN3sadN2Z4RPYDQD9Q/nxSj+T3RtRwKTSYTN2nICzOsd4W75A32YHvkL8jYlhcL6VPATpiDlH9gbPOl+wBn/+wNDJDKVOFMQcBJYzQEF6NmoDG/jaZO21dfPp8Hw7jnd0YeQN4m49nNI5jasjMJEi9Dc2XK4MkMDuLy6O6kqXb9qYkrrF6ijNBfvNgBdXI2YwmLgeJlLmEx4saFW7Ht4sXNWm09Bxeab7+FVjiHReZj71Rtp1MAh6lIwTS2858JzVA1ZL3ohGBgACGYA5YBheILdXX5Yie5S2+kbp4wGcGT97Z/GnWZJi2GGIsmuttZy/K8i+qvevL2eP0/NNQ2M8L9MKeEoeMyKKHWAAMFzE4EXM4
+ r6n2G7B6
+ 4J06uPxv+YQ/Jvv24XhYASFh0/bXY6O9DasIlzzP+Y8Zv6E9wrHgI7qBBH+7ohmDr2YufZ6VAcx8oVw7EbCjB9NBU4RTm1PSE72FCr9I/S/tW2x6NCp3boXtsPogVCoifdwz6+kQdlqPWWhH9HrA7G0zC4g/UUOyrsVtEJTEWmOyiJxyITgveh1DWN0I9eCStA6PQs7CszWdsXwSnOCH8PuV1RY5IBvenCHocFENfeLOXF5G4PLziuz+KCgE0rWgioGJtYFJmGSED6BbXgmtx0BDzkw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,171 +130,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Mar 07, 2026 at 02:09:41PM +0000, Dmitry Ilvokhin wrote:
-> On Sat, Mar 07, 2026 at 02:16:41PM +0100, Peter Zijlstra wrote:
-> > On Fri, Mar 06, 2026 at 07:24:56PM +0100, Vlastimil Babka wrote:
-> > 
-> > > Yeah I don't think the guard construct in this case should be doing anything
-> > > here that wouldn't allow the compiler to compile to the exactly same result
-> > > as before? Either there's some problem with the infra, or we're just victim
-> > > of compiler heuristics. In both cases imho worth looking into rather than
-> > > rejecting the construct.
-> > 
-> > I'd love to look into it, but I can't seem to apply these patches to
-> > anything.
-> > 
-> > By virtue of not actually having the patches, I had to resort to b4, and
-> > I think the incantation is something like:
-> > 
-> >   b4 shazam cover.1772811429.git.d@ilvokhin.com
-> > 
-> > but it doesn't want to apply to anything I have at hand. Specifically, I
-> > tried Linus' tree and tip, which is most of what I have at hand.
-> 
-> Thanks for taking a look, Peter.
-> 
-> This series is based on mm-new and depends on my earlier patchset:
-> 
-> https://lore.kernel.org/all/cover.1772206930.git.d@ilvokhin.com/
-> 
-> Those patches are currently only in Andrew's mm-new tree, so this series
-> won't apply cleanly on Linus' tree or tip.
-> 
-> It should apply on top of mm-new from:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-OK, so the big problem is __GUARD_IS_ERR(), and that came up before, but
-while Linus told me how to fix it, he didn't actually like it very much:
+> Let's rename it to make it better match our new naming scheme.
+>
+> While at it, polish the kerneldoc.
+>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  arch/s390/mm/gmap_helpers.c          |  2 +-
+>  drivers/android/binder/page_range.rs |  4 ++--
+>  drivers/android/binder_alloc.c       |  2 +-
+>  include/linux/mm.h                   |  4 ++--
+>  kernel/bpf/arena.c                   |  2 +-
+>  kernel/events/core.c                 |  2 +-
+>  mm/madvise.c                         |  4 ++--
+>  mm/memory.c                          | 14 +++++++-------
+>  net/ipv4/tcp.c                       |  6 +++---
+>  rust/kernel/mm/virt.rs               |  4 ++--
+>  10 files changed, 22 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index ae2d59a19313..f8789ffcc05c 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -89,7 +89,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+>  		if (!vma)
+>  			return;
+>  		if (!is_vm_hugetlb_page(vma))
+> -			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+> +			zap_vma_range(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+>  		vmaddr = vma->vm_end;
+>  	}
+>  }
+> diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+> index fdd97112ef5c..2fddd4ed8d4c 100644
+> --- a/drivers/android/binder/page_range.rs
+> +++ b/drivers/android/binder/page_range.rs
+> @@ -130,7 +130,7 @@ pub(crate) struct ShrinkablePageRange {
+>      pid: Pid,
+>      /// The mm for the relevant process.
+>      mm: ARef<Mm>,
+> -    /// Used to synchronize calls to `vm_insert_page` and `zap_page_range_single`.
+> +    /// Used to synchronize calls to `vm_insert_page` and `zap_vma_range`.
+>      #[pin]
+>      mm_lock: Mutex<()>,
+>      /// Spinlock protecting changes to pages.
+> @@ -719,7 +719,7 @@ fn drop(self: Pin<&mut Self>) {
+>  
+>      if let Some(vma) = mmap_read.vma_lookup(vma_addr) {
+>          let user_page_addr = vma_addr + (page_index << PAGE_SHIFT);
+> -        vma.zap_page_range_single(user_page_addr, PAGE_SIZE);
+> +        vma.zap_vma_range(user_page_addr, PAGE_SIZE);
+>      }
+>  
+>      drop(mmap_read);
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index dd2046bd5cde..e4488ad86a65 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1185,7 +1185,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	if (vma) {
+>  		trace_binder_unmap_user_start(alloc, index);
+>  
+> -		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+> +		zap_vma_range(vma, page_addr, PAGE_SIZE);
+>  
+>  		trace_binder_unmap_user_end(alloc, index);
+>  	}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 4bd1500b9630..833bedd3f739 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2835,7 +2835,7 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>  
+>  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+> -void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> +void zap_vma_range(struct vm_area_struct *vma, unsigned long address,
+>  			   unsigned long size);
+>  /**
+>   * zap_vma - zap all page table entries in a vma
+> @@ -2843,7 +2843,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+>   */
+>  static inline void zap_vma(struct vm_area_struct *vma)
+>  {
+> -	zap_page_range_single(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+> +	zap_vma_range(vma, vma->vm_start, vma->vm_end - vma->vm_start);
+>  }
+>  struct mmu_notifier_range;
+>  
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index c34510d83b1f..37843c6a4764 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
+> @@ -656,7 +656,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+>  	guard(mutex)(&arena->lock);
+>  	/* iterate link list under lock */
+>  	list_for_each_entry(vml, &arena->vma_list, head)
+> -		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+> +		zap_vma_range(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+>  }
 
-  https://lore.kernel.org/all/20250513085001.GC25891@noisy.programming.kicks-ass.net/
-
-However it does help with this:
-
-$ ./scripts/bloat-o-meter defconfig-build/mm/page_alloc-pre-gcc-16.o defconfig-build/mm/page_alloc-post-gcc-16.o | grep -v __UNIQUE
-add/remove: 24/24 grow/shrink: 3/2 up/down: 296/-224 (72)
-Function                                     old     new   delta
-get_page_from_freelist                      6158    6198     +40
-free_pcppages_bulk                           678     714     +36
-unreserve_highatomic_pageblock               708     736     +28
-make_alloc_exact                             280     264     -16
-alloc_pages_bulk_noprof                     1415    1399     -16
-Total: Before=45299, After=45371, chg +0.16%
-
-$ ./scripts/bloat-o-meter defconfig-build/mm/page_alloc-pre-gcc-16.o defconfig-build/mm/page_alloc.o | grep -v __UNIQUE
-add/remove: 24/24 grow/shrink: 3/15 up/down: 277/-363 (-86)
-Function                                     old     new   delta
-unreserve_highatomic_pageblock               708     757     +49
-free_pcppages_bulk                           678     707     +29
-get_page_from_freelist                      6158    6165      +7
-try_to_claim_block                          1729    1726      -3
-setup_per_zone_wmarks                        656     653      -3
-free_pages_prepare                           924     921      -3
-calculate_totalreserve_pages                 282     279      -3
-alloc_frozen_pages_nolock_noprof             622     619      -3
-__free_pages_prepare                         924     921      -3
-__free_pages_ok                             1197    1194      -3
-__free_one_page                             1330    1327      -3
-__free_frozen_pages                         1303    1300      -3
-__rmqueue_pcplist                           2786    2777      -9
-free_unref_folios                           1905    1894     -11
-setup_per_zone_lowmem_reserve                388     374     -14
-make_alloc_exact                             280     264     -16
-__alloc_frozen_pages_noprof                 5411    5368     -43
-nr_free_zone_pages                           189     138     -51
-Total: Before=45299, After=45213, chg -0.19%
-
-
-
-However, looking at things again, I think we can get rid of that
-unconditional __GUARD_IS_ERR(), something like the below, Dan?
-
-This then gives:
-
-$ ./scripts/bloat-o-meter defconfig-build/mm/page_alloc-pre-gcc-16.o defconfig-build/mm/page_alloc.o | grep -v __UNIQUE
-add/remove: 24/24 grow/shrink: 1/16 up/down: 213/-486 (-273)
-Function                                     old     new   delta
-free_pcppages_bulk                           678     699     +21
-try_to_claim_block                          1729    1723      -6
-setup_per_zone_wmarks                        656     650      -6
-free_pages_prepare                           924     918      -6
-calculate_totalreserve_pages                 282     276      -6
-alloc_frozen_pages_nolock_noprof             622     616      -6
-__free_pages_prepare                         924     918      -6
-__free_pages_ok                             1197    1191      -6
-__free_one_page                             1330    1324      -6
-__free_frozen_pages                         1303    1297      -6
-free_pages_exact                             199     183     -16
-setup_per_zone_lowmem_reserve                388     371     -17
-free_unref_folios                           1905    1888     -17
-__rmqueue_pcplist                           2786    2768     -18
-nr_free_zone_pages                           189     138     -51
-__alloc_frozen_pages_noprof                 5411    5359     -52
-get_page_from_freelist                      6158    6089     -69
-Total: Before=45299, After=45026, chg -0.60%
-
-
-Anyway, if you all care about the size of things -- those tracepoints
-consume *WAAY* more bytes than any of this.
-
-
----
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -286,15 +286,18 @@ static __always_inline _type class_##_na
- 	__no_context_analysis						\
- { _type t = _init; return t; }
- 
--#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
--typedef lock_##_name##_t lock_##_name##ext##_t;			\
-+#define EXTEND_CLASS_COND(_name, ext, _cond, _init, _init_args...)	\
-+typedef lock_##_name##_t lock_##_name##ext##_t;				\
- typedef class_##_name##_t class_##_name##ext##_t;			\
--static __always_inline void class_##_name##ext##_destructor(class_##_name##_t *p) \
--{ class_##_name##_destructor(p); }					\
-+static __always_inline void class_##_name##ext##_destructor(class_##_name##_t *_T) \
-+{ if (_cond) return; class_##_name##_destructor(_T); }			\
- static __always_inline class_##_name##_t class_##_name##ext##_constructor(_init_args) \
- 	__no_context_analysis \
- { class_##_name##_t t = _init; return t; }
- 
-+#define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
-+	EXTEND_CLASS_COND(_name, ext, 0, _init, _init_args)
-+
- #define CLASS(_name, var)						\
- 	class_##_name##_t var __cleanup(class_##_name##_destructor) =	\
- 		class_##_name##_constructor
-@@ -394,12 +397,12 @@ static __maybe_unused const bool class_#
- 	__DEFINE_GUARD_LOCK_PTR(_name, _T)
- 
- #define DEFINE_GUARD(_name, _type, _lock, _unlock) \
--	DEFINE_CLASS(_name, _type, if (!__GUARD_IS_ERR(_T)) { _unlock; }, ({ _lock; _T; }), _type _T); \
-+	DEFINE_CLASS(_name, _type, if (_T) { _unlock; }, ({ _lock; _T; }), _type _T); \
- 	DEFINE_CLASS_IS_GUARD(_name)
- 
- #define DEFINE_GUARD_COND_4(_name, _ext, _lock, _cond) \
- 	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true); \
--	EXTEND_CLASS(_name, _ext, \
-+	EXTEND_CLASS_COND(_name, _ext, __GUARD_IS_ERR(*_T), \
- 		     ({ void *_t = _T; int _RET = (_lock); if (_T && !(_cond)) _t = ERR_PTR(_RET); _t; }), \
- 		     class_##_name##_t _T) \
- 	static __always_inline void * class_##_name##_ext##_lock_ptr(class_##_name##_t *_T) \
-@@ -488,7 +491,7 @@ typedef struct {							\
- static __always_inline void class_##_name##_destructor(class_##_name##_t *_T) \
- 	__no_context_analysis						\
- {									\
--	if (!__GUARD_IS_ERR(_T->lock)) { _unlock; }			\
-+	if (_T->lock) { _unlock; }					\
- }									\
- 									\
- __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
-@@ -565,7 +568,7 @@ __DEFINE_LOCK_GUARD_0(_name, _lock)
- 
- #define DEFINE_LOCK_GUARD_1_COND_4(_name, _ext, _lock, _cond)		\
- 	__DEFINE_CLASS_IS_CONDITIONAL(_name##_ext, true);		\
--	EXTEND_CLASS(_name, _ext,					\
-+	EXTEND_CLASS_COND(_name, _ext, __GUARD_IS_ERR(_T->lock),	\
- 		     ({ class_##_name##_t _t = { .lock = l }, *_T = &_t;\
- 		        int _RET = (_lock);                             \
- 		        if (_T->lock && !(_cond)) _T->lock = ERR_PTR(_RET);\
+Acked-by: Puranjay Mohan <puranjay@kernel.org>
 
