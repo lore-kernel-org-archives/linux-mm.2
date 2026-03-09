@@ -4,107 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1785EF3C266
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 486EFF3C24E
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:42:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FEBF6B0093; Mon,  9 Mar 2026 09:42:41 -0400 (EDT)
+	id B17646B0095; Mon,  9 Mar 2026 09:42:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC636B0095; Mon,  9 Mar 2026 09:42:41 -0400 (EDT)
+	id A9AE86B0096; Mon,  9 Mar 2026 09:42:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ED006B0096; Mon,  9 Mar 2026 09:42:41 -0400 (EDT)
+	id 9C3ED6B0098; Mon,  9 Mar 2026 09:42:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CA7A6B0093
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:42:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 078C5C0AED
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:41 +0000 (UTC)
-X-FDA: 84526639722.22.5A1853C
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 2ACEB8001D
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=dDG+1siO
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ABDB6B0095
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:42:45 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4371B1B6E5B
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:45 +0000 (UTC)
+X-FDA: 84526639890.28.2865BE3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6649814000F
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dQnV0/0I";
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773063759;
+	s=arc-20220608; t=1773063763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ki42cLPnp8Qeyh0kILceJ+Cv5Lvk3JbK3h54C1+Mwj8=;
-	b=Iwl267QMEk4pNyFEYScIY5cmkSPTn/V/NZGpD1ujGULi/YvnvnF25PRfXUC0HR3hx7xAZt
-	pR4eU4g+J8a9h8P4WJ2/Lr77E2S/LC6EOwfUJN5GR7Ts8zCkEezcwxQAssiLQAKzZK3QIO
-	+5HirAZdH8KicL9AVcY1mt/tbAgJQk4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063759; a=rsa-sha256;
-	cv=none;
-	b=DRnuH8kTUTFjw+rcTkiP80uoGyOKqHTjliQ1d2DpbzuyHY/QFrkmKxP08fs2cwDdLp2TSK
-	mw6NGoxxPUHrtRLivAxun2W36Q9Nc7g9Eh1KNWMSqqCUtYtTWyku/8/cST2PE0XWLaXYBn
-	URVBr3Y37UzV4IMVZPnmy9pDgjCuMPM=
+	bh=QdLqgkrqeAfJ6Qj1NcjlAT2Fn0qLa5PiGFwuIm6W/I8=;
+	b=dEu7iFJTDFcHZDA62VRsuAw5JoBGjfFF7WvDToEdJRANXBbmaDuwmfguwFgcZf8yZ8OPki
+	1KUw2Bh/F3o78RKbi1AqREbPKblEEIJ6wGTe5j9pRAbH/C5jwtXkvUm0Wp7xBtkAO7R88+
+	VuXThfCEsn8pu+fKaCiIdF+dkWoC3VI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=dDG+1siO;
-	spf=none (imf30.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=Ki42cLPnp8Qeyh0kILceJ+Cv5Lvk3JbK3h54C1+Mwj8=; b=dDG+1siO5bIqzBPb12wlG3NvS5
-	EN79ITNUuMRYWb1u/3APu6BeWNKyTmA6hToFHqiHqlkdiRKIA9vIrtstl2+uBPp6ulVEXPpHIY8S+
-	/qPvP4qh9R+kZxaNl4rFrhkU83Nxe5JPXoNHmSYP96GQfkng196aUNuNdDxm1mK8+5+Y15RgAjmud
-	tmX9OHDK9qsmmC/NOlJliGldXPzZ5sFU2q578//Lo06FbVEOh2aJ9xaWuGi4pzMMviTq09uIs7/mN
-	oj2A4LlDnp2AqxBzyRMT+39n4fJOunQF+VSc8FjsK8f/S0NZeXOxCePsuZ5IsPMoJgEhsFOa0Ao48
-	Bg65Ng3w==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vzasS-002G3r-Hy; Mon, 09 Mar 2026 13:42:32 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Mar 2026 06:41:47 -0700
-Subject: [PATCH v8 4/6] kho: fix kho_in_debugfs_init() to handle non-FDT
- blobs
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="dQnV0/0I";
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063763; a=rsa-sha256;
+	cv=none;
+	b=vbekN1hUeN+QbL/P+Z+0YsvI2plGcJjNjXVcH6P8ezik2Ew945IkYIFwxcHjj6mKSNsSw+
+	zvzFmhq8+CKg9mFTbVZc+B7rG+B1zAJIuhylSadLVK3jWvtOUJMGIlRvy9TIMOabXjPgQz
+	GzZG8SIxXIiWcgibjiJhaXtcEdO49AE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6966443410;
+	Mon,  9 Mar 2026 13:42:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF653C2BCB0;
+	Mon,  9 Mar 2026 13:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773063762;
+	bh=QdLqgkrqeAfJ6Qj1NcjlAT2Fn0qLa5PiGFwuIm6W/I8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dQnV0/0Ib5o0KbD2/Ib4XNlPdDfuU95v07ZdnPKKg/jFgYKnhJQhqIjmKDE6jqoHa
+	 UbnrtJYOdfufndzBfXb1qT70GS2hllMwKgjigWNx4X/AmvD8OC015KFUUmWfM896jr
+	 wXD1IkVH+s3e1kL5CIa837syBspn675hbIjHowdCIOfapdJc/If84l+T88BRb5Q1/C
+	 fHHYCOP92nycWnMvBnifB/KK9hIBMPUEWC6c1NlMCuWDVPTlHFviQ7LzRunEaSUMkn
+	 iJr6MSJLjAjFWmO3A7thdciHjEBjfED6vCHJ9FMv7WUeep4AHm6VcjAK/bvyCVE536
+	 8QEJ6P5eRDAHw==
+Date: Mon, 9 Mar 2026 13:42:35 +0000
+From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
+ hugetlb.c
+Message-ID: <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
+References: <20260306101600.57355-1-david@kernel.org>
+ <4rzf46kw6hq3b5ivv7cvgyza4yfrvk2shrncytobabxef644nm@wzu2bw63co37>
+ <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
+ <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-kho-v8-4-c3abcf4ac750@debian.org>
-References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-In-Reply-To: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-mm@kvack.org, usamaarif642@gmail.com, 
- Breno Leitao <leitao@debian.org>, SeongJae Park <sj@kernel.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2751; i=leitao@debian.org;
- h=from:subject:message-id; bh=pgo9Bbif/Iq2LY22Zf8vKl/gIhQNmdeP3CUxMaHZ9Dw=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprs4yoKfrHmBJbEuCrYV9rdiomUpCNqeGUD49s
- JR++cG0exWJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa7OMgAKCRA1o5Of/Hh3
- bQWLD/98p0l+FcT2BDdyTKmRTYD8ikYqEE7RChHTT4zoIMfKc1BwA+xtvZUUAVJXhXqdxUS4s79
- 0uGsW8iYers5S5MQIn79gWL44duPHmAIANIZlzBe7WE1lV7JYculVbw67zBpCKv8MZcRrDmJoHx
- GXw4uVdTrXe/EXgvJlAmNEfmamGKe0nLq93P9LRUcKsgVgTKW71hQBlvxv5XP8MZfaoU9swIWc3
- 2PpJHC+cXA3+rEbXG1KVzM+eVyT7MPLMhuTKKdfbFyyAT9tPZ9UkiMpJKtVbgueuLN7KpWHhohR
- wd7sj7uHsMfWsL2bQtpf888+xZYLqRGvqn8ioA3lb/KGw4l8DVoXzqazDibQ0w1X/3+aiop5AY1
- KWBQ+FZnaQEFlmCT5lfX4fdDOyCFB4AI1OSlCS6hEiOUvRtV5RZ3s10bhyBx9CnPAoH2f06ci/G
- g0Z3LvvdcOCNz1lcOodOu0cQkFRmUL8LmD4wEmRybFtMps5ZPVVax00gYgv+kjZEMUvWBpht5jG
- kVMFwn0VVfXGiSgMrTOIO/BVvgu0CHkibLtrXdCMSru24HseBgV62fjTDdmyFEPfQ0W1L6oUFV9
- rI+y+a4L7i2QX/SaGirRr5UdNjaw2HaQeX60PK6zOS/K9JBcmIV5R9PfadMTGQXO4KJuIEoU0D9
- Nc+zunbNNdsk26Q==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: a1a54bu5bu44nphcpzadka44ayt3jdnz
-X-Rspamd-Queue-Id: 2ACEB8001D
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773063758-307173
-X-HE-Meta: U2FsdGVkX1/TaxICfrHOm9V2/WJMrzTd6nEu/J71Gn4SlnynHPsHe8A71bSIg6LNEmyAsVihvIRImoh6lLEc42LCjOwpp+UsbdcvIdfm2mfxMLP9yWJWN+2AmRgT/S5Osn8/+iHbo89Fb5BPBtURB3KSwjvjjlzNfMm4qAAQ5eJgAGFxDaUO6iaaUben5OYxRDEMkYrQ9vydctj2S/AR4HMLt3zkv8aNWsf0nZZgP2UpVhjTz09x+zPfTqWUoENgcPRfj7uRSFB/G/4lDBrHuiyhir7rWQDquoZr/vkq3KclSBDqpMt8OKYFSyZSAAFls9fVIvq1Qkvhjh+/YMINw0657C79kdeb4NnPZ32owWu/bBTQREj9tU2fgzkhnkvadUh3djfF4jSHnuL7pBfbiCjdRa8JcsEsUvYJHFXsjzHNK+GOYlU9W764k7qmxnl05UeinhMrPdWGJx8jhiqzG71o2SxRf+VZnxASolJZ/iVRj2BdTthrjN84Ym4zMCye/DwGStI5Yv0wAkobQWoapdKuUytJqWn+UMijqrXRv7chFaoG4VdRMKWW50LZ2/b2byKwBOJcY3id+u5pC719NsZGB5Yn0cFdXuG6IEsV6uR4Wi37Wy42KdxeIwCDBRd+ICxDX2iBd9BQrGhukXB6N2FiNX40x61Z6JBHrCyvRfQlYlkMLw9JOH73JB2cJIG8W7HL3OAUEjMGHQ8eR6Y4qlR6PrNNGZiySDJ/6bUl7uOdK+16pcue+Cq6fiBMEAWLOWvwzQTaNBaFNZoV1MsOELKFFFEpP+rGWE+MI0ZFuWW/pnA4OFxuX1z6dqYmOOk4Z2FLDLC6FlSS4UX9k6HPDi8ncBWD4Q81aVGgqy0Tab9iFZCmkRoZ72Mbz5IXpWt+TZREhJPDF0vfSYlipJdXU1ETEwXXlJifMyAY41w2euPu60YOF8RoxBT8eUD71lO8aVUEb+wLMOel5arxKAL
- 23SF6Xk8
- EEvVV7ddipDdopShuwi8+tCnpGPuCED1ADpYuGwab8NlA1Qqq9+FP44kpH4djEJF5vTPNyDvV/JhlTrLP1D6Jm75d48pwnsjKlp0x106zdMU5844aHvBBGO2MXmnPxD7P7RqfEKXuCzu/57YDIreNu0JZpnVbAUlwgcnu2kqGyCmRGhPuzU3+j9yrwFm0RHyG/4LtbiaZ0OfDRNHcP8NDhwce4nRTo0U5Zd5fpndFhsVYN74=
+X-Rspamd-Queue-Id: 6649814000F
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 13mm3db59c37u3p37iibh6x9fia669pt
+X-HE-Tag: 1773063763-782827
+X-HE-Meta: U2FsdGVkX18tyr4ZqHbXt1WQm1ppjn8rNH5dGj3khFv8gwHwizVBPAqlNMGaFV9Ne5iMilOt1YHsEnqXosb3oN7afhZU73vjNn04zvdPsvG6vb3AONU/p8+KYXnwjlqOYV9O2fZpIHZ3yx5GsaIHF0Wl7b9H4HWeQJMdta+VsPGjqg6UpD4++6J2YtDTcjQCYOPaHerXGcm3YKKp8xkio5zVEfZ2I/jD2hCe5CU7gnhjYcHjZGwCDIQ8c0mvBD9F2Fw5ZcNjprcYKTmCjfPFbX9/0GW4wYUGRn46o94gm1KhaDDnrAxUHdxnMrAGZabrrfb+7uhqAJBw+Irid6K4kinx7GIIXbFPW8qx/+bC/oqdNdPAcv0ojpBQb3jTqREonK3c2KPxqJ0xwtX7GXoCQlSf5udW4dCacWBgHY57iWlGxFKQoHILOwRDiqg9j64rvaNwTGMgBT56hzPxQroc0FKOqeY8bn2eCEEOPmlI9pRYqqrRMfRzckdYY6TkuAPEOWuT91cCLH3WIuH+cuWIk4lDBrRcTIP7l+p28ICwNC2aqwu+uVOzZCBCxcYem70uD1/e+LWOTzfmHDH1d9Cy/5BtoF2GW2REqyI0rjPj4RZdtxXNF0W6g8IS4Huq1JztuhGaZMQ+07IG/x4NKvxmWno7v22tnSQRKVMxnkKAwnm5lOKUbnpC+UYz5vbRwsnOkVtMnXjQT7dAXlcrEd6F30Kljz9cqmEEBMyWcoDnC2jVxOWECOojGnZBN2UVtybfFZOkRABypoRfbws7acHe9xqxS49AQlrKDGkOyc0j8Bd+JjcwZwPTXXllWppbqYP4SRswTfgWLsDhXIzIuLmVO8emqXMqfN/EJkbiD/+kKiFpOVk68/8K/DhOF20azhibVQ4WIJv3W+hN3zKebNR01SmOQESYpTOjkoj19Smsu7lziif7GgVHi1TLYgAkcEr9+xvOMQBNJ7dlm1S8jZs
+ sroXPyxf
+ 2ZPD2Q3vhRAmEkK7lNl1T1KpI5b/usCRvM6W0gtq6WVa+iojeI0dwDEFfxfe9yAyexdck8bus3Op+emgyvu+UQviYCliR06d5Mo4Kmznoa7UGsIYWzSnfZddFrf10bsxft430DYjMCWBy4X65jiwW3xWqXk47tJoZ+IUAY9dk8ISRNe36zp0jQHkXTlNKxCfm6LmsbpMZUWjKZTo9JrkpIN6jsYLUc+yVVkt5Ai8zzwKhSc4WnRxd1XM/qOeG8Xo+fhX7yLcW/EVfo+huUPvPXI2e8bAkuQvWKxrYy9Qe9SFpsKP4sLM6oyR4LKXLgphgKxQ3CBBVpxyCqb+cIJOobwDwpMXoXcY2TpuWnLoAPWEcOtFPXJPNqj9jlNoDu03OIvHoSAInPuHjS7NnO1OZ/mnU3JLZ0gnSdRTnU+cye+FSc9iMVGdI/wWo9VuuFoL9Yla6oSaumaokBvUVgjdyJWQsHuu1rLcnAVuaYyBa69d58VZgpBI3w10lLRSoH9iCA6LnTIXsLpmTWOE4tfJLORO3P1kbvper/R8F
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,86 +101,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kho_in_debugfs_init() has two problems when displaying incoming
-sub-blobs in debugfs:
+On Fri, Mar 06, 2026 at 02:12:50PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/6/26 12:19, Lorenzo Stoakes (Oracle) wrote:
+> > On Fri, Mar 06, 2026 at 11:13:41AM +0000, Pedro Falcato wrote:
+> >> On Fri, Mar 06, 2026 at 11:15:56AM +0100, David Hildenbrand (Arm) wrote:
+> >>> Looking into vma_(kernel|mmu)_pagesize(), I realized that there is one
+> >>> scenario where DAX would not do the right thing when the kernel is
+> >>> not compiled with hugetlb support.
+> >>>
+> >>> Without hugetlb support, vma_(kernel|mmu)_pagesize() will always return
+> >>> PAGE_SIZE instead of using the ->pagesize() result provided by dax-device
+> >>> code.
+> >>>
+> >>> Fix that by moving vma_kernel_pagesize() to core MM code, where it belongs.
+> >>> I don't think this is stable material, but am not 100% sure.
+> >>>
+> >>> Also, move vma_mmu_pagesize() while at it. Remove the unnecessary hugetlb.h
+> >>> inclusion from KVM code.
+> >>>
+> >>> Cross-compiled heavily.
+> >>>
+> >>> Cc: Andrew Morton <akpm@linux-foundation.org>
+> >>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> >>> Cc: Nicholas Piggin <npiggin@gmail.com>
+> >>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >>> Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+> >>> Cc: Muchun Song <muchun.song@linux.dev>
+> >>> Cc: Oscar Salvador <osalvador@suse.de>
+> >>> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> >>> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> >>> Cc: Vlastimil Babka <vbabka@kernel.org>
+> >>> Cc: Mike Rapoport <rppt@kernel.org>
+> >>> Cc: Suren Baghdasaryan <surenb@google.com>
+> >>> Cc: Michal Hocko <mhocko@suse.com>
+> >>> Cc: Jann Horn <jannh@google.com>
+> >>> Cc: Pedro Falcato <pfalcato@suse.de>
+> >>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> >>> Cc: Dan Williams <dan.j.williams@intel.com>
+> >>
+> >> Although we all love less mail, FYI it seems like this didn't work properly
+> >> for the patches (no CC's on there).
+> >>
+> >> Did you try git-email --cc-cover?
+> >
+> > Yeah I noticed this also :>) Assumed it was a new way of doing things somehow?
+> > :P
+>
+> "--cc-cover" is apparently not the git default on my new machine.
+>
+> "See, I CCed you, I totally did not try to sneak something in. Oh, I
+> messed up my tooling, stupid me ...". :)
 
-1. It uses the hardcoded property name "fdt" instead of
-   KHO_SUB_TREE_PROP_NAME ("preserved-data"), so it never finds
-   subtrees stored by the current kho_add_subtree().
+;)
 
-2. It calls fdt_totalsize() to determine blob sizes, which assumes
-   all blobs are FDTs. This breaks for non-FDT blobs like struct
-   kho_kexec_metadata.
+Wasn't aware of that option actually, handy!
 
-Fix both issues by using KHO_SUB_TREE_PROP_NAME to find subtrees
-and reading the "blob-size" property from the FDT (persisted by
-kho_add_subtree()) instead of calling fdt_totalsize().
+>
+> --
+> Cheers,
+>
+> David
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- kernel/liveupdate/kexec_handover_debugfs.c | 34 ++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-index 7a100f2bf3947..257ee8a52be66 100644
---- a/kernel/liveupdate/kexec_handover_debugfs.c
-+++ b/kernel/liveupdate/kexec_handover_debugfs.c
-@@ -13,6 +13,7 @@
- #include <linux/io.h>
- #include <linux/libfdt.h>
- #include <linux/mm.h>
-+#include <linux/kho/abi/kexec_handover.h>
- #include "kexec_handover_internal.h"
- 
- static struct dentry *debugfs_root;
-@@ -121,23 +122,34 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
- 	fdt_for_each_subnode(child, fdt, 0) {
- 		int len = 0;
- 		const char *name = fdt_get_name(fdt, child, NULL);
--		const u64 *fdt_phys;
--		void *sub_fdt;
-+		const u64 *blob_phys;
-+		const u64 *blob_size;
-+		void *blob;
- 
--		fdt_phys = fdt_getprop(fdt, child, "fdt", &len);
--		if (!fdt_phys)
-+		blob_phys = fdt_getprop(fdt, child,
-+					KHO_SUB_TREE_PROP_NAME, &len);
-+		if (!blob_phys)
- 			continue;
--		if (len != sizeof(*fdt_phys)) {
--			pr_warn("node %s prop fdt has invalid length: %d\n",
--				name, len);
-+		if (len != sizeof(*blob_phys)) {
-+			pr_warn("node %s prop %s has invalid length: %d\n",
-+				name, KHO_SUB_TREE_PROP_NAME, len);
- 			continue;
- 		}
--		sub_fdt = phys_to_virt(*fdt_phys);
-+
-+		blob_size = fdt_getprop(fdt, child,
-+					KHO_SUB_TREE_SIZE_PROP_NAME, &len);
-+		if (!blob_size || len != sizeof(*blob_size)) {
-+			pr_warn("node %s missing or invalid %s property\n",
-+				name, KHO_SUB_TREE_SIZE_PROP_NAME);
-+			continue;
-+		}
-+
-+		blob = phys_to_virt(*blob_phys);
- 		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
--					     sub_fdt, fdt_totalsize(sub_fdt));
-+					     blob, *blob_size);
- 		if (err) {
--			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
--				ERR_PTR(err));
-+			pr_warn("failed to add blob %s to debugfs: %pe\n",
-+				name, ERR_PTR(err));
- 			continue;
- 		}
- 	}
-
--- 
-2.47.3
-
+Cheers, Lorenzo
 
