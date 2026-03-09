@@ -4,129 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0649F41807
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 15:08:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B70E4F41808
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 15:09:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EB316B0088; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
+	id 2604B6B0005; Mon,  9 Mar 2026 11:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B61E6B0089; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
+	id 235036B0088; Mon,  9 Mar 2026 11:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CCB16B008C; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
+	id 1178F6B0089; Mon,  9 Mar 2026 11:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE4A6B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:08:33 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C18C75739A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:32 +0000 (UTC)
-X-FDA: 84526856064.24.50D152D
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7D5D54000A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:08:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XscvnJC7;
-	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3B026B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:09:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BACD7160206
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:09:58 +0000 (UTC)
+X-FDA: 84526859676.30.A7C3FBE
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 60FFD40017
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:09:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FJwabNsA;
+	spf=pass (imf27.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773068910;
+	s=arc-20220608; t=1773068996;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
-	b=VwZmku477sxDZgCidWqfWUxNc7D/ApyR0Htqvb3LapA1BMZvbMb7TCduZCgxbNy44ERzzP
-	B5elZ+YQGkAEQ5rD7xi8BKq6wtEgWu9hUQtjGJXZxtceaqjbAJPfqHmaSWuedzkdhYIn9+
-	VMnvpUQozdwVITZhdQK8ghDz26m1vjo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773068910; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=woFLTl4MQININgn1l26aXv8v4wFqzDNApNaqLAUyjBk=;
+	b=BVdU6iy2umBk5QCz3XtSbh45bp58wAwXU1mWSkGupQq2S4epKjVChLrYROAqsctTmUeXRq
+	fBxQ7dX8WC7JaHSXbfa0aoVLouYyUw4O98xQhFvIKMT8XBaT5+U0bbJrKdhMC6UiIhaAfM
+	Kd5aoocCJM9Ca4VaGsmN9Kx4imQCoT4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773068996; a=rsa-sha256;
 	cv=none;
-	b=phsDg/bZDrOXMq2Gii4F2PaQXe/+8MyOgCNSuZmdG/2dgO64kQB9CUqLvr9sEGAUvRsI/T
-	SqdLT2ya46l/mDzOb9tC6E45QeDsnL7ApzJWwME+29xeecnr1yTGnR+kI7A7LPwi/RHIuM
-	rYaMWWJH1U0dE4wM2LhlKzaHdvwoWLo=
+	b=4aiwSW9zkwNrYF0gRYHYqThBIASkGIltsOu/31NAsfIPIR1IVZ+DHx3kUTx+ysIp2T1ltH
+	uWwN2Cp2eKH0pRfE3C8k96Cyk7lH4POBc33RRY4QzDCGv5syeeqRHEVd0yxEujOW0x4gd4
+	qFXINUYJpKpFAiTkWaJuBSsMWvSdpqc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XscvnJC7;
-	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48540355459so5340375e9.3
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 08:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773068909; x=1773673709; darn=kvack.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
-        b=XscvnJC7k9OnomiCvfD/aji3paKJTQ4DSYV0rkEvOXOzVausrAa55/ry0hJgvDPJpB
-         Mgq68ZnTOuoyiBlY/PIU2pPD9Vc9PiCzmnhGzJ3zNeGAJPeqjWkDckTLHwAJibXhI3QC
-         XwyzFM7aI/r6lpynT1gzdPcrLGw/m2fDOzOm5taWJA9sR3Em/uGh2WVJGugTtszLKq2P
-         ZLdAPtH2BJ9StvLZwA4jZJnkrh/7I6bm/uu4yo6DSQ5ln9hHsywbNBug3PrKE5CUjWSI
-         DB2U8BsxIDAHA2XXxcd4cxenDZDvGO5gXWFxqGFnUa3bhMMjFTdqM5oz+sJsyVn2Zdu3
-         To5Q==
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FJwabNsA;
+	spf=pass (imf27.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773068995;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=woFLTl4MQININgn1l26aXv8v4wFqzDNApNaqLAUyjBk=;
+	b=FJwabNsA/zZi5bd/zdcjzjkaftW5QWldXPxAcv5Tm68j7X9YmAmlVKC0w42eg6IlgV7PCi
+	fq/wKaRdu8m9FPv4vJZvydAdJ8bonsTEWZvToAc7pw4R51kwZwuNrxJj2KBTFHPcynuUI4
+	SIIs5Ct498lIlhG/IWvUurg4tE2hkLk=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-KBZLCfl2NTG-wjfLD7BJ_Q-1; Mon, 09 Mar 2026 11:09:54 -0400
+X-MC-Unique: KBZLCfl2NTG-wjfLD7BJ_Q-1
+X-Mimecast-MFC-AGG-ID: KBZLCfl2NTG-wjfLD7BJ_Q_1773068994
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-64956932a51so15006603d50.0
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 08:09:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773068909; x=1773673709;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mjuuwRMRXMuBEkBAokG0kVZoWPUDTpeuLcxt/9gKsig=;
-        b=RCR76kfMGe7XMPSjgwnIxCrVcbN7cPuMIsvn91VRqTS9+Fw5nxrkh9jTTvNQG0mswq
-         bX4/df1MFXcp/Gutw3R4mhmuKsFua8YStZI4sf57TXaIKmPodpESDjlaP4J9oP3/CKmu
-         YUvoj+C9lCO7V7CCBXyXtje8pJw5pg2V1TaNFmXbZKF63N7ANxZoqEp11948hn7roc8D
-         aiYf6P+JBh45WQeBQDfrbfHHmGhigRWDZnvebfDsajT6GAdWijGqng/rpMFcYbLaBqih
-         VzkfNGPCvuziFKKIIOoboQcrNA5lS/hs1rFlMmD8z73rlIhFLvnpbH9yOG9x0WlQZEJj
-         inLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjct2wRilyqg9eZ0vufBmlzggXiDJjiVGhWDcrJGY1BOmhobk9R5t+UJXGmAjefawIWMfLUTDY4g==@kvack.org
-X-Gm-Message-State: AOJu0Yy/Z0zZm6D78inShsg+i+s3IImlI7iotFno82G2mAdLlyVhWJaK
-	MyYccT2XlLUwWNYmT60bMGlITD1x99yzc8zuy5JBoCY0JMsZ/efLFtKP7ZBnUSpIPbwEsjmnugI
-	0krvO
-X-Gm-Gg: ATEYQzyUdFomYu0/vxxC+fmc9PlYoeX/mv4zItBC9y2lnPE+DMKLaZfc0gsofFQu/Xl
-	KxUoorj/8Kf3RxtC9uqu+uYVTa1QyfcQMuRi9s51fXy4hyeI6zVn3FdumMuCMiJdINCQRLJJUrr
-	aJvNrevy6+J4j7xoBP+8crvhKD+UfDL0QNevS4mRpK0yjf8cooXxw8btuu5P026doIg5Lm+DSJB
-	klyVXAqeeArGD2rJUG/ReM0E8iaT2vhXG8PTo7K4J71Vzl/m/WruO1U+6ZmQQ4ydMVQzR0mehLF
-	KLjftwVnjyr2JreeUUUAeh6naqnX+KSNiOqOQID7B8C6/hBaJqOutjxZQh6EoXJP1/AsLnF4D3O
-	wAJz2NYzPr3gtZ4efhCIgR5P9Xa7IAAeWqbFmijCztIJUSX44uCT2LMC2pI29JKR4VtWytzRVgk
-	gxG63kQbI2AH4gZzDw3mllyZ928KrOtnTnS1zEcDrNJ6c=
-X-Received: by 2002:a05:600c:6306:b0:485:40ed:2d1 with SMTP id 5b1f17b1804b1-48540ed03fdmr14531205e9.17.1773068908685;
-        Mon, 09 Mar 2026 08:08:28 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad8da01sm28684927f8f.1.2026.03.09.08.08.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 08:08:28 -0700 (PDT)
-From: =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Date: Mon, 09 Mar 2026 16:08:08 +0100
-Subject: [PATCH v2] mm: Do not allocate shrinker info with
- cgroup.memory=nokmem
+        d=1e100.net; s=20230601; t=1773068994; x=1773673794;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=woFLTl4MQININgn1l26aXv8v4wFqzDNApNaqLAUyjBk=;
+        b=E72SYDcnIcw1EO4RLeV9+4sKctHGBODC+CODHo5+BEQkOjmb8krrTTGl1kBSXPAx2L
+         wN7WMB1nHnlCioeuMsRMcKrdmukI5YkJOg/RrWY7XZ+1DpxoBq25khUiilkWKY28ZoaE
+         WUt7EakXus39J6WyVjdgDTriHjOHMb1M97DXml8lEnBQ+d2yAfLb3OZUqmE+JsV2FH2c
+         nOzyJo7aehufBMZEdTJYhIoGjqTstbEpmOklC/mSG0mJfnX8+hSXTMP/JmshOqcpby2c
+         8/PCd+pV8Gu8sUeZaQNemL57j6b5tbBA1EAzyUpUa8jSYYrvo5wv9lWTavSR2astSFkD
+         0Ceg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2J4WVD6bMoxAPCzlgG9TdxbD0yPU0/XzfVRShPoEdzSgH1JS6bU43PZt9swPi+KsMyEac5ZGXUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz3bQgve8TEkQnSNVv3vBTnTCXQvUrorp7VEa6naL8W+oguL/wc
+	T+IhtBqtdOeQqmjGVEekngI+dE6u1VeByL7LoIW7J3ShdolqZTgwksDURIaZICoom6Pug14soc8
+	GZCVh0eBOjpRR+LGiGva+KR3ZIfe+gXKSsCQMkDk9kLIXSNOBTagvoY/RCuKiE2qOVrxYkTexkz
+	03AXDYEx5qOAG2uS8caJ1A5wRcQTI=
+X-Gm-Gg: ATEYQzzVwwVJP7Gu9NA2aw8S1Zwr9tWyJq1gG6n7Az110HpT17fZRuCj66EVbF9dR0s
+	AJ7/5PEIB1NWPgXThxmXuXNB1TtpegkdJ0znPNH3Z5iOBb5dfywxHnlEy95aAuohWpSMYhx0Xw2
+	ke8Wp1i/b+5x1j4dHKcaKNw2HDA4byo2HZRAweEMRAyTiUcyc3yZoCk7RCNC4iQwzzgkR/rM7kp
+	I5s
+X-Received: by 2002:a53:858a:0:b0:646:7062:22ad with SMTP id 956f58d0204a3-64d1427cc45mr8678482d50.46.1773068993923;
+        Mon, 09 Mar 2026 08:09:53 -0700 (PDT)
+X-Received: by 2002:a53:858a:0:b0:646:7062:22ad with SMTP id
+ 956f58d0204a3-64d1427cc45mr8678430d50.46.1773068993292; Mon, 09 Mar 2026
+ 08:09:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260309-cgroup-ml-nokmem-shrinker-v2-1-3e7a7eefb6c9@suse.com>
-X-B4-Tracking: v=1; b=H4sIAFfirmkC/42NTQ6CMBBGr0Jm7RgYfwBX3sOwgHYKE2xLWiEaw
- t2tnMDl+5LvvRUiB+EIt2yFwItE8S4BHTJQQ+t6RtGJgXK65kQXVH3w84T2ic6Pli3GIYgbOWC
- p2zOZTpnKEKT/FNjIe3c/msSDxJcPnz21FL/1H+tSYIG6zE9VXXc6Je5xjnxU3kKzbdsXp5Wol
- sEAAAA=
-X-Change-ID: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>
-Cc: Jan Kara <jack@suse.cz>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2455; i=mkoutny@suse.com;
- h=from:subject:message-id; bh=PF7PEPuBVFEev9rRlZplgRHqFt2dHhMGKiCN80nPSv0=;
- b=owGbwMvMwCVWZ8v0fMrtHxyMp9WSGDLXPUo7IhO6X+rd1bAl3syOVw64fv6zKWBh/qo13sXl2
- 6vcH/y075jIwiDGxWAppsjiJJzHOv+DjJvl6a4vMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
- IZChY8TAxSkAU11jzvCH33/risv7sgOdm590TbQulDR4aWJVzntyxapwKVtTtrQ1jAxnmvhWXne
- JPlO8YcG3+bcyo89Fl7ryq23ZtJlH+uLaR1XMAA==
-X-Developer-Key: i=mkoutny@suse.com; a=openpgp;
- fpr=9F2AB6F1F2BBEE7621C1B620CFDED9A2FD1314F0
+References: <20260226113233.3987674-1-usama.arif@linux.dev>
+ <20260226113233.3987674-13-usama.arif@linux.dev> <CAA1CXcDyqPPwf_-W7B+PFQtL8HdoJGCEqVsVxq7DhOUB=L4PQA@mail.gmail.com>
+ <6982e9fc-cc17-4d4f-b26e-83997c4bf070@linux.dev>
+In-Reply-To: <6982e9fc-cc17-4d4f-b26e-83997c4bf070@linux.dev>
+From: Nico Pache <npache@redhat.com>
+Date: Mon, 9 Mar 2026 09:09:26 -0600
+X-Gm-Features: AaiRm50M7EsyVTjUp3ZumpjEiav95f1tL1iFQKYgAgTcPXxEsX1_R8rjMYvu9Fs
+Message-ID: <CAA1CXcCb6aZnjgtunEuwL380S-2re9N-AEjZUB+XO9G6gkrHQw@mail.gmail.com>
+Subject: Re: [RFC v2 12/21] mm: thp: handle split failure in device migration
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	willy@infradead.org, linux-mm@kvack.org, fvdl@google.com, hannes@cmpxchg.org, 
+	riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, maddy@linux.ibm.com, 
+	mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, hca@linux.ibm.com, 
+	gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Y8QpZv6G-_jDfyuOYN0Fk_SfwaCc-35mJua8rBPpQUk_1773068994
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: e7hhb9iuya9c1jxa11nx8tcruza8npdn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D5D54000A
-X-Stat-Signature: pnyzq9ahmykodg1oedc6q5n66amks7n4
-X-HE-Tag: 1773068910-905144
-X-HE-Meta: U2FsdGVkX1+qljSjQA5HfFwXPSBYTx3HBUg8CXpj/x1RCJSZCPAdcASdqc3zB6Mhk4B3NNTbt5DVLc96x334HiB6yM7R+xp3GUS8VjlD2F9rNRdlglbOkZarhFGcFQaPWBUTEveX9zWeNbsCMlj9x6/YqDc3uCvd1q2mWV9QOKWA6fsJ4mY49uJuZ6ScRkUrFq0YdW64sXdTAfLJoKYrYewhtztqDkAYMMjb2wwFVlDOS8KM1T2d9/XNdwhvr+2SkFMJ7XMJ1YlSQGDbQ5ST6LAnxq3NO6KssYliuAARKc6Aj2WLF6ym57U2Yl3bQJZgdXQUVj75IZkkOAZ/AGN1NqUAJKwFEyOF08VCncAuh2NgkKAny3HkN649GaskMmtMlBh8YBZTdFba3np7nZW54tBSgridg1OChXz0C6Ud9gQSjfX7d0H4IUB6CIfIVm47UcNxy8FqSyOLmp8S3bsT7d4xEPTzHi+oBMMM+0npawZAoy3C9e2D6Q4q4TWjz/9qGuQhfccOsl+082xb9uXugG+5Ptw0StXfl69pvBYfx/DUEuqHFeRWm2DNZBYvSguRARJ9GmcYHYUv4VPrQnerXOutuMRYS4IxRih/G2Rsd0gOjCb4m83QLSm7HiULWL0twICBUvZQCgK2wzJqFrJBB/n+GrVPI8RW/KVSxPFJfLQiw3h9gKi1VbzpKQ3Q8fP8IiwD9Pmkj3YGT0ZWhjvfmgKeHH1hFXDxQfWwNegYnAgnyb4ZYYNFzdSBbuqFW4bf7NiK9CpORm3ZMhKUzn2m7/CIIWVs2t6MXSd1wjGKNp0jQQMoAWjpTZhQc97XFiuyHaa/vdt4xAiuY5dAh4+SH+UT2sI+DMLQgyLSk66ciPw9ZApLCbsr5BbVKn7DsNlKSDPOYG3Fd8aUdbJ2IC4SZB8Aw82v0VerMkiYUttbLigPjBNUeyH0xl9x7RwHMLtoeHWkAV5oTVvxsKaVpqL
- 1QHGJnCe
- vYmEeBnCSNBg8G9YQiMHfWihL3KPFseKMcusPO1ifc/SJTUKfqlE2jmnG4rcF8XVPYB38jUHMZpiUAA0UtuOnq6KHoan7/TkoPhdFPWdzUmVjT6nmJYb3ulRxcGu+oi4uGVznAkYlHPTf34IfiYgNap/aHmKpdI0HuqxTdJVgbbwWuddDHHSg94rgim6eG4tg/o+6QSRmaNTAdvb9L5sr2deJ7ubju79XUL+9lDnMFLRq3MIdFU1/vfgn6DqnVwNd+OMsCi7RLCA5ahVpnWRd7SYIac6A/a/3dDBYTAS486B/7EJ3DbJDd7CMb4taMY/WfLSuQktySse4KsfRDX39zXHj3w36PtisDvF0zWV+knF+NcmK8/vwGjsS52Z2R1LMCTITNVTaYog2UPKpAnTdbPPBOwwE7qc4rHfj4O1cPhPAsnBDPf7c4rizvC65/T4f9I/MEjnoNJHQMkR/2Jaez2lgf00LAh95lAx4WosxmE4VXAwQYtVuvJZzk9xfB2klFjoeYuPBfkfrfGo=
+X-Rspamd-Queue-Id: 60FFD40017
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773068996-517623
+X-HE-Meta: U2FsdGVkX1/NF7sy86NM4K4vOCRD9paRYqqfjFJbaLeQc7kwYZBvVOvyaxdr6ja+StaY2KPIDhKaweWnhC4GMlAKiVRu8aqrvfziQGbcU0rOGUAjxYMTS/VVD+ovE5D3kCnP4rAPogBo3RY2/u4IFdRVdUjIDopX+7kZAUQnfcUgGSxuEcCXaFaTeGYXaE0f8Vc7e9SNkjizOoAts6Id/3GD0hkw3Fag+5b9mAGsNsxaZJP3vgEQZiSkXJ7VXXPNypQ2SVKiP0RKQJ7Ysx6lCGIOyRMVvCQx15ts1IA5WwCQlOdnT0HVxwvdY0X/eo+vb5ENFi4c+wjesyUXMKMtzAFBx1Z2VkwW8VjPjJl7IbktlNjoyZlgL9n1Qf8s7E5cVX564ssucubYqG4vq1pyVHZQ8WOdsWoC/WluP2qsdcZwBO1ZP1ttC3dDuviMaVqkQHfrJEhI/4AVL3/ZCd66dJvjQ6cnVrHn6RrSD52PvjQFJXxBwprw0hB9sMSTec8fAS0O97OuD0yRTIdj2q+CnSIA1Jv/yeBQp+Q1SzChiPv1ZknFWJRXWOMNx2sjRwYjSkSndxuy3ULBFXs2H8wqxVd7z0MZM2T8oG6Tzrc2MHh6NDS60GjhRZJvhbNI0vKz351weg3BZn8tw7Mr9hJyFFbgY/OZX02AFt/Svro4Af2AU/pYMVO/7eL4ybMYrrkoSs/cPiCAvfgdEsYcKRMqn0GytWve8vdR/yenYh59Eqe/4WcprwxORHnmZcn81OKmmy1U/D4Y/j6H6RV0JTjTl6UzzgSpKY6LDsHCFuBVHjhoqWbqSpGaNO5D4asb4fz4CS1SWvr5dbwNQ3/W6m2zfqdFu5ZKVPbV4vkk8MCie2v+W6YRtvs6bWYfSqLeuAQVmFnnmeNA5Yb7fN3iLk8aPTmjnB0zxck8nIWmf8ZmyLQ7kGxBhBJyK/pZeuszFbjHotspYZseF38dI1sI8He
+ c/WC0a0I
+ 9q94L5K4QCo3k9PUcC6lEPuGaqiUsPEY9HthekqI+1ZhKs53l98zHnt1N9ck3loPnw61gYZLImp/Vw4CSYjbMccqhcJDh3aRVDy4JLBD/XkM24ChYy6GW9xZ30WiLVwXxy1+2aN89+pGExrxt7Bo3dj1BCUk1fguoY2kds14z9bsQzhFWdxV82j9XW8IZS9xPzcZqmhEe8kijv8am3ds/YoRu1AMBVZKbDHCXEMFy+5FJys846dnerNRMKTMK2JxrguFyUIr0lHJjYCIWzn9HlKObv//XVf4AyalBQGfEUoWXVjoS1PUuX4xYxE1JOG/Qnc37pPsbHar1ddWymzk4x9p+rRRokwVA2pvF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,68 +133,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There'd be no work for memcg-aware shrinkers when kernel memory is not
-accounted per cgroup, so we can skip allocating per memcg shrinker data.
-This saves some memory, avoids holding shrinker_mutex with O(nr_memcgs)
-and saves work in shrink_slab_memcg().
+On Thu, Mar 5, 2026 at 9:55=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+>
+>
+> On 02/03/2026 21:20, Nico Pache wrote:
+> > On Thu, Feb 26, 2026 at 4:34=E2=80=AFAM Usama Arif <usama.arif@linux.de=
+v> wrote:
+> >>
+> >> Device memory migration has two call sites that split huge PMDs:
+> >>
+> >> migrate_vma_split_unmapped_folio():
+> >>   Called from migrate_vma_pages() when migrating a PMD-mapped THP to a
+> >>   destination that doesn't support compound pages.  It splits the PMD
+> >>   then splits the folio via folio_split_unmapped().
+> >>
+> >>   If the PMD split fails, folio_split_unmapped() would operate on an
+> >>   unsplit folio with inconsistent page table state.  Propagate -ENOMEM
+> >>   to skip this page's migration. This is safe as folio_split_unmapped
+> >>   failure would be propagated in a similar way.
+> >>
+> >> migrate_vma_insert_page():
+> >>   Called from migrate_vma_pages() when inserting a page into a VMA
+> >>   during migration back from device memory.  If a huge zero PMD exists
+> >>   at the target address, it must be split before PTE insertion.
+> >>
+> >>   If the split fails, the subsequent pte_alloc() and set_pte_at() woul=
+d
+> >>   operate on a PMD slot still occupied by the huge zero entry.  Use
+> >>   goto abort, consistent with other allocation failures in this functi=
+on.
+> >>
+> >> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> >> ---
+> >>  mm/migrate_device.c | 16 ++++++++++++++--
+> >>  1 file changed, 14 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> >> index 78c7acf024615..bc53e06fd9735 100644
+> >> --- a/mm/migrate_device.c
+> >> +++ b/mm/migrate_device.c
+> >> @@ -909,7 +909,13 @@ static int migrate_vma_split_unmapped_folio(struc=
+t migrate_vma *migrate,
+> >>         int ret =3D 0;
+> >>
+> >>         folio_get(folio);
+> >
+> > Should we be concerned about this folio_get? Are we incrementing a
+> > reference that was already held if we back out of the split?
+> >
+> > -- Nico
+>
+>
+>
+> Hi Nico,
+>
+> Thanks for pointing this out. It spun out to an entire investigation for =
+me [1].
 
-Then there are SHRINKER_NONSLAB shrinkers which handle non-kernel memory
-so nokmem should not disable their per-memcg behavior. Such shrinkers
-(e.g.  deferred_split_shrinker) still need access to per-memcg data (see
-also commit 0a432dcbeb32e ("mm: shrinker: make shrinker not depend on
-memcg kmem")).
+Hey Usama,
 
-The savings with this patch come on container hosts that create many
-superblocks (each with own shrinker) but tracking and processing
-per-memcg data is pointless with nokmem (shrink_slab_memcg() is
-partially guarded with !memcg_kmem_online already).
+I'm sorry my question lead you down a rabbit hole but I'm glad you did
+the proper investigation and found the correct answer :) Thanks for
+looking into it and for clearing that up via a comment!
 
-The patch uses "boottime" predicate mem_cgroup_kmem_disabled() (not
-memcg_kmem_online()) to avoid mistakenly un-MEMCG_AWARE-ing shrinkers
-registered before first non-root memcg is mkdir'd.
+Cheers,
+-- Nico
 
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
----
-Changes in v2:
-- update comment (Qi)
-- collect trailers
-- rebase on master
-- Link to v1: https://lore.kernel.org/r/20260225-cgroup-ml-nokmem-shrinker-v1-1-d703899bdda4@suse.com
----
- mm/shrinker.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 7b61fc0ee78fb..167cd70ae4918 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -219,6 +219,8 @@ static int shrinker_memcg_alloc(struct shrinker *shrinker)
- 
- 	if (mem_cgroup_disabled())
- 		return -ENOSYS;
-+	if (mem_cgroup_kmem_disabled() && !(shrinker->flags & SHRINKER_NONSLAB))
-+		return -ENOSYS;
- 
- 	mutex_lock(&shrinker_mutex);
- 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
-@@ -716,6 +718,7 @@ struct shrinker *shrinker_alloc(unsigned int flags, const char *fmt, ...)
- 	 *  - non-memcg-aware shrinkers
- 	 *  - !CONFIG_MEMCG
- 	 *  - memcg is disabled by kernel command line
-+	 *  - non-slab shrinkers: when memcg kmem is disabled
- 	 */
- 	size = sizeof(*shrinker->nr_deferred);
- 	if (flags & SHRINKER_NUMA_AWARE)
-
----
-base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
-change-id: 20260225-cgroup-ml-nokmem-shrinker-7da42fbcf8f2
-
-Best regards,
--- 
-Michal Koutný <mkoutny@suse.com>
+>
+> Similar to [1], I inserted trace prints [2] and created a new __split_hug=
+e_pmd2
+> that always returns -ENOMEM. Without folio_put on error [3], we get a ref=
+count of 2.
+>
+>        hmm-tests-129     [000] .l...     1.485514: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dffb48827440e8000 dst=3Dffb48827440e8000 src=3D=3Dds=
+t=3D1 refcount_src=3D2 mapcount_src=3D0 order_src=3D9 migrate=3D0 BEFORE re=
+move_migration_ptes
+>        hmm-tests-129     [000] .l...     1.485517: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dffb48827440e8000 refcount=3D3 mapcount=3D1 AFTER re=
+move_migration_ptes
+>        hmm-tests-129     [000] .l...     1.485518: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dffb48827440e8000 refcount=3D2 AFTER folio_put(src)
+>
+>
+> With folio_put on error [4], we get a refcount of 1.
+>
+>        hmm-tests-129     [001] .....     1.492216: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dfff7b8be840f0000 dst=3Dfff7b8be840f0000 src=3D=3Dds=
+t=3D1 refcount_src=3D1 mapcount_src=3D0 order_src=3D9 migrate=3D0 BEFORE re=
+move_migration_ptes
+>        hmm-tests-129     [001] .....     1.492219: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dfff7b8be840f0000 refcount=3D2 mapcount=3D1 AFTER re=
+move_migration_ptes
+>        hmm-tests-129     [001] .....     1.492220: __migrate_device_final=
+ize: FINALIZE[0]: src=3Dfff7b8be840f0000 refcount=3D1 AFTER folio_put(src)
+>
+>
+> So we need folio_put for split_huge_pmd_address failure, but NOT for
+> folio_split_unmapped.
+>
+>
+> [1] https://lore.kernel.org/all/332c9e16-46c3-4e1c-898e-2cb0a87ba1fc@linu=
+x.dev/
+> [2] https://gist.github.com/uarif1/6abe4bedb85814e9be8d48a4fe742b41
+> [3] https://gist.github.com/uarif1/f718af2113bc1a33484674b61b9dafcc
+> [4] https://gist.github.com/uarif1/03c42f2549eaf2bc555e8b03e07a63c8
+>
 
 
