@@ -4,81 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64D95FCA181
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 20:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14294FCA180
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 20:23:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5686B0005; Mon,  9 Mar 2026 16:19:40 -0400 (EDT)
+	id 4F2A36B0005; Mon,  9 Mar 2026 16:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87C4B6B0089; Mon,  9 Mar 2026 16:19:40 -0400 (EDT)
+	id 4CA516B0089; Mon,  9 Mar 2026 16:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77E266B008A; Mon,  9 Mar 2026 16:19:40 -0400 (EDT)
+	id 3AB666B008A; Mon,  9 Mar 2026 16:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AF636B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:19:40 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 173B48B4E6
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:19:40 +0000 (UTC)
-X-FDA: 84527640120.22.180DBE7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2A18B4000D
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:19:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rtmHvZQO;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6886B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 16:23:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE970160369
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:22:59 +0000 (UTC)
+X-FDA: 84527648478.24.899627F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 15F781C0002
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:22:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B7IXhROP;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773087578;
+	s=arc-20220608; t=1773087778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yFCYtDgZNBy/k7iX22hecf0icbSiO/rj9QIWcsJKGDk=;
-	b=hync+vXqdYcigC3t4+HQpqHSjzlC0XvvwTkWlEnf41aOX/DhN6y99m+VrSqsTXFUI4di6J
-	BJOo6ORHM0ds9/Unb9sMGM0biCz1nnTEjB4fSa2XwhGC1stjltIU1q4s5hRwKFEYqbY7Rg
-	HrNJZC9E6dypgFHKroSJZUjPhCcLRVc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773087578; a=rsa-sha256;
-	cv=none;
-	b=HlzPZV3vvyYY36zKG3PaoZAYxPUGI50DrlxXhimXtZ2/k1xQcYVyugYluKjsE6Ql7k4QTF
-	4PBczxeG9QYutmqj2HdNekz35ytQXeINWomAmlMa4HTtl5GrDkDFzpnAdY/aXAh9d8ppjp
-	IGoi1W1vh/r4x1P2X6JajNyZ0HuCsTs=
+	bh=Ony86vlpWyV9HxJI36xrzExnDaWzxdFkE1yJ8v1zi6s=;
+	b=l7c34/g5obrUhsw+00evlToN9pN828CqL7UWeMyZz2oPPxxjwWq63K3K6fMy2Q9EKt2Y/L
+	9le1AWBDUK+XTriVOSEmReGwtTDZtCCBS6F7ezqUDPkKGDsYMPzKp8uja6oybx40/NtYMl
+	rSqi8elLcAehYVHbIRCaPY0X/BfZyac=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rtmHvZQO;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B7IXhROP;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773087778; a=rsa-sha256;
+	cv=none;
+	b=6Ei7yYSM9Fepw68phLWRS8/MNV2vCq6AueGRple3nVhO3Sx/W+msFmAMsPD6Ch7xyQOpET
+	qu/yHpVNGmXf01DvFVyjOovZmH9MRpBcQI8T4gJzz0LKyi04BnyXevrmezvj4jO5t6Si+Y
+	v+YqWsMxjQxV1ZPU67urjuDJ+gER7QQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6C2140E1E;
-	Mon,  9 Mar 2026 20:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AC3C4CEF7;
-	Mon,  9 Mar 2026 20:19:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7A50E60097;
+	Mon,  9 Mar 2026 20:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D480C4CEF7;
+	Mon,  9 Mar 2026 20:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773087576;
-	bh=F4qDOTwlmpMVGOYoeh7zdnEaIRA9urHrMzvm9TRvvyE=;
+	s=k20201202; t=1773087777;
+	bh=fSaRukjxWJ92UeSz7ouhJj6LJujaYf3lOtbd8VWs+TA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rtmHvZQOcr65RyUvYfRo6thVlEqEYzrZSaYDahQ3yDf/gi9p3aM6XEUsBwI4I40Kv
-	 HOTPVJGa4gr3NQdKRb/7W6D69ePW/HgnX1ARb7ncBFYAkCH84LLTvpuFfTMmKOOBMz
-	 jbZGJYPHvykA9p8Fz/kb/oC9ugNndtcy9ofFGdVlO8fGr8zJqPd7wMR048WvjOsQWZ
-	 OCzbJ2Tqp3JRtDX57M5uaLmsRrQUE+VV9VQLnad5nWb8ShqIi3oN/b0RWaAuCZi9fm
-	 64V0Snonoou+slsMoIzX/0byAF/pOn/9P39aWN8QzoaWaD3bznLRdJbu9rwE1xNjAw
-	 UYgJ3PycJffZQ==
-Message-ID: <51eeb09d-d3f4-412f-85da-690fdc0f8e6a@kernel.org>
-Date: Mon, 9 Mar 2026 21:19:27 +0100
+	b=B7IXhROP5eZaXsujy91kFeFuniY2+1W+nwoEZozilAP2brfi+8rz1JbIlV6ol7P+p
+	 V6t5pR+3rlrrkGCvtbFw9bEEbbZQBxsm7lmTJr7vcpBareDfr6A4WlSwQNc/UwIEiO
+	 qnBl+RjBDaOPCF0hnKp0+P9NWjWc9zS9IvOE4KSGmx71BRJpo+kBm/PvY2sOalQtya
+	 6XVS2O9/7+xXHk8awhoAnFPDfM5SRQUBzZ8F+p/WSAC8QFFZ477HgjcCjxQ/Vu6+sE
+	 M5np1cHKF+kjVfZf97LZP0j4P84yuGzmpX+fX4034G+TyFdcVAR7OmnUD1OroDGCbF
+	 XCZleASryZAJg==
+Message-ID: <57cf14b7-e5cc-4298-9d56-978b855e3276@kernel.org>
+Date: Mon, 9 Mar 2026 21:22:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/1] mm/pagewalk: don't split device-backed huge pfnmaps
-To: Max Boone <mboone@akamai.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Alex Williamson <alex@shazbot.org>, linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Max Tottenham <mtottenh@akamai.com>,
- Josh Hunt <johunt@akamai.com>, Matt Pelland <mpelland@akamai.com>
-References: <20260309174949.2514565-1-mboone@akamai.com>
- <20260309174949.2514565-2-mboone@akamai.com>
+Subject: Re: [PATCH] mm/migrate_device: document folio_get requirement before
+ frozen PMD split
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+ ziy@nvidia.com, linux-mm@kvack.org, mpenttil@redhat.com, balbirs@nvidia.com
+Cc: matthew.brost@intel.com, joshua.hahnjy@gmail.com, hannes@cmpxchg.org,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260306104409.3915811-1-usama.arif@linux.dev>
+ <c74e3941-f977-4b19-9d71-972bd9ed5c60@kernel.org>
+ <a9404db2-d8de-440f-b407-fdc489b00f7b@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260309174949.2514565-2-mboone@akamai.com>
+In-Reply-To: <a9404db2-d8de-440f-b407-fdc489b00f7b@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 15F781C0002
+X-Stat-Signature: kn9xke7uabtay59xdzb9k3o5cdeaj1qy
 X-Rspam-User: 
-X-Stat-Signature: 85jdd6c9k6s8y7gyin9bh8cifo5qtss9
-X-Rspamd-Queue-Id: 2A18B4000D
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773087577-70077
-X-HE-Meta: U2FsdGVkX1/G9rL3wWOu2JXvT3L/3iqfhnlrHMa8Cu5GDagx//b2lf0GEVivtkgF7GiW3JnOVD8FCMZV6yIhdl4zFQbOJRnj0HvyWiX3MJ4wOSqWSvQZNkXXXwBwntPuuPAGvUv/JSAsMcLzug9NhDH6bs5eDAm1qCapQwxT0GDA4UkiT3R99yuqcYrj86mRG9dPE3NWBpVPTlmhBtcjRiLftlVM9uYvMm4Xgxe+6zX1mqruFLNJ1OcLCBe0aP24wqQlzs1Jg47TNuNtzmV7S6Wk7QwxYik9W1MSA3nvyLEU6cfE6M29yEDsak8Jzi6BX5hS87+HOtz6fGbb19cuCIVd3ME1IntjWZl8RqRIYDJV9x8ORKqKzZI3+cUAj14Qea+g0X/BczOquDhq786u+E0t9LwHezOmPZgomSS7S1luFrXq4Abn+PxbmFVdsxjhPcuvdTOY7Z3iAHM1bbt58PQZin6PfRwzexcaz2pRVz44Qv+zCPStF4TiWTB0r7TbFYqNzNvzHhvqCZTGx8GL7kjyfzbjgfzTyQF5xWIVRjQryAgZZX5WR5TUsVq+WZ2ce6nRK6w7Hq3twPZH/PHJVO2XSq2tUYC5k0+VI/wjCEd7ebFK1r0+7N4CbKNCHLGyGY5O+2RGUdO9c3qVWlFy4v8fiFzyqH1Pdc4exzRafwbH1yRP4v0W5WqRm1Bp2UoHp1QjQghLn3XE6qm50KVTZo46QSzHrcjEB4gckdd/+1zAOjjDSNWIN6x0N5XRVTv9d5kjDF+1VCj7q8VadgvXPd9DI82hy+e9cZ8Q5HZMdYbCvaRLdVWCbnpYDBmJytJ6IXmXZ+sjWRNUnLJ3p5kiz4U+leiu/QjYPFqGQVpk5MnjBoIXWnTYf0BcSOS87IYYK5eNMOI9o8pdTaNd+aMyZ2hnO08lQZgcUoyZfYp8Catr1EosAmEyimCHFpZF1wDMQ6Cxym8Kirp9VejDGSX
- lMQZPXxx
- ZsB6ZbBspB9+y+lLWydvfFk0vPNyGK7xauqO8m16M2goJX7k/uMaG/OfrpvJ4NXBCXZRHaQi7G77Q2LIhES0YNbiJkWfGijzSG6DYkiDJO5+3QjmEmTQS4sZyjNeNIpmuWO5yh9xoKMc1M8oBoUni2wH1E79+YI5z8ySDBJ/g7R4mF1YX18lyoDPtt5bIRm4EqZmW+HO4tUbht+1s60vgBXRiJsBCNiWkRsIVDgg86QpghTdwttL4sB7DYQq+G6Hu2TAdaLbyyxSOqIZpkA+mOPotpq638qSSQv2y
+X-HE-Tag: 1773087777-302977
+X-HE-Meta: U2FsdGVkX1+Y8Sz6e3AwMtt4VEKyX7nvx5EiiiFv97i9SmY6PPCsxigfb+qqjqdg3VjWlNtKBuwE/1p8+IaDA2qPWyJneHs8UJHjCQGMGyfvh2ePxVvLa+z+1PiMoW63Ixd9T3GXgAhYpa3VorlPiPDFil5xWcsZLC7ZFZKpyiwrZenpzI6vHz0hcalT1OZenPily/2OoXIUsn56IldLbtdVOcNgS3fsuP8dZNw+bffkL25KrTbxIgWZXPuneULxSvc81NuHdxLuHQjkbmC3rBx0mdCMoHM8wzD6e+sfeVbW9Xc1oCiAZJ94fSZiF0eNXqbjRI26oLICIC1cBZ17guQ7p3g4bbj3yhyhUWv/miJnFJPeu7ARegK2H8mZm3sGnMg3V3G65QmWIb5UjwRjb/YFgybmpp4aGpUWeR/82XmahSc5+LvKgcUkKKOTzi/Wl2UUL+kyN5Bu/nF7uokGzqgqZFqLA3POTlyo2s5gK3TxrkEXH4JFZIT9xNt+ZTzXget3z8ruMLggyR6bWWFMipNuVYb8tR5TvLWy/tADKNGo3jhSIwSJTMUOvMGsDYv9eYQbCn3aDHXmj3TGs0yGjL2Ds2H/XVCqDm4jHqgLYvUmJ5yFPR0HJlIylVwmkPZuIHt0L6eVE9leM45e2yhMlNoZpEmPro5iAuvQrk2lTmeSk62okWQ9sLA6BtSSPeLBIFJNyFhfQ0pQN2AiHbQzh99t3SgDEy+NKi7sSbUDkIlrdjnKXW69YmCoiw8YpaC42OcCtmYyz6Phee+3kv94AZaBW1v4ydXhd4UGuLBk5A21lD6mjgWYCLHejzws2FWYXOmhqqRMURu0gUWN5rK99E43QMrUbBAFhzWiL2E8wqCEhzzzQksbmCZ9KZMBH0GVQXhb+MMI1NNRrUF1d3RkXv7wLwRYZ5iPFcv4h0MxxQeAU3gJiozOBb1GSTyQV0RyY74E23jbsWteLRdNYxD
+ BvrFS38e
+ /4Ih6t9Ps+mMmpYbrQmuZNsCV6CLrD9SokR+qk8EHNNKHGZHvtTudGjaH7BbS4L6Bjq50tfe4YqUaF/fZPYKpF5kPuy/+XBDlaykZNhUY3RzujOXTUGfn/cgeLH0GOJjSpzT5ikIRvUAVHlvtkezQJsY/20VTyc80O89xS/1YVai00UJJuyvY8f398cG/WIKHCLQfb92jYK5mj1pLZJK4x7RVNANL4Z6OP9166SJnzIct3r/iZj9PZbJnJ/I1fh2XXDvCuOcNFTHCh/Eu1WCorm0higeuaQYW1d2rzBQZt17u7mPKnymWsDtoueNNxRm301z2SEEAgys1my9Z1lYGGTCSMfb+kX+oO9goTvl1aU/Pb4PD4xjnO4LQU39ez5oe/aSOjHB9yD0ZT+bPGQ/XLFosOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,58 +145,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/9/26 18:49, Max Boone wrote:
-> Don't split and descend on special PMD/PUDs, which are generally
-> device-backed huge pfnmaps as used by vfio for BAR mapping. These
-> can be faulted back in after splitting and before descending, which
-> can race to an illegal read.
+On 3/9/26 20:11, Usama Arif wrote:
 > 
-> Signed-off-by: Max Boone <mboone@akamai.com>
-> Signed-off-by: Max Tottenham <mtottenh@akamai.com>
 > 
-> ---
->  mm/pagewalk.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
+> On 09/03/2026 18:18, David Hildenbrand (Arm) wrote:
+>> On 3/6/26 11:44, Usama Arif wrote:
+>>> split_huge_pmd_address() with freeze=true splits a PMD migration entry
+>>> into PTE migration entries, consuming one folio reference in the
+>>> process.  The folio_get() before it provides this reference.
+>>>
+>>> Add a comment explaining this relationship and a VM_WARN_ON_ONCE to
+>>> catch an unexpected refcount != 1 entry state.
+>>>
+>>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>> ---
+>>>  mm/migrate_device.c | 5 +++++
+>>>  1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>>> index 78c7acf024615..6fa2878848a7e 100644
+>>> --- a/mm/migrate_device.c
+>>> +++ b/mm/migrate_device.c
+>>> @@ -908,6 +908,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+>>>  	unsigned long flags;
+>>>  	int ret = 0;
+>>>  
+>>> +	VM_WARN_ON_ONCE(folio_ref_count(folio) != 1);
+>>
+>> Can't we have speculative references here? In general, asserting that
+>> the refcount has an exact value (besides 0) is often shaky.
 > 
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab..d1460dd84 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -147,10 +147,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  				continue;
->  		}
->  
-> -		if (walk->vma)
-> +		if (walk->vma) {
-> +			/*
-> +			 * Don't descend into device-backed pfnmaps,
-> +			 * they might refault the PMD entry.
-> +			 */
-> +			if (unlikely(pmd_special(*pmd)))
-> +				continue;
+> 
+> I hope not at this point in code.
+> 
+> At this point, the folio is locked and unmapped (both done in migrate_vma_collect_huge_pmd()),
+> and the present PMD was set to migration entry. It is isolated from LRU in
+> migrate_device_unmap(). So the folio should not be visible to GUP or reclaim/compaction.
+> Only anon, non-swapcache folios should reach here. So it won't run into any folio_try_get
+> in page cache or swap cache.
 
-In general, if you're using pmd_special()/pud_split() and friends in
-ordinary page table walking code, you are doing something wrong. We
-don't want to leak these details in such page table walkers.
+We have other pfn walkers that can just temporary grab a reference, to
+immediately back off. So it's not very reliable to depend on that.
 
-We do have vm_normal_page_pmd() to identify special mappings, but I
-first have to understand what exactly you are trying to solve here.
+> 
+> The folio_get() done in migrate_vma_split_unmapped_folio() is consumed by
+> split_huge_pmd_address(), and folio_split_unmapped() expects a folio_reference
+> of 1 after this [1].
+> 
+> If its not considered good to assert a non zero refcount value, I can change the
+> warning to a comment, but I think refcount should be 1 at this point, otherwise
+> folio_split_unmapped will fail.
 
-(You would also be affecting the remapping of the huge zero folio.)
+Well, yes. folio_split_unmapped() will handle this gracefully (as
+documented), without triggering a warning.
 
-A lot more details from the cover letter belong into the patch
-description. In fact, you don't even need a cover letter :)
-
-IIUC, this is rather serious and would require a Fixes: and even Cc: stable?
-
-I'll spend some time tomorrow trying to understand what the real problem
-here is.
-
-But for now: can this only be reproduces with PUDs (which you mention in
-the cover letter) or also PMDs?
-
-For the PMD case I would assume that pte_offset_map_lock() performs
-proper checks And for the PUD case we are missing a re-check under PTL.
+So best to remove the VM_WARN_ON_ONCE().
 
 -- 
 Cheers,
