@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ECAFEA855C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 05:31:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20355EA855A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 05:50:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F7496B0088; Mon,  9 Mar 2026 01:31:56 -0400 (EDT)
+	id 36B7E6B0088; Mon,  9 Mar 2026 01:50:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A53C6B0089; Mon,  9 Mar 2026 01:31:56 -0400 (EDT)
+	id 319A96B0089; Mon,  9 Mar 2026 01:50:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B1496B008A; Mon,  9 Mar 2026 01:31:56 -0400 (EDT)
+	id 225396B008A; Mon,  9 Mar 2026 01:50:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id EB3696B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 01:31:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B3BB140D2E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:31:55 +0000 (UTC)
-X-FDA: 84525402990.17.7FA1320
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EB261140005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:31:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0OXSgQya;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EBAF6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 01:50:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C93D13B9C8
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:50:37 +0000 (UTC)
+X-FDA: 84525450114.10.78DC544
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 94654100002
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:50:35 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B+k3oNFE;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773034314;
+	s=arc-20220608; t=1773035435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iGlvh0iG8om9ac8C832XTdhmJ76uZG1b0g3VYPlePWk=;
-	b=WPmuSBaeSbbEScqRQV0BYsZ/bTEV/5tNcVIc9nKfUG304nw6kPUy08Wtj6F+Pt2YSeXL9Z
-	2iUy5oNnmBWNYfTZcnv8eXr8No2ihCdCNCnepsF16BtYQP144kld4DQFwiPouZnsm+tJ7u
-	BQk8Zs4abA+vpWeGXkbwLp0Rjvlk17k=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0OXSgQya;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773034314; a=rsa-sha256;
+	bh=tC9OL7D0uV/0nE4z74ieVTS9O9BlK+B4AD8xfHR50JM=;
+	b=jgfi2Icfzjq/OGi3x4Pm0z9CAlsSV+7MnSCnV7jx8Xr8QPtLlwxQ9FwYMlNbmWt3TavjKS
+	WHWfbPNFkZw0XMUWKkD+dmOgof7ghvpT+KVi4kTtbrq6NiD/MVsxFGZPeDm5uU/evukbVQ
+	CGeCBaXo/vaCHuGHcyl8nCvRTw2xb1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773035435; a=rsa-sha256;
 	cv=none;
-	b=sz4e2O+V7V+6rbGoo9WnQ16tvCF3Isjg0DYe4z9/SiEpRqvn5t6PQItgRrpJRpyRLLTCQp
-	oxBydQ1TiwEb7QzjskaLWRMSucEF4octTktfJWe1Ya3pvchyplSq8K0nCggyZ5pUxHiEdK
-	uZFA5vjeLtyiQ+eNTCT/8Rh0QjC5318=
+	b=wSmYw9OECao6IYA8s8iCw6xslpXbPIJV51nrLgucXlxEQESYmAfdejvTG2zSZKUtea6W6m
+	7hQNjSlhOoqAPSIAi7al5SAewwm6zoFKRoP8a3SlaUEN6y6yEydcXECVgAiVFBcKewH+M2
+	iqbwRXkPwGOfSRcOrlpMhi0H6RtrA1M=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=B+k3oNFE;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 233ED600AE;
-	Mon,  9 Mar 2026 05:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9DBC4CEF7;
-	Mon,  9 Mar 2026 05:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1773034312;
-	bh=4vfn24XF5vYM4uKJiPcBNrbK2n+o8o1NwxX6wesI5rI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=0OXSgQyaGKM4/OkMYYNOBGc1jOpQf8k6tBPMlq5b+13lMtXthcgJ/r+gE0DCCY78j
-	 BlfPwEhZUvz2DdcsurS3snoWjRBKlD05ghbVxD6YZO19bitVgaTRh6xsYauJbdGTBq
-	 7RoJRoO6WFEqvwezzNXMtcXSYC67tTHmeZngWErc=
-Date: Sun, 8 Mar 2026 22:31:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>,
- <oe-kbuild-all@lists.linux.dev>, David Hildenbrand <david@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-new 286/330] include/dup.h:354:25: error: stray
- '\302' in program
-Message-Id: <20260308223152.7c99aaa3c73f819b7844fa07@linux-foundation.org>
-In-Reply-To: <aa4QKbYOvGmDEqVG@rli9-mobl>
-References: <aa4QKbYOvGmDEqVG@rli9-mobl>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+	by sea.source.kernel.org (Postfix) with ESMTP id 5EDB143A42
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBA2C19423
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773035434;
+	bh=Sm5xfFohT6PwWq2yTFipdvcFh15GKBv9n0Io2kRwufk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=B+k3oNFExsQRQ4W2+UDHyJXTmxlR04qoaVrm0KAhLIsFR+VWDKuI9hrKpdZz9algA
+	 tTJXHWqhcyyry/nYfV2Z8qwTQd0hkdwiroDysqan3CYiNnMFc10ajGhoMu45c4sWi1
+	 sAaB7VAhY7zGeTCVhszo1oTN3ng3OjfHkwjdncDH13xSyGge0IaMdp7h4oR6skX1b1
+	 wnLAakDXa6ldYG2pWGNgmVskEfwBjehHJxunItLpIL5MePpS+KdqSL2fa+lPn7uITv
+	 szFh6aSD7S/7rPxk/BtlnqVUeVylC5qAgsUTP6ZeEesFbm6JaGyxngxpcutn2ua3g7
+	 zVgLqTnW0udjg==
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-64ca6595c8aso10997548d50.0
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 22:50:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVrg0TH1ZLHsMcLCRzfWVxPRhSzjGUoD54j5P3GP4R7tXlIq1RHZV40E6wpRgAsaUZn7dIQc9iL9A==@kvack.org
+X-Gm-Message-State: AOJu0YyHNmR3B4AZ8Odq84OKqXZ74VcGQIBsL73XU6bEsadcOd8VLXYe
+	BAanN4DrSPrkBPStc8Kr+TmPBHoKPOhjVwcW38iMEfwNfBaHUNUei4tMm6zupd7Na0tYSnwEEzi
+	hYNFHdjvOhU8zgNoOVzbIqNXHfrTB+BC9fhBW/ISawg==
+X-Received: by 2002:a05:690e:d8d:b0:64c:9a08:9dfe with SMTP id
+ 956f58d0204a3-64d1429cbdemr9287598d50.46.1773035433567; Sun, 08 Mar 2026
+ 22:50:33 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1772797581.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1772797581.git.zhuhui@kylinos.cn>
+From: Chris Li <chrisl@kernel.org>
+Date: Sun, 8 Mar 2026 22:50:22 -0700
+X-Gmail-Original-Message-ID: <CACePvbU5hSTOkGUVBGnN6xDCxywgA_QDKugqn=Qw6WbHBRJ6KQ@mail.gmail.com>
+X-Gm-Features: AaiRm52eBYNLkQxjnY01S_PCGKfwLmzHT6KwnBYJ5n6oOeqtSE8S9cudeU9qs94
+Message-ID: <CACePvbU5hSTOkGUVBGnN6xDCxywgA_QDKugqn=Qw6WbHBRJ6KQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] mm/swap: fix missing locks in swap_reclaim_work()
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>, 
+	YoungJun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EB261140005
-X-Stat-Signature: cf7jhcadfop18ed97i5seueas4ety9hh
 X-Rspam-User: 
-X-HE-Tag: 1773034313-967960
-X-HE-Meta: U2FsdGVkX19q3eSlJGl65B8HiPGKe4UZcgM6H6dNwBE0/ALr2SPRzsihr9I495d1+K/FHYPiobV8oJiVn9OfefRuBwFKVapRjvZ90d2EBDTLG7Yx0lO+MBrGJ7q2wNAyBiJzShlQZKLkr1LAHDGPTMZS1/BJ28EPPeeHRB0FtYaiKClkhlJm/Cb8qyuPxoSxq+O33LlAZvIUCjkGmn9FPn/U9yKJ6A/itzcmhONaH+RU8le4GJ6M7AsViZmO8JjkQzXv8mrh0KxBONnAkl4ZN+LehcY9DnIkIkUr7z4HG8HRcwLy44jmbxFH2Hgsb9b7X1veG3pG2lmfr9wrz7Spf1uJRlUQ3Gtw7Qfx29daqAnVOe9Yg27O2M9lvykQ50TOFsYO6oTqVEMkmJwIlPmI+6OsJ7Z5/aTNK0eBft5qVPpeQwGYTdXevGCMADpxhfZ6J3m0A0AO16MDz62dHwMLYa9/DJtXdomVPOyCw8yNl8fvIGl3FChpOxcFZmDKsPvL0VzvBzNM7ar6pfXewV/UXkZ1poq7sjAe92vHInoJfz4TaDa1ull8ndUVo2Fvt5vzyjhE6FI4UK4alZO8YYx+BewXbgIvEZUl8g4GSxjxtWNjE3L4uqLF89XY9r4NxZJ3Lb0DMNuyi+EI1LuS2ew3gQE6/MMVQHk8/HHrCWEe7oSXjWXuJ4b238NzULpH0dSvmojjeC5symlyGH7g11yoq5M+aqA3FRmN7C6AArOLVu35eiPHq1C9dpR/sxZNuDhIpAIQxYyYVedENMhW8l+c9Y3987lSmg6ZnEIYd6cDrrcVkCZ/pancBHP2c5TXGmmKiXy2CxQPbHREZzYpn7XDnBqPZT3ogCZm3IkyDncbe/8B/4tSW/8wmLnpK/5DGhvOml+CtCmY65RWGcA+iTVm7n5c5PWf92op1MTyEnrWN3EzK8L0k+A0fJGxEOkk53F9xNvjEWTI6SKMFtsAma5
- o7rtKcB5
- R9zKfQOXmYdg8GMIK7sQF9CFi4bz3bsR11smJvFfZEh7kH2Ucj5Q7/NngcdD1O0sf/bhPXJbf83sEclokAuulpKy4ydFnMOANF/Mu4kEJJJj9l31aKoHycyO4HsbyJTJGApa2Z4cPM/fRKHXcy8ipjFVu3Bw1lX8gvdVubCbMQ5x3QO4G9pS5uoqtuBxRgrI2BV2MsIqR0p2lIerIfOXAfLOzIi/AGZmIncOLlubdTT/pkNYC4fBxuZcYeg07AzJ45gBGTXTHp1GWdZQEYlTLLrSwQncKsM5VQDpehAgvoIHyxNpBDQOHvnyQHyrvRLMiYHqlKx0dtuAYtnQledRsvmbRPOZ4SB4EtVQM
+X-Stat-Signature: f1pppfo3isqjjjfs1q9jt43fbb4tjkbc
+X-Rspamd-Queue-Id: 94654100002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773035435-27766
+X-HE-Meta: U2FsdGVkX1+iv7XYHa/hgdBNvJN23ltv+7RW6kfni5gEeY4AxsEtLIwDs489E77fM6CBZ9RtuuIl0kfGPGaTG//YD8eQmlBERq7BK0qhiWjGNs7Q9NLaVj8/NclVwa4VFH4fwVHYeH6YO0ircZM/7z3yBFotUSdw39Ouil4fkBzk0afA4nscCCoOoUEkoXHmN0+cXc0xuDgu7TiX3an5bD5Qg3Fef4tk3crrBT+gBW49sUZupGrT3ooQ64Lm91+E2ripX8zoRv5eBZJzExWLip+sKqR8Py6EZLs5jPHDxstWWppJrI+dgsu1/7uZFI8HeB0WZy6sWnOxW3AHqXHJhckTcwKng3fzwBPFpGhD7yXW+Gckl2aXFdkkNXmx/hX5IqefyJSIBHAvdjeJQ/t+LlueETuJnUijJil0CIOHC18H9xvIufDGjOdU9kr90su0of3OdvnkREPEiTZT+Lh514C+vNuXMgyhaoeY8cKhoMzSs18t9OwSVGTC3tiC4SxgOeX7/yBQyy9EjY0PKu+DcFC5cWGbR08xo+H9vpuQs1/qHzddN7E+clUtONsKmbiDRGbt8yAP7v3T2m3yxEX5ei/MyT2G5Fam22R4KMDaOOalqXiS8pCiw5mk20ftIPRU+tQEZvoVeUHzkMDCTwz32NFhKhxUsZznvfNvcpoguyCIknrjAQhBNnNwXBQJvtm615afsDPv7fxV4vKriWcFHznpS/J8tVSn8Gl/1wGlG8VHWF9HP+6qAwcVyl0OMz7d2ublNmQjUb1+VwThKft1ZapJCC1mBxiPhnLsJaY/t7PG90J2LXql81Ys8f5lSGpZoDTDW0G68JNLpmWSHxirOlE2z//MUA+gSAzISssHZbhHUCkU+tChwxxaYIPZekjlq5QJ1wFQ5ZO1ulAIGLkWXPo7yEw0gcU6RLIsY44uU+gOhnWFMjuQYUiVkZ1CK29UwNqfppd/y9oLlD31fAS
+ iz8eVz8T
+ afdvWkGgR+9x1nyJENOb773/F6gcbcqBujBBqUpOdE/xeWJdVpf9akzqS9xJdJIzCz9fOIB/WiMKVZWv2tOL98wIx77KPrHiupTvEMx9DQeloU6x7YvHJE01BiL/FvsjcFhJqBuc6n4BNHtuPMCxAImN1hmTdWnUXzhcKsUxJhnONT+BLzAL/ucvUAE9vb9D00WxXvyjcL4VkTfNxw8MU8DCFfLfcFTGybLnWjLB92+Xnm1q3mnBkPtZTmtc9uc2/tsdF9dXPqYjrfn7ntCcJsr1QKjg4GHfyeXQIBOtaRcS5PH0byFqIxO1LP9zPVRlRYg1IIDWuP3ntHLk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,39 +105,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 9 Mar 2026 08:11:21 +0800 kernel test robot <lkp@intel.com> wrote:
+On Fri, Mar 6, 2026 at 3:51=E2=80=AFAM Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> swap_cluster_alloc_table() assumes that the caller holds the following
+> locks:
+> ci->lock
+> percpu_swap_cluster.lock
+> si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
+>
+> There are five call paths leading to swap_cluster_alloc_table():
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
+>
+> swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+>
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+>
+> swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+>
+> swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+>
+> Other paths correctly acquire the necessary locks before calling
+> swap_cluster_alloc_table().
+> But the swap_reclaim_work() path fails to acquire
+> percpu_swap_cluster.lock and, for non-SWP_SOLIDSTATE devices,
+> si->global_cluster_lock.
+>
+> The first patch ensures swap_reclaim_work() correctly acquires
+> percpu_swap_cluster.lock and si->global_cluster_lock before calling
+> swap_reclaim_full_clusters(). Without these locks, the preconditions
+> for swap_cluster_alloc_table() are not met.
+>
+> The second patch adds lockdep assertions in swap_cluster_alloc_table()
+> to help catch such locking inconsistencies early.
+>
+> I tried to reproduce this naturally, but the swap_reclaim_work path
+> rarely hits the !cluster_table_is_alloced(found) condition. To verify
+> the fix, I used GDB to force found->table to NULL, which triggered
+> the following warning due to the missing locks:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   167400fd4c51f9e5ea8fc9d33c89c938799be4be
-> commit: 84cd8de2b92a1ccf493c43da8b31bb983d320ca7 [286/330] mm-prevent-dro=
-ppable-mappings-from-being-locked-fix
-> config: x86_64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/2=
-0260309/202603090023.npem8cfw-lkp@intel.com/config)
-> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20260309/202603090023.npem8cfw-lkp@intel.com/reproduce)
->=20
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/r/202603090023.npem8cfw-lkp@intel.com/
->=20
-> All error/warnings (new ones prefixed by >>):
->=20
->    In file included from vma_internal.h:55,
->                     from shared.h:11,
->                     from main.c:3:
-> >> include/dup.h:354:9: warning: ISO C99 requires whitespace after the ma=
-cro name
->      354 | #define VM_NO_MLOCK_MASK=A0 =A0 =A0 =A0(VM_SPECIAL | VM_DROPPA=
-BLE)
->          |         ^~~~~~~~~~~~~~~~
+As YoungJun and Kairui point out, isolate_lock_cluster() will take a
+cluster from the full cluster list. When the cluster is isolated, it
+already has the ci->lock. The cluster should be full, all entries
+allocated, and the cluster table should be already allocated. The
+ci->lock prevents the cluster from changing behind us.  Forcing the
+table to NULL in gdb is not the right way to demonstrate triggering
+it. If you still believe there is a bug, please demonstrate it by
+providing the backtrace of the execution flow sequence and explaining
+how the race condition across different threads/CPUs caused the bug.
+For debugging, you can also introduce arbitrary synchronization (e.g.
+spin lock) in the allocation code path to force a wait for the race
+condition to happen, especially if the race window is too hard to
+align.
 
-bah, OK, my attempt to turn the incoming email into something usable
-didn't work out,  Let me attempt to repair that.
-
-Anthony, text/plain changelogged, signed-off patches are very much
-preferred, thanks.
-
+Chris
 
