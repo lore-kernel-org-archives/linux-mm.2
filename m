@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8363EFCD9E
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 11:54:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF46EFCD9D
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 11:54:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BC2E6B0089; Mon,  9 Mar 2026 07:54:56 -0400 (EDT)
+	id 79EDB6B008A; Mon,  9 Mar 2026 07:54:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 515146B008A; Mon,  9 Mar 2026 07:54:56 -0400 (EDT)
+	id 776726B008C; Mon,  9 Mar 2026 07:54:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 340386B008C; Mon,  9 Mar 2026 07:54:56 -0400 (EDT)
+	id 6B6656B0092; Mon,  9 Mar 2026 07:54:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DD026B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:54:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C720E16014A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:54:55 +0000 (UTC)
-X-FDA: 84526368150.12.84D33CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 20EC6A000B
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:54:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdRW6ZzK;
-	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5299B6B008A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:54:58 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D73481B66F9
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:54:57 +0000 (UTC)
+X-FDA: 84526368234.06.987F8AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 48E4E1C0011
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 11:54:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TNUsru5j;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773057294;
+	s=arc-20220608; t=1773057296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hxncm0MuN/XyAdr0kGExvOJPKEgg2c0ZDcSpaZvAHio=;
-	b=LeIDFTYveciRE2fHPb72KYV1YAQ1Q+yUC+4kUi2Ygr9BoRr8Lk4cIBkAUH2wfE/uiSxoPR
-	oeB0t3ltCb9rKPkJjGdrVhGMnJ3xMUCQfg1oyPImj3ft3iVyqvFaeLMGwtKtrgIJkUtVQn
-	+j5Y+kdUwhIjz3+TIx947mpARc6baZU=
+	bh=MxMHvmM3RaY2aDUFswGaKWurRtoA2jCjR358sU+4osg=;
+	b=gsMjEPJ/1qcZLVmsco+SG0fGHV/o3tMMqpGInVQJm3lvmA59YdoT8GRAFCaaZEg8fAbNkP
+	y3XG02eOnZfdCufz4yPvfbSrtOQLWgqamVgF4/yWdyJOrPtCPbuqeZl1DAo/kYNEc9eLWh
+	6PkS7yXrxzl2WNqEcdcv+VEnHadc/S4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QdRW6ZzK;
-	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TNUsru5j;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773057294; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773057296; a=rsa-sha256;
 	cv=none;
-	b=xxNrISKUtmJOhQU5u44ouPL2AVcNG8PYUsIQseu9hT7SJT1uU2oQyJuy1AxC6KWdMNkIxC
-	g5wIoVZExxsR11eEMFPqEKgH4vb8XUK1vvjklooJ1ukcEuNF0XGP+XO1o0GEc5AX3rbcRe
-	IlJZJnzxzqO9hO3KAv2neLyOeM0oyDg=
+	b=Ux636uChyzM4Xd2ovjOvO3Go+56QNuBH2kXHRk8H0zsVf8JKgG+5EhrLwGiLRHiKFGyovZ
+	sELP/gYQ8EiQwRz+iG5QVjNU9OOg8muBeNryL/xCMre6cHbUzQz3j15RFyvJymy/8BFVEL
+	DF3Po8lScZ0lhtT0vfScY0JW/Cul3I4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4B89E43740;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FA4260133;
+	Mon,  9 Mar 2026 11:54:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941C6C2BC9E;
 	Mon,  9 Mar 2026 11:54:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4A7C2BCB0;
-	Mon,  9 Mar 2026 11:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773057293;
-	bh=dv/kbGgCScvzX+VINvVvCUHC1AHbYmECjaCbqTlfAsI=;
+	s=k20201202; t=1773057295;
+	bh=PghrAoUWQBw2NUIGa/NJWkd6SAFY/nFx+VVc64+OWJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdRW6ZzKPvM1Ns6+2p0lvKAMpE0RLu0wOtgXUj+oduazNRj6Twou+nxnPz6miimer
-	 9Wjfn+JFs1AzaWmo4sguLDjSnoKsVDRzxrZlBAQkud8p2Gs4v/NIyiSYJRhZVChtfu
-	 6N2CQFTIskLmov4Nn7Pk/jm0AxlfAg2a07L8m/zz4pPWKLlTFzl9DV4ZUKPRmweszo
-	 vRbHWgX/7X+ZK7fMj3j1BeGSG62kXZw5Sbi0BrQtWQqsVJfk5v0fwo2BpU6eogWK90
-	 kCQ9mxUVUTYIKE2pHg3Qlgi2QE3bDUtwQWEpOOEmu9c+3QJ/P+2G19PbiN5luSvvdw
-	 9BM5cjNtcOa5w==
+	b=TNUsru5jubWi2MbJKJBuu3usla6/Z1udHfgghCkcSPNQPkz7iUVrHtG3JgprG2w+D
+	 a9KONyqqvjdcrsjH4N3Ulg80eqb5X6+2AFZotV2egl2jzV/qaHBGMfm+2vdPWZRXmN
+	 e3Hg91eeplQkzr5L1XtSYd+bHogb7SZfHcsoXLD0zXHhV2hqLuX+n9p1A77p6Imasa
+	 V+HqEqiAkvyUVN25DP0hP+bso+5VZGiLNkC4jVO8vtgOu+Kuiq512MCw2M9Hn+27+i
+	 kfzQa7S6sRGIIJ8KIBj+pT5VqxXsFH8mHZx6VM2AE6ohvd120npMtjV6IBjvRssl0b
+	 yKqT3B0U4pSpQ==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -72,22 +72,22 @@ To: Pasha Tatashin <pasha.tatashin@soleen.com>,
 Cc: linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/6] selftests/liveupdate: add framework for memfd tests
-Date: Mon,  9 Mar 2026 11:54:34 +0000
-Message-ID: <20260309115441.266805-2-pratyush@kernel.org>
+Subject: [PATCH 2/6] selftests/liveupdate: add helper functions for memfd tests
+Date: Mon,  9 Mar 2026 11:54:35 +0000
+Message-ID: <20260309115441.266805-3-pratyush@kernel.org>
 X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
 In-Reply-To: <20260309115441.266805-1-pratyush@kernel.org>
 References: <20260309115441.266805-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 20EC6A000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ak53jysgta85ik7ogruke6wkkgapmidy
+X-Stat-Signature: 1nkupc5uanerc4a58jj3gktgacxudbt3
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773057293-616230
-X-HE-Meta: U2FsdGVkX197tg+9cVSkprH2/w7nPMgYtGHu8mjHqO0+iyuj9R3W+tIM2e4cG3OJukVpxabypWYjjjuQiN3t6GPXTSlKqh88x1OJD6MUBvXsQvsgv5CUGa27ujZ4Vc66Ne3xwk5Fe6hQSRkj5WYJeZ8rdEkIaCoYTG8cXXzzD63U9nwLIyqttcuuWHEnv20J0PG1guzfW19TY3iCpjTDouIXiGQhnELWh+JXXwXJGeIf3kQjiiXrdDUMfvFiy9PLsAlrUqwPHOPEpeX6CUGgWWRxiCuNtn6Kbg/H4WNSAIKQl7Xbb0XHHT/9o6TInUhgrntBkv4ONblsHDcUXyzl0Fb3VMt3P2VX0/JLXhtxZCLn+8AmlcvbVXPPcyfs1HAgN9Fc1NhEjn3vd5FCENfeOKS2qufWLJ8eV9L6GZ2l1e7pwo1/Fu8l8/hliduoKvsBb/Q0PtImwrnEAfUuXoneszzADXalM1Eoqtu8WThtbU6S+0We9KnN7YNhneb1KJCT79mU1H8GBpiON77qGLm/4/lequkCLrdZ/PQB5v13rk59HL3cmM9xBXUKXWPQibEEnMXvmsx7UkGCcd4XFh4n6CXuyszR9RdT4N1h2YggXmNDh5932NDc3zzqn5+VviZY8jVUFU+UFQqURSuGg3gOCXoP2UWtQoGaCRLvi2MMsWU/dUW5iiGMz6PLTll4hV7STDnV7m/zMDn45NyXrCsuwJS0qMamq3iGtk63LlXCbrWJT4nf8r67dmeMRS1fLTxqjJXmOjMiBrS6PDQaCnKl0R3y+A6qYS5tW0wVKLivbjEk4UivCa2uSjL50sWAE828Nz4Svk8WH0HXVtzvFD+OO8lEJNuBU4lEyzhE4ECV7C4xh2dcebkDhfzTyhNkcyyPhj68MFbcgb8/Ip1CdcVKxjDpz8OAYq8DGQKxxCXYOKWBTc03EMYMUmMSKYrA7mZ+MgO0KgYUY+OlEc/UJcl
- RQsrbs8A
- f3sIDgy7mC5zh34nugoqmL+4YylVx9mioY0OSutBdJOIYhqsW3AT/Fnl0h+PmebV9CynXdHeMeiZ4bm0g54lyLgbnvFdk4Iu33CxZ0tJFu/53e28eXrwKbae3wHfDzOI25p+xEi4bM8UNe4R6dp2siRSVL/dAOInzKtA8+9oVREs27Y96qI2VJH1jY8RTl+f3Km0pHw9+uVK7f2IBGLFBdVrt2HiX+rBBti2zgR1Mp26A6vA=
+X-Rspamd-Queue-Id: 48E4E1C0011
+X-HE-Tag: 1773057296-154269
+X-HE-Meta: U2FsdGVkX1/Y0Tvmiw40jchwipYE5MqOOaLcLA4a7/5dYkqANTAi7pPpSvIZsIl9tyaT57IJnZ17pIKaN6EkEaQwm5Lg9JP1ynCI0BKVCGaIMmp9VEKGu0pbm+FJBqrEKGFCWr4hbjRzPqnZ2BBFN5fSp5ZZbm2d6BWo0vRuIYEPGPavQXktHWRWRyX1D5VGwLw65Pc1sB4gDHLzYd2YkeAP2TdYmg1wVitxdCk0mNgX2Nh5MM3b5OjYHXXLXv40hUmdYJa2lihiGiaMRCT9yZf2LMh6ymBMSWn6rOR0PIl4WcfTHTu5DDL8yUuW4VeewSaaKFz6C6LvQs0vByM1mfEin8DevIKZ4sdZQRXicT4hldeGYsj0Q/C0nqCxyH0xTlbkwH0DgaibPVUxrrlyKzgECqPtNXa+pg243Ja1C80sf33Xehd/1IaBnbo5vcQLeEJ1WRwbQ6+H3wcoQv8FBWnjktMokRZ7Ie1Z3z+469wegWkffy/OGnlehUbbux8s244aab/WjuB7RSMWNvHOjEhavHfU6SIeV4hfB3ZdEyqkrMLiV6Dz8GlncxNF+/hSVN/SkIOpyGVTAHkkeIK8rwUgpYnugs9XWMGMhn6Rd95N3NPCeJ+eps2HFK3IhiE/Ps4P/sc6MQkNxkG+Ysnj/OvoLRMDyzXyy9TpPMt6UalRh9N/eTZoN5Azr62Egi+Kid+4jGBsfsJXn3eUP6nxtfzFvWE3v2VHhUX0H8eBbB7Vdf5qxGwxA+ApXwGlVG+ueLyIsqEQbI8Tq5G7xA3cPfPfh7CIh2DLe86gQ+nouxYpkM5wpkqBWf08abYG52NY4NcVWg3IDpxH/FwVhH5Lvek0Ao7ixkX/0T9xcRG8jCFI+qrOxnKwQYiW4ohYunK/mRNfQJlotpQFvzpHZXgMAvTynJQIDZbW2fKk9c3lBtM8TL0RC0YahbdW66iu5tV3y4TaJGVOYDN39/skj/j
+ m+vuaZNA
+ G1gkfv1Pz9/pjcedLPpSRavO2oq2lk8WCbwG/xQJuWTEvlAbBUKS2zxe28MBACiRZkf2efiHDg+yyAAnLGoPY8/8Tc4+Sr73dbhWGcKOFGd2YL2kJyOXBTXXqVoZldo5N6Vr2ehJrmEMsAmfbJ+RV4yhyclRXhgOCTtdxSiGNY80ENeqbY47yeTKlDxarzBz0NVKjAJU+CFTehNs5E3I6LXmYb//ykunMCLK8bUZV6S3Ayc3aGmcJMLFwyE1XjiimGJJlQVI8PSVdrneeleK24Sv/tIuROPfJn1OLF655hFj8S5rFsbkm3mjWtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,132 +97,231 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Currently memfd preservation using LUO is only tested indirectly via the
-luo_multi_session or luo_kexec_simple tests. Their main purpose is to
-test other live update functionality.
+Add some helper functions that will be used by memfd tests. This moves
+some of the complexity out of the test itself, which results in better
+test readability and less code duplication.
 
-Add a framework for writing memfd tests. The framework hooks into the
-kselftest harness, but adds some things on top to make it suitable for
-live update.
-
-The LUO FD (/dev/liveupdate) can only be opened by one process at a
-time. Each test runs in its own process. This means the LUO FD must be
-owned by the main process and shared to children. main() opens the LUO
-FD and shares it to child runners using a global variable.
-
-Live update tests run in two stages. One before kexec and one after.
-Detect the stage using a special state session. If the session is
-present, it means the test is in post-kexec state.
-
-Additionally, take in an optional --stage argument that lets callers
-specify expected stage. This is useful as a safety net to catch LUO core
-failures. If LUO core fails to preserve the state session properly, this
-option can help detect this and fail early. Since the option is not
-recognized by the kselftest harness, remove it from argv before calling
-test_harness_run().
-
+Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- tools/testing/selftests/liveupdate/Makefile   |  1 +
- .../testing/selftests/liveupdate/luo_memfd.c  | 77 +++++++++++++++++++
- 2 files changed, 78 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_memfd.c
+ .../selftests/liveupdate/luo_test_utils.c     | 175 +++++++++++++++++-
+ .../selftests/liveupdate/luo_test_utils.h     |   9 +
+ 2 files changed, 183 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index 080754787ede..051daae55eec 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -6,6 +6,7 @@ TEST_GEN_PROGS += liveupdate
+diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
+index 3c8721c505df..45ace3697ee6 100644
+--- a/tools/testing/selftests/liveupdate/luo_test_utils.c
++++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+@@ -1,8 +1,12 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
- TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
- TEST_GEN_PROGS_EXTENDED += luo_multi_session
-+TEST_GEN_PROGS_EXTENDED += luo_memfd
- 
- TEST_FILES += do_kexec.sh
- 
-diff --git a/tools/testing/selftests/liveupdate/luo_memfd.c b/tools/testing/selftests/liveupdate/luo_memfd.c
-new file mode 100644
-index 000000000000..b779eee18387
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_memfd.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2026, Google LLC.
+ /*
+- * Copyright (c) 2025, Google LLC.
++ * Copyright (c) 2025-2026, Google LLC.
+  * Pasha Tatashin <pasha.tatashin@soleen.com>
 + * Pratyush Yadav (Google) <pratyush@kernel.org>
-+ */
++ *
++ * Copyright (C) 2025 Amazon.com Inc. or its affiliates.
++ * Pratyush Yadav <ptyadav@amazon.de>
+  */
+ 
+ #define _GNU_SOURCE
+@@ -23,6 +27,175 @@
+ 
+ #include "luo_test_utils.h"
+ 
++/* Read exactly specified size from fd. Any less results in error. */
++int read_size(int fd, char *buffer, size_t size)
++{
++	size_t remain = size;
++	ssize_t bytes_read;
++
++	while (remain) {
++		bytes_read = read(fd, buffer, remain);
++		if (bytes_read == 0)
++			return -ENODATA;
++		if (bytes_read < 0)
++			return -errno;
++
++		remain -= bytes_read;
++	}
++
++	return 0;
++}
++
++/* Write exactly specified size from fd. Any less results in error. */
++int write_size(int fd, const char *buffer, size_t size)
++{
++	size_t remain = size;
++	ssize_t written;
++
++	while (remain) {
++		written = write(fd, buffer, remain);
++		if (written == 0)
++			return -EIO;
++		if (written < 0)
++			return -errno;
++
++		remain -= written;
++	}
++
++	return 0;
++}
++
++int generate_random_data(char *buffer, size_t size)
++{
++	int fd, ret;
++
++	fd = open("/dev/urandom", O_RDONLY);
++	if (fd < 0)
++		return -errno;
++
++	ret = read_size(fd, buffer, size);
++	close(fd);
++	return ret;
++}
++
++int save_test_data(const char *filename, const char *buffer, size_t size)
++{
++	int fd, ret;
++
++	fd = open(filename, O_RDWR | O_CREAT, 0666);
++	if (fd < 0)
++		return -errno;
++
++	ret = write_size(fd, buffer, size);
++	fsync(fd);
++	close(fd);
++	return ret;
++}
++
++int load_test_data(const char *filename, char *buffer, size_t size)
++{
++	int fd, ret;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		return -errno;
++
++	ret = read_size(fd, buffer, size);
++	close(fd);
++	return ret;
++}
++
++/* Create and initialize a memfd with random data. */
++int create_random_memfd(const char *memfd_name, char *buffer, size_t size)
++{
++	int fd;
++	int ret;
++
++	fd = memfd_create(memfd_name, 0);
++	if (fd < 0)
++		return -errno;
++
++	ret = generate_random_data(buffer, size);
++	if (ret < 0) {
++		close(fd);
++		return ret;
++	}
++
++	if (write_size(fd, buffer, size) < 0) {
++		close(fd);
++		return -errno;
++	}
++
++	/* Reset file position to beginning */
++	if (lseek(fd, 0, SEEK_SET) < 0) {
++		close(fd);
++		return -errno;
++	}
++
++	return fd;
++}
 +
 +/*
-+ * Selftests for memfd preservation via LUO.
++ * Make sure fd contains expected data up to size. Returns 0 on success, 1 on
++ * data mismatch, -errno on error.
 + */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <unistd.h>
-+
-+#include <linux/liveupdate.h>
-+
-+#include "../kselftest.h"
-+#include "../kselftest_harness.h"
-+
-+#include "luo_test_utils.h"
-+
-+#define STATE_SESSION_NAME "luo-state"
-+#define STATE_MEMFD_TOKEN 1
-+
-+#define LIVEUPDATE_DEV "/dev/liveupdate"
-+static int luo_fd = -1, stage;
-+
-+int main(int argc, char *argv[])
++int verify_fd_content(int fd, const char *expected_data, size_t size)
 +{
-+	int session, expected_stage = 0;
++	char *buffer;
++	int ret;
 +
-+	/*
-+	 * The test takes an optional --stage argument. This lets callers
-+	 * provide the expected stage, and if that doesn't match the test errors
-+	 * out.
-+	 *
-+	 * Look for the stage. Since test_harness_run() doesn't recognize it,
-+	 * once found, remove it from argv.
-+	 */
-+	for (int i = 1; i < argc; i++) {
-+		if (strcmp(argv[i], "--stage") == 0) {
-+			if (i + 1 < argc) {
-+				expected_stage = atoi(argv[i + 1]);
-+				memmove(&argv[i], &argv[i + 2], (argc - i - 1) * sizeof(char *));
-+				argc -= 2;
-+				i--;
-+			} else {
-+				ksft_exit_fail_msg("Option --stage requires an argument\n");
-+			}
++	buffer = malloc(size);
++	if (!buffer)
++		return -ENOMEM;
++
++	/* Reset file position to beginning */
++	if (lseek(fd, 0, SEEK_SET) < 0) {
++		ret = -errno;
++		goto out;
++	}
++
++	ret = read_size(fd, buffer, size);
++	if (ret < 0)
++		goto out;
++
++	if (memcmp(buffer, expected_data, size) != 0) {
++		ret = 1;
++		goto out;
++	}
++
++	ret = 0;
++
++out:
++	free(buffer);
++	return ret;
++}
++
++/*
++ * Verify fd content using mmap. Returns 0 on success, 1 on data mismatch,
++ * -errno on error.
++ */
++int verify_fd_content_mmap(int fd, const char *expected_data, size_t size)
++{
++	char *mapped_mem;
++	int ret;
++
++	mapped_mem = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
++	if (mapped_mem == MAP_FAILED)
++		return -errno;
++
++	/* ret = memcmp(mapped_mem, expected_data, size) ? 1 : 0; */
++	ret = 0;
++	for (size_t i = 0; i < size; i++) {
++		if (mapped_mem[i] != expected_data[i]) {
++			ret = 1;
++			break;
 +		}
 +	}
 +
-+	luo_fd = luo_open_device();
-+	if (luo_fd < 0)
-+		ksft_exit_skip("Failed to open %s (%s). Is the luo module loaded?\n",
-+			       strerror(errno), LUO_DEVICE);
-+
-+	session = luo_retrieve_session(luo_fd, STATE_SESSION_NAME);
-+	if (session == -ENOENT)
-+		stage = 1;
-+	else if (session >= 0)
-+		stage = 2;
-+	else
-+		fail_exit("Failed to check for state session");
-+
-+	if (expected_stage && expected_stage != stage)
-+		ksft_exit_fail_msg("Stage mismatch: expected %d, got %d\n",
-+				   expected_stage, stage);
-+
-+	if (stage == 1)
-+		create_state_file(luo_fd, STATE_SESSION_NAME, STATE_MEMFD_TOKEN, 2);
-+
-+	test_harness_run(argc, argv);
++	munmap(mapped_mem, size);
++	return ret;
 +}
++
+ int luo_open_device(void)
+ {
+ 	return open(LUO_DEVICE, O_RDWR);
+diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.h b/tools/testing/selftests/liveupdate/luo_test_utils.h
+index 90099bf49577..d1b85703708b 100644
+--- a/tools/testing/selftests/liveupdate/luo_test_utils.h
++++ b/tools/testing/selftests/liveupdate/luo_test_utils.h
+@@ -35,6 +35,15 @@ void restore_and_read_stage(int state_session_fd, int token, int *stage);
+ 
+ void daemonize_and_wait(void);
+ 
++int read_size(int fd, char *buffer, size_t size);
++int write_size(int fd, const char *buffer, size_t size);
++int generate_random_data(char *buffer, size_t size);
++int save_test_data(const char *filename, const char *buffer, size_t size);
++int load_test_data(const char *filename, char *buffer, size_t size);
++int create_random_memfd(const char *memfd_name, char *buffer, size_t size);
++int verify_fd_content(int fd, const char *expected_data, size_t size);
++int verify_fd_content_mmap(int fd, const char *expected_data, size_t size);
++
+ typedef void (*luo_test_stage1_fn)(int luo_fd);
+ typedef void (*luo_test_stage2_fn)(int luo_fd, int state_session_fd);
+ 
 -- 
 2.53.0.473.g4a7958ca14-goog
 
