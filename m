@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F2C2EFCD78
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 09:54:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 804E2EFCD78
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 09:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BCC86B008C; Mon,  9 Mar 2026 05:54:19 -0400 (EDT)
+	id 8E6EF6B0092; Mon,  9 Mar 2026 05:54:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F409F6B0092; Mon,  9 Mar 2026 05:54:18 -0400 (EDT)
+	id 8BEAC6B0093; Mon,  9 Mar 2026 05:54:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEB766B0093; Mon,  9 Mar 2026 05:54:18 -0400 (EDT)
+	id 6C2BF6B0095; Mon,  9 Mar 2026 05:54:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C16676B008C
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:54:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C29E5B07F
+	by kanga.kvack.org (Postfix) with ESMTP id 5DD2A6B0092
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 05:54:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20AC5C4017
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:54:20 +0000 (UTC)
+X-FDA: 84526064280.08.4907084
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 365CE80004
 	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:54:18 +0000 (UTC)
-X-FDA: 84526064196.22.216AB91
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9A026100007
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:54:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="nFVwWfm/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3x5iuaQsKCAgiksmztm61voowwotm.kwutqv25-uus3iks.wzo@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3x5iuaQsKCAgiksmztm61voowwotm.kwutqv25-uus3iks.wzo@flex--ackerleytng.bounces.google.com
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tp9alRrK;
+	spf=pass (imf30.hostedemail.com: domain of 3yJiuaQsKCAkjltn0un72wppxxpun.lxvurw36-vvt4jlt.x0p@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yJiuaQsKCAkjltn0un72wppxxpun.lxvurw36-vvt4jlt.x0p@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773050056;
+	s=arc-20220608; t=1773050058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QgiSP3km688q6ojjEduHXzfYAonyqsNdhLOg8lFMsCA=;
-	b=LSQMgdbTdUSbMH2KuvBdAFCbKj+34WYAcg+zy4xxk0GY5wdLrHvBQIeGEiSu2u7oXggcpd
-	5slsUrNq71hY7tpXANkboE7CkPoKmHslemvh6LKIsBsS0hqkB78u38PhzK2wrEj/UNGqaA
-	XsxHPBjCtQ7ZR6LshBXcEqLcmLO5BEo=
+	bh=6X2ZyGf4duGXbwGrp5sOhQZ4KKFdJaMZm2rOVj/sk3w=;
+	b=S57pD3vQOVOHtaNdOX6mHDP7R/twt/wTGMRdAaUiL3U753ICD5J2rU3kUlq/iF1qUguJNv
+	TWjEEL0LVGCbcl8ZGf+9Webj3x9LssmsaXTArACBmh38uBe2CBBDr6CKiEesOLgEK26Gwt
+	zvI6qu7talWrmdMOrIX3k7jZYcOKklo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="nFVwWfm/";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf05.hostedemail.com: domain of 3x5iuaQsKCAgiksmztm61voowwotm.kwutqv25-uus3iks.wzo@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3x5iuaQsKCAgiksmztm61voowwotm.kwutqv25-uus3iks.wzo@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773050056; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Tp9alRrK;
+	spf=pass (imf30.hostedemail.com: domain of 3yJiuaQsKCAkjltn0un72wppxxpun.lxvurw36-vvt4jlt.x0p@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3yJiuaQsKCAkjltn0un72wppxxpun.lxvurw36-vvt4jlt.x0p@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773050058; a=rsa-sha256;
 	cv=none;
-	b=6kKBJyfpcfWPCHZs4Sp8TLfsr4cq6g1XdrbHWdgncRSN6gZgN5qLuOIcs0laWw5HrddDmP
-	EBvybpR+Cw7Vf9oZ4LL4H+3UDCv71lmVUtTB3q1xdUVveXPWW7zYB09kYNjnLNWUdbbpi8
-	C2q7FVq8duiRI43peaqDJUZnXxwyqyc=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae59e057f1so85643245ad.1
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 02:54:16 -0700 (PDT)
+	b=lm55hzqKxBQLJYe0jaZFvHkAT19L4dUrL+0Oj3F2/pfiqDBQ1n7aonIULi/NOjtNdQJD9N
+	ajSIrHs3ZHvzMEO6FRMMZYf65Hc3BJ6TC0qkpjW+YEpcpUsVKsqXHB1tbrkws6fIwUXwD2
+	E/x5eGphcdBldk6Fbo+TcUzRTYkJeCs=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ae5031c6c5so385905515ad.3
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 02:54:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773050055; x=1773654855; darn=kvack.org;
+        d=google.com; s=20230601; t=1773050057; x=1773654857; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QgiSP3km688q6ojjEduHXzfYAonyqsNdhLOg8lFMsCA=;
-        b=nFVwWfm/LzPLzWhMEpc999oSCwETZ3qIJ4RGqx80Eqd2b922VVSR4IXnhbnt6QJ/w5
-         KOs2sAN2TkmS69jKWLeo4HiK7z+BeUWSXRWuLDN8nXJn3iE73mdWEzG23sND3m883hqs
-         wyncb0AIDn+FT5q8hp1x7JVQNV6J+KVywYdXMcA5vbEwjZum5eeFKvX/GWvhPAwquHRa
-         DOENF7ElgOHXXWp9B5RWU6rG7IYUGtlhtguSjXAZ9NFHyZAnk54q+eA/a/fUpYIhTiwJ
-         7/uTOmdbTOoctYUAiDHTapcJZp20xvwkdvvMt9N+n48zYfWAqp6x9ey+WqPDUsgYlYFw
-         YkMQ==
+        bh=6X2ZyGf4duGXbwGrp5sOhQZ4KKFdJaMZm2rOVj/sk3w=;
+        b=Tp9alRrKahuTVZQppsmNX0np0XVa3ip3oFbfKxFQQierGCevl8tumqHeoJNTmupGwX
+         Gf4wm6r1+ZsitwpSFORKX6HrEXUB1Dx4c7GxTuX/vfbhCMMD8Jna1qurhTbYzQtb/YQ+
+         GH37Aix8RonHQuTdpNhwru4ZBzaibSbtIx1E00g1r9l0XMuYXnAhyzJUeVi9OYRkhx56
+         OthX+8OjoBd9L9KKBj7u7EslKSO6AxhDkZV4pxwE4GxIWNcckM5H/e6Dz0qqXg4GX3px
+         eEap3k7wIc+KAUjqmMH5HY17tEagU0+7crk2QRv8dZwPUXkR6q++2TA/hqFOFyDehmMd
+         6yEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773050055; x=1773654855;
+        d=1e100.net; s=20230601; t=1773050057; x=1773654857;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QgiSP3km688q6ojjEduHXzfYAonyqsNdhLOg8lFMsCA=;
-        b=kaT9b9iqoaY+7shSTEgHI1Izho8weKUciTDl2S2zVwu9Q8YUYgz15aofjj2KHz1Tl4
-         GqRVarGJA7dizCqVKPisbweyE9rTaTprkOqSp4XYdr9EBcaMbMCaMwSG+MJUJKJ1AdCo
-         CTkcuy+lRbQfe4l3yCPCCeps+8ckVYrNT57skBI50N/kXRkZD8bySXfiS9yo5QE/rwKb
-         jDABqEv0ddMBKQVItHwZLXo0cAsSBNAO0iLiT+tyzxhG5UoIPsVUorXGuvTMQ/i9KM9q
-         oepbLb5GXJnizPwikD1SAVktc+fvR5399bPt4oXC88qwO7tDi7jd5ceCle1+fIhks59k
-         ZfpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/gYHv4N6b6OluaBUFHYRP97MvP4vaVri6qKqWJO8t7g4AwRMgMgKpEr3lYRIfe5wLcVsxn8M0AQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz6CWPxiCzMMK0wBLmILcQ7CauvJzfDG1a+crd38wA5jci46TKv
-	O5JmtDJqSn74moQPuX3OD9w+jxbnAYCqpTmwp5e3QUO8jiqc4bQ0zKjABANKgTMRRdajvZH0IWE
-	kqrFMmh3fNycIiS/E9c58AKSyxw==
-X-Received: from plef1.prod.google.com ([2002:a17:902:f381:b0:2a5:9a43:6fdf])
+        bh=6X2ZyGf4duGXbwGrp5sOhQZ4KKFdJaMZm2rOVj/sk3w=;
+        b=kx5m/r45F7SuntBf/xsfa2ibKHCysHfOxJ1XOazp/OeR+mvNxX/hB7Qz76QDngx8hL
+         /VEZmpkB7FhlR4hqegtsMYQMOM0Ctx0l8xXrWiCRi48KK6HhkUBf//+/4x55/RhPgIPu
+         /fpFF0B5r6OFaoHHBtzNKrh+pOmX9Ig7k7SdEMxtetXUOD5cnGYSHFwUYCCfAg8qNlkI
+         RECUvQySqa9osKoLV4DSo6mhVMx0VTfHIbCjAZ270UxKQn9NBe4O57b2HBwDNid/U2ve
+         e7jMToCGg+qQ2vn8sQe37i3gkzJfvTfXU2k7LtpGLScXds1jk2tPtKxX1E824eIT4+zE
+         lsTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsM0gvX/iFsbhTgM+o+w2xARoxrsdDrZLureS1YJEz1UMhV8eRm8Hpg8gX53a9FZK41/j5f0uEJw==@kvack.org
+X-Gm-Message-State: AOJu0YxDheUUgT0mq9KHXsT+EkEdonQp/U+2T8oXr5VU90QCuF5RJ+3h
+	SQw0Gyq7eeqc+kmwEeONylJ76/HGdXx46i7ssfX4c7Ny9hjdGkg4HruyK+qKE3eTtG+nuwRn9S/
+	6FJ2Z3uDmzw89aGB720zxsAanyA==
+X-Received: from pliy13.prod.google.com ([2002:a17:903:3d0d:b0:2ae:3f26:a1c3])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:18b:b0:2ae:7fa3:df1c with SMTP id d9443c01a7336-2ae823985a0mr98528365ad.21.1773050055283;
- Mon, 09 Mar 2026 02:54:15 -0700 (PDT)
-Date: Mon, 09 Mar 2026 09:53:53 +0000
+ 2002:a17:902:e890:b0:2ae:7f49:8e37 with SMTP id d9443c01a7336-2ae82416de1mr112118785ad.11.1773050056826;
+ Mon, 09 Mar 2026 02:54:16 -0700 (PDT)
+Date: Mon, 09 Mar 2026 09:53:54 +0000
 In-Reply-To: <20260309-gmem-st-blocks-v3-0-815f03d9653e@google.com>
 Mime-Version: 1.0
 References: <20260309-gmem-st-blocks-v3-0-815f03d9653e@google.com>
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519; pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773050050; l=820;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773050050; l=3039;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=0dslHDfc8e0m/ec8VD6G1x697Vl+o1F8eHqZCQrHxw8=; b=eOCypP2XtIK7WY3YqZd54ElrueSK8F6DJhK/7Y2HZaR12KKA6z53pp3vMBE5jxXzUPXRiI7/S
- mHsrhIlZsLlCMKxkujWBCQjp/ZE0AdpD8N7mP1eC2QkmTI2K/92Y0+b
+ bh=yeoFRB0x0cYTGtPfHobeqkFPIXI/Si+Y5++BAFhp31U=; b=/7QaGGXJvObuh04yNGHeLFEneGC6nTgx3TASDbD9523g5EzCojJdSnNh5/P0oXkbUD04qd+mq
+ 7mGm6etCRziCzsqHuyNkqm2bt1BC9Gf7zUKg1q8Pm9Ood8vplQeG6EK
 X-Mailer: b4 0.14.3
-Message-ID: <20260309-gmem-st-blocks-v3-2-815f03d9653e@google.com>
-Subject: [PATCH RFC v3 2/4] KVM: guest_memfd: Set release always on
- guest_memfd mappings
+Message-ID: <20260309-gmem-st-blocks-v3-3-815f03d9653e@google.com>
+Subject: [PATCH RFC v3 3/4] KVM: selftests: Wrap fstat() to assert success
 From: Ackerley Tng <ackerleytng@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
@@ -109,14 +108,14 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
 	linux-doc@vger.kernel.org, Ackerley Tng <ackerleytng@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9A026100007
-X-Stat-Signature: zyog9eoki851ftsq8rskno9n8pee69au
+X-Stat-Signature: 1os7bgu9iwwoe37or97fdgtiyj7pyk7i
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773050056-769623
-X-HE-Meta: U2FsdGVkX1/gXJtLzNk4ybtMZ45bi8u5cBULuhPUMhfQtJvSaVcGxUSoWAaThN9zaND0tzMSIPSWZKacn8KYwmQdmOlaGYixLzauSyO+OihCqwQIE3Pde1rg9iCUy4+fx/i9Veic1f9X55bqBV9mn53Q7JKVf/pSGSvsLgq1jvqxNi5P+GTTPj7MDwBPZYwpRRyNLEuHRNACBt3tT5S5zeyOcoXUDkgcmYC0WmON0k761DnEi40acFgy4VXEucCj++6D3e0RuPQk5+vUfxSLxyUti+4lVv5bt34wtYJrAVcCo8YuSBqR8+1N68e9gi2hh8EUYmI0c+CWIqmfhmyVX5WNysaoFE4Y1S7i2vYV/AqfTW7WrgEpDMAJ1rKFvezT92JDe/dJhN/jUZU/0mCG1YUzE/mvHYBvPVDNnRXloZssvEYfowefqLBzVGPTK8RiIh9BoM8d/E8pocuhucW6GycUSMVV10nDX0brl+wIEBKBgTHtwIPCoiZSJ+tDQ4ki6RNG4jJp6ZFbBGoAXil6SrpZwOMb2j4UuiO7t/iotKeTbCbO0DJy7k9FMWiZSTd4JC9UUMBnDKmdVyGe72cu/SQnHOSCs6XJtH4mF4bMEQKp3sKj3x0nVGa3o6M/NdwH6byXofD4HMYurF0bTctlXK6dpw+jy5kM3ZAawz4eOXZkvaw45PGruRERL49EgdbUGBAkqIE6+KNAEplPGdX48ZQiiMcnqNb7nBMHrScW+ikHZ1coB++pEWoMNbs9MR4+tOgUpUn99jipUBLg/Wg1tHTsW2H70Fms84gpYg9nhdapNPL+ggAYv6tu2OxifnxfYGDGpB2muxWOi9s8o1afay+It75v9/BGTXnV/pjKp0TS6hHE/53y6DXQ9KbN9FIrY1B7PdMya9CvHHv+foanI9AmugdP4OdWHKOxtH60Ma7bp15MuATiOOWUOfDzQkm4+fOJvrG+RKakOL6NkfC
- c7Kxljda
- NzJ3Nd3o00LF8yML8L9ansmt7EdAaAH2gA+4IIlBU8YNe6nJpUniysOILjpG/DIew1qU/zkpbByaLewJCK8831AAd19yfgpPomdGvZQTpPWuUtpUNCRxRgHkNbOBO3eO8hSUIOzeRtf2fEXc7oLO9rcwKldLVpfa3yNT0e89vdDvTNE4UvX91se3H2ketvAZyovPrwWRl9j59oWwj5ub7L7PLOD/MizCkNj0Tp0SEBO9j0Yxu+FH9RQmwS6R6dHkE28beD3JT7yfcMOLs5ZanUCvBy1dZMywK0Yi473ihpdjvRcD6RiUrogfj6lMj926icR6qWiRblwk+CCAitiPrGZNo8d7pHnnNzgRroSAeytI6PYENuhLtkMjrhNClBKJ9HOhYKlvwKGS0e0Zpls5e8M5IC1MU2hP+Tlw3ynF+WPsL3Pzp+9Vylzjc4UwI2FCPaXYNUIL4OsNCvJMQA8uAOUMfHErj0t8jTwWzut9IdA9azOmbv5Hriyh4YCY4/kVekhVeDK/LmpD4P7t9DfDSZSqkDKcCsRyBWL7hs7h3IJUzNWPIinNebqaubrahh8VZjh4e+KngKgx4rXbLr7cUDM0SQKrvHtDedfq3Eh+KIi3MIhA/S0FNNK+N+QTvpYGRLdGPs8Zl5N17X0QWWSsfQppHNmnXXHeWfthb9rQWSpXV8H/b5KUKR0mHcNBa2ViCI4d/oSiZm0tfq0eVN9PF7VmXDA==
+X-Rspamd-Queue-Id: 365CE80004
+X-HE-Tag: 1773050058-949977
+X-HE-Meta: U2FsdGVkX1+DpSoTIVijaC9cFLxgXSzWa5LVXBhZSdgRXyTxhdoN4f5YObMnhb+ixRSK/Gr/NZ4AlrgHvqdZdbtAaYHOU57TTExnLSnv/3MBlmhs+HWnRShQvU3NtHKwoE64mVsb2zdstqWsiu4lNK0sglVdoeb1AAGfnMGxfLO+bEFbsgpcZ4yC/K4AJleBkjWT3IMztscywCtufnnbChw2ZpG4UJTRsiUkCd3yQ+Cc/VBx/9Di8uAx6x9Apf9OsB5d5YB1c1ej+rwJnaL/4q349v0SrOCq+EB1WZiXgTnTN4g4alU0TsSQaEAOnFrNiecca+3Rfv3kmVxPzCRKIn4YDnSFJvxsjLz3DaMjmU38T9LJXYlH1mqOlwIacFLCW52HiMFPvhpO4P0o+weVQ/BRsEp3lw7Z+JizU+psDUW570CM8SGto+KPiKwFckJPXlfTVNu5UbOvE300YH2F/1+GXed99w1j9/Y1WGKS0dD3LpYckiZICHaPpViYAAmEiUpOC1ZWtLUWdv1Kti1H25AQ8lFISnQZ53n7Et0NgM2S+lfqtXTY8+yHEjf1ytznvrCY1gyy0dg0f+6e2s0Sj66Tty/Iaa1uaWm/ROuJAm0pCF77Kjwt3A+fWx8idft2/1+PLyVjJjlWdUR1EMDoExgJhwvDkd0VjtSCZHB/sXnKsmRW9dKCwCY7px6CT/OsQlgew191n2YS3Qd8oiZ2sI4fOhBwFcT2+LHQzyoZQ1Hw7tWvlehscYcDJEShu4f1we8oirQw/r/7goPeXir8ncIAlQIuoLip5nJihUN4qjgGsdMj/iqyqBFsovQ8QdiIZ1ggGcGBmL3XUldqmqICZluoGR7DGXzrB0cXr43sh+9Bx0HrQ+lf5qa9+Bqi+pbUBDzDRf4dDpvA4DcHc8SkO+uspxh6ae1AIOrR0COhtlYcC89nhDcW1X4ATKOlLBnbpzlhjlLuL5L07mXFS4z
+ urxwd/Qy
+ ic9K7GXfy/ZTzrHzv08mLF5aawtpYc455i6PUNNBE88W1hXEqOuaFSeAvHJ46YZEnguiGBPu4PaOhJj6k19Ls7ssQZQCQDN2JbIIOw3lWYF3YyiQVnkNJ73jp5ZkEetVXXwle2Vc9bdLAuZuBCKj/XHsQHJR+EBM9IOohkQ/9fCNtyEYmoewnKERbpDZr9UgQiV0JR7Md0tjgkcO4raJN8yV8iAYTk/C0MuVnBUe+vkShj7Asliri74Oeu89BXV8Y3aAqc3Ir4zgOTCL3sTsTrwktJXfsmJ9NpmOGa/Ew1Mknux2xf+7xpOcxEi3GeCSEyEAA3HSE72B0nt8IZYoAY4xxADC5B71aZO8kTR1r3iITxmzpVqi3d1BAizcgqHAzPYRcAeYtCIxl/z/8Jdmsslrkhv89SiGl+M+NTRs738MQgCToy/1NCsCd3bTUiKw4T7a6TnEKGLy5tgjyGrVM0Xv3dd/v7Rdt9JOCPDmEVyZSa+1WFQtJEgbhwzLokAWE5efkGHFrFD54i4dsdFiTuQbUo2gzxRv2ksGp3J1byGRQIaKI5JXQRqe+XUg0b3Y7mFbeYd9dq3VNiQk2IKjx18buxJd9YNeIBZetiAPeMNhjkHJU/pT8ckMZshB17HpRMFSrwvgrDKMDOjXMb5mDOBoNNj9dSiH128dgFGxxfaXmKKQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,26 +123,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Set release always on guest_memfd mappings to enable the use of
-.invalidate_folio, which performs inode accounting for guest_memfd.
+Extend kvm_syscalls.h to wrap fstat() to assert success. This will be used
+in the next patch.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/kvm/guest_memfd_test.c     | 15 +++++----------
+ tools/testing/selftests/kvm/include/kvm_syscalls.h |  2 ++
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 77219551056a7..8246b9fbcf832 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -607,6 +607,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	mapping_set_inaccessible(inode->i_mapping);
- 	/* Unmovable mappings are supposed to be marked unevictable as well. */
- 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-+	mapping_set_release_always(inode->i_mapping);
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index ec7644aae999d..638906298ed73 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -270,10 +270,8 @@ static void test_mmap_not_supported(int fd, size_t total_size)
+ static void test_file_size(int fd, size_t total_size)
+ {
+ 	struct stat sb;
+-	int ret;
  
- 	GMEM_I(inode)->flags = flags;
+-	ret = fstat(fd, &sb);
+-	TEST_ASSERT(!ret, "fstat should succeed");
++	kvm_fstat(fd, &sb);
+ 	TEST_ASSERT_EQ(sb.st_size, total_size);
+ 	TEST_ASSERT_EQ(sb.st_blksize, page_size);
+ }
+@@ -361,25 +359,22 @@ static void test_create_guest_memfd_invalid_sizes(struct kvm_vm *vm,
  
+ static void test_create_guest_memfd_multiple(struct kvm_vm *vm)
+ {
+-	int fd1, fd2, ret;
++	int fd1, fd2;
+ 	struct stat st1, st2;
+ 
+ 	fd1 = __vm_create_guest_memfd(vm, page_size, 0);
+ 	TEST_ASSERT(fd1 != -1, "memfd creation should succeed");
+ 
+-	ret = fstat(fd1, &st1);
+-	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
++	kvm_fstat(fd1, &st1);
+ 	TEST_ASSERT(st1.st_size == page_size, "memfd st_size should match requested size");
+ 
+ 	fd2 = __vm_create_guest_memfd(vm, page_size * 2, 0);
+ 	TEST_ASSERT(fd2 != -1, "memfd creation should succeed");
+ 
+-	ret = fstat(fd2, &st2);
+-	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
++	kvm_fstat(fd2, &st2);
+ 	TEST_ASSERT(st2.st_size == page_size * 2, "second memfd st_size should match requested size");
+ 
+-	ret = fstat(fd1, &st1);
+-	TEST_ASSERT(ret != -1, "memfd fstat should succeed");
++	kvm_fstat(fd1, &st1);
+ 	TEST_ASSERT(st1.st_size == page_size, "first memfd st_size should still match requested size");
+ 	TEST_ASSERT(st1.st_ino != st2.st_ino, "different memfd should have different inode numbers");
+ 
+diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/testing/selftests/kvm/include/kvm_syscalls.h
+index 843c9904c46f6..2266c06347f5d 100644
+--- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
++++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
+@@ -2,6 +2,7 @@
+ #ifndef SELFTEST_KVM_SYSCALLS_H
+ #define SELFTEST_KVM_SYSCALLS_H
+ 
++#include <sys/stat.h>
+ #include <sys/syscall.h>
+ 
+ #define MAP_ARGS0(m,...)
+@@ -78,5 +79,6 @@ __KVM_SYSCALL_DEFINE(close, 1, int, fd);
+ __KVM_SYSCALL_DEFINE(fallocate, 4, int, fd, int, mode, loff_t, offset, loff_t, len);
+ __KVM_SYSCALL_DEFINE(ftruncate, 2, unsigned int, fd, off_t, length);
+ __KVM_SYSCALL_DEFINE(madvise, 3, void *, addr, size_t, length, int, advice);
++__KVM_SYSCALL_DEFINE(fstat, 2, int, fd, struct stat *, buf);
+ 
+ #endif /* SELFTEST_KVM_SYSCALLS_H */
 
 -- 
 2.53.0.473.g4a7958ca14-goog
