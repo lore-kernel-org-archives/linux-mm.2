@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3BFF3C263
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:45:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E5EF3C263
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:46:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45BAB6B00A3; Mon,  9 Mar 2026 09:45:54 -0400 (EDT)
+	id 6B2C56B0098; Mon,  9 Mar 2026 09:46:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 425CC6B00A5; Mon,  9 Mar 2026 09:45:54 -0400 (EDT)
+	id 6697C6B00A5; Mon,  9 Mar 2026 09:46:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3282C6B00A6; Mon,  9 Mar 2026 09:45:54 -0400 (EDT)
+	id 57FB06B00A6; Mon,  9 Mar 2026 09:46:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 21E626B00A3
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:45:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EDC0E1BFD2
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:45:53 +0000 (UTC)
-X-FDA: 84526647786.20.A3585D7
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4975A6B0098
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:46:13 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E361F1B6EB0
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:46:12 +0000 (UTC)
+X-FDA: 84526648584.25.31CF5BB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3DB53100004
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:45:52 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f+uB5+io;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 23B431C000A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:46:11 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kAJgUG3X;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773063952;
+	s=arc-20220608; t=1773063971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qdpkBVXQqaztcRpunxmS+20ynH4iIZbOg126QmuMCVg=;
-	b=tPE46wvCKm2JgCY6sFooMuUZsuJG8yyEaycdpxIEwu/6+YI6CagYqdnZIKel7YVNBxfHFB
-	7+diwgSLsW/qNfLmB8BSoQXxa6pbd4JNUon/xOStQQVe9/wGz4xM/WEro5sXW28+AWMnlp
-	ocoG/ssiuAVUwCgKpvOxL4/Tje78IME=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=f+uB5+io;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063952; a=rsa-sha256;
+	bh=8/QncjDbqxrgKnQi1N2T/qIWgaAe6xRCgg0IrW1kdLk=;
+	b=MP8iDiMlm5Jk6kPB+YT3RNHWO95rAfNluUrhGwNswM0ma0O08TOYsIQiF+3SL66XMBOLdU
+	dEubML/usG0Z5WkqwJ6OZVn0Py3sQDKTjnv/wzDp8z+SIs1vooyZZ93diQqk/dBE3MdRhe
+	UIEuGXMmJkv+Dg7D6eksn9OWR03PjAs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063971; a=rsa-sha256;
 	cv=none;
-	b=3usMF+q2qaZqYJGNKlw+Q6ww1CaMvJilYk27NUi6LfcBF5FPWPqK0MjlNcAXPnJW3DKRU5
-	oaTEH8vuJLuznAsLVNyv0Np3FX/nJKorsqV7ffiXnhNbemCr2Tc3URsrnXuOUrq17MJal+
-	gDLjkDDrMzi2kG78H9bVphj6qwrSMRE=
+	b=UWbhPza4M0e1t6NAfckF9LNDl0X+XkKT8mliU0O+/WBSKrtaGszZhBJf/GPi4AHZQ9MV94
+	rOH4ksUnglO2gc4O+bIXSenthVLXFc7A1RHEBxXfYTOVcFfhti1w3CTJ1tzt4iRSwoHKIJ
+	L7PU1pPKQfJO35mvczqVZVBToo0FRC0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kAJgUG3X;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9ED4C60133;
-	Mon,  9 Mar 2026 13:45:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D6CC2BC9E;
-	Mon,  9 Mar 2026 13:45:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AA81D60131;
+	Mon,  9 Mar 2026 13:46:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185D4C4CEF7;
+	Mon,  9 Mar 2026 13:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773063951;
-	bh=uJhVNt32IndBelFxb/TnWkfy5J8A3tuWwwNGBogcLSc=;
+	s=k20201202; t=1773063970;
+	bh=OM97bWXBnd0VBOqYFf1pVUaQvZcrYTh7q6Afau4wh/0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f+uB5+ioxZ2uQUIYl3Oc1O86bfYtlfqKUyT18pDwStUjEAZx1x9m3kVkZb9pFnqAl
-	 LNlCZhd42Jjm8zM5AysYSUHz26XAiQoa5iSRYTSVeHP5pgOj9cw2Qof5jk1ydrhut6
-	 YboNQL8470tawD40gNEm0uOAMY1fOqC+gY1Ly2sczhYaxyQe6bFaWO0DUN0FKQz9GY
-	 SFXF2fbINuhEwy14PERotM0MUtofd8SNsLoYNXaZj+t6DfbWNkylkjEBd8wXJdZ0lr
-	 opLi9yTow4uaBOeYOniL3XcGKcGH0QZiEDh5JnmEDMdTvCVxOtDcQaAwBrJ0jm4Xq4
-	 YFtuw+/FHjj3g==
-Message-ID: <1b61cbcc-d062-4475-8763-e415e821fd14@kernel.org>
-Date: Mon, 9 Mar 2026 14:45:41 +0100
+	b=kAJgUG3XhSrmTrl/QlibTCR87GueAM6hZs8p0kFsSDo/3SCgHshDjV9CVhw/vRHkl
+	 8hzM7nsFs/OPj3s7NjfQQkCgKfT4pOcp1neidbSKyVfjMe+H3/pHIEVLtbAMo6Hrau
+	 tIxoMJOsLK3MD6yFDMwBLRAM0539H+biby1SIXdpSGOmXKM7XccxLPdzP5EFajDOsU
+	 MWe4FbBjtMArCmFrYC81K3GGd8HiOtKcV0j6l24pJInWsL47ihrmvd86xz89twFdLY
+	 NpIELSNrqYQfeQAzAJlysU5RYJ9D+Hoyypb/DUMBsVuY5Ha6FlUHz9A45n+0XKtnwn
+	 /86LdWNH5X6IA==
+Message-ID: <52a57e42-b07c-4630-83e1-86fd2a5ab99d@kernel.org>
+Date: Mon, 9 Mar 2026 14:46:00 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] mm: huge_memory: refactor enabled_store() with
- change_enabled()
+Subject: Re: [PATCH v4 4/4] mm: ratelimit min_free_kbytes adjustment messages
 To: Breno Leitao <leitao@debian.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
@@ -81,10 +80,9 @@ To: Breno Leitao <leitao@debian.org>,
  Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
  Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
- kas@kernel.org, kernel-team@meta.com,
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+ kas@kernel.org, kernel-team@meta.com
 References: <20260309-thp_logs-v4-0-926b9840083e@debian.org>
- <20260309-thp_logs-v4-3-926b9840083e@debian.org>
+ <20260309-thp_logs-v4-4-926b9840083e@debian.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260309-thp_logs-v4-3-926b9840083e@debian.org>
+In-Reply-To: <20260309-thp_logs-v4-4-926b9840083e@debian.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 3DB53100004
-X-Stat-Signature: e15upmerooa8tutu5wznup6uiasps3u9
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773063952-51551
-X-HE-Meta: U2FsdGVkX1+WtKwTTp70thpGPImsjwvEAk4qGgI8LzwMuG/NDrTmYdiww2wNYpg7+30iqlS88VRSBfPA+jHqbJ+/bqEj46k/UnqAb80aiH/jtjPZMwyGCr2NSYxtjJOLYFDbILJNJUbP+u3opNjSqLO8Yu3udoPGKeg04XVZwBT3UY+sUeZmF5H8aXno5Ywul5NpnW+Qzu/LrVYAZgCWl3FW9rL53dFMRU2LbDpjEguHpHOilvM6KwMv2PdTHAOrwzXV1m0y2BwFxOoJIETF+XoSmgu/ueYWHni0GCZn1V0KDANgm16GzYZNRDix7eSrQQhyPkFAiTt5w1QdCbeRGIS1x31j4tVJw4/nBFvCAyKb73YTJ5JSA9oUlF8NZPYpc5lp11SSrvsA3uip/jzSQfqFfgyfJd7N0lOpvgqtXT1moP3jVfwYrE9wstiGxovh0PWCibj4YpQ5/OVieT7KH6TM0Fghtvwd1/s33uVd2BqS4Q9nYva5CT4s4r6JPtKI1QexnCbJZiXUlxm2KebfNjSPPbXsvM4ZtT3pVHvEETjD/uUQoEbcIDF7isslQ69GCpkvlQvo0u2Op6q1P/3Q8zzLHgUqzq+HrsIZi+5NJ2uv1viYOxuWWbhu1Qq6Z3k6JxwoENFUtp676kzjLmIa5oCpiOXvAOxuk5jStqIUiFJJo+FAfI89J5lupu61u8RIoPNgDO+9BGvqSeMd+khHe6XWYU+L+W5qonv0fSNfnks6PLcTT77EePnTZ+SUn4wuVQS1lSOuJuVCzmgfpxMl5zr2pIPwm/T0f6JclJJR0XRrmKN4r6Kc8wagwA1SSb+VnpEfwmass2PI6WU6iO6ffo9p3xVHtWP4Ymbln4Qw7iorhZQM0IkYpMF0VRv8qD21i+Kr7X89nPMLbreF2T6Uzrf57gLu4GeYI9TAJMC+Ldzx+eCAjILJsekb3jxRiXjG92TfWp2oWVp3u6lhfy9
- ycWh+j/k
- 6UrICE5FSELQxUc1ONV39fOFWU8mp6X4AgQqcUml0vfwG5H0NLm7jCg+O51/jLB9CXp7J5qcybb14Esna7aFhER4HsNqD1P9a2c68XtK9xDqcO0qGrMXZstz4jf6gMsW1DC7kh4TESBpk1r8tt64Zm0Xv74GVODExP4mJI4ZNrIlazaiStFOofKNP1CsoHHsg9EHT8Eg4CsBo+lQmEXALosJeWQuamLu0/ZVmYDtwbSUcnrRpoGZYEhI8GiTcea2tb1bJsR2asFxvIIMEnV/6bAlHuhPiqeyFf54Gs2q6gd7cKRwYLOfDFXhuL0FO7OzprKW/kdq0pnsczV+SV0FrMGZpt8IuwqOjYuOG
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 23B431C000A
+X-Stat-Signature: 76zernau9xoyc4hnsudewe5q1tdumfyp
+X-HE-Tag: 1773063971-621507
+X-HE-Meta: U2FsdGVkX19deYNt6d54Ijd4pmwfnuwtTJrlubO9DM6lQU+VreUsOIv5SKVZ4xf35WitOZy9L+gpP9gcKmle15mpC5bNpGRzjcARTxEcoRVULRIsl/M4NLaQTly1FOp6cZAnplIKKxZYR/S4Lb4Vtc8Gd3Y6JZRpBRd6NpiMlvT8k15UXbdzMmGu9HEzhs2UULUeezXFIL49v6qty/b8O/bCyIQh2SHm0HDtBEUzaMOTNnzcMTsETCzqRdhPUTfyQBGE4yNbfl9KanSP9hcMgkK1PgCF5v0VcBOZk3bG00HH2qWw1iS7Club1M0SIo6VdcgbhNe2IfzFEYGLsCp3HbIrrp3pAxfRAl1JqctiWzBdbK+oeZuM+IsgQAIBt4GV1sGl2pF/qnXUwxVdBABLADKTNXu8DG3+kTcHeIGsqY9z8vqr+zvy9gMpAX9OCRpUj6iHSCgrA7e+FcjFyBKVmK1OoEcXv6WTPyipZT+z5M5bqW72Z5AvoADO5ljZ6abNL7IIPOfCc2C+alpPRHpmmu8NrGdTCfu+UfuwsYoyYIeadzYld1yZHbBlwWbM2p3Bsw3I2ffgkyjBvq+XHwbr99JlmG07vy14UcHSzjYOfwPmkXVqPyzr66NGTPlJWzO2VlKPGt82mZi/xdSnHibv8muLKTL4mIVGCG6tJUtp0VExFSmXxwlHFzrYRHymckO4GGuzgfPgOmYi/0aIPwvJaGllfF9QyAi5XGwP0ZbGWEegeirjMaBPZmXV5MmlgnbxFHAk1gOpla6tv1w/4TtbU/wkc6cd60axHFPsIA4/zoFkx0r9nJ65mMQ843fkRdW8YKiZzW0fld0H22Kn8ivNRuPZAmOatcA5tIXbj+FWFFPU8iHYUK3qshqhfl7UMixJ6cDlzdeFjyp7KBuKzZfR5mX9Fo/PsdecG6gPZceezzRsbd5xEowOAL8A1WhX2lhgr4FbPiI9pc/PtUeI17u
+ TTLvUMH3
+ 5Ri5qzlxQq8KZp1Tyl0RwcFkZfUIbvrOp4ceMuWvZuojwY6ImNAD8kySkGCANhiEY7ygNQWmxRTZ+jFQwUSsZNamJTRKKRlKfMYdVjH137rKXBBlFXsyzMN3HjnWwcRXYnSUWUL5ETlczR9Rj4dQBfLvrfv14v77SGr2aJeQ7jtzs7W4FFpqVUvFC0hMuWj8xFc9T03YhAq1zqyLte83Kgln/5fchFI6opE9IEgdKC4frtsOGDnznbMUiQrJnViRVbynaUCE93NvQvEo45IE6iQ/6wVu368L3WctmrnpMZgxuUBQRdq4PAE1P7BuYHni7Ke36soe01LIh75kpPategbL8x1m7Lcqsf02W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,52 +148,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 3/9/26 12:07, Breno Leitao wrote:
-> Refactor enabled_store() to use a new change_enabled() helper.
-> Introduce a separate enum global_enabled_mode and
-> global_enabled_mode_strings[], mirroring the anon_enabled_mode
-> pattern from the previous commit.
+> The "raising min_free_kbytes" pr_info message in
+> set_recommended_min_free_kbytes() and the "min_free_kbytes is not
+> updated to" pr_warn in calculate_min_free_kbytes() can spam the
+> kernel log when called repeatedly.
 > 
-> A separate enum is necessary because the global THP setting does
-> not support "inherit", only "always", "madvise", and "never".
-> Reusing anon_enabled_mode would leave a NULL gap in the string
-> array, causing sysfs_match_string() to stop early and fail to
-> match entries after the gap.
-> 
-> The helper uses the same loop pattern as change_anon_orders(),
-> iterating over an array of flag bit positions and using
-> test_and_set_bit()/test_and_clear_bit() to track whether the state
-> actually changed.
+> Switch the pr_info in set_recommended_min_free_kbytes() and the
+> pr_warn in calculate_min_free_kbytes() to their _ratelimited variants
+> to prevent the log spam for this message.
 > 
 > Signed-off-by: Breno Leitao <leitao@debian.org>
-> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 > ---
->  mm/huge_memory.c | 63 ++++++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 48 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2d5b05a416dab..be42a28da31d8 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -330,30 +330,63 @@ static const char * const anon_enabled_mode_strings[] = {
->  	[ANON_ENABLED_NEVER]	= "never",
->  };
->  
-> +enum global_enabled_mode {
-> +	GLOBAL_ENABLED_ALWAYS	= 0,
-> +	GLOBAL_ENABLED_MADVISE	= 1,
-> +	GLOBAL_ENABLED_NEVER	= 2,
-> +};
-> +
-> +static const char * const global_enabled_mode_strings[] = {
-> +	[GLOBAL_ENABLED_ALWAYS]		= "always",
-> +	[GLOBAL_ENABLED_MADVISE]	= "madvise",
-> +	[GLOBAL_ENABLED_NEVER]		= "never",
-> +};
-> +
-> +static bool change_enabled(enum global_enabled_mode mode)
 
-I'd similarly call this something like "set_global_enabled_mode"
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
