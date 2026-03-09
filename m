@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 210B5FCA17A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 19:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2458BFCA179
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 19:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C10E6B0005; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
+	id 825636B0005; Mon,  9 Mar 2026 15:13:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AC7F6B008C; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
+	id 7A9106B0089; Mon,  9 Mar 2026 15:13:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CAE56B0092; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
+	id 6AB366B008A; Mon,  9 Mar 2026 15:13:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F5F16B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 955A016032C
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:11:31 +0000 (UTC)
-X-FDA: 84527468382.16.F8348FD
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F1FE514000B
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:11:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vFiXUTgr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 58BA96B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:13:20 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD18B58613
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:13:19 +0000 (UTC)
+X-FDA: 84527472918.09.BAA2946
+Received: from relay.hostedemail.com (unirelay09 [10.200.18.72])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1AFF9120003
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:13:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773083489;
+	s=arc-20220608; t=1773083598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t4mG+t+RXYYFo6HmjRVakUrKTlFJ7ROOygeekLGG8TY=;
-	b=0VLJudl0gWJDy0RBfOzX3re3wGmti4KGAWJqAG10l8qg4pkj2WAWCR188E9ZYuK5+PZG7X
-	LadMN+YTAn3RNBUrN/mTKOQmFmVDuckVrWVU2NmslJWjJEHUjL1+7jRZoKI+GSAe1Dxk/P
-	suJDjUSotgbIBEb9CMlBD988rmfpDOA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773083489; a=rsa-sha256;
-	cv=none;
-	b=bWXCX2nszLknrWM3o1v8zhsFxMI44ENjFHr6gFKjoSa3zwq04fom0tAZw+wKHSHSF1NdcF
-	02cg9/mmZSogrH8AsIg+DxLud6fhcyQB8jYLA6+2VY5rnrI+LMeYoaaH7uif/pO0nbPxH2
-	iRaqCcrNMPcNtYegGVIBVVAEyRRXCSw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vFiXUTgr;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-Message-ID: <a9404db2-d8de-440f-b407-fdc489b00f7b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773083485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t4mG+t+RXYYFo6HmjRVakUrKTlFJ7ROOygeekLGG8TY=;
-	b=vFiXUTgrZJ1cpUYR+sGtEhO2tybjtnLZl7GWxczInonCmn9eljEUISVRbk75dWa1ua3QaN
-	bMKjff7b8mf4Y5usYdQZy+en1dwCQsWWwi1+wTA2faaV/vB8ZDD4q/OAfIoHYtvL+XwZgJ
-	7XEQQuneWtuvrQ6yFX370zPDrHyTRN0=
-Date: Mon, 9 Mar 2026 22:11:20 +0300
+	bh=405DxsN4405tuURLsEbdjbyCYCZ0c0PIcgEbBX/VCL8=;
+	b=gfK0QKudPmgZxnlsPpilg1QlF5+cgawJ8IX1jTT3oJt93LbHAkBdrk0KqRNuLdGTDEPYWA
+	UVkaCqI1F0ATysgpf6KiEV5QrI6XPKeGXrw9akYYSB8eQXmXPozOZza+Wo9780b6DOQHRt
+	rj/SycKujwSnjFaatFDBC6/LhuxF0c8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773083598; a=rsa-sha256;
+	cv=none;
+	b=uegsf3c3hepZRx+PEETmegQzALeowfHex/Nmu3Dd8YSRrCVpgGnlr40UNeNMeTcaR1Qj8u
+	UNgr0uEa7RIKaTR/zdPdanOM6byOu/lE1EbgJTjiwYfnTElGQ+P1h1eRff2HzKuRjrGd5m
+	MqT9i9fds+zaQ55s+NjkPmmw0ezfBhQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	none
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F80E8B40B;
+	Mon,  9 Mar 2026 19:13:15 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 0D2EF20026;
+	Mon,  9 Mar 2026 19:13:09 +0000 (UTC)
+Date: Mon, 9 Mar 2026 15:13:17 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Dmitry Ilvokhin <d@ilvokhin.com>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ Len Brown <lenb@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Oscar
+ Salvador <osalvador@suse.de>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] mm: zone lock tracepoint instrumentation
+Message-ID: <20260309151317.7bba06dd@gandalf.local.home>
+In-Reply-To: <aa7dgQDMEz34eadj@casper.infradead.org>
+References: <cover.1772206930.git.d@ilvokhin.com>
+	<aa7G1nD7Rd9F4eBH@casper.infradead.org>
+	<aa7XdpIVtLFS3FIu@shell.ilvokhin.com>
+	<aa7dgQDMEz34eadj@casper.infradead.org>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/migrate_device: document folio_get requirement before
- frozen PMD split
-Content-Language: en-GB
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
- ziy@nvidia.com, linux-mm@kvack.org, mpenttil@redhat.com, balbirs@nvidia.com
-Cc: matthew.brost@intel.com, joshua.hahnjy@gmail.com, hannes@cmpxchg.org,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-References: <20260306104409.3915811-1-usama.arif@linux.dev>
- <c74e3941-f977-4b19-9d71-972bd9ed5c60@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <c74e3941-f977-4b19-9d71-972bd9ed5c60@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/t1Ugy1fVfjXyAi0RgUyUMU3bb6SSTt54=
+X-HE-Meta: U2FsdGVkX1/Wx0umbTtULg2v9su5xeKShIbhebg44QdCcqtOibGO+Ihs1xBog4RL/GQxhiUtLwc8NNVFs8NrifJeiVuZCaBnsyIP5ll9GwHE+DuXexFcf7tzPaO+zm9jcDgS1fMOvX6sNJWwEPx9pBTyzyNPuBu8QJhCoXE92GFp1mdZECY+Okz/VjQo05ivbANloz/uuoLMjauDe+H8knTs5XdzvK9d0uSl4QWvGP+ulTi4xxM518Qk8ORZtElmWksx0uJukhu2dIcBzyH4pmVT7F+Fvs72WiT66l6E4l84judGtvbb7e71dICUFeB/g0OgzEtJORBzgxZX9liw1aXv9m8ED5+yT5Gj3BiGQgUBQ4rPqL2GBiO0rUh+8cxQ
+X-HE-Tag-Orig: 1773083589-71908
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F1FE514000B
-X-Stat-Signature: 1b8rc7871tkcx6j4e1hsbpdt6syh5w43
+X-Rspamd-Queue-Id: 1AFF9120003
+X-Stat-Signature: q3yxck1isxs11rr5dx37zbn637abuzme
 X-Rspam-User: 
-X-HE-Tag: 1773083487-328048
-X-HE-Meta: U2FsdGVkX18P8yBeU/JKaG5v5eiBxZBCapQq5g2Ykj3Hydqksh/fRyJog2BNFOzchrvAQhnJz+EFnFAz6hP2dOL+Rk5zk3u2zfgw1JnwEw+Sw4e7qj+mDuG8sHuQN5cvtN8gnuRbm6w+Id3NlQF5cLi3sRwRaK1BlDtScoDJ2eRubisM0FwU6K+oFqFLxZOnKhxemGd4IFE9J8cO7tTDEtHSlRYs+Wm4YrvQe8ttEyyL+54d6zm1jTW9JAGonTpeI9K0q8CEYiU8RTH6fCq2egQvCSdUh4DC2QvpyR36J05soJfkBrhfMWrPY3B/PxS2Q4YzBCE794bQlR9yk/+HR/UikVeUpoGVZr1quBA10d+BUAz14ungtoceuVFuBMSofvaCPoGvag1xbX7kMFdsCh49casvUKkcbOXvT/5TEEX1SDH9Fj/slwQDI0d76KG52t05dP01nJAgavZPrOoXq/alvVumolhc+7wSshIlA0Mltt6XfzLjdFZMjDJlorqvB6xKnSgh6ngWt/4Smi6N58t+UiGDkploJm7baTDFzd05wJkhxXM/6A4Oef1X1Yr45fkI5oCQu26fmxkhZYCEPp8U3FZ5w03qVbRzJK+IfumoWmMaBgULJIq/uLBSSFNnIi8Krr0b8oaJFNQeID6lLaqbsFSkDiQNyCxuezq8otcgA3sDig5tJDGrqHeySK2R0rVYR75FXQd1WAXlRwGgM3E2G8DOac3zB1JBLj4OQmNc7bRBRe1oYHV91izmwBE7oiH3X6+4XD+UyDUVC5cMceAzdKitg/2n8XPqGN978IoeBKBR4FgDSAVF1zIpZ43zCPUlzXudZl/zQGnCUqojlLkSXKNHkzPlE5qfWVPezjUSNGUdpeMlpjmVrVgQ/xDKc5f6WHQFh4TN02NMtvFCTJ8pXDuJO1+lMmSBCWayK5DnPkpWW2fKMxrfX/KV8UgS7u2Cn5StTHrbemmq+wD
- naGCaoE2
- 2aF88xJ5vGUyrIr6VMVx8Mv9oZSc+QuxjX7ai7rOeucC72+JZoOWOxZArY2eDvFi66vl73orhUp1qXfNR5ONwQJnhcs5u0nzotChvCBQh3aQhrAXZTIaF4zOSFj9oN5ZSJoQktgWFv4P/D+e1PTMspUpRYViXQGosDn/2ONqXc1G5aPMSZytTn5CAHxVY2Ulebhm4Trp4pFLDl1TF/8YJs02q6E0jYhm8FSL5qN5f/GA0EBRXE6aE224NtzpoT7t4cVBVCitEbTJaptFKxadpQHLG3Cv4iDt23+dz44i92OKshKwb6lEU/kB6r+v+R0lJuyq9Fip96MWNgwY7JUvTntlDaFXwyDaW9EFz7UZb52EkF5S2J5jj05FnhzNugBB8O3xmtHvkJcS4H7T1939J0HMgSDcFXSubsI9c
+X-HE-Tag: 1773083597-900226
+X-HE-Meta: U2FsdGVkX183AYKpSqKm7aXGAApiSh4G7aLcat3L5gSB9ZbH5cJMkcrv2a3tZlHGY8Bbi1EQvTPDNhSHaNJXjnuowCMFSvB4zOfFc8cEOpInWcbBlQITsFau5yJskvjED2xS8qhatSC3u5KhcdyY02TMxcVU0xz1d0KW5FcAX1DWzxExSJR8HTwZtlX3B+FWrxpgOelVwCYgMjLAm9qxvVb6jGmDww4J8RxxYIHuZmapRKMIpVnvTxAjXfh0tcnjOgtGYvT4fIPcTb3SRFWBL4rF74jYv3Qse9SYrZ+ld49RPZc9wOjTtNe+F1LWE4bqCLzH1E3eVJuvHi+azVFhKAS+D8LEKqQlJU80CgLQSyQPtmoUSE1eK+nQ1Xds1LYAd9JGNisUIQfXgdgJK+cHALV1dzQeVKExC+1jimcxRuu35bq04ai8erska10Qwin73UKnUmuydlINXVn0/2+++osHshNNyRA6uUXWMbFxH3IoHnitlO1sYKX1a6HZw6WqY+aZB/YuvdrwN0lRiplHUPJIUfWBajV5hEAR11dvrUTsEO/XhT/7qMbzvwSP39rOL3kOPpS9pqjWtK9nqBznB1pzOHZCrUaZxO2NhEQASUw7n1QjXuhggS016s81ao5N7lK9rLrWZbBeHl1d34QCeRogR19uPjMBgt/x5ecbVQ+Qnq2Ef383B4Nbf38vwqWMzKoDrQ+aqbXAxXepscuKF4uIDwmlycBwkmGijiUHf5mmHkf0mJBieApZb/qmGH1W3ZuE0fDI8yMMS2N0Lr5ETwKe0yGf9jAx942WXOkmrrv8CNYtO0ATDYKCYPrPmIMXNRSWMAYZBEu4RRU/e6dAT4JTreIk/Q2wvneeqtWI07V7vCaxkxwcwDa7jUkUG8CHgLYuOJXrGWyriWSuoK+b6yj/4Styc9XPwEqSodaK6IE2k3/9eldZP7Yy05u+LFeo9ekMjs25rf/X5H4P/tZ
+ inQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,64 +97,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 9 Mar 2026 14:47:29 +0000
+Matthew Wilcox <willy@infradead.org> wrote:
 
-
-On 09/03/2026 18:18, David Hildenbrand (Arm) wrote:
-> On 3/6/26 11:44, Usama Arif wrote:
->> split_huge_pmd_address() with freeze=true splits a PMD migration entry
->> into PTE migration entries, consuming one folio reference in the
->> process.  The folio_get() before it provides this reference.
->>
->> Add a comment explaining this relationship and a VM_WARN_ON_ONCE to
->> catch an unexpected refcount != 1 entry state.
->>
->> Suggested-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>  mm/migrate_device.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->> index 78c7acf024615..6fa2878848a7e 100644
->> --- a/mm/migrate_device.c
->> +++ b/mm/migrate_device.c
->> @@ -908,6 +908,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>  	unsigned long flags;
->>  	int ret = 0;
->>  
->> +	VM_WARN_ON_ONCE(folio_ref_count(folio) != 1);
+> > CONFIG_LOCK_STAT provides useful statistics, but it is primarily a
+> > debug facility and is generally too heavyweight for the production
+> > environments.  
 > 
-> Can't we have speculative references here? In general, asserting that
-> the refcount has an exact value (besides 0) is often shaky.
+> Yes, agreed.  I think that is what needs to change.
 
+The biggest issue with making a generic light weight LOCK_STAT is that
+locks are extremely optimized. Any addition of generic lock encoding will
+cause a noticeable overhead when compiled in, even when disabled.
 
-I hope not at this point in code.
+Most of the lock code is inlined for the fast path. Now if we want to add
+lock stats, we would need to add hooks into those inlined paths. This will
+undoubtedly increase the size of text, which will have an impact on I$.
 
-At this point, the folio is locked and unmapped (both done in migrate_vma_collect_huge_pmd()),
-and the present PMD was set to migration entry. It is isolated from LRU in
-migrate_device_unmap(). So the folio should not be visible to GUP or reclaim/compaction.
-Only anon, non-swapcache folios should reach here. So it won't run into any folio_try_get
-in page cache or swap cache.
+The other issue is the data we store for the lock. A lock is usually just a
+word (or long) in size, embedded in a structure. LOCKDEP and LOCK_STAT adds
+a key per lock. This increases the data size of the kernel.
 
-The folio_get() done in migrate_vma_split_unmapped_folio() is consumed by
-split_huge_pmd_address(), and folio_split_unmapped() expects a folio_reference
-of 1 after this [1].
+LOCK_STAT was designed on top of LOCKDEP. Perhaps a lighter version of
+LOCK_STAT could be designed without LOCKDEP, but it would be a project on
+its own.
 
-If its not considered good to assert a non zero refcount value, I can change the
-warning to a comment, but I think refcount should be 1 at this point, otherwise
-folio_split_unmapped will fail.
-
-[1] https://elixir.bootlin.com/linux/v6.19.6/source/mm/huge_memory.c#L4137
-
-> 
->> +	/*
->> +	 * take a reference, since split_huge_pmd_address() with freeze = true
->> +	 * drops a reference at the end.
->> +	 */
->>  	folio_get(folio);
->>  	split_huge_pmd_address(migrate->vma, addr, true);
->>  	ret = folio_split_unmapped(folio, 0);
-> 
-> 
-
+-- Steve
 
