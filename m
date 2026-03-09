@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB77F3C241
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 12:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABFFAF3C240
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 12:09:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BED46B0096; Mon,  9 Mar 2026 08:08:47 -0400 (EDT)
+	id 11C0D6B009B; Mon,  9 Mar 2026 08:09:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 576056B0098; Mon,  9 Mar 2026 08:08:47 -0400 (EDT)
+	id 0FE076B009D; Mon,  9 Mar 2026 08:09:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 474536B0099; Mon,  9 Mar 2026 08:08:47 -0400 (EDT)
+	id F14B36B009E; Mon,  9 Mar 2026 08:09:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 324D96B0096
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:08:47 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDFB21BD0E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:08:46 +0000 (UTC)
-X-FDA: 84526403052.12.4D72179
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012025.outbound.protection.outlook.com [40.107.200.25])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9F9DC140009
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:08:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=HdL3klMH;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD6A96B009B
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:09:22 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 807521383B6
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:09:22 +0000 (UTC)
+X-FDA: 84526404564.16.11FFFE5
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012029.outbound.protection.outlook.com [40.107.209.29])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 629D614000F
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 12:09:19 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=5bIZHJDN;
+	spf=pass (imf09.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.29 as permitted sender) smtp.mailfrom=shivankg@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.25 as permitted sender) smtp.mailfrom=shivankg@amd.com
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773058123;
+	s=arc-20220608; t=1773058159;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ETMZ5NoK2WiSlN6paRvMaoqyz9O26OG06Og+sPAr524=;
-	b=8LGz9S3W7GsP9cBPIJ8G7rqBC6kZZ4WL+OZpCB7auSNs5OjKCKEDxHWrOYKAoMsVX5RUB1
-	5WX3+5Gsm6QBzBrQyTC/yChpxTTxl7GGrmSxWk58A7F5TA4mbLkJgy5c687OpC1UuRr1mb
-	WX4LdzilmJVkAs9DZpZZZFDAZStA/LQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=j3JviBQpwSfrAAQVeEbzSZyJ9whuVjAN4LWwHJVqruM=;
+	b=Oo8LNnamoFSy7Vr07rAB0noILNNhrDNT/Xy4HgR4UUbRqyA2CxW7WmeymFFx/ZFV30M5gS
+	Rn59fUCHz961V0+v79LY/CfDuqLJcu4MlVxegtbAkAapSzBYxu1eoV1zh8JirWqAWDN9FK
+	Hcnzp1RSLBgKxeqh1JYDr6HIe+wf/L4=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=HdL3klMH;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	imf09.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=5bIZHJDN;
+	spf=pass (imf09.hostedemail.com: domain of shivankg@amd.com designates 40.107.209.29 as permitted sender) smtp.mailfrom=shivankg@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.107.200.25 as permitted sender) smtp.mailfrom=shivankg@amd.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773058123; a=rsa-sha256;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773058159; a=rsa-sha256;
 	cv=pass;
-	b=hvImS4/6j41Q/kT047bN0fpJjCFanALo+74H5Cg6K+Xk0Iq4hV9G6YfN4PJ8Cqpr9nfscS
-	9XhONZWcRmRzBUive9tAnfeAeG1g/mA1HQywrKh4bCJ5sVGBNu1ert7uSeBWX3V+c3YHv4
-	c4fVqRMlDFCspynhdEeAKD9/arUxXJQ=
+	b=Cnys0iJ/TKfCkc9bnfsuS4CjY1a0NFtRViNaQRzQBp6bnCuMAacQuoMtcPxyT3ZisuwpxQ
+	iGKM9tZKDvnAGta9MaiHKIYlWP42KoNnEwV05s3PN91ebwbiW6c8lP21zHxqs+ANmwXi9t
+	dvGOuqkJlkus8t8ZQOeCyYYNKswa4JU=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yLiWs50alCYAtA2V3eRQRP7S0Vex4XMwQzXpv6B0TgxEEA5A4ikr1XkB5l2erp1xKnlh/Vy3lvt/h2cAlmyN55eIlbe5lafRgLsXajRgj2m/CYdhQ6PgvZelrd2bX9YRgxAuqY6eaDIdaA0qyPGAWQbOySDdObrdDJO5WvHrDarAh6t2LgOdQFI7Kc+jYhJy9yFL69EC1gLviLbEjnfHtn4q1XiYIGiJfDBSgSlNeuy76XtduKU3oLWesVMo7qziSddiBHXRSiGbmZ4/wBKiezF5FXLCWSR080E4VnLQWYCV9IFis8JcQD/gmC31CJQV2hzxMdEPhM8JqHCEfHGdDA==
+ b=V9dyG6i/rbwchfI/KdGvICJHuwbLlxy0F+AKrnseRZt0Jlj1J23vptCTM7ommxACm0i/iLPC5B3xqERF+hKrtWAspUq9Q/uG9+pB/K/yamqU8HjV5iJNgr6vLaOZBlXfO1dAddetk2IYgcf6R8j+TxuTDj306LuZBwKFcGzyG5yclSKNJtOWNjb1ATZ/dS3YQiGFUeSUBrDMizrcb8r3Wiwh5Qy+7WNNW5K4gJwQKXIREi4k4ExAdHUQDwLylX5y8isQ6z6S01q+BgdjbZBcP3NPsj6oeSu6wHRHDycE3MPkWQNUPT0VUZ+jxjfbJc3yIAS5A3W3AbhRs/5GkmCMnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ETMZ5NoK2WiSlN6paRvMaoqyz9O26OG06Og+sPAr524=;
- b=Q83U3LgLGAr/DMG2rJyibXUZxmjdbGfQi1D259YS0ETxmOA5lCHNEuCz3BY+6ez2lXOltLHhvQ/Kn6SvznCPPPSpYC2g2viT0I/Mrjm1wHa6azXEh9dU/Pq+InLpneyKF2z9p/7LRALZBw7g60Y1Nlez3zUA5blJbUhQYSvO553pE5XCCOeWNZTC+QzCnlOWCaDqjZynCU6a8GBecO3ltjNcFAKQzoXdNwFuKfGr8v6sicYCF8yOjhRXFg2ydnvbstE4a5GJX17tU3XPFoO1s9woDg3aYLzNkAvan7lD4cZD7Uu0EUb/RBcq3tC5wTSpetXmw4tDnXRxFo0WoN8+XQ==
+ bh=j3JviBQpwSfrAAQVeEbzSZyJ9whuVjAN4LWwHJVqruM=;
+ b=QMm18C339j/8cq8gmXQCTusx5euyu/+lGMZSSnuyBJviJBn56w0wtV6U1ic+o10+WfjXGQw8VnNH27rwCgkslbYi9102dt4nxf6BJYAdrn4IviU63sdkfxVl+HbXb2IZUZP4jDfwzD9mbKciiVAUBAMexH3hM34kQutGpnI6t15PKDdffpZxrPhnTAPCyFMf4LKng4TPS/kQgEERbPJOqeQ3WomAg3lk4Qz/aJXUhVhS5xn/ZlfESZSN0gh5axt54MMQBkh0KMqvgbAovpf03BP9Mdc+JOu87Cn6k1+A6SCTiLuJ72aJ8QcxaRGb6A3jS3cME/N15hmysa/AYGfVng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ETMZ5NoK2WiSlN6paRvMaoqyz9O26OG06Og+sPAr524=;
- b=HdL3klMHxiYQOIc3ImEgtNxJV7uKvpsQ92A9ktSn+K8n1ewRbaILju725akjYy8h64pFKLcI+r8wXxYp8WtYv1O4kHKFj9xjdc3v0YTfBTqcbQ8KkDmHcFOplNCRMUvMiKuqpOtjrcKDWdqpeWzWhfTFYaLXXWAPX98ZyXnoJaM=
-Received: from SA1P222CA0177.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c4::25)
- by DS2PR12MB9567.namprd12.prod.outlook.com (2603:10b6:8:27c::8) with
+ bh=j3JviBQpwSfrAAQVeEbzSZyJ9whuVjAN4LWwHJVqruM=;
+ b=5bIZHJDNyI4tlRCUGrLCzMJCY5GA9B/NPXiQRqj7E362D2YQnn/xmw5YkTyGCXa/O27C7EDikCXTh5IO2C9BN9Npvz0gUCKn3rVZHNG+xTCKn0SubcMnSK4/TIMfHrkufs3WfNabvOesvtC2tFBw75eQNtj8FsmPBq/vXUjKzFg=
+Received: from SA1PR05CA0013.namprd05.prod.outlook.com (2603:10b6:806:2d2::19)
+ by SAWPR12MB999141.namprd12.prod.outlook.com (2603:10b6:806:4e1::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.10; Mon, 9 Mar
- 2026 12:08:38 +0000
-Received: from SA2PEPF0000150B.namprd04.prod.outlook.com
- (2603:10b6:806:3c4:cafe::4d) by SA1P222CA0177.outlook.office365.com
- (2603:10b6:806:3c4::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.25 via Frontend Transport; Mon,
- 9 Mar 2026 12:08:33 +0000
+ 2026 12:09:16 +0000
+Received: from SA2PEPF00001505.namprd04.prod.outlook.com
+ (2603:10b6:806:2d2:cafe::7e) by SA1PR05CA0013.outlook.office365.com
+ (2603:10b6:806:2d2::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.24 via Frontend Transport; Mon,
+ 9 Mar 2026 12:09:12 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,17 +83,17 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF0000150B.mail.protection.outlook.com (10.167.242.43) with Microsoft
+ SA2PEPF00001505.mail.protection.outlook.com (10.167.242.37) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Mon, 9 Mar 2026 12:08:37 +0000
+ 15.20.9678.18 via Frontend Transport; Mon, 9 Mar 2026 12:09:16 +0000
 Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 9 Mar
- 2026 07:08:37 -0500
+ 2026 07:09:16 -0500
 Received: from kaveri.amd.com (10.180.168.240) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 9 Mar
- 2026 07:08:26 -0500
+ 2026 07:09:05 -0500
 From: Shivank Garg <shivankg@amd.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>
 CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
@@ -108,50 +109,52 @@ CC: <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>,
 	<riel@surriel.com>, <shakeel.butt@linux.dev>, <stalexan@redhat.com>,
 	<tj@kernel.org>, <nifan.cxl@gmail.com>, <linux-kernel@vger.kernel.org>,
 	<linux-mm@kvack.org>, Shivank Garg <shivankg@amd.com>
-Subject: [RFC PATCH v4 0/6] Accelerate page migration with batch copying and hardware offload
-Date: Mon, 9 Mar 2026 12:07:20 +0000
-Message-ID: <20260309120725.308854-3-shivankg@amd.com>
+Subject: [RFC PATCH v4 1/6] mm: introduce folios_mc_copy() for batch folio copying
+Date: Mon, 9 Mar 2026 12:07:22 +0000
+Message-ID: <20260309120725.308854-5-shivankg@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260309120725.308854-3-shivankg@amd.com>
+References: <20260309120725.308854-3-shivankg@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.180.168.240]
 X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb10.amd.com
  (10.181.42.219)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150B:EE_|DS2PR12MB9567:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8803a4ec-ddac-4949-d6d8-08de7dd49875
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001505:EE_|SAWPR12MB999141:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e1614c5-54e7-4ef6-dd57-08de7dd4af8d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|36860700016|1800799024|13003099007;
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	3a6q06snTWX3fVbX08uPX87kNa+YGEn7ncPBIgrBCVgkyiCcO+vIt+sp8TGYs0OdZWugage18pW2gVMyQk4BrOPEQfYbq6TakOzCD0yURUdQqxr1hJgTaT6h8Gh5rdGsPpR03RtPOEZtmAYHZGDL/BLs0+UFU37VLYpPJYOC56gMGCY6jkKFg7JxrCFd5w0iH+9IBnwWNu7pnBywdm13XbomANHHT6TQkgKtcYz1uNbcD/ycrz5p1dNB1yILddNvDsOYzJYAyMwaSsZFca846juZcOBAgvkmL4qlK3nyFcrg14/OXWJsC3fxsd76gV54N75KM28uBJw6UWFN5e4tRm9iIvcvEsF6erpsw7kSdudsylVbfcm+yj+Ht8ZhmI3kADVjr4jlY++8Dwyldcg3mpw6SQR83YHc0Rg/gXMkEDbrGP8Yuxvtb+TrmQCQNuAuRpySWeMe02buKOD+QSdTKlWMifdyTREoa8yJjzdyx262HWHInymctNAt2GGweHGCLrj9AgcEiCsMlu3lpN5vJLQ69qdtBS6hFiEKsDcIcKxA9g46GdDnb2hM+hrRIaXQZFKRXY+MG1lNsuOARakPOqstUa349Ar4u5zvdBeoZJ5Rs11A/0cic5MwhnjO8icTr94LHd73GpaUi7PpwgwhH3lPBE64bTsfEb/WKgXvMaeA40laRULQYc6dXLgWJtH2EXrHvi1UFYlc8w/9/O74Ab8wWFhndVoNzM5gnRyQ+p8=
+	o+yzEPjzqwMnXxWwIQIxHPIa/KMFJ24FraqeV0p/tYyDVcHIx8atWR0fu5CvJJpPyFY6y30tO/cjeOSY0eBR1rM5PuID1mZYZou0kUbBKWcj4LBnu5nSwePZgqX8i5OgKlgaZDieiXDDMJG+V3PctaFJn8jEc/rQt2TL/A+k7ppBa8RyhCEGliHAdZSBEjnJ/XriT6zniILfl7YjpuI1nYXzkOKHB+6QKZFC3jQMSBs1GP/szPGRfJws58dXjcowbCXcnLyMXH7tM51Hldf2rzYSU2Jw3PM1evoFFwdHwbkKoL0kduBNAUEX1dTFJLIVLGwu1L0OwD8XHrHvCbvI4M42ihWevXfievMac/Na7lDvXhZ7aV/E5B0z1FCbcAWtUMETfhby0ffQals98pL1LmHiUwi6EicbnTB9T2pwzEQBrBLySm/fYpJ4MipBoZk0MHKbrC35+L0AKQS9lq3nNgSUA4x17lhH2aVTIrK6IpQGwmlOoulXxjJzb1iaIovTpV+h2inOf37WfPOqZrSsnkNebxP4hWaAzYv5v3zv5HD07CXchH175Wl4i15+rVUCQM+WwbOU3eiMsG6rFwBAB7lFvHnpB1GunlhjNbcSu8SojkW8eJixtVCk+tbKTiH9iNzVEqfzbRzDCg7WBWccsAQo2ZVA2lnBfN3ahpOGnmSNSHAgliEllPwZol3O7HKdJEaV35rBDx4q5NUJ53mhPAIdt41ZdxVF6a81L5OKRidarHEUe+0Ud0k+0wMCzqvQzvZ/EJTZwbZvS7uwQVAzvA==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(36860700016)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	16mVyh/09iOcZPfDxiyAt9qOXmKYdJ9N+qhfSloHrn9Vx2WY0PJ06FTaINGJheXJyF8yTwUd0shm1eKCkzEtVB/umfkYS19LyCq4h27/2ZIL9jkLLrbivs9L3BM2uG4g/le+sbgaiGpel46jwtK9inFgmamK2ehwz4Vi0DgWQeTwxyUPevehBqpF/HGxNTLJTgsSx6wYAcJCnuz2BgG7WEQ5pV2E74HGdjTAP869KOvXYH8vr8fgDSWxWADWV9naljuvGQNuXv3NCssomnlmtm6VwRn2PHdBvuxi4tuhp+jjp3YvQOHZJ5iEUq8bInKog8cpxD+e7FbcZBHu+yL5QTM3jTRvgQTqrOsE7odDGDia8LLRLWG41Z9D/6w4QndxGt5OZwNOk1MHOYgRECnMQzb3yQLbQHg5DQstyB8+UprBLcdI5RJtqHZ1I9Kz7Q/j
+	PKUbSv92d6ato9RgZBRV18xICSFjDHf9+Yg42SqSdH4q9II4VoMpCUOiaG6Ya88m5/7Zf6gYFK5KGTwoPbFQ45vZyTZPovVFg+csGD/y+4fVEnoFgDSYLpOd1h+uhqGZSoWJcLxvCbxnQcGYnWLmadDohYxFwzf886EJTU+4zwDNajzwGMwccZnWxod3nog5Kq+ESdrW/4j7TN6o7oURwSdnc4kYSAaOq3StLPT6IEk06eqhlgyhWQF5Ge29l/wPKQqbKfHo7kfNVeroa9oIbeFeXDar12SjcaB3G5e9AmS4lu+2k9tgw4BvIy4tKxgoLRdeJP09VC4twbdIbp47uukvOzLeo0yN82a40VRQxMJs+pF90SP8ZFzp2CXyG55dsoY0eVdijltgfYkAGzKWhxK42LKjRgWYVohDlyxLUAC0ToHnb5FYA6ey92YxEWjI
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 12:08:37.6910
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 12:09:16.4410
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8803a4ec-ddac-4949-d6d8-08de7dd49875
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e1614c5-54e7-4ef6-dd57-08de7dd4af8d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF0000150B.namprd04.prod.outlook.com
+	SA2PEPF00001505.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9567
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9F9DC140009
-X-Stat-Signature: 7a8yhp8669rtny1ucxibzxe1t9s48ear
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999141
+X-Rspamd-Queue-Id: 629D614000F
+X-Stat-Signature: zqrj4ttsi489ffzofn5tum4emce9eycg
 X-Rspam-User: 
-X-HE-Tag: 1773058123-380552
-X-HE-Meta: U2FsdGVkX187RgUXH9/MLEZrrFnweXs5Sul9va9JP64mtuzP7BNO0ENGzb2yZBmhNTI/3dqmysHKclJa/xNsvDpYUlTeK37Y4zJpHfQ/WATocjAlvkiI/e7U8VJoE1Q05UCDyaqlmgppB3t2YisD9zEFOWsvvNLr5m5ITL4W8bcRd9rba3/b+g8pX5CGjWX2frZmuo9DYYzENYmiP86dR7LmO6WSlTr9W9FKmYdEnRJVkmUZJN2XbUDlw9B+nqevlYUiSPfHrDmcCni/Ya5av+ZfH2pMhoudCknLmHU+CjUSueyahxZN26NPuCPoowj57kYrFBu0p/v3aK/GN1CAiiK3vxE5T5JCJSit0kErAOPFEHV0peiA+d4h987oX5fU2jlmv458sAFfv7mqPVCQraSIfV1zCWcKIQaQ9zs+WZq5MvguI7VELhlT118EY6CJuGa0cjZsv6O8T2lzqYLHRnxKdfgHHHLVuvkFUiyREIMLJksAqv9wW5/8PgExgPwvLqaEXkO4+05iDnjyyLCxB/X8/cfCOk9uOVBAivif90jmFrl5ykcGVOKKQNxTv0B7NGVzgmOu2V/uf5EWyfSrjrMklS2IDN/jKsefKQEaXOW1rLLUA7kUFCCvB+xf+quopxBjrrJ8JvMWb8uiRa2wQ6jZm1pzTD0wZSf/OLYHBpd7/KA+Tbr/LcJ9fX8b01h+xLhUoqAWT8x2SWwo7CD7mC0iWUdoa+svtWaZWekx0wzGq04fPPwLDMP3in6TwSkmWWs/2MX+QbOH1q43bRBjVpUQy/ivqFIStNcG6eGU5LniXSAvS2LyRo7W/iNngEo2gPaW4CexFAQvwcOD0VIT4zurnSaokMXOiR4h2XClCQxyW/y0lOYuynpeeE5W9Y6A2K0leydR2CjArkRA7LjS9yt0mJELT7n3Kbim+zS+98xCwKZzFTvOEI8UyEJlLwgZkO3uLdM214aHoNFY+AC
- ClB5AGpW
- qwwj1rXXFoS7bUfAUZwu3GqLNt5jKbMJUPQR7L+jZhYqBGIHrEzrj9W/L+moRL6zRkw4jw37HrvB904tRaGDnVpf7AZRi19DPihqqXQjBDSDAcy7vYSSWQkYVdC84tpen5TIqph78Ug4MgpDtfj/CcOJ7EBphCB24g2PAfX6VAFnxkYP6pnCea6BA3wU9naThvFPrrpkrF8ZhXvZqNcuNEF6phLi6lxQlVnP27vJbIMiwiox3hBHhNrSvO4C23akBjdgvjLSUfRozDPKtFpGzWNteMGYjZRHXBvm1VgtovCbKerNT/v7AZSG+Vm+x3y7Cf06KAnSJg4Loq0I+m+PX1qBoAIxXaRZ21E15M4EteCn+m+sBU+N+Qil3nb0qlh4o4r4hsocP0wdlAhMx0E32V6z4clS+0wNipbYVWwDes/xxbLBx8m7w9UO8rM/QXWaGUCnALK/nTdpRyPEtbQVjCOyn8V9aXlrqmLkxDQbrBs3n2SRoDowDRuPCdMAkiovPl1ZezNGGTvMDk3vMqzu49vst1mInA+enryRQIp08eMNQ0QZZqRnkY82FLB+oNxFwhevdTXGueooidjGdcjHg9jT5q5qGgzCfoI/0hNeG6W8nGOPTW85PN7Mr0rc2SHv6k5lpr68dtQphBdZ3h9Jpz6oCnUKhtolP9L23o2JKPr1N6Fj0xrPmgbAlmphwLPAt+gfdsUdDBYdr6Lg=
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773058159-413500
+X-HE-Meta: U2FsdGVkX1/VsbliGstnnFyZJvIhmNAMHK3nXaXTWUgnShLj0j/pmsfg4fMduA1LHh4yQDqjbczo3c2hF/Dnb278JNjjwIkWcArkhvQ6i0yYEAl/R7a67AvZHQA9I3/dJhQdpRfy5o7OXZR+7pLdIu8/Dme1EXXnFXP6PAT2R6gOUw3tTUk5ObtSUSs74EQlX0WtcHEJ3eXeD3IXBohcVIiqsDM12vu/byopkoGiChtkPFi7p2teCmWRk9GhpmJ2MLqtP+Z4Yl62M+oee5HEmZl4rexGrv1mpFW1H6Wq8bMhGhjuUT3WMCHLXL0v1XOLXJn7D7Ln/077hke+owc7Kx6cWfC40EJGK10mJPnMnIOeiyr2CVYgxQ9ZLdITYr+zuxGKrMSEE17v7ndfZqUmmCTPUrbrRLY3IoKqXyFG6ptt71j8OU2iEDasASPCZ1kdqVukK5CDQq+hyHO0Y82Udl6T78AP1yHyk5bRqpsLu6l7ZjEQxRVgTexJOEDxFrAqjKxE6YdS/zgVFoXXb988P9Gnswdf2zhINit3eScn3Yq/epQbv86XtSCOw7W+Vzye90HzPpgSoSodE3Ac4jkLnXdlS8E7g1aX3Bn4IRo45014e651BHf2HjOtxHuLW97Qk1+8OBlRwYsX/JxDGSId7n8EW2HGPwMrsnRtH8ovcwziTEq6pUrFi4AYHwDgNEFBN0Ef+xvvZnu5WIF17Oh4rY7QBP41e7cGQgAAphiUSHLe8W8p+PNZF8iC7it1Asd79yRowTvj/hFv+c0WlDF/lWPj3dCLpO1NqY2ePEuoi4wrVA6UbFEi/0YdKGZj/M8fI69XfBG/ABCzMEcfoU54e57duv0a8NNHB3+eA2BDuJpdteWp3Tu4TwC5ZhaiECdvMKemutIQv5SuxPRIFqX6pHkoM2bfBhsfwlZ5VEZ2AyaB0/6KrhUgf/gMicBFImxdk8Mx8FNu7DO8ehgsz3Y
+ npx7Seqz
+ hwVuEXQ6Kcn7xl2t4N4lHeXYVK+MCRIhcN/holhUfc0xaKMRRHgrtapAvz76TPZ/8H4+bm3oruOwCNNGMVqZNdlYV7cTIaxgm+tRV2AR7DudSuDblpIJI2wz/lbDmz36L0X10ndjl8zOvuEu68Gas6mAkhHR0dFjX/HFH7Tb8l2uUh/iBH+pF3oMslHIyhIDG9NYqABcku9wh9+OsReSm9vAWXQWf5ZgUR3GSLQw1likJ7kKG6Qc+l3/7m5h6KZHs42FBPiTyb1Wn2fY9Bme/CvUaAhLahdA6C+pcYoVi9h+TRDEA8tw02SJYYYC0YQp2s+C02ruYGWubTGUMHT94DUNCr0LA1K1tuEttUzwq6UmwyaCwRoYFQM1QheYzTTsfBppXZ5iToG8Ju9YIxHT3cWfWIY1bzcXGa8xhExyKhre4TWAyuuPmjnYccbikxLMUpsl5oI8YnmYOKF93WUEUYenBOQQSriVwV/ufEfnYcBCGSFQERb3ifTwieb45ScOmK7CLNaMjIGkITTZXERRjlCWeU+vz2j913O/hDqJwqE/9nHcHZ7K31Wq7+TzOnBg0JKvlefZF3NSp1NeU5u2MnJVVA8ptMzBRhibE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,209 +162,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the fourth RFC of the patchset to enhance page migration by
-batching folio-copy operations and enabling acceleration via DMA offload.
+Add folios_mc_copy() which walks list of src and dst folios in lockstep,
+and copies folio content via folio_mc_copy(). folios_cnt parameter is
+unused here, but is part of the offload_copy callback signature used by
+later patches in the series.
 
-Single-threaded, folio-by-folio copying bottlenecks page migration in
-modern systems with deep memory hierarchies, especially for large folios
-where copy overhead dominates, leaving significant hardware potential
-untapped.
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+ include/linux/mm.h |  2 ++
+ mm/util.c          | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-By batching the copy phase, we create an opportunity for hardware
-acceleration. This series builds the framework and provides a DMA
-offload driver (dcbm) as a reference implementation, targeting bulk
-migration workloads where offloading the copy improves throughput
-and latency while freeing the CPU cycles.
-
-See the RFC V3 cover letter [1] for motivation.
-
-
-Changelog since V3:
--------------------
-
-1. Redesigned batch migration flow: pre-copy the batch before the move
-   phase instead of interleaving copy with metadata updates.
-   Simpler design, avoids redundancy with existing migrate_folios_move()
-   path.
-
-2. Rewrote offload registration infrastructure: Simplified the migrate
-   copy offload infrastructure design, fixed the srcu_read_lock()
-   placement and other minor bugs.
-
-3. Added should_batch() callback to struct migrator so offload drivers can
-   filter which migration reasons are eligible for offload.
-
-4. Renamed for clarity:
-   - CONFIG_OFFC_MIGRATION     -> CONFIG_MIGRATION_COPY_OFFLOAD
-   - migrate_offc.[ch]         -> migrate_copy_offload.[ch]
-   - drivers/migoffcopy/       -> drivers/migrate_offload/
-   - start_offloading/stop_offloading -> migrate_offload_start/stop
-
-5. Dropped mtcopy driver to keep focus on core infrastructure and DMA
-   offload (for testing and reference). Multi-threaded CPU copy can
-   follow separately.
-
-6. Rebased on v7.0-rc2.
-
-
-DESIGN:
--------
-
-New Migration Flow:
-
-[ migrate_pages_batch() ]
-    |
-    |--> do_batch = should_batch(reason) // driver filters by migration reason (e.g. allow
-    |                                    // NUMA balancing, skip other), Once per batch
-    |
-    |--> for each folio:
-    |      migrate_folio_unmap()        // unmap the folio
-    |      |
-    |      +--> (success):
-    |           if migrate_offload_enabled && do_batch && folio_supports_batch_copy():
-    |               -> src_batch / dst_batch    // batch list for copy offloading
-    |           else:
-    |               -> src_std / dst_std        // standard lists for per-folio CPU copy
-    |
-    |--> try_to_unmap_flush()                   // single batched TLB flush 
-    |
-    |--> Batch copy (if src_batch not empty):
-    |    - Migrator is configurable at runtime via sysfs.
-    |
-    |      static_call(migrate_offload_copy)    // Pluggable Migrators
-    |              /          |            \
-    |             v           v             v
-    |     [ Default ]  [ DMA Offload ]  [ ... ]
-    |
-    |      On failure, folios fall back to per-folio CPU copy.
-    |
-    +--> migrate_folios_move()      // metadata, update PTEs, finalize
-         (batch list with already_copied=true, std list with false)
-
-Offload Registration:
-
-    Driver fills struct migrator { .name, .offload_copy, .should_batch, .owner }
-    and calls migrate_offload_start().  This:
-      - Pins the module via try_module_get()
-      - Patches static_call targets for offload_copy and should_batch
-      - Enables the migrate_offload_enabled static branch
-
-    migrate_offload_stop() disables the static branch and reverts both
-    static_calls, then synchronize_srcu() waits for in-flight
-    migrations before module_put().
-
-
-PERFORMANCE RESULTS:
---------------------
-
-System Info: AMD Zen 3 EPYC server (2-sockets, 32 cores, SMT Enabled),
-1 NUMA node per socket, v7.0-rc2, DVFS set to Performance, PTDMA hardware.
-
-Benchmark: move_pages() syscall to move pages between two NUMA nodes.
-
-1. Moving different sized folios such that total transfer size is constant
-(1GB), with different number of DMA channels. Throughput in GB/s.
-
-a. Baseline (vanilla kernel: v7.0-rc2, single-threaded, serial folio_copy):
-
-============================================================================================
-       | 4K          | 16K         | 64K         | 256K        | 1M           | 2M         |
-============================================================================================
-       |3.55±0.19    | 5.66±0.30   | 6.16±0.09   | 7.12±0.83   | 6.93±0.09   | 10.88±0.19  |
-
-b. DMA offload (Patched Kernel, dcbm driver, N DMA channels):
-
-============================================================================================
-Channel Cnt| 4K      | 16K         | 64K         | 256K        | 1M          | 2M          |
-============================================================================================
-1      | 2.63±0.26   | 2.92±0.09   |  3.16±0.13  |  4.75±0.70  |  7.38±0.18  | 12.64±0.07  |
-2      | 3.20±0.12   | 4.68±0.17   |  5.16±0.36  |  7.42±1.00  |  8.05±0.05  | 14.40±0.10  |
-4      | 3.78±0.16   | 6.45±0.06   |  7.36±0.18  |  9.70±0.11  | 11.68±2.37  | 27.16±0.20  |
-8      | 4.32±0.24   | 8.20±0.45   |  9.45±0.26  | 12.99±2.87  | 13.18±0.08  | 46.17±0.67  |
-12     | 4.35±0.16   | 8.80±0.09   | 11.65±2.71  | 15.46±4.95  | 14.69±4.10  | 60.89±0.68  |
-16     | 4.40±0.19   | 9.25±0.13   | 11.02±0.26  | 13.56±0.15  | 18.04±7.11  | 66.86±0.81  |
-
-- DMA offload with 16 channels achieves ~6x speedup for 2MB folios.
-- Larger folios benefit more; small folios are DMA-setup bound.
-
-2. Varying total move size (folio count) for fixed 2MB folio size,
-   single DMA channel. Throughput (GB/s):
-
-2MB Folios | Baseline    | DMA
-=================================
-1          |  7.34       |  6.17
-8          |  8.27       |  8.85
-16         |  7.56       |  9.12
-32         |  8.39       | 11.73
-64         |  9.37       | 12.18
-256        | 10.58       | 12.50
-512        | 10.78       | 12.68
-1024       | 10.77       | 12.76
-2048       | 10.87       | 12.81
-8192       | 10.84       | 12.82
-
-- Throughput increases with batch size but plateaus after ~64 pages.
-- Even a single DMA channel outperforms baseline for batch-size >= 8 pages.
-
-EARLIER POSTINGS:
------------------
-[1] RFC V3: https://lore.kernel.org/all/20250923174752.35701-1-shivankg@amd.com
-[2] RFC V2: https://lore.kernel.org/all/20250319192211.10092-1-shivankg@amd.com
-[3] RFC V1: https://lore.kernel.org/all/20240614221525.19170-1-shivankg@amd.com
-[4] RFC from Zi Yan: https://lore.kernel.org/all/20250103172419.4148674-1-ziy@nvidia.com
-
-RELATED DISCUSSIONS:
--------------------
-[5] MM-alignment Session [Nov 12, 2025]:
-    https://lore.kernel.org/linux-mm/bd6a3c75-b9f0-cbcf-f7c4-1ef5dff06d24@google.com/
-[6] Linux Memory Hotness and Promotion call [Nov 6, 2025]:
-    https://lore.kernel.org/linux-mm/8ff2fd10-c9ac-4912-cf56-7ecd4afd2770@google.com/
-[7] LSFMM 2025:
-    https://lore.kernel.org/all/cf6fc05d-c0b0-4de3-985e-5403977aa3aa@amd.com
-[8] OSS India:
-    https://ossindia2025.sched.com/event/23Jk1
-
-Git Tree: https://github.com/shivankgarg98/linux/commits/shivank/V4_migrate_pages_optimization_precopy
-
-Thanks to everyone who reviewed, tested or participated in discussions
-around this series. Your feedback helped me throughout the development
-process.
-
-Best Regards,
-Shivank
-
-
-Shivank Garg (5):
-  mm: introduce folios_mc_copy() for batch folio copying
-  mm/migrate: skip data copy for already-copied folios
-  mm/migrate: add batch-copy path in migrate_pages_batch
-  mm/migrate: add copy offload registration infrastructure
-  drivers/migrate_offload: add DMA batch copy driver (dcbm)
-
-Zi Yan (1):
-  mm/migrate: adjust NR_MAX_BATCHED_MIGRATION for testing
-
- drivers/Kconfig                       |   2 +
- drivers/Makefile                      |   2 +
- drivers/migrate_offload/Kconfig       |   8 +
- drivers/migrate_offload/Makefile      |   1 +
- drivers/migrate_offload/dcbm/Makefile |   1 +
- drivers/migrate_offload/dcbm/dcbm.c   | 457 ++++++++++++++++++++++++++
- include/linux/migrate_copy_offload.h  |  34 ++
- include/linux/mm.h                    |   2 +
- mm/Kconfig                            |   9 +
- mm/Makefile                           |   1 +
- mm/migrate.c                          | 133 ++++++--
- mm/migrate_copy_offload.c             |  99 ++++++
- mm/util.c                             |  31 ++
- 13 files changed, 748 insertions(+), 32 deletions(-)
- create mode 100644 drivers/migrate_offload/Kconfig
- create mode 100644 drivers/migrate_offload/Makefile
- create mode 100644 drivers/migrate_offload/dcbm/Makefile
- create mode 100644 drivers/migrate_offload/dcbm/dcbm.c
- create mode 100644 include/linux/migrate_copy_offload.h
- create mode 100644 mm/migrate_copy_offload.c
-
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5be3d8a8f806..e1ca4d6b7361 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1644,6 +1644,8 @@ void __folio_put(struct folio *folio);
+ void split_page(struct page *page, unsigned int order);
+ void folio_copy(struct folio *dst, struct folio *src);
+ int folio_mc_copy(struct folio *dst, struct folio *src);
++int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
++		unsigned int __always_unused folios_cnt);
+ 
+ unsigned long nr_free_buffer_pages(void);
+ 
+diff --git a/mm/util.c b/mm/util.c
+index b05ab6f97e11..5bda599168f8 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -749,6 +749,37 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+ }
+ EXPORT_SYMBOL(folio_mc_copy);
+ 
++/**
++ * folios_mc_copy - Copy the contents of list of folios.
++ * @dst_list: destination folio list.
++ * @src_list: source folio list.
++ * @folios_cnt: unused here, present for callback signature compatibility.
++ *
++ * Walks list of src and dst folios in lockstep and copies folio
++ * content via folio_mc_copy(). The caller must ensure both lists have
++ * the same number of entries. This may sleep.
++ *
++ * Return: 0 on success, negative errno on failure.
++ */
++int folios_mc_copy(struct list_head *dst_list, struct list_head *src_list,
++		unsigned int __always_unused folios_cnt)
++{
++	struct folio *src, *dst;
++	int ret;
++
++	dst = list_first_entry(dst_list, struct folio, lru);
++	list_for_each_entry(src, src_list, lru) {
++		cond_resched();
++		ret = folio_mc_copy(dst, src);
++		if (ret)
++			return ret;
++		dst = list_next_entry(dst, lru);
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(folios_mc_copy);
++
+ int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
+ static int sysctl_overcommit_ratio __read_mostly = 50;
+ static unsigned long sysctl_overcommit_kbytes __read_mostly;
 -- 
 2.43.0
 
