@@ -4,143 +4,214 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3590EF36E8
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 06:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE396EF36F4
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 07:22:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E80146B0088; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
+	id AAFB86B0088; Mon,  9 Mar 2026 03:22:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E37946B0089; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
+	id A5CF66B0089; Mon,  9 Mar 2026 03:22:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D360A6B008A; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
+	id 90A926B008A; Mon,  9 Mar 2026 03:22:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE4F56B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 64F228D280
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:59:01 +0000 (UTC)
-X-FDA: 84525622482.06.798941B
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8EFB81A0014
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:58:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nLBITQ6y;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3566B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:22:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 021DF1CCBD
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:22:42 +0000 (UTC)
+X-FDA: 84525682206.27.1861811
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B967720008
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:22:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=a02bKuZk;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Zh7H0Ohr;
+	spf=pass (imf13.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773039539;
+	s=arc-20220608; t=1773040958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
-	b=yu7sZ0VCcBo4PIQ4oW854m1WXaaWcl9U4d+BCk/Qy9+MzQO9z3rSvICPehYkBKQtPphz7J
-	e81fF4hj2NZ9ePNNiEHKZwjjZANeN2WxALazaBwgV3dhyKXHpV139EJsuv/tmRiymWZ5QC
-	bg6WaF1jlEaum8JMoGn2SgU2I76kR5k=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773039539; a=rsa-sha256;
-	cv=pass;
-	b=vPUOcPxFCf+FSewcZH7nASTBj7jxM7lmdUPSZYMdw33DIqLesxr2VCkERJjud2xQ8WqseS
-	5RirvaPf2NBScn1sMIsWhbp4I6aJAB2GkFBQrfd3pCyMJnb+njs9kZSrG4r/5TA2j+9POz
-	ITSSog0Om3YC1un6pXgawo5FP3os6XI=
+	bh=VFuKVeeRR343OvwIs9Pi21PXnu5qHljRfbiVAuQw+QE=;
+	b=nSFm19tlBqhRUMhOYCtViTLK4YDgHOgJlCxlQ8SfpDp0lulVTKvIV8f2V757fxw3ls4e3j
+	Wmo3TNJsecO4BaFGr7uOgjlbO0XE89SAP48Kpr582gfFpZHFHSPw0CgC+L8h/EiSN7dLF4
+	R13zyNRX4Mc/08SWMVDk++MDUiLgFCU=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nLBITQ6y;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5ffe41e8e83so1674760137.1
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 23:58:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773039538; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QrcCXGk9VXxK223L+1u+CnLgAjnLuZNCvpQV+vYLwe2g519N3q0ZJOm10y0swqctqI
-         bhyzhpTm1Z6tslDoYQHek/58cEi/xEOUWiz4bJ90yoTNVLWhOovxmfGP1BBohOU0LyN9
-         NBjEk+ieZCuoK47bPmT99w5UJyG7voOJFkhwxxHwp0kzqY7ERhwaXKmjMKf1cLk9dSix
-         wkEtZcBBo7hQ3IogMQfuXfdKdIsNCcu3+I7+eGUe7ryjQFqi+JZRDDlEQW9PM+Jovqsl
-         5Lag2f9fwbl2qLJMeFkc9UA85i04JVqLfLd7Oq2wpasthvT6Jz7aY3vRPhlEM0zc3jFw
-         KMSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
-        fh=n2OJZ2bRKRY27K/gljfq5vlP7dioHL+8odNJK0co4T0=;
-        b=HrT8nnTY0v5d3jzOJmei5r5oT/DWWH48SV3JoSK6NBMNxUE5kxVb8kgP9hnKh/0Nez
-         UHPYtu1fijgC9qISsKg9nSWryPGco+UKyLTviVyOgaZIx9qH2hCfhNlXokDUGpMiwwgS
-         1OAXI9ktxQluv2X4ffjETY+qxPeyHBxSvVNiIKN1c/a3y+8uovT7IRp1NbNvSLOSDjoN
-         OclJhkX1nZEcDK0yTnFIBJHMLAfc/TGCSO4bxGEWPAbWeKvHluYRYMLGl0ivJwg26WTg
-         JWK0kQC/JxM74txuz78s9JVXoYlm874IcXSxC6g3LLvzAv24Z5AY4fBWdnQyTwg/ySjs
-         kyjQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=a02bKuZk;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Zh7H0Ohr;
+	spf=pass (imf13.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773040958; a=rsa-sha256;
+	cv=pass;
+	b=Szu9bO8YEXiKxDNt0DRYFC0dbIW2On24YY0rtNiNiFLpZxBwySarUYaqphdBffWyatvkyx
+	1XQksJLG4ZicqvrTWkbq3G9S9Wgwrba79zjRSmeep5jYXHNAi2bopx61u9VMfsWbdkcYG6
+	9xCsYf2YSJDB6VJXEmzk6cmwPHbi4iI=
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6290mI0J1004109;
+	Mon, 9 Mar 2026 07:22:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=VFuKVeeRR343OvwIs9Pi21PXnu5qHljRfbiVAuQw+QE=; b=
+	a02bKuZkeKgTq2afWKl6+ThO+UJhhy5nFN/uq+IWYmabJEPSFrgDz7yIXu7i+bwZ
+	eA0+Rs5tglgDCjx+vkyOM1skKkA6YToTQxS5BDFk6+TNYIMQUGT4l1LMcGFkrW7H
+	KYlYdnSuCHP5UmTs9wxOzSNVvU1x4pr4Fs/WUdq5coIT0PPswDOkm8sZGTFdTqrr
+	qSrzgo94JiKlw31qHB8RoLuzvCprsZmyDqtuHBjIyYiH3/skUowTZr25u31Pz6hR
+	d37wNsHt5/zPPsCb6ckRj1NtFAVq8btTUJOjqUb35Iw3S7bIpviu2aukjFeWb0tM
+	uckaDDfHM6KAQBlA9pq5mw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4csjnugaqw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 09 Mar 2026 07:22:31 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62958WXe020504;
+	Mon, 9 Mar 2026 07:22:30 GMT
+Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010043.outbound.protection.outlook.com [52.101.46.43])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4crafcasgr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 09 Mar 2026 07:22:30 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=irBMRjY6S8zAPJH54DkVvDWZcJPKg1yfC65k6SuSh37deYt0spQOR56HfXflRdaNLvashR14Kzzq44/GtoC/iXjrSg19jZszouvhVGoHBvDLZaAG/bQ3xub4vdWr6pDJichbjQ5O2u2Fj4ms+rKsZWkaGNXWQltpyGkrKkAIdH9HWW4qyLwpWzquKAEFpch+DO9Wd61eP181JIuNJCmiwLhWH6JUKq224gwXJZzgf9GWvyqU2XHtAhC9Pz/hyu89im+H81F7b0mXYI2n/gb/kpXtB/AWdW7m994UR9NYOjLmkqpnNkbNY50HPqUQFehs2BTg2G8MbEqMrw+430Axmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VFuKVeeRR343OvwIs9Pi21PXnu5qHljRfbiVAuQw+QE=;
+ b=homCn2QmEgT1napoJsLqbKyTB65j4ZtDV+mF/rCtRvPCbtPZDEvtuQWaAj1GOQutg8mrPinVlWKBaChIwt/cPEk3IuMY6BuXbzWxagDG72ZTcExznxd1RORwB4Z1GcmDHGWg4OGCB7uB5MIU2/rcwvAmM8JV2lVSrJWUbrDMOYQ8nnKXJpL+7nP0mQy24pzIPTzt10Kdece320gJ/WuNKptdUctN+bu+YQdiOIUE94jclW1IDgsyrK4PJFiC9AbzFeGfR8CCM7lvR6OUpOrYNjTwBZWpgeQLopxeDepMHrHA9rJw0vzkNj0UJVaC3vb8OzOLmdkRs+6GnXlYJB/6tA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773039538; x=1773644338; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
-        b=nLBITQ6yzldzRjiWVsKwCz1U5LZyJ1KAKsjqFmTyN/WmCXJP7quUcWZK868MrkIhH6
-         GBqNxPbstrCQD+LSySjvmaTKX4VKcnKxJGj6AjTnNlMV8j6QFNeKIVup76kWTts5KFsO
-         WlB/k5WopCY1SbW5sLNr0MUhNy8sIdAST4w+6otsB01l+GNGyDzTy85ypO7ie0T6RYoR
-         m2cHR8pBtRpyZgWNIiRfQrXDxUA/9EriVY9PQPGgO4fRzrbnlNihTJQmkrpJ//Lo56+B
-         ToaanE2XzpGAed5M5G9ETApoa2d/P5qW3THTG6zqSlYuKafLZe2tEMTkFz5pJAQ3j1hQ
-         TvKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773039538; x=1773644338;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
-        b=iIkHlorbLbgWRHHn8JvZQdO3f3rmjjOkXbIQNCLR96QEQEeZOAvy0Yzb+jaHGQEGaD
-         20xy+QdHZkyQimhqE3GiycH5n4yP2ysIdcM5xZLujyZcZ1NUhUFMUgcDlEfDF41BId9j
-         NVmOCH8CQ7iLYhbfXxf3Qx78zqhPKdvg4MZoTJYpRS3J3wANi4SId6Z5BAi3HVMABZGE
-         Bt93ubNpTFf3Q/JhyY/vYd7djaB0DplYRmhfry0HiVFqh02OoqRLBFSaW0DLshz+ggNk
-         T+Y10l0GQstfMmtyFwwzd+WweieMMFEAKK5yRDzJPEA/H9p/a79/pafZFLT0pBanJ63P
-         /T6g==
-X-Forwarded-Encrypted: i=1; AJvYcCW0dBiq35Lcvi4Ymt9qDgaetjqV95PLM/nMJrr0/JIdVS8FECYhLjciZ+ellLDWMhdlg/J+KtouYQ==@kvack.org
-X-Gm-Message-State: AOJu0YwBbkIsLeoQO5VWvOdpBDaXaInSF8yF36C03VO/MmHBpYOCFt1S
-	4TLbTrExLLUZK6nCjjx+h6qhmhTAS1XAtZxm3PwgymXVRL/gIJIzOURs97Ar03qK9Az9ngz9iHf
-	8PVGZkneW0iYoE3R4gSXRNHmy6t+DOP41ejyIC+Hc
-X-Gm-Gg: ATEYQzwj7JWbvlnVSFlpuRIu0+H6mmUvZFSV0DlIAF6n6StNJuLfQrkbf7KUnVG/+q0
-	ecoN3IcrjMM8wx9yZZ3RJnp7sEpiYNco8nsoQ8ktRW2KNhT+9jTELfDtEzwdWZsJpOTTZz2SnDO
-	cLUr9C96vRFOHNA/+mVhujh90MiDpS/xXaAHuQ43z86WqcV0jUw78F9V0QWJiBUxKxiLZCXErCx
-	wUn2yXpI/Magh2fXvSsAFdjDmj89o0ulHmUhBTC9Xmh5Ab8y0Ogc/Sg2DFTUMyhawsNjoDpUKzT
-	oL3L9fhIKDMm18AolvCuKYGW/sQUSCUI1kC8e1NxiS/+YZwLhikg/zkIyh9RBj2oYu9tjeAcz/O
-	Se8bL
-X-Received: by 2002:a05:6102:e13:b0:600:1547:967c with SMTP id
- ada2fe7eead31-60015479e34mr1563846137.16.1773039538125; Sun, 08 Mar 2026
- 23:58:58 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 8 Mar 2026 23:58:57 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 8 Mar 2026 23:58:57 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260226180821.2218448-1-joshua.hahnjy@gmail.com>
-References: <20260226180821.2218448-1-joshua.hahnjy@gmail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VFuKVeeRR343OvwIs9Pi21PXnu5qHljRfbiVAuQw+QE=;
+ b=Zh7H0OhrXN2H9zL63Yv5DnVbycTOFSHBhkwlV35u80pABTVvtaqGOmkcgShkdJWT3qg3fzYImF9nslVme5e22ZJCA8IOfxCyylaSBTR/cU1IWvdeD0sCblRA4y08btoyjpOV4SabMVSuIXv6jLBbXfkHJXiAKgPlGoHGkoWklnw=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by IA1PR10MB7114.namprd10.prod.outlook.com (2603:10b6:208:3fd::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Mon, 9 Mar
+ 2026 07:22:26 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9678.023; Mon, 9 Mar 2026
+ 07:22:26 +0000
+From: Harry Yoo <harry.yoo@oracle.com>
+To: harry.yoo@oracle.com
+Cc: adilger.kernel@dilger.ca, akpm@linux-foundation.org,
+        cgroups@vger.kernel.org, hannes@cmpxchg.org, hao.li@linux.dev,
+        linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, shicenci@gmail.com,
+        vbabka@kernel.org, cl@gentwo.org, rientjes@google.com,
+        roman.gushchin@linux.dev, viro@zeniv.linux.org.uk, surenb@google.com,
+        stable@vger.kernel.org
+Subject: [PATCH] mm/slab: fix an incorrect check in obj_exts_alloc_size()
+Date: Mon,  9 Mar 2026 16:22:19 +0900
+Message-ID: <20260309072219.22653-1-harry.yoo@oracle.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <aa5NmA25QsFDMhof@hyeyoo>
+References: <aa5NmA25QsFDMhof@hyeyoo>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SL2P216CA0178.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:1a::6) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Date: Sun, 8 Mar 2026 23:58:57 -0700
-X-Gm-Features: AaiRm52DFXwwe30HaILLP1hzK0v0FaeZdOZHX4R5IM7HVR_30U8T8Nloh1wxEVg
-Message-ID: <CAEvNRgFpD0jD8QdmBPz-T=jhGn+Rb8MjTq4aycAUkAx54fMhWg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more
- generic use
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
-	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
-	jthoughton@google.com, kalyazin@amazon.com, mhocko@kernel.org, 
-	michael.roth@amd.com, muchun.song@linux.dev, osalvador@suse.de, 
-	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, 
-	pratyush@kernel.org, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev, 
-	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA1PR10MB7114:EE_
+X-MS-Office365-Filtering-Correlation-Id: d217db01-fb9d-4f35-dfaa-08de7dac9d20
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	kHurEqXhkeQY6m6F7cdMHccpLaApLSy5h9j2R7R4LB3//JtJOSn27p/ICyJJuhYsT2DqRLf645MZXD3JsMKxHcV2g4CGp8LRLts8iy1Hv/Fu8QkI4sAgk4P8wW1ngIO2xGN6PFv/of63s/2SXVVZn/25kPFMa79rPT9hzfqqx4VzduvkDjbgvoGaBkGNvH1tDQmrr1ZraM2Glmukxg2RmrUBI5mCMlL204RSvxLYtYwafQsr6IfbbIgCF1IYFU6DFXfdKjRseBntA/ScQuRDfzKIuAMjzWjFFgtsh2WK1zaGawQ+0iu+3wdZ2dRKON/n22wCWJZepKFV3RDWDzfDnlnSpejcaeZGAlFjRgp8GV56ZQmv5sD/rqqePLzXaN+EIAHhNdscRYjiJh1ewOtYXIpuSQRBhGpvpi/8EdbdVDUTaW8JQUvwlTIZRA13WcuyzRPzURi+XmmPfiuIHkkdPDbvcdMgyAXQzHhqWo4JOVB6JHr2RgccnTGegis0fJ61AA0xXIjnqVueypIzVryqU88bwDn3xfrhYF/9PJMip91RiSjiBa2vqE7L+pGJybzusuEkD6V15wjOB/vMwsReG6XP0FBofCujAUsrMpK/Odc42RINHODXFzW/mq96kkq/eKKJJIjW7/TODY3av2vayyRsuy1QdKJuPU9sCgYMlKfICkRXGQFuLFYzSJo+aboR48CzY0xRc3+KyVBYurgaTOC5A0eOLtEkQeZ3Yro6aXJLgDFTW6jKHhz2Y7JcMXa1
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?loMtXRLgm1w1x3FC1kU1a91WOYijhEXOPb0pReod747/34XFjUpwxOTcLadr?=
+ =?us-ascii?Q?/7tDeUzNoM3xVzY9zphfF4upA4mbGbr6hH4RhghPEScD2hvo+hwlD4PO7rZ1?=
+ =?us-ascii?Q?cyJSXhsqbGpZuAuqPKZeOINxZ0XL/UTOEIdLCvXR0AqRzjUrS8e+IMsbHFrF?=
+ =?us-ascii?Q?onT8JQf1I0cBd08FOnOYBrbxq9iQBqSruieWnIe+GCIJqthKQfuD215l/qFO?=
+ =?us-ascii?Q?pubyGLZGZd/FUQCp4e5zq+36CAEzgEvobEUCT8q8rPcRVdOAQTWgKGSPVynl?=
+ =?us-ascii?Q?K+JEOejyV/vJq33VSgdjrHf7WCQ5fW2+FawWMgMrqiemR6kQZOz8KHAZXZOf?=
+ =?us-ascii?Q?6sLUQf2IJFXM8y6aQPwMHFLr4G1GiqwFEBoXf38YDIanQT/rxGcrWqBcqcIq?=
+ =?us-ascii?Q?FwCVFX2jSXMg0+zZniIQO37V/70plSTkCV6FIRBCuWsri7u1zKUxVcebvfm4?=
+ =?us-ascii?Q?VVNsvA5pgvJBZIlEFLtjltJeUkvAK0JvePA3XLgJktnhZmJnoybZCfEroT+c?=
+ =?us-ascii?Q?J/wDpfdHFMJE3syMBJuSXg9rTxH+HvHdW4U0vDq+2hXiINFy20pEUlI6GTcp?=
+ =?us-ascii?Q?x8mzS+EdHWDtq+VMflgFK9oYkvHOPubrfd7Za3Uh6+5R063jge6LdLBy1f4/?=
+ =?us-ascii?Q?ujWEPzQs8vrgQgK5upBt+D8sUUq2gofOrKJQ09QeLbGNetYli7mEo/DbB3gq?=
+ =?us-ascii?Q?eDLyC5y2x/QaohOPtEggXtJaQ87ek4AfTyHRFCsW1WRP5mWplehNoLGxRqi8?=
+ =?us-ascii?Q?npNdrGYFXIzAc01DfP14L9G6DssoIsjt7307NBAmvf7GZ5m69enqT1gJlguN?=
+ =?us-ascii?Q?XE+QtD3fufHNXvvcziL7EEUSH2Mq7Pwvxag7Ba0LDoV7fLXx4R3AZ3jtts4L?=
+ =?us-ascii?Q?r6pWfyY6/r9gNl9Ip8uy+KGMhauuAmNHDxlQQAaH3y1BP1AW71cIJsVtwzgp?=
+ =?us-ascii?Q?UNrP6b2ZlqH4sZhWuXHYQbrl/Xz0FzfC3RRL9hiE4UtczXqgIwZB9DA0AxUQ?=
+ =?us-ascii?Q?8WBWKo9q/LX/9k3E1iAQlZ/SdmVV98Vh2bU773M2ronHcwDQ5zt35jhfX2T5?=
+ =?us-ascii?Q?/sHXdvUwGYAXxAgWm+Gt0nDJo2pXlmzTMDNIAsBtIOE61ChOg7Rnnsr+xrHB?=
+ =?us-ascii?Q?0t1kCaFRXCX0GvYdjwSD2BoqewaF69HF7ZnHSKom0P9Acc0T7r3bHQXO9ey+?=
+ =?us-ascii?Q?CqI/NtRa+RTJyfSDB6phcPlBg0oQ25cPSx0SjpbnIFjccMMLTR5/czneREjg?=
+ =?us-ascii?Q?e3m4jDNpUMeMnzuaGWoU1p5pnRdL2iRhTcEOY1AsBVmDiRf5eams87Wd+aoJ?=
+ =?us-ascii?Q?464s3Gw5RqgAWJsZBJ9xInciEYO8HL8Us9kCIcExZF9PAMIHOlOQ0RPXLaiQ?=
+ =?us-ascii?Q?4RLkRW8/0jNTRPosEOnxwLztyMHaZkBqToQUYwriTZiYcNtWSnCnL7akh78I?=
+ =?us-ascii?Q?WC30BOA2gA0xkzMCeAElyjD4nxrTk5oHyvfY40Ywq7P8aIDzIuWFFkNdsZoP?=
+ =?us-ascii?Q?sv8TF3p8+nenjCkjP7w8w/32xaZGPP28XUG0RTbRs9KimwuaTN+/BOV4zINA?=
+ =?us-ascii?Q?M89EE+KnTjwdK0wR28C4CJZtgZNg6kT4Xcw+1PoPs7GgXratfei9BtH5lT03?=
+ =?us-ascii?Q?Z9KPsk5y4PXdDjZaDmocDPBpyAaFJuJvZiBNlLzqGZblwySx2Byl5JF9cpJR?=
+ =?us-ascii?Q?ocU5HAg/sKPsEPAmXLztf1Z5hrFqeBLWoHefDZPcZv+mdsAYV7D/hGNh5qag?=
+ =?us-ascii?Q?zMNM1Qh3VQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked:
+	taoHvnRucBs3DFkB8QH9GbyYEF4pir8u+kadWvHtDScSfFy7hEE60NFW1n7ZSDqEFEiMGFFavqApx69tMk5Va/gfQ8D2U4U/e9Hbw/nC/VrqmpaXhQGnAKQYAMo/xscfc+Tn9yBruzaAzHrGXkKbSPLBgDVgbqif8XTqi3kr/+J0pzZYGnpNa41+hXuChSCnnonTEuRpYIjqFSFm8dt5EVXn7ZCYW0XyCrKC2TrPfez/1PMsW0wjGjBj87ZdhHkEGZBL8JiwFbWcPJFOeTkloS2NwKnL9i4/D3SBT319QYo3jSxviL9I/91okBLD7T6kvQUBb16pvZOBk19OltQvEA==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	8r974mULjT7E8Egi4czwaljXcgv2gRnr40WV6alzIAjDvzJRwzpEa44VoOdIf68M3ZR2zXpl933Pu0u3G38f/8Wx7KIuPPvjj52ctaD3+ZygokK/tcwuMaVF20k3mjciuXeoJC+LRgdEYhE9KtBug5kwIZV2iOzB6vxuFpdFlcK1QoWvRpRGSsF6mrbwnxCoX4fcMNV2++qk9i5pxfYWXYEioW1ASTnDzsPPcG28RqzsG7KuK6YxVMTyptR7M56RfmiLwTO9A4snue7TOWb8Made0Z44Ktf7cH5eyZokbOVB1/TFKuJLLTKMlKT10DzAxJ809TdDdTRWV2WfguxcdV+1Bw074eexAfvkocm8MxR6Z47CqvOT1jo27q3cjw4CNLzkXQOoBIUVyNOm0EIAB5rbkl9/AJCWQbZpYD1DS1xRotNa8UChnSEvRpI8KZ98ReGpOvzFLKlNFxWaLVzXPukT+5BwvNqwFap+qTq18sXeMmxyhwJsFrpPVQ1Sz7y/dRtW5aM11YKToJR6csALMtZgHrG9zHK+1TsR2Gcoyak4Kj/PulfVh3yCnEL8pMVvnvLie2XOVu6NbcMH7GiIsGb+jRr63qHanPCIzFsMpH4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d217db01-fb9d-4f35-dfaa-08de7dac9d20
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 07:22:26.1029
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HahCC2ONnymrVlHnPMuAKXpM5dbI7Z7U0WmlwWsuYG7JlyP+HAqPujskhg9qWzWKzt4XnjyNi956lJi5amqrzQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7114
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-09_02,2026-03-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 mlxscore=0
+ mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
+ definitions=main-2603090066
+X-Proofpoint-GUID: 5adgi5nH2artCtbsByQea3dtKdDiHb-7
+X-Authority-Analysis: v=2.4 cv=c7WmgB9l c=1 sm=1 tr=0 ts=69ae7537 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=Yq5XynenixoA:10
+ a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
+ a=qgwYbtkUS2zLDHN1x-gA:9 cc=ntf awl=host:12266
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDA2NyBTYWx0ZWRfXw9Uf2tN+wiZ9
+ hfPrICOlBc+JPJI19gaqmzQOFO3tzAFIxWUNaNQIFKGga0P/Qnp5+12i9Ry0SIlfm7aoxqyk36r
+ M4XMrREIWTlOzofQXjK725KZkPWlIcLiWoj01pcCPg1toYBAehBLKKkNIkLvfYU17EnH0FSVJsP
+ hrG/Os9lJYxgwlKE0VplGwS/NYpZN+vI9IlB1bKReZhXooLwD6tN+YyYVnvfiIQIrUziDefYMl3
+ VFT9wqCnjprmXNr5w8C0f+JkL1jTG/QgY06LALKDDNi/0TCw8Iei8YAA+3joIjw5LDyTrcKg3qu
+ mGGQfzyubtjD7dnoZWNvm4nVeTW0a4OOyGt2ynz5nTSKCS1Vspqv+K/sIlXN8ixuTbPwjhEiHir
+ xeoxBkDLAszhVJAUWiZ97qIMntdHsM7DdUHkiz2V/ExLfiX7AdM9JVt/yj+RkLlQYh7ZNRPJJ+s
+ HuxBFfIYHCg94ns4BiDSMNNDsyCx0Bpglc931b1c=
+X-Proofpoint-ORIG-GUID: 5adgi5nH2artCtbsByQea3dtKdDiHb-7
+X-Rspamd-Queue-Id: B967720008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: aqt54dmo449srs4xnruwqh5aw3uhyews
 X-Rspam-User: 
-X-Stat-Signature: kxuta1shge8a3prifz18page5513nz7p
-X-Rspamd-Queue-Id: 8EFB81A0014
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773039539-424744
-X-HE-Meta: U2FsdGVkX18WXeA/535aHeIhIykDT9a/6+/sswRT+UFrCUlb02081vds/5ERPgkfwnwcnAPTFdv26/dj9jLS6sRIB7jxqCtHQTaSsPmViG+36hsKnT7SN2XEatnjc+Bm5CHdJJec/u+V3E5JPSOboOXgQqHX7B1+s3PUMbzXn8mvVARF3ZuvZb7hCmzcYzKqW4cY4htse8+m39WCjinUrnQ9o3R4go6KAP1ihFZMEYb4DjEE47y465yxEoL8Q4JJy9ikDfFB3wRO6ZTKxTkgA2ndZLaj9iSLU8N4WcxRi3+wQI7Uo6IAGhl1ijTAicMI76XR65vwGPPZdx2x1lDvFcy8sxwdClhVNUpQBOqQASUg1LhL1xZC/UgxsUTOGFlo6D5s/Yd52AzvRneXjuZgfnDVRdv96jnBLQrUlQZrvUB6SHL+NRW5L647Ro+3Mna0PoiM8tMimNKr7rf92LY3mejnI3xHf8DEbwCjAex3W+fYg37/ew7bp5eysBJynnf1N2io3YQLKgCgEJF2+lmEh9cAIzWDEIEvBkLW3Xp3N8ACp6n53jorf847qYc9NHD257bivDNJkt1DSZIhf+cEU+F3Wvmn8Ce7iWzJ4ALrQSBjhExzOb2wGkol7/BsdlKgLjIQN0TcinOMrGoI/WTTuAwXFB62pWibRSM0JAhl71g8jqLbB3nkI+5kHKE6kNETRJnxDtsdbof32J/GaxmgvI2FZJ649h/6P6D9apUTUIjsNCKtok2KM0mUXkpXhnz9gIQ5B9bP1ObZk+r6J9L6T+82znpuN1ODmblLRAvfFWoegARIpItrj08nVeXRFUcNU7OIhvJLOiiJDGUBHeqWGfavSKP3PPmqGN2jJgv6Y8+zrVZFEZihpFqU+t5bJ7wyogNivDownI0hsSOu4e6oMvqfzo95xJ8H3KQEzkZw/EsU4V3R81G9rUvsJ7YRWLIFoZs/QSwm0c5HAdHaTr4
- J5BiRH6e
- 2uw0oJJY3BXOBpSs3D5G9QeH9bq55Mh4XLcb3UAX/lilVK98h49j9SdfeIQ==
+X-HE-Tag: 1773040958-870975
+X-HE-Meta: U2FsdGVkX18NKNMczwJNruo6TSiRBzw+0/57KSpuO736tNRJJkAqIjzX+DisA+b85JcNZWK0NHpmHBDBA5ytVo4Of9rj7RCRov0hEOR6RSbzm8QX4zqizMay3UQP1G4pniqSUREKe7Fvl+/GiBsvaNph70YY+Px3Dml4pQLc1sYAFPzkcgi0wTL/n+gLga0bla8eKavqM1pdMSywxndRtfxw1IAqLQ8mWH/+D6O5rUc7PlP3WU32IsgWHySla8FqpgYQuO8yXhE5AIe5XRK5EP84zhISIq0ceTJyP797vuXOxi1kB79tv38pdXdrYPNx2XXdubO2Yy3DAUD9PJ8GBNUopltbsycU8ZrpZ4S5vQH/3uBK8bG6p/LgiCJQx7qo6jOT9DXW36mSaL7X3FBGX4wvAu26fILX8A1c7jmGl/XEUaIXeafW6VBofy6OaNPdjjNm/XxDnIkPlKP1Dm0yoQcPCpP+3dIUKuM2nOx9dJ/YEbojvsJVJCUJFEanQRFi4zn7v+k6Hs2g3jnhm7lgtAfJZINYWQOpo1Mr4EBGjhPBoIFKnCmKQOGYiBRjdRb7rFPpN2y+0NNmeunlRvBnHd8bWcoPNKpRelLau6QrwVrGH7ihQ4J7dbGzQl9f7V5RZYBQrfjM2bn9EICpPSL2XUNShm92pDBEy9HB0fgnXQLVpVV/hvEN4OrWO1iajM9qNLFIgGjBdGo3C3atN1/dEhw3HVQxixnYh5xLEzD1XW9SMlSry/JfHNT02emVgVGj+jC4ReIR4ZJ3i1JhMOYXB4eNR7SXIJZTDUcOmo7LzWAB942fX9DTwAFrHWn+sNN1wLdVnfVjmgT3X0NBamOGqts1xm9J9rzzYqkr7kvZzAOuYmsOrIrd/SIsN/vWyQlIxrIxqwLd2tHaDorCfCXyIwPcP3PIRV5CTeI8tOseNCUuXbH8TB/gC9uCNy6kYgIjZEcV8qz4yWXPC5ucLWK
+ VkJzOgwi
+ gKg8j8XjGUDObPARled1GGPPWQfLN6FpyNrQuGMfaYMt2uUMi8+Pm7kbyutyd989C/ALFdyj9pZ4tPrvuEmYV2CcOOPuJq8yzvYJiDW/duHCETQfcURssrI/EOCzcSw8UB3zWNPAm/zhM/czkP4Aqd3csG/S853Fj9TiPva4ouHve/zvNqZhN5YFZUTTuSpTuZscg9bkrA9NrXNs7EaiKLP23rtfLU6PpExElCvd1oJYmsIUgka2OKw+V9sW0NWxX+eMVH4ncHJAOIs3UtC1+JaeANYaF6cm7XcOYLBoHGUcQiGzswF+r8evyV6NbYhPVzvYc/7e8WxmLBHlTkrGHfy482OG4X3QTqEQeU1eh39Fhh/Kr/TBmSgrIx4e5yLQ9u/wKRvDhYhb6dzA6uqiL0z8wCMOPdoK1MqgQXHY2va5qAXiW4lxG86KqONRLEimyOQdMxuesPds7lAfIdGAuLnhtQBaflssOtfUCd1Cl0QKRToHSRg7jHgBNTRmMRAxnL9euU3udUbcic3dQ8Fv79ltigmgPVqmhtio480yKhDhVNtrNjfQGvRXRjTNSmH8d4q5ZaiOMgKx3l/Z4VkHks9WVoOnIpRUDQX5iOPbBWe1yKUEBgjYIswFOq7+nvlKrcbCW3KQHH+IFk1aYZmnqHxkw9vhBBDTz2XrfAlS9k8pNyEFLKvXpF6AIKv/g3s4lN7MZhHkoyRxuW7XCcwq3GgzCjqeMgqrPEIjtoqU8y3FZm38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,115 +219,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
+array from the same cache, to avoid creating slabs that are never freed.
 
-> On Wed, 25 Feb 2026 19:37:04 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
->
->> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
->>
->> > On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
->> >
->> > Hi Ackerly, I hope you're donig well!
->> >
->> > [...snip...]
->> >
->> >> I would like to get feedback on:
->> >>
->> >> 1. Opening up HugeTLB's allocation for more generic use
->> >
->> > I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
->> > if I'm missing anything obvious.
->>
->> Happy to take questions! Thank you for your thoughts and reviews!
->
-> Of course, thank you for your work, Ackerley!
->
->> > But I'm wondering what hugeTLB offers
->> > that other hugepage solutions cannot offer for guest_memfd, if the
->> > goal of this series is to decouple it from hugeTLBfs.
->> >
->>
->> The one other huge page source that we've explored is THP pages from the
->> buddy allocator. Compared to HugeTLB, huge pages from the buddy
->> allocator
->>
->> + Has a maximum size of 2M
->> + Does not guarantee huge pages the way HugeTLB does - HugeTLB pages are
->>   allocated at boot, and guest_memfd can reserve pages at guest_memfd
->>   creation time.
->> + Allocation of HugeTLB pages is also really fast, it's just dequeuing
->>   from a preallocated pool
->
-> All of these make sense. Just wanted to know if guest_memfd had any
-> unique usecases for hugeTLB that normal hugetlbfs didn't have.
->
+There is one mistake that returns the original size when memory
+allocation profiling is disabled. The assumption was that
+memcg-triggered slabobj_ext allocation is always served from
+KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
+both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
+allocation is served from normal kmalloc. This is because kmalloc_type()
+prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
+KMALLOC_RECLAIM with KMALLOC_NORMAL.
 
-IIUC HugeTLB was meant to make huge pages available to userspace for
-performance reasons, guest_memfd wants HugeTLB for the same reason, but
-just for virtualization use cases. So nope, I don't think there's any
-specifically unique usecases.
+As a result, the recursion guard is bypassed and the problematic slabs
+can be created. Fix this by removing the mem_alloc_profiling_enabled()
+check entirely. The remaining is_kmalloc_normal() check is still
+sufficient to detect whether the cache is of KMALLOC_NORMAL type and
+avoid bumping the size if it's not.
 
-These are the differences I can think of between guest_memfd and
-HugeTLBfs's usage of HugeTLB:
+Without SLUB_TINY, no functional change intended.
+With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
+now allocate a larger array if the sizes equal.
 
-+ guest_memfd may split HugeTLB pages to individual struct pages during
-  guest_memfd's ownership of the HugeTLB page. (The pages will be merged
-  before returning them to HugeTLB)
+Reported-by: Zw Tang <shicenci@gmail.com>
+Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from its own slab")
+Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+---
 
-+ guest_memfd will provide an option to remove memory in guest_memfd
-  ownership from the kernel direct map - I think HugeTLB pages are
-  always in the direct map (?)
+Zw Tang, could you please confirm that the warning disappears
+on your test environment, with this patch applied?
 
-+ guest_memfd doesn't want to use HugeTLB surplus pages, for now
+ mm/slub.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-+ guest_memfd will reserve pages at fd creation time instead of at mmap
-  time. Reservation is done by creating a subpool, so guest_memfd
-  doesn't use resv_map.
+diff --git a/mm/slub.c b/mm/slub.c
+index 20cb4f3b636d..6371838d2352 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+ 	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+ 	struct kmem_cache *obj_exts_cache;
+ 
+-	/*
+-	 * slabobj_ext array for KMALLOC_CGROUP allocations
+-	 * are served from KMALLOC_NORMAL caches.
+-	 */
+-	if (!mem_alloc_profiling_enabled())
+-		return sz;
+-
+ 	if (sz > KMALLOC_MAX_CACHE_SIZE)
+ 		return sz;
+ 
 
->> The last reason to use HugeTLB is not because of any inherent advantage
->> of using HugeTLB over other sources of huge pages, but for
->> administrative/scheduling purposes:
->>
->>   Given that existing non-guest_memfd workloads are already using
->>   HugeTLB, for optimal scheduling, machine memory is already carved up
->>   in HugeTLB pages for these workloads. Workloads that require using
->>   guest_memfd (like Confidential VMs) must also use HugeTLB to
->>   participate in optimial workload scheduling across machines.
->>
->>
->> [...snip...]
->>
->> On the other hand, reintroducing the charging protocol has the benefit
->> of avoiding allocations (not just dequeuing, if surplus HugeTLB pages
->> are required) if the memcg limit is hit. Also, if the original reason
->> for removing the protocol was to simplify the code, refactoring out
->> hugetlb_alloc_folio() also simplifies the code, and I think it's
->> actually nice that memcg charging is done the same way as the other two
->> (h_cg and h_cg_rsvd charging). After hugetlb_alloc_folio() is refactored
->> out, the gotos make all three charging systems consistent and symmetric,
->> which I think is nice to have :)
->>
->> I hope the consistent/symmetric charging among all 3 systems is welcome,
->> what do you think?
->
-> For the hugetlbfs case, the path to allocate a hugeTLB page on demand
-> makes sense, so I definitely see the argument for avoiding allocations.
-> Does guest_memfd also have a path to allocate a hugeTLB page outside of
-> the boottime reservations? In that case I think it would be nice to
-> clarify that the allocation failure case optimization is also for
-> guest_memfd, not only for hugetlbfs.
->
+base-commit: 6432f15c818cb30eec7c4ca378ecdebd9796f741
+-- 
+2.43.0
 
-For now, guest_memfd actually doesn't want to use surplus pages, so
-guest_memfd won't be allocating pages outside of boottime
-reservations.
-
-> Symmetric charging is definitely welcome : -) All of your reasons make
-> sense to me, I just wanted to ask and make sure.
->
-
-This change is mostly for (an alternate form of) simplicity :)
-
-> Thanks for your thoughts! I hope you have a great day!!
-> Joshua
 
