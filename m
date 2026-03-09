@@ -4,88 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C39FF417E3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 14:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54139F417E3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 14:39:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E6786B0093; Mon,  9 Mar 2026 10:31:34 -0400 (EDT)
+	id 7EDC96B0005; Mon,  9 Mar 2026 10:39:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 690BB6B0095; Mon,  9 Mar 2026 10:31:34 -0400 (EDT)
+	id 7A4706B0088; Mon,  9 Mar 2026 10:39:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BDC66B0096; Mon,  9 Mar 2026 10:31:34 -0400 (EDT)
+	id 6A6DF6B0089; Mon,  9 Mar 2026 10:39:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CDA96B0093
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 10:31:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E42EE160212
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:31:32 +0000 (UTC)
-X-FDA: 84526762824.27.355FDDA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C6EB6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 10:39:35 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1041A1C091
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:39:35 +0000 (UTC)
+X-FDA: 84526783110.22.D94BF95
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 345FF1C000E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:31:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fD8z0n94;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 28B6410000B
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:39:32 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J1RRaJsj;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773066691;
+	s=arc-20220608; t=1773067173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kr/5ThKivQFdJzXEU9F7nnGTIkjnqSsxpz+D+a6mImI=;
-	b=LY4ZRwVcjCXa5GZw9mx44XjKDSVEF72TcMzB7HCHPSeoITDOfplIMGKjTEaftB7PQ0qsf6
-	pkugugwoqrQq/gLHkoB+/BWzr8TfUziUebVLwNvNO6c0nhgZK8hTNYjiQ8qrHK3WNTSIX2
-	YR/DHn1FV7QLgvOf4wGYTfqffgeK3Sg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773066691; a=rsa-sha256;
-	cv=none;
-	b=uWw+L9x9YrOQmqLOfHLxhIsxv1hL8OinaX4NLUmMmWzbWo8DZQEENbxueTA6gzaupvGHov
-	5f5DcxCVU7CSJmX94idcaY2LqKGCCv0EPDQmgq/hyBW+U//ed2TVTmHahVKrwOIGwuWFtK
-	yIn4WWZl6IDh2/XkCcBfHuhySzYwoyA=
+	bh=ax2e3nDwsvw9ILVHvWERWqTLhgIowHpeGr3SQn+CkPI=;
+	b=6II4ecECWR+5A25k6BaRIZ4J3XmSJ2dQCarfFhrLPV86c+3JSko9z74vT7YqULU80BYcfT
+	ZQqJczXu2OwxsPbN34TwfJUa0p4KD7DQsFN1yfGAS8L3Gp9ZEH5rSZkUDxSCjizOLbwLMK
+	FAIusUX9Q9xmhgGAzSniKhE5rOZU+8Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fD8z0n94;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J1RRaJsj;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773067173; a=rsa-sha256;
+	cv=none;
+	b=A98DvhYh93/UAFolbJXZ+vjdzN5Jes7EnTdRHWkf9Xfe55iEL9RaUb6T52IpsEAWmaxgxW
+	OKGyxmgNLKBSWuMFsHpj6rNE4Ow03GYYzO1XKKhNqguzhiaR6yvGdbTwixwWFDcQzHsS2b
+	nVPU021T52y9Sc9+QD+W2N4nScs77IY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3281443B75;
-	Mon,  9 Mar 2026 14:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79179C4CEF7;
-	Mon,  9 Mar 2026 14:31:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EEF0D443B2;
+	Mon,  9 Mar 2026 14:39:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54697C2BCB4;
+	Mon,  9 Mar 2026 14:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773066690;
-	bh=11S7fCwzp8bMaQluirI+BWvva5ZwY/s8Lezv4k9qpkk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fD8z0n94M31wKotXwnmb6/WQwChNvmqT2ZEZMBCPbXnMm2rtKAbS1lRU7dd2EiKUR
-	 Kr7BU0P4LyKX3CVN7ng2qOZnD+yOUBGwUayE7Qwkz8RTlLxZE/DYjJCgQDHEibSVWH
-	 fePyM4zxWCdmlTo/Wqy0W+VokKWvzuihShdr9U7y9oC3kLf+mPWoQpVJwy/aSOP39y
-	 SevD9nqQn4BHUw3AancjMKMFpXYHMRyBTN7gTrM+0dZ8UOXBpC0IuKeWe8T7HwLlfl
-	 +RQz8RqlYX/jVqo/EQyMHpuc09ab5DMZLHQ0jZv/GkY1wIg0qiJyMXAnlXAwOtXMk4
-	 0aI3gVogMJi2w==
-Date: Mon, 9 Mar 2026 14:31:27 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com
-Subject: Re: [PATCH] mm: prevent droppable mappings from being locked
-Message-ID: <2cd5fcf4-9094-486c-b74d-e2db77c4fc00@lucifer.local>
-References: <20260306204550.8405-1-anthony.yznaga@oracle.com>
- <7c1db5ef-2457-46ff-ab20-dd4090570fb6@kernel.org>
+	s=k20201202; t=1773067171;
+	bh=9PukcKOFazN0dG+ZH11NZrXPlcPN2/bdDpO63eNNTeM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J1RRaJsjFoPPzLLr+uhbPsnz4s6HEiGtDUliOig0I6SGfRKOs6wSvlzLJb4/GiJhD
+	 O87gKny2z+59fQSrPq0OpUbuXNOz2YjE+3mJ8tXxiuvSKRaG9x4hYFcAjcX8aKOq8W
+	 +KOuL/Lnlo6fJKFqOw5ouWYPRW1vccwAW9VyGXFoFV+PF98W9TEHARAXUiTcqhiaJp
+	 2eynJFn5+FPYRGCrD3lTK2oWYT1Lb6D2CjwpquUhL7AYCnK52bv49oSzW/pzMXI0j8
+	 t2k414mb6oDPC8cJb/Ivs5I8kOhx+bHIC8miqqFrQJUOTr8l9DuiaI/FzvE+dgtkH+
+	 kXI+vX0aZe5Tg==
+Message-ID: <92376758-5bb5-4391-8904-cd0e2f72acf8@kernel.org>
+Date: Mon, 9 Mar 2026 15:39:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c1db5ef-2457-46ff-ab20-dd4090570fb6@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 345FF1C000E
-X-Stat-Signature: qzo5rjp7wwcywqt1rrdjxt5ro7hy9cn5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] arm64: mm: implement the architecture-specific
+ test_and_clear_young_ptes()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
+ <7f891d42a720cc2e57862f3b79e4f774404f313c.1772778858.git.baolin.wang@linux.alibaba.com>
+ <6305e05e-2911-42b0-b6f5-7fdde787b778@kernel.org>
+ <c607b6fd-a682-4400-a7fd-abe83152db10@linux.alibaba.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <c607b6fd-a682-4400-a7fd-abe83152db10@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 28B6410000B
+X-Stat-Signature: sg3qgzxgns6wmu6k474mykjy8nk4e9ta
 X-Rspam-User: 
-X-HE-Tag: 1773066691-740817
-X-HE-Meta: U2FsdGVkX1/i47TJOqbPYAzDJmdxFCGno/76zCrxtBWRGnqV8VRJytsL3EO8INSH1/R3sN+1YiavR4VQhjADqM2n25nosZsT+Id8z87UY7Icqj/3i08vFhmVe0PNB5zDKB/LYqYtE0p0oI3WB+5uaxkD/fGDJG36W37rO5B9xKrG8158H/8klSVikm1ZnqLT8JEBAJVEAv5oXCbd1GCaiuHvTAgFZ+CsNflpCFcUCRpkDaX3STWN4hkA5l1o08oEkb104GOp30sJ9X2xVB/jszeCrQBxqE0CXbfAGD1zJXcvLM4k0GOqPAyPXZMZUFqV1/f4wmyD98Sk2RD5orFHHe7OJv5Jk5UxcOVjUje3OZXICyi5GY3E9IxbaW2uFX+bGDfDTEg+IQKbvhqW7BBhv+7Gao0NkXKle2HTxryI5SPgX94n0phVUk3JfhodzI8eXmIvbOpLS5f2cOomWpqhjKU2C6mU63zg2txVUOML4003JkoXF88IRoWAbP58TO9xN7sIQoBCpwqKSYMYZOeWHq4HYsMuENZ/sRJD73kJVFFq5eahccVpp0vH6VJhPFX7MUY6hudRIW+xeyGfOTLbd02fmHTnxEss9GpV/gdrS4wozebZr3uO8/mLFJua6CCf+fXtUCZUfIEF4EPdFLP1OSgYNam606or/0nnt+HenuRWIJF3cWyi4S9vrGh3IqUDGjViRjhDopVqu73m6ACl1hzbEmVL91DupiroENvJEsBrBCWInhlN09EujDOUUqE11OLuLbMPA49TITOhfmFOiJ/WnL5HZ+Gh0EvOvP7DJUeLLFiTt28gbJOMf2DXuAVvR3Y9LzQQcOHmF+7nI0FTOu6ORYUiHJgtHJtb1AYRuyIjnTv7rRc3ugb+qsFKbxDw21ZRXpXC8yGszsMOMT7hWwNLgSCb9NNRSGu/xjrV+Yd0kh10B33/l3gbFwFUKgo/bZ/dOodjWBSz7YEHfPi
- DXqX+opc
- rlp0Aouorw+hY9Dm+TW4HPccm9Tzcy4Kp7wMZE7jHfgAZC0RRqHlsY5cLhGrX5Ur2C9PTizVguHwbhtPlNUhCmndVheeYd34LkY5IrKiYM4TWbscsM5pmZ12X+qcFmB25yLTRJSxVtg52rmrQKZuM+77DdVNjSjqF7UISiRQJAMmEl3rLGUpHz+fgsV2gRQjw3aEkGe95TSG4tZlqgMjlKS4crMxWfEvnsfP0h8JAHg3Tje8YRicSPKzs6Vi5P/IOvawaQfuR77zYAhs=
+X-HE-Tag: 1773067172-895362
+X-HE-Meta: U2FsdGVkX1+jskurnE9ZIgD8GaB9R/L8tA4zzIbm5Rx9c6hPMzXdeVaEPL7zi81tKGcHqLp/UFtlkTeiz76js+1xJTgE2DQZBhBGrmBxqMDRiOMVX3Dg17VMWzciCAC1dvn7+LJtcSrvwD32F1nQVW/jESgRqeY/lvvbZ0izz/pBhKpIzajSPCE5WWp+hKGaV6IOproyA8132IRL3/xejqEVsSsLovdBDQzlNcNfcyVkpUuoB330H2D27tgtHo2oW3rQfOp1bUYQvdy43aKMCq8FzRX8dkNuy9aKUwYInhGjXKBlGMa/8vSFI0q/07G1lOGEll3IrKr927Gz6XZSwrTo7IMcUujlJxA+c8PB3YkH5whNDVSz/CYtze5NZDax9kMIDiel+tz8VTmQG3/IX3QLjtLqj97TNWTdzsY8VMOmF9utsU9bNr0mjBW8URZZcB7iGTETCnn40+BR9dGC3tbqDUiESSN7VZcozl2pHOf2MEbFYwqOnJZ2hqda3QsxYqBbGG+1Z4vjbrUM3NrrJtCKjTgvOKFOv7ldmTAshB8+yyRR+NTmDxP3zB+ILEmp6+RcaHS7Zh/vUX67uUIxoOrkZkcMsR9F3qCLZNu6L4hn8Z44LP4WOIvLic9UDDYZXI+MbYW1wSkuKmWb/9GKqv/CFgOo+pxUpLqQpNXuLCXYQ/wUgl6PVEN/cVTcYFuWp7J1bUx3tuw+MKSaPHuoqIPjZ1hZQYa7Tm6Isg9ZojTEctAIQybKS0K8Bci4JMql/bFwRU975d0WIsK2NYFIRIb/PuNAtgLHkfKvXeJlfdIUzqxac0yJOgbSyBNsezEcb1JRroyvhugVaMJG7hImUgWS5K1Jd+IdJJu60GvGFianhbEqYch4UAKY5QhPkAdkMRF8GuDFi/XcdpGMt+bJdOkQ6xU29DWzhhQAqgdUBAl8c5gKO5d2QgSXL1ETJVxhbZd4zP8YpDq/1xOxaY/
+ 6QxCnmmC
+ A6+tlQQ/xulhiwwo/EfYjWWBbNzy1kgnSmBoMEj0kTFaGMCCBYzFXzlA5dEUBSYG+KHZztGS85hdFnRCSBRuFKWAU9PRSeMEU4NraqmxIK60b4hswsc0HzsihZnmq8T6anDtXdWLD+U6Zvt0HWdI+nmxuCRs9s28CIvFuGEn6zIXeTS24+RVD6gaAC6+Khp9VZIQIwn5O5F4SNi5wO7WeBB0/pxZoetLp2Nz/n42U+uyjCNQyRxZYfG7pCsjPEwTAqmr7Z7cWna4pHtO5w+Pe5Fw6LGefH3TNG7eW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,127 +147,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 03:15:24PM +0100, David Hildenbrand (Arm) wrote:
-> On 3/6/26 21:45, Anthony Yznaga wrote:
-> > Mappings created with MAP_DROPPABLE cannot be locked via mlock() due
-> > to the check in mlock_fixup(). However, they will be locked indirectly
-> > if they are created after mlockall(MCL_FUTURE).
-> >
-> > Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-> > Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-> > ---
-> >  include/linux/mm.h | 3 +++
-> >  mm/mlock.c         | 4 ++--
-> >  mm/vma.c           | 2 +-
-> >  3 files changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 5be3d8a8f806..bb830574d112 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -574,6 +574,9 @@ enum {
-> >  /* This mask represents all the VMA flag bits used by mlock */
-> >  #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
-> >
-> > +/* This mask prevents VMAs from being mlock'd */
-> > +#define VM_NO_MLOCK_MASK	(VM_SPECIAL | VM_DROPPABLE)
->
-> Instead of adding that, could we cleanup further by doing something like the following?
->
-> The usage of "vma->vm_mm" must be double checked, and we'll have to take care of making
-> the tools/testing/vma test happy.
+>>
+>> (b) The first pte is !pte_cont(), but some others in there are?
+> 
+> IMO they can’t be handled in a single batch. Since the folio_pte_batch()
+> will group consecutive !cont PTEs into one batch and consecutive cont
+> PTEs into another (assume all PTEs belong to a single large folio),
+> because their PTE entries have different CONT bits.
+Interesting, thanks. I thought that folio_pte_batch() would be able to
+batch that.
 
-Yeah Anthony - please do a simple:
+But yes, pte_batch_hint() relies on the CONT bit still being set after a
+ptep_get(). I wonder whether we should document somewhere that the arm
+implementation depends on that.
 
-$ cd tools/testing/vma
-$ make && ./vma
+This might be something to look into in the future. (make
+folio_pte_batch() ignore cont information when comparing and make the
+arm implementation be able to deal with that).
 
-To make sure that your changes don't introduce anything that breaks that.
+Assume we unmapped the last page of a large folio. Ideally, we'd be able
+to process the remaining THP pieces (all ptes) in a single operation. I
+guess right now it would be two.
 
-If you need to add duplicate header defines put them in
-tools/testing/vma/include/dup.h, if you need to stub stuff out put in stubs.h
-and if you need to customise something for testing purposes, put it in custom.h.
+-- 
+Cheers,
 
->
-> Not even compile tested, so will require some more work.
->
->
-> diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
-> index 593f5d4e108b..755281fab23d 100644
-> --- a/include/linux/hugetlb_inline.h
-> +++ b/include/linux/hugetlb_inline.h
-> @@ -30,7 +30,7 @@ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
->
->  #endif
->
-> -static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-> +static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
->  {
->  	return is_vm_hugetlb_flags(vma->vm_flags);
->  }
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 6e1162e13289..b70ebbdafe00 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1242,6 +1242,15 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
->  	}
->  	return fpin;
->  }
-> +
-> +static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
-> +{
-> +	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-> +		return false;
-> +	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
-> +		return false;
-> +	return vma != get_gate_vma(vma->vm_mm);
-> +}
-
-Yeah this is nice.
-
->  #else /* !CONFIG_MMU */
->  static inline void unmap_mapping_folio(struct folio *folio) { }
->  static inline void mlock_new_folio(struct folio *folio) { }
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 1a92d16f3684..e16b2ea234f7 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -472,9 +472,7 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	int ret = 0;
->  	vm_flags_t oldflags = vma->vm_flags;
->
-> -	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
-> -	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
-> -	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
-> +	if (newflags == oldflags || !vma_supports_mlock(vma))
->  		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
->  		goto out;
->
-> diff --git a/mm/vma.c b/mm/vma.c
-> index e95fd5a5fe5c..b7055c264b5d 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -2589,9 +2589,7 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
->
->  	vm_stat_account(mm, vma->vm_flags, map->pglen);
->  	if (vm_flags & VM_LOCKED) {
-> -		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
-> -					is_vm_hugetlb_page(vma) ||
-> -					vma == get_gate_vma(mm))
-> +		if (!vma_supports_mlock(vma))
->  			vm_flags_clear(vma, VM_LOCKED_MASK);
->  		else
->  			mm->locked_vm += map->pglen;
-
-Very much preferable!
-
-> --
-> 2.43.0
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+David
 
