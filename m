@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8F89EF3706
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD18EF36FB
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:06:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27F5C6B008C; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
+	id E66226B0092; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22D776B0092; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
+	id DFD066B0095; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12FF56B0093; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
+	id AFD556B0092; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F40306B008C
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:06:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A257D1B941C
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:06:31 +0000 (UTC)
-X-FDA: 84525792582.27.6A5EB23
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 99B226B0092
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:06:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 469CDC40F5
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:06:32 +0000 (UTC)
+X-FDA: 84525792624.11.5876490
 Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 42792120005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:06:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M/zHX531";
-	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8573D140010
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:06:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6SXWado;
+	spf=pass (imf23.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773043590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=+FqI0gHA031QQBMAtt9J8dHkFUnPoZqRMUQFOrt22u8=;
-	b=sxtRtTPxNwUCEvrp+8nEsOge01cg8dwDXIJODjk8mdbewvuBMTgle0HZzpS1yp73qQBHDJ
-	1SyyDAv2N91D4QY4ymsLTIO62DFlr1r1tbd1J8VKnrKDvAnkJQc3EYJnK8kfib6QwaDikX
-	fprSONOi4Y1HDVYFwGBUIR+SdYvmGug=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/9qkGX4IQsoz4+saQxr+Ks9qPbIOEkiQZre8PPkbRL0=;
+	b=wGYmJc8KtLgrWvuDPj9BwMQkKkSiZ6Eu77Rl6IWMoZvU8ECyQ6eDQ9g2l+kXv/b+yTbycv
+	E/UPO17z5QsEH6i7Q/7YlyIWofWCzksPdbB4T4xrMo+qDIE0DU0NOYDqjCz3/ThajesQyK
+	awvxR8/P4CKQnkYtTRJ2lmKNpZzaV/E=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j6SXWado;
+	spf=pass (imf23.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773043590; a=rsa-sha256;
 	cv=none;
-	b=7iExwV4/CRwiTfTk8iMt4oilZkb+dPltA53O6QdlMfotJmHhHuiY0z+YQWgdfdpXtFAkiU
-	nXrQm3Q2CKWSxnOi+x9JFaf/xx4VHajZH6nv8YTs+U7X46jaGBW0tq1OwTBXD3C+ytOCWZ
-	A8g9++docIvxWx89yQcStcRzI3cGtlk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M/zHX531";
-	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	b=Eep9yE3UIukV20GcvldK2d+zQ2dMuw01ro8u2YUHtZZhfVRd2sVH1Zq+1Uu5g9Om2ynwxW
+	KBQIzXBo03bQP7fX1JCTNwh0Bq6PhT9QR+9WqrYRzniQOeckA4s5AwLvf+QqCNJFFCbVwP
+	xK6dYAiYcz3/UmMTLA7eR6i2YysRD+E=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773043584;
+	t=1773043587;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+FqI0gHA031QQBMAtt9J8dHkFUnPoZqRMUQFOrt22u8=;
-	b=M/zHX531aYs9dkvPc46Rnm+wa2XLzC7x0M7Tob0MInfGZICR0HI23cv6nLNX13Ea1lQixy
-	ixR3pWpSVVFubOendXpGNvSFOdP5A91RBRjjTX2XwjOqkCKf5546ZPrAiWl99+wN7RISLg
-	s8yE95KjPAAm/w3Pw/TXCfqErv7rIV8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/9qkGX4IQsoz4+saQxr+Ks9qPbIOEkiQZre8PPkbRL0=;
+	b=j6SXWado97/8h7663KF4D0acF7r5B6e90za3CBZQyfPGwi6sOZtNxEb3ZgDIQ1T7sdDyHf
+	3Ps1c345JS1zAKGSuW0pOBd6Wik1EjnvFi4mN427itu/V7iCnRQfbHwAZW1nunTB+/P5Fz
+	vvZbOXTVY1MSXuu33AH+4VX+gtj7zLo=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Chris Li <chrisl@kernel.org>,
@@ -70,20 +71,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v2 0/2] mm/swap: enhance swap cluster allocation checks
-Date: Mon,  9 Mar 2026 16:05:40 +0800
-Message-ID: <cover.1773040982.git.zhuhui@kylinos.cn>
+Subject: [PATCH v2 1/2] mm/swap: Add VM_WARN_ON to isolate_lock_cluster()
+Date: Mon,  9 Mar 2026 16:05:41 +0800
+Message-ID: <25c1be6b4a54a69d4b57189fd84c7502c4412d7a.1773040982.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1773040982.git.zhuhui@kylinos.cn>
+References: <cover.1773040982.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: k6cuna7j69c4yd5fm741xun3qz81k1ij
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 42792120005
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773043588-786915
-X-HE-Meta: U2FsdGVkX18708aGMKBRmWDrE61saRNp+tPp3noXCE+cR5adjcb0EAjsibOl+Ys8mxQsjzZJfm9fPBd4lnQIaVdNtRjBg2pXMFdL86hcrVvetFGy+jkwH/omOP2DL2tZaQG1CIT6Vs/Cr2MKha6GxBlrrAEyje7Lg1TLbFiWFx5pJYOw4+xoXpyEaCBpjDnQ/K2TOC8pNBuLysgdP3j30vb70NGYUxKqT0CtR3B1Yi6uEsDbyJ5G2jfSZBDcI143vAkQB+3cPiX6BkI+lmZG+Bp7Ynq/IOS8NV6r+wVdw+WRJu4akbcva0jORdphynKp6nW8a8XK5K75h0yDAZo8+zhi+b7Du9+/j11HkPyuIgdXxJ0KhTOrZhAxgoQwrMRXbwdcOQ6eEqLPXl2PupcpXAjPneiB2YNiILtK1BU6q2S5nGibSyFVUKf9RdPtZaJnP/zS6zdoNg2A8KUG3vCuWK/jsU7WZkkTnZcf7SaXIQdPzEh7HxPZiA6y/HZowDx5bXagwK707jUPap2CTPlE6VtbuvGgqbCl+JxtTEyTvpOoZHvKXZvWdSmUd8e47NgJrX+m0fLns6jc2ESyXEX/6wd5G9egQkTCgj5VVfoRqPTafFUVkb+HQUyJzE5JObvFFxWEZdsoXcIYnB8pCmz/mH5xHU6J/tQ/ZpBI4oWVjwhp+HrY/ZMS/vSeje3hllpleg1sUQh8O+j9/3rI0DXzBsV7UBHuMuC8xkdbYWJNf2MGfAgRsNV0B9uxlZu5543C+YO0z7HKUuCPNADL7osvMrSU/+K0oLzo0JbeeRipeSWTbqkIgKmrX8IiE9hs16YnyHc06RVyI465xJaXDQ+mCfs3+4+YS7Z8M0z49EIkdMi1fXi9mhbZa+NegyYpOj5OR8zx3Qrd7wNITzaPUqefaHPl/SKr9I+8q6Uqr9BJn+gH4ZWCok03IDGMEsTT8A2pdZs7Zw0CRXeHn4/qgvb
- r79xwfpD
- FJd407wIN+JdBDXqH/QZgYvP6IqPFuk4kZ7OFs7ED+PX1DI4VIbZMle2NVXYL1xy3gZWfZd6fL2xodRXcuRHUCM+qyO6qZQ8KS2+0RvKsaXKvMBzXjV4C85dQ186ugnFBg0sgJRhub54zPHW5eplApyUC8Q==
+X-Rspamd-Queue-Id: 8573D140010
+X-Rspamd-Server: rspam08
+X-Stat-Signature: jr93qw8ej9cme7khtcodrjxbjzhfy9dw
+X-HE-Tag: 1773043589-701011
+X-HE-Meta: U2FsdGVkX19llecC1TEoO/nRoLWbFqFJHj1NOehs0VYCaAGTqYMlqgDJIdSEK+jxbvgiQNVtGAgLLy3QZ+8ywqdGzU7Z2+yzBbwXk7SvSdZlHiTKs9meytvtCxgRY89QBl9gn6JSsRAVFRpRAmfK6NrW+d0kIP5JP0wymqiEKD3XxHbuS//pGYs58EH4RAmQsoQIrw8YBWvg9VR5Iszt9gT/djioB8fL2bDv1n2D5RWSvm9ZkXv0JtQVTVODSIWvSLDbGa98899Fd7Tg1wpYuyICAr+fSAZwr578hcKC+TL9ow2oTswVlL3w27EQnH4GXn/hKMjawGCx98yKKVDcsrPk0WE5o2/tdT0FSY98lRjmt40mnmKG7SD0+whrOHTHTVoupJsBAenRG2uIcnjKm6zAlDEMRWYZfvpZilTqFawx17b3O0VrKqvC50+MVjiY6yQEkcgNps/p8YcPHvEfrH4VccnYlM4g8EDd/N5kMqCWI9sPsJ4uHmhjrm7UI8SOjystCvAhVjHXMbtW27Qd+ZShYXIST/jB1XGP/U/XB962UV1jVsDUqrcPOEjgQZkFPMK41IMmVwhAU71dKSMBLwGmuYjdI0WNvbv/82Jqbi1wnV0UNKM80TJ6erRZqNVN7ZsePx9OkL8yrpSeYj33jcM3AfheJ8DDNotjfkL6T91AP3IlGSLi7pG7LvN09GUK6mqBVzeY/jKKPh/rkKIkJhgRhoWAoWbfHhXkSNsG91u20TrEBbiGoZ/PdxAun6pW+GHqBMiXv9UFZsA5yfsnljwCOsdnr78Oi9OBkodNGc1JBWbYUupbML+3sWXHezHvgr+HpYKpSt2xXRGucopGkS+WS1r9ZZEuHyQGio/baNMSobnh6uKdfpB5Tv2LC9SlXvHHIArYT9BnzkDb9lT07juEjLzpkyBA6J7o+5vM7/jWRCLwMOVvAnzpXL0bqV+JYHkXkQZC0a49XOPILQg
+ uuGvE4fk
+ m64Pjwmkq+c4IQiC/pNgWtelJnRj/eIj5nF2E7952u3y8RZf/C0fOm1z0d6IK0UlwGBdGFfFYLEOa0fytkmEEPxuZqz6YDUKUrBuShZAjy6eMkcle4hsfrsZY+vb9S15WLuHc4rXEN/XidA9uB+6ObxyB+slDK4Ts+Ze7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,34 +96,59 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-This series enhances safety and debugging for swap cluster allocation
-paths in mm/swapfile.c.
+swap_cluster_alloc_table() assumes that the caller holds the following
+locks:
+ci->lock
+percpu_swap_cluster.lock
+si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
 
-Patch 1 adds a VM_WARN_ON in isolate_lock_cluster() to verify that
-full clusters (which should already have allocated tables) are not
-processed by swap_cluster_alloc_table().
+There are five call paths leading to swap_cluster_alloc_table():
+swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
 
-Patch 2 adds lockdep_assert_held for si->global_cluster_lock on non-SSD
-devices and adjusts the assertion order to match the actual lock
-acquisition sequence.
+swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
+->isolate_lock_cluster->swap_cluster_alloc_table
 
-Changelog:
-v2:
-According to the comments of YoungJun Park, Kairui Song and Chris Li,
-change acquire locks in swap_reclaim_work() to adds a VM_WARN_ON in
-isolate_lock_cluster().
-According to the comments of YoungJun Park, add code in patch 2 to Change
-the order of lockdep_assert_held() to match the actual lock acquisition
-order.
+swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+->swap_reclaim_full_clusters->isolate_lock_cluster
+->swap_cluster_alloc_table
 
-Hui Zhu (2):
-  mm/swap: Add VM_WARN_ON to isolate_lock_cluster()
-  mm/swap: Add lockdep for si->global_cluster_lock in
-    swap_cluster_alloc_table()
+swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
+->isolate_lock_cluster->swap_cluster_alloc_table
 
- mm/swapfile.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
+->swap_cluster_alloc_table
 
+Other paths correctly acquire the necessary locks before calling
+swap_cluster_alloc_table().
+But swap_reclaim_work() doesn't need do that because
+swap_reclaim_full_clusters() just isolate si->full_clusters that
+the tables of it must be allocated.
+Then isolate_lock_cluster() that is called by
+swap_reclaim_full_clusters() will never call swap_cluster_alloc_table().
+
+This patch add a VM_WARN_ON to warning if a fill cluster will be handle
+by swap_cluster_alloc_table()
+
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ mm/swapfile.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 94af29d1de88..3fc2eb30c187 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -596,6 +596,9 @@ static struct swap_cluster_info *isolate_lock_cluster(
+ 	spin_unlock(&si->lock);
+ 
+ 	if (found && !cluster_table_is_alloced(found)) {
++		/* Table of full cluster must be allocated. */
++		VM_WARN_ON(ci->flags == CLUSTER_FLAG_FULL);
++
+ 		/* Only an empty free cluster's swap table can be freed. */
+ 		VM_WARN_ON_ONCE(list != &si->free_clusters);
+ 		VM_WARN_ON_ONCE(!cluster_is_empty(found));
 -- 
 2.43.0
 
