@@ -4,224 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07044EA8554
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 04:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D73AEA8554
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 04:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59EF26B0088; Mon,  9 Mar 2026 00:33:51 -0400 (EDT)
+	id 4BB0D6B0088; Mon,  9 Mar 2026 00:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54CF06B0089; Mon,  9 Mar 2026 00:33:51 -0400 (EDT)
+	id 469C76B0089; Mon,  9 Mar 2026 00:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F6706B008A; Mon,  9 Mar 2026 00:33:51 -0400 (EDT)
+	id 313C46B008A; Mon,  9 Mar 2026 00:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 296D56B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 00:33:51 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A2A16B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 00:53:42 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0310140CF9
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:33:50 +0000 (UTC)
-X-FDA: 84525256620.27.44E8C4B
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5398C80003
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:33:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V8pEgAnR;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nTQ7sRWx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AFA5BBAA39
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:53:41 +0000 (UTC)
+X-FDA: 84525306642.27.BBF1199
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 90199C0002
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:53:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Zkl49zXa;
+	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773030827;
+	s=arc-20220608; t=1773032019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ncwKmqm8QRWmA+ExekKPwrnAasYkjZc8P80yMVkdKGk=;
-	b=2BlhnfZiOyg3W4eEhbnHfQEiYb1n6vYuraIQy7t/T4DWsQMBt8miCRkpMxNEOVKq888VuV
-	/+zlSkBchv2fVfah4GL7pfe/Mwdhf3H/NPDpOzNqP70IFnItD1EQsZgAEecHob7ld7xb1Y
-	+YKXPvPLsFrIGvEgAXVC+0ADm1h4rKk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773030827; a=rsa-sha256;
-	cv=pass;
-	b=krOyIsxZjq662w2Qxn7I4Li9EKAAnxABQeXCzk0ARFpFoSizgBJIX7jbSVCHA0L/bCYA5M
-	5e8yWcMf0JRYQCF43+FPbJX1pC0KTDjk0d5zXJTdJfXD4zzsLPwUGhEM/zptuN33pedSR4
-	0K0aFJ22ZSDomVwKDSs/aBRNDJ3VPBY=
+	bh=YKTCl3ZZHhLgk1TZ61Z+cLelMYdC4TOsqAIQ4YfDLnE=;
+	b=wdazwmzYTYUe3My7WFbrB7kJU6TOSRaIlB6BzozLYQ17nRFGRX+mtA8So6rRGwwhfhv4mv
+	UXYXpSp09vkPAtV68AO1IezAHL5WXB6QF8CT3vzggAbIkFF+9i4z9v2aNfjfjicVzLadK9
+	h9ngy7ZWns9b2tp79QOA7zmsE2gyqBI=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V8pEgAnR;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=nTQ7sRWx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf30.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 628Nt1TO919841;
-	Mon, 9 Mar 2026 04:33:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=ncwKmqm8QRWmA+ExekKPwrnAasYkjZc8P80yMVkdKGk=; b=
-	V8pEgAnRVaBpR/PccUb6dOAzI7PUllpsRE0Y3FK/yHy5yahpva+qp1nyNgM1oHbv
-	du+4kXJK8lUOeik4yT38a5fOZz/GrPwVvvp8A9LNj3TNGiVM1nXzqa6s7vDqQs2z
-	C6bPtPmmJSlxlUcYBOhMutj/kvedgCe3RkNfmhgouFWbNaHAth/b8usQW/wxgH+0
-	9suR+PEXKg0Dp3/2XJyWiqnFKme42WE+dEHwoZMFYbF7wbdRxZSJ2e7ZaMMAH0Fx
-	ib7AW0PVnIVe3CjYKBVXP3V8nTcQf/rSLFBFqb0VcWPnfBd0JdyzcwBBKt3m6vW6
-	prKOYI8D2etShkDOTZnR1Q==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4csjnug5t5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Mar 2026 04:33:42 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6292P6qk039578;
-	Mon, 9 Mar 2026 04:33:41 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010001.outbound.protection.outlook.com [52.101.61.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4craf87208-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Mar 2026 04:33:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IY2kzj5RZr3CsVcrRQBcHVU6QZhE8QOfXRi+to5iGqNAsgacJKBIbxFfzLa1SjT8XLSMh5UYwuB2nwCJ642ovd26bd5J8JCBUUyz/4t7WdxeRmRmRZtWJyVtall+zCKq0U/eO1Otq9HnF1Ko48fjO2Fm61HN2lDHMcBrVhdCsKNWKCNd4zLx2d/qZMrot9I6x60UBIKER1riZ2SANHKgpOoc+F9FutSOmF7eaHpePenOGA9GAEob/Jl09PBUXAIUAlO345fFDwijbMTG0sGbssBtmHzw6207zO5l1iI0CzPnC55mCIGHkrErWaNsC01MTTN0pgBmy+lNB2F/334VUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ncwKmqm8QRWmA+ExekKPwrnAasYkjZc8P80yMVkdKGk=;
- b=SRCPjhJMEsnhbPorH9npqupuQtrnkhNE/9GL800uV9bByAnf6tKoQihUThYdd9Qkb3J8UGt2JSlLiE82mIH0YRDyOfP22pe1L3YHhQfrwu9dtFfRKZJBfPsGrNbKZCmO9tijGPMI74LuG+6J/DXKU5Q9Us7New4VKu8LmtknV7dGfbBv+ChPuc6GaOLrKr0bvVdzItmwe9aXA2iQXU7pFksvzltt+dVI71ABy8ztAEaqxk7xRQZI3bBUU4uZybq1iZW1teE9QZtJuLTnmyEEEl0AJVw6jKtTSXSArY0QdZvFh46Oh06JNVs9d2TfL5HqzjJjnDRRTPMhYFQITvKupA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Zkl49zXa;
+	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773032019; a=rsa-sha256;
+	cv=pass;
+	b=vgU2ZR8L+HOGXKPmA0FiUAHVRlVaG/u3C8gP5NcC4wnGWI4qXJlCKh/BwnpNCGu3nzKPyX
+	agxjIXcWXrc2lKb6EHG6DC3cjCXen7ewWg48A3hoyiVM3McKt4s+t5mziiQWzbbqCC2s3U
+	DkDJnG+vQKcD8ALpBlHXxKE4bl/GT/U=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4852af55981so88685e9.0
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 21:53:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773032018; cv=none;
+        d=google.com; s=arc-20240605;
+        b=amIUnoaqFKt5c8DlU+N1WtrGuartvY2IxE8oEwea07oW5lTC1nButjdGEW7Hp2dhzy
+         +Ju7tRca+lwmBgTurTOM9JkhQ7IFjsg2uYAifHvsfdN7Z3tNlFGkTWmjEuhowiMfHTpe
+         mvSLp/Yg+im35H2a4XreN2mqiKtYvT+kJ247wIn+7uMWnYguc750TiQCFwmjl/3JlKPl
+         QTFOYbKMCKB1rwiEzzf7OUDxA9ZVPhjHj1QEZK4dlEGFYwmE/bXIwXe+XovOvQTrNpwm
+         MT4Vc7WxN5UWre6kfa3DvcODkspOkfwS5Ygz9J7DroPqtl5891x3hDiUIK38GLInlkFo
+         LKfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YKTCl3ZZHhLgk1TZ61Z+cLelMYdC4TOsqAIQ4YfDLnE=;
+        fh=QDY98UspIu+v4Bko2kB9QR1vHQkoZrZGmAHRyd9OdfE=;
+        b=MWrfUtovsrI0V4jzEybibCoXFjw2PUT7LtxkOTJm81E3aKQ/I9AzhgAnJ3hl6ABq9/
+         /9iOqVAptHHtdIOp5mThqMAGOS/WQP20HI31mHtVDH7EjukAKhlvJkjFobYUfnNNKPCj
+         o2Y2U3EEYjIhzVVISoPe5fF+4mhHptF4HJTuZBdVocgw8V22KE+DK8OryQ3etxob4U7C
+         bAPQz+i/WZRUxB2DbffWyYY82AMmddaq3L0/FnsOPI/v7kNVWXhcjrdHVlOYkMcZXDf0
+         xpitmwVzGGYqvx9QvTp9PSdP2xcj7chFC4UxPmnio05fyrG8sq0tVAhw+nb73XZt7hjN
+         JF/w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ncwKmqm8QRWmA+ExekKPwrnAasYkjZc8P80yMVkdKGk=;
- b=nTQ7sRWxm/6rNKX2a6Jtt8u6TX7foNgTYSiO8WF4aXh8NEp/GQopS5Yit41OrzC47136k4qaQ5i9LJCdzVzKR+ucYszlElFsJsLcEcqDYGAOf5k8ak83VTO7Irnu9kyoLugRGe5DkGgnCUIFNOilgurON/NtcqLDIRoLwq6KwmQ=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by MW6PR10MB7639.namprd10.prod.outlook.com (2603:10b6:303:244::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.23; Mon, 9 Mar
- 2026 04:33:37 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9678.023; Mon, 9 Mar 2026
- 04:33:36 +0000
-Date: Mon, 9 Mar 2026 13:33:28 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Zw Tang <shicenci@gmail.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-ext4@vger.kernel.org, cgroups@vger.kernel.org,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Andreas Dilger <adilger.kernel@dilger.ca>, Hao Li <hao.li@linux.dev>
-Subject: Re: [BUG] WARNING in alloc_slab_obj_exts triggered by __d_alloc
-Message-ID: <aa5NmA25QsFDMhof@hyeyoo>
-References: <CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com>
-X-ClientProxiedBy: SE2P216CA0142.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c8::9) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=google.com; s=20230601; t=1773032018; x=1773636818; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YKTCl3ZZHhLgk1TZ61Z+cLelMYdC4TOsqAIQ4YfDLnE=;
+        b=Zkl49zXaVfgONAtTOV3FhfJizhNA01XDtZKan5vmVwf18epXKcGW+vFOymsw342w9m
+         T8LAKcTgi0hp1EqMWIw+sp7KTiGqPUFQvTldGU0DWBFn6sfTysi59TqVl6bubldiNvx/
+         g1joSZCWy6ihFdVTWN0pt6X4uWyG9jS/AkUyuTas5UahJ7ZbZyejtWfkTQfCcWu2MoaG
+         YL87PzmmVcvGLFilLfz8lOjj5XuDUWignB3tdI/ZKhHJiCHFeng2VFASobsIjpf8dPZy
+         IPKPZamJy7Mlpww2hhZWUp9lL3GigfPm/YNa1lyNGPAei/2ZvIa+0GIooF1Mu++YUZfL
+         Azqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773032018; x=1773636818;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YKTCl3ZZHhLgk1TZ61Z+cLelMYdC4TOsqAIQ4YfDLnE=;
+        b=pYK7aglqZhkvfNnMN5oqthYvFB5PCx8Un1yDfQE93L5T0xk3KWq0tFquKPN0a7KyIx
+         XzKSaBBKfbzxKv34H5fy9HW09fTsx8bxjJq0VVhJL86bSegAsAWEBA3IMSe10EeBDXzP
+         axSCj/mOTrd8t38yG+oWrecRIryUKOCumFP38mnXrs9LifaGbIKeOQt6Me0IP465Nrf+
+         IBdrMDlTdQNx5wwXG87aqbkyVzxZjFVu2z8pExxh4ep6lFs8wiznuge92t4882LEIuVf
+         XsliOCOWm/byxzYJqV0B/hkQT2KWhs3hoKaFBFjzkdCx0EZPjnxLvpMbRO5KoWo4ii4e
+         Betg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7Qsii2D9tbzB38XIhhByfKNTzcBl+4c4X/SWJvI1DG8kaSCZwwVZO2KRjo6p4qTsBANbeu/TlKw==@kvack.org
+X-Gm-Message-State: AOJu0YypXAZ+q6sj8bDaJmkPHu5vjLpSyrIAT6QUokJje6dKqtTB+xRj
+	j0zUWCRbjY0besx4R13HslvnvYM+9SuA7pyqO9QVgQNjRyeClyMgac48lPu/e/2koyzopqR5Zd/
+	XNsRksA9ooIsurSM5g/gdhfIpySW6dpmBy3EbiLyJ
+X-Gm-Gg: ATEYQzw8IcnKihFQeSr/yomcKT8xCOZrgBlHcQs80knJrR28SHulfSW9czjtP/lu6tI
+	ev01CxW0hKorWKVpO2xSr7TiF4BNWk4g4JTKeNOt978u+KqJATjk+BIi5Gtf/7GKhoKKSdCRLvl
+	QR5vSnJq7t0KzpbW40fEEJqMN6W/Yh1kOcO76Rnj4VnDsx1ZjmWeDxwx5WYr1G799TVI3YVYIhX
+	r9HbTMC8zm+mKG9oOi36UNazWJXWCp4T3cfY8Snd3c7EQDQveWm9hln7Qh+2/GmrrMlINOlpRTT
+	EkA+q14JBuouPLpTi0jELr+nEZjeOXfvv4b0O8Y=
+X-Received: by 2002:a05:600c:3b86:b0:483:6f85:b16e with SMTP id
+ 5b1f17b1804b1-4852e45a28dmr1925675e9.3.1773032017478; Sun, 08 Mar 2026
+ 21:53:37 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MW6PR10MB7639:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78acf538-9052-4ee9-9dd1-08de7d9507b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|14052099004;
-X-Microsoft-Antispam-Message-Info:
-	c/DaA4uSH/xPoAipJCLezYC7uXOh9faksgoslH9u11accIbvNBYi2XuGw89X72eqnh1HUUN0oKGEsE3ra4jbIClVlHmxnwI+E0gWYljoHjiomQtf/0w8rL0BDSwq3KfSKpFeJoK4lOawhamGmMl7B7Wxkzzn15AiRGq+q6OmPfZdkaWz6M29eN85YAVdjahvrt5TzvtXoAy84qjnKTYQu6In9szRmN0x8ztce4h0SCqz3KwOldO5Eh+S2q+ZR2cU3whVrBShB/cAY8lOBdxntG+0vvRRdTfaicOOMDKI97TExBH55c0sZ/bRuvHpeyE1sKqkBovipCIgCCRx0p3MZ2wm3JWKHF6SLAuJiOi49ygyDRDNJHW7AuI8cyN4OmEJN28dUuwZNlGyQQTd9ipWH+LOnqfHbxla6aFDqW3vb6Z9cBJ6hsWqRhY3Pb4Cve42iUxKJrjgawUwWz5sJr4mrK41C4kzE6MfE6UuXp2Y3PcGsPDhKW5k8i7BtRmGG/i1sMt+t/rjhQj3osxcqAF3CUl/hhuw5EhAhXNaiBiFNQtux5zYjp3ZrHNWD05n83wSJo5bsnUjYoUKjsujKKCohqOnkQFb7luxpD3F9dcRBqoNNt0CmRSvb/kFabt5QA3qFjiz/Ce+t1rIYTfIoKidvwgydqeZ32LDu2ayKYvLInzMitrEccCS5iG9tmyepVAn
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(14052099004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UGxLbS9ZMXhPejd0UFBCbWN0ekhhbnJMUkh3TDF4VUVBRmJ3VjN3OTdyN2Rh?=
- =?utf-8?B?Y3VXa3RCQlEwbVMxV2ZBTDlOSGUrcXhqcnVkSUthUGNxbnhiZy9hVXdhRWJa?=
- =?utf-8?B?WlN0ODJYNUZzVEQyc1pWY3doZzM4UlBmeWdyRUR5bWIrNzQxSDB4THlSemFU?=
- =?utf-8?B?OGdKNEZHK1JqOXdGdGYrLzZuNlV1d3RJZDl5dmdRK2NOMHlHM3dhWUE0ZDJG?=
- =?utf-8?B?U0c0MUlxRzVCMStkVW03aDNRTjk1WXR6bjdrc2xXcDZDOEFSMCs3S2lJcGR1?=
- =?utf-8?B?RWNBQlRRNTZFN0VnbXpjc1VEL1RJQnFCSlJVVWl3K0JUNEU4MHdJdnVldFpS?=
- =?utf-8?B?QnpsdS9CYjJpOHlwa083QURBTHhIWWdsa3QxSnBlczdnQk5GVFVmU3YwSE9q?=
- =?utf-8?B?cHM4NzZNSkZGU29KYk56dmdQMytPVTVqTUs3RnpjL09mOEFzcVU1VCtkd3kw?=
- =?utf-8?B?M1ZJeXlQeG1YUWUxOHBmdm92VnNCVUdjYWJCSlNPSEZRNWNMcFFZT1VqMlpv?=
- =?utf-8?B?c1pwcUNSQ3lDeUR2c2FncEdNWTB1Y01pK3BkYnA1ZzZ4QiszcFpaWE1hWDh6?=
- =?utf-8?B?REZvbUN4Zm9JVnVRekFSRUIzUStqODlqNnByS2hqL01UWnpmMHZiL3NNWFVI?=
- =?utf-8?B?WXlZYnlDd1dCRjljV1AyQ3I1Sm9wMi80UUszaDN3UlprOXpuVnBENVFWekVO?=
- =?utf-8?B?c1o2aEhvditJeEZ1Q3RtcmRmNGowd1JvaEtveS9FdW42QnkxVXIyU1o1dURY?=
- =?utf-8?B?VVFsN3dvWWtnYVpSZXhkbDJyZzJNU2xxYVdqY2F1dFJQUHBPeUt5NmFOYVJJ?=
- =?utf-8?B?TjRtdm83WXFKWk5sWHVWWm9DU0g0eVQyVGZmc1BSTVA4Mlk4NFZTU1o0OXA4?=
- =?utf-8?B?dEVPalRqeW1ncUdNMlIxeDRhNzZUWnlIREk2bnNNQlJtNko1NW56bkwvVlVR?=
- =?utf-8?B?dnA0bkd4M2xXc3hGbXJBODlQcFpoN0hBZGtCMDRHUlhBY2NnRXBoOE1tS3pU?=
- =?utf-8?B?TUtTbWlYTnZoNTNJVnVBUTNHZnVJYXhMUmxCRTk2MlJBWmZtM0lEYmVxa3ZV?=
- =?utf-8?B?MWEzc0V2MStsNmNaWjhpcFU4ckFDRTY5SWkvRG1RSUV4bnQrNHdMMUtQK0hp?=
- =?utf-8?B?L2dpSE9rdnhtZjZJUlQrdGtSZTZaNjZWSTJ6cU1iN0xZeDFudmpDdXE1ZHNG?=
- =?utf-8?B?ZkYxTXNJbVJJaWs1eXdjczJqZFF1NGtDMWZDeDhRQXljejhmVHZUVVNlVWpY?=
- =?utf-8?B?VGd2WXBwZ1huU3haSzRqWWt6WlFhdlBrNjkwOXMzYktHdU1RRTRrdW5xTy96?=
- =?utf-8?B?bWg1ZEQveXJ5TFVGYWZWQ2sreXpCZEtNWWJHd2M5ZnJMWmdObmpNV09ScVNW?=
- =?utf-8?B?dG1xYlpXMzhadFR3VUNCMURYT1ZLUVBKSG5CZTVqR0tqMVRXdGxiTTRtRm42?=
- =?utf-8?B?eVBNbWJpbnN1N2xPOEhYNjBQU09LOHpzM1NwQThFRXlHKzQzK1JXQWsza29Z?=
- =?utf-8?B?eHVtbHA5WFIvNnNhQXJrN09EdmE1cUtpWE15dnZFTElkeXhybEdUaS9teW55?=
- =?utf-8?B?UEN2eTRoK1NvTzhCRGNGelQ1M3hMRytreHROMFNyWnhGRiszU0VEdkpSQk5s?=
- =?utf-8?B?VXpoQmV5MXZrQ2tBUS9WeEtFZWFIcVpzbTNvRnJoaDJQdGd4RTBqS0hKUFN0?=
- =?utf-8?B?dmFZNkpZVThSZWxkNldvejQxL0l4OTAxZllualM4WjdyZHhMVnQ4ZW85ZHJ1?=
- =?utf-8?B?bDM3cG8rTXlUS0Q4bFh3L2szeHFrR3pjSWFybVRVTk1WZms5L3NPMUhGT0xG?=
- =?utf-8?B?RXVEMUxYSkxYR2sxUUFpYjBML21EQVBaL1Y2WWZJbFB1WkxkTkxBVGZVTml3?=
- =?utf-8?B?S29YRHFVK05HaklJbGVPK3BKckVwRG43SnVBemMrcmxZb1dndVliYlhDU0U2?=
- =?utf-8?B?YnhsQlpqb2ExSzk4WVJLQkhsdWFKSW1uRXpHbjhmWE1KMkN6REZXdTlIeU41?=
- =?utf-8?B?dXJYdDduNUNFOWgycU4vMnZSOWVsMDYzMHBMb1RNNlgrc25RM3ZnUzR4aDBL?=
- =?utf-8?B?TmdnMmd2ZlhoNjBoR0lFNDB5M2lsQXRuQ2xNaHhCY09DNHhJMmVodXNjRHJs?=
- =?utf-8?B?ZXB2Z1lOUWVhV1l4OWNQdE02b1hLOGM0c0ZicmpqVTYrQjljV2NxZnEyUHl3?=
- =?utf-8?B?RlJwVTdHN2NjRk5Eb2V4azVGZWk5d2tibEJIeTBybHpMb2dTRlY2aUxYMi9j?=
- =?utf-8?B?UW9qR2l4T240N1pxZ3EzVnJoOS9iWjdIc2JtNnE2QXg2U2RNRml1R29MZmE5?=
- =?utf-8?B?c0lBeG1xbFpxZm9jLzVkWTNCdWxFVGw3TTlhMzQ2ZE1LMjlVb0Jsdz09?=
-X-Exchange-RoutingPolicyChecked:
-	QhrYF+T2xoknen47jMydUbxUaGiNLiLLAUKnjhbbtrfF8wVKHP+xeOxOo/AkEqT0W2z/pkvAyuSbh/Vyjo5kfgDSnTybS9SczgO5DknrMdyg62uP0UWVUXROh7fPBe1ajlpoPVxcf5iWas4XitlkEkHp/wa81qsmdY5+n2nebYzxyjPviJ/tiC+LTCQZI1OtY/Y4myXgIJXP2jCj2HGsbjV5u7aq77EPp5+huTORkuCcMY8meSahtwc7hzwNikqaCe1wJ8E+pzwAyGAeFkLu0xJuZmzKYjW40Xv03wZpLv/YR84uaW+whCxBHZfnJAnYVY2n3KBkTO5uHmHhaZK1lQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	H70pPCfmqdl+MKdiMTq0wvM6LZHEKzo4GVNskGft9jv4zjuJmEDds54Xvd43dd7MiyL7b30D89JSwyF+2qWNnsou8TgMcSXuHeTndIpjCfiOe0bbgEs8IrUxKbrSO04r3KEuCUxrubvOdT+g0c+XlwMTO8aXHD7ZBfsMk/6EdT2G/KjQ1XymXe9KcPo4nLHuzt/9ueP+0ZLy4CRpUssd+aTxogwYcCwqkClrQhCTYL4otLMR2Uu+Nu/f73uXNWwHC3JUd3vgepK6rBKRz1zceCflBburhKbYOdeQ8qb8Df1nqhEtYNzArrZqTNaYnN2gVwfJEWw1DQotkp/tCxHp/WBjFRcw3Tmr69WugR0KrYvmuTXHsRNn82oi9cGcmV+fYR9JYwZRYnYTs9EMtAG6kYB2KunNC4OkcR6qVBeiEtC/EGg/RjzqGX36XeuJJq7TcHJdljRjcrliCALgMaUy+GIlba4+9ouH2acQTnSVeQeAT74zemmK4K/8tscwC57BK/EVgOSxtR8ODfZdltFWN/40qPC1cx2l6nYACzNiDdwW7N5jq0dEBkFGWzrpF6kBugP50lEI4BIYg1U2/b5d9tUPdz8s9AILJc5kVIA19kw=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78acf538-9052-4ee9-9dd1-08de7d9507b0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 04:33:36.7230
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IOq7Z6frke6LG8KIqLc78navcxi3TTYct2Gsn6kpUxc5w0hoGUAVe2OmBu9RmSRTCBoi09aNAPFwoWBSqcfK+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR10MB7639
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_01,2026-03-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2603090040
-X-Proofpoint-GUID: wUgAYn8yuiKIvsD7Mr1LO8qQv8u2oS92
-X-Authority-Analysis: v=2.4 cv=c7WmgB9l c=1 sm=1 tr=0 ts=69ae4da6 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=L2YNdeTNRC4H0Xt-:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22
- a=fGO4tVQLAAAA:8 a=DnvfMoujX6-V84MCrxsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDAzOSBTYWx0ZWRfX/3D2cfOaojPc
- NHVg7+5VEkrxMvlf+9fNxRIkYdtf+qEFn3VMUc7rqHO2pvVFA4uBnBfOp4s6zy+8YT4UX0JxKz5
- mmBcPzWrfJ5w31OXVBb0ajCnUbGe2bN9SVx2/IUbFxW45lQrbo24/sch5aoa4QK2F/KErsfp1UN
- YG/zYPXOfOGu53pOpjVaD07nr1T7M5FvSktK5hYSjg/Btiu8p0pdob/0tGfMNxFspyfLujLU1fM
- qEfjoSXrM0O70SBYVHjYOraBjjbFaLZEyYaOfKbN9dikzLmNB/YqpxLX73E4tE3BaOaom9tAdRJ
- oNencPowpnUEvH7TIOfd6CrDT763C1SmIjPSMEOVRYsFdeGQySUGzai+p4PqV6yrkXxtka93EjT
- 5RPpweshs3UT5MLk3F1B4IlDPRYliWsgMtIsEuQzBDokiqk+z9lR2REMRGqkmYqmozaMPzguZyw
- XqxSVyZNm73sJim1BLw==
-X-Proofpoint-ORIG-GUID: wUgAYn8yuiKIvsD7Mr1LO8qQv8u2oS92
+References: <20260203192352.2674184-1-jiaqiyan@google.com> <20260203192352.2674184-2-jiaqiyan@google.com>
+ <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com> <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
+ <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com> <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
+ <a0d25caf-a18b-e3d8-e74f-fc18fa85252e@huawei.com>
+In-Reply-To: <a0d25caf-a18b-e3d8-e74f-fc18fa85252e@huawei.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Sun, 8 Mar 2026 21:53:25 -0700
+X-Gm-Features: AaiRm52OugVEfS8g75Px5seZ5I3SYFZ1Jdyd2NzqUgRjpWBwmGWtg6DYu0FRfQg
+Message-ID: <CACw3F51+bAm03nvucV54bkThnYc-4ewgqGzq_c5i6oMmnGdEtw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
+ MFR policy
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	willy@infradead.org, akpm@linux-foundation.org, osalvador@suse.de, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, 
+	sidhartha.kumar@oracle.com, ziy@nvidia.com, david@redhat.com, 
+	dave.hansen@linux.intel.com, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	william.roche@oracle.com, harry.yoo@oracle.com, jane.chu@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 90199C0002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3db4wfhj5q9m6b1stg8qh97s66pqtt89
 X-Rspam-User: 
-X-Stat-Signature: id69qjbsf53hkt3ktexpdokpz7nuurib
-X-Rspamd-Queue-Id: 5398C80003
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773030827-857694
-X-HE-Meta: U2FsdGVkX190YP60tZc/qeZ8Yg1nyT/gHJHeWpuiQQeoKzaSe10eNggsc5xFPMaHwHaHnAbNZ9CDHrtWtREab6mDVLG0u09hg6fmyZCHouG9FrGZUBQcctlLu1iaa8CDuUwxKf1xP6IckiqUN1HCqo24sZZUvKltLWzwbCl+9zbowYb2vqFkfnj/8XOAqMcCYHdbU0jz2q8rj2w0yW98THrWRNLm0JZSGyzAxctEIEKWev+fdADOYmEqcNGOQkrFcLA6Xu2tMzq6hyTpxexGIUapWriX0vMLKkdzDzlF7TQMS2LfPI8JHdFbOtXOnqtEBsl3vQTAW4PhMu0k71DJ4PT9MC4aOe7xfPnUpJi6z62oFctYYqsSfSUGiI5LRHsT/v2bsacExf+TgN+FjX04tG0G7CORkLHiFFKvHrBik69wRyG8x6IGIRM9cW+l4TjWjFoUBCYKsDgdGOkK/eLZDatREs2aS4scFifazfKs7D2fDQgeCvZCm4wmupyoNXjsOH59S5kDBmdzBBqVCoto+MYbXzae/HJHjzVBWoCQkdaBc22ztYx/Qca9K1f/TGNj6rPv9y7jLeb0d4eDwf+I6W6N+8hsIDEbNS7R84/Z13UW9DUysst9XtumTt/yMZ59XC8/eX3qE+tm3UfCV7LUL/pOInjuv3icoymh/LmT1M0NnORWFgDZ13PEiPfKjeUmTbLMaGM4vsGRThcZldOGN4WJQOQH9KHtD2uE+21mVuHiyo2KVWr08Peh1YQcYzNliWti/ivK8x5A0n7gCUx7gjwWiNxxHjrFJrT/zbWxYMVUBw9oJPrjUfIfEYuYctb3uGed2NALu0eRsMgIK/66iAnt5rdT940Er84bSyody9bKsLHdIc98ozDeVTwRUfKZMqAwQ6BxxyoFIeCHd6wF/GrT7DgpArYsw5L+z8rg9Ec6rREh3yiGwMBPHvff2lmBylLM3f5K1bGlYoq9AY5
- es5cEg5J
- NoFEQnGTdtUBfKJyyiuKNhmDoxequTOKIA6EnYJoPaaWjrSTayTNMjXISoXUe6x85DNPrPclGBxjy94lYjnaXvD551e1uheVoj24JtZpyzuNrA1n1H+Nq39e2IozExSzS9wTXUxAef3b+vv2gjHO6LPauKfuqrwavbqNAGwRCuqMRa8KmkLWMeiQN3rSEGpjbmVYCuv5DRKr4cr27ebKLVfT2xShOc8IkS2LEvHN0Z4mUnFZX4qH+valjrwF3+bXZba5kHpsOfB9pvAc08g0DwqlGL2DM+IJPPFEjxknkEGfgUahMx1Wx1jS2ougaKcrV8h1YlIPjrCZhRbucEaOHxeQlGUOruyAn1bbhFSd5t5of3r9U1BZo+Z5jY5s8uu6I0HmdBJcSW8Le0mRVQNhLLAuW0c9sVMP0aepDMCrvOiqAQ6vDvUs1waq7xnPzm88WgJ0tjsssmKQ4gl5XsNwWtP9cWdtHguoMlnVk3QXDkFegJYUthcbwalQ2xluNfNPHONMVtg5zCSAMHCEXl4EcNnTYqZYHvUZckjQOyEj7YHH0GtXtB1QZFGzQRYWUBNC+IL3ZV14QQN7Ks16J0l6KXNLWRar+wDOcoLXPMevgNWeRCu1jKvWu81jQrnj+SaTWxGSSkYGyqn4ihy0NXW4pMG6yRmspbvLpHOUlfN1tdNBCv3OAKnoV6gGwj4NOgHxGxPzA/iQ2AbwGYmSO08uVslV2b/uWgYUQk05xhMGDL10tc1FXhBHLdp4gkg==
+X-HE-Tag: 1773032019-982908
+X-HE-Meta: U2FsdGVkX1/M784aT31gYUnLoj1ez6RMGd0NwKxfg8q/8RU/F3dgUCU4W14pcsSo/ii8WxKgEDZwDZ1TJDb714c9arEnfyZQqqWKorT3oUd9v55nEK0oGTF0RSdSgpB+C7kykjasBfWiKlcPdGQyXSqyWv0iOl6MefU09jJbaWkCrBKCqX13tYIXggPEI1sVWdzoLsG8Lheu3XmBTvw+cL3h+xLf2FTCjaIO8HVlF6Z8UDvZO+oECHKniMK4IU0CLGOJvSzu4gr9rKmtblEUejYQeQmw8qeprqxjZwuLLBiwyWiB9tPviQRnuCvnR5pJcgcf6h/6awoT+TLPmP/txQjiEozQmc+zTlOB2FkEPprueOtSb6lha30HfpCQZM/jeqangILdzYL/9uryedKto44smSpPcA5skZaEiHDV2yIjXdxGexmWu4hl9JK4i+KEWT2Q6A9JXQX73yZ7mxGc4EjKTKZCsKMuigdXyRXfxpai9eMDJg1ZWW6R0/ubGrlPnU+xtvlWqjFVxVKvbX6AZWzwz+zqnHCqvi+QxkkNrZ6GW/BIuYNZUusrTZgj4qQ5cwQk+P8p2qrdek0GcnmjGuFo3ft3wOeYdcjIjvo0FGtFYVegzSySS2RLXQjmSi8mqB0vY2V5OGQLgr0Z1u8BE+F++ciOqw1Q+ilIOx+90pexwvtRaXB7qq3vZUu0iFnhDdF9LEgs4hODcWziVvRGe4H0Aof78X9iCM/HWgPE6URa4HhBHg24I0mLWVKEnKy7FOejJIjUSN+IMCVd+3QTKD0WSPbgErgwsxRIlGUR1egM4r4jXEOmLXf74hMLb4fLt7FbZNokXKbcbrYc3ESxQ0fVKqG4IHOkrJHvIIjSXOwg7o5fwQRt1zY4L9CPCf8CGOT05iIogCbrO24K4Bk4zaM2exSE1A11MdK6qU6f5ggH+gu+U1Y6whsg71ncEs84GyM9xDPrZVoN4pvgcwT
+ YvZuI8gz
+ 2Ud19RIG0/71o0Cpyv21rV7BN7NCcg3T5JhknTTnlNdevAddg+caXddp1F0A6a+OmChW87YnuP9hlxVI69lUQBzPkpyKSpqMXn3C2wWwcqm2l8+KqohEA2RxXiYroU5Zmlfvtbck72I1pHPf25uRXPcW7S/HlENRAcSfq34EAsQUffcbyGB5wbY6Ol9k9vKTDCuLf/3lAOG88hTmVrf2WZPKiZaQrxtgHc/62WecW5tWF+8fBfbd1+03tRyEbvgguTcdlurKzghpwZ4T7L9gew75I34uZae63RBAxc0yBZCxP/J54j+NrUI77MY5+OklwNz0MR1HNjHxNVrU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -229,156 +148,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 11:14:58AM +0800, Zw Tang wrote:
-> Hi,
-> 
-> I encountered a WARNING in alloc_slab_obj_exts() while running a
-> syzkaller-generated reproducer on Linux 7.0-rc2.
-> 
-> The warning is triggered during dentry allocation (__d_alloc) after
-> mounting a crafted ext4 filesystem image.
-> 
-> Kernel
-> git tree: torvalds/linux
-> commit： 0031c06807cfa8aa51a759ff8aa09e1aa48149af
-> kernel version:Linux 7.0.0-rc2-00057-g0031c06807cf
-> hardware: QEMU Ubuntu 24.10
-> 
-> I was able to reproduce this issue reliably using the attached
-> reproducer.
-
-Hi, thanks for the report!
-
-> Reproducer：
-> C reproducer: https://pastebin.com/raw/eHjm2Aw6
-> console output: https://pastebin.com/raw/FQAhquTy
-> kernel config: pastebin.com/raw/CnHdTQNm
-
-a few notable config options:
-
-CONFIG_SLUB_TINY=y (which implies KMALLOC_RECLAIM = KMALLOC_NORMAL)
-# CONFIG_MEM_ALLOC_PROFILING is not set
-CONFIG_MEMCG=y
-
-and also random kmalloc cache feature is not enabled.
-
-> The warning originates from:
-> 
-> mm/slub.c:2189
+On Mon, Feb 23, 2026 at 11:30=E2=80=AFPM Miaohe Lin <linmiaohe@huawei.com> =
+wrote:
 >
-> Call trace:
-> 
-> WARNING: mm/slub.c:2189 at alloc_slab_obj_exts+0x132/0x180
-> CPU: 0 UID: 0 PID: 699 Comm: syz.0.118
+> On 2026/2/13 13:01, Jiaqi Yan wrote:
+> > On Mon, Feb 9, 2026 at 11:31=E2=80=AFPM Miaohe Lin <linmiaohe@huawei.co=
+m> wrote:
+> >>
+> >> On 2026/2/10 12:47, Jiaqi Yan wrote:
+> >>> On Mon, Feb 9, 2026 at 3:54=E2=80=AFAM Miaohe Lin <linmiaohe@huawei.c=
+om> wrote:
+> >>>>
+> >>>> On 2026/2/4 3:23, Jiaqi Yan wrote:
+> >>>>> Sometimes immediately hard offlining a large chunk of contigous mem=
+ory
+> >>>>> having uncorrected memory errors (UE) may not be the best option.
+> >>>>> Cloud providers usually serve capacity- and performance-critical gu=
+est
+> >>>>> memory with 1G HugeTLB hugepages, as this significantly reduces the
+> >>>>> overhead associated with managing page tables and TLB misses. Howev=
+er,
+> >>>>> for today's HugeTLB system, once a byte of memory in a hugepage is
+> >>>>> hardware corrupted, the kernel discards the whole hugepage, includi=
+ng
+> >>>>> the healthy portion. Customer workload running in the VM can hardly
+> >>>>> recover from such a great loss of memory.
+> >>>>
+> >>>> Thanks for your patch. Some questions below.
+> >>>>
+> >>>>>
+> >>>>> Therefore keeping or discarding a large chunk of contiguous memory
+> >>>>> owned by userspace (particularly to serve guest memory) due to
+> >>>>> recoverable UE may better be controlled by userspace process
+> >>>>> that owns the memory, e.g. VMM in the Cloud environment.
+> >>>>>
+> >>>>> Introduce a memfd-based userspace memory failure (MFR) policy,
+> >>>>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
+> >>>>> but the current implementation only covers HugeTLB.
+> >>>>>
+> >>>>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
+> >>>>> whenever it runs into a new UE,
+> >>>>>
+> >>>>> * MFR defers hard offline operations, i.e., unmapping and
+> >>>>
+> >>>> So the folio can't be unpoisoned until hugetlb folio becomes free?
+> >>>
+> >>> Are you asking from testing perspective, are we still able to clean u=
+p
+> >>> injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED=
+?
+> >>>
+> >>> If so, unpoison_memory() can't turn the HWPoison hugetlb page to
+> >>> normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
+> >>
+> >> We might loss some testability but that should be an acceptable compro=
+mise.
+> >
+> > To clarify, looking at unpoison_memory(), it seems unpoison should
+> > still work if called before truncated or memfd closed.
+> >
+> > What I wanted to say is, for my test hugetlb-mfr.c, since I really
+> > want to test the cleanup code (dissolving free hugepage having
+> > multiple errors) after truncation or memfd closed, so we can only
+> > unpoison the raw pages rejected by buddy allocator.
+> >
+> >>
+> >>> it. unpoison_memory(pfn) can probably still turn the HWPoison raw pag=
+e
+> >>> back to a normal one, but you already lost the hugetlb page.
+> >>>
+> >>>>
+> >>>>>   dissolving. MFR still sets HWPoison flag, holds a refcount
+> >>>>>   for every raw HWPoison page, record them in a list, sends SIGBUS
+> >>>>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT=
+.
+> >>>>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
+> >>>>>   remains accessible via the mapping created with that memfd.
+> >>>>>
+> >>>>> * If the memory was not faulted in yet, the fault handler also
+> >>>>>   allows fault in the HWPoison folio.
+> >>>>>
+> >>>>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
+> >>>>> when userspace process truncates its hugepages:
+> >>>>>
+> >>>>> * When the HugeTLB in-memory file system removes the filemap's
+> >>>>>   folios one by one, it asks MFR to deal with HWPoison folios
+> >>>>>   on the fly, implemented by filemap_offline_hwpoison_folio().
+> >>>>>
+> >>>>> * MFR drops the refcounts being held for the raw HWPoison
+> >>>>>   pages within the folio. Now that the HWPoison folio becomes
+> >>>>>   free, MFR dissolves it into a set of raw pages. The healthy pages
+> >>>>>   are recycled into buddy allocator, while the HWPoison ones are
+> >>>>>   prevented from re-allocation.
+> >>>>>
+> >>>> ...
+> >>>>
+> >>>>>
+> >>>>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *f=
+olio)
+> >>>>> +{
+> >>>>> +     int ret;
+> >>>>> +     struct llist_node *head;
+> >>>>> +     struct raw_hwp_page *curr, *next;
+> >>>>> +
+> >>>>> +     /*
+> >>>>> +      * Since folio is still in the folio_batch, drop the refcount
+> >>>>> +      * elevated by filemap_get_folios.
+> >>>>> +      */
+> >>>>> +     folio_put_refs(folio, 1);
+> >>>>> +     head =3D llist_del_all(raw_hwp_list_head(folio));
+> >>>>
+> >>>> We might race with get_huge_page_for_hwpoison()? llist_add() might b=
+e called
+> >>>> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
+> >>>
+> >>> Oh, when there is a new UE while we releasing the folio here, right?
+> >>
+> >> Right.
+> >>
+> >>> In that case, would mutex_lock(&mf_mutex) eliminate potential race?
+> >>
+> >> IMO spin_lock_irq(&hugetlb_lock) might be better.
+> >
+> > Looks like I don't need any lock given the correction below.
+> >
+> >>
+> >>>
+> >>>>
+> >>>>> +
+> >>>>> +     /*
+> >>>>> +      * Release refcounts held by try_memory_failure_hugetlb, one =
+per
+> >>>>> +      * HWPoison-ed page in the raw hwp list.
+> >>>>> +      *
+> >>>>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned=
+()
+> >>>>> +      * can exclude them during dissolve_free_hugetlb_folio().
+> >>>>> +      */
+> >>>>> +     llist_for_each_entry_safe(curr, next, head, node) {
+> >>>>> +             folio_put(folio);
+> >>>>
+> >>>> The hugetlb folio refcnt will only be increased once even if it cont=
+ains multiple UE sub-pages.
+> >>>> See __get_huge_page_for_hwpoison() for details. So folio_put() might=
+ be called more times than
+> >>>> folio_try_get() in __get_huge_page_for_hwpoison().
+> >>>
+> >>> The changes in folio_set_hugetlb_hwpoison() should make
+> >>> __get_huge_page_for_hwpoison() not to take the "out" path which
+> >>> decrease the increased refcount for folio. IOW, every time a new UE
+> >>> happens, we handle the hugetlb page as if it is an in-use hugetlb
+> >>> page.
+> >>
+> >> See below code snippet (comment [1] and [2]):
+> >>
+> >> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+> >>                                  bool *migratable_cleared)
+> >> {
+> >>         struct page *page =3D pfn_to_page(pfn);
+> >>         struct folio *folio =3D page_folio(page);
+> >>         int ret =3D 2;    /* fallback to normal page handling */
+> >>         bool count_increased =3D false;
+> >>
+> >>         if (!folio_test_hugetlb(folio))
+> >>                 goto out;
+> >>
+> >>         if (flags & MF_COUNT_INCREASED) {
+> >>                 ret =3D 1;
+> >>                 count_increased =3D true;
+> >>         } else if (folio_test_hugetlb_freed(folio)) {
+> >>                 ret =3D 0;
+> >>         } else if (folio_test_hugetlb_migratable(folio)) {
+> >>
+> >>                    ^^^^*hugetlb_migratable is checked before trying to=
+ get folio refcnt* [1]
+> >>
+> >>                 ret =3D folio_try_get(folio);
+> >>                 if (ret)
+> >>                         count_increased =3D true;
+> >>         } else {
+> >>                 ret =3D -EBUSY;
+> >>                 if (!(flags & MF_NO_RETRY))
+> >>                         goto out;
+> >>         }
+> >>
+> >>         if (folio_set_hugetlb_hwpoison(folio, page)) {
+> >>                 ret =3D -EHWPOISON;
+> >>                 goto out;
+> >>         }
+> >>
+> >>         /*
+> >>          * Clearing hugetlb_migratable for hwpoisoned hugepages to pre=
+vent them
+> >>          * from being migrated by memory hotremove.
+> >>          */
+> >>         if (count_increased && folio_test_hugetlb_migratable(folio)) {
+> >>                 folio_clear_hugetlb_migratable(folio);
+> >>
+> >>                 ^^^^^*hugetlb_migratable is cleared when first time se=
+eing folio* [2]
+> >>
+> >>                 *migratable_cleared =3D true;
+> >>         }
+> >>
+> >> Or am I miss something?
+> >
+> > Thanks for your explaination! You are absolutely right. It turns out
+> > the extra refcount I saw (during running hugetlb-mfr.c) on the folio
+> > at the moment of filemap_offline_hwpoison_folio_hugetlb() is actually
+> > because of the MF_COUNT_INCREASED during MADV_HWPOISON. In the past I
+> > used to think that is the effect of folio_try_get() in
+> > __get_huge_page_for_hwpoison(), and it is wrong. Now I see two cases:
+> > - MADV_HWPOISON: instead of __get_huge_page_for_hwpoison(),
+> > madvise_inject_error() is the one that increments hugepage refcount
+> > for every error injected. Different from other cases,
+> > MFD_MF_KEEP_UE_MAPPED makes the hugepage still a in-use page after
+> > memory_failure(MF_COUNT_INCREASED), so I think madvise_inject_error()
+> > should decrement in MFD_MF_KEEP_UE_MAPPED case.
+> > - In the real world: as you pointed out, MF always just increments
+> > hugepage refcount once in __get_huge_page_for_hwpoison(), even if it
+> > runs into multiple errors. When
+>
+> This might not always hold true. When MF occurs while hugetlb folio is un=
+der isolation(hugetlb_migratable is
+> cleared and extra folio refcnt is held by isolating code in that case), _=
+_get_huge_page_for_hwpoison won't get
+> extra folio refcnt.
+>
+> > filemap_offline_hwpoison_folio_hugetlb() drops the refcount elevated
+> > by filemap_get_folios(), it only needs to decrement again if
+> > folio_ref_dec_and_test() returns false. I tested something like below:
+> >
+> >     /* drop the refcount elevated by filemap_get_folios. */
+> >     folio_put(folio);
+> >     if (folio_ref_count(folio))
+> >         folio_put(folio);
+> >     /* now refcount should be zero. */
+> >     ret =3D dissolve_free_hugetlb_folio(folio);
+>
+> So I think above code might drop the folio refcnt held by isolating code.
 
-The triggered warning is:
+Hi Miaohe, thanks for raising the concern. Given two things below
+- both folio_isolate_hugetlb() and get_huge_page_for_hwpoison() are
+guarded by hugetlb_lock.
+- hugetlb_update_hwpoison() only folio_test_set_hwpoison() for
+non-isolated folio after folio_try_get() succeeds.
 
-VM_WARN_ON_ONCE(virt_to_slab(vec) != NULL &&
-		virt_to_slab(vec)->slab_cache == s);
+as long as folio_test_set_hwpoison() is true here, this refcount
+should never come from folio_isolate_hugetlb(). What do you think?
 
-which means we may be creating a never-freed slab due to recursion.
+For folio under isolation, MF ignores it without
+folio_test_set_hwpoison(), and
+filemap_offline_hwpoison_folio_hugetlb() won't happen at all.
+For HWPoison folio, MF has made the folio no longer being able to
+isolate/migrate.
 
-obj_exts_alloc_size() is supposed to prevent this but it didn't.
-Let's see why.
-
-> Call Trace:
->  <TASK>
->  __memcg_slab_post_alloc_hook+0x130/0x460 mm/memcontrol.c:3234
->  memcg_slab_post_alloc_hook mm/slub.c:2464 [inline]
->  slab_post_alloc_hook.constprop.0+0x9c/0xf0 mm/slub.c:4526
->  slab_alloc_node.constprop.0+0xaa/0x160 mm/slub.c:4844
->  __do_kmalloc_node mm/slub.c:5237 [inline]
->  __kmalloc_noprof+0x82/0x200 mm/slub.c:5250
->  kmalloc_noprof include/linux/slab.h:954 [inline]
->  __d_alloc+0x235/0x2f0 fs/dcache.c:1757
-
-The gfp flag used by __d_alloc() is
-GFP_KERNEL_ACCOUNT | __GFP_RECLAIMABLE.
-
-Looking at kmalloc_type(), when both __GFP_RECLAIMABLE and __GFP_ACCOUNT
-flags are specified, __GFP_RECLAIMABLE has a higher priority.
-
-That said, obj_exts_alloc_size() needs to handle CONFIG_SLUB_TINY
-(KMALLOC_RECLAIM = KMALLOC_NORMAL) properly.
-
-in obj_exts_alloc_size():
->        /*
->         * slabobj_ext array for KMALLOC_CGROUP allocations
->         * are served from KMALLOC_NORMAL caches.
->         */
->        if (!mem_alloc_profiling_enabled())
->                return sz;
-
-I added this just to make sure we're not pessimizing when memory
-profiling is not enabled. It turns out this part is incorrect,
-and actually, redundant.
-
-When memcg requested allocation, the snippet assumes that it would be
-KMALLOC_CGROUP, but it turns out there is an exception:
-SLUB_TINY with __GFP_ACCOUNT and __GFP_RECLAIMABLE specified.
-
-This should be properly handled by:
-
->        if (!is_kmalloc_normal(s))
->                return sz;
-
-I think this should work:
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 0c906fefc31b..4759fe6aa60e 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
- 	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
- 	struct kmem_cache *obj_exts_cache;
-
--	/*
--	 * slabobj_ext array for KMALLOC_CGROUP allocations
--	 * are served from KMALLOC_NORMAL caches.
--	 */
--	if (!mem_alloc_profiling_enabled())
--		return sz;
--
- 	if (sz > KMALLOC_MAX_CACHE_SIZE)
- 		return sz;
-
-
-
->  d_alloc_pseudo+0x1d/0x70 fs/dcache.c:1871
->  alloc_path_pseudo fs/file_table.c:364 [inline]
->  alloc_file_pseudo+0x64/0x140 fs/file_table.c:380
->  __shmem_file_setup+0x136/0x270 mm/shmem.c:5863
->  memfd_alloc_file+0x81/0x240 mm/memfd.c:471
->  __do_sys_memfd_create mm/memfd.c:522 [inline]
->  __se_sys_memfd_create mm/memfd.c:505 [inline]
->  __x64_sys_memfd_create+0x205/0x440 mm/memfd.c:505
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0x11d/0x5a0 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> 
-> The issue happens after mounting an ext4 filesystem image via a loop
-> device created from a compressed image in the reproducer.
-> 
-> Relevant kernel messages:
-> 
-> EXT4-fs (loop0): mounted filesystem
-> 00000000-0000-0000-0000-000000000000 r/w without journal.
-> EXT4-fs (loop3): Delayed block allocation failed for inode 18 at
-> logical offset 768 with max blocks 2 with error 28
-> EXT4-fs (loop3): This should not happen!! Data will be lost
-> 
-> The WARNING occurs in alloc_slab_obj_exts(), which is related to slab
-> object extension allocation.
-> 
-> This may indicate a slab metadata inconsistency triggered by the
-> filesystem state.
-> 
-> Please let me know if additional debugging information would help.
-> 
+>
 > Thanks.
-> Zw Tang
-
--- 
-Cheers,
-Harry / Hyeonggon
+> .
 
