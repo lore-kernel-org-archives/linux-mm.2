@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0DB0EF3719
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C48FCEF3718
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:46:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 183106B0088; Mon,  9 Mar 2026 04:42:07 -0400 (EDT)
+	id 254726B0088; Mon,  9 Mar 2026 04:46:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1311D6B0089; Mon,  9 Mar 2026 04:42:07 -0400 (EDT)
+	id 2026B6B0089; Mon,  9 Mar 2026 04:46:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D086B008A; Mon,  9 Mar 2026 04:42:06 -0400 (EDT)
+	id 10DBE6B008A; Mon,  9 Mar 2026 04:46:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E36176B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:42:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 93B92140D7E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:42:06 +0000 (UTC)
-X-FDA: 84525882252.05.19814D3
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F24ED6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:46:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97C161CCEF
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:46:27 +0000 (UTC)
+X-FDA: 84525893214.13.1BCA6A8
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6DA6E1A0010
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:42:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+	by imf04.hostedemail.com (Postfix) with ESMTP id C166440003
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:46:24 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773045725;
+	s=arc-20220608; t=1773045985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BlMaS1zrMN5rgyAPk07UXv8P/A1oQhQb0uwHzQEkXS0=;
-	b=6hUM6duQlg1FQky+RzixonEnaQ7nJPui23kG6RNe7rz/2tyy0az9jTxDHKsIOtjPiczbxb
-	whd9wufL8q5yDOVG5yKAWfqyKwBkOAbKG8AaTyHWRWXY1teC/LvXCb6M1ruSTkwe6zty/w
-	cMDBPZNcEWMUCb0GighyYkoxUr3EB4o=
+	bh=ptm94RZa9ZVvrFRlGHO5+hvnjW1ygRaFselBj9OM2uc=;
+	b=7YSV/HdN5dNm3y7id51LqMwtqV70eA0fifrAkq9gCX1S4tY8Ai0cBH29+ECYHyytEBHg85
+	WksdNvpORtCdBePWgOLcNoC1Sc6KOID3HZUhBNpSjS00Hst+Y+H13OlMyamnGixkTnMYE8
+	8Y9yiyYVbl9wd8ylplo0D/3y+r6ewnA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
+	imf04.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773045725; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773045985; a=rsa-sha256;
 	cv=none;
-	b=1FY5tWXr7hlp7oTaI6ahthWuoLzbQJp2hmMMU3yPZrR3uZujETgUiQ8sUJ76o2uUHrO2eU
-	bZv7ZUKHSy6RvPrUY8Yopiqb2kK5tR91G0UF30QiQ1zahvUdsZR7IktvOSw0HC5xw2FE/Z
-	yAgpWavaCP7zd77pty5QGC1/hkbqfpw=
+	b=aZ/q70s81vPcVu+nlKMsDI1zHFEnVDCralGJAfsy5DOu8zu8UTLjcwT9hya7y54Zeq76Le
+	1om3S/dYFHTcjm0GPsyWbAgxPD05QOe6r9NwZM73LvKUgbFHqzIOCahbOTKkjKGsbWgSgy
+	LiiT18rbtTtXV37PardfZ5u2EDUddgo=
 Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 9 Mar 2026 17:41:57 +0900
+	by 156.147.51.102 with ESMTP; 9 Mar 2026 17:46:21 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
-Date: Mon, 9 Mar 2026 17:41:28 +0900
+Date: Mon, 9 Mar 2026 17:46:21 +0900
 From: YoungJun Park <youngjun.park@lge.com>
 To: Hui Zhu <hui.zhu@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
@@ -61,23 +61,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
 	Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH v2 2/2] mm/swap: Add lockdep for si->global_cluster_lock
- in swap_cluster_alloc_table()
-Message-ID: <aa6HuKYiv6YP7Hkk@yjaykim-PowerEdge-T330>
+Subject: Re: [PATCH v2 1/2] mm/swap: Add VM_WARN_ON to isolate_lock_cluster()
+Message-ID: <aa6I3cZWNJdbGHDi@yjaykim-PowerEdge-T330>
 References: <cover.1773040982.git.zhuhui@kylinos.cn>
- <879eff096e46c02f994de62dc210a95cc58e3f19.1773040982.git.zhuhui@kylinos.cn>
+ <25c1be6b4a54a69d4b57189fd84c7502c4412d7a.1773040982.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <879eff096e46c02f994de62dc210a95cc58e3f19.1773040982.git.zhuhui@kylinos.cn>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6DA6E1A0010
-X-Stat-Signature: jpsmpr9p4d8hka3i4ddt699mtmnwzj89
+In-Reply-To: <25c1be6b4a54a69d4b57189fd84c7502c4412d7a.1773040982.git.zhuhui@kylinos.cn>
+X-Rspamd-Queue-Id: C166440003
+X-Stat-Signature: kggtad6ha9muph5ufzub5sq44hzx4xf4
 X-Rspam-User: 
-X-HE-Tag: 1773045723-833696
-X-HE-Meta: U2FsdGVkX19rDnBxTx56dn5A2OUilWKbx56seNYrilz4chsAcdCr/SAES0r6hHWEwCtqrZNNA9nE6whEobjFoljQGv9GxlzdRt4mr8qpyO0Nvn3txoY8iKAt6Gecz3kbNGQyPuolV6u2e84cQLcRmV2+T3gaDnmRQYGePZUjj3fbOlUXYbCvtq5EbmAC35/mHiK07Rg/wyXACv5Ed+tExhpEQBcwX7l8KARkZbbuRXkd8SaWWH5TuA4PWwt04kjvDV8nfUw1QCubHrQ5BnYGkYeHTK/OK0FDlqNB++Uaka/49FYWltUxgPxUZ+ESiZPIjO58lghvEqub0t98kzOYrjA6rXi+Dquepz+GYYGZDJ3lUUB1jwNgzqM1qneND+9k7MYPSwDgpRLPQOIZN+xYOE1xgF+rTgbzS0RKd/PITl78Oiru4I3LmjBeVUq8JIMOjlosylVsYJ34bAeV7fiImsMIxEXuE+Pp7AWLqrFzdu4i2fBxGYeQ5eIRkba+vJahbZzsTym/KbkQ6ke20otFck1ynIiXXuMa9v6pT9Ni+OqsYqLIYVYvTm95WM+CS49t5Os9CPFaMKQtP3VM66iLBxu0Qeph/lQP3cLvW/gC8iRwGevlcW16GmemHNiF+DSgUTC8qrfgCCHHA3YmROSxkp5ZBCHpRbjjRa/mEJrVOg2I9zL/csb/wkAqn13yimFfVGtD14ShtP3FPUkL62ICtzkX8uAHSwSipTP3ag67gSoj/IqL6+WM4Y9xmwfnxiV9f0TW4IqPg9r5BG3rSlOdmMy8uKo6RVTWWikG02MjlI1nvACOKClO7EW59dNucdvzEx84LsARBXQgyWqY0DEWLsPXUeJ/sF5bnGUxXeeTO/pcNtW8TdellhrdRejTrCs4zkNFU9mficCO0g1pRzLbH9WqocdCmPCN+PFpmIUyEF6mpoSDzjWAOdLNz/rQ+HObg/BaO0EgXSRUcI3aQMT
- bXhqFAYx
- wEhmYmkz58wtPOJJJcpRqrpJ85TmHkEvWd7zXIWgtvRPAJer5Y/8JeB+2RHGvZGC0gOXPpYA7qiml7BwWi9xKUSdrXqI7ptun9J0/UxFyWxhx0+GsrXQhjjTxHBdRPUUgc4bKSyGk9++mgvof1aiwhJz34jD8HS/Nd2/2J03OLj4rrvlOxqn82ikRBb2b385fXdrthgZm8qc2ZTuj/xJTxCFne1XSnSmZ/KRjSGuaxeC8gfNgsn9QMtJgLct/SPYK1q6iqrtJ81K96+dG0E4DFGltAnKQd7lrHW4Y
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773045984-16249
+X-HE-Meta: U2FsdGVkX1+xQ36reAdApR4O0gbJXbQMQO4u8aE3gyAd5h9QcRzYnrJ3ruZ1MWbCTiUTI4QddsQ3BouZyTqyZkqJouUJiFAlC0HTML7599qt840yRjkGbnxJX8xeGC3KBVjSQ9Sck55MXatgXwV0tbL08Rgl4RYxN36nEMQ9c6brzZw4gi7FADS4Mr4/bNyHEsRI9nK1j3sBx2hExgMORZo//qEgsrV7WijQjBAzOA2Ua7l4ucxXof3BHwLXQjB5gwYcYnzS/YwwAxg+mSVb01JYlB6A1wlna6/A5NU59p80bPBAhlELTYAI0JL02SWwe6BgxJBKaU7AVMMAPDoc2B0vYSFykW/Q9wffWOVvATp/DVNEEArKE2qQKegAn66afGG62X8wlja3yyuFzqFtazuYVvJywdKLKOiJLqet0lFc0Sl/ZAMmsL12l0OgmAPHuY94+q2He/K9KpPLMre9V410V7OT4JshcdmjVLhMBoz4tLjsxtl/6fK1hGrzRPeqFILPD0X8zKDW+HlQj1/SCOsIE2146p0J40uRQfRYmZUTsR4E8iB0ZIpB0Co+B5mnEX2Z7FDZpp9ph3lPFJp+YjOZjF10zMroblIaynumC0VgrwO2CyMftHdEozLLdWDPTsxwsi6Ld3X8oPekttswJOC8WA/BeoD+9y3IBUCrpvUa2F6wTxNH+LQG0XIyvY7bAYR1XJOYR/i5IDGtufEYkkueNIyXcNI8T0Swfte5MPOqo8pEP6A8JRudfH8XjtJ4kOS9DRUj7Zkpab5TciyUoaQrVzklidOdFuLuP9QrYwdhTqs4Sh4qskybky2CfFpOh7oJ/20XI8A33do974jCVoqO6uxMVendERDtW2IM8fRemBjEF2EPDRwXBta+s9IS50p04NUn8BUEcaXtDcC2f2rd+/g1HUfU0VS2yyrDqR8zwOuSsN1jKRpp8ZptsjORE6XZmZhwxOT+om4Tpl2
+ 2ZzB6fj4
+ MgPfmtwgDFgwDEMCp9RAsInPPiPvtfaSjYTfRmqS1EfFOI9k+qhv99w/raWlbNyBsGjVOv8rhzXua4uLZoPj2cPFNfF4MXu0mgI1+9jNPpSj4hd28oSkRzaD2X7M5NNp9KfYNWCAgF/5JQ2JqS93wR8V5tqRH2nWoB0Hx0ukfqyp0WBmYfspnPjJ6qvgbcoCwa6WMB/HpNcUeaCJKK81hMHlUU+MKBSy1ylR+cuuonuk1w91p4jlr0MU6kDrwrVm4Fg9vQVgkXnEzDDE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,47 +84,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 04:05:42PM +0800, Hui Zhu wrote:
+On Mon, Mar 09, 2026 at 04:05:41PM +0800, Hui Zhu wrote:
 > From: Hui Zhu <zhuhui@kylinos.cn>
 > 
-> Add a lockdep_assert_held(&si->global_cluster_lock) in
-> swap_cluster_alloc_table() for non-SWP_SOLIDSTATE devices.
+> swap_cluster_alloc_table() assumes that the caller holds the following
+> locks:
+> ci->lock
+> percpu_swap_cluster.lock
+> si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
 > 
-> The function already requires the caller to hold both ci->lock
-> and percpu_swap_cluster.lock.
-> And it also necessitates si->global_cluster_lock when the device is not
-> SWP_SOLIDSTATE.
+> There are five call paths leading to swap_cluster_alloc_table():
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
 > 
-> Adding this assertion ensures locking consistency and helps catch
-> potential synchronization issues during development.
-> Change the order of lockdep_assert_held() to match the actual lock
-> acquisition order.
+> swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+> 
+> swap_alloc_hibernation_slot->cluster_alloc_swap_entry
+> ->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+> 
+> swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
+> ->isolate_lock_cluster->swap_cluster_alloc_table
+> 
+> swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
+> ->swap_cluster_alloc_table
+> 
+> Other paths correctly acquire the necessary locks before calling
+> swap_cluster_alloc_table().
+> But swap_reclaim_work() doesn't need do that because
+> swap_reclaim_full_clusters() just isolate si->full_clusters that
+> the tables of it must be allocated.
+> Then isolate_lock_cluster() that is called by
+> swap_reclaim_full_clusters() will never call swap_cluster_alloc_table().
+> 
+> This patch add a VM_WARN_ON to warning if a fill cluster will be handle
+> by swap_cluster_alloc_table()
 > 
 > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 > ---
->  mm/swapfile.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  mm/swapfile.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 3fc2eb30c187..b31b86263b89 100644
+> index 94af29d1de88..3fc2eb30c187 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -476,8 +476,10 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
->  	 * Only cluster isolation from the allocator does table allocation.
->  	 * Swap allocator uses percpu clusters and holds the local lock.
->  	 */
-> -	lockdep_assert_held(&ci->lock);
->  	lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
-> +	if (!(si->flags & SWP_SOLIDSTATE))
-> +		lockdep_assert_held(&si->global_cluster_lock);
-> +	lockdep_assert_held(&ci->lock);
+> @@ -596,6 +596,9 @@ static struct swap_cluster_info *isolate_lock_cluster(
+>  	spin_unlock(&si->lock);
 >  
->  	/* The cluster must be free and was just isolated from the free list. */
->  	VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
-> -- 
-> 2.43.0
+>  	if (found && !cluster_table_is_alloced(found)) {
+> +		/* Table of full cluster must be allocated. */
+> +		VM_WARN_ON(ci->flags == CLUSTER_FLAG_FULL);
 
-The changes look good to me. Thanks!
 
-Reviewed-by: Youngjun Park <youngjun.park@lge.com>
+As Kairui suggested,
+Would a VM_WARN to check if `list == si->free_cluster` be good?
+Or perhaps `ci->flags != CLUSTER_FLAG_FREE`?
+
+This check only cares about CLUSTER_FLAG_FULL, so it might be better to
+cover other flags except the free flag. 
+
+Thanks! 
+Youngjun Park
 
