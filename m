@@ -4,101 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C66EF36E6
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 06:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3590EF36E8
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 06:59:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90C996B0088; Mon,  9 Mar 2026 02:43:36 -0400 (EDT)
+	id E80146B0088; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BA0F6B0089; Mon,  9 Mar 2026 02:43:36 -0400 (EDT)
+	id E37946B0089; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79B986B008A; Mon,  9 Mar 2026 02:43:36 -0400 (EDT)
+	id D360A6B008A; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 69F716B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:43:36 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id BE4F56B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:01 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EB6985A759
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:43:35 +0000 (UTC)
-X-FDA: 84525583590.06.B19EA4A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F357240006
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:43:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sMPHdWE5;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773038614;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 64F228D280
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:59:01 +0000 (UTC)
+X-FDA: 84525622482.06.798941B
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8EFB81A0014
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:58:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nLBITQ6y;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773039539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1oee4XTRD36dMlnURuWN7DWeH3E5ai84Aeb4gTSpw6o=;
-	b=e61AnKd3C+JTvbAq/Tx5FcGDORGl3Ovlg4QUCBqGPLVlg2kClWdp8D9ZnDRsmFOyZztgWR
-	Rt6XECngCtnqLsoZdLLmu8VGtL8MUexo5AFgJyvprJPD7uuwfMG4ivEG4TQ8qfrUkVEZew
-	7akX85nOnCfudW9sMcy3W6Jn0XIe9BY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sMPHdWE5;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773038614; a=rsa-sha256;
-	cv=none;
-	b=nHmLPf1P3bvrZTUPAsd4jmVMSmlQnAdgCtnpGGfvsG34wsSrzZfe33DTthuyPRCgIm0snm
-	RQ9mKqahbXmladcv9T8mOc6A+hNb0aqktC91PH+kN5QlmTynOtFCFm2ZGiYaM2lbWTRvsW
-	oy2iprJn35snLj+VtxFP19xsnkwjzmM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E852443335
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A05C4CEF7
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 06:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773038612;
-	bh=Kd0fqfFX4RvUyiMDACbVyLY3TBDW007B4tQ5jKf2j4I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sMPHdWE5WkZSFYjJxVN7GaTjQP88iWcJQSSlFzuadDPUQQxKhkvW/RPoA9gjtubpc
-	 FGS0F5KubKV4M0xZy10pq82vt7TZW6M87A+6ORc0lwiZfcIyomwpDaSDrncNLsVWb3
-	 EipSgxlx36Mq1z0UwN4zcwmk6+WC+lMM2dZJVW+9jJ60TcliAf53kdc0Cpy9SUGq4R
-	 8eovoXkOPM4VLOBsxwmqb1mJtId30jqk39Jj5Bw/H/SS25nJNRozgjQ5kt3VEmNKZD
-	 BlPvhNqL8W/dvwknCdQ7OVVXbSkPJ1XwDbNkAv2aw1lhnEgV+uDSEIb0qOkwpWs8Xh
-	 iQxxIlhX15r/w==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64c9ebd1369so10136608d50.1
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 23:43:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXsNYeVIv7h9wW7VVFjXRDLObt3eZ65eYw2U/EY0lIIdVB9CbZMch0sTc3JLFkoReYmGB9fIpV0tQ==@kvack.org
-X-Gm-Message-State: AOJu0YyJznJ38b9/dsb6iWPCSsqqWcdqMj5wI4NnRvIG+Ci7xakA4KtC
-	HE6bNyR+tzTJTvxf8H2cIuosAVJKlj8ewQav1qdri5McXomAuIGogfJ3vn0FAGsT23TXgLrCV1G
-	FCRB4pGJMq0/CxkgaIHq+sjAPj21kzAJJbMX7UKq4PA==
-X-Received: by 2002:a05:690e:b4e:b0:64c:ed9e:2e05 with SMTP id
- 956f58d0204a3-64d141016e0mr9704019d50.25.1773038612056; Sun, 08 Mar 2026
- 23:43:32 -0700 (PDT)
+	bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
+	b=yu7sZ0VCcBo4PIQ4oW854m1WXaaWcl9U4d+BCk/Qy9+MzQO9z3rSvICPehYkBKQtPphz7J
+	e81fF4hj2NZ9ePNNiEHKZwjjZANeN2WxALazaBwgV3dhyKXHpV139EJsuv/tmRiymWZ5QC
+	bg6WaF1jlEaum8JMoGn2SgU2I76kR5k=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773039539; a=rsa-sha256;
+	cv=pass;
+	b=vPUOcPxFCf+FSewcZH7nASTBj7jxM7lmdUPSZYMdw33DIqLesxr2VCkERJjud2xQ8WqseS
+	5RirvaPf2NBScn1sMIsWhbp4I6aJAB2GkFBQrfd3pCyMJnb+njs9kZSrG4r/5TA2j+9POz
+	ITSSog0Om3YC1un6pXgawo5FP3os6XI=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nLBITQ6y;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5ffe41e8e83so1674760137.1
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 23:58:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773039538; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QrcCXGk9VXxK223L+1u+CnLgAjnLuZNCvpQV+vYLwe2g519N3q0ZJOm10y0swqctqI
+         bhyzhpTm1Z6tslDoYQHek/58cEi/xEOUWiz4bJ90yoTNVLWhOovxmfGP1BBohOU0LyN9
+         NBjEk+ieZCuoK47bPmT99w5UJyG7voOJFkhwxxHwp0kzqY7ERhwaXKmjMKf1cLk9dSix
+         wkEtZcBBo7hQ3IogMQfuXfdKdIsNCcu3+I7+eGUe7ryjQFqi+JZRDDlEQW9PM+Jovqsl
+         5Lag2f9fwbl2qLJMeFkc9UA85i04JVqLfLd7Oq2wpasthvT6Jz7aY3vRPhlEM0zc3jFw
+         KMSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
+        fh=n2OJZ2bRKRY27K/gljfq5vlP7dioHL+8odNJK0co4T0=;
+        b=HrT8nnTY0v5d3jzOJmei5r5oT/DWWH48SV3JoSK6NBMNxUE5kxVb8kgP9hnKh/0Nez
+         UHPYtu1fijgC9qISsKg9nSWryPGco+UKyLTviVyOgaZIx9qH2hCfhNlXokDUGpMiwwgS
+         1OAXI9ktxQluv2X4ffjETY+qxPeyHBxSvVNiIKN1c/a3y+8uovT7IRp1NbNvSLOSDjoN
+         OclJhkX1nZEcDK0yTnFIBJHMLAfc/TGCSO4bxGEWPAbWeKvHluYRYMLGl0ivJwg26WTg
+         JWK0kQC/JxM74txuz78s9JVXoYlm874IcXSxC6g3LLvzAv24Z5AY4fBWdnQyTwg/ySjs
+         kyjQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773039538; x=1773644338; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
+        b=nLBITQ6yzldzRjiWVsKwCz1U5LZyJ1KAKsjqFmTyN/WmCXJP7quUcWZK868MrkIhH6
+         GBqNxPbstrCQD+LSySjvmaTKX4VKcnKxJGj6AjTnNlMV8j6QFNeKIVup76kWTts5KFsO
+         WlB/k5WopCY1SbW5sLNr0MUhNy8sIdAST4w+6otsB01l+GNGyDzTy85ypO7ie0T6RYoR
+         m2cHR8pBtRpyZgWNIiRfQrXDxUA/9EriVY9PQPGgO4fRzrbnlNihTJQmkrpJ//Lo56+B
+         ToaanE2XzpGAed5M5G9ETApoa2d/P5qW3THTG6zqSlYuKafLZe2tEMTkFz5pJAQ3j1hQ
+         TvKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773039538; x=1773644338;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xm+uz1scAwUZE28AuDXf2j1vo8g+3wU8dKlPy71SF1k=;
+        b=iIkHlorbLbgWRHHn8JvZQdO3f3rmjjOkXbIQNCLR96QEQEeZOAvy0Yzb+jaHGQEGaD
+         20xy+QdHZkyQimhqE3GiycH5n4yP2ysIdcM5xZLujyZcZ1NUhUFMUgcDlEfDF41BId9j
+         NVmOCH8CQ7iLYhbfXxf3Qx78zqhPKdvg4MZoTJYpRS3J3wANi4SId6Z5BAi3HVMABZGE
+         Bt93ubNpTFf3Q/JhyY/vYd7djaB0DplYRmhfry0HiVFqh02OoqRLBFSaW0DLshz+ggNk
+         T+Y10l0GQstfMmtyFwwzd+WweieMMFEAKK5yRDzJPEA/H9p/a79/pafZFLT0pBanJ63P
+         /T6g==
+X-Forwarded-Encrypted: i=1; AJvYcCW0dBiq35Lcvi4Ymt9qDgaetjqV95PLM/nMJrr0/JIdVS8FECYhLjciZ+ellLDWMhdlg/J+KtouYQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBbkIsLeoQO5VWvOdpBDaXaInSF8yF36C03VO/MmHBpYOCFt1S
+	4TLbTrExLLUZK6nCjjx+h6qhmhTAS1XAtZxm3PwgymXVRL/gIJIzOURs97Ar03qK9Az9ngz9iHf
+	8PVGZkneW0iYoE3R4gSXRNHmy6t+DOP41ejyIC+Hc
+X-Gm-Gg: ATEYQzwj7JWbvlnVSFlpuRIu0+H6mmUvZFSV0DlIAF6n6StNJuLfQrkbf7KUnVG/+q0
+	ecoN3IcrjMM8wx9yZZ3RJnp7sEpiYNco8nsoQ8ktRW2KNhT+9jTELfDtEzwdWZsJpOTTZz2SnDO
+	cLUr9C96vRFOHNA/+mVhujh90MiDpS/xXaAHuQ43z86WqcV0jUw78F9V0QWJiBUxKxiLZCXErCx
+	wUn2yXpI/Magh2fXvSsAFdjDmj89o0ulHmUhBTC9Xmh5Ab8y0Ogc/Sg2DFTUMyhawsNjoDpUKzT
+	oL3L9fhIKDMm18AolvCuKYGW/sQUSCUI1kC8e1NxiS/+YZwLhikg/zkIyh9RBj2oYu9tjeAcz/O
+	Se8bL
+X-Received: by 2002:a05:6102:e13:b0:600:1547:967c with SMTP id
+ ada2fe7eead31-60015479e34mr1563846137.16.1773039538125; Sun, 08 Mar 2026
+ 23:58:58 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 8 Mar 2026 23:58:57 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 8 Mar 2026 23:58:57 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260226180821.2218448-1-joshua.hahnjy@gmail.com>
+References: <20260226180821.2218448-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
-References: <20260306024608.1720991-1-youngjun.park@lge.com>
- <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com> <aaqKJQeO8wLQL7Zn@yjaykim-PowerEdge-T330>
-In-Reply-To: <aaqKJQeO8wLQL7Zn@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 8 Mar 2026 23:43:20 -0700
-X-Gmail-Original-Message-ID: <CACePvbVp=9PM=LUdL=aq8G2Svy+v04pBnf3ygRY+xW3WEHNm9A@mail.gmail.com>
-X-Gm-Features: AaiRm50l4FuBu88S4IZCYVq3PtusOGwnkdn1PQubplGv80j2zPfgBT3cIAgBGW8
-Message-ID: <CACePvbVp=9PM=LUdL=aq8G2Svy+v04pBnf3ygRY+xW3WEHNm9A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm/swap, PM: hibernate: hold swap device reference
- across swap operation
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev, 
-	linux-pm@vger.kernel.org, linux-mm@kvack.org
+Date: Sun, 8 Mar 2026 23:58:57 -0700
+X-Gm-Features: AaiRm52DFXwwe30HaILLP1hzK0v0FaeZdOZHX4R5IM7HVR_30U8T8Nloh1wxEVg
+Message-ID: <CAEvNRgFpD0jD8QdmBPz-T=jhGn+Rb8MjTq4aycAUkAx54fMhWg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more
+ generic use
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
+	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
+	jthoughton@google.com, kalyazin@amazon.com, mhocko@kernel.org, 
+	michael.roth@amd.com, muchun.song@linux.dev, osalvador@suse.de, 
+	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pratyush@kernel.org, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev, 
+	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: onf9q63bxi4ygcp3g7eotkfqbg68dqo3
-X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F357240006
-X-HE-Tag: 1773038613-522308
-X-HE-Meta: U2FsdGVkX1+UvR3+sAqJTFqmh9Eq9hpAqjbT9K5u0TweSUIOJz/fyJ9rnyBwwnpeRW3zyWqCMTcrC23md9RHNFlzAaPfAFgkKYszi9kV/CdMmqDdMz7t37mS5Ac0ObAtjGMwY2c/A9xXeup4LArkLKtawZUVGbbv+yx2dObVrdPgXNAJ0+Q+2kpOZmGbYpVleJXw3l61HEmz/fSxT15dfLBTyfR9ah2EJuZN/dv0Tdf0tzbjC7obsEQYK35EQakBdIjrapSM3MCw9Iar91L+dXgi0woJ9O7GpXah9BuYSBk6NNMxNrw03AVaUtBhi5oFFpctZ/q0d0aL26Kjm+Px46eCiJJGNao4ZLoiuJsdNZc1czVW/bV9fJyV+GhrP+wXUo8EPC/DYJRHnKnb9e/YpjiuuiHl8zioY9F43ipedqCzNm0TcENFQRcUlMP8dwQ2vQ/VMz6wjIkYTwNc9+PL0ABgFvgqX/8Mb6zKidHfkb1mb4/DUqaL9IjPm9UHI65rIgBObvIkIUBjDy0Q4Bo+rFigLKlmHpdQr4WvqzSjNrvPpBbAHvPzUVZHxxJ8xx1YzV3smwRAJIvCItzB8mAelc+S3bHCJw4YvsrFerczIw2WOc8XoR5mHVLMaWnv0gNcWLsuEgUeDWZbtZ+hgF02tQglr4RCcNirbYN4DVqiw166e797cTSkmVu3p9LplXK4c/Z8cbdgAXIsD+NR6wQlZbXPY/8Y/ETohG8b95mrdaDKySQq4IJBLBi2tFp5cu7MYKrXbfCe+DKNtZSniTPS3Jcg6OKXvGZrqQL8dwl5pSX94LeDQ1ehwbYb+noA0XbcDA56w25bnhVCb6GtmpuSCzdgCm0h5aMKizZ57FGyiq1y/05oK3/T1yWVT+E2mgnaF0ymJNXMyEsAMlmclsI6lXzn5nn2yCP1HHxjacaTdJd5rdmEb5tIcIfMgf5Wjn8mGLDMmx6H0af6U7NFlEP
- TpVyiMX4
- GEeivMXk8GcBWQmYAyCAznn0Xluy69JAZb45REErpk4Klv8AcBdwNTWFC3bnT+JH6ZzPG67o2RXE/ewJO+EzcdGVujxolh93IlGk31IHvo+a9B36dcNTMmOXN2qVex5AhGeDFaOfuHKtb+pm9CrNCGA6obqwp/T3t1SpcR/bbJcCEbHN+uBEzQzgGX500IWrhBQ4uTPC+W6Vi/FagX/EHB16QXgpVYZMgYsgnB5gzDYKChyxXREpGWvg3ZfZEzsrgl7kEp0wlEZYDduWP+FsBNRUDtYyMZwT4cSIY11JRlLS6TC3OmnBmBAQtRQ==
+X-Stat-Signature: kxuta1shge8a3prifz18page5513nz7p
+X-Rspamd-Queue-Id: 8EFB81A0014
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773039539-424744
+X-HE-Meta: U2FsdGVkX18WXeA/535aHeIhIykDT9a/6+/sswRT+UFrCUlb02081vds/5ERPgkfwnwcnAPTFdv26/dj9jLS6sRIB7jxqCtHQTaSsPmViG+36hsKnT7SN2XEatnjc+Bm5CHdJJec/u+V3E5JPSOboOXgQqHX7B1+s3PUMbzXn8mvVARF3ZuvZb7hCmzcYzKqW4cY4htse8+m39WCjinUrnQ9o3R4go6KAP1ihFZMEYb4DjEE47y465yxEoL8Q4JJy9ikDfFB3wRO6ZTKxTkgA2ndZLaj9iSLU8N4WcxRi3+wQI7Uo6IAGhl1ijTAicMI76XR65vwGPPZdx2x1lDvFcy8sxwdClhVNUpQBOqQASUg1LhL1xZC/UgxsUTOGFlo6D5s/Yd52AzvRneXjuZgfnDVRdv96jnBLQrUlQZrvUB6SHL+NRW5L647Ro+3Mna0PoiM8tMimNKr7rf92LY3mejnI3xHf8DEbwCjAex3W+fYg37/ew7bp5eysBJynnf1N2io3YQLKgCgEJF2+lmEh9cAIzWDEIEvBkLW3Xp3N8ACp6n53jorf847qYc9NHD257bivDNJkt1DSZIhf+cEU+F3Wvmn8Ce7iWzJ4ALrQSBjhExzOb2wGkol7/BsdlKgLjIQN0TcinOMrGoI/WTTuAwXFB62pWibRSM0JAhl71g8jqLbB3nkI+5kHKE6kNETRJnxDtsdbof32J/GaxmgvI2FZJ649h/6P6D9apUTUIjsNCKtok2KM0mUXkpXhnz9gIQ5B9bP1ObZk+r6J9L6T+82znpuN1ODmblLRAvfFWoegARIpItrj08nVeXRFUcNU7OIhvJLOiiJDGUBHeqWGfavSKP3PPmqGN2jJgv6Y8+zrVZFEZihpFqU+t5bJ7wyogNivDownI0hsSOu4e6oMvqfzo95xJ8H3KQEzkZw/EsU4V3R81G9rUvsJ7YRWLIFoZs/QSwm0c5HAdHaTr4
+ J5BiRH6e
+ 2uw0oJJY3BXOBpSs3D5G9QeH9bq55Mh4XLcb3UAX/lilVK98h49j9SdfeIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,149 +148,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 6, 2026 at 12:02=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
+Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+
+> On Wed, 25 Feb 2026 19:37:04 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
 >
-> On Thu, Mar 05, 2026 at 10:55:15PM -0800, Chris Li wrote:
-> > On Thu, Mar 5, 2026 at 6:46=E2=80=AFPM Youngjun Park <youngjun.park@lge=
-.com> wrote:
-> > >
-> > > Currently, in the uswsusp path, only the swap type value is retrieved=
- at
-> > > lookup time without holding a reference. If swapoff races after the t=
-ype
-> > > is acquired, subsequent slot allocations operate on a stale swap devi=
-ce.
-> >
-> > Just from you above description, I am not sure how the bug is actually
-> > triggered yet. That sounds possible. I want more detail.
+>> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+>>
+>> > On Wed, 11 Feb 2026 16:37:11 -0800 Ackerley Tng <ackerleytng@google.com> wrote:
+>> >
+>> > Hi Ackerly, I hope you're donig well!
+>> >
+>> > [...snip...]
+>> >
+>> >> I would like to get feedback on:
+>> >>
+>> >> 1. Opening up HugeTLB's allocation for more generic use
+>> >
+>> > I'm not entirely familiar with guest_memfd, so pleae excuse my ignorance
+>> > if I'm missing anything obvious.
+>>
+>> Happy to take questions! Thank you for your thoughts and reviews!
 >
-> To be honest, I am not deeply familiar with the snapshot code, which is w=
-hy
-> I submitted this as an RFC. However, I believe the race is theoretically
-> possible and I was able to trigger it with a simple PoC user program.
+> Of course, thank you for your work, Ackerley!
 >
-> (not in-kernel swsusp as I think, cuz every user thread freezed
-> before creating snapshot, only on uswsusp)
+>> > But I'm wondering what hugeTLB offers
+>> > that other hugepage solutions cannot offer for guest_memfd, if the
+>> > goal of this series is to decouple it from hugeTLBfs.
+>> >
+>>
+>> The one other huge page source that we've explored is THP pages from the
+>> buddy allocator. Compared to HugeTLB, huge pages from the buddy
+>> allocator
+>>
+>> + Has a maximum size of 2M
+>> + Does not guarantee huge pages the way HugeTLB does - HugeTLB pages are
+>>   allocated at boot, and guest_memfd can reserve pages at guest_memfd
+>>   creation time.
+>> + Allocation of HugeTLB pages is also really fast, it's just dequeuing
+>>   from a preallocated pool
 >
-> The race occurs in `power/user.c`
+> All of these make sense. Just wanted to know if guest_memfd had any
+> unique usecases for hugeTLB that normal hugetlbfs didn't have.
 >
-> 1. snapshot_open() calls swap_type_of() to find the swap device.
-> 2. We get the swap type, but hold no reference at this point.
-> 3. [Race Window]: Another thread triggers swapoff() and swapon()
-> 4. snapshot_ioctl(SNAPSHOT_ALLOC_SWAP_PAGE) is called.
->    -> The swap device is gone or the type ID is reused by another device =
-or
->       swap device is missing.
 
-Ah, I see. Thanks for the explanation.
+IIUC HugeTLB was meant to make huge pages available to userspace for
+performance reasons, guest_memfd wants HugeTLB for the same reason, but
+just for virtualization use cases. So nope, I don't think there's any
+specifically unique usecases.
 
-> > Can you show me which code path triggered this bug?
-> > e.g. Thread A wants to suspend, with this back trace call graph.
-> > Then in this function foo() A grabs the swap device without holding a r=
-eference.
-> > Meanwhile, thread B is performing a swap off while A is at function foo=
-().
-> >
-> > > Additionally, grabbing and releasing the swap device reference on eve=
-ry
-> > > slot allocation is inefficient across the entire hibernation swap pat=
-h.
-> >
-> > If the swap entry is already allocated by the suspend code on that
-> > swap device, the follow up allocation does not need to grab the
-> > reference again because the swap device's swapped count will not drop
-> > to zero until resume.
+These are the differences I can think of between guest_memfd and
+HugeTLBfs's usage of HugeTLB:
+
++ guest_memfd may split HugeTLB pages to individual struct pages during
+  guest_memfd's ownership of the HugeTLB page. (The pages will be merged
+  before returning them to HugeTLB)
+
++ guest_memfd will provide an option to remove memory in guest_memfd
+  ownership from the kernel direct map - I think HugeTLB pages are
+  always in the direct map (?)
+
++ guest_memfd doesn't want to use HugeTLB surplus pages, for now
+
++ guest_memfd will reserve pages at fd creation time instead of at mmap
+  time. Reservation is done by creating a subpool, so guest_memfd
+  doesn't use resv_map.
+
+>> The last reason to use HugeTLB is not because of any inherent advantage
+>> of using HugeTLB over other sources of huge pages, but for
+>> administrative/scheduling purposes:
+>>
+>>   Given that existing non-guest_memfd workloads are already using
+>>   HugeTLB, for optimal scheduling, machine memory is already carved up
+>>   in HugeTLB pages for these workloads. Workloads that require using
+>>   guest_memfd (like Confidential VMs) must also use HugeTLB to
+>>   participate in optimial workload scheduling across machines.
+>>
+>>
+>> [...snip...]
+>>
+>> On the other hand, reintroducing the charging protocol has the benefit
+>> of avoiding allocations (not just dequeuing, if surplus HugeTLB pages
+>> are required) if the memcg limit is hit. Also, if the original reason
+>> for removing the protocol was to simplify the code, refactoring out
+>> hugetlb_alloc_folio() also simplifies the code, and I think it's
+>> actually nice that memcg charging is done the same way as the other two
+>> (h_cg and h_cg_rsvd charging). After hugetlb_alloc_folio() is refactored
+>> out, the gotos make all three charging systems consistent and symmetric,
+>> which I think is nice to have :)
+>>
+>> I hope the consistent/symmetric charging among all 3 systems is welcome,
+>> what do you think?
 >
-> You are right. Since the swap device is pinned once a swap entry is
-> allocated, we could indeed rely on that pinning mechanism to ensure safet=
-y
-> for subsequent allocations (instead of doing get/put every time).
+> For the hugetlbfs case, the path to allocate a hugeTLB page on demand
+> makes sense, so I definitely see the argument for avoiding allocations.
+> Does guest_memfd also have a path to allocate a hugeTLB page outside of
+> the boottime reservations? In that case I think it would be nice to
+> clarify that the allocation failure case optimization is also for
+> guest_memfd, not only for hugetlbfs.
 >
-> However, relying on that pinning alone does not protect the window betwee=
-n
-> the initial lookup (step 1) and the *first* allocation.
 
-Agree. That place needs fixing. We will make two patches.
+For now, guest_memfd actually doesn't want to use surplus pages, so
+guest_memfd won't be allocating pages outside of boottime
+reservations.
 
-Patch 1. Fix the swap off  racing between lookup and first allocation
-on suspend.
-swap_type_of() is very tricky for the device swap because of the
-conditional lookup of the si->start_block matching the offset or not.
-That make this patch very complex.
-
-One idea to brainstorm:
-
-So we can get the reference count on during snapshot_open(), after
-checking "root_swap" still points to valid swsusp_resume_device.
-Then we release the reference count on "root_swap" during snapshot_release(=
-).
-
-That might side step the complexity of  swap_type_of() doing the
-si->start_block checking.
-
-It should fix the bug you described here more simply.
-
-> My proposal is to grab the reference at the lookup point to close this
-> initial race.
-
-That is my suggested patch 1.
-
-> If we do that, I believe we can remove the per-slot
-> get/put calls entirely, as the initial reference is sufficient to keep th=
-e
-
-I suggest that as the patch 2. It is an optimization to eliminate the
-get/put pairs. It is optional. without it is fine in terms of
-correctness. Might not worth the trouble for patch 2.
-
-> device alive until the operation completes.
+> Symmetric charging is definitely welcome : -) All of your reasons make
+> sense to me, I just wanted to ask and make sure.
 >
-> Regarding the reference release strategy in this patch:
->
-> 1. uswsusp: The reference is released when the snapshot device file
->    is closed(snapshot_release) and error paths.
-> 2. not uswsusp`: I only added reference release in the error paths.
 
-That part makes this patch complex and harder to review. Need to
-carefully check whether we take the reference count or not.
+This change is mostly for (an alternate form of) simplicity :)
 
->
-> About 2.. I conclude that on a successful resume, the system state revert=
-s to
-> the snapshot point, making an explicit release unnecessary. However,
-> I am not 100% certain if this holds true for the swap reference
-> context.
-
-That is the part I try to avoid: the very fragmented error condition
-for reference counting.
-Hopefully, with patch 1 idea we don't need that complexity.
-
->
-> This part is the primary reason I submitted this as an RFC. I
-> would appreciate it if you could review this part specifically to
-> confirm whether my understanding is correct.
-
-BTW, I can review the swap part,  we also need to get the
-suspend/resume maintainer (Rafael?) to review the suspend aspect of
-this change as well.
-
->
-> > > Address these issues by holding the swap device reference from the po=
-int
-> > > the swap device is looked up, and releasing it once at each exit path=
-.
-> > > This ensures the device remains valid throughout the operation and
-> > > removes the overhead of per-slot reference counting.
-> >
-> > I want to understand how to trigger the buggy code path first. It
-> > might be obvious to you. It is not obvious to me yet.
->
-> I hope the explanation above clarifies the trace. Please let me know if
-> there are still parts that are not obvious, and I will explain further or
-> investigate more.
-
-Yes you did. Thank you.
-
-Chris
+> Thanks for your thoughts! I hope you have a great day!!
+> Joshua
 
