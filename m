@@ -4,117 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30673FCA16A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 18:07:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DF7FCA177
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 19:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A8106B0005; Mon,  9 Mar 2026 14:07:10 -0400 (EDT)
+	id BE5B96B0005; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 652916B0089; Mon,  9 Mar 2026 14:07:10 -0400 (EDT)
+	id B9C5F6B0089; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 554906B008A; Mon,  9 Mar 2026 14:07:10 -0400 (EDT)
+	id AC8BB6B008A; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 455206B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:07:10 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DD4AD1B756E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 18:07:09 +0000 (UTC)
-X-FDA: 84527306178.22.945EDC6
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CDF9B4000A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 18:07:07 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A21C6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 486EC1A0310
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:00:18 +0000 (UTC)
+X-FDA: 84527440116.16.74CD6CF
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 93C1E4000A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:00:15 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=b4Eud+B1;
-	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=d2IgH4d2;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf01.hostedemail.com: domain of zohar@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zohar@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773079628;
+	s=arc-20220608; t=1773082815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MrfDzIDC5Rwkn3qiBzXUKn7XOVFFMBF2JI8saiP7iIE=;
-	b=4Lhtm5IiGMnI3zX2RoiuQGA+xjwGNxPu36YMJ8eS5VPtyGZQAu02jifnLDmTHk+Ogi3DKh
-	5LU4li3gctGwANPU9tg5OkwM+ga1RIsPxW9+rKygMj134A+omP9hqcOyZ5cjbnZUgL6wl0
-	j7bq4dec+cwb0A+CoXl2k8mG7sYUB4Y=
+	bh=5swsN0rUxxavDq9zMYnPJS2Jv47BUk07HnZRz0pbh40=;
+	b=wRoaU7CgAPJOvWk8PnpKuwbcHl7j5mAIkOdtdx+nZKThx2O1GdFr5NYVShsbVYTTq/Jih7
+	6ZZY4YXmAUCYJF3rX0cJMIjuJsmSXxe56KAlRfJUGa9L4iY4shYBEfa5T+X72OP0GURShM
+	UehxeFO+/fAyAc2cqLmE2kyDeDuu/qw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773082815; a=rsa-sha256;
+	cv=none;
+	b=66x2Gh57NtXep51IRV9E/Lye6BxBhPVYdUS3Rrr6+jGD2eBsyS51SUHbUQ9C4Fk9UeSINf
+	jmJhk5bKzbYLxwNxvk1xw/TyfZjS24mnp2Ew/wofmrBg8wQy2MidLDYcMZOpm3ckX0MJUe
+	lnwR3kVs8QfVcVr2/GC3gAmhK4gDOHc=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=b4Eud+B1;
-	spf=pass (imf01.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773079628; a=rsa-sha256;
-	cv=none;
-	b=EcfR2Ve+9pMzbG6+KYvNFLbBtzZGK7jsvDxQHmsQeF/DijwUR2WfrIE6GCaWg9WiskU2A2
-	1efsxcCF1IgY+d2LgqptB/iVCaroK+LERHHNVgN82ZjBDogdgZOedKumEeTKiQ7l4h1L0d
-	JJ3lyw8GOXOsc1JgiI/UZZx+75Ij6TQ=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-439c9bdc1eeso2539056f8f.3
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 11:07:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773079626; x=1773684426; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MrfDzIDC5Rwkn3qiBzXUKn7XOVFFMBF2JI8saiP7iIE=;
-        b=b4Eud+B1XgzIgqCRNoOMwhQX7fIBp/DE3rt3D4ZuUCnX5NJhkZw5tqlGEcl4oxp7Ae
-         f80x6VD9P/GJE4g+CPEtkeIEziyGLgGKvtoUPaak5n1BYsOG5xdYrHwcZ0+PYB60xWYf
-         HuoKES72idGJmGE1nRVsoWCceHBRTyMi7g24dbrn/PwRT1LD+4aVfI3aChNnaVjcY5Hu
-         rnxW4ICLs6qDf05jCld/SBuaNAJWXqXcyP/Z3JaX9KSufI6apkbZ1fjBcid8EElKvEpQ
-         z5Cq/fcYaMlG7FofWHwOmU9JFniLZJ5J3t39GW1YjwnUjXzpROEp36U55Sj2vgQP1BO/
-         oxQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773079626; x=1773684426;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MrfDzIDC5Rwkn3qiBzXUKn7XOVFFMBF2JI8saiP7iIE=;
-        b=nnu70acMa6aYLuIdsGhHxXoZPGj1I8ASgcl3GPcbj8UXX/GKzKFxfzsks3ddvDDbxK
-         GlFHXWvFtof0eo2eeMtkMasrlaXrnbTBaKHDRc31skhN0TpZoBKmXlbCn2Yl3wu4P4Cg
-         xirOen2kZPAMz34iGDU/egv3R/4LQhIKx+Hf4bi63Q9+6xR/RGIs+S4QAlaKsBrzaXEC
-         9UfJSrQ5XBJKBj10p0dUA2zzSn1qQFdSMRlO3A7lbX2kesWL1/eKHLzfTYDO8Hotn2+B
-         OjuwnRkANaNuGfZnajbYKp+q9+x3HqRNj/4IntSFLOC3G1eKcf8UCbOOKeHXTAMGpUw1
-         N+Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCV0cb0EgqDznXNmvbYo1Z2RMOIc9GIA3iIdJEILwpLdsfHO5oyPkQH2ZO303a0KVJvOE2Q8uv44MA==@kvack.org
-X-Gm-Message-State: AOJu0YwvoZhAw4oxRh5RoyZNVOK/MxsdahZmq+Qgdy4moXXXtNNFU4v6
-	Cb1oBIlSoJOGqZV0BzXHy5pQcEmd4qo5umiE9SaEbfTdarqFqqYxFsiukGhyv6FrJBI=
-X-Gm-Gg: ATEYQzz151IQgjJSa58ncBMbaISwMDV+QQrp+PnyKjSeMc2EO5Nz29DdpZkyqOe5h4y
-	spzcQWz8leMeAmU9M3r/pqqczY+o4bpsTgXwZhBjA7UZttYB1/x5oIw+UhdzaU7cIL3AzKEuUTJ
-	MMqB+PBrrSeNVLz0ulRXhv1qBM1xFYZHlZHNRd74YpJjxHXBGMZP5Dvq2zm4LmSURDPUcxi3A2N
-	Wk5F3nSkLDicQ66VkIHW5dkmTs+fCPCcVc0WwUz3pA+n/afxcTsstJYhKF0yLWWH4zKogrTBYIN
-	ZRbgXzMJDMAfbaDrATEJBUke1K8MahIMHZD40NB/swArqqHLAVSqVVFk5ZLcGrNqzMc13BBbRrl
-	PsSQRzF+Znla3i6ixd9akUKCaDXD3tGbD80SL8iDvXnZ1FBbW/iffzzRzY1j7VKPfzS6Vyd2Eun
-	dLmrcpKeMTvKwx7hhnHraEGoaL/oX1OdmweufTPgknHeo=
-X-Received: by 2002:a05:6000:220d:b0:439:c43a:acb1 with SMTP id ffacd0b85a97d-439da67c0bcmr22231635f8f.35.1773079626120;
-        Mon, 09 Mar 2026 11:07:06 -0700 (PDT)
-Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae2ba66sm24939422f8f.20.2026.03.09.11.07.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 11:07:05 -0700 (PDT)
-Date: Mon, 9 Mar 2026 19:07:04 +0100
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Waiman Long <longman@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tejun Heo <tj@kernel.org>, Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftest: memcg: Skp memcg_sock test if address family
- not supported
-Message-ID: <4ddd3jascnb6nt7quhyjfmsgsmtfmjofwmnrgjktz57cfbfymj@6ejbdgbg4lz2>
-References: <20260309160205.651754-1-longman@redhat.com>
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=d2IgH4d2;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf01.hostedemail.com: domain of zohar@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zohar@linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629BiYp9402979;
+	Mon, 9 Mar 2026 19:00:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5swsN0
+	rUxxavDq9zMYnPJS2Jv47BUk07HnZRz0pbh40=; b=d2IgH4d2cI76xjXosS08+5
+	z7p4cmRM3+vsUQToHiG2nB8DP/joMF596z7727f61cqMRXeNJJpaPHxOajT8sUoA
+	4hdB+fd4u1HsuNVMFr3OsadtAG1CKvM35tVtsMpgaqqCM2ZBMMXJkpG++BlAdorh
+	a25OzV7jJWb6oFmtakhiLNn+qzaAmqYeRhvuloIidiB6X0BgKDL71O4yfuzN3RUh
+	AoqpvZ653XjMWMMwrSPrZbVK8uRNsl6RplSUCc6nWvYsnXyDf2A2VF2Up7qZowSZ
+	aJlNA2A77/MP8caSRZkmC6D9PsUx9bOXT5BvUfyuxzfxj3qWmymQF0ir3jH77L1w
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun7rdb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Mar 2026 19:00:09 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 629FvaW1015771;
+	Mon, 9 Mar 2026 19:00:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs121ww0t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Mar 2026 19:00:08 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 629J079s4915810
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Mar 2026 19:00:08 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B444C58064;
+	Mon,  9 Mar 2026 19:00:07 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E09F35805A;
+	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.72.80])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
+Message-ID: <c9500adc562665d44feaca9206f23a5ba07432c1.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 00/12] vfs: change inode->i_ino from unsigned long
+ to u64
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+        fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
+        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
+        v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+        autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
+        codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+        linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+        ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+        devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+        netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
+        linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
+        audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
+        bpf@vger.kernel.org
+In-Reply-To: <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
+References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+		 <05b5d55c49b5a1bbc43a5315e3c84872e7e634b3.camel@linux.ibm.com>
+	 <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Mar 2026 15:00:04 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yd53fwzzczbtgjoq"
-Content-Disposition: inline
-In-Reply-To: <20260309160205.651754-1-longman@redhat.com>
-X-Rspamd-Queue-Id: CDF9B4000A
-X-Stat-Signature: x1r3gqwkto7nfz1ck35b9b4fp9efyxyp
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69af18ba cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=o9bg_TheAfZNAX0b3qsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDE2NSBTYWx0ZWRfX6z/xa1oiKPHE
+ y5EqU++9e+D9gbPsThEA40KAIQaMNONuQFv6rphXC4UXK9hbuizpabscJIBcCstT+gR2HtuKysP
+ juuUkxGaMl7wxMTZHQleqdpaj1BApzfJEmhJlxbY5TY+zaAhKCE7FmRzIMEIOEQTi0cM+UreNNn
+ frwDdmfnFwh4sJREHHlQDdGWVECyjZbYar7Sfrv1WmeMPxeeCh8/LcWzrRHQxRnw2tvA2a4D8NR
+ c7ma8KolSpfVjNgJ0OleioMQBwEZGtoJr7jBKqVpvCDiflI9IHYr2EnI/OMDVmsDQcjOAtzHE2E
+ Cqs2ZZL0dk00OuX7g/sw5bXFEAXaWjWvfls2vJrY4HNOaz6u97184uDaehJuW5B2dmjBv87lTJU
+ mdY20MyhE/Ql/CExB+A/Xcl6KkN3u1kmsdTu44KKD0LP1RVDdsR5dGWPIvWKEchoHvJnuy6WqMG
+ FGu2ZyF+vBxNE+HNtfg==
+X-Proofpoint-ORIG-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-09_05,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090165
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 93C1E4000A
+X-Stat-Signature: 5ni9w4ndpop7fr73o3p9b6thrw8sdinn
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773079627-857578
-X-HE-Meta: U2FsdGVkX1/Nfq1RSCBbWBaOEGh1e53W5dCtPC5h+qrlqY0OWG6Qqf3OsEpcQkg37iXNQoRCQNCkAnOEEhWOGqBo+xI5BlZpTU450NAhrRgw0qUcv/CXFViheIk/RReunP46O39PvYsPzO/M+P2FBy+qe4rL/tEAst8h//WZ2TltIQKqbSpd7Ukc6hFbjs8zLloQztrJnLdQTEXcnrm+7SkiS4Bjo+ov4QXLEazSHKInK8fAsRsWyaF8eAJqABGQYHQzqpy2Q8aVKse1bQIJ1akpxWpmIbgI7au/nJgi5xfjpGtslOouZSqL3wk7e3ywXt4VmfLhZ1ikJD27sYFRW4AC0lWWu3X3XHpnuvnqoQR2MttvLqiAJgVecnTuyZc3N8ihQtDU04wNAQWqTTFvgZiTSvOYuimug0dj5XsZPSsmR4ODwqXRR80uc+Do17JTZVbGqNR0RaUleD1bAs1uDUcQY6xQFs6FHt7Ulg7nmNqqHuUEX3h5wBUBUXXXbcn8AZL4x4Oo+xp74E6jOlQD1uVK0qfq4LrQU+1XVVMqK9aqVIpNv2HvJUoe0BtFC0JU3hMSAd8ONrLvRlZ+as0WC6aZYHZXm0f/nWcygoE45wJnOvQ4y6SIX/04SkFeonrroxarUKnQJmBeRMnws7eRXt7AhPnh12IO1Lq+ILEyTUeK7EG60fZ8klrWKMUNVyvAhUK8cE2l1VgmvD8zpbd4V8+mx0LumpXT9mv2yV7lpbSXojrcoxm4jHTut3v7YcOcJ90yef7AZUaJDD2+vBvklwURY3h2PL8DTPOgI1c62kwvwYAhWPa6VeJrsDnQrteU/QMtyhxdi9qq5+pF985CLSV62GHwD9KSVVpVnTgwD8p1ItfROhnt6i2IRjTXSdVXhG2XM/GyTXsiFDkruCh/g5j1rCBiCmhyGVLSVzVp0ZiEx5ZDhfEOEhOkvo9a0vOVDDqO48XHUmcz0dHNsry
- 3u4zSCmw
- PMzNC2TOy5WrDwuiJGgCJT6KvjiOmG5fHPbvUzxaKYvD082rbixNf1IlOmCCAHWzdsdnXfksQO/tOhmTBNYlCwQ1jkFkEjy6BO62QQdmT/frjhOlnIOPQIAJJG/AVpm2SA8ohPOZDXaaFJFXa5RteXWQs0NT6jmjrONe2v3ICoNpGArlYozzIUJdYyiOOOU5IUMspvvX2pNuXsYqGGN33kFx+HvkEE3IOrlWM0uq+x1CVGhSiyQYFW1oPnzBiykSnRU25wLK7kGY3hf/9yuL6CWtYmABUDDL6/vtvmJvr4tub0tP0m6PwgB1xysqV93iiNjzMytBY7DDAl23LFPSIv3nxQ4Vk7UZiRo+fkTmthmrkexYByxRrSRGA+cjy56qSoZFFGbgRGuOwdScYuDAKIf3+u2bQhmYjqJLRf8xtP95eBht9o0+tmbr+JmofLnZ3HQ19euclegZwDZ1D2u/+HizsZNysjmLmwCZa7Ny5BLH1ci/EEa3uKJI51eG4/+D/KLax
+X-HE-Tag: 1773082815-614366
+X-HE-Meta: U2FsdGVkX1/zZ/fIvS3h2Is8OYJuWsTUzTFTt7tia9/Tf5YxO/2yTTB7PZi/ZjKDyFyVAAtvUHAD/R43w04W8dzYgkRsRFIpR60lUxC8ZIZdkK+roMJQ4kwOuUsxdg3fAA89rcIUVifduGTs783EwPtqG+MfECWvWd8H3erFnbpUQbb+JrF5mWvE4bNuz8IwFte1ku0TWoBvbTmEG8Qq4gyBxsGFtSSpfoM4aYwPq3H3V4zfIjUUb99iYx7XwZCtdWJ9L+KZiPOUZw+6cYE7sD6acmF8NFkFb1iYcGt+sAh9Xg24sARN1K7LMmLcBGaa3pNkInlukk5v1xGzIms/r/c6yQMHAZnsepFznXmp8Cz9Bwu+CnZ1DJ0g3/G68ZA0RS2zS6S3JAtLQL/tU4GQtDRHmOXFfKKZYpw+jB94rRqJ/wQWHTUqO2+g2MuyeHbjtwheWF4O9LcGUHw2fZc/CQ7rBonmzts+L7Xw9EwH7o2DNEaARMzfw31mZJo2fxXN6SMJCceK/Nn1b4GJMUIK7245fkpckNnwsnH/VGLih+BgKE+/SfMU/zI3L47KMUCQbtM+AOVy+8w941r2nREss5OodIIAiw0OEaa1WhYqBr1aHVPr61y6pxUW8p4VFlU6A9kPO8QWAXS96V5VjNP9Q+Z0jgya5ufFKIwkHyZ/cUF8dYIRgskFdthgWUyhesqfI4J8hvNAb1tiYGEywJ+SKWO1lZJYtN3BZNeeGsgOJabg8Cv6F+Qkj7TG+nYn9TmN+pZnnRKKxBcyUTYU89vDJ1Ft/6AicWUQRoL/Boq027cGtqibWY0nko3hudlJtcTndpIT6bQN+3uygimJeZ1p8ZLa5TYOT+6cQDuJAg+G88uecetBlTKlVkjYNolasqxj6GpKJH0V2aJR906tkR8kYmYhWsksdhaLBiztQByfwZ68EU2BixFFQhAoh5bNH7nwb4RXAaN5UZcVoZtHlPN
+ iBem6qUG
+ i4JSlTIlYAf9eqeBOi3iZ0Q0nZhJusDL8O+83147cBye0KJfmWFDSdOJo2XywCNfZ27KX3WIXatkkZcTlwPRhdWXvbpIpmJ5Yw5g85Nb0CY1KU/R8icS0DwsHvc4Ig9ieqRzmpiKAui65vUoicVoz0YMM+krDswjYKslb7aA8Zuw4PWUcERlJj89FsPV5NwKBuV1WLN5cBRcNaVhfSZJm5aIZO0iOoySgSbX1pbGNHfEA0zJp3kJrN+Zatq+HgTn425CE3JJIw2f20lQ0Gqr35ZgxOAqDNNHKBP7fIl16xLU2wnr9T/7875fXqsHNwzjiSNODBX3qRTEEFWDuOr9XANRsMgA1jB3SZSCH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,64 +161,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 2026-03-09 at 13:59 -0400, Jeff Layton wrote:
+> On Mon, 2026-03-09 at 13:47 -0400, Mimi Zohar wrote:
+> > [ I/O socket time out.  Trimming the To list.]
+> >=20
+> > On Wed, 2026-03-04 at 10:32 -0500, Jeff Layton wrote:
+> > > This version squashes all of the format-string changes and the i_ino
+> > > type change into the same patch. This results in a giant 600+ line pa=
+tch
+> > > at the end of the series, but it does remain bisectable.  Because the
+> > > patchset was reorganized (again) some of the R-b's and A-b's have bee=
+n
+> > > dropped.
+> > >=20
+> > > The entire pile is in the "iino-u64" branch of my tree, if anyone is
+> > > interested in testing this.
+> > >=20
+> > >     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git=
+/
+> > >=20
+> > > Original cover letter follows:
+> > >=20
+> > > ----------------------8<-----------------------
+> > >=20
+> > > Christian said [1] to "just do it" when I proposed this, so here we a=
+re!
+> > >=20
+> > > For historical reasons, the inode->i_ino field is an unsigned long,
+> > > which means that it's 32 bits on 32 bit architectures. This has cause=
+d a
+> > > number of filesystems to implement hacks to hash a 64-bit identifier
+> > > into a 32-bit field, and deprives us of a universal identifier field =
+for
+> > > an inode.
+> > >=20
+> > > This patchset changes the inode->i_ino field from an unsigned long to=
+ a
+> > > u64. This shouldn't make any material difference on 64-bit hosts, but
+> > > 32-bit hosts will see struct inode grow by at least 4 bytes. This cou=
+ld
+> > > have effects on slabcache sizes and field alignment.
+> > >=20
+> > > The bulk of the changes are to format strings and tracepoints, since =
+the
+> > > kernel itself doesn't care that much about the i_ino field. The first
+> > > patch changes some vfs function arguments, so check that one out
+> > > carefully.
+> > >=20
+> > > With this change, we may be able to shrink some inode structures. For
+> > > instance, struct nfs_inode has a fileid field that holds the 64-bit
+> > > inode number. With this set of changes, that field could be eliminate=
+d.
+> > > I'd rather leave that sort of cleanups for later just to keep this
+> > > simple.
+> > >=20
+> > > Much of this set was generated by LLM, but I attributed it to myself
+> > > since I consider this to be in the "menial tasks" category of LLM usa=
+ge.
+> > >=20
+> > > [1]: https://lore.kernel.org/linux-fsdevel/20260219-portrait-winkt-95=
+9070cee42f@brauner/
+> > >=20
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> >=20
+> > Jeff, missing from this patch set is EVM.  In hmac_add_misc() EVM copie=
+s the
+> > i_ino and calculates either an HMAC or file meta-data hash, which is th=
+en
+> > signed.=20
+> >=20
+> >=20
+>=20
+> Thanks Mimi, good catch.
+>=20
+> It looks like we should just be able to change the ino field to a u64
+> alongside everything else. Something like this:
+>=20
+> diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm=
+/evm_crypto.c
+> index c0ca4eedb0fe..77b6c2fa345e 100644
+> --- a/security/integrity/evm/evm_crypto.c
+> +++ b/security/integrity/evm/evm_crypto.c
+> @@ -144,7 +144,7 @@ static void hmac_add_misc(struct shash_desc *desc, st=
+ruct inode *inode,
+>                           char type, char *digest)
+>  {
+>         struct h_misc {
+> -               unsigned long ino;
+> +               u64 ino;
+>                 __u32 generation;
+>                 uid_t uid;
+>                 gid_t gid;
+>=20
 
---yd53fwzzczbtgjoq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] selftest: memcg: Skp memcg_sock test if address family
- not supported
-MIME-Version: 1.0
+Agreed.
 
-On Mon, Mar 09, 2026 at 12:02:05PM -0400, Waiman Long <longman@redhat.com> =
-wrote:
-> On systems where IPv6 isn't enabled or not configured to support
-> SOCK_STREAM, the test_memcg_sock test always fails.
+>=20
+> That should make no material difference on 64-bit hosts. What's the
+> effect on 32-bit? Will they just need to remeasure everything or would
+> the consequences be more dire? Do we have any clue whether anyone is
+> using EVM in 32-bit environments?
 
-I think IPv6 is not substantial for the check...
+All good questions. Unfortunately I don't know the answer to most of them. =
+What
+we do know: changing the size of the i_ino field would affect EVM file meta=
+data
+verification and would require relabeling the filesystem.  Even packages
+containing EVM portable signatures, which don't include or verify the i_ino
+number, would be affected.
 
-> The purpose of the test_memcg_sock test is to verify that
-> memory.stat.sock and memory.current values are close.
+Mimi
 
-=2E.. so this should work with IPv4 too.
 
-> If the socket() call fails, there is no way we can test that. I
-> believe it is better to just skip the test in this case instead of
-> reporting a test failure hinting that there may be something wrong
-> with the memcg code.
 
-Yes, the skip on (any) socket creation is also (independently) good.
 
-> @@ -1460,6 +1466,9 @@ static int test_memcg_sock(const char *root)
->  	free(memcg);
-> =20
->  	return ret;
-> +skip:
-> +	ret =3D KSFT_SKIP;
-> +	goto cleanup;
-
-Maybe make this analogous with other cases where there is no specific skip-=
-label but
-
-	if (err =3D=3D EAFNOSUPPORT) {
-		ret =3D KSFT_SKIP;
-		goto cleanup;
-	}
-
-Thanks,
-Michal
-
---yd53fwzzczbtgjoq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaa8MRBsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjPoQD+PmjLLORgemm6L6Wd7y1R
-hoB0caqu50AlVSz1SKP3ThsBAP+AO9l6EzSrSBWNiUV7LSV/NsXeLyrdxjriU91M
-fVEL
-=GNSq
------END PGP SIGNATURE-----
-
---yd53fwzzczbtgjoq--
 
