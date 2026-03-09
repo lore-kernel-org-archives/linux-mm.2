@@ -4,156 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6DF7FCA177
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 19:00:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 210B5FCA17A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 19:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE5B96B0005; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
+	id 4C10E6B0005; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9C5F6B0089; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
+	id 4AC7F6B008C; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC8BB6B008A; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
+	id 3CAE56B0092; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A21C6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:00:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5F16B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 15:11:32 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 486EC1A0310
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:00:18 +0000 (UTC)
-X-FDA: 84527440116.16.74CD6CF
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 93C1E4000A
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:00:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=d2IgH4d2;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of zohar@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zohar@linux.ibm.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 955A016032C
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:11:31 +0000 (UTC)
+X-FDA: 84527468382.16.F8348FD
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F1FE514000B
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:11:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vFiXUTgr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773082815;
+	s=arc-20220608; t=1773083489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5swsN0rUxxavDq9zMYnPJS2Jv47BUk07HnZRz0pbh40=;
-	b=wRoaU7CgAPJOvWk8PnpKuwbcHl7j5mAIkOdtdx+nZKThx2O1GdFr5NYVShsbVYTTq/Jih7
-	6ZZY4YXmAUCYJF3rX0cJMIjuJsmSXxe56KAlRfJUGa9L4iY4shYBEfa5T+X72OP0GURShM
-	UehxeFO+/fAyAc2cqLmE2kyDeDuu/qw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773082815; a=rsa-sha256;
+	bh=t4mG+t+RXYYFo6HmjRVakUrKTlFJ7ROOygeekLGG8TY=;
+	b=0VLJudl0gWJDy0RBfOzX3re3wGmti4KGAWJqAG10l8qg4pkj2WAWCR188E9ZYuK5+PZG7X
+	LadMN+YTAn3RNBUrN/mTKOQmFmVDuckVrWVU2NmslJWjJEHUjL1+7jRZoKI+GSAe1Dxk/P
+	suJDjUSotgbIBEb9CMlBD988rmfpDOA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773083489; a=rsa-sha256;
 	cv=none;
-	b=66x2Gh57NtXep51IRV9E/Lye6BxBhPVYdUS3Rrr6+jGD2eBsyS51SUHbUQ9C4Fk9UeSINf
-	jmJhk5bKzbYLxwNxvk1xw/TyfZjS24mnp2Ew/wofmrBg8wQy2MidLDYcMZOpm3ckX0MJUe
-	lnwR3kVs8QfVcVr2/GC3gAmhK4gDOHc=
+	b=bWXCX2nszLknrWM3o1v8zhsFxMI44ENjFHr6gFKjoSa3zwq04fom0tAZw+wKHSHSF1NdcF
+	02cg9/mmZSogrH8AsIg+DxLud6fhcyQB8jYLA6+2VY5rnrI+LMeYoaaH7uif/pO0nbPxH2
+	iRaqCcrNMPcNtYegGVIBVVAEyRRXCSw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=d2IgH4d2;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of zohar@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zohar@linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629BiYp9402979;
-	Mon, 9 Mar 2026 19:00:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=5swsN0
-	rUxxavDq9zMYnPJS2Jv47BUk07HnZRz0pbh40=; b=d2IgH4d2cI76xjXosS08+5
-	z7p4cmRM3+vsUQToHiG2nB8DP/joMF596z7727f61cqMRXeNJJpaPHxOajT8sUoA
-	4hdB+fd4u1HsuNVMFr3OsadtAG1CKvM35tVtsMpgaqqCM2ZBMMXJkpG++BlAdorh
-	a25OzV7jJWb6oFmtakhiLNn+qzaAmqYeRhvuloIidiB6X0BgKDL71O4yfuzN3RUh
-	AoqpvZ653XjMWMMwrSPrZbVK8uRNsl6RplSUCc6nWvYsnXyDf2A2VF2Up7qZowSZ
-	aJlNA2A77/MP8caSRZkmC6D9PsUx9bOXT5BvUfyuxzfxj3qWmymQF0ir3jH77L1w
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun7rdb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Mar 2026 19:00:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 629FvaW1015771;
-	Mon, 9 Mar 2026 19:00:08 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs121ww0t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Mar 2026 19:00:08 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 629J079s4915810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Mar 2026 19:00:08 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B444C58064;
-	Mon,  9 Mar 2026 19:00:07 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E09F35805A;
-	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.72.80])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Mar 2026 19:00:04 +0000 (GMT)
-Message-ID: <c9500adc562665d44feaca9206f23a5ba07432c1.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 00/12] vfs: change inode->i_ino from unsigned long
- to u64
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-        v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-        autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-        ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-        devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-        audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-        bpf@vger.kernel.org
-In-Reply-To: <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
-References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
-		 <05b5d55c49b5a1bbc43a5315e3c84872e7e634b3.camel@linux.ibm.com>
-	 <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Mar 2026 15:00:04 -0400
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vFiXUTgr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Message-ID: <a9404db2-d8de-440f-b407-fdc489b00f7b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773083485;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t4mG+t+RXYYFo6HmjRVakUrKTlFJ7ROOygeekLGG8TY=;
+	b=vFiXUTgrZJ1cpUYR+sGtEhO2tybjtnLZl7GWxczInonCmn9eljEUISVRbk75dWa1ua3QaN
+	bMKjff7b8mf4Y5usYdQZy+en1dwCQsWWwi1+wTA2faaV/vB8ZDD4q/OAfIoHYtvL+XwZgJ
+	7XEQQuneWtuvrQ6yFX370zPDrHyTRN0=
+Date: Mon, 9 Mar 2026 22:11:20 +0300
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
-X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69af18ba cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=o9bg_TheAfZNAX0b3qsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDE2NSBTYWx0ZWRfX6z/xa1oiKPHE
- y5EqU++9e+D9gbPsThEA40KAIQaMNONuQFv6rphXC4UXK9hbuizpabscJIBcCstT+gR2HtuKysP
- juuUkxGaMl7wxMTZHQleqdpaj1BApzfJEmhJlxbY5TY+zaAhKCE7FmRzIMEIOEQTi0cM+UreNNn
- frwDdmfnFwh4sJREHHlQDdGWVECyjZbYar7Sfrv1WmeMPxeeCh8/LcWzrRHQxRnw2tvA2a4D8NR
- c7ma8KolSpfVjNgJ0OleioMQBwEZGtoJr7jBKqVpvCDiflI9IHYr2EnI/OMDVmsDQcjOAtzHE2E
- Cqs2ZZL0dk00OuX7g/sw5bXFEAXaWjWvfls2vJrY4HNOaz6u97184uDaehJuW5B2dmjBv87lTJU
- mdY20MyhE/Ql/CExB+A/Xcl6KkN3u1kmsdTu44KKD0LP1RVDdsR5dGWPIvWKEchoHvJnuy6WqMG
- FGu2ZyF+vBxNE+HNtfg==
-X-Proofpoint-ORIG-GUID: IXXixi4WEaMt5ZLipHNyYmLY2v6HWLsd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_05,2026-03-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090165
+Subject: Re: [PATCH] mm/migrate_device: document folio_get requirement before
+ frozen PMD split
+Content-Language: en-GB
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, npache@redhat.com,
+ ziy@nvidia.com, linux-mm@kvack.org, mpenttil@redhat.com, balbirs@nvidia.com
+Cc: matthew.brost@intel.com, joshua.hahnjy@gmail.com, hannes@cmpxchg.org,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260306104409.3915811-1-usama.arif@linux.dev>
+ <c74e3941-f977-4b19-9d71-972bd9ed5c60@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <c74e3941-f977-4b19-9d71-972bd9ed5c60@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 93C1E4000A
-X-Stat-Signature: 5ni9w4ndpop7fr73o3p9b6thrw8sdinn
+X-Rspamd-Queue-Id: F1FE514000B
+X-Stat-Signature: 1b8rc7871tkcx6j4e1hsbpdt6syh5w43
 X-Rspam-User: 
-X-HE-Tag: 1773082815-614366
-X-HE-Meta: U2FsdGVkX1/zZ/fIvS3h2Is8OYJuWsTUzTFTt7tia9/Tf5YxO/2yTTB7PZi/ZjKDyFyVAAtvUHAD/R43w04W8dzYgkRsRFIpR60lUxC8ZIZdkK+roMJQ4kwOuUsxdg3fAA89rcIUVifduGTs783EwPtqG+MfECWvWd8H3erFnbpUQbb+JrF5mWvE4bNuz8IwFte1ku0TWoBvbTmEG8Qq4gyBxsGFtSSpfoM4aYwPq3H3V4zfIjUUb99iYx7XwZCtdWJ9L+KZiPOUZw+6cYE7sD6acmF8NFkFb1iYcGt+sAh9Xg24sARN1K7LMmLcBGaa3pNkInlukk5v1xGzIms/r/c6yQMHAZnsepFznXmp8Cz9Bwu+CnZ1DJ0g3/G68ZA0RS2zS6S3JAtLQL/tU4GQtDRHmOXFfKKZYpw+jB94rRqJ/wQWHTUqO2+g2MuyeHbjtwheWF4O9LcGUHw2fZc/CQ7rBonmzts+L7Xw9EwH7o2DNEaARMzfw31mZJo2fxXN6SMJCceK/Nn1b4GJMUIK7245fkpckNnwsnH/VGLih+BgKE+/SfMU/zI3L47KMUCQbtM+AOVy+8w941r2nREss5OodIIAiw0OEaa1WhYqBr1aHVPr61y6pxUW8p4VFlU6A9kPO8QWAXS96V5VjNP9Q+Z0jgya5ufFKIwkHyZ/cUF8dYIRgskFdthgWUyhesqfI4J8hvNAb1tiYGEywJ+SKWO1lZJYtN3BZNeeGsgOJabg8Cv6F+Qkj7TG+nYn9TmN+pZnnRKKxBcyUTYU89vDJ1Ft/6AicWUQRoL/Boq027cGtqibWY0nko3hudlJtcTndpIT6bQN+3uygimJeZ1p8ZLa5TYOT+6cQDuJAg+G88uecetBlTKlVkjYNolasqxj6GpKJH0V2aJR906tkR8kYmYhWsksdhaLBiztQByfwZ68EU2BixFFQhAoh5bNH7nwb4RXAaN5UZcVoZtHlPN
- iBem6qUG
- i4JSlTIlYAf9eqeBOi3iZ0Q0nZhJusDL8O+83147cBye0KJfmWFDSdOJo2XywCNfZ27KX3WIXatkkZcTlwPRhdWXvbpIpmJ5Yw5g85Nb0CY1KU/R8icS0DwsHvc4Ig9ieqRzmpiKAui65vUoicVoz0YMM+krDswjYKslb7aA8Zuw4PWUcERlJj89FsPV5NwKBuV1WLN5cBRcNaVhfSZJm5aIZO0iOoySgSbX1pbGNHfEA0zJp3kJrN+Zatq+HgTn425CE3JJIw2f20lQ0Gqr35ZgxOAqDNNHKBP7fIl16xLU2wnr9T/7875fXqsHNwzjiSNODBX3qRTEEFWDuOr9XANRsMgA1jB3SZSCH
+X-HE-Tag: 1773083487-328048
+X-HE-Meta: U2FsdGVkX18P8yBeU/JKaG5v5eiBxZBCapQq5g2Ykj3Hydqksh/fRyJog2BNFOzchrvAQhnJz+EFnFAz6hP2dOL+Rk5zk3u2zfgw1JnwEw+Sw4e7qj+mDuG8sHuQN5cvtN8gnuRbm6w+Id3NlQF5cLi3sRwRaK1BlDtScoDJ2eRubisM0FwU6K+oFqFLxZOnKhxemGd4IFE9J8cO7tTDEtHSlRYs+Wm4YrvQe8ttEyyL+54d6zm1jTW9JAGonTpeI9K0q8CEYiU8RTH6fCq2egQvCSdUh4DC2QvpyR36J05soJfkBrhfMWrPY3B/PxS2Q4YzBCE794bQlR9yk/+HR/UikVeUpoGVZr1quBA10d+BUAz14ungtoceuVFuBMSofvaCPoGvag1xbX7kMFdsCh49casvUKkcbOXvT/5TEEX1SDH9Fj/slwQDI0d76KG52t05dP01nJAgavZPrOoXq/alvVumolhc+7wSshIlA0Mltt6XfzLjdFZMjDJlorqvB6xKnSgh6ngWt/4Smi6N58t+UiGDkploJm7baTDFzd05wJkhxXM/6A4Oef1X1Yr45fkI5oCQu26fmxkhZYCEPp8U3FZ5w03qVbRzJK+IfumoWmMaBgULJIq/uLBSSFNnIi8Krr0b8oaJFNQeID6lLaqbsFSkDiQNyCxuezq8otcgA3sDig5tJDGrqHeySK2R0rVYR75FXQd1WAXlRwGgM3E2G8DOac3zB1JBLj4OQmNc7bRBRe1oYHV91izmwBE7oiH3X6+4XD+UyDUVC5cMceAzdKitg/2n8XPqGN978IoeBKBR4FgDSAVF1zIpZ43zCPUlzXudZl/zQGnCUqojlLkSXKNHkzPlE5qfWVPezjUSNGUdpeMlpjmVrVgQ/xDKc5f6WHQFh4TN02NMtvFCTJ8pXDuJO1+lMmSBCWayK5DnPkpWW2fKMxrfX/KV8UgS7u2Cn5StTHrbemmq+wD
+ naGCaoE2
+ 2aF88xJ5vGUyrIr6VMVx8Mv9oZSc+QuxjX7ai7rOeucC72+JZoOWOxZArY2eDvFi66vl73orhUp1qXfNR5ONwQJnhcs5u0nzotChvCBQh3aQhrAXZTIaF4zOSFj9oN5ZSJoQktgWFv4P/D+e1PTMspUpRYViXQGosDn/2ONqXc1G5aPMSZytTn5CAHxVY2Ulebhm4Trp4pFLDl1TF/8YJs02q6E0jYhm8FSL5qN5f/GA0EBRXE6aE224NtzpoT7t4cVBVCitEbTJaptFKxadpQHLG3Cv4iDt23+dz44i92OKshKwb6lEU/kB6r+v+R0lJuyq9Fip96MWNgwY7JUvTntlDaFXwyDaW9EFz7UZb52EkF5S2J5jj05FnhzNugBB8O3xmtHvkJcS4H7T1939J0HMgSDcFXSubsI9c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,118 +96,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-03-09 at 13:59 -0400, Jeff Layton wrote:
-> On Mon, 2026-03-09 at 13:47 -0400, Mimi Zohar wrote:
-> > [ I/O socket time out.  Trimming the To list.]
-> >=20
-> > On Wed, 2026-03-04 at 10:32 -0500, Jeff Layton wrote:
-> > > This version squashes all of the format-string changes and the i_ino
-> > > type change into the same patch. This results in a giant 600+ line pa=
-tch
-> > > at the end of the series, but it does remain bisectable.  Because the
-> > > patchset was reorganized (again) some of the R-b's and A-b's have bee=
-n
-> > > dropped.
-> > >=20
-> > > The entire pile is in the "iino-u64" branch of my tree, if anyone is
-> > > interested in testing this.
-> > >=20
-> > >     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git=
-/
-> > >=20
-> > > Original cover letter follows:
-> > >=20
-> > > ----------------------8<-----------------------
-> > >=20
-> > > Christian said [1] to "just do it" when I proposed this, so here we a=
-re!
-> > >=20
-> > > For historical reasons, the inode->i_ino field is an unsigned long,
-> > > which means that it's 32 bits on 32 bit architectures. This has cause=
-d a
-> > > number of filesystems to implement hacks to hash a 64-bit identifier
-> > > into a 32-bit field, and deprives us of a universal identifier field =
-for
-> > > an inode.
-> > >=20
-> > > This patchset changes the inode->i_ino field from an unsigned long to=
- a
-> > > u64. This shouldn't make any material difference on 64-bit hosts, but
-> > > 32-bit hosts will see struct inode grow by at least 4 bytes. This cou=
-ld
-> > > have effects on slabcache sizes and field alignment.
-> > >=20
-> > > The bulk of the changes are to format strings and tracepoints, since =
-the
-> > > kernel itself doesn't care that much about the i_ino field. The first
-> > > patch changes some vfs function arguments, so check that one out
-> > > carefully.
-> > >=20
-> > > With this change, we may be able to shrink some inode structures. For
-> > > instance, struct nfs_inode has a fileid field that holds the 64-bit
-> > > inode number. With this set of changes, that field could be eliminate=
-d.
-> > > I'd rather leave that sort of cleanups for later just to keep this
-> > > simple.
-> > >=20
-> > > Much of this set was generated by LLM, but I attributed it to myself
-> > > since I consider this to be in the "menial tasks" category of LLM usa=
-ge.
-> > >=20
-> > > [1]: https://lore.kernel.org/linux-fsdevel/20260219-portrait-winkt-95=
-9070cee42f@brauner/
-> > >=20
-> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> >=20
-> > Jeff, missing from this patch set is EVM.  In hmac_add_misc() EVM copie=
-s the
-> > i_ino and calculates either an HMAC or file meta-data hash, which is th=
-en
-> > signed.=20
-> >=20
-> >=20
->=20
-> Thanks Mimi, good catch.
->=20
-> It looks like we should just be able to change the ino field to a u64
-> alongside everything else. Something like this:
->=20
-> diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm=
-/evm_crypto.c
-> index c0ca4eedb0fe..77b6c2fa345e 100644
-> --- a/security/integrity/evm/evm_crypto.c
-> +++ b/security/integrity/evm/evm_crypto.c
-> @@ -144,7 +144,7 @@ static void hmac_add_misc(struct shash_desc *desc, st=
-ruct inode *inode,
->                           char type, char *digest)
->  {
->         struct h_misc {
-> -               unsigned long ino;
-> +               u64 ino;
->                 __u32 generation;
->                 uid_t uid;
->                 gid_t gid;
->=20
-
-Agreed.
-
->=20
-> That should make no material difference on 64-bit hosts. What's the
-> effect on 32-bit? Will they just need to remeasure everything or would
-> the consequences be more dire? Do we have any clue whether anyone is
-> using EVM in 32-bit environments?
-
-All good questions. Unfortunately I don't know the answer to most of them. =
-What
-we do know: changing the size of the i_ino field would affect EVM file meta=
-data
-verification and would require relabeling the filesystem.  Even packages
-containing EVM portable signatures, which don't include or verify the i_ino
-number, would be affected.
-
-Mimi
 
 
+On 09/03/2026 18:18, David Hildenbrand (Arm) wrote:
+> On 3/6/26 11:44, Usama Arif wrote:
+>> split_huge_pmd_address() with freeze=true splits a PMD migration entry
+>> into PTE migration entries, consuming one folio reference in the
+>> process.  The folio_get() before it provides this reference.
+>>
+>> Add a comment explaining this relationship and a VM_WARN_ON_ONCE to
+>> catch an unexpected refcount != 1 entry state.
+>>
+>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  mm/migrate_device.c | 5 +++++
+>>  1 file changed, 5 insertions(+)
+>>
+>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+>> index 78c7acf024615..6fa2878848a7e 100644
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -908,6 +908,11 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+>>  	unsigned long flags;
+>>  	int ret = 0;
+>>  
+>> +	VM_WARN_ON_ONCE(folio_ref_count(folio) != 1);
+> 
+> Can't we have speculative references here? In general, asserting that
+> the refcount has an exact value (besides 0) is often shaky.
 
+
+I hope not at this point in code.
+
+At this point, the folio is locked and unmapped (both done in migrate_vma_collect_huge_pmd()),
+and the present PMD was set to migration entry. It is isolated from LRU in
+migrate_device_unmap(). So the folio should not be visible to GUP or reclaim/compaction.
+Only anon, non-swapcache folios should reach here. So it won't run into any folio_try_get
+in page cache or swap cache.
+
+The folio_get() done in migrate_vma_split_unmapped_folio() is consumed by
+split_huge_pmd_address(), and folio_split_unmapped() expects a folio_reference
+of 1 after this [1].
+
+If its not considered good to assert a non zero refcount value, I can change the
+warning to a comment, but I think refcount should be 1 at this point, otherwise
+folio_split_unmapped will fail.
+
+[1] https://elixir.bootlin.com/linux/v6.19.6/source/mm/huge_memory.c#L4137
+
+> 
+>> +	/*
+>> +	 * take a reference, since split_huge_pmd_address() with freeze = true
+>> +	 * drops a reference at the end.
+>> +	 */
+>>  	folio_get(folio);
+>>  	split_huge_pmd_address(migrate->vma, addr, true);
+>>  	ret = folio_split_unmapped(folio, 0);
+> 
+> 
 
 
