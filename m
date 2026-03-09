@@ -4,119 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B9ACEA854C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 02:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5023EA854A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 02:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E8F76B0088; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
+	id 0CD236B0088; Sun,  8 Mar 2026 22:59:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 496F86B0089; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
+	id 07AD76B0089; Sun,  8 Mar 2026 22:59:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 378A46B008A; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
+	id EC8456B008A; Sun,  8 Mar 2026 22:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 25BE26B0088
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 22:34:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C6AF91C89E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:34:49 +0000 (UTC)
-X-FDA: 84524956698.28.AEDB933
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EB24810000E
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:34:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D9CC06B0088
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 22:59:48 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B7EBC3D02
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:48 +0000 (UTC)
+X-FDA: 84525019656.09.ADF50E6
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6BE10100006
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:46 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUubOeJ5;
-	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FJawJpKa;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773023688;
+	s=arc-20220608; t=1773025186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
-	b=brWP9j/b+wZgcVEVNSqrhpLdQOwCugraoVA7JpH0x8Ve3BLBpnX+S1GsgSgAI36e/EUztH
-	B89t+KUB670N6xSPNB1l0xLzWVrj8lV8EG+t/+YA8JptYMXQ3sZicbv2TVggj+ZuULU1ur
-	qpgsDjRsBsq1RiwqOw6J5pIGujSlmPc=
+	bh=surD7Tl7I0c7IM/NAN7h4/O0mH6dbWmZP+2JPPoPahM=;
+	b=3/DGy9l+I3CAYTBDthmO2IJYbe1NadGTn3/FZZHRmhBGc6sELV1IoD2JfAI8bF0UCmahSE
+	RoFM2bkQF15TeFlVoi9+oa4kc+fmy6Lm3mkAe71fWhvNH7SauCDlWRbbfr0dZeG5hPCevy
+	aDyuuHpcLXM/Yj7pJ1zadoTvHDP6eSc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773025186; a=rsa-sha256;
+	cv=none;
+	b=KjtoKjyYaZ12UPJ9Di74xw/c75B+vCTwdWErIvMPM2pwXdf2IkCTaxhDhsyX6wrPyEZgmz
+	1pvPPfgNlPWGJOOmPjomPp0gbAtQgSvPT6FcSjc0vxGIWIe+mEBgRR6N2DG8W4uu2WXCTj
+	r0m5HTdAq1cx1+OgeAvnkxXHHe1cQGw=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nUubOeJ5;
-	spf=pass (imf05.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773023688; a=rsa-sha256;
-	cv=none;
-	b=3oP17amWVl8HXPwYl/djmkIh0w8WCVFVOYRR/ED3Qdn+IP6d/u8jaLVcUN/lBFCdpRXCOB
-	dtVfGmdGCWiYWseVPLh7znKAmEXtnrb/4VP3cDCyO9KRHAPiKPSkB7pVv98Bj5vEwSqPqH
-	gLWETGoFEGZlIa14Hx6Oj0yzZiTniuo=
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2bd9a485bd6so6636604eec.1
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 19:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773023687; x=1773628487; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
-        b=nUubOeJ53tVNdL6Y+kfmh56kBV7Tonlp/c/9iFV7965k9VV/q9y2cVaRAA9h5mUth7
-         eenK2COGaffjH/i38nPFRLCp8NcnTSTnZqaDTLSOVNKQhZILaWFze9gKI58JDe0SQiNd
-         QMXV/jkzpfgQ2Ewr5LZ550XJ7T4GJO4TOkBMoEaLG2H6hz44h3gX76CMJnZYQoB+ZDuO
-         n/zCXnYQ5AQqG4tY0kIgCVwKg6KfRk3/82AY5sQEiCIdLvcbI9SzEMGoFyUEPV2SYIVA
-         yKKczISkM7jWWfLP65fwjt5picZFBv/iSY+LOqDqkk9HysXEG4lTwtRRonNRmieNWO+h
-         cpMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773023687; x=1773628487;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rEBd1cs2oe7i2LMTBttxBgMKfH6i4xUsDVFq4wSxJlE=;
-        b=Wj2lZ9Bqvc5iOPeFnvWqY3E+LfHyBRksDQ64Bl/HllSEL3M65T0n1kqAIea3AYodei
-         dZT91hFEie6X5fq6WymkLOpHZm2j1I9z0Su57sWoC2IpU+Xo2jB7myiDACrlsFHn8A8l
-         WyhFYBw5tHKK0/RuZTHD1W85kbSwpbJxgpXZiIQwT4Di54JRCLZ7zD0dtOBSOtQHgPRq
-         rljSEFCf9V8sZRQPJquFzGrJGQ/UwQJzPekUD8FrIFRSzgPCiGU6ZsKcm1RSptjf9q42
-         qlGWHVTlHxFHahtNUFJMe0C2GWHw/dW0hkUcKs1ovm7sLhYnVZiSkhIAYJtANpgrIXXU
-         QP/A==
-X-Forwarded-Encrypted: i=1; AJvYcCW7+KjhuC+FQNPk+hM83EUuS6IkdzrQr7YA9pJ6XQa1U20Zs3wecLO6OdEW0Hq/pjGGcS49Iwj59g==@kvack.org
-X-Gm-Message-State: AOJu0YwoMD2EZYqQ0xK5OaO5GXyRMUzz4GrZ8apcJKHcHN7lFTj/eV8T
-	IbwPkVrhWbT0ahyGEXCpsYiHwgVzT8ORebHXmDhhz912O+sllf0E653x
-X-Gm-Gg: ATEYQzxD6DhqEWN2FuWArPF2HS6Kfl101CaQWckqq58WOLjZ5DXBcK7dYq3TyONv7Es
-	FkEgCDwxxQ9wiA43FPXQiax84WqvCOG3vZct8u0JwqnhnfcYg4RAeRcrH0TYWwycZcLlw2nRv8G
-	HqhnVw8WN3Wuv0AbDXH+xEQqJdSZ0d/e3uQIwn5SySh1zfVI5e2mh9bVLcEGrjytErcf7TooNIS
-	QI1qnOiMZF5zXODLxrNdk86PLFLX0er2u2atfWbRXCQBb9MYgeovXSHY0ZOb3pNaMj44zFvKbHD
-	ydhHXyiMbk0F7cGG/RbtT8zsmyqMh3zO66cxJ/TluGotbdeYQPtfoqnD+IB59rPvE7dN79lzNWH
-	DA+3Ws15oz0kmuPp/EYuuw0XBpCDih1uPg3iWHaqOKhdN8Kzevup1Dq+pmh5zjIF6dmIILEo+wp
-	uCqDOHw2/aO5poGsi5j27AJsezaZfW+3JnZrs=
-X-Received: by 2002:a05:7301:3d1a:b0:2be:fe8:8aff with SMTP id 5a478bee46e88-2be4e03b3ebmr4076299eec.18.1773023686622;
-        Sun, 08 Mar 2026 19:34:46 -0700 (PDT)
-Received: from localhost.localdomain ([104.28.165.128])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be4f80cc1dsm7076193eec.3.2026.03.08.19.34.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 08 Mar 2026 19:34:46 -0700 (PDT)
-From: wang lian <lianux.mm@gmail.com>
-To: sj@kernel.org
-Cc: akpm@linux-foundation.org,
-	brendan.higgins@linux.dev,
-	damon@lists.linux.dev,
-	davidgow@google.com,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	wang lian <lianux.mm@gmail.com>
-Subject: Re: [PATCH 2/7] mm/damon/tests/core-kunit: add a test for damon_is_last_region()
-Date: Mon,  9 Mar 2026 10:34:06 +0800
-Message-ID: <20260309023406.9784-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260307195356.203753-3-sj@kernel.org>
-References: <20260307195356.203753-3-sj@kernel.org>
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FJawJpKa;
+	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <d5eb31b8-a099-49bf-9b3e-09e525242968@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773025183;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=surD7Tl7I0c7IM/NAN7h4/O0mH6dbWmZP+2JPPoPahM=;
+	b=FJawJpKa2+SghPS7x3wAb1/ADkqlaG+EU48QgAFLhye7ep1KXmfv8aR211KO6QMm+aM9jE
+	lkSfHq7NYA6CmA4qgbrbz1Bb+64sic2GD+OsuriZ38V6yHQAVTjuMN9h63nPZs8OqpFDZL
+	E7/eoswn88XvnfZ+A7mJ8TC5NNgcmWI=
+Date: Mon, 9 Mar 2026 10:59:18 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH v6 31/33] mm: memcontrol: convert objcg to be per-memcg
+ per-node type
+To: Usama Arif <usama.arif@linux.dev>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
+ kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
+ akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
+ apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
+ usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
+References: <20260306202931.3878822-1-usama.arif@linux.dev>
+ <b77bd438-3420-4569-a461-7b1b7afbc0a3@linux.dev>
+ <898e8ca7-efcb-4bd7-8016-871b37be830e@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <898e8ca7-efcb-4bd7-8016-871b37be830e@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB24810000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hfcyue1mmemgygx4jbjm81y3rxkwpc1o
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: x7btssfh1w5wm5e89jwyxr1wq5ezgq5z
 X-Rspam-User: 
-X-HE-Tag: 1773023687-900019
-X-HE-Meta: U2FsdGVkX1+gMcTgl2H49XRGMI4kp5U9vQhBsHRgaHQGYR2IDbZAC3i5zLmHUMZBP1+bixOEZuBgyfITZFB60aQGuv0T1NEntRyXQzNsIwJljcKiazvmPm18g2A9zgkda9gDklK4HFZsi1bODjdNG/zJni84UcIcwToWuNsYCQAOeTQnt1c+6hNfa8eq4aKDu/d5W5eCb1wjYgYONa70cPhbfcM/wEUYUM+Tv1DD8it6ghjotXHJSF8ILkxuGbffmhmGno8BbhWy4AtdTEuAHAX/2w6duJrPXnsZmlZkT0IqhVTsdh39fxJlxiMRZnImO7PufvPC5Dg2rJk9YRn7lc5PcIRz0R204RV4ZnsplUM3JJM/Wdo9AJmipLWoxZHnZO9GhDJo8OdlbfAM2mZ9fs52qoUUt7KAGOq+BBNsl9uTkrgvBfvixvPVHGzuHl5S8pPZ8cCFokNiU0XMuNMPOvYgtA6aN26z1BvlwqwJHqI4W1bgtkbAGll6QJqkYaGy/RVWpONCAFtMSuGsevEdW1kgYu18sKax1a/HD22dNDWl8zX6g9W/9WyJAdGBRjh9qdGUeOKg8ShTzR8xOxindPym7NYqEUoGE2YG2jhCPilxb6m9EseE82S8acB6TEt6n09hrGCIunubk79tezwPFRd8cFkTc/lbl1IwJxqeeqZbLlegKxilUXQYVscNtNHqVJfbz0F26A06DCcmf7+psUXkaVbuw6G+jv2jmMxOPh0mS5BZRga2LHCskVy6LfYH5d6oFQswS37+SDmjbG+Z/pwHWLu7t2fwyTvstN6fZ6ZiQtq943JP1jmNvJZI/2WmMEP6zblQ+7SXaDwbU00FMhjsPnBqmhRnyzziKOD9RA1eIcZBPzXw3N9RqhPpO45JVuYCauDSIV7Mg567ZE2Viy6qs0L2EmXwgQvpQvgMiPSTLDuU1gCeazawCjGl9TaA/MuiCXXZL5dOK0sw7qK
- uXwj+D3i
- W2qenljLKClAGqpcymYQwIgBl0GIRA1uGt6P7X0swWljIoR5X+kvIxZpYm4h7fnL/7Ly1Bno/y0ELofJutgqy7q3fYNeYaGk391E5FCpbd0C4ePi383hkK98lzZcXtVc72npa8BxyVK0RsY++PWTwgYOpOsKfbc58Rn6EMNozx5mvUWY3E2mj2mVaHT3GQ9037Ac+7FRzTLrhtEoPelG+2Xl7XvJzP1T2DIXUzi3s6/W8oasH2SgY5ZUKL6msCmFxbHavnMX1aaxP0hu663c5ivSxdsqC6oA90MLJZ9jFMvJLqyUUQCAClAvOokEIjIY7jDpKwByPTiwd6kHoltWuSKQTdjfWN8JH8ILOQpbjYbEfbNNcHQi5tqbQdWgN+hg0HTOw6uF839EPCWfjRsH2E5ek2xGGwBQz7FVMOomdtFLU4qgrUHqy3hUWWOKg2JQNeRgbXkZLECOBTS80pxbuhAjBI9LIOnMle475yPYrltq6WhX+uBGbF9MMclY6FANKg2cTL71ABZcovRD/lBfqAD94cXznkSDISi+ZChLMeBteu3cKXNb/87FHTfBwUl89GIw5wP1LopR6DgQLMpMOIhHotfItC9OkXSKHRvi+HJAKlReykU4u8Ks0Z3F8sm6ROtMUuQF6Q4JYbLeh73FgYz5A6oola9M6EYK4DAhHZ47Tzg5hPoyLQ8FZskE16XL0UHisfrLx7UE5k5pcvYLNc/2JWchST5Emdd/1
+X-Rspamd-Queue-Id: 6BE10100006
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773025186-887675
+X-HE-Meta: U2FsdGVkX1+j6cI11z9O41gvAh6l3+nk+zT61aiTUaV31K8xELbHqMnodFqhMXgmImWOqIM106f1EUWPpRo+fsEdqB487kdZSG3WMsKDdPw75tX8XHluzgrAq/fjMMh4u9XkwSTeFBqq/W/9U5wHfBTrioU4xi2K3YDEsMxo1Twnun/W09z4ykox6uCqpuZuf1Qg/+YlDHbgvVSpyAa4VSYvrpASvbUwJSi10B/JGp66Q1t1YLhAIS5urwpwAh+rUSh/1DlWDxLMhlvDgOSa0G6c6692N26D6UFDfrNs5wQTUialkWdeuj2Oo2nHIfewdwWEy0+tP3r93Gotrk27JaDfpMS3gntA+lUq1uPd5ppoAd1r2LILcrlek54uLwQ/I9lhDRPFYPsIHdVGUIHx6x1ZmfgHPSgpajCodr1wFz8bdwzK7Ojv5itQ+2/CKSLIoGtb5tIiG0VWtU6muBA/XLkrv+0oWEJPrusRmNuC21+ml4oFlCafONa+/5jBWchI+pJgD2EHlqd6uZrfwhW0asUwDbrj/IeyaP7rDUGH5I5XL/ZLeGLMtuey6QVkBjTnfNdvVYqvYGarWCOWXXb5jifPy/xUITccm5hlmfSZdw+HL2ZDgP4NP5J1RssPGN/KyU3frspeJN7gaOtPkQsBLb6lDvEqxN9XMPE1kSkTBRaISMyypl51RomxDnLXoxxKm9LFUjaUiDi/PDz5nJITux/DP6Xg9T5SGFhTAutUnGSsaeWezAFLShoiB5MHuId3JRXItt3jVvTCvOnRL7U6Am2yLJxoeLWHSzcVaya3Y1RS5DJgp6Nyu9Boi0PIufKQsTnUiDqSK37zRpqK6dw4DhSSu8kkZTHcLytQivlz304ft0MRV4ETZwi98ZVAyc0woKWhlQOaJA9yzTxAgL+9a3hg7/iP5sqSitUkgGgPqJYShmaOQ75EeQygcOID3VQa/9O/b9VBgQh6apy7xeC
+ pkfIiM14
+ Acl+/vlNOXKS5fcNY+bnSOxM9Qd9A+2X0wVP1QDeNod56Sd324YEADnsUbHxBIVNeDZS/YUjOF0COAB6pjGALNxis1CzqyuAZDIyxTjW45R7RY6h9bqUpe3bavQujKEF+9AzIXZB5Y7SVRi1z2ibmkvp80GKc6bLuyXTJ6pInHoFZOtOy7goj1+6RqBaHW/mndEq0xkF2ZXDE7WwC3vY6cZkrmkCu6iBovnml/ja0uGPxLG2BUSWxLXQE4XS2sl7z4sUWygMWo9641nv2rhbrAs6fb0xvqCMZpQb2HBoQPltHiLM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,27 +99,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> There was a bug [1] in damon_is_last_region().  Add a kunit test to not
-> reintroduce the bug.
 
-> [1] https://lore.kernel.org/20260114152049.99727-1-sj@kernel.org/
 
-> Signed-off-by: SeongJae Park <sj@kernel.org>
+On 3/7/26 7:08 PM, Usama Arif wrote:
+> 
+> 
+> On 07/03/2026 08:51, Qi Zheng wrote:
+>> Hi Usama,
+>>
+>> On 3/7/26 4:29 AM, Usama Arif wrote:
+>>> On Thu,  5 Mar 2026 19:52:49 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+>>>
+>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>>
+>>>> Convert objcg to be per-memcg per-node type, so that when reparent LRU
+>>>> folios later, we can hold the lru lock at the node level, thus avoiding
+>>>> holding too many lru locks at once.
+>>>>
+>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>>> ---
+>>>>    include/linux/memcontrol.h | 23 +++++------
+>>>>    include/linux/sched.h      |  2 +-
+>>>>    mm/memcontrol.c            | 79 +++++++++++++++++++++++---------------
+>>>>    3 files changed, 62 insertions(+), 42 deletions(-)
+>>>>
+>>>
+>>> [...]
+>>>
+>>>> @@ -4087,7 +4100,13 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+>>>>        xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
+>>>>          return 0;
+>>>> -free_shrinker:
+>>>> +free_objcg:
+>>>> +    for_each_node(nid) {
+>>>> +        struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+>>>> +
+>>>> +        if (pn && pn->orig_objcg)
+>>>> +            obj_cgroup_put(pn->orig_objcg);
+>>>
+>>> Is it possible that you might call obj_cgroup_put twice on the same cgroup?
+>>
+>> Oh, I think you are right. Here pn->orig_objcg was not reset to NULL, so
+>> obj_cgroup_put() will be called in __mem_cgroup_free() again.
+>>
+>>>
+>>> If css_create fails, css_free_rwork_fn is queued, which ends up calling
+>>> mem_cgroup_css_free which calls obj_cgroup_put again?
+>>>
+>>> Maybe adding pn->orig_objcg = NULL overhere after obj_cgroup_put
+>>> is enough to prevent the double put from causing issues?
+>>
+>> Agree.
+>>
+>> Like this?
+>>
+> 
+> Yes below looks good! Might be good to add a comment as well why setting
+> it to NULL.
 
-Hi SeongJae,
+OK, will add the following comment:
 
-I've been following the previous discussion regarding the bug in
-damon_is_last_region() where the arguments of list_is_last() were
-accidentally swapped.
+/*
+  * Reset pn->orig_objcg to NULL to prevent obj_cgroup_put()
+  * from being called agagin in __mem_cgroup_free().
+  */
 
-I have verified this patch by running the KUnit tests on my arm64 native
-environment. The damon_test_is_last_region test case passed as expected,
-confirming that the fix is robust and the regression is effectively
-prevented.
+> 
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 992a3f5caa62b..e0795aec4356b 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -4140,8 +4140,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+>>          for_each_node(nid) {
+>>                  struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+>>
+>> -               if (pn && pn->orig_objcg)
+>> +               if (pn && pn->orig_objcg) {
+>>                          obj_cgroup_put(pn->orig_objcg);
+>> +                       pn->orig_objcg = NULL;
+>> +               }
+>>          }
+>>          free_shrinker_info(memcg);
+>>   offline_kmem:
+>>
+>> If there are no problems, I will send a fix patch later.
+>>
+>> Thanks,
+>> Qi
+>>
+>>>
+>>>> +    }
+>>>>        free_shrinker_info(memcg);
+>>>>    offline_kmem:
+>>>>        memcg_offline_kmem(memcg);
+>>>> -- 
+>>>> 2.20.1
+>>>>
+>>>>
+>>
+> 
 
-Tested-by: wang lian <lianux.mm@gmail.com>
-Reviewed-by: wang lian <lianux.mm@gmail.com>
---
-Best Regards,
-wang lian
 
