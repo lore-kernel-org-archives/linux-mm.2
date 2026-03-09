@@ -4,125 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED701FCA16A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 17:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5532EFCA16A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 17:59:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2958B6B0005; Mon,  9 Mar 2026 13:54:27 -0400 (EDT)
+	id 918006B008A; Mon,  9 Mar 2026 13:59:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A396B0089; Mon,  9 Mar 2026 13:54:27 -0400 (EDT)
+	id 8C5976B008C; Mon,  9 Mar 2026 13:59:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 176176B008A; Mon,  9 Mar 2026 13:54:27 -0400 (EDT)
+	id 79B006B0092; Mon,  9 Mar 2026 13:59:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 07A4A6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:54:27 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9FEF71402CF
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:54:26 +0000 (UTC)
-X-FDA: 84527274132.29.4E2AFD8
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B686DC000B
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:54:24 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="lOWDr/v9";
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 69D456B008A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:59:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0238657783
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:59:53 +0000 (UTC)
+X-FDA: 84527287908.10.CDB10FC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 55ADB180005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 17:59:51 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sytoAyoq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773078864;
+	s=arc-20220608; t=1773079191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9lfgX4em38pbhc6TYJlG7GYrzpl0a5OWL9SJYa4uhDY=;
-	b=rAnWn6O0mSm0KSW6ZOeSPPVQV8Pc+0DYrZy5fZWU0I7/hA21ACrIZ9YbButqAHqjX7jl5b
-	hBBuB7v2KR+CbbQA2ocvib79JRasegEUer+FBXd7r2HPNHTB+tdml+IXE12NInvZl5ZAr6
-	seuXiWYf/XDU+Bl+uVr/m60TyCiRl44=
+	bh=Xv3oHIACYXATdIksIdHpsVmpQmqLfCgwYlyNLj2YQTU=;
+	b=FWzLMelEMRPOhRpAADBYV1WQ1kyIywpzSKiQ+mE+JKUTTbxqfvzxeBYBNaV3OpjutGXUYY
+	WXSH6Xlo/JwNFHT1kju8JP7r37AqKmI/ID7iB4jEZvCQc1AVWq54VKZHT2V8rrYulsuX7f
+	ZvRIyg6WKdFfAz7TCw8taK7MH6/iPvE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="lOWDr/v9";
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773078864; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sytoAyoq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773079191; a=rsa-sha256;
 	cv=none;
-	b=BuECruBNfue1yRraRLiT/56EOok/Y+P40XTGaCq1IuweEdl9MEOwtdM/FqmBKyzqSPZQLL
-	TnKcofCB4PubkPX8SpWtAB1EdA1cwcgbW3WXuL2tBPBR7lOsPw52AzPSsIm6wBNlW7S+7K
-	mcqDBKxnes9oBldpEKrSWgF/Fe1L2is=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cd847b4b23so156405585a.0
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 10:54:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1773078864; x=1773683664; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9lfgX4em38pbhc6TYJlG7GYrzpl0a5OWL9SJYa4uhDY=;
-        b=lOWDr/v9XeKCi7R//UmRYUJ+6IZsHJVkeUAIwJ3ZDYSvgN0gTurjrrDv+LCFC8vN6D
-         17kkMw/fLiAEwfY8N8ngEgF3Op9cLfX0jm/2i8G/ufVsblke/DMEENOriNmJDV425VEf
-         eCjE4qm7dCBQAwZD0fW1J9LIpTQcUQaJ6nGzk8D2bPHT9dp86KGwA+YXWAur74vzjZf0
-         miYVEtnq4sqSY92G9RodQuLamu+Fqgk28VJb08QFosj+L81Z31l1WaiN9Njt38nnqOq2
-         Ah6FTFb2sGCm7/5IKrhoW9XS6DPIVDbpjWfh54+RzMnA3VBESU/q91Yh/xNwi9+gLo2K
-         YsSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773078864; x=1773683664;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9lfgX4em38pbhc6TYJlG7GYrzpl0a5OWL9SJYa4uhDY=;
-        b=Onhe4g92RX0tYfIITiM/XjYMWmx2ffT7UDbb9Smsvcjcj/X5X8+faXnec05WdGQVqX
-         7jW6ExdbpjmqoZbksF4Sg7GPqeMP7tnlh8T4IbzwKlg9VbjMEywkcCgDy6/ezlUMmFRf
-         hfmaS0BWY3mKdVUsUdGHO+eWlgf1hDxgcb9qV4N38JqmjAFJct+px+rSF92A6IgMMOEi
-         r8IlptopANKcdGYeFjqju5qfHTapmRpvumzj2hu4IaYJRb2w8T7hHMFjs9w8dGy0YVpr
-         ZrF+RnnHeQDWhIjToN7ErgtoP0KVeWzZeXkYNSTQMyGf+Cfn1sv/JIJUw5GB0VDlp0xr
-         vqTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWIgDOTcUkYIeB/qPy3ElIyAjfvyS1/qzaWeVVGfDXZvZ3ZD3b7x5Zm45CJCGR+8M6GK3kRK6CHlw==@kvack.org
-X-Gm-Message-State: AOJu0Yzmd/OBGjF5BGEfDZKp8Sb0G2qlDeKN2CKCDpkFRWspc+BZUlpw
-	2bpKCOycBt7136raBe700Zto4Cekg7bqoNFXU6B1ZiXke3vFLIzqq2Nj0hWrk7ATApo=
-X-Gm-Gg: ATEYQzwEndIrpYXGKONSLlIjvpA7NGeT/EtLPj4gjWRpQUZvkca7ouNKHTz6TbKS0sG
-	u9kywZhSDEqKv6DBpFC7ZIoCt6Ql1TdieoWdnR0Ay0UMaN/Ux1yOE9eRgja6lm1ILY3PitoE+Ex
-	g7NPzFlq+S01r74y7l/jVEFSJyBNBrcQOyxT6UxM6m81LH6tB0yWBf6i8HywDnwRM54bN4KcFNN
-	kDV7A9OaIyyBlh1l/vd6RkBzCKbnI0Ou19jEOH+w2sQaNm303GFmjV3WB6EtnMuvCpwMisogUUn
-	AOiBeUtyZg5E4xkajcrwoWbJtEZULAQBlMCn8EoofSaqUConRBoYn0G6WZb5hU+E1mnhWI7GQWc
-	+z8AA4aH3Ylizqy8OP3Aal6kFb+XE0uj/QjX+X+1zYnDKCSQLLqkJdoqkB3FwfXUW8N19UAYSxK
-	5wLknXlyMs5dAqNJNacQuxU4f3rlBAxMBssi9jzbApXmus8HkckfRqorrnQ9b04L8XgW3DQHAzV
-	nm0ZPpdAA==
-X-Received: by 2002:a05:620a:700a:b0:8b2:ea5a:4149 with SMTP id af79cd13be357-8cd6d4d544bmr1554684285a.65.1773078863734;
-        Mon, 09 Mar 2026 10:54:23 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd6f4878bbsm718502285a.4.2026.03.09.10.54.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 10:54:23 -0700 (PDT)
-Date: Mon, 9 Mar 2026 13:54:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Shivank Garg <shivankg@amd.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@kernel.org, willy@infradead.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, ziy@nvidia.com,
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	dave@stgolabs.net, Jonathan.Cameron@huawei.com, rkodsara@amd.com,
-	vkoul@kernel.org, bharata@amd.com, sj@kernel.org,
-	weixugc@google.com, dan.j.williams@intel.com, rientjes@google.com,
-	xuezhengchu@huawei.com, yiannis@zptcorp.com, dave.hansen@intel.com,
-	hannes@cmpxchg.org, jhubbard@nvidia.com, peterx@redhat.com,
-	riel@surriel.com, shakeel.butt@linux.dev, stalexan@redhat.com,
-	tj@kernel.org, nifan.cxl@gmail.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Mike Day <michael.day@amd.com>
-Subject: Re: [RFC PATCH v4 4/6] mm/migrate: add copy offload registration
- infrastructure
-Message-ID: <aa8JTMda9oafjzcf@gourry-fedora-PF4VCD3F>
-References: <20260309120725.308854-3-shivankg@amd.com>
- <20260309120725.308854-12-shivankg@amd.com>
+	b=HxZkdvRzyR0l5QuGKr6/cGsWXxt8WSnR7Ys+g8LCyYtIhgeXY1YcejKNzmgGwZuoIOAU5+
+	Ue8Atg2/sC+tv4v/R7h1iaT8Gkp8KCuPlGHJPwFanLCMnpnP0JvDCHOGO+jyQ0z8MjNnAn
+	pDypuvw3CaxoNe8i6KylAbo1oRC9UEw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8895D600AE;
+	Mon,  9 Mar 2026 17:59:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF2DC4CEF7;
+	Mon,  9 Mar 2026 17:59:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773079190;
+	bh=BYb8Q4I+dU4OWfDEfeeu912CnLq4YsMBTwSGhXV88iA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=sytoAyoqRuqb7DYALeMfgGmFwJ/Gnq7PhmSsmZjb3Idg/HwBvfuZsGOsKOoEb4ATD
+	 sNL1JTeDn0KBItNMUfMM8sl7+3QgkkVzNRPdXfiIX/FM78037uWHmKKhSbAmHrf4IH
+	 e0otFYm4RNTeOtcwv5wvbMawAoPEO2T2ZX8k03N8US8APKwS4rDGcQnOHCnZoEi5y6
+	 ihMnUzX+sa1TX2VQBqP2HLPfdCKhgqmyvLVdRj16S2R523CjWeM26qn1e3tCMxmywz
+	 N6hxIDEPk1JA4enrgUR14S2JtF4kfmOi+o5dVSvCCBOgDlz4fDmen/eikhSqweb7f7
+	 kinrKOOfx9+zw==
+Message-ID: <f22758116dabd3c135a833bcb5cfcd2ea4f6ecf4.camel@kernel.org>
+Subject: Re: [PATCH v3 00/12] vfs: change inode->i_ino from unsigned long to
+ u64
+From: Jeff Layton <jlayton@kernel.org>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+ autofs@vger.kernel.org, 	ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
+	ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ devel@lists.orangefs.org, 	linux-unionfs@vger.kernel.org,
+ apparmor@lists.ubuntu.com, 	linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, 	selinux@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, 	dri-devel@lists.freedesktop.org,
+ linux-media@vger.kernel.org, 	linaro-mm-sig@lists.linaro.org,
+ netdev@vger.kernel.org, 	linux-perf-users@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, 	linux-xfs@vger.kernel.org,
+ linux-hams@vger.kernel.org, linux-x25@vger.kernel.org, 
+	audit@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-can@vger.kernel.org, linux-sctp@vger.kernel.org, bpf@vger.kernel.org
+Date: Mon, 09 Mar 2026 13:59:43 -0400
+In-Reply-To: <05b5d55c49b5a1bbc43a5315e3c84872e7e634b3.camel@linux.ibm.com>
+References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+	 <05b5d55c49b5a1bbc43a5315e3c84872e7e634b3.camel@linux.ibm.com>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
+ n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
+ egyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqV
+ T2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm
+ 0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtV
+ YrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8sn
+ VluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQ
+ cDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQf
+ CBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sE
+ LZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BB
+ MBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4
+ gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI
+ 7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/r0km
+ R/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2B
+ rQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRI
+ ONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZ
+ Wf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQO
+ lDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7Rj
+ iR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27Xi
+ QQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBM
+ YXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKC
+ wQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9q
+ LqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC
+ 3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoa
+ c8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3F
+ LpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx3bri75n1
+ TkBYGmqAXy9usCkHIsG5CBHmphv9MHmqMZQVsxvCzfnI5IO1+7MoloeeW/lxuyd0pU88dZsV/riHw
+ 87i2GJUJtVlMl5IGBNFpqoNUoqmvRfEMeXhy/kUX4Xc03I1coZIgmwLmCSXwx9MaCPFzV/dOOrju2
+ xjO+2sYyB5BNtxRqUEyXglpujFZqJxxau7E0eXoYgoY9gtFGsspzFkVNntamVXEWVVgzJJr/EWW0y
+ +jNd54MfPRqH+eCGuqlnNLktSAVz1MvVRY1dxUltSlDZT7P2bUoMorIPu8p7ZCg9dyX1+9T6Muc5d
+ Hxf/BBP/ir+3e8JTFQBFOiLNdFtB9KZWZmIExheXRvbiA8amxheXRvbkBzYW1iYS5vcmc+iQI4BBM
+ BAgAiBQJOldK9AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRAADmhBGVaCFWgWD/0ZRi4h
+ N9FK2BdQs9RwNnFZUr7JidAWfCrs37XrA/56olQl3ojn0fQtrP4DbTmCuh0SfMijB24psy1GnkPep
+ naQ6VRf7Dxg/Y8muZELSOtsv2CKt3/02J1BBitrkkqmHyni5fLLYYg6fub0T/8Kwo1qGPdu1hx2BQ
+ RERYtQ/S5d/T0cACdlzi6w8rs5f09hU9Tu4qV1JLKmBTgUWKN969HPRkxiojLQziHVyM/weR5Reu6
+ FZVNuVBGqBD+sfk/c98VJHjsQhYJijcsmgMb1NohAzwrBKcSGKOWJToGEO/1RkIN8tqGnYNp2G+aR
+ 685D0chgTl1WzPRM6mFG1+n2b2RR95DxumKVpwBwdLPoCkI24JkeDJ7lXSe3uFWISstFGt0HL8Eew
+ P8RuGC8s5h7Ct91HMNQTbjgA+Vi1foWUVXpEintAKgoywaIDlJfTZIl6Ew8ETN/7DLy8bXYgq0Xzh
+ aKg3CnOUuGQV5/nl4OAX/3jocT5Cz/OtAiNYj5mLPeL5z2ZszjoCAH6caqsF2oLyAnLqRgDgR+wTQ
+ T6gMhr2IRsl+cp8gPHBwQ4uZMb+X00c/Amm9VfviT+BI7B66cnC7Zv6Gvmtu2rEjWDGWPqUgccB7h
+ dMKnKDthkA227/82tYoFiFMb/NwtgGrn5n2vwJyKN6SEoygGrNt0SI84y6hEVbQlSmVmZiBMYXl0b
+ 24gPGpsYXl0b25AcHJpbWFyeWRhdGEuY29tPokCOQQTAQIAIwUCU4xmKQIbAwcLCQgHAwIBBhUIAg
+ kKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIV1H0P/j4OUTwFd7BBbpoSp695qb6HqCzWMuExsp8nZjr
+ uymMaeZbGr3OWMNEXRI1FWNHMtcMHWLP/RaDqCJil28proO+PQ/yPhsr2QqJcW4nr91tBrv/MqItu
+ AXLYlsgXqp4BxLP67bzRJ1Bd2x0bWXurpEXY//VBOLnODqThGEcL7jouwjmnRh9FTKZfBDpFRaEfD
+ FOXIfAkMKBa/c9TQwRpx2DPsl3eFWVCNuNGKeGsirLqCxUg5kWTxEorROppz9oU4HPicL6rRH22Ce
+ 6nOAON2vHvhkUuO3GbffhrcsPD4DaYup4ic+DxWm+DaSSRJ+e1yJvwi6NmQ9P9UAuLG93S2MdNNbo
+ sZ9P8k2mTOVKMc+GooI9Ve/vH8unwitwo7ORMVXhJeU6Q0X7zf3SjwDq2lBhn1DSuTsn2DbsNTiDv
+ qrAaCvbsTsw+SZRwF85eG67eAwouYk+dnKmp1q57LDKMyzysij2oDKbcBlwB/TeX16p8+LxECv51a
+ sjS9TInnipssssUDrHIvoTTXWcz7Y5wIngxDFwT8rPY3EggzLGfK5Zx2Q5S/N0FfmADmKknG/D8qG
+ IcJE574D956tiUDKN4I+/g125ORR1v7bP+OIaayAvq17RP+qcAqkxc0x8iCYVCYDouDyNvWPGRhbL
+ UO7mlBpjW9jK9e2fvZY9iw3QzIPGKtClKZWZmIExheXRvbiA8amVmZi5sYXl0b25AcHJpbWFyeWRh
+ dGEuY29tPokCOQQTAQIAIwUCU4xmUAIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOa
+ EEZVoIVzJoQALFCS6n/FHQS+hIzHIb56JbokhK0AFqoLVzLKzrnaeXhE5isWcVg0eoV2oTScIwUSU
+ apy94if69tnUo4Q7YNt8/6yFM6hwZAxFjOXR0ciGE3Q+Z1zi49Ox51yjGMQGxlakV9ep4sV/d5a50
+ M+LFTmYSAFp6HY23JN9PkjVJC4PUv5DYRbOZ6Y1+TfXKBAewMVqtwT1Y+LPlfmI8dbbbuUX/kKZ5d
+ dhV2736fgyfpslvJKYl0YifUOVy4D1G/oSycyHkJG78OvX4JKcf2kKzVvg7/Rnv+AueCfFQ6nGwPn
+ 0P91I7TEOC4XfZ6a1K3uTp4fPPs1Wn75X7K8lzJP/p8lme40uqwAyBjk+IA5VGd+CVRiyJTpGZwA0
+ jwSYLyXboX+Dqm9pSYzmC9+/AE7lIgpWj+3iNisp1SWtHc4pdtQ5EU2SEz8yKvDbD0lNDbv4ljI7e
+ flPsvN6vOrxz24mCliEco5DwhpaaSnzWnbAPXhQDWb/lUgs/JNk8dtwmvWnqCwRqElMLVisAbJmC0
+ BhZ/Ab4sph3EaiZfdXKhiQqSGdK4La3OTJOJYZphPdGgnkvDV9Pl1QZ0ijXQrVIy3zd6VCNaKYq7B
+ AKidn5g/2Q8oio9Tf4XfdZ9dtwcB+bwDJFgvvDYaZ5bI3ln4V3EyW5i2NfXazz/GA/I/ZtbsigCFc
+ 8ftCBKZWZmIExheXRvbiA8amxheXRvbkBrZXJuZWwub3JnPokCOAQTAQIAIgUCWe8u6AIbAwYLCQg
+ HAwIGFQgCCQoLBBYCAwECHgECF4AACgkQAA5oQRlWghUuCg/+Lb/xGxZD2Q1oJVAE37uW308UpVSD
+ 2tAMJUvFTdDbfe3zKlPDTuVsyNsALBGclPLagJ5ZTP+Vp2irAN9uwBuacBOTtmOdz4ZN2tdvNgozz
+ uxp4CHBDVzAslUi2idy+xpsp47DWPxYFIRP3M8QG/aNW052LaPc0cedYxp8+9eiVUNpxF4SiU4i9J
+ DfX/sn9XcfoVZIxMpCRE750zvJvcCUz9HojsrMQ1NFc7MFT1z3MOW2/RlzPcog7xvR5ENPH19ojRD
+ CHqumUHRry+RF0lH00clzX/W8OrQJZtoBPXv9ahka/Vp7kEulcBJr1cH5Wz/WprhsIM7U9pse1f1g
+ Yy9YbXtWctUz8uvDR7shsQxAhX3qO7DilMtuGo1v97I/Kx4gXQ52syh/w6EBny71CZrOgD6kJwPVV
+ AaM1LRC28muq91WCFhs/nzHozpbzcheyGtMUI2Ao4K6mnY+3zIuXPygZMFr9KXE6fF7HzKxKuZMJO
+ aEZCiDOq0anx6FmOzs5E6Jqdpo/mtI8beK+BE7Va6ni7YrQlnT0i3vaTVMTiCThbqsB20VrbMjlhp
+ f8lfK1XVNbRq/R7GZ9zHESlsa35ha60yd/j3pu5hT2xyy8krV8vGhHvnJ1XRMJBAB/UYb6FyC7S+m
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309120725.308854-12-shivankg@amd.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B686DC000B
-X-Stat-Signature: g38c9qt1kf6chyb1dwznes7cab776ffp
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 55ADB180005
+X-Stat-Signature: qoifyzrnes77mb3q5ywqzdyki8p1t7qx
 X-Rspam-User: 
-X-HE-Tag: 1773078864-988576
-X-HE-Meta: U2FsdGVkX18oOkZep5FI1xLtXYneuadVondpHhcLlQaXhvlBIa6HywPh6eqzN4q9GTFkenpfYKne3/GBzaCqvmKPcMZLR2+cax1LsifhUoXRFQ+coplbx6/6TkHiasdvGzyd32UuoRZdmQ4+5/tCDMzybIWDPoMywmdDxTcjatH69bZGK884b37JUZJnvdUr15LohNtqGNa0qpnzKp2NHaGZ6S6gNC6tW4u3hOQkPdA5E9pt7kpZYGBrVMYLJsI2woP0Ww/x/n38SBUY6UwwueTiBkA+tVnExMO6wrrPXdnyOdgAdmN7DJP9PQwRqr9E85z+664Jp9KGdDlxcfOxdIgoNMc1iTyA8AeFYhoyd8tlaSfIg/Umy15zccgllZ4wJc+KSGJwldyOaWEu9RD5DOJKgkz5NetHCXf9b93vUSnAKOwnpdTxfC3lXHQAoYjs8xlb79+SapA3cXRemRADdOiZnkbw3Lmc+usyIeOLbYtIctrZP1jiVV7aDQFRsStbbQ0EkuLEiqDF30pZ0WSbYrM1Usa2o7vykyAFbUT6W8QqLIZ1YNmcrwe2MgGEw1R3g+xVrvi4RoxYgZ+0ub4zHBhZfx3LK1AfmkJSwwaKKC+nScP7AlKUdhz0h1cTRPiO7/fJQ52KgxkAm4qYUEH2yBU+f6ugCirzNAbOKBs8vilzwiy+XRKKApB/Zj36YUcCHPg3LoAIsQoPlv8vt0x6JlKDpLt+S9Z6a5nmZYXOUirThwQPDuFp1dyac0v/VR4IfuwdSAYbz7nxbut0Win7BpUmBKyf6iDAghQTfyWBXQSCQOvaPUvArad1+8VYvpxBmWTvXR6tCQ6CBN1bFBSZTb2deikTSuBQ5tquMNzXcwPK4+NJMSgEBzNscOdgzfiG386z5g+nPizHO4PB3VRgixjZ/smT4jrdedsfUIZ+hEcRcuA5u8psKCMQCRrsUCU4sMkx7RtTQagfxkuj8gR
- 0D8rx8Fu
- gMettfTB7+G/u0oHIjlpXP47aNlr2F2VvSMjJlFNXLpqeuPPvV+vVWJ4Oq+rk7xmu0XCUP/dFvonn+NCOjxD/PyOQd3ULDJrgzzQlz5P9ULG3CJ+pqMVpcKreeqAt9vNUJxl1zioCohNNXFcpPiXvgzIWi7w8w58MCzMvd4wOmfaM3Gp0Yajv5Kp7khvzlQJ/wxifdDGnHTUiRGz+v7rTWpbH656UThO+sAvkzCoLfZIcxudqh59KHiqYv+yYHFLooeYc8UO4emvNdl059ymfm+L668kU9yRteFPa+81zZBPmgbQTKd6wuYK4a56qSg+y45CvW6pWAvwZl1Q2+qV/DNE5rlha7HUyE2H/vhzlRRKPaIpVLQGIgibAfrXdw63QguetbU3RbVSkx4hD/nNhahZjQA==
+X-HE-Tag: 1773079191-68490
+X-HE-Meta: U2FsdGVkX1+KUjTp6J+DbYFT35jiyRMB75iPeIdcCz2mqC94eZkpZYC9GT3ND8ei6bLvjVC9rElMTv+jGFIcOv5EzayBx7bK5JD2or86X/DlEBxikHS/Wck8ra8vvA59x/vzmBUQGRF+/tcROxf7AKA7dbwRzmsVRKu8BwgNQ5Gz0ixiOFF+q1a3ZQSPWhhAhvXEkesHg5ErFjPFaOqw7l9NmLFk7Gsz5i/Si5t1gCkHzqAlH1pC4AsleeFdXjQ5ZvdtqLmDorcTesDSYFfLpQNVuyInl5E0SHI+pthio94EFda0XHehvE5Ssy2xorUzSmTVdwriz43vbd6Oy22H0V03NpuY9Zc+V3kNrVxo5maNqMZXI5s4/tBrsLdchVVze2JQYZKGoaqWyK2hejEgKyGdBVgN8byyjPpW+ge9NeTkRpcrL7WkHirauOq6SoLszFm3vvo3Vqa66Q2CcP7XXBZ/XB5GJeL5e6f1vIMdap4CgoxfoOL2TurKOdhMfZK4vhGfJJdRdDL6TMElM8v+u0rpsoXF2Y1oJaQwAC3LpQBxJwQk7MaMsBoNtUltziuiQY1SqASH9IhDMInS9AeNp6c3uGyq/VliAvWGZvryom6w8JRvkehRs00p50F0nl+FZgjRBKH322tEKa5AqkojvZkPk/c7lxOPP5kIvQusBFp6y5Osr+E/k/mGnn2paDlqsnqlGlGPEbnz4DA1V/oZ3WqhXi37a88E19cYWB8sXUq6qci18m/SrAKeCfvfNwXR6jNLQep4azSXk7hpIu3UTw6aIWjNeHB+tI/rPEd3MJgcM449YdvTjPmC2h5eyWKzTzjSUti3D+YIIPWSKFKOkaeKDj7twjBmHVcpTmjPjmFPQ2P9k2TT2xJ7qYJZ9mzmw1t2SlKapm3EQiezm5QxeBPzd1ROb1R7yhZYx9/24PNfkk4MVyzXYwS9d1Og8OUY1ijwEv2OEO8koFNpGDq
+ wejZvwLc
+ uj9iZeLtl7T9McCj8zxlHFHiIUNBsH2QmPo4lLtzA5D+zYK/16EH0M/4XYQWFiSqNk7mta5lh3i/UdnNTGUhSg4xfP9MhiCZ3h1TVlH9z4/srclYDpzZtVDofCgiz3qQJotBrOM79Chk28B7Q8fVwecAVIbkQllsf/NqS+66lExQak0y1HZF1f+RHyPGBMsT3eKAgCHXtwX6GQ2KPRR9PZ0IYc6ALefxS5BUt/tjx4rIXgP8Z+Ta6ugIZqJ2mtc6DEvPbsZfcaSuIDdFtH2rnkuHt3r0svpgcMHHS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,28 +187,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 12:07:29PM +0000, Shivank Garg wrote:
-... snip ... 
-> 
-> Only one migrator can be active a time. A second registration returns
-> -EBUSY, and only the active migrator can stop itself. The static_call
-> dispatch is under SRCU so synchronize_srcu() in stop path guarantees
-> no in-flight copy before the module reference is dropped.
-> 
-... snip ...
+On Mon, 2026-03-09 at 13:47 -0400, Mimi Zohar wrote:
+> [ I/O socket time out.  Trimming the To list.]
+>=20
+> On Wed, 2026-03-04 at 10:32 -0500, Jeff Layton wrote:
+> > This version squashes all of the format-string changes and the i_ino
+> > type change into the same patch. This results in a giant 600+ line patc=
+h
+> > at the end of the series, but it does remain bisectable.  Because the
+> > patchset was reorganized (again) some of the R-b's and A-b's have been
+> > dropped.
+> >=20
+> > The entire pile is in the "iino-u64" branch of my tree, if anyone is
+> > interested in testing this.
+> >=20
+> >     https://git.kernel.org/pub/scm/linux/kernel/git/jlayton/linux.git/
+> >=20
+> > Original cover letter follows:
+> >=20
+> > ----------------------8<-----------------------
+> >=20
+> > Christian said [1] to "just do it" when I proposed this, so here we are=
+!
+> >=20
+> > For historical reasons, the inode->i_ino field is an unsigned long,
+> > which means that it's 32 bits on 32 bit architectures. This has caused =
+a
+> > number of filesystems to implement hacks to hash a 64-bit identifier
+> > into a 32-bit field, and deprives us of a universal identifier field fo=
+r
+> > an inode.
+> >=20
+> > This patchset changes the inode->i_ino field from an unsigned long to a
+> > u64. This shouldn't make any material difference on 64-bit hosts, but
+> > 32-bit hosts will see struct inode grow by at least 4 bytes. This could
+> > have effects on slabcache sizes and field alignment.
+> >=20
+> > The bulk of the changes are to format strings and tracepoints, since th=
+e
+> > kernel itself doesn't care that much about the i_ino field. The first
+> > patch changes some vfs function arguments, so check that one out
+> > carefully.
+> >=20
+> > With this change, we may be able to shrink some inode structures. For
+> > instance, struct nfs_inode has a fileid field that holds the 64-bit
+> > inode number. With this set of changes, that field could be eliminated.
+> > I'd rather leave that sort of cleanups for later just to keep this
+> > simple.
+> >=20
+> > Much of this set was generated by LLM, but I attributed it to myself
+> > since I consider this to be in the "menial tasks" category of LLM usage=
+.
+> >=20
+> > [1]: https://lore.kernel.org/linux-fsdevel/20260219-portrait-winkt-9590=
+70cee42f@brauner/
+> >=20
+> > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+>=20
+> Jeff, missing from this patch set is EVM.  In hmac_add_misc() EVM copies =
+the
+> i_ino and calculates either an HMAC or file meta-data hash, which is then
+> signed.=20
+>=20
+>=20
 
-> @@ -1820,11 +1833,18 @@ static int migrate_pages_batch(struct list_head *from,
->  
-> +#ifdef CONFIG_MIGRATION_COPY_OFFLOAD
-> +	/* Check if the offload driver wants to batch for this reason */
-> +	if (static_branch_unlikely(&migrate_offload_enabled))
-> +		do_batch = static_call(migrate_should_batch)(reason);
-> +#endif
-> +
+Thanks Mimi, good catch.
 
-should the migrate_should_batch call also be done under srcu?
+It looks like we should just be able to change the ino field to a u64
+alongside everything else. Something like this:
 
-In theory it's an incredibly small window, but there is a race window.
+diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/e=
+vm_crypto.c
+index c0ca4eedb0fe..77b6c2fa345e 100644
+--- a/security/integrity/evm/evm_crypto.c
++++ b/security/integrity/evm/evm_crypto.c
+@@ -144,7 +144,7 @@ static void hmac_add_misc(struct shash_desc *desc, stru=
+ct inode *inode,
+                          char type, char *digest)
+ {
+        struct h_misc {
+-               unsigned long ino;
++               u64 ino;
+                __u32 generation;
+                uid_t uid;
+                gid_t gid;
 
-~Gregory
+
+
+That should make no material difference on 64-bit hosts. What's the
+effect on 32-bit? Will they just need to remeasure everything or would
+the consequences be more dire? Do we have any clue whether anyone is
+using EVM in 32-bit environments?
+
+Thanks,
+--=20
+Jeff Layton <jlayton@kernel.org>
 
