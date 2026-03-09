@@ -4,94 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5023EA854A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 02:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC4BEA8542
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 03:08:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CD236B0088; Sun,  8 Mar 2026 22:59:49 -0400 (EDT)
+	id B48E16B0088; Sun,  8 Mar 2026 23:08:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07AD76B0089; Sun,  8 Mar 2026 22:59:49 -0400 (EDT)
+	id B1C866B0089; Sun,  8 Mar 2026 23:08:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC8456B008A; Sun,  8 Mar 2026 22:59:48 -0400 (EDT)
+	id 9F4726B008A; Sun,  8 Mar 2026 23:08:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D9CC06B0088
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 22:59:48 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5B7EBC3D02
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:48 +0000 (UTC)
-X-FDA: 84525019656.09.ADF50E6
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6BE10100006
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 02:59:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FJawJpKa;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773025186;
+	by kanga.kvack.org (Postfix) with ESMTP id 8DF056B0088
+	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 23:08:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 274ECC3A88
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:08:44 +0000 (UTC)
+X-FDA: 84525042168.30.8A91DD7
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2ED1E2000D
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:08:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=izBJi9rS;
+	spf=pass (imf13.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773025722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=surD7Tl7I0c7IM/NAN7h4/O0mH6dbWmZP+2JPPoPahM=;
-	b=3/DGy9l+I3CAYTBDthmO2IJYbe1NadGTn3/FZZHRmhBGc6sELV1IoD2JfAI8bF0UCmahSE
-	RoFM2bkQF15TeFlVoi9+oa4kc+fmy6Lm3mkAe71fWhvNH7SauCDlWRbbfr0dZeG5hPCevy
-	aDyuuHpcLXM/Yj7pJ1zadoTvHDP6eSc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773025186; a=rsa-sha256;
-	cv=none;
-	b=KjtoKjyYaZ12UPJ9Di74xw/c75B+vCTwdWErIvMPM2pwXdf2IkCTaxhDhsyX6wrPyEZgmz
-	1pvPPfgNlPWGJOOmPjomPp0gbAtQgSvPT6FcSjc0vxGIWIe+mEBgRR6N2DG8W4uu2WXCTj
-	r0m5HTdAq1cx1+OgeAvnkxXHHe1cQGw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FJawJpKa;
-	spf=pass (imf05.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <d5eb31b8-a099-49bf-9b3e-09e525242968@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773025183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=surD7Tl7I0c7IM/NAN7h4/O0mH6dbWmZP+2JPPoPahM=;
-	b=FJawJpKa2+SghPS7x3wAb1/ADkqlaG+EU48QgAFLhye7ep1KXmfv8aR211KO6QMm+aM9jE
-	lkSfHq7NYA6CmA4qgbrbz1Bb+64sic2GD+OsuriZ38V6yHQAVTjuMN9h63nPZs8OqpFDZL
-	E7/eoswn88XvnfZ+A7mJ8TC5NNgcmWI=
-Date: Mon, 9 Mar 2026 10:59:18 +0800
+	bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
+	b=pSWMroKozjGuJOe7NtNT2oBfbXvjpgke5V8GGZ/POOARrX2dkiZ89TgLXz0aKiC1EQdY8+
+	LV81fxrZnG/BrF38pF8oSXC/7nFMe4cbXgxz6IvzfVuxZMW5C7kdzGrTyWxmd9tNxw6aXp
+	D7VJ/Mlg5rhd8EdzwSXI0sFHHG24qyY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773025722; a=rsa-sha256;
+	cv=pass;
+	b=O58qXrhFms89s/S5l0UTkoU0y9EWvtOp9JjXJEYEndgC2hlxzyym6cTMVyXTMppC4TDFEf
+	gFHw6N0wReGR/VwVBcG2jZFuHfRq/6g4cKOMaDbYzzZiTzZ4oYr3M1EWYMPOCAl7vEk/Ow
+	v2Kb4jrrdkEcwsUzL5Vcz1djTTdfHIk=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=izBJi9rS;
+	spf=pass (imf13.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 74.125.82.171 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso10608037eec.1
+        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 20:08:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773025721; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RyY6+AAAJKLik5KU9v5Ystw5Lq1W429XZMWxqdbhxMgfWxsaapY81BSaGb2gyaJAYv
+         inySxPGAMnm5SLYg8jl0TeiVMMy0LsCPbYGuBIUSB4ktVlLWiUbGtZMECuyJ8jqk75cZ
+         LbZdMFEuyhA/UqP6Y/phkYzBEm8fJTvelgpB04/QK6zOOXyPiPTMzf1iZGuHfjvCK+wt
+         ECLt31YETJkrBN583PE8eXOxRqRRmekYDZpqXgR8PPWQEj8kcx87Jsi2lb1y4Gvjle5c
+         e++KSYfdcf6Tajsxdnxo5ktCLP3rvbqs3BUdlNCukjsnARCMgRziakqO8rxtoK+VynvJ
+         3l8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
+        fh=lzioZPi3T7Hn4N6ku/o6nOIj8e7G2Ylj4Tn47lyyy5I=;
+        b=KbB9t9j8btOZ+Z1Y91oy0y6Jnh79XlMMJrmMateRo3wisZqzU7Qs4e8rTcpS0PhlYN
+         0duLxyEthbPX/ILJRBta86GhSB9ZT2jdjiuuO0NIWzH5tY5aZDqXARDNcHyg3piZihF4
+         wIDDeRjFZUFtCGkjDqHExjrECHF2fr2/3Mq3TlxOxjNbDOjLkrNd5knTkcImOMJwidSx
+         77+AGdNQmUJcjoSUmMueEOHuAmgONw66B5zUCNgeKZHBaXzT+R+qOcDZQcgfyw42tc0z
+         wxbOkuG28o7X0VKPVbFTzjMdBVPcTUXn5lWO7nonax7IvF9nPsn8P7wnuOTnl/AdIfr5
+         hQjA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773025721; x=1773630521; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
+        b=izBJi9rSieQiuQXIcHSXv4y3Wfxl8WBNostCV1D/xTZ5+N0Wy/TwOihujUPpLtk6UK
+         nKTAO7qG3GA4lfzQ8ld64N7gF6w4VEv9pAxlixOn2MUhyjr5oEPwJeUEaUjWGRrUKxpe
+         1Lt3K5qGwNlSIBhxiDCB2q4orz4hzq8TBPPOPFZSJLHt40PZ1mwwnwnwnnUKiGoGGn1q
+         FhnNXRlGLfhc4RuHUkn2MhoKO1xhLqW1x28q/2wjnILIl1PeTWSvnhNHN4EFGIX0e8bM
+         pD9SVUHXDKrMi+4M+f+tCEJJRjSvhUdj4I03AIxtZlJ2isBcicw6oOCBjRit/mNpyXWN
+         0w5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773025721; x=1773630521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fzqPjms/tffjy4BC2lVO9Tm/P6GB1dUduvpzcwiyUHc=;
+        b=E9UnFzpSpf+DCjJ0XQ+44Ap5bYaAA7J68IjjAANfqNXIiGFu4gOKf2fSbNGfBUaZBx
+         tKakHsv6VTiOWuhyfC8Skxv3DjkL7KhLAGo0UaHpCG8NLD8F1uy04SL8gLzY5wLveim+
+         rl9pwPrNSKUwUfjZse7n7cNt0/8aEfFa+4kIrHKHLx75fz//fdXooexEROQ4mVLVxZft
+         I0T47tUqC9DoOCngsEDmzt3JsTZGr2TEQ/wmDmovGNTu1t/4OS+dYh+qRmZP9ZkbWPtQ
+         wO+NIkGjVkEy8rnQxm6wBxq4Ts90GnCIxXVVtaQLl08btDirlyceRj2d8pbSlh2+3UsS
+         AFJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ/MwwuyCvFJC7SrCzj9o/IBhsWGY2FmP0HnbM9pewbw2Qrz6LMYHpqZlxUXHq2sIcLc9DwOqGbg==@kvack.org
+X-Gm-Message-State: AOJu0Yyj8GKFlZBAD0RxoPIr95yWUDpt7RI9tvo7Hg1/EsxgrG5iD9rS
+	CQ1F6F3SoYB3BZwxmRvXBOo9MCBEi2nK1TlqBEpb4498d0HNJzlhjpuM1WbCnKb7L1zr/oOSzml
+	n5P4zRG8+64lVngugSMZviKPwlM3vzrg=
+X-Gm-Gg: ATEYQzy/dl9XA4KJFpcsGMZp8SSoFIhC4k8NlMBcLkZK42Iy1bz1HFZ0qo2FYu7ePBB
+	MeKr0XcYsB0GVerQPqaj8B2qO5fgjjj3WP7rrc69d58UvFynL7yzo6xSO4RG68mYaju0PtDtEB3
+	Z4T/SrhHgtnxmJXjGXSLsaHzfNdSdGXE+DwL02dua2BLLvVS2jO0AHGQm6nvLJyfI4q4Pjer4qJ
+	pEQRHdt5sRfLkd8s4Y0e2TPDx2ggWAVqrRULfcdZjzWEzusM56QA9ELrUmPzIKZmW09CJbQ/TGK
+	FjIdKLa7y9B2ninDg4Wpd61kcR386O7ZIAyBR/PAlA==
+X-Received: by 2002:a05:7300:b90b:b0:2be:6f6:a39c with SMTP id
+ 5a478bee46e88-2be4dff28a3mr3189470eec.13.1773025720706; Sun, 08 Mar 2026
+ 20:08:40 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 31/33] mm: memcontrol: convert objcg to be per-memcg
- per-node type
-To: Usama Arif <usama.arif@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- harry.yoo@oracle.com, yosry.ahmed@linux.dev, imran.f.khan@oracle.com,
- kamalesh.babulal@oracle.com, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com,
- akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com,
- apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com,
- usamaarif642@gmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <20260306202931.3878822-1-usama.arif@linux.dev>
- <b77bd438-3420-4569-a461-7b1b7afbc0a3@linux.dev>
- <898e8ca7-efcb-4bd7-8016-871b37be830e@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <898e8ca7-efcb-4bd7-8016-871b37be830e@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: x7btssfh1w5wm5e89jwyxr1wq5ezgq5z
+References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+ <20260307143542.179953-1-jianhuizzzzz@gmail.com> <ffc6106b-292b-d8d7-3c34-aebe4feb6e5f@google.com>
+In-Reply-To: <ffc6106b-292b-d8d7-3c34-aebe4feb6e5f@google.com>
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Date: Mon, 9 Mar 2026 11:08:29 +0800
+X-Gm-Features: AaiRm5345nQP7wJtt_NLhvQXt--b6XhTjz5lByTfdLY_4-yd1IfeVU4kfncXG9s
+Message-ID: <CAEgWzV62v3TPrvLLpQac-KBkDFNTWg-=V2Xep_2+h0c5NXOaYA@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+To: Hugh Dickins <hughd@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Peter Xu <peterx@redhat.com>, 
+	Andrea Arcangeli <aarcange@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>, 
+	SeongJae Park <sj@kernel.org>, Jonas Zhou <jonaszhou@zhaoxin.com>, 
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2ED1E2000D
+X-Stat-Signature: zjc8uux4zstwhrbgaxgqfaut44jhjn7y
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6BE10100006
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773025186-887675
-X-HE-Meta: U2FsdGVkX1+j6cI11z9O41gvAh6l3+nk+zT61aiTUaV31K8xELbHqMnodFqhMXgmImWOqIM106f1EUWPpRo+fsEdqB487kdZSG3WMsKDdPw75tX8XHluzgrAq/fjMMh4u9XkwSTeFBqq/W/9U5wHfBTrioU4xi2K3YDEsMxo1Twnun/W09z4ykox6uCqpuZuf1Qg/+YlDHbgvVSpyAa4VSYvrpASvbUwJSi10B/JGp66Q1t1YLhAIS5urwpwAh+rUSh/1DlWDxLMhlvDgOSa0G6c6692N26D6UFDfrNs5wQTUialkWdeuj2Oo2nHIfewdwWEy0+tP3r93Gotrk27JaDfpMS3gntA+lUq1uPd5ppoAd1r2LILcrlek54uLwQ/I9lhDRPFYPsIHdVGUIHx6x1ZmfgHPSgpajCodr1wFz8bdwzK7Ojv5itQ+2/CKSLIoGtb5tIiG0VWtU6muBA/XLkrv+0oWEJPrusRmNuC21+ml4oFlCafONa+/5jBWchI+pJgD2EHlqd6uZrfwhW0asUwDbrj/IeyaP7rDUGH5I5XL/ZLeGLMtuey6QVkBjTnfNdvVYqvYGarWCOWXXb5jifPy/xUITccm5hlmfSZdw+HL2ZDgP4NP5J1RssPGN/KyU3frspeJN7gaOtPkQsBLb6lDvEqxN9XMPE1kSkTBRaISMyypl51RomxDnLXoxxKm9LFUjaUiDi/PDz5nJITux/DP6Xg9T5SGFhTAutUnGSsaeWezAFLShoiB5MHuId3JRXItt3jVvTCvOnRL7U6Am2yLJxoeLWHSzcVaya3Y1RS5DJgp6Nyu9Boi0PIufKQsTnUiDqSK37zRpqK6dw4DhSSu8kkZTHcLytQivlz304ft0MRV4ETZwi98ZVAyc0woKWhlQOaJA9yzTxAgL+9a3hg7/iP5sqSitUkgGgPqJYShmaOQ75EeQygcOID3VQa/9O/b9VBgQh6apy7xeC
- pkfIiM14
- Acl+/vlNOXKS5fcNY+bnSOxM9Qd9A+2X0wVP1QDeNod56Sd324YEADnsUbHxBIVNeDZS/YUjOF0COAB6pjGALNxis1CzqyuAZDIyxTjW45R7RY6h9bqUpe3bavQujKEF+9AzIXZB5Y7SVRi1z2ibmkvp80GKc6bLuyXTJ6pInHoFZOtOy7goj1+6RqBaHW/mndEq0xkF2ZXDE7WwC3vY6cZkrmkCu6iBovnml/ja0uGPxLG2BUSWxLXQE4XS2sl7z4sUWygMWo9641nv2rhbrAs6fb0xvqCMZpQb2HBoQPltHiLM=
+X-HE-Tag: 1773025722-839354
+X-HE-Meta: U2FsdGVkX18U9Dm0s5j2yUj1NbuTkojpDV01kjfTFuGe1eOJXKXFMy2Q7TmyZA9ioMiLiwEECIdts3lYOAiEw+YVCHNk+Zh4cp4qGTIAzvYyxJTJX4L3z3a4A22/pqpg8D5PmbS7efUzb8A39QRkBzGncnuta2yixc9AOmkhbzEMHzlCqXgM9izR94jMHbkH9kTvJceG/exxHTFNDoIKBb998Ax8K+fC4clM3j/7weHXJ6odsOHW2ETFOAijn0T6zrSZijc8CKEn7/P99Qpn8/EIHklSfiyVJnLAfBS4zVr0B4vnQkbcYoxLENW4vJqDnjz360VKLm/Dmnz86dh4ZC90t0UMNgMpKO8tSJ/Esn7Pk0rYYa02gG0Chs9018xiw8ogEeXAg+l+5CvsKKyS6IMSlItSibHSdT1qQuMVG+i98PEoQiqWx4cCHl9t33ly2EHpIgUjWJ/z5/S+9fx1cCPuVd+S3g1SljpslYfDP1bQ6g0NQR7zatl1/rygjuG5mHZ1+eTyG0Wflgg+LVrIbnQVhzEUQ26tBfcyEOybOKgan1QGo1e7wPO7tsLvh5jD4XjfRr3K7SOzBLFKEjvhaK7HIfTeDLTQyzMdBQyg5GRZuTfOKLbTy6yByR0M9EIhgdibzIL0Wg+y8Oz5hHLdKREBMDdFvJAwjDSpaud5619UZ3P17GKA7os99aB6KCkRh2DksHtL7Qw3wXBfGg26tetMC/76009P2JYJg1K5DrkjB2ZtPaUv1NkHvSLpghucJncgXngVZLTdOaPPvjLQ1O5E0llfosb+ctZarlv4apb8984Pta+KbP11y36JhOtKrWaKmjb1sscGfZFMIcAYSQpSwBVmNJDOaa1R7jO3diIUt9UR2NPd2OnLIBq9orDo8+Ld2AP/63XrVXvhRY6jbCpAMPM7yHjUUKq/Msqc8rdu/XXO4mjtQSOrRK5mrF8BtHTvmrUAFRknbT6K1cl
+ YunNvdaO
+ OO2IRZd9AXJOi+uuWROLqSJrpf1hRmgcZWgbtdFFGtX0nWuzICCmfdzYbRujPtIpQlbqOSH13F1qYBdZLnobV/F0+zUbsgS0wMQnJfuVtROadi8HZhh9GN8s4b9VdAI8sLTWB7c8iJbJ0xfFcmmASXuiKwYEtdOH/EauoCdD3g4sVnpbEhNGjpA/2iCY9c8/wTRj0mebezH7FlAQDh9lrgT/7Lfqux3DkiHYBQI1s881G7LjoOll8qfuOzlXq7ke3voD5+8qkh5S458uTufmlfvg7VI/8g8zVklOQ/0uC35mTHmA4a6nXR6OXhA+1orCM6AV0rchT9SyHFV8A7R/gxPY8KJuSK0Sv86PWE45mjx3kzSOUmEK+jbMrkG3vK+f3DF6USZNgPoTWftS0Nx/qGTfCfM9iPvRpq5YNboODK9i5pU7byURqLAkAmVTBYOyKgpqHCi5lZwo27W/iqZjQqdNcamLNkPS7C74tdNIMkWnVd2WRj5zBLZyBxte/AnhtgNUlJrGbCuR3h1z7gGElgfxE4XrAMxaW7b8Pl3YeEypuoCXT3vsMystYDv8lgakO5q5/qgLGBunwzRitsCQBFLmoZDW5CvLpVjiA9YCLbp2LH32/uboUZR5eFZMYMwIslvQ4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,105 +145,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, Mar 08, 2026, Hugh Dickins wrote:
+> I have not thought it through, nor checked (someone else please do so
+> before this might reach stable trees); but I believe it's very likely
+> that that Fixes attribution to a 4.11 commit is wrong - more likely 6.7's
+> a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c").
 
+You are right. Before a08c7193e4f1, linear_page_index() called
+linear_hugepage_index() for hugetlb VMAs, which returned the index in
+huge page units. The bug was introduced when a08c7193e4f1 removed that
+special casing but missed updating the caller in mm/userfaultfd.c.
 
-On 3/7/26 7:08 PM, Usama Arif wrote:
-> 
-> 
-> On 07/03/2026 08:51, Qi Zheng wrote:
->> Hi Usama,
->>
->> On 3/7/26 4:29 AM, Usama Arif wrote:
->>> On Thu,  5 Mar 2026 19:52:49 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
->>>
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> Convert objcg to be per-memcg per-node type, so that when reparent LRU
->>>> folios later, we can hold the lru lock at the node level, thus avoiding
->>>> holding too many lru locks at once.
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
->>>> ---
->>>>    include/linux/memcontrol.h | 23 +++++------
->>>>    include/linux/sched.h      |  2 +-
->>>>    mm/memcontrol.c            | 79 +++++++++++++++++++++++---------------
->>>>    3 files changed, 62 insertions(+), 42 deletions(-)
->>>>
->>>
->>> [...]
->>>
->>>> @@ -4087,7 +4100,13 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->>>>        xa_store(&mem_cgroup_private_ids, memcg->id.id, memcg, GFP_KERNEL);
->>>>          return 0;
->>>> -free_shrinker:
->>>> +free_objcg:
->>>> +    for_each_node(nid) {
->>>> +        struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
->>>> +
->>>> +        if (pn && pn->orig_objcg)
->>>> +            obj_cgroup_put(pn->orig_objcg);
->>>
->>> Is it possible that you might call obj_cgroup_put twice on the same cgroup?
->>
->> Oh, I think you are right. Here pn->orig_objcg was not reset to NULL, so
->> obj_cgroup_put() will be called in __mem_cgroup_free() again.
->>
->>>
->>> If css_create fails, css_free_rwork_fn is queued, which ends up calling
->>> mem_cgroup_css_free which calls obj_cgroup_put again?
->>>
->>> Maybe adding pn->orig_objcg = NULL overhere after obj_cgroup_put
->>> is enough to prevent the double put from causing issues?
->>
->> Agree.
->>
->> Like this?
->>
-> 
-> Yes below looks good! Might be good to add a comment as well why setting
-> it to NULL.
+I will fix the Fixes tag in v3. Thanks!
 
-OK, will add the following comment:
-
-/*
-  * Reset pn->orig_objcg to NULL to prevent obj_cgroup_put()
-  * from being called agagin in __mem_cgroup_free().
-  */
-
-> 
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 992a3f5caa62b..e0795aec4356b 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -4140,8 +4140,10 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->>          for_each_node(nid) {
->>                  struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
->>
->> -               if (pn && pn->orig_objcg)
->> +               if (pn && pn->orig_objcg) {
->>                          obj_cgroup_put(pn->orig_objcg);
->> +                       pn->orig_objcg = NULL;
->> +               }
->>          }
->>          free_shrinker_info(memcg);
->>   offline_kmem:
->>
->> If there are no problems, I will send a fix patch later.
->>
->> Thanks,
->> Qi
->>
->>>
->>>> +    }
->>>>        free_shrinker_info(memcg);
->>>>    offline_kmem:
->>>>        memcg_offline_kmem(memcg);
->>>> -- 
->>>> 2.20.1
->>>>
->>>>
->>
-> 
-
+Hugh Dickins <hughd@google.com> =E4=BA=8E2026=E5=B9=B43=E6=9C=889=E6=97=A5=
+=E5=91=A8=E4=B8=80 10:09=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Sat, 7 Mar 2026, Jianhui Zhou wrote:
+>
+> > In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+> > page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
+> > returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+> > expects the index in huge page units (as calculated by
+> > vma_hugecache_offset()). This mismatch means that different addresses
+> > within the same huge page can produce different hash values, leading to
+> > the use of different mutexes for the same huge page. This can cause
+> > races between faulting threads, which can corrupt the reservation map
+> > and trigger the BUG_ON in resv_map_release().
+> >
+> > Fix this by replacing linear_page_index() with vma_hugecache_offset()
+> > and applying huge_page_mask() to align the address properly. To make
+> > vma_hugecache_offset() available outside of mm/hugetlb.c, move it to
+> > include/linux/hugetlb.h as a static inline function.
+> >
+> > Fixes: 60d4d2d2b40e ("userfaultfd: hugetlbfs: add __mcopy_atomic_hugetl=
+b for huge page UFFDIO_COPY")
+>
+> I have not thought it through, nor checked (someone else please do so
+> before this might reach stable trees); but I believe it's very likely
+> that that Fixes attribution to a 4.11 commit is wrong - more likely 6.7's
+> a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c").
+>
+> Hugh
 
