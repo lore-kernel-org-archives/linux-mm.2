@@ -4,138 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA58DF3C265
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8524EF3C267
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 14:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BB286B00A7; Mon,  9 Mar 2026 09:47:12 -0400 (EDT)
+	id C614B6B0005; Mon,  9 Mar 2026 10:00:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 065396B00A8; Mon,  9 Mar 2026 09:47:12 -0400 (EDT)
+	id C2C636B008C; Mon,  9 Mar 2026 10:00:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECA036B00A9; Mon,  9 Mar 2026 09:47:11 -0400 (EDT)
+	id B587D6B0093; Mon,  9 Mar 2026 10:00:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7D66B00A7
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:47:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5D5F139322
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:47:11 +0000 (UTC)
-X-FDA: 84526651062.04.E2C2EA1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F2D3C40007
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:47:09 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KqlTf+Xu;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A3FDB6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 10:00:25 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5089EC0946
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:00:25 +0000 (UTC)
+X-FDA: 84526684410.27.FB33651
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6A7E7100018
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 14:00:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovj5osbH;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773064030;
+	s=arc-20220608; t=1773064823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fuazgn5HJvq9KCmsOuAjco2sO0LoAGAhBZEoDoRj4V8=;
-	b=mipqDvO+hvLbTZqpVIeYtbH9pYpVG+n74DauGitvzON0Xe+6X329hBrYmGVHoYWt3Wn9DA
-	42R9kOgo91ovtLhuSA4de642byT4+r9sOb0R6YuGbB/Xc7muIgyqwa9EUDlZ+v3TouCuLE
-	Enz50Y8QWhsCsbIXJG+w2qIfv8VcUf8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773064030; a=rsa-sha256;
-	cv=none;
-	b=tHvF5c0SVL8Yy5XRvFoDTg2oH9l++SbxpLaNHOI9ZaCAJztTyyEiB7CZyYGxU+i5KxRMg+
-	j/th29KWisO5G7LnZWVfIN0BJaufa1cdDSFvBdnJwMw5X+cAfhBp7mzvYuzSPcmXvGPLCa
-	p8vytbIHqBxBDR9LC6koYjN2KqFNsEA=
+	bh=UVpj/ocorlGwiYME3cThw4GoTD2go/xZAU0PixP4vrE=;
+	b=ZAwfNjX4KHdAldo6NNm0DaX/5L7qRZISDa2uAJpJANp6WyvO8OcDrehV9QxjiTbKJKz220
+	GuI51e29Chnsq73liJ12avqkNabu/Smx5+7JyetCx85nQC83rlmyV0HxntBZJF4RP3/pmj
+	hqr0zKf+Ggwkg6bZCCdG6WtukGjN7tI=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KqlTf+Xu;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ovj5osbH;
+	spf=pass (imf05.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773064823; a=rsa-sha256;
+	cv=none;
+	b=WJwwxleGRkOVlRq7+WzdTHUtBzDetwYqGhZ1yLkzrFp+nQlCjxWvqlWpiUxQy/36rP59hi
+	5ETrk37LJE7r4iaWs3wiHyrgnYvohYg8WG5Jf8YODEyG38xeUpE1UNe0lJZ+9RNt5dErxw
+	bkkqZTnQaUJrR/G0f1HHPpTv3C9wWmQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 732C960133;
-	Mon,  9 Mar 2026 13:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA80EC4CEF7;
-	Mon,  9 Mar 2026 13:47:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6033D42DCA;
+	Mon,  9 Mar 2026 14:00:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0526AC4CEF7;
+	Mon,  9 Mar 2026 14:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773064029;
-	bh=7piKZHhsIBIfKAmz0YNkAHG2fwGgdi8QiNaH5QjGJ3c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KqlTf+XuTDsfWF7nxx244vtdTmqtYiab/znRgfKYMAUmCHQpbMwn6npnKqw2qh9lm
-	 HPnBESsOgkY/l/oTJtCXVwQWx94HqSQkEaQMsoH08XCOrtDJfjJKWZDFwrxHVo2St4
-	 gttIAV8tZ1AGzulO9MnmQa7oA343ki4adG9EULbpJyMge2+P4cKFM78JVsCHiLM0BP
-	 0qh/3QNTDs09ZBooa2Wz30AIE/YR6hfjsbibHEiXhQVGlehE53bjbNGXNa0BqLUMWl
-	 D4BAYZ+FTNJOz/oL1fcQh59A6Ll7GPj5pxHx3X+G1tBdVqa78XdsBQ6yuVgmeqCazr
-	 TtenKHTchw+HA==
-Message-ID: <edd058dc-9d94-4c5d-a2b1-245a04b54eb0@kernel.org>
-Date: Mon, 9 Mar 2026 14:47:03 +0100
+	s=k20201202; t=1773064822;
+	bh=DnCTxrCceZEz1a9g0WegA+3Sbf1oc314HptMlIzKbcc=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=ovj5osbHOQZAbykrOKjaNKiC/PPZQXDRw1nyH+1XViznnSZDCqkeDx5eL9quBIBsQ
+	 UJC+r+PeVEAN8FjGoAUaaUnJPFZsycuEXyK1aLyYFm/GX3yiwe1Fbikx5wo5UJMDLV
+	 t10Ji3OWaEXZKc4PSXFCVEo0FVKQnUg5SUgfFK053iSmBp33N2MsYc/DSRmpr/4Jsv
+	 vq+RV1XC7qsxFY0uDaafX1ZuQj6Fx7MFR86Q1orM8qJtHBkOGLsO8FwPp2RBLLZbjp
+	 8xvRNFuZc0up6rzLjRwgdBlNLKCUbwfCpB6EwHAdTu2Vw3T5Q9uPTXbGs9bbimOBva
+	 DxPEH+dJN/kWQ==
+Message-ID: <0a25d83b-c6ea-4230-a89d-1f496b91764c@kernel.org>
+Date: Mon, 9 Mar 2026 15:00:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] mm: move vma_kernel_pagesize() from hugetlb to
- mm.h
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>
-References: <20260306101600.57355-1-david@kernel.org>
- <20260306101600.57355-2-david@kernel.org>
- <833950ef-e01d-4914-b5f9-bc1f6261b184@lucifer.local>
- <729e14d4-6949-4d46-9380-12331b5ad363@kernel.org>
- <d8cdf99b-3139-49b5-bc4f-dda139856021@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+From: vbabka@kernel.org
+Subject: Re: [PATCH] mm/slab: fix an incorrect check in obj_exts_alloc_size()
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <d8cdf99b-3139-49b5-bc4f-dda139856021@lucifer.local>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: adilger.kernel@dilger.ca, akpm@linux-foundation.org,
+ cgroups@vger.kernel.org, hannes@cmpxchg.org, hao.li@linux.dev,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, shicenci@gmail.com,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ viro@zeniv.linux.org.uk, surenb@google.com, stable@vger.kernel.org
+References: <aa5NmA25QsFDMhof@hyeyoo>
+ <20260309072219.22653-1-harry.yoo@oracle.com>
+In-Reply-To: <20260309072219.22653-1-harry.yoo@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F2D3C40007
-X-Stat-Signature: c6c6dt5sea1n3jxjuuiegpi8sbijtuip
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6A7E7100018
+X-Stat-Signature: rqkud8dxjmqtrbrb4stsu5aum7bzdf8i
 X-Rspam-User: 
-X-HE-Tag: 1773064029-952426
-X-HE-Meta: U2FsdGVkX18EvltVfFioyJcUy+tB0w+ajf8Jtl0PPzkGqEmudHqGWNdRnUcdAniC7sl78F3tlO/By44rKmnjIE3CP/T0RtbJyNjdQ2yAHFUNyLQHqgfDxuA49vPpHvagYLg+9KvoZcavZxAQZJzqnGkg+hnx/3W92qvt9yXn+XN7I9mKQSlIDYOQmOCtBk9huHhuYwj4v77oalIO/eNhGTYjvNxvKbGPK2OFMoAE/0l3+LosXrqTFdKzszrFNKw+mkeTH9MEIrAZ3TsRT1pqGzjed1ozXVMoSNDqPcmGU7vlMJqsBQvxaW8Yz0zXlNZKKF3DtM/gkzOBeSqfnHbi0r9Fx/wK7zlIFamCSXQujw1osRCUIqbJARJwhYBOLqhDPotWz2ZxWnF7BGZ64nfR2NdyeIT8iBe/68U+fazfnPvLMUg8ziLE8xeIZ1kzniFDCzbJQ6O0x1eBzyRrrzTCesuywQDg60nkUpzJ5WU9N56BnztZjkhQQ/+7g+uBzJWYsO1mYY/l2POncKinQJjJWv2gZ6RKEEuV4/bw1y7QJEUQvnKurR7Ggur/5UqhK5SYxKX3fh7FVSmjqPzlLQVE3FpGMKdnBZYiY4E15BInyBBdVRJ1qs5Cz90SWGQFcrf36HdhaAJ9jxX5AIDMfRtrNj/KgmJUgcCEExoFLdm7GJp7Ux5/m51E8igPRsUk9/+H9lQ1KDVeM0ud4RDvnePWcjaRvjgZQZpEvIsnUj47ea7JAMLm4r5CeuLiUhB5PpUqZFch6gtQbF0rbvMokOSe1GcXEdinvYYGWx5Kzg0d+GWE25W8TyJOjqUGmVxpOcD42ZRASk3DEVOhOHfTLcKoWYO+EDcr/gYh9o2BvYo6AR+oUwddUIMcAcI3VKr3B1vudPX6jvTHQoCYIvnvqGirrXMs9TqRSZPofasjlOwpuQD6BrUD1geGGc84NmQJd51yTIlg/HDsoBqTQSDvpZf
- f8NsC3fn
- FnsV0TYab5mi7blnECeiL04mzIg2zru3UALhjnV3fnKGlCW3HCsYbLts5NXa/uqpGWPqTHGA2ROEOpRtC0RO0J3l2z8hihl+yqklcuPUhDN35kJWSHZBwaiVXJUK9pNF4J3QeKs8CKydClxbvsmIV2f2TyYVRy0lyNvEM5VTn80jCG6/gbVKlUTM4r5dacVR9LtXBdv4HOq5iXk49CKUaqlf1zofSFI8yEzR/CRLKihkeliNHTiTJydXFNQ1fbpqqPFRrwLX8/2hNPYt2GB+yUcxo8yeZXT86SEVUs0Nf2w42Fh3WJnN940Jlyshyd56/Xd3Te5CAiI2Z4/4=
+X-HE-Tag: 1773064823-976182
+X-HE-Meta: U2FsdGVkX1+dT91e/TpnIo20QPTo72acT4iUeKCjRsa2rzK3fZc+RZINHVgGqrvRgV5P2n5NjHFREYLjvbE3dZBEmtPHIyHvL8tZtGTArV1tRoBbpLOCy2nvNGy8ze/Qa/3o+6M50doYIv4rnkYs39m8zmE//lTLxw5xpE21vUteQsljb3Q64k9VjIgj6FYO8xSJ4z43b9ajORG0+n6TkQwFCPnldOziSYkjqLI3tPknHHDRXANOrX0oBHzqdyptku1u9m4U22kWdRd/ek2NUr6rKPH8/SAC7YC42Gn7sh15vVJ6tLTV8X/OoyjC/mSZ9blaW7im1lRTQ3ajHna54XqdTQf4EuJVuOGLH5jb8O3ESHB1SeXaO9USz5P5dOuz9IrjFR4y6xipGkaWbh7iJbv3GfImEtlHKf5VNbguLQqhGKGD5h4/uM61j7lZaLwZvbNnjBqs/GrN5HE0WUrjTJXhmozUfxHThOYSSRjHXhylWGQa4H0ttNnDw2x54C7mURcx8A7B+By4W+YtODu9gwsPWrtfPVl0h/EinHJEDaXo1rTTK+O2XF7boN94EgZqgH3xFP6wUaDJXEKG1HJo9wDDBT+OM8ngogQ1mC59XhUJBjJbxy/n6cR/SIuI/xFDMA+xQrm1/3D8gpw++QJdnWUkiNWo9aCUmwzEtweMWYTMNaWsmWm1W3Lpjk/hSkEWdJxoOeO3S3tQRQkn73TB5XIjfWrEC9oAPGCWqsNpEfpmCUL0ykv6D94B8Zjl1pdlex0LZhDFWAaghre/BC+DS0tOzy4EJ9zKATPR+bTJxBz+CwIKlnJWCETmOHkDbxsl+LLXUIJYgtAS0+EsNygqTzOVNnBpmOLXlUMNvcGjFEWO8uSV5N1/srwK2GFMkEf4FG2XrO0/sFTVLyMvfPc26Cvz2FF6+SihaYMXPk+C7wo0DP3Q0uaX7634VKCJB3k6sHl5qT1pNYWlOZTyA9V
+ FiW57JjQ
+ JHMG5bLSV2E0wL6fZdzjjf9stCj+KfEALYv2Gm7hu35h8+ROGclRWsoYc1SosCRq4QBZ7ZhC932AEytm0l31BJ8D20QNwNx4yfhqZNHJdUkEhTosTiUxA0q/D2O4PzbobMZN0Ail/jwXk/DeKzSNKE6/ORpWsbbwsCShcJNfDZbqexcgCPEW1P8q+2XO+n6HoVbWpMp1YOpXmL0yaF0Yq517gbXadlPw1im1myIh+4YfUuHi4sXuVzhuh9v+ZyUVGQcs9vvX8HEgSXm2ZcS1dED++DO/ZLBA+ApYlGOgpWm04chJXx6o50pSoHxlUHlEABoPSIDubHy6ct5Ah9khdH2/pZJY27MMQMv32WeMzCH2hmOpBAedMhdlD7ImNsqhpxoH0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,50 +98,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/9/26 14:41, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Mar 06, 2026 at 02:25:51PM +0100, David Hildenbrand (Arm) wrote:
->> On 3/6/26 12:07, Lorenzo Stoakes (Oracle) wrote:
->>>
->>> LGTM, but you need to fix up VMA tests, I attach a patch below to do this. Will
->>> this resolved:
->>
->> Thanks!
->>
->> I assume that should go into patch #2 instead?
->>
->>>
->>> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
->>
->>
->> [...]
->>
->>> ---
->>>  tools/testing/vma/include/dup.h | 7 +++++++
->>>  1 file changed, 7 insertions(+)
->>>
->>> diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
->>> index 3078ff1487d3..65b1030a7fdf 100644
->>> --- a/tools/testing/vma/include/dup.h
->>> +++ b/tools/testing/vma/include/dup.h
->>> @@ -1318,3 +1318,10 @@ static inline void vma_set_file(struct vm_area_struct *vma, struct file *file)
->>>  	swap(vma->vm_file, file);
->>>  	fput(file);
->>>  }
->>> +
->>> +static inline unsigned long vma_kernel_pagesize(struct vm_area_struct *vma)
->>> +{
->>> +	if (unlikely(vma->vm_ops && vma->vm_ops->pagesize))
->>> +		return vma->vm_ops->pagesize(vma);
->>> +	return PAGE_SIZE;
->>
->> Should we just KIS and use PAGE_SIZE for the test?
+On 3/9/26 08:22, Harry Yoo wrote:
+> obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
+> array from the same cache, to avoid creating slabs that are never freed.
 > 
-> Yeah that's fine, but then should go in tools/testing/vma/include/custom.h :>)
+> There is one mistake that returns the original size when memory
+> allocation profiling is disabled. The assumption was that
+> memcg-triggered slabobj_ext allocation is always served from
+> KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
+> both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
+> allocation is served from normal kmalloc. This is because kmalloc_type()
+> prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
+> KMALLOC_RECLAIM with KMALLOC_NORMAL.
 
-I'll place it in there, then, thanks.
+Hm that's suboptimal (leads to sparsely used obj_exts in normal kmalloc
+slabs) and maybe separately from this hotfix we could make sure that with
+SLUB_TINY, __GFP_ACCOUNT is preferred going forward?
 
--- 
-Cheers,
+> As a result, the recursion guard is bypassed and the problematic slabs
+> can be created. Fix this by removing the mem_alloc_profiling_enabled()
+> check entirely. The remaining is_kmalloc_normal() check is still
+> sufficient to detect whether the cache is of KMALLOC_NORMAL type and
+> avoid bumping the size if it's not.
+> 
+> Without SLUB_TINY, no functional change intended.
+> With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
+> now allocate a larger array if the sizes equal.
+> 
+> Reported-by: Zw Tang <shicenci@gmail.com>
+> Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from its own slab")
+> Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
-David
+Added to slab/for-next-fixes, thanks!
+
+> ---
+> 
+> Zw Tang, could you please confirm that the warning disappears
+> on your test environment, with this patch applied?
+> 
+>  mm/slub.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 20cb4f3b636d..6371838d2352 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+>  	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+>  	struct kmem_cache *obj_exts_cache;
+>  
+> -	/*
+> -	 * slabobj_ext array for KMALLOC_CGROUP allocations
+> -	 * are served from KMALLOC_NORMAL caches.
+> -	 */
+> -	if (!mem_alloc_profiling_enabled())
+> -		return sz;
+> -
+>  	if (sz > KMALLOC_MAX_CACHE_SIZE)
+>  		return sz;
+>  
+> 
+> base-commit: 6432f15c818cb30eec7c4ca378ecdebd9796f741
+
 
