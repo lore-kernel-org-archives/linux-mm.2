@@ -4,136 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF8B5EA8542
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 03:51:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1DF1EA8551
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 04:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDD2F6B0088; Sun,  8 Mar 2026 23:51:19 -0400 (EDT)
+	id A302C6B0088; Mon,  9 Mar 2026 00:12:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8B116B0089; Sun,  8 Mar 2026 23:51:19 -0400 (EDT)
+	id 9DDE86B0089; Mon,  9 Mar 2026 00:12:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62C86B008A; Sun,  8 Mar 2026 23:51:19 -0400 (EDT)
+	id 8BF736B008A; Mon,  9 Mar 2026 00:12:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4BE56B0088
-	for <linux-mm@kvack.org>; Sun,  8 Mar 2026 23:51:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3F5E7140CE1
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:51:19 +0000 (UTC)
-X-FDA: 84525149478.11.E733CD2
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 40584A0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:51:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XI1nlywN;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773028277;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 798476B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 00:12:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3896140CF6
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:12:17 +0000 (UTC)
+X-FDA: 84525202314.02.C18C5B7
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1CBEA40006
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:12:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieW0DHeZ;
+	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773029536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXxR93eN4nOXJ2hkzZIdpEw2+mXW+oYXzBW7KM1qKYE=;
-	b=qi5M12Qh9sHt/pF/YOhCbD0WdKcfqi+6hDQcYg0CRBWKv27CmuHm5WMZ4DVofFC5/V9xQo
-	/7I/SuGXqAEFAyhw9YDsP5cQUYO+jxQ2t5qeXczpWeZCcmylZD3Im+lYJzg6YIxY4+ONWJ
-	GeYl/GWPnRQ0hrOLmgPs3Z9WC1aedsM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773028277; a=rsa-sha256;
-	cv=pass;
-	b=YyK9NdHYbdzVOc9cEIVMQwg/Kra+wwuFBVqy2nRSd4L9MtuSpxBVD1PQ0RYqVsg/emyu1b
-	Bhh84rxZl0wKz0yvaiFGDFvxAHFQZrbTKQ+2rCzIZ+PrAZ9x832uw015/rNBs56qCkPfNG
-	KPg09g32rsZnB0nmt+VspKaJ6DPqpWA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XI1nlywN;
-	spf=pass (imf15.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b9358bc9c50so1224892266b.1
-        for <linux-mm@kvack.org>; Sun, 08 Mar 2026 20:51:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773028275; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KJ+/GTdaOrc5gVHtbztKFutnNJR2d33dz/1OFCL76IS1Za/6mnro23kZJtAzprC/ql
-         HqTf6dfNQ8G+IoSBHpebwsBG04XSZPkcgwRqHs5JAqzNp+gbguzwFQXYwTyYtv0QAUhT
-         btE7l+9YlUYSfmuqja28k8fIkyKVcz/hnzo3KQjCqVD6LHUxrCyULx2AfrRGH57ctaDf
-         eR1SehAm939wK9EZ/b0tT9bXBEJIdKP+ex86LIpkp8axrCcGVO/tLD2qmM1jiroCaFOh
-         9ONqxkZl/E2l1pTBG4XfckoBeyzffBOVKUCNVhkqB95GABE6yn1cc4tM+AQWQlAsu7hk
-         4JYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DXxR93eN4nOXJ2hkzZIdpEw2+mXW+oYXzBW7KM1qKYE=;
-        fh=4c/Wd/9qbmcSFHl/zBfkwHXiE/kZAYAU/GUynmTkbQQ=;
-        b=eU9Kg0K2tcNx3qXB/fT+U1mJHMxXe3p/OdOCmGYctm5R8+cF3xHJN9INEmf3AGHJvY
-         5OV+uNnXh2qajN7NNTv6fYjsVwDBov5htfdyvVTbIqOxCIZ+STS5u7ODRIMM7257zA9t
-         CQeRoOX5DqpiO+3xI6i2X4x1C4378DZPVa2WYYVXxsJGOeiaSWQmFhHdN3NJWO0i7/Vj
-         bvlfnPhWQUwLy0QX1kuUJMau2dB/v+65mX98BfCCf0CcfZCpqXYC6BfudsoHLH+io0Qj
-         L9UzibNQduzSTbMaN9iLAHwWUbfGbecyEPNSWJxqIFXvRHSwwK5EjfXUahAhZpu8v51p
-         xIBw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773028275; x=1773633075; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DXxR93eN4nOXJ2hkzZIdpEw2+mXW+oYXzBW7KM1qKYE=;
-        b=XI1nlywNSw1rTg91+ZFnqd2zp5xTH8uYsg/YVGPHYZ1vkGiqMRXnaz50vTck0YLs/u
-         Kpv2gzJL0dC6SVukXOPQiZaLocR8XsJDJITFePSjDpehZ1C7Sxps6hNR8UxAryjBuC7X
-         ghC86u5O3Mn+yP9kI10jhuZKZxO97rdJ9ALI6cXNbU4WreK2oqpGsWOXGxN0YpEj+rDx
-         fvLWKOfNGUjZ4nrLd86ToWbr5gYKUtoaGGmFOcpeWCCnZfhdceBh6Z011P2Ol6Or+B2Y
-         OK5ME/JfJOUU6hsJII5B+bb1r0U+92F1z85y1FKTEsb5Uj8wwc7G6tTrWX2mGtCO4KjW
-         rTfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773028275; x=1773633075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DXxR93eN4nOXJ2hkzZIdpEw2+mXW+oYXzBW7KM1qKYE=;
-        b=JIb6rhrX/t8jPyDGcW7DPS2chGwpYU0bbMBqXcyDXBjuYpPSphrIjbeS3nrWHqL4H4
-         VktmWJBg6zbU/XEcgHzLAdnAx6daUkJtMLTqC0hxt8j2pJSMq0ShHiqqK26Cbonm270G
-         n5Fi5uB1WqTLMw1E0SLknP5XdYgl/697j+qgV+q44KWwIGNk51NciwoIkF1hFVGORu5D
-         1R1miNOk213SxfJVlNWk+hDmzDQyBatkFB01HQ6isVADHrhEqFp/XbWZyMzWFFh2mQLV
-         fWto/zhMnwy1H0Jp+gsvpeGqu+QfKDlCKmCgHEOsKJM4f/B1yZ0o+sEZRp35IFz4J57k
-         ZwSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOJn+Pug2D7m9EaMiplDJ0WHc65u8iXSusTSi8wrpe1430ZlN8ehHZ4SsEjhZh2GCNA69PeBovBQ==@kvack.org
-X-Gm-Message-State: AOJu0YyVHKvddtfqONigFM/4deJcrboYbeIQO9nc9p+mfaF3JNgJoaPe
-	vJgSRnW6Mq/RwIJdi2Wl/lxV938r9iFS6ls0askfPFbjuajOLUFAm7SlNb5qEIljiqLxLAaWZo8
-	Rxx/CtK/eOOL5ObN0XmiHusVw6mZchko=
-X-Gm-Gg: ATEYQzxa5bveRqFthxDBNjcHCdMm0XyxbJpawTuTve59L8BOD6VzN6Se1ka5WK45QpO
-	3m17kJNeK/PTGlh7HtBNRSV5Vyk7KcPLucUEJkXBJfAzDtE+grEFpFJzivxVrRvhplKpua+QiKf
-	Gak7A7rmj2n0B90w1S9bHEzKY+LxNojmqgavigTOP82HipQneg1K81bmLgPTtcQPX3pNvCVid09
-	ppGEs+x8Uv7XCrMIU3jjxfDlXVc5Q5evjvUmr265osEP1t1ts0l+oAkCzR3WCeNg7qYFMPZv5Mx
-	g+qf4c5R6uQYI3YdZaG1ARcyck1ryh2MyiIof7A=
-X-Received: by 2002:a17:907:869e:b0:b96:eb74:3152 with SMTP id
- a640c23a62f3a-b96eb745f74mr151253166b.22.1773028275014; Sun, 08 Mar 2026
- 20:51:15 -0700 (PDT)
+	bh=7+We0UTCfei8hJDh4dOY5+VilrUyV36V3uZTQdBlRfg=;
+	b=Tgx3ViN5wsym22zPXZjwrAjatFkzzv+QFL9ATLTPh5JlZlRaoePE8TmfZwRbVGtUR58hdJ
+	Mu8PRzdT3xBpWRWWFkCjZDUCmLqmJkpIz5tJ1mlffT6LHqthPa2gY0vzU2Vh2qKmudeKYi
+	zj7ijEUrlMmXzrqIjxMBFPD+G7C7490=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ieW0DHeZ;
+	spf=pass (imf04.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773029536; a=rsa-sha256;
+	cv=none;
+	b=sIyXtUlfjFSmyqxf1ZqsymchZnuaTXjwgmxgtIfFwwIuB0RIrxYoEu+n+Uf2EkF7Ty6zDV
+	c9HotH0UNnEprTFhdV8nizvKQ2XmDj7zsgLuSM3SyqvRs/OTGzH5k4F3V11m2i1Yu41fhh
+	trhJHoqdR82koV5vwJeen3G3uPwZ/PQ=
+Message-ID: <0829a4f6-f885-4727-b9bb-b274fd444b5e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773029533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7+We0UTCfei8hJDh4dOY5+VilrUyV36V3uZTQdBlRfg=;
+	b=ieW0DHeZxDFVY9pCFQ77R7jbAOeRtZSOCy3S74dqwXfxr6WmNfhFbhv92YTa39I40TYVK9
+	TfzDax1iWH4zLO74kWRVKpvQgJ/mWwbzO7RB57vZkDSrgm/MuYHALYPZ7xuJ4dbpm59ABK
+	Ab7q6dvbWfsONJI36NxztfUOmivs8Zk=
+Date: Sun, 8 Mar 2026 21:11:59 -0700
 MIME-Version: 1.0
-References: <cover.1772797581.git.zhuhui@kylinos.cn> <02f5912caa6c427705bf8da43497801caf3b102f.1772797581.git.zhuhui@kylinos.cn>
- <aarcCC/FgqtxEZFj@yjaykim-PowerEdge-T330>
-In-Reply-To: <aarcCC/FgqtxEZFj@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 9 Mar 2026 11:50:38 +0800
-X-Gm-Features: AaiRm529TRePdDRmPljpwx8wsAi2YL4m6M7ZbZaYukeWzn1e0tgDUiwVAUb-7ck
-Message-ID: <CAMgjq7B3uka8GQtHeJXu7nyCVhTFAcJ2y1EWFTQe3rjVRkqCSw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/swap: fix missing locks in swap_reclaim_work()
-To: Hui Zhu <hui.zhu@linux.dev>, YoungJun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: pr6uja4w9ss4cr6cxwt7nsrtpagpt7pk
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+To: Gregory Price <gourry@gourry.net>,
+ "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com,
+ vbabka@suse.cz, apopple@nvidia.com, axelrasmussen@google.com,
+ byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
+ eperezma@redhat.com, jasowang@redhat.com, hannes@cmpxchg.org,
+ joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
+ virtualization@lists.linux.dev, weixugc@google.com,
+ xuanzhuo@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
+ kernel-team@meta.com
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
+ <87seabu8np.fsf@DESKTOP-5N7EMDA> <aa3MBp0JhUN6zE8i@gourry-fedora-PF4VCD3F>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+In-Reply-To: <aa3MBp0JhUN6zE8i@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40584A0005
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773028277-609364
-X-HE-Meta: U2FsdGVkX19C0DT3n67SFyK5BLwcXslGd3XKYT5ExxNaEwZUIMJADzSZvc6rwXlwameJ+xiBVhFhZfrAAcWKMx8YaAWBjCuqxRSnvr7EY5ApHsfwXU4flha1DvmV3/H8Fr+3EnKYxsHQUjGpW4Tv5CqKm2ou4PlX5NrZhFrBHSe9hr3l+461lZLc4lmhnZn6k2HLKvy9mXrYCLLJbiyPeDBSCkcWN4jxu0YCrsLB6t/qjo7vd/yV5HwcTbxGsyJDr6Xlax/FHgbTUyWeorsBpOpnSSRuTmcIhRvwXNaAtHb7N3wTyH/JffQtLClYpk/ZT5Cg2Jc7r5LXqpGqhzbWMXo/AMiIDGxWONrMmHKf6WgKhff0vJ0H2eqZ6ZIJLohDsxVifqP6S6tysMuF7znHV4pPmOf1Zmn6uRjPeoYBlaug16tORrGuiN4gq1q/NtiPImjXcbxdycG68+hFViSA3yopVfZb7k95zeknjTJVc8YswTnZzO2AxeZp/VUdPWuxb2hxy2QqB1/n3aQAUbmUVz0zHUmeFK5WPkl77pDFvluZJenvnua3rRR+6KBnJib9sa7qLvQ7jHHayELZsebnXd4XhGyzbTQSoOW7oN3jzcOZIigz6etoiKvjKY1XlDdiO7Oyd/EBJyGQQqMoS/AZhS37s4Xr33GcI62XSS6n3zVMoByUt2ZZMpW6C9ose5BGu63Kn3dZgH6/QupD0hGq9FaZEIBZoGYoPqrjVjPGhpZYoldfT5LzIHo25z4W5ZkkFeqzggmjt4JT/+FbW3LhSkCTCj4PkYe60IWkyTNQu6e5Ylc/zC/bcmE3EPFu3RKXX6yYKzXjA54j8eOBozdbPAhP/NiipJKKUP+GDnZFf9vwCtJgYt8axRmGOPsmlR7zQhsnVoa+ysyp5gaHgSmUOQAweqSGEOo6OneAdntLqRgV13LMt+9wx67U1p5SS8jAVTKYOo+DYEdMsjekB6R
- 3JoIHKdh
- XRGB4Goi8gc8GRX72LQWI0TL5NGcvgws9enqO+q1tKZ47KwwzFHfwaL7/riaXZH7wh3hz3EaLfdccnnYLuENmSNOGJz0lOnVEBwTJjoN1nIPRLGyWrjla3iXwxXtuJ0AE8g92DD+WEOWsaSdb7+wG+URnJDD/4O4Zsl13AuVPhSrLluUSwdJlNNzpRrpZvRUYeYVT6eNI+XnezhzMsc7i/UKd3nAcdQnJUm3k3Pmo47fInh2vpcKr4bgJ9HJq0oJ4t/KiEDajJXldPZf7ptFTkn+pvDra/lPQfGpub4UbsrFm/Ku7Welc/2n+sqIo1xTlwB2JkGSjkOaBrWDbRiTzA5Ts1384PbTmQc6lSDUf1Pm62pgw7mn8vpMeU9QpqYDwjM7TmOfOQjptb9ApxnzpJhsp3t01xrW2vMESCdSCo/KoY+ILGk7zX5Cbw5sGlAjJyQje0uBNbQxT9tB2bwWzXkLPEg==
+X-Rspamd-Queue-Id: 1CBEA40006
+X-Rspamd-Server: rspam08
+X-Stat-Signature: fjoz99tzrrumwk6fi3n83omjbqnhsyge
+X-HE-Tag: 1773029535-518980
+X-HE-Meta: U2FsdGVkX18PjYhQmO4aZYJ+BmofIQN8NTiXBXYu2VmARhcDC4CLKvgNXGldr5nCc2sgVCNQYuVN1MMAURt3I4z12ZLKw+UtLImjn6Uz9/BDl80ch2lF4Mo91lcU/VJlKjC2Ts6Svq6fXb+qXD6MsTy0aq/w0Ht5hVzhr5QLavnYvF61RCuXHZINYDLCoFOLoTQd0aeTzy7TIyD8+nX6VRFeN372cj+zCODcCG4/JTdj4P6nfBRBNzE/VpOXdqQvrRpkXQGxEyqdMYffb/QmpGHQQdGubazBcit2xyNLu2SyYERN5Z63MDRFkzkA78wZq9fQi3lNBPHw6Jvi4UMHeNMLW437mtk70viSlSHi3yT7Hz8oP01NgTajl9jWABxEzIQMTbHSIjqT+6WUizbZvsC2XsaRhDbX/KoQfqfqccn0GBRKGV5v6mnH5ji8TzOeOaEI604M1HoDcJbz6Nk0+XMygV+t43BnZsATjXm6qqrGv7AnCHzASUP5LUf31D3f+JggcBercWtz+jIeijXDxTS0YChupjX4acHUhHYmwoOTgXFamnBGBt0btJTm5ZdK2tnnDW0Zfpfip09HzVTEFXw6S/677avo9PGjWpfuqsKJLDG/+4zYAjmv+lYWuJPrN0ZYeRz9T1CAj6pkihC5tuhde4LfHMKYApFKqA78lgsv+SKqMdvM32rfof5A55DXFEX3YD326+PCurQdJAbOOW3d3DTkVlYS09RmMWCCblyYQKNJcDA72Q+tnBupeSTdLOz/zniKYDH4o2g0ETJ2WEoGc43/UWVlsUuneAS02TSmdMERTzk33H+POUVLY7BkFZK13ZGDWNyKdbkxbDIfGI6W5ZF1mbZWiqCPLPJBJKEY2EPYvDGWtfklv0DDvD8NUOLb//xsfnztlw8ZS7ezt+qbomhJQx/NSq6SYfTZ8EzFdwoxZxyh7cAb0QNMl+Yhyy9bwaBGd3cHtfQqbnm
+ OAC6CUPB
+ 6Fht+fchEwYTmJ7DJT/W7XXVeUU45/j5IyvTYtAFr06Mq2vLIOzLgrA6Gsr29mGxnYxgCdJWHBpW4L43ZeBmsOMZOI9qFP6tQgsHyw5CWH5nsp48nbj2xFjDpAZ1UxW7H4QvlQ656n+nD50/fxC6QwFW8pqVYDOzbnj1r9wF2d9oVIJ6HlHOrcGjIF/OAqiKDA3QLoFUYBE5XgPtRrH5ssAxxEu2EoJaEvhoWTi2b+LWyGrnSNPOT9K9o0AXByL9LaiFb97g3V5yOhDtGt5kmxdMTT7axw56A5+UulVBU/QMYij1AcAL7aIRPKHrk9uOrQBKNgiULDrS6Jog=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,53 +101,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 6, 2026 at 9:58=E2=80=AFPM YoungJun Park <youngjun.park@lge.com=
-> wrote:
->
-> On Fri, Mar 06, 2026 at 07:50:36PM +0800, Hui Zhu wrote:
-> > From: Hui Zhu <zhuhui@kylinos.cn>
->
-> Hello Hui Zhu! :)
-> >
-> > swap_cluster_alloc_table() assumes that the caller holds the following
-> > locks:
-> > ci->lock
-> > percpu_swap_cluster.lock
-> > si->global_cluster_lock (required for non-SWP_SOLIDSTATE devices)
-> >
-> > There are five call paths leading to swap_cluster_alloc_table():
-> > swap_alloc_hibernation_slot->cluster_alloc_swap_entry
-> > ->alloc_swap_scan_list->isolate_lock_cluster->swap_cluster_alloc_table
-> >
-> > swap_alloc_slow->cluster_alloc_swap_entry->alloc_swap_scan_list
-> > ->isolate_lock_cluster->swap_cluster_alloc_table
-> >
-> > swap_alloc_hibernation_slot->cluster_alloc_swap_entry
-> > ->swap_reclaim_full_clusters->isolate_lock_cluster
-> > ->swap_cluster_alloc_table
-> >
-> > swap_alloc_slow->cluster_alloc_swap_entry->swap_reclaim_full_clusters
-> > ->isolate_lock_cluster->swap_cluster_alloc_table
-> >
-> > swap_reclaim_work->swap_reclaim_full_clusters->isolate_lock_cluster
-> > ->swap_cluster_alloc_table
->
-> Can isolate_lock_cluster() actually invoke swap_cluster_alloc_table()
-> on a full cluster? My understanding is that full clusters already have
-> a swap_table allocated, and swap_cluster_alloc_table() is only called
-> for free clusters that need a new allocation. If isolate_lock_cluster()
-> checks !cluster_table_is_alloced() before calling swap_cluster_alloc_tabl=
-e(),
-> wouldn't the full-cluster reclaim path skip that allocation entirely?
+On 3/8/26 12:20 PM, Gregory Price wrote:
+> On Sat, Mar 07, 2026 at 08:27:22PM +0800, Huang, Ying wrote:
+>> "JP Kobryn (Meta)" <jp.kobryn@linux.dev> writes:
+>>
+>>>
+>>>    hit
+>>>      - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+>>>      - for other policies, allocation succeeded on intended node
+>>>      - counted on the node of the allocation
+>>>    miss
+>>>      - allocation intended for other node, but happened on this one
+>>>      - counted on other node
+>>>    foreign
+>>>      - allocation intended on this node, but happened on other node
+>>>      - counted on this node
+>>>
+>>> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
+>>> in /proc/vmstat.
+>>
+>> IMHO, it may be better to describe your workflow as an example to use
+>> the newly added statistics.  That can describe why we need them.  For
+>> example, what you have described in
+>>
+>> https://lore.kernel.org/linux-mm/9ae80317-f005-474c-9da1-95462138f3c6@gmail.com/
+>>
+>>> 1) Pressure/OOMs reported while system-wide memory is free.
+>>> 2) Check per-node pgscan/pgsteal stats (provided by patch 2) to narrow
+>>> down node(s) under pressure. They become available in
+>>> /sys/devices/system/node/nodeN/vmstat.
+>>> 3) Check per-policy allocation counters (this patch) on that node to
+>>> find what policy was driving it. Same readout at nodeN/vmstat.
+>>> 4) Now use /proc/*/numa_maps to identify tasks using the policy.
+>>
+>> One question.  If we have to search /proc/*/numa_maps, why can't we
+>> find all necessary information via /proc/*/numa_maps?  For example,
+>> which VMA uses the most pages on the node?  Which policy is used in the
+>> VMA? ...
+>>
+> 
+> I am a little confused by this too - consider:
+> 
+> 7f85dca86000 interleave=0,1 file=[...] mapped=14 mapmax=5 N0=3 N1=10 ...
+> 
+> Is n0=3 and N1=10 because we did those allocations according to the
+> policy but got fallbacks, or is it that way because we did 7/7 and
+> then things got migrated due to pressure?
 
-Hi all, thanks for the patch and review. That's correct, I don't think
-a full cluster will need allocation.
+That ambiguity should be resolved with this patch.
 
-Maybe we can add a VM_WARN to check if `list =3D=3D si->free_cluster` when
-cluster_table_is_alloced is true? Just in case and make things easier
-to understand.
+> 
+> Do these counters let you capture that, or does it just make the numbers
+> even more meaningless?
 
-BTW there is already a comment in swap_cluster_alloc_table: "Only
-cluster isolation from the allocator does table allocation." That
-comment can be extended if that's not detailed enough.
+You would be able to look at the new counters and see that the
+allocations were distributed evenly at the time of allocation. If an
+imbalance is observed afterward we would know that it was due to
+migration.
+
+> 
+> The page allocator will happily fallback to other nodes - even when a
+> mempolicy is present - because mempolicy is more of a suggestion rather
+> than a rule (unlike cpusets).  So I'd like to understand how these
+> counters are intended to be used a little better.
+
+That was the motivation for v2. In the previous rev, there was debate on
+the lack of accounting for the fallback cases. So in this patch we
+account for the fallbacks by making use of miss/foreign. In terms of how
+the counters are intended to be used, the workflow would resemble:
+
+1) Pressure/OOMs reported while system-wide memory is free.
+2) Check /proc/zoneinfo or per-node stats in .../nodeN/vmstat to narrow
+    down node(s) under pressure.
+3) Check per-policy hit/miss/foreign counters (added by this patch) on
+    node(s) to see what policy is driving allocations there (intentional
+    vs fallback).
+4) Use /proc/*/numa_maps to identify tasks using the policy.
 
