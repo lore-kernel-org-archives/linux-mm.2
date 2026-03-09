@@ -4,106 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21E76F3C24E
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C960F3C263
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 13:43:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BA1C6B0089; Mon,  9 Mar 2026 09:42:50 -0400 (EDT)
+	id 6B9136B00A0; Mon,  9 Mar 2026 09:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89B596B0098; Mon,  9 Mar 2026 09:42:50 -0400 (EDT)
+	id 69AD26B00A1; Mon,  9 Mar 2026 09:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 773AD6B0099; Mon,  9 Mar 2026 09:42:50 -0400 (EDT)
+	id 57C426B00A2; Mon,  9 Mar 2026 09:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 67CF66B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:42:50 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E6FD1A0119
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:50 +0000 (UTC)
-X-FDA: 84526640100.23.652FAD3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 54E8F40007
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:42:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QnXvFd2E
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A1F76B00A0
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 09:43:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E228C1A01D1
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:43:22 +0000 (UTC)
+X-FDA: 84526641444.30.EC9A934
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 06D2F20002
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 13:43:20 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZQb15M8r;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773063768;
+	s=arc-20220608; t=1773063801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O7Ml/vJyi0FRJgghGtQCc2586RzghnjwSv1hQiNW19c=;
-	b=dwmz0lg9K89FHMl0MhIVwFZx3VoJFiyBW+jYbl5GRNiTcCQ4me/ZOFlZNpSlNMzkOibCGJ
-	w5N1FRSuhyx80r0PTBUAHEKI8SsGdn864oejc/utj6TkAe8Oi1c5uXdSsk6NUzpQRrm8AH
-	98bSQYolVU6kfUL+tYDdpqAnWXTbFQ8=
+	bh=RTnKyrf0LGE23PY9A0Ht7/mKiGV1tV3urT+EyE+Hxyk=;
+	b=4f7ZwCpcTTwyF1lHuVBQOc7hT2rlJmeUYmpqt6m+2sP5FU5KlYeEp+RsxKIis0NQ5nR1qd
+	t/ImP0Rim0lqDjl5yaT19v8HXK5wvKHjj52k/4z44ScrZeEIystuteTQziZ47roCDjB16I
+	egnIHJXFCiaqNS5pjVND0lMiTAj8+mA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=QnXvFd2E;
-	spf=none (imf11.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063768; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZQb15M8r;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773063801; a=rsa-sha256;
 	cv=none;
-	b=UgXFSlLM/wMf7noL2/heASDa+iwCni1HUXCP7SQodk3vQkAbpnqQwhPwn176P7rBvGMhSE
-	lFg/tp8fUilTaE0Rd/DWHXSk2tRzhXrDxm/bam+F4RHrxULyJJBQ5SR+ZCWi8XXOdl6knW
-	G3gzVcIY9zJyhsn2UUU5PzEZ/iWQjIE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=O7Ml/vJyi0FRJgghGtQCc2586RzghnjwSv1hQiNW19c=; b=QnXvFd2Et5S90TK4Ts/A++2Ztl
-	Cn/VR9gXgY/yUvfvqBzs6m7idnfnCuJpz9xk1huJY677VCStJcKu3lGhGjGPYntaChOsBlxa0KkK3
-	lq4feo/BjeHAMPAzBVwhmn6M4jCiBDGDZagI83LFOx90LaVIemMdN4DdP8zB+H0RDceNcJPzpjNcI
-	Tebz/53FVEPqzrgkcNKeiKGnwt4krm7LfX5+X5WciPzDX0JEr+gwI8N3lad5FNMCTAdqboaikDpWn
-	qKkK1CYSwBT5bOPFTETm8PmaVYQRcDqoVVKGd6flSNNmaa56En8XONgahWyMIJodab1IiJQ0+/Fp7
-	IGgthkzA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vzasa-002G4H-Nw; Mon, 09 Mar 2026 13:42:41 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Mar 2026 06:41:49 -0700
-Subject: [PATCH v8 6/6] kho: document kexec-metadata tracking feature
+	b=4/SI9LMuWIas4ibQoKzf7B+6GZz2MSsFbLPrsJUZnFo3WjBp3m9QecgFGfitdZ0ZIUe+0D
+	FLRLjr6NMvXK1zZzsXrNcmXF1i/oxXWWOCtE2JbL69S/xNZA1nO41JQMuzBQReU9KUCDAF
+	s/SrCatkiF8RuvPEgY95Cn66rJ1lI1U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4186543F44;
+	Mon,  9 Mar 2026 13:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63895C4CEF7;
+	Mon,  9 Mar 2026 13:43:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773063800;
+	bh=zmy6clpWE/fIfSwygLZAhqxBM8N2z/0Tt68Uy5Q+aps=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZQb15M8rxYvJv0UYuVy3BjBEkCLY1h9j+2RWQ//mAm3xX6WceXqnxkU4KAPcMqc47
+	 /9Uak9k3MJ/h0TYdTUn7Ac9tQqUCeKrpXZ083Xz450GT2rMHX5TYSn7TE2OOIreeJR
+	 H5f9S7hKuWa3u3c65EUomV/LE/YU5fNB0AST+s3WVjA8ytL//jsYsWAhHNeEfeP+ei
+	 l2UdQqYswcS1+0QGd5fVBRbdvR/b9Mkk/pLCp/Y2q3Ac/2R+vM8hoE4/q69Cekjsyf
+	 LQTnL/+3sWAOkRBVihWgT/nKXVQTTI8laKUWwE8QZ5Vcnr2WkVMuaQpOqEN9j8KESl
+	 FX9xqEf2DSKyg==
+Message-ID: <4f2abf42-983f-4cc2-92f5-c81827e7b7e2@kernel.org>
+Date: Mon, 9 Mar 2026 14:43:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] mm: huge_memory: refactor anon_enabled_store()
+ with change_anon_orders()
+To: Breno Leitao <leitao@debian.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, usamaarif642@gmail.com,
+ kas@kernel.org, kernel-team@meta.com,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+References: <20260309-thp_logs-v4-0-926b9840083e@debian.org>
+ <20260309-thp_logs-v4-2-926b9840083e@debian.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260309-thp_logs-v4-2-926b9840083e@debian.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-kho-v8-6-c3abcf4ac750@debian.org>
-References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-In-Reply-To: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
-To: Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
- linux-mm@kvack.org, usamaarif642@gmail.com, 
- Breno Leitao <leitao@debian.org>, SeongJae Park <sj@kernel.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2486; i=leitao@debian.org;
- h=from:subject:message-id; bh=GuS2S3Wn71jXKGx9RIpG1q7JVYnitQ1EXkky0LyglZk=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBprs4ze/rUp861RrV5t62pTbJLJtbdntrR9AyI8
- qkmZylG1YeJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaa7OMwAKCRA1o5Of/Hh3
- bZgPD/4v3Yod2PPxx34KIn9K3RWl7jTuWUrsFK1hW5GuknLIksUYSy1hNqVshjLJL0tJFoK3wbK
- Vtx8cP6mtyX6+bJqGT38vExtFo2tWIe/55xDb6xyYSFvL4b+tj3K3+A6nHr4S+5Pq94JzrFg99V
- NXoqxOcxj46lsy5L5BHNIABY5rDqSuHF84zlo/2CJ+7pMUrS25J5mMwyPpbbWBQuRZLk7JS190/
- k6Uqk0QxlwagjSHgnnjKNxib/DwMW76TD67dadJv4hzW4JKA+zZvfKYG+wvfPs9dDdDb8ydbMHy
- sPol8dSYkjkF8rrvyXAFuzX3FMjQ8tmxTZInP/oXcwhfYGKDaUgYKb20OKL1CwkEUHZfOxlqIUx
- tlEPhKfp3oCZuYTt+HIQqeXLLNbIxRUdcAAag4DjWGdHgYnwbvrF35b1NZyDN7s0bCMAEb3mHQ/
- OH8tyo88JiSVeNtJcd7fHF6i6L9B3jxJY953cHHLrHlYOpFJKe5QEO4kZ82UEiP7F5vjAOC82w3
- Ce7XCPByc1m/rvbfXZnpIalWvsCeDzgO/XgUO/mNL7PVsHabR18OWb8DkeaBqsOg5xZ4Bz4v1dT
- /j6A+KxuQ8FbDrNLwb3mInMqwr2JH+L2rHio50MXWAPzeFhnPGkMnSSGknAarZQp+tpypF8BbJi
- 1Z9KvPbhp3tRUEw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 54E8F40007
-X-Stat-Signature: 86u9cb7ead1p6kopt3a8tt1zwj38zkgh
+X-Rspamd-Queue-Id: 06D2F20002
+X-Stat-Signature: jtm3wah64gbjxgdex6ck53z7nczcmusp
 X-Rspam-User: 
-X-HE-Tag: 1773063768-385196
-X-HE-Meta: U2FsdGVkX1/U/4ZASFpGAiF3WwU8yIvQYwSiadZ5C4VuoEY6HFSwRMC7IBPBtIah2MDp+m7xmvKcDxpxRMvkJoJLgMhSF3O5T9zP9DwqLgviVfMHgksI1FK6F2PuqV7oMEirZonaXUcgJ4f9GlV1cZ7GuyJAh1WD+Gw+EFSaSHvOTJNR/P4l3b8kLuf/RWpui8ZwbXfBZLu5TJxkH2N9fiXwi0mnV0AVm/6TFDLTbuQfpggjTioZgTOitAEzFJvh8MqEF95Tom7dnsbG0vQp1UaYcWMZ9JA9JlnaIR5EyCTuu8+25fBGgD+xmN9bF8JzWDvOij9pMzyVGcvVWKVaZFjr+9xbv0SopR64A3IWE74zcZH2UzndvDkC/YczZ0ammx5bzVjfB3ctCvrHqim8fyYg854nCD3AS5ukUz+mR/08LEx8LRK3mLKfD0FBr/FEVJ/+zHQjoVNEL8/AKNkdUqviAb9oEQjAQPBfWoCZx8AyrvEBhpb+hP7a3JV+CZGCa/pKSXEEURx2ACvxwSkvzUZbdGfAX2/ksLOVD4EHgOMATVX+TYUsciE7Wr/poR8LZq1idmxu8U+4qttDSGcryrhpc5xSR98aKBddLaIgdR/zPikHNW4w4y05IrUzYiPuVIRBUoFdy4ATVVo6L/tTndp5P6CIU5XJ8ERAk6Py8bcl7tCsKM4Q6WVxNCVp7DETa9R2aNH8d4KuM3BrLdgALcwlNfwhlroWJKqFgyDnOGxqxAhXDbvle+1uxWgAWllGHy6/yWBaVnndUQroSLR3gdqUL6H5r0ei1po6/BB5gs8oyaCaMiUG1kz5kS9I/sYxlnC7UKFMBdRkud72ztlF+UHu2+iUg1kFkYCp2ED9qb89ThoyXy042tU8LbafN9Z4PQCZvhcsome100SGBstycHJNRDMpvreg49KYI8xZiUJRVg8CQ2rUdsOmbbYGll6f80Mj4Gr4imNHi2z8aPk
- OifDDGsM
- FJOABh2CnCMT0S4ekFhM6a2wTzS1JQZPXomL3dpO0vhJ3INUhHQeqgOVoU64U6k6ZzdL4c8Ml67f1Grn9sFJMyWn77XnE86coK2+fO00VaMWFUkilWkxh03LVOwVli1kfRNW60rJEOzNkr0OsVx5ckkWr6q/U7zodxjhNXpQGP86IrupWwLl7hinlQQ==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773063800-190585
+X-HE-Meta: U2FsdGVkX19ziBK+i8n4CtKSx2PoiflVHGZsUgxYNYr1cSUSgsrl2PasrRrifbtPdKhIdh2uJIUWYpciUi7u1y+BqT9a2A9wHpYbQi/k5RVcTx0VW4WtUKKaVxC9T5p8+HD6DWj2qRqeQNLETqEjWUPolIJxqC/lBdTdPvb387FxJV8ODmbgvhAZwX0996qCIZKw4/iiR9+rDQ8wvzgNRCi8h/0rUkf2E3pJWWNe6jpPyF47E8a6YAXv4+XDz1laR+E2JgpR/pWUO5RSAu59KBYX5eD/r6lwUC4hZluzB6x0mhRszx2jL2NeNitfO3i4wcmPS6YjI8uRwlsezssGm8VGiIHu89nrrk9Z/kPaSUwPPZtbSwkTodV/YJ/IgdLjDxBoybMPDCpvWKxv3MRSrmRATDKX28hIyUZ4cNYiGdu3LkjTCihxQJsnhKXNQTGZbzGw0Qjv+8D0vFK4cj2sMNOgcSB2HFqWPRvfS708pGbd+/ZA5lmlFIXL/5ZO7Q0l48MLrbXhSaA3GNWIvZrzBtbX0/nOqgUGHocFDW6MUAasQs2S9R0q0yOb+oMyza9hNJxuhOXDVhCXL+j40UqIBTz6g3nlILLNuQp/yQHmNvLK/ykfF/FrK2LkGn827EsrsjRGT4m6T6a2DNP+RvBpMZce2JEkTmR1seL1FX93G/k+Hja0ziTbz4f6cM+93pjcU4/OM/413XInNiYvnNaX428DRlSwlaKCS+dqu64pB11uxRre3o3KRjKoL56c/tfsCHJyVv+45mfPCEz9iy9kSVcg/98WWDo5Myex6NiPcAx4cWyYPzr9s5H3Gjlzo0xM7fSCxaCrl1Hm1y2LYD0Tw8//0DD21goEFxWSYTK90noPrHak/ADRSnrnRwrRCasFWzTxtOwZxaum+dCBZj3/Owf5ATPHZ8IasWWHTCUDeFkbL8MIzzI3AULPeXxQMtVJqUhL3Ri5ZG212EgCxbX
+ xxaBXONQ
+ ORR1+N+3izUMvt9r8CWvO8ViTq1KoGQg2DEaqfgDMztguJa07svfXxomVHpkFNEdNVLSVdiQ5K5ndLt5bMuaW40jgWVv3zJhJTgrK2utGvsI80kd8z6OA7f8AYYSIdDwR2e5em682sb66mfAvieQ8P6ohwlkTRm0CYdZy3pj7d3TsdYNbzLqPPoYIn2q5Rf0PGyy8Ip4rQ0VBOCusyUlk+d2q2vBBYlctvw/r9QkFmqf4MJHw5tHpZmvkVCG2IgQFMUXVzLBzAZLjf3HAn5uqwp9rq52IB84xfS6MWKdvtQeK4jKMI9rgC64eF0mAan4cKEF9H99YKiLIZLvMUx4lIuuQih9TPADXqNxA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,70 +149,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add documentation for the kexec-metadata feature that tracks the
-previous kernel version and kexec boot count across kexec reboots.
-This helps diagnose bugs that only reproduce when kexecing from
-specific kernel versions.
+On 3/9/26 12:07, Breno Leitao wrote:
+> Consolidate the repeated spin_lock/set_bit/clear_bit pattern in
+> anon_enabled_store() into a new change_anon_orders() helper that
+> loops over an orders[] array, setting the bit for the selected mode
+> and clearing the others.
+> 
+> Introduce enum anon_enabled_mode and anon_enabled_mode_strings[]
+> for the per-order anon THP setting.
+> 
+> Use sysfs_match_string() with the anon_enabled_mode_strings[] table
+> to replace the if/else chain of sysfs_streq() calls.
+> 
+> The helper uses test_and_set_bit()/test_and_clear_bit() to track
+> whether the state actually changed, so start_stop_khugepaged() is
+> only called when needed. When the mode is unchanged,
+> set_recommended_min_free_kbytes() is called directly to preserve
+> the watermark recalculation behavior of the original code.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+> ---
+>  mm/huge_memory.c | 84 +++++++++++++++++++++++++++++++++++---------------------
+>  1 file changed, 52 insertions(+), 32 deletions(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 8e2746ea74adf..2d5b05a416dab 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -316,6 +316,20 @@ static ssize_t enabled_show(struct kobject *kobj,
+>  	return sysfs_emit(buf, "%s\n", output);
+>  }
+>  
+> +enum anon_enabled_mode {
+> +	ANON_ENABLED_ALWAYS	= 0,
+> +	ANON_ENABLED_MADVISE	= 1,
+> +	ANON_ENABLED_INHERIT	= 2,
+> +	ANON_ENABLED_NEVER	= 3,
+> +};
+> +
+> +static const char * const anon_enabled_mode_strings[] = {
+> +	[ANON_ENABLED_ALWAYS]	= "always",
+> +	[ANON_ENABLED_MADVISE]	= "madvise",
+> +	[ANON_ENABLED_INHERIT]	= "inherit",
+> +	[ANON_ENABLED_NEVER]	= "never",
+> +};
+> +
+>  static ssize_t enabled_store(struct kobject *kobj,
+>  			     struct kobj_attribute *attr,
+>  			     const char *buf, size_t count)
+> @@ -515,48 +529,54 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
+>  	return sysfs_emit(buf, "%s\n", output);
+>  }
+>  
+> +static bool change_anon_orders(int order, enum anon_enabled_mode mode)
 
-Suggested-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- Documentation/admin-guide/mm/kho.rst | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+I would suggest something a bit longer but clearer
 
-diff --git a/Documentation/admin-guide/mm/kho.rst b/Documentation/admin-guide/mm/kho.rst
-index 6a4ddf3440465..2c26e560bd78a 100644
---- a/Documentation/admin-guide/mm/kho.rst
-+++ b/Documentation/admin-guide/mm/kho.rst
-@@ -42,6 +42,45 @@ For example, if you used ``reserve_mem`` command line parameter to create
- an early memory reservation, the new kernel will have that memory at the
- same physical address as the old kernel.
- 
-+Kexec Metadata
-+==============
-+
-+KHO automatically tracks metadata about the kexec chain, passing information
-+about the previous kernel to the next kernel. This feature helps diagnose
-+bugs that only reproduce when kexecing from specific kernel versions.
-+
-+On each KHO kexec, the kernel logs the previous kernel's version and the
-+number of kexec reboots since the last cold boot::
-+
-+    [    0.000000] KHO: exec from: 6.19.0-rc4-next-20260107 (count 1)
-+
-+The metadata includes:
-+
-+``previous_release``
-+    The kernel version string (from ``uname -r``) of the kernel that
-+    initiated the kexec.
-+
-+``kexec_count``
-+    The number of kexec boots since the last cold boot. On cold boot,
-+    this counter starts at 0 and increments with each kexec. This helps
-+    identify issues that only manifest after multiple consecutive kexec
-+    reboots.
-+
-+Use Cases
-+---------
-+
-+This metadata is particularly useful for debugging kexec transition bugs,
-+where a buggy kernel kexecs into a new kernel and the bug manifests only
-+in the second kernel. Examples of such bugs include:
-+
-+- Memory corruption from the previous kernel affecting the new kernel
-+- Incorrect hardware state left by the previous kernel
-+- Firmware/ACPI state issues that only appear in kexec scenarios
-+
-+At scale, correlating crashes to the previous kernel version enables
-+faster root cause analysis when issues only occur in specific kernel
-+transition scenarios.
-+
- debugfs Interfaces
- ==================
- 
+"set_anon_enabled_mode_for_order()"
+
+Or shorter
+
+"set_anon_enabled_mode"
+
+1) set vs. change. the function returns whether actually something
+   changed.
+
+2) We're not really changing "anon_orders". Yeah, we're updating
+   variables that are named "huge_anon_orders_XXX", but that's more an
+   implementation detail when setting the anon_enabled mode for a
+   specific order.
+
+> +{
+> +	static unsigned long *orders[] = {
+> +		&huge_anon_orders_always,
+> +		&huge_anon_orders_madvise,
+> +		&huge_anon_orders_inherit,
+> +	};
+
+Having a "order" and "orders" variable that have different semantics is
+a bit confusing. Don't really have a better suggestion. "enabled_orders"
+? hm.
+
+
+> +	enum anon_enabled_mode m;
+> +	bool changed = false;
+> +
+> +	spin_lock(&huge_anon_orders_lock);
+> +	for (m = 0; m < ARRAY_SIZE(orders); m++) {
+> +		if (m == mode)
+> +			changed |= !test_and_set_bit(order, orders[m]);
+> +		else
+> +			changed |= test_and_clear_bit(order, orders[m]);
+> +	}
+
+Can we use the non-atomic variant here? __test_and_set_bit(). Just
+wondering as the lock protects concurrent modifications.
+
+
+> +	spin_unlock(&huge_anon_orders_lock);
+> +
+> +	return changed;
+> +}
+> +
+
+Apart from that LGTM.
 
 -- 
-2.47.3
+Cheers,
 
+David
 
