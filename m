@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED00EFCA191
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 23:10:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3039FCC9A2
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 23:35:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6C7E6B0005; Mon,  9 Mar 2026 19:10:09 -0400 (EDT)
+	id 1B0216B0005; Mon,  9 Mar 2026 19:35:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1A4F6B0089; Mon,  9 Mar 2026 19:10:09 -0400 (EDT)
+	id 1679A6B0089; Mon,  9 Mar 2026 19:35:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C263D6B008A; Mon,  9 Mar 2026 19:10:09 -0400 (EDT)
+	id 0940D6B008A; Mon,  9 Mar 2026 19:35:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B19876B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:10:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65D6C1A0393
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:10:09 +0000 (UTC)
-X-FDA: 84528069738.08.F67673C
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 341AAC0004
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:10:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ppc3tLui;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ED7E46B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 19:35:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95DC2C1966
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:35:36 +0000 (UTC)
+X-FDA: 84528133872.07.9F891B7
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CFACD1C0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:35:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VTcCMmh0;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773097807;
+	s=arc-20220608; t=1773099335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7pf/BuL+OuQCj3Lebv/TwYfAfcvP2u/9LGqWeh7qGx4=;
-	b=4MtTF4N1eCyqZFt8/e6p9yy0cKKoQ0EE+kt3nhCNiIFStzJ9cHO1LQ3V0FwPA5oW5UrWls
-	VGWW/JdWmWVtlgL1Ypsc3gfkLg/PJHMqfq60fz1igfuDuQxAJC0nxFfhPedSU5t4htoFav
-	rS0bsh0yKmqtvAp+U0wDfr8yEdUxraY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ppc3tLui;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773097807; a=rsa-sha256;
+	bh=qcUZHIoP/8rVVvTMfjJZuqQNgHOSfG8EEoqKfNdISjo=;
+	b=Nqh6VfeAHoPEijtLA306iSX5qnzNZj6qdt6PKYwhM5B9ObdYuUMKTj4OUROR0pzskYxglt
+	w2dHQtLtMrqYDI8gBWbJ+0O1mgGLdPa3EsGtbBDjw1A+y9Hs1g24DUx69lOXNXiSZAO5iT
+	FtGn/XwpJj/p3GOwJ6Uhz6lo5PwPkig=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773099335; a=rsa-sha256;
 	cv=none;
-	b=ONEI5Egycfqh8ezbA+1P0u1xTOfjHZPchv1hAV+sJPt6FT/HR/eL0az/9U5T/KajlkPkuC
-	hmJTyIFMyllvB2/8s5Y2Kdl937Y3grKY/v5h1idNQi8y0ATr9rqvKcJfSNOUhMR5FaFuQl
-	UZDQ6MPTa11Hi35sr5k8zoZqfypvdyY=
-Date: Mon, 9 Mar 2026 16:09:58 -0700
+	b=58EqZYH5vc2JEGIcRu1q47te+bNZ4QUUEwNzZAfN4yLbalK6lRNAF6afv9huPuPwLT2GH7
+	OnNDtQdfpQqeOdIUuGcrErq5Elv4RbDO47yP007y825D0WnnXExDrNs+WrucvfFv04LFRf
+	8nzi3MeMwA4vlYcFHQ2dBQHEwlmmdEw=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VTcCMmh0;
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 9 Mar 2026 16:35:22 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773097804;
+	t=1773099329;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7pf/BuL+OuQCj3Lebv/TwYfAfcvP2u/9LGqWeh7qGx4=;
-	b=ppc3tLuikjtXxy4J11OJ8dMyczJdQBJfufqnlr8I9Ar3PaiXdi5OyYO9RawkpH+xg8f2jn
-	+gFF+nyi18gbqEfQ1LKl+LF/alRYARItsibw8lX4K5suMEck031JVQxcdHRKK4X2FMr/BF
-	TdyV3fnvqRGusRJAQERAWFjfOJQ9ibk=
+	bh=qcUZHIoP/8rVVvTMfjJZuqQNgHOSfG8EEoqKfNdISjo=;
+	b=VTcCMmh01vAkOgpbdITzQKUfGBwJyxxIUHL9dTLptYFWWKdUefCRn8yKynWdEQISF3sh9Y
+	u2C/Kh8xkLnJuT+K+Zsi2qHDmUNbs8XNMxiO2jbYtz7I+d9IlVeq8GmfQN9LqFRWoLDYKu
+	aWf9StgOUuywlW4g8ai+CM4I5wXtq4g=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: lsf-pc@lists.linux-foundation.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Hui Zhu <hui.zhu@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Muchun Song <muchun.song@linux.dev>, Geliang Tang <geliang@kernel.org>, 
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	David Rientjes <rientjes@google.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>, willy@infradead.org
-Subject: Re: [LSF/MM/BPF TOPIC] Reimagining Memory Cgroup (memcg_ext)
-Message-ID: <aa9SB6OzocfwL9kO@linux.dev>
-References: <20260307182424.2889780-1-shakeel.butt@linux.dev>
- <87sea8zo0t.fsf@linux.dev>
+To: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com, 
+	vbabka@suse.cz, apopple@nvidia.com, axelrasmussen@google.com, byungchul@sk.com, 
+	cgroups@vger.kernel.org, david@kernel.org, eperezma@redhat.com, gourry@gourry.net, 
+	jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com, 
+	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org, muchun.song@linux.dev, 
+	zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev, surenb@google.com, 
+	virtualization@lists.linux.dev, weixugc@google.com, xuanzhuo@linux.alibaba.com, 
+	ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
+Message-ID: <aa9Yq5zWBu9lCu_4@linux.dev>
+References: <20260307045520.247998-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87sea8zo0t.fsf@linux.dev>
+In-Reply-To: <20260307045520.247998-1-jp.kobryn@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 341AAC0004
-X-Stat-Signature: jgu6skkkftng3cjo5bzbsz5c14xqsp93
 X-Rspam-User: 
-X-HE-Tag: 1773097806-366775
-X-HE-Meta: U2FsdGVkX1+/SiV6F3Nf8Xd0JzC4mw8ou1MM6uPRxI+/RxPqsxnvvEpyP2fPzWF4f0ctaa1DROX51BkulmQW5IKts/5oNZTF2NnlgiEu83uYoRtLmLdFldpFV40uOyaTCGWHnVqeoMB7MkOPBZD9j/W7TwKAV3eEhK0w71rAdW1RcUseTpujzyRH2CjMe3zcf4mNXs1xh7qewE+NF63vGe3bXs9EVLSceTwLOnvaYF+H0o7d3wb/DxAeBVbApVkf4t5WF2xQgG9dYiGhxLiVXbvy0e91K+JtN01+qjBGbwszVAZghxiXpZjDSKUHcTZC0hnYtmvbBTQiFOmctFGIakE+pEIZFAVo0CJ5MGhImYq+3BglX5C2sDE6YSfXstKSvSa80YJYwYifAyh7VAAKO0N0vq9sUhbqfEwYI9lsfnviGOxY9OHoyjYU40O+4iYXToJNbwKqUngn2i5Lp8BCueQQTQlOxwwAWo4HVpwLww2E3bMhE/2tJY56A6HSLbsIz6Ku94TeSDsa2yWlFfAATUrsk4EZZroOdNvB57x2XeXgTnomv8j7z7viypjuT7TTMRafkCxPoagcwVOHfA6mc7ivOLZuN18xZj+90VqrAurh7abQ5pKSHBhAG1mkfac+r/XFkIToZzKH69cJ+ZywBs2ikPLbZg7S2w7Szxv4mxRD9CQPXHSSJFw9VYDzjmawnK80QQUQueM91JgW4n89itUUohAU8mCZeOy7FtTIquQyUFwSD/03s1y0z1j49Scs1ETPpjSFN1/oxksDg0cZ/r+QC7MmoZrsgCfjGE9EvJNR0RAMBzuqk5WpluQQ1vjHO4+dS2JOeYw8Z3tmcJVE8DRuiu+OCC7ozLMs7d+keUFdzCMScoo08iN1OsmxCJnjgA1/0yAcCyHXLCYmN3LAbtuTPpnrCX53ResSB7FOtovQ5Ld9vdzpNG+pHv+q+f1x5lTroysx9XinDrC4rZZ
- rJt7jFO5
- 1t9iV2w/nOLQO+odXhOvIyjwV7S0TsZXRPMxpiGT8RsOSWvW43Q3m5eQ4XCxvfD2FXexUw78jkQo3+fWUdjf3t1sozW4L4kWnqUSfpT94C75htMHoKhT4fTYZN0hVtVRDCNbvLJxvO/gwzr/j/ZSGfywQP8bnT1YpfXZaJeBJNv6v+FSqngh82TL06pcE1aHMtBwoKNXfkHHRsJAA193dySXhF/TLvuIuAhLN5gV2MsM0jijt+KeEd61NiUAm2IHZuWXw
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFACD1C0005
+X-Stat-Signature: 4jofmaqobwbowau6y15etdjoxy6tkc6k
+X-HE-Tag: 1773099334-268785
+X-HE-Meta: U2FsdGVkX1/s7oe9TMLVXSSzdxEZpZqrH6Q43KaHxDRgwnlvRp6MA3hNlRLQMSlej2d7pkgqVfU4MH19bj1U/D7cS4QNauTQsjL10yDwzZlM1CQT1bVeLaZSf0150O8Lc3vlPtDdmijxBM24cs2qiNeVsEdTVsTf1xelMJdjO3H6Pquq8JK1vKYyuA0RPPLwAXtc+sjtTQUqmklqslZKz2fyTLQdG0Q01zFbUXiOJEWvbWYWyiJPwxk9C7wItgziRPs+X6q4HC4Zjsx1IgN5EN0gjk+Jj55wdGGcTyJ0PDFtyqFrCqGPa1dmbFIZxbXDz/puAEXlvAUZENXsoWm0nq3bPWgOCPJp5uRZoFOEJW8b4SAMXOdQr1Ofmj5QNgAawcvwJ6gbru1NkOkzqhlDhwMyI7PLWerXmXkhNa2o3iZYWVfrPJ+cYIYb946OfqbvtaEgBkuM2MukAoJS8GCCMR2v0uLLXXdoH4oe9bSfufI2tW694JFsRpXEFA8MQ73brcVNib3Cjg1FJ+PrLtz4vv/B5Z9Ufq+yeaNza5ip7NkuDLk6LwAXGNgO2hD1ZiAXDunxi0AboyoQO9PCpeo5m9dX/2lGGFNEQaRTOQc//9ks5YmrnsemLvUZ1v8+ko+wnwGlpT+9s72F5Ieb7I2UVuJlwDblRIyGBfxw4No+3OlHtuiR+I5KN4Eb5Wnnaj8N0Z5FSi+VgyNTysbmvZIs+34ol2oklO3o/SRHnnigDzUVi8hekZoFb8GjtvY5wi7M0y6mXL9Ix1LPBOE+wH90Mtne7K/QNcUDFef5J123K4fV5UyAK/TXqFIOIdChXZpI4cKW7jomQCKL7zS0K3XO7qfKevW5me44Ti/hs+9hTWGriUUFG8Pw0HvkmeQN2L1wNUudrfKp3MDnBNdzw8FdrrZ/77hdrmd+NMC6GrKHrK6yNxI4MZYNdWwMEhqqzF/4yOollf0LDWghd4faEef
+ Dh3fAgqL
+ +iGhA8G1nFPIOd+3jSFobfQWQ3lwWEIpBYNCgZFijeAYmnSVtn9z1/JaBwpsXFVeDGhPdBu3r7mD7a9BCf/rcQPBcOokHOdbbixfznWZGDv8rOP01ewCt2eQn8mhnoueDT9gx9Q+ZKeouckkVVakBQRdN6sI7yv0IqSVwhSouXPmuDCWFUESarMHTZxEDuZlZVIng9LImjLcvTVc5WKYPBPUGcpC+zjWUont32hG1RGsqct7UMnkLJ/CIyYjz4EUndPizgFjHftN224Tmk1Np80XGk9LVMP3loGxj9unHx7Ng2O6nYTpPCi6vzk4Mnb4SspJB8k70QFUca5A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,20 +93,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 02:33:22PM -0700, Roman Gushchin wrote:
-> Shakeel Butt <shakeel.butt@linux.dev> writes:
+On Fri, Mar 06, 2026 at 08:55:20PM -0800, JP Kobryn (Meta) wrote:
+> When investigating pressure on a NUMA node, there is no straightforward way
+> to determine which policies are driving allocations to it.
 > 
-[...]
+> Add per-policy page allocation counters as new node stat items. These
+> counters track allocations to nodes and also whether the allocations were
+> intentional or fallbacks.
 > 
-> This is fantastic, thanks Shakeel!
+> The new stats follow the existing numa hit/miss/foreign style and have the
+> following meanings:
 > 
-> I'd be very interested to discuss it! I suggested a somewhat
-> similar/related topic to the bpf track (bpf use cases in mm), we might
-> think of joining them.
+>   hit
+>     - for BIND and PREFERRED_MANY, allocation succeeded on node in nodemask
+>     - for other policies, allocation succeeded on intended node
+>     - counted on the node of the allocation
+>   miss
+>     - allocation intended for other node, but happened on this one
+>     - counted on other node
+>   foreign
+>     - allocation intended on this node, but happened on other node
+>     - counted on this node
 > 
+> Counters are exposed per-memcg, per-node in memory.numa_stat and globally
+> in /proc/vmstat.
+> 
+> Signed-off-by: JP Kobryn (Meta) <jp.kobryn@linux.dev>
+> ---
+> v2:
+>   - Replaced single per-policy total counter (PGALLOC_MPOL_*) with
+>     hit/miss/foreign triplet per policy
+>   - Changed from global node stats to per-memcg per-node tracking
+> 
+> v1:
+> https://lore.kernel.org/linux-mm/20260212045109.255391-2-inwardvessel@gmail.com/
+> 
+>  include/linux/mmzone.h | 20 ++++++++++
+>  mm/memcontrol.c        | 60 ++++++++++++++++++++++++++++
+>  mm/mempolicy.c         | 90 ++++++++++++++++++++++++++++++++++++++++--
+>  mm/vmstat.c            | 20 ++++++++++
+>  4 files changed, 187 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 7bd0134c241c..c0517cbcb0e2 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -323,6 +323,26 @@ enum node_stat_item {
+>  	PGSCAN_ANON,
+>  	PGSCAN_FILE,
+>  	PGREFILL,
+> +#ifdef CONFIG_NUMA
+> +	NUMA_MPOL_LOCAL_HIT,
+> +	NUMA_MPOL_LOCAL_MISS,
+> +	NUMA_MPOL_LOCAL_FOREIGN,
+> +	NUMA_MPOL_PREFERRED_HIT,
+> +	NUMA_MPOL_PREFERRED_MISS,
+> +	NUMA_MPOL_PREFERRED_FOREIGN,
+> +	NUMA_MPOL_PREFERRED_MANY_HIT,
+> +	NUMA_MPOL_PREFERRED_MANY_MISS,
+> +	NUMA_MPOL_PREFERRED_MANY_FOREIGN,
+> +	NUMA_MPOL_BIND_HIT,
+> +	NUMA_MPOL_BIND_MISS,
+> +	NUMA_MPOL_BIND_FOREIGN,
+> +	NUMA_MPOL_INTERLEAVE_HIT,
+> +	NUMA_MPOL_INTERLEAVE_MISS,
+> +	NUMA_MPOL_INTERLEAVE_FOREIGN,
+> +	NUMA_MPOL_WEIGHTED_INTERLEAVE_HIT,
+> +	NUMA_MPOL_WEIGHTED_INTERLEAVE_MISS,
+> +	NUMA_MPOL_WEIGHTED_INTERLEAVE_FOREIGN,
+> +#endif
 
-Awesome, we can request to have a joint session between MM and BPF to discuss
-these topics. I know Emil and Tal are also interested in upstreaming
-cached_ext. So, we have multiple topics in the intersection of MM and BPF.
+I have not looked into what these metrics mean but these are too many, at least
+for the memcg. For the memcg, there is significant memory cost for each metric
+added to memcg.
 
 
