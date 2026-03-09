@@ -4,91 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95543EF36FC
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 07:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1FC2EF3700
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Mar 2026 08:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A4636B0089; Mon,  9 Mar 2026 03:58:14 -0400 (EDT)
+	id 165726B0088; Mon,  9 Mar 2026 04:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086786B008A; Mon,  9 Mar 2026 03:58:14 -0400 (EDT)
+	id 1262F6B008A; Mon,  9 Mar 2026 04:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED4DD6B008C; Mon,  9 Mar 2026 03:58:13 -0400 (EDT)
+	id 010ED6B008C; Mon,  9 Mar 2026 04:02:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DFB5B6B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 03:58:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1154C1DE6
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:58:13 +0000 (UTC)
-X-FDA: 84525771666.22.897FF84
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 030B11C0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 07:58:11 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sClTN7LR;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773043092;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DE4306B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 04:02:06 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D9E413BAD8
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:02:06 +0000 (UTC)
+X-FDA: 84525781452.24.DD1D45D
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com [209.85.222.49])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 64DAF16000A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 08:02:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oOV0xii1;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773043324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lKOGQSccnOLIOvszIRzBg7Fo7IwCwzoMUoz3ymuPxCY=;
-	b=CuyMOC82TYQtiyX8G8h1+kG22ryjOcioZHsbHGKbeqTS68y7lAcDekuDkL3nfJBEvKJ3eP
-	PvKi7wUffr2GcDC9WQML59pOvTOJ7V1YMWD1fV4dFH4eGjkw5irTILxalVff97SdkFC9/5
-	f3VgIkhg5ttTOXsYNaCSE12djpuuwBA=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sClTN7LR;
-	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773043092; a=rsa-sha256;
-	cv=none;
-	b=cOahwB1lphA1z47z5Pen2VNBlnTh1f+T1rgw2q4ta60c+WvBdySJkS2qMcKIG/8pGEkx3Y
-	SWrGGsod4Xkxxw2GLYwbifD4FsrPvIRXGbKmbQS67lZ3pZOjZ3LQsGIi8MHVkXAZmgeT+n
-	M476gy/ic96DPvWGRZ+jUcr7UDN4n/4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC441429CD;
-	Mon,  9 Mar 2026 07:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC603C4CEF7;
-	Mon,  9 Mar 2026 07:58:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773043090;
-	bh=hUC6isBD58pUbu3zVQBoLKKC8yyRHkrLeQRdXS+SnP0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sClTN7LRV3iwwY9qz66NghmzMC8SpFSJbToxuVy4BVF5uIomByFWf3jOe0N052pJb
-	 uGYnS+e2Nl7h6qc/xPnGiuWuT6Lx2UqprA0i4ePdVTT0EqQKE/XFW4qBzKuwGFG/PR
-	 EMIjY7nVuZ+omD39r4Fcjg796/5SL6xhmpQxmrNDwi71hiDNxioYYIcNHhzvwRLIkP
-	 GQgPKYtajX8JfO3HNU2AdGOb1aV6pNNz0z/7ASY1/kllgQEU/XBIqqsedf7Tux28uE
-	 LwbmzHcnOak0ZNfG+o/1MA//Vl9PJZZzXyauDhQHAqkLr884ErpdVNyyU4yxM/XU9N
-	 XHRftrpNAG3nQ==
-Date: Mon, 9 Mar 2026 09:58:02 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	usamaarif642@gmail.com, SeongJae Park <sj@kernel.org>,
-	kernel-team@meta.com
-Subject: Re: [PATCH v7 2/6] kho: rename fdt parameter to blob in
- kho_add/remove_subtree()
-Message-ID: <aa59irg2P-sejKO5@kernel.org>
-References: <20260306-kho-v7-0-404d14c188bb@debian.org>
- <20260306-kho-v7-2-404d14c188bb@debian.org>
+	bh=5iKTwpN//vgpsNCCXbcsIw/eIDxxyup8fH8lZJsZvpA=;
+	b=mXZwDOYwQ+/9wMXsrJ90TN056jhdSqjMMHTsMdNCg2YZ/8DZVLLeZDIdt7vIU93yEMm2qj
+	p92Wnsoeo57OloJqMcgo8OXGwHjNxE6Gb8iB2qEHiEiny5f696SkSwJTVcSfUwlWkrAnT4
+	0YJo1BuQOQdzv10hZ79AC79yZt+3cgc=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=oOV0xii1;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.222.49 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773043324; a=rsa-sha256;
+	cv=pass;
+	b=ux9J1L0kgIZCCQpjCskUi6H2K4vEKTViR6M0O7Regw9QXzRGi3FOZJwZXIDI1CYU81+J/Z
+	yZuGOchsPVkGNBG2Jv28OJQWAlMxuc5QSdlFdJ3O+cGf10DswnWENotyHlo+YVmnFeXc1E
+	h+OCCh8V948ZrYwHtK7QSVUNRKlcOBM=
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-94de4f5531eso3566430241.0
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 01:02:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773043323; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N26Ev++rUOxfAEZQwQzCeh+04wWHt2R1Gc/Wu0XHLEEdHXoANIT/scNFqg5lfQf76N
+         YoXp9dHluBslW2Qfd7S7C9fzxgz9BAkqLSBcqYAPeuMWgwHYhXI+5eQ3AbHMzns4nJIW
+         uiaISez97nam1uNs37Jt7ke12nBgllAO11C0dNXpLhvtWkNMOt7LoDhyXCBqP1U4m4ts
+         T9HkcsCftKyJg4lm2yIHH/sJCzRhD2uMp8rslPfBx4aYiaUh3EEgT5VCCi58i19Do6UY
+         bsxmUNpi0gafQHDjhDqVRV7IuZw21XNp3ehi/3Bpib+QOnj6ciGEZJ7vJ7NULDHH7XNp
+         SvBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=5iKTwpN//vgpsNCCXbcsIw/eIDxxyup8fH8lZJsZvpA=;
+        fh=jXsdAt6T6XIwtnjPsQFu6y+RJU87nUfQQ0ReJLReFcI=;
+        b=FBsUf/tjKX0uJL2Paosdiq8vMK8RsoWzCwMb/DekaG19JnY7CA+QV2hc9U6PO0j8B9
+         EIEn0dSlKy+zq26MYmwwpuPSgR6cv30Y/Bm+j8qqNymPjBh//ne/EyiSHb0k4i8TxdSo
+         5IvVFomTVCJvrmV8OzU+yKgkUP3qXizJrXaR/tQ8j/HrerlDe59BL/a4VlCtJbXtRrr5
+         /mGQr7eZFtz3KzGxivUNyylwV1GdSWt8aa7zhFWW83MA3Yr+divsnXSKuT9oWFqJg58T
+         wL3tnaNlDr35LDN4FwbOg3DhKoTy1Ca+nVHz5yRGGD+zagCg+cxGFttdONDoTon1oLth
+         jENw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773043323; x=1773648123; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5iKTwpN//vgpsNCCXbcsIw/eIDxxyup8fH8lZJsZvpA=;
+        b=oOV0xii14awuq8gEh0GSloKd3vwZzmg5MFZ0XHCTNPok7kFfylq6BJKHhIanlm2oed
+         MPL9boPQC5/mCqpoJDvf9TDbew4I3smZyPhtYsnpJl2xbtGyM9wjaikLJworL2rJhl6b
+         seCNRvl21wDAHVbOwiLvvfdYaxmjW40/gLbmZNQbj2DZn6z/q4GSZxFhvtF3puYP32ge
+         m7DPC5kqjWN46SibkXXdUkertNBkdUYjcneyXrKYlslvszzEjgUYunMY6Cq67NYgrdWj
+         eemc1vJrh68ghFKzHVCq+skyJ/+jpOKSmLLT1MWhokrWZDkaMmzNXyGRgF2B23k3o2gU
+         vAVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773043323; x=1773648123;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5iKTwpN//vgpsNCCXbcsIw/eIDxxyup8fH8lZJsZvpA=;
+        b=CGoykgbjMIU2BePmSY2x1LgIg/XtZJUOCFCkwEoD8nGV14aa6FAITQkK3HoIagkT9z
+         ttad7z8gU/CjpV9nCmwUh3VcQnKjKFqoL4O5KddeBvDm+ojL9DClTWPcFiaUtsDXbnEa
+         JeIG7gv9Z3zwKRfFqcAoeE+k9i62gftgWLaud/6vfountQMfDdpHM2E31CofrdZg58FY
+         W8J1c08aKCgUzbwOqxPWhM2C/03+1uRwa9AQ1G5RJboqf3788B+hjgOwPw777n1z3jQi
+         ZUNwKkB7EtmK3p2C2V6TA5t2gtPGK6W4V81AuzL43YPcwa/+nJ4Fqe9fa+QJzXoPI8jV
+         VyIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdGIDf4CahV0ha8puQg0+ahENO3wUjZBvgmZvoPEYzGYTFMwTWQ3xsOsXquU6NAAJyfBuwDBT/qQ==@kvack.org
+X-Gm-Message-State: AOJu0YyxdNkd06FYCmAu6hxrTeMbCPJElNNQF+ois+6Om0BjEdHMIzDs
+	rM0+T7wP7974/EsqrLVlzOFQLVIoILQSaHrPq/rOWupG5r7iIE9ypEArqQ8Cd4IkMKG0/sXNRf8
+	veToX/dx99i8cXHPXkdN3DlJP/3244XWJnvgVOgQV
+X-Gm-Gg: ATEYQzyaXdV7ZHYMy+NqQA2U1bDUmF5aWpcBrGNVMnG2aSBoHhubSZd1rvuxP4iGgfK
+	2ypY7RL7O0UByq6K4fIg8x2gvgWwqhCfgHb0+dGfYB47T8I7JAaeQTVwU5DJdYy2lW92Hby7OUj
+	aiHMuecoRefmYor6zPntXpDZDyUDRPPo1Jwb1DCzdO/7bKpgUFXjE5kNJpkTIt8uq0xTD8tbHln
+	9MXc13ykk4Pe1a1WLpQaaCtSYYcLdKAWju+6ZkdTckKYrHJXNO7XXkyHPS8Fk4OvOYuDOQxuKiD
+	p8+99Adnv5h0iSFEeT/RNnjSTb8dwI44ZfnVpj4mmjqlIs7EDoiwVvP7+XDJdVbg6cSqyA==
+X-Received: by 2002:a05:6102:4194:b0:5ff:cee8:660c with SMTP id
+ ada2fe7eead31-5ffe61bf0d2mr3868411137.31.1773043322886; Mon, 09 Mar 2026
+ 01:02:02 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 9 Mar 2026 01:02:02 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 9 Mar 2026 01:02:02 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aahNprLw0_Cdhzxp@google.com>
+References: <20260225-gmem-st-blocks-v2-0-87d7098119a9@google.com>
+ <20260225-gmem-st-blocks-v2-2-87d7098119a9@google.com> <5097ff66-b727-4eac-b845-3bd08d1a0ead@suse.com>
+ <aahNprLw0_Cdhzxp@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306-kho-v7-2-404d14c188bb@debian.org>
-X-Rspamd-Queue-Id: 030B11C0005
-X-Stat-Signature: ux1e44gtu9au4ngioyzxjnej63qwaur3
+Date: Mon, 9 Mar 2026 01:02:02 -0700
+X-Gm-Features: AaiRm52tdsuammFV80Tf5JuKg-WPQwxrDNCct9c5X_bV6T_IkMHGIVZ0r4R166A
+Message-ID: <CAEvNRgFwyqY0q-PTvMGjK82rxvbCfPxK8-RUPML3w_8mzAk8xA@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 2/6] KVM: guest_memfd: Directly allocate folios
+ with filemap_alloc_folio()
+To: Sean Christopherson <seanjc@google.com>, Vlastimil Babka <vbabka@suse.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	rientjes@google.com, rick.p.edgecombe@intel.com, yan.y.zhao@intel.com, 
+	fvdl@google.com, jthoughton@google.com, vannapurve@google.com, 
+	shivankg@amd.com, michael.roth@amd.com, pratyush@kernel.org, 
+	pasha.tatashin@soleen.com, kalyazin@amazon.com, tabba@google.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 64DAF16000A
+X-Stat-Signature: 5amk79dohkfk8ah851rff5nnf3e34ifm
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773043091-31464
-X-HE-Meta: U2FsdGVkX19Kkdao/Ud29OZbAmyX9i9906dZ97Uy7sCyKjEHIpTT8H3cun6LklrhrBtXvdKMpKg9qq6xEJzhTeGF3p2m5BdYYu3dm7mhhN7E2B3O0gL53x7XaeWWOOs963KiwRvB6M0eRFVZG8TPjY0o/4C3GpZWvPQEUn6pM6+VWLH+F548jd+sU/QZbuAUsGkP1OCCkN8LdmxxEu8NbjgeDKPC7qMo3xyYntNBbm0jEtGPshlCGbMmE30D0WVrkrZXjVkUceD0Qqt47cizUoiqlnajNGqzPJhD+/0ub7e2QvvcskqJi4isc29Ctq/UGlf6924AO/vJCTkVJGCZ+HQ+N+4oEnBXBh+X3ogi9b/u5BxKN3AApiqmY2mv+ZZVKezhGe8vwdlfwfFwewT9ZH33gjTzBDkt3bCOlnYOVkVoEOv5UNlbdvnnYvxm+z1ydln9HqAIpe4JKnfM/RAKauG98vanXWQ+/YaV+K0kyBgKQ3ITgwF3Cb9St0D3uPZnLDgsUZt0OAplzqgFYuRQQS94d5qdfeYmgFXbKABtfCigg3+vg+Jkyw/GgYjqYB82cu3NsNZZ8wM2u8xViUg0/Lj4yqhGu0R2R5ePm2eQMkOmF0PWOXvinFhJUOUzWTzHnXuOD47vBTUojbju1S/uKQdAVAYHJah87/VQvuVBbBn0wUS/eoI35QqIYMEZ9Hpbo+TLsOvkRSgIgs7UakNiLqDFwDYqxNJqU/ZRhMRNsuI8gHg//ZsdVrgTLJCGaifuwBoMPKjQ8lzaFb2LeJJVmgw0s3iuxKvGrdoVdemgNrNrqedPsaSWOnyeNEZ7F72kLkNynI2PnV6ag23567OEyhn9cBP/NHc8Ed4zX0lNkRsXSk5UgKZmc38oECrlBLKfbFuZwoqkwBMr29UXWW8Nx7Jhv17sFmntfFxnj4mHi4/rvkC4BQ2r3DF2wRvlgJMcPAaEl+AT0IeowMP+wYv
- js9hZHRX
- JX1DqlVcaV4RYtvzuxsG0PTaCAeLjJ7koMG3FHBrk6h/DSox21oZOUU+xOzr4jf9Jjyc5wHnW5MZ/+hhuriak9wf9or06xxBiMq0Mi9lqBkFMnKd6nUPG5pgT3d+t/u+gZGUTQ0x4F+PbJsNdH0JIYEA6m92CVoBWVTHLzPYgGPAHbmToGzChGL8+5IE57PvTND+OFCkvZjz5ZFTmu3yHv7fzXwvLSWf+coOgb0JAsl+29m71bYjzPQdqGxm4jY5YTa8yaKPK6XGTmxs2PlnDqfdYEFl+Ft6xTW6Z5X9VTo51BcYvo0aQHxTVFQkXCKgYvdZmR+QEocbPCCUk0+rRAhlY1NEdDSJhrHuz
+X-HE-Tag: 1773043324-852989
+X-HE-Meta: U2FsdGVkX1+byPLuKtWbzWNkBGEGU7VB2ecD/0f1/aTdjhSieJMAVMH+XE/tk1jXoNmKv+gZ/0bsNXjU8zCPpniWtx1IGyc+mA3TLhj7yu/wXtHX799U3Bi7xRhsYQ73QuNooU6AVDDLaZRbTYmcjSGcql9fRgaJfLdvbg3Ks60UUMEW5iFzlXGi1mDr1No8uN/x7wiAhlBicnPo8AEw/dossivERkBzPcC/i2rnRJm8+x6aaz2wn5IVo7SuejQNOVd5FeszPLmSHMyXPSYSA7wVp3wpGQiaXVy5+C6engKS9oPKa12ofB+d+Txz0O67McICt+1gqqKxAPvfsceCxEimM7o9D+vU+UnjXNe+PgECbyjIGFhlwrg00NJqBi802NBMIH6I5u/5m5Kuc15sFEOT5TgyZDp10FKFmzvkuNlhJaqtNCvmCJ8KAbEhkB7W9MacKcywFtYSppGdyrYLY31+EXkq9UIF3ECiNkQ0e31gm7i9kTefa2VgpUMA5ZRDTe/U26QXnFi5qvI7DS+YfW5hSt966evMk3Ke4sYmoxF4shb7oUjww1WGzXyfqK0dNLlrAD01nc+OlF0E5Utfl0xomRfTi0Smnm4Vd8TXAOllfm1SgAjfFkzgzgXKKJp1Faar4E94oZM2zdJ6MvZDtg65a/oC+y/lRtov+AHpYdH/FQvax+uAmSN0xja8RCdPTQtWbbsCi5filzUmoG3HfYPSMvdD/9d+l+qZ7G5ssBRrTzTHgRK1WvgTLF9uFTfn7dj6+PW5uOsDXBtSmHvoCiEP7YEeQel4wCKxPtFr9gqP49iaIeqHZre9hzG0KZiiWRiCSkmdCZhwdhAWa9iFu5ea6ffj/U30LF6Kgc/6P4VGjYSPGdMnDWREa2UL3uP4d6HaZhYlPE+zF81rl6oOYs5CAtIGWJHWJGmw4hMyDVzZUWYtXRUwXqj4ZLr3fix86WBwxRUowLuCDVmkgkY
+ mRGDSjiZ
+ siWIweL0n2deB/UKtPRcUf8eH9BmJEB8jWRG82S0vAVo9VeVc6+5pvBOTeQ/cRGtpjNJDQfptpcZxFgLanE1FnzqRsjmJUYW8mH2B5vCpTtrcLFYoB9CZClm/93gd2akL0eu2rT8NpITQTbhHYK8bcDiPknZ9zv4duQ3WwgAHkq32warfnhc6/1GZX5mWYIj8vIkk7dMLpyg3WhBDcalehj/jZSpIjhAkQlvFsesC8gk8i0oofT9QNq/MagnuJrQd5l4RHJ0s5/gR+TGNzz9r1rhA+97g1S7bhgbAHs5EXMjAeg/QYdV7UWZ+kP17KUWG+FiwQXVupBlADlW1NX/oz73OGiXn3ndj47T+7G1R0AIvcmiu+Ykxa1tW+A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,250 +153,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Mar 06, 2026 at 04:39:21AM -0800, Breno Leitao wrote:
-> Since kho_add_subtree() now accepts arbitrary data blobs (not just
-> FDTs), rename the parameter from 'fdt' to 'blob' to better reflect
-> its purpose. Apply the same rename to kho_remove_subtree() for
-> consistency.
-> 
-> Also rename kho_debugfs_fdt_add() and kho_debugfs_fdt_remove() to
-> kho_debugfs_blob_add() and kho_debugfs_blob_remove() respectively,
-> with the same parameter rename from 'fdt' to 'blob'.
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+Sean Christopherson <seanjc@google.com> writes:
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> On Mon, Mar 02, 2026, Vlastimil Babka wrote:
+>> On 2/25/26 08:20, Ackerley Tng wrote:
+>> > __filemap_get_folio_mpol() is parametrized by a bunch of GFP flags, which
+>>
+>>                                                            FGP?
+>>
+>> > adds complexity for the reader. Since guest_memfd doesn't meaningfully use
+>> > any of the other FGP flags, undo that complexity by directly calling
+>> > filemap_alloc_folio().
+>> >
+>> > Directly calling filemap_alloc_folio() also allows the order of 0 to be
+>> > explicitly specified, which is the only order guest_memfd supports. This is
+>> > easier to understand,
+>
+> That's debatable.  IMO, one isn't clearly better than the other, especially since
+> filemap_lock_folio() is itself a wrapper for __filemap_get_folio_mpol().  And there
+> is a cost to open-coding, as it means we risk missing something if there's a change
+> in __filemap_get_folio_mpol() that's beneficial to guest_memfd.
+>
+> As Vlastimil said, if this greatly simplifies accounting, then I'm ok with it.
+> But the changelog needs to focus on that aspect, because I don't see this as a
+> clear win versus using __filemap_get_folio_mpol().
+>
 
-> ---
->  include/linux/kexec_handover.h              |  8 ++++----
->  kernel/liveupdate/kexec_handover.c          | 25 +++++++++++++------------
->  kernel/liveupdate/kexec_handover_debugfs.c  | 25 +++++++++++++------------
->  kernel/liveupdate/kexec_handover_internal.h | 16 ++++++++--------
->  4 files changed, 38 insertions(+), 36 deletions(-)
-> 
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index abb1d324f42d0..0666cf298c7f4 100644
-> --- a/include/linux/kexec_handover.h
-> +++ b/include/linux/kexec_handover.h
-> @@ -32,8 +32,8 @@ void kho_restore_free(void *mem);
->  struct folio *kho_restore_folio(phys_addr_t phys);
->  struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages);
->  void *kho_restore_vmalloc(const struct kho_vmalloc *preservation);
-> -int kho_add_subtree(const char *name, void *fdt, size_t size);
-> -void kho_remove_subtree(void *fdt);
-> +int kho_add_subtree(const char *name, void *blob, size_t size);
-> +void kho_remove_subtree(void *blob);
->  int kho_retrieve_subtree(const char *name, phys_addr_t *phys);
->  
->  void kho_memory_init(void);
-> @@ -97,12 +97,12 @@ static inline void *kho_restore_vmalloc(const struct kho_vmalloc *preservation)
->  	return NULL;
->  }
->  
-> -static inline int kho_add_subtree(const char *name, void *fdt, size_t size)
-> +static inline int kho_add_subtree(const char *name, void *blob, size_t size)
->  {
->  	return -EOPNOTSUPP;
->  }
->  
-> -static inline void kho_remove_subtree(void *fdt) { }
-> +static inline void kho_remove_subtree(void *blob) { }
->  
->  static inline int kho_retrieve_subtree(const char *name, phys_addr_t *phys)
->  {
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 55bdc5d2d1929..ebaf3104c36ab 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -749,13 +749,13 @@ static void __init kho_reserve_scratch(void)
->  }
->  
->  /**
-> - * kho_add_subtree - record the physical address of a sub FDT in KHO root tree.
-> + * kho_add_subtree - record the physical address of a sub blob in KHO root tree.
->   * @name: name of the sub tree.
-> - * @fdt: the sub tree blob.
-> + * @blob: the sub tree blob.
->   * @size: size of the blob in bytes.
->   *
->   * Creates a new child node named @name in KHO root FDT and records
-> - * the physical address of @fdt. The pages of @fdt must also be preserved
-> + * the physical address of @blob. The pages of @blob must also be preserved
->   * by KHO for the new kernel to retrieve it after kexec.
->   *
->   * A debugfs blob entry is also created at
-> @@ -764,9 +764,9 @@ static void __init kho_reserve_scratch(void)
->   *
->   * Return: 0 on success, error code on failure
->   */
-> -int kho_add_subtree(const char *name, void *fdt, size_t size)
-> +int kho_add_subtree(const char *name, void *blob, size_t size)
->  {
-> -	phys_addr_t phys = virt_to_phys(fdt);
-> +	phys_addr_t phys = virt_to_phys(blob);
->  	void *root_fdt = kho_out.fdt;
->  	int err = -ENOMEM;
->  	int off, fdt_err;
-> @@ -789,7 +789,8 @@ int kho_add_subtree(const char *name, void *fdt, size_t size)
->  	if (err < 0)
->  		goto out_pack;
->  
-> -	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, name, fdt, size, false));
-> +	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
-> +					  size, false));
->  
->  out_pack:
->  	fdt_pack(root_fdt);
-> @@ -798,9 +799,9 @@ int kho_add_subtree(const char *name, void *fdt, size_t size)
->  }
->  EXPORT_SYMBOL_GPL(kho_add_subtree);
->  
-> -void kho_remove_subtree(void *fdt)
-> +void kho_remove_subtree(void *blob)
->  {
-> -	phys_addr_t target_phys = virt_to_phys(fdt);
-> +	phys_addr_t target_phys = virt_to_phys(blob);
->  	void *root_fdt = kho_out.fdt;
->  	int off;
->  	int err;
-> @@ -822,7 +823,7 @@ void kho_remove_subtree(void *fdt)
->  
->  		if ((phys_addr_t)*val == target_phys) {
->  			fdt_del_node(root_fdt, off);
-> -			kho_debugfs_fdt_remove(&kho_out.dbg, fdt);
-> +			kho_debugfs_blob_remove(&kho_out.dbg, blob);
->  			break;
->  		}
->  	}
-> @@ -1452,9 +1453,9 @@ static __init int kho_init(void)
->  		return 0;
->  	}
->  
-> -	WARN_ON_ONCE(kho_debugfs_fdt_add(&kho_out.dbg, "fdt",
-> -					 kho_out.fdt,
-> -					 fdt_totalsize(kho_out.fdt), true));
-> +	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, "fdt",
-> +					  kho_out.fdt,
-> +					  fdt_totalsize(kho_out.fdt), true));
->  
->  	return 0;
->  
-> diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-> index b5a1e09ca8f14..7a100f2bf3947 100644
-> --- a/kernel/liveupdate/kexec_handover_debugfs.c
-> +++ b/kernel/liveupdate/kexec_handover_debugfs.c
-> @@ -23,8 +23,9 @@ struct fdt_debugfs {
->  	struct dentry *file;
->  };
->  
-> -static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
-> -				 const char *name, const void *fdt, size_t size)
-> +static int __kho_debugfs_blob_add(struct list_head *list, struct dentry *dir,
-> +				  const char *name, const void *blob,
-> +				  size_t size)
->  {
->  	struct fdt_debugfs *f;
->  	struct dentry *file;
-> @@ -33,7 +34,7 @@ static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
->  	if (!f)
->  		return -ENOMEM;
->  
-> -	f->wrapper.data = (void *)fdt;
-> +	f->wrapper.data = (void *)blob;
->  	f->wrapper.size = size;
->  
->  	file = debugfs_create_blob(name, 0400, dir, &f->wrapper);
-> @@ -48,8 +49,8 @@ static int __kho_debugfs_fdt_add(struct list_head *list, struct dentry *dir,
->  	return 0;
->  }
->  
-> -int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
-> -			const void *fdt, size_t size, bool root)
-> +int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
-> +			 const void *blob, size_t size, bool root)
->  {
->  	struct dentry *dir;
->  
-> @@ -58,15 +59,15 @@ int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
->  	else
->  		dir = dbg->sub_fdt_dir;
->  
-> -	return __kho_debugfs_fdt_add(&dbg->fdt_list, dir, name, fdt, size);
-> +	return __kho_debugfs_blob_add(&dbg->fdt_list, dir, name, blob, size);
->  }
->  
-> -void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt)
-> +void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob)
->  {
->  	struct fdt_debugfs *ff;
->  
->  	list_for_each_entry(ff, &dbg->fdt_list, list) {
-> -		if (ff->wrapper.data == fdt) {
-> +		if (ff->wrapper.data == blob) {
->  			debugfs_remove(ff->file);
->  			list_del(&ff->list);
->  			kfree(ff);
-> @@ -112,8 +113,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
->  		goto err_rmdir;
->  	}
->  
-> -	err = __kho_debugfs_fdt_add(&dbg->fdt_list, dir, "fdt", fdt,
-> -				    fdt_totalsize(fdt));
-> +	err = __kho_debugfs_blob_add(&dbg->fdt_list, dir, "fdt", fdt,
-> +				     fdt_totalsize(fdt));
->  	if (err)
->  		goto err_rmdir;
->  
-> @@ -132,8 +133,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
->  			continue;
->  		}
->  		sub_fdt = phys_to_virt(*fdt_phys);
-> -		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
-> -					    sub_fdt, fdt_totalsize(sub_fdt));
-> +		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
-> +					     sub_fdt, fdt_totalsize(sub_fdt));
->  		if (err) {
->  			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
->  				ERR_PTR(err));
-> diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
-> index 2a28cb8db9b0a..0399ff1077750 100644
-> --- a/kernel/liveupdate/kexec_handover_internal.h
-> +++ b/kernel/liveupdate/kexec_handover_internal.h
-> @@ -26,19 +26,19 @@ extern unsigned int kho_scratch_cnt;
->  int kho_debugfs_init(void);
->  void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt);
->  int kho_out_debugfs_init(struct kho_debugfs *dbg);
-> -int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
-> -			const void *fdt, size_t size, bool root);
-> -void kho_debugfs_fdt_remove(struct kho_debugfs *dbg, void *fdt);
-> +int kho_debugfs_blob_add(struct kho_debugfs *dbg, const char *name,
-> +			 const void *blob, size_t size, bool root);
-> +void kho_debugfs_blob_remove(struct kho_debugfs *dbg, void *blob);
->  #else
->  static inline int kho_debugfs_init(void) { return 0; }
->  static inline void kho_in_debugfs_init(struct kho_debugfs *dbg,
->  				       const void *fdt) { }
->  static inline int kho_out_debugfs_init(struct kho_debugfs *dbg) { return 0; }
-> -static inline int kho_debugfs_fdt_add(struct kho_debugfs *dbg, const char *name,
-> -				      const void *fdt, size_t size,
-> -				      bool root) { return 0; }
-> -static inline void kho_debugfs_fdt_remove(struct kho_debugfs *dbg,
-> -					  void *fdt) { }
-> +static inline int kho_debugfs_blob_add(struct kho_debugfs *dbg,
-> +				       const char *name, const void *blob,
-> +				       size_t size, bool root) { return 0; }
-> +static inline void kho_debugfs_blob_remove(struct kho_debugfs *dbg,
-> +					   void *blob) { }
->  #endif /* CONFIG_KEXEC_HANDOVER_DEBUGFS */
->  
->  #ifdef CONFIG_KEXEC_HANDOVER_DEBUG
-> 
-> -- 
-> 2.47.3
-> 
-> 
+FGF_GET_ORDER() indeed caps the order at 0. I was overly focused on the
+earlier line where it did mapping_min_folio_order(), where I thought
+other code could possibly influence the eventual order.
 
--- 
-Sincerely yours,
-Mike.
+I'll revert to __filemap_get_folio_mpol() in the next version and see
+how that goes. Thanks!
+
+> And if we go through with this, we should probably revert 16a542e22339 ("mm/filemap:
+> Extend __filemap_get_folio() to support NUMA memory policies"), because guest_memfd
+> is/was the only user.
+>
+>> > +static struct folio *__kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>> > +{
+>> > +	/* TODO: Support huge pages. */
+>> > +	struct mempolicy *policy;
+>> > +	struct folio *folio;
+>> > +	gfp_t gfp;
+>> > +	int ret;
+>> > +
+>> > +	/*
+>> > +	 * Fast-path: See if folio is already present in mapping to avoid
+>> > +	 * policy_lookup.
+>> > +	 */
+>> > +	folio = filemap_lock_folio(inode->i_mapping, index);
+>> > +	if (!IS_ERR(folio))
+>> > +		return folio;
+>> > +
+>> > +	gfp = mapping_gfp_mask(inode->i_mapping);
+>> > +
+>> > +	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+>
+> This is a potential performance regression.  Previously, KVM would do a policy
+> lookup once per retry loop.  Now KVM will do the lookup
+>
+> I doubt it will matter in practice, because on EEXIST filemap_lock_folio() should
+> be all but guaranteed to find the existing folio.  But it's also something that
+> should be easy enough to avoid, and it's also another argument for using
+> __filemap_get_folio_mpol() instead of open coding our own version.
 
