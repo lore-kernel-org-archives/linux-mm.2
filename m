@@ -4,95 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E73FD2D9A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:04:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15855FD2D9F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:08:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DEC86B00CC; Tue, 10 Mar 2026 10:04:58 -0400 (EDT)
+	id 4ED856B00C5; Tue, 10 Mar 2026 10:08:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29E186B00CE; Tue, 10 Mar 2026 10:04:58 -0400 (EDT)
+	id 49B486B00C6; Tue, 10 Mar 2026 10:08:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A7B6B00D1; Tue, 10 Mar 2026 10:04:58 -0400 (EDT)
+	id 3C8816B00CA; Tue, 10 Mar 2026 10:08:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 043556B00CC
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:04:58 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D969F569FF
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:04:56 +0000 (UTC)
-X-FDA: 84530324592.03.522C6F6
-Received: from lankhorst.se (unknown [141.105.120.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4A4FE12001B
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:04:54 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 28A976B00C5
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:08:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D73B4898AC
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:08:11 +0000 (UTC)
+X-FDA: 84530332782.02.4EED714
+Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1B2CE120016
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:08:09 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=lankhorst.se header.s=default header.b=TDCpneR7;
-	spf=pass (imf29.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773151495;
+	s=arc-20220608; t=1773151690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nw+2RI1UdZCQMNTBlqjHNx0WyDX4h7rXKbPOwoHtiCU=;
-	b=I+4v3atuO6UtUJoIth61aec/KthrYoDJ61q7thq3m5z/O3rHCthS8dziEK9bcmHQh4/6M3
-	g9MtR8OZF1lBnhIXQ2dYVihF+J9tmILX3nHu3TBC+MHHNa+HnLwS4MQ/Gi7U1lgr3Uncec
-	WAzOrWJy6MF5CpinQLn8UePnF1rKRw8=
+	 in-reply-to:in-reply-to:references:references;
+	bh=HPL66xu6ufWwmWtPeO/cE7zqEYWvLRdiXRFNaq8HLM4=;
+	b=WhhKejIuWNI1QDvmFpcrfcR+8CICVEFdyrWfEjIma+wY/LtfSyV9uglaky+cTNiLEIxKxO
+	PHZ3f1tUColHj1SIHXyZAKSwOuAlk4ckVlGzuOAR1IVIHDvBp3Y06FtFsvHU1JOPejdAES
+	A6UcZTcQiOG3gOt7mOim2smeHOUVkIs=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=lankhorst.se header.s=default header.b=TDCpneR7;
-	spf=pass (imf29.hostedemail.com: domain of dev@lankhorst.se designates 141.105.120.124 as permitted sender) smtp.mailfrom=dev@lankhorst.se;
-	dmarc=pass (policy=none) header.from=lankhorst.se
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773151495; a=rsa-sha256;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773151690; a=rsa-sha256;
 	cv=none;
-	b=fVkXVCVR5aT90fR33vcmIc8fRegcbfO8xdQN2CwGbMx/Gpo+WTdX9ibCjzhya1dkKZTcQ6
-	2t/LxbsEP26x4omuZP5M7GoA2hMeQPJgtm56EA0QJZ9TRMfRJMq6Bp0JG01UJrjtJ/wguY
-	2Ik5cTpTs8bbjxwM0RbYnnsPvfJnI0I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
-	s=default; t=1773151492;
-	bh=AP771/2zE2q+ybEw63w0gq1+eWjICIZaqX8QtFkg6Y4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TDCpneR7rSc+QsWPXUAi5CDqj4FadL5YZY4sWe00jbEuKTQgONEFhoonbVt4hniNf
-	 VhpLLLWQ70xI8zDfoxRffkEJD9Askb5DHQB5opl/sY3VBGIkoHubgm/16dTNV7Dv7l
-	 65SQcXGQpw7u+HQJlObkfrVRGo/IsBev2GYqVhQx+ozIkqH3JwsNP+s8ClFNpzOjNV
-	 WzGgMkJnt/V6yyGNPf5bP2kxLY8pyxtUOmlz/ilsBK/2qYZg/NUxLU0APnuZbSaOn5
-	 iU2+iSnTJBC+Au5hP8hlzI+vmqOV8X0Q+GP4dTAGm2mZl8eiMr8A4P8V4dPjCi8aKE
-	 /+yh/IvMyNaYw==
-Message-ID: <250c4fe8-8f7a-4a0e-8439-53bb12987b3d@lankhorst.se>
-Date: Tue, 10 Mar 2026 15:04:50 +0100
+	b=OuSR8MDWBbNyTjhKkoNpa5xBqIHO3pSgDNhQklpegANEa9Pj2TVoiWivC3WbVbGej8n+28
+	k2Vr3WKxA2tchH9KuxH0l2fu5aSvIzLv65vzvcaXlpDEtPXHMoZKNSz8vf1HcXGdJUpiZb
+	QnkZV5qDJ9rvKy6JaQQcVMJ97wyID9E=
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CEFF1C171;
+	Tue, 10 Mar 2026 14:08:05 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 847E92D;
+	Tue, 10 Mar 2026 14:07:40 +0000 (UTC)
+Date: Tue, 10 Mar 2026 10:07:50 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+ bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH 15/61] trace: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+Message-ID: <20260310100750.303af303@gandalf.local.home>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-15-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+	<20260310-b4-is_err_or_null-v1-15-bd63b656022d@avm.de>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] mm/mmu_notifier: Allow two-pass struct
- mmu_interval_notifiers
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
- Simona Vetter <simona.vetter@ffwll.ch>, Dave Airlie <airlied@gmail.com>,
- Alistair Popple <apopple@nvidia.com>, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260305093909.43623-1-thomas.hellstrom@linux.intel.com>
- <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
-Content-Language: en-US
-From: Maarten Lankhorst <dev@lankhorst.se>
-In-Reply-To: <20260305093909.43623-2-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4A4FE12001B
-X-Stat-Signature: o8hadaticy9tsq3s5yst6d1ujtkfn7jp
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19Z3Tx1sMlUDFHS8YYPfSOpiqPw8cg/LfU=
+X-HE-Meta: U2FsdGVkX1+JWrMXdInzvBx9l2WUqahyoYUezPLaF3HICGuHpiLcos2NJHmqwFPLfM8ZBXZ6/fmTg/vlHLcqcaFGukyEZOsOE3kBaCKhhIkGksjLucUHfFRW8KX39dTkHeOQhZTWX/A0f9Y+1fWRMEQzHGhaJF2wpPshgb4yUxNCAKdeI6QYyukTSlQGbTY7Uxizi79ndrJuznFkrJ0f1Gh3JC2I5gazyCY5QhqLMJ9a9ShPFpKdZ7NDaPeyx31oXfa0p+bWWHR1R5JbGDYWhbllAgJDuEbxQsOff6UlFUV0L3hTo0f3pFVAKw4ZSe/3wUeKTGah6IcaIcnei7ziR9eK5k/ow6hfmOBOZGq2CLBxHUplOJMJzaQEF/IeU48U6bUZ8WiPpl/JDxwK03ucqBa/7oG+YB+etWyAxh+TKdi7NbCLCb6PbeExJ2cO76n2AdjJCB03SaDGNN90kGsLmA==
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773151494-56660
-X-HE-Meta: U2FsdGVkX1/ZMD53hTkCdujwdK7s5RVb3z1WbsNiPYznQGeyNcDpAfI0Q1rfuPZiqeoD0vNjkRh8hB6lusG61AnXyiYq6heKX6b1Z1NccuXgJHggCFiY/B3RMsL6O1GbU+FdfU4y8jFSXnrGmhl7lGjVaRxsbckd8iMtjslZHf4ZaQvOdVWCHuk9XpqvTEDQ8U2Acfi+uXjL526sGmS2C4qsL8Y8Q8A9oIv2WhjAr4AgWDX5IajVf5Wck7palE2c5mWP2jZUALjE//8NKnRP7HQJdhFovNcd+4A2cpwbn5nh6yd29Cfn/k99XJCOZAoHNSCRr6r5L8tIKIdgEednRXYtStrb6nVxp8n4baUSBbvcY+51MIMgyNRdfOYvMkiDhuTRlZeVFM6MktrVVslEy4zAEFnOclAKIJlmke3j7y2JouGH+nujjjGlYt0fy5krAhhs4fCZ3EjpaRQ4LBY/YMrLXxvynAmIwaZstTC4qz+HTiF+UTu7rtADgRtf6B28y0XVZY+aTQAeW3sOhGGfYyfKf0iPcFL8tb+5/ay3n7UeKifID6SuCHaKRU8IYz9YcYP04e2L/CEYUG0qlGYuy/mzfYpPVWtA2KnOx9iILDwwGj2sqOcobLhDA5CY+U5wcRyqO2UWC4UdI4UwlP127ZAfN1CbSWihAqS/3k4cBh9nCngqrpjN4yLq+rywtA7LpIxST4PQPuOdz+YIpL32TnNEnLZq2dNKTE1Ys8nl18pbCDTH4Uj9OcI6XlfeUwBSXxjDowA0TLpOMeCFaF++cu7d2pNbmI2Q4FVyPPkZB8WhYAZe46iXx4oooHeXSx8LL2f2f8mjXD8+zBUzTrcCpOxzrHb58HDPUML1/bn21pw7uZvWeveyQE+rKslS9HIgFgWO0OVJOTp4Bt3kplynlJcRsE0mSx9qqSjUHSihj11zNb4KoUblhNUkU6ehRs6u9sqclTmgNNI/97bFc16
- 9X4m4uCA
- E5zkF5cGeL9QCxhYkdOZ9Lu6mhZW2u4BT79uq/zJLJvEzC+32xzuGJGcUeBlOnCwfJGwDttDY279yuyPQh7eruc1lWiJrycHlY2QRJye4khgIe6n6fDbjV+MOWeGgGryKYOPds++AkQwhwF0o0spr7RHda8bxDkZp3yEBdfjjl4dwv/YuNFCTT7cDmszXhhj6QiG/ScvO/yN7myo8wEkjsYmAVFzhY//H88eQ6bKe57FLNQeZDZ48gKH7qe2bmh9g0zzHAbe2pLLhSIU744tS6EPUAPaZF0zp97WDZ6hjs7pjzbFdk0yOKktbCF0+YxRqJD5r9TQgMwO0Kt9/iECib+r8pDTRhN333I+a+wK6pLuRlkpmQhT743oQe7OLBQmYfj5Xbm3uv3TGvFd1usqH2BMNlTzjDb2chqtRq28whlKyctr6pWWPTBD29zErxsAeeBmlBWI/2Hj1SeSLhHMz3OO4vEaJVJvWQQ+HYrIt7/88WZ4sDxynfbLF3nMVQmP0+GJGbR2bdXnOQus9rKbSXdM8/PALTjjbre938XoFn14K5vP/E99ntz8AFrWhR2I8IhKxtSLn7i0IYTC8g82Chs4JsiQGYS1P+q+5WVBQmwk9Tmioo113ev0VuPiZBZtMUcqr5M1jfebtIFXLXuNan9FPORDZSzgxTORASzVkCSBvfa08EKQeWr9lYHQ2wyYJZsM6
+X-HE-Tag-Orig: 1773151660-993833
+X-Rspamd-Queue-Id: 1B2CE120016
+X-Rspamd-Server: rspam08
+X-Stat-Signature: 96g3re8yxfaeoumzj3ttytwhczwetqtf
+X-HE-Tag: 1773151689-198421
+X-HE-Meta: U2FsdGVkX19ycyHu+RR3EtH68Chlf+C+7cppba/jBZtBuQ6p0mc4FAGkbatrdwVXNOTr3QGvHj5FXx8O3CKBewIhBqQHFltfRwwDkyvVi3a7XmfYEL+tC5TPGxBNVgI846nN9whkw1N7WPzIbPbaoIpfUrkh3lTTbOR+RPqXBojWkqYK+l/yaxMsswq2TeyBuIoJ/Skmc9l45yqrK0/ayaJpU/FYrDCzM1MIA5Yq+Cg1Tb/cHqRoFPi+dgWB33i39inQP4jHMvdECgdUc2tmin1fkL/Lkx8mMf/4BEnYlgf/FgceL2jxmQgq5fqObiG6RKPH0af84PqCWz1QhO7Zmt4PC2fNyZTo4rbWuYq/T002SerSKKrg2tdPB7SkmMyP/Wp4+win2AGmjHEI0pLGzCssdaUCj5MvtMe4QThnkxtrX6Mtg3JsSHd4WV8rsY0CooEwQ98sb4bsHEfG/mrU+9GcoUzceRyJ/liw3b5vmP5/83XpzxL/fdFAAQVhBPy5iY4899/zASyM3gRfSeaWU7A1kQ5QHsUeb1G6HXCM8RP+0XC+Qii14mmyZU9SabrIeE7TRP4ycoeczhKyCn4EM+do6ajWj/v3EErsKIiG4krt01Aefv8VNJrazaERcf/Ys2XDlFPsXER9YzQds7Gr5om85kWkvPGX+cK/kIW3r2nrxZawAcb5h3WPi2Kb1PUQUww1xXiaxo72R1Njuzisb5uV7PjVBDLjbLrA+F61XXgrJjnqpaXFLdJF5Q9zZEFnirNwY9wiL7QYEjI3Au614CSBSnO7evUBED1yaTTE34kaloar/RlZp5asBtyMVzCYIruTAWfr62DU7sy97qjMD1WWyXT3flpZa05rjMDQAyWPeLLCIPg8mcGA5y87KJFRFm4yWrud7LvrbX27w6VCAMbz090rHO3tB1FwBeVvSx+oOPM27vrpyXqJYjbnM0CEw3qL4e71ZeH9g8ozvMs
+ fdejXJD9
+ 5BJtiT4p2oraNqBYn4ZhVASbcFyUVjyMxBfMexn9Eul0wjtrN5kSpJq0DIw8wxgX4Vy0I/19zWVmojAmZsLxv2dH2pgRL021Bg1eCpqpgv5dNdBfasJie2fSFPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,265 +110,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hey,
+On Tue, 10 Mar 2026 12:48:41 +0100
+Philipp Hahn <phahn-oss@avm.de> wrote:
 
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 
-Den 2026-03-05 kl. 10:39, skrev Thomas Hellström:
-> GPU use-cases for mmu_interval_notifiers with hmm often involve
-> starting a gpu operation and then waiting for it to complete.
-> These operations are typically context preemption or TLB flushing.
->
-> With single-pass notifiers per GPU this doesn't scale in
-> multi-gpu scenarios. In those scenarios we'd want to first start
-> preemption- or TLB flushing on all GPUs and as a second pass wait
-> for them to complete.
->
-> One can do this on per-driver basis multiplexing per-driver
-> notifiers but that would mean sharing the notifier "user" lock
-> across all GPUs and that doesn't scale well either, so adding support
-> for multi-pass in the core appears to be the right choice.
->
-> Implement two-pass capability in the mmu_interval_notifier. Use a
-> linked list for the final passes to minimize the impact for
-> use-cases that don't need the multi-pass functionality by avoiding
-> a second interval tree walk, and to be able to easily pass data
-> between the two passes.
->
-> v1:
-> - Restrict to two passes (Jason Gunthorpe)
-> - Improve on documentation (Jason Gunthorpe)
-> - Improve on function naming (Alistair Popple)
-> v2:
-> - Include the invalidate_finish() callback in the
->   struct mmu_interval_notifier_ops.
-> - Update documentation (GitHub Copilot:claude-sonnet-4.6)
-> - Use lockless list for list management.
-> v3:
-> - Update kerneldoc for the struct mmu_interval_notifier_finish::list member
->   (Matthew Brost)
-> - Add a WARN_ON_ONCE() checking for NULL invalidate_finish() op if
->   if invalidate_start() is non-NULL. (Matthew Brost)
-> v4:
-> - Addressed documentation review comments by David Hildenbrand.
->
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Simona Vetter <simona.vetter@ffwll.ch>
-> Cc: Dave Airlie <airlied@gmail.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: <dri-devel@lists.freedesktop.org>
-> Cc: <linux-mm@kvack.org>
-> Cc: <linux-kernel@vger.kernel.org>
->
-> Assisted-by: GitHub Copilot:claude-sonnet-4.6 # Documentation only.
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Why?
+
+> 
+> Change generated with coccinelle.
+> 
+> To: Steven Rostedt <rostedt@goodmis.org>
+> To: Masami Hiramatsu <mhiramat@kernel.org>
+> To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-trace-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 > ---
->  include/linux/mmu_notifier.h | 42 +++++++++++++++++++++++
->  mm/mmu_notifier.c            | 65 +++++++++++++++++++++++++++++++-----
->  2 files changed, 98 insertions(+), 9 deletions(-)
->
-> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-> index 07a2bbaf86e9..dcdfdf1e0b39 100644
-> --- a/include/linux/mmu_notifier.h
-> +++ b/include/linux/mmu_notifier.h
-> @@ -233,16 +233,58 @@ struct mmu_notifier {
->  	unsigned int users;
->  };
+>  kernel/trace/fprobe.c                | 2 +-
+>  kernel/trace/kprobe_event_gen_test.c | 2 +-
+>  kernel/trace/trace_events_hist.c     | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+> index dcadf1d23b8a31f571392d0c49cbd22df1716b4f..a94ce810d83b90f55d1178a9bd29c78fd068df4c 100644
+> --- a/kernel/trace/fprobe.c
+> +++ b/kernel/trace/fprobe.c
+> @@ -607,7 +607,7 @@ static int fprobe_module_callback(struct notifier_block *nb,
+>  	do {
+>  		rhashtable_walk_start(&iter);
 >  
-> +/**
-> + * struct mmu_interval_notifier_finish - mmu_interval_notifier two-pass abstraction
-> + * @link: Lockless list link for the notifiers pending pass list
-> + * @notifier: The mmu_interval_notifier for which the finish pass is called.
-> + *
-> + * Allocate, typically using GFP_NOWAIT in the interval notifier's start pass.
-> + * Note that with a large number of notifiers implementing two passes,
-> + * allocation with GFP_NOWAIT will become increasingly likely to fail, so consider
-> + * implementing a small pool instead of using kmalloc() allocations.
-> + *
-> + * If the implementation needs to pass data between the start and the finish passes,
-> + * the recommended way is to embed struct mmu_interval_notifier_finish into a larger
-> + * structure that also contains the data needed to be shared. Keep in mind that
-> + * a notifier callback can be invoked in parallel, and each invocation needs its
-> + * own struct mmu_interval_notifier_finish.
-> + *
-> + * If allocation fails, then the &mmu_interval_notifier_ops->invalidate_start op
-> + * needs to implements the full notifier functionality. Please refer to its
-> + * documentation.
-> + */
-> +struct mmu_interval_notifier_finish {
-> +	struct llist_node link;
-> +	struct mmu_interval_notifier *notifier;
-> +};
-> +
->  /**
->   * struct mmu_interval_notifier_ops
->   * @invalidate: Upon return the caller must stop using any SPTEs within this
->   *              range. This function can sleep. Return false only if sleeping
->   *              was required but mmu_notifier_range_blockable(range) is false.
-> + * @invalidate_start: Similar to @invalidate, but intended for two-pass notifier
-> + *                    callbacks where the call to @invalidate_start is the first
-> + *                    pass and any struct mmu_interval_notifier_finish pointer
-> + *                    returned in the @finish parameter describes the finish pass.
-> + *                    If *@finish is %NULL on return, then no final pass will be
-> + *                    called, and @invalidate_start needs to implement the full
-> + *                    notifier, behaving like @invalidate. The value of *@finish
-> + *                    is guaranteed to be %NULL at function entry.
-> + * @invalidate_finish: Called as the second pass for any notifier that returned
-> + *                     a non-NULL *@finish from @invalidate_start. The @finish
-> + *                     pointer passed here is the same one returned by
-> + *                     @invalidate_start.
->   */
->  struct mmu_interval_notifier_ops {
->  	bool (*invalidate)(struct mmu_interval_notifier *interval_sub,
->  			   const struct mmu_notifier_range *range,
->  			   unsigned long cur_seq);
-> +	bool (*invalidate_start)(struct mmu_interval_notifier *interval_sub,
-> +				 const struct mmu_notifier_range *range,
-> +				 unsigned long cur_seq,
-> +				 struct mmu_interval_notifier_finish **finish);
-> +	void (*invalidate_finish)(struct mmu_interval_notifier_finish *finish);
->  };
+> -		while ((node = rhashtable_walk_next(&iter)) && !IS_ERR(node))
+> +		while (!IS_ERR_OR_NULL((node = rhashtable_walk_next(&iter))))
+
+Ug, No!
+
+That looks so much worse than the original.
+
+-- Steve
+
+>  			fprobe_remove_node_in_module(mod, node, &alist);
 >  
->  struct mmu_interval_notifier {
-> diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-> index a6cdf3674bdc..4d8a64ce8eda 100644
-> --- a/mm/mmu_notifier.c
-> +++ b/mm/mmu_notifier.c
-> @@ -260,6 +260,15 @@ mmu_interval_read_begin(struct mmu_interval_notifier *interval_sub)
->  }
->  EXPORT_SYMBOL_GPL(mmu_interval_read_begin);
+>  		rhashtable_walk_stop(&iter);
+> diff --git a/kernel/trace/kprobe_event_gen_test.c b/kernel/trace/kprobe_event_gen_test.c
+> index 5a4b722b50451bfdee42769a6d3be39c055690d1..a1735ca273f0b756aa1fcfcdab30ddad9bc51c5f 100644
+> --- a/kernel/trace/kprobe_event_gen_test.c
+> +++ b/kernel/trace/kprobe_event_gen_test.c
+> @@ -75,7 +75,7 @@ static struct trace_event_file *gen_kretprobe_test;
 >  
-> +static void mn_itree_finish_pass(struct llist_head *finish_passes)
-> +{
-> +	struct llist_node *first = llist_reverse_order(__llist_del_all(finish_passes));
-> +	struct mmu_interval_notifier_finish *f, *next;
-> +
-> +	llist_for_each_entry_safe(f, next, first, link)
-> +		f->notifier->ops->invalidate_finish(f);
-> +}
-> +
->  static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
->  			     struct mm_struct *mm)
+>  static bool trace_event_file_is_valid(struct trace_event_file *input)
 >  {
-> @@ -271,6 +280,7 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
->  		.end = ULONG_MAX,
->  	};
->  	struct mmu_interval_notifier *interval_sub;
-> +	LLIST_HEAD(finish_passes);
->  	unsigned long cur_seq;
->  	bool ret;
->  
-> @@ -278,11 +288,27 @@ static void mn_itree_release(struct mmu_notifier_subscriptions *subscriptions,
->  		     mn_itree_inv_start_range(subscriptions, &range, &cur_seq);
->  	     interval_sub;
->  	     interval_sub = mn_itree_inv_next(interval_sub, &range)) {
-> -		ret = interval_sub->ops->invalidate(interval_sub, &range,
-> -						    cur_seq);
-> +		if (interval_sub->ops->invalidate_start) {
-> +			struct mmu_interval_notifier_finish *finish = NULL;
-> +
-> +			ret = interval_sub->ops->invalidate_start(interval_sub,
-> +								  &range,
-> +								  cur_seq,
-> +								  &finish);
-> +			if (ret && finish) {
-> +				finish->notifier = interval_sub;
-> +				__llist_add(&finish->link, &finish_passes);
-> +			}
-Should we warn if !ret && finish?
-
-Anyway, looks good either way.
-
-Reviewed-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-
-
-> +		} else {
-> +			ret = interval_sub->ops->invalidate(interval_sub,
-> +							    &range,
-> +							    cur_seq);
-> +		}
->  		WARN_ON(!ret);
->  	}
->  
-> +	mn_itree_finish_pass(&finish_passes);
->  	mn_itree_inv_end(subscriptions);
+> -	return input && !IS_ERR(input);
+> +	return !IS_ERR_OR_NULL(input);
 >  }
 >  
-> @@ -430,7 +456,9 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
->  			       const struct mmu_notifier_range *range)
->  {
->  	struct mmu_interval_notifier *interval_sub;
-> +	LLIST_HEAD(finish_passes);
->  	unsigned long cur_seq;
-> +	int err = 0;
->  
->  	for (interval_sub =
->  		     mn_itree_inv_start_range(subscriptions, range, &cur_seq);
-> @@ -438,23 +466,41 @@ static int mn_itree_invalidate(struct mmu_notifier_subscriptions *subscriptions,
->  	     interval_sub = mn_itree_inv_next(interval_sub, range)) {
->  		bool ret;
->  
-> -		ret = interval_sub->ops->invalidate(interval_sub, range,
-> -						    cur_seq);
-> +		if (interval_sub->ops->invalidate_start) {
-> +			struct mmu_interval_notifier_finish *finish = NULL;
-> +
-> +			ret = interval_sub->ops->invalidate_start(interval_sub,
-> +								  range,
-> +								  cur_seq,
-> +								  &finish);
-> +			if (ret && finish) {
-> +				finish->notifier = interval_sub;
-> +				__llist_add(&finish->link, &finish_passes);
-> +			}
-> +
-> +		} else {
-> +			ret = interval_sub->ops->invalidate(interval_sub,
-> +							    range,
-> +							    cur_seq);
-> +		}
->  		if (!ret) {
->  			if (WARN_ON(mmu_notifier_range_blockable(range)))
->  				continue;
-> -			goto out_would_block;
-> +			err = -EAGAIN;
-> +			break;
->  		}
->  	}
-> -	return 0;
->  
-> -out_would_block:
-> +	mn_itree_finish_pass(&finish_passes);
-> +
->  	/*
->  	 * On -EAGAIN the non-blocking caller is not allowed to call
->  	 * invalidate_range_end()
+>  /*
+> diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+> index 73ea180cad555898693e92ee397a1c9493c7c167..59df215e1dfd9349eca1c0823ed709ec7285f766 100644
+> --- a/kernel/trace/trace_events_hist.c
+> +++ b/kernel/trace/trace_events_hist.c
+> @@ -3973,7 +3973,7 @@ trace_action_create_field_var(struct hist_trigger_data *hist_data,
 >  	 */
-> -	mn_itree_inv_end(subscriptions);
-> -	return -EAGAIN;
-> +	if (err)
-> +		mn_itree_inv_end(subscriptions);
-> +
-> +	return err;
->  }
+>  	field_var = create_target_field_var(hist_data, system, event, var);
 >  
->  static int mn_hlist_invalidate_range_start(
-> @@ -976,6 +1022,7 @@ int mmu_interval_notifier_insert(struct mmu_interval_notifier *interval_sub,
->  	struct mmu_notifier_subscriptions *subscriptions;
->  	int ret;
->  
-> +	WARN_ON_ONCE(ops->invalidate_start && !ops->invalidate_finish);
->  	might_lock(&mm->mmap_lock);
->  
->  	subscriptions = smp_load_acquire(&mm->notifier_subscriptions);
+> -	if (field_var && !IS_ERR(field_var)) {
+> +	if (!IS_ERR_OR_NULL(field_var)) {
+>  		save_field_var(hist_data, field_var);
+>  		hist_field = field_var->var;
+>  	} else {
+> 
 
 
