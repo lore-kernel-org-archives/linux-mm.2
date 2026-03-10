@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE30FCC9AD
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:12:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B582FFCC9AF
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:12:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61EE36B0089; Mon,  9 Mar 2026 23:12:40 -0400 (EDT)
+	id 2474F6B008A; Mon,  9 Mar 2026 23:12:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59E646B008A; Mon,  9 Mar 2026 23:12:40 -0400 (EDT)
+	id 1F1576B008C; Mon,  9 Mar 2026 23:12:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ADE76B008C; Mon,  9 Mar 2026 23:12:40 -0400 (EDT)
+	id 0C37D6B0092; Mon,  9 Mar 2026 23:12:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0A16B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:12:40 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5AF71B7FA6
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:12:39 +0000 (UTC)
-X-FDA: 84528680838.03.E474CB5
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 06D7240005
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:12:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=My0EFc+f;
-	spf=pass (imf12.hostedemail.com: domain of r@hev.cc designates 209.85.210.172 as permitted sender) smtp.mailfrom=r@hev.cc;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F070D6B008A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:12:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B21F6160466
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:12:43 +0000 (UTC)
+X-FDA: 84528681006.05.BB45C01
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf23.hostedemail.com (Postfix) with ESMTP id CB02A140008
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:12:41 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=tBoW9kkN;
+	spf=pass (imf23.hostedemail.com: domain of r@hev.cc designates 209.85.210.175 as permitted sender) smtp.mailfrom=r@hev.cc;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773112358;
+	s=arc-20220608; t=1773112361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Gnfc04EYdLBOgTA22D3ZA5OANJFWm2SEibGG/QoA0M=;
-	b=pjsP+5w8Q6K5c27dY5wf6q0Vx107q2min5q+Noy7yafG8GaxNZ2Ztboteb24iCKzgR4VPM
-	JHM3MT7gcQoGg8jaC5JDVXY9cwDkNHG1pjtTLwed+T7OGH8xjddriaSZyhZw4+1KdnVA3E
-	UJwQm6Pr2RKC8Khwz05rJBgv5+SBZoQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=My0EFc+f;
-	spf=pass (imf12.hostedemail.com: domain of r@hev.cc designates 209.85.210.172 as permitted sender) smtp.mailfrom=r@hev.cc;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773112358; a=rsa-sha256;
+	bh=PGbxRmtnq4j2JJLS66I6xJ9tyvKo4E5pO4kbP3Ck6zI=;
+	b=bj+FCwo2zkeR6RX1coxmelOuoeG9F7ZFAFIBz/ZDFEC2H9nh4xQHJmMrCfmjYZy6C4U2jd
+	SVuZzNT4emUOZgbHbU3AB6kEFFUtS+l0iu4zF28dQGz97DtCNzE6tXhe80JzgjnpCxNOzo
+	AeEkrvV6L5uSqDQrMpQYt9B5/6qc+uA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773112361; a=rsa-sha256;
 	cv=none;
-	b=DBk95GC99TKQoKYyCrh/ThXhkfDHSMUGGseBaq181jPRYaBYU4gnuE0mMsUadQKqNHqIby
-	VHcKiMtXqj09D8/1YLpkTZuoKgWrvKS77O58I6oWXHSPOZBwinmwrcN3tHKDLrtZDA0Nld
-	DNYSvo8w/TD3gBQSjD2W+nUpbs6AazA=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82989744ee0so4037492b3a.2
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:12:37 -0700 (PDT)
+	b=00rIVzTtndPpOK8teshxlm6XaTrWasALz+pGXYoQeKweIAZ5yhnHIC0rclzE+yYWHyX5td
+	T1bsZ8EYtSsPQeaB4zAG8O3d5PSwnE1mQm5mpPSlWuq7rjfmgNaegaXe2eGVuK6tcvzyzY
+	Jxql8mGdwnzpGhINDBAjEFq7AS9NNxY=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=tBoW9kkN;
+	spf=pass (imf23.hostedemail.com: domain of r@hev.cc designates 209.85.210.175 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82748257f5fso6817900b3a.1
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:12:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773112357; x=1773717157; darn=kvack.org;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773112361; x=1773717161; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8Gnfc04EYdLBOgTA22D3ZA5OANJFWm2SEibGG/QoA0M=;
-        b=My0EFc+f4trSmJrGDJqv5OLX0ckOo0CtoYNi5v4trt5nkaMxrb8EmccImYRPUAmKXK
-         HhNLsta/BKOOqSIYP/Izw7cpyToen44hBm10I4gAzmcNLo3HaPKAvWLeFFEDhuiJUSTb
-         gttLXCC13mvbtJoZL+PUhW4yg20ANd61UNkqOZucFZXpmJNdHcVgvBbt7H+MJ81iD+2k
-         lEi/l9y3h5OHa6xNgX2EW95K54BxbBn8qvBTWnUWosA+V7n21OwugVgA4q8nHQRoienU
-         WnMYniPq2AYepK4qF6VxenTs0GBct8QdAceLSU26WRMTgUmDOIkwtx36KxhAg2Ds0M8x
-         7d0w==
+        bh=PGbxRmtnq4j2JJLS66I6xJ9tyvKo4E5pO4kbP3Ck6zI=;
+        b=tBoW9kkN77uHPp8E5FcE0LyQaXC9OpDIOjwF3jGvtZLWFbHHkjBUh9dl37hpqf6n0B
+         YjZ5mzbu3aL5Dq/ms8Ofa+hdUKt4NxzUeVgMg8/ni9EP2MQ1Sj5mWACf/vP/HZ5P9yf7
+         /I7XysuYwjO8wDjFbQ8v2yidZ5Gy44PkHDwr6R9HolOmW1jUt3kw79KBP7x8PPlh/dVS
+         MOC1ZuB3F/rgrU525sQ7TlnMKAd3IlCeZ05bjtkuGMPWrXRTUJBdl9GWjq44IWk5NXnw
+         PmPOW96F4o3HLAc1j6hpQ6sqNdkTBuFuCmRJSnyQ1OpBDLgakPQzxYwzxgmNAXUONr5g
+         0XWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773112357; x=1773717157;
+        d=1e100.net; s=20230601; t=1773112361; x=1773717161;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8Gnfc04EYdLBOgTA22D3ZA5OANJFWm2SEibGG/QoA0M=;
-        b=jF5YODAA8YBAnllmuyGkKvcirptDFAstqjyFzpQDeWJYUIZqg1CpEygy9GR3q3lerP
-         yjq8/YZoNHldSKN/RXwLFqNvrqcSkHIuvekPu9N5pMvnpz7sXDm4y/ri+bY6iFwh9n4H
-         xv4FoudrSfs8XK0jDVQ9/UGLgQZEmJ/NXE07Vs0E/5ky1qCRS9ogikmn/i6KzNsSqKef
-         Y63i08GYz9f3z3DQW9WS/BnIggRsc8inmZi7bR8kuAzny2IkrNRZ6E1d6YDyFASKljSd
-         sELDu1RTmIrshsH75RPGPij70hdvL1ooEwPCA+LFwsqTGpnniTpp6BHsokiHLFr+tvP0
-         LZ3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVMj+Lc0280zk/ZKHKDhYLiZm8t3GhRYvCpWws79AnCpqH9gmiMvy4qDfBHWMMksr02IjZ8zHO8xg==@kvack.org
-X-Gm-Message-State: AOJu0Yywc8SGaz9cxPK6EidlNVTYZoC9mDMQlzsfBWXuaYSHiZHzhcpB
-	Qx1fwoovLV35i3ah1hLf/htp9SnZdutTeEjhMPrwYRoFe+dPqQ0VXcxE1zwETWtqmSM=
-X-Gm-Gg: ATEYQzxVge7uXhgH0bii5kmR+Mba7/yc00FDx0TilBq+vHINaKCoysxUvcAqZOLOZgQ
-	2xHn0F6NbIRbQHoisYjNn26cXDiBPxysCRqQOl/cdG3ewnXnhz0Nhv9D29PiGbiIGuvBYEIZYck
-	6k7BsA468htI3r5s59dPSffyqu/8hAIPXS+Y4ys1ziBxat4JT5f8jrGJsNmJ6eNaUkZYf2x5sNE
-	7svSc5MBgTBB5/Mjm6FQq09RuUuvaKNlbu1TfLljM18CJ+1R0G/sXgd3oUMJ2pXO4PfJAuF/eeq
-	AIwlL7F3zj5sMcLgXypCMrIV5fyYIkibbDY/k1n0ej22CgLXbE1llOtoV260S1/IOVQpxnhKLRp
-	JVqpbuRncNuYxXxeAjyYMHa0vCa98gvvS3DLh+YnPQP3Tgi8zFj+YVcpDy+6MsN7JumEWo4SVbq
-	2ZcEJjfQSr
-X-Received: by 2002:a05:6a00:1a8c:b0:829:810e:8af8 with SMTP id d2e1a72fcca58-829a2dc4f99mr12713671b3a.22.1773112356834;
-        Mon, 09 Mar 2026 20:12:36 -0700 (PDT)
+        bh=PGbxRmtnq4j2JJLS66I6xJ9tyvKo4E5pO4kbP3Ck6zI=;
+        b=gn2cgV62wb4NPkuA6dW8fm++PGpVVDxyLYXR4UURx3wdBcI1Vx6pD6R8ug/GHBRfoO
+         OX/yuFoyJR70/hPPXC4IlNsjOW0v4s0pawL/1axmC1EVFqYPpVlYO35DpRtc0JfuJ02f
+         qu7/LMesU3g+czggWeG7xxrp3BY2eiP5y0iiLQJlDPtZBkAZhsXYznwYjrA3tIfVOdvv
+         wbhIPo8DEBuVd9fcLRGoKpOQIbFPP7xxLBThM4NwqwAoalAdWQQBoQ1pMy9v0NNnV9Yn
+         dqF/wv/llVK/isntuJJSg7HZlnZRVCPxkzHAcftbhkf38mfhZaY2PjUVsbMcmSzDfmsV
+         aE4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVsQmTE7uokQeLmj50pNL1n45sT2g2vM0ZHHbXNVT+mpUArts21dsh2rc9YmrrL67SXImOjI84nEA==@kvack.org
+X-Gm-Message-State: AOJu0YwpCNhn/xG4qdBVVTKLi+DGJj10JB53LPC3glsvRckDhtu110v+
+	oQd/HB5qkGQR7pGj1/ZSZQTqYsA+mEK6Actb3aw/t/bAeZZbz/57JAEEF+T5oTq4RgU=
+X-Gm-Gg: ATEYQzxXHO8Wx+Yfp/etI9dSs7Ldn/xTgHefC00PV9rzvLFQ0mZYgvHHHAtH9vvScD+
+	qsn6U+c8YjetFJiRCTYBlEo60O93LsqrTIJCSi6Mq4Oh2faQItaOMHSao7msg3Yo3wOtYkkjcQC
+	AlP7HdAdi6bhbtGv3GyKaOGd+Yh9m7MNbmaXFLDLRULN3eyIOiwuptcdPc051LvurFo59pkSo4e
+	95fbk95n401xPiPV0TUBgv2KGrOXNS7/8ic9LNvZ/nKoo645Ko1UagnQwLWBdFaZLJM7KyQcJRG
+	QxFyUrUgNifh/3bsD3GxLxHtNmdBGTrmWb2v81u9Iy8/htJJhvELaMeBbaTJNCIVGkZ7rxEbUxJ
+	HpF4TnqT/zyQH06xxytbUnb6wmZSxCJv2uQI8INJkEyEsjfIq9hHLFe63X+nTSjNhO2rr8D4oYj
+	sI7aSzDPAz
+X-Received: by 2002:a05:6a00:9517:b0:829:cbc0:f0c1 with SMTP id d2e1a72fcca58-829e3fe0536mr1540396b3a.18.1773112360560;
+        Mon, 09 Mar 2026 20:12:40 -0700 (PDT)
 Received: from localhost ([2400:8902:e002:de08:5754:7dac:85df:935a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a465c872sm14213691b3a.19.2026.03.09.20.12.33
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a465c872sm14213691b3a.19.2026.03.09.20.12.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 20:12:36 -0700 (PDT)
+        Mon, 09 Mar 2026 20:12:40 -0700 (PDT)
 From: WANG Rui <r@hev.cc>
 To: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -111,22 +111,22 @@ Cc: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	WANG Rui <r@hev.cc>
-Subject: [PATCH v4 1/2] huge_mm: add stubs for THP-disabled configs
-Date: Tue, 10 Mar 2026 11:11:37 +0800
-Message-ID: <20260310031138.509730-2-r@hev.cc>
+Subject: [PATCH v4 2/2] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
+Date: Tue, 10 Mar 2026 11:11:38 +0800
+Message-ID: <20260310031138.509730-3-r@hev.cc>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260310031138.509730-1-r@hev.cc>
 References: <20260310031138.509730-1-r@hev.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 06D7240005
-X-Stat-Signature: btx6su98zya4cn1q3rhh476dm51qtkio
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773112357-552657
-X-HE-Meta: U2FsdGVkX1/hpQKNhU1lxyoJ5fEebgRCxj9CSOdF2ZlP/FbuULGzlXuNSRfTJQUoP8KcfZNzn2wNF3rn2GMgx+66/MbqKQSr6gK0f52Ssje4sEA+StevAkir8rFj0Hl4i0YFs2JgIRV21qBO/eAyxBV8J0xtNdlew5vQje3AerQPvzXvZPUnKFIYC6s8O18G28PCpVPCieeZqWZzvntDe5qAD+e/6qSlN2sFJJUVOaGv5/QnMAqc7CbRkBoYhBMLymd8l0XwpwF5zPZpMASDx4nl9EnfsRrRPJXWzDKNHLHasmLUrVey3p026VBRHsmNHPL+M59Me12ve29k+3fv4SDYbN7xIKQTQ5p+IyWbN1PxAnUROicOoeKNiAwPuIePY5XyzO29lHNU0+CAYjuXwIyyJFZF47a7elCKLh9+VCArEZzX+rEWJsKAtN9FfScZ+284PgyJMqo+2Ko9jRJ99cWMVpkbpyD7tMXif4eejnftJHCANs7StEF1aGY/BAOp/GoxtT7aIAHJiMJAUfR9uqd2H3dLvVw0Cr3ypEVakIA6aez6OCs31e4vbUwWvNch2VFhwOrzIOUh8FpgNT/7Kl7arLeiYkXVDExhVriwgZ9hy3gpgwIEj/ZzBTmH3MJOduM+qoLA0hMSIkTLycDNtBQbtPBXsbd8/rz/4MUNYUbk/LiVET2f0Mjj1ZlbB7b0TM0PjMA9Y6iIUbekry9v+cXthCUWsWjDZF8AJY3mVahIVxv72jpREj99FDuidp2mfwPFKDV3BaiokQTaJ0uWG6zoHnO9OJTAQmObYSUVpLMGH6TI61nk8rTiQKJd9GaJqPGUw4IfjA8pK0914Zsij9C7UJgnXLB/ODXx6Te6xwd02bwBXzwPcXujByiE610/lC/N58b29MpM8jNNtH9fHIQqIMhoBd+fsbNIsmj2gZZjp79G++++qXQj/2qzXTTTDznzLIlQaXyYGHjHjPc
- vfeAr2KD
- SERVgl3i6adNTMb3Dj9pX+uH/oWTQPkx/1l9AdUGsFyZUFOTG/a4MvqZGVIGb59brp2GU/we+x+InH9IdV0+IuxngvXi6sHcrt8RRGyrjPtl1quB1qujDHZs/zRaGn5qb+t23u3E966k2J6cZHJoboN0s5QVT20VsI3hJttTl1UUdOVdRp1siXx3ZnnLs4PW03Dsr/588Kb4UgXH08GplRWv+tPrylWh17ttPB/xjTMjAe9dffE9wWmG5IWCT8Qr+fYJcjOjiDQJ2CNQSbwDwb2o/utLbPqlNeplpgFYuPiRKwBQtf0L8oke0JyVYLr9Hiu/sB4T/dEgzKpwQhMqQcFy5RR4c3An4PaRsS22aWcUup/1/57E3QZnXCfSP0v6FcDDj4gGSjlgymA5WTKfBrXx6JPNw20/LNPNGFziFw8Qt15k3UNUr5alkO69+56w4yOKqW/zYvti304LvIUZNbFuEz21ERH/5dG1+XrznAV2okDvjYfDO/qjkKq56M/5IoekNTPmzDa9mq1ZxVpXioq7Go2aUlXO18xF1mEz8UvT+en9kLSz4cVioqqTfQusKBJe7nUXOoPOpOZ1qEpStn820Xauc8X8XZtp3MwRz2cRsUtMgYEiWoiSaiAHPShiMjeNuig/UscTqSvNY4Fdw81KvLA==
+X-Stat-Signature: 3ct4oin5dgobem7no8xmuf5pxbpkz4zd
+X-Rspamd-Queue-Id: CB02A140008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773112361-753000
+X-HE-Meta: U2FsdGVkX1+7vRK3h1DYGdyS+w5DhMhd9zFovknm0VE+C7bRwjMCGwwOWAbQwYQBn8JAuSyrlTQULCZiq/sdCNKFwSBnRtgllqmeOHn7psMp2eWMzzb0k1yQ+pfPlwAlaTnwtwRTUYD/QI/Y2PUzeBgZbWviLN1SvyiIENLn0AywEAuGbJTfVMnv8SWfNr/1vF6muTD4oroSUqzyLHaPG4CzaKzPXvJ03XgRIYczOw5s63cqlEsw130HcQc/4ce5Bqu0NyUsHE2ScVmXIgVilXNoH5N96tEUWVBQVbFV87ObGz3TTKE/WD3cL54gtkmiQVLdL4U4V/PZoJrK4ZggG+8BIKPNJkYZXC3bDl8hHPQDAhysZH6pEGLO0YkBC9/ojaUJ8Prbz2Sskf/gV40Kgs5zRTy75M0GCzfuBHEuFVvoAvwJsqXk7bd11mxV97DMsTCFKc3Yfdk98NROWJ10bLK6jIUY+FNTCOM6uzg22P0aORkPxV+ZWK0bXHPO0nYhFoXb876+ytzO9F57q4O+/F0tWq4TA77gwpspGaiteQ7j4ff8yYrVBdQC8jYF9SqDpNKT8JfdHviUkS1hvGziRfvPl81tfyUhUw92YihATQl6pQ0S5BF9vka94ILFvIyVwSZQ4jNTiKzAk2mSVQ0E/Nm73sn6k+g5x8B8UzxxoeAc3WgPgukc8VpiD7jwy9r7c8SJ/jzV9IJ+5usdiZB7o1V1tzJMtCWdCWxymjRwzGqey02qMgPKjJhgVaB4J8S0Lxw9knTc28c34etGNwtMxYU11FgcVIhYnA6MxnAljfz4hf6i/SkCoRxwU33L57yCN0DpwJZCoQfyNwbbA++BvMGizbOedIWScYHRZeIVpnAdkj00sSObznT0j+Hrpiv0U3PTfD/MnWOQBZ+0oouE3r6ksRvWzAPxTW1M05jzrtf7K+M8r9Qnm5oq1k93/huUOYJ5utLe//Bvr5QhEIY
+ iZT5Hfzh
+ WMmntNzjtOmc0uq26ipDB8PJcrZWquPsDzFexyhU0kvMbiO3pr51zvDim9l+HZo/xT+TyYk7lLhVwg0XLnGV96Ow6Q6W8zle3ClYkC7UNEXWK/0ZJclApBapgMsTGCmnIDMfj6vT2u06SS5ZTT4hXN4BbylL7F0QoUeZgU/YwR35fW00OWqb1CZYL05yJkKRtg5zY1JZ0auE9boZb/dnz2TvoCaeweVyS6rrk24uTqpLCzNGuav4ciLfU3+qnRHJDj95yHmpv0kaOnYsj3IeicLZ5bLRO+lfmXnOWR83rKSFEf7vyNtSUUCDj7dMPj9OZT9q9n7W84BbnQTuyRuLfxal7/fAhU7ZntLCk7qFd2o54XVPac2hI5JYtQFr3Vp6zJ+R33CO5m0pw4cNPohoHz4MALffR/P7DvBGPj98P4d8dXrANjRzHEMDeMoFkZUjvdaTGeac0sVlMF2iqtMcofm9X7qFLLGWGIl7oL/1WXBN/8w2pr4SDkUet+vQAeqzbXEMv7WU2Q8PhErTl30DtxYsb6RkEcwX3gZBn7cediBpljaKtxOJM8jBfQCv9jIQm++ZymyO4R+GQzYG40zP8p7ZG3H5Xb2xrz7E6+A+E2k1ik9KhuKfTjZKdew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,36 +134,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugepage_global_enabled() and hugepage_global_always() only exist
-when CONFIG_TRANSPARENT_HUGEPAGE is set.  Add inline stubs that
-return false to let code compile when THP is disabled.
+When Transparent Huge Pages (THP) are enabled in "always" mode,
+file-backed read-only mappings can be backed by PMD-sized huge pages
+if they meet the alignment and size requirements.
+
+For ELF executables loaded by the kernel ELF binary loader, PT_LOAD
+segments are normally aligned according to p_align, which is often
+only page-sized. As a result, large read-only segments that are
+otherwise eligible may fail to be mapped using PMD-sized THP.
+
+A segment is considered eligible if:
+
+* THP is in "always" mode,
+* it is not writable,
+* both p_vaddr and p_offset are PMD-aligned,
+* its file size is at least PMD_SIZE, and
+* its existing p_align is smaller than PMD_SIZE.
+
+To avoid excessive address space padding on systems with very large
+PMD_SIZE values, this optimization is applied only when PMD_SIZE <= 32MB,
+since requiring larger alignments would be unreasonable, especially on
+32-bit systems with a much more limited virtual address space.
+
+This increases the likelihood that large text segments of ELF
+executables are backed by PMD-sized THP, reducing TLB pressure and
+improving performance for large binaries.
+
+This only affects ELF executables loaded directly by the kernel
+binary loader. Shared libraries loaded by user space (e.g. via the
+dynamic linker) are not affected.
+
+Benchmark
+
+Machine: AMD Ryzen 9 7950X (x86_64)
+Binutils: 2.46
+GCC: 15.2.1 (built with -z,noseparate-code + --enable-host-pie)
+
+Workload: building Linux v7.0-rc1 vmlinux with x86_64_defconfig.
+
+                Without patch        With patch
+instructions    8,246,133,611,932    8,246,025,137,750
+cpu-cycles      8,001,028,142,928    7,565,925,107,502
+itlb-misses     3,672,158,331        26,821,242
+time elapsed    64.66 s              61.97 s
+
+Instructions are basically unchanged. iTLB misses drop from ~3.67B to
+~26M (~99.27% reduction), which results in about a ~5.44% reduction in
+cycles and ~4.18% shorter wall time for this workload.
 
 Signed-off-by: WANG Rui <r@hev.cc>
 ---
- include/linux/huge_mm.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/binfmt_elf.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index a4d9f964dfde..badeebd4ea98 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -570,6 +570,16 @@ void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index fb857faaf0d6..a0d679c31ede 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -28,6 +28,7 @@
+ #include <linux/highuid.h>
+ #include <linux/compiler.h>
+ #include <linux/highmem.h>
++#include <linux/huge_mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pagemap.h>
+ #include <linux/vmalloc.h>
+@@ -489,6 +490,30 @@ static int elf_read(struct file *file, void *buf, size_t len, loff_t pos)
+ 	return 0;
+ }
  
- #else /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static inline bool hugepage_global_enabled(void)
++static inline bool should_align_to_pmd(const struct elf_phdr *cmd)
 +{
-+	return false;
++	/*
++	 * Avoid excessive virtual address space padding when PMD_SIZE is very
++	 * large (e.g. some 64K base-page configurations).
++	 */
++	if (PMD_SIZE > SZ_32M)
++		return false;
++
++	if (!hugepage_global_always())
++		return false;
++
++	if (!IS_ALIGNED(cmd->p_vaddr | cmd->p_offset, PMD_SIZE))
++		return false;
++
++	if (cmd->p_filesz < PMD_SIZE)
++		return false;
++
++	if (cmd->p_flags & PF_W)
++		return false;
++
++	return true;
 +}
 +
-+static inline bool hugepage_global_always(void)
-+{
-+	return false;
-+}
-+
- static inline bool folio_test_pmd_mappable(struct folio *folio)
+ static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
  {
- 	return false;
+ 	unsigned long alignment = 0;
+@@ -501,6 +526,10 @@ static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
+ 			/* skip non-power of two alignments as invalid */
+ 			if (!is_power_of_2(p_align))
+ 				continue;
++
++			if (should_align_to_pmd(&cmds[i]) && p_align < PMD_SIZE)
++				p_align = PMD_SIZE;
++
+ 			alignment = max(alignment, p_align);
+ 		}
+ 	}
 -- 
 2.53.0
 
