@@ -4,121 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA9C6FD4F33
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 20:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E72FD4F2A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 20:21:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBF056B00B5; Tue, 10 Mar 2026 16:21:20 -0400 (EDT)
+	id 979716B00B7; Tue, 10 Mar 2026 16:21:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0886B00B7; Tue, 10 Mar 2026 16:21:20 -0400 (EDT)
+	id 92F846B00B9; Tue, 10 Mar 2026 16:21:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D555E6B00B8; Tue, 10 Mar 2026 16:21:20 -0400 (EDT)
+	id 7FAFC6B00BA; Tue, 10 Mar 2026 16:21:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C2B5C6B00B5
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:21:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A299D1B7686
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:20 +0000 (UTC)
-X-FDA: 84531273120.04.9E857B8
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 33B4C40008
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:18 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MiNYG6Mg;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=KT2McpU4;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf27.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D0BE6B00B7
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:21:36 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 279411402A0
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:36 +0000 (UTC)
+X-FDA: 84531273792.26.87D19D4
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 74765140016
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=cSKAc1KE;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=A+ysWVDZ;
+	spf=pass (imf23.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773174078;
+	s=arc-20220608; t=1773174093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pr45VIQTBIoBLlkPvMxS8V0csqqIhMCo/oCsn7JOcGU=;
-	b=NtN1a/mO+49QIB9YH0AqcF8pgKalHde3cz5NYIq3RBon0Zk35XCmIUmAxTBcIey/6gkaVO
-	cvnVLDcT4DOU5lNBRva+vxaDjy30g4Teypj3j1CF/UBfXp/2HplPqPt6NEw+y8Vydi2ahC
-	XFuF055kTPwqOG3wwjSIEPXrgxBbhA0=
+	bh=rin5Xzgf9RNm/Gx3a/2HtbrcZkKjggIhMf3Yv3Ghmqo=;
+	b=30e3PYj4MPS98QLC2NsBRswj0KFGng2r9mvQ3odXiZXly8hDE/idzKCj16r4wQHtjAkLQa
+	wKG1WwARLMqpjIrNvhaEkGou3Z0EWL6ApwO1A4JXCtT1odIRAvcHl5SeHCLtnPch9eMKM5
+	Xa2njSS980GWdIlvNNyloHFN2eCmoa0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=MiNYG6Mg;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=KT2McpU4;
-	dmarc=pass (policy=reject) header.from=qualcomm.com;
-	spf=pass (imf27.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773174078; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=cSKAc1KE;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=A+ysWVDZ;
+	spf=pass (imf23.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773174093; a=rsa-sha256;
 	cv=none;
-	b=QpmMQrH+u0yrV6k5mAyoeIcWBeLa4BuTmc5texAMAXan39D0/qyCQl6oBRf+CSQn0D9OwD
-	eJwZGSkstawPwPXXjZwuP7GU4nuNSYg5uZRmAJ9MXusQA4JCbAxpu4C0PDF6sUcLolra3/
-	lu04eoq9ZMT+nbymm1bayWtwvzQCrNU=
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AHcodI2179278
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:17 GMT
+	b=XpHiD6slC+j+4chmhQw3bszU0L0hpSV7unsfsBiXN9V+jUDWRVGEz09EtAVGgE8NYEhVB2
+	hPAeVbh+adf+y9pSXGrSuJS+7eq/3e59LYdPIPgjbXWuMqq8RMjylnnMEEdsiNFoXng7PY
+	Pe3MvQp6pEc1Gs8pKV2gTIE9LN6pJ9Q=
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AIUMKX2862598
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pr45VIQTBIoBLlkPvMxS8V0csqqIhMCo/oCsn7JOcGU=; b=MiNYG6Mg57sq7QtU
-	zJFIBnJyAS7vLog4JGVLNREvSwVC4yWzJRTVbt3IFdvKGvBjgVI97JsNiktdyeVj
-	xXLfiKSQwfvXK5tsCPovUzt0e2vzyDn5vMwoDlFnQpzwd2CKrWaOmiWjrdFPeM0S
-	DfqByTbpLqi4ehvVsfjsxeOhe5WkbDiZNTHQqVx/6h3Oz7F/Mtynfdha4Zcul4xg
-	v0uHkmin0ZLQW7DenGiDyaWWfv35rxEZlufO0XX62XkpWC8yTSU3u7cGrHxV0wt1
-	3hyTqzoGEoJLpnQoDlC/yiGAsBwrWRXROCs2QfukllG0dArhrV8lWb/nZRQNMSyk
-	5qmNdw==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ctqvsrkan-1
+	rin5Xzgf9RNm/Gx3a/2HtbrcZkKjggIhMf3Yv3Ghmqo=; b=cSKAc1KERyQjjkOA
+	qTajW6Q83Ix/u5Eo0LKOiiBoEeptb7pCB/5odF2wr54RzKSDwm2ZvAH1qbcE7bvL
+	888ZY5YbJRAd5+ZbXvznNccWLQNvJDYINVNXrJlChhha/S6KjOCs25AuVQMZS/I+
+	IW3ufpqfqgC+m3IVCa7My1xhEC7ecNIzapfE8ftgLSu0ZaKFg4Fmxnnw2k+EzT+9
+	i+5yGn0jb2+hNMwFqqHO3SkKe4Htt4NSzxCd6uI6/y9xDdr55bRTv8B1pq++DHtf
+	mcckOKiGXNl/58X10nzQET/pv5I2+NglpHcBJlr85o0qksKbZMF1kfx9UYGm9UHC
+	dST3QQ==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cte3wb6hj-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:17 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c73939e0314so2937866a12.1
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:21:17 -0700 (PDT)
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:21:32 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-82984468f85so3332338b3a.1
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:21:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773174076; x=1773778876; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1773174091; x=1773778891; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pr45VIQTBIoBLlkPvMxS8V0csqqIhMCo/oCsn7JOcGU=;
-        b=KT2McpU49AYlzj1oyGx8DgCztPjJ07MaeciwxUbNduDShRehnTjWOxALG9bFLNRy8c
-         HM7gzbE8Faq3tmCF5aDzLA4O8C5wnjDpUZ5i5Aq2hwkNkOIu4AupL6X1yfjINtSqq0mj
-         nQySTpzer48xFTHPsB3phRU5eU/qJC8mgpNWTSnP90Sq4wPEOnc7IbsbS01f5lUspV/0
-         FzG27+JYtY79LkPZpnJ+Rnm3ojahxqGWXiUClhhpB2h9sq1RaNUVPdbfYwAFD5L2MoWF
-         aCSK8zavhSUQkkOFpk2gUNeZMHTSc5UG8Y+ydVqWtBIwt52uJoCqkjnL77E2H64TRlCY
-         36wA==
+        bh=rin5Xzgf9RNm/Gx3a/2HtbrcZkKjggIhMf3Yv3Ghmqo=;
+        b=A+ysWVDZbdIdEZMS1R4tCyIlS8s030odpfccqtl0W5qdAxEUohErVomKlfCnaWAuY0
+         YgjUC7CMerFxzpkb/p8bfXDEc8fhyr7qwg3OmnMwg2w1t9THBDX+LLVHDkkbAWbCwXww
+         2NFFQH/Ra+g8/7w5T7K0KpfJ3j9sXAwU5NpNstzxQskRSOKd3DiRfmzNdVtocxDnY6dv
+         ec4BLY72sy1q0K9lr5bp6Q0SubrG4B01HXUdxmXTtEFBgP8hSnQT0xSEO6WnG3IKyPnr
+         FosOxU0zklsX4/f5e1KnElxxSr0WSY6XKcW5WHNF9xe1dv5UI25uyQW1R3hZ+cMAZap/
+         oSYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773174076; x=1773778876;
+        d=1e100.net; s=20230601; t=1773174091; x=1773778891;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=pr45VIQTBIoBLlkPvMxS8V0csqqIhMCo/oCsn7JOcGU=;
-        b=Fxjjj/D14txGSiuSa7vg+C2ASEvX35igQTIbsTq1OnINNny8KoXpar4bzN8kgeuJip
-         A5q6Siv+yry6pfJC4GhKzKpwzDc2w1fObO2KOgUBOv+mhAGUfWy9FjViFNkAO2u1J27K
-         fVd7E/XOaEeWyC6fTTsmckhbZBmB3yQxxCcfa+NUESFCOJFdfdQhl/ayUU6I2GIv4itY
-         b06QpZhzvcoV4s4Bx6vK9xqrMvn7bimaRoTKMj5X6ytWE9zRiSlWwsbEpvYRqu4ixN/f
-         vDc6vVtEjG60ZzCS0HKRTQnlsJBJGFmHMXOHs/1u9CAs3liAtXpxZiWLsrd2YUDpmaTc
-         /5KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX358syNB/sGILB+bKD/NAXM0n20UYuTLEaXobaGlcwplnq8gBw4A2qlnyc7GKAh6+TXnYzxGm/KA==@kvack.org
-X-Gm-Message-State: AOJu0YzADpboUlxQJVqWO+FAkAz+d7y1vAS2xru7ns8/BzSkgbqjG19g
-	gOt4D9tk0k/kGOiBfwp6eu218CcEuT245hY7oGvhzlhsZAl6joW90PHI5TxbU7cVDPf5lNMIQW0
-	QBvHHfjy8a9zZ9Plz5VZD1uybhrnR0xuEEsGfKOjLYpriTyth2L1mZA==
-X-Gm-Gg: ATEYQzwY1DJ8NX2XCB+76qXqtt8jiJDFd5QCGQ/X0Qo4lhZPa6f4F2bCmxzAxSC107i
-	VeDzwlFtytB84iMNmLq3080MPnoQiUKj3hKIKAN5YWucbNjzuIpzaKkA/n1GAGWeu9evrzXh9w9
-	zhGpZf2wjxumPd2qfZ8BJcx+hxE7jGgVY3p/esF1lgsKxSHiTqh8VlqM17WPAOiIcK9UYFOF5cf
-	W/teu9WXrdl/W6Wpk0YaS/EoYiBH3yr9svKdKbm6zz4YavcN8bzqY20ezu/zPsTA36vR+lQgTgU
-	UBEoP5x7lCq216Zpxy8xJEU7Z91q6VDR1L14j7uivN6CPdmIC7LMLu97fcIkJdfexGfechX+D2M
-	s5aCtjV7BfHf6tDCi3ax6vSN0wnJbMSjwI0W0qYNx0Ar0/wh7
-X-Received: by 2002:a05:6a00:194f:b0:829:737e:7d77 with SMTP id d2e1a72fcca58-829f7276aa8mr117545b3a.66.1773174075898;
-        Tue, 10 Mar 2026 13:21:15 -0700 (PDT)
-X-Received: by 2002:a05:6a00:194f:b0:829:737e:7d77 with SMTP id d2e1a72fcca58-829f7276aa8mr117489b3a.66.1773174075251;
-        Tue, 10 Mar 2026 13:21:15 -0700 (PDT)
+        bh=rin5Xzgf9RNm/Gx3a/2HtbrcZkKjggIhMf3Yv3Ghmqo=;
+        b=CXKP3sa+EDLVNL0DBPNbxALHOAiE28dj8sY//P5MBVFh53X10y/OAQpgOAUP3+OGQE
+         pcm8VBPi9JkYXzPaLEiq0tVVI+njO+NawH8oDEpHN2LkvIGrx2GPkMxkoDbzcboFAabR
+         PgbCKxnbKTPWNgPI0EoYzvQv3D0OzHpXrRcYaDEm6QCEPzPGrCxhIZ/iXTA9NEmzLU63
+         F/X/G0CyI5xNJEuo4hMarQ4SDlbULvN0tmn+Flo0dac2d18agQqEyc4suNZe9osfho3F
+         mwxeVuK+LnJnEY5TOk8medmmU7P4szJfNq8BjDFxi9g3lWEr8jIBW/Qas2KKP6JigKvs
+         R9lw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Y0lbNZK4j5EknNXFeP+9GOrApM6CmC5w7Fb35VFAHVHSCCWm0yjGPIynzHcKrAAO37W3/H5fJQ==@kvack.org
+X-Gm-Message-State: AOJu0Yybv+db/NARUV9xnxeJEK5XPJq4JEaftqNswnDkQNNeA2KWfkSQ
+	Gga/cyhZbHCOyOxdrBAd73we4iUIqgU1tIZ93UU7gW7MH289m2s3+5z0UtIdflYN9ZSBnMHHi+K
+	fdzm+i6Q3Hgz2bEv/6IVllwBPL3NmZf/tLgUEDeREvmB7f95nyoeKSg==
+X-Gm-Gg: ATEYQzzHGJ98ah+yg8M+Jg+LhRK5jT444BFSeYPeEo4g7cwh9A3ihedzAlsBZuQ+UeL
+	03utkgOoJARubW18wSdc0eifHLwe3/vCeRQkuuZamvZSu3cnI58cZs0SHKz/0otAGmwuaGwcsZW
+	ieXr9KUQbqnn16PaodNlvGM/oEwQKT48SlZjUFg7//wPbesZYimHH8s1PDeu5ufXA1inLsfa6R2
+	anUmIWIKmC6rakRMe7HweBuQBfbaY5TYHFMl5lLJosGR8adjqt0T+OGSR8RAJR+shSh14npz6Dz
+	blgD+oXeclVLzxgAPcViXlrHK90O16XD8Sah6UK10wWm8Pk7Mn/96KsOwl8yJr6lhJdvTpGfJvU
+	TwJhX8FeWmGXQDEdKcohI9YKsAU8jN73somNOirR6gTseT1Cy
+X-Received: by 2002:a05:6a00:bc93:b0:823:cbb:a484 with SMTP id d2e1a72fcca58-829f706c200mr175203b3a.14.1773174091199;
+        Tue, 10 Mar 2026 13:21:31 -0700 (PDT)
+X-Received: by 2002:a05:6a00:bc93:b0:823:cbb:a484 with SMTP id d2e1a72fcca58-829f706c200mr175158b3a.14.1773174090546;
+        Tue, 10 Mar 2026 13:21:30 -0700 (PDT)
 Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829f6dc2d0asm115262b3a.13.2026.03.10.13.21.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829f6dc2d0asm115262b3a.13.2026.03.10.13.21.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 13:21:14 -0700 (PDT)
+        Tue, 10 Mar 2026 13:21:30 -0700 (PDT)
 From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Date: Wed, 11 Mar 2026 01:46:04 +0530
-Subject: [PATCH v2 20/25] printk: Register information into meminspect
+Date: Wed, 11 Mar 2026 01:46:05 +0530
+Subject: [PATCH v2 21/25] remoteproc: qcom: Move minidump data structures
+ into its own header
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-minidump-v2-v2-20-f91cedc6f99e@oss.qualcomm.com>
+Message-Id: <20260311-minidump-v2-v2-21-f91cedc6f99e@oss.qualcomm.com>
 References: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
 In-Reply-To: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
 To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
@@ -160,46 +161,45 @@ Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-mm@kvack.org, linux-arm-msm@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
 X-Mailer: b4 0.14-dev-f7c49
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773173756; l=2132;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773173756; l=5406;
  i=mukesh.ojha@oss.qualcomm.com; s=20250708; h=from:subject:message-id;
- bh=DoL9F6Yy+rSvMBQNw/eS/qA8539X5KoND3cxVd5dx4g=;
- b=j+JQFKmaZDxUEpGVy3yxwRluoEiiKKxHpWd1mF6xVlnJWzgrkvwAQJ3AycXjiujTAa6qBPTc/
- fk1Ilv1rpSuD1QonOn1v1fM73CSGktc+aR8CTEikL2TUDUjPNLboP1S
+ bh=KXQCMJRLCbRonZvqZxJyWcxsG8bFtO60YADpZ72A4+g=;
+ b=7x0MeE/624UBgwaYA8d01C2eHOaPSi5LvmpDqTC0RDeXSdnY95KEknozT67woVS1EZWsgkcpb
+ kHF12b/JwLyAxBxitovgKsNVTm6BUP7AGvDHLNONgLVcKcqhMzi7W9d
 X-Developer-Key: i=mukesh.ojha@oss.qualcomm.com; a=ed25519;
  pk=eX8dr/7d4HJz/HEXZIpe3c+Ukopa/wZmxH+5YV3gdNc=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDE3NyBTYWx0ZWRfXycyFpmQ9wQoN
- CdUECUwR70ZxhG2P7brpVB5Yz9KLalLTnrIa3JPh9D3oJ4hOLNDBYQErTKVVaEY6eZDnuxUx/wP
- +zuXSaeTYc0BeExqwOS3L9sFZ6stQxetIG6xbFqMsvoWtfwk4v9vjsAa99rVjLvM/VOEWySiO6l
- GlfYIKWDdfzDG2qhfb5tdiULukF7dnudXJn9FteatBJshn0eBYAAk+a2m+N8021V3I2n0v6SKV1
- daxM0vqCzATXjaRZ7PHLTPGw30zq2KkwFroYHI08viJ85m6TYyxEqA7BpB1xCMI0ZYLvxADNpTJ
- daEGruImPTLD+M1RHJTrrJv9ytpAGq5PaotOjbGJagk5Pfp7hz/vHLTRLEkg+lpiIsBd4PjZDeo
- HlFPtZx/f6F1Skqi+kKF5vi/ULRWxz4R0hHtwkYN89J4N2ll/xeLrbqvKTcaccRdSMt294YmvZT
- 8rYkbpmhLLw6IM7AodQ==
-X-Proofpoint-ORIG-GUID: HiikUrq15mLDzgi4V0D9cC03LCxFiFpJ
-X-Authority-Analysis: v=2.4 cv=Lo2fC3dc c=1 sm=1 tr=0 ts=69b07d3d cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDE3NyBTYWx0ZWRfX/0vxEIR9iYTl
+ 6eInW80cy6xnhqD8xkixE9hrxpweyo/SSX/7zlV672R87Wo0aadh8sZjfLu/DWOyNWidGo+Dsa0
+ 5UlLbC2Ynfm8CjrvIn3Azbg0l+ZHruPBhzWknFoxo1pBwiP1dyG7CBsONg6aLr+2iCBi7uJH92b
+ ieUFyuKZpbjlySXuvPwfy+eSGdmiUOGBaWJWXh5pe8vjFuTH99YHElunwhLTVVUlXLDL4pCFX79
+ m6owt9PGXFnNuqZefFvzBeUkfiKSvTSr9KJcI/QP/MIdnmYySPSUO9+SgT/UOWqyqgMUTbqkJRc
+ p5KGS2zBQ96ylY1RkZpAl730cgmLibZt90uENZJ7xrJfMXVhjSHGlMpUYAiBfcBhDgbADdKRpD7
+ Khtr9/8UGLuvgsVt9v0aJCG8IbZR34bVayazd5NXv//pRKchgFfr+ZsXZfJo5Y4zwNSrXR361yi
+ u1b4JlZ+JTdUnSUwbWg==
+X-Authority-Analysis: v=2.4 cv=GtFPO01C c=1 sm=1 tr=0 ts=69b07d4c cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=iox4zFpeAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=ZWDwVrzm9O4pBL7d_cQA:9
- a=QEXdDO2ut3YA:10 a=3WC7DwWrALyhR5TkjVHa:22 a=WzC6qhA0u3u7Ye7llzcV:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: HiikUrq15mLDzgi4V0D9cC03LCxFiFpJ
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=NM4Q4TbMW06K43K3HisA:9 a=QEXdDO2ut3YA:10
+ a=IoOABgeZipijB_acs4fv:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: t2YTqgGVau5va0HFVjbp9sVrAmBeFzah
+X-Proofpoint-GUID: t2YTqgGVau5va0HFVjbp9sVrAmBeFzah
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-10_04,2026-03-09_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 clxscore=1015 impostorscore=0 bulkscore=0 malwarescore=0
- phishscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 suspectscore=0 priorityscore=1501 impostorscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100177
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 33B4C40008
-X-Stat-Signature: ajzp36b9x5u6is3aojafrmud6oqwj57f
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 74765140016
+X-Stat-Signature: so9xbgfb5r1rukeceq5wa5ymegat94mj
 X-Rspam-User: 
-X-HE-Tag: 1773174078-217736
-X-HE-Meta: U2FsdGVkX1/DStJ7e45PjKDfR4VQpfvChSIW3nqa5504MqeQv/I+aF8gak0KpmpAR7fd46tzh+mHX9yIRIEUND+KvkLx+y+KZ3JKAoOF49v0Dm5DKr2O+/jb82pNyxD3rkXKN6hO5yXK6UB0nFQumdgWnwq1/1XyZ8kQv5TDyZxNRLvQu94uKpQJcqjU4z7Ul2aQ0C3ShV5sQbwjC2um+aPzDK5pEX0KYMY657SG4jUCheLfhQx2cJ7mAQ7Kr72VQNiADsAlnmF4t8Fnd3W7u/Bcxi3NAkqIOiSPlambBD4lXdGl5lxeRrw0ymxJkYpv9Vf3h90r/4UJoR9PFWdn/mmAedd96SW2qrptmkIzWF7Dk7DfMYmrLE5CrcB8K2cTVcQRdOpWSh+rzxBbnzHPobnNymTgbUNG5tv8nRE+XbIQrD5bajO56sT8E981AlA5lnGyWaJEYSqlfP4zz4uo25ogJjgB8seG9jNKG3a9XxipmBbUKvgGqpr+t4ArOWmv5PkZZez6h24lsDbZSicz8DL2ws4opLgDakHclPZd1cU7SW8nAcewZAbOp3egIGpS8GUBPYgjO8Ozvg5ae/V9mzxbRDezmfI7v/cH8DFUa2trgfyE2EDwWODXIenoOHWD2xfK+D9Zrkt+SqwOMI/ASWO5BRQ/NR7L0lyjtkrL+Eu7iWpVsNJVP2Q5Y+csTWAruMCBMAMXoaUIWh4adipj6iliSw33qgM2EDZaORyun7PTeZRc3WVbUgmTc3COSGZ2xRk/yc0bX9ZMUhkt8I6fWEDd0BekMBWIfra1ldihJp8tfRPgMiB1eYWkG3icDqy84PJvgNk/9cbjM5P9oFAC07abuOLmdpnJG6Mmj3NmZS2lG2I5IFuKw8gHE84oU1ruox8DuD/HhWAfbxEwYzPzPK92vLtCEu8BOxg05t5zUVupxUDEn3ha/x506Gpe5+zaV2jA41x5NS1STzZgl4U
- uW9Ob+B0
- Jj6sEPKSysym85tLxZ6XOfnytWBO1OL4b9b3D5X9SB78C1M0wvrV3coJQ7wH+uDftseLMK1PsP/qfaWGbZ8xl5eski26+cnrKZtu16oGTmUbB978+LYa2j8cmEQiD82ILGcR9t6hGqgOsF0SKmFe0Osprqf7m+WEhWSipzLeS3CwpLbqi8PmpAwWhl1TtO971xYhCCz8aD2Fc3sGuO5JOVt7prpZwNsd6xPGRSEsm1dUnXf30qGAAyAYET6kgM4YS4gHi5aFMVTDEwPGczGm+c2QWon9QdmZYwmZ0wJnGX+aD0Tcn9H57i0NQuGoV/q+xv0hbbm6G4PDRIkBavQ9t5rrTDT4uXnUf/vvbOoM+HwimxEqYzyDjjY/ScaPdE6nHcRH50C5EFXKKfgbdJ+1STjBRObKHF7cOPU/GvoNLKDgl/yLDDByCvgaaqOK/Kil+yimhYVABR4G8iIOeUlDyR3B6/14BZ1rkm2aszLlbIgh3mRkwekfF7jBsx7gNi6GfHvPTOmPB+dIH1eZdacOqcT54bc0CsLHnCb/2aETVVkxSnt/Hk1RxOHrGyBOWzHfZLInv04bOmdx4dV+P45J6PzKbKXbzgTATBqhrdcgA+TDj3Z/rK1+Uw0gIf63OvOp8jY2M5Bjn7bMtCdTAeCteLD+NbXyQhbOinuHdAZhpKGcVJUpkBg9kH8eUbqad8EbWCHMTvXqBoHq/4FO2WAUv+NTlig==
+X-HE-Tag: 1773174093-138386
+X-HE-Meta: U2FsdGVkX18AUxKpiKvAe5YINDBNJHc85s8qTr+fZ/kzwjl1Pj5JgaLQh1fT1zPvyrRsSg/ib1ooKtaZUmWC0EXaoAPJq6/IRNjJ1GBn43CDeJagXJHrU8AQ3NLnRL8QZ8e7PwsA/MnuUmqFaCAwESYkXsbHoXC9U0Pk1KYgwsUDTBqOAr5/ZL2YJ3LiYIbMqEstlVyozb7JIir71onKQgsSavqdghCX8Bz/RuyEqL+o7NjelJ+6h58fKBxrXkzfAZkd6C/O771/u+ysh1HuCrJSK5HmH5aIIwU1oi77qKHpcvCye55Ui8WUhsDjKyvtk+NE6VpafJijlVnX69EdMo3kS7xagCzaT06/n0tj2BA2lBkO94POBho6gPnCmUWNld+HsEE+lebf3RYIgGYR9RO9yeCcULQDjkjr0Wh/XLBHmfvEZjf2O43EQXjOhTV6OF0GPFguuu7PD0tFQJvOsbPfn52aoTY3jucJKSLR8w2JyW6ccIaKrzdseHUrfY9fvoEtGARxnDVK1+Feov6JmbwrAHhfjhesniryi0VonFrOZLRv70/2MTaenqA2mpQug5/LsG8H4VfFGGLUtA0gIgQ231QRa0HGaPerqY5Pkcm2HfjrFtTrd1zCZauilbX4WgJ/6eQalZGeCQrCWieWR9r4nmv2sLLtawggQKMNSODXznL24+2umKSVjyWojwp3oEaU0jMSvfbbTTx0quhFS1JFRhMFcxizG8pfOMAhC4SyKRQN7gwuKGopHnDjxS131svNCXYAZXxzjyW0Ee2kdprMgUalzSrNvruTeGpKtW0FjouRoRKoWgYxoZThZXYqjr1HIYT0DxmgQ/OOd3KBwRQdRQmCYuWx+dKI0ji/To1mSz5T6G0Kd23xcvEUYL0fwNY5CGdIOFggym/+Dz5AjkuosbmcvaN3TP2cVOsaJ9R9Q+ULk0xI6gClTw3X/F6XX+GLJno4GQJ1nhfxou2
+ 3nOJE2S2
+ K/ASLMWyowQBYCpjCb+bhATP+Ycc0//G4B2HcVTDWT1NRVjg4inKrGPljcWb9LnBSu8RTtD/sQjctFda+KtxrBNEdGLRZIvD+F7HyTtDvV8obq+TzMmnL0y61tvOr0VDXa1WmnbwnkBYlt/6SnwZ1BiA9BDqfgnGU0F2xRlbkXl/D5TAkXDKkENa6lcNw5/JQitFTe1Rxv6qDSjA+yrbtkuFJCpTtweoTgKnB6B6+TEta/nvlHSAwwMcpN6UH9Qm02hQovXEhsnWlMjCqiO9AVHcIOLPMx4910SEBOB5NRKOQnpIrQLzklFdjuzi9zIkEWNETxG1gTyxMT+1JwclxIRuxHy0cor08IGuaTJMKT68kCqoeKsanrjgv1vy4tQv7tHeQ86nb5Wk+FgDJp14ZO65x0hRDHwd2wAzsJdV8tGES7BWX0sPCwzub8luWuuuC1EbvHco804wT+WiHmIGW41qgeQacvwyG+9j0lWWGBJlovl1tILh3VsiyVUUpjl2t59v+Ei0N6zCOyuHTJN4czO5z4hjy/ZgcgObm9UMUih50z+a9qdrDrpSWGx6fd7w/ZT9342P536+Qn04gaOFaunvplvzpxu0iNrqlS8Qh0NNgswUMF5gpkViLSnPuhlHIOBq4EPnZ7wK7SqHDQ3dTBCcMjIgEsXYeyinGunIrvfLO6Ogv0bQurn+uhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -207,72 +207,166 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Annotate vital static, dynamic information into meminspect for debugging
+From: Eugen Hristev <eugen.hristev@linaro.org>
 
-Static:
- - prb_descs
- - prb_infos
- - prb
- - prb_data
- - printk_rb_static
- - printk_rb_dynamic
+Move the minidump data structures into its own header such that it can
+be reused by other drivers. No functional change.
 
-Dynamic:
- - new_descs
- - new_infos
- - new_log_buf
-
-meminspect uses a different API to annotate variables for inspection,
-and information about these variables is stored in the inspection table.
-
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Co-developed-by: Eugen Hristev <eugen.hristev@linaro.org>
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 ---
- kernel/printk/printk.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/remoteproc/qcom_common.c  | 56 +-------------------------------
+ include/linux/soc/qcom/minidump.h | 68 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 55 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 0323149548f6..03216e7ef807 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -49,6 +49,7 @@
- #include <linux/sched/debug.h>
- #include <linux/sched/task_stack.h>
- #include <linux/panic.h>
-+#include <linux/meminspect.h>
+diff --git a/drivers/remoteproc/qcom_common.c b/drivers/remoteproc/qcom_common.c
+index 6c31140268ac..864c89f060b1 100644
+--- a/drivers/remoteproc/qcom_common.c
++++ b/drivers/remoteproc/qcom_common.c
+@@ -18,6 +18,7 @@
+ #include <linux/rpmsg/qcom_smd.h>
+ #include <linux/slab.h>
+ #include <linux/soc/qcom/mdt_loader.h>
++#include <linux/soc/qcom/minidump.h>
+ #include <linux/soc/qcom/smem.h>
  
- #include <linux/uaccess.h>
- #include <asm/sections.h>
-@@ -518,10 +519,16 @@ static u32 log_buf_len = __LOG_BUF_LEN;
- #endif
- _DEFINE_PRINTKRB(printk_rb_static, CONFIG_LOG_BUF_SHIFT - PRB_AVGBITS,
- 		 PRB_AVGBITS, &__log_buf[0]);
-+MEMINSPECT_NAMED_ENTRY(prb_descs, _printk_rb_static_descs);
-+MEMINSPECT_NAMED_ENTRY(prb_infos, _printk_rb_static_infos);
-+MEMINSPECT_NAMED_ENTRY(prb_data, __log_buf);
-+MEMINSPECT_SIMPLE_ENTRY(printk_rb_static);
+ #include "remoteproc_internal.h"
+@@ -28,61 +29,6 @@
+ #define to_ssr_subdev(d) container_of(d, struct qcom_rproc_ssr, subdev)
+ #define to_pdm_subdev(d) container_of(d, struct qcom_rproc_pdm, subdev)
  
- static struct printk_ringbuffer printk_rb_dynamic;
-+MEMINSPECT_SIMPLE_ENTRY(printk_rb_dynamic);
- 
- struct printk_ringbuffer *prb = &printk_rb_static;
-+MEMINSPECT_SIMPLE_ENTRY(prb);
- 
- /*
-  * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
-@@ -1238,6 +1245,10 @@ void __init setup_log_buf(int early)
- 
- 	local_irq_restore(flags);
- 
-+	meminspect_register_va(new_log_buf, new_log_buf_len);
-+	meminspect_register_va(new_descs, new_descs_size);
-+	meminspect_register_va(new_infos, new_infos_size);
+-#define MAX_NUM_OF_SS           10
+-#define MAX_REGION_NAME_LENGTH  16
+-#define SBL_MINIDUMP_SMEM_ID	602
+-#define MINIDUMP_REGION_VALID		('V' << 24 | 'A' << 16 | 'L' << 8 | 'I' << 0)
+-#define MINIDUMP_SS_ENCR_DONE		('D' << 24 | 'O' << 16 | 'N' << 8 | 'E' << 0)
+-#define MINIDUMP_SS_ENABLED		('E' << 24 | 'N' << 16 | 'B' << 8 | 'L' << 0)
+-
+-/**
+- * struct minidump_region - Minidump region
+- * @name		: Name of the region to be dumped
+- * @seq_num:		: Use to differentiate regions with same name.
+- * @valid		: This entry to be dumped (if set to 1)
+- * @address		: Physical address of region to be dumped
+- * @size		: Size of the region
+- */
+-struct minidump_region {
+-	char	name[MAX_REGION_NAME_LENGTH];
+-	__le32	seq_num;
+-	__le32	valid;
+-	__le64	address;
+-	__le64	size;
+-};
+-
+-/**
+- * struct minidump_subsystem - Subsystem's SMEM Table of content
+- * @status : Subsystem toc init status
+- * @enabled : if set to 1, this region would be copied during coredump
+- * @encryption_status: Encryption status for this subsystem
+- * @encryption_required : Decides to encrypt the subsystem regions or not
+- * @region_count : Number of regions added in this subsystem toc
+- * @regions_baseptr : regions base pointer of the subsystem
+- */
+-struct minidump_subsystem {
+-	__le32	status;
+-	__le32	enabled;
+-	__le32	encryption_status;
+-	__le32	encryption_required;
+-	__le32	region_count;
+-	__le64	regions_baseptr;
+-};
+-
+-/**
+- * struct minidump_global_toc - Global Table of Content
+- * @status : Global Minidump init status
+- * @md_revision : Minidump revision
+- * @enabled : Minidump enable status
+- * @subsystems : Array of subsystems toc
+- */
+-struct minidump_global_toc {
+-	__le32				status;
+-	__le32				md_revision;
+-	__le32				enabled;
+-	struct minidump_subsystem	subsystems[MAX_NUM_OF_SS];
+-};
+-
+ struct qcom_ssr_subsystem {
+ 	const char *name;
+ 	struct srcu_notifier_head notifier_list;
+diff --git a/include/linux/soc/qcom/minidump.h b/include/linux/soc/qcom/minidump.h
+new file mode 100644
+index 000000000000..25247a6216e2
+--- /dev/null
++++ b/include/linux/soc/qcom/minidump.h
+@@ -0,0 +1,68 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Qualcomm Minidump definitions
++ *
++ * Copyright (C) 2016 Linaro Ltd
++ * Copyright (C) 2015 Sony Mobile Communications Inc
++ * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
++ */
 +
- 	/*
- 	 * Copy any remaining messages that might have appeared from
- 	 * NMI context after copying but before switching to the
++#ifndef __QCOM_MINIDUMP_H__
++#define __QCOM_MINIDUMP_H__
++
++#define MAX_NUM_OF_SS           10
++#define MAX_REGION_NAME_LENGTH  16
++#define SBL_MINIDUMP_SMEM_ID	602
++#define MINIDUMP_REGION_VALID		('V' << 24 | 'A' << 16 | 'L' << 8 | 'I' << 0)
++#define MINIDUMP_SS_ENCR_DONE		('D' << 24 | 'O' << 16 | 'N' << 8 | 'E' << 0)
++#define MINIDUMP_SS_ENABLED		('E' << 24 | 'N' << 16 | 'B' << 8 | 'L' << 0)
++
++/**
++ * struct minidump_region - Minidump region
++ * @name		: Name of the region to be dumped
++ * @seq_num:		: Use to differentiate regions with same name.
++ * @valid		: This entry to be dumped (if set to 1)
++ * @address		: Physical address of region to be dumped
++ * @size		: Size of the region
++ */
++struct minidump_region {
++	char	name[MAX_REGION_NAME_LENGTH];
++	__le32	seq_num;
++	__le32	valid;
++	__le64	address;
++	__le64	size;
++};
++
++/**
++ * struct minidump_subsystem - Subsystem's SMEM Table of content
++ * @status : Subsystem toc init status
++ * @enabled : if set to 1, this region would be copied during coredump
++ * @encryption_status: Encryption status for this subsystem
++ * @encryption_required : Decides to encrypt the subsystem regions or not
++ * @region_count : Number of regions added in this subsystem toc
++ * @regions_baseptr : regions base pointer of the subsystem
++ */
++struct minidump_subsystem {
++	__le32	status;
++	__le32	enabled;
++	__le32	encryption_status;
++	__le32	encryption_required;
++	__le32	region_count;
++	__le64	regions_baseptr;
++};
++
++/**
++ * struct minidump_global_toc - Global Table of Content
++ * @status : Global Minidump init status
++ * @md_revision : Minidump revision
++ * @enabled : Minidump enable status
++ * @subsystems : Array of subsystems toc
++ */
++struct minidump_global_toc {
++	__le32				status;
++	__le32				md_revision;
++	__le32				enabled;
++	struct minidump_subsystem	subsystems[MAX_NUM_OF_SS];
++};
++
++#endif
 
 -- 
 2.50.1
