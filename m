@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E32E9EB1053
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F145EB1053
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20B536B008C; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+	id 510996B0089; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08B5A6B0093; Tue, 10 Mar 2026 07:55:28 -0400 (EDT)
+	id 4B9506B0092; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D52486B008C; Tue, 10 Mar 2026 07:55:28 -0400 (EDT)
+	id 305CC6B0095; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BA7D06B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:28 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 807C5160148
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 145C26B0089
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE3971B4756
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:28 +0000 (UTC)
-X-FDA: 84529998336.04.75A2217
+X-FDA: 84529998336.06.C3705A7
 Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3889D18000D
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id B48D2A0007
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773143726;
+	s=arc-20220608; t=1773143727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wXP6inC1ot/jec8Yz2mJDj/4GFF4TcysvA1pHXvsm5c=;
-	b=4Zfazb+GXtT8mSlEFZLhoItFJhr4vRiz/kKubE0qMUFCIjsSyggO9Sf49VY7fHH6vz/209
-	6tfeDDTBdFiFo4zRsMnV+f++C5jDRCOesh7Tcs9kcqlUJ68cGWCPLqQASZ0OKBdLlxbkm3
-	BY2fnHcnidLUrW9ovcZdyYdIVBjr3tE=
+	bh=p0plzaKeSbxjl79A2lleHYZjr3IgqG3bFMpzk2gkjBk=;
+	b=ekI3DrCHrVtco6+C4EZ612LDA+2uaH0EsGUclcjzpdiJulYbblKBihttff4/RD4lnRPWG8
+	n1KQDdonkR6ngYeSi9j50HJl7CRYoXQL/VYM45Nvd1NIbkIx1PF1aoXPeSjUBmVl2g9CQp
+	jkJ3AwCbIxvgVFhLv4zxmkfzYnWSeGg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
+	imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143726; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143727; a=rsa-sha256;
 	cv=none;
-	b=XJe6uuqqbYkrVGgPRf8tQzDK0BkV2LaD1MjtVtqEFV1bhZOlrnFCZXiAUQpyV8ZAW/IEh6
-	TBOiqlBBQOriQ+/Pp0R+wIyZviuDRGr1lV29lJ/Oq7ZRwt0jGviAUiGfhFW/uwY7W6DON2
-	wbnft6P0eA9FK0ysDy6A+kebyXEqKaI=
+	b=n0O2pcTqv2Oz5z5Xu0jPRjMEkCa9ugoIzrArEvzuntz3bihUAyxccOpf9c6I3S8qhwT35a
+	axRolbpae7Y5cprzDFsYyQ9vEbsnTydadDU3/N1X3sxcUj5Y1VN3Nh/sayJIVohye1yTPt
+	i/C8xTqSaMgCjjqIaucwYtjG/4hm2pI=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ab-e21d-7f0000032729-7f000001d976-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:23 +0100
+	id 69b006ab-e21d-7f0000032729-7f000001d99c-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:23 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:29 +0100
-Subject: [PATCH 03/61] ceph: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:33 +0100
+Subject: [PATCH 07/61] erofs: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-3-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-7-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -93,33 +93,35 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
- Viacheslav Dubeyko <slava@dubeyko.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1465; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=FEizU4OZfQ9wQ3wvLqHfhAD95k5qump7I9MIi0BZQKk=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAXdroDlhymGqsGkbn1SZv53cw4YuzOIIwtui
- bzXW6sBBQWJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF3QAKCRA0LQZT0ays
- 2/1wB/sGTAYBPIahrXD3EXFQ9FcpHqqnw1r9sZLiba/u035gmw5LoaZhwTxHDBskl2iaWkVnIXz
- Iy7Anuu/HF1GBhMkP4ZE553CQedkoQLkwUxzFneqcFtg8dEj/bcSSJoqNhuTbcFTeYPFZ2FuuJR
- mi6wxSHOtk1jHNn9K4y3/ujXKX8zNKkMQCDkESe1H1kZKzWifi4aoEVftzahJtLslDJIa2qDL4i
- OSDOnojL7uRKrSwdvp+XJGBIrrn9XWylS2+dg5zaohBqwfc9ulGK+fMI3nM/n2Gqrv2OPrXEBM6
- 17i7pbPmqS6afMN4bPYcsNPNwynB+aJ8jBm/4wPpjycn86fZ
+Cc: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
+ Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
+ Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
+ Chunhai Guo <guochunhai@vivo.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=Wx/k10vuVbp8ZUI17J5Bmoq0XIce6rBC9+YI4+K5MhY=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAXuTWLAsZgE3CYfS0prKIO5oYoR3eM1fSwdn
+ +XKr0TQn0GJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF7gAKCRA0LQZT0ays
+ 2/j8B/sEd5J2vRHsnvhncB2lMo9VZ5h3+ZMJUztWw9QhmuXX9Qx3HEdJ5GLZ84ct6sqOhNTdJzS
+ JFD7aVZEzrOOhcVXC4LBSF/0LTyuRs08pHBx90juaWCHs505i/RK57onvWUjJYv2jNvBVJQQ+S6
+ AU4u0SqHLiT0AAUqbjuiM2TTHxhB5xD59cg+mk4rXkCdmvt3sw2+h9McRwE+VdqWIniC4/IsZt/
+ lSDklfOcCL2PaTrHCFhWHaM0/yrWd/ljPTRmFceOPsri9YRyl2VkofnQ4LBx/tIitZdlpukR5BZ
+ 3gdZMB70thXOoVOpRxkVmdjJvHPiGXebLpJqAK8oxLcbLF+S
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143723-7B60AF2F-D466ABAE/0/0
+X-purgate-ID: 149429::1773143724-8966EF2F-D5F13E8E/0/0
 X-purgate-type: clean
-X-purgate-size: 1467
+X-purgate-size: 1167
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: 3889D18000D
-X-Stat-Signature: t1thfj5tt6gomo1zau8yc9ymn3jkn7z8
+X-Rspamd-Queue-Id: B48D2A0007
+X-Stat-Signature: orugryfegwqaymt6pu395prxd1rgwb7k
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-HE-Tag: 1773143725-92134
-X-HE-Meta: U2FsdGVkX1/mKo55AwphTAAyjlgNN0OC6LnkqasqHwMfZKnXPfofr0PRzgy50FZ5qA9hH/qFAm35P7AXK/AiLRURONxfMNpLKjJWUguTFkr0DW2EnCIR9DKJUMSfCf5YWnYd1m5r28GO6gizSmRvt0O4HUjjKFZXcZw8Q0SQDdhAYWgLUU7vU7ohJGnFWu2RsEYS4HY4D4FSCkg8OG2gGDCsiS27+YV49QAnZGBWpQK6QbAg/xNJFKSntKfc8OSY0lg3HlAFXcCTtR9QbMMwPJVROT4Gun2Zra/7JeRfDiLLLeSQubyGYjg0TLfZbhYZlzdeUDodUQ5yC62DKyiG1JFY7YhLhM4PmBaE/TkEvTpX0JojQJXznaTnj10R+TDiHK0He/mjlgDxWQgilMPx3DjBj9Zvt4zt1n44VddX8tffIP5UhDFx/AN/pFKSKNvKSAASBdrPNd90urLnps2saUZuXN0aOOd4hhP8t/jKFOhfdDfHyag8T9yh6IxoLNXQIjsCy7g2WxmBVkhiI/iidJiBcGS768O1l+1h3W4C5GWIOxA2Js22/6LXxw6RBX6fVkJG5uQi8bpVkIDf8cQxoVLcrx2pq6+3i/rOZ1p0qPomvg+AsxsFheORA2U9nS6Tn4eeUyyI5ns0D4PaclZBAgUwQ+b20Y5hfsY+knxCOgoSe+dQGXqYpvW4t+o6zzfbgV8jMqpHHk1yhN9B6RTBdfe/VLE2XOiLrWYEMNQzTjJgl3tWLTRey1tYwz3vNlg9WC6HpLEvAVitfOh/HB0Z1AmhRMkzLwFjP37vk/7j8cUgMHjv2B7Ap0QU9Lme6ZSSg6H5B3X19/wccCXK6X5QnNXGLvEPO2Y6T/SdPJdeGfCxZ0JcPg1F7a8OxIWbBpyNp/8thepTyyHnSWtjyLxVfBBagpIw8ugNBflqxCoEKQy1qTQo+p/UsZmBGobUXth5YjX5WGwMEUNyzVihjtK
- MebDsoZ4
- RNTeNZpwJe5iGL3IEghXmphO6lTeWz69M+hY1E7NMdsX4TnLSzlgZM0tU5xyP2ElA2iV5lQ1EE9Y+sqzgj/UmTcbOHGj1HH9xZJrv0ZC7qnQ2T9qBhzzp13MGWeVBECFxKoKqnooA/sTPNMDx0upy9onH7FAhivI6O9actG3k5SzvpTT0TVr1TI5d0sgXxEIBKLsAP3qYKPqgQoI4LXdVZ0moTgjEFdfnK/liR3unmHlJrQBKTtR0M08JunKvKw16q41Jx54I3c5c7B9XnmBwq6ZdKFe+vwPapICeIblazFbXvxBlTNMWOdBNIZQrw6oJF/UyhQ0l3SP+Ixc2Ws5cpH4KOA==
+X-HE-Tag: 1773143726-607309
+X-HE-Meta: U2FsdGVkX19PKXzsSpVzyGHXSo9GF/AR5PFyODfo+AwVIgapxFHs4cpvHmzxt4KIetsSgDicvLiETonWDWOcqcHSsMr13LxOiqzkeoeX4Gds7Z6ussPpogkFSESUXY7X1ro3jJ4n8+2pVGJ49nTH+WEgOPiYoImjyXYS6hzKzoFgiC5db7VDCpJnw9n6xgX8DtsoKDKTctX42ZbtLJtkMxFjzQZ5BVcDMf4yYJmJbSc8Hy3cmiy2srX2o+9nJbL0/+go3apOmehaVnm24jtbvxYFMHEqVYPH4ACHdlawQ+hEmi5ZjuPY0/ms283yDOeuHY6CBreLhz+foisGbDB1SGvhuuWZGKKayM6/zpd7VQzp2bEy7gN/y8vD5okD0Y4Q4+zdwqccvl9Ms6tlwGaGKwI6M1eNKDApQR0nCRK3f7ictTKDU9Flgp9lmgrCHt13T+Jkk/q0N0217bfuDxAQxPcgSp66VWd0CymWftYrK0/nLRosUHEDqTjk8OnqYkEsJOkz7TCsGj0QCnRmbygB9ygjwAUMc2mnY7RzuFBixRXks5sysyFslPJbpV3Wd7ynpZ+YcB7Or/CO5lJc+JbitLz9oBLU8/9XmepXshQaJJ+Jjeo+MdVYPalC3EStGh4URdgnC2CQpwXU+HGgfCc64SGVCJBh96WvMWxvwPyn5/fp+WVd8SBiKBx8N+8vn8sQXzdbzpICF/RsQtdX1TInX78ms6PDV7vJGCQRjf/tkoWSr5BgYEvEW2Nfdds6oqt21CiVCnYW/hDowqI+Wz7JNZ2Nr8rfGLMUiGYXO2m6/Nr5AfDbUGKlDtN9F9fyfvh4fxSsn3t2YqpXCUjU36DQI3ZSr0u3q/VPXmWzMWW5DEg75pfOg3cYlGwlB94GCjmt/miyR6jCkxZSindvL0LspenENt/ChT1B7SY3m2iupVun0J3Bdqj9mzDtcGorwxg7JT8saySYkLlQrpWK82Y
+ s00Dr0Ex
+ mGktSk/2VZns2QAZOJzaFn1XnlJExGyftY6gWlpW+wZxoq4Wlx33VrVzg9ZULxaW7vHFc8TZB7JWh3e5nvpHxFM6bZIq/YQcN/9sLfTjIobjLhumy0///WBJM+Y3yVdVS13p/LgtTviLR3cvY0TgfoA5Yz752HgPXUVpjNJUCObZkDz00sjLx1QV6bNc7IPosRYscLpBhZenIZXlHA7rz9Rl+g7rPC08+UA1HV8nGuxy0OqrRyWnGRWgPED9E0swC0+oI/dMUX/HVCKKs1F2RB5/OuCCcoF/0KoF4Cz1sM+DtUb+wJha0/o82yDjPFl3QodqS8W5brL4JAUq7VykB0M7ePzJ1VBAGA6g+85bCMSKfTumuOZ6pLuIS/knloq9ul0iDLzOIeWq/TM4fbi75yD8yRKHhTkWORqZLgfCReO1+fvE1ovpvB0iod/KkAQexeNj2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,43 +134,33 @@ check.
 
 Change generated with coccinelle.
 
-To: Ilya Dryomov <idryomov@gmail.com>
-To: Alex Markuze <amarkuze@redhat.com>
-To: Viacheslav Dubeyko <slava@dubeyko.com>
-Cc: ceph-devel@vger.kernel.org
+To: Gao Xiang <xiang@kernel.org>
+To: Chao Yu <chao@kernel.org>
+To: Yue Hu <zbestahu@gmail.com>
+To: Jeffle Xu <jefflexu@linux.alibaba.com>
+To: Sandeep Dhavale <dhavale@google.com>
+To: Hongbo Li <lihongbo22@huawei.com>
+To: Chunhai Guo <guochunhai@vivo.com>
+Cc: linux-erofs@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- fs/ceph/dir.c  | 2 +-
- fs/ceph/snap.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/zdata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-index 86d7aa594ea99335af3e91a95c0a418fdc1b8a8a..934250748ae4fd4c148fd27bdf91175047c2877d 100644
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -889,7 +889,7 @@ int ceph_handle_notrace_create(struct inode *dir, struct dentry *dentry)
- {
- 	struct dentry *result = ceph_lookup(dir, dentry, 0);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 3977e42b9516861bf3d59c072b6b8aaa6898dd8a..88c293ab2b1ef7962c6f5c0aa82639859e41b8e2 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1227,7 +1227,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
+ 		struct page *page = bvec->page;
  
--	if (result && !IS_ERR(result)) {
-+	if (!IS_ERR_OR_NULL(result)) {
- 		/*
- 		 * We created the item, then did a lookup, and found
- 		 * it was already linked to another inode we already
-diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-index 52b4c2684f922bfed39550311e793bfe3622cd26..528ad581be160713f91416115659e2dc6f259576 100644
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -902,7 +902,7 @@ int ceph_update_snap_trace(struct ceph_mds_client *mdsc,
- bad:
- 	err = -EIO;
- fail:
--	if (realm && !IS_ERR(realm))
-+	if (!IS_ERR_OR_NULL(realm))
- 		ceph_put_snap_realm(mdsc, realm);
- 	if (first_realm)
- 		ceph_put_snap_realm(mdsc, first_realm);
+ 		/* compressed data ought to be valid when decompressing */
+-		if (IS_ERR(page) || !page) {
++		if (IS_ERR_OR_NULL(page)) {
+ 			bvec->page = NULL;	/* clear the failure reason */
+ 			err = page ? PTR_ERR(page) : -EIO;
+ 			continue;
 
 -- 
 2.43.0
