@@ -4,123 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C598BEB105F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 21:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F9FFFD88C3
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 22:08:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 071FE6B0092; Tue, 10 Mar 2026 17:34:55 -0400 (EDT)
+	id 3C5976B0088; Tue, 10 Mar 2026 18:08:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01D5E6B0098; Tue, 10 Mar 2026 17:34:54 -0400 (EDT)
+	id 375F86B0089; Tue, 10 Mar 2026 18:08:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3A426B0099; Tue, 10 Mar 2026 17:34:54 -0400 (EDT)
+	id 24BA36B008A; Tue, 10 Mar 2026 18:08:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D06736B0092
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:34:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 76ACC13A8B0
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:34:54 +0000 (UTC)
-X-FDA: 84531458508.02.EA3B019
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 484F020008
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:34:52 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VAMeG9Xw;
-	spf=pass (imf13.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773178492;
+	by kanga.kvack.org (Postfix) with ESMTP id 12B356B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 18:08:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B65EBB7EEC
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 22:07:59 +0000 (UTC)
+X-FDA: 84531541878.18.4B41FFD
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D355B1C0005
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 22:07:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MRUJ+haf;
+	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773180477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H/UPRVTAsUYW3i+OG72G17asefLsIJOs+AkksZbtd/w=;
-	b=vbokkSuYEmi+3UmUvOE23Dcjd6cJAb1iEhDAHz07PazC/weB3XuTJec8iddDO0PlEpUWm9
-	GhFYFV7B7JsonvMGyxed27mcIhKW86TIWf3EoyccPU9F5kJbsRpg+xV+ejHbkg9O3f1VFF
-	Lg+L/JmwKLJINap2Vi1GHmKr8BrvTN0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773178492; a=rsa-sha256;
-	cv=none;
-	b=qjwnN/NEebPIo+nBb+D5Gg79DARWD9+KJ9ENMRoHecgyeuJQOn00fdKfK5qkqKyXnjW+Uc
-	4yCubHYE5M2NZEKdSkcUvw7voXN+5mhV3OeuKn2LxLpRLl4zNZrtTWE9cyxdy7aoFjwgov
-	wrY9wHxDd6OraJTk4btRd4wccLVMzAg=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VAMeG9Xw;
-	spf=pass (imf13.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773178491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H/UPRVTAsUYW3i+OG72G17asefLsIJOs+AkksZbtd/w=;
-	b=VAMeG9XwtzaewG5hBYCtv/GXeFf/SjHZhL3d7irXa5IehjCplOj6fhU1Y/F6fNjAKV+QZM
-	73DqTIigTCMUNKOSZCCFSTpZ6YQKfIJXRasNOmdCDaRDqXfXOnhol+JUtHernpIxVuRE2T
-	RIEBRkFoaA82Pv/++XoYzL4LuxmIt7g=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-dn-TJG_tON-R02PKmPloJA-1; Tue,
- 10 Mar 2026 17:34:45 -0400
-X-MC-Unique: dn-TJG_tON-R02PKmPloJA-1
-X-Mimecast-MFC-AGG-ID: dn-TJG_tON-R02PKmPloJA_1773178483
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6EB3F1800371;
-	Tue, 10 Mar 2026 21:34:42 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.4])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 60E7419560A6;
-	Tue, 10 Mar 2026 21:34:40 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id D35534037EE9C; Tue, 10 Mar 2026 18:24:02 -0300 (-03)
-Date: Tue, 10 Mar 2026 18:24:02 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Leonardo Bras <leobras.c@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Message-ID: <abCL8vE3cttL1Yq0@tpad>
-References: <aYs6Ju2G4bm6_tl2@tiehlicka>
- <aYxviLoWsrLqDU7o@tpad>
- <aYywl1hdBQP2_slo@tiehlicka>
- <aZDw6xI2izFDfuuu@WindFlash>
- <aZL45yORfkNvS9Rs@tiehlicka>
- <aZjY9h3XXMNY-Ytd@WindFlash>
- <aZwYmNuucBspCYhk@tiehlicka>
- <aaJDjmnfuo8AM6J9@WindFlash>
- <aaYpICV55B70U1I2@tpad>
- <aa20uDGqnmiqYJ1w@WindFlash>
+	bh=9kkeACht95noKyq8swG36CoWs2+8JaKZ99j3py+2/DM=;
+	b=O6vj36z1jm3aM4RmGS2pWnToKmRH3dboBXf4mdh1iupoolCrkcszwNacaq3oxc+eUpgkiL
+	vI84UpJaAcdahfeMRXoYjA++Yh3NwZ4BaCfgjSUpv9AtQksLLj5f48pY+iIyW+lz8ne2k1
+	StPKY3bPmy8QzlzZ6cJ7A9aj3zcWUT8=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MRUJ+haf;
+	spf=pass (imf20.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.43 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773180477; a=rsa-sha256;
+	cv=pass;
+	b=a+xKE99aeLkXPdjub647EuzuWjE18dKqGD7t3uwZzner98TQhcNoA6NoPwbvsHjYT9gsWR
+	U3YhH0INablaaKmOQFsnENK8UbxbZNN/xY8V4j779+FWBsrLN8MqJLm2sUqTPltupd38rz
+	4h9CCybDo3KmbToCR+FZ/ScuPcntEMY=
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-899fa9610bbso154083546d6.0
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 15:07:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773180477; cv=none;
+        d=google.com; s=arc-20240605;
+        b=irptrhmh0SZSY2Ngf/czBPFafU6o9KMqVx4kYoQgw+zMB0rOZfalUlZd3yXldK4Rpj
+         tpo/GJlCN/EpT6dYLuXw2EgDuET5GMGrD+ZiEMQBc46MQU1+3IPgZ2bpBVYp4/3CKbJ4
+         FthCKNtuBb8BRie7hxP4Brva/NxiuTJmm28OKCvJJrWQb6t/nKisGC0G3qOvgF5pf36w
+         1pVwoobKbFekEkXsXrwCkKjjpa9PfB0ERpjs7AfaPqRvup9nsjLdWe2WTEUW/YeF1phJ
+         m4V3Oe35A387mXsTQ+Up6LP+JiRaShw6PWmB3jLt0d0LfWNiWEwylwLK0SCoaKuz5iwq
+         su7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9kkeACht95noKyq8swG36CoWs2+8JaKZ99j3py+2/DM=;
+        fh=KZC+l7m/JT3QCJDfj8hetfrQHBwq9hvAmdnacr2Z3VU=;
+        b=SqkyjulgP/f3zLaHm0LUJs7C+ZJMwekHhTjb2Z3mcIR7bJaItgMzN8zNh859gLPG7c
+         fXd+vVQCM7QW2AabGwhuRkWrBVX/QW222Li4+LCsQ9YtzTXHD6jORzP272r03xTF6mF8
+         fjUs+NK5nSqJ73kh+qdHhXXGElu86b1q8KMKyaPbPf7e0vj+MCq5EsOc14WteCUytqFO
+         DnWOj44tHgXDRxjrWgQWR60XwUrgzsuLt7HCXstUOIrPoq/GfX3ESBriNMmx19ZzWV6a
+         HVLmSfJKpDG2carcdcOzD+56ukg9dNcXAyc+/a3Xsk6hvtJntxXnvepQmhPCiHzn7w5M
+         HHtQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773180477; x=1773785277; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9kkeACht95noKyq8swG36CoWs2+8JaKZ99j3py+2/DM=;
+        b=MRUJ+hafr9mO0a29kITzNMsgREjcx9M69n5/Igfxz0Sa6KabXp1nhK508kczv5D9MA
+         wCphx8Shj7X3X7Ei8K2DdfR1VmqUE1R48ws/1kg/1i8GiISYpExqBoaNtGEc0NcpPIjG
+         FdpzZgPIy8rqOwxr+9B9XEMqvzzASaL5KLYl1as9ueYEVEJU1mVFSi4Tyui5imSExkdd
+         7xcLG72o9ptDxktqRVrlTbU6MRbtZUUdI61s3GXAism+EwbJ+0rzup6kQ7YO0Po/l4Gp
+         wT7uQkA0fAm9/PF4RHQZYA0yQjB9SG0g9ZqDblu2K01rwvcmNoCDXlXCV263Dm+ppwPR
+         PSaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773180477; x=1773785277;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9kkeACht95noKyq8swG36CoWs2+8JaKZ99j3py+2/DM=;
+        b=U7RVI5LW66bl0kXvnMTzHqKOHizTrqcsUQYDR6tnDnbHdD6RDLSizkqB+BvEicAc9Y
+         P7c73yswqBcXKHfRldILqWq9KRQRHMc7vRuuj7wmOZMvb9bolmQBgqeqE67kZ++sAYcz
+         5B10FW6UeAdzAcxzaaY1Q1lhZqk8YUEFMTrhXMTSM3/qM+Ie9Apw9DBlyytBxlT9eY5S
+         PzJ02vvyzvr1hQILcXOQhc+yyHjrAa7Af4LMTA8ncvUK4m8c8gkCxwL3fSvM0OkyqWZj
+         y9qGkDTqxIVANDrv2Y5l9nsgiD8GsX5QfHC4IT0KxFtJOUFvtHC3pPkI6nHX9xBlHw+S
+         uNJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWCR9acdTpEK04+T0aP5MK39GUOHLV4jXZyJC2jh6Pcnmpk4ksCmPArsCRHYAImSJb93ifIf6P21w==@kvack.org
+X-Gm-Message-State: AOJu0YzoYkuRq0Nt0e9Ec+5VFxPSl3DWFXduSk09jdWuhBIrimwstbRt
+	iEBwO04bZh+m7i6bivz2kBAq4Z2zBNHJahC71hcB3ZWeR0zwptLY++4gVRls1TIhICNXpnzxA4n
+	NkwqqM3nE+4fSh8sdY+ErVxE6ODXR0m4=
+X-Gm-Gg: ATEYQzynRT6xVc8Mg4Lk5k0nHqkHY4YNgZjgJtOf667mYd/VuWszaCmO3ISvatXRn21
+	u5gXthYQNKIDIe3iWHh7v9HNB2R8NXtR8M6AWMFaJV4rrfqSZMLvBLlkSDzJkiAMDJ72GEwukst
+	n/9ol5aR8OJ39FgILaCGBQcEa0LcWh9CL2mY30y2dMRD1yS3LZTbbTOfGfjJ5BzZu6Gplrbp35r
+	6HGzt7llPe/mLFPvKi9+WMhyzJTKdq5EPMDLVKujkwx9aWD2mR/UaTbK0u8rMp7/MhYOo6L/Wpc
+	i1fovvYROLLGOf52
+X-Received: by 2002:a05:6214:21c4:b0:89a:ff2:b8ce with SMTP id
+ 6a1803df08f44-89a66a6662amr3068656d6.41.1773180476656; Tue, 10 Mar 2026
+ 15:07:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <aa20uDGqnmiqYJ1w@WindFlash>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-MFC-PROC-ID: lg6PRJMoJzEvTxSP4Nl2aWIJYNmiOxKZMma3vQGevBM_1773178483
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 484F020008
-X-Stat-Signature: 69ym8p74uad7q4wo8mu6xgge6ywp9wnm
+References: <20260310015657.42395-1-hui.zhu@linux.dev>
+In-Reply-To: <20260310015657.42395-1-hui.zhu@linux.dev>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 11 Mar 2026 06:07:45 +0800
+X-Gm-Features: AaiRm52RIaYvqSyHW_vTNKb00l8Sd2WDFbB9cGJlzhKPoSbby8yOhzritPID1Wk
+Message-ID: <CAGsJ_4z85ZVnky6zCA5ZJ51EFM_8_O-ErYDmthwXryxGCxq9GQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/swap: strengthen locking assertions and invariants
+ in cluster allocation
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	YoungJun Park <youngjun.park@lge.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4fipofbrikczfc5wqbmwzpyqabzxn9cw
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773178492-179912
-X-HE-Meta: U2FsdGVkX1944Wm08/0/43A20Tq2DKsAOQdcaf/s3ELNcQe1ouFfNJsUIXyk61NGGDIsMxS0wM9IUsAAwC78TE8/4zULzhS4coZHhneHRGmwjVls+wRI7zfIckemNlQ3p3zrHbRzbZxrMo+3z7UR+XBWIwkbLJz1E21xw6zM4+epcRlFwEBwqOVIzEfRQHD2TGbbnBCfww7JMtHWH6ZPSdRUJhhX5+3Nb7u9CywKLfuxGL2s5+hQVBgRfHPsA/CR0UAc7VSHmq6dD8N3VOP7E5d+ig/9HyL9UPap7/689FzkKEtXfP+9239GR2Je2wJV9J284OCDx/MKjtU+uwDKRhWQ7sac9ac7BXIahyu6aD96NHlALYJfUALvaFOkQUgdJkED/O8EhgATeIKlYwqSN68yA8zT7Z/G9TiA9j+cAHR/ioRiBHhexne2d6XZkP5+C6EB8eI50n8NK5qUxExlLIDI2t6Lz/T8gYWG9Tn7iUp4Fko0FVW8tIjvypzc/sJwY1bZLaglusvoq/6xegFFLBR8TwA/ZQWJTdeKvShgltCouxiR1N3Z5cA61DB4O0fsHVNz4269xoNNRWrLY8CnlKfTwc1zt4idWhOFJCYKLL3UZxPOOoQwv9QZ0+TWxtNtBLGIK7SVtDA4GcK6bRJYHOXvjAC9Tqf/Wu65IFVYB7bd3W34uvkYcmzXvSQ0UA32mSSouITIrS3Nk81Qv/sujS8So3cYua4e0OXpHYWO1S+GAsrURHI85JoJi+iNi09rFmV9mjAroiHpWp8aOz22lJq6P8S/5JWolQiRsB+LgxB5lJvxFUo+Exdoox7gC3rRHpYAfGltnqy6AbRdJ8GDwlvZeaa2yR7d0uDkW72MFxPKjZ3FpQ6PsHqfJTtP5qB5kcvdvUzeC1G2YapUcMRXcQ3a27/xquP+QLW0sph4av/h/yckEWk6lHn/IaT6TsPmPAdr2k4at0Z4n/723iG
- ks2r8XCk
- wDlqJo8x1Kpf12nQbxcC5oV7ASI+qynlElcD8ixPli2DNlHypmhs6a8vMQh9cyhSVRDNbR4pz/Gt7VA+ee8QW3Ige2X44EIyzBcsoxQIekH4cyEbvwBszrDs/A/aZkY3etZuzS2rPpu9O+M1PCAfsHZJIqcdfMiKEjmMUBj7Iu90w38jqNuNYtqnupJOzju3mraIYqF+Uhh8exIbCJSHBDE0RY8943azKz2InH1gbVJKp+q6nIBxaO2lmJqawur51ogwLKAFopKzPtIaFXvmbqVnnzfoe+VtkpMzG2TRQLmixrYd1EC/fxJMTl8B+ylJbQYC8gDICra6njaVNRE9OWmbpDcR9q3CAJ5ErQxnAw4fN1GIH2cs0d0oGRoJobXO5z0SmOxCOEfvRQjnbx/rFIswKc1WXi4ypmNtnAAwzbsGBj1VWkuyPQZY/tK29WNnxH4p5iH+3ptvj9ec=
+X-Rspamd-Queue-Id: D355B1C0005
+X-HE-Tag: 1773180477-116575
+X-HE-Meta: U2FsdGVkX1+smV0jXiBbTLn1Wg3rae75gCKs9ryi6M7gVf50F51yUyhckwlLKrc745X27HxMd4QzShQm1LQSc5JhxeK90ewGkJ+LjNCOkna63bsY2CYEpkUtt8BKu0z2km3I9Vg0fA0R4I5Xnh08iq4SdcIHeejD9BQDWDlaNkV/opB9TVJT0RBP0MWNgKjltOTlKGQ+vsiHGw+6wjPziymGt6d/V3GrpgWJ51g6XNqVRktHrKbc0KTG2tRJ2JGuGcxwSvkzTssob44dnjTvBMaYSY+ShlcXJbVQKEmvNZDT36n4AO/hPS3KG/XtJmHPpxFSFTOf6lSZ5JvCntTRIw800PcSW9QHllqgO3kJRjtgaY0MbZbdCoWhLsfvIkb1tnFVoii5wgLxnHvMu5ZUEbdf2ZrqjcDwsEfhwf487t7Jqtik1047V95zcJfYTCmDvcfXu9J9+24mctS32PoByWM2bxn5olmqy0/NbKQpfPSiv6zGAUEqdQ0sNePe2FUOKIqw6yXQ7jWT0pNMnsju6u4qRARkoxEpF6r/+PkUDcC0qp34Ugie56BlJQ6gqod+8qCZY/GOQGda5cO5INl2kratrelQS8VnglL9YqRHEfcG0ZXu8Q9punZXxy9dGydFgZO6o2Os8Ty6EIoUPB1pTCAqjBsM8p64oNTL2QQItKHYy0pyDE7vPoO2WsHLud7bd8+RqBH68emBolFMy5RJeZEkVJzzmVoOSwXqNNoEhEeC8JdJVqw7V2fwH+4T0T3xfzMBbKUWTDSx+xFq8jnJdCnAe1C6c1mH/z37xUDRY1seAxnyrjtIUyYf2S5CW8AvpsyyXrFxsqovyY36nrZO+bojGBf5zrLJLJdoMAASn8Qxw+B6MuYt4c3gOr1W0pdKeSezFk1BiTT5yYjmdyQeTNBbatbOZmu5ElCZJ91mlcSjI31XkTrhja1mThRnvzHWB0T6ujJtZPm2jv1RcR0
+ ERNqBvJa
+ wOvUM0AWPTameYdRUlIEjdOrf9u+hCJoCSapLSsZoaB2Lmk0BfFXGzrEDxo2IhV1V0obXmCXE01ns9BOl3+2HrugZRfxr/PQ+dj4UCLrGgg3ucfGrxdJperjSjPAsMriDo/6zQYeEIwe749BiRcUGS/6vc/n0acexitefd2XymhnpwCFGyXlkNgrnsa5Ie/gs/gevqzmPiOtYBa7vsPlG0JeRungfX0SFrmuHynATKhoNEJQTWPSF8zaLERu0K8bbutdTOK5u1uZ1vZvmif7CzNIQs5vPYxCOE/vAb8+7ZXiSs/h+5xnjyRxJ5bq5WxYBVN02bL7qJSKOdHXIK6KLW7mwrgRtdlJFcQfBUMn+t8IfsaEtxhVFAfXn/5NGRAbecRxbRfNNSrkFlRZRdmy89qqu1mGDI/fVVdMd4nfokTzfj5nrWOSlGyckKKa2lcfh8EDj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,172 +142,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Mar 08, 2026 at 02:41:12PM -0300, Leonardo Bras wrote:
-> On Mon, Mar 02, 2026 at 09:19:44PM -0300, Marcelo Tosatti wrote:
-> > On Fri, Feb 27, 2026 at 10:23:27PM -0300, Leonardo Bras wrote:
-> > > On Mon, Feb 23, 2026 at 10:06:32AM +0100, Michal Hocko wrote:
-> > > > On Fri 20-02-26 18:58:14, Leonardo Bras wrote:
-> > > > > On Mon, Feb 16, 2026 at 12:00:55PM +0100, Michal Hocko wrote:
-> > > > > > On Sat 14-02-26 19:02:19, Leonardo Bras wrote:
-> > > > > > > On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
-> > > > > > > > On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
-> > > > > > > > > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> > > > > > > > [...]
-> > > > > > > > > > What about !PREEMPT_RT? We have people running isolated workloads and
-> > > > > > > > > > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > > > > > > > > > have requirements as strong as RT workloads but the underlying
-> > > > > > > > > > fundamental problem is the same. Frederic (now CCed) is working on
-> > > > > > > > > > moving those pcp book keeping activities to be executed to the return to
-> > > > > > > > > > the userspace which should be taking care of both RT and non-RT
-> > > > > > > > > > configurations AFAICS.
-> > > > > > > > > 
-> > > > > > > > > Michal,
-> > > > > > > > > 
-> > > > > > > > > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> > > > > > > > > boot option qpw=y/n, which controls whether the behaviour will be
-> > > > > > > > > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
-> > > > > > > > 
-> > > > > > > > My bad. I've misread the config space of this.
-> > > > > > > > 
-> > > > > > > > > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> > > > > > > > > (and remote work via work_queue) is used.
-> > > > > > > > > 
-> > > > > > > > > What "pcp book keeping activities" you refer to ? I don't see how
-> > > > > > > > > moving certain activities that happen under SLUB or LRU spinlocks
-> > > > > > > > > to happen before return to userspace changes things related 
-> > > > > > > > > to avoidance of CPU interruption ?
-> > > > > > > > 
-> > > > > > > > Essentially delayed operations like pcp state flushing happens on return
-> > > > > > > > to the userspace on isolated CPUs. No locking changes are required as
-> > > > > > > > the work is still per-cpu.
-> > > > > > > > 
-> > > > > > > > In other words the approach Frederic is working on is to not change the
-> > > > > > > > locking of pcp delayed work but instead move that work into well defined
-> > > > > > > > place - i.e. return to the userspace.
-> > > > > > > > 
-> > > > > > > > Btw. have you measure the impact of preempt_disbale -> spinlock on hot
-> > > > > > > > paths like SLUB sheeves?
-> > > > > > > 
-> > > > > > > Hi Michal,
-> > > > > > > 
-> > > > > > > I have done some study on this (which I presented on Plumbers 2023):
-> > > > > > > https://lpc.events/event/17/contributions/1484/ 
-> > > > > > > 
-> > > > > > > Since they are per-cpu spinlocks, and the remote operations are not that 
-> > > > > > > frequent, as per design of the current approach, we are not supposed to see 
-> > > > > > > contention (I was not able to detect contention even after stress testing 
-> > > > > > > for weeks), nor relevant cacheline bouncing.
-> > > > > > > 
-> > > > > > > That being said, for RT local_locks already get per-cpu spinlocks, so there 
-> > > > > > > is only difference for !RT, which as you mention, does preemtp_disable():
-> > > > > > > 
-> > > > > > > The performance impact noticed was mostly about jumping around in 
-> > > > > > > executable code, as inlining spinlocks (test #2 on presentation) took care 
-> > > > > > > of most of the added extra cycles, adding about 4-14 extra cycles per 
-> > > > > > > lock/unlock cycle. (tested on memcg with kmalloc test)
-> > > > > > > 
-> > > > > > > Yeah, as expected there is some extra cycles, as we are doing extra atomic 
-> > > > > > > operations (even if in a local cacheline) in !RT case, but this could be 
-> > > > > > > enabled only if the user thinks this is an ok cost for reducing 
-> > > > > > > interruptions.
-> > > > > > > 
-> > > > > > > What do you think?
-> > > > > > 
-> > > > > > The fact that the behavior is opt-in for !RT is certainly a plus. I also
-> > > > > > do not expect the overhead to be really be really big. 
-> > > > > 
-> > > > > Awesome! Thanks for reviewing!
-> > > > > 
-> > > > > > To me, a much
-> > > > > > more important question is which of the two approaches is easier to
-> > > > > > maintain long term. The pcp work needs to be done one way or the other.
-> > > > > > Whether we want to tweak locking or do it at a very well defined time is
-> > > > > > the bigger question.
-> > > > > 
-> > > > > That crossed my mind as well, and I went with the idea of changing locking 
-> > > > > because I was working on workloads in which deferring work to a kernel 
-> > > > > re-entry would cause deadline misses as well. Or more critically, the 
-> > > > > drains could take forever, as some of those tasks would avoid returning to 
-> > > > > kernel as much as possible. 
-> > > > 
-> > > > Could you be more specific please?
-> > > 
-> > > Hi Michal,
-> > > Sorry for the delay
-> > > 
-> > > I think Marcelo covered some of the main topics earlier in this 
-> > > thread:
-> > > 
-> > > https://lore.kernel.org/all/aZ3ejedS7nE5mnva@tpad/
-> > > 
-> > > But in syntax:
-> > > - There are workloads that are projected not avoid as much as possible 
-> > > return to kernelspace, as they are either cpu intensive, or latency 
-> > > sensitive (RT workloads) such as low-latency automation.
-> > > 
-> > > There are scenarios such as industrial automation in which 
-> > > the applications are supposed to reply a request in less than 50us since it 
-> > > was generated (IIRC), so sched-out, dealing with interruptions, or syscalls 
-> > > are a no-go. In those cases, using cpu isolation is a must, and since it 
-> > > can stay really long running in userspace, it may take a very long time to 
-> > > do any syscall to actually perform the scheduled flush.
-> > > 
-> > > - Other workloads may need to use syscalls, or rely in interrupts, such as 
-> > > HPC, but it's also not interesting to take long on them, as the time spent 
-> > > there is time not used for processing the required data.
-> > > 
-> > > Let's say that for the sake of cpu isolation, a lot of different
-> > > requests made to given isolated cpu are batched to be run on syscall 
-> > > entry/exit. It means the next syscall may take much longer than 
-> > > usual.
-> > > - This may break other RT workloads such as  sensor/sound/image sampling, 
-> > > which could be generally ok with some of the faster syscalls for their 
-> > > application, and now may perceive an error because one of those syscalls 
-> > > took too long. 
-> > > 
-> > > While the qpw approach may cost a few extra cycles, it operates remotelly 
-> > > and makes the system a bit more predictable. 
-> > > 
-> > > Also, when I was planning the mechanism, I remember it was meant to add 
-> > > zero overhead in case of CONFIG_QPW=n, very little overhead in case of 
-> > > CONFIG_QPW=y + qpw=0 (a couple of static branches, possibly with the 
-> > > cost removed by the cpu branch predictor),  and only add a few cycles in 
-> > > case of qpw=1 + !RT. Which means we may be missing just a few adjustments 
-> > > to get there.
-> > 
-> > Leo,
-> > 
-> > v2 of the patchset adds only 2 cycles to CONFIG_QPW=y + qpw=0. 
-> > The larger overhead was due to migrate_disable, which is now (on v2)
-> > hidden inside the static branch.
-> > My bad.
-> 
-> Hi Marcelo,
-> 
-> Great, hiding migrate_disable under the static branch is the best scenario.
-> 
-> I wonder why we spend 2 cycles on the static branches, though, should be 
-> close to nothing unless the branch predictor is too busy already. Well, we 
-> can always try to optimize in a different way.
-> 
-> Thanks for the effort on this!
+On Tue, Mar 10, 2026 at 9:57=E2=80=AFAM Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> The swap_cluster_alloc_table() function requires several locks to be held
+> by its callers: ci->lock, the per-CPU swap_cluster lock, and, for
+> non-solid-state devices (non-SWP_SOLIDSTATE), the si->global_cluster_lock=
+.
+>
+> While most call paths (e.g., via cluster_alloc_swap_entry() or
+> alloc_swap_scan_list()) correctly acquire these locks before invocation,
+> the path through swap_reclaim_work() -> swap_reclaim_full_clusters() ->
+> isolate_lock_cluster() is distinct. This path operates exclusively on
+> si->full_clusters, where the swap allocation tables are guaranteed to be
+> already allocated. Consequently, isolate_lock_cluster() should never
+> trigger a call to swap_cluster_alloc_table() for these clusters.
+>
+> Strengthen the locking and state assertions to formalize these invariants=
+:
+>
+> 1. Add a lockdep_assert_held() for si->global_cluster_lock in
+>    swap_cluster_alloc_table() for non-SWP_SOLIDSTATE devices.
+> 2. Reorder existing lockdep assertions in swap_cluster_alloc_table() to
+>    match the actual lock acquisition order (per-CPU lock, then global loc=
+k,
+>    then cluster lock).
+> 3. Add a VM_WARN_ON_ONCE() in isolate_lock_cluster() to ensure that table
+>    allocations are only attempted for clusters being isolated from the
+>    free list. Attempting to allocate a table for a cluster from other
+>    lists (like the full list during reclaim) indicates a violation of
+>    subsystem invariants.
+>
+> These changes ensure locking consistency and help catch potential
+> synchronization or logic issues during development.
+>
+> Changelog:
+> v3:
+> According to the comments of Kairui Song, squash patches and fix logic
+> bug in isolate_lock_cluster() where flags were cleared before check.
+> v2:
+> According to the comments of YoungJun Park, Kairui Song and Chris Li,
+> change acquire locks in swap_reclaim_work() to adds a VM_WARN_ON in
+> isolate_lock_cluster().
+> According to the comments of YoungJun Park, add code in patch 2 to Change
+> the order of lockdep_assert_held() to match the actual lock acquisition
+> order.
+>
+> Reviewed-by: Youngjun Park <youngjun.park@lge.com>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 
-Leo,
+Just a few nits; otherwise:
 
-migrate_enable was leaking out of the static key section 
-into the common error path.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
-With preempt_disable, as suggested by Vlastimil, those 2 cycles are
-gone:
+> ---
+>  mm/swapfile.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 94af29d1de88..4e0fb1ce5245 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -476,8 +476,10 @@ swap_cluster_alloc_table(struct swap_info_struct *si=
+,
+>          * Only cluster isolation from the allocator does table allocatio=
+n.
+>          * Swap allocator uses percpu clusters and holds the local lock.
+>          */
+> -       lockdep_assert_held(&ci->lock);
+>         lockdep_assert_held(&this_cpu_ptr(&percpu_swap_cluster)->lock);
+> +       if (!(si->flags & SWP_SOLIDSTATE))
+> +               lockdep_assert_held(&si->global_cluster_lock);
+> +       lockdep_assert_held(&ci->lock);
+>
+>         /* The cluster must be free and was just isolated from the free l=
+ist. */
+>         VM_WARN_ON_ONCE(ci->flags || !cluster_is_empty(ci));
+> @@ -577,6 +579,7 @@ static struct swap_cluster_info *isolate_lock_cluster=
+(
+>                 struct swap_info_struct *si, struct list_head *list)
+>  {
+>         struct swap_cluster_info *ci, *found =3D NULL;
+> +       u8 flags;
+>
+>         spin_lock(&si->lock);
+>         list_for_each_entry(ci, list, list) {
+> @@ -589,6 +592,7 @@ static struct swap_cluster_info *isolate_lock_cluster=
+(
+>                           ci->flags !=3D CLUSTER_FLAG_FULL);
+>
+>                 list_del(&ci->list);
+> +               flags =3D ci->flags;
+>                 ci->flags =3D CLUSTER_FLAG_NONE;
+>                 found =3D ci;
+>                 break;
+> @@ -596,6 +600,9 @@ static struct swap_cluster_info *isolate_lock_cluster=
+(
+>         spin_unlock(&si->lock);
+>
+>         if (found && !cluster_table_is_alloced(found)) {
+> +               /* Table of non-free cluster must be allocated. */
 
-[   61.217232] kmalloc_bench: Avg cycles per kmalloc: 164
-[   68.047789] kmalloc_bench: Avg cycles per kmalloc: 165
-[   73.266568] kmalloc_bench: Avg cycles per kmalloc: 165
-[  120.634168] kmalloc_bench: Avg cycles per kmalloc: 164
-[  127.617872] kmalloc_bench: Avg cycles per kmalloc: 164
-[  157.803679] kmalloc_bench: Avg cycles per kmalloc: 163
-[root@fedvm kmalloc-perf-test]# dmesg | grep qpw
-[    0.000000] Command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
-[    0.118274] Kernel command line: BOOT_IMAGE=(hd0,gpt2)/vmlinuz-tip root=UUID=35cfa00b-ed70-483f-b7b2-1964e14f719e ro rootflags=subvol=root console=ttyS0,115200 qpw=0 skew_tick=1 tsc=reliable rcupdate.rcu_normal_after_boot=1 rcutree.nohz_full_patience_delay=1000 isolcpus=managed_irq,domain,14,15 amd_pstate=disable nosoftlockup crashkernel=1024M
+I feel this comment is somewhat redundant with the one below,
+and its wording might be inaccurate. It could be rewritten as:
 
+/* Non-free clusters must have their swap table already allocated. */
+
+> +               VM_WARN_ON_ONCE(flags !=3D CLUSTER_FLAG_FREE);
+> +
+>                 /* Only an empty free cluster's swap table can be freed. =
+*/
+>                 VM_WARN_ON_ONCE(list !=3D &si->free_clusters);
+>                 VM_WARN_ON_ONCE(!cluster_is_empty(found));
+
+I'd prefer moving VM_WARN_ON_ONCE(flags !=3D CLUSTER_FLAG_FREE)
+here directly, without the redundant comment you're adding. Doesn't
+it already convey "empty free cluster"?
+
+Thanks
+Barry
 
