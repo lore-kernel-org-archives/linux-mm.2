@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40577FD4F08
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:54:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38FA4FD4F08
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7286F6B008A; Tue, 10 Mar 2026 13:54:04 -0400 (EDT)
+	id 5F3BE6B0093; Tue, 10 Mar 2026 13:54:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DCBF6B0092; Tue, 10 Mar 2026 13:54:04 -0400 (EDT)
+	id 5BB156B0095; Tue, 10 Mar 2026 13:54:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FBD36B0095; Tue, 10 Mar 2026 13:54:04 -0400 (EDT)
+	id 4F1DA6B0096; Tue, 10 Mar 2026 13:54:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AFFD6B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:54:04 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1B2E1602DB
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:03 +0000 (UTC)
-X-FDA: 84530901966.26.A815526
-Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 04AB018000F
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=P+XiKjo2;
-	spf=pass (imf16.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	by kanga.kvack.org (Postfix) with ESMTP id 2B0076B0093
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:54:18 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C054A140298
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:17 +0000 (UTC)
+X-FDA: 84530902554.25.746B331
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	by imf03.hostedemail.com (Postfix) with ESMTP id CC9602000A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:15 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=I3sUpFOI;
+	spf=pass (imf03.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.30 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
 	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773165242;
+	s=arc-20220608; t=1773165256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GAJ+J+1XntmG0XcWACMTfZBywC1fG1kbT1ZPvAKl7/I=;
-	b=KHauTHRpFBhXXD13MczS7bMW6jyAquOBYjjsnRjH/pdoD3iuVbMIWb2amIeIYcuCSkcbVG
-	Q78vCN0gv0ceuU0j74xnYo10x4nRQb0Pyc8N4N9bZnK1r5UmiaD258j07N1BVcr1NesQtV
-	8u6MzXGA004ThbXXOBy1fjK6FKSUaxg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165242; a=rsa-sha256;
-	cv=none;
-	b=0raBD8kCkFXA3N+nbIN3HCH2H+3p52pUlhJiI8TG1ElYNBoqi1MGU1cv3O8/A+DZPwTuBt
-	Jxs5auhWwhKNj7MKzkllzoqMUgq4uIJ3aUi/XHoCqXCZw1+ZxWZk40HBnCcIQoWjdU7ccf
-	xpQYeyOiTIjT1a3KEXLnexyBzvgIR78=
+	bh=xYzT9pUJ33fciEEYHLErzOjZWjIu4mssUSjNvzdqw84=;
+	b=5NWARF9fz1Ej94WBscTJHLaFeSc5Lh9qONPni5MgqRczMQM0oaMcmwIqqOxrY9jMzwQuc0
+	fgkFHaXgzgsA8IFC18Aa7KObEMemtUaSZRMffkkS7khZl5ZTTyNkDtGO+fl0BxzuYUCspG
+	dIBt4ycXZbnMZ2DlKa0JY6YzgI1G/Vk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=P+XiKjo2;
-	spf=pass (imf16.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	imf03.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=I3sUpFOI;
+	spf=pass (imf03.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.30 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
 	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165256; a=rsa-sha256;
+	cv=none;
+	b=UjCCbifH1aZN1lVsQTSa631b0snYOpdP/Y9B+gzFFEGjh508EcEQnipcLF5BimK1q/2Yz9
+	BOZMwk8oUofFRnyg3FB2UX6P4AH/c/tjf2cw3xstUQa5LUvxcmEOrjcuCcodK3sbCV4dDb
+	40MnacZ1uwheyAzUKvBkfRHiWfQbCjM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1773165239; x=1773424439;
-	bh=GAJ+J+1XntmG0XcWACMTfZBywC1fG1kbT1ZPvAKl7/I=;
+	s=protonmail3; t=1773165253; x=1773424453;
+	bh=xYzT9pUJ33fciEEYHLErzOjZWjIu4mssUSjNvzdqw84=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=P+XiKjo2WDhinx0LrZhoCyEO9Xz+s6vrjf4PAP6BYgEFfhhXNGL4WxkqcfRL5LKQd
-	 mRqR/n13Qr+TlRaDEPhsv8mhs8s/iECp5fYo4Xp38yrJa7pvqHKHYqP1bDdYRoRvWo
-	 hnFlILtUZ982lBU4y/339wXeTtL1Lwzj9znt1VKRLyrhc0dfpQ7av2ya+WO/tIW/qh
-	 xuXWGc7T+l0ECmd2r31w55ZhDRO8l+htirq7RNuBnsxn51eaMTCF6605eYD1apPZSZ
-	 N5AV4HhxU3wF/5eh72gUxCVPvZxkw135q/Dcu5vwt1P3+uVM4u4CMLu0RmrzAkk/Rl
-	 yclEgiNjw698w==
-Date: Tue, 10 Mar 2026 17:53:55 +0000
-To: akpm@linux-foundation.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
+	b=I3sUpFOIrb0QB5EzsPsVdPlNOpVbfpHLEIFJQeylmc0o9iLyg5d30OqYqf74C9PEt
+	 RxuA3WzuNAsFr9ULBmNwM/R6q310ubpG5zMPLnSj8NrahepZxdw9FFYzh8zrDewQik
+	 Q+C99HzEX98wp3AL5hhD5rDIhZk9HpP0T3YASmLQ4jR4m7lhEPy5rvBV99WZHTb6Ap
+	 LQb0JdgMolcKL7naA7a8LT3bnoSH6+T/ea4fC83VoDovOCHQmt3is2Q4jssmokQ/XV
+	 VYE1OSvIOG1j2JVFfqGlypQEZkNX39kCtNRTrCb6+LvwUXH13MrQ8zkE8ZfYM6zqvM
+	 r7E5fhO3jM/lA==
+Date: Tue, 10 Mar 2026 17:54:09 +0000
+To: akpm@linux-foundation.org, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: m.wieczorretman@pm.me, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v11 04/15] x86/kasan: Add arch specific kasan functions
-Message-ID: <61a7cecb9f498a565d87508e434ea1d7df9623f1.1773164688.git.m.wieczorretman@pm.me>
+Cc: m.wieczorretman@pm.me, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
+Subject: [PATCH v11 06/15] kasan: arm64: x86: Make page_to_virt() KASAN aware
+Message-ID: <b51b60f82bbd99cdcd7f6d0d2bac1d5f3bed0fe0.1773164688.git.m.wieczorretman@pm.me>
 In-Reply-To: <cover.1773164688.git.m.wieczorretman@pm.me>
 References: <cover.1773164688.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: e16ac0e855ec3772eef990d44995458f1f48bbd8
+X-Pm-Message-ID: a95af21cc490f13be9b2b1108f966a54feb03d3d
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5y6x5kgatfzu5barqjrzuh9ahid1skat
+X-Rspamd-Queue-Id: CC9602000A
+X-Stat-Signature: 7ouy4syzpfpmk3cw4pxtui1uyn55tc57
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04AB018000F
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773165241-53273
-X-HE-Meta: U2FsdGVkX19dKs+wYIhN7rj7+/9/QJfNWq+ZyGhn0qMLy1o6v400UiXeW+rMbu0w91MYT6jg/4L8U2zhyKzZxXQlzHyf/E7YmuyvC1mptWAcD1HleLWe6ong+nLX+ofbbP/ZtDCzfaXnHTUghdxu2ucgI+gOSQna2LfXgxVwnOJRK2SEIf8Xw24oze/bauqr/DXFFUBE3PxKnWWo6NYHh2yPmJqA9BWrs2CJseK6zM1vilqSrZvHGGdmG0jMoPbWn2kxNr6RasC96T2fJIF5sQZufPennNmlB9z9SYbN9SE1i7BI52WXMAvub0DU7couEb3D5yW6iI4VPc/oa07FhHm0ElKKbL4yeSb6D/Degnz51o1BE6TfUY2kmJDUr0wC+cWtJpj/gUm/Dhg+yMSUysJaSNgVPEHZCbWRWlmqQwxwEvuK+5D/HgBwS/kiWA1qzxDsBZ0CoeEvaomve65ZTZNhKlC/gdzRSjCa/pvWHkyUZ1aY6thvYuZoSiwkTz2hUnWohwWzOs7hse0MUfjBDqzLS/AAV2XUqe3bNTWZwoC5/0hFvARMLjR+FQ4DbPeMrsim2o1DLbw0mbPZulJ6KMp1C4iFhKJO0stsfF2PhQ6wHHNo40ZvKudWUnolG941zljQLWUP0PT20GQ81uKxvaALFt7CgBUk+0YKq+9q01KY0SLExc17/4tZ16fuTnKoP/I2p8CroFKbIsGgk6xGgVkqpL9rFVPPR55KIH3DjChxvPdf0Ki1Ttb1nMiEv3rakYJi/OkdOCexTJWrlFm4+rdQl71Ht48+sM8YmvxSsWIyv6uquQIKITgjPtFdLVhE75jviKnz964rsKnobep9PZsosoOKZFhJjYNMibbeR0d6qiqn6naIOYg4pG9qrUSCAtJxsEuNfEKkr0ilNEqv9CMB/r5RZto5NEkrtSe0DC49Lod+8FwWA8MiOoMc/r5ozo+SWgaTmJXl3unaNj/
- ZjIqIQs/
- woCXgmta/u/ENqgHsPxS5rlSz6rZVY/g60K9+gvgWF6uNttzDUTAhqg817uEX1OmWu/TCqY3+M0OCGl+feM9ArZxH/orakblCvmou0ZHMnAJz+c45F+qyCsJHCANtsMmcg2LMCm1RjEfv5NfAJa3h2/P8/kaB6uKS963Dfa8St67F5BV4ypPrLT9d/Uc/JYKp2jDWCwTbQesNo2oNg6aVnH5abWWspKwcd4y26iWH5jMyWvUjKHpSvwPjmOxSgSPsTETh3zKBcdU/19Sal7FkHbXYGwC0VApsAPjr
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773165255-765048
+X-HE-Meta: U2FsdGVkX19wzLNal5esd8Z8Cl6aB1yWJbdqK3OK6DFRL2JtS0X2KLdr7pGPtU+sJGQ0DBw7gTKpV0zoWKXhBGETqI6o7pLDcRQF/p2KzmhiVdAfFzv4JPIopBLTAg6VzhpOrBasIglJH1kVDmdbx8ztI5ok7krluRHiaOPBROu26rf11Q7/KruzPvm+kQSE9wtU6C+jL298KUzQlI++HY5SD1Pk9DNDHnjJVgv49CL9rh7NVGBDoBPLGQvyme/dH0vDxTfuaGEWDwauT6Nq7XTLY4Of6VptP9lDQxn2XM1Z0xoW9INREiFRzv2gGmpNS36sl6hZssMJKuo2+nmocatspaUAaXZY/0XjQ2P0igPNMjSezVYseRthrQqPitoS+DpT+TAgO8lyrcuEPpTip4+RVQTScJnxvKgarlhXagPkW/oXNCsUmfP2neitak2GosIzAjkgfK1fSjN27eM9YpSOR6kTostHzZMrbaVFh7oJZntHGV7jKTYeP5C9+c3nnuDQKv3hBwv1Spyslh8W+9j7uTJb1Q6Yshm+y9IP/JLMlq1LTkbwdIxKVTXeBZjyhE/tOiMx+Y7hBikPPaCpIIHoZ2M0m9ZSP0zNbxA1/TGJGTnZwHJydb6zIzQweD8cHE42DkIPNqLr5HpfJ0XYjNZRh3yjEKUy0H634Jlo67l/ZP/OtAcOJwZ1f2SFLTXhbyX3nz45XkbjPieYZ7m81PWtRTVqQQD9k4I/18VodBExMHbbT105jPl91u+FEDtlCYf8xROYHJ8eQg5CCqUMv/abzUEegKGRMSHDynLgdkKwJ+NSzmePrCzfGhcirsQtyAztahxvknDF5a3oX41XefozRUYyNavlPlWSmmWZjzw6BOpyQW5x6JNvGGVwv+yirUGQFee4r75Yj2zuol/7Gu9IBNHFQR+ChPImo3Q26wAxUT7Gpv51XzyIJ1TCOTQItmI7tHo5HDDXsEHURxB
+ 5cV2/OGX
+ N5T8P4vWNdOXVuA5z4aKwhCYqblWoiOuA/sJ54jFn2HQDlFwh/SmQl4xXLfxqnvg537oP75uDuJop6B8TGx1s0bBMQUhVASsxKd6u8hArGYIjvdn0Q9pB6lfterVtK5BEv0ztIOYoXxiFBlhNfk/YEfXK5OjjgqHvE7w9rXORYW386stwencjfYFxlws2sqojqmWSRd12ojCCqXHyFoU8KzVnB50lNWkAb2PRWNqRQg6Q5EbOI1tl0iHM7a1JBQmXpc9mLf31tYTid22qABuBrYXyDXQIYdwFoYllFPPcMnsl5CU2I0zddR+n9aIdnakpOtfQnmnAMlz26e/dl9bEbPZXvp4Ts3T9EvJCzFCHVOLCtv64QuWNNT4yHQPDEl+1Plu+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,141 +91,103 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-KASAN's software tag-based mode needs multiple macros/functions to
-handle tag and pointer interactions - to set, retrieve and reset tags
-from the top bits of a pointer.
+Special page_to_virt() implementation is needed if an architecture wants
+to enable KASAN software tag-based mode.
 
-Mimic functions currently used by arm64 but change the tag's position to
-bits [60:57] in the pointer.
+Make page_to_virt() KASAN aware in arch-independent code so
+architectures implementing the software tag-based mode don't have to
+define their own implementations anymore. When KASAN is disabled or for
+architectures that don't implement the software tag-based mode
+page_to_virt() will be optimized to it's previous form.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 ---
-Changelog v9:
-- Rename KASAN_TAG_BYTE_MASK to KASAN_TAG_BITS_MASK.
-- Add Andrey Ryabinin's Reviewed-by tag.
+Changelog v11:
+- Redo the patch to work on the page_to_virt macro. Split off changes
+  about virt to phys conversion to an earlier patch.
+- Remove Alexander's acked-by due to bigger changes.
 
 Changelog v7:
-- Add KASAN_TAG_BYTE_MASK to avoid circular includes and avoid removing
-  KASAN_TAG_MASK from mmzone.h.
-- Remove Andrey's Acked-by tag.
+- Add Alexander's Acked-by tag.
 
-Changelog v6:
-- Remove empty line after ifdef CONFIG_KASAN_SW_TAGS
-- Add ifdef 64 bit to avoid problems in vdso32.
-- Add Andrey's Acked-by tag.
+Changelog v5:
+- Move __tag_reset() calls into __phys_addr_nodebug() and
+  __virt_addr_valid() instead of calling it on the arguments of higher
+  level functions.
 
 Changelog v4:
-- Rewrite __tag_set() without pointless casts and make it more readable.
+- Simplify page_to_virt() by removing pointless casts.
+- Remove change in __is_canonical_address() because it's taken care of
+  in a later patch due to a LAM compatible definition of canonical.
 
-Changelog v3:
-- Reorder functions so that __tag_*() etc are above the
-  arch_kasan_*() ones.
-- Remove CONFIG_KASAN condition from __tag_set()
+ arch/arm64/include/asm/memory.h |  5 -----
+ include/linux/kasan.h           | 10 ++++++++++
+ include/linux/mm.h              |  5 ++++-
+ 3 files changed, 14 insertions(+), 6 deletions(-)
 
- arch/x86/include/asm/kasan.h | 42 ++++++++++++++++++++++++++++++++++--
- include/linux/kasan-tags.h   |  2 ++
- include/linux/mmzone.h       |  2 +-
- 3 files changed, 43 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-index d7e33c7f096b..c868ae734f68 100644
---- a/arch/x86/include/asm/kasan.h
-+++ b/arch/x86/include/asm/kasan.h
-@@ -3,6 +3,8 @@
- #define _ASM_X86_KASAN_H
+diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memor=
+y.h
+index 875c0bd0d85a..39dd0071d3ec 100644
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -411,11 +411,6 @@ static inline unsigned long virt_to_pfn(const void *ka=
+ddr)
+  */
 =20
- #include <linux/const.h>
-+#include <linux/kasan-tags.h>
-+#include <linux/types.h>
- #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
- #define KASAN_SHADOW_SCALE_SHIFT 3
+ #if defined(CONFIG_DEBUG_VIRTUAL)
+-#define page_to_virt(x)=09({=09=09=09=09=09=09\
+-=09__typeof__(x) __page =3D x;=09=09=09=09=09\
+-=09void *__addr =3D __va(page_to_phys(__page));=09=09=09\
+-=09(void *)__tag_set((const void *)__addr, page_kasan_tag(__page));\
+-})
+ #define virt_to_page(x)=09=09pfn_to_page(virt_to_pfn(x))
+ #else
+ #define page_to_virt(x)=09({=09=09=09=09=09=09\
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index c6febd1362e8..58cf02af4fa5 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -527,6 +527,11 @@ static inline void *kasan_reset_tag(const void *addr)
+ =09return (void *)arch_kasan_reset_tag(addr);
+ }
 =20
-@@ -24,8 +26,43 @@
- =09=09=09=09=09=09  KASAN_SHADOW_SCALE_SHIFT)))
-=20
- #ifndef __ASSEMBLER__
-+#include <linux/bitops.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+
-+#ifdef CONFIG_KASAN_SW_TAGS
-+#define __tag_shifted(tag)=09=09FIELD_PREP(GENMASK_ULL(60, 57), tag)
-+#define __tag_reset(addr)=09=09(sign_extend64((u64)(addr), 56))
-+#define __tag_get(addr)=09=09=09((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)a=
-ddr))
-+#else
-+#define __tag_shifted(tag)=09=090UL
-+#define __tag_reset(addr)=09=09(addr)
-+#define __tag_get(addr)=09=09=090
-+#endif /* CONFIG_KASAN_SW_TAGS */
-+
-+#ifdef CONFIG_64BIT
-+static inline void *__tag_set(const void *__addr, u8 tag)
++static inline void *kasan_set_tag(const void *addr, u8 tag)
 +{
-+=09u64 addr =3D (u64)__addr;
++=09return (void *)arch_kasan_set_tag(addr, tag);
++}
 +
-+=09addr &=3D ~__tag_shifted(KASAN_TAG_BITS_MASK);
-+=09addr |=3D __tag_shifted(tag & KASAN_TAG_BITS_MASK);
-+
+ /**
+  * kasan_report - print a report about a bad memory access detected by KAS=
+AN
+  * @addr: address of the bad access
+@@ -544,6 +549,11 @@ static inline void *kasan_reset_tag(const void *addr)
+ =09return (void *)addr;
+ }
+=20
++static inline void *kasan_set_tag(const void *addr, u8 tag)
++{
 +=09return (void *)addr;
 +}
-+#else
-+static inline void *__tag_set(void *__addr, u8 tag)
-+{
-+=09return __addr;
-+}
-+#endif
 +
-+#define arch_kasan_set_tag(addr, tag)=09__tag_set(addr, tag)
-+#define arch_kasan_reset_tag(addr)=09__tag_reset(addr)
-+#define arch_kasan_get_tag(addr)=09__tag_get(addr)
+ #endif /* CONFIG_KASAN_SW_TAGS || CONFIG_KASAN_HW_TAGS*/
 =20
- #ifdef CONFIG_KASAN
-+
- void __init kasan_early_init(void);
- void __init kasan_init(void);
- void __init kasan_populate_shadow_for_vaddr(void *va, size_t size, int nid=
-);
-@@ -34,8 +71,9 @@ static inline void kasan_early_init(void) { }
- static inline void kasan_init(void) { }
- static inline void kasan_populate_shadow_for_vaddr(void *va, size_t size,
- =09=09=09=09=09=09   int nid) { }
--#endif
-=20
--#endif
-+#endif /* CONFIG_KASAN */
-+
-+#endif /* __ASSEMBLER__ */
-=20
- #endif
-diff --git a/include/linux/kasan-tags.h b/include/linux/kasan-tags.h
-index ad5c11950233..36cc4f70674a 100644
---- a/include/linux/kasan-tags.h
-+++ b/include/linux/kasan-tags.h
-@@ -10,6 +10,8 @@
- #define KASAN_TAG_WIDTH=09=090
+ #ifdef CONFIG_KASAN_HW_TAGS
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b2245b1a25d8..044425db766e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -117,7 +117,10 @@ extern int mmap_rnd_compat_bits __read_mostly;
  #endif
 =20
-+#define KASAN_TAG_BITS_MASK=09((1UL << KASAN_TAG_WIDTH) - 1)
-+
- #ifndef KASAN_TAG_KERNEL
- #define KASAN_TAG_KERNEL=090xFF /* native kernel pointers tag */
+ #ifndef page_to_virt
+-#define page_to_virt(x)=09__va(PFN_PHYS(page_to_pfn(x)))
++#define page_to_virt(x) ({=09=09=09=09=09=09=09\
++=09void *__addr =3D __va(PFN_PHYS(page_to_pfn((struct page *)x)));=09=09\
++=09kasan_set_tag(__addr, page_kasan_tag(x));=09=09=09=09\
++})
  #endif
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7bd0134c241c..2bd4f9eb1ea7 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1269,7 +1269,7 @@ static inline bool zone_is_empty(const struct zone *z=
-one)
- #define NODES_MASK=09=09((1UL << NODES_WIDTH) - 1)
- #define SECTIONS_MASK=09=09((1UL << SECTIONS_WIDTH) - 1)
- #define LAST_CPUPID_MASK=09((1UL << LAST_CPUPID_SHIFT) - 1)
--#define KASAN_TAG_MASK=09=09((1UL << KASAN_TAG_WIDTH) - 1)
-+#define KASAN_TAG_MASK=09=09KASAN_TAG_BITS_MASK
- #define ZONEID_MASK=09=09((1UL << ZONEID_SHIFT) - 1)
 =20
- static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
+ #ifndef lm_alias
 --=20
 2.53.0
 
