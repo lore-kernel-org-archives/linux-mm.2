@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32CCEEB1054
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40045EB1053
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A1A96B00BC; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
+	id 5F9556B00B6; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1036B00B8; Tue, 10 Mar 2026 07:55:34 -0400 (EDT)
+	id 49F9F6B00B9; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6FBD6B00B8; Tue, 10 Mar 2026 07:55:34 -0400 (EDT)
+	id E810E6B00BE; Tue, 10 Mar 2026 07:55:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A0A56B00AA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 924776B00BC
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65A35B58F5
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 67E7E87632
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:34 +0000 (UTC)
-X-FDA: 84529998588.14.774690C
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2B92410000E
+X-FDA: 84529998588.03.20CCC9F
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1E092180005
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=nh38mtwH;
-	spf=pass (imf14.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="cflriKS/";
+	dmarc=pass (policy=quarantine) header.from=avm.de;
+	spf=pass (imf24.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,41 +35,42 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FfSzQd7kv4UrwUhbLdoRlPs9cYP9/YWD1INFReBo/3M=;
-	b=SuwDeOgT+aA/XjR+sBBoIOj5BidPcALGhmvxUrvPJJlMQ58lp/vqlmuc76thbQgNJvBwxK
-	iCTGrsIVPGhxItOYFvUIfZozxJHs/3ecCq56iDd49/WJgRE9n3NFoWvsE8z8LkTAOcOxJy
-	B1yH/M/FphsqQ/dBiBb+XaBCsunsOfA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=nh38mtwH;
-	spf=pass (imf14.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+	bh=XP4gpPWqTj9pDSzwMZXMboF2wk9nIzIBQDXj9hzH44E=;
+	b=Ck9GmS9M9OBqSu5RqqiHRF2ezGComIIacKPuZKBKhFIP+G9RyC21WTBTSvDtZrJvzOqs1W
+	HQj8Z8h/zbpWZ8g710LamYLxRY6wu9IcbmyFh6wSG7kizEWYFWG1p/zf3t2hBnG/Jh+0MY
+	/s79qS/8XzATFsG++R79x7TFfp+QJEg=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143732; a=rsa-sha256;
 	cv=none;
-	b=QKmXQZvIiR4be3QLMixcTcgdHC6PCXJUsWnGacNXj5/iwwr4RNYtGBFSWESNA1OJVHCOZB
-	vKT5Fk/hI2HHg68b+SzWEBbAaLzG04Z69gjz/lDBqJ1RnW9vJM7Kt9nKjS6dIFtPULOISZ
-	RgqJ6/qqtdDK6aBib5AYSQEcCynqsDA=
+	b=t2Inw5vlybqprJMoNRdepgQuFGialKGgd4xeVlN9e9pbdr/FbaW7ujTQqpX+m0iXXSLvBu
+	NRHXMDo4BywlhMpwSPkawCtKVnSNTLskYHZi17qxOmECkfl2pH0yDED8nVS0KyY58L5ut5
+	3BITyaXAiWA4P7x3iBLiZSRheUF3iBY=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="cflriKS/";
+	dmarc=pass (policy=quarantine) header.from=avm.de;
+	spf=pass (imf24.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143726; bh=7kdqP+tYIFKXEbW/CcutoIH+BaTJGO9lG8xGd+KBKlA=;
+	t=1773143726; bh=Ch69HE8buqP46euP+YYFTxXSo2whzs/OaZa7KOXrnvQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nh38mtwHyUV9SKw+BNpXSRFMzfO8/FcrsieQzDWw9oji2O+z7Psbni6v7KAffehjx
-	 qmid8HatIGHMRnktoTMo9XRdUV6Ztkx3lRZel+NdFrmuz3TY6gos5gVQP+DoaQPsNi
-	 ndWgzemtoyfAka1Tah5hiKpjxy0BL5dDr2HvKeZc=
+	b=cflriKS/Uv58AGT33/uwNkwB7J2sdEXakW9Rj3yjFGXI+RI4a366cceElHliZyuuJ
+	 mPSZ4TFmYIg3AF1ANgH8AJ4fIbLOCMfBhLuXzJMYqTbevJEc4r+piLw+nWaz0hy5uE
+	 Y9GvHMtmRIkJRf4y+wtLqshG0kOCxTBOOJdztUGI=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ae-b734-7f0000032729-7f000001c0a2-1
+	id 69b006ad-2367-7f0000032729-7f000001c97a-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:09 +0100
-Subject: [PATCH 43/61] s390: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:58 +0100
+Subject: [PATCH 32/61] net/wireless: Prefer IS_ERR_OR_NULL over manual NULL
+ check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-43-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-32-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,35 +100,32 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1168; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=7kdqP+tYIFKXEbW/CcutoIH+BaTJGO9lG8xGd+KBKlA=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZn1sZXeMLIPVJuPMvtIFyA6+Lb/ZSleHAPf
- T0qLrc6EciJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGZwAKCRA0LQZT0ays
- 20K6B/45z034OMVnc7IW5eSlZRm22idjp9lRSYx7bSAgasz9Q69aq8L0v4zLmsPUTUANCklIZV3
- Ky9LpL/JQ27BKEBlPFUkZv7HOQgdozWfUf51X/x0BdMhEpEPDFIJUTovRoUphEHN8rw1r9KUQDQ
- dRKeWS5ua07ZtP69du+2qOW1Bjj55fWBu+uxvI7fohNlQeSwssQzt0rpy3r+7xRxxg0LdKDF+Eo
- Y+QuFzLHRhLpEtgPju+jKGgQPeWyFuaSnteU1ZzTdDhjn5fvjXBJ7IuXzcVk6epAYwi3YolC11O
- rwheclTeEca9nqJY9eYYhG9OXtZeHQ7d173Po939eVnoDlQn
+Cc: Johannes Berg <johannes@sipsolutions.net>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=917; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=Ch69HE8buqP46euP+YYFTxXSo2whzs/OaZa7KOXrnvQ=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZCB6VtswQFIkNrtK394BinlB0uxLllvDTnj
+ z6f33li4q+JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGQgAKCRA0LQZT0ays
+ 29wzCAChPFrcW+FfvZBVjABe7F29XZ5724a8XRQE85Iu6UGQCVTrGSBLyo8jXYsg5J3peaPVeKT
+ KKhoEQfBVKbt6EAaScrTEpLi3KNOnd86Q8Wna7PddPHX6e15k2MlGUGDjd2Bw64F5NdG8ERAjc6
+ DA0lCDlLGGjTu5XPxTGz5ABOwv4DjK6Yeb1iOXElewR1+d8c0JuR13TfzCtZK7b2pKqoZzkmtsk
+ 88UMWo9/5GiOCX9lUMyP/7qRCJPVDMHslX+kZfg6K27OVxqrHU+QQ1K66P5yscc52ULdw9obFw9
+ w1Ny2/RuJ7C5Uaac1egGmoDY7u2Te8bNEht0/tO/Xq6O2NMq
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143726-E3DCEA3D-4F569189/0/0
+X-purgate-ID: 149429::1773143726-964B0E1F-7D6D0A0A/0/0
 X-purgate-type: clean
-X-purgate-size: 1170
+X-purgate-size: 919
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Stat-Signature: mwisjzocpwiej4ap3h4qts7fsp3s79uh
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1E092180005
+X-Stat-Signature: g5tocaysmoocfkguf94k8xc9u8tyu7fx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B92410000E
-X-HE-Tag: 1773143731-26041
-X-HE-Meta: U2FsdGVkX18rKWFeMIIfQtKi2ufIKyVW+YWR9jFRvDDgufwiQhADhmedbMaykuhoRq8lqj5RDxkOrEh9NKarKOL9tlhRcYmaetDs7m3YsWqJoCdbuQC9YPyxDExzMmJU897qG9DaBOEbyQ0jInIUCdGpkH2jRimWK1aJw5Qv5/cVO39ppPpuWz5Oumgj6YreFv/zhqIVb+5XNGLLlTE5wZV1q+8k0Eg3l16AKH/Y1dk1WZXWtBRwH7CBnfiulPXIxZ0pVNLCmTEJNRcc0fr4Tl7mP//eYA+jDzVajg13g1BfEqOsZ2EG/04Rfo8pMHqCgywvTMbErAX5Na2UfOeLlsRppjqlONbgvqNZHm2UGirPludKM/fq9SwmHHITo1JE7KUkg5/Wd8K7QOxurR6VY1nOfjbI230Gif0WjMiIhZYX7Lqj6ocDbcT5LyZnRbHNqE6On8auOtpzxfFVp/aerPpkDwDKubOZ6asR1wX6lR2ycG5EzgAVRiN+dTdX+z3V51M4QiSvxfStVenmZTMArWtcNqnoLjqacjlqIhpBREuKmc4g3I3ooZbJPEFvOf2Dxps32Iia8XFcZic410sq30m1Hb/SxG4bKYlRNVBq3gLSk/6UpNvfStHGJyP+jcGbjmTIsD2m2b+wD80ChnPz/vJQPuQIEazT3uZ5ApFKYQPGSUCPXgT4tr5Mv8XhyX77YQRZlK26PlJWYMx3oEoR8Z7Uu/AjigfKnVzc7LHBRWjhgYxjVX10coXT2deGqH+r0dMiXHUtRkPH9VQeri/8JyTwapDP+JWeBR8K+vPsM4RL19MbDkpf6t+m5S57cBVS6yF+KnAwHvhfM+LzCPaw7CD70Ta8VBcB/oRivvWBFbsDbqAYRvrP8eZ8Gr+eFozkY1WrPxtwhQqyE/3oyLxb7iH0Z5u5wE3BkA8nlsJNEdhjv2enMlPFX4Tc74CzLn19GS8hkl8UChqi5mfT54E
- Yge3kEap
- RjCn+PrAiEkRZ9d9hB736rYX+KmmrfGv54WZ63D2dWTIXoFiOl/10TgrO8s2tGcPrFdSxIUNRg3B2ukDYF3UGDsYG7ZlUw6hYRmqJGDzK5XRgKjiBoc3OE4sw38r5LadBL9B6F34FozUWEVoH0UC97b1vXAd5+JqYPFXcqR24ibEhyPWXhwv9MSc6wo8nBr1ooCCDD0Ro1Z5N9co5p8i94wJfvn8/D/TkvVoROBEB4UObqimDMzUS85K8rUKW1B/fB4IGAD28o4lUu8PYYb797MNYtk/oF3pDfoMiT+K/UMZzWhCYdEIZGjHS+YK1J+dDnfKqHeLUv/nxZMZlXQug0ExLZKpqAhKUwbBuqEt3GX95Wi7d9ewdGRI/ThYNh8RHSo+K
+X-HE-Tag: 1773143731-298349
+X-HE-Meta: U2FsdGVkX1+auN5bjIQq7XMWagy0hTSSHilVkHmccfoBKDoaU0dYUYVlW1LNsfWXPgN9L90khmPcBEUelTBvyc3UGoxgRCSk3psUvwDE5Hb85db9910dUg93vP6+AaKL8LoUXZ92fhBwy5ZQeLyjw8eLvbPaDpMHfhfFxZme0nhADdUyrtEGRi1/Q6qxCP5ubDlo7aNpqJ7zRyix3XiVmiwLyTJ9BhdyWFjcggmxYO0/zSuwbCxq8TFCtxD1/RFnnVs2TTVyAGPRFKWL/jT2+rOmaZxQd1mR0AzoVL989kMgz37A6IT/4Du6BS7/fSrRCtPCxigwRlW2iDcn0QrkCbeOiIr95KHBwg41YLTTEC27hyab9sKtsIDECYG6z7GJVdg+KTKi/hJZgb071C3xs7DA4yKCzBR8B76re7D7woF6GvMyvDt0/4BWdeyMKR+93HPT0Vjx1BAsz0oAz+I/ufpfNqzfILacjDDqo5894R5Il7KDWwgkw2hP9uBx48BorOE455vdlw+sKGAnlFq3C9PHdmvkb2tNaqYJCarOZLCtNuEFk8ERDYIV/RD89UwlSxgYF3Wft60YuWE07YQdphzIeZ/27GQDSmqIYjcBid9sFtst7ohwn/9fskyBR6WA0fkeN8l9KiOPUzaDfGmej37X9FbafsQHGBDtTdUc/3mXdyQsDThdLoOWYcVeM8Hz4L8e5hXpL4N4yLrM4/PnrNKdqmywy0PDVmeYAHiTzVwKmG+hsn1O9F5RKbdKGirihqontbrt5ZpKi5Tc6ly90OKdyzej8xu3vT2kh2qnSnhjJpB737F/4i00XFgkKYWGNEHZLYt87M5RxhhXef8q2lFfPErdwDg9aq7J4B1kKUW6cj6kY2f+WAxvbKXpb6/dPHW8NBvQzmUqrx/xeomIHO06CUx/NjhhZvINVtbKyoqR4WoWKijVfjYlfVaBFhZCDlFsk/guqZ2R9BKhfqw
+ pGgB3Wqr
+ 9myK2m4BpLOZV06emDmif0zBOuFAwLbML295abfBGnL3ZJmzH0Mloykah+O2bN4/VrrRlPRmwTl1/59RwYFYsNuWJmlnOSsVaMK4MMRpuptvlGrV/VuDi3jG13UoZ6RgXZ4Cs8EN7PTOur5DMT8p46IBtcNaqcimU+lQjiuxzxkG6+hgjWoqLZDBNLiQlNIPtZek3ueazjzOTwzZVkFA6URvliuIBQnrIflKwdMVxuAtLR3dmh5fXuPy59LSckD1e06ZAlPiCjfvVTFTUmZ7/gtxZ9KPzUrk5auZ3kwPoJRr145/hBoi7uZvHLlVIWmAfw+KbtSUxh2lWAcrCCsdtG1jMq7DfSSj7fK8z76JpPLPkkqF2l0RdqKpFByFgsC57zrwqrK4wZXuQxQtI0rUtwB2gPLm0KprSThXx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,31 +138,27 @@ check.
 
 Change generated with coccinelle.
 
-To: Heiko Carstens <hca@linux.ibm.com>
-To: Vasily Gorbik <gor@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: Sven Schnelle <svens@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/s390/char/tape_class.c | 2 +-
+ net/wireless/reg.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/char/tape_class.c b/drivers/s390/char/tape_class.c
-index b69430220a813e764ec1514c27ad486ac9e95575..aad4fff1faea69ae055b517910ec6467b14cb6e8 100644
---- a/drivers/s390/char/tape_class.c
-+++ b/drivers/s390/char/tape_class.c
-@@ -100,7 +100,7 @@ EXPORT_SYMBOL(register_tape_dev);
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 1c5c38d18febd511285bc4aab93a60b4287dc054..222764a151ea25bec6179dbaffa87f34fdbf8da6 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -1014,7 +1014,7 @@ static void regdb_fw_cb(const struct firmware *fw, void *context)
+ 	}
  
- void unregister_tape_dev(struct device *device, struct tape_class_device *tcd)
- {
--	if (tcd != NULL && !IS_ERR(tcd)) {
-+	if (!IS_ERR_OR_NULL(tcd)) {
- 		sysfs_remove_link(&device->kobj, tcd->mode_name);
- 		device_destroy(&tape_class, tcd->char_device->dev);
- 		cdev_del(tcd->char_device);
+ 	rtnl_lock();
+-	if (regdb && !IS_ERR(regdb)) {
++	if (!IS_ERR_OR_NULL(regdb)) {
+ 		/* negative case - a bug
+ 		 * positive case - can happen due to race in case of multiple cb's in
+ 		 * queue, due to usage of asynchronous callback
 
 -- 
 2.43.0
