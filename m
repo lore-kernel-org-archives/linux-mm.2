@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03FF1FCC9AF
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C86C2FCC9AF
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 488D46B0092; Mon,  9 Mar 2026 23:13:08 -0400 (EDT)
+	id 3ACB16B0095; Mon,  9 Mar 2026 23:13:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4329B6B0093; Mon,  9 Mar 2026 23:13:08 -0400 (EDT)
+	id 380086B0096; Mon,  9 Mar 2026 23:13:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32EB36B0095; Mon,  9 Mar 2026 23:13:08 -0400 (EDT)
+	id 2A6576B0098; Mon,  9 Mar 2026 23:13:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 245156B0092
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:13:08 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F25ED1B6EF4
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:13:07 +0000 (UTC)
-X-FDA: 84528682014.26.67AF83B
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 18D0E1C000A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:13:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=jiSDDlHl;
-	spf=pass (imf20.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BA786B0095
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:13:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6643B8D7C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:13:11 +0000 (UTC)
+X-FDA: 84528682182.10.18D6AB3
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E09D9180004
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:13:09 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=BhDzZDrg;
+	spf=pass (imf16.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
 	dmarc=pass (policy=reject) header.from=shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773112386;
+	s=arc-20220608; t=1773112390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
-	b=Ph5qOhO7Tq92rS077S/cxzviWxZPiusQMLl3A2UbFhRMYGbdclnbt01FTR+kIz7rGMN3+z
-	cno7y4rvj83+Rum+a+UYVuamHVjuQEjY1Be2D9cTMJZ1WunZ9G8xJzFWrmXVgRV1EDNjcP
-	WfepTib9ubEojHp4AcQnlqHTp+ddtCo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773112386; a=rsa-sha256;
-	cv=none;
-	b=H3Onb7d00owSpv3/kVAbeSPPRsjqNHmP3XjyewMPM+arxGr/9VRF+Nb/LYogn2LM2DF5b5
-	2Dmh4pb9N6WvOuPwC7/GCJK1TuADAdnsJpEFTwh+qahfFr0fmuBTdih86JPyrB79Vd4uaT
-	WBNNR1iw4CdtSnLYteCDfPbX2z3cVMM=
+	bh=wsmX9IqTgTtiIKR5iSvwZiEzuk2SZ9FYiHutnUA3cX0=;
+	b=3r3WjH5Ar+h8z9tv5ESRIxxq6HspKASB4HRUb/aMm9X9yhe2Hvq06sPt+j6lb0Cce1BFWG
+	09TbsIVKNy4sZ/EQ+JstIoXg8gpsyW53KBLW6d1uQjxJmVd9D1GV9OLlLopovDnBU0wsGJ
+	74V65IW4G3LUtnHnC5jA4UaShDFuKHs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=jiSDDlHl;
-	spf=pass (imf20.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=BhDzZDrg;
+	spf=pass (imf16.hostedemail.com: domain of haifeng.xu@shopee.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=haifeng.xu@shopee.com;
 	dmarc=pass (policy=reject) header.from=shopee.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3598cab697eso5638425a91.1
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:13:05 -0700 (PDT)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773112390; a=rsa-sha256;
+	cv=none;
+	b=6KmPdU5bTq638K2EYdRY69rxS/nGKSMLqkVmKNFT0Gr/N2TSliMzIcEwxAeZcCMzfv81y+
+	bFvqULanCYLvRC/vcKD5HPwXy66YKQcm78ZYKCBy7Y2FeUyyg141wA7cc/qsN332QZJZuO
+	GqfiQv1hV98CG+0XZrXRAfj3hhDs11Q=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-354a18c48b5so11186871a91.1
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1773112385; x=1773717185; darn=kvack.org;
+        d=shopee.com; s=shopee.com; t=1773112388; x=1773717188; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
-        b=jiSDDlHldr07bcG5wGHXlOEEwm4LK+PBf4H/4ao7m9nE5VgUSqIPDhmeIFn5eCeAKn
-         Zi8zt9h87MyD8vO8JqHRVEZbKn6CRPe0RyvDzkH0n1+b9/Qm77E0pKv4hX4KkuEwGmFl
-         ElimqaDs4yD0Gjyr9Vc3CJlnuc5o/WHKwKtGOlQ2SDC11sDbR8RuAgYCsXxHuGivx1Eh
-         RDTTl6Mg4TiD1JiFbJ3ELpzz1AS/bZzc5Q5fguzz0Xvin5Wph/8E9Ny5Ahoruo/mJZGC
-         3W/91qbOyeTQlMNc5Q+DwclchMl3Fu6kLUxEjCY1QSjRuTunfR58W6SXIaCw8E7mQ4uN
-         ZpEQ==
+        bh=wsmX9IqTgTtiIKR5iSvwZiEzuk2SZ9FYiHutnUA3cX0=;
+        b=BhDzZDrgzIGNYz1gl/LJhFlQ452bx6OFMBkQH5nIcmnyhVHQ/6rfoakxRCnqjrLtu2
+         x/z6IpYZsP0siWuud+zQq03m3VjOYChXePIGPCvM6KPqYKfjmrvCVRJZEN9iD4iNuSW4
+         nIrLECSEqfuSfBYheB3SSj2VodEUqDtC2HmLQL21XzOAf4fltFiHETnKIf2d25slPiYe
+         IRBr4ZLXt6AA/eefvHjBKegzO5Q1Uv5WQdpgBTsJKbKmnFQRfWBcZVbSSAYGjUovhjbB
+         d33HipJFzy7ow/VyI9zzhSvDh9svEMsUHHJhGblf1MzxnBg9vTHCJkPP9yTYEoAZo1lR
+         67HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773112385; x=1773717185;
+        d=1e100.net; s=20230601; t=1773112388; x=1773717188;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=+OzUwreO0Fx04kzL8hUKy9/smwpH8GzkcqgpiyONa3A=;
-        b=ZQrXWYYljLplLXFEhJQeHSmYi9J6bZNSLv2z/8qUSUbuI8txAZSknwa88qeAZsbSmB
-         9IRN4krmlk7i5KzwNIY13NPtfg9Qqkz/CvEeafqnk6/l5RVAsgE803NFjynaI6fXgw6E
-         y7IUsCjPeUbGTfJGQ37f9ZAGSCUktba0DGZZ04cG4IJ5AihW2Qa0K6vJik1ZdwnDeI7U
-         7TqPwHENl0Yw8AnAAxPsuXdBfUp1avEjQ3UhuhhF1agVLCxN2TGJe1qcE4gFsJL1vb9i
-         FgKKvoZwSzHE8PHevWQhQdWZBUAKl9Qvb5iUHKJKWb8+dPKZ2kzeVV+8HbEfRK0w96AC
-         +PkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjZJYP6X7S0JCP6Rcpr4uAcrRHvAGucV7eX8PZPX0OjXssB0aSIUiQLQDvPWmpWZts7HqkLoifaA==@kvack.org
-X-Gm-Message-State: AOJu0Ywnp1G4Jcqd1PxOCUUEIwiKYneDr1NYzwwBvbmlCUEZEDobHJ+U
-	aCzTX/l/xJnrIczwW2oqpv4e1rH+UU4pZpp6XXh0VsvUgqs16QSIZ2ejyXJhoCW910E=
-X-Gm-Gg: ATEYQzzGUbA9eLfWsL5aH8eeeuh2GRja1Hv+s60ejJYDa3hnsv4MIenLrCpx0bkh5Nm
-	/vbgsoRzpUwJhhGIeDOuicWeXf/0xXkTAtQgNDl91tacMEsXTP25D53U5fk+JFBLyhv/EyG7aUi
-	VJ2FYO47TsUH7IbcuTf1o7nUkyoZV6ZrxP9XMZmWmYgkUHKM5hKiy/nf9rxGKVYr7Suvm+0ngOe
-	dqpl/rqCN/TAv2lwtw3Vp+cGLItV6lKp+LTlmnCL0i4KehfW5enNIstZFKECsqWTPG7zzJBZn4N
-	1b65ZgakD0XduquAtMm3Ev7PL/sYsLzXFisOvj/3O8xCzFyhA+2LCXADBOylpZTudxf9ZEktjwY
-	DjuYevoemV50gSkEPE3Q3RXHOoI6MeAoYJNz/loWKeYhxVZOw3Q8+ayWGahtXDjXYU+upAcaFFW
-	TFYRnrAlV/qPZsRzA/XiqI7P9j+3vztF8BFPo8ow==
-X-Received: by 2002:a17:90b:1b4d:b0:359:8df1:8553 with SMTP id 98e67ed59e1d1-359f0286267mr1489731a91.9.1773112384931;
-        Mon, 09 Mar 2026 20:13:04 -0700 (PDT)
+        bh=wsmX9IqTgTtiIKR5iSvwZiEzuk2SZ9FYiHutnUA3cX0=;
+        b=ONXDzmyxZo7s9INWEwmQlh1HaHmgzjO4j0dFqyZLP6+uVQN+v1EYKjYh/1Rq7WGDqb
+         yDOPMjwidxVq1G9xKyDJeIpGKTZYJ4ZwpfXT/xavdOGMekc+3H5viV4lmIjLdpfq4KZe
+         Uwbvl5cLVomW3cXjHPzNyVybpfqmjIeOxrfsIO2iv5bYdXjnvh9scoXTgD9XN+VCCV88
+         k69O0VzfrLI4qIrXziSSZfiYv1KwLARteTXM3w9Gua6Jko7wX7LSpx5np7Ff4+29h0RM
+         UgSHzMcP4lamGyZMdEF8ktmJLYux8XCgFZ6ZYB+qjsJnpWbBrW/G3EpkQJD40H7SU6Vp
+         G49w==
+X-Forwarded-Encrypted: i=1; AJvYcCW51/ZAcV8hmRsO9Mk90k90LXLQSmKP5rN7ZyBfN9WugpJTigBoXsov0r9QAlDRtutfY2ceQg23CA==@kvack.org
+X-Gm-Message-State: AOJu0YzOvwatIw72H3JB97aEDpCNP00b7EIc6bcXSKM1Nj1hCJz52gnM
+	/NK5eJbTFd07xTgpTpiSzqJj9KD8deLdC1CWXyNhJqIar6E4eWqaHFp4504h5/rjz2k=
+X-Gm-Gg: ATEYQzxI6M2Dtaxti2/qE+d2njFgezkPdZdV4guhxwur2S5NDj10h6iGz8OELyXddx9
+	laOcmPpZo3mfOlg3sYYp9Sixie7pW3dMkbv6gTM+KuGLCU79SNLC0RW0c7GLtNKJaAWGYFejKG4
+	0746VwgxBKyMzjJeBHB7u7Z6PGTz0WuMyP+Vs7Tv00n/oD4a7ohyPUM3jLDN3kC3+8EI3hUoF3g
+	xPEFMIK3vv3b1KHwphRnWghadkk2vgvHoBQQE8YGfNl0RFutcgnAntEX/rKbKTDjDmkNATX0RUK
+	61Umt5r3asv9oD35q+rG/WZVdQTjsg6rwxF0Wu0O9M82GAsDL05mPsCWFSGWU7zAf4zPnMZrFUM
+	vdZH0YQ8wjY7bcH3WgMct2YvVJFJboN7YsftC1ram5hxHMOTPe0qnxLPvAI6XQhQ/DcTFLfVq3M
+	p7eXOer4B89rZUHX9kYMmVwkpzsUoucF3dtBqcCjR3IvjeujzQ
+X-Received: by 2002:a17:90b:2604:b0:359:92b5:da70 with SMTP id 98e67ed59e1d1-359be2725f4mr11208013a91.9.1773112388515;
+        Mon, 09 Mar 2026 20:13:08 -0700 (PDT)
 Received: from localhost.localdomain ([147.136.157.0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359bcc28f0fsm5169284a91.13.2026.03.09.20.13.01
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359bcc28f0fsm5169284a91.13.2026.03.09.20.13.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 20:13:03 -0700 (PDT)
+        Mon, 09 Mar 2026 20:13:08 -0700 (PDT)
 From: Haifeng Xu <haifeng.xu@shopee.com>
 To: akpm@linux-foundation.org,
 	david@fromorbit.com,
@@ -99,22 +99,22 @@ Cc: zhengqi.arch@bytedance.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Haifeng Xu <haifeng.xu@shopee.com>
-Subject: [PATCH V2 2/4] mm: shrinker: move shrinker_id() code block below memcg_kmem_online()
-Date: Tue, 10 Mar 2026 11:12:48 +0800
-Message-ID: <20260310031250.289851-3-haifeng.xu@shopee.com>
+Subject: [PATCH V2 3/4] mm: shrinker: optimize the allocation of shrinker_info when setting cgroup_memory_nokmem
+Date: Tue, 10 Mar 2026 11:12:49 +0800
+Message-ID: <20260310031250.289851-4-haifeng.xu@shopee.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260310031250.289851-1-haifeng.xu@shopee.com>
 References: <20260310031250.289851-1-haifeng.xu@shopee.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 18D0E1C000A
-X-Stat-Signature: 7hbmnyfoztoz6bcd1u3af1hmrng1g4ak
-X-HE-Tag: 1773112385-818042
-X-HE-Meta: U2FsdGVkX1/wi42SoPrBrLsdJlj14fToF1qTBKLToeXaXyewsnw78EQTXVKbg3srH5GWsrrprLj3U/RudC2mjDKOhTjdHp4T0YH55++Tv4fBr+1+heknM+U6V3cS95l8M23XDG6OpvDZAnrik4otqvXMcBCIFmfeV7Ckbt6PJptj4txAry1UIuZhagC9xKJownQLlM5UahHTjCKb1nxHfiDJ5HFSFwonvUhytgplByuH2GqeSeG0CKoSCkMN2bjw6PlQ8O9329Ba/dSo6qbT9smfBvVVpcf+vscOwnvPlHvxRaf/Bg+TBbUcGFg1exOiSvYwwkxA7/+OnEBakNZs4IMDTpiiHjmhMx0j3ImwHKUc5F+EsBcGiak7THha6/62YpLCOCBSWIkUm9hxtOo2jXEKjllnGkG2eOeVD13IaXgotXxjHVhFDFG8u8nTwsd6ftX9KN6KESN2bOmtVSIc+d4O2VZ8BwL1EK9UdUXT8mpuaJomnAFLA9RhI+Q4KdtJ/586d3ZPwuH6fK4gY/4CQBWOF6f8bA2A7kWAMcT2qDrw+XT6KouAi4qUT9b82B5rPyLjsPq6zOFx0bmjhp9Shsp+3G6kDvh2/QKMl1KDh/pvmT9I6bymUXb6rrlM1tWCd4vpuPSkhJPL7R1kRYTVX5BSSgtLcq7hSJyg2XxHX4Vrsb2fTKdJ17YfdbxNvtLAz3bbT7oSFNSQl3H83txVs4B+cGpJeIO/BaL3rw8agoQufDKV2suZpZnhKTI5EZ1zDs1+WjMfHXOW+A0RDJCemCTCJ/jna0hNj/6eeUCZGF9HQlDXtIU4NzI8/VKPp+KRTxmM8FwE7+pWKd0gv8x0wMyVcijshLcVxeGiTp+ZlSSPRv2XFC8BjPrdcxrxfrEs6+cwPiB/vffx6yKImxGLnKZ+S4pwLUwLsIvn3kBeSlUgkbfP6JkgpbD/Jn8yA70m8bxAEiDvMyxGy2s8B0x
- Bgg3SYB7
- CI8xLKcOT4dGfn6q3g47B/PJt84akr7rovtuaXiPDXgiocTTzfTeaNaG4dmjB2wmNBbp0SFtywW4VSongyKY12HaibNyzrpV+JmNfA+1VFUzAIYI=
+X-Rspamd-Queue-Id: E09D9180004
+X-Rspamd-Server: rspam08
+X-Stat-Signature: myn6qpxbk8ncpbckstfn9qmzg3cg4qry
+X-HE-Tag: 1773112389-557519
+X-HE-Meta: U2FsdGVkX1+FQi6OmeAFhrbDPOWAURbm7B5A0Zb1m5QP7BaVcxweUoO6BDkvOURE30IzFV6pNzbD4s9zIQmDrQ3QpK5wIUTIciwD3b+YPgAzpnQLObrPVUK6zI8OSKkhPRKPLLR6N1sk5xN//Ma995jsZJUjyj0tnKQ4PuZqAHQk/w/MV/O+R15PUXrUTGWaCj09ujTlJZ2xpeWK/UV+CjCXdBClTC9F8EFyF246pPV1S/8dF3y/i/GzWYQvbb/Ai6z8dATx+AOoej+gSGF6/bSMg6n2ZTviul0r13eCBSIrXnkEvyS+8G4t2cpW4V6fgLBjC3sVZFvYQ8ivfMwdxSOscfUvi20TwYMTqnDLPYs7QzzxbGDLyHHe2SWshd9uNX7iWU2i2EKzAm/FJCQD3xZZlr9kPfc3iceob029d9lANRyOy/6oa3T6kHIpnGbLAz8b7AvuZDGFFO84EpCDoKaRH/HpmOZIRMNBrgwTGiNHTAR9MNJHAQzz4becE6gE/uAUvx1+PF6NKh9EZJE1Ce+9HpzDLGKbyCEos7ez9gu3Zmb2oVEPrJvPWFptEUW+XXAfh0zDBQajL7d1SbUXncRF4NuKtNd2ffOplrsHRnJv0nUS8G2y2T9qH5s2wCiM+8gJ8g17LLPzohV8qpaxxSTYPAT2ARhbHqvXP4D9FXbj46h66C6DyocolDEIo38yGIZndTC/oxDBfoxk9fF4CWHnsSYYwkfE9a1eC8l/3K6BHUmCzfJM4EdneuWoFi/1xwbKzPlZg4J9pxc3GWaSUlILbpHkoRVSdjYF/5wQLBE7gd7IU34JDsNlhu8NOO5yk7N5xtNib/DZDR9H+hw5ki/1O2dlxs8uY1KV5Z/F1PV0LQdl413R6tcLPZFGg0YIQxE9xPCZ9XbnRz91QhFeWWJ48dbZGDXDPBWw9+VwFk+y262bPqURSvsPDHFyHZIQGsWJI92WQJ4DCgcTxIA
+ 0CafPCmr
+ tY0iDn9ltudtRDEE6i92pdGf5WXA4wsj7hv78vhAYLCRGXnSmljOHt2J9K4/6vvY4B4tKNKkOouBONmEk4JazE9mQZSy1u3JSn6GS1EQmX7OM5fLXHhsorXtYaAZyRub4Vb0b8nMhE6xrpO/ELa46BQh5q9vL1eXjJcEUSSRYmQwbmPfNDlTEHNnLAoECx0oUMpTGLUdE15FAt7K+FGNCJhzD9e4YJ7QZD1IIopqA6InWuf/qLdSD1ikkCyY/r8wn2Pxn4Wr9y28sNJCat+mBOF+jYd9PWrimVf1FFG70p8LSO3rwPwotzFGVaZIZV3Gq6xOg5SZw9gurjPTDR1Nkt5qHdA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,223 +122,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The following patch will use memcg_kmem_online() to decide the id
-of shrinker, so move the code block down to reduce the diff noise
-in the following patch.
+When kmem is disabled, memcg slab shrink only call non-slab shrinkers,
+so just allocates shrinker info for non-slab shrinkers to non-root memcgs.
 
-No functional change here.
+Therefore, if memcg_kmem_online is true, all things keep same as before.
+Otherwise, root memcg allocates id from shrinker_idr to identify each
+shrinker and non-root memcgs use nonslab_id to identify non-slab shrinkers.
+The size of shrinkers_info in non-root memcgs can be very low because the
+number of shrinkers marked as SHRINKER_NONSLAB | SHRINKER_MEMCG_AWARE is
+few. Also, the time spending in expand_shrinker_info() can reduce a lot.
+
+When setting shrinker bit or updating nr_deferred, use nonslab_id for
+non-root memcgs if the shrinker is marked as SHRINKER_NONSLAB.
 
 Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
 ---
- include/linux/memcontrol.h | 188 ++++++++++++++++++-------------------
- 1 file changed, 94 insertions(+), 94 deletions(-)
+ include/linux/memcontrol.h |   8 ++-
+ include/linux/shrinker.h   |   3 +
+ mm/shrinker.c              | 116 +++++++++++++++++++++++++++++++++----
+ 3 files changed, 114 insertions(+), 13 deletions(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index a583dbc0adcc..ce7b5101bc02 100644
+index ce7b5101bc02..3edd6211aed2 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -1582,100 +1582,6 @@ static inline void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+@@ -1804,7 +1804,13 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
  
- #endif	/* CONFIG_CGROUP_WRITEBACK */
- 
--struct sock;
--#ifdef CONFIG_MEMCG
--extern struct static_key_false memcg_sockets_enabled_key;
--#define mem_cgroup_sockets_enabled static_branch_unlikely(&memcg_sockets_enabled_key)
--
--void mem_cgroup_sk_alloc(struct sock *sk);
--void mem_cgroup_sk_free(struct sock *sk);
--void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk);
--bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
--			  gfp_t gfp_mask);
--void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
--
--#if BITS_PER_LONG < 64
--static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
--{
--	u64 val = get_jiffies_64() + HZ;
--	unsigned long flags;
--
--	write_seqlock_irqsave(&memcg->socket_pressure_seqlock, flags);
--	memcg->socket_pressure = val;
--	write_sequnlock_irqrestore(&memcg->socket_pressure_seqlock, flags);
--}
--
--static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
--{
--	unsigned int seq;
--	u64 val;
--
--	do {
--		seq = read_seqbegin(&memcg->socket_pressure_seqlock);
--		val = memcg->socket_pressure;
--	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
--
--	return val;
--}
--#else
--static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
--{
--	WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
--}
--
--static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
--{
--	return READ_ONCE(memcg->socket_pressure);
--}
--#endif
--
--int alloc_shrinker_info(struct mem_cgroup *memcg);
--void free_shrinker_info(struct mem_cgroup *memcg);
--void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
--void reparent_shrinker_deferred(struct mem_cgroup *memcg);
--
--static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
--{
+ static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+ {
 -	return shrinker->id;
--}
--#else
--#define mem_cgroup_sockets_enabled 0
--
--static inline void mem_cgroup_sk_alloc(struct sock *sk)
--{
--}
--
--static inline void mem_cgroup_sk_free(struct sock *sk)
--{
--}
--
--static inline void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
--{
--}
--
--static inline bool mem_cgroup_sk_charge(const struct sock *sk,
--					unsigned int nr_pages,
--					gfp_t gfp_mask)
--{
--	return false;
--}
--
--static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
--					  unsigned int nr_pages)
--{
--}
--
--static inline void set_shrinker_bit(struct mem_cgroup *memcg,
--				    int nid, int shrinker_id)
--{
--}
--
--static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
--{
--	return -1;
--}
--#endif
--
- #ifdef CONFIG_MEMCG
- bool mem_cgroup_kmem_disabled(void);
- int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order);
-@@ -1844,6 +1750,100 @@ static inline bool memcg_is_dying(struct mem_cgroup *memcg)
++	int id = shrinker->id;
++
++	if (!memcg_kmem_online() && (shrinker->flags & SHRINKER_NONSLAB) &&
++	    memcg != root_mem_cgroup)
++		id = shrinker->nonslab_id;
++
++	return id;
  }
- #endif /* CONFIG_MEMCG */
+ #else
+ #define mem_cgroup_sockets_enabled 0
+diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+index 1a00be90d93a..df53008ed8b5 100644
+--- a/include/linux/shrinker.h
++++ b/include/linux/shrinker.h
+@@ -107,6 +107,9 @@ struct shrinker {
+ #ifdef CONFIG_MEMCG
+ 	/* ID in shrinker_idr */
+ 	int id;
++
++	/* ID in shrinker_nonslab_idr */
++	int nonslab_id;
+ #endif
+ #ifdef CONFIG_SHRINKER_DEBUG
+ 	int debugfs_id;
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 61dbb6afae52..68ea2d49495c 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -12,6 +12,7 @@ DEFINE_MUTEX(shrinker_mutex);
  
-+struct sock;
-+#ifdef CONFIG_MEMCG
-+extern struct static_key_false memcg_sockets_enabled_key;
-+#define mem_cgroup_sockets_enabled static_branch_unlikely(&memcg_sockets_enabled_key)
+ #ifdef CONFIG_MEMCG
+ static int shrinker_nr_max;
++static int shrinker_nonslab_nr_max;
+ 
+ static inline int shrinker_unit_size(int nr_items)
+ {
+@@ -78,15 +79,25 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+ {
+ 	int nid, ret = 0;
+ 	int array_size = 0;
++	int alloc_nr_max;
 +
-+void mem_cgroup_sk_alloc(struct sock *sk);
-+void mem_cgroup_sk_free(struct sock *sk);
-+void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk);
-+bool mem_cgroup_sk_charge(const struct sock *sk, unsigned int nr_pages,
-+			  gfp_t gfp_mask);
-+void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages);
++	if (memcg_kmem_online()) {
++		alloc_nr_max = shrinker_nr_max;
++	} else {
++		if (memcg == root_mem_cgroup)
++			alloc_nr_max = shrinker_nr_max;
++		else
++			alloc_nr_max = shrinker_nonslab_nr_max;
++	}
+ 
+ 	mutex_lock(&shrinker_mutex);
+-	array_size = shrinker_unit_size(shrinker_nr_max);
++	array_size = shrinker_unit_size(alloc_nr_max);
+ 	for_each_node(nid) {
+ 		struct shrinker_info *info = kvzalloc_node(sizeof(*info) + array_size,
+ 							   GFP_KERNEL, nid);
+ 		if (!info)
+ 			goto err;
+-		info->map_nr_max = shrinker_nr_max;
++		info->map_nr_max = alloc_nr_max;
+ 		if (shrinker_unit_alloc(info, NULL, nid)) {
+ 			kvfree(info);
+ 			goto err;
+@@ -147,33 +158,47 @@ static int expand_one_shrinker_info(struct mem_cgroup *memcg, int new_size,
+ 	return 0;
+ }
+ 
+-static int expand_shrinker_info(int new_id)
++static int expand_shrinker_info(int new_id, bool full, bool root)
+ {
+ 	int ret = 0;
+ 	int new_nr_max = round_up(new_id + 1, SHRINKER_UNIT_BITS);
+ 	int new_size, old_size = 0;
+ 	struct mem_cgroup *memcg;
++	struct mem_cgroup *start = NULL;
++	int old_nr_max = shrinker_nr_max;
+ 
+ 	if (!root_mem_cgroup)
+ 		goto out;
+ 
+ 	lockdep_assert_held(&shrinker_mutex);
+ 
++	if (!full && !root) {
++		start = root_mem_cgroup;
++		old_nr_max = shrinker_nonslab_nr_max;
++	}
 +
-+#if BITS_PER_LONG < 64
-+static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
-+{
-+	u64 val = get_jiffies_64() + HZ;
-+	unsigned long flags;
+ 	new_size = shrinker_unit_size(new_nr_max);
+-	old_size = shrinker_unit_size(shrinker_nr_max);
++	old_size = shrinker_unit_size(old_nr_max);
 +
-+	write_seqlock_irqsave(&memcg->socket_pressure_seqlock, flags);
-+	memcg->socket_pressure = val;
-+	write_sequnlock_irqrestore(&memcg->socket_pressure_seqlock, flags);
-+}
++	memcg = mem_cgroup_iter(NULL, start, NULL);
++	if (!memcg)
++		goto out;
+ 
+-	memcg = mem_cgroup_iter(NULL, NULL, NULL);
+ 	do {
+ 		ret = expand_one_shrinker_info(memcg, new_size, old_size,
+ 					       new_nr_max);
+-		if (ret) {
++		if (ret || (root && memcg == root_mem_cgroup)) {
+ 			mem_cgroup_iter_break(NULL, memcg);
+ 			goto out;
+ 		}
+ 	} while ((memcg = mem_cgroup_iter(NULL, memcg, NULL)) != NULL);
+ out:
+-	if (!ret)
+-		shrinker_nr_max = new_nr_max;
++	if (!ret) {
++		if (!full && !root)
++			shrinker_nonslab_nr_max = new_nr_max;
++		else
++			shrinker_nr_max = new_nr_max;
++	}
+ 
+ 	return ret;
+ }
+@@ -212,25 +237,58 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
+ }
+ 
+ static DEFINE_IDR(shrinker_idr);
++static DEFINE_IDR(shrinker_nonslab_idr);
+ 
+ static int shrinker_memcg_alloc(struct shrinker *shrinker)
+ {
+ 	int id, ret = -ENOMEM;
++	bool kmem_online;
+ 
+ 	if (mem_cgroup_disabled())
+ 		return -ENOSYS;
+ 
++	kmem_online = memcg_kmem_online();
+ 	mutex_lock(&shrinker_mutex);
+ 	id = idr_alloc(&shrinker_idr, shrinker, 0, 0, GFP_KERNEL);
+ 	if (id < 0)
+ 		goto unlock;
+ 
+ 	if (id >= shrinker_nr_max) {
+-		if (expand_shrinker_info(id)) {
++		/* If memcg_kmem_online() returns true, expand shrinker
++		 * info for all memcgs, otherwise, expand shrinker info
++		 * for root memcg only
++		 */
++		if (expand_shrinker_info(id, kmem_online, !kmem_online)) {
++			idr_remove(&shrinker_idr, id);
++			goto unlock;
++		}
++	}
 +
-+static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
-+{
-+	unsigned int seq;
-+	u64 val;
++	shrinker->nonslab_id = -1;
++	/*
++	 * If cgroup_memory_nokmem is set, record shrinkers with SHRINKER_NONSLAB
++	 * because memcg slab shrink only call non-slab shrinkers.
++	 */
++	if (!kmem_online && shrinker->flags & SHRINKER_NONSLAB) {
++		int nonslab_id;
 +
-+	do {
-+		seq = read_seqbegin(&memcg->socket_pressure_seqlock);
-+		val = memcg->socket_pressure;
-+	} while (read_seqretry(&memcg->socket_pressure_seqlock, seq));
++		nonslab_id = idr_alloc(&shrinker_nonslab_idr, shrinker, 0, 0, GFP_KERNEL);
++		if (nonslab_id < 0) {
+ 			idr_remove(&shrinker_idr, id);
+ 			goto unlock;
+ 		}
 +
-+	return val;
-+}
-+#else
-+static inline void mem_cgroup_set_socket_pressure(struct mem_cgroup *memcg)
-+{
-+	WRITE_ONCE(memcg->socket_pressure, jiffies + HZ);
-+}
++		if (nonslab_id >= shrinker_nonslab_nr_max) {
++			/* expand shrinker info for non-root memcgs */
++			if (expand_shrinker_info(nonslab_id, false, false)) {
++				idr_remove(&shrinker_idr, id);
++				idr_remove(&shrinker_nonslab_idr, nonslab_id);
++				goto unlock;
++			}
++		}
++		shrinker->nonslab_id = nonslab_id;
+ 	}
 +
-+static inline u64 mem_cgroup_get_socket_pressure(struct mem_cgroup *memcg)
-+{
-+	return READ_ONCE(memcg->socket_pressure);
-+}
-+#endif
+ 	shrinker->id = id;
+ 	ret = 0;
+ unlock:
+@@ -247,6 +305,12 @@ static void shrinker_memcg_remove(struct shrinker *shrinker)
+ 	lockdep_assert_held(&shrinker_mutex);
+ 
+ 	idr_remove(&shrinker_idr, id);
 +
-+int alloc_shrinker_info(struct mem_cgroup *memcg);
-+void free_shrinker_info(struct mem_cgroup *memcg);
-+void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id);
-+void reparent_shrinker_deferred(struct mem_cgroup *memcg);
++	if (shrinker->flags & SHRINKER_NONSLAB) {
++		id = shrinker->nonslab_id;
++		if (id >= 0)
++			idr_remove(&shrinker_nonslab_idr, id);
++	}
+ }
+ 
+ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
+@@ -305,10 +369,33 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+ 		parent_info = shrinker_info_protected(parent, nid);
+ 		for (index = 0; index < shrinker_id_to_index(child_info->map_nr_max); index++) {
+ 			child_unit = child_info->unit[index];
+-			parent_unit = parent_info->unit[index];
+ 			for (offset = 0; offset < SHRINKER_UNIT_BITS; offset++) {
+ 				nr = atomic_long_read(&child_unit->nr_deferred[offset]);
+-				atomic_long_add(nr, &parent_unit->nr_deferred[offset]);
 +
-+static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
-+{
-+	return shrinker->id;
-+}
-+#else
-+#define mem_cgroup_sockets_enabled 0
++				/*
++				 * If memcg_kmem_online() is false, the non-root memcgs use
++				 * nonslab_id but root memory cgroup use id. When reparenting
++				 * shrinker info to it, must convert the nonslab_id to id.
++				 */
++				if (!memcg_kmem_online() &&  parent == root_mem_cgroup) {
++					int id, p_index, p_off;
++					struct shrinker *shrinker;
 +
-+static inline void mem_cgroup_sk_alloc(struct sock *sk)
-+{
-+}
++					id = calc_shrinker_id(index, offset);
++					shrinker = idr_find(&shrinker_nonslab_idr, id);
++					if (shrinker) {
++						id = shrinker->id;
++						p_index = shrinker_id_to_index(id);
++						p_off = shrinker_id_to_offset(id);
 +
-+static inline void mem_cgroup_sk_free(struct sock *sk)
-+{
-+}
++						parent_unit = parent_info->unit[p_index];
++						atomic_long_add(nr,
++								&parent_unit->nr_deferred[p_off]);
++					}
++				} else {
++					parent_unit = parent_info->unit[index];
++					atomic_long_add(nr, &parent_unit->nr_deferred[offset]);
++				}
+ 			}
+ 		}
+ 	}
+@@ -538,7 +625,12 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_mask, int nid,
+ 			int shrinker_id = calc_shrinker_id(index, offset);
+ 
+ 			rcu_read_lock();
+-			shrinker = idr_find(&shrinker_idr, shrinker_id);
 +
-+static inline void mem_cgroup_sk_inherit(const struct sock *sk, struct sock *newsk)
-+{
-+}
++			if (memcg_kmem_online())
++				shrinker = idr_find(&shrinker_idr, shrinker_id);
++			else
++				shrinker = idr_find(&shrinker_nonslab_idr, shrinker_id);
 +
-+static inline bool mem_cgroup_sk_charge(const struct sock *sk,
-+					unsigned int nr_pages,
-+					gfp_t gfp_mask)
-+{
-+	return false;
-+}
-+
-+static inline void mem_cgroup_sk_uncharge(const struct sock *sk,
-+					  unsigned int nr_pages)
-+{
-+}
-+
-+static inline void set_shrinker_bit(struct mem_cgroup *memcg,
-+				    int nid, int shrinker_id)
-+{
-+}
-+
-+static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
-+{
-+	return -1;
-+}
-+#endif
-+
- #if defined(CONFIG_MEMCG) && defined(CONFIG_ZSWAP)
- bool obj_cgroup_may_zswap(struct obj_cgroup *objcg);
- void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size);
+ 			if (unlikely(!shrinker || !shrinker_try_get(shrinker))) {
+ 				clear_bit(offset, unit->map);
+ 				rcu_read_unlock();
 -- 
 2.43.0
 
