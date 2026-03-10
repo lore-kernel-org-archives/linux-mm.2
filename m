@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A0BFCC9DE
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 08:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 699D6FCC9DB
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 08:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FE596B0088; Tue, 10 Mar 2026 04:44:03 -0400 (EDT)
+	id B7B006B008A; Tue, 10 Mar 2026 04:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B5DE6B0089; Tue, 10 Mar 2026 04:44:03 -0400 (EDT)
+	id B29486B008C; Tue, 10 Mar 2026 04:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D4C46B008A; Tue, 10 Mar 2026 04:44:03 -0400 (EDT)
+	id A55716B0092; Tue, 10 Mar 2026 04:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 794486B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:44:03 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A54B160527
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:44:03 +0000 (UTC)
-X-FDA: 84529515966.25.4E46E77
+	by kanga.kvack.org (Postfix) with ESMTP id 926046B008A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:47:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 57F5E1C044
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:47:12 +0000 (UTC)
+X-FDA: 84529523904.03.2E13D9C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 303EB40004
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:44:00 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id B2D86100006
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:47:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773132241;
+	s=arc-20220608; t=1773132430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1ur8stHKou9PH9HVPKtfEzt00VSj98Qw+AjpXHCQhiA=;
-	b=kJsfQKmpShnutcZTB/g6J8AbPa4TD7rPATG6VJagfZpFrC05ccEKuUqgRpDsexy8QFRMhs
-	fRponYzMZunxCH3cummsiDeMkhbQtVw+OOj0tVRnlrr4Z3YxKVfZVrEeccWgN+61aCOvx8
-	+GoATxbszHkP5/Rg/Ez6nExNrhWnmn0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773132241; a=rsa-sha256;
+	bh=n9aBm11mMxtDbOS9OktwbhcCey+gROdEwKJW/GQ9uBY=;
+	b=a/XYSdVnrZZP4izkuNA0fpfX8UNOs2cqB49ishfiZd7UvZ7hA3+nTBxAY8KrK6KlyAbPnJ
+	TckB/fxHcPwSNDGxs5N4BaG6miGPVCjfnSlYodeQlBCUhz8wCYSbGjPBsgSKAaXOtbUb2n
+	GscMrpBvARtxa0aGcwtunO/K3cCxtFI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773132430; a=rsa-sha256;
 	cv=none;
-	b=Hu33te8xPA404qrr/8wR/AyqCjCn7mx93DeTpbPQx1ltIjZFi/f44qo/XV9tFR7abl/9r0
-	3lf20DudHDIdR43ClD+Pktl2kI1c+Kr0wkkQg8P2BSXylP964EU9K8bfQbhJQGDRhL2mnW
-	yGO5TNernXgkvB0OtRYMpYIg75jNUcg=
+	b=qxZmHtlpaRb1YGWjM+LHyB+HCcCvNVAZaLG/KhKE2CCSTsjrrs0FXbJPSiyYo/gUWGTCA3
+	0IpNzSHD+bR6SNPzUG9vL1onm0R/X5lWf+JqxRAkoflfPqZjQD0WCM8DLZOwnVxfVBkQMD
+	958dvwDLBh6dqhzBK9uftMhIci5J/Sg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC80D169C;
-	Tue, 10 Mar 2026 01:43:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AFD63169C;
+	Tue, 10 Mar 2026 01:47:03 -0700 (PDT)
 Received: from [10.164.19.59] (unknown [10.164.19.59])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 508BD3F7BD;
-	Tue, 10 Mar 2026 01:43:51 -0700 (PDT)
-Message-ID: <e2cf5e92-b2c7-43ab-bcc8-58b1207658b7@arm.com>
-Date: Tue, 10 Mar 2026 14:13:48 +0530
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1E0C03F7BD;
+	Tue, 10 Mar 2026 01:47:01 -0700 (PDT)
+Message-ID: <959607a5-4112-47da-95fb-6388d96af5e7@arm.com>
+Date: Tue, 10 Mar 2026 14:16:59 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] mm/rmap: initialize nr_pages to 1 at loop start in
- try_to_unmap_one
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Subject: Re: [PATCH 6/9] mm/swapfile: Make folio_dup_swap batchable
+To: Kairui Song <ryncsn@gmail.com>
 Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
- david@kernel.org, hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
- weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
- harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de,
- baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com,
- kas@kernel.org, willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
+ david@kernel.org, hughd@google.com, chrisl@kernel.org, weixugc@google.com,
+ ljs@kernel.org, Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com,
+ jannh@google.com, pfalcato@suse.de, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org,
+ willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
 References: <20260310073013.4069309-1-dev.jain@arm.com>
- <20260310073013.4069309-3-dev.jain@arm.com>
- <92b8f168-b135-4c2b-a0be-36c8f8079684@lucifer.local>
- <58b3878a-24fe-4ed1-a870-604b44da71f7@arm.com>
- <b8f4ae76-7e96-4579-9b08-9913734262fb@lucifer.local>
+ <20260310073013.4069309-7-dev.jain@arm.com>
+ <CAMgjq7A1QX2s52aQKQcg0vFAK2t2Xsh8S0THdUC9t9r=DEUQrw@mail.gmail.com>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <b8f4ae76-7e96-4579-9b08-9913734262fb@lucifer.local>
+In-Reply-To: <CAMgjq7A1QX2s52aQKQcg0vFAK2t2Xsh8S0THdUC9t9r=DEUQrw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 303EB40004
-X-Stat-Signature: 5oy99uzq1553kiodu6u9p4q3nzitq789
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773132240-795614
-X-HE-Meta: U2FsdGVkX1/QPxZBlx4ivZFDWUT9OY8w/GA+Py3nL1FmM0t71AYES06NGfvcW5Zw/h1oVJkJCcQVfOGStan+R0K2/fg0bhgbSVZ326qJAJqGBA7XT+Pj80y6kSpwYPGuUuQikV+dA3zMgu0p8qclBD6ApTTRyQbHgUYoPfZCpa1icbKRdi3fyMKZ3Uu6WSoVHtl8RA4i5hkjGzZr3tpyz/phuxiOJJi8LlGWxmKe+WnOUex6fw5Er3DXvh1qVRM80l3Xz3YQRpPCdq4NR5/im4nxj/nl5qx1ISaQOsSwfQMBePZ2GV8WQ3HvkLAMca4d/SZOZ/bQWQI3Nzao2q23lpI6WTHb5YOBR1ioPu8V02Z8qAdUkKPCmBLxjfM5GlMu/SzJzHuBZhs/kqVZeX+zKqewEwsixExwEu93daRT9UzybbBkdBR8z6WrJOJQdipub7PU4xbNp5jVxbmTF1iD38H7U1IAcqfkGR/4tZ93jpbj4zxIivctZdXCMXJ9MTbeKsf4UT57K9JZf1XqO60vTmZSPbrZh5Z4UhqiKSbZ9KP/6cKKu+cbR9RBigt39IxRQ3wmX3P4nhIhn46LcVt8wz7uuKHHfPVf2wyvPX2rG0KhItA1TuVjcXc+eOP4G+F9T5G0dJXVovV6REej/1Iuk8vTOo2eNMmtSLD+OR30uQwq9AVgMDS9dplfDy63rH8zZMSCxOzU8hdf6HC08EHa7NtpF9sBZgD+hxOkZOT6q7zZT8RbsddI4ua3y/J48WZT2HuePWh6eWbYHPZTA74GqOtDkApsl8tfrUs1C4OJIsXAYivfYvYh6FUE4lYtLstb4DVrnVlbkXAFZUpekuIk8r/ICdaULhvOymKlWD6DRjORSu9J8ZG59TeifJ/lf9o42dT+pA2wC++Pc289GVtDK837ZM9HwtTAgS/Wj6fq3R3z/GdJ6rY9SjeNOciNo0yvvs0QIQkWtdSHgM9a3Hn
- h1fua0lW
- 3v7d7c+DlE/SCw1/n65XLwkk+BhUb+LdCkOViAS+JWT4Izom279w+r3KdQseaP2Jr9DENafnrUk+m2UWDg8uTIhWU66RFy4lsVs3W6Ixl6FnGbtLOnMAVG9Tc9B6QuTvUprz9bF1YVOb3pLFPM0FpBazefha7OGJODdBpVmH8G1QQO8Zx8ORqff+Mo2YSJsyblpk0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B2D86100006
+X-Stat-Signature: s7y87iq6uob3rrzgozdqffupm9t4ffgj
+X-HE-Tag: 1773132430-594976
+X-HE-Meta: U2FsdGVkX19fg3KqTjF1jb6a5Xuq9JFpkpRzfT/efCnUbtpIET6H9haW6d7vk06HjY0D+Ry9UnQ5+UThxxGM1E2oxG72rA2XCw7T/4Nad1JeIP4BPINSPlE0IY78o9c8r3x5mhYq9BbplvTVetke9yGMJbBfKWSv2b3sCr2LW88G58OQZDja5Bfd6ISqvTajAE8jz8+zOcvPhy/H1rIi+gLKNyurTTXr1C6pzXRmJg3itcrmspb4TDJihm3AtDNgMjVrmaxQQ5eEpYZwJZOxgVjtaU8mjAqHyLcxTHZFm5bjoT02qS1ozZdLgFrW5LR+OnCIwvy/LfCHyMxAiACgeOidgTHEi+shEFZvIg/5SHbaFFj7RW2o6gFwB9qFVRE+wYXqtdL4Jt+LtgVxSMH9wj4EDKO6GRneYZzzFOzaSofKV3x4y6RI0fOJr8rqCoh7pifEHhCklUjJEdEBS2DMBU5YLASaJL6IVY8qRa1xK36nV4Z6utzcbRhzI8ch/urgXnb0JIOefpDPoELSDetm20pnPOZ2KmrD0ePANhP9608MEEzrIdUa3TmqVhfGILIb/Xeo0k50T3G5gRxA3acmMwOX4VImS75x6CAec4icQ7eCL9HxqrMoxm7CAHJYF0nTL2tFCt+WDwUpuOr6us9id5nhYDe1n3dQRWvg/bg6wuQyhuyjh36Zsfna/0D/Y0XXv9vd2YHgHd9ZqaO8wD2hGlUJJXzThS1XQW21Az349fhsNrimkHNjEJjYqGuqGaLux1YGwirTDehYqpKX6j995CdonDqtO0gtbtek8a5GWb/I9nTQWx5LSeORMruKLZ448b7yOHzG9OhEzivL1U2AVGHYtO6Cl1OLbIe256Frbk2XJ1+SlTzdi/GVTjMzZTXw89hDOFfUrZMasjY3ugP5qwc9IsUyJTL5oO95kRLdHRdkVAjvYX1+u6HC1D40qWQoFGhEP6sHpXU9Bi/iGZw
+ 5RpeQA5Y
+ JU+dbUqGG5q8+OtULOdPjLGSY74zC71fR3VTqv4Mych0CvOq/YsedLLy2MBOID2pnI9EgWGLCxY+D6dZKpjp5KjCXCQTlARBIwpyKNvNC8qaZLBsESp/S5ksi81HXmo9LZaUopxX8fvrwqSu7AsqghKvKHQLWjSK4k9OYr40230aeR/D+YXDg8WIiE9syChACLCjCNWuvBkJ62UCU5eDMAJ3OZ9FUki9SjbXMrm6CKOx1424xJZJlrGBJD/hNcZILljRQYVonoUtqX5tQqEydgWUuZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,45 +95,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/03/26 2:09 pm, Lorenzo Stoakes (Oracle) wrote:
-> On Tue, Mar 10, 2026 at 02:01:44PM +0530, Dev Jain wrote:
+On 10/03/26 1:57 pm, Kairui Song wrote:
+> On Tue, Mar 10, 2026 at 3:36 PM Dev Jain <dev.jain@arm.com> wrote:
 >>
->>
->> On 10/03/26 1:40 pm, Lorenzo Stoakes (Oracle) wrote:
->>> On Tue, Mar 10, 2026 at 01:00:06PM +0530, Dev Jain wrote:
->>>> Initialize nr_pages to 1 at the start of the loop, similar to what is being
->>>> done in folio_referenced_one(). It may happen that the nr_pages computed
->>>> from a previous call to folio_unmap_pte_batch gets reused without again
->>>> going through folio_unmap_pte_batch, messing up things. Although, I don't
->>>> think there is any bug right now; a bug would have been there, if in the
->>>> same instance of a call to try_to_unmap_one, we end up in the
->>>> pte_present(pteval) branch, then in the else branch doing pte_clear() for
->>>> device-exclusive ptes. This means that a lazyfree folio has some present
->>>> entries and some device entries mapping it. Since a pte being
->>>> device-exclusive means that a GUP reference on the underlying folio is
->>>> held, the lazyfree unmapping path upon witnessing this will abort
->>>> try_to_unmap_one.
->>>
->>> Dude, paragraphs. PARAGRAPHS :) this is one dense set of words.
->>>
->>> It's also a very compressed 'stream of consciousness' hard-to-read block here.
->>
->> Sure :) I'll try to break this down.
->>
->>>
->>> I'm not sure it's really worth having this as a separate commit either, it's
->>> pretty trivial.
->>
->> Hmm...well, as I explain above, it's not trivial for me :) it is difficult
->> for me to reason here whether nr_pages can be reused without a reset in
->> a future iteration.
+>> Teach folio_dup_swap to handle a batch of consecutive pages. Note that
+>> folio_dup_swap already can handle a subset of this: nr_pages == 1 and
+>> nr_pages == folio_nr_pages(folio). Generalize this to any nr_pages.
 > 
-> OK you can have it be separate, let's just really clean up the commit message
-> then please :)
-
-Okay, thanks.
-
+> Thanks a lot for doing this. I was thinking it's about time we respin
+> the batch unmapping of anon folios idea. Barry tried that before with
+> an RFC, and now batching from swap side is easier, so some parts can
+> be done cleaner.
 > 
-> Thanks, Lorenzo
+>> Currently we have a not-so-nice logic of passing in subpage == NULL if
+>> we mean to exercise the logic on the entire folio, and subpage != NULL if
+>> we want to exercise the logic on only that subpage. Remove this
+>> indirection, and explicitly pass subpage != NULL, and the number of
+>> pages required.
+> 
+> I was hoping most callers will just use the whole folio, but after
+> checking your code, yeah, using explicit subpage and nr does fit the
+> other parts better.
+> 
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index 915bc93964dbd..eaf61ae6c3817 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -1738,7 +1738,8 @@ int folio_alloc_swap(struct folio *folio)
+>>  /**
+>>   * folio_dup_swap() - Increase swap count of swap entries of a folio.
+>>   * @folio: folio with swap entries bounded.
+>> - * @subpage: if not NULL, only increase the swap count of this subpage.
+>> + * @subpage: Increase the swap count of this subpage till nr number of
+>> + * pages forward.
+> 
+> The new nr_pages parameter isn't documented in the kernel-doc comment?
+
+Oops, will add this in v2, thanks.
 
 
