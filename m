@@ -4,110 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CFF6EB1054
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F76DEB1063
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:56:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A55A6B00BB; Tue, 10 Mar 2026 10:55:03 -0400 (EDT)
+	id 733CC6B00BE; Tue, 10 Mar 2026 10:56:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76FF46B00BE; Tue, 10 Mar 2026 10:55:03 -0400 (EDT)
+	id 714D26B00C1; Tue, 10 Mar 2026 10:56:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 686056B00C0; Tue, 10 Mar 2026 10:55:03 -0400 (EDT)
+	id 668356B00C4; Tue, 10 Mar 2026 10:56:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5517C6B00BB
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:55:03 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20F16C0EEC
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:55:03 +0000 (UTC)
-X-FDA: 84530450886.28.30B86A8
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 600AB180008
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:55:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q7J9Xayb;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 54EA96B00BE
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:56:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 192DE567C6
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:56:30 +0000 (UTC)
+X-FDA: 84530454540.03.66E138B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6222F4000F
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:56:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmYJxjF5;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773154501;
+	s=arc-20220608; t=1773154588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Koap7c4nmBUn1jQcRs2TKnT3RilQxG9yZc8gbf4yHA=;
-	b=JIpiwk9DtQdSxnqwcKjZvUL8+GzfgFbDIxXcPvKPFe4wUhdH0nsTjgA5gwPsHt0UYdOIst
-	+OGkoe9/xgo3/Uy1fxKhK96uwPHSkkEasYiYFRsg2yrMyMjdx95bFNVSdx8CpvmNNDN4cY
-	8qoPG715EwvGmbkbHPeflzbfgeOKyIM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773154501; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=e2GDU9qoSm/KLo/nFV5ncI3YrUp1pEDOPoiLdBpB96I=;
+	b=Zp+SoyUNzp451H/UVuHnVaGBmgIxvMbC9Bkf2EY6Zk6ZgmAznSmBqLOhwmv+OUo0L+UCUn
+	+vWj44PV8hNhhLd5/KIpRNf31mZ35EJiBSsdbAFvziT4g62uokhzVQU4uoFW33VVKEPHKZ
+	uOU4pty/89WgxuM6epCkEn7IutSHMx8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773154588; a=rsa-sha256;
 	cv=none;
-	b=xkVHDSqGNDy+VO5mD5ngalEgs4DFNrBSrbCAfMI6JFimj/iu0+YYYyu9Aq6y6CcQhQP+2k
-	m/4CioPONl9FKfXfZLuaZn1w93wV/JmqP6QdRQZ3ChOOFpYw0um0CqJKjG2TxkQq4JBDaI
-	QkN19wqQlNEgO9c74HvNudfSoCCENFk=
+	b=bHabHGY3rXvdFW0XIUa17M1vBPKMVOH8BuYJKJmXdEPO7U0MWji0VTze16km5RiD2N1WPh
+	eg7yxMlRtKxdW4UKN/pdcDFE/8fMU1e/w3enQCn4DEKrAZjXiADtjNUYk9XpvlGPDwG6oH
+	+G/98NJFeSyJoefw6YrX2pQdoJrh+TU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Q7J9Xayb;
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773154499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Koap7c4nmBUn1jQcRs2TKnT3RilQxG9yZc8gbf4yHA=;
-	b=Q7J9Xayb3tuq1RwczoR+kkYcwmbHr2IBdva+1kWyUfpOmeUqFxY8p3HhUG0VvkvFVRO7cq
-	rcbAym+WsHWFr//SsTKMXbfjnthBN1AVMJKC4S1BQIu+Y4f+asu6YqEK9FjMKM6HNAuqFg
-	o+kIhQjL1lj8wyLdBd5OI3jV01FKMB4=
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	ryan.roberts@arm.com,
-	david@kernel.org
-Cc: ajd@linux.ibm.com,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	catalin.marinas@arm.com,
-	dev.jain@arm.com,
-	jack@suse.cz,
-	kees@kernel.org,
-	kevin.brodsky@arm.com,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	npache@redhat.com,
-	rmclure@linux.ibm.com,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	will@kernel.org,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	hannes@cmpxchg.org,
-	kas@kernel.org,
-	shakeel.butt@linux.dev,
-	kernel-team@meta.com,
-	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH 4/4] mm: align file-backed mmap to exec folio order in thp_get_unmapped_area
-Date: Tue, 10 Mar 2026 07:51:17 -0700
-Message-ID: <20260310145406.3073394-5-usama.arif@linux.dev>
-In-Reply-To: <20260310145406.3073394-1-usama.arif@linux.dev>
-References: <20260310145406.3073394-1-usama.arif@linux.dev>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BmYJxjF5;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5220A40E42;
+	Tue, 10 Mar 2026 14:56:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9FAC19423;
+	Tue, 10 Mar 2026 14:56:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773154587;
+	bh=fE0Z/ubIZkvllDHDQoyXm3PyilLIY5Tu3AO0WZjDsTc=;
+	h=From:Subject:Date:To:Cc:From;
+	b=BmYJxjF5a9dvOp3Ha8UOY28eN9Ls8Tj2k9Ht30d/cMSVQDuueoydi7eHYyhEKug0P
+	 7Nlx16fAGAVjuUcYJ2TifdA8RZUEW1WVE9bwxzk6xsX+LpY8pVoI4vRK7LSwKi5txn
+	 TXEzAkjKCCygTWwTUJXDiJ1W7J4iNz/l+AwgclQGa3Y15wLxiZd+BOIdUxRV70lpku
+	 Yb+xcr51PtPS54Gt5fizFsM4bBka1qsrUKeauVLz/PqrHs9sj2wVpJAkDrkRlREcW4
+	 KDGuvIRo5jnylDD0rRfqsWWjU9OfzKITpIrGYVmZLMxWkcDeykF04Ooym+xGP7OcEp
+	 HXaeEl2lsisxg==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v2 0/2] kthread, exit: clean up kernel thread exit paths
+Date: Tue, 10 Mar 2026 15:56:08 +0100
+Message-Id: <20260310-work-kernel-exit-v2-0-30711759d87b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: u48wfk8ghkboh1ew4yod7odg4tcjf9j9
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAgxsGkC/yWMWw6CMBQFt0Lut5fUkuBjK8aPthykosXcViQh7
+ N1WP+fkzKwUIR6RztVKgtlHP4UMeleRG0y4gX2XmbTSrWpUy59JRh4hAQ/G4hNrHPvuBO202VP
+ WXoLeL7/k5frn+LZ3uFQ65WFNBFsxwQ1lepqYIPV8qBWLa2jbvtE5QPyWAAAA
+X-Change-ID: 20260306-work-kernel-exit-2e8fd9e2c2a1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+ linux-nfs@vger.kernel.org, bpf@vger.kernel.org, kunit-dev@googlegroups.com, 
+ linux-doc@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ netfs@lists.linux.dev, io-uring@vger.kernel.org, audit@vger.kernel.org, 
+ rcu@vger.kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+ netdev@vger.kernel.org, linux-mm@kvack.org, 
+ linux-security-module@vger.kernel.org, 
+ Christian Loehle <christian.loehle@arm.com>, linux-fsdevel@vger.kernel.org, 
+ Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.15-dev-9fd7c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3309; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=fE0Z/ubIZkvllDHDQoyXm3PyilLIY5Tu3AO0WZjDsTc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRuMBTr7bhhNqNZgWf+LzYHk0VPGot/7yk3qp6qVMf86
+ r3sWbafHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOZtoyRof32OmMzK1MvFp3i
+ RLOjK2rOFX5Z+v3AGxeDj8ltGz5br2Fk2COsfshHNk+cZf2uoIUP/xl9bjn/zH4H6x9zpi1CQW+
+ KGQA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: c7a19r485enfujp46cuway113m4kkgim
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 600AB180008
+X-Rspamd-Queue-Id: 6222F4000F
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1773154501-16187
-X-HE-Meta: U2FsdGVkX19oXNg6vnkjLDLjoMvlQWnSiZnjYSYLrr10v7ZdOcBb6+FJ6FlzECobFC5SXaTy31ZAWckFjjvOzwQCx1Cv3nRC1yxJ+fGRz74h/FtkJPzxts/D+qFoTuUlZnpFKawenSdOAx+8VLbn27+gyE6VIyRM6mvH26dFGTD1o6SaYacBHXH/egq02qr0qxTD9aT/7D2ewIe8ez1QUw2lr7X5ChWhk1U4P4/wzoqqc3MsRiJlDjM3ibi4yZn8YtKDTagtd/PGnjJA8RhLiRFbzcMW+C6AbkzxX/JOhtwOPdSd6lRJyhJlY8Pqgu45gzcqnlIzKpM32ZwCViiqXfr0hmXDVus2xC7pUgm4cZarOqvRHQoAc70/9hxZvFTjB3ZW/rVcNm+x2hU0/u1DKVWar6hijPqmzgSVNxTk2hSmE7jEJJYhihXFrDT91nTh+sbgja1XwcHWauo7YQL+7wHPryVshlLjfLj6BN1BsMGoPPBPkAAOYi0myqT8eHSTaitPACdHKl69MeLrbHOIdTE0QBq7zwDCAeb+P6lth+RWpzocvkarJ6ybsnUBxeMkFqJJo5HaWKzx4LlqeDokrHn4g8j+yaC8oOZASefhQ4387ugkgS8O2UdqlQ4unSjW01JZsZJesi7KbcJlkJyQjSuoY8IJjWr4Ph1nd8uhqfnCo7Euf2x6toxIvf62G97hu4RPMXcTJgsNVYjTQuLVV+55XfT2kXJF9wc2PTF8zZCUykSsebog9qhBF6SsS22W8n4BG1eDIVjiX6cbITt3bzYGi9/M1kflWHz58JC/9Yun0ghw361flkeU7upUKYXtLlyxpEWPOUo1/EcsjF2YFRAHHQdj3+wQpDui/6kUAJfZwbGnFLz2AQOgdJlx8iMiOCk9HKLdY51HklxIlt7SAqsUwYVLKQk1eTIzcgeqeYb8de0vdaziHBYeoihYC9aMthh4F4iMCBMOoPilp6R
- UNy3USg6
- 455o/to5TFWHrFiCgPMFVoBtLRTh/QPvB1bHtV1LZStz+UjXkx8ToZsG7kMbTFLitrPfMZ/bsTDX1SDGf7MbonZkUfgbFvVn5hnIWi/V/XwIi3bogvpm9mNpeIOAuAFpnRe3fuDis/wObr8ARdZcr1ZAxXabhxe4DehNrgNALXjtjmvw1JsffABqPYu2DS+GahXhX6/53RwRFGzJJfUQzNA7Ixtb0zyu7f2bNk7ASXi3aJsFnQhYXP7x+IQ==
+X-HE-Tag: 1773154588-719622
+X-HE-Meta: U2FsdGVkX1/s2zW4j3ldvTqp55m7saJdVZhV0fB0YkXDArNFsYg6OFVoj5tD2V5cdjaxt3YEIDALJIkdztviNmOHfzTtaPk5ePBviYa51lpEFZGkoNOgwEzkCDVcGcvuk3dtokiXlMabybW6CJszfkuy8rnGjwHT735kO8E5ThrjwqkbXLGIYV74sWlF5gZEiMgBrPJo3md1/+JJwtM9lZuTw8sIOBQsMMdtfRCMSqhCsukk1O7/ez50OjKtugsyXeoW5WUnfALfPfwRMYjuevCQRt/E9ZD8c8hkC5bhyk4rFZSxUTrRTC21HUB07fw6yoGEzANWGiGsskb+K3LVy57l3UX/yjlnlj0dEno1MhoVtvx3w0q1434bvaunw69Kb3dYasblQuUEYbOnl58Qb+Ss1x2LarAVilCD5IcA2i1EOkuyeqQ+gGUCcq83mBiSyw9y6P07b57zQH58ck7H0JIJa2mjnGN82cO6xs5i9354d6ml6hHXpx0OOREIElPHeShtErTzFYagOqXanLVlDu9IuosXvT4dpTRGPvpbwm4wTZuRjx06gar7y+FcTspfevx+2naf6BXFIEiG+znZYOez9PTrAQRPG4lY7PIRo6uh+qGSmo5OGrjW1A74/xOGl5ghgdlVIiG/XS0XUOV9X2+Vlv/ydiY+mL7RGzmwn975RMZwu4QpKdytBAfzFrI0uvqnywHDcpLoLIOOI9ApkgfrjXZ8qjdkIjd//Oj67v68w0DxPScHjjEuTVIG5fPjBqSHXACL8XlPQKT4+C3g3YO9NppHl8OGezKIgAS8ed9Z9OCsBzeck26XBK36PQKKZslCrx9CKQMF52L/Ti+r3pPfWAdI3CgzuJ52g1pmRKQnEal+ksRqtQOOWDbEb9t97epouEa4Egy8qe4U90cSlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,66 +106,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-thp_get_unmapped_area() is the get_unmapped_area callback for
-filesystems like ext4, xfs, and btrfs. It attempts to align the virtual
-address for PMD_SIZE THP mappings, but on arm64 with 64K base pages
-PMD_SIZE is 512M, which is too large for typical shared library mappings,
-so the alignment always fails and falls back to PAGE_SIZE.
+In 28aaa9c39945 ("kthread: consolidate kthread exit paths to prevent
+use-after-free") we folded kthread_exit() into do_exit() to fix a UAF
+bug but left kthread_exit() around as an alias. Remove it.
 
-This means shared libraries loaded by ld.so via mmap() get 64K-aligned
-virtual addresses, preventing contpte mapping even when 2M folios are
-allocated with properly aligned file offsets and physical addresses.
+While at it, rename do_exit() to task_exit() to communicate that is not
+just a private api.
 
-Add a fallback in thp_get_unmapped_area_vmflags() that tries
-PAGE_SIZE << exec_folio_order() alignment (2M on arm64 64K pages)
-when PMD_SIZE alignment fails. This is small enough that shared
-libraries could qualify, enabling contpte mapping for their executable
-segments.
-
-This applies to all file-backed mappings (not just exec). Non-exec
-file-backed mappings also benefit from contpte mapping when large
-folios are used. Aligning all file-backed mappings ensures that any
-large folio in the page cache can be contpte-mapped regardless of
-the mapping's protection flags, reducing dTLB misses for read-heavy
-workloads.
-
-The fallback is gated by exec_folio_order() which returns 0 by default,
-making this a no-op on architectures that don't define it.
-
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- mm/huge_memory.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Christian Brauner (2):
+      kthread: remove kthread_exit()
+      tree-wide: rename do_exit() to task_exit()
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 8e2746ea74adf..1c9476a5ed51c 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1242,6 +1242,23 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * If the arch requested large folios for exec memory, try to align
-+	 * to the folio size as a fallback. This is much smaller than PMD_SIZE
-+	 * (e.g. 2M vs 512M on arm64 64K pages), so it succeeds for mappings
-+	 * that are too small for PMD alignment. Proper alignment ensures that
-+	 * the hardware can coalesce PTEs (e.g. arm64 contpte) when large
-+	 * folios are mapped.
-+	 */
-+	if (exec_folio_order()) {
-+		unsigned long folio_size = PAGE_SIZE << exec_folio_order();
-+
-+		ret = __thp_get_unmapped_area(filp, addr, len, off, flags,
-+					      folio_size, vm_flags);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return mm_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags,
- 					    vm_flags);
- }
--- 
-2.47.3
+ Documentation/accounting/taskstats-struct.rst                |  2 +-
+ Documentation/locking/robust-futexes.rst                     |  8 ++++----
+ Documentation/trace/kprobes.rst                              |  2 +-
+ fs/cachefiles/namei.c                                        |  2 +-
+ include/linux/kernel.h                                       |  2 +-
+ include/linux/kthread.h                                      |  1 -
+ include/linux/module.h                                       |  2 +-
+ include/linux/sunrpc/svc.h                                   |  2 +-
+ io_uring/io-wq.c                                             |  2 +-
+ io_uring/sqpoll.c                                            |  2 +-
+ kernel/acct.c                                                |  2 +-
+ kernel/auditsc.c                                             |  4 ++--
+ kernel/bpf/verifier.c                                        |  2 +-
+ kernel/exit.c                                                | 10 +++++-----
+ kernel/futex/futex.h                                         |  2 +-
+ kernel/futex/pi.c                                            |  2 +-
+ kernel/futex/syscalls.c                                      |  2 +-
+ kernel/kthread.c                                             |  8 ++++----
+ kernel/locking/rwsem.c                                       |  2 +-
+ kernel/module/main.c                                         |  2 +-
+ kernel/pid_namespace.c                                       |  2 +-
+ kernel/rcu/tasks.h                                           | 12 ++++++------
+ kernel/reboot.c                                              |  6 +++---
+ kernel/seccomp.c                                             |  8 ++++----
+ kernel/signal.c                                              |  4 ++--
+ kernel/time/posix-timers.c                                   |  2 +-
+ kernel/umh.c                                                 |  2 +-
+ kernel/vhost_task.c                                          |  2 +-
+ lib/kunit/try-catch.c                                        |  2 +-
+ mm/hugetlb.c                                                 |  2 +-
+ security/tomoyo/gc.c                                         |  2 +-
+ tools/objtool/noreturns.h                                    |  3 +--
+ tools/testing/selftests/bpf/prog_tests/tracing_failure.c     |  2 +-
+ tools/testing/selftests/bpf/progs/tracing_failure.c          |  2 +-
+ .../selftests/ftrace/test.d/dynevent/fprobe_syntax_errors.tc |  2 +-
+ .../selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc      |  2 +-
+ .../selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc   |  2 +-
+ 37 files changed, 58 insertions(+), 60 deletions(-)
+---
+base-commit: 1f318b96cc84d7c2ab792fcc0bfd42a7ca890681
+change-id: 20260306-work-kernel-exit-2e8fd9e2c2a1
 
 
