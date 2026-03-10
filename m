@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7553FCC9D1
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 07:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59CF4FCC9D4
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 07:30:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCB326B008A; Tue, 10 Mar 2026 03:30:49 -0400 (EDT)
+	id BD8006B008C; Tue, 10 Mar 2026 03:30:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C78CA6B008C; Tue, 10 Mar 2026 03:30:49 -0400 (EDT)
+	id B84FE6B0092; Tue, 10 Mar 2026 03:30:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7AEC6B0092; Tue, 10 Mar 2026 03:30:49 -0400 (EDT)
+	id ABB0D6B0093; Tue, 10 Mar 2026 03:30:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A811E6B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:30:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3FC1A1B8164
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:30:49 +0000 (UTC)
-X-FDA: 84529331418.02.9A8E8B7
+	by kanga.kvack.org (Postfix) with ESMTP id 9D3F86B008C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:30:58 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 621B41C607
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:30:58 +0000 (UTC)
+X-FDA: 84529331796.21.7306199
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 638B5C0005
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:30:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id C395F180006
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:30:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773127848;
+	s=arc-20220608; t=1773127856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=lw5GknMq60aHBt/YcK3pWYcpz1Z2ln/AyAgRsoN+0iQ=;
-	b=7iKxdF3wQCYzblxzTlWJ1GSEB9IF+hc+KYvY7n4AQKp2AFmR+IdDgnHp36yqYxHwRh8JLK
-	RPb+Zvhzc6yveAkG01DHpWTLXS656/wkaP2h69UbpjyobMmuMAJbXMbauhSipOBaf+nrBE
-	LLg2hXOBryJFsLYvK3HMS9n2WJlyFR4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773127848; a=rsa-sha256;
-	cv=none;
-	b=j+/15CVYDij5ESU1BOMLHkbtnuH7GKIEUXPrx/P5PPmtqMkqVi591BXrRe1jC02+aCOADM
-	P3F7/136l3RXoWcr8YvMZ04eo3fJGww5qHAUU4Ben7MqKpqdxrrFmmLb0r00VhXqDztHNz
-	YpCfwrifG4GrqEkkHNsFA+ZkihakyB4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZecdbAWVaScHzfXhmt2Lrf9nOd5m4QJ36dVQjPMVAo0=;
+	b=7IVsiMGttxZ5P6erMvOe4IXV38xI4b8FoKpdZeN/tj4FwieOdXNF+ElSNsQTQsqbZr9c01
+	GAn88XeI6bkDNmjGHbPbJ9D4/0iFXzDM1IsZu7M43V4nSKCQqLrbVQYVWJ70Cu3txcnNk6
+	ybXKWPcnkUK1MX5+95TwpiaooYQ4knc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf16.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf22.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf16.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773127856; a=rsa-sha256;
+	cv=none;
+	b=xJLGfsASXjdrP4prTaSLKjjWltxUCwSro2Ija/O7CeZyZ0+pB/aWREB0Dy4d3g6cKEvN/k
+	lf6BFPOpI+qtx6Pxjgq4GwzUvKB2EadIuYP4JIs1zbd1KcGJOqPnDdaU86xmCCT7f8hHPW
+	rS1AGN4AdHRVbLOM841Ni7YoyS1HTS0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0968C152B;
-	Tue, 10 Mar 2026 00:30:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 721DF152B;
+	Tue, 10 Mar 2026 00:30:49 -0700 (PDT)
 Received: from a080796.blr.arm.com (a080796.arm.com [10.164.21.51])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5A5A43F73B;
-	Tue, 10 Mar 2026 00:30:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BE6DA3F73B;
+	Tue, 10 Mar 2026 00:30:46 -0700 (PDT)
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	axelrasmussen@google.com,
@@ -87,18 +88,22 @@ Cc: weixugc@google.com,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH 0/9] mm/rmap: Optimize anonymous large folio unmapping
-Date: Tue, 10 Mar 2026 13:00:04 +0530
-Message-Id: <20260310073013.4069309-1-dev.jain@arm.com>
+Subject: [PATCH 1/9] mm/rmap: make nr_pages signed in try_to_unmap_one
+Date: Tue, 10 Mar 2026 13:00:05 +0530
+Message-Id: <20260310073013.4069309-2-dev.jain@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260310073013.4069309-1-dev.jain@arm.com>
+References: <20260310073013.4069309-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 638B5C0005
-X-Stat-Signature: 7jb3g8jmjt5nr88z3d8jga5uspg9siae
+X-Rspamd-Queue-Id: C395F180006
+X-Stat-Signature: xwfkodsc11opbab68hwhpuka6pk66rm1
 X-Rspam-User: 
-X-HE-Tag: 1773127847-15700
-X-HE-Meta: U2FsdGVkX18+G0ItXdKlOMoP0ZIf7f0kC7SZ4L0EVjv/7kVMOA4cg/d12JEc9oQjY4hAxq/tkvBYwxdDKO1w/WdIYsGmAOIf8XdZ8KBLsFY6DwdsszbLLM0OtOPOpLqHlqCi6Y1vzH15M0ck9yCe/pC1nW43uUmBrXw8zSqFRFs6dLPrd1Yg4VeSJoTnCJyemHj5wpIoUghUi/Mr7ySor+zNFYNTloUQzzucpfJblL6hu+LLV6kkEc03KzRr5Wv8xFMchsUlcNUr/Jl9L1LQpUDtAUM4Z/LGYuXAPVdHt8az8iuZDUoitozf8VDTHl7sIMf+USnfHEiJb0M0CjMi7L3vlM1qrPpsDXXn981WF9uZDiwsqzl1EEiSKH24MR+8Z9wgKLAR/3D2tVgGuO2TFRY7dS6v6Rz448XcMU85KyI+G+5zcfTWWKoJwYZEmayl08HXfUsnYKw0J3UAj0Ua5xAZDQoycGvwfmxmc6D9fYD933E5bRCSIyRWf4gkwOHPpfHnmqiR4p+5Bmq5CpGJbnDSEO7kwirAoprOFb8sNaiMQbBmfrOzvHZyu2z/QIsPU/mOYgJhZa4tDitJAaMVS3rdqiBBhEdpgE1UnSTWemyGkPpHtyMGRsfgJF5xsROwF8bnHHfKd8vWh16ywhaIkMrJ9Wyhxf82lpSSDQPYYh6Vlc0+7LYrVannPySF+BU7rU2Nc3KzUhKeMA92GjkWpyXrcUO0ET+ioVyqLlDr4HgsGZDhlov3QFSy4pNPj7BdrzCjPWmYu+GFO6fe2njGxQqvlw6qnVzPZuG3XP/gp/foB0bAj+TfDxIJOFu5le6tQvKhbX+gOYETGLU33b4t5g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773127856-400274
+X-HE-Meta: U2FsdGVkX1+p2FIfilk87X1DLKnKbIhseeD4qr0mRH2vj+OEPG8HvTOIgd6u/QMB6R+tZ/n3+hW7EHtDHcWHhAjAbcgaDIHn3lvheGK30bLJ3cO/Yz9/4ZNH2sqETi6ofzEEl9zrEU1fYQjP2iz4dPGV//R6Zf5Xx1GfuiiImKofN+gN2lyNqSCXK7S/6ruMednA+0Tp1eRI2oiJgbPcQDjlixwH9gxSO/Peg5jwdT8u9mMLaGSLaqVzRUlM28uKtVHtfn5IMLFTSDPkXBlMn3ixcPwutbAwMW0MYBl/yKiTS80KE8wkhBkiesmYPuucizQB5zuDCuir9mlbsOppzyXr/9uWMXlMYAbLAOhzQPAqluIWUqmOaHgy595hGExr+xWIrF8Aw1sv1+KcS7yxtem+mnDuOCxxvEysNfQRQsQ2KgODzEwJnHB6accKyEVaqP0k6EO/hA7vDWtt2heBY1G0op7b6fE1TD/IreQWUuuvyl85ihlte+LCHw7zM+weGf4j+v8QvcprK9Emh2Zbg0R/oTIG/+Q/5MEYzVYeL5+v09V/xIL70/HkWVS0kE8+JELaLvMgRYK9/C81Oq+/oYEWeizvDiRCgVHRk32QLOZ8vdr7LD/4Eq7TOTdPzOocig3+FwPs6CpWLHUD0PjzpSGJPYoCoZYXm8HeVnc9bDE/hQPQ0gn6iEkNw0NeQU2OrFSrmBJc/yh2IHy535ASmtaqqO1aixDEUDGSaxIvXAnDDQsr5xt4kACKhfDpbVdlQP9N0KHRzz7WUan0yvzy0Ex5RJWGqQ3iVawi1qcclJFyo6WGvXOa4IKpaKeW70oqtZZUNeh/9d3pVVcVPlRUXhJrMM71qpP5/keIJmnfd+Vx+zzQmr35RJISyRKAchIi7r/T1vExx3+NrXn5GmhlA5CYZ74+CTxJlsi0DmuLikb4/PhiOx5QBOh5AVD8oIEjGZV8KYluKcNyReOB7Bi
+ JyEPsypd
+ bCBxC4tNMRbhTPwWXgzvLufkiB+3m3yqDh2QcBhe1iFrQWSS95JzHKNAAnmAZR9Rbd/Bl2SiGG7uWU5WE6yO3xkTNsV/I7lVairJKTXAbwFn0e7IGKDcRKIP1g9q21DHjkHVLAelNQyWmx6F/1nq5HUr3irzegLwjhLgsiUhKlRWjKk1Q2kTFV8nKps/BSJAHshoxybXg4kYIr3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,92 +111,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Speed up unmapping of anonymous large folios by clearing the ptes, and
-setting swap ptes, in one go.
+Currently, nr_pages is defined as unsigned long. We use nr_pages to
+manipulate mm rss counters for lazyfree folios as follows:
 
-The following benchmark (stolen from Barry at [1]) is used to measure the
-time taken to swapout 256M worth of memory backed by 64K large folios:
+	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
 
- #define _GNU_SOURCE
- #include <stdio.h>
- #include <stdlib.h>
- #include <sys/mman.h>
- #include <string.h>
- #include <time.h>
- #include <unistd.h>
- #include <errno.h>
+Suppose nr_pages = 3. -nr_pages underflows and becomes ULONG_MAX - 2. Then,
+since add_mm_counter() uses this -nr_pages as a long, ULONG_MAX - 2 does
+not fit into the positive range of long, and is converted to -3. Eventually
+all of this works out, but for keeping things simple, declare nr_pages as
+a signed variable.
 
- #define SIZE_MB 256
- #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
-
- int main() {
-     void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
-                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-     if (addr == MAP_FAILED) {
-         perror("mmap failed");
-         return 1;
-     }
-
-     memset(addr, 0, SIZE_BYTES);
-
-     struct timespec start, end;
-     clock_gettime(CLOCK_MONOTONIC, &start);
-
-     if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
-         perror("madvise(MADV_PAGEOUT) failed");
-         munmap(addr, SIZE_BYTES);
-         return 1;
-     }
-
-     clock_gettime(CLOCK_MONOTONIC, &end);
-
-     long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
-                        (end.tv_nsec - start.tv_nsec);
-     printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
-            duration_ns, duration_ns / 1e6);
-
-     munmap(addr, SIZE_BYTES);
-     return 0;
- }
-
-On arm64, only showing one of the middle values in the distribution:
-
-without patch:
-madvise(MADV_PAGEOUT) took 52192959 ns (52.193 ms)
-
-with patch:
-madvise(MADV_PAGEOUT) took 26676625 ns (26.677 ms)
-
-
-[1] https://lore.kernel.org/all/20250513084620.58231-1-21cnbao@gmail.com/
-
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Based on mm-unstable bb420884e9e0. mm-selftests pass.
+ mm/rmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Dev Jain (9):
-  mm/rmap: make nr_pages signed in try_to_unmap_one
-  mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
-  mm/rmap: refactor lazyfree unmap commit path to
-    commit_ttu_lazyfree_folio()
-  mm/memory: Batch set uffd-wp markers during zapping
-  mm/rmap: batch unmap folios belonging to uffd-wp VMAs
-  mm/swapfile: Make folio_dup_swap batchable
-  mm/swapfile: Make folio_put_swap batchable
-  mm/rmap: introduce folio_try_share_anon_rmap_ptes
-  mm/rmap: enable batch unmapping of anonymous folios
-
- include/linux/mm_inline.h  |  37 +++--
- include/linux/page-flags.h |  11 ++
- include/linux/rmap.h       |  38 ++++-
- mm/internal.h              |  26 ++++
- mm/memory.c                |  26 +---
- mm/mprotect.c              |  17 ---
- mm/rmap.c                  | 274 ++++++++++++++++++++++++-------------
- mm/shmem.c                 |   8 +-
- mm/swap.h                  |  10 +-
- mm/swapfile.c              |  25 ++--
- 10 files changed, 298 insertions(+), 174 deletions(-)
-
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 6398d7eef393f..087c9f5b884fe 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1979,9 +1979,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 	struct page *subpage;
+ 	struct mmu_notifier_range range;
+ 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+-	unsigned long nr_pages = 1, end_addr;
++	unsigned long end_addr;
+ 	unsigned long pfn;
+ 	unsigned long hsz = 0;
++	long nr_pages = 1;
+ 	int ptes = 0;
+ 
+ 	/*
 -- 
 2.34.1
 
