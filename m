@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7F9EB107C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 15:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F14BEB1076
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 15:58:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 769156B00A0; Tue, 10 Mar 2026 11:58:38 -0400 (EDT)
+	id 9EE046B00A1; Tue, 10 Mar 2026 11:58:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 740626B00A1; Tue, 10 Mar 2026 11:58:38 -0400 (EDT)
+	id 96D856B00A3; Tue, 10 Mar 2026 11:58:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 618AA6B00A3; Tue, 10 Mar 2026 11:58:38 -0400 (EDT)
+	id 7B0216B00A4; Tue, 10 Mar 2026 11:58:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F71A6B00A0
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:58:38 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E22E51A0241
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 15:58:37 +0000 (UTC)
-X-FDA: 84530611074.05.5F7B66D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C5C96B00A1
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:58:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 154261B704E
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 15:58:39 +0000 (UTC)
+X-FDA: 84530611158.12.88E2375
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A51A9180017
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 15:58:35 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UzaWdN9I;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2185CA0011
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 15:58:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=DQQrAnE5;
+	spf=pass (imf15.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773158315;
+	s=arc-20220608; t=1773158317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KILNHPFhZkB/epKpICgOxbnFyklyzYF7FlY8WQTGTpo=;
-	b=1jhK3uqD6jbsDSDCNo+VTzWvZZAnlYAYwlZH57wQYoQdf+Mx3eQuzeKyh6vlZgbRQwgdbx
-	RGPk8+4nlju2Ye6I5pSQD6GnGl7Dsh/1csfwf8n1foWXTlKzTirBqqaFxjgyBjvTFPCQTJ
-	5pyh5t56zrSMgdWA8Ao+sdKKjV8l2eU=
+	 in-reply-to:references:dkim-signature;
+	bh=De4g2LAyWvY3GWO7BeINKqb2S28hzYXHWiu9xaz7NEc=;
+	b=b1KL1K9CFrqCyPRQj4LMzHj8jjZrgeRx/rxPxGPNBPd+zrwOHwOf2DEg4IBi1JJlU8TTld
+	gdlkBQwvqWt+HkZeAsarfVwisJgQMi4Tcd4a9oQWidcrBuFgeu1Tl5XKX7GxZuv7G8M5lk
+	bvNVcJbNnBSrgTowwbwgEX6ztspJUKA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=UzaWdN9I;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf06.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773158315; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=DQQrAnE5;
+	spf=pass (imf15.hostedemail.com: domain of anthony.yznaga@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=anthony.yznaga@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773158317; a=rsa-sha256;
 	cv=none;
-	b=W0B4Af5HvjDSSmOZZRLDsg+86lX464hsj+CH14Wq6gXyXM34+4vKynvasslwByFT2f9QYr
-	1SGAFSA0L4zlRUJXpCA/3DM4piJ00/MS8n9MR+EZfQQq6HPrSHMqb5zL/eMgfVp8GgWG/l
-	PvUP0bbsKFcUVqDyyogBsIApGG0o1cs=
+	b=qW0yXA25Kjj0DWcHKjZL+7Tfn5iEOSjMOekZ3OukaR3DJbOZ4X8NllLgBJKUnXIT3uSXwP
+	XRFuDj4IEyGsW830wzbdDW58/cCxhfua3q74EL1CqpcCQlZBxyhIK3IGNqjHtfJJ03krJj
+	ourX4g2VoxpNMVXhI6TsC/ZzLmRvPJM=
 Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A9ovME1719663;
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62AFcc0Q2582839;
 	Tue, 10 Mar 2026 15:58:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=KILNH
-	PFhZkB/epKpICgOxbnFyklyzYF7FlY8WQTGTpo=; b=UzaWdN9I7qC4DIwxgIPFi
-	iQmIVD+655Hl3pkyB6uKXxQxInsunyLlBQGBBx8Kpagek8bm6a5z1P5QKD4lA/HE
-	E24rLIIS21o6Jsr2nK2Ek/4cW0oGng65qcEkPHkPPtIMOx1/PvR+u2aZLQZV1f/M
-	hofmxX25UpouCzjVG8fDpsRQZA3LdZZOryE+3CnWY6/4UNF2Afz+T8LdE7siWjce
-	LMvfW3l7ZFJIMjkoJga42MaJt4/N2Gdvv05SZjNp/heTE5Q5dZQkCbW3cizf5D3S
-	n55c4E6uGdWT2MpTh/SKJG8annbmODnaEgm5quizhW0F0oGcxHYX9yAeT2GmQjuL
-	g==
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=De4g2LAyWvY3GWO7BeINKqb2S28hz
+	YXHWiu9xaz7NEc=; b=DQQrAnE5EBBJNqVzGSrnY5PZvllsaEenaJ/j35CNNMPc+
+	if513RKpVaEAnuw7XCC/8qnWZcAM7Da0/vYEiBDqR1nDB7h3ZL8hLaCeBJwqIcaK
+	84QfpayjX8aD45c4ZrkvbieaRqbpWlxLZWo1VzrjaEjdjBU3VLXmSZBkGrZ52OTq
+	LvpzI4UY3ebYKgCwk7S0jYut+E99lfTGYr/CYGwkJAi3If72KsSKrYwgS54+LTq/
+	uyX3WeEyeyydIV8MV21SB/2iXf3z5oRDZIt1vB8sfwltXKJys9gPTe7Ui/hJQyC8
+	nGM0XfnozDi+tevFOfrF4FPstQEsK05ya7RuBnuCg==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cskyp350q-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cskyp350n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 15:58:30 +0000 (GMT)
+	Tue, 10 Mar 2026 15:58:29 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62AF4TLE022760;
-	Tue, 10 Mar 2026 15:58:30 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62AEZh1l022712;
+	Tue, 10 Mar 2026 15:58:28 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4crafa9wyb-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4crafa9wxk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 15:58:29 +0000
+	Tue, 10 Mar 2026 15:58:28 +0000
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62AFwRjE027022;
-	Tue, 10 Mar 2026 15:58:29 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62AFwRjC027022;
+	Tue, 10 Mar 2026 15:58:28 GMT
 Received: from localhost.localdomain (ca-dev60.us.oracle.com [10.129.136.27])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4crafa9wu5-2;
-	Tue, 10 Mar 2026 15:58:29 +0000
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4crafa9wu5-1;
+	Tue, 10 Mar 2026 15:58:27 +0000
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-kselftest@vger.kernel.org
@@ -85,12 +84,10 @@ Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
         Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
         surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de,
         Jason@zx2c4.com, shuah@kernel.org
-Subject: [PATCH v2 2/2] selftests/mm: verify droppable mappings cannot be locked
-Date: Tue, 10 Mar 2026 08:58:21 -0700
-Message-ID: <20260310155821.17869-2-anthony.yznaga@oracle.com>
+Subject: [PATCH v2 1/2] mm: prevent droppable mappings from being locked
+Date: Tue, 10 Mar 2026 08:58:20 -0700
+Message-ID: <20260310155821.17869-1-anthony.yznaga@oracle.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260310155821.17869-1-anthony.yznaga@oracle.com>
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
@@ -100,28 +97,27 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 sp
  mlxlogscore=999 mlxscore=0 adultscore=0 malwarescore=0 phishscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
  definitions=main-2603100139
-X-Proofpoint-GUID: oyz9zc_Zust4hy0UWhisJ0Qjfd6uCtps
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDEzOSBTYWx0ZWRfX1iBG67dp9wN/
- Ll2TaXxKxOMgKFyRkxcea61Fo4AB9u85VHcLtsNfVSQtXTTxfGXMmGYlMB6naxLdPzKuHzU5lcD
- P1d/KPiQ/KdiXdHCMRxSer8jrybEWmzeHnzMzd8gYBhrNxxwrkUCK3Fv6DB+IqIFYH2mytfE/pO
- Wy2WF2jCmPvM4+HrK8korvzyS6BTyIQLbx33lbUeopILSIpOlr5BfH+IB0VeJurE7hN65eePYXd
- ZPt9Kr2R/3ALFWgx9Ee3aNsvk5QdmU1dQFgsEsLs5arUT9ITO46LJRNEXEyKZF0fY8qFX3n7dgb
- 7g0LmT2Y4q654d01AwkpN4O2d4oYGNzhYRNno9bZJ6JmicUob2X9ayFM7F6+YeD4z0GsoMPB4K3
- BUJXwNKFMTIlKtqOytdsfthuz4pV+Y4VU57LVazHPQavIQrOkaatMiml6xW1VAmEV4UhTTvEIHj
- 6/BsvTh+D3VP4ZD4vXg==
-X-Proofpoint-ORIG-GUID: oyz9zc_Zust4hy0UWhisJ0Qjfd6uCtps
-X-Authority-Analysis: v=2.4 cv=XP89iAhE c=1 sm=1 tr=0 ts=69b03fa6 cx=c_pps
+X-Proofpoint-GUID: 3ANEJ9zuxwbaKK0FOosQOnxfOLriMh2V
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDEzOSBTYWx0ZWRfX5pR1s/plwPJM
+ MViPNiMklGdGKAA2mkRnPrJ5sLUYq13b+k4KDZ3wGxz6cF/d+3bbrePc2iZR4wvTTA3BSESsG9n
+ ec5xBEY8h+RJCi70R3AqT9l/88yHAQftO3gCYtPk6owA1Kitdn/OWQgtXrjuGSb+J3fPrgwEGXI
+ v9tyKNmy714ZzMFMK6U2ddyUceTRS5cU1phT/n6+2Ssh4MEev5Ms6qAZMU2mV8T/q24V8Bb8qWf
+ dUvajm+yezMBXP2uNHJoWestU2BZ0/WtyiR//PT6O7IRGCSrqlA40Srbu7IYmPrh80SRUPXJvCC
+ RxsFUOemI3bNn2j/AQR9Mz3P8V3dpKWrAAefslK1JuFKNCxMQlms1Tmuzq001Tfnxiq34EhC6Pz
+ CHI9B+BQDBhy3anvgePs7icHCYliVke8Pe+nZl2UFRxvQftT+N5o5gstxN/sAOlRxgTEFQPqJaI
+ haHj9KL8pUAU6gVxnQw==
+X-Proofpoint-ORIG-GUID: 3ANEJ9zuxwbaKK0FOosQOnxfOLriMh2V
+X-Authority-Analysis: v=2.4 cv=XP89iAhE c=1 sm=1 tr=0 ts=69b03fa5 cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=RD47p0oAkeU5bO7t-o6f:22 a=yPCof4ZbAAAA:8 a=_qCjRXgy2aYRKG6zBr8A:9
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A51A9180017
-X-Stat-Signature: 77pcjgk3df9dxrp5nhp1hhifit41f917
+ a=RD47p0oAkeU5bO7t-o6f:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=iWkOVUfiZeQ8vpaLj3YA:9
+X-Rspamd-Queue-Id: 2185CA0011
+X-Stat-Signature: 94opxhamp5p1174kxicaq8urwqb8bcq5
 X-Rspam-User: 
-X-HE-Tag: 1773158315-458096
-X-HE-Meta: U2FsdGVkX1+TwAeXhXC/vWfavTXzPONrFDv1ZpkpAUEstO3e0vF+rIpPREePLC/1TdwmXVYSaxhxJ2pOQDcZkn76O0ZRUXMpt7CdosVtoIMO6ZjbslmmhKKkJIzjMnlDEk3XYWHR/ihotYKCNN/mJDHWIYKp1+bGH/1kavjxRc3yANa25raOLZ1/bXaBtdk7TR0b++WgADesV+C/5J0ap+7KA6IFIPJYOL0+e3z36BG10FnJKPXWEg4fkiO/VKf7ABOkp+lNHhscVRVNUdvO46E+9D4vLzAc/gUkoMD9zU9zCM+xeLC3gBEyfjfKSzRSt1XC9yBy/8pZ/FrrhPKNDQOiyTWeHUPI3MRifOjFdxhPOKjtgIUk37We1vGyAmPLaz9ZkrYQGpUI0slxkReoRM6sZBqtmL2hxeb0mnF3TNGVvZunp/VYf3wB3/37lmYGNlcWqZLkKhZHJ27HeJbk4c80wpQClBByQFp2ZbwlrJ33j41EQKxi4SmGb0qkkHsJ/Tb8YKPlz1/ogBG7YYsT5eEqq7POD3Qzd2FYzbZwLDDVRvYGNwYpfsXA6gZq85xLvMy4wSqtgZ1Kxh2oLhpcAePPV6A7/qczm4gYWSFpLkmm/uuaBwiVwbVj7KK5zlYHSxqvEzrXDotZJjEhqPmpDhmVMPCz2PIyxdjweTt2JnAitpCpGw5uD70tYM5Bujoz9i7sxYfwsH+DahmNNutTkHYvp/BG8CKSFCrCR7WGZWkXuX8Xgu2pRg7hhl04bBLYumy/v5Fq2akasisNveKq4/I9nU0JSMqn2p6xbJxHBZzPyewoaS14ANHfsfrhVs2+GHgmnSJzRORUMtmIxBGLyrq5RRlRmHwmk5Kcjv2FW4Zz3utLanO0wd9heVPyX88PqJpE+2bA2GOYIv+e9Gp2PEMdeqlJNM+TzzPqwLJqMS6cSuNTM2xGglZ3M8LBw9QQm5Q0U+HS6DXirDdz1cA
- B/CHLkta
- yK1UMWTK0UqDZMxJXYeUqZRvXdNy1loB8+XQRWPqFPI6FUmJSEfhLwws1yJIaN2Xp00fq1fZ+Tc4YjLfAxYTUJwjHyKi9hOzqli0MuJ3eoTH1q+UNV56Fjh7Esgg31iBXzojJtXBWW19Ruck4+uKj68wGqhrbDuBdm2WocF8Y8jEzZoZxVt7IQbEK8FNj/ofOl55dctzHyso1zkAkCrSyfINFpLsSC/g5GkpmaGmdjaNvH10=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773158316-3384
+X-HE-Meta: U2FsdGVkX1/ngzCr2ZzlZrY0vfYYRISdCEEOemcSrwZa1NddeSbhpjZw4cTJm6r6u4YsZRGjOBKHUets1GhIC4+1zx1H9H65SGabxjzt4LPOybC8h7ivw2gJB6iFAeOT6kIaNui8zpFIAW7VLdtthsMEqdRvxU96hjZYkMW11y0+qXqUkl6+l77GjSOMWvJzu8HiRPyCZitbgU8JhkASKzDuJgbHG4KAdYZI6O2tP8V2onrQhxxqyc2DpgUVPPCVYUOnL08eXd336QJkch8lTkgiCBtsg+m35KE3F5V06h+lFxiERGJpoqcsVWIU3Atlag0UHZz0/SSJNtEFeEDjvAO5UmXkXJk6gqOEsnBPnG/E0k1eGw1Cz28Kx0QDOWixlQQ7OZflxW6X+hTXJcvn5EMuiMBCZWXhg56URk/SlU4aPUsWWnL1HQ4a+PUZegsNR1VXOCLsLVXzmk67vez4p7jwsrEoCMPTQWRh6qnuz0SiMtVoufUU+kJIDtI+ENte6rECXHABlMk3GAeLXemf2L5Eezvb2p9lO/B8hnqhxD1ROlYqdpSuF7KoKEn7kxThq+r89Hgr+NllRtLsf0SUbHm9QEtMScru/gaCfaBzLSEMdW7ddk+YqEh9Mryxc5pz2TAexcw/OPN06clUB8JOipciuOOkc0lc2F6eSow6UVKwRY5knZVkt9jCsl/8Krj1+bLn3Zl5xJQavHFzPDsOsWznPlaRRRT0fX+BtOsLQZ80EX42qa2vuDGDvTwYDZWDcrUNgYjEGsFIrddxIpIuhGvCho3u8DgKhsCx309JIZO1PlG+MhOkpsSysYPyVuCVBg2nQscF4P7WVN9pYy+JARHq6JxFQxeW6fFmlc/KVZoffOzqm6JkF46HdBnCAUe+4XtPTGS3r6d/aM+t/yVERehCDhQV3t+VwIyCy2DvzRq6CqhyRlbIng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,149 +125,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Verify that a mapping created with MAP_DROPPABLE cannot be locked
-via mlock(), and that it will not be locked if it's created after
-mlockall(MCL_FUTURE).
+Droppable mappings must not be lockable. There is a check for VMAs with
+VM_DROPPABLE set in mlock_fixup() along with checks for other types of
+unlockable VMAs which ensures this when calling mlock()/mlock2().
 
+For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.
+In apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
+current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
+applied to it. VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
+When these flags are set as default in this manner they are cleared in
+__mmap_complete() for new mappings that do not support mlock. A check for
+VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
+mappings created with VM_LOCKED set. To fix this and reduce that chance of
+similar bugs in the future, introduce and use vma_supports_mlock().
+
+Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
+Suggested-by: David Hildenbrand <david@kernel.org>
 Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
 ---
- tools/testing/selftests/mm/mlock2-tests.c | 78 ++++++++++++++++++++---
- 1 file changed, 69 insertions(+), 9 deletions(-)
+v2:
+ - Implement vma_supports_mlock() instead of vma flags mask (DavidH)
+ - Add selftests (Lorenzo)
 
-diff --git a/tools/testing/selftests/mm/mlock2-tests.c b/tools/testing/selftests/mm/mlock2-tests.c
-index b474f2b20def..b5790e717dd6 100644
---- a/tools/testing/selftests/mm/mlock2-tests.c
-+++ b/tools/testing/selftests/mm/mlock2-tests.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- #define _GNU_SOURCE
- #include <sys/mman.h>
-+#include <linux/mman.h>
- #include <stdint.h>
- #include <unistd.h>
- #include <string.h>
-@@ -163,14 +164,17 @@ static int lock_check(unsigned long addr)
- 	return (vma_rss == vma_size);
- }
+ include/linux/hugetlb_inline.h    |  2 +-
+ mm/internal.h                     | 10 ++++++++++
+ mm/mlock.c                        | 10 ++++++----
+ mm/vma.c                          |  4 +---
+ tools/testing/vma/include/stubs.h |  5 +++++
+ 5 files changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
+index 593f5d4e108b..755281fab23d 100644
+--- a/include/linux/hugetlb_inline.h
++++ b/include/linux/hugetlb_inline.h
+@@ -30,7 +30,7 @@ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
  
--static int unlock_lock_check(char *map)
-+static int unlock_lock_check(char *map, bool mlock_supported)
+ #endif
+ 
+-static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
++static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
  {
--	if (is_vmflag_set((unsigned long)map, LOCKED)) {
-+	if (!is_vmflag_set((unsigned long)map, LOCKED))
-+		return 0;
+ 	return is_vm_hugetlb_flags(vma->vm_flags);
+ }
+diff --git a/mm/internal.h b/mm/internal.h
+index cb0af847d7d9..8c67637abcdd 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1218,6 +1218,16 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
+ 	}
+ 	return fpin;
+ }
 +
-+	if (mlock_supported)
- 		ksft_print_msg("VMA flag %s is present on page 1 after unlock\n", LOCKED);
--		return 1;
--	}
-+	else
-+		ksft_print_msg("VMA flag %s is present on an unsupported VMA\n", LOCKED);
- 
--	return 0;
-+	return 1;
- }
- 
- static void test_mlock_lock(void)
-@@ -196,7 +200,7 @@ static void test_mlock_lock(void)
- 		ksft_exit_fail_msg("munlock(): %s\n", strerror(errno));
- 	}
- 
--	ksft_test_result(!unlock_lock_check(map), "%s: Unlocked\n", __func__);
-+	ksft_test_result(!unlock_lock_check(map, true), "%s: Unlocked\n", __func__);
- 	munmap(map, 2 * page_size);
- }
- 
-@@ -296,7 +300,7 @@ static void test_munlockall0(void)
- 		ksft_exit_fail_msg("munlockall(): %s\n", strerror(errno));
- 	}
- 
--	ksft_test_result(!unlock_lock_check(map), "%s: No locked memory\n", __func__);
-+	ksft_test_result(!unlock_lock_check(map, true), "%s: No locked memory\n", __func__);
- 	munmap(map, 2 * page_size);
- }
- 
-@@ -336,7 +340,61 @@ static void test_munlockall1(void)
- 		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
- 	}
- 
--	ksft_test_result(!unlock_lock_check(map), "%s: No locked memory\n", __func__);
-+	ksft_test_result(!unlock_lock_check(map, true), "%s: No locked memory\n", __func__);
-+	munmap(map, 2 * page_size);
++static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
++{
++	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
++		return false;
++	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
++		return false;
++	return vma != get_gate_vma(current->mm);
 +}
 +
-+/*
-+ * Droppable memory should not be lockable.
-+ */
-+static void test_mlock_droppable(void)
+ #else /* !CONFIG_MMU */
+ static inline void unmap_mapping_folio(struct folio *folio) { }
+ static inline void mlock_new_folio(struct folio *folio) { }
+diff --git a/mm/mlock.c b/mm/mlock.c
+index 2f699c3497a5..73551c71cebf 100644
+--- a/mm/mlock.c
++++ b/mm/mlock.c
+@@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	int ret = 0;
+ 	vm_flags_t oldflags = vma->vm_flags;
+ 
+-	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
+-	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
+-	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
+-		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
++	if (newflags == oldflags || vma_is_secretmem(vma) ||
++	    !vma_supports_mlock(vma))
++		/*
++		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
++		 * For secretmem, don't allow the memory to be unlocked.
++		 */
+ 		goto out;
+ 
+ 	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
+diff --git a/mm/vma.c b/mm/vma.c
+index be64f781a3aa..18c3c5280748 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2589,9 +2589,7 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
+ 
+ 	vm_stat_account(mm, vma->vm_flags, map->pglen);
+ 	if (vm_flags & VM_LOCKED) {
+-		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
+-					is_vm_hugetlb_page(vma) ||
+-					vma == get_gate_vma(mm))
++		if (!vma_supports_mlock(vma))
+ 			vm_flags_clear(vma, VM_LOCKED_MASK);
+ 		else
+ 			mm->locked_vm += map->pglen;
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index 947a3a0c2566..416bb93f5005 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -426,3 +426,8 @@ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
+ }
+ 
+ static inline void hugetlb_split(struct vm_area_struct *, unsigned long) {}
++
++static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
 +{
-+	char *map;
-+	unsigned long page_size = getpagesize();
-+
-+	/*
-+	 * Ensure MCL_FUTURE is not set.
-+	 */
-+	if (mlockall(MCL_CURRENT))
-+		ksft_exit_fail_msg("mlockall(MCL_CURRENT): %s\n", strerror(errno));
-+	if (munlockall())
-+		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
-+	if (map == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap error: %s", strerror(errno));
-+
-+	if (mlock2_(map, 2 * page_size, 0)) {
-+		munmap(map, 2 * page_size);
-+		ksft_exit_fail_msg("mlock2(0): %s\n", strerror(errno));
-+	}
-+
-+	ksft_test_result(!unlock_lock_check(map, false), "%s: droppable memory not locked\n",
-+			__func__);
-+
-+	munmap(map, 2 * page_size);
++	return false;
 +}
-+
-+static void test_mlockall_future_droppable(void)
-+{
-+	char *map;
-+	unsigned long page_size = getpagesize();
-+
-+	if (mlockall(MCL_CURRENT | MCL_FUTURE))
-+		ksft_exit_fail_msg("mlockall(MCL_CURRENT | MCL_FUTURE): %s\n", strerror(errno));
-+
-+	map = mmap(NULL, 2 * page_size, PROT_READ | PROT_WRITE,
-+		   MAP_ANONYMOUS | MAP_DROPPABLE, -1, 0);
-+
-+	ksft_test_result(!unlock_lock_check(map, false), "%s: droppable memory not locked\n",
-+			__func__);
-+
-+	if (munlockall()) {
-+		munmap(map, 2 * page_size);
-+		ksft_exit_fail_msg("munlockall() %s\n", strerror(errno));
-+	}
-+
- 	munmap(map, 2 * page_size);
- }
- 
-@@ -442,7 +500,7 @@ int main(int argc, char **argv)
- 
- 	munmap(map, size);
- 
--	ksft_set_plan(13);
-+	ksft_set_plan(15);
- 
- 	test_mlock_lock();
- 	test_mlock_onfault();
-@@ -451,6 +509,8 @@ int main(int argc, char **argv)
- 	test_lock_onfault_of_present();
- 	test_vma_management(true);
- 	test_mlockall();
-+	test_mlock_droppable();
-+	test_mlockall_future_droppable();
- 
- 	ksft_finished();
- }
 -- 
 2.47.3
 
