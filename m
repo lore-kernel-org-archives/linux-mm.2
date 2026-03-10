@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93312FD2D6C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB84FD2D6B
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 832E36B00F0; Tue, 10 Mar 2026 08:23:12 -0400 (EDT)
+	id 9CA766B00F8; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E09C6B00F2; Tue, 10 Mar 2026 08:23:12 -0400 (EDT)
+	id 937406B00F9; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B8336B00F3; Tue, 10 Mar 2026 08:23:12 -0400 (EDT)
+	id 80F746B00FA; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D4336B00F0
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:23:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 14435B42C8
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:12 +0000 (UTC)
-X-FDA: 84530068224.07.62A87F3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 713846B00F8
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B1CFC0352
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:36 +0000 (UTC)
+X-FDA: 84530069232.05.1554D14
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 67F331C0008
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=USBW0I5R;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6E4C2120013
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:34 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fkez07Tl;
+	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773145390;
+	s=arc-20220608; t=1773145414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5U3NeXHJE8lfg4BXS8esFmXtZQ5l+VHcEWPXt89DuYc=;
-	b=rBKZ+n6DXMg5qNgRCUrSnN9hMMZQqZBJ57rZcUGPnyTYHBy3wSsEdv9LkYPEPxz3I4P2X+
-	La15N9gbKh5wKHGhi04MC7C/Z8M4hptZm+crmazFxeabtGgIK9Ajo4jtVnh+0CNTMIyqYA
-	kpD/E+uFtkgzmNKIcty3W9QTz0nCSN0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773145390; a=rsa-sha256;
-	cv=none;
-	b=M6RbzwQOvUuxV06qrHh1xxEIQSRKTMYLaCHDEA0HTn6+5VwRr0jpQS3nT+D6zdkhtkp6LJ
-	Lqf6u3CtupY7QDPMcedLdwAE7qomrG4w/QHkEAN/ULUCLr8hVQcfOe0A7ryi58oWmM9yR2
-	KaRQ7kkt/su3sXdjYPtMtsb4HyGhzto=
+	bh=sWy9ef7Hud0vVkgTkw0OoHXnvQiMcKWf2ClKsqXhea4=;
+	b=VqM9hs95ymGAiJ3OGdVLhYo0bGtyUDNHGB7fo/IV7K/ZAajTiailmBzOrrVv3vM1tBnljK
+	+V89Og4eCyLlu5ATtdggYsrinkovMkWuum6f9PkAq/iBzmVVoyHRNiKHBBkfmX5BCMcal5
+	0ts1QPEv/ImmbtSAmut7bOoZfK293CY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=USBW0I5R;
-	spf=pass (imf21.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fkez07Tl;
+	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773145414; a=rsa-sha256;
+	cv=none;
+	b=2yjFQTsOBAmljf7m9ug502eoQ7rS3Y84fWVA7WWK/zGG8pt4JLKz+LdeLe9BTeLoesyeHq
+	7wvjMrhtO7JWtbU20b32bpADL5jDYHkdHaeJc0vBwa4lMnZ46YFchBaalxGRfPr/qV/Myo
+	Fib8G/yxrxk2KNrJ+EFZpJBdMyi0vOo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A441D60054;
-	Tue, 10 Mar 2026 12:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C6FC19423;
-	Tue, 10 Mar 2026 12:23:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BB3CC600B0;
+	Tue, 10 Mar 2026 12:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10E4C19423;
+	Tue, 10 Mar 2026 12:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773145389;
-	bh=GC3Sg9J7xD8kIPv5UD36basFOlkNvWWf+dL0gpcN4gs=;
+	s=k20201202; t=1773145413;
+	bh=dKSFFzRnVfNET7rWuE5Oko4JdMIW5clek3Ra8qeLWt0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=USBW0I5R1IRmIxXZQ4igYISdfUhrLNnzBamW3ly9QC3INE+BegS2zslKhDKzhXDG7
-	 fKMU7RIbXNpol1PHCzCb5aV7jzNo2emhRzvTpOYCvay1rk9VpMjF/PBmugESDxkXYL
-	 S0eTx6lMzIbdUYaaQJ7wmSE0g/aO76gzcuT07juTvznRsdelMLPOv9tAcL33MuZDV4
-	 MJfe/XfyamWxe2yqSYGMcVQ926M3F363GVs0b2nOXa4FFqyaQNv/s+Jdn7Lo043fzU
-	 f7A0IS8nsfHXq1XpvhuTTXROF4mFHi4SpARL1EaftIE0z7e8v+uGDZL5stw1zyUhEs
-	 3V3NLgotla0yg==
-Message-ID: <2ff39929dad06ca7d009ccd6dfe873da22a07c8a.camel@kernel.org>
-Subject: Re: [PATCH 61/61] file: Drop unlikely() around IS_ERR_OR_NULL()
+	b=fkez07TlE1bfdj9q72lfPh33xZUWj92R+6N34570wM83IJULMKkc+t1NI+NIthPJ8
+	 udd0+wDsOsLyEYtc2rUq6c/04oYHs4Ijd8GvgL72KdgHcTTjuge6542A67j9ng4nMs
+	 ibR7d2V6NwLDyu/uVXWq0145yHAFZxvc42G+2L2+sUZ3uktv+EclNSS20uQ7swL0HP
+	 LWOaDsIKcth0kzayTnUnDFQv7L72QnV4UUeRrzt36Vk9ZcP+WXEjov00vhjcxe3Gp8
+	 CPc1GnWeA6B7VfYAg6uLBaadmh06wX7OXgaehJVXZ7xVcjj32thXyrmbMa6Rym7GyL
+	 HCCmPdJG4zvRQ==
+Message-ID: <d97c4fd76d7b7fc8b38d3bb4e4ed700b1003ecba.camel@kernel.org>
+Subject: Re: [PATCH 30/61] net/sunrpc: Prefer IS_ERR_OR_NULL over manual
+ NULL check
 From: Jeff Layton <jlayton@kernel.org>
 To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org, 
 	apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
@@ -93,11 +94,16 @@ To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
  ntfs3@lists.linux.dev, 	samba-technical@lists.samba.org,
  sched-ext@lists.linux.dev, 	target-devel@vger.kernel.org,
  tipc-discussion@lists.sourceforge.net, 	v9fs@lists.linux.dev
-Cc: Christian Brauner <brauner@kernel.org>
-Date: Tue, 10 Mar 2026 08:23:01 -0400
-In-Reply-To: <20260310-b4-is_err_or_null-v1-61-bd63b656022d@avm.de>
+Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, Olga
+ Kornievskaia <okorniev@redhat.com>,  Dai Ngo <Dai.Ngo@oracle.com>, Tom
+ Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>
+Date: Tue, 10 Mar 2026 08:23:26 -0400
+In-Reply-To: <20260310-b4-is_err_or_null-v1-30-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-	 <20260310-b4-is_err_or_null-v1-61-bd63b656022d@avm.de>
+	 <20260310-b4-is_err_or_null-v1-30-bd63b656022d@avm.de>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxw
  n8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1Wv
@@ -176,14 +182,14 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 MIME-Version: 1.0
-X-Stat-Signature: 8hzueycxmingfbymciqebcgz48owbdww
+X-Stat-Signature: tkyzorxazuiyntmzwzj44go8uytqp5dy
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67F331C0008
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773145390-806666
-X-HE-Meta: U2FsdGVkX1+xLhfXMokh0OOP0RtkTn/UWrYRccbljkurIpQj3Q8jOF3QB+FRENRm4F9rCO5SU2R+IqA6wt1xCLd8s2gQ2xt+lo4rhC6PvwV2yNVLeiuHTfXcqBQ1CyDFZH64sGMRQHN7d17ApMrD0PHRiUNrszG2EY9aSR0VUn3gdcOed1WaqiDG0CrIYwux/ktnpfVocKynNnf9sON9vwVP5IxtB+3sk3QVgI9+SmS1721nCLYMHNiGp8hya707Ik1PEklkTKkeQoP5XuAV7s6JQ3lqOZqIYGcqyo7FVgiwWjwz2ajr567lmJN3uenyFXcWPFPicU9e5N792gXSrG5gTRKPFE8lDBi9RcOfu0TzrCkY0d6kk314/ou/bdDtHKuTrSm2MC8i8x07EZG/EJF2U4pCv9qa+lsrAID+NdvDBjieQxlxJ8Df+tuBUtAZ6JtLoe5ONoKihFiAjxCM7jgPA15Gt+lJGhn9CCKoLb6Qa7ii5daQJi6pjO2mDdWOgfOGlfq9qjzsYqlL1AYSvDAKRf2hw7EVeiecenWObKBGNAp4RIYiaHwUnJw9JiDjk5LTUn1sWLU5QRj0w5g1w1u/jBbHTU5nNAZK2MlidTvopGT/VM9hdHwaB+5sHj1U+VQRyubEh79dER6yUIXbaqfMSwWJdyADvwhMUjHPLdaCCLlwBmmjCxtiwUMVlD+rWRCTJmrVsu3it5baTepj5sS9QLLz2Y9r7k4/kb5Hk3LUfN8441DXFqZR0Lhm/ynLLBpncV21QYpMpOu5nQDdHnUU+g0Hs1iZlxXwgfyECbbaAXBdks0QjgDOPbRYoVmOoimD96NyJ7zy+GEEhO6+4hJazC4GorYMp6KOiym8mo7KthJlnxntLaquckf5cMzpcMbrD83hR6nubS6DzvdByc9RqRcymzjy7Whc33Le7yJuXGuZPktcKpav0xvqFrpEPwH08r9uKOaHPvXXxl8
- sD5G70hu
- K/sE21YA7/16zmJnC1XUJfPNIpeqzbdLllJq73VfE8jprA3m0q4b6erbAMhPuJDNwqR1ik82Z3pwzYqy8NMAgi+e1b1XmT6Ts6pQZ1csxjBzTECq6XyXAS3Q0Hen/1XLlh24GHGrUsrHQsBsTGWZfB55jWKEhveU1R7sFnEJ2nO6ID9Efp8rGioLwdhsO2LVY+TppMDQHG+g+iCApobiUuJF0d10NqvghfYLTWa6l4AM+eg6bS8/t04Dy8GAWiRP27Y90vnHOek+LaEWLNCSbAnEVzKVTF5W2eiWB8R1ibB8h1Y/9Kysovl4vDHvZc/ssonh5
+X-Rspamd-Queue-Id: 6E4C2120013
+X-HE-Tag: 1773145414-28103
+X-HE-Meta: U2FsdGVkX19ygGwV/ER5yz2pn7/Ks/9Y1zAahURfMiSPr2k65wgcHGWX+HrSd2/z49ZKShF6EDtAZN8BlM+nhbG7M2owd6pFJ0LdxCzBDhTJlfNlZQQ+mjb71n1vsHEiGpA0amB5YjeNLKMSUAKdln6vXqJM2vU9P1UpWyP+5nsqj66MLMZqrasHOR66nLEzvqE6aDE4VE2O0TTCZPRuAKWbxKTlX5MXaPLPsXG7eC/8UON5pBbyCClK5o+5uGDAV43dfm7t08qTH8AGd+Ao8HsxoV+l5Qcje/APs7ld5nYbZ4xKlvsVofNMOimKmsVfgqX1tS80aQZqJJPueRAsbAJcYJ2SycZ6o+a1UoDgG1I+9H0Jw9h6JrnVIH9NAAckhfyc8kWkGkY6PRjID6L94YPgiJBaCV3cWK0e+Ly+BqljfrvIQjAEM1fqa40FS41CThJGnvjrd6OI7ZJfdE24cwuwJ6K5I3v7GykGgXjAtqHWEp05uXyvQMfY/gzPLVaX3smRHMWxxbdSdIxf82IteDlQ+jdfCTicKWcZmHtHO3AiC1YG+93Y3OSqZkvagSqLaF58VlcSowU5Cq6bF9pb4lEx67Y45EgkgCB0H9wFeRRcYpoug3nBKmXNQMFRH7rxTghj6IAbbSO5EdBdsYJH3pjj8ZQsbMYe6Nt6Y2mGCyD2hqiX9NiRQSdcg/XmKFpvSErNHqAg8ABOMevpGYLJqQwB0QS6fEwy19A556fTh0RTmdCPNhCzkU79EWg6Qt/6Gfj2u3ur1ZQQOxUr0K1D31desF6vF1FAKbFVh/n6B4IVzOaG0qixBG1DXjg/Df8ofgHvs6nvZpAQKzHPe3zhSKFORNY/iMKbc4N+aKirai+AO9AL25m/lRQNYBq7FniKxmnkxdAcC+q9I429OOgEJZJNoBmRiQZkfUezsRQtmYCJhsh24hEH+R/WNj8IHQPGmtfLz65zQsHXmSjMjzu
+ m3BdW7c3
+ tuVhh/V/Rd3GQ/CkTUkEb/pLAMWSEJHIp5gQ9eNJZHcloYs3WvbG6o7tcEhWqUe+fNpW0Kv7WGJeytvnGOzgGM0sfnNq7YcfNxSM+apoLAIccZlu5yl+3zlk2xNr4cx39sqrS55uNDHbb1X6THAjR98DFfRKrYSama1sX5VmFqbGX7HkmDJw9IH5TN246hfeFI1EJKxYKu7jkOMDz7HM14wN2Ys6ZWNC2YEAKUJJnm/znGhSC9fhUMKTbEeqTcKyNFzLqAKzJ1qq10J6T1cejY6yRbNqbKauBmDk001nvJtKbZXsSlsxjWLvId/dlLGOdLigSgEs2rT5h98t881y3wXxW2n8i2pTBQvpx+v6jM9brayOHm3eNtakY2tj8g33eMqZlwaOUtYMRA/J5cbXhLw8/IEHPcCwls2sQP0WLSnM3lrv1cjhPH5Rzh51WOL+PuWcd3wJwRsss2OGeVH3C9Nu5stlFSnYnEiC5Yyxt3ehPgMWUjv+4C2DUqDP+SP0BolcskVgipMurOWA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,38 +197,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-03-10 at 12:49 +0100, Philipp Hahn wrote:
-> IS_ERR_OR_NULL() already uses likely(!ptr) internally. checkpatch does
-> not like nesting it:
-> > WARNING: nested (un)?likely() calls, IS_ERR_OR_NULL already uses
-> > unlikely() internally
-> Remove the explicit use of unlikely().
+On Tue, 2026-03-10 at 12:48 +0100, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 >=20
 > Change generated with coccinelle.
 >=20
-> To: Christian Brauner <brauner@kernel.org>
+> To: Trond Myklebust <trondmy@kernel.org>
+> To: Anna Schumaker <anna@kernel.org>
+> To: Chuck Lever <chuck.lever@oracle.com>
 > To: Jeff Layton <jlayton@kernel.org>
+> To: NeilBrown <neil@brown.name>
+> To: Olga Kornievskaia <okorniev@redhat.com>
+> To: Dai Ngo <Dai.Ngo@oracle.com>
+> To: Tom Talpey <tom@talpey.com>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Eric Dumazet <edumazet@google.com>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: Simon Horman <horms@kernel.org>
+> Cc: linux-nfs@vger.kernel.org
+> Cc: netdev@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 > ---
->  include/linux/file.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  net/sunrpc/xprtrdma/svc_rdma_transport.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >=20
-> diff --git a/include/linux/file.h b/include/linux/file.h
-> index 27484b444d3155685cdbb89f546f26ef66e3e1b4..007b9b9d365a052c1c056e125=
-71eaf4f8ef5a45c 100644
-> --- a/include/linux/file.h
-> +++ b/include/linux/file.h
-> @@ -163,7 +163,7 @@ static inline void class_fd_prepare_destructor(const =
-struct fd_prepare *fdf)
->  {
->  	if (unlikely(fdf->__fd >=3D 0))
->  		put_unused_fd(fdf->__fd);
-> -	if (unlikely(!IS_ERR_OR_NULL(fdf->__file)))
-> +	if (!IS_ERR_OR_NULL(fdf->__file))
->  		fput(fdf->__file);
->  }
+> diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrd=
+ma/svc_rdma_transport.c
+> index 9b623849723ed0eb74b827881c6f32d3434c891b..b4d03e59a8202f20360cff1e2=
+e79b1e325396517 100644
+> --- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
+> +++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+> @@ -578,7 +578,7 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xp=
+rt *xprt)
+>   errout:
+>  	/* Take a reference in case the DTO handler runs */
+>  	svc_xprt_get(&newxprt->sc_xprt);
+> -	if (newxprt->sc_qp && !IS_ERR(newxprt->sc_qp))
+> +	if (!IS_ERR_OR_NULL(newxprt->sc_qp))
+>  		ib_destroy_qp(newxprt->sc_qp);
+>  	rdma_destroy_id(newxprt->sc_cm_id);
+>  	rpcrdma_rn_unregister(dev, &newxprt->sc_rn);
+> @@ -608,7 +608,7 @@ static void svc_rdma_free(struct svc_xprt *xprt)
+>  	might_sleep();
 > =20
+>  	/* This blocks until the Completion Queues are empty */
+> -	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
+> +	if (!IS_ERR_OR_NULL(rdma->sc_qp))
+>  		ib_drain_qp(rdma->sc_qp);
+>  	flush_workqueue(svcrdma_wq);
+> =20
+> @@ -619,16 +619,16 @@ static void svc_rdma_free(struct svc_xprt *xprt)
+>  	svc_rdma_recv_ctxts_destroy(rdma);
+> =20
+>  	/* Destroy the QP if present (not a listener) */
+> -	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
+> +	if (!IS_ERR_OR_NULL(rdma->sc_qp))
+>  		ib_destroy_qp(rdma->sc_qp);
+> =20
+> -	if (rdma->sc_sq_cq && !IS_ERR(rdma->sc_sq_cq))
+> +	if (!IS_ERR_OR_NULL(rdma->sc_sq_cq))
+>  		ib_free_cq(rdma->sc_sq_cq);
+> =20
+> -	if (rdma->sc_rq_cq && !IS_ERR(rdma->sc_rq_cq))
+> +	if (!IS_ERR_OR_NULL(rdma->sc_rq_cq))
+>  		ib_free_cq(rdma->sc_rq_cq);
+> =20
+> -	if (rdma->sc_pd && !IS_ERR(rdma->sc_pd))
+> +	if (!IS_ERR_OR_NULL(rdma->sc_pd))
+>  		ib_dealloc_pd(rdma->sc_pd);
+> =20
+>  	/* Destroy the CM ID */
 
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
