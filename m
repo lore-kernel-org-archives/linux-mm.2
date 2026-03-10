@@ -4,113 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7882FFD2D87
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 13:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DEAFD2D81
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 13:45:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B19646B00D8; Tue, 10 Mar 2026 09:34:04 -0400 (EDT)
+	id 843E46B00D2; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC7406B00D9; Tue, 10 Mar 2026 09:34:04 -0400 (EDT)
+	id 7FAF86B00D3; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5A36B00DA; Tue, 10 Mar 2026 09:34:04 -0400 (EDT)
+	id 727556B00D4; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A6896B00D8
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:34:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 31608B6531
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:34:04 +0000 (UTC)
-X-FDA: 84530246808.21.16590ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 948A240003
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:34:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gbboZny9;
-	spf=pass (imf04.hostedemail.com: domain of lee@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=lee@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 630186B00D2
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED914160197
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:45:24 +0000 (UTC)
+X-FDA: 84530275368.02.3AC34B3
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 492F71C0004
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:45:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=BSv+5VTS;
+	spf=pass (imf18.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	dmarc=pass (policy=quarantine) header.from=crudebyte.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773149642;
+	s=arc-20220608; t=1773150323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BJ66tlRJGWcr6zQKUuqut9b4VgLqQ75FULJQ++XQI3c=;
-	b=6oGLAA1axWuqlGudQqpsfcOinrW8VyncRwBm3jiTIMVYvV1s952u2lx/XsxbPQdaOJ81zL
-	6MDCEL+p3E0GJ/iye0OCBZdpiVpqrg9WX4XnBmDBeg9GvleVaAp2zJtM1mtTEIIR3m4Ntr
-	cXKSLzSsyTtBjXJe+1yWnfB0LB1nJWE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773149642; a=rsa-sha256;
+	bh=tqNoaL94Dj4pObM+6pGSr4RMsIJmELh6Cj7p3cxJGxE=;
+	b=ClsrcMUT8mTp2fC8KY2LGfOtFGKZ0ywh4y6YdSlenHOd7DVJJJM4Uwn5SVMMCxRPicjLpG
+	3m4NXold+GX/UtpVuvmMh575D4YzGf6fMOtju0/tBLNYwMzIyiW/X13zG3mu/GdsR+kxmE
+	/R74r80uY2gxykelF0XeI2BfbiGmiZY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773150323; a=rsa-sha256;
 	cv=none;
-	b=pSkAtM1LOQuXXpKdX4dH++/L17JBahb9+wFHu247c/nm/lIuPZ3ILMmJ+B7zxelayg1vx2
-	Xed8lLGitbnYqWkImKcagY9C01vbvLljvnK5fP3tzmt8zpH7qley/AAl9WJcWMnoGRyf6z
-	/59x5O0ZoY0PrhuixTTqbiorNhwi9F4=
+	b=L3VoRQeEUq8JL1Yz9UgfN+63gJjMjXlqn7zhRXM5uA1PGfxRCb6+eOpY0NHWbloU7hXnt4
+	ThfaWDjRyiNPmTvkJEALBDAKl0UJUAIjkkZCbAOxJPwtt1Sa2iZk+WEvwXrhFvolkwZq2y
+	iwXmjwW3jQ/D5JgdQHUwVgJjPRP9MKE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gbboZny9;
-	spf=pass (imf04.hostedemail.com: domain of lee@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=lee@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DBB2D60054;
-	Tue, 10 Mar 2026 13:34:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1338AC19423;
-	Tue, 10 Mar 2026 13:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773149641;
-	bh=1YnmztTcNk3Ff+PgeiUurE/Sk941AjWRBcXze9NtmZ0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=gbboZny9vDD72Pka+n0iXs0baByjKbSZoFC4cppvyGvi6DURLPzP7/PURy6H4x0SE
-	 hZcTDQvWtiIR96dUWEkTSxfg7YW1/icauTRQtPPhn3DjatNJnXXgx9ePr2EFS/J1xE
-	 m2MZHJen8/8vAxVjX4Rh0mvAwOneBCTEICPjlkx0jZOCBN/iedVV5+9QBqwIzFk1vO
-	 tVOWY5YqoR5nPBwka2P8esnXtwU65aqvGrom7R8xo/zbp7HcZsAU1Ct1Z6jDsVgPm9
-	 q6q+cosYNG9tKwHqU9XoTXUFgoVy3XzQYbAwRSYwrOvATdzUAyZiFt5O4W3gYPYlF6
-	 gVdqFVkFvSybA==
-From: Lee Jones <lee@kernel.org>
-To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
- bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
- dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-mm@kvack.org, 
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org, 
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
- Philipp Hahn <phahn-oss@avm.de>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-51-bd63b656022d@avm.de>
-References: <20260310-b4-is_err_or_null-v1-51-bd63b656022d@avm.de>
-Subject: Re: (subset) [PATCH 51/61] leds: Prefer IS_ERR_OR_NULL over manual
- NULL check
-Message-Id: <177314963081.2226692.3105447886678957300.b4-ty@kernel.org>
-Date: Tue, 10 Mar 2026 13:33:50 +0000
+	imf18.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=BSv+5VTS;
+	spf=pass (imf18.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	dmarc=pass (policy=quarantine) header.from=crudebyte.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=tqNoaL94Dj4pObM+6pGSr4RMsIJmELh6Cj7p3cxJGxE=; b=BSv+5VTSyPyrhpKWnMZVCjZEvG
+	yrk6LWxlGwnUUZjquKMol+ljVUIUp9jBraubgLqBi4cKz4hniKCf9rIQTsThme1FexxEN+zxKvsgC
+	uvMYbDhkYi+shFX+PLCD/IMwmjSpYMDJbZGsateoQvss1ByMiB7n5CokueqpdePTp7697ajozqLcL
+	QNNNvSzTIj5kMR2wUJSupi5THJtiu7VhPmFy8ePRrdnRpYFSOebiyO3IlTbeTGO/MmRM5PEIBBHLD
+	zejwvm6ItsldfqTIXTc6O0Z/soDk0el6lSZ+MrXBoszSWB5pdQE71J71rNLjrXAAIRkB6hWfEOV6d
+	5s2EICAGfy5rFvZnPzPqZQFNMJmMF1OtxV9pY8V9U1rZXYRb0+cWjl6X1xLcFCZOiZcoHLob301cc
+	kRokX7oWqU/2ExVyAy+qxf6eKje0uvqaOqv9hMGZ5ryaSKPC2aKAIJfnAVSBvJS/v1i4KIjPZc3rm
+	OWRlN9QVYisM4o3VWUWhQE9QLOSHJzH7XsIe7kcAxjAHPZYtil03PpuGESYai0z/ycOzdMPXNnK8s
+	RUYQ5R4xdnnK/uIBRJ5tLN+fwlf+9zGkqtXzZ7Db2ibQTV2JC6OBFoQ9ds8aqQ/KGsNN9Qx1u7AAn
+	wqTFHtO0j/nTwkXDvMBIt3or3MQXIgQCujiNGxQ00=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+ bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, kvm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+ Philipp Hahn <phahn-oss@avm.de>, Philipp Hahn <phahn-oss@avm.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>
+Subject: Re: [PATCH 06/61] 9p: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 14:45:07 +0100
+Message-ID: <2401874.ElGaqSPkdT@weasel>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-6-bd63b656022d@avm.de>
+References:
+ <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-6-bd63b656022d@avm.de>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-52d38
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 492F71C0004
+X-Stat-Signature: yetajadrgfjhaao5ekcrznminhuzbdkr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 948A240003
-X-Stat-Signature: uqhfzwqjrxp4rcgas6k8h48kqdxpfrme
-X-HE-Tag: 1773149642-343891
-X-HE-Meta: U2FsdGVkX1+EYk9EsOgeHXwkMgFFQ1FDZd3/77wNjt7LJLLbnirCUg/hi2YFofUCnLM9wlrHNyNGssglkPYO5+7IXM1IrO1XFJLGMMUJBaBpQqg0zZf61Yuj6nrS834kTU5YQz6zROHsJOaFxB0C7O/bsoY3E82jcKJXlTgRfTmRct6zXlaYS6BhbFX6gOowL3eDjECipsyF4pHetCJ0eAXVpdf5zoF9EIf9h7ROAbVi19JpT2fi990uICMze7xitMuDGERFZG2/zfhFxkSpKleA/04T2MWQFDrJULCZCiLl3hqTStc02styvuLy6DD9ix2pwa/qA4XUI+RNeARBsW53IfC7Oumig7xrcnjhVzhkI2UnAri9l3osDVoznf2hnk2g08/WTtoXjZAKfGs1t2mhbVcy+hJVjoWt236py+GBkeVXtswZGBBnqM7t/WGzDyNiQqAGPdFqiQ0W5y70wRcZ9oaboQrW4Q/Xt+HioCLywihYoi2+JXn1EFH+VCfaGOAs9l/Nh2FHrdk9tkecDP1vAzyLuEHxcn0/irxaYJgZHjQ3slUWXf+Q01zr8wTPNu0I+OzPAdxifj6jjl3nqhL8PSnNc13zqz2A+Q4yQsMW4RXoU+bYvN6jqnUtmgKOmbclnDk6nhM1Iehj9yFmKR6P3yT77JiKMC8tJu8fmNqR8Kd7fm9cGNiCUGsbOMT9m/V424xbhPBbrfRJuQDc0xM+wFFoMCBNsobJyS6uivoV5a5IK6jWg4tdlBDxGpUgbPtyumQENiBMbhQJuTAHRAi6dMUezrTr82aMNJpAOQeST4TYsJY03k5W8cjV0aV103EMhYuKUymf9YcM8ENo54gqBLV/jANizd68XDlEwf4sTdxlwrMs85/1zjUTAETnfXGdU/kOqclUDxWFZ7+DSXRL078vHkWw/MPQWnckT4tHepbnb+dfd35DHN8Wgb5sv53lcXVD/fV3qq3LhvC
- 1Rvyyo78
- o09epJskXP4xTS+SVwFJ9FD2aTEtOSj8ZaEfCMVgV1qlrCUzUL35zDmKN4oB+A7z9gQtO5bgOuJw7EooPy2nqBg1KWbdcQYikpgPH3pj9cqvmdvEnTi8/HioSCwg8q5eZxO9C+y9HOXI0ot4N0y/L1/lA/K9AtxtwgYpgCWX6iMRNmYdPBrdsP+DlLY1llRfed4dsomifzhRKEMg6X2k738B+TYq4+ymZ5DkEsd66AhqtyM4tteLoKXSp5yr16lJdumNCNdOzZxWzDgMCq8TE59Fe7e6fZSDBYc0QljtXhEaGOzr/qdCBDvwhGR+Lc+C40lCWk4GERtnx2qY=
+X-HE-Tag: 1773150323-824807
+X-HE-Meta: U2FsdGVkX189UOBsfGncc2Wovz+crkov4sOCCJvq4JpAwiTyoJftwgxMtTQrq1JIA1gdgOPKrI55KBim9GLT7jfXUNR0kyXGzYMCxlAZqD82zNzFXobLQu/QP27Pxx7HmsPusG5BeV1wCb5W6SX/Jq5FYuEGXo+QVG8uTbxqrKqClDcb3XE6whyDJvB6ir+8+b4ErWqBiJRmKbMHG+dg6zdFt+JsR4CX5YlM2Um4gn+nh21481f5yW8z6BrnQq6Ug79sslZ2aCC7jsBI5+5gNPkwiSY2dXlpfLKauC9Cy9CJFqIHpYfD5nlM/NQEU+FShe+2cDgB0M3+YZTJoL8H+l6+YwsB+0I4wgTuY3Lq7YHT5ScppyZOsjjgEgr5pxqiddHR2eaecWfr0MOasI+lqhmFWKTdezqXa4PFMJdkPcU2q41th3SoI1SezY6vZ4g5QC5x2nrAOh7m/6yeGx98veazd/PNYSUnJnA9Cmq/jYhllqe6e9AofFnGd8t4JdsUcIxXOC+ZgIyntEZ/kV16QKH8fD5LhXABYGqaZc3Ekfu/U1KpCAbi+ad8K0Dj76/Ut0UBYNSd/Xb+VAJRncTRBiNa3bqZPZ4Y+0bnmC3Vlc+ZbeWzoSRpSupsB52FK8aMYDrVCgrLfCoF90a9EJnl7kx+HEHDzWdcHMqC2ou8Ajis4HNlHCPafhZN42Xo1A8q9NjtNNvgndHEr8RbB6Msf2RV7HkVXey9RPvoBoTTEZvl4QUBLibzYaghF6FFroOBrNMsbczIC4EY5rzXy+4mROdZruGjKXiB6EnKyoHu9HemR+04fyMorVAjnOp7XvGEnUr+qo94hSLh/6Bya2PrvttGPe0zpqFU4SYXT0P1LLbj2BxqcqiVCPDuiLeb8dJqvOQiafZcfqLv0EuluMN3mcCI+NDJrngVQqMHMLEmm0G/+Q+RH8nzNNrVPUYzFTVwdKQri0wefuIPGHSHk90
+ NL2G81vs
+ ff6aVesCmYYba9gDgrvzz249CS5QNcrYWTRn23+fPSmcEjYx9RObMY2lwJ/uByrp3/oh7cCzUGW9CNqobKJOfiX4UIL4N4SKZ3u6GiYbuxBtd3oVd7prcPMpsPnpiN1dISiv1NtgPre725ASsbU1KWWQKzqoxV9orwjJSGhrfP9F59fKSkLLVdX6XIlAgM3WqMaidnxyJ6iQl7orglAzxIwGnxfojXhNK+hL5nkqG36RagA20hWZMYPvsKvTFdHGpbVdYqZaxpPm+H6vja12NCxZmeayq/4a49vgmdCzYIkW0rZNV+/X8EPnG77QJe5Lq6Fddv0C4VHQlcHS6er3K8qqQ0bUpOyNgRxtLp2neR/fdLTjIVIyeHVHuj3Er0Wgd2PGQOHfVwCaqcxdIULH+ZEBrPWjn6Wioffo2OAByXM9QrvZURTCs3b/LW8m50R6OQ61ElIRiU3AKvONVhQui45irpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,20 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Mar 2026 12:49:17 +0100, Philipp Hahn wrote:
+On Tuesday, 10 March 2026 12:48:32 CET Philipp Hahn wrote:
 > Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 > check.
 > 
 > Change generated with coccinelle.
 > 
+> To: Eric Van Hensbergen <ericvh@kernel.org>
+> To: Latchesar Ionkov <lucho@ionkov.net>
+> To: Dominique Martinet <asmadeus@codewreck.org>
+> To: Christian Schoenebeck <linux_oss@crudebyte.com>
+> Cc: v9fs@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  fs/9p/fid.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+"fs/9p" in the subject on this one, please, not just "9p".
+
+Except of that:
+
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+
+> diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+> index
+> 0d6138bee2a3d1ab565ab2d210c0a3f3bf97e4e3..3bb7ef4380e972a2d9ab67eb4aab6cc5b
+> fe2eea7 100644 --- a/fs/9p/fid.h
+> +++ b/fs/9p/fid.h
+> @@ -27,7 +27,7 @@ static inline struct p9_fid *v9fs_fid_clone(struct dentry
+> *dentry) struct p9_fid *fid, *nfid;
 > 
+>  	fid = v9fs_fid_lookup(dentry);
+> -	if (!fid || IS_ERR(fid))
+> +	if (IS_ERR_OR_NULL(fid))
+>  		return fid;
+> 
+>  	nfid = clone_fid(fid);
 
-Applied, thanks!
-
-[51/61] leds: Prefer IS_ERR_OR_NULL over manual NULL check
-        commit: e68f95a51d1a8c1594b536c4d495cbea38d47561
-
---
-Lee Jones [李琼斯]
 
 
