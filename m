@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15631FCC9D9
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 07:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F23C7FCC9D8
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 08:02:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 250066B0088; Tue, 10 Mar 2026 03:57:08 -0400 (EDT)
+	id 374856B0088; Tue, 10 Mar 2026 04:02:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D38D6B0089; Tue, 10 Mar 2026 03:57:08 -0400 (EDT)
+	id 2F8876B0089; Tue, 10 Mar 2026 04:02:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0DF926B008A; Tue, 10 Mar 2026 03:57:08 -0400 (EDT)
+	id 204696B008A; Tue, 10 Mar 2026 04:02:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF2456B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:57:07 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A5A1A1A0483
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:57:07 +0000 (UTC)
-X-FDA: 84529397694.21.CD79028
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2399B1C0002
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:57:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qzMBJqJ/";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 097086B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:02:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4DDB88BFA1
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:02:43 +0000 (UTC)
+X-FDA: 84529411806.13.2564B84
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5261D80017
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:02:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s7BxM9IC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773129426;
+	s=arc-20220608; t=1773129761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=23tUe0a+NwEyNwsMC6T0ScoiXnNceFqmSGaZ8YFbDzs=;
-	b=NoWQb1rvSBi8HpcokTUH9a3ch+JSUOkLel567iYj9ouMKSl1Jr2PPQ3nfiiOujULmHWsKX
-	Dte3A/UA1PouvxWexj90mKNeoPn0mZg9paulmP0kxeJqsTU9pJApwJpn4Nbkk1XeJx9PN5
-	hhr8rlq31YibXOWC6xC/eHUBGAw/z9E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773129426; a=rsa-sha256;
+	bh=/vNC813Ci5mWIjEjqoTU9IyrUPVoqoQRgXyGJ9wmArc=;
+	b=54vz8BhD7I7WT20ZoXwtgO89URyEfoH+doXh+ccI49eL/2Q1hH1uZhtsbeWEmGbYWXKIF1
+	12ySqNRrlPAMNpgpYF8dthxJYsHVMGcikQubyh8PoXVOWdmzRLYpht0gbatrxfRAGZTMQE
+	xlm3SYns8yOXVbxBawX4pZA6lw6YcHE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773129761; a=rsa-sha256;
 	cv=none;
-	b=77N1j5IsOb98fODVCBIYg0u6AIEF6xTgWMMvF8IqNyFM5myzPUJcA+y/Ncy5nupr/yeo2L
-	HrcySS7SitlfSqwGdNcYUdKgmdUBXRVtZi9KMUpT8yglzOHP+WlnrkA+EBsYcleSJG5oFp
-	4DxcpRliGZtEuiofj1/AyvglZKXJqWM=
+	b=aLKcuiGKOXrXVTgSrZE8RrNJoZmtfyXKEXFq6zqWEu1aZFv9jpRqGFBL7fCToSqlEi6PYq
+	D1n0SMrQOKi09Z65KLmfNAr56cT3lzXsBmqbZkMfJhnnCaQV8D2qGZSCn4hCfbvytsQ9VL
+	dezyuqdxdhgKh/a6AUzw/AoMVE7HNDI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qzMBJqJ/";
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=s7BxM9IC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6F17E60054;
-	Tue, 10 Mar 2026 07:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD1FC19423;
-	Tue, 10 Mar 2026 07:56:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DC22B444AF;
+	Tue, 10 Mar 2026 08:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0ECC19423;
+	Tue, 10 Mar 2026 08:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773129425;
-	bh=X9YMbOQWGRlITo5g86lvNrEVXklk0jAjT5ujJ5DMb4g=;
+	s=k20201202; t=1773129759;
+	bh=V8I3M0Bv0LCRbTF4LHTnw2/E8YY1O6TGUgahodOTqrc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qzMBJqJ/CkX22YMjxInR8KPOs1WydZlWfE3u04qA4qRQGBtS9ORp5ykmHbbMD+FT5
-	 iRvB+omVod31Eh1004YiGlNXtSQmilLRUmjU7eyEhHFDNmJ1jmKH80omHTUeAiC3TM
-	 UpKmMIMRnqb5VHDNcLDlFJ0l0gqZoA6Qg5B6EmoAlWFNq3txMOKX35KeyaIj1Ff0MC
-	 Mkc45NpQ7TeXi9npg5eZhMbVpxDBDhF4LQLwaYG7ICwptEIo6zG7H+sgI0v0+QFzjp
-	 E13QV27r4xwT4/IX0t2efZo5zUTPOcPKoeKFdrtAoAHqOvC7DFkQdDDm2vKet1EFmG
-	 dlLyBt/5fqwbQ==
-Date: Tue, 10 Mar 2026 07:56:54 +0000
+	b=s7BxM9ICbUPacTle/92NHI3PD4PjiQ+NU8F6hb2iW+4J7NYe3dxHe2D7P2ZmWxOB+
+	 WvtYUYyDYSLjkd3MkbRmHN5QAVZ+fe4ylTx+L41r3GIcEGVyYwOy9MbyNST+sK0tZK
+	 3lQiLdreSlLIu9GFhd3u5De6XHVcpD2qFep3wOqFjXkhPXVnWoRYADJ4og1nZR4BL+
+	 Qszp5jy7lvYL7Yu8RCnE1yPl6NJbiDGcns/T8LqtGpmB5iGwiCQ4As6hWbpDt3u+1H
+	 Xj1wCTTqUnLDhIfFIUxPIOPhNnG8EvoyriYXEfsyojgU21Qwn2Hg1c/AeOZFwKIVvF
+	 Jv4/o6tGYDUbw==
+Date: Tue, 10 Mar 2026 08:02:29 +0000
 From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 To: Dev Jain <dev.jain@arm.com>
 Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
@@ -75,22 +75,21 @@ Cc: akpm@linux-foundation.org, axelrasmussen@google.com,
 	baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org, 
 	willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH 1/9] mm/rmap: make nr_pages signed in try_to_unmap_one
-Message-ID: <21801fb7-0f42-4ad3-8b85-2ac6013b8aa5@lucifer.local>
+Subject: Re: [PATCH 0/9] mm/rmap: Optimize anonymous large folio unmapping
+Message-ID: <032ab9a6-a49f-41c7-81fe-1c6fbaf94a79@lucifer.local>
 References: <20260310073013.4069309-1-dev.jain@arm.com>
- <20260310073013.4069309-2-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310073013.4069309-2-dev.jain@arm.com>
+In-Reply-To: <20260310073013.4069309-1-dev.jain@arm.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5261D80017
+X-Stat-Signature: jtnz1dpmu4ttku6hh8zyk4kkoup3owbs
 X-Rspam-User: 
-X-Stat-Signature: 3atryd6ncscxc3yhraaqnc6h5if9pg5n
-X-Rspamd-Queue-Id: 2399B1C0002
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773129426-191759
-X-HE-Meta: U2FsdGVkX1/N+pilp8QoFgJDzaBOrlYtWbVYrHuAxnRjmboqPpHnDuPyh3l1lJhwGnXTWJmxFZ9mmaH9U0DhZTr9DRW+KjbZpUkULkRTKQ5Rsk8aG5j53FMrWLV0KkuFZ63OYUVv7oAWf72VojORWLFQMjgvVCpjQwC+8ysIMTbqp1nfa8Lt6cuV2v9P1l17wPbvAPapB0cxp3svLtlB2bFhUoO+zbUr6f4V7n8uuqvbB6Coi5zH3M1PgR0wOhgiNImw2ltHW2S/AKkkBCzBKqb5mIO8icMbTL5JFMzt32IMJVEzB7B6rL67em821Nf0wkha6JqQvNDU6iz9xavI7Gbty/sF0veBopXSCgUbI/DEYPtngjYdUOdm/FoG+DORn5RwGwx/vRV6pAUrwaIxM8Inp9kYka7o+pd9rW+G4rKT/OjJdjpKSZ0qPSnrAGzcLocYqrnakTquLzjx3S99a57rwsd1Dp3S5zU9W9BOdqYb9+4mglS12sCWAfKg1F/h/et9XtddvOEnLsK0AnP4AE+VFeAdPeXumD6GogjrK10G11mGJ6yYdfapHq27cG9GjcCfrpZC2a+pdNIWTBO6zi3+VgO4XZajZ6KQ14nZHVA/pkMXCp97AXFnc1u+1dO7dIYsHhKN6WlofvT4VH4s9YSP1NJUrkufT4i/cpAnSa+6p4IOaytTtrVMGZpvENVPlv/VcjoyHAI11l2pYIflZnGrC8eNNiGeyEjtqP60VELArw0CIJr1mdVknxh75ZrC5v6/GJL0ckel3YvhWs0fAn8DRaa+OW8sDWt/qoa/o4lezCq0La0a7xMRSPycPpMJurfqE69Oa5kb7vzy6UPDH5Os/ohgQ+r+u8JwhCuokP+G3hhD5lVbK7yOp9OB+jQXeyErqyelt/B8dtpK0BlqCvOxNcng5roFRWN/z1ycEz1XTR8poeUgf5YpeGH2SBmmXB7xH7hJBV1M72kLI1U
- N67EylNA
- FGvOa8qW1AR6xuS0Os4we87uKCUI9r26Kcjce5qT7HC2ML/jBMb7lgPP1VukCQNv9Idb08N/WuMmy5aCwln3LzbcJ0sGDA1PBj+RiHvRNf7v65QReiGxjkDtPXIxOZdJWxKQdo3DfPX37bZX99OTOwJkTTjM+5exbym6Nk/z/xNuzMM6EPEGOZnh4QyTMQ27KpV2kBQ/I/a7ElFZuCGipmrd1ecuPAwYTeHgQC+f1BlfJlhJcgejhNAex+EhEmi+I4saJn6TMKvAHlLTA1u30uhRvlxac2MhRZSqEQhFIYRF0rPcPFNdyrV4MWj/TF/REqsdv
+X-HE-Tag: 1773129761-595349
+X-HE-Meta: U2FsdGVkX18JAAAPNyyMpmuUwQ/JDGXJmCvBWgFj+HavDax2E4Gm7wxrCNeXO3ZpUpR/niuynzlmhZtdY5nbTNC8Z18nYdPMuXzj5Q1LyYtHRQ2VCWGcJfKiM6TA6R23q2LdmYiPRYhE5IHWP6vXNcGRQXcdNaK8lgSEm2HVPCDS5AAwakc0vx89gCpXMO1CUSs0SE+M7jWZmpz3Gl29dKDqeLQSMq/vBn5md8jzbP1s3dpI/u4tZCgHKGV3Bv01mTWdgL8iSjtOi04St/WEU8lniFSPtHgub+taRgVAZP4PDRv3TKCNxX1eflg2+xbfKUxY2dbb+ak8O5g53upyGmiaMjF5Lz0ICTFI4roKWlSQtsu+R6a//48XbkwDFG/Na7odTINSmx0UotGnYyLq4vJkRsfPc83DcIDrIX7hge+vVOO+Thk8RtggtUNG2o2q4hc1oa2yTzfzRpQXYTe6YzShbMavyacuUfFdUeXF053lTfGqUMN96kxhtFDxsceRJI1pwgFQHaApXSa9aNuUy6yIfFgng1cOIX/ItN1JKAFqpV6JE7Ze06F+Epa0BIdNxc4EbiBlQoarDB5Hcxxu95Mw+TpazVNqAyMLVgutk0Iz6S4AhjLCZ3KL/nuWskBo/Tg2mdvGSAtmWjwLqGFRYZk/GvENiVY6M8uI1gwWhdIr2lseVcVGfFTJR2ZhWw2fd0gUnqdZaY6cTWASOz1Es2FGVzmT5xJk2bqFXaEb+OkdOI82eDjP/Jga57qyRuJ+xbcOqFDZRBuXU7sgQNfL43Huq2w+0vmkOuLo7n2zt+619I0ux8UNr2BWJfC93gVFqDwkuno/enT1oUP0Xs8NkQhy5Nf8xvTDJ47rV8OkQSAtNu2jcpx/yFZJ1uAZqMqXaAEEyaCe8aiNYDnZrOdnRvHP68fxI5+qdnZYmzF6D9LmnVZM5GVttfzfBjV9aMJiQXe/iYgyALzoWH+qSnv
+ TrmUqw9W
+ 9SSiZOoheSFW23Ry7OZBSh9BCgilptwZCdc+w8dF2++KjZti1cwdfRQbOoISq6IDYQt3zJni2guxPRvQOwoZkjKdVRejxWZbDuDRbJji6NY6U6uDuekXFyIR2nD+p7LyLtp5Nmt0zJMueupz3buukGQ0zo+WkcYGUY2AlAg0Qy31v+jBJ7YWQbyjskBcYEvlPyCJFPOSUuLoeEd6wOUhANo/VZ4ugYON/PJpUkEJJk/9N/Li2SpEwymHvWQSfpSpco4Rs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,45 +97,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 01:00:05PM +0530, Dev Jain wrote:
-> Currently, nr_pages is defined as unsigned long. We use nr_pages to
-> manipulate mm rss counters for lazyfree folios as follows:
+On Tue, Mar 10, 2026 at 01:00:04PM +0530, Dev Jain wrote:
+> Speed up unmapping of anonymous large folios by clearing the ptes, and
+> setting swap ptes, in one go.
 >
-> 	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+> The following benchmark (stolen from Barry at [1]) is used to measure the
+> time taken to swapout 256M worth of memory backed by 64K large folios:
 >
-> Suppose nr_pages = 3. -nr_pages underflows and becomes ULONG_MAX - 2. Then,
-> since add_mm_counter() uses this -nr_pages as a long, ULONG_MAX - 2 does
-> not fit into the positive range of long, and is converted to -3. Eventually
-> all of this works out, but for keeping things simple, declare nr_pages as
-> a signed variable.
+>  #define _GNU_SOURCE
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <sys/mman.h>
+>  #include <string.h>
+>  #include <time.h>
+>  #include <unistd.h>
+>  #include <errno.h>
 >
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>  #define SIZE_MB 256
+>  #define SIZE_BYTES (SIZE_MB * 1024 * 1024)
+>
+>  int main() {
+>      void *addr = mmap(NULL, SIZE_BYTES, PROT_READ | PROT_WRITE,
+>                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>      if (addr == MAP_FAILED) {
+>          perror("mmap failed");
+>          return 1;
+>      }
+>
+>      memset(addr, 0, SIZE_BYTES);
+>
+>      struct timespec start, end;
+>      clock_gettime(CLOCK_MONOTONIC, &start);
+>
+>      if (madvise(addr, SIZE_BYTES, MADV_PAGEOUT) != 0) {
+>          perror("madvise(MADV_PAGEOUT) failed");
+>          munmap(addr, SIZE_BYTES);
+>          return 1;
+>      }
+>
+>      clock_gettime(CLOCK_MONOTONIC, &end);
+>
+>      long duration_ns = (end.tv_sec - start.tv_sec) * 1e9 +
+>                         (end.tv_nsec - start.tv_nsec);
+>      printf("madvise(MADV_PAGEOUT) took %ld ns (%.3f ms)\n",
+>             duration_ns, duration_ns / 1e6);
+>
+>      munmap(addr, SIZE_BYTES);
+>      return 0;
+>  }
+>
+> On arm64, only showing one of the middle values in the distribution:
+>
+
+This doesn't seem very statistically valid.
+
+How about you give median, stddev etc.? Variance matters too.
+
+> without patch:
+> madvise(MADV_PAGEOUT) took 52192959 ns (52.193 ms)
+>
+> with patch:
+> madvise(MADV_PAGEOUT) took 26676625 ns (26.677 ms)
+
+You have a habit of only giving data on arm64, and not mentioning whether you've
+tested on any other arch/setup.
+
+I've commented on this before so I'm a bit disappointed you've done the exact
+same thing here again. Especially since you've previously introduced regressions
+this way.
+
+Please can you test this on (hardware!) x86-64 _at least_ as well and confirm
+you aren't regressing anything for 4K pages?
+
+>
+>
+> [1] https://lore.kernel.org/all/20250513084620.58231-1-21cnbao@gmail.com/
+>
 > ---
->  mm/rmap.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Based on mm-unstable bb420884e9e0. mm-selftests pass.
 >
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 6398d7eef393f..087c9f5b884fe 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1979,9 +1979,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  	struct page *subpage;
->  	struct mmu_notifier_range range;
->  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
-> -	unsigned long nr_pages = 1, end_addr;
-> +	unsigned long end_addr;
->  	unsigned long pfn;
->  	unsigned long hsz = 0;
-> +	long nr_pages = 1;
-
-This is a non-issue that makes the code confusing, so let's not?
-
-The convention throughout the kernel is nr_pages generally is unsigned because
-you can't have negative nr_pages.
-
->  	int ptes = 0;
+> Dev Jain (9):
+>   mm/rmap: make nr_pages signed in try_to_unmap_one
+>   mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
+>   mm/rmap: refactor lazyfree unmap commit path to
+>     commit_ttu_lazyfree_folio()
+>   mm/memory: Batch set uffd-wp markers during zapping
+>   mm/rmap: batch unmap folios belonging to uffd-wp VMAs
+>   mm/swapfile: Make folio_dup_swap batchable
+>   mm/swapfile: Make folio_put_swap batchable
+>   mm/rmap: introduce folio_try_share_anon_rmap_ptes
+>   mm/rmap: enable batch unmapping of anonymous folios
 >
->  	/*
+>  include/linux/mm_inline.h  |  37 +++--
+>  include/linux/page-flags.h |  11 ++
+>  include/linux/rmap.h       |  38 ++++-
+>  mm/internal.h              |  26 ++++
+>  mm/memory.c                |  26 +---
+>  mm/mprotect.c              |  17 ---
+>  mm/rmap.c                  | 274 ++++++++++++++++++++++++-------------
+>  mm/shmem.c                 |   8 +-
+>  mm/swap.h                  |  10 +-
+>  mm/swapfile.c              |  25 ++--
+>  10 files changed, 298 insertions(+), 174 deletions(-)
+>
 > --
 > 2.34.1
 >
