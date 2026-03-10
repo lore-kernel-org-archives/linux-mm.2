@@ -4,109 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9371EFCC9A4
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 00:04:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC087FCC9A4
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:05:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57B586B0005; Mon,  9 Mar 2026 20:04:19 -0400 (EDT)
+	id 74C816B008C; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 529B26B0089; Mon,  9 Mar 2026 20:04:19 -0400 (EDT)
+	id 6EFAC6B0089; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 435106B008A; Mon,  9 Mar 2026 20:04:19 -0400 (EDT)
+	id 5B3CF6B0093; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FCD46B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 20:04:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 986A58B7A2
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 00:04:18 +0000 (UTC)
-X-FDA: 84528206196.05.AC5F433
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D4EC21A0010
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 00:04:14 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="IVb/wMMZ";
-	spf=pass (imf19.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 449B06B008A
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD03513AC45
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:41 +0000 (UTC)
+X-FDA: 84528360882.17.AED9D93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 13DB7C0012
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JwHQBb75;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773101056;
+	s=arc-20220608; t=1773104740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUfLC0f2AWQrj2JXMtmVBU5gG8MnUPc2ruYf8Fml+U8=;
-	b=RkkSRngMbs9B3HJLty2llRcwYky+UqK+TGsFD1KtjVb/kK2UNp3WPDFoq2tMAKbRI/dm0G
-	JxqPTCY4ZzXTOEeXlrQqn/h7VWSAp0pJWcgtX7tZ8U3YXJnRf18ZZ+WgQIappsATGp/H4Q
-	zdrbLgBWruam2rB8/2XscLDlbzvZzuQ=
+	bh=AJYAtc3OIsoelg3S40q0HjEY3cuw4xk4wN4pHk6YaH0=;
+	b=JdDor6KUNv4q5ddMR1cnCvaEQqyzWx22N/iSa4P9QyG/B5mZFphqtxgI+70Zmzv46kTGBQ
+	Fvpp/ysKweOUm/4L5R23G0V6EVoC96MXuMV+Swh9eMWhS+lZvLikvXKq3L3GAbtixve4U3
+	yV/0cw6qRjg//5zDa9DiO76d31fdKAU=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="IVb/wMMZ";
-	spf=pass (imf19.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773101056; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JwHQBb75;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773104740; a=rsa-sha256;
 	cv=none;
-	b=zo68aObIKmDWs/+ugiEjcZvIgoqtCzUdBeVQ4RVlN5g/xpdBF0rS9NV35f0brshwWrTBe5
-	LUM1Av6YAL3XEpTsYcE7II4Udfh2pBDUrdvhjCeEiQGvu5NSpk7hJa+rwvlHWiyXqNEO6r
-	SKhGjg1cVzPwFve1M2Y5L1oASWHGoTM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773101054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CUfLC0f2AWQrj2JXMtmVBU5gG8MnUPc2ruYf8Fml+U8=;
-	b=IVb/wMMZrbuf9lsb3GnsZFeL2O7pxhRgIbRFh1jrqZ2165ZaKFjOTDu6bli0v48MZeTSWX
-	UmK9OiyDt4Zf1xQ7OSXUswD9zGfK/eVBJaLTpF/qbTd7YaeJ7SKwH0MWxmbCiGBLDeXuAM
-	jkdOg3DXn1tnae1b6cUEQVE+uq+QO48=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-vCKMX45vN-W9t60to1Wwhw-1; Mon,
- 09 Mar 2026 20:04:10 -0400
-X-MC-Unique: vCKMX45vN-W9t60to1Wwhw-1
-X-Mimecast-MFC-AGG-ID: vCKMX45vN-W9t60to1Wwhw_1773101049
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 704C11956060;
-	Tue, 10 Mar 2026 00:04:08 +0000 (UTC)
-Received: from [10.22.81.138] (unknown [10.22.81.138])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D67EE1800361;
-	Tue, 10 Mar 2026 00:04:05 +0000 (UTC)
-Message-ID: <38c7a9a2-a8f1-4ae2-9070-73d0ebb42f53@redhat.com>
-Date: Mon, 9 Mar 2026 20:04:05 -0400
+	b=qBGNflBL3a02L7C8umosJVLVx4YUDBjwtE1GrWMKi5B/kWACRs4/JCiEfwV2y7lbJ9jEXI
+	iHnJAwTvBegn2xXfDl7NYbH+btke/kX4Qwr6ieeCSmtbxSdZl/Rh8d5IZ8P/0KgSiDn1CY
+	UjDdGurqPDhrqXiwScU/3ZwHWLAGrDw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D02F44182;
+	Tue, 10 Mar 2026 01:05:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C506C2BCAF;
+	Tue, 10 Mar 2026 01:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773104739;
+	bh=L8f/ifxCU2NPf0V1A0Et6pf5vfY3OtYSlSoZEdh8jTI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JwHQBb75BCYx3628Zxc7T+Zu7KR5tq2xk1nZTwDdDxBbqgbplC7OkjNBj7MMlW7ZM
+	 LB1wwsCjxl/y9HM4kkxf6lHsvgWZBKZbKk7q0H7y0a8R7qDqGhR7Rgmgongi6RxHAW
+	 hbFIeMezZBsnj/i/tponGizAAugNueUtKN/8Oeg7YpJji5Fd2wDDclB/Jq/Q7g/Nb0
+	 xMPcV2kruZHaqsrTijWC6Oob73912ZbNlLS9HOn5mzhrlq8lAsSD8AwXUPFrnDrZrP
+	 ad0wz24W24FIfBZ/U52FUnSigozYkRza7zPOXaDrOQ8T5/4YE11Q3BRfBDetveZKKb
+	 SOpTYoAY+OZjQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 02/11] mm/damon/core: allow quota goals set zero effective size quota
+Date: Mon,  9 Mar 2026 18:05:18 -0700
+Message-ID: <20260310010529.91162-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260310010529.91162-1-sj@kernel.org>
+References: <20260310010529.91162-1-sj@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftest: memcg: Skp memcg_sock test if address family
- not supported
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Tejun Heo <tj@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-References: <20260309160205.651754-1-longman@redhat.com>
- <4ddd3jascnb6nt7quhyjfmsgsmtfmjofwmnrgjktz57cfbfymj@6ejbdgbg4lz2>
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <4ddd3jascnb6nt7quhyjfmsgsmtfmjofwmnrgjktz57cfbfymj@6ejbdgbg4lz2>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: AiV8sfC4SxXOslMNxOmSR3eBWxLP66XlAquWQ0GzB6U_1773101049
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D4EC21A0010
-X-Stat-Signature: 4gf4zwb65bo6bqt3bbszarphr7rdhupj
+X-Rspamd-Queue-Id: 13DB7C0012
+X-Rspamd-Server: rspam07
+X-Stat-Signature: q1q8nxmg5nw4xtqfdm4pr3nazngf59ih
 X-Rspam-User: 
-X-HE-Tag: 1773101054-223664
-X-HE-Meta: U2FsdGVkX1+abOqs11Uz/YuUpLu2C/zQ2RgUkAGNVQD5F0wxxcUvILhkIav8CcwaEuCDGE9KxRz1XRGbf+tHgoFKlRXc0UJBW7XFC1G734a1m/lUoqM/9B7NhqB4tcDaZ5pD9bwn364i8cNQZLi3b2iNxmwYsTEXva0e1aWMwzuIz3s9sG4J++XLGifm6mQpfA6fbh/4gJaSPtCQP8nlXR7gzLx3Dsg76kHM1mHwk6R3cCrA4p9hbbgtkioxnmZQrE02HoNeCWpbEs5DAe6uENUNf7lAJUxMPZWHjmEiWRGSrkVjbj8N4NzxJiDCgX4qTCN4I9fQF7I3SwYc6PcRbfmq+kKv9hFNT+SvQCn4Nyxu5FRs5wtLU3gC3tZ3gT9xLrTmVvybOexFBvAAjKhWHu2057SMUIGBzit0VHwxft9eFyEYTVp1v/RFsA/fD5n6482sr6eQDC48ld+8js3HsW+C3B4XO1pYVbdbDJ7JtCbFvX9b33R5n0r1ColoXIo1uL+hP47HbSIpBWs/4Vp/YdSC4CXyvltp4UtB75ZXQL2tn6yhSYrO1nV7419MsjbvAzwbUl+BcXFJcWO8uXkFW31Is31Q0I1l4rawroyJDyQ7M/EciaZHLp4R8XpRMLOWm3kFsutRm80Ik+Pra13p+EDxyT0N7Z93ymwlVpqwTkXSGQgMFUH6o4JkO4OyQECc/CFDhpIaTgqdu9iUCCU6Qan6BdpMWPiwDpqOQoOSlYSjvRpzOYak6KuSCdZIRPEWDbGbeDg3LkQTPJqzXC77QvlmyVK3Uep4OnzkMQrP79kRVrNMNzOOSDhfJ1eMTW5/VWStnBOy/V8LgG1dKKyKBUsmM7Mfj1f87VLtIYaU3nEjN0g9rKGqYM9k7CY5gUg0FdO0eym1vM3YinPNSNESN/YFshwws+5DFhOWS6KBJVQwr6SC6yybvi/aLB+gbcYJQjy9oSa+2u2lPjHjNdd
- p94sz9s5
- FCJkIKmu3Dkg9A3IpapqJ2WnBleRGqQ5PtQLCR8X8tsbQHwaYUhrA8OeXUcGEqYpd5d6R4eSbVev1Eqy36b0zMab9u/7fNLTLlk02Ffu7VQ1VcDVveS1ALwZ3FD8/PBPr0xU5Lak4fLh/YGhNli8xSSNj4qRvyTZc3kYE7cWk+W527nLv/kj8GXl6dPuy1MJ19jK40G6llyjLrTL3ln34cCZXlceCkQ3d11bvZzd1fPEb2ku37qkzeRX3+hGIt+LqzFbyujKvFYcIv+UsIm99caMcC3PmtDC3NSGrpzQDPyYkhps9n0ELRd9AvdvbC67VTMH8GMSBO7OZj2gtBkfre5bLdXeN+GpUd3TjJkraF2xpMARxrGwfIHrvhIy8kENMqttvMxW93lDYMlu6ZxtkRIBsJqShpOAEFRY8
+X-HE-Tag: 1773104739-425256
+X-HE-Meta: U2FsdGVkX188F2DsH9c8rtkQRPaUOfRK7Hq3ZDp0AI+ziqIYjrYjB70zslwJAMyKcXzVVCYene3XYhHDQuoJdhl0V3pdywEp6Puu/X7Drp6joObUs3HQaQy9qQwb2F3bgEGqXWs8xHBnTZgOPF00SVUoUnhW9apSJxhBxYNe5/F6ADK6o6IVX0jqRHZM2j2KaYuiXaqcdyGQqgrVDgCD0aJIeQWl6UDrOWvsBCv2lD7kfOy/41tEaZ3qRWFhmDFCT9l3y2FzR+6i7qR0GFpkf6nI6OrMhjqYFbB5uhdD/LsgWpSqInI6Fm89iJpo5p7MRtw3jDkXGM5MddaYaRZiV3z45vfBufBVV/jV3TndTbOCWqUxgl2X6RKHjCGNSv98yTTn/BPQd/CG3RfdUYrQSrwepTO0Wh7A3OEJRR3XsOInEg5W/T7fzBvm3KF8T5SaLGXeg1ZAkpvQgLpprjAF+iHAJh9oQwmYvEFe0d5NlsRBOU1xoVx4Nf7rXYHB4wnWVNGKY6XmFPS7n+l/IQp/OV1ZgsaeY/HwXz4nPue8fFAhUP7DDh6pVGgFFnflW14yAWOj/27xfs5L/di5L/7kw0aqLSqNLtpqt8/CqAf6XYPrttmr9UP/KugNYN3IhTlKQyXEd0eEyBO+lKshzWdC4aQ1Opv5QbVBdrGJywElUD1NBp3Hr5pDXMU4+0US9zOjxnHtqZfS0rJc9LlACFQVgF9E8xSBPEMfMsbrZ0pKQD0In8l/hhM28VYiY5uzExS22LeV/4PcVGikWH/+v37rIB7B2rDC2MF2iHS2FRNdgi6EviPBkJZvdlDJzIn9hgT1oAid3/YrLNBBThjdD/t17ZR/RIoHm+WNSYsjt4pN3q+Oj6R+3SkJIcqGjvd3msZOfbopZB1bkR/jJ6ewrSj3/QKmTR4t20iDItRDF0rF/fs/qbIJYb419M2MYFaQoGM5MnohadGXQWcyDwhBYdz
+ 6vWzgNE/
+ GjR2XYP3dru/iHYkA7P1TM4m4ZY8UJeHcBKwS72nruO/pi3VzrXjAa40nUYi1N5WjPSSWs9jMM9mJdd5gYMD0cVap+l+DRu4B/0pr0ohtAZxL55KkQ2poEMMIIGj0niNCdZFVOLAJHKE5i1Q0T5MIjMZCJL28KY20QkEbVzh0kYSutPE48HnjZWqS//I29ecr0rtGQ9rEuc7q5i9c9KLoheGo4h9fcEIkpipYEUnLhQOlJ8w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,41 +92,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/9/26 2:07 PM, Michal Koutný wrote:
-> On Mon, Mar 09, 2026 at 12:02:05PM -0400, Waiman Long <longman@redhat.com> wrote:
->> On systems where IPv6 isn't enabled or not configured to support
->> SOCK_STREAM, the test_memcg_sock test always fails.
-> I think IPv6 is not substantial for the check...
-I mentioned it because the current code is using AF_INET6 family.
->
->> The purpose of the test_memcg_sock test is to verify that
->> memory.stat.sock and memory.current values are close.
-> ... so this should work with IPv4 too.
-Probably, I will try that out.
->
->> If the socket() call fails, there is no way we can test that. I
->> believe it is better to just skip the test in this case instead of
->> reporting a test failure hinting that there may be something wrong
->> with the memcg code.
-> Yes, the skip on (any) socket creation is also (independently) good.
->
->> @@ -1460,6 +1466,9 @@ static int test_memcg_sock(const char *root)
->>   	free(memcg);
->>   
->>   	return ret;
->> +skip:
->> +	ret = KSFT_SKIP;
->> +	goto cleanup;
-> Maybe make this analogous with other cases where there is no specific skip-label but
->
-> 	if (err == EAFNOSUPPORT) {
-> 		ret = KSFT_SKIP;
-> 		goto cleanup;
-> 	}
+User-explicit quotas (size and time quotas) having zero value means the
+quotas are unset.  And, effective size quota is set as the minimum value
+of the explicit quotas.  When quota goals are set, the goal-based quota
+tuner can make it lower.  But the existing only single tuner never sets
+the effective size quota zero.  Because of the fact, DAMON core assumes
+zero effective quota means the user has set no quota.
 
-Yes, that will work too. Will make the update in the next version.
+Multiple tuners are now allowed, though.  In the future, some tuners
+might want to set a zero effective size quota.  There is no reason to
+restrict that.  Meanwhile, because of the current implementation, it
+will only deactivate all quotas and make the scheme work at its full
+speed.
 
-Cheers,
-Longman
+Introduce a dedicated function for checking if no quota is set.  The
+function checks the fact by showing if the user-set explicit quotas are
+zero and no goal is installed.  It is decoupled from zero effective
+quota, and hence allows future tuners set zero effective quota for
+intentionally deactivating the scheme by a purpose.
 
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c16a390152790..d351ef3bcf4e9 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -387,6 +387,11 @@ void damos_destroy_quota_goal(struct damos_quota_goal *g)
+ 	damos_free_quota_goal(g);
+ }
+ 
++static bool damos_quota_goals_empty(struct damos_quota *q)
++{
++	return list_empty(&q->goals);
++}
++
+ /* initialize fields of @quota that normally API users wouldn't set */
+ static struct damos_quota *damos_quota_init(struct damos_quota *quota)
+ {
+@@ -1789,12 +1794,24 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+ 		r->age <= s->pattern.max_age_region;
+ }
+ 
++/*
++ * damos_quota_is_set() - Return if the given quota is actually set.
++ * @quota:	The quota to check.
++ *
++ * Returns true if the quota is set, false otherwise.
++ */
++static bool damos_quota_is_set(struct damos_quota *quota)
++{
++	return quota->esz || quota->sz || quota->ms ||
++		!damos_quota_goals_empty(quota);
++}
++
+ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+ 		struct damos *s)
+ {
+ 	bool ret = __damos_valid_target(r, s);
+ 
+-	if (!ret || !s->quota.esz || !c->ops.get_scheme_score)
++	if (!ret || !damos_quota_is_set(&s->quota) || !c->ops.get_scheme_score)
+ 		return ret;
+ 
+ 	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
+@@ -2064,7 +2081,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 	}
+ 
+ 	if (c->ops.apply_scheme) {
+-		if (quota->esz && quota->charged_sz + sz > quota->esz) {
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz + sz > quota->esz) {
+ 			sz = ALIGN_DOWN(quota->esz - quota->charged_sz,
+ 					c->min_region_sz);
+ 			if (!sz)
+@@ -2083,7 +2101,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 		quota->total_charged_ns += timespec64_to_ns(&end) -
+ 			timespec64_to_ns(&begin);
+ 		quota->charged_sz += sz;
+-		if (quota->esz && quota->charged_sz >= quota->esz) {
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz >= quota->esz) {
+ 			quota->charge_target_from = t;
+ 			quota->charge_addr_from = r->ar.end + 1;
+ 		}
+@@ -2111,7 +2130,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 			continue;
+ 
+ 		/* Check the quota */
+-		if (quota->esz && quota->charged_sz >= quota->esz)
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz >= quota->esz)
+ 			continue;
+ 
+ 		if (damos_skip_charged_region(t, r, s, c->min_region_sz))
+@@ -2396,7 +2416,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 	/* New charge window starts */
+ 	if (time_after_eq(jiffies, quota->charged_from +
+ 				msecs_to_jiffies(quota->reset_interval))) {
+-		if (quota->esz && quota->charged_sz >= quota->esz)
++		if (damos_quota_is_set(quota) &&
++				quota->charged_sz >= quota->esz)
+ 			s->stat.qt_exceeds++;
+ 		quota->total_charged_sz += quota->charged_sz;
+ 		quota->charged_from = jiffies;
+-- 
+2.47.3
 
