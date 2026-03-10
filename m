@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DEE0EB1056
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3030EB1053
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 643546B00A2; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+	id 9D49B6B0093; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 423A96B0098; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+	id 96B206B009F; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FD746B0099; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+	id 7452E6B0093; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C3BE06B0092
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 991641BDAC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9FB6B009E
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CDD10137557
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:29 +0000 (UTC)
-X-FDA: 84529998378.24.02B38E9
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4E95480018
+X-FDA: 84529998378.03.7D004E4
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8D3B2A000B
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=CWhZH8pY;
-	spf=pass (imf30.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="lEAp/s1F";
+	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143727;
@@ -35,41 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n8Jm3vj7u3QNjr1p8t4oOjObln75+m5CO9VCo8tfBlU=;
-	b=8UHzfmV607GeYGCC+tyqrByRv0NDxiBp6GWtnCdRYbhBByYzESn7tsu8mj8HNCYmBt2gFY
-	5X0fh2XJHJL9ayIr4n8ZfSVJWO/wVRHR1iqBUqF+0tjWDS1MG5lm9soZJRc/JAfRHX+dSn
-	bipLo9VBWzd2ezqA5nxPL/Qvo3ME9H0=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=CWhZH8pY;
-	spf=pass (imf30.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+	bh=0/roifme+WLdPTziKMwbNdr5N/yzFbOWcvPcd+8xFnU=;
+	b=RLtkQiLQGnmsoQE/axYMO7x/f6s6OUV4aniOg0UoU5sp5BIurzXzdtlTXzwCtBM4S0eLbo
+	tkWD1kVskjdY3y5h1BFBkTzarvizBF1ex5kRjRPnbF6qQteiSqSCrvdDPB5LDXiht+AfEk
+	Wzoqsy68+NgYqh+PcEPg7o2HkphPy6Y=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143727; a=rsa-sha256;
 	cv=none;
-	b=GpdneNKRmJpV/+r90IFIxLT1vlem5JljbvS4yXdAOpKq1peJBlqn9V1GP7WX8chUwOdAiU
-	q4qzG4JUx0ndF4jgsOKFAv1cqY5iv0RaElvRynLsxBXG+8WEZoseAOD/NKR7QsL+tDIx2d
-	v5QUlGviDm9+imwLDP79p0yd1HWBi8g=
+	b=36GC1lKPxUb2MnktVVKByo1kYqMVAb2hj8CdZPv7uYyd0L/X9t6NTpahhEH+pmIPVpI1OV
+	qrw2gSf9FYeCamVN6k2rfYwgqBaJe6StOja/vJrb6hP2ZyDgZFHh6uJosslT6LjG+T779H
+	D2k6Y+Yn815fdGPQWc9CLom3cEYsFOk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="lEAp/s1F";
+	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143724; bh=TePjCBJ2mRHkUlSzKz9AEyXwCeNO/T4sJeJlLVRUEek=;
+	t=1773143723; bh=wq/KSwJcA3hqLetMFo3dTHFYxjONcw4I7Ih9VV1gllk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CWhZH8pYoPHXJ9GodRv8bZf7CTCXPR5biEc/ESvLjFSG7M9EoK4FQxeOy1o2q/xFG
-	 adtTUhZFnjWgEtd3EnUld9xRhtBPP2LCXHOMBXjK/IfTv5IvUPb5jOISEusb1eiq65
-	 jalyJvpG8KfbWsOaQK+eTSDIbq4VvwVTL38wqr+Y=
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	b=lEAp/s1FGs3gh/G3BwLm92E1HCxjGWlqxsQSbz/j1CB+Vlb/y59DpH7suq9qWHqSS
+	 sYNh9xzFzAwYyP3SKrKt2sCrYh94W00YkOJHULlnCDrzYXE+bJd6oNQ88ujEwWl/IW
+	 WDyVvJrtHTQ4L2Ennx46mVzCXGqAvMhY+uWIILEA=
+Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ab-b734-7f0000032729-7f000001c000-1
+	id 69b006ab-2367-7f0000032729-7f0000019cd2-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:23 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:23 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:44 +0100
-Subject: [PATCH 18/61] sound: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:30 +0100
+Subject: [PATCH 04/61] ext4: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-18-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-4-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,35 +99,33 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Max Filippov <jcmvbkbc@gmail.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2160; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=TePjCBJ2mRHkUlSzKz9AEyXwCeNO/T4sJeJlLVRUEek=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYTbY49pcWmI+zPeufRNN/9dH/gm0tUhIW5M
- sSE0KnGvN+JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGEwAKCRA0LQZT0ays
- 20TjCACXYevOdzzWZ8zg+QT0mj5XNSQgsj+29ztKUJ+NhTXTaWid39EhUMP397Ax0ta31zsGPRm
- 0odiGii9nvcNMTK3z0LbXHwAyd2Q0fNqi4zFsqaNgSljw41n6QLzk50RIIvlMAtwUsismcvcfkc
- GlGmvCqi0YMh5Ps6ZKTVJuHiANRfJwasfti849ayN0tL2bNpZjcStJrsD6oocum/i0yO/DOehLD
- OGOf2TSq2UVG28aLw7N49gUvv1bUDwk6CT215ovMEtUyRG0UE7FpDGWKSdiW4/MWJSzpOO7eARa
- NIfS+Ckmg34HqAiCowU5EbKs98L8LUAVBFgmoB7oAUhpavOc
+Cc: Theodore Ts'o <tytso@mit.edu>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2748; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=wq/KSwJcA3hqLetMFo3dTHFYxjONcw4I7Ih9VV1gllk=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAXjBVZQh0oHFoS6hdf46zx6cg9yKqCoM11bV
+ 3iWUec0h4iJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF4wAKCRA0LQZT0ays
+ 29vPB/9f5lFIt+0FtFBJpiKbUGS7UgY9T4E/E6CJ5zu/RqCe6vd531NLZdsmBEosrdFBBXDX57H
+ sd8LCXF/sp89Zga6l1XIWkSIeHW4dDtT/UJNpkUGlvpmR4wd6cIocUQ2SKJZm2I5Ny799jzRqsU
+ 77XwGSzBy8rHgewt3q+d77K7620aLC+ceQfquSvw5IkT7R5aPt+VaJGvb/4d0wK060SD2e3AbrD
+ KG5aPg5rty9abqBDIFiMe9sH7jc7Ssmy8RQOhQUuB/vX9zXXRZULMf0v4sI8el0Gl3lDI9uBnpn
+ 7EXyqizDRxBWqqlsbAFrtlRuPcNXRB2sNpMKxVhp0my3RZH1
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143723-26DC0A3D-7CFC2EAB/0/0
+X-purgate-ID: 149429::1773143723-7D482E1F-03DD7EA2/0/0
 X-purgate-type: clean
-X-purgate-size: 2162
+X-purgate-size: 2750
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: 4E95480018
-X-Stat-Signature: 9drngkznx4cg54qbizbcbkoygz6dhhxx
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773143727-670962
-X-HE-Meta: U2FsdGVkX19bZ07d527QbK0Rrb9pEel3EmbOCc15UvT7wVnhUXmi0+d//4MrrjMl3zkXDyD04J6r5yageh7EJygW0st6+mZQgr6sUZPWBlFkEtJhqbW3ViDuBdE2ygfjyGRHpqL0sf8Hvwh+uianw5D45J3mG8DIrFHuKpD7H5qrGQFp+5yMJxp8g4IonWOKeKPEJXjQiwl8cOemZxpq89XU1R/hghHHm1clbcPqBAVqK62U9OM1DL/j73chiSjFaHMU1ei9yN3E2u2iOnkQM8JYXetqJSDiZH0Ztoz3JTVQKm6sMGnV4rFsQfXvGNWxzlPCQ+t+8eNfQui91o6QComj00+wzOvqOyyjO2vj/EmdnFLmM6sZkYHsUMp0Tu8zFuKJ8ELeYYdCUdXFAjYQrucQSmIxfRjgi2y94lerwPNtRqW5ONrkWGKmHf9SB/BvxAtIPdaZJ0iHybhFsgYQ4pRnPB6U8WuZsRGBQTFr394YXT4hXCIS291IcMsUpzct/t11vTiclYWcEl1J0RL1gWx6argcKOZBWpWr5zh2lp/FmcojNeXAZDLnNnjiRpvZATlEAbJrkbiboQTA+g4cc/iI7AC7FCKO5+gpB1RltmAciH1XpSfDnwy6BDodA7GnwqsEAtqy/PT0nCTJJwTkmuZOQ0aDGGCter7BW7vsVv/HR/xHVBdUpQKHa+Eu7H5nR4OuDUan4HFnild7r//o42aIeX0ze8ChefydBDfylJO6DtwsbHJFpDwrxJiacjlukq5jeonMo4H0Dn2vSXgGQiLsMhfIDy8PSn4zQiySqR5EIsPh1OGiPD2FpPeOVLuPo0i+X90g/tCe9JcvBZ5qZy99/BVpOGl2dobCmAfHMGfz4u39lgxytDUFCOfU9zy3Y5Ff5fwpK4MsSw41l59aA9+ROSEGENHG5K+Z8USJsaSNqRACgOw8BNgj4UE28QScHWjZnJyCDM9CChok+S+
- 1c7oFEI5
- ltvxCfmPcAl0mtKcwY+35/ppl2dDfJuRvQvTO6G/u4XkQ0ejbQUcwCNTDK3WUqnd69sqvp9zeBieAlARmIlbq73+elSQYp8RdHE7C/ce46nHhNbzEiiH63D3rUtu/JbQw1LAN+3CWSr0/p6REPSjXoHt2CNOiBbIw+/Xs0FsDkiir4JbWgw9XNoeVCO8gmrhZRX1sXh/xzk+rbWrj95xU5UpXUgtWyUUlNQqB9jNJncaRGFgE8G8uT61qm2ewXSNcPrwEIxdrzwDP8cUdsiLwR02ufW5K4KI1yCLL53GJ3qGDJQ/rjIa/Hv1SlJW14Ou/OmttqK6CYfCuZ2Eqj3Du3OHesD2jYR4A9zzAwtgPniMAuxZ6Yx1bwt4zwXiVrLNHKHmFIUP8kWocmT2qJtt4zfK2nHPUj2mBwJ+QNsYhAw8MqyshoBnZ8zOWBzuqPMC83d5Nq+XbL7EyO29xbm5cB0dbLU1Kb8tTzqEprAW3s5ptPBA=
+X-Stat-Signature: ofmnqj4ieeo4cgwwkbya7x1xx16ak4th
+X-Rspamd-Queue-Id: 8D3B2A000B
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773143727-722096
+X-HE-Meta: U2FsdGVkX1+E4i911rDVx3Lae+oVRKk61Y10wGbp5M0Ypr4utSidP1E27rWrg5IP0j3CqUvTeXtG47iobXkCqLoEMcFMfv3uaLc+rr8R0GctTWuzpJBBvKKjzQXXfmqblNtMVhIVrqnWW7G7+H004jNWnFbf+zUS545FLF1NXu6s2ISndZUTQMy0Uuiu+jz7M5Y3ID4XVJIZpNL/fd1xgoEoQ8Asl15jHTAXfHOJlHBQnm5gOf6QVY3wpAkvnodsJkTasLKYyTpSxnBb/LobwYML414iXBBueB3RTp8qvOPwGdO+0ugOwLgsHb09nbvHTlF1ZJb8SK7VQCg9GncsSvnNthQdbIdabt/P4AmCuVvFi3E6X1Vm+uSRGODfPZ5izivnxgJ05PbR8VlFko21D1oenheebKMn/FovsHMcvy4sH4X8nbPOyLGIHml9WPryLlgC2qlFage9pvxucshFxxJwmWiyzxi5Una43GZ4nX7J+VJbF4pZn+22sLGS5gY1pyZtZSghBggoubIRr7zkkWwqwJBnLBKT3Qbqevn7A+sg2kekkrroxq3VOBbxo9m8LSWW/26rR0Uq2b2JD+GAmlp32nYXK99H2ffu45vjZNpQfYqqlUecLIRM40clEM6vyhny2+NrB0VA7HzdQEZfraLr5x7CXCcbVHX6+oVGUBqrgfeGdjAu9my/SPxhgw8eY3JO1P2GmporIC2rM/g+j2L4DTTZNam1I3xPpHrbd2TRqG4I91AA1hfsXnYJCIYBAKg45y3HifPCVqXO436XRRVjVSRmyiOER64rby83k2nlwTb1MJZ1I4PSiwu0q+M4yrF60P4oCKQdzi8AWPhBjOS/Cgs8ajhTK4r3VExivk69bg15vGp95JWvH1oAORAfgROBadW//KyvPHzee8RmEycHqGwKdtiMGg5C6IvMemRi3/aQ8qkPOY8xUTBhYrZ+7YKsHZbQCpNVqc9BE3v
+ qe1T2MRn
+ 83CYgeM0SxEAaTdeTdgDb4YLCYbZ6uO3yluyQY3PldvdUWIZu9XCD42TNY9ewdfXmpFwHOozmaYDj8UrpRVsejpwLHMGqVHb2k7duA09liGIHQWrAxP4JslEAwD3X2zUjXuhKUZ93RCXn6BDKZwxVhmm7aJbxK/KzjawAXa5LnLER25gUCKnBLPhymW1Tyh9Ep3lcesHXH9TLmCSbq2ICxzpmSWfzpQ455QDcRkJgN0gzm19K+368IkUkaM2An8BEY0o2OiNPAyquoN/GsTnFEYAodJC5WmruZ0vOEbY5A2HV+LTWvxdyx9QP6QNFMb59t1ZlHwp94eR9rRmDJ00hMs6aAsncDWvLa6VPrmnsWi0n3IeoYFSrHPGddP2wMN167Oh2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,55 +138,70 @@ check.
 
 Change generated with coccinelle.
 
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-To: Liam Girdwood <lgirdwood@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-To: Jaroslav Kysela <perex@perex.cz>
-To: Takashi Iwai <tiwai@suse.com>
-To: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-sound@vger.kernel.org
+To: "Theodore Ts'o" <tytso@mit.edu>
+To: Andreas Dilger <adilger.kernel@dilger.ca>
+Cc: linux-ext4@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- sound/soc/samsung/i2s.c       | 4 ++--
- sound/soc/xtensa/xtfpga-i2s.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/fast_commit.c | 2 +-
+ fs/ext4/mballoc.c     | 2 +-
+ fs/ext4/namei.c       | 2 +-
+ fs/ext4/symlink.c     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/samsung/i2s.c b/sound/soc/samsung/i2s.c
-index e9964f0e010aee549cced75d8fe2023e8271d443..6e86f3a0a52dd3f8fc728d634594eb81f9945c57 100644
---- a/sound/soc/samsung/i2s.c
-+++ b/sound/soc/samsung/i2s.c
-@@ -559,7 +559,7 @@ static int i2s_set_sysclk(struct snd_soc_dai *dai, int clk_id, unsigned int rfs,
- 			clk_id = 1;
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index f575751f1cae430eead31afa4f7d03ade1099d4a..bc69ac1195acb823465e735572b8a21255d485f5 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -320,7 +320,7 @@ void ext4_fc_mark_ineligible(struct super_block *sb, int reason, handle_t *handl
+ 	if (ext4_fc_disabled(sb))
+ 		return;
  
- 		if (!any_active(i2s)) {
--			if (priv->op_clk && !IS_ERR(priv->op_clk)) {
-+			if (!IS_ERR_OR_NULL(priv->op_clk)) {
- 				if ((clk_id && !(mod & rsrc_mask)) ||
- 					(!clk_id && (mod & rsrc_mask))) {
- 					clk_disable_unprepare(priv->op_clk);
-@@ -812,7 +812,7 @@ static int i2s_hw_params(struct snd_pcm_substream *substream,
- 	i2s->frmclk = params_rate(params);
+-	if (handle && !IS_ERR(handle))
++	if (!IS_ERR_OR_NULL(handle))
+ 		tid = handle->h_transaction->t_tid;
+ 	else {
+ 		read_lock(&sbi->s_journal->j_state_lock);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 20e9fdaf4301b61c9d54401ed95067db6b6b8173..d7f004817c1ff758e4e25f84b2c27238b7420f84 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2870,7 +2870,7 @@ ext4_group_t ext4_mb_prefetch(struct super_block *sb, ext4_group_t group,
+ 		    EXT4_MB_GRP_NEED_INIT(grp) &&
+ 		    ext4_free_group_clusters(sb, gdp) > 0 ) {
+ 			bh = ext4_read_block_bitmap_nowait(sb, group, true);
+-			if (bh && !IS_ERR(bh)) {
++			if (!IS_ERR_OR_NULL(bh)) {
+ 				if (!buffer_uptodate(bh) && cnt)
+ 					(*cnt)++;
+ 				brelse(bh);
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index c4b5e252af0efbfcbaf83688a32d445327a74a02..4fdfc81f79028a588b3c1f912bff5e8a52cd9f13 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -723,7 +723,7 @@ struct stats dx_show_entries(struct dx_hash_info *hinfo, struct inode *dir,
+ 		struct stats stats;
+ 		printk("%s%3u:%03u hash %8x/%8x ",levels?"":"   ", i, block, hash, range);
+ 		bh = ext4_bread(NULL,dir, block, 0);
+-		if (!bh || IS_ERR(bh))
++		if (IS_ERR_OR_NULL(bh))
+ 			continue;
+ 		stats = levels?
+ 		   dx_show_entries(hinfo, dir, ((struct dx_node *) bh->b_data)->entries, levels - 1):
+diff --git a/fs/ext4/symlink.c b/fs/ext4/symlink.c
+index 645240cc0229fe4a2eda4499ae4a834fe3bd3a66..b612262719ede35d2612c5834d2bef7f18215516 100644
+--- a/fs/ext4/symlink.c
++++ b/fs/ext4/symlink.c
+@@ -92,7 +92,7 @@ static const char *ext4_get_link(struct dentry *dentry, struct inode *inode,
  
- 	rclksrc = priv->clk_table[CLK_I2S_RCLK_SRC];
--	if (rclksrc && !IS_ERR(rclksrc))
-+	if (!IS_ERR_OR_NULL(rclksrc))
- 		priv->rclk_srcrate = clk_get_rate(rclksrc);
- 
- 	return 0;
-diff --git a/sound/soc/xtensa/xtfpga-i2s.c b/sound/soc/xtensa/xtfpga-i2s.c
-index 678ded059b959d475b6be3766867c8a78bdd4e54..698905257b690457a5d3d315e77d99d487d91f77 100644
---- a/sound/soc/xtensa/xtfpga-i2s.c
-+++ b/sound/soc/xtensa/xtfpga-i2s.c
-@@ -609,7 +609,7 @@ static void xtfpga_i2s_remove(struct platform_device *pdev)
- {
- 	struct xtfpga_i2s *i2s = dev_get_drvdata(&pdev->dev);
- 
--	if (i2s->regmap && !IS_ERR(i2s->regmap)) {
-+	if (!IS_ERR_OR_NULL(i2s->regmap)) {
- 		regmap_write(i2s->regmap, XTFPGA_I2S_CONFIG, 0);
- 		regmap_write(i2s->regmap, XTFPGA_I2S_INT_MASK, 0);
- 		regmap_write(i2s->regmap, XTFPGA_I2S_INT_STATUS,
+ 	if (!dentry) {
+ 		bh = ext4_getblk(NULL, inode, 0, EXT4_GET_BLOCKS_CACHED_NOWAIT);
+-		if (IS_ERR(bh) || !bh)
++		if (IS_ERR_OR_NULL(bh))
+ 			return ERR_PTR(-ECHILD);
+ 		if (!ext4_buffer_uptodate(bh)) {
+ 			brelse(bh);
 
 -- 
 2.43.0
