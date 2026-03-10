@@ -4,126 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C703EB1049
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A254EB104C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:05:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAF786B0088; Tue, 10 Mar 2026 07:05:04 -0400 (EDT)
+	id B02516B0089; Tue, 10 Mar 2026 07:05:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5D086B0089; Tue, 10 Mar 2026 07:05:04 -0400 (EDT)
+	id AAC6B6B008A; Tue, 10 Mar 2026 07:05:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3EA16B008A; Tue, 10 Mar 2026 07:05:04 -0400 (EDT)
+	id 9AF1A6B008C; Tue, 10 Mar 2026 07:05:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B32156B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:05:04 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C60B6B0089
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:05:47 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6B7F11C7FC
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:05:04 +0000 (UTC)
-X-FDA: 84529871328.02.22A9E66
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 844C9A0018
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:05:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J1jkoKPi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4F6EAB9DF7
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:05:47 +0000 (UTC)
+X-FDA: 84529873134.02.BFE0119
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 53262140007
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:05:44 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N2aZCT3r;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773140702;
+	s=arc-20220608; t=1773140745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GGNmukUV6ZynmQPnufsr7pSOWgOJq6CQN8CVvI47374=;
-	b=jRH/zfT6+VrWIWuR05lvEgnHfWHa6EJU+5GrOWHKAOG0aLTqHuMAUxWT0eWaJn6uTSsNrM
-	uSUvZK2mefyDU4hhIal2MFr2t2/tvW1ip19Yibu5pO/TwMVQr2gsg89i9SBRfKHMhNehi2
-	zMnEnVm6n6b60rgc1nEVIZbCrTW7cjg=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J1jkoKPi;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of jianhuizzzzz@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=jianhuizzzzz@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773140702; a=rsa-sha256;
+	bh=4akV6MaGHmSnJk/SzTCTQAyiJw3QkRpB6h4z0N/jqq8=;
+	b=fgGvK6HKH4xO2RDravPYA/NvqdQlrK5Uj7DHmoTap+cthP1i62cQAhiDtW4bGx1oMJcIGc
+	HodhhWzoJS5uVlcjtTlF9CI7eMuTk5/ZwE1xdRIZpovjR0vLRJbHzksd9PTEzGaSvhPhsV
+	Wyb4bidMKvG34FwLzvLf6/TRWC5svoU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773140745; a=rsa-sha256;
 	cv=none;
-	b=a8hwsaJUcc/C5Rx8vM97QEUymlfBhe+Ws31WR5pLyQPGcOuM9B8EY4hiI682Q9IYA9U6PQ
-	l06Yz3UKeRBM3CZDNVl4jNez68g7HCcEV3dvKNNSJ+EhEqS5owWpQc5Goo8hzb8mqydeC8
-	9ltdTuuA109P+Wl1Kfoa6v7YXWl0KyY=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so139392245ad.2
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:05:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773140701; x=1773745501; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GGNmukUV6ZynmQPnufsr7pSOWgOJq6CQN8CVvI47374=;
-        b=J1jkoKPiVOsLz+3qr+AjG2sOeFc+nsv5Z+ag1BmMVac3KyUAe2W+9zp/Y08l/RFRNn
-         zg7c5vG5p4v2K8PsM/hHgY65KKx0coAoeIz+3ES3hwN1VzY6V2OKyOZISRanisbHnX5w
-         8FugvDo193GXIO7twul2rwxozdUlZ/FgQhCrB4PAR12MmUfn79n45myfx+MELJK4OfKI
-         lEHY2T6HjdUww3Iv0t9WPHOk3fD/wrNnvQBcqaIGmy/N6CS8AwgsQsO8NDCULuzWFohL
-         QkakEWmQshgJjKJCRJAdF1Lz36ZAW1GwHYLGFxHX2txus/CJlYsJP8TFDrNRQdsc8GOR
-         wlpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773140701; x=1773745501;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GGNmukUV6ZynmQPnufsr7pSOWgOJq6CQN8CVvI47374=;
-        b=ZwZ3/klQR/nakuvqoA6pkPE539gF4OO2/p2x/wQBpH5flNLipeJlSLghHtZl6H1Q4o
-         ajFUqENVyQpv8eVcdMUlxd2FAMCw30/nyGUoc3EFs+Sd2JkaR5OOGZzG83IxVsaNALUS
-         jvPWCf5szvWdaw4U9tP0ZmRZtQl2x/nLiSn2D0OkfcXm2mpfd9e2gT5sTbcpeEbnXh8h
-         W+95qIBHbj+dHv/eCu7BIqvsLfDABLCQSAAD8yxhbgUmCLFFvMkomsl0shuUXJhlj+Em
-         Yyz8pOz4ZI3uWCGu10pLpzIflvBJThvQkbiG+L0ODzWGNyroJoNO8zcwEkBYdUQheUca
-         KgGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmL8uLSEkkAoyrM7r5AXqAqO6RkR3UCIwjUdJVAhlB90BKoKhQYp+DZaQkRBKwGd2ENkZrjETD/g==@kvack.org
-X-Gm-Message-State: AOJu0YwsD9DSDQzURD9q1kvsHCnnuiMttHme72zEuSmfycdLS5/B1KW4
-	4o43Rt5063sVUIYWcSyrh4zX0VB8PP/h2yo20hqGc1VwM2cVg2OUWlRi
-X-Gm-Gg: ATEYQzwazmf25Mvhqu9nm9ZCewUK3WISSiQZuZLYC+0apEL16Yzhbxe/3IBryPERwhY
-	H28BKEI+l2mKrXV/bklh7c5Z+ntATigPQCpn7QmfTBgYE2NXNx6QztfskqCTTjzOUOhH2UQMaaL
-	XZFvemh8D25cgeJIxXBjrlyA0sp0y+rSTGu/umnmIUxkoYD07j8drwcOszoCONOUusAvMz+c9vg
-	TMq0DoehN9NJkqwLKnMi7DquCN0iJiB6GcsZrEsR4L09dBuqLCZgBqk7f1juWIZ2tS3yr3HkWOe
-	wMR9wJsKWK8R6F2hgihO5QhoaNVjsYuA9xRebiHRKjBV/90IL/1PNG/5t5IbbLbjdhSlwN4iIqm
-	P2mLXlrvc81Eevrc2k3M0L5Qa3t/t4QWZS7aUcFM+buwp7/Yi893oEKUy8ZInI+KI6TxMFBvr8A
-	7vEk4ol22npa85eU3eERifKwR8l+j9KECBb3AEibI=
-X-Received: by 2002:a17:903:2283:b0:2ae:5223:59ac with SMTP id d9443c01a7336-2ae823849famr139615335ad.13.1773140701141;
-        Tue, 10 Mar 2026 04:05:01 -0700 (PDT)
-Received: from zjh-os.zhaoxin.com ([2404:7ac0:6c5d:6b3c:b482:76f9:3eac:e82d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83e5c167sm141829815ad.1.2026.03.10.04.04.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 04:05:00 -0700 (PDT)
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	SeongJae Park <sj@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Jonas Zhou <jonaszhou@zhaoxin.com>,
+	b=oICcpUjIg4+JnV3ckBLCx18Ymbj0Eb6n9LyCpzIQIcP+RwWEC5eksRrwYKCjeSUBwAjmyN
+	yz7LHvOC/d8ikcnvMPFOd+Mksa8eRo7Fraknpvby2Fl8GI/GOnr2QxNCqz3B94CeiqEYwo
+	PMNlAh4eLi/t8RkAx4BtWEfOFa3lhOo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N2aZCT3r;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773140742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4akV6MaGHmSnJk/SzTCTQAyiJw3QkRpB6h4z0N/jqq8=;
+	b=N2aZCT3rN2A3bOZSlbE7ME1QU04ADUX5sf4VTjCoc9fD9LpEnEWln0NYOQ3yekfQsRaAYm
+	ZJtjwe4EN6xrYEh8/Rvej1KTyC4MqGuZ00a6hifeCnDtBYLGJ/RSow0VzgweOWvqn17XDT
+	11zMIsUABN8SKCd0hAR4CLeT0cOIR3I=
+From: Usama Arif <usama.arif@linux.dev>
+To: Haifeng Xu <haifeng.xu@shopee.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	david@fromorbit.com,
+	roman.gushchin@linux.dev,
+	zhengqi.arch@bytedance.com,
+	muchun.song@linux.dev,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
-	Jianhui Zhou <jianhuizzzzz@gmail.com>
-Subject: [PATCH v4] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-Date: Tue, 10 Mar 2026 19:05:26 +0800
-Message-ID: <20260310110526.335749-1-jianhuizzzzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
-References: <20260306140332.171078-1-jianhuizzzzz@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2 3/4] mm: shrinker: optimize the allocation of shrinker_info when setting cgroup_memory_nokmem
+Date: Tue, 10 Mar 2026 04:05:35 -0700
+Message-ID: <20260310110536.3474739-1-usama.arif@linux.dev>
+In-Reply-To: <20260310031250.289851-4-haifeng.xu@shopee.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 844C9A0018
-X-Stat-Signature: 5mbeyok89pb1d4zxtpgpbukehtf8yprf
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 53262140007
+X-Stat-Signature: 5t6wfp9915u3xcn1rs5p315my6g68ae6
 X-Rspam-User: 
-X-HE-Tag: 1773140702-100997
-X-HE-Meta: U2FsdGVkX19f795xRcTZ7lFp1fWMOYZr7WALEMBi26GSmSZKKs+8+kRpQuWNIbWw/AkdBfVXdfkiLmNeDtx57QFem0Ky6+rdVx6cmwoEC45hXHX7aRzeYk7iMcWc6WY/N2TowgzDPjhpneX90IQJbFMfD2W0LTf3jy8G973H4md0FYsCSCiabeEmld4/mvGWifNI71JyHbRrLphSU7fgIDqHbUUignVwjAKaZs8rekmS53EwDecA5/b7UAmzbKJxeDuzFPB5amb26MHgB2T1X0fjeFqKuzrK+B2CjvJPrHiUP2HzihOGzw/1qNtDxPUpC8NsWg3JqR6lAT0ptPnzcg1ZJdszOBAnl5opqkaGZlbgMqIZWsatgUuxXjBZSGgEMSosfKQB0bSNd81V8IIkOKMErfQgWhsJMJ5tNpim94noQ8skvjZGYwZg3csujypvCTkS2KB1n61QIlGVWQBxX80gvXnLxAsKx2p/m52csLy1E/m4lAvHe/bA0A5/vkiSNH1H8wIczNz9IsMUpVdq7GstcHIgYZNksD4TVOso4Nrv+jTcMfOBCJT+C6N+PGXB42spWY+zA8pT1hPpBJ6EmmOprYAFg9+3V2aMJy1vhA0JFIPthWaDnpgRgkHmiCTzrfhx1JRbATIWMkkgQ9yKPodNSNYFeQ65DkQQNK23+5czPGhpQ3StLaVUVIN872Iyffix0k0kVfqW5aPty0Z9wT61LAfAqdiv1C+f7FfP4LEXv5AzHo0yjuCxsgXHOxCi8+gHNNPp1RN/ZelFF8REBN0Acgct/EvDQmT0DYi2Fnakg6E8eHih2L2zYLwskJewaEv82TWZu3P7IPTHlKYhsuHyezzEnQupgcwE+o+Bzmt3vDQC+QYM5CVFc+ORKz0IX0Ozn4A+7CQVZy/qqeo8Bcc3WUoWPWZ+fIqeWluSMRlM2aKvLKUPyoJpzWDCoXQzxc0d5aAQFmW2JyTSdVW
- qJQBPQHZ
- aKTuSj4Y9uvvmOwlILQvgTUFOm53hY0Ijof/+IM8ebPuSWrFMTzWO0CSdjcUSVRsPBeYJYpgs+3P70xKXd9Czqn8ij1zSO74YAzO9n8CNeefNe9t4kH82kj/HPBA1qe9b0Za7xe4YcAzjfgJLGbIHD9L59Sz9fwHKvm0IVVARhhQu7xOHF+s7NIbqJwQVbDDcoPH/vRgnKK5xU82490EHMSZ7g+JdM8hQkG4K1VRJVAhanZpeHSG4GKEd44qvzYndopdwjadvnmEfWGz8IR4HRzNEluw35FVK1tQ4hs0DM08TmdHjUVznn5joGHmTpBVUlS5RYDQ29PqWd4g2fYON78lnJP3yCgSKGqJ7RA2izISKJ3HuB1AQf/mYow08vwnbHXLZpNUJZcjX0D19LDjPBfqyh7zo77vjKtVUmKK0sjWa6VsR4mxYE3oHRrioJidLNt8jP71VpCW3dmD2bRBOLqf3N2Dt/UAyIYqFSOywEH2LsBzoyD+gExzuphq4jFtF9hT9VlwE7I9iUMr2hexQZ8yKpuDynaupT7ijqpAFrcEu3yASnuBr1Z+0dbhUey4/wtK6T6Dt91+rIc0opvSqYI/lpMuV85wJ+RiejvLDPVbQXWRwy+qQTL9d4xyC1fJfSQ5F4SHstatTTNPZ+rfA+vAMLBxanOOYsD5YfFit7r6MPBpNzHb7il8N/CW22f7U7dNKelR6FBVbQrKyP1ptfkxhHw==
+X-HE-Tag: 1773140744-785412
+X-HE-Meta: U2FsdGVkX1/XwTuxWNxdF6HM/9INvcH62llU++CC3cvU/BKZUw91h/nnY1N1hPQgy0pBd1lq0RagBiqLlRgjabLjyGZ/hlnQH7noMWcijxPVjlonXZmGJpBgMTnmcEvrw2VLZk+GzKiRkmV8hbyf+fMNu1n2tRP+n0QBxfjC+F78HXiJLju0wPo0IdV2bcSZoLMAzSghjVRerNXrqHretujgdw5DAd4mHvc4xvSuMWhXwnUweZxWbQ3ahFjBbi3PbrNGyQK3ZhP9M7dkXhtI8LrWeEOQ7fslaOrAeZ5YI6tBIYx+Idz7pIyELraPWry/YArE3EVQp8Xm1W7/b3PXLETqXYbcQUtx87nQ7+gTZ687GRi/IIsUp72MR3iEYWBBZzr0F81KQOR/yJ7qeLzBYMBTXV3125U3oOgXQEEe/DBHx347VMV69iLMML7OIKh8N1t1bT3H16zqtEB8lfYCs+gxF8oOSiUgC+KgAmY4NCGhKZCYIC2QH1KouB0wpPDkOuVjSb7ggvxX90fo41zCog6hD7kgBNqsesE4hJneap3m7tTYkbaN02vedGXjvwQe+t8orIWkQiRKyuHODA1nfsXF6Q1kjJuFq/KaAjBZa0X4MwLECYa1yvpb4ysh2gXaD6cWNPd4RsTeTfo5C9KqGe2eeeR60MlH/M65lU+AETfpZJFwDhDHxjDvlbpJmKxd5Mcxathl7YhGY0i16suawihWz7m8xWg5BNgeGFN4emxm1ce1SscYo0HbJ7v1YSzCBPR576Dp8xUD4LDP19MJh0pU7diZJkThZJlBqwviod6y927kXhpj5J9HQpTZEUXD7G3otZ6Cd20AGUl0hYp/wB8o1/ZBADh54mPfeWIck0bY3S1fn+h71YONvgZV0TnftANAn7ueFt4R7Ssxj2GgeeOzGiBpzV1cRwM38fwPDJeVCiUjVsWtoWUPSYq3UfkEHKdu8VAIA3ajJZHpj2k
+ vORngs3E
+ fvlG19BYXtQ5EuhYq7zNN9FuM8dvZPVonvVDUuzxb2ISr410LDQvVQcbZQ8AFo441NzGbVvt6st22ttiiohI+e/HrNr9haNaZPoAfG2Bs/3fugEGr81t/ewAZB1NUL2SkxyVNpWtxYbeU3u3lJCGNURifG7yQLfLdIa3upI9AHGI+1guXM2MIMx1MDl50geDY5B7LG7q0/wELREKZmiua7tg0/8Fj9Jtm8m8C2og+U2FbIHTSg6+jm455TGT+3MHNjSvh/aEXo7c+UPz+QBUyyY+VjfhlVlgA8SDB3D48NfQIYxuHb8IbL41xI44KXXhG+vqvJE5IqqWXxAqvgXhgE1g9lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,83 +92,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash(). However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units. This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page. This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
+On Tue, 10 Mar 2026 11:12:49 +0800 Haifeng Xu <haifeng.xu@shopee.com> wrote:
 
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
+> When kmem is disabled, memcg slab shrink only call non-slab shrinkers,
+> so just allocates shrinker info for non-slab shrinkers to non-root memcgs.
+> 
+> Therefore, if memcg_kmem_online is true, all things keep same as before.
+> Otherwise, root memcg allocates id from shrinker_idr to identify each
+> shrinker and non-root memcgs use nonslab_id to identify non-slab shrinkers.
+> The size of shrinkers_info in non-root memcgs can be very low because the
+> number of shrinkers marked as SHRINKER_NONSLAB | SHRINKER_MEMCG_AWARE is
+> few. Also, the time spending in expand_shrinker_info() can reduce a lot.
+> 
+> When setting shrinker bit or updating nr_deferred, use nonslab_id for
+> non-root memcgs if the shrinker is marked as SHRINKER_NONSLAB.
+> 
+> Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+> ---
+>  include/linux/memcontrol.h |   8 ++-
+>  include/linux/shrinker.h   |   3 +
+>  mm/shrinker.c              | 116 +++++++++++++++++++++++++++++++++----
+>  3 files changed, 114 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index ce7b5101bc02..3edd6211aed2 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -1804,7 +1804,13 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
+>  
+>  static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
+>  {
+> -	return shrinker->id;
+> +	int id = shrinker->id;
+> +
+> +	if (!memcg_kmem_online() && (shrinker->flags & SHRINKER_NONSLAB) &&
+> +	    memcg != root_mem_cgroup)
+> +		id = shrinker->nonslab_id;
+> +
+> +	return id;
+>  }
+>  #else
+>  #define mem_cgroup_sockets_enabled 0
+> diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+> index 1a00be90d93a..df53008ed8b5 100644
+> --- a/include/linux/shrinker.h
+> +++ b/include/linux/shrinker.h
+> @@ -107,6 +107,9 @@ struct shrinker {
+>  #ifdef CONFIG_MEMCG
+>  	/* ID in shrinker_idr */
+>  	int id;
+> +
+> +	/* ID in shrinker_nonslab_idr */
+> +	int nonslab_id;
+>  #endif
+>  #ifdef CONFIG_SHRINKER_DEBUG
+>  	int debugfs_id;
+> diff --git a/mm/shrinker.c b/mm/shrinker.c
+> index 61dbb6afae52..68ea2d49495c 100644
+> --- a/mm/shrinker.c
+> +++ b/mm/shrinker.c
+> @@ -12,6 +12,7 @@ DEFINE_MUTEX(shrinker_mutex);
+>  
+>  #ifdef CONFIG_MEMCG
+>  static int shrinker_nr_max;
+> +static int shrinker_nonslab_nr_max;
+>  
+>  static inline int shrinker_unit_size(int nr_items)
+>  {
+> @@ -78,15 +79,25 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
+>  {
+>  	int nid, ret = 0;
+>  	int array_size = 0;
+> +	int alloc_nr_max;
+> +
+> +	if (memcg_kmem_online()) {
+> +		alloc_nr_max = shrinker_nr_max;
+> +	} else {
+> +		if (memcg == root_mem_cgroup)
+> +			alloc_nr_max = shrinker_nr_max;
+> +		else
+> +			alloc_nr_max = shrinker_nonslab_nr_max;
+> +	}
+>  
+>  	mutex_lock(&shrinker_mutex);
 
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Cc: stable@vger.kernel.org
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
----
-v4:
-- Introduce hugetlb_linear_page_index() instead of exposing
-  vma_hugecache_offset(); call hstate_vma() internally to simplify
-  the API (David Hildenbrand)
+Hello!
 
-v3:
-- Fix Fixes tag to a08c7193e4f1 (Hugh Dickins)
-
-v2:
-- Remove unnecessary !CONFIG_HUGETLB_PAGE stub for vma_hugecache_offset()
-  (Peter Xu, SeongJae Park)
-
- include/linux/hugetlb.h | 17 +++++++++++++++++
- mm/userfaultfd.c        |  2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 65910437be1c..67d4f0924646 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(struct hstate *h)
- 	return h->order + PAGE_SHIFT;
- }
- 
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 927086bb4a3c..5590989e18c7 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -573,7 +573,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
--- 
-2.43.0
+The patch reads shrinker_nonslab_nr_max and shrinker_nr_max before
+acquiring shrinker_mutex. The original code read shrinker_nr_max
+UNDER the lock. Both variables are modified under shrinker_mutex by
+concurrent shrinker registrations. A stale read could cause
+alloc_shrinker_info() to allocate an undersized shrinker_info,
+leading to out-of-bounds access in set_shrinker_bit() or the
+nr_deferred functions.
 
 
