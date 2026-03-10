@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA0F2FCC9A6
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 08:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DFC6FCC9DC
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 08:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2612D6B008A; Tue, 10 Mar 2026 04:19:33 -0400 (EDT)
+	id 793696B008A; Tue, 10 Mar 2026 04:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22BB26B008C; Tue, 10 Mar 2026 04:19:33 -0400 (EDT)
+	id 7175F6B008C; Tue, 10 Mar 2026 04:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11C146B0092; Tue, 10 Mar 2026 04:19:33 -0400 (EDT)
+	id 622C46B0092; Tue, 10 Mar 2026 04:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 0087D6B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:19:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA8861404C7
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:19:32 +0000 (UTC)
-X-FDA: 84529454184.13.89D85E4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3607414000F
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:19:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LPN5XdK4;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 503796B008A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:23:36 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0836513B15A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:23:36 +0000 (UTC)
+X-FDA: 84529464432.09.A859FD5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 33E9C1A0005
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:23:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773130771;
+	s=arc-20220608; t=1773131014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AUybclS64PKWFufgF6aQ8JgaWSAYT+y02bRA5IUp4WA=;
-	b=tdEQS5sHXkhVIayFm1rcQ0B0m9YDZt5VKXJ/kTzVcMIcU6egdhySnILyP5vFXj1cU4oBPt
-	YiUH7aGgMxuMXB65TegRkLJHdAKju7PmpUrirI6iVk2m8Re1EgdG/LRIbZF4RYrstPyRQC
-	cafIXYf//lV6AEh0zIk92nvDm4OwAv0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773130771; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZoUAXyjI8ksm965pjBKFH/ei443oBFLgIGbLGAjoijA=;
+	b=w2SCec3oIJscq+/ivK2om7/cBChJpVaMo6WjopvKRyQwUqNKbjlh0AA2w8iYmUi70RDpXB
+	4fuPAjZUR8FdVTpDGB1WPV+rAPqgRwLzS3ECwfSkzWRMDu4UYLqdrN4P+QZjFLKm5JoDE+
+	O7958PorJf9vfnIy72sNqtH72qOagKg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773131014; a=rsa-sha256;
 	cv=none;
-	b=ixkH6/rGuT3+cvyaoqrBAO/AnSKOp/yKr8gtCVcff31/YHirwaHLi82gDucyI9COwVYfIv
-	apudYZhOSlNyUq/UhsTgHwV5mCJw9LYfIrj1S3pkRyCMmvEH6RM/rW+Py7LD0qd+wtcY8H
-	loTyPZYmR6VX15oSvISwmQ1jNaqxK7M=
+	b=aDHzKeVvML2Xb7BhF2N/seJYF2fSaqj+xRZ+oBsLPgHW9WbJ2wn2YiO1IAT95fY2vvzG2U
+	huGW9M6iJVioA2nXk7pgGZbHJEzSyaNh+eaGpS7tTlYGVwCa6ZAS1fRZ/fIWrrzkXlBnrG
+	p3cpqHcDnFBMldB3zI6DgGHWnBqgRG0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LPN5XdK4;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D13260054;
-	Tue, 10 Mar 2026 08:19:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A169C19423;
-	Tue, 10 Mar 2026 08:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773130770;
-	bh=8WZa6uKoHgCJog3B3JTAsJwy5aNoFExhEXTWApc7brM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LPN5XdK4RD/9ann95QRaRMH8iwCmfE4xqsiUbUaSIFW1gOQAi3jvkAPFy9Ne/gex0
-	 DLq3806t9o1ar6v61LMZvyQHR3hlaHI531/DnVgdpM8gBvebmMS1SSs+MmtDFG8f9N
-	 Z4VyTuW22OeWZX3cNF5LJ3Vi+wmPMYHZUGl/hvW4fBr1moDmQjsf1ioBivxDYGR74a
-	 vyLnb4EsN2jQDcPqNOXaOBp3xiaMmZtv74phnPa3SzZrYDty8Ptd3siyGMFLg/3awr
-	 HSMV8IVunt+MYsHoKG/Yb37zdRfQwhqtarfQlqv1BrvHDRz/zymKfcNiS8TGUN5r9F
-	 /8h4M49rEjnhg==
-Date: Tue, 10 Mar 2026 08:19:20 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	yuanchu@google.com, david@kernel.org, hughd@google.com, chrisl@kernel.org, 
-	kasong@tencent.com, weixugc@google.com, Liam.Howlett@oracle.com, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com, 
-	harry.yoo@oracle.com, jannh@google.com, pfalcato@suse.de, 
-	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com, 
-	baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org, 
-	willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-Subject: Re: [PATCH 3/9] mm/rmap: refactor lazyfree unmap commit path to
- commit_ttu_lazyfree_folio()
-Message-ID: <3915e3bc-c390-44bc-a463-bdd687598284@lucifer.local>
-References: <20260310073013.4069309-1-dev.jain@arm.com>
- <20260310073013.4069309-4-dev.jain@arm.com>
+	imf19.hostedemail.com;
+	dkim=none;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 317B616A3;
+	Tue, 10 Mar 2026 01:23:27 -0700 (PDT)
+Received: from [10.164.19.59] (unknown [10.164.19.59])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 860FA3F7BD;
+	Tue, 10 Mar 2026 01:23:24 -0700 (PDT)
+Message-ID: <04a7465b-ee69-479f-aaa4-ccdf3ae16805@arm.com>
+Date: Tue, 10 Mar 2026 13:53:21 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310073013.4069309-4-dev.jain@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] mm/rmap: make nr_pages signed in try_to_unmap_one
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com, weixugc@google.com,
+ Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com,
+ jannh@google.com, pfalcato@suse.de, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ baohua@kernel.org, youngjun.park@lge.com, ziy@nvidia.com, kas@kernel.org,
+ willy@infradead.org, yuzhao@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260310073013.4069309-1-dev.jain@arm.com>
+ <20260310073013.4069309-2-dev.jain@arm.com>
+ <21801fb7-0f42-4ad3-8b85-2ac6013b8aa5@lucifer.local>
+ <31f93292-3de6-475c-b7fe-82ef41a3a7de@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <31f93292-3de6-475c-b7fe-82ef41a3a7de@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kzedw9jxt7pmec56w9keqy6wcpeadfuc
 X-Rspam-User: 
-X-Stat-Signature: 5pjtwi8mxhgs89tqiiuyjx8t8mzeaez1
-X-Rspamd-Queue-Id: 3607414000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773130771-916926
-X-HE-Meta: U2FsdGVkX19g5UVrwmS9KwXITGZkpYbRywve/b6Oozmq3lhjUEg/I3tDDQN7YNXWjXzKhXethXnzp6HphYpWFeWL4uohzp1vMkxRfqKx4UQgcrwuN1C/wUi7yv1dzpfTc7awyFrqsw1q0t91fh9nPbro6Jtps4qIvKe1u/Wcv703Gu03X8bAigMKtGL5Z4r7MosX5mAW+awH/ZbhL108nwzvV62FgRU781eHR+jEtThwi4nPFHvLll+lOshnFV60iYcFJilptqFjdc4Rxy8wbt2u4qLAHMyYETWa4QM/Edx3CGhHaDwlbEPxUOqQX90fmjiCxuWeVRLAAqgSIupx4vroOyZGsTkDq/L/FiHt46SZePjAYrcG17mmbYZcz2Ug/MEzg+5raUWkm/Z6aFpt5Gz6wJZgCHwjelJGPSnUzJtGrIIuXvhwk66Du72coX9OlUFrWVuCOBnQzr74sNYiAUdlbO7RcrQS3Htds/lZIP2pEeE69a2l32pOIrG6K9jUmg40Jl0UaeBLTpCSNlqPtsspwHvwPPicY5C0xDoKBj+Voe1igb6lwf42eoFeFYgMuJbM8PF5V8vNAu+Z9exSM0oXvZ6XW8g3JY3Rj7tDcrx906dl8b5NBE5eezs9zCtCnV8Rb09JOsRYx48RYL1DNW7VhGW8+SNP7IaQ+VVCcWZxNJV0rbL9kuJ+6FpEr8ppX1XRHOgBFcpehBKdSbM1+Adlm2bX5FLuAsplohuOSvzSAP1G3rVLeixWpEiuvxAUf2pbEMQe52BQM/Ky9PLDopAb0koBOkLS+QF2YKyhXbt8AmjUpMGJFZVmVNNs7aE3hdYLfZ+SRcmaNBxKQ+FlLJg/sEySxX1r6Xh4xIBJivQ2Q8bNw7vEnogLtl0lwo1ekVcwCPd5KckxqaQo175gSA==
+X-Rspamd-Queue-Id: 33E9C1A0005
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773131014-625946
+X-HE-Meta: U2FsdGVkX18Kbaftp/1XmkWq0W7kE8NfnWYoKhNU4DBPHAaY4dkeRnxcBMNSmsi2UDi2//s4PWfcpSw0zhDQrz4jJIneite6OUKnmZpN41mh2reHyTcKmY2JU077eYASdjGoNcHDCS3dJK3yD1vSzVUjDFLcRAvLMQ5GyKfnQr3qbHhMVr/KNL3IQIxiUNhT/om+pZEzZqsw6x9Cu93ttadeC346A0PQPLZ2quOXuDIE7yBLVKIKmBt8MWsRoftBQ70NwO0fObpeNWiZjNAO6fyCr05wb82TveO+9Ug1Bj6nv+wLu771IJb6WEO3R22rcK8MNW7xxsCG2fo/8ObNXDsAXulMttKmFn7Zx9SJ1zgZod377emVCMpmYgf2euLB7JmY8wzxds5aXtjX9o4GVpALyZm3MJE6Lq8ra+1v9LEXX7jFwEsk0IKXlmgD1HnpqvMyZ7woHG8qzeBNmDqRIh1e6+i8s6w7JVYUi+7MkX6MMMdOA01IP/RQuRSw9oXg3P143oULaZHNIVjmVqSYVk/bxzhMKcIKOjpcjYEvxGu7ZI+6BbO1v+pHdbqHX1UbXbz7e5MziRdf93MYdXN59XNnzatpb7wDNNyUcBJzLPLi5aprTOfF8nr83QYbJJc4Xn+aoJGnk0wwUu9WfQT2jfwZQtI4OpYeGbIAWDmBNF3GnprAF8SL7evkaNmb8+5aZpEcEANZQIfPh3z4aKGaFpo3gUi18goFODvPpUQe/Hqe/UmbJ2ldRg9twqriafKDtKOWZYiigmASyEaCpHTOFXyFT/LjYX7LpTPFjk85M+O3YbaxJM7gIV8wq6jL4CmXfUyuWB7YRHkXENYTLbhG1gUma8S9Sez6QQqGuR96Fhn/P+LLoASCXA4UF6XMKeR62cJfZyazk7jNJJUgKKPcexbB5/I//W7Y3tcxuGXvpW8a1bNa9Bz4tRV6yWL4UOCXjAdoWdNod4dA0UyUXVg
+ Z5V/tP5H
+ tGEmMOOn4s2bE417yOEpx+ChoKIlMBqTPD4kTh1cpHWcS6xCATfN+ql4+C56pltS46vzUca4FVOz22w1QzRwBFouBgXDP7LdS9hEAj+x6XX158pFdndddZmfd3yjGwkGJno5/MoOkOm7HzFkavoagRSuGwnbBIx/lb5nO6+qi+IYinWLfBijNscMIrtgru5t+odyc6OhIo8cuWMgjQvf2itrITMGk4Mtri28Fx1tliSrZ+Jo9GEQBgV/YnnhJiJlnRMM7rFxuI5ASuv66e8Q54kTxKaY9kw0DNgd2IIO+mFKCVOXi8FodSSDCmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,156 +95,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 01:00:07PM +0530, Dev Jain wrote:
-> Clean up the code by refactoring the post-pte-clearing path of lazyfree
-> folio unmapping, into commit_ttu_lazyfree_folio().
->
-> No functional change is intended.
->
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-This is a good idea, and we need more refactoring like this in the rmap code,
-but comments/nits below.
 
-> ---
->  mm/rmap.c | 93 ++++++++++++++++++++++++++++++++-----------------------
->  1 file changed, 54 insertions(+), 39 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1fa020edd954a..a61978141ee3f 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1966,6 +1966,57 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->  }
->
-> +static inline int commit_ttu_lazyfree_folio(struct vm_area_struct *vma,
+On 10/03/26 1:36 pm, David Hildenbrand (Arm) wrote:
+> On 3/10/26 08:56, Lorenzo Stoakes (Oracle) wrote:
+>> On Tue, Mar 10, 2026 at 01:00:05PM +0530, Dev Jain wrote:
+>>> Currently, nr_pages is defined as unsigned long. We use nr_pages to
+>>> manipulate mm rss counters for lazyfree folios as follows:
+>>>
+>>> 	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+>>>
+>>> Suppose nr_pages = 3. -nr_pages underflows and becomes ULONG_MAX - 2. Then,
+>>> since add_mm_counter() uses this -nr_pages as a long, ULONG_MAX - 2 does
+>>> not fit into the positive range of long, and is converted to -3. Eventually
+>>> all of this works out, but for keeping things simple, declare nr_pages as
+>>> a signed variable.
+>>>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>>  mm/rmap.c | 3 ++-
+>>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 6398d7eef393f..087c9f5b884fe 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -1979,9 +1979,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>  	struct page *subpage;
+>>>  	struct mmu_notifier_range range;
+>>>  	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+>>> -	unsigned long nr_pages = 1, end_addr;
+>>> +	unsigned long end_addr;
+>>>  	unsigned long pfn;
+>>>  	unsigned long hsz = 0;
+>>> +	long nr_pages = 1;
+>>
+>> This is a non-issue that makes the code confusing, so let's not?
+>>
+>> The convention throughout the kernel is nr_pages generally is unsigned because
+>> you can't have negative nr_pages.
+> 
+> Indeed. Documented in:
+> 
+> commit fa17bcd5f65ed702df001579cca8c885fa6bf3e7
+> Author: Aristeu Rozanski <aris@ruivo.org>
+> Date:   Tue Aug 26 11:37:21 2025 -0400
+> 
+>     mm: make folio page count functions return unsigned
+>     
+>     As raised by Andrew [1], a folio/compound page never spans a negative
+>     number of pages.  Consequently, let's use "unsigned long" instead of
+>     "long" consistently for folio_nr_pages(), folio_large_nr_pages() and
+>     compound_nr().
+>     
+>     Using "unsigned long" as return value is fine, because even
+>     "(long)-folio_nr_pages()" will keep on working as expected.  Using
+>     "unsigned int" instead would actually break these use cases.
+>     
+>     This patch takes the first step changing these to return unsigned long
+>     (and making drm_gem_get_pages() use the new types instead of replacing
+>     min()).
+>     
+>     In the future, we might want to make more callers of these functions to
+>     consistently use "unsigned long".
 
-Strange name, maybe lazyfree_range()? Not sure what ttu has to do with
-anything...
+So when I was playing around with the code, I noticed that passing
+unsigned int nr_pages to add_mm_counter(-nr_pages) messes up things. Then
+I noticed we have an unsigned long here, which prevents that. This is quite
+non-trivial information for me, especially when I searched around the
+codebase and found this is the only place where we pass a negative unsigned
+long.
 
-> +		struct folio *folio, unsigned long address, pte_t *ptep,
-> +		pte_t pteval, long nr_pages)
+But thanks for pointing out this commit. If it is a well-known fact that
+(long)-folio_nr_pages() will work correctly, then we can drop this patch.
 
-That long nr_pages is really grating now...
+>     
+> 
+> 
 
-> +{
-
-Come on Dev, it's 2026, why on earth are you returning an integer and not a
-bool?
-
-Also it would make sense for this to return false if something breaks, otherwise
-true.
-
-> +	struct mm_struct *mm = vma->vm_mm;
-> +	int ref_count, map_count;
-> +
-> +	/*
-> +	 * Synchronize with gup_pte_range():
-> +	 * - clear PTE; barrier; read refcount
-> +	 * - inc refcount; barrier; read PTE
-> +	 */
-> +	smp_mb();
-> +
-> +	ref_count = folio_ref_count(folio);
-> +	map_count = folio_mapcount(folio);
-> +
-> +	/*
-> +	 * Order reads for page refcount and dirty flag
-> +	 * (see comments in __remove_mapping()).
-> +	 */
-> +	smp_rmb();
-> +
-> +	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-> +		/*
-> +		 * redirtied either using the page table or a previously
-> +		 * obtained GUP reference.
-> +		 */
-> +		set_ptes(mm, address, ptep, pteval, nr_pages);
-> +		folio_set_swapbacked(folio);
-> +		return 1;
-> +	}
-> +
-> +	if (ref_count != 1 + map_count) {
-> +		/*
-> +		 * Additional reference. Could be a GUP reference or any
-> +		 * speculative reference. GUP users must mark the folio
-> +		 * dirty if there was a modification. This folio cannot be
-> +		 * reclaimed right now either way, so act just like nothing
-> +		 * happened.
-> +		 * We'll come back here later and detect if the folio was
-> +		 * dirtied when the additional reference is gone.
-> +		 */
-> +		set_ptes(mm, address, ptep, pteval, nr_pages);
-> +		return 1;
-> +	}
-> +
-> +	add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
-> +	return 0;
-> +}
-> +
->  /*
->   * @arg: enum ttu_flags will be passed to this argument
->   */
-> @@ -2227,46 +2278,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->
->  			/* MADV_FREE page check */
->  			if (!folio_test_swapbacked(folio)) {
-> -				int ref_count, map_count;
-> -
-> -				/*
-> -				 * Synchronize with gup_pte_range():
-> -				 * - clear PTE; barrier; read refcount
-> -				 * - inc refcount; barrier; read PTE
-> -				 */
-> -				smp_mb();
-> -
-> -				ref_count = folio_ref_count(folio);
-> -				map_count = folio_mapcount(folio);
-> -
-> -				/*
-> -				 * Order reads for page refcount and dirty flag
-> -				 * (see comments in __remove_mapping()).
-> -				 */
-> -				smp_rmb();
-> -
-> -				if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-> -					/*
-> -					 * redirtied either using the page table or a previously
-> -					 * obtained GUP reference.
-> -					 */
-> -					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-> -					folio_set_swapbacked(folio);
-> +				if (commit_ttu_lazyfree_folio(vma, folio, address,
-> +							      pvmw.pte, pteval,
-> +							      nr_pages))
-
-With above corrections this would be:
-
-	if (!lazyfree_range(vma, folio, address, pvme.pte, pteval, nr_pages))
-	   ...
-
->  					goto walk_abort;
-> -				} else if (ref_count != 1 + map_count) {
-> -					/*
-> -					 * Additional reference. Could be a GUP reference or any
-> -					 * speculative reference. GUP users must mark the folio
-> -					 * dirty if there was a modification. This folio cannot be
-> -					 * reclaimed right now either way, so act just like nothing
-> -					 * happened.
-> -					 * We'll come back here later and detect if the folio was
-> -					 * dirtied when the additional reference is gone.
-> -					 */
-> -					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
-> -					goto walk_abort;
-> -				}
-> -				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
->  				goto discard;
->  			}
->
-> --
-> 2.34.1
->
-
-Thanks, Lorenzo
 
