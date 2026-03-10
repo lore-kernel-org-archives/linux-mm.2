@@ -4,112 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B19CDFD4F03
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0323BFD4F05
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:25:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC17C6B0005; Tue, 10 Mar 2026 12:11:14 -0400 (EDT)
+	id 215846B009D; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99EC6B0089; Tue, 10 Mar 2026 12:11:14 -0400 (EDT)
+	id 18E556B00A1; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5276B008A; Tue, 10 Mar 2026 12:11:14 -0400 (EDT)
+	id F28C16B009E; Tue, 10 Mar 2026 12:25:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 957B86B0005
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:11:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40EC216011D
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:11:14 +0000 (UTC)
-X-FDA: 84530642868.28.9390B92
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9FBE1140006
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:11:11 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b="e7MW2/gF";
-	spf=pass (imf09.hostedemail.com: domain of greearb@candelatech.com designates 148.163.129.48 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DECFA6B009B
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:25:39 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8815F13A024
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:39 +0000 (UTC)
+X-FDA: 84530679198.14.829E261
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 720F640004
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773159072;
+	s=arc-20220608; t=1773159938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O7gMNiH9BdelWvusGd7OrNLFfglJLbH4s0k+LIP9tqQ=;
-	b=wlEukhQIn/hWOfOgoVCmKtrMEY++Ied/PBM+g478Kq3zF9uuGYU8LxicEKydAtLObAwZ6M
-	r+45Vnldp3SwV2lMYUllz5LtOcQB+IATy6JdyQJsGGbrebDvIsNIYZXVyoStPHqvJR2AVm
-	tdrixaRcq1/wl6hJ3VZKVLFO85JVCk8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=candelatech.com header.s=default header.b="e7MW2/gF";
-	spf=pass (imf09.hostedemail.com: domain of greearb@candelatech.com designates 148.163.129.48 as permitted sender) smtp.mailfrom=greearb@candelatech.com;
-	dmarc=pass (policy=none) header.from=candelatech.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773159072; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=yJOdLwZw0G8ZVmaT/9cUosGHSzT26Y5hGxn5uwPShbc=;
+	b=nqVSgxWHLxH+zOMIR5pezmEbK4U8KVRVDggfxOUNHc8dwADlCqQf2bfo/XWzXFEiZtcdf1
+	WG++8+4YgLWfjrfMFLq6RMZCBV09hIyK4OAYbv4Y8UIQe9ueX7oCbub008Dy17zh2GWOQ5
+	PD1Sczfo6S2Xp5i5Q4vQDISP/jeDXf4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773159938; a=rsa-sha256;
 	cv=none;
-	b=edIdgXMTUK9Q+lzJRtyKSm/DEgmZ/jCqB0NfkZejmIsRsWpnLV6KFXWD7iZeMZIWN08mFS
-	h3Xlfk56VMuMDzJIAFyggXUu3yq9ue3L9ohIn1sZitzxj5RT8tCy7jfL1UPdL8+Cx29mKB
-	N/Kj31bAghQByMAvPErhol0rL2usqdo=
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ED66A340090;
-	Tue, 10 Mar 2026 16:11:07 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 9B00513C2B0;
-	Tue, 10 Mar 2026 09:10:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 9B00513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1773159056;
-	bh=5zKbXLO3yRW74LlTEHd2bGno6r91jmuahTP/SPinZUQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e7MW2/gFMTBDhQHSAYbjSNqGfEBsd/R5nEC+4Tl+binFtZXIqca+TG/mEIJdyXf70
-	 Hoctr3CpTzqAc476951tkL0uNsb3Mjh8Hbr9/bhbxWxfOdsA3v8hUPFgvLpgvf/19o
-	 8Kn6WmoP6W3cNsNkn99PuCbEFmlWDlWK22+TGnqU=
-Message-ID: <bba74cab-7305-a052-7e1c-7a7736ba4531@candelatech.com>
-Date: Tue, 10 Mar 2026 09:10:56 -0700
+	b=yEy3PxYwzA0O+7KnwwdFdfUVd7XvMiVe743U/faEqN9sOdD6hZRmiIkRhvtt6dEjn0LFP/
+	AqxrGnVW7tQTpGcl0az3WsXPC3ToeKAsy1qNcS1sbpkRYEQQxx6QgqbHeRhvpINEjENUo4
+	g6uVObPH7OhJqikwEPLQaRzyqDo/nEA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	spf=pass (imf17.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fVfPN1VnpzHnGjq;
+	Wed, 11 Mar 2026 00:25:28 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 385B940086;
+	Wed, 11 Mar 2026 00:25:34 +0800 (CST)
+Received: from mscphis01197.huawei.com (10.123.65.218) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 10 Mar 2026 19:25:33 +0300
+From: <gutierrez.asier@huawei-partners.com>
+To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
+	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [RFC PATCH v2 3/4] mm/damon: New module with hot application detection
+Date: Tue, 10 Mar 2026 16:24:19 +0000
+Message-ID: <20260310162420.4180562-4-gutierrez.asier@huawei-partners.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
+References: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: 6.18.13 iwlwifi deadlock allocating cma while work-item is
- active.
-To: Tejun Heo <tj@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- Miriam Rachel <miriam.rachel.korenblit@intel.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <18c4bfed-caca-bef3-a139-63d7fa48940a@candelatech.com>
- <e7d92fab-9d0e-4a58-aa0b-2c6545772e68@candelatech.com>
- <3456b2c89f057900b39ce79ea8ca1154c5014e43.camel@sipsolutions.net>
- <0de6c8d1-d2fa-44ac-8025-cfcfecd87b02@candelatech.com>
- <bed9cc03d3c214b2601093f91e4b00f3715762b2.camel@sipsolutions.net>
- <c616fc41-3bc7-4ddc-b65c-a622111d8548@candelatech.com>
- <35779061f94c2a55bb58dcd619ae91c618509cf4.camel@sipsolutions.net>
- <aadKDCKGHk1Ua-7_@slm.duckdns.org>
- <3303d57a4ea6776dbc66ca72441023f76e6f1234.camel@sipsolutions.net>
- <35a7ebcf-862f-0b3a-a245-c32196a58692@candelatech.com>
- <aadYoaA_JYduCx_S@slm.duckdns.org>
- <de003dc3-3e37-f238-4250-2df16eeb77d6@candelatech.com>
- <68c1ca1381d1871fff72b211890a64eb@kernel.org>
-Content-Language: en-US
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <68c1ca1381d1871fff72b211890a64eb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1773159069-t8kQowwyWApu
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1773159069;t8kQowwyWApu;<greearb@candelatech.com>;e39a4ef213bcaa75c219f509376588df
-X-PPE-TRUSTED: V=1;DIR=OUT;
-X-Rspamd-Queue-Id: 9FBE1140006
-X-Stat-Signature: 7dqmh6j3um9t9dxce1cfpofama5w9kay
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.65.218]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773159071-402331
-X-HE-Meta: U2FsdGVkX18BJGCFmS8VwzmDfZhqzCXbIlRZALAptRYF0wyk0xibXtunPtsPWvHeXGUNmKYD9p3gmqojp83f7FGaXtG0AlvqX6Kwdr5mDHg6KPPcBkYbTTQwuQIMLmEogUtU+xkOWxxvX7CV1O6E23TnT9bWug1ZZGO2kPYWCQV6RSZtG1JjHOaWFJpEaCNM5LEVcupGCg/PCubrJIDrxYZ9pnEJpHyncfF8Qe2TRDufTT68e/2HDFbp83ToicLt4AokcVAeD9f6HNM2Hj1GvCS5joL9MjV0QlGiYJv4fWiIegJcjEymWcSdJO1FMhsJd+EbflXK+q8f81V7/TSLL39rBrMpueEUcVZkldLG8d0qpZyK8ZReUyrxHIkx4hbr8wKpbUjHZN9K031lynNTm5DUblRt8teOJlmb/DGKd/mE1CWzmtIOYQQ81gTrVuPO3Rr5XVEPTt6DtGBd7UtaNFWlqNEg/lYsHysPGPFUOIdkiHU9byctziGh1TYcGZHQg/y8mUQaO1k9ApeF1ralPFBG95Hzf++r8vyh05sj7NWJT368KIdFcI4P79obtG+m3CEHjVIo3gG8zqh/vXHUqvjVleVE4Dr41L3NdGFebl4iNu1zxVJNqImlIHlLkIBrMfFTGNVAncI6Xy85ah/Fam0e5y8UW7bkyvBtqQlsxPm/GBGwOTTf7maoZuatxprHGU4Ql7hUr8n/cAbVzclcd4rcZfrQFJiysWYLkkymEFYsWg8gJqhAtIr+89ErhjU2Ffpgj8BRGii4XaLlVORnPhKD1vqpLo6jsoWdOd6XeJ+w9W0LqNdzJf/fQQRt3T4BBFscBmQLvftBnpSCaMs5q2YyFvjaeZhSHcsgo6Tm66rZFt9Ldx+/KubzoEyZU1tETWpsvvKewGxKHiuWG2RInzZv3vjHdogBerEIqhddrgwPwRsS5FNLW5CStEzIPlakeaWTFNGzl6T83dnpY4R
- H8D+wPkM
- 9FrvlJVBxyLDPyzO7fLfE6eEkd4SsTDW/kYB+ntyPqtN0Kst0IcfyG3AmVd6SJ8P6C1QwHoHf3Qd+F70sLDBIPX3BbGjAZNLX7BJeLgl9UPelCTjQe7LlShCUAWViyQUwTu4mnyENnaazjGp6UqyIxxiMUmyBFse5Fu8g4dr5x7k8gDyspF89Qbv3qfQbV/mbTxs7Fa1N+/d3YkurzEd1eMKx98lf7pH3NMr17xjewyL9kk6Tm2QKO6O9hBwHU7w14yUO/bxjS4UfAheTN4TCue2T2dwSFBvLYAUoR3usvUnO0MBuZd7jrahqMzJxsgc+LbD+AeO4Mt/KhfaQzjKH+enusnRhXiuiUprje1fC/NrlibVdbuU1KSVK2+fHSMYpQXyS
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 720F640004
+X-Stat-Signature: zrqnz59pq5ghh9or6jjstifm5k13smhp
+X-HE-Tag: 1773159937-213668
+X-HE-Meta: U2FsdGVkX1/lYHsRjNLA/6bGkpx7ZL0K/7mLuvsqx+vrDEt7i0g9UYULtElkwHa7gPg1MjYwN0xlPvsQ32S4EWLnP/xwjZOstSSlCh3/hpGHQmcSN+1ZUY8q5BWGi6W5C7BMGBrUqIVNF8x2XpafDF3DGXsxa3Nni3Leq4YRDr+cL/aH9egGPibMBDzrI49h0VhhTy2LUgeAG1eBtGYslY5o9ZejXS2y9mviT//dWhYd+oeXEJeEsxPLVkjmYQPjJZm78BxFEh3oCg6TyQ+quGySa1pLCKIIfwnrWMazR/bV96TRGAJxNzF0sk6hJVoKan1MFqshJmIV2h9k32hcHY4j2bb7+kWtuAu9hkkQBM3TxqWoTqWgr+JyqLiriWKBAlZbsDEByNDtvPI47ilQhA3ixx8e5/Bk21fPBFzdsJy4J14ZiMSsYf963d3xDCfl6mWtZrvP+XUMT4Xuw4quwxjeabUfbkKuSHxtRjpW8FCWYIDeb1aO7RkhWbe5hhbuBaASBE+4MSPFFt/hbFch/ovUTzK+CH1fIz1XfmPDIVVY6SLHIYEbOCdu/0JdlbK7952KAzeE72aSlo/BdWKOI8w95rVPzapoiO9WNSGogyIg/wm56NkCTh/pRnyCzVsvDNw3L8b6wkMZjS4DNpg+AfJSiaHL1Sa/PA72f/MPaEJNbuUWscCU8DJ70pK3888DX3AypUmUy4+nEiMreplDPY1ht0wCwvxSaeyod/jX/k1+kmS+RlwPFN8nfByTJFu0l9JoW7dH1L4P8XboPszL17zGlxBHzaqvEaQELFwEbgCevQmHMeE3FSKZBXokRRnxizlo3zcoCceMV3aLMqfJrIJFyOXLcqMXqMCrI2IS+xzsiEwrtUih5inDv5iXVDKgx5zFzJNSO9nzrQakv28c+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,260 +90,511 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/4/26 09:14, Tejun Heo wrote:
-> Hello,
-> 
-> (Partially drafted with the help of Claude)
-> 
-> On Tue, Mar 03, 2026 at 04:02:14PM -0800, Ben Greear wrote:
->> Could the logic that detects blocked work-queues instead be instrumented
->> to print out more useful information so that just reproducing the problem
->> and providing dmesg output will be sufficient?  Or does dmesg already provide
->> enough that would give you a clue as to what is going on?
-> 
-> It may not be exactly the same issue, but Breno just posted a patch that
-> might help. The current watchdog only prints backtraces for workers that
-> are actively running on CPU, so sleeping culprits are invisible. His
-> patch removes that filter so all in-flight workers get printed:
-> 
->    http://lkml.kernel.org/r/aag4tTyeiZyw0jID@gmail.com
-> 
-> Might be worth trying.
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-Hello Tejun,
+1. It first launches a new kthread called damon_dynamic. This thread
+will behave as a supervisor, launching new kdamond threads for all
+the processes we want to montiored. The tasks are sorted
+by utime delta. For the top N tasks, a new kdamond thread will be
+launched. Applications which turn cold will have their kdamond
+stopped.
 
-I applied the first 4 patches of the v2 of that series to my 6.18.14 kernel, with
-my use-kthread-for-regdom patches reverted.
+The processes are supplied by the monitored_pids parameter. When the
+module is enabled, it will go through all the monitored_pids, start
+the supervisor and a new kdamond thread for each of the tasks. This
+tasks can be modified and applied using the commit_input parameters.
+In that case, we will stop any kdamond thread for tasks that are not
+going to be monitored anymore, and start a new kdamond thread for each
+new task to be monitored. For tasks that were monitored before and are
+still monitored after commiting a new monitored_pids list, kdamond
+threads are left intact.
 
-Stock 6.18.16 kernel crashes too often in the wifi driver to reliably reproduce the deadlock
-there.
+2. Initially we don't know the min_access for each of the task. We
+want to find the highest min_access when collapses start happening.
+For that we have an initial threashold of 90, which we will lower
+until a collpase occurs.
 
-Both the reg_todo and lru_drain are on CPU 5, but I'm not sure if that really
-matters.
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+---
+ mm/damon/Kconfig          |   7 +
+ mm/damon/Makefile         |   1 +
+ mm/damon/hugepage.c (new) | 441 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 449 insertions(+)
 
-Does this info below show anything useful to you?
-
-Mar 10 08:59:15 ct523c-2103 kernel: BUG: workqueue lockup - pool cpus=5 node=0 flags=0x0 nice=0 stuck for 57507s!
-Mar 10 08:59:15 ct523c-2103 kernel: Showing busy workqueues and worker pools:
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue events: flags=0x100
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 2: cpus=0 node=0 flags=0x0 nice=0 active=2 refcnt=3
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 264128:disconnect_work [cfg80211] for 57502s disconnect_work [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=9 refcnt=10
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 271323:reg_todo [cfg80211] for 57507s
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: reg_todo [cfg80211], igb_watchdog_task [igb], output_poll_execute [drm_kms_helper], kernfs_notify_workfn, 
-key_garbage_collector, 2*update_super_work, netstamp_clear
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue events_unbound: flags=0x2
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=2 refcnt=3
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 236337:cfg80211_wiphy_work [cfg80211] for 57507s cfg80211_wiphy_work [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue events_unbound: flags=0x2
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=1 refcnt=2
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 142096:linkwatch_event for 57502s linkwatch_event
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=3 refcnt=4
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 218388:fsnotify_mark_destroy_workfn for 55995s fsnotify_mark_destroy_workfn BAR(1309) 
-,267638:fsnotify_connector_destroy_workfn for 55995s fsnotify_connector_destroy_workfn
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=2 refcnt=4
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue events_freezable: flags=0x104
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=2
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: pci_pme_list_scan
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue events_power_efficient: flags=0x180
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 14: cpus=3 node=0 flags=0x0 nice=0 active=2 refcnt=3
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 268226:reg_check_chans_work [cfg80211] for 57441s reg_check_chans_work [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=218 refcnt=219
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: gc_worker [nf_conntrack], hub_post_resume, 216*ioc_release_fn
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue rcu_gp: flags=0x108
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=2
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: process_srcu
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue mm_percpu_wq: flags=0x8
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=2 refcnt=4
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: lru_add_drain_per_cpu BAR(236337), vmstat_update
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue cgroup_offline: flags=0x100
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=107
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: css_killed_work_fn
-Mar 10 08:59:15 ct523c-2103 kernel:     inactive: 105*css_killed_work_fn
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue cgroup_release: flags=0x100
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=15
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: css_release_work_fn
-Mar 10 08:59:15 ct523c-2103 kernel:     inactive: 13*css_release_work_fn
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue cgroup_bpf_destroy: flags=0x100
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=54
-Mar 10 08:59:15 ct523c-2103 kernel:     pending: cgroup_bpf_release
-Mar 10 08:59:15 ct523c-2103 kernel:     inactive: 52*cgroup_bpf_release
-Mar 10 08:59:15 ct523c-2103 kernel: workqueue ipv6_addrconf: flags=0x6000a
-Mar 10 08:59:15 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=1 refcnt=14
-Mar 10 08:59:15 ct523c-2103 kernel:     in-flight: 202972:addrconf_dad_work for 57505s
-Mar 10 08:59:15 ct523c-2103 kernel:     inactive: 4*addrconf_verify_work
-Mar 10 08:59:15 ct523c-2103 kernel: pool 2: cpus=0 node=0 flags=0x0 nice=0 hung=0s workers=3 idle: 203067 243191
-Mar 10 08:59:15 ct523c-2103 kernel: pool 14: cpus=3 node=0 flags=0x0 nice=0 hung=0s workers=3 idle: 709498 699449
-Mar 10 08:59:15 ct523c-2103 kernel: pool 22: cpus=5 node=0 flags=0x0 nice=0 hung=57507s workers=3 idle: 166929 260518
-Mar 10 08:59:15 ct523c-2103 kernel: pool 32: cpus=0-7 flags=0x4 nice=0 hung=0s workers=9 idle: 631693 712021 717023 671858
-Mar 10 08:59:15 ct523c-2103 kernel: Showing backtraces of busy workers in stalled CPU-bound worker pools:
-Mar 10 08:59:15 ct523c-2103 kernel: pool 22:
-Mar 10 08:59:15 ct523c-2103 kernel: task:kworker/5:2     state:D stack:0     pid:271323 tgid:271323 ppid:2      task_flags:0x4208060 flags:0x00080000
-Mar 10 08:59:15 ct523c-2103 kernel: Workqueue: events reg_todo [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel: Call Trace:
-Mar 10 08:59:15 ct523c-2103 kernel:  <TASK>
-Mar 10 08:59:15 ct523c-2103 kernel:  __schedule+0x106f/0x4340
-Mar 10 08:59:15 ct523c-2103 kernel:  ? lock_acquire+0x155/0x2e0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? io_schedule_timeout+0x150/0x150
-Mar 10 08:59:15 ct523c-2103 kernel:  ? __schedule+0x1865/0x4340
-Mar 10 08:59:15 ct523c-2103 kernel:  preempt_schedule_notrace+0x4c/0x70
-Mar 10 08:59:15 ct523c-2103 kernel:  preempt_schedule_notrace_thunk+0x16/0x30
-Mar 10 08:59:15 ct523c-2103 kernel:  rcu_is_watching+0x59/0x70
-Mar 10 08:59:15 ct523c-2103 kernel:  lock_acquire+0x291/0x2e0
-Mar 10 08:59:15 ct523c-2103 kernel:  schedule+0x211/0x3a0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? schedule+0x1f2/0x3a0
-Mar 10 08:59:15 ct523c-2103 kernel:  schedule_preempt_disabled+0x11/0x20
-Mar 10 08:59:15 ct523c-2103 kernel:  __mutex_lock+0xd02/0x1d60
-Mar 10 08:59:15 ct523c-2103 kernel:  ? reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:  ? ww_mutex_lock+0x160/0x160
-Mar 10 08:59:15 ct523c-2103 kernel:  ? __mutex_unlock_slowpath+0x15d/0x770
-Mar 10 08:59:15 ct523c-2103 kernel:  ? wait_for_completion_io_timeout+0x20/0x20
-Mar 10 08:59:15 ct523c-2103 kernel:  ? reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:  reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:  reg_todo+0x52e/0x7c0 [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:  ? lock_release+0xce/0x290
-Mar 10 08:59:15 ct523c-2103 kernel:  process_one_work+0x88b/0x1820
-Mar 10 08:59:15 ct523c-2103 kernel:  ? pwq_dec_nr_in_flight+0xe00/0xe00
-Mar 10 08:59:15 ct523c-2103 kernel:  ? reg_process_hint+0x1480/0x1480 [cfg80211]
-Mar 10 08:59:15 ct523c-2103 kernel:  worker_thread+0x5a1/0xfd0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? __kthread_parkme+0xc6/0x1f0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? rescuer_thread+0x1350/0x1350
-Mar 10 08:59:15 ct523c-2103 kernel:  kthread+0x3b7/0x770
-Mar 10 08:59:15 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? ret_from_fork+0x17/0x3a0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? lock_release+0xce/0x290
-Mar 10 08:59:15 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:15 ct523c-2103 kernel:  ret_from_fork+0x28b/0x3a0
-Mar 10 08:59:15 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:15 ct523c-2103 kernel:  ret_from_fork_asm+0x11/0x20
-Mar 10 08:59:15 ct523c-2103 kernel:  </TASK>
-Mar 10 08:59:46 ct523c-2103 kernel: BUG: workqueue lockup - pool cpus=5 node=0 flags=0x0 nice=0 stuck for 57537s!
-Mar 10 08:59:46 ct523c-2103 kernel: Showing busy workqueues and worker pools:
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue events: flags=0x100
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 2: cpus=0 node=0 flags=0x0 nice=0 active=2 refcnt=3
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 264128:disconnect_work [cfg80211] for 57533s disconnect_work [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=9 refcnt=10
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 271323:reg_todo [cfg80211] for 57537s
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: reg_todo [cfg80211], igb_watchdog_task [igb], output_poll_execute [drm_kms_helper], kernfs_notify_workfn, 
-key_garbage_collector, 2*update_super_work, netstamp_clear
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue events_unbound: flags=0x2
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=2 refcnt=3
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 236337:cfg80211_wiphy_work [cfg80211] for 57537s cfg80211_wiphy_work [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue events_unbound: flags=0x2
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=1 refcnt=2
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 142096:linkwatch_event for 57533s linkwatch_event
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=3 refcnt=4
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 218388:fsnotify_mark_destroy_workfn for 56026s fsnotify_mark_destroy_workfn BAR(1309) 
-,267638:fsnotify_connector_destroy_workfn for 56026s fsnotify_connector_destroy_workfn
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=2 refcnt=4
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue events_freezable: flags=0x104
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=2
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: pci_pme_list_scan
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue events_power_efficient: flags=0x180
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 14: cpus=3 node=0 flags=0x0 nice=0 active=2 refcnt=3
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 268226:reg_check_chans_work [cfg80211] for 57472s reg_check_chans_work [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=218 refcnt=219
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: gc_worker [nf_conntrack], hub_post_resume, 216*ioc_release_fn
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue rcu_gp: flags=0x108
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=2
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: process_srcu
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue mm_percpu_wq: flags=0x8
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=2 refcnt=4
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: lru_add_drain_per_cpu BAR(236337), vmstat_update
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue cgroup_offline: flags=0x100
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=107
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: css_killed_work_fn
-Mar 10 08:59:46 ct523c-2103 kernel:     inactive: 105*css_killed_work_fn
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue cgroup_release: flags=0x100
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=15
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: css_release_work_fn
-Mar 10 08:59:46 ct523c-2103 kernel:     inactive: 13*css_release_work_fn
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue cgroup_bpf_destroy: flags=0x100
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 22: cpus=5 node=0 flags=0x0 nice=0 active=1 refcnt=54
-Mar 10 08:59:46 ct523c-2103 kernel:     pending: cgroup_bpf_release
-Mar 10 08:59:46 ct523c-2103 kernel:     inactive: 52*cgroup_bpf_release
-Mar 10 08:59:46 ct523c-2103 kernel: workqueue ipv6_addrconf: flags=0x6000a
-Mar 10 08:59:46 ct523c-2103 kernel:   pwq 32: cpus=0-7 flags=0x4 nice=0 active=1 refcnt=14
-Mar 10 08:59:46 ct523c-2103 kernel:     in-flight: 202972:addrconf_dad_work for 57536s
-Mar 10 08:59:46 ct523c-2103 kernel:     inactive: 4*addrconf_verify_work
-Mar 10 08:59:46 ct523c-2103 kernel: pool 2: cpus=0 node=0 flags=0x0 nice=0 hung=0s workers=3 idle: 203067 243191
-Mar 10 08:59:46 ct523c-2103 kernel: pool 14: cpus=3 node=0 flags=0x0 nice=0 hung=0s workers=3 idle: 709498 699449
-Mar 10 08:59:46 ct523c-2103 kernel: pool 22: cpus=5 node=0 flags=0x0 nice=0 hung=57537s workers=3 idle: 166929 260518
-Mar 10 08:59:46 ct523c-2103 kernel: pool 32: cpus=0-7 flags=0x4 nice=0 hung=0s workers=9 idle: 631693 712021 717023 671858
-Mar 10 08:59:46 ct523c-2103 kernel: Showing backtraces of busy workers in stalled CPU-bound worker pools:
-Mar 10 08:59:46 ct523c-2103 kernel: pool 22:
-Mar 10 08:59:46 ct523c-2103 kernel: task:kworker/5:2     state:D stack:0     pid:271323 tgid:271323 ppid:2      task_flags:0x4208060 flags:0x00080000
-Mar 10 08:59:46 ct523c-2103 kernel: Workqueue: events reg_todo [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel: Call Trace:
-Mar 10 08:59:46 ct523c-2103 kernel:  <TASK>
-Mar 10 08:59:46 ct523c-2103 kernel:  __schedule+0x106f/0x4340
-Mar 10 08:59:46 ct523c-2103 kernel:  ? lock_acquire+0x155/0x2e0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? io_schedule_timeout+0x150/0x150
-Mar 10 08:59:46 ct523c-2103 kernel:  ? __schedule+0x1865/0x4340
-Mar 10 08:59:46 ct523c-2103 kernel:  preempt_schedule_notrace+0x4c/0x70
-Mar 10 08:59:46 ct523c-2103 kernel:  preempt_schedule_notrace_thunk+0x16/0x30
-Mar 10 08:59:46 ct523c-2103 kernel:  rcu_is_watching+0x59/0x70
-Mar 10 08:59:46 ct523c-2103 kernel:  lock_acquire+0x291/0x2e0
-Mar 10 08:59:46 ct523c-2103 kernel:  schedule+0x211/0x3a0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? schedule+0x1f2/0x3a0
-Mar 10 08:59:46 ct523c-2103 kernel:  schedule_preempt_disabled+0x11/0x20
-Mar 10 08:59:46 ct523c-2103 kernel:  __mutex_lock+0xd02/0x1d60
-Mar 10 08:59:46 ct523c-2103 kernel:  ? reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:  ? ww_mutex_lock+0x160/0x160
-Mar 10 08:59:46 ct523c-2103 kernel:  ? __mutex_unlock_slowpath+0x15d/0x770
-Mar 10 08:59:46 ct523c-2103 kernel:  ? wait_for_completion_io_timeout+0x20/0x20
-Mar 10 08:59:46 ct523c-2103 kernel:  ? reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:  reg_process_self_managed_hints+0x70/0x190 [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:  reg_todo+0x52e/0x7c0 [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:  ? lock_release+0xce/0x290
-Mar 10 08:59:46 ct523c-2103 kernel:  process_one_work+0x88b/0x1820
-Mar 10 08:59:46 ct523c-2103 kernel:  ? pwq_dec_nr_in_flight+0xe00/0xe00
-Mar 10 08:59:46 ct523c-2103 kernel:  ? reg_process_hint+0x1480/0x1480 [cfg80211]
-Mar 10 08:59:46 ct523c-2103 kernel:  worker_thread+0x5a1/0xfd0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? __kthread_parkme+0xc6/0x1f0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? rescuer_thread+0x1350/0x1350
-Mar 10 08:59:46 ct523c-2103 kernel:  kthread+0x3b7/0x770
-Mar 10 08:59:46 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? ret_from_fork+0x17/0x3a0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? lock_release+0xce/0x290
-Mar 10 08:59:46 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:46 ct523c-2103 kernel:  ret_from_fork+0x28b/0x3a0
-Mar 10 08:59:46 ct523c-2103 kernel:  ? kthread_is_per_cpu+0xb0/0xb0
-Mar 10 08:59:46 ct523c-2103 kernel:  ret_from_fork_asm+0x11/0x20
-Mar 10 08:59:46 ct523c-2103 kernel:  </TASK>
-
-
->> If I were to attempt to use AI on the coredump, would echoing 'c' to
->> /proc/sysrq-trigger with kdump enabled (when deadlock is happening) be
->> the appropriate action to grab the core file?
-> 
-> Yes, that's right, but you need to set up kdump first. The quickest way
-> depends on your distro:
-> 
->   - Fedora/RHEL: dnf install kexec-tools, then kdumpctl reset-crashkernel,
->     systemctl enable --now kdump
->   - Ubuntu/Debian: apt install kdump-tools (say Yes to enable), reboot
->   - Arch: Install kexec-tools, add crashkernel=512M to your kernel
->     cmdline, create a kdump.service that runs
->     kexec -p /boot/vmlinuz-linux --initrd=/boot/initramfs-linux.img \
->       --append="root=<your-root> irqpoll nr_cpus=1 reset_devices"
-> 
-> After reboot, verify with: cat /sys/kernel/kexec_crash_size (should be
-> non-zero). Then when the deadlock happens:
-> 
->    echo c > /proc/sysrq-trigger
-
-I have kdump enabled already, and I could create a vmcore like this.
-I have never used drgn, nor claude.  Based on the logs above, do
-you still think it would be helpful to try drgn?  If so, can you please
-suggest some commands or approaches specific to this particular bug?
-
-Thanks,
-Ben
-
+diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
+index 8c868f7035fc..2355aacb6d12 100644
+--- a/mm/damon/Kconfig
++++ b/mm/damon/Kconfig
+@@ -110,4 +110,11 @@ config DAMON_STAT_ENABLED_DEFAULT
+ 	  Whether to enable DAMON_STAT by default.  Users can disable it in
+ 	  boot or runtime using its 'enabled' parameter.
+ 
++config DAMON_HOT_HUGEPAGE
++	bool "Build DAMON-based collapse of hot regions (DAMON_HOT_HUGEPAGES)"
++	depends on DAMON_VADDR
++	help
++	 Collapse hot region into huge pages. Hot regions are determined by
++	 DAMON-based sampling
++
+ endmenu
+diff --git a/mm/damon/Makefile b/mm/damon/Makefile
+index d8d6bf5f8bff..ac3afbc81cc7 100644
+--- a/mm/damon/Makefile
++++ b/mm/damon/Makefile
+@@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
+ obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
+ obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
+ obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
++obj-$(CONFIG_DAMON_HOT_HUGEPAGE)	+= modules-common.o hugepage.o
+diff --git a/mm/damon/hugepage.c b/mm/damon/hugepage.c
+new file mode 100644
+index 000000000000..ccd31c48d391
+--- /dev/null
++++ b/mm/damon/hugepage.c
+@@ -0,0 +1,441 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2026 HUAWEI, Inc.
++ *             https://www.huawei.com
++ *
++ * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
++ */
++
++#define pr_fmt(fmt) "damon-hugepage: " fmt
++
++#include <linux/damon.h>
++#include <linux/kstrtox.h>
++#include <linux/module.h>
++
++#include "modules-common.h"
++
++#ifdef MODULE_PARAM_PREFIX
++#undef MODULE_PARAM_PREFIX
++#endif
++#define MODULE_PARAM_PREFIX "damon_hugepage."
++
++#define MAX_MONITORED_PIDS 100
++#define HIGHEST_MIN_ACCESS 90
++#define HIGH_ACC_THRESHOLD 50
++#define MID_ACC_THRESHOLD 15
++#define LOW_ACC_THRESHOLD 2
++
++static struct task_struct *monitor_thread;
++
++struct mutex enable_disable_lock;
++
++/*
++ * Enable or disable DAMON_HUGEPAGE.
++ *
++ * You can enable DAMON_HUGEPAGE by setting the value of this parameter
++ * as ``Y``. Setting it as ``N`` disables DAMON_HOT_HUGEPAGE.  Note that
++ * DAMON_HOT_HUGEPAGE could do no real monitoring and reclamation due to the
++ * watermarks-based activation condition.  Refer to below descriptions for the
++ * watermarks parameter for this.
++ */
++static bool enabled __read_mostly;
++
++/*
++ * Make DAMON_HUGEPAGE reads the input parameters again, except ``enabled``.
++ *
++ * Input parameters that updated while DAMON_HUGEPAGE is running are not applied
++ * by default.  Once this parameter is set as ``Y``, DAMON_HUGEPAGE reads values
++ * of parametrs except ``enabled`` again.  Once the re-reading is done, this
++ * parameter is set as ``N``.  If invalid parameters are found while the
++ * re-reading, DAMON_HUGEPAGE will be disabled.
++ */
++static bool commit_inputs __read_mostly;
++module_param(commit_inputs, bool, 0600);
++
++/*
++ * DAMON_HUGEPAGE monitoring period in microseconds.
++ * 5000000 = 5s
++ */
++static unsigned long monitor_period __read_mostly = 5000000;
++module_param(monitor_period, ulong, 0600);
++
++static long monitored_pids[MAX_MONITORED_PIDS];
++static int num_monitored_pids;
++module_param_array(monitored_pids, long, &num_monitored_pids, 0600);
++
++static struct damos_quota damon_hugepage_quota = {
++	/* use up to 10 ms time, reclaim up to 128 MiB per 1 sec by default */
++	.ms = 10,
++	.sz = 0,
++	.reset_interval = 1000,
++	/* Within the quota, page out older regions first. */
++	.weight_sz = 0,
++	.weight_nr_accesses = 0,
++	.weight_age = 1
++};
++DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_hugepage_quota);
++
++static struct damos_watermarks damon_hugepage_wmarks = {
++	.metric = DAMOS_WMARK_FREE_MEM_RATE,
++	.interval = 5000000, /* 5 seconds */
++	.high = 900, /* 90 percent */
++	.mid = 800, /* 80 percent */
++	.low = 50, /* 5 percent */
++};
++DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_hugepage_wmarks);
++
++static struct damon_attrs damon_hugepage_mon_attrs = {
++	.sample_interval = 5000, /* 5 ms */
++	.aggr_interval = 100000, /* 100 ms */
++	.ops_update_interval = 0,
++	.min_nr_regions = 10,
++	.max_nr_regions = 1000,
++};
++DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_hugepage_mon_attrs);
++
++struct hugepage_task {
++	struct damon_ctx *ctx;
++	int pid;
++	struct damon_target *target;
++	struct damon_call_control call_control;
++	struct list_head list;
++};
++
++static struct damos *damon_hugepage_new_scheme(int min_access,
++						   enum damos_action action)
++{
++	struct damos_access_pattern pattern = {
++		/* Find regions having PAGE_SIZE or larger size */
++		.min_sz_region = PMD_SIZE,
++		.max_sz_region = ULONG_MAX,
++		/* and not accessed at all */
++		.min_nr_accesses = min_access,
++		.max_nr_accesses = 100,
++		/* for min_age or more micro-seconds */
++		.min_age_region = 0,
++		.max_age_region = UINT_MAX,
++	};
++
++	return damon_new_scheme(
++		&pattern,
++		/* synchrounous partial collapse as soon as found */
++		action, 0,
++		/* under the quota. */
++		&damon_hugepage_quota,
++		/* (De)activate this according to the watermarks. */
++		&damon_hugepage_wmarks, NUMA_NO_NODE);
++}
++
++static int damon_hugepage_apply_parameters(
++				struct hugepage_task *monitored_task,
++				int min_access,
++				enum damos_action action)
++{
++	struct damos *scheme;
++	struct damon_ctx *param_ctx;
++	struct damon_target *param_target;
++	struct damos_filter *filter;
++	int err;
++	struct pid *spid;
++
++	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
++					   DAMON_OPS_VADDR);
++	if (err)
++		return err;
++
++	spid = find_get_pid(monitored_task->pid);
++	if (!spid)
++		return err;
++
++	param_target->pid = spid;
++
++	err = damon_set_attrs(param_ctx, &damon_hugepage_mon_attrs);
++	if (err)
++		goto out;
++
++	err = -ENOMEM;
++	scheme = damon_hugepage_new_scheme(min_access, action);
++	if (!scheme)
++		goto out;
++
++	damon_set_schemes(param_ctx, &scheme, 1);
++
++	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, false);
++	if (!filter)
++		goto out;
++	damos_add_filter(scheme, filter);
++
++	err = damon_commit_ctx(monitored_task->ctx, param_ctx);
++out:
++	damon_destroy_ctx(param_ctx);
++	return err;
++}
++
++static int damon_hugepage_damon_call_fn(void *arg)
++{
++	struct hugepage_task *monitored_task = arg;
++	struct damon_ctx *ctx = monitored_task->ctx;
++	struct damos *scheme;
++	int err = 0;
++	int min_access;
++	struct damos_stat stat;
++
++	damon_for_each_scheme(scheme, ctx)
++		stat = scheme->stat;
++	scheme = list_first_entry(&ctx->schemes, struct damos, list);
++
++	if (ctx->passed_sample_intervals < scheme->next_apply_sis)
++		return err;
++
++	if (stat.nr_applied)
++		return err;
++
++	min_access = scheme->pattern.min_nr_accesses;
++
++	if (min_access > HIGH_ACC_THRESHOLD) {
++		min_access = min_access - 10;
++		err = damon_hugepage_apply_parameters(
++			monitored_task, min_access, DAMOS_COLLAPSE);
++	} else if (min_access > MID_ACC_THRESHOLD) {
++		min_access = min_access - 5;
++		err = damon_hugepage_apply_parameters(
++			monitored_task, min_access, DAMOS_COLLAPSE);
++	} else if (min_access > LOW_ACC_THRESHOLD) {
++		min_access = min_access - 1;
++		err = damon_hugepage_apply_parameters(
++			monitored_task, min_access, DAMOS_COLLAPSE);
++	}
++	return err;
++}
++
++static int damon_hugepage_init_task(struct hugepage_task *monitored_task)
++{
++	int err = 0;
++	struct damon_ctx *ctx = monitored_task->ctx;
++	struct damon_target *target = monitored_task->target;
++	struct pid *spid;
++
++	if (!ctx || !target)
++		damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_VADDR);
++
++	if (damon_is_running(ctx))
++		return 0;
++
++	spid = find_get_pid(monitored_task->pid);
++	if (!spid)
++		return err;
++
++	target->pid = spid;
++
++	monitored_task->call_control.fn = damon_hugepage_damon_call_fn;
++	monitored_task->call_control.repeat = true;
++	monitored_task->call_control.data = monitored_task;
++
++	struct damos *scheme = damon_hugepage_new_scheme(
++			HIGHEST_MIN_ACCESS, DAMOS_COLLAPSE);
++	if (!scheme)
++		return -ENOMEM;
++
++	damon_set_schemes(ctx, &scheme, 1);
++
++	monitored_task->ctx = ctx;
++	err = damon_start(&monitored_task->ctx, 1, false);
++	if (err)
++		return err;
++
++	return damon_call(monitored_task->ctx, &monitored_task->call_control);
++}
++
++static int add_monitored_task(int pid, struct list_head *task_monitor)
++{
++	struct hugepage_task *new_hugepage_task;
++	int err;
++
++	new_hugepage_task = kzalloc_obj(*new_hugepage_task);
++	if (!new_hugepage_task)
++		return -ENOMEM;
++
++	new_hugepage_task->pid = pid;
++	INIT_LIST_HEAD(&new_hugepage_task->list);
++	err = damon_hugepage_init_task(new_hugepage_task);
++	if (err)
++		return err;
++	list_add(&new_hugepage_task->list, task_monitor);
++	return 0;
++}
++
++static int damon_hugepage_handle_commit_inputs(
++		struct list_head *monitored_tasks)
++{
++	int i = 0;
++	int err = 0;
++	bool found;
++	struct hugepage_task *monitored_task, *tmp;
++
++	if (!commit_inputs)
++		return 0;
++
++	while (i < MAX_MONITORED_PIDS) {
++		if (!monitored_pids[i])
++			break;
++
++		found = false;
++
++		rcu_read_lock();
++		if (!find_vpid(monitored_pids[i])) {
++			rcu_read_unlock();
++			continue;
++		}
++
++		rcu_read_unlock();
++
++		list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
++			if (monitored_task->pid == monitored_pids[i]) {
++				list_move(&monitored_task->list, monitored_tasks);
++				found = true;
++				break;
++			}
++		}
++		if (!found) {
++			err = add_monitored_task(monitored_pids[i], monitored_tasks);
++			/* Skip failed tasks */
++			if (err)
++				continue;
++		}
++		i++;
++	}
++
++	i = 0;
++	list_for_each_entry_safe(monitored_task, tmp, monitored_tasks, list) {
++		i++;
++		if (i <= num_monitored_pids)
++			continue;
++
++		err = damon_stop(&monitored_task->ctx, 1);
++		damon_destroy_ctx(monitored_task->ctx);
++		list_del(&monitored_task->list);
++		kfree(monitored_task);
++	}
++
++	commit_inputs = false;
++	return err;
++}
++
++static int damon_manager_monitor_thread(void *data)
++{
++	int err = 0;
++	int i;
++	struct hugepage_task *entry, *tmp;
++
++	LIST_HEAD(monitored_tasks);
++
++	for (i = 0; i < MAX_MONITORED_PIDS; i++) {
++		if (!monitored_pids[i])
++			break;
++
++		rcu_read_lock();
++		if (!find_vpid(monitored_pids[i])) {
++			rcu_read_unlock();
++			continue;
++		}
++		rcu_read_unlock();
++
++		add_monitored_task(monitored_pids[i], &monitored_tasks);
++	}
++
++
++	while (!kthread_should_stop()) {
++		schedule_timeout_idle(usecs_to_jiffies(monitor_period));
++		err = damon_hugepage_handle_commit_inputs(&monitored_tasks);
++		if (err)
++			break;
++	}
++
++	list_for_each_entry_safe(entry, tmp, &monitored_tasks, list) {
++		err = damon_stop(&entry->ctx, 1);
++		damon_destroy_ctx(entry->ctx);
++	}
++
++	for (int i = 0; i < MAX_MONITORED_PIDS;) {
++		monitored_pids[i] = 0;
++		i++;
++	}
++	return err;
++}
++
++static int damon_hugepage_start_monitor_thread(void)
++{
++	num_monitored_pids = 0;
++	monitor_thread = kthread_create(damon_manager_monitor_thread, NULL,
++				 "damon_dynamic");
++
++	if (IS_ERR(monitor_thread))
++		return PTR_ERR(monitor_thread);
++
++	wake_up_process(monitor_thread);
++	return 0;
++}
++
++static int damon_hugepage_turn(bool on)
++{
++	int err = 0;
++
++	mutex_lock(&enable_disable_lock);
++	if (!on) {
++		if (monitor_thread) {
++			kthread_stop(monitor_thread);
++			monitor_thread = NULL;
++		}
++		goto out;
++	}
++	err = damon_hugepage_start_monitor_thread();
++out:
++	mutex_unlock(&enable_disable_lock);
++	return err;
++}
++
++static int damon_hugepage_enabled_store(const char *val,
++				const struct kernel_param *kp)
++{
++	bool is_enabled = enabled;
++	bool enable;
++	int err;
++
++	err = kstrtobool(val, &enable);
++	if (err)
++		return err;
++
++	if (is_enabled == enable)
++		return 0;
++
++	err = damon_hugepage_turn(enable);
++	if (err)
++		return err;
++
++	enabled = enable;
++	return err;
++}
++
++static const struct kernel_param_ops enabled_param_ops = {
++	.set = damon_hugepage_enabled_store,
++	.get = param_get_bool,
++};
++
++module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
++MODULE_PARM_DESC(enabled,
++	"Enable or disable DAMON_DYNAMIC_HUGEPAGES (default: disabled)");
++
++static int __init damon_hugepage_init(void)
++{
++	int err;
++
++	/* 'enabled' has set before this function, probably via command line */
++	if (enabled)
++		err = damon_hugepage_turn(true);
++
++	if (err && enabled)
++		enabled = false;
++	return err;
++}
++
++module_init(damon_hugepage_init);
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+2.43.0
 
 
