@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB46FCC9A5
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:38:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 793C3FCC9A5
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B96CC6B0005; Mon,  9 Mar 2026 21:38:05 -0400 (EDT)
+	id D776D6B0005; Mon,  9 Mar 2026 21:40:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B44B76B0088; Mon,  9 Mar 2026 21:38:05 -0400 (EDT)
+	id D25556B0088; Mon,  9 Mar 2026 21:40:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A72266B0089; Mon,  9 Mar 2026 21:38:05 -0400 (EDT)
+	id BFD156B0089; Mon,  9 Mar 2026 21:40:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 97BD46B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:38:05 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A9CC1C2D3
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:38:05 +0000 (UTC)
-X-FDA: 84528442530.02.40E428C
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2E47CA0007
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:38:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uYKz3pjt;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B08D96B0005
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:40:37 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CFC01B7EB2
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:40:37 +0000 (UTC)
+X-FDA: 84528448914.19.54F96D9
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7D7CC80004
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:40:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=LXEH18Kd;
+	spf=pass (imf30.hostedemail.com: domain of r@hev.cc designates 209.85.214.177 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773106683;
+	s=arc-20220608; t=1773106835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mhrc2zSy815zRqLDWu0GrGfLpE+YR1s6BVi+lBVNCR0=;
-	b=wCi2klYWZ2nhgHRZbfRJeFHnowUiSYJvOQYahmxtq1ghH4U9rDGllSMM8rUcfenY0yo/vH
-	JOdtt/lOquzxhTj5HfLsufJvQ1/CpO4HbZg+j80Wqtll0H/7ilhq/Blj7VT4IBpD2Qhtco
-	/Jf0a3xvbXieMACZHAFCpDHQCZ5igcw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773106683; a=rsa-sha256;
-	cv=none;
-	b=UIGmck4CFV0DffqroOZievlD33CS6g6mAqA/xcDCV90vh8J94zoDPtRElZFqueTV4iC8B0
-	tFNaKIKyd6B8gbv6u+HUoog+0Ag8eh9omXPx3k+MkNq9qhB0amtmpaPCsrlyEEbrwQttBJ
-	ojSZ35Dgaa494xRuxsm+IDm1/bmocqQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=a7694XZeCof+FdxT7qTthMncnpG5NN0vfJefAJSmmkg=;
+	b=tTxpOz9XQq19b86J9FvVE5ODG4JE/HdxUZTMd3HkItPoJUaAxZW6x+rhWHbXQr4lPDQc6a
+	cYY2S0kbWUoUhMjjHzHhTg+9CPnS5p5dxud2VuXuqECxnRRg/wnOnkj9Q68rondwoyWLRm
+	2Jt85Eq3NGdX1NpZpQgrpKaIoPAr43Q=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uYKz3pjt;
-	spf=pass (imf25.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773106678; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mhrc2zSy815zRqLDWu0GrGfLpE+YR1s6BVi+lBVNCR0=;
-	b=uYKz3pjts0AQKVevUsR5Blk+N2g791lviMTe1khW8wfMFKNDc5au7EULX5JSk94/IXHHiqGxXZwiD7Dx3CVokS3HfmWRdF2mQfoTqudnXwtSHEdnahnAUL0ghAaF+d4sV7hCX+WvxRs9EXfw7H9YgER5VECqJyr1bJT5P/hSq1s=
-Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-e6KrH_1773106676 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Mar 2026 09:37:56 +0800
-Message-ID: <d6820b1e-52ae-4ef2-8342-11818fdd0cb1@linux.alibaba.com>
-Date: Tue, 10 Mar 2026 09:37:55 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=hev-cc.20230601.gappssmtp.com header.s=20230601 header.b=LXEH18Kd;
+	spf=pass (imf30.hostedemail.com: domain of r@hev.cc designates 209.85.214.177 as permitted sender) smtp.mailfrom=r@hev.cc;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773106835; a=rsa-sha256;
+	cv=none;
+	b=SHj9Mgh8akG2CpSwNZQNy7koOme/RKi4kseE9Df8+E687T3+m91QayeFPWQPr6HAoSOXL6
+	bXhPgz3gM7Z6angLc0FRq1qR9oZ0jvtnNlNNnt+x68achULBmUQtt16h8tm0a9vTJ3rBDY
+	oxizNH6Y/6wiBGpXSG1X5bp9wQhED1g=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ae5636ab04so89627095ad.3
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 18:40:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1773106834; x=1773711634; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a7694XZeCof+FdxT7qTthMncnpG5NN0vfJefAJSmmkg=;
+        b=LXEH18KdKY1ubYMkrPK26yxd29J315q3it3021rDVE3tn2/xVY30a3pFZmO/ZNRQZq
+         KH1I7LmH1hKDEJb1fzSyYoYTCzp8Gc3B/C04OXYEHIdbsyk8oVWmMYO1EsVlnaw0sUn8
+         Lay0bA0k3CA/tqBvmVZDP6cWtjoPm8DruEbNXyr5pbLC40MzHuPSKhBxOhEC9VFRZs6G
+         +Zc9THtht+GTm9zXizL3cE5+PM2nefwS/w73GC19LGbplC4enTvBp5jXlQ7OJIhQejxH
+         uSl250IsTY+LyzX3TbUuN+sxAMP5oBNOwd4zXRoCuiWVKgED73y6u3BwVZ2//MCXi49T
+         Z48Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773106834; x=1773711634;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a7694XZeCof+FdxT7qTthMncnpG5NN0vfJefAJSmmkg=;
+        b=D5bePuZ7vZdHnNIgCQLzBZE5teMKdZkXJ93tHjQqCjceJredZLkRbFG/kytePc5Ddl
+         xdkw7xdqZaX2BDjoX38SuFCq5tOI+Kr07VqI9wkd6JR57wzNGHmX9IINdw2JprQ8Acyn
+         1Oq8O19avSWY1m+ITcDNdqQ97LczlFfBMsTaj5OCxiMmtMYg2B7jISfn6dCqzrD99Vij
+         3WEfot8i9evE+zlmoPviUJLJGxl8kEV4GHV+RgMx+88CB+huXrAxudqXGwlu/IxvG2HX
+         /F172F41g01pmHUDI2TY8RkpU4HYYJU4Ide3DQey8gQJH1lkBsGwCfc0GyL9u3GNs5yh
+         cnTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpaFGBZkG2/hXaE1nf5OgwK5/6n2sRsOfSZhGI1n/t49ctjDYMOQhwgpFxVZZYOgsfEGj+JXMJcw==@kvack.org
+X-Gm-Message-State: AOJu0Yw0Yt1iSyLTPeUu7FnXbyMUbwNf59pURiwzwFiD3wB0KKST8DMC
+	cHd3vc1TQVc2RodrzwYMPWr2Ie/wYwR4yx4iIcL/YFZjAQzEKdwW8xEZOYekwIv8UIA=
+X-Gm-Gg: ATEYQzw9K9HzXsf2NXYylf5Nlmx1Paj0QDn7cR/Iu0q0rwbz5+IUg7ljVEJU6LWOMt3
+	V5bEAWSLWy0GEOASpSO/iec+DEXaJIS6r/Ipj/ZBZvBr1v4tFiNANwbkXc1XxC4lxmx/pHK50Yy
+	+gJqsinEAzKNINHf+l1n7RgMnxSO6n1kKLpZHwOkfipRw0qf+RLL+o8fYnU8k46UVPyVqxll7Cq
+	5NerjH3LhT9mX9mQA4mxaKL80aWfIS9qQPasyV5hGMjiCYxoOocLVX/bsHWI59VyBJRtBKCiEBF
+	IyoapRS8nD/YpVvGxCYAXUNLNIWKyXYzWoX7o3De+NKRB0FRm+RrBomibknYUblE9hgMvy1z3bl
+	FsIZJMtywHbPk2chizgTDgI1Jj/pqz8kWt928Zrs+WXo0qh878ZK9grfx3DJAEB6+gAN28c9Ulj
+	0xi7j36Xfz
+X-Received: by 2002:a17:903:1968:b0:2ae:8062:8362 with SMTP id d9443c01a7336-2ae82266d9fmr126325985ad.0.1773106834233;
+        Mon, 09 Mar 2026 18:40:34 -0700 (PDT)
+Received: from localhost ([2400:8902:e002:de08:5754:7dac:85df:935a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aea3d26565sm6966515ad.2.2026.03.09.18.40.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 18:40:33 -0700 (PDT)
+From: WANG Rui <r@hev.cc>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	WANG Rui <r@hev.cc>
+Subject: [PATCH v3] binfmt_elf: Align eligible read-only PT_LOAD segments to PMD_SIZE for THP
+Date: Tue, 10 Mar 2026 09:39:58 +0800
+Message-ID: <20260310013958.103636-1-r@hev.cc>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm: rmap: support batched checks of the references
- for large folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
- willy@infradead.org, dev.jain@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
- <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
- <CAGsJ_4yEWn3kVZPQZatOJX7NLLv-OK9pAqUDuWz25XxG5hpV=w@mail.gmail.com>
- <a4d7cf56-eab4-431d-886b-a32456e44736@linux.alibaba.com>
- <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAGsJ_4woBVQdYcCbN1Btr2vxOL8OAujaHkNZZ41=S-TdNh-wbw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ycgf8tmysaw81ga8kh8gk77bcw7icif6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7D7CC80004
+X-Stat-Signature: pj3hyecam1qxjf1hsotzjro8gnfd4eiw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2E47CA0007
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773106681-42814
-X-HE-Meta: U2FsdGVkX1+v3wrNOwiWwmK28dYn7CoaO9wmtdweZW3fWXvh9f1AaBSC/WjujmXqvXtqXdFnvER3H4oaOiPd1JlqrwBbb48izPDBT9FqXfOjpbJagEqB9tlRObvDBJCDS4jwPprKZA3HFZAlxLuVGTQC6g08fxfjurV5q60HAzLq66ARemt7l6r3jLEjGiXRnLm3xTJSSkfLYBIuzvSPKYjLhf+Z42sofGz1KLczDNwRntdrpU1iMwOzKVrDzxOddWFnuy2SEDRZ5DZO8Mf77zNq4WcFzn2gjNvKwEhX8Q4pV9ju7MxWVxIksnQeTHDuqCVywbu7v2h0oXT9nUunfV0eVu7edl7L1YL8Cn/TR2hqrOyjhoMvYMGId3biHhPcpcLp1PFCWEkeBF9j41ZsK8r0grKVVtulclxMhnZxaEXW0uaDg5o3nqGIUwoNjydKEgpdHq4j+QW7ckLq/qyaxFJYkPSqwRYy5Zbndhqe22NA1+02n1qCUmoKLMEAqA4J5Pf9K8RkApKFCdUuLidT/Su/nWmBBNX7xZyM+/K3Ma/KrY5BSfjHZ6iK/UJavpM1meRXJuIRhuQymqCbl8QDj9fONAd+IGBnNVJO2Q5Txmd6wmNgwSuncCkshkBGNENneeWcR2k0XpVAGp5ncTMkXQgLkv/UNke2+GsR92o470LIyjlWTSyu0b4RZXoF3HnnCaboj3XWI565vPpQWykfUBGZ4KS+pNjisCzv72ahDvp2P2lzqiNaP7mQfeCpYcxcu3nplIlUx1M0RUouSMoirEK9yvwJWowxJhPCzjkP6qC3jbLueeWCslzuQvsohXSS6TQGPZjvEmIM9Q4NDVfaZwysdb5kdkJ8SPssZzEjbcUTJCQnrK0XzeTDtAxecx1DMgDmy2nEO4zHh7gD6OfYP9wcXAanVKyqsgJFG72t6cwjIsNNt7bz+IvZ8+vp2cPzQIepPy50exWhSyqaKRn
- 8ewTx2de
- ZcJuRQACWB+9PwFS6wfyulWai1EcoXC0umJVNzloFwcgAouYHXGWtPZpc1KG65NL9qY9J3nsJl9W+I3Go42E90Oemv7wnr9S1RIAfPhIGIcOBcD85CGR9O2dNoxVHM3iM6JPutqXVACEJ5V48ujwcUMEaD6/zFM50qbReTwiB5hMnFcyeIQ5EVFFIrfdP3DtXsX5LJyk6M/IwVeo5iS+/EwqftpXI4aJq4xSxtGewQx+X3YnMdBOf9yvHcbsGs6kg92YKVtJGWqCFqNWpbUR4LkETtBlBGHkPMqiE5Zl8aWXgVcLY98KYh5pWWt9oiHDYyTbPf2x1kNB4j9+5VTHrTMcc6g8nYL27iYdgGWRYRRCdN4GYi6rotnKtUXQ23OMxhJDp3z50oeG8DR+TVbrbMOfZg78q269T514u81KzUcqzRD/KQxqMyWfvVMYsrgab5F+I3IgDKWct7G4/4uYqwm1hew==
+X-HE-Tag: 1773106835-535790
+X-HE-Meta: U2FsdGVkX18BjMxjNrRvBpiGrxs7BZwnBl6CbHdUEWLnnpuvABSbT12TghB/2c1ri4beMIpVYB4XPsi12ncmZ7NCL9ycEL1c2U3ZaQtvdcz8qdhE2L4RW8agNMgwrZAaRTbAqg7shbsMn9X9rNDCPZDeODgPduAoBktKjXtxnBcKLJWs8q7oc0gLIEl/ns2MgpedChQwcvJyaUeW9KLeXtC8LCfpu9eIrbJaptTjQMdWDkiR3qNYciSx15hOBZLZZZenjFTNuDIMjXfkLsEllYBR2OqZ0KeU73wgJOuatTLAaSBHZh5A4tUtNez3upxf6HdClfIk4/BbYlGi/avY2vhoUnwDf8NZrugInzHsDrULGeZ0rwBxpIaMXID7S0g0VgAU0RIOb0vTOhqafRvhF5SK08x2wFGyzRLjZYNsUmUzVcNOaK6EM9f2enkrSElmXrY3jW5GKe0LryEqJpcPrRy9evc6z901PqqlDSXtil6ksEWkTBL/RspdG9uFFUOlTdvRUU+C6zXjD4mZ9vIueyFRxPGIXQmfFPOasOtpLA4k54GgNyNDtwDxlZvFW8V1ig4uOhg/811Ibc+cwLVjuLWLSIpojIXy9Vv61eyhZZ/1oDFCY7FzhGcYdJzN0xgLtseIl1/gpqKxACzqGSN/gjQOKYtd6WNBLK8wNkmTHsRMERusIsGt3DJ83SQIbcCjAOR4M2V/0GDRCqRCjL1jz7efliuP26454onEDSz8ZchUURQtTpQR2HHUHSbWhtxOWwNQtKkdo6MTkdnJ95Wx4KvLvZ1Tii6veQg5T3tcrRBfRVsskVjGl09h9r4MTBmgUcscBgwiKPLn+J4YBjH2ecjxj7RpRR3xwnK3F8g0/NwvxD/RJk8e/gpLOuECzzizJUG/w32U0l/TbscR+y+PzOoiY0tLQvtSYKNvsO59OPi5JEU9RnMfnioH7vVjDm6+3niF8DRwukNIrixyRff
+ /zTbxp6R
+ x7DMtcnCav+8gdJycrhotyneE6kF3gO3crik9Ixcm8cDEywtXzqlUyZMrviDwc2TCmeu+geBBlDwcsg9JZu6f3N89FtDLexK4G7NGZj70FuKt2DMfGCylnF/GcjCSms1YE3La0V/+w3ZdnIv3pmnmOb/vQZUWnuVtoDHvtDB8M91dRrIyZjIMXJBl/fD11tzyjnSL/aj/MfqzadqEpBGd/RjBUO8gnxpNIMmHbZPnexOfBXOrzkDLnAa5borJX4Tv8qHmhJVYsaKxFuRGhyzYNyXiVe6AEV6iFXM/EPeA+ADWCZE5mZnFQAHPs4sNPdl0FLosk5hDcuyvc9xqNx9CTD/24dMqxpLzpixFu37IBztSzV2ybcPKP4eNtWDQGvCzfjApOfMhAJCiDoFbdu+6xCqSBsUrU0EGm0U4BNHj2fU31TDGHLS10z3lL2MgzGOSDzad2EcUUVCe70bHXWXjzEcgtWGs43NFkq/XPTtgLFoDnyAHhKHLUfM2Ofl+Hdb88jHF+nfi6X9/Uzj9ziK1O6JgII4tcCRrbcJGHCmfutm+WQdfjG/u4/0r571LTxl4SsHhpQtZTfyH+d5jydoBXIKDyJ18ZjLRyHg5wIiuCIFa4JydytsDP/OKknopjpbQs7k2WBPfwyke7fU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,162 +121,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When Transparent Huge Pages (THP) are enabled in "always" mode,
+file-backed read-only mappings can be backed by PMD-sized huge pages
+if they meet the alignment and size requirements.
 
+For ELF executables loaded by the kernel ELF binary loader, PT_LOAD
+segments are normally aligned according to p_align, which is often
+only page-sized. As a result, large read-only segments that are
+otherwise eligible may fail to be mapped using PMD-sized THP.
 
-On 3/7/26 4:02 PM, Barry Song wrote:
-> On Sat, Mar 7, 2026 at 10:22 AM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 3/7/26 5:07 AM, Barry Song wrote:
->>> On Mon, Feb 9, 2026 at 10:07 PM Baolin Wang
->>> <baolin.wang@linux.alibaba.com> wrote:
->>>>
->>>> Currently, folio_referenced_one() always checks the young flag for each PTE
->>>> sequentially, which is inefficient for large folios. This inefficiency is
->>>> especially noticeable when reclaiming clean file-backed large folios, where
->>>> folio_referenced() is observed as a significant performance hotspot.
->>>>
->>>> Moreover, on Arm64 architecture, which supports contiguous PTEs, there is already
->>>> an optimization to clear the young flags for PTEs within a contiguous range.
->>>> However, this is not sufficient. We can extend this to perform batched operations
->>>> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
->>>>
->>>> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
->>>> of the young flags and flushing TLB entries, thereby improving performance
->>>> during large folio reclamation. And it will be overridden by the architecture
->>>> that implements a more efficient batch operation in the following patches.
->>>>
->>>> While we are at it, rename ptep_clear_flush_young_notify() to
->>>> clear_flush_young_ptes_notify() to indicate that this is a batch operation.
->>>>
->>>> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
->>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>
->>> LGTM,
->>>
->>> Reviewed-by: Barry Song <baohua@kernel.org>
->>
->> Thanks.
->>
->>>> ---
->>>>    include/linux/mmu_notifier.h |  9 +++++----
->>>>    include/linux/pgtable.h      | 35 +++++++++++++++++++++++++++++++++++
->>>>    mm/rmap.c                    | 28 +++++++++++++++++++++++++---
->>>>    3 files changed, 65 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
->>>> index d1094c2d5fb6..07a2bbaf86e9 100644
->>>> --- a/include/linux/mmu_notifier.h
->>>> +++ b/include/linux/mmu_notifier.h
->>>> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
->>>>           range->owner = owner;
->>>>    }
->>>>
->>>> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)                \
->>>> +#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)  \
->>>>    ({                                                                     \
->>>>           int __young;                                                    \
->>>>           struct vm_area_struct *___vma = __vma;                          \
->>>>           unsigned long ___address = __address;                           \
->>>> -       __young = ptep_clear_flush_young(___vma, ___address, __ptep);   \
->>>> +       unsigned int ___nr = __nr;                                      \
->>>> +       __young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);    \
->>>>           __young |= mmu_notifier_clear_flush_young(___vma->vm_mm,        \
->>>>                                                     ___address,           \
->>>>                                                     ___address +          \
->>>> -                                                       PAGE_SIZE);     \
->>>> +                                                 ___nr * PAGE_SIZE);   \
->>>>           __young;                                                        \
->>>>    })
->>>>
->>>> @@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
->>>>
->>>>    #define mmu_notifier_range_update_to_read_only(r) false
->>>>
->>>> -#define ptep_clear_flush_young_notify ptep_clear_flush_young
->>>> +#define clear_flush_young_ptes_notify clear_flush_young_ptes
->>>>    #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
->>>>    #define ptep_clear_young_notify ptep_test_and_clear_young
->>>>    #define pmdp_clear_young_notify pmdp_test_and_clear_young
->>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>>> index 21b67d937555..a50df42a893f 100644
->>>> --- a/include/linux/pgtable.h
->>>> +++ b/include/linux/pgtable.h
->>>> @@ -1068,6 +1068,41 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
->>>>    }
->>>>    #endif
->>>>
->>>> +#ifndef clear_flush_young_ptes
->>>> +/**
->>>> + * clear_flush_young_ptes - Mark PTEs that map consecutive pages of the same
->>>> + *                         folio as old and flush the TLB.
->>>> + * @vma: The virtual memory area the pages are mapped into.
->>>> + * @addr: Address the first page is mapped at.
->>>> + * @ptep: Page table pointer for the first entry.
->>>> + * @nr: Number of entries to clear access bit.
->>>> + *
->>>> + * May be overridden by the architecture; otherwise, implemented as a simple
->>>> + * loop over ptep_clear_flush_young().
->>>> + *
->>>> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
->>>> + * some PTEs might be write-protected.
->>>> + *
->>>> + * Context: The caller holds the page table lock.  The PTEs map consecutive
->>>> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
->>>> + */
->>>> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
->>>> +               unsigned long addr, pte_t *ptep, unsigned int nr)
->>>> +{
->>>> +       int young = 0;
->>>> +
->>>> +       for (;;) {
->>>> +               young |= ptep_clear_flush_young(vma, addr, ptep);
->>>> +               if (--nr == 0)
->>>> +                       break;
->>>> +               ptep++;
->>>> +               addr += PAGE_SIZE;
->>>> +       }
->>>> +
->>>> +       return young;
->>>> +}
->>>> +#endif
->>>
->>> We might have an opportunity to batch the TLB synchronization,
->>> using flush_tlb_range() instead of calling flush_tlb_page()
->>> one by one. Not sure the benefit would be significant though,
->>> especially if only one entry among nr has the young bit set.
->>
->> Yes. In addition, this will involve many architectures’ implementations
->> and their differing TLB flush mechanisms, so it’s difficult to make a
->> reasonable per-architecture measurement. If any architecture has a more
->> efficient flush method, I’d prefer to implement an architecture‑specific
->> clear_flush_young_ptes().
-> 
-> Right! Since TLBI is usually quite expensive, I wonder if a generic
-> implementation for architectures lacking clear_flush_young_ptes()
-> might benefit from something like the below (just a very rough idea):
-> 
-> int clear_flush_young_ptes(struct vm_area_struct *vma,
->                  unsigned long addr, pte_t *ptep, unsigned int nr)
-> {
->          unsigned long curr_addr = addr;
->          int young = 0;
-> 
->          while (nr--) {
->                  young |= ptep_test_and_clear_young(vma, curr_addr, ptep);
->                  ptep++;
->                  curr_addr += PAGE_SIZE;
->          }
-> 
->          if (young)
->                  flush_tlb_range(vma, addr, curr_addr);
->          return young;
-> }
+A segment is considered eligible if:
 
-I understand your point. I’m concerned that I can’t test this patch on 
-every architecture to validate the benefits. Anyway, let me try this on 
-my X86 machine first.
+* THP is in "always" mode,
+* it is not writable,
+* both p_vaddr and p_offset are PMD-aligned,
+* its file size is at least PMD_SIZE, and
+* its existing p_align is smaller than PMD_SIZE.
+
+To avoid excessive address space padding on systems with very large
+PMD_SIZE values, this optimization is applied only when PMD_SIZE <= 32MB,
+since requiring larger alignments would be unreasonable, especially on
+32-bit systems with a much more limited virtual address space.
+
+This increases the likelihood that large text segments of ELF
+executables are backed by PMD-sized THP, reducing TLB pressure and
+improving performance for large binaries.
+
+This only affects ELF executables loaded directly by the kernel
+binary loader. Shared libraries loaded by user space (e.g. via the
+dynamic linker) are not affected.
+
+Benchmark
+
+Machine: AMD Ryzen 9 7950X (x86_64)
+Binutils: 2.46
+GCC: 15.2.1 (built with -z,noseparate-code + --enable-host-pie)
+
+Workload: building Linux v7.0-rc1 vmlinux with x86_64_defconfig.
+
+                Without patch        With patch
+instructions    8,246,133,611,932    8,246,025,137,750
+cpu-cycles      8,001,028,142,928    7,565,925,107,502
+itlb-misses     3,672,158,331        26,821,242
+time elapsed    64.66 s              61.97 s
+
+Instructions are basically unchanged. iTLB misses drop from ~3.67B to
+~26M (~99.27% reduction), which results in about a ~5.44% reduction in
+cycles and ~4.18% shorter wall time for this workload.
+
+Signed-off-by: WANG Rui <r@hev.cc>
+---
+Changes since [v2]:
+* Renamed align_to_pmd() to should_align_to_pmd().
+* Added benchmark results to the commit message.
+
+Changes since [v1]:
+* Dropped the Kconfig option CONFIG_ELF_RO_LOAD_THP_ALIGNMENT.
+* Moved the alignment logic into a helper align_to_pmd() for clarity.
+* Improved the comment explaining why we skip the optimization
+  when PMD_SIZE > 32MB.
+
+[v2]: https://lore.kernel.org/linux-fsdevel/20260304114727.384416-1-r@hev.cc
+[v1]: https://lore.kernel.org/linux-fsdevel/20260302155046.286650-1-r@hev.cc
+---
+ fs/binfmt_elf.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index fb857faaf0d6..a0d679c31ede 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -28,6 +28,7 @@
+ #include <linux/highuid.h>
+ #include <linux/compiler.h>
+ #include <linux/highmem.h>
++#include <linux/huge_mm.h>
+ #include <linux/hugetlb.h>
+ #include <linux/pagemap.h>
+ #include <linux/vmalloc.h>
+@@ -489,6 +490,30 @@ static int elf_read(struct file *file, void *buf, size_t len, loff_t pos)
+ 	return 0;
+ }
+ 
++static inline bool should_align_to_pmd(const struct elf_phdr *cmd)
++{
++	/*
++	 * Avoid excessive virtual address space padding when PMD_SIZE is very
++	 * large (e.g. some 64K base-page configurations).
++	 */
++	if (PMD_SIZE > SZ_32M)
++		return false;
++
++	if (!hugepage_global_always())
++		return false;
++
++	if (!IS_ALIGNED(cmd->p_vaddr | cmd->p_offset, PMD_SIZE))
++		return false;
++
++	if (cmd->p_filesz < PMD_SIZE)
++		return false;
++
++	if (cmd->p_flags & PF_W)
++		return false;
++
++	return true;
++}
++
+ static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
+ {
+ 	unsigned long alignment = 0;
+@@ -501,6 +526,10 @@ static unsigned long maximum_alignment(struct elf_phdr *cmds, int nr)
+ 			/* skip non-power of two alignments as invalid */
+ 			if (!is_power_of_2(p_align))
+ 				continue;
++
++			if (should_align_to_pmd(&cmds[i]) && p_align < PMD_SIZE)
++				p_align = PMD_SIZE;
++
+ 			alignment = max(alignment, p_align);
+ 		}
+ 	}
+-- 
+2.53.0
+
 
