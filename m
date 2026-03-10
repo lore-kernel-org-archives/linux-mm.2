@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD24EFCD9F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 09:51:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF2CF3C27D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 09:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 922856B009D; Tue, 10 Mar 2026 05:51:17 -0400 (EDT)
+	id 8334B6B009E; Tue, 10 Mar 2026 05:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B3806B00A0; Tue, 10 Mar 2026 05:51:17 -0400 (EDT)
+	id 7CEDD6B00A0; Tue, 10 Mar 2026 05:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CEF56B009E; Tue, 10 Mar 2026 05:51:17 -0400 (EDT)
+	id 5D7F16B00A1; Tue, 10 Mar 2026 05:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5992D6B009D
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 05:51:17 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3DFD596DE
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:51:16 +0000 (UTC)
-X-FDA: 84529685352.26.2C4C5F5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39ACF6B009E
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 05:51:19 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EFAA31B820C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:51:18 +0000 (UTC)
+X-FDA: 84529685436.19.9D04809
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9E65E140008
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:51:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sMzY4G5i;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf23.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+	by imf28.hostedemail.com (Postfix) with ESMTP id B5575C0003
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:51:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="l/QIJccT";
+	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773136274;
+	s=arc-20220608; t=1773136276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QGi1qF8PiOKDYjAiPGpA3ncjmf9jwUTDw9NnQ+rBsyQ=;
-	b=ySsirD9jc49Huzjw6E9wZZahoWpXzc900sSXDkxOf81IdqgdVlT3IT6B0Ca61ZQJVo6R+f
-	7mVgEbAK9m1uyFWIDKau9hkrV9w1R1LCLPRDlYOS7oiPzPErDbbuwnLdzEiBEDtWYcqo+Z
-	TnKybjaNDpFoe1Fr7DDG0tYMM3jxN4w=
+	bh=CEIPjtg9gWEbVKB/YcF/D7E+rwK4lFNKPSL1ENPVeB0=;
+	b=Ri9JoLA04JQmIoxuJRmfCPuOqEWi7Wn2d4lgwuJ6mm04Z4QA0Bdpe+ewZAewQQEEC/Jd4E
+	0o4tfjj3uY1r4sj2xW9k+84RKSch2NqmrTgeIoCD+YSRAzyVQlNX9wS3O1t1ATFwjh3Spp
+	LZ3tQLO18yiCwoS/4EeL7TbbefdJtKQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=sMzY4G5i;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf23.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773136274; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="l/QIJccT";
+	spf=pass (imf28.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773136276; a=rsa-sha256;
 	cv=none;
-	b=vxY5g1ukoX5RdteGVDC/Tc/vqCdUJAqOY1JGejKAtG276Ax9rtGWxl8K/Swnm/34VQ5eoj
-	NGjZY3ld/e/go7eraaJ5pm4VpwXwQVvBjZB3rvBfTq/PXThxp/o36GvgfKHcnhKCxyW7Xm
-	vGM6kzH4lScxPbXYIMSAQAOGXvJ6u2c=
+	b=QFSsSvRcbCNUQGGKkyqEKEzwO17tSfNi0TIXUBx7HmHCMFJ8u/EpsZ96mZBbL36k5lwcDu
+	0XMZ9J1Zhb7YbRNmTMn8shWivFsTnBv1BYIMSESLRFbeusUuYF5ARpFu7BFLMGJd0cjs5A
+	aiiPiOksGgrrUF1xei6LKbG6a/ATGsk=
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A87eRb1651541;
-	Tue, 10 Mar 2026 09:51:04 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62A9jOl51527158;
+	Tue, 10 Mar 2026 09:51:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=QGi1qF8PiOKDYjAiP
-	GpA3ncjmf9jwUTDw9NnQ+rBsyQ=; b=sMzY4G5iyi+sGubv9NKWyKBvm8brljeKp
-	Ha9S2d3pXst/fNP4ahAd4IqrMJ+bgzSqg3ynV2SQDUyBaHMUcp7A2XOGWhtvEaN3
-	X4v0/NwRkmVQyeevTIybm8gNkEFmIQzLPi4wzwTzPeqAONqVxj1khOmvlMe+8v+q
-	udpHZ2xT6jWFNSg4ZUMD09NmYnQ3qzNpH/vQnFp9gtzAu/HFlQZGrFDQcN6z+VKK
-	LUSAygctFY5ITAfllyfYkC8ZE7CpUIoIh1LsWTQcaDjur4ZZJFN/p9Fr76ZSm8dz
-	l5bC7EKpQxbmPewGnwycroVsHoG9TG4Mqqf9U4da8UP1x8y2wNpmw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun9yg9-1
+	:mime-version:references:subject:to; s=pp1; bh=CEIPjtg9gWEbVKB/Y
+	cF/D7E+rwK4lFNKPSL1ENPVeB0=; b=l/QIJccToUTlkUvQ7YzQ8+MfV7GA+vmCJ
+	3K7lV1/LU5b4Z2Nwi1G59oL/iq9DoVfMmNg7ZihCtJ07fYqYpkkBzsI4PnU0+RBs
+	AJiemloCxZFrHfxwhCRo34evbtMaeBxnHpVpUJcGiriniS9lD0AThXE7G/oFXlD8
+	oPh6mXBj/oiQA7I0ImTDOOFLzWlNfp15y9Likg9zR11pxFYDo7Nv0rseS3Uw1mO1
+	bDNzWgnI8mwXBfRoj3N4kKwUHMhCl5atfzxhzkwWVTSuB1D24dFaThKZ5Klj/l0+
+	rR7E4U4JmeUL/FlX9lWUq/wgEhga2udtbP8vlj89S/C/c0uTHdLmA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4crcun9ygn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Mar 2026 09:51:04 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62A6FAnD023022;
-	Tue, 10 Mar 2026 09:51:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ct8ng1gja-1
+	Tue, 10 Mar 2026 09:51:10 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62A7K7Od024657;
+	Tue, 10 Mar 2026 09:51:09 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cs0jk0chq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Mar 2026 09:51:03 +0000
+	Tue, 10 Mar 2026 09:51:09 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62A9p1Ot52035974
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62A9p7Fh48103760
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 09:51:01 GMT
+	Tue, 10 Mar 2026 09:51:07 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7833D2004E;
-	Tue, 10 Mar 2026 09:51:01 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BA60F20043;
+	Tue, 10 Mar 2026 09:51:07 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 590EA20043;
-	Tue, 10 Mar 2026 09:50:58 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 10C692004E;
+	Tue, 10 Mar 2026 09:51:05 +0000 (GMT)
 Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.in.ibm.com (unknown [9.109.243.201])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Mar 2026 09:50:58 +0000 (GMT)
+	Tue, 10 Mar 2026 09:51:04 +0000 (GMT)
 From: Sayali Patil <sayalip@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -95,9 +95,9 @@ Cc: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
         Dev Jain <dev.jain@arm.com>,
         Muhammad Usama Anjum <usama.anjum@collabora.com>,
         Liam.Howlett@oracle.com, Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH 09/13] selftests/mm: skip uffd-wp-mremap if UFFD write-protect is unsupported
-Date: Tue, 10 Mar 2026 15:19:27 +0530
-Message-ID: <afbe6bf8ca508d810bc1c9d749483711edae9751.1773134177.git.sayalip@linux.ibm.com>
+Subject: [PATCH 11/13] selftests/mm: fix double increment in linked list cleanup in compaction_test
+Date: Tue, 10 Mar 2026 15:19:29 +0530
+Message-ID: <00fdaa3c84427958f51eaefa7603094a090fcebc.1773134177.git.sayalip@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1773134177.git.sayalip@linux.ibm.com>
 References: <cover.1773134177.git.sayalip@linux.ibm.com>
@@ -105,20 +105,20 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: SWxD8bpKaqy-0dfV_GENQ8P_aUbhnGDw
-X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69afe988 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Proofpoint-GUID: kixY2zL5yaEAA-mD1ndaixXgGIqUzKp5
+X-Authority-Analysis: v=2.4 cv=Hp172kTS c=1 sm=1 tr=0 ts=69afe98f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=smpEqqgnm6pLQfsEXf8A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA4MSBTYWx0ZWRfXx8Ggp5UJeC3z
- bgAh9pD69SkCLo8vgYvemGu1LTiQSgaa/rSo8xXVb2EstW+bSjSzyfYlB/1qzU61owb+pqRP2NW
- 9Nf5R4POWnv52IeANqEcmIl/6NexdPheiiqJEjSIqYTiTPNXfZSMf+WZD1ZzzcjdWdG0GjxDBXi
- QUmu8AukMRncSuB5NzBCkI3rmVN5qhtuSsO88kDdxemyKPA5HDEYLARN3Wj3TKC7xpUaIMxIC8e
- 7t4MZoleXLLeRgnvnpFaLX/cMJ6dOsSOWKWzfm6NEUYKoxNMmZ6zKOXG5QQ6wEI1PHFrDCIozl0
- eR0cDgWsz3Iqs4/wZcUUwFIcJ/KkuQ0WlYCl8MxKMB/t4SALkJq9KbUoiDLiV0mBj6nZIier+hr
- suwscYiNuQ4bJG/y+xCq9nnmZweNXtCy4IXbkzYz0mVOYXMpkRbqKemPXx0Zfgy8sdIjJGPVptV
- /U/tvLIfXTjJZiV4G/g==
-X-Proofpoint-ORIG-GUID: K3yND6Lm82jlVHKWL0E0jpjFajuQexdH
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=kdAlEqw6soqvCZangacA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzEwMDA4MSBTYWx0ZWRfX17VkN1Q7r02q
+ jQ+WosVzNNvXYvzljn437YUOvwzbMVuF1NDDeDd+NHx/NL+Dk8Fr4pZGko8Ehad1ZnUP6SXCTtK
+ +vsLDtyZD0auZ+dauHzB77mfUM4cc5EG35+BFdOGkZC7cJL2uuCePtaAJfjd57w9K49OIzIZwxz
+ 5I//WGZuORXbz2XMhNbbvfHqrKXrYcu2fmIcPKEcM+sfNfujxhvGTMEIYUxn8A8aeP0qmfPwBaM
+ VJxLeqJaLk8lRvpC1ODvcqvSVAdojmjC6IDASLrj1ufuE2aAaI0yqzirmR7By33wpOPBv8NdhJe
+ COjlD1MsCopFJQ5uVwF3gChuZY2dGxCpO8nfUdwEoCG1HVkAdfoO2C6puxKBJFPANDhARwdfAHu
+ mFQp8rGT9fi9Hgub1FPbtxQ5PMvV4RzKZOX/Vv3+FQHWu24QSW4POdnNBc5HUk7M0v31EktwAWp
+ k5hZmCo9PJRASEeWBjA==
+X-Proofpoint-ORIG-GUID: 5P0GG_ESkEJ6a8EgrkO8kdbULkt_VrU0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-10_01,2026-03-09_02,2025-10-01_01
@@ -127,14 +127,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  spamscore=0 phishscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603100081
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9E65E140008
-X-Stat-Signature: whuzca5s33zaciow9j3aiimo1htx7gwq
+X-Stat-Signature: unwj4kp84uyuhmj978dan8rwzu7xhogt
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-HE-Tag: 1773136274-105940
-X-HE-Meta: U2FsdGVkX19LbUxY+dCyR0HsAlb3GOXj7bVit1WE7I0yU5kF46sS+83istIfQdB6hAzkv3ww/tHeC1JtG6jeng6L04oH7TUd8cEFO3OcUPHBh+K9mnSsjS5L6wS9HwtRsa+jWFTdPnWRDH9QM2829Pj1SWafjdJ3aso7gq+cJostIGWCf9eyH/NnvUmItyU6SpqexPLkZuWULv7Z/bRzK+jg7y6N8lcrZknmBnmosasaD/piIH/f8rr0yBKrL3sVkjfs/yWe0f74PuCeJMwS33uk2wpRgfd5rdRqfvVt/ALzlSJ/UkDpvlnCa/Dmt3w67dydrSRgxZszPsy8wqn8tkukcYQi1dzdWA2r8QHovWX/QFPT5pKNT4JsnL+Q+ns03dInHlnCA2vSnKW47luERn46LBTwwbk+f6zplFLw0u60WWddxM+MWCF3ei8DKNgA+GCD/F+ElKeOmFiLtEeEefXJQpucNmaFBUwX2i+FlAvIjwoj9zin7+PK975XozPjXBxrpk6q8BgAP7kza/WLs10jNNSproRFW1skwlioEJ0MzZ1Dk8zp045CxbZvQNTU0GE0Nw5ArHT6XRQH3pDmUbeoHtTFKn/kDt9knOXNyssNgqGo3UShZ+j8eD+hpRwnLYFdZwAlFYKxIlP7OYRJXimgoL21oIZZCUqp17AhMGiI5r6NA+piiF4vsYjMOn41QrHQOUCpDiaq8SJRw994Xb7z+zj3gImLv1RPvI3sbqJi9R4TEg+BbrHGgBMs+Z5WxaHCrGX9XJJ91CmlfnqHKAn2Td9IkbuE3W+oBCPDZxYB4qIUSHQczryYM+NaLkDzKBoaXyNLykAaAoVyBEAXI0JDzK6+q9aC8symnyA4/FWqksUPnfne+JarXkk8pOtY3TQb+3A2Bi+2jy8++Y6Z90t6S1Vw/iVakJzK/vmv1+Eo0ItvSkoFt3G/rxI7XQUCuZ6ALV8ZawqWUSqVBYG
- 64uKkibv
- sqm0d3/9bBwbt+zeB04h08hlV/9oT8BQ4h6J/RlnAshDWq5nJPIZM8/aK7/cEQJVkOmQie0YsH43BXpIuy/AC3+yQmOLuruWAtnK4ZbR+M4OEtIk+PEZudvGCakf6fffS+vQeniQ01ctBaOAyjvPQEUM3hn+z+3WZRrBjbUVFFyfhozqxWBkGC7WVt64e6Et53ID7VIAS2XQl3clP0aaNScOlw3uplFfJBmryl3c1LuXKs2q+mZkE1zhSd+yt3l/z/7f7zEFwoa+DFigK3vaIkaETvA==
+X-Rspamd-Queue-Id: B5575C0003
+X-HE-Tag: 1773136276-274344
+X-HE-Meta: U2FsdGVkX19SFXg/70iyenbnxjJQsKka7yEeOei3vrVPW91VLDfHy7moA5Zvm/kgYdPfNxnkbd6FxqRpoOHeG4i1my4+2uNypudy7SZi8GxUt4NZzUJAjE9jEP0quv2BMHJl8DIMJsal0dGpmgcW0UjTRt5+qlALBgn+npVnPGr/WA4kPbzd7MXMmh+/Kut31MLe9nloiSH4jz3L19LHOj8/TfiT+stRHn5zD8qzwF4LYnXihONqnHt6DQWBLUADyiJOmb1kGY5AybSogbIy+UhC+4cayBsyWtgZYAnrUC3c8YlU0BHXNZcVZ0RMMnzmhtneKbXLjpilkfGqjdGZYRIfe55Zt7Z6410gcR8wWsg/vQ9dYupoIXmlVosYnhYF3zYLkgyBctEeMMhwf+qwkVX0AsmPVOixP5Gx7vJd2cRnP1CHYxo8H5tAt1YhnAiPl8mi0nMN8Boo3TFl4jQcZOjcOopxYQfBc0ANMehq2pk9Ky0Vpd6cRaHVz7dUbqYAc7+hVato9wdo+6vLi/UifuKMsKzAVWFtASQGXBEu+p3nxe/4zS5Da3qtkBMTcusB0MNCtDGiLz2J/JpK5BcMtWpddYTVaHMBEYdgdwCTc9bUD96+E4+gZHu3kLueguUMgfxHnzKBJkUxrd10IMn2nnAuUP6xZ43FL/lvNxUvbV2mtmo+4a25mPrOD44/M6IeP53GnynlFEdGHRLvb3CRgGWYD+yYSmCNcvQSWW9a0vA4JU0VJIV9SqQ8csukPVvC6/bjgQFXboK6pqayBZtl2FMnOWfpGR0H/0fu9F69CCO10CSX3ECvZdo6t2yZ1KCBhEyYrMCC5UrOMQvt+fB/5OntA8z3dZL2TS/gqqTIeGLwC2WiAWDEt3Cd43uVWtq+RQkjl99BwrjqmTJFGn9lQUj6vAZ55MMoQ8Q0qr1KaFuORF1R1SmPQODmLlFb4Z5pmihOLNbld77mt7eEQln
+ pUhkQ/00
+ t/KTpDZFCQwliOyOYZx1aTvLYtheQ1mKkRVJ7Cb3DMLFHV8KG3HEduQK1UjWOwgdK7rN1EGUAJfs0IgUz9JZSeKWDMshCrODXZ1wJEOyftO+G/J1uTC0kmZRktwXwrriD40cEYWBpOG13we/cEb3IERt5O16D5FC3yWz6hvd8vg7dp+IPNaVgH51+6j27E2xNYFfWSi3EEyume1p3rTJFArjJUIlG+tETSs9Xv9PIyxj50W9eg95m1KJ4qgnh4MgaqS3937fmsdjBirCKtT6hz1aRSBHngzaHd2UFZH3iWrWXeGYxY7eE71fPNhyuWd1i492rYUr+K1uix3u+cPfviHZU73M5d0NdYWWYNuyz8HSY/Cwr2EYdhZYh2a+aazPe3F92XuA+z2x2syW+8vZHKNVbqMC8lgPUNqpq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,93 +142,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The uffd-wp-mremap test requires the UFFD_FEATURE_PAGEFAULT_FLAG_WP
-capability. On systems where userfaultfd write-protect is
-not supported, uffd_register() fails and the test reports failures.
+The cleanup loop of allocated memory currently uses:
 
-Check for the required feature at startup and skip the test when the
-UFFD_FEATURE_PAGEFAULT_FLAG_WP capability is not present,
-preventing false failures on unsupported configurations.
+    for (entry = list; entry != NULL; entry = entry->next) {
+        munmap(entry->map, MAP_SIZE);
+        if (!entry->next)
+            break;
+        entry = entry->next;
+    }
 
-Before patch:
- running ./uffd-wp-mremap
- ------------------------
-  [INFO] detected THP size: 256 KiB
-  [INFO] detected THP size: 512 KiB
-  [INFO] detected THP size: 1024 KiB
-  [INFO] detected THP size: 2048 KiB
-  [INFO] detected hugetlb page size: 2048 KiB
-  [INFO] detected hugetlb page size: 1048576 KiB
- 1..24
-  [RUN] test_one_folio(size=65536, private=false, swapout=false,
-  hugetlb=false)
- not ok 1 uffd_register() failed
-  [RUN] test_one_folio(size=65536, private=true, swapout=false,
-  hugetlb=false)
- not ok 2 uffd_register() failed
-  [RUN] test_one_folio(size=65536, private=false, swapout=true,
-  hugetlb=false)
- not ok 3 uffd_register() failed
-  [RUN] test_one_folio(size=65536, private=true, swapout=true,
-  hugetlb=false)
- not ok 4 uffd_register() failed
-  [RUN] test_one_folio(size=262144, private=false, swapout=false,
-  hugetlb=false)
- not ok 5 uffd_register() failed
-  [RUN] test_one_folio(size=524288, private=false, swapout=false,
-  hugetlb=false)
- not ok 6 uffd_register() failed
- .
- .
- .
- Bail out! 24 out of 24 tests failed
-  Totals: pass:0 fail:24 xfail:0 xpass:0 skip:0 error:0
- [FAIL]
-not ok 1 uffd-wp-mremap # exit=1
+The inner entry = entry->next causes the loop to skip every
+other node, resulting in only half of the mapped regions being
+unmapped.
 
-After patch:
- running ./uffd-wp-mremap
- ------------------------
- 1..0 # SKIP uffd-wp feature not supported
- [SKIP]
-ok 1 uffd-wp-mremap # SKIP
+Remove the redundant increment to ensure every entry is visited
+and unmapped during cleanup.
 
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
 Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 ---
- tools/testing/selftests/mm/uffd-wp-mremap.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/mm/compaction_test.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/uffd-wp-mremap.c b/tools/testing/selftests/mm/uffd-wp-mremap.c
-index 17186d4a4147..73d53a4da389 100644
---- a/tools/testing/selftests/mm/uffd-wp-mremap.c
-+++ b/tools/testing/selftests/mm/uffd-wp-mremap.c
-@@ -19,6 +19,17 @@ static size_t thpsizes[20];
- static int nr_hugetlbsizes;
- static size_t hugetlbsizes[10];
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 30209c40b697..f73930706bd0 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -263,9 +263,6 @@ int main(int argc, char **argv)
  
-+static void uffd_wp_feature_supported(void)
-+{
-+	uint64_t features;
-+
-+	if (uffd_get_features(&features) && errno == ENOENT)
-+		ksft_exit_skip("failed to get available features (%d)\n", errno);
-+
-+	if (!(features & UFFD_FEATURE_PAGEFAULT_FLAG_WP))
-+		ksft_exit_skip("uffd-wp feature not supported\n");
-+}
-+
- static int detect_thp_sizes(size_t sizes[], int max)
- {
- 	int count = 0;
-@@ -336,6 +347,8 @@ int main(int argc, char **argv)
- 	struct thp_settings settings;
- 	int i, j, plan = 0;
+ 	for (entry = list; entry != NULL; entry = entry->next) {
+ 		munmap(entry->map, MAP_SIZE);
+-		if (!entry->next)
+-			break;
+-		entry = entry->next;
+ 	}
  
-+	uffd_wp_feature_supported();
-+
- 	pagesize = getpagesize();
- 	nr_thpsizes = detect_thp_sizes(thpsizes, ARRAY_SIZE(thpsizes));
- 	nr_hugetlbsizes = detect_hugetlb_page_sizes(hugetlbsizes,
+ 	if (check_compaction(mem_free, hugepage_size,
 -- 
 2.52.0
 
