@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99DEAFD2D81
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 13:45:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23F3FFD2D92
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 13:47:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 843E46B00D2; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
+	id 77E786B0005; Tue, 10 Mar 2026 09:47:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FAF86B00D3; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
+	id 75C486B00D1; Tue, 10 Mar 2026 09:47:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727556B00D4; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
+	id 688CD6B00D4; Tue, 10 Mar 2026 09:47:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 630186B00D2
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:45:25 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id ED914160197
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:45:24 +0000 (UTC)
-X-FDA: 84530275368.02.3AC34B3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 559336B0005
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 09:47:18 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E755E14014B
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:47:17 +0000 (UTC)
+X-FDA: 84530280114.09.DE96A72
 Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 492F71C0004
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:45:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=crudebyte.com header.s=kylie header.b=BSv+5VTS;
-	spf=pass (imf18.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 60FBD120018
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:47:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=dTpIUmFy;
+	spf=pass (imf29.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
 	dmarc=pass (policy=quarantine) header.from=crudebyte.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773150323;
+	s=arc-20220608; t=1773150436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tqNoaL94Dj4pObM+6pGSr4RMsIJmELh6Cj7p3cxJGxE=;
-	b=ClsrcMUT8mTp2fC8KY2LGfOtFGKZ0ywh4y6YdSlenHOd7DVJJJM4Uwn5SVMMCxRPicjLpG
-	3m4NXold+GX/UtpVuvmMh575D4YzGf6fMOtju0/tBLNYwMzIyiW/X13zG3mu/GdsR+kxmE
-	/R74r80uY2gxykelF0XeI2BfbiGmiZY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773150323; a=rsa-sha256;
+	bh=aVv/PSZT5NGeZjfHxwg8OpWgNHlsgZDJ/5CMzeiUbdo=;
+	b=V8/EoSZR3/zHRQuTanm0QTCusPF8tV3Y1HbZ2WZ5l9h6Q/NQBbhpof+58SROldPDSX828E
+	DYFff5qnM7a6sdHlEV5sVu3WRVy2qc4tlDR2NolcJJqkuhNNGDGAD46bPY5R2GR4JvRDVR
+	zcpyogYQAoxle2vIJDxBDRvSB9de13M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773150436; a=rsa-sha256;
 	cv=none;
-	b=L3VoRQeEUq8JL1Yz9UgfN+63gJjMjXlqn7zhRXM5uA1PGfxRCb6+eOpY0NHWbloU7hXnt4
-	ThfaWDjRyiNPmTvkJEALBDAKl0UJUAIjkkZCbAOxJPwtt1Sa2iZk+WEvwXrhFvolkwZq2y
-	iwXmjwW3jQ/D5JgdQHUwVgJjPRP9MKE=
+	b=h6QzvX1chBGsO2bb8ER4IKrkxDJhMA31XBi8A6gf6GZTDs7HSF1j0+//oPlqUdvMLIrqUn
+	GLpc7qo1K0NqLWNZWlAWc0ZOfxSY+WxECLYnjm5j+blVFrouZnwnfcpdxkQK58kozOMw72
+	dLJKSnK3sCf73DMx6SqsMaI/6AXQs34=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=crudebyte.com header.s=kylie header.b=BSv+5VTS;
-	spf=pass (imf18.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=dTpIUmFy;
+	spf=pass (imf29.hostedemail.com: domain of linux_oss@crudebyte.com designates 5.189.157.229 as permitted sender) smtp.mailfrom=linux_oss@crudebyte.com;
 	dmarc=pass (policy=quarantine) header.from=crudebyte.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Content-ID:Content-Description;
-	bh=tqNoaL94Dj4pObM+6pGSr4RMsIJmELh6Cj7p3cxJGxE=; b=BSv+5VTSyPyrhpKWnMZVCjZEvG
-	yrk6LWxlGwnUUZjquKMol+ljVUIUp9jBraubgLqBi4cKz4hniKCf9rIQTsThme1FexxEN+zxKvsgC
-	uvMYbDhkYi+shFX+PLCD/IMwmjSpYMDJbZGsateoQvss1ByMiB7n5CokueqpdePTp7697ajozqLcL
-	QNNNvSzTIj5kMR2wUJSupi5THJtiu7VhPmFy8ePRrdnRpYFSOebiyO3IlTbeTGO/MmRM5PEIBBHLD
-	zejwvm6ItsldfqTIXTc6O0Z/soDk0el6lSZ+MrXBoszSWB5pdQE71J71rNLjrXAAIRkB6hWfEOV6d
-	5s2EICAGfy5rFvZnPzPqZQFNMJmMF1OtxV9pY8V9U1rZXYRb0+cWjl6X1xLcFCZOiZcoHLob301cc
-	kRokX7oWqU/2ExVyAy+qxf6eKje0uvqaOqv9hMGZ5ryaSKPC2aKAIJfnAVSBvJS/v1i4KIjPZc3rm
-	OWRlN9QVYisM4o3VWUWhQE9QLOSHJzH7XsIe7kcAxjAHPZYtil03PpuGESYai0z/ycOzdMPXNnK8s
-	RUYQ5R4xdnnK/uIBRJ5tLN+fwlf+9zGkqtXzZ7Db2ibQTV2JC6OBFoQ9ds8aqQ/KGsNN9Qx1u7AAn
-	wqTFHtO0j/nTwkXDvMBIt3or3MQXIgQCujiNGxQ00=;
+	bh=aVv/PSZT5NGeZjfHxwg8OpWgNHlsgZDJ/5CMzeiUbdo=; b=dTpIUmFyfV+bP6Hy0ueZpN32tu
+	piiOrm2xYxIB724JO1nPYEvLrwNppM7ldi2VsLNiB9a22ZPzaNJQ0YaGHJwVuraOF2yk5SpAHZold
+	s8t7GSMCpZMXoj2MN+HCYF9oJcPgVF+TLl3oulmGF4t7YrhkwJ3IfsTmzXldUh96w/myd3pDSVX1g
+	/e8bzPXWMBYBNoEloTPI5IYSewDyrYj60Js0etFfclp4hEgkn7HaHPBIdN5mmqp8OC3Z4JyMZY1In
+	us3k02cy2EDC8Yr2DD9TZj2Bfv2JCzi8o1CBU/q/X+4deOd5/tymAnt0Bem3HGOfb0TZNQXc+sRV/
+	1upKIM10UX7QbQ98BeJxn1cHAUt80a13aLlrns2kgX3r4ZD43IvQ3qOgYizweNeHFZvB+bpwBSNFD
+	hlDW1qIdKmIN+wC7qSL6cU7m+YgH+eIF1AeR8pLLvTFBNqmI6qti9D+O96RBcbYAwE/olpfjlTGn5
+	mdLSL9FFfI7mx4Sepl5WAdeD1XVerb2KTcAMA8AXYimzng7DssEnPDbX6u+t3yAcQjc1BrWIujZyx
+	Gao2D20IgKGUx784nxNUpYJ2ZiCkXzoDKyugnEIdTC+VrOwC2OEJanP1Uq3/BrGj0qOrmxYFeI51c
+	48zjYWWU3v40e6itkF189TkI8Acs6/RLaheNlL7MM=;
 From: Christian Schoenebeck <linux_oss@crudebyte.com>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
@@ -92,25 +92,29 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  Philipp Hahn <phahn-oss@avm.de>, Philipp Hahn <phahn-oss@avm.de>
 Cc: Eric Van Hensbergen <ericvh@kernel.org>,
  Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>
-Subject: Re: [PATCH 06/61] 9p: Prefer IS_ERR_OR_NULL over manual NULL check
-Date: Tue, 10 Mar 2026 14:45:07 +0100
-Message-ID: <2401874.ElGaqSPkdT@weasel>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-6-bd63b656022d@avm.de>
+ Dominique Martinet <asmadeus@codewreck.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Subject:
+ Re: [PATCH 24/61] net/9p: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 14:47:03 +0100
+Message-ID: <1948861.tdWV9SEqCh@weasel>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-24-bd63b656022d@avm.de>
 References:
  <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-6-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-24-bd63b656022d@avm.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 492F71C0004
-X-Stat-Signature: yetajadrgfjhaao5ekcrznminhuzbdkr
 X-Rspam-User: 
-X-HE-Tag: 1773150323-824807
-X-HE-Meta: U2FsdGVkX189UOBsfGncc2Wovz+crkov4sOCCJvq4JpAwiTyoJftwgxMtTQrq1JIA1gdgOPKrI55KBim9GLT7jfXUNR0kyXGzYMCxlAZqD82zNzFXobLQu/QP27Pxx7HmsPusG5BeV1wCb5W6SX/Jq5FYuEGXo+QVG8uTbxqrKqClDcb3XE6whyDJvB6ir+8+b4ErWqBiJRmKbMHG+dg6zdFt+JsR4CX5YlM2Um4gn+nh21481f5yW8z6BrnQq6Ug79sslZ2aCC7jsBI5+5gNPkwiSY2dXlpfLKauC9Cy9CJFqIHpYfD5nlM/NQEU+FShe+2cDgB0M3+YZTJoL8H+l6+YwsB+0I4wgTuY3Lq7YHT5ScppyZOsjjgEgr5pxqiddHR2eaecWfr0MOasI+lqhmFWKTdezqXa4PFMJdkPcU2q41th3SoI1SezY6vZ4g5QC5x2nrAOh7m/6yeGx98veazd/PNYSUnJnA9Cmq/jYhllqe6e9AofFnGd8t4JdsUcIxXOC+ZgIyntEZ/kV16QKH8fD5LhXABYGqaZc3Ekfu/U1KpCAbi+ad8K0Dj76/Ut0UBYNSd/Xb+VAJRncTRBiNa3bqZPZ4Y+0bnmC3Vlc+ZbeWzoSRpSupsB52FK8aMYDrVCgrLfCoF90a9EJnl7kx+HEHDzWdcHMqC2ou8Ajis4HNlHCPafhZN42Xo1A8q9NjtNNvgndHEr8RbB6Msf2RV7HkVXey9RPvoBoTTEZvl4QUBLibzYaghF6FFroOBrNMsbczIC4EY5rzXy+4mROdZruGjKXiB6EnKyoHu9HemR+04fyMorVAjnOp7XvGEnUr+qo94hSLh/6Bya2PrvttGPe0zpqFU4SYXT0P1LLbj2BxqcqiVCPDuiLeb8dJqvOQiafZcfqLv0EuluMN3mcCI+NDJrngVQqMHMLEmm0G/+Q+RH8nzNNrVPUYzFTVwdKQri0wefuIPGHSHk90
- NL2G81vs
- ff6aVesCmYYba9gDgrvzz249CS5QNcrYWTRn23+fPSmcEjYx9RObMY2lwJ/uByrp3/oh7cCzUGW9CNqobKJOfiX4UIL4N4SKZ3u6GiYbuxBtd3oVd7prcPMpsPnpiN1dISiv1NtgPre725ASsbU1KWWQKzqoxV9orwjJSGhrfP9F59fKSkLLVdX6XIlAgM3WqMaidnxyJ6iQl7orglAzxIwGnxfojXhNK+hL5nkqG36RagA20hWZMYPvsKvTFdHGpbVdYqZaxpPm+H6vja12NCxZmeayq/4a49vgmdCzYIkW0rZNV+/X8EPnG77QJe5Lq6Fddv0C4VHQlcHS6er3K8qqQ0bUpOyNgRxtLp2neR/fdLTjIVIyeHVHuj3Er0Wgd2PGQOHfVwCaqcxdIULH+ZEBrPWjn6Wioffo2OAByXM9QrvZURTCs3b/LW8m50R6OQ61ElIRiU3AKvONVhQui45irpg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 60FBD120018
+X-Stat-Signature: t5d8gt9rcghphob545m3735ya93s8xj9
+X-HE-Tag: 1773150436-186505
+X-HE-Meta: U2FsdGVkX1+CY1uCHZhjVn6vqHe5fmWtIJQHUzi53JKrUqZDwUR2pcPsYCZuhU/G4RGq0U35R0nPS6OZUzzsIUbCVq9m1zqFvwsPGqmU7PIW1XHg96ntGq051qcMCrdIFDQifKyTymOViBUkyah8h41bN15aPYT15xyQlzTQccaSA0u+skWtwD+S/cyGWoAyhOO19ljCvvGY67gbvfxbFItLeMfWtpizREo5mUMoiBbQKLmZ4iHY7YrOIwobl7n2l34MfqZrsrrmaGnbOqpHWVDeCo0Q9iARBI/g31ggqN2FroHeR9/7tAN6hjJBwi4X3u/mXx/GopDdCzFky1H7CnAGqr61/VRM1jLE9v2eQwLJoRUCmW1FdCS4lcAPp8WtTQipY1dOe//ny4s+uLzH8WFS5dTWeaVptXgLR456gdgRDyKPF3sOE8sf737dfVhQc+4ARCk2jphccN/KUe7/wtqqiD8CFSmPQMDiboq1tkw/5reY4rUjYN3lJ+vKPCNfj1CD70Sh6zulQRsSjhVsWmnKl/xSA0hKHGn+iyHmWUV2sRJgg+rtSP3/A4h3/GSlhxz2/rl5/uAkLOyJlXy92hNsTSEh4QHrSeBjoLastZ/G3+MgXVjTU805NloLYm6aIaiOfqphqMv1UQN2ITXLfEnS5/jTM3SCiZPz6sHsV+0dHZU4IvMr8Q6msxgHJs1J79W1Hhd5sJskeGu1RmKnvh5mKRdc+pXLbq4gO7wYpgGk9pWYWXwX1M8gDPhydboxWDOAbbASCRqNhduT/iHPoKcXcvx+p4Ybg+Z3pCKegLB5gfBQWoIi+6bqMAMCRpgqHSQ6VS3OKTJEIVsgP8fHKbHV+5605XprN5JfxJh2NEImv1CpKcA9gAgMOi/jzvpayo+PEe9mgUMVLyqCIla3bPoVW7QSQAISTO5m061GKyvew/ETnuvpJnYoR9IjFz7wrn65aXbEcYqNbCVNWqw
+ r76hGRV7
+ K63D+y3dEfJc47aJKsMFFW+dUpX86JoreU2lzRNidkCniWtm5GVbJYutA0r9eDu950R7/9aPsNReHu85r5L0Eh0oz+FYO1j4AfsLoB3Eoq4limD+fB/NrOsdrBWEMklbJC9T5P1WYkwiYkF5CDc8y9KjGEBSXgt263umrd4qhUcGR01ao4ZekoxbuNqxiHYc0l7AkSbJbEDQiNwD5v2AIBO5sEn3gXyBvAsLcvKlWavezUPfmcuD2q9yGIngZAZRZe4CiYDfzlYTE0MQPpjxWa8dwWhfG9tKGHUjUAuiiBSHIPYX/cqQNuvpQMsewC4XrZU0ETvByjoL2nSFJIZuevdSFiRAiMHohwGwlYYN9LRIqioMm3cc2pzwTO/O5iC7Q6JJArnjNuBuXCtZ58qOCLIkBOWsIx/wZXk+C2H0eDvSrqodRl04MDqacJpQEbRgSGQVVz5JvU13PUgvWEMEhaklrcin7rWTV5mvsjJ9cDQZ6yi6WsMEn1niRRDnR5Q3Ib+dKKd9PsFE9y2/eq0nzkLMyh+BYXkD17hLIkRPBJHgDhB7DZQ3zk0/xXydbU4S8wuv1/cvbT85jeRkdJxGDndNYl90jJwEDoo1rlqOIGwZai5c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,7 +122,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tuesday, 10 March 2026 12:48:32 CET Philipp Hahn wrote:
+On Tuesday, 10 March 2026 12:48:50 CET Philipp Hahn wrote:
 > Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 > check.
 > 
@@ -128,33 +132,63 @@ On Tuesday, 10 March 2026 12:48:32 CET Philipp Hahn wrote:
 > To: Latchesar Ionkov <lucho@ionkov.net>
 > To: Dominique Martinet <asmadeus@codewreck.org>
 > To: Christian Schoenebeck <linux_oss@crudebyte.com>
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Eric Dumazet <edumazet@google.com>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: Simon Horman <horms@kernel.org>
 > Cc: v9fs@lists.linux.dev
+> Cc: netdev@vger.kernel.org
 > Cc: linux-kernel@vger.kernel.org
 > Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 > ---
->  fs/9p/fid.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
-"fs/9p" in the subject on this one, please, not just "9p".
-
-Except of that:
+>  include/net/9p/client.h | 2 +-
+>  net/9p/trans_rdma.c     | 8 ++++----
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 
 Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-
-> diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+ 
+> diff --git a/include/net/9p/client.h b/include/net/9p/client.h
 > index
-> 0d6138bee2a3d1ab565ab2d210c0a3f3bf97e4e3..3bb7ef4380e972a2d9ab67eb4aab6cc5b
-> fe2eea7 100644 --- a/fs/9p/fid.h
-> +++ b/fs/9p/fid.h
-> @@ -27,7 +27,7 @@ static inline struct p9_fid *v9fs_fid_clone(struct dentry
-> *dentry) struct p9_fid *fid, *nfid;
+> 838a94218b593f3fb19e6827c472753380193461..4bde6bd716f323c819745e64c7aac0dea
+> 7beb72f 100644 --- a/include/net/9p/client.h
+> +++ b/include/net/9p/client.h
+> @@ -364,7 +364,7 @@ static inline struct p9_fid *p9_fid_get(struct p9_fid
+> *fid)
 > 
->  	fid = v9fs_fid_lookup(dentry);
+>  static inline int p9_fid_put(struct p9_fid *fid)
+>  {
 > -	if (!fid || IS_ERR(fid))
 > +	if (IS_ERR_OR_NULL(fid))
->  		return fid;
+>  		return 0;
 > 
->  	nfid = clone_fid(fid);
+>  	if (tracepoint_enabled(9p_fid_ref))
+> diff --git a/net/9p/trans_rdma.c b/net/9p/trans_rdma.c
+> index
+> aa5bd74d333f3b5e6fd1e4344d26bc0201ff7f7f..60461344b536bcb6e94112aace75a88b6
+> a99ad86 100644 --- a/net/9p/trans_rdma.c
+> +++ b/net/9p/trans_rdma.c
+> @@ -252,16 +252,16 @@ static void rdma_destroy_trans(struct p9_trans_rdma
+> *rdma) if (!rdma)
+>  		return;
+> 
+> -	if (rdma->qp && !IS_ERR(rdma->qp))
+> +	if (!IS_ERR_OR_NULL(rdma->qp))
+>  		ib_destroy_qp(rdma->qp);
+> 
+> -	if (rdma->pd && !IS_ERR(rdma->pd))
+> +	if (!IS_ERR_OR_NULL(rdma->pd))
+>  		ib_dealloc_pd(rdma->pd);
+> 
+> -	if (rdma->cq && !IS_ERR(rdma->cq))
+> +	if (!IS_ERR_OR_NULL(rdma->cq))
+>  		ib_free_cq(rdma->cq);
+> 
+> -	if (rdma->cm_id && !IS_ERR(rdma->cm_id))
+> +	if (!IS_ERR_OR_NULL(rdma->cm_id))
+>  		rdma_destroy_id(rdma->cm_id);
+> 
+>  	kfree(rdma);
 
 
 
