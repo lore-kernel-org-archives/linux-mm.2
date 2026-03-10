@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE21BFD4F05
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:25:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BC31FD4F03
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:32:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E0226B00A0; Tue, 10 Mar 2026 12:25:41 -0400 (EDT)
+	id 7D3E46B0099; Tue, 10 Mar 2026 12:32:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 336516B00A1; Tue, 10 Mar 2026 12:25:41 -0400 (EDT)
+	id 7AAC16B00A5; Tue, 10 Mar 2026 12:32:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1058B6B00A3; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
+	id 702176B00A6; Tue, 10 Mar 2026 12:32:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8F36B00A1
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1C1F8A8E8
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:40 +0000 (UTC)
-X-FDA: 84530679240.05.16E1686
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B825BC000D
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 604BD6B0099
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:32:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD374160298
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:32:17 +0000 (UTC)
+X-FDA: 84530695914.16.C65CE94
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4C8D88001A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:32:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=VKyNj+IB
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773159939;
+	s=arc-20220608; t=1773160336;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7s/8dO0IBbFGVFY52YJWBDxGNegYTFxW9CtA++XdlKs=;
-	b=fLp++kF/OpeZUzbUkmZXpr2XxGdLLxa57YhZNoHid/WdIP/9MyJyXZzPBoBDy1qc0AIlQN
-	Bp/2KyW3syscFJKCKJGDQZrmW/5KZO5klR2O/2DxmkGoafjh/s0CoqI3ZR2VJt8NGL7QKl
-	eD3nqzlEcSQeCn9zbRUn/hmSg4J2crI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GCRfJr6MPjn4DphBdnrts5oH/u8hqxi4oo9mnLAJdfI=;
+	b=RVfhh3S86dOAUeq+FiOwlMpeXf2Gz+wdYnf3KYm8S9R+ZnF13w8pOO5SLAi0BrATcKidXn
+	qaeosYF/QafMB7HOsmR4JAvbaLi5c4OWsGcsd9LbVaHpr2Cod8HaYbNOtIaWwC+YuCONv7
+	avIW14h5rFFnNnrlXGXjON0X/TcpAZg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773159939; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=VKyNj+IB;
+	spf=none (imf02.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773160336; a=rsa-sha256;
 	cv=none;
-	b=3zA7QjX3pbYSqKaXnNNouaCJSnf5bjRLf8mCls5Uv1hXePrnqVCIWt4RMkRK+52m/ZwBQS
-	6ElQO5mxztu/G3hJ4lEtnA89yrMEvyMsS6rdtouSOCU1/YxWU3BLh7fCDX1dViLah7Mtve
-	avROhz3xyTBGk0PGvh9bR6bAxqFe8XA=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fVfNd1dkxzJ467N;
-	Wed, 11 Mar 2026 00:24:49 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0F59840086;
-	Wed, 11 Mar 2026 00:25:34 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Mar 2026 19:25:33 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v2 1/4] mm/damon: Generic context creation for modules
-Date: Tue, 10 Mar 2026 16:24:17 +0000
-Message-ID: <20260310162420.4180562-2-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
-References: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
+	b=5yLOYofJ/NX0n0DMxmIwy5EghtEjg+v+/Yw0bSvWp1cQ5OBL33nfxqp9pusCv4zXl4k3m5
+	6n5bfwqpfEaErjqvLd7KLqY33CY5fXLP+NucYrYfkFCTdgy2U7pCHR7QFdxH4b3UAYTLiP
+	5zIdFVIYmOsvWVgCIA9V9SgQEXCcuFw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=GCRfJr6MPjn4DphBdnrts5oH/u8hqxi4oo9mnLAJdfI=; b=VKyNj+IBMRhuSfakqpigRiDlpa
+	ao2dQIquGGT/aOBg4BhZDShCvzICeQ/qVAc3nRpnopfYYwf7fhcN9EbzFgQXR9LfTPCQ7kYyJrqSe
+	31GsGjiuTk/fxcg7MUxbbMe0UgIr7cpTmTgDdWHMh6Qs73MDFnMmI3kkHiZwjQLd5NSyOsx6wuvW7
+	HSifkXxybWNO3lGqFnI1daWa0pmY05yusUwqbrz7V/sAPhk7KDr2eOh26JYX2hvJbCGI3q/xrgilE
+	QMh7zBgdK1VBebfSFaZ9CtEPcYRPtXA3UNwmgpq9ZtSo/adwin+h6SdsjiIErRSRfYJOcMe8BNUDj
+	GCdA4ctw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vzzzt-0037gW-BA; Tue, 10 Mar 2026 16:31:53 +0000
+Date: Tue, 10 Mar 2026 09:31:46 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Subject: Re: [PATCH v4 2/4] mm: huge_memory: refactor anon_enabled_store()
+ with change_anon_orders()
+Message-ID: <abBGMmE6EidqvWAc@gmail.com>
+References: <20260309-thp_logs-v4-0-926b9840083e@debian.org>
+ <20260309-thp_logs-v4-2-926b9840083e@debian.org>
+ <4f2abf42-983f-4cc2-92f5-c81827e7b7e2@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Stat-Signature: f3od9m8xqj15cgc5yh99hwp8wjuegift
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f2abf42-983f-4cc2-92f5-c81827e7b7e2@kernel.org>
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 4C8D88001A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jiuh8grab8q7rhgj4krhi4a3bmqpct1g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B825BC000D
-X-HE-Tag: 1773159938-124284
-X-HE-Meta: U2FsdGVkX1/ADgSEm6gLvNrNaxJyFQ+3KNDrNt/VFLA124LMD6yX/SJdIs3pXgXfGWvyjJm9vrBes9/TS+jL4olDU4JNnsFHQ4i5mUuh0wyMtvYJdFnlBz3S0nOdO/opESM1PDuCf+wFvj96Kl9KgZVAJJpF5f6Mz5lLlI2M15j50ut1Dv737T+xqUt9GI1OXDZ/asbRDr5kUgE9i45h8bFGHR06DkrbFbApau8mC0L+wuxv43em0hbLRMhlWnQNX3iElU1SbMxRK7+a0gHTQvlMT6tD6C/8IDFizm+P4MmCT0GicvqAgzBpKy1mI80w2ZA1lazLt7MTaj3S8h8+yG3pXKogQQ4IWgmqPFx8LCAwPVWnrqbEkSr7nllvfuwiSTS1BwunBScLUncVLYBYgGd+tp5fVwNzGdFMb3K164wmW8ZLBhm6nrRkDjGFnFitH6mdut48jpE6gY/5ZIjcvRDaBbB/5bpUuuQTYA7kBWcdHuqaYlBVLzRE5bPBW2jmbg3xm0MLqYWzLPPg4tWWdGIPFfETbsls48uqV8474+W1iG211oWIL9/Y9s7IZ+rGWdOEG4c0pqthJBibADD/mRwEU2GTGfjmb9Iv+vLDQu1ACurSmnQ1KeMwNdQCo3MtKJ/mR1xBI5PA9FU4UEEfdfYO4FLNBE9MT2tbwmQTEWiFg4L6APrDeT7kYNlVzr68zAxbk72E5jRhpVGfKV8lrgtOYa5iGryeEw5tAgJ9PTeEjxzkIABXe/TpQeCWLs/vTR8EKkzQIZ4Ob3eLvWA90O6b2OqPI0dwTAmxWipWMUDvmEnOd/f7T1IP74OMgjlgVSDzQZKhsdVjoDw1oi3fA5j5waIVudWTNKzL9uS+UjZSCOP5/kPerU/Jj96v85qpgHuhlF4Ls2Xiz2IPYUfgz0ax6HInlrYu3M4LTIhLM7JUDqQfr3HU+2GXwNzBdU+HpmgC8FU6XfGj5UH1cqg
- QOjQun/m
- hpjHizIyPs3dSRhGkKRIdR+TUiUalFCaQBB4z4ytCl2YbIbNMg//+H5vy2A3abctD02VvysBEPTWQlzch0bKP78Wnq3axB4S1g9jlAQBP4h//aneXrlql5UsObXnW/BkiR5jeDCY/DnqUrS5TRp0nJDN+WR/s9X1Zdaf28IiNSaHDluOZ5mZfcguu325JBOGmsRRrxdl/8K2Qm6zVuvQ60s3ujdnnTBV3qbJJqGpCQGFm/USQ217XQcBlx5LeJx33tmtA
+X-HE-Tag: 1773160336-274277
+X-HE-Meta: U2FsdGVkX18mJOytMQpGqFyxq/TDNmg0lxV5TJ+uKVfHnyQFWQkINd1+EGlSGTxusBSFjafpb5/RoubJCf/50drHv2idUe8MQohnbUQp5cp/gy0AK6nPlRxnWhsMaRuht4uvNwBJDd6xM9445ZPHGLkEuKajobo4FBv1N+pkgAP4jzksN0xcaFXltZumJ1izWuZ1vDtk1QpiXoy2GPJZL6OW/RiD24XGA0hxrR2YrVK302Qjeums26GfCJgrjINZWB/qhW7icnXebXLfZAtsjYpJdbdX0EGwnGQBrb8BsiwmsZgaqZ3A2YylTjDzg3RJtlcy4h1mppFA5Sr+jFsEYAW5hiCi7K0DLCIA4jSpF3uB+5/fU/VkO9mE/wbOHau1V448FVvzCCsLG2Jr/XayKbciAR6NtuuXQx/fx63Vo/jS0K1y7iAty4j28riREx9W9tqwuzco29Q09aGt6PXTOCD538iJjMRS/t0naFOxF+gej7zONH5Nq3gvBf0rqwUyeMvefd2Ms3MvmObm0H5Bh2JYAjCfz0O3bScaqEWAjnQHuDMGMXwVXDVG1sJoB2WLA/g2o8lt8Wrv7quzxMvb5qaVW9weTQ/t208youKtCLv9XTiWNUvSRhgqlh1sIwK/lAEIGZWOiYBvrWyj9Wib04luo9YDe+nMjzJCjD7iK9ry51a8Q0PIqMUOaxMx8vpUgXsdu9DJMVPqzfM2LECQ3+P4WTpOSKfQz0SXXRMgj4Hp9lD03T+2InMQpJemB78pgx8q+cCL/bFOVbZZDfOGE0q9qBPr2bMRRmTIHIi0PAl3X6+97PAgvaiofncVAfQU5D2KLCikNq+eUsJXrRwrPZ+mSZG9R65x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,103 +98,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On Mon, Mar 09, 2026 at 02:43:11PM +0100, David Hildenbrand (Arm) wrote:
+> On 3/9/26 12:07, Breno Leitao wrote:
+> > +static bool change_anon_orders(int order, enum anon_enabled_mode mode)
+> 
+> I would suggest something a bit longer but clearer
+> 
+> "set_anon_enabled_mode_for_order()"
+> 
+> Or shorter
+> 
+> "set_anon_enabled_mode"
+set_anon_enabled_mode() seems to be better. Then I have:
 
-It is more elegant to have a generic version of new context creation
-which receives the mode as a parameter.
+set_global_enabled_mode() and set_anon_enabled_mode().
 
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
----
- mm/damon/lru_sort.c       | 5 +++--
- mm/damon/modules-common.c | 6 +++---
- mm/damon/modules-common.h | 4 ++--
- mm/damon/reclaim.c        | 5 +++--
- 4 files changed, 11 insertions(+), 9 deletions(-)
+> 1) set vs. change. the function returns whether actually something
+>    changed.
+> 
+> 2) We're not really changing "anon_orders". Yeah, we're updating
+>    variables that are named "huge_anon_orders_XXX", but that's more an
+>    implementation detail when setting the anon_enabled mode for a
+>    specific order.
+> 
+> > +{
+> > +	static unsigned long *orders[] = {
+> > +		&huge_anon_orders_always,
+> > +		&huge_anon_orders_madvise,
+> > +		&huge_anon_orders_inherit,
+> > +	};
+> 
+> Having a "order" and "orders" variable that have different semantics is
+> a bit confusing. Don't really have a better suggestion. "enabled_orders"
+> ? hm.
 
-diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-index 7bc5c0b2aea3..143ee0b21da6 100644
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -287,7 +287,8 @@ static int damon_lru_sort_apply_parameters(void)
- 	unsigned int hot_thres, cold_thres;
- 	int err;
- 
--	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
-+	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
-+				DAMON_OPS_PADDR);
- 	if (err)
- 		return err;
- 
-@@ -479,7 +480,7 @@ static int __init damon_lru_sort_init(void)
- 		err = -ENOMEM;
- 		goto out;
- 	}
--	err = damon_modules_new_paddr_ctx_target(&ctx, &target);
-+	err = damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_PADDR);
- 	if (err)
- 		goto out;
- 
-diff --git a/mm/damon/modules-common.c b/mm/damon/modules-common.c
-index 86d58f8c4f63..ae50b2fa3a86 100644
---- a/mm/damon/modules-common.c
-+++ b/mm/damon/modules-common.c
-@@ -14,8 +14,8 @@
-  * @ctxp:	Pointer to save the point to the newly created context
-  * @targetp:	Pointer to save the point to the newly created target
-  */
--int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
--		struct damon_target **targetp)
-+int damon_modules_new_ctx_target(struct damon_ctx **ctxp,
-+		struct damon_target **targetp, enum damon_ops_id mode)
- {
- 	struct damon_ctx *ctx;
- 	struct damon_target *target;
-@@ -24,7 +24,7 @@ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	if (damon_select_ops(ctx, DAMON_OPS_PADDR)) {
-+	if (damon_select_ops(ctx, mode)) {
- 		damon_destroy_ctx(ctx);
- 		return -EINVAL;
- 	}
-diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
-index f103ad556368..379b49c6a617 100644
---- a/mm/damon/modules-common.h
-+++ b/mm/damon/modules-common.h
-@@ -45,5 +45,5 @@
- 	module_param_named(nr_##qt_exceed_name, stat.qt_exceeds, ulong,	\
- 			0400);
- 
--int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
--		struct damon_target **targetp);
-+int damon_modules_new_ctx_target(struct damon_ctx **ctxp,
-+		struct damon_target **targetp, enum damon_ops_id mode);
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 43d76f5bed44..24786a58683a 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -197,7 +197,8 @@ static int damon_reclaim_apply_parameters(void)
- 	struct damos_filter *filter;
- 	int err;
- 
--	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
-+	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
-+				DAMON_OPS_PADDR);
- 	if (err)
- 		return err;
- 
-@@ -381,7 +382,7 @@ static int __init damon_reclaim_init(void)
- 		err = -ENOMEM;
- 		goto out;
- 	}
--	err = damon_modules_new_paddr_ctx_target(&ctx, &target);
-+	err = damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_PADDR);
- 	if (err)
- 		goto out;
- 
--- 
-2.43.0
+Ack. renaming to enabled_orders.
 
+> > +	enum anon_enabled_mode m;
+> > +	bool changed = false;
+> > +
+> > +	spin_lock(&huge_anon_orders_lock);
+> > +	for (m = 0; m < ARRAY_SIZE(orders); m++) {
+> > +		if (m == mode)
+> > +			changed |= !test_and_set_bit(order, orders[m]);
+> > +		else
+> > +			changed |= test_and_clear_bit(order, orders[m]);
+> > +	}
+> 
+> Can we use the non-atomic variant here? __test_and_set_bit(). Just
+> wondering as the lock protects concurrent modifications.
+
+Ack!
+
+I will respin a new version,
+--breno
 
