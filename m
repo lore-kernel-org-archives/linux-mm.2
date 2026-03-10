@@ -4,115 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 810A7FCC9AA
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 02:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FF8FCC9AF
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 02:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E3A26B0088; Mon,  9 Mar 2026 22:21:56 -0400 (EDT)
+	id 989B46B0088; Mon,  9 Mar 2026 22:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BAE46B0089; Mon,  9 Mar 2026 22:21:56 -0400 (EDT)
+	id 937676B0089; Mon,  9 Mar 2026 22:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C7226B008A; Mon,  9 Mar 2026 22:21:56 -0400 (EDT)
+	id 843846B008A; Mon,  9 Mar 2026 22:51:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 48E636B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 22:21:56 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D4F77160422
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 02:21:55 +0000 (UTC)
-X-FDA: 84528552990.10.1FF5847
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 19BF7C0004
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 02:21:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cvKNfoE0;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 703A56B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 22:51:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13220B8EB1
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 02:51:20 +0000 (UTC)
+X-FDA: 84528627120.14.E95BA2A
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4809FC000A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 02:51:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ununkg+1;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773109313;
+	s=arc-20220608; t=1773111078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXjGztx/BX5wcnPp0cQJ/8oe6dfejXu8ICgIm66QIN8=;
-	b=zyO+9gMsODNwtB78RG4Uthu3Nx8ihE36XaSpw0j39cMTaxWtquSvSBAyPPE9W4/+rWK/mB
-	Q5pGnjgI7XDGWzyCd0VJJIAWru/s0Ip/vZxzW0Y6dXhOOigJ7Pg29TdnCsoksXbrFwhTFp
-	vF2YVz7iQM77PVJBvXG1n1Q+ynxjbUc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773109313; a=rsa-sha256;
-	cv=none;
-	b=OD2rNzYA2IXZFTRGtVyqAnocSg+IrkuPqMT0KZQIGnP0gwvC8C/I4jM6dOckT3ouHKaQ6s
-	yR6TfmEIkBzYEof/PTIQ+llCnBVUMzy1mvL0hU9Ba2XSgrDF4M+i0wauG7eTB0Ebr3NEEZ
-	IpTtgxNcMl51bGwo04aUMHnIahuzGC4=
+	bh=aOzjae/W+WCxIMUGhwZr1WeqcdnegQLRX5RKCOr4bFk=;
+	b=JydAth2e7gfuJhOxeBlj02wWyXNBk1prl+Vko5B+qLFuN+oVYHUriZEkEOkH8DWD8m/m0y
+	H1ToJ1uFk5JWEoWAPnxb0SS4nLUi40j1Ms1PYPYYbGQWXBikhvVGqFlqL6CN8YnP9h8ukJ
+	ZrX2ri81ZUGy/KmCy4DAowEY69wqDGc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cvKNfoE0;
-	spf=pass (imf10.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=AXjGztx/BX5wcnPp0cQJ/8oe6dfejXu8ICgIm66QIN8=;
-	b=cvKNfoE0tUgJu+WaN6nim0UwxI2ppxxOA1o+CTA3EKkeTKw9atxxP61gYVuljCbxU9Vf2fCRY
-	f+LtdqaqZM7yIjxHoqvbdeiMepbIlFh5PV+ZgBDm2qW4rMAKaZI9fOGe5hUlEjMAU2Vf6pPX6uP
-	xI2zM5LqqE8dl4FBjIT6pN4=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4fVHZD67v5z1K9Cg;
-	Tue, 10 Mar 2026 10:16:52 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1ED414056C;
-	Tue, 10 Mar 2026 10:21:45 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Mar 2026 10:21:44 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Mar 2026 10:21:43 +0800
-Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
- MFR policy
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <nao.horiguchi@gmail.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <willy@infradead.org>,
-	<akpm@linux-foundation.org>, <osalvador@suse.de>, <rientjes@google.com>,
-	<duenwen@google.com>, <jthoughton@google.com>, <jgg@nvidia.com>,
-	<ankita@nvidia.com>, <peterx@redhat.com>, <sidhartha.kumar@oracle.com>,
-	<ziy@nvidia.com>, <david@redhat.com>, <dave.hansen@linux.intel.com>,
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<william.roche@oracle.com>, <harry.yoo@oracle.com>, <jane.chu@oracle.com>
-References: <20260203192352.2674184-1-jiaqiyan@google.com>
- <20260203192352.2674184-2-jiaqiyan@google.com>
- <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com>
- <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
- <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
- <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
- <a0d25caf-a18b-e3d8-e74f-fc18fa85252e@huawei.com>
- <CACw3F51+bAm03nvucV54bkThnYc-4ewgqGzq_c5i6oMmnGdEtw@mail.gmail.com>
- <a3ff8c7b-69c1-fecc-3564-ecaa3e8a7e67@huawei.com>
- <CACw3F53qr1Af=r__SNxU1ohr69s8apHqHz9tcEHg1hDSLsk5TQ@mail.gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <6b304954-f3d1-5581-5937-1464caf85ab1@huawei.com>
-Date: Tue, 10 Mar 2026 10:21:42 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ununkg+1;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773111078; a=rsa-sha256;
+	cv=none;
+	b=BZUdMVCNU3vj+6sfbRgMbHLrA0JzdajpqDgghEtEuHU9nJaWNqriQ81uBNvrkjRChLZA3K
+	UkrJ5Ss8cB6M5OxUweqoXFrSATM/ZnQ1Qf7UjvC9GUZzlzn0dxkKXc/Rx5MtDih4GBixPS
+	RGFfzTcQtpa10Hw2upf0VIe28TtEpWM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773111068; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=aOzjae/W+WCxIMUGhwZr1WeqcdnegQLRX5RKCOr4bFk=;
+	b=ununkg+1fs4GbsCGVVeDYLEWn85oITxMAEYKIj4PT8t/AglXEPR8wv9BMrimcmUh3W00bZuiFnlgOq6qDdOLVxpPswMI0ZnhjCPhYvyZsoWGxUjv5oWrk24BIXJASoHV2GOVOBl1B+xDOmW1cXa9L7NiBy4M2aJ+8o/WaSvUU+w=
+Received: from 30.74.144.119(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X-eKuga_1773111066 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Mar 2026 10:51:07 +0800
+Message-ID: <9b324c40-d148-4c1b-bcbb-7bd07c4f6bbb@linux.alibaba.com>
+Date: Tue, 10 Mar 2026 10:51:06 +0800
 MIME-Version: 1.0
-In-Reply-To: <CACw3F53qr1Af=r__SNxU1ohr69s8apHqHz9tcEHg1hDSLsk5TQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] arm64: mm: implement the architecture-specific
+ test_and_clear_young_ptes()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
+Cc: catalin.marinas@arm.com, will@kernel.org, lorenzo.stoakes@oracle.com,
+ ryan.roberts@arm.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, riel@surriel.com,
+ harry.yoo@oracle.com, jannh@google.com, willy@infradead.org,
+ baohua@kernel.org, dev.jain@arm.com, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+ zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <cover.1772778858.git.baolin.wang@linux.alibaba.com>
+ <7f891d42a720cc2e57862f3b79e4f774404f313c.1772778858.git.baolin.wang@linux.alibaba.com>
+ <6305e05e-2911-42b0-b6f5-7fdde787b778@kernel.org>
+ <c607b6fd-a682-4400-a7fd-abe83152db10@linux.alibaba.com>
+ <92376758-5bb5-4391-8904-cd0e2f72acf8@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <92376758-5bb5-4391-8904-cd0e2f72acf8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: fwz4ebi4kj9uhaj78wtdu813sp33o4ww
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4809FC000A
+X-Stat-Signature: 8uontb6wsewx7s7o8swdjyjbnexmxq5b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 19BF7C0004
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773109311-896006
-X-HE-Meta: U2FsdGVkX19q2SyJEQFIOs+SPDLPdFJSlEpKKd1lBJ49EY25eGEznhkQkWRGK4RqAzofNBGq+SgrIWcY2ZZLl6EoK9+onuF+ylvKnKRaQ/Bk2028S+Mx5sFCNMYK4/G0KNhNjO7C+whTlctHsy4960/9i/JQsyjteAFxdvlTfWKMQcBeyL58iwEgprYxHOSQ/6Z3AiImKsNSthFEvMvKJQMSKDNQgmUpJzM/d9UiukSwRcEiimv4DyEI1InJb2Of2pzXAholGyBLm6uYdYpjAj828cR1kjD5GO60gfJdCZmtYOhECXymDTICImJCyJhjSjN+88q3t8YdKU1kxnsWFzOH1UuyEyACvT8Vd7V98/Wwu68KYlHtKLk/4cR0SR4jb/1eXC7nbxHQmMe6QSJbiShIWN/p4y+xGJQFWEUnMhx2h0Cwc0qXVlweNtidphT1krdxD+wv6B4v/bW9X3VAwdEXS0CJs8mlcgK5aKnmwZ8kgqz/BLawHJ71ekriquURkPQpseJzRxSprQyPCBBAl6V20zOuV10PqAvnl7pX5kXN+ul3NdV9/CETJ6sOhjLCI3gNJv7Knu+40UffxbkzxMf0axJ+zgKbmO1Md0FTbc3spD1Yxtccstu67s49FFiYs4bChJIsK/+zU4fARHRsgJ6H2jzTJRR8mIH7x3b7mPPhHiZ77yzEszcNYaUl60oPsB4bJ64PRcA0VjEw4nvoLn1pEUK5NpEaXAjCDH/bPEXX2UIGs2IwduobRTYk+nETE2gr/6poexAI7bjXiPt4ZFFpyzhJET0Rmnnp/yPSVcU9RxhBY0EvX9BhsCnV90WUpAchyznKCubOE2etHLm2/eFZp1FKitqGi0PQnbGhgk/llsagL6gL/dqHuqbE05NB/oluU1Je/KKWCPxy908X02o+Qt0VBwFGGpweHGkz8nPVHsD+X+fADYSeTcObh791ZhHAqD++0Z6Ad2NSqrK
- XORHmCpy
- kczDMSgJ9o7lX4R8trHXUOrSJpaTz42eihMAFykQ9LXAjpMIvDBqRNyyzfmy4r0Sib1qaXq55mZv4fO9l1ifKQX2Gxh1lcgYV3joid9uT4lkuMSM02RWxZHnrdzVJK9X75mBfQZeuWm5PankBODAatOJzve8yDX93kWaLReWD4kFBilsL+bmC0KUPq9SeFxYyMIDql7XN3RqjoXw66+rV+Drdwp3JDx/y/prapwCvBZD3lqKi23nT7OSYBndI6wtcqqhqiTWfzEYGUZvuwdci/KU6YrKa8F6kgQ9La4hprvuuci8fbMFvBkM9hnzCxuMrPNi/9iQSe0+BROrT79EWZDrsNO8xTfPLZKm/aFzTPCY7/m7E04FlZ5Zhjkal6GAGXs/QU2CmLsilohZvu7E6XQqDPw==
+X-HE-Tag: 1773111073-383831
+X-HE-Meta: U2FsdGVkX1+IbOqTCEaxBMW1QEFwvWdMoEjTbVmLLiQFPKNurNvIqjKGpgXp7GMwniu9f3WhDuZvKTBk04reWc5V6zFn8Kdod9gp1gJGmzVL2ne7oNUnfxgSrXnr7sRCdwto3JSwd5jod+eUxQErEx4JWVwSX3SAo+sKLYDtYOx0qrQHz8MTZmXzHj9a/C62pl2eVHt3566wY6PWynZXM3ZIS15jDSHgyr1gobnewvVk4d44CF4lV3RiPhyATSFtUDxI86Mba33FqKQMguU0fLCCPpOsy8rYRtEvZ+PcNVkyC9NCXuSB4z16xpUfE65ycH70FuBuDpLqSE7QXyGoid0qsYQldJ/ukef5PVKr42KgUw4dmWmBDaEIgtmDcKEf6mbn01oio62h4qVpFZaeg2/lDSmxqJy8J4SzWF4ASvJGg5UctkO+8wdTWRo/3LG7DfHkDHFUzID9liRqsMr1FCdcyZuCSWfXe/q7yOELzJf+LRJy/VD547K4UTgwK+kg8y8fXPFC0Sp4bA4BkXhLkxYuflK1seeBpm7FoDbRtrq3io8oZI75AW+q3wCFOlMQANyRdX73u7HnnW5Tumq7+NVeu5mYjOhpKomzAE0JYy+CUVuIYKzYYUoZ9wCTyPWjorcKbl5Mjfhnrx7ByjWjyXvtXZjdXn/9rhJuktCwO1N81SF0YbrGZDpojN4sjg4Vbcdj/nhLckYKqtVE0SDgskMtF+/kvakvRxjpkoquiEiBvVgINGlMkM1KtnPatJuXiT/UFOWwlYiiva5l8/niT2Nop84qBJDAnRCWN3/F8Hq0XO0WWU92oxHWsmHUEEGPxW6SQGvh8jxrCPDUHmsjfdAP4ohkfCVhkUjre7ulsGrC4D8Ug9VOmWCJXlLaNXx96KZOjoBjJkGr5GCFQ8mWwZ5ORwBUnUkOW97/77Z2szHXNbbCp3/C9lk9GAALpD3bJBELXAHB5h45vnHlSf5
+ e1px0jr4
+ 6+N7yMnfAg3u439b+jyvdhRpIzrXuKYwW2Gn70EEQqxj87vbJSwNC6nWp51EewM+NkrdAQjL+anX1xTjLZ25ztSlQ5c2Wz1IJ62JfvrM3k/wChTN0mLT3FeMK1XgFavy6qj5TmpS1G2vdMgS0LxdeqgtK4p5cGpmTVu5iZIOJpM1UqUupMQ2fFPJe7Gz2+2pIU3x1loQcG/xxDa99QYcaKU8XSjMVMybquwLz6NjXJOFrSKAQ9pKJy1j1H3Gt725d/5obuIoMxkNXgdtUMRHisPgfCU2W7v/go+xtijryHMP1sUsRlw8/W0QYbJglHmNOxo3b0pZ+eahxFaF+hr0IOddR6uTO0FLkyulL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,297 +96,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/3/9 23:47, Jiaqi Yan wrote:
-> On Mon, Mar 9, 2026 at 12:41 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>
->> On 2026/3/9 12:53, Jiaqi Yan wrote:
->>> On Mon, Feb 23, 2026 at 11:30 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>>>
->>>> On 2026/2/13 13:01, Jiaqi Yan wrote:
->>>>> On Mon, Feb 9, 2026 at 11:31 PM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>>>>>
->>>>>> On 2026/2/10 12:47, Jiaqi Yan wrote:
->>>>>>> On Mon, Feb 9, 2026 at 3:54 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
->>>>>>>>
->>>>>>>> On 2026/2/4 3:23, Jiaqi Yan wrote:
->>>>>>>>> Sometimes immediately hard offlining a large chunk of contigous memory
->>>>>>>>> having uncorrected memory errors (UE) may not be the best option.
->>>>>>>>> Cloud providers usually serve capacity- and performance-critical guest
->>>>>>>>> memory with 1G HugeTLB hugepages, as this significantly reduces the
->>>>>>>>> overhead associated with managing page tables and TLB misses. However,
->>>>>>>>> for today's HugeTLB system, once a byte of memory in a hugepage is
->>>>>>>>> hardware corrupted, the kernel discards the whole hugepage, including
->>>>>>>>> the healthy portion. Customer workload running in the VM can hardly
->>>>>>>>> recover from such a great loss of memory.
->>>>>>>>
->>>>>>>> Thanks for your patch. Some questions below.
->>>>>>>>
->>>>>>>>>
->>>>>>>>> Therefore keeping or discarding a large chunk of contiguous memory
->>>>>>>>> owned by userspace (particularly to serve guest memory) due to
->>>>>>>>> recoverable UE may better be controlled by userspace process
->>>>>>>>> that owns the memory, e.g. VMM in the Cloud environment.
->>>>>>>>>
->>>>>>>>> Introduce a memfd-based userspace memory failure (MFR) policy,
->>>>>>>>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
->>>>>>>>> but the current implementation only covers HugeTLB.
->>>>>>>>>
->>>>>>>>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
->>>>>>>>> whenever it runs into a new UE,
->>>>>>>>>
->>>>>>>>> * MFR defers hard offline operations, i.e., unmapping and
->>>>>>>>
->>>>>>>> So the folio can't be unpoisoned until hugetlb folio becomes free?
->>>>>>>
->>>>>>> Are you asking from testing perspective, are we still able to clean up
->>>>>>> injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED?
->>>>>>>
->>>>>>> If so, unpoison_memory() can't turn the HWPoison hugetlb page to
->>>>>>> normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
->>>>>>
->>>>>> We might loss some testability but that should be an acceptable compromise.
->>>>>
->>>>> To clarify, looking at unpoison_memory(), it seems unpoison should
->>>>> still work if called before truncated or memfd closed.
->>>>>
->>>>> What I wanted to say is, for my test hugetlb-mfr.c, since I really
->>>>> want to test the cleanup code (dissolving free hugepage having
->>>>> multiple errors) after truncation or memfd closed, so we can only
->>>>> unpoison the raw pages rejected by buddy allocator.
->>>>>
->>>>>>
->>>>>>> it. unpoison_memory(pfn) can probably still turn the HWPoison raw page
->>>>>>> back to a normal one, but you already lost the hugetlb page.
->>>>>>>
->>>>>>>>
->>>>>>>>>   dissolving. MFR still sets HWPoison flag, holds a refcount
->>>>>>>>>   for every raw HWPoison page, record them in a list, sends SIGBUS
->>>>>>>>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT.
->>>>>>>>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
->>>>>>>>>   remains accessible via the mapping created with that memfd.
->>>>>>>>>
->>>>>>>>> * If the memory was not faulted in yet, the fault handler also
->>>>>>>>>   allows fault in the HWPoison folio.
->>>>>>>>>
->>>>>>>>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
->>>>>>>>> when userspace process truncates its hugepages:
->>>>>>>>>
->>>>>>>>> * When the HugeTLB in-memory file system removes the filemap's
->>>>>>>>>   folios one by one, it asks MFR to deal with HWPoison folios
->>>>>>>>>   on the fly, implemented by filemap_offline_hwpoison_folio().
->>>>>>>>>
->>>>>>>>> * MFR drops the refcounts being held for the raw HWPoison
->>>>>>>>>   pages within the folio. Now that the HWPoison folio becomes
->>>>>>>>>   free, MFR dissolves it into a set of raw pages. The healthy pages
->>>>>>>>>   are recycled into buddy allocator, while the HWPoison ones are
->>>>>>>>>   prevented from re-allocation.
->>>>>>>>>
->>>>>>>> ...
->>>>>>>>
->>>>>>>>>
->>>>>>>>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *folio)
->>>>>>>>> +{
->>>>>>>>> +     int ret;
->>>>>>>>> +     struct llist_node *head;
->>>>>>>>> +     struct raw_hwp_page *curr, *next;
->>>>>>>>> +
->>>>>>>>> +     /*
->>>>>>>>> +      * Since folio is still in the folio_batch, drop the refcount
->>>>>>>>> +      * elevated by filemap_get_folios.
->>>>>>>>> +      */
->>>>>>>>> +     folio_put_refs(folio, 1);
->>>>>>>>> +     head = llist_del_all(raw_hwp_list_head(folio));
->>>>>>>>
->>>>>>>> We might race with get_huge_page_for_hwpoison()? llist_add() might be called
->>>>>>>> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
->>>>>>>
->>>>>>> Oh, when there is a new UE while we releasing the folio here, right?
->>>>>>
->>>>>> Right.
->>>>>>
->>>>>>> In that case, would mutex_lock(&mf_mutex) eliminate potential race?
->>>>>>
->>>>>> IMO spin_lock_irq(&hugetlb_lock) might be better.
->>>>>
->>>>> Looks like I don't need any lock given the correction below.
->>>>>
->>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>>> +
->>>>>>>>> +     /*
->>>>>>>>> +      * Release refcounts held by try_memory_failure_hugetlb, one per
->>>>>>>>> +      * HWPoison-ed page in the raw hwp list.
->>>>>>>>> +      *
->>>>>>>>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned()
->>>>>>>>> +      * can exclude them during dissolve_free_hugetlb_folio().
->>>>>>>>> +      */
->>>>>>>>> +     llist_for_each_entry_safe(curr, next, head, node) {
->>>>>>>>> +             folio_put(folio);
->>>>>>>>
->>>>>>>> The hugetlb folio refcnt will only be increased once even if it contains multiple UE sub-pages.
->>>>>>>> See __get_huge_page_for_hwpoison() for details. So folio_put() might be called more times than
->>>>>>>> folio_try_get() in __get_huge_page_for_hwpoison().
->>>>>>>
->>>>>>> The changes in folio_set_hugetlb_hwpoison() should make
->>>>>>> __get_huge_page_for_hwpoison() not to take the "out" path which
->>>>>>> decrease the increased refcount for folio. IOW, every time a new UE
->>>>>>> happens, we handle the hugetlb page as if it is an in-use hugetlb
->>>>>>> page.
->>>>>>
->>>>>> See below code snippet (comment [1] and [2]):
->>>>>>
->>>>>> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->>>>>>                                  bool *migratable_cleared)
->>>>>> {
->>>>>>         struct page *page = pfn_to_page(pfn);
->>>>>>         struct folio *folio = page_folio(page);
->>>>>>         int ret = 2;    /* fallback to normal page handling */
->>>>>>         bool count_increased = false;
->>>>>>
->>>>>>         if (!folio_test_hugetlb(folio))
->>>>>>                 goto out;
->>>>>>
->>>>>>         if (flags & MF_COUNT_INCREASED) {
->>>>>>                 ret = 1;
->>>>>>                 count_increased = true;
->>>>>>         } else if (folio_test_hugetlb_freed(folio)) {
->>>>>>                 ret = 0;
->>>>>>         } else if (folio_test_hugetlb_migratable(folio)) {
->>>>>>
->>>>>>                    ^^^^*hugetlb_migratable is checked before trying to get folio refcnt* [1]
->>>>>>
->>>>>>                 ret = folio_try_get(folio);
->>>>>>                 if (ret)
->>>>>>                         count_increased = true;
->>>>>>         } else {
->>>>>>                 ret = -EBUSY;
->>>>>>                 if (!(flags & MF_NO_RETRY))
->>>>>>                         goto out;
->>>>>>         }
->>>>>>
->>>>>>         if (folio_set_hugetlb_hwpoison(folio, page)) {
->>>>>>                 ret = -EHWPOISON;
->>>>>>                 goto out;
->>>>>>         }
->>>>>>
->>>>>>         /*
->>>>>>          * Clearing hugetlb_migratable for hwpoisoned hugepages to prevent them
->>>>>>          * from being migrated by memory hotremove.
->>>>>>          */
->>>>>>         if (count_increased && folio_test_hugetlb_migratable(folio)) {
->>>>>>                 folio_clear_hugetlb_migratable(folio);
->>>>>>
->>>>>>                 ^^^^^*hugetlb_migratable is cleared when first time seeing folio* [2]
->>>>>>
->>>>>>                 *migratable_cleared = true;
->>>>>>         }
->>>>>>
->>>>>> Or am I miss something?
->>>>>
->>>>> Thanks for your explaination! You are absolutely right. It turns out
->>>>> the extra refcount I saw (during running hugetlb-mfr.c) on the folio
->>>>> at the moment of filemap_offline_hwpoison_folio_hugetlb() is actually
->>>>> because of the MF_COUNT_INCREASED during MADV_HWPOISON. In the past I
->>>>> used to think that is the effect of folio_try_get() in
->>>>> __get_huge_page_for_hwpoison(), and it is wrong. Now I see two cases:
->>>>> - MADV_HWPOISON: instead of __get_huge_page_for_hwpoison(),
->>>>> madvise_inject_error() is the one that increments hugepage refcount
->>>>> for every error injected. Different from other cases,
->>>>> MFD_MF_KEEP_UE_MAPPED makes the hugepage still a in-use page after
->>>>> memory_failure(MF_COUNT_INCREASED), so I think madvise_inject_error()
->>>>> should decrement in MFD_MF_KEEP_UE_MAPPED case.
->>>>> - In the real world: as you pointed out, MF always just increments
->>>>> hugepage refcount once in __get_huge_page_for_hwpoison(), even if it
->>>>> runs into multiple errors. When
->>>>
->>>> This might not always hold true. When MF occurs while hugetlb folio is under isolation(hugetlb_migratable is
->>>> cleared and extra folio refcnt is held by isolating code in that case), __get_huge_page_for_hwpoison won't get
->>>> extra folio refcnt.
->>>>
->>>>> filemap_offline_hwpoison_folio_hugetlb() drops the refcount elevated
->>>>> by filemap_get_folios(), it only needs to decrement again if
->>>>> folio_ref_dec_and_test() returns false. I tested something like below:
->>>>>
->>>>>     /* drop the refcount elevated by filemap_get_folios. */
->>>>>     folio_put(folio);
->>>>>     if (folio_ref_count(folio))
->>>>>         folio_put(folio);
->>>>>     /* now refcount should be zero. */
->>>>>     ret = dissolve_free_hugetlb_folio(folio);
->>>>
->>>> So I think above code might drop the folio refcnt held by isolating code.
->>>
->>> Hi Miaohe, thanks for raising the concern. Given two things below
->>> - both folio_isolate_hugetlb() and get_huge_page_for_hwpoison() are
->>> guarded by hugetlb_lock.
->>> - hugetlb_update_hwpoison() only folio_test_set_hwpoison() for
->>> non-isolated folio after folio_try_get() succeeds.
->>>
->>> as long as folio_test_set_hwpoison() is true here, this refcount
->>> should never come from folio_isolate_hugetlb(). What do you think?
->>>
->>
->> Let's think about below scenario. When __get_huge_page_for_hwpoison() encounters an
->> isolated hugetlb folio:
->>
->> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->>                                  bool *migratable_cleared)
->> {
->>         struct page *page = pfn_to_page(pfn);
->>         struct folio *folio = page_folio(page);
->>         bool count_increased = false;
->>         int ret, rc;
->>
->>         if (!folio_test_hugetlb(folio)) {
->>                 ret = MF_HUGETLB_NON_HUGEPAGE;
->>                 goto out;
->>         } else if (flags & MF_COUNT_INCREASED) {
->>                 ret = MF_HUGETLB_IN_USED;
->>                 count_increased = true;
->>         } else if (folio_test_hugetlb_freed(folio)) {
->>                 ret = MF_HUGETLB_FREED;
->>         } else if (folio_test_hugetlb_migratable(folio)) {
->>
->>                    ^^^^*Since hugetlb_migratable is cleared for the isolated hugetlb folio*
->>
->>                 if (folio_try_get(folio)) {
->>                         ret = MF_HUGETLB_IN_USED;
->>                         count_increased = true;
->>                 } else {
->>                         ret = MF_HUGETLB_FREED;
->>                 }
->>         } else {
->>
->>                   ^^^^*Code will reach here without extra refcnt increased*
->>
->>                 ret = MF_HUGETLB_RETRY;
->>                 if (!(flags & MF_NO_RETRY))
->>                         goto out;
->>         }
->>
->>         *Code will reach here after retry*
-> 
-> You are right, thanks for pointing that out. Let me think about more
-> how to handle this.
-> 
->>         rc = hugetlb_update_hwpoison(folio, page);
->>         if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
->>                 ret = rc;
->>                 goto out;
->>         }
->>
->> So hugetlb_update_hwpoison() will be called even for folio under isolation
->> without folio_try_get(). Or am I miss something?
-> 
-> Just a random question: if MF never increments a hugepage's refcount,
 
-MF will hold hugetlb folio's refcount unless it's freed or isolated.
 
-> what does the folio_put() in me_huge_page() (when mapping = null) do?
-> Is it dropping for something other than MF?
+On 3/9/26 10:39 PM, David Hildenbrand (Arm) wrote:
+>>>
+>>> (b) The first pte is !pte_cont(), but some others in there are?
+>>
+>> IMO they can’t be handled in a single batch. Since the folio_pte_batch()
+>> will group consecutive !cont PTEs into one batch and consecutive cont
+>> PTEs into another (assume all PTEs belong to a single large folio),
+>> because their PTE entries have different CONT bits.
+> Interesting, thanks. I thought that folio_pte_batch() would be able to
+> batch that.
+> 
+> But yes, pte_batch_hint() relies on the CONT bit still being set after a
+> ptep_get(). I wonder whether we should document somewhere that the arm
+> implementation depends on that.
+> 
+> This might be something to look into in the future. (make
+> folio_pte_batch() ignore cont information when comparing and make the
+> arm implementation be able to deal with that).
+> 
+> Assume we unmapped the last page of a large folio. Ideally, we'd be able
+> to process the remaining THP pieces (all ptes) in a single operation. I
+> guess right now it would be two.
 
-For isolated hugetlb folio, MF_HUGETLB_RETRY will be returned and code won't reach here.
-Thanks.
-.
+Right. Let me investigate this further and see if I can figure out how 
+to optimize this case.
+
+Thanks for reviewing.
 
