@@ -4,91 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF27EB1048
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 10:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C08DBEB1049
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 10:42:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A02ED6B008A; Tue, 10 Mar 2026 06:36:50 -0400 (EDT)
+	id 0906D6B0088; Tue, 10 Mar 2026 06:42:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ACA76B008C; Tue, 10 Mar 2026 06:36:50 -0400 (EDT)
+	id 0483E6B0089; Tue, 10 Mar 2026 06:42:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DA486B0092; Tue, 10 Mar 2026 06:36:50 -0400 (EDT)
+	id EC1546B008A; Tue, 10 Mar 2026 06:42:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DCDD6B008A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 06:36:50 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 348788BAE0
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:36:50 +0000 (UTC)
-X-FDA: 84529800180.24.BE4C4CC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6829D80011
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:36:48 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c4P/dioT";
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D74F36B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 06:42:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CB4313B2E7
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:42:56 +0000 (UTC)
+X-FDA: 84529815552.25.042D1D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CC56E1A000B
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:42:54 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oMYZgNyO;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773139008;
+	s=arc-20220608; t=1773139374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8MSL+w0v7oyItZmGWWs64QhONDOI35vXCXF222iDqVM=;
-	b=4kY9SL0RCaRAZzzD1Yh528MBPOF9IZyioyX4rQDl+9iN2p2VN93sWVCQra8US9jPLICcWb
-	53589kxYeqf7zgoEYLUoaDs8emIBqbwBf3KmLkZeiWoaAj3Ojj8WlGF3HTqd3B7t2uu1wF
-	bepwvEiTKVhCHATe/O13Fps+GTu/NJg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773139008; a=rsa-sha256;
+	bh=9FN+TSPz+ltUzp9VbceUI7lOzqSaL3v1qzAWOwuafhg=;
+	b=ZKuP1Fwortkj2hUdRB20aLIA4iwChwqxxt6bzamnwPmaV8PfvscU3OJuA1exR7RWu9QZaT
+	w/vnIjLwEthLuyeuRs2NP3vF3mGHpx7reGbLjVYNwDoTio7rHWf7ZJG3dwjg7hLiiR1+cW
+	2VZ4QFcNbBZDUeSbYyI3CVHYpCfWOxw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773139374; a=rsa-sha256;
 	cv=none;
-	b=1qLtU6+u7JNPyQcMhtTu6j325Wmr+TPAOvR1vEqqMs2e/6sVBq/rZRg9D9AwYS8emVMS12
-	1KR9oCbAIj8ilwbLsqDUeFX/e0zrUYSsGw5NpFd5mk6Vpiarocep6igi26sSa8o50PItVC
-	hTE4v7XyUcsYmlOCAc1l0dCQaFYTjt4=
+	b=rMxFjsvIy6+KtnPRSs67tD14zcYYFwxOdU1w0j7SAsITWtEyxj0JtYSOl2rtuKCyJUznwd
+	IntW4tHN5G9qrjn4OdGn6onSAwdjfiME6bFqv9lgsr50QIYvmI7ySLAH2NAZaykRB+omwk
+	2uqHpMYqQ0356+bsSVhP5hyJ6mDLRug=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="c4P/dioT";
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oMYZgNyO;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50C8244393;
-	Tue, 10 Mar 2026 10:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FB4C19423;
-	Tue, 10 Mar 2026 10:36:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 16CAF600AE;
+	Tue, 10 Mar 2026 10:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAC8C19423;
+	Tue, 10 Mar 2026 10:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773139007;
-	bh=W9mAwkbLlYnKfeePBjebcYRdBnJ6E2MpSEq54ioYRzw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c4P/dioTx1zil8ozOzqhL6X/9iGKpOVhuU526quBqtwWSPwFQSEZoIJMVmJJUsOF5
-	 nwKORBgb0pGbSD59iNFGvajMzeEB+l90b66z07ro+54oDBh7pDJRwjyM2jjW4fM4pO
-	 xcrbr14WA961xY1LpW+mTGorEMhcXxAR0O15Tg8HHIiCiRG8dLKVGWu/HHvBcZENzO
-	 hXNLQnxrOmRnWvmMOMFR0ufoj3F6tuAXdD9kMzpfuGtqhlfmHXyrwOwBlv9FFYu/7d
-	 +22JF3UWxgN3RP3N9VaBWLPofEMoo6/DvR+oB87o/Sqvkiy5/LNe5KvzyURJyMqiFq
-	 a8o+ZkcX6YwPg==
-Date: Tue, 10 Mar 2026 12:36:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	usamaarif642@gmail.com, SeongJae Park <sj@kernel.org>,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 4/6] kho: fix kho_in_debugfs_init() to handle non-FDT
- blobs
-Message-ID: <aa_0OESNkyp8V2eF@kernel.org>
-References: <20260309-kho-v8-0-c3abcf4ac750@debian.org>
- <20260309-kho-v8-4-c3abcf4ac750@debian.org>
+	s=k20201202; t=1773139373;
+	bh=3m4rwlvUFZd/0jBCZKj1ip7fgfW/CYTB+r1GS0xW8Zg=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=oMYZgNyO6Nw0x10/mkbxLbNa3w2PDuEiOMmiGOmxmWdsAOPsFzktLpRkbixkawRet
+	 tj5YdvGt4sREgy8o/poBYWzHo4fTpp++pr5X2UMGlzKyJcO8Kg96Ns1yjhKZcd7txE
+	 5EvJ6fTGwznHjJt6UprwMhfYioMNPBGVGqIg552QXnbdj/17cl6RZWlu6qMSpQI5f3
+	 fLdCzn89uMtWTne6Wzrz92K8HderdBAcLDYXaxhjU2rrPCC8xYXawirkfsEz2sAUxV
+	 Bw96P6McCBiZSVtvb2iwX4n2pJqHd42GbNC+AhmVlZYV+E4WHOf2LHjNboUFKYdqJn
+	 gzzi3dYFxAlaA==
+Message-ID: <d987d8a2-07b5-477c-9ca1-23eb7947768d@kernel.org>
+Date: Tue, 10 Mar 2026 11:42:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260309-kho-v8-4-c3abcf4ac750@debian.org>
+User-Agent: Mozilla Thunderbird
+From: Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v1 0/4] mm: move vma_(kernel|mmu)_pagesize() out of
+ hugetlb.c
+Content-Language: en-US
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Dan Williams <dan.j.williams@intel.com>
+References: <20260306101600.57355-1-david@kernel.org>
+ <4rzf46kw6hq3b5ivv7cvgyza4yfrvk2shrncytobabxef644nm@wzu2bw63co37>
+ <371cf0f7-4b30-4d8c-99e7-ae0543f8be23@lucifer.local>
+ <5eae6c52-c3f9-407e-8fb8-01a950b282bf@kernel.org>
+ <9172a09f-f014-4a76-b813-8f0c79fbe2f4@lucifer.local>
+ <19fdac31-0d2e-4662-b3a4-02555d8e4221@kernel.org>
+In-Reply-To: <19fdac31-0d2e-4662-b3a4-02555d8e4221@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: gaqhnnijwpkqs91hmt4qysxiytxuogxs
-X-Rspamd-Queue-Id: 6829D80011
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773139008-855311
-X-HE-Meta: U2FsdGVkX18XJZ31vZMlOxrHsx57/ZzjA6/uAqMrHKx43cYSecVYwn9TfYMEwh52T6C9uXBoa4bPPLdv28P0SWC/WDw3wBhJ1kq8JH+XI9Rxf39lDUE/pF0Y7FZjxOBVyr+W2BlE0K9XUgR29+APlGCwz2I3WtPIoexoJKWPpwLIvtezNlUaXLmUMsdC5vdwwWg8g2UcZiVZMvltUUfUCA6RX1qlIgHhlt3u9kIubD2PClM/Kfac14MRh+bMxcSsbbpz9ZE2wS22BnKI5ViZBcJ4pd0UGbTi0Ndk8XlMUCOpBHzw+Bxme/E+xZD2t2kpWmBEmxjmutKeNImhSlCpP37OQIzfbKx9CXXyLgDh1XjWlfIbJkJFGhcOVF8tO9//INeK16MdHwG44MH6Fuo21TMC7sYWtBqUJtlXvSWyjLfdEzmy47zkgyK5oD0oys1mexNsQXNb/ntVtmjNwm6nm9VpzQYhltqnnUnboRl5SzkKouftHCWYRTQsthKqrPhdGfztEnb94p1iaox0FMSg7JC9PdlF4T4XbajqHznav0cEiKRoMA+M6Nl7O+ohw50RJrZw5LxDGt0IfQZBHt0essGdufCnbeni/UKhImxhV8ZshDoWMCLPjJoIvPE9hl2RUkhb/KPYTFQrEydIzO/d1v5oELs5cYGcomcBUqFLHx3ZGQWdUbVH12T2YG9Yh4QPTwmnSN5Bs2bLmueJDF4iDrFh7hLY4179wmLMhMlf4NXF4Z8U1vWbzCKpx2ggC5g2Hf2QvMc+aT3OZvv293Eh/sTfBt0YZSwsPpTcDbqp0Qj0+O194poOw7ZKIHMNGXTb/w5BlWrNJ0c/n+leSa0UCH+874+BDKbrVRVoQRD72tK9EJtqFPBs2DsfKK8W9UFsUvBunuY/H0AATfoRu0uUDwj3/FQ7oIrx0O2nqUfjEhGUrvV1vZ5pEoOqfFYIfMMpYTVRzVV7mOkeDxnXg57
- 5Nz861Ht
- oKSer9+vTsaBqTCeD/2Hx77qh7x6HR8f4chTHBj4j3YBkLcVL1nyP3WUUFsCZS9ZnTqOVZl/qzYAH3BQwbAggOALB6qcaYnKsBdMcvrEnsg33gEYK4uuMoPJ7UHA9+pb6wwIK1+xG41VAhnAbH1Uvs4T0jbsOo0nuXWo8s/o8yKevjpp7XF3aznlZ/gvf6JNauuo9xWeP3nU/VJ/14kAKj3Sru8j/cb7RUkO57G6HHUdVe0P+oSKCLTawEsBFQN3YQm2tc4sOlWAMa+FFQKwlboT8NmV+V+UyS4ASPEObR70qfQfBVSboj/XzVwkE7yJH2ktrSjs+oy+N//iyMae7JE9y6a9p+musSmug
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CC56E1A000B
+X-Stat-Signature: 31fixzmzfwamr6thkdjg4uy6oqa19t4f
+X-HE-Tag: 1773139374-572300
+X-HE-Meta: U2FsdGVkX1/kTqtGSRJ+HWdERhXdnplUvP9v4DyOuBN9EFMIbz4X5VWi0s8bOVWnvqrWA8RzaPoNeW8rr5suO/6gW23urZSb1xXQXgKXfR75qwbgb0BWtTzTG0ZinUPztC05nZ8LXXPSD8rNyvS7egQuSnFxHCbcfczFVEsh3OJRg27AW0ZsNv7qyOJUlPP9mWYfZR0Gfbr0Tu2eUvcl5J7S8246LxQNbD8vFvoNneZUQ5pxvkoTpuqnWDFH62HXyTyJg5ZXyuXiMyhy/8hymS5h2FzO8elqOT9n1yTaN2dy75bGQNoczm4LdL1EudOZp5RhUvB62UVh0HZLYFxTjZdZpxJ9J0ei+8MxXe4dJ/n3nm34J558eq//l5le3Gq5d7Tog19rEMyd+ciQmmYCnZN7U9d062YKnroAmImNIZ4UA8/a2n2gOYEPB1y5dmRa6Vt44RvZfnIxPtZqzvDvvSROxsRi2t+LG4j7Dx6AcsjLgmRBWpa53/FNF60F/TPYFgGN3T4PdaRANNFC3RJwLdilv/YMMKuwbFPzSV4VmUF9vgWsVjRF8NndV5G7ys9tiiwmt9z63kFEaW94rFrKWwKqjeQkeN7/WoqDQXtgKWwMYbTRqQstpy64fesn0wfDnCHfNDCfJSMqFYNgDZEwvcFSLJ2o8lVramwodZsXOgiab/D6uz4PMysd7UGfYQUSrMXGKU+DOH5wLq5DovpNWEO6NabBV88dnxu7nUf8WedfXt38OD77y/e7f+4BUJEucrg/wC9rCJW4vTwmuMrqGA9yLiVJhUtTIou6tGSTUDuMfYGLgbsvs+IU2avrTwrHGY7DB7iyP3VdiURXXWKbvIvIlVowIRFohXl0W93YXbjYUJvDeEpBocAqscP4tw6OO3P/WrEtpCT+n6EA2pRYoAaGWmVhf8wiprW9HrEViylVxEgdkua2hJg3YH1cIPpLFvnqZtIqC9hhtLH5RIT
+ e7O2Sfif
+ Xm2FMwrzgRR/GcWe90qNqAvZMmoqZTESm9mmmjHRdLdlGH5qdI1Z5WABkvokxPWK9bHw8Wa9Uz6bLGiYscoxEr3GqmLFOapJu508EU/LzhtijEgiiQe5gZpd7LgAUL17P3/s3RBKba2H9N5DY5f61O/1kjP4KOsx4+a3GR+P9VAp31of9gJxIc8cTXEI9Ry2Jvqp6MLQ6pt4y1qS/05CSsDIpmKGCIHF/8eJauwktNGzjDsEJyWxmKs9FK9fPmz206tksgji8DdWSVr6pPjafhN4GXBboSYycegVd/wCzPXP14KPqVkNV4dMj3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,94 +109,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 09, 2026 at 06:41:47AM -0700, Breno Leitao wrote:
-> kho_in_debugfs_init() has two problems when displaying incoming
-> sub-blobs in debugfs:
+On 3/9/26 16:07, David Hildenbrand (Arm) wrote:
+> On 3/9/26 14:42, Lorenzo Stoakes (Oracle) wrote:
+>> On Fri, Mar 06, 2026 at 02:12:50PM +0100, David Hildenbrand (Arm) wrote:
+>>> On 3/6/26 12:19, Lorenzo Stoakes (Oracle) wrote:
+>>>>
+>>>> Yeah I noticed this also :>) Assumed it was a new way of doing things somehow?
+>>>> :P
+>>>
+>>> "--cc-cover" is apparently not the git default on my new machine.
+>>>
+>>> "See, I CCed you, I totally did not try to sneak something in. Oh, I
+>>> messed up my tooling, stupid me ...". :)
+>> 
+>> ;)
+>> 
+>> Wasn't aware of that option actually, handy!
 > 
-> 1. It uses the hardcoded property name "fdt" instead of
->    KHO_SUB_TREE_PROP_NAME ("preserved-data"), so it never finds
->    subtrees stored by the current kho_add_subtree().
-> 
-> 2. It calls fdt_totalsize() to determine blob sizes, which assumes
->    all blobs are FDTs. This breaks for non-FDT blobs like struct
->    kho_kexec_metadata.
-> 
-> Fix both issues by using KHO_SUB_TREE_PROP_NAME to find subtrees
-> and reading the "blob-size" property from the FDT (persisted by
-> kho_add_subtree()) instead of calling fdt_totalsize().
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> On my old setup I had a script that would, in addition, also CC anybody
+> CC'ed on individual patches on the cover letter. Was quite useful for
+> larger series where you don't want to spam people with unrelated patches.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I had such a script too.
 
-> ---
->  kernel/liveupdate/kexec_handover_debugfs.c | 34 ++++++++++++++++++++----------
->  1 file changed, 23 insertions(+), 11 deletions(-)
-> 
-> diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-> index 7a100f2bf3947..257ee8a52be66 100644
-> --- a/kernel/liveupdate/kexec_handover_debugfs.c
-> +++ b/kernel/liveupdate/kexec_handover_debugfs.c
-> @@ -13,6 +13,7 @@
->  #include <linux/io.h>
->  #include <linux/libfdt.h>
->  #include <linux/mm.h>
-> +#include <linux/kho/abi/kexec_handover.h>
->  #include "kexec_handover_internal.h"
->  
->  static struct dentry *debugfs_root;
-> @@ -121,23 +122,34 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
->  	fdt_for_each_subnode(child, fdt, 0) {
->  		int len = 0;
->  		const char *name = fdt_get_name(fdt, child, NULL);
-> -		const u64 *fdt_phys;
-> -		void *sub_fdt;
-> +		const u64 *blob_phys;
-> +		const u64 *blob_size;
-> +		void *blob;
->  
-> -		fdt_phys = fdt_getprop(fdt, child, "fdt", &len);
-> -		if (!fdt_phys)
-> +		blob_phys = fdt_getprop(fdt, child,
-> +					KHO_SUB_TREE_PROP_NAME, &len);
-> +		if (!blob_phys)
->  			continue;
-> -		if (len != sizeof(*fdt_phys)) {
-> -			pr_warn("node %s prop fdt has invalid length: %d\n",
-> -				name, len);
-> +		if (len != sizeof(*blob_phys)) {
-> +			pr_warn("node %s prop %s has invalid length: %d\n",
-> +				name, KHO_SUB_TREE_PROP_NAME, len);
->  			continue;
->  		}
-> -		sub_fdt = phys_to_virt(*fdt_phys);
-> +
-> +		blob_size = fdt_getprop(fdt, child,
-> +					KHO_SUB_TREE_SIZE_PROP_NAME, &len);
-> +		if (!blob_size || len != sizeof(*blob_size)) {
-> +			pr_warn("node %s missing or invalid %s property\n",
-> +				name, KHO_SUB_TREE_SIZE_PROP_NAME);
-> +			continue;
-> +		}
-> +
-> +		blob = phys_to_virt(*blob_phys);
->  		err = __kho_debugfs_blob_add(&dbg->fdt_list, sub_fdt_dir, name,
-> -					     sub_fdt, fdt_totalsize(sub_fdt));
-> +					     blob, *blob_size);
->  		if (err) {
-> -			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
-> -				ERR_PTR(err));
-> +			pr_warn("failed to add blob %s to debugfs: %pe\n",
-> +				name, ERR_PTR(err));
->  			continue;
->  		}
->  	}
-> 
-> -- 
-> 2.47.3
-> 
+> Still have to set that back up.
 
--- 
-Sincerely yours,
-Mike.
+But now "b4 send" does that for me automatically. And I don't need to do a
+"git format-patch" beforehand. It also does the equivalent of "--cc-cover".
 
