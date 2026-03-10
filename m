@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B83E6EB104F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:38:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6FF7EB104F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:38:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27A666B0089; Tue, 10 Mar 2026 07:38:41 -0400 (EDT)
+	id 0A0476B008A; Tue, 10 Mar 2026 07:38:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 207A06B008A; Tue, 10 Mar 2026 07:38:41 -0400 (EDT)
+	id 040CB6B008C; Tue, 10 Mar 2026 07:38:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11E516B008C; Tue, 10 Mar 2026 07:38:41 -0400 (EDT)
+	id E85CE6B0092; Tue, 10 Mar 2026 07:38:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 03C5C6B0089
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:38:41 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2188C01BB
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:38:40 +0000 (UTC)
-X-FDA: 84529956000.01.DA50701
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2C04FC0003
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:38:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=JPg4yHxS;
-	spf=pass (imf28.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D7B8D6B008A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:38:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A40BBB54B6
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:38:44 +0000 (UTC)
+X-FDA: 84529956168.30.B580191
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C7D31140005
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:38:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="FH/3u5FI";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf09.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773142718;
+	s=arc-20220608; t=1773142722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DlbppZcw7Bols0n34L6K8JFTRaNL701/JTjAGVZvn6I=;
-	b=ZQLQ3gHW4y5uxZseVFsLB3RNoM/j7RO+mza2MIWMZZaAvSEioS/afTKeGiHaBmNPIheeTe
-	ra9segDtP/GPZ13gHUX1yGXAURcfwLpumr5Xu3idVwMjRWWaAA25wImf3dOGSVziahOwbf
-	4BxjGCyWpD+Il0GlmfzTWzdtQFCrm2w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773142718; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fdvSAzoo6YoHXW8kKXpbNqTJIz++VEopwb6mVs5rsKU=;
+	b=cIWfldXvMUzfey3XhZLGLAO8PfCYnxG6GFr9sfn01QNTu8PneSausP87czNaziQX8KleV+
+	BqN7+Dtpuur6B/MqT3RYqYb64SC8eW1fi5kB5wy4o6VYmBipHZBUg3jeOr/N+hSulyyFBE
+	wmJGnGL913QwX6lhRVJNDnXglQnrpo4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773142722; a=rsa-sha256;
 	cv=none;
-	b=aHQl7MKFbNaVwtuq2hhTSw47pmf4+jX3SY6fDMOuzTECBvgZ2OpA8Yt/UyDHigPa0qWoy8
-	x6Hv8/+8DFxUQrY/Dk+6VbIZCxNPAu9vmiitKc9bpA7ZjvMsQFNOZdnheCeqIY00nK0inx
-	D6gTD6OZnj4Eqi6wa8zcIhrJeEdJwXs=
+	b=kxkvwPW6IYAtoLJutHCeoGs6wQ2cDV46Q3awSuqhEdcWpf+/r/dmZeu8QFow2jgPTPAcfZ
+	5dlGejacO4C5C+7QTpUEnIK05iDpxHwl9MwpvBd4GJITcpwO5UNtBL0MhEPEbht3slPyKD
+	Z9QpBkPV2R4RYHfj6ZVk2JDQpaLXFmI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=JPg4yHxS;
-	spf=pass (imf28.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="FH/3u5FI";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf09.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Dl
-	bppZcw7Bols0n34L6K8JFTRaNL701/JTjAGVZvn6I=; b=JPg4yHxSqT21AGjjiV
-	YtSDD1/8otWOhrKofO9Onrj6ieTCiINPkoUnNRQHo2K7x0CoJuBVY0UV4PbelBhh
-	imAeLne7foQZpOWlkc5PcEVRM4wWD1PefHCN+NbLOYfrIX/2rcAx7lryKYwoioHg
-	G6A5mg52fwON4rczkt/ymRncg=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fd
+	vSAzoo6YoHXW8kKXpbNqTJIz++VEopwb6mVs5rsKU=; b=FH/3u5FIhRb7GWs2B0
+	GQ/iKMBFiJHemM7v5rQQnuH/+tN3x5HvfMScgYCBdpL806IiSXHHOn+OARoRQ4Dm
+	PXrEwwzMMaHH/H3Gr/puXqMR/pxe9rReHnBNqnp8p6yfrwbwB90d1JLh9e0irkNV
+	mI7Kg/kt8a6cIPEPSXk3mHdUQ=
 Received: from ubuntu24-z.. (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXvQ+eArBpwhXAAA--.11763S2;
-	Tue, 10 Mar 2026 19:38:07 +0800 (CST)
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAXvQ+eArBpwhXAAA--.11763S3;
+	Tue, 10 Mar 2026 19:38:09 +0800 (CST)
 From: ranxiaokai627@163.com
 To: hannes@cmpxchg.org,
 	mhocko@kernel.org,
@@ -74,27 +74,29 @@ Cc: cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	ran.xiaokai@zte.com.cn,
 	ranxiaokai627@163.com
-Subject: [PATCH 0/2] fix kmem over-charging for embedded obj_exts array
-Date: Tue, 10 Mar 2026 11:38:02 +0000
-Message-ID: <20260310113804.245647-1-ranxiaokai627@163.com>
+Subject: [PATCH 1/2] mm/slab: move obj_exts_in_slab() definition to slab.h
+Date: Tue, 10 Mar 2026 11:38:03 +0000
+Message-ID: <20260310113804.245647-2-ranxiaokai627@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260310113804.245647-1-ranxiaokai627@163.com>
+References: <20260310113804.245647-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXvQ+eArBpwhXAAA--.11763S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKry8KFyfJFW3Jw4fur15Arb_yoWkKFg_ZF
-	Z2qas8Xr4UGFyDGa47CF4UJFy3Ja13Jr4rGF17JrsrCF97KwnrArnxX3yxZ34kZF4rCwn8
-	J3y5Wr1Fvr1xWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRMjjqJUUUUU==
+X-CM-TRANSID:_____wAXvQ+eArBpwhXAAA--.11763S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF4DCr4xXw1DGw15Cw17Wrg_yoW5Gr18pF
+	yrG3ZrtrWvvry2grW7Jr48G34Yv34ftry8JrWxKwnYqa4Fvw4DtF10qry0vF98uas2gFnx
+	Xws5KFy8Ww4jvFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRkR6wUUUUU=
 X-Originating-IP: [117.176.242.62]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxh8uemmwAp9lNgAA3a
-X-Stat-Signature: 6eid5u7s18z4x3hih768ubig1kp3rzp1
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxgEve2mwAqFlcwAA3-
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C7D31140005
+X-Stat-Signature: hqekciirr4497o51ywu3poz46f1p56qr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C04FC0003
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773142716-886968
-X-HE-Meta: U2FsdGVkX18A3oKjr++JGfBbFRDCmd/Bm8x9dWeDs6ZPCzUpvhDeDMwfYjbw1z5A2BHDSmvIrKQGkmfii9+HYOZ3O6tS4NzgUDq8lNZK466c6thYh6GwwvkPyEPR2hcklcF3JIw7vE5xzRJrG/RQo4VSOEyeBkw9J64lfevBLrDabz2S/4J+xSMhf9ufeWVswEefjDTvl7WBdTbdwWIavPfkZU9bMikblto3OCEWcZUBM5NPl2osb9cwnIOaNn58vhHVKSIVBtR6fsmJri4xwnOtKG6YHS9BjbC1xJo73mjSMOxyh8WwjYQ2tIV5MQPOMkEasivc0oVfr9H7if/mA/bo55CWV68JD1ld892y6rEq6Fo2363vCcxLSehtsRALa96gb3OmbLMVOm1XWCcOEmxKsHlpirDoT68y/fqxkWLdIrPLvVDY2vmlGzKcYJ+cc0O65xo+EUxLIe08V+sBjPcsUw8RTf5oMpT98k+JdWhvSQwWnPxLOm57VeFYS2fXv5PDtNpDH7SUojhZVzBoTnEwM78Jw2unyQ2U5Rcb2dVi6vKtqA9zvZFqdYKT39k26dKdESlNlRWM4YrIZ+u/IPWJDSM2laKk2pvFAVFgpz3qf+iawzk1ESULLHCB1GBlVj3r0dpNO9ozUwmnv4rNsg2ZwG70I6QKscADO4Os4XcWyqKws9GajNQjOlfUIlc4tJiWfoQ9T0/9q4cqudDrUJWOGf+HdbiaGgmR0Uexq75Zz9x3hF3QDV2lgZvPDk/9YiGSyE8VwtVW/TMBmgd77O3jekNN/NhRBzyvTFO0k6iLiVaHLqDsRQGhZNZEV4B0u/h0h/UGO0oX5CPY5M824DHqTxP9hjmbcQIyzcRxFEXC9EKOy4ALB7VSmk6ipe8DbRJZVL87cMK84ftNqEaFXZqPgQP0S/K3+iff+YiXj4LUbcDgc2tWFN5Smpp26ciLXOStsgf1/WBgZNejJnp
- YUguKzU+
- nWX/cZ5QFMUY5T6DenyuKdaR6UDrfkhLbFwsltjIcjBaIAiiuxZ9PVe0PbNYxi6wc7pxCuKj0Irf5i+ldq7IKuMxapJ/c3xPTfej0M0kjWN91Kf61mqtRzFVv3dKBxU8fQLt2tc2e1aZX30yB91zXK+KGdlBRENvyuWf8XRvBvZBNs/I+6EG5MbevhmPSM4j6PaQrltRTUmGNC4zsoIxRiJgnyth6dHCJ4sWr+hp7VqCoeAhSeUBWu2CEQ+2expZ+bRRop7gV1yk2z/CdgxGrRctZ/nzb+uy+7852TD3xmbEdwn2jSvh1eotAEE226zUtZXvpHxAfH1l+pmuymW68XE7hvlTImICj827KoMc/aIKAmvpo9UaahuvbjlfyK4HhbOStNQUhE4Rmgdr2GOpxwtnqCY2brRUKrrtoctgdbi3HImj6hvWK6Ag16FB8lu8tU4cs
+X-HE-Tag: 1773142721-512476
+X-HE-Meta: U2FsdGVkX19FqWXA8oFGJJcmDcl2ibdK3IkSWTIGtDrXEIKPKTmlWNW8gsPJiYWngedFb5DH5JgVs3UQengBo9VWneOOueuo16cyea3tOWNRSv/dS+ORerUxH5gqKhkAjBR52YpVycpl75AOLmNWYyAP1uSgsatiY1XNU6y5MLxca4MgpjLEYPaaHVmKZRGUGifkdegW7S3yZ4/OoJCtszsRjZpZgO/sJHCSWFL3T3X0cH4lM/bM4iFkwav5LigUlXpnW2cJTAdntgQY/s4N8aJp20ZMzW8sGORRRnzI8HwLDCximylsmWYO66aZNKViOB3mh6GGcbeb08Y7vBF+j6/syQu9iaKYsgJsSjmd133FLp7wC/dZRRPwUmOqRqqb7bqg5otxgDd4HdrU4K4XOSKy5Y1JTeOgkiega4f2ZWcY5Y/hWpAKpOJ7dJGMmdvOIBxqgaRLph8SLl5Jds8FVbr+fi4L8mmXu5t9+63/LWwpOB57VPrsRrtNz91ssTtcgiFQEwyS12VHaW/kJrlL5tEfB2KWviRAew+Mm3P4+a2cI2C72KkAy6rmW4y7Tm8fA0/Ekv3wM5U6w2F+XMrThYZ8JZrORMXkxgnTR0kMlZTcAfKYpDrVYEErOckamNhSIuuC37pduYLgpJ1qEP44Agzcxojdhg9TyE33FPd+USgqElERsRd0kWOLW028s7SfEn7DlxQmbp6OSIG8hHMZIuIYuZkzAnF2OsmBrpjoFdPKopfmsKS7xqdJNsdAGSGohJmfrQuD2NyT/vgg96mS2uvOMuNH/g63J8QGM4FHJHLmS6E5qPnMbPfgAqVslApJtwsnZbFy3bQLE7eE5uQUpH//VxtRaaimKRZg7EVExoZwLUGOiKycYUWzvLhbJGym+7fJhER+Tduc9RlmSiCqRtHpKVpAYt0XUt09K/vNMWLDBCkLKV1Wc9O+2VghZaqhkmOSvhZkW37ZKJ6HDML
+ +3ydPNor
+ G982DEnwu0fxqzzZPGgeFNmuHTdAj3JDvcd5wDYFRpxw7SVdVWVSqrTdGOl5UXetgujSSrxLQQCvkayzwD+R2MQk9E7XzLOji6rukaVJ+C1H5VNpgX0Ap6PtgnrUeGGFlKjr0gVVApFeBt+HilixdT9Th/xPjQgrlckyfIecFdZpp65ojyuCdeVN94PiOvLKM0n3KW1WrIINdYNxWqmfOqsuX20UlTiv0yt/vhLB6RZOps0z73dO39iOiSC1bP9eX2QFnTw0kDpdw5Xn0McLZMsVxlM1SYhF3WlNYgdpPMNcB9+kcQNhl1QAQtuFlomCOUjUYlHGChY/Lik/JWse+Bq9+rPP0xRu9HUdy3LdnwQq1HyqjfLUC+RFc7e0vibA+hSn8XpuKYr6J45wU7JUP+3ASOJH7Lt2gTnQ/DEWhJgfYXTiuhTz7MmyHX0COXKQ7q+1kOD2hyKDwMgrsm+yneVeGb9jLW4Pcjgxt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,34 +106,92 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata
-in unused space within s->size"), the struct slabobj_ext array can
-use slab leftover space or be embedded into the slub object to save
-memory. In these cases, no extra kmalloc space is allocated for the
-obj_exts array.
+Move the definition of obj_exts_in_slab() to slab.h. This is in
+preparation for the next patch, which needs to access this helper
+from memcontrol.c.
 
-However, obj_full_size() always returns extra sizeof(struct obj_cgroup *)
-bytes for every object, which leads to over-charging for slabs with
-embedded obj_exts.
+No functional change intended.
 
-This series optimizes obj_full_size() to check whether obj_exts uses
-slab leftover space or is embedded in the object. If so, only the object
-size is charged. Otherwise, the extra obj_cgroup pointer space is also
-charged.
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+---
+ mm/slab.h | 19 +++++++++++++++++++
+ mm/slub.c | 19 -------------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-Patch1 moves obj_exts_in_slab() definition to slab.h so it can be
-       called from memcontrol.c.
-Patch2 updates obj_full_size() to avoid over-charging.
-
-Ran Xiaokai (2):
-  mm/slab: move obj_exts_in_slab() definition to slab.h
-  memcg: fix kmem over-charging for embedded obj_exts array
-
- mm/memcontrol.c | 19 ++++++++++++++-----
- mm/slab.h       | 19 +++++++++++++++++++
- mm/slub.c       | 19 -------------------
- 3 files changed, 33 insertions(+), 24 deletions(-)
-
+diff --git a/mm/slab.h b/mm/slab.h
+index 77242024e7d5..8354d5669ee7 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -597,6 +597,21 @@ static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+ 	return kasan_reset_tag(obj_ext);
+ }
+ 
++static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
++{
++	unsigned long obj_exts;
++	unsigned long start;
++	unsigned long end;
++
++	obj_exts = slab_obj_exts(slab);
++	if (!obj_exts)
++		return false;
++
++	start = (unsigned long)slab_address(slab);
++	end = start + slab_size(slab);
++	return (obj_exts >= start) && (obj_exts < end);
++}
++
+ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+                         gfp_t gfp, bool new_slab);
+ 
+@@ -617,6 +632,10 @@ static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
+ static inline void slab_set_stride(struct slab *slab, unsigned int stride) { }
+ static inline unsigned int slab_get_stride(struct slab *slab) { return 0; }
+ 
++static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
++{
++	return false;
++}
+ 
+ #endif /* CONFIG_SLAB_OBJ_EXT */
+ 
+diff --git a/mm/slub.c b/mm/slub.c
+index 1871c5ef354a..845a67736688 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -808,20 +808,6 @@ static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+ 	return objext_offset + objext_size <= slab_size(slab);
+ }
+ 
+-static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+-{
+-	unsigned long obj_exts;
+-	unsigned long start;
+-	unsigned long end;
+-
+-	obj_exts = slab_obj_exts(slab);
+-	if (!obj_exts)
+-		return false;
+-
+-	start = (unsigned long)slab_address(slab);
+-	end = start + slab_size(slab);
+-	return (obj_exts >= start) && (obj_exts < end);
+-}
+ #else
+ static inline bool need_slab_obj_exts(struct kmem_cache *s)
+ {
+@@ -845,11 +831,6 @@ static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
+ 	return false;
+ }
+ 
+-static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
+-{
+-	return false;
+-}
+-
+ #endif
+ 
+ #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
 -- 
 2.25.1
 
