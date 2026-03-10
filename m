@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33EBDFCC9B2
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 898ABFCC9B2
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:36:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E7456B008C; Mon,  9 Mar 2026 23:32:37 -0400 (EDT)
+	id A58266B0089; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 76B2D6B0093; Mon,  9 Mar 2026 23:32:37 -0400 (EDT)
+	id A05A26B008A; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66DA36B0095; Mon,  9 Mar 2026 23:32:37 -0400 (EDT)
+	id 93BEE6B0093; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 55DB86B008C
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:32:37 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E3F561C437
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:32:36 +0000 (UTC)
-X-FDA: 84528731112.19.7126AEF
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0AE544000D
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:32:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=25WpgtJU;
-	spf=pass (imf27.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 816026B0089
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11E26139E41
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:36:39 +0000 (UTC)
+X-FDA: 84528741318.30.CA3CF82
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 76EF3100007
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:36:36 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="u/Y5l5+N";
+	spf=pass (imf14.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773113553;
+	s=arc-20220608; t=1773113797;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ukfr+AuSSjalhcEuGd775EwrTPxyhTtDQGkfF9cnnoI=;
-	b=KQIuYjuOK8/W9p4TBY2aFT+ogBnTviFhvzRMI8m55MeWRkeefowqXbIzxM0LHB4MuMNvSO
-	j3VyyhgIy9JIb5KrLZ8Psr/Gi4Ks6uaaw2Ta0OqN9BAumn5zusxvHPVt3NZhfig2pqNdw5
-	1PaJoNsLVBkUpYwxMWROGG6AlBelaVs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=25WpgtJU;
-	spf=pass (imf27.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773113553; a=rsa-sha256;
+	bh=ot5C4phsn/D5HCjzZ0Ig3HqX6b1yZe2wL22xhQfLHmg=;
+	b=IFSXXL9T8AzAs3tVxgHQkUtSisyovwlfGElmicOyrmXnV7cl0qxqAGnYUkBISLGlGSZWI4
+	fuYdlaVBjMP8ckRqLQkGtgAKViQ89sY+gmwk9pa2+99BReDoE4So6AApSnwwjXDJoz63iV
+	taanGKSENZPyB+0lOvCg+W1csybQdPA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773113797; a=rsa-sha256;
 	cv=none;
-	b=6PbdqTZhw8W8+nad6MEjOZqftql05sZpatCcqXNvZuojKwqyBgawwrBEXopZAYtSeow892
-	k8xFYUHiPN1BM3t5su19vwvxFz2DFGZW50XlO49yKpuKKl4R9W5FxTY9grNWhREGRESojz
-	6Z8wYGBK9V/g4Zf4dpkXVmVx8xGVhBM=
+	b=nAKWyAlhm0yo8LTS/2GqYtvwQZAbwJRxVMCyTGoVCVcdGOZ4c79kQaCH6JitYqaaH4U2eB
+	f49XaF9wju+2bvK1TNSXYc8CG5v9uxDOb0+VJDEUTtnBvmRb+OnAGijno7i+oVDOHRK5qu
+	0IL2SYzWPc2I+c4mnPudVC90uiPEDZo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="u/Y5l5+N";
+	spf=pass (imf14.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=ukfr+AuSSjalhcEuGd775EwrTPxyhTtDQGkfF9cnnoI=;
-	b=25WpgtJUdMU4EPFULH4K6br31HYc+68SzizJgcjOO0/WwTWrFm0I23gaAhtwXnemVVXog/D/6
-	BKz/296PrNYryXCSs7MiOe69iLEyRVgoaq5Khg5lETGv3V86EtVXKGw/JnmgCWQ0KZKoJSPlifM
-	iFUEDnQb9cUjb9lEiLhCOWk=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fVK7D71ZgzcbS0;
-	Tue, 10 Mar 2026 11:27:04 +0800 (CST)
+	bh=ot5C4phsn/D5HCjzZ0Ig3HqX6b1yZe2wL22xhQfLHmg=;
+	b=u/Y5l5+N4i469pymJs6TizNMRhaXRY3XQYDkxsFl8M0qt2iPo/czlg6L4roHgwf6Ip1oXoqm1
+	ascKg5gs8YVj2fROA1QIFoKpqalvRjzL7LS7HXslvZjro8o1K1ud6Vkerhap9qLy7VjeW+0w97x
+	UGB+091hZnHHBRVLz06b+qk=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fVKCg5mZDz12LCw;
+	Tue, 10 Mar 2026 11:30:55 +0800 (CST)
 Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0A90840569;
-	Tue, 10 Mar 2026 11:32:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id F058D40538;
+	Tue, 10 Mar 2026 11:36:31 +0800 (CST)
 Received: from [10.174.179.248] (10.174.179.248) by
  kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Mar 2026 11:32:26 +0800
-Message-ID: <875a5d1b-4bed-4f70-a122-acd625265bfa@huawei.com>
-Date: Tue, 10 Mar 2026 11:32:26 +0800
+ 15.2.1544.11; Tue, 10 Mar 2026 11:36:29 +0800
+Message-ID: <0dc36f64-3e6c-4e4b-bdd1-6e364babb0bc@huawei.com>
+Date: Tue, 10 Mar 2026 11:36:29 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC v3 2/4] mm/pgtable: Make pfn_pte() filter out huge
  page attributes
-To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>, Matthew Wilcox
-	<willy@infradead.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>,
+To: Matthew Wilcox <willy@infradead.org>
+CC: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>, <david@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
 	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
@@ -95,22 +95,22 @@ References: <20260228070906.1418911-1-yintirui@huawei.com>
  <20260228070906.1418911-3-yintirui@huawei.com>
  <5eaf3846-01db-471e-9903-b0b239d7838d@suse.com>
  <e8d5ba16-3071-4b4a-b6a1-d492cc46e8c2@huawei.com>
- <4d7c396a-6a48-4e56-b8d1-3ac7bd5d10fb@suse.com>
+ <aapXRN4KjWtUUJ0g@casper.infradead.org>
 From: Yin Tirui <yintirui@huawei.com>
-In-Reply-To: <4d7c396a-6a48-4e56-b8d1-3ac7bd5d10fb@suse.com>
+In-Reply-To: <aapXRN4KjWtUUJ0g@casper.infradead.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.174.179.248]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0AE544000D
-X-Stat-Signature: g19u4hzjijpgbcpmrwzgj4ngcancgn3q
 X-Rspam-User: 
-X-HE-Tag: 1773113552-240755
-X-HE-Meta: U2FsdGVkX18O/wOt7dRB+BMbXco7CzPXxit5aIP+elsvMSR/7tke6YF4zIgd2BvdhA1oSZRGl9v0XTV7Y+awZVIiUEGWmteHv39tIMWVwl0qfvqDpjG2aaCtPKvuJTadLta06jIuV+OLmUAYUtCA5YA1S/nTEhaPxkODDJRwCM9GCOBT3kZUe5eN3vUfbnj6t1UJ824/MXWg0uF33jQai5ToY0aPOfnwIpUV8Tcb95pwdMTyBDvqzsrTgY3ueDUBTKONZB9XlY74Ao9d2S9tHiHh+e5bNVduMcuwktMysy+OkOX0Y0G9Hu9GjJEkZjX+BYJj0kAiUPy09fAio9WzuaqtPRikKrCIRb5WZOwyI8aq0ZV9f4rGsjY5dZu/7g5H8MY9oVuhaCSxskM+bZdUq+KFYaYnFKRnlwbP0TSci6SfArTGziQwc/UaXP/PnSJodPMN55N/aNdMT6LvzZPKCJ9upqHPaIVUwK5hZ2cIlRY/6LNBlTHmJfJTkq6fvvH1Ve1mqQj631C8/dIR6yk72KWNpnOKHVHjEpchFg5NaTyDO8YHaz8umz0ZaUaNRgEIi2JAyxzQC7ffVy7AYZVGUqU9jYE8I5aWVgb35OFlUN2Bmy+XvwIB2nt7bpqcwjRNIutEzcVJk77RyLjon56u6cDGCTHuP8BxFJr3Ktrly3hydzzDl3ev+mzrwrJP9wrl/Fn/J/yPLqrnYkj1XL4k0T4zwn+zGvlUfTm1fGbCnEV2FlA8sNfMuHaM0raPbIKDnE47+lr4RI9iq/eJvPN5s3s7p25zVeEc2/U8loi5MjXP/d5pW0URNYHb8H12YG877zIOl+EZz+CKtzBFI2RvbHi9KsE0wFmnJZe3aUdvPNlGdB7gT3nWfkywS+1mUjggQkjFARhbjckFMgDQqFSg60MgTY7v8dD8TTnOtFmdjMSCJT4GCCvA+6pWj0pZqO/Xb4nCyxs9mN1h3ILtaKE
- 2zpZJ74P
- YJOjD9TYbVSnCTT+MeVPPUj9myiMbJt8RLeyYepwwm3jVxSg8+yrjv6vnb+O+VN8jIlD2W2iglRIzuv9K2eWX46Cww7SbJ7mb6sxy4LYbJWuqPZsnbBhcf2RBjqexbLOfXnpzsr1gWjKJ9ZpeZmD9pfzDA5Sl37+nLbvF62C7KfmiNLwGVPFEEAy5ZNj501DDGn/b8nkh7Z49GNiCBtVEOBDB/gF+ub0iTGmM+dGcD/RjTzqRBWuTbUZ4WW5nfgZ4f18sV8PXHfyck9oCVeX1qqrBwt0XheSe60WlW4z4azSSrL8lzSHG1i9a+A6cNVzQH2xTBzz+PIFnqXiSOFjdAxdcxx8l3ExDiajRSFdnXseW9UZxd5E5a7v18BLENqxYe7xBTw1Jp6RcSQk=
+X-Stat-Signature: k1z6ttwuchrgoa6uphdyrua5wm3jtkhh
+X-Rspamd-Queue-Id: 76EF3100007
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773113796-647174
+X-HE-Meta: U2FsdGVkX19c5Xi/CBeEVb37WMAZCAPHzN5CFFO/Obif56jaZdY13vINZCEGA3uWVwXlbFJjSevuEt4jMWoHysm7SK05HDC8U7s0Gx8fopcWwfCUYzkTqIaMfI4Qe5Q93i19COcgqdWNanBWe1jeiGYWbfXscXgYztOOnwQiGVrLs6HZIBwCj7aPVNChY0UUQGc4jb6gavfDb5iIyirirIRfPYNvxjksuZQMsr4MDUeL1428UURh0u8SyW3ykUi7sM5pqc/BLBuHS0nZaqb3dhkGSGgznCFsAtY3wmqhLGijhA+11VIRh8RDhAUeNWBsTdS6QNrviz+htoQ3x95Eyo2NrjyjxMVfw4yGHVWyAilrAHpod0AiJD1VvfUzPbW/ezlFOg4+B/a7AGBom3WsuEcU9dchuSo3YeecccYOBZJwPP52uB+k3nx8QjLQhJ7RU9NK4uh5uF1WOJ0OCGwXOZdoyUobdZCZwwbGPsNFQKjhUq4W4oMvKg5K0TqsyO60NFgt8mCl67q77XGcOfhZ4mDbz6p7FBWy+vmUVvUQ4+nlGqQ4BBQzGDvjyAKXH4Y4/zm+LD05Qt1JVV+ShjzS5l4kRDXPF66Cp4CA2C44Z9r3dgS57R16jCnhwTZbAeVO1UMASYTHNNki94dEvu096Di/WkH9Hq+vsimmSRWFcYgTU4BB7+ntFnqRJx9SH4ffv0EoOF0k2a305RMKoE44h1yVCyiWDPIY+V8gVTrYhFHVVrIEifjpDrim746aPD4TqWt/epDuLnFVzJEgnHvLrDsglSDaS274aSp/fGhCI1zdEvk1pCwjH1LW7XKqECt1Eoaz827GIaKoRANn55pmg2RyiEXqOShhZepQOfIPoaF0TSlnT8DRJIELQWSwqDgezJR4KAXRpNRTkdIHviMcpYFfCb507IUNhLLE1tV8ZuD6tHIuCWnAZz6S96F1WerdSLTDa0vE8hFegFLJoHX
+ raSdpQlQ
+ rNdhabQY9pZWmOq/+pRvy9jPI+bRdFEVwW9VyZDHHDgcCMRhQPELrZbz+h0ftK5yFCGS4gAv2n8DYwwTmK04XD7E54zUI76qGWwF85YmbzsMzU/ytvSVXm3hqHvUHlsx7OH/ZWMzUb065hO+21cgFe8qQ73i5/PePgnGlF+douJkKwcEZLsowIegdAblkfBovBk8BlszMgMxFdSAwQCoikrYNLxiQBn7WPx1hypK2hW0KLp00ryyw4KX+ru+QdJmDXOwmSqbFlacK0uiWqGV7/Y3w6VhKmMceWT3nYuHFOJrSRaCQ22rDLKBUYwvE/Z3eJTB3+l1P7UyRcPw/i6LwiOtFgMRd+vBmMmTAvdA0f+cpEEU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,56 +120,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/5/2026 6:05 PM, Jürgen Groß wrote:
->> Hi Willy and Jürgen,
->>
->> Following up on the x86 _PAGE_PSE and _PAGE_PAT aliasing issue.
->>
->> To achieve the goal of keeping pfn_pte() pure and completely 
->> eradicating the pte_clrhuge() anti-pattern, we need a way to ensure 
->> pfn_pte() never receives a pgprot with the huge bit set.
->>
->> @Jürgen:
->> Just to be absolutely certain: is there any safe way to filter out the 
->> huge page attributes directly inside x86's pfn_pte() without breaking 
->> PAT? Or does the hardware bit-aliasing make this strictly impossible 
->> at the pfn_pte() level?
+On 3/6/2026 12:25 PM, Matthew Wilcox wrote:
 > 
-> There is no huge bit at the PTE level. It is existing only at the PMD 
-> and the
-> PUD level.
+> I don't think we should have pgprot_large_2_4k().  Or rather, I think it
+> should be embedded in pmd_pgprot() / pud_pgprot().  That is, we should
+> have an 'ideal' pgprot which, on x86, perhaps matches that used by the
+> 4k level.  pfn_pmd() should be converting from the ideal pgprot to
+> that actually used by PMDs (and setting _PAGE_PSE?)
 > 
-> So: yes, it is absolutely impossible to filter it out, as the bit has a
-> different meaning in "real" PTEs (with "PTE" having the meaning: a 
-> translation
-> entry in a page referenced by a PMD entry not having the PSE bit set).
-> 
-Hi Jürgen,
 
-Thank you for your confirmation.
+Hi Willy,
 
->>
->> @Willy @Jürgen:
->> Assuming it is impossible to filter this safely inside pfn_pte() on 
->> x86, we must translate the pgprot before passing it down. To maintain 
->> strict type-safety and still drop pte_clrhuge(), I plan to introduce 
->> two arch-neutral wrappers:
->>
->> x86:
->> /* Translates large prot to 4K. Shifts PAT back to bit 7, inherently 
->> clearing _PAGE_PSE */
->> #define pgprot_huge_to_pte(prot)    pgprot_large_2_4k(prot)
->> /* Translates 4K prot to large. Shifts PAT to bit 12, strictly sets 
->> _PAGE_PSE */
->> #define pgprot_pte_to_huge(prot) 
->> __pgprot(pgprot_val(pgprot_4k_2_large(prot)) | _PAGE_PSE)
-> 
-> Seems to be okay.
-While the wrapper approach handles the aliasing, Willy recently 
-suggested taking it a step further by embedding this translation 
-directly into `pfn_pmd()` and `pmd_pgprot()`.
-
-I am going to explore this embedded approach for the v4 respin.
+I will take this route and implement the embedded approach for the v4 
+respin.
 
 -- 
 Yin Tirui
