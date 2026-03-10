@@ -4,84 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FD2FD4F0F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72ABEFD4F0F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A366E6B0095; Tue, 10 Mar 2026 13:54:22 -0400 (EDT)
+	id 79AD66B0098; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FD966B0096; Tue, 10 Mar 2026 13:54:22 -0400 (EDT)
+	id 771F36B0099; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DFCF6B0098; Tue, 10 Mar 2026 13:54:22 -0400 (EDT)
+	id 674096B009D; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ED5D6B0095
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:54:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19675B7915
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:22 +0000 (UTC)
-X-FDA: 84530902764.07.B6E7BC0
-Received: from mail-244121.protonmail.ch (mail-244121.protonmail.ch [109.224.244.121])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3B0651C0007
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:54:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=TdeiI5Eg;
-	spf=pass (imf20.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 407266B0098
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D35361B7303
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:18 +0000 (UTC)
+X-FDA: 84530912676.26.8BF323A
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F2199120003
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="Fqx/FEUj"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773165260;
+	s=arc-20220608; t=1773165497;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zjM37d5NXgOfN+BbnN5wcd6ufgE9HwUJahACByQ/mOc=;
-	b=jCPAvak8SWEqtrcEWcMcZAn804I4+3O5eRukkshaE0H0Xi8bVVGaHAyr/h1N6+lTgzbj+7
-	jSNeOqF/TnjUWQacRqovEAXw8vLLf2P7IEXerI6GotJpQsLhXxTJwH3qMxmw+BSiPL4tu2
-	ENc8Sy0qUfvIC0gHei6mbxk4fz/nSC0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165260; a=rsa-sha256;
-	cv=none;
-	b=NmN2ONWjYZ5VXaAeZOMYCFE99XQ8EzF8TOdAxGLYU4290vKK/gDLMztDpVYFVU/6hcshNi
-	cLqJUCBYVomDeW7fPWgQVI9t1pO88eCDyuXDSr2Qg4Ij5TdS1OAru3p3mM5/BDMB+q9S77
-	YjVO3bsJ7CeoLzCEHLv+meZGlUWicRU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=e43stWVIt/gV4fTuEkK6b3XE5CxzUgflCtEqccZEgaE=;
+	b=o0QnOQpkWzikaH0D+kcOrYHnzOmFVE4Lwp4I0kfb2PihZ3dSfoxWcHCReDEsuOuyVE/1M1
+	mLUO1wLTMG66h39l6L9+ebg7ozJzojSbe+3/Kv0bLuLgrJ8WJl7p1yDryM2eRAnbuIx/z7
+	OffXY6MHbW/yhB/BAaOT1fG2XSqEntY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=TdeiI5Eg;
-	spf=pass (imf20.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.121 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1773165258; x=1773424458;
-	bh=zjM37d5NXgOfN+BbnN5wcd6ufgE9HwUJahACByQ/mOc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TdeiI5EgKkUmx6lLx62juUTEtbY42Vnt9sE017+UF2+eCFw2FmEWtRhxWnRq9PDZT
-	 ojOs2S3zIaUYSZQL+Bzku1FeFz8vDKAbCB+BXQTiGPd+wzgpsGrN0wLZT1qGfviDJp
-	 B/RLawSOqIcEmfu4lm3kXkT0+MiOzc5eK8JoJDVHIZ5aAXbizMRIbL11vsL1s4Yupi
-	 onz25zm55NCQm4OoD+Gu1c6iEUSNyrG5+DYyNJq2gIP7Hii4iSWVElakf0XS+r2WY9
-	 vI6p55YyVL1P4rgd6/TS3X7TQs9HNwQVOsIgP+MVuW4i7mtNZdVzAjp5rI3S9DQlpY
-	 m2AfwK8Xf4lXQ==
-Date: Tue, 10 Mar 2026 17:54:14 +0000
-To: akpm@linux-foundation.org, Mike Rapoport <rppt@kernel.org>, Uladzislau Rezki <urezki@gmail.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: m.wieczorretman@pm.me, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Alexander Potapenko <glider@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v11 07/15] mm/execmem: Untag addresses in EXECMEM_ROX related pointer arithmetic
-Message-ID: <46124025a71405bd5d830496c79baee047a1f3f3.1773164688.git.m.wieczorretman@pm.me>
-In-Reply-To: <cover.1773164688.git.m.wieczorretman@pm.me>
-References: <cover.1773164688.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 1f2018ca438a91b582bccc0718962a32e2496492
+	imf29.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="Fqx/FEUj";
+	spf=none (imf29.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165497; a=rsa-sha256;
+	cv=none;
+	b=ny+QyHx5sZEECAb0cWE7xoUYdRVfJgOsXXXdu8Dd7PB4fAXHqLxh/MPeqdoVXhNJTz/5vC
+	6VxwaQ7eRWgein965+1eU8nIMHa0J6PDy/wArfdDBumesV1QoIxOQVtl9Qan5nSumLG1Ku
+	3DFu+wgoH7SpWcUhRAGvlAOIMb7aQdw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=e43stWVIt/gV4fTuEkK6b3XE5CxzUgflCtEqccZEgaE=; b=Fqx/FEUjI8yutWEVaYVi5bHwEk
+	e7MYjVrMersnayKWHlhiVGRH/LBBFk2AX3zM4vNMwTMHCVUYOPhS9l7TF3geRkxzshCLAp5XfDp2s
+	8a5D8vKogllCOGJXFrRDbwNzJr6mEQ0Dhas0LwWzKKnKtmoNelvFGpft6ii1nLo6eSmQdzquJm8xN
+	JlSXv6sNqXsRwkH3ul1wU2dXDNoVWXfvnYJcLl+kPkDole75uGweOlYyRKigWXeeOKHV3pFWc1rgA
+	iaSlWyFbFEeXgEaBVyCiJ+CnJwzh6ZbWUCzZJl7lGuVUqOsM4iYEWYCNxPyfmN5bqL7Ym+DzOqTvc
+	VYlfeOFQ==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1w01L7-003AZM-Jv; Tue, 10 Mar 2026 17:57:55 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v5 0/4] mm: thp: reduce unnecessary start_stop_khugepaged()
+ calls
+Date: Tue, 10 Mar 2026 10:57:06 -0700
+Message-Id: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHNbsGkC/2XN0WrEIBCF4VeRuV7LxFFXc7XvUUrRaBJLSRZNQ
+ 8uSdy9uKbXs5cD5/rlBiTnFAj27QY57KmldoGfqxGCY3TJFngL0DAQKjYTEt/n6+r5OhaOyQXu
+ Dow4aTgyuOY7p8556fvm5y4d/i8NWfV3MqWxr/rr/2ru6+83Kv+zeceTKIhnRGScUXUL0yS1Pa
+ 56gdnfRStVIwZFb7cmFs1XGygdJrTw3kjhyJ1UQgxlJG/UgZSttI2X9KbS3RiIaiv/kcRzfIeW
+ Z7GEBAAA=
+X-Change-ID: 20260303-thp_logs-059d6b80f6d6
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-363b9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3252; i=leitao@debian.org;
+ h=from:subject:message-id; bh=cT2sOaFtawOcE6NecJK4yZ2VuHWTUuS7G1H4o50g0w0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpsFuaZIVXuthS8XcxawntaC0RPXkIy1kPshiAk
+ eub5UVwHnKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabBbmgAKCRA1o5Of/Hh3
+ bf3tD/9Y43G7y1j1uPcbAWz8YhBtfnSlwNYDSpgbKSJ7ARsndZIZMGB/59uobQ5Q/aEWJ8thhdy
+ FtrAjhpIfnNWUNLNnahOiPyv7AGcXQBs/YwLNjSG5cYVZi5/1PWh7VNqAStgI2gGwAyTUStCvfH
+ GLkhFWiB/3u4RW0w73N3BRMzKWsiyCy/PI3eM4RDAuLFRh9fUgCDiEMeMC8zZ1sZ+fz/Ni/HiJM
+ vc19puIW0Sx5k81Z37NGf5Eim0kMVDO1lyxbEoA//3x2wlNYVjHJ0ZG13f1fTiRiulPNAzI9k6M
+ jY/QIlejJupuR84EH6SL5Sf9GG4cECjO4ID7pCHIzs0mHD2l2W+Lt5s8gk9J0VX6iPxkT9tBNs6
+ Lf8ithbtn1etci9ZgJBnkW/ZveVOqWv44VfgKQBZ3sEazvwj/46o4KsxIDW4t80ezNxkpoCtDON
+ Pxo5+vTqIjMipq1B5CqBUWlCmBH7n+M0KnlZYToH+/yKd4eQJrsbgvATo5kxgdsgXvSXhud3pl7
+ v45mkZJHPPXheUsVFPqYLdN0fT+I77nzhUKjWfkimPTyiqN4FZjjdvN0MAVQNSDMILd0VP7JdDE
+ hhWNh/XR4nTbyYSX06PPVX5XehBQd3pDRcSN+K+gWW0N46YnNfgec4+29bM2UAuHLrrvCEycdA3
+ 5uOJuV/2JSYIlbg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: F2199120003
+X-Stat-Signature: ec5zy8bqxz3yw9eti68qicwtnmoxw73i
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3B0651C0007
-X-Stat-Signature: ywxej6oz8mb8z3zdz94pgbzkksq43xzt
-X-HE-Tag: 1773165260-174363
-X-HE-Meta: U2FsdGVkX19FIntciHXlQyEXG4ImtmR5sR8I+iOfvV3tV6ppZAFf1jWX/+wJ9Y11plTGI+HPyi4F45aBSytudL8c2yfQBpB6Mc0C6TVJ1xYiXodD5HV3XnkEK4wvaLYNCQTe7E63fntCDaXSf/s018i6BSLIlIKKgJlpDinFU+Pi7SScIVRLRz0x2Vm/8tvWvT3cr07gybDFO50X4UWG0yfAIokBvSgJ/Wtotg/0m6OSlQdtcW1N/lbp5HAFuHB8zD8ugMSdDtjw+lDRP+prZQnB1/2LhH2EJlUCDCSupzwah5JsTuITvZYM4KJB+9HeQs7eUS0hhp/wwyFX3Ly8GOLWHUh06KYlUw2TahljzAMInGRRStXg8YpqJyGRKJYugvj8QcM8vl+adNTRGkjG5jYIPSC6QV/NX1ZwBwikURUdQd5kG96BT++LzfuS6iuM0jsEI7RJJTaUK+Q+Bv8RBhDtvM/Ebd0W7ckcwT/JHRgGurj5Xfv4knSKzNKGV2KWv0YxaPP+9y1cVR2mBEoViqs1ppPmxFQRdvFU0JrWy0Zs+YZ3qsSD5vYxZJZyFk9M7XKRNKa18O0Yjjjnc6B8dzP9E6zbkjz6emk8toc2gEWmYBaKr8ZcOQ2vVJeWCkIU6i5JQPYRbbJXqVB+DkQlO0WA1xkHsoRaVQVvIKRROvu3YFfxzHNxDGRdiiAa7qY+SnQEd0ijS51/qRhNflGbDHg/rQq037nkv40nK715ljFrhdCQVU/mlr2RYMbfdJ9JquXj2zEN1X5cVW0NGf4pzrBRcDHr/Byo4xtUM5LCmpt8xKz6F8wa+lFL6Zf+yOY5jF3i6+MhZjzr1JXj9HY9YEjleSFF/mZTgZnb9VaGEB/O3+lgVVpLLRIUhRRcb9XZrL4/788NBskOOJifTJP47UpHJEeGizoEunYyEQmQ4ptHhiSJTv6lBLTcdlmO8PcaRt1QiWBRzbcfTa2jpEH
- +rrO0wMV
- LM8R6RRjwjmmDVUd9z2drcASgGN6WJa+Zy1ptRBlQRrN6++Xq3aVLfKkjszdHGgQHF0qPOMyGkUfe/y6pzMse5684bvUbeuoUtubcR4ZTMYrZsHlqE8icaSFnf2WdAvAoDaJZ7opEbnjOiqB+8mIs1XFqdFRb9km9QpxyVRyI4pADN7r2rIFCvXKL62WMjcpGZOKCCXT148RmYCQa8amEVWcUHGrvOFEUywVDpmIuw2jFgS+bi+MdUnIHWprrH8DC6Vb4J+SJIU+PuLiKUTzXjVaMNjBIJoeD/RlnOtnJyJ1u5+GwonjhSzsrRhPPtizfKyBhJlcFli37Z2E=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773165496-251250
+X-HE-Meta: U2FsdGVkX19DYsFRb2ee3oTeOsYxJkZAR3XJsSHbLwcPF2lwePSteMvm3xP+sncOsFjc72tlSfEC8H7k17O96Mc2sffkZM5YEVK//GgZlWPHgM1PXi32nBTVqBjYkm1NuorXVxlhBmSui6qIg0GyAX4CMt5UfK647xcAbobkHnRGC8UMBbJ8BfY8ix8Zk9Le0ctAf9G0rdY+6U6J5pDV6KKl7xV+X/T6IU/4P86PBLHNxjGSGcCkBlsAmyAYrq5zl16y2ZGJ3H35ybrIthpkL79Ab3lRKLcq5GI5qkUXBuBaV3rynGb3bM/67Oq5BxsRYf/fKvxLamcQQ95cA0Vs9cCEirfgsSOb8q9MxefFy+kzpoJWcbJao0OEsXL9vmSe+/LJy8S/4G1n5GeWIxug0AO7PYZe4TQAPEKJGa8sK6MhX/02jOsFeodz0xWuFdQpAWSgwwUuoyxGUsZ2yE3STpbVaPgnR9+LEtkDl8KaiLCaF47mNXcoJY/d8nLZ3QT+ajBiSfhdBAMwoR+CDQWdAXeDkSOGGoA5K56Ku/K4JJeeUyWirGeCYwk9QOSMsfF9WdCP2pA0Q/QzBT05j3jX2EOYXA1sdrMvEkRR6RjZ/xWErOC+8+nJqAWMpGy8+cYbfOQPgwv7ekBtdetcUmpyp+hHpiS5BluM+L1AF7kn+GRqrwqVCLnBzqybVvNKzqRxbnoNtu7a8jnmgcOXNo2mZbmqrJP6XtNt4SzGGiV1Ilp0LV7hZjepwa281rgiy3OkE88SfFjh6LfNUxlI4nqGHP7euSa9oBK63H7W3+07GXtkvEiW/+eSH6beBiM5NcuDamGoJFVXMSRK++fBC7Xq8R8v42z9nnt9sMwOEA9Z2vMaoILLhZN1AlrjmATyyyONRMZjH7yk5eFK51NGUyUuS/k85v0PKQcjMLNvcHe26pH4FADk+q2zKqRvHioF5XFoPHXIPM/vcN9g/om9Foz
+ VKX7R2mN
+ 9hc3aa4Tf7CWxckSkShqOOHRAjt9CLESlvTYIAT5ijgPd0Gihvxv0MquRetQ+k+CELCpWw5ynlH7FTbv/QbFF5xZLtX7nj8GMx7zBWLaXPoD6ChUOPEsykxXkXdzAjtpQMJEG2hNfvY40T7nhHszHaxGal2muu2DLvgqQJgYLkcGNI/27/IcaUGJlx52CZpqwhfBEKKknUk9+LLaJqz1kEz+h1EBM4JrYl5WhYNCst11Bhq7xjtcfozaJPpVaoUkwayqXMsbyr9W8e/crJi84xMn3pfOwTCccseo3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,94 +122,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Writing to /sys/kernel/mm/transparent_hugepage/enabled causes
+start_stop_khugepaged() called independent of any change.
+start_stop_khugepaged() SPAMs the printk ring buffer overflow with the
+exact same message, even when nothing changes.
 
-ARCH_HAS_EXECMEM_ROX was re-enabled in x86 at Linux 6.14 release.
-vm_reset_perms() calculates range's start and end addresses using min()
-and max() functions. To do that it compares pointers but, with KASAN
-software tags mode enabled, some are tagged - addr variable is, while
-start and end variables aren't. This can cause the wrong address to be
-chosen and result in various errors in different places.
+For instance, if you have a custom vm.min_free_kbytes, just touching
+/sys/kernel/mm/transparent_hugepage/enabled causes a printk message.
+Example:
 
-Reset tags in the address used as function argument in min(), max().
+      # sysctl -w vm.min_free_kbytes=112382
+      # for i in $(seq 100); do echo never > /sys/kernel/mm/transparent_hugepage/enabled ; done
 
-execmem_cache_add() adds tagged pointers to a maple tree structure,
-which then are incorrectly compared when walking the tree. That results
-in different pointers being returned later and page permission violation
-errors panicking the kernel.
+and you have 100 WARN messages like the following, which is pretty dull:
 
-Reset tag of the address range inserted into the maple tree inside
-execmem_vmalloc() which then gets propagated to execmem_cache_add().
+      khugepaged: min_free_kbytes is not updated to 112381 because user defined value 112382 is preferred
 
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Acked-by: Alexander Potapenko <glider@google.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+A similar message shows up when setting thp to "always":
+
+      # for i in $(seq 100); do
+      #       echo 1024 > /proc/sys/vm/min_free_kbytes
+      #       echo always > /sys/kernel/mm/transparent_hugepage/enabled
+      # done
+
+And then, we have 100 messages like:
+
+      khugepaged: raising min_free_kbytes from 1024 to 67584 to help transparent hugepage allocations
+
+This is more common when you have a configuration management system that
+writes the THP configuration without an extra read, assuming that
+nothing will happen if there is no change in the configuration, but it
+prints these annoying messages.
+
+For instance, at Meta's fleet, ~10K servers were producing 3.5M of
+these messages per day.
+
+Fix this by making the sysfs _store helpers easier to digest and
+ratelimiting the message.
+
+This version is heavily based on Lorenzo's suggestion on V1.
+
 ---
-Changelog v10:
-- Add Mike's acked-by tag.
+Changes in v5:
+- Used the lockless __test_and_set_bit() primitives (David)
+- Rename the functions and variables to match the code (David)
+- Link to v4: https://patch.msgid.link/20260309-thp_logs-v4-0-926b9840083e@debian.org
 
-Changelog v7:
-- Add Alexander's acked-by tag.
-- Add comments on why these tag resets are needed (Alexander)
+Changes in v4:
+- Use the enum instead of int in the new functions (akpm).
+- Explicitly initialize the enum values (akpm).
+- Link to v3: https://patch.msgid.link/20260307-thp_logs-v3-0-a45d2c8f3685@debian.org
 
-Changelog v6:
-- Move back the tag reset from execmem_cache_add() to execmem_vmalloc()
-  (Mike Rapoport)
-- Rewrite the changelogs to match the code changes from v6 and v5.
+Changes in v3:
+- Extra ratelimit patch.
+- Create two enums, one for anon and one for global. (Lorenzo)
+- Remove the `extern` from set_recommended_min_free_kbytes (Lorenzo)
+- Export set_recommended_min_free_kbytes() definition to mm/internal.h
+  (Lorenzo)
+- Link to v2: https://patch.msgid.link/20260305-thp_logs-v2-0-96b3ad795894@debian.org
 
-Changelog v5:
-- Remove the within_range() change.
-- arch_kasan_reset_tag -> kasan_reset_tag.
+Changes in v2:
+- V2 is heavily based on Lorenzo and Kiryl feedback on v1.
+- Link to v1: https://patch.msgid.link/20260304-thp_logs-v1-0-59038218a253@debian.org
 
-Changelog v4:
-- Add patch to the series.
+---
+Breno Leitao (4):
+      mm: khugepaged: export set_recommended_min_free_kbytes()
+      mm: huge_memory: refactor anon_enabled_store() with change_anon_orders()
+      mm: huge_memory: refactor enabled_store() with change_enabled()
+      mm: ratelimit min_free_kbytes adjustment messages
 
- mm/execmem.c | 9 ++++++++-
- mm/vmalloc.c | 7 ++++++-
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ mm/huge_memory.c | 147 +++++++++++++++++++++++++++++++++++++------------------
+ mm/internal.h    |   5 ++
+ mm/khugepaged.c  |   6 +--
+ mm/page_alloc.c  |   4 +-
+ 4 files changed, 110 insertions(+), 52 deletions(-)
+---
+base-commit: 9dd5012f78d699f7a6051583dc53adeb401e28f0
+change-id: 20260303-thp_logs-059d6b80f6d6
 
-diff --git a/mm/execmem.c b/mm/execmem.c
-index 810a4ba9c924..dc7422222cf7 100644
---- a/mm/execmem.c
-+++ b/mm/execmem.c
-@@ -59,7 +59,14 @@ static void *execmem_vmalloc(struct execmem_range *range=
-, size_t size,
- =09=09return NULL;
- =09}
-=20
--=09return p;
-+=09/*
-+=09 * Resetting the tag here is necessary to avoid the tagged address
-+=09 * ending up in the maple tree structure. There it's linear address
-+=09 * can be incorrectly compared with other addresses which can result in
-+=09 * a wrong address being picked down the line and for example a page
-+=09 * permission violation error panicking the kernel.
-+=09 */
-+=09return kasan_reset_tag(p);
- }
-=20
- struct vm_struct *execmem_vmap(size_t size)
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index c607307c657a..67406e42c4d0 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3361,7 +3361,12 @@ static void vm_reset_perms(struct vm_struct *area)
- =09 * the vm_unmap_aliases() flush includes the direct map.
- =09 */
- =09for (i =3D 0; i < area->nr_pages; i +=3D 1U << page_order) {
--=09=09unsigned long addr =3D (unsigned long)page_address(area->pages[i]);
-+=09=09/*
-+=09=09 * Addresses' tag needs resetting so it can be properly used in
-+=09=09 * the min() and max() below. Otherwise the start or end values
-+=09=09 * might be favoured.
-+=09=09 */
-+=09=09unsigned long addr =3D (unsigned long)kasan_reset_tag(page_address(a=
-rea->pages[i]));
-=20
- =09=09if (addr) {
- =09=09=09unsigned long page_size;
---=20
-2.53.0
-
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
 
