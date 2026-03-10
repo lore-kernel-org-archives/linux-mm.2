@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3928CFCC9A6
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 851D6FCC9A5
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:05:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6C4C6B008A; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
+	id C8CCF6B0093; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42B46B0093; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
+	id C3A8D6B0095; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCFDE6B008A; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
+	id A3ADA6B0098; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2DCF6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:05:42 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6B4081603EC
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:42 +0000 (UTC)
-X-FDA: 84528360924.10.3B0F555
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CF711A0015
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IfiM1MsN;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8481F6B0093
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 39D9258767
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:43 +0000 (UTC)
+X-FDA: 84528360966.17.8EC1EF8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5D57C4000F
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBwjHDJb;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773104740;
+	s=arc-20220608; t=1773104741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7rAquPtPTIczA93CoUyMvoDJlpRSkVonq3WURizgyxg=;
-	b=wmiRxphTfGj/0dCp510HsOxHNL5XmubCh5eR7QlyOxmIhN0v84uNhCPNNm9zxcz6AGCv/W
-	4NDQ2JNu/z8DVBy+OwRWzb3DC23vzllKQ1t3jTVklDyvgoK2vDVnr5Pq78LdA+qOdMNNfI
-	t+3ciU6TBQlZO7rhy3LnmESJsOFwOCk=
+	bh=NtMbNh3H86JFY8kZ/Eo+JjcntGif4NW9YtzRYc8lQGU=;
+	b=BeD/KPMyPK2yY7Xku1qOvzd4aLgEYmcT2kBCpnDs+mBD+3vPb1M0/ay1Q/2mHnPDDUSwyv
+	hDPhk/GgkUWb9I8cLip37Maj35MmrDM/5Ljf3z1kZQsIbrTyKA8lIQQpe+lfb/iUM92LPf
+	lRiuBEmf6hcEez5VCg0cPndwF8A+Rh8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IfiM1MsN;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBwjHDJb;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773104740; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773104741; a=rsa-sha256;
 	cv=none;
-	b=5B++5lJn8aZy/RKALWkaoM/WzSa26M3n1Sb2EAAxQMSISW8aitCIua+1LFalXe6cGUjjDG
-	vc4/V9Z4PNuYnq4czsnkQWHM/GyZ4IhQwnc97N22uOEfVsh2gY+VUWCCgwpe43gFzuwdQi
-	duP0KyIIq7UsAOFE6pthtqAVYBsHjRo=
+	b=i1ILIUB21JDAwQd6M5DFUXdcasgDzwIX06INVQEdsdEnWcYi7x5egiRp16YtsRIgq1+iau
+	QOjWgUGIZQ+BaS8PkGCYx4BLf3K+fPHS9I2OtLJZ6py0fT08/5+9fwUZvXHNpIl0io4okX
+	+ZFuyFD9H+awlK4j8TqakHtPM+RZRdg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 500B960097;
+	by sea.source.kernel.org (Postfix) with ESMTP id 83C1E43C5B;
 	Tue, 10 Mar 2026 01:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00F9C2BCAF;
-	Tue, 10 Mar 2026 01:05:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F16C2BCB0;
+	Tue, 10 Mar 2026 01:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773104740;
-	bh=yTvCo+JXdygWDppuMY59cBuy+ffz+XijY5gZYAbrrfU=;
+	bh=8g5RM84PzzTOH9XhkrAPhPyfvWGkJhpn6rsV5ukGTjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfiM1MsNSmm3WEADxWNf29ZgMu+jsFkfxsa2a2ZOxtfqhMDKNeD4ymTphfOlK8ULi
-	 Gpmws3E34ovE+lMw5Jgqouj5gpLzn6WB3zijl+7gt0TWPOFXyY67xN0S07TzsULSrU
-	 cPb1hp7ctCr8nL5HcRsvnTojy3TyNihgWh/Lqvod+yWvM/9Z2XwkqBcPHoOG9Vqm5d
-	 dIdKAu5t9IBBqdnBVxMlE6Y4DQ/kVWYimUhqdXZT47ksdqKjTTp3FtttOtWBA7ds2j
-	 4ycyG6DGB76YlDz+ureGMT/9Yfd71uJ40L3SmuZRl8JP48I3UjH0GIOeGotkXbA5Ce
-	 YZ508Oi6fPOTA==
+	b=gBwjHDJb5FNMs4+6fg//+BneuH8gokx0udvi/q2s3S9GwqombT+uPVubEw41mquHE
+	 UuxckTAdvSweLAQLwEUFz5Ryfw6r0J3YtrYe6dR3C9GSzp1EbGMaTIBNtKUS90y/wa
+	 /X4w8R210/TNxc1imAGaUtgPWt4VkMELhjnNx+spUf/N0CWxP5mez3pGE7o63VHpsx
+	 TQRXaUY2jRdnYMoNYStNFqNCI2bRb5vQteR3qBhrUoHXnQdoh/CK8yY7lnAaJy2PAn
+	 p1G9XxX2JdLXPjRQoFBxyurqvS9jXtpTn+gXn4EhdDl5cLfyWweNFv1TOEY7c7iHM/
+	 3/l4Cc3Avg+NA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -79,22 +80,23 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 05/11] Docs/mm/damon/design: document the goal-based quota tuner selections
-Date: Mon,  9 Mar 2026 18:05:21 -0700
-Message-ID: <20260310010529.91162-6-sj@kernel.org>
+Subject: [PATCH 06/11] Docs/admin-guide/mm/damon/usage: document goal_tuner sysfs file
+Date: Mon,  9 Mar 2026 18:05:22 -0700
+Message-ID: <20260310010529.91162-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260310010529.91162-1-sj@kernel.org>
 References: <20260310010529.91162-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: t8kqyfhj9gscbqecfnotodaocpjr5ucz
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF711A0015
-X-Rspamd-Server: rspam08
-X-Stat-Signature: ewt4965zkk48onwtwacpfpadhd67kchq
-X-HE-Tag: 1773104740-934783
-X-HE-Meta: U2FsdGVkX187eHdf/B6uPWVVaMbf6kGI4hnYuyXevAmEMuKbGEZZ4KHlSarcMoHgXZvdNswGmta4gMCm1Qs1kVD+2bRBUCVaJZqE+QRRXFVQ5S7cZuEECd7k9s+VEruLcXoFwezd452Ta1LAsWBnqV0NjH0YhFpQ2KLAtQ3NqHyDfUWbdiHYlCQo46SkW2naUXIhu2VD69BcoueeSXfH7g87fTZ3Qg/Sykx/INIAqrtJvYGnE3cMKKPQCKS6+zG6f0EF+D+myAkQZ+2png6Q+TEl9sZAGTCLMYhuFJB18NsscFsJO0PFshEXiJY4vwXVQpduxu7k7V6K7V1y/IhQPOMoxVipG4Y0T0WOnRb2v55tJ/02GcPoN6whbpfRRAFcupcaljQFuQclRUoqlpogofifX6Ycx98BaEA9cXSp1YMc7t7rAJQ7Zo+1m9Y+M8toCDImptxGrskO6elvCJw07xQlyWEgMIxpzWyr0vkVuYAsoVeNIHTADm4gvfEIAtZ1zkMP6mOrBrgZekdY+xj6O7X7twsJemOX3OEhOg9sqLQVT7PIAmjYrud5W6KINglj2BZ2uwBklGUa3EYOjHmdTFkgeTmFGpoXGIzXW4SC0hEYQa4NR5T8DyLOfc+YmdDOXz11Aip3lE2aGvK/8cZfto/6qySYYY/FcsmXV6Y1vC2+8Gudf45gpVWxZ2CSctAmvvIY2HBiVf0eYrGcSKsUUXkwPjAR268Rka03ZaJDqQyk6C0pdSUvVnthJGfmzOZy6ErBxfvmoLIT//b3FCfeIOY0sNOcNYsP7y6LJXzrmAr0gGfAWBvAsnCYWPNWayPqmm7+0VxqWA/LDDui78/ZZJO4B6iEb67jkqc0L/WOzqBlLbwC7kQ60mvIQiq/P/rD02mYUEKsXK3j9jJHJMSdMMFv8pMPJr+/4jQdlo+ah53Lw2vB2IRu6IZb7sop9laTuxz18+gfSrCwnGfVWzW
- uM3qpb/p
- V77oof5SY1fKvGVDJ3JIW+3jUkDDHdOMmIMFh2/6r14wdWRvHZbOexwu4Ezudw5GDDIIbQw99oZkrNXO9LIIehNl+mWvji1OxNP4qu+Fy/u8Fy/rPo+xWC+kBcjDHNqdbhcwD9+AQxcy094mwqXUct+cUd1o9RfjeMDUT+OWnXuQvTDQNv5zNOdphepe2h1a3hnH0mcFxPmgoQl27ZpwWeQ/U1gZI/yl3rS0OVZRBwMEpY5g=
+X-Rspamd-Queue-Id: 5D57C4000F
+X-HE-Tag: 1773104741-226504
+X-HE-Meta: U2FsdGVkX1/aULtNnlK/E/BF1X8P5Nz5o3Yw2Ifp5LtHtHnjXCxNz/P/hKmRZTTm0F15yCSrt00CxYJNN06wX+pi/N/iG4ZYWEnSMrBCI8x6CyrEAszGhTF5G5LRGbPiNj0UJhVS3oPXDhls8aAMvX4B6v3Ish9PcCQKhfbkbONx4y94pm29bZUwlyKzMcmIVNehXjhlwHeT1r/q+/gT+lDgjbpEIusiH5qjEoJPgCeGAHSLGEH6Yz0wrlaNVvd1O+jAZzrTFnThFdT2t8Td99z+2O2LAArjk7B9c7k5Ud6WsqBzvoq3bBN0L3Yx1RYwKk/zBKGwTTAulmyS5cRA+1ScYp31EcGV26RDKsTtlaiT2Wq9CnWEx6S3sGMa+b32+sqvTRkYiETj8Ml88oOsc/vvacQ0ccU55vdvBNXpU1qWI8lZR3xkAP+4XL66XZa9hNJxTNNhhfG1LjUAUG+CbaguwEj9cAsQ1u2dtkUHYoail13QTqYdvraBJKf2M57C6Tft8u6d3KdYFF4r+Sd3vwqXcm3x0qUi+W+5d9T2C/tbQww4CIeSQWmoXbNDk9+mhOvdWejzNnpP6rkhld4SiAFhMSVlLtLt+MfVAtwh6eWzXkr1PiLypdQrkzoZVdluNWd/p2puh6CA4z3sNcT5iyWbeKRtE28ebNidd1gxZ4ohY/vgPFnaAsWaqBqVHWXOVLD6U4ZA0Woc+DBtO6xoIQZdH96+iSMrvkrBpQ+wmLaHknRzVU9x2n1jDjNdfJUCWk6fDZ9Qnh4poFdNQ0mt7t9Z7/KJBJLqiMNKSfspStqX18T7LVRpkiiVU28asGKFu8XbNB4jk5BK2uVIe1vRHxcfn8ipaMbWLSQXzfq7rMsEhd+8SUrMdQerYohTWTuvAEroTZNDOd5T0MAgNOVMk4qT5YgNB6iSiDivbPd5DrFlS4r+1rVodfqDjzni+DkXVfhsQ/vk8MgZEjTDfv/
+ qqDflTnJ
+ AKZJ/P0xC/b2HhLL6ddOJaXxZT3aYUHR91Y69ZBe4wx/c8WQq/JvmU7LymOIxvvoMJZY7ijCOEg+FJ1YBzCRtngIfW7p5cNEQgIzROYUBkgM/jTYJVk3g4XdB3RQF4ji3RyajXdPD4JW2aXZtYdHtNofELZSxnh9ArCveuM5DnBJXCjDdXz3Em7kWOYCWIWT2Ti5FQ/UFipqxnBUk/PZUwrzOU8yCg3azrGqZnkSc/C4noqOE4e8s0YhjSijkAr+1PNudWnjouG3+Uf1bujIMpUwzcJU9INNgMEQcelUzFReCPB+ij1mr+VI5rQYcZYwpa3Qx1NtJvHcH2N643JX2SLzoli2syGoTOqVphHcwMNFzU9sgRLglnjFCOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,37 +104,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the design document for the newly added goal-based quota tuner
-selection feature.
+Update the DAMON usage document for the new sysfs file for the goal
+based quota auto-tuning algorithm selection.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index ac795f30519c5..29fff20b3c2a9 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -566,6 +566,18 @@ aggressiveness (the quota) of the corresponding scheme.  For example, if DAMOS
- is under achieving the goal, DAMOS automatically increases the quota.  If DAMOS
- is over achieving the goal, it decreases the quota.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index b0f3969b6b3b1..534e1199cf091 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -83,7 +83,7 @@ comma (",").
+     │ │ │ │ │ │ │ │ sz/min,max
+     │ │ │ │ │ │ │ │ nr_accesses/min,max
+     │ │ │ │ │ │ │ │ age/min,max
+-    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes
++    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes,goal_tuner
+     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
+     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
+     │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
+@@ -377,9 +377,9 @@ schemes/<N>/quotas/
+ The directory for the :ref:`quotas <damon_design_damos_quotas>` of the given
+ DAMON-based operation scheme.
  
-+There are two such tuning algorithms that users can select as they need.
+-Under ``quotas`` directory, four files (``ms``, ``bytes``,
+-``reset_interval_ms``, ``effective_bytes``) and two directories (``weights`` and
+-``goals``) exist.
++Under ``quotas`` directory, five files (``ms``, ``bytes``,
++``reset_interval_ms``, ``effective_bytes`` and ``goal_tuner``) and two
++directories (``weights`` and ``goals``) exist.
+ 
+ You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, and
+ ``reset interval`` in milliseconds by writing the values to the three files,
+@@ -390,6 +390,14 @@ apply the action to only up to ``bytes`` bytes of memory regions within the
+ quota limits unless at least one :ref:`goal <sysfs_schemes_quota_goals>` is
+ set.
+ 
++You can set the goal-based effective quota auto-tuning algorithm to use, by
++writing the algorithm name to ``goal_tuner`` file.  Reading the file returns
++the currently selected tuner algorithm.  Refer to the design documentation of
++:ref:`automatic quota tuning goals <damon_design_damos_quotas_auto_tuning>` for
++the background design of the feature and the name of the selectable algorithms.
++Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
++setup.
 +
-+- ``consist``: A proportional feedback loop based algorithm.  Tries to find an
-+  optimum quota that should be consistently kept, to keep achieving the goal.
-+  Useful for kernel-only operation on dynamic and long-running environments.
-+  This is the default selection.  If unsure, use this.
-+- ``temporal``: More straightforward algorithm.  Tries to achieve the goal as
-+  fast as possible, using maximum allowed quota, but only for a temporal short
-+  time.  When the quota is under-achieved, this algorithm keeps tuning quota to
-+  a maximum allowed one.  Once the quota is [over]-achieved, this sets the
-+  quota zero.  Useful for deterministic control required environments.
-+
- The goal can be specified with five parameters, namely ``target_metric``,
- ``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
- mechanism tries to make ``current_value`` of ``target_metric`` be same to
+ The time quota is internally transformed to a size quota.  Between the
+ transformed size quota and user-specified size quota, smaller one is applied.
+ Based on the user-specified :ref:`goal <sysfs_schemes_quota_goals>`, the
 -- 
 2.47.3
 
