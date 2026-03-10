@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28D22EB105A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2316DEB1055
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED4EB6B00B3; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
+	id 174C96B00B2; Tue, 10 Mar 2026 07:55:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFA0A6B00B5; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
+	id ED2646B00B7; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B0076B00B4; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
+	id B81406B00AA; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 493336B00B2
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 541A96B00AF
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2CDD140147
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:32 +0000 (UTC)
-X-FDA: 84529998504.19.7AF7FCB
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A66D840013
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2332955B49
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:33 +0000 (UTC)
+X-FDA: 84529998546.07.4104CD2
+Received: from mail.avm.de (mail.avm.de [212.42.244.120])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C7C4A180011
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=XrOjEMLx;
-	spf=pass (imf07.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=helEnKZU;
+	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143731;
@@ -35,42 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bw00K/cYen8HzVy4Opfh9Xr2YPOPoH4QqmKdT33VAv8=;
-	b=rXFx86gV3INzP/Xo0WXuSAJHGhBcEUXbneGx7G5vXeBpslwxnC/TCkfARTqnP1FoMkKqHI
-	eu5tC3n0RMzZijVb+B3rHUpBs4VDBr2GAzqOgcye1fo07ujMIKPXTcFP/6hamkLspcWkNb
-	Ri6xFUQ8PF+E4u6mPzUH0IeBpX3Z8Ak=
+	bh=VeyuMlBSXCUl2HyhMWtK62gNrN2xqJpTn5I2B2Zc2uk=;
+	b=HZ6Pri1jokbGB1Fk26nrfwyzxPuSbBls9NJaZXi79kyACa95mx1zaHnKCrD7SEJaiX5TBm
+	h/HChgWQY6RJs/d/YFxWL73kvscdYxP3kNttCEHVrejxB4cBwlNl/NXxlMMHdiX+LRlo14
+	3rNbXkWSWI1QcNb6n0fs6CDZdnlyMRs=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=helEnKZU;
+	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143731; a=rsa-sha256;
 	cv=none;
-	b=eyUW+MXz3GgOK1TFzebgWkcq/eLP5EodHIGCzAyo0302/mNTpT5KfNa0EIktvzmaN5BItg
-	Vs+sjR9rDmVCfG5ACgIbef6K6oiuq+cKBR/cs3WpV1lpp5vp5QvlyQhhBAGAlhS9ro9ZrK
-	1a6HMFQk0REUeB7QJY1LEiDnkh6q9hc=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=XrOjEMLx;
-	spf=pass (imf07.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+	b=nDZ51tbszhh/XvOvzs8vMnG20t43jQ8mln55iDF5YGhZ6LxXb/lhZFHsbLnO7retx9Qxp6
+	9v89WiLEfuM/SY0uRl8D8vXhbiAfUjwrBvrfGjMqJTqjBweBbECqQ2oYvP2x/BIyhr3aYV
+	U7Mw4HRPSFMCcsJ0+YVJezOdIIxopzk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143725; bh=pn4l4Bneda6cRvLB6hSFUDCMaCdQu5yrimDpnU+4XNM=;
+	t=1773143725; bh=xBKhBreRFiEpPz9/49OtWlCzYkq81mZihzEqekyK7xA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=XrOjEMLxKN0Q5AmyrWHNIKWYwAXYvxSGofpRw1fSzyTCz7O3kSu9wZMVhCigrODma
-	 xaDgiBmBXDbNfcoI5fcc6yYimuO3Cnj4vKRdoox62XvE8LKZz+/gN4z3zTXbmuJ2J8
-	 09unIVObBESNuzHAoxHz8OyIcq6YqGzcxhMd6Jyc=
+	b=helEnKZUDYmuyC7r9itC+dVARlXrRlYpZWzDAaAXEYc5wN1FHoKQsdSjCaomchjhv
+	 +41zqDKlH044FWtyvi2VX9TAdQF1rs14U237EegHWJogLxynx4m+2shwi9NDMEzjxe
+	 k3vCUFrBTw+1/DCUt/wn8qmUGFq+b5Q0TC9ytTvc=
 Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ac-2367-7f0000032729-7f0000019d5a-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
+	id 69b006ac-b734-7f0000032729-7f000001c024-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:24 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:46 +0100
-Subject: [PATCH 20/61] apparmor: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:48:48 +0100
+Subject: [PATCH 22/61] md: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-20-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-22-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -100,34 +99,34 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: John Johansen <john.johansen@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1034; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=pn4l4Bneda6cRvLB6hSFUDCMaCdQu5yrimDpnU+4XNM=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYZg+c1WuLJkNtjs3nyvfVhnVwRMFZkjRyjg
- 9Bta5ElUMSJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGGQAKCRA0LQZT0ays
- 21AMCAC7XRT2CFV3uyPK4StoEGsXQYqMR1ynn7bit9TqTcf+0Wgtn6TYvMctAHR6A5S0MhH7yf7
- gILWOKn6+HLqPdr3lmY3ZuYwuYUr4OHhvBA9aCnbDXWOuH1dD12oVxx3wu0+3drbZUUw1a5lJWN
- hsJfyDm3gNagxfOpgqCfQqiJ9xVVghJWjS+o0/hto7AZgqOBw9ObaanKLghJUEDwwTwpQEVda2+
- 0LDNyTd4iej+Ak8COmDse1KGC2gcs+EiSzfYOC0pte2fBmGM11VRcAnsxd2vAsBFmvs/mJ8XFJS
- YSqDB3vEx2vFoOZdvhWx2ECAhXN2w/fnobSlleabiSgRaViM
+Cc: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
+ Mikulas Patocka <mpatocka@redhat.com>, 
+ Benjamin Marzinski <bmarzins@redhat.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1995; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=xBKhBreRFiEpPz9/49OtWlCzYkq81mZihzEqekyK7xA=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYgLcFKxegL/bQqhgTo4RNQJgrnmxL3YCzsA
+ NwbsOtNPYeJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGIAAKCRA0LQZT0ays
+ 21bACACtmD+JNOZZE2WtYGgZs+OKFUvGXg8BvTcg2nAeuTAfDV15mPSXGDJtr1bOhVuDnL/Nw9l
+ YuHe1nCI3Kb5gMl9oJ6QTc/nxqpUehwIiPaszmCzsqUT9Av4+JV9tbiRExsTnWgWp8/ohC7O/t7
+ 0F2HI97L08/EOhP6er3J/caSpZnOpbWXT+xXd1cfFQmhFO8426W+HbSPnqaYqXoPZvzXs04m+U7
+ Y+HhZZm9gUaVM39bOf2O7FpXKP5lXlaxHXla0Syc5xOdqOCZGHEwLXH/1MeFU5JbVnp/DFE01i8
+ 2gpgUDB/Kr+8ov9qYVC2ZPrR+l2cjmrUojAxw0U8eiSwxKRA
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-914AAE1F-0BAD1D24/0/0
+X-purgate-ID: 149429::1773143724-71DC2A3D-384367F1/0/0
 X-purgate-type: clean
-X-purgate-size: 1036
+X-purgate-size: 1997
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Stat-Signature: 1expxj7zu4fjixjy7jfk3ceapc73wy13
+X-Rspamd-Queue-Id: C7C4A180011
+X-Stat-Signature: ziy3dawa44muzgejpkuhjggu6er95jcs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A66D840013
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773143730-445922
-X-HE-Meta: U2FsdGVkX1+f/zX8pRndr9QLuMJN2ysXv9QRsvbwCqWGP/e8nPodhEc68+RvKSieggT1ceNeAXeNtw7964pgqgugrUM0+8ei9tima12lz4Fz3yxlIUZSfJw5lPvgFCl+GkS2sf7fWExIuKuhDv/D2hyL6ko63mmCqvhRkYk1WrWghkBpR3ftagOTm5gL4mwbBg0piS5emZZ4EhP4gYAst2JjqvR2wWlzUDAoBpUU0kOxCQnWaDMhlVmJS16/SJSchNiSVQO94IdhaR6mg4jR1H50wMREXgOFDxuPvhu6FKCDKfFO0RlVUToulRFkn26uMGI42z5VyJy5fQt0GA6MTD8G4GGVAwFDmPhFkYuNYJm3CQ3Pdm4AriEISie8DIWaZ0oAGwd7BQJElWiXQ6UONu+FACwY1ZnP8wAW9t2Q14+d2zRxmucrxC6roQ8e/zoUgVCsKBHVS0yM7/NXSD5XX0RJ5qkmLcEvgbzT8zYih8m7yEnjmoN1Ww8xl/Qpw4qI0gfkEyoV6dEtncMid21ciZrfsVL4qlIT/bueMc2dDBWYbY92i41vLk2cSfgVejf+cPBRvFu39lgMYHKdF2InFRgfEGDjWyvfmRHhEnvU2P0ljZeFk4VAIrDPQlrqSiDtiH920SDfHUi/TWefY0OKgXDeem4tqVHtOz3oUFgi8RUIqY77B/48VA7ZOV40HWwPHng5Z6EGHwx8p/exJ3+lIA2mznpt4KervwcRvK2ES/0koycteO336hDg59Kw2n0e+Ti8aDA7pqbn0JbB5Q5a9GkthAfUuDAtpaVYtLrW4hJU/AqtEnvfOFa8ay75n2jRnHpnA9kusCI1NpuA1YokkGHmUBUNaE4iPeTmMKMKaJvSPa9By8smYdc/KuLA99S9DqM6LuNktlORjtGONPMAt1jHC1le1yXJHXAlJH6G7PIdWt34JdoBfzSO9KGwakiAM0T3tt8V6N6Xb/4ymH7
- 0qPHbJtu
- pLLDeyiQVWySXPR1gDivvMOOAC3Qt66o6YIddfcdwguK/Ak/iNXoQ1JSdoOcGU/vOH4BfbmpFFnkUQIEm+yn/JlqEywoKkPKQGAXg27nUJjw32n3mF9e3fBv0HFk9/tHvmfC0i+JwPz9jHv/6fa7TAFH5rIbHE1dcwBjzkGY7/T+carqhmcAj6VJlkyDYJH8nrBa8akgGaFvwsEIjmxp3x3RKHv5I/U+IzpgCaCawYPaNQn7+8QHnlbp+S2dtrFDEA1liOS2QY5NI0zMV8T2rqDJ1LXY+7ZVX3RKcwy2riWYKCAOW6icbd7+SSQdO7jj8IkKoPFFXhDoLT8aPVQJ5n7r3UDLKIK/CVRrS3DycrvuHnww6SX2keFDJq/mIR2IwOANRzpA7+ETnOJoro7LZ+lQPCpVSDewCPARsZvlPyhH42I1w4bmKmjOH3jBb81K4v7OHWJXm4ix+AlTm7spZsKU56NfPAC6weWWzDjTdgJP/v+Y35FHoKscsEnoxqB+k7zA8Ml+Svv+E8/qKUwlE8xFEhZ2DeK7GXnDfNkaga0zIxGNfWJTMeecKRwdIaYpvOwgM1Q5V5L9rsiVlgXxunAObQMI+fQIMhL7dbac8TCsx3RKH1phZXRgUDek+2yYT5+Pa7p+WntBwE3exNERLLqz+02UXs1z9Z1jY
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773143730-916114
+X-HE-Meta: U2FsdGVkX18oMV0PLul4ZdCBXS12ToWr3c9C6t8gDwiXr93Z5/eGlc2wS9v24rV1WZ77TIiqhEfV3/9YgUBwv0pRrUglK+FMF8+aNwYGYzJJtr5tJ3cE7ma0Esx7kRecpXXZ0CDzwLafD5ncuH4lsF+6gPGuU40I5/NCxEqbfMQWBVJdgpiCJHnbkwxyoPfXBNv9SGfgwv/QbSNzQxQZh7EchEla7ngRHu/nXR21tH4a2Mf4dMsoFK7ZAe5RGHnVfzqZwc9crKHJgoPmMRI1XluMxsYS7izyk02eqrvN8+E4j5OCdV8pMqrZjEUryOf3zrj7iG78JcxfWU9RIWd5hywFvpa67V4aaR+0XiEl+3ChdNwDZQB3yLzUFjSk+uZBO2Zn9vBwf8q5SVWEvgrfMoQq667eddj5KlMztdHIQ5jaDTWO31NAUEVX816QY06jpCZohGkyU0L+YGbt/6vXzU6oZvfcEn4+eS0/Xgjj67gR3VmzN7dkS+Yql2ifM07xO0xXF1RxiB5WpXVGb7U8U6uSwK8c8AloitVhfXCpOYFe+4u6GvjGA3ogMt/h6iTxdqJFRLLN0tMhHE1tXel1Ehw3lmSCgrEx/O1UhifYl3+36r307/vfOhjgKPZVk/ThUEs1h1TXMKjLXsfCWt1tnHi74kI49i1uM06dNLU6YaM+MqU11TrWs9MO6G2LcZLRvim6jX5vnOKBtL+6Q2i4sfLqhPezTu5OqWYradvElZgpJez3SVo+8wlytgar2coE2g+Nerpl6lvI867sh1yFP0oMFxB4S3r5ciZkcmPBsD1S+WV40Fe32kwXfnfN3jutnAm52FfsU0BE5f5tVFmjSPYWu7pnR/jWVT8EED31M4rlGIdhVHdAqKZoXRz8cr0NO3bEadz8Tu4czV8/8xJv3Gly9h5UYpC+uxnonwt6dFvZz8LsMpXTsu65qQAlIXwqXWmMWd12070UmpD8Lia
+ WUHBVcKz
+ 3d9KSPVvemVKqfnl6WkM4yVRYXra8xWAf+zXAyjE3i5D4bgLhJfuuE5Vhbh6kfIwyMZnNNeNtpcD5N/CYIB/3/ilJ16DZxW4R5CcyOMEgp/R+J9kyIr7W+WdiVjypMm/Opq1UTQ9m4lIKfJfUWn/sNR2Z3pR6+Pa6wHVRcBILG3vT5rbybNsP1okok9zWeg3Jm/86C7vAajmXC+CtqIXTwB45aFGAgiMAxR9ZlpbIrn6yFYVD7zWVwFAVM0O3qYAlsgEI89Zrxg8RhbsBnDZufiKp1MiF4XjP6xRNw7B+iOAmMx9t3MlmzNKqpCGnQ6CGvXGQPc/uZSNjaitawpr3ipOuLYYj1C4F7KPYgnveMDAlvqYWPDRxmgLHF9HYgxRP4BbyqRXiSSaDK8jKjbN5dfMr3pEd533fBVSFr3U3z9+VTte2zoL2FTiJawwG5xwxRDZ+QN9bsAPxDtg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,31 +139,53 @@ check.
 
 Change generated with coccinelle.
 
-To: John Johansen <john.johansen@canonical.com>
-To: Paul Moore <paul@paul-moore.com>
-To: James Morris <jmorris@namei.org>
-To: "Serge E. Hallyn" <serge@hallyn.com>
-Cc: apparmor@lists.ubuntu.com
-Cc: linux-security-module@vger.kernel.org
+To: Alasdair Kergon <agk@redhat.com>
+To: Mike Snitzer <snitzer@kernel.org>
+To: Mikulas Patocka <mpatocka@redhat.com>
+To: Benjamin Marzinski <bmarzins@redhat.com>
+Cc: dm-devel@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- security/apparmor/apparmorfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-metadata.c | 2 +-
+ drivers/md/dm-crypt.c          | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
-index 2f84bd23edb69e7e69cb097e554091df0132816d..5145b0c9c699514697291967c5a7b1e96b8753d1 100644
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -352,7 +352,7 @@ static void aafs_remove(struct dentry *dentry)
- {
- 	struct inode *dir;
+diff --git a/drivers/md/dm-cache-metadata.c b/drivers/md/dm-cache-metadata.c
+index 57158c02d096ed38759d563bf27e7f1b3fe58ccc..32f7d25b83a181a30a78c663d48f7882cb97f7b5 100644
+--- a/drivers/md/dm-cache-metadata.c
++++ b/drivers/md/dm-cache-metadata.c
+@@ -1819,7 +1819,7 @@ int dm_cache_metadata_abort(struct dm_cache_metadata *cmd)
+ 	WRITE_UNLOCK(cmd);
+ 	dm_block_manager_destroy(old_bm);
+ out:
+-	if (new_bm && !IS_ERR(new_bm))
++	if (!IS_ERR_OR_NULL(new_bm))
+ 		dm_block_manager_destroy(new_bm);
  
--	if (!dentry || IS_ERR(dentry))
-+	if (IS_ERR_OR_NULL(dentry))
+ 	return r;
+diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
+index 54823341c9fda46b2d8e13428cbd51f3edf642d5..05eae3d3c7df6baebd0b7a4219f7b6938f6e7f87 100644
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2295,7 +2295,7 @@ static void crypt_free_tfms_aead(struct crypt_config *cc)
+ 	if (!cc->cipher_tfm.tfms_aead)
  		return;
  
- 	/* ->d_parent is stable as rename is not supported */
+-	if (cc->cipher_tfm.tfms_aead[0] && !IS_ERR(cc->cipher_tfm.tfms_aead[0])) {
++	if (!IS_ERR_OR_NULL(cc->cipher_tfm.tfms_aead[0])) {
+ 		crypto_free_aead(cc->cipher_tfm.tfms_aead[0]);
+ 		cc->cipher_tfm.tfms_aead[0] = NULL;
+ 	}
+@@ -2312,7 +2312,7 @@ static void crypt_free_tfms_skcipher(struct crypt_config *cc)
+ 		return;
+ 
+ 	for (i = 0; i < cc->tfms_count; i++)
+-		if (cc->cipher_tfm.tfms[i] && !IS_ERR(cc->cipher_tfm.tfms[i])) {
++		if (!IS_ERR_OR_NULL(cc->cipher_tfm.tfms[i])) {
+ 			crypto_free_skcipher(cc->cipher_tfm.tfms[i]);
+ 			cc->cipher_tfm.tfms[i] = NULL;
+ 		}
 
 -- 
 2.43.0
