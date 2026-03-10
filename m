@@ -4,144 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C25FD2D63
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:01:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7861FD2D62
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:09:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B75626B010C; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
+	id 2CB8C6B0102; Tue, 10 Mar 2026 08:09:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40A96B010D; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
+	id 24BB46B0104; Tue, 10 Mar 2026 08:09:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A36316B010E; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
+	id 1317F6B0105; Tue, 10 Mar 2026 08:09:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FAE36B010C
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3174F14014E
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:01:21 +0000 (UTC)
-X-FDA: 84530013162.10.9092828
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8935240010
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:01:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=Hzc3GuxH;
-	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773144079;
+	by kanga.kvack.org (Postfix) with ESMTP id F14066B0102
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:09:27 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AB3F01A0124
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:09:27 +0000 (UTC)
+X-FDA: 84530033574.29.74FB126
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012026.outbound.protection.outlook.com [52.101.53.26])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 83DC780018
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:09:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZXl7dHcJ;
+	spf=pass (imf30.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.53.26 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773144564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ph1uUWr1L/iF1ZEQmadj650OhaHNRF4I0z9qkCXYfg8=;
-	b=vjbuNxcqdzQjlBFxA1z2oELbcKM0hCAoNk7dti43f11GTPzMzhPu+V1wDLrkZirLKxMO1P
-	qy81hMpGkYLVvadvOxhUNmypi8zq/Jt5OSpa7sfWAKj7Q/1WSKVDbeDuDpzRGTp3ebXAsw
-	reIY/3ajYS8++4bWN0f7nysKqScg9ss=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773144079; a=rsa-sha256;
-	cv=none;
-	b=wkK5TgOE0rsYGLIBXY+GKJ3VGEMYLJ/m3PD9sSJvc1W/rBzmLq3VcI8hMfI4p8neXv4nbB
-	p4zXD2LUahssAv6PHpalH7T6YfLJ5EEpBkvohYT427Q1ayLQKYuaE9cIt4WCzaSvpkmRaJ
-	S2B5DoXtCUAMGDSga89VnSjgUnyXtqY=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=Hzc3GuxH;
-	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143727; bh=KQiEoi/5KK1uW5/WekNTwCqBkzEqSA1SWtsVPdM2q90=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Hzc3GuxHf6WKr4EWmy7suWfFtUIN+cSSog0xcKAdq1K62+58VIbGObMn11FXUjfnw
-	 XSgX37V9MsgZIzaqlzkHaWhxgePi5JwVjORgVIpVxik46tgfvcV/Ti0iljkdkzgEMz
-	 GP23Vofxf0i5EbReeE876OiemRlixpOKPI/O3H3w=
-Received: from [212.42.244.71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
-	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ae-e21d-7f0000032729-7f000001da34-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
-From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:04 +0100
-Subject: [PATCH 38/61] net: Prefer IS_ERR_OR_NULL over manual NULL check
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
+	bh=gF867SZzGYLT8GRpHbaChcflB30COqiDq6XJ+UvHW18=;
+	b=XBwlVYCYkP+SyrbElaWnrFphgY6TtRR78Sv226C4Ao10H31TZRhdsqiiM7PiLCKX5K+uXs
+	qrfI80dDGTDtr0hTpwHFJR28x2s2UQIJq2uPpXJAmgCiZjRH+Xc2uYl3AcsMrtj1E8pr4Q
+	+J93h94ZLpZZt86pxel0BHTEQazpQTo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773144564; a=rsa-sha256;
+	cv=pass;
+	b=VKYSQ8aDWe7QfIDSsdIFrS6YJ2ijA85acny6uZ9s4cCFOjwFg49q3DGAmpIsGKtKtTVZ3x
+	hGiVK2aLdC0unreC2g6CzpaY6N8GmGzOciEnz3g4u/8fdOM+bC5HyyDb0GXDvDIwsdd1Eq
+	9KwURN3lbasRbjI23JOqoQLC4ftBs/o=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=ZXl7dHcJ;
+	spf=pass (imf30.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.53.26 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TJsVMBb/tfGS87N6mIm9gRpXLCG42LAurayKGilMpxH/PDAr6bPNORfmCWZdjFU5R7D5YcYVguQFtqfLsyUmX6kxPFEiSnzSsT0X3i0FZTMjFiZB5JSgx61rS8Jiq20+4FG0+Db95lS++3Ok568q+HrUTsjrgmzRIPtYvLHTFAfoIVjW6PkzcMkPY/QZEoyboF3mMAY3EBMYeDlzkyUfQNgv2is2HOBv6kxvpCtksmMrmf2C17YqcNm63uz9PJF3rzu/pXmn+Y/40v82v0CJVF0IRzwjgpXNkpPu70bEE9PhaBjBzo/VB/yBbp3ICmJYmfpH5tnLllbLzWc8qcbqCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gF867SZzGYLT8GRpHbaChcflB30COqiDq6XJ+UvHW18=;
+ b=A2Ru6EbP1EMp/PDkCT0cnRgB1/f8s00+cW4TFkcG/EjOacy1+TJQGOWYk0aHUmOpC/iMXYysAj27QcdMd/BifeatINVRALr3MGmWitIvYGtDPpaaAFSeBoN5DEyM2/QJ8S+tpub4ZOorKtpKdyn7FcqVVhHnus1onV+uLNBWMVPmeU0wQqfsudk9uYlLGgmXCwK/gGPYwXxxZiOtCx+KpkS4vkdrkM7hoso3ret+vtforbnCV+dubm12lKmnClHIQ4COIEeapD+O3McKAo0po2MlRrlzp3AwgsZZHp7CBIZXA6ITZnNhl8vT1O4jjw2v7/ovSA3Eojwqo3dIub9S/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gF867SZzGYLT8GRpHbaChcflB30COqiDq6XJ+UvHW18=;
+ b=ZXl7dHcJkP06v2ir7fTUMJWqlo7worOJJa3N+67vK7KARsFWhcBYNtHJTOaUCi6oZtkQm51cDcHyyhtpA/QL8Xy29+4WVECz45gMFpNlOj/wUMB1wZvJFPAfkPFOghKdC2iGF8zP3A/t1JfyK/gDFnhPQayRDQYXxDcsnL/Ngpc=
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by SJ2PR12MB8926.namprd12.prod.outlook.com (2603:10b6:a03:53b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
+ 2026 12:09:15 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9700.010; Tue, 10 Mar 2026
+ 12:09:15 +0000
+Message-ID: <e8a328f9-568c-428c-9111-8742e5dc9a4e@amd.com>
+Date: Tue, 10 Mar 2026 13:08:57 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 37/61] drm: Prefer IS_ERR_OR_NULL over manual NULL check
+To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org,
+ apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
+ cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Zhenyu Wang <zhenyuw.linux@gmail.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Alex Deucher <alexander.deucher@amd.com>,
+ Sandy Huang <hjc@rock-chips.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?=
+ <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
- bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
- dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
- intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
- kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
- linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org, 
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-leds@vger.kernel.org, linux-media@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-mm@kvack.org, 
- linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
- linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
- linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
- ntfs3@lists.linux.dev, samba-technical@lists.samba.org, 
- sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
- tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
- Philipp Hahn <phahn-oss@avm.de>
-Cc: Igor Russkikh <irusskikh@marvell.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Michael Chan <mchan@broadcom.com>, 
- Potnuri Bharat Teja <bharat@chelsio.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Taras Chornyi <taras.chornyi@plvision.eu>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
- Keyur Chudgar <keyur@os.amperecomputing.com>, 
- Quan Nguyen <quan@os.amperecomputing.com>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6679; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=KQiEoi/5KK1uW5/WekNTwCqBkzEqSA1SWtsVPdM2q90=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZXMdz3AdJ9BDXSNnmAtbN1zmhCLGlM5aT0i
- DUnFwIG7QKJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGVwAKCRA0LQZT0ays
- 20CyB/4lggnkY4K4Lo4sONwYMpv2ax2osa3aOBaZeOsk7IrX5OefQhdbIn4njQGFhSRkoN1OS74
- RFM1P8Zj2ox5AT2OTTsGgJszYrviPiI6f3OB4fORCX0D5Uy+q+MJ9QaHAVOTki7YRDRPqPU8eot
- qXUXo3MWBintiQb+VUgj0c7V53AbuvEdsGiANz4ngxrRyeRv0LQno6AOBMWbXRBogpDl1L0S2i4
- UZBntAPoWZbboJc05+3p5MczuG3QperMntaj9Tb4wrxw8nvaoynlDjGr2dg61cj+UKtCoiisS82
- re/u1kbEtkI5dJs+aKf1mABBLdny1Poccch6DjzUum6aDXBE
-X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
- fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143726-95E77E6F-9B3D9DCE/0/0
-X-purgate-type: clean
-X-purgate-size: 6681
-X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8935240010
-X-Stat-Signature: 7jgth6whp6axxez5p35x7u3b5wgn344i
+ <20260310-b4-is_err_or_null-v1-37-bd63b656022d@avm.de>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-37-bd63b656022d@avm.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BN0PR04CA0015.namprd04.prod.outlook.com
+ (2603:10b6:408:ee::20) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ2PR12MB8926:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47f3db0b-99c2-4a41-234d-08de7e9dd8e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|921020|22082099002|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	rOsxnTx2kr7OFzy5oepnHTPa0Bl5bJUKTo+63luhlotIfFC3KzHLS+E3VMqAH1iHBTKaMYJ2UmsdfGDNZaGu1pbEMDo//hCzcDM4M0QcZ45ZOizgGMHWaZ1ya6xgl3xwPkUvHxqqi0dZr9N6cRTFQsw2jWmjewkDeVuOnYane588HX2iWR3CYWIfa7Br5OJ8iwoNCOeglYq2hmCD+XVye2SYHUtE3Hy4SP9KBI+8BmSMAMQ/VOPLHLKz4RZ9XB2O5YjMjmZNxo77a9Wn4CGVWydbDau3GMYxKNosqPKCKb4Q1CUax6ft49mrg9SC//kqRW1zqMolNibmO7EJ8UrT+8LEQLFweVShgEKu5cPWaq3q4EG/+BJAf1IDt5+JDbViN17XVz70lGDOGZ4jwQRjV4vf9JdhxuB4SEEixCLVEvpCz1BN1wjaMZJjUQJ1rBtYeCl7QcnPw9U0IKylRYTF5xRaKrh7F+9YZM5fq1EYA8ZCM91wDsdBKj5lLGxj8vM0EN2SWbDWewgwDW8HgSigsEvdgly9gfuYdn31TzS0vOH/OX63TN1XP4v6vomPJEuUHP++WLg3pWBA3+DbKgempasoOCVE7DLrw/dyeIIxqkWziHoLnwrgnCzwadYNNG+thV2OSa9TYKcYx215HoD7gpmsNcq0zcO0TS0q9MaYHbyjHNj6G+3J45FlJseURnlO+nW1rf/TKjD52NDMyHLSNSRr9yuLpthUPmg9JNvsnPoFd1Ih5I4yneCQepirDpxfGM+ONzOAPJ8ruHE9n09qdA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(921020)(22082099002)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V1AwRVFocW41VXIyT21kL25qc09PRmMrUmFOdmVac0U0V1hTYjN6aUpIdDZ5?=
+ =?utf-8?B?dkRQb21XQWNhaVdmelNIamQ4SXdCUDFSekF2NklUMC9ycDZyUWFFNXRGM1Q0?=
+ =?utf-8?B?d1FUQ2d0b3Zpb3dqK2NNQ1lrUzJGeGlLRU9rekxOcFFhOTlqWWI3bit0TVJ5?=
+ =?utf-8?B?V2liamcxbjM5SmRzcFJvTmNkYnpjWm1KSVI0SmZDNWIyV3hwQlNkT0phTUlJ?=
+ =?utf-8?B?UUVSRDBpMVZvZ05xVGlNdWN5aC9lNGN4cXplUmVoREZUYzhEOWRUWjlOdlZ3?=
+ =?utf-8?B?VlFvMEwzT1Z5TGwraTFMZmJRczdQV0R0emVocTlKUFpuOXA3TWJmRTJVVDJm?=
+ =?utf-8?B?M0U2NnROelpvbEJKcWZLK3E3MzZaNXZFUzBxdzZ1NmJzSTZuZ1BrNXc3MitE?=
+ =?utf-8?B?Q1FXUmRpR20rOStjVDRzeUxpTUp3VVRhbWVsSFdrV2lmZ0M0SFFDTjBQNERs?=
+ =?utf-8?B?Q0dDcXdaVWoySXZNdWh4YVBGUkNPWWcrYTl5ZnRmamhKMks5NEQ4MUtoelBt?=
+ =?utf-8?B?SmVITXBjVEwwTkgyTlhSUlVNVUZJOTlJM0ordkZBRUYyZmpNUjNQR0hCdTZ1?=
+ =?utf-8?B?Sm9vNmZpMkg2VFc4OFh4VUVOZ1JJL2F0RGhxS3VWZitGVVRKWVQ3MktHOHVs?=
+ =?utf-8?B?YnoyT1d2Q3Q0Z1o3MGRTcnpUVFZ3UVVYUTBFcjVSbE01azdaNytsUzQ2WFIr?=
+ =?utf-8?B?WUZBZHB0bGIvOXFhV3VjK0xUZ3U4Yjc4OHdKSm5tOUxucFpOMkJjcXZXTVVC?=
+ =?utf-8?B?RGJzOU1yU2N1c2tIR09qQW0zQ3AwaWc3OEdqUlQ0S3hubVVORXB4NmdndHFp?=
+ =?utf-8?B?RXFwRjJ5cmUvMWRGZVduQk9IUFhXQVc0SjBKUEkzeXFQRU96dHc4VTJxdi92?=
+ =?utf-8?B?c0VUNjJuZU85SUN6YXZ5M2cxeStJWkVNMXZrRnFpOGJoSW9XSER4aHkwZFVt?=
+ =?utf-8?B?UGRnSkdSREJwNGJuNTh5bmtiS2VXMU1JUzc3OCtHY3VzcVZpUWl2MDByUEJL?=
+ =?utf-8?B?TUN1M3pBVXZEcm5KaUdpNTVHZWZwNEZhZHlVbTRwQ1NjWThTa3ZHZ2pKdDF2?=
+ =?utf-8?B?bkhmTjBPMEFONkFPeFhzZlVvZ1VRQm5KT1hLYWZEanVvaUlWWGtYUmJ0TCtx?=
+ =?utf-8?B?MjRDei95ckRET05hVFFEdjVxcURHYlJleWhCV3Mwd2dZdE01K0t1V2lPeXlM?=
+ =?utf-8?B?MXIwZHExd2hyZkNZUVZHYUNHbUxCU2wyVDh5WCtqWmNDRkF1RHJ5alQzVFha?=
+ =?utf-8?B?cVpYbDZtMGxJQmpIZ1FkbW9UN2JFNDNCZEV6T09IaUoyUU5YOEN5WXlNN2V3?=
+ =?utf-8?B?MkhUaVQ0ZnZFOHFTVFY1NHFJRFNZaStiUlVxamZtajJxTHFaczgzbXR6YmVC?=
+ =?utf-8?B?bVNxdlZxUXhLVXBhM3AyRHVZczhxREJYdFdpOWRCajdRZUpDTzR0TTJoS0w2?=
+ =?utf-8?B?VTczMUIwN1hnc1IrRldzY1dMdzZuU0NnTjc0cFljbDF2MzZtR1luWWltQmlD?=
+ =?utf-8?B?cEw2Y1FEZXFwVjZKdG5xVDRUeGRTaEdpczgvUDEyWlU0b3h6cEFsa3d4bUdp?=
+ =?utf-8?B?N2NiOStpMzY4cU1ZZStzWEJuOEplNnFHeFZCYlF5OGo1T0tvRVRKT0JiUERn?=
+ =?utf-8?B?WG5PdHFvbWIwSUt2REFYMHh2MVNtUVZSMGJENjZNSXJoeGo4K1FpQVZMTkdw?=
+ =?utf-8?B?Vm50bzFicFNuVVFvMUhMRS9tczM1Wk9rejRKanFkcC9SN000cUUxUlZSVzZt?=
+ =?utf-8?B?SG01L1NJbWNnc09HSGk4YkNPeEdjaE1kN2FQQUY3VHFtMEpDdDFuclZnUDRR?=
+ =?utf-8?B?dzVoWXZrS3hQcEdKMTlwTXQ1VlFjMlFuVnptNmVkRGFyQk9lL29jY0NwcStC?=
+ =?utf-8?B?bS9BVGNQak1ka3Vsb0FON0pKbWltdVphN3ZtVm1WNUZ5UEVGM0pqQmRaT3dJ?=
+ =?utf-8?B?TjBsaDVzSzhBekl0T3I1RXZGdVhIamNkSy8rdDQzSVFiV1J2U3NDQWx1OVBN?=
+ =?utf-8?B?eXk4V3k5R3NpSlRNaktTWkJiNTZiVU1LeGdDZkw4NVBSWDZXRXhSMlErQ0NK?=
+ =?utf-8?B?d24xSnZ2U2xOVm9JTjYzdW5qMGZEWWJEamZMMmkwQVhyeXdZUmV4Y0graDFN?=
+ =?utf-8?B?V1VxRjBpVmxTaW0xZEswTG12a0pJTjRTU0hlUjZGZnc3SFZmNXZsR0t6QVpQ?=
+ =?utf-8?B?TWF6eDBoWDFhcFJJaW9MYnRDUC9hZVRWTi9URVN2ckh1bVQvV0R6R3BXcVBC?=
+ =?utf-8?B?QUtWME8vZzk5V3UxZDZUTnU5eHl6Y2ZoZ1hjdXI0MmwyODNZNU5vaEZnS3h2?=
+ =?utf-8?Q?DfmazJR2VH3VghHRhw?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47f3db0b-99c2-4a41-234d-08de7e9dd8e9
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 12:09:15.0060
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HqRTO+mz3lE4w162bISlJt1G5cnWIiVsGPkfJ+DfwnudZuohoYCt/6AWclzBsAkl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8926
+X-Stat-Signature: h191461nragn97cwjtnby7r6owut1ut9
 X-Rspam-User: 
-X-HE-Tag: 1773144078-346912
-X-HE-Meta: U2FsdGVkX1+bX8liRRh9TyIEBr9MLW6dVHqDz0rypsoDrncMUrrbXc2Yt8ifP5tIR6kx6opTvptA1Qfqt1mJuWmljhiyMQkLA/spY/RXsULw/KY6p9+2LlBTsZoAUBp31lSZw9VmIn2HIWDUiHjRlhvB1uc+I2O0fas81Kp6AYt9ur+sc5A7/iJdALBajY5oKdv5/6lYF8wlhvR7Ek1tRMlcv8ditAr0sa8gz8IGpnf3yVUY/crsnP83nvS1JD3bgev6l8xebbJuyXDVuIHWTrhqUYvcDWvA1KvpzypJENlOziAQltB3qZZiOolakRL8xrkUJEeyjrd/NO6MqzBj/HAHkhLGf7PyJ41iyd8LXOQIL9yduY7HMqrzPBF5JX9yNOvadIv9MB2dmEXZ8P1ymTy9jNAdh/TFRh+3j9Wj8zDYPzsC+v45QEI6SbazkOVycEZsvYnhzhJCOop/l3rcplVmw0PoIC68k81ggMZAe+dHQ0G7x/Q7LbXC38d37cvDoYHCEOC+hqS3DK4y/7yhn6ElptrhkcK6c9in5MQtSVdii7mLRAHutJGeK29CI285DvzF6NWSgrVQPTa+qEsMe/lhMdipt6wKa+NqU2ruoMyZJal9gKhcK1yFvw6VkIU7d7OTJ2HONIN86PwBXSU64q28WV8Tf/kA3sk3OrLOnnZwU/CVNxyqLjxd5U7qlEXqTmL3rSaJqZgtbcFXtXA4gHRKQUbRSBnvKRfw/3is1FWXJ1V+N6XiqqO/4nfsx2CdjWexc+Esz9rH6u/C7y9BWq/+BH9/3I3GkvTZN7jVjyDJfkGVo9bLBu8dMW1vfKlbBH9oDKF77cd4SNkwcTnwvUL2wWmxxL9qCvB0Y4x8oTuPteso2joyUAFfFX7KVs0gPyQsY27gfKnN55mY42uujk0L8/jte/RSaJNtkrMOQhl9aXheC4bfR2XPjW5dvLSzn0ECWKLhqc5SjV/BKb3
- +AK+ayfk
- cpSpH+skvKkzEgtJufbAL9o79zCKXEoN5rmoDLSiOvjlt2MlwTPfbLOUsRlzG5b6WN2XwkIaYNCFfuMSuUfGBqJyDErwMTh0t72KlGub4dOGl6h7WV8XUpOkj5ktBZwKVgHmd9Ab7gu+KLEcNf2zKWnzEiK7BpXi3o8J0qyYIMEZFtlS2bouRqaYwhOYWks2XMViTkyVIAZZPucISH6g0/wOkfSyeGrXFmw3EjTGV8kEYwg3rwK87/4NxaY8oUZ27o/SKC2VlRhR7MFN/+dStQU7hx0uxHJlCMy1TJqGxjTjnL5RIBfH4IY1EGSy34qLiLvUgIy0o1mbkSKF/pxHKOFaJeIXTmX+wMxAsqFOmO/5OUk+PaIypBU7WON0Pt7cWZ6/PBOTG6AV44J/azvV0n2nH256IgAGt74u9ipn7JD0nRc+JKLDMq+ccmEatUNyMVUb0MXsXLKgqDYlkXt6ZznzUcbJk0vh/dSxXiYOluaAaQWvYJrdbBA7Q+QGUitiyYI8CwOaq7Fi9JDHYAn2+/2PDEh6JI5nfpEqaLSpGOSfhfQYzHZiXO4mlLofJ69SUnO1LT1xDUQ6Q1235KWzU5GLD7bO1R/CtbyHZcxOFkottPD7rjc/dAfHNQwKjCn1wIV7f3LfRXs4sxaCePYfwTl83F9PRXJk/XIxvVc0peG74ouvokN5ruvcLTfSu7KgiSWEq0ZqcOFHqwcik+Xrdt+PF5aWmi24E5qPBQVuix2MEIW8JS4okuUuk4areaFjYYeFPr003WlRhT2QzT5alXaJ+5rLcXropVm4wJhL7WzFR8yg2+GEgTFVPGaW0K/A/blH7W7fLnSk/IJoLBLhgYXGfYKpw4G1mBT8QCt105lq/qplIbIu6njl6pOj7Mr9HCyAsBRqeAK2KnRsnuvsvaabetjmNzn67b7QnCpXr8dSq2QyfTsUTHYbvykiHo4Tyov8d2LSsIz2gL+i6HBSeTaljWHoz
- 5LUZmoWE
- 5t+jKRW/eNwpz+RFtoYdM/haY83XTRfccXHqvP3DveR6pkt6NTc6WIHrdmze4zdriB/K3FA5YmjJMYuoqQvry1ZAVwAqSn9M+fDiuNbnv4RAelfy8Q7tEPDzFwMRr1Wv
+X-Rspamd-Queue-Id: 83DC780018
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773144564-149730
+X-HE-Meta: U2FsdGVkX19HtUh6hHkiLdXPMsgN6K1xHQ6VxjEoqCaH414s+ZpepBKziZTLxS2AfdVSxoLYpQB3B49pUnxoSY9XgQe49xr4B0f6KAbL4Kw6xNYKO0Wo/GVkzH6PUt5MP77e3r3NTuCsG499D+C1wvST3lu8BTdgPiTCU4OEu6sFo/7DFzRyjFLbjP0L/SoAGFSJRpK6NvzHX5330UZ8eNnBtIeIBZAgyiveKVSPd6qwWIQ0JizHhHS0qB41e9Ol0WUx2/MM8dTUMxPv6VJcxmpb6LhVsAvqOfUDHLH2uFjPRfRGZCXSQXoOYjCaujCNyelwsWxTunwejXrmpU2hiS9LMOZpuMz6kK2m+BN9SE38rz5P3SHZDiIAjER8iFOX5Th7qxGvHS1PbJrBnmdgBWchwwdNdQzZz1oaSr7mw5m2EQ2dCGWnxhN+OT74Hf2vU7a226+Illp4Akp4i+P485So5KrxJtDUhSMIfKZEY0lfMXyjbdlD3RI49w7Ecg/Afm+nhR5Yn2mx+AVNe9UHCTQOpBcsEqlz8hBA73ghuNf8NDLfuLIXE2QWv0qNhduxxh4aMDzkCxTAx+HjJqNaAx+bbL0jE/vkmAzcWgf0W/r6WMczkI3maq4CmwubFmZbFMYyBVpgz6sItXV6ypEM/DGbZbfLiYWomcKCr39TLC5RNU7wjUZvwKRypcv6tqEKyfRy9PdmeX3glFJNrSBEKt3VYMI2AjTBFL7v4qdVvhFOX7/tVIWKcQHZnwaoDsPyHWykhogXq4Iuhzm1glJrvRanGEF3YkYI6IYEGyTeENvjICk27wx/ZiPIs1om9s4Hr7se5JFN6WZzIwOToq2ihK0510Aqx3DnKpb6aIt5bajgPV2unEfrnieASGpTInSEbLBhK7uwNXlOgJ90qJEybDJr6qfeQ8mfJiE3Rf+cHroEdQJW5SHeAtFw8PNscv7p1ye/oI+0aFrMQ+e+D6K
+ 9hfYPxCp
+ N0OrkQ9pzku9rl0OYJlMvfDGBu6owI0zsTgrcjLKG2nFiuxD+wJ2AWlQF5MPHYwaMrCflLkDEvWE+L3i5+TB5gv7pa7y7eVwASBYEQ86FSLnJwpTrtyUbalOEasRFb54USHmmI7OsMRRGSzRbcsaqvtb5UhiaRznmNamEgzmV7yRbumsNU9v0rrHuXphxvsxeeGbbPJE4uvUTpYE8eP1qzvTWPJofzgx5LZItYaDD0bd4G4VTAUIgaYVQ8XBOTOPbZdKl/losoJ9giD4Uh6yZqFgvFDkEN54HoFKFfynOfZPM8G8ZyEAmyjZjmMEf56we9Q0yN8ZUWx/mm03Yf0WZI0a7RBVfU68K3DTiM4SOKF2Eb/q6JxjAt8Mo9y0Fk0kqI+GjqAXsz+KxAt38sYn807x6JJJ/4a7yg3Hga9I+r3onasG2pkNOVy1v1NzG1krVjb6DUrA2yTEB00G9YxriRAd4lGdF0tAvX4+rVXhlCecCrOVdO94v6zmHVcB6izoUP8HqoU0SdW4gGW6oqIzKYHIov2tPJULY9BhhPbeJqyWTgap5MOuMJyIqTjiauNZzW3nSecL7K5HbRcshPRGWF56EHAQs64BISyx5JY+KGy7a4v6xlVi3uG/uCH3ahgpSH0sDWINlmfDEuASK+YiLoh33L1P8lQ3SfKet5cYNxofU7zyWyLjrPWOUneUsatqIRmji05AJq0a84UlK3+v9jv0OgL7PSK7Bj6W39XPSpY16IhOZ5ZYoI6LjsAULeONuQ1NGsV1L5mUb/qtU1t+2NEWx6UTwcjfwukX9pB2Yuilzh4S9Ir9Z+S8JBy9WOO2+tjWc+2EW42++VmKPi39H71x6vpvpY9FlHxbqxiN2U5JZIJCDEzx+NBQPhx6x4kKpx18JM82KZMXf/AR1mBs4Ci3yB04jCXl2ah3bfSCv3KYSN23o5KXQZw3Jpv9/mNQls9nFH6kpllkQMDi1qKbRLLKYZznw
+ Kx9fj0Qp
+ STxY7qSdaMJpmpuZy+U9Up0l7U98BOd9m/sG8X08B30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,155 +209,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-check.
+On 3/10/26 12:49, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
 
-Change generated with coccinelle.
+Looks like a reasonable cleanup but could be that driver maintainers want to take that through their individual branches to avoid conflicts.
 
-To: Igor Russkikh <irusskikh@marvell.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-To: Michael Chan <mchan@broadcom.com>
-To: Potnuri Bharat Teja <bharat@chelsio.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: Taras Chornyi <taras.chornyi@plvision.eu>
-To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>
-To: Iyappan Subramanian <iyappan@os.amperecomputing.com>
-To: Keyur Chudgar <keyur@os.amperecomputing.com>
-To: Quan Nguyen <quan@os.amperecomputing.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-To: Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: linux-stm32@st-md-mailman.stormreply.com
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-usb@vger.kernel.org
-Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
----
- drivers/net/ethernet/aquantia/atlantic/aq_ring.c        | 2 +-
- drivers/net/ethernet/broadcom/tg3.c                     | 2 +-
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c    | 3 +--
- drivers/net/ethernet/intel/ice/devlink/devlink.c        | 2 +-
- drivers/net/ethernet/marvell/prestera/prestera_router.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
- drivers/net/mdio/mdio-xgene.c                           | 2 +-
- drivers/net/usb/r8152.c                                 | 2 +-
- 8 files changed, 8 insertions(+), 9 deletions(-)
+Alternatively when the i915 and rockship maintainers say that they are fine with the change I'm happy to push this to drm-misc-next.
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-index e270327e47fd804cc8ee5cfd53ed1b993c955c41..43edef35c4b1ff606b2f1519a07fad4c9a990ad4 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-@@ -810,7 +810,7 @@ static int __aq_ring_xdp_clean(struct aq_ring_s *rx_ring,
- 		}
- 
- 		skb = aq_xdp_run_prog(aq_nic, &xdp, rx_ring, buff);
--		if (IS_ERR(skb) || !skb)
-+		if (IS_ERR_OR_NULL(skb))
- 			continue;
- 
- 		if (ptp_hwtstamp_len > 0)
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 2328fce336447eb4a796f9300ccc0ab536ff0a35..8ed79f34f03d81184dcc12e6eaff009cb8f7756e 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7943,7 +7943,7 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
- 
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs) {
-+	if (IS_ERR_OR_NULL(segs)) {
- 		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
- 	}
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-index 3307e50426819087ad985178c4a5383f16b8e7b4..1c8a6445d4b2e3535d8f1b7908dd02d8dd2f23fa 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
-@@ -1032,8 +1032,7 @@ static void ch_flower_stats_handler(struct work_struct *work)
- 	do {
- 		rhashtable_walk_start(&iter);
- 
--		while ((flower_entry = rhashtable_walk_next(&iter)) &&
--		       !IS_ERR(flower_entry)) {
-+		while (!IS_ERR_OR_NULL((flower_entry = rhashtable_walk_next(&iter)))) {
- 			ret = cxgb4_get_filter_counters(adap->port[0],
- 							flower_entry->filter_id,
- 							&packets, &bytes,
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 6c72bd15db6d75a1d4fa04ef8fefbd26fb6e84bd..3d08b9187fd76ca3198af28111b6f1c1765ea01e 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -791,7 +791,7 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node
- 						  node->parent->rate_node);
- 	}
- 
--	if (rate_node && !IS_ERR(rate_node))
-+	if (!IS_ERR_OR_NULL(rate_node))
- 		node->rate_node = rate_node;
- 
- traverse_children:
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router.c b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-index b036b173a308b5f994ad8538eb010fa27196988c..4492938e8a3da91d32efe8d45ccbe2eb437c0e49 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
-@@ -1061,7 +1061,7 @@ static void __prestera_k_arb_hw_state_upd(struct prestera_switch *sw,
- 		n = NULL;
- 	}
- 
--	if (!IS_ERR(n) && n) {
-+	if (!IS_ERR_OR_NULL(n)) {
- 		neigh_event_send(n, NULL);
- 		neigh_release(n);
- 	} else {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 6827c99bde8c22db42b363d2d36ad6f26075ed50..356a4e9ce04b1fcf8786d7274d31ace404be2cf6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1275,7 +1275,7 @@ static int stmmac_init_phy(struct net_device *dev)
- 	/* Some DT bindings do not set-up the PHY handle. Let's try to
- 	 * manually parse it
- 	 */
--	if (!phy_fwnode || IS_ERR(phy_fwnode)) {
-+	if (IS_ERR_OR_NULL(phy_fwnode)) {
- 		int addr = priv->plat->phy_addr;
- 		struct phy_device *phydev;
- 
-diff --git a/drivers/net/mdio/mdio-xgene.c b/drivers/net/mdio/mdio-xgene.c
-index a8f91a4b7fed0927ee14e408000cd3a2bfb9b09a..09b30b563295c6085dc1358ac361301e5cf6b2a8 100644
---- a/drivers/net/mdio/mdio-xgene.c
-+++ b/drivers/net/mdio/mdio-xgene.c
-@@ -265,7 +265,7 @@ struct phy_device *xgene_enet_phy_register(struct mii_bus *bus, int phy_addr)
- 	struct phy_device *phy_dev;
- 
- 	phy_dev = get_phy_device(bus, phy_addr, false);
--	if (!phy_dev || IS_ERR(phy_dev))
-+	if (IS_ERR_OR_NULL(phy_dev))
- 		return NULL;
- 
- 	if (phy_device_register(phy_dev))
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 0c83bbbea2e7c322ee6339893e281237663bd3ae..73f17ebd7d40007eec5004f887a46249defd28ab 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -2218,7 +2218,7 @@ static void r8152_csum_workaround(struct r8152 *tp, struct sk_buff *skb,
- 
- 		features &= ~(NETIF_F_SG | NETIF_F_IPV6_CSUM | NETIF_F_TSO6);
- 		segs = skb_gso_segment(skb, features);
--		if (IS_ERR(segs) || !segs)
-+		if (IS_ERR_OR_NULL(segs))
- 			goto drop;
- 
- 		__skb_queue_head_init(&seg_list);
+Regards,
+Christian.
 
--- 
-2.43.0
+> 
+> Change generated with coccinelle.
+> 
+> To: Andrzej Hajda <andrzej.hajda@intel.com>
+> To: Neil Armstrong <neil.armstrong@linaro.org>
+> To: Robert Foss <rfoss@kernel.org>
+> To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> To: Jonas Karlman <jonas@kwiboo.se>
+> To: Jernej Skrabec <jernej.skrabec@gmail.com>
+> To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> To: Maxime Ripard <mripard@kernel.org>
+> To: Thomas Zimmermann <tzimmermann@suse.de>
+> To: David Airlie <airlied@gmail.com>
+> To: Simona Vetter <simona@ffwll.ch>
+> To: Zhenyu Wang <zhenyuw.linux@gmail.com>
+> To: Zhi Wang <zhi.wang.linux@gmail.com>
+> To: Jani Nikula <jani.nikula@linux.intel.com>
+> To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> To: Tvrtko Ursulin <tursulin@ursulin.net>
+> To: Alex Deucher <alexander.deucher@amd.com>
+> To: "Christian König" <christian.koenig@amd.com>
+> To: Sandy Huang <hjc@rock-chips.com>
+> To: "Heiko Stübner" <heiko@sntech.de>
+> To: Andy Yan <andy.yan@rock-chips.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: intel-gfx@lists.freedesktop.org
+> Cc: amd-gfx@lists.freedesktop.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-rockchip@lists.infradead.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  drivers/gpu/drm/bridge/synopsys/dw-hdmi.c       | 2 +-
+>  drivers/gpu/drm/drm_sysfs.c                     | 2 +-
+>  drivers/gpu/drm/i915/gvt/scheduler.c            | 4 ++--
+>  drivers/gpu/drm/radeon/radeon_test.c            | 2 +-
+>  drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c | 2 +-
+>  5 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> index ee88c0e793b0416d20105a43448cb4037402e64b..64fa2bc8d28197147ee22b4f74134cc27dd9b32d 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+> @@ -3608,7 +3608,7 @@ void dw_hdmi_remove(struct dw_hdmi *hdmi)
+>  {
+>         drm_bridge_remove(&hdmi->bridge);
+> 
+> -       if (hdmi->audio && !IS_ERR(hdmi->audio))
+> +       if (!IS_ERR_OR_NULL(hdmi->audio))
+>                 platform_device_unregister(hdmi->audio);
+>         if (!IS_ERR(hdmi->cec))
+>                 platform_device_unregister(hdmi->cec);
+> diff --git a/drivers/gpu/drm/drm_sysfs.c b/drivers/gpu/drm/drm_sysfs.c
+> index ef4e923a872843339743d21e4877225855da921e..6748acb4163e8f5658c9201a0412b38862c7baab 100644
+> --- a/drivers/gpu/drm/drm_sysfs.c
+> +++ b/drivers/gpu/drm/drm_sysfs.c
+> @@ -600,7 +600,7 @@ struct device *drm_sysfs_minor_alloc(struct drm_minor *minor)
+>   */
+>  int drm_class_device_register(struct device *dev)
+>  {
+> -       if (!drm_class || IS_ERR(drm_class))
+> +       if (IS_ERR_OR_NULL(drm_class))
+>                 return -ENOENT;
+> 
+>         dev->class = drm_class;
+> diff --git a/drivers/gpu/drm/i915/gvt/scheduler.c b/drivers/gpu/drm/i915/gvt/scheduler.c
+> index 15fdd514ca836e84f4de95e3207ab45bb9243426..933ec5ffa1f1ebafd687996f167b982490702211 100644
+> --- a/drivers/gpu/drm/i915/gvt/scheduler.c
+> +++ b/drivers/gpu/drm/i915/gvt/scheduler.c
+> @@ -675,10 +675,10 @@ static void release_shadow_batch_buffer(struct intel_vgpu_workload *workload)
+>         list_for_each_entry_safe(bb, pos, &workload->shadow_bb, list) {
+>                 if (bb->obj) {
+>                         i915_gem_object_lock(bb->obj, NULL);
+> -                       if (bb->va && !IS_ERR(bb->va))
+> +                       if (!IS_ERR_OR_NULL(bb->va))
+>                                 i915_gem_object_unpin_map(bb->obj);
+> 
+> -                       if (bb->vma && !IS_ERR(bb->vma))
+> +                       if (!IS_ERR_OR_NULL(bb->vma))
+>                                 i915_vma_unpin(bb->vma);
+> 
+>                         i915_gem_object_unlock(bb->obj);
+> diff --git a/drivers/gpu/drm/radeon/radeon_test.c b/drivers/gpu/drm/radeon/radeon_test.c
+> index 0b459f7df23bae3eef7e36f4b5f35638fb6f4985..573284c4af60f12d7edec889260fc8a2e2b70420 100644
+> --- a/drivers/gpu/drm/radeon/radeon_test.c
+> +++ b/drivers/gpu/drm/radeon/radeon_test.c
+> @@ -234,7 +234,7 @@ static void radeon_do_test_moves(struct radeon_device *rdev, int flag)
+>                         radeon_bo_unreserve(gtt_obj[i]);
+>                         radeon_bo_unref(&gtt_obj[i]);
+>                 }
+> -               if (fence && !IS_ERR(fence))
+> +               if (!IS_ERR_OR_NULL(fence))
+>                         radeon_fence_unref(&fence);
+>                 break;
+>         }
+> diff --git a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+> index 3547d91b25d317c6cad690da7d97a7e5436c0236..8a267de85da9c76c2e29b2ababf1218e400282c2 100644
+> --- a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+> +++ b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+> @@ -1095,7 +1095,7 @@ static int dw_mipi_dsi_rockchip_host_detach(void *priv_data,
+>         struct device *second;
+> 
+>         second = dw_mipi_dsi_rockchip_find_second(dsi);
+> -       if (second && !IS_ERR(second))
+> +       if (!IS_ERR_OR_NULL(second))
+>                 component_del(second, &dw_mipi_dsi_rockchip_ops);
+> 
+>         component_del(dsi->dev, &dw_mipi_dsi_rockchip_ops);
+> 
+> --
+> 2.43.0
+> 
 
 
