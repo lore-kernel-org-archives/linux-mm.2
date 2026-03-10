@@ -4,117 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BEB6FD4F08
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:13:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 264ADFD4F0F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:50:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 912E46B0088; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
+	id DF66E6B0088; Tue, 10 Mar 2026 13:50:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86C116B0089; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
+	id DC4CA6B008C; Tue, 10 Mar 2026 13:50:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 740AC6B008C; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
+	id CFA9F6B0092; Tue, 10 Mar 2026 13:50:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 601366B0088
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14FEE1602AD
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:13:53 +0000 (UTC)
-X-FDA: 84530800746.20.383E481
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DC0C4120010
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:13:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Muqwupi7;
-	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id A82F56B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:50:02 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48AE913A3E4
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:50:02 +0000 (UTC)
+X-FDA: 84530891844.05.9064387
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 885D41C000C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:50:00 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b="GIVr/5DW";
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773162831;
+	s=arc-20220608; t=1773165000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sXudXV+vIcCe/FaMWV94uAIHSh+hgQuxJ4MUz1MgDPw=;
-	b=QNKhcf02o3N+wsexUZWmW1vcytjt3sawvlZ2zQOu/fZ+K7RpSTHxxoz7owJvw3iQGaJXVO
-	Vh3DQOY0KxfntQusxs6CJadn41WmRf7pjrRL6cRf7+JF9Bstfd2eaW66UBfC6ORWjs2TcS
-	C11YKMb8okziBMOmtWw5I4d5lZG95uc=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Muqwupi7;
-	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773162831; a=rsa-sha256;
+	bh=9MN/vj8HfI8aMqCrRTurhnitKN8uIAxpU0TiUVovwqM=;
+	b=G1ibRD27Hh4mZARhNw9FIolJ88HWFv1iOyzWPBBP9bva2lQZsvMAsj2xAo2XVe4XGXsqlR
+	TbQnMW3ulCYV6VxPkJN7P0M5x08Mggbs5rTFt912C4iIjSQz5H3KW8lb3G4PjIBm6ORhen
+	sKMyTLtY9ck2tyjnU8boTzEfjIqUkSg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165000; a=rsa-sha256;
 	cv=none;
-	b=IkG7f4VQ6w33xnJRmhBeHiJCUZe/tt1xusXFxMPAXLxT5BHVB+AaEdmR89V5a1DUx9g5Cn
-	PVYEv2BhH7N3oyj4hB05VkDt9QnVt07Vhwf81MMyEK+lgJJ+8a8D5LX+Tu2IabdoaDMQAX
-	Ie24t4qVBN2K7hBm+7MeaGL51pHDJXU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773162830;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sXudXV+vIcCe/FaMWV94uAIHSh+hgQuxJ4MUz1MgDPw=;
-	b=Muqwupi7d9Jo7oA/bo572s2O4QsqH4I9jZmZbuqqca7yXA549dXXP07PnPh+wfVrgfYgEk
-	R+99pXKlJ3EJrciWKF8YF2FQo2db9cKK+2S8nT7g+DNj/HDI2B2yVQSbJRnaYRN/n+hRJg
-	j+oFMxolOpcHxvDwdEnQzkhIuNoyMSU=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-7P6qnvrTPXugEWadv_84rA-1; Tue,
- 10 Mar 2026 13:13:44 -0400
-X-MC-Unique: 7P6qnvrTPXugEWadv_84rA-1
-X-Mimecast-MFC-AGG-ID: 7P6qnvrTPXugEWadv_84rA_1773162822
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4BAE18005B9;
-	Tue, 10 Mar 2026 17:13:40 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.4])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E99B430002D2;
-	Tue, 10 Mar 2026 17:13:38 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id CBB5D40205ECE; Tue, 10 Mar 2026 14:12:03 -0300 (-03)
-Date: Tue, 10 Mar 2026 14:12:03 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras.c@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
-Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
-Message-ID: <abBQ40Zkk76Zej8i@tpad>
-References: <20260302154945.143996316@redhat.com>
- <aam1cHq3_fb-T1HH@localhost.localdomain>
+	b=3VW4fj4ggfjqEKYWE1NqrXs9jtUH2nolifozoMOg9bvcT3UTf7Nzyq173HClqpSae0ox9d
+	zQ0aINXP06KknTYi9N3jPEBL1RFf5QE26ChwHgVQ8fqjQSqR2j3OPaT3MuZm70wDJe7a0/
+	RHj/zA7rxomoDw2617WfMbnx6qr9muI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b="GIVr/5DW";
+	spf=pass (imf20.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from localhost.localdomain (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id EE16EB382C;
+	Tue, 10 Mar 2026 17:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1773164999;
+	bh=9MN/vj8HfI8aMqCrRTurhnitKN8uIAxpU0TiUVovwqM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GIVr/5DWzY/aI05+illM0LXMLuWwX9FDyHG64qseRzdJfUMgizJHPNVV0MJ4Sqkxk
+	 W4kAaiW+bHnNMROoycbuhLq2ebHtL289aUzHWJJ582bpoSjI2ZxvCPX9dcBuGs0a7I
+	 4oJ4HkzcQJXOkQiFKy5/ZbfzED01SksbuWj5nFWc=
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Dmitry Ilvokhin <d@ilvokhin.com>
+Subject: [PATCH v2 2/2] locking: Add contended_release tracepoint
+Date: Tue, 10 Mar 2026 17:49:39 +0000
+Message-ID: <cb89caf58885858433711f0ed6238484f5f1a67f.1773164180.git.d@ilvokhin.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1773164180.git.d@ilvokhin.com>
+References: <cover.1773164180.git.d@ilvokhin.com>
 MIME-Version: 1.0
-In-Reply-To: <aam1cHq3_fb-T1HH@localhost.localdomain>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: RAX6PqhNY2LHs4Y2g0FY5QLgdrEYT_xD92v9dJzBtdU_1773162822
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DC0C4120010
-X-Stat-Signature: eyz3b58cf7kims6gxf5xb6u6ic3cpb57
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773162830-286345
-X-HE-Meta: U2FsdGVkX1+H6FdSMpke6VLLBUV4OtnTEOsdB18rtKEU3Nl0UuVydFB9LhMZqADJSFcSdGC2xzqxkmMwbys356srEEVvNWFUJqIe3+XmK2yZZRZwoB8d+7TaXIoC2FIOYf3RGvWOZZzu0581X+6mgjXLMM8bAdl92LH2L4JkpKykYe52iQBUZXTWiia/TC7CAmBx9YIvZ48uq1LHclApzRAhElViDvN6PjX2JeHfKacYbSbWHxth6Te/Npm4SPo8ermAbfQ8yad4AEZ+31SQY5+OLmmsqGpHj/AJoa+kvhXdnMoNePyu+v094mzkvD9lFWdBqCb7CcE2sTlYdHjKlkMgARDCZV7hZKW5Yc06udjhTPXeQKj0sGSrwgXoSSH4STGhiaKpEMQUCwBNgqpXS5FrpPb967uCCvhYhXsMRnVZ0fc/5xySixLRCtL7LrrDS+U9hr+02OSv9nL/3fJfP803vWADG6uHY0ghYCGPsS8JqWFrERDGWqCcrH7yrE8J0gZZoLNISDESs0gW869d1KQyP+apNKZLhDgDl/bJZgiknVP5gyqDsUrGbzdDifnt5M3Kme9ur1hUSeOUKp3d5S5wNz3DwwkEPJcUfh2KiXyL1i1h1t6ynFeWmA5OSP9LZ83M4zzlBwgXYCMki/IQPL3yILygVoGkHoUYJWnlK/SvUko3KEOx0jKlABg13IODCD4sajkIUobijbiBtcRePYCXMooWZhOygDp0Ntmxckz4+Tp+keCIolluztHtztdKq2JwaZAxemKEi2rod1rHAryeTwgdiakMi+KlB6wGhwF5IpkS1BlHZ1KxNnGXyC67rqlBt6LlhNQch1nWxV15GnYAGjMa7R9cf/Uf6XnfhiXFNPxIlpQDkwcGLySyTaLHtUe/8Xby/NvCmzfCaslAFEhY7tmtEUlYHvX7ezCnpvZ4055DwvjF0CPoLuIALjWQQ10RNUh2iZyxlPoTE17
- JwYkuj6b
- a4Yd8xr3eeAsZUPu4IUlNKGt54KPV8RzB+My+WLVqiSiCk1ixWiptv1OFsqeDOzCITuuYmhMMIXFsoDd9g015gizdJvzJ86rMCLACUkU0lSmUB5apVhN4B7UAuM4oRkKXD8j7OSAnAJYPFH0pQn47CMSe9fFxPyNXOeOBBBomZhMnd2DfoGf8NMxXjEEF9vr+r4S0hcyU83LsVDH5oRv+7ySDVkiG37Mz+/21PH8DI9/8+ehBtlce007PaOdQYOoiYy7tgm/TJlcUzRLq9PKjxYDYnLHfnShKgvJaOP6rdpZAMD3TSbnFtrr5FmKEhcWcfoSlii73Zga2cTfYHomZ+y+CX13T+sAUUr14hHOzObB+mUqIZgiCE8vwoA6y5eV2E/RF4f58ceAyzFaS0XELgmNnLKnYHWgFXbGW
+X-Stat-Signature: m1pgf9879rk4nw9wo1is1dw667obmgce
+X-Rspamd-Queue-Id: 885D41C000C
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773165000-560196
+X-HE-Meta: U2FsdGVkX1/qX+tYKLr+oIE2SBY5PW2UZ4zfwUpm8lOC0dsqkuYIqqUTnecRVLeM0pXb2L+5p4q9FK5fS4PI2YHAsva0QJUD0xp4Wt2O0JMS3FK2ShV/gOEMgOs2FyRCBz25bczSbqptX5mRH7HdAz0LElEeOEL3sf9Mik2FtOChqvZAQ5MnzUrfxb0YtSAhNBr16dDlXW6d3u/lXWtrby8roPHMlxQKa4o2g6mhXmgeE8rIF3jbMNY/QmyYqNpO56Jn/Rsk8xrlIefLDubugtRE8QmrAeaQ4O3FISMNqoD3ZwQLEdAY9BLdtYn2bSSRKTfPd33WUemR8SODT0JZVn+Q0j+BHO2prPPE+/vcHJ+aAzEdT72juUr9CsE9NQEOx+xsKQLHeYXkCSvD7puBI+nd2Jg9bkbaFrOW2pis1xDzltoy2sb+ciX+h/etjAuWLrCWlzCda8EZFTf/BCpm4XuQcly1BxC+3KtxoaDJommica93oCxHvSvoX7ZV733GqrPntO1q/K4s+AQkeURvIdUnMmn9rVY9jTSfmxZnthfaxF4How7EuPk/KWvK1prKpH7xXg5lGkbMDTsUh4z96YepPaD77RfbeydJBBYjr8eG79iViMEitxMRCkG2OP9ZrlqHfiV1ZtVMmoFsMJQ/FF3ToLfTChCqFndcOkHkS69ftPpLENR4Y6ffsHljemcTvpY8J5RKTzXFRruC19vqTw80k1VkFthZGb55VYjDywgjXLfnPTJg00/EVvFixwFbliOYNDiZ1YGFPhMqDSZ5yRd6h/qzCo1yKY8YUJ3jXT74RLIWr3KmYvMpX0aixla1SC6B+2xN85nRIc0QeArYJ58frivwZUlKO0fKXIqM90FkbhKPQ43YwwnGcZ8cZpoP3WFE4ZfCGjeAjfTV5cnri9HmamxyC/O0EMEapXwq5yigFxc7wwVOxk9RXmnkAJxxhBu3QSUYpW4KNThpLBq
+ WSQ8YRvR
+ C6++YD7xw8BOTUlaK7mGr4sZVRub758/1630az817ng2fJNSLF6LXLbPiaHx6WbNt4rdFFHrFNmnWlv5uJ6Wzhi9cIZ6KXuXLzi1pFeVbEwC8HhppaUL6TN/SOhe/QPyfVa9hWZyq8vDVWWFrnZV9RUxvnNjRPycB5xxeXt6hxkqwwAMTN6IQPVgTMOjgkHVuCHGfkKo9qIOsh8bsFc51Ikzpfq4KsDh6DXqTxUvxT7F9yNpdpwvjLa1YPyHRsU5EyoMFQAnPAs20qyE3Rw3Gejl+/qzwhgGcI1SkSivbuDlHVU3KUJY4KwEsdjRoEyckEmi6ONE6QiUGePw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,133 +99,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Frederic,
+Add the contended_release trace event. This tracepoint fires on the
+holder side when a contended lock is released, complementing the
+existing contention_begin/contention_end tracepoints which fire on the
+waiter side.
 
-On Thu, Mar 05, 2026 at 05:55:12PM +0100, Frederic Weisbecker wrote:
-> Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
-> > The problem:
-> > Some places in the kernel implement a parallel programming strategy
-> > consisting on local_locks() for most of the work, and some rare remote
-> > operations are scheduled on target cpu. This keeps cache bouncing low since
-> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> > kernels, even though the very few remote operations will be expensive due
-> > to scheduling overhead.
-> > 
-> > On the other hand, for RT workloads this can represent a problem: getting
-> > an important workload scheduled out to deal with remote requests is
-> > sure to introduce unexpected deadline misses.
-> > 
-> > The idea:
-> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-> > In this case, instead of scheduling work on a remote cpu, it should
-> > be safe to grab that remote cpu's per-cpu spinlock and run the required
-> > work locally. That major cost, which is un/locking in every local function,
-> > already happens in PREEMPT_RT.
-> > 
-> > Also, there is no need to worry about extra cache bouncing:
-> > The cacheline invalidation already happens due to schedule_work_on().
-> > 
-> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
-> > RT workload.
-> > 
-> > Proposed solution:
-> > A new interface called Queue PerCPU Work (QPW), which should replace
-> > Work Queue in the above mentioned use case.
-> > 
-> > If CONFIG_QPW=n this interfaces just wraps the current
-> > local_locks + WorkQueue behavior, so no expected change in runtime.
-> > 
-> > If CONFIG_QPW=y, and qpw kernel boot option =1, 
-> > queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
-> > and perform work on it locally. This is possible because on 
-> > functions that can be used for performing remote work on remote 
-> > per-cpu structures, the local_lock (which is already
-> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
-> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
-> 
-> So let me summarize what are the possible design solutions, on top of our discussions,
-> so we can compare:
-> 
-> 1) Never queue remotely but always queue locally and execute on userspace
->    return via task work.
+This enables correlating lock hold time under contention with waiter
+events by lock address.
 
-How can you "queue locally" if the request is visible on a remote CPU?
+Add trace_contended_release() calls to the slowpath unlock paths of
+sleepable locks: mutex, rtmutex, semaphore, rwsem, percpu-rwsem, and
+RT-specific rwbase locks. Each call site fires only when there are
+blocked waiters being woken, except percpu_up_write() which always wakes
+via __wake_up().
 
-That is, the event which triggers the manipulation of data structures 
-which need to be performed by the owner CPU (owner of the data
-structures) is triggered on a remote CPU.
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
+---
+ include/trace/events/lock.h   | 17 +++++++++++++++++
+ kernel/locking/mutex.c        |  1 +
+ kernel/locking/percpu-rwsem.c |  3 +++
+ kernel/locking/rtmutex.c      |  1 +
+ kernel/locking/rwbase_rt.c    |  8 +++++++-
+ kernel/locking/rwsem.c        |  9 +++++++--
+ kernel/locking/semaphore.c    |  4 +++-
+ 7 files changed, 39 insertions(+), 4 deletions(-)
 
-This is confusing.
-
-Can you also please give a practical example of such case ?
-
->    Pros:
->          - Simple and easy to maintain.
-> 
->    Cons:
->          - Need a case by case handling.
-> 
-> 	 - Might be suitable for full userspace applications but not for
->            some HPC usecases. In the best world MPI is fully implemented in
->            userspace but that doesn't appear to be the case.
-> 
-> 2) Queue locally the workqueue right away
-
-Again, the event which triggers the manipulation of data structures
-by the owner CPU happens on a remote CPU. 
-So how can you queue it locally ?
-
->    or do it remotely (if it's
->    really necessary) if the isolated CPU is in userspace, otherwise queue
->    it for execution on return to kernel. The work will be handled by preemption
->    to a worker or by a workqueue flush on return to userspace.
-> 
->    Pros:
->         - The local queue handling is simple.
-> 
->    Cons:
->         - The remote queue must synchronize with return to userspace and
-> 	  eventually postpone to return to kernel if the target is in userspace.
-> 	  Also it may need to differentiate IRQs and syscalls.
-> 
->         - Therefore still involve some case by case handling eventually.
->    
->         - Flushing the global workqueues to avoid deadlocks is unadvised as shown
->           in the comment above flush_scheduled_work(). It even triggers a
->           warning. Significant efforts have been put to convert all the existing
-> 	  users. It's not impossible to sell in our case because we shouldn't
-> 	  hold a lock upon return to userspace. But that will restore a new
-> 	  dangerous API.
-> 
->         - Queueing the workqueue / flushing involves a context switch which
->           induce more noise (eg: tick restart)
-> 	  
->         - As above, probably not suitable for HPC.
-> 
-> 3) QPW: Handle the work remotely
-> 
->    Pros:
->         - Works on all cases, without any surprise.
-> 
->    Cons:
->         - Introduce new locking scheme to maintain and debug.
-> 
->         - Needs case by case handling.
-> 
-> Thoughts?
-
-Can you please be more verbose, mindful of lesser cognitive powers ? :-) 
-
-Note: i also dislike the added layers (and multiple cases) QPW adds.
-
-But there is precedence with local locks...
-
-Code would be less complex in case spinlocks were added:
-
-01b44456a7aa7c3b24fa9db7d1714b208b8ef3d8 mm/page_alloc: replace local_lock with normal spinlock
-4b23a68f953628eb4e4b7fe1294ebf93d4b8ceee mm/page_alloc: protect PCP lists with a spinlock
-
-But people seem to reject that in the basis of performance
-degradation.
+diff --git a/include/trace/events/lock.h b/include/trace/events/lock.h
+index 8e89baa3775f..4f28e41977ec 100644
+--- a/include/trace/events/lock.h
++++ b/include/trace/events/lock.h
+@@ -138,6 +138,23 @@ TRACE_EVENT(contention_end,
+ 	TP_printk("%p (ret=%d)", __entry->lock_addr, __entry->ret)
+ );
+ 
++TRACE_EVENT(contended_release,
++
++	TP_PROTO(void *lock),
++
++	TP_ARGS(lock),
++
++	TP_STRUCT__entry(
++		__field(void *, lock_addr)
++	),
++
++	TP_fast_assign(
++		__entry->lock_addr = lock;
++	),
++
++	TP_printk("%p", __entry->lock_addr)
++);
++
+ #endif /* _TRACE_LOCK_H */
+ 
+ /* This part must be outside protection */
+diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+index 427187ff02db..ff9d07f3e900 100644
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -992,6 +992,7 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 	if (waiter) {
+ 		next = waiter->task;
+ 
++		trace_contended_release(lock);
+ 		debug_mutex_wake_waiter(lock, waiter);
+ 		__clear_task_blocked_on(next, lock);
+ 		wake_q_add(&wake_q, next);
+diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
+index f3ee7a0d6047..1eee51766aaf 100644
+--- a/kernel/locking/percpu-rwsem.c
++++ b/kernel/locking/percpu-rwsem.c
+@@ -263,6 +263,8 @@ void percpu_up_write(struct percpu_rw_semaphore *sem)
+ {
+ 	rwsem_release(&sem->dep_map, _RET_IP_);
+ 
++	trace_contended_release(sem);
++
+ 	/*
+ 	 * Signal the writer is done, no fast path yet.
+ 	 *
+@@ -297,6 +299,7 @@ void __percpu_up_read(struct percpu_rw_semaphore *sem)
+ 	 * writer.
+ 	 */
+ 	smp_mb(); /* B matches C */
++	trace_contended_release(sem);
+ 	/*
+ 	 * In other words, if they see our decrement (presumably to
+ 	 * aggregate zero, as that is the only time it matters) they
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index ccaba6148b61..3db8a840b4e8 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1466,6 +1466,7 @@ static void __sched rt_mutex_slowunlock(struct rt_mutex_base *lock)
+ 		raw_spin_lock_irqsave(&lock->wait_lock, flags);
+ 	}
+ 
++	trace_contended_release(lock);
+ 	/*
+ 	 * The wakeup next waiter path does not suffer from the above
+ 	 * race. See the comments there.
+diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
+index 82e078c0665a..081778934b13 100644
+--- a/kernel/locking/rwbase_rt.c
++++ b/kernel/locking/rwbase_rt.c
+@@ -162,8 +162,10 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
+ 	 * worst case which can happen is a spurious wakeup.
+ 	 */
+ 	owner = rt_mutex_owner(rtm);
+-	if (owner)
++	if (owner) {
++		trace_contended_release(rwb);
+ 		rt_mutex_wake_q_add_task(&wqh, owner, state);
++	}
+ 
+ 	/* Pairs with the preempt_enable in rt_mutex_wake_up_q() */
+ 	preempt_disable();
+@@ -205,6 +207,8 @@ static inline void rwbase_write_unlock(struct rwbase_rt *rwb)
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
++	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
++		trace_contended_release(rwb);
+ 	__rwbase_write_unlock(rwb, WRITER_BIAS, flags);
+ }
+ 
+@@ -214,6 +218,8 @@ static inline void rwbase_write_downgrade(struct rwbase_rt *rwb)
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
++	if (trace_contended_release_enabled() && rt_mutex_has_waiters(rtm))
++		trace_contended_release(rwb);
+ 	/* Release it and account current as reader */
+ 	__rwbase_write_unlock(rwb, WRITER_BIAS - 1, flags);
+ }
+diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
+index ba4cb74de064..cf7d8e75ad7b 100644
+--- a/kernel/locking/rwsem.c
++++ b/kernel/locking/rwsem.c
+@@ -1390,6 +1390,7 @@ static inline void __up_read(struct rw_semaphore *sem)
+ 	if (unlikely((tmp & (RWSEM_LOCK_MASK|RWSEM_FLAG_WAITERS)) ==
+ 		      RWSEM_FLAG_WAITERS)) {
+ 		clear_nonspinnable(sem);
++		trace_contended_release(sem);
+ 		rwsem_wake(sem);
+ 	}
+ 	preempt_enable();
+@@ -1413,8 +1414,10 @@ static inline void __up_write(struct rw_semaphore *sem)
+ 	preempt_disable();
+ 	rwsem_clear_owner(sem);
+ 	tmp = atomic_long_fetch_add_release(-RWSEM_WRITER_LOCKED, &sem->count);
+-	if (unlikely(tmp & RWSEM_FLAG_WAITERS))
++	if (unlikely(tmp & RWSEM_FLAG_WAITERS)) {
++		trace_contended_release(sem);
+ 		rwsem_wake(sem);
++	}
+ 	preempt_enable();
+ }
+ 
+@@ -1437,8 +1440,10 @@ static inline void __downgrade_write(struct rw_semaphore *sem)
+ 	tmp = atomic_long_fetch_add_release(
+ 		-RWSEM_WRITER_LOCKED+RWSEM_READER_BIAS, &sem->count);
+ 	rwsem_set_reader_owned(sem);
+-	if (tmp & RWSEM_FLAG_WAITERS)
++	if (tmp & RWSEM_FLAG_WAITERS) {
++		trace_contended_release(sem);
+ 		rwsem_downgrade_wake(sem);
++	}
+ 	preempt_enable();
+ }
+ 
+diff --git a/kernel/locking/semaphore.c b/kernel/locking/semaphore.c
+index 74d41433ba13..d46415095dd6 100644
+--- a/kernel/locking/semaphore.c
++++ b/kernel/locking/semaphore.c
+@@ -231,8 +231,10 @@ void __sched up(struct semaphore *sem)
+ 	else
+ 		__up(sem, &wake_q);
+ 	raw_spin_unlock_irqrestore(&sem->lock, flags);
+-	if (!wake_q_empty(&wake_q))
++	if (!wake_q_empty(&wake_q)) {
++		trace_contended_release(sem);
+ 		wake_up_q(&wake_q);
++	}
+ }
+ EXPORT_SYMBOL(up);
+ 
+-- 
+2.52.0
 
 
