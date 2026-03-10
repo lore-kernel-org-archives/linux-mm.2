@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEC90FD4F11
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:58:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC2FFD4F0F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:58:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F0576B0099; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
+	id 42B9C6B009D; Tue, 10 Mar 2026 13:58:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86F6C6B009E; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
+	id 3D5D16B009E; Tue, 10 Mar 2026 13:58:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71D646B009B; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
+	id 2C1826B00A0; Tue, 10 Mar 2026 13:58:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 413B16B0099
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:58:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9F0F140209
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:18 +0000 (UTC)
-X-FDA: 84530912676.30.2495587
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EFE6D6B009D
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:58:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8D70F1602AD
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:20 +0000 (UTC)
+X-FDA: 84530912760.15.5660FF0
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D9007C0009
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HwiXYvpW
+	by imf17.hostedemail.com (Postfix) with ESMTP id C00014000B
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:58:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qHUYXrdG
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773165497;
+	s=arc-20220608; t=1773165498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L+KNhzYEf7Z4qnoEfyB0FBqnVQ+fhLYoQUFp4aL3UqE=;
-	b=CY5idckw/ZzDceoUSTBPwnH0qf1caBk4s/HMf+5SKXWSF8Omh/VX0r5Cs9BB9WJ5M4yJlP
-	fZsJYOf3qtNIlgvYXDgZImK35fMSkD05BAVlxf+yuRac+7vB86UvrH1hxMBrKoV4IoN8Zg
-	t3/BpcxKM3vnYxJFKkpYkCCj3IZOirI=
+	bh=wuDf6OJ8QUnJ8gfCrD1Pap3z37T2KxqK0+T2vb4JLZk=;
+	b=5kzMuNEYveKUbGq2ICRvKYfcLKTdDcCezj/7cqkxqm99bgruy98OiOWLXydsV376IBktkM
+	0tXCGtGTjHaTVSSEyDFQ1OQMaYLz/LKQNK8moSni37cgQPZu5tp3DcObEbDB5+RaWG79F6
+	tl1t0x6qOJKkS+K+GJVv/CL3nGRRjfE=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HwiXYvpW;
-	spf=none (imf10.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=qHUYXrdG;
+	spf=none (imf17.hostedemail.com: domain of leitao@debian.org has no SPF policy when checking 82.195.75.108) smtp.mailfrom=leitao@debian.org;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165497; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773165498; a=rsa-sha256;
 	cv=none;
-	b=qj0mEDaLtza9kQxybKliYh3s5/jn9edXobgMuieW4RFGMIdkEM8XW8NzS8C0DjOIB6Vs2r
-	kPG05GhIZFC4AwEyrYiWxF0vOqIIP1OsKTntbhGb5DdWQ/7aImxsTUnMOkuu6UehHebBtZ
-	LjM0Cdowkc9mPddEhVR4Vm+naLatiVM=
+	b=pUIia1b5nK6mSEWIpcVY7lk3Rk4YJjHMd+x35nUPyeGPVFQ/gwpP+PWUDDJ9KuUg0VSAin
+	LbHYJ8xA+CKzA7nhlUCurCXCqZscn0XwlctVHdh0vl2bRpA7SQBtuc10lsxlaDeVMDYKx0
+	duE4t5qt7CzE/OIcprouoOGgaFoeoh0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description;
-	bh=L+KNhzYEf7Z4qnoEfyB0FBqnVQ+fhLYoQUFp4aL3UqE=; b=HwiXYvpWdxpdbwI5HJ9b11pre4
-	+NDoDJOm53K24FNAinCfnf2gIk+eMe/Wy/ou3POGGIooEU7pxvdaTlCrksgaFjrupNYeeckABfa3Z
-	B3FeTwEVy5ntcZW4SGCJAsAFUw1fyfJO4URWOXbPSiG0LyDF3MICokXdXhpccQJNu9WMlcyaSfkwH
-	yDKssVbXjNHFBagSXd5xXoeB+4UG1U/iyE1XSl3cmj0iOx4WcRB5o/oEHZnVXGvYpvVhc1ALllxSW
-	u3YLbjVAklqutdA0Xsq1GHIRO8jTrpyVjWyZmnVWySL04DOz/knNhZXXrtsOcfZjIiJcVunZ0jOFY
-	/5dKr4iQ==;
+	bh=wuDf6OJ8QUnJ8gfCrD1Pap3z37T2KxqK0+T2vb4JLZk=; b=qHUYXrdGbS8JLo9Z2odggADZmV
+	Qh23xRIiiavV7kgPHSRVV6T5NzCiWjqEf7Xalfj+D8A1p6jSuxZPLG9YVwaocYoeOiu9WKIRqgyIC
+	61QYgR0vGFjx/i92vfztDJO1hysO+kRAfVY52j+XC39tazR/x1VwbZBYhTZDExCQzOM7RnWKJA3HL
+	WKu3gPS+Dhz1mUTtNqIXUEMiEvKCXRF39ODy/QOGSs6XsEMVSzgWVy1OoLZWux/PG/KPhanyZGPfI
+	IsvoK3/4vN9gjL5ENAFkAYUGs3GsHz464pNAWi1sERBgCqU+x3VZIZcDfmsIiZT8VPWG9zlJPy8An
+	10PyWNGQ==;
 Received: from authenticated user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.94.2)
 	(envelope-from <leitao@debian.org>)
-	id 1w01LF-003AZV-4G; Tue, 10 Mar 2026 17:58:01 +0000
+	id 1w01LK-003AZX-M2; Tue, 10 Mar 2026 17:58:06 +0000
 From: Breno Leitao <leitao@debian.org>
-Date: Tue, 10 Mar 2026 10:57:07 -0700
-Subject: [PATCH v5 1/4] mm: khugepaged: export
- set_recommended_min_free_kbytes()
+Date: Tue, 10 Mar 2026 10:57:08 -0700
+Subject: [PATCH v5 2/4] mm: huge_memory: refactor anon_enabled_store() with
+ change_anon_orders()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-thp_logs-v5-1-686099175bf6@debian.org>
+Message-Id: <20260310-thp_logs-v5-2-686099175bf6@debian.org>
 References: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
 In-Reply-To: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -84,34 +84,34 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Johannes Weiner <hannes@cmpxchg.org>, Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
- "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
- Breno Leitao <leitao@debian.org>
+ Breno Leitao <leitao@debian.org>, 
+ "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
 X-Mailer: b4 0.15-dev-363b9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1360; i=leitao@debian.org;
- h=from:subject:message-id; bh=oMoTCYuZFb1fOm1lw/KHx/Ut4gfjGFHilENByzx/t8Q=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpsFubfa0/+t5o1gsfjniqKSZmIl1lGskKQPYKo
- rsp8i2E69WJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabBbmwAKCRA1o5Of/Hh3
- bS2sD/9DQ4RPUfDCgzs0t0hPuxsUFuVQapY+aiPHNBci/XBsV53TnhPvX9ZBN2Uu6hmQujs7syl
- 9P6PshEqr9nF/c9+bRe3OlcN4P1MVTvi6sOg2JNiEIpQCyggAqnJa8VAEcgEA+ozTSk8hRxskuD
- 2dFFIMTQx8sVIrwwWlIZ9MhvAr/1Q7L0qgha72EwglARazkuGpjqCoKRrFZ7+IEofM3Mzyd87KP
- E6fbdoKm41IkJjZHZd0qsbmWNyoh3shI9OtPgZq+JqwhRGT2Hy5f0sdY831EOIZSSSmg4BjjwPB
- E6fXqZ13B5QM4gTURNLSaqccEfMVYpX3lABxLLaYKDVQMTVP9IYjTL+oDudvhK6evJgIuBDfXsV
- wYQEViNHFd9ZNbqz0qi84tpQG4uXD8h/1g0qoHx+gcLpHeV9M4b72nVFV3SjjFsjwVB3ODJ7/1B
- at1ffDTThmtSc3Q1p5EyoeHz6ZFUXLU/bVMDnQzc7VnEXBqLd5Fvte0hudP5vJnybS7cJrDlKl6
- G2YdYBBkdMyItjvBX5tFXqXK1UKJGzWHwEp2Gi3zbsO9rUoYoRUoy2+LXtvwVaqfiUG5QheHX2S
- fXy3AAQRJCypzxmgerTnxg18m3cLiK3gtzR6GKPo6VGG7H7mLWaqlHoheIR2G3vUS06lQY0hDTl
- Wvre2iBFY9NiCmA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4470; i=leitao@debian.org;
+ h=from:subject:message-id; bh=W0pmwY7DpMzVDcPqXGmH/VcJ1h6MSXt/labrb03moRc=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpsFubY8Fq8JCtehLEcWZp56AKZ24T+7XEXQM24
+ 7Vo9qImBG2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCabBbmwAKCRA1o5Of/Hh3
+ bd0XEACvvOzGt+2EHXj4MyyuyZzPvTkSZ+Z9cKHtKT6+fOAAsVPpRzLX0pe1j+k7sNoxoMsogkv
+ 591ZDzPfcUd14WHhuF8RJk6Y0utn5b9WlDNFduTUzaeroOF1oasvUqJ/3tQgJf/vmZR1ivwqDcZ
+ gM/J/zabonqKwI4wXwWCzF9sgZhEsXFE+Jty15ip5o6KnOzBFZp1LvwheVLB+pNKP7NDrcKF4Rc
+ XbB9Gr6zK0oont2/PRMslOr7aeYJUlFFqn/nqZ1BdFNly83uGKgPg2OISVaKZ24yIyiC4yZdrtA
+ qMM9pUbZqkyHVPmSalm0Z/NtdxIxTVk3M2YIcRBG5Vyisqh4NGZWSwc24pz/Hd9zRurAGOKdmUt
+ 2RugkypRkI6j2ZtzEI5TdvJe9AhXjqsHIZQGv4mlMx/gXAZ11Ihlhdvn4W3xvy7L7/Z5Bvpyqur
+ lo2WBj/tl8IwVz5jdca5JxU3ejm1P7zB37Ixvgu9iaaJGodfVklbJiI6XqttzkHvQJWqF26wk1g
+ susxa1pX/st3V+K2yaf5ZN+vRysBMIoyWuqTMHO6xqdMYPx/QKE962oapmrfckhthgAr4rVcUmn
+ sh7h0YQRwL50dc3WYfYOWGM++hFvnnTFFg0roi+zarn5a6AhAvw7caaQYdmLEU5qdr1JOY+9tS4
+ YQQh0wVY5S6BZ6A==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Queue-Id: D9007C0009
-X-Stat-Signature: hq81ybbkfn479yn9ti9cope7qomb4q7y
+X-Stat-Signature: jasqkioam4iopw18nmb5smfrk7femc45
+X-Rspamd-Server: rspam09
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773165496-362646
-X-HE-Meta: U2FsdGVkX1+cBIsC6jAxE74Ec5TZc+rqT8EwvA4eL8q/W8myAvEcjmcxh8pZS6/h8KMC8XikkUs0yxi215gycWYTL9t136lTg0gyTwEPTVhoVJdDJaeJ6zf3WqDFloyyPXCMhw7GSYeehQmRdOpekjMefkxnk3M9XTnGTIcLV8LLlRj2M6JwjjPO2rR+sromnfW6xaBwcyeDi3wpR6a/6iHifWrR0jAYT9QhCpYLDCC+gxE460WZC6wIvI24vqWYVJV8eyv76ja0ttd1wSeI4zXCLfjMR/b07YJ0az0Q207Z5s/0C08YrLAxaD2UmMFfjlGyvVDT8ZC47g5Oz2kkkqt/vYKbrX/eWB6xLm+Vf/pZ1SWeJIGo2KbDhp64JZCTn79DMxsb6KRgO4LqKtkLoNJypqdeyCGc9YALksDKhtZ5PbcgQHfS0zKcRpLnfCgjlq0+4a5TBKxT/v3y2PTAx9m+3L2cxdQkkmaLC/6BxqvVxTR4s7+usLq/AXA/aXt96wPKMsSS+jy3O2efJQuXgUEXDs4B58I+/sBkgQS6n9tpTyZKET7tmawxPExr3kw+W0I5Vy2Jzf2WFHbPOotxtit/Xbcg2zgTtqrvbmuF9QZf1EcLGbZ+MrsUYQVh1HxMTY/N0awDdzcc0siWkTt4aPowRxdzp1HpoWsWyZ9lQnUx3ZonWz7PDcfUqdemCn4vx7UGyd/BNnVzIcXa4xPlRtpMaHd8nDVb5rSqVG5/b0LDc8dgR2APLGkBXKX1z9QOSb+M7TQH7NwBab00B+sP0HST/Ix/kdYWafrXRL09HZ/nyKqEwhJ+sax1MzzqxMECzKG9HpI+CYUZ9bKh1eYd74uTmQsOD9S9hTHoQYNPk1/sIaXDTovHAue3SfAEwLNdPJXU4G2lrr/15jthj8bS62t35nozWkeZFPJ6b5TWKYJsc0PEKu6To1+Wqs7Ii2W5QqBgWGAO8JA/3EcW/0K
- WLS3qGPJ
- q+MY8hv7oSQ9KpAjBoQUXlpYJ/qpOFZc0DtEGNbXMvtAJrb1ar9LJnUhW0KEsAhhP+hh/PF1QR9zmsZBU77OFwHG8zXlWIo8KACZEW4jtw4EeLzsySwUKFdR8Muu9Rl9/h4QTE7HvBWLOnaUYGOCM4jY4QzFgx/YLaUuVMYkqXyjHZS8wuEAlilsAL9bWSLWxkOcc+8zFbL0uZeRrOAgAThCooptau0CNItEmS6jsBBahRwfXvFRaZlH7OFiJ18JX5J3fHdospR0Tj4k=
+X-Rspamd-Queue-Id: C00014000B
+X-HE-Tag: 1773165498-436715
+X-HE-Meta: U2FsdGVkX19VxyAVWquKuBDKpGnTirvSZmgsA4iAwTHIGSRLokCLw3G160SmFh489pd+XPR2B2bwv+1Qe2lxjBPXbSpPYw1BCJFugMmAUYD+x21Ag6RPq++ZZTNtbWzl6/Zl9J5xeCrNdv2pJ+uzN33JtCzrPrllIxHNO11qtwznnU1sTTn6KKh3fZgVEpDP+wL/yJapfoYlVhfrpu0gchIdolwTNglxhzyNg48TtWWa2xEIcqeCFp9cIxzRGfQgc4K7xRZsQi5rojkXBSGJ4XFhJfAZw6Mya+k6K6cpG7B9pT/wIOC/lkJQOEAn4Bzmu/YAF32pzuPwyNKmmr6LlB0AqHlTH/6LrkMZxUeYBXk8UjCloGIjrUe4jzz7RFUShFeFZ2Yht2pJWxmNJGJ8/HL/P+Ot0MzFDdkTB0jb2mQULXrh1tDsKp7XsAOHp9BcW78DE+W+K/mEkViKIO86K+79gjtRozHEsppV7oZpp+vMD7ELYKpfTjHzovlA13Boy6tUcr8Llgz8qCpIQyPAG9EvyUdJ65o+vDxs+CnHUPCY7qKQ9ljL48bkt1cmzXFUGR7Fpiy+kx4/FxRLbkbotFlJU3YQCwx2cqzTPTh5B1dE1r9sE3tN1UlsGFKyX1pO56QuSk/f87GRhIZv7b9ecmbdxTgbbb/VHKR1uMsdChEpspzvyeDY5hJ+ayHm1blLEU1P96IVviv5M5C/v2RlUdC8sULcjZqwdOkf33Lx/e/DHhplpekAIUTNLelSTkHtv6pCmRS0aCSaJ0tcGLX6gLNfBxJATeUMchCb4s8e5MxAdc6IRnkQiu3Xkw2Dgz0VwRrP+141NLYhRfcdyJvi0wnAvVrJf/ooOT/kZZNef/X8YAEp7Bqogj7KDNerZ6x8UfVvRyQgKaEsVRaY24tkZ2X5sBja9GKgbv2MjmWaJttFsYAK1Y+nj9ajm4p0eL2yV+UrGduB0VHZDpc4+T6
+ uSy3Umyb
+ h3TsxzL9H42dID3mDTnlrM5PCCGaiQQc0XrjWoBukEDuOIbmJij59K+xOBefc3vG/X+hSkd3KPjBjbHDQBejwwG+aYvHRfRMCV2HlgE7WyuJQut3ixUZIOTmKz2gufNEj19HlCprR0aPwFJ3ZbjiDuUWLy4fzglKnRdmWglvZrKJFNw6VwYqh8L/D2h+LLMKq0O5LML5e3JdjArH25ttUbAFYeaFpALaoirX8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,51 +119,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make set_recommended_min_free_kbytes() callable from outside
-khugepaged.c by removing the static qualifier and adding a
-declaration in mm/internal.h.
+Consolidate the repeated spin_lock/set_bit/clear_bit pattern in
+anon_enabled_store() into a new change_anon_orders() helper that
+loops over an orders[] array, setting the bit for the selected mode
+and clearing the others.
 
-This allows callers that change THP settings to recalculate
-watermarks without going through start_stop_khugepaged().
+Introduce enum anon_enabled_mode and anon_enabled_mode_strings[]
+for the per-order anon THP setting.
 
-Suggested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Use sysfs_match_string() with the anon_enabled_mode_strings[] table
+to replace the if/else chain of sysfs_streq() calls.
+
+The helper uses test_and_set_bit()/test_and_clear_bit() to track
+whether the state actually changed, so start_stop_khugepaged() is
+only called when needed. When the mode is unchanged,
+set_recommended_min_free_kbytes() is called directly to preserve
+the watermark recalculation behavior of the original code.
+
 Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
 ---
- mm/internal.h   | 5 +++++
- mm/khugepaged.c | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ mm/huge_memory.c | 84 +++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 52 insertions(+), 32 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index cb0af847d7d99..7bd768e367793 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -623,6 +623,11 @@ int user_proactive_reclaim(char *buf,
-  */
- pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address);
- 
-+/*
-+ * in mm/khugepaged.c
-+ */
-+void set_recommended_min_free_kbytes(void);
-+
- /*
-  * in mm/page_alloc.c
-  */
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 1dd3cfca610db..56a41c21b44c9 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2630,7 +2630,7 @@ static int khugepaged(void *none)
- 	return 0;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 8e2746ea74adf..e19dda5aaf195 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -316,6 +316,20 @@ static ssize_t enabled_show(struct kobject *kobj,
+ 	return sysfs_emit(buf, "%s\n", output);
  }
  
--static void set_recommended_min_free_kbytes(void)
-+void set_recommended_min_free_kbytes(void)
++enum anon_enabled_mode {
++	ANON_ENABLED_ALWAYS	= 0,
++	ANON_ENABLED_MADVISE	= 1,
++	ANON_ENABLED_INHERIT	= 2,
++	ANON_ENABLED_NEVER	= 3,
++};
++
++static const char * const anon_enabled_mode_strings[] = {
++	[ANON_ENABLED_ALWAYS]	= "always",
++	[ANON_ENABLED_MADVISE]	= "madvise",
++	[ANON_ENABLED_INHERIT]	= "inherit",
++	[ANON_ENABLED_NEVER]	= "never",
++};
++
+ static ssize_t enabled_store(struct kobject *kobj,
+ 			     struct kobj_attribute *attr,
+ 			     const char *buf, size_t count)
+@@ -515,48 +529,54 @@ static ssize_t anon_enabled_show(struct kobject *kobj,
+ 	return sysfs_emit(buf, "%s\n", output);
+ }
+ 
++static bool set_anon_enabled_mode(int order, enum anon_enabled_mode mode)
++{
++	static unsigned long *enabled_orders[] = {
++		&huge_anon_orders_always,
++		&huge_anon_orders_madvise,
++		&huge_anon_orders_inherit,
++	};
++	enum anon_enabled_mode m;
++	bool changed = false;
++
++	spin_lock(&huge_anon_orders_lock);
++	for (m = 0; m < ARRAY_SIZE(enabled_orders); m++) {
++		if (m == mode)
++			changed |= !__test_and_set_bit(order, enabled_orders[m]);
++		else
++			changed |= __test_and_clear_bit(order, enabled_orders[m]);
++	}
++	spin_unlock(&huge_anon_orders_lock);
++
++	return changed;
++}
++
+ static ssize_t anon_enabled_store(struct kobject *kobj,
+ 				  struct kobj_attribute *attr,
+ 				  const char *buf, size_t count)
  {
- 	struct zone *zone;
- 	int nr_zones = 0;
+ 	int order = to_thpsize(kobj)->order;
+-	ssize_t ret = count;
++	int mode;
+ 
+-	if (sysfs_streq(buf, "always")) {
+-		spin_lock(&huge_anon_orders_lock);
+-		clear_bit(order, &huge_anon_orders_inherit);
+-		clear_bit(order, &huge_anon_orders_madvise);
+-		set_bit(order, &huge_anon_orders_always);
+-		spin_unlock(&huge_anon_orders_lock);
+-	} else if (sysfs_streq(buf, "inherit")) {
+-		spin_lock(&huge_anon_orders_lock);
+-		clear_bit(order, &huge_anon_orders_always);
+-		clear_bit(order, &huge_anon_orders_madvise);
+-		set_bit(order, &huge_anon_orders_inherit);
+-		spin_unlock(&huge_anon_orders_lock);
+-	} else if (sysfs_streq(buf, "madvise")) {
+-		spin_lock(&huge_anon_orders_lock);
+-		clear_bit(order, &huge_anon_orders_always);
+-		clear_bit(order, &huge_anon_orders_inherit);
+-		set_bit(order, &huge_anon_orders_madvise);
+-		spin_unlock(&huge_anon_orders_lock);
+-	} else if (sysfs_streq(buf, "never")) {
+-		spin_lock(&huge_anon_orders_lock);
+-		clear_bit(order, &huge_anon_orders_always);
+-		clear_bit(order, &huge_anon_orders_inherit);
+-		clear_bit(order, &huge_anon_orders_madvise);
+-		spin_unlock(&huge_anon_orders_lock);
+-	} else
+-		ret = -EINVAL;
++	mode = sysfs_match_string(anon_enabled_mode_strings, buf);
++	if (mode < 0)
++		return -EINVAL;
+ 
+-	if (ret > 0) {
+-		int err;
++	if (set_anon_enabled_mode(order, mode)) {
++		int err = start_stop_khugepaged();
+ 
+-		err = start_stop_khugepaged();
+ 		if (err)
+-			ret = err;
++			return err;
++	} else {
++		/*
++		 * Recalculate watermarks even when the mode didn't
++		 * change, as the previous code always called
++		 * start_stop_khugepaged() which does this internally.
++		 */
++		set_recommended_min_free_kbytes();
+ 	}
+-	return ret;
++
++	return count;
+ }
+ 
+ static struct kobj_attribute anon_enabled_attr =
 
 -- 
 2.52.0
