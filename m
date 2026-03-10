@@ -4,108 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADC1EB1054
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FC8EB105A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:45:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E7A16B00B6; Tue, 10 Mar 2026 10:40:38 -0400 (EDT)
+	id E45F46B0089; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 991C06B00B7; Tue, 10 Mar 2026 10:40:38 -0400 (EDT)
+	id DF3F26B008A; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BEEE6B00BA; Tue, 10 Mar 2026 10:40:38 -0400 (EDT)
+	id CC8D56B008C; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B9BC6B00B6
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:40:38 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 332E81399B1
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:40:38 +0000 (UTC)
-X-FDA: 84530414556.15.AB15A9F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 683C6C0012
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:40:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DDgFIsR0;
-	spf=pass (imf28.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773153636;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BBA196B0089
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B6911C006
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:45:46 +0000 (UTC)
+X-FDA: 84530427492.21.3BADB5E
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020106.outbound.protection.outlook.com [52.101.195.106])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BC2F7120004
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:45:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.195.106 as permitted sender) smtp.mailfrom=atomlin@atomlin.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773153943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=H2KXlUhYjyvsk/adOesgn1eiMUOMZJsVsfNB2OlVCtA=;
-	b=ds5/J+hMqvNv2ilPO8FLpa2voIQdKDC3s1scTyb/F/kw+gy9itM3/XJcyQcVt6fYIVK8yH
-	bB8ciw2IReC/f2ufF/vRWC8Ddd4dlzcI3THuKx+aCi4o4duP2DqLTwQND6aS/a5/vyxz1V
-	2flUaaId1LzVQmBidIkcij18zujxdy8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773153636; a=rsa-sha256;
-	cv=none;
-	b=amJdVcNTAgjgZj/J8UjMZEf9OJaLARUs+pdrs9uNQPCPMb3jPfUBcCeSoaW/dNDIfNLsAJ
-	YvHqQn80wyRXMaK3MjGXyfzHwH1hCfCzQ4iLFkZq+enxrmcrYbhRyswtRup7hwjy4nkqmv
-	aDTb1Q0fhnxc/4Jyu78nd7gQN8xApL8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DDgFIsR0;
-	spf=pass (imf28.hostedemail.com: domain of longman@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773153635;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=H2KXlUhYjyvsk/adOesgn1eiMUOMZJsVsfNB2OlVCtA=;
-	b=DDgFIsR0eKpsNa70/lf7KmgAneRDCEWFu+qQUUwNYSMdrKGjTWSjQFCdJ4hGlwD8Jo3e19
-	fqYyw7mqVw9vp9dKMOB9g+9WToVxjsMALVghyvrmjmNIi/QJNamuBZYOAW7bPwioM2qQxB
-	49cbUl3bYO9kQvmTL1sf8Sj5/sXllL0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-508-tdmInL87MA-qqhnECWWfXA-1; Tue,
- 10 Mar 2026 10:40:32 -0400
-X-MC-Unique: tdmInL87MA-qqhnECWWfXA-1
-X-Mimecast-MFC-AGG-ID: tdmInL87MA-qqhnECWWfXA_1773153630
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 55B31186A475;
-	Tue, 10 Mar 2026 14:39:50 +0000 (UTC)
-Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.89.94])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9457E1800759;
-	Tue, 10 Mar 2026 14:39:47 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH v2] selftest: memcg: Skp memcg_sock test if address family not supported
-Date: Tue, 10 Mar 2026 10:39:35 -0400
-Message-ID: <20260310143936.720592-1-longman@redhat.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JAqErPuH8jvSz3S3uW1/upneO2POe6vZLbo48MwocK4=;
+	b=as2tDeR1jgykM2mMT+hZyL0uXPLwQXMiF1kF/PSBPe5SLlQs/4mVREB6UZF01HcQ2Liflq
+	Jxn3oPSiINk3zK4f3lSWBxw9YA2N1yrX0VWLBqIPPqemhNeKketgYYaJR64O0DQM1LRsL4
+	MTZDMScn5Gl15lJR8P172+GFdCrlmZU=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.195.106 as permitted sender) smtp.mailfrom=atomlin@atomlin.com;
+	dmarc=none;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773153943; a=rsa-sha256;
+	cv=pass;
+	b=GvNc+8Jb5jo/L0acE4TAdbMCX43BM9RynCQeDcW6E7v+Ukfy9AZFB4NYe0BuAtb62QAYxR
+	uRpvrFJ9O1ZQnaWa6r/z9OdvLLfaY4OPhu3IAkuw+vImQSdeKX9LpsA3BzE/3qE0jkCF05
+	4pk65tPr7e6fLOG0f66no8aQ/8hzb/w=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wB3Xfg8fFKEFvKlN8/Fj9g4pkeaVtXn0kkDv06O/WSlvfRmYmXzgWxSHv/glXmpgWjTZmDQlgN6XQtexxgcXW1W3VL/TLBetRYLY+B0ZV+vUVrCE48T2TIf40hP5rOs6WTQ7mys9HRZ+1AY1OvWdkf82/IykWL/OF4A+EYy6VjDR2OHgY9tSg7ChErbiQ3cYlgp7LRs1+gUG8oz3MmZ8f87tinkxAlWUEiyIEYKB0ncf/zELL6vWI41RbzVzDg2PiDOv7VyMNBtlJHN7zzrYdtM2wpxx31mXGg7KPaEOEKyIvGxE9pmt0WWUaZE4NxXaxmjdGfClh+8Ek0cFT+UH+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JAqErPuH8jvSz3S3uW1/upneO2POe6vZLbo48MwocK4=;
+ b=W7tN4kfmd1B4jfJhRrUU6g4HsnWTQgFcjxfu8uf5dskX9ZbOcsBt430GAQhCKU8RgliHekyDzVdtGLYNkozrOO6SD2vWf4qf8y8niwVpCVoOOGsGHOzd80vtscok3K+fUCblknwTOHpHEiaywOV7qny2C0CogV32hxhE8dxV7Tq4Wq/YUNb2j9iwjREaJEIkKWo7nfWO/XYQXuJneWwzmE7r626rMP84ru1sLQzsKq7frVNFpBeZl8i8bshHULXeIkAad5lsnmOQcGAdgsVX9wqpjlsdXovsGplhJS5y8yvgeyXsiFIw0qc/e9C8Bq3IiywnSpp6TSnFye1QIK6rYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
+ dkim=pass header.d=atomlin.com; arc=none
+Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:70::10)
+ by CWXP123MB4117.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:b4::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
+ 2026 14:45:39 +0000
+Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::de8e:2e4f:6c6:f3bf]) by CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::de8e:2e4f:6c6:f3bf%2]) with mapi id 15.20.9678.017; Tue, 10 Mar 2026
+ 14:45:39 +0000
+Date: Tue, 10 Mar 2026 10:45:35 -0400
+From: Aaron Tomlin <atomlin@atomlin.com>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev, 
+	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-pm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
+	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH 17/61] module: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+Message-ID: <qtwmj2mcbokwa7gexs5oqasjuitoaajiawc4d6dwcc224lmvbo@syjg6j6jggwy>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+ <20260310-b4-is_err_or_null-v1-17-bd63b656022d@avm.de>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iksijtbqwcym3dge"
+Content-Disposition: inline
+In-Reply-To: <20260310-b4-is_err_or_null-v1-17-bd63b656022d@avm.de>
+X-ClientProxiedBy: BN0PR04CA0148.namprd04.prod.outlook.com
+ (2603:10b6:408:ed::33) To CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:400:70::10)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: m7vHXTTBq-hKU3yTcSLzqYukW62_y1UJ1qe7PTRbmV0_1773153630
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 683C6C0012
-X-Stat-Signature: dnut19w1de8ncgzpg5rptu13u5jpz55d
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP123MB3523:EE_|CWXP123MB4117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13b40275-3529-4e12-fb2e-08de7eb3b274
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	eS8vfNxIlcveoUfBbC1f0b/7XDyt042g0NrOSeRHjPQz8SGF8XhnduWnhSq6w/jRCubBJWCQ0em9JSqFUpfcMToM52skjTdNeFfaYr/iVSsKAWiaW3DO/bcnqdcpaQuiI02eS0+aO+CkNT1YH1QQ6E7Q57u6/qaWaQ20N+1FIBcJZS1mBzIioruuLmthEo0gpbRvPUw85MZ4BuTbyxgwfUdq297KnZNKBcxR51k+1QwxfVuZq9j/tn2i89QI1rer6MizYsOjruF/dbbHjCey+BSjf4ODjERjtTz7wyRciY2SWDagpg72iLn9KVmzZVKExW68zMr/l9NtJWoTedOYUByiSKXbyY/3JV9xRnX1MzB9BgBZzT1xIV+5HlUy2YjMHl/3dJLaD2oBPxNWLURA8Z08rKBhZiJO2xeSiCI4mtWcnPeq3oEWmmY/WeHCI/B3o7JWziYbmH0QC8uqLAo/mQeRtn2TDgHIlkcKjGfALzMiD8xYPzjGT5P2vIR5K1BknKS+wJWav08f2MBfPRpwDPe50D0F6uw8UO3X9XH+2FvKXluY6iP9bBIpwnIhpFLltJGAWJ97kBcunctHO08msp59QGCLa7B9KyIGa5ySuwKbRsiH6EO7wMRDJH8WU49ueWwW1LGly9m6jhK5/yiuwnls2+tKU53my80py9Z/IAQ4MsIkAQLyj3EYcQb0F1EbNzlO4n0fZQx8QozYXcKQrvPpY9dpMBAU9AUK3jolnXE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RjlvdnlwWk1CSFZIUGxWVloyKzB5bUNjN2lRU1ZhM1hLSHQ0V2Flc3Iwd0VL?=
+ =?utf-8?B?bXArd0JIN2tZVzZLUGpqcHBUbWNFZzAwc2o1TmRuYkFRMnBERWo0OVk4L2JH?=
+ =?utf-8?B?M01qcWhaNDU3SDMxYnZDcThyUkNHMjYrZ0dtR1F3V0ZIVTVrUnRKN1dOOHR2?=
+ =?utf-8?B?RHpPcTI5V3R6azVuanpHZmg3U3dOd3lZRk94MUpZd2N2UFZnMitFcXdwbGtM?=
+ =?utf-8?B?MVBDd0xUODEzK21Ma2FQSnZNQVNYMnNGU2xJbmhqOHdmb3RhYm82alo0MVlQ?=
+ =?utf-8?B?VzEweHRPTGZxV25GM0ZwQ1BUcytpRGJIY3hVVk5KR0ZBbzhrUHd0YnJVMjdy?=
+ =?utf-8?B?T3JWUFFPdzZJVitQVWE1b0RnRkNLbHlmVCtkS295eVFOa1FyMTB4aVFPTzli?=
+ =?utf-8?B?V2hUMW52U2ZGa0N6TTF4UWZqejVMc0RPa05rbHluMUFBUVJQRTJZRGM3clEr?=
+ =?utf-8?B?Vmc2aGVzb01QenlhdGlYc0NLMWY5WUVJQ1JIUHFYcWs1a1pEN2JORDVjTlFN?=
+ =?utf-8?B?YjRTRUkwcitrUHM4blJac05MdDY3VXJTSStuZUhpcDZsV1EvazZkMGRYME1q?=
+ =?utf-8?B?ZFI3eWtGN3NEc0RCcGNhQTErRXB2cjRXWnRzbVpTcWtISDh4Y213SVhnMU01?=
+ =?utf-8?B?QjlCaTltWWgwUFFmb3VuaGQ3dDVKMkVwdVphRTNMR1hvVDkrbXBSMFNMUlVa?=
+ =?utf-8?B?M0JHVmRmaHdxcFg5QlgxaXNtckQ2SGIzRWJzYnZuTzViVWsxQlZHQmlDNExl?=
+ =?utf-8?B?Z1ptTVlDVVE2ZWQwMGdDZEk5Y0Q3NnFyWVltd0N0cDRUa2lXZ2h1R09tTGNT?=
+ =?utf-8?B?T0owTUk0UFc2SkljekM3QlZsVzJiWVBpVkZtaHFMK0FBOEg2aEovOGd6RnBW?=
+ =?utf-8?B?LzNsZkJmUU92bC9XUU5jZ05SbWNXZ3B5VXRzRVUzTm4vQWtVWFFqRnRYekY3?=
+ =?utf-8?B?L2E4TXpUV1ZCZGxZbitRS1RPYlBZVU9Yb0NDQUNEQnMvcTllUGltK1MyN2tZ?=
+ =?utf-8?B?WXNuc2hBelVVbVNtWUtYSi9SYzhWa095dy9RS1F6bHdibjNQYUpITTlhVTNo?=
+ =?utf-8?B?SFhldlpnYjYza082ZmFKRjZKd0h4LzJkTXRpclQxazNrQm9zTG5ReEQ0anhT?=
+ =?utf-8?B?S2s2L3ZiYUZzZU8rMHFEQkczZElUeW5KcEFRWnFHMVV1RXNsTzUvR1hNaG1Z?=
+ =?utf-8?B?T052eUI1MlpyTUNiWkNHbFI2dFBOQ29rNS9hcjltTStCVVUveDZTNHFtVXlK?=
+ =?utf-8?B?Smc3cmFlakdnVmtTak8zOHo4VHhzT0x6WmEwK29HckR1b1VPNUtiYlQ2SHIy?=
+ =?utf-8?B?a2VCRGJzM0IrZUJnSlVVNSs2Z1ozTWdJTEc2TWg0dklnenRxbHBVNkRiS2Q1?=
+ =?utf-8?B?VWdRbWlCTVRVZDZtQ0txNW1pYzVLVVd2L21mSElOMUhvUk90VWNYR3JFNUFy?=
+ =?utf-8?B?VkdFOTRTUTlrN2c3T3dpMUhhWVJOYnNZR3UydnU1UEpUMlAwdTczT1FyS2NI?=
+ =?utf-8?B?NUVlYVJ5R3R2K2tyYSt0RGdaVlZDSUJjVmNlYS8zZm1PWDQ4K3ZOT1BrQ1Ay?=
+ =?utf-8?B?MHRNaUswa2thTDR3cGZuN1R4ZzBUVHI0ZkdpM2F0N0dGWHJ6bGt6T3hyU2NH?=
+ =?utf-8?B?U1hJWHdweVpZcXU0RmRkejFLQXo4OGRNa0NiNmwwMzlFbGk4UklOaWtLSkRF?=
+ =?utf-8?B?UkpkRklXeHFRUzNxRFcrWWtGRXVuYXR3ZFloTkR5YUtSeWUzUjJhMGF0UktE?=
+ =?utf-8?B?RytHVTR5ODNjL2dpQjNMUkxMRm1QZmluWVJCWkt5VTZ3VW5vSXE0MitqU1k4?=
+ =?utf-8?B?aGJxc2hOZEsxdnJXMVg4N0lYZE0yalpJS3hYR25lQUw4VlBUWVpkWExhRGND?=
+ =?utf-8?B?UE5BQlkrajhVRWk1REJvWTBoeXdIRnJyQVl5ZDlTeEwyWWJrWEhGR2cvTG9N?=
+ =?utf-8?B?UktDRDM3dXhLWGlLL3pCcWp4UVNrSEN5clNLYmNLUFp4NjlxTldpUWppRXVi?=
+ =?utf-8?B?bERrcGUwdmR1K1AzUEVOdzYwaUgraVBkRUtUdEVIeEYweVQ3WnpKcHFsUjhp?=
+ =?utf-8?B?ck9wYlVlS1FGNUtINUxaMzZSUTdBZkhkdHEzOC9jNUg4WWRHUTEzZ1VEc1hn?=
+ =?utf-8?B?R0JxTFNOZ3VMMldjamx0Wll2MnJ1M2dzSjVNTlVUSnV4ZXh2b3prY0d4bzVK?=
+ =?utf-8?B?alRna2ROMW0zdzVCZWxoQXpqSXplVUpINE9jbFdpOTRMT2l6bDBFWGxpTVBD?=
+ =?utf-8?B?NkVGRWlFYXVZdEI2SEZsdmJpa253N0NYMlNVeVd4UmZVVlJLUWIyUk5BaFdn?=
+ =?utf-8?B?elM3bSs1cmluUGdxWTRDdEVRU1JVNm1PR0llU1djMEZsdGdRb0hWUT09?=
+X-OriginatorOrg: atomlin.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13b40275-3529-4e12-fb2e-08de7eb3b274
+X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 14:45:39.3587
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HwFautavIbFqmN5YwHCFfTVUxc9gxa3cpwndmicLa0FlANQgRiCX3WWVzDmT9lbq0RC4/eZ8BgFQOpVQW1fLOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB4117
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BC2F7120004
+X-Stat-Signature: zuj9tjp9nook616bn1j618x7o6x96zym
 X-Rspam-User: 
-X-HE-Tag: 1773153636-380413
-X-HE-Meta: U2FsdGVkX19WV4PgJngopMiZArrL19LkaVxOMOxmxv5GyXz2YPpoRVfdTRt5Z8HcBHjkYFGDUlWq1G1RwzB/+pcVP8+CB1j/5MRGjv3XqLEZd1ZT4GRvQkz+NslHV5jKs82vJFzO12mtalDvMWgprqJOFgjSSVQkxDE1FbXhtvkaFM4p0SUi06ClwsuYOHdv38Z3peuXWLxnuM06VgDip64ain58Ca8j0/WxSPSCieE22MnR54ASDjsNeDM7UmNNChz60akef6UVkALw3XUNuV8WGNB+xjTtmRin2c3g4Y4nDti09T5W7ufSUZfPR8ZI/fahdXi8SyUL6dZk8IhN9kfyuva8kbxbscuV248hu2/RhCehaAlUb95ivAuNm/eRREbKom5O9EGKDL8cGEc2D02xoN2cytG3O6nK7nl972liccguG366LWc+8y/0YTDgzYnoqhIfJXt/PW0li7gnKcns8QtyZScvHFfpUhivKE4bKieumOjO9hWZMGlg5P285LGz1MsPE9CyaXT2Aouv359ysrTbynLrHLCZZ7Vglo6glN++p27xLCKv2dly5Y9IGFn5ebyvvbVpOJ+gip/dIEF/Ps7UA7WQErLX8haibtmlAqaw1zCCzdzGPh09AbOsEUstJ6sP5MkQdxcPvxP5em0pBXGbsNueqbJ92NDfoUbhuPKL330cSV0uH8A+huzN/YHArIlRx30SNS6HWerV9NoHo8P70ImeK1My+3oy4KcugZDv2BfcDXATZgaPi8/3pP1GUWwJWTpwJley4YkKNL2fwlMAvmSzccyB30uwoJsYh2sDt2yp0edYfgOGsFC5/WMfBUH+UVpydq6mznrn6EZIxZnTuo0jzyy86ZOsUM4c7J5ZAiQckAZlOgJbtfHduzS7sqy2Hl7fvcdzQNOX6I9ePWg1P3ApdYHTrkypmoI6pD/idIvpSjTA514Bo2fP05bNyWQ+kBszh4qNWf0
- oRU79gx1
- UZWzij7756L88zR1EbhNEJVujjavt/pYMk9ZVwDMwQP6HK2WFRF9Ivt6wBD36pcEDIiuC
+X-HE-Tag: 1773153943-21315
+X-HE-Meta: U2FsdGVkX1+I1StYl0U4lmOHcwwGr+tnVuIOgnDXFry5wa3svXefs30CLYHIZq5o43z0/MjwySaRyWKahwg1vGHPli9uRDbfnJfu8OzimrQoC4ieJDawVSNU8K8U4/PjvVxMGTFpUVScHJyeWOQRvaq5PRxqPhX1uzCv7zZKnIRNoF2jkIbLkQUhfIEhv7q3HOGpLVpIcXueXgu0FpCmsHhvWKP4eMjKRvyWfn2vuhD7s/7M41Oe94yovCSDCLS6cO/tMPrV79C7U6Uopl4shDwRCh5mNZQtKCA9CAU/KMxgK+rJT0BL4nXBA/9cSnb1X9OSxkLKA6Df1zSGwoAdjy60DkIoKevw65i2YSebmEIdN/NMEGHd5J6T75aJi9SeO++OghpYsIeLbEaudNirM6j7bclnRd40SxXP6MOrVEi+CDrhsm7eDU1UboCRgyMphtL6D5isMrddc6RymY1RlLGVroDDd6MMT6Cg8vkxYjOy8+JMELXUf4Ur9PlLVVxjiLxHsAc/E63gjkOuhysZSREDoTlkS+4vlfk+y72VOMEbq+GhKRJ+O6/qEvRRreeahjkpiReYH0TUhW2LApmYTTqnFoSfP1EaRmBwQJJYD9Cyrj7t1JUWaaqDqGK9qEeO4a4Sv3igcN3hA2+FpIZw17jhMJL4P9riJp4lWDPy0DCVdhOY5zaCL8WUOWEmO+4votSsiXyw5+n1tqbBOB8DCkLe5k33WUyruwz7CtrGrrXYHyz7eZszOajRdiSkN+SY5aXX2CKuH6WrWww7r69MOJiiuxFovF0cnZ0/Elkq8llghP0aRqoF0fErtLlQooknv+UeGxD4vFNqtW5YYGVKOLtMMkHvgtRluJBdCDcTXi0TM1zYSF9meHP0+V8CIIcktaYxj/1GlA2zoY2fuq8CSARJWRl9l38aHXugzs9mqRQvzcrg70kag2KAtPCJxQzDLPI+vgWtXfEcig0Nscw
+ 0ciDY1Lh
+ Lm/fIjNawovqamGOsGNfonXCCAZrNywNztFXGp2Ld6ShOtOj1mGWJWc3U4FVSYRsVe8HG75ZbtG/bZ/LY3lOC5WPoRFs6CrKQZP1TAhPVGGztrJGUEiFZMI1Vs3NTMLEAFlnXcc9TcJv3omfEtom0KymaHm8zfasrCc327RSxhde+UsIWBEEF8TkhM6Tyxs/439Yz3cqI2bKKZPDVqf3KavI1Apc8bNSjf/OLxFb71gAkEgU7+103rhMRBbCIHomodYGY6kXDk22X/f50ftFwVArOdVy4cWJdEmSzDc9mUrYEokWCnNSODH2JwQDR4hDJj6trrNtSxrEE5bpmEAQrgCkqdSWn5ZTQLEjbaXYuOHuimBZt95+10+VVJLqpe0PmYMY4biA00pWpQQjKyKS/iSZP42VOnSFFiT/FLl1QcbUFUtasFq9beLz8IutzGy4x79ZQqV27R5lsLAUkehW45EafPyuWYFkdpGtPs27ORu7r2Jo8nY7hsLIcMyCbGztQWNEBTAdZVVFpfk68Mee7kcSAPVfh4A1WzfRv79tCg7XngTaVVZJLr/7jm+iszjLsLClkXRPDlg/iUTrWtGWnPWnuFA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,57 +182,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The test_memcg_sock test in memcontrol.c sets up an IPv6 socket and
-send data over it to consume memory and verify that memory.stat.sock
-and memory.current values are close.
+--iksijtbqwcym3dge
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 17/61] module: Prefer IS_ERR_OR_NULL over manual NULL
+ check
+MIME-Version: 1.0
 
-On systems where IPv6 isn't enabled or not configured to support
-SOCK_STREAM, the test_memcg_sock test always fails.  When the socket()
-call fails, there is no way we can test the memory consumption and
-verify the above claim. I believe it is better to just skip the test
-in this case instead of reporting a test failure hinting that there
-may be something wrong with the memcg code.
+On Tue, Mar 10, 2026 at 12:48:43PM +0100, Philipp Hahn wrote:
+> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+> check.
+>=20
+> Change generated with coccinelle.
+>=20
+> To: Luis Chamberlain <mcgrof@kernel.org>
+> To: Petr Pavlu <petr.pavlu@suse.com>
+> To: Daniel Gomez <da.gomez@kernel.org>
+> To: Sami Tolvanen <samitolvanen@google.com>
+> To: Aaron Tomlin <atomlin@atomlin.com>
+> Cc: linux-modules@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
+> ---
+>  kernel/module/main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index c3ce106c70af165e2dc1a3c79f5a074a5c3e3d34..7f62f0620dcd75960e431f7af=
+3d1cadf4cc41e4b 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -1551,7 +1551,7 @@ static int simplify_symbols(struct module *mod, con=
+st struct load_info *info)
+>  		case SHN_UNDEF:
+>  			ksym =3D resolve_symbol_wait(mod, info, name);
+>  			/* Ok if resolved.  */
+> -			if (ksym && !IS_ERR(ksym)) {
+> +			if (!IS_ERR_OR_NULL(ksym)) {
+>  				sym[i].st_value =3D kernel_symbol_value(ksym);
+>  				break;
+>  			}
+>=20
+> --=20
+> 2.43.0
+>=20
 
-Fixes: 5f8f019380b8 ("selftests: cgroup/memcontrol: add basic test for socket accounting")
-Signed-off-by: Waiman Long <longman@redhat.com>
+Hi Philipp,
 
-[v2] Update and commit log & adjust the skip code as suggested by Michael.
+Thank you.
 
----
- tools/testing/selftests/cgroup/test_memcontrol.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Have you considered other users of IS_ERR() in kernel/module/main.c too?
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 2fb096a2a9f9..a25eb097b31c 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1280,8 +1280,11 @@ static int tcp_server(const char *cgroup, void *arg)
- 	saddr.sin6_port = htons(srv_args->port);
- 
- 	sk = socket(AF_INET6, SOCK_STREAM, 0);
--	if (sk < 0)
-+	if (sk < 0) {
-+		/* Pass back errno to the ctl_fd */
-+		write(ctl_fd, &errno, sizeof(errno));
- 		return ret;
-+	}
- 
- 	if (setsockopt(sk, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0)
- 		goto cleanup;
-@@ -1412,6 +1415,12 @@ static int test_memcg_sock(const char *root)
- 			goto cleanup;
- 		close(args.ctl[0]);
- 
-+		/* Skip if address family not supported by protocol */
-+		if (err == EAFNOSUPPORT) {
-+			ret = KSFT_SKIP;
-+			goto cleanup;
-+		}
-+
- 		if (!err)
- 			break;
- 		if (err != EADDRINUSE)
--- 
-2.53.0
+Perhaps it might be best to prepare a clean up for each applicable
+subsystem in isolation.
 
+
+Kind regards,
+--=20
+Aaron Tomlin
+
+--iksijtbqwcym3dge
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEeQaE6/qKljiNHm6b4t6WWBnMd9YFAmmwLosACgkQ4t6WWBnM
+d9aU9xAAqqgNT5SoU+VYtTZ80wOUwEE2OMdLBYzCI0mjnqJPXnb4U+JQX0SteStv
+Wd+zDAGE5Me5p/CfEt/+aiyKOuiZL7yQucXzvUMGKxqLMQFwqPvA3WtSoTVFL+rF
+LkaH0u5Q5L3fR1LqaiKYIZuzVEvau4J1yxwpr3TSOVVjsiNOir78WKYMWkbywt9w
+2ZGJmWlqCHaicR+MbDxwYxmj6A8vWK4lMNrf9/bSNlRcevwMRBi5MEVCXNAmi8/K
+HL+Lff4iFQayNqX+KHvqO+d71PuZJ6uRoZtmn2TOsqPFvRhSEwOCORUQRwprUwHK
+1AXthzlvxw54scM7jH/H7EVz4b/StJaeHqfZLJ4y6QJv7HWYccOTXqVPj5yDF4AS
+LNEe/UEO2rZOSVwqm8USG03ipXDhoZ7is3ump24r9vmbuJ4Ut/UkZnPPM2f1V8YS
+AiWpOQ5tGWd+85RvZUyJfbagqS9XcCxV1Ec+y4MXwaab2ddu81t86xc5nbRANS/k
+juKrG81J7nYvlpvQajkCU6tK/ZZsalYBs/BCg2IAYhG1V5SqGHR6o/a3KjVtmdwP
+5t9pTp1q1bD8/UPf4bSgjULpyVSusQkcdm6aoNJD80Jqi8vPQSuZUDFw9gdbbWdT
+6f5kQv0sOH33oz8IDL0pTNDmWbOF3HKDQCX5nbTnNtfG048XNxo=
+=x/q5
+-----END PGP SIGNATURE-----
+
+--iksijtbqwcym3dge--
 
