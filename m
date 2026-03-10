@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B5BAEB105D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1066AEB1065
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CE6B6B00C2; Tue, 10 Mar 2026 07:55:37 -0400 (EDT)
+	id 8336F6B00B9; Tue, 10 Mar 2026 07:55:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 52FC06B00B9; Tue, 10 Mar 2026 07:55:37 -0400 (EDT)
+	id 66C766B00CD; Tue, 10 Mar 2026 07:55:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2733B6B00CB; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
+	id 1F8326B00CD; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F11A6B00C3
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B6AB6B00CD
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 102F1160148
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:36 +0000 (UTC)
-X-FDA: 84529998672.01.D454FF8
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DB5D516014C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:35 +0000 (UTC)
+X-FDA: 84529998630.22.2B483FC
 Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CF68818000F
+	by imf01.hostedemail.com (Postfix) with ESMTP id A95CE4000F
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=FuoIkm8y;
-	dmarc=pass (policy=quarantine) header.from=avm.de;
-	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=OzCQWGEP;
+	spf=pass (imf01.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,41 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PYVbgZ2nKxN5YxfS32Q6BrkzgM9oUAmR+BouSLEtSW0=;
-	b=YPc2/pFnPPR9awhN+jxO0jKdcSxh3BOAtbTqfnxWFBujY+Zl7+65vxRE2r0M5Qj6wykK01
-	Epk79RRdez0poOtxmsRF5YAnTtDgTvYQzevQPmd9NEPakBxoq2D71W0b41GTKzLnSLsK3O
-	mSc26/mkSRgxZePHwxduzNN/steG8RY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=FuoIkm8y;
-	dmarc=pass (policy=quarantine) header.from=avm.de;
-	spf=pass (imf16.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
+	bh=UqoCfhfTnRmuJC079QUYeXoC3nkqphscNqN7PPxlKOk=;
+	b=5MRQukbcqIH2scqchHKKLeHnTV07fOaBSf1hcsykwykrtc1D8d1P0Z3ZuKrQRl7X2O5xt5
+	IFKzvdOfJnSSLCiliM1BuIZDfQGcYeNB+OIvdkHGreCU+rIcH2p4bul6w3TpyPqzQVhAas
+	p58L9suhLxwb6pe3dV6z39radar2+i0=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143734; a=rsa-sha256;
 	cv=none;
-	b=RHaKxG4qL59jii4vl27BQoNgqPCcZu/8wm54RPMXLHdKUKMce7GDixQZfyiBz1TO9YPTww
-	LUA3XEYSFwWulqpVU2SvK6aTh8pqRSVjAWnTEKRSh/hJB1iBKVEsEyqPluk5MbpebxicP0
-	FH+XPK4H4hct9K7nTdOLsVN/3REKIUM=
+	b=AnM/Wii4GeCLeLmkrTjZF3/ECV/OnA3UuPpGJ7l2k13ZI1+tvbKVa0MG/fiFZSuHGddtta
+	CROmrtKbkOU2A4TXgWnUI81Q2P2UvMYixt7Qaoc/MQWqCrkYilhUejO9hKzwO1bH5ivzI6
+	CW9dLIoCsZl3bod1tAv2H+QILXK0rQE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=OzCQWGEP;
+	spf=pass (imf01.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143729; bh=D3MT7fsInTbF+Q1IcBY1KlhxZOhv8n1GbgMEryPc1iY=;
+	t=1773143729; bh=aOTa0J99wrUiCJDKciZIBaRSFy8AAIBeipk1P/Ry6Do=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FuoIkm8y1r9jmy9XkB/nIcxLjk6bi+LjK6sb5O5ohjTjMY18sKNe5fNP8s8fr+eSE
-	 cVA8MM9YDRtdE2+c+3jQLNZHyd4epnj5ZDnSjfPWRMAs2R10VO12Ss6TLbgdzang/C
-	 IuQfXi2yHqFGvraOYFSaQFSWS/mBIxmUmEAiJKQg=
-Received: from [212.42.244.71] (helo=mail.avm.de)
+	b=OzCQWGEP3xIWg4aft9Gi61CqVxzVTLKLAimjDrWeQqUc3hUkPv1N3tKeXtgO8+TTP
+	 XhmqP+sFetcOut+NsJt0vEBnYbeIs2Hbr8gQtf+aklxbXgaq0RnUqAMfY7Dvjp000Y
+	 AkX7mNRKwyV5huTmoXbZ4xAO9eyZ3soV+HNDBiK0=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006b0-2367-7f0000032729-7f000001ca2a-1
+	id 69b006b1-2367-7f0000032729-7f000001ca34-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:29 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:28 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:29 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:22 +0100
-Subject: [PATCH 56/61] clk: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:49:23 +0100
+Subject: [PATCH 57/61] reset: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-56-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-57-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,34 +99,32 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1921; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=D3MT7fsInTbF+Q1IcBY1KlhxZOhv8n1GbgMEryPc1iY=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAaUcbSjlqDNveOR0T7quZaIRE99Gs4Y40VBm
- M+JmB4D/wiJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGlAAKCRA0LQZT0ays
- 29iMCACZFg0QUOFeRuYtY3bNuohm/w3gB25wtydzkEpw1y51B0CHIEYO2D+JTSeLzAXWxzoBnW9
- HXPmPssLJbvCLWKHMMkr0gAWPlZj2r2H5W9oWdTzVn7prfkWfj3QlC8PF6krEUlEdaF6S2eKHnY
- z1zuimMLbUrpcxQrqC7ES4i2d/Rp5LYwIEnS9CU2G4AgF3dSj7KUVqb2Lo1UirL++DC+eGcQfPA
- Ura0HOmvOdmbreSMPuxW3hgubjzqbYDJe+u22CiDbkdU8O1mLNiEw60lO04uucHvbyqPHMrNt0s
- Po0xv5cdM7Uk0fq2L3KaKWcmaytoRStiJNfwvalXm+okYQVa
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=968; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=aOTa0J99wrUiCJDKciZIBaRSFy8AAIBeipk1P/Ry6Do=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAaYTbMwEnKjO28t4NGQZrm6X1QSq5SK/k8qB
+ qh4VPr1rLCJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGmAAKCRA0LQZT0ays
+ 21umCACxIKapQYseolYqqyBm7SyLTZbMM7MUu/ruXbxGyc49Ef4ha2YprHG4wuhRGtqa+VJappe
+ JyX0Z9X9KMdJsI/T+BsTdbSpg720pNSAKbSG/WcuoRUIgTiyuqx3+IKJLG0jtFT86FOozZPOWEy
+ PPGiUFAfCi7lTKlHGrGHOhGX9fNEHoC67p+hbdbdmFe+ifTERx6lzSSYvUcvltMUMt2tdHG0fgm
+ mbuvPyYzKrB65Gooayr+TJ6lncMe1eo3kIkCgAS0gJFF08HI7PwP3Atbb7J7YpFYREokazErNBn
+ 540BWDngwOE49h53Z1ngLFPv4fl7uolW05pdRIimfw0qiceA
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143729-974B6E1F-DBF721A0/0/0
+X-purgate-ID: 149429::1773143729-7B4FEE1F-3FF7DD9F/0/0
 X-purgate-type: clean
-X-purgate-size: 1923
+X-purgate-size: 970
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CF68818000F
-X-Stat-Signature: 65joh6tq5qaj6x7tejyezgptmoybis5a
 X-Rspam-User: 
-X-HE-Tag: 1773143733-80446
-X-HE-Meta: U2FsdGVkX1+2J9Do2B1HcGZbFn2YTc28BkL3uDYlirqkcjFGuniSkb/h93rWBfS6ANO8NsrjJt7PF5AkyxiJURyAApuAAlHAMAdAKfDsvxrOXbu8sV+w/UQN8vrSYz/NWqs0Rr/ImphMhXhMggJhEXd5L6iPdpxLn9TcjdCHFck+SB9y9fpmeDJ7Bv5V2PnGm6J6w17WopN9LjzV2epYdhbZ22Y1sNFHVApFI3XmOPrTaidOw2N+N4SVwS6dzUqb7DwK+5HlKHCENgVkGThMLoqRvllnUACfbFYHlZCjN6KrBtTIgW+1l4X45oGTDJ7MEg+5EOVA4iDlXmwLdOh7zW23iCxUtLWQmnWAOvXaIR0/tJiMtW5fggSu5qvADhpH2Sj0D6Ggp0tn3qmTSnBxlNrtfZ7MoJmNhXgfNKZzHZIZblUFQTJF/DJPfDaJ2SVJ8EZ6ESz2lUGM5TwnXxerh6OEXxcIivYvv7wCIBOfd9EhvJaomfPCgwbyG3JmJHYDBPrGi7jcNSALp47xQQYIe34heUQt35qmr1RxaNo+jMnlTYxpIrElSoNcjPQl+DCmyY5aJj2MQyfmylebphz/Uu1njBzMkElZEjfprzBFQ+IVw6OEU3RJvGLGk/Ndaw0eWoi36cEP8j6hdNC+ClkDmIJFoqRJWZuCdlQuw1H86B4Xs+1v8dOvhtApOqEBasqfslWIB9zSbD5NG8eWMf3kZT+Vwb1xB5hLUtzg1oj0UecqF6c5WBEdaWPcvpgf6UO77B7KXEcS06oo/B00VYVFT5X5u+Dvhq1m7/YEJTfvCkAq4iiw3Jw6TWVwHT9tfM039B/nM0Gog6q9VwuY0S9GwMKg8DhaW4lByY5qmIHxT0g1z3TGqkcEnskej2myxxRpEr1mYf6n0/I0MATPX+eOkVWV77rUGBQHfAdRS51f0KNJyVhc2ATnoDIIQqUG3MOJctPUYXCbzT9vrCObHRX
- TQ2Aawn1
- hvMdQRiCnaV6blG2t1ibnUaQtrkrk4EzF8zR8FTy4xJJBSvEaevvGkAL0u81JxXU3FrW5r/9sZH+VtuHkg2czjieJvpsJjNR7tDtGVnFk2IElaVybKe0ZJmWvqyfl8JWObGbSXRRbQLtYS8mC/325B9L6WWUO6LXvtCYopccmB5sUH7Jd+dHkXCUBNVkJIKdZv+NmxND8EUs/PNxNxNDrwLj8rJZMaxz4y77nOhudANcGEvBMP8zvuPKlVJ/z6vA4UCsdLcrfYJZM51DydTbenFKEZRq70+vfUX47aOZTL+iAoR/crTeg6NVaBzK6022qIexhOWgCJbPMp4kvZVtf9vahH2qV+JdGbwnCek18X0EBYexILvywIR7XIWeDcFPBGnXgHCmfReaJFE09aLnW8y12pmhKJbJa4KFdCBaHSQikpPQ=
+X-Stat-Signature: hxqmmy67qnkbpaa7i8dx8du8x7zqfskn
+X-Rspamd-Queue-Id: A95CE4000F
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773143733-142139
+X-HE-Meta: U2FsdGVkX1+p8UPCqBTIoyYUUSU4JVBWJJwTNkjh58B4CnpQCW0PrGFQ3tLXxPtJLH4BPPSl3/fxN4fXbk7TaNpM/Eyu96lTPinj/FC3r4fyXgTvAqip44kEhZz/gojUzKsDAi5j7D1GmCqnLa8OgJMeIJYvh8xtoit3UVSMcsq6zbpz5WvALqhdWAt149WH7bKa8x1bs6Qc6rBZOCP8qUEIFCrzfYtVXxABqd9/tU6sqRwAmsf7ykabpe19Yk8pxGUHFR90yqSEuY1zGHldOoDjtSXcEN82RTBzQOaRGjkbY0yKAUkJt5h7syrZWUUd64jgixQkqCfYHxx5ppBn8CKCLIR/maY1Tu2LCKxwDYuSiwiAO0bxLWTPDeMkXlqTCskrTtKTX+TUP2hvBM3Tc0ncmEri9fC1YI1Hl337Hd4zTHIATPmqGVzPMD17mI0o22+LD4d1OVsxJG+O/irz1why+OizIGpm+IV+serOSe16K6CJvBXw1yjm0J/X46bQ0zRjKdv1d5tF8OrzBhQcoY0FMcMrLXlfMYK2fJgB3A43sqbs5wZmoIqLUvt1lnBYeHnwNizI6jfzHlLjvM7FxmNJ9sT4/yHgwEXuvTJ36QFN2qlWJP2qMkh7rsZ7zRiJk84kDcJCht8n49TFB/OXCwgx1d81aRy8CBj05CXeC41WXd5/GrZ+ZQKbI4UgNJob7+o47X+HIPQtM9OuuibEhuM7nBxxpUV5UfICg7QFSOn+hVOf6QToOl353+CwtQ0Bhlb/1tVw3Ekp1BkmaQRg9GwZxx8jKWz8ih30CgXC30HwomzNDomFt/LW1h1J+pg22IIeP8mmgyxroPsy424UThDEss9G7d8t80IM0iHiiGSrvi26s6aE3f07x5Gwh5On3nirqicFWU6g9MpGFkdzi0b2Z+uNRSFMOsG5JOiw/QcdMTRRMeg1D7zJCY7FBw5XUQdlZCiiOqL0ut+BYXT
+ VL1UQwHv
+ oySoKvWLvcavds7htnIix//hKEN4qHZ0yN5J2WxpKpnFOlgXWO34FvSKKgKz2dsrDScjWKS09Ur2zg6IqTyLX884mr6Fojy7+iVaogl1e0/Cp++72hPlwnGIgBq7+oVeG8q1LEpe5bpwNArHG5stimBTjbSdaUsc9Egc6o8XWFWptXpPOpSoGMLF1eoe53KUIlDe8bBhMt3hreTIqHiNSi5YEUxOtiHx8enst3GVRjQlHikbeMwaDfq55mjy0aJHtG64Nbw3mmKLPbX+zqOxW3rRlpufD5ZASHQEfQtdPrNNREc6emwXHQJXTkVyyhH1f0N1OSp/Zgn4Kv0LC3EBPWNTIlj6jVv4E9Ibm1G5OVRl1+ewVtEKqNgxfpsP+ZuLpZd8k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,53 +141,26 @@ cases!
 
 Change found with coccinelle.
 
-To: Michael Turquette <mturquette@baylibre.com>
-To: Stephen Boyd <sboyd@kernel.org>
-To: Daniel Lezcano <daniel.lezcano@kernel.org>
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: linux-clk@vger.kernel.org
+To: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/clk/clk.c               | 4 ++--
- drivers/clocksource/timer-pxa.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/reset/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 47093cda9df32223c1120c3710261296027c4cd3..35146e3869a7dd93741d10b7223d4488a9216ed1 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -4558,7 +4558,7 @@ void clk_unregister(struct clk *clk)
- 	unsigned long flags;
- 	const struct clk_ops *ops;
- 
--	if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-+	if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
- 		return;
- 
- 	clk_debug_unregister(clk->core);
-@@ -4744,7 +4744,7 @@ void __clk_put(struct clk *clk)
+diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+index fceec45c8afc1e74fe46311bdc023ff257e8d770..649bb4ebabb20a09349ccbfc62f8280621df450e 100644
+--- a/drivers/reset/core.c
++++ b/drivers/reset/core.c
+@@ -715,7 +715,7 @@ EXPORT_SYMBOL_GPL(reset_control_bulk_acquire);
+  */
+ void reset_control_release(struct reset_control *rstc)
  {
- 	struct module *owner;
- 
--	if (!clk || WARN_ON_ONCE(IS_ERR(clk)))
-+	if (WARN_ON_ONCE(IS_ERR_OR_NULL(clk)))
+-	if (!rstc || WARN_ON(IS_ERR(rstc)))
++	if (WARN_ON(IS_ERR_OR_NULL(rstc)))
  		return;
  
- 	clk_prepare_lock();
-diff --git a/drivers/clocksource/timer-pxa.c b/drivers/clocksource/timer-pxa.c
-index 7ad0e5adb2ffac4125c34710fc67f4b45f30331d..f65fb0b7fc318b766227e5e7a4c0fb08ba11c8f9 100644
---- a/drivers/clocksource/timer-pxa.c
-+++ b/drivers/clocksource/timer-pxa.c
-@@ -218,7 +218,7 @@ void __init pxa_timer_nodt_init(int irq, void __iomem *base)
- 
- 	timer_base = base;
- 	clk = clk_get(NULL, "OSTIMER0");
--	if (clk && !IS_ERR(clk)) {
-+	if (!IS_ERR_OR_NULL(clk)) {
- 		clk_prepare_enable(clk);
- 		pxa_timer_common_init(irq, clk_get_rate(clk));
- 	} else {
+ 	if (reset_control_is_array(rstc))
 
 -- 
 2.43.0
