@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5572BEB1058
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71259EB1055
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED8A6B00A5; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id D0ED26B00A8; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D25C6B00A8; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id BCD966B00AD; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77FCE6B00A6; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id A51346B00AC; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 47F0B6B00A8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 862916B00AA
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 128D21A015D
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5550413862E
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:32 +0000 (UTC)
-X-FDA: 84529998504.30.4612268
+X-FDA: 84529998504.21.D3027A9
 Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B1C2540018
+	by imf13.hostedemail.com (Postfix) with ESMTP id 14FFF2000F
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:29 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=dw1nuFFW;
-	spf=pass (imf11.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=OlBoHHpV;
+	dmarc=pass (policy=quarantine) header.from=avm.de;
+	spf=pass (imf13.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -35,42 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gy402GJXbgyAJ+YKb8LodXTXPBtJ8ptnh7Eq9VEeyMQ=;
-	b=c4ICYJ+LNwK66t+NxxEnqjplJgjkEhlMhF87tpv4uROKv8U+svzRMq57PW2wzCNU6HvNBQ
-	C1CMYOZ2kcYOUiY0951ujSH1iC8zuBNBnpnAd/xtAJqe7D8Z6UwV6n06SNuarZeW2xqPLf
-	vCbxxoCM8vyt3daYDtKEWAOBA/HspzE=
+	bh=wVT0uA+kucQG0i/QTB2svHNIMILb8xbLFt0mWLocNwU=;
+	b=jqTb+GiIr22LD+bw8+N+r5EuHvww19EwijeWSsXa2ADcqBH1lya0rNo6MSxtszY+i9u7RE
+	O+wd4NGkEZfBvfyOBbIfG+NpI9efsBP9nldT+9zgtVtTI8JJrV7KN7U+D+EyQKmPKx+THK
+	6vRlehlbXoGwsGCRcx6xUno5gQSu8qo=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143730; a=rsa-sha256;
 	cv=none;
-	b=FFSs3UEsv6vJqt/qTv544Diwz7UoZCWpWbq97GegzXnx6fqYYKsFdPi7wPWfecry/VPsrF
-	jHl7DOQYHCYPXt5nCxnguvmirIQHipyUVsoLdoay8/W80DHG+NsBpYE9is4SegH/BxD5gI
-	xxsQCpbkwdGWiFVCy+YbM+3CmcgkX9Y=
+	b=Acg8P69tG2Xb9U95bh93OhRiz1EVAQkZcZ7v1tmKF+5KtM6kI+EyEgtIdA+v2CgJbKGUG8
+	LLzSVvStjCNX9axUNjZQSwvxGwGC+WosezIkfrqDRyG79Osc5dyp2qVLyutqWfXNjs6f6q
+	5ef3cP8LUjkWdHuJbqqLs78Lmg0WYUw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=dw1nuFFW;
-	spf=pass (imf11.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=OlBoHHpV;
+	dmarc=pass (policy=quarantine) header.from=avm.de;
+	spf=pass (imf13.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143726; bh=ObADPYZ6pJh7dF4ZtW/umhCREHwhUDWMyq9N6rBcVwQ=;
+	t=1773143726; bh=6EuXq65aclW87MvbjKpAiGhSvzG4CQReYSdgtvzfvbQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dw1nuFFWpVVdrKOfBC8Dj4wKZMjU9ddsg9cir5xT91Je3Qc4zdD9Tv9d84zEGU77U
-	 bneXu7o4d3sJr/YNLcP9VRF/8FE25ShEW6LPrPIHkFN36JlEXF0VOvnj++ND2duaOC
-	 CYWW988mCr9Su8D1d7S5dskAeFMN3TEqL7EVGhxg=
+	b=OlBoHHpVof4NyozqV3vxjKcjvk/y17oYz+NX0GgTt5nMsrjzgfoQZCcD5nyMeqLWk
+	 htiyUI/wWJswuTU+8y83flTCS0RnzHoiIrK06LfnovJyy/ccZ/NhBYSEivcOaZTGCa
+	 Ux8J7cHyncVvErf5jzV1qMqauD0EUnF5+GejdCq4=
 Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ad-e21d-7f0000032729-7f000001da1a-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
+	id 69b006ae-e21d-7f0000032729-7f000001da2a-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:57 +0100
-Subject: [PATCH 31/61] net/tipc: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:49:03 +0100
+Subject: [PATCH 37/61] drm: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-31-bd63b656022d@avm.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260310-b4-is_err_or_null-v1-37-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -100,34 +99,48 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Jon Maloy <jmaloy@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1121; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=ObADPYZ6pJh7dF4ZtW/umhCREHwhUDWMyq9N6rBcVwQ=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAY/UcXAwJovG6A4nB7YjchfS8dWMTKJR/2Zu
- MZwvRUzfSuJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGPwAKCRA0LQZT0ays
- 2xl9CAC38JfIZK13/o0jdZIM8Gu3hUV57MgGCpPmPgAkgZQzEtBGs2FDO8Fx54b796heUI6C17z
- ZbGY2wRKWGjXSBCngfD+Y2a/1jCSzGEuQ4jVEtxbgFKGiVGPc8zPo3j7RIqGt+XkDfXhUJV/WGs
- +J2xRVA9B3RKAYgO58tDVBDDKVuZmX4cu+ETIaOpu3+o52epJyZqzezdrVwvwMz+c005iQpPVgY
- LKvEVu+vfw1C/S2Bm6+j0K7soEoH7Q1wM0z8TR821F0SvZ3KgnganCVQOD062Ix1eouKRv0CD2a
- gtvYCJFRo6JoTu9p/1jJVnIebiN1A5uUYXaP+Bibs/sNVbrI
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Zhenyu Wang <zhenyuw.linux@gmail.com>, Zhi Wang <zhi.wang.linux@gmail.com>, 
+ Jani Nikula <jani.nikula@linux.intel.com>, 
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Tvrtko Ursulin <tursulin@ursulin.net>, 
+ Alex Deucher <alexander.deucher@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4819; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=6EuXq65aclW87MvbjKpAiGhSvzG4CQReYSdgtvzfvbQ=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZT+7AKzVVh94OZwGC1ojred94HRoubB3Jj7
+ iZaELcQHomJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGUwAKCRA0LQZT0ays
+ 26wAB/9TBiS4XQT7vnGKfXiPWlqEeJl/SwNfE8gRd+LVLd2GPoXI77JKlqZA5KJHsuEaYytwRHj
+ 0co7/mL9JXJHOUE/UPYXt3qFrwRsleM7nnJK7ysqo/nuMkL1zXCK+fpnqQpoBiKUkPJFjSSQWWs
+ A0qg0NaHPa2ThCoMkZDNEnWBS7X/+ME4OgDoWVp7r1X953fdXqxWSX8/++3IUoA8zLfZZvBTN8Z
+ lQp574N8BAAfdqG0oi1OBRhOByM9d1hpEYg4qXmJvNDZzHG8su81gcwwO+KaBKEy6Skfpo/fDOj
+ n85UVFKj8iDz3Ls4+zhkzod+J74YBwXEvBpocAWj1P06D/Zf
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143725-2FBCCF2F-19F0E4AB/0/0
+X-purgate-ID: 149429::1773143726-88610E6F-62997727/0/0
 X-purgate-type: clean
-X-purgate-size: 1123
+X-purgate-size: 4821
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Stat-Signature: x9g3gatdtxtx75z7eatdki6n161s7qm4
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 14FFF2000F
+X-Stat-Signature: 7begwkztkjyq4giywedg7cf7qdnxfhss
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B1C2540018
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773143729-339421
-X-HE-Meta: U2FsdGVkX19mLBSakji81Di9fIL5BfZv1o2qGzvAu8QuVfnSNSZ2MZvoIdyzieGBjgVvFKaU3QSpRpWo0Pr8XpWs0MJaqFZAL7kKie5GZkno6nM4Nmmd702JnHrOyAnUeaxDf8kCpaUs+r6oYJev1LvP+iAuZ6oe48BS3TzZHQzYSOukLUNdbDLDPYve7nO22aunZhaoApvOmH5m7MKk0PG3nHxyqO2DcX8rlM+H13gdIt1IkJ157q6N7qodFWpz38ZpPNXtj/pb/7CCYPBn4FEWKhUneDUtJaZKQJ3SS1j+9OFLA8kNffaNT7feqAIdSWPHpMSRCtALLVHe16aUV+xc7gxCe5WBN1Z8vwp9nT25/GrYRl8vLCusFZ4243uJiCwQNy2k/TUkD7G+zhR09t6cAE8xD4jggzwV2KQcacYQYcicsqgR8HaNE2nwWsR4Z1HaN7CnSK5BLDkpalJ/d+KjnmTnBX3Nq5g8bYbHTgRD+WygL45IHDZXDRSxNKd3GkYktrcPreMGwPgZGjx9cXmL9SMuZwJijl8j6cEIDfJKyUgzhSHRBQoYiOq+/Cu9UKXMsL0fS+ZxuicTxRU+WVKVTDmeYZ8HGnegqxi8pYQuIh4LKQW5nh4VolMJe1pZne57eF9eFJe9qjICo7aNspj4ajE3JP9ANnaidd1cmMSp+myXyhz/IV7pzR1lZl+On756cM5VufzOgsgL3QyUM40WaZFpGa2Hembn9sjAqW6Fhv1hSbnYlUR0JP0VEZpDloKM10XI49kOcT5JYZVTYn39M3mo84x1V0YW7Yifw/WXWsbZeyAZCk2q/XkQOqVz4JE0Pj/LORx9MqGXQYMghXMArlPHdWMLSIdpb3fL/jXT3wS9uGJw9iI8Thb3RhjiEIFZadLMiVlZCL49wVHzoFY7gsUcPIgnWQNSGNHu8qWajEYigdYqfgKS2sKyHmSC5+Kf356TABp7kAY9SrJ
- 6jUd7YJZ
- 1VoXJKNBCnegZxwkEGW41d/zCBqGcFBBR8RxKYoXNPPXH461ART3OXWFmCh7O/9TPpL6yuyqDOx//+DFiFOjuLPnmgNZj5oBSi0FpOn2ikEW9dS6/XuXWYM9mx1alFRQQaTjOPLMAKrXxIszpzZg/zlqMcvXZTT/QCfXl5wxmx0j+vS8SGnOAItrmVB0LuA2y/Y6iKpQOFxch7wa8n8F0I2NZuSKC+94mAndlhMG8mNw8QKurUYf0WG+bslqNCkbcbqeEPGam7RmWzgEGLjPfnK7oavgrfK2GpJeWYqSkA6Hx06/8UN9ccn3HAFplZH1ldHAabRPNoRh88ThE81gRVKpDmsnrN38mNCx/UtkVBFhYmREbBQzH+59+mEVK/xkZ92ASma1BXNKPPl0g4MP7GXcC9RvNrpftD5DNYtRFE4oKE0d9nSvfAcQzBsOitPhwhbMfuOZE+8CyaY9rFOhaTl7Ku8r2I/7gtXiBdtv02rJ5KVtguEIFCUe4zRcEoiqmg4Sp
+X-HE-Tag: 1773143729-82188
+X-HE-Meta: U2FsdGVkX1+SfLSmBidKjjtIN25zE26ls7EsJt31e82/dk1E5nii+zhhwpzbW25e+g9W+cIIGXC2NBFj5Ls7WtAlQPApGDW7vRYBtff/jCavIMijPhe969EPVvdy/SzhhpfdtBbSRxmXg1Lli8bzetIDQ7ztOHoS0YlIxzqGRxBUpPdToH6xMaJovSbPac8BChZa2sdQGBKDxzW6liL2CnlT0BADli1KLx4M53ME90owp1vfQx7jFeG48Yag+ykICBenu8d+2Xt0THJmlDjPHZLEL7CXj0XeYmJ5oFS6QmrMAX2XALPrRNJbWSIhZSje8I/jPvHvf/DVEw12f0jvgcM0zH2WM5PAhgg2e1wlURDdv16rCFC0RGMoBMIw4NhpfLddAQ+RlLXTwBBmZ9eZReo65kuTUdQwEH5AUUzUmldhbGbW1VXJOazSxUstpI6ZjQIHhz6f7On93BanPgp/fMok2jSgtY/+K8eIQUajGJKIp4suG0v3ZxjShro1V3dfyDPPFx4VQhcUU62TZssYYh9ouLRugNXxT7GwOaej8as8shcImFZRgBvLbo+E5Yl0hNvwVrSQyiRelPGElnsfZdBalaabJdk8mI3F7GwX/XXGrW7O2+IK9ESvgDgm15q71YdZIilR9Z0PQF/J7pvqyK35KjWQs8FWzfCXH3Xb10e/ar7/wn32v4qXUECWaH/Hick8CHSquZIb6e70uXHaymNk10IH09sRY28CQLAql9yqTsdEuAMd8xetO1WH1gJcpNpW29Y/j+S+rxF+vLnwa1ZEJiZacZjZ/cf9jECiWyA3dL0m66RfChCvWYyt1H81tKpLyc3J/bThN7Lh2jMOcFSipa5qwhsihWgMIh679D/Viwb+eonoC2FtUufl/WmG5AyX+yGClHIirdE4BF/tPNAympRKzoQ8EianNCuXPE95/nxYpnU5MR2sTge4wNsXjMv8i8/oY3dhSUbAWi1
+ Ytl7DdAp
+ AFAhwxcxDVu1CkWKGpGiMJHKs6T3qZ64MT1X66uBJ1hMwx+ZnckEKIh97oqxeMHrbZneWB6KPfK5rbpqWU+znToZpyTFanbN3Xh6Csb1fWmmw5FG+P5JYDxt6RFqTNr2i9oQRZb1atxoqYbJOtZ0CghIPHhTVdpj/rbK4TErtbE9tpWG4PDLdYFkvzhsR6V56IirAYGtL5+rdYDIJLnWsqKgPqPKKYR8AaqdNGbiG/b+wSdxL7h16kfJh/sq/6bCdqYR88ffdmc8ABSNbgAU6wlGdL5eMeZcbHAmA7TNNSvnOZObIwXFqf8niUx0HVkwEwmhCJJm1PE1pjAW/cqc78Zb5RZWuT4bdoGH7CewOoeYs2shPfGH3/jwc/JxYO3uZp03x7dWV6LOO0SiYdkP1+uUPM/0uLjF4gKdBUTxn2qEA/h/fzMH2MQneVbvIASC+iZU8ZW8iiaXRw492moS1KFxjVEmMPi81d2bh2ZBGCCDnsgZvY81GfHvr9hCQ6JjxY0L7EYZX+NXt+ofARKgMbM5PLi01L0MUuHd2DwxlR66p7XVWG9lYLNxxQHn3TNvBsjOf9qtjn8WFKF5L7irZJqO56xVkwxEZahqFf5CsFdwVyJ6obDHTs7rMQeVAiA/gBQ/ZJ0WQESVqynhmF54R5EiAp5+PjCFFaVhr66Miue+acSMhcz1Qtaj0D7mGucC9cVg2fHxLf3DxKkWnkraaYEUDzUZWN0ukmnbLmKdySkuCIsAXVGNfyF8ELQHehfnNato/UqNMUhmynx9hnUDq8TEMsI6/6qsLoOISsDqefeBxMm9jXlQVPeUsAm+BpV9ZjzOn6ceJihTRNt5voNf3h9mR0SLm98EDaurC+2pQzFmL1DkZoVxkDKpUQe1WkUh6dq12Pv/us7D/OpqcE3R2WyNooQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,33 +153,112 @@ check.
 
 Change generated with coccinelle.
 
-To: Jon Maloy <jmaloy@redhat.com>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: tipc-discussion@lists.sourceforge.net
+To: Andrzej Hajda <andrzej.hajda@intel.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+To: Robert Foss <rfoss@kernel.org>
+To: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+To: Jonas Karlman <jonas@kwiboo.se>
+To: Jernej Skrabec <jernej.skrabec@gmail.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Maxime Ripard <mripard@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+To: David Airlie <airlied@gmail.com>
+To: Simona Vetter <simona@ffwll.ch>
+To: Zhenyu Wang <zhenyuw.linux@gmail.com>
+To: Zhi Wang <zhi.wang.linux@gmail.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>
+To: Alex Deucher <alexander.deucher@amd.com>
+To: "Christian König" <christian.koenig@amd.com>
+To: Sandy Huang <hjc@rock-chips.com>
+To: "Heiko Stübner" <heiko@sntech.de>
+To: Andy Yan <andy.yan@rock-chips.com>
+Cc: dri-devel@lists.freedesktop.org
 Cc: linux-kernel@vger.kernel.org
+Cc: intel-gfx@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- net/tipc/socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c       | 2 +-
+ drivers/gpu/drm/drm_sysfs.c                     | 2 +-
+ drivers/gpu/drm/i915/gvt/scheduler.c            | 4 ++--
+ drivers/gpu/drm/radeon/radeon_test.c            | 2 +-
+ drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index 4c618c2b871db681e69f7aec8f660d6130a13346..0d9cb21ffbf1539b7740e76521e3aac5fde322e3 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2971,7 +2971,7 @@ void tipc_sk_reinit(struct net *net)
- 	do {
- 		rhashtable_walk_start(&iter);
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index ee88c0e793b0416d20105a43448cb4037402e64b..64fa2bc8d28197147ee22b4f74134cc27dd9b32d 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -3608,7 +3608,7 @@ void dw_hdmi_remove(struct dw_hdmi *hdmi)
+ {
+ 	drm_bridge_remove(&hdmi->bridge);
  
--		while ((tsk = rhashtable_walk_next(&iter)) && !IS_ERR(tsk)) {
-+		while (!IS_ERR_OR_NULL((tsk = rhashtable_walk_next(&iter)))) {
- 			sock_hold(&tsk->sk);
- 			rhashtable_walk_stop(&iter);
- 			lock_sock(&tsk->sk);
+-	if (hdmi->audio && !IS_ERR(hdmi->audio))
++	if (!IS_ERR_OR_NULL(hdmi->audio))
+ 		platform_device_unregister(hdmi->audio);
+ 	if (!IS_ERR(hdmi->cec))
+ 		platform_device_unregister(hdmi->cec);
+diff --git a/drivers/gpu/drm/drm_sysfs.c b/drivers/gpu/drm/drm_sysfs.c
+index ef4e923a872843339743d21e4877225855da921e..6748acb4163e8f5658c9201a0412b38862c7baab 100644
+--- a/drivers/gpu/drm/drm_sysfs.c
++++ b/drivers/gpu/drm/drm_sysfs.c
+@@ -600,7 +600,7 @@ struct device *drm_sysfs_minor_alloc(struct drm_minor *minor)
+  */
+ int drm_class_device_register(struct device *dev)
+ {
+-	if (!drm_class || IS_ERR(drm_class))
++	if (IS_ERR_OR_NULL(drm_class))
+ 		return -ENOENT;
+ 
+ 	dev->class = drm_class;
+diff --git a/drivers/gpu/drm/i915/gvt/scheduler.c b/drivers/gpu/drm/i915/gvt/scheduler.c
+index 15fdd514ca836e84f4de95e3207ab45bb9243426..933ec5ffa1f1ebafd687996f167b982490702211 100644
+--- a/drivers/gpu/drm/i915/gvt/scheduler.c
++++ b/drivers/gpu/drm/i915/gvt/scheduler.c
+@@ -675,10 +675,10 @@ static void release_shadow_batch_buffer(struct intel_vgpu_workload *workload)
+ 	list_for_each_entry_safe(bb, pos, &workload->shadow_bb, list) {
+ 		if (bb->obj) {
+ 			i915_gem_object_lock(bb->obj, NULL);
+-			if (bb->va && !IS_ERR(bb->va))
++			if (!IS_ERR_OR_NULL(bb->va))
+ 				i915_gem_object_unpin_map(bb->obj);
+ 
+-			if (bb->vma && !IS_ERR(bb->vma))
++			if (!IS_ERR_OR_NULL(bb->vma))
+ 				i915_vma_unpin(bb->vma);
+ 
+ 			i915_gem_object_unlock(bb->obj);
+diff --git a/drivers/gpu/drm/radeon/radeon_test.c b/drivers/gpu/drm/radeon/radeon_test.c
+index 0b459f7df23bae3eef7e36f4b5f35638fb6f4985..573284c4af60f12d7edec889260fc8a2e2b70420 100644
+--- a/drivers/gpu/drm/radeon/radeon_test.c
++++ b/drivers/gpu/drm/radeon/radeon_test.c
+@@ -234,7 +234,7 @@ static void radeon_do_test_moves(struct radeon_device *rdev, int flag)
+ 			radeon_bo_unreserve(gtt_obj[i]);
+ 			radeon_bo_unref(&gtt_obj[i]);
+ 		}
+-		if (fence && !IS_ERR(fence))
++		if (!IS_ERR_OR_NULL(fence))
+ 			radeon_fence_unref(&fence);
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+index 3547d91b25d317c6cad690da7d97a7e5436c0236..8a267de85da9c76c2e29b2ababf1218e400282c2 100644
+--- a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
++++ b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+@@ -1095,7 +1095,7 @@ static int dw_mipi_dsi_rockchip_host_detach(void *priv_data,
+ 	struct device *second;
+ 
+ 	second = dw_mipi_dsi_rockchip_find_second(dsi);
+-	if (second && !IS_ERR(second))
++	if (!IS_ERR_OR_NULL(second))
+ 		component_del(second, &dw_mipi_dsi_rockchip_ops);
+ 
+ 	component_del(dsi->dev, &dw_mipi_dsi_rockchip_ops);
 
 -- 
 2.43.0
