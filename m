@@ -4,192 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB84FD2D6B
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:23:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E39FD2D6A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CA766B00F8; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
+	id B8DF56B00F6; Tue, 10 Mar 2026 08:28:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937406B00F9; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
+	id B65BB6B00F7; Tue, 10 Mar 2026 08:28:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80F746B00FA; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
+	id A9B5E6B00F9; Tue, 10 Mar 2026 08:28:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 713846B00F8
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:23:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1B1CFC0352
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:36 +0000 (UTC)
-X-FDA: 84530069232.05.1554D14
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6E4C2120013
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:23:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fkez07Tl;
-	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 966956B00F6
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:28:37 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46E311BF8A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:28:37 +0000 (UTC)
+X-FDA: 84530081874.22.AF135FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7CF918001D
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:28:35 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FOutLnoL;
+	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773145414;
+	s=arc-20220608; t=1773145715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sWy9ef7Hud0vVkgTkw0OoHXnvQiMcKWf2ClKsqXhea4=;
-	b=VqM9hs95ymGAiJ3OGdVLhYo0bGtyUDNHGB7fo/IV7K/ZAajTiailmBzOrrVv3vM1tBnljK
-	+V89Og4eCyLlu5ATtdggYsrinkovMkWuum6f9PkAq/iBzmVVoyHRNiKHBBkfmX5BCMcal5
-	0ts1QPEv/ImmbtSAmut7bOoZfK293CY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fkez07Tl;
-	spf=pass (imf29.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773145414; a=rsa-sha256;
+	bh=CYE/HV7EYizpiAYX6Lz6xzxADa1AFKYBU1J/zOcqJyk=;
+	b=Kyj+UjAjrZL4zHc1BGJlXj5WRItvhsyY0IpVvHxrkgj2bwhR2G6C9YuYaFyQBo39lD5YSi
+	Sp1Ysj7Vl48q9Esok45tLauYr41z6sgCDC3fbekluPFS+zc1KVSo68VG33HMB4JY/3CiCT
+	X01VQRzh0pKTePNFwXTcoT3m1pcTxDc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773145715; a=rsa-sha256;
 	cv=none;
-	b=2yjFQTsOBAmljf7m9ug502eoQ7rS3Y84fWVA7WWK/zGG8pt4JLKz+LdeLe9BTeLoesyeHq
-	7wvjMrhtO7JWtbU20b32bpADL5jDYHkdHaeJc0vBwa4lMnZ46YFchBaalxGRfPr/qV/Myo
-	Fib8G/yxrxk2KNrJ+EFZpJBdMyi0vOo=
+	b=SlZEKfmi9GHpFIK4oTlUqjFwobRG3ufcO3puC+0BjFfbT4kxaSX7XnEUbjhMSEXtcxHJEq
+	xjvmbb9LOQFD2Fj+eAqK5fRY3f+lcRN12lAT3otgax8ONogXtaZBPklrdpij7Mc+6x3q6p
+	/C2M3ZnBIxlA5YuJrxz1SbB7ZUH+PYw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FOutLnoL;
+	spf=pass (imf30.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB3CC600B0;
-	Tue, 10 Mar 2026 12:23:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10E4C19423;
-	Tue, 10 Mar 2026 12:23:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 337BD43449;
+	Tue, 10 Mar 2026 12:28:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8179C19423;
+	Tue, 10 Mar 2026 12:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773145413;
-	bh=dKSFFzRnVfNET7rWuE5Oko4JdMIW5clek3Ra8qeLWt0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=fkez07TlE1bfdj9q72lfPh33xZUWj92R+6N34570wM83IJULMKkc+t1NI+NIthPJ8
-	 udd0+wDsOsLyEYtc2rUq6c/04oYHs4Ijd8GvgL72KdgHcTTjuge6542A67j9ng4nMs
-	 ibR7d2V6NwLDyu/uVXWq0145yHAFZxvc42G+2L2+sUZ3uktv+EclNSS20uQ7swL0HP
-	 LWOaDsIKcth0kzayTnUnDFQv7L72QnV4UUeRrzt36Vk9ZcP+WXEjov00vhjcxe3Gp8
-	 CPc1GnWeA6B7VfYAg6uLBaadmh06wX7OXgaehJVXZ7xVcjj32thXyrmbMa6Rym7GyL
-	 HCCmPdJG4zvRQ==
-Message-ID: <d97c4fd76d7b7fc8b38d3bb4e4ed700b1003ecba.camel@kernel.org>
-Subject: Re: [PATCH 30/61] net/sunrpc: Prefer IS_ERR_OR_NULL over manual
- NULL check
-From: Jeff Layton <jlayton@kernel.org>
-To: Philipp Hahn <phahn-oss@avm.de>, amd-gfx@lists.freedesktop.org, 
-	apparmor@lists.ubuntu.com, bpf@vger.kernel.org, ceph-devel@vger.kernel.org,
- 	cocci@inria.fr, dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
- 	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+	s=k20201202; t=1773145714;
+	bh=NZ5oTCN6VGzePwnu776uK+3unhTqb8pwokxv1IJtK7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FOutLnoL/seeB/icY17T5kE23weT+c8OWPxsN1CuLtbqZf1qO8twCXpCHPEW4zEb5
+	 uM5pcZxBh8XK3wQOjz6gQLnb8DbNMsJ6SwgjqzPaDdyeQRMdzDiadj+7d8CVSVSbbp
+	 WbSnGZkMbwo0cpPlViR1A0oh5e53oFE0sYAJxulW9oCNKaXKAhhACMzXx6XsRo3Hlx
+	 /XgKdmLcz/EtWl6VZEOUGY5PBqGn3Xb4X+aqLL+l2HoSL3wZMd6NhcSGeVt+ZFpBkn
+	 8s7ZymgPrZjLjSz7/xRlCoCIsHrVCduE0eaA6Z9IamuK4ZW4bnyThB9ZhLWcSUucoJ
+	 BJsDSXl6ZXWkQ==
+Date: Tue, 10 Mar 2026 12:28:20 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Philipp Hahn <phahn-oss@avm.de>
+Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
+	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr,
+	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org,
 	intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev,
- kvm@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, 	linux-bluetooth@vger.kernel.org,
- linux-btrfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
- linux-clk@vger.kernel.org, 	linux-erofs@lists.ozlabs.org,
- linux-ext4@vger.kernel.org, 	linux-fsdevel@vger.kernel.org,
- linux-gpio@vger.kernel.org, 	linux-hyperv@vger.kernel.org,
- linux-input@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-leds@vger.kernel.org, 	linux-media@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-phy@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
 	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, 	samba-technical@lists.samba.org,
- sched-ext@lists.linux.dev, 	target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, 	v9fs@lists.linux.dev
-Cc: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, Olga
- Kornievskaia <okorniev@redhat.com>,  Dai Ngo <Dai.Ngo@oracle.com>, Tom
- Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>
-Date: Tue, 10 Mar 2026 08:23:26 -0400
-In-Reply-To: <20260310-b4-is_err_or_null-v1-30-bd63b656022d@avm.de>
+	ntfs3@lists.linux.dev, samba-technical@lists.samba.org,
+	sched-ext@lists.linux.dev, target-devel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 18/61] sound: Prefer IS_ERR_OR_NULL over manual NULL check
+Message-ID: <19aa26fc-8570-492e-8e17-23d6950676f0@sirena.org.uk>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
-	 <20260310-b4-is_err_or_null-v1-30-bd63b656022d@avm.de>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
- QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+ <20260310-b4-is_err_or_null-v1-18-bd63b656022d@avm.de>
 MIME-Version: 1.0
-X-Stat-Signature: tkyzorxazuiyntmzwzj44go8uytqp5dy
-X-Rspamd-Server: rspam09
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7JjDB+7CEHk89uTh"
+Content-Disposition: inline
+In-Reply-To: <20260310-b4-is_err_or_null-v1-18-bd63b656022d@avm.de>
+X-Cookie: A fool and his honey are soon parted.
+X-Stat-Signature: 3xiitcs3rzpda8goq9ccghmaa8677qa4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6E4C2120013
-X-HE-Tag: 1773145414-28103
-X-HE-Meta: U2FsdGVkX19ygGwV/ER5yz2pn7/Ks/9Y1zAahURfMiSPr2k65wgcHGWX+HrSd2/z49ZKShF6EDtAZN8BlM+nhbG7M2owd6pFJ0LdxCzBDhTJlfNlZQQ+mjb71n1vsHEiGpA0amB5YjeNLKMSUAKdln6vXqJM2vU9P1UpWyP+5nsqj66MLMZqrasHOR66nLEzvqE6aDE4VE2O0TTCZPRuAKWbxKTlX5MXaPLPsXG7eC/8UON5pBbyCClK5o+5uGDAV43dfm7t08qTH8AGd+Ao8HsxoV+l5Qcje/APs7ld5nYbZ4xKlvsVofNMOimKmsVfgqX1tS80aQZqJJPueRAsbAJcYJ2SycZ6o+a1UoDgG1I+9H0Jw9h6JrnVIH9NAAckhfyc8kWkGkY6PRjID6L94YPgiJBaCV3cWK0e+Ly+BqljfrvIQjAEM1fqa40FS41CThJGnvjrd6OI7ZJfdE24cwuwJ6K5I3v7GykGgXjAtqHWEp05uXyvQMfY/gzPLVaX3smRHMWxxbdSdIxf82IteDlQ+jdfCTicKWcZmHtHO3AiC1YG+93Y3OSqZkvagSqLaF58VlcSowU5Cq6bF9pb4lEx67Y45EgkgCB0H9wFeRRcYpoug3nBKmXNQMFRH7rxTghj6IAbbSO5EdBdsYJH3pjj8ZQsbMYe6Nt6Y2mGCyD2hqiX9NiRQSdcg/XmKFpvSErNHqAg8ABOMevpGYLJqQwB0QS6fEwy19A556fTh0RTmdCPNhCzkU79EWg6Qt/6Gfj2u3ur1ZQQOxUr0K1D31desF6vF1FAKbFVh/n6B4IVzOaG0qixBG1DXjg/Df8ofgHvs6nvZpAQKzHPe3zhSKFORNY/iMKbc4N+aKirai+AO9AL25m/lRQNYBq7FniKxmnkxdAcC+q9I429OOgEJZJNoBmRiQZkfUezsRQtmYCJhsh24hEH+R/WNj8IHQPGmtfLz65zQsHXmSjMjzu
- m3BdW7c3
- tuVhh/V/Rd3GQ/CkTUkEb/pLAMWSEJHIp5gQ9eNJZHcloYs3WvbG6o7tcEhWqUe+fNpW0Kv7WGJeytvnGOzgGM0sfnNq7YcfNxSM+apoLAIccZlu5yl+3zlk2xNr4cx39sqrS55uNDHbb1X6THAjR98DFfRKrYSama1sX5VmFqbGX7HkmDJw9IH5TN246hfeFI1EJKxYKu7jkOMDz7HM14wN2Ys6ZWNC2YEAKUJJnm/znGhSC9fhUMKTbEeqTcKyNFzLqAKzJ1qq10J6T1cejY6yRbNqbKauBmDk001nvJtKbZXsSlsxjWLvId/dlLGOdLigSgEs2rT5h98t881y3wXxW2n8i2pTBQvpx+v6jM9brayOHm3eNtakY2tj8g33eMqZlwaOUtYMRA/J5cbXhLw8/IEHPcCwls2sQP0WLSnM3lrv1cjhPH5Rzh51WOL+PuWcd3wJwRsss2OGeVH3C9Nu5stlFSnYnEiC5Yyxt3ehPgMWUjv+4C2DUqDP+SP0BolcskVgipMurOWA=
+X-Rspamd-Queue-Id: 7CF918001D
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773145715-968138
+X-HE-Meta: U2FsdGVkX18oGcYNHp/6vh+7FSiGkTJx2+ZFtGpHZWhy3SVjFzs0v14l8iLSo0JZeKRFUzvbxVC0HS/nX3qVtgkSmo0YfMhpizJ9jr478yEzRcj6cpmCwA3E1HGSvPDwajCayE329Ye9RdrfSFjpY75F63Hv8XYk+ZPVbuSnCqNwi1SuNVejuMv9ebvvAnQLlaxBHcnuDEy5KHPNCpXVI+gCS1GtClQq3lqb4VLWRHZj0aDbI4Uypw42iXOwX4Yty7ELJi60kwbGm2mExcaL+H4v0q8kisigDbzNsREMD2Gihq8VThOVUhGjYmmJMDYCkGFj2etRElWHfP/4E8I9b6kyelUWMr2OTE8BgwBOlP/U8hQC+CEW71AU7zMzKHh4q7axh8qGnkT0a6YUVZISX6bFpQwJ+IuR1DXwtf81SuCgNObDG/4+eQXg24FQfO8oJtkNz/hKWRyRCf35PExOb9uSi3SmB8warDn+V31+HfcuK4zMlEGWGeQgqMY0+137663mFsr8VjTAH68Wbz4v22B9yMyKYeWek0WAhy2IeT59Q25/VkxT40HvxkFzpeKQeTD7AlUEaOgXIyG0zUzlLaLMn67OKXaSfQtJLybtQYmmkVf7MuNKFbrFcdVLMar/HLNHhB7an4u92JhZJEZSALvB2j+McP00ifczk+gu6ds2kf7l144oIKLvNAt28Sz5FQbiGn0i32wdXF8GDwuHXS3rR2pBstYJinmXA24Vl9HdjdFcdRcSCAWCIbBRM2HxO1zemV6ae9tOLJcm5Ytfsc5/3DhykpS7F1KOTlVIy1YI3cZVm6sZgkc17tdmr5zHSIU8lAInKJBuvvYzkr7fpm/D7aJQy1EJkkpMAUwkY7UkDuAk/0/L57J71fMfdYC+PvoIddr0o5wgGsmZn5pR01I1oKe+vraEim/wcg6gpDQ9Yy/G8o2bLZJKKrcAiT1kTsBxSRpvzOB5GzCTLew
+ 1nFtNJIc
+ nZM+yy9AA1mdqP4euPFwdrCJMen4dRtFrzVnkny+y+Es7WD9AFELM1vSgjOCfG3c9bw2tfDDLMZGC7erORq4vHP2KAtVqc1LhS1r+Kx7oCTgMcbvK6jBxt/1R3yrtO7PyAjg+kh0okM/CioPKz/aEt0AI6IVw77rwXBI/wuPcRotrNBWIuWJEDRbfEgSlOZK6YhiqOE26iBtfmyeQL2e4dCUfN0w3NuyWpKwmp+0t1fcZ2e474vnRjfO4Itv/m4sG411xVNrDq+lOP2Hfds2hp10nIJtulFBAIc7lv3ymWghXr4cWCZHIiOkb3hrUMGNFn7X+OzEpskIm0K94VYXRrgea/QkctibmbPQ5cN0GvWpA2ETdQNLJBc9UgaGvsNhe4UrOBMRlXx1sSmmHrYYxRgUzPg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -197,79 +122,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-03-10 at 12:48 +0100, Philipp Hahn wrote:
+
+--7JjDB+7CEHk89uTh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Mar 10, 2026 at 12:48:44PM +0100, Philipp Hahn wrote:
 > Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
 > check.
->=20
-> Change generated with coccinelle.
->=20
-> To: Trond Myklebust <trondmy@kernel.org>
-> To: Anna Schumaker <anna@kernel.org>
-> To: Chuck Lever <chuck.lever@oracle.com>
-> To: Jeff Layton <jlayton@kernel.org>
-> To: NeilBrown <neil@brown.name>
-> To: Olga Kornievskaia <okorniev@redhat.com>
-> To: Dai Ngo <Dai.Ngo@oracle.com>
-> To: Tom Talpey <tom@talpey.com>
-> To: "David S. Miller" <davem@davemloft.net>
-> To: Eric Dumazet <edumazet@google.com>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Paolo Abeni <pabeni@redhat.com>
-> To: Simon Horman <horms@kernel.org>
-> Cc: linux-nfs@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  net/sunrpc/xprtrdma/svc_rdma_transport.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->=20
-> diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrd=
-ma/svc_rdma_transport.c
-> index 9b623849723ed0eb74b827881c6f32d3434c891b..b4d03e59a8202f20360cff1e2=
-e79b1e325396517 100644
-> --- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-> +++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-> @@ -578,7 +578,7 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xp=
-rt *xprt)
->   errout:
->  	/* Take a reference in case the DTO handler runs */
->  	svc_xprt_get(&newxprt->sc_xprt);
-> -	if (newxprt->sc_qp && !IS_ERR(newxprt->sc_qp))
-> +	if (!IS_ERR_OR_NULL(newxprt->sc_qp))
->  		ib_destroy_qp(newxprt->sc_qp);
->  	rdma_destroy_id(newxprt->sc_cm_id);
->  	rpcrdma_rn_unregister(dev, &newxprt->sc_rn);
-> @@ -608,7 +608,7 @@ static void svc_rdma_free(struct svc_xprt *xprt)
->  	might_sleep();
-> =20
->  	/* This blocks until the Completion Queues are empty */
-> -	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
-> +	if (!IS_ERR_OR_NULL(rdma->sc_qp))
->  		ib_drain_qp(rdma->sc_qp);
->  	flush_workqueue(svcrdma_wq);
-> =20
-> @@ -619,16 +619,16 @@ static void svc_rdma_free(struct svc_xprt *xprt)
->  	svc_rdma_recv_ctxts_destroy(rdma);
-> =20
->  	/* Destroy the QP if present (not a listener) */
-> -	if (rdma->sc_qp && !IS_ERR(rdma->sc_qp))
-> +	if (!IS_ERR_OR_NULL(rdma->sc_qp))
->  		ib_destroy_qp(rdma->sc_qp);
-> =20
-> -	if (rdma->sc_sq_cq && !IS_ERR(rdma->sc_sq_cq))
-> +	if (!IS_ERR_OR_NULL(rdma->sc_sq_cq))
->  		ib_free_cq(rdma->sc_sq_cq);
-> =20
-> -	if (rdma->sc_rq_cq && !IS_ERR(rdma->sc_rq_cq))
-> +	if (!IS_ERR_OR_NULL(rdma->sc_rq_cq))
->  		ib_free_cq(rdma->sc_rq_cq);
-> =20
-> -	if (rdma->sc_pd && !IS_ERR(rdma->sc_pd))
-> +	if (!IS_ERR_OR_NULL(rdma->sc_pd))
->  		ib_dealloc_pd(rdma->sc_pd);
-> =20
->  	/* Destroy the CM ID */
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+I can't tell what the dependency story is here, it looks like there's
+none?  If that's the case you shouldn't send things as a single series,
+send separate patches to the various subsystems.
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--7JjDB+7CEHk89uTh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmwDmMACgkQJNaLcl1U
+h9D4VAf/VCpoXjivQsq8mL1i6sHdID6byBqwG7egrwiRCrsZav80JlvY/F+1fWQl
+Fe3Ct+yRv1pWeNy67wSCZD3mtHtNH0JpwRTNxS1XQrnXc7CLjzKunCldDfzTbfom
++QmXWHQB3Qo9ie1ugoAGet9gx/vkV0z+cv9sVHg1o1R7/AKqfgov7xnuP9Hlv9Uk
+p1pkMya/NhbXBsrh+BFbktLgp+7sAOMjWgtGZ3NfHzwju9n4Jdbl1JcPxgDl0SHp
+6z8kP2+oskOspesqLWw62mZF+bN32Ycjt1N7/EFjtPBdJKIcQJLICoACzxyQBZYg
++i50s/oSRL1HiP4US2lxoy8BqxaqrQ==
+=U6jW
+-----END PGP SIGNATURE-----
+
+--7JjDB+7CEHk89uTh--
 
