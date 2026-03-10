@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 851D6FCC9A5
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:05:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4DC1FCC9A4
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 01:05:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8CCF6B0093; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
+	id 666626B009D; Mon,  9 Mar 2026 21:05:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3A8D6B0095; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
+	id 5FBD86B00A0; Mon,  9 Mar 2026 21:05:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3ADA6B0098; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
+	id 35DC06B009D; Mon,  9 Mar 2026 21:05:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8481F6B0093
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:05:43 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 39D9258767
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 173156B0095
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 21:05:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0FE61B7EC3
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:43 +0000 (UTC)
-X-FDA: 84528360966.17.8EC1EF8
+X-FDA: 84528360966.30.0DE32F9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5D57C4000F
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBwjHDJb;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4592640005
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 01:05:42 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UlaywHj+;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773104741;
+	s=arc-20220608; t=1773104742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NtMbNh3H86JFY8kZ/Eo+JjcntGif4NW9YtzRYc8lQGU=;
-	b=BeD/KPMyPK2yY7Xku1qOvzd4aLgEYmcT2kBCpnDs+mBD+3vPb1M0/ay1Q/2mHnPDDUSwyv
-	hDPhk/GgkUWb9I8cLip37Maj35MmrDM/5Ljf3z1kZQsIbrTyKA8lIQQpe+lfb/iUM92LPf
-	lRiuBEmf6hcEez5VCg0cPndwF8A+Rh8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gBwjHDJb;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773104741; a=rsa-sha256;
+	bh=nXQwFia5MUkSWEbq+GlksNthoUI5oeUzVAVQRJujAQc=;
+	b=e9sNB1t9cl5nAbV8TrSRZc5LL4GYGlGPqZ/TkPo8KkCKHYUYaa+s/IAA+VJKGuPrOYr8iA
+	nfIIoqk55AsfNs2D5ISxdhKBypXoYFlcwzyz8r5r7Ho52nH67InDPH7JolOyOCAqLBs9QW
+	ZzHongqY70aSDDii5/70h/gEvAB5Ksc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773104742; a=rsa-sha256;
 	cv=none;
-	b=i1ILIUB21JDAwQd6M5DFUXdcasgDzwIX06INVQEdsdEnWcYi7x5egiRp16YtsRIgq1+iau
-	QOjWgUGIZQ+BaS8PkGCYx4BLf3K+fPHS9I2OtLJZ6py0fT08/5+9fwUZvXHNpIl0io4okX
-	+ZFuyFD9H+awlK4j8TqakHtPM+RZRdg=
+	b=7pG6Rd3pR08jXDLFXj1IZYSleWcNNT8ypPFYP0l4plmqtWX+n9MmJnzkAhkQ0zZxzj7HXU
+	Vy9ZOUqI8f+VVIVIW1tCGbcMFP3ITbyeuzIr6k0ObcNrAf9xwhg6E+rpB/rlayVpAwENay
+	O2GuQ+B7HdkX0h6LV2043RGQAznulAQ=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UlaywHj+;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 83C1E43C5B;
-	Tue, 10 Mar 2026 01:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F16C2BCB0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0A1D844164;
+	Tue, 10 Mar 2026 01:05:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DA2C2BCAF;
 	Tue, 10 Mar 2026 01:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773104740;
-	bh=8g5RM84PzzTOH9XhkrAPhPyfvWGkJhpn6rsV5ukGTjU=;
+	bh=RnZI/MXRpMMVI21PH3lD5eWdT2CRwxGrwP2sFfAnvFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gBwjHDJb5FNMs4+6fg//+BneuH8gokx0udvi/q2s3S9GwqombT+uPVubEw41mquHE
-	 UuxckTAdvSweLAQLwEUFz5Ryfw6r0J3YtrYe6dR3C9GSzp1EbGMaTIBNtKUS90y/wa
-	 /X4w8R210/TNxc1imAGaUtgPWt4VkMELhjnNx+spUf/N0CWxP5mez3pGE7o63VHpsx
-	 TQRXaUY2jRdnYMoNYStNFqNCI2bRb5vQteR3qBhrUoHXnQdoh/CK8yY7lnAaJy2PAn
-	 p1G9XxX2JdLXPjRQoFBxyurqvS9jXtpTn+gXn4EhdDl5cLfyWweNFv1TOEY7c7iHM/
-	 3/l4Cc3Avg+NA==
+	b=UlaywHj+K9Zz2qhj7I/fWERoGNXH/0LTgb4PdowthXyd5FwlOhmslyFIZVF6MfnW4
+	 lu6sAjCygck1yJ50owxWPe+2ogZEGybivoRQTi6jwkZUegDx2Om42qstvvTRxM1xnk
+	 w/p/ek4mLghJswoGvuTMoekqXnrVUougnaKYcrJOMUojXiqCK4TKOwYi3CB3GkhJcX
+	 OtfWIviJ5z0K5CTEaqw1J4sGw8ECJsbAQPg6W1wS3uKfb0+HpPI//zFwSgE3LhNbn4
+	 KvkR2hPivPaKl7ELQZRIXpC19bxZUrkQ9eFqm/hfxdIQCeMORQkeelINdGfu6uE0Gv
+	 0nfdGv4YoRJ5w==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 06/11] Docs/admin-guide/mm/damon/usage: document goal_tuner sysfs file
-Date: Mon,  9 Mar 2026 18:05:22 -0700
-Message-ID: <20260310010529.91162-7-sj@kernel.org>
+Subject: [PATCH 08/11] mm/damon/tests/core-kunit: test goal_tuner commit
+Date: Mon,  9 Mar 2026 18:05:24 -0700
+Message-ID: <20260310010529.91162-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260310010529.91162-1-sj@kernel.org>
 References: <20260310010529.91162-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: t8kqyfhj9gscbqecfnotodaocpjr5ucz
-X-Rspamd-Server: rspam09
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4592640005
+X-Stat-Signature: 6yaiycjcobqy3ogfusfubg98dm3dtsj4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D57C4000F
-X-HE-Tag: 1773104741-226504
-X-HE-Meta: U2FsdGVkX1/aULtNnlK/E/BF1X8P5Nz5o3Yw2Ifp5LtHtHnjXCxNz/P/hKmRZTTm0F15yCSrt00CxYJNN06wX+pi/N/iG4ZYWEnSMrBCI8x6CyrEAszGhTF5G5LRGbPiNj0UJhVS3oPXDhls8aAMvX4B6v3Ish9PcCQKhfbkbONx4y94pm29bZUwlyKzMcmIVNehXjhlwHeT1r/q+/gT+lDgjbpEIusiH5qjEoJPgCeGAHSLGEH6Yz0wrlaNVvd1O+jAZzrTFnThFdT2t8Td99z+2O2LAArjk7B9c7k5Ud6WsqBzvoq3bBN0L3Yx1RYwKk/zBKGwTTAulmyS5cRA+1ScYp31EcGV26RDKsTtlaiT2Wq9CnWEx6S3sGMa+b32+sqvTRkYiETj8Ml88oOsc/vvacQ0ccU55vdvBNXpU1qWI8lZR3xkAP+4XL66XZa9hNJxTNNhhfG1LjUAUG+CbaguwEj9cAsQ1u2dtkUHYoail13QTqYdvraBJKf2M57C6Tft8u6d3KdYFF4r+Sd3vwqXcm3x0qUi+W+5d9T2C/tbQww4CIeSQWmoXbNDk9+mhOvdWejzNnpP6rkhld4SiAFhMSVlLtLt+MfVAtwh6eWzXkr1PiLypdQrkzoZVdluNWd/p2puh6CA4z3sNcT5iyWbeKRtE28ebNidd1gxZ4ohY/vgPFnaAsWaqBqVHWXOVLD6U4ZA0Woc+DBtO6xoIQZdH96+iSMrvkrBpQ+wmLaHknRzVU9x2n1jDjNdfJUCWk6fDZ9Qnh4poFdNQ0mt7t9Z7/KJBJLqiMNKSfspStqX18T7LVRpkiiVU28asGKFu8XbNB4jk5BK2uVIe1vRHxcfn8ipaMbWLSQXzfq7rMsEhd+8SUrMdQerYohTWTuvAEroTZNDOd5T0MAgNOVMk4qT5YgNB6iSiDivbPd5DrFlS4r+1rVodfqDjzni+DkXVfhsQ/vk8MgZEjTDfv/
- qqDflTnJ
- AKZJ/P0xC/b2HhLL6ddOJaXxZT3aYUHR91Y69ZBe4wx/c8WQq/JvmU7LymOIxvvoMJZY7ijCOEg+FJ1YBzCRtngIfW7p5cNEQgIzROYUBkgM/jTYJVk3g4XdB3RQF4ji3RyajXdPD4JW2aXZtYdHtNofELZSxnh9ArCveuM5DnBJXCjDdXz3Em7kWOYCWIWT2Ti5FQ/UFipqxnBUk/PZUwrzOU8yCg3azrGqZnkSc/C4noqOE4e8s0YhjSijkAr+1PNudWnjouG3+Uf1bujIMpUwzcJU9INNgMEQcelUzFReCPB+ij1mr+VI5rQYcZYwpa3Qx1NtJvHcH2N643JX2SLzoli2syGoTOqVphHcwMNFzU9sgRLglnjFCOg==
+X-HE-Tag: 1773104742-397857
+X-HE-Meta: U2FsdGVkX1+l25TKwBvPUOq68LV9keKTorFTkn29CsqmLZAgpOc+Vk8J8BXaayYCoFooTTrStQHTrOIDatNo/EWqE6jTRBlnlg47bVeZ+ftcdUOyYJ+qJT3Q+jsE/oJQ5UMHCcoNxi4ryOIAO8j+MNBclxCjBh5Voj99K5AVCq4ENPwRscTJBiy0CuzUoLxS2/LshsvKSBzoW6HadNseby2hi5AXY1OI4a955mNymzRpMR4LxG/CE0a8IEZLafyjdPQ2tIANN3Wv8wH8cnYeB4P1WeHFdY2ZiO0aetQfrbkudb6ICZJs1/+5/yQd5jyQTmlF3hTyW7bv4lU82ay/pVPXd00oJnDJs2NFiMr1Msn1C5U1Dw3h7I0o0qTJx8kCNER+ZjFHD+KGPmiLORMbiNd2hlWNHubNEaT8b2G+2tPNUY7gOLMYWmJBbNXPT/6R1QCe9qEocyH1yyARVZ91FLrjg7uIzPZsZwYe1UDFDztFByWFfG3Kz6lFWKqDZzaEDGQsiXoOE6Xfg8mRSWyZrTnVu9kT4NwgwwQ6pCdmwf5YzdBMO8JDWYomc4qTCNdwH2C14PiYg85kxk4JADlHz30ARHRVuKFV4wL1zpMt5nB9D9igZ08/DS/9VLtbv4R/nRxui366gUht8uUoKleAGFsWrmPOFWipwFoPYBXAgjXPxGxe0+oFvqjKvqT7cWfaS7LAY74gA5Nj9Ig6D0yDtk89G7htjYXvzi2M2SgV5Gh3VBuEe8Eavj2ftIdvAwDiWglbOlsIcdNPIdDZgdLmhCXC3afcnP6bX4llW1lw+ay4VCRZUIaW4ppI0eljvlNYfrIP12WJconzOHs5Q/Wo42WmoQQ+2Es4rWQwiKItZj4uafOloy5kTzzCw9HrGGMUGnKk2Y43fZDhgxcoHkiyZoNFGRGjeAyeCGzfOqv9sTkn7LQZkvkTrkau2j38J6a2qMhDH2IrhdOZwZRpdLo
+ d/vhnFys
+ wv+waEzNp6SJae/vgkk74hKjFRit+a6vh+1bF7RAzD7PqTCFiTYbal04sACtsJ4w1FTGO2rqKTIpTM9QLkFjgOnKPH1Sk5aqau/5eq2we6q06f9JXwfBy5qoLfONUzZVuG3qfglbJmBMGynvjdLcYizZNN6KaugkWj00n05Xk6ECE7Ub77Srk4aVXqKdvY8f10lOewkcWyKBdg2f6y/LbHH6t4JKHmaheW9JIXz9ojmMfrzXegDWgW4nRBHqwNX0K+GstTHieOy8kpegJA/qpNEJiwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,55 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the DAMON usage document for the new sysfs file for the goal
-based quota auto-tuning algorithm selection.
+Extend damos_commit_quota() kunit test for the newly added goal_tuner
+parameter.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ mm/damon/tests/core-kunit.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index b0f3969b6b3b1..534e1199cf091 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -83,7 +83,7 @@ comma (",").
-     │ │ │ │ │ │ │ │ sz/min,max
-     │ │ │ │ │ │ │ │ nr_accesses/min,max
-     │ │ │ │ │ │ │ │ age/min,max
--    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes
-+    │ │ │ │ │ │ │ :ref:`quotas <sysfs_quotas>`/ms,bytes,reset_interval_ms,effective_bytes,goal_tuner
-     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
-     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
-     │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
-@@ -377,9 +377,9 @@ schemes/<N>/quotas/
- The directory for the :ref:`quotas <damon_design_damos_quotas>` of the given
- DAMON-based operation scheme.
- 
--Under ``quotas`` directory, four files (``ms``, ``bytes``,
--``reset_interval_ms``, ``effective_bytes``) and two directories (``weights`` and
--``goals``) exist.
-+Under ``quotas`` directory, five files (``ms``, ``bytes``,
-+``reset_interval_ms``, ``effective_bytes`` and ``goal_tuner``) and two
-+directories (``weights`` and ``goals``) exist.
- 
- You can set the ``time quota`` in milliseconds, ``size quota`` in bytes, and
- ``reset interval`` in milliseconds by writing the values to the three files,
-@@ -390,6 +390,14 @@ apply the action to only up to ``bytes`` bytes of memory regions within the
- quota limits unless at least one :ref:`goal <sysfs_schemes_quota_goals>` is
- set.
- 
-+You can set the goal-based effective quota auto-tuning algorithm to use, by
-+writing the algorithm name to ``goal_tuner`` file.  Reading the file returns
-+the currently selected tuner algorithm.  Refer to the design documentation of
-+:ref:`automatic quota tuning goals <damon_design_damos_quotas_auto_tuning>` for
-+the background design of the feature and the name of the selectable algorithms.
-+Refer to :ref:`goals directory <sysfs_schemes_quota_goals>` for the goals
-+setup.
-+
- The time quota is internally transformed to a size quota.  Between the
- transformed size quota and user-specified size quota, smaller one is applied.
- Based on the user-specified :ref:`goal <sysfs_schemes_quota_goals>`, the
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index e86d4f4fe261a..9e5904c2beeb2 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -693,6 +693,7 @@ static void damos_test_commit_quota(struct kunit *test)
+ 		.reset_interval = 1,
+ 		.ms = 2,
+ 		.sz = 3,
++		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_CONSIST,
+ 		.weight_sz = 4,
+ 		.weight_nr_accesses = 5,
+ 		.weight_age = 6,
+@@ -701,6 +702,7 @@ static void damos_test_commit_quota(struct kunit *test)
+ 		.reset_interval = 7,
+ 		.ms = 8,
+ 		.sz = 9,
++		.goal_tuner = DAMOS_QUOTA_GOAL_TUNER_TEMPORAL,
+ 		.weight_sz = 10,
+ 		.weight_nr_accesses = 11,
+ 		.weight_age = 12,
+@@ -714,6 +716,7 @@ static void damos_test_commit_quota(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, dst.reset_interval, src.reset_interval);
+ 	KUNIT_EXPECT_EQ(test, dst.ms, src.ms);
+ 	KUNIT_EXPECT_EQ(test, dst.sz, src.sz);
++	KUNIT_EXPECT_EQ(test, dst.goal_tuner, src.goal_tuner);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_sz, src.weight_sz);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_nr_accesses, src.weight_nr_accesses);
+ 	KUNIT_EXPECT_EQ(test, dst.weight_age, src.weight_age);
 -- 
 2.47.3
 
