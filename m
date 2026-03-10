@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8737CEB1053
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ED5CEB1052
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDAB56B00A4; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id 30DD16B00B1; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E29D86B00A7; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id 0AC496B00A7; Tue, 10 Mar 2026 07:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0ADE6B00A4; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
+	id D35986B00AA; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F8176B00A7
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9659F6B00A4
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 651A0C0287
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 437711BEF0
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:32 +0000 (UTC)
-X-FDA: 84529998504.06.B4EC5C2
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1D029120014
+X-FDA: 84529998504.29.0DB507F
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 11BC4100012
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:29 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=fVELfbwv;
-	spf=pass (imf29.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=AHWaJPiB;
+	spf=pass (imf14.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143730;
@@ -35,42 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YHzgGZovp5R3ovSImQbhUGUsyfpkJhLDogat/KIjBPE=;
-	b=0vFT6J5V7JLhZpR2z7jTGmiRTwMRErpe0CjH6KQNJZ3gzVY8a/u2TIvawuOZT9zUw2UPO5
-	aUaEU6eS5Qsn4BFQrQNrf0T20WiHVg+SfzTdZ63BrZpxARBuNsaKszAyEZecuApSuoI269
-	dbPw9vDtOtwykPlQrnTyNd+DYONhXk4=
+	bh=TMYuXsAwXlZPj+pNBI19fXQVyelGTABQZdwu3TAkE2A=;
+	b=NTz1p9Py+T6qiYkdDFJKb7WpGEuqtJqkPHaPw1e2PFTQuQbOoFqV077iGJZxgpmjMx/bvo
+	JcjPb7Mw+ULf3sU5DDR9vo8ysLhwZbrGDxwcY823OhoXbB8u8fNjEoR6BhfjEzah/CjAsg
+	U7pE6u8ZILAXGpgxu0Gzm9NkTo/XwQw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=fVELfbwv;
-	spf=pass (imf29.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	imf14.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=AHWaJPiB;
+	spf=pass (imf14.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143730; a=rsa-sha256;
 	cv=none;
-	b=7RAJVJU5mfJR9tFIcZb9/ejSTUyIBecBgpisgZaTkvUre6msB8EwSOVlFgynsUPrl9lATb
-	WaA/J0dUir9k+bxqvgm2a/hJwFM8KSXaxDqPlsUjdPwQX+ayUdi0fo55BjfWjumQiVLt04
-	DFqM+cTewoiCqsyKGHFYxY6AzoFSNeQ=
+	b=Z20uRkrHc/c3jOYhXxJ46LLcLRTs6M/mhHNgX22oSSIrKgPImdyqiog9ZWziFo5aXgeNXa
+	czJTsdX/6xrzuyYUqdL6SUkRwKoIsbxljNertdu+gNr3eAgkrY82Y9Btcvt7r6EbDctTuP
+	hj1bKE6gKSNMi9f4430kMrjYzQf0dEU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143726; bh=pDm3lCNTlSjUg9te/2qYAZpsW6tvI+d2q74vAk/3XKc=;
+	t=1773143725; bh=lEmCou71DQIv3rJiH+2ZIvzOcBQ45/hCLHA8fjFTjEM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=fVELfbwvQoehRpaJFY7JhfI6hh7CeBxkQsPfYq55sQ0vUjWp9z+lIlt95Xk2AyEJh
-	 PbXsF1cpAtdhOegTLvrb0S9nq62cukWwwyYrxLjCI0wmTbF+WNMrGuES99sNVPjj/b
-	 EsWE3JQi9cza2Xm4SWbcDWKe4CCvCMWDAHq2lZUk=
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	b=AHWaJPiBsL+GwFoetOExpKLG9cmnqvpt8xMBxHRmuFnKfjqJNAZAD1Wuu27hEzCjp
+	 yo/8LH57/iizP+bjiVmoMZwTMOiCMC/XLDqy5SSCcm+OQZZ/0iP8EPctZ2sQqxK7Ab
+	 XT9/JQSyTpsDOlLEGnKt3l1avwq96+RDdo3lipF8=
+Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ae-e21d-7f0000032729-7f000001da20-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	id 69b006ac-2367-7f0000032729-7f0000019d40-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:24 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:02 +0100
-Subject: [PATCH 36/61] arch/sh: Prefer IS_ERR_OR_NULL over manual NULL
- check
+Date: Tue, 10 Mar 2026 12:48:41 +0100
+Subject: [PATCH 15/61] trace: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-36-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-15-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -100,34 +99,34 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, 
- Rich Felker <dalias@libc.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1014; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=pDm3lCNTlSjUg9te/2qYAZpsW6tvI+d2q74vAk/3XKc=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZQlhc7PU7tZE01ILV/cgCsTY0g2y915SWo2
- WOp3PFfMVuJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGUAAKCRA0LQZT0ays
- 25iRB/4+DNoMMW2koOlN/DfR0crLtH1nZDxAJOmf/8RHXFfdriIuA3iATU5mx4bxDWjpvaGsmVF
- sScQl/IREquLsn2WvMNqP8VTO6O5b6dTKbFCMkwD4BQk0G2mg/TcyproVTFFc53eOopbKdhzKTm
- Isr1LIuVwpZ0FQ6SRPCDxxmnQfxV1v9dSs1qwmVTacxHLQeT5J39Og4hMR9wi3vpAJ5eehJCv9n
- lR3Su7JxXXqg12+uTsE16DABRCYs7reggRC+HE7/WglPKMOyMs6b/M6GTKoEx8jwE+9yNdG13UM
- RWdxOZdqo69T8hgV/W9OJAR9jWWipbKE58eiOeRYxFyI6r6y
+Cc: Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2257; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=lEmCou71DQIv3rJiH+2ZIvzOcBQ45/hCLHA8fjFTjEM=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYJfb+qOowLIkUmfJbwapQWgbBrCmoY2MGV1
+ kQO676TIO+JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGCQAKCRA0LQZT0ays
+ 264GB/0ePCsoEZ4dvusK/+59DK+nFUG4TMYrwfcQ9Aw8geb+nDTbFBXmGXKhwNE0FGNMoZ9u6w0
+ 6Z8ff6aHriAkc9Kt7Cgo70KOX6BjUy2bKgpnqJ9UCEmLABUocGsnikIoRM/S+kmqBXC+hSxD7sM
+ X70l7rxeP1jyVHxWJrxfa6E/R35lI3vjpmjnsYcBxz/fgBeGY30s+ys1gafR9RwiFHF5/fl9jcb
+ Y3J+3Pom6JCnaZYPGyS2UG84plp5l+rENGjhP2UWug9tGkZ5pwYbuR79z7QaUT6EEnR3YbR314t
+ 8SpG12KL4Vc7ZU5W2GsSc9E64021CyFWbNdSoNZGwreTwyp2
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143726-35BF0F2F-C3FAD55E/0/0
+X-purgate-ID: 149429::1773143724-764F0E1F-76E75FCD/0/0
 X-purgate-type: clean
-X-purgate-size: 1016
+X-purgate-size: 2259
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1D029120014
-X-Stat-Signature: f5ozpc5m9b9tjmir9hesgqjynnnqhcoz
+X-Rspamd-Queue-Id: 11BC4100012
+X-Stat-Signature: g79zcmtuca88rc7bfcppd15zir68w15r
 X-Rspam-User: 
-X-HE-Tag: 1773143729-182928
-X-HE-Meta: U2FsdGVkX1+v07CxJToSF/vIF+swAHKXu8mYPzRHzXGww1Fa19hHTTowKHSl9YTLh33yDXmFFJThogmQFrISvD9UwEY5nWwkracfB7QM8yREhxviQ5IfQOgH/MAq2gD9Gh2romHvhGQBB9cwbK6VTmVFI8kgzU3H1dchBRQpRPQXojM4Tmy4cabhviWdKbQjF6Ia0RvbfPf001uJFdoAoxPgY9PbEnoTun15IDBHgQ0ZoIGixNhw8ccpnjgS2t7FmqJZB/CC9VTj6UPorqhTdAy18fTy3GAl+K5ag4fJkZgWLIF7jP9ud6hZJtrMVHpN7GjVagd0Vr2o7Bhh7AIvKtxED0fy+7l3otDe+HY2PtiMmE2eTUyThdK6xynGdiQhNKr3mQ/0/GpkNy+a14zGTX3Y2GHfvpzmJNv0aZ9Zj+S/1dUSgAgp980jzjJijLDC3Z8X5dnRNYzE4wwHk+HqZ9zq0vnIkVgGm4zDcqp2n4SJBNssD2YfY5XQhbKZVpP3kFBpJ+lmfB9IWtqo0dd3hHWoOW2ZOjZjwxZkEeCatctQ8HyJM+ZsaVtgtvt/240OPmwI5S4loYf1oJ7fjRkgfoJr4Z/ch9uoU+pDrpVy28Kj8HlAgU0R0g3qBw30oaVyVd6pEeGtHr/td1vvtStY7XSzhf/uBwS7Crl5YzOgX8pd0I+yjuXPLTFtYwzkJlInpPzql5608Whmdcmj/AykxoIbWOPO/fkNjcqzKF0ByJ+c8RC2HTalm8U4MGDRzZLhTrT3mhau7w4wJycwuKiaIvMceoPA5fZORiKzoeiJ4FBXtUZLtyBcHAe7nv/alcN6SXQUABsE3yblVWFEoWAidmOAj0cbU6F2G2xnvzD1eHbQpJcsEC53gSD2nvhs1HlIEgnbn9Hm9fXzkIPP4T9045CEMa+w9pugLwm19ru3+bzQEgKlwG521w88IQ8k1okFhMAIb7jJ66GIXZfv7ui
- J76PD9ld
- 1fTh783iTu9Exij/2+tVIjIYqvQ1UcxOQECLBulKRmNnJZ+bM8aoZ5BoWMvQfG8Z4QF45+NiZuCPl01yEQccgd3UQYU7DwrK5gZBYAS3mFQ3NE5cqYVvPxGdvlDaJOJirqDAfdQGciAEqyTO+sPimB9dvF7LFU9jRKWr6k6l2jjAw7abOgRVTxuc64h3ydjCZR/TjO5azSRsfzystRuRgvOuHsp2JJP2zCr6Cygva5lXkQVT9x4uNxodYSJhm+OGmezg+38y5exCLuJF7+b/ZfnaH/TO3W+Oxs/rEp1mKfP78/il4MPztgPdI/1c7TA0tlGt2pOOn44dKqw4qKiXVZsxB9Nf45R3SE0pGf3CDRbyD/VNUeaYuuB1LZedA7aVgLgfeOsrmSc+DYpmxp+Dz4jkZXOO/4lF5dfKnAQ6UNIotZ6PdGqxhpSPImIldwPUaAKYt
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773143729-426212
+X-HE-Meta: U2FsdGVkX1/D97STZ6iLMrKKtg1Az4Y0gG6YfXKkEG7vRUNaLJJW9dHEAhqaO28dDSH1QciBpkBMvMu3A/K+FBwkIuCu35NiYeS/mm8keA3ssr844JD0Eto5iyU61Rhe6IIlP+ubeiYKQHbeBOaubt2VY1GSTahtIcF32s2NT/HTBTyG2VhGk863Ha2sK4z6sinXAqWCqUJQPDyFcqDdRElc/8bmKt30ZfFDf81L0nuTUQPIZ4LljIkYv0t1hjTBZVQuSeSTP6T3Tiw9EjW2/EaE0yOXqZrSpGr5szqWUvUJVO63/sg7/UpPgcUsx0VJqCOtsItg2QfwWJ6tEl3BORQqQp1caWuYImPM2scRP0/XDCcIcoLmJAUMOo5LDV4zm7NtvaRSUjGLhYp8P/s0R84KbDRuzinVi2PacMEibUH1tpWgUrXb3w/9y3k/useh8a0ten/HD7BwXGN3/iK84JfNPVpbWZJ5q3VkUSu+c/+ovD2+fxX5fZ7ZppkA0daB7AzeEXXF8jJesELA2yPzsXe0gtqdURQKNGUgiT3YSY2U11aWTqgG3jQkpMYxnMfOwwqD2rfXfnuATzbZs3xM5xzxpPmMqF+/eZbrxjSEpR/HeHehFX1GhBfS29ySiGDidFDw9+CVXLJkYaE1RprqzLd0pusc0+tMnYy3l5iNeTWqyBNoRXwNYh7UDRkO5ArFmd3C2Ce4SfeyFUsYwZLe4IhWAoPoomDBztFx8WMNlSRphfm2qZymKuT17477y/iwi+zlzLj7s/vLDHkSWWbS4s5WsQwJ/8TFIT1E97DgjRQ/v5quGuQRKnvGskLqtNcYN0xTiNv8nZmT3HWf9qUgICarhJinfxOIyEJIsV7WVTb4ItsFO049gJAi33FJ922EAM6rsgH1LK9JQtCcmYEj46PBK/39t8MbDVVBuQ6n0I0dEqcycnK8Vb1hNO0ohOQA0V5JOM2zhpzR4IOTiat
+ ZuE6W+nM
+ mNmikjI6/L1BoXERyoZun+yv09aJI9qf2HdZBOZFeyFo6RLRsy6RSlN59IWmzqcjPhk3klF1qWVcHDtIvxFvGEQD7jo64wR+grj63yqn4SWXhUbdLiqY9uVKEB8xupS8TGWCeYcCcJblMymHhBGf0HUQc0hkd1hrFJTgSMFJUuqHlUkyWsWh6idnudZnKu67AcWNUa3nvJVDPD3TTc2oVrUpYdU7JfymmbglqB2ZJivQMDGsN1bcs9IlOikfdilONQCgSSO0jqmFjbmqu0o6oMDFL6+H+ZCSwSnX1j9QmnOWYCVaigSENc2iIQ+1n9JdTC+GgiqZWKZFmFGnXmRld8X3G60ETpo3fEGFliT7E+VE7he/oXwD9VL+xtJm4jwOIJPYFRT8HNYtv4Ma7i5RMvBznoAQz5RrLw0VO0dBLlScywm4FotVvQHGgK6qe8xQQklbuwqsl03JdGWOiwqdIQqLD2YGXgsLtoDGvg7RAOmTRVlzXbVpW68TC8TITsX30jtzw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,29 +139,57 @@ check.
 
 Change generated with coccinelle.
 
-To: Yoshinori Sato <ysato@users.sourceforge.jp>
-To: Rich Felker <dalias@libc.org>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org
+To: Steven Rostedt <rostedt@goodmis.org>
+To: Masami Hiramatsu <mhiramat@kernel.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: linux-kernel@vger.kernel.org
+Cc: linux-trace-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- arch/sh/mm/ioremap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/fprobe.c                | 2 +-
+ kernel/trace/kprobe_event_gen_test.c | 2 +-
+ kernel/trace/trace_events_hist.c     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
-index 5bbde53fb32d785607f8281f9e9cee16d16fc551..06c3bfe2511fd0d5e67e28a8882aa9159991c30a 100644
---- a/arch/sh/mm/ioremap.c
-+++ b/arch/sh/mm/ioremap.c
-@@ -97,7 +97,7 @@ void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
- 	 */
- 	mapped = pmb_remap_caller(phys_addr, size, pgprot,
- 			__builtin_return_address(0));
--	if (mapped && !IS_ERR(mapped))
-+	if (!IS_ERR_OR_NULL(mapped))
- 		return mapped;
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index dcadf1d23b8a31f571392d0c49cbd22df1716b4f..a94ce810d83b90f55d1178a9bd29c78fd068df4c 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -607,7 +607,7 @@ static int fprobe_module_callback(struct notifier_block *nb,
+ 	do {
+ 		rhashtable_walk_start(&iter);
  
- 	return generic_ioremap_prot(phys_addr, size, pgprot);
+-		while ((node = rhashtable_walk_next(&iter)) && !IS_ERR(node))
++		while (!IS_ERR_OR_NULL((node = rhashtable_walk_next(&iter))))
+ 			fprobe_remove_node_in_module(mod, node, &alist);
+ 
+ 		rhashtable_walk_stop(&iter);
+diff --git a/kernel/trace/kprobe_event_gen_test.c b/kernel/trace/kprobe_event_gen_test.c
+index 5a4b722b50451bfdee42769a6d3be39c055690d1..a1735ca273f0b756aa1fcfcdab30ddad9bc51c5f 100644
+--- a/kernel/trace/kprobe_event_gen_test.c
++++ b/kernel/trace/kprobe_event_gen_test.c
+@@ -75,7 +75,7 @@ static struct trace_event_file *gen_kretprobe_test;
+ 
+ static bool trace_event_file_is_valid(struct trace_event_file *input)
+ {
+-	return input && !IS_ERR(input);
++	return !IS_ERR_OR_NULL(input);
+ }
+ 
+ /*
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 73ea180cad555898693e92ee397a1c9493c7c167..59df215e1dfd9349eca1c0823ed709ec7285f766 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -3973,7 +3973,7 @@ trace_action_create_field_var(struct hist_trigger_data *hist_data,
+ 	 */
+ 	field_var = create_target_field_var(hist_data, system, event, var);
+ 
+-	if (field_var && !IS_ERR(field_var)) {
++	if (!IS_ERR_OR_NULL(field_var)) {
+ 		save_field_var(hist_data, field_var);
+ 		hist_field = field_var->var;
+ 	} else {
 
 -- 
 2.43.0
