@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29073EB1052
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C60CEB1052
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B51346B0099; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+	id DD02A6B009E; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEB256B00A0; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+	id C62F86B009F; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8462A6B0099; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
+	id 8FF916B009D; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 576336B00A1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54F316B009D
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2026D1BD3E
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 26F4F54FE8
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:30 +0000 (UTC)
-X-FDA: 84529998420.07.06AD7EC
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D771AA000E
+X-FDA: 84529998420.11.1D6D95C
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 062E0C0013
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:27 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=J3wSWYAg;
-	spf=pass (imf15.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=ZioiLNZ6;
+	spf=pass (imf22.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143728;
@@ -35,41 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xi8Rxb9N8gVUASmXPG2lAu3yO+J9YHYyyksDmdHBdxY=;
-	b=2std2llrvTmuLP4hvSL4BjFrTlTW6SAtXA5bMOL899aLnp5t2KcG3HI97vylk39VrOlZs/
-	OsPKm5h8ajveSZuy9wzx6xx75OiJFIZcP+ET3i5O0c5gxY6dDhYzom+vE8uIKty7iCgVY0
-	4ob/Gz1+5l0YceBQsZxZlfIjM8sz6Ic=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=J3wSWYAg;
-	spf=pass (imf15.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
+	bh=fFGvRlKzm+7M1qonE6vgNo7ccQBlVkvo/OM+PnyhH+0=;
+	b=QECt/P8xwdMfPeWqWrIfs10WFgH+XoyOEaAQ/FAD8dowIAJtNOFxkJBrTvrMScCBBa+orV
+	RXIXOfseU4Kvlupm3qRNHSHBMX8JtMuqgY9mXA1OZE/4KSyHWoJrzeVFSLrW8it9WQ+ls/
+	t/bYj3Vi/rxZsy546YlM+BZbGtd7+So=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143728; a=rsa-sha256;
 	cv=none;
-	b=GTiCdkUIaf1By4Q4ISmQZ9zI8MIDHukO7puyFi4S3y0R2HjAUr6/MCelrelRZ7e6BSfhRA
-	Nm4MLajXwQHm05SruBdZVTFURLn8UF+xoULmlgvW/PquLlq5PppjrJmBHrPgGv99MQmZeE
-	N2hJpreU0GlWZwmLpFgX4bJazDoHjpo=
+	b=kTN4cBBFkvjXiuFdkC2tpoue0f8pF8O3Y6/inUezD61DlfaSn1Y0QLb1N+u+oVY1j4eAgE
+	LwxJg0Wl4crOy+4kkCxeJhoomPYJJILepRuapuht79Y329iXR5r431n7hXfdR5jRI9vIUJ
+	bQJZ/PH2NTcSoAB7YCF6npLQfxn/dP0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=ZioiLNZ6;
+	spf=pass (imf22.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143724; bh=1PXfnuytcDxCJ5WvjcpjD44YA1sDO5ZH9mYGPwGsGfw=;
+	t=1773143723; bh=KX6X+DDiGt9UXTjcCHLPV6DtScldl/2cIRjPuvT9tTY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=J3wSWYAgTHffE/RASKBpQWq2ySnTd5MpW6YLASVrV89gusHRkOxfAkrwsTjGvFaNS
-	 hDxuWWXJL4XVOl+LI/t97dlq56rN6Kpzc7n2jHPxY+V+uUTEo8r5Ulk5M3qiRSRkq1
-	 dYJqASb6U15Y8KxN9uh8urreNs5K4N5plRC3Hf68=
-Received: from [212.42.244.71] (helo=mail.avm.de)
+	b=ZioiLNZ6EfhKGMrW73+pjGIuwzOuvOKiSTcZ7wPJiCwebXNzeEOuXWZ+A1nFHvhW4
+	 kJcOoKZ0VhxgqpRswcks1O+/9tUDVhOk4k88nkZD85ItDoYcz2HVcAjttfrO5CwuLe
+	 NFoc05VLkE1QM4ORDb0Hi3i8FcBzsZqAPnJdPzxQ=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ab-b734-7f0000032729-7f000001bff0-1
+	id 69b006ab-2367-7f0000032729-7f0000019d06-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:23 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
 	Tue, 10 Mar 2026 12:55:23 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:42 +0100
-Subject: [PATCH 16/61] sched: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:32 +0100
+Subject: [PATCH 06/61] 9p: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-16-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-6-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,39 +99,35 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Tejun Heo <tj@kernel.org>, David Vernet <void@manifault.com>, 
- Andrea Righi <arighi@nvidia.com>, Changwoo Min <changwoo@igalia.com>, 
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
- Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, 
- Dietmar Eggemann <dietmar.eggemann@arm.com>, 
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, 
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1398; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=1PXfnuytcDxCJ5WvjcpjD44YA1sDO5ZH9mYGPwGsGfw=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYMDPZu3smBGrrjEDAZgewRd/vSzrMtCJxCU
- Ab0/aCneJOJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGDAAKCRA0LQZT0ays
- 2yYuCACBFSism0sJT51wNOH3mmVipRWFOp8Vg+RkYWteB8QGePJlSbJv9OJm09HMkW7tLjwUyWX
- VVHeC9B16w6ID+8gEcOTClH7t/fK4Dy8WecKHkh0F285AVZWcglgZ3SjIJUNbcIL4vnctyxVDTz
- UXRKVqYZS83Tz67A8a3xEjr7wme1UPPk+FME5Cb8slTwxHRkeibjPT1wP0LHzCbUOIo6nCgv8R7
- jLfvDCodAoO4aPJRzL3vfdPDFaqXegciQKVWThwHK6Iz+gXqJuudCNdAk8Oa0FFSpSor2eNbdWj
- hK6ZRlUo0db2BRvH/nraA1HapgaLEA9P2vfUY2mJwp9Lzm4g
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=932; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=KX6X+DDiGt9UXTjcCHLPV6DtScldl/2cIRjPuvT9tTY=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAXqJp0CDUjw9jEvsvX+a/KbvAdXeFk7KScmA
+ k1gbpU+8P+JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF6gAKCRA0LQZT0ays
+ 29mrCACj+Vud6UtbAeAOyyVoHbFLvMA1jaglqqRGws0fgYsgwpzXFXvy2i2CmaAOIcTuq4UVTOl
+ 2Cp9O2MO0VDKHA4864zJOud8em6WQkYpTs1edDKjyZ8gpLnrkl+uUALuLIZHLcn32/PFl6USje2
+ 0rlhbB9Ue5RZDoT7EFzcp3mX899jCdSGzalbeWr5SPDgRQW0S9l7PbTpDgAvlvTr4+JT6Q76sJ+
+ Xum3jXXZ29Rm368akWgnu/SoCzltjqdTHnSYloTAliMoi8hFFj6gbktEQSHRbMEzLVXTgNcHq2l
+ 4mfiDZbzmkqs8S8e3yaP+Mk/R/tjrHLygop2cIGzqTfhnlfW
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143723-E0DD4A3D-EB59D507/0/0
+X-purgate-ID: 149429::1773143723-77CF7E1F-303E842C/0/0
 X-purgate-type: clean
-X-purgate-size: 1400
+X-purgate-size: 934
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: D771AA000E
-X-Stat-Signature: qabjexmjs9ie8jkuf5drs584t4cjim86
+X-Stat-Signature: hrbqy6fwxfx3nqo85of4uijf9zu5hxjd
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773143727-779593
-X-HE-Meta: U2FsdGVkX19gmmNPiukOdMLr8TNKP+/fqxd13K8FqQAEitZkKZyeaiJjRWbxL0cnpkAlPvmQ/CIWRXIVU2jw/7ArIfhoyPVdvaAoMExr+f4vM+el+FiTHF7/AhOfNcx78eQDSzcX8LbVIUyzwEXVLia0twDb+C7aO8oAoL2TFJK6jsDWw+O10Pss8u+c4eaj7U7EF+qPVT8NQlKLFBEhMQ4ADAt0ixAK9mgg1VOpXDCSyXFSgQ14lpAl83kMlSpqTRkWjy/ZxHMtc2rnm5d+Rkxnf47H8ExZGoy0afO2LZsAODUerMvFPSvuWVhecWqqZ9fzRmsPWQ9ZGURWUCe6XAL9EE0c+t8e8RQQavRI1SUHvebgWzmmzqkR5oNaKa4BVNUfB6u6nrhFuQaUl+Ny+MKJgJ4rvU7Wkc7QP+t06C3TWq+9k9XOwUT3DAb+BLaM3uAnvcGFxqDnjlSb0jHyEnbZwY4v7FPavRlpTK2o2R3t4DVQFrWAxbSVgA7ORgl3V7iyCTvZsstX4+YRliYoUyChW0OjY3N8/R4pWNO2zKgNsYG1AbgyGF7mjImic7SmSr0Lj7n6A2XcEvtCfR4B/z+7JIUzKNzaadeOFBF09apYkvW4x4G14+42Fprhxyc6ANEK9Zht3YuVKXCEp4SBu9g9LtIJ+n6R9R0d/wcTWRJJPdQN9g0gaN7T6H7YNRpJiBvlrGdjauo9TuWouki7N8vmQge2zVhJTjSK4DXLXzdvvvuNr4OPsceOq/i9pYyBTZx7oWAgKYUVnAD1Y6XTydijm4Uv0nK/2PdruQTtumubSKN2QbmcvcbUuLaSvoEEWn1XuN/cAElSizgCoC/iT1YEHGyKAPzAMtI/9EtJFS2QPZFkDnYhzi7jlJodZ5NllRQTFg0kI9TSz7A8gKVTaOhVU2Txld4Ll1Hsa7LIL97A7QZku+1aT2b4xH4mR5Ag4uSlck8N4GQLdsqOf5/
- u5ulRaSN
- +ZERm1ijR50VehScYg5VWcf+Fvn5Ubf8jreiWEksj+DlkooBB8oimq5YRIbnbcdUavmEhpt4H1AkdatopWNiN2VKfc7c1M5ygWLBwHnk1axiED8M+vZUXA4/l548x299r4VP2Xkuqrxl+dU+LZ6VO085fj7Z7Ut+phi3R/Z1qKhUbM2VJ3A+Rx6ls1v/qYsk2vE/9Yps6b13xEE4FKmffK6AuEJjkmoNmakD4q+N7BQN1X4DekCFV/HI9sFTg+OqiB/zf0ygrmUt2s5pE9doME1k+comJ2ZV+l/fX8cAqFbCONKGJy2f9AQlGTCycIK1HkeTUz+TPqNxXm8YOxfPYtsl2it5/WfsgcgNfMJUQ4TBOOXM3jhCLSVVyLz85ipxDLTS3gZGnaZfoaiJj/Usyah2jpaRIJClEFYDe4pxZFXoIIoml35lq5eOhGplmxGzuilsFPqAqla6Hh2DzwrETpFAVad/6ezvWlNIe4f3VS1fj5sxgf4c5gHr+caF6evHJcQA32KQ3jJNe0PySkCN/pWNzFIirRXC68/N/endwf2wZOle1Cibe9aqMnAGgY8VFP7wc7HA7+IXRCr/YvCLy+3LnI+UenXgtdWOhXwbcWiR1F2oL3f08STeCXGwZF/dymvaYAiaZcAg+XFnfkOe3wqkErNvFRFVTQ7ynk7pHM9y9irvrlBKWk6bkgs4dumjNUPXGeiFOe1jFPKyj24ZtS7xOqeQxG0x2Dii58oWxOHcoHDIXs1WlSZOzjWU2512/Wjnu83PbyXa3zhcuPWZG3/SZF15CzMYFNHzv1TGtMb72MDgtu7YGST593g==
+X-Rspamd-Queue-Id: 062E0C0013
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773143727-969469
+X-HE-Meta: U2FsdGVkX18//Eu2WTYCKX4vZLD/jmQ0eVhHth8Si1OkoQKWDV89M4wZQq6dNRdYOCZsp3kojOAUfSxMwHMS6Ijkn+l6NWA50/Lo2MRMiE6K2COSWYThf2ZZzxkkWHLbueX0dxBUEjtnqzMHhNR8kT0Xn7rqjqM0WgfkxYHn3Le/442nlaI9v/UhbtMufALEF3Qk1sjjDrX6rUplkaASNNF8eQ3QstHElRaM7DMtLM/rx3u/ldUPmVuj6/H6sNuiTPtZbchLTzBruUERVxjfzLTN2O/lW82vp9GJjVNWHtGELO0H0CM11aKhIXbKfFGTNRTFwb93TbL7RfKPGmM/WCmdeJqLEVqbvYxpaM+RN0Ben9Qju/ev2J1J5xDfdEuiNpRlxGoss2MdcLrGD9xWp0NAu6BWLXvIzXnIPrYOogqG6/5aziFMMtH6qhn/cXaVJI34QB0i3dCMKKdvakHzZB9uLPOGvn4W+SCmQTc5IwmkANLp80mnjTLSYBAn1Lfll4QjqC+OkITACAzUfBB3ITR2Pf5U/K+8XE9o0LOBKjfY4lSSRg4Q5t5Qe/Y4Cwkrvf7nEgdpeKuxXkshYXJijujO++qQu/Ri54I1Rv4ySLDDwBhOnvyZ0GrLV7k++KLZVlNCkiFTA5FLZwhtYZy56M+JHAArYk0Jyd02PkmEwBlDWyEQAXDyAygghRMOVK5CrCYRf2BnzXMzoGJ2IDYBA4eceuYtoYYv0wMhuxtIvQ1TuQfen/s2JMoUybLrEN5og4J5Qp3YC+nyIWdumog9DZBAG///9N+xINLXfzi6WpyOeia2XoQ5KIugd3hHjiHWWCadb8poql2UOeLc9myLK9MB9ZBs5FQblHXUVuNKUKz4W3WnbI73KMeaAQPWfWf394fu+hMa3/ZWq0cAw2jJwVISOxv0R7cZItJPNAaAppmXYufXxv0JeUDN+JaF0OzwyhcaubutBpGVgxYDnud
+ Hiz+HroG
+ n+6mayViunu824/rJjYahMN+oCeDEGWZl09ESn1BDdtPCLFYuoJTwNoACXdbwh5pvSSKQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,39 +140,30 @@ check.
 
 Change generated with coccinelle.
 
-To: Tejun Heo <tj@kernel.org>
-To: David Vernet <void@manifault.com>
-To: Andrea Righi <arighi@nvidia.com>
-To: Changwoo Min <changwoo@igalia.com>
-To: Ingo Molnar <mingo@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-To: Juri Lelli <juri.lelli@redhat.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-To: Dietmar Eggemann <dietmar.eggemann@arm.com>
-To: Steven Rostedt <rostedt@goodmis.org>
-To: Ben Segall <bsegall@google.com>
-To: Mel Gorman <mgorman@suse.de>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: sched-ext@lists.linux.dev
+To: Eric Van Hensbergen <ericvh@kernel.org>
+To: Latchesar Ionkov <lucho@ionkov.net>
+To: Dominique Martinet <asmadeus@codewreck.org>
+To: Christian Schoenebeck <linux_oss@crudebyte.com>
+Cc: v9fs@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- kernel/sched/ext.c | 2 +-
+ fs/9p/fid.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 1594987d637b09e586ae788b7f2e6336332d605a..cfa869bd7de5406a5ca094992ab04c62b0e92fd0 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3688,7 +3688,7 @@ static void scx_sched_free_rcu_work(struct work_struct *work)
- 	do {
- 		rhashtable_walk_start(&rht_iter);
+diff --git a/fs/9p/fid.h b/fs/9p/fid.h
+index 0d6138bee2a3d1ab565ab2d210c0a3f3bf97e4e3..3bb7ef4380e972a2d9ab67eb4aab6cc5bfe2eea7 100644
+--- a/fs/9p/fid.h
++++ b/fs/9p/fid.h
+@@ -27,7 +27,7 @@ static inline struct p9_fid *v9fs_fid_clone(struct dentry *dentry)
+ 	struct p9_fid *fid, *nfid;
  
--		while ((dsq = rhashtable_walk_next(&rht_iter)) && !IS_ERR(dsq))
-+		while (!IS_ERR_OR_NULL((dsq = rhashtable_walk_next(&rht_iter))))
- 			destroy_dsq(sch, dsq->id);
+ 	fid = v9fs_fid_lookup(dentry);
+-	if (!fid || IS_ERR(fid))
++	if (IS_ERR_OR_NULL(fid))
+ 		return fid;
  
- 		rhashtable_walk_stop(&rht_iter);
+ 	nfid = clone_fid(fid);
 
 -- 
 2.43.0
