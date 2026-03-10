@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77FFFCC9B3
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:54:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32F85FCC9B2
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 04:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D8176B0088; Mon,  9 Mar 2026 23:54:07 -0400 (EDT)
+	id 299A06B0088; Tue, 10 Mar 2026 00:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0854B6B0089; Mon,  9 Mar 2026 23:54:07 -0400 (EDT)
+	id 247276B0089; Tue, 10 Mar 2026 00:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED3886B008A; Mon,  9 Mar 2026 23:54:06 -0400 (EDT)
+	id 1499F6B008A; Tue, 10 Mar 2026 00:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D9C946B0088
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:54:06 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A0DC16046A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:54:06 +0000 (UTC)
-X-FDA: 84528785292.02.3474BFB
-Received: from mail-oo1-f69.google.com (mail-oo1-f69.google.com [209.85.161.69])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C125980009
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:54:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of 325WvaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=325WvaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 027CD6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 00:05:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9306359112
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:05:09 +0000 (UTC)
+X-FDA: 84528813138.23.1B71888
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E52BBA000A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 04:05:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	spf=pass (imf25.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773114844;
+	s=arc-20220608; t=1773115507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=oIx85w9W7IsG0j4v1Wx1+1hfwFsNA9DgmZnpX/ajWn4=;
-	b=Cj+syLqPMqpfbJeSadOqB2gfyRPBlwsBrsQPSJ05wxiwOafrSLxpbDprva+eJMBkKvHOw6
-	ILU9e92Ypt/3AZcnpfBYpFMDjG4iKoZdt5IpYIqYyuKizzH3By/FCbhjykwwB9zYwe7gWp
-	WSRwQtZSDUtyzforU4mZoU7B+YHZ8Fg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pcPeGPKnK+VVnaKWUE33TzsISgSeurGv2X4aZN4dvjY=;
+	b=cxnCiQF01HN2wkb6tF5bNeARlximmKmk01Mdpw7Vr0Bjrj1tsWWaClJYCL1yq9SWABkgEY
+	KFZtX7WJit9RMefqALEYSZb9pW4HiZnwuOD2XRwCWS6ZPOMgx/UFOoYXiuN5JVBVNARphw
+	BkiMaAUehlcTHtfQxXG4BispU8jQTiY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf25.hostedemail.com;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf30.hostedemail.com: domain of 325WvaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.69 as permitted sender) smtp.mailfrom=325WvaQkbABoIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773114844; a=rsa-sha256;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773115507; a=rsa-sha256;
 	cv=none;
-	b=a3XOe2+9Evmlbr2XyG4xRgfNHbr+3/xECDAJ5tt/JYytKQT2feqRMtmA+tCZ46cx3GTkEm
-	L19HR56+BBHIWQJ1+cjjq0IeBKEiP5G4/5rUGW5EPAtHO8/5YTEVNvUZocD0psLePGGePD
-	wHCBIj06EH0ciMOLX3MPnoPmZZSofzs=
-Received: by mail-oo1-f69.google.com with SMTP id 006d021491bc7-679c5ed0942so138616002eaf.1
-        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:54:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773114844; x=1773719644;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oIx85w9W7IsG0j4v1Wx1+1hfwFsNA9DgmZnpX/ajWn4=;
-        b=omLj/OLdKeYizYDpbI9aCpp5od5K9rqXrDP58cXioPhEVf0ly56OGgFuB2XW0qOLOj
-         W/kY4/H5OJBZ1RW20N1X7CLRigy67IpGnKM4XZwiZSeAg3pgygwo8BQmdePk+MUlRnUk
-         PR6acMV5MGFFQ3A6R6syCG80wun1nzsxYnRT4aFYU+80hqJYERDFT+icz6AkMy/gBm+m
-         KHjaPSUM8aq7GLSewDvUo/+IslvOdLdQWiNfl08cHw6XmVXZ7O+ECfFIUT8WknAFJg6l
-         zWDXMlxeTGbT32Z+2xuAwkLLr3ytTev6q7VY0wZ5GXN0DyO0zClrN2TckrS/G5K9d1Cu
-         UrxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRNbCroIFpqBLgctURldoEfnrtC7uID7HiqDKSeDNC7f8fHvpM+YdTAa8yaQJIdh9TY0Xc84G0Fg==@kvack.org
-X-Gm-Message-State: AOJu0YzPGOkH50VYwQAgmEEWdETJuA0VXJK3Nq41zffXS8wrUyfz8/mU
-	s+W30ovc0UEYGs4oQxbU8xPotEXK7t4GSY+RkdO3rbRR+cstcDuXu9OIHXWWENgwd6SwrWHKSEP
-	LhOMNcIDuPiX/fNSKyd9Zg4gj3wr6FIhAPH0+E+Z6rfL6cIB+6Ha59lTi2to=
+	b=emy9xyr8qyTKPix42pnySGvDW4japdbdfdWFI7VZlGwRei4vXkiGcBEESIcUyGB8eHKYX9
+	CIehiWL9PgNNhOwoTnx4OW3Or+W9Eh/wHojT8DWZKEwkoFEThqDUAXzD4sFabcbqfJ/oWh
+	OkswjEdWxW/DCofhOFfb9l93xh0JDXE=
+Received: from [10.213.22.149] (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowADX+N9GmK9phtg2Cg--.5200S2;
+	Tue, 10 Mar 2026 12:04:23 +0800 (CST)
+Message-ID: <482adca2-4755-4e86-8488-fa2b1a02f0b5@iscas.ac.cn>
+Date: Tue, 10 Mar 2026 12:04:22 +0800
 MIME-Version: 1.0
-X-Received: by 2002:a4a:edc8:0:b0:662:f763:c539 with SMTP id
- 006d021491bc7-67b9bc6ad80mr8703060eaf.14.1773114843722; Mon, 09 Mar 2026
- 20:54:03 -0700 (PDT)
-Date: Mon, 09 Mar 2026 20:54:03 -0700
-In-Reply-To: <aa-SinLe2jrtO1pS@hyeyoo>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69af95db.a00a0220.d013.0001.GAE@google.com>
-Subject: Re: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
-From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, catalin.marinas@arm.com, chao@kernel.org, 
-	hao.li@linux.dev, harry.yoo@oracle.com, jaegeuk@kernel.org, jannh@google.com, 
-	liam.howlett@oracle.com, linkinjeon@kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org, vbabka@suse.cz, wangqing7171@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] SPARSEMEM broken on RISC-V; was: [PATCH] arch, mm:
+ consolidate initialization of SPARSE memory model
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Mike Rapoport <rppt@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org
+References: <20260111082105.290734-1-rppt@kernel.org>
+ <20260111082105.290734-25-rppt@kernel.org>
+ <20260223144108-dcace0b9-02e8-4b67-a7ce-f263bed36f26@linutronix.de>
+ <aZytSwzGj24lqkLU@kernel.org>
+ <20260309082841-9c542a85-073d-4d08-8b8e-a56621a13c91@linutronix.de>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20260309082841-9c542a85-073d-4d08-8b8e-a56621a13c91@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:rQCowADX+N9GmK9phtg2Cg--.5200S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3Wr1rZr4UJrW5Xr1rGF1rZwb_yoWxKFWDpF
+	48A3W5JFW5Jr4fAws7tw1kZryFkwnxGrW5tF95W34FkwsFvryrtw1vgayj9as7Wr4vkw42
+	kF4a9F9F9a4UJa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Sb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
+	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8XwCF04k20xvY0x0EwIxGrwCFx2IqxV
+	CFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r10
+	6r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxV
+	WUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG
+	6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UYxBIdaVFxhVjvjDU0xZFpf9x07br385UUUUU=
+X-Originating-IP: [210.73.43.101]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C125980009
-X-Stat-Signature: 9p891zjt4amib1wyr87o7hcqb39g3y7f
+X-Rspamd-Queue-Id: E52BBA000A
+X-Stat-Signature: rkdnts4ghwroq18qa6wcg31d9zho4aze
 X-Rspam-User: 
-X-HE-Tag: 1773114844-177416
-X-HE-Meta: U2FsdGVkX1/rr+wixMqakkR03sMqny42jvYFyM7er2/K1DWB0crEhXwrjtZ+GWYb8F9Jcr2rBETJTEhb98Kq8i6+C5b+BuwP3+wtG6OdFZqrdcJqx1d56RGOpwJnWUHrPNK2f9t1w7dlP2o62gPf+/rwzYhR5+sfW60GUBHVCXUxToLiz78oc8xFl0eaqZrUOwFMZJtCAzW6WIHyn4xF/PQQXb6968r7rjbcePx+eEjApOSEJmhA6E7+TnelV9lAYLHWumBYteIlNCRpQxddFcZbLiy2FA7oVM9kWCIhSlZDUsSC3wDFRkliAZzSHztj7KL+tYmOHz6CdLazVnzrBQQt58adKE9l4j+F13hKWpTEgpOtF19oPIzHuvdgG4lg8nMdravx/592tLHjSRxi4ce8xGzSice92mGOQqfmyVdx1sKrl0/9tlGSGW9XxhE8zcFQmsqGjIVOcSzr0UXbXnDXh0oFQycVFWMbjlgkGW+a/tmSJN51dgxZz1idN81lo5XCfoqLLpSBr+dMDuMU4vNF6X0aph1xyC3S8C4KranoK+ANo9CcnvLZ5C1XVFlIo/zwVl3Rx41sMrTqa2nZawjN/4ApC3fXkdSnXNiKvzhoyigwBtLac3N6ZdevB4fkTPmRa3GyqTJ+YQCipO4aGjubkD3Re6lgpCwrHivRKx4ydUIjR880sHZruW/VoaYop3bYGnvYsi2pj/aVm6cWkI0MfvSljtF1imczL/MaZUCcQS10FYSkovU7M6wpmk9OaG/2fGi8uk3j1rDBP1Id/T3YKhNb9utdjXk4cWA4eJFh78LIkJPJBjAhsRhyFoGJOg+sqgqNjJ1Oj5RdnA2gQB5lIQdG68eIqDhFMDCtVtDwMRSF8cGxAdOeI/wZiqRMRUmmd0q6ybqkgZf0OAmSlb545swzRlHQUGKs3aITPXYxRAlznrh9eCXxvswI4YjOXivqv5LulPSEJpZNCaV
- q7Up2Z1l
- SPfrYkDj/qqNodln2gziROme4p32JKbJ/H1w3yXCW8su/PfjMH+jUCHazK9KKKQdVcGyKSsDjGd6wYq/H9smZp7CHrFfwjSCSGXUnvO+hzSoeuDSlZ+Bz8OyaHcovFXudLdyfshgFFv5FaO0ec1fXGwjc47hluXzJ3RUcFLogNB/i5UrSF8odnJWuEwn2/YsO+VdC72dUAW1HTgKAKqz6ls7wNUQWWy4N9e4TjT9O0P+7p81/hfN00jLAP9mT9AmAnwsVZ5mLvgJWCOUyRmOKixRb6i0ke9ByVdPlhUg+m7L3FF2VUFeke+V0FgvAHA63XPSnezbB47BUuF7iadP7cCdFpoNA7Ki1IB3OGBo2Gyfqhvoy/OGzym4FL3dpJfxgZydqWM9HWoHl7KPvD7aB5ZRaxufycIi/YPDS8O9nDVUsINcT1KxHs6cEPOGrCt+wtWasAPbuYQvyZ4m4Q9gdTYvY6+0E3AYHFBxFF9qU6RlwxFbQK+625LozDAhrgrDyATQFfRx9AeuhsIKLKn3RYmnpNh454Ca3r5+8Sqn7oOIAHaTyr5PhMFWEXHFuFUsuHg5wxu32hk04vAvPeGE2S0BHwj0ZU0F5ecwF8EHudP6qtVV3KB9r6tT4FqV4H3NMvueiRQP9gq7teCEY6EHJ2ZIbNdh+HlkzZgJ92vV4nIPER6daDyXauzllq1GOeR6oL+skx5pmEmnIgmS0brQZj2RlH/iS1pVg78TT5kEQINSRT8IcT6liy7OiJuNkLmFHS0gZMj/kS1qHnkAGD5npNph/XcIluLy1INiosLdt67Blh06wdTHlp7GGVOUK4EibMoQqaDHcmSZnlNN/E2GsV6LpyCJAySLn00KkluDktGz/ieL6n3a4U2kzJKZau098AJoZw0vLGPlB5aXCu086Bavsy0IZ26gCiYlo/X6LJPHnmNgdaYT2b6jo/JI5LSSzZAdVYW+mFyaEouCDKkuMuYmEaSD2
- y07UE0pY
- cXYpmWgiGsAfyjcIwOgodjqkhicTTyi0ovhZrHmmdC7WQqFqtzvgtw==
+X-HE-Tag: 1773115505-538989
+X-HE-Meta: U2FsdGVkX1/9nNIA9jFxpdLF8cGgjBoGt9PTC4sNCaQiSD0n7Ii/jjhVCCCgMqy5YV1134lkIIwubYyqjPzgoVMhNmsDZQQbqwVJmCey/Yt/RqhBN6Hfaw0cJj0rUTKbzoJlcWt6eUzk3GYowB2w5M+TzXxFrhl2+TsI5TqTYu3h7DbooUtgWLfg37/r9as7ux6GK9Rs3zcMZXtXLF17SDdrDBWH3+Bh7tl65lfcSZRlJ+s24QWiCGE8ljWDeZRNpnhaizMW6vlutzI2OHmuKx2qvTkHjG7mzibSyCrgf2bA4pbNrAbZoOjjSOIfZwGfO/bHhWd08W8ZRf3HPXMymepVp29clXfMrYGE7GndH3QT+Si1QC76ibbEhKYa5rDsM1HuGcoD1TsomfxO+gVZHt5HG+wU/MEP5+JjrKQZE2xyZEU6Wx1AUoaS63WeuFxIhCcEw9owVIRY2WNRJHT/CH6WsA0SV7DDJyFKJmjY8lTEwQj01PscOYbJAEu3jnjbIbi1YRxJlrBpgvyQD98qUlRUorGhs9gv7/plTcGNfFTFiXHGZWiZ2NkWX3VTo+G5e3v5+ajtTi0SOZoqggHU3CIUtDS6qFJ8oGozDEX3aaGwzwRtSyfi9G37KjkI7Qu5mmRQHh0TGn1mVPmA6Q3VldOHyfG1/aKjhEx/DkIwKKlbgXZ8rcbUuknMS5OFTi79d+SnCAIQ9Vo6ccveYgh3lMdD366Kk56Xp6jeq/0+gmEBBpuXbNEsDhTKr9HhK4SvZV3yQHLNRG/KjlMpXGnXfQBnTeilH+zhyj0o7JwJMV6JIU6X0kDW+j1YT9pKid/VZyEPA+jR0sHK6DOM2oIsptf8O1PrJwc+JE+38K2VKeOi3EHvn46RudnLYCsXSnmBX9Z1uuX+Pti0vqlPWKdwiuZYztDML//QpfVcCePiONeUK0KyE2bJKIhrK29E/NScLWWkjqvwgfP1Otm7EPr
+ EK5DxjHe
+ R/y+vAj6mbO2FEctPZ2UxjtymjqzGgWNHFx8++aTne4/UjTsxdg/6yjy6sJdHUMvDeD/qGG5v6Tl7qidrP1tr+oT9uWhwtX8u/XFyD1xPSpdgyzOQjC1qK5G2iS83BDEegiZ8chsF764n7WitJBuWTm0/awKM4uzTiChEb3MD/ozOlwqBXKgOvfPgEmFf3mTPY8j+ayDHQq5mPtA4NQQDcJwIow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,187 +110,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-
-syzbot has tested the proposed patch but the reproducer is still triggering an issue:
-memory leak in __pcs_replace_empty_main
-
-BUG: memory leak
-unreferenced object 0xffff888100b60200 (size 512):
-  comm "kthreadd", pid 2, jiffies 4294937343
-  hex dump (first 32 bytes):
-    00 6c c3 09 81 88 ff ff 00 9a 9d 0a 81 88 ff ff  .l..............
-    00 16 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 8a95531e):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4552 [inline]
-    slab_alloc_node mm/slub.c:4874 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5280
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    alloc_full_sheaf mm/slub.c:2834 [inline]
-    __pcs_replace_empty_main+0x1d2/0x260 mm/slub.c:4634
-    alloc_from_pcs mm/slub.c:4725 [inline]
-    slab_alloc_node mm/slub.c:4859 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_node_noprof+0x57e/0x5d0 mm/slub.c:5274
-    kmalloc_node_noprof include/linux/slab.h:1081 [inline]
-    __vmalloc_area_node mm/vmalloc.c:3855 [inline]
-    __vmalloc_node_range_noprof+0x284/0xe50 mm/vmalloc.c:4064
-    __vmalloc_node_noprof+0x71/0x90 mm/vmalloc.c:4124
-    alloc_thread_stack_node kernel/fork.c:355 [inline]
-    dup_task_struct kernel/fork.c:924 [inline]
-    copy_process+0x3e5/0x28c0 kernel/fork.c:2050
-    kernel_clone+0xac/0x6e0 kernel/fork.c:2654
-    kernel_thread+0x80/0xb0 kernel/fork.c:2715
-    create_kthread kernel/kthread.c:459 [inline]
-    kthreadd+0x186/0x250 kernel/kthread.c:817
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff88810438c200 (size 512):
-  comm "swapper/0", pid 1, jiffies 4294937794
-  hex dump (first 32 bytes):
-    00 02 10 0e 81 88 ff ff 00 56 c3 09 81 88 ff ff  .........V......
-    00 17 04 00 81 88 ff ff 3c 00 00 00 00 00 00 00  ........<.......
-  backtrace (crc 3e1bb722):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4552 [inline]
-    slab_alloc_node mm/slub.c:4874 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5280
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe8/0x300 mm/slub.c:5730
-    free_to_pcs mm/slub.c:5783 [inline]
-    slab_free mm/slub.c:6185 [inline]
-    kfree+0x352/0x390 mm/slub.c:6498
-    v4l2_ctrl_handler_free drivers/media/v4l2-core/v4l2-ctrls-core.c:1756 [inline]
-    v4l2_ctrl_handler_free+0x92/0x290 drivers/media/v4l2-core/v4l2-ctrls-core.c:1736
-    vivid_dev_release+0x26/0x90 drivers/media/test-drivers/vivid/vivid-core.c:857
-    v4l2_device_release drivers/media/v4l2-core/v4l2-device.c:51 [inline]
-    kref_put include/linux/kref.h:65 [inline]
-    v4l2_device_put+0x6b/0xa0 drivers/media/v4l2-core/v4l2-device.c:56
-    vivid_create_instance drivers/media/test-drivers/vivid/vivid-core.c:2070 [inline]
-    vivid_probe.cold+0x55a/0x386d drivers/media/test-drivers/vivid/vivid-core.c:2095
-    platform_probe+0x86/0xf0 drivers/base/platform.c:1446
-    call_driver_probe drivers/base/dd.c:583 [inline]
-    really_probe+0x12f/0x3a0 drivers/base/dd.c:661
-    __driver_probe_device+0xc7/0x160 drivers/base/dd.c:803
-    driver_probe_device+0x2a/0x120 drivers/base/dd.c:833
-    __driver_attach drivers/base/dd.c:1227 [inline]
-    __driver_attach+0x10a/0x200 drivers/base/dd.c:1167
-    bus_for_each_dev+0xb8/0x120 drivers/base/bus.c:383
-    bus_add_driver+0x122/0x280 drivers/base/bus.c:715
-    driver_register+0xb1/0x140 drivers/base/driver.c:249
-
-BUG: memory leak
-unreferenced object 0xffff888109c35c00 (size 512):
-  comm "kworker/0:1", pid 10, jiffies 4294937868
-  hex dump (first 32 bytes):
-    00 68 d4 09 81 88 ff ff 00 9c de 09 81 88 ff ff  .h..............
-    00 16 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 9ab54a7c):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4552 [inline]
-    slab_alloc_node mm/slub.c:4874 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5280
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe8/0x300 mm/slub.c:5730
-    free_to_pcs mm/slub.c:5783 [inline]
-    slab_free mm/slub.c:6185 [inline]
-    kfree+0x352/0x390 mm/slub.c:6498
-    vfree.part.0+0x1cd/0x4d0 mm/vmalloc.c:3484
-    vfree mm/vmalloc.c:3456 [inline]
-    delayed_vfree_work+0x5b/0x90 mm/vmalloc.c:3398
-    process_one_work+0x26c/0x5d0 kernel/workqueue.c:3275
-    process_scheduled_works kernel/workqueue.c:3358 [inline]
-    worker_thread+0x243/0x490 kernel/workqueue.c:3439
-    kthread+0x14e/0x1a0 kernel/kthread.c:436
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff88810a9d9a00 (size 512):
-  comm "swapper/0", pid 1, jiffies 4294937887
-  hex dump (first 32 bytes):
-    00 02 b6 00 81 88 ff ff 00 98 9d 0a 81 88 ff ff  ................
-    00 16 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 368f6316):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4552 [inline]
-    slab_alloc_node mm/slub.c:4874 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5280
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe8/0x300 mm/slub.c:5730
-    free_to_pcs mm/slub.c:5783 [inline]
-    slab_free mm/slub.c:6185 [inline]
-    kfree+0x352/0x390 mm/slub.c:6498
-    slab_sysfs_init+0xce/0xf0 mm/slub.c:9613
-    do_one_initcall+0x79/0x4c0 init/main.c:1382
-    do_initcall_level init/main.c:1444 [inline]
-    do_initcalls init/main.c:1460 [inline]
-    do_basic_setup init/main.c:1479 [inline]
-    kernel_init_freeable+0x2a4/0x340 init/main.c:1692
-    kernel_init+0x1b/0x1d0 init/main.c:1582
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-BUG: memory leak
-unreferenced object 0xffff88810a9d9600 (size 512):
-  comm "swapper/0", pid 1, jiffies 4294937887
-  hex dump (first 32 bytes):
-    00 b6 34 0a 81 88 ff ff 00 6c c3 09 81 88 ff ff  ..4......l......
-    00 16 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-  backtrace (crc d6fcd7dc):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4552 [inline]
-    slab_alloc_node mm/slub.c:4874 [inline]
-    __do_kmalloc_node mm/slub.c:5267 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5280
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    kzalloc_noprof include/linux/slab.h:1188 [inline]
-    __alloc_empty_sheaf+0x35/0x50 mm/slub.c:2771
-    alloc_empty_sheaf mm/slub.c:2786 [inline]
-    __pcs_replace_full_main+0xe8/0x300 mm/slub.c:5730
-    free_to_pcs mm/slub.c:5783 [inline]
-    slab_free mm/slub.c:6185 [inline]
-    kfree+0x352/0x390 mm/slub.c:6498
-    slab_sysfs_init+0xce/0xf0 mm/slub.c:9613
-    do_one_initcall+0x79/0x4c0 init/main.c:1382
-    do_initcall_level init/main.c:1444 [inline]
-    do_initcalls init/main.c:1460 [inline]
-    do_basic_setup init/main.c:1479 [inline]
-    kernel_init_freeable+0x2a4/0x340 init/main.c:1692
-    kernel_init+0x1b/0x1d0 init/main.c:1582
-    ret_from_fork+0x23c/0x4b0 arch/x86/kernel/process.c:158
-    ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-
-connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+On 3/9/26 15:34, Thomas Wei=C3=83schuh wrote:
+> Hi RISC-V maintainers,
+>
+> SPARSEMEM on RISC-V is currently broken in mainline.
+> Could you take a look at my report and the suggestions from Mike below?=
 
 
-Tested on:
+Not riscv maintainer, just happened to be taking look at 32-bit RISC-V
+lately...
 
-commit:         1f318b96 Linux 7.0-rc3
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17bde806580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2c6ad6fefffa76b1
-dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=1065375a580000
+Fortunately this is a 32-bit only thing. On 64-bit we enable vmemmap,
+which means that phys_to_page is also just arithmetic. Almost all (or
+just all?) commercially available riscv w/ MMU stuff are 64-bit.
+
+I guess RV32 needs some more love?
+
+> On Mon, Feb 23, 2026 at 09:40:59PM +0200, Mike Rapoport wrote:
+>> On Mon, Feb 23, 2026 at 02:52:45PM +0100, Thomas Wei=C3=9Fschuh wrote:=
+
+>>> On Sun, Jan 11, 2026 at 10:20:58AM +0200, Mike Rapoport wrote:
+>>>> Every architecture calls sparse_init() during setup_arch() although =
+the
+>>>> data structures created by sparse_init() are not used until the
+>>>> initialization of the core MM.
+>>>>
+>>>> Beside the code duplication, calling sparse_init() from architecture=
+
+>>>> specific code causes ordering differences of vmemmap and HVO initial=
+ization
+>>>> on different architectures.
+>>>>
+>>>> Move the call to sparse_init() from architecture specific code to
+>>>> free_area_init() to ensure that vmemmap and HVO initialization order=
+ is
+>>>> always the same.
+>>> This broke the boot on RISC-V 32-bit (rv32_defconfig) for me.
+>>>
+>>> Specifically if sparse_init() is *not* called before the following ca=
+llchain,
+>>> the kernel dies at that point.
+>>>
+>>> start_kernel()
+>>>   setup_arch()
+>>>     apply_boot_alternatives()
+>>>       _apply_alternatives()
+>>>         riscv_cpufeature_patch_func()
+>>>           patch_text_nosync()
+>>>           riscv_alternative_fix_offsets()
+>> Hm, most architectures do alternatives patching much later in the boot=
+,
+>> when much more subsystems (including mm) is already initialized.
+>>
+>> Any particular reason riscv does it that early?=20
+
+Theoretically, it could be moved by making sure more things don't use
+alternatives on boot.
+
+In practice, a bunch of random things call the alternatives-using
+versions of macros to check for extensions that I'd say (again, not
+maintainer, just taking a look) I'd rather have this be as early as
+possible, to minimize the minefield where random functions give the
+wrong answer. (Since those are all supposed to generate only a single
+nop or jump, WARN is not a good option.) Just looking at callees of
+arch/riscv/kernel/setup.c setup_arch(), I see:
+
+  * init_rt_signal_env() -> get_rt_frame_size() -> has_vector() ->
+    riscv_has_extension_unlikely()
+  * init_rt_signal_env() -> get_rt_frame_size() -> has_xtheadvector() ->
+    riscv_has_vendor_extension_unlikely()
+  * riscv_user_isa_enable() -> riscv_has_extension_unlikely()
+
+And it's probably only going to get worse as more extensions come that
+have architectural state.
+
+>>> Simple reproducer, using kunit:
+>>>
+>>> ./tools/testing/kunit/kunit.py run --raw_output=3Dall --make_options =
+LLVM=3D1 --arch riscv32 --kconfig_add CONFIG_SPARSEMEM_MANUAL=3Dy --kconf=
+ig_add CONFIG_SPARSEMEM=3Dy
+>> Looking at patch_map it's quite clear why movement of sparse_init() ca=
+sed a
+>> crash:
+>>
+>> 	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr))
+>> 		page =3D phys_to_page(__pa_symbol(addr));
+>>
+>> phys_to_page() with CONFIG_SPARSEMEM=3Dy will try to access memory sec=
+tion
+>> that are initialized in sparse_init().
+>>
+>> What I don't understand is why patch_map() needs a struct page for ker=
+nel
+>> text patching at all, __pa_symbol() should work just fine.
+>> And the BUG_ON(!page) is completely bogus for phys_to_page() conversio=
+n,
+>> because that one is pure arithmetics.
+
+"Copied from arm64" was the reason, I believe. See code pre/post commit
+8d09e2d569f6 ("arm64: patching: avoid early page_to_phys()") where the
+exact same idea as yours was applied to arch/arm64/kernel/patching.c
+patch_map(). Evidently riscv needs the same fix.
+
+>> If moving apply_boot_alternatives() is not an option for riscv, someth=
+ing
+>> like the patch below should fix the issue with access to nonexistent
+>> memory sections. But I think moving apply_boot_alternatives() later in=
+ boot
+>> would make things less fragile.
+>>
+>> diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
+>> index db13c9ddf9e3..89b3c13f2865 100644
+>> --- a/arch/riscv/kernel/patch.c
+>> +++ b/arch/riscv/kernel/patch.c
+>> @@ -43,18 +43,19 @@ static __always_inline void *patch_map(void *addr,=
+ const unsigned int fixmap)
+>>  {
+>>  	uintptr_t uintaddr =3D (uintptr_t) addr;
+>>  	struct page *page;
+>> +	phys_addr_t phys;
+>> =20
+>> -	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr))
+>> -		page =3D phys_to_page(__pa_symbol(addr));
+>> -	else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+>> +	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr)) {
+>> +		phys =3D __pa_symbol(addr);
+>> +	} else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
+>>  		page =3D vmalloc_to_page(addr);
+>> -	else
+>> +		BUG_ON(!page);
+>> +		phys =3D page_to_phys(page);
+>> +	} else {
+>>  		return addr;
+>> +	}
+>> =20
+>> -	BUG_ON(!page);
+>> -
+>> -	return (void *)set_fixmap_offset(fixmap, page_to_phys(page) +
+>> -					 offset_in_page(addr));
+>> +	return (void *)set_fixmap_offset(fixmap, phys + offset_in_page(addr)=
+);
+>>  }
+>> =20
+>>  static void patch_unmap(int fixmap)
+
+The __pa_symbol(addr) case looks wrong - it adds an offset to an address
+already with offset. This matches what arm64 did and should look pretty
+similar to=C2=A0commit 8d09e2d569f6 ("arm64: patching: avoid early
+page_to_phys()"):
+
+diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
+--- a/arch/riscv/kernel/patch.c
++++ b/arch/riscv/kernel/patch.c
+@@ -42,19 +42,19 @@ static inline bool is_kernel_exittext(uintptr_t addr)=
+
+ static __always_inline void *patch_map(void *addr, const unsigned int fi=
+xmap)
+ {
+ 	uintptr_t uintaddr =3D (uintptr_t) addr;
+-	struct page *page;
+-
+-	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr))
+-		page =3D phys_to_page(__pa_symbol(addr));
+-	else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+-		page =3D vmalloc_to_page(addr);
+-	else
++	phys_addr_t phys;
++
++	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr)) {
++		phys =3D __pa_symbol(addr);
++	} else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX)) {
++		struct page *page =3D vmalloc_to_page(addr);
++		BUG_ON(!page);
++		phys =3D page_to_phys(page) + offset_in_page(addr);
++	} else {
+ 		return addr;
++	}
+=20
+-	BUG_ON(!page);
+-
+-	return (void *)set_fixmap_offset(fixmap, page_to_phys(page) +
+-					 offset_in_page(addr));
++	return (void *)set_fixmap_offset(fixmap, phys);
+ }
+=20
+ static void patch_unmap(int fixmap)
+
+I can confirm this fixes riscv32 boot oops on QEMU. I can send it out as
+a proper patch later, pending making checkpatch.pl happy/happier and
+testing.
+
+For reference this is arm64:
+
+static void __kprobes *patch_map(void *addr, int fixmap)
+{
+	phys_addr_t phys;
+
+	if (is_image_text((unsigned long)addr)) {
+		phys =3D __pa_symbol(addr);
+	} else {
+		struct page *page =3D vmalloc_to_page(addr);
+		BUG_ON(!page);
+		phys =3D page_to_phys(page) + offset_in_page(addr);
+	}
+
+	return (void *)set_fixmap_offset(fixmap, phys);
+}
+
 
 
