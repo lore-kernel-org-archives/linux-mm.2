@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79372FD4F04
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BEB6FD4F08
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 17:13:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F4B86B0092; Tue, 10 Mar 2026 13:02:21 -0400 (EDT)
+	id 912E46B0088; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A2876B0093; Tue, 10 Mar 2026 13:02:21 -0400 (EDT)
+	id 86C116B0089; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77ABA6B0095; Tue, 10 Mar 2026 13:02:21 -0400 (EDT)
+	id 740AC6B008C; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 656686B0092
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:02:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08C9C1602CA
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:02:21 +0000 (UTC)
-X-FDA: 84530771682.30.49D8E20
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A79FEC000A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:02:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E5bgoUQu;
-	spf=pass (imf22.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 601366B0088
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:13:53 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14FEE1602AD
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:13:53 +0000 (UTC)
+X-FDA: 84530800746.20.383E481
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DC0C4120010
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:13:50 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Muqwupi7;
+	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773162139;
+	s=arc-20220608; t=1773162831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0LKshKUK3KitIMjNACXgO7TTkRiyZPtXq9EyeTBs6so=;
-	b=nGJqxG4ElGZ+G+UxkFJSPCq+bdghwUwP/EINNIPv6W02GGUKK7PzY5UEnWU4QFXOMzXDRA
-	csNs4gdD6jCDs480oDi+e6rEg8/U/21EXTvrWAm+28tNufMthQ/DVb6a9tTuRPGBE1TZfz
-	Y5198S2jVwaRlPgtlFirmounn0KTPN8=
+	bh=sXudXV+vIcCe/FaMWV94uAIHSh+hgQuxJ4MUz1MgDPw=;
+	b=QNKhcf02o3N+wsexUZWmW1vcytjt3sawvlZ2zQOu/fZ+K7RpSTHxxoz7owJvw3iQGaJXVO
+	Vh3DQOY0KxfntQusxs6CJadn41WmRf7pjrRL6cRf7+JF9Bstfd2eaW66UBfC6ORWjs2TcS
+	C11YKMb8okziBMOmtWw5I4d5lZG95uc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E5bgoUQu;
-	spf=pass (imf22.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773162139; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Muqwupi7;
+	spf=pass (imf29.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773162831; a=rsa-sha256;
 	cv=none;
-	b=k3qMeDYXU9SQZwKiddty2lF4lQUzHz6vRFDRpQmNfKXSZJZOo/eAUlEFuO0jQm/95Rz5TG
-	z8OW+zKNg8TazH3Gv+F/hO5MRsLhgQQgdErbw1AOl23nEV17aanBqONbR37Eqw6GamQt+X
-	RLQJ6GC4HnfWtQOxRjGbvfv+06+oHks=
-Message-ID: <35272f7a-4c1e-48f8-8e99-82bf3baffab3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773162135;
+	b=IkG7f4VQ6w33xnJRmhBeHiJCUZe/tt1xusXFxMPAXLxT5BHVB+AaEdmR89V5a1DUx9g5Cn
+	PVYEv2BhH7N3oyj4hB05VkDt9QnVt07Vhwf81MMyEK+lgJJ+8a8D5LX+Tu2IabdoaDMQAX
+	Ie24t4qVBN2K7hBm+7MeaGL51pHDJXU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773162830;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0LKshKUK3KitIMjNACXgO7TTkRiyZPtXq9EyeTBs6so=;
-	b=E5bgoUQuw0+On5E2PJ89wAn5VJKu0l4SF5t/wicRslH5R9CgJYBndevL6URwlolo5gSWRA
-	Rc/KugVqwjM2d90Y46q784Bkmf8xfQ3zQpYtXtd6nTtBR9SZPM+vh4LPJc3yEA8/OJ97D/
-	64B0uIZzJgoLagIttfjTn+QWj07uYtA=
-Date: Tue, 10 Mar 2026 10:01:53 -0700
+	bh=sXudXV+vIcCe/FaMWV94uAIHSh+hgQuxJ4MUz1MgDPw=;
+	b=Muqwupi7d9Jo7oA/bo572s2O4QsqH4I9jZmZbuqqca7yXA549dXXP07PnPh+wfVrgfYgEk
+	R+99pXKlJ3EJrciWKF8YF2FQo2db9cKK+2S8nT7g+DNj/HDI2B2yVQSbJRnaYRN/n+hRJg
+	j+oFMxolOpcHxvDwdEnQzkhIuNoyMSU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-7P6qnvrTPXugEWadv_84rA-1; Tue,
+ 10 Mar 2026 13:13:44 -0400
+X-MC-Unique: 7P6qnvrTPXugEWadv_84rA-1
+X-Mimecast-MFC-AGG-ID: 7P6qnvrTPXugEWadv_84rA_1773162822
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4BAE18005B9;
+	Tue, 10 Mar 2026 17:13:40 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.4])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E99B430002D2;
+	Tue, 10 Mar 2026 17:13:38 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id CBB5D40205ECE; Tue, 10 Mar 2026 14:12:03 -0300 (-03)
+Date: Tue, 10 Mar 2026 14:12:03 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras.c@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+Message-ID: <abBQ40Zkk76Zej8i@tpad>
+References: <20260302154945.143996316@redhat.com>
+ <aam1cHq3_fb-T1HH@localhost.localdomain>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm/mempolicy: track page allocations per mempolicy
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@suse.com,
- vbabka@suse.cz, apopple@nvidia.com, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, mst@redhat.com, rppt@kernel.org,
- muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
- roman.gushchin@linux.dev, surenb@google.com, virtualization@lists.linux.dev,
- weixugc@google.com, xuanzhuo@linux.alibaba.com,
- ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
- kernel-team@meta.com
-References: <20260307045520.247998-1-jp.kobryn@linux.dev>
- <aa9aDGwk8YteaEob@linux.dev> <dcf2e654-ad2f-4390-9b62-078e664158de@linux.dev>
- <abAmMjkZZLN9LXXM@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "JP Kobryn (Meta)" <jp.kobryn@linux.dev>
-In-Reply-To: <abAmMjkZZLN9LXXM@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A79FEC000A
-X-Stat-Signature: qaphrjghntmtrxy384bejbatypxb97dp
+In-Reply-To: <aam1cHq3_fb-T1HH@localhost.localdomain>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: RAX6PqhNY2LHs4Y2g0FY5QLgdrEYT_xD92v9dJzBtdU_1773162822
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DC0C4120010
+X-Stat-Signature: eyz3b58cf7kims6gxf5xb6u6ic3cpb57
 X-Rspam-User: 
-X-HE-Tag: 1773162138-43882
-X-HE-Meta: U2FsdGVkX18mqGbP0ZN94edru4aVPjqe+7EpRUIZandeWsxoO5+JDF2upWDEjLiYEd1MieADAAEUhkWP8rDxWp5UdH9mvE66LCs1cWfuXScCEUflxP+qf/nxBPbqqeNEI/Rxe/sDyEu+509u1D3fvmtx9IY+ZS33YD4chtYnprS7KyvyyRkc8McQP148RxixklI1i7Y/PnG0Bgv8TtHrzh8cf7+2EHvDkvbG3Fdj+coENv4KYkEMKcFD38S8XywHr34vhKxk8SThaFVWs4/rSzHehx7n4Xja0OCYQ/AKf6FuPqwvZM5YOA8OyOSZS88os5Bb5i06H0Zk55fMeFup/E074qB7EDcTvaTUc9kYCpYjlXGPvMY9BKYuCr+LscS2DgGK0udLuyFBYcdOMRKPIeZMvm2XFOBu9h+6Hg89l2nmqbjJDW15R+f0aaF0SFlGR28sikqndbKT4OprA1CsWaPl7oynwnrVjpZvbxAmdmijpLLrsCYfhm1jWewvBp+Zx4H0eg0NWRp76Snlx/5CrMLHfTtA6yhtIOZas0geGBDLwW9q/bXiJsJ9t1qGcIxdiGx/64oppqENZAkdVgdfEgQg1F1/y3leJ6dgOzMkWc+P70Mh0uPRha5L3/+IUZQ8CETeHHmPnuaceN+KIZzHtHle6Ws0/NZi6WLdYmRpsOrg6T/3GwvdV53SK/cZcA91xD4YNDQZEtdpVooZfBi6LPuQJT7AE0lssNTtbE9bWsGEg3zG4JmiXM+jh7AI7VoeFo/NTPb5iPG7UVmpgeYzl8bxg3tBZLmX2zHeOdcDo9PmVTQrQvINXXwawEQMbkTXI+bZCViAa2dRju1GtdYHCfcPxuNuO41XKoJvH/nvxzeYq//rA4Dfaw+T/aCv5wuvFo/YnedrzcUxcUjccaE3IRMBlZNLaiRgK2x56JEOf2SdsMJegcUtUbh3LRXIJ6jnIkkpyONL5a5Pmj5skAf
- UOuV90j0
- q5Un2dUORzThzW14yVLAJYS+o5NngoJqO3V4KXy78BTyStZJq8/ezvrkc73IT9pqPp5blHKB1c0DsTHqj/lEzDYlg0F+eW74IytQMHVDpg2sdnXczWHtT2HrBlo67z/FJxMkO2rtNC/9q1I2Ia0VtFRbNL8/iy3oCpn1q7tIehG9Z2ehqvSSP7hvNZoFCnmnqSTrBwoodIGjITdImL41e/DD31BuZC/14IA6WArT+Z736C0oxuMx5XKzriEthSKpbzjEnrS+10uQnwOPCw0zxf+en9g==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773162830-286345
+X-HE-Meta: U2FsdGVkX1+H6FdSMpke6VLLBUV4OtnTEOsdB18rtKEU3Nl0UuVydFB9LhMZqADJSFcSdGC2xzqxkmMwbys356srEEVvNWFUJqIe3+XmK2yZZRZwoB8d+7TaXIoC2FIOYf3RGvWOZZzu0581X+6mgjXLMM8bAdl92LH2L4JkpKykYe52iQBUZXTWiia/TC7CAmBx9YIvZ48uq1LHclApzRAhElViDvN6PjX2JeHfKacYbSbWHxth6Te/Npm4SPo8ermAbfQ8yad4AEZ+31SQY5+OLmmsqGpHj/AJoa+kvhXdnMoNePyu+v094mzkvD9lFWdBqCb7CcE2sTlYdHjKlkMgARDCZV7hZKW5Yc06udjhTPXeQKj0sGSrwgXoSSH4STGhiaKpEMQUCwBNgqpXS5FrpPb967uCCvhYhXsMRnVZ0fc/5xySixLRCtL7LrrDS+U9hr+02OSv9nL/3fJfP803vWADG6uHY0ghYCGPsS8JqWFrERDGWqCcrH7yrE8J0gZZoLNISDESs0gW869d1KQyP+apNKZLhDgDl/bJZgiknVP5gyqDsUrGbzdDifnt5M3Kme9ur1hUSeOUKp3d5S5wNz3DwwkEPJcUfh2KiXyL1i1h1t6ynFeWmA5OSP9LZ83M4zzlBwgXYCMki/IQPL3yILygVoGkHoUYJWnlK/SvUko3KEOx0jKlABg13IODCD4sajkIUobijbiBtcRePYCXMooWZhOygDp0Ntmxckz4+Tp+keCIolluztHtztdKq2JwaZAxemKEi2rod1rHAryeTwgdiakMi+KlB6wGhwF5IpkS1BlHZ1KxNnGXyC67rqlBt6LlhNQch1nWxV15GnYAGjMa7R9cf/Uf6XnfhiXFNPxIlpQDkwcGLySyTaLHtUe/8Xby/NvCmzfCaslAFEhY7tmtEUlYHvX7ezCnpvZ4055DwvjF0CPoLuIALjWQQ10RNUh2iZyxlPoTE17
+ JwYkuj6b
+ a4Yd8xr3eeAsZUPu4IUlNKGt54KPV8RzB+My+WLVqiSiCk1ixWiptv1OFsqeDOzCITuuYmhMMIXFsoDd9g015gizdJvzJ86rMCLACUkU0lSmUB5apVhN4B7UAuM4oRkKXD8j7OSAnAJYPFH0pQn47CMSe9fFxPyNXOeOBBBomZhMnd2DfoGf8NMxXjEEF9vr+r4S0hcyU83LsVDH5oRv+7ySDVkiG37Mz+/21PH8DI9/8+ehBtlce007PaOdQYOoiYy7tgm/TJlcUzRLq9PKjxYDYnLHfnShKgvJaOP6rdpZAMD3TSbnFtrr5FmKEhcWcfoSlii73Zga2cTfYHomZ+y+CX13T+sAUUr14hHOzObB+mUqIZgiCE8vwoA6y5eV2E/RF4f58ceAyzFaS0XELgmNnLKnYHWgFXbGW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,40 +122,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/10/26 7:53 AM, Shakeel Butt wrote:
-> On Mon, Mar 09, 2026 at 09:17:43PM -0700, JP Kobryn (Meta) wrote:
->> On 3/9/26 4:43 PM, Shakeel Butt wrote:
->>> On Fri, Mar 06, 2026 at 08:55:20PM -0800, JP Kobryn (Meta) wrote:
-> [...]
->>>
->>> This seems like monotonic increasing metrics and I think you don't care about
->>> their absolute value but rather rate of change. Any reason this can not be
->>> achieved through tracepoints and BPF combination?
->>
->> We have the per-node reclaim stats (pg{steal,scan,refill}) in
->> nodeN/vmstat and memory.numa_stat now. The new stats in this patch would
->> be collected from the same source. They were meant to be used together,
->> so it seemed like a reasonable location. I think the advantage over
->> tracepoints is we get the observability on from the start and it would
->> be simple to extend existing programs that already read stats from the
->> cgroup dir files.
-> 
-> Convenience is not really justifying the cost of adding 18 counters,
-> particularly in memcg. We can argue about adding just in system level metrics
-> but not for memcg.
-> 
-> counter_cost = nr_cpus * nr_nodes * nr_memcg * 16 (struct lruvec_stats_percpu)
-> 
-> On a typical prod machine, we can see 1000s of memcg, 100s of cpus and couple of
-> numa nodes. So, a single counter's cost can range from 200KiB to MiBs. This does
-> not seem like a cost we should force everyone to pay.
-> 
-> If you really want these per-memcg and assuming these metrics are updated in
-> non-performance critical path, we can try to decouple these and other reclaim
-> related stats from rstat infra. That would at least reduce nr_cpus factor in the
-> above equation to 1. Though we will need to actually evaluate the performance
-> for the change before committing to it.
+Hi Frederic,
 
-I could trade off the per-cgroup granularity and change these stats to
-become global per-node stats.
+On Thu, Mar 05, 2026 at 05:55:12PM +0100, Frederic Weisbecker wrote:
+> Le Mon, Mar 02, 2026 at 12:49:45PM -0300, Marcelo Tosatti a écrit :
+> > The problem:
+> > Some places in the kernel implement a parallel programming strategy
+> > consisting on local_locks() for most of the work, and some rare remote
+> > operations are scheduled on target cpu. This keeps cache bouncing low since
+> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> > kernels, even though the very few remote operations will be expensive due
+> > to scheduling overhead.
+> > 
+> > On the other hand, for RT workloads this can represent a problem: getting
+> > an important workload scheduled out to deal with remote requests is
+> > sure to introduce unexpected deadline misses.
+> > 
+> > The idea:
+> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> > In this case, instead of scheduling work on a remote cpu, it should
+> > be safe to grab that remote cpu's per-cpu spinlock and run the required
+> > work locally. That major cost, which is un/locking in every local function,
+> > already happens in PREEMPT_RT.
+> > 
+> > Also, there is no need to worry about extra cache bouncing:
+> > The cacheline invalidation already happens due to schedule_work_on().
+> > 
+> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
+> > RT workload.
+> > 
+> > Proposed solution:
+> > A new interface called Queue PerCPU Work (QPW), which should replace
+> > Work Queue in the above mentioned use case.
+> > 
+> > If CONFIG_QPW=n this interfaces just wraps the current
+> > local_locks + WorkQueue behavior, so no expected change in runtime.
+> > 
+> > If CONFIG_QPW=y, and qpw kernel boot option =1, 
+> > queue_percpu_work_on(cpu,...) will lock that cpu's per-cpu structure
+> > and perform work on it locally. This is possible because on 
+> > functions that can be used for performing remote work on remote 
+> > per-cpu structures, the local_lock (which is already
+> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
+> 
+> So let me summarize what are the possible design solutions, on top of our discussions,
+> so we can compare:
+> 
+> 1) Never queue remotely but always queue locally and execute on userspace
+>    return via task work.
+
+How can you "queue locally" if the request is visible on a remote CPU?
+
+That is, the event which triggers the manipulation of data structures 
+which need to be performed by the owner CPU (owner of the data
+structures) is triggered on a remote CPU.
+
+This is confusing.
+
+Can you also please give a practical example of such case ?
+
+>    Pros:
+>          - Simple and easy to maintain.
+> 
+>    Cons:
+>          - Need a case by case handling.
+> 
+> 	 - Might be suitable for full userspace applications but not for
+>            some HPC usecases. In the best world MPI is fully implemented in
+>            userspace but that doesn't appear to be the case.
+> 
+> 2) Queue locally the workqueue right away
+
+Again, the event which triggers the manipulation of data structures
+by the owner CPU happens on a remote CPU. 
+So how can you queue it locally ?
+
+>    or do it remotely (if it's
+>    really necessary) if the isolated CPU is in userspace, otherwise queue
+>    it for execution on return to kernel. The work will be handled by preemption
+>    to a worker or by a workqueue flush on return to userspace.
+> 
+>    Pros:
+>         - The local queue handling is simple.
+> 
+>    Cons:
+>         - The remote queue must synchronize with return to userspace and
+> 	  eventually postpone to return to kernel if the target is in userspace.
+> 	  Also it may need to differentiate IRQs and syscalls.
+> 
+>         - Therefore still involve some case by case handling eventually.
+>    
+>         - Flushing the global workqueues to avoid deadlocks is unadvised as shown
+>           in the comment above flush_scheduled_work(). It even triggers a
+>           warning. Significant efforts have been put to convert all the existing
+> 	  users. It's not impossible to sell in our case because we shouldn't
+> 	  hold a lock upon return to userspace. But that will restore a new
+> 	  dangerous API.
+> 
+>         - Queueing the workqueue / flushing involves a context switch which
+>           induce more noise (eg: tick restart)
+> 	  
+>         - As above, probably not suitable for HPC.
+> 
+> 3) QPW: Handle the work remotely
+> 
+>    Pros:
+>         - Works on all cases, without any surprise.
+> 
+>    Cons:
+>         - Introduce new locking scheme to maintain and debug.
+> 
+>         - Needs case by case handling.
+> 
+> Thoughts?
+
+Can you please be more verbose, mindful of lesser cognitive powers ? :-) 
+
+Note: i also dislike the added layers (and multiple cases) QPW adds.
+
+But there is precedence with local locks...
+
+Code would be less complex in case spinlocks were added:
+
+01b44456a7aa7c3b24fa9db7d1714b208b8ef3d8 mm/page_alloc: replace local_lock with normal spinlock
+4b23a68f953628eb4e4b7fe1294ebf93d4b8ceee mm/page_alloc: protect PCP lists with a spinlock
+
+But people seem to reject that in the basis of performance
+degradation.
+
 
