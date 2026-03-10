@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C787FD4F07
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD7CCFD4F05
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 16:25:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5872E6B009E; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
+	id D6DE16B009F; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51CFC6B00A1; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
+	id CEF816B00A0; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DFFA6B009F; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
+	id BD0D26B00A1; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 09A9C6B009D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A697B6B009F
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:25:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C894A5787D
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D80DA8ABDD
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:39 +0000 (UTC)
-X-FDA: 84530679198.13.91F5AEB
+X-FDA: 84530679198.02.B8344AC
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 13E5B18000F
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0AF4BA000A
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:25:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+Authentication-Results: imf25.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	spf=pass (imf25.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
 	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773159938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=DWQl7kW8RKlDM3zNog+kcvwiTau0XjoieRNTv+ZadOk=;
-	b=hROFkHKcxQVGR37etPxJZln5od8epyBd+RgKdWmTFhLbZxJrxue7NWtccLbuJxmSgiH6g0
-	/UU9giZekI6MrwRcrmkaUc4O3izBKcnBrbKRj+OZxLN7+PhB8s9icrTiQZTg51JxdkKRWM
-	YHyd4BNha8Fgd2INVn8vIap0vdO8o2Y=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T02wgZ+rRxKQwysPpPfItvTdL46ccI3h87ycEsVRFKA=;
+	b=63mN4fmsm4gqM2LuixeVRXH0aF5a1ttDKHmaiJW6lNp1AxZK8VuBtZ8gPTEOgLPyezDIi3
+	I5WVeLnQx96dLAGHU1tUPxDxCxdJjHIYCsorLpArYTVlnyOd6/eWc/canRAB/IpVZXNuW+
+	HQFV/lP4Cl5BwphLE6t29Jp14g8gdOQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=none;
+	spf=pass (imf25.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773159938; a=rsa-sha256;
 	cv=none;
-	b=Z+wtAJAJILWO225hbU+4/5p3zgQBFkbt7q/r1SUQ5Jrc84xcC9PwioUBYKGmoaH/6l5NxM
-	oCLXjUs1TIk29TGOdD2rgeFFkD6O6fy81n6e+AI2PRSt4xA9rVT1rjff1NXNYWlE2r4YNo
-	a5SQeOn8g63bb+ZGIhfCs4nwSEyiguw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	b=47gJ7N/T6ILxNmlYXVEBc43IDKR9V2LBPwrGlRnzj0T/1xH8k0s9vYJ/9ECOetOb5rbk9u
+	1dt6iuFGKhPIsPx1VMm3MVm7TO8jPpGwR8Pra4gQ//vOXaHGSBZGr/vIQQjMOaU3TxrkZM
+	fW069aU4rka533+qelTKdV1PdKUnMqo=
 Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fVfPM6plZzHnGgg;
-	Wed, 11 Mar 2026 00:25:27 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fVfNd2Dg6zJ469b;
+	Wed, 11 Mar 2026 00:24:49 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id EE06D40086;
-	Wed, 11 Mar 2026 00:25:33 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 23EAB40086;
+	Wed, 11 Mar 2026 00:25:34 +0800 (CST)
 Received: from mscphis01197.huawei.com (10.123.65.218) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -64,22 +65,26 @@ To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
 	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
 	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH v2 0/4] mm/damon: Support hot application detections
-Date: Tue, 10 Mar 2026 16:24:16 +0000
-Message-ID: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
+Subject: [RFC PATCH v2 2/4] mm/damon: Support for synchrounous huge pages collapse
+Date: Tue, 10 Mar 2026 16:24:18 +0000
+Message-ID: <20260310162420.4180562-3-gutierrez.asier@huawei-partners.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
+References: <20260310162420.4180562-1-gutierrez.asier@huawei-partners.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.123.65.218]
 X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
  mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Queue-Id: 0AF4BA000A
+X-Stat-Signature: ew4yas3t3rg5qyxq4kp7akihenw3dh6q
 X-Rspam-User: 
-X-Stat-Signature: oehpug65zrymwk5tay9rdfcqyukq8xek
-X-Rspamd-Queue-Id: 13E5B18000F
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773159936-538101
-X-HE-Meta: U2FsdGVkX1/zQOddvCa54vFh1vf6/293NgzcTY8iQ5TnrflxrmQJZIRWitpIyOQcJfSkdy88fMGz4e5tKw6ohjKuTUhqhGQdNMAbqXM6Uy7h24oHl1PGh9q9tuO9U/qemMJDTQDUrQpqdJHdgcs+vf64TNsLJ2hhoVWaHLfZjz5bdRJ1MwG0oRasjg5oIj7xVf1ddhdYXedeOMFU4UyXNY04SoZ7skpSYyMnfN95o2GovvR7SPo4ltY8RtTjHInqdx6b4R6O7vQ2WfM57UD8aq2vMDSWUElWE5Shog8oSIyQpsDb8N+uSInZisR72UC/pnHbtYJraAYnfvluUxxyi6R/YOAwIJr/IAt7Ja75Sd1YP1mpXsU1/9StljESy2h0Rsznl6rwzZ2WG/K4IWkgBcRHJ66RYgMrvM2/n61Z/bzZYlko4dqINtBm21WXfRyWTqkrff/8eo8i+/snrSvjoMkunUs/2V1xEw9EYg360D6DRBRTDAnDz8WHzKEd0ugPlIsjWRTXoFizhbhfadwb6beLvBkyjG2BI3JlemJZx55H4gLJc4M5bS1fnH2d5KAvAjQ/V5SdBmkIEbHTAspWfNvLvJ9hlOHPOkbMJ820bB6XiIeuwt2vlri2AewU0miod/vDw23ADRAFZoYWxH+q15zxZmVjk8FZ5s9VIAlNnUuQpIMTHCATOoTZxC1B9cCjQyRIRXZpmws56e+/D+vJozuvEIJMa+vH9FajyU3gXC7uaHy/QTj7LK+RAEwNUtXRRr5sBwiVCYr2KtuFPlNk+TIUcf9q6hCZWHQrk/6gpd9aERdxRyEF3o/ue4K9PAGtV0GvnMVZ8p/OGEBMYH+a0qCsHbf5qcay7AtgtY6xONfS6wpkZStdxmNpGxFTgK1HwX7PoyYAzDCxxwdcQClcIw==
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773159936-832093
+X-HE-Meta: U2FsdGVkX1+CeL6015vzHvJoY9AS0iJg4GeaN1pKb7Voh6nWUQeB6ubI3drE6KaHMKs+myh7uyvD/AEoy3DuPi/a0L2zd+kfAoFsOvK+GXzRS8qV5dNzPJ70OvezUcnci/bhUii6rAy7ZznOdWeZ5dzvPYaQO6GER/IRYZHscga0iVJOYz1iyNZEYB5A30Us8Kpp5EdXfUuSEdVPHnLhHNZvkulgX/G9S/rCnvb8BdPMEP3Uf9xw/D6dt4Fmj8MhXxZoHuaymsp8UL6uogIJY5kdk9P11cpG/gXGku3S1P1f4QipGpKwjk8YBiieyoNxlszkusWKRRCiulIGYKOmb0tjUm854PPHtNllwwV29FuZ7dZPktXL51judQLKmkw2GCnNMjN5jpfvhKZ2UpVDT/xMmbqfoorrMO8LQBRzxioeT804qXiQ2BYdVmDnXITHiG6ZljiZWqNHhaABFl8q69gGSlrwXVAp8igrAh7peeAS5ETMNKiqvfflkhPUEeD+xDNLYsXVD3m7BVdpY5KOk2McrJLxOSR+gryQmthDKjVYAtQO1+9Dz063PN33dxI2shn6DfZ79f1npsjUyI8T0y//OIRLUyTrb8bOJ02/vNfT7c7cYWGm05wZu3LkRK7K2HrfrajjgMfYUhU6M68IueHiRC9MtnPj4TqMKdUbi0znuRYGPTqTjXWRLqaHQehUp7E0Yusf9WoIfllRGHTl2ZO03nmIBl4Bdqll2qN0fBp7N/rA31eVnOx/FZbYdpOU5w/IJNmS0BKmVUUXA1zNHTrrRTvEEGbSLg6XfKL4FB2ZWn0C1Ra+s6zE6iUFceZilEcA1dH1bSXiaagqKsziIw2nh7SA/ZS1tcIIUUQm5d899VMInAyzPO6dbg+70vnHYoWL+bzdPqHhnSYKf+Mm8uwMxKOlDFtSMpwtSfRVXmUL9Ji2JZ/hbOEkqs9rQIcVmEQvvGrPULeBb8J2mIk
+ Z18/2xX6
+ hsyTqhPcleB6q7514EXxAMqvJpycDOrFOSdYUUfYiG+RgogsV8vmskH2/7wu7/rDEFA7nljqks/ToxjrYcAbusUdn21/dV9d0U5tGNmJNl08El2RK5Djh/x8Efp2sm4WD7gllMjujvusB3xUTRb2b5+AgYzm4suSt34J046yQV0ry26xK2EVQefEQY92BJeFIVAcLvADCXHHPm7XOZjrIqD3u1QeB3qXC7bdcmZtgOeGZ9DVhlojayJbs6v1vOXTvfDepMFET9vDj0t07Q9jZMs7XjYn3Ubjt5oQm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,76 +94,39 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-Overview
-----------
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+---
+ include/linux/damon.h | 1 +
+ mm/damon/vaddr.c      | 3 +++
+ 2 files changed, 4 insertions(+)
 
-This patch set introduces a new dynamic mechanism for detecting hot applications
-and hot regions in those applications.
-
-Motivation
------------
-
-Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
-hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
-fragmentation and memory waste. For this reason, most application guides and
-system administrators suggest to disable THP.
-
-
-Solution
------------
-
-A new Linux kernel module that uses DAMON to detect hot regions and collapse
-those regions into huge pages. The user supplies a set of PIDs using a module
-parameter, and then, the module launches a new kdamond thread to monitor each
-of the tasks.
-
-In each kdamond, we start with a high min_access value. Our goal is to find the
-"maximum" min_access value at which point the DAMON action is applied. In each
-cycle, if no action is applied, we lower the min_access.
-
-Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
-collapse synchronously and avoid polluting khugepaged and other parts of the MM
-subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
-which needs the correct vm_flags_t set.
-
-
------------
-Changes in v2:
-- Previously there was a mechanism to automatically detect hot applications.
-  Based on SeongJae Park's feedback [1], this was removed from the module, leaving
-  it entirely to the user space.
-- All allocations now use kzalloc_obj.
-- Since the user space provides now the list of pids to monitor, a commit_input
-  parameter is added to allow changing the pids while the module runs.
-- Renamed the module from dynamic_hugepages to hugepages
-
-[1]: https://lore.kernel.org/all/20260211150902.70066-1-sj@kernel.org/
-
-Asier Gutierrez (4):
-  Damon_modules_new_paddr_ctx_target. This works  only for physical
-    contexts. In case of virtual addresses, we should  duplicate the
-    code.
-  Support for huge pages collapse, which will be used by
-    dynamic_hugepages module.
-  This new module launches a new kdamond thread for each of them. The
-    purpose is to detect hot regions in a given list of tasks and
-    collapse them into huge pages.
-  DAMON_HOT_HUGEPAGE documentation
-
- .../admin-guide/mm/damon/hugepage.rst (new)   | 186 ++++++++
- include/linux/damon.h                         |   1 +
- mm/damon/Kconfig                              |   7 +
- mm/damon/Makefile                             |   1 +
- mm/damon/hugepage.c (new)                     | 441 ++++++++++++++++++
- mm/damon/lru_sort.c                           |   5 +-
- mm/damon/modules-common.c                     |   6 +-
- mm/damon/modules-common.h                     |   4 +-
- mm/damon/reclaim.c                            |   5 +-
- mm/damon/vaddr.c                              |   3 +
- 10 files changed, 650 insertions(+), 9 deletions(-)
- create mode 100644 Documentation/admin-guide/mm/damon/hugepage.rst
- create mode 100644 mm/damon/hugepage.c
-
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4fea23da857..a9cf17b9e8fa 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -142,6 +142,7 @@ enum damos_action {
+ 	DAMOS_LRU_DEPRIO,
+ 	DAMOS_MIGRATE_HOT,
+ 	DAMOS_MIGRATE_COLD,
++	DAMOS_COLLAPSE,
+ 	DAMOS_STAT,		/* Do nothing but only record the stat */
+ 	NR_DAMOS_ACTIONS,
+ };
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 729b7ffd3565..36791a9a1094 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -969,6 +969,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ 	case DAMOS_NOHUGEPAGE:
+ 		madv_action = MADV_NOHUGEPAGE;
+ 		break;
++	case DAMOS_COLLAPSE:
++		madv_action = MADV_COLLAPSE;
++		break;
+ 	case DAMOS_MIGRATE_HOT:
+ 	case DAMOS_MIGRATE_COLD:
+ 		return damos_va_migrate(t, r, scheme, sz_filter_passed);
 -- 
 2.43.0
 
