@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F145EB1053
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 167E1EB1052
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:55:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 510996B0089; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+	id A3BE16B0095; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B9506B0092; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+	id 90F7A6B0096; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 305CC6B0095; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
+	id 77BE76B0092; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 145C26B0089
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E4146B0092
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE3971B4756
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC5241BE7D
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:28 +0000 (UTC)
-X-FDA: 84529998336.06.C3705A7
+X-FDA: 84529998336.14.7D1093A
 Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B48D2A0007
+	by imf08.hostedemail.com (Postfix) with ESMTP id DB0CB160002
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
+Authentication-Results: imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	spf=pass (imf08.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1773143727;
@@ -35,35 +35,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p0plzaKeSbxjl79A2lleHYZjr3IgqG3bFMpzk2gkjBk=;
-	b=ekI3DrCHrVtco6+C4EZ612LDA+2uaH0EsGUclcjzpdiJulYbblKBihttff4/RD4lnRPWG8
-	n1KQDdonkR6ngYeSi9j50HJl7CRYoXQL/VYM45Nvd1NIbkIx1PF1aoXPeSjUBmVl2g9CQp
-	jkJ3AwCbIxvgVFhLv4zxmkfzYnWSeGg=
+	bh=zS/lt7IufKQt9b00w4tg0H1pDBP8jbAdIjOpgPRguTw=;
+	b=vxEXlKelXYzD4+3KQEo+CBFwlYKG6Q5iyQpH/8Cmm9LegZJWnvhhgWqzDXAmhSNnxuJkIE
+	78NlH/9VTjXqYowzxUW0rcQ/1oPNVCmCKS56SnHA52VLhDCWX7Q1pL37y5lXkD0XqwpK2W
+	KmCbzk16huyfO9gby/pwNo999khoSO0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	spf=pass (imf08.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143727; a=rsa-sha256;
 	cv=none;
-	b=n0O2pcTqv2Oz5z5Xu0jPRjMEkCa9ugoIzrArEvzuntz3bihUAyxccOpf9c6I3S8qhwT35a
-	axRolbpae7Y5cprzDFsYyQ9vEbsnTydadDU3/N1X3sxcUj5Y1VN3Nh/sayJIVohye1yTPt
-	i/C8xTqSaMgCjjqIaucwYtjG/4hm2pI=
+	b=0sZtYYSukPhdpyf8KpOERe70GbTgJHCib4YktR1cQde8PeflmakR7oQ6JiVDBJSATmrwYv
+	VNI+CqLoR1IQ5TiPhvSqf85vpWwrrzNXJ1WaogYSsSe0iGuDjsQ1P4S/fkPlIeByeXtrwB
+	3WrYhLLFtowqDzb5c6oazFuaFsLHYrA=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ab-e21d-7f0000032729-7f000001d99c-1
+	id 69b006ac-e21d-7f0000032729-7f000001d9ae-1
 	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:23 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:24 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:33 +0100
-Subject: [PATCH 07/61] erofs: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:35 +0100
+Subject: [PATCH 09/61] ntfs3: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-7-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-9-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -93,35 +93,32 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, 
- Yue Hu <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, 
- Sandeep Dhavale <dhavale@google.com>, Hongbo Li <lihongbo22@huawei.com>, 
- Chunhai Guo <guochunhai@vivo.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=Wx/k10vuVbp8ZUI17J5Bmoq0XIce6rBC9+YI4+K5MhY=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAXuTWLAsZgE3CYfS0prKIO5oYoR3eM1fSwdn
- +XKr0TQn0GJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF7gAKCRA0LQZT0ays
- 2/j8B/sEd5J2vRHsnvhncB2lMo9VZ5h3+ZMJUztWw9QhmuXX9Qx3HEdJ5GLZ84ct6sqOhNTdJzS
- JFD7aVZEzrOOhcVXC4LBSF/0LTyuRs08pHBx90juaWCHs505i/RK57onvWUjJYv2jNvBVJQQ+S6
- AU4u0SqHLiT0AAUqbjuiM2TTHxhB5xD59cg+mk4rXkCdmvt3sw2+h9McRwE+VdqWIniC4/IsZt/
- lSDklfOcCL2PaTrHCFhWHaM0/yrWd/ljPTRmFceOPsri9YRyl2VkofnQ4LBx/tIitZdlpukR5BZ
- 3gdZMB70thXOoVOpRxkVmdjJvHPiGXebLpJqAK8oxLcbLF+S
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1617; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=0D7JqCvM2HduGB7jcCjsvL2MgPxSPSMnqWoOW6gFXPg=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAX0gr7ZqouZ6B9Y6l873KDZh87VRkMxmLSVt
+ AItcTzXYr2JATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAF9AAKCRA0LQZT0ays
+ 2/XgCACwqNRVP1ceb2sCHMTvH8vznLrrwbRdBid2VGiRwlIoIqclnUBeLwwGZ/n/hBxtkijY1s3
+ NziYVgznq0k9VYxacmvzAvuKhhv5805K9y/+itK+PFXmzL3ZRzqmfWP6ng28fVSUYAufwVEc7CR
+ 9llIbOBq8N4aCpqTBELhb7mwymU8hNLZpMBK934i79wnmNx9OySShuCrTBL+FEQ9g/aUtfHcqTV
+ 4JM/tu/NHEvIwEfZrC8rjS3HwU+8fz/vbF4We+/TjORw4iEGT1m6VfBdB71QF+Wi1viRKTPIkVW
+ Nxf+o86GuJolrkUsNGy4WHdCFW95aUilkAjXyF+7XIpdZkLT
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143724-8966EF2F-D5F13E8E/0/0
+X-purgate-ID: 149429::1773143724-80E01F2F-4A43AD77/0/0
 X-purgate-type: clean
-X-purgate-size: 1167
+X-purgate-size: 1619
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: B48D2A0007
-X-Stat-Signature: orugryfegwqaymt6pu395prxd1rgwb7k
+X-Rspamd-Queue-Id: DB0CB160002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: fjm6rb6c797yspoxgm47xoc5babfmt7x
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773143726-607309
-X-HE-Meta: U2FsdGVkX19PKXzsSpVzyGHXSo9GF/AR5PFyODfo+AwVIgapxFHs4cpvHmzxt4KIetsSgDicvLiETonWDWOcqcHSsMr13LxOiqzkeoeX4Gds7Z6ussPpogkFSESUXY7X1ro3jJ4n8+2pVGJ49nTH+WEgOPiYoImjyXYS6hzKzoFgiC5db7VDCpJnw9n6xgX8DtsoKDKTctX42ZbtLJtkMxFjzQZ5BVcDMf4yYJmJbSc8Hy3cmiy2srX2o+9nJbL0/+go3apOmehaVnm24jtbvxYFMHEqVYPH4ACHdlawQ+hEmi5ZjuPY0/ms283yDOeuHY6CBreLhz+foisGbDB1SGvhuuWZGKKayM6/zpd7VQzp2bEy7gN/y8vD5okD0Y4Q4+zdwqccvl9Ms6tlwGaGKwI6M1eNKDApQR0nCRK3f7ictTKDU9Flgp9lmgrCHt13T+Jkk/q0N0217bfuDxAQxPcgSp66VWd0CymWftYrK0/nLRosUHEDqTjk8OnqYkEsJOkz7TCsGj0QCnRmbygB9ygjwAUMc2mnY7RzuFBixRXks5sysyFslPJbpV3Wd7ynpZ+YcB7Or/CO5lJc+JbitLz9oBLU8/9XmepXshQaJJ+Jjeo+MdVYPalC3EStGh4URdgnC2CQpwXU+HGgfCc64SGVCJBh96WvMWxvwPyn5/fp+WVd8SBiKBx8N+8vn8sQXzdbzpICF/RsQtdX1TInX78ms6PDV7vJGCQRjf/tkoWSr5BgYEvEW2Nfdds6oqt21CiVCnYW/hDowqI+Wz7JNZ2Nr8rfGLMUiGYXO2m6/Nr5AfDbUGKlDtN9F9fyfvh4fxSsn3t2YqpXCUjU36DQI3ZSr0u3q/VPXmWzMWW5DEg75pfOg3cYlGwlB94GCjmt/miyR6jCkxZSindvL0LspenENt/ChT1B7SY3m2iupVun0J3Bdqj9mzDtcGorwxg7JT8saySYkLlQrpWK82Y
- s00Dr0Ex
- mGktSk/2VZns2QAZOJzaFn1XnlJExGyftY6gWlpW+wZxoq4Wlx33VrVzg9ZULxaW7vHFc8TZB7JWh3e5nvpHxFM6bZIq/YQcN/9sLfTjIobjLhumy0///WBJM+Y3yVdVS13p/LgtTviLR3cvY0TgfoA5Yz752HgPXUVpjNJUCObZkDz00sjLx1QV6bNc7IPosRYscLpBhZenIZXlHA7rz9Rl+g7rPC08+UA1HV8nGuxy0OqrRyWnGRWgPED9E0swC0+oI/dMUX/HVCKKs1F2RB5/OuCCcoF/0KoF4Cz1sM+DtUb+wJha0/o82yDjPFl3QodqS8W5brL4JAUq7VykB0M7ePzJ1VBAGA6g+85bCMSKfTumuOZ6pLuIS/knloq9ul0iDLzOIeWq/TM4fbi75yD8yRKHhTkWORqZLgfCReO1+fvE1ovpvB0iod/KkAQexeNj2
+X-HE-Tag: 1773143726-72231
+X-HE-Meta: U2FsdGVkX1+xsbKschcizoaH69YcHjIa7PGLrRW3wI52JZ9Gj1f98Z6Ka7cPHU8H8HHacBvjZp7QQjHpSpLZHdjEykhPvo7OA1h126rC9dw2VfdA+relntwoyY/VF5/ekdDPIUmqDs3TJNC34A9LhviHyXR0i9eN4/KCdEyNvRDHw8blvpxHR6cftV9Jx8kfYAIuOlZ/cxA+Y0o8YoeeSE7TWTD4SypGj3nP/ccYtDTo3+Hg/MC5GchtJtEGQNTkB4fqfh1l/J4hIlDxFRTV8DSexg79IGKLQxZ1CICerSztX2jlZnb/SrEAY37fYyYcvdhotsw78X5cD785mQfQS0IIg8y/UZk/5GodFOR6ioiqDdtWSjq+lWhkvnUnH1rVKs8WFfjIeTLKC8bn6ts+NJW0bIaTjLNCjRXnMTe1JMFrq2RBm/+gDGr6XFadoYY3L4hL5ebflT2xvpVN5rpxtyPfe3It5EJSaPE+TzaDsr6UnY9YXzRRspjfWu0HE1yP/pynPvpW/OzU6kZIBeUkJImC+BdP3pdqoe9pBSs2alY1/7c59L6fflCyNw62qfH7G+p5rDVYyYoVqxszy8/n+eGXVQjNYv1qpaMLvl0iUFsq4YANiJN5wgk+JgXkImOLzYOTRCzaSYgkKzIKdfGDK7XzmgfN+Tjq6+0PLStb5iENjoJAx/BHNxUUyUlths2eJXMUwtT31RBNQVlfGI44O+Q2gU0l3rrQuWne5F6zJSlOXjqZPY62p0a9LQXIuy6TrreVWRqDRKzjgc9GERb3PZ4eRa/YDy5DKipbc7XQHqbEv4eYLQurudTu7OQ12ZyM8GRifmGLiiPcCn7me4/nNr6WYpjxPXPqyaChk1eROtFS6ldHnDxK3Jb8MMXZPqC8VVrndum8ul7824/J4417v+XGaiVMLHMurPCXYDubFIp6g444olRBrUr2YTmeVJNYoR2cl4siDqMz83EqDel
+ EDZuGQjp
+ UmX3c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,33 +131,52 @@ check.
 
 Change generated with coccinelle.
 
-To: Gao Xiang <xiang@kernel.org>
-To: Chao Yu <chao@kernel.org>
-To: Yue Hu <zbestahu@gmail.com>
-To: Jeffle Xu <jefflexu@linux.alibaba.com>
-To: Sandeep Dhavale <dhavale@google.com>
-To: Hongbo Li <lihongbo22@huawei.com>
-To: Chunhai Guo <guochunhai@vivo.com>
-Cc: linux-erofs@lists.ozlabs.org
+To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: ntfs3@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- fs/erofs/zdata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/fsntfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 3977e42b9516861bf3d59c072b6b8aaa6898dd8a..88c293ab2b1ef7962c6f5c0aa82639859e41b8e2 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1227,7 +1227,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
- 		struct page *page = bvec->page;
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 0df2aa81d8845f21bfb571c408bd65b9e1fb8128..3ced4f95c2e95bac1fe5b334f976b8c8a15cf19d 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -237,7 +237,7 @@ int ntfs_extend_init(struct ntfs_sb_info *sbi)
  
- 		/* compressed data ought to be valid when decompressing */
--		if (IS_ERR(page) || !page) {
-+		if (IS_ERR_OR_NULL(page)) {
- 			bvec->page = NULL;	/* clear the failure reason */
- 			err = page ? PTR_ERR(page) : -EIO;
- 			continue;
+ 	/* Try to find $ObjId */
+ 	inode2 = dir_search_u(inode, &NAME_OBJID, NULL);
+-	if (inode2 && !IS_ERR(inode2)) {
++	if (!IS_ERR_OR_NULL(inode2)) {
+ 		if (is_bad_inode(inode2)) {
+ 			iput(inode2);
+ 		} else {
+@@ -248,21 +248,21 @@ int ntfs_extend_init(struct ntfs_sb_info *sbi)
+ 
+ 	/* Try to find $Quota */
+ 	inode2 = dir_search_u(inode, &NAME_QUOTA, NULL);
+-	if (inode2 && !IS_ERR(inode2)) {
++	if (!IS_ERR_OR_NULL(inode2)) {
+ 		sbi->quota_no = inode2->i_ino;
+ 		iput(inode2);
+ 	}
+ 
+ 	/* Try to find $Reparse */
+ 	inode2 = dir_search_u(inode, &NAME_REPARSE, NULL);
+-	if (inode2 && !IS_ERR(inode2)) {
++	if (!IS_ERR_OR_NULL(inode2)) {
+ 		sbi->reparse.ni = ntfs_i(inode2);
+ 		sbi->reparse_no = inode2->i_ino;
+ 	}
+ 
+ 	/* Try to find $UsnJrnl */
+ 	inode2 = dir_search_u(inode, &NAME_USNJRNL, NULL);
+-	if (inode2 && !IS_ERR(inode2)) {
++	if (!IS_ERR_OR_NULL(inode2)) {
+ 		sbi->usn_jrnl_no = inode2->i_ino;
+ 		iput(inode2);
+ 	}
 
 -- 
 2.43.0
