@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 511C2EB1057
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65773EB1055
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C3726B00D0; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
+	id 587846B00CA; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19E216B00C5; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
+	id 2ED986B00CB; Tue, 10 Mar 2026 07:55:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEF296B00BE; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
+	id E7E356B00B9; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 988A26B00B9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D8DC6B00C2
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:35 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68CC954FE8
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 22957137501
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:35 +0000 (UTC)
-X-FDA: 84529998630.07.F0758A3
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4E05BC0006
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b="Pw5J/ZKa";
-	spf=pass (imf22.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+X-FDA: 84529998630.23.B0E24A6
+Received: from mail.avm.de (mail.avm.de [212.42.244.120])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 82D494000A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="g+N0/sgS";
+	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773143733;
+	s=arc-20220608; t=1773143732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v9QVCffpCG3XK0BPU9sg9EjWtze/5MDgO50jcyU8Kb4=;
-	b=Bl2AATfBoc6twnRFx5oFXZgeh+NF0AQzh0P8Qq+g0gdXqGk2LAjqtkR3I3s4u+R+6bjQkF
-	GQf9rjECRO4xCto1C2AEtKn/UIWiet99VNPkus7hMIvpyC0UQRkyhePB67Q20OZLQTKWAT
-	Jc5qcRZ27Pr5FyN4iw/orx8/sBr1V+8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b="Pw5J/ZKa";
-	spf=pass (imf22.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143733; a=rsa-sha256;
+	bh=C3ysDg7oU3Ik8LJ7AkFJ4IpI0srzE03Ecj3qWGQ34tM=;
+	b=xlySwbZs62A+xXyQ5bi4bEVRfXWccmCvcDxF3Q+luTCD8ckfSG3egfYkZoQFNX8PI2TrNi
+	CxRgKK4tN5BDnhYfy+FWgSIPd8PZjFjZit/3MwJMGres6GtSGsfj/oNq5FbMAbflDP5E3B
+	lejnMHtQetuZ5EFVpnpcTUSStWHorno=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143732; a=rsa-sha256;
 	cv=none;
-	b=nP49XiFCC2Zcf5PDjxIKdIBq23V72y+VJuw+4GNlBPwbuS2CH/FU7BzeBNPN2NyhwhaOxC
-	4Xdz9PxAXNRx8K2+zuH0zi6JjaT2nmz2HxbcX+zDZ5llY91L/5dZ+CLzpRgRoH7EfAqsrA
-	s9hfbvG7G2ZB4z55BOX/j/6EceNcotQ=
+	b=HT9sHvPMRKCrxhyJ5HPazzCiHGATAUrrEr3S734Ti412bDJagLT6vizf3bGHlAd5J1+JgL
+	ABx9GsgbSHb6vO4kOJGmI3NOGdfEVbuU9HU6sSo/UL9UOZ3FVhRXXaw1AkNQOvkkOu2O3d
+	1J+HZL7O3/WHVBpkHbMDYk+ZXwg/GDg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b="g+N0/sgS";
+	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143728; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
+	t=1773143726; bh=iG/6Gbypjz2OmWQb0dXEIiFm2wHO3xZ/QJrRffJjoq0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Pw5J/ZKa7qdOD/KHliFHGAPgoeYPtxmoMsaCQF/FKai+LG5vkmyJowXsEzkD3cPot
-	 34kvrGSUxg1JnjFKHY6NsLgrOVug3M9Be4rVveawRMrk6MR1C1BR6jP8hIlA4X3hU4
-	 jr1s0kl9i2R1ifgZ0ZoS8j1AZYiWtKMhO7fCyfSs=
+	b=g+N0/sgSQ8SRQky5YcCPVvBqWjz0hDf6/mz5MXtIt5pp3nndKwnydeDBFFaGciw76
+	 fK8hCsX2XQfm37mz50EiEfGo9ClFJDaFX6LRzTWB5+xeibMvG/0El8aLjh4dU3qpIV
+	 pdtzYGFmANh8kH/hW7lr12MBHwTlKf1PiSqCWud4=
 Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006af-e21d-7f0000032729-7f000001bab8-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:28 +0100
+	id 69b006ac-b734-7f0000032729-7f000001c052-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:24 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:14 +0100
-Subject: [PATCH 48/61] mtd: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:48:53 +0100
+Subject: [PATCH 27/61] net/netlink: Prefer IS_ERR_OR_NULL over manual NULL
+ check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-48-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-27-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,33 +100,34 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1817; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=P8RHvB1pDU6Ba6KZR0cIN2NAbDWAknWQIRz8JMX8gns=;
- b=kA0DAAoBNC0GU9GsrNsByyZiAGmwBnnIluZqwXeZ26oYYynjfBoy02QQTmlYcSsBV5M99kkBR
- okBMwQAAQoAHRYhBDls8G2tYNRwNAKmmDQtBlPRrKzbBQJpsAZ5AAoJEDQtBlPRrKzbhhQIALOH
- 7GGUb7lDbOgP/8xq1PNX4SyEuog4C5Kqug0EL27yDZ5DTcHtYtEWvTOVFh3DoBIg9oWZIhltbqf
- zQqvypi0p020OQBz5OD/FKYzR1JLtT/NpVkDjTnrh0FIsLPISsJn9k8DorrTpQE5Fk5zPEGhmlk
- HlvpEuSvvQD0MQibzxJjUYSjgq+Ll386Twc/QQfm3hFYZT/c4I4Yb80f4z0CM2WhT7S3udW5nGM
- BjGFdYImnQ9uAgWz45BEBVAwZb3P7349MoFLUJ9ZHvqc+4UOIWn+5d35lrOEZcvkJpfol2G0RFZ
- WFsYepS2AbdMtsza99K9TLlncKCIQLIaXnPIWJM=
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1045; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=iG/6Gbypjz2OmWQb0dXEIiFm2wHO3xZ/QJrRffJjoq0=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYxKX27oPhhgjZ9L2aN+uf2Pkd/lJuV0FZGx
+ 7sT5NeXxfGJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGMQAKCRA0LQZT0ays
+ 2910CACA5AX3Aqq6mMRjUqWLJkwISGQ/SClIom7gyl5y4YdXmFh365btAW6CDMrujm4g2yYHKMn
+ icMIaMalhr2gJPGai/SU/Cr5CZi3ZY+4gua5T+uq+HkP8vLsixdy6MzBKvC4YJ7SQ9u1y3suTJ2
+ dXw3LfFbSDyXJK4eAmt3Q9xLN+IDoqMq7+VyONJtkwZmjMDy5iHAJpd4FamMBrqSwy4GaDMKKm7
+ glgw85FRb142AMKifN1ghWcWZj4AIrKdQR8M3/bZ64Q5ElxSWaeaZ0coUuPBsdwn1welLaCtuOr
+ MNnjMGoWnx945CHnVYBBpgGh+sR8NWsokX9o62B2ZLaEYpxG
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143728-90660F2F-3D7E05AD/0/0
+X-purgate-ID: 149429::1773143724-DEDD0A3D-09A71CC5/0/0
 X-purgate-type: clean
-X-purgate-size: 1819
+X-purgate-size: 1047
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: 4E05BC0006
-X-Stat-Signature: bayxmfdueg5nrkthxxngc65gwq7fwx4a
+X-Stat-Signature: 5wp74hxi3i14r11f9oy1npjxchkzjxjp
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773143733-481762
-X-HE-Meta: U2FsdGVkX19ZJ5J46dTvVBF4wDPtxzyNuXqwrTqaNpIfAZ9WDvn8c2VuOujAVQtY+2qzqJzEI13sZVormCkdXGGplB5Wh6hRpb3qm6W66kxdt3885HyR/Im4Y/p7zvAYctXkunrobNYzF9dDKWddcng2VS2em+8yPnX9EOHYkTkLVjCCJcXWuwCMToiPhaVu+1BuPvakZ2nPhmFEx9dSzSwfUnUzpVHZ9ed2wE9Kh81ENxySLFOPNTZpBOOAO9cuZM1s+ydvwcDycgCknBJqMUIEOvzHutVEh686VMwpihZumq9eteOQm3QV7KFGwxrugrx3ZIwW1yst9IP3nIWoYMa/uNavfO0dRdJ5UJU0w47/sB81MbQdnswsVv3LQjOw6b7CrWTkEHRuw858HbrmNkTeLdsAU0zCl6WJATRKk4hd9svRbhAUBAh80NIV53OymRF5oYJVW8VG2DPCUfhlk9aadz905kTlvF64r2mEqTGS1MgLlY37AHqxsZX68dCObIJA2Do19srXDKbn5zB/eOCtq3JHfGalWaF8kflgx+IEXLCDH0F4+DTnGjrP4xy471GU6jVnnIpkMNiv3vKWSgGZw/Dg9r8t0rtpCcHypp98TPN2xOxWx2x/FLfooKn84P0ckQFmbEKD+0S4lojWS/x4xef6eJW49L6WgU69hUymG+bsMN9dpPtu4whQIqkxB4gTnVJO2iKQ/wDee86t0uE9fc/6L2g0OpXQBHOND3xfg8Hb50luMHpd8fouzR+ui9U1ItV0vRTYe/IvdgRQXnhLzjWbcu6GpJzMMb5rxtfUXxTpRcOQ05p9yMFl33QJT2AyeiH/iyssQS+Vx/FvWCKpEKIR78g/fzWaG1yOym12ZRaBzyaIwoiOLxx5+cJfN546ZG/KkeweMA0/tpNmdkg/Q6Ndbfxsg667NYtU8ufHrDJRHNTHUg7ykh8b+FtFGumHCRoROj+kdGwsW0E
- 3+taCan5
- Y23fLzrnmHTHUa59wWvHURLl7DgXFzHuEMrVSL6SO9V1rWbHOvY1NUAq3A1INUH7ibFExh/ZCtZi3m6tweBKiCK1tj1XSWDZuF5gsKhxZgNvZknF1KUny+K/XuE2mmeX4RfDsgodTJwEHADUXF5BnTy0u2nDITcXBn1qwvCwwWFJHH6X8MU3TGmUVQMIjvho8JbO2Q5yuZWB8r9TbRIcYUTfS7usDT/TqkDFGm2gy6CImY/h4tCZbQcMcZsZLmm2RWgewKL6c5KQf0xa47viNoLJe+EfTvhbnBbG4ETkGloya3eqIhGnViLr4f8PS19cOb0UEvTxiN7GroPcul8y0ZvYzTZ/rn0T0pPKeda+L9A4kJsex0N37NC/kHEB7WaL4pQMkzADKhRdasBcZ6f48JMqYJMRcTZLK7trFZTqBneKR02UZwE/yVAdolV5Vw4dRYOa6NCHTiXV1olkccMcSKmHTLSHDApFQxxmRIexu47mQ/cwHPXbh0X9rcCHN/CoBs9sMVcWUu9/1xKycfQsa/mrgNw==
+X-Rspamd-Queue-Id: 82D494000A
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1773143732-370353
+X-HE-Meta: U2FsdGVkX1+6tZn+rVDDXQLqdoP5mpmOPFHRAoiaoLpkjwunGeyOtrvbAk86qyRu29WnsbxOh3DjJmv7YRqKredYTGMSUKkzsUPLwtl6YMdL6RHiGClPw8aUlS7AXNc/RTdhbwH37l90N4W7nSzyth0qCRH6nedoXxdbuXvtIG7L0ga3Bp0QenPX1Tq5hjsBTEufVV+GM91b0AsEvG53YzobtK9gm/kminY7tUDOPyWU45FjO7iM7oqSiqxGXNbUGnfG2zC7qmgqz/ntKYu7+wM2/kUBouPrQ4/XF9btBc94ETbxU/lIHH2urjhBGp1yOwKl5Xvkk105bcae/CVbe1wT+BBGXhaUgQcuF7w6ZQvMm3O3p2SpJ5/6Ued8AZsy4Cd3FOPkrY2T/77Mbso8mDKTQc05qoJgOnSrCoiJvzj+C5AlF5QUY/y8kAVo1Z+h0SIt2WJTEpm08t5T8BjWoGjffSYiUUOGCtixgZMM7CB/BO8ddpkIYHiM6tv4Rc/vnfLhQgpo/3sljsGgWdDVmNZOxhm4dR+NuMWzq0J+iMmFRCVn01tV7+Pl3yQPvsICH0ragMR1h6fLEYmlSCp4aW1Gu5VnvqKFxa1z8I7zEA5XWWJQVCmT5PSYUg+O+bwQ7FVxgTZobMCP6A4dey8c3eYgS2ihoDZ6boLc2RJ/rYM/mZFaLMsuv/dbquXfvKxCijlqvZr0Th1IA6O+q6w2QZvTphll1ge2oLPO89zMnwYETd+gLpHkMu3pR6J8hrUnwx6zih4rBxj7EtRLVnNFztuzLPfpccsAXGtSlDMxOExrhZkAAdZKq6ewEMGSmfGcKysgMh/c9k0SLzwBLFKsMLqHu+YfVtG3zcOcT2f0wdh6KwEOIqR35/Htv5bAOH7ABbYSnHTA7jgm3U8vDQmPltxcypVDHvvi2mVuPIQwsD2ohYUggecsFI0sDjhd3UcrBB/+AHbRJFFFNvtJJjw
+ pHdeyY8c
+ XAdSTUhqVvX+pDRe4w0IPZerMqJiKJVFUNNNv58fatdPRXR8nyGL/dDYiLfHAMnxHxQ97MERn2d5kMsSNgDzYLAZjlETkUXuPEKfkNCFlT1qFi3GSONY/7BIxWCmZ2ZTS5EOVTt2vO8QjALYiBujEEBb3hJtpCRAylJa6cm3kMNElQ6CU1Tl6HY9rNPdft+BghggDJ/HQFc4AAqZqaCQMXVks0taFDrdrZI+sKdsEVUORlCJSXNHkwF+3h8RGATicqiRhn+eTMwE6EQO3ZyBMvqFh4dGQNUfJld8tbPWsAQOxvJw1SO1CpdcGRcGt7Fd9soWwXDAPFkX7biPFP5XI/y2T2crERCvnqSBIRbrBD0AYLJT+klpPIMoBEk7zOCfWfAO/Rz2GJytCr/OHNEcVRD+DR8INCxYONAxoYNktPT4yPR5S8KChye0OevnK1Cz6j/wjPn3z0lh4EsG/mdTC7FD77W5rl/EtaEuGJvH/o9WR2Fg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,54 +140,31 @@ check.
 
 Change generated with coccinelle.
 
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>
-To: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/mtd/nand/raw/gpio.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/gpio.c b/drivers/mtd/nand/raw/gpio.c
-index 69e5e43532a448aa6273f3df79f53145784ccc05..86a8b62fb9e8510d36f925b8b468ec17c77e26d8 100644
---- a/drivers/mtd/nand/raw/gpio.c
-+++ b/drivers/mtd/nand/raw/gpio.c
-@@ -276,9 +276,9 @@ static void gpio_nand_remove(struct platform_device *pdev)
- 	nand_cleanup(chip);
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 4d609d5cf40653e04de60f2d28ee26b8bdcdc2ed..58707b9da84adf1002ab9eff9401fa2083374189 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -2667,7 +2667,7 @@ static void *netlink_seq_start(struct seq_file *seq, loff_t *posp)
  
- 	/* Enable write protection and disable the chip */
--	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
-+	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
- 		gpiod_set_value(gpiomtd->nwp, 0);
--	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
-+	if (!IS_ERR_OR_NULL(gpiomtd->nce))
- 		gpiod_set_value(gpiomtd->nce, 0);
- }
+ 	netlink_walk_start(iter);
  
-@@ -358,7 +358,7 @@ static int gpio_nand_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, gpiomtd);
+-	for (pos = *posp; pos && obj && !IS_ERR(obj); pos--)
++	for (pos = *posp; pos && !IS_ERR_OR_NULL(obj); pos--)
+ 		obj = __netlink_seq_next(seq);
  
- 	/* Disable write protection, if wired up */
--	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
-+	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
- 		gpiod_direction_output(gpiomtd->nwp, 1);
- 
- 	/*
-@@ -381,10 +381,10 @@ static int gpio_nand_probe(struct platform_device *pdev)
- 		return 0;
- 
- err_wp:
--	if (gpiomtd->nwp && !IS_ERR(gpiomtd->nwp))
-+	if (!IS_ERR_OR_NULL(gpiomtd->nwp))
- 		gpiod_set_value(gpiomtd->nwp, 0);
- out_ce:
--	if (gpiomtd->nce && !IS_ERR(gpiomtd->nce))
-+	if (!IS_ERR_OR_NULL(gpiomtd->nce))
- 		gpiod_set_value(gpiomtd->nce, 0);
- 
- 	return ret;
+ 	return obj;
 
 -- 
 2.43.0
