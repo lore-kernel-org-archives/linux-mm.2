@@ -4,144 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB9DFD4F34
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 20:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16763EB1076
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 21:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 810136B00C1; Tue, 10 Mar 2026 16:23:05 -0400 (EDT)
+	id EEC9F6B008C; Tue, 10 Mar 2026 17:34:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4F76B00C3; Tue, 10 Mar 2026 16:23:05 -0400 (EDT)
+	id E9AA26B0092; Tue, 10 Mar 2026 17:34:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4536B00C4; Tue, 10 Mar 2026 16:23:05 -0400 (EDT)
+	id D9CA86B0095; Tue, 10 Mar 2026 17:34:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B6D36B00C1
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 16:23:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 236E81C30A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:23:05 +0000 (UTC)
-X-FDA: 84531277530.13.FE1D5C6
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5CBC520009
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 20:23:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWxikTC9;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773174183;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CAE526B008C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 17:34:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B4CB1B7873
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:34:27 +0000 (UTC)
+X-FDA: 84531457374.15.6095226
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F208CA0014
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 21:34:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XqGOoHJ0;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773178466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MvUTAnnhc8zKV+r8Z88BcKJZ/7ZFuI0lAAC+kKQkCpI=;
-	b=DjZJ7G26tiDj9vjzDSo9/VzH9lys4nOH4Zx5ksfk+dyjRfLDZk3LJSr/fbqXK/mcK4aDEZ
-	cyOc0w0zTu9YXYmjxh5F0xup5gwpCOHTn2nQomjlDLJkaXLeYjGwc7tzFbaN2PTQCn30t8
-	VZFGJdt/lCBE5oyVIUv+FOIGuFKEpuo=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IWxikTC9;
-	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.49 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773174183; a=rsa-sha256;
-	cv=pass;
-	b=SiMkru7UtA9z/01PBB6U1ANOhZZUQxddb5LsAXY7Majj6dGn+y7USj2sZFvf4njND0JNkz
-	0ogJWBl4lJF52NyQRVV5ApOBzr+EYvVvR/Ty8qiaQF7EN55Q48OuGcQ92mwJQs3dPoeBuM
-	TvuL2xnYUqanDuYycl+JBb/WwYhsnto=
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-899eabc5292so100228336d6.0
-        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 13:23:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773174182; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jHdUP0d2u0F06ez1zgcijbMo4Sz7/GnYl/h+oQNdWVtb33iUhaKRLMYvoARq3XXYVO
-         haDI0sJyDyZ58kBBl1DeS6D0zZkbEdy1KuHE1kX8B44eyfSnNiLBmitEAm+26Kpk/aIt
-         DLMDYpTo4qq/Otz/583qvSnEKG6xdRcq9BJjtLmzOlfrSWHAl5dxM6mTYD33UAjChjZv
-         am7gUJrmgXWTFy8H2v1xi/QZFwSCvjd7c+fYrGykG4hFyxNKMcyxE4hSbyNbUl5/U8B9
-         eDykr5oz42V4Uq82RavDsBt+V4o//RL2cJXwooKnoxxV5P1WClDp3RfnsqmJ7fXlxqdz
-         CaOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MvUTAnnhc8zKV+r8Z88BcKJZ/7ZFuI0lAAC+kKQkCpI=;
-        fh=BvJ8rSv7hjRJwbZveWzSWjQ0Bao4/BJYWAbn6Eoh2LE=;
-        b=Pmw4Xmz/hOqv8p089AcH8D8KARIvsNu+GIwD5CTgFojBWP8LkIaGE2MZbjgQGwUInC
-         odEPML6osD8kFyREekyRIpnYNB92vYT0FshH0zPELfrt7GvVTyENM8XnhdEDm3aiXbAr
-         cHidF4gREF4xcLmdtq8w6xdG2oZOpCyhv1y/uAL1dVnLoN5HiJYe5IYsvRBpc/xYLspQ
-         YUkSZFfqCbsVyBalUmflb0FacxEPO6FJvGg5cwtrCxDB4kmJS/KQCEPTqGUMgSgjcLMe
-         sK6Qk/o5BiSypywPzwuJBvHfduDIrWJHNWj8PfIgIUVoDgyJwMGzMYafzqSTv6uEkboA
-         9JcQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773174182; x=1773778982; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MvUTAnnhc8zKV+r8Z88BcKJZ/7ZFuI0lAAC+kKQkCpI=;
-        b=IWxikTC96W3z/AeNxsdyYN8reXHq4ws7NarXyukYuOBAHwuvhPRUPXP/FeH2dqPdYd
-         R1Y7OMUbFqhZ6EvZUqT2LgqapWf8eZtmzOCyCw4+pJjROdboLHUzbmDB/h1DTx4U2oiz
-         f5A24Au89+gpFZnj9X9BV4TjQtIUAqdcc1JKJOhGAffs/Sp5BdqiObC0oAqxeY4e1ix+
-         v1M2YiOrDsqTYym6SbIP703DmKdiL6Jex4VQwJ3zzw+Odp7mTtnfhg3R3ynOeXqkjNOU
-         5rfZeE1bfhKMGUcXiHlOYesCcV0WvmLEZKLyIVgANyY1566Rg2fs2oufJph0fgDntcVg
-         D72g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773174182; x=1773778982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MvUTAnnhc8zKV+r8Z88BcKJZ/7ZFuI0lAAC+kKQkCpI=;
-        b=xRE5ygUl+7CyUA+c0wdHzg0VTAAyUYLSjtKzCf3t6riQ30tCF9codvGcZfkELY6D2N
-         +9XG3GmuiDfKJK4gyuTrSeTBgwSZ9uJflx1Px9J9+OtTVTcPysJs8nhZeEPy8mxANIbs
-         HkK2Ha2jDVyj8E6WFvL1XtnrQPO+ohCJCIaRqzPdlwXscJVz6eyi+H/O9ZYWtKw2LmA0
-         0YrlQ0Nf30WzjEsAM13hJdZAFEG9xU8Gxaf2wIqYICrWL76oksCQiDEdTb6ASdMmapYj
-         amrav52J4qnH9fWttriZB5LSn7ZXPMoh2q6X3o7dWaqR/nG1Ow6WE5xCNMdB7RYWAkRQ
-         ejzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuyVjWJafIRDD0WuNb+Yr3gC1ykVhuiUWDDoCegAl6Jidz7X2nV43N1yOHc7EJUoxwvNPP6h+uOw==@kvack.org
-X-Gm-Message-State: AOJu0YzvxRnG0yoQBWg8mRjlFeu6akejezFeRoRs9K70iyYQRZePdOwP
-	zrRfOGAVoxtcpO8LJzmBsEBPVaOe7jteiLTypjkejFNgYU6HrQzvz0O9gnYou0XIzKSv+2F14Ah
-	0rIcWv+FSNrAjLlJvNeV7WQXR7jYB1Ys=
-X-Gm-Gg: ATEYQzxIDJXWLZMB/I69LEhJnQt1t0xB1HGrFLK0eS/X/NcgEcaPXT0TJvQlpzWWJuz
-	l35OAPnTwTsINPfnU+MT7sCQ+DMRhnRwETVUbE6wJJomqkaM44bX7PU+34YX1J6P2n6QE2uXvoK
-	VS0Sw+b88xxI1SJ3kobP58SDtAB9hk4JKWsJOg9uHWbo1JdNps4oZqOndcy5433N1iLkmOdQfQ+
-	DzdFYYmRG2V5EZDsS8x0J1IUe/lmVcnJgBmsW/b7cmmeC58C8K8bAQXck+07iXkoByaVKHgCk6Y
-	Ocprog==
-X-Received: by 2002:a05:6214:cc7:b0:899:fd8c:55d2 with SMTP id
- 6a1803df08f44-89a30a5600fmr247155436d6.15.1773174182006; Tue, 10 Mar 2026
- 13:23:02 -0700 (PDT)
+	bh=kN4LxTQv0yEvEUYVTk4wDtrXEmPb+E5bctm5CirlZuU=;
+	b=ydGjCQFVyuorGZhKXhoos55bwzBGTOZA9urXXhpjYZENKxIQ9zntG0xVfyNXxkJgyp3p04
+	u6wZ/wH5hMj4GNH02fdqWrFuEBLdF7CMuj8ZOMelnfYx7GvBuc1p3nBKElH5NVSHv9B6+T
+	+o5RxQwS9fCkU/fAwB6MCfYNDkcq1eM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XqGOoHJ0;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773178466; a=rsa-sha256;
+	cv=none;
+	b=sx7dMuNVtivwAiBgO2vijVLJehYL5gAE+f7Ec3V9Vn8ucw9mSOKsSoVQDNrVZKimyBdlf+
+	r8M/p9TfHQjB3eX9Y8xZKtUrQpK3qx8GQW8TllbkewRFOsCoDaXtGmaSv89dsroD0xJ5xp
+	HG0nPSjWm2k4VZaAzvOyCWMxK3Y4HTk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4965D6012A;
+	Tue, 10 Mar 2026 21:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1859C19423;
+	Tue, 10 Mar 2026 21:34:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773178465;
+	bh=anu5ccVYq0VybeUWOWkYcT+XFVzew7g77Ym8dOjH0AE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XqGOoHJ0fvSL0gcNZ2Mxqk/lyN0hXZ6pJ5ewKL7Esv/H3WIzCPXa8WFvP9FE2mT7w
+	 uu39pd6fmw5uNktb/vrLS1971pwCqjGXhGaA11BLUk6zM6fbypj0ZR7Owo4Oq7Mnj8
+	 LbvZqmUX/v1dmjhGMzmzkS69287Y+RAWbpAFg9RZgDbTTpjkNct6i5o82Ks+XRpU+F
+	 i0z0owJw+UyzHgiFtz6t4lkCKPqbFBcNyuLH9zkxAXVCOViFU5F0D2XoNBeU81TlAo
+	 vC7IqLop2H4OPVSQFMUxFzT2r/hERvL5lxQ2SNDeRkV6iseD0XeZSPizEZ3cjO8Di9
+	 JLW75b+6yCOtA==
+Date: Tue, 10 Mar 2026 22:34:22 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras.c@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feun <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 0/5] Introduce QPW for per-cpu operations (v2)
+Message-ID: <abCOXjSPbxNxa0f6@pavilion.home>
+References: <20260302154945.143996316@redhat.com>
+ <aam1cHq3_fb-T1HH@localhost.localdomain>
+ <aaoyFClXLEYNzzBR@tpad>
 MIME-Version: 1.0
-References: <20260310-thp_logs-v5-0-686099175bf6@debian.org>
- <20260310-thp_logs-v5-2-686099175bf6@debian.org> <CAGsJ_4zUQPfrpnwcXJQUGMP_0dUW7uQpVuGr7EfNm+qPnDGLHA@mail.gmail.com>
- <20260310131726.a9173c7cfa333b6522f9c8f2@linux-foundation.org>
-In-Reply-To: <20260310131726.a9173c7cfa333b6522f9c8f2@linux-foundation.org>
-From: Barry Song <21cnbao@gmail.com>
-Date: Wed, 11 Mar 2026 04:22:50 +0800
-X-Gm-Features: AaiRm51ZRMJnvEv-JOrd30Tv5A1BTLvAGzfg7VnWKNYbFopNGBE_oKN_RJyEr_Q
-Message-ID: <CAGsJ_4zQf-6t5uSqNobA22q8wtchsE217ohC+2yG9-Rgum+dvA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/4] mm: huge_memory: refactor anon_enabled_store()
- with change_anon_orders()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Breno Leitao <leitao@debian.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	usamaarif642@gmail.com, kas@kernel.org, kernel-team@meta.com, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5CBC520009
-X-Stat-Signature: k8u8hfh96a6jibap8j4dbct5fdp1ayh5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aaoyFClXLEYNzzBR@tpad>
+X-Rspamd-Queue-Id: F208CA0014
+X-Stat-Signature: spemcdn5xto1ur46tghpd17r8koh9ayh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1773174183-560074
-X-HE-Meta: U2FsdGVkX1+0/zr5yluzf69wgByORLSlKwj+Jqc5i1OojrSCkQKvE/CilFUYiYioLaUo3jQEx4kwYTtaEnzWsBodccyQNQyGH1DxKa17Vej0Vjek9viUJpVm3xiYK+IvqBzHgT2FQ1BG5PAp/zKA2TasXqratUC8ju/lqtSBSx3mNeIcmMn9QCL40hZ3oDxzETt3h4yOZ7AqvNU7l0vLJ2KZN+n8fPU3vIqmaIJg9E6oaCwsDlpMc3G+CXWIf+Qjbm9mqW10OSITYu+2YVNjBlG7QXMMP4hwmqSC626wbsZvNZKblVNI2JF24igqcg9aSxMPaMGYwLeXpfoRYxobIEKSHWCo7DkDFdCyACEJ/4pukmJfCwO83cpc3u92+tqV/HTa0I9DZI0S0DaPUfqs59H3G5Dux18GHbpVRJwwDZLbxFz2DeaBA42q7CuvXkPHu1QZU3u8kMI+IegMx1XcdCOrB4MI8ywfrF+mcdbswFvKxLBRbQdxsGICV+QlJ2/+R2faLA0WmSEKJ6N+Cr7XoAWDf5ZTE/X83IWpWyag128g/Y1JMYg1NFnu9n/ZhLqKvV3v4+fVxN67V4RPo8r6lR1pSJzd5ncvd/AcCEqyIQ7HJsxcVvayhahPPjE8udTtvCLY9zr43ggPOilT3VXbNl48H6Uh++w3KscPKlKcMT3DxmZBKsY4gwF7vNGGRmhXWe6Pd5zAbWbOFolAgvHydEgOXwN0+l4Dq8q2x8JiAnFC0YjBURYXiykD+hJKCoVw6wQu1N6b1yQfQLKkgUmr6J4XnNyc1Ngm3q2D4AZCjtgVj5VqLfL1cihEZqAewl4Yz5Web7VlhsafLU4FUov74epC1vSZmtJgyrk+to/Rwh5SaK2NWz2zSh6a4DerxKm1utHXqoPYXsWCLp2rh2EkelmqUxbDf7IKN/fXnwhlZ6UsaOtvEM14JWPL/hy3RMlIa15HU1InowOvyqT208N
- gbJHVX//
- NY3Dn2bsRmeXWDFMND+W/TS4w+n1ToWhDywvzHli1G/ZDTZS41kUPT3VoA813B+3IuwmEv7sQ/WUKiPhmcU9xOnLGwK6ffE5GMbh2Y+X9F7PFNiw=
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773178465-728395
+X-HE-Meta: U2FsdGVkX1/q8vLHP3+tS5zXFWmYAsEGH8ZNFxautUNDWkvOQN+C1UllsEQFkrFbEUVLAVVv7iferASRQqjBLD2CprAvARvd+vn67xQgcLE2MSV4FKwVtiDLW+bfOA5lq81Nq7y5DmD8pdH1IVtqfiuKBQPE2Uu6mOat/Ikoar9qrN4Kta2N743VSYAzU+iJB8iqZoYw7bHAGgDQA2A7IEU7OAC0ak/UB3jH5RpjU6tHsWRFLttn6drkUrO400brIly3pPvfzwQsmMxinRqDa89YcmSdRgStGaQ55KUSKInnvyz2J5e60i0QzQ28inaf99LnVe3YXWKrUJGPGRBV365l1EVDcaz9S+Vf5FQmQWA1QB5qaLpA0rF3LlSHpj/Be+tjhPLSbzUvdEExT3IgwhblYKATmpgU4nXPrUV/FAHi+MvgoQ21uHrEaoieBrvLvrWyZFvMyLznmC4Pyu5K1V43jR3r00UFFGvvM3aw/RwSHgGEziCs43wfRS2bhhRLoZQLUKMA4sI210Y4z2ttzEX/rLAxnG+gVUu4ufUAmjEhD/dHOu3r2iVdZtK78uTK+6DLGZBSSJwv7sxdjT887jXRLdAWWJru1Y7Aevc04bpuXopzfOHCVV5u3Au5AGYdRMIKHpqJxNdgNVTdQsMbyQLINrIg6r/UeDNJ5jz0YQB2sTOn0/ncZJYsRNg5vKy8Ey5b69MlX8mE7B0mq9zrHWgZJo/sVdhL4hWVm8zxhPUnSziVhj/U2jA+y8OKpqyeQs3a/7Km3mdAr7fwHWOBlTD0IdDiGa3ZJyWsEuunzHAbr4j1yEMas9QhsnEyNmjEVo/M+bEqxilIuQRt19LUGjxCJo73NPVlSM4MwfBjHf6d0CDEvb42+n47QAjbCXAbRYV9Xyrd7Fsd7Xq8PbnEe36+JZcVhtXJFngXrvuCgboLWGXhcipo9rV/ByxjMLdq0VTKpuOL5S8lvNaGUDO
+ pTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,31 +106,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 4:17=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Wed, 11 Mar 2026 04:11:36 +0800 Barry Song <21cnbao@gmail.com> wrote:
->
-> > > +static bool set_anon_enabled_mode(int order, enum anon_enabled_mode =
-mode)
-> > > +{
-> > > +       static unsigned long *enabled_orders[] =3D {
-> > > +               &huge_anon_orders_always,
-> > > +               &huge_anon_orders_madvise,
-> > > +               &huge_anon_orders_inherit,
-> > > +       };
-> >
-> > Is there a reason enabled_orders needs to be static?
-> > Could it instead be allocated on the stack?
->
-> Could, but then the array would be rebuilt each time the function is call=
-ed.
-> The idea here is to save a bit of runtime cost.
+Le Thu, Mar 05, 2026 at 10:47:00PM -0300, Marcelo Tosatti a écrit :
+> On Thu, Mar 05, 2026 at 05:55:12PM +0100, Frederic Weisbecker wrote:
+> > So let me summarize what are the possible design solutions, on top of our discussions,
+> > so we can compare:
+> 
+> I find this summary difficult to comprehend. The way i see it is:
+> 
+> A certain class of data structures can be manipulated only by each individual CPU (the
+> per-CPU caches), since they lack proper locks for such data to be
+> manipulated by remote CPUs.
+> 
+> There are certain operations which require such data to be manipulated,
+> therefore work is queued to execute on the owner CPUs.
 
-I see. My understanding is that this function is very cold,
-so we don't really care about its performance. But I'm fine
-with keeping it static if you prefer.
+Right.
 
-Thanks
-Barry
+ 
+> > 
+> > 1) Never queue remotely but always queue locally and execute on userspace
+> 
+> When you say "queue locally", do you mean to queue the data structure 
+> manipulation to happen on return to userspace of the owner CPU ?
+
+Yes.
+
+> 
+> What if it does not return to userspace ? (or takes a long time to return 
+> to userspace?).
+
+Indeed it's a bet that syscalls eventually return "soon enough" for correctness
+to be maintained and that the CPU is not stuck on some kthread. But on isolation
+workloads, those assumptions are usually true.
+
+> 
+> >    return via task work.
+> > 
+> >    Pros:
+> >          - Simple and easy to maintain.
+> > 
+> >    Cons:
+> >          - Need a case by case handling.
+> > 
+> > 	 - Might be suitable for full userspace applications but not for
+> >            some HPC usecases. In the best world MPI is fully implemented in
+> >            userspace but that doesn't appear to be the case.
+> > 
+> > 2) Queue locally the workqueue right away or do it remotely (if it's
+> >    really necessary) if the isolated CPU is in userspace, otherwise queue
+> >    it for execution on return to kernel. The work will be handled by preemption
+> >    to a worker or by a workqueue flush on return to userspace.
+> > 
+> >    Pros:
+> >         - The local queue handling is simple.
+> > 
+> >    Cons:
+> >         - The remote queue must synchronize with return to userspace and
+> > 	  eventually postpone to return to kernel if the target is in userspace.
+> > 	  Also it may need to differentiate IRQs and syscalls.
+> > 
+> >         - Therefore still involve some case by case handling eventually.
+> >    
+> >         - Flushing the global workqueues to avoid deadlocks is unadvised as shown
+> >           in the comment above flush_scheduled_work(). It even triggers a
+> >           warning. Significant efforts have been put to convert all the existing
+> > 	  users. It's not impossible to sell in our case because we shouldn't
+> > 	  hold a lock upon return to userspace. But that will restore a new
+> > 	  dangerous API.
+> > 
+> >         - Queueing the workqueue / flushing involves a context switch which
+> >           induce more noise (eg: tick restart)
+> > 	  
+> >         - As above, probably not suitable for HPC.
+> > 
+> > 3) QPW: Handle the work remotely
+> > 
+> >    Pros:
+> >         - Works on all cases, without any surprise.
+> > 
+> >    Cons:
+> >         - Introduce new locking scheme to maintain and debug.
+> > 
+> >         - Needs case by case handling.
+> > 
+> > Thoughts?
+> > 
+> > -- 
+> > Frederic Weisbecker
+> > SUSE Labs
+> 
+> Its hard for me to parse your concise summary (perhaps it could be more
+> verbose).
+> 
+> Anyway, one thought is to use some sort of SRCU type protection on the 
+> per-CPU caches.
+> But that adds cost as well (compared to non-SRCU), which then seems to
+> have cost similar to adding per-CPU spinlocks.
+
+Well, there is SRCU-fast now. Though do we care about housekeeping performance
+to be optimized on isolated workloads to the point we complicate things with a
+weaker and and trickier synchronization mechanism? Probably not. If we choose to
+pick up your solution, I'm fine with spinlocks.
+
+Thanks.
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
