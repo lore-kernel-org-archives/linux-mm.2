@@ -4,73 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD2A6EB1055
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE6EDEB1052
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:56:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6E076B00A0; Tue, 10 Mar 2026 07:55:31 -0400 (EDT)
+	id 3ECC96B00A3; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCE496B00A4; Tue, 10 Mar 2026 07:55:31 -0400 (EDT)
+	id 25F896B00A4; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5CC46B00A3; Tue, 10 Mar 2026 07:55:31 -0400 (EDT)
+	id 0F6C46B00A5; Tue, 10 Mar 2026 07:55:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EF656B00A1
+	by kanga.kvack.org (Postfix) with ESMTP id EF4956B00A3
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:55:31 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 539E51BD3E
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7DE31B6B98
 	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:31 +0000 (UTC)
-X-FDA: 84529998462.17.8AAF140
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 291981C0010
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:28 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=pkZgS6E2;
-	spf=pass (imf18.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+X-FDA: 84529998462.22.8C1F8CA
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	by imf21.hostedemail.com (Postfix) with ESMTP id A70B01C0010
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:55:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773143729;
+	s=arc-20220608; t=1773143730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awwiZWdQD63BruGvltZFRwj8p2Y5WEoFULKdNAbwIBo=;
-	b=0/rhHRLi/6EAFAWaJ5ThWfyl+kXYhZdL+xq/2esyGQTvG8QoCCWmbOztRNzmBvAU3nGTiy
-	zt/JH9ZqlHf7rdd/E2p3yp1gShsbePxBDOEscU0W3szAydBoGbiGwXmu09vL8rOBD5dauk
-	60mW4NV4+aTRLMW0H/CfLQ8GM0R37Lc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=pkZgS6E2;
-	spf=pass (imf18.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.120 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
-	dmarc=pass (policy=quarantine) header.from=avm.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143729; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=1RQt94wsCFG7IJEQyvVRUl8nd2Z953/wokMRXtIM6bI=;
+	b=ZHOYk7KZqtauwYGsOZz22cm7kToIQTMB542ZzYvwESXeBb9KE9rIyjkCHIg7f/UO5c7VE/
+	Uj/TuLgqr9QR3JP3TqqZ8MYfFKoLhxeR8v/1MkPAU9Ki9TkHlriEiQyjhgqkO90JqyDUej
+	kVn8tZy6mPGF51OZBWU9OQFb5M9B0xw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143730; a=rsa-sha256;
 	cv=none;
-	b=6xj6sbfXehQgwuEqIYbNrTF0GrP4h9t6JNIiQPwt/8J3S3RSlfdI4n0805D/vmPFBtbW7s
-	4VIp/odEHesR9Y+SVv7nNAgO0QnWBscw2VvurWm4F50BxGTzs4/FaQms9HEYb606tJBBrq
-	EdMZc+2WrRsNyEtLnNPUmxalcapI3w0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143724; bh=U4MQ2UyTEtTm9FfUFN8u0E2v86RR/vLyOkwrg7Rl0HM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=pkZgS6E2b6HyMFIjBzS/B+8+S0biV0Szf5QLvjvxmALO/k+UU3HGuHgtEcUK6r0hT
-	 l3sidqEaLmVC6CjiI74oRmEKxGfUqB5EqeVLendnLbzsQ2HomXxjkzlaNLXsRLIGkS
-	 uT2G4P9Dig0e7DdWmJ/gJ1GOA6l1sZgQVMwHxKoY=
+	b=2Me9qfj+R1bdrmrR2s+wBzTiYLghzmcDccJAUqA0ovJUiDkgv9iaq3xebcmPq1/squyNQ+
+	1fzgm5G3UcGlfnhT8r8G4DhEqv9y8HNsAH3nb0wG3XnGVpm6+MXxYpvdEIg/k/eHDA4RyG
+	PAJR3F5/xUBnQc2OxvpzifDMlqBs25c=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	dmarc=pass (policy=quarantine) header.from=avm.de
 Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006ac-b734-7f0000032729-7f000001c046-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:24 +0100
+	id 69b006ad-e21d-7f0000032729-7f000001d9e2-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:24 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:48:51 +0100
-Subject: [PATCH 25/61] net/bluetooth: Prefer IS_ERR_OR_NULL over manual
- NULL check
+Date: Tue, 10 Mar 2026 12:48:47 +0100
+Subject: [PATCH 21/61] lib/test: Prefer IS_ERR_OR_NULL over manual NULL
+ check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-25-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-21-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -100,34 +94,33 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Marcel Holtmann <marcel@holtmann.org>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1522; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=U4MQ2UyTEtTm9FfUFN8u0E2v86RR/vLyOkwrg7Rl0HM=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYq6Vp4tN82O3UqmYAB2rCpxamSEi8qzxQbQ
- a7J5ECg00uJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGKgAKCRA0LQZT0ays
- 2zTjB/4mjCTr3iXgM6OBkpfxhcEN7EQQZ1y9EXzSAaaFnPJ4J6dbscyHQ/vrwihzqSCkid2ehYX
- PXWgLr3enkVF+dbM8V9NRPpLg6F53eMyK7CDWQG9AEEJdJq5IDVkThiVxeIs2iOyPBRVnnYWh+Q
- FhA5NtTEwVLOnsWfWahJLqDe7jVY+yfeXhrX4z5N5WnqSQs4m5vScZRnTkdBPMBPzYgMtNL5igV
- SF/croNsrnotNJXtafaXYhWm05HCgfm5TNLHJLZIRe+0bC9Er8RwnfgRXEDKBgK6ljnqVy3QgCk
- bdr+gnx+ukbOMXU8jf2GxeDozNZ6NjdS7QCYNHlx/c+fJCr+
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+ Aaron Tomlin <atomlin@atomlin.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2236; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=dZgGx+TJ86HynJEVGMrEA5pIsLW37DebkwtATXmSHOI=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYdDyn9P9EqiNuLjohkPV9X7iASajPgIoE/Y
+ Nuv6AjHInyJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGHQAKCRA0LQZT0ays
+ 2wT8B/9ExWKAo/Sn9Hy5RU9mMJnGJZfEhSDSh3BrEyzAo8askVVJ9+5gjVv5zubvVRZSl0xsWYD
+ ONcBymLUypUnGPDyKoUOhx2btlwnIrxM+A/znjwtFfejlhgahBH8clBf9ppwmWxz+aomfSi8dH0
+ gI3DmyyOVIa4OSRnV4I+RdKzJvI1/m5sEwA+61ywfL4pM19NmtFK9XOne0dvmugbwth+SSxAJRb
+ vUziX2Dy0AcV+RxD3aCuKKv6tZLzJkBbkKbaQ16k0qyAZb3zbS92hAPdw+yFsGOJMaFjGgEs6OE
+ FCCv3wHl+aKzbAwbrH/eK6sw740pLs96xx8NapXtmcrko8Wn
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143724-27DC6A3D-212813DF/0/0
+X-purgate-ID: 149429::1773143725-98670F2F-CE18AF23/0/0
 X-purgate-type: clean
-X-purgate-size: 1524
+X-purgate-size: 2238
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
-X-Rspamd-Queue-Id: 291981C0010
-X-Stat-Signature: ejyytdoa74sbjx8n8s43ib198xfj9j9b
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773143728-32879
-X-HE-Meta: U2FsdGVkX1866GZDTmgzrMbGXsNyXP1xK1e5zYoIvs5LGwJiMWEIRmZjr8Bcx5J5qkR6ZOJYsFmiN3IqyqzPQ+xvk6tT+pcCDNnLizX5axGKTcoDuLNspi+HbPCRxcuiWntZYsFtVfrnpmAGEInCYHwBJfk3yU/nwxCfSgyKzW/AbRN3CJhvsawVhsPqHJFSkGwVUJBFA6pwtvQnKdOw8O2lJxV02phq5QX7YSARhlaWize3MNRL43MWuklC6W40ZJDBSWc9HxvbdoP9dtf1T+2n4VhGVVhDhgiV0/eh9LyjwyMw12JHMWJxC2ddGWnFYuyOeHKsUyXOCrTxfLKCCaE7Bg4dAirUqICRcyW4GyzH0LERkM4RfPlq+uOZQznNcgKwB0WphSRpbqX7ur+PH9K5yd8j6ZYDoiF74zSGrpssiczxPWIwqISu2Eh8ydLEJtbnMynbZgzRu+6zl5HZi4wn8nBzazIUoamQK1EBM3ooSRDjV3SF9+W3VFWrcH2Uun/NKUF3rHiMmI1P2SXshv0V984S6lqANxCp9+FIA5B5j+zE53EgLO9ka9qdkIK9JqegkTceu8lhDuVCA8006gjk3HorYDBa4P3YqRRBr+z7YFMBbry5SmYOyEO9f2pcecLFN1hBxbY5sT3ejCd8PotRde+w6Sqx7I8kCjZmu9rXcsVnrp5QeERxYEBIW4EfDLUKfSW/r76q9+3DButP87IKBdCnaUIhU2I2pVUhIufD72V1U1r26XW/GWspbKfpW++FBOSBVAkqtU2oXDHrWGo+2D2kgjTpX7H+hSDjhaleOJKOV/4q3qeLvZNF64GIY5OSu+im/Nz+ltJMIVIRF7yKZdHncgPJB/CSbCtRHNx5SnwgjCQkwHqclMQg9cD08SOPbowB2NyGjsRxz7Kj2ZVnbUrk/IIwdfAuW+6PoK5srgOLBa8I8iZnlsNsyXnGkBtQudlGODvKZ6mgU0B
- jtZwJ+MR
- yrTcZnvaQMn575ylpYcX3U7+cBi3jkhlpzCCLNHlrtlIi40q4Nqp8YzEpWE9PDAekz/P4F1UbcAP3QO+khgPOIzagcgnfvBd/pUZiBwd7dmz4Hd4ZQiRJATjWvHF6hjgooZ0aMkTyADvmxzsV+53eVEbtD1hy047Z0lvQgnXRrjIUQQiLkF7KzIGL36MWJc1NRNI26y4D6Ca3onfjHSb2NEN0Zdhc2xMhwgHGXSa45B2E1hPzPhaiwWourxCHeOaTRK0xted3tFqCVGMbPexPkSAQ5hmzpWbtyZhGGqOoSXWzrvL42OwDrwGR1XHfeEB2cnIAYleWItXoTD5879O4IZZEFq2bgm+BpXm/6LYaFno/a6MNaAyE8g/Dh6TcbLLh9QghCVPbCV4ZKHEn8Y3iG2dydRLDFnqSWYutoFJdKMldsiOJVUUQAt0PCjsFj+Ei24bI1SZdsnxZ8s9e24M8KEgBDleRLkJhLATDHUzqEcx5At1kmjVP5iL3+Q==
+X-Stat-Signature: c85tuoncct7n5tp6yg8bobrmk5xbdwfn
+X-Rspamd-Queue-Id: A70B01C0010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773143729-831229
+X-HE-Meta: U2FsdGVkX1+vusp6ZOrDLqm5e28COK00VaKl1qARyh/xzrMASga/Hw09bPnYpSurQBcGoUZyCFpgD/wPJL6bb0UIdb6z79IKoStdokkBvam4ckL7dT2X+Q0f1TCZ3T/YOZcsYUukhQ8FK+z8wf7IB/Qhp4r+ig92anfY/xIqj03RHorAPQQD+VwwV9xbH/MxIW4MYx5MA7oXkg/dELW/k8oKjZE7o4tZBUCGYBQCVL9dZ+tctrjwrkFSPKcTEbIqXEtn6/QRFLe4Yk27YEbQXFnZv2H9xK8tFHyRzXZmnxIAN9VqRau7xWG6DdsiieoGH+xNepG+wEcKc3ilfoLIKWYI3sLFzoB43kOFA0fzbo2DbhK2mUL7Tpnomxk5HKqMN/nArfPVK3DY02Eegi0T2ewO8l/pLG5CzYccH70m9u55uwvR50dan6dyegKQJu2qy8lCIvsh3kcG42lAQYeYHglDh4lIpSztZYCS+5pqTF9L0BBqu3b8PU/A90+WweUC8GUkNmZFKeIBtlcVedM3BQmTlPHjUtHclcbYTvN3hhmvnvB0mP6U0cZudh3zB1xHlm36qqOtHepGA3aY4cw5SN9CAK3ekISnxZZyinNy4BlJOOba1mggBoLbFowCzBa2mVgq8L9Ir5hyor0BISFWi+lP4Ku4YxvqgkJUxD3c5F4ZvcayR2gnGrB/R52lHb3yGTTsdEUeY4rz6EDlRdaKzi7QsjRZCMikW1WevuyFiZ4FAo7pKt6E1ZQWD0GJPr1PFfShC1k9P/CL9/h2S7dCGIvXHvioE71Ib0Z7KtrWKn0Xlh0Qx+BB8ljncRCl+zh5rIC8k4IHchTgN4byGnOKPOYHF95JnQEgXJmb9wKmXZUzbBPSJSZs+rzPKJ94i/ovjR5CQX8FGpyS4rNUGKgnp14GUkUhc3+7Y/FA6yd1knJkbJxYJRSd+rggIUzVjqj7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,47 +133,55 @@ check.
 
 Change generated with coccinelle.
 
-To: Marcel Holtmann <marcel@holtmann.org>
-To: Johan Hedberg <johan.hedberg@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Luis Chamberlain <mcgrof@kernel.org>
+To: Petr Pavlu <petr.pavlu@suse.com>
+To: Daniel Gomez <da.gomez@kernel.org>
+To: Sami Tolvanen <samitolvanen@google.com>
+To: Aaron Tomlin <atomlin@atomlin.com>
 Cc: linux-kernel@vger.kernel.org
+Cc: linux-modules@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- net/bluetooth/mgmt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/test_firmware.c | 2 +-
+ lib/test_kmod.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index a7238fd3b03bb54f39af1afee74dc1acd931c324..06d2da67bbe14e17ee478aa939de26526c333d91 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -4169,7 +4169,7 @@ static void set_default_phy_complete(struct hci_dev *hdev, void *data, int err)
- 		mgmt_phy_configuration_changed(hdev, cmd->sk);
- 	}
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index b471d720879a70c0db82e605960abe69de28ab4b..fc3177927a02e2d7849915309048529395ece0f8 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -955,7 +955,7 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
+ 		init_completion(&req->completion);
+ 		req->task = kthread_run(test_fw_run_batch_request, req,
+ 					     "%s-%u", KBUILD_MODNAME, req->idx);
+-		if (!req->task || IS_ERR(req->task)) {
++		if (IS_ERR_OR_NULL(req->task)) {
+ 			pr_err("Setting up thread %u failed\n", req->idx);
+ 			req->task = NULL;
+ 			rc = -ENOMEM;
+diff --git a/lib/test_kmod.c b/lib/test_kmod.c
+index f0dd092860ea6f9c69a71e10cb1c8b071b1cd1b7..f44a181f6f1ab53cf95a0a0b598b88cb5f8f369d 100644
+--- a/lib/test_kmod.c
++++ b/lib/test_kmod.c
+@@ -327,7 +327,7 @@ static int try_one_request(struct kmod_test_device *test_dev, unsigned int idx)
+ 	info->task_sync = kthread_run(run_request, info, "%s-%u",
+ 				      KBUILD_MODNAME, idx);
  
--	if (skb && !IS_ERR(skb))
-+	if (!IS_ERR_OR_NULL(skb))
- 		kfree_skb(skb);
+-	if (!info->task_sync || IS_ERR(info->task_sync)) {
++	if (IS_ERR_OR_NULL(info->task_sync)) {
+ 		test_dev->test_is_oom = true;
+ 		dev_err(test_dev->dev, "Setting up thread %u failed\n", idx);
+ 		info->task_sync = NULL;
+@@ -358,7 +358,7 @@ static void test_dev_kmod_stop_tests(struct kmod_test_device *test_dev)
  
- 	mgmt_pending_free(cmd);
-@@ -5730,7 +5730,7 @@ static void read_local_oob_data_complete(struct hci_dev *hdev, void *data,
- 			  MGMT_STATUS_SUCCESS, &mgmt_rp, rp_size);
- 
- remove:
--	if (skb && !IS_ERR(skb))
-+	if (!IS_ERR_OR_NULL(skb))
- 		kfree_skb(skb);
- 
- 	mgmt_pending_free(cmd);
-@@ -8277,7 +8277,7 @@ static void read_local_oob_ext_data_complete(struct hci_dev *hdev, void *data,
- 				 mgmt_rp, sizeof(*mgmt_rp) + eir_len,
- 				 HCI_MGMT_OOB_DATA_EVENTS, cmd->sk);
- done:
--	if (skb && !IS_ERR(skb))
-+	if (!IS_ERR_OR_NULL(skb))
- 		kfree_skb(skb);
- 
- 	kfree(mgmt_rp);
+ 	for (i=0; i < config->num_threads; i++) {
+ 		info = &test_dev->info[i];
+-		if (info->task_sync && !IS_ERR(info->task_sync)) {
++		if (!IS_ERR_OR_NULL(info->task_sync)) {
+ 			dev_info(test_dev->dev,
+ 				 "Stopping still-running thread %i\n", i);
+ 			kthread_stop(info->task_sync);
 
 -- 
 2.43.0
