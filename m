@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F89DEB1076
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 11:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95C25FD2D63
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 12:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7B66B010A; Tue, 10 Mar 2026 07:57:15 -0400 (EDT)
+	id B75626B010C; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B54A6B010C; Tue, 10 Mar 2026 07:57:15 -0400 (EDT)
+	id B40A96B010D; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9B76B010A; Tue, 10 Mar 2026 07:57:15 -0400 (EDT)
+	id A36316B010E; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BB336B010A
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:57:15 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC5851B6C03
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:57:14 +0000 (UTC)
-X-FDA: 84530002788.13.3C49B03
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A25642000C
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 11:57:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=SoumYKRr;
-	spf=pass (imf03.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FAE36B010C
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 08:01:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3174F14014E
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:01:21 +0000 (UTC)
+X-FDA: 84530013162.10.9092828
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8935240010
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 12:01:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=Hzc3GuxH;
+	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773143833;
+	s=arc-20220608; t=1773144079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tH1cp5PCJpa6ROYs7l2uv7rYJsMuwswI+vu0oa+RdzE=;
-	b=1yUng3QFcDLA/lgKPbEWgTqWhM67FWOeem6Mu+JYRDWdmU5sqpR4qRBLMN51nRItF1RhY0
-	zPRgj2boaDMEScnhPhyW6Uud3uo/ShySGsmrEVwf0WmtNEhq40JJxl4uzOy0nbaUbzaf/C
-	iQ4fuSyjiZD6fD1JCoEsHm4MagjcxqM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773143833; a=rsa-sha256;
+	bh=Ph1uUWr1L/iF1ZEQmadj650OhaHNRF4I0z9qkCXYfg8=;
+	b=vjbuNxcqdzQjlBFxA1z2oELbcKM0hCAoNk7dti43f11GTPzMzhPu+V1wDLrkZirLKxMO1P
+	qy81hMpGkYLVvadvOxhUNmypi8zq/Jt5OSpa7sfWAKj7Q/1WSKVDbeDuDpzRGTp3ebXAsw
+	reIY/3ajYS8++4bWN0f7nysKqScg9ss=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773144079; a=rsa-sha256;
 	cv=none;
-	b=O3Ce/AI6+FCgGp9WyVxyyOi7mDW5d/zzxxJe8QuT8gX/JznKity8sFBf/gREa58YzS4nH9
-	s9m26fTqVcLSiwR5vaKvgm7AKNLI7f78/pkU025L+d7bh3ehrXrV3jswyhfOD2L9mo/9sx
-	I3flc6/brHLI4ZWGm93/SRPPr/SuwFI=
+	b=wkK5TgOE0rsYGLIBXY+GKJ3VGEMYLJ/m3PD9sSJvc1W/rBzmLq3VcI8hMfI4p8neXv4nbB
+	p4zXD2LUahssAv6PHpalH7T6YfLJ5EEpBkvohYT427Q1ayLQKYuaE9cIt4WCzaSvpkmRaJ
+	S2B5DoXtCUAMGDSga89VnSjgUnyXtqY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=avm.de header.s=mail header.b=SoumYKRr;
-	spf=pass (imf03.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.119 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
+	imf17.hostedemail.com;
+	dkim=pass header.d=avm.de header.s=mail header.b=Hzc3GuxH;
+	spf=pass (imf17.hostedemail.com: domain of phahn-oss@avm.de designates 212.42.244.94 as permitted sender) smtp.mailfrom=phahn-oss@avm.de;
 	dmarc=pass (policy=quarantine) header.from=avm.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143730; bh=BZdZKAXpTi8WGNXN2fiMzetM/noYEEE0kBAl+EzvNzY=;
+	t=1773143727; bh=KQiEoi/5KK1uW5/WekNTwCqBkzEqSA1SWtsVPdM2q90=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SoumYKRreG/py1h5mHUmmcf5MNhTA0IWVyuhwVtBQDsB3zjLeFZGYUpB8dmBQK885
-	 8zp8zOhWINTswvz/8Dpb4sCQeiaM8MeFzyXeYCejwMtQ6v6ZBfw76CXpeNeZINOkH+
-	 x4yAkEpkA6PhpBthZhWBkiZQBi3374fgQonGrnmw=
+	b=Hzc3GuxHf6WKr4EWmy7suWfFtUIN+cSSog0xcKAdq1K62+58VIbGObMn11FXUjfnw
+	 XSgX37V9MsgZIzaqlzkHaWhxgePi5JwVjORgVIpVxik46tgfvcV/Ti0iljkdkzgEMz
+	 GP23Vofxf0i5EbReeE876OiemRlixpOKPI/O3H3w=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006b1-2367-7f0000032729-7f000001ca68-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:29 +0100
+	id 69b006ae-e21d-7f0000032729-7f000001da34-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:26 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:29 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:26 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:27 +0100
-Subject: [PATCH 61/61] file: Drop unlikely() around IS_ERR_OR_NULL()
+Date: Tue, 10 Mar 2026 12:49:04 +0100
+Subject: [PATCH 38/61] net: Prefer IS_ERR_OR_NULL over manual NULL check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-61-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-38-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -99,33 +99,49 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Jeff Layton <jlayton@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1020; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=BZdZKAXpTi8WGNXN2fiMzetM/noYEEE0kBAl+EzvNzY=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAamjmr2YH1D6NIv4bWMOoOgSjqlNw1AkTnEk
- z4zblGz3BCJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGpgAKCRA0LQZT0ays
- 24dkB/9I2IH2WVtNuAbc4pN8k/UWfzfn7IBk5SYldKbG4a3vAt2BCQOMLY6KBgHTT+SL+30NFE0
- eqhT72U09tRMvyWUaeodCCSJABvxL6Unq+gQWaX6/P1+X8+kVa/Fa0v8GHtiYqiopntbOsAjZBr
- sS0Bbptn0GuVsdoMNke4vQD0A9rA3xW5nWOgDpK1U8FjC9uaXfz1Bfzn2XQq/Me0fZtcNCJpNlZ
- qjNOLRSw3BZGb7IPqnUrcjHIuuNd6dYbs6wYHOgbyiibTqQrj6tp6SnoDxHnYU93V6GBh2lMfHt
- 9qSEynUbZNIYOnoqI2ah9KWLVKFkMsTrddsdp5JisL6z2WZS
+Cc: Igor Russkikh <irusskikh@marvell.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Michael Chan <mchan@broadcom.com>, 
+ Potnuri Bharat Teja <bharat@chelsio.com>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Taras Chornyi <taras.chornyi@plvision.eu>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Iyappan Subramanian <iyappan@os.amperecomputing.com>, 
+ Keyur Chudgar <keyur@os.amperecomputing.com>, 
+ Quan Nguyen <quan@os.amperecomputing.com>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6679; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=KQiEoi/5KK1uW5/WekNTwCqBkzEqSA1SWtsVPdM2q90=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZXMdz3AdJ9BDXSNnmAtbN1zmhCLGlM5aT0i
+ DUnFwIG7QKJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGVwAKCRA0LQZT0ays
+ 20CyB/4lggnkY4K4Lo4sONwYMpv2ax2osa3aOBaZeOsk7IrX5OefQhdbIn4njQGFhSRkoN1OS74
+ RFM1P8Zj2ox5AT2OTTsGgJszYrviPiI6f3OB4fORCX0D5Uy+q+MJ9QaHAVOTki7YRDRPqPU8eot
+ qXUXo3MWBintiQb+VUgj0c7V53AbuvEdsGiANz4ngxrRyeRv0LQno6AOBMWbXRBogpDl1L0S2i4
+ UZBntAPoWZbboJc05+3p5MczuG3QperMntaj9Tb4wrxw8nvaoynlDjGr2dg61cj+UKtCoiisS82
+ re/u1kbEtkI5dJs+aKf1mABBLdny1Poccch6DjzUum6aDXBE
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143729-96CB1E1F-80912B69/0/0
+X-purgate-ID: 149429::1773143726-95E77E6F-9B3D9DCE/0/0
 X-purgate-type: clean
-X-purgate-size: 1022
+X-purgate-size: 6681
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8935240010
+X-Stat-Signature: 7jgth6whp6axxez5p35x7u3b5wgn344i
 X-Rspam-User: 
-X-Stat-Signature: 7aqfo41btg5fiarwwaapp4zpeoewne3c
-X-Rspamd-Queue-Id: A25642000C
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773143832-8928
-X-HE-Meta: U2FsdGVkX18H2wLUOVcaEcWPDSP8JuuWZ3PZcuPlyFk3islImKT66LfUV8U7hHn0DVV+UQ6bZ7usGjUE4/vLwbKKcqTpJsRfiNInWK3/gbU6YDVIuvY871uCxnhbjrIM2+aVXNlHFr/PwVWrHyfHBHhPcqBh2F1YopysMmoo5tfi+ZqqhgGPckZaTqa/LJ0yBTyHbc4IBJIK/X/OpnRbrA9w8nRUjTivt02TIfiFpwMDhiBng1Uwh8zNS494FThASRcqQ6tpfihoC8ACh9Edx8KEaj0z3uTj6ebxcd4AF2KAKo5TGvvwq25YjVHHFHePXYD87mb16qOU51f8gonOzePHt7OKEcfN51FiaSES2eu/pUJQZx7KBVArXQ96+p9VfyvJuFwXvvHE8lQ3KzAVer/ywvs5YSQxsGrXfASKK4I6LKNRdniJiWJwDExjQwJKXGMyDrhvACFwVFZInh/w//84fquviODCHkWhoBXHY1CcfLBttritxbXR3ZkE1kAUb32z3ZkHvy1X+KUsV+dchKQFnyUSVoICuFHjBf2GWvqhieWskUOuWMOu4b7TcqT9diaXlhMwXj49d/6NP8vUJRMkOw2zjAnzFQJcZZKEi951P/XCCXRfjxivUoE9BKU06x+XJaZQR+k1VslcXL3rsIOLN0PJMmoGM8/FugTQlpgHeUq9oCQTE1xRRV/NFM7kBoGUK9bg8WuAYv0YLy06vd2I6gVjta9SWrSbuVCwHllZU90ZLrvhG/xeP6jjPLhDD4W+jCoFAM/X7MOX6mekGnrDnODj/Bpw1mGzKJFfP61NEY6baV3mIuD3Gg7tr8MYMViq+NZRQ/SAwAuKtpuJmn3J2Ost1fOY4yQdkhZPSiULeQm0bDfKGboos6Dr2rfBVKavcXqGx4Z7NVQb83QQ7mO4Rq7+q8bk0V8npfK5Jw5iaEYG6r5VyFHnCsCcHl9/Yv10PwxOgd7MrTyU+Ry
- PTpNY3Kw
- Tg8uVqQZNPjnblaJx2s13bW1ecDeyHzpLT30V4RRuW/P82PxBQbpAB/nibdNtgQ1ykoIfHJS2TFlq8wOX+y4IOk5aVIH3hgyP8cSfPD6icc1heMHFlqfZdvh72CifRMwBqVI2Ugj5Dmg41AQ2nPkNNRM27AOWZlxwyGGPUd5GAttGbxmfTaDrklR8EOIRL7EWDOrQrNiBm97OK+LkuOxH9Cv8uYVo3veV2S7zQJw6IXOfSK9pIOu/4GkoIjjpmCijLe10Y4tARwyfxC55zWwF3V5hfPPAwX3N8dZ2To0/21J3vVhOa36jGP6cfsUf1yPUDDRZgA9F4hYPTALKEqkAx1XH5K/k43HCklnPEkWbQv5bfTo=
+X-HE-Tag: 1773144078-346912
+X-HE-Meta: U2FsdGVkX1+bX8liRRh9TyIEBr9MLW6dVHqDz0rypsoDrncMUrrbXc2Yt8ifP5tIR6kx6opTvptA1Qfqt1mJuWmljhiyMQkLA/spY/RXsULw/KY6p9+2LlBTsZoAUBp31lSZw9VmIn2HIWDUiHjRlhvB1uc+I2O0fas81Kp6AYt9ur+sc5A7/iJdALBajY5oKdv5/6lYF8wlhvR7Ek1tRMlcv8ditAr0sa8gz8IGpnf3yVUY/crsnP83nvS1JD3bgev6l8xebbJuyXDVuIHWTrhqUYvcDWvA1KvpzypJENlOziAQltB3qZZiOolakRL8xrkUJEeyjrd/NO6MqzBj/HAHkhLGf7PyJ41iyd8LXOQIL9yduY7HMqrzPBF5JX9yNOvadIv9MB2dmEXZ8P1ymTy9jNAdh/TFRh+3j9Wj8zDYPzsC+v45QEI6SbazkOVycEZsvYnhzhJCOop/l3rcplVmw0PoIC68k81ggMZAe+dHQ0G7x/Q7LbXC38d37cvDoYHCEOC+hqS3DK4y/7yhn6ElptrhkcK6c9in5MQtSVdii7mLRAHutJGeK29CI285DvzF6NWSgrVQPTa+qEsMe/lhMdipt6wKa+NqU2ruoMyZJal9gKhcK1yFvw6VkIU7d7OTJ2HONIN86PwBXSU64q28WV8Tf/kA3sk3OrLOnnZwU/CVNxyqLjxd5U7qlEXqTmL3rSaJqZgtbcFXtXA4gHRKQUbRSBnvKRfw/3is1FWXJ1V+N6XiqqO/4nfsx2CdjWexc+Esz9rH6u/C7y9BWq/+BH9/3I3GkvTZN7jVjyDJfkGVo9bLBu8dMW1vfKlbBH9oDKF77cd4SNkwcTnwvUL2wWmxxL9qCvB0Y4x8oTuPteso2joyUAFfFX7KVs0gPyQsY27gfKnN55mY42uujk0L8/jte/RSaJNtkrMOQhl9aXheC4bfR2XPjW5dvLSzn0ECWKLhqc5SjV/BKb3
+ +AK+ayfk
+ cpSpH+skvKkzEgtJufbAL9o79zCKXEoN5rmoDLSiOvjlt2MlwTPfbLOUsRlzG5b6WN2XwkIaYNCFfuMSuUfGBqJyDErwMTh0t72KlGub4dOGl6h7WV8XUpOkj5ktBZwKVgHmd9Ab7gu+KLEcNf2zKWnzEiK7BpXi3o8J0qyYIMEZFtlS2bouRqaYwhOYWks2XMViTkyVIAZZPucISH6g0/wOkfSyeGrXFmw3EjTGV8kEYwg3rwK87/4NxaY8oUZ27o/SKC2VlRhR7MFN/+dStQU7hx0uxHJlCMy1TJqGxjTjnL5RIBfH4IY1EGSy34qLiLvUgIy0o1mbkSKF/pxHKOFaJeIXTmX+wMxAsqFOmO/5OUk+PaIypBU7WON0Pt7cWZ6/PBOTG6AV44J/azvV0n2nH256IgAGt74u9ipn7JD0nRc+JKLDMq+ccmEatUNyMVUb0MXsXLKgqDYlkXt6ZznzUcbJk0vh/dSxXiYOluaAaQWvYJrdbBA7Q+QGUitiyYI8CwOaq7Fi9JDHYAn2+/2PDEh6JI5nfpEqaLSpGOSfhfQYzHZiXO4mlLofJ69SUnO1LT1xDUQ6Q1235KWzU5GLD7bO1R/CtbyHZcxOFkottPD7rjc/dAfHNQwKjCn1wIV7f3LfRXs4sxaCePYfwTl83F9PRXJk/XIxvVc0peG74ouvokN5ruvcLTfSu7KgiSWEq0ZqcOFHqwcik+Xrdt+PF5aWmi24E5qPBQVuix2MEIW8JS4okuUuk4areaFjYYeFPr003WlRhT2QzT5alXaJ+5rLcXropVm4wJhL7WzFR8yg2+GEgTFVPGaW0K/A/blH7W7fLnSk/IJoLBLhgYXGfYKpw4G1mBT8QCt105lq/qplIbIu6njl6pOj7Mr9HCyAsBRqeAK2KnRsnuvsvaabetjmNzn67b7QnCpXr8dSq2QyfTsUTHYbvykiHo4Tyov8d2LSsIz2gL+i6HBSeTaljWHoz
+ 5LUZmoWE
+ 5t+jKRW/eNwpz+RFtoYdM/haY83XTRfccXHqvP3DveR6pkt6NTc6WIHrdmze4zdriB/K3FA5YmjJMYuoqQvry1ZAVwAqSn9M+fDiuNbnv4RAelfy8Q7tEPDzFwMRr1Wv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,35 +149,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-IS_ERR_OR_NULL() already uses likely(!ptr) internally. checkpatch does
-not like nesting it:
-> WARNING: nested (un)?likely() calls, IS_ERR_OR_NULL already uses
-> unlikely() internally
-Remove the explicit use of unlikely().
+Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+check.
 
 Change generated with coccinelle.
 
-To: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
+To: Igor Russkikh <irusskikh@marvell.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Pavan Chebbi <pavan.chebbi@broadcom.com>
+To: Michael Chan <mchan@broadcom.com>
+To: Potnuri Bharat Teja <bharat@chelsio.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: Taras Chornyi <taras.chornyi@plvision.eu>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>
+To: Iyappan Subramanian <iyappan@os.amperecomputing.com>
+To: Keyur Chudgar <keyur@os.amperecomputing.com>
+To: Quan Nguyen <quan@os.amperecomputing.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-usb@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- include/linux/file.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c        | 2 +-
+ drivers/net/ethernet/broadcom/tg3.c                     | 2 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c    | 3 +--
+ drivers/net/ethernet/intel/ice/devlink/devlink.c        | 2 +-
+ drivers/net/ethernet/marvell/prestera/prestera_router.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
+ drivers/net/mdio/mdio-xgene.c                           | 2 +-
+ drivers/net/usb/r8152.c                                 | 2 +-
+ 8 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/file.h b/include/linux/file.h
-index 27484b444d3155685cdbb89f546f26ef66e3e1b4..007b9b9d365a052c1c056e12571eaf4f8ef5a45c 100644
---- a/include/linux/file.h
-+++ b/include/linux/file.h
-@@ -163,7 +163,7 @@ static inline void class_fd_prepare_destructor(const struct fd_prepare *fdf)
- {
- 	if (unlikely(fdf->__fd >= 0))
- 		put_unused_fd(fdf->__fd);
--	if (unlikely(!IS_ERR_OR_NULL(fdf->__file)))
-+	if (!IS_ERR_OR_NULL(fdf->__file))
- 		fput(fdf->__file);
- }
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index e270327e47fd804cc8ee5cfd53ed1b993c955c41..43edef35c4b1ff606b2f1519a07fad4c9a990ad4 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -810,7 +810,7 @@ static int __aq_ring_xdp_clean(struct aq_ring_s *rx_ring,
+ 		}
  
+ 		skb = aq_xdp_run_prog(aq_nic, &xdp, rx_ring, buff);
+-		if (IS_ERR(skb) || !skb)
++		if (IS_ERR_OR_NULL(skb))
+ 			continue;
+ 
+ 		if (ptp_hwtstamp_len > 0)
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 2328fce336447eb4a796f9300ccc0ab536ff0a35..8ed79f34f03d81184dcc12e6eaff009cb8f7756e 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -7943,7 +7943,7 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+ 
+ 	segs = skb_gso_segment(skb, tp->dev->features &
+ 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
+-	if (IS_ERR(segs) || !segs) {
++	if (IS_ERR_OR_NULL(segs)) {
+ 		tnapi->tx_dropped++;
+ 		goto tg3_tso_bug_end;
+ 	}
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
+index 3307e50426819087ad985178c4a5383f16b8e7b4..1c8a6445d4b2e3535d8f1b7908dd02d8dd2f23fa 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_tc_flower.c
+@@ -1032,8 +1032,7 @@ static void ch_flower_stats_handler(struct work_struct *work)
+ 	do {
+ 		rhashtable_walk_start(&iter);
+ 
+-		while ((flower_entry = rhashtable_walk_next(&iter)) &&
+-		       !IS_ERR(flower_entry)) {
++		while (!IS_ERR_OR_NULL((flower_entry = rhashtable_walk_next(&iter)))) {
+ 			ret = cxgb4_get_filter_counters(adap->port[0],
+ 							flower_entry->filter_id,
+ 							&packets, &bytes,
+diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+index 6c72bd15db6d75a1d4fa04ef8fefbd26fb6e84bd..3d08b9187fd76ca3198af28111b6f1c1765ea01e 100644
+--- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
+@@ -791,7 +791,7 @@ static void ice_traverse_tx_tree(struct devlink *devlink, struct ice_sched_node
+ 						  node->parent->rate_node);
+ 	}
+ 
+-	if (rate_node && !IS_ERR(rate_node))
++	if (!IS_ERR_OR_NULL(rate_node))
+ 		node->rate_node = rate_node;
+ 
+ traverse_children:
+diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router.c b/drivers/net/ethernet/marvell/prestera/prestera_router.c
+index b036b173a308b5f994ad8538eb010fa27196988c..4492938e8a3da91d32efe8d45ccbe2eb437c0e49 100644
+--- a/drivers/net/ethernet/marvell/prestera/prestera_router.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_router.c
+@@ -1061,7 +1061,7 @@ static void __prestera_k_arb_hw_state_upd(struct prestera_switch *sw,
+ 		n = NULL;
+ 	}
+ 
+-	if (!IS_ERR(n) && n) {
++	if (!IS_ERR_OR_NULL(n)) {
+ 		neigh_event_send(n, NULL);
+ 		neigh_release(n);
+ 	} else {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 6827c99bde8c22db42b363d2d36ad6f26075ed50..356a4e9ce04b1fcf8786d7274d31ace404be2cf6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1275,7 +1275,7 @@ static int stmmac_init_phy(struct net_device *dev)
+ 	/* Some DT bindings do not set-up the PHY handle. Let's try to
+ 	 * manually parse it
+ 	 */
+-	if (!phy_fwnode || IS_ERR(phy_fwnode)) {
++	if (IS_ERR_OR_NULL(phy_fwnode)) {
+ 		int addr = priv->plat->phy_addr;
+ 		struct phy_device *phydev;
+ 
+diff --git a/drivers/net/mdio/mdio-xgene.c b/drivers/net/mdio/mdio-xgene.c
+index a8f91a4b7fed0927ee14e408000cd3a2bfb9b09a..09b30b563295c6085dc1358ac361301e5cf6b2a8 100644
+--- a/drivers/net/mdio/mdio-xgene.c
++++ b/drivers/net/mdio/mdio-xgene.c
+@@ -265,7 +265,7 @@ struct phy_device *xgene_enet_phy_register(struct mii_bus *bus, int phy_addr)
+ 	struct phy_device *phy_dev;
+ 
+ 	phy_dev = get_phy_device(bus, phy_addr, false);
+-	if (!phy_dev || IS_ERR(phy_dev))
++	if (IS_ERR_OR_NULL(phy_dev))
+ 		return NULL;
+ 
+ 	if (phy_device_register(phy_dev))
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 0c83bbbea2e7c322ee6339893e281237663bd3ae..73f17ebd7d40007eec5004f887a46249defd28ab 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -2218,7 +2218,7 @@ static void r8152_csum_workaround(struct r8152 *tp, struct sk_buff *skb,
+ 
+ 		features &= ~(NETIF_F_SG | NETIF_F_IPV6_CSUM | NETIF_F_TSO6);
+ 		segs = skb_gso_segment(skb, features);
+-		if (IS_ERR(segs) || !segs)
++		if (IS_ERR_OR_NULL(segs))
+ 			goto drop;
+ 
+ 		__skb_queue_head_init(&seg_list);
 
 -- 
 2.43.0
