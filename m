@@ -4,113 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 898ABFCC9B2
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:36:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3D2FCC9AF
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 03:40:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A58266B0089; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
+	id D47236B0088; Mon,  9 Mar 2026 23:40:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A05A26B008A; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
+	id D224F6B0089; Mon,  9 Mar 2026 23:40:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93BEE6B0093; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
+	id C2AE56B008A; Mon,  9 Mar 2026 23:40:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 816026B0089
-	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:36:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11E26139E41
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:36:39 +0000 (UTC)
-X-FDA: 84528741318.30.CA3CF82
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 76EF3100007
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:36:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="u/Y5l5+N";
-	spf=pass (imf14.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773113797;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFFC46B0088
+	for <linux-mm@kvack.org>; Mon,  9 Mar 2026 23:40:15 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5E3B0C09B3
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:40:15 +0000 (UTC)
+X-FDA: 84528750390.03.D6E1411
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 611821C0008
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 03:40:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bnMQHuMK;
+	spf=pass (imf21.hostedemail.com: domain of shicenci@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=shicenci@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773114013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ot5C4phsn/D5HCjzZ0Ig3HqX6b1yZe2wL22xhQfLHmg=;
-	b=IFSXXL9T8AzAs3tVxgHQkUtSisyovwlfGElmicOyrmXnV7cl0qxqAGnYUkBISLGlGSZWI4
-	fuYdlaVBjMP8ckRqLQkGtgAKViQ89sY+gmwk9pa2+99BReDoE4So6AApSnwwjXDJoz63iV
-	taanGKSENZPyB+0lOvCg+W1csybQdPA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773113797; a=rsa-sha256;
-	cv=none;
-	b=nAKWyAlhm0yo8LTS/2GqYtvwQZAbwJRxVMCyTGoVCVcdGOZ4c79kQaCH6JitYqaaH4U2eB
-	f49XaF9wju+2bvK1TNSXYc8CG5v9uxDOb0+VJDEUTtnBvmRb+OnAGijno7i+oVDOHRK5qu
-	0IL2SYzWPc2I+c4mnPudVC90uiPEDZo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="u/Y5l5+N";
-	spf=pass (imf14.hostedemail.com: domain of yintirui@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=yintirui@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ot5C4phsn/D5HCjzZ0Ig3HqX6b1yZe2wL22xhQfLHmg=;
-	b=u/Y5l5+N4i469pymJs6TizNMRhaXRY3XQYDkxsFl8M0qt2iPo/czlg6L4roHgwf6Ip1oXoqm1
-	ascKg5gs8YVj2fROA1QIFoKpqalvRjzL7LS7HXslvZjro8o1K1ud6Vkerhap9qLy7VjeW+0w97x
-	UGB+091hZnHHBRVLz06b+qk=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fVKCg5mZDz12LCw;
-	Tue, 10 Mar 2026 11:30:55 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id F058D40538;
-	Tue, 10 Mar 2026 11:36:31 +0800 (CST)
-Received: from [10.174.179.248] (10.174.179.248) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Mar 2026 11:36:29 +0800
-Message-ID: <0dc36f64-3e6c-4e4b-bdd1-6e364babb0bc@huawei.com>
-Date: Tue, 10 Mar 2026 11:36:29 +0800
+	bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
+	b=i2g8Vz4lL3t+d4pVdtPnxvsjcO+kP7xGIGthDdioef7gF37XWK7374e6ciha1pA5xEAElJ
+	PL8BHKB1gnQDItk4pEex1g+ECdZNPoS5YAuEIV33YpPgFQ4CdODo2OEDg1kZ51GUJ6Z3Rq
+	q1+vzEtA2emQxEFsbW1XqOBVsE3rPgE=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773114013; a=rsa-sha256;
+	cv=pass;
+	b=QLZv8r4i6QW8+UsuM7/bxtTQSoqWzYWsefAf6PrYJ3IJYaWfEbaOZGsuV2AIeemJ5vblKZ
+	IdE0p9V1+aX0KWhkmskUCqq505U9BP/94MZMilzNLQ/3YuDyHRyEpuSbeCgTaeGklBVov3
+	t8tBdxp7JSV42xcC1bNDKrNpHf9xcAo=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bnMQHuMK;
+	spf=pass (imf21.hostedemail.com: domain of shicenci@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=shicenci@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c739d32b72cso2408856a12.2
+        for <linux-mm@kvack.org>; Mon, 09 Mar 2026 20:40:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773114012; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MoHmDTE0WaG1wNx+hP0j9rFXZc6JFhAEgsrlWrHDp1De53k2cQTDNQQf+ZweB/PTfE
+         uiNrb2A48CX8idej3eyfUVzI16OeXW/Jj3DTlWZeYk0R0otzVsmzt8uhYg4XWpCAozcn
+         Nwp5nJJT2LoWCnlRpFHvrlilBiqndMp1dLoIR7/DJ91fMvhpOD3WF8Oebp5dmg8tjUw2
+         jxQ76m9Bpec1udeN45h6jIl/qjW0KGhIO1kCwTAt0YaxlSLpI0qyq70czkChgQ+NBZmd
+         sevADrz9pGBLs8KTJOPmOaAMADyOA5sPkSsR3jJN+ko9//zlsBZTu3M58nrXtVWlT9Lj
+         49GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
+        fh=A7v3UZok3MWeVtSDL6A/ns8gJoA4ldLst8qqljDk0Ss=;
+        b=d/02ZuZeLz/7genJ/2B7dsXCv1fyKm/EXYJ+13WJJus4etwjveR1dBZkFbi3wCtR6m
+         ENtDQwCfwUcWnEtwRgjmCVNBzLdEuHJgQBG4ymp3Gh1mii+4XI+vcUJ7WgcfrsgH+PHx
+         iKrgLNwCVgoSyaF1em2IvTVk5v9U0onXvW45H28dkv5Mv4oePLCjl1+xUjQoYx/GsFpl
+         WfbE7VJQ91BJlE/ZrEKu2PctXi/M6kIL9Mrwxx9dtEcJosskg1Tj3dZzfcdsar848EHv
+         Z5z7g5CDQirFFp7hPKqhwjLDsW6zBTCLXgnHOYXyP4Gc2aEskAinBQaOkQpMCvjcOHjS
+         3gww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773114012; x=1773718812; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
+        b=bnMQHuMKmW4Qpp12xGe4i5QaY2OMKjrPoUkGhXom5CSK9KUMnxrc+Cq67Ngtz89s9Q
+         njsj/atM+CVyPVm/vdVd7LLFQ0Gr3j46UBBwNUD0jP52+WUmDOBL53cA+zCfMQVwq4Jk
+         dvzeeCXEdLA3f1DrRGIsBOEB1eRcWDHZ6zSn32oWGhCEq2doopyH9+ADPKR0Ai8/P+ho
+         8YLO3nO88srlYlGKoPbmB+iV0KpBKLIaNrRgZZtPDWYzGedjw1iRPC7TxyNzi5JhbiTR
+         aXtfkv1AUpxyx4kTO54xhMZ5w4n+rDXPduAzxXieS4imexjmBTqmIxaN4Z5MsFl8CHqV
+         MkwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773114012; x=1773718812;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1PR62EF1lAki6+/h7SawFbTNGruJi0XAMWivo94NRLc=;
+        b=JPLlb3fidzgp7dfFox6dbhJxQQZ7NmJ7mW+wCCvblxzMnFW4Vfo++k00ly7+lu+NUZ
+         KF78e+feLwD/sgFj68BA4zCGGF5ZnOAYpKPrVBDtkgisMQ8fxfxvK+x+dX/yfvj8Z/vd
+         XZgoYEyjm+89hn82cZ59q2+AIptg3xxQdowzO+9GuaKnBAWmww66EnHy1Ak76W4+8PU2
+         TB8QmNmX2Mk21y7cw1+dt5LXUQvzfTQ431cBguHyJAO+gveqihI/zcx8xufagk9IVgsX
+         4uiuXAKtQAFcKq16Y0d+x6W6K+0K+lFD87B2wN7TVeAsNG7/7JqrVYrIwgEK15YRWKQh
+         nE7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXiDqA7l/ynl/5lu+ttVwpI3584jWCGxzOSk+aWwQbzRQgJbOExh9BZCCUCOdgPkjO2xDoEGS8Ksw==@kvack.org
+X-Gm-Message-State: AOJu0Yyt75EtUxxG9Pf/2cacKR7kehMLSieIysAK8+ulP9lZ0iSvLHV+
+	7/iUbi7ba/4uZXx5jT4y5vjlz+OjurZNO/gGzzbR3Re5DHDr3Rh0qea86HTfxGH0Fd3eD6PIl7i
+	x0itiojuXxDoqDVCi2KWjoH+5X0fo90U=
+X-Gm-Gg: ATEYQzwYDSQjGezm2sThdj9rz9FWvWDXEDBORledeeP5yXv84EU9cB76/lA8mLSCAcJ
+	tw7GXhHYh2gu7nqhel4GzkScfU7h2fLyTo6tuxLqON5ovimvRMLpdIxOfNhjGjdLEtSld7Ht/xd
+	lceNGCGqBotAFryUWBnlUj4wsvqac/UnacaYxTd1Ra+HiQW+pLhTyQy812Nm6raGV5FfDYuH5HZ
+	KrOgPaCt2UgiqLsEQbslR/E+0jHsfXAfFcVa4ecFitE2HvXGuuCVKr139cXv2xf29mKI6+Su4rR
+	cME0aEg=
+X-Received: by 2002:a05:6a21:9ccb:b0:395:291b:f555 with SMTP id
+ adf61e73a8af0-398590ebdaamr11794026637.69.1773114012045; Mon, 09 Mar 2026
+ 20:40:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v3 2/4] mm/pgtable: Make pfn_pte() filter out huge
- page attributes
-To: Matthew Wilcox <willy@infradead.org>
-CC: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <x86@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <david@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <luto@kernel.org>, <peterz@infradead.org>,
-	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>, <ziy@nvidia.com>,
-	<baolin.wang@linux.alibaba.com>, <Liam.Howlett@oracle.com>,
-	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
-	<baohua@kernel.org>, <lance.yang@linux.dev>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<anshuman.khandual@arm.com>, <rmclure@linux.ibm.com>,
-	<kevin.brodsky@arm.com>, <apopple@nvidia.com>, <ajd@linux.ibm.com>,
-	<pasha.tatashin@soleen.com>, <bhe@redhat.com>, <thuth@redhat.com>,
-	<coxu@redhat.com>, <dan.j.williams@intel.com>, <yu-cheng.yu@intel.com>,
-	<baolu.lu@linux.intel.com>, <conor.dooley@microchip.com>,
-	<Jonathan.Cameron@huawei.com>, <riel@surriel.com>, Kefeng Wang
-	<wangkefeng.wang@huawei.com>, <chenjun102@huawei.com>
-References: <20260228070906.1418911-1-yintirui@huawei.com>
- <20260228070906.1418911-3-yintirui@huawei.com>
- <5eaf3846-01db-471e-9903-b0b239d7838d@suse.com>
- <e8d5ba16-3071-4b4a-b6a1-d492cc46e8c2@huawei.com>
- <aapXRN4KjWtUUJ0g@casper.infradead.org>
-From: Yin Tirui <yintirui@huawei.com>
-In-Reply-To: <aapXRN4KjWtUUJ0g@casper.infradead.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.248]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
+References: <aa5NmA25QsFDMhof@hyeyoo> <20260309072219.22653-1-harry.yoo@oracle.com>
+In-Reply-To: <20260309072219.22653-1-harry.yoo@oracle.com>
+From: Zw Tang <shicenci@gmail.com>
+Date: Tue, 10 Mar 2026 11:40:00 +0800
+X-Gm-Features: AaiRm51P9s3DC7FjytFC4I2paYZUeQw-qAwJyjCHl-40jBVff_9Gjy4xmE9iqAQ
+Message-ID: <CAPHJ_VLzRECge4=L5RRqZyf-Sou8APi=Sc=d0brBAMdj3UC_Cw@mail.gmail.com>
+Subject: Re: [PATCH] mm/slab: fix an incorrect check in obj_exts_alloc_size()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: adilger.kernel@dilger.ca, akpm@linux-foundation.org, 
+	cgroups@vger.kernel.org, hannes@cmpxchg.org, hao.li@linux.dev, 
+	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, vbabka@kernel.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	viro@zeniv.linux.org.uk, surenb@google.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: k1z6ttwuchrgoa6uphdyrua5wm3jtkhh
-X-Rspamd-Queue-Id: 76EF3100007
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1773113796-647174
-X-HE-Meta: U2FsdGVkX19c5Xi/CBeEVb37WMAZCAPHzN5CFFO/Obif56jaZdY13vINZCEGA3uWVwXlbFJjSevuEt4jMWoHysm7SK05HDC8U7s0Gx8fopcWwfCUYzkTqIaMfI4Qe5Q93i19COcgqdWNanBWe1jeiGYWbfXscXgYztOOnwQiGVrLs6HZIBwCj7aPVNChY0UUQGc4jb6gavfDb5iIyirirIRfPYNvxjksuZQMsr4MDUeL1428UURh0u8SyW3ykUi7sM5pqc/BLBuHS0nZaqb3dhkGSGgznCFsAtY3wmqhLGijhA+11VIRh8RDhAUeNWBsTdS6QNrviz+htoQ3x95Eyo2NrjyjxMVfw4yGHVWyAilrAHpod0AiJD1VvfUzPbW/ezlFOg4+B/a7AGBom3WsuEcU9dchuSo3YeecccYOBZJwPP52uB+k3nx8QjLQhJ7RU9NK4uh5uF1WOJ0OCGwXOZdoyUobdZCZwwbGPsNFQKjhUq4W4oMvKg5K0TqsyO60NFgt8mCl67q77XGcOfhZ4mDbz6p7FBWy+vmUVvUQ4+nlGqQ4BBQzGDvjyAKXH4Y4/zm+LD05Qt1JVV+ShjzS5l4kRDXPF66Cp4CA2C44Z9r3dgS57R16jCnhwTZbAeVO1UMASYTHNNki94dEvu096Di/WkH9Hq+vsimmSRWFcYgTU4BB7+ntFnqRJx9SH4ffv0EoOF0k2a305RMKoE44h1yVCyiWDPIY+V8gVTrYhFHVVrIEifjpDrim746aPD4TqWt/epDuLnFVzJEgnHvLrDsglSDaS274aSp/fGhCI1zdEvk1pCwjH1LW7XKqECt1Eoaz827GIaKoRANn55pmg2RyiEXqOShhZepQOfIPoaF0TSlnT8DRJIELQWSwqDgezJR4KAXRpNRTkdIHviMcpYFfCb507IUNhLLE1tV8ZuD6tHIuCWnAZz6S96F1WerdSLTDa0vE8hFegFLJoHX
- raSdpQlQ
- rNdhabQY9pZWmOq/+pRvy9jPI+bRdFEVwW9VyZDHHDgcCMRhQPELrZbz+h0ftK5yFCGS4gAv2n8DYwwTmK04XD7E54zUI76qGWwF85YmbzsMzU/ytvSVXm3hqHvUHlsx7OH/ZWMzUb065hO+21cgFe8qQ73i5/PePgnGlF+douJkKwcEZLsowIegdAblkfBovBk8BlszMgMxFdSAwQCoikrYNLxiQBn7WPx1hypK2hW0KLp00ryyw4KX+ru+QdJmDXOwmSqbFlacK0uiWqGV7/Y3w6VhKmMceWT3nYuHFOJrSRaCQ22rDLKBUYwvE/Z3eJTB3+l1P7UyRcPw/i6LwiOtFgMRd+vBmMmTAvdA0f+cpEEU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 611821C0008
+X-Stat-Signature: i93w85aoeybuamph3t8w41tzqesyyr75
+X-HE-Tag: 1773114013-573473
+X-HE-Meta: U2FsdGVkX196eq+m8ZM3/LN/AjM/qNbaP6k3M5DMe16VY3v0y1JjIqLPbDYUvP6rWEfLcnqGWbLkB7gkUdu9hIP2Z5nB7AUtEMo/5lo2vNe1InAmXFoY4g6JMsdYW/Q9d9KPtVNapbfMND6mXDwgEQyjXNGQcMbgZ9GDp4mCdoJq2OXdDny26NGffGAZ7pLl5pE9tsagva1BSgd4kbtVBdjwWTQpTvv4Og8B648+/Zf8fWF5b5m38LrShWGp0rQO0For9jaIPTVcPfA6UDGo4rUlFMfHGBRyzt5AgS3G3z0JFWKhEIRttxSelJ7ZQbGCLSpVitsvEoANqK+8S0pxUM0yTIHcllQHVOJMTYu2bYtF2N0u6NzKiYQjdOQqhttrJhQC7I6oOjqzmEvZOTaUUL4vOdhztt3g5nTQUbmUAO9o40TggSV5PrUDqZbZah1PLjiqGKZ/Sh2iUN8eN1DupW584w88ik3q5BcxgrRUP6c8WlQfSdPcPovwtFBkqc6MTMqQ5jNPWR6iJTGyIEbYWgpSb6537nqhaLD9N3MKsG6OHy6kcsdFqpdrKcq44tkfuJ7EU/okGiB7Ef/Qs+HrDfMgmmiDqBA7nmgWQGKFTSgZCVU3hDRtrrEMFG5JFs2jxCC8SyVBUKvFG+oNWlCz1YQvBUz2UvkGcTWzro0Nva9mwpTTvg4lC/IWsKp488XbFCyuZNrNJ8KWsJhsf0yoexPYgI0fNSQ/B6JBlXWPwCuPCC0Uu7giajVXfu73rNDG/Dlz/RRHjlkU1D29B2wnc1jUHGnE1ZM/CjLuxbjHntukVUzBQl2LcR06QGOsjfVi3F1EvfvDTZFsqvCFqb83vFxcmEhU838BusID5tqwkH4ZLDZ7O673yL/oD9Fti91nvhK82HfWQzYaTgBamXAMiYq9dsBPa0dDiuSERzyrv9x6eJsTY/7mSEYjdjRjq+BDVDQrwbDVbEn/DKJj/ry
+ e4BC5Jw9
+ IVHD/Lk7pZDpMCJSL8qgNWLepDmGbkF3aqYUhHeJyDsW2BkOrjQO8GlQBqYVSpmJnyX+eY3Wj1XJVUOGOFP4T3yH+8IhBt1ZxaidiGLdX/pSdCWekXNGKyaMPseYJ6NlwWroPBGTNnuvgQ1kvGuNqqVi+BFzB5EIBBjtIs4qctVcq4/fgNrYyQlsbm/CN4CYRCqxibDhUjhcL3CXXr8mvYdotOQ3BjHdtsx9KX26d16jSbf2NqD1WbImaAapQptRG3DKfnNsSa4ajGPQ3IomKu8SmDlykDsBaQu7zG0Goyu+TPpBEZyc+yL145el+4Eq+RXYZFJM8Y4IR5eQ0KD8b46WzdCk93ADhjqC7oIyKtMzCV9dO103qW10J/89xpLMZ5x609xa/n6aAUGNS2jxJC3xhydhmBCiG7x2ITTDBSYx5ST4XBX/dZSC8S43KuW7GkI2p6O68jgwHVNNLKi/9SbZf2yXEvu/547JHjGMdSDxFaxV+3p8vR6+xgnEsdYFCcuAOCMCMynGVkJo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,23 +142,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Harry,
 
+Thanks for the patch.
 
-On 3/6/2026 12:25 PM, Matthew Wilcox wrote:
-> 
-> I don't think we should have pgprot_large_2_4k().  Or rather, I think it
-> should be embedded in pmd_pgprot() / pud_pgprot().  That is, we should
-> have an 'ideal' pgprot which, on x86, perhaps matches that used by the
-> 4k level.  pfn_pmd() should be converting from the ideal pgprot to
-> that actually used by PMDs (and setting _PAGE_PSE?)
-> 
+I tested it on my environment with the original syzkaller reproducer,
+and the warning no longer reproduces after applying the patch.
 
-Hi Willy,
+Kernel version tested: v7.0-rc2
 
-I will take this route and implement the embedded approach for the v4 
-respin.
+Tested-by: Zw Tang shicenci@gmail.com
 
--- 
-Yin Tirui
+Best regards,
+Zw Tang
 
+Harry Yoo <harry.yoo@oracle.com> =E4=BA=8E2026=E5=B9=B43=E6=9C=889=E6=97=A5=
+=E5=91=A8=E4=B8=80 15:22=E5=86=99=E9=81=93=EF=BC=9A
+>
+> obj_exts_alloc_size() prevents recursive allocation of slabobj_ext
+> array from the same cache, to avoid creating slabs that are never freed.
+>
+> There is one mistake that returns the original size when memory
+> allocation profiling is disabled. The assumption was that
+> memcg-triggered slabobj_ext allocation is always served from
+> KMALLOC_CGROUP type. But this is wrong [1]: when the caller specifies
+> both __GFP_RECLAIMABLE and __GFP_ACCOUNT with SLUB_TINY enabled, the
+> allocation is served from normal kmalloc. This is because kmalloc_type()
+> prioritizes __GFP_RECLAIMABLE over __GFP_ACCOUNT, and SLUB_TINY aliases
+> KMALLOC_RECLAIM with KMALLOC_NORMAL.
+>
+> As a result, the recursion guard is bypassed and the problematic slabs
+> can be created. Fix this by removing the mem_alloc_profiling_enabled()
+> check entirely. The remaining is_kmalloc_normal() check is still
+> sufficient to detect whether the cache is of KMALLOC_NORMAL type and
+> avoid bumping the size if it's not.
+>
+> Without SLUB_TINY, no functional change intended.
+> With SLUB_TINY, allocations with __GFP_ACCOUNT|__GFP_RECLAIMABLE
+> now allocate a larger array if the sizes equal.
+>
+> Reported-by: Zw Tang <shicenci@gmail.com>
+> Fixes: 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from it=
+s own slab")
+> Closes: https://lore.kernel.org/linux-mm/CAPHJ_VKuMKSke8b11AZQw1PTSFN4n2C=
+0gFxC6xGOG0ZLHgPmnA@mail.gmail.com [1]
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>
+> Zw Tang, could you please confirm that the warning disappears
+> on your test environment, with this patch applied?
+>
+>  mm/slub.c | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 20cb4f3b636d..6371838d2352 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2119,13 +2119,6 @@ static inline size_t obj_exts_alloc_size(struct km=
+em_cache *s,
+>         size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
+>         struct kmem_cache *obj_exts_cache;
+>
+> -       /*
+> -        * slabobj_ext array for KMALLOC_CGROUP allocations
+> -        * are served from KMALLOC_NORMAL caches.
+> -        */
+> -       if (!mem_alloc_profiling_enabled())
+> -               return sz;
+> -
+>         if (sz > KMALLOC_MAX_CACHE_SIZE)
+>                 return sz;
+>
+>
+> base-commit: 6432f15c818cb30eec7c4ca378ecdebd9796f741
+> --
+> 2.43.0
+>
 
