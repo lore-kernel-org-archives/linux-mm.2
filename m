@@ -4,177 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FC8EB105A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78EE6EB1054
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Mar 2026 14:52:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E45F46B0089; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
+	id 870116B00B1; Tue, 10 Mar 2026 10:52:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3F26B008A; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
+	id 851C76B00B2; Tue, 10 Mar 2026 10:52:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8D56B008C; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
+	id 726B76B00B3; Tue, 10 Mar 2026 10:52:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BBA196B0089
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:45:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B6911C006
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:45:46 +0000 (UTC)
-X-FDA: 84530427492.21.3BADB5E
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020106.outbound.protection.outlook.com [52.101.195.106])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BC2F7120004
-	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:45:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.195.106 as permitted sender) smtp.mailfrom=atomlin@atomlin.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773153943;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 652036B00B1
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 10:52:37 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2001AB652B
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:52:37 +0000 (UTC)
+X-FDA: 84530444754.10.35E1818
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3EC091A001A
+	for <linux-mm@kvack.org>; Tue, 10 Mar 2026 14:52:35 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gyg37Q+h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1773154355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JAqErPuH8jvSz3S3uW1/upneO2POe6vZLbo48MwocK4=;
-	b=as2tDeR1jgykM2mMT+hZyL0uXPLwQXMiF1kF/PSBPe5SLlQs/4mVREB6UZF01HcQ2Liflq
-	Jxn3oPSiINk3zK4f3lSWBxw9YA2N1yrX0VWLBqIPPqemhNeKketgYYaJR64O0DQM1LRsL4
-	MTZDMScn5Gl15lJR8P172+GFdCrlmZU=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of atomlin@atomlin.com designates 52.101.195.106 as permitted sender) smtp.mailfrom=atomlin@atomlin.com;
-	dmarc=none;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1773153943; a=rsa-sha256;
-	cv=pass;
-	b=GvNc+8Jb5jo/L0acE4TAdbMCX43BM9RynCQeDcW6E7v+Ukfy9AZFB4NYe0BuAtb62QAYxR
-	uRpvrFJ9O1ZQnaWa6r/z9OdvLLfaY4OPhu3IAkuw+vImQSdeKX9LpsA3BzE/3qE0jkCF05
-	4pk65tPr7e6fLOG0f66no8aQ/8hzb/w=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wB3Xfg8fFKEFvKlN8/Fj9g4pkeaVtXn0kkDv06O/WSlvfRmYmXzgWxSHv/glXmpgWjTZmDQlgN6XQtexxgcXW1W3VL/TLBetRYLY+B0ZV+vUVrCE48T2TIf40hP5rOs6WTQ7mys9HRZ+1AY1OvWdkf82/IykWL/OF4A+EYy6VjDR2OHgY9tSg7ChErbiQ3cYlgp7LRs1+gUG8oz3MmZ8f87tinkxAlWUEiyIEYKB0ncf/zELL6vWI41RbzVzDg2PiDOv7VyMNBtlJHN7zzrYdtM2wpxx31mXGg7KPaEOEKyIvGxE9pmt0WWUaZE4NxXaxmjdGfClh+8Ek0cFT+UH+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JAqErPuH8jvSz3S3uW1/upneO2POe6vZLbo48MwocK4=;
- b=W7tN4kfmd1B4jfJhRrUU6g4HsnWTQgFcjxfu8uf5dskX9ZbOcsBt430GAQhCKU8RgliHekyDzVdtGLYNkozrOO6SD2vWf4qf8y8niwVpCVoOOGsGHOzd80vtscok3K+fUCblknwTOHpHEiaywOV7qny2C0CogV32hxhE8dxV7Tq4Wq/YUNb2j9iwjREaJEIkKWo7nfWO/XYQXuJneWwzmE7r626rMP84ru1sLQzsKq7frVNFpBeZl8i8bshHULXeIkAad5lsnmOQcGAdgsVX9wqpjlsdXovsGplhJS5y8yvgeyXsiFIw0qc/e9C8Bq3IiywnSpp6TSnFye1QIK6rYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
-Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:70::10)
- by CWXP123MB4117.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:b4::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.25; Tue, 10 Mar
- 2026 14:45:39 +0000
-Received: from CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- ([fe80::de8e:2e4f:6c6:f3bf]) by CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- ([fe80::de8e:2e4f:6c6:f3bf%2]) with mapi id 15.20.9678.017; Tue, 10 Mar 2026
- 14:45:39 +0000
-Date: Tue, 10 Mar 2026 10:45:35 -0400
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: Philipp Hahn <phahn-oss@avm.de>
-Cc: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
-	bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
-	dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, gfs2@lists.linux.dev, 
-	intel-gfx@lists.freedesktop.org, intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
-	linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-media@vger.kernel.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-pm@vger.kernel.org, linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	samba-technical@lists.samba.org, sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
-	tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: [PATCH 17/61] module: Prefer IS_ERR_OR_NULL over manual NULL
- check
-Message-ID: <qtwmj2mcbokwa7gexs5oqasjuitoaajiawc4d6dwcc224lmvbo@syjg6j6jggwy>
-References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
- <20260310-b4-is_err_or_null-v1-17-bd63b656022d@avm.de>
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iksijtbqwcym3dge"
-Content-Disposition: inline
-In-Reply-To: <20260310-b4-is_err_or_null-v1-17-bd63b656022d@avm.de>
-X-ClientProxiedBy: BN0PR04CA0148.namprd04.prod.outlook.com
- (2603:10b6:408:ed::33) To CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:70::10)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ml1c+QBVKH1G4D7WQDxLbH41bxeuoQxcf06ZreXxasU=;
+	b=C6P3rzFdTD3RkirrHGOZTnTdplQZ/UicQ89BASQFq2cyKo/DxHX/aOQparYBR6nnenO2CG
+	35fksOVQQQLZ/g+VY7o7mHTYeq6fEkjfR1Wjd48ad/GT/pnEvkKwJLOzZfKW+oflfu+OFh
+	mylO5QBtSoW/jU0y7Or2+Ds+pf0npSw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773154355; a=rsa-sha256;
+	cv=none;
+	b=pefV1HtOBfjMy0axEnVCWxfflRQyrsyab+cVqLfOXxyFQn0Pl/kS6h49z31q28PyRGXote
+	FqApboLzvUv3AuH8prFWdeakyt2lPKdJnIwXZytm6nYKBJWihEu9SGIgpb/txNeZZbSJ7p
+	ABBnHrqoA3hXIIw4d82VwACH3Lq/VDU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Gyg37Q+h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4852f73d0a3so27943635e9.3
+        for <linux-mm@kvack.org>; Tue, 10 Mar 2026 07:52:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773154353; x=1773759153; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ml1c+QBVKH1G4D7WQDxLbH41bxeuoQxcf06ZreXxasU=;
+        b=Gyg37Q+h2aKdstGfueqYQWeOxNBCYQrjWaASWBnR5jMx/NnNmROs7A+Mxx9lUvlPqN
+         fuKglZxnNHOXLvHFmA1gsUOMri1HvZKReQUKl5gROJ98xQaLjqpDyvLO72pdopPIuLiv
+         WMrj6L0xKSjK50IiWTudWMgGZ6C209OZ1vLQyv8Qa2KOxtM949vvDeGqDK+MuE2YGrwZ
+         3Cc9obkIjSFv60rr+lG3vNSY8PBMSLXIPGj95B1/bLaMHmgi+dyQD4Ue2t0ZAiOstJt5
+         EX0Bg3J1vAX7GK3TYUoJqLKR/doniLriIr/FFvLKF0mpDVrSbGEci99mNLoRqQCOOCGj
+         TYQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773154353; x=1773759153;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ml1c+QBVKH1G4D7WQDxLbH41bxeuoQxcf06ZreXxasU=;
+        b=Q/R9x4jxQis9QElEwfdz2CJnC6SDIjma/wBHh0Mr8PzU5OKwXf4J20N0PFKe+kbEc2
+         np/AqPVFE0L4DIxy7T/3JbX5v8iyIVz/QbLCTYTW4ASqshhi1GNxe5SUVXfsYZgzaush
+         f1eUDnWAf6AZv99p4msCsm65MZ4yihx/6on8CyJcXgTQfnJGlGCpWONgAShWMLTa6ijS
+         H2eUK8gxxQQn/5FtG/0lT8qJNs6zxFrkzaBsZV6+L7fH4LKHRTK9pvXfecZknDNRLyXr
+         emEcMTcOARxB7KOCuUsahJ6p9BMZfGagJjbMiQNPphpcxGTgIi/njJ/GjjWVfO9h/1Qz
+         A1OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUj9ev6CODrO8rEUYoSXjxfCrfbWysLwtDggK5E2EZxw0dC70Msp6QRalCfcpK+B4Z4+YVQS1AeUw==@kvack.org
+X-Gm-Message-State: AOJu0YzKy2Cso6KLau4DygF0wvJXEWsN7cr2U1jC1+klG10kVLxm+DP9
+	RvPVjmYLOk6eD7g6CrdqkBLInAByNY4k5+AffvYa2GIlKpvBq3dReg9c
+X-Gm-Gg: ATEYQzzHXmaZZUcKz3IXMLzbd+WXKASnzE7FzWTRNQa0kEBv+eyvH9i/Ug7Adlaflwt
+	r1QC80U5FjNB0dgn9KFxVyuh/OeT3OcdV+P06gVN8dkcazEFheOpYIuBvOToLSkwwnXVc5HFtM1
+	gARZyaGWdwmf9XleTsZ78IKnMMxDN5bxI1OZpF8YRsnY2nqfcbuSNvb25vHdr1ZNPsqRYKGn/Hg
+	vCcT09i7tsg44ueIT70tLjOL847hYtYx5qwRpMnR5y3NGTWtBV6KRQgxkDxdnyjNM/vgNEgdsy+
+	docqvUVDw3OocAz4FOxkua6iLeO/5yXDFtpeo+1AEQI863Rewq7jTC+r2efdP3kZ1FedXNm/8z1
+	VPxA8LJ6vXJK9+bAqxQnbQO0AlFzXDg6WVBl3FnhvBoC3eR4ockp2YKzdE11X/hAuVToDDmGZkX
+	PCXXWW6iYe/tQ4oVWr48W71CsNZK71i6DKIyl2ZLUIFB/hhk+dR+fS1td/zw63iRIr
+X-Received: by 2002:a05:600c:8b5b:b0:480:4ae2:def1 with SMTP id 5b1f17b1804b1-485269305e5mr250455895e9.13.1773154353218;
+        Tue, 10 Mar 2026 07:52:33 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dada3b43sm37635135f8f.13.2026.03.10.07.52.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 07:52:32 -0700 (PDT)
+Date: Tue, 10 Mar 2026 14:52:31 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Xie Yuanbin <qq570070308@gmail.com>, willy@infradead.org,
+ Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org,
+ justinstitt@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, llvm@lists.linux.dev, mhocko@suse.com, morbo@google.com,
+ nathan@kernel.org, nick.desaulniers+lkml@gmail.com, rppt@kernel.org,
+ surenb@google.com
+Subject: Re: [PATCH] mm: optimize the implementation of WARN_ON_ONCE_GFP()
+Message-ID: <20260310145231.1680db9b@pumpkin>
+In-Reply-To: <be647d6b-9bcb-41c8-bfcf-7fa03d2b942f@kernel.org>
+References: <aa7p3eQfEuh2wObQ@casper.infradead.org>
+	<20260309155933.41179-1-qq570070308@gmail.com>
+	<be647d6b-9bcb-41c8-bfcf-7fa03d2b942f@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB3523:EE_|CWXP123MB4117:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13b40275-3529-4e12-fb2e-08de7eb3b274
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	eS8vfNxIlcveoUfBbC1f0b/7XDyt042g0NrOSeRHjPQz8SGF8XhnduWnhSq6w/jRCubBJWCQ0em9JSqFUpfcMToM52skjTdNeFfaYr/iVSsKAWiaW3DO/bcnqdcpaQuiI02eS0+aO+CkNT1YH1QQ6E7Q57u6/qaWaQ20N+1FIBcJZS1mBzIioruuLmthEo0gpbRvPUw85MZ4BuTbyxgwfUdq297KnZNKBcxR51k+1QwxfVuZq9j/tn2i89QI1rer6MizYsOjruF/dbbHjCey+BSjf4ODjERjtTz7wyRciY2SWDagpg72iLn9KVmzZVKExW68zMr/l9NtJWoTedOYUByiSKXbyY/3JV9xRnX1MzB9BgBZzT1xIV+5HlUy2YjMHl/3dJLaD2oBPxNWLURA8Z08rKBhZiJO2xeSiCI4mtWcnPeq3oEWmmY/WeHCI/B3o7JWziYbmH0QC8uqLAo/mQeRtn2TDgHIlkcKjGfALzMiD8xYPzjGT5P2vIR5K1BknKS+wJWav08f2MBfPRpwDPe50D0F6uw8UO3X9XH+2FvKXluY6iP9bBIpwnIhpFLltJGAWJ97kBcunctHO08msp59QGCLa7B9KyIGa5ySuwKbRsiH6EO7wMRDJH8WU49ueWwW1LGly9m6jhK5/yiuwnls2+tKU53my80py9Z/IAQ4MsIkAQLyj3EYcQb0F1EbNzlO4n0fZQx8QozYXcKQrvPpY9dpMBAU9AUK3jolnXE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjlvdnlwWk1CSFZIUGxWVloyKzB5bUNjN2lRU1ZhM1hLSHQ0V2Flc3Iwd0VL?=
- =?utf-8?B?bXArd0JIN2tZVzZLUGpqcHBUbWNFZzAwc2o1TmRuYkFRMnBERWo0OVk4L2JH?=
- =?utf-8?B?M01qcWhaNDU3SDMxYnZDcThyUkNHMjYrZ0dtR1F3V0ZIVTVrUnRKN1dOOHR2?=
- =?utf-8?B?RHpPcTI5V3R6azVuanpHZmg3U3dOd3lZRk94MUpZd2N2UFZnMitFcXdwbGtM?=
- =?utf-8?B?MVBDd0xUODEzK21Ma2FQSnZNQVNYMnNGU2xJbmhqOHdmb3RhYm82alo0MVlQ?=
- =?utf-8?B?VzEweHRPTGZxV25GM0ZwQ1BUcytpRGJIY3hVVk5KR0ZBbzhrUHd0YnJVMjdy?=
- =?utf-8?B?T3JWUFFPdzZJVitQVWE1b0RnRkNLbHlmVCtkS295eVFOa1FyMTB4aVFPTzli?=
- =?utf-8?B?V2hUMW52U2ZGa0N6TTF4UWZqejVMc0RPa05rbHluMUFBUVJQRTJZRGM3clEr?=
- =?utf-8?B?Vmc2aGVzb01QenlhdGlYc0NLMWY5WUVJQ1JIUHFYcWs1a1pEN2JORDVjTlFN?=
- =?utf-8?B?YjRTRUkwcitrUHM4blJac05MdDY3VXJTSStuZUhpcDZsV1EvazZkMGRYME1q?=
- =?utf-8?B?ZFI3eWtGN3NEc0RCcGNhQTErRXB2cjRXWnRzbVpTcWtISDh4Y213SVhnMU01?=
- =?utf-8?B?QjlCaTltWWgwUFFmb3VuaGQ3dDVKMkVwdVphRTNMR1hvVDkrbXBSMFNMUlVa?=
- =?utf-8?B?M0JHVmRmaHdxcFg5QlgxaXNtckQ2SGIzRWJzYnZuTzViVWsxQlZHQmlDNExl?=
- =?utf-8?B?Z1ptTVlDVVE2ZWQwMGdDZEk5Y0Q3NnFyWVltd0N0cDRUa2lXZ2h1R09tTGNT?=
- =?utf-8?B?T0owTUk0UFc2SkljekM3QlZsVzJiWVBpVkZtaHFMK0FBOEg2aEovOGd6RnBW?=
- =?utf-8?B?LzNsZkJmUU92bC9XUU5jZ05SbWNXZ3B5VXRzRVUzTm4vQWtVWFFqRnRYekY3?=
- =?utf-8?B?L2E4TXpUV1ZCZGxZbitRS1RPYlBZVU9Yb0NDQUNEQnMvcTllUGltK1MyN2tZ?=
- =?utf-8?B?WXNuc2hBelVVbVNtWUtYSi9SYzhWa095dy9RS1F6bHdibjNQYUpITTlhVTNo?=
- =?utf-8?B?SFhldlpnYjYza082ZmFKRjZKd0h4LzJkTXRpclQxazNrQm9zTG5ReEQ0anhT?=
- =?utf-8?B?S2s2L3ZiYUZzZU8rMHFEQkczZElUeW5KcEFRWnFHMVV1RXNsTzUvR1hNaG1Z?=
- =?utf-8?B?T052eUI1MlpyTUNiWkNHbFI2dFBOQ29rNS9hcjltTStCVVUveDZTNHFtVXlK?=
- =?utf-8?B?Smc3cmFlakdnVmtTak8zOHo4VHhzT0x6WmEwK29HckR1b1VPNUtiYlQ2SHIy?=
- =?utf-8?B?a2VCRGJzM0IrZUJnSlVVNSs2Z1ozTWdJTEc2TWg0dklnenRxbHBVNkRiS2Q1?=
- =?utf-8?B?VWdRbWlCTVRVZDZtQ0txNW1pYzVLVVd2L21mSElOMUhvUk90VWNYR3JFNUFy?=
- =?utf-8?B?VkdFOTRTUTlrN2c3T3dpMUhhWVJOYnNZR3UydnU1UEpUMlAwdTczT1FyS2NI?=
- =?utf-8?B?NUVlYVJ5R3R2K2tyYSt0RGdaVlZDSUJjVmNlYS8zZm1PWDQ4K3ZOT1BrQ1Ay?=
- =?utf-8?B?MHRNaUswa2thTDR3cGZuN1R4ZzBUVHI0ZkdpM2F0N0dGWHJ6bGt6T3hyU2NH?=
- =?utf-8?B?U1hJWHdweVpZcXU0RmRkejFLQXo4OGRNa0NiNmwwMzlFbGk4UklOaWtLSkRF?=
- =?utf-8?B?UkpkRklXeHFRUzNxRFcrWWtGRXVuYXR3ZFloTkR5YUtSeWUzUjJhMGF0UktE?=
- =?utf-8?B?RytHVTR5ODNjL2dpQjNMUkxMRm1QZmluWVJCWkt5VTZ3VW5vSXE0MitqU1k4?=
- =?utf-8?B?aGJxc2hOZEsxdnJXMVg4N0lYZE0yalpJS3hYR25lQUw4VlBUWVpkWExhRGND?=
- =?utf-8?B?UE5BQlkrajhVRWk1REJvWTBoeXdIRnJyQVl5ZDlTeEwyWWJrWEhGR2cvTG9N?=
- =?utf-8?B?UktDRDM3dXhLWGlLL3pCcWp4UVNrSEN5clNLYmNLUFp4NjlxTldpUWppRXVi?=
- =?utf-8?B?bERrcGUwdmR1K1AzUEVOdzYwaUgraVBkRUtUdEVIeEYweVQ3WnpKcHFsUjhp?=
- =?utf-8?B?ck9wYlVlS1FGNUtINUxaMzZSUTdBZkhkdHEzOC9jNUg4WWRHUTEzZ1VEc1hn?=
- =?utf-8?B?R0JxTFNOZ3VMMldjamx0Wll2MnJ1M2dzSjVNTlVUSnV4ZXh2b3prY0d4bzVK?=
- =?utf-8?B?alRna2ROMW0zdzVCZWxoQXpqSXplVUpINE9jbFdpOTRMT2l6bDBFWGxpTVBD?=
- =?utf-8?B?NkVGRWlFYXVZdEI2SEZsdmJpa253N0NYMlNVeVd4UmZVVlJLUWIyUk5BaFdn?=
- =?utf-8?B?elM3bSs1cmluUGdxWTRDdEVRU1JVNm1PR0llU1djMEZsdGdRb0hWUT09?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13b40275-3529-4e12-fb2e-08de7eb3b274
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2026 14:45:39.3587
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HwFautavIbFqmN5YwHCFfTVUxc9gxa3cpwndmicLa0FlANQgRiCX3WWVzDmT9lbq0RC4/eZ8BgFQOpVQW1fLOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB4117
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BC2F7120004
-X-Stat-Signature: zuj9tjp9nook616bn1j618x7o6x96zym
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3EC091A001A
+X-Stat-Signature: apezxjjcbt87u3i71t1ph18hgbeux6ze
 X-Rspam-User: 
-X-HE-Tag: 1773153943-21315
-X-HE-Meta: U2FsdGVkX1+I1StYl0U4lmOHcwwGr+tnVuIOgnDXFry5wa3svXefs30CLYHIZq5o43z0/MjwySaRyWKahwg1vGHPli9uRDbfnJfu8OzimrQoC4ieJDawVSNU8K8U4/PjvVxMGTFpUVScHJyeWOQRvaq5PRxqPhX1uzCv7zZKnIRNoF2jkIbLkQUhfIEhv7q3HOGpLVpIcXueXgu0FpCmsHhvWKP4eMjKRvyWfn2vuhD7s/7M41Oe94yovCSDCLS6cO/tMPrV79C7U6Uopl4shDwRCh5mNZQtKCA9CAU/KMxgK+rJT0BL4nXBA/9cSnb1X9OSxkLKA6Df1zSGwoAdjy60DkIoKevw65i2YSebmEIdN/NMEGHd5J6T75aJi9SeO++OghpYsIeLbEaudNirM6j7bclnRd40SxXP6MOrVEi+CDrhsm7eDU1UboCRgyMphtL6D5isMrddc6RymY1RlLGVroDDd6MMT6Cg8vkxYjOy8+JMELXUf4Ur9PlLVVxjiLxHsAc/E63gjkOuhysZSREDoTlkS+4vlfk+y72VOMEbq+GhKRJ+O6/qEvRRreeahjkpiReYH0TUhW2LApmYTTqnFoSfP1EaRmBwQJJYD9Cyrj7t1JUWaaqDqGK9qEeO4a4Sv3igcN3hA2+FpIZw17jhMJL4P9riJp4lWDPy0DCVdhOY5zaCL8WUOWEmO+4votSsiXyw5+n1tqbBOB8DCkLe5k33WUyruwz7CtrGrrXYHyz7eZszOajRdiSkN+SY5aXX2CKuH6WrWww7r69MOJiiuxFovF0cnZ0/Elkq8llghP0aRqoF0fErtLlQooknv+UeGxD4vFNqtW5YYGVKOLtMMkHvgtRluJBdCDcTXi0TM1zYSF9meHP0+V8CIIcktaYxj/1GlA2zoY2fuq8CSARJWRl9l38aHXugzs9mqRQvzcrg70kag2KAtPCJxQzDLPI+vgWtXfEcig0Nscw
- 0ciDY1Lh
- Lm/fIjNawovqamGOsGNfonXCCAZrNywNztFXGp2Ld6ShOtOj1mGWJWc3U4FVSYRsVe8HG75ZbtG/bZ/LY3lOC5WPoRFs6CrKQZP1TAhPVGGztrJGUEiFZMI1Vs3NTMLEAFlnXcc9TcJv3omfEtom0KymaHm8zfasrCc327RSxhde+UsIWBEEF8TkhM6Tyxs/439Yz3cqI2bKKZPDVqf3KavI1Apc8bNSjf/OLxFb71gAkEgU7+103rhMRBbCIHomodYGY6kXDk22X/f50ftFwVArOdVy4cWJdEmSzDc9mUrYEokWCnNSODH2JwQDR4hDJj6trrNtSxrEE5bpmEAQrgCkqdSWn5ZTQLEjbaXYuOHuimBZt95+10+VVJLqpe0PmYMY4biA00pWpQQjKyKS/iSZP42VOnSFFiT/FLl1QcbUFUtasFq9beLz8IutzGy4x79ZQqV27R5lsLAUkehW45EafPyuWYFkdpGtPs27ORu7r2Jo8nY7hsLIcMyCbGztQWNEBTAdZVVFpfk68Mee7kcSAPVfh4A1WzfRv79tCg7XngTaVVZJLr/7jm+iszjLsLClkXRPDlg/iUTrWtGWnPWnuFA==
+X-HE-Tag: 1773154355-627092
+X-HE-Meta: U2FsdGVkX18YZsjlzKGPme1dPj09lLdIg5VuGVieNTJNREKzScZzOErcy2kXI7u+8LZpXLGgx2R6429bDuqpTn2TtIuzQXNkt7/C6XpzL5VEjPa4+hLsjYQOfQY/BZ5rm64ogoY7fnFZHV9a3Jv0CdBV/nP0+XY9tscXIStgAwVKOs0GfSj4XP1dnkQyogBHUC2JCjYVGIw2eFAqd5TH15uziK5Wars/C49Vo2soz3mrO9eEmOx1xLhEYVVPyHNNpUwIjo+QWVOXgx8lPPxEgNR/QTNwd9lDtTpfL72hqXlG6PtG1UsXq7ES464oGUZMK/bYuzVrx8I472JyPT32AZZTlPryF4nJSsDzKXZBSKfnEJ22KsH4xsdUSE2l3ne8r3yi/kI+JI9OFywT12TRLaneUdcC0Jo7Y5R+OeSA1wG8pQYZnfpsSGzeP6yOoT5woOGT4JSIgx37xCGsTrSldmBh2z3vS/buoARG888Ny4Fw7ax8WfurH+lOLQbwJN3Ba6MiX1lzNeR84uBkkb+msNUIvX1oEGhLMbWN+/fVxK2fHXwX4MS/iPI6eJY3YQgeMjOjCGr43cLey5HkJYfS1mVPlv35/cp8h5bUFDIXPJ95QjKDjI1xcnA6srLhh8YRtM6fyDztS8cqpkarIjNtOxkrjQnfjPgLk374pHHhcbl4TEa0NLMJFewITbQgh1+BSEainFPmNECa//aAWnWHbCN+gR1O0+aXXbZGHSqriN8fdtpCc4CQseuVqxAEiMyaar/ELw3Mnea5I49DfRCqMfJi33hvDYBjJ73n6piEBzW/XbNJhOGCBtlc+z7qFHQu55hkMz3/afqSr++JOmQDDXcamZK0fAypRSm9yepaLQq6pdOG083z6tk2a46NXb1HIlFr7WLyBmr76Z6ARULGqK0fIN5pY/e2ACvAwSo75O1Kt78V/LC0G5FrqqwAik60NPUewbfLQSPkSUznTp3
+ RHIj/t3V
+ ChDs1S3KzMc0+RYDoqQD8b3Yjol6Vl0owydiIni9xCjNjIuf10hg2z/jr6STwM04FrrrOUkPRyTl6IpkX0k5yNrIslHtA/4ZY241s9jX9Tdl03NHVYaxMfADOOrUCn+T5+MLy3f1VB37OM3B5xzHejvv/dvMKLx7GEdkw+e8vy6CBmJFsm4aEdrqGoIlDM1LppaMN2AFrjsChNJCIUkQoVLjJe50KFYy/NwtPrBRRMxDSqGhPXgoh0uJt1/hOfBiJExLEgEpUhKWhckmsvunkhcFTMg7eJAVqEVvpBVN2g+Ibzn9rNPfDHQ3BRyj59+j/EkyQovuDusQ0IoOtcgjIBe56kRGrWjJvmueJVisdNSs4pp2QoBtiSiLqwbc/S8sHf8FYpFMZuGOJpwOPU6jYyFif94jyJwYpDJEPQ775Sz6k3YYSV7NsgTg7d/NFFXiVmG+AULyY5/DlVkAetX0YndHkV02J1KMn+rA87++dkhAV2HDAHPynsjWsCvtP0s594ChYpgOT9i2zQLp/8XG7egETGkwLjOiAsR9dJVUFuMLKseLMQQ4vm0ixOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,85 +125,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---iksijtbqwcym3dge
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 17/61] module: Prefer IS_ERR_OR_NULL over manual NULL
- check
-MIME-Version: 1.0
+On Tue, 10 Mar 2026 11:55:55 +0100
+"Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
 
-On Tue, Mar 10, 2026 at 12:48:43PM +0100, Philipp Hahn wrote:
-> Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
-> check.
->=20
-> Change generated with coccinelle.
->=20
-> To: Luis Chamberlain <mcgrof@kernel.org>
-> To: Petr Pavlu <petr.pavlu@suse.com>
-> To: Daniel Gomez <da.gomez@kernel.org>
-> To: Sami Tolvanen <samitolvanen@google.com>
-> To: Aaron Tomlin <atomlin@atomlin.com>
-> Cc: linux-modules@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
-> ---
->  kernel/module/main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index c3ce106c70af165e2dc1a3c79f5a074a5c3e3d34..7f62f0620dcd75960e431f7af=
-3d1cadf4cc41e4b 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -1551,7 +1551,7 @@ static int simplify_symbols(struct module *mod, con=
-st struct load_info *info)
->  		case SHN_UNDEF:
->  			ksym =3D resolve_symbol_wait(mod, info, name);
->  			/* Ok if resolved.  */
-> -			if (ksym && !IS_ERR(ksym)) {
-> +			if (!IS_ERR_OR_NULL(ksym)) {
->  				sym[i].st_value =3D kernel_symbol_value(ksym);
->  				break;
->  			}
->=20
-> --=20
-> 2.43.0
->=20
+> On 3/9/26 16:59, Xie Yuanbin wrote:
+> > On Mon, 9 Mar 2026 15:40:13 +0000, Matthew Wilcox wrote:  
+> >>On Mon, Mar 09, 2026 at 11:38:11PM +0800, Xie Yuanbin wrote:  
+> >>> As shown in the commit message of commit 242b872239f6a7deacbc
+> >>> ("include/linux/once_lite.h: fix judgment in WARN_ONCE with clang"),
+> >>> the code "unlikely(a && b)" may generate poor assembly code if it is
+> >>> actually "unlikely(a) && unlikely(b)" or "unlikely(a) && b".  
+> >>
+> >> Why fix this in multiple places in the kernel instead of once in clang?  
+> > 
+> > If a and b is both unlikely, then "unlikely(a) && unlikely(b)" will
+> > generate better code than "unlikely(a && b)". This is also true for gcc.  
+> 
+> What are the details of how it's better for gcc?
 
-Hi Philipp,
+I'm not sure about that specific case, but I've definitely seen gcc
+generate sub-optimal code for some un/likely() of compound expressions.
+The underlying cause is that the code is (probably) first transformed to:
+	bool tmp = expression;
+	if (unlikely(tmp)) ...
+this means that you lose some of the short-circuiting that happens
+early in the code generation of 'if (expression)'.
 
-Thank you.
+It is also not at all clear what you want the compiler to generate.
+For 'unlikely(a || b)' you want 'if (a) goto x; if (b) goto x' so that
+the 'likely' path is the no-branch one.
+But for 'unlikely(a && b)' you still want 'if (a) goto x; y:' which means
+that the 'b' test is out-of-line and has to be 'x: if (!b) goto y' to
+avoid a branch when a is false - but that means you have a 'normally
+taken' branch after the test of b.
+That pretty much means the compiler has to decide which unlikely()
+to ignore.
+So it only makes sense to do 'if (unlikely(a) && b)'.
+Indeed even 'if (unlikely(a) && likely(b))' may be better!
 
-Have you considered other users of IS_ERR() in kernel/module/main.c too?
+	David
 
-Perhaps it might be best to prepare a clean up for each applicable
-subsystem in isolation.
+> 
+> > As for the issue of clang judging twice, I have already submitted it to
+> > clang:
+> > Link: https://github.com/llvm/llvm-project/issues/167117
+> > However, even if clang fixes it, this optimization will not be merged
+> > back to the old version of clang.  
+> 
+> That's life and not worth complicating the kernel code for. This is not
+> about making it functional, only about perf.
+> 
 
-
-Kind regards,
---=20
-Aaron Tomlin
-
---iksijtbqwcym3dge
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEeQaE6/qKljiNHm6b4t6WWBnMd9YFAmmwLosACgkQ4t6WWBnM
-d9aU9xAAqqgNT5SoU+VYtTZ80wOUwEE2OMdLBYzCI0mjnqJPXnb4U+JQX0SteStv
-Wd+zDAGE5Me5p/CfEt/+aiyKOuiZL7yQucXzvUMGKxqLMQFwqPvA3WtSoTVFL+rF
-LkaH0u5Q5L3fR1LqaiKYIZuzVEvau4J1yxwpr3TSOVVjsiNOir78WKYMWkbywt9w
-2ZGJmWlqCHaicR+MbDxwYxmj6A8vWK4lMNrf9/bSNlRcevwMRBi5MEVCXNAmi8/K
-HL+Lff4iFQayNqX+KHvqO+d71PuZJ6uRoZtmn2TOsqPFvRhSEwOCORUQRwprUwHK
-1AXthzlvxw54scM7jH/H7EVz4b/StJaeHqfZLJ4y6QJv7HWYccOTXqVPj5yDF4AS
-LNEe/UEO2rZOSVwqm8USG03ipXDhoZ7is3ump24r9vmbuJ4Ut/UkZnPPM2f1V8YS
-AiWpOQ5tGWd+85RvZUyJfbagqS9XcCxV1Ec+y4MXwaab2ddu81t86xc5nbRANS/k
-juKrG81J7nYvlpvQajkCU6tK/ZZsalYBs/BCg2IAYhG1V5SqGHR6o/a3KjVtmdwP
-5t9pTp1q1bD8/UPf4bSgjULpyVSusQkcdm6aoNJD80Jqi8vPQSuZUDFw9gdbbWdT
-6f5kQv0sOH33oz8IDL0pTNDmWbOF3HKDQCX5nbTnNtfG048XNxo=
-=x/q5
------END PGP SIGNATURE-----
-
---iksijtbqwcym3dge--
 
