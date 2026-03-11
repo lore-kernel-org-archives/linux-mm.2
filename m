@@ -4,103 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45F1FD063E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 07:31:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E27FD064B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 07:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5DB06B0089; Wed, 11 Mar 2026 03:31:53 -0400 (EDT)
+	id 31AB86B008A; Wed, 11 Mar 2026 03:33:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3F066B008A; Wed, 11 Mar 2026 03:31:53 -0400 (EDT)
+	id 2FC5D6B008C; Wed, 11 Mar 2026 03:33:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A17406B008C; Wed, 11 Mar 2026 03:31:53 -0400 (EDT)
+	id 207AE6B0092; Wed, 11 Mar 2026 03:33:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 800FE6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:31:53 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33EC41C91F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:31:53 +0000 (UTC)
-X-FDA: 84532962906.13.AEB112C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2493D140010
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:31:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CFVjoH0k;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F0ADD6B008A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:33:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D2401A0690
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:33:20 +0000 (UTC)
+X-FDA: 84532966560.02.25D51F1
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BB03C40005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:33:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="I TBjGls";
+	spf=pass (imf07.hostedemail.com: domain of luckd0g@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=luckd0g@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773214311;
+	s=arc-20220608; t=1773214398;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWiFyBcdQIPprieqKABTKimIyvkofRGeeAguDoRoOlk=;
-	b=7JSVfWncnslUktpWsDxpaJW0XBHDcYyaHWiDbtAgI5oMQTveBWPlQ+NY50ur0so2fVUw+t
-	wrF6YJwjzhkiLZYn1LaFrqe0jePoV0Ak7cIitiuZheNK2rvZV0kGAz6meGubTmSc1qtD6y
-	smfbruosTdiW3Z9pg5gEaLdM/MpRck8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773214311; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Jp8fDph6l6+p6hz/DvMu0I+Wk3zJgeH0irY78zHwrog=;
+	b=l2WpFVuhsBiyUex5C1l6CtOorOVCDizw9ZHb/4TKkAQb7jPlmDL+fUBQzgB1SqsN9wJqKa
+	xdgfz5y+RWPkjICafqjOkNTafU+nuoVVD7drIsjCy2AA6AeAASap2PRsVjYly8Y8nujoLm
+	+43ptB8axdvayfIMci/qe4CgA0dsJfE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773214398; a=rsa-sha256;
 	cv=none;
-	b=5wGRcxyfGvb66oQ4wk7Y48XfWzYKlLysNPZtT0UuvRQK2Z0PD18MA9oOqvDhDmr+ipET7B
-	O/Rzw3zvhRHllKU1xbSDdQ7lVi2Y5xJMfJT6xdFRz0KcbsybwNDwIPR7bcoUf/KoDJfJIP
-	9a62Od8TMkGbCJE5XF3NCY7s7sYZ7fI=
+	b=0G7g73M1Inl1Tdl5gipOF1pYx6hF/9VmfJcSj4H901gjEBNdlkXV8muc8aRmlJNFHC5FW+
+	/1kGlBT4w968utawbm62celhSXNdQ+BmG8ifLQtFepFaewR+/tYCEqI7YCZ3QIBtjX/AV+
+	y1Zs4rkzySMIR8Y18YoHNefHz2t9zZo=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CFVjoH0k;
-	spf=pass (imf09.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6EC544486
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD19FC2BC9E
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773214309;
-	bh=3V4xHLccw4r7xXUFmzGLCC246uQfgynbB+kat8hm+Bw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CFVjoH0kIm7TgHiBi2WgNXveLq1CZfPSaXIF9qI7Xt7Hr6Hop9QSbbDrR0PlwhNT/
-	 7VZu9JHaOecyn6gXGe68L1rsGqG2+i9oomt8UqOCu+FC5sJoyV13ycuupFl/Jk3O4K
-	 uwewpZod5ZRoVz9uBprcK85QHt10kgJKi9HfTsN5iaM74LYGPvEZ+mK706UVbIy03t
-	 oAQ1Uhshk9Ntt05Rc3vBAz22v4RaUXCnqR3S55SDfYMY0SpR3Tz3eecbo/9UETbkxC
-	 KEHoioDqc7O4MJF5UVSu6nIOYj84w3uP8SsM+E/z6ZfaXurVbazpx8q/z2/JbYSq9V
-	 wnQ/QY/oaKxcA==
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-64c9c8f8783so759574d50.1
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 00:31:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXHmRZYNkFyOmeBIqQmOkZ7HsYygjXJLUv0fcFt4g8EBOxT5ttl/b33dtRUPQmppO1v4Nur/7P9Yw==@kvack.org
-X-Gm-Message-State: AOJu0YwOHMDzZMCS+V7+f/jWXszrsHyPXz8ZiZlnURhs1dXR26fbXqmB
-	4HT5SMTfOFZVOk1svtYh6jHfvdtoJ+vpTltxgc55e2ll/BiQ9LNgbbbyoGwFu9pqzxuPC7qdCKW
-	OfPiaJFGBc9nJC0YM7QblNX61KRY1AKAHS0hWWdpv0Q==
-X-Received: by 2002:a05:690e:1347:b0:64c:9bf0:3055 with SMTP id
- 956f58d0204a3-64d656602afmr1277629d50.6.1773214308943; Wed, 11 Mar 2026
- 00:31:48 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="I TBjGls";
+	spf=pass (imf07.hostedemail.com: domain of luckd0g@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=luckd0g@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=Jp8fDph6l6+p6hz/DvMu0I+Wk3zJgeH0irY78zHwrog=; b=I
+	TBjGlstJhiphN2XXv945Wpa7DivImJhOtR+oqSJNPRAxEAkIKWFDNBYJ2KhNZ38B
+	dziWk/CzbjE8xJUG4e3XS0N1rRHrRTCBocfVnoZcN9xGes7R9tPEfMJdKMMy4HCP
+	tJePg5nHXoopaJazsRseew8IrRrIDcWydkAeOudqc0=
+Received: from luckd0g$163.com ( [183.205.138.18] ) by
+ ajax-webmail-wmsvr-40-127 (Coremail) ; Wed, 11 Mar 2026 15:32:51 +0800
+ (CST)
+X-Originating-IP: [183.205.138.18]
+Date: Wed, 11 Mar 2026 15:32:51 +0800 (CST)
+From: "Jianzhou Zhao" <luckd0g@163.com>
+To: shikemeng@huaweicloud.com, chrisl@kernel.org, akpm@linux-foundation.org,
+	kasong@tencent.com, nphamcs@gmail.com, bhe@redhat.com,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: KCSAN: data-race in __folio_batch_add_and_move /
+ __lru_add_drain_all
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20251222(83accb85) Copyright (c) 2002-2026 www.mailtech.cn 163com
+X-NTES-SC: AL_Qu2cAf6au0ss5yacbekfmU4Rhug7UMO3uf8n24JfPJ9wjA/p2yseUUF9NmPf88CwFTuXvxiGfTNO1/ZAU5BifrwxO2pg2iz8+zZx9sKcSMFdMg==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-References: <20260306024608.1720991-1-youngjun.park@lge.com>
- <CACePvbXVvPp_a89UFztZo5nGawpFea9t=NRisf468VcxHgkX7A@mail.gmail.com>
- <aaqKJQeO8wLQL7Zn@yjaykim-PowerEdge-T330> <CACePvbVp=9PM=LUdL=aq8G2Svy+v04pBnf3ygRY+xW3WEHNm9A@mail.gmail.com>
- <aa551UFgiq+gUl/T@yjaykim-PowerEdge-T330>
-In-Reply-To: <aa551UFgiq+gUl/T@yjaykim-PowerEdge-T330>
-From: Chris Li <chrisl@kernel.org>
-Date: Wed, 11 Mar 2026 00:31:37 -0700
-X-Gmail-Original-Message-ID: <CACePvbW_t+dqFVZfde6aXxbREaX4iiSxd4knFGKQyDkbxprH6A@mail.gmail.com>
-X-Gm-Features: AaiRm52Adgj8vkv6Psup88AW1ywMhrtnpWIBzQ3U1LbmgXHrKe1Ii1Zg4gMoYBU
-Message-ID: <CACePvbW_t+dqFVZfde6aXxbREaX4iiSxd4knFGKQyDkbxprH6A@mail.gmail.com>
-Subject: Re: [RFC PATCH v2] mm/swap, PM: hibernate: hold swap device reference
- across swap operation
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	pavel@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	bhe@redhat.com, baohua@kernel.org, usama.arif@linux.dev, 
-	linux-pm@vger.kernel.org, linux-mm@kvack.org, hyungjun.cho@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 2493D140010
-X-Stat-Signature: nboh9js19k4eaam9ok6uoc91h7a1auhn
+Message-ID: <39f32cfd.6357.19cdbd00f48.Coremail.luckd0g@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:fygvCgAXDrujGrFpZ7Z2AA--.25512W
+X-CM-SenderInfo: poxfyvkqj6il2tof0z/xtbC9gN1AGmxGqNhMwAA3z
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-Rspam-User: 
-X-HE-Tag: 1773214310-210992
-X-HE-Meta: U2FsdGVkX182q4voS81zpbNjLWvlbgJX5L/ZhULG3cnogpM/U0wzoYU3DeRvJjVseGUAyR85mN6ClukWHCtTq8LvP9hn9pTv6lbPLaxgYu7OnxxHzVx+VbOILJExNVGXgPUIT0UQA8XnispnwuHtHHkz65Qaa1oX0UvHSA5vsLoC7OdcJ6tcvD/yDiwK/kQBjPC56YnbCYs4HtgFSwiazNkpufyLKqljXAyriwmvsDkgDisDypCgNkGRYjtE1TJsOVz1V22t4G8jGA0IIy4n9vkbCqfgHgmE1G9qZeL+YGviiVa/Q9+R1EwLO6RudNSwwhwL7WWiHkBDgLBRHURArFOR7dOAi7H/qI+oYwNTEeBnwQEnkqKlfua5LKcY7cIXYGjC6E8D7jLGpu5rA2tTkjg9S21De3UDILavU/E31YlvR0j3xzPDkbNrq4rHkyOXXV6vKAOuUGLnmyMU7/tggZWWclLTg5dkgBRnP86aa1bIpkeGWLdBa0QCn7rd1E9j72mI9Yvh15N6zhHnjjZVt5rmirAhP0/ftI5rqWeYTmgmFnw6u1tRTDyXIk8U8Ei3uB44z5tcea7EG/6c2NBMvINNlV0827cQFUSqTXqfk6xDfoOt2hL94MwKZXbw4lOLVKKmeDS76AVEzAEmrsIwNcWCjrCw2ap02S9bZvTRno+TvwxzzlrPpDZrcwbbc2KawiGCRiv3Hj8Qw7yTHOTogyuN0jPHZCithcU2VWnqSh2B4isqY7GGVKKv019Yw+7AdRkLs7PlJy3jASY/tWwPKfgJTjCN82lzhxxXzsSqmD2gdUBvU+zuN26SlzSvPLt0hejwqDGZ4n6xIvxXgm6+J2048XuE7CcCRB0kekJ8pDKXUQsbUozuuTx1quqW7E7242T47O5UZ7Y4Is61d8hnLRT/+YlK4Kq/aFzPSUMfXKCUv9bAGIeaMktZtfm4i3+KXOdhydR3wpTBHQxCVnt
- r0eofwtp
- oQkryd5JxUVT7NGiheTA6xbKkBuJ3KGIGsitj19iE3Wx9GpafXczy4hsMUjSJlwyTg7t3FaUvmvw3Bg2BIrsWlgSq6z19BCASHPSGAjmhUGp72Xll6zv+Uq2F2shSm2Qk3G4JcSPKxUe+KCXZlqkxONGa2XnGLhIv3ZlzOTf+Py9o3zyR5zFALrUcYht53DgOZvMirMrIPS5J7n3A2nE4dvkGdqTSm6t0K4iPrOgX6K1i3M/CClz4YilDvaxUXTvKQrX9bdGQ4sdNRPhQYzwouYshoT9AN/XHiQ+4aQHsfNp78AWzpkz3tG3mLQ==
+X-Stat-Signature: 35539moytmko3ej9dy816qqw4igc1a4h
+X-Rspamd-Queue-Id: BB03C40005
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773214397-370008
+X-HE-Meta: U2FsdGVkX1+KoNBNEAw7qb8aYNF4wzHCaxmxzpmUqB9ft2Hw0xwd0PgmDgs/siKj7S4op1KszJCwV53FUxMVCsNhkeW+GxxNtCpT0jPc462EDkslMw7x/FKbE0RBVaKis8j6AIJbi0P17SBJ8wyRu3yDFy5qqBZ1QI54LJR/A9abqwnRMzbaBD4xSuQgkMnpdlZAEc6XHQQcPuCrE2W0WopqabwRyGyneld3TnL2pXFBJT5ag4rknJ9O8uSPUQuJ/w7XejtfMBPLcT1NTmKcFIGZ8I8/Nr1pRxsDMagZTh4yc1iWSyCHoK/afNjri4f5THO3ZF68FpZRt6i4WlSfg673YwQpzMTY+Hg6TzQyAufgnWRSyZElIWJjRsiUPtIVcYt3KX/SvLKjRsPl4FG5ysE8w8sSr0JXEe09cal9fZ+smy/QTWJp8FtZJ3SbpvpL5Sh1rWUL4CJhGV2Jbun9L8jH8OIfcC6l2uggnG1qJZkHVrcFA+Jst7s18yI8m2u3w1B/f8hg5tPtXRgrcz+HNSqTlmgE+SG2z2sHaQHn+34wnCLAmCWAvr3UjMW9QefoRncMkhf4tQobJ+WFfJnzrAgZKwx7e8REsiJVchDdqlX9o77Id1/9OaR4aoA2Mix9q56ph2ip8Em0pS8Q8uapFI8a053p/FNNwraw14CzrtrxDVNzP1kJmMtHtYGQWojK9+rTix9fUkdt11JsZYaiIjYkN65EQ0Qd1aF46xEEsDxfhQ8ebEPDRdydi82TsxNipSZLafBDMpuY7Kzz64pl2vwzcYzNtbURUUsFIAWKthm92q7luEI6JbmwHMWQZwXp41wuJhLoeiQEskyA7C6UfqoovqeM8FkYH9xiiQBLHsrY9anvMh8VoLiE3+HsmNCapeYOz9n52msAmw9m62bS5GHEiRkw0kEgpXpAN1p0Ipq4RQFyLDCDx3PoInEv9VJ8R+vYW4yVORMVow3viEX
+ vrilirL8
+ eSJejwEAApAv2P1mnE7kdiCOFypKSnXH+YE37GCu76An2ElXuAEF6Z0mTOjYKnk/6mD6zxlW3Dcoh18e5DraYytQaoajbTAEaKNdtH/ibtDqqp2FoZDzDa8c1N5RwUOdg02pycrS5GZGyHyhLqkPfslPKLSzfrjSZLVtJBO3RB37crwmgLk80PvzL4XCnpGoM0KSeZATBKU2MutPwOTOfQ6Tm5Q/OItlAjZnHOevOQvxZCh3h8EB/D0m6SS9Cbs5zDnBn6i+U0X96b9iewHFu70N5UezNY+t18PxsoAhSJ27VS/mJo4KTnAlp8gmXdHWScPqq+2JRuHUlL0s6LxEUqYdKxn3JjhlbbKZ7xeVMtC0EBICmpX67x/x42JWqj2uin82qpH3FAsshKVuAjyjTngrHbBPzDB0mB+te7N4RkpAQNnDjphJalX+awWi0GGEwEOEjhx1eljnWJs3jVLWJbR22epy4VSEBP+BwqooBrqhgCssWnCImtNHHHXguy/2B6EruuSSERHAkFwk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,120 +93,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Mar 9, 2026 at 12:42=E2=80=AFAM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Sun, Mar 08, 2026 at 11:43:20PM -0700, Chris Li wrote:
->
-> > Agree. That place needs fixing. We will make two patches.
-> >
-> > Patch 1. Fix the swap off  racing between lookup and first allocation
-> > on suspend.
-> > swap_type_of() is very tricky for the device swap because of the
-> > conditional lookup of the si->start_block matching the offset or not.
-> > That make this patch very complex.
-> >
-> > One idea to brainstorm:
-> >
-> > So we can get the reference count on during snapshot_open(), after
-> > checking "root_swap" still points to valid swsusp_resume_device.
-> > Then we release the reference count on "root_swap" during snapshot_rele=
-ase().
-> >
-> > That might side step the complexity of  swap_type_of() doing the
-> > si->start_block checking.
-> >
-> > It should fix the bug you described here more simply.
->
-> While that approach would be great as a minimal fix, I think we still
-> cannot avoid the following situation.
->
-> Until the first swap offset is allocated, we cannot guarantee that swapof=
-f
-> won't happen. To be safe, I think it is difficult to prevent swapoff
-> without holding the swap_lock.
+ClN1YmplY3Q6IFtCVUddIG1tLCBzd2FwOiBLQ1NBTjogZGF0YS1yYWNlIGluIF9fZm9saW9fYmF0
+Y2hfYWRkX2FuZF9tb3ZlIC8gX19scnVfYWRkX2RyYWluX2FsbApEZWFyIE1haW50YWluZXJzLApX
+ZSBhcmUgd3JpdGluZyB0byByZXBvcnQgYSBLQ1NBTi1kZXRlY3RlZCBkYXRhLXJhY2UgdnVsbmVy
+YWJpbGl0eSBpbiB0aGUgTGludXgga2VybmVsLiBUaGlzIGJ1ZyB3YXMgZm91bmQgYnkgb3VyIGN1
+c3RvbSBmdXp6aW5nIHRvb2wsIFJhY2VQaWxvdC4gVGhlIGJ1ZyBvY2N1cnMgZHVyaW5nIGNvbmN1
+cnJlbnQgZm9saW8gYmF0Y2ggYWRkaXRpb24gYW5kIHRoZSBnbG9iYWwgTFJVIGRyYWluIG9wZXJh
+dGlvbnMgaW4gdGhlIG1lbW9yeSBtYW5hZ2VtZW50IHN1YnN5c3RlbS4gV2Ugb2JzZXJ2ZWQgdGhp
+cyBvbiB0aGUgTGludXgga2VybmVsIHZlcnNpb24gNi4xOC4wLTA4NjkxLWcyMDYxZjE4YWQ3NmUt
+ZGlydHkuCkNhbGwgVHJhY2UgJiBDb250ZXh0Cj09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQpCVUc6IEtDU0FOOiBkYXRhLXJh
+Y2UgaW4gX19mb2xpb19iYXRjaF9hZGRfYW5kX21vdmUgLyBfX2xydV9hZGRfZHJhaW5fYWxsCndy
+aXRlIHRvIDB4ZmZmZjg4ODA3ZGQyNjdlMCBvZiAxIGJ5dGVzIGJ5IHRhc2sgMTE4OTQgb24gY3B1
+IDE6CsKgZm9saW9fYmF0Y2hfYWRkIGluY2x1ZGUvbGludXgvcGFnZXZlYy5oOjgwIFtpbmxpbmVd
+CsKgX19mb2xpb19iYXRjaF9hZGRfYW5kX21vdmUrMHg3Zi8weDFiMCBtbS9zd2FwLmM6MTk2CsKg
+Zm9saW9fYWRkX2xydSsweGJlLzB4ZDAgbW0vc3dhcC5jOjUxMQrCoGZvbGlvX2FkZF9scnVfdm1h
+KzB4NDcvMHg3MCBtbS9zd2FwLmM6NTMwCsKgd3BfcGFnZV9jb3B5IG1tL21lbW9yeS5jOjM3ODQg
+W2lubGluZV0KwqBkb193cF9wYWdlKzB4ZGE5LzB4MjAwMCBtbS9tZW1vcnkuYzo0MTgwCsKgaGFu
+ZGxlX3B0ZV9mYXVsdCBtbS9tZW1vcnkuYzo2MzAzIFtpbmxpbmVdCsKgX19oYW5kbGVfbW1fZmF1
+bHQrMHhiNmMvMHgyMWYwIG1tL21lbW9yeS5jOjY0MjEKwqBoYW5kbGVfbW1fZmF1bHQrMHgyZWUv
+MHg4MjAgbW0vbWVtb3J5LmM6NjU5MArCoGRvX3VzZXJfYWRkcl9mYXVsdCBhcmNoL3g4Ni9tbS9m
+YXVsdC5jOjEzMzYgW2lubGluZV0KwqBoYW5kbGVfcGFnZV9mYXVsdCBhcmNoL3g4Ni9tbS9mYXVs
+dC5jOjE0NzYgW2lubGluZV0KwqBleGNfcGFnZV9mYXVsdCsweDM5OC8weDEwZDAgYXJjaC94ODYv
+bW0vZmF1bHQuYzoxNTMyCsKgYXNtX2V4Y19wYWdlX2ZhdWx0KzB4MjYvMHgzMCBhcmNoL3g4Ni9p
+bmNsdWRlL2FzbS9pZHRlbnRyeS5oOjYxOApyZWFkIHRvIDB4ZmZmZjg4ODA3ZGQyNjdlMCBvZiAx
+IGJ5dGVzIGJ5IHRhc2sgNTUyNiBvbiBjcHUgMDoKwqBmb2xpb19iYXRjaF9jb3VudCBpbmNsdWRl
+L2xpbnV4L3BhZ2V2ZWMuaDo1OCBbaW5saW5lXQrCoGNwdV9uZWVkc19kcmFpbiBtbS9zd2FwLmM6
+Nzg0IFtpbmxpbmVdCsKgX19scnVfYWRkX2RyYWluX2FsbCsweDJlMy8weDVhMCBtbS9zd2FwLmM6
+ODgxCsKgbHJ1X2FkZF9kcmFpbl9hbGwrMHgxMC8weDIwIG1tL3N3YXAuYzo5MDMKwqBpbnZhbGlk
+YXRlX2JkZXYrMHg3YS8weGIwIGJsb2NrL2JkZXYuYzoxMDYKwqBleHQ0X3B1dF9zdXBlcisweDVk
+ZC8weDhmMCBmcy9leHQ0L3N1cGVyLmM6MTM0OArCoGdlbmVyaWNfc2h1dGRvd25fc3VwZXIrMHhl
+Yy8weDIwMCBmcy9zdXBlci5jOjY0MwrCoGtpbGxfYmxvY2tfc3VwZXIrMHgyOS8weDYwIGZzL3N1
+cGVyLmM6MTczMArCoGV4dDRfa2lsbF9zYisweDQ4LzB4OTAgZnMvZXh0NC9zdXBlci5jOjc0NDQK
+wqBkZWFjdGl2YXRlX2xvY2tlZF9zdXBlcisweDcyLzB4MjEwIGZzL3N1cGVyLmM6NDc0CsKgZGVh
+Y3RpdmF0ZV9zdXBlciBmcy9zdXBlci5jOjUwNyBbaW5saW5lXQrCoGRlYWN0aXZhdGVfc3VwZXIr
+MHg4Yi8weGEwIGZzL3N1cGVyLmM6NTAzCsKgY2xlYW51cF9tbnQrMHgyMmYvMHgyYzAgZnMvbmFt
+ZXNwYWNlLmM6MTMxOArCoF9fY2xlYW51cF9tbnQrMHgxNi8weDIwIGZzL25hbWVzcGFjZS5jOjEz
+MjUKwqB0YXNrX3dvcmtfcnVuKzB4MTA1LzB4MTkwIGtlcm5lbC90YXNrX3dvcmsuYzoyMzMKwqBy
+ZXN1bWVfdXNlcl9tb2RlX3dvcmsgaW5jbHVkZS9saW51eC9yZXN1bWVfdXNlcl9tb2RlLmg6NTAg
+W2lubGluZV0KwqBfX2V4aXRfdG9fdXNlcl9tb2RlX2xvb3Aga2VybmVsL2VudHJ5L2NvbW1vbi5j
+OjQ0IFtpbmxpbmVdCsKgZXhpdF90b191c2VyX21vZGVfbG9vcCsweDEyOS8weDdkMCBrZXJuZWwv
+ZW50cnkvY29tbW9uLmM6NzUKwqBfX2V4aXRfdG9fdXNlcl9tb2RlX3ByZXBhcmUgaW5jbHVkZS9s
+aW51eC9pcnEtZW50cnktY29tbW9uLmg6MjI2IFtpbmxpbmVdCsKgc3lzY2FsbF9leGl0X3RvX3Vz
+ZXJfbW9kZV9wcmVwYXJlIGluY2x1ZGUvbGludXgvaXJxLWVudHJ5LWNvbW1vbi5oOjI1NiBbaW5s
+aW5lXQrCoHN5c2NhbGxfZXhpdF90b191c2VyX21vZGVfd29yayBpbmNsdWRlL2xpbnV4L2VudHJ5
+LWNvbW1vbi5oOjE1OSBbaW5saW5lXQrCoHN5c2NhbGxfZXhpdF90b191c2VyX21vZGUgaW5jbHVk
+ZS9saW51eC9lbnRyeS1jb21tb24uaDoxOTQgW2lubGluZV0KwqBkb19zeXNjYWxsXzY0KzB4Mjdm
+LzB4MmMwIGFyY2gveDg2L2VudHJ5L3N5c2NhbGxfNjQuYzoxMDAKwqBlbnRyeV9TWVNDQUxMXzY0
+X2FmdGVyX2h3ZnJhbWUrMHg3Ny8weDdmCnZhbHVlIGNoYW5nZWQ6IDB4MGYgLT4gMHgxMApSZXBv
+cnRlZCBieSBLZXJuZWwgQ29uY3VycmVuY3kgU2FuaXRpemVyIG9uOgpDUFU6IDAgVUlEOiAwIFBJ
+RDogNTUyNiBDb21tOiBzeXotZXhlY3V0b3IgTm90IHRhaW50ZWQgNi4xOC4wLTA4NjkxLWcyMDYx
+ZjE4YWQ3NmUtZGlydHkgIzQ0IFBSRUVNUFQodm9sdW50YXJ5KSAKSGFyZHdhcmUgbmFtZTogUUVN
+VSBTdGFuZGFyZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNS4wLTEgMDQvMDEv
+MjAxNAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT0KRXhlY3V0aW9uIEZsb3cgJiBDb2RlIENvbnRleHQKT24gQ1BVIDEsIGEg
+cGFnZSBmYXVsdCBoYW5kbGVyIGFsbG9jYXRlcyBhIG5ldyBmb2xpbyBhbmQgaW5zZXJ0cyBpdCBp
+bnRvIHRoZSBMUlUgbGlzdCwgaGl0dGluZyBgX19mb2xpb19iYXRjaF9hZGRfYW5kX21vdmUoKWAu
+IEhlcmUsIGxvY2FsIENQVSBiYXRjaCB1cGRhdGVzIGhhcHBlbiB2aWEgYGZvbGlvX2JhdGNoX2Fk
+ZCgpYCwgZ2VuZXJhdGluZyBhIHBsYWluIHdyaXRlIHRvIGBmYmF0Y2gtPm5yYDoKYGBgYwovLyBp
+bmNsdWRlL2xpbnV4L3BhZ2V2ZWMuaApzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGZvbGlvX2JhdGNo
+X2FkZChzdHJ1Y3QgZm9saW9fYmF0Y2ggKmZiYXRjaCwKwqAgwqAgwqAgwqAgwqAgwqBzdHJ1Y3Qg
+Zm9saW8gKmZvbGlvKQp7CsKgZmJhdGNoLT5mb2xpb3NbZmJhdGNoLT5ucisrXSA9IGZvbGlvOyAv
+LyA8LS0gV3JpdGUKwqByZXR1cm4gZm9saW9fYmF0Y2hfc3BhY2UoZmJhdGNoKTsKfQpgYGAKTWVh
+bndoaWxlLCBvbiBDUFUgMCwgYGxydV9hZGRfZHJhaW5fYWxsKClgIGl0ZXJhdGUgb3ZlciBhbGwg
+b25saW5lIENQVXMgYW5kIGNoZWNrcyBpZiB0aGVpciBsb2NhbCBmb2xpbyBiYXRjaGVzIHJlcXVp
+cmUgZmx1c2hpbmcuIFRoZSBjaGVjayByZWxpZXMgb24gYGNwdV9uZWVkc19kcmFpbigpYCwgY2Fs
+bGluZyBgZm9saW9fYmF0Y2hfY291bnQoKWAgdG8gaW5zcGVjdCByZW1vdGUgQ1BVIGBmYmF0Y2hg
+IGZpZWxkcy4gVGhpcyB0cmFuc2xhdGVzIHRvIGFuIHVuYW5ub3RhdGVkIHJlYWQgb3ZlciBgZmJh
+dGNoLT5ucmA6CmBgYGMKLy8gbW0vc3dhcC5jCnN0YXRpYyBib29sIGNwdV9uZWVkc19kcmFpbih1
+bnNpZ25lZCBpbnQgY3B1KQp7CsKgc3RydWN0IGNwdV9mYmF0Y2hlcyAqZmJhdGNoZXMgPSAmcGVy
+X2NwdShjcHVfZmJhdGNoZXMsIGNwdSk7CsKgLyogQ2hlY2sgdGhlc2UgaW4gb3JkZXIgb2YgbGlr
+ZWxpaG9vZCB0aGF0IHRoZXkncmUgbm90IHplcm8gKi8KwqByZXR1cm4gZm9saW9fYmF0Y2hfY291
+bnQoJmZiYXRjaGVzLT5scnVfYWRkKSB8fCAvLyA8LS0gTG9ja2xlc3MgUmVhZArCoCDCoCDCoCDC
+oCBmb2xpb19iYXRjaF9jb3VudCgmZmJhdGNoZXMtPmxydV9tb3ZlX3RhaWwpIHx8Ci4uLgp9Ci8v
+IGluY2x1ZGUvbGludXgvcGFnZXZlYy5oCnN0YXRpYyBpbmxpbmUgdW5zaWduZWQgaW50IGZvbGlv
+X2JhdGNoX2NvdW50KGNvbnN0IHN0cnVjdCBmb2xpb19iYXRjaCAqZmJhdGNoKQp7CsKgcmV0dXJu
+IGZiYXRjaC0+bnI7IC8vIDwtLSBMb2NrbGVzcyBSZWFkCn0KYGBgClJvb3QgQ2F1c2UgQW5hbHlz
+aXMKQSBkYXRhIHJhY2Ugb2NjdXJzIGJlY2F1c2Ugd3JpdGVyIGFjY2VzcyB0byBgZmJhdGNoLT5u
+cmAgdmlhIGBmb2xpb19iYXRjaF9hZGQoKWAgaXMgc3RyaWN0bHkgbG9jYWwgdG8gaXRzIENQVSBh
+bmQgZXhlY3V0ZWQgdXNpbmcgcGxhaW4gcG9pbnRlciBhc3NpZ25tZW50cyB3aXRob3V0IGNyb3Nz
+LUNQVSBsb2Nrcy4gTWVhbndoaWxlLCBgY3B1X25lZWRzX2RyYWluKClgIHJlbW90ZWx5IGl0ZXJh
+dGVzIGFjcm9zcyBhbGwgQ1BVcyB0byBjaGVjayBgZmJhdGNoLT5ucmAgYW5kIGNvbnNlcnZhdGl2
+ZWx5IGRldGVybWluZSBpZiBMUlUgZHJhaW5hZ2Ugd29yayBuZWVkcyB0byBiZSBnbG9iYWxseSBz
+Y2hlZHVsZWQuIFNpbmNlIGl0IHJlYWRzIHRoZSBjb3VudGVycyBmcm9tIG90aGVyIENQVXMgd2l0
+aG91dCBzeW5jaHJvbml6YXRpb24sIHRoaXMgaXMgYW4gaW50ZW50aW9uYWwsIGJlbmlnbiBkYXRh
+IHJhY2UgdXRpbGl6ZWQgYXMgYW4gb3B0aW1pemF0aW9uIGhldXJpc3RpYy4KVW5mb3J0dW5hdGVs
+eSwgd2Ugd2VyZSB1bmFibGUgdG8gZ2VuZXJhdGUgYSByZXByb2R1Y2VyIGZvciB0aGlzIGJ1Zy4K
+UG90ZW50aWFsIEltcGFjdApCZWNhdXNlIHRoZSBhY2Nlc3MgaXMgYSBiZW5pZ24gY3Jvc3MtY3B1
+IGluc3BlY3Rpb24gdG8gZGV0ZXJtaW5lIGlmIGEgZHJhaW4gdGFzayBzaG91bGQgYmUgb2ZmbG9h
+ZGVkLCByZWFkaW5nIGEgc2xpZ2h0bHkgc3RhbGUgdmFsdWUganVzdCBsZWFkcyB0byBza2lwcGlu
+ZyB0aGUgZHJhaW4gKGlmIHJlYWQgMCkgb3Igc2NoZWR1bGluZyBhbiB1bm5lY2Vzc2FyeSwgcmVk
+dW5kYW50IGRyYWluIHdvcmsgKGlmIHJlYWQgPiAwIHdoZW4gZW1wdHkpLiBJdCBpc24ndCBmdW5j
+dGlvbmFsbHkgY3JpdGljYWwuIEhvd2V2ZXIsIEtDU0FOIGZsYWdnaW5nIGl0IHByb2R1Y2VzIG5v
+aXNlIHRoYXQgaGlkZXMgbW9yZSBjcml0aWNhbCBkYXRhIHJhY2VzLiAKUHJvcG9zZWQgRml4ClNp
+bmNlIGBjcHVfbmVlZHNfZHJhaW4oKWAgaXMgZGVzaWduZWQgdG8gb3BlcmF0ZSBoZXVyaXN0aWNh
+bGx5IGFuZCB0b2xlcmF0ZXMgcmFjZXMgc2FmZWx5LCB0aGUgdW5hbm5vdGF0ZWQgcmVhZHMgb3Zl
+ciBgZm9saW9fYmF0Y2hfY291bnQoKWAgY2FuIGJlIGV4cGxpY2l0bHkgd3JhcHBlZCB3aXRoIHRo
+ZSBgZGF0YV9yYWNlKClgIG1hY3JvIHRvIGFubm90YXRlIHRoZSBpbnRlbnRpb25hbCBsb2NrbGVz
+cyByZWFkcywgc2lsZW5jaW5nIHRoZSBzYW5pdGl6ZXIgcHJvcGVybHkuCmBgYGRpZmYKLS0tIGEv
+bW0vc3dhcC5jCisrKyBiL21tL3N3YXAuYwpAQCAtNzgxLDEyICs3ODEsMTIgQEAgc3RhdGljIGJv
+b2wgY3B1X25lZWRzX2RyYWluKHVuc2lnbmVkIGludCBjcHUpCsKgIHN0cnVjdCBjcHVfZmJhdGNo
+ZXMgKmZiYXRjaGVzID0gJnBlcl9jcHUoY3B1X2ZiYXRjaGVzLCBjcHUpOwrCoCAvKiBDaGVjayB0
+aGVzZSBpbiBvcmRlciBvZiBsaWtlbGlob29kIHRoYXQgdGhleSdyZSBub3QgemVybyAqLwotCXJl
+dHVybiBmb2xpb19iYXRjaF9jb3VudCgmZmJhdGNoZXMtPmxydV9hZGQpIHx8Ci0JICAgICAgIGZv
+bGlvX2JhdGNoX2NvdW50KCZmYmF0Y2hlcy0+bHJ1X21vdmVfdGFpbCkgfHwKLQkgICAgICAgZm9s
+aW9fYmF0Y2hfY291bnQoJmZiYXRjaGVzLT5scnVfZGVhY3RpdmF0ZV9maWxlKSB8fAotCSAgICAg
+ICBmb2xpb19iYXRjaF9jb3VudCgmZmJhdGNoZXMtPmxydV9kZWFjdGl2YXRlKSB8fAotCSAgICAg
+ICBmb2xpb19iYXRjaF9jb3VudCgmZmJhdGNoZXMtPmxydV9sYXp5ZnJlZSkgfHwKLQkgICAgICAg
+Zm9saW9fYmF0Y2hfY291bnQoJmZiYXRjaGVzLT5scnVfYWN0aXZhdGUpIHx8CisJcmV0dXJuIGRh
+dGFfcmFjZShmb2xpb19iYXRjaF9jb3VudCgmZmJhdGNoZXMtPmxydV9hZGQpKSB8fAorCSAgICAg
+ICBkYXRhX3JhY2UoZm9saW9fYmF0Y2hfY291bnQoJmZiYXRjaGVzLT5scnVfbW92ZV90YWlsKSkg
+fHwKKwkgICAgICAgZGF0YV9yYWNlKGZvbGlvX2JhdGNoX2NvdW50KCZmYmF0Y2hlcy0+bHJ1X2Rl
+YWN0aXZhdGVfZmlsZSkpIHx8CisJICAgICAgIGRhdGFfcmFjZShmb2xpb19iYXRjaF9jb3VudCgm
+ZmJhdGNoZXMtPmxydV9kZWFjdGl2YXRlKSkgfHwKKwkgICAgICAgZGF0YV9yYWNlKGZvbGlvX2Jh
+dGNoX2NvdW50KCZmYmF0Y2hlcy0+bHJ1X2xhenlmcmVlKSkgfHwKKwkgICAgICAgZGF0YV9yYWNl
+KGZvbGlvX2JhdGNoX2NvdW50KCZmYmF0Y2hlcy0+bHJ1X2FjdGl2YXRlKSkgfHwKwqAgwqAgwqAg
+wqAgwqBuZWVkX21sb2NrX2RyYWluKGNwdSkgfHwgaGFzX2JoX2luX2xydShjcHUsIE5VTEwpOwrC
+oH0KYGBgCldlIHdvdWxkIGJlIGhpZ2hseSBob25vcmVkIGlmIHRoaXMgY291bGQgYmUgb2YgYW55
+IGhlbHAuCkJlc3QgcmVnYXJkcywKUmFjZVBpbG90IFRlYW0KCgoKCiAKCgoKCgoKCgoKCgoKCgoK
 
-Grab the swap device reference at the beginning of `snapshot_open`,
-before any swap_offset allocation, until `snapshot_close`. That should
-prevent the swapoff? The swapoff must wait until the reference is
-dropped at snapshot_close().
-I assume the swap entry allocation happens between snapshot_open() and
-snapshot_close().
-
-> So, to stick to the minimal fix principle and only address the currently
-> possible bug in uswsusp, we could consider:
->
-> 1) Creating a separate function to grab the reference for uswsusp, and
->    put it in snapshot_close().
-Ack.
-
-> 2) Adding a parameter to swap_type_of() to decide whether to acquire the
->    reference or not, and put it in swsusp_close()
-
-In my mind, shouldn't the first point 1) be enough? Not sure 2) is needed.
-
-Chris
-
-
-
-
->
-> On all strategies, we do not grab the
-> reference when taking an in-kernel snapshot, and do not add alloc/free
-> get/put.
->
-> > > My proposal is to grab the reference at the lookup point to close thi=
-s
-> > > initial race.
-> >
-> > That is my suggested patch 1.
-> >
-> > > If we do that, I believe we can remove the per-slot
-> > > get/put calls entirely, as the initial reference is sufficient to kee=
-p the
-> >
-> > I suggest that as the patch 2. It is an optimization to eliminate the
-> > get/put pairs. It is optional. without it is fine in terms of
-> > correctness. Might not worth the trouble for patch 2.
->
-> Yes, I agree. I will split the patch into two as you suggested and think
-> about it further.
->
-> > > device alive until the operation completes.
-> > >
-> > > Regarding the reference release strategy in this patch:
-> > >
-> > > 1. uswsusp: The reference is released when the snapshot device file
-> > >    is closed(snapshot_release) and error paths.
-> > > 2. not uswsusp`: I only added reference release in the error paths.
-> >
-> > That part makes this patch complex and harder to review. Need to
-> > carefully check whether we take the reference count or not.
-> >
-> > >
-> > > About 2.. I conclude that on a successful resume, the system state re=
-verts to
->
-> > > the snapshot point, making an explicit release unnecessary. However,
-> > > I am not 100% certain if this holds true for the swap reference
-> > > context.
-> >
-> > That is the part I try to avoid: the very fragmented error condition
-> > for reference counting.
-> > Hopefully, with patch 1 idea we don't need that complexity.
->
-> I agree with you.
-> But, I believe it can be a safe modification that can be sufficiently
-> verified through review.
->
-> I would love to hear the thoughts of the hibernation maintainers and othe=
-r
-> reviewers on this. Although there are some complex parts, I think this
-> modification has clear benefits.
->
-> Thanks
->
-> Best regards,
-> Youngjun Park
->
 
