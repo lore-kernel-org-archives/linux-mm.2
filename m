@@ -4,85 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53690FD0659
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAB82FD88DA
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:06:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 689886B0089; Wed, 11 Mar 2026 04:49:31 -0400 (EDT)
+	id AC0ED6B0089; Wed, 11 Mar 2026 05:06:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66B946B0096; Wed, 11 Mar 2026 04:49:31 -0400 (EDT)
+	id A6EC26B008A; Wed, 11 Mar 2026 05:06:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5400A6B009E; Wed, 11 Mar 2026 04:49:31 -0400 (EDT)
+	id 950156B008C; Wed, 11 Mar 2026 05:06:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FAF66B0089
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:49:31 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEDBA5A517
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:49:30 +0000 (UTC)
-X-FDA: 84533158500.26.DA9E338
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B8A6580009
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:49:27 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="e PPHXGF";
-	spf=pass (imf02.hostedemail.com: domain of luckd0g@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=luckd0g@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70B376B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:06:01 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0CB6D140191
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:06:01 +0000 (UTC)
+X-FDA: 84533200122.19.116F353
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6BDEC140005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:05:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpaMyPfq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773218968;
+	s=arc-20220608; t=1773219959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GAasSFadjKoOoj3ZztArgAv35rmKjQfoPCMXT8gypuY=;
-	b=RfKRQokIGkz5xg/S5FVHswVbLSmCYXzZVYab+GdJy6XOLpGcT+93p2SrEumLt6jLN+ECCr
-	qkw0WLct7DA3HVlChr5TFMbTcihWV4IhiQ3UiPanxVphj3eT7nZVcNG8KQDhI6UMqoaFGp
-	L+j7XQ+gfYwfXZBGD9M+DQbDbDnDSOI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rnNyLKmjYEZq2RUQBnjPHjK0TRD3X9R1o76bubZW2qs=;
+	b=C+78A6bgk4F3MX+COK1bMpzwYBKPl9U1mt8jkkzJ7ygmkgN3Q3JYgF8DX5FK7Q4bgHGfAw
+	wddAHkAKLy28TX7I12w7VyCCDVo5dqCFmNQFHZtRVbCFJD+YMgGZsGKjoK8n9qX0xi1g1q
+	rdL2YX+MiKKwkBOrsktDN+S5pyO2Pj0=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="e PPHXGF";
-	spf=pass (imf02.hostedemail.com: domain of luckd0g@163.com designates 117.135.210.5 as permitted sender) smtp.mailfrom=luckd0g@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773218968; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OpaMyPfq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of krzk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=krzk@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773219959; a=rsa-sha256;
 	cv=none;
-	b=x5dxY18NQgA+bTBB1Ad1x+imb6zarLfHmaFtWYRRr/bO0iTC4Ezujp9AERcQT4vEsjqgXv
-	ccKm3O006Pm0Ri8kzgX+m/SocCHWlrxZG1L7B9RLOqApz7SFUPFrqg6NT0a5xhBr0b3Sp3
-	wIZvqjM4F+BLA2WNUrICg15pKYU2w/M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=GAasSFadjKoOoj3ZztArgAv35rmKjQfoPCMXT8gypuY=; b=e
-	PPHXGFq6msWVyT9IWVpY/5LSLKhMq8gkDWAYH3uQ6CAf4vSYbzNmZyAtZeHINKya
-	OVd88HxZ5vwm6B+qCJnMtH0FHmB0/fgNt3/rAW1OXaT8bIEeWyCaRzRbBo5l+LUw
-	SCJrjq5W5gnJ6AaxMu8lZjh6QaDEDBbSwKzEiYBZIA=
-Received: from luckd0g$163.com ( [183.205.138.18] ) by
- ajax-webmail-wmsvr-40-127 (Coremail) ; Wed, 11 Mar 2026 16:49:23 +0800
- (CST)
-X-Originating-IP: [183.205.138.18]
-Date: Wed, 11 Mar 2026 16:49:23 +0800 (CST)
-From: "Jianzhou Zhao" <luckd0g@163.com>
-To: urezki@gmail.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: KASAN: vmalloc-out-of-bounds Write in vfree_atomic
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20251222(83accb85) Copyright (c) 2002-2026 www.mailtech.cn 163com
-X-NTES-SC: AL_Qu2cAf6at0Et5SWYZ+kfmU4Rhug7UMO3uf8n24JfPJ9wjA/p2yseUUF9NmPf88CwFTuXvxiGfTNO1/ZAU5BifrwxsAXrNo8sX+7dusy/6Cu9Fg==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	b=kgfHMBXVI0tD7bFLf4DS6qroiOSJS6jmZKQavAaD6vBhHBHnJPpQ7bZeQNj9vVq2PcIZhQ
+	JBMBeSTc/MAvCdevVkaamsXQeKHB2Pe8G4oSjAsmSCg+4Iri8wWgxYgxsq7F8zno53Urgf
+	rUqkw2CghOGqUUQ3+KFdiTOPjL+zQoI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 244506024D;
+	Wed, 11 Mar 2026 09:05:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F588C4CEF7;
+	Wed, 11 Mar 2026 09:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773219957;
+	bh=D51Pq/e4LwlQGDMBcJS01g9zdaJBXlcZ+FyspkYyjeE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OpaMyPfq5NJaxf+QkDm+yAtMK9kTWUJspfstygKAnF36YOzTZ2jWyATAqtQgBLBOM
+	 X7EOY4g5cKeILwzeLPh05VN39Ui0Tl0XRCyhPtPKF+XRDBvG3uGRxL3geoxNA01KsV
+	 ofaXr1sB2KM6GdSqJGVEzXwom3ewd9AWlWCw76//1vFUck3bpY/jDA2Z3TJeAS0wct
+	 x7wrFcLwQUXjxKKLVQojnFj42oKnR7IDX+XtyjJleVSLWbpk5XV9qItG3s7hMIzEUc
+	 chvYt7DQKjUQu3mfmM6HFrP1S1qSI/69qT/hoP0l27gPIQJeHYnZR5m2vfxMrlSCKn
+	 nz/28x/sq+9yA==
+Date: Wed, 11 Mar 2026 10:05:55 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <eugen.hristev@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 24/25] dt-bindings: reserved-memory: Add Google Kinfo
+ Pixel reserved memory
+Message-ID: <20260311-light-terrestrial-bison-d9cd97@quoll>
+References: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
+ <20260311-minidump-v2-v2-24-f91cedc6f99e@oss.qualcomm.com>
 MIME-Version: 1.0
-Message-ID: <57fac928.7af6.19cdc162036.Coremail.luckd0g@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fygvCgDXP5WTLLFpDdd2AA--.25845W
-X-CM-SenderInfo: poxfyvkqj6il2tof0z/xtbC1BP1gGmxLJPN4gAA36
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Rspamd-Queue-Id: B8A6580009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nqesdywdt3a3j548hx9chmny8ty6wor1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260311-minidump-v2-v2-24-f91cedc6f99e@oss.qualcomm.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6BDEC140005
+X-Stat-Signature: cisurcza1n9jg3n774ma54gsd1nzr3on
 X-Rspam-User: 
-X-HE-Tag: 1773218967-115291
-X-HE-Meta: U2FsdGVkX1+EqP3Gq2CaHUvkz4qo2tyWdv7Do793gX6CP02AlJf1dExNnBSNUziumT0HaS/EeM+MPukgDRf1BVgMbux4ZK6x382UoVAERuXtBsKwPoZn0Ly8uiqmn6AaKoGCBK5eWLcUVmn3pF5MkGw9Xb+kqs4uPs313D4TF/PbCiLiDs2fMB+NnJ1N7eu1CAYJKiaBskzn4OU0hdIqmyO4GvzbS+GOwtvsDP8B8VauizJajofv2wOQgmPlYsX1oWCcbACFzxcMdTMhukSuKDDzA9WwjHleoTRl+QfKFVTZktffhHTiCZBQmc6y3+mZH9wJvE2gJjjOsdRAzVpOR3FXct+FpRbTYe/i+NFhj6ARyg8uALP9g1GNgGY6tgEkyv/s10OS8E4TjjeFN1xKp807ZXvEfN01j/9iaa2FiCrA/kKo/fnuS7O4sE4oikDELiO+zvnAghvYzj4XogkCbhr+x0LQoD4cmL4mwXgYYYpG5gzp6Q76oTOAWgCk7UsXxE50eMYU4PQv/Hue5HRe5yLCMI2lZzjPwWuYGPzv8C/lAORs9O6CKngEMsFdQyEQsKPSpkLGPm6BlfnBEYFmc8LWGw34qeu3FPXqc4t54F5K/+83RA0x3rGuqtlv90NNmEWSqW0/pz/N/Ov+RaU67nm7WV/EixFzVeY0T5fE6cvqCw1ghu1rWMdfhwgAHmT8bh6g/rF4MjZ8ghI8mXD7pg+VNjrcvXJvqoVT6+BAiJa3Pot6LBk48izhscUTfPiIPkucWEO2KxUhnFBc0EsFDilnHgL73HBicMnQTni/iSdCuHZG0bxVO/JmCTu9DSMr6OTXERBN/W+mGkiezhpmCCJhx5D+Ea+FYSNaOrZLp8er/1+TCKHwPrbkcJN7B9arx5JIQCVqKOWg0F4tT/5OSSJqHqZkqkx/bTvFoF5I9TTsqrxkCU5CTd5RjtwXlUZsRwlyuu3EpM7O8R97MXG
- oM6J3wFG
- 8yTudxE+R3YzxKyJFy2Pb7AWmgMXInHi6K1nSICGs5T8+La6Cx0pnmFO5GW9cVBvh7pMLEDAvhEXrlKgD9kKbIS6Go/H9A0D4zQATwxfrKFxnhIMWUP7DxMlkNzmgg/IfGM9HrWfJENhFD4TGV5qZwofaQX6vA/5m5cIUVs03mv2gr2XpLF9Bbj/tKCtGytZXQvITpR1pZ5RJZvAAGSZIbA/cce0S+Ik8+s/LTuQaRP9fhCwwOgOBtB6qtXwbyhomnoK5YHbGyK9JoM03nMfjaIfc8dGj4kCNHZOT8fNbx/3myTJRgG51+Ww1iA8A5rO3Mc8SAZwpNkGTJm2T0f6cQfUZrF91xmEuNmh4I8D2FCYEjrBvPWq8VR3oHM1YHfuIW8OY8nVlAsobScBHNJOYnprFeq2AffIPSft/H64J3H4tdp3bfgK5FYH9vv6tKjRHrBg0MUgjyfaswA63yoqDvaxlcTxg7m6925XGrOP+51C0gMqcwOwogAW09ZPKgywHoXpavKr9y2JTf8b7BKjgO2IH3e5e5cUXrnG174AGA+5Ibj+Htm6MJcSm2a5uIgK0EDEPP5f2tEcCJXrnZJWBmpQjCnwD9gZWgXoB
+X-HE-Tag: 1773219959-339978
+X-HE-Meta: U2FsdGVkX1+V5Fs+yCFP0JVpmjuoUsDD46LGte6BR5Qk6MN1hOiH88LemhfF1k2LWBpvG0Tfcci0l5irHP23qcXltAc8ZpDwADxN/dskqf+FYAFMMr4l4Yaxf+FrwyqB7jlhCNKEFejNWt/ZeNr0+qWEOI8786erZSi2ufpgWVHEy0uPyRNBCTWQYao8urVZOaryMyvI/VrHjpcSpFygDNNwD/6t9/iiBU/YGBwo+ODXvRQZxq+AMZxUAtBb3Y3Wqw1JmWUKFidaEVwQwr25nZUBWJx3s54kx4uPQBviXSJsOg6AvTRDLMFg20iNzQ21g3wtg0ic8seeYFlVXLoTeltmOB6nB83SnDxipUB8V9vXvjgdFzIW5hMmbZ20QMiO+fVtoB+jB8fV4ZyvoBN1k+zP446WtIydDTfdF6I2o+9AOoy2pAm0YpVQz99tFgULYAzn8zL6jpzbVv08B6AEW3x+spOE1/dZ2T9xQf4xpASTsSnqSwjnKH0pPUTd+s5y3oS3prnEnkDLNeptxn1AudIw9Y0PImpfU7OjaZhVyZtW9Y1eCrH7w4ebRan8d0gI3kVgzXHMtSMCRvdw1IMuPJdpp3T7tz8BSUIbk8TCNLDyU4AA4rbvQohjkwYxHC6xwlb4rL4FJLUrlWfVkLQQY9F07HH14xaeeO/C8c0nPE42POUrArnj7ll40pS7rWN0nAY8jsuL1asNQBL64dSTiGt9dtxw53jf8poR6Rqxdte6aSszH2AELeLbObC7EAKu90Blxu5VtjJP6ws2iFqrh9TK8I6T2+FAhkm+vs2MAD13xpvzs8r3NOCg7YB0pcebdHamdp/Uc4LNr1Fa1/n+dIdJmuyGNyrMjDjIOSOPCE6GH2TDFRaB69XQHqGeHXpHKST/RjuR5UECcuFw2/IeJIHerVEWDWg774Rock69XWEFb3PjGnKn4rEejIF8BCFZJCO7oa5EGeO2ZyONmgn
+ WqQi3Ugf
+ YjRseRtcj3tnDJ+m/iylzFLop9sm0v2hGKC4xZZwq1+HLXwGIavVlYKd4xrnuIWKFQ/k8pJPpRuJAoFResPgEzGYf2hpWP5GYuZUA5leEjnDrEUb955xsnQlJTJw27FZVioz3Rwt/Kqw/oXxRinYHpoYUkAjEQrYQXg6orObzRaoqMfb5YxXcNPBI9KnxpZdz3NvJqefVeD+m4PdScrq3C3nS1tJn6F5fJ7rqlCqARZ7N1m4xLb2aQVeqGw/mCtLlsGmiykm5tOf9rgLadNan84T24Acz0pbwKCIX0mF/vD1l/dtHwBJd9mkNsIUnujAUqiAa/6xRDSYiBoYjksxYbZSeWpz9WPF2B6/KJk2RFkIlThCCU27tiNrR2J1KSLGkIDDF388d9mmE0UQIFIY4crg+iqvjo4p67/2NWGgHtAgs/zkeYRCYNXz0ua/Dx0MrMr2vBMwZKkVVH4543uM6YtMrdw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,71 +115,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CgpUbzogbGlua2luamVvbkBrZXJuZWwub3JnLCBzajE1NTcuc2VvQHNhbXN1bmcuY29tCkNjOiBs
-aW51eC1mc2RldmVsQHZnZXIua2VybmVsLm9yZywgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9y
-ZwpTdWJqZWN0OiBbQlVHXSBleGZhdDogS0FTQU46IHZtYWxsb2Mtb3V0LW9mLWJvdW5kcyBXcml0
-ZSBpbiBkZWxheWVkX2ZyZWUgZHVlIHRvIGRvdWJsZS1mcmVlIG9mIHZvbF91dGJsCgpEZWFyIGV4
-RkFUIE1haW50YWluZXJzLAoKT3VyIGN1c3RvbSBmdXp6aW5nIHRvb2wsIFJhY2VQaWxvdCwgaGFz
-IGRldGVjdGVkIGEgdm1hbGxvYy1vdXQtb2YtYm91bmRzIHdyaXRlIGluc2lkZSB0aGUgYGRlbGF5
-ZWRfZnJlZWAgZnVuY3Rpb24uIFRoZSB1bmRlcmx5aW5nIGlzc3VlIGlzIGEgZG91YmxlLWZyZWUg
-dnVsbmVyYWJpbGl0eSByZWdhcmRpbmcgdGhlIHVwY2FzZSB0YWJsZSAoYHZvbF91dGJsYCkuCgoj
-IyMgQ2FsbCBUcmFjZToKYGBgCkJVRzogS0FTQU46IHZtYWxsb2Mtb3V0LW9mLWJvdW5kcyBpbiBs
-bGlzdF9hZGRfYmF0Y2grMHgxNWYvMHgxODAgbGliL2xsaXN0LmM6MzIKV3JpdGUgb2Ygc2l6ZSA4
-IGF0IGFkZHIgZmZmZmM5MDAwNTMxOTAwMCBieSB0YXNrIHN5ei40LjM3My8xNDI2MgoKQ2FsbCBU
-cmFjZToKIDxJUlE+CiAuLi4KIGthc2FuX3JlcG9ydCsweDk2LzB4ZDAgbW0va2FzYW4vcmVwb3J0
-LmM6NjM0CiBsbGlzdF9hZGRfYmF0Y2grMHgxNWYvMHgxODAgbGliL2xsaXN0LmM6MzIKIGxsaXN0
-X2FkZCBpbmNsdWRlL2xpbnV4L2xsaXN0Lmg6MjQ4IFtpbmxpbmVdCiB2ZnJlZV9hdG9taWMrMHg1
-ZS8weGUwIG1tL3ZtYWxsb2MuYzozMzI2CiB2ZnJlZSsweDcwOC8weDhhMCBtbS92bWFsbG9jLmM6
-MzM1MwogZGVsYXllZF9mcmVlKzB4NDkvMHhiMCBmcy9leGZhdC9zdXBlci5jOjc5OQogcmN1X2Rv
-X2JhdGNoIGtlcm5lbC9yY3UvdHJlZS5jOjI1NjggW2lubGluZV0KIC4uLgpgYGAKCiMjIyBVbmRl
-cmx5aW5nIFJvb3QgQ2F1c2U6CgpUaGUgaXNzdWUgb2NjdXJzIHdoZW4gYGV4ZmF0X2NyZWF0ZV91
-cGNhc2VfdGFibGUoKWAgZmFpbHMgdG8gbG9hZCBhbiB1cGNhc2UgdGFibGUgYW5kIHN1YnNlcXVl
-bnRseSBmYWlscyB0byBsb2FkIHRoZSBkZWZhdWx0IGZhbGxiYWNrIGR1ZSB0byBtZW1vcnkgZXho
-YXVzdGlvbiAoLUVOT01FTSksIGNhdXNpbmcgYHNiaS0+dm9sX3V0YmxgIHRvIGJlIGRvdWJsZS1m
-cmVlZC4KCjEuIER1cmluZyBgZXhmYXRfY3JlYXRlX3VwY2FzZV90YWJsZSgpYCwgaWYgYGV4ZmF0
-X2xvYWRfdXBjYXNlX3RhYmxlKClgIHJldHVybnMgYW4gZXJyb3Igb3RoZXIgdGhhbiBgLUVJT2Ag
-KGUuZy4gYC1FSU5WQUxgIGZyb20gYSBjaGVja3N1bSBtaXNtYXRjaCksIHRoZSBjb2RlIHRyaWdn
-ZXJzIGBleGZhdF9mcmVlX3VwY2FzZV90YWJsZSgpYCB0byBmcmVlIHRoZSBpbnZhbGlkIHRhYmxl
-IGJlZm9yZSBqdW1waW5nIHRvIGBsb2FkX2RlZmF1bHRgLgoyLiBJbnNpZGUgYGV4ZmF0X2ZyZWVf
-dXBjYXNlX3RhYmxlKClgLCBga3ZmcmVlKHNiaS0+dm9sX3V0YmwpYCBpcyBleGVjdXRlZCwgYnV0
-IGBzYmktPnZvbF91dGJsYCBpcyAqKm5vdCBzZXQgdG8gTlVMTCoqLgozLiBJbiBgbG9hZF9kZWZh
-dWx0OmAsIHRoZSBleGVjdXRpb24gY2FsbHMgYGV4ZmF0X2xvYWRfZGVmYXVsdF91cGNhc2VfdGFi
-bGUoc2IpYC4KNC4gSWYgdGhlIHN5c3RlbSBpcyB1bmRlciBtZW1vcnkgcHJlc3N1cmUsIGBrdmNh
-bGxvYygpYCBpbnNpZGUgdGhlIGRlZmF1bHQgbG9hZGVyIGZhaWxzIGFuZCByZXR1cm5zIGAtRU5P
-TUVNYC4gQmVjYXVzZSBvZiB0aGlzIGZhaWx1cmUsIGBzYmktPnZvbF91dGJsYCBpcyBub3Qgb3Zl
-cndyaXR0ZW4gd2l0aCBhIG5ldyBwb2ludGVyLCBsZWF2aW5nIGl0IGhvbGRpbmcgdGhlIHByZXZp
-b3VzbHkgZnJlZWQgdm1hbGxvYyBhZGRyZXNzLgo1LiBUaGUgYC1FTk9NRU1gIGZhaWx1cmUgcHJv
-cGFnYXRlcyB1cCwgYWJvcnRpbmcgdGhlIGZpbGVzeXN0ZW0gbW91bnQuIFRoZSBWRlMgc3VwZXJi
-bG9jayB0ZWFyZG93biBldmVudHVhbGx5IHByb2Nlc3NlcyB0byBgZXhmYXRfa2lsbF9zYigpYCwg
-cXVldWluZyB0aGUgUkNVIGNhbGxiYWNrIGBkZWxheWVkX2ZyZWUoKWAuCjYuIFdoZW4gYGRlbGF5
-ZWRfZnJlZSgpYCBhc3luY2hyb25vdXNseSBydW5zLCBpdCBhZ2FpbiBjYWxscyBgZXhmYXRfZnJl
-ZV91cGNhc2VfdGFibGUoc2JpKWAuCjcuIGBrdmZyZWUoKWAgaXMgY2FsbGVkIGZvciBhIHNlY29u
-ZCB0aW1lIG9uIHRoZSBvbGQgYHNiaS0+dm9sX3V0YmxgLCBjb25zdGl0dXRpbmcgYSBkb3VibGUg
-ZnJlZS4KOC4gQmVjYXVzZSBgZGVsYXllZF9mcmVlYCBleGVjdXRlcyBpbiBhIHNvZnRpcnEgY29u
-dGV4dCwgYGt2ZnJlZSgpYCBkZWxlZ2F0ZXMgdGhlIGNsZWFudXAgdG8gYHZmcmVlX2F0b21pYygp
-YC4gYHZmcmVlX2F0b21pY2AgY2FzdHMgdGhlIHZpcnR1YWwgYWRkcmVzcyB0byBhbiBgbGxpc3Rf
-bm9kZWAgYW5kIHdyaXRlcyBpdHMgYG5leHRgIHBvaW50ZXIuIEtBU0FOIGNhdGNoZXMgdGhpcyBp
-bGxpY2l0IHdyaXRlIG9wZXJhdGlvbiBvbiBwcmV2aW91c2x5IGZyZWVkLCB1bm1hcHBlZCB2bWFs
-bG9jIG1lbW9yeSwgZW1pdHRpbmcgdGhlIGB2bWFsbG9jLW91dC1vZi1ib3VuZHNgIGV4Y2VwdGlv
-bi4KCiMjIyBLZXkgQ29kZSBTbmlwcGV0czoKCkluIGBmcy9leGZhdC9ubHMuY2AsIGBleGZhdF9j
-cmVhdGVfdXBjYXNlX3RhYmxlKClgOgpgYGBjCiAgICAgICAgICAgIHJldCA9IGV4ZmF0X2xvYWRf
-dXBjYXNlX3RhYmxlKHNiLCBzZWN0b3IsIG51bV9zZWN0b3JzLCAuLi4pOwoKICAgICAgICAgICAg
-YnJlbHNlKGJoKTsKICAgICAgICAgICAgaWYgKHJldCAmJiByZXQgIT0gLUVJTykgewogICAgICAg
-ICAgICAgICAgLyogZnJlZSBtZW1vcnkgZnJvbSBleGZhdF9sb2FkX3VwY2FzZV90YWJsZSBjYWxs
-ICovCiAgICAgICAgICAgICAgICBleGZhdF9mcmVlX3VwY2FzZV90YWJsZShzYmkpOyAgLy8gWzFd
-IEZyZWVzIC0+dm9sX3V0YmwgYnV0IGxlYXZlcyBhIGRhbmdsaW5nIHBvaW50ZXIKICAgICAgICAg
-ICAgICAgIGdvdG8gbG9hZF9kZWZhdWx0OwogICAgICAgICAgICB9Ci4uLgpsb2FkX2RlZmF1bHQ6
-CiAgICAvKiBsb2FkIGRlZmF1bHQgdXBjYXNlIHRhYmxlICovCiAgICByZXR1cm4gZXhmYXRfbG9h
-ZF9kZWZhdWx0X3VwY2FzZV90YWJsZShzYik7IC8vIFsyXSBGYWlscyBvbiBrdmNhbGxvYyBhbmQg
-cmV0dXJucyAtRU5PTUVNCmBgYAoKSW4gYGZzL2V4ZmF0L3N1cGVyLmNgLCBpbnNpZGUgYGRlbGF5
-ZWRfZnJlZSgpYDoKYGBgYwpzdGF0aWMgdm9pZCBkZWxheWVkX2ZyZWUoc3RydWN0IHJjdV9oZWFk
-ICpwKQp7CiAgICAuLi4KICAgIGV4ZmF0X2ZyZWVfdXBjYXNlX3RhYmxlKHNiaSk7IC8vIFszXSBT
-ZWNvbmQgaW52b2NhdGlvbiBsZWFkcyB0byBkb3VibGUgZnJlZSBVQUYKICAgIGV4ZmF0X2ZyZWVf
-c2JpKHNiaSk7Cn0KYGBgCgojIyMgUHJvcG9zZWQgRml4OgoKVGhlIHNvbHV0aW9uIGlzIG5hdGl2
-ZWx5IHNpbXBsZTogbnVsbGlmeSBgc2JpLT52b2xfdXRibGAgZGlyZWN0bHkgaW5zaWRlIGBleGZh
-dF9mcmVlX3VwY2FzZV90YWJsZSgpYCBhZnRlciBmcmVlaW5nIGl0LiBUaGlzIHNhZmVseSBjb252
-ZXJ0cyB0aGUgc2Vjb25kYXJ5IGFzeW5jaHJvbm91cyBga3ZmcmVlYCBpbnRvIGEgbm8tb3AuCgpg
-YGBjCiB2b2lkIGV4ZmF0X2ZyZWVfdXBjYXNlX3RhYmxlKHN0cnVjdCBleGZhdF9zYl9pbmZvICpz
-YmkpCiB7CiAJa3ZmcmVlKHNiaS0+dm9sX3V0YmwpOworCXNiaS0+dm9sX3V0YmwgPSBOVUxMOwog
-fQpgYGAKCkJlc3QgcmVnYXJkcywKClRoZSBSYWNlUGlsb3QgVGVhbQo=
+On Wed, Mar 11, 2026 at 01:46:08AM +0530, Mukesh Ojha wrote:
+> Add documentation for Google Kinfo Pixel reserved memory area.
+> 
+> Co-developed-by: Eugen Hristev <eugen.hristev@linaro.org>
+> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> ---
+>  .../bindings/reserved-memory/google,kinfo.yaml     | 46 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  6 +++
+>  2 files changed, 52 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
+> new file mode 100644
+> index 000000000000..2f964151f0c0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
+
+Nothing improved, read previous feedback.
+
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/reserved-memory/google,kinfo.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Google Pixel Kinfo reserved memory
+> +
+> +maintainers:
+> +  - Eugen Hristev <eugen.hristev@linaro.org>
+> +  - Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> +
+> +description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +  This binding represents reserved-memory used to store data for firmware/bootloader
+
+Nothing improved.
+
+> +  on the Pixel platform. The stored data is debugging information of the running
+> +  kernel.
+> +
+> +allOf:
+> +  - $ref: reserved-memory.yaml
+> +
+> +properties:
+> +  compatible:
+> +    const: google,debug-kinfo
+> +
+> +  reg:
+> +    description: page-aligned region of memory containing debugging data of running kernel
+
+Missing constraints.
+
+Please wrap code according to the preferred limit expressed in Kernel
+coding style (checkpatch is not a coding style description, but only a
+tool).  However don't wrap blindly (see Kernel coding style).
+
+Best regards,
+Krzysztof
+
 
