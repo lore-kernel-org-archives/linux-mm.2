@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1C9FD064D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 07:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4583FD064E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 07:42:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01F176B0005; Wed, 11 Mar 2026 03:38:34 -0400 (EDT)
+	id F226C6B0005; Wed, 11 Mar 2026 03:42:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE4EF6B0089; Wed, 11 Mar 2026 03:38:33 -0400 (EDT)
+	id ECFCF6B0089; Wed, 11 Mar 2026 03:42:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF08B6B008A; Wed, 11 Mar 2026 03:38:33 -0400 (EDT)
+	id DB1C96B008A; Wed, 11 Mar 2026 03:42:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B707C6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:38:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5565ABA204
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:38:33 +0000 (UTC)
-X-FDA: 84532979706.21.ED007A7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D68501C0003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:38:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ap2sqBiO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B6CBE6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:42:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6643414067B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:42:00 +0000 (UTC)
+X-FDA: 84532988400.22.D80A357
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E009BA000B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 07:41:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SqmlROTQ;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773214711;
+	s=arc-20220608; t=1773214918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=caSzwbBW000RZl6UoZ8TFqZr2izPss+Vtb29F028OR4=;
-	b=jMXLttRpuzZeWJiizHjNm6Z5uwfh7TXgXCvFZgHsnc45SgZoDM3l0x59dl2Tpwp+Sv1cx9
-	slNSvtd94Yjt28nlLxltCjQaCoXP3jcMoOh+tykUXIiTxlmOKNqQMuAVgJZiI1Pk3Fz3KW
-	BIhwpv1+bcCkl/DLtyDXZq/86ve0gto=
+	bh=H56QLzxUhEgi6jqHY6ZmGgtMEVMNUh81uLgFUyINflQ=;
+	b=QxWURY2baYogo9RNJ2jpDDtZzCodCcfqlZJz8qX8lBSM/hR9HEYhjwjizhbe0iuGV/fDCr
+	g08tDQ8CTAyX8sgEcvVMBFVPTvN1mjiQG3qqgo6Hdjoi9Q29WpYnjskwpsr0s31ugHO1AJ
+	OeOyZhqFNXmbMSqornSIIv81gBF1cx8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ap2sqBiO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773214711; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SqmlROTQ;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773214918; a=rsa-sha256;
 	cv=none;
-	b=rVA7fLSbXFS84MrHRfoHjY98UnNC3pTW5+JYtIzf8+wzI6E2ZZTzont439HjsfYkiQphYL
-	Y6E8b4tL/kbuWJnyHeI/cGmxeymW+fSWVrlz6LMNsI/oEsC3IDdNK0Vqe3P5VSpWBdBDfU
-	9FUrYoOw2kVE+eQ6To/g5Ykwhxogaf4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 33A9A6014B;
-	Wed, 11 Mar 2026 07:38:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE298C4CEF7;
-	Wed, 11 Mar 2026 07:38:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773214710;
-	bh=YwwQxlaXwMMbqagxRfolcXWYqSrMPA5QKuGMRbcPECo=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=ap2sqBiOyzNEg5d9WoWmhZjrYXZKC7JT2oPedkW5M1KgX6ee0qONqMx2Dylwh9xRG
-	 wWYD+NG4lLN8GsAC7SCUic669xXeIO/lo3u4OyQWc7zP73Pt9uxAQN8GJWbqAcrjoc
-	 LQ59Q0Y0Hh47txaeYLCuvXLNyk/Bflt4G8HFMj8dpnfNZRWXPt1OF6FLbriAu7k1px
-	 wN4cDDNb1Sw1JvfNfRDPiuvO85CSG2EEhQi9VaPccss3mXRD0/FbLkWZKSB/1SMLbo
-	 i5ecanrLK0dblbNLrCwiwZGWhGA6FUwN1T1YMcSs86zqODxcjv3NbyX59VgsdfY4SU
-	 v7i8ntllz1UNA==
-Message-ID: <e7ccb3b0-791e-4e01-86c3-65b613e3cc5a@kernel.org>
-Date: Wed, 11 Mar 2026 08:38:25 +0100
+	b=ighNnrFOAsd6hTFaF9ClItjigwjhrtA5aDCWBetywa1xRp1yv5H0WTMahoxCcOKP7vb/Ur
+	A3UJPGGLmsX8ilop9Xc4UvNH8+IgR7cU8/VKWXbCI2aEkUob1Gw1q4uvz90C9u3z35S9Na
+	EPLGO7LaYHz/7dVgvhdUDSesORlU3YI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773214918; x=1804750918;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VOyzQxkiOrYyQ5++xZdWU53tYlT+cG5P+BjBAxzOJqE=;
+  b=SqmlROTQnAANPq+ZRG6Ds8iD0eaRQyVQkj8RD8cuivLjW511rtoKVV6f
+   6wp10d4BqhiQo7UzhlYy97p08Fb88G3EvQ6NKup7qa3xnJYxQYghXCLic
+   0kBVXt0cN780hiIY+Qn+vY0tKBQbp0/eNls27ZeCcBjJanGA+1esDcSzb
+   yvsuNQEtG/drRZOxClF6r3+EdSWW3DedMa/IwNi+RinE57bRhSQxjhenW
+   GoC/hgLG1AwXFbxGEU+PniAXIpMgD6PaacsXCGvUOW1hZUqG7WjmBPIVf
+   uqVkCXAo0IuKXSzoas98SEbJxcFiFJwx1mne2uyuH2CDuZRbRt8fXYtvc
+   Q==;
+X-CSE-ConnectionGUID: /55VQnJhTMSX6AlGZdzQKw==
+X-CSE-MsgGUID: ftvOly1TS0Ssd+cXLfo0Dg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74394428"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="74394428"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 00:41:55 -0700
+X-CSE-ConnectionGUID: /X5V1c6LS9+3qp302cC7lw==
+X-CSE-MsgGUID: l2aL8VOtTrCZh90fqg3DCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+   d="scan'208";a="243391357"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by fmviesa002.fm.intel.com with ESMTP; 11 Mar 2026 00:41:51 -0700
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w0ECT-000000003HV-28cV;
+	Wed, 11 Mar 2026 07:41:49 +0000
+Date: Wed, 11 Mar 2026 08:41:35 +0100
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Brian Geffon <bgeffon@google.com>, John Stultz <jstultz@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Suleiman Souhlal <suleiman@google.com>
+Subject: Re: [PATCH v2 1/3] tracing: Have futex syscall trace event show
+ specific user data
+Message-ID: <202603110841.Pxedg2y4-lkp@intel.com>
+References: <20260310201036.542627924@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: vbabka@kernel.org
-Subject: Re: [PATCH 0/2] fix kmem over-charging for embedded obj_exts array
-To: Hao Li <hao.li@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: ranxiaokai627@163.com, hannes@cmpxchg.org, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
- cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- ran.xiaokai@zte.com.cn
-References: <20260310113804.245647-1-ranxiaokai627@163.com>
- <abDPvjUld-2BTpRa@hyeyoo>
- <exe5r2q526ym5qcypup73yltv3jqnplwhybr3zwxgcs5vfgoin@t6yj2ntfs7jk>
-Content-Language: en-US
-In-Reply-To: <exe5r2q526ym5qcypup73yltv3jqnplwhybr3zwxgcs5vfgoin@t6yj2ntfs7jk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D68501C0003
-X-Stat-Signature: t7y15zyy8m4fas8e89nfyr5zqnko3bj5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310201036.542627924@kernel.org>
+X-Rspamd-Queue-Id: E009BA000B
+X-Stat-Signature: qrhozd3dygt1hgb9odm4us6j6z5pq5ri
 X-Rspam-User: 
-X-HE-Tag: 1773214711-5014
-X-HE-Meta: U2FsdGVkX19SfUHozCva0FFr8R/hvVSKLfVSRyjnu9xL9CtGxDMq0ccFS924OG/+kVCWNHgnKCyTsKd9qVdL1MQC64GrLDOw6loiQtrKlwrhEy+bu2z0wc28SwU6sBD9otTp4Tnmjz9zSmWnHiSXmPVIR03DNA6kbXoWFAhKAiZE8jWrUgO7ur+lFDVGIkKut4emb1nk6rUKoJBr/Kzhch1k40YdDYSGuv0JNbUz6Fl0r6Zr0dSQ2N0goFuNtdg5WdboCXNZHxXl8uvVhIFFlX6qYSwyLiFkjI/elipQTpYGqMx/y78dg/P4JYuU7QBShkau86KqmyiMpsssI2TAKNLw6cM2i8hW2vl6QyisuFNxSKEKiK43IJxDu26r9nlhU39no9oo/0C1HaEqqg3xgpF+S/u86GWcmVM/N/b0J3MFEIYS3//BlW8rlbMiPvfP2odwyUQI0uM3qu5otu5SZI0e9CTVQC/Vh5R5X47tHDONfJPtI4m+ToPFhQUfi7EOzrzJJf4Xxt4rdygz4eqlQsN+5BR496y0xXPGeVmzv3biO4Fc4SUAFKZ956XZF/CpY35NGJ7jn8FTY6g7Y7SmRe9XGqnRviMybybpESHBiORZ2pn1hZLcXer5mor1lLpAhWhVb12wWOyFdyZ6IQIzq1zOr8bGbNGMwE+ulWPDSW4jAzMqyZti68xDR4aocXOkutOY5ypZxssLSLgaNU17CxVockd/j5mTsRHSlWzvJfprcesp4IEaUkeCQu42GGH/ayNOgJWA7/sYbFZknkiFMQLLT/Lfc08aYD6WtiEA5k6nNZR5M6s/UyUMphbH2hcsFXIn9q0xTwKchzTGpM1JgvobC26oHBPa5pr8X7iEtWl9+nSs3vytRqvsMJwozwTui+ljRTOGzCDaVfQeZ1+y6ePK9a1b+vynUKn2tds7x4uxXe3lXj2aUo4R5wyi7gKlccNd6jj0b2/hScLW5rY
- Q8C8zD4u
- J1Ajf
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1773214916-457115
+X-HE-Meta: U2FsdGVkX19Zrz3y8jQllJRWZojgHxTRXQTfbyzxIZJR2KpJ14kuUt2aVxldnC8zEWQZ5aU3UK8trr0fgb+OIUUfV6UKn96LyP82eioHJXETCJfECLvd/YPLKRJ9+KXQ4BAoyyoxrZ8VYDU2oPqYJ1NLakKkVlSFBQNFT9t/jpBpanI6N3KyEbuqiC81JM5y+yhPcBkHTY0x0Dv8SUbmB21IlVoCI1w+fUqWLwEVgHihefD9GecYgqXJgWlubhflozDYDmCcAsAvTTM9v+O4pmtRSkogQwP6yBaAfPl3gbqthYZ1Ykx0InW1YQox+rwPWIInTktNKZni09ihb37QS0shLwqsMlWH/e/XAAof1ugsa/lnMWUxW9l0Ehg/dJXYCMqTQYFywj+BaycAGyBOwn7jWXVffJ+a1JtuZ07iY/PXkYOnjWB5oXuLGeqLuC8bizNjmKFzKT+r5UZZNISAYF3IvcOgaXYLKWjfhbNMZORBy6iajejyk42f6B4JOIb6SiPZwSV3iXxNj22oOApOSwnz/iZQNqGoe2Fhzub1EH6ynHUEi+t5v10g0rWQJEyclC0srPzO3U++8sK2va3qw10pN77gGakpptucrsMDi/AAp4XNlq3kQvK6gk+XOysAiFOPLnqm8vGarvk8KaQ8y267JbBxdIKdDRhzB2uK0KNNsMCFlvH8/8feDi0VnOsOzo7gf+WxVhacjOrHmpLWAZuZzj/B6QBC3TMpUJxTLWH0ghRvE3njwBWDwUOh00LR/asjZo+504TmZWY16H37swVEWV1uuDN+dQagb47QCMhAtEHnS5cD9uTwTjah4bkQtZtzuBLr8MqLrfV6ULLg4QTEW64b/hFKsDBKPcYKMuCpC5mL67NraSm/HH+ss/xGr7FKYsRMuuPGd+IXTw3K7EfmCXiwyRJ6tSn4bYYdZ5owFH3sy4+9FI9qpD50WbGze03rBERBQFVegUPR26c
+ GlhJVIA2
+ bA5PZgA2l6H1sm491i9ql8DpKHcyyssujMqwO67XO4oXYWKpykrkxq+uA2vFg72adhpxGM6w4CSzbIFpk4XzYukc7+xGpj52gdoNUiLz6Ud2VkdPsup9c/vwnOR4BxUKEj2rD8gq6g2HtBy4b2iWQSYVSIo0DUdpN1JhIg4gmEbaQ/+RzZTbWbTNMjh6+nGTxYjxWCzExMNSlUQ+QhPjqk4BXoLS6YJcJ9+rZtgiPN8GHA94BuWF1UGQ+cFpoDum20X6ZcYGisp5oaFBKLrCzt0fBxA2cSngYXw2y9gqD4Vynvi/FpcIZIN1M1HLNKRJZQIVIcfvwDB2mKr+fxR2LAez//UhTrcmt9B9j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,49 +115,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/11/26 04:06, Hao Li wrote:
-> On Wed, Mar 11, 2026 at 11:13:18AM +0900, Harry Yoo wrote:
->> On Tue, Mar 10, 2026 at 11:38:02AM +0000, ranxiaokai627@163.com wrote:
->> > From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->> > 
->> > Since commit a77d6d338685 ("mm/slab: place slabobj_ext metadata
->> > in unused space within s->size"), the struct slabobj_ext array can
->> > use slab leftover space or be embedded into the slub object to save
->> > memory. In these cases, no extra kmalloc space is allocated for the
->> > obj_exts array.
->> > 
->> > However, obj_full_size() always returns extra sizeof(struct obj_cgroup *)
->> > bytes for every object, which leads to over-charging for slabs with
->> > embedded obj_exts.
->> > 
->> > This series optimizes obj_full_size() to check whether obj_exts uses
->> > slab leftover space or is embedded in the object. If so, only the object
->> > size is charged. Otherwise, the extra obj_cgroup pointer space is also
->> > charged.
->> 
->> Hi Ran,
->> 
->> At first look, I'm not sure if it's a good idea - although it's
->> allocated from wasted space, it's still memory that's needed to
->> charge objects.
-> 
-> Yes, I've been thinking about this as well.
-> 
-> For slabobj_ext that lives at the end of the whole slab, it seems reasonable to
-> charge it to the cgroup.
-> 
->> 
->> But for "embedded into the slub object" case, yeah,
->> the metadata is charged twice, as it's already included in s->size.
-> 
-> While reading patch 2, I was also thinking about whether it would make sense to
-> call obj_exts_in_slab() on every object allocation and free for this case...
-> 
-> I wonder if we could use objext_flags to carry a bit of information about where
-> slabobj_ext is located.
+Hi Steven,
 
-Uh maybe let's not complicate it and just drop obj_full_size() altogether
-and just charge s->size? Just accept that allocating slab objects has some
-overhead, we're not accounting all of it fully anyway. It shouldn't cause a
-big difference in practice.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on tip/locking/core]
+[also build test WARNING on trace/for-next akpm-mm/mm-everything linus/master v7.0-rc3 next-20260310]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Have-futex-syscall-trace-event-show-specific-user-data/20260311-041422
+base:   tip/locking/core
+patch link:    https://lore.kernel.org/r/20260310201036.542627924%40kernel.org
+patch subject: [PATCH v2 1/3] tracing: Have futex syscall trace event show specific user data
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260311/202603110841.Pxedg2y4-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260311/202603110841.Pxedg2y4-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603110841.Pxedg2y4-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   kernel/trace/trace_syscalls.c: In function 'syscall_get_futex':
+>> kernel/trace/trace_syscalls.c:807:15: warning: variable 'buf' set but not used [-Wunused-but-set-variable]
+     807 |         char *buf;
+         |               ^~~
+
+
+vim +/buf +807 kernel/trace/trace_syscalls.c
+
+   801	
+   802	static int
+   803	syscall_get_futex(unsigned long *args, char **buffer, int *size, int buf_size)
+   804	{
+   805		struct syscall_user_buffer *sbuf;
+   806		const char __user *ptr;
+ > 807		char *buf;
+   808	
+   809		/* buf_size of zero means user doesn't want user space read */
+   810		if (!buf_size)
+   811			return -1;
+   812	
+   813		/* If the syscall_buffer is NULL, tracing is being shutdown */
+   814		sbuf = READ_ONCE(syscall_buffer);
+   815		if (!sbuf)
+   816			return -1;
+   817	
+   818		ptr = (char __user *)args[0];
+   819	
+   820		*buffer = trace_user_fault_read(&sbuf->buf, ptr, 4, NULL, NULL);
+   821		if (!*buffer)
+   822			return -1;
+   823	
+   824		/* Add room for the value */
+   825		*size += 4;
+   826	
+   827		buf = *buffer;
+   828	
+   829		return 0;
+   830	}
+   831	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
