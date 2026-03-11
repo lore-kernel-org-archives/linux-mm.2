@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF37103E2E8
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 22:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C35C103E2E9
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 22:23:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6C686B0005; Wed, 11 Mar 2026 18:14:34 -0400 (EDT)
+	id D79B86B0088; Wed, 11 Mar 2026 18:23:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1A286B0089; Wed, 11 Mar 2026 18:14:34 -0400 (EDT)
+	id CFD4B6B0089; Wed, 11 Mar 2026 18:23:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D264D6B008A; Wed, 11 Mar 2026 18:14:34 -0400 (EDT)
+	id C093C6B008A; Wed, 11 Mar 2026 18:23:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C31596B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:14:34 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 535DF160448
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:14:34 +0000 (UTC)
-X-FDA: 84535187268.10.799D595
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AD0176B0088
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 18:23:44 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52BBEC1C65
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:23:44 +0000 (UTC)
+X-FDA: 84535210368.06.FF2CA07
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C146A20003
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:14:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ttVI0Ffm;
-	spf=pass (imf13.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id B3C2D1C0002
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 22:23:42 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FeHRPAuo;
+	spf=pass (imf20.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773267272;
+	s=arc-20220608; t=1773267822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1diyUXtofsL9Kv4UTes8svJlVam6hmtTVTZIlcFE+zw=;
-	b=YI7Ew7Wp9ei/p39ZPUQiHTGAXIVdmRgzb9TBOx1LjMdw7g6uAvS8aGv2qJGfFP2Arv+VmF
-	rcWgWlAk07miMzazGbMOrrEqFanHsjByvmpLpkd0hBnnfYNiaqob6k5yfI8TzrEMmJMMSR
-	DWXTjWa6lxWwtFJebGblEaBkzLNdCv8=
+	bh=gHs3xR5Se3YZpNYXYKMYNNyGO8X65iRZ5Ar425fORQU=;
+	b=xDROFMc9oJZnbDPpPGiOUEWZfHukqeD1YNziOEl5N0ccorgWTeO7dU+2tAUOUtswpuAHYi
+	d2jEIvUtTecza5N0PMzvSxgt/fpmhDCYrnOwZ3aLy36J5C24JClht8vxA195wiIxtN9vkG
+	wloGccY7oSrixA6I7iWtlHFQCh5Xq3M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ttVI0Ffm;
-	spf=pass (imf13.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FeHRPAuo;
+	spf=pass (imf20.hostedemail.com: domain of dgc@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=dgc@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773267272; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773267822; a=rsa-sha256;
 	cv=none;
-	b=MN2UDWLRR9mTMsa06mrkrftLmsfQsRu+XTCxLQ0OwkW6wBu05GrGAalSF0k24bFf0O+s2j
-	39H7TRRxZVMQToihO2bep63rYQcc4FGXKJzvauHJnzR5fzOy8TElFa8FN5zPu/p+/j9noc
-	o5hBU3udpehcN0lU66Z8qK6D5XeI3m8=
+	b=QLcgDMhbuP3Icd542RUdt3fDRZpJa9KFdpWS41c5KloWbBCGvyQLv5ce9yk2h7PRKFANuY
+	Mc5eXdYJtdsUTzEB5E0DERthvlbeUNw2TlesBiZ2MjnWhoAzAx/ClsgbWpMjssO+Y639V6
+	XuWF7AvvnYuX57jHo81Os1LFMMZMJrA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D29C6012B;
-	Wed, 11 Mar 2026 22:14:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D563C4CEF7;
-	Wed, 11 Mar 2026 22:14:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1D8686012B;
+	Wed, 11 Mar 2026 22:23:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BBFC4CEF7;
+	Wed, 11 Mar 2026 22:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773267271;
-	bh=SMRLE93kEGoA+0MBMPBBavmrc0muc9ghbk1j6trheEg=;
+	s=k20201202; t=1773267821;
+	bh=vNQT44UR5S7io6hYR318cyqfrKmzItN1fXmEUKzW/FU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ttVI0Ffm1g/2TdOemBet/emqBxMQgWvHKTRuu4ukXnctx1IqMRKPHmOGA3Zx7aTSv
-	 TsJjas2SDs+WHHSdglXv7I1Yccw6DC121au7ytFzFieWlanmw3Wz7qOFSWVkYaO7ed
-	 bMhVg8vwkuSsVjP0ZdGO2Qf/6HJL/EVKVWYNWXgtnSFh3Q/ph67nGq6DdHpFLqpzfq
-	 6i7ZX1fNdfPSHX26KBunLUjwIO/22JwFDLYOZLzoNoszw8YQwDbABTqaCrN+OnmJJz
-	 comK+ItGCJvbbsETmKfcw/vtUnJ66UO1SrjfX2Zgvyay4/V/AlQ3ZaV+/46kPpHszI
-	 oBt4Jhb0xtcSA==
-Date: Thu, 12 Mar 2026 09:14:20 +1100
+	b=FeHRPAuogMNRiB8G5ICCZu3caqsUfYCD+oSm5TCtz9JTaWZ8VaP0YTNEHXM6A0sz7
+	 oBGu9yCKuNu1jGvN3ZDLvDcAq6qW3jS3f+/iQ+ESmw7490jUrTRgTnSYiRpPjsK2EO
+	 jJWHrn35MPBI8Hr4eWuzjS5ECSbhaOxUZZyaqCS7S2+P4mVrKYu4WmexzUKhLYaHGL
+	 pqZX21nQuRS/RiLDg8CyxfqCAVGbAt+4fccp2/NsLFDkL5qyhN6WbT8l94xWTbr8Vy
+	 vGS2ud63GtFRK8Gr3PumhVpc5TsqJ8FhqdyYiG44bwox1ZlW+YvENMZVtCHFjODDro
+	 s/5dr6wdY7vrg==
+Date: Thu, 12 Mar 2026 09:23:35 +1100
 From: Dave Chinner <dgc@kernel.org>
-To: Haifeng Xu <haifeng.xu@shopee.com>
-Cc: akpm@linux-foundation.org, david@fromorbit.com,
-	roman.gushchin@linux.dev, zhengqi.arch@bytedance.com,
-	muchun.song@linux.dev, linux-mm@kvack.org,
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 3/4] mm: shrinker: optimize the allocation of
- shrinker_info when setting cgroup_memory_nokmem
-Message-ID: <abHpPC8tWwU93C1D@dread>
-References: <20260310031250.289851-1-haifeng.xu@shopee.com>
- <20260310031250.289851-4-haifeng.xu@shopee.com>
+Subject: Re: [PATCH] mm: switch deferred split shrinker to list_lru
+Message-ID: <abHrZ7VoRIU71vAH@dread>
+References: <20260311154358.150977-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310031250.289851-4-haifeng.xu@shopee.com>
-X-Rspamd-Queue-Id: C146A20003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 65e6jhigdbikhhbicu51n44ax3ejo6hc
+In-Reply-To: <20260311154358.150977-1-hannes@cmpxchg.org>
+X-Rspamd-Queue-Id: B3C2D1C0002
+X-Stat-Signature: gzdfjot68c5we7fbdjeicpt6if9dnsce
 X-Rspam-User: 
-X-HE-Tag: 1773267272-569630
-X-HE-Meta: U2FsdGVkX1/liji6NwUZi60fKUTnwAHTLcXAzFy8q26LSwYmgOyPssV3xnLu3yO+Z9EV4MXReP/tkuFqx8VrK4mBjddtg+9giKsdGSh+3eXIvQZCmKAEAfHxRVmc2NqXkrD5RRQTTx83IaAzkejoC5LpvLORsSU/tyKKhrOAEb6I+kVPpkYgZMpWFaB/A+97ybQQPQBJMaaWXtfmWaD1hh4xL3AFMjX56gYZMsqNYSGxhTx4ceFxahrgWchRFCcvkWjiXdfkKyQ7+Di8BbPUwz6lgWEePHBWl6x8a4Sg3N1wbsJD/y0QbMnhKo93Y+Nt4iP2i7sSrUT57+mxQmXMXQcPhOBVuQLBCv2fbFyB96rm4y3Fsv9bd2fEPPkeE2tFr6E6s6KQuAzlC0CLmJoB+T7ObbTfLkkjShuo2/1tyyZ0Sc0XhDg5XQ+tAYbOOQqSsSltbzuZ20MnPYn69r/sR2Ae6XvomQUHyP/t7EMqtcASFZSM6yVCAT3W9b21MGrFFdfJKZCKIAejmexJQNXcqEnbPbxn3LjZuEBeaA/KaNKb+4eRVV5jJy9ASlGhqT+GDJp8MC1uTcTl8OQ2QAw18JHY2Na7fOHsCEPFrhT2wnNQ6+o4pxCLALGSQqgbX9CcNICbrT5v4C/1/WImRhAfGfR6mtHn72NCB0VoaCNRGc4gcGs6FaJEcPHNxnk5tQOOxg3P5hvJaIcpfHP41Q0sAXz+xtor00cBKSj98xvVVB5IhrR5SLMXPdEv2xPZ3A1AmxHSdGwbFhb1WaEvZorsgOb95bnUJIkG7l4hYwkuICvbkbvr6qLMDPXlApEPijKE2IxwweoSxICSq4+gua+nb0PKfjbfVQI5yB26wcooJBpmuA6bDgBmV9ZbF0R7I61v0ztI9WHxd7mN4sNYvhZ1/9H+4G4OBoowJMqe344U0Gq2NsPB63tNAv1p9vMCylbIb85fml2K2rZqqHZcf1t
- 9B0u1Cdk
- hCULgfDJIv1prgcOGGICtbDqxs0hUP6g+LI4ituVEkou7K3DH6T5UIjypoWOtv8w6ILuJGL9I00E8anBA5o1qPZctEXgx9bSur8vOTcSpHTCzOzd/zKKu1xfj5sJR0MkWumZvEvFJpKuDHLjxOusMAwUdiUoo8ao/rpXXEOU2RM3tzg2tB1wyVTaumDbazwjAe8yn4lECq7FZhPv+1Iku4A3LwquugJuVDD6NCkfX7IZnc3YFXX04Oq4aVS/kuyhaKUEpkISHlaDeAUqI3cTBJLGYqRBi3jzViTW0R9l8kWYlK9d6sYbCeXQQdmUl+wZnjv3AgQQ2nLakOeewvRzr8dXsgA==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773267822-922377
+X-HE-Meta: U2FsdGVkX18J8EodDCZAOncwy53DzAaQkV6MGPsXqzCVU749t+g+WyqO+zDZovXCaNCIg968+tlo2IGMgAWQQzb+cccsZuxf1GMsUtNb830jnNyFQqWFPd5gSZpyTGYeuLC+9kHriB/KMDQ2UM8DxFZrYYrGJp2OOWiBn6yd41LB87e61YJzUWoY9Bk6DvABApwY5yHBYrQv4GYKWQcZcMDSR7q4s6opt8L/b1oqd0PM+DMuEoveq0CTKPelwG7iC99m+itOvaaiF1V4id9nZ4dazCZzOVGMYUuN/ZWPFS9cyHIIaYe3kYN6pCZEtkdqRqlGXqCXB01y8CoLSKFyldf1eBHAn4r2lHQSPqYoksDzUZmP+EsJsJv/JfcaS1moKGzTNFu4bh7uyT+QqgXp542Z9dXqJ/IS0aFBTIAQlB5v2hrrO7XIXqdvasr0zRopnGU6zL7Xhaf2Nfn3TDlWxst/o+I9AHy1ul1PX1Fr5bSJFdjAFtCV3c5pbse/4zn061yeHOXDYCz4j80+Yd18NGMcp9cKMZlUyeo6rzpNHMH+p9ean85BgguGNcBGvo1Px/26wqLAZGhiRjkNSkH2Bbb/f0038B2l/UaSCIuE6+u/xTGtX0fNN9L5toN+rUdQSIqLgSQwfkB5JBE11e7OLgq480Xt4FgOi22foob8FUfjkuLiKUMQGKzr59aN4X2dB6g5ZzVUDGVL3eKwyfPyAYz1ZRzHiYf5K09CUunATKzyj2Y0t7pHDq9lw0a1G6VZH5Y3+D4S1CQjJYPxnS8gtRY+eK6iFYDbxERN7aON+bohwRmGoend6Cd/1eFL8PwfOeEoiOg48R+2LU/ErONY/n5k3Fu/FGZOSHhfSXfvCcWwJuRhcfwjEXm4U0USrpqCnlnUcxYjU1XxhUC8dpZoj3wZFS6xMMtl33At8XZd49euK9Ek6IW/mSCa3yVljGTOoOuKOueu5vX0ticM4kg
+ /xnNXXPD
+ kdgb67F2SpXli3mDOnvzl8L9BEf0B1k7eY4KmGPMydmNc04gr6zrTUdtiRhljVrtFrFiGf9ukZHvo9Pgi56y5trJScImoBAseCaOzkg6Beq3cNCmezRiOR5ao3xDxV93+RN6fxFL7LLrNq5+/JT+b6R2gaiU/unTIQT3IxgeqYJLme63phaPoh/tXNi3WyeM2vFWU2Yi5Ug444p/1M09BNNmSyBOTt9St/+b4D/JaoRJFbhXetSMJv5E9jWG7ToiUIbFFxTkMISKagoY06IMWoYKKkojDmzlfnGSY4TOHZHLU0cN5pzgCGceKd9gTcIiKOsgohIs7+0L1DbC0D8XSdUm7rv0cdS4jRfQsxq+Kq5v/3pamktw+PvTOnW4r1a3vmazn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,115 +95,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 11:12:49AM +0800, Haifeng Xu wrote:
-> When kmem is disabled, memcg slab shrink only call non-slab shrinkers,
-> so just allocates shrinker info for non-slab shrinkers to non-root memcgs.
+On Wed, Mar 11, 2026 at 11:43:58AM -0400, Johannes Weiner wrote:
+> The deferred split queue handles cgroups in a suboptimal fashion. The
+> queue is per-NUMA node or per-cgroup, not the intersection. That means
+> on a cgrouped system, a node-restricted allocation entering reclaim
+> can end up splitting large pages on other nodes:
 > 
-> Therefore, if memcg_kmem_online is true, all things keep same as before.
-> Otherwise, root memcg allocates id from shrinker_idr to identify each
-> shrinker and non-root memcgs use nonslab_id to identify non-slab shrinkers.
-> The size of shrinkers_info in non-root memcgs can be very low because the
-> number of shrinkers marked as SHRINKER_NONSLAB | SHRINKER_MEMCG_AWARE is
-> few. Also, the time spending in expand_shrinker_info() can reduce a lot.
+> 	alloc/unmap
+> 	  deferred_split_folio()
+> 	    list_add_tail(memcg->split_queue)
+> 	    set_shrinker_bit(memcg, node, deferred_shrinker_id)
 > 
-> When setting shrinker bit or updating nr_deferred, use nonslab_id for
-> non-root memcgs if the shrinker is marked as SHRINKER_NONSLAB.
+> 	for_each_zone_zonelist_nodemask(restricted_nodes)
+> 	  mem_cgroup_iter()
+> 	    shrink_slab(node, memcg)
+> 	      shrink_slab_memcg(node, memcg)
+> 	        if test_shrinker_bit(memcg, node, deferred_shrinker_id)
+> 	          deferred_split_scan()
+> 	            walks memcg->split_queue
 > 
-> Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+> The shrinker bit adds an imperfect guard rail. As soon as the cgroup
+> has a single large page on the node of interest, all large pages owned
+> by that memcg, including those on other nodes, will be split.
+> 
+> list_lru properly sets up per-node, per-cgroup lists. As a bonus, it
+> streamlines a lot of the list operations and reclaim walks. It's used
+> widely by other major shrinkers already. Convert the deferred split
+> queue as well.
+> 
+> The list_lru per-memcg heads are instantiated on demand when the first
+> object of interest is allocated for a cgroup, by calling
+> memcg_list_lru_alloc(). Add calls to where splittable pages are
+> created: anon faults, swapin faults, khugepaged collapse.
+> 
+> These calls create all possible node heads for the cgroup at once, so
+> the migration code (between nodes) doesn't need any special care.
+> 
+> The folio_test_partially_mapped() state is currently protected and
+> serialized wrt LRU state by the deferred split queue lock. To
+> facilitate the transition, add helpers to the list_lru API to allow
+> caller-side locking.
+> 
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > ---
->  include/linux/memcontrol.h |   8 ++-
->  include/linux/shrinker.h   |   3 +
->  mm/shrinker.c              | 116 +++++++++++++++++++++++++++++++++----
->  3 files changed, 114 insertions(+), 13 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index ce7b5101bc02..3edd6211aed2 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -1804,7 +1804,13 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg);
->  
->  static inline int shrinker_id(struct mem_cgroup *memcg, struct shrinker *shrinker)
->  {
-> -	return shrinker->id;
-> +	int id = shrinker->id;
-> +
-> +	if (!memcg_kmem_online() && (shrinker->flags & SHRINKER_NONSLAB) &&
-> +	    memcg != root_mem_cgroup)
-> +		id = shrinker->nonslab_id;
-> +
-> +	return id;
->  }
->  #else
->  #define mem_cgroup_sockets_enabled 0
-> diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-> index 1a00be90d93a..df53008ed8b5 100644
-> --- a/include/linux/shrinker.h
-> +++ b/include/linux/shrinker.h
-> @@ -107,6 +107,9 @@ struct shrinker {
->  #ifdef CONFIG_MEMCG
->  	/* ID in shrinker_idr */
->  	int id;
-> +
-> +	/* ID in shrinker_nonslab_idr */
-> +	int nonslab_id;
->  #endif
->  #ifdef CONFIG_SHRINKER_DEBUG
->  	int debugfs_id;
-> diff --git a/mm/shrinker.c b/mm/shrinker.c
-> index 61dbb6afae52..68ea2d49495c 100644
-> --- a/mm/shrinker.c
-> +++ b/mm/shrinker.c
-> @@ -12,6 +12,7 @@ DEFINE_MUTEX(shrinker_mutex);
->  
->  #ifdef CONFIG_MEMCG
->  static int shrinker_nr_max;
-> +static int shrinker_nonslab_nr_max;
->  
->  static inline int shrinker_unit_size(int nr_items)
->  {
-> @@ -78,15 +79,25 @@ int alloc_shrinker_info(struct mem_cgroup *memcg)
->  {
->  	int nid, ret = 0;
->  	int array_size = 0;
-> +	int alloc_nr_max;
-> +
-> +	if (memcg_kmem_online()) {
-> +		alloc_nr_max = shrinker_nr_max;
-> +	} else {
-> +		if (memcg == root_mem_cgroup)
-> +			alloc_nr_max = shrinker_nr_max;
-> +		else
-> +			alloc_nr_max = shrinker_nonslab_nr_max;
-> +	}
+>  include/linux/huge_mm.h    |   6 +-
+>  include/linux/list_lru.h   |  48 ++++++
+>  include/linux/memcontrol.h |   4 -
+>  include/linux/mmzone.h     |  12 --
+>  mm/huge_memory.c           | 326 +++++++++++--------------------------
+>  mm/internal.h              |   2 +-
+>  mm/khugepaged.c            |   7 +
+>  mm/list_lru.c              | 197 ++++++++++++++--------
+>  mm/memcontrol.c            |  12 +-
+>  mm/memory.c                |  52 +++---
+>  mm/mm_init.c               |  14 --
+>  11 files changed, 310 insertions(+), 370 deletions(-)
 
-What does this do and why does it exist? Why do we need two
-different indexes and tracking structures when memcg is disabled?
+Can you please split this up into multiple patches (i.e. one logical
+change per patch) to make it easier to review?
 
-If I look at this code outside of this commit context, I have -zero-
-idea of what all this ... complexity does or is needed for.
-
-AFAICT, the code is trying to reduce memcg-aware shrinker
-registration overhead, yes?
-
-If so, please explain where all the overhead is in the first place -
-if there's a time saving of hundreds of seconds in your workload,
-then whatever is causing the overhead is going to show up in CPU
-profiles. What, exactly, is causing all the registration overhead?
-
-i.e. there are lots of workloads that create large numbers of
-containers when memcg is actually enabled, so if registration is
-costly then the right thing to do here is fix the registration
-overhead problem.
-
-Hacking custom logic into the code to avoid the overhead in your
-specific special case so you can ignore the problem is not the way
-we solve problems. We need to solve problems like this in a way that
-benefits -everyone- regardless of whether they are using memcgs or
-not.
-
-So, please identify where all the overhead in memcg shrinker
-registration is, and then we can take steps to improve the
-registration code -for everyone-.
+i.e. just from the list-lru persepective, there's multiple complex
+changes in the series - locking API changes, new locking primitives,
+internally locked functions exposed to callers allowing external
+locking, etc. These need to be looked at individually and in
+isolation so we can actually discuss the finer details, and that's
+almost impossible to do when they are all smashed into one massive
+patch.
 
 -Dave.
 -- 
