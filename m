@@ -4,86 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04FB7104BED5
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 038D3104BEDB
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:43:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EC8E6B0005; Wed, 11 Mar 2026 06:36:36 -0400 (EDT)
+	id 0FFEA6B0005; Wed, 11 Mar 2026 06:43:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CD9A6B0089; Wed, 11 Mar 2026 06:36:36 -0400 (EDT)
+	id 0ADFA6B0089; Wed, 11 Mar 2026 06:43:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FAB66B008A; Wed, 11 Mar 2026 06:36:36 -0400 (EDT)
+	id EEEA46B008A; Wed, 11 Mar 2026 06:43:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EFC8E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:36:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A0A05AEF5
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:36:35 +0000 (UTC)
-X-FDA: 84533428350.29.DCD6523
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B70E52000B
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:36:33 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ezS6vw3K;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C92576B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:43:31 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8271E1A073C
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:43:31 +0000 (UTC)
+X-FDA: 84533445822.04.F85C42D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3389E160008
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:43:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PklujyXJ;
+	spf=pass (imf08.hostedemail.com: domain of minlei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=minlei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773225393;
+	s=arc-20220608; t=1773225809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BS+o9CUivIwQ+3FYUnx1vpQfaswGlIpxsyn0BQxaPnk=;
-	b=kPbboLrzrVQnIIKUmjzuO5P0YQgCMWwy1nQENWbYApjX8WBSi81bga6cLjKM/32TcTYDUm
-	OSY5/o8lY7OrrZlRypmeYQG4Hf6q2yk+1uQkfiGcs9vDlVmIkXXo/yYsOaq9MLaOZqiP0O
-	/6bVlje+NNGM1qiJjWtePcxraVdNOzw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773225393; a=rsa-sha256;
+	bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
+	b=u6ZpOLpbtLyrG2H71JcCxye4Ba6r63TyKDGuOH+JBzY57v/URNS/juRaziZ5C9ICRoqs5F
+	G6IxXlSveqALMEFcwSnOBxwfwtytT8e1jsBjQUhm6lBjVVEdL2BWlRyswmyZjOLkbQnZ6f
+	Dtl/Y9w3gyzAzZIgmxNwORvYpoPx50A=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773225809; a=rsa-sha256;
 	cv=none;
-	b=NtRd/KhECb/09iMe8q6hIKyAj5iGwIlUsO1odpiGSnCPk+3IBfU3X599MDq+zr8LBQXZCy
-	Hy9W9QbXgD+74iRXF/fD1vCQTG7+Z1e6W01PovTukJZivheJOTuMNvff7qTylkIeSQYxfh
-	gO815lKyF4FhlV0JCOT1EZBAbumalu8=
+	b=PKcKO35NfPZhvVsmcKIQQXl81Eo74IBRr1mW8HHVTIUWZt3uRgAwvvYcUOWXe2rvYy7rzh
+	WG/9RztpXRBSR/MIQFMpeCv5vhMuo/+Z/EU0SLIhrmiKsahe8XUlCwy6IQl95Je1Mf6M/B
+	K7IXhu6O8q9eBFf/IJ3hiAjICrvYwQ0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ezS6vw3K;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7D8074005B;
-	Wed, 11 Mar 2026 10:36:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABD3C2BC9E;
-	Wed, 11 Mar 2026 10:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773225392;
-	bh=lNu7q64hprlaCR7g0QrB2ctXWf6ElvwXPCnWy2oZujw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ezS6vw3KQMORKGVvYQxHhbYSAK1mjYyOKSGonzUCFmXD75/wBmO8Ozi+gOAT1bYKg
-	 ydEaJWIhquqA7UA3lT7rUuTobTxByzvsWa+19OVguVUKT2QVTnl9h9r1EyVI6aaiKc
-	 lIEXgmmvKS35AccbtjIf22URoxSLpdLqYDzkiL3ukCd0ikfF9hbV1g9q7aCDP9evnR
-	 bfaFp5PU8zrF4B6A5ULwZE9jqMjYnLkuqRVpqgo9lBpvY4Lw4ra4zSi+eXUWj1yHmW
-	 rhlrJTRMUVK2JvvOFbaFrmg4G1M9+7G9kdSHF2eltAFGwBjJ3meFacUKqrl0Em+GQS
-	 HY8MYJ/Ic2vwQ==
-Date: Wed, 11 Mar 2026 10:36:26 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	Liam.Howlett@oracle.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jannh@google.com, pfalcato@suse.de, Jason@zx2c4.com, 
-	shuah@kernel.org
-Subject: Re: [PATCH v2 1/2] mm: prevent droppable mappings from being locked
-Message-ID: <269b1a31-20d1-4451-b4ba-f55a67f27d96@lucifer.local>
-References: <20260310155821.17869-1-anthony.yznaga@oracle.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PklujyXJ;
+	spf=pass (imf08.hostedemail.com: domain of minlei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=minlei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773225808;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
+	b=PklujyXJYSQ1h7jaMy1HuO1CiVJI1MsgCYXT+8msyYNgBKFX9SeUYjnpGDeMIIUYc64WSn
+	hakNNosFYb6OsI5AQub7Yta8PVMKZg9bF61SllZLhceMq/+Oq4Vdnyh3gWiw+4ERcuQo3G
+	g5+nH09oevUzj3tEk/XjwGsHUnaEWkc=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-602-3dYXyzt2OcqBJOJV7GKSkQ-1; Wed, 11 Mar 2026 06:43:27 -0400
+X-MC-Unique: 3dYXyzt2OcqBJOJV7GKSkQ-1
+X-Mimecast-MFC-AGG-ID: 3dYXyzt2OcqBJOJV7GKSkQ_1773225807
+Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-9483c030e3bso11933966241.1
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 03:43:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773225806; x=1773830606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6Xjw8yXZWjS7rmwloovrXF0TGyPb8EZi/Ah7SDvpbN0=;
+        b=HSF4LTvjBXUcA3pSkYdIJNpDni5YYsN3kEYFcBeMEHA9ckfDMmch9MND+VU4+GQDhX
+         3sU7N2DQzjnu74QfWOxG9rrfk+U6+L1cwhwphTmldx5FseSPIqHvpVTSvQoscKx4XOGU
+         TFJGRiLwKCx+UfbvgL+3qJN1YzOpk37PJlljmx4b91dOz2a5JTcmhQCSd+0hNdGh4RFN
+         xCDY+1+1XqLzRhjG2u/0uVf1H2XEKg2ZPVCl3yAKZy06eyqjAARLhl7/Rw0EL1OUm3dy
+         ta3SuMjZp3LNXm7dFeS5DJRTBDuqklBoECtz69MAu+c7GG+JuvP6C7VXT2Lc4XteBqpp
+         p3Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaG7sapENZLYeLc+Xth5tdwtj4/MoL5mTqPrSW73BkhHKga1Bmn5QsQ6kv6RSK/FCI7hMvEE8ETg==@kvack.org
+X-Gm-Message-State: AOJu0YxkOk1g1zp+QTrCJMLwDP9h+fH2hq9817/FWSpfTK1NKuugZ6V0
+	mX7OqUN3L7Ue09+OxNasiGSuHXztv4whl3wf6SwQvWJMNfQDDPewafWwdWtK+VhpU0xCtxQERxv
+	/omLaS62Dd0IJVgb4rAfh1hzMSyI7HOGo/UO+B6oK4DFwRAU2OJEbTNKFyqp/Zr1bJOuALrmMOm
+	0nDePYGDE0nIhUuI1azLvwONJ1vP8=
+X-Gm-Gg: ATEYQzwpNiSVuLg6p9sQmFmRXsqtnOKH2cY2hlTv+UM5C/aEZobabgZ77OLbIhatcAZ
+	1F9NZjuzXS4Ja1gvIqKi1parrtL85CnaM4wl8qCDu0mXROiVYBDrP2gBwQ2c5f+fEAsdOaGgIOY
+	9ChlhFVALhQqvOb/RtWaFfONjgMMPdlNgIxVAic9SDhyj4XZKZaRMYoVgdMD1YVavOVC3UdQksA
+	KD+wpPZ0p0YH29/Ag4l6YThlhBPSyrlfIi7mDU=
+X-Received: by 2002:a05:6102:6ca:b0:5ff:bbc1:50a7 with SMTP id ada2fe7eead31-601df72aa68mr781425137.15.1773225805993;
+        Wed, 11 Mar 2026 03:43:25 -0700 (PDT)
+X-Received: by 2002:a05:6102:6ca:b0:5ff:bbc1:50a7 with SMTP id
+ ada2fe7eead31-601df72aa68mr781415137.15.1773225805639; Wed, 11 Mar 2026
+ 03:43:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260310155821.17869-1-anthony.yznaga@oracle.com>
-X-Stat-Signature: ajdcxs7xzaztqmgrfwyzu3imdychh86n
+References: <aZ0SbIqaIkwoW2mB@fedora> <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
+ <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org> <aZ7BbosIr2FvZFAe@fedora>
+ <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org> <aapeVb_L5zohWRRe@hyeyoo>
+ <d5cd4eb4-1703-41af-9c71-842ae33edbdf@kernel.org> <aaqq7YmUcOht3GWH@fedora>
+ <abDA9UrJBT1wXh22@hyeyoo> <abFA17ZmsW6RgcYI@fedora>
+In-Reply-To: <abFA17ZmsW6RgcYI@fedora>
+From: Ming Lei <ming.lei@redhat.com>
+Date: Wed, 11 Mar 2026 18:43:14 +0800
+X-Gm-Features: AaiRm506C_nISMUep0Od2dqpUzuzhQzDUy4U2M3p2Tx9SR_kxDokMrc0Dva4Nao
+Message-ID: <CAFj5m9KutWuGfPN4cfAd-CjFNTCC+fLw0DtMsFFQrRBEeK-8LQ@mail.gmail.com>
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	Hao Li <hao.li@linux.dev>, Christoph Hellwig <hch@infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 17ENYYbK2swAQ-7tnOI-ky1_VcoST3OFxJ7UR3UAOcw_1773225807
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B70E52000B
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1773225393-541382
-X-HE-Meta: U2FsdGVkX1+ZMbbpZeIdy5d1VZEcclCkyoFqe5P+WBp1U8BRhd82xpPoGNG/5AhqOJ9pOSqmc+xjRgahCTfqa3/VfgjYl3FscP0tZhZDBBO/E6o0jkJBmOhUH4bs+O/rZ0tL45Bw9nZom9UU7zIdjQzTjnaUkqdM6PefVfm4d4nnkxbRf80aUZn/c9a/+3HhXZBh4/qXmGa2YNsqXjQw3JREqazORvA90qLwxsH2G+En1PIK/9LNzg2x26/KI21QVza4qoEf7cFvqIX6U6XXkujxmDTlfoj6SUQDGuOZ2w3+XXuxXcXImYJkDfAu2sCH1riDymM24njEKNTV+lRfSyNbIYxhCDQ3/QDWVHsAi5J/BmiHid7/lEZmZjlyws+1MXTVoYMYFevYewxGdDdA6MVzaKArjt7Tk1/f9BmDPBLGi54juX3NJ5RFv6s8aTufxubBpb0AjHl4awv7WAKmiYPxfsnK6h2KQkD3b+l08F18r2eI2PN4GcgyN8c+IhZ8x63AFC5yTUbtIjzpWHwPOUThwiffnrPXBdvEu96+XWYJjvcGkepjKKqpKs2kkKKtP9iSgpjdBkvuJSiYj7gT16oESsDCSD1ay+Udr9ZlmZ9Kq09ks6bXpk4LXeVfGhaDZa/dV1W6uOuK/R9FgDAozWlq1N0siFJk0TLpqJqCwuWM0+nJcWoT/4il0Y9YgBXGpJ553SKisRh3qig+HhCx6PuFoHtCP8uFugK/cx1OnSc/GBdyJSQ0tI0hivlR+/4Gn59GjRh5LjNYZ12LuC0KHMpcXYr6SvJKoz8lKfXDTdsGOnb0hzRRAFu/AnmXly4uPStavPwvGK1eYHKKZSKA+xPJKOgCtvDhL28DHe3mJ292t8yOwGfrBFAszz/tZHROj3A8CpPcwpM=
+X-Stat-Signature: 44w1hxw1xyuz48rywpuh5pre69cr7ioc
+X-Rspamd-Queue-Id: 3389E160008
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773225809-604063
+X-HE-Meta: U2FsdGVkX19Cs9wlRkKwXQ8ABgxhUYYOotciz1p5oVnOM+8+RAY9DnFO66aLfkNzEKT/Aq0bNgoi+bfC9k4UoSj0Q5WpIxOVTbiEvruE7GPikz7ZNx8iYIVJiYpbeQ04urdjihlhW5iVyVNBKOF9C4Urvq67+Liad0tYpNurAWgnb6JY8rWwczDpDekNuS4a6S54gNHd59Pc8equjLUwtTXQwVC1IYXr6WX/oWlZTWCJGAI81pDWitBQmPcIqVkkKGEvT0kLxx2RYRthm5vfv6izZPSTgw3551vDTVeCJXGFEpvtYXJZpQ3hHiy+8T662S6un2O0a+ikVkaqdYVtHif7msHWkbXBi4av3lOfdwDH65XwOl03yL8Fq6fOSqbKp1FuyNfosr2znWABL4d2lQbRKuF5gV08qGn8NqZHqe/ZOCX66GzC1pIOuRINW6Vws/hSYsevv1Pu14Q81LIzMWrWSN828dhiF2ssAfdYeEengKxjuLi6b+6efXKdjQLLAskE3QXshD9IqBvTVv/NrK/H/WcJsqvDa3HmfRyaSTiMBJNMWBsvTV+Jh8EUEKBfPAgALHmH63y47F3/1bRKrjwUWlXWBp1gCy6Zuto8QHfVh0zNziiWHSN98Y7ECMOhqzmRefYVhw64yfftNGGGukgoT1NB49zp8wEhJzP8PeFrvCtc5Ziwi00NLFfxHqad5qEoIHS5pkbqu7ZF2WWqih+cyNIC4yLSrL6xkN/swxzCTZpr628m7MXL6LXEeNAbTwltmshqG74y7IKnQGs07nXLRp79qA5yhrDRIa3QTrlS8qUqO6h5FC4kZdV+iEeg68qV6jtKFfcKb+3/tat4cXMpaTW0AIHz3g/MS+CGzc8z+lHJTUcVlYU5N1cQzVjWPdbKFZ0phWJ2Z6weqLboAINDlYUqC4MwsR75PIKHZ7eLhNMbOJIOuDOtO4dove8wrzn0orW0Aeu0Reknh5p
+ fEvS60kb
+ XgcaIN3zP7cyU/n5ZOeK8Sh7HUfus6oD+dPGB6zVI3SoBqlHhXBO71KCaXnilFgYKAMj5Un97EqqQ+LqPy/rrSxLBgYT6959P8e2lZhL/IxIWvnIup5mTSZkm2bw+uZeJpGLhI/J3B5Jh+Fl7t4A+FKFdblW87VMxmsQt6bpM7I6xN7jwH07B2VJSiaVoK6q3MSRJpb1f/t51DmRs8CDpNKHeV+OKlwOcGoML07Selpx6qHDtI2+h36J78VFs3nbBHQXgYS16mj4W3FO6PSzYbKM7EsJdxpH3oKmleWFYNMTVmGl2ZBvibkx9bueZiqhC4mgR3JRQtt0n34KLipP+oZU+N09+EYS0bwzw8C5KKPsykCaERkVh2AckgMNBixpqApg0vwyTQlSHP2jbf+bACmrvK6UERG/NhcOAZRwqZ/qq6WMUuBAKy6bOWDnnBvLAU1I+2PuAFQcpj64RcXh/gdT8t62e+J272ibq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,153 +131,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Mar 10, 2026 at 08:58:20AM -0700, Anthony Yznaga wrote:
-> Droppable mappings must not be lockable. There is a check for VMAs with
-> VM_DROPPABLE set in mlock_fixup() along with checks for other types of
-> unlockable VMAs which ensures this when calling mlock()/mlock2().
+On Wed, Mar 11, 2026 at 6:16=E2=80=AFPM Ming Lei <ming.lei@redhat.com> wrot=
+e:
 >
-> For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.
-> In apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
-> current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
-> applied to it. VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
-> When these flags are set as default in this manner they are cleared in
-> __mmap_complete() for new mappings that do not support mlock. A check for
-> VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
-> mappings created with VM_LOCKED set. To fix this and reduce that chance of
-> similar bugs in the future, introduce and use vma_supports_mlock().
+> On Wed, Mar 11, 2026 at 10:10:13AM +0900, Harry Yoo wrote:
+> > On Fri, Mar 06, 2026 at 06:22:37PM +0800, Ming Lei wrote:
+> > > On Fri, Mar 06, 2026 at 09:47:27AM +0100, Vlastimil Babka (SUSE) wrot=
+e:
+> > > > On 3/6/26 05:55, Harry Yoo wrote:
+> > > > > On Thu, Feb 26, 2026 at 07:02:11PM +0100, Vlastimil Babka (SUSE) =
+wrote:
+> > > > >> On 2/25/26 10:31, Ming Lei wrote:
+> > > > >> > Hi Vlastimil,
+> > > > >> >
+> > > > >> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUS=
+E) wrote:
+> > > > >> >> On 2/24/26 21:27, Vlastimil Babka wrote:
+> > > > >> >> >
+> > > > >> >> > It made sense to me not to refill sheaves when we can't rec=
+laim, but I
+> > > > >> >> > didn't anticipate this interaction with mempools. We could =
+change them
+> > > > >> >> > but there might be others using a similar pattern. Maybe it=
+ would be for
+> > > > >> >> > the best to just drop that heuristic from __pcs_replace_emp=
+ty_main()
+> > > > >> >> > (but carefully as some deadlock avoidance depends on it, we=
+ might need
+> > > > >> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll se=
+nd a patch
+> > > > >> >> > tomorrow to test this theory, unless someone beats me to it=
+ (feel free to).
+> > > > >> >> Could you try this then, please? Thanks!
+> > > > >> >
+> > > > >> > Thanks for working on this issue!
+> > > > >> >
+> > > > >> > Unfortunately the patch doesn't make a difference on IOPS in t=
+he perf test,
+> > > > >> > follows the collected perf profile on linus tree(basically 7.0=
+-rc1 with your patch):
+> > > > >>
+> > > > >> what about this patch in addition to the previous one? Thanks.
+> > > > >>
+> > > > >> ----8<----
+> > > > >> From d3e8118c078996d1372a9f89285179d93971fdb2 Mon Sep 17 00:00:0=
+0 2001
+> > > > >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> > > > >> Date: Thu, 26 Feb 2026 18:59:56 +0100
+> > > > >> Subject: [PATCH] mm/slab: put barn on every online node
+> > > > >>
+> > > > >> Including memoryless nodes.
+> > > > >>
+> > > > >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > > > >> ---
+> > > > >
+> > > > > Just taking a quick grasp...
+> > > > >
+> > > > >> @@ -6121,7 +6122,8 @@ void slab_free(struct kmem_cache *s, struc=
+t slab *slab, void *object,
+> > > > >>        if (unlikely(!slab_free_hook(s, object, slab_want_init_on=
+_free(s), false)))
+> > > > >>                return;
+> > > > >>
+> > > > >> -      if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) =3D=
+=3D numa_mem_id())
+> > > > >> +      if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) =
+=3D=3D numa_mem_id())
+> > > > >> +                      || !node_isset(slab_nid(slab), slab_nodes=
+))
+> > > > >
+> > > > > I think you intended !node_isset(numa_mem_id(), slab_nodes)?
+> > > > >
+> > > > > "Skip freeing to pcs if it's remote free, but memoryless nodes is
+> > > > >  an exception".
+> > > >
+> > > > Indeed, thanks! Ming, could you retry with that fixed up please?
+> > >
+> > > After applying the following change, IOPS is ~25M:
+> > >
+> > > - delta change on the two patches
+> > >
+> > > diff --git a/mm/slub.c b/mm/slub.c
+> > > index 085fe49eec68..56fe8bd956c0 100644
+> > > --- a/mm/slub.c
+> > > +++ b/mm/slub.c
+> > > @@ -6142,7 +6142,7 @@ void slab_free(struct kmem_cache *s, struct sla=
+b *slab, void *object,
+> > >                 return;
+> > >
+> > >         if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) =3D=3D=
+ numa_mem_id())
+> > > -                       || !node_isset(slab_nid(slab), slab_nodes))
+> > > +                       || !node_isset(numa_mem_id(), slab_nodes))
+> > >             && likely(!slab_test_pfmemalloc(slab))) {
+> > >                 if (likely(free_to_pcs(s, object, true)))
+> > >                         return;
+> > >
+> >
+> > Hi Ming, thanks a lot for helping testing!
+> >
+> > The stats look quite fine to me, but we're still seeing suboptimal IOPS=
+.
+> >
+> > > - slab stat on patched `815c8e35511d Merge branch 'slab/for-7.0/sheav=
+es' into slab/for-next`
+> >
+> > Does that doesn't include Vlastimil's (fb1091febd66 mm/slab: allow shea=
+f
+> > refill if blocking is not allowed)?
 >
-> Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-
-We should definitely cc: stable I think.
-
-It might result in some backport pain since it'll probably pre-date the
-__mmap_region() stuff :)) sorry.
-
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-
-LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
-> v2:
->  - Implement vma_supports_mlock() instead of vma flags mask (DavidH)
->  - Add selftests (Lorenzo)
-
-I know it's a sort of subject thing, but please in future add a cover letter if
-#patches > 1 :) thanks!
-
+> No, because fb1091febd66 isn't included into `815c8e35511d Merge branch
+> 'slab/for-7.0/sheaves'.
 >
->  include/linux/hugetlb_inline.h    |  2 +-
->  mm/internal.h                     | 10 ++++++++++
->  mm/mlock.c                        | 10 ++++++----
->  mm/vma.c                          |  4 +---
->  tools/testing/vma/include/stubs.h |  5 +++++
->  5 files changed, 23 insertions(+), 8 deletions(-)
+> >
+> > Next time when testing it, could you please test on top of 7.0-rc3 w/
+> > the memoryless node patch (w/ the delta above) applied?
 >
-> diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
-> index 593f5d4e108b..755281fab23d 100644
-> --- a/include/linux/hugetlb_inline.h
-> +++ b/include/linux/hugetlb_inline.h
-> @@ -30,7 +30,7 @@ static inline bool is_vma_hugetlb_flags(const vma_flags_t *flags)
+> IOPS is same between `815c8e35511d Merge branch 'slab/for-7.0/sheaves' in=
+to slab/for-next`
+> and 7.0-rc3 with the two patches.
 >
->  #endif
+> IMO, it should be more easier to compare & investigate by focusing on
+> 815c8e35511d, given there is only 41 patches between v6.19-rc5 and
+> commit 815c8e35511d.
 >
-> -static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-> +static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
->  {
->  	return is_vm_hugetlb_flags(vma->vm_flags);
->  }
-
-Ideally we'd use the new VMA flags approach, but I'll fix that later myself when
-I make those changes.
-
-> diff --git a/mm/internal.h b/mm/internal.h
-> index cb0af847d7d9..8c67637abcdd 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1218,6 +1218,16 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
->  	}
->  	return fpin;
->  }
-> +
-> +static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
-> +{
-> +	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-> +		return false;
-> +	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
-> +		return false;
-> +	return vma != get_gate_vma(current->mm);
-
-Honestly it's dumb that we don't have vma_is_gate(), I see arm32 have their own
-is_gate_vma() macro, but we should really have one to avoid this noise :)
-
-Anyway probably not worth it for this patch esp. if backporting.
-
-Wonder if we should have vma_support_munlock() for secretmem ;) (again one for
-another patch I guess).
-
-> +}
-> +
->  #else /* !CONFIG_MMU */
->  static inline void unmap_mapping_folio(struct folio *folio) { }
->  static inline void mlock_new_folio(struct folio *folio) { }
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 2f699c3497a5..73551c71cebf 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	int ret = 0;
->  	vm_flags_t oldflags = vma->vm_flags;
+> >
+> > Also, let us check a few things...
+> >
+> > 1) Does bumping up sheaf capacity change the slab stats & IOPS?
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 0c906fefc31b..5207279417e2 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -7611,13 +7611,13 @@ static unsigned int calculate_sheaf_capacity(st=
+ruct kmem_cache *s,
+> >        * should result in similar lock contention (barn or list_lock)
+> >        */
+> >       if (s->size >=3D PAGE_SIZE)
+> > -             capacity =3D 4;
+> > +             capacity =3D 6;
+> >       else if (s->size >=3D 1024)
+> > -             capacity =3D 12;
+> > +             capacity =3D 24;
+> >       else if (s->size >=3D 256)
+> > -             capacity =3D 26;
+> > +             capacity =3D 52;
+> >       else
+> > -             capacity =3D 60;
+> > +             capacity =3D 120;
+> >
+> >       /* Increment capacity to make sheaf exactly a kmalloc size bucket=
+ */
+> >       size =3D struct_size_t(struct slab_sheaf, objects, capacity);
 >
-> -	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
-> -	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
-> -	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
-> -		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
-> +	if (newflags == oldflags || vma_is_secretmem(vma) ||
-> +	    !vma_supports_mlock(vma))
-> +		/*
-> +		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
-> +		 * For secretmem, don't allow the memory to be unlocked.
-> +		 */
->  		goto out;
->
->  	vma = vma_modify_flags(vmi, *prev, vma, start, end, &newflags);
-> diff --git a/mm/vma.c b/mm/vma.c
-> index be64f781a3aa..18c3c5280748 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -2589,9 +2589,7 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
->
->  	vm_stat_account(mm, vma->vm_flags, map->pglen);
->  	if (vm_flags & VM_LOCKED) {
-> -		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
-> -					is_vm_hugetlb_page(vma) ||
-> -					vma == get_gate_vma(mm))
-> +		if (!vma_supports_mlock(vma))
->  			vm_flags_clear(vma, VM_LOCKED_MASK);
->  		else
->  			mm->locked_vm += map->pglen;
-> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-> index 947a3a0c2566..416bb93f5005 100644
-> --- a/tools/testing/vma/include/stubs.h
-> +++ b/tools/testing/vma/include/stubs.h
-> @@ -426,3 +426,8 @@ static inline void vma_adjust_trans_huge(struct vm_area_struct *vma,
->  }
->
->  static inline void hugetlb_split(struct vm_area_struct *, unsigned long) {}
-> +
-> +static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
-> +{
-> +	return false;
-> +}
+> IOPS can be increased from 24M to 29M with this patch, against 7.0-rc3 wi=
+th
+> Vlastimil's today patchset.
 
-Thanks :) tested locally and working fine.
+BTW, the improvement looks unstable; sometimes it reaches 28=E2=80=9329M, b=
+ut sometimes
+it doesn't, just 25=E2=80=9326M.
 
-> --
-> 2.47.3
->
+Thanks,
 
-Cheers, Lorenzo
 
