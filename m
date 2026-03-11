@@ -4,74 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AD24112584E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:17:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667491125852
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 16:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB2AE6B0005; Wed, 11 Mar 2026 12:17:33 -0400 (EDT)
+	id 981AF6B0005; Wed, 11 Mar 2026 12:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B5C886B008A; Wed, 11 Mar 2026 12:17:33 -0400 (EDT)
+	id 90BAF6B008A; Wed, 11 Mar 2026 12:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4BF26B008C; Wed, 11 Mar 2026 12:17:33 -0400 (EDT)
+	id 7E6726B008C; Wed, 11 Mar 2026 12:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 85F1B6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:17:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1DA6F1402D3
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:17:33 +0000 (UTC)
-X-FDA: 84534287586.08.1305E53
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5694F6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:20:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E7DB716027D
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:20:06 +0000 (UTC)
+X-FDA: 84534294012.18.80BA66F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 53E0E4000D
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:17:31 +0000 (UTC)
+	by imf01.hostedemail.com (Postfix) with ESMTP id D213C4000F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 16:20:03 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EUHkHmHA;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRH9Q7aG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773245851;
+	s=arc-20220608; t=1773246003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kD71w3Tt2gAVVnQx1xZBWCzmCRvDqufDuFeX4uRT9S8=;
-	b=N1Mu3wVXmHLZeGocTz0mb7IBSxIPEUOHX0I2TQeRBES6Fyjk5qbZ3fvTOLUXyDFETYiVyU
-	X5ocvgJP87xhxFPzOYh0xEaX09/MDV2QNt0wDWlNswNuXxEcY5PY7rYhYj0moe4kk6Xh6V
-	KS7CFtO/vRa42To04+1JnOmLzlrZf84=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773245851; a=rsa-sha256;
+	bh=bR3vsQLWaXkLl0xaiA3nTiKdoROZ8vOGxjPBnQtBKzY=;
+	b=AW8kxwMVg22pzeJlmCIIL/mbEvyvRWsIhwWV/LirmkA55mMzuPqFVtUzaHqsyR+sdmT/U6
+	lKpc4yKFWYQQDpQAy9DGNOd30i7InHVnCV6N+sf2lmvWOLN6GrQXZxS6nyZhBFEsz4R0PD
+	SPEIklYsSsuJaaeQ4S33uqW753z49IU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773246003; a=rsa-sha256;
 	cv=none;
-	b=H8j7qwIoGFwJqcSmGlBzfj03YuSMiQRbzS6WnlYiqjTSLshPeKi0Yw1FsE22H/qsRFzBO7
-	zO3AbJFfLRZRzuYWaINb+UBMWmggjKQulQObP0b07jOG9DaiPnMTjHGYqnGMt7AJKbqKsk
-	J3jCWJww1QRK1gsQ1/KqdrMbpVk0lSE=
+	b=jZ6EGEg4FAZtzJ9YZa6YYMCAPKiKFAaquANSeX3YcS2CnCRCPFU7kebp5HyinQQXCvsZtz
+	0L0E0A21W5EPSWc3T7lNvL/gGWdCgiTT1UF1RuJyyMLSnSzfFno+Y4UhH+aED2v3xdDTS3
+	RorL6rYCQa2anbP4eM3BI96NO/CAenk=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EUHkHmHA;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRH9Q7aG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF19460054;
-	Wed, 11 Mar 2026 16:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12584C4CEF7;
-	Wed, 11 Mar 2026 16:17:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 306B66057A;
+	Wed, 11 Mar 2026 16:20:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0115C4CEF7;
+	Wed, 11 Mar 2026 16:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773245850;
-	bh=SMV6uQqezP3PptD11R5vFFjM355S5GJqJsDLElTabEs=;
+	s=k20201202; t=1773246002;
+	bh=Q38flWxlKYCC3BnTX9DQqZ0jbBnyGWg0kcPHxlKCRCo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EUHkHmHAlvf9oARFvmypdAOk4mXIA/6eyWzkR5ucFZcpSbq4S6PYyKp2ptx8OgdzQ
-	 x7Q0uy0uq0W+yFs4cIvtVjeq3CvRwLkgoitwsbK3Vpr/fGvx2nE6uZ8SJqUGzkpJ/B
-	 vgBBGzVIQGKst9fOKwRC05CG75zFzYDOH6JzB4VhB+MWjPMMjF4MjrY4IFmID4nVgm
-	 atyo0VpND+VF9wsm4zh5XQpt1VkYY66+M/P+qZJ3+hTJ+YqRU/rlwn/jHXqpNykVbS
-	 yeYD8t9sBD6Huby5vNTy6WGkpvNovDYGGqWr++Drmkyti9nqxn7cVUAODs44XLQ3GE
-	 Wt5zTxL0KtYdQ==
-Message-ID: <9115acdf-edf8-4abf-a59c-8980c1375e67@kernel.org>
-Date: Wed, 11 Mar 2026 17:17:28 +0100
+	b=gRH9Q7aGzGCdD0Y8A5OV+7ZUpTJKajTLjkbk1qDdNLoc+ithzOd1IeHX4N+2G5Iq6
+	 Lfo/iNfSi7kA01erVE9Go0d40XfVTVJYhIFwD6K/2tMyVTEt9wBE9vDx0l6opJGk3U
+	 vjnL2Z6BfhfvzlCrfKIpa6Qp44O+cJlIFivipSUV2cWkSUJK/avzGEzN8N/8nm9Ro8
+	 DzqHkp/RCsz8CIBDO0vi+zg1V8Sqb6vxOFrqjdBEbOOQKitZ7y4IwOumTeYZC7WBNk
+	 bIsU/XdJ1ZhxffBWnnM9AlGmGXwndQAuXc/ji1kDXyHMpbGog0WZJEoa//OnvElesL
+	 qDzttUUigftKQ==
+Message-ID: <4370ca46-64ee-4357-ae6b-1405e65f3f47@kernel.org>
+Date: Wed, 11 Mar 2026 17:19:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: BUG: Bad page state in process kworker/u32:1
-To: Tj <tj.iam.tj@proton.me>
-Cc: linux-mm@kvack.org
-References: <4df99438-637c-4919-96dd-1fbe6dce70cb@proton.me>
+Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+To: "Li, Tianyou" <tianyou.li@intel.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>, Wei Yang <richard.weiyang@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+ Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+ Yuan Liu <yuan1.liu@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+ Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+ linux-kernel@vger.kernel.org
+References: <20260130163756.2674225-1-tianyou.li@intel.com>
+ <20260130163756.2674225-3-tianyou.li@intel.com>
+ <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
+ <aYjmcZ4hg9bNbmiY@kernel.org>
+ <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+ <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
+ <aYsaBkMecDG595Xg@kernel.org>
+ <b3777d0e-0b25-45bc-b387-e67fe5a0d328@kernel.org>
+ <de501b65-6d02-4eeb-b50e-bfe5ab9b8d00@intel.com>
+ <24ef67e7-6f0f-4544-a50c-90c4de368c40@intel.com>
+ <383e1567-0966-434e-a818-f70bff1d5220@kernel.org>
+ <214b2cb0-e0d9-4482-956a-5bc599bae45e@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -118,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4df99438-637c-4919-96dd-1fbe6dce70cb@proton.me>
+In-Reply-To: <214b2cb0-e0d9-4482-956a-5bc599bae45e@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D213C4000F
+X-Stat-Signature: 968793a9q5ocfc5uipoh77u69mpmhanz
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 53E0E4000D
-X-Stat-Signature: fofqdpwx1ufjjyprw3mstpfbeyqj7ib6
-X-HE-Tag: 1773245851-389409
-X-HE-Meta: U2FsdGVkX1+7aZ7+j5rskEyAHIvGdgQgb5Ib3kpd5wXKTxnS0YijUVOS4V+1Vk65Sn10wYiB3ZuaOzjXCmRfUrKJZGqYvNUFGaiMP/wZicsFbSb+eTJ6PmRB67bOFzMY7/ANi4eqIrcB78onK7FyZofbLir8VqPkL6x0s4l4WBTs5V89QNCo6aq28kMinIcNYoHSNSRFHiDpBl/gSoq3JjzikmVw09sMICrlsDmZg7oHOJRCbffcmCirqlwBCrl1kWHVk8p27+T9CuNHFnBiH+FTNLwNC4c6IrYNoHzQm+tj+yEBkk7RjPHaG1sdfQiQrC0waMHdLt/y92Z0bzz1igfPGhTSQPj6J5tr9eyeuJ7I8By13C3a5xI670e/fqHVtLD07jqn2X4Vfpk2gx3srI3q5q3GoyOBF03HTgAkBXbhLdRyGNW6NHXP95iXFW4X9+k38DMhi36z2iuYt93xfucCaXS7BcI0lv/zKCaKukq1kY2Wn3aIElzZ3I+Wm8SSA+an455QGxAN0+1dtdRT1z7ELXc20sbquJaMYithANS+8ZAxIqkgSCxbuMCMr1geIAscr1/IvEm5DuNzWDFQIfw1A4zHs/absuSfPByC6Cb1nRz7JTZXh9HZRwwq1T/KWNJ7eJB/jVzaK/tnPkZLgvmGgA/VZi1TC3QQkRtvS/hJT05B4MUwuhSz7PYCOWBUI2ueuJ0sv18ki8cR+YRYdbVHZkkYf6AFeUVKIxoL7TcQRER+bCz9tOLDihrstUK3L7G2ccONzCWo3Iu2HwSpOfMIC4gf0dKN236Ffs1tLmhWsj6dnfLieG6FLnnfpe9h69oWTqZSwjJ5zn/ZkjXu/JuJeDXW0RCIh3+Hf/o/IrN9uagNMZFLusNzDKr7zhCIz6kxaq3Ur5jWETTFUYqc+54FDjC1LEXfYeY2xsDj8XoPe2rurThz4N0gnp76jR8HB06P4htBJWlxBiSc8f3
- 9ysaA642
- U9qVKuCmP3B269I6erfV6dspSQsKqs+uwmAyIA7PTrw0r4oM/qD+Y9tW6JneHUSTFo3OkbXkc2/UAg0auls6l+0X2cZwhKMi1OZuXQNwXn5cUcUWbHNfHWCQWpmYWfQ+4FJ8bCMw1W0iqEqtKmKA/lkTvfbQkCy/y57PVxoA2mDy6N4xS5BtJNJbO8sA7cbTF8RqaA/9ptBa/iqZTaH5VD6hcMM9p51EJW9cqaD4vP4ly41xbU5tQszUwJISOvfm5qn+B1UrU6MD6xNeAsEmYO+VXOYsKiBaqARE5Etl/h4L4Vxg2fHQy/HsK6lLMyN0h+5XQV5aeU827USE=
+X-HE-Tag: 1773246003-998646
+X-HE-Meta: U2FsdGVkX18Xmi8/L/JXP3hUBH5SPpdkDJ5JxnPFkandNum7a9CdmxDoG019P83mcBw2o8Q7o4UEoF1cwpbA4tkAbKyLRC3me5KgCcIMuPjKccxMQ/GEUb2Nao7kdqiVIj1VmT/v6WvXGJLwsDH/hivIPT4OEnL27x/Hq1K4gyLJ1tCy5AS0DDr0y6a126bWptbu+TpGku2R5nPyKheS0q7WTh53o3/VD/HzWekPijEsok7j/iwBuK8gqpSe2yrj/oAdlt7Ac7xY1J31uYfCBNb+AH4ZCnJU+i7K5uVEVXXYuxC8CjT7tr8b8cMzIN7/KU1EG1vS4T9ARhOvKvOsY+QtaIJ796OMD73XnjNLKI3VVyUdsS3wcf1pH21DTHbNyDwkW77EdNA+LdxOFTswsfEYtukDeh9GaWnbl408ooVrbF/g4jEGztpk5U1kMA9V2ECiW8aB8VLOEmftiGAlexkh/N08VyqKe3N/NA4BRoO/T1dCmeltq8tVdskssUI5+xAtnGEhbewxWFUQ64MZD/7b5uhgRzHsfhHAffg4u8F72UCtU8gI3Q0F4+3ZFaKb6KSwLa6AuQSzRMljaMUMITLfae3wXq/zYh/u1s7y1eVuoqtF+jgI3+mGY3oVYkf+0B1AGEBjsNRZQP5WCkJNIwFcCtH73T5ToPMUmnl3lruBA0RWWIoTKYxvzggMwRowefkktboZR+cPztW9cYIGe7PmlC8Gpxro3p5vwy6USK+sGMtDKG4E2SrpA4nzfFL5Bob05MGNuiLS3fiYx+RaEixUEc2XmXj5mnzNOtLTLDsRKELJtuTGWSMY5VFk40zKuDq2evWbq11xjCHNLb41JBRM94PeeqKvGKkN9XSpjDUxD/g6Nglbu9rU3L8zv4vGsRGqtJsAkxRLDHSodn7ghvBUsbDWF4IEdtOreE5vLlqcTcqJQCFhINTGADEE3Hy2tHprao62ewIWxNQINEI
+ 6zxWD7ov
+ juV9TmEWwC9uiiSROqtF1jBBLkRNvqajZi9eI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,46 +154,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 3/11/26 17:12, Tj wrote:
-> On arm64, Qualcomm sdm845, an attempt to allocate and release a CMA for 
-> DMA fails. It seems to be caused by the recent commit 9bda131c6093e9c4 
-> "mm: cma: add cma_alloc_frozen{_compound}()" where cma_alloc() now calls 
-> set_page_refcounted() but cma_release() or its callees do not undo it, 
-> resulting in:
+On 3/11/26 16:02, Li, Tianyou wrote:
 > 
-> kernel: BUG: Bad page state in process kworker/u32:1  pfn:f4b00
-> kernel: page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 
-> pfn:0xf4b00
-> kernel: flags: 0x1ffe00000000000(node=0|zone=0|lastcpupid=0xfff) CMA
-> kernel: raw: 01ffe00000000000 fffffdffc1d2c048 ffff800080353608 
-> 0000000000000000
-> kernel: raw: 0000000000000000 0000000000000000 00000001ffffffff 
-> 0000000000000000
-> kernel: page dumped because: nonzero _refcount
+> On 3/9/2026 10:26 PM, David Hildenbrand (Arm) wrote:
+>> On 3/9/26 01:42, Li, Tianyou wrote:
+>>> Hi David, Mike & Other maintainers,
+>> Hi!
+>>
+>>> Just a quick update: Yuan and I created a new patch based on David and
+>>> Mike's code, updated the documentation as well, performed the
+>>> performance test, double check all the references etc. We observed a
+>>> slightly performance regression, not sure it was caused by the
+>>> environment configuration or we triggered some unexpected behavior. We
+>>> might need a bit more time to investigate. Will send out the patch soon
+>>> once we have confirmed data for the performance regression. Thanks.
+>> A performance regression would be rather unexpected, unless we somehow
+>> don't ever set zone->contiguous=true any more :)
+>>
+>> In which test / code path did you observe a regression?
 > 
-> I've enabled pr_debug plus added in my own pr_info()s to track the 
-> callers. The following shows, first, my manual dump_stack() in 
-> __cma_alloc_frozen() in order to understand the callers, and immediately 
-> after the BUG.
+> 
+> Sorry for the late response, I missed the email by accident. The test is
+> simply hotplug and unplug the 256GB memory, the time became 3s instead
+> of 2s for some reason compared to previous patch.
 
-This might be fixed by
+Weird, because we should be doing less work :)
 
-commit f4355d6bb39fc8e53d772fa0654c8441b214e349
-Author: Zi Yan <ziy@nvidia.com>
-Date:   Tue Feb 24 22:12:31 2026 -0500
+> Interestingly, for
+> 512GB memory hotplug/unplug, the time remains as 6s. What we planned to
+> do are: 1. double/triple check with the same and other servers; 2.
+> collect the perf profile to see what is the diff compared with previous
+> patch, if the regression consistently persisted.
 
-    mm/cma: move put_page_testzero() out of VM_WARN_ON in cma_release()
-    
-    When CONFIG_DEBUG_VM is not set, VM_WARN_ON is a NOP.  Putting any
-    statement with side effect inside it is incorrect.  Collect all
-    !put_page_testzero() results and check the sum using WARN instead after
-    the loop.  It restores the same check in free_contig_range() before commit
-    e0c1326779cc ("mm: page_alloc: add alloc_contig_frozen_{range,pages}()"),
-    the commit prior to the Fixes one.
-    
-    Link: https://lkml.kernel.org/r/20260225031231.2352011-1-ziy@nvidia.com
+Sounds good.
 
-Can you double-check?
+> 
+> I will work with Yuan on this and hopefully we can have more information
+> to be shared here soon. Thanks.
+
+Greta, thanks. Feel free to send out a new version in the meantime.
 
 -- 
 Cheers,
