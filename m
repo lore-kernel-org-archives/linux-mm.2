@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03C9FD0655
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8156FD065A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 08:28:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDB046B0093; Wed, 11 Mar 2026 04:26:32 -0400 (EDT)
+	id 1524F6B0098; Wed, 11 Mar 2026 04:28:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C60FE6B0095; Wed, 11 Mar 2026 04:26:32 -0400 (EDT)
+	id 10A106B0099; Wed, 11 Mar 2026 04:28:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADC796B0096; Wed, 11 Mar 2026 04:26:32 -0400 (EDT)
+	id 00C6E6B009B; Wed, 11 Mar 2026 04:28:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F16B6B0093
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:26:32 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 023591391AA
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:26:31 +0000 (UTC)
-X-FDA: 84533100624.12.EB1C90D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4DD9414000F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:26:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tVrbszXt;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB7476B0098
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 04:28:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A7B51A05D1
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:28:01 +0000 (UTC)
+X-FDA: 84533104362.16.8BBBB84
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6C1591C000A
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 08:27:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YCimT57N;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773217590;
+	s=arc-20220608; t=1773217679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nKYqOmThISUuvmbvRutrRX7Tdp1JKiZGTlMciMR9WLY=;
-	b=32FLBjpcZ6skxbq4/8nk14dZzUENNjY+Ur9P+QEwaUTcaP52MLmk7PP96dzLXRnYnPPY3n
-	eNegvprIrEhXYU2jKM8GUp/EWdisfCSucR7B8hdbeFxDxAa6EbjK119KmMSfe+bsv20XGI
-	yI82E+QTfZBg+xkOq8GZrEsVKUTlQ5o=
+	bh=Wb54AwpsvRCk6MTGz8qZOYDRcryKsG+hshWt3zYfQ00=;
+	b=7Zjzcp7u1xxd994ONo1qGW5fRQGP5/D/pK+y9cMCeqXEOqbE2Uk+PgNZn4h8/TsTl2sVsG
+	yDrkHEGi+jGVrHxptD6erXkJlNgDI0igX7KLPMhwa/TUgG6jHacwHp36nj70/VF3QkbCO2
+	pDw6fWgq9M3R4eHySxF743OeIESw2/4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tVrbszXt;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773217590; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YCimT57N;
+	spf=pass (imf20.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.46 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773217679; a=rsa-sha256;
 	cv=none;
-	b=IBnWaZCe1PZXOCt+VA3dUFQZTXmL8J2anMe3jjPBDRUmaE+6o2egPTtR5mcjgyhp6hVvkg
-	6pivq3eGOnKo1FGMfjyjXsyTQwXXyOthccuSF9BTMCItpnrkLf+r2HfwkIyHMIAlUd3eEW
-	QK2Zv2q2vafqSWHjB0ZaAFoJyPZD1zU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B652C6013E;
-	Wed, 11 Mar 2026 08:26:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729CEC2BCAF;
-	Wed, 11 Mar 2026 08:26:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773217589;
-	bh=UP3yJUyJDW/TX5ELUeY/5xbOkxTwR1PYscwuXutUMbA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=tVrbszXtIWxzSx7nssq5H9vOP2XQE1atbb2q5iYKXTf3fiZYtqpRY1waLwrB2SA6b
-	 aiK7aA5fz901sGCBYDtPL971qFSgDaRRlKhu8VICRAu2NzZxtr/tkfDKrCT1WGAAz3
-	 XUVxXxVTGGMYvwp0zzm57C7niGg3mKcxQYaUo1LSpx6JlYb2XB2E+fHg01RwoP8r5q
-	 xUHk6ALUhAp/8qlMoO2VGGMUsVCw1oXpLadKfpjOETBole/a+3swrGMYM08AfwTiL5
-	 xLxEIwXPrD7cAidTO3Dh6/4hJJcoWvmim8V7y/MqW8IbQ/z8C5gr1OkzD6JSTzvJGJ
-	 ZA2d4DzNqBlYw==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 11 Mar 2026 09:25:57 +0100
-Subject: [PATCH 3/3] slab: free remote objects to sheaves on memoryless
- nodes
+	b=RZ1ogLTNO9eeO/QjtrryZEfe4rNyEfIwXKhmwGdRCcahFjCqOwKStnjAdhcJhMoL09bOvF
+	i38JGCy3Jo1SmbXXnSWE7zqCnrtuGituvQ6JBE3ZNSkw0v02CGJ5GlC65QSfKy8T5l50Va
+	aHDIFB8WiRBiM9bovmI0fywzpP2lPBc=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35691a231a7so8666207a91.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 01:27:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773217678; x=1773822478; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wb54AwpsvRCk6MTGz8qZOYDRcryKsG+hshWt3zYfQ00=;
+        b=YCimT57NHwVNEpUZrQcHK2Ix6pOknq4BB/oFqJc88t6KOJaobadP3uC56iciFFnrSU
+         yAiSIdsa2NzcAoQIZct/u2ClNVsH52IqLWKYeq5Dxa4U05tPaQpSzI/nwatq1rJG5Q3y
+         sXA0YhOYz0/zYy+1N5lAho+S0Ts79xF3CuYRE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773217678; x=1773822478;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wb54AwpsvRCk6MTGz8qZOYDRcryKsG+hshWt3zYfQ00=;
+        b=nxIWaJNROVcsk8uJh6E57tXWR8kfzSQq1uVf8u/fxnDpJAWSXCmd/GOTOXJgqDD6DF
+         Fjlsdkq5Yi3CGj7a9MB7BLAyAXvkfzfORvMzMimx3FBImKysXohRfQdnNZQ6Vgo6BCeC
+         jjVErwM07w7KMsaM/AmJ9KVZxLZ/S4GWQZjJ5ctR3NS5tqrxpTzqkDPIsH6GWxoWtn7Y
+         NZGF2oNgGWa43RP+IG+dwy0PFV1ap5F6JmW/lC1vqYduNqVJaxsFGQGzxsvrG1YSDe1c
+         XsCUca2XXOehqDU3QjnGgnVGIkfrPlS2r9bDlJvYwUQsXUQvzIr4T8IcKFu5ViS/AUH2
+         3Unw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnfvbYLLuphikPPjWnmZ7FDXEJha8bOvD69Bcu4bzTNWTBcBLD9E2L+UqfQGin6XTGy5kEPjBzNw==@kvack.org
+X-Gm-Message-State: AOJu0YzidxmurEIrSPBJ9Xt5sAkl1HOXujkoZ+yp+Yf05Z1n7XQzq7BF
+	sVTHa77qBcrfIHde/3JuWIcAX1B0kOhg5RHUFLzIAbGGRnYwW+tGhdkUkZi8z2QWHA==
+X-Gm-Gg: ATEYQzxx8q3gSNJ8qneiKbPsHgwhFpXkN2VlLvGw6VHVfdu/6UfAuHRtQsraAsBEdB0
+	xMXoqvztZ9ZV/JWQrZ7Z8ZHQObezq/DjM+oPh1exja/TwyIYB3ov0DSwbZENI6C7ytsC+QtaElt
+	/fshnFL5vJgWWxCtJ0Yddy1iubpWBdYwIclpXRjHT77mF9zQkZTDPpprLjT4GX8Uf1M2NTfmnuc
+	DHdgHX12tNGT9ItFjblBuAzkNgLmUnjeIdbaayi41oCO1+LT0okdWH+W4g2Cd6t6fR1KOOees6S
+	yWqE0fBjleqvU9dEUc4PRu/TDn9lqUAB1rix1gVU5dgVfaKJXyCmMR5+0IaEkrB1WxGUfUWtFtG
+	bvQLDw8iKgeQ4A5Od7MmtN/1CL4fk7UdzbFfzyfSWSSVWwqhvhsNwlU+nduJDZtOI9VjLAYIDi8
+	+GGzGW8yyHSGTGI/VlordzsS2yU8gZyVf2y7zqVf6b024een3ag3Qtoe0n5JsirpU=
+X-Received: by 2002:a17:90b:4ec8:b0:356:23be:7ecb with SMTP id 98e67ed59e1d1-35a012cce45mr1850888a91.12.1773217678148;
+        Wed, 11 Mar 2026 01:27:58 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:93a4:8281:fe98:426a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a02e19708sm1947257a91.3.2026.03.11.01.27.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Mar 2026 01:27:57 -0700 (PDT)
+Date: Wed, 11 Mar 2026 17:27:54 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>, Brian Geffon <bgeffon@google.com>, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, gao xu <gaoxu2@honor.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH] zram: do not permit params change after init
+Message-ID: <abEnBEPQDpF6Sgpv@google.com>
+References: <20260310060407.1133800-1-senozhatsky@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260311-b4-slab-memoryless-barns-v1-3-70ab850be4ce@kernel.org>
-References: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
-In-Reply-To: <20260311-b4-slab-memoryless-barns-v1-0-70ab850be4ce@kernel.org>
-To: Ming Lei <ming.lei@redhat.com>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-X-Mailer: b4 0.14.3
-X-Stat-Signature: ak1ep9azm7f47mtfw41m77hkpa45toj6
-X-Rspamd-Server: rspam09
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310060407.1133800-1-senozhatsky@chromium.org>
+X-Rspamd-Queue-Id: 6C1591C000A
+X-Stat-Signature: wq1gfwusicygwhpqsgnxfhmgo9fgrpsi
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4DD9414000F
-X-HE-Tag: 1773217590-372489
-X-HE-Meta: U2FsdGVkX18Cp5viQOjZzjj1Ok3yT0SqrmyunW67V6hfnuvBN6L42UgJQWRNmxGc6s2f24OYOxdYNxteocjoNh+NkzqM24mNmCPjGPsBxUbFSw9yxEs3Ipt4quCu2mucbsm9TdhkHbKaiM4+ZlobggcUYcOnJHiGbDUkrc+DPJ1q1M46iW+dS9KLWwq9Pgo6Hiqf3bmfMFL/u/L/bPaJ2k7AtrQgQFTa5rHJhoGw7miHEvdhc86Ocy5p+bXR942FDLWcSAzuVjP9+ldGW2D3tG7PWEvVv4/I70yfyInRbOZQbZQVRgcvsgw1IpUx0U+26mqtlMXx4OHKCwQwQsgONM44snOsjqRCVkIAc1a9PWNLpz/c36H2BDd6TP06Wx4peSx3cX+YC31iDzMmobLQ5u/Psk5dg7aOt+rsJEJHAEXkHcbTj7M0YiJU+L+g0u8ChymhOkef3dATUalIKbPWc1sqW5gZY2PunYzxiMDm17+lwylKl6H639P37A2Gsxbj+QSXgL0aZChA5ri03D5DvR5CPpW88iImeAcE7nGg3kWnlP5Y+fWQrWUX1fYUqlfXqS/bUtLkyFIt899QKsURnL3bEeUuDRRnYEaKRLRqQ00wLkoU7Ka6pkqQRQ/E5h2kN7w/lPdbKyzSei0nmkWt9B6TlZ7hDdOBEtFmWqj96cCnBDi7yKw5XxjvwY1L8QHmASMza9JjxYZ/RnTYmloZcbzdCh7GjyTI6lHCN4AgpcifsZjZWVALJaYUVCXCtW03/Gw3BhEkhUGcCkx39J6fTzPdlAdznR2C7QbJkrSm5kG07nJPo1vXxmo0X0oQ97JrY//BY1C/2kd6H1FrUY41VFV5XEFg91G+nW6lPoG+3dmx+vndODsdo2H22g+INlFpWjcX7hxPem0xw9+6aFmlL54pIl505R6x1VoCJT3IRERDZSXaA50cqQ1Cvi+7gHAaHz/LgriVGy+MdN0VzwI
- akdGE9ZU
- Rb5EnLzP1o4IWRlsBTJUCbKiwImbMlxxPpjEifwBe22rfB35xdj2U8YAKdacA9mdGrSWYBx2TxkjxKEGy1kvp43aFTW0sf2CbitE0oUpM3+93bwVqUMTJqI+cKNWffy+7HTPD5G4nsa0Hpqvqx504FXlvx4vuOHSs70G4NJK2X74sCHcnAyDZL/t8HYk8LSgqoYUjT8JZgzTBbL5efI4u1d+ZtRAT28cUPuYSZm7SCyxoHPT8CVBFhAQIkg==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773217679-846593
+X-HE-Meta: U2FsdGVkX1+b2natiIfn1aCSfI9zo5O7WAtFWn9kV55Jf/aueHpJ0py31Fle4rvuSbpwBXmwqfYYqDPiHOGx44v68Ay13Vhhfqju4ltw6hzHeaYKVzM3vaBQDDQ9PJX3NVyUq//iFXSM2GsY4Kdr05M+G094l6jS9lwdQepdDdoL2b0AiQ2dmX5DIaX9UAtrkQRci4ZNwO56RTQ/xMlJoL+Sjj6q6Mjp1DH86m0za9+IBRYvE+vm0dTjyPVIds6ylFvCuxEJ2JFAio1M8tPiPJiIg5vhbO0IwlvK9VKRCElkzLKVmkLMDzkJFi90yP4Xwab9V3oh5lBfmAMTdtkV4KzQyF24Gr5CUHKY3BQq84mEs9yOwHF+uiSGUvkPFOv+lwxXeBXXF9kW9J1KWfO6LLfh6buN2gjkS2mlV4ikBJ32D7ePwETK94GrvpCzQIzoBsOdyzG/wVeV7FxVfK85QfRktS/7nsKuhmYqZwHZ2bezeXcscMJw+7QE7emboWoPIhjEuwFzwB8JY5DhE4q2RPnZhesPYeMS3ZfQaRKSOuWQBHjPPbstavBpL3vt5ZQlsXVU2f0lYZv9S4pgT1I9/cLv4loi1CIFiHSTPxUuNP4Vl94KQrXvw3ltwxPeyq5WlO39lzRlHyc3B8Stk9n/GDoSMRc2g2z+UlIOm9GrNQtuNxs3zN2jKxmTPTd5hdXLfJFZkRB+hMhWkfmRdJzhJ72Dyo4FOvf/1b7WIWwBKKH3TwD+lPX3NQAEv0uAt9YUg3Zriwxt1/8UUVSXpaj1ABr/Oh5xwHVGjInCW5yqGHo4GYgHkEnygZCH3jy3CYSi1Jc3oOBWx2ZPpoxROU+urrgpJgmedDEZYCv4edIDX50sZ7V4rX8mf0RGSqenPuuFObBgWK8N8G8+0xY6t+dI/G0DXbh6XXsXuxHzT4lSadcFxC9PtbZufcCAPaMi0kmsz84kNS6B7BuFjRsR7Li
+ zRgDJPZe
+ MmtxjvQvJTbpoaubYf6qgVP/m0SlBcXSsQSzkrfaK9af6P6QYnFIRp8XCEuvsyXAIYERBjV8pL5sTJmxkd/W+hePWsCHfUomaQ4+i0fSOrMQhR9pHBuX+JeI2Kmv0XJRNMuoOs+ROQJXx7jB2ojwLGpcTm7cI5j4UviBmFDxCsJem1ScA0rbWhlG6+rFFY+4+gNEhXcnYQ3CjiRk08lpRkl+UaL857uZRqn3+JPdJdcKhj8ylrfqzZS7m0GPojf8wQgPWCQpVmjTWRX+3Pmhtf/2TAImtISvoJm+hfWh1WugnNwe88TA805K64GnwYlyWKg9+Vb/NSRzlYorFKUUabwwmlon4YE/KTtfg6k10JURYDVbWXWd2wt0+EIO8AMv0Jo/QGmWvqkjsgCCsHv+yEaTORw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,147 +114,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On memoryless nodes we can now allocate from cpu sheaves and refill them
-normally. But when a node is memoryless on a system without actual
-CONFIG_HAVE_MEMORYLESS_NODES support, freeing always uses the slowpath
-because all objects appear as remote. We could instead benefit from the
-freeing fastpath, because the allocations can't obtain local objects
-anyway if the node is memoryless.
+On (26/03/10 15:01), Sergey Senozhatsky wrote:
+> First, algorithm_params_store(), like any sysfs handler,
+> should grab device init lock.
+> 
+> Second, like any write() sysfs handler, it should grab
+> device init lock in exclusive mode.
+> 
+> Third, it should not permit change of algos' parameters
+> after device init, as this doesn't make sense - we cannot
+> compress with one C/D dict and then just change C/D dict
+> to a different one, for example.
+> 
+> Fixes: 4eac932103a5d ("zram: introduce algorithm_params device attribute")
+> Cc: gao xu <gaoxu2@honor.com>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-Thus adapt the locality check when freeing, and move them to an inline
-function can_free_to_pcs() for a single shared implementation.
+Andrew, I will include this patch into v2 of the zram fixups,
+can you please drop it for now?
 
-On configurations with CONFIG_HAVE_MEMORYLESS_NODES=y continue using
-numa_mem_id() so the percpu sheaves and barn on a memoryless node will
-contain mostly objects from the closest memory node (returned by
-numa_mem_id()). No change is thus intended for such configuration.
-
-On systems with CONFIG_HAVE_MEMORYLESS_NODES=n use numa_node_id() (the
-cpu's node) since numa_mem_id() just aliases it anyway. But if we are
-freeing on a memoryless node, allow the freeing to use percpu sheaves
-for objects from any node, since they are all remote anyway.
-
-This way we avoid the slowpath and get more performant freeing. The
-potential downside is that allocations will obtain objects with a larger
-average distance. If we kept bypassing the sheaves on freeing, a refill
-of sheaves from slabs would tend to get closer objects thanks to the
-ordering of the zonelist. Architectures that allow de-facto memoryless
-nodes without proper CONFIG_HAVE_MEMORYLESS_NODES support should perhaps
-consider adding such support.
-
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
----
- mm/slub.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 55 insertions(+), 12 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index d8496b37e364..2e095ce76dd0 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6009,6 +6009,56 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
- 	return false;
- }
- 
-+static __always_inline bool can_free_to_pcs(struct slab *slab)
-+{
-+	int slab_node;
-+	int numa_node;
-+
-+	if (!IS_ENABLED(CONFIG_NUMA))
-+		goto check_pfmemalloc;
-+
-+	slab_node = slab_nid(slab);
-+
-+#ifdef CONFIG_HAVE_MEMORYLESS_NODES
-+	/*
-+	 * numa_mem_id() points to the closest node with memory so only allow
-+	 * objects from that node to the percpu sheaves
-+	 */
-+	numa_node = numa_mem_id();
-+
-+	if (likely(slab_node == numa_node))
-+		goto check_pfmemalloc;
-+#else
-+
-+	/*
-+	 * numa_mem_id() is only a wrapper to numa_node_id() which is where this
-+	 * cpu belongs to, but it might be a memoryless node anyway. We don't
-+	 * know what the closest node is.
-+	 */
-+	numa_node = numa_node_id();
-+
-+	/* freed object is from this cpu's node, proceed */
-+	if (likely(slab_node == numa_node))
-+		goto check_pfmemalloc;
-+
-+	/*
-+	 * Freed object isn't from this cpu's node, but that node is memoryless.
-+	 * Proceed as it's better to cache remote objects than falling back to
-+	 * the slowpath for everything. The allocation side can never obtain
-+	 * a local object anyway, if none exist. We don't have numa_mem_id() to
-+	 * point to the closest node as we would on a proper memoryless node
-+	 * setup.
-+	 */
-+	if (unlikely(!node_isset(numa_node, slab_nodes)))
-+		goto check_pfmemalloc;
-+#endif
-+
-+	return false;
-+
-+check_pfmemalloc:
-+	return likely(!slab_test_pfmemalloc(slab));
-+}
-+
- /*
-  * Bulk free objects to the percpu sheaves.
-  * Unlike free_to_pcs() this includes the calls to all necessary hooks
-@@ -6023,7 +6073,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 	struct node_barn *barn;
- 	void *remote_objects[PCS_BATCH_MAX];
- 	unsigned int remote_nr = 0;
--	int node = numa_mem_id();
- 
- next_remote_batch:
- 	while (i < size) {
-@@ -6037,8 +6086,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 			continue;
- 		}
- 
--		if (unlikely((IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) != node)
--			     || slab_test_pfmemalloc(slab))) {
-+		if (unlikely(!can_free_to_pcs(slab))) {
- 			remote_objects[remote_nr] = p[i];
- 			p[i] = p[--size];
- 			if (++remote_nr >= PCS_BATCH_MAX)
-@@ -6214,11 +6262,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
- 	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
- 		return;
- 
--	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
--	    && likely(!slab_test_pfmemalloc(slab))) {
--		if (likely(free_to_pcs(s, object, true)))
--			return;
--	}
-+	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, object, true)))
-+		return;
- 
- 	__slab_free(s, slab, object, object, 1, addr);
- 	stat(s, FREE_SLOWPATH);
-@@ -6589,10 +6634,8 @@ void kfree_nolock(const void *object)
- 	 */
- 	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
- 
--	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())) {
--		if (likely(free_to_pcs(s, x, false)))
--			return;
--	}
-+	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
-+		return;
- 
- 	/*
- 	 * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
-
--- 
-2.53.0
-
+We need to protect algo lookup path as well, which accesses
+->comp_algs.  I'll fix that in v2.
 
