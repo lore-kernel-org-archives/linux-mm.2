@@ -4,109 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B42BFD88DA
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:09:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAB79104950F
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 09:15:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C1256B0005; Wed, 11 Mar 2026 05:09:25 -0400 (EDT)
+	id 086906B0005; Wed, 11 Mar 2026 05:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982646B0089; Wed, 11 Mar 2026 05:09:25 -0400 (EDT)
+	id 0346C6B0089; Wed, 11 Mar 2026 05:15:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 859D96B008A; Wed, 11 Mar 2026 05:09:25 -0400 (EDT)
+	id E2D6E6B008A; Wed, 11 Mar 2026 05:15:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7E46B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:09:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F06DF13B7D1
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:09:24 +0000 (UTC)
-X-FDA: 84533208648.08.91802AD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 46BB420008
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:09:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BCEE46B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 05:15:30 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C3FA1A06D1
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:15:30 +0000 (UTC)
+X-FDA: 84533224020.05.D7DC0C2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 924A520002
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:15:28 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Hiav0/5S";
-	spf=pass (imf03.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LgDro3Eo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773220163;
+	s=arc-20220608; t=1773220528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1VuTdylyjgcE4ZoIj19R0wwxjD2D00fSIOSrvgvBWuo=;
-	b=3rTd7Qdxg72mahTQze16mx03h4pB4uIf7bxreAbnjmQCm0bJS3Xy6j3m4RJk5iXuPBWfIq
-	Gl2a8BCiNuMV7xrSe2M9CO1WSUJuQlMPoyC7nrRK0uC9Dcabo9G0tq3s8XL6bDUgWBssbR
-	UNy7MrnDm7g7iha0AFmmPigandskWNM=
+	bh=GoQUTWPs5uJ9sIVTj3JBtc39v4T/2J1JaJMwIAHWnnE=;
+	b=noAFQKlYjnUJNdfBILNPVLwss1qTaw2fbd5QqKr2Undpi+XtxqJ+E1mMGpN982pAr6wXOs
+	cSs8ShGg9org9AIFrCMKpX9vxw59D7rJSlmPVu9fzg+0nmaS8mOBYnCSBNanqmyBr3xNdh
+	s/c9/vdE2vp3pioAiGT8atT/F9+eAgU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773220528; a=rsa-sha256;
+	cv=none;
+	b=qR7MHW+3ol6tP4lixOX93wOqQkYAlvAVuXINdY58oBDCO8iRRqGKG0JqvKfjBuqD/A0Pai
+	l9ZZDHBD0BadImtyxhFhuCpTW7YJKNDT7yZIkHl4/5pUz8kEfqB8DHpcS1FJZnEEQeipjP
+	s64M08iCIPIIH6TgQsJtv+1tNbCtXfA=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Hiav0/5S";
-	spf=pass (imf03.hostedemail.com: domain of krzk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=krzk@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773220163; a=rsa-sha256;
-	cv=none;
-	b=qxKGbXWNlhKzcd4O3qlZ/QYTmFcCM/kJfntezBf414Hq11/6xpUe9A+KK54XiwolpvYVhu
-	LP2sjYVMySb19NaPOMNHh+Ap/Du7w1aSeic4xJvJVhfszEUP6ejFAtmBehFnNHtiD7uKNc
-	7SiMaLiLNoSGah9UU7gQjpEUNibbHcc=
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LgDro3Eo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 472FC4190B;
-	Wed, 11 Mar 2026 09:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97481C4CEF7;
-	Wed, 11 Mar 2026 09:09:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B51E8600B0;
+	Wed, 11 Mar 2026 09:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCD9C4CEF7;
+	Wed, 11 Mar 2026 09:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773220162;
-	bh=82aUC4VRpBGw7JMuttBYhm6dWXOcxLKrXkiWiKokSkc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hiav0/5SDxMf9zR8suSIZHhKHiHBJdBn25HKmiP6Nvb/vZamKVkRaC+bkUU+MMoo3
-	 Ni0yaCeLrupAUaWRFNEnAuXIqphbhDlWgHLpNADqlynBDF7c35TM9zxQLOe8P0jKnC
-	 d1QXefq7ueIltcKqNd6w6N5kWro0EIIaImFy76V51md/QPFfq9cNwZLAKiY4+Iu9zH
-	 OAoeKfTgXg0iSyPWwQKKoQ/v1L08Sm6Dj3xv/KywOB97OeG83b4hfoG2GwyCSdg1IB
-	 zu45S0H/TgnahEqJdikaJQTJWaM9V9+zgqHuKySEF2INd3fBkw7cRzVCzwi155hFHW
-	 TDLU+bfophjrQ==
-Date: Wed, 11 Mar 2026 10:09:19 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <eugen.hristev@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 25/25] meminspect: Add debug kinfo compatible driver
-Message-ID: <20260311-poetic-transparent-barracuda-b7a3ab@quoll>
-References: <20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com>
- <20260311-minidump-v2-v2-25-f91cedc6f99e@oss.qualcomm.com>
+	s=k20201202; t=1773220527;
+	bh=/qi/E3sx1wLUyctUK7y+OHXYZPNKh6z9xCAoPwaS9tY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LgDro3Eo6GuEp/c7KpExTwow2lUTl/Pn1bh3kCtPgx5EZkzvkzK56JY3zwHnUDcCc
+	 2as2PvShmmr1XG14DpK2Vlg+JLgJPDOEbIdyLQiZA99gO2VhR6aNobJIyS0CqNvQtn
+	 yBA+KuKdx+4dfgWg9peWZmhGw4/QosQ2PPXaLIeUrGAHySdhxN3QZSvEY8TJQRF4w5
+	 5y2vcF8WS6Vs3oTWyB2qlm1mbS5CYuB5pIK+WazvnWck2cAfQHHfFT1RCTg/MOj6af
+	 KpqT4L8GJkV64xMCr6wNACXlhye3na8PI6Nzf9xRvk9/jbbFZy4EGpTLuB6A51j2SG
+	 LfTqtyCu5LFfA==
+Message-ID: <61df6369-333c-430a-bd18-c5b1acae68ea@kernel.org>
+Date: Wed, 11 Mar 2026 10:15:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260311-minidump-v2-v2-25-f91cedc6f99e@oss.qualcomm.com>
-X-Rspamd-Queue-Id: 46BB420008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: g8pna6ussf74ht6ybiogrgzysxopcnwo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 16/16] mm/memory: support VM_MIXEDMAP in
+ zap_special_vma_range()
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
+ <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Leon Romanovsky <leon@kernel.org>,
+ Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
+References: <20260227200848.114019-1-david@kernel.org>
+ <20260227200848.114019-17-david@kernel.org>
+ <20260309142954.GM1687929@ziepe.ca>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260309142954.GM1687929@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 924A520002
+X-Stat-Signature: 1bcabnj1uwkmgo9oi4ytpgew7e31n1ny
 X-Rspam-User: 
-X-HE-Tag: 1773220163-54772
-X-HE-Meta: U2FsdGVkX1+IXLofiL3b0vhkMIcriwcEcIaqdMiEat77W87oNj473Zuw1kbg7rOPRSrC2J3ov+poRK5n97df/f9zoikmLt/B3YyvuX40wE7VB/A3fN5scHmzsOytCnmPJJurghM1eEiODcPuousl8628YbOXFYfGKJix5ynoz/6Ao7D0gOjc1dFOmZ8/wcmWrx+2PXNsYhaZZJd+jC5+PgcZJo5jFP6Eff12Ls+3f1NztQnPVtP7mQH3GGjMdYSCte4e9Gjt9qh9SxjeeyYnoxsz1z5/k/zrZObU2/kKfTyYyIkKkpi5BBpaWDyUJYhXx26ammQsmWI1nxNXor6OHFWkAlyuLLliz3mRM8BCDT8i4Dk5YqoMsTkV+DCLo0kGBLDxHFrEIwoanLLFLbXXg5fX6NSHJxWlBJ7xSle4PvjBr9Ch+57ikTFcxFOj8dBbqehM1pytF2c8gZXZtXw/jpiqt60zVNwCeRh8OhRDKmWyLlKzLCPLf3NO2PnUfrY04ZZbXFMeWIy3ARAogGfo/wfhrknf9HitngMHutKHjgeJvGo/H8k0FFzB/1XLiJCTm7oWB6JNVc5zhLnPC/gqC7tdVzLKZCt/xhpRlR26pM1v3E7fWd4QuH4vRp1yzo4xv6HoGD1mqRnMQl+4f0JgGCPebWCWMjATzVgzLtOZw8XkMnerNVqK4jlJwd3R+0a0wYaFfHLmn1Fgy4fnO0VPteXBlaSJQ/ZGvjg79h64wlJTymFgEZ9OCuAj4TeTvCxYNw2M4xzS7GGEUF1JKiH75IwSsf5evcX+h+u7veWg+gBw8jTFgwMvmLE7G3kncoZ6yjklvJtiC/8LEE2bdvOsgTsw4nlMLZFnBeP3FETwyQHN98yBmvbvqJTqclZW9jaI2ToSTl28OpBIMipRYo/0nAsju/5UUFb2ZMtbu90Q1zUg+VH3boVcT+GVDSwPBGznMfj2VRZGzH3ilIE4tfH
- 0hLCpGEj
- 9ZB51yg2ZeSlXde5SddUgNWNy3cnIkKHfM9Hr0fmfCY2vGK5Rssled5HMFqn9sWZm/P+InBWHHfnHyWbg6vjuerp85RXjD4Zo8zXB3N5Kikk/12dB/QkE95uXwCQ80BltxFnGzaUCrVlkpFsMZdJXS2GZ55txoV2pE7dmR3mGK59yDweZLrtbaSZ60NnUyWDyJSx5lM9UyBMPpd+eJHTHcsUCCRntV+0s9mtSkzmUmqLwo6om2mpf9mfaRrEoBlNxv7+BnnwrkNsQPKHO0ph2bhysyjZHjb8QGRF5QthwHvPx1P1IR0lOdW8DLtF/a2XMohXW9E7XWv8mwGURXL9oYKjTgx9XehmcdDA76AMagiZi0AXkdbyHgMNOxSTs1NO+ujwgswn0rlY0Qo5OwmQdKa8kgrwQRHGSDMz3uNpU8lQpmLqgH7NWEyuKzyB3VG2r2/Q7+gB6BodnY8by4GmxzvXYS4Ne860ZLjuICzJPdpfFuixtUMK+mcpQ6HNv+XiLk3oX
+X-HE-Tag: 1773220528-357569
+X-HE-Meta: U2FsdGVkX1+lgRaAB2CBFApntgCXWUL3CY3GvI7U7D71iZmg5AVJxgj7058U6fl9nu9WiIPhl7UTuCsFe7PbikbEfB/Vk5CjpRZOTEyraB2b1A0khKZsxON+pu0WwhDLgaiDyjhBBtTX2V6HoKKMtNKTjEISGgQdg4QwsxzeasgUwW3MyVF+qX69Fs1EDNxnY2Q4FKwavp7W0BOlUMPjz9A1s7HY5XJXoqzK3zovJd8FaLgCNXGaEOCVRfe0K1A9Ur79qv8gdEjqqor+ky+GICN2wRJ6udBwSDEJZjIAgGKH5avQRRqQJrpbSWuUWu0pfjax/pck6+G/A/Vs9BULV8wMW6+oVBnUIefUTHtZfR5h5+GsRoTzTr5uouxYxW/Nr0MitvZOBIE/1WzSrgTqgNXTUzjj7M77oZEzwPBHTKcT0diBBItFfIK5a4q5P/UscUmR8lAqsDfnPbNvyyOihb3MvDC4XeS+Y5e9egmhc1C7MK0mZBDHGPAeX/+uIdfXaJ/bks0SfSarrYCqtYfUFM2qBAhGQjhx/lrMPfm6a/v1L1ogDDmYAzYull96KcnHxG8XDcbJ+HH6sZuxdFHqVP5GKB98QWbpfHLCjUZO+ieD/QXVk+/6mq4AO7UJ5SLMK9dkfciE/ofqV/op8ulNJeKVpT0AoMym+MKc5B/gEpuxOUjHKs0gpNAHFs5mKx17twTY7D7wj1zktk3eS6iSPuOLT6+aeBd5p4YhWegXqPOBCChVIZywQhUPgAjNWRHUGQa9xRY4/J7dR2fqkrYnFWHwMUmd12iy6QB6NMUZnRXNqZb/5bC6oddOPAdkqe6HfP2xbHEnlXQHhLHaJLRgmR+no4C7lixBWa51BOr33Md8HnP1rWrn2UgA52ZVe1FTkrp/tqldZ0y9bbcvpKUfpiLFpD2ZIkmJ6WF0EPeuz3iocCvH95Q4Bz/KcURrevNUwK/3d6G8REGQMujPeJT
+ JzoSNBwB
+ HNy4Ugw6D/VahZhz5s1DOE0GCI7N8Z7okRcxk+jFHLg37B7rjghao25bGAW1KJyT5lJ7u9v0IXGZnqtAowYAQFzDZ+zZjrW6qxqLTh9ZPxbae6CMiZtEoUo7HpXv0CMn7sakAJku60eg8vaumYBuZvM8vN7LPLwm1jfG22i8Zqw87XPAZbW0a8gMlowUAhKjA7TSL67UOKIYoOy3PN1oiOHVg/A4MPId9z6coovK2fwdmPMN5ysSN8JVpwB8sQUCTJgaMRc9t74Ezx9Y6OuLaWB0VOWBnPgL7uqjAPf3PyEu/PPkcgjBfPvA4bxIreRkASzWkfmymaogG+6Kepge7VS+3fC0V2MGPepPY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,267 +182,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 01:46:09AM +0530, Mukesh Ojha wrote:
-> From: Eugen Hristev <eugen.hristev@linaro.org>
+On 3/9/26 15:29, Jason Gunthorpe wrote:
+> On Fri, Feb 27, 2026 at 09:08:47PM +0100, David Hildenbrand (Arm) wrote:
+>> There is demand for also zapping page table entries by drivers in
+>> VM_MIXEDMAP VMAs[1].
+>>
+>> Nothing really speaks against supporting VM_MIXEDMAP for driver use. We
+>> just don't want arbitrary drivers to zap in ordinary (non-special) VMAs.
+>>
+>> [1] https://lore.kernel.org/r/aYSKyr7StGpGKNqW@google.com
 > 
-> With this driver, the registered regions are copied to a shared memory
-> zone at register time. The shared memory zone is supplied via OF. This
-> driver will select only regions that are of interest, and keep only
-> addresses. The format of the list is Kinfo compatible, with devices like
-> Google Pixel phone. The firmware is only interested in some symbols'
-> addresses.
+> Are we sure about this?
+
+Yes, I don't think relaxing this for drivers to use it on VM_MIXEDMAP is
+a problem.
+
 > 
-> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> ---
->  MAINTAINERS                |   1 +
->  drivers/of/platform.c      |   1 +
->  kernel/meminspect/Kconfig  |  11 ++
->  kernel/meminspect/Makefile |   1 +
->  kernel/meminspect/kinfo.c  | 284 +++++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 298 insertions(+)
+> This whole function seems like a hack to support drivers that are not
+> using an address_space.
+
+I assume, then using
+unmap_mapping_folio()/unmap_mapping_pages()/unmap_mapping_range() instead.
+
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2504b7df0e7d..48b5457fae98 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16597,6 +16597,7 @@ M:	Eugen Hristev <eugen.hristev@linaro.org>
->  M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/reserved-memory/google,kinfo.yaml
-> +F:	kernel/meminspect/kinfo.c
->  
->  MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
->  M:	Mike Rapoport <rppt@kernel.org>
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 2a7111e8354d..09047e021de4 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -495,6 +495,7 @@ static const struct of_device_id reserved_mem_matches[] = {
->  	{ .compatible = "ramoops" },
->  	{ .compatible = "nvmem-rmem" },
->  	{ .compatible = "google,open-dice" },
-> +	{ .compatible = "google,debug-kinfo" },
-
-place it before open-dice
-
->  	{}
->  };
->  
-> diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
-> index fa2b5a84b251..396510908e47 100644
-> --- a/kernel/meminspect/Kconfig
-> +++ b/kernel/meminspect/Kconfig
-> @@ -17,3 +17,14 @@ config MEMINSPECT
->  
->  	  Note that modules using this feature must be rebuilt if option
->  	  changes.
-> +
-> +config MEMINSPECT_KINFO
-> +	tristate "Shared memory KInfo compatible driver"
-> +	depends on MEMINSPECT
-> +	help
-> +	  Say y here to enable the Shared memory KInfo compatible driver
-> +	  With this driver, the registered regions are copied to a shared
-> +	  memory zone at register time.
-> +	  The shared memory zone is supplied via OF.
-> +	  This driver will select only regions that are of interest,
-> +	  and keep only addresses. The format of the list is Kinfo compatible.
-> diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
-> index 09fd55e6d9cf..283604d892e5 100644
-> --- a/kernel/meminspect/Makefile
-> +++ b/kernel/meminspect/Makefile
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
->  obj-$(CONFIG_MEMINSPECT) += meminspect.o
-> +obj-$(CONFIG_MEMINSPECT_KINFO) += kinfo.o
-> diff --git a/kernel/meminspect/kinfo.c b/kernel/meminspect/kinfo.c
-> new file mode 100644
-> index 000000000000..79918908968d
-> --- /dev/null
-> +++ b/kernel/meminspect/kinfo.c
-> @@ -0,0 +1,284 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + *
-> + * Copyright 2002 Rusty Russell <rusty@rustcorp.com.au> IBM Corporation
-> + * Copyright 2021 Google LLC
-> + * Copyright 2025 Linaro Ltd. Eugen Hristev <eugen.hristev@linaro.org>
-> + */
-> +#include <linux/container_of.h>
-> +#include <linux/kallsyms.h>
-> +#include <linux/meminspect.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_reserved_mem.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/utsname.h>
-> +
-> +#define BUILD_INFO_LEN		256
-> +#define DEBUG_KINFO_MAGIC	0xcceeddff
-> +
-> +/*
-> + * Header structure must be byte-packed, since the table is provided to
-> + * bootloader.
-> + */
-> +struct kernel_info {
-> +	/* For kallsyms */
-> +	u8 enabled_all;
-> +	u8 enabled_base_relative;
-> +	u8 enabled_absolute_percpu;
-> +	u8 enabled_cfi_clang;
-> +	u32 num_syms;
-> +	u16 name_len;
-> +	u16 bit_per_long;
-> +	u16 module_name_len;
-> +	u16 symbol_len;
-> +	u64 _relative_pa;
-> +	u64 _text_pa;
-> +	u64 _stext_pa;
-> +	u64 _etext_pa;
-> +	u64 _sinittext_pa;
-> +	u64 _einittext_pa;
-> +	u64 _end_pa;
-> +	u64 _offsets_pa;
-> +	u64 _names_pa;
-> +	u64 _token_table_pa;
-> +	u64 _token_index_pa;
-> +	u64 _markers_pa;
-> +	u64 _seqs_of_names_pa;
-> +
-> +	/* For frame pointer */
-> +	u32 thread_size;
-> +
-> +	/* For virt_to_phys */
-> +	u64 swapper_pg_dir_pa;
-> +
-> +	/* For linux banner */
-> +	u8 last_uts_release[__NEW_UTS_LEN];
-> +
-> +	/* Info of running build */
-> +	u8 build_info[BUILD_INFO_LEN];
-> +
-> +	/* For module kallsyms */
-> +	u32 enabled_modules_tree_lookup;
-> +	u32 mod_mem_offset;
-> +	u32 mod_kallsyms_offset;
-> +} __packed;
-> +
-> +struct kernel_all_info {
-> +	u32 magic_number;
-> +	u32 combined_checksum;
-> +	struct kernel_info info;
-> +} __packed;
-> +
-> +struct debug_kinfo {
-> +	struct device *dev;
-> +	void *all_info_addr;
-> +	size_t all_info_size;
-> +	struct notifier_block nb;
-> +};
-> +
-> +static void update_kernel_all_info(struct kernel_all_info *all_info)
-> +{
-> +	struct kernel_info *info;
-> +	u32 *checksum_info;
-> +	int index;
-> +
-> +	all_info->magic_number = DEBUG_KINFO_MAGIC;
-> +	all_info->combined_checksum = 0;
-> +
-> +	info = &all_info->info;
-> +	checksum_info = (u32 *)info;
-> +	for (index = 0; index < sizeof(*info) / sizeof(u32); index++)
-> +		all_info->combined_checksum ^= checksum_info[index];
-> +}
-> +
-> +static u8 global_build_info[BUILD_INFO_LEN];
-
-Don't create singletons. That's a driver so you can have multiple
-instances of it.
-
-> +
-> +static int build_info_set(const char *str, const struct kernel_param *kp)
-> +{
-> +	size_t build_info_size = sizeof(global_build_info);
-> +
-> +	if (strlen(str) > build_info_size)
-> +		return -ENOMEM;
-> +	memcpy(global_build_info, str, min(build_info_size - 1, strlen(str)));
-> +	return 0;
-> +}
-> +
-> +static const struct kernel_param_ops build_info_op = {
-> +	.set = build_info_set,
-> +};
-> +
-> +module_param_cb(build_info, &build_info_op, NULL, 0200);
-> +MODULE_PARM_DESC(build_info, "Write build info to field 'build_info' of debug kinfo.");
-
-Drop. Build info is a static, fixed information, there is no need to write it
-from user-space.
-
-
-...
-
-> +	memset(all_info, 0, sizeof(struct kernel_all_info));
-> +	info = &all_info->info;
-> +	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
-> +	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
-> +	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
-> +	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
-> +	info->name_len = KSYM_NAME_LEN;
-> +	info->bit_per_long = BITS_PER_LONG;
-> +	info->module_name_len = MODULE_NAME_LEN;
-> +	info->symbol_len = KSYM_SYMBOL_LEN;
-> +	info->thread_size = THREAD_SIZE;
-> +	info->enabled_modules_tree_lookup = IS_ENABLED(CONFIG_MODULES_TREE_LOOKUP);
-> +	info->mod_mem_offset = offsetof(struct module, mem);
-> +	info->mod_kallsyms_offset = offsetof(struct module, kallsyms);
-> +
-> +	memcpy(info->build_info, global_build_info, strlen(global_build_info));
-> +
-> +	kinfo->nb.notifier_call = kinfo_notifier_cb;
-> +
-> +	meminspect_notifier_register(&kinfo->nb);
-> +	meminspect_lock_traverse(kinfo, register_kinfo_region);
-> +
-> +	return 0;
-> +}
-> +
-> +static void debug_kinfo_remove(struct platform_device *pdev)
-> +{
-> +	struct debug_kinfo *kinfo = platform_get_drvdata(pdev);
-> +
-> +	meminspect_notifier_unregister(&kinfo->nb);
-> +}
-> +
-> +static const struct of_device_id debug_kinfo_of_match[] = {
-> +	{ .compatible	= "google,debug-kinfo" },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
-> +
-> +static struct platform_driver debug_kinfo_driver = {
-> +	.probe = debug_kinfo_probe,
-> +	.remove = debug_kinfo_remove,
-> +	.driver = {
-> +		.name = "debug-kinfo",
-> +		.of_match_table = of_match_ptr(debug_kinfo_of_match),
-
-Drop of_match_ptr, you have warning here.
-
-> +	},
-> +};
-> +module_platform_driver(debug_kinfo_driver);
-> +
-> +MODULE_AUTHOR("Eugen Hristev <eugen.hristev@linaro.org>");
-> +MODULE_AUTHOR("Jone Chou <jonechou@google.com>");
-> +MODULE_DESCRIPTION("meminspect Kinfo Driver");
-> +MODULE_LICENSE("GPL");
+> I say that as one of the five driver authors who have made this
+> mistake.
 > 
-> -- 
-> 2.50.1
-> 
+> The locking to safely use this function is really hard to do properly,
+> IDK if binder can shift to use address_space ??
+I cannot really tell.
+
+Skimming over the code, it looks like it really always handles "single
+VMA" stuff ("Since a binder_alloc can only be mapped once, we ensure the
+vma corresponds to this mapping by checking whether the binder_alloc is
+still mapped"), which makes the locking rather trivial.
+
+It does seem to mostly allocate/free pages in a single VMA, where I
+think the existing usage of zap_vma_range() makes sense.
+
+So I'm not sure if using address_space would really be an improvement there.
+
+Having that said, maybe binder folks can be motivated to look into that.
+But I would consider that future work.
+
+-- 
+Cheers,
+
+David
 
