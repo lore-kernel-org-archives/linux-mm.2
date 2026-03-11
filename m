@@ -4,118 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B28931125876
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 19:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE3741125875
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 19:51:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D56CC6B0005; Wed, 11 Mar 2026 15:24:23 -0400 (EDT)
+	id CF2646B0005; Wed, 11 Mar 2026 15:51:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D047A6B0089; Wed, 11 Mar 2026 15:24:23 -0400 (EDT)
+	id CA03F6B0089; Wed, 11 Mar 2026 15:51:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06C66B008A; Wed, 11 Mar 2026 15:24:23 -0400 (EDT)
+	id B81B66B008A; Wed, 11 Mar 2026 15:51:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id ADE076B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 15:24:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4BEF3B8890
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:24:23 +0000 (UTC)
-X-FDA: 84534758406.13.4B9EEB2
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 32E7814000D
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:24:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A49CF6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 15:51:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 59A611A03D7
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:51:57 +0000 (UTC)
+X-FDA: 84534827874.07.B3CE1CD
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 70306140009
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 19:51:55 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="WdQoDe/R";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LpVJW8jH;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773257061;
+	s=arc-20220608; t=1773258715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8U0uYARB35fXHTmG04QQVNwq76UNnAJXyOiaCIyb4bk=;
-	b=HBxFmIywwvSKY/aZ2f/ioFQ3p1+cBE5RnQ4OzycGgesqqa4YnqDG7nXGKchycwB4N3zGkP
-	7blm08yeT50BplR77hAlH91SiaurJsFiFyN1SsZC9rdF3xFU/bD0jlBxCKfz9NVSWDzZ0a
-	a4L/R87QyaCeLzF59L9p/pPMde9vdyw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773257061; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7aHPhdDyOXpYHbCyzKIIDvUmbmQ3BcfB3tK1FnL3jrw=;
+	b=6aSeNEmquMfgBGVq1dZ9R4u1S6qxNAiW2pR5J5UTfnm4cYZmXvDAbuqIzCU+BWbFoZyxYd
+	3Gy/7g7djvUo7qnjNnk32lICsix2mTSy2xTNGWMCa80G97/gXwd6JaQuZ/ZhqGPg30Gm+Z
+	ffUhVkAaC5b0zFwp16cVRuZSKWM5AvY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773258715; a=rsa-sha256;
 	cv=none;
-	b=pu1JQ8XyTgbOqULCL9yoV+BNSevx3Peu1qdfAyRHiwOaCbFtxUtQPtrLL7SXp0+I9pGfQ0
-	s1/Vi0j+H2MP1rR2AUlYogNdrjoPm+dn39KKK7tbqs1lDzx6RRvW7bhPrHCkficPEyDx27
-	fr1q6WAE6V+QdqPWitULUvDkS73+bi0=
+	b=yh5hRuCR4nsuS4cbk+xdXmg1Efh+lnMIwxxJx9/SgqagiJNxJmagfTvlJ+G5w8l6UCY1v5
+	hSwXp/UCgitkjWwrVzNiQyUzDTOkYOpMyevVeE9w0uWXWXd06NwzUgr51DbUb2rYbdZmax
+	IWi4rIVJB3rR04MTwwHs2cskA4YtYYI=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="WdQoDe/R";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.50 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899fbf92bdbso3110866d6.0
-        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:24:20 -0700 (PDT)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LpVJW8jH;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4671cbce465so171448b6e.3
+        for <linux-mm@kvack.org>; Wed, 11 Mar 2026 12:51:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1773257060; x=1773861860; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8U0uYARB35fXHTmG04QQVNwq76UNnAJXyOiaCIyb4bk=;
-        b=WdQoDe/R0BcZO0rZ2zcUtH1hWmfNzEdA5DRDS7qQ2R/zrY0RawiA25yqbgVZLyr82f
-         8OtLki66iNPba3td78OTnYu+wzZtZkgOxvCfl3hgY0e07fS5jTIM+z1CTtlD5mv4qRXj
-         t6Bwi6uusi3PDJYyg28RrnwT6f63yVCQcU2UWKTuZMKPAbqzOeSEtyAF4iKTWWQvAd6B
-         uKy971Ee6oZyN+JWlQ8lWpUbqeWqklsVaErU64aVDIUa/accxkn1oMTfnm5qtqyJH2Jn
-         MveiyiRfS4OYjRjwOnluh0Q82VPopx1hkKVxCW2Ik4YQtk99rRo+2Xg5PDuV88sGylrO
-         nObw==
+        d=gmail.com; s=20230601; t=1773258714; x=1773863514; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7aHPhdDyOXpYHbCyzKIIDvUmbmQ3BcfB3tK1FnL3jrw=;
+        b=LpVJW8jHoKOqke4kswNAkinW0nwdjkd661E0zsHSz6PNo4uFcKv76xSTik17+Q1J2K
+         ie8qKlpOimDBDg1wW0mJUm7A7AkOBOf+ERfiWORD6To0Ev8Q75eJ0y4VjmNWiiFN5T/0
+         vWI4DyPHYnTXi9H4ltklNGl9nWFQ6r0Tg7iG5X0VGt4N/rM69OljGE1DRR1nbGcJkUgF
+         x94yCAVpi0twQTC2X3rSXcuEIvXKObhyCCcwzGJGhng17VI1u5S7kjXcQyTVctLXLX/L
+         czG2OdZ43e/oQ2VEW2hj9oS59P5o5vllkTEEIFbRtJYkmb2rNN4OnxJZqPuouz2+3kOE
+         Zr7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773257060; x=1773861860;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8U0uYARB35fXHTmG04QQVNwq76UNnAJXyOiaCIyb4bk=;
-        b=jnIXsgV5/M9OQ5pthqEKwfdhW4oAT0T1UKwlHlD9NTeCM9aX7YX6sX00ozHGDaqkmy
-         E6AMO1sV/uxeFAgUYFaBkNQZqCEYlGUeTkXU2CjAyW/d+sBoJPlRwrskFJ/VlqgGEVS5
-         RGavuCDkPyKpsRbrio5P2Le7jicQ8KfZVfg8IMRVWtHFWKkRm/Ma0EOTdgt6RDy4COx0
-         AaG8SIwnTo0BnCWysZVH0zLQRxmGW1pa7Fll8lW7rA+FhYN4BguDzUEtk+6EGryIACBF
-         Dv8c5jwGStf8HGgpJpV3SmoDDy/Ha6k0O73T7D4m9PLdYjEUl3EJVx0+uyToGm6PPVzn
-         Kz1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVZPQStkDteXrtm38bSDfx1xZnaWb6wAwBv7uM3B2S/Sd9qo933sB05ltPP/3kTt1UPfBozqsw0vA==@kvack.org
-X-Gm-Message-State: AOJu0YwrXMALV/w8cF9Rb32qGtlhAtgkaAS3KzuYSITFSe77vYJ0XqoQ
-	cr0Q0sidfo0laOzSQw3wbuw4BjW3bJ6fZBhgUeh9nnZtsEN66oX8nea23LVJYaakKSc=
-X-Gm-Gg: ATEYQzzS60B1gUDSCWruLBeibjyJyL2bFvng14ouQAB2zm6mffo4KCrkdgmAwh+8THH
-	4SQKaGB4RD59TL5m01pJx+nN79QbEvdIHnkglQ90215kMxaceu94Bwj6gisHpRMzcZFMYrXTdn2
-	7u1wm9gZT5YWbBFIIH4yI76/QV7eLY7dFk+qixrElDRLbZ86ULRmEZRKrgsoikfW472Wu9f022X
-	hF3Db8lbsOTmCfpym4sbowdbJk41aAOBk82Y0uAAzNmmzgCbsTNDZTfbXogG7KLGbdyfAJqfq/u
-	CCDXf53fnWqkhU71OpZKwHGVxLI7Hh7rPb0RbXxgf8acV+0MjBvlN7ZsquV61FHBzKDiEo2kY66
-	Es75c96Pq1MLNEmw/MLZ8r4NkwPwYeW2LLaoswu+fDLfnFtLQyRUhnB2Ail0PfLLr+M4dRsK1vr
-	X3f31m6zWz1WrsPRltCCP73w==
-X-Received: by 2002:a05:6214:2305:b0:89a:717:1e48 with SMTP id 6a1803df08f44-89a66ae1ce8mr47665266d6.58.1773257060159;
-        Wed, 11 Mar 2026 12:24:20 -0700 (PDT)
-Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a65cfc409sm20026086d6.35.2026.03.11.12.24.19
+        d=1e100.net; s=20230601; t=1773258714; x=1773863514;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7aHPhdDyOXpYHbCyzKIIDvUmbmQ3BcfB3tK1FnL3jrw=;
+        b=wmBhkIZRetK+bYXz/yHMfbd3gEsXAcvc+lnV0xASW6O/ivtA61D0hN7LjR1xyjUHgt
+         TdVspmWGrUNpz16POWlqSjPU4jwmTqMXaZH1vzwEAi0gfrZldxRQhaLfpln9YHZES0Td
+         /IyxQgqS8QPXc0+FXceeL0En27HwU19cJdExa+gueNhtLmWWRXxeEbD//zPG7wLRZdf2
+         s4nX9d4iKVl5FYyWv8/m8WxNaFgCEA6ckUOUogg2sWew2G5K9IiaoVB59KPGNUI6UXuk
+         oSqOZed0gbz063Z8z0aVK2KjmheQuC7R5ECgVkX6umeHgXPqB3u8qaTD5VA0bJFjgJ+/
+         MRXw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5fz9XUifdhz9shgfx7UsqDmcHQ43qmiX/UrL+U9bx6DcaVCiGd5/+uW5BrEpIjeIOUAjzD/AJng==@kvack.org
+X-Gm-Message-State: AOJu0Yziloy2Pau2rXK3spOiH9D+zXYt7lbPHSGI6++VO5hQRWg1OHU9
+	v1hHIAbSexwaQV9pYRqbClZ0rU0ul/AeF5X52Lj9IAHlYl1W7FkUvh8V
+X-Gm-Gg: ATEYQzwLFGDwAr1IMrW2cISArrjmLimwwvEcRyH1AIaeyxGvmgTjqeU4bWqvHYfeNWi
+	3E21P4e6NixI289ZOb9GIy11eD2oDq+ExDqznyNGhav+dxexy+PZ8+L7ZL4tUr8Ql22VGh8Ejgj
+	NQ1n8GO98q9IshAcgHipMlXhb3RaYFRnjDhjoYbJEPsPqE/0SNKA4PUDODhehORHzZ2xNhnV00T
+	q4lH2DwFsnaNpw44Pqquca6qsZMhscDhjRx2NkJaCEuycWA6Nba1OQqmFQpXXrEcMH5oq4TFX3D
+	sAA+LRfnM9HDGzgWG9shDygg/Cz4MQzbow984uCnSUaKrqRQn5WpMbi4AfzEOPOXZsQllOIBylW
+	CUPSk9eIVPgzv3FzSjSmsVogAvRB2VLHqTz9Ag3JtDyfjdRL7UP6hZi5Dh4TEQc5QuKlRFcpc6c
+	7TJb2mEFE534GsE1EMSN1+
+X-Received: by 2002:a05:6808:14c6:b0:467:e7b:6fd5 with SMTP id 5614622812f47-4673359a676mr2487176b6e.41.1773258714266;
+        Wed, 11 Mar 2026 12:51:54 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:8::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-46734125bdasm1805164b6e.1.2026.03.11.12.51.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Mar 2026 12:24:19 -0700 (PDT)
-Date: Wed, 11 Mar 2026 15:24:18 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: switch deferred split shrinker to list_lru
-Message-ID: <abHBYss1GDYX4uWe@cmpxchg.org>
-References: <20260311154358.150977-1-hannes@cmpxchg.org>
- <050ce5bd-4725-468e-acaf-7fca72b84d06@linux.dev>
- <abGpgxsDKeSc6cjR@cmpxchg.org>
+        Wed, 11 Mar 2026 12:51:53 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <hoangnhat.pham@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH 00/11] mm/zswap, zsmalloc: Per-memcg-lruvec zswap accounting
+Date: Wed, 11 Mar 2026 12:51:37 -0700
+Message-ID: <20260311195153.4013476-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abGpgxsDKeSc6cjR@cmpxchg.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 32E7814000D
-X-Stat-Signature: ichiceysqg3nnirzywbhmd98thy1nqf5
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1773257061-427661
-X-HE-Meta: U2FsdGVkX19DGuMuvxoykaUMWEjyCw4WjTn7ZZ55+PttmB5sWkRZKtJq3WgYq1XJGsTNELbBPGzUmMessTwYDqjVfUXES4EvWjaHdKOm+6onGUatyzV2+CAPRekrpFWlyw5MOuadoc8eQD2e+Y4f/K7YbFlTLvEQDuB8enmmfE6WgbIP2xQEqhGNh7hNq/bW1vRWLBckMNHI3WqZT0swo9A/i7GTfUu3j3qcZ2SxfVyhCKrVRJsLzi4SHKHyTiO4SEqJTAi3aznUHpgQY54LxdqEHFF+p42i+teJChYSGWgjY/jSg8/TH2G3+TGh3WKESeMYKGD5ecr86msUCmoU0aXETs6dNCFp8cwBVsJ2svNywQjYrVY7DKz7Oo1lNo3avON40I6RJV7QbpOZxnvIX5sKCB2mBKXqyMlHXoJW8GzVJT7cEWlhOLNVE48lgKoAGoqxXuruxv4FHKfifhmJuzmVsCOWalXrrvbOmwz5vbkvCBgKB0xZaplPBIqNwy3R1ndxkBtwg6uzhmEAtHZ5OcfIzN6IbOJzS9U5d34v7Eq6LSfTv5mko4rKW/QshkY1ENYYe96Rz6n2QKX5i0UlxHg9CNNPWlCiOcy0nPKlLGUXZ2v4phorPANqwSEX+8WUBao/snfxkJEhH6myZgZftjn/VbVohkB3rxImnNOngE8c/7lYF6QbjQktyCgHNz2Z4arsccED4GAvJzL872gEEkHFgYsCR2MVUza9SGGTSKGrRnDTyGyeI1QG2tjdaqTvqt32vtISXj3eqYwayKrsc1JwlnfMorjTmrVohIrXGepGT0SXjkk0GNSX5WCLeihQT0e9XVmJGGu0cNJhSYUA4uI2/ZysFmmPfY8F5O5W2VX2k5B4hkfXu0qAkuuftG5UM3gVz5l9Z4tqL2fUswhaiagQmYDq6ZOTt4CprZDl8bgHQX8IUCG1AfdIjypQV50MUX+YpjsNt1mbFN/LdQp
- qejSRjL9
- +zPEIpiem6IsDVfGUxwLizGmJIxpOkakZAiLl6hUJV1z5lKFJzrXx5syk44mqMOjnhUupgT9ottz9+BI5gGAPoLzbJkXAEtLY7qPngeKeNxpXxjBm33HAdh5+2h0BSzWxDLtYBPC3QR8glIXGBN5WUa5RGci61jv+MKmjIzY6zLAwAgbLuWnXFG4vezSvEzJTE1aQxYXB7CZC6vq5YQ0dQsBadysuWi19f93D1rE6v+ua0HCY3XdFic+pfDK25Azt3e+2rHpEpK8hWvpfMXPmxRvIUAXsOgQks1SxK8lUUksL2uAaZoxiPdN7CWEwM2JT9eF4btZOQ0Buizmbi7ETHNW1T5GB2k872oNKPMxyl+nybccc3CRAuwx3BjB0QreeHWWYEsYZFBJcTbOnihurCMZ06+JFp93qkHqyeHHhBwvXIpLkCANljZjgvC0KTohezPfP/CVfL40fcrs=
+X-Stat-Signature: q5fcy13y7jzub74tdncwry6ebdymctsb
+X-Rspamd-Queue-Id: 70306140009
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773258715-724311
+X-HE-Meta: U2FsdGVkX1/uXwrOwq1F9oSYTepvhUaXgwa/nAD2fCBYmtSHR6W2SDBynXEmLI6Fr9U9H1QQ0kuzUk7g/P3y3I+I8RjkK3wNWqxGclD2n4G76RjaDfORi9ctUfH0u1ZexUXcQFMdI9Qv4GqIGyxgRtbV0EWtO8nuc2VqZYzpRGcjJewxSoiRZDd8H/CAO4S9RNGJFn2jBW6tMTVSuV7GT08h/62eJNCC4fvm05Qiqnc/p02yw14r4hRXK+IB/RrN4INKxJZ1HTc3YvviPPxzuhpoeqVOcuVpHa9XD0PwVHmY5hJAyHKpXLByN6sSP+Da+La0y779QLoFTIT88+Yd8Ac0td3CuLLuuhAyrCYxtqkWsXGg+PkAtVoiXZJbXpM4MqRtc8YTppBf3kLyFZnbBy/xXQ9leEym9oTRTpXxSWwb9+CV0uPjBUN/T/JtZxGI+vA8GV/b6xs23cY1nO136XblvM+2xrqpAp7RrHUxqMSnl3BkSuqUQDm2RiKROVRVlbiIW0/XbsJo8O0tSrLmJC0xFk3QKEhVIsrq1qCKZqJQbOyaXLkY83zIX8tMtXnm3wUhvGvTVR1ekt/tzMP/YDH/p+OQOKarWlmLOX1GcUrLqRBFx9VewO3buNNFH6HSKkzmVxBW0fHltjRHC7r/sJ4nwg4j3BbzGG4McMc0KueOfeFDIS1Q1itlyr13Z4M1TQpDa33rJLAnJlqP8TkkRfQEE3TRumJTq3SjgMABebP7D76glSloywl5jTGj1dUEqTNUzbw4NWk7caH4pNGXwNfTYCWAB9nC8egwjBkTPra1PQZgtKYTUrZMVk/P6BTbzTM7Pp+vTMkj3jIjAN+8apOPWuM1wiot39y6ouxY+lDS/BPxE4mioNrQzRweF3kAy5mdWXPWVYqcY9yZIxnVgbjHQkAEXLcDPerswZBx/PfMGpIDmPLIZSbkLr7yfAARMpI7DZI2ZGavcM5pwkc
+ /4EP09eS
+ WhCwEBTeRFyy+r2VW/mvwkkwMXhv0U0p8YIM7zVvn3Egck1Pyq5C8djnvNyqEaGf/06UglTiQXCN4I23ux/Klnpacx0ADkAXg7M7qeasVffP9ayRDKvtGlst120LRa9Ib6QfzWWnjxkPAzUJwWXIgKwES8flyGBB6MZwR0gaVf3C9OYmKkR+H/ZCDlXyAjn9hVs8IakE78mSo7GK9AXpte4taICpUM2uOdUnwuFo2rm8ZKHCZcvhcmehkhPbgE0lK3ZFRnz7tmfxMNXqv2FyWeRp+41XGOCVR1kjK1H95PsjhGETqJEyN540KPCRxqPcm4QEh1/tNSaPgxy+0AGxMNBnqdHTGiFjc+an5exyjRThTFvvCl+EaA/v7o5DfCK1QEcDERBOL5ObJ6AHK5AwSkL5Mue0pO9dYFmeZbPWMKw4ASKIGs5AfMCxEVXok+GHiNsvynlo+GR/L+5ZUt4G6xTD5sXyXEZ+hxYcGSEJwUVGMLdZblSiC/j7l2nzMp2VseAsw6gY5UoroPjTJr4P54fR9BZJTYW5o2Td1RKwACFlTt7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,44 +128,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Mar 11, 2026 at 01:42:32PM -0400, Johannes Weiner wrote:
-> On Wed, Mar 11, 2026 at 08:00:29PM +0300, Usama Arif wrote:
-> > On 11/03/2026 18:43, Johannes Weiner wrote:
-> > > @@ -3802,33 +3706,25 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
-> > >  	struct folio *new_folio, *next;
-> > >  	int old_order = folio_order(folio);
-> > >  	int ret = 0;
-> > > -	struct deferred_split *ds_queue;
-> > > +	struct list_lru_one *l;
-> > >  
-> > >  	VM_WARN_ON_ONCE(!mapping && end);
-> > >  	/* Prevent deferred_split_scan() touching ->_refcount */
-> > > -	ds_queue = folio_split_queue_lock(folio);
-> > > +	l = list_lru_lock(&deferred_split_lru, folio_nid(folio), folio_memcg(folio));
-> > 
-> > Hello Johannes!
-> > 
-> > I think we need folio_memcg() to be under rcu_read_lock()? 
-> > folio_memcg() calls obj_cgroup_memcg() which has lockdep_assert_once(rcu_read_lock_held()).
-> > 
-> > folio_split_queue_lock() wraps split_queue_lock() under rcu_read_lock() so wasnt an issue.
-> 
-> In this case, the caller has interrupts disabled, which implies an RCU
-> read-side critical section.
-> 
-> That's also why it's using the plain list_lru_lock(), not the irq
-> variant. Same for the lruvec lock a few lines down. I followed the
-> example of none of that being documented, either ;)
-> 
-> How do folks feel about a VM_WARN_ON(!irqs_disabled()) at the top?
+INTRODUCTION
+============
+The current design for zswap and zsmalloc leaves a clean divide between
+layers of the memory stack. At the higher level, we have zswap, which
+interacts directly with memory consumers, compression algorithms, and
+handles memory usage accounting via memcg limits. At the lower level,
+we have zsmalloc, which handles the page allocation and migration of
+physical pages.
 
-Okay, lockdep actually does warn. rcu_read_lock_held() is explicit and
-not appeased by implicit RCU sections.
+While this logical separation simplifies the codebase, it leaves
+problems for accounting that requires both memory cgroup awareness and
+physical memory location. To name a few:
 
-Paul pointed me to rcu_read_lock_any_held(), which we could use in
-obj_cgroup_memcg() to suppress the splat and permit implicit RCU.
+ - On tiered systems, it is impossible to understand how much toptier
+   memory a cgroup is using, since zswap has no understanding of where
+   the compressed memory is physically stored.
+   + With SeongJae Park's work to store incompressible pages as-is in
+     zswap [1], the size of compressed memory can become non-trivial,
+     and easily consume a meaningful portion of memory.
 
-Or we can make rcu_read_lock() explicit in the above code.
+ - cgroups that restrict memory nodes have no control over which nodes
+   their zswapped objects live on. This can lead to unexpectedly high
+   fault times for workloads, who must eat the remote access latency
+   cost of retrieving the compressed object from a remote node.
+   + Nhat Pham addressed this issue via a best-effort attempt to place
+     compressed objects in the same page as the original page, but this
+     cannot guarantee complete isolation [2].
 
-Any preferences for how we want to handle this in MM code?
+ - On the flip side, zsmalloc's ignorance of cgroup also makes its
+   shrinker memcg-unaware, which can lead to ineffective reclaim when
+   pressure is localized to a single cgroup.
+
+Until recently, zpool acted as another layer of indirection between
+zswap and zsmalloc, which made bridging memcg and physical location
+difficult. Now that zsmalloc is the only allocator backend for zswap and
+zram [3], it is possible to move memory-cgroup accounting to the
+zsmalloc layer.
+
+Introduce a new per-zspage array of objcg pointers to track
+per-memcg-lruvec memory usage by zswap, while leaving zram users
+mostly unaffected.
+
+In addition, move the accounting of memcg charges from the consumer
+layer (zswap, zram) to the zsmalloc layer. Stat indices are
+parameterized at pool creation time, meaning future consumers that wish
+to account memory statistics can do so using the compressed object
+memory accounting infrastructure introduced here.
+
+PERFORMANCE
+===========
+The experiments were performed across 5 trials on a 2-NUMA machine.
+
+Experiment 1
+Node-bound workload, churning memory by allocating 2GB in 1GB cgroup.
+0.638% regression, standard deviation: +/- 0.603%
+
+Experiment 2:
+Writeback with zswap pressure
+0.295% gain, standard deviation: +/- 0.456%
+
+Experiment 3:
+1 cgroup, 2 workloads each bound to a NUMA node.
+2.126% regression, standard deviation: +/- 3.008%
+
+Experiment 4:
+Reading memory.stat 10000x
+1.464% gain, standard deviation: +/- 2.239%
+
+Experiment 5:
+Reading memory.numa_stat 10000x
+0.281% gain, standard deviation: +/- 1.878%
+
+It seems like all of the gains or regressions are mostly within the
+standard deviation. I would like to note that workloads that span NUMA
+nodes may see some contention as the zsmalloc migration path becomes
+more expensive.
+
+PATCH OUTLINE
+=============
+Patches 1 and 2 are small cleanups that make the codebase consistent and
+easier to digest.
+
+Patch 3 introduces memcg accounting-awareness to struct zs_pool, and
+allows consumers to provide the memcg stat item indices that should be
+accounted. The awareness is not functional at this point.
+
+Patches 4, 5, and 6 allocate and populate the new zspage->objcgs field
+with compressed objects' obj_cgroups. zswap_entry->objcgs is removed
+and redirected to look at the zspage for memcg information.
+
+Patch 7 moves the charging and lifetime management of obj_cgroups to the
+zsmalloc layer, which leaves zswwap only as a plumbing layer to hand
+cgroup information to zsmalloc at compression time.
+
+Patches 8 and 9 introduce node counters and memcg-lruvec counters for
+zswap.
+
+Patches 10 and 11 handle charge migrations for the two types of compressed
+object migration in zsmalloc. Special care is taken for compressed
+objects that span multiple nodes.
+
+CHANGELOG V1 [4] --> V2
+=======================
+A lot has changed from v1 and v2, thanks to the generous suggestions
+from reviewers.
+- Harry Yoo's suggestion to make the objcgs array per-zspage instead of
+  per-zpdesc simplified much of the code needed to handle boundary
+  cases. By moving the array to be per-zspage, much of the index
+  translation (from per-zspage to per-zpdesc) has been simplified. Note
+  that this does make the reverse true (per-zpdesc to per-zspage is
+  harder now), but the only case this really matters is during the
+  charge migration case in patch 10. Thank you Harry!
+
+- Yosry Ahmed's suggestion to make memcg awareness a per-zspool decision
+  has simplified much of the #ifdef casing needed, which makes the code
+  a lot easier to follow (and makes changes less invasive for zram).
+
+- Yosry Ahmed's suggestion to parameterize the memcg stat indices as
+  zs_pool parameter makes the awkward hardcoding of zswap stat indices
+  in zsmalloc code more natural & leaves room for future consumers to
+  follow. Thank you Yosry!
+
+- Shakeel Butt's suggestion to turn the objcgs array from an unsigned
+  long to an objcgs ** pointer made the code much cleaner. However,
+  after moving the pointer from zpdesc to zspage, there is now no longer
+  a need to tag the pointer. Thank you, Shakeel!
+
+- v1 only handled the migration case for single compressed objects.
+  Patch 10 in v2 is written to handle the migration case for zpdesc
+  replacement.
+  + Special-casing compressed objects living at the boundary are a tad
+    bit harder with per-zspage objcgs. I felt that this difficulty was
+    outweighed by the simplification in the "typical" write/free case,
+    though. 
+
+REVIEWERS NOTE
+==============
+Patches 10 and 11 are a bit hairy, since they have to deal with special
+casing scenarios for objects that span pages. I originally implemented a
+very simple approach which uses the existing zs_charge_objcg functions,
+but later realized that these migration paths take spin locks and
+therefore cannot accept obj_cgroup_charge going to sleep.
+
+The workaround is less elegant, but gets the job done. Feedback on these
+two commits would be greatly appreciated!
+
+[1] https://lore.kernel.org/linux-mm/20250822190817.49287-1-sj@kernel.org/
+[2] https://lore.kernel.org/linux-mm/20250402204416.3435994-1-nphamcs@gmail.com/#t3
+[3] https://lore.kernel.org/linux-mm/20250829162212.208258-1-hannes@cmpxchg.org/
+[4] https://lore.kernel.org/all/20260226192936.3190275-1-joshua.hahnjy@gmail.com/
+
+Joshua Hahn (11):
+  mm/zsmalloc: Rename zs_object_copy to zs_obj_copy
+  mm/zsmalloc: Make all obj_idx unsigned ints
+  mm/zsmalloc: Introduce conditional memcg awareness to zs_pool
+  mm/zsmalloc: Introduce objcgs pointer in struct zspage
+  mm/zsmalloc: Store obj_cgroup pointer in zspage
+  mm/zsmalloc, zswap: Redirect zswap_entry->objcg to zspage
+  mm/zsmalloc, zswap: Handle objcg charging and lifetime in zsmalloc
+  mm/memcontrol: Track MEMCG_ZSWAPPED in bytes
+  mm/vmstat, memcontrol: Track ZSWAP_B, ZSWAPPED_B per-memcg-lruvec
+  mm/zsmalloc: Handle single object charge migration in migrate_zspage
+  mm/zsmalloc: Handle charge migration in zpdesc substitution
+
+ drivers/block/zram/zram_drv.c |  10 +-
+ include/linux/memcontrol.h    |  20 +-
+ include/linux/mmzone.h        |   2 +
+ include/linux/zsmalloc.h      |   9 +-
+ mm/memcontrol.c               |  75 ++-----
+ mm/vmstat.c                   |   2 +
+ mm/zsmalloc.c                 | 381 ++++++++++++++++++++++++++++++++--
+ mm/zswap.c                    |  66 +++---
+ 8 files changed, 431 insertions(+), 134 deletions(-)
+
+-- 
+2.52.0
+
 
