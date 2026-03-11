@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D328FD0651
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:15:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18AABFD0651
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 14:18:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10A5A6B0005; Wed, 11 Mar 2026 10:15:47 -0400 (EDT)
+	id 30E776B0089; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0871D6B0089; Wed, 11 Mar 2026 10:15:47 -0400 (EDT)
+	id 2D3A96B008A; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECB7E6B008A; Wed, 11 Mar 2026 10:15:46 -0400 (EDT)
+	id 1BF1B6B008C; Wed, 11 Mar 2026 10:18:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C948E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:15:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7AD581B7075
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:15:46 +0000 (UTC)
-X-FDA: 84533980692.06.95BACA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C256314001A
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:15:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n3DndFFE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EEC3A6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:18:05 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8105B139CB9
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:18:05 +0000 (UTC)
+X-FDA: 84533986530.09.EEE13C3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B70784000B
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 14:18:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJcweLKm;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773238544;
+	s=arc-20220608; t=1773238683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Clt0DQs60d/ZG03TM9GIry7bo+puyERJ0DzramOvtvg=;
-	b=oiGxhpNuPFJln0OIoL/CyjPeg8w5MEzc92lt7p9oj+l9Fief6+owSDr99oZKpJTbTIP7Qq
-	fJsRpmA8Fl5vyqjfEOuoCU0dZWwXk2Z88Vnb7xrma4TFDNDDvkJONm+boTAeb1Lu0xu0pf
-	9z+qFs4pLK5YO8w9Ge3GV6N5YQihvXw=
+	bh=AC2U3mmRonwdJEe9Za0niCObP4jB8XCHVibzx8Qg188=;
+	b=pugLHdAY9B1PXubLotBNal90AcuPBiKpoRo0DxJO5TbSR/R7Oy4GR+r3UCZvhlrzlh/OA1
+	Qqbas48tEK5Kw25uqZvwocu2kpdckSevOqF003Fn0q5q29fgx/K2Qh8zZda8gMQFmLUqZ1
+	J0illtp1OxqMlxRyUsj5VhwYfY9Qdmo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n3DndFFE;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773238544; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aJcweLKm;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773238683; a=rsa-sha256;
 	cv=none;
-	b=CRm/YMMbqQBkfHTlSMTbTWWBk3hx1Lpi64cIOf8r5CfjzUtpJTZSLDi/q3gpuew9bTsQDq
-	Lj3t4DTgPproDxjSNt9+45DDdSZ3DxGdIzXCvpn4ln3kBVrep6MC4/tNFg2ulWOM6nLEnz
-	ebmc8pL8eKkwFBiKlm3MHkdW0bxsKqk=
+	b=jPCqnY6KoQ4ESU8Chu/ezr9KpDeVrNuXztWF1lgAdBxviW7A47gJqLBT+sB2+5/LUWnhqs
+	DnbWhHypkwJqlGbvejFZ6w/nP3AzGAb1GLcq0hB5Eai0sP7CvWnwEtkL+GyBms6/Ho60PM
+	Dg4SCA5CZvmpyXQ0wIW9OjWEuNNjib8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 679A4600B0;
-	Wed, 11 Mar 2026 14:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECB3C4CEF7;
-	Wed, 11 Mar 2026 14:15:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C0438400FB;
+	Wed, 11 Mar 2026 14:18:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C25EC4CEF7;
+	Wed, 11 Mar 2026 14:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773238542;
-	bh=gJf2hT1zxwV0L7MQvy0u3llLuP0G7FBCE3sa8wyOois=;
+	s=k20201202; t=1773238682;
+	bh=thMAcRBBlSWiPQMxkurkltMdIsa+zjOuygZaQbtIy1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3DndFFE9UkffnsBBonl96rB5qoX1Z3uyeu5Mj3TI2ljDgv3/9fzJ89O/jXyrvw1p
-	 UkszehXje7Of9U7WRDkWoq885wyPcFnnN6v/CkwRAMuS7HehWQq7eWkySs3TvKCD+1
-	 B9cJIeCm603PxlOK17q5MhQiPnrqQL9qwVFPWm2t9EuoyC+GTTUc89bJZ9go7RkbFq
-	 yZdianXHsN0JOaeOBsx9vqASMrYEQuXHS/FprXofvqFCaL/8J9G1SRdgMxQFzDMhdX
-	 wdurVrXQesYNuBEgARJr6+oQVEh4UzIG06lBd3KpADdGkJKryfMuh1PHogzbm7ncOH
-	 CDiZfZfU2bGRA==
+	b=aJcweLKm9pp8NQp9VuqHN9g8KhPIAgSKYkkfrCK91Dse76Jy5LNRsMJfgggHjy0WJ
+	 n+GgtNlQX1XEejWmDfSv4eh5QAFpi4qDOdZgkNn01QVPdoFDAc1K9wx5kBji1fRo1d
+	 zDe10WErzLLJjshSAEyqrIcJVt57pk7/pHxMJk0JnJ+69U44Uw7Q1oSM6fPCb/dlUo
+	 /Og7UF/JioKTYZ3ynhkxgylF0e631eLBsIeWimgQytJWU5CGOEcvuCLC2Mt1ETLSoF
+	 kN9hZihzKQlvGBFKRqJiSs6zCWZPbBx8I2mTPKzPr5PhV3hrIqOQUci0OCL3YBhHrd
+	 qV0POmeC7KNxA==
 From: SeongJae Park <sj@kernel.org>
 To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -75,22 +75,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/4] mm/damon: Generic context creation for modules
-Date: Wed, 11 Mar 2026 07:15:32 -0700
-Message-ID: <20260311141533.96435-1-sj@kernel.org>
+Subject: Re: [RFC PATCH v2 2/4] mm/damon: Support for synchrounous huge pages collapse
+Date: Wed, 11 Mar 2026 07:17:53 -0700
+Message-ID: <20260311141753.96543-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <013c9fcd-bdeb-4508-8495-9ce9cd65b578@huawei-partners.com>
+In-Reply-To: <0c3068da-4dcb-4bc7-a762-2f529cb5abc2@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C256314001A
-X-Stat-Signature: q3awi3znfc35t13dor19xkoygt14iuai
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B70784000B
+X-Stat-Signature: io7faqnmm3mea5sdiigzkgj6wz17stax
 X-Rspam-User: 
-X-HE-Tag: 1773238544-547820
-X-HE-Meta: U2FsdGVkX18LbVHROU8nGBjqJ+ULCGi0NgxImmzeJt92xmxa73xzUAXaYR9H/Wi6ZGqLFer4iTNQgCxYX50pHOVzo0GD+6IxnIhhxC9GUOzCStJT36ygoAn0d0K9x55kSPqLq++fyKdHm99JycTjTSQ63n8M2Me3b8eBTzWfeHOX+MqGdsoJzVqenc7LgFxu2x+gTCnsvuK2kc9Zt7ZCdmGM9V3UzUGhAgkl11NrEC4p4O7uJ/dKfz6sCXqbmLSQ0aZLFIwuX456iljlMIgUhVJIG08rcIYcX3zWC48+4ZEPiANgDqn50/lzPFbW3u+Z5NNO4XxYmeHf5yhBQOxxiZv0ewN290jokaCC+HrdXs3YN+WoqUOI4IcAHnCzmg8IxtCKIoQcYNhL9pOn7ObwHLBPHAkb0MlwC2fog1TMEMuXZggM5bsGQsVBNHHLwYf7+uNJTBAvT04sUzLZ22jkAT2xVSnOUbeDo+7AoDfKi8YI+xWUiZmCwTy2oVkLuwzdriFXRqR+SdicyxtJasNjr+nncEepfYoG9ny8Po9jcsWo+zFTmp1otuWYPQh4WVzsTebwwHUtfNNRQ0g758YxzD8hWHbJhIsWHFr9mzht/OaRKkWE76MJY9RV6Ab2+cfmJlGM2VeXOt8GI9ehGPqxgLJrbjBMcO6t0NaqsFC8YRLoUInwLRVkTl8/7WdUEW8TvWir0dg3cNUp+OOUNCcQeC1rlzHRr9uks4eKXMW2CiFt6om8stGChuLhbKUWfLsYH+xrFQpMJCOsEhnNvbejAcddbj4VhbfRaBl0GD6NiV+PlZ7Ont8EKmkvjP/nQRJZq9/M61BGXAmdqkHqciEd90bdH6vBakT+GE0ISg7m95wHSs0aZK7FYNAHHJl5JWQ8qPKibAOSwXR8shE1BYiQNqNcXShL6vYfeOGt8WCDdAN+SmOS15wv/ij/t+oIJA9Hw2CMRkCrst6wb5pDXqB
- ZkMecYfr
- oV02w4wuXyDgyiJaQP7W55E4QCkzZQfFktumDBVzjZSKtU3Kf39zy/hFezKedAwoI+z43/hwIClL1o1M3iQ75t4v93N5oHmcNQILH7X7w9YCdnJEBSFkf6SofRlqgec0Re+CVfhgC//gRunz2YJnsav+frG68PlPVSrJ853xL18l1V5etKV2iEJv34VS7cQLXAqF7Il7y7r7Xws554heMIzC1ODrXWWT83mmsN6F1uGASosgOP8OnEEwgXJQmPI5DkvMyiAGHBesTnlGld+206yyNskPwfaAbe476
+X-HE-Tag: 1773238683-415981
+X-HE-Meta: U2FsdGVkX1/11p+GluvgrOuhGRnpR3QTNDGisDRpSUc4pe7cVsD7S3u3Llmp4qsdzK+YdI+RNijbNUYYMTnGyGRGd/QE/Wf0kQQby+ezUTWDdPGoarUOH8pIUQWDCVgyWX68uFeI4ayDWW+vx9wPY9Djq1mmNq2HCL2cwyFhgbINw8le7YBJWzj2bD+sexGD0FolZNnL86JhOcw7E4bBF1VTSGU1mnthSZvAuw0+jERwp0ez6FNqxfne7emtRoQYNMG78BK0vD5DrwXV0f/Gm4rNHeIr4TlLBIHDF0WehExFIumf3fGaWeMh+AYfltpytE+M0XDGJVyeEzWgYtdWRIbBzPu9K2jkHaLm52aWEXEmNMEGwju06/q1jthDWn6nQcnuan1k6oIMDb6cBamDiLsEO/hXWsW6tj8QzDJs+PJ/CHJFRpqouCLaNCMVfG1edhA3q01gKYqn6NlirKAOL0R5/k8Gh1NEyV/t12y4wqiuBYCqhtjAFgPFZSo1jHdyYS4cqjE3V2p1k6VWSsS8Kl7QeVOnAJ9KG5wWVd8DgtgRvd1/gaFznNSLXi7ceDETFvlGixhn1Hc/06mpCxNOfO7DoN4gW4fTNdzaNi8PsA25gmC35IMPkomxWuxMuTcZiyUcDnBML3ZDqzradlmIzh5oHMFzp1VOm5xZQofc5o8AZPIWhBNoou+BZdpdIouPSaHx2QtZ/nNZWdNqwMymGogkawxSkHymErGNNgpVeVMC52GI7YSzjzjnW4m0mMCBJVRqTq7yoGtufZG+J/HFDrN96XJw866O0aX/9Az2blvAmfp9rS9KNFFSk7+OiJ9+La6VLK06S5DihI3RrH9dTvtgIdPlNdRXi9Wtb74bU/Zwsrzebep0tAc53zHFnWUwHIAmMZOolcKkCgRkGfox5l6KO7R1GqMmygXH0L8Apswmdyu7aKTxKmCBY5EYy74Zdgvog18UgLDPNwOX80d
+ 5X16oaRD
+ A8Vui4ThhrZrURtwdCv8XUMOYh7G2RPY92aWW8ty37ILvUU36cTW8JnIM1yPp/CkaXo6BzqZD0rgaQlBbqy47n1e9RMLxOUyN6TFYbj6xjGAezanrAfIReJ61lgdQpmkAL2Rp4bOBieR3G3tLj5h0c9hrKAifHWMp3j00SwZMHzTEpn3zHdE3lmy7NklvegldHGnyyUgDTMLuqaz+DmOPqsBrhlh2JMTgA2fDgsnOmh7Xnxf/ah8Ocxtz2EbdanF5tD2TP0yF6uBcFu94Ns0ifaeKqJZbcnIESHQaWVo1oRDc3X5ui4GvKlpnHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,61 +98,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Mar 2026 16:10:19 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Wed, 11 Mar 2026 16:11:12 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
 > 
 > 
-> On 3/11/2026 3:57 AM, SeongJae Park wrote:
-> > On Tue, 10 Mar 2026 16:24:17 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> On 3/11/2026 4:02 AM, SeongJae Park wrote:
+> > On Tue, 10 Mar 2026 16:24:18 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 > > 
 > >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>
-> >> It is more elegant to have a generic version of new context creation
-> >> which receives the mode as a parameter.
-> >>
-> >> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
-> >> ---
-> >>  mm/damon/lru_sort.c       | 5 +++--
-> >>  mm/damon/modules-common.c | 6 +++---
-> >>  mm/damon/modules-common.h | 4 ++--
-> >>  mm/damon/reclaim.c        | 5 +++--
-> >>  4 files changed, 11 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> >> index 7bc5c0b2aea3..143ee0b21da6 100644
-> >> --- a/mm/damon/lru_sort.c
-> >> +++ b/mm/damon/lru_sort.c
-> >> @@ -287,7 +287,8 @@ static int damon_lru_sort_apply_parameters(void)
-> >>  	unsigned int hot_thres, cold_thres;
-> >>  	int err;
-> >>  
-> >> -	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
-> >> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
-> >> +				DAMON_OPS_PADDR);
 > > 
-> > I like the name of the function is becoming shorter.  But I'm not happy with
-> > the fact the resulting calling code becomes longer.
+> > Please add more descriptions of the change, including the motivation.
 > > 
-> > I understand you are doing this extension because you want a version of the
-> > function for vaddr.  What about introducing another dedicated function, say,
-> > damon_modules_new_vaddr_ctx_target() ?
-> > 
-> > And you can avoid duplicates between damon_modules_new_{p,v}addr_ctx_target()
-> > by implementing internal function, say, damon_modules_new_ctx_target() that
-> > receives the damon_ops_id.  And damon_modules_new_{P,v}addr_ctx_target() will
-> > just wrappers of damon_modules_new_ctx_target().
+> > I assume the motivation is similar to MADV_COLLAPSE that aims to make
+> > synchronous and therefore faster huge page collapsing impacts copared to
+> > MADV_HUGEPAGE?  It would be nice to make it clear here.  Also, if my assumption
+> > is not wrong, adding a test results showing the benefit of DAMOS_COLLAPSE over
+> > DAMOS_HUGEPAGE here would be nice.
 > 
-> Sure, I will do it.
+> You are right. I will make it more clear in the cover letter for the next
+> version.
 
-Thanks for accepting my suggestion.
-
-> 
-> Since this is some generic code not related to the module I am working on,
-> maybe I can move this to a different patch set that we can upstream. What do
-> you think?
-
-Please feel free to do so :)
+Sounds good.  But please add a brief commit message in addition to the subject
+here, too.  Some people complains blank commit message looks odd.
 
 
 Thanks,
