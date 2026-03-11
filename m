@@ -4,88 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE4D104BEC7
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BCE31049527
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 10:16:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22D7B6B0005; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
+	id 3F1DA6B0005; Wed, 11 Mar 2026 06:16:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D6826B0089; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
+	id 375A76B0089; Wed, 11 Mar 2026 06:16:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E6246B008A; Wed, 11 Mar 2026 06:11:27 -0400 (EDT)
+	id 223C36B008A; Wed, 11 Mar 2026 06:16:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D97526B0005
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:11:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F95F1A070F
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:11:26 +0000 (UTC)
-X-FDA: 84533364972.18.E5877CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CBD9D180010
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:11:24 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vORWu92q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F1BCC6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 06:16:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 80AD98C374
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:16:12 +0000 (UTC)
+X-FDA: 84533376984.12.7CA13D8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 53BDB40010
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 10:16:10 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LFNGv0wF;
+	spf=pass (imf27.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773223884;
+	s=arc-20220608; t=1773224170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hdOJL1yYTnsO411MaFPrt8EI5lpClWJ2queE70PRRaQ=;
-	b=DYaHr5L1u3dDr9ugHgQOdKk6GxzN5qCXcYD5AnuiJrssfYK/r/BamV0zA+xlaafddtWwSg
-	E/VqDQ3TdpLZvfhT10q3V9t9Wqhs0edC7uBCqusLGizr53cg7KlqkAjvJ14DOXIOV7OtgE
-	t2MmU3obkZ7l/0c4iGlQoS+Rd+ts3vI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773223884; a=rsa-sha256;
+	bh=ScqAB1pPNilAlzHe4XpHePGh9uVJkCnzlqRgNeOGVw8=;
+	b=ztoZ3SoQVw6+mtcB0+H2tm3iUm06rWOdS0qCdLPL0BLHF3Ea3JOv26d1ByLNON0DaDqJSa
+	lVzyvtgNl+QxQrybMgggyOMmkmbvW5tmd8Zpp1xzMWafxQrQovmV/LMRu00h/BF+F2C5fD
+	IRDSu42zr0+zQZBSTkGh69BOlSpv32w=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773224170; a=rsa-sha256;
 	cv=none;
-	b=X/ceCo/5U1iaAxS9fSiS4X784DxEy0FaKNCoXvFElby0fsvcEAcgfP9F7cPlyyAz4Mz6ri
-	u7Dxg1hwFNcRT4JzMi3LlypmWq1IU+kzil3e8rAkoM9vZa7VVLiYr+md695F7t8bQikyd2
-	lJAWlXkNfUOaRhnmNrVCmtAD/qbDouo=
+	b=Gr4n65v2QegL0hLExyWozcfxxHhLxxcPupj+Ux31s+Ik+2cPfCtKj+ClCuDVlrz+cA2g+h
+	uo0wmkeLRhR/Xb/ZsCS1WvtJjs8NISchqNtQA4nWic/ojrDWHouOsT0QrfMs2NpPbmrvKe
+	KJxe9s2ed3mdBgv7E6jd7sutHaEsGfE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vORWu92q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E1E46600B0;
-	Wed, 11 Mar 2026 10:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B9AC4CEF7;
-	Wed, 11 Mar 2026 10:11:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773223883;
-	bh=LCBZgY/aamBuvWc1+VzQD3H9HM4ufxSjmpZJ92W5bvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vORWu92q6D3w4sohkY61ALK9H2VgoICnSF9jtg/EfSS9Xf7VFwnDduwbWLSiY2pJt
-	 q9TAuqhB7by8fgQZ+LFuJ3uOG0cVE3feGj9rw/tA5G8kW8exk6yQixWp+n4CPlcWFw
-	 28LxQHJeeocPn7q3xXmo3PFWAqbxlJy6Y9wpR4NuSXrR5Fe9pb4E/wv4s6S3S8QQmy
-	 IZBbN7eZ57qrwzO+1ojlTLvHQ8QC11l/wQKTD6+eBsntkOVIe6ahTc3LS5rK9f8j4P
-	 WrItiND+pdNKTdyq4+J20jN5FjpDN7BZ/Wg7QMDOSD+D7gaq9nRTnCNjmPqdRq/vNF
-	 YOdjn5m7Ky75w==
-Date: Wed, 11 Mar 2026 10:11:20 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: Jianzhou Zhao <luckd0g@163.com>
-Cc: pfalcato@suse.de, akpm@linux-foundation.org, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: BUG: KCSAN: data-race in do_mremap / vma_complete
-Message-ID: <abaad620-bc19-4a3b-9bef-6a1ad4335ce3@lucifer.local>
-References: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LFNGv0wF;
+	spf=pass (imf27.hostedemail.com: domain of ming.lei@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=ming.lei@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773224169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ScqAB1pPNilAlzHe4XpHePGh9uVJkCnzlqRgNeOGVw8=;
+	b=LFNGv0wF7rR3zI8M7011oIXXxcsoPRMc8wXqjEWqK7GPI9n+LAGp48g79xmTlEYp6GkDul
+	Fl5hPlnfWp3ufG6808SFSojBj/iJwjvkM+pxyWC2oWfIBj7wnaBhkF8sGH3jTnojDU0gZX
+	cfdnrcYlQ1mwcZoBwswc8MODEiuVX0M=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-nIKYXTN6MSiF-HWLli9IXg-1; Wed,
+ 11 Mar 2026 06:16:05 -0400
+X-MC-Unique: nIKYXTN6MSiF-HWLli9IXg-1
+X-Mimecast-MFC-AGG-ID: nIKYXTN6MSiF-HWLli9IXg_1773224163
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 728AB1955F39;
+	Wed, 11 Mar 2026 10:16:03 +0000 (UTC)
+Received: from fedora (unknown [10.72.116.147])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 056531800576;
+	Wed, 11 Mar 2026 10:15:56 +0000 (UTC)
+Date: Wed, 11 Mar 2026 18:15:51 +0800
+From: Ming Lei <ming.lei@redhat.com>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>, Christoph Hellwig <hch@infradead.org>
+Subject: Re: [Regression] mm:slab/sheaves: severe performance regression in
+ cross-CPU slab allocation
+Message-ID: <abFA17ZmsW6RgcYI@fedora>
+References: <aZ0SbIqaIkwoW2mB@fedora>
+ <5cf75a95-4bb9-48e5-af94-ef8ec02dcd4d@suse.cz>
+ <724310c2-46a2-4410-8a5d-c69dcc8de35d@kernel.org>
+ <aZ7BbosIr2FvZFAe@fedora>
+ <c6a01f7e-c6eb-454b-9b9e-734526dd659d@kernel.org>
+ <aapeVb_L5zohWRRe@hyeyoo>
+ <d5cd4eb4-1703-41af-9c71-842ae33edbdf@kernel.org>
+ <aaqq7YmUcOht3GWH@fedora>
+ <abDA9UrJBT1wXh22@hyeyoo>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+In-Reply-To: <abDA9UrJBT1wXh22@hyeyoo>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: 7VQkcfy17Us8EkNYgqPv0OYQx7fKB3tkORc57SFX8gY_1773224163
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1a7d4c26.6b46.19cdbe7eaf0.Coremail.luckd0g@163.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CBD9D180010
-X-Stat-Signature: yrxzbrjwtxuz9dn3sdrqy633yud6byu5
 X-Rspam-User: 
-X-HE-Tag: 1773223884-651850
-X-HE-Meta: U2FsdGVkX1/cpG2KeUAMfWvnhxtz02x6lIkj8RZFh0OON/T+CqgncroGf2pBPqXg/SMTP5G6lEeuYlkKb5G00atsCZYMtKU0Jg/XfEgGmjoqpf8FkumTa3CQPYIMD0TE/fVrLwsfvoGSXy6+TODcgjE7pWttBEdxvZabT8cSvgpEenfCkUgRALDZUPZ2BgNPqLa+mvfWT3MeER6S3nSyEHl1TpWUrnqv5VjQOrh9/g+nHxOw074wviWJhS/jiU+4pyNC71yvoA+4HR/aBGwEZ2Rzdkgt/hf+2fQ/bUXEijrYHgZE7m7C0js1s+D8OJV4nKNzb2E8HXNmxrldZGzIHrCX1PjiUqW/rmR6Npt0TJESKrnX9U0aDlhEw9F6cA5u9NR2sllwS6vBN5R1pvDTQDW5MJ7ruKMQ2JNzzNP8tRJ32FvhbFA7kLkcif8ylqkE5eGRz8RIU73jX7/YnAu1V+gvFmFKtGPJwzPA92EjYWFxQkBBhj8eotdAzMhjwKaNW3YUteCwzlKmsbMkLtKPQMf8oxJsDLY0XbZZtaoMs7y11cTUyVHSBofjzgEkjcjMwcL8k607TJDuP9564IaXCwVMs2UbJdaQNhzw8E365WGgTdk7gAq/qgExgnb4NhJKXGuufOpJnBx9mj09HcGA8NCSJP2zDOHhNvA4UT0MHliYPWm1dn9T8qjle2MGIwfs3Y6YtsL/6ZHV6xe9FEg1A8FpQbbyRKKyfFSlV5kZAbeukKiaIorg7/IJr2KaweWvzUKbeW2w/TWZ2LehdopGaqjmtKcXxqDtUJ/OsCVznebwt/KUpDzBYiVUnyAPk6CJaNCnngf58hKJmUWA6ZARGr0xjC49Lh4k6ILgxDKawJ/CUgRWDm9x6vSLew8prBnWVjvDnmfRkf4hkoTfwgdlmbpTQNF4UXeL82/HQxtYdogtAJhxz7gyCCY0kcZ9j6YrEHgIFfWXVDzRyuPREnK
- MaDpssqV
- PEcuOThsRysqgJVECeHF1kYgUVZ91kpnSfSSvCo3BNr9hRKbhG3rNbtPVYgZ0lrsS/Dd+Y7Dn1ohxMb43snA1rZg4G0aO6fAKEifqw8B3eWRfIetL5Vd1rF2xFd8bFwNyckt1UuRgLdNQYipubf1P/SWanV6CheDloRe2gVb/Yw8UKZnPZTCudc2RvCpqFg3qD3HlNEj5/g4S+RDdjarCjXkJqV8qWgslWh/AJo0NN2p1jkag6UuQiizZ+j7vDXkf/hlwd79/M9nrWY1eQFJVE6fOEacum5gxEpACFslPduBVxyGfKi0AVmOHDw==
+X-Stat-Signature: ynbrjzo4kuxhmzgn58kdtwkjdk6mij1f
+X-Rspamd-Queue-Id: 53BDB40010
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1773224170-815508
+X-HE-Meta: U2FsdGVkX19KmQQsDx8vt+SlbxRJUR9m8JzAtaK0HXYUUwdKt5OJrWYu27NjRPuRNuUTE4bNSF9c5LI8OQXWyCpSHko0LMXFUE2njfkXEyYjzqwibhjrXsLPP4DUg4e+Yg24skhsiMN3Bd5X6w2YkIFZSqmt5KaAb31O7uZiEJiZO7QhIb5RRhagfhx/JwmJcBwlg7aG8jXTQB/3UC63Y7vAIICeFsHocpYXoLKQH9DFk9dURXWreFMSQWpKMNA65lQKmd6Oqaujwag39EJLSkIteEYtwBzUFPtoQEh/ksBMMu17fLJoau/UyshaxU6RohesVwuYhuiqzjGUvzGoqfPrFV3Q6GC/aEeSSwVH9U3hVbnSwwEoN03hzbdVrF0H0lLq/a85ozj3bpna4fPxhKyibzV0arYEgsvxQyqB2CutHG+8vWsDj1tO/Bm9bat8Yuiuv6Sq8sZlPJJTse5AspOwAHibH+2bv63ec1eEN12L5fz4gLUCfNO4n8jQ81FOVtsYXgK/0xq9TrjlBY6G0PTJc7lvvOHi6mNN0cM/6z/o1XZ+t/QgPxjTtZ8dRP2g8iuiEEWBm1MygpjSZxZURmYJWNRiapeAfnFTXWp+LuZ2SkXDMtsu/hBrMdIuLcUHF+TMz/pJ1wXngqn/RzvKZsDWLVhwSn49qCQroTlHU1jMgJPmiKva/CWM8pVXQ+HOJiFR4d3Lq1GLRz35Ht56YBEo8SAhDgxC5fRQg5eWQfH8tj2JOZc5pJiKdKgrcvRT3ehSAYjKZsxGE3CJbCBf+wjQenlFf9V02cvOXDP+ItsX9Y/BRNNIjmmbbVPyvxpIlzMbNA6Lr+R9l3r4nSL+YxURV87At7aJc4j0KrYymBtOW/OdQQyvJaMRJdvefNVsVAF1ttApuy7mmmH1EA3/scHe7gLQcwO0ebs7AJKX5WRvW9kqXOa+4O+YTmpjpI9vDjW1O+0JiBSUoX+78kg
+ CsRUje+8
+ dhwNg+lXllBimI7Y2FOt77ZxmO52KeWtyJFzSoUX/JfhxNgiYWFw9GTCdIjF/zytVZgO+9sIuc6pyE0elw6NfOg4wkJ88HcYNqEZIjHNC/IKZ/ufnG6RC5ZgWe06q5+OuS3hwea2ZyLxK10IBF8mXfLVXqbhCSfucLf/eif34xlbcgvLOdKjP53BPztgRnMTqaTWZlf1k2dGD1FYUWe+ATd94CHn9gJkt4qavUrOD+dWV3s+rB4J5igYoRNk9AfUgH7Ltie0v5ju1ATrz2Ca0SHFEQHKGpaCpmJySygZG+POqJtJN9kK7N8a80yB8a3LNJ7nExpEhjulscc8KHR4nEZ+a9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,103 +115,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(Removing incorrect mail, I know it'll take a while to propagate the mail
-change :)
+On Wed, Mar 11, 2026 at 10:10:13AM +0900, Harry Yoo wrote:
+> On Fri, Mar 06, 2026 at 06:22:37PM +0800, Ming Lei wrote:
+> > On Fri, Mar 06, 2026 at 09:47:27AM +0100, Vlastimil Babka (SUSE) wrote:
+> > > On 3/6/26 05:55, Harry Yoo wrote:
+> > > > On Thu, Feb 26, 2026 at 07:02:11PM +0100, Vlastimil Babka (SUSE) wrote:
+> > > >> On 2/25/26 10:31, Ming Lei wrote:
+> > > >> > Hi Vlastimil,
+> > > >> > 
+> > > >> > On Wed, Feb 25, 2026 at 09:45:03AM +0100, Vlastimil Babka (SUSE) wrote:
+> > > >> >> On 2/24/26 21:27, Vlastimil Babka wrote:
+> > > >> >> > 
+> > > >> >> > It made sense to me not to refill sheaves when we can't reclaim, but I
+> > > >> >> > didn't anticipate this interaction with mempools. We could change them
+> > > >> >> > but there might be others using a similar pattern. Maybe it would be for
+> > > >> >> > the best to just drop that heuristic from __pcs_replace_empty_main()
+> > > >> >> > (but carefully as some deadlock avoidance depends on it, we might need
+> > > >> >> > to e.g. replace it with gfpflags_allow_spinning()). I'll send a patch
+> > > >> >> > tomorrow to test this theory, unless someone beats me to it (feel free to).
+> > > >> >> Could you try this then, please? Thanks!
+> > > >> > 
+> > > >> > Thanks for working on this issue!
+> > > >> > 
+> > > >> > Unfortunately the patch doesn't make a difference on IOPS in the perf test,
+> > > >> > follows the collected perf profile on linus tree(basically 7.0-rc1 with your patch):
+> > > >> 
+> > > >> what about this patch in addition to the previous one? Thanks.
+> > > >> 
+> > > >> ----8<----
+> > > >> From d3e8118c078996d1372a9f89285179d93971fdb2 Mon Sep 17 00:00:00 2001
+> > > >> From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> > > >> Date: Thu, 26 Feb 2026 18:59:56 +0100
+> > > >> Subject: [PATCH] mm/slab: put barn on every online node
+> > > >> 
+> > > >> Including memoryless nodes.
+> > > >> 
+> > > >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > > >> ---
+> > > > 
+> > > > Just taking a quick grasp...
+> > > > 
+> > > >> @@ -6121,7 +6122,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+> > > >>  	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+> > > >>  		return;
+> > > >>  
+> > > >> -	if (likely(!IS_ENABLED(CONFIG_NUMA) || slab_nid(slab) == numa_mem_id())
+> > > >> +	if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) == numa_mem_id())
+> > > >> +			|| !node_isset(slab_nid(slab), slab_nodes))
+> > > > 
+> > > > I think you intended !node_isset(numa_mem_id(), slab_nodes)?
+> > > > 
+> > > > "Skip freeing to pcs if it's remote free, but memoryless nodes is
+> > > >  an exception".
+> > > 
+> > > Indeed, thanks! Ming, could you retry with that fixed up please?
+> > 
+> > After applying the following change, IOPS is ~25M:
+> > 
+> > - delta change on the two patches
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 085fe49eec68..56fe8bd956c0 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -6142,7 +6142,7 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+> >                 return;
+> >  
+> >         if (likely(!IS_ENABLED(CONFIG_NUMA) || (slab_nid(slab) == numa_mem_id())
+> > -                       || !node_isset(slab_nid(slab), slab_nodes))
+> > +                       || !node_isset(numa_mem_id(), slab_nodes))
+> >             && likely(!slab_test_pfmemalloc(slab))) {
+> >                 if (likely(free_to_pcs(s, object, true)))
+> >                         return;
+> >
+> 
+> Hi Ming, thanks a lot for helping testing!
+> 
+> The stats look quite fine to me, but we're still seeing suboptimal IOPS.
+> 
+> > - slab stat on patched `815c8e35511d Merge branch 'slab/for-7.0/sheaves' into slab/for-next`
+> 
+> Does that doesn't include Vlastimil's (fb1091febd66 mm/slab: allow sheaf
+> refill if blocking is not allowed)?
 
-On Wed, Mar 11, 2026 at 03:58:55PM +0800, Jianzhou Zhao wrote:
->
-> Subject: [BUG] mm/mremap: KCSAN: data-race in do_mremap / vma_complete
-> Dear Maintainers,
-> We are writing to report a KCSAN-detected data race vulnerability within the memory management subsystem, specifically involving `vma_complete` and `check_mremap_params`. This bug was found by our custom fuzzing tool, RacePilot. The race occurs when `vma_complete` increments the `mm->map_count` concurrently while `check_mremap_params` evaluates the same `current->mm->map_count` without holding the appropriate `mmap_lock` or using atomic snapshot primitives (`READ_ONCE`). We observed this bug on the Linux kernel version 6.18.0-08691-g2061f18ad76e-dirty.
-> Call Trace & Context
-> ==================================================================
-> BUG: KCSAN: data-race in do_mremap / vma_complete
-> write to 0xffff88800c232348 of 4 bytes by task 27920 on cpu 1:
->  vma_complete+0x6d2/0x8a0 home/kfuzz/linux/mm/vma.c:354
->  __split_vma+0x5fb/0x6f0 home/kfuzz/linux/mm/vma.c:567
->  vms_gather_munmap_vmas+0xe5/0x6a0 home/kfuzz/linux/mm/vma.c:1369
->  do_vmi_align_munmap+0x2a3/0x450 home/kfuzz/linux/mm/vma.c:1538
->  do_vmi_munmap+0x19c/0x2e0 home/kfuzz/linux/mm/vma.c:1596
->  do_munmap+0x97/0xc0 home/kfuzz/linux/mm/mmap.c:1068
->  mremap_to+0x179/0x240 home/kfuzz/linux/mm/mremap.c:1374
->  ...
->  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
-> read to 0xffff88800c232348 of 4 bytes by task 27919 on cpu 0:
->  check_mremap_params home/kfuzz/linux/mm/mremap.c:1816 [inline]
->  do_mremap+0x352/0x1090 home/kfuzz/linux/mm/mremap.c:1920
->  __do_sys_mremap+0x129/0x160 home/kfuzz/linux/mm/mremap.c:1993
->  __se_sys_mremap home/kfuzz/linux/mm/mremap.c:1961 [inline]
->  __x64_sys_mremap+0x66/0x80 home/kfuzz/linux/mm/mremap.c:1961
->  ...
-> value changed: 0x0000001f -> 0x00000020
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 UID: 0 PID: 27919 Comm: syz.7.1375 Not tainted 6.18.0-08691-g2061f18ad76e-dirty #42 PREEMPT(voluntary)
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> ==================================================================
-> Execution Flow & Code Context
-> In `mm/vma.c`, the `vma_complete()` function finalizes VMA alterations such as insertions. When a new VMA is successfully attached (e.g., during splitting), the function increments the process's `map_count` while holding the necessary `mmap_lock` in write mode from the calling context:
-> ```c
-> // mm/vma.c
-> static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
->     struct mm_struct *mm)
-> {
->  ...
->  } else if (vp->insert) {
->   /* ... split ... */
->   vma_iter_store_new(vmi, vp->insert);
->   mm->map_count++; // <-- Plain concurrent write
->  }
->  ...
-> }
-> ```
-> Conversely, the `mremap` syscall validation sequence preemptively evaluates `check_mremap_params()` *before* acquiring the `mmap_lock`. This allows dropping malformed syscalls fast but leaves the map quota check unsynchronized:
-> ```c
-> // mm/mremap.c
-> static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
-> {
->  ...
->  /* Worst-scenario case ... */
->  if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3) // <-- Plain concurrent read
->   return -ENOMEM;
->  return 0;
-> }
-> ```
-> At `mm/mremap.c:1924`, the `mmap_write_lock_killable(mm)` is only acquired *after* `check_mremap_params()` successfully returns.
-> Root Cause Analysis
-> A KCSAN data race arises because the `mremap` parameters validator attempts to enact an early heuristic rejection based on the current threshold of `mm->map_count`. However, this evaluation executes entirely without locks (`mmap_lock` is taken subsequently in `do_mremap`). This establishes a plain, lockless read racing against concurrent threads legitimately mutating `mm->map_count` (such as `vma_complete` splitting areas and incrementing the count under the protection of `mmap_lock`). The lack of `READ_ONCE()` combined with a mutating operation provokes the KCSAN alarm and potentially permits compiler load shearing.
-> Unfortunately, we were unable to generate a reproducer for this bug.
-> Potential Impact
-> This data race technically threatens the deterministic outcome of the `mremap` heuristic limit guard. Because `map_count` spans 4 bytes, severe compiler load tearing across cache lines theoretically could trick `check_mremap_params` into accepting or rejecting expansions erratically. Functionally, as a heuristic pre-check, it is virtually benign since a stricter bounded evaluation takes place later under safety locks, but fixing it stops sanitizing infrastructure exhaustion and formalizes the lockless memory access.
-> Proposed Fix
-> To inform the compiler and memory models that the read access of `map_count` inside `check_mremap_params` deliberately operates locklessly, we should wrap the evaluation using the `data_race()` macro to suppress KCSAN warnings effectively while conveying intent.
-> ```diff
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -1813,7 +1813,7 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
->    * Check whether current map count plus 2 still leads us to 4 maps below
->    * the threshold, otherwise return -ENOMEM here to be more safe.
->    */
-> -	if ((current->mm->map_count + 2) >= sysctl_max_map_count - 3)
-> +	if ((data_race(current->mm->map_count) + 2) >= sysctl_max_map_count - 3)
->    return -ENOMEM;
+No, because fb1091febd66 isn't included into `815c8e35511d Merge branch
+'slab/for-7.0/sheaves'.
 
-Ack, this used to be checked under the mmap write lock.
+> 
+> Next time when testing it, could you please test on top of 7.0-rc3 w/
+> the memoryless node patch (w/ the delta above) applied?
 
-I'll send a patch that factors out these kinds of checks + potentially does a
-speculative check ahead of time and then re-checks once lock established.
+IOPS is same between `815c8e35511d Merge branch 'slab/for-7.0/sheaves' into slab/for-next`
+and 7.0-rc3 with the two patches.
 
-With a:
+IMO, it should be more easier to compare & investigate by focusing on
+815c8e35511d, given there is only 41 patches between v6.19-rc5 and
+commit 815c8e35511d.
 
-Suggested-by: Jianzhou Zhao <luckd0g@163.com>
+> 
+> Also, let us check a few things...
+> 
+> 1) Does bumping up sheaf capacity change the slab stats & IOPS?
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 0c906fefc31b..5207279417e2 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7611,13 +7611,13 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
+>  	 * should result in similar lock contention (barn or list_lock)
+>  	 */
+>  	if (s->size >= PAGE_SIZE)
+> -		capacity = 4;
+> +		capacity = 6;
+>  	else if (s->size >= 1024)
+> -		capacity = 12;
+> +		capacity = 24;
+>  	else if (s->size >= 256)
+> -		capacity = 26;
+> +		capacity = 52;
+>  	else
+> -		capacity = 60;
+> +		capacity = 120;
+>  
+>  	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
+>  	size = struct_size_t(struct slab_sheaf, objects, capacity);
 
->   return 0;
-> ```
-> We would be highly honored if this could be of any help.
+IOPS can be increased from 24M to 29M with this patch, against 7.0-rc3 with
+Vlastimil's today patchset.
 
-Thanks, much appreciated :)
+> 
+> 2) Is there any change in NUMA locality between v6.19 vs. v7.0-rc3 (patched)?
+>    (e.g., measured via
+>     perf stat -e node-loads,node-load-misses,node-stores,node-store-misses)
 
-> Best regards,
-> RacePilot Team
+root@tomsrv:~/temp/mm/7.0-rc3/patched# perf stat -a -e node-loads,node-load-misses,node-stores,node-store-misses
+Error:
+No supported events found.
+The sys_perf_event_open() syscall returned with 22 (Invalid argument) for event (node-loads).
+"dmesg | grep -i perf" may provide additional information.
 
-Cheers, Lorenzo
+Looks the events are not supported on AMD Zen4 machine.
+
+> 
+> 3) It's quite strange that blk_mq_sched_bio_merge() completely
+>    disappeared in v7.0-rc2 profile [1] . Is there any change
+>    in read/write io merge rate? (/proc/diskstats) between v6.19 and
+>    v7.0-rc3?
+
+It isn't strange.
+
+Because IOPS drops to 13M on v7.0-rc2 from 34M on v6.19-rc5, so blk_mq_sched_bio_merge
+can't be shown obviously, which code path is run for each bio(IO).
+
+It is one totally random READ IO, and IO merge shouldn't happen.
+
+Thanks, 
+Ming
+
 
