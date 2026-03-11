@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD8B106289E
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 531CB106289D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Mar 2026 13:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C31136B0098; Wed, 11 Mar 2026 09:10:27 -0400 (EDT)
+	id 8481F6B0099; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDEE06B0099; Wed, 11 Mar 2026 09:10:27 -0400 (EDT)
+	id 7E8EE6B009D; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0B826B009B; Wed, 11 Mar 2026 09:10:27 -0400 (EDT)
+	id 722DB6B009E; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D4FD6B0098
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:10:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DBF1B6CA0
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:10:27 +0000 (UTC)
-X-FDA: 84533816094.04.AD5A3DF
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BED26B0099
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 09:11:18 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CFBF11A01DA
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:11:17 +0000 (UTC)
+X-FDA: 84533818194.30.3F1B798
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 41160C0016
-	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:10:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id CF7A8A001F
+	for <linux-mm@kvack.org>; Wed, 11 Mar 2026 13:11:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
 	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1773234625;
+	s=arc-20220608; t=1773234676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PIt3LSLvTE8qLL7xcLPMmbqSPbWXw/G7btx3kQ2ldpE=;
-	b=fG4sWzFzqFJvjTiUIGUasa/EK7/fGPbMC1vpvDErthnmzSaBC/k9o9tfQv3Q+iKOs976FN
-	rGAPQ3kqz3ynTdhP2UGzE1GqSlBuzxHuijZJQ3NaVwFiZeNwAA0YgCpm7PUn0mknye6Ehr
-	YAU7BUYzlB530GDumFyepoiIw4ujdh4=
+	bh=aB8bB87GXT5l61YUdgvdLYmu8krexDzk3Lgvx96XokQ=;
+	b=lk1nwW2USOLIHxwwnkNCIQJ85We5BolAE8tbVVLY6U7ZJeOCmxStC4zGbDiDrW4JetOHeT
+	VmJNsyIupeXHr5WUOZNOuDITrMLYAbLGz3+c/E3biKGxiXoC1jdc1aT9bwOymPbIgU4Ltt
+	RPaZuZvmprhzXvR6szd21QojjJvF95M=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
+	imf15.hostedemail.com;
 	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
 	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773234625; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1773234676; a=rsa-sha256;
 	cv=none;
-	b=eQYdtqxkKf9p1S95n1tPm/RhcEYbYI/VS+KQXgncwzozkF68aC/7S1hXbHcgrin7dYeOv1
-	5X1Myu2WoCIdTwherVe6C1B4D1cRpt3+k81uyvEFVRy790p4sX5iRSdfMDTR8RRvMAr/yi
-	vR53jZ9H+e8VoEik74kuYPjoHtOBAec=
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWB1c3Kw7zHnGcW;
-	Wed, 11 Mar 2026 21:10:12 +0800 (CST)
+	b=v0Ur0lN59UJpJOyJmlX07ZnCl7abfmTis7Jm+D7OOIsI7Psw8LYjoHAC61ccSZ+cP00n03
+	pXC0q0wmp966PYi36/ljEUDZ8xOKWPSpwZSnu3ItL1CJgmuXycq8fW06o++tCLfrm/iXlp
+	ePgjMsxfUISb2Wo3PhCGWdY7Q8xB95c=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fWB1v2vZKzJ46Yd;
+	Wed, 11 Mar 2026 21:10:27 +0800 (CST)
 Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2F04F4056E;
-	Wed, 11 Mar 2026 21:10:20 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A1FA440086;
+	Wed, 11 Mar 2026 21:11:13 +0800 (CST)
 Received: from [10.123.123.154] (10.123.123.154) by
  mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 11 Mar 2026 16:10:19 +0300
-Message-ID: <013c9fcd-bdeb-4508-8495-9ce9cd65b578@huawei-partners.com>
-Date: Wed, 11 Mar 2026 16:10:19 +0300
+ 15.2.1544.11; Wed, 11 Mar 2026 16:11:13 +0300
+Message-ID: <0c3068da-4dcb-4bc7-a762-2f529cb5abc2@huawei-partners.com>
+Date: Wed, 11 Mar 2026 16:11:12 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/4] mm/damon: Generic context creation for modules
+Subject: Re: [RFC PATCH v2 2/4] mm/damon: Support for synchrounous huge pages
+ collapse
 To: SeongJae Park <sj@kernel.org>
 CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
 	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
 	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
 	<linux-kernel@vger.kernel.org>
-References: <20260311005759.90440-1-sj@kernel.org>
+References: <20260311010222.90548-1-sj@kernel.org>
 Content-Language: en-US
 From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260311005759.90440-1-sj@kernel.org>
+In-Reply-To: <20260311010222.90548-1-sj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.123.123.154]
 X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
  mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Queue-Id: 41160C0016
-X-Stat-Signature: s8zcw7b7r1s5idz7gde1am6u83qwmfr8
+X-Rspamd-Queue-Id: CF7A8A001F
+X-Stat-Signature: ztz8qspkh81jptiof4eatebpa7ksp8ej
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1773234624-882081
-X-HE-Meta: U2FsdGVkX1+AB2DVXTPyv0bok54slHp0ZEkq/yKwFKQINBRFMOdj2A4X+2hbuzjUgSQKWit60+5t7qicR8tGrH1jO0biQyriDObHx6QQ6wE+7zdsfo8x5IxBnIKcHeNDvYyvUq1IxAwl+JHPJiKU3Wqa9S6U/IvF6MaDIy24YjQEkXo4pSBz4RqWunsVjZKMaO40tP4EfOQ/IT4rHkKIa51vFMw3MJX9T1ujTXo0b/c/f7uBhJ67mkG4D/UfVHBPi+SRyEfVThqA1oW54uVsBqvjFXrvXgyqugxh6Da4WzpU3380BG3DYmQuUcQ+xgTaW1EIbdHcZ5tbx5EOfbeTQEHQ4J500tUz6a2m8EtmAVmcNHBqNbft9MdVjhS0LgdfrvMo9Bc+smY9Sm5+LUAbMmcfNc/GRw6JbtoWbuGq1/dn7WMFD/LOIpVpueTrvhIz23Oo282ngpEN+teSX+E3EIIW4KTzfuo5ncoN0wYvYnefNzfPkLAJlZInrXboPgWiZKPIgwmTq7laAFkwhJanJHoDiCESXhxoqNVFmqAKioj9f/2c7foQpFsybptBYDZfYVAKIpkoymAGoNFVUPbrProaT4Qphik2+UDvB3Bx9K42BnuyJnt046j5VtBsdqqpcoKiY0Z6wCEO5xyBCeXSCPoc7pR+EVc3fgBqRamaRBUB0hNZxjla1Iv2Is/i7kvzG44x+J2inN7rFwYLRALarWbzTGlwApz18SYxMz6F0Er/NRqRPHVMATtOj62LMLBlq/620USiaJIfdMGim95r/vBMS49nZHCJKB5L3ATnmFEjTF6VKmzOFHY2IfyMOpOvyc/M8acEDJ1Tm5zu/3+1LFyvAAmVf3clbicphM8ynW/HoZPK75FGCmZ2uFrlKQGuci6/18DZJgrr3QiyDgXMJpBhpPA+M0I/8xK+ve/QoyajH1mpixmtFjG2Wwn8PqNqin8joRI7vhJWBJI8pk1
- KXR/dtPh
- j0GXmjhV/Yxn+s5GTLw8KGZJW0tn4+uEQCmyL+wqgqWP7BvBuodELz/qK0rtol6Oux/Zs7oCLsDUjwr+GnH4SxLw/73ruOtPX3EKJhZL3/OTIxz+UD6C0YcNaL62xy437L933c8Mi9fE3cRvipnQ68GvQrGU5Ta1nQdaizzsfaOFbYBJOJyPaOknm7l2TW7B5U7d3tOXZiFJ/EZMRgygXBVRxsg7KE0PVOOi9SiRdYeIM3Gvft0EIy1HPPgXrLS7gaQmtjxEovBHjX0yT00nv78zQcyRH8Erx29wNDN10CvAmhW1MuNdY/MIdag==
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1773234675-384777
+X-HE-Meta: U2FsdGVkX1//8+rqCinQ5LJJ4XlpNWUQGQx0RzTbjJ+d12gaqVP671pMAwRr6zt6kGoOKz8d19XPefUQI9Gvobm/yf1RfQ2sdUeXP3Mto+3HhhS9xEFbpdhFOLmzBoAwWYeTu2krtbxx8VQo/N6fJfZwFyYAj9XdoZlM2BAk3D5WO5Fwhrz9rrrWGuT7sqBVPQjZPSHCJLP+uyc9UvXgyfSxSEARV6VBZY3Ut2+M4AcnvxlmATjSGp85ErihsA64Qy+teG8nP5Uyb6Kg4DNmqYrB9uCDOnGyhPVJavGeYjgUS4a23D1+cVqMXoSYf/mAejWgYHP8c82ykABtUDo63+6tSlXN16baG/Y4bS+ZMWidx9TEUwMejwf+OV9ONr116yKW2sGA96YSIx8jnU2mYDsGPDwHA7CZJOm7SB0YZ5z2fl63H0S60kdz974BL7bMz4DkYpZoR2I/hEHrmyl3TKdPLDW7jr4ief4Bq6lvHOUiKNF+d+acxG6U8ouc1t2VtU3Wneb7doCwEDl1oyJN8BMwndA5o6RENH7W5Mg9YiAc3TE1hGf0t7LP47aBj+BhS2z/gz5z5LKmPZH7iBaBcDESgcKe1bF2xyBHh1pOAhyQaov7SoiQg25zGy+yYRnP6f53aY9igAUTZyOxlYDyGci+ynIvxuLtj9kC8LHSgdVYF5ruW+Tc+LTH9cJVqlepxdNejaf07JL0hDgh1LR/6e7ZHCFmPyQ0HHQFivO+J/e90DiI6tPK2PqIm4+i2QTt6O0XBrqUisvrcr9Wo+Qfv8ndqmxhN1UWxilxuwj+PprWst7Ge6yGAyWCE0A9D31UK0E/QjfHipscdYOkpANDPWvB39C83jbiYVF7szmel11I+Zl3V852j2GDBYIaasn3WPxgLpo+X/4LjtG+PW05NviDzkYLkIZSTIl5b8ukq+Uk9HIrdxOwzWhD2thozUa1chD7ggjAdQLohGfAcRN
+ BCjWl28j
+ 2E0/7z76DRh+efQa/sbgjekar9ADV0Z8JFuBpXn8P46dPAZbMCUaZNd3kUmQNEZ4IesmH3y1wACTmyxCpFNLfwY1Lq/ZNBQC/s8vXr66GtDLQXobzr5gDWPSD3Ux2RF3m1E1NYOCt9fvX3DQv/TlEHcR2PXBAK+pmr1MRmBd2/T0pOhnddiITpwz8+qRuPKdnoDAUr4FxPBBdQkZ2gJ+Uc68dcSd7l58bdBRW1/CXZRn2acJG0Q+vOoeyR7/aekQv4WUk8p6equYQhi59a6WbYcpgJSbFDNrkvrNUHYULN/68tKzUOHYnfASmAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,137 +96,67 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 3/11/2026 3:57 AM, SeongJae Park wrote:
-> On Tue, 10 Mar 2026 16:24:17 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+On 3/11/2026 4:02 AM, SeongJae Park wrote:
+> On Tue, 10 Mar 2026 16:24:18 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 > 
 >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> It is more elegant to have a generic version of new context creation
->> which receives the mode as a parameter.
+> 
+> Please add more descriptions of the change, including the motivation.
+> 
+> I assume the motivation is similar to MADV_COLLAPSE that aims to make
+> synchronous and therefore faster huge page collapsing impacts copared to
+> MADV_HUGEPAGE?  It would be nice to make it clear here.  Also, if my assumption
+> is not wrong, adding a test results showing the benefit of DAMOS_COLLAPSE over
+> DAMOS_HUGEPAGE here would be nice.
+
+You are right. I will make it more clear in the cover letter for the next
+version.
+
+> 
 >>
 >> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 >> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
 >> ---
->>  mm/damon/lru_sort.c       | 5 +++--
->>  mm/damon/modules-common.c | 6 +++---
->>  mm/damon/modules-common.h | 4 ++--
->>  mm/damon/reclaim.c        | 5 +++--
->>  4 files changed, 11 insertions(+), 9 deletions(-)
+>>  include/linux/damon.h | 1 +
+>>  mm/damon/vaddr.c      | 3 +++
+>>  2 files changed, 4 insertions(+)
 >>
->> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
->> index 7bc5c0b2aea3..143ee0b21da6 100644
->> --- a/mm/damon/lru_sort.c
->> +++ b/mm/damon/lru_sort.c
->> @@ -287,7 +287,8 @@ static int damon_lru_sort_apply_parameters(void)
->>  	unsigned int hot_thres, cold_thres;
->>  	int err;
->>  
->> -	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
->> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
->> +				DAMON_OPS_PADDR);
-> 
-> I like the name of the function is becoming shorter.  But I'm not happy with
-> the fact the resulting calling code becomes longer.
-> 
-> I understand you are doing this extension because you want a version of the
-> function for vaddr.  What about introducing another dedicated function, say,
-> damon_modules_new_vaddr_ctx_target() ?
-> 
-> And you can avoid duplicates between damon_modules_new_{p,v}addr_ctx_target()
-> by implementing internal function, say, damon_modules_new_ctx_target() that
-> receives the damon_ops_id.  And damon_modules_new_{P,v}addr_ctx_target() will
-> just wrappers of damon_modules_new_ctx_target().
-
-Sure, I will do it.
-
-Since this is some generic code not related to the module I am working on,
-maybe I can move this to a different patch set that we can upstream. What do
-you think?
-
-> 
->>  	if (err)
->>  		return err;
->>  
->> @@ -479,7 +480,7 @@ static int __init damon_lru_sort_init(void)
->>  		err = -ENOMEM;
->>  		goto out;
->>  	}
->> -	err = damon_modules_new_paddr_ctx_target(&ctx, &target);
->> +	err = damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_PADDR);
-> 
-> Ditto.
-> 
->>  	if (err)
->>  		goto out;
->>  
->> diff --git a/mm/damon/modules-common.c b/mm/damon/modules-common.c
->> index 86d58f8c4f63..ae50b2fa3a86 100644
->> --- a/mm/damon/modules-common.c
->> +++ b/mm/damon/modules-common.c
->> @@ -14,8 +14,8 @@
->>   * @ctxp:	Pointer to save the point to the newly created context
->>   * @targetp:	Pointer to save the point to the newly created target
->>   */
->> -int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
->> -		struct damon_target **targetp)
->> +int damon_modules_new_ctx_target(struct damon_ctx **ctxp,
->> +		struct damon_target **targetp, enum damon_ops_id mode)
-> 
-> Nit.  I'd suggest 'ops_id' as the parameter name, instead of 'mode'.
-> 
->>  {
->>  	struct damon_ctx *ctx;
->>  	struct damon_target *target;
->> @@ -24,7 +24,7 @@ int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
->>  	if (!ctx)
->>  		return -ENOMEM;
->>  
->> -	if (damon_select_ops(ctx, DAMON_OPS_PADDR)) {
->> +	if (damon_select_ops(ctx, mode)) {
->>  		damon_destroy_ctx(ctx);
->>  		return -EINVAL;
->>  	}
->> diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
->> index f103ad556368..379b49c6a617 100644
->> --- a/mm/damon/modules-common.h
->> +++ b/mm/damon/modules-common.h
->> @@ -45,5 +45,5 @@
->>  	module_param_named(nr_##qt_exceed_name, stat.qt_exceeds, ulong,	\
->>  			0400);
->>  
->> -int damon_modules_new_paddr_ctx_target(struct damon_ctx **ctxp,
->> -		struct damon_target **targetp);
->> +int damon_modules_new_ctx_target(struct damon_ctx **ctxp,
->> +		struct damon_target **targetp, enum damon_ops_id mode);
->> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
->> index 43d76f5bed44..24786a58683a 100644
->> --- a/mm/damon/reclaim.c
->> +++ b/mm/damon/reclaim.c
->> @@ -197,7 +197,8 @@ static int damon_reclaim_apply_parameters(void)
->>  	struct damos_filter *filter;
->>  	int err;
->>  
->> -	err = damon_modules_new_paddr_ctx_target(&param_ctx, &param_target);
->> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
->> +				DAMON_OPS_PADDR);
->>  	if (err)
->>  		return err;
->>  
->> @@ -381,7 +382,7 @@ static int __init damon_reclaim_init(void)
->>  		err = -ENOMEM;
->>  		goto out;
->>  	}
->> -	err = damon_modules_new_paddr_ctx_target(&ctx, &target);
->> +	err = damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_PADDR);
->>  	if (err)
->>  		goto out;
->>  
+>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+>> index a4fea23da857..a9cf17b9e8fa 100644
+>> --- a/include/linux/damon.h
+>> +++ b/include/linux/damon.h
+>> @@ -142,6 +142,7 @@ enum damos_action {
+>>  	DAMOS_LRU_DEPRIO,
+>>  	DAMOS_MIGRATE_HOT,
+>>  	DAMOS_MIGRATE_COLD,
+>> +	DAMOS_COLLAPSE,
+>>  	DAMOS_STAT,		/* Do nothing but only record the stat */
+>>  	NR_DAMOS_ACTIONS,
+>>  };
+>> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+>> index 729b7ffd3565..36791a9a1094 100644
+>> --- a/mm/damon/vaddr.c
+>> +++ b/mm/damon/vaddr.c
+>> @@ -969,6 +969,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>>  	case DAMOS_NOHUGEPAGE:
+>>  		madv_action = MADV_NOHUGEPAGE;
+>>  		break;
+>> +	case DAMOS_COLLAPSE:
+>> +		madv_action = MADV_COLLAPSE;
+>> +		break;
+>>  	case DAMOS_MIGRATE_HOT:
+>>  	case DAMOS_MIGRATE_COLD:
+>>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
 >> -- 
 >> 2.43.0
+> 
+> The code looks good to me.
 > 
 > 
 > Thanks,
 > SJ
+> 
+> [...]
 > 
 
 -- 
